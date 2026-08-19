@@ -22,18 +22,19 @@ CAT = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))
 DEC = json.load(open("decisoes-ficha.json", encoding="utf-8"))
 wb  = load_workbook(ARQ)
 
-CORPO  = DEC["C4_fontes"]["corpo"]["fonte"]
-TITULO = DEC["C4_fontes"]["titulo"]["fonte"]
-MARCA  = DEC["C4_fontes"]["marca"]["fonte"]
-PERMITIDAS = {CORPO, TITULO, MARCA}
+_F = DEC["C4_fontes"]
+CORPO = _F["corpo"]["fonte"]
+PERMITIDAS = {_F[p]["fonte"] for p in ("corpo", "titulo", "documento", "serie", "marca")}
+KANJI_PISO = _F["kanji_piso_pt"]
 PALETA = {"120F1D","211C35","30294D","493F54","756588","998BA9","F4F1F7"} | \
          {g["hex"] for g in DEC["A5_acento"]["degraus"]}
 
 print("AS ABAS")
-esperadas = ["FICHA", "TÉCNICA", "MESA", "QUEM É", "DADOS"]
+esperadas = DEC["C6_documento"]["abas"]
 checa("as cinco abas existem", all(a in wb.sheetnames for a in esperadas),
       str([a for a in esperadas if a not in wb.sheetnames]))
-checa("a FICHA abre primeiro", wb.sheetnames[0] == "FICHA", wb.sheetnames[0])
+checa("a CARTEIRA abre primeiro (C6: ela é o documento)",
+      wb.sheetnames[0] == "CARTEIRA", wb.sheetnames[0])
 checa("a DADOS fica escondida", wb["DADOS"].sheet_state == "hidden")
 
 print("\nA FONTE  (o defeito que matou o protótipo)")
@@ -52,6 +53,24 @@ checa("nenhuma célula saiu numa fonte que não foi escolhida", not fora,
 checa("a fonte padrão do documento é a de corpo",
       wb._fonts[0].name == CORPO, str(wb._fonts[0].name))
 
+print("\nO KANJI, E O PISO MEDIDO")
+kanji = [(ws.title, c.coordinate, c.font.size, c.value)
+         for ws in wb for l in ws.iter_rows() for c in l
+         if isinstance(c.value, str) and any("\u4e00" <= ch <= "\u9fff" for ch in c.value)]
+for aba, coord, pt, v in kanji:
+    print(f"      {aba}!{coord}  {v}  {pt} pt")
+checa(f"nenhum kanji abaixo de {KANJI_PISO} pt (abaixo disso o traço funde)",
+      all(k[2] >= KANJI_PISO for k in kanji), str([k for k in kanji if k[2] < KANJI_PISO]))
+
+print("\nA ARTE  (C5: desenhada por código, nunca baixada)")
+import os as _os
+pecas = DEC["C5_arte"]["pecas"]
+faltando = [p for p in pecas if not _os.path.exists(f"arte/{p}.png")]
+checa(f"as {len(pecas)} peças existem", not faltando, str(faltando))
+checa("o gerador da arte está junto", _os.path.exists("arte/gera.py"))
+usadas = sum(len(ws._images) for ws in wb)
+checa("a ficha usa a arte", usadas >= 5, f"{usadas} imagens")
+
 print("\nA REGRA DURA DA MESA  (o app de celular troca fonte que ele não tem)")
 so_corpo = {c.font.name for l in wb["MESA"].iter_rows() for c in l
             if c.font and c.font.name}
@@ -62,7 +81,7 @@ larg = wb["MESA"].column_dimensions["A"].width
 checa("a largura de coluna está na faixa medida (3.6 a 4.1)", 3.6 <= larg <= 4.1, str(larg))
 
 print("\nA LARGURA DAS ABAS DE PC")
-for aba in ["FICHA", "TÉCNICA", "QUEM É"]:
+for aba in ["CARTEIRA", "FICHA", "TÉCNICA", "QUEM É"]:
     n = sum(1 for c in range(1, 60) if L(c) in wb[aba].column_dimensions)
     px = n * (larg * 7)
     checa(f"{aba}: {n} colunas ≈ {px:.0f} px, cabe em notebook de 1366",

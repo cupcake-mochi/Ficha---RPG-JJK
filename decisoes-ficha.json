@@ -172,7 +172,7 @@
     "o_bug_que_isso_conserta": "o prototipo tinha '10 + Destreza + 1' com o 1 escrito na mao; ele fica errado no refino 3, quando a protecao vira 2"
   },
   "C4_fontes": {
-    "escolha": "tres fontes, com papeis separados, e uma regra dura para o celular",
+    "escolha": "cinco fontes, cada uma com um papel, e a regra dura do celular",
     "corpo": {
       "fonte": "Roboto",
       "onde": "todas as abas",
@@ -184,9 +184,9 @@
       "porque": "condensada: a mesma linha ocupa 20% menos que em Roboto, e sobra espaco na coluna estreita"
     },
     "marca": {
-      "fonte": "Noto Sans JP",
-      "onde": "so ornamento em kanji, em area morta, so nas abas de PC",
-      "porque": "e a unica das candidatas que tem kanji E os acentos do portugues"
+      "fonte": "Yuji Syuku",
+      "onde": "os kanji, dentro da arte gerada",
+      "porque": "pincel de verdade; e a que menos deforma o traco ao encolher"
     },
     "regra_dura": "a aba MESA usa SO Roboto. O app de celular do Sheets tem menos fontes que o navegador e troca as de fora da lista sem avisar",
     "medido": {
@@ -207,7 +207,66 @@
         "BebasNeue": 1.0
       },
       "criterio_titulo": "x/maiuscula acima de 0.90 e display caixa-alta, e cansa em bloco de texto",
-      "porque_Lexend_caiu": "333 px de 336 nao deixa respiro entre celula"
-    }
+      "porque_Lexend_caiu": "333 px de 336 nao deixa respiro entre celula",
+      "kanji_piso": {
+        "regra": "kanji so le a partir de 22 pt; abaixo disso os tracos fundem",
+        "metrica": "deriva de cobertura contra o mesmo glifo a 96 px, corte em 12%",
+        "metrica_descartada": "contagem de vaos fechados: oscilava com o tamanho, o que e impossivel se estiver certa",
+        "piso_por_fonte": {
+          "ShipporiMincho": 22,
+          "YujiSyuku": 22,
+          "NewTegomin": 22,
+          "ZenAntique": 22,
+          "NotoSansJP": 28
+        }
+      }
+    },
+    "documento": {
+      "fonte": "Shippori Mincho",
+      "onde": "nome do portador e valores de campo nas abas de PC",
+      "porque": "serifada japonesa com os acentos do portugues; e ela que da a voz de documento oficial"
+    },
+    "serie": {
+      "fonte": "Courier New",
+      "onde": "numero de registro, serie, data de emissao",
+      "porque": "maquina de escrever le como burocracia, e esta na lista que o Sheets carrega sozinho"
+    },
+    "kanji_piso_pt": 22
+  },
+  "C5_arte": {
+    "escolha": "arte desenhada por codigo, nunca baixada",
+    "porque": "o material circula entre jogadores e pode virar PDF; arte de terceiro com licenca desconhecida vira problema do Mizuki depois",
+    "gerador": "arte/gera.py, com semente fixa: roda de novo e sai identico",
+    "pecas": [
+      "selo-封",
+      "selo-呪",
+      "pincelada",
+      "pincelada-roxa",
+      "respingo",
+      "moldura-foto",
+      "textura"
+    ],
+    "como_entra_no_sheets": "o Apps Script embute em base64 pela CellImage, sem depender de URL externa",
+    "como_entra_no_xlsx": "imagem flutuante, so em area morta, porque ela bloqueia a digitacao embaixo",
+    "consertado_no_caminho": "a primeira pincelada sorteava falha coluna a coluna e saiu com cara de codigo de barras; pincel seco arrasta, nao pisca"
+  },
+  "C6_documento": {
+    "escolha": "a ficha e o documento oficial do feiticeiro, e a primeira aba e a carteira",
+    "de_onde_veio": "Morningstar, sobre a ficha do Night Witches: a gramatica visual sai da ficcao, nao de um guia de layout",
+    "o_que_isso_decide": [
+      "regua no lugar de caixa: um fio embaixo do valor, nunca borda em volta",
+      "secoes numeradas 01 02 03, com o numero grande e apagado",
+      "numero de registro e data de emissao, em Courier",
+      "o Selo desenhado como carimbo, e ele e a unica coisa vermelha da pagina",
+      "assimetria: lombada escura na lateral, conteudo deslocado"
+    ],
+    "abas": [
+      "CARTEIRA",
+      "FICHA",
+      "TÉCNICA",
+      "QUEM É",
+      "MESA",
+      "DADOS"
+    ]
   }
 }

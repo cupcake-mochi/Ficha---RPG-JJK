@@ -55,6 +55,9 @@ for nome, v in KAORI.items():
     ws[IDX["atr_" + nome]] = v
 ws[IDX["caminho"]] = CAMINHO
 ws[IDX["nivel"]]   = NIVEL
+# o LibreOffice exporta em csv SO a primeira aba, e a primeira agora e a
+# CARTEIRA. Na copia, a FICHA vai para a frente -- o arquivo real nao muda.
+wb.move_sheet("FICHA", -wb.sheetnames.index("FICHA"))
 wb.save(copia)
 
 subprocess.run(["libreoffice", "--headless", "--convert-to",

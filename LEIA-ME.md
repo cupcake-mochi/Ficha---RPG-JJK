@@ -2,16 +2,20 @@
 
 Este pacote continua o trabalho da conversa anterior. **Nada foi recomeçado do zero, e nenhum arquivo dos seus repositórios foi editado.**
 
-O que mudou nesta rodada: **as cinco decisões do bloco A e as quatro do bloco C foram fechadas**, e a **ficha existe**. Ela é gerada por script, e a Kaori sai certa de dentro dela.
+O que mudou nesta rodada: a ficha **ganhou identidade**. Ela deixou de ser planilha organizada e virou o documento oficial do feiticeiro — carteira com foto e selo, régua no lugar de caixa, arte desenhada por código, e cinco fontes com papéis separados.
+
+**Para subir isso e virar uma planilha de verdade: [`COMO-SUBIR.md`](COMO-SUBIR.md).**
 
 ---
 
 ## Por onde começar
 
 1. **`DECISOES-bloco-A.md`** — as nove decisões (bloco A e bloco C), com o porquê e o que foi medido. É o dono delas.
-2. **`ficha/ficha-projeto-m.xlsx`** — a ficha. Gerada por `ficha/monta.py`; não edite o `.xlsx` na mão, edite o gerador.
-3. **`manual-temporario.md`** — o texto pronto para colar no manual, decisão A2b. **Só você aplica isso**; eu não mexo no repositório.
-4. **`PENDENCIAS.md`** — o bloco A saiu e virou ponteiro. Entraram cinco itens novos, do B5 ao B9.
+2. **`COMO-SUBIR.md`** — do repositório até a ficha na mão do jogador, em seis passos.
+3. **`ficha/ficha-projeto-m.xlsx`** — a ficha, seis abas. Gerada por `ficha/monta.py`; não edite o `.xlsx` na mão, edite o gerador.
+4. **`apps-script/Codigo.gs`** — o que o `.xlsx` não carrega: caixa de seleção, cor de estado, proteção, e a entrada por delta.
+5. **`manual-temporario.md`** — o texto pronto para colar no manual, decisão A2b. **Só você aplica isso**; eu não mexo no repositório.
+6. **`PENDENCIAS.md`** — o bloco A saiu e virou ponteiro. Entraram cinco itens novos, do B5 ao B9.
 
 O `DESIGN-ficha-digital.md` e o `ESPECIFICACAO-ficha-digital.md` continuam valendo. O desenho ganhou uma linha de "decidido" em cada seção que tinha pergunta aberta, e duas correções de fato na parte do script.
 

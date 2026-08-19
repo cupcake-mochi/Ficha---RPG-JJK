@@ -9,7 +9,7 @@ import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from openpyxl import Workbook
 from openpyxl.styles import Font
-import estilo, dados, aba_ficha, abas_resto
+import estilo, dados, aba_ficha, aba_carteira, abas_resto
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CAT = json.load(open(os.path.join(RAIZ, "catalogo-projeto-m.json"), encoding="utf-8"))
@@ -24,6 +24,10 @@ wb._fonts[0] = Font(name=estilo.CORPO, size=estilo.PT_VALOR, color=estilo.TEXTO)
 
 ref = dados.monta(wb, CAT, DEC)
 R   = aba_ficha.monta(wb, CAT, DEC, ref)
+CAR = aba_carteira.monta(wb, CAT, DEC, ref, R)
+
+# o nome mora na CARTEIRA, e a FICHA le dele. Um dado, um dono.
+R["nome"].value = f"=IF(CARTEIRA!{CAR['nome'].coordinate}=\"\",\"\",CARTEIRA!{CAR['nome'].coordinate})"
 abas_resto.tecnica(wb, CAT, DEC, ref)
 abas_resto.mesa(wb, CAT, DEC, R)
 abas_resto.quem_e(wb, CAT, DEC)
@@ -33,7 +37,8 @@ abas_resto.quem_e(wb, CAT, DEC)
 dados.indice(wb, R)
 
 # a ordem em que as abas abrem
-wb.move_sheet("FICHA", -wb.sheetnames.index("FICHA"))
+for i, aba in enumerate(["CARTEIRA", "FICHA", "TÉCNICA", "MESA", "QUEM É"]):
+    wb.move_sheet(aba, i - wb.sheetnames.index(aba))
 saida = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ficha-projeto-m.xlsx")
 wb.save(saida)
 print(f"ficha escrita: {saida}")
