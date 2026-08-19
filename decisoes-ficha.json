@@ -5,7 +5,6 @@
     "quando": "2026-08-18",
     "regra": "onde a ficha e o manual discordarem, o manual vence; onde a regra nao existe no manual, o campo fonte diz 'ficha'"
   },
-
   "A1_catalogo": {
     "escolha": "carimbo com aviso vivo",
     "copia_local": true,
@@ -14,9 +13,11 @@
     "se_a_central_cair": "a ficha perde o aviso e continua inteira; os menus nao dependem do IMPORTRANGE",
     "porque_a_copia_local_e_obrigatoria": "no Sheets, lista suspensa so aponta para intervalo da MESMA planilha",
     "renomear_a_central": "nao quebra; o IMPORTRANGE guarda o id do arquivo, nao o nome",
-    "o_que_quebra": ["apagar a central", "perder o acesso a ela"]
+    "o_que_quebra": [
+      "apagar a central",
+      "perder o acesso a ela"
+    ]
   },
-
   "A2_temporario": {
     "vida": {
       "empilha": false,
@@ -44,7 +45,9 @@
       "expira": "fim da cena",
       "gasta_antes_do_pe_normal": true,
       "teto_numerico": null,
-      "teto_por_fonte": {"Braseiro": 2},
+      "teto_por_fonte": {
+        "Braseiro": 2
+      },
       "fonte": {
         "tudo": "manual, Braseiro (Trilha Brasa, nivel 11): 'nunca passa de 2 acumulados e some no fim da cena. Energia temporaria gasta como PE, e gasta primeiro'",
         "teto_e_do_Braseiro_nao_geral": "o Braseiro e hoje a unica fonte de energia temporaria no manual"
@@ -58,47 +61,153 @@
       "quem_aplica": "Mizuki, no repositorio do manual"
     }
   },
-
   "A3_incompatibilidades": {
     "escolha": "trava so na ficha; o manual fica calado",
     "pares": [
-      {"a": "Rápido", "b": "Reação", "fonte": "manual",
-       "texto": "Nao entra no mesmo feitico que Reacao.",
-       "onde": "manual, tabela da Familia Tempo"},
-      {"a": "Rápido", "b": "Lento", "fonte": "ficha",
-       "texto": "Um diz Acao Bonus, o outro diz rodada inteira.",
-       "onde": "decisao A3"}
+      {
+        "a": "Rápido",
+        "b": "Reação",
+        "fonte": "manual",
+        "texto": "Nao entra no mesmo feitico que Reacao.",
+        "onde": "manual, tabela da Familia Tempo"
+      },
+      {
+        "a": "Rápido",
+        "b": "Lento",
+        "fonte": "ficha",
+        "texto": "Um diz Acao Bonus, o outro diz rodada inteira.",
+        "onde": "decisao A3"
+      }
     ],
     "o_que_fica_exposto": "quem monta feitico no papel ou no gerador continua com o desconto",
     "tamanho_do_desconto": "um terco do orcamento em toda Classe; com a Familia Tempo Livre, o Rapido sai de graca"
   },
-
   "A4_reservas": {
     "escolha": "os dois",
     "atual_editavel": true,
     "caixa_de_delta": true,
     "gatilho": "onEdit simples, so mexe na propria planilha",
     "sobrevive_a_copia": true,
-    "nao_roda_quando": ["sem sinal, ate o celular sincronizar"],
+    "nao_roda_quando": [
+      "sem sinal, ate o celular sincronizar"
+    ],
     "quando_nao_roda": "o jogador edita o atual na mao; nada trava",
     "botao_desenhado_no_celular": false,
     "substituto_do_botao": "caixa de selecao ou lista suspensa fazendo papel de botao"
   },
-
   "A5_acento": {
     "escolha": "cor de estado no numero grande",
     "degraus": [
-      {"quando": "cheio",              "hex": "E8DCD4", "nome": "osso"},
-      {"quando": "abaixo da metade",   "hex": "D89B3A", "nome": "ambar"},
-      {"quando": "abaixo de um quarto","hex": "C2334D", "nome": "vermelho"}
+      {
+        "quando": "cheio",
+        "hex": "E8DCD4",
+        "nome": "osso"
+      },
+      {
+        "quando": "abaixo da metade",
+        "hex": "D89B3A",
+        "nome": "ambar"
+      },
+      {
+        "quando": "abaixo de um quarto",
+        "hex": "C2334D",
+        "nome": "vermelho"
+      }
     ],
     "porque_funciona": "os tres estao em degraus de claridade, nao de matiz",
     "medido": {
-      "osso_vs_ambar":     {"normal": 1.80, "protanopia": 1.88, "deuteranopia": 1.69},
-      "ambar_vs_vermelho": {"normal": 2.24, "protanopia": 2.51, "deuteranopia": 1.95},
-      "osso_vs_vermelho":  {"normal": 4.03, "protanopia": 4.74, "deuteranopia": 3.31},
-      "sobre_o_painel":    {"osso": 12.18, "ambar": 6.76, "vermelho": 3.02}
+      "osso_vs_ambar": {
+        "normal": 1.8,
+        "protanopia": 1.88,
+        "deuteranopia": 1.69
+      },
+      "ambar_vs_vermelho": {
+        "normal": 2.24,
+        "protanopia": 2.51,
+        "deuteranopia": 1.95
+      },
+      "osso_vs_vermelho": {
+        "normal": 4.03,
+        "protanopia": 4.74,
+        "deuteranopia": 3.31
+      },
+      "sobre_o_painel": {
+        "osso": 12.18,
+        "ambar": 6.76,
+        "vermelho": 3.02
+      }
     },
     "regra_que_continua_valendo": "a cor nunca e o unico meio: o numero em si ja diz o estado"
+  },
+  "C1_evocador": {
+    "escolha": "o Evocador sai do menu de Caminhos da ficha, por enquanto",
+    "motivo": "o Caminho existe no manual, mas as entregas de Trilha (niveis 2, 11, 19 e 27) estao em escrita, o Casco diz 'mais vida' sem numero, e a ficha da invocacao (manual cap.14, p.180) nao existe em versao nenhuma da ficha",
+    "o_catalogo_NAO_muda": "o catalogo espelha o manual, e o manual tem cinco Caminhos. Quem some e a OPCAO no menu da ficha, nao a entrada no catalogo",
+    "caminhos_no_menu": [
+      "Bastião",
+      "Vanguarda",
+      "Guia",
+      "Emanador"
+    ],
+    "caminho_oculto": "Evocador",
+    "a_ficha_diz": "Evocador — em escrita, fale com o mestre",
+    "quando_volta": "quando as entregas de Trilha e o numero do Casco sairem"
+  },
+  "C2_carimbo": {
+    "escolha": "o carimbo e a versao do projeto",
+    "versao_corrente": "0.104",
+    "data_da_versao": "18/08/2026",
+    "dona_da_versao": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
+    "manual_do_fundamento": "7.10",
+    "porque_a_do_projeto_e_nao_a_do_manual": "o catalogo foi extraido do PDF inteiro, que e o recorte da versao do projeto; o 7.10 e so do capitulo de Fundamento",
+    "onde_fica_na_ficha": "DADOS!B1, e a central publica a mesma string numa celula so"
+  },
+  "C3_defesa": {
+    "escolha": "a protecao vira celula propria, com escolha entre aptidao e equipamento",
+    "formula_defesa": "10 + Destreza + protecao",
+    "formula_protecao": "SE(usa equipamento; protecao do equipamento; ARRED.ABAIXO(refino/3) + 1)",
+    "porque": "Traje e Revestimento DESLIGAM a protecao da aptidao e entregam a deles no lugar, entao o jogador escolhe qual das duas vale",
+    "o_que_entra_agora": "a celula de escolha e a formula da aptidao",
+    "o_que_entra_depois": "o catalogo de equipamento (manual cap.12); ate la o jogador digita o numero na mao",
+    "o_bug_que_isso_conserta": "o prototipo tinha '10 + Destreza + 1' com o 1 escrito na mao; ele fica errado no refino 3, quando a protecao vira 2"
+  },
+  "C4_fontes": {
+    "escolha": "tres fontes, com papeis separados, e uma regra dura para o celular",
+    "corpo": {
+      "fonte": "Roboto",
+      "onde": "todas as abas",
+      "porque": "esta na lista curta que o Sheets carrega sem 'mais fontes', entao o app de celular nao substitui ela"
+    },
+    "titulo": {
+      "fonte": "Oswald",
+      "onde": "titulos, rotulos de bloco e os numeros grandes, so nas abas de PC",
+      "porque": "condensada: a mesma linha ocupa 20% menos que em Roboto, e sobra espaco na coluna estreita"
+    },
+    "marca": {
+      "fonte": "Noto Sans JP",
+      "onde": "so ornamento em kanji, em area morta, so nas abas de PC",
+      "porque": "e a unica das candidatas que tem kanji E os acentos do portugues"
+    },
+    "regra_dura": "a aba MESA usa SO Roboto. O app de celular do Sheets tem menos fontes que o navegador e troca as de fora da lista sem avisar",
+    "medido": {
+      "linha_de_feitico_da_MESA_em_336px": {
+        "Roboto": 308,
+        "Lexend": 333,
+        "NotoSansJP": 301,
+        "Oswald": 247,
+        "Anton": 273,
+        "BebasNeue": 230
+      },
+      "x_sobre_maiuscula": {
+        "Roboto": 0.74,
+        "Lexend": 0.75,
+        "NotoSansJP": 0.74,
+        "Oswald": 0.71,
+        "Anton": 0.85,
+        "BebasNeue": 1.0
+      },
+      "criterio_titulo": "x/maiuscula acima de 0.90 e display caixa-alta, e cansa em bloco de texto",
+      "porque_Lexend_caiu": "333 px de 336 nao deixa respiro entre celula"
+    }
   }
 }

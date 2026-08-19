@@ -1,6 +1,9 @@
 {
   "_meta": {
     "sistema": "Projeto M",
+    "versao": "0.104",
+    "versao_data": "18/08/2026",
+    "versao_dona": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
     "fonte": "Projeto-M-Manual-da-Guilda.pdf (199 p.)",
     "regra": "onde a ficha-em-branco.docx e o manual discordarem, o manual vence",
     "nivel_inicial": 2,

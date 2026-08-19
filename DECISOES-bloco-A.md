@@ -171,3 +171,69 @@ sobre o painel:  osso 12.18 · âmbar 6.76 · vermelho 3.02
 A cor não é o único meio de dizer nada. Sob esse esquema o número **já diz sozinho** que está baixo — a cor só chega junto. É o uso certo dela.
 
 Vermelho na ficha continua querendo dizer "olha isso". Agora ele quer dizer duas coisas que são a mesma: regra violada, e vida acabando.
+
+---
+
+# Bloco C · as quatro que saíram do "falta algo antes de construir"
+
+Decididas em 18/08/2026, depois de fechar o bloco A. Os valores estão no `decisoes-ficha.json` como `C1` a `C4`.
+
+## C1 · O Evocador sai do menu, por enquanto
+
+**O Caminho continua no manual e continua no catálogo. Quem some é a opção no menu da ficha.** Essa distinção não é preciosismo: o catálogo espelha o manual, e mexer nele para resolver um problema da ficha é exatamente como as Famílias divergiram.
+
+O motivo é que o Evocador tem três buracos empilhados:
+
+- as entregas de Trilha dos níveis 2, 11, 19 e 27 estão em escrita, e o próprio manual manda combinar com o mestre até saírem
+- o `Casco` diz *"as suas invocações têm mais vida"* sem número, enquanto as outras duas opções da mesma escolha têm
+- **a ficha da invocação não existe em versão nenhuma da ficha.** O manual tem um capítulo inteiro para ela — capítulo 14, nove páginas, com seção própria de ficha na p.180 e catálogo próprio na p.182 — e nem a especificação, nem o documento de desenho, nem a `ficha-em-branco.docx` têm um campo sequer
+
+A ficha imprime `Evocador — em escrita, fale com o mestre` no lugar da opção.
+
+O `conferir-decisoes.py` checa que o motivo ainda vale: se o `Casco` ganhar número no manual, a checagem acende e o Evocador pode voltar.
+
+## C2 · O carimbo é a versão do projeto
+
+**Hoje `0.104`**, de 18/08/2026. A dona dela é a entrada do topo do `CHANGELOG` do repositório do sistema.
+
+Não é a `v7.10` do Manual do Fundamento: essa é só de um capítulo, e o catálogo saiu do PDF inteiro.
+
+O catálogo ganhou o campo `_meta.versao`, que ele não tinha — sem ele a decisão A1 não tinha o que carimbar.
+
+## C3 · A proteção vira célula, e ela é uma escolha
+
+```
+proteção = SE(usa equipamento ; a do equipamento ; ARRED.ABAIXO(refino/3) + 1)
+Defesa   = 10 + Destreza + proteção
+```
+
+O protótipo tinha `10 + Destreza + 1`, com o `1` na mão. Ele acerta hoje por coincidência, porque a ficha nasce no nível 2 com refino 1, e erra no refino 3.
+
+**A célula de equipamento entra agora vazia.** O catálogo do capítulo 12 entra depois; até lá o jogador digita o número. O que importa é que a fórmula já sabe que o equipamento **desliga** a aptidão em vez de somar com ela.
+
+## C4 · Três fontes, e uma regra dura para o celular
+
+| papel | fonte | onde |
+|---|---|---|
+| corpo | **Roboto** | todas as abas |
+| título e número grande | **Oswald** | só nas abas de PC |
+| marca em kanji | **Noto Sans JP** | só ornamento, área morta, só no PC |
+
+**A `MESA` usa só Roboto, e isso é regra, não preferência.** O app de celular do Sheets tem menos fontes que o navegador e troca sem avisar as que estão fora da lista curta. Roboto está nela; Oswald não.
+
+O `conferir-ficha-xlsx.py` reprova o arquivo se aparecer qualquer outra fonte na `MESA` — e reprovou, na primeira vez que rodou.
+
+### O que foi medido
+
+```
+                    linha de feitiço da MESA        x/maiúscula
+                    (o espaço é 336 px)
+  Roboto                    308 px                     0.74
+  Lexend                    333 px                     0.75      sem respiro
+  Noto Sans JP              301 px                     0.74
+  Oswald                    247 px                     0.71      20% mais estreita
+  Anton                     273 px                     0.85
+  Bebas Neue                230 px                     1.00      caixa alta, cansa
+```
+
+A razão x/maiúscula é o que separa fonte de texto de fonte de título. A primeira versão da medida usou só a altura de x e **aprovou a Bebas Neue como fonte de corpo**, o que está errado: nela a minúscula tem o tamanho da maiúscula.

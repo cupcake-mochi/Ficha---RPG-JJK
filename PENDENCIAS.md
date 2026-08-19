@@ -83,6 +83,26 @@ O `botão de descanso longo` do documento de desenho não roda no app de celular
 
 **Já corrigido no desenho:** o substituto é caixa de seleção ou lista suspensa fazendo papel de botão, que o gatilho pega normalmente. Fica registrado porque a ideia de "botão" pode voltar.
 
+### B8 · O `Estopim` soma um número que não existe
+
+Achado escrevendo a fórmula da CD de feitiço.
+
+O manual é explícito na p.192: *"Não existe 'atributo de conjuração' na ficha padrão."* A conta é `10 + 2 + maestria`, com o `2` fixo. E ele diz que **algumas habilidades de Caminho trocam esse 2 por um atributo**, e que a habilidade diz qual.
+
+O problema: **nenhuma habilidade do manual faz essa troca.** Procurei em todas. A única coisa que menciona atributo de conjuração é o `Estopim`, nível 11 do Emanador — *"todo feitiço seu soma o seu atributo de conjuração no dano"* — e ele **usa** o número sem que nada o tenha concedido.
+
+Então hoje o Emanador chega no nível 11 e ganha uma entrega que soma zero, ou que o mestre inventa na hora. É a mesma forma do `Casco`: uma entrega que aponta para um número que o sistema não produz.
+
+**A ficha não inventa.** A CD e o ataque de conjuração usam o `2` fixo, e existe uma célula de troca ao lado, vazia, para quando a regra existir.
+
+### B9 · A ficha da invocação
+
+Consequência do C1, e ela é maior que o C1.
+
+O capítulo 14 do manual — nove páginas, da 179 à 187 — tem uma seção chamada *"A ficha da invocação"* e um catálogo próprio. **Nenhuma versão da ficha tem um campo disso**, nem a de papel nem o plano da digital.
+
+Enquanto o Evocador estiver fora do menu isso não dói. No dia em que ele voltar, é um bloco novo inteiro, e a `MESA` de um Evocador precisa mostrar duas criaturas em 12 colunas.
+
 ---
 
 ## O que já foi decidido, e não deve ser reaberto

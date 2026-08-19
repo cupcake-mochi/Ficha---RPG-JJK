@@ -112,6 +112,64 @@ for i in range(len(graus)-1):
           vistas is not None and min(vistas.values()) >= LIMITE_ENTRE,
           f"nao achei o par '{par}' nas medidas" if vistas is None else str(vistas))
 
+# ---------------------------------------------------------------- 4
+print("\nO BLOCO C  (as quatro que sairam do 'falta algo antes de construir')")
+
+# C1: o Evocador some do MENU, nunca do catalogo. O catalogo espelha o manual.
+c1 = DEC["C1_evocador"]
+checa("o catalogo continua com os cinco Caminhos do manual",
+      len(CAT["caminhos"]) == 5, f"achei {len(CAT['caminhos'])}")
+checa("o Evocador continua no catalogo (some so do menu)",
+      c1["caminho_oculto"] in CAT["caminhos"])
+checa("o menu da ficha traz os outros quatro, e todos existem",
+      len(c1["caminhos_no_menu"]) == 4 and
+      all(c in CAT["caminhos"] for c in c1["caminhos_no_menu"]),
+      str([c for c in c1["caminhos_no_menu"] if c not in CAT["caminhos"]]))
+checa("menu + oculto = o catalogo inteiro, sem sobra nem falta",
+      set(c1["caminhos_no_menu"]) | {c1["caminho_oculto"]} == set(CAT["caminhos"]))
+checa("o motivo do C1 ainda vale: o manual segue sem o numero do Casco",
+      "Casco — as suas invocações têm mais vida." in MAN,
+      "se o Casco ganhou numero, o Evocador pode voltar ao menu")
+
+# C2: o carimbo e a versao do projeto, e o dono dela e o CHANGELOG.
+c2 = DEC["C2_carimbo"]
+checa("a versao do carimbo tem forma de versao do projeto",
+      c2["versao_corrente"].count(".") == 1 and
+      all(p.isdigit() for p in c2["versao_corrente"].split(".")))
+checa("o catalogo carrega a versao que a ficha carimba",
+      CAT["_meta"].get("versao") == c2["versao_corrente"],
+      f"_meta.versao = {CAT['_meta'].get('versao')!r}, carimbo = {c2['versao_corrente']!r}")
+
+# C3: a Defesa nao pode ter numero de protecao escrito na mao.
+c3 = DEC["C3_defesa"]
+checa("a formula da Defesa nao tem constante de protecao embutida",
+      "+ protecao" in c3["formula_defesa"] and
+      not any(f"+ {n}" in c3["formula_defesa"] for n in "0123456789"),
+      c3["formula_defesa"])
+checa("a protecao da aptidao sai do refino, e nao de um numero fixo",
+      "refino" in c3["formula_protecao"])
+checa("o manual continua dizendo que o equipamento desliga a aptidao",
+      "Traje" in MAN and "Revestimento" in MAN)
+
+# C4: a MESA e o unico lugar onde a fonte nao pode ser escolha livre.
+c4 = DEC["C4_fontes"]
+SEGURAS = {"Arial", "Comic Sans MS", "Courier New", "Georgia", "Roboto", "Verdana"}
+checa("a fonte de corpo esta na lista que o Sheets carrega sem 'mais fontes'",
+      c4["corpo"]["fonte"] in SEGURAS,
+      f"{c4['corpo']['fonte']} nao esta em {sorted(SEGURAS)}; o app de celular trocaria")
+checa("a regra da MESA nomeia a mesma fonte do corpo",
+      c4["corpo"]["fonte"] in c4["regra_dura"])
+med = c4["medido"]
+checa("a fonte de corpo escolhida cabe na linha de 336 px da MESA",
+      med["linha_de_feitico_da_MESA_em_336px"][c4["corpo"]["fonte"]] <= 336)
+checa("a fonte de titulo e mais estreita que a de corpo, que e o motivo dela",
+      med["linha_de_feitico_da_MESA_em_336px"][c4["titulo"]["fonte"]] <
+      med["linha_de_feitico_da_MESA_em_336px"][c4["corpo"]["fonte"]])
+checa("nenhuma fonte escolhida e display caixa-alta",
+      all(med["x_sobre_maiuscula"][c4[p]["fonte"].replace(" ", "")] <= 0.90
+          for p in ("corpo", "titulo")),
+      "x/maiuscula acima de 0.90 cansa em bloco de texto")
+
 # ---------------------------------------------------------------- contra-teste
 print("\nCONTRA-TESTE  (a checagem distingue, ou ela e trivialmente verdadeira?)")
 # O contraste sobre o painel NAO e o criterio que decide o A5, e provar isso importa:
