@@ -1,0 +1,104 @@
+{
+  "_meta": {
+    "o_que_e": "As decisoes do bloco A, em forma de dado. Este arquivo e o DONO das cinco: script, validador e a ficha leem daqui, e o DECISOES-bloco-A.md explica o porque.",
+    "decidido_por": "Mizuki",
+    "quando": "2026-08-18",
+    "regra": "onde a ficha e o manual discordarem, o manual vence; onde a regra nao existe no manual, o campo fonte diz 'ficha'"
+  },
+
+  "A1_catalogo": {
+    "escolha": "carimbo com aviso vivo",
+    "copia_local": true,
+    "celula_versao_local": "DADOS!B1",
+    "celula_versao_corrente": "IMPORTRANGE da central, uma celula so",
+    "se_a_central_cair": "a ficha perde o aviso e continua inteira; os menus nao dependem do IMPORTRANGE",
+    "porque_a_copia_local_e_obrigatoria": "no Sheets, lista suspensa so aponta para intervalo da MESMA planilha",
+    "renomear_a_central": "nao quebra; o IMPORTRANGE guarda o id do arquivo, nao o nome",
+    "o_que_quebra": ["apagar a central", "perder o acesso a ela"]
+  },
+
+  "A2_temporario": {
+    "vida": {
+      "empilha": false,
+      "regra": "fica o maior",
+      "expira": "fim da cena",
+      "gasta_antes_da_vida_normal": true,
+      "teto_numerico": null,
+      "fonte": {
+        "gasta_primeiro": "manual, Melhoria Rasga Escudo: 'o dano ignora pontos de vida temporarios e barreiras: bate direto na vida'",
+        "nao_empilha": "ficha (decisao A2a); copia a forma da energia temporaria e a convencao de d20",
+        "expira": "ficha (decisao A2a); 'fim da cena' e unidade que o manual ja usa"
+      },
+      "fontes_no_manual": {
+        "Apoio": "3 por ponto que sobra",
+        "Fluxo": "2 x Classe",
+        "Aprumo": "1d10 + atributo de ataque",
+        "Crosta": "a sua maior Classe",
+        "Vento a Favor": "9",
+        "Muralha": "18"
+      }
+    },
+    "energia": {
+      "empilha": true,
+      "regra": "acumula ate o teto que a propria fonte declarar",
+      "expira": "fim da cena",
+      "gasta_antes_do_pe_normal": true,
+      "teto_numerico": null,
+      "teto_por_fonte": {"Braseiro": 2},
+      "fonte": {
+        "tudo": "manual, Braseiro (Trilha Brasa, nivel 11): 'nunca passa de 2 acumulados e some no fim da cena. Energia temporaria gasta como PE, e gasta primeiro'",
+        "teto_e_do_Braseiro_nao_geral": "o Braseiro e hoje a unica fonte de energia temporaria no manual"
+      }
+    },
+    "sobe_para_o_capitulo": {
+      "alvo": "Vida, energia e alma (manual p.15)",
+      "sobe_vida": true,
+      "sobe_energia": true,
+      "texto_proposto": "manual-temporario.md",
+      "quem_aplica": "Mizuki, no repositorio do manual"
+    }
+  },
+
+  "A3_incompatibilidades": {
+    "escolha": "trava so na ficha; o manual fica calado",
+    "pares": [
+      {"a": "Rápido", "b": "Reação", "fonte": "manual",
+       "texto": "Nao entra no mesmo feitico que Reacao.",
+       "onde": "manual, tabela da Familia Tempo"},
+      {"a": "Rápido", "b": "Lento", "fonte": "ficha",
+       "texto": "Um diz Acao Bonus, o outro diz rodada inteira.",
+       "onde": "decisao A3"}
+    ],
+    "o_que_fica_exposto": "quem monta feitico no papel ou no gerador continua com o desconto",
+    "tamanho_do_desconto": "um terco do orcamento em toda Classe; com a Familia Tempo Livre, o Rapido sai de graca"
+  },
+
+  "A4_reservas": {
+    "escolha": "os dois",
+    "atual_editavel": true,
+    "caixa_de_delta": true,
+    "gatilho": "onEdit simples, so mexe na propria planilha",
+    "sobrevive_a_copia": true,
+    "nao_roda_quando": ["sem sinal, ate o celular sincronizar"],
+    "quando_nao_roda": "o jogador edita o atual na mao; nada trava",
+    "botao_desenhado_no_celular": false,
+    "substituto_do_botao": "caixa de selecao ou lista suspensa fazendo papel de botao"
+  },
+
+  "A5_acento": {
+    "escolha": "cor de estado no numero grande",
+    "degraus": [
+      {"quando": "cheio",              "hex": "E8DCD4", "nome": "osso"},
+      {"quando": "abaixo da metade",   "hex": "D89B3A", "nome": "ambar"},
+      {"quando": "abaixo de um quarto","hex": "C2334D", "nome": "vermelho"}
+    ],
+    "porque_funciona": "os tres estao em degraus de claridade, nao de matiz",
+    "medido": {
+      "osso_vs_ambar":     {"normal": 1.80, "protanopia": 1.88, "deuteranopia": 1.69},
+      "ambar_vs_vermelho": {"normal": 2.24, "protanopia": 2.51, "deuteranopia": 1.95},
+      "osso_vs_vermelho":  {"normal": 4.03, "protanopia": 4.74, "deuteranopia": 3.31},
+      "sobre_o_painel":    {"osso": 12.18, "ambar": 6.76, "vermelho": 3.02}
+    },
+    "regra_que_continua_valendo": "a cor nunca e o unico meio: o numero em si ja diz o estado"
+  }
+}
