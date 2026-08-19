@@ -35,7 +35,9 @@ SERIE      = _F["serie"]["fonte"]        # Courier    · registro e data
 MARCA      = _F["marca"]["fonte"]        # Yuji Syuku · kanji
 KANJI_PISO = _F["kanji_piso_pt"]         # 22: abaixo disso o traco funde
 
-PT_ROTULO, PT_VALOR, PT_TITULO, PT_GRANDE = 9, 11, 12, 26
+# a Castoro tem altura de x 0.475, a menor das candidatas: o corpo sobe um
+# ponto para compensar. O numero saiu da medida, nao do olho.
+PT_ROTULO, PT_VALOR, PT_TITULO, PT_GRANDE = 9, 12, 12, 26
 LARG_COL, ALT_LIN = 4.0, 15
 
 def fill(c): return PatternFill("solid", start_color=c, end_color=c)
@@ -69,7 +71,7 @@ def regua(ws, c1, r, c2, cor=LINHA, grossa=False):
     for c in range(c1, c2 + 1):
         ws.cell(row=r, column=c).border = Border(top=s)
 
-def campo(ws, c1, r, larg, rot, valor, pt=15, cor=TEXTO, nome=None, fonte_rot=None):
+def campo(ws, c1, r, larg, rot, valor, pt=16, cor=TEXTO, nome=None, fonte_rot=None):
     """rotulo pequeno em cima, valor grande embaixo, regua debaixo. Sem caixa."""
     txt(ws, c1, r, rot.upper(), nome=fonte_rot or TITULO, pt=8, cor=TEXTO_FRACO,
         ate=(c1 + larg, r))
@@ -84,16 +86,23 @@ def secao(ws, r, num, nome, c1=4, c2=24):
     txt(ws, c1 + 3, r, nome, nome=TITULO, pt=PT_TITULO, cor=BLOCO, ate=(c2, r))
     return r + 2
 
+# onde cada imagem foi parar. O emissor le daqui em vez de vasculhar o
+# openpyxl: o ancoradouro dele muda de forma conforme como voce o define.
+COLOCADAS = []
+
 def arte(ws, nome, col, lin, larg_px, alt_px=None):
     """imagem flutuante. So em area morta: ela bloqueia a digitacao embaixo."""
     caminho = os.path.join(ARTE, nome)
     if not os.path.exists(caminho):
         return None
     im = _Img(caminho)
+    proporcao = im.height / im.width
     im.width = larg_px
-    im.height = alt_px if alt_px else int(larg_px * (im.height / im.width))
+    im.height = alt_px if alt_px else int(larg_px * proporcao)
     im.anchor = ws.cell(row=lin, column=col).coordinate
     ws.add_image(im)
+    COLOCADAS.append({"aba": ws.title, "nome": nome, "col": col, "lin": lin,
+                      "larg": im.width, "alt": im.height})
     return im
 
 def lombada(ws, linhas, texto_topo, texto_baixo):
@@ -105,13 +114,19 @@ def lombada(ws, linhas, texto_topo, texto_baixo):
         al="center", ate=(2, 48))
 
 def barra(cel_atual, cel_max, cor_formula):
-    """SPARKLINE nativo. O Mizuki confirmou que funciona no app de celular."""
-    return (f'=SPARKLINE({cel_atual},{{"charttype","bar";"max",{cel_max};'
-            f'"color1",{cor_formula}}})')
+    """SPARKLINE nativo. Funciona no app de celular -- o Mizuki confirmou.
+
+    O IFERROR nao e enfeite: com o Caminho vazio o maximo vira texto vazio, a
+    divisao da cor estoura, e a ficha em branco abre com #DIV/0! na cara do
+    jogador. Ficha vazia tem que abrir limpa.
+    """
+    return (f'=IFERROR(SPARKLINE({cel_atual},{{"charttype","bar";"max",{cel_max};'
+            f'"color1",{cor_formula}}}),"")')
 
 def cor_de_estado(atual, maximo):
     """a formula da decisao A5, em texto, para entrar dentro do SPARKLINE"""
-    return (f'IF({maximo}=0,"#{OSSO}",'
+    # N() resolve o campo vazio: sem ele "" nao e 0 e a divisao estoura
+    return (f'IF(N({maximo})=0,"#{OSSO}",'
             f'IF({atual}/{maximo}<=0.25,"#{VERMELHO}",'
             f'IF({atual}/{maximo}<=0.5,"#{AMBAR}","#{OSSO}")))')
 

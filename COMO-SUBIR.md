@@ -1,133 +1,108 @@
 # Como isto vira uma ficha de verdade
 
-Do repositório até a planilha na mão do jogador. São seis passos, e só o quinto tem chance de dar errado.
+**Mudou.** Não tem mais upload nem conversão: a planilha nasce dentro do Google Sheets, montada por um script.
 
-**Você faz isso uma vez.** Os jogadores copiam o modelo pronto e não rodam nada.
+O caminho antigo, pelo `.xlsx`, morreu numa prova. O registro do script devolveu `imagens: 0` — imagem que vem da importação **não é visível pela API**, então nem dava para consertar o tamanho dela. E ela não era a única coisa que a conversão quebrava: fonte, altura de linha, caixa de seleção e o fundo das células mescladas quebravam junto.
+
+Agora nada é traduzido, então nada se perde na tradução.
 
 ---
 
-## 1 · Gerar o arquivo
+## Os quatro passos
+
+### 1 · Gerar
 
 ```bash
 python3 ficha/monta.py
-```
-
-Sai o `ficha/ficha-projeto-m.xlsx`, com as seis abas.
-
-**Nunca edite o `.xlsx` na mão.** Ele é saída, não fonte — na próxima vez que você rodar o gerador, a sua edição some. Se algo precisa mudar, muda no gerador.
-
-Antes de subir, confira:
-
-```bash
 ./rodar-tudo.sh
 ```
 
-Dez validadores. Se algum falhar, o arquivo não está pronto.
+Sai o `apps-script/Ficha.gs`. Se os dez validadores não passarem, não sobe.
 
-## 2 · Importar no Google Sheets
+### 2 · Planilha em branco
 
-Drive → **Novo** → Upload → escolhe o `.xlsx`.
+[sheets.new](https://sheets.new) — cria uma planilha vazia. Dá um nome a ela.
 
-Depois abre ele e vai em **Arquivo → Salvar como Planilhas Google**. Isso converte de verdade; sem esse passo ele fica em modo de compatibilidade e algumas coisas não funcionam.
-
-O que **sobrevive** à importação: layout, cores, fontes, fórmulas, mesclagens, larguras, texto girado, imagens.
-
-O que **não sobrevive**, e é por isso que existe o passo 4: caixa de seleção nativa, formatação condicional, proteção de célula e as notas.
-
-## 3 · Instalar as fontes na planilha
-
-Três das cinco não vêm carregadas. Numa célula qualquer, abre o seletor de fonte → **Mais fontes** → e adiciona:
+**Instala as três fontes agora**, antes de rodar o script. Numa célula qualquer, seletor de fonte → **Mais fontes**:
 
 ```
-Oswald · Shippori Mincho · Yuji Syuku
+Oswald  ·  Castoro  ·  Yuji Syuku
 ```
 
-`Roboto` e `Courier New` já estão lá.
+### 3 · Colar os dois arquivos
 
-**Faça isso antes do passo 4.** O script aplica fonte, e ele não consegue aplicar uma que a planilha não conhece.
+**Extensões → Apps Script.**
 
-> A `MESA` usa só Roboto de propósito. O app de celular tem menos fontes que o navegador e troca as outras sem avisar.
+Apaga o que estiver no `Código.gs` e cola o conteúdo de **`apps-script/Codigo.gs`**.
 
-## 4 · Rodar o script, uma vez
+Depois, no `+` ao lado de **Arquivos**, escolhe **Script**, dá o nome `Ficha`, e cola o conteúdo de **`apps-script/Ficha.gs`**.
 
-**Extensões → Apps Script.** Apaga o que estiver lá, cola o conteúdo de `apps-script/Codigo.gs`, salva.
+> O `Ficha.gs` tem 112 KB e a maior parte é a arte em base64. É normal ele demorar a colar.
 
-Na lista de funções escolhe **`montarFicha`** e clica em executar.
+Salva com `Ctrl+S`.
 
-Na primeira vez o Google pede autorização. Ele vai mostrar um aviso de "app não verificado" — é o seu próprio script, e o caminho é **Avançado → Ir para (nome do projeto)**.
+### 4 · Executar
 
-O que ele faz:
+No seletor de funções, escolhe **`construir`** e clica em **▶ Executar**.
 
-| | |
-|---|---|
-| caixa de seleção | nas perícias, ofícios e testes |
-| cor de estado | vida e energia viram âmbar abaixo da metade, vermelho abaixo de um quarto |
-| proteção | as células de fórmula avisam antes de serem sobrescritas |
-| notas | a regra aparece ao passar o mouse |
-| fonte | garante Roboto na `MESA` |
+Na primeira vez ele pede autorização: **Revisar permissões** → tua conta → **Avançado** → **Acessar** → **Permitir**.
 
-**O `onEdit` não precisa de nada.** Ele é gatilho simples: roda sozinho, inclusive nas cópias dos jogadores, sem ninguém autorizar nada. É ele que faz a caixinha de `±` funcionar.
+**Demora.** São seis abas, quase oitocentas células com valor, seis imagens e trinta e oito caixas de seleção. Conta com um a dois minutos, e não é travamento.
 
-## 5 · A arte (o passo que pode dar errado)
+Quando terminar, o registro escreve:
 
-A arte não vai junto na importação de um jeito confiável. Ela entra pelo script, em base64, **sem depender de nenhum arquivo hospedado**.
-
-```bash
-python3 arte/gera.py --base64
+```
+FICHA PRONTA em 74s · CARTEIRA: 61 células, 4 imagens · FICHA: ... · cor de estado: 6 regra(s) · notas: 5 nota(s) · protegidas: 15 célula(s)
 ```
 
-Isso imprime uma linha por peça. Cola tudo dentro do `var ARTE = { ... }` no `Codigo.gs`, e depois chama, por exemplo:
+**Não vai ter pop-up.** O aviso vai para o registro de propósito: `alert()` abre na aba da planilha e trava a execução esperando um clique que você não vê.
 
-```javascript
-colarArte('selo-封', 'CARTEIRA', 'AL25');
-```
+---
 
-**Por que assim e não por URL:** `IMAGE()` do Sheets só aceita endereço público. Isso significaria hospedar a arte em algum lugar e a ficha quebrar no dia em que aquele lugar sair do ar. Em base64 a imagem mora dentro da planilha.
+## Se quiser refazer
 
-**O custo:** o base64 é grande, e colar sete peças deixa o `Codigo.gs` gordo. Se incomodar, cola só o selo e a moldura — são os dois que mais fazem diferença.
+Roda `construir` de novo. Ela **apaga as abas e monta tudo do zero** — então qualquer coisa que você tenha digitado na ficha se perde.
 
-## 6 · Publicar o modelo
+Enquanto estiver ajustando o desenho, isso é o que você quer. Depois que tiver personagem preenchido, não rode mais.
 
-Compartilha a planilha como **somente leitura** com o servidor, e manda os jogadores fazerem **Arquivo → Fazer uma cópia**.
+---
 
-Cada cópia leva o script junto e o `±` funciona de cara.
+## Publicar para os jogadores
+
+Compartilha como **somente leitura** e manda cada um fazer **Arquivo → Fazer uma cópia**.
+
+A cópia leva os dois arquivos de script junto. O `onEdit` é gatilho simples: funciona na cópia **sem ninguém autorizar nada**, e é ele que faz a caixinha de `±` aplicar dano.
 
 ### A planilha central do carimbo
 
-A decisão A1 pede uma segunda planilha, só com o número da versão do catálogo.
-
-1. Cria uma planilha nova, escreve `0.104` na `A1`, e compartilha como leitura.
-2. Na ficha-modelo, na aba `DADOS`, célula `D1`, põe:
+1. Cria outra planilha, escreve `0.104` na `A1`, compartilha como leitura.
+2. Na ficha, aba `DADOS`, célula `D1`:
 
 ```
-=IMPORTRANGE("id-da-planilha-central";"A1")
+=IMPORTRANGE("id-da-central";"A1")
 ```
 
-3. Autoriza uma vez, quando ele pedir.
+3. Autoriza uma vez.
 
-Quando você fechar uma versão nova do manual, muda **uma célula** na central e toda ficha em circulação passa a mostrar o aviso sozinha.
-
-> Se a central sumir, a ficha perde o aviso e **não perde mais nada**. Nenhum menu depende dela — foi por isso que a A1 ficou assim.
+Quando o manual mudar, você muda **uma célula** na central e toda ficha em circulação avisa sozinha que está atrasada. Se a central sumir, a ficha perde o aviso e não perde mais nada.
 
 ---
 
 ## Quando o manual mudar
 
 ```bash
-python3 ficha/monta.py     # regera com o catálogo novo
-./rodar-tudo.sh            # os dez têm que passar
+python3 ficha/monta.py
+./rodar-tudo.sh
 ```
 
-Sobe o `.xlsx` novo como um modelo novo, e muda a versão na central. As fichas antigas continuam funcionando e passam a avisar que estão atrasadas.
-
-**Ficha de jogador não se migra.** Ele copia o modelo novo e transcreve, ou continua na antiga sabendo que está atrasado. Automatizar migração de planilha é caro e quebra mais do que conserta.
+Cola o `Ficha.gs` novo por cima do antigo e roda `construir` numa planilha nova. Ficha de jogador não se migra: ele copia o modelo novo e transcreve.
 
 ---
 
 ## O que ainda não está pronto
 
-Está tudo listado no `PENDENCIAS.md`, mas os três que você vai sentir primeiro:
-
-- **A montagem de feitiço não trava sozinha na planilha ainda.** A regra existe e roda no `conferir_feitico.py`, mas ela ainda não virou Apps Script. É o próximo pedaço caro.
+- **A montagem de feitiço não trava sozinha.** As oito regras de ouro e os dois pares incompatíveis rodam no `conferir_feitico.py`, mas ainda não viraram Apps Script. É o próximo pedaço caro, e o que mais vale.
 - **Equipamento é campo digitado**, até o catálogo do capítulo 12 entrar.
 - **O Evocador está fora do menu**, e volta quando as entregas de Trilha dele saírem.
+
+O resto está no `PENDENCIAS.md`.

@@ -137,11 +137,12 @@ def monta(wb, CAT, DEC, ref):
         txt(ws, cc + 1, rr, nome_p, nome=DOCUMENTO, pt=10, cor=TEXTO, ate=(cc + 8, rr))
         txt(ws, cc + 9, rr, d["atributo"][:3], nome=TITULO, pt=8, cor=LINHA, ate=(cc + 10, rr))
         cel_atr = f'${L(R["atr_" + d["atributo"]].column)}${R["atr_" + d["atributo"]].row}'
-        txt(ws, cc + 11, rr, f'={cel_atr}+IF(${L(cc)}${rr}="",0,{MAE})',
+        txt(ws, cc + 11, rr, f'={cel_atr}+IF(${L(cc)}${rr}=TRUE,{MAE},0)',
             nome=TITULO, pt=10, cor=OSSO, al="right", ate=(cc + 12, rr))
         regua(ws, cc, rr + 1, cc + 12, TINTA)
-    R["perícias treinadas"] = f'=COUNTA(${L(4)}${p0}:${L(4)}${p0+11})' \
-                              f'+COUNTA(${L(18)}${p0}:${L(18)}${p0+11})'
+    CAIXAS = [(4, p0, 12), (18, p0, len(CAT["pericias"]) - 12)]
+    R["perícias treinadas"] = (f'=COUNTIF(${L(4)}${p0}:${L(4)}${p0+11},TRUE)'
+                               f'+COUNTIF(${L(18)}${p0}:${L(18)}${p0+11},TRUE)')
     r += 13
 
     # ------------------------------------------------- 06 oficios e testes
@@ -151,6 +152,7 @@ def monta(wb, CAT, DEC, ref):
         txt(ws, cc, rr, None, al="center", cor=OSSO)
         txt(ws, cc + 1, rr, of, nome=DOCUMENTO, pt=10, ate=(cc + 9, rr))
         regua(ws, cc, rr + 1, cc + 9, TINTA)
+    CAIXAS += [(4, r, 6), (15, r, len(CAT["oficios"]) - 6)]
     TRS = [t for t, v in CAT["testes_de_resistencia"].items() if isinstance(v, dict)]
     BON = CAT["testes_de_resistencia"]["bonus_se_treinado"]
     for i, t in enumerate(TRS):
@@ -161,8 +163,10 @@ def monta(wb, CAT, DEC, ref):
         txt(ws, 37, rr, " ou ".join(a[:3] for a in atr), nome=TITULO, pt=8,
             cor=LINHA, ate=(41, rr))
         cel_atr = f'${L(R["atr_"+atr[0]].column)}${R["atr_"+atr[0]].row}'
-        txt(ws, 42, rr, f'={cel_atr}+IF(${L(28)}${rr}="",0,{BON})',
+        txt(ws, 42, rr, f'={cel_atr}+IF(${L(28)}${rr}=TRUE,{BON},0)',
             nome=TITULO, pt=10, cor=OSSO, al="right", ate=(COLS, rr))
         regua(ws, 28, rr + 1, COLS, TINTA)
+    CAIXAS.append((28, r, len(TRS)))
+    R["_caixas"] = CAIXAS          # o script le daqui: nada de contar no olho
     arte(ws, "respingo.png", 43, r + 7, 90)
     return R

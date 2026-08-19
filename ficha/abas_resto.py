@@ -81,14 +81,17 @@ def mesa(wb, CAT, DEC, R):
         junta(ws, cc, r, cc + w - 1, r)
         escreve(ws, cc, r, h.upper(), pt=PT_ROTULO, cor=TEXTO_FRACO)
         cc += w
+    # linhas em branco, para o jogador escrever a mao. A TECNICA saiu da ficha
+    # e com ela o calculo do feitico; quando ela voltar, estas linhas puxam de
+    # la de novo em vez de serem digitadas.
     for i in range(6):
         rr = r + 1 + i
         pinta(ws, 1, rr, C, rr, PAINEL if i % 2 == 0 else PAINEL_ALTO)
-        cc, origem = 1, 6 + i * 12          # onde o bloco i comeca na TECNICA
-        for j, (h, w) in enumerate(cabec):
+        cc = 1
+        for h, w in cabec:
             junta(ws, cc, rr, cc + w - 1, rr)
-            escreve(ws, cc, rr, f'=IF(TÉCNICA!B{origem}="","",TÉCNICA!B{origem})' if j == 0 else None,
-                    pt=PT_ROTULO, cor=TEXTO if j == 0 else OSSO, alinha=ESQ if j == 0 else CENTRO)
+            escreve(ws, cc, rr, None, pt=PT_ROTULO, cor=TEXTO,
+                    alinha=ESQ if h == "nome" else CENTRO)
             cc += w
     return ws
 
@@ -151,9 +154,12 @@ def quem_e(wb, CAT, DEC):
     for titulo, altura in [("aparência", 6), ("história", 10), ("laços", 6),
                            ("o que ele quer", 4), ("o que ele esconde", 4),
                            ("notas de mesa", 8)]:
-        pinta(ws, 1, r, C, r + altura, PAINEL)
-        rotulo(ws, 1, r, C, titulo)
-        junta(ws, 1, r + 1, C, r + altura)
-        escreve(ws, 1, r + 1, None, pt=PT_ROTULO, cor=TEXTO, alinha=ESQ_Q)
+        rotulo(ws, 3, r, C, titulo)
+        junta(ws, 3, r + 1, C, r + altura)
+        escreve(ws, 3, r + 1, None, pt=PT_ROTULO, cor=TEXTO, alinha=ESQ_Q)
+        # o preenchimento vem DEPOIS da mesclagem: mesclar apaga o estilo de
+        # tudo que nao e o canto, e ai o bloco abre branco no Sheets
+        pinta(ws, 3, r, C, r + altura, PAINEL)
+        regua(ws, 3, r + altura + 1, C, LINHA)
         r += altura + 2
     return ws

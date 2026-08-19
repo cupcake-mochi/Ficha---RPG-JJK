@@ -9,7 +9,7 @@ import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from openpyxl import Workbook
 from openpyxl.styles import Font
-import estilo, dados, aba_ficha, aba_carteira, abas_resto
+import estilo, dados, aba_ficha, aba_carteira, abas_resto, emitir_gs
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CAT = json.load(open(os.path.join(RAIZ, "catalogo-projeto-m.json"), encoding="utf-8"))
@@ -28,7 +28,6 @@ CAR = aba_carteira.monta(wb, CAT, DEC, ref, R)
 
 # o nome mora na CARTEIRA, e a FICHA le dele. Um dado, um dono.
 R["nome"].value = f"=IF(CARTEIRA!{CAR['nome'].coordinate}=\"\",\"\",CARTEIRA!{CAR['nome'].coordinate})"
-abas_resto.tecnica(wb, CAT, DEC, ref)
 abas_resto.mesa(wb, CAT, DEC, R)
 abas_resto.quem_e(wb, CAT, DEC)
 
@@ -36,10 +35,19 @@ abas_resto.quem_e(wb, CAT, DEC)
 # decorar coordenada. Serve ao validador hoje e ao Apps Script depois.
 dados.indice(wb, R)
 
+# a TÉCNICA saiu: o bloco de feitiço dela ficou ruim e o Mizuki preferiu
+# tirar até ele ser refeito. Está registrado no PENDENCIAS como B10.
+ordem = ["CARTEIRA", "FICHA", "MESA", "QUEM É", "DADOS"]
+
 # a ordem em que as abas abrem
-for i, aba in enumerate(["CARTEIRA", "FICHA", "TÉCNICA", "MESA", "QUEM É"]):
+for i, aba in enumerate([a for a in ordem if a != "DADOS"]):
     wb.move_sheet(aba, i - wb.sheetnames.index(aba))
 saida = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ficha-projeto-m.xlsx")
 wb.save(saida)
+
+# e o mesmo desenho, agora como script que constrói a planilha por dentro
+gs, celulas, pecas = emitir_gs.escrever(wb, ordem, R.get("_caixas"))
+print(f"script escrito: {gs}")
+print(f"  {celulas} células, {pecas} peças de arte embutidas")
 print(f"ficha escrita: {saida}")
 print(f"abas: {wb.sheetnames}")

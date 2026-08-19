@@ -103,6 +103,16 @@ O capítulo 14 do manual — nove páginas, da 179 à 187 — tem uma seção ch
 
 Enquanto o Evocador estiver fora do menu isso não dói. No dia em que ele voltar, é um bloco novo inteiro, e a `MESA` de um Evocador precisa mostrar duas criaturas em 12 colunas.
 
+### B10 · A aba `TÉCNICA` saiu da ficha
+
+O bloco de montagem de feitiço ficou ruim de ler e de usar: doze linhas de rótulo empilhadas, com um vão grande em cima, e nada calculado ainda. O Mizuki preferiu tirar a deixar torto.
+
+**O que some junto:** a linha de uso rápido da `MESA` deixa de puxar dela e passa a ser digitada à mão.
+
+**O que ela precisa ter quando voltar:** o bloco horizontal em vez de vertical, e os seis campos que o sistema calcula sozinho — ação, alcance, alvo, como resolve, custo em PE e dano. Isso está medido no `medidas/bloco-feitico.py` e descrito na seção 10 do `DESIGN-ficha-digital.md`.
+
+Ela volta junto com a trava de montagem, que é o próximo pedaço caro.
+
 ---
 
 ## O que já foi decidido, e não deve ser reaberto

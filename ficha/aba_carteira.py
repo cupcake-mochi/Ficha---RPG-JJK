@@ -30,18 +30,20 @@ def monta(wb, CAT, DEC, ref, R):
     txt(ws, 12, 3, "carteira de registro · documento oficial",
         nome=CORPO, pt=9, cor=TEXTO_FRACO, ate=(30, 3))
     # o numero de registro se monta do personagem: versao, Caminho e nivel
+    # o numero se monta do personagem: versao do catalogo e as quatro primeiras
+    # letras do nome. Sem conta: a v1 multiplicava a versao por mil sem motivo.
     txt(ws, 34, 2,
-        f'="Nº M-"&TEXT({ref["carimbo_local"]}*1000,"0000")&"-"&'
-        f'IF({da_ficha("nome")}="","0000",UPPER(LEFT({da_ficha("nome")},4)))',
+        f'="Nº M-"&SUBSTITUTE({ref["carimbo_local"]},".","")&"-"&'
+        f'IF({da_ficha("nome")}="","····",UPPER(LEFT({da_ficha("nome")},4)))',
         nome=SERIE, pt=11, cor=BLOCO, al="right", ate=(COLS, 2))
-    txt(ws, 34, 3, '="emitida "&TEXT(TODAY(),"dd.mm.aaaa")',
+    txt(ws, 34, 3, '="emitida "&TEXT(TODAY(),"dd.mm.yyyy")',
         nome=SERIE, pt=9, cor=TEXTO_FRACO, al="right", ate=(COLS, 3))
     arte(ws, "pincelada-roxa.png", 1, 5, 1240, 14)
 
     # ------------------------------------------------------------------ foto
-    arte(ws, "moldura-foto.png", 4, 8, 205)
-    txt(ws, 4, 22, "cole a foto por cima desta moldura", nome=CORPO, pt=8,
-        cor=LINHA, ate=(13, 22))
+    arte(ws, "moldura-foto.png", 4, 8, 190)
+    txt(ws, 4, 33, "cole a sua foto por cima desta moldura", nome=CORPO, pt=8,
+        cor=LINHA, ate=(13, 33))
 
     # ------------------------------------------------------------ o portador
     txt(ws, 15, 8, "PORTADOR", nome=TITULO, pt=9, cor=TEXTO_FRACO, ate=(25, 8))
@@ -57,21 +59,20 @@ def monta(wb, CAT, DEC, ref, R):
         c1 = 15 + (i % 3) * 11
         rr = 17 + (i // 3) * 4
         valor = f'=IF({alvo}="","—",{alvo})' if alvo else None
-        campo(ws, c1, rr, 9, rot, valor, pt=14)
+        campo(ws, c1, rr, 9, rot, valor, pt=15)
 
     # ------------------------------------------------------------- o carimbo
-    arte(ws, "selo-封.png", 38, 25, 115)
-    txt(ws, 37, 33, "SELO REGISTRADO", nome=TITULO, pt=8, cor=TEXTO_FRACO,
-        al="right", ate=(COLS, 33))
+    arte(ws, "selo-封.png", 38, 26, 105)
+    txt(ws, 37, 34, "SELO REGISTRADO", nome=TITULO, pt=8, cor=TEXTO_FRACO,
+        al="right", ate=(COLS, 34))
 
     # -------------------------------------------------------- a técnica dele
-    txt(ws, 4, 26, "TÉCNICA DECLARADA", nome=TITULO, pt=9, cor=TEXTO_FRACO, ate=(20, 26))
-    txt(ws, 4, 27, None, nome=DOCUMENTO, pt=17, cor=OSSO, ate=(24, 28))
-    regua(ws, 4, 29, 24, LINHA)
-    txt(ws, 4, 30, None, nome=CORPO, pt=10, cor=TEXTO_FRACO, ate=(30, 31))
-    txt(ws, 4, 32, "uma linha sobre o que a técnica é. o resto está na aba TÉCNICA.",
-        nome=CORPO, pt=8, cor=LINHA, ate=(30, 32))
-    arte(ws, "respingo.png", 31, 26, 100)
+    txt(ws, 15, 26, "TÉCNICA DECLARADA", nome=TITULO, pt=9, cor=TEXTO_FRACO, ate=(32, 26))
+    txt(ws, 15, 27, None, nome=DOCUMENTO, pt=17, cor=OSSO, ate=(34, 28))
+    regua(ws, 15, 29, 34, LINHA)
+    txt(ws, 15, 30, None, nome=CORPO, pt=10, cor=TEXTO_FRACO, ate=(34, 31))
+    txt(ws, 15, 32, "uma linha sobre o que a técnica é. o resto está na aba TÉCNICA.",
+        nome=CORPO, pt=8, cor=LINHA, ate=(34, 32))
 
     # ------------------------------------------------------------- o rodapé
     regua(ws, 3, 37, COLS, LINHA)
