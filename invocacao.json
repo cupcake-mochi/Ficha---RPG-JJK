@@ -3,9 +3,10 @@
     "o_que_e": "os valores da ficha da invocacao. Este arquivo e o dono dos VALORES; o porque mora no capitulo vendorizado ao lado.",
     "dono_da_regra": "Projeto - M, capitulo 16 (Invocacoes) do Manual da Guilda, e a peca 15 de sistema/03-mecanica no repositorio JJK---Project",
     "lido_de": "capitulo-16-invocacoes.md e capitulo-35-caminhos-e-trilhas.md, copias de sistema/05-material/livro/manual/60-invocacoes.md e 35-caminhos-e-trilhas.md",
-    "versao_do_sistema": "0.200",
+    "versao_do_sistema": "0.200, e os dois capitulos conferidos IDENTICOS na 0.205",
     "por_que_nao_le_do_manual_txt": "o manual.txt deste repositorio esta congelado na v0.104 (199 p., 16 capitulos) e o capitulo de Invocacoes mudou de forma depois disso: a ficha derivada do dono e a venda de numero morreram na v0.180, a regua da morte e a vida do corpo forte mudaram na v0.178, e o Investir ganhou tabela de dano na v0.178. Construir contra o manual.txt seria construir a mecanica morta.",
-    "regra": "onde este arquivo e o capitulo discordarem, o capitulo vence"
+    "regra": "onde este arquivo e o capitulo discordarem, o capitulo vence",
+    "conferido_em": "02/09/2026, contra o commit ccec9d2 (v0.205) do JJK---Project: o 60-invocacoes.md e o 35-caminhos-e-trilhas.md vieram byte a byte iguais aos vendorizados aqui. Entre a v0.200 e a v0.205 o unico capitulo do livro que mudou foi o 45-aptidoes-e-refino.md, que esta ficha nao le."
   },
   "atributos": {
     "lista": [

@@ -296,21 +296,51 @@ são estes, e cada um diz de onde veio:
 com o capítulo vendorizado como dono, e sem tocar em nenhum arquivo do sistema.
 Ela não depende de nada que esteja em obra do outro lado.
 
-### A re-extração do `manual.txt` (B11) tem de esperar
+### A re-extração do `manual.txt` (B11) — o bloqueio que eu escrevi já venceu
 
-**Não re-extraia agora.** O Bestiário é a peça 26 do sistema e a **v0.201** está
-em aberto lá: ela mexe na pressão do chefe, que é `3,3 ×` menor que a do d20 —
-e esse conserto mexe no `72`, que é a base da régua de condição inteira.
+> **⚠ Escrito em 02/09/2026 mandando esperar a v0.201 fechar, e conferido no
+> mesmo dia: ela fechou, e mais quatro depois dela.** *O sistema estava na v0.200
+> quando eu escrevi, e está na **v0.205**.* **Um aviso que manda esperar uma
+> coisa que já aconteceu é dívida, então ele foi reescrito em vez de mantido.**
 
-A régua de condição é dona das **condições que esta ficha imprime**, e o
-`conferir-catalogo.py` daqui cobra a contagem delas contra a página do PDF.
-Re-extrair no meio disso congela um retrato que está mudando, e o vermelho
-apareceria aqui como se fosse defeito da ficha.
+O que eu tinha escrito: *não re-extraia, porque a v0.201 mexe na pressão do
+chefe, que mexe no `72`, que é a base da régua de condição.* **Isso aconteceu, e
+o efeito nesta pasta foi zero** — a régua trocou de pergunta e nenhum preço se
+moveu, e o capítulo de dano e condições do livro não mudou uma linha.
 
-**A ordem certa é:** a v0.201 fechar no sistema → re-extrair o `manual.txt` e
-subir o `catalogo-projeto-m.json` → e só então os itens **B8** e **B14**, que
-são os dois números que hoje estão certos contra o manual velho e errados
-contra o vivo.
+**Medido contra o commit `ccec9d2` (v0.205):**
+
+| o que mudou entre a v0.200 e a v0.205 | esta ficha lê? |
+|---|---|
+| `45-aptidoes-e-refino.md` — o `Kokusen` sai do catálogo de aptidões e entra a `Circulação` | **não.** O `catalogo-projeto-m.json` não tem chave de aptidões |
+| o PDF do Manual da Guilda (repaginou) | **sim, indiretamente** — o `manual.txt` sai dele, e as páginas citadas podem ter andado |
+| as peças 19, 23 e 26, e cinco validadores do sistema | **não.** Esta pasta não lê peça |
+| o manual do Fundamento, v7.22 → v7.24 | **não diretamente** — o capítulo 9 do livro não mudou |
+| a peça 15, cinco linhas | **não muda número nenhum da ficha da invocação** (veja abaixo) |
+
+**Então o B11 não está mais bloqueado pelo motivo que eu dei.** O que ele virou é
+um trabalho maior do que era: o livro ganhou a `Circulação`, perdeu o `Kokusen`
+do catálogo, e repaginou — e as contagens que o `conferir-catalogo.py` cobra
+contra número de página são justamente as que uma repaginação move.
+
+**A ordem continua sendo:** re-extrair o `manual.txt` e subir o
+`catalogo-projeto-m.json` primeiro; **B8** e **B14** só depois disso.
+
+### A ficha da invocação foi conferida contra a v0.205, e está inteira
+
+Os dois capítulos vendorizados vieram **byte a byte idênticos** do commit
+`ccec9d2`. Nenhum número que a planilha usa se moveu, e os três validadores dela
+continuam verdes.
+
+> **A peça 15 mudou cinco linhas na v0.201, e vale saber o que:** a coluna
+> *"rodadas de chefe concentrando"* caiu para um terço — o corpo do `Coro` sai da
+> luta em `0,6` rodada de chefe contra `1,7` de antes, e o corpo forte em `1,4`
+> contra `4,2`. **Nenhum corpo perdeu vida:** o que triplicou foi o dano de rodada
+> do chefe, na tabela de inimigo. A razão de `2,5 ×` entre os dois corpos não se
+> moveu, e é ela que sustenta o argumento do `Servo`.
+>
+> *Isso é fato de mesa, não conserto de ficha: uma invocação hoje aguenta bem
+> menos foco de chefe do que aguentava. É item de playtest.*
 
 ### O que é seguro mexer sem esperar nada
 
