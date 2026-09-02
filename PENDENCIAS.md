@@ -81,7 +81,7 @@ Isso é independente da ficha digital e vale sozinho.
 >
 > *Ele também tem duas cópias idênticas nesta pasta, e isso é o **B15**.*
 
-### B5 · `Lento` nomeia duas coisas diferentes — **RESOLVIDO NA FICHA**
+### B5 · `Lento` nomeia duas coisas diferentes
 
 Achado ao fechar o A3.
 
@@ -90,30 +90,26 @@ Achado ao fechar o A3.
 | tabela de condições (p.32 e p.117) | condição de nível Leve: *"deslocamento pela metade, e sem Ação Bônus"* |
 | tabela de Restrições (p.121) | Restrição Média: *"custa a rodada inteira"* |
 
-As duas listas aparecem na ficha, e o jogador veria a mesma palavra em dois
+As duas listas vão aparecer na ficha, e o jogador vai ver a mesma palavra em dois
 menus significando coisas diferentes. Pior: as duas mexem em Ação Bônus, então a
 confusão é plausível na mesa, não só na leitura.
 
 É a armadilha de *"a mesma palavra carregando duas escalas"*, e ela já mordeu
 este projeto antes com a palavra `Classe`.
 
-> ***Decisão do Mizuki: desambiguar na ficha, sem tocar no manual.*** **O menu de
-> condições mostra `Lento (condição)` e o de Restrições mostra `Lento
-> (restrição)`.** *O catálogo continua com os nomes crus — quem ganha o rótulo é
-> o menu.*
->
-> **A colisão é DERIVADA das duas listas, e não escrita no código:** *é
-> `set(condicoes) & set(restricoes)`, hoje `{'Lento'}`.* **Se um nome novo cair
-> nas duas, ele ganha rótulo sozinho e a checagem passa a cobrar ele** — sem
-> ninguém precisar lembrar.
->
-> *Quatro checagens novas no `conferir-ficha-xlsx.py`, e as três perturbações
-> conferidas: tirar o rótulo acende as duas do meio, e pôr rótulo onde não há
-> colisão acende a quarta.*
+**Não é decisão de agora, e o conserto é caro:** renomear qualquer uma das duas
+mexe no manual publicado. Fica registrado.
 
-**O conserto de verdade continua sendo do manual**, e continua caro: renomear
-qualquer uma das duas mexe no material publicado. *O que a ficha fez foi tirar a
-mordida da mesa, não fechar a dívida.*
+> **⚠ Uma desambiguação na ficha foi escrita e DESFEITA em 02/09/2026.** *Ela
+> punha `Lento (condição)` e `Lento (restrição)` nos dois menus, com a colisão
+> derivada das duas listas.* **Foi revertida a pedido do Mizuki: aquela rodada
+> era para a ficha da invocação, e mexer na ficha do personagem estava fora do
+> escopo.** *O `ficha/dados.py`, o `ficha-projeto-m.xlsx`, o `apps-script/Ficha.gs`
+> e o `conferir-ficha-xlsx.py` voltaram byte a byte ao que eram.*
+>
+> *Se um dia isso voltar à mesa, o desenho já foi medido: a colisão é
+> `set(condicoes) & set(restricoes)`, e derivá-la faz um nome novo ganhar rótulo
+> sozinho.*
 
 ### B6 · O desconto do `Rápido` + `Lento` continua disponível fora da ficha
 

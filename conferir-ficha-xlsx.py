@@ -95,33 +95,6 @@ checa("a MESA tem 12 colunas com largura definida",
 larg = wb["MESA"].column_dimensions["A"].width
 checa("a largura de coluna está na faixa medida (3.6 a 4.1)", 3.6 <= larg <= 4.1, str(larg))
 
-# --- B5: a mesma palavra em duas listas nao pode chegar crua nos dois menus --
-print("\nA COLISAO DE NOME ENTRE DUAS LISTAS  (B5)")
-# a colisao e derivada do catalogo, e nao escrita aqui: um nome novo que caia
-# nas duas listas passa a ser cobrado sozinho.
-_colidem = set(CAT["condicoes"]) & set(CAT["restricoes"])
-_dados = wb["DADOS"]
-def _coluna(titulo):
-    for c in range(1, 40):
-        if _dados.cell(row=3, column=c).value == titulo:
-            return [_dados.cell(row=r, column=c).value for r in range(4, 40)
-                    if _dados.cell(row=r, column=c).value]
-    return []
-_cond, _rest = _coluna("Condições"), _coluna("Restrições")
-checa(f"o catalogo tem {len(_colidem)} nome(s) nas duas listas: {sorted(_colidem)}",
-      len(_colidem) > 0, "se nao ha colisao, esta checagem perdeu o assunto")
-for _n in sorted(_colidem):
-    checa(f"`{_n}` chega rotulado no menu de condicoes",
-          f"{_n} (condição)" in _cond and _n not in _cond,
-          f"achei {[v for v in _cond if _n in str(v)]}")
-    checa(f"`{_n}` chega rotulado no menu de Restricoes",
-          f"{_n} (restrição)" in _rest and _n not in _rest,
-          f"achei {[v for v in _rest if _n in str(v)]}")
-checa("nenhum nome SEM colisao ganhou rotulo a toa",
-      not [v for v in _cond + _rest if "(condição)" in str(v) or "(restrição)" in str(v)
-           if str(v).split(" (")[0] not in _colidem],
-      "algum rotulo sobrou onde nao havia colisao")
-
 print("\nA LARGURA DAS ABAS DE PC")
 # as abas de PC saem da decisão C6, e não de uma lista escrita aqui:
 # a TÉCNICA saiu da ficha e esta linha envelheceu junto

@@ -30,19 +30,6 @@ def monta(wb, CAT, DEC):
             pt=PT_ROTULO, cor=TEXTO_FRACO, alinha=ESQ)
     ref["carimbo_local"], ref["carimbo_central"] = "DADOS!$B$1", "DADOS!$D$1"
 
-    # --- a desambiguacao do B5 -------------------------------------------
-    # `Lento` nomeia duas coisas: condicao de nivel Leve (deslocamento pela
-    # metade, sem Acao Bonus) e Restricao Media (custa a rodada inteira). Na
-    # ficha o jogador veria a mesma palavra em dois menus.
-    #
-    # A colisao e DERIVADA das duas listas, e nao escrita aqui: se outra
-    # aparecer um dia, ela ganha rotulo sozinha. O catalogo continua com os
-    # nomes crus -- quem ganha o rotulo e o MENU.
-    COLIDEM = set(CAT["condicoes"]) & set(CAT["restricoes"])
-
-    def rotula(nome, tipo):
-        return f"{nome} ({tipo})" if nome in COLIDEM else nome
-
     # --- as listas -------------------------------------------------------
     c = 1
     # C1: o Evocador sai do MENU. O catalogo continua com os cinco.
@@ -52,8 +39,8 @@ def monta(wb, CAT, DEC):
     c = col(c, "Famílias", list(CAT["familias"]))
     c = col(c, "Formas", list(CAT["formas"]))
     c = col(c, "Melhorias", list(CAT["melhorias"]), 26)
-    c = col(c, "Restrições", [rotula(x, "restrição") for x in CAT["restricoes"]])
-    c = col(c, "Condições", [rotula(x, "condição") for x in CAT["condicoes"]])
+    c = col(c, "Restrições", list(CAT["restricoes"]))
+    c = col(c, "Condições", list(CAT["condicoes"]))
     c = col(c, "Origens", list(CAT["origens"]))
     c = col(c, "Testes", [t for t in CAT["testes_de_resistencia"]
                           if isinstance(CAT["testes_de_resistencia"][t], dict)])
