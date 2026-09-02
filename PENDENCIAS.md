@@ -95,13 +95,13 @@ Então hoje o Emanador chega no nível 11 e ganha uma entrega que soma zero, ou 
 
 **A ficha não inventa.** A CD e o ataque de conjuração usam o `2` fixo, e existe uma célula de troca ao lado, vazia, para quando a regra existir.
 
-### B9 · A ficha da invocação
+### B9 · A ficha da invocação — **FECHADA**
 
-Consequência do C1, e ela é maior que o C1.
+Ela existe: `ficha-invocacao/ficha-invocacao.xlsx`, planilha separada, com o
+`invocacao.json` como dono dos valores e três validadores em cima.
 
-O capítulo 14 do manual — nove páginas, da 179 à 187 — tem uma seção chamada *"A ficha da invocação"* e um catálogo próprio. **Nenhuma versão da ficha tem um campo disso**, nem a de papel nem o plano da digital.
-
-Enquanto o Evocador estiver fora do menu isso não dói. No dia em que ele voltar, é um bloco novo inteiro, e a `MESA` de um Evocador precisa mostrar duas criaturas em 12 colunas.
+**Mas ela fechou contra um manual que não é o `manual.txt` daqui**, e isso é o
+item B11 abaixo.
 
 ### B10 · A aba `TÉCNICA` saiu da ficha
 
@@ -112,6 +112,86 @@ O bloco de montagem de feitiço ficou ruim de ler e de usar: doze linhas de rót
 **O que ela precisa ter quando voltar:** o bloco horizontal em vez de vertical, e os seis campos que o sistema calcula sozinho — ação, alcance, alvo, como resolve, custo em PE e dano. Isso está medido no `medidas/bloco-feitico.py` e descrito na seção 10 do `DESIGN-ficha-digital.md`.
 
 Ela volta junto com a trava de montagem, que é o próximo pedaço caro.
+
+### B11 · O `manual.txt` e o `catalogo-projeto-m.json` estão 96 versões atrás
+
+O catálogo se declara **v0.104**, fonte *"Manual da Guilda (199 p.)"*, e o
+`manual.txt` tem **16 capítulos**. O sistema está na **v0.200** e o manual vivo
+tem **18**. No capítulo de Invocações a diferença não é de texto, é de mecânica:
+
+| o que o `manual.txt` daqui diz | o que vale hoje | morreu em |
+|---|---|---|
+| a ficha da invocação é **derivada** da do dono | ficha própria, cinco atributos dela | v0.180 |
+| vender número devolve orçamento (`−1 de acerto → 4 pontos`) | a venda não existe mais | v0.180 |
+| `Servo` = `5 × h` | corpo forte, `2,5 × (base + 2 × nível) + Con × nível` | v0.178 |
+| morre de vez pela metade da **vida máxima** | pela metade da **régua**, que é `5 ×` a vida crua do tipo | v0.178 |
+| `Investir` sem número | tabela de sete faixas, `1d6` a `15d6` | v0.178 |
+| `Casco`, *"mais vida"* sem número | `Parrudo`, `5 ×` a maestria | v0.184/v0.185 |
+
+**Por isso a ficha da invocação não lê do `manual.txt`.** Ela lê de
+`capitulo-16-invocacoes.md` e `capitulo-35-caminhos-e-trilhas.md`, cópias do
+repositório do sistema, com o `conferir-invocacao.py` guardando a divergência:
+se o `manual.txt` for re-extraído e a mecânica morta sumir dele, a checagem 9
+muda de estado e cobra a decisão.
+
+**Re-extrair o `manual.txt` é trabalho de verdade, e tem estilhaço:** o
+`conferir-decisoes.py` cobra a string do `Casco`, o `conferir-catalogo.py` cobra
+contagens contra páginas do PDF de 199 p., e o `revisao-cetica.py` lê dele. Não
+dá para fazer de passagem.
+
+### B12 · A checagem do C1 nunca vai acender
+
+O `conferir-decisoes.py` tem esta linha, e ela existe para avisar quando o
+Evocador pode voltar ao menu:
+
+```python
+checa("o motivo do C1 ainda vale: o manual segue sem o numero do Casco",
+      "Casco — as suas invocações têm mais vida." in MAN, ...)
+```
+
+Ela lê o `manual.txt`, que está congelado. **A string vai continuar lá para
+sempre, então a checagem sai verde toda vez e nunca vai mudar de estado.**
+
+E o motivo que ela guarda já expirou: dos três buracos que o C1 listou, as
+entregas de Trilha fecharam na **v0.164** e o `Casco` virou `Parrudo` com número
+na **v0.184/v0.185**. O terceiro era a ficha da invocação, que é o B9 acima.
+
+**A decisão de o Evocador voltar ao menu é do Mizuki.** O que está registrado
+aqui é que os três motivos dela caíram.
+
+### B13 · A `Voz` soma um número que não existe
+
+Achado montando a ficha da invocação, e é a mesma forma do B8.
+
+A `Voz` é uma das três rotas da `Sintonia` do Evocador (capítulo 35):
+*"a CD dos efeitos das suas invocações sobe em `1`, e vira `metade da sua
+maestria` a partir do nível 7"*.
+
+**A invocação não tem fórmula de CD em documento nenhum** — nem no capítulo 16,
+nem na peça 15. A rota soma `+1` num número que o sistema não produz.
+
+**A ficha não inventa:** ela marca como pendente na seção 09 e manda combinar
+com o mestre, e o `conferir-invocacao.py` tem uma checagem que acende no dia em
+que o capítulo 16 ganhar uma CD.
+
+### B14 · O Teste de Resistência treinado da ficha do personagem está atrasado
+
+Não é da invocação, e apareceu ao lado dela.
+
+O `catalogo-projeto-m.json` traz `bonus_se_treinado: 2`, e o `aba_ficha.py` usa
+esse `2`. **A peça 1 §4 do sistema diz `TR = d20 + atributo do TR + maestria`**,
+e o `+2` fixo morreu na **v0.117** — a entrada daquela versão registra que
+*"o `+2` fixo entregava 65% e a maestria entrega 65%, e a mudança inteira caiu
+no TR que ninguém treinou"*.
+
+Na ficha isso já erra no nível 2 (`+2` contra maestria `1`) e erra mais no 30
+(`+2` contra `4`). **A ficha da invocação usa a maestria**, que é a regra viva,
+então hoje as duas fichas discordam entre si.
+
+Junto com ele: o **B8** (`Estopim` somando um atributo de conjuração que não
+existe) fechou no sistema na **v0.117** — o `2` fixo morreu e o acerto passou a
+levar maestria. A ficha ainda usa o `2`.
+
 
 ---
 

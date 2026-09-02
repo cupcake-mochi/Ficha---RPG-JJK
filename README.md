@@ -16,6 +16,7 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 | [`DECISOES-bloco-A.md`](DECISOES-bloco-A.md) | as cinco decisões que travavam a construção, com o porquê e o que foi medido |
 | [`PENDENCIAS.md`](PENDENCIAS.md) | o que ainda espera decisão |
 | [`DESIGN-ficha-digital.md`](DESIGN-ficha-digital.md) | paleta, tipografia, abas, automação |
+| [`ficha-invocacao/`](ficha-invocacao/) | a ficha da invocação, planilha separada. O dono dos valores é o [`invocacao.json`](invocacao.json) |
 | [`ESPECIFICACAO-ficha-digital.md`](ESPECIFICACAO-ficha-digital.md) | toda fórmula, todo catálogo, todas as travas |
 
 ## Rodar os validadores
@@ -24,7 +25,9 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 ./rodar-tudo.sh
 ```
 
-São oito, e os oito passam.
+São treze, e os treze passam.
+
+> *Esta linha dizia **oito** enquanto o `rodar-tudo.sh` rodava dez, e o `LEIA-ME` dizia dez ao lado. Duas cópias do mesmo número, duas respostas — e nenhum validador cruzava as duas.*
 
 ## As duas regras que não mudam
 

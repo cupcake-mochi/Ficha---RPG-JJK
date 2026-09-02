@@ -27,7 +27,13 @@ O `DESIGN-ficha-digital.md` e o `ESPECIFICACAO-ficha-digital.md` continuam valen
 ./rodar-tudo.sh
 ```
 
-São dez, e os dez passam.
+São treze, e os treze passam.
+
+Para regerar a ficha da invocação:
+
+```bash
+python3 ficha-invocacao/monta.py
+```
 
 Para regerar a ficha:
 
@@ -47,6 +53,9 @@ python3 ficha/monta.py
 | `arnes-decisoes.py` | perturba as decisões numa cópia isolada e prova que o validador acende |
 | **`conferir-ficha-xlsx.py`** | **novo.** Lê o `.xlsx` gerado: fonte, cor, largura, e se cada fórmula puxa o atributo certo |
 | **`regressao-kaori-na-ficha.py`** | **novo.** Preenche a Kaori na ficha, manda o LibreOffice recalcular, e compara com a p.41 |
+| **`conferir-invocacao.py`** | **novo.** O `invocacao.json` contra os capítulos 16 e 35 vendorizados, e a planilha contra o JSON |
+| **`regressao-invocacao.py`** | **novo.** Recalcula a ficha da invocação e bate com os números que o capítulo 16 publica |
+| **`arnes-invocacao.py`** | **novo.** Perturba o `invocacao.json` numa cópia isolada e prova que a checagem certa acende |
 
 ### Dois arquivos que os validadores leem de fora
 

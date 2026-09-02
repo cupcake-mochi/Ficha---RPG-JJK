@@ -1,0 +1,442 @@
+{
+  "_meta": {
+    "o_que_e": "os valores da ficha da invocacao. Este arquivo e o dono dos VALORES; o porque mora no capitulo vendorizado ao lado.",
+    "dono_da_regra": "Projeto - M, capitulo 16 (Invocacoes) do Manual da Guilda, e a peca 15 de sistema/03-mecanica no repositorio JJK---Project",
+    "lido_de": "capitulo-16-invocacoes.md e capitulo-35-caminhos-e-trilhas.md, copias de sistema/05-material/livro/manual/60-invocacoes.md e 35-caminhos-e-trilhas.md",
+    "versao_do_sistema": "0.200",
+    "por_que_nao_le_do_manual_txt": "o manual.txt deste repositorio esta congelado na v0.104 (199 p., 16 capitulos) e o capitulo de Invocacoes mudou de forma depois disso: a ficha derivada do dono e a venda de numero morreram na v0.180, a regua da morte e a vida do corpo forte mudaram na v0.178, e o Investir ganhou tabela de dano na v0.178. Construir contra o manual.txt seria construir a mecanica morta.",
+    "regra": "onde este arquivo e o capitulo discordarem, o capitulo vence"
+  },
+  "atributos": {
+    "lista": [
+      "Força",
+      "Destreza",
+      "Constituição",
+      "Inteligência",
+      "Essência"
+    ],
+    "pontos_na_criacao": 9,
+    "teto_na_criacao": 3,
+    "por_marco": 1,
+    "teto": 6
+  },
+  "progressao": {
+    "marcos": [
+      6,
+      10,
+      14,
+      18,
+      22,
+      26,
+      30
+    ],
+    "maestria_em": [
+      10,
+      18,
+      26
+    ],
+    "classe_em": [
+      1,
+      5,
+      9,
+      13,
+      17,
+      21,
+      26
+    ],
+    "formula_maestria": "1 + quantos de maestria_em <= nivel",
+    "formula_classe": "quantos de classe_em <= nivel"
+  },
+  "orcamento": {
+    "base": 8,
+    "por_marco": 4,
+    "formula": "base + por_marco * quantos marcos <= nivel",
+    "conferido": {
+      "2": 8,
+      "6": 12,
+      "10": 16,
+      "18": 24,
+      "26": 32,
+      "30": 36
+    }
+  },
+  "tipos": {
+    "talismã": 1,
+    "corpo amaldiçoado": 1,
+    "técnica": 2,
+    "maldição domada": 3
+  },
+  "vida": {
+    "formula_crua": "base do tipo + (2 + Constituicao dela) * nivel do dono",
+    "formula_corpo_forte": "ARRED.ABAIXO(2,5 * (base do tipo + 2 * nivel) + Constituicao dela * nivel)",
+    "multiplicador_corpo_forte": 2.5,
+    "constituicao_fora_do_multiplicador": true,
+    "por_que": "com a Constituicao dentro do multiplicador um ponto dela valia 5x o nivel num corpo de invocacao e 1x numa ficha de personagem. Conserto da v0.178.",
+    "conferido_corpo_forte_con0": {
+      "técnica": {
+        "2": 15,
+        "10": 55,
+        "18": 95,
+        "30": 155
+      },
+      "talismã": {
+        "2": 12,
+        "10": 52,
+        "18": 92,
+        "30": 152
+      },
+      "maldição domada": {
+        "2": 17,
+        "10": 57,
+        "18": 97,
+        "30": 157
+      }
+    },
+    "conferido_cru_con0": {
+      "técnica": {
+        "2": 6,
+        "10": 22,
+        "18": 38,
+        "30": 62
+      }
+    }
+  },
+  "trilhas": {
+    "Servo": {
+      "corpos": 1,
+      "corpo": "forte",
+      "orcamento_multiplicador": 1.5,
+      "vulneravel_a_area": 1.0,
+      "nota": "o orcamento e o da ficha mais metade, arredondando para baixo. Todo orcamento e multiplo de 4, entao fecha redondo."
+    },
+    "Matilha": {
+      "corpos": 5,
+      "corpo": "forte",
+      "orcamento_multiplicador": 1.0,
+      "vulneravel_a_area": 1.5,
+      "nota": "um corpo forte numa barra so, com cascata. Area causa o dano uma vez na barra, e ela leva metade a mais."
+    },
+    "Coro": {
+      "corpos": 1,
+      "corpo": "cru",
+      "orcamento_multiplicador": 1.0,
+      "vulneravel_a_area": 1.0,
+      "nota": "o unico que ataca e comanda na mesma rodada, e por isso leva o corpo cru."
+    }
+  },
+  "morte": {
+    "formula_regua": "5 * a vida CRUA do tipo (nunca a do corpo forte)",
+    "multiplicador_regua": 5,
+    "morre_de_vez_se": [
+      "o excedente passar de metade da regua",
+      "um unico golpe causar a regua inteira"
+    ],
+    "volta_com": "metade da vida maxima do corpo em campo",
+    "vida_cheia_volta": "no descanso longo",
+    "sem_estado_intermediario": "ela some no zero: nada de Inconsciente, Sequela ou Cicatriz",
+    "exemplo_do_capitulo": {
+      "nivel": 10,
+      "tipo": "técnica",
+      "constituicao": 1,
+      "vida_maxima": 32,
+      "regua": 160,
+      "volta_com": 16
+    }
+  },
+  "ficha_dela": {
+    "acerto": "o atributo dela + a maestria do dono",
+    "defesa": "10 + a Destreza dela + ARRED.ABAIXO(Essencia OU Inteligencia do dono / 2)",
+    "defesa_escolha": [
+      "Essência",
+      "Inteligência"
+    ],
+    "defesa_escolha_trava": "escolhida na montagem, e nao muda depois",
+    "teste_de_resistencia": "o atributo do TR + a maestria do dono, e a maestria so entra no TR que ela treinou",
+    "trs_treinados": 1,
+    "deslocamento": 9,
+    "amarra": 18,
+    "amarra_de_onde_vem": "o alcance base de Projetil",
+    "fora_da_amarra": "nao pode ser comandada: fica onde esta, sem agir. Ela NAO some.",
+    "nao_tem": [
+      "Caminho",
+      "técnica"
+    ]
+  },
+  "testes_de_resistencia": {
+    "Físico": [
+      "Força",
+      "Destreza"
+    ],
+    "Vigor": [
+      "Constituição"
+    ],
+    "Intelecto": [
+      "Inteligência"
+    ],
+    "Espírito": [
+      "Essência"
+    ]
+  },
+  "custo": {
+    "invocar_pe": "1 x a maior Classe do dono",
+    "invocar_acao": "Acao Padrao",
+    "comandar_acao": "Acao Padrao, toda rodada",
+    "iniciativa": "usa o numero do dono e age logo depois dele",
+    "fora_de_combate": "acao nao custa nada, entao quem invoca antes da luta paga so os PE"
+  },
+  "traco": {
+    "Escalada": 2,
+    "Nado": 2,
+    "Fala": 3,
+    "Faro": 5,
+    "Vigia": 5,
+    "Miúdo": 7,
+    "Voo": 8,
+    "Montaria": 8,
+    "Fisgada": 8,
+    "Emboscada": 8,
+    "Jorro": 8,
+    "Graúdo": 8,
+    "Remoto": 8
+  },
+  "comando": {
+    "Investir": 0,
+    "Agarrar": 4,
+    "Arrastar": 4,
+    "Buscar": 4,
+    "Cavar": 4,
+    "Interpor": 8,
+    "Chamariz": 8
+  },
+  "regua_traco": {
+    "2": "muda como ela anda, e so ela",
+    "3": "muda o que ela comunica",
+    "5": "muda o que ela percebe",
+    "7": "muda que espaco ela ocupa, a um passo de mexer no tabuleiro",
+    "8": "encosta em outra criatura ou no ambiente"
+  },
+  "regua_comando": {
+    "0": "e o ataque",
+    "4": "faz uma coisa com um alvo ou um objeto",
+    "8": "protege voce, ou nega a acao de outro"
+  },
+  "nao_compra": {
+    "dado de dano": "o teto de uma Rotina ja governa a saida",
+    "qualquer coisa que cresça com refino": "refino cresce muito mais rapido que a ficha dela",
+    "atributo": "os cinco ja saem do arranjo dela",
+    "Defesa, acerto ou vida direto": "os tres saem dos atributos dela"
+  },
+  "investir": {
+    "nota": "o numero de dados desce sempre, porque a soma nunca pode passar do que o dono faria sozinho",
+    "faixas": [
+      {
+        "de": 2,
+        "ate": 4,
+        "uma": "1d6",
+        "matilha": "2"
+      },
+      {
+        "de": 5,
+        "ate": 8,
+        "uma": "4d6",
+        "matilha": "1d6"
+      },
+      {
+        "de": 9,
+        "ate": 12,
+        "uma": "6d6",
+        "matilha": "2d6"
+      },
+      {
+        "de": 13,
+        "ate": 16,
+        "uma": "8d6",
+        "matilha": "3d6"
+      },
+      {
+        "de": 17,
+        "ate": 20,
+        "uma": "10d6",
+        "matilha": "4d6"
+      },
+      {
+        "de": 21,
+        "ate": 25,
+        "uma": "13d6",
+        "matilha": "5d6"
+      },
+      {
+        "de": 26,
+        "ate": 30,
+        "uma": "15d6",
+        "matilha": "6d6"
+      }
+    ]
+  },
+  "parrudo": {
+    "ponteiro": "o dono agora e sintonia.rotas.Parrudo, nesta mesma pasta"
+  },
+  "montagens_por_trilha": {
+    "Servo": {
+      "entradas": [
+        "Agarrar",
+        "Interpor"
+      ],
+      "pontos": 12,
+      "arranjo": [
+        3,
+        1,
+        3,
+        1,
+        1
+      ]
+    },
+    "Matilha": {
+      "entradas": [
+        "Agarrar",
+        "Arrastar"
+      ],
+      "pontos": 8,
+      "arranjo": [
+        3,
+        2,
+        1,
+        1,
+        2
+      ]
+    },
+    "Coro": {
+      "entradas": [
+        "Fisgada"
+      ],
+      "pontos": 8,
+      "arranjo": [
+        1,
+        3,
+        1,
+        2,
+        2
+      ]
+    }
+  },
+  "montagens_do_material": [
+    {
+      "nome": "Cão Divino",
+      "entradas": [
+        "Faro"
+      ],
+      "pontos": 5,
+      "nivel": 2,
+      "arranjo": [
+        1,
+        3,
+        2,
+        0,
+        3
+      ]
+    },
+    {
+      "nome": "Nue",
+      "entradas": [
+        "Voo"
+      ],
+      "pontos": 8,
+      "nivel": 2,
+      "arranjo": [
+        1,
+        3,
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "nome": "Elefante Máximo",
+      "entradas": [
+        "Jorro"
+      ],
+      "pontos": 8,
+      "nivel": 2,
+      "arranjo": [
+        3,
+        2,
+        3,
+        1,
+        0
+      ]
+    },
+    {
+      "nome": "Serpente",
+      "entradas": [
+        "Emboscada",
+        "Agarrar"
+      ],
+      "pontos": 12,
+      "nivel": 6,
+      "arranjo": [
+        3,
+        3,
+        2,
+        1,
+        0
+      ]
+    },
+    {
+      "nome": "Sapo",
+      "entradas": [
+        "Fisgada",
+        "Agarrar"
+      ],
+      "pontos": 12,
+      "nivel": 6,
+      "arranjo": [
+        2,
+        3,
+        3,
+        0,
+        1
+      ]
+    },
+    {
+      "nome": "Nue completo",
+      "entradas": [
+        "Voo",
+        "Montaria"
+      ],
+      "pontos": 16,
+      "nivel": 10,
+      "arranjo": [
+        3,
+        3,
+        2,
+        0,
+        1
+      ]
+    }
+  ],
+  "sintonia": {
+    "o_que_e": "o degrau de nivel 2 do Evocador. Escolhe UMA das tres, e as tres mexem na invocacao.",
+    "dono": "capitulo 35 do Manual da Guilda, secao 'Degraus do Evocador'",
+    "rotas": {
+      "Presa": {
+        "efeito": "as suas invocacoes acertam critico com 19 ou 20",
+        "critico_a_partir_de": 19,
+        "mexe_em": "o dado do acerto dela"
+      },
+      "Parrudo": {
+        "efeito": "as suas invocacoes tem mais vida, equivalente a 5 x a sua maestria",
+        "multiplicador_maestria": 5,
+        "mexe_em": "a vida dela",
+        "chamava_se": "Casco, ate a v0.184"
+      },
+      "Voz": {
+        "efeito": "a CD dos efeitos das suas invocacoes sobe em 1, e vira metade da sua maestria a partir do nivel 7",
+        "bonus": 1,
+        "vira_metade_da_maestria_no_nivel": 7,
+        "mexe_em": "a CD dos efeitos dela",
+        "PENDENTE": "a invocacao NAO tem formula de CD em documento nenhum: o capitulo 16 nao escreve nenhuma, e a peca 15 tambem nao. Esta rota some um numero que o sistema nao produz, que e a mesma forma do Estopim (PENDENCIAS B8) e do antigo Casco. A ficha marca como pendente em vez de chutar.",
+        "nota_na_ficha": "A invocação não tem fórmula de CD em documento nenhum — nem o capítulo 16, nem a peça 15 escrevem uma. Esta rota soma num número que o sistema ainda não produz, então combine com o mestre em vez de chutar."
+      }
+    }
+  }
+}
