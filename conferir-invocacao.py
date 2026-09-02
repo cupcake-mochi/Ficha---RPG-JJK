@@ -339,8 +339,33 @@ else:
         checa("a DADOS publica o indice de celulas", idx is not None)
         if idx:
             n = sum(1 for r in range(3, 200) if d.cell(row=r, column=idx).value)
-            checa("o indice cobre os 8 slots de compra e os 5 atributos dela",
-                  n >= 8 + 5, f"o indice tem {n} campos")
+            campos = {d.cell(row=r, column=idx).value for r in range(3, 200)
+                      if d.cell(row=r, column=idx).value}
+            # quantos slots a ficha PRECISA ter: derivado do catalogo e do maior
+            # orcamento, e nao um numero escrito aqui. Com 4 por grupo a ficha
+            # estourava a partir do nivel 6 do Servo.
+            def _cabem(precos, orc):
+                nn = soma = 0
+                for pr in sorted(precos):
+                    if soma + pr > orc:
+                        break
+                    soma += pr
+                    nn += 1
+                return nn
+            _teto = int((INV["orcamento"]["base"] + INV["orcamento"]["por_marco"] *
+                         len(INV["progressao"]["marcos"])) *
+                        max(t["orcamento_multiplicador"]
+                            for t in INV["trilhas"].values()))
+            _pt = _cabem(INV["traco"].values(), _teto)
+            _pc = _cabem([v for v in INV["comando"].values() if v > 0], _teto)
+            tem_t = len([c for c in campos if c.startswith("traco_")])
+            tem_c = len([c for c in campos if c.startswith("comando_")])
+            checa(f"a ficha tem os {_pt} slots de Traco que o teto pede",
+                  tem_t == _pt, f"tem {tem_t}")
+            checa(f"a ficha tem os {_pc} slots de Comando que o teto pede",
+                  tem_c == _pc, f"tem {tem_c}")
+            checa("o indice cobre os slots e os 5 atributos dela",
+                  n >= _pt + _pc + 5, f"o indice tem {n} campos")
         # todo Traco e Comando do json esta na aba de apoio
         na_aba = {c.value for lin in d.iter_rows() for c in lin if isinstance(c.value, str)}
         faltando = [e for e in list(INV["traco"]) + list(INV["comando"]) if e not in na_aba]

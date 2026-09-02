@@ -279,11 +279,31 @@ R["orcamento"] = derivada(4, r, 6, "orçamento", f"={ORC}", pt=20)
 ORCC = cel(4, r + 1)
 r += 4
 
+# quantos slots cada grupo precisa: o maior orcamento que existe comprando as
+# entradas mais baratas. Derivado, nunca escrito na mao -- com 4 por grupo a
+# ficha ja estourava no nivel 6 do Servo, e o teto real e 9 Traco e 6 Comando.
+def _cabem(precos, orc):
+    n = soma = 0
+    for pr in sorted(precos):
+        if soma + pr > orc:
+            break
+        soma += pr
+        n += 1
+    return n
+
+_orc_teto = int((O["base"] + O["por_marco"] * len(INV["progressao"]["marcos"]))
+                * max(t["orcamento_multiplicador"] for t in INV["trilhas"].values()))
+N_TRACO = _cabem(INV["traco"].values(), _orc_teto)
+N_COMANDO = _cabem([v for v in INV["comando"].values() if v > 0], _orc_teto)
+
 SLOTS = []
-for grupo, ref_lista, ref_tab, col0 in [("TRAÇO", REF["traco"], REF["tab_traco"], 4),
-                                        ("COMANDO", REF["comando"], REF["tab_comando"], 26)]:
-    txt(ws, col0, r, grupo, nome=TITULO, pt=PT_ROTULO, cor=BLOCO, ate=(col0 + 17, r))
-    for i in range(4):
+NOMES_SLOT = []
+for grupo, ref_lista, ref_tab, col0, quantos in [
+        ("TRAÇO", REF["traco"], REF["tab_traco"], 4, N_TRACO),
+        ("COMANDO", REF["comando"], REF["tab_comando"], 26, N_COMANDO)]:
+    txt(ws, col0, r, f"{grupo} · até {quantos}", nome=TITULO, pt=PT_ROTULO,
+        cor=BLOCO, ate=(col0 + 17, r))
+    for i in range(quantos):
         rr = r + 1 + i
         pinta(ws, col0, rr, col0 + 17, rr, PAINEL if i % 2 == 0 else PAINEL_ALTO)
         txt(ws, col0, rr, "—", cor=OSSO, pt=11, ate=(col0 + 12, rr))
@@ -292,7 +312,9 @@ for grupo, ref_lista, ref_tab, col0 in [("TRAÇO", REF["traco"], REF["tab_traco"
         txt(ws, pc, rr, f'=IFERROR(VLOOKUP({cel(col0, rr)},{ref_tab},2,FALSE),0)',
             nome=TITULO, pt=11, cor=TEXTO_FRACO, al="right", ate=(col0 + 17, rr))
         SLOTS.append(cel(pc, rr))
-r += 6
+        NOMES_SLOT.append((grupo.lower().replace("ç", "c").replace("ã", "a"),
+                           i + 1, cel(col0, rr)))
+r += max(N_TRACO, N_COMANDO) + 2
 
 GASTO = "+".join(SLOTS)
 R["gasto"] = derivada(4, r, 6, "gasto", f"={GASTO}", pt=14)
@@ -370,13 +392,9 @@ for i, (chave, v) in enumerate(R.items()):
 for i, sl in enumerate(SLOTS):
     txt(d, IDX, 3 + len(R) + i, f"slot_pontos_{i+1}")
     txt(d, IDX + 1, 3 + len(R) + i, sl.replace("$", ""))
-for i, sl in enumerate(SLOTS):
-    # a celula do NOME da entrada fica 13 colunas a esquerda da dos pontos
-    cc = int("".join(ch for ch in sl.split("$")[2] if ch.isdigit()))
-    col = sl.split("$")[1]
-    from openpyxl.utils import column_index_from_string as CI
-    txt(d, IDX, 3 + len(R) + len(SLOTS) + i, f"slot_nome_{i+1}")
-    txt(d, IDX + 1, 3 + len(R) + len(SLOTS) + i, f"{L(CI(col)-13)}{cc}")
+for i, (grupo, n_, coord) in enumerate(NOMES_SLOT):
+    txt(d, IDX, 3 + len(R) + len(SLOTS) + i, f"{grupo}_{n_}")
+    txt(d, IDX + 1, 3 + len(R) + len(SLOTS) + i, coord.replace("$", ""))
 
 # a INVOCAÇÃO abre primeiro; a DADOS fica escondida atrás dela
 wb.move_sheet("INVOCAÇÃO", -1)

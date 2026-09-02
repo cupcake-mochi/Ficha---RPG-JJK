@@ -180,9 +180,9 @@ for trilha, m in INV["montagens_por_trilha"].items():
     tr = [e for e in m["entradas"] if e in INV["traco"]]
     cm = [e for e in m["entradas"] if e in INV["comando"]]
     for i, e in enumerate(tr):
-        v[f"slot_nome_{i+1}"] = e
+        v[f"traco_{i+1}"] = e
     for i, e in enumerate(cm):
-        v[f"slot_nome_{5+i}"] = e
+        v[f"comando_{i+1}"] = e
     s = roda(**v)
     checa(f"{trilha}: gasto = {m['pontos']}", num(s["gasto"]) == m["pontos"],
           f'a ficha deu {s["gasto"]!r}')
@@ -202,9 +202,9 @@ for m in INV["montagens_do_material"]:
     tr = [e for e in m["entradas"] if e in INV["traco"]]
     cm = [e for e in m["entradas"] if e in INV["comando"]]
     for i, e in enumerate(tr):
-        v[f"slot_nome_{i+1}"] = e
+        v[f"traco_{i+1}"] = e
     for i, e in enumerate(cm):
-        v[f"slot_nome_{5+i}"] = e
+        v[f"comando_{i+1}"] = e
     s = roda(**v)
     checa(f"{m['nome']}: gasto = {m['pontos']}", num(s["gasto"]) == m["pontos"],
           f'a ficha deu {s["gasto"]!r}')
@@ -214,10 +214,37 @@ for m in INV["montagens_do_material"]:
 print()
 print("   contra-teste: uma montagem que NAO cabe tem de acusar")
 v = zerado(nivel=2, tipo="técnica", trilha="Coro")
-v["slot_nome_1"], v["slot_nome_2"] = "Voo", "Montaria"      # 8 + 8 = 16, contra 8
+v["traco_1"], v["traco_2"] = "Voo", "Montaria"             # 8 + 8 = 16, contra 8
 s = roda(**v)
 checa("Voo + Montaria no nv2 (16 pontos de um orcamento de 8) acusa 'estourou'",
       isinstance(s["sobra"], str) and "estourou" in s["sobra"], f'a ficha deu {s["sobra"]!r}')
+
+print()
+print("   os slots comportam a montagem mais CARA que o orçamento paga")
+_tr = sorted(INV["traco"].items(), key=lambda x: x[1])
+_cm = sorted([kv for kv in INV["comando"].items() if kv[1] > 0], key=lambda x: x[1])
+_n_tr = len([k for k in CEL if k.startswith("traco_")])
+_n_cm = len([k for k in CEL if k.startswith("comando_")])
+# Servo no nv30: o maior bolso que existe
+v = zerado(nivel=30, tipo="técnica", trilha="Servo")
+_orc = int((INV["orcamento"]["base"] + INV["orcamento"]["por_marco"] *
+            len(INV["progressao"]["marcos"])) * 1.5)
+_soma, _usados = 0, 0
+for nome_e, pr in _tr:
+    if _soma + pr > _orc or _usados >= _n_tr:
+        break
+    _soma += pr
+    _usados += 1
+    v[f"traco_{_usados}"] = nome_e
+s = roda(**v)
+checa(f"a ficha tem {_n_tr} slots de Traço e {_n_cm} de Comando",
+      _n_tr == 9 and _n_cm == 6, f"achei {_n_tr} e {_n_cm}")
+checa(f"cabem {_usados} Traço no Servo nv30 e a ficha soma {_soma}",
+      num(s["gasto"]) == _soma, f'a ficha deu {s["gasto"]!r}')
+checa("e a sobra continua não-negativa", not isinstance(s["sobra"], str),
+      f'a ficha deu {s["sobra"]!r}')
+checa("contra-teste: com 4 slots essa montagem não caberia",
+      _usados > 4, f"ela usou so {_usados} slots")
 
 # =====================================================================
 print()
