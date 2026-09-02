@@ -318,10 +318,25 @@ moveu, e o capítulo de dano e condições do livro não mudou uma linha.
 | o manual do Fundamento, v7.22 → v7.24 | **não diretamente** — o capítulo 9 do livro não mudou |
 | a peça 15, cinco linhas | **não muda número nenhum da ficha da invocação** (veja abaixo) |
 
-**Então o B11 não está mais bloqueado pelo motivo que eu dei.** O que ele virou é
-um trabalho maior do que era: o livro ganhou a `Circulação`, perdeu o `Kokusen`
-do catálogo, e repaginou — e as contagens que o `conferir-catalogo.py` cobra
-contra número de página são justamente as que uma repaginação move.
+**Então o B11 não está mais bloqueado pelo motivo que eu dei.**
+
+> **⚠ E o segundo motivo que eu dei também estava errado.** *Escrevi que a
+> repaginação do livro moveria as contagens do `conferir-catalogo.py`.* **Ele
+> não lê número de página:** *o `p.26` da saída é prosa na etiqueta, e a
+> checagem compara `len(CAT[chave])` contra um número escrito no próprio
+> código.* **Repaginar não quebra nada ali.** *Medido lendo o código, que é o
+> que a lição do projeto manda fazer com número sobre ferramenta.*
+
+O que o B11 é de verdade, medido: **re-extrair o `manual.txt` e acertar as
+contagens do `catalogo-projeto-m.json`** contra o livro vivo. Quem lê o
+`manual.txt` são o `conferir-decisoes.py` (que cobra frases literais), o
+`revisao-cetica.py` e o `conferir-kaori.py` — e é nas **frases** que ele morde,
+não nas páginas.
+
+**O que muda no conteúdo, entre a v0.104 e a v0.205:** o `Kokusen` sai do
+catálogo de aptidões e entra a `Circulação`; o TR treinado vira maestria; a CD
+de feitiço vira `8 + atributo da técnica + maestria`; a `Base por Classe` separa
+`Apoio` de `Cura e Onda`. Os dois últimos são o **B8** e o **B14**.
 
 **A ordem continua sendo:** re-extrair o `manual.txt` e subir o
 `catalogo-projeto-m.json` primeiro; **B8** e **B14** só depois disso.
