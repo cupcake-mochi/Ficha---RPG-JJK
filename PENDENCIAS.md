@@ -48,9 +48,19 @@ Enquanto não entrar, a Defesa fica presa em `10 + Destreza + proteção da apti
 
 ### B4 · A checagem 7 das Famílias precisa subir
 
-Não é dúvida, é ação pendente. O `repo-conserto/checagem-7-familias.py` está pronto, acende no estado atual e apaga numa cópia corrigida. Ele conserta um erro que **hoje está na ficha em branco que os seus jogadores usam**.
+Não é dúvida, é ação pendente. O `repo-conserto/checagem-7-familias.py` está
+pronto, acende no estado atual e apaga numa cópia corrigida. Ele conserta um
+erro que **hoje está na ficha em branco que os seus jogadores usam**.
 
 Isso é independente da ficha digital e vale sozinho.
+
+> **⚠ Ele não roda desta pasta, e isso é da natureza dele.** *É um **fragmento**
+> para colar no `conferir-ficha.py` do outro repositório: ele chama `bloco()`,
+> `ler()`, `erro()` e `lista_js()`, que são helpers de lá, e lê
+> `../../manual/gerador/partB.js` e o `dados.js`, que não existem aqui.* **Rodar
+> ele solto dá `NameError: bloco`** — o que é esperado, não defeito.
+>
+> *Ele também tem duas cópias idênticas nesta pasta, e isso é o **B15**.*
 
 ### B5 · `Lento` nomeia duas coisas diferentes
 
@@ -87,13 +97,29 @@ O `botão de descanso longo` do documento de desenho não roda no app de celular
 
 Achado escrevendo a fórmula da CD de feitiço.
 
-O manual é explícito na p.192: *"Não existe 'atributo de conjuração' na ficha padrão."* A conta é `10 + 2 + maestria`, com o `2` fixo. E ele diz que **algumas habilidades de Caminho trocam esse 2 por um atributo**, e que a habilidade diz qual.
+O manual **desta pasta** é explícito na p.192: *"Não existe 'atributo de
+conjuração' na ficha padrão."* A conta é `10 + 2 + maestria`, com o `2` fixo. E
+ele diz que **algumas habilidades de Caminho trocam esse 2 por um atributo**, e
+que a habilidade diz qual.
 
-O problema: **nenhuma habilidade do manual faz essa troca.** Procurei em todas. A única coisa que menciona atributo de conjuração é o `Estopim`, nível 11 do Emanador — *"todo feitiço seu soma o seu atributo de conjuração no dano"* — e ele **usa** o número sem que nada o tenha concedido.
+O problema: **nenhuma habilidade daquele manual faz essa troca.** A única coisa
+que menciona atributo de conjuração é o `Estopim`, nível 11 do Emanador —
+*"todo feitiço seu soma o seu atributo de conjuração no dano"* — e ele **usa** o
+número sem que nada o tenha concedido.
 
-Então hoje o Emanador chega no nível 11 e ganha uma entrega que soma zero, ou que o mestre inventa na hora. É a mesma forma do `Casco`: uma entrega que aponta para um número que o sistema não produz.
+**A ficha não inventa.** A CD e o ataque de conjuração usam o `2` fixo, e existe
+uma célula de troca ao lado, vazia, para quando a regra existir.
 
-**A ficha não inventa.** A CD e o ataque de conjuração usam o `2` fixo, e existe uma célula de troca ao lado, vazia, para quando a regra existir.
+> **⚠ Isto FECHOU no sistema na v0.117, e a ficha continua certa contra o
+> manual dela.** *O `2` fixo morreu junto com o mecanismo, e a CD virou
+> `8 + o atributo da sua técnica + maestria` — está no capítulo 10 do manual
+> vivo, e em mais três lugares.* **O `manual.txt` daqui, congelado na v0.104,
+> ainda escreve `CD de feitiço = 10 + 2 + maestria` na linha 536.**
+>
+> **Então este item não se conserta sozinho: ele é parte do B11.** Mudar a
+> fórmula da ficha agora a põe à frente do manual que ela declara como fonte, e
+> a regra deste repositório é a inversa — *onde a ficha e o manual discordarem,
+> o manual vence.* **Conserta-se junto com a re-extração, nunca antes dela.**
 
 ### B9 · A ficha da invocação — **FECHADA**
 
@@ -139,25 +165,31 @@ muda de estado e cobra a decisão.
 contagens contra páginas do PDF de 199 p., e o `revisao-cetica.py` lê dele. Não
 dá para fazer de passagem.
 
-### B12 · A checagem do C1 nunca vai acender
+### B12 · A checagem do C1 nunca acendia — **CONSERTADA**
 
-O `conferir-decisoes.py` tem esta linha, e ela existe para avisar quando o
-Evocador pode voltar ao menu:
+O `conferir-decisoes.py` tinha esta linha, e ela existia para avisar quando o
+Evocador podia voltar ao menu:
 
 ```python
 checa("o motivo do C1 ainda vale: o manual segue sem o numero do Casco",
       "Casco — as suas invocações têm mais vida." in MAN, ...)
 ```
 
-Ela lê o `manual.txt`, que está congelado. **A string vai continuar lá para
-sempre, então a checagem sai verde toda vez e nunca vai mudar de estado.**
+Ela lia o `manual.txt`, que está congelado. **A frase nunca sai de lá, então a
+checagem saía verde para sempre e não tinha como mudar de estado.** Um guarda
+que não pode acender não guarda nada.
 
-E o motivo que ela guarda já expirou: dos três buracos que o C1 listou, as
-entregas de Trilha fecharam na **v0.164** e o `Casco` virou `Parrudo` com número
-na **v0.184/v0.185**. O terceiro era a ficha da invocação, que é o B9 acima.
+**Hoje ela lê o dono vivo daquele número** — o `capitulo-35-caminhos-e-trilhas.md`
+vendorizado — e cobra que a decisão C1 **declare** o estado de hoje dos três
+motivos dela, em vez de continuar escrita como se ainda valessem. São sete
+checagens, e o `arnes-decisoes.py` tem oito perturbações provando que cada uma
+acende: cinco no lado do JSON e três no lado dos arquivos, inclusive o caso de
+o `manual.txt` ser re-extraído.
 
-**A decisão de o Evocador voltar ao menu é do Mizuki.** O que está registrado
-aqui é que os três motivos dela caíram.
+**Os três motivos do C1 caíram:** entregas de Trilha na **v0.164**, o `Casco`
+virando `Parrudo` com número na **v0.184/v0.185**, e a ficha da invocação no
+**B9** desta rodada. A decisão de o Evocador voltar ao menu continua sendo do
+Mizuki, e agora ela está declarada em vez de implícita.
 
 ### B13 · A `Voz` soma um número que não existe
 
@@ -174,23 +206,54 @@ nem na peça 15. A rota soma `+1` num número que o sistema não produz.
 com o mestre, e o `conferir-invocacao.py` tem uma checagem que acende no dia em
 que o capítulo 16 ganhar uma CD.
 
-### B14 · O Teste de Resistência treinado da ficha do personagem está atrasado
+### B14 · O Teste de Resistência treinado — **não é bug da ficha, é o B11**
 
-Não é da invocação, e apareceu ao lado dela.
+Registrado errado na primeira passada desta rodada, e corrigido aqui.
 
 O `catalogo-projeto-m.json` traz `bonus_se_treinado: 2`, e o `aba_ficha.py` usa
 esse `2`. **A peça 1 §4 do sistema diz `TR = d20 + atributo do TR + maestria`**,
-e o `+2` fixo morreu na **v0.117** — a entrada daquela versão registra que
-*"o `+2` fixo entregava 65% e a maestria entrega 65%, e a mudança inteira caiu
-no TR que ninguém treinou"*.
+e o `+2` fixo morreu na **v0.117**.
 
-Na ficha isso já erra no nível 2 (`+2` contra maestria `1`) e erra mais no 30
-(`+2` contra `4`). **A ficha da invocação usa a maestria**, que é a regra viva,
-então hoje as duas fichas discordam entre si.
+**Mas a ficha está certa contra o manual dela.** O `manual.txt` desta pasta não
+só usa o `+2` — ele nega a maestria com todas as letras, na linha 636:
 
-Junto com ele: o **B8** (`Estopim` somando um atributo de conjuração que não
-existe) fechou no sistema na **v0.117** — o `2` fixo morreu e o acerto passou a
-levar maestria. A ficha ainda usa o `2`.
+> *"treino vale +2 fixo aqui, e não maestria. Maestria não entra em Teste de
+> Resistência nunca."*
+
+E o manual vivo, no capítulo 10, diz o contrário:
+
+> *"Teste de Resistência = d20 + atributo do TR + maestria, e a maestria só
+> entra se você for treinado nele."*
+
+**Consertar a ficha antes de re-extrair o manual quebraria a regra deste
+repositório**, que é *o manual vence*. Fica como parte do **B11**, junto com o
+B8, que é o mesmo defeito no outro número.
+
+*A ficha da invocação usa a maestria, e isso é de propósito: ela declara o
+capítulo vivo como dono, e não o `manual.txt`. As duas fichas discordam entre si
+até a re-extração, e isso está declarado nos dois lados.*
+
+### B15 · Quatro arquivos têm duas cópias, e nenhum tem dono declarado
+
+Achado indo mexer no B4.
+
+| arquivo | as duas cópias | hoje |
+|---|---|---|
+| `checagem-7-familias.py` | raiz e `repo-conserto/` | idênticas |
+| `divergencia-familias.py` | raiz e `repo-conserto/` | idênticas |
+| `daltonismo.py` | raiz e `medidas/` | idênticas |
+| `paleta.py` | raiz e `medidas/` | idênticas |
+
+**Nenhum é importado por nada**, e a documentação está dividida: o `PENDENCIAS`
+e o `LEIA-ME` apontam para a subpasta, o `ESPECIFICACAO` e os dois `HANDOFF`
+apontam para o nome pelado da raiz. O `conferir-decisoes.py` cita
+`medidas/daltonismo.py` num comentário, o que faz da subpasta o dono de fato.
+
+É a lição nº 9 na camada de arquivo: hoje são iguais, e no dia em que alguém
+editar uma delas divergem em silêncio, sem validador que alcance.
+
+**O conserto é apagar as quatro da raiz e acertar as referências dos documentos
+vivos** — mas apagar arquivo é decisão do Mizuki, então fica registrado.
 
 
 ---
@@ -209,3 +272,52 @@ levar maestria. A ficha ainda usa o `2`.
 | `Queima` | conta como repetição no teto de dano |
 | largura | desenhar para ~1300 px, que cabe em notebook |
 | **o bloco A inteiro** | **`DECISOES-bloco-A.md`** |
+
+---
+
+## Isolamento · esta pasta não escreve no repositório do sistema
+
+**Registrado em 02/09/2026, com uma conversa aberta em paralelo sobre o
+Bestiário.** Se você chegou aqui de uma conversa nova, leia isto antes de mexer
+em número.
+
+**O que esta pasta faz:** ela **lê** o repositório do sistema e guarda cópias
+declaradas do que precisa. Ela nunca edita nada lá. Os arquivos vendorizados
+são estes, e cada um diz de onde veio:
+
+| arquivo aqui | de onde veio, no `JJK---Project` |
+|---|---|
+| `manual.txt` | o PDF do Manual da Guilda, `pdftotext -layout` — **congelado na v0.104** |
+| `capitulo-16-invocacoes.md` | `sistema/05-material/livro/manual/60-invocacoes.md` |
+| `capitulo-35-caminhos-e-trilhas.md` | `sistema/05-material/livro/manual/35-caminhos-e-trilhas.md` |
+| `repos/JJK---PDF---RPG-main/ficha/ficha-exemplo-kaori.docx` | o repositório do PDF |
+
+**A ficha da invocação foi construída assim de propósito:** planilha separada,
+com o capítulo vendorizado como dono, e sem tocar em nenhum arquivo do sistema.
+Ela não depende de nada que esteja em obra do outro lado.
+
+### A re-extração do `manual.txt` (B11) tem de esperar
+
+**Não re-extraia agora.** O Bestiário é a peça 26 do sistema e a **v0.201** está
+em aberto lá: ela mexe na pressão do chefe, que é `3,3 ×` menor que a do d20 —
+e esse conserto mexe no `72`, que é a base da régua de condição inteira.
+
+A régua de condição é dona das **condições que esta ficha imprime**, e o
+`conferir-catalogo.py` daqui cobra a contagem delas contra a página do PDF.
+Re-extrair no meio disso congela um retrato que está mudando, e o vermelho
+apareceria aqui como se fosse defeito da ficha.
+
+**A ordem certa é:** a v0.201 fechar no sistema → re-extrair o `manual.txt` e
+subir o `catalogo-projeto-m.json` → e só então os itens **B8** e **B14**, que
+são os dois números que hoje estão certos contra o manual velho e errados
+contra o vivo.
+
+### O que é seguro mexer sem esperar nada
+
+- a ficha da invocação e os três validadores dela — eles leem os capítulos
+  vendorizados, não o `manual.txt`
+- o **B12**, que já foi consertado nesta rodada
+- o **B4**, que é do repositório do PDF e não toca no sistema
+- o **B15**, que é arrumação de arquivo desta pasta
+- o **B7** e o **B10**, que são desenho da ficha
+

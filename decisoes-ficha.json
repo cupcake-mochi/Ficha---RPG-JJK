@@ -151,7 +151,14 @@
     ],
     "caminho_oculto": "Evocador",
     "a_ficha_diz": "Evocador — em escrita, fale com o mestre",
-    "quando_volta": "quando as entregas de Trilha e o numero do Casco sairem"
+    "quando_volta": "quando as entregas de Trilha e o numero do Casco sairem",
+    "motivo_hoje": {
+      "estado": "os tres motivos do C1 expiraram. A decisao de o Evocador voltar ao menu e do Mizuki, e enquanto ela nao vier a ficha segue com quatro.",
+      "entregas_de_trilha": "FECHADAS no sistema na v0.164 — as doze entregas do Evocador foram as ultimas das quinze Trilhas",
+      "numero_do_casco": "FECHADO: o Casco virou Parrudo na v0.184 e ganhou numero com dono na v0.185, 5 x a maestria. O dono e o capitulo 35, vendorizado aqui como capitulo-35-caminhos-e-trilhas.md",
+      "ficha_da_invocacao": "FECHADA: ficha-invocacao/ficha-invocacao.xlsx, com o invocacao.json como dono dos valores",
+      "por_que_a_checagem_velha_nao_servia": "ela procurava a frase 'Casco — as suas invocacoes tem mais vida.' no manual.txt, que esta congelado na v0.104. A frase nunca sai de la, entao a checagem saia verde para sempre e nunca podia acender."
+    }
   },
   "C2_carimbo": {
     "escolha": "o carimbo e a versao do projeto",

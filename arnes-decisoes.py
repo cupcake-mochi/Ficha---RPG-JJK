@@ -10,7 +10,8 @@ import json, os, shutil, subprocess, sys, tempfile
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 PRECISA = ["conferir-decisoes.py", "decisoes-ficha.json", "catalogo-projeto-m.json",
-           "DECISOES-bloco-A.md", "PENDENCIAS.md", "manual.txt"]
+           "DECISOES-bloco-A.md", "PENDENCIAS.md", "manual.txt",
+           "capitulo-35-caminhos-e-trilhas.md"]
 
 def roda(pasta):
     r = subprocess.run([sys.executable, "conferir-decisoes.py"], cwd=pasta,
@@ -83,6 +84,69 @@ perturba("par que nomeia peca inexistente", peca_fantasma, "nomeia pecas que exi
 def fonte_inventada(d):
     d["A2_temporario"]["vida"]["fontes_no_manual"]["Casco de Ferro"] = "sei la"
 perturba("fonte de vida temporaria inventada", fonte_inventada, "fontes de vida temporaria existem")
+
+# --- C1: o guarda que a v0.104 deixou morto -----------------------------
+def c1_sem_declaracao(d):
+    del d["C1_evocador"]["motivo_hoje"]
+perturba("C1 sem declarar o estado dos motivos", c1_sem_declaracao,
+         "declara o estado de hoje dos tres motivos")
+
+def c1_numero_errado(d):
+    d["C1_evocador"]["motivo_hoje"]["numero_do_casco"] = (
+        "FECHADO: o Casco virou Parrudo e vale 9 x a maestria")
+perturba("C1 declarando um numero que nao e o do capitulo 35", c1_numero_errado,
+         "o numero que o C1 declara e o mesmo")
+
+def c1_sem_dono_da_decisao(d):
+    d["C1_evocador"]["motivo_hoje"]["estado"] = "fica fora e pronto"
+perturba("C1 sem registrar de quem e a decisao", c1_sem_dono_da_decisao,
+         "a decisao de voltar ao menu e do Mizuki")
+
+def c1_sem_a_ficha(d):
+    d["C1_evocador"]["motivo_hoje"]["ficha_da_invocacao"] = "nao existe ainda"
+perturba("C1 dizendo que a ficha da invocacao nao existe", c1_sem_a_ficha,
+         "aponta a ficha da invocacao como fechada")
+
+def c1_sem_o_porque(d):
+    d["C1_evocador"]["motivo_hoje"]["por_que_a_checagem_velha_nao_servia"] = "sei la"
+perturba("C1 sem explicar por que a checagem velha nao servia", c1_sem_o_porque,
+         "por que a checagem velha nao servia")
+
+print()
+print("=" * 70)
+print("PASSO 2b - e o OUTRO LADO do C1: o capitulo 35, que e o dono vivo")
+
+def perturba_arquivo(nome, arquivo, de, para, agulha):
+    d = copia()
+    alvo = os.path.join(d, arquivo)
+    antes = open(alvo, encoding="utf-8").read()
+    depois = antes.replace(de, para, 1)
+    if antes == depois:
+        print(f"  [INUTIL] {nome:38} -> a troca NAO bateu no arquivo")
+        shutil.rmtree(d); return
+    open(alvo, "w", encoding="utf-8").write(depois)
+    cod, saida = roda(d)
+    achou = agulha in saida
+    veredito = ("ACENDEU" if (cod != 0 and achou)
+                else ("acendeu outra" if cod != 0 else "NAO ACENDEU"))
+    print(f"  [{veredito:14}] {nome:38} -> saida {cod}")
+    shutil.rmtree(d)
+
+perturba_arquivo("o Parrudo perde o numero no capitulo 35",
+                 "capitulo-35-caminhos-e-trilhas.md",
+                 "equivalente a **`5 ×` a sua maestria**",
+                 "e ninguem escreveu quanto",
+                 "da um numero ao Parrudo")
+perturba_arquivo("o Parrudo muda de numero no capitulo 35",
+                 "capitulo-35-caminhos-e-trilhas.md",
+                 "equivalente a **`5 ×` a sua maestria**",
+                 "equivalente a **`7 ×` a sua maestria**",
+                 "o numero que o C1 declara e o mesmo")
+perturba_arquivo("o manual.txt foi re-extraido e perdeu a frase do Casco",
+                 "manual.txt",
+                 "Casco — as suas invocações têm mais vida.",
+                 "Parrudo — as suas invocações têm mais vida, 5 × a sua maestria.",
+                 "nunca podia acender")
 
 print()
 print("=" * 70)

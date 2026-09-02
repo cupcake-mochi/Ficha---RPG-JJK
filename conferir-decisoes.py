@@ -10,7 +10,7 @@ Nenhum valor mora aqui: le do decisoes-ficha.json, do catalogo e do manual.txt.
 Se o manual.txt nao existir este validador FALHA, nao pula. Um verde que pulou
 checagem nao prova nada.
 """
-import json, os, sys, math
+import json, os, re, sys, math
 
 FALHAS, PULADAS = [], 0
 
@@ -127,9 +127,52 @@ checa("o menu da ficha traz os outros quatro, e todos existem",
       str([c for c in c1["caminhos_no_menu"] if c not in CAT["caminhos"]]))
 checa("menu + oculto = o catalogo inteiro, sem sobra nem falta",
       set(c1["caminhos_no_menu"]) | {c1["caminho_oculto"]} == set(CAT["caminhos"]))
-checa("o motivo do C1 ainda vale: o manual segue sem o numero do Casco",
+# ------------------------------------------------------------------------
+# C1: o motivo da decisao tem de estar em dia com a realidade.
+#
+# A versao ANTIGA desta checagem lia o manual.txt procurando a frase
+# 'Casco - as suas invocacoes tem mais vida.' e passava enquanto ela estivesse
+# la. Como o manual.txt deste repositorio esta congelado na v0.104, a frase
+# nunca sai -- entao ela saia VERDE para sempre e nunca podia acender. Um
+# guarda que nao pode mudar de estado nao guarda nada.
+#
+# Hoje ela le o dono VIVO daquele numero: o capitulo 35 vendorizado. Se o
+# Parrudo (ex-Casco) tem numero la, o motivo do C1 caiu, e a decisao tem de
+# DECLARAR que caiu -- em vez de continuar escrita como se ainda valesse.
+if not os.path.exists("capitulo-35-caminhos-e-trilhas.md"):
+    print("\nFALTA O ARQUIVO 'capitulo-35-caminhos-e-trilhas.md', e ele e o dono")
+    print("  vivo do numero do Parrudo. Sem ele a checagem do C1 nao confere nada.")
+    print("  copie de: <clone do JJK---Project>/sistema/05-material/livro/manual/")
+    print("            35-caminhos-e-trilhas.md")
+    sys.exit(1)
+CAP35 = ' '.join(le('capitulo-35-caminhos-e-trilhas.md').split())
+m_par = re.search(r"\*\*`Parrudo`\*\*[^|]*?`(\d+) ×` a sua maestria", CAP35)
+checa("o capitulo 35 da um numero ao Parrudo, o ex-Casco",
+      m_par is not None,
+      "se o Parrudo perdeu o numero, o motivo do C1 voltou a valer e este bloco "
+      "todo precisa ser relido")
+checa("o manual.txt daqui NAO tem esse numero — e por isso a checagem velha "
+      "nunca podia acender",
       "Casco — as suas invocações têm mais vida." in MAN,
-      "se o Casco ganhou numero, o Evocador pode voltar ao menu")
+      "o manual.txt foi re-extraido: reveja se este bloco ainda precisa do "
+      "capitulo vendorizado")
+mh = c1.get("motivo_hoje", {})
+PRECISA_MH = {"estado", "entregas_de_trilha", "numero_do_casco",
+              "ficha_da_invocacao"}
+faltando_mh = sorted(PRECISA_MH - set(mh))
+checa("o C1 declara o estado de hoje dos tres motivos dele",
+      not faltando_mh, "falta declarar: " + str(faltando_mh))
+if m_par:
+    checa("o numero que o C1 declara e o mesmo do capitulo 35",
+          m_par.group(1) + " x a maestria" in mh.get("numero_do_casco", ""),
+          "o capitulo diz " + m_par.group(1) + ", o C1 diz "
+          + repr(mh.get("numero_do_casco", "")))
+checa("o C1 registra que a decisao de voltar ao menu e do Mizuki",
+      "Mizuki" in mh.get("estado", ""))
+checa("o C1 aponta a ficha da invocacao como fechada",
+      "ficha-invocacao" in mh.get("ficha_da_invocacao", ""))
+checa("o C1 explica por que a checagem velha nao servia",
+      "congelado" in mh.get("por_que_a_checagem_velha_nao_servia", ""))
 
 # C2: o carimbo e a versao do projeto, e o dono dela e o CHANGELOG.
 c2 = DEC["C2_carimbo"]
