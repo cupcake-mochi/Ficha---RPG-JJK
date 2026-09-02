@@ -500,7 +500,7 @@ Confirmado em três lugares: no `dados.js`, na tabela 15 da `ficha-em-branco.doc
 
 **Por que passou:** o `conferir-ficha.py` tem seis checagens (perícias, ofícios, Caminhos, Trilhas, constantes do nível 2, e os arquivos existirem). Nenhuma delas confere Famílias. Cada outra cópia da ficha tem um dono declarado; a lista de Famílias é a única que não tem.
 
-**O conserto** está em `checagem-7-familias.py`, pronta para colar no `conferir-ficha.py`. Ela acende no estado atual do repositório e apaga numa cópia com o `dados.js` corrigido.
+**O conserto** está em `repo-conserto/checagem-7-familias.py`, pronta para colar no `conferir-ficha.py`. Ela acende no estado atual do repositório e apaga numa cópia com o `dados.js` corrigido.
 
 > Isso é a lição nº 9 do projeto acontecendo de novo, na mesma camada em que ela custou mais caro: *"a única cópia que sai do repositório e vai para a mão de um jogador foi a última a ser conferida."*
 
@@ -586,4 +586,4 @@ Cinco perguntas eliminam opções, e elas se respondem antes de escrever código
 | `conferir_feitico.py` | as regras de ouro aplicadas a um feitiço |
 | `regressao-exemplos.py` | os feitiços publicados no manual |
 | `arnes.py` | prova que cada checagem acende |
-| `checagem-7-familias.py` | o conserto da divergência da seção 9 |
+| `repo-conserto/checagem-7-familias.py` | o conserto da divergência da seção 9 |

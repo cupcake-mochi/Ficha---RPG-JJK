@@ -25,11 +25,30 @@ O `conferir-decisoes.py` confere que esse documento, o `decisoes-ficha.json` e e
 
 ## Dívida · dá para começar sem, mas ela volta
 
-### B1 · O manual está fora da identidade visual
+### B1 · O manual está fora da identidade visual — **FECHADO NA v0.200, e invertido**
 
-O gerador do manual usa ameixa `741B47`; o servidor e o PDF usam `#211C35` e `#756588`. Os dois roxos **não aparecem em nenhum arquivo do repositório**.
+O gerador do manual usava ameixa `741B47`; o servidor e o PDF usam `#211C35` e
+`#756588`.
 
-Com a ficha indo para a paleta do servidor, **o manual passa a ser o que está fora**. Isso é um item de correção do repositório, não da ficha.
+> **⚠ Conferido em 02/09/2026, no commit `ccec9d2`: a divergência morreu, e não
+> foi para a paleta que este item supunha.** *A **v0.200** unificou as duas
+> paletas do projeto numa terceira, a **`Neve Saturado`**, e ela entrou nos
+> quatro geradores de uma vez — o do manual, o do livro, o da ficha de papel e o
+> do bloco de inimigo.*
+>
+> **Ela é clara e rosada:** `ink 251727` · `crimson BC2A6E` · `rule F8C7DC` ·
+> papel `FDF0F6`. *O `741B47` não aparece mais em gerador nenhum.*
+>
+> **Então o item inverteu:** o manual não estava fora e voltou para a paleta do
+> servidor — ele foi para uma terceira, junto com o livro e a ficha de papel.
+> **Quem está numa paleta própria hoje é a ficha digital**, escura
+> (`FUNDO 120F1D` · `PAINEL 211C35` · `TEXTO F4F1F7`).
+>
+> *Papel claro e tela escura é diferença de mídia, e a decisão **C4** desta pasta
+> escolheu a paleta do servidor de propósito. Mas isso deixou de ser "o manual
+> está errado" e passou a ser uma pergunta de desenho: a ficha digital fica
+> escura enquanto todo o material impresso é claro?* **Ela está em aberto, e é do
+> Mizuki.**
 
 ### B2 · Falta um segundo caso de teste
 
@@ -62,7 +81,7 @@ Isso é independente da ficha digital e vale sozinho.
 >
 > *Ele também tem duas cópias idênticas nesta pasta, e isso é o **B15**.*
 
-### B5 · `Lento` nomeia duas coisas diferentes
+### B5 · `Lento` nomeia duas coisas diferentes — **RESOLVIDO NA FICHA**
 
 Achado ao fechar o A3.
 
@@ -71,11 +90,30 @@ Achado ao fechar o A3.
 | tabela de condições (p.32 e p.117) | condição de nível Leve: *"deslocamento pela metade, e sem Ação Bônus"* |
 | tabela de Restrições (p.121) | Restrição Média: *"custa a rodada inteira"* |
 
-As duas listas vão aparecer na ficha, e o jogador vai ver a mesma palavra em dois menus significando coisas diferentes. Pior: as duas mexem em Ação Bônus, então a confusão é plausível na mesa, não só na leitura.
+As duas listas aparecem na ficha, e o jogador veria a mesma palavra em dois
+menus significando coisas diferentes. Pior: as duas mexem em Ação Bônus, então a
+confusão é plausível na mesa, não só na leitura.
 
-É a armadilha de *"a mesma palavra carregando duas escalas"*, e ela já mordeu este projeto antes com a palavra `Classe`.
+É a armadilha de *"a mesma palavra carregando duas escalas"*, e ela já mordeu
+este projeto antes com a palavra `Classe`.
 
-**Não é decisão de agora, e o conserto é caro:** renomear qualquer uma das duas mexe no manual publicado. Fica registrado.
+> ***Decisão do Mizuki: desambiguar na ficha, sem tocar no manual.*** **O menu de
+> condições mostra `Lento (condição)` e o de Restrições mostra `Lento
+> (restrição)`.** *O catálogo continua com os nomes crus — quem ganha o rótulo é
+> o menu.*
+>
+> **A colisão é DERIVADA das duas listas, e não escrita no código:** *é
+> `set(condicoes) & set(restricoes)`, hoje `{'Lento'}`.* **Se um nome novo cair
+> nas duas, ele ganha rótulo sozinho e a checagem passa a cobrar ele** — sem
+> ninguém precisar lembrar.
+>
+> *Quatro checagens novas no `conferir-ficha-xlsx.py`, e as três perturbações
+> conferidas: tirar o rótulo acende as duas do meio, e pôr rótulo onde não há
+> colisão acende a quarta.*
+
+**O conserto de verdade continua sendo do manual**, e continua caro: renomear
+qualquer uma das duas mexe no material publicado. *O que a ficha fez foi tirar a
+mordida da mesa, não fechar a dívida.*
 
 ### B6 · O desconto do `Rápido` + `Lento` continua disponível fora da ficha
 
@@ -233,27 +271,29 @@ B8, que é o mesmo defeito no outro número.
 capítulo vivo como dono, e não o `manual.txt`. As duas fichas discordam entre si
 até a re-extração, e isso está declarado nos dois lados.*
 
-### B15 · Quatro arquivos têm duas cópias, e nenhum tem dono declarado
+### B15 · Quatro arquivos tinham duas cópias — **RESOLVIDO**
 
 Achado indo mexer no B4.
 
-| arquivo | as duas cópias | hoje |
+| arquivo | ficou em | a cópia da raiz |
 |---|---|---|
-| `checagem-7-familias.py` | raiz e `repo-conserto/` | idênticas |
-| `divergencia-familias.py` | raiz e `repo-conserto/` | idênticas |
-| `daltonismo.py` | raiz e `medidas/` | idênticas |
-| `paleta.py` | raiz e `medidas/` | idênticas |
+| `checagem-7-familias.py` | `repo-conserto/` | apagada |
+| `divergencia-familias.py` | `repo-conserto/` | apagada |
+| `daltonismo.py` | `medidas/` | apagada |
+| `paleta.py` | `medidas/` | apagada |
 
-**Nenhum é importado por nada**, e a documentação está dividida: o `PENDENCIAS`
-e o `LEIA-ME` apontam para a subpasta, o `ESPECIFICACAO` e os dois `HANDOFF`
-apontam para o nome pelado da raiz. O `conferir-decisoes.py` cita
-`medidas/daltonismo.py` num comentário, o que faz da subpasta o dono de fato.
+As quatro eram idênticas, nenhuma era importada por nada, e a documentação
+estava dividida: o `PENDENCIAS` e o `LEIA-ME` apontavam para a subpasta, o
+`ESPECIFICACAO` e os dois `HANDOFF` para o nome pelado da raiz. Um comentário do
+`conferir-decisoes.py` cita `medidas/daltonismo.py`, o que já fazia da subpasta o
+dono de fato.
 
-É a lição nº 9 na camada de arquivo: hoje são iguais, e no dia em que alguém
-editar uma delas divergem em silêncio, sem validador que alcance.
+> ***Decisão do Mizuki: apagar as da raiz.*** *As referências pelo nome pelado
+> nos três documentos foram acertadas para o caminho da subpasta, e não sobrou
+> nenhuma solta.*
 
-**O conserto é apagar as quatro da raiz e acertar as referências dos documentos
-vivos** — mas apagar arquivo é decisão do Mizuki, então fica registrado.
+Era a lição nº 9 na camada de arquivo: hoje eram iguais, e no dia em que alguém
+editasse uma delas divergiriam em silêncio, sem validador que alcançasse.
 
 
 ---

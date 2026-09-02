@@ -33,7 +33,7 @@ Confirmado em três lugares: `dados.js`, tabela 15 da `ficha-em-branco.docx`, e 
 
 **Por que passou:** o `conferir-ficha.py` tem seis checagens e nenhuma confere Famílias. Toda outra cópia da ficha tem dono declarado; a lista de Famílias não tem.
 
-**O conserto está pronto** em `checagem-7-familias.py`. Ela acende no estado atual do repositório e apaga numa cópia com o `dados.js` corrigido.
+**O conserto está pronto** em `repo-conserto/checagem-7-familias.py`. Ela acende no estado atual do repositório e apaga numa cópia com o `dados.js` corrigido.
 
 > A Kaori não expõe esse bug. As cinco Famílias que ela usa são exatamente as cinco que as duas listas têm em comum. Ela passa por coincidência.
 
@@ -158,9 +158,9 @@ O protótipo mostrou tudo de uma vez, sem rolagem, e foi isso que espremeu o tex
 | `regressao-exemplos.py` | os feitiços publicados na página 137 |
 | `arnes.py` | prova que cada checagem acende |
 | `teto-fechado.py` | a busca exaustiva do teto de dano |
-| `checagem-7-familias.py` | o conserto do bug das Famílias |
+| `repo-conserto/checagem-7-familias.py` | o conserto do bug das Famílias |
 | `revisao-cetica.py` | confere a especificação contra o manual |
-| `divergencia-familias.py` | mede a divergência das Famílias |
+| `repo-conserto/divergencia-familias.py` | mede a divergência das Famílias |
 | `ficha/` | o protótipo em xlsx e o gerador dele |
 
 **Nenhum arquivo do repositório foi editado.** Todo trabalho ficou em diretório próprio.
