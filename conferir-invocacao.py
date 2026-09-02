@@ -85,6 +85,27 @@ for grupo, chave, ncols in [("### `Traço`", "traco", 3), ("### `Comando`", "com
         checa(f"{chave} · {nome} = {pts}", do_cap.get(nome) == pts,
               f"o capitulo diz {do_cap.get(nome)!r}")
 
+print()
+print("   e o texto de cada entrada sai do capitulo, e nao foi reescrito aqui")
+for grupo, chave in [("### `Traço`", "traco"), ("### `Comando`", "comando")]:
+    do_cap = {}
+    for cs in tabela_depois_de(grupo, 3):
+        nome, pts = limpa(cs[1]), limpa(cs[0])
+        if pts.isdigit():
+            do_cap[nome] = re.sub(r"\s+", " ", limpa(cs[2])).strip()
+    fora = []
+    for nome, txt_ in INV[chave + "_texto"].items():
+        # o Remoto foi reescrito de proposito: a linha do capitulo aponta para
+        # outra secao do livro, e um ponteiro nao serve dentro de uma planilha
+        if nome == "Remoto":
+            continue
+        if do_cap.get(nome) != txt_:
+            fora.append(nome)
+    checa(f"{chave}: todo texto e o do capitulo, palavra por palavra", not fora,
+          f"diferem do capitulo: {fora}")
+    checa(f"{chave}: o Remoto e a unica reescrita, e ela esta declarada",
+          "Remoto" in INV[chave + "_texto"] or chave == "comando")
+
 total = len(INV["traco"]) + len(INV["comando"]) - 1
 m = re.search(r"São (\d+) entradas compráveis", CAP)
 checa("o capitulo declara o total de compraveis, e ele bate",
@@ -327,12 +348,29 @@ else:
         pula("a planilha", "o openpyxl nao esta instalado")
     else:
         wb = load_workbook(FICHA)
-        checa("as duas abas existem", set(wb.sheetnames) == {"INVOCAÇÃO", "DADOS"},
+        checa("as tres abas existem",
+              set(wb.sheetnames) == {"INVOCAÇÃO", "CATÁLOGO", "DADOS"},
               str(wb.sheetnames))
         checa("a INVOCACAO abre primeiro", wb.sheetnames[0] == "INVOCAÇÃO",
               wb.sheetnames[0])
+        checa("o CATALOGO vem depois dela, e fica VISIVEL",
+              wb.sheetnames[1] == "CATÁLOGO"
+              and wb["CATÁLOGO"].sheet_state == "visible",
+              f'{wb.sheetnames[1]} / {wb["CATÁLOGO"].sheet_state}')
         checa("a DADOS fica escondida", wb["DADOS"].sheet_state == "hidden",
               wb["DADOS"].sheet_state)
+        # o catalogo existe para quem RECEBE a planilha: sem o texto, escolher
+        # no menu e escolher no escuro.
+        _cat = {str(c.value) for lin in wb["CATÁLOGO"].iter_rows() for c in lin
+                if c.value is not None}
+        _faltam = [n for n in list(INV["traco"]) + list(INV["comando"])
+                   if n not in _cat]
+        checa("as 20 entradas aparecem na aba CATALOGO", not _faltam,
+              f"faltou: {_faltam}")
+        _sem_texto = [n for n in list(INV["traco"]) + list(INV["comando"])
+                      if INV["traco_texto"].get(n, INV["comando_texto"].get(n, "")) not in _cat]
+        checa("cada entrada leva junto o que ela FAZ", not _sem_texto,
+              f"sem texto na aba: {_sem_texto}")
         d = wb["DADOS"]
         idx = next((c for c in range(1, 80) if d.cell(row=2, column=c).value == "campo"),
                    None)

@@ -210,22 +210,22 @@
     "Chamariz": 8
   },
   "regua_traco": {
-    "2": "muda como ela anda, e so ela",
+    "2": "muda como ela anda, e só ela",
     "3": "muda o que ela comunica",
     "5": "muda o que ela percebe",
-    "7": "muda que espaco ela ocupa, a um passo de mexer no tabuleiro",
-    "8": "encosta em outra criatura ou no ambiente"
+    "7": "muda que espaço ela ocupa, a um passo de mexer no tabuleiro",
+    "8": "encosta em outra criatura ou no ambiente: carrega, prende, empurra, barra, alcança além do alcance, aparece onde não dava"
   },
   "regua_comando": {
-    "0": "e o ataque",
+    "0": "é o ataque",
     "4": "faz uma coisa com um alvo ou um objeto",
-    "8": "protege voce, ou nega a acao de outro"
+    "8": "protege você, ou nega a ação de outro"
   },
   "nao_compra": {
-    "dado de dano": "o teto de uma Rotina ja governa a saida",
-    "qualquer coisa que cresça com refino": "refino cresce muito mais rapido que a ficha dela",
-    "atributo": "os cinco ja saem do arranjo dela",
-    "Defesa, acerto ou vida direto": "os tres saem dos atributos dela"
+    "dado de dano": "o teto de uma Rotina já governa a saída. Um Traço que dê +1d6 não existe",
+    "qualquer coisa que cresça com refino": "refino cresce muito mais rápido que a ficha dela, e ela passaria de você",
+    "atributo": "os cinco já saem do arranjo dela, e comprar de novo é pagar duas vezes",
+    "Defesa, acerto ou vida direto": "os três saem dos atributos dela"
   },
   "investir": {
     "nota": "o numero de dados desce sempre, porque a soma nunca pode passar do que o dono faria sozinho",
@@ -439,5 +439,29 @@
         "nota_na_ficha": "A invocação não tem fórmula de CD em documento nenhum — nem o capítulo 16, nem a peça 15 escrevem uma. Esta rota soma num número que o sistema ainda não produz, então combine com o mestre em vez de chutar."
       }
     }
+  },
+  "traco_texto": {
+    "Escalada": "sobe parede e teto sem teste",
+    "Nado": "move na água sem penalidade. Rio, cisterna, tanque alagado de estação",
+    "Fala": "ela fala, e dá para conversar com ela",
+    "Faro": "rastreia por cheiro e por energia. Pega rastro velho de horas",
+    "Vigia": "o que ela vê e ouve, você vê e ouve também",
+    "Miúdo": "ocupa espaço menor e passa por vão. Duto, grade de bueiro, folga embaixo da porta",
+    "Voo": "o deslocamento dela passa a ser de voo também",
+    "Montaria": "carrega uma pessoa ou mais, dependendo do tamanho",
+    "Fisgada": "prende à distância. Ela alcança, engancha, e quem ia fugir para de conseguir",
+    "Emboscada": "surge do chão, fora do alcance de visão",
+    "Jorro": "ataca em linha ou em área",
+    "Graúdo": "ocupa espaço maior e barra passagem",
+    "Remoto": "funciona além dos 18 metros da amarra. Dentro da cena, para qualquer um; fora da cena, com requisito"
+  },
+  "comando_texto": {
+    "Investir": "o ataque. Toda invocação tem",
+    "Agarrar": "prende o alvo",
+    "Arrastar": "move o alvo, ou se move levando ele. Tira alguém de cima de uma beirada, ou põe",
+    "Buscar": "pega um objeto, ou rastreia de forma ativa",
+    "Cavar": "abre buraco, desenterra, revira o terreno. Faz rota onde não havia rota",
+    "Interpor": "se põe entre você e o golpe. O corpo dela recebe o que ia em você",
+    "Chamariz": "o alvo tem de vir para cima dela. Você escolhe em quem a coisa está prestando atenção"
   }
 }

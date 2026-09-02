@@ -375,6 +375,67 @@ txt(ws, 4, r + 1,
 txt(ws, 4, r + 2, VOZ["nota_na_ficha"], pt=8, cor=TEXTO_FRACO, ate=(COLS, r + 3))
 R["cd_pendente"] = ws.cell(row=r + 1, column=4)
 
+# ================================================================= CATALOGO
+# Aba VISIVEL, e ela existe por um motivo pratico: quem recebe esta planilha
+# escolhe `Fisgada` num menu e nao tem como saber o que aquilo faz. Os textos
+# saem do invocacao.json, que os leu do capitulo 16 -- nao sao escritos aqui.
+cat = base(wb, "CATÁLOGO", COLS, 64)
+pinta(cat, 3, 1, COLS, 2, PAINEL_ALTO)
+txt(cat, 4, 1, "O CATÁLOGO — o que dá para comprar", nome=TITULO, pt=16, cor=OSSO,
+    ate=(30, 2))
+txt(cat, 32, 1, "capítulo 16", nome=SERIE, pt=8, cor=TEXTO_FRACO, al="right",
+    ate=(COLS, 2))
+
+rc = 4
+for grupo, chave, glosa in [
+        ("TRAÇO", "traco", "o que ela É. Sempre ligado, sem gastar ação."),
+        ("COMANDO", "comando", "o que ela FAZ quando o dono gasta a Ação Padrão nela.")]:
+    txt(cat, 4, rc, grupo, nome=TITULO, pt=PT_TITULO, cor=BLOCO, ate=(20, rc))
+    txt(cat, 4, rc + 1, glosa, pt=9, cor=TEXTO_FRACO, ate=(COLS, rc + 1))
+    rc += 2
+    for j, (h, larg) in enumerate([("PONTOS", 5), ("NOME", 9), ("O QUE FAZ", 30)]):
+        pass
+    txt(cat, 4, rc, "PONTOS", nome=TITULO, pt=8, cor=TEXTO_FRACO, ate=(7, rc))
+    txt(cat, 8, rc, "NOME", nome=TITULO, pt=8, cor=TEXTO_FRACO, ate=(15, rc))
+    txt(cat, 16, rc, "O QUE FAZ", nome=TITULO, pt=8, cor=TEXTO_FRACO, ate=(COLS, rc))
+    regua(cat, 4, rc + 1, COLS, LINHA)
+    rc += 1
+    # ordenado pelo preco, que e a ordem em que a regua cresce
+    for i, (nome_e, pts) in enumerate(sorted(INV[chave].items(), key=lambda kv: kv[1])):
+        rr = rc + i
+        pinta(cat, 4, rr, COLS, rr, PAINEL if i % 2 == 0 else PAINEL_ALTO)
+        txt(cat, 4, rr, pts, nome=TITULO, pt=11, cor=OSSO, al="center", ate=(7, rr))
+        txt(cat, 8, rr, nome_e, nome=DOCUMENTO, pt=10, cor=OSSO, ate=(15, rr))
+        txt(cat, 16, rr, INV[chave + "_texto"].get(nome_e, ""), pt=9, cor=TEXTO,
+            ate=(COLS, rr))
+    rc += len(INV[chave]) + 2
+
+# as duas reguas: para precificar o que o jogador inventar
+txt(cat, 4, rc, "INVENTAR O SEU", nome=TITULO, pt=PT_TITULO, cor=BLOCO, ate=(20, rc))
+txt(cat, 4, rc + 1, "escreva o efeito, ache na régua o degrau em que ele cai, e leve "
+    "para o mestre. A palavra final é dele, sempre em cima de uma entrada escrita.",
+    pt=9, cor=TEXTO_FRACO, ate=(COLS, rc + 2))
+rc += 3
+for grupo, chave in [("TRAÇO", "regua_traco"), ("COMANDO", "regua_comando")]:
+    txt(cat, 4, rc, f"régua de {grupo}", nome=TITULO, pt=9, cor=TEXTO_FRACO, ate=(20, rc))
+    rc += 1
+    for i, (pts, quando) in enumerate(sorted(INV[chave].items(), key=lambda kv: int(kv[0]))):
+        rr = rc + i
+        pinta(cat, 4, rr, COLS, rr, PAINEL if i % 2 == 0 else PAINEL_ALTO)
+        txt(cat, 4, rr, int(pts), nome=TITULO, pt=11, cor=OSSO, al="center", ate=(7, rr))
+        txt(cat, 8, rr, quando, pt=9, cor=TEXTO, ate=(COLS, rr))
+    rc += len(INV[chave]) + 1
+
+# o que nao se compra a preco nenhum
+txt(cat, 4, rc, "E O QUE NÃO SE COMPRA A PREÇO NENHUM", nome=TITULO, pt=9,
+    cor=AMBAR, ate=(COLS, rc))
+rc += 1
+for i, (item, porque) in enumerate(INV["nao_compra"].items()):
+    rr = rc + i
+    txt(cat, 4, rr, item, nome=DOCUMENTO, pt=10, cor=OSSO, ate=(15, rr))
+    txt(cat, 16, rr, porque, pt=9, cor=TEXTO_FRACO, ate=(COLS, rr))
+    regua(cat, 4, rr + 1, COLS, LINHA)
+
 # o indice: quem quiser achar um campo le daqui, em vez de decorar coordenada.
 # Serve ao validador e ao teste de regressao. Mesmo molde do dados.indice da
 # ficha grande.
@@ -397,7 +458,8 @@ for i, (grupo, n_, coord) in enumerate(NOMES_SLOT):
     txt(d, IDX + 1, 3 + len(R) + len(SLOTS) + i, coord.replace("$", ""))
 
 # a INVOCAÇÃO abre primeiro; a DADOS fica escondida atrás dela
-wb.move_sheet("INVOCAÇÃO", -1)
+for i, aba in enumerate(["INVOCAÇÃO", "CATÁLOGO"]):
+    wb.move_sheet(aba, i - wb.sheetnames.index(aba))
 
 saida = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ficha-invocacao.xlsx")
 wb.save(saida)
