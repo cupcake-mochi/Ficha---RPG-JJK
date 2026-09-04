@@ -145,8 +145,9 @@ layout = {
         "veio_do_sheets": "https://docs.google.com/spreadsheets/d/"
                           "1rH43Xw6nneXwIPkI1VpsnPPkTZTPIqbiocY0KQdPwZ8/edit",
         "limpezas": [
-            "as 3165 celulas em Arial 10 preto, todas vazias, saem: e o estilo de "
-            "fabrica do Sheets",
+            "as celulas em Arial 10 preto, todas vazias, saem: e o estilo de "
+            "fabrica do Sheets. Quantas sao, o comparador conta -- numero em "
+            "prosa deriva, e este ja derivou de 3165 para 3161 numa edicao.",
             "a largura 3,63 volta a 4,0, que e o que o gerador escreve antes da "
             "ida e volta de unidade",
             "a condicional verde B7E1CD de D114, o 'nao esta vazio' de fabrica do "

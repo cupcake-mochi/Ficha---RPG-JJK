@@ -3,38 +3,43 @@
 
 Planilha SEPARADA, por escolha do Mizuki: o que a ficha do personagem sabe
 (nivel, Essencia, Inteligencia) entra aqui como celula que o jogador digita.
-No dia em que ela virar aba da ficha grande, essas tres celulas viram
-formula apontando para a FICHA e nada mais muda.
+No dia em que ela virar aba da ficha grande, essas tres celulas viram formula
+apontando para a FICHA e nada mais muda.
+
+O DESENHO e o da ficha de player, e nao um proprio: as tres faixas -- rotulo
+claro, poco escuro, legenda -- estao no gramatica.py, medidas da Ficha
+(PROJETO M) 0.1. A primeira versao desta ficha usava a `regua` do estilo.py, e
+o Mizuki pediu que ela ficasse tao legivel quanto a que a mesa ja usa.
 
 Nenhum numero esta escrito aqui: tudo vem do invocacao.json, cujo dono
-declarado e o capitulo 16 do Manual da Guilda.
+declarado sao os capitulos 16 e 35 do Manual da Guilda.
 """
 import json, os, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+AQUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(RAIZ, "ficha"))
+sys.path.insert(0, AQUI)
 
 from openpyxl import Workbook
 from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter as L
 from openpyxl.worksheet.datavalidation import DataValidation
 from estilo import (CORPO, TITULO, DOCUMENTO, SERIE, PT_ROTULO, PT_VALOR,
-                    PT_TITULO, PT_GRANDE, LARG_COL, ALT_LIN, FUNDO, PAINEL,
-                    PAINEL_ALTO, LINHA, BLOCO, TEXTO_FRACO, TEXTO, TINTA,
-                    OSSO, AMBAR, VERMELHO, txt, regua, pinta, junta, secao,
-                    campo, barra, cor_de_estado, base, lombada)
+                    LARG_COL, ALT_LIN, FUNDO, PAINEL, PAINEL_ALTO, FAIXA,
+                    PAINEL_BAIXO, LINHA, BLOCO, TEXTO_FRACO, TEXTO, TINTA,
+                    OSSO, AMBAR, VERMELHO, txt, regua, pinta, junta, base,
+                    lombada, barra, cor_de_estado)
+import gramatica as G
+from gramatica import COLS, GRADE_7, GRADE_10, LARG_7, LARG_10
 
 INV = json.load(open(os.path.join(RAIZ, "invocacao.json"), encoding="utf-8"))
 
-COLS = 46
 wb = Workbook()
 wb.remove(wb.active)
 wb._fonts[0] = Font(name=CORPO, size=PT_VALOR, color=TEXTO)
 
 # ====================================================================== DADOS
-# a aba de apoio: as listas dos menus, as tabelas de PROCV, e o espelho dos
-# cinco atributos dela -- o espelho existe porque INDICE/CORRESP precisa de
-# celulas contiguas, e na aba de cima elas estao espalhadas pelo desenho.
 d = wb.create_sheet("DADOS")
 d.sheet_state = "hidden"
 REF = {}
@@ -68,8 +73,7 @@ def tabela(c, titulo, cabec, linhas, larg=16):
     return c + len(cabec) + 1
 
 c = 11
-c = tabela(c, "tab_tipos", ["tipo", "base"],
-           [[k, v] for k, v in INV["tipos"].items()])
+c = tabela(c, "tab_tipos", ["tipo", "base"], [[k, v] for k, v in INV["tipos"].items()])
 c = tabela(c, "tab_trilhas", ["trilha", "corpos", "mult", "corpo", "area"],
            [[k, v["corpos"], v["orcamento_multiplicador"], v["corpo"],
              v["vulneravel_a_area"]] for k, v in INV["trilhas"].items()])
@@ -82,7 +86,6 @@ c = tabela(c, "tab_investir", ["de", "uma", "matilha"],
 c = tabela(c, "tab_trs", ["tr", "atributo"],
            [[t, a[0]] for t, a in INV["testes_de_resistencia"].items()])
 
-# as tres escadas de progressao, cada uma numa coluna
 P = INV["progressao"]
 for nome_e, valores in [("e_marcos", P["marcos"]), ("e_maestria", P["maestria_em"]),
                         ("e_classe", P["classe_em"])]:
@@ -93,12 +96,12 @@ for nome_e, valores in [("e_marcos", P["marcos"]), ("e_maestria", P["maestria_em
     REF[nome_e] = f"DADOS!${L(c)}$3:${L(c)}${2+len(valores)}"
     c += 1
 
-ESPELHO = c + 1          # o espelho dos cinco atributos dela, preenchido depois
+ESPELHO = c + 1
 REF["espelho"] = f"DADOS!${L(ESPELHO)}$3:${L(ESPELHO)}$7"
 pinta(d, 1, 1, c + 3, 30, FUNDO)
 
 # ================================================================= INVOCAÇÃO
-ws = base(wb, "INVOCAÇÃO", COLS, 92)
+ws = base(wb, "INVOCAÇÃO", COLS, 120)
 R = {}
 
 def dv(formula, c1, r1, c2=None, r2=None):
@@ -110,131 +113,127 @@ def dv(formula, c1, r1, c2=None, r2=None):
 def cel(c, r):
     return f"${L(c)}${r}"
 
-def entrada(c, r, larg, rot, valor=None, pt=16, cor=OSSO):
-    """celula que o JOGADOR digita: valor em osso, regua embaixo."""
-    return campo(ws, c, r, larg, rot, valor, pt=pt, cor=cor)
-
-def derivada(c, r, larg, rot, formula, pt=16):
-    """celula que a planilha calcula: valor em branco, para separar das de cima."""
-    return campo(ws, c, r, larg, rot, formula, pt=pt, cor=TEXTO, nome=TITULO)
-
-lombada(ws, 92, "INVOCAÇÃO", "PROJETO - M")
+lombada(ws, 120, "INVOCAÇÃO", "PROJETO - M")
 pinta(ws, 3, 1, COLS, 2, PAINEL_ALTO)
 txt(ws, 4, 1, "A FICHA DA INVOCAÇÃO", nome=TITULO, pt=18, cor=OSSO, ate=(30, 2))
-txt(ws, 32, 1, f'capítulo 16 · sistema v{INV["_meta"]["versao_do_sistema"]}',
+txt(ws, 32, 1, f'capítulo 16 · sistema v{INV["_meta"]["versao_do_sistema"][:5]}',
     nome=SERIE, pt=8, cor=TEXTO_FRACO, al="right", ate=(COLS, 2))
 
 # ------------------------------------------------------------- 01 O DONO
-r = secao(ws, 4, "01", "O DONO — o que a ficha dele decide", c2=30)
-R["nivel"]     = entrada(4, r, 5, "nível do dono", 2, pt=20)
-R["ess_dono"]  = entrada(11, r, 5, "essência dele", 0)
-R["int_dono"]  = entrada(18, r, 5, "inteligência dele", 0)
-NIV, ESS, INT = cel(4, r + 1), cel(11, r + 1), cel(18, r + 1)
+r = G.secao(ws, 4, "1.0", "O DONO — o que a ficha dele decide", ate=28)
+R["nivel"]    = G.campo(ws, GRADE_10[0], r, LARG_10, "nível do dono", 2, pt=G.PT_GRANDE, alto=2)
+R["ess_dono"] = G.campo(ws, GRADE_10[1], r, LARG_10, "essência dele", 0, pt=G.PT_GRANDE, alto=2)
+R["int_dono"] = G.campo(ws, GRADE_10[2], r, LARG_10, "inteligência dele", 0, pt=G.PT_GRANDE, alto=2)
+NIV, ESS, INT = cel(GRADE_10[0], r+1), cel(GRADE_10[1], r+1), cel(GRADE_10[2], r+1)
 
 MAE = f'(1+COUNTIF({REF["e_maestria"]},"<="&{NIV}))'
 MAR = f'COUNTIF({REF["e_marcos"]},"<="&{NIV})'
 CLA = f'COUNTIF({REF["e_classe"]},"<="&{NIV})'
-R["maestria"] = derivada(25, r, 5, "maestria", f"={MAE}")
-R["marcos"]   = derivada(32, r, 5, "marcos", f"={MAR}")
-R["classe"]   = derivada(39, r, 6, "maior classe · PE de invocar", f"={CLA}")
-MAEC, MARC, CLAC = cel(25, r + 1), cel(32, r + 1), cel(39, r + 1)
-txt(ws, 4, r + 3, "estas três da esquerda você digita; no dia em que isto virar aba da "
-    "ficha grande, elas puxam da FICHA por fórmula e nada mais muda.",
-    pt=8, cor=TEXTO_FRACO, ate=(COLS, r + 3))
-r += 5
+R["maestria"] = G.campo(ws, GRADE_10[3], r, LARG_10, "maestria", f"={MAE}", alto=2)
+MAEC = cel(GRADE_10[3], r+1)
+r += 4
+R["marcos"] = G.campo(ws, GRADE_10[0], r, LARG_10, "marcos", f"={MAR}")
+R["classe"] = G.campo(ws, GRADE_10[1], r, LARG_10, "maior classe · PE de invocar", f"={CLA}")
+MARC, CLAC = cel(GRADE_10[0], r+1), cel(GRADE_10[1], r+1)
+r = G.nota(ws, r + 3, "As três da esquerda você digita. No dia em que isto virar aba da "
+           "ficha grande, elas puxam da FICHA por fórmula e nada mais muda.")
 
 # -------------------------------------------------------- 02 A INVOCAÇÃO
-r = secao(ws, r, "02", "A INVOCAÇÃO", c2=30)
-R["nome"]    = entrada(4, r, 11, "nome", None, pt=18)
-R["tipo"]    = entrada(17, r, 8, "tipo", None, pt=12)
-R["trilha"]  = entrada(27, r, 6, "trilha", None, pt=12)
-R["sintonia"] = entrada(35, r, 10, "sintonia", "—", pt=12)
-dv(REF["tipos"], 17, r + 1)
-dv(REF["trilhas"], 27, r + 1)
-dv(REF["sintonia"], 35, r + 1)
-TIPO, TRI, SIN = cel(17, r + 1), cel(27, r + 1), cel(35, r + 1)
-txt(ws, 4, r + 3, "a Sintonia é o degrau de nível 2 do Evocador, e as três rotas dela "
-    "mexem nesta ficha: " + " · ".join(
-        f'{k} {v["efeito"]}' for k, v in INV["sintonia"]["rotas"].items()),
-    pt=8, cor=TEXTO_FRACO, ate=(COLS, r + 4))
-r += 6
+r = G.secao(ws, r + 1, "2.0", "A INVOCAÇÃO", ate=24)
+R["nome"]     = G.campo(ws, 4, r, 20, "nome", None, pt=18, nome=DOCUMENTO)
+R["tipo"]     = G.campo(ws, 26, r, LARG_10, "tipo", None, pt=12, nome=CORPO)
+R["trilha"]   = G.campo(ws, 37, r, LARG_10, "trilha", None, pt=12, nome=CORPO)
+dv(REF["tipos"], 26, r + 1)
+dv(REF["trilhas"], 37, r + 1)
+TIPO, TRI = cel(26, r + 1), cel(37, r + 1)
+r += 3
+R["sintonia"] = G.campo(ws, 4, r, LARG_10, "sintonia", "—", pt=12, nome=CORPO)
+dv(REF["sintonia"], 4, r + 1)
+SIN = cel(4, r + 1)
+txt(ws, 15, r, "A TRILHA É O EIXO", nome=TITULO, pt=G.PT_ROT, cor=BLOCO, ate=(COLS, r))
+txt(ws, 15, r + 1, "ela decide quantos corpos vão a campo, qual fórmula de vida "
+    "vale, e o multiplicador do orçamento", nome=CORPO, pt=G.PT_NOTA, cor=TEXTO,
+    ate=(COLS, r + 2))
+r = G.nota(ws, r + 3, "A Sintonia é o degrau de nível 2 do Evocador: " + " · ".join(
+    f'{k} — {v["efeito"]}' for k, v in INV["sintonia"]["rotas"].items()))
 
 # ---------------------------------------------------- 03 OS ATRIBUTOS DELA
 A = INV["atributos"]
-r = secao(ws, r, "03", "OS ATRIBUTOS DELA — são dela, e ela não copia os seus", c2=34)
+r = G.secao(ws, r + 1, "3.0", "OS ATRIBUTOS DELA — são dela, e ela não copia os seus",
+            ate=32)
 ATR = {}
 for i, a in enumerate(A["lista"]):
-    c1 = 4 + i * 7
-    txt(ws, c1, r, a.upper(), nome=TITULO, pt=8, cor=TEXTO_FRACO, ate=(c1 + 5, r))
-    ATR[a] = txt(ws, c1, r + 1, 0, nome=TITULO, pt=24, cor=OSSO, al="center",
-                 ate=(c1 + 5, r + 2))
-    regua(ws, c1, r + 3, c1 + 5, LINHA)
-CELS = [cel(4 + i * 7, r + 1) for i in range(5)]
+    ATR[a] = G.campo(ws, GRADE_7[i], r, LARG_7, a[:3], 0, pt=G.PT_ATR,
+                     legenda=a, alto=2)
+CELS = [cel(GRADE_7[i], r + 1) for i in range(5)]
 GASTO_A = "+".join(CELS)
 DISP_A = f'({A["pontos_na_criacao"]}+{MARC})'
-r += 4
-R["pontos_atributo"] = derivada(4, r, 8, "pontos gastos · de", f"={GASTO_A}", pt=12)
-R["pontos_disp"]     = derivada(14, r, 8, "disponíveis", f"={DISP_A}", pt=12)
-aviso = (f'=IF({GASTO_A}>{DISP_A},"estourou o total",'
-         f'IF(MAX({",".join(CELS)})>{A["teto"]},"estourou o teto de {A["teto"]}",'
-         f'IF({GASTO_A}<{DISP_A},"sobrou ponto","ok")))')
-R["aviso_atributo"] = campo(ws, 24, r, 20, "conferência", aviso, pt=12, cor=AMBAR,
-                            nome=TITULO)
-txt(ws, 4, r + 3, f'{A["pontos_na_criacao"]} pontos na criação com teto {A["teto_na_criacao"]}, '
-    f'mais {A["por_marco"]} por marco, teto {A["teto"]}. Mesma regra da sua ficha.',
-    pt=8, cor=TEXTO_FRACO, ate=(COLS, r + 3))
 r += 5
+R["pontos_atributo"] = G.campo(ws, GRADE_10[0], r, LARG_10, "pontos gastos", f"={GASTO_A}", pt=12)
+R["pontos_disp"]     = G.campo(ws, GRADE_10[1], r, LARG_10, "disponíveis", f"={DISP_A}", pt=12)
+aviso_f = (f'=IF({GASTO_A}>{DISP_A},"estourou o total",'
+           f'IF(MAX({",".join(CELS)})>{A["teto"]},"estourou o teto de {A["teto"]}",'
+           f'IF({GASTO_A}<{DISP_A},"sobrou ponto","ok")))')
+R["aviso_atributo"] = G.campo(ws, GRADE_10[2], r, LARG_10 + 11, "conferência",
+                              aviso_f, pt=12, cor=AMBAR)
+r = G.nota(ws, r + 3, f'{A["pontos_na_criacao"]} pontos na criação com teto '
+           f'{A["teto_na_criacao"]}, mais {A["por_marco"]} por marco, teto {A["teto"]}. '
+           f'Mesma regra da sua ficha.')
 
-# espelho na DADOS, para o INDICE/CORRESP do acerto e dos TR
 for i, a in enumerate(A["lista"]):
     txt(d, ESPELHO, 3 + i, f"=INVOCAÇÃO!{CELS[i]}")
 d.column_dimensions[L(ESPELHO)].width = 10
 txt(d, ESPELHO, 2, "espelho", pt=PT_ROTULO, cor=TEXTO_FRACO)
-ESP = REF["espelho"]
-NOMES_A = REF["atributos"]
+ESP, NOMES_A = REF["espelho"], REF["atributos"]
 
 def valor_de(escolha):
     return f"INDEX({ESP},MATCH({escolha},{NOMES_A},0))"
 
 # --------------------------------------------------- 04 O QUE ENCARA O DADO
-r = secao(ws, r, "04", "O QUE ENCARA O DADO — o número é dela, o ritmo é seu", c2=36)
-R["atr_acerto"] = entrada(4, r, 8, "atributo do acerto", None, pt=12)
-dv(NOMES_A, 4, r + 1)
-ACE = cel(4, r + 1)
-R["acerto"] = derivada(14, r, 5, "acerto", f'=IF({ACE}="","",{valor_de(ACE)}+{MAEC})')
-R["defesa_de"] = entrada(21, r, 9, "defesa usa, dele", None, pt=12)
-dv(REF["defesa_de"], 21, r + 1)
-DEFDE = cel(21, r + 1)
-R["defesa"] = derivada(32, r, 5, "defesa",
+r = G.secao(ws, r + 1, "4.0", "O QUE ENCARA O DADO — o número é dela, o ritmo é seu",
+            ate=34)
+R["atr_acerto"] = G.campo(ws, GRADE_10[0], r, LARG_10, "atributo do acerto", None,
+                          pt=11, nome=CORPO)
+dv(NOMES_A, GRADE_10[0], r + 1)
+ACE = cel(GRADE_10[0], r + 1)
+R["acerto"] = G.campo(ws, GRADE_10[1], r, LARG_10, "acerto",
+                      f'=IF({ACE}="","",{valor_de(ACE)}+{MAEC})')
+R["defesa_de"] = G.campo(ws, GRADE_10[2], r, LARG_10, "defesa usa, dele", None,
+                         pt=11, nome=CORPO)
+dv(REF["defesa_de"], GRADE_10[2], r + 1)
+DEFDE = cel(GRADE_10[2], r + 1)
+R["defesa"] = G.campo(ws, GRADE_10[3], r, LARG_10, "defesa",
     f'=10+{CELS[1]}+FLOOR(IF({DEFDE}="{A["lista"][4]}",{ESS},{INT})/2,1)')
-_presa = INV["sintonia"]["rotas"]["Presa"]["critico_a_partir_de"]
-R["critico"] = derivada(39, r, 6, "crítico com",
-    f'=IF({SIN}="Presa","{_presa} ou 20","20")', pt=12)
-txt(ws, 4, r + 3, "acerto e Teste de Resistência rolam d20 + isto. A Defesa é passiva, "
-    "e a maestria não entra nela.", pt=8, cor=TEXTO_FRACO, ate=(COLS, r + 3))
-r += 4
-
-R["tr_treinado"] = entrada(4, r, 8, "qual TR ela treina", None, pt=12)
-dv(REF["trs"], 4, r + 1)
-R["fisico_de"] = entrada(14, r, 7, "o físico dela usa", None, pt=12)
-dv(REF["fisico_de"], 14, r + 1)
-TREI, FIS = cel(4, r + 1), cel(14, r + 1)
 r += 3
+_presa = INV["sintonia"]["rotas"]["Presa"]["critico_a_partir_de"]
+R["critico"] = G.campo(ws, GRADE_10[0], r, LARG_10, "crítico com",
+                       f'=IF({SIN}="Presa","{_presa} ou 20","20")', pt=12)
+R["tr_treinado"] = G.campo(ws, GRADE_10[1], r, LARG_10, "qual TR ela treina", None,
+                           pt=11, nome=CORPO)
+dv(REF["trs"], GRADE_10[1], r + 1)
+R["fisico_de"] = G.campo(ws, GRADE_10[2], r, LARG_10, "o físico dela usa", None,
+                         pt=11, nome=CORPO)
+dv(REF["fisico_de"], GRADE_10[2], r + 1)
+TREI, FIS = cel(GRADE_10[1], r + 1), cel(GRADE_10[2], r + 1)
+r += 3
+pinta(ws, 4, r, COLS, r, PAINEL_ALTO)
+txt(ws, 4, r, "OS QUATRO TESTES DE RESISTÊNCIA · ela treina UM, e a sua maestria "
+    "entra só nele", nome=TITULO, pt=G.PT_ROT, cor=OSSO, ate=(COLS, r))
+r += 1
 for i, (t, atrs) in enumerate(INV["testes_de_resistencia"].items()):
-    c1 = 4 + (i % 2) * 20
-    rr = r + (i // 2) * 2
+    c1 = 4 + (i % 2) * 21
+    rr = r + (i // 2)
     escolha = FIS if len(atrs) > 1 else f'"{atrs[0]}"'
-    txt(ws, c1, rr, t, nome=DOCUMENTO, pt=11, cor=TEXTO, ate=(c1 + 10, rr))
-    txt(ws, c1 + 11, rr, f'=IFERROR({valor_de(escolha)}+IF({TREI}="{t}",{MAEC},0),"")',
-        nome=TITULO, pt=12, cor=OSSO, al="right", ate=(c1 + 15, rr))
-    regua(ws, c1, rr + 1, c1 + 15, LINHA)
-txt(ws, 4, r + 4, "ela treina um só. A sua maestria entra nele, e nos outros três não — "
-    "igual a qualquer ficha.", pt=8, cor=TEXTO_FRACO, ate=(COLS, r + 4))
-r += 6
+    G.linha_lista(ws, c1, rr, 11, t,
+                  f'=IFERROR({valor_de(escolha)}+IF({TREI}="{t}",{MAEC},0),"")',
+                  atributo=" ou ".join(a[:3] for a in atrs),
+                  zebra=(i // 2) % 2 == 1)
+r = G.nota(ws, r + 3, "Acerto e Teste de Resistência rolam d20 + isto. A Defesa é "
+           "passiva, e a maestria não entra nela.")
 
 # ------------------------------------------------------- 05 VIDA E MORTE
 V, M = INV["vida"], INV["morte"]
-r = secao(ws, r, "05", "VIDA E MORTE", c2=30)
+r = G.secao(ws, r + 1, "5.0", "VIDA E MORTE", ate=20)
 BASE_T = f'IFERROR(VLOOKUP({TIPO},{REF["tab_tipos"]},2,FALSE),0)'
 CON = CELS[2]
 CRUA = f'({BASE_T}+(2+{CON})*{NIV})'
@@ -244,44 +243,47 @@ _p = INV["sintonia"]["rotas"]["Parrudo"]["multiplicador_maestria"]
 PARR = f'IF({SIN}="Parrudo",{_p}*{MAEC},0)'
 VMAX = f'=IF({TIPO}="","",IF({CORPO_T}="forte",{FORTE},{CRUA})+{PARR})'
 
-R["vida_max"] = derivada(4, r, 6, "vida máxima", VMAX, pt=20)
-VMAXC = cel(4, r + 1)
-R["vida"] = entrada(12, r, 6, "vida agora", None, pt=20)
-VC = cel(12, r + 1)
-txt(ws, 20, r + 1, barra(VC, VMAXC, cor_de_estado(VC, VMAXC)), ate=(31, r + 1))
-regua(ws, 20, r + 2, 31, LINHA)
-R["corpos"] = derivada(33, r, 5, "corpos em campo",
-    f'=IFERROR(VLOOKUP({TRI},{REF["tab_trilhas"]},2,FALSE),"")')
-R["area"] = derivada(40, r, 5, "área bate ×",
-    f'=IFERROR(VLOOKUP({TRI},{REF["tab_trilhas"]},5,FALSE),"")')
+R["vida_max"] = G.campo(ws, GRADE_10[0], r, LARG_10, "vida máxima", VMAX,
+                        pt=G.PT_GRANDE, alto=2)
+VMAXC = cel(GRADE_10[0], r + 1)
+R["vida"] = G.campo(ws, GRADE_10[1], r, LARG_10, "vida agora", None,
+                    pt=G.PT_GRANDE, alto=2)
+VC = cel(GRADE_10[1], r + 1)
+R["corpos"] = G.campo(ws, GRADE_10[2], r, LARG_10, "corpos em campo",
+    f'=IFERROR(VLOOKUP({TRI},{REF["tab_trilhas"]},2,FALSE),"")', alto=2)
+R["area"] = G.campo(ws, GRADE_10[3], r, LARG_10, "área bate ×",
+    f'=IFERROR(VLOOKUP({TRI},{REF["tab_trilhas"]},5,FALSE),"")', alto=2)
 r += 4
-
+pinta(ws, 4, r, COLS, r, PAINEL_ALTO)
+txt(ws, 4, r, "A BARRA", nome=TITULO, pt=G.PT_ROT, cor=OSSO, ate=(14, r))
+pinta(ws, 15, r, COLS, r, PAINEL)
+txt(ws, 15, r, barra(VC, VMAXC, cor_de_estado(VC, VMAXC)), ate=(COLS, r))
+r += 2
 REGUA = f'{M["multiplicador_regua"]}*{CRUA}'
-R["regua"] = derivada(4, r, 7, "régua da morte", f'=IF({TIPO}="","",{REGUA})', pt=14)
-R["meia_regua"] = derivada(13, r, 7, "metade dela", f'=IF({TIPO}="","",{REGUA}/2)', pt=14)
-R["volta_com"] = derivada(22, r, 7, "volta com", f'=IF({TIPO}="","",FLOOR({VMAXC}/2,1))', pt=14)
-txt(ws, 31, r, "MORRE DE VEZ SE", nome=TITULO, pt=8, cor=TEXTO_FRACO, ate=(COLS, r))
-txt(ws, 31, r + 1, "o excedente passar da metade, ou um golpe só causar a régua inteira",
-    pt=9, cor=TEXTO, ate=(COLS, r + 2))
-r += 4
-txt(ws, 4, r, "a régua sai da vida CRUA do tipo, nunca da do corpo forte — é a mesma "
-    "para um corpo, cinco, ou o corpo grande. Ela some no zero: sem Inconsciente, "
-    "sem Sequela, sem Cicatriz. A vida cheia volta no descanso longo.",
-    pt=8, cor=TEXTO_FRACO, ate=(COLS, r + 1))
+R["regua"] = G.campo(ws, GRADE_10[0], r, LARG_10, "régua da morte",
+                     f'=IF({TIPO}="","",{REGUA})')
+R["meia_regua"] = G.campo(ws, GRADE_10[1], r, LARG_10, "metade dela",
+                          f'=IF({TIPO}="","",{REGUA}/2)')
+R["volta_com"] = G.campo(ws, GRADE_10[2], r, LARG_10, "volta com",
+                         f'=IF({TIPO}="","",FLOOR({VMAXC}/2,1))')
 r += 3
+r = G.aviso(ws, r, "morre de vez se",
+            "o excedente passar da metade da régua, ou um golpe só causar a régua "
+            "inteira. A régua sai da vida CRUA do tipo, nunca da do corpo forte — é "
+            "a mesma para um corpo, cinco, ou o corpo grande.")
+r = G.nota(ws, r, "Ela some no zero: sem Inconsciente, sem Sequela e sem Cicatriz. "
+           "A vida cheia volta no descanso longo.")
 
 # --------------------------------------------------------- 06 O ORÇAMENTO
-r = secao(ws, r, "06", "O ORÇAMENTO — compra o que ela FAZ, nunca número", c2=36)
+r = G.secao(ws, r + 1, "6.0", "O ORÇAMENTO — compra o que ela FAZ, nunca número",
+            ate=32)
 O = INV["orcamento"]
 MULT = f'IFERROR(VLOOKUP({TRI},{REF["tab_trilhas"]},3,FALSE),1)'
 ORC = f'FLOOR(({O["base"]}+{O["por_marco"]}*{MARC})*{MULT},1)'
-R["orcamento"] = derivada(4, r, 6, "orçamento", f"={ORC}", pt=20)
-ORCC = cel(4, r + 1)
-r += 4
+R["orcamento"] = G.campo(ws, GRADE_10[0], r, LARG_10, "orçamento", f"={ORC}",
+                         pt=G.PT_GRANDE, alto=2)
+ORCC = cel(GRADE_10[0], r + 1)
 
-# quantos slots cada grupo precisa: o maior orcamento que existe comprando as
-# entradas mais baratas. Derivado, nunca escrito na mao -- com 4 por grupo a
-# ficha ja estourava no nivel 6 do Servo, e o teto real e 9 Traco e 6 Comando.
 def _cabem(precos, orc):
     n = soma = 0
     for pr in sorted(precos):
@@ -296,149 +298,136 @@ _orc_teto = int((O["base"] + O["por_marco"] * len(INV["progressao"]["marcos"]))
 N_TRACO = _cabem(INV["traco"].values(), _orc_teto)
 N_COMANDO = _cabem([v for v in INV["comando"].values() if v > 0], _orc_teto)
 
-SLOTS = []
-NOMES_SLOT = []
+SLOTS, NOMES_SLOT = [], []
+r += 4
 for grupo, ref_lista, ref_tab, col0, quantos in [
         ("TRAÇO", REF["traco"], REF["tab_traco"], 4, N_TRACO),
         ("COMANDO", REF["comando"], REF["tab_comando"], 26, N_COMANDO)]:
-    txt(ws, col0, r, f"{grupo} · até {quantos}", nome=TITULO, pt=PT_ROTULO,
-        cor=BLOCO, ate=(col0 + 17, r))
+    pinta(ws, col0, r, col0 + 19, r, PAINEL_ALTO)
+    txt(ws, col0, r, f"{grupo} · até {quantos}", nome=TITULO, pt=G.PT_ROT,
+        cor=OSSO, ate=(col0 + 19, r))
     for i in range(quantos):
         rr = r + 1 + i
-        pinta(ws, col0, rr, col0 + 17, rr, PAINEL if i % 2 == 0 else PAINEL_ALTO)
-        txt(ws, col0, rr, "—", cor=OSSO, pt=11, ate=(col0 + 12, rr))
-        dv(ref_lista, col0, rr)
-        pc = col0 + 13
+        pinta(ws, col0, rr, col0 + 19, rr, PAINEL if i % 2 == 0 else PAINEL_ALTO)
+        txt(ws, col0, rr, "—", nome=DOCUMENTO, pt=10, cor=OSSO, ate=(col0 + 14, rr))
+        dv(ref_lista, col0, rr, col0 + 14, rr)
+        pc = col0 + 15
         txt(ws, pc, rr, f'=IFERROR(VLOOKUP({cel(col0, rr)},{ref_tab},2,FALSE),0)',
-            nome=TITULO, pt=11, cor=TEXTO_FRACO, al="right", ate=(col0 + 17, rr))
+            nome=TITULO, pt=11, cor=OSSO, al="right", ate=(col0 + 19, rr))
         SLOTS.append(cel(pc, rr))
         NOMES_SLOT.append((grupo.lower().replace("ç", "c").replace("ã", "a"),
                            i + 1, cel(col0, rr)))
 r += max(N_TRACO, N_COMANDO) + 2
 
 GASTO = "+".join(SLOTS)
-R["gasto"] = derivada(4, r, 6, "gasto", f"={GASTO}", pt=14)
-R["sobra"] = campo(ws, 12, r, 6, "sobra",
+R["gasto"] = G.campo(ws, GRADE_10[0], r, LARG_10, "gasto", f"={GASTO}")
+R["sobra"] = G.campo(ws, GRADE_10[1], r, LARG_10, "sobra",
     f'=IF({ORCC}-({GASTO})<0,"estourou "&(({GASTO})-{ORCC}),{ORCC}-({GASTO}))',
-    pt=14, cor=AMBAR, nome=TITULO)
-txt(ws, 20, r, "O QUE ELE NÃO COMPRA A PREÇO NENHUM", nome=TITULO, pt=8,
-    cor=TEXTO_FRACO, ate=(COLS, r))
-txt(ws, 20, r + 1, " · ".join(INV["nao_compra"]), pt=9, cor=TEXTO, ate=(COLS, r + 2))
-txt(ws, 4, r + 4, "o Servo monta com o orçamento da ficha mais metade, porque é um corpo "
-    "só e não cinco. Todo orçamento é múltiplo de 4, então fecha redondo.",
-    pt=8, cor=TEXTO_FRACO, ate=(COLS, r + 4))
-r += 6
+    cor=AMBAR)
+r += 3
+r = G.nota(ws, r, "O Servo monta com o orçamento da ficha mais metade, porque é um "
+           "corpo só e não cinco. O que ele NÃO compra a preço nenhum: "
+           + " · ".join(INV["nao_compra"]) + ".")
 
 # ------------------------------------------------------------- 07 INVESTIR
-r = secao(ws, r, "07", "INVESTIR — o ataque, e toda invocação tem", c2=32)
-# PROCV aproximado, e nao INDICE/CORRESP: a primeira coluna da tabela e a
-# faixa em ordem crescente, que e exatamente o que o PROCV com VERDADEIRO le.
-# O INDICE/CORRESP devolvia sempre a primeira faixa -- pego pela regressao.
+r = G.secao(ws, r + 1, "7.0", "INVESTIR — o ataque, e toda invocação tem", ate=28)
 COLI = f'IF({TRI}="Matilha",3,2)'
 DANO = f'=IF({NIV}="","",VLOOKUP({NIV},{REF["tab_investir"]},{COLI},TRUE))'
-R["investir"] = derivada(4, r, 7, "dano do investir", DANO, pt=20)
-txt(ws, 14, r, "POR CORPO", nome=TITULO, pt=8, cor=TEXTO_FRACO, ate=(24, r))
-txt(ws, 14, r + 1, f'=IF({TRI}="Matilha","cada um dos cinco rola isto",'
-    f'IF({TRI}="","","o corpo em campo rola isto"))', pt=10, cor=TEXTO, ate=(30, r + 1))
-txt(ws, 4, r + 3, "você e todas as suas invocações somados entregam uma Rotina. "
-    "O número de dados sempre desce — a soma nunca passa do que você faria sozinho.",
-    pt=8, cor=TEXTO_FRACO, ate=(COLS, r + 3))
-r += 5
+R["investir"] = G.campo(ws, GRADE_10[0], r, LARG_10, "dano do investir", DANO,
+                        pt=G.PT_GRANDE, alto=2)
+G.campo(ws, GRADE_10[1], r, LARG_10 + 22, "por corpo",
+        f'=IF({TRI}="Matilha","cada um dos cinco rola isto",'
+        f'IF({TRI}="","","o corpo em campo rola isto"))', pt=11, nome=CORPO, alto=2)
+r = G.nota(ws, r + 4, "Você e todas as suas invocações somados entregam uma Rotina. "
+           "O número de dados sempre desce — a soma nunca passa do que você faria "
+           "sozinho.")
 
 # --------------------------------------------------------------- 08 NA MESA
-C = INV["custo"]
 F = INV["ficha_dela"]
-r = secao(ws, r, "08", "NA MESA — o que não muda", c2=30)
+r = G.secao(ws, r + 1, "8.0", "NA MESA — o que não muda", ate=24)
 for i, (rot, valor) in enumerate([
         ("invocar", f'=("custa "&{CLAC}&" PE e a Ação Padrão")'),
         ("comandar", '="a Ação Padrão, toda rodada"'),
         ("iniciativa", '="a sua, e ela age logo depois de você"'),
         ("deslocamento", f'=({F["deslocamento"]}&" metros")'),
-        ("amarra", f'=({F["amarra"]}&" metros — além disso não pode ser comandada, e não some")')]):
+        ("amarra", f'=({F["amarra"]}&" metros — além disso não pode ser comandada, '
+                   f'e não some")')]):
     rr = r + i
     pinta(ws, 4, rr, COLS, rr, PAINEL if i % 2 == 0 else PAINEL_ALTO)
-    txt(ws, 4, rr, rot, nome=TITULO, pt=9, cor=TEXTO_FRACO, ate=(12, rr))
-    txt(ws, 13, rr, valor, pt=10, cor=TEXTO, ate=(COLS, rr))
+    txt(ws, 4, rr, rot.upper(), nome=TITULO, pt=G.PT_ROT, cor=TEXTO_FRACO, ate=(14, rr))
+    txt(ws, 15, rr, valor, nome=CORPO, pt=G.PT_NOTA, cor=OSSO, ate=(COLS, rr))
+r += 6
 
 # ------------------------------------------------- 09 O QUE FICA PENDENTE
-# a regra do repositorio: onde a regra nao existe, nao se inventa -- a ficha
-# marca como pendente em vez de chutar numero.
 VOZ = INV["sintonia"]["rotas"]["Voz"]
-r += 6
-r = secao(ws, r, "09", "O QUE ESTA FICHA NÃO CALCULA, E POR QUÊ", c2=36)
-pinta(ws, 4, r, COLS, r + 3, PAINEL)
-txt(ws, 4, r, "a CD dos efeitos dela", nome=TITULO, pt=10, cor=AMBAR, ate=(20, r))
-txt(ws, 4, r + 1,
+r = G.secao(ws, r, "9.0", "O QUE ESTA FICHA NÃO CALCULA, E POR QUÊ", ate=32)
+pinta(ws, 4, r, COLS, r, PAINEL_ALTO)
+txt(ws, 4, r, "A CD DOS EFEITOS DELA", nome=TITULO, pt=G.PT_ROT, cor=AMBAR,
+    ate=(COLS, r))
+pinta(ws, 4, r + 1, COLS, r + 3, PAINEL)
+R["cd_pendente"] = txt(ws, 4, r + 1,
     f'=IF({SIN}="Voz","a Voz manda subir a CD dela, e a invocação não tem fórmula '
     f'de CD em documento nenhum — combine com o mestre","")',
-    pt=9, cor=TEXTO, ate=(COLS, r + 1))
-txt(ws, 4, r + 2, VOZ["nota_na_ficha"], pt=8, cor=TEXTO_FRACO, ate=(COLS, r + 3))
-R["cd_pendente"] = ws.cell(row=r + 1, column=4)
+    nome=CORPO, pt=G.PT_NOTA, cor=TEXTO, ate=(COLS, r + 1))
+txt(ws, 4, r + 2, VOZ["nota_na_ficha"], nome=CORPO, pt=G.PT_LEG, cor=TEXTO_FRACO,
+    ate=(COLS, r + 3))
 
 # ================================================================= CATALOGO
-# Aba VISIVEL, e ela existe por um motivo pratico: quem recebe esta planilha
-# escolhe `Fisgada` num menu e nao tem como saber o que aquilo faz. Os textos
-# saem do invocacao.json, que os leu do capitulo 16 -- nao sao escritos aqui.
 cat = base(wb, "CATÁLOGO", COLS, 64)
 pinta(cat, 3, 1, COLS, 2, PAINEL_ALTO)
 txt(cat, 4, 1, "O CATÁLOGO — o que dá para comprar", nome=TITULO, pt=16, cor=OSSO,
     ate=(30, 2))
 txt(cat, 32, 1, "capítulo 16", nome=SERIE, pt=8, cor=TEXTO_FRACO, al="right",
     ate=(COLS, 2))
-
 rc = 4
 for grupo, chave, glosa in [
         ("TRAÇO", "traco", "o que ela É. Sempre ligado, sem gastar ação."),
         ("COMANDO", "comando", "o que ela FAZ quando o dono gasta a Ação Padrão nela.")]:
-    txt(cat, 4, rc, grupo, nome=TITULO, pt=PT_TITULO, cor=BLOCO, ate=(20, rc))
-    txt(cat, 4, rc + 1, glosa, pt=9, cor=TEXTO_FRACO, ate=(COLS, rc + 1))
-    rc += 2
-    for j, (h, larg) in enumerate([("PONTOS", 5), ("NOME", 9), ("O QUE FAZ", 30)]):
-        pass
-    txt(cat, 4, rc, "PONTOS", nome=TITULO, pt=8, cor=TEXTO_FRACO, ate=(7, rc))
-    txt(cat, 8, rc, "NOME", nome=TITULO, pt=8, cor=TEXTO_FRACO, ate=(15, rc))
-    txt(cat, 16, rc, "O QUE FAZ", nome=TITULO, pt=8, cor=TEXTO_FRACO, ate=(COLS, rc))
-    regua(cat, 4, rc + 1, COLS, LINHA)
+    pinta(cat, 4, rc, COLS, rc, FAIXA)
+    txt(cat, 4, rc, grupo, nome=TITULO, pt=G.PT_TIT_SEC, cor=OSSO, ate=(20, rc))
+    txt(cat, 21, rc, glosa, nome=CORPO, pt=G.PT_NOTA, cor=TEXTO_FRACO, ate=(COLS, rc))
     rc += 1
-    # ordenado pelo preco, que e a ordem em que a regua cresce
+    pinta(cat, 4, rc, COLS, rc, PAINEL_ALTO)
+    txt(cat, 4, rc, "PONTOS", nome=TITULO, pt=G.PT_ROT, cor=OSSO, al="center", ate=(7, rc))
+    txt(cat, 8, rc, "NOME", nome=TITULO, pt=G.PT_ROT, cor=OSSO, ate=(15, rc))
+    txt(cat, 16, rc, "O QUE FAZ", nome=TITULO, pt=G.PT_ROT, cor=OSSO, ate=(COLS, rc))
+    rc += 1
     for i, (nome_e, pts) in enumerate(sorted(INV[chave].items(), key=lambda kv: kv[1])):
         rr = rc + i
         pinta(cat, 4, rr, COLS, rr, PAINEL if i % 2 == 0 else PAINEL_ALTO)
         txt(cat, 4, rr, pts, nome=TITULO, pt=11, cor=OSSO, al="center", ate=(7, rr))
         txt(cat, 8, rr, nome_e, nome=DOCUMENTO, pt=10, cor=OSSO, ate=(15, rr))
-        txt(cat, 16, rr, INV[chave + "_texto"].get(nome_e, ""), pt=9, cor=TEXTO,
-            ate=(COLS, rr))
+        txt(cat, 16, rr, INV[chave + "_texto"].get(nome_e, ""), nome=CORPO, pt=G.PT_NOTA,
+            cor=TEXTO, ate=(COLS, rr))
     rc += len(INV[chave]) + 2
 
-# as duas reguas: para precificar o que o jogador inventar
-txt(cat, 4, rc, "INVENTAR O SEU", nome=TITULO, pt=PT_TITULO, cor=BLOCO, ate=(20, rc))
-txt(cat, 4, rc + 1, "escreva o efeito, ache na régua o degrau em que ele cai, e leve "
-    "para o mestre. A palavra final é dele, sempre em cima de uma entrada escrita.",
-    pt=9, cor=TEXTO_FRACO, ate=(COLS, rc + 2))
-rc += 3
+pinta(cat, 4, rc, COLS, rc, FAIXA)
+txt(cat, 4, rc, "INVENTAR O SEU", nome=TITULO, pt=G.PT_TIT_SEC, cor=OSSO, ate=(20, rc))
+txt(cat, 21, rc, "escreva o efeito, ache na régua o degrau em que ele cai, e leve "
+    "para o mestre", nome=CORPO, pt=G.PT_NOTA, cor=TEXTO_FRACO, ate=(COLS, rc))
+rc += 1
 for grupo, chave in [("TRAÇO", "regua_traco"), ("COMANDO", "regua_comando")]:
-    txt(cat, 4, rc, f"régua de {grupo}", nome=TITULO, pt=9, cor=TEXTO_FRACO, ate=(20, rc))
+    pinta(cat, 4, rc, COLS, rc, PAINEL_ALTO)
+    txt(cat, 4, rc, f"régua de {grupo}", nome=TITULO, pt=G.PT_ROT, cor=OSSO, ate=(COLS, rc))
     rc += 1
     for i, (pts, quando) in enumerate(sorted(INV[chave].items(), key=lambda kv: int(kv[0]))):
         rr = rc + i
         pinta(cat, 4, rr, COLS, rr, PAINEL if i % 2 == 0 else PAINEL_ALTO)
         txt(cat, 4, rr, int(pts), nome=TITULO, pt=11, cor=OSSO, al="center", ate=(7, rr))
-        txt(cat, 8, rr, quando, pt=9, cor=TEXTO, ate=(COLS, rr))
+        txt(cat, 8, rr, quando, nome=CORPO, pt=G.PT_NOTA, cor=TEXTO, ate=(COLS, rr))
     rc += len(INV[chave]) + 1
 
-# o que nao se compra a preco nenhum
-txt(cat, 4, rc, "E O QUE NÃO SE COMPRA A PREÇO NENHUM", nome=TITULO, pt=9,
+pinta(cat, 4, rc, COLS, rc, PAINEL_ALTO)
+txt(cat, 4, rc, "E O QUE NÃO SE COMPRA A PREÇO NENHUM", nome=TITULO, pt=G.PT_ROT,
     cor=AMBAR, ate=(COLS, rc))
 rc += 1
 for i, (item, porque) in enumerate(INV["nao_compra"].items()):
     rr = rc + i
-    txt(cat, 4, rr, item, nome=DOCUMENTO, pt=10, cor=OSSO, ate=(15, rr))
-    txt(cat, 16, rr, porque, pt=9, cor=TEXTO_FRACO, ate=(COLS, rr))
-    regua(cat, 4, rr + 1, COLS, LINHA)
+    pinta(cat, 4, rr, COLS, rr, PAINEL if i % 2 == 0 else PAINEL_ALTO)
+    txt(cat, 4, rr, item, nome=DOCUMENTO, pt=10, cor=OSSO, ate=(17, rr))
+    txt(cat, 18, rr, porque, nome=CORPO, pt=G.PT_NOTA, cor=TEXTO_FRACO, ate=(COLS, rr))
 
-# o indice: quem quiser achar um campo le daqui, em vez de decorar coordenada.
-# Serve ao validador e ao teste de regressao. Mesmo molde do dados.indice da
-# ficha grande.
+# ------------------------------------------------------------------ INDICE
 IDX = c + 3
 d.column_dimensions[L(IDX)].width = 22
 d.column_dimensions[L(IDX + 1)].width = 12
@@ -449,7 +438,6 @@ for a, celula in ATR.items():
 for i, (chave, v) in enumerate(R.items()):
     txt(d, IDX, 3 + i, chave)
     txt(d, IDX + 1, 3 + i, v.coordinate)
-# os oito slots de compra nao passam pelo R: eles nao tem rotulo proprio
 for i, sl in enumerate(SLOTS):
     txt(d, IDX, 3 + len(R) + i, f"slot_pontos_{i+1}")
     txt(d, IDX + 1, 3 + len(R) + i, sl.replace("$", ""))
@@ -457,12 +445,11 @@ for i, (grupo, n_, coord) in enumerate(NOMES_SLOT):
     txt(d, IDX, 3 + len(R) + len(SLOTS) + i, f"{grupo}_{n_}")
     txt(d, IDX + 1, 3 + len(R) + len(SLOTS) + i, coord.replace("$", ""))
 
-# a INVOCAÇÃO abre primeiro; a DADOS fica escondida atrás dela
 for i, aba in enumerate(["INVOCAÇÃO", "CATÁLOGO"]):
     wb.move_sheet(aba, i - wb.sheetnames.index(aba))
 
-saida = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ficha-invocacao.xlsx")
+saida = os.path.join(AQUI, "ficha-invocacao.xlsx")
 wb.save(saida)
 print(f"ficha escrita: {saida}")
 print(f"abas: {wb.sheetnames}")
-print(f"campos indexados: {len(R)}")
+print(f"campos indexados: {len(R)} · slots: {N_TRACO} Traço e {N_COMANDO} Comando")
