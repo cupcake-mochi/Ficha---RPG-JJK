@@ -1,3 +1,8 @@
 __pycache__/
 *.pyc
 mensagem-de-commit.txt
+
+# O .xlsx que o Mizuki mandou para o gerador da v0.1 reproduzir. Ele e ENTRADA
+# do extrair.py, nao material do repositorio -- e a fonte dele e a planilha no
+# Sheets. Regere com: python3 ficha-v01/extrair.py <caminho do .xlsx>
+ficha-v01/original.xlsx

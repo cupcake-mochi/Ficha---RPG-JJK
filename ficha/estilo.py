@@ -19,9 +19,17 @@ ARTE = os.path.join(RAIZ, "arte")
 DEC  = json.load(open(os.path.join(RAIZ, "decisoes-ficha.json"), encoding="utf-8"))
 
 # --- paleta --------------------------------------------------------------
-FUNDO, PAINEL, PAINEL_ALTO = "120F1D", "211C35", "30294D"
+# Os dois roxos de painel mudaram na v0.1 da ficha, e a decisao do Mizuki foi
+# "uma paleta so": os valores novos vieram do arquivo que ele editou no Sheets
+# e passaram a ser os oficiais. Os antigos, 211C35 e 30294D, nao aparecem em
+# preenchimento nenhum daquela ficha -- eles morreram lidos, e nao por palpite.
+FUNDO, PAINEL, PAINEL_ALTO = "120F1D", "1E1733", "3D2E78"
 LINHA, BLOCO, TEXTO_FRACO  = "493F54", "756588", "998BA9"
 TEXTO, TINTA, PAPEL        = "F4F1F7", "0A0810", "17131F"
+
+# as duas que a v0.1 acrescentou, batizadas pelo lugar em que ela as usa
+FAIXA        = "211940"   # a faixa dos titulos de secao: PROJETO M, VALORES, REGISTRO
+PAINEL_BAIXO = "1B142F"   # FICHA D117:D119, embaixo de APTIDOES E FEITICOS
 
 _G = {g["nome"]: g["hex"] for g in DEC["A5_acento"]["degraus"]}
 OSSO, AMBAR, VERMELHO = _G["osso"], _G["ambar"], _G["vermelho"]

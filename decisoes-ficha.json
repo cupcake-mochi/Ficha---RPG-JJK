@@ -316,6 +316,32 @@
       "porque": "o bloco de feitico dela ficou ruim de ler e de usar; o Mizuki preferiu tirar a ficar torto",
       "o_que_some_junto": "a linha de uso rapido da MESA passa a ser digitada a mao ate a TECNICA voltar",
       "onde_esta_registrado": "PENDENCIAS.md, item B10"
+    },
+    "abas_removidas_na_v01": {
+      "quais": [
+        "MESA",
+        "QUEM É"
+      ],
+      "quando": "na v0.1 da ficha, editada pelo Mizuki no Google Sheets",
+      "decisao": "sairam de proposito, e o gerador da v0.1 nao as recria",
+      "as_abas_da_v01": [
+        "CARTEIRA",
+        "FICHA",
+        "DADOS"
+      ],
+      "o_que_some_junto": "a MESA era a de 12 colunas que lia da FICHA por formula, e a QUEM E era a da ficcao. O molde das duas continua no ficha/abas_resto.py se um dia voltarem."
     }
+  },
+  "C7_paleta_v01": {
+    "escolha": "os dois roxos de painel da v0.1 viram a paleta oficial, e nao excecao",
+    "de_onde_veio": "o .xlsx que o Mizuki editou no Sheets e mandou em 04/09/2026",
+    "painel": "1E1733, no lugar do 211C35",
+    "painel_alto": "3D2E78, no lugar do 30294D",
+    "faixa": "211940, nova: a faixa dos titulos de secao",
+    "painel_baixo": "1B142F, nova: FICHA D117:D119",
+    "por_que": "os dois antigos nao aparecem em preenchimento nenhum daquela ficha. Deixar as duas paletas no repositorio seria a licao no 9 convidada para dentro.",
+    "consequencia_aceita": "a ficha da invocacao passa a usar os roxos novos, porque ela importa do estilo.py. O ficha-projeto-m.xlsx antigo NAO foi regerado: a v0.1 substitui ele.",
+    "onde_a_ficha_vive": "Google Sheets, planilha 1rH43Xw6nneXwIPkI1VpsnPPkTZTPIqbiocY0KQdPwZ8",
+    "o_que_isso_decide": "o IFS das 16 celulas fica cru e o SPARKLINE das 3 continua. No Excel os dois quebram, e esta aceito."
   }
 }
