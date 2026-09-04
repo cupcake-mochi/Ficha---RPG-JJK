@@ -87,6 +87,43 @@ def linha_lista(ws, c, r, larg_nome, nome_item, valor, atributo=None,
                al="right", ate=(cc + 2, r))
 
 
+# a linha de Teste de Resistencia, na forma que a ficha de player ganhou na
+# atualizacao de 04/09: caixa/nome/Extra/atributo/valor, com o Extra entrando
+# na conta. As larguras sao as dela -- nome 7 colunas, Extra 1, atributo 5,
+# valor 5 -- lidas de AC74:AI74, AJ74, AK74:AO74 e AP74:AT74.
+LARG_TR_NOME, LARG_TR_ATR, LARG_TR_VAL = 6, 4, 4
+
+def linha_tr(ws, c, r, nome_tr, atributo, formula_valor, zebra=False):
+    """Devolve (celula do Extra, celula do valor)."""
+    fundo = PAINEL_ALTO if zebra else PAINEL
+    c_nome = c
+    c_extra = c_nome + LARG_TR_NOME + 1
+    c_atr = c_extra + 1
+    c_val = c_atr + LARG_TR_ATR + 1
+    pinta(ws, c, r, c_val + LARG_TR_VAL, r, fundo)
+    txt(ws, c_nome, r, nome_tr, nome=DOCUMENTO, pt=10, cor=OSSO,
+        ate=(c_nome + LARG_TR_NOME, r))
+    extra = txt(ws, c_extra, r, None, nome=TITULO, pt=10, cor=OSSO, al="center")
+    txt(ws, c_atr, r, atributo, nome=TITULO, pt=PT_ROT, cor=TEXTO_FRACO,
+        al="center", ate=(c_atr + LARG_TR_ATR, r))
+    val = txt(ws, c_val, r, formula_valor, nome=TITULO, pt=10, cor=OSSO,
+              al="right", ate=(c_val + LARG_TR_VAL, r))
+    return extra, val
+
+
+def cabecalho_tr(ws, c, r, ate):
+    """a faixa de rotulo em cima das linhas de TR, com o Extra nomeado."""
+    pinta(ws, c, r, ate, r, PAINEL_ALTO)
+    txt(ws, c, r, "TESTE", nome=TITULO, pt=PT_ROT, cor=OSSO,
+        ate=(c + LARG_TR_NOME, r))
+    txt(ws, c + LARG_TR_NOME + 1, r, "Extra", nome=DOCUMENTO, pt=6, cor=OSSO,
+        al="center")
+    txt(ws, c + LARG_TR_NOME + 2, r, "USA", nome=TITULO, pt=PT_ROT, cor=OSSO,
+        al="center", ate=(c + LARG_TR_NOME + 2 + LARG_TR_ATR, r))
+    txt(ws, c + LARG_TR_NOME + LARG_TR_ATR + 4, r, "d20 +", nome=TITULO,
+        pt=PT_ROT, cor=OSSO, al="right", ate=(ate, r))
+
+
 def nota(ws, r, texto, ate=COLS, cor=TEXTO_FRACO):
     txt(ws, 4, r, texto, nome=CORPO, pt=PT_NOTA, cor=cor, ate=(ate, r + 1))
     return r + 2

@@ -267,6 +267,32 @@ print("=" * 74)
 s = roda(**zerado(nivel=18, tipo="técnica", trilha="Coro", ess_dono=5, int_dono=1,
                   defesa_de="Essência", atr_acerto="Destreza", tr_treinado="Vigor",
                   fisico_de="Força", **{"atr_Destreza": 4, "atr_Constituição": 2}))
+# os quatro TR, lidos do INDICE e nao de coordenada decorada -- eles andaram
+# quando o bloco ganhou a forma nova, e o indice e o que impede o teste de
+# apontar para o lugar velho em silencio
+checa("o TR treinado (Vigor) leva a maestria: Con 2 + 3 = 5",
+      num(s["tr_Vigor"]) == 5, f'a ficha deu {s["tr_Vigor"]!r}')
+checa("o Fisico usa Forca (0) e NAO leva maestria, porque nao e o treinado",
+      num(s["tr_Físico"]) == 0, f'a ficha deu {s["tr_Físico"]!r}')
+checa("contra-teste: trocar o treinado move o numero",
+      num(roda(**zerado(nivel=18, tipo="técnica", trilha="Coro",
+                        tr_treinado="Físico", fisico_de="Destreza",
+                        **{"atr_Destreza": 4}))["tr_Físico"]) == 7,
+      "Destreza 4 + maestria 3 tinha de dar 7")
+
+print()
+print("   e o Extra de cada TR entra na conta, como na ficha de player")
+s_ex = roda(**zerado(nivel=18, tipo="técnica", trilha="Coro", tr_treinado="Vigor",
+                     fisico_de="Força",
+                     **{"atr_Constituição": 2, "tr_extra_Vigor": 3}))
+checa("Vigor com Extra 3: 2 + maestria 3 + 3 = 8", num(s_ex["tr_Vigor"]) == 8,
+      f'a ficha deu {s_ex["tr_Vigor"]!r}')
+checa("contra-teste: o Extra de um TR nao mexe nos outros",
+      num(s_ex["tr_Intelecto"]) == 0, f'a ficha deu {s_ex["tr_Intelecto"]!r}')
+s_vazio = roda(**zerado(nivel=18, tipo="técnica", trilha="Coro", tr_treinado="Vigor",
+                        fisico_de="Força", **{"atr_Constituição": 2}))
+checa("Extra vazio nao vira erro — o N() resolve", num(s_vazio["tr_Vigor"]) == 5,
+      f'a ficha deu {s_vazio["tr_Vigor"]!r}')
 checa("maestria do nv18 = 3", num(s["maestria"]) == 3, f'{s["maestria"]!r}')
 checa("acerto = Destreza dela (4) + maestria (3) = 7", num(s["acerto"]) == 7,
       f'a ficha deu {s["acerto"]!r}')

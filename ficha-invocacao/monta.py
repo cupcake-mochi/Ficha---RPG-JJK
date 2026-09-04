@@ -216,19 +216,29 @@ R["fisico_de"] = G.campo(ws, GRADE_10[2], r, LARG_10, "o físico dela usa", None
 dv(REF["fisico_de"], GRADE_10[2], r + 1)
 TREI, FIS = cel(GRADE_10[1], r + 1), cel(GRADE_10[2], r + 1)
 r += 3
-pinta(ws, 4, r, COLS, r, PAINEL_ALTO)
 txt(ws, 4, r, "OS QUATRO TESTES DE RESISTÊNCIA · ela treina UM, e a sua maestria "
-    "entra só nele", nome=TITULO, pt=G.PT_ROT, cor=OSSO, ate=(COLS, r))
+    "entra só nele", nome=TITULO, pt=G.PT_ROT, cor=BLOCO, ate=(COLS, r))
+r += 1
+# a forma e a da ficha de player depois da atualizacao de 04/09: cada linha
+# ganhou uma coluna Extra, e ela ENTRA na conta. Aqui o "treinado" nao e caixa
+# por linha e sim o menu de cima -- a invocacao treina exatamente UM, e um menu
+# diz isso melhor que quatro caixas das quais so uma pode estar marcada.
+G.cabecalho_tr(ws, 4, r, 24)
+G.cabecalho_tr(ws, 26, r, COLS)
 r += 1
 for i, (t, atrs) in enumerate(INV["testes_de_resistencia"].items()):
-    c1 = 4 + (i % 2) * 21
+    c1 = 4 + (i % 2) * 22
     rr = r + (i // 2)
     escolha = FIS if len(atrs) > 1 else f'"{atrs[0]}"'
-    G.linha_lista(ws, c1, rr, 11, t,
-                  f'=IFERROR({valor_de(escolha)}+IF({TREI}="{t}",{MAEC},0),"")',
-                  atributo=" ou ".join(a[:3] for a in atrs),
-                  zebra=(i // 2) % 2 == 1)
-r = G.nota(ws, r + 3, "Acerto e Teste de Resistência rolam d20 + isto. A Defesa é "
+    _extra = f"${L(c1 + G.LARG_TR_NOME + 1)}${rr}"
+    e_cel, v_cel = G.linha_tr(
+        ws, c1, rr, t, " ou ".join(a[:3] for a in atrs),
+        f'=IFERROR({valor_de(escolha)}+IF({TREI}="{t}",{MAEC},0)+N({_extra}),"")',
+        zebra=(i // 2) % 2 == 1)
+    R["tr_" + t] = v_cel
+    R["tr_extra_" + t] = e_cel
+r = G.nota(ws, r + 3, "Acerto e Teste de Resistência rolam d20 + isto, e o Extra "
+           "entra na conta — é onde entra o que a ficha não sabe. A Defesa é "
            "passiva, e a maestria não entra nela.")
 
 # ------------------------------------------------------- 05 VIDA E MORTE
