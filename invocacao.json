@@ -436,7 +436,7 @@
         "vira_metade_da_maestria_no_nivel": 7,
         "mexe_em": "a CD dos efeitos dela",
         "PENDENTE": "a invocacao NAO tem formula de CD em documento nenhum: o capitulo 16 nao escreve nenhuma, e a peca 15 tambem nao. Esta rota some um numero que o sistema nao produz, que e a mesma forma do Estopim (PENDENCIAS B8) e do antigo Casco. A ficha marca como pendente em vez de chutar.",
-        "nota_na_ficha": "A invocação não tem fórmula de CD em documento nenhum — nem o capítulo 16, nem a peça 15 escrevem uma. Esta rota soma num número que o sistema ainda não produz, então combine com o mestre em vez de chutar."
+        "nota_na_ficha": "A CD dos efeitos dela não tem fórmula em documento nenhum — nem o capítulo 16, nem a peça 15 escrevem uma. Enquanto não existir, combine o número com o mestre."
       }
     }
   },

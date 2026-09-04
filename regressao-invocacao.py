@@ -335,8 +335,9 @@ checa("contra-teste: a Presa NAO mexe na vida",
 
 # a Voz: ela aponta para a CD, que nao existe -- a ficha avisa
 vz = roda(**zerado(nivel=10, tipo="técnica", trilha="Coro", sintonia="Voz"))
-checa("a Voz faz a ficha avisar que a CD nao tem formula",
-      isinstance(vz["cd_pendente"], str) and "não tem fórmula" in vz["cd_pendente"],
+checa("a Voz faz a ficha mandar combinar a CD com o mestre",
+      isinstance(vz["cd_pendente"], str)
+      and "Combine com o mestre" in vz["cd_pendente"],
       f'a ficha deu {vz["cd_pendente"]!r}')
 checa("sem a Voz o aviso da CD fica calado", nd["cd_pendente"] in ("", None),
       f'a ficha deu {nd["cd_pendente"]!r}')

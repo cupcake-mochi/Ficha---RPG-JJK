@@ -470,7 +470,8 @@ checa("o capitulo 16 nao escreve NENHUMA formula de CD para a invocacao",
       "achei CD no capitulo 16: se ela ganhou formula, a pendencia da Voz fechou")
 checa("o json registra a pendencia da Voz", "PENDENTE" in S["rotas"]["Voz"])
 checa("a nota que vai PARA A FICHA existe e esta em portugues de gente",
-      "não tem fórmula de CD" in S["rotas"]["Voz"].get("nota_na_ficha", ""))
+      "não tem fórmula" in S["rotas"]["Voz"].get("nota_na_ficha", "")
+      and "combine o número com o mestre" in S["rotas"]["Voz"]["nota_na_ficha"])
 checa("a pendencia diz por que ela existe",
       "nao tem formula de cd" in S["rotas"]["Voz"]["PENDENTE"].lower())
 checa("o bloco antigo do Parrudo virou ponteiro, e nao segundo dono",
