@@ -83,7 +83,10 @@ def le(coord):
 
 print(f"Kaori · {CAMINHO} nível {NIVEL} · " +
       " ".join(f"{k[:3]}{v}" for k, v in KAORI.items()))
-print(f"\n{"campo":16} {"a ficha calcula":>16} {"manual p.41":>13}")
+# os rotulos saem para variaveis porque aspas iguais dentro de uma f-string
+# so compilam no Python 3.12 em diante, e o rodar-tudo.sh nao vai exigir isso
+_c, _f, _m = "campo", "a ficha calcula", "manual p.41"
+print(f"\n{_c:16} {_f:>16} {_m:>13}")
 falhas = 0
 for campo, esp in ESPERADO.items():
     lido = le(IDX[campo])

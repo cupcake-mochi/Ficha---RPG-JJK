@@ -170,3 +170,35 @@ function aplicarDelta_(e, idx) {
     e.range.clearContent();
   });
 }
+
+// =====================================================================
+// O AUTOTESTE, para rodar de dentro do editor do Apps Script.
+//
+// O onEdit e gatilho simples: dispara sozinho ao digitar e nao se executa
+// a mao -- chamado pelo seletor de funcao ele quebra, porque o `e` vem
+// vazio. Entao o que se roda aqui e isto, que nao toca na planilha.
+//
+// Os mesmos casos moram no regressao-delta.js, que roda no node lendo os
+// numeros do manual-temporario.md. Aqui eles estao escritos a mao de
+// proposito: o Apps Script nao le o repositorio, e o que se quer saber no
+// editor e se a colagem entrou, nao se a regra mudou.
+// =====================================================================
+function testeDelta() {
+  var casos = [
+    ['exemplo do manual (18 temp, 20 de dano)', [40, 40, 18, -20], 38, 0],
+    ['dano menor que a temporaria',             [40, 40, 18,  -5], 40, 13],
+    ['sem temporaria',                          [19, 19,  0,  -9], 10, 0],
+    ['cura nao devolve temporaria',             [10, 19,  5,   4], 14, 5],
+    ['cura nao passa do maximo',                [17, 19,  0,   9], 19, 0]
+  ];
+  var falhou = 0;
+  casos.forEach(function (c) {
+    var r = aplicaPasso_(c[1][0], c[1][1], c[1][2], c[1][3]);
+    var ok = (r.atual === c[2] && r.temp === c[3]);
+    if (!ok) falhou++;
+    Logger.log((ok ? 'OK   ' : 'FALHA') + ' \u00b7 ' + c[0] +
+               ' \u00b7 atual ' + r.atual + ' (esperado ' + c[2] + ')' +
+               ' \u00b7 temp ' + r.temp + ' (esperado ' + c[3] + ')');
+  });
+  Logger.log(falhou ? (falhou + ' FALHA(S)') : 'as 5 passaram');
+}

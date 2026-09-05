@@ -404,6 +404,12 @@ perturba os três arquivos. Nenhum número esperado está escrito no teste.
 > reserva na mão — a A4 mantém o atual editável exatamente para casos assim, e a
 > nota que aparece ao passar o mouse no campo TEMP diz isso.
 
+**Conferido na planilha viva, 05/09/2026.** O Mizuki colou o `Codigo.gs` no
+editor de Apps Script da ficha e rodou o `testeDelta`: as cinco passaram. O
+`testeDelta` mora no próprio `Codigo.gs` porque o `onEdit` é gatilho simples e
+não se executa à mão — chamado pelo seletor de função ele quebra, já que o `e`
+vem vazio.
+
 ### B17 · O campo TEMP da INTEGRIDADE não tem fonte no manual
 
 A ficha tem `integridade_temp` no índice e o campo na tela, mas **nada no
@@ -417,6 +423,26 @@ nota do campo agora diz que regra nenhuma o concede. **Mas ele é uma pergunta e
 aberto:** ou algo deveria conceder, ou o campo sai da linha da Integridade.
 
 *Decisão tua. Não é dívida técnica: é desenho de sistema.*
+
+### B18 · O `Ficha.gs` está atrás da planilha viva, e o `construir()` apaga tudo
+
+O `apps-script/Ficha.gs` é o transporte do gerador: o `construir()` **apaga
+todas as abas e monta do zero**. Comparando o que ele emite com a ficha que
+está em uso hoje, ele está atrás em pelo menos quatro pontos:
+
+| | o `Ficha.gs` monta | a ficha viva tem |
+|---|---|---|
+| abas | 5 (CARTEIRA, FICHA, MESA, QUEM É, DADOS) | 6 — com INVOCAÇÃO, CATÁLOGO e DADOS_INV |
+| `J31` · integridade máxima | `=20+8*($AH$11-1)` | `=20+(AJ17+5)*($AH$11-1)` |
+| lista de Caminhos | para no `Emanador` | tem o `Evocador` |
+| linhas da FICHA | 94 | 135 |
+
+**Rodar o `construir()` hoje devolveria uma ficha antiga e levaria as abas de
+invocação junto.** Ele só volta a ser seguro depois que o gerador Python
+emitir o estado atual — e aí o `emitir_gs.py` regera o `Ficha.gs`.
+
+*Não é dívida de código: é uma arma carregada no editor. Fica registrado para
+ninguém apertar o gatilho por engano.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 

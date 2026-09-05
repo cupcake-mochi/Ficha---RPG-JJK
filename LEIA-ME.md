@@ -27,9 +27,12 @@ O `DESIGN-ficha-digital.md` e o `ESPECIFICACAO-ficha-digital.md` continuam valen
 ./rodar-tudo.sh
 ```
 
-São dezesseis, e os dezesseis passam — em Python 3.12 ou acima. O
-`regressao-delta.js` roda no node, porque o Apps Script não pode ser testado
-de fora; sem node ele é pulado com aviso, não em silêncio.
+São dezesseis. Quinze passam em qualquer máquina; o
+`regressao-kaori-na-ficha.py` precisa de um LibreOffice **com o filtro do
+Calc** para recalcular a ficha, e onde ele não existe essa checagem falha alto
+em vez de passar em branco — é de propósito. O `regressao-delta.js` roda no
+node, porque o Apps Script não pode ser testado de fora; sem node ele é pulado
+com aviso, também não em silêncio.
 
 Para regerar a ficha da invocação:
 
