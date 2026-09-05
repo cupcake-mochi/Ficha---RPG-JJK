@@ -57,7 +57,15 @@ function notasDeRegra_(ss, idx) {
     'maestria': 'Vira 2 no nível 10, 3 no 18, 4 no 26. Não é "a cada oito níveis".',
     'cd de feitiço': 'Não existe atributo de conjuração na ficha padrão: o 2 é fixo.',
     'vida_temp': 'Vida temporária não empilha: fica a maior. Some no fim da cena, ' +
-                 'e é gasta antes da vida normal.',
+                 'e é gasta antes da vida normal — a caixinha de ± desconta ' +
+                 'daqui primeiro e só o que sobrar desce na vida. Dano com ' +
+                 'Rasga Escudo ignora isto: edite a vida na mão.',
+    'energia_temp': 'Energia temporária acumula até o teto que a fonte declarar ' +
+                    '(hoje só o Braseiro concede, e o teto dele é 2). Some no fim ' +
+                    'da cena, e a caixinha de ± queima daqui antes do seu PE.',
+    'integridade_temp': 'Nenhuma regra do manual concede integridade temporária. ' +
+                        'O campo está aqui pela forma das outras duas reservas: ' +
+                        'se algo conceder, a caixinha de ± desconta daqui primeiro.',
     'equipamento': 'Enquanto o catálogo do capítulo 12 não entra, digite aqui a ' +
                    'proteção do equipamento. Vazio = usa a da aptidão.'
   };
@@ -100,9 +108,46 @@ function onEdit(e) {
 }
 
 /**
+ * A conta da caixinha de +/-, sem planilha nenhuma em volta.
+ *
+ * Ela mora separada porque e o unico lugar do projeto onde duas decisoes se
+ * encontram: a A4 (a caixinha) e a A2 (a temporaria gasta primeiro). O
+ * regressao-delta.js roda esta funcao contra o exemplo publicado no
+ * manual-temporario.md, e o Apps Script nao pode ser testado de fora.
+ *
+ * Perda come a temporaria antes de tocar a reserva. Ganho nao devolve
+ * temporaria: ela e um extra por cima, e quem concede e a fonte, no campo
+ * TEMP. Quem toma dano com `Rasga Escudo` -- que ignora a temporaria -- edita
+ * a reserva na mao; a A4 mantem o atual editavel exatamente para isso.
+ */
+function aplicaPasso_(atual, max, temp, passo) {
+  atual = Number(atual) || 0;
+  max = Number(max) || 0;
+  temp = Math.max(0, Number(temp) || 0);
+  passo = Number(passo) || 0;
+
+  var novo = atual;
+  if (passo < 0) {
+    var comido = Math.min(temp, -passo);
+    temp = temp - comido;
+    novo = atual - (-passo - comido);
+  } else {
+    novo = atual + passo;
+  }
+  return {
+    atual: Math.max(0, max ? Math.min(novo, max) : novo),
+    temp: temp
+  };
+}
+
+/**
  * Decisão A4: digita -9 na caixinha, o script aplica no atual e limpa.
  * O atual continua editável à mão — sem sinal o gatilho não roda, e sem isso
  * a ficha viraria pedra no meio da sessão.
+ *
+ * Decisão A2: o passo negativo come a temporária antes da reserva, e o campo
+ * TEMP desce junto. Sem isso a caixinha descontava direto da vida e a
+ * temporária ficava parada na tela, valendo nada.
  */
 function aplicarDelta_(e, idx) {
   var ficha = SpreadsheetApp.getActive().getSheetByName('FICHA');
@@ -112,9 +157,16 @@ function aplicarDelta_(e, idx) {
     var passo = Number(e.range.getValue());
     if (!passo) return;
     var atual = ficha.getRange(cel_(idx, r));
-    var max = Number(ficha.getRange(cel_(idx, r + '_max')).getValue()) || 0;
-    var novo = Number(atual.getValue()) + passo;
-    atual.setValue(Math.max(0, max ? Math.min(novo, max) : novo));
+    var ct = cel_(idx, r + '_temp');
+    var temp = ct ? ficha.getRange(ct) : null;
+    var antes = temp ? Math.max(0, Number(temp.getValue()) || 0) : 0;
+
+    var fim = aplicaPasso_(atual.getValue(),
+                           ficha.getRange(cel_(idx, r + '_max')).getValue(),
+                           antes, passo);
+
+    atual.setValue(fim.atual);
+    if (temp && fim.temp !== antes) temp.setValue(fim.temp);
     e.range.clearContent();
   });
 }

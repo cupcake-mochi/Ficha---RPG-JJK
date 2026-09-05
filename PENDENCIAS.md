@@ -377,6 +377,47 @@ de feitiço vira `8 + atributo da técnica + maestria`; a `Base por Classe` sepa
 **A ordem continua sendo:** re-extrair o `manual.txt` e subir o
 `catalogo-projeto-m.json` primeiro; **B8** e **B14** só depois disso.
 
+### B16 · A caixinha de ± ignorava a vida temporária — **CONSERTADO**
+
+A **A2** decidiu que a temporária *gasta primeiro*, e o `decisoes-ficha.json`
+carrega isso escrito nos dois campos: `gasta_antes_da_vida_normal` e
+`gasta_antes_do_pe_normal`. A **A4** construiu a caixinha de ±. **As duas nunca
+foram ligadas.**
+
+O `aplicarDelta_` do `apps-script/Codigo.gs` lia três células do índice —
+`vida`, `vida_max` e `vida_delta` — e nunca a quarta, `vida_temp`, que o índice
+publica desde sempre. Resultado na mesa: o dano descia direto na reserva e o
+campo TEMP ficava parado na tela, valendo nada.
+
+**O que mudou:** a conta saiu para um `aplicaPasso_` puro, sem planilha em
+volta, e o passo negativo come a temporária antes de tocar a reserva. O campo
+TEMP desce junto. Ganho não devolve temporária — ela é extra por cima, e quem
+concede é a fonte.
+
+**Como isso é conferido:** o `regressao-delta.js` roda o `aplicaPasso_` no node
+contra o exemplo publicado no `manual-temporario.md` (18 temporários, 20 de
+dano, dois descem na vida) e contra os dois campos da A2, e o `arnes-delta.py`
+perturba os três arquivos. Nenhum número esperado está escrito no teste.
+
+> **`Rasga Escudo` não passa pela caixinha.** A Melhoria ignora a temporária, e
+> o script não tem como saber que o dano é dela. Quem toma esse dano edita a
+> reserva na mão — a A4 mantém o atual editável exatamente para casos assim, e a
+> nota que aparece ao passar o mouse no campo TEMP diz isso.
+
+### B17 · O campo TEMP da INTEGRIDADE não tem fonte no manual
+
+A ficha tem `integridade_temp` no índice e o campo na tela, mas **nada no
+sistema concede integridade temporária**. Procurei o termo no `manual.txt`, no
+`catalogo-projeto-m.json` e nas decisões: são seis fontes de vida temporária
+(`Apoio`, `Fluxo`, `Aprumo`, `Crosta`, `Vento a Favor`, `Muralha`) e uma de
+energia (`Braseiro`, teto 2). De integridade, zero.
+
+**O campo não faz mal** — vazio, o `aplicaPasso_` passa por ele sem efeito, e a
+nota do campo agora diz que regra nenhuma o concede. **Mas ele é uma pergunta em
+aberto:** ou algo deveria conceder, ou o campo sai da linha da Integridade.
+
+*Decisão tua. Não é dívida técnica: é desenho de sistema.*
+
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
 Os dois capítulos vendorizados vieram **byte a byte idênticos** do commit

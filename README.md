@@ -25,7 +25,9 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 ./rodar-tudo.sh
 ```
 
-São treze, e os treze passam.
+São dezesseis, e os dezesseis passam — em Python 3.12 ou acima. O
+`regressao-delta.js` roda no node, porque o Apps Script não pode ser testado
+de fora; sem node ele é pulado com aviso, não em silêncio.
 
 > *Esta linha dizia **oito** enquanto o `rodar-tudo.sh` rodava dez, e o `LEIA-ME` dizia dez ao lado. Duas cópias do mesmo número, duas respostas — e nenhum validador cruzava as duas.*
 

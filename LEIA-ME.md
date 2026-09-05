@@ -27,7 +27,9 @@ O `DESIGN-ficha-digital.md` e o `ESPECIFICACAO-ficha-digital.md` continuam valen
 ./rodar-tudo.sh
 ```
 
-São treze, e os treze passam.
+São dezesseis, e os dezesseis passam — em Python 3.12 ou acima. O
+`regressao-delta.js` roda no node, porque o Apps Script não pode ser testado
+de fora; sem node ele é pulado com aviso, não em silêncio.
 
 Para regerar a ficha da invocação:
 
