@@ -162,6 +162,29 @@ PERTURBACOES = [
     ("a pendência da Voz é apagada",
      ["sintonia", "rotas", "Voz", "PENDENTE"], REMOVE,
      "o json registra a pendencia da Voz"),
+
+    # o DEGRAU do Traco e Comando proprios. As tres perturbam o CAPITULO, e
+    # nao o json nem a planilha: o degrau que a ficha oferece se mede contra a
+    # regua do dono da regra, senao a checagem sai verde ao perturbar a
+    # constante que ela usa como esperado.
+    ("a seção do Traço e Comando próprios sai do capítulo",
+     ("texto", "capitulo-16-invocacoes.md", "### Traço e Comando próprios",
+      "### Entradas extras"),
+     None, "deixa escrever Traco e Comando fora dos catalogos"),
+    ("o capítulo para de mandar achar o degrau na régua",
+     ("texto", "capitulo-16-invocacoes.md", "ache na régua",
+      "escolha um preço"),
+     None, "manda achar o degrau na regua"),
+    ("um degrau desaparece da régua de Traço",
+     ("texto", "capitulo-16-invocacoes.md",
+      "| **3** | muda **o que ela comunica**. `Fala` |",
+      "| **2** | muda **o que ela comunica**. `Fala` |"),
+     None, "degrau_traco oferece"),
+    ("um degrau desaparece da régua de Comando",
+     ("texto", "capitulo-16-invocacoes.md",
+      "| **4** | **faz uma coisa com um alvo ou um objeto**",
+      "| **5** | **faz uma coisa com um alvo ou um objeto**"),
+     None, "degrau_comando oferece"),
 ]
 
 for nome, alvo, novo, esperado in PERTURBACOES:

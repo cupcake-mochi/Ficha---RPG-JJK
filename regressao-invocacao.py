@@ -385,6 +385,65 @@ checa(f'contra-teste: um atributo em 7 acusa o teto de {A["teto"]}',
 # =====================================================================
 print()
 print("=" * 74)
+print("O DEGRAU — o Traco e Comando proprios, recalculados na planilha")
+print("=" * 74)
+
+# Os degraus saem da regua do capitulo, lida do json que o conferir amarra
+# nela. O teto e o piso vem do maior e do menor degrau, e nao de numero
+# escrito aqui: se a regua mudar, este teste muda com ela.
+_dt = sorted(int(k) for k in INV["regua_traco"])
+_dc = sorted(int(k) for k in INV["regua_comando"])
+_base = dict(nivel=2, tipo="técnica", trilha="Servo")
+
+s = roda(**zerado(**_base))
+_orc = num(s["orcamento"])
+checa("nada escolhido: gasto zero", num(s["gasto"]) == 0, f'{s["gasto"]!r}')
+
+for _d in _dt:
+    s = roda(**zerado(**_base, traco_1="Bafo de Fogo", degrau_traco_1=_d))
+    checa(f"Traco proprio no degrau {_d} custa {_d}",
+          num(s["gasto"]) == _d, f'a ficha gastou {s["gasto"]!r}')
+
+for _d in _dc:
+    s = roda(**zerado(**_base, comando_1="Escoltar", degrau_comando_1=_d))
+    checa(f"Comando proprio no degrau {_d} custa {_d}",
+          num(s["gasto"]) == _d, f'a ficha gastou {s["gasto"]!r}')
+
+# nome proprio SEM degrau escolhido nao gasta nada: o "—" do menu vale zero
+s = roda(**zerado(**_base, traco_1="Bafo de Fogo"))
+checa("nome proprio sem degrau escolhido nao gasta nada",
+      num(s["gasto"]) == 0, f'{s["gasto"]!r}')
+
+# contra-teste: o degrau NAO atropela o catalogo. Com um nome do catalogo, o
+# preco e o do catalogo mesmo que o jogador escolha outro degrau.
+_nome_cat, _preco_cat = next(iter(INV["traco"].items()))
+_outro = next(x for x in _dt if x != _preco_cat)
+s = roda(**zerado(**_base, traco_1=_nome_cat, degrau_traco_1=_outro))
+checa(f"contra-teste: {_nome_cat} continua custando {_preco_cat} "
+      f"mesmo com o degrau em {_outro}",
+      num(s["gasto"]) == _preco_cat, f'a ficha gastou {s["gasto"]!r}')
+
+# o proprio entra na SOBRA junto com o resto. Aqui vai no nivel 30, onde o
+# orcamento cabe os dois -- no nivel 2 os dois degraus mais caros estouram, e
+# esse caso vira o contra-teste logo abaixo.
+_soma = _dt[-1] + _dc[-1]
+_alto = dict(_base, nivel=30)
+s = roda(**zerado(**_alto, traco_1="Bafo de Fogo", degrau_traco_1=_dt[-1],
+                  comando_1="Escoltar", degrau_comando_1=_dc[-1]))
+_orc30 = num(s["orcamento"])
+checa(f"nv30: dois proprios somam {_soma} e a sobra desce igual",
+      num(s["gasto"]) == _soma and num(s["sobra"]) == _orc30 - _soma,
+      f'gasto {s["gasto"]!r}, sobra {s["sobra"]!r}, orcamento {_orc30!r}')
+
+# contra-teste: o proprio nao escapa do teto do orcamento
+s = roda(**zerado(**_base, traco_1="Bafo de Fogo", degrau_traco_1=_dt[-1],
+                  comando_1="Escoltar", degrau_comando_1=_dc[-1]))
+checa(f"contra-teste: nv2 com {_soma} num orcamento de {_orc:.0f} acusa o estouro",
+      str(s["sobra"]).startswith("estourou"), f'{s["sobra"]!r}')
+
+# =====================================================================
+print()
+print("=" * 74)
 if falhas:
     print(f">>> {len(falhas)} FALHA(S) de {checagens}")
     for f in falhas:

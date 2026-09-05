@@ -100,17 +100,41 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
         REF[nome_e] = f"{ND}!${L(c)}$3:${L(c)}${2+len(valores)}"
         c += 1
 
-    ESPELHO = c + 1
+    # O resto da aba DADOS, declarado num lugar so para ninguem escrever em
+    # cima de ninguem. A primeira versao das duas reguas caiu exatamente sobre
+    # o indice de campos, porque as colunas dele estavam escritas 380 linhas
+    # abaixo e eu contei do espelho.
+    ESPELHO = c + 1               # o espelho dos atributos dela
+    IDX = c + 3                   # o indice de campos: campo | celula
+    DEG_T, DEG_C = c + 6, c + 7   # as duas reguas, viradas em menu
     REF["espelho"] = f"{ND}!${L(ESPELHO)}$3:${L(ESPELHO)}$7"
-    pinta(d, 1, 1, c + 3, 30, FUNDO)
+
+    # As reguas entram no fim de proposito: as abas ja estao embutidas na ficha
+    # do Mizuki, e uma coluna nova no meio moveria tab_traco, tab_comando e
+    # tab_investir de lugar -- as formulas da aba INVOCACAO apontam para as
+    # letras de hoje.
+    lista(DEG_T, "degrau_traco",
+          ["—"] + [int(k) for k in sorted(INV["regua_traco"], key=int)], larg=12)
+    lista(DEG_C, "degrau_comando",
+          ["—"] + [int(k) for k in sorted(INV["regua_comando"], key=int)], larg=12)
+
+    pinta(d, 1, 1, DEG_C + 1, 30, FUNDO)
 
     # ================================================================= INVOCAÇÃO
     ws = base(wb, NI, COLS, 120)
     R = {}
 
-    def dv(formula, c1, r1, c2=None, r2=None):
+    def dv(formula, c1, r1, c2=None, r2=None, estrito=False):
+        # Aviso, e nao bloqueio, em quase tudo: e o que deixa o jogador digitar
+        # o nome de um Traco ou Comando dele por cima do menu do catalogo.
+        # O DEGRAU e a excecao -- ele sai da regua do capitulo, e valor de fora
+        # dela nao e escolha de sabor, e deriva de preco entre duas mesas.
         v = DataValidation(type="list", formula1=formula, allow_blank=True,
-                           showDropDown=False)
+                           showDropDown=False,
+                           showErrorMessage=estrito,
+                           errorStyle="stop" if estrito else None,
+                           error=("O degrau sai da régua do capítulo 16."
+                                  if estrito else None))
         ws.add_data_validation(v)
         v.add(f"{L(c1)}{r1}:{L(c2 or c1)}{r2 or r1}")
 
@@ -318,26 +342,49 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
     N_TRACO = _cabem(INV["traco"].values(), _orc_teto)
     N_COMANDO = _cabem([v for v in INV["comando"].values() if v > 0], _orc_teto)
 
-    SLOTS, NOMES_SLOT = [], []
+    SLOTS, NOMES_SLOT, DEGRAUS_SLOT = [], [], []
     r += 4
-    for grupo, ref_lista, ref_tab, col0, quantos in [
-            ("TRAÇO", REF["traco"], REF["tab_traco"], 4, N_TRACO),
-            ("COMANDO", REF["comando"], REF["tab_comando"], 26, N_COMANDO)]:
+    # A faixa continua com 20 colunas: o que muda e a reparticao dela em tres.
+    # O nome perde quatro colunas para o DEGRAU, que so serve quando o jogador
+    # escreve um Traco ou Comando proprio -- o capitulo 16 manda achar na
+    # regua o degrau em que o efeito cai, e a palavra final e do mestre.
+    for grupo, ref_lista, ref_tab, ref_degrau, col0, quantos in [
+            ("TRAÇO", REF["traco"], REF["tab_traco"],
+             REF["degrau_traco"], 4, N_TRACO),
+            ("COMANDO", REF["comando"], REF["tab_comando"],
+             REF["degrau_comando"], 26, N_COMANDO)]:
         pinta(ws, col0, r, col0 + 19, r, PAINEL_ALTO)
         txt(ws, col0, r, f"{grupo} · até {quantos}", nome=TITULO, pt=G.PT_ROT,
-            cor=OSSO, ate=(col0 + 19, r))
+            cor=OSSO, ate=(col0 + 10, r))
+        txt(ws, col0 + 11, r, "DEGRAU", nome=TITULO, pt=G.PT_ROT,
+            cor=TEXTO_FRACO, ate=(col0 + 14, r))
+        txt(ws, col0 + 15, r, "PONTOS", nome=TITULO, pt=G.PT_ROT,
+            cor=TEXTO_FRACO, al="right", ate=(col0 + 19, r))
         for i in range(quantos):
             rr = r + 1 + i
             pinta(ws, col0, rr, col0 + 19, rr, PAINEL if i % 2 == 0 else PAINEL_ALTO)
-            txt(ws, col0, rr, "—", nome=DOCUMENTO, pt=10, cor=OSSO, ate=(col0 + 14, rr))
-            dv(ref_lista, col0, rr, col0 + 14, rr)
+            txt(ws, col0, rr, "—", nome=DOCUMENTO, pt=10, cor=OSSO, ate=(col0 + 10, rr))
+            dv(ref_lista, col0, rr, col0 + 10, rr)
+            cd_ = col0 + 11
+            txt(ws, cd_, rr, "—", nome=TITULO, pt=10, cor=TEXTO_FRACO,
+                al="center", ate=(col0 + 14, rr))
+            dv(ref_degrau, cd_, rr, col0 + 14, rr, estrito=True)
             pc = col0 + 15
-            txt(ws, pc, rr, f'=IFERROR(VLOOKUP({cel(col0, rr)},{ref_tab},2,FALSE),0)',
+            # nome do catalogo: o preco e o do catalogo. Nome escrito a mao:
+            # cai no degrau. Nada escolhido: N("—") e zero, e nada e gasto.
+            txt(ws, pc, rr,
+                f'=IFERROR(VLOOKUP({cel(col0, rr)},{ref_tab},2,FALSE),'
+                f'N({cel(cd_, rr)}))',
                 nome=TITULO, pt=11, cor=OSSO, al="right", ate=(col0 + 19, rr))
             SLOTS.append(cel(pc, rr))
-            NOMES_SLOT.append((grupo.lower().replace("ç", "c").replace("ã", "a"),
-                               i + 1, cel(col0, rr)))
-    r += max(N_TRACO, N_COMANDO) + 2
+            _g = grupo.lower().replace("ç", "c").replace("ã", "a")
+            NOMES_SLOT.append((_g, i + 1, cel(col0, rr)))
+            DEGRAUS_SLOT.append((_g, i + 1, cel(cd_, rr)))
+    r += max(N_TRACO, N_COMANDO) + 1
+    r = G.nota(ws, r, "Para escrever um Traço ou Comando seu: digite o nome por "
+                      "cima do menu e escolha o DEGRAU em que o efeito cai. As "
+                      "duas réguas estão no CATÁLOGO, e a palavra final é do "
+                      "mestre.")
 
     GASTO = "+".join(SLOTS)
     R["gasto"] = G.campo(ws, GRADE_10[0], r, LARG_10, "gasto", f"={GASTO}")
@@ -449,7 +496,6 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
         txt(cat, 18, rr, porque, nome=CORPO, pt=G.PT_NOTA, cor=TEXTO_FRACO, ate=(COLS, rr))
 
     # ------------------------------------------------------------------ INDICE
-    IDX = c + 3
     d.column_dimensions[L(IDX)].width = 22
     d.column_dimensions[L(IDX + 1)].width = 12
     txt(d, IDX, 2, "campo", pt=PT_ROTULO, cor=TEXTO_FRACO)
@@ -465,6 +511,10 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
     for i, (grupo, n_, coord) in enumerate(NOMES_SLOT):
         txt(d, IDX, 3 + len(R) + len(SLOTS) + i, f"{grupo}_{n_}")
         txt(d, IDX + 1, 3 + len(R) + len(SLOTS) + i, coord.replace("$", ""))
+    _b = 3 + len(R) + len(SLOTS) + len(NOMES_SLOT)
+    for i, (grupo, n_, coord) in enumerate(DEGRAUS_SLOT):
+        txt(d, IDX, _b + i, f"degrau_{grupo}_{n_}")
+        txt(d, IDX + 1, _b + i, coord.replace("$", ""))
 
 
     return {"campos": R, "slots": SLOTS, "nomes_slot": NOMES_SLOT,

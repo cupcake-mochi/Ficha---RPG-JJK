@@ -114,6 +114,7 @@ checa("o capitulo declara o total de compraveis, e ele bate",
 
 print()
 print("   toda entrada cai no degrau que a propria regua manda")
+DEGRAUS_CAP = {}
 for chave, sec in [("traco", "**Régua de `Traço`**"), ("comando", "**Régua de `Comando`**")]:
     degraus = set()
     for cs in tabela_depois_de(sec, 2):
@@ -126,6 +127,7 @@ for chave, sec in [("traco", "**Régua de `Traço`**"), ("comando", "**Régua de
     checa(f"{chave}: os degraus do json sao os mesmos da regua do json",
           {int(k) for k in INV["regua_" + chave]} == degraus,
           f'json {sorted(int(k) for k in INV["regua_" + chave])}, capitulo {sorted(degraus)}')
+    DEGRAUS_CAP[chave] = degraus
 
 # =====================================================================
 print()
@@ -409,6 +411,73 @@ else:
         faltando = [e for e in list(INV["traco"]) + list(INV["comando"]) if e not in na_aba]
         checa("todo Traco e Comando do json entrou na planilha", not faltando,
               f"faltou: {faltando}")
+
+        # ------------------------------------------------------------------
+        # O DEGRAU: o capitulo 16 deixa escrever Traco e Comando fora dos
+        # catalogos, e manda achar na regua o degrau em que o efeito cai. A
+        # ficha so oferecia os fixos. Estas checagens medem contra a regua do
+        # CAPITULO, nunca contra a lista da planilha nem contra o json -- o
+        # numero esperado tem que vir do dono da regra.
+        print()
+        print("   o degrau do Traco e Comando proprios")
+        checa("o capitulo deixa escrever Traco e Comando fora dos catalogos",
+              "### Traço e Comando próprios" in CAP)
+        checa("o capitulo manda achar o degrau na regua, e da a palavra ao mestre",
+              "ache na régua" in CAP and "A palavra final é dele" in CAP)
+
+        inv = wb["INVOCAÇÃO"]
+        _menus = {str(dvv.sqref): dvv.formula1
+                  for dvv in inv.data_validations.dataValidation}
+
+        for chave, grupo in (("traco", "Traco"), ("comando", "Comando")):
+            _esperado = ["—"] + sorted(DEGRAUS_CAP[chave])
+            # acha a coluna da lista pelo titulo que o gerador escreve
+            _col = next((c for c in range(1, 120)
+                         if d.cell(row=1, column=c).value == "degrau_" + chave), None)
+            checa(f"a DADOS publica a lista degrau_{chave}", _col is not None)
+            if _col:
+                _lido = [d.cell(row=rr, column=_col).value
+                         for rr in range(2, 2 + len(_esperado))]
+                checa(f"degrau_{chave} oferece {_esperado}", _lido == _esperado,
+                      f"a planilha oferece {_lido}")
+                _sobra = d.cell(row=2 + len(_esperado), column=_col).value
+                checa(f"degrau_{chave} nao oferece degrau que a regua nao tem",
+                      _sobra is None, f"achei {_sobra!r} depois do ultimo")
+
+            # cada slot do grupo tem menu de degrau na PROPRIA linha
+            _celulas = {}
+            if idx:
+                for rr in range(3, 200):
+                    k = d.cell(row=rr, column=idx).value
+                    if isinstance(k, str) and k.startswith(chave + "_"):
+                        _celulas[k] = d.cell(row=rr, column=idx + 1).value
+            checa(f"o indice publica a celula de cada slot de {grupo}",
+                  bool(_celulas) and all(_celulas.values()),
+                  f"{len(_celulas)} slots, celulas {list(_celulas.values())}")
+
+            if _col:
+                _letra = d.cell(row=1, column=_col).column_letter
+                _sem_menu = []
+                for k, coord in sorted(_celulas.items()):
+                    lin = re.sub(r"[A-Z]", "", str(coord))
+                    if not any(f"${_letra}$" in f1
+                               and re.search(rf"[A-Z]+{lin}\b", sq)
+                               for sq, f1 in _menus.items()):
+                        _sem_menu.append(k)
+                checa(f"cada slot de {grupo} tem menu de degrau na linha dele",
+                      not _sem_menu, f"sem menu: {_sem_menu}")
+
+        # o preco de todo slot cai no degrau: a formula tem N( do degrau
+        _pontos = []
+        if idx:
+            for rr in range(3, 200):
+                k = d.cell(row=rr, column=idx).value
+                if isinstance(k, str) and k.startswith("slot_pontos_"):
+                    _pontos.append(d.cell(row=rr, column=idx + 1).value)
+        _sem_queda = [pc for pc in _pontos
+                      if "N($" not in str(inv[pc].value or "")]
+        checa("o preco de todo slot cai no degrau quando o nome e proprio",
+              _pontos and not _sem_queda, f"sem queda: {_sem_queda}")
 
 G = open(GERADOR, encoding="utf-8").read()
 # a regra: o gerador le do json. Um preco do catalogo escrito no codigo e o
