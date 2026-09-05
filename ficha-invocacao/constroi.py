@@ -25,7 +25,7 @@ from estilo import (CORPO, TITULO, DOCUMENTO, SERIE, PT_ROTULO, PT_VALOR,
                     LARG_COL, ALT_LIN, FUNDO, PAINEL, PAINEL_ALTO, FAIXA,
                     PAINEL_BAIXO, LINHA, BLOCO, TEXTO_FRACO, TEXTO, TINTA,
                     OSSO, AMBAR, VERMELHO, txt, regua, pinta, junta, base,
-                    lombada)
+                    lombada, barra, cor_de_estado)
 import gramatica as G
 from gramatica import COLS, GRADE_7, GRADE_10, LARG_7, LARG_10
 
@@ -277,7 +277,7 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
     pinta(ws, 4, r, COLS, r, PAINEL_ALTO)
     txt(ws, 4, r, "A BARRA", nome=TITULO, pt=G.PT_ROT, cor=OSSO, ate=(14, r))
     pinta(ws, 15, r, COLS, r, PAINEL)
-    txt(ws, 15, r, G.barra_com_trilho(VC, VMAXC), ate=(COLS, r))
+    txt(ws, 15, r, barra(VC, VMAXC, cor_de_estado(VC, VMAXC)), ate=(COLS, r))
     r += 2
     REGUA = f'{M["multiplicador_regua"]}*{CRUA}'
     R["regua"] = G.campo(ws, GRADE_10[0], r, LARG_10, "régua da morte",

@@ -27,7 +27,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__))), "ficha"))
 from estilo import (CORPO, TITULO, DOCUMENTO, SERIE, FUNDO, PAINEL, PAINEL_ALTO,
                     FAIXA, PAINEL_BAIXO, LINHA, TINTA, TEXTO, TEXTO_FRACO, OSSO,
-                    AMBAR, VERMELHO, txt, pinta, junta, regua)
+                    AMBAR, txt, pinta, junta, regua)
 
 COLS = 46
 
@@ -137,31 +137,3 @@ def aviso(ws, r, titulo, texto, ate=COLS):
     pinta(ws, 4, r + 1, ate, r + 2, PAINEL)
     txt(ws, 4, r + 1, texto, nome=CORPO, pt=PT_NOTA, cor=TEXTO, ate=(ate, r + 2))
     return r + 3
-
-
-def barra_com_trilho(cel_atual, cel_max, trilho=PAINEL_ALTO):
-    """A barra de vida em DOIS segmentos: o que sobrou e o que falta.
-
-    A versao de um segmento so (`estilo.barra`, com a opcao "max") desenha
-    apenas o pedaco cheio. Com o campo "vida agora" vazio -- que e o estado de
-    repouso, porque quem digita ali e o jogador -- nao sobra nada para
-    desenhar, e a linha da barra abre em branco. Sem trilho tambem nao da para
-    ver quanto falta: o SPARKLINE nao pinta o fundo.
-
-    Dois segmentos resolvem os dois: o primeiro leva a cor de estado, o
-    segundo leva o trilho, e a soma dos dois e o proprio maximo -- por isso a
-    opcao "max" sai.
-
-    Os MAX/MIN nao sao enfeite. `N()` faz o campo vazio virar 0; o MIN prende
-    o cheio no maximo (vida acima da maxima nao estica a barra); os MAX prendem
-    tudo em zero (vida negativa nao inverte os segmentos). E a razao da cor vai
-    dentro de um IFERROR porque com o tipo em branco a vida maxima e texto
-    vazio, e ai a divisao estoura.
-    """
-    cheio = f'MAX(0,MIN(N({cel_atual}),N({cel_max})))'
-    falta = f'MAX(0,N({cel_max})-MAX(0,N({cel_atual})))'
-    razao = f'IFERROR(N({cel_atual})/N({cel_max}),0)'
-    cor = (f'IF({razao}<=0.25,"#{VERMELHO}",'
-           f'IF({razao}<=0.5,"#{AMBAR}","#{OSSO}"))')
-    return (f'=IFERROR(SPARKLINE({{{cheio},{falta}}},'
-            f'{{"charttype","bar";"color1",{cor};"color2","#{trilho}"}}),"")')
