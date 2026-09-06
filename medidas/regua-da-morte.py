@@ -254,3 +254,40 @@ for nome_c, corpo in (('CORPO CRU — o `Coro`', cru),
                 cel = [rotulo(golpe(nv, n), vm, mult) for n, _, _ in CATEGORIAS]
                 print(f'    {nv:>3} {con:>4} {vm:>5} | '
                       + ' | '.join(f'{x:>13}' for x in cel))
+
+# =============================================================================
+titulo('6. AS TRÊS MONTAGENS QUE A PRÓPRIA PEÇA 15 §3.7 PUBLICA')
+print('  Não são caso de canto: é a montagem que a peça manda fazer no nível 2.')
+print('  P(uma rolagem destruir de vez um corpo CHEIO), com a área já fora.\n')
+MONTAGENS = [('Coro', 1, cru, 'corpo cru (h)'),
+             ('Matilha', 1, forte, 'corpo forte, o pool'),
+             ('Servo', 3, forte, 'corpo forte')]
+for nome, con, corpo, desc in MONTAGENS:
+    print(f'  `{nome}` — Constituição {con} · {desc}')
+    print(f"    {'nv':>3} {'vida':>5} | " + ' | '.join(f'{c[0]:>11}' for c in CATEGORIAS)
+          + ' |   pior')
+    for nv in NIVEIS:
+        vm = corpo(2, con, nv)
+        ps = [p_alcanca(golpe(nv, n), vm) for n, _, _ in CATEGORIAS]
+        cel = ['nunca' if p == 0 else f'{p*100:.0f}%' for p in ps]
+        print(f'    {nv:>3} {vm:>5} | ' + ' | '.join(f'{x:>11}' for x in cel)
+              + f' |  {max(ps)*100:5.1f}%')
+    print()
+
+# =============================================================================
+titulo('7. POR QUE — quantos golpes cada corpo aguenta, na escala do jogo')
+print('  A peça 26 §4.6 põe o personagem do nv30 em 243 de vida contra um golpe')
+print('  de `Alcateia` de 73. É essa a escala de durabilidade do sistema.\n')
+PJ = {2: 19, 30: 243}
+print(f"    {'nv':>3} | {'golpe':>7} | {'Coro CON1':>10} | {'Matilha CON1':>13} | "
+      f"{'Servo CON3':>11} | {'personagem':>11}")
+for nv in NIVEIS:
+    g = arred(linha(nv) * 1.00) / 3
+    pj = f'{PJ[nv]/g:>11.1f}' if nv in PJ else f'{"—":>11}'
+    print(f'    {nv:>3} | {g:>7.1f} | {cru(2,1,nv)/g:>10.1f} | {forte(2,1,nv)/g:>13.1f} | '
+          f'{forte(2,3,nv)/g:>11.1f} | {pj}')
+print('\n  Todo corpo do sistema aguenta de 2,5 a 3,4 golpes. O do `Coro` aguenta 1,3.')
+print('  Ele é o único corpo do jogo dimensionado ABAIXO de um golpe e meio de')
+print('  inimigo — e é por isso que a régua nova morde nele e em mais ninguém.')
+print('  O `h` foi calibrado em MEIA ROTINA, que é a escala do dano do JOGADOR;')
+print('  quem bate nele é o inimigo, e as duas escalas não são a mesma.')
