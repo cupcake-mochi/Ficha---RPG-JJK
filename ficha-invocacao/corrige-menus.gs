@@ -52,9 +52,17 @@ function corrigeMenus() {
     // célula com "Intêligencia" dentro continuaria com ela para sempre.
     var atual = String(cel.getValue());
     if (lista.indexOf(atual) < 0) {
-      cel.setValue(lista[0]);
+      // O chute NÃO pode ser o primeiro da lista sem mais nada. A defesa lê
+      // ['Essência','Inteligência'], e "Intêligencia" é só o acento fora de
+      // lugar -- cair no primeiro trocaria o atributo de defesa dela em
+      // silêncio. Então primeiro procura pela chave sem acento e sem caixa,
+      // e só chuta o primeiro quando não parece nenhum (o '-' do O46).
+      var perto = achaPerto_(lista, atual);
+      var novo = (perto !== null) ? perto : lista[0];
+      cel.setValue(novo);
       trocados.push(MENUS[i][0] + ' (' + MENUS[i][2] + '): "' + atual +
-                    '" estava fora da lista, virou "' + lista[0] + '"');
+                    '" -> "' + novo + '"' +
+                    (perto === null ? '  [nao parecia nenhum: confira]' : ''));
     }
 
     cel.setDataValidation(
@@ -70,4 +78,40 @@ function corrigeMenus() {
                      : '\n\nNenhum valor estava fora da lista.') +
     '\n\nO nome do Traço e do Comando não foi tocado: eles seguem sem menu, ' +
     'como o tira-triangulo.gs deixou.');
+}
+
+// --- apoio ---------------------------------------------------------------
+
+/**
+ * O item da lista que é o mesmo texto a menos de acento e caixa, ou null.
+ *
+ * Sem String.normalize de propósito: se a planilha estiver no runtime antigo
+ * (Rhino) ele não existe, e o script morreria em vez de corrigir.
+ */
+function achaPerto_(lista, texto) {
+  var k = chave_(texto);
+  if (!k) return null;
+  for (var i = 0; i < lista.length; i++) {
+    if (chave_(lista[i]) === k) return lista[i];
+  }
+  return null;
+}
+
+var ACENTO = {
+  'á':'a','à':'a','ã':'a','â':'a','ä':'a',
+  'é':'e','è':'e','ê':'e','ë':'e',
+  'í':'i','ì':'i','î':'i','ï':'i',
+  'ó':'o','ò':'o','õ':'o','ô':'o','ö':'o',
+  'ú':'u','ù':'u','û':'u','ü':'u',
+  'ç':'c','ñ':'n'
+};
+
+function chave_(texto) {
+  var s = String(texto).toLowerCase().replace(/\s+/g, '');
+  var out = '';
+  for (var i = 0; i < s.length; i++) {
+    var c = s.charAt(i);
+    out += (ACENTO[c] || c);
+  }
+  return out;
 }
