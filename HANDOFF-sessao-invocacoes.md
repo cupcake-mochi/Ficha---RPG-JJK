@@ -31,9 +31,18 @@ primeiro economiza repetir.**
    `#ERROR!`.**
 4. `conserta-aviso.gs` — **PENDENTE, é o próximo passo.** Conserta o `#ERROR!`.
 
-### `JJK---Project` — 23 arquivos modificados, **NADA COMMITADO**
+### `JJK---Project` — branch `claude/regua-e-oficios-v0216`
 
-Base: `73bd969`, a v0.215. Eu escrevi a entrada da **v0.216** no topo do
+**Commitado e empurrado**, no commit `c3338ec`, base `73bd969` (v0.215).
+
+> **Ele está marcado como "trabalho em andamento" de propósito.** *A régua da
+> morte não entrou — ela é a seção 2 deste documento.* **O commit existe porque
+> o container da sessão é descartável e as 23 mudanças morreriam com ele;** o
+> commit definitivo, com o `subir.sh` e a versão fechada, continua sendo do
+> Mizuki.
+>
+> *O repositório precisou ser autorizado na sessão (`add_repo`) para o push
+> passar — a sessão nasceu com escopo só no `Ficha---RPG-JJK`.* Eu escrevi a entrada da **v0.216** no topo do
 `CHANGELOG` e subi a versão no README, no `ESTADO-ATUAL` e no `LEIA-ME`.
 
 **O que está escrito e conferido:**
@@ -51,6 +60,11 @@ Base: `73bd969`, a v0.215. Eu escrevi a entrada da **v0.216** no topo do
 - **Seis cópias que já estavam atrasadas antes disso** foram acertadas.
 - **PDF, PDF de duas colunas, DOCX e TEXTO regerados** e conferidos por
   extração de texto.
+
+**Os PDFs vieram no commit.** *Eles são regeráveis pelo
+`sistema/05-material/livro/build/`, mas ficaram versionados porque já estavam
+versionados antes — não fui eu que decidi isso.* Precisa de `markdown`,
+`beautifulsoup4` e `weasyprint` para regerar.
 
 **Estado dos validadores:** os 26 de mecânica passam com PULADAS 0. O
 `conferir-repositorio.py` falha nos dois problemas do `finalizado/livro/`, que
