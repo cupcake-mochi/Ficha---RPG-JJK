@@ -2,7 +2,7 @@
 """Le a Ficha (PROJETO M) 0.1 e escreve o layout.json que o monta.py replica.
 
 Ele NAO copia bytes: ele extrai o DESENHO e limpa o ruido que o Google Sheets
-deixou na ida e volta. As tres limpezas, todas decididas pelo Mizuki:
+deixou na ida e volta. As quatro limpezas, todas decididas pelo Mizuki:
 
   1. as celulas em Arial 10 preto -- 3165 delas, TODAS vazias. E o estilo de
      fabrica do Sheets em celula que o gerador nao pintou.
@@ -10,6 +10,8 @@ deixou na ida e volta. As tres limpezas, todas decididas pelo Mizuki:
      para pixel e devolve 3,63: e a mesma coluna.
   3. a condicional verde B7E1CD em D114 -- o "nao esta vazio" de fabrica do
      Google, numa linha sem conteudo.
+  4. as tres barras "agora" voltam a =J23, =J27 e =J31. A planilha viva e onde
+     ele joga, e ela exporta com o personagem em campo -- o molde nasce cheio.
 
 O que ele PRESERVA: valor e formula de cada celula, as cinco fontes com
 tamanho e cor, os preenchimentos, as bordas, o alinhamento, as mesclagens, as
@@ -26,9 +28,21 @@ ORIG = sys.argv[1] if len(sys.argv) > 1 else os.path.join(AQUI, "original.xlsx")
 SAIDA = os.path.join(AQUI, "layout.json")
 ARTE = os.path.join(AQUI, "arte")
 
-# --- as tres limpezas, nomeadas para o comparador poder cobra-las -----------
+# --- as quatro limpezas, nomeadas para o comparador poder cobra-las --------
 RUIDO_FONTE = ("Arial", 10.0)          # limpeza 1
 LARGURA_CERTA = 4.0                    # limpeza 2 (o Sheets devolve 3.63)
+
+# limpeza 4: as tres barras "agora" voltam a nascer CHEIAS.
+#
+# D23, D27 e D31 sao vida, energia e integridade ATUAIS, e o desenho delas e'
+# apontar para a maxima ao lado -- e' assim que a ficha nova nasce inteira. Mas
+# a planilha viva e' onde o Mizuki JOGA: quando ele exporta com um personagem
+# em campo, essas tres vem como numero (19, 8, 25 na exportacao de 07/09/2026),
+# e o molde do repositorio passaria a nascer com a vida daquele personagem.
+#
+# Ela e' limpeza e nao conserto: o numero na planilha dele esta certo. O que
+# esta errado e' ele virar molde.
+BARRAS_CHEIAS = {"FICHA": {"D23": "=J23", "D27": "=J27", "D31": "=J31"}}
 CF_DE_FABRICA = "FFB7E1CD"             # limpeza 3
 
 wb = load_workbook(ORIG)
@@ -73,6 +87,7 @@ def idx_estilo(cel):
     return indice[k]
 
 abas = []
+barras_repostas = []
 for nome in wb.sheetnames:
     s = wb[nome]
     celulas = []
@@ -93,6 +108,10 @@ for nome in wb.sheetnames:
             v, ref = c.value, None
             if isinstance(v, ArrayFormula):
                 v, ref = v.text, v.ref
+            _cheia = BARRAS_CHEIAS.get(nome, {}).get(c.coordinate)
+            if _cheia is not None and v != _cheia:
+                barras_repostas.append(f"{nome}!{c.coordinate} {v!r} -> {_cheia}")
+                v = _cheia
             celulas.append([c.coordinate, v, e] + ([ref] if ref else []))
 
     # as colunas: o Sheets colapsa tudo num range so, e a largura volta a 4,0
@@ -155,6 +174,9 @@ layout = {
         "o_que_e": "o desenho da Ficha (PROJETO M) 0.1, extraido do .xlsx que o "
                    "Mizuki mandou. O monta.py replica isto.",
         "origem": os.path.basename(ORIG),
+        # o comparador LE daqui em vez de guardar a propria copia: um numero,
+        # um dono. Sem isto ele acusaria as tres como divergencia nao explicada.
+        "barras_cheias": BARRAS_CHEIAS,
         "veio_do_sheets": "https://docs.google.com/spreadsheets/d/"
                           "1rH43Xw6nneXwIPkI1VpsnPPkTZTPIqbiocY0KQdPwZ8/edit",
         "limpezas": [
@@ -165,6 +187,11 @@ layout = {
             "ida e volta de unidade",
             "a condicional verde B7E1CD de D114, o 'nao esta vazio' de fabrica do "
             "Google, sai",
+            "as tres barras 'agora' -- vida, energia e integridade -- voltam a "
+            "apontar para a maxima (=J23, =J27, =J31). A planilha viva e onde o "
+            "Mizuki JOGA, entao ela exporta com o personagem dele em campo; o "
+            "molde tem de nascer cheio. Quantas foram repostas, o extrator conta: "
+            + (", ".join(barras_repostas) if barras_repostas else "nenhuma nesta rodada"),
         ],
         "onde_ela_vive": "Google Sheets. Por isso o IFS fica cru e o SPARKLINE "
                          "continua: no Excel os dois quebram, e isso esta aceito.",

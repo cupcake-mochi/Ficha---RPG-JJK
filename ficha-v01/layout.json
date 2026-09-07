@@ -1,12 +1,20 @@
 {
  "_meta": {
   "o_que_e": "o desenho da Ficha (PROJETO M) 0.1, extraido do .xlsx que o Mizuki mandou. O monta.py replica isto.",
-  "origem": "c65ab9d1-Ficha__PROJETO_M__0.1.xlsx",
+  "origem": "original.xlsx",
+  "barras_cheias": {
+   "FICHA": {
+    "D23": "=J23",
+    "D27": "=J27",
+    "D31": "=J31"
+   }
+  },
   "veio_do_sheets": "https://docs.google.com/spreadsheets/d/1rH43Xw6nneXwIPkI1VpsnPPkTZTPIqbiocY0KQdPwZ8/edit",
   "limpezas": [
    "as celulas em Arial 10 preto, todas vazias, saem: e o estilo de fabrica do Sheets. Quantas sao, o comparador conta -- numero em prosa deriva, e este ja derivou de 3165 para 3161 numa edicao.",
    "a largura 3,63 volta a 4,0, que e o que o gerador escreve antes da ida e volta de unidade",
-   "a condicional verde B7E1CD de D114, o 'nao esta vazio' de fabrica do Google, sai"
+   "a condicional verde B7E1CD de D114, o 'nao esta vazio' de fabrica do Google, sai",
+   "as tres barras 'agora' -- vida, energia e integridade -- voltam a apontar para a maxima (=J23, =J27, =J31). A planilha viva e onde o Mizuki JOGA, entao ela exporta com o personagem dele em campo; o molde tem de nascer cheio. Quantas foram repostas, o extrator conta: FICHA!D23 19.0 -> =J23, FICHA!D27 8.0 -> =J27, FICHA!D31 25.0 -> =J31"
   ],
   "onde_ela_vive": "Google Sheets. Por isso o IFS fica cru e o SPARKLINE continua: no Excel os dois quebram, e isso esta aceito."
  },
@@ -18223,7 +18231,7 @@
     ],
     [
      "D23",
-     19.0,
+     "=J23",
      68
     ],
     [
@@ -19113,7 +19121,7 @@
     ],
     [
      "D27",
-     8.0,
+     "=J27",
      68
     ],
     [
@@ -20018,7 +20026,7 @@
     ],
     [
      "D31",
-     25.0,
+     "=J31",
      68
     ],
     [

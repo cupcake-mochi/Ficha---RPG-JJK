@@ -23,6 +23,7 @@ for f in (A, B):
         sys.exit(f"falta {f}. Rode extrair.py e monta.py primeiro.")
 
 wa, wb_ = load_workbook(A), load_workbook(B)
+BARRAS = LAY["_meta"].get("barras_cheias", {})
 difs, esperadas = [], Counter()
 
 def cor(c):
@@ -105,6 +106,13 @@ for n in wa.sheetnames:
                 esperadas["Arial 10 de fábrica em célula vazia"] += 1
                 continue
             coord = sa.cell(row=r, column=c).coordinate
+            # limpeza 4: a barra "agora" do original vem com o numero do
+            # personagem que o Mizuki estava jogando, e o molde tem de nascer
+            # cheio. A lista mora no layout.json, nunca aqui.
+            _cheia = BARRAS.get(n, {}).get(coord)
+            if _cheia is not None and pb["valor"] == _cheia:
+                esperadas["barra 'agora' reposta para nascer cheia"] += 1
+                continue
             for k in pa:
                 if pa[k] != pb[k]:
                     difs.append(f"{n}!{coord} {k}: {pa[k]!r} != {pb[k]!r}")
@@ -179,7 +187,7 @@ for n in wa.sheetnames:
 
 print()
 print("=" * 74)
-print("AS DIFERENÇAS ESPERADAS — as três limpezas que o Mizuki decidiu")
+print(f"AS DIFERENÇAS ESPERADAS — as {len(LAY['_meta']['limpezas'])} limpezas que o Mizuki decidiu")
 print("=" * 74)
 for k, v in esperadas.items():
     print(f"  {v:>6}  {k}")
@@ -195,6 +203,6 @@ if difs:
     if len(difs) > 40:
         print(f"    ... e mais {len(difs) - 40}")
     sys.exit(1)
-print(">>> IGUAIS — fora as três limpezas declaradas, o gerador reproduz o")
+print(f">>> IGUAIS — fora as {len(LAY['_meta']['limpezas'])} limpezas declaradas, o gerador reproduz o")
 print("    arquivo do Mizuki célula por célula.")
 print("=" * 74)
