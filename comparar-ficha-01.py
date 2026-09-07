@@ -11,6 +11,7 @@ elas. Qualquer outra e defeito do gerador.
 import json, os, sys
 from collections import Counter
 from openpyxl import load_workbook
+from openpyxl.worksheet.formula import ArrayFormula
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 A = os.path.join(AQUI, "ficha-v01", "original.xlsx")
@@ -29,10 +30,23 @@ def cor(c):
         return None
     return c.rgb if isinstance(c.rgb, str) else None
 
+def valor_de(cel):
+    """O valor comparavel da celula.
+
+    ⚠ Formula MATRICIAL nao se compara direto: o openpyxl devolve um objeto
+    ArrayFormula sem __eq__, entao duas identicas saem como diferentes -- e o
+    comparador acusava as cinco da aba INVOCACAO como divergencia nao
+    explicada, imprimindo dois enderecos de memoria como se fossem valores.
+    O que identifica uma matricial e o par (faixa, texto)."""
+    v = cel.value
+    if isinstance(v, ArrayFormula):
+        return ("matricial", v.ref, v.text)
+    return v
+
 def perfil(cel):
     f, p, b, al = cel.font, cel.fill, cel.border, cel.alignment
     return {
-        "valor": cel.value,
+        "valor": valor_de(cel),
         "fonte": [f.name, f.sz, cor(f.color), bool(f.b), bool(f.i)] if f else None,
         "fundo": cor(p.start_color) if (p and p.fill_type == "solid") else None,
         "borda": {l: [getattr(b, l).style, cor(getattr(b, l).color)]

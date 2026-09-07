@@ -18,6 +18,7 @@ decisao A5, as imagens e a ordem das abas.
 """
 import json, os, re, shutil, sys, zipfile
 from openpyxl import load_workbook
+from openpyxl.worksheet.formula import ArrayFormula
 from openpyxl.utils import get_column_letter as L
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
@@ -80,7 +81,19 @@ for nome in wb.sheetnames:
             e = idx_estilo(c)
             if c.value is None and e is None:
                 continue
-            celulas.append([c.coordinate, c.value, e])
+            # ⚠ FORMULA MATRICIAL. O openpyxl devolve um objeto ArrayFormula, e
+            # nao uma string -- e ele nao serializa em JSON. Ate a ficha ganhar
+            # as cinco do INDEX/MATCH da aba INVOCACAO, este extrator nunca
+            # tinha visto uma, e ele MORRIA no json.dump em vez de avisar.
+            #
+            # Guardamos o texto e a FAIXA dela. A faixa importa: numa matricial
+            # de uma celula so ela e a propria celula, mas numa de varias ela
+            # diz ate onde o resultado se espalha, e escrever so o texto
+            # transformaria a formula numa comum, calada.
+            v, ref = c.value, None
+            if isinstance(v, ArrayFormula):
+                v, ref = v.text, v.ref
+            celulas.append([c.coordinate, v, e] + ([ref] if ref else []))
 
     # as colunas: o Sheets colapsa tudo num range so, e a largura volta a 4,0
     cols = []

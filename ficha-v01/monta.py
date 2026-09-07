@@ -16,6 +16,7 @@ Onde a ficha vive e o Google Sheets, e isso decide duas coisas:
   · o SPARKLINE das 3 celulas continua. Ele nao existe no Excel.
 """
 import json, os, sys
+from openpyxl.worksheet.formula import ArrayFormula
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter as L
@@ -80,10 +81,14 @@ for a in LAYOUT["abas"]:
 
     # o valor ANTES da mesclagem: mesclar apaga o estilo de tudo que nao e o
     # canto, e ai o bloco abre branco
-    for coord, valor, ie in a["celulas"]:
+    for reg in a["celulas"]:
+        coord, valor, ie = reg[0], reg[1], reg[2]
         cel = ws[coord]
         if valor is not None:
-            cel.value = valor
+            # o quarto campo, quando existe, e a faixa de uma formula MATRICIAL:
+            # sem ele ela volta como formula comum e o Sheets recalcula outra
+            # coisa. Registro de tres campos continua valendo -- e a maioria.
+            cel.value = ArrayFormula(reg[3], valor) if len(reg) > 3 else valor
         if ie is not None:
             st = ESTILOS[ie]
             if st["font"]:          cel.font = st["font"]
