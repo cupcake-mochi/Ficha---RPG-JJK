@@ -3,10 +3,10 @@
     "o_que_e": "os valores da ficha da invocacao. Este arquivo e o dono dos VALORES; o porque mora no capitulo vendorizado ao lado.",
     "dono_da_regra": "Projeto - M, capitulo 16 (Invocacoes) do Manual da Guilda, e a peca 15 de sistema/03-mecanica no repositorio JJK---Project",
     "lido_de": "capitulo-16-invocacoes.md e capitulo-35-caminhos-e-trilhas.md, copias de sistema/05-material/livro/manual/60-invocacoes.md e 35-caminhos-e-trilhas.md",
-    "versao_do_sistema": "0.200, e os dois capitulos conferidos IDENTICOS na 0.205",
+    "versao_do_sistema": "0.216, mais a regua da morte por corpo (nao fechada em versao)",
     "por_que_nao_le_do_manual_txt": "o manual.txt deste repositorio esta congelado na v0.104 (199 p., 16 capitulos) e o capitulo de Invocacoes mudou de forma depois disso: a ficha derivada do dono e a venda de numero morreram na v0.180, a regua da morte e a vida do corpo forte mudaram na v0.178, e o Investir ganhou tabela de dano na v0.178. Construir contra o manual.txt seria construir a mecanica morta.",
     "regra": "onde este arquivo e o capitulo discordarem, o capitulo vence",
-    "conferido_em": "02/09/2026, contra o commit ccec9d2 (v0.205) do JJK---Project: o 60-invocacoes.md e o 35-caminhos-e-trilhas.md vieram byte a byte iguais aos vendorizados aqui. Entre a v0.200 e a v0.205 o unico capitulo do livro que mudou foi o 45-aptidoes-e-refino.md, que esta ficha nao le."
+    "conferido_em": "07/09/2026, contra o commit 5dccb3d do JJK---Project, na branch claude/regua-da-morte-por-corpo: o 60-invocacoes.md foi copiado byte a byte para o capitulo-16-invocacoes.md daqui."
   },
   "atributos": {
     "lista": [
@@ -69,8 +69,6 @@
   },
   "vida": {
     "formula_crua": "base do tipo + (2 + Constituicao dela) * nivel do dono",
-    "formula_corpo_forte": "ARRED.ABAIXO(2,5 * (base do tipo + 2 * nivel) + Constituicao dela * nivel)",
-    "multiplicador_corpo_forte": 2.5,
     "constituicao_fora_do_multiplicador": true,
     "por_que": "com a Constituicao dentro do multiplicador um ponto dela valia 5x o nivel num corpo de invocacao e 1x numa ficha de personagem. Conserto da v0.178.",
     "conferido_corpo_forte_con0": {
@@ -93,44 +91,47 @@
         "30": 157
       }
     },
-    "conferido_cru_con0": {
+    "formula_corpo": "ARRED.ABAIXO(multiplicador da Trilha * (base do tipo + 2 * nivel) + Constituicao dela * nivel)",
+    "multiplicador_mora_em": "trilhas.<Trilha>.multiplicador_corpo",
+    "conferido_corpo_coro_con0": {
       "técnica": {
-        "2": 6,
-        "10": 22,
-        "18": 38,
-        "30": 62
+        "2": 12,
+        "10": 44,
+        "18": 76,
+        "30": 124
       }
-    }
+    },
+    "formula_crua_ainda_serve_para": "nada na ficha: nenhuma Trilha usa mais a formula crua desde que o corpo do Coro subiu para 2x. Ela fica escrita porque as duas formulas de corpo sao ela com multiplicador, e o capitulo ainda a explica."
   },
   "trilhas": {
     "Servo": {
       "corpos": 1,
-      "corpo": "forte",
+      "multiplicador_corpo": 2.5,
       "orcamento_multiplicador": 1.5,
       "vulneravel_a_area": 1.0,
       "nota": "o orcamento e o da ficha mais metade, arredondando para baixo. Todo orcamento e multiplo de 4, entao fecha redondo."
     },
     "Matilha": {
       "corpos": 5,
-      "corpo": "forte",
+      "multiplicador_corpo": 2.5,
       "orcamento_multiplicador": 1.0,
       "vulneravel_a_area": 1.5,
       "nota": "um corpo forte numa barra so, com cascata. Area causa o dano uma vez na barra, e ela leva metade a mais."
     },
     "Coro": {
       "corpos": 1,
-      "corpo": "cru",
+      "multiplicador_corpo": 2,
       "orcamento_multiplicador": 1.0,
       "vulneravel_a_area": 1.0,
-      "nota": "o unico que ataca e comanda na mesma rodada, e por isso leva o corpo cru."
+      "nota": "o unico que ataca e comanda na mesma rodada, e por isso leva o menor corpo dos tres. Ele valia a formula crua ate a regua da morte voltar a ser a vida do corpo: com `h` ele era o unico corpo do jogo abaixo de um golpe e meio de inimigo, e um golpe comum o destruia em definitivo."
     }
   },
   "morte": {
-    "formula_regua": "5 * a vida CRUA do tipo (nunca a do corpo forte)",
-    "multiplicador_regua": 5,
+    "formula_regua": "a vida maxima daquele corpo",
+    "multiplicador_regua": 1,
     "morre_de_vez_se": [
-      "o excedente passar de metade da regua",
-      "um unico golpe causar a regua inteira"
+      "um unico golpe causar a regua inteira",
+      "o excedente passar de metade da regua"
     ],
     "volta_com": "metade da vida maxima do corpo em campo",
     "vida_cheia_volta": "no descanso longo",
@@ -139,10 +140,12 @@
       "nivel": 10,
       "tipo": "técnica",
       "constituicao": 1,
-      "vida_maxima": 32,
-      "regua": 160,
-      "volta_com": 16
-    }
+      "vida_maxima": 54,
+      "regua": 54,
+      "volta_com": 27,
+      "trilha": "Coro"
+    },
+    "area_nao_e_golpe_unico": "area derruba, e nunca destroi"
   },
   "ficha_dela": {
     "acerto": "o atributo dela + a maestria do dono",

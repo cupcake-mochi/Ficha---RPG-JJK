@@ -79,8 +79,9 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
     c = 11
     c = tabela(c, "tab_tipos", ["tipo", "base"], [[k, v] for k, v in INV["tipos"].items()])
     c = tabela(c, "tab_trilhas", ["trilha", "corpos", "mult", "corpo", "area"],
-               [[k, v["corpos"], v["orcamento_multiplicador"], v["corpo"],
-                 v["vulneravel_a_area"]] for k, v in INV["trilhas"].items()])
+               [[k, v["corpos"], v["orcamento_multiplicador"],
+                 v["multiplicador_corpo"], v["vulneravel_a_area"]]
+                for k, v in INV["trilhas"].items()])
     c = tabela(c, "tab_traco", ["traço", "pontos"],
                [["—", 0]] + [[k, v] for k, v in INV["traco"].items()])
     c = tabela(c, "tab_comando", ["comando", "pontos"],
@@ -280,12 +281,11 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
     r = G.secao(ws, r + 1, "5", "VIDA E MORTE", ate=20)
     BASE_T = f'IFERROR(VLOOKUP({TIPO},{REF["tab_tipos"]},2,FALSE),0)'
     CON = CELS[2]
-    CRUA = f'({BASE_T}+(2+{CON})*{NIV})'
-    FORTE = f'FLOOR({V["multiplicador_corpo_forte"]}*({BASE_T}+2*{NIV})+{CON}*{NIV},1)'
-    CORPO_T = f'IFERROR(VLOOKUP({TRI},{REF["tab_trilhas"]},4,FALSE),"cru")'
+    MULT_C = f'IFERROR(VLOOKUP({TRI},{REF["tab_trilhas"]},4,FALSE),1)'
+    CORPO_V = f'FLOOR({MULT_C}*({BASE_T}+2*{NIV})+{CON}*{NIV},1)'
     _p = INV["sintonia"]["rotas"]["Parrudo"]["multiplicador_maestria"]
     PARR = f'IF({SIN}="Parrudo",{_p}*{MAEC},0)'
-    VMAX = f'=IF({TIPO}="","",IF({CORPO_T}="forte",{FORTE},{CRUA})+{PARR})'
+    VMAX = f'=IF({TIPO}="","",{CORPO_V}+{PARR})'
 
     R["vida_max"] = G.campo(ws, GRADE_10[0], r, LARG_10, "vida máxima", VMAX,
                             pt=G.PT_GRANDE, alto=2)
@@ -303,7 +303,10 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
     pinta(ws, 15, r, COLS, r, PAINEL)
     txt(ws, 15, r, barra(VC, VMAXC, cor_de_estado(VC, VMAXC)), ate=(COLS, r))
     r += 2
-    REGUA = f'{M["multiplicador_regua"]}*{CRUA}'
+    # A regua da morte E a vida maxima daquele corpo. A celula APONTA para a
+    # vida maxima em vez de recalcular: duas contas para o mesmo numero e a
+    # licao no 9 dentro de uma planilha, e aqui ela sairia de graca.
+    REGUA = VMAXC
     R["regua"] = G.campo(ws, GRADE_10[0], r, LARG_10, "régua da morte",
                          f'=IF({TIPO}="","",{REGUA})')
     R["meia_regua"] = G.campo(ws, GRADE_10[1], r, LARG_10, "metade dela",
@@ -312,9 +315,10 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
                              f'=IF({TIPO}="","",FLOOR({VMAXC}/2,1))')
     r += 3
     r = G.aviso(ws, r, "morre de vez",
-                "quando o dano que passar de zero for maior que a metade da régua, ou "
-                "quando um golpe só causar a régua inteira. Fora desses dois casos ela "
-                "só cai, e você reinvoca.")
+                "quando um golpe só causar a régua inteira, ou quando o dano que passar "
+                "de zero for maior que a metade da régua. A régua é a vida máxima dela. "
+                "Área nunca destrói: ela derruba como qualquer dano. Fora desses dois "
+                "casos ela só cai, e você reinvoca.")
     r = G.nota(ws, r, "No zero ela sai do campo. Ela não fica Inconsciente e não ganha "
                "Sequela nem Cicatriz. Reinvocar custa os PE de novo, e ela volta com "
                "metade da vida; a vida cheia volta no descanso longo.")

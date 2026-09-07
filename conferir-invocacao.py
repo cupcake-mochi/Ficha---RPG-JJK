@@ -149,9 +149,17 @@ for cs in tabela_depois_de("**Tipos e vida**", 6):
               f"a formula do json da {calc}")
 
 print()
-mult = INV["vida"]["multiplicador_corpo_forte"]
+# O multiplicador do corpo mora na TRILHA desde que o corpo do Coro subiu de `h`
+# para 2x: com tres valores possiveis, um campo unico em vida.* virou mentira.
+mult = INV["trilhas"]["Servo"]["multiplicador_corpo"]
 checa(f"o capitulo escreve o multiplicador {mult} do corpo forte",
       str(mult).replace(".", ",") in CAP, f"nao achei {mult} no capitulo")
+checa("as duas Trilhas de corpo forte levam o mesmo multiplicador",
+      INV["trilhas"]["Matilha"]["multiplicador_corpo"] == mult,
+      f'a Matilha diz {INV["trilhas"]["Matilha"]["multiplicador_corpo"]}')
+_mc = INV["trilhas"]["Coro"]["multiplicador_corpo"]
+checa(f"o corpo do Coro ({_mc}x) e MENOR que o corpo forte ({mult}x)", _mc < mult,
+      "o Coro deixou de ser a Trilha do corpo pequeno, e o capitulo promete que ela e")
 checa("o capitulo pos a Constituicao FORA do multiplicador",
       "+ a Constituição dela × o seu nível" in CAP and INV["vida"]["constituicao_fora_do_multiplicador"])
 for cs in tabela_depois_de("**Corpo forte, com Constituição `0`**", 5):
@@ -249,23 +257,30 @@ checa(f'deslocamento = {F["deslocamento"]} metros',
 checa(f'a amarra = {F["amarra"]} metros',
       f'ficar a até {F["amarra"]} metros' in CAP)
 checa("fora da amarra ela NAO some", "Ela **não some**" in CAP or "Ela não some" in CAP)
-checa(f'a regua da morte = {M["multiplicador_regua"]} x a vida do TIPO',
-      f'A régua da morte é `{M["multiplicador_regua"]} ×` a vida que a fórmula do tipo dá' in CAP)
-checa("a regua NAO e a vida daquele corpo",
-      "A régua não é a vida daquele corpo" in CAP)
+checa("a regua da morte E a vida maxima daquele corpo",
+      "A régua da morte é a vida máxima daquele corpo" in CAP)
+checa("o json guarda o multiplicador 1 — a regua nao multiplica nada",
+      M["multiplicador_regua"] == 1, f'o json diz {M["multiplicador_regua"]}')
+checa("area nunca destroi, e o capitulo diz",
+      "Área nunca destrói" in CAP and "area derroba" not in M["area_nao_e_golpe_unico"])
+checa("os dois gatilhos na ordem em que o capitulo escreve",
+      "se um único golpe causar a régua inteira, ou se o excedente passar de metade "
+      "da régua" in CAP)
 E = M["exemplo_do_capitulo"]
 base = INV["tipos"][E["tipo"]]
-vmax = base + (2 + E["constituicao"]) * E["nivel"]
+# o exemplo e' de uma Trilha, entao a vida sai do multiplicador DELA
+_mc = INV["trilhas"][E["trilha"]]["multiplicador_corpo"]
+vmax = int(_mc * (base + 2 * E["nivel"])) + E["constituicao"] * E["nivel"]
 checa(f'o exemplo do capitulo fecha: vida {E["vida_maxima"]}', vmax == E["vida_maxima"],
       f"a formula da {vmax}")
-checa(f'o exemplo do capitulo fecha: regua {E["regua"]}',
-      vmax * M["multiplicador_regua"] == E["regua"],
-      f'a formula da {vmax * M["multiplicador_regua"]}')
+checa(f'o exemplo do capitulo fecha: regua {E["regua"]}', vmax == E["regua"],
+      f"a regua E a vida maxima, e a formula da {vmax}")
 checa(f'o exemplo do capitulo fecha: volta com {E["volta_com"]}',
       vmax // 2 == E["volta_com"], f"a formula da {vmax // 2}")
 checa("o capitulo publica o exemplo com os mesmos numeros",
-      f'= {E["vida_maxima"]}` e a régua da morte é `{M["multiplicador_regua"]} × '
-      f'{E["vida_maxima"]} = {E["regua"]}' in CAP)
+      f'= {E["vida_maxima"]}`, então **a régua da morte dela é `{E["regua"]}`**' in CAP)
+checa("o capitulo nomeia a Trilha do exemplo",
+      f'na Trilha `{E["trilha"]}`' in CAP)
 
 # =====================================================================
 print()
@@ -279,8 +294,14 @@ for cs in tabela_depois_de("**A vida que cada Trilha põe em campo**", 4):
     t = INV["trilhas"][nome]
     checa(f"{nome}: {corpos} corpo(s)", t["corpos"] == int(corpos),
           f'o json diz {t["corpos"]}')
-    esperado = "cru" if "cru" in cs[2] else "forte"
-    checa(f"{nome}: corpo {esperado}", t["corpo"] == esperado, f'o json diz {t["corpo"]!r}')
+    # a coluna de vida do capitulo publica o numero no nv10, Con 0, `tecnica`;
+    # ele se recalcula do multiplicador da Trilha em vez de ser lido de rotulo.
+    _num = re.search(r"(\d+)", cs[3])
+    if _num:
+        _b = INV["tipos"]["técnica"]
+        _esp = int(t["multiplicador_corpo"] * (_b + 2 * 10))
+        checa(f"{nome}: vida {_esp} no nv10, Con 0, `tecnica`", int(_num.group(1)) == _esp,
+              f'o capitulo publica {_num.group(1)} e {t["multiplicador_corpo"]}x da {_esp}')
 checa("a Matilha leva metade a mais de area",
       "leva `×1,5` do dano" in CAP and INV["trilhas"]["Matilha"]["vulneravel_a_area"] == 1.5)
 checa("area bate uma vez na barra, e nao uma por corpo",

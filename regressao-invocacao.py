@@ -122,27 +122,32 @@ for tipo, col in INV["vida"]["conferido_corpo_forte_con0"].items():
 
 print()
 print("=" * 74)
-print("3. A VIDA CRUA — a tabela de Tipos e vida, pelo Coro")
+print("3. O CORPO DO CORO — o menor dos tres, e ele tem multiplicador proprio")
 print("=" * 74)
-for tipo, col in INV["vida"]["conferido_cru_con0"].items():
+for tipo, col in INV["vida"]["conferido_corpo_coro_con0"].items():
     for nivel, esperado in col.items():
         s = roda(**zerado(nivel=int(nivel), tipo=tipo, trilha="Coro"))
-        checa(f"vida crua · {tipo} · nv{nivel} = {esperado}",
+        checa(f"corpo do Coro · {tipo} · nv{nivel} = {esperado}",
               num(s["vida_max"]) == esperado, f'a ficha deu {s["vida_max"]!r}')
 
 print()
 print("   contra-teste: o Servo e o Coro NAO podem dar a mesma vida")
 s1 = roda(**zerado(nivel=10, tipo="técnica", trilha="Servo"))
 s2 = roda(**zerado(nivel=10, tipo="técnica", trilha="Coro"))
-checa("Servo (55) != Coro (22) no mesmo nivel e tipo",
+checa("Servo != Coro no mesmo nivel e tipo",
       num(s1["vida_max"]) != num(s2["vida_max"]),
       f'os dois deram {s1["vida_max"]!r}')
 
 print()
-print("   a regua sai da vida CRUA, e nao da do corpo forte")
-checa("a regua do Servo e a do Coro sao IGUAIS — 5 x a crua",
-      num(s1["regua"]) == num(s2["regua"]),
-      f'Servo {s1["regua"]!r} · Coro {s2["regua"]!r}')
+print("   a regua E a vida maxima, entao ela muda de Trilha para Trilha")
+checa("a regua do Servo e a do Coro sao DIFERENTES",
+      num(s1["regua"]) != num(s2["regua"]),
+      f'Servo {s1["regua"]!r} · Coro {s2["regua"]!r} — se forem iguais a regua '
+      'voltou a ser escala fixa sem ninguem ver')
+for _s, _n in ((s1, "Servo"), (s2, "Coro")):
+    checa(f"a regua do {_n} e exatamente a vida maxima dele",
+          num(_s["regua"]) == num(_s["vida_max"]),
+          f'regua {_s["regua"]!r} contra vida {_s["vida_max"]!r}')
 
 # =====================================================================
 print()
@@ -346,11 +351,19 @@ checa("contra-teste: a Voz NAO mexe na vida",
       f'{vz["vida_max"]!r} contra {nd["vida_max"]!r}')
 
 print()
-print("   contra-teste: o Parrudo NAO pode mexer na regua da morte")
+# ⚠ Este contra-teste era o OPOSTO ate a regua voltar a ser a vida do corpo: ele
+# exigia que o Parrudo NAO mexesse na regua, porque a regua era escala fixa. Com a
+# regua sendo a vida maxima, ela anda junto com tudo que sobe a vida — e o que
+# sobra para conferir e' o TAMANHO do passo, que continua sendo so o Parrudo.
+print("   o Parrudo sobe a regua junto com a vida, e no tamanho exato")
 sem = roda(**zerado(nivel=30, tipo="técnica", trilha="Servo", sintonia="—"))
 com = roda(**zerado(nivel=30, tipo="técnica", trilha="Servo", sintonia="Parrudo"))
-checa("a regua e a mesma com e sem Parrudo", num(sem["regua"]) == num(com["regua"]),
-      f'{sem["regua"]!r} contra {com["regua"]!r}')
+_dv = num(com["vida_max"]) - num(sem["vida_max"])
+_dr = num(com["regua"]) - num(sem["regua"])
+checa("o Parrudo mexe na regua", _dr != 0,
+      'a regua nao se moveu — ela deixou de ser a vida maxima')
+checa(f"e ela anda exatamente o que a vida anda ({_dv})", _dr == _dv,
+      f'a vida andou {_dv} e a regua andou {_dr}')
 
 # =====================================================================
 print()

@@ -75,7 +75,7 @@ Toda invocação é de um dos quatro tipos, e o tipo é o que decide a base da v
 |---|---|---|---|
 | `Servo` | 1 | um corpo forte | **55** num corpo só |
 | `Matilha` | 5 | um corpo forte, numa barra só | **55** repartidos, com cascata |
-| `Coro` | 1 | o corpo cru de `Tipos e vida` | **22** |
+| `Coro` | 1 | um corpo menor | **44** |
 
 **Corpo forte, com Constituição `0`**
 {: .tab-titulo }
@@ -160,7 +160,10 @@ Cada linha diz quanto ela custa do orçamento, o nome que vai na ficha, e o efei
 | **8** | `Graúdo` | ocupa espaço maior e **barra passagem** |
 | **8** | `Remoto` | funciona além dos 18 metros da amarra. Ver *A amarra, e as três faixas de alcance* |
 
-> **O `Graúdo` e o `Miúdo` são o mesmo eixo em degraus diferentes, e o que os separa é quem sofre.** O `Miúdo` passa por um vão, e isso é coisa que a invocação faz consigo mesma. O `Graúdo` barra passagem, e barrar é o inimigo perdendo movimento.
+> **`Miúdo`** — ela ocupa espaço menor e passa por um vão, e isso é coisa que a invocação faz consigo mesma.
+> **`Graúdo`** — ela ocupa espaço maior e barra passagem, e barrar é o inimigo perdendo movimento.
+>
+> **Os dois são o mesmo eixo em degraus diferentes, e o que os separa é quem sofre.**
 
 Uma invocação com `Vigia` transforma toda cena de vigilância: o grupo fica no carro e a invocação fica no telhado. Uma com `Fala` faz o interrogatório, o recado e a negociação em lugar onde nenhum de vocês podia aparecer.
 
@@ -226,6 +229,77 @@ Você pode escrever `Traço` e `Comando` fora dos dois catálogos, e as réguas 
 | **4** | **faz uma coisa com um alvo ou um objeto**. `Agarrar`, `Arrastar`, `Buscar`, `Cavar` |
 | **8** | **protege você, ou nega a ação de outro**. `Interpor`, `Chamariz` |
 
+## Montar uma invocação
+
+A montagem cabe em cinco passos.
+
+1. **A Trilha.** Ela diz quantos corpos entram em campo, que corpo é esse, e qual é o seu orçamento. Você não paga por ela: ela vem no nível 2, junto do Caminho.
+2. **Os atributos.** Nove pontos entre os cinco, nenhum acima de `3`, e eles são dela.
+3. **O tipo.** Ele decide a base da vida, e a Trilha multiplica em cima.
+4. **O orçamento.** Compre `Traço` e `Comando` no catálogo, ou escreva os seus pela régua. Sobrar ponto pode; estourar não.
+5. **A ficha.** Acerto, Defesa, Teste de Resistência, vida e deslocamento saem sozinhos dos quatro anteriores. Dê um nome e escreva.
+
+> **Os atributos e o orçamento são dois bolsos, e eles não se conversam.** Não existe troca que baixe um atributo para comprar `Traço`, nem o contrário.
+
+### Exemplo
+
+Você joga um Evocador de nível 6, com a Trilha `Servo` e Essência `3`. O que você quer é o corpo que fecha o corredor: a coisa se planta na porta, e quem quiser passar resolve ela antes.
+
+**Passo 1 — a Trilha.** O `Servo` põe **um** corpo em campo, e esse corpo é corpo forte. Ele também é o único dos três que monta com o orçamento da ficha mais metade: no nível 6 a ficha tem `12`, então você tem **`18`**.
+
+**Passo 2 — os atributos.** Força `3` para barrar, Constituição `3` porque o serviço dela é apanhar, Essência `2` pela presença, Inteligência `1` e Destreza `0`. O Teste de Resistência que ela treina é o Físico, pela Força.
+
+**Passo 3 — o tipo.** `maldição domada` — uma coisa que quis te matar antes de aceitar ficar na porta. A base dela é `3`.
+
+**Passo 4 — o orçamento.** `Graúdo` custa `8` e barra passagem, `Chamariz` custa `8` e obriga o alvo a vir para cima dela, e as duas juntas são o corredor fechado. Sobram `2`, e `Escalada` custa exatamente isso — ela chega ao lugar pela parede, sem depender do chão. **`8 + 8 + 2 = 18`, o orçamento inteiro.**
+
+**Passo 5 — a ficha.** A vida sai do corpo forte: `2,5 × (3 + 2 × 6)` dá `37`, mais `3 × 6` da Constituição dela, e fecha em `55`. O acerto é a Força `3` dela mais a sua maestria `1`. A Defesa é `10`, mais a Destreza `0` dela, mais metade da sua Essência.
+
+**Ficha da Carranca**
+{: .tab-titulo }
+
+| linha | valor |
+|---|---|
+| **Trilha e tipo** | `Servo` · `maldição domada` · um corpo |
+| **atributos** | For `3` · Des `0` · Con `3` · Int `1` · Ess `2` |
+| **compras** | `18` de `18` — `Graúdo` `8` · `Chamariz` `8` · `Escalada` `2` |
+| **acerto** | `+4` |
+| **Defesa** | `11` |
+| **Teste de Resistência** | Físico `+4`. Nos outros três a sua maestria não entra |
+| **vida** | `55` |
+| **régua da morte** | `55` — a vida máxima dela |
+| **deslocamento** | `9` metros, e ela sobe parede |
+| **`Investir`** | `4d6` |
+| **como é** | uma cara de pedra do tamanho de uma porta. Ela desce pela parede, senta na passagem, e fica olhando para quem chegou até a coisa vir até ela |
+
+> **A régua da morte é a vida máxima dela, e é só isso.** *A Carranca tem `55` de vida, então a régua dela é `55`.* **É a régua que decide se a invocação volta ou acaba** — a linha de `vida` conta a luta de hoje, a régua conta se existe amanhã.
+>
+> **Metade de `55` é `27,5`, e dano é número inteiro:** o excedente que mata de vez é `28` para cima.
+
+E se a mesma montagem estivesse nas outras duas Trilhas:
+
+**A Carranca em cada Trilha**
+{: .tab-titulo }
+
+| | `Servo` | `Matilha` | `Coro` |
+|---|---|---|---|
+| orçamento no nível 6 | **`18`** | `12` | `12` |
+| corpos em campo | 1 | **5** | 1 |
+| vida | `55` | `55` numa barra só | **`48`** |
+| `Investir` | `4d6` | `1d6` por corpo | `4d6` |
+| área | normal | **`×1,5`** | normal |
+| régua da morte | `55` | `55` | `48` |
+
+**Só o `Servo` tem bolso diferente**, e por isso a montagem da `Carranca` não caberia nas outras duas: nelas a `Escalada` fica de fora. **A régua da morte acompanha a vida em cada uma**, porque ela *é* a vida máxima — `55` nas duas de cima e `48` no `Coro`.
+
+> **Erros comuns**
+>
+> **Comprar dado de dano.** Não existe `Traço` que dê `+1d6` a preço nenhum. O que você e todas as suas invocações causam numa rodada já é o dano de uma rodada sua sozinho, e o `Investir` entrega essa cota inteira.
+>
+> **Comprar Defesa, acerto ou vida.** Os três já saem dos atributos dela, e comprar de novo é pagar duas vezes pela mesma coisa. O orçamento compra o que ela **faz**.
+>
+> **Procurar a régua da morte em outro lugar que não a linha da vida.** A régua **é** a vida máxima daquele corpo — o número escrito em `vida` quando ela está inteira. Não tem conta nenhuma para fazer.
+
 ### Montagens de exemplo
 
 Seis invocações conhecidas, montadas com os catálogos `Traço` e `Comando`.
@@ -286,11 +360,14 @@ Os 18 metros são o alcance base de Projétil, a referência de distância do si
 > **E a invocação como `Matilha` é vulnerável a área: ela leva `×1,5` do dano**, metade a mais.
 
 
-> **A régua da morte é `5 ×` a vida que a fórmula do tipo dá**, e ela é a mesma para toda invocação — um corpo só, os cinco da `Matilha`, ou o corpo grande do `Servo`.
-> **Ela morre em definitivo se o excedente passar de metade da régua, ou se um único golpe causar a régua inteira.**
+> **A régua da morte é a vida máxima daquele corpo.** É o número de `vida` da ficha dela, com o corpo inteiro. Não tem conta para fazer.
+> **Ela morre em definitivo se um único golpe causar a régua inteira, ou se o excedente passar de metade da régua.**
+> **Área nunca destrói.** Ela derruba como qualquer dano, e só.
 > O talismã se desfaz, o corpo se perde, a invocação de técnica ou a maldição domada é exorcizada.
 
-A régua não é a vida daquele corpo, e isso é de propósito: se ela fosse, um corpo pequeno seria destruído de vez por um golpe comum, e um corpo grande sobreviveria ao mesmo golpe. **Morrer de vez precisa de área grande ou de Expansão de Domínio**, para qualquer invocação.
+**Excedente é o que sobra do golpe depois de zerar a vida dela.** Se ela está com `10` e leva `18`, o excedente é `8`.
+
+A régua é a vida máxima porque um golpe que apaga um corpo inteiro **destruiu** esse corpo — não faz sentido ele contar como "só caiu". Na prática **nenhum golpe comum destrói**: precisa de um crítico do maior inimigo da tabela, ou de o corpo já estar quase caindo quando o golpe chega.
 
 ### Voltar
 
@@ -301,7 +378,7 @@ Você paga os PE de novo e paga a Ação Padrão de novo.
 
 > **A vida cheia volta no descanso longo.** Enquanto a missão não acaba, o corpo que você trouxe de volta continua com metade.
 
-> **Exemplo.** O Kaito, nível 10, tem uma invocação de `técnica` com Constituição `1`, então a vida máxima dela é `2 + (2 + 1) × 10 = 32` e a régua da morte é `5 × 32 = 160`. Ela está com `4` de vida e leva um golpe de `18`. O excedente é `14`, que não passa de `80`, que é metade da régua; e `18` não chega a `160`. Ela some, mas não morreu de vez: no turno seguinte ele gasta `3` PE e a Ação Padrão, e ela volta com `16`, que é metade da vida máxima dela.
+> **Exemplo.** O Kaito, nível 10, tem uma invocação de `técnica` na Trilha `Coro`, com Constituição `1`. A vida máxima dela é `2 × (2 + 2 × 10) + 1 × 10 = 54`, então **a régua da morte dela é `54`**. Ela está com `4` de vida e leva um golpe de `18`. O excedente é `14`, que não passa de `27`, que é metade da régua; e `18` não chega a `54`. Ela some, mas não morreu de vez: no turno seguinte ele gasta `3` PE e a Ação Padrão, e ela volta com `27`, que é metade da vida máxima dela.
 
 ### Queda do dono
 
