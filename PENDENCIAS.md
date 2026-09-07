@@ -444,6 +444,66 @@ emitir o estado atual — e aí o `emitir_gs.py` regera o `Ficha.gs`.
 *Não é dívida de código: é uma arma carregada no editor. Fica registrado para
 ninguém apertar o gatilho por engano.*
 
+#### ⚠ O diagnóstico mudou, e ele desmonta duas das quatro linhas
+
+**Decisão do Mizuki na v0.220 do outro repositório: *"B18 precisa ser corrigido"*.
+Indo aplicar, as quatro linhas da tabela acima não são quatro problemas do mesmo
+tipo — são um conserto, uma decisão dele, e duas consequências.**
+
+| linha | o que ela é de verdade |
+|---|---|
+| `J31` · integridade máxima | **CONSERTO, e foi feito** — ver abaixo |
+| lista de Caminhos | **não é atraso: é a decisão `C1`**, que tirou o Evocador do menu de propósito. O `decisoes-ficha.json` já diz que os três motivos dela expiraram e que **voltar é decisão do Mizuki**. O gerador está obedecendo uma decisão, não ficando para trás |
+| abas 5 × 6 | as três que faltam — `INVOCAÇÃO`, `CATÁLOGO`, `DADOS_INV` — vêm do `ficha-invocacao/`, que é **outro gerador, com o `invocacao.json` de dono**. Juntar os dois num caderno só é desenho, e não conserto |
+| linhas da FICHA · 94 × 135 | consequência das duas de cima, e não causa própria |
+
+**Feito na v0.221 — a fórmula da Integridade:**
+
+*O `aba_ficha.py` escrevia `=20+8*(NIV-1)`, que é a Integridade PLANA.* **Ela
+deixou de ser plana na v0.145 do sistema**, pela decisão da v0.70: ela escala com
+Essência, e a fórmula de hoje é `20 + (Essência + 5) × (nível − 1)` — que é
+exatamente o `=20+(AJ17+5)*($AH$11-1)` da planilha viva. **O gerador é que estava
+atrás, e agora ele emite a de hoje.**
+
+> **E o `8` também morava dentro do `conferir-kaori.py`**, escrito na mão. *Número
+de regra dentro de validador envelhece calado.* **O capítulo 15 do livro foi
+vendorizado aqui como `capitulo-15-dano-e-condicoes.md`**, no mesmo molde dos
+capítulos 16 e 35, e o validador lê a fórmula de lá.
+
+**⚠ E isso deixou o `conferir-kaori.py` VERMELHO, de propósito, num ponto só:**
+
+*A regra pede `26` para a Kaori — nível 2, Essência 1 — e a ficha de exemplo
+vendorizada em `repos/JJK---PDF---RPG-main/ficha/` imprime `28`.* **Ela é de antes
+da v0.145.** *Os outros dez campos batem.*
+
+> **O conserto é re-vendorizar aquela ficha, e ele NÃO foi feito aqui porque a
+> pasta é cópia de outro repositório.** *A do `JJK---Project` já imprime `26` — mas
+> ela é outro documento (29 parágrafos e 40 tabelas contra 28 e 38), e trocar uma
+> pela outra dentro de uma pasta rotulada como cópia de um terceiro repositório é
+> decisão de quem cuida daquela vendorização.*
+
+#### ⚠⚠ E indo regerar a planilha apareceu um SEGUNDO gatilho carregado
+
+**Rodar o `monta.py` hoje produz uma planilha que o `conferir-ficha-xlsx.py`
+REPROVA**, e não por causa do conserto acima: *`[FALHA] nenhuma cor de texto fora
+da paleta <- {'3D2E78': 6}`*.
+
+*Isolado: a falha aparece rodando o `monta.py` a partir do fonte **sem nenhuma
+mudança minha**, então ela é anterior a esta leva.* **As seis células são os
+números de seção da FICHA — `01` a `06` —, e o `3D2E78` é o `PAINEL_ALTO` do
+`estilo.py`, que é cor de FUNDO sendo usada como cor de TEXTO.**
+
+> **O `ficha-projeto-m.xlsx` commitado PASSA na checagem, e o regerado não.** *Ou
+o artefato foi salvo antes de o `secao()` passar a usar o `PAINEL_ALTO`, ou ele
+foi mexido à mão depois.* **De um jeito ou de outro, o artefato commitado e o
+gerador que deveria produzi-lo não estão dizendo a mesma coisa.**
+
+**Por isso a v0.221 mexeu só no FONTE.** *O `ficha/ficha-projeto-m.xlsx` e o
+`apps-script/Ficha.gs` ficaram como estavam:* **regerar hoje trocaria um artefato
+verde por um vermelho, por um motivo que não tem nada a ver com o `B18`.**
+*Consertar a cor — ou soltar o `PAINEL_ALTO` na paleta de texto — vem antes de
+regerar, e é decisão tua.*
+
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
 Os dois capítulos vendorizados vieram **byte a byte idênticos** do commit

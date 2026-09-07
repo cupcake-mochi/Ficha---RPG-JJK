@@ -6,6 +6,21 @@ from docx import Document
 CAT = json.load(open('catalogo-projeto-m.json', encoding='utf-8'))
 DOC = Document('repos/JJK---PDF---RPG-main/ficha/ficha-exemplo-kaori.docx')
 
+# A INTEGRIDADE NAO MORA MAIS AQUI. Ate a v0.145 do sistema ela era plana —
+# `20 + 8 x (nivel - 1)` — e este arquivo guardava esse 8 escrito na mao. A
+# decisao da v0.70 entrou na v0.145 e ela passou a escalar com Essencia. Numero
+# de regra dentro de validador envelhece calado, entao a formula se le do dono:
+# o capitulo 15 do livro, vendorizado aqui.
+def regra_da_integridade():
+    m = re.search(r'fórmula dela é `(\d+) \+ \(Essência \+ (\d+)\) × \(nível − 1\)`',
+                  open('capitulo-15-dano-e-condicoes.md', encoding='utf-8').read())
+    if not m:
+        raise SystemExit('!! nao achei a formula da Integridade no capitulo 15 vendorizado — '
+                         'ou ela mudou de forma la, ou o capitulo saiu do lugar')
+    return int(m.group(1)), int(m.group(2))
+
+ITG_BASE, ITG_SOMA = regra_da_integridade()
+
 KAORI = {"Força":3, "Constituição":2, "Destreza":2, "Inteligência":1, "Essência":1}
 CAMINHO, NIVEL, PROTECAO = "Bastião", 2, 1
 
@@ -15,7 +30,7 @@ maestria = 1 + NIVEL // 8
 CALC = {
     "Vida":          str((C["vida_inicial"] + con) + (C["vida_por_nivel"] + con) * (NIVEL - 1)),
     "Energia":       str(C["pe_por_nivel"] * NIVEL),
-    "Integridade":   str(20 + 8 * (NIVEL - 1)),
+    "Integridade":   str(ITG_BASE + (KAORI["Essência"] + ITG_SOMA) * (NIVEL - 1)),
     "Defesa":        str(10 + des + PROTECAO),
     "Iniciativa":    f"d20 + {des}",
     "Deslocamento":  "9 m",

@@ -59,6 +59,7 @@ def monta(wb, CAT, DEC, ref):
     FOR = f'${L(R["atr_Força"].column)}${R["atr_Força"].row}'
     CON = f'${L(R["atr_Constituição"].column)}${R["atr_Constituição"].row}'
     DES = f'${L(R["atr_Destreza"].column)}${R["atr_Destreza"].row}'
+    ESS = f'${L(R["atr_Essência"].column)}${R["atr_Essência"].row}'
     r += 6
 
     # as tres reservas, com o medidor nativo
@@ -67,7 +68,12 @@ def monta(wb, CAT, DEC, ref):
         ("vida", f'=IF({CAM}="","",(VLOOKUP({CAM},{TAB},3,FALSE)+{CON})'
                  f'+(VLOOKUP({CAM},{TAB},4,FALSE)+{CON})*({NIV}-1))'),
         ("energia", f'=IF({CAM}="","",VLOOKUP({CAM},{TAB},5,FALSE)*{NIV})'),
-        ("integridade", f'=20+8*({NIV}-1)'),
+        # A Integridade deixou de ser plana na v0.145 do sistema, pela decisao
+        # da v0.70: ela escala com Essencia. O dono e o capitulo 15 do livro,
+        # vendorizado aqui como capitulo-15-dano-e-condicoes.md, e o
+        # conferir-kaori.py le a regra de la em vez de guardar ela.
+        # A planilha viva ja usa esta formula; era o GERADOR que estava atras.
+        ("integridade", f'=20+({ESS}+5)*({NIV}-1)'),
     ]
     for nome_r, f_max in formulas:
         txt(ws, 4, r, nome_r.upper(), nome=TITULO, pt=8, cor=TEXTO_FRACO, ate=(14, r))
