@@ -9,7 +9,7 @@ from estilo import *
 from openpyxl.utils import get_column_letter as L
 from openpyxl.worksheet.datavalidation import DataValidation
 
-COLS, LINHAS = 46, 92
+COLS, LINHAS = 46, 138
 
 def monta(wb, CAT, DEC, ref):
     ws = base(wb, "FICHA", COLS, LINHAS)
@@ -104,6 +104,10 @@ def monta(wb, CAT, DEC, ref):
     pos = lambda i: (4 + (i % 4) * 11, r + (i // 4) * 4)
     C_PROT, R_PROT = pos(1); C_EQUI, R_EQUI = pos(2)
     PROT, EQUI = f"${L(C_PROT)}${R_PROT+1}", f"${L(C_EQUI)}${R_EQUI+1}"
+    # o Bloquear (peca 23) le a Defesa, que e o item 0 desta mesma grade —
+    # a celula de valor dele nasce em pos(0), uma linha abaixo do rotulo.
+    C_DEF, R_DEF = pos(0)
+    DEFESA_CEL = f"${L(C_DEF)}${R_DEF+1}"
     campos = [
         ("defesa",        f'=10+{DES}+{PROT}', TITULO),
         ("proteção",      f'=IF({EQUI}="",FLOOR({REFI}/3,1)+1,{EQUI})', TITULO),
@@ -115,6 +119,9 @@ def monta(wb, CAT, DEC, ref):
         ("à distância",   f'="d20 + "&{DES}', TITULO),
         ("maestria",      f'={MAE}', TITULO),
         ("deslocamento",  "9 m", TITULO),
+        # peca 23: "2d10 + (Defesa - 11)". Novo na v0.221 do gerador — a
+        # planilha viva ja tinha, o gerador nao.
+        ("bloquear",      f'="2d10 + "&({DEFESA_CEL}-11)', TITULO),
     ]
     for i, (rot, val, fnt) in enumerate(campos):
         c1, rr = pos(i)
@@ -134,45 +141,163 @@ def monta(wb, CAT, DEC, ref):
         R[rot] = f"${L(c1)}${r+1}"
     r += 4
 
+    # Uma linha de pericia OU oficio: Trein + Espec + nome + sigla + valor.
+    # A Especializacao e a peca 11 SS3 do JJK---Project: do nivel 10 em
+    # diante, no lugar de uma pericia/oficio NOVO no marco, voce especializa
+    # um que ja treina e soma METADE da maestria por cima. A formula nao
+    # trava nivel nem exige o Trein junto — decisao do Mizuki (17/10): fica
+    # so na escolha do jogador, com a tabela de marco como referencia, do
+    # mesmo jeito que o resto da ficha nao conta pericia/oficio treinado
+    # contra o orcamento da criacao.
+    def linha_treino(cc, rr, nome_item, atributo, cel_atr, larg_nome=7):
+        txt(ws, cc, rr, None, al="center", cor=OSSO)
+        txt(ws, cc + 1, rr, None, al="center", cor=OSSO)
+        txt(ws, cc + 2, rr, nome_item, nome=DOCUMENTO, pt=10, cor=TEXTO,
+            ate=(cc + 1 + larg_nome, rr))
+        c_atr = cc + 2 + larg_nome
+        txt(ws, c_atr, rr, atributo[:3], nome=TITULO, pt=8, cor=LINHA,
+            ate=(c_atr + 1, rr))
+        trein, espec = f"${L(cc)}${rr}", f"${L(cc+1)}${rr}"
+        txt(ws, c_atr + 2, rr,
+            f'={cel_atr}+IF({espec}=TRUE,{MAE}+INT({MAE}/2),IF({trein}=TRUE,{MAE},0))',
+            nome=TITULO, pt=10, cor=OSSO, al="right", ate=(c_atr + 3, rr))
+        regua(ws, cc, rr + 1, c_atr + 3, TINTA)
+
+    def cabecalho_treino(cols, rr):
+        for gc in cols:
+            txt(ws, gc, rr, "T", nome=TITULO, pt=7, cor=TEXTO_FRACO, al="center")
+            txt(ws, gc + 1, rr, "E", nome=TITULO, pt=7, cor=TEXTO_FRACO, al="center")
+
+    def contagem_treinados(grupos):
+        """SUMPRODUCT em vez de somar dois COUNTIF: Trein E Espec marcados na
+        mesma linha (o caso normal de uma especializacao de verdade) e UMA
+        pericia treinada, nao duas."""
+        partes = []
+        for cc, r0, n in grupos:
+            t = f"{L(cc)}{r0}:{L(cc)}{r0+n-1}"
+            e = f"{L(cc+1)}{r0}:{L(cc+1)}{r0+n-1}"
+            partes.append(f'SUMPRODUCT((({t}=TRUE)+({e}=TRUE))>0)')
+        return "=" + "+".join(partes)
+
     # --------------------------------------------------------- 05 pericias
     r = secao(ws, r, "05", "PERÍCIAS · marque as 8 ou 9 treinadas", c2=30)
-    p0 = r
+    n1 = 12
+    n2 = len(CAT["pericias"]) - n1
+    cabecalho_treino((4, 18), r)
+    p0 = r + 1
     for i, (nome_p, d) in enumerate(CAT["pericias"].items()):
-        cc, rr = 4 + (i // 12) * 14, r + (i % 12)
-        txt(ws, cc, rr, None, al="center", cor=OSSO)
-        txt(ws, cc + 1, rr, nome_p, nome=DOCUMENTO, pt=10, cor=TEXTO, ate=(cc + 8, rr))
-        txt(ws, cc + 9, rr, d["atributo"][:3], nome=TITULO, pt=8, cor=LINHA, ate=(cc + 10, rr))
+        cc, rr = 4 + (i // n1) * 14, p0 + (i % n1)
         cel_atr = f'${L(R["atr_" + d["atributo"]].column)}${R["atr_" + d["atributo"]].row}'
-        txt(ws, cc + 11, rr, f'={cel_atr}+IF(${L(cc)}${rr}=TRUE,{MAE},0)',
-            nome=TITULO, pt=10, cor=OSSO, al="right", ate=(cc + 12, rr))
-        regua(ws, cc, rr + 1, cc + 12, TINTA)
-    CAIXAS = [(4, p0, 12), (18, p0, len(CAT["pericias"]) - 12)]
-    R["perícias treinadas"] = (f'=COUNTIF(${L(4)}${p0}:${L(4)}${p0+11},TRUE)'
-                               f'+COUNTIF(${L(18)}${p0}:${L(18)}${p0+11},TRUE)')
-    r += 13
+        linha_treino(cc, rr, nome_p, d["atributo"], cel_atr)
+    CAIXAS = [(4, p0, n1), (5, p0, n1), (18, p0, n2), (19, p0, n2)]
+    R["perícias treinadas"] = contagem_treinados([(4, p0, n1), (18, p0, n2)])
+    r = p0 + n1 + 1
 
-    # ------------------------------------------------- 06 oficios e testes
-    r = secao(ws, r, "06", "OFÍCIOS E TESTES DE RESISTÊNCIA", c2=34)
-    for i, of in enumerate(CAT["oficios"]):
-        cc, rr = 4 + (i // 6) * 11, r + (i % 6)
-        txt(ws, cc, rr, None, al="center", cor=OSSO)
-        txt(ws, cc + 1, rr, of, nome=DOCUMENTO, pt=10, ate=(cc + 9, rr))
-        regua(ws, cc, rr + 1, cc + 9, TINTA)
-    CAIXAS += [(4, r, 6), (15, r, len(CAT["oficios"]) - 6)]
+    # ------------------------------------------------------------ 06 oficios
+    r = secao(ws, r, "06", "OFÍCIOS · o atributo é sugestão — o mestre decide na mesa", c2=34)
+    m1 = 6
+    m2 = len(CAT["oficios"]) - m1
+    cabecalho_treino((4, 18), r)
+    o0 = r + 1
+    for i, (nome_o, d) in enumerate(CAT["oficios"].items()):
+        cc, rr = 4 + (i // m1) * 14, o0 + (i % m1)
+        atr = d["atributo_padrao"]
+        cel_atr = f'${L(R["atr_" + atr].column)}${R["atr_" + atr].row}'
+        linha_treino(cc, rr, nome_o, atr, cel_atr)
+    CAIXAS += [(4, o0, m1), (5, o0, m1), (18, o0, m2), (19, o0, m2)]
+    R["ofícios treinados"] = contagem_treinados([(4, o0, m1), (18, o0, m2)])
+    r = o0 + m1 + 1
+
+    # ----------------------------------------- 07 testes de resistencia
+    r = secao(ws, r, "07", "TESTES DE RESISTÊNCIA", c2=24)
     TRS = [t for t, v in CAT["testes_de_resistencia"].items() if isinstance(v, dict)]
     BON = CAT["testes_de_resistencia"]["bonus_se_treinado"]
     for i, t in enumerate(TRS):
         rr = r + i
-        txt(ws, 28, rr, None, al="center", cor=OSSO)
-        txt(ws, 29, rr, t, nome=DOCUMENTO, pt=10, ate=(36, rr))
+        txt(ws, 4, rr, None, al="center", cor=OSSO)
+        txt(ws, 5, rr, t, nome=DOCUMENTO, pt=10, ate=(12, rr))
         atr = CAT["testes_de_resistencia"][t]["atributo"]
-        txt(ws, 37, rr, " ou ".join(a[:3] for a in atr), nome=TITULO, pt=8,
-            cor=LINHA, ate=(41, rr))
+        txt(ws, 13, rr, " ou ".join(a[:3] for a in atr), nome=TITULO, pt=8,
+            cor=LINHA, ate=(17, rr))
         cel_atr = f'${L(R["atr_"+atr[0]].column)}${R["atr_"+atr[0]].row}'
-        txt(ws, 42, rr, f'={cel_atr}+IF(${L(28)}${rr}=TRUE,{BON},0)',
-            nome=TITULO, pt=10, cor=OSSO, al="right", ate=(COLS, rr))
-        regua(ws, 28, rr + 1, COLS, TINTA)
-    CAIXAS.append((28, r, len(TRS)))
+        txt(ws, 18, rr, f'={cel_atr}+IF(${L(4)}${rr}=TRUE,{BON},0)',
+            nome=TITULO, pt=10, cor=OSSO, al="right", ate=(24, rr))
+        regua(ws, 4, rr + 1, 24, TINTA)
+    CAIXAS.append((4, r, len(TRS)))
+    r += len(TRS) + 2
+
+    # -------------------------------------------- 08 aptidoes e feiticos
+    # O maximo de espacos de feitico e de Classe 0 sai das MESMAS formulas da
+    # secao 04 — nao e escolha, e' o teto em nivel 30. 24 e 5, medido:
+    #   espacos(30) = 2 + INT(30/2) + COUNTIF(marcos<=30)   = 2+15+7 = 24
+    #   classe0(30) = 2 + COUNTIF([5,11,17]<=30)            = 2+3   = 5
+    # A tabela nasce com esse tamanho fixo — sobra em nivel baixo, e o
+    # contador (nao a quantidade de linha) e' quem diz quanto usar.
+    MARCOS = CAT["progressao"]["marcos"]
+    ESPACOS_MAX = 2 + 30 // 2 + sum(1 for m in MARCOS if m <= 30)
+    CLASSE0_MAX = 2 + sum(1 for m in (5, 11, 17) if m <= 30)
+    r = secao(ws, r, "08", "APTIDÕES E FEITIÇOS", c2=30)
+
+    # -- feiticos de Classe 0: gratis, sem orcamento — so nome, forma e efeito
+    txt(ws, 4, r, "CLASSE 0 · GRÁTIS, NÃO OCUPAM ESPAÇO", nome=TITULO, pt=9,
+        cor=TEXTO_FRACO, ate=(20, r))
+    r += 1
+    c0_nome_ini = r
+    for i in range(CLASSE0_MAX):
+        rr = r + i
+        txt(ws, 4, rr, None, nome=DOCUMENTO, pt=10, cor=TEXTO, ate=(13, rr))
+        txt(ws, 14, rr, None, nome=DOCUMENTO, pt=10, cor=TEXTO_FRACO, ate=(22, rr))
+        txt(ws, 23, rr, None, nome=CORPO, pt=9, cor=TEXTO_FRACO, ate=(COLS, rr))
+        regua(ws, 4, rr + 1, COLS, TINTA)
+    r += CLASSE0_MAX + 1
+
+    # -- feiticos conhecidos: Classe entra, Pontos e PE saem sozinhos (3xClasse,
+    # peca 19 — "o mesmo numero dos pontos"). O jogador so digita nome, forma e
+    # o que a Melhoria/Restricao faz.
+    txt(ws, 4, r, "CLASSE", nome=TITULO, pt=8, cor=TEXTO_FRACO)
+    txt(ws, 7, r, "NOME", nome=TITULO, pt=8, cor=TEXTO_FRACO)
+    txt(ws, 17, r, "FORMA", nome=TITULO, pt=8, cor=TEXTO_FRACO)
+    txt(ws, 24, r, "PONTOS / PE", nome=TITULO, pt=8, cor=TEXTO_FRACO)
+    txt(ws, 28, r, "MELHORIAS · RESTRIÇÕES · O QUE FAZ", nome=TITULO, pt=8, cor=TEXTO_FRACO)
+    r += 1
+    f_ini = r
+    for i in range(ESPACOS_MAX):
+        rr = r + i
+        cl = txt(ws, 4, rr, None, nome=DOCUMENTO, pt=10, cor=OSSO, al="center", ate=(6, rr))
+        txt(ws, 7, rr, None, nome=DOCUMENTO, pt=10, cor=TEXTO, ate=(16, rr))
+        txt(ws, 17, rr, None, nome=DOCUMENTO, pt=10, cor=TEXTO_FRACO, ate=(23, rr))
+        cel_cl = f"${L(4)}${rr}"
+        txt(ws, 24, rr, f'=IF({cel_cl}="","",{cel_cl}*3)', nome=TITULO, pt=10,
+            cor=OSSO, al="center", ate=(27, rr))
+        txt(ws, 28, rr, None, nome=CORPO, pt=9, cor=TEXTO_FRACO, ate=(COLS, rr))
+        regua(ws, 4, rr + 1, COLS, TINTA)
+    r += ESPACOS_MAX + 1
+
+    # o contador: linhas usadas contra o que a peca 8/12 liberou neste nivel.
+    # COUNTIF(">0") conta SLOT preenchido, nao ponto gasto — a v0.221 da
+    # planilha viva corrigiu o mesmo erro (somava ponto onde devia contar
+    # espaco).
+    ESP, CLZ = R["espaços de feitiço"], R["classe 0 grátis"]
+    faixa_cl = f"${L(4)}${f_ini}:${L(4)}${f_ini+ESPACOS_MAX-1}"
+    faixa_c0 = f"${L(4)}${c0_nome_ini}:${L(4)}${c0_nome_ini+CLASSE0_MAX-1}"
+    R["feitiços status"] = (
+        f'="Disponível: "&({ESP}-COUNTIF({faixa_cl},">0"))'
+        f'&" · Conhecidos: "&{ESP}'
+        f'&" · Classe 0: "&({CLZ}-COUNTIF({faixa_c0},"<>"))&"/"&{CLZ}'
+    )
+    txt(ws, 4, r, R["feitiços status"], nome=CORPO, pt=10, cor=TEXTO_FRACO, ate=(COLS, r))
+    r += 2
+
+    # -- passiva livre, peca 8 passo 5: uma, de graca, para todo mundo
+    r = secao(ws, r, "09", "PASSIVA LIVRE · uma, de graça. Não rola dado, não muda número", c2=34)
+    txt(ws, 4, r, None, nome=CORPO, pt=10, cor=TEXTO, ate=(COLS, r + 2))
+    r += 4
+
+    # -- anotacoes: texto livre, sem numero de regra dentro
+    r = secao(ws, r, "10", "ANOTAÇÕES")
+    txt(ws, 4, r, None, nome=CORPO, pt=10, cor=TEXTO_FRACO, ate=(COLS, r + 4))
+    r += 6
+
     R["_caixas"] = CAIXAS          # o script le daqui: nada de contar no olho
-    arte(ws, "respingo.png", 43, r + 7, 90)
+    arte(ws, "respingo.png", 43, r - 3, 90)
     return R

@@ -26,7 +26,11 @@ _F = DEC["C4_fontes"]
 CORPO = _F["corpo"]["fonte"]
 PERMITIDAS = {_F[p]["fonte"] for p in ("corpo", "titulo", "documento", "serie", "marca")}
 KANJI_PISO = _F["kanji_piso_pt"]
-PALETA = {"120F1D","211C35","30294D","493F54","756588","998BA9","F4F1F7"} | \
+# "3D2E78" e o PAINEL_ALTO do estilo.py, e ele entra aqui como cor de TEXTO de
+# proposito: e o numero grande e apagado que a secao() poe atras do titulo —
+# "ornamento que tambem orienta", no proprio docstring dela. Achado faltando
+# na v0.221: o gerador ja usava ele desde antes, e a checagem nunca soube.
+PALETA = {"120F1D","211C35","30294D","493F54","756588","998BA9","F4F1F7","3D2E78"} | \
          {g["hex"] for g in DEC["A5_acento"]["degraus"]}
 
 print("AS ABAS")

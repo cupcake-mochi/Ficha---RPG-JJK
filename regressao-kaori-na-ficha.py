@@ -16,7 +16,11 @@ if not os.path.exists(ARQ):
 KAORI = {"Força": 3, "Constituição": 2, "Destreza": 2, "Inteligência": 1, "Essência": 1}
 CAMINHO, NIVEL = "Bastião", 2
 # a chave e o nome no INDICE que a propria ficha publica na DADOS
-ESPERADO = {"vida_max": 23, "energia_max": 8, "integridade_max": 28, "defesa": 13,
+# integridade_max = 20+(Essência+5)*(nível-1): 20+(1+5)*1 = 26. Era 28 (a
+# fórmula plana, 20+8*(nível-1)) até o aba_ficha.py atualizar pro capítulo 15
+# do livro — a ficha de exemplo vendorizada em repos/ ainda imprime 28, e é
+# ela que está atrás (conferir-kaori.py cobre essa divergência à parte).
+ESPERADO = {"vida_max": 23, "energia_max": 8, "integridade_max": 26, "defesa": 13,
             "maestria": 1, "cd de feitiço": 13}
 
 d = tempfile.mkdtemp(prefix="kaori-")

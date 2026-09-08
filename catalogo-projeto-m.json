@@ -123,18 +123,52 @@
       "descricao": "tirar alguém do sério, fazer perder a linha, forçar a vir para cima de você. É o oposto de Intimidação : uma faz recuar, a outra faz avançar. Analisar a técnica do inimigo Não existe perícia para isso, porque são duas perguntas diferentes e cada uma já tem casa. OCULTISMO RECONHECE O QUE VOCÊ ESTÁ SENTIR ENERGIA LÊ COMO A ENERGIA SE MOVE VENDO \"Isso é uma técnica de troca, e troca sempre   \"Ela gasta muito no começo de cada golpe. Se eu forçar tem um custo.\"                                 três seguidos, ela seca.\" Você conhece o catálogo                        Você não precisa saber o nome do que está aconte‐ cendo O Nanami faz a primeira. O Todo faz a segunda."
     }
   },
+  "_nota_oficios": "atributo_padrao NAO e trava: o livro (capitulo 12) diz que oficio resolve com 'o que a situacao pedir', o mestre escolhe na hora. O padrao aqui e so o valor de partida que a ficha pre-preenche, tirado da peca 7 SS6 do JJK---Project ('atributo padrao | a vizinha que decide'); o jogador troca na mesa quando a cena pedir outro.",
   "oficios": {
-    "Condução": "carro, moto, van, o que estiver na garagem.",
-    "Arrombamento": "tranca, alarme, cofre, janela que não devia abrir.",
-    "Herbalismo": "planta que cura, planta que mata, chá, unguento, e o que dá para fazer no mato quando não tem hospital.",
-    "Forja": "fazer, afiar e manter arma, e cuidar de ferramenta amaldiçoada sem estragar o que tem dentro.",
-    "Caligrafia": "talismã, papel de barreira, documento oficial. E documento oficial que não é oficial.",
-    "Burocracia": "a máquina jujutsu por dentro: relatório, requisição, quem assina o quê, como se pede uma janela e como se encobre o que não devia ter sido visto.",
-    "Entalhador": "madeira, pedra, osso. Fazer o corpo que vai receber alguma coisa.",
-    "Alfaiate": "tecido, corte, remendo. O uniforme que aguenta energia amaldiçoada sai daqui, e o traje sob medida também. O de prateleira veste todo mundo e ninguém.",
-    "Culinária": "cozinhar de verdade, para gente ou para o que aceitar comida.",
-    "Instrumento": "um instrumento, escolhido no treino.",
-    "Jogatina": "carta, dado, aposta, e ler a mesa enquanto joga."
+    "Condução": {
+      "atributo_padrao": "Destreza",
+      "descricao": "carro, moto, van, o que estiver na garagem."
+    },
+    "Arrombamento": {
+      "atributo_padrao": "Destreza",
+      "descricao": "tranca, alarme, cofre, janela que não devia abrir."
+    },
+    "Herbalismo": {
+      "atributo_padrao": "Inteligência",
+      "descricao": "planta que cura, planta que mata, chá, unguento, e o que dá para fazer no mato quando não tem hospital."
+    },
+    "Forja": {
+      "atributo_padrao": "Força",
+      "descricao": "fazer, afiar e manter arma, e cuidar de ferramenta amaldiçoada sem estragar o que tem dentro."
+    },
+    "Caligrafia": {
+      "atributo_padrao": "Destreza",
+      "descricao": "talismã, papel de barreira, documento oficial. E documento oficial que não é oficial."
+    },
+    "Burocracia": {
+      "atributo_padrao": "Inteligência",
+      "descricao": "a máquina jujutsu por dentro: relatório, requisição, quem assina o quê, como se pede uma janela e como se encobre o que não devia ter sido visto."
+    },
+    "Entalhador": {
+      "atributo_padrao": "Destreza",
+      "descricao": "madeira, pedra, osso. Fazer o corpo que vai receber alguma coisa."
+    },
+    "Alfaiate": {
+      "atributo_padrao": "Destreza",
+      "descricao": "tecido, corte, remendo. O uniforme que aguenta energia amaldiçoada sai daqui, e o traje sob medida também. O de prateleira veste todo mundo e ninguém."
+    },
+    "Culinária": {
+      "atributo_padrao": "Inteligência",
+      "descricao": "cozinhar de verdade, para gente ou para o que aceitar comida."
+    },
+    "Instrumento": {
+      "atributo_padrao": "Essência",
+      "descricao": "um instrumento, escolhido no treino."
+    },
+    "Jogatina": {
+      "atributo_padrao": "Essência",
+      "descricao": "carta, dado, aposta, e ler a mesa enquanto joga."
+    }
   },
   "caminhos": {
     "Bastião": {

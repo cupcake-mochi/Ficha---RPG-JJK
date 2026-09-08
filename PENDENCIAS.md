@@ -504,6 +504,63 @@ verde por um vermelho, por um motivo que não tem nada a ver com o `B18`.**
 *Consertar a cor — ou soltar o `PAINEL_ALTO` na paleta de texto — vem antes de
 regerar, e é decisão tua.*
 
+#### Feito depois — o gerador alcançou perícias, ofícios e feitiços, e o segundo gatilho foi desarmado
+
+**A `conferir-ficha-xlsx.py` estava certa em reprovar, e errada no motivo.** *O
+`PAINEL_ALTO` como cor de texto não é acidente: é o `secao()` do `estilo.py`
+fazendo exatamente o que o próprio docstring dele diz — "o número da seção entra
+grande e apagado: ornamento que também orienta".* **A checagem nunca soube disso.**
+Ela ganhou o `3D2E78` na paleta permitida, com o motivo escrito ao lado — e um
+contra-teste provou que ela continua pegando cor de verdade fora do padrão
+(injetei um magenta aleatório numa célula e a checagem acendeu igual).
+
+**E o `aba_ficha.py` fechou boa parte da distância que faltava — não pela
+comparação de linhas, que era consequência e não causa, mas em CONTEÚDO:**
+
+- **Ofícios ganharam fórmula.** Até aqui o gerador só escrevia o nome — sem
+  atributo, sem bônus, sem nada. Agora cada um lê o `atributo_padrao` do
+  catálogo (novo campo, ao lado de `descricao`) e soma maestria do mesmo jeito
+  que perícia já somava.
+  > **⚠⚠ E o atributo padrão de 8 dos 11 ofícios estava ERRADO onde ele já
+  > existia — na planilha viva, não aqui.** *Ela tinha os onze fixos em
+  > `INTELIGÊNCIA`, e só três (`Herbalismo`, `Burocracia`, `Culinária`) estavam
+  > certos por coincidência.* `Condução`, `Arrombamento`, `Caligrafia`,
+  > `Entalhador` e `Alfaiate` são **Destreza**; `Forja` é **Força**; `Jogatina`
+  > e `Instrumento` são **Essência** — a peça 7 §6 do `JJK---Project` é a fonte
+  > ("atributo padrão | a vizinha que decide"). **O catálogo, o gerador e a
+  > planilha viva foram corrigidos juntos**, e o Mizuki recebeu um Apps Script
+  > (`planilha-viva/corrigir-oficios.gs`) pra rodar na conta real dele.
+  > *E o livro (capítulo 12) diz que ofício "resolve com o que a situação
+  > pedir" — não é trava como perícia, é sugestão de partida. O campo chama-se
+  > `atributo_padrao`, não `atributo`, por isso.*
+- **Especialização entrou, em perícias e ofícios.** Peça 11 §3: do nível 10 em
+  diante, especializar soma metade da maestria por cima de quem já treina. A
+  ficha ganhou um segundo checkbox (`Espec`, ao lado do `Trein` que já
+  existia) com a fórmula certa. *Decisão do Mizuki: não trava nível nem exige
+  o `Trein` marcado — fica na escolha do jogador, com a tabela de marco como
+  referência, do mesmo jeito que o resto da ficha não conta nada contra o
+  orçamento da criação.*
+- **`Bloquear` entrou** — `2d10 + (Defesa − 11)`, peça 23. A planilha viva já
+  tinha; o gerador não.
+- **Aptidões e Feitiços nasceu do zero.** Classe 0 (5 linhas, o teto no nível
+  30), feitiços conhecidos (24 linhas, o mesmo teto), Pontos/PE derivados da
+  Classe (`3 × Classe`, peça 19), Passiva Livre, e um contador que conta SLOT
+  preenchido — não ponto gasto, o mesmo erro que a planilha viva já tinha
+  corrigido em paralelo e que a v0.221 não sabia.
+
+**Tudo isso foi provado com o LibreOffice recalculando de verdade** — não só
+"não deu erro": uma Kaori hipotética no nível 10, com `Furtividade`
+Treinada+Especializada, devolveu exatamente `atributo + maestria +
+⌊maestria/2⌋`; `Forja` com `Trein` devolveu o valor usando **Força**, não mais
+Inteligência; `Bloquear` devolveu `2d10 + 3` batendo com a Defesa daquele nível;
+um feitiço de Classe 3 devolveu Pontos/PE = 9.
+
+**A FICHA tinha 94 linhas antes desta leva; hoje tem 134.** Ainda faltam as
+três abas de invocação (`INVOCAÇÃO`, `CATÁLOGO`, `DADOS_INV`) e o menu de
+Caminhos continua sem o Evocador — as duas seguem exatamente como a seção
+anterior já registrou: a primeira é outro gerador com dono próprio, a segunda
+é a decisão `C1` esperando o Mizuki.
+
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
 Os dois capítulos vendorizados vieram **byte a byte idênticos** do commit
