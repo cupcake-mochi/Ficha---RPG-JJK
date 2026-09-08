@@ -9,7 +9,7 @@ from estilo import *
 from openpyxl.utils import get_column_letter as L
 from openpyxl.worksheet.datavalidation import DataValidation
 
-COLS, LINHAS = 46, 138
+COLS, LINHAS = 46, 146
 
 def monta(wb, CAT, DEC, ref):
     ws = base(wb, "FICHA", COLS, LINHAS)
@@ -149,7 +149,16 @@ def monta(wb, CAT, DEC, ref):
     # so na escolha do jogador, com a tabela de marco como referencia, do
     # mesmo jeito que o resto da ficha nao conta pericia/oficio treinado
     # contra o orcamento da criacao.
-    def linha_treino(cc, rr, nome_item, atributo, cel_atr, larg_nome=7):
+    # o bonus, igual nos dois casos: metade da maestria por cima de quem ja
+    # treina, e a maestria inteira para quem so treinou.
+    def _bonus(cc, rr):
+        trein, espec = f"${L(cc)}${rr}", f"${L(cc+1)}${rr}"
+        return f'IF({espec}=TRUE,{MAE}+INT({MAE}/2),IF({trein}=TRUE,{MAE},0))'
+
+    # PERICIA: o atributo e FIXO. "Atletismo e sempre Forca" — peca 7 §4, e o
+    # capitulo 12 do livro repete: "o atributo dela e o da tabela e nao muda".
+    # Entao a formula aponta direto para a celula do atributo.
+    def linha_pericia(cc, rr, nome_item, atributo, larg_nome=7):
         txt(ws, cc, rr, None, al="center", cor=OSSO)
         txt(ws, cc + 1, rr, None, al="center", cor=OSSO)
         txt(ws, cc + 2, rr, nome_item, nome=DOCUMENTO, pt=10, cor=TEXTO,
@@ -157,11 +166,43 @@ def monta(wb, CAT, DEC, ref):
         c_atr = cc + 2 + larg_nome
         txt(ws, c_atr, rr, atributo[:3], nome=TITULO, pt=8, cor=LINHA,
             ate=(c_atr + 1, rr))
-        trein, espec = f"${L(cc)}${rr}", f"${L(cc+1)}${rr}"
-        txt(ws, c_atr + 2, rr,
-            f'={cel_atr}+IF({espec}=TRUE,{MAE}+INT({MAE}/2),IF({trein}=TRUE,{MAE},0))',
+        cel_atr = f'${L(R["atr_" + atributo].column)}${R["atr_" + atributo].row}'
+        txt(ws, c_atr + 2, rr, f'={cel_atr}+{_bonus(cc, rr)}',
             nome=TITULO, pt=10, cor=OSSO, al="right", ate=(c_atr + 3, rr))
         regua(ws, cc, rr + 1, c_atr + 3, TINTA)
+
+    # OFICIO: o atributo NAO e fixo. A peca 7 §5 escreve o padrao de cada um e
+    # fecha com a clausula que ela mesma chama de "a que importa" — *"o mestre
+    # troca quando a ficcao pedir, e diz qual antes da rolagem"*. Se a formula
+    # apontasse direto para uma celula de atributo, trocar na mesa exigiria
+    # editar formula. Entao o atributo VIRA CELULA, pre-preenchida com o
+    # padrao, e o total le dela por IFS — que e o que a planilha viva ja fazia.
+    ATRS = CAT["atributos"]["lista"]
+    def linha_oficio(cc, rr, nome_item, atributo_padrao, larg_nome=5, larg_atr=4):
+        txt(ws, cc, rr, None, al="center", cor=OSSO)
+        txt(ws, cc + 1, rr, None, al="center", cor=OSSO)
+        txt(ws, cc + 2, rr, nome_item, nome=DOCUMENTO, pt=10, cor=TEXTO,
+            ate=(cc + 1 + larg_nome, rr))
+        c_atr = cc + 2 + larg_nome
+        txt(ws, c_atr, rr, atributo_padrao, nome=CORPO, pt=9, cor=TEXTO_FRACO,
+            ate=(c_atr + larg_atr - 1, rr))
+        cel = f"${L(c_atr)}${rr}"
+        # ⚠ IF ANINHADO, e nao IFS. O IFS e "future function" no formato xlsx:
+        # sem o prefixo _xlfn. ele vira #NAME? — e com o prefixo o Google
+        # Sheets, que e o destino de verdade, e que nao entende. O IF aninhado
+        # funciona nos dois, e a planilha viva usa IFS so porque ela nasceu
+        # nativa no Sheets e nunca passou por um .xlsx.
+        # Achado recalculando de verdade: o IFERROR engolia o #NAME? e a
+        # celula devolvia SO o bonus, calada. Numero errado sem aviso.
+        escolha = "0"
+        for a in reversed(ATRS):
+            alvo = f'${L(R["atr_" + a].column)}${R["atr_" + a].row}'
+            escolha = f'IF({cel}="{a}",{alvo},{escolha})'
+        c_val = c_atr + larg_atr
+        txt(ws, c_val, rr, f'={escolha}+{_bonus(cc, rr)}',
+            nome=TITULO, pt=10, cor=OSSO, al="right", ate=(c_val + 1, rr))
+        regua(ws, cc, rr + 1, c_val + 1, TINTA)
+        return c_atr
 
     def cabecalho_treino(cols, rr):
         for gc in cols:
@@ -187,8 +228,7 @@ def monta(wb, CAT, DEC, ref):
     p0 = r + 1
     for i, (nome_p, d) in enumerate(CAT["pericias"].items()):
         cc, rr = 4 + (i // n1) * 14, p0 + (i % n1)
-        cel_atr = f'${L(R["atr_" + d["atributo"]].column)}${R["atr_" + d["atributo"]].row}'
-        linha_treino(cc, rr, nome_p, d["atributo"], cel_atr)
+        linha_pericia(cc, rr, nome_p, d["atributo"])
     CAIXAS = [(4, p0, n1), (5, p0, n1), (18, p0, n2), (19, p0, n2)]
     R["perícias treinadas"] = contagem_treinados([(4, p0, n1), (18, p0, n2)])
     r = p0 + n1 + 1
@@ -201,9 +241,9 @@ def monta(wb, CAT, DEC, ref):
     o0 = r + 1
     for i, (nome_o, d) in enumerate(CAT["oficios"].items()):
         cc, rr = 4 + (i // m1) * 14, o0 + (i % m1)
-        atr = d["atributo_padrao"]
-        cel_atr = f'${L(R["atr_" + atr].column)}${R["atr_" + atr].row}'
-        linha_treino(cc, rr, nome_o, atr, cel_atr)
+        c_atr = linha_oficio(cc, rr, nome_o, d["atributo_padrao"])
+        # o menu: o mestre troca o atributo aqui, sem digitar errado
+        dv(ref["Atributos"], c_atr, rr, c_atr, rr)
     CAIXAS += [(4, o0, m1), (5, o0, m1), (18, o0, m2), (19, o0, m2)]
     R["ofícios treinados"] = contagem_treinados([(4, o0, m1), (18, o0, m2)])
     r = o0 + m1 + 1
@@ -273,23 +313,48 @@ def monta(wb, CAT, DEC, ref):
         regua(ws, 4, rr + 1, COLS, TINTA)
     r += ESPACOS_MAX + 1
 
+    # -- Passivas PAGAS: elas comem espaco de feitico, e o preco e a propria
+    # Classe (manual, secao 1: "Classe 1 · 1 espaço", "2 · 2 espaços",
+    # "3 · 3 espaços"). Teto de CINCO pagas; a Livre nao conta e mora na secao
+    # de baixo.
+    PASSIVAS_MAX = 5
+    txt(ws, 4, r, "PASSIVAS PAGAS · custam espaço de feitiço, e a Classe é o preço. Máximo 5",
+        nome=TITULO, pt=9, cor=TEXTO_FRACO, ate=(30, r))
+    r += 1
+    txt(ws, 4, r, "CLASSE", nome=TITULO, pt=8, cor=TEXTO_FRACO)
+    txt(ws, 7, r, "NOME", nome=TITULO, pt=8, cor=TEXTO_FRACO)
+    txt(ws, 17, r, "O QUE ELA FAZ SOZINHA", nome=TITULO, pt=8, cor=TEXTO_FRACO)
+    r += 1
+    p_ini = r
+    for i in range(PASSIVAS_MAX):
+        rr = r + i
+        txt(ws, 4, rr, None, nome=DOCUMENTO, pt=10, cor=OSSO, al="center", ate=(6, rr))
+        txt(ws, 7, rr, None, nome=DOCUMENTO, pt=10, cor=TEXTO, ate=(16, rr))
+        txt(ws, 17, rr, None, nome=CORPO, pt=9, cor=TEXTO_FRACO, ate=(COLS, rr))
+        regua(ws, 4, rr + 1, COLS, TINTA)
+    r += PASSIVAS_MAX + 1
+
     # o contador: linhas usadas contra o que a peca 8/12 liberou neste nivel.
     # COUNTIF(">0") conta SLOT preenchido, nao ponto gasto — a v0.221 da
     # planilha viva corrigiu o mesmo erro (somava ponto onde devia contar
-    # espaco).
+    # espaco). Ja a Passiva e SOMA e nao contagem, porque a Classe dela E o
+    # preco em espaco: uma Classe 3 come tres.
     ESP, CLZ = R["espaços de feitiço"], R["classe 0 grátis"]
     faixa_cl = f"${L(4)}${f_ini}:${L(4)}${f_ini+ESPACOS_MAX-1}"
     faixa_c0 = f"${L(4)}${c0_nome_ini}:${L(4)}${c0_nome_ini+CLASSE0_MAX-1}"
+    faixa_ps = f"${L(4)}${p_ini}:${L(4)}${p_ini+PASSIVAS_MAX-1}"
     R["feitiços status"] = (
-        f'="Disponível: "&({ESP}-COUNTIF({faixa_cl},">0"))'
+        f'="Disponível: "&({ESP}-COUNTIF({faixa_cl},">0")-SUM({faixa_ps}))'
         f'&" · Conhecidos: "&{ESP}'
+        f'&" · Passivas: "&COUNTIF({faixa_ps},">0")&"/{PASSIVAS_MAX}"'
         f'&" · Classe 0: "&({CLZ}-COUNTIF({faixa_c0},"<>"))&"/"&{CLZ}'
     )
     txt(ws, 4, r, R["feitiços status"], nome=CORPO, pt=10, cor=TEXTO_FRACO, ate=(COLS, r))
     r += 2
 
-    # -- passiva livre, peca 8 passo 5: uma, de graca, para todo mundo
-    r = secao(ws, r, "09", "PASSIVA LIVRE · uma, de graça. Não rola dado, não muda número", c2=34)
+    # -- passiva livre, peca 8 passo 5: uma, de graca, e ela NAO conta no teto
+    # de cinco nem come espaco — "A Passiva Livre não conta", no manual.
+    r = secao(ws, r, "09", "PASSIVA LIVRE · de graça, fora do teto. Não rola dado, não muda número", c2=38)
     txt(ws, 4, r, None, nome=CORPO, pt=10, cor=TEXTO, ate=(COLS, r + 2))
     r += 4
 

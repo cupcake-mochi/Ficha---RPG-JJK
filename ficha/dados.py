@@ -44,7 +44,11 @@ def monta(wb, CAT, DEC):
     c = col(c, "Origens", list(CAT["origens"]))
     c = col(c, "Testes", [t for t in CAT["testes_de_resistencia"]
                           if isinstance(CAT["testes_de_resistencia"][t], dict)])
-    c = col(c, "Atributos", list(CAT["atributos"]))
+    # ⚠ era list(CAT["atributos"]), que devolve as CHAVES do bloco — a coluna
+    # saia com "lista, escala, criacao, nota, pagina" no lugar dos cinco
+    # atributos. Ficou dormente ate a v0.221, quando o menu do atributo do
+    # oficio precisou dela de verdade.
+    c = col(c, "Atributos", CAT["atributos"]["lista"])
     c = col(c, "Trilhas", list(CAT["trilhas"]))
 
     # --- tabela dos Caminhos, para o PROCV ------------------------------

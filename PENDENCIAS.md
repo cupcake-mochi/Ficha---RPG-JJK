@@ -555,11 +555,60 @@ Treinada+Especializada, devolveu exatamente `atributo + maestria +
 Inteligência; `Bloquear` devolveu `2d10 + 3` batendo com a Defesa daquele nível;
 um feitiço de Classe 3 devolveu Pontos/PE = 9.
 
-**A FICHA tinha 94 linhas antes desta leva; hoje tem 134.** Ainda faltam as
+**A FICHA tinha 94 linhas antes desta leva; hoje tem 142.** Ainda faltam as
 três abas de invocação (`INVOCAÇÃO`, `CATÁLOGO`, `DADOS_INV`) e o menu de
 Caminhos continua sem o Evocador — as duas seguem exatamente como a seção
 anterior já registrou: a primeira é outro gerador com dono próprio, a segunda
 é a decisão `C1` esperando o Mizuki.
+
+#### E a revisão em cima disso achou três coisas, duas delas minhas
+
+*O Mizuki notou que a leva acima rodou em Sonnet e pediu uma revisão no Opus,
+mirada nos dois pontos que eu mesmo tinha marcado como "desenho meu, sem
+segunda cabeça": a seção 08 e a tabela de atributo dos ofícios.* **A tabela
+passou — os onze batem com a peça 7 §5, e o resumo dela ("cinco em Destreza,
+três em Inteligência, duas em Essência, uma em Força") fecha.** *O resto não
+passou.*
+
+**1 · O atributo do ofício estava CRAVADO na fórmula, e a regra diz o contrário.**
+A peça 7 §5 escreve o padrão de cada ofício e fecha com a cláusula que ela
+mesma chama de *"a que importa"*: **"o mestre troca quando a ficção pedir, e
+diz qual antes da rolagem"**. *Eu tinha tratado ofício como perícia — atributo
+fixo, apontado direto na fórmula —, e trocar na mesa exigiria editar fórmula.*
+**Hoje o atributo é célula editável, pré-preenchida com o padrão, com menu
+suspenso dos cinco, e o total lê dela.** *Perícia continua cravada, e isso está
+certo: "o atributo dela é o da tabela e não muda".*
+
+**2 · As Passivas pagas não existiam, e elas comem espaço de feitiço.**
+*O manual é explícito: Passiva "é paga com espaços de feitiço conhecido", e a
+Classe é o preço — `1` custa 1 espaço, `2` custa 2, `3` custa 3, com teto de
+cinco pagas.* **Meu contador só subtraía feitiço, então ele MENTIA para
+qualquer ficha com Passiva paga.** *Entrou a tabela das cinco, e o contador
+passou a subtrair a SOMA das Classes — soma, e não contagem, porque uma Classe
+3 come três espaços. A Passiva Livre ficou de fora do teto, como o manual manda.*
+
+**3 · ⚠⚠ O `IFS` não existe no formato `.xlsx`, e ele estava mentindo em silêncio.**
+*Para o atributo virar célula eu escrevi `IFERROR(IFS(...),0)` — que é o idioma
+da planilha viva.* **Recalculando de verdade, a Forja devolveu `2` onde devia
+devolver `5`.** *O `IFS` é "future function" no OOXML: sem o prefixo `_xlfn.`
+ele vira `#NAME?`, e o `IFERROR` engolia o erro e devolvia zero para o
+atributo.* **Número errado, sem aviso, numa célula que parece funcionar.**
+
+> **E o prefixo não é a saída, porque ele quebraria o outro lado:** *o destino
+> de verdade é o Apps Script montando nativo no Sheets, e lá `_xlfn.IFS` não
+> existe.* **A saída é `IF` aninhado, que funciona nos dois.** *A planilha viva
+> usa `IFS` sem problema porque ela nasceu dentro do Sheets e nunca passou por
+> um `.xlsx` — o idioma dela não é portável, e copiá-lo foi o erro.*
+>
+> *Vale para o Mizuki saber: qualquer `.xlsx` exportado da planilha viva vai
+> mostrar `#NAME?` nessas células. Não é defeito da planilha dele; é o formato.*
+
+**Um quarto achado, dormente e pré-existente:** *a coluna `Atributos` da aba
+`DADOS` continha `lista, escala, criacao, nota, pagina` — as CHAVES do bloco do
+catálogo, e não os cinco atributos.* **O `dados.py` fazia `list(CAT["atributos"])`
+onde devia fazer `CAT["atributos"]["lista"]`.** *Ninguém usava a coluna, então
+ela nunca acusou — e foi justamente nela que o menu novo do ofício precisou se
+pendurar.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
