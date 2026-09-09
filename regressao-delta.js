@@ -36,6 +36,8 @@ function extrai(fonte, nome) {
 const GS = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Codigo.gs'), 'utf8');
 const aplicaPasso_ = new Function(extrai(GS, 'aplicaPasso_') +
                                   '; return aplicaPasso_;')();
+const passoDeVidaPorAlma_ = new Function(extrai(GS, 'passoDeVidaPorAlma_') +
+                                         '; return passoDeVidaPorAlma_;')();
 
 // --- o que os documentos dizem ------------------------------------------
 const A2 = JSON.parse(fs.readFileSync(path.join(RAIZ, 'decisoes-ficha.json'),
@@ -100,6 +102,39 @@ checa('temporaria negativa e lida como zero',
 checa('sem maximo declarado o ganho nao e preso',
       aplicaPasso_(10, 0, 0, 40).atual, 50);
 checa('passo zero nao move nada', aplicaPasso_(10, 19, 5, 0), { atual: 10, temp: 5 });
+
+// --- 7. o acoplamento do dano de alma ----------------------------------
+// A REGRA NAO ESTA ESCRITA AQUI: sai do capitulo 15 do livro, vendorizado.
+const CAP15 = fs.readFileSync(path.join(RAIZ, 'capitulo-15-dano-e-condicoes.md'), 'utf8');
+const mAcopla = CAP15.match(
+  /Cada ponto de dano na alma tira (\d+) de (\w+) e (\d+) de (\w+)/);
+if (!mAcopla) {
+  falhas.push('o capitulo 15 parou de publicar a linha do acoplamento — sem ela\n' +
+              '      esta secao nao tem dono e o teste viraria copia de si mesmo');
+} else {
+  const [, nVida, aVida, nItg, aItg] = mAcopla;
+  const reservas = [aVida.toLowerCase(), aItg.toLowerCase()].sort();
+  checa('o livro acopla vida e Integridade, e so as duas',
+        reservas, ['integridade', 'vida']);
+  checa('e na mesma proporcao, 1 para 1', Number(nVida), Number(nItg));
+
+  // o passo de vida que a alma arrasta e o MESMO passo, pelo 1:1 acima
+  const por = Number(nVida) / Number(nItg);
+  checa('-6 na alma arrasta -6 de vida', passoDeVidaPorAlma_(-6), -6 * por);
+  checa('-1 na alma arrasta -1 de vida', passoDeVidaPorAlma_(-1), -1 * por);
+
+  // e o lado positivo NAO devolve vida: recuperar alma nao cura corpo (§5)
+  checa('ganhar Integridade nao devolve vida', passoDeVidaPorAlma_(+6), 0);
+  checa('passo zero nao arrasta nada', passoDeVidaPorAlma_(0), 0);
+
+  // a vida arrastada passa pela temporaria como qualquer perda de vida (A2),
+  // e a Integridade cai inteira: temporaria de vida e anteparo do CORPO
+  const alma = aplicaPasso_(20, 28, 0, -6);              // a Integridade
+  const corpo = aplicaPasso_(19, 19, 4, passoDeVidaPorAlma_(-6));  // a vida, com 4 temp
+  checa('a Integridade cai inteira, sem anteparo', alma.atual, 14);
+  checa('a temporaria de vida absorve a parte do corpo', corpo.temp, 0);
+  checa('e o resto sai da vida', corpo.atual, 17);
+}
 
 // --- resultado ---------------------------------------------------------
 const barra = '='.repeat(74);

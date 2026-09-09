@@ -9,7 +9,11 @@ As tres regras do projeto, e nenhuma pode ser pulada:
 import json, os, shutil, subprocess, sys, tempfile
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
-PRECISA = ["regressao-delta.js", "decisoes-ficha.json", "manual-temporario.md"]
+PRECISA = ["regressao-delta.js", "decisoes-ficha.json", "manual-temporario.md",
+           # v0.222: o acoplamento do dano de alma le a regra do capitulo 15,
+           # que e o dono vivo dela. Sem ele na copia a base falha e o arnes
+           # inteiro seria falso positivo.
+           "capitulo-15-dano-e-condicoes.md"]
 NODE = shutil.which("node") or shutil.which("nodejs")
 
 
@@ -154,6 +158,31 @@ edita_json("a A2 desiste de gastar a energia temporaria primeiro",
            lambda d: d["A2_temporario"]["energia"].__setitem__(
                "gasta_antes_do_pe_normal", False),
            "A2 diz que a energia temporaria gasta antes do PE")
+
+# --- o acoplamento do dano de alma, achado pelo Mizuki na v0.222 ---------
+edita("a alma para de arrastar a vida", GS,
+      "return passoNaAlma < 0 ? passoNaAlma : 0;",
+      "return 0;",
+      "na alma arrasta")
+edita("a alma arrasta METADE da vida", GS,
+      "return passoNaAlma < 0 ? passoNaAlma : 0;",
+      "return passoNaAlma < 0 ? passoNaAlma / 2 : 0;",
+      "na alma arrasta")
+edita("recuperar Integridade passa a curar o corpo", GS,
+      "return passoNaAlma < 0 ? passoNaAlma : 0;",
+      "return passoNaAlma;",
+      "ganhar Integridade nao devolve vida")
+edita("a funcao do acoplamento some do Codigo.gs", GS,
+      "function passoDeVidaPorAlma_(", "function outroNomeQualquer_(",
+      None)
+edita("o LIVRO perde a linha do acoplamento", "capitulo-15-dano-e-condicoes.md",
+      "> **Cada ponto de dano na alma tira 1 de vida e 1 de Integridade.**",
+      "> **Dano na alma desconta da Integridade.**",
+      "parou de publicar a linha do acoplamento")
+edita("o LIVRO acopla a alma a OUTRA reserva", "capitulo-15-dano-e-condicoes.md",
+      "> **Cada ponto de dano na alma tira 1 de vida e 1 de Integridade.**",
+      "> **Cada ponto de dano na alma tira 1 de energia e 1 de Integridade.**",
+      "acopla vida e Integridade")
 
 edita("mexida inocua no comentario", GS,
       "// o mestre precisa poder mexer", "// o mestre tem que poder mexer",

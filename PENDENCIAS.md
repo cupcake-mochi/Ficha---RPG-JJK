@@ -410,6 +410,55 @@ editor de Apps Script da ficha e rodou o `testeDelta`: as cinco passaram. O
 não se executa à mão — chamado pelo seletor de função ele quebra, já que o `e`
 vem vazio.
 
+### ~~B20 · A ficha não acoplava o dano de alma à vida~~ — **CONSERTADA na v0.222**
+
+***Achado do Mizuki:*** *"dano na alma n deveria ta reduzindo vida? quando eu
+colocasse perda ali no dano da alma"*. **Sim, e a ficha não fazia.**
+
+O `aplicarDelta_` tratava as três reservas **independentes** — o laço só agia na
+reserva cuja caixinha você mexeu. *Digitar `−6` no delta da Integridade tirava 6
+de Integridade e mais nada; a vida nem sabia.* **E a regra diz o contrário**, no
+livro cap. 15 e na peça 24 §3.1:
+
+> **Cada ponto de dano na alma tira `1` de vida e `1` de Integridade.**
+
+**Nunca tinha sido registrado.** *Nem no `DESIGN-ficha-digital.md`, que lista a
+Integridade com "dano de alma" na coluna de origem e para aí.*
+
+#### O formato, e por que ele não foi escolha livre
+
+**Existem dois jeitos de perder Integridade, e a caixinha não consegue adivinhar
+qual é:**
+
+| | o que tira | quem |
+|---|---|---|
+| **padrão** (§3.1) | `1` de vida **e** `1` de Integridade | tudo, menos a exceção |
+| **atravessa** (§3.2) | `1` de Integridade **e mais nada** | só o `Cisão` |
+
+*O próprio §3.2 desempata:* **"Isso não é o padrão — é exceção, e ela precisa
+estar escrita no efeito."** *Então a caixinha faz o padrão, e o `Cisão` sai pela
+porta que a ficha já tem* — **a mesma do `Rasga Escudo`, escrita no comentário do
+`Codigo.gs` desde sempre:** *"edita a reserva na mão; a A4 mantém o atual
+editável exatamente para isso."*
+
+**E o acoplamento é só no lado NEGATIVO, o que é afirmação e não descuido:**
+*perder Integridade é dano de alma e leva a vida junto; **ganhar** Integridade é
+recuperação, e ela não devolve vida.* **O §5 escreve um lado — "cura comum não
+devolve o que a alma perdeu" — e o outro é a mesma linha lida ao contrário:**
+*descanso longo enche a alma, e não é por isso que o corpo sara.*
+
+> **A vida arrastada passa pela temporária como qualquer perda de vida** (A2:
+> *"gasta antes da vida normal"*, com o `Rasga Escudo` como única exceção
+> declarada), **e a Integridade cai inteira mesmo assim** — *temporária de vida é
+> anteparo do **corpo***.
+
+**A regra não mora no código:** o `regressao-delta.js` lê a linha do acoplamento
+do capítulo 15 vendorizado e confere a proporção `1:1` de lá. *São `29` checagens
+agora, contra `20` antes.* **E o `arnes-delta.py` ganhou seis perturbações** — a
+alma parar de arrastar, arrastar metade, o ganho passar a curar, a função sumir,
+o livro perder a linha, e o livro acoplar a alma a outra reserva. *As dezoito
+acendem, e o inócuo continua verde.*
+
 ### ~~B17 · O campo TEMP da INTEGRIDADE não tem fonte no manual~~ — **FECHADA na v0.222**
 
 A ficha tem `integridade_temp` no índice e o campo na tela, mas **nada no

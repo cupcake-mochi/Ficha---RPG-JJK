@@ -1,5 +1,5 @@
 /**
- * Escreve as notas dos três campos TEMP na aba FICHA.
+ * Escreve as notas dos campos TEMP e das caixinhas de +/- na aba FICHA.
  *
  * POR QUE: a nota da vida temporária (AF23) dizia TRÊS das quatro regras e
  * omitia a quarta — o TETO DE METADE DA VIDA MÁXIMA. Ele não é invenção: o
@@ -11,6 +11,11 @@
  * concede integridade temporária — o campo fica assim mesmo, por decisão do
  * Mizuki na v0.222, como espaço do mestre. O B17 fechou aí.
  *
+ * E AM31 — a caixinha de +/- da Integridade — mudou de comportamento na v0.222:
+ * ela agora ARRASTA A VIDA JUNTO, porque o §3.1 diz que cada ponto de dano na
+ * alma tira 1 de vida e 1 de Integridade, e a ficha não fazia isso. Achado do
+ * Mizuki. A nota avisa, e diz por onde o Cisão escapa.
+ *
  * ⚠ Isto existe como script separado porque o emitir_gs.py NÃO carrega nota —
  * o transporte para o Apps Script leva valor, fórmula, formato e caixa de
  * seleção, e para por aí. O gerador Python já escreve as três no .xlsx.
@@ -19,7 +24,7 @@
  *   Extensões → Apps Script → cole num arquivo novo → salve → Executar.
  *   Roda quantas vezes quiser: ele sobrescreve as mesmas três notas.
  */
-function corrigirNotasDosCamposTemp() {
+function corrigirNotasDaFicha() {
   var ficha = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('FICHA');
   if (!ficha) {
     throw new Error('Não achei a aba FICHA.');
@@ -43,7 +48,20 @@ function corrigirNotasDosCamposTemp() {
       'O campo fica assim mesmo — é espaço do mestre: se alguma coisa na mesa ' +
       'conceder, anote aqui.\n' +
       'A ficha já trata ele como as outras duas: um delta negativo come a ' +
-      'temporária antes da Integridade, e ela nunca fica negativa.'
+      'temporária antes da Integridade, e ela nunca fica negativa.',
+
+    'AM23':
+      'Valor negativo para perda, positivo para ganho. Espere alguns segundos.\n' +
+      'A perda come a vida temporária antes da vida.',
+    'AM27':
+      'Valor negativo para gasto, positivo para ganho. Espere alguns segundos.\n' +
+      'O gasto come a energia temporária primeiro.',
+    'AM31':
+      'Valor negativo para perda, positivo para ganho. Espere alguns segundos.\n' +
+      '⚠ A PERDA AQUI TIRA VIDA JUNTO, no mesmo tanto: cada ponto de dano na ' +
+      'alma tira 1 de vida e 1 de Integridade (livro, cap. 15).\n' +
+      'Exceção: o Cisão atravessa o corpo e tira só Integridade. Para ele, ' +
+      'edite a Integridade na mão em vez de usar esta caixinha.'
   };
 
   var log = [];
@@ -55,6 +73,6 @@ function corrigirNotasDosCamposTemp() {
 
   Logger.log(log.join('\n'));
   SpreadsheetApp.getUi().alert(
-    'Notas dos campos TEMP: ' + log.length + ' células.\n\n' + log.join('\n')
+    'Notas atualizadas: ' + log.length + ' células.\n\n' + log.join('\n')
   );
 }

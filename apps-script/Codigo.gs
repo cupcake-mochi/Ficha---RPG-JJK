@@ -141,6 +141,39 @@ function aplicaPasso_(atual, max, temp, passo) {
 }
 
 /**
+ * O ACOPLAMENTO DO DANO DE ALMA, e ele e uma regra e nao uma conveniencia.
+ *
+ * Livro cap. 15 e peca 24 §3.1: "Cada ponto de dano na alma tira 1 de vida e
+ * 1 de Integridade." A ficha NAO fazia isso -- o aplicarDelta_ tratava as tres
+ * reservas independentes, entao -6 na caixinha da Integridade tirava 6 de
+ * Integridade e a vida nem sabia. Achado pelo Mizuki na v0.222.
+ *
+ * SO NO LADO NEGATIVO, e isso e' afirmacao:
+ *   - perder Integridade e' dano de alma, e dano de alma leva a vida junto;
+ *   - GANHAR Integridade e' recuperacao, e ela nao devolve vida. O §5 escreve
+ *     um lado disso ("cura comum nao devolve o que a alma perdeu") e o outro
+ *     lado e' a mesma linha lida ao contrario: descanso longo enche a alma, e
+ *     nao e por isso que o corpo sara.
+ *
+ * A EXCECAO NAO PASSA POR AQUI, de proposito. O `Cisao` (peca 16 §4) atravessa
+ * o corpo: tira Integridade e mais nada. A caixinha nao tem como saber qual dos
+ * dois voce quis, entao ela faz o PADRAO -- que e o que o §3.2 manda, porque ele
+ * declara a si mesmo excecao: "Isso nao e o padrao -- e excecao, e ela precisa
+ * estar escrita no efeito." Quem toma `Cisao` edita a Integridade na mao, pela
+ * mesma porta que o `Rasga Escudo` ja usa, e a A4 mantem o atual editavel
+ * exatamente para isso.
+ *
+ * E o passo da vida passa pelo aplicaPasso_ como qualquer outro, entao a vida
+ * temporaria absorve ele: a A2 diz "gasta antes da vida normal" para toda perda
+ * de vida, e a unica excecao declarada e o `Rasga Escudo`. A Integridade cai
+ * inteira mesmo assim -- temporaria de vida e anteparo do CORPO.
+ */
+function passoDeVidaPorAlma_(passoNaAlma) {
+  passoNaAlma = Number(passoNaAlma) || 0;
+  return passoNaAlma < 0 ? passoNaAlma : 0;
+}
+
+/**
  * Decisão A4: digita -9 na caixinha, o script aplica no atual e limpa.
  * O atual continua editável à mão — sem sinal o gatilho não roda, e sem isso
  * a ficha viraria pedra no meio da sessão.
@@ -167,6 +200,23 @@ function aplicarDelta_(e, idx) {
 
     atual.setValue(fim.atual);
     if (temp && fim.temp !== antes) temp.setValue(fim.temp);
+
+    // o acoplamento: dano na alma leva a vida junto (§3.1)
+    if (r === 'integridade') {
+      var passoVida = passoDeVidaPorAlma_(passo);
+      if (passoVida) {
+        var vAtual = ficha.getRange(cel_(idx, 'vida'));
+        var vct = cel_(idx, 'vida_temp');
+        var vTemp = vct ? ficha.getRange(vct) : null;
+        var vAntes = vTemp ? Math.max(0, Number(vTemp.getValue()) || 0) : 0;
+        var vFim = aplicaPasso_(vAtual.getValue(),
+                                ficha.getRange(cel_(idx, 'vida_max')).getValue(),
+                                vAntes, passoVida);
+        vAtual.setValue(vFim.atual);
+        if (vTemp && vFim.temp !== vAntes) vTemp.setValue(vFim.temp);
+      }
+    }
+
     e.range.clearContent();
   });
 }

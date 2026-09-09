@@ -93,6 +93,25 @@ def monta(wb, CAT, DEC, ref):
                         "nunca fica negativa."),
     }
 
+    # E as notas da CAIXINHA de +/-. A da Integridade nao e igual as outras
+    # duas desde a v0.222: ela arrasta a vida junto, porque o §3.1 diz que cada
+    # ponto de dano na alma tira 1 de vida e 1 de Integridade — e a ficha nao
+    # fazia isso. Achado do Mizuki. A porta do `Cisao` esta escrita na nota.
+    NOTA_DELTA = {
+        "vida": ("Valor negativo para perda, positivo para ganho. Espere alguns "
+                 "segundos.\nA perda come a vida temporária antes da vida."),
+        "energia": ("Valor negativo para gasto, positivo para ganho. Espere alguns "
+                    "segundos.\nO gasto come a energia temporária primeiro."),
+        "integridade": ("Valor negativo para perda, positivo para ganho. Espere "
+                        "alguns segundos.\n"
+                        "⚠ A PERDA AQUI TIRA VIDA JUNTO, no mesmo tanto: cada ponto "
+                        "de dano na alma tira 1 de vida e 1 de Integridade "
+                        "(livro, cap. 15).\n"
+                        "Exceção: o Cisão atravessa o corpo e tira só Integridade. "
+                        "Para ele, edite a Integridade na mão em vez de usar esta "
+                        "caixinha."),
+    }
+
     # as tres reservas, com o medidor nativo
     TAB = ref["tabela_caminhos"]
     formulas = [
@@ -116,6 +135,8 @@ def monta(wb, CAT, DEC, ref):
         if nome_r in NOTA_TEMP:
             nota(tp, NOTA_TEMP[nome_r])
         dl = campo(ws, 39, r, 5, "±", None, pt=11, cor=OSSO, nome=SERIE)
+        if nome_r in NOTA_DELTA:
+            nota(dl, NOTA_DELTA[nome_r])
         R[nome_r], R[nome_r + "_max"] = ca, cm
         R[nome_r + "_temp"] = f"${L(32)}${tp.row}"
         R[nome_r + "_delta"] = f"${L(39)}${dl.row}"
