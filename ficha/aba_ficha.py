@@ -80,10 +80,17 @@ def monta(wb, CAT, DEC, ref):
                     "• Acumula até o teto que a própria fonte declarar.\n"
                     "• Hoje só o Braseiro concede, e o teto dele é 2.\n"
                     "• Some no fim da cena."),
+        # B17 FECHADO na v0.222, por decisao do Mizuki: "n vou remover da ficha
+        # o integridade temporaria". Entao a nota parou de dizer "ou o campo
+        # sai" — ele fica. O que ela diz agora e' o que e' verdade: regra
+        # nenhuma concede isso hoje, e a maquina da ficha ja trata ele igual
+        # as outras duas (conferido no aplicaPasso_ do Codigo.gs).
         "integridade": ("⚠ Regra nenhuma concede integridade temporária hoje.\n"
-                        "O campo existe porque as três reservas são montadas no "
-                        "mesmo laço. Está em aberto (B17) e é decisão de desenho: "
-                        "ou algo passa a conceder, ou o campo sai."),
+                        "O campo fica assim mesmo — é espaço do mestre: se "
+                        "alguma coisa na mesa conceder, anote aqui.\n"
+                        "A ficha já trata ele como as outras duas: um delta "
+                        "negativo come a temporária antes da Integridade, e ela "
+                        "nunca fica negativa."),
     }
 
     # as tres reservas, com o medidor nativo

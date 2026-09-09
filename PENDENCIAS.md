@@ -410,7 +410,7 @@ editor de Apps Script da ficha e rodou o `testeDelta`: as cinco passaram. O
 não se executa à mão — chamado pelo seletor de função ele quebra, já que o `e`
 vem vazio.
 
-### B17 · O campo TEMP da INTEGRIDADE não tem fonte no manual
+### ~~B17 · O campo TEMP da INTEGRIDADE não tem fonte no manual~~ — **FECHADA na v0.222**
 
 A ficha tem `integridade_temp` no índice e o campo na tela, mas **nada no
 sistema concede integridade temporária**. Procurei o termo no `manual.txt`, no
@@ -419,10 +419,27 @@ sistema concede integridade temporária**. Procurei o termo no `manual.txt`, no
 energia (`Braseiro`, teto 2). De integridade, zero.
 
 **O campo não faz mal** — vazio, o `aplicaPasso_` passa por ele sem efeito.
-**Mas ele é uma pergunta em aberto:** ou algo deveria conceder, ou o campo sai
-da linha da Integridade.
 
-*Decisão tua. Não é dívida técnica: é desenho de sistema.*
+> ### ***Decisão do Mizuki na v0.222: o campo FICA.***
+>
+> *Com todas as letras:* **"n vou remover da ficha o integridade temporaria"**.
+>
+> **Então a pergunta fechou pelo lado que não precisa de regra nova.** *Regra
+> nenhuma concede integridade temporária hoje, e o campo continua ali como
+> **espaço do mestre** — se alguma coisa na mesa conceder, anota.* **O que muda é
+> a nota:** ela dizia *"ou algo passa a conceder, ou o campo sai"*, e ela passou a
+> dizer que o campo fica e que ninguém concede.
+
+**E a máquina já está inteira por baixo dele, o que é o que torna a decisão
+barata.** *Conferido no `aplicaPasso_` do `Codigo.gs`: o laço do delta cobre as
+três reservas, e um passo negativo come a temporária antes da Integridade e
+nunca deixa ela negativa.* **Não faltava código — faltava fonte.**
+
+> **⚠ O que NÃO fica decidido:** *se um dia alguma coisa passar a conceder, ela
+> não herda preço de nada.* **A medida abaixo mostra por quê:** *as seis fontes de
+> vida temporária compram sobrevivência e a régua da peça 11 §9 preça isso em
+> dano evitado; integridade temporária evita `0,00` de dano de vida.* **Ela
+> compraria outra coisa — adiar estágio —, e nada no sistema preça isso.**
 
 #### ⚠ Este texto afirmava uma nota que não existe
 
@@ -438,7 +455,7 @@ está **dentro** dele. *Vida ganhou `TEMP` porque tem regra, energia porque tem
 regra, Integridade porque estava na lista.* **É subproduto de laço — o que é
 exatamente por que a pergunta existe.**
 
-#### A medida, feita na v0.222 do outro repositório
+#### A medida que sustentou a decisão, feita na v0.222 do outro repositório
 
 **Ela derruba o precedente que estava sendo suposto.** A peça 24 reprovou duas
 entregas que encostam na Integridade — o `recuperar Integridade` (§6.1) e o `−1`

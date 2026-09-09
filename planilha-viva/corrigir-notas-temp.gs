@@ -7,8 +7,9 @@
  * JJK---Project é a dona da conta. Sem o teto, empilhar é sempre melhor que
  * atacar, e um Apoio de Classe 1 entrega 9 num Emanador de nível 2 cujo teto é 7.
  *
- * E AF27 e AF31 não tinham nota nenhuma. A de AF31 é a que mais importa: ela
- * avisa que regra nenhuma concede integridade temporária, que é a pendência B17.
+ * E AF27 e AF31 não tinham nota nenhuma. A de AF31 avisa que regra nenhuma
+ * concede integridade temporária — o campo fica assim mesmo, por decisão do
+ * Mizuki na v0.222, como espaço do mestre. O B17 fechou aí.
  *
  * ⚠ Isto existe como script separado porque o emitir_gs.py NÃO carrega nota —
  * o transporte para o Apps Script leva valor, fórmula, formato e caixa de
@@ -39,9 +40,10 @@ function corrigirNotasDosCamposTemp() {
       '• Some no fim da cena.',
     'AF31':
       '⚠ Regra nenhuma concede integridade temporária hoje.\n' +
-      'O campo existe porque as três reservas são montadas no mesmo laço. ' +
-      'Está em aberto (B17) e é decisão de desenho: ou algo passa a conceder, ' +
-      'ou o campo sai.'
+      'O campo fica assim mesmo — é espaço do mestre: se alguma coisa na mesa ' +
+      'conceder, anote aqui.\n' +
+      'A ficha já trata ele como as outras duas: um delta negativo come a ' +
+      'temporária antes da Integridade, e ela nunca fica negativa.'
   };
 
   var log = [];
