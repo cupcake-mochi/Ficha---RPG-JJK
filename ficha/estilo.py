@@ -79,6 +79,16 @@ def regua(ws, c1, r, c2, cor=LINHA, grossa=False):
     for c in range(c1, c2 + 1):
         ws.cell(row=r, column=c).border = Border(top=s)
 
+def nota(cel, texto):
+    """comentario de celula. ⚠ O emitir_gs.py NAO carrega nota: o transporte para
+    o Apps Script so leva valor, formula, formato e caixa de selecao. Entao isto
+    vale para o .xlsx, e a planilha viva precisa do script de nota separado."""
+    from openpyxl.comments import Comment
+    c = Comment(texto, "Projeto M")
+    c.width, c.height = 320, 110
+    cel.comment = c
+    return cel
+
 def campo(ws, c1, r, larg, rot, valor, pt=16, cor=TEXTO, nome=None, fonte_rot=None):
     """rotulo pequeno em cima, valor grande embaixo, regua debaixo. Sem caixa."""
     txt(ws, c1, r, rot.upper(), nome=fonte_rot or TITULO, pt=8, cor=TEXTO_FRACO,

@@ -20,7 +20,17 @@ LAY = json.load(open(os.path.join(AQUI, "ficha-v01", "layout.json"), encoding="u
 
 for f in (A, B):
     if not os.path.exists(f):
-        sys.exit(f"falta {f}. Rode extrair.py e monta.py primeiro.")
+        # ⚠ CODIGO 2 = PULADA, e nao falha. O `original.xlsx` e' INSUMO do
+        # Mizuki — o export cru da planilha viva —, e ele nao mora no
+        # repositorio. Sair com 1 fazia o rodar-tudo.sh dizer "ALGUM VALIDADOR
+        # FALHOU" por falta de arquivo, que e' a mesma cor de um defeito de
+        # verdade. Cor igual para coisas diferentes e' como um vermelho vira
+        # paisagem. O rodar-tudo.sh conta os 2 separado, e continua gritando
+        # que o que pulou NAO foi conferido.
+        print(f"PULADA: falta {os.path.basename(f)}. Ele e insumo seu — o export")
+        print("        cru da planilha viva. Ponha ele em ficha-v01/ e rode")
+        print("        extrair.py e monta.py. Sem ele esta comparacao nao roda.")
+        sys.exit(2)
 
 wa, wb_ = load_workbook(A), load_workbook(B)
 BARRAS = LAY["_meta"].get("barras_cheias", {})

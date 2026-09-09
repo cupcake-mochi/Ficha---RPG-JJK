@@ -418,11 +418,77 @@ sistema concede integridade temporária**. Procurei o termo no `manual.txt`, no
 (`Apoio`, `Fluxo`, `Aprumo`, `Crosta`, `Vento a Favor`, `Muralha`) e uma de
 energia (`Braseiro`, teto 2). De integridade, zero.
 
-**O campo não faz mal** — vazio, o `aplicaPasso_` passa por ele sem efeito, e a
-nota do campo agora diz que regra nenhuma o concede. **Mas ele é uma pergunta em
-aberto:** ou algo deveria conceder, ou o campo sai da linha da Integridade.
+**O campo não faz mal** — vazio, o `aplicaPasso_` passa por ele sem efeito.
+**Mas ele é uma pergunta em aberto:** ou algo deveria conceder, ou o campo sai
+da linha da Integridade.
 
 *Decisão tua. Não é dívida técnica: é desenho de sistema.*
+
+#### ⚠ Este texto afirmava uma nota que não existe
+
+**Ele dizia que *"a nota do campo agora diz que regra nenhuma o concede"*.** As
+`22` notas da planilha viva foram varridas uma a uma na v0.222 do outro
+repositório: **não há nota em `AF31`**, nem em `AF27`. *A única nota de reserva é
+a `AF23`, da vida temporária.* **A frase saiu.**
+
+#### E o campo nasceu de um laço, não de uma decisão
+
+O `aba_ficha.py` monta as três reservas num `for`, e o `campo(... "temp" ...)`
+está **dentro** dele. *Vida ganhou `TEMP` porque tem regra, energia porque tem
+regra, Integridade porque estava na lista.* **É subproduto de laço — o que é
+exatamente por que a pergunta existe.**
+
+#### A medida, feita na v0.222 do outro repositório
+
+**Ela derruba o precedente que estava sendo suposto.** A peça 24 reprovou duas
+entregas que encostam na Integridade — o `recuperar Integridade` (§6.1) e o `−1`
+na Integridade máxima (§6.3) — as duas por valerem `0,00` para dois terços dos
+alvos. **As duas agem no eixo da LETALIDADE, e o campo `TEMP` age no eixo do
+ESTÁGIO** — e estágio dispara muito antes da alma esvaziar.
+
+| a entrega vale `0,00` em | grade de `980` fichas |
+|---|---|
+| as duas **reprovadas** pelo §6.1 e §6.3 | **`67,8%`** |
+| o campo `TEMP` no degrau `2` — o que cobra `+1` PE por Classe | **`10,2%`** |
+
+> ***O precedente do §6.1 não alcança o B17.*** **O que pesa contra é outro, e é
+> maior:** `Alma` é `1` dos `5` tipos Especiais, e os Especiais são `10%` do dano
+> recebido — **`2,0%` do que chega na ficha**. *Uma reserva dedicada a segurar
+> `2%` dos acertos vale `0,00` em `~98%` deles.*
+>
+> **⚠ E esse `2,0%` sai do `60/30/10` da peça 19 §4, que a própria peça declara
+> sem dono** — *"o peso dos três grupos é PREVISÃO", "o primeiro que a mesa vai
+> corrigir"*, com `04-playtest/` vazia desde a v0.1.
+
+**Mais duas coisas medidas junto:**
+
+- **Magnitude fixa evapora.** As seis fontes de temporária entregam de `2` a
+  `18`, e a Integridade vai de `28` no nível 2 a `252` no 30: a mesma fonte vale
+  `129%` do degrau 2 no nível 2 e `14%` no nível 30. *Uma fonte teria de escalar
+  — a forma que o `Fluxo` (`2 × Classe`) e a `Crosta` (maior Classe) já têm.*
+- **A defesa contra `Alma` já existe sem reserva nova.** *Ele é um dos catorze
+  tipos resistíveis, e a peça 5 §4 autoriza "resistência a um tipo".*
+
+### B19 · A ficha não sabe que a vida temporária tem teto
+
+**A nota `AF23` da planilha viva diz três das quatro regras** — não empilha, some
+no fim da cena, é gasta antes da vida normal — **e omite a quarta: o teto de
+metade da vida máxima.**
+
+*Ela não é invenção:* **o livro publica ela no capítulo 10** — *"tem **teto de
+metade da sua vida máxima**"* — e a peça 1 §5.1.1 do outro repositório é a dona,
+com a conta do porquê: *sem teto, empilhar é sempre melhor que atacar, e um
+`Apoio` de Classe 1 entrega `9` num Emanador de nível 2 cujo teto é `7`.*
+
+**E o `decisoes-ficha.json` grava `teto_numerico: null`**, com o
+`manual-temporario.md` escrevendo *"nenhum teto numérico serviria: as fontes vão
+de 2 a 18"*. **A frase está certa e a conclusão não:** *o teto não é numérico, é
+proporcional* — e por ser proporcional ele resolve exatamente o problema que a
+frase diz não ter solução.
+
+> **Não é decisão: é a ficha atrás do livro**, a mesma família do `B18`. *O
+> conserto é a decisão `A2` ganhar o campo do teto, a nota `AF23` ganhar a quarta
+> linha, e o `conferir-decisoes.py` cobrar as duas contra o capítulo 10.*
 
 ### B18 · O `Ficha.gs` está atrás da planilha viva, e o `construir()` apaga tudo
 
@@ -481,6 +547,37 @@ da v0.145.** *Os outros dez campos batem.*
 > ela é outro documento (29 parágrafos e 40 tabelas contra 28 e 38), e trocar uma
 > pela outra dentro de uma pasta rotulada como cópia de um terceiro repositório é
 > decisão de quem cuida daquela vendorização.*
+
+##### ⚠ E na v0.222 o vermelho virou divergência DECLARADA
+
+**O diagnóstico acima continua valendo inteiro — o que mudou é a cor.** *Um
+validador permanentemente vermelho não é registro: é um validador que as pessoas
+param de ler, e aí o próximo desvio de verdade entra junto sem ninguém ver.*
+
+**O `conferir-kaori.py` ganhou a lista `DIVERGENCIAS`, no molde da checagem `12`
+do `JJK---Project`:** *divergência declarada passa e reporta; qualquer outra
+reprova.* **E ela tem o outro lado**, que é o que a impede de virar desculpa
+permanente: *se os dois lados voltarem a bater, o validador **reprova** mandando
+tirar a linha* — mesma forma do `fechada na vX.YYY` do `ESTADO-revisao.md`.
+
+*As duas direções foram provadas em cópia isolada:* **uma divergência nova (mexer
+na Vida) reprova, e uma linha declarada que fechou (a Defesa) reprova pedindo a
+remoção.**
+
+> **Tirar a linha é o conserto.** *Quando o repositório do PDF for republicado
+> com a Integridade da v0.145, re-vendorize a ficha e apague a entrada
+> `"Integridade"` do `DIVERGENCIAS` na mesma passada.*
+
+#### E o `comparar-ficha-01.py` deixou de contar como falha
+
+**Ele pedia `ficha-v01/original.xlsx`, que é INSUMO teu** — *o export cru da
+planilha viva, que não mora no repositório* — **e saía com código `1`.** *O
+`rodar-tudo.sh` então dizia "ALGUM VALIDADOR FALHOU" por falta de arquivo, que é
+a mesma cor de um defeito de verdade.*
+
+**Agora falta de insumo sai com `2` e conta como PULADA**, e o resumo lista o que
+pulou com o aviso de sempre: *o que pulou NÃO foi conferido.* **Duas cores para
+duas coisas diferentes.**
 
 #### ⚠⚠ E indo regerar a planilha apareceu um SEGUNDO gatilho carregado
 

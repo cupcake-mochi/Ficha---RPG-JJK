@@ -69,6 +69,7 @@ O zip já traz os dois, então `./rodar-tudo.sh` funciona assim que você descom
 | arquivo | de onde veio |
 |---|---|
 | `manual.txt` | o seu próprio PDF, extraído com `pdftotext -layout` |
+| `capitulo-10-como-jogar.md` | cópia do capítulo 10 do livro. **É o dono do teto da vida temporária**, e o `conferir-decisoes.py` lê de lá em vez de guardar o número |
 | `repos/JJK---PDF---RPG-main/ficha/ficha-exemplo-kaori.docx` | cópia do seu repositório público, só esse arquivo |
 
 Os dois são derivados de material seu. Se for subir isto para o GitHub e preferir não duplicar, pode apagar os dois — o `conferir-decisoes.py` **falha e diz como regerar**, em vez de pular em silêncio. Um verde que pulou checagem não prova nada.

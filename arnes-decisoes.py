@@ -11,7 +11,11 @@ import json, os, shutil, subprocess, sys, tempfile
 AQUI = os.path.dirname(os.path.abspath(__file__))
 PRECISA = ["conferir-decisoes.py", "decisoes-ficha.json", "catalogo-projeto-m.json",
            "DECISOES-bloco-A.md", "PENDENCIAS.md", "manual.txt",
-           "capitulo-35-caminhos-e-trilhas.md"]
+           "capitulo-35-caminhos-e-trilhas.md",
+           # v0.222: o teto da vida temporaria passou a ser lido do capitulo 10,
+           # que e o dono vivo dele — a A2 gravava so o teto NUMERICO e concluia
+           # que teto nenhum serviria. O teto e proporcional, e o livro publica.
+           "capitulo-10-como-jogar.md", "manual-temporario.md"]
 
 def roda(pasta):
     r = subprocess.run([sys.executable, "conferir-decisoes.py"], cwd=pasta,
@@ -147,6 +151,34 @@ perturba_arquivo("o manual.txt foi re-extraido e perdeu a frase do Casco",
                  "Casco — as suas invocações têm mais vida.",
                  "Parrudo — as suas invocações têm mais vida, 5 × a sua maestria.",
                  "nunca podia acender")
+
+print()
+print("=" * 70)
+print("PASSO 2c - o TETO da vida temporaria, que a v0.222 achou faltando")
+print("  A A2 gravava so o teto_numerico: null e o manual-temporario.md concluia")
+print("  'nenhum teto numerico serviria'. O teto nao e numerico, e PROPORCIONAL,")
+print("  e o livro publica ele no capitulo 10 — a ficha e que nao sabia.")
+
+perturba_arquivo("o LIVRO perde o teto (o dono some)",
+                 "capitulo-10-como-jogar.md",
+                 "tem **teto de metade da sua vida máxima**",
+                 "nao tem teto nenhum",
+                 "o capitulo 10 do livro publica o teto")
+perturba_arquivo("a A2 grava um teto que nao e o do livro",
+                 "decisoes-ficha.json",
+                 '"teto_proporcional": "metade da vida maxima"',
+                 '"teto_proporcional": "um terco da vida maxima"',
+                 "a decisao A2 carrega o teto proporcional")
+perturba_arquivo("a A2 perde o campo do teto",
+                 "decisoes-ficha.json",
+                 '"teto_proporcional": "metade da vida maxima",',
+                 '"teto_proporcional_desligado": "metade da vida maxima",',
+                 "a decisao A2 carrega o teto proporcional")
+perturba_arquivo("a tabela de proveniencia perde a linha do teto",
+                 "manual-temporario.md",
+                 "| teto de metade da vida máxima (vida) |",
+                 "| outra coisa qualquer (vida) |",
+                 "declara o teto na tabela de proveniencia")
 
 print()
 print("=" * 70)

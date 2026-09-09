@@ -48,7 +48,7 @@ O número do dano vem da arma ou do feitiço. O tipo diz quem resiste a ele e co
 
 **`Energia Reversa`** — causado pela inversão da energia em maldições. Desmonta a biologia da maldição, desestruturando tecidos.
 
-**`Alma`** — causado por ataques diretos à essência espiritual. Ele gasta Integridade em vez de vida, e tem quatro estágios próprios. Os quatro estágios estão na tabela `Estágios de dano na alma`.
+**`Alma`** — causado por ataques diretos à essência espiritual. Ele desgasta a Integridade junto com a vida, e tem quatro estágios próprios. A régua inteira está adiante, na seção *Dano na alma*.
 
 ### Nomes repetidos
 

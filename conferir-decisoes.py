@@ -62,6 +62,37 @@ checa("o Braseiro e a UNICA fonte de energia temporaria",
       MAN.count("energia tempo") == 1,
       f"achei {MAN.count('energia tempo')} mencoes; o teto de 2 pode nao ser mais so dele")
 
+# --- o TETO da vida temporaria, lido do capitulo DONO e nao escrito aqui ----
+# ⚠⚠ Ate a v0.222 a A2 gravava so `teto_numerico: null`, e o manual-temporario.md
+# concluia "nenhum teto numerico serviria". A frase esta certa e a conclusao nao:
+# o teto NAO e numerico, e PROPORCIONAL — metade da vida maxima —, e por ser
+# proporcional ele resolve exatamente o problema que a frase levanta (as fontes
+# vao de 2 a 18, entao nenhum numero fixo serve; uma fracao da ficha serve).
+# O livro publica ele no capitulo 10 e a ficha nao sabia. Esta checagem le o
+# capitulo vendorizado, para a ficha nao envelhecer de novo em silencio.
+CAP10 = le('capitulo-10-como-jogar.md')
+_teto = re.search(r'teto de (metade) da sua vida máxima', CAP10)
+checa("o capitulo 10 do livro publica o teto da vida temporaria",
+      bool(_teto),
+      "sem ele esta checagem nao tem dono, e o teto volta a sumir da ficha")
+if _teto:
+    _prop = DEC["A2_temporario"]["vida"].get("teto_proporcional")
+    checa("a decisao A2 carrega o teto proporcional que o livro publica",
+          _prop == f"{_teto.group(1)} da vida maxima",
+          f"a A2 diz {_prop!r} e o livro diz {_teto.group(1)!r} da vida maxima")
+    # e a tabela de proveniencia tem de citar ele, senao a linha "nenhum teto
+    # numerico serviria" volta a se ler como "nao ha teto"
+    MT = le('manual-temporario.md')
+    # A LINHA DA TABELA, e nao o arquivo: a prosa em volta agora explica o teto
+    # e cita ele por extenso, entao procurar a frase solta encontraria o texto
+    # que EXPLICA em vez da linha que DECLARA. O arnes pegou isso: perturbar a
+    # linha da tabela saia verde por causa da prosa.
+    _linha_teto = [l for l in MT.splitlines()
+                   if l.startswith('|') and 'teto de metade da vida máxima' in l]
+    checa("o manual-temporario.md declara o teto na tabela de proveniencia",
+          bool(_linha_teto),
+          "a tabela so falava do teto NUMERICO, e isso se le como 'nao ha teto'")
+
 fontes = DEC["A2_temporario"]["vida"]["fontes_no_manual"]
 faltando = [f for f in fontes if f not in MAN]
 checa(f"as {len(fontes)} fontes de vida temporaria existem no manual",

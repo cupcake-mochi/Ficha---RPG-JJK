@@ -1,347 +1,350 @@
 {
-  "_meta": {
-    "o_que_e": "As decisoes do bloco A, em forma de dado. Este arquivo e o DONO das cinco: script, validador e a ficha leem daqui, e o DECISOES-bloco-A.md explica o porque.",
-    "decidido_por": "Mizuki",
-    "quando": "2026-08-18",
-    "regra": "onde a ficha e o manual discordarem, o manual vence; onde a regra nao existe no manual, o campo fonte diz 'ficha'"
+ "_meta": {
+  "o_que_e": "As decisoes do bloco A, em forma de dado. Este arquivo e o DONO das cinco: script, validador e a ficha leem daqui, e o DECISOES-bloco-A.md explica o porque.",
+  "decidido_por": "Mizuki",
+  "quando": "2026-08-18",
+  "regra": "onde a ficha e o manual discordarem, o manual vence; onde a regra nao existe no manual, o campo fonte diz 'ficha'"
+ },
+ "A1_catalogo": {
+  "escolha": "carimbo com aviso vivo",
+  "copia_local": true,
+  "celula_versao_local": "DADOS!B1",
+  "celula_versao_corrente": "IMPORTRANGE da central, uma celula so",
+  "se_a_central_cair": "a ficha perde o aviso e continua inteira; os menus nao dependem do IMPORTRANGE",
+  "porque_a_copia_local_e_obrigatoria": "no Sheets, lista suspensa so aponta para intervalo da MESMA planilha",
+  "renomear_a_central": "nao quebra; o IMPORTRANGE guarda o id do arquivo, nao o nome",
+  "o_que_quebra": [
+   "apagar a central",
+   "perder o acesso a ela"
+  ]
+ },
+ "A2_temporario": {
+  "vida": {
+   "empilha": false,
+   "regra": "fica o maior",
+   "expira": "fim da cena",
+   "gasta_antes_da_vida_normal": true,
+   "teto_numerico": null,
+   "fonte": {
+    "gasta_primeiro": "manual, Melhoria Rasga Escudo: 'o dano ignora pontos de vida temporarios e barreiras: bate direto na vida'",
+    "nao_empilha": "ficha (decisao A2a); copia a forma da energia temporaria e a convencao de d20",
+    "expira": "ficha (decisao A2a); 'fim da cena' e unidade que o manual ja usa",
+    "teto": "livro, capitulo 10 \"Como Jogar\": \"tem teto de metade da sua vida maxima\". O dono da regra e a peca 1 §5.1.1 do JJK---Project, que escreve a conta: sem teto, empilhar e sempre melhor que atacar"
+   },
+   "fontes_no_manual": {
+    "Apoio": "3 por ponto que sobra",
+    "Fluxo": "2 x Classe",
+    "Aprumo": "1d10 + atributo de ataque",
+    "Crosta": "a sua maior Classe",
+    "Vento a Favor": "9",
+    "Muralha": "18"
+   },
+   "teto_proporcional": "metade da vida maxima",
+   "_nota_teto": "ATE A v0.222 esta decisao gravava so o teto_numerico: null, e o manual-temporario.md concluia \"nenhum teto numerico serviria\". A frase esta certa e a conclusao nao: o teto NAO e numerico, e proporcional — e por ser proporcional ele resolve exatamente o problema que a frase diz nao ter solucao. A ficha estava atras do livro, que publica o teto desde antes."
   },
-  "A1_catalogo": {
-    "escolha": "carimbo com aviso vivo",
-    "copia_local": true,
-    "celula_versao_local": "DADOS!B1",
-    "celula_versao_corrente": "IMPORTRANGE da central, uma celula so",
-    "se_a_central_cair": "a ficha perde o aviso e continua inteira; os menus nao dependem do IMPORTRANGE",
-    "porque_a_copia_local_e_obrigatoria": "no Sheets, lista suspensa so aponta para intervalo da MESMA planilha",
-    "renomear_a_central": "nao quebra; o IMPORTRANGE guarda o id do arquivo, nao o nome",
-    "o_que_quebra": [
-      "apagar a central",
-      "perder o acesso a ela"
-    ]
+  "energia": {
+   "empilha": true,
+   "regra": "acumula ate o teto que a propria fonte declarar",
+   "expira": "fim da cena",
+   "gasta_antes_do_pe_normal": true,
+   "teto_numerico": null,
+   "teto_por_fonte": {
+    "Braseiro": 2
+   },
+   "fonte": {
+    "tudo": "manual, Braseiro (Trilha Brasa, nivel 11): 'nunca passa de 2 acumulados e some no fim da cena. Energia temporaria gasta como PE, e gasta primeiro'",
+    "teto_e_do_Braseiro_nao_geral": "o Braseiro e hoje a unica fonte de energia temporaria no manual"
+   }
   },
-  "A2_temporario": {
-    "vida": {
-      "empilha": false,
-      "regra": "fica o maior",
-      "expira": "fim da cena",
-      "gasta_antes_da_vida_normal": true,
-      "teto_numerico": null,
-      "fonte": {
-        "gasta_primeiro": "manual, Melhoria Rasga Escudo: 'o dano ignora pontos de vida temporarios e barreiras: bate direto na vida'",
-        "nao_empilha": "ficha (decisao A2a); copia a forma da energia temporaria e a convencao de d20",
-        "expira": "ficha (decisao A2a); 'fim da cena' e unidade que o manual ja usa"
-      },
-      "fontes_no_manual": {
-        "Apoio": "3 por ponto que sobra",
-        "Fluxo": "2 x Classe",
-        "Aprumo": "1d10 + atributo de ataque",
-        "Crosta": "a sua maior Classe",
-        "Vento a Favor": "9",
-        "Muralha": "18"
-      }
-    },
-    "energia": {
-      "empilha": true,
-      "regra": "acumula ate o teto que a propria fonte declarar",
-      "expira": "fim da cena",
-      "gasta_antes_do_pe_normal": true,
-      "teto_numerico": null,
-      "teto_por_fonte": {
-        "Braseiro": 2
-      },
-      "fonte": {
-        "tudo": "manual, Braseiro (Trilha Brasa, nivel 11): 'nunca passa de 2 acumulados e some no fim da cena. Energia temporaria gasta como PE, e gasta primeiro'",
-        "teto_e_do_Braseiro_nao_geral": "o Braseiro e hoje a unica fonte de energia temporaria no manual"
-      }
-    },
-    "sobe_para_o_capitulo": {
-      "alvo": "Vida, energia e alma (manual p.15)",
-      "sobe_vida": true,
-      "sobe_energia": true,
-      "texto_proposto": "manual-temporario.md",
-      "quem_aplica": "Mizuki, no repositorio do manual"
-    }
-  },
-  "A3_incompatibilidades": {
-    "escolha": "trava so na ficha; o manual fica calado",
-    "pares": [
-      {
-        "a": "Rápido",
-        "b": "Reação",
-        "fonte": "manual",
-        "texto": "Nao entra no mesmo feitico que Reacao.",
-        "onde": "manual, tabela da Familia Tempo"
-      },
-      {
-        "a": "Rápido",
-        "b": "Lento",
-        "fonte": "ficha",
-        "texto": "Um diz Acao Bonus, o outro diz rodada inteira.",
-        "onde": "decisao A3"
-      }
-    ],
-    "o_que_fica_exposto": "quem monta feitico no papel ou no gerador continua com o desconto",
-    "tamanho_do_desconto": "um terco do orcamento em toda Classe; com a Familia Tempo Livre, o Rapido sai de graca"
-  },
-  "A4_reservas": {
-    "escolha": "os dois",
-    "atual_editavel": true,
-    "caixa_de_delta": true,
-    "gatilho": "onEdit simples, so mexe na propria planilha",
-    "sobrevive_a_copia": true,
-    "nao_roda_quando": [
-      "sem sinal, ate o celular sincronizar"
-    ],
-    "quando_nao_roda": "o jogador edita o atual na mao; nada trava",
-    "botao_desenhado_no_celular": false,
-    "substituto_do_botao": "caixa de selecao ou lista suspensa fazendo papel de botao"
-  },
-  "A5_acento": {
-    "escolha": "cor de estado no numero grande",
-    "degraus": [
-      {
-        "quando": "cheio",
-        "hex": "E8DCD4",
-        "nome": "osso"
-      },
-      {
-        "quando": "abaixo da metade",
-        "hex": "D89B3A",
-        "nome": "ambar"
-      },
-      {
-        "quando": "abaixo de um quarto",
-        "hex": "C2334D",
-        "nome": "vermelho"
-      }
-    ],
-    "porque_funciona": "os tres estao em degraus de claridade, nao de matiz",
-    "medido": {
-      "osso_vs_ambar": {
-        "normal": 1.8,
-        "protanopia": 1.88,
-        "deuteranopia": 1.69
-      },
-      "ambar_vs_vermelho": {
-        "normal": 2.24,
-        "protanopia": 2.51,
-        "deuteranopia": 1.95
-      },
-      "osso_vs_vermelho": {
-        "normal": 4.03,
-        "protanopia": 4.74,
-        "deuteranopia": 3.31
-      },
-      "sobre_o_painel": {
-        "osso": 12.18,
-        "ambar": 6.76,
-        "vermelho": 3.02
-      }
-    },
-    "regra_que_continua_valendo": "a cor nunca e o unico meio: o numero em si ja diz o estado"
-  },
-  "C1_evocador": {
-    "escolha": "o Evocador sai do menu de Caminhos da ficha, por enquanto",
-    "motivo": "o Caminho existe no manual, mas as entregas de Trilha (niveis 2, 11, 19 e 27) estao em escrita, o Casco diz 'mais vida' sem numero, e a ficha da invocacao (manual cap.14, p.180) nao existe em versao nenhuma da ficha",
-    "o_catalogo_NAO_muda": "o catalogo espelha o manual, e o manual tem cinco Caminhos. Quem some e a OPCAO no menu da ficha, nao a entrada no catalogo",
-    "caminhos_no_menu": [
-      "Bastião",
-      "Vanguarda",
-      "Guia",
-      "Emanador"
-    ],
-    "caminho_oculto": "Evocador",
-    "a_ficha_diz": "Evocador — em escrita, fale com o mestre",
-    "quando_volta": "quando as entregas de Trilha e o numero do Casco sairem",
-    "motivo_hoje": {
-      "estado": "os tres motivos do C1 expiraram. A decisao de o Evocador voltar ao menu e do Mizuki, e enquanto ela nao vier a ficha segue com quatro.",
-      "entregas_de_trilha": "FECHADAS no sistema na v0.164 — as doze entregas do Evocador foram as ultimas das quinze Trilhas",
-      "numero_do_casco": "FECHADO: o Casco virou Parrudo na v0.184 e ganhou numero com dono na v0.185, 5 x a maestria. O dono e o capitulo 35, vendorizado aqui como capitulo-35-caminhos-e-trilhas.md",
-      "ficha_da_invocacao": "FECHADA: ficha-invocacao/ficha-invocacao.xlsx, com o invocacao.json como dono dos valores",
-      "por_que_a_checagem_velha_nao_servia": "ela procurava a frase 'Casco — as suas invocacoes tem mais vida.' no manual.txt, que esta congelado na v0.104. A frase nunca sai de la, entao a checagem saia verde para sempre e nunca podia acender."
-    }
-  },
-  "C2_carimbo": {
-    "escolha": "o carimbo e a versao do projeto",
-    "versao_corrente": "0.104",
-    "data_da_versao": "18/08/2026",
-    "dona_da_versao": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
-    "manual_do_fundamento": "7.10",
-    "porque_a_do_projeto_e_nao_a_do_manual": "o catalogo foi extraido do PDF inteiro, que e o recorte da versao do projeto; o 7.10 e so do capitulo de Fundamento",
-    "onde_fica_na_ficha": "DADOS!B1, e a central publica a mesma string numa celula so"
-  },
-  "C3_defesa": {
-    "escolha": "a protecao vira celula propria, com escolha entre aptidao e equipamento",
-    "formula_defesa": "10 + Destreza + protecao",
-    "formula_protecao": "SE(usa equipamento; protecao do equipamento; ARRED.ABAIXO(refino/3) + 1)",
-    "porque": "Traje e Revestimento DESLIGAM a protecao da aptidao e entregam a deles no lugar, entao o jogador escolhe qual das duas vale",
-    "o_que_entra_agora": "a celula de escolha e a formula da aptidao",
-    "o_que_entra_depois": "o catalogo de equipamento (manual cap.12); ate la o jogador digita o numero na mao",
-    "o_bug_que_isso_conserta": "o prototipo tinha '10 + Destreza + 1' com o 1 escrito na mao; ele fica errado no refino 3, quando a protecao vira 2"
-  },
-  "C4_fontes": {
-    "escolha": "cinco fontes, cada uma com um papel, e a regra dura do celular",
-    "corpo": {
-      "fonte": "Roboto",
-      "onde": "todas as abas",
-      "porque": "esta na lista curta que o Sheets carrega sem 'mais fontes', entao o app de celular nao substitui ela"
-    },
-    "titulo": {
-      "fonte": "Oswald",
-      "onde": "titulos, rotulos de bloco e os numeros grandes, so nas abas de PC",
-      "porque": "condensada: a mesma linha ocupa 20% menos que em Roboto, e sobra espaco na coluna estreita"
-    },
-    "marca": {
-      "fonte": "Yuji Syuku",
-      "onde": "os kanji, dentro da arte gerada",
-      "porque": "pincel de verdade; e a que menos deforma o traco ao encolher"
-    },
-    "regra_dura": "a aba MESA usa SO Roboto. O app de celular do Sheets tem menos fontes que o navegador e troca as de fora da lista sem avisar",
-    "medido": {
-      "linha_de_feitico_da_MESA_em_336px": {
-        "Roboto": 308,
-        "Lexend": 333,
-        "NotoSansJP": 301,
-        "Oswald": 247,
-        "Anton": 273,
-        "BebasNeue": 230
-      },
-      "x_sobre_maiuscula": {
-        "Roboto": 0.74,
-        "Lexend": 0.75,
-        "NotoSansJP": 0.74,
-        "Oswald": 0.71,
-        "Anton": 0.85,
-        "BebasNeue": 1.0
-      },
-      "criterio_titulo": "x/maiuscula acima de 0.90 e display caixa-alta, e cansa em bloco de texto",
-      "porque_Lexend_caiu": "333 px de 336 nao deixa respiro entre celula",
-      "kanji_piso": {
-        "regra": "kanji so le a partir de 22 pt; abaixo disso os tracos fundem",
-        "metrica": "deriva de cobertura contra o mesmo glifo a 96 px, corte em 12%",
-        "metrica_descartada": "contagem de vaos fechados: oscilava com o tamanho, o que e impossivel se estiver certa",
-        "piso_por_fonte": {
-          "ShipporiMincho": 22,
-          "YujiSyuku": 22,
-          "NewTegomin": 22,
-          "ZenAntique": 22,
-          "NotoSansJP": 28
-        }
-      }
-    },
-    "documento": {
-      "fonte": "Castoro",
-      "onde": "nome do portador e valores de campo nas abas de PC",
-      "porque": "serifada de livro, pouco contraste entre grosso e fino: le como registro de arquivo",
-      "conferida_no_seletor": true,
-      "altura_de_x": 0.475,
-      "cuidado": "e a menor altura de x das candidatas, entao valor pequeno pede um ponto a mais",
-      "substituiu": "Shippori Mincho e depois Noto Serif JP, e NENHUMA DAS DUAS existe no Sheets",
-      "licao": "a lista do Google Fonts nao e a lista do Sheets; agora o validador so aceita fonte conferida"
-    },
-    "serie": {
-      "fonte": "Courier New",
-      "onde": "numero de registro, serie, data de emissao",
-      "porque": "maquina de escrever le como burocracia, e esta na lista que o Sheets carrega sozinho"
-    },
-    "kanji_piso_pt": 22,
-    "fontes_confirmadas_no_sheets": {
-      "como_foi_conferido": "o Mizuki procurou uma a uma no seletor de fontes do Google Sheets",
-      "quando": "2026-08-18",
-      "existem": [
-        "Roboto",
-        "Courier New",
-        "Arial",
-        "Verdana",
-        "Georgia",
-        "Oswald",
-        "Yuji Syuku",
-        "Shippori Antique",
-        "Shippori Antique B1",
-        "Castoro",
-        "Bree Serif",
-        "Cormorant",
-        "Cormorant Garamond",
-        "Fjalla One",
-        "Black Ops One",
-        "Bree Serif",
-        "Cookie",
-        "Dancing Script"
-      ],
-      "NAO_existem": [
-        "Shippori Mincho",
-        "Noto Serif JP"
-      ],
-      "porque_esta_lista_existe": "eu propus duas fontes que nao existem la, uma atras da outra. A lista do Google Fonts NAO e a lista do Sheets, e nao da para supor. Agora o validador so aceita fonte que esta aqui."
-    }
-  },
-  "C5_arte": {
-    "escolha": "arte desenhada por codigo, nunca baixada",
-    "porque": "o material circula entre jogadores e pode virar PDF; arte de terceiro com licenca desconhecida vira problema do Mizuki depois",
-    "gerador": "arte/gera.py, com semente fixa: roda de novo e sai identico",
-    "pecas": [
-      "selo-封",
-      "selo-呪",
-      "pincelada",
-      "pincelada-roxa",
-      "respingo",
-      "moldura-foto"
-    ],
-    "como_entra_no_sheets": "o script insere com insertImage a partir de base64 e define largura e altura ele mesmo. Imagem importada de .xlsx nao aparece no getImages(), entao nao dava nem para consertar o tamanho dela",
-    "como_entra_no_xlsx": "imagem flutuante, so em area morta, porque ela bloqueia a digitacao embaixo",
-    "consertado_no_caminho": "a primeira pincelada sorteava falha coluna a coluna e saiu com cara de codigo de barras; pincel seco arrasta, nao pisca",
-    "peca_removida": {
-      "nome": "textura",
-      "porque": "600 KB de base64 para um ruido que nao aparece na tela. Como a arte agora viaja DENTRO do script, o tamanho dela deixou de ser gratis"
-    }
-  },
-  "C6_documento": {
-    "escolha": "a ficha e o documento oficial do feiticeiro, e a primeira aba e a carteira",
-    "de_onde_veio": "Morningstar, sobre a ficha do Night Witches: a gramatica visual sai da ficcao, nao de um guia de layout",
-    "o_que_isso_decide": [
-      "regua no lugar de caixa: um fio embaixo do valor, nunca borda em volta",
-      "secoes numeradas 01 02 03, com o numero grande e apagado",
-      "numero de registro e data de emissao, em Courier",
-      "o Selo desenhado como carimbo, e ele e a unica coisa vermelha da pagina",
-      "assimetria: lombada escura na lateral, conteudo deslocado"
-    ],
-    "abas": [
-      "CARTEIRA",
-      "FICHA",
-      "MESA",
-      "QUEM É",
-      "DADOS"
-    ],
-    "aba_removida": {
-      "nome": "TÉCNICA",
-      "porque": "o bloco de feitico dela ficou ruim de ler e de usar; o Mizuki preferiu tirar a ficar torto",
-      "o_que_some_junto": "a linha de uso rapido da MESA passa a ser digitada a mao ate a TECNICA voltar",
-      "onde_esta_registrado": "PENDENCIAS.md, item B10"
-    },
-    "abas_removidas_na_v01": {
-      "quais": [
-        "MESA",
-        "QUEM É"
-      ],
-      "quando": "na v0.1 da ficha, editada pelo Mizuki no Google Sheets",
-      "decisao": "sairam de proposito, e o gerador da v0.1 nao as recria",
-      "as_abas_da_v01": [
-        "CARTEIRA",
-        "FICHA",
-        "DADOS"
-      ],
-      "o_que_some_junto": "a MESA era a de 12 colunas que lia da FICHA por formula, e a QUEM E era a da ficcao. O molde das duas continua no ficha/abas_resto.py se um dia voltarem."
-    }
-  },
-  "C7_paleta_v01": {
-    "escolha": "os dois roxos de painel da v0.1 viram a paleta oficial, e nao excecao",
-    "de_onde_veio": "o .xlsx que o Mizuki editou no Sheets e mandou em 04/09/2026",
-    "painel": "1E1733, no lugar do 211C35",
-    "painel_alto": "3D2E78, no lugar do 30294D",
-    "faixa": "211940, nova: a faixa dos titulos de secao",
-    "painel_baixo": "1B142F, nova: FICHA D117:D119",
-    "por_que": "os dois antigos nao aparecem em preenchimento nenhum daquela ficha. Deixar as duas paletas no repositorio seria a licao no 9 convidada para dentro.",
-    "consequencia_aceita": "a ficha da invocacao passa a usar os roxos novos, porque ela importa do estilo.py. O ficha-projeto-m.xlsx antigo NAO foi regerado: a v0.1 substitui ele.",
-    "onde_a_ficha_vive": "Google Sheets, planilha 1rH43Xw6nneXwIPkI1VpsnPPkTZTPIqbiocY0KQdPwZ8",
-    "o_que_isso_decide": "o IFS das 16 celulas fica cru e o SPARKLINE das 3 continua. No Excel os dois quebram, e esta aceito."
+  "sobe_para_o_capitulo": {
+   "alvo": "Vida, energia e alma (manual p.15)",
+   "sobe_vida": true,
+   "sobe_energia": true,
+   "texto_proposto": "manual-temporario.md",
+   "quem_aplica": "Mizuki, no repositorio do manual"
   }
+ },
+ "A3_incompatibilidades": {
+  "escolha": "trava so na ficha; o manual fica calado",
+  "pares": [
+   {
+    "a": "Rápido",
+    "b": "Reação",
+    "fonte": "manual",
+    "texto": "Nao entra no mesmo feitico que Reacao.",
+    "onde": "manual, tabela da Familia Tempo"
+   },
+   {
+    "a": "Rápido",
+    "b": "Lento",
+    "fonte": "ficha",
+    "texto": "Um diz Acao Bonus, o outro diz rodada inteira.",
+    "onde": "decisao A3"
+   }
+  ],
+  "o_que_fica_exposto": "quem monta feitico no papel ou no gerador continua com o desconto",
+  "tamanho_do_desconto": "um terco do orcamento em toda Classe; com a Familia Tempo Livre, o Rapido sai de graca"
+ },
+ "A4_reservas": {
+  "escolha": "os dois",
+  "atual_editavel": true,
+  "caixa_de_delta": true,
+  "gatilho": "onEdit simples, so mexe na propria planilha",
+  "sobrevive_a_copia": true,
+  "nao_roda_quando": [
+   "sem sinal, ate o celular sincronizar"
+  ],
+  "quando_nao_roda": "o jogador edita o atual na mao; nada trava",
+  "botao_desenhado_no_celular": false,
+  "substituto_do_botao": "caixa de selecao ou lista suspensa fazendo papel de botao"
+ },
+ "A5_acento": {
+  "escolha": "cor de estado no numero grande",
+  "degraus": [
+   {
+    "quando": "cheio",
+    "hex": "E8DCD4",
+    "nome": "osso"
+   },
+   {
+    "quando": "abaixo da metade",
+    "hex": "D89B3A",
+    "nome": "ambar"
+   },
+   {
+    "quando": "abaixo de um quarto",
+    "hex": "C2334D",
+    "nome": "vermelho"
+   }
+  ],
+  "porque_funciona": "os tres estao em degraus de claridade, nao de matiz",
+  "medido": {
+   "osso_vs_ambar": {
+    "normal": 1.8,
+    "protanopia": 1.88,
+    "deuteranopia": 1.69
+   },
+   "ambar_vs_vermelho": {
+    "normal": 2.24,
+    "protanopia": 2.51,
+    "deuteranopia": 1.95
+   },
+   "osso_vs_vermelho": {
+    "normal": 4.03,
+    "protanopia": 4.74,
+    "deuteranopia": 3.31
+   },
+   "sobre_o_painel": {
+    "osso": 12.18,
+    "ambar": 6.76,
+    "vermelho": 3.02
+   }
+  },
+  "regra_que_continua_valendo": "a cor nunca e o unico meio: o numero em si ja diz o estado"
+ },
+ "C1_evocador": {
+  "escolha": "o Evocador sai do menu de Caminhos da ficha, por enquanto",
+  "motivo": "o Caminho existe no manual, mas as entregas de Trilha (niveis 2, 11, 19 e 27) estao em escrita, o Casco diz 'mais vida' sem numero, e a ficha da invocacao (manual cap.14, p.180) nao existe em versao nenhuma da ficha",
+  "o_catalogo_NAO_muda": "o catalogo espelha o manual, e o manual tem cinco Caminhos. Quem some e a OPCAO no menu da ficha, nao a entrada no catalogo",
+  "caminhos_no_menu": [
+   "Bastião",
+   "Vanguarda",
+   "Guia",
+   "Emanador"
+  ],
+  "caminho_oculto": "Evocador",
+  "a_ficha_diz": "Evocador — em escrita, fale com o mestre",
+  "quando_volta": "quando as entregas de Trilha e o numero do Casco sairem",
+  "motivo_hoje": {
+   "estado": "os tres motivos do C1 expiraram. A decisao de o Evocador voltar ao menu e do Mizuki, e enquanto ela nao vier a ficha segue com quatro.",
+   "entregas_de_trilha": "FECHADAS no sistema na v0.164 — as doze entregas do Evocador foram as ultimas das quinze Trilhas",
+   "numero_do_casco": "FECHADO: o Casco virou Parrudo na v0.184 e ganhou numero com dono na v0.185, 5 x a maestria. O dono e o capitulo 35, vendorizado aqui como capitulo-35-caminhos-e-trilhas.md",
+   "ficha_da_invocacao": "FECHADA: ficha-invocacao/ficha-invocacao.xlsx, com o invocacao.json como dono dos valores",
+   "por_que_a_checagem_velha_nao_servia": "ela procurava a frase 'Casco — as suas invocacoes tem mais vida.' no manual.txt, que esta congelado na v0.104. A frase nunca sai de la, entao a checagem saia verde para sempre e nunca podia acender."
+  }
+ },
+ "C2_carimbo": {
+  "escolha": "o carimbo e a versao do projeto",
+  "versao_corrente": "0.104",
+  "data_da_versao": "18/08/2026",
+  "dona_da_versao": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
+  "manual_do_fundamento": "7.10",
+  "porque_a_do_projeto_e_nao_a_do_manual": "o catalogo foi extraido do PDF inteiro, que e o recorte da versao do projeto; o 7.10 e so do capitulo de Fundamento",
+  "onde_fica_na_ficha": "DADOS!B1, e a central publica a mesma string numa celula so"
+ },
+ "C3_defesa": {
+  "escolha": "a protecao vira celula propria, com escolha entre aptidao e equipamento",
+  "formula_defesa": "10 + Destreza + protecao",
+  "formula_protecao": "SE(usa equipamento; protecao do equipamento; ARRED.ABAIXO(refino/3) + 1)",
+  "porque": "Traje e Revestimento DESLIGAM a protecao da aptidao e entregam a deles no lugar, entao o jogador escolhe qual das duas vale",
+  "o_que_entra_agora": "a celula de escolha e a formula da aptidao",
+  "o_que_entra_depois": "o catalogo de equipamento (manual cap.12); ate la o jogador digita o numero na mao",
+  "o_bug_que_isso_conserta": "o prototipo tinha '10 + Destreza + 1' com o 1 escrito na mao; ele fica errado no refino 3, quando a protecao vira 2"
+ },
+ "C4_fontes": {
+  "escolha": "cinco fontes, cada uma com um papel, e a regra dura do celular",
+  "corpo": {
+   "fonte": "Roboto",
+   "onde": "todas as abas",
+   "porque": "esta na lista curta que o Sheets carrega sem 'mais fontes', entao o app de celular nao substitui ela"
+  },
+  "titulo": {
+   "fonte": "Oswald",
+   "onde": "titulos, rotulos de bloco e os numeros grandes, so nas abas de PC",
+   "porque": "condensada: a mesma linha ocupa 20% menos que em Roboto, e sobra espaco na coluna estreita"
+  },
+  "marca": {
+   "fonte": "Yuji Syuku",
+   "onde": "os kanji, dentro da arte gerada",
+   "porque": "pincel de verdade; e a que menos deforma o traco ao encolher"
+  },
+  "regra_dura": "a aba MESA usa SO Roboto. O app de celular do Sheets tem menos fontes que o navegador e troca as de fora da lista sem avisar",
+  "medido": {
+   "linha_de_feitico_da_MESA_em_336px": {
+    "Roboto": 308,
+    "Lexend": 333,
+    "NotoSansJP": 301,
+    "Oswald": 247,
+    "Anton": 273,
+    "BebasNeue": 230
+   },
+   "x_sobre_maiuscula": {
+    "Roboto": 0.74,
+    "Lexend": 0.75,
+    "NotoSansJP": 0.74,
+    "Oswald": 0.71,
+    "Anton": 0.85,
+    "BebasNeue": 1.0
+   },
+   "criterio_titulo": "x/maiuscula acima de 0.90 e display caixa-alta, e cansa em bloco de texto",
+   "porque_Lexend_caiu": "333 px de 336 nao deixa respiro entre celula",
+   "kanji_piso": {
+    "regra": "kanji so le a partir de 22 pt; abaixo disso os tracos fundem",
+    "metrica": "deriva de cobertura contra o mesmo glifo a 96 px, corte em 12%",
+    "metrica_descartada": "contagem de vaos fechados: oscilava com o tamanho, o que e impossivel se estiver certa",
+    "piso_por_fonte": {
+     "ShipporiMincho": 22,
+     "YujiSyuku": 22,
+     "NewTegomin": 22,
+     "ZenAntique": 22,
+     "NotoSansJP": 28
+    }
+   }
+  },
+  "documento": {
+   "fonte": "Castoro",
+   "onde": "nome do portador e valores de campo nas abas de PC",
+   "porque": "serifada de livro, pouco contraste entre grosso e fino: le como registro de arquivo",
+   "conferida_no_seletor": true,
+   "altura_de_x": 0.475,
+   "cuidado": "e a menor altura de x das candidatas, entao valor pequeno pede um ponto a mais",
+   "substituiu": "Shippori Mincho e depois Noto Serif JP, e NENHUMA DAS DUAS existe no Sheets",
+   "licao": "a lista do Google Fonts nao e a lista do Sheets; agora o validador so aceita fonte conferida"
+  },
+  "serie": {
+   "fonte": "Courier New",
+   "onde": "numero de registro, serie, data de emissao",
+   "porque": "maquina de escrever le como burocracia, e esta na lista que o Sheets carrega sozinho"
+  },
+  "kanji_piso_pt": 22,
+  "fontes_confirmadas_no_sheets": {
+   "como_foi_conferido": "o Mizuki procurou uma a uma no seletor de fontes do Google Sheets",
+   "quando": "2026-08-18",
+   "existem": [
+    "Roboto",
+    "Courier New",
+    "Arial",
+    "Verdana",
+    "Georgia",
+    "Oswald",
+    "Yuji Syuku",
+    "Shippori Antique",
+    "Shippori Antique B1",
+    "Castoro",
+    "Bree Serif",
+    "Cormorant",
+    "Cormorant Garamond",
+    "Fjalla One",
+    "Black Ops One",
+    "Bree Serif",
+    "Cookie",
+    "Dancing Script"
+   ],
+   "NAO_existem": [
+    "Shippori Mincho",
+    "Noto Serif JP"
+   ],
+   "porque_esta_lista_existe": "eu propus duas fontes que nao existem la, uma atras da outra. A lista do Google Fonts NAO e a lista do Sheets, e nao da para supor. Agora o validador so aceita fonte que esta aqui."
+  }
+ },
+ "C5_arte": {
+  "escolha": "arte desenhada por codigo, nunca baixada",
+  "porque": "o material circula entre jogadores e pode virar PDF; arte de terceiro com licenca desconhecida vira problema do Mizuki depois",
+  "gerador": "arte/gera.py, com semente fixa: roda de novo e sai identico",
+  "pecas": [
+   "selo-封",
+   "selo-呪",
+   "pincelada",
+   "pincelada-roxa",
+   "respingo",
+   "moldura-foto"
+  ],
+  "como_entra_no_sheets": "o script insere com insertImage a partir de base64 e define largura e altura ele mesmo. Imagem importada de .xlsx nao aparece no getImages(), entao nao dava nem para consertar o tamanho dela",
+  "como_entra_no_xlsx": "imagem flutuante, so em area morta, porque ela bloqueia a digitacao embaixo",
+  "consertado_no_caminho": "a primeira pincelada sorteava falha coluna a coluna e saiu com cara de codigo de barras; pincel seco arrasta, nao pisca",
+  "peca_removida": {
+   "nome": "textura",
+   "porque": "600 KB de base64 para um ruido que nao aparece na tela. Como a arte agora viaja DENTRO do script, o tamanho dela deixou de ser gratis"
+  }
+ },
+ "C6_documento": {
+  "escolha": "a ficha e o documento oficial do feiticeiro, e a primeira aba e a carteira",
+  "de_onde_veio": "Morningstar, sobre a ficha do Night Witches: a gramatica visual sai da ficcao, nao de um guia de layout",
+  "o_que_isso_decide": [
+   "regua no lugar de caixa: um fio embaixo do valor, nunca borda em volta",
+   "secoes numeradas 01 02 03, com o numero grande e apagado",
+   "numero de registro e data de emissao, em Courier",
+   "o Selo desenhado como carimbo, e ele e a unica coisa vermelha da pagina",
+   "assimetria: lombada escura na lateral, conteudo deslocado"
+  ],
+  "abas": [
+   "CARTEIRA",
+   "FICHA",
+   "MESA",
+   "QUEM É",
+   "DADOS"
+  ],
+  "aba_removida": {
+   "nome": "TÉCNICA",
+   "porque": "o bloco de feitico dela ficou ruim de ler e de usar; o Mizuki preferiu tirar a ficar torto",
+   "o_que_some_junto": "a linha de uso rapido da MESA passa a ser digitada a mao ate a TECNICA voltar",
+   "onde_esta_registrado": "PENDENCIAS.md, item B10"
+  },
+  "abas_removidas_na_v01": {
+   "quais": [
+    "MESA",
+    "QUEM É"
+   ],
+   "quando": "na v0.1 da ficha, editada pelo Mizuki no Google Sheets",
+   "decisao": "sairam de proposito, e o gerador da v0.1 nao as recria",
+   "as_abas_da_v01": [
+    "CARTEIRA",
+    "FICHA",
+    "DADOS"
+   ],
+   "o_que_some_junto": "a MESA era a de 12 colunas que lia da FICHA por formula, e a QUEM E era a da ficcao. O molde das duas continua no ficha/abas_resto.py se um dia voltarem."
+  }
+ },
+ "C7_paleta_v01": {
+  "escolha": "os dois roxos de painel da v0.1 viram a paleta oficial, e nao excecao",
+  "de_onde_veio": "o .xlsx que o Mizuki editou no Sheets e mandou em 04/09/2026",
+  "painel": "1E1733, no lugar do 211C35",
+  "painel_alto": "3D2E78, no lugar do 30294D",
+  "faixa": "211940, nova: a faixa dos titulos de secao",
+  "painel_baixo": "1B142F, nova: FICHA D117:D119",
+  "por_que": "os dois antigos nao aparecem em preenchimento nenhum daquela ficha. Deixar as duas paletas no repositorio seria a licao no 9 convidada para dentro.",
+  "consequencia_aceita": "a ficha da invocacao passa a usar os roxos novos, porque ela importa do estilo.py. O ficha-projeto-m.xlsx antigo NAO foi regerado: a v0.1 substitui ele.",
+  "onde_a_ficha_vive": "Google Sheets, planilha 1rH43Xw6nneXwIPkI1VpsnPPkTZTPIqbiocY0KQdPwZ8",
+  "o_que_isso_decide": "o IFS das 16 celulas fica cru e o SPARKLINE das 3 continua. No Excel os dois quebram, e esta aceito."
+ }
 }

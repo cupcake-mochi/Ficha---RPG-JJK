@@ -62,6 +62,30 @@ def monta(wb, CAT, DEC, ref):
     ESS = f'${L(R["atr_Essência"].column)}${R["atr_Essência"].row}'
     r += 6
 
+    # As notas do campo TEMP. Cada linha diz de onde ela vem, porque nota de
+    # ficha e' regra abreviada e regra abreviada envelhece calada.
+    #   ⚠ A do TETO faltava ate a v0.222: a nota da planilha viva dizia tres das
+    #     quatro regras e omitia a quarta. O livro publica o teto no capitulo 10
+    #     e a peca 1 §5.1.1 do outro repositorio e a dona da conta.
+    #   ⚠ E o emitir_gs.py NAO carrega nota — isto vale so para o .xlsx. A
+    #     planilha viva precisa do corrigir-notas-temp.gs, na planilha-viva/.
+    NOTA_TEMP = {
+        "vida": ("Vida temporária é anteparo, e não vida.\n"
+                 "• É gasta antes da vida normal.\n"
+                 "• Não empilha: duas fontes, fica a maior.\n"
+                 "• Teto: metade da sua vida máxima.\n"
+                 "• Some no fim da cena.\n"
+                 "Livro, cap. 10. A Melhoria Rasga Escudo ignora ela."),
+        "energia": ("Energia temporária gasta como PE, e gasta primeiro.\n"
+                    "• Acumula até o teto que a própria fonte declarar.\n"
+                    "• Hoje só o Braseiro concede, e o teto dele é 2.\n"
+                    "• Some no fim da cena."),
+        "integridade": ("⚠ Regra nenhuma concede integridade temporária hoje.\n"
+                        "O campo existe porque as três reservas são montadas no "
+                        "mesmo laço. Está em aberto (B17) e é decisão de desenho: "
+                        "ou algo passa a conceder, ou o campo sai."),
+    }
+
     # as tres reservas, com o medidor nativo
     TAB = ref["tabela_caminhos"]
     formulas = [
@@ -82,6 +106,8 @@ def monta(wb, CAT, DEC, ref):
         ca, cm = f"${L(4)}${r+1}", f"${L(10)}${r+1}"
         txt(ws, 16, r + 1, barra(ca, cm, cor_de_estado(ca, cm)), ate=(30, r + 2))
         tp = campo(ws, 32, r, 5, "temp", 0, pt=11, cor=TEXTO_FRACO, nome=SERIE)
+        if nome_r in NOTA_TEMP:
+            nota(tp, NOTA_TEMP[nome_r])
         dl = campo(ws, 39, r, 5, "±", None, pt=11, cor=OSSO, nome=SERIE)
         R[nome_r], R[nome_r + "_max"] = ca, cm
         R[nome_r + "_temp"] = f"${L(32)}${tp.row}"

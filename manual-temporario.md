@@ -48,8 +48,21 @@ Nada aqui foi inventado do zero. O que é decisão está marcado.
 | gasta antes do PE normal | **manual.** `Braseiro`: *"Energia temporária gasta como PE, e gasta primeiro"* |
 | some no fim da cena (energia) | **manual.** `Braseiro` |
 | some no fim da cena (vida) | **decisão A2a.** Copia a forma da energia |
-| não empilha, fica o maior (vida) | **decisão A2a.** Nenhum teto numérico serviria: as fontes vão de 2 a 18 |
+| não empilha, fica o maior (vida) | **decisão A2a.** Nenhum teto *numérico* serviria: as fontes vão de 2 a 18 |
+| teto de metade da vida máxima (vida) | **livro, capítulo 10.** *"tem **teto de metade da sua vida máxima**"* — e o dono da conta é a peça 1 §5.1.1 do outro repositório |
 | acumula até o teto da fonte (energia) | **manual.** *"nunca passa de 2 acumulados"* é do `Braseiro`, não do sistema |
+
+> **⚠ A linha do teto entrou na v0.222, e ela estava faltando desde o começo.**
+> *A tabela dizia "nenhum teto numérico serviria" e parava ali, o que se lia como
+> "não há teto".* **Há, e ele é proporcional — que é justamente o formato que
+> resolve o problema que a frase levanta:** *o teto numérico não serve porque as
+> fontes vão de `2` a `18`; o teto de metade da vida máxima serve porque ele
+> acompanha a ficha em vez de a fonte.*
+>
+> **E ele morde de verdade.** *A peça 1 §5.1.1 mede: o `Fluxo` nunca é cortado
+> (entrega `2` a `14`), e o `Apoio` puro é cortado **sempre**, em toda Classe —
+> um `Apoio` de Classe 1 entrega `9` num Emanador de nível 2 cujo teto é `7`.*
+> **O teto vira o limite real do `Apoio`, e não a Classe do feitiço.**
 
 ### As seis fontes de vida temporária que o manual já tem
 
