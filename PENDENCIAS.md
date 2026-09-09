@@ -459,6 +459,18 @@ alma parar de arrastar, arrastar metade, o ganho passar a curar, a função sumi
 o livro perder a linha, e o livro acoplar a alma a outra reserva. *As dezoito
 acendem, e o inócuo continua verde.*
 
+**Conferido na planilha viva, 09/09/2026.** *O Mizuki colou o `passoDeVidaPorAlma_`
+e o bloco novo do `aplicarDelta_` no `Código.gs` da planilha real, salvou e testou
+na mesa:* **funciona.** *A exportação dele daquele dia está em `planilha-viva/`.*
+
+> **⚠ E na primeira colagem faltou um bloco, o que vale registrar porque a culpa é
+> da forma como eu entreguei o patch.** *Eu escrevi "troque o fim do `forEach` por
+> isto" começando no `atual.setValue(fim.atual);` — e as três linhas do
+> `var fim = aplicaPasso_(...)` vinham logo antes, então foram junto na troca.*
+> **A ficha teria quebrado com `fim is not defined` na primeira caixinha usada.**
+> *Patch por trecho de meio de função precisa mostrar a âncora de cima também, e
+> não só a linha onde a troca começa.*
+
 ### ~~B17 · O campo TEMP da INTEGRIDADE não tem fonte no manual~~ — **FECHADA na v0.222**
 
 A ficha tem `integridade_temp` no índice e o campo na tela, mas **nada no
