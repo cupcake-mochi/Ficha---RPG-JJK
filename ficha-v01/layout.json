@@ -33,7 +33,8 @@
    "o estado de mesa que nao e desenho volta vazio: os tres campos de dano, que o Codigo.gs apaga sozinho, e o equipamento, que vazio usa a protecao da aptidao. E a regra da limpeza anterior aplicada a mais quatro celulas. O extrator conta: FICHA!AM23 0.0 -> vazio, FICHA!AM27 0.0 -> vazio, FICHA!AM31 0.0 -> vazio, FICHA!Z40 1.0 -> vazio",
    "o Arial que sobra depois da primeira limpeza vira a fonte de corpo, decidido pelo Mizuki em 14/09/2026. Quantas, o extrator conta: 31",
    "o carimbo de versao que o Sheets em portugues leu como numero volta a ser o texto 0.NNN. O extrator conta: DADOS!B1 104.0 -> '0.104', DADOS!D1 104.0 -> '0.104'",
-   "a aba DADOS sai do catalogo, e nao da exportacao: as doze listas das colunas A a L e o carimbo em B1 e D1. Decidido pelo Mizuki em 14/09/2026, quando o catalogo foi da v0.104 a v0.239 e a planilha viva ainda carregava o de antes. O monta.py aplica, e o comparador conta quantas celulas mudaram."
+   "a aba DADOS sai do catalogo, e nao da exportacao: as doze listas das colunas A a L e o carimbo em B1 e D1. Decidido pelo Mizuki em 14/09/2026, quando o catalogo foi da v0.104 a v0.239 e a planilha viva ainda carregava o de antes. O monta.py aplica, e o comparador conta quantas celulas mudaram.",
+   "o Teste de Resistencia treinado soma a maestria, e nao 2: a planilha viva somava a regra do manual da v0.104, e o capitulo 1 soma a maestria desde a v0.117 do sistema. E o B14. So o termo somado no treino das quatro formulas muda, e ele aponta para a celula que o indice publica com o nome que o catalogo da. O monta.py aplica, e o comparador conta."
   ],
   "onde_ela_vive": "Google Sheets. Por isso o IFS fica cru e o SPARKLINE continua: no Excel os dois quebram, e isso esta aceito."
  },

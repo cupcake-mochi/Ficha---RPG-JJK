@@ -248,6 +248,10 @@ layout = {
             "carimbo em B1 e D1. Decidido pelo Mizuki em 14/09/2026, quando o catalogo foi da v0.104 "
             "a v0.239 e a planilha viva ainda carregava o de antes. O monta.py aplica, e o comparador "
             "conta quantas celulas mudaram.",
+            "o Teste de Resistencia treinado soma a maestria, e nao 2: a planilha viva somava a "
+            "regra do manual da v0.104, e o capitulo 1 soma a maestria desde a v0.117 do sistema. E o "
+            "B14. So o termo somado no treino das quatro formulas muda, e ele aponta para a celula que "
+            "o indice publica com o nome que o catalogo da. O monta.py aplica, e o comparador conta.",
         ],
         "onde_ela_vive": "Google Sheets. Por isso o IFS fica cru e o SPARKLINE "
                          "continua: no Excel os dois quebram, e isso esta aceito.",

@@ -20,6 +20,8 @@ LAY = json.load(open(os.path.join(AQUI, "ficha-v01", "layout.json"), encoding="u
 sys.path.insert(0, os.path.join(AQUI, "ficha-v01"))
 import dados_catalogo
 DADOS_CAT = dados_catalogo.valores()
+import tr_treinado
+TR_NOVAS = tr_treinado.trocas(LAY)
 
 for f in (A, B):
     if not os.path.exists(f):
@@ -141,6 +143,12 @@ for n in wa.sheetnames:
                     and pb["valor"] == DADOS_CAT.get(coord)
                     and all(pa[k] == pb[k] for k in pa if k != "valor")):
                 esperadas["célula da DADOS que sai do catálogo"] += 1
+                continue
+            # limpeza 9: o TR treinado soma a maestria, e nao 2 (v0.240 do sistema, o B14). So o
+            # VALOR pode diferir, e ele tem de ser a formula que o tr_treinado.py monta.
+            if (n == "FICHA" and coord in TR_NOVAS and pb["valor"] == TR_NOVAS[coord]
+                    and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                esperadas["fórmula de TR que passa a somar a maestria"] += 1
                 continue
             for k in pa:
                 if pa[k] != pb[k]:

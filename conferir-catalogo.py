@@ -64,6 +64,82 @@ for nome, chave in (("Melhorias", "melhorias"), ("Formas", "formas"), ("Restrico
     print(f"  [{'OK' if not faltam else 'FALHA'}] as {len(CAT[chave])} {nome} do catalogo aparecem no manual"
           + (f"  <- faltam {faltam}" if faltam else ""))
 
+print("\nTESTES DE RESISTENCIA CONTRA O MANUAL")
+# v0.240 do sistema, o B14: o catalogo dizia `bonus_se_treinado: 2`, que e a regra do manual da
+# v0.104, e a chave estava entre as nao conferidas contra o livro. O termo sai da formula do
+# capitulo 1, a contagem sai da frase dos treinados, e o atributo de cada TR sai da tabela.
+TRC = CAT["testes_de_resistencia"]
+_trs = {t: v for t, v in TRC.items() if isinstance(v, dict)}
+_mr = re.search(r"Teste de Resistência = d20 \+ atributo do TR \+ (\w+), e a (\w+) só entra "
+                r"se você for treinado nele", MAN)
+ok = bool(_mr) and _mr.group(1) == _mr.group(2) == TRC.get("bonus_se_treinado")
+if not ok: falhas.append("o termo do TR treinado nao e o do manual")
+print(f"  [{'OK' if ok else 'FALHA'}] o TR treinado soma '{TRC.get('bonus_se_treinado')}', "
+      f"e o manual soma '{_mr.group(1) if _mr else None}'")
+_mq = re.search(r"Você é treinado em (" + _NUM + r") dos (" + _NUM + r"):", MAN)
+_dq = (EXT[_mq.group(1)], EXT[_mq.group(2)]) if _mq else (None, None)
+ok = _dq == (TRC.get("treinados_na_criacao"), len(_trs))
+if not ok: falhas.append(f"TRs: {TRC.get('treinados_na_criacao')} de {len(_trs)} != {_dq}")
+print(f"  [{'OK' if ok else 'FALHA'}] treinados {TRC.get('treinados_na_criacao')} de {len(_trs)}, "
+      f"e o manual declara {_dq[0]} de {_dq[1]}")
+_mt = re.search(r"TESTE DE USA SERVE PARA RESISTÊNCIA (.*?) Só o TR Físico", MAN)
+_tab = _mt.group(1) if _mt else ""
+_linhas = [f"{t} {' ou '.join(v['atributo'])}" for t, v in _trs.items()]
+faltam = [x for x in _linhas if x not in _tab]
+if faltam or not _mt: falhas.append(f"TRs que a tabela do manual nao tem: {faltam or 'a tabela sumiu'}")
+print(f"  [{'OK' if _mt and not faltam else 'FALHA'}] os {len(_trs)} TRs e os atributos deles estao na tabela"
+      + (f"  <- faltam {faltam or 'a tabela'}" if faltam or not _mt else ""))
+
+print("\nSUB-ORIGEM E ROTAS DE CRIACAO CONTRA O MANUAL")
+# v0.240 do sistema. A `sub_origem` dizia que Sem Technica combinava com qualquer Origem, e as
+# `rotas_de_criacao` davam tres rotas como "sendo escrita", da epoca em que o livro tinha a tabela
+# `Rotas de criacao`. A tabela saiu na v0.147; cada rota sai da frase do capitulo que a monta.
+def _nomes(txt):
+    return [x.strip() for x in re.split(r",| e ", txt) if x.strip()]
+_cinco = re.search(r"Cinco principais \(([^)]*)\)", MAN)
+_alc = re.search(r"(\w+) Origens alcançam ela — ([^.]*)\.", MAN)
+_so = CAT["sub_origem"].get("Sem Técnica", {})
+if not isinstance(_so, dict):
+    _so = {}          # o formato de antes da v0.240 era uma frase, sem a lista
+ok = bool(_cinco and _alc) and _so.get("origens") == _nomes(_alc.group(2)) == _nomes(_cinco.group(1)) \
+     and EXT.get(_alc.group(1).lower()) == len(_so.get("origens", [])) \
+     and all(o in CAT["origens"] and not CAT["origens"][o].get("especial") for o in _so.get("origens", []))
+if not ok: falhas.append("as Origens que alcancam Sem Tecnica nao sao as do manual")
+print(f"  [{'OK' if ok else 'FALHA'}] Sem Técnica alcança {_so.get('origens')}, "
+      f"e o manual diz {_alc.group(2) if _alc else None}")
+
+_ROT = CAT["rotas_de_criacao"]
+def _linhas(rota):
+    return [r for r in _ROT if r["rota"] == rota]
+_mm = re.search(r"(\w+) rotas? de criação montam? o poder aqui em vez de montar no Fundamento: "
+                r"o ([^.]*?) e a ([^.]*)\.", MAN)
+_ms = re.search(r"(\w+) rota de criação monta o poder aqui em vez de montar no Fundamento: "
+                r"a sub-origem (Sem Técnica)", MAN)
+def _no_texto(origem, txt):
+    base, _, ramo = origem.partition(" · ")
+    return base in txt and (not ramo or ramo in txt)
+_tm = _linhas("Técnica Marcial")
+ok = bool(_mm) and EXT.get(_mm.group(1).lower()) == len(_tm) and all(_no_texto(r["origem"], _mm.group(0)) for r in _tm)
+if not ok: falhas.append("as rotas pela Tecnica Marcial nao sao as do manual")
+print(f"  [{'OK' if ok else 'FALHA'}] Técnica Marcial: {[r['origem'] for r in _tm]}")
+_st = _linhas("Sem Técnica")
+ok = bool(_ms) and EXT.get(_ms.group(1).lower()) == len(_st) and all(_ms.group(2) in r["origem"] for r in _st)
+if not ok: falhas.append("a rota do Sem Tecnica nao e a do manual")
+print(f"  [{'OK' if ok else 'FALHA'}] Sem Técnica: {[r['origem'] for r in _st]}")
+_fu = _linhas("Fundamento")
+_principais = _nomes(_cinco.group(1)) if _cinco else []
+_padrao = len(re.findall(r"Fundamento, do jeito padrão", MAN))
+_rc = [r for r in _fu if r["origem"] not in _principais]
+ok = sorted(r["origem"] for r in _fu if r["origem"] in _principais) == sorted(_principais) == sorted(_principais[:_padrao]) \
+     and len(_principais) == _padrao \
+     and len(_rc) == 1 and _rc[0]["origem"].startswith("Restrição Celestial · corpo pela técnica") \
+     and "Fundamento normal, corpo com limitação" in MAN
+if not ok: falhas.append("as rotas pelo Fundamento nao sao as do manual")
+print(f"  [{'OK' if ok else 'FALHA'}] Fundamento: as {_padrao} principais do jeito padrão, e {[r['origem'] for r in _rc]}")
+_sobra = [r for r in _ROT if r not in _tm + _st + _fu]
+if _sobra: falhas.append(f"rotas que nenhuma frase do manual cobre: {_sobra}")
+print(f"  [{'OK' if not _sobra else 'FALHA'}] as {len(_ROT)} rotas estão todas cobertas por uma frase do manual")
+
 print("\nTRAVAS DE ESTRUTURA")
 sem_pericia = [a for a in CAT["atributos"]["lista"]
                if not any(v["atributo"] == a for v in CAT["pericias"].values())]

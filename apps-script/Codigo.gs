@@ -55,7 +55,8 @@ function notasDeRegra_(ss, idx) {
     'proteção': 'Traje e Revestimento DESLIGAM a proteção da aptidão e entregam a ' +
                 'deles no lugar. Deixe o equipamento vazio para usar a aptidão.',
     'maestria': 'Vira 2 no nível 10, 3 no 18, 4 no 26. Não é "a cada oito níveis".',
-    'cd de feitiço': 'Não existe atributo de conjuração na ficha padrão: o 2 é fixo.',
+    'cd de feitiço': 'CD de feitiço = 8 + o atributo da sua técnica + maestria. ' +
+                     'O atributo é o que você escolhe em ATRIBUTO DE CONJURAÇÃO.',
     'vida_temp': 'Vida temporária não acumula: fica a maior, com teto de metade ' +
                  'da vida máxima. Some no fim da cena, e é gasta antes da vida ' +
                  'normal — a caixinha de ± desconta daqui primeiro e só o que ' +
@@ -105,7 +106,9 @@ function onEdit(e) {
   if (!e || !e.range) return;
   var aba = e.range.getSheet().getName();
   if (aba !== 'FICHA') return;
-  aplicarDelta_(e, indice());
+  var idx = indice();
+  aplicarDelta_(e, idx);
+  prenderTemp_(e, idx);
 }
 
 /**
@@ -139,6 +142,40 @@ function aplicaPasso_(atual, max, temp, passo) {
     atual: Math.max(0, max ? Math.min(novo, max) : novo),
     temp: temp
   };
+}
+
+/**
+ * O teto do campo TEMP, sem planilha nenhuma em volta. É o B19.
+ *
+ * Decisão A2: a temporária tem teto de metade do máximo. A metade arredonda
+ * para baixo, porque o manual arredonda contra quem ganha, e o que se ganha
+ * nunca fica abaixo de 1. Campo vazio continua vazio, e sem máximo declarado
+ * não há teto para aplicar.
+ *
+ * O "fica a maior" da A2 não mora aqui: quem digita a temporária pode estar
+ * trocando de fonte ou zerando no fim da cena, e o script não sabe qual.
+ */
+function tetoTemp_(valor, max) {
+  if (valor === '' || valor === null || valor === undefined) return valor;
+  var v = Number(valor);
+  if (isNaN(v)) return valor;
+  v = Math.max(0, v);
+  max = Number(max) || 0;
+  if (max <= 0) return v;
+  var teto = Math.max(1, Math.floor(max / 2));
+  return Math.min(v, teto);
+}
+
+/** Prende no teto o TEMP digitado à mão. A caixinha de ± só desce a temporária. */
+function prenderTemp_(e, idx) {
+  var ficha = SpreadsheetApp.getActive().getSheetByName('FICHA');
+  ['vida', 'energia', 'integridade'].forEach(function (r) {
+    var ct = cel_(idx, r + '_temp');
+    if (!ct || ct !== e.range.getA1Notation()) return;
+    var antes = e.range.getValue();
+    var depois = tetoTemp_(antes, ficha.getRange(cel_(idx, r + '_max')).getValue());
+    if (depois !== antes) e.range.setValue(depois);
+  });
 }
 
 /**
@@ -200,6 +237,27 @@ function testeDelta() {
     Logger.log((ok ? 'OK   ' : 'FALHA') + ' \u00b7 ' + c[0] +
                ' \u00b7 atual ' + r.atual + ' (esperado ' + c[2] + ')' +
                ' \u00b7 temp ' + r.temp + ' (esperado ' + c[3] + ')');
+  });
+  Logger.log(falhou ? (falhou + ' FALHA(S)') : 'as 5 passaram');
+}
+
+// O teto do campo TEMP, com casos do regressao-delta.js escritos à mão pelo
+// mesmo motivo do testeDelta: aqui se quer saber se a colagem entrou.
+function testeTeto() {
+  var casos = [
+    ['exemplo do manual (27 com máximo 40)', [27, 40], 20],
+    ['abaixo do teto',                       [12, 40], 12],
+    ['máximo ímpar arredonda para baixo',    [99, 23], 11],
+    ['campo vazio continua vazio',           ['', 40], ''],
+    ['sem máximo não há teto',               [27, 0], 27]
+  ];
+  var falhou = 0;
+  casos.forEach(function (c) {
+    var r = tetoTemp_(c[1][0], c[1][1]);
+    var ok = (r === c[2]);
+    if (!ok) falhou++;
+    Logger.log((ok ? 'OK   ' : 'FALHA') + ' \u00b7 ' + c[0] +
+               ' \u00b7 ' + r + ' (esperado ' + c[2] + ')');
   });
   Logger.log(falhou ? (falhou + ' FALHA(S)') : 'as 5 passaram');
 }

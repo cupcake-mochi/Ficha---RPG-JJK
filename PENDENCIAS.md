@@ -139,7 +139,7 @@ O `botão de descanso longo` do documento de desenho não roda no app de celular
 
 **Já corrigido no desenho:** o substituto é caixa de seleção ou lista suspensa fazendo papel de botão, que o gatilho pega normalmente. Fica registrado porque a ideia de "botão" pode voltar.
 
-### B8 · O `Estopim` soma um número que não existe
+### B8 · O `Estopim` soma um número que não existe — **FECHADO em 15/09/2026, na v0.240 do sistema**
 
 Achado escrevendo a fórmula da CD de feitiço.
 
@@ -167,6 +167,12 @@ uma célula de troca ao lado, vazia, para quando a regra existir.
 > fórmula da ficha agora a põe à frente do manual que ela declara como fonte, e
 > a regra deste repositório é a inversa — *onde a ficha e o manual discordarem,
 > o manual vence.* **Conserta-se junto com a re-extração, nunca antes dela.**
+
+**Como fechou.** *A planilha viva já calculava a CD de hoje — `8 + atributo da técnica + maestria`, com o atributo escolhido em `ATRIBUTO DE CONJURAÇÃO` —, e a exportação de 14/09 trouxe isso.* **Sobravam três restos, e os três foram consertados:**
+
+- *a nota da célula `cd de feitiço` no `Codigo.gs` dizia "o 2 é fixo"; o `conferir-ficha-xlsx.py` passou a cobrar dela a fórmula do `manual.txt`;*
+- *o `conferir-kaori.py` conferia contra a ficha da Kaori de 07/09, com as contas da mesma época. A cópia vendorizada voltou a ser a do sistema, e a maestria e a Integridade saem das fórmulas do catálogo. E ele imprimia `NAO BATE` e saía com 0: agora ele falha;*
+- *o catálogo escrevia a Integridade como `20 + 8 × (nível − 1)`, que morreu na v0.145.*
 
 ### B9 · A ficha da invocação — **FECHADA**
 
@@ -265,7 +271,7 @@ nem na peça 15. A rota soma `+1` num número que o sistema não produz.
 com o mestre, e o `conferir-invocacao.py` tem uma checagem que acende no dia em
 que o capítulo 16 ganhar uma CD.
 
-### B14 · O Teste de Resistência treinado — **não é bug da ficha, é o B11**
+### B14 · O Teste de Resistência treinado — **FECHADO em 15/09/2026, na v0.240 do sistema**
 
 Registrado errado na primeira passada desta rodada, e corrigido aqui.
 
@@ -291,6 +297,8 @@ B8, que é o mesmo defeito no outro número.
 *A ficha da invocação usa a maestria, e isso é de propósito: ela declara o
 capítulo vivo como dono, e não o `manual.txt`. As duas fichas discordam entre si
 até a re-extração, e isso está declarado nos dois lados.*
+
+**Como fechou.** *A planilha somava `IF(<caixa>=TRUE,2,0)` nos quatro TRs.* **A `ficha-v01` ganhou a limpeza 9, no `tr_treinado.py`:** *o termo somado sai do `bonus_se_treinado` do catálogo, que virou `maestria`, e a célula sai do índice da `DADOS`.* **O `regressao-kaori-na-ficha.py` recalcula os quatro TRs no LibreOffice** — *Físico `4` e Vigor `3`, que com o `2` davam `5` e `4`* —, **e o `conferir-catalogo.py` confere o bloco de TRs contra a tabela e as frases do capítulo 1.** *A ficha de papel do sistema imprimia o mesmo `+ 2`, e fechou na mesma versão, com a checagem 10 do `conferir-ficha.py` de lá.*
 
 ### B15 · Quatro arquivos tinham duas cópias — **RESOLVIDO**
 
@@ -400,7 +408,7 @@ de feitiço vira `8 + atributo da técnica + maestria`; a `Base por Classe` sepa
 `Apoio` de `Cura e Onda`. Os dois últimos são o **B8** e o **B14**.
 
 **A ordem continua sendo:** re-extrair o `manual.txt` e subir o
-`catalogo-projeto-m.json` primeiro; **B8** e **B14** só depois disso.
+`catalogo-projeto-m.json` primeiro; **B8** e **B14** só depois disso. *Os dois fecharam na v0.240 do sistema.*
 
 ### B16 · A caixinha de ± ignorava a vida temporária — **CONSERTADO**
 
@@ -501,11 +509,15 @@ ninguém apertar o gatilho por engano.*
 > dos `1366` de notebook que a ficha pede. Elas são do gerador da invocação, e o
 > `conferir-ficha-xlsx.py` só imprime a largura delas.*
 
-### B19 · O teto da temporária não é aplicado pela planilha
+### B19 · O teto da temporária não é aplicado pela planilha — **ESCRITO em 15/09/2026, falta testar no Sheets**
 
 **O capítulo 1 do manual põe teto de metade do máximo na vida e na energia temporárias**, *e a A2 desta pasta segue ele desde 14/09/2026.* **A planilha não aplica o teto:** *a caixinha de ± come a temporária antes da reserva, mas quem digita a temporária pode passar da metade do máximo.* **A nota da célula avisa.**
 
 *O conserto é o `Codigo.gs` prender o campo TEMP em metade do máximo quando ele é editado.* **Ele precisa ser testado no Sheets, que daqui não roda.**
+
+> **Escrito na v0.240 do sistema, e ainda não testado no Sheets.** *O `onEdit` chama o `prenderTemp_`, que usa o `tetoTemp_`: metade do máximo, arredondada para baixo, com piso de 1. Campo vazio fica vazio, e sem máximo não há teto.* **O `regressao-delta.js` confere o `tetoTemp_` contra o exemplo do capítulo 1, e o `arnes-delta.py` ganhou nove perturbações.** *O que falta: colar o `Codigo.gs` na planilha, digitar um TEMP acima da metade e ver ele descer. O `testeTeto()` roda do editor.*
+>
+> *O "fica a maior" da A2 não entrou: quem digita a temporária pode estar trocando de fonte ou zerando no fim da cena, e o script não sabe qual.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 

@@ -9,7 +9,7 @@ As tres regras do projeto, e nenhuma pode ser pulada:
 import json, os, shutil, subprocess, sys, tempfile
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
-PRECISA = ["regressao-delta.js", "decisoes-ficha.json", "manual-temporario.md"]
+PRECISA = ["regressao-delta.js", "decisoes-ficha.json", "manual-temporario.md", "manual.txt"]
 NODE = shutil.which("node") or shutil.which("nodejs")
 
 
@@ -154,6 +154,45 @@ edita_json("a A2 desiste de gastar a energia temporaria primeiro",
            lambda d: d["A2_temporario"]["energia"].__setitem__(
                "gasta_antes_do_pe_normal", False),
            "A2 diz que a energia temporaria gasta antes do PE")
+
+# o teto do campo TEMP, o B19
+TETO = "  var teto = Math.max(1, Math.floor(max / 2));"
+
+edita("o teto arredonda para cima", GS, TETO,
+      "  var teto = Math.max(1, Math.ceil(max / 2));",
+      "o teto nao passa da metade")
+
+edita("o teto vira um terco", GS, TETO,
+      "  var teto = Math.max(1, Math.floor(max / 3));",
+      "o proprio teto passa")
+
+edita("o piso de 1 do teto cai", GS, TETO,
+      "  var teto = Math.floor(max / 2);",
+      "o teto nao cai abaixo de 1")
+
+edita("o campo TEMP deixa de ser preso", GS,
+      "  return Math.min(v, teto);", "  return v;",
+      "fica em 20")
+
+edita("a funcao do teto desaparece do Codigo.gs", GS,
+      "function tetoTemp_(", "function tetoOutroNome_(",
+      "tetoTemp_ nao existe no Codigo.gs")
+
+edita("o exemplo do teto muda de numero", "manual.txt",
+      "te deixa em 20", "te deixa em 21",
+      "fica em 21")
+
+edita("o exemplo do teto muda de forma", "manual.txt",
+      "o seu teto é 20: um efeito", "o seu teto fica em 20: um efeito",
+      "o exemplo do teto no capitulo 1 do manual.txt mudou de forma")
+
+edita("o manual deixa de arredondar para baixo", "manual.txt",
+      "O que você ganha desce.", "O que você ganha fica.",
+      "o manual arredonda para baixo o que voce ganha")
+
+edita_json("a A2 tira a metade do teto da energia",
+           lambda d: d["A2_temporario"]["energia"].__setitem__("teto", "o PE máximo"),
+           "A2 poe o teto da energia em metade do maximo")
 
 edita("mexida inocua no comentario", GS,
       "// o mestre precisa poder mexer", "// o mestre tem que poder mexer",

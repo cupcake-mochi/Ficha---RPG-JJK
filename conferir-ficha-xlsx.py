@@ -200,6 +200,20 @@ for campo, atributo in [("vida_max", "Constituição"), ("defesa", "Destreza"),
           isinstance(form, str) and alvo in form.replace("$", ""),
           str(form)[:80])
 
+print("\nAS NOTAS DE REGRA DO Codigo.gs")
+# v0.240 do sistema, o resto do B8: a fórmula da CD já era a do manual, e a nota que aparece ao
+# passar o mouse continuava dizendo "o 2 é fixo". Nenhum validador lia as notas. A fórmula sai do
+# manual.txt, e a nota tem de trazê-la.
+import re as _rn
+_MANN = " ".join(open("manual.txt", encoding="utf-8").read().split())
+_CODN = open("apps-script/Codigo.gs", encoding="utf-8").read()
+_mcd = _rn.search(r"CD de feitiço = ([^.]+)\.", _MANN)
+_mno = _rn.search(r"'cd de feitiço':\s*((?:'[^']*'\s*\+?\s*)+)", _CODN)
+_nota = "".join(_rn.findall(r"'([^']*)'", _mno.group(1))) if _mno else ""
+checa("a nota da CD de feitiço traz a fórmula do manual",
+      bool(_mcd) and _mcd.group(1) in _nota,
+      f"manual: {_mcd.group(1) if _mcd else '?'} · nota: {_nota[:80]}")
+
 print("\nO SCRIPT QUE CONSTRÓI A PLANILHA")
 import os as _o
 GS = "apps-script/Ficha.gs"

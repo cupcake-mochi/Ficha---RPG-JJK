@@ -38,6 +38,13 @@ for _a in LAYOUT["abas"]:
         print(f"a DADOS sai do catalogo v{_DADOS_CAT['B1']}: "
               f"{dados_catalogo.aplica(_a, _DADOS_CAT)} celula(s) diferentes da exportacao")
 
+# v0.240 do sistema, o B14: o Teste de Resistencia treinado soma a maestria, e nao 2. O termo sai do
+# catalogo, e a celula dele sai do indice da DADOS. Ver tr_treinado.py.
+import tr_treinado
+_TR = tr_treinado.trocas(LAYOUT)
+print(f"o TR treinado soma o termo do catalogo: {tr_treinado.aplica(LAYOUT, _TR)} formula(s) "
+      f"diferentes da exportacao")
+
 # a paleta e a fonte de corpo saem do estilo.py, que e o dono delas -- e ele
 # ganhou as quatro cores desta versao na v0.1 (decisao do Mizuki: uma paleta so)
 sys.path.insert(0, os.path.join(os.path.dirname(AQUI), "ficha"))

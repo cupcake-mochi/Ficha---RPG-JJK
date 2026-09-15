@@ -66,6 +66,43 @@ _mt = _re.search(r'IFS\((\$?[A-Z]+\$?\d+)="FORÇA"', str(ws[IDX["cd de feitiço"
 if not _mt:
     print("a CD de feitiço não lê o atributo da técnica por IFS: não sei onde escolher"); sys.exit(1)
 ws[_mt.group(1).replace("$", "")] = "FORÇA"
+# Os Testes de Resistência, o B14: a ficha soma a maestria no treinado e só o atributo nos outros.
+# Os dois que a Kaori treina saem do exemplo do livro, a regra sai do capítulo 1, os nomes e os
+# atributos saem do catálogo, e a maestria sai da própria ficha recalculada, conferida acima.
+CAT = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))
+_MAN = " ".join(open("manual.txt", encoding="utf-8").read().split())
+_ex = _MAN[_MAN.find("A Kaori, feiticeira de nível 2."):_MAN.find("CD dos feitiços dela")]
+_mo = _re.search(r"Teste de Resistência: (\w+)", _ex)
+_mc = _re.search(r"Teste de Resistência do Caminho: (\w+)", _ex)
+_mr = _re.search(r"Teste de Resistência = d20 \+ atributo do TR \+ (\w+), e a (\w+) só entra "
+                 r"se você for treinado nele", _MAN)
+if not (_mo and _mc and _mr) or _mr.group(1) != _mr.group(2) or _mr.group(1) not in IDX:
+    print("não achei no manual.txt os TRs da Kaori, ou a regra do TR com um termo que a ficha "
+          "publica no índice"); sys.exit(1)
+TREINADOS = {_mo.group(1), _mc.group(1)}
+_TRC = CAT["testes_de_resistencia"]
+TRS = {}
+for _l in ws.iter_rows():
+    for _c in _l:
+        _n = _c.value.strip() if isinstance(_c.value, str) else None
+        if _n not in _TRC or not isinstance(_TRC[_n], dict) or _n in TRS:
+            continue
+        for _d in ws[_c.row]:
+            _v = _d.value
+            _mb = (_re.search(r"IF\((\$?[A-Z]+\$?\d+)=TRUE,", _v)
+                   if _d.column > _c.column and isinstance(_v, str) and _v.startswith("=") else None)
+            if _mb:
+                TRS[_n] = (_d.coordinate, _mb.group(1).replace("$", ""),
+                           _re.search(r'IFS\((\$?[A-Z]+\$?\d+)="', _v))
+                break
+if set(TRS) != {t for t, v in _TRC.items() if isinstance(v, dict)}:
+    print(f"não achei a fórmula de treino de todos os TRs na FICHA: {sorted(TRS)}"); sys.exit(1)
+for _n, (_tot, _cx, _ma) in TRS.items():
+    ws[_cx] = _n in TREINADOS
+    # o Físico escolhe o atributo na criação, e o livro não diz qual a Kaori travou: a cópia usa o
+    # primeiro que o catálogo lista, e o número esperado sai do mesmo atributo
+    if _ma:
+        ws[_ma.group(1).replace("$", "")] = _TRC[_n]["atributo"][0].upper()
 # o LibreOffice exporta em csv SO a primeira aba, e a primeira agora e a
 # CARTEIRA. Na copia, a FICHA vai para a frente -- o arquivo real nao muda.
 wb.move_sheet("FICHA", -wb.sheetnames.index("FICHA"))
@@ -112,6 +149,18 @@ for campo, esp in ESPERADO.items():
     ok = lido.replace(".0", "") == str(esp)
     falhas += not ok
     print(f"  {campo:16} {lido:>16} {esp:>13}   {'BATE' if ok else 'NÃO BATE'}")
+
+_mae = le(IDX[_mr.group(1)]).replace(".0", "")
+_t1, _t2 = "TR · treino", "atributo + treino"
+print(f"\n{_t1:26} {_f:>6} {_t2:>18}")
+for _n, (_tot, _cx, _ma) in TRS.items():
+    _atr = KAORI[_TRC[_n]["atributo"][0]]
+    esp = _atr + (int(_mae) if _n in TREINADOS else 0) if _mae.isdigit() else None
+    lido = le(_tot)
+    ok = esp is not None and lido.replace(".0", "") == str(esp)
+    falhas += not ok
+    _rot = _n + (" · treinado" if _n in TREINADOS else " · sem treino")
+    print(f"  {_rot:24} {lido:>6} {str(esp):>18}   {'BATE' if ok else 'NÃO BATE'}")
 
 shutil.rmtree(d, ignore_errors=True)
 print(f"\n{'A FICHA REPRODUZ A KAORI' if not falhas else f'{falhas} NÚMERO(S) ERRADO(S)'}")

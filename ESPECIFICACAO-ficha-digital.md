@@ -4,6 +4,8 @@ Especificação de construção. Escrita para alguém que nunca viu este sistema
 
 Todo número aqui foi conferido contra o `Projeto-M-Manual-da-Guilda.pdf` (v7.10) e contra o repositório, por script. Onde eu não tinha certeza, está escrito que eu não tinha certeza.
 
+> **Na v0.240 do sistema, as fórmulas da seção dos números derivados e o exemplo da Kaori foram trazidos para o manual de hoje:** *a Integridade, a CD, a conjuração, os dois ataques e o Teste de Resistência treinado.* **O resto deste documento continua conferido contra a v7.10**, e não foi relido.
+
 ---
 
 ## O que este documento é, e o que ele não é
@@ -168,19 +170,19 @@ Nenhuma destas é escolha. Todas devem ser calculadas pela ficha e travadas cont
 |---|---|
 | Vida | `(vida inicial do Caminho + Con) + (vida por nível do Caminho + Con) × (nível − 1)` |
 | Energia (PE) | `PE por nível do Caminho × nível` |
-| Integridade | `20 + 8 × (nível − 1)` |
+| Integridade | `20 + (Essência + 5) × (nível − 1)` |
 | Defesa | `10 + Destreza + proteção` |
 | Iniciativa | `d20 + Destreza` |
 | Deslocamento | `9 m` |
 | Maestria | `1`, e vira 2 no nível **10**, 3 no **18**, 4 no **26**. Ver o aviso abaixo |
 | Proteção inicial | `⌊refino ÷ 3⌋ + 1`, e some se vestir equipamento |
-| CD de feitiço | `10 + 2 + maestria` |
-| Ataque de conjuração | `d20 + 2 + maestria` |
-| Ataque corpo a corpo | `d20 + Força` |
-| Ataque à distância | `d20 + Destreza` |
+| CD de feitiço | `8 + atributo da técnica + maestria` |
+| Ataque de conjuração | `d20 + atributo da técnica + maestria` |
+| Ataque corpo a corpo | `d20 + Força + maestria` |
+| Ataque à distância | `d20 + Destreza + maestria` |
 | Perícia treinada | `d20 + atributo + maestria` |
 | Perícia sem treino | `d20 + atributo` |
-| Teste de Resistência | `d20 + atributo do TR`, mais `2` se treinado |
+| Teste de Resistência | `d20 + atributo do TR`, mais a maestria se treinado |
 
 > **Cuidado com a maestria, e este erro já foi cometido.** A descrição "sobe +1 a cada oito níveis" é ambígua e produz `1 + nível÷8`, que **erra nos níveis 8, 9, 16, 17, 24 e 25**: dá maestria alta demais, e com ela `+1` na CD de feitiço e `+1` no ataque de conjuração.
 >
@@ -427,7 +429,7 @@ A ficha de papel imprime quatro linhas de consulta no rodapé da última página
 
 A `ficha-exemplo-kaori.docx` é uma ficha de nível 2 conferida. Se a sua ficha digital reproduz os números dela, a base está certa.
 
-**Entrada:** Bastião, nível 2, Força 3, Constituição 2, Destreza 2, Inteligência 1, Essência 1, TR Físico travado em Força.
+**Entrada:** Bastião, nível 2, Força 3, Constituição 2, Destreza 2, Inteligência 1, Essência 1, TR Físico travado em Força, técnica em Força.
 
 **Saída esperada:**
 
@@ -435,15 +437,15 @@ A `ficha-exemplo-kaori.docx` é uma ficha de nível 2 conferida. Se a sua ficha 
 |---|---|---|
 | Vida | 23 | `(12 + 2) + (7 + 2) × 1` |
 | Energia | 8 | `4 × 2` |
-| Integridade | 28 | `20 + 8 × 1` |
+| Integridade | 26 | `20 + (1 + 5) × 1` |
 | Defesa | 13 | `10 + 2 + 1` |
 | Iniciativa | d20 + 2 | Destreza |
 | Deslocamento | 9 m | fixo |
 | Maestria | 1 | nível 2 |
-| CD de feitiço | 13 | `10 + 2 + 1` |
-| Conjuração | d20 + 3 | `2 + maestria` |
-| Corpo a corpo | d20 + 3 | Força |
-| À distância | d20 + 2 | Destreza |
+| CD de feitiço | 12 | `8 + 3 + 1` |
+| Conjuração | d20 + 4 | Força + maestria |
+| Corpo a corpo | d20 + 4 | Força + maestria |
+| À distância | d20 + 3 | Destreza + maestria |
 
 **Perícias treinadas (8):** Atletismo, Intuição, História, Hierarquia, Sobrevivência, Sentir Energia, Percepção, Intimidação.
 

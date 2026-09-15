@@ -1,8 +1,8 @@
 {
   "_meta": {
     "sistema": "Projeto M",
-    "versao": "0.239",
-    "versao_data": "14/09/2026",
+    "versao": "0.240",
+    "versao_data": "15/09/2026",
     "versao_dona": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
     "fonte": "Projeto-M-Manual-da-Guilda.pdf, o livro da versão acima",
     "regra": "onde a ficha-em-branco.docx e o manual discordarem, o manual vence",
@@ -18,17 +18,17 @@
       "oficios (nomes)",
       "familias",
       "trilhas",
-      "caminhos (vida, PE e dado)"
+      "caminhos (vida, PE e dado)",
+      "testes_de_resistencia",
+      "sub_origem",
+      "rotas_de_criacao"
     ],
     "nao_conferido_contra_o_livro": [
       "fundamento",
       "origens",
-      "sub_origem",
-      "rotas_de_criacao",
       "legados",
       "legados_formatos",
       "progressao",
-      "testes_de_resistencia",
       "atributos"
     ]
   },
@@ -261,7 +261,7 @@
       ]
     },
     "treinados_na_criacao": 2,
-    "bonus_se_treinado": 2
+    "bonus_se_treinado": "maestria"
   },
   "familias": {
     "Alcance": "chegar longe, se mexer, mexer o inimigo de lugar",
@@ -806,56 +806,53 @@
     }
   },
   "sub_origem": {
-    "Sem Técnica": "combina com qualquer Origem; nao amplia a conta de Legados"
+    "Sem Técnica": {
+      "origens": [
+        "Latente",
+        "Receptáculo",
+        "Descendente",
+        "Reencarnado",
+        "Feto"
+      ],
+      "legados": "nao amplia a conta de Legados: e uma entrada de Destranca e ocupa uma das duas vagas"
+    }
   },
   "rotas_de_criacao": [
     {
       "origem": "Latente",
-      "rota": "Fundamento",
-      "jogavel": true
+      "rota": "Fundamento"
     },
     {
       "origem": "Receptáculo",
-      "rota": "Fundamento",
-      "jogavel": true
+      "rota": "Fundamento"
     },
     {
       "origem": "Descendente",
-      "rota": "Fundamento",
-      "jogavel": true
+      "rota": "Fundamento"
     },
     {
       "origem": "Reencarnado",
-      "rota": "Fundamento",
-      "jogavel": true
+      "rota": "Fundamento"
     },
     {
       "origem": "Feto",
-      "rota": "Fundamento",
-      "jogavel": true
+      "rota": "Fundamento"
     },
     {
       "origem": "Restrição Celestial · corpo pela técnica",
-      "rota": "Fundamento",
-      "jogavel": true
+      "rota": "Fundamento"
     },
     {
-      "origem": "qualquer uma + Sem Técnica",
-      "rota": "Aptidão ou Estilo da Sombra",
-      "jogavel": false,
-      "porque": "Estilo da Sombra esta sendo escrito"
+      "origem": "Sem Técnica, com uma das cinco principais",
+      "rota": "Sem Técnica"
     },
     {
       "origem": "Corpo Amaldiçoado",
-      "rota": "Técnica Marcial",
-      "jogavel": false,
-      "porque": "Tecnica Marcial esta sendo escrita"
+      "rota": "Técnica Marcial"
     },
     {
-      "origem": "Restrição Celestial · energia pelo corpo",
-      "rota": "Técnica Marcial",
-      "jogavel": false,
-      "porque": "Tecnica Marcial esta sendo escrita"
+      "origem": "Restrição Celestial · sem energia",
+      "rota": "Técnica Marcial"
     }
   ],
   "legados": {
@@ -1280,7 +1277,7 @@
       "refino": "1 + marcos_alcancados                    # so a linha de graca; o teto e 10",
       "classe": "quantos de (1,5,9,13,17,21,26) <= nivel",
       "classe_0": "2 + quantos de (5,11,17) <= nivel",
-      "integridade": "20 + 8 * (nivel - 1)"
+      "integridade": "20 + (Essência + 5) * (nivel - 1)      # capitulo 1 do manual; o 20 + 8 morreu na v0.145"
     },
     "liberacao_maxima": {
       "10": "1a",

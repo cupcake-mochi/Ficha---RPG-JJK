@@ -160,8 +160,8 @@
   },
   "C2_carimbo": {
     "escolha": "o carimbo e a versao do projeto",
-    "versao_corrente": "0.239",
-    "data_da_versao": "18/08/2026",
+    "versao_corrente": "0.240",
+    "data_da_versao": "15/09/2026",
     "dona_da_versao": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
     "manual_do_fundamento": "7.10",
     "porque_a_do_projeto_e_nao_a_do_manual": "o catalogo foi extraido do PDF inteiro, que e o recorte da versao do projeto; o 7.10 e so do capitulo de Fundamento",

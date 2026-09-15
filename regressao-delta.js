@@ -4,7 +4,8 @@
  * O Apps Script nao roda fora do Google, entao o aplicaPasso_ do Codigo.gs
  * mora sozinho, sem tocar em planilha nenhuma, e este arquivo o carrega e o
  * roda no node. Nenhum numero esperado esta escrito aqui: o exemplo sai do
- * manual-temporario.md e as regras saem do decisoes-ficha.json.
+ * manual-temporario.md, o teto sai do capitulo 1 do manual.txt, e as regras
+ * saem do decisoes-ficha.json.
  *
  * node regressao-delta.js
  */
@@ -101,6 +102,35 @@ checa('sem maximo declarado o ganho nao e preso',
       aplicaPasso_(10, 0, 0, 40).atual, 50);
 checa('passo zero nao move nada', aplicaPasso_(10, 19, 5, 0), { atual: 10, temp: 5 });
 
+// --- 7. o teto do campo TEMP, o B19 -----------------------------------
+const tetoTemp_ = new Function(extrai(GS, 'tetoTemp_') + '; return tetoTemp_;')();
+const CAP1 = fs.readFileSync(path.join(RAIZ, 'manual.txt'), 'utf8').split(/\s+/).join(' ');
+// "com 40 de vida máxima o seu teto é 20: um efeito que daria 27 te deixa em 20"
+const mTeto = CAP1.match(/com (\d+) de vida máxima o seu teto é (\d+): um efeito que daria (\d+) te deixa em (\d+)/);
+// "O que você ganha desce. E o que você ganha nunca fica abaixo de 1."
+const mPiso = CAP1.match(/o que você ganha nunca fica abaixo de (\d+)/);
+if (!mTeto || !mPiso) throw new Error('o exemplo do teto no capitulo 1 do manual.txt mudou de forma');
+const [TMAX, TETO, EFEITO, FICA] = mTeto.slice(1).map(Number);
+const PISO = Number(mPiso[1]);
+
+checa(`exemplo do manual · ${EFEITO} com maximo ${TMAX} fica em ${FICA}`,
+      tetoTemp_(EFEITO, TMAX), FICA);
+checa('exemplo do manual · abaixo do teto nao e mexido', tetoTemp_(TETO - 1, TMAX), TETO - 1);
+checa('exemplo do manual · o proprio teto passa', tetoTemp_(TETO, TMAX), TETO);
+checa('A2 poe o teto da vida em metade do maximo', /^metade /.test(A2.vida.teto), true);
+checa('A2 poe o teto da energia em metade do maximo', /^metade /.test(A2.energia.teto), true);
+checa('o manual arredonda para baixo o que voce ganha', CAP1.includes('O que você ganha desce.'), true);
+
+const outro = TMAX - 1;                // um maximo com a paridade trocada
+const tOutro = tetoTemp_(outro, outro);
+checa(`maximo ${outro} · o teto nao passa da metade`, 2 * tOutro <= outro, true);
+checa(`maximo ${outro} · o teto e o maior inteiro que nao passa`, 2 * (tOutro + 1) > outro, true);
+checa(`maximo 1 · o teto nao cai abaixo de ${PISO}`, tetoTemp_(TMAX, 1), PISO);
+checa('campo TEMP vazio continua vazio', tetoTemp_('', TMAX), '');
+checa('temporaria negativa digitada vira zero', tetoTemp_(-3, TMAX), 0);
+checa('sem maximo declarado nao ha teto', tetoTemp_(EFEITO, 0), EFEITO);
+checa('texto que nao e numero nao e mexido', tetoTemp_('x', TMAX), 'x');
+
 // --- resultado ---------------------------------------------------------
 const barra = '='.repeat(74);
 console.log('');
@@ -112,5 +142,5 @@ if (falhas.length) {
   process.exit(1);
 }
 console.log(`>>> TUDO OK — as ${ok} checagens saem do exemplo do`);
-console.log('    manual-temporario.md e das regras do decisoes-ficha.json.');
+console.log('    manual-temporario.md, do capitulo 1 do manual.txt e da A2 do decisoes-ficha.json.');
 console.log(barra);
