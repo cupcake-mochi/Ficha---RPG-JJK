@@ -149,31 +149,44 @@ def _valor(v):
         m = _EMBRULHO.match(v)
         if m:
             return "=" + m.group(1).replace('""', '"').strip()
-    if isinstance(v, str) and re.fullmatch(r"\d+\.\d+", v):
+    if isinstance(v, str) and re.fullmatch(r"-?\d+(?:\.\d+)?", v):
+        # e o inteiro tambem: o "1" de secao da INVOCACAO voltava da ida e volta como numero
         return "'" + v
     return v
 
-def _alturas(ws, por_fonte):
+def _alturas(ws, por_fonte, so_declaradas=False):
     """a altura de cada linha em pixel: a que a aba declara, e senao a da maior letra.
 
     A planilha viva exporta a altura que o Sheets mostra, em ponto, e 1 pt = 4/3 px
     devolve o pixel exato. As linhas espacadoras de 4,5 pt da FICHA so existem assim."""
-    out = {str(r): _linha_alta(p) for r, p in por_fonte.items()}
+    # A ficha-v01 so leva a altura que a planilha viva declara: a da maior letra era do gerador
+    # aposentado, e dava 27 px na linha 9 da CARTEIRA e 23 px na DADOS_INV, que a viva tem em 21.
+    out = {} if so_declaradas else {str(r): _linha_alta(p) for r, p in por_fonte.items()}
     for k, dim in ws.row_dimensions.items():
         if dim.height:
             out[str(int(k))] = max(2, int(round(dim.height * 4 / 3)))
     return out
 
-def _larguras(ws):
+def _px_largura(w, limpa=None):
+    """a largura do .xlsx em pixel, pela conta do Sheets: pixel = 8 x largura - 1, medida em
+    medidas/larguras-sheets.json. Ate 15/09/2026 era 7 x largura, e cada ida e volta pelo Sheets
+    estreitava as colunas da INVOCACAO, do CATALOGO, da DADOS e da DADOS_INV em 12%. A largura que a
+    limpeza 2 do extrator reescreveu volta a ser a exportada antes da conta."""
+    if limpa and abs(w - limpa["no_layout"]) < 1e-6:
+        w = limpa["exportada"]
+    return int(round(8 * w - 1))
+
+def _larguras(ws, limpa=None):
     """as colunas que fogem da largura da coluna A, em faixas de pixel"""
     base = ws.column_dimensions["A"].width or 4.0
     out = []
     for k, dim in ws.column_dimensions.items():
         if dim.width and abs(dim.width - base) > 1e-6:
-            out.append([dim.min, dim.max, int(round(dim.width * 7))])
+            out.append([dim.min, dim.max, _px_largura(dim.width, limpa)])
     return sorted(out)
 
-def emitir(wb, ordem, imgs=None, arte_dir=None):
+def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None):
+    from collections import Counter
     import estilo as _est
     # o formato de fabrica da celula no script: a vazia com este formato nao precisa ser escrita
     padrao = (_est.CORPO, _est.PT_VALOR, "#" + _est.TEXTO.upper())
@@ -187,7 +200,7 @@ def emitir(wb, ordem, imgs=None, arte_dir=None):
             for rr in range(m.min_row, m.max_row + 1):
                 for cc in range(m.min_col, m.max_col + 1):
                     dono[(rr, cc)] = m.coord
-        bordas_lados = {}
+        bordas_lados, fundo_cnt = {}, Counter()
         for linha in ws.iter_rows():
             for c in linha:
                 r, col = c.row, c.column
@@ -204,6 +217,7 @@ def emitir(wb, ordem, imgs=None, arte_dir=None):
                     continue
                 f, a = c.font, c.alignment
                 pintado = _cor(c.fill.start_color) if c.fill and c.fill.fill_type else None
+                fundo_cnt[pintado] += 1
                 if c.value is None and pintado is None and (not f or not f.name):
                     continue
                 max_c, max_r = max(max_c, col), max(max_r, r)
@@ -232,7 +246,9 @@ def emitir(wb, ordem, imgs=None, arte_dir=None):
         # o fundo em faixas: 15 mil celulas pintadas viravam 15 mil entradas.
         # Vizinhas da mesma cor na mesma linha viram uma faixa so, e a cor de
         # base nem entra -- o script ja comeca com ela.
-        BASE = "#120F1D"
+        # A base e o fundo que a aba mais usa, e None quando ela e sem pintura: a DADOS_INV da viva
+        # tem 2680 celulas sem pintura e 1170 escuras, e saia pintada por inteiro.
+        BASE = fundo_cnt.most_common(1)[0][0] if fundo_cnt else "#120F1D"
         por_linha = {}
         for r, c, cor in fundos:
             if cor != BASE:
@@ -257,8 +273,8 @@ def emitir(wb, ordem, imgs=None, arte_dir=None):
             if v.type == "list" and v.formula1:
                 for rg in str(v.sqref).split():
                     dv.append([rg, v.formula1.replace("DADOS!", "DADOS!")])
-        larg_px = int(round((ws.column_dimensions["A"].width or 4.0) * 7))
-        largs_px, alt_px = _larguras(ws), _alturas(ws, alturas)
+        larg_px = _px_largura(ws.column_dimensions["A"].width or 4.0, limpa)
+        largs_px, alt_px = _larguras(ws, limpa), _alturas(ws, alturas, so_declaradas=imgs is not None)
         ncols, nrows = max(max_c, 12), max_r + 2
         if imgs is not None:
             # a ficha-v01: a imagem entra DENTRO da celula, numa caixa medida no pixel do script, e a
@@ -285,7 +301,7 @@ def emitir(wb, ordem, imgs=None, arte_dir=None):
             else:
                 medidas.append([col_b, lin_b, 1])
         abas.append({
-            "nome": nome, "cols": ncols, "rows": nrows, "larg": larg_px, "padrao": list(padrao),
+            "nome": nome, "cols": ncols, "rows": nrows, "larg": larg_px, "padrao": list(padrao), "fundo_base": BASE,
             "vals": vals, "estilos": estilos, "fundos": fundos,
             "bordas": _faixas_de_borda(bordas_lados, dono),
             "merges": merges, "dv": dv, "imgs": imgs_aba, "caixas_medidas": medidas,
@@ -303,8 +319,8 @@ def emitir(wb, ordem, imgs=None, arte_dir=None):
                 arte[f] = base64.b64encode(open(os.path.join(pasta, f), "rb").read()).decode()
     return abas, arte
 
-def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None):
-    abas, arte = emitir(wb, ordem, imgs, arte_dir)
+def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None):
+    abas, arte = emitir(wb, ordem, imgs, arte_dir, limpa)
     for a in abas:
         medidas = a.pop("caixas_medidas")
         if caixas is None:

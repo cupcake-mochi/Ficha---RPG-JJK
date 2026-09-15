@@ -89,7 +89,7 @@ function montarAba_(ss, spec) {
 
   // matrizes locais: escrever célula a célula no Sheets é lento demais
   var pad = spec.padrao || ['Roboto', 11, '#F4F1F7'];
-  var v = mat_(nr, nc, ''), bg = mat_(nr, nc, '#120F1D');
+  var v = mat_(nr, nc, ''), bg = mat_(nr, nc, spec.fundo_base === undefined ? '#120F1D' : spec.fundo_base);
   var ff = mat_(nr, nc, pad[0]), fs = mat_(nr, nc, pad[1]);
   var fc = mat_(nr, nc, pad[2]), fw = mat_(nr, nc, 'normal');
   var ha = mat_(nr, nc, 'left'), va = mat_(nr, nc, 'middle'), rot = mat_(nr, nc, 0);
@@ -180,7 +180,8 @@ function montarAba_(ss, spec) {
   spec.imgs.forEach(function (im) {
     if (!ARTE[im[4]]) return;
     var caixa = aba.getRange(im[0], im[1], im[2] - im[0] + 1, im[3] - im[1] + 1);
-    if (caixa.getNumRows() > 1 || caixa.getNumColumns() > 1) caixa.merge();
+    // a caixa que a planilha exportada ja traz mesclada nao e mesclada de novo
+    if ((caixa.getNumRows() > 1 || caixa.getNumColumns() > 1) && !caixa.isPartOfMerge()) caixa.merge();
     caixa.getCell(1, 1).setValue(SpreadsheetApp.newCellImage()
       .setSourceUrl('data:image/png;base64,' + ARTE[im[4]]).build());
   });

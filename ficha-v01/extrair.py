@@ -33,6 +33,7 @@ from estilo import CORPO
 # --- as quatro limpezas, nomeadas para o comparador poder cobra-las --------
 RUIDO_FONTE = ("Arial", 10.0)          # limpeza 1
 LARGURA_CERTA = 4.0                    # limpeza 2 (o Sheets devolve 3.63)
+LARGURA_DO_SHEETS = 3.63
 
 # limpeza 4: as tres barras "agora" voltam a nascer CHEIAS.
 #
@@ -122,6 +123,7 @@ except (OSError, ValueError, KeyError):
     IMAGENS_ANTES = {}
 
 abas = []
+IMAGENS_MANTIDAS = {}
 barras_repostas = []
 estado_limpo = []
 arial_trocadas = []
@@ -167,7 +169,7 @@ for nome in wb.sheetnames:
     cols = []
     for k, v in s.column_dimensions.items():
         if v.width:
-            larg = LARGURA_CERTA if abs(v.width - 3.63) < 0.01 else v.width
+            larg = LARGURA_CERTA if abs(v.width - LARGURA_DO_SHEETS) < 0.01 else v.width
             cols.append([v.min, v.max, larg])
     linhas_h = [[int(k), v.height] for k, v in s.row_dimensions.items() if v.height]
 
@@ -197,7 +199,18 @@ for nome in wb.sheetnames:
     mescladas = [str(r) for r in s.merged_cells.ranges]
 
     imagens = []
-    for i, im in enumerate(getattr(s, "_images", [])):
+    # A imagem que o script poe DENTRO da celula volta na exportacao ancorada no canto da caixa
+    # mesclada, com tamanho de tela sem sentido (29x0) e a arte ja reduzida pelo Sheets. Lida assim,
+    # ela desmontaria as caixas: a aba fica com as imagens do layout anterior, e a arte nao e regravada.
+    _cantos = {(m.min_row, m.min_col) for m in s.merged_cells.ranges}
+    _exp = list(getattr(s, "_images", []))
+    if (_exp and IMAGENS_ANTES.get(nome)
+            and all((im.anchor._from.row + 1, im.anchor._from.col + 1) in _cantos for im in _exp)):
+        imagens = IMAGENS_ANTES[nome]
+        IMAGENS_MANTIDAS[nome] = len(imagens)
+        print(f"  [aviso] {nome}: as {len(_exp)} imagens vieram de dentro da celula; ficaram as do layout anterior")
+        _exp = []
+    for i, im in enumerate(_exp):
         arq = f"{nome.lower().replace(' ', '-')}-{i+1}.png"
         try:
             dados = im.ref.getvalue() if hasattr(im.ref, "getvalue") else open(im.ref, "rb").read()
@@ -241,6 +254,11 @@ layout = {
         "estado_vazio": ESTADO_VAZIO,
         "arial_vira_corpo": ARIAL_VIRA_CORPO,
         "carimbo_texto": CARIMBO,
+        # o emissor precisa da largura que o Sheets exportou para achar o pixel dela
+        "largura_limpa": {"exportada": LARGURA_DO_SHEETS, "no_layout": LARGURA_CERTA},
+        # as abas cujas imagens a exportacao trouxe de dentro da celula, e ficaram as do layout anterior:
+        # o comparador aceita a diferenca de tamanho nelas
+        "imagens_mantidas": IMAGENS_MANTIDAS,
         "veio_do_sheets": "https://docs.google.com/spreadsheets/d/"
                           "1rH43Xw6nneXwIPkI1VpsnPPkTZTPIqbiocY0KQdPwZ8/edit",
         "limpezas": [

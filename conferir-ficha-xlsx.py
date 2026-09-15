@@ -111,11 +111,18 @@ print("\nA LARGURA DAS ABAS DE PC")
 # porque ninguém as vê. As da invocação têm gerador e validador próprios, e o nome
 # delas sai do arquivo que aquele gerador escreve.
 _INV = set(load_workbook("ficha-invocacao/ficha-invocacao.xlsx").sheetnames) - {"DADOS"}
+_LIMPA = json.load(open("ficha-v01/layout.json", encoding="utf-8"))["_meta"].get("largura_limpa")
+def _px_col(w):
+    """a conta do Sheets, a mesma do emissor: pixel = 8 x largura - 1 (medidas/larguras-sheets.json),
+    com a largura da limpeza 2 voltando a ser a exportada. Até 15/09/2026 aqui era 7 x largura."""
+    if _LIMPA and abs(w - _LIMPA["no_layout"]) < 1e-6:
+        w = _LIMPA["exportada"]
+    return round(8 * w - 1)
 for aba in [a for a in DEC["C6_documento"]["abas"]
             if a in wb.sheetnames and wb[a].sheet_state != "hidden"]:
     larg = wb[aba].column_dimensions["A"].width or 4.0
     n = sum(1 for c in range(1, 60) if L(c) in wb[aba].column_dimensions)
-    px = n * (larg * 7)
+    px = n * _px_col(larg)
     if aba in _INV:
         print(f"  [--] {aba}: {n} colunas ≈ {px:.0f} px — aba da invocação, fica com o conferir-invocacao.py")
         continue
@@ -475,6 +482,8 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
                     if ws_.cell(rr, cc).value not in (None, ""):
                         _img_ruim.append((la["nome"], i["arquivo"], "valor embaixo", rr, cc))
             for m in ws_.merged_cells.ranges:
+                if m.coord == f"{L(c1)}{l1}:{L(c2)}{l2}":
+                    continue          # a exportação da ficha montada já traz a caixa mesclada
                 if not (m.max_row < l1 or m.min_row > l2 or m.max_col < c1 or m.min_col > c2):
                     _img_ruim.append((la["nome"], i["arquivo"], "mesclagem cortada", str(m)))
             png = _b64.b64decode(_arte.get(chave, ""))[:24]
@@ -501,6 +510,57 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
         _emb_ruim += [(a["nome"], v[0], v[1]) for v in a["vals"] if isinstance(v[2], str) and "__xludf" in v[2]]
     checa(f"as {_n_emb} fórmulas que o Sheets exportou embrulhadas saem com a função de dentro",
           _n_emb > 0 and not _emb_ruim, str(_emb_ruim[:3]))
+
+    # A largura, a altura, o texto com cara de número e o fundo de base: o que a volta pelo Sheets
+    # mostrou em 15/09/2026. Exportada de novo, a ficha montada vinha com as colunas da INVOCAÇÃO, do
+    # CATÁLOGO, da DADOS e da DADOS_INV 12% mais estreitas -- o emissor fazia 7 x largura, e o Sheets
+    # faz 8 x largura - 1 --, com altura em linha que a viva não declara, com "1" virando número, e
+    # com a DADOS_INV pintada por inteiro.
+    from collections import Counter as _Ct
+    _med = _js.load(open("medidas/larguras-sheets.json", encoding="utf-8"))
+    _pr = [p for p in _med["pares"] if round(8 * p[1] - 1) != p[0]]
+    checa(f"a conta do Sheets reproduz os {len(_med['pares'])} pares de largura medidos",
+          len(_med["pares"]) >= 3 and not _pr, str(_pr[:3]))
+    _larg_r, _alt_r, _num_r, _fundo_r, _n_num = [], [], [], [], 0
+    # o fundo se conta num arquivo aberto de novo: as checagens de cima leem a DADOS até a linha 199,
+    # e o openpyxl cria célula vazia em cada leitura
+    _wb_limpo = load_workbook(ARQ)
+    for a in dados:
+        ws_ = wb[a["nome"]]
+        _w = {}
+        for k, d in ws_.column_dimensions.items():
+            if d.width:
+                for cc in range(d.min, d.max + 1):
+                    _w[cc] = d.width
+        _base = ws_.column_dimensions["A"].width or 4.0
+        for cc in range(1, a["cols"] + 1):
+            quer = _px_col(_w.get(cc) or _base)
+            tem = next((px for x1, x2, px in a["largs"] if x1 <= cc <= x2), a["larg"])
+            if quer != tem:
+                _larg_r.append((a["nome"], L(cc), quer, tem))
+        _decl = {str(int(k)): max(2, int(round(d.height * 4 / 3))) for k, d in ws_.row_dimensions.items() if d.height}
+        if a["alturas"] != _decl:
+            _alt_r.append((a["nome"], sorted(set(a["alturas"].items()) ^ set(_decl.items()))[:3]))
+        _sv = {(v[0], v[1]): v[2] for v in a["vals"]}
+        _cnt = _Ct()
+        for linha in ws_.iter_rows():
+            for cel in linha:
+                if cel.__class__.__name__ == "MergedCell":
+                    continue
+                if isinstance(cel.value, str) and _re.fullmatch(r"-?\d+(?:\.\d+)?", cel.value):
+                    _n_num += 1
+                    if _sv.get((cel.row, cel.column)) != "'" + cel.value:
+                        _num_r.append((a["nome"], cel.coordinate, _sv.get((cel.row, cel.column))))
+        for linha in _wb_limpo[a["nome"]].iter_rows():
+            for cel in linha:
+                if cel.__class__.__name__ != "MergedCell":
+                    _cnt[_cor_x(cel.fill.start_color) if cel.fill and cel.fill.fill_type else None] += 1
+        if a.get("fundo_base", "?") != (_cnt.most_common(1)[0][0] if _cnt else None):
+            _fundo_r.append((a["nome"], a.get("fundo_base", "?"), _cnt.most_common(2)))
+    checa("cada coluna sai com a largura da planilha, pela conta do Sheets", not _larg_r, str(_larg_r[:3]))
+    checa("cada linha sai com a altura que a planilha declara, e só ela", not _alt_r, str(_alt_r[:2]))
+    checa(f"os {_n_num} textos com cara de número vão com apóstrofo", _n_num > 0 and not _num_r, str(_num_r[:3]))
+    checa("o fundo de base de cada aba é o que a planilha mais usa", not _fundo_r, str(_fundo_r[:2]))
 
     # As fórmulas que citam uma aba que ainda não nasceu. A montagem segue a ordem do ABAS -- a
     # CARTEIRA antes da FICHA, a FICHA antes da DADOS, a INVOCAÇÃO antes da DADOS_INV --, e fórmula

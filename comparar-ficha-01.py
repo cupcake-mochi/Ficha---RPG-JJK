@@ -139,7 +139,9 @@ for n in wa.sheetnames:
                 continue
             # limpeza 8: a aba DADOS sai do catalogo, e nao da exportacao (v0.239 do
             # sistema). So o VALOR pode diferir, e ele tem de ser o que o catalogo manda.
+            # as doze listas moram de A a L, numa letra so: ate 15/09/2026 a coluna AB passava por lista
             if (n == "DADOS" and (coord in DADOS_CAT or dados_catalogo.e_da_lista(coord))
+                    and re.fullmatch(r"[A-L]\d+", coord)
                     and pb["valor"] == DADOS_CAT.get(coord)
                     and all(pa[k] == pb[k] for k in pa if k != "valor")):
                 esperadas["célula da DADOS que sai do catálogo"] += 1
@@ -219,7 +221,11 @@ for n in wa.sheetnames:
     ia = [(round(i.width), round(i.height)) for i in getattr(sa, "_images", [])]
     ib = [(round(i.width), round(i.height)) for i in getattr(sb, "_images", [])]
     print(f"  imagens: {len(ia)} original · {len(ib)} gerada")
-    if sorted(ia) != sorted(ib):
+    if sorted(ia) != sorted(ib) and n in LAY["_meta"].get("imagens_mantidas", {}) \
+            and len(ia) == len(ib) == LAY["_meta"]["imagens_mantidas"][n]:
+        # a exportacao trouxe a imagem de dentro da celula, e o extrator manteve a do layout anterior
+        esperadas["imagem de dentro da célula, mantida do layout anterior"] += len(ia)
+    elif sorted(ia) != sorted(ib):
         difs.append(f"{n}: tamanhos de imagem {sorted(ia)} != {sorted(ib)}")
 
 print()

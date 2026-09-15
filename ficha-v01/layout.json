@@ -24,6 +24,11 @@
     "D1"
    ]
   },
+  "largura_limpa": {
+   "exportada": 3.63,
+   "no_layout": 4.0
+  },
+  "imagens_mantidas": {},
   "veio_do_sheets": "https://docs.google.com/spreadsheets/d/1rH43Xw6nneXwIPkI1VpsnPPkTZTPIqbiocY0KQdPwZ8/edit",
   "limpezas": [
    "as celulas em Arial 10 preto, todas vazias, saem: e o estilo de fabrica do Sheets. Quantas sao, o comparador conta -- numero em prosa deriva, e este ja derivou de 3165 para 3161 numa edicao.",

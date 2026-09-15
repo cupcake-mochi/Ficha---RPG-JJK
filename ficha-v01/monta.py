@@ -154,6 +154,7 @@ import emitir_gs
 gs, celulas, pecas = emitir_gs.escrever(
     wb, [a["nome"] for a in LAYOUT["abas"]],
     imgs={a["nome"]: a["imagens"] for a in LAYOUT["abas"]},
-    arte_dir=os.path.join(AQUI, "arte"))
+    arte_dir=os.path.join(AQUI, "arte"),
+    limpa=LAYOUT["_meta"].get("largura_limpa"))
 print(f"script escrito: {gs}")
 print(f"  {celulas} células, {pecas} peças de arte embutidas")

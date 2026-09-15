@@ -54,7 +54,9 @@ def valores(CAT=None, DEC=None):
 def e_da_lista(coord):
     """a celula e de uma das doze listas, do item um para baixo"""
     m = re.match(r"^([A-Z]+)(\d+)$", coord)
-    return bool(m) and m.group(1) in COLUNAS and int(m.group(2)) >= 4
+    # UMA letra: com `in COLUNAS` a coluna AB passava por lista, porque "AB" esta dentro de
+    # "ABCDEFGHIJKL", e a tabela de pericias da DADOS saia vazia. Achado em 15/09/2026.
+    return bool(m) and len(m.group(1)) == 1 and m.group(1) in COLUNAS and int(m.group(2)) >= 4
 
 
 def aplica(aba, val):

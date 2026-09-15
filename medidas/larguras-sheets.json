@@ -1,0 +1,39 @@
+{
+ "o_que_e": "a largura de coluna que o Sheets exporta para o .xlsx, contra o pixel que o Apps Script mandou",
+ "fonte": "o apps-script/Ficha.gs de 15/09/2026 10:52, que mandava pixel = 7 x largura, montado no Sheets pelo Mizuki e exportado em Kaori.xlsx as 11:02",
+ "conta": "pixel = 8 x largura - 1",
+ "pares": [
+  [
+   28,
+   3.63
+  ],
+  [
+   35,
+   4.5
+  ],
+  [
+   74,
+   9.38
+  ],
+  [
+   88,
+   11.13
+  ],
+  [
+   105,
+   13.25
+  ],
+  [
+   136,
+   17.13
+  ],
+  [
+   140,
+   17.63
+  ],
+  [
+   192,
+   24.13
+  ]
+ ]
+}
