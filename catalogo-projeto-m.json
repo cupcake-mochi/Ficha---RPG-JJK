@@ -1,14 +1,36 @@
 {
   "_meta": {
     "sistema": "Projeto M",
-    "versao": "0.104",
-    "versao_data": "18/08/2026",
+    "versao": "0.239",
+    "versao_data": "14/09/2026",
     "versao_dona": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
-    "fonte": "Projeto-M-Manual-da-Guilda.pdf (199 p.)",
+    "fonte": "Projeto-M-Manual-da-Guilda.pdf, o livro da versão acima",
     "regra": "onde a ficha-em-branco.docx e o manual discordarem, o manual vence",
     "nivel_inicial": 2,
     "nivel_maximo": 30,
-    "grau_inicial": 4
+    "grau_inicial": 4,
+    "conferido_contra_o_livro": [
+      "melhorias",
+      "restricoes",
+      "condicoes",
+      "formas (nomes)",
+      "pericias (nomes)",
+      "oficios (nomes)",
+      "familias",
+      "trilhas",
+      "caminhos (vida, PE e dado)"
+    ],
+    "nao_conferido_contra_o_livro": [
+      "fundamento",
+      "origens",
+      "sub_origem",
+      "rotas_de_criacao",
+      "legados",
+      "legados_formatos",
+      "progressao",
+      "testes_de_resistencia",
+      "atributos"
+    ]
   },
   "atributos": {
     "lista": [
@@ -307,13 +329,7 @@
       "nota": "fora de combate, sem dano"
     }
   },
-  "_pendente": [
-    "Trilhas do Evocador (Servo, Matilha, Coro): entregas de nivel 2, 11, 19 e 27 em escrita",
-    "Nivel 27 da Trilha Arremate: casa vaga de proposito",
-    "Pactos: regra completa em escrita",
-    "Tecnica Marcial e Estilo da Sombra: em escrita",
-    "Casco, segunda opcao da Sintonia do Evocador: diz 'mais vida' sem numero"
-  ],
+  "_pendente": [],
   "melhorias": {
     "Longe": {
       "familia": "Alcance",
@@ -348,7 +364,7 @@
     "Perseguir": {
       "familia": "Alcance",
       "peso": "Media",
-      "efeito": "Se o alvo sair do alcance antes de o feitiço resolver, o feitiço vai atrás."
+      "efeito": "Se o alvo sair do alcance antes de o feitiço concluir, o feitiço vai atrás."
     },
     "Maior": {
       "familia": "Área",
@@ -408,7 +424,7 @@
     "Fura": {
       "familia": "Mira",
       "peso": "Media",
-      "efeito": "Ignora até 3 × Classe de Redução de Dano. O que passar disso continua valendo."
+      "efeito": "Ignora até 2 × Classe de Redução de Dano."
     },
     "Corrói": {
       "familia": "Mira",
@@ -418,7 +434,7 @@
     "Sem Cobertura": {
       "familia": "Mira",
       "peso": "Leve",
-      "efeito": "Cobertura leve e meia cobertura não atrapalham."
+      "efeito": "Cobertura Parcial não atrapalha. A Total não se fura: ela não é bônus, é a ausência de alvo legal."
     },
     "De Novo": {
       "familia": "Mira",
@@ -428,7 +444,7 @@
     "Toca a Alma": {
       "familia": "Mira",
       "peso": "Leve",
-      "efeito": "Só da Classe 3 em diante, e só para Fundamento cuja Regra encosta em alma, mente ou conceito. Os dados de dano deste feitiço viram dano na alma, e você fica com metade deles, arredondando para baixo. Não entra numa Liberação Máxima. A régua do dano na alma está em Para o mestre. Imunidade. Nenhuma Melhoria fura imunidade. Quem quiser isso monta uma Passiva de Regra Própria com o mestre, com limite de uma vez por cena."
+      "efeito": "Só da Classe 3 em diante, e só para Fundamento cuja Regra seja direta sobre alma. Os dados de dano deste feitiço viram dano na alma, e você fica com metade deles, arredondando para baixo. Não entra numa Liberação Máxima."
     },
     "Terreno": {
       "familia": "Controle",
@@ -438,17 +454,17 @@
     "Anteparo": {
       "familia": "Controle",
       "peso": "Media",
-      "efeito": "Deixa uma parede ou escudo com 10 × Classe de pontos de vida, por 1 minuto."
+      "efeito": "Deixa uma parede ou escudo com 10 × Classe de pontos de vida, por 1 minuto. Ocupa os mesmos quadrados que a Linha da Classe dele, arrumados como você quiser, cada um partilhando um lado com outro. Altura mínima 2 quadrados. Colocado num ponto a até o alcance do feitiço."
     },
     "Prende": {
       "familia": "Controle",
       "peso": "Media",
-      "efeito": "O alvo não sai do lugar até o fim do próximo turno dele. Ele pode gastar a ação para tentar um Teste de Resistência e se sol‐ tar."
+      "efeito": "O alvo não sai do lugar até o fim do próximo turno dele. Ele pode gastar uma ação — qualquer uma, menos livre — para tentar um Teste de Resistência e se soltar. O Teste é decidido na criação do feitiço."
     },
     "Cerca": {
       "familia": "Controle",
       "peso": "Leve",
-      "efeito": "O alvo não consegue se aproximar de você até o fim do próximo turno dele."
+      "efeito": "O alvo não consegue se aproximar de você até o fim do próximo turno dele. Acaba assim que você causar dano a ele — inclusive o dano do próprio feitiço que comprou esta Melhoria."
     },
     "Puxa": {
       "familia": "Controle",
@@ -458,12 +474,7 @@
     "Desarma o Feitiço": {
       "familia": "Controle",
       "peso": "Media",
-      "efeito": "Cancela um efeito contínuo ou uma barreira de Classe igual ou menor que a sua. As condições, uma a uma São catorze, e cada uma tem um nível: Leve , Média ou Pesada . O nível faz duas coisas ao mesmo tempo. Ele é o preço da Melhoria Condição que aplica ela, e é o que custa em energia para tirar ela de alguém (1 ponto por nível). Uma condição dura uma rodada. Cada condição custa o que ela vale, e é por isso que são três níveis: Impedido e Surdo pesam coisas muito diferentes numa luta. Numa Classe 5, aplicar uma Leve custa 3 pontos, uma Média custa 5 e uma Pesada custa 8. NÍVEL LEVE          O QUE FAZ Lento            Deslocamento pela metade, e sem Ação Bônus. Incapacitado     Você não pode Bloquear, e todo ataque corpo a corpo contra você é crítico. Derrubado        No chão. Só se move rastejando, desvantagem nos seus ataques, e quem ataca de até 1,5 m tem vantagem; de longe, desvantagem. Agarrado         Deslocamento 0. Acaba se quem agarrou ficar Incapacitado , ou se algo te tirar do alcance dele. Desarmado        A sua arma está no chão ou na mão de outro. Você bate desarmado até pegar de volta. NÍVEL LEVE          O QUE FAZ Surdo              Não ouve. Falha automática em teste que precise de audição, e −2 na iniciativa. NÍVEL MÉDIA     O QUE FAZ Calado         Você não conjura. Nada que precise de voz, gesto ou Selo sai. Enfeitiçado    Você não ataca quem enfeitiçou nem mira efeito nocivo nele, e ele tem vantagem em teste social contra você. NÍVEL O QUE FAZ PESADA Petrificado    Virou pedra. Incapacitado , deslocamento 0, sem perceber o que está em volta, vantagem para quem te ataca, e resistência a todo dano. Impedido       Deslocamento 0, desvantagem nos seus ataques e no Teste de Resistência Físico, e vantagem para quem te ataca. Cego           Não enxerga. Falha automática em teste que precise de vista, desvantagem nos seus ataques, vantagem para quem te ataca. Amedrontado    Desvantagem em ataque e teste enquanto enxergar a fonte do medo, e você não se aproxima dela de vontade própria. Envenenado     Desvantagem nos seus ataques e em todo teste de perícia. Atordoado      Você perde a Ação Padrão e não usa reação. Quem tem mais de uma Ação Padrão no turno perde UMA, não todas. Atordoado e Incapacitado atacam eixos diferentes, e não se empilham. Um tira ação, o outro tira defesa: ATORDOADO                                              INCAPACITADO O que tira             parte do turno: uma Ação Padrão e a reação             a defesa O alvo ainda           se defende normalmente                                 age normalmente"
-    },
-    "Nível": {
-      "familia": "Controle",
-      "peso": "Pesada",
-      "efeito": "Leve Tirar o que o alvo faz custa três vezes mais do que tirar o que protege ele. E o Atordoado cobra uma Ação Padrão só, de propósito: um chefe age mais de uma vez por rodada, e apagar o turno dele com uma linha de Controle sairia barato demais. Três coisas que não são condição aqui. Inconsciente é cair morrendo, e tem regra própria no capítulo Como Jogar: não é efeito de uma rodada. Exaustão é relógio de descanso, e a Melhoria Condição não alcança ela. Invisível é benefício: comprar para aplicar num inimigo é pagar para ajudar ele."
+      "efeito": "Cancela um efeito contínuo ou uma barreira de Classe igual ou menor que a sua."
     },
     "Impulso": {
       "familia": "Auxiliares",
@@ -478,12 +489,12 @@
     "Abre Ferida": {
       "familia": "Auxiliares",
       "peso": "Leve",
-      "efeito": "O alvo fica com −2 em Testes de Resistência até o fim do próximo turno dele."
+      "efeito": "O alvo fica com −2 em um Teste de Resistência até o fim do próximo turno dele."
     },
     "Sobrecarga": {
       "familia": "Auxiliares",
       "peso": "Leve",
-      "efeito": "Até o fim do próximo turno do alvo, o feitiço dele custa o dobro de energia e sai com a CD 2 menor."
+      "efeito": "Até o fim do próximo turno do alvo, ele não usa Reação, e o feitiço dele sai com a CD 2 menor."
     },
     "Firmeza": {
       "familia": "Auxiliares",
@@ -503,7 +514,7 @@
     "Enfraquece": {
       "familia": "Auxiliares",
       "peso": "Media",
-      "efeito": "O dano do alvo cai um quarto até o fim do próximo turno dele."
+      "efeito": "O dano do alvo cai Xd4 até o fim do próximo turno dele, com X sendo metade do seu atributo de técnica."
     },
     "Ecoa": {
       "familia": "Auxiliares",
@@ -523,12 +534,12 @@
     "Remate": {
       "familia": "Castigo",
       "peso": "Media",
-      "efeito": "+25% de dano contra alvo abaixo de metade da vida. Não entra num feitiço que tenha uma Condicional ligada à vida do alvo."
+      "efeito": "+25% de dano contra alvo abaixo de metade da vida. Não entra num feitiço que tenha uma Condicional ligada à vida do alvo ou à duração, nem num feitiço com a Restrição Aquecer."
     },
     "Estilhaço": {
       "familia": "Castigo",
       "peso": "Leve",
-      "efeito": "Em crítico, ou quando o alvo erra o Teste de Resistência por 5 ou mais, metade dos dados respinga em quem estiver do lado."
+      "efeito": "Em crítico, ou quando o alvo falha o Teste de Resistência por 5 ou mais, metade dos dados respinga em quem estiver do lado."
     },
     "Quebra Coisa": {
       "familia": "Castigo",
@@ -538,7 +549,7 @@
     "Rasga Escudo": {
       "familia": "Castigo",
       "peso": "Media",
-      "efeito": "O dano ignora pontos de vida temporários e barreiras: bate direto na vida."
+      "efeito": "O dano ignora vida temporária e barreiras: bate direto na vida. Não ignora Redução de Dano."
     },
     "Sem Cura": {
       "familia": "Castigo",
@@ -548,22 +559,22 @@
     "Rápido": {
       "familia": "Tempo",
       "peso": "Pesada",
-      "efeito": "Custa Ação Bônus em vez de Ação Padrão. Não entra no mesmo feitiço que Reação ."
+      "efeito": "Custa Ação Bônus em vez de Ação Padrão. Não entra no mesmo feitiço que Reação."
     },
     "Reação": {
       "familia": "Tempo",
       "peso": "Pesada",
-      "efeito": "Você conjura como Reação, a um gatilho que você declara quando monta o feitiço. Não entra no mesmo feitiço que Rápido ."
+      "efeito": "Você conjura como Reação, a um gatilho que você declara quando monta o feitiço. Não entra no mesmo feitiço que Rápido nem que Armado."
     },
     "Armado": {
       "familia": "Tempo",
       "peso": "Leve",
-      "efeito": "Deixa o feitiço pronto e dispara depois, na mesma cena. Disparar ainda gasta ação."
+      "efeito": "Você gasta a ação e o PE do feitiço, e ele fica armado até o fim da cena. Na hora de armar, escolha um gatilho que a mesa consiga ver acontecer e que não seja um momento do seu próprio turno. Quando ele acontece, o feitiço sai sem gastar Reação, com alcance e alvo conferidos naquela hora. Um armado por vez. Se ele não sair, porque a cena acabou ou porque você armou outro, metade do PE volta. Não entra no mesmo feitiço que Reação nem com a Restrição Carregar."
     },
     "Silencioso": {
       "familia": "Tempo",
       "peso": "Leve",
-      "efeito": "Sem gesto, sem palavra. Ninguém percebe que você conjurou."
+      "efeito": "Sem gesto, sem palavra. Usar não revela a sua posição e não exige nenhum sinal. Dispensa Selo de gesto ou de som; Selo de condição, como enxergar o alvo, continua valendo."
     },
     "Adianta": {
       "familia": "Tempo",
@@ -573,7 +584,7 @@
     "Segura": {
       "familia": "Tempo",
       "peso": "Leve",
-      "efeito": "Você pode adiar o efeito por até uma rodada e disparar no seu próximo turno, de graça. Se você conjurar um feitiço como Ação Bônus ou Reação, o único outro feitiço que cabe naquele turno é de Classe 0."
+      "efeito": "Você pode adiar o efeito por até uma rodada e disparar no seu próximo turno, de graça."
     },
     "Marca": {
       "familia": "Marca",
@@ -608,7 +619,7 @@
     "Limpa": {
       "familia": "Amparo",
       "peso": "Media",
-      "efeito": "Remove de um aliado uma condição de nível Leve ou Média ."
+      "efeito": "Remove de um aliado uma condição de nível Leve ou Média."
     },
     "Limpa Fundo": {
       "familia": "Amparo",
@@ -623,7 +634,7 @@
     "Divide": {
       "familia": "Amparo",
       "peso": "Media",
-      "efeito": "Um aliado a até 9 m passa a receber metade do dano que você recebe‐ ria, até o fim do próximo turno. Você escolhe na hora de conjurar."
+      "efeito": "Um aliado a até 9 m passa a receber metade do dano que você receberia, até o fim do próximo turno. Você escolhe na hora de conjurar."
     },
     "Junto": {
       "familia": "Amparo",
@@ -638,14 +649,19 @@
     "Remenda": {
       "familia": "Amparo",
       "peso": "Pesada",
-      "efeito": "Devolve 5 × Classe de Integridade a um aliado, e com ela a vida máxima que tinha sido derrubada. Uma vez por cena. Fora de família Efeito Próprio       o         Uma mecânica que não existe em lugar nenhum desta lista. Um des‐ mes‐      locamento junto com o dano, um efeito que só funciona em superfí‐ tre       cie molhada, o que for. Um por feitiço, combinado antes da sessão e decide    nunca no meio dela. Não pertence a nenhuma Família, então Família Fechada não bloqueia. A Restrição equivalente é a Restrição Própria , no fim de Definindo Restrições. Definindo Restrições Restrição é a desvantagem que você aceita em troca de pontos. Um feitiço carrega no máximo duas, e a devolução total não passa de 2 × Classe. O que a Restrição devolve serve só para pagar Melhoria: se devolver mais do que você gastou, o excedente se perde. Restrição nunca vira dano. Uma Restrição devolve Leve ou Média , nunca Pesada . Duas Média já batem no teto de devolução da Classe, então o catálogo inteiro cabe dentro do fecho."
+      "efeito": "Devolve 5 × Classe de Integridade a um aliado. Uma vez por cena, por alvo."
     },
-    "Condicao": {
+    "Condição": {
       "familia": "Controle",
       "peso": "VARIAVEL",
-      "efeito": "Aplica uma das catorze condicoes. O preco e o nivel dela (Leve, Media ou Pesada). Dura uma rodada. As de nivel Pesada dao Teste de Resistencia no fim de cada turno.",
-      "excecao": "unica Melhoria cujo peso nao e fixo: le o nivel da condicao escolhida",
-      "pagina": 118
+      "efeito": "Aplica uma das treze condições. O preço é o nível dela (Leve, Média ou Pesada), e a seção Condições traz as três listas. Dura uma rodada. As de nível Pesada dão Teste de Resistência no fim de cada turno do alvo, e só pode ser colocada uma delas por feitiço.",
+      "excecao": "unica Melhoria cujo peso nao e fixo: le o nivel da condicao escolhida"
+    },
+    "Efeito Próprio": {
+      "familia": null,
+      "peso": "MESTRE",
+      "efeito": "Uma mecânica que não existe em lugar nenhum desta lista. Um deslocamento junto com o dano, um efeito que só funciona em superfície molhada, o que for. Um por feitiço, combinado antes da sessão e nunca no meio dela. Não pertence a nenhuma Família, então Família Fechada não bloqueia.",
+      "excecao": "fora de família: o mestre decide quanto ela custa"
     }
   },
   "condicoes": {
@@ -657,7 +673,6 @@
     "Surdo": "Leve",
     "Calado": "Media",
     "Enfeitiçado": "Media",
-    "Petrificado": "Pesada",
     "Impedido": "Pesada",
     "Cego": "Pesada",
     "Amedrontado": "Pesada",
@@ -667,9 +682,9 @@
   "restricoes": {
     "Corpo a Corpo": {
       "devolve": "Media",
-      "o_que_muda": "Projétil vira Toque (1,5 m). Explosão vira Aura , centrada em você. Cone e Linha já saem de você, então não podem pegar esta."
+      "o_que_muda": "Projétil vira Toque (1,5 m). Explosão vira Aura, centrada em você. Cone e Linha já saem de você, então não podem pegar esta."
     },
-    "Lento": {
+    "Atrasar": {
       "devolve": "Media",
       "o_que_muda": "Custa a rodada inteira (Ação Completa): você não se move, não usa ação bônus e não faz mais nada naquele turno."
     },
@@ -683,15 +698,15 @@
     },
     "Sangra": {
       "devolve": "Media",
-      "o_que_muda": "Você toma 2 × Classe de dano que nada reduz."
+      "o_que_muda": "Você toma 2 × Classe de dano que não pode ser reduzido."
     },
     "Recuo": {
-      "devolve": "Leve",
-      "o_que_muda": "Você fica com uma condição até o fim do seu próximo turno. Ela ou        devolve o nível dela: uma condição Leve devolve Leve , uma Média Média     devolve Média . Nível Pesada não entra, porque Restrição nunca devolve Pesada ."
+      "devolve": "Leve ou Media",
+      "o_que_muda": "Você fica com uma condição até o fim do seu próximo turno. Ela devolve o nível dela: uma condição Leve devolve Leve, uma Média devolve Média. Nível Pesada não entra, porque Restrição nunca devolve Pesada."
     },
     "Carregar": {
       "devolve": "Media",
-      "o_que_muda": "Você gasta um turno carregando o feitiço antes de disparar. Se tomar dano nesse meio-tempo, faz um Teste de Resistência de Espí‐ rito (CD 10, ou metade do dano, o que for maior) para manter. Se falhar, perde o feitiço. Carregar não é concentração: o feitiço ainda não saiu."
+      "o_que_muda": "Você gasta um turno carregando o feitiço antes de disparar. Se tomar dano nesse meio-tempo, faz um Teste de Resistência de Espírito (CD 10, ou metade do dano, o que for maior) para manter. Se falhar, perde o feitiço. Carregar não é concentração: o feitiço ainda não saiu."
     },
     "Tudo ou Nada": {
       "devolve": "Leve",
@@ -702,12 +717,12 @@
       "o_que_muda": "Uma vez por cena."
     },
     "Condicional": {
-      "devolve": "Leve",
-      "o_que_muda": "Só funciona quando uma condição de cena ou de alvo, escrita na ou        ficha, é verdadeira: no escuro, marcado por você, abaixo de metade Média     da vida, perto de água corrente. Falha em menos de uma cena a cada três: devolve Leve . Falha na maioria das cenas: devolve Média ."
+      "devolve": "Leve ou Media",
+      "o_que_muda": "Só funciona quando uma condição de cena ou de alvo, escrita na ficha, é verdadeira: no escuro, marcado por você, abaixo de metade da vida, perto de água corrente. Falha em menos de uma cena a cada três: devolve Leve. Falha na maioria das cenas: devolve Média."
     },
     "Fraqueza": {
-      "devolve": "Leve",
-      "o_que_muda": "Depois de usar, você fica com desvantagem num dos quatro Testes            10 ou        de Resistência, escolhido na montagem, até o fim da cena. Vigor ou Média     Intelecto: Leve . Físico ou Espírito: Média ."
+      "devolve": "Leve ou Media",
+      "o_que_muda": "Depois de usar, você fica com desvantagem num dos quatro Testes de Resistência, escolhido na montagem, até o fim da cena. Vigor ou Intelecto: Leve. Físico ou Espírito: Média."
     },
     "Frágil": {
       "devolve": "Leve",
@@ -727,19 +742,19 @@
     },
     "Dívida": {
       "devolve": "Media",
-      "o_que_muda": "Depois de usar, o próximo feitiço que você conjurar nesta cena custa o dobro de energia."
+      "o_que_muda": "Depois de usar, o próximo feitiço que você conjurar nesta cena custa 2 × a Classe deste feitiço de energia a mais — mesmo que ele seja de Classe 0."
     },
     "Peso Morto": {
       "devolve": "Leve",
-      "o_que_muda": "Seu deslocamento cai pela metade até o fim do próximo turno."
+      "o_que_muda": "Seu deslocamento cai pela metade até o fim do próximo turno, e você recebe −1 no seu Teste de Resistência Físico."
     },
     "Sem Volta": {
       "devolve": "Media",
-      "o_que_muda": "Se o feitiço não acertar ninguém, você não conjura nada no seu próximo turno. Restrição Própria Se a desvantagem que você imaginou não está na lista, escreva ela. A Restrição Própria é o espelho do Efeito Próprio : você propõe a dor, o mestre define quanto ela devolve."
+      "o_que_muda": "Se o feitiço não acertar ninguém, você não conjura nada no seu próximo turno."
     },
     "Restrição Própria": {
-      "devolve": "Leve",
-      "o_que_muda": "Uma desvantagem que não existe nesta lista. Escrita com o ou         mestre antes da sessão, nunca no meio dela, e vale só para o Média     feitiço onde nasceu. Conta no limite de duas Restrições e obedece as mesmas travas de todas as outras. Quanto ela devolve. A pergunta é uma só: em quantas cenas isso vai realmente atrapalhar? Atrapalha em menos de uma cena a cada três: Leve . Atrapalha na metade das cenas ou mais: Média . Não dá para imaginar uma cena em que atrapalhe: não devolve nada, e não vale como Restrição. Nenhuma Restrição do capítulo devolve Pesada , e a Própria também não. Duas Média já batem exatamente no teto de devolução da Classe (2 × Classe), então uma Pesada estouraria o fecho do sistema. Se a dor que você escreveu parece valer mais que uma Média , ela prova‐ velmente são duas Restrições disfarçadas de uma. Separe. Na dúvida, para que lado errar. Efeito Próprio na dúvida é Pesada . Restrição Própria na dúvida é Leve . Os dois erram para o mesmo lado: o que não infla o feitiço. Uma Melhoria cara e uma Restrição barata custam ao jogador um pouco de orçamento; o contrário custa o balanço da mesa inteira."
+      "devolve": "Leve ou Media",
+      "o_que_muda": "Uma desvantagem que não existe nesta lista. Escrita com o mestre antes da sessão, nunca no meio dela, e vale só para o feitiço onde nasceu. Conta no limite de duas Restrições e obedece as mesmas travas de todas as outras."
     }
   },
   "fundamento": {

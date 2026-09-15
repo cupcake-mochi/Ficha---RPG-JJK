@@ -255,23 +255,23 @@ for arq, marca in [("capitulo-16-invocacoes.md", "nao confere NADA"),
 # =====================================================================
 print()
 print("=" * 74)
-print("PASSO 5 — o guarda da divergência: se o manual.txt for re-extraído,")
-print("           a checagem tem de mudar de estado em vez de ficar verde")
+print("PASSO 5 — o guarda da concordância: se o manual.txt voltar a ter a ficha")
+print("           derivada, que morreu na v0.180, a checagem tem de acender")
 print("=" * 74)
 tmp = monta_copia()
-if edita(tmp, "manual.txt", "A ficha dela é derivada da sua",
-         "A invocação tem os cinco atributos, e eles são dela"):
+if edita(tmp, "manual.txt", "A invocação tem os cinco atributos, e eles são dela.",
+         "A ficha dela é derivada da sua."):
     cod, saida = roda(tmp)
-    a_certa = any("ficha derivada" in lin for lin in saida.split("\n")
-                  if lin.strip().startswith("[FALHA]"))
+    a_certa = any("ficha derivada" in lin or "mesma ficha propria" in lin
+                  for lin in saida.split("\n") if lin.strip().startswith("[FALHA]"))
     if cod != 0 and a_certa:
-        print("  [ACENDE] o manual.txt consertado faz o guarda mudar de estado")
+        print("  [ACENDE] o manual.txt com a mecânica morta faz o guarda acender")
     else:
-        print("  [NÃO ACENDE] o guarda continuou verde com o manual.txt consertado")
-        falhas.append("guarda da divergência")
+        print("  [NÃO ACENDE] o guarda continuou verde com a mecânica morta de volta")
+        falhas.append("guarda da concordância")
 else:
     print("  [INVÁLIDA] a troca nao bateu no manual.txt")
-    falhas.append("guarda da divergência (troca nao bateu)")
+    falhas.append("guarda da concordância (troca nao bateu)")
 shutil.rmtree(tmp, ignore_errors=True)
 
 # =====================================================================

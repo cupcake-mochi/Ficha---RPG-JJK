@@ -10,7 +10,7 @@ import json, os, shutil, subprocess, sys, tempfile
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 PRECISA = ["conferir-decisoes.py", "decisoes-ficha.json", "catalogo-projeto-m.json",
-           "DECISOES-bloco-A.md", "PENDENCIAS.md", "manual.txt",
+           "DECISOES-bloco-A.md", "PENDENCIAS.md", "manual.txt", "manual-temporario.md",
            "capitulo-35-caminhos-e-trilhas.md"]
 
 def roda(pasta):
@@ -72,7 +72,7 @@ perturba("dois degraus que viram a mesma cor", daltonismo_ruim, "pior caso de da
 
 def fonte_mentirosa(d):
     for p in d["A3_incompatibilidades"]["pares"]:
-        if p["b"] == "Lento":
+        if p["b"] == "Atrasar":
             p["fonte"] = "manual"                          # o manual NAO escreve esse par
 perturba("par da ficha declarado como do manual", fonte_mentirosa, "o manual escreve mesmo esse par")
 
@@ -84,6 +84,18 @@ perturba("par que nomeia peca inexistente", peca_fantasma, "nomeia pecas que exi
 def fonte_inventada(d):
     d["A2_temporario"]["vida"]["fontes_no_manual"]["Casco de Ferro"] = "sei la"
 perturba("fonte de vida temporaria inventada", fonte_inventada, "fontes de vida temporaria existem")
+
+def energia_acumula(d):
+    d["A2_temporario"]["energia"]["empilha"] = True
+perturba("a A2 volta a deixar a energia acumular", energia_acumula, "nenhuma temporaria acumula")
+
+def vida_sem_teto(d):
+    d["A2_temporario"]["vida"]["teto"] = "sem teto"
+perturba("a A2 tira o teto da vida temporaria", vida_sem_teto, "o teto e metade do maximo")
+
+def fonte_de_energia_inventada(d):
+    d["A2_temporario"]["energia"]["fontes_no_manual"]["Chama Eterna"] = "sei la"
+perturba("fonte de energia temporaria inventada", fonte_de_energia_inventada, "fontes de energia temporaria existem")
 
 # --- C1: o guarda que a v0.104 deixou morto -----------------------------
 def c1_sem_declaracao(d):
@@ -111,6 +123,12 @@ def c1_sem_o_porque(d):
     d["C1_evocador"]["motivo_hoje"]["por_que_a_checagem_velha_nao_servia"] = "sei la"
 perturba("C1 sem explicar por que a checagem velha nao servia", c1_sem_o_porque,
          "por que a checagem velha nao servia")
+
+# 14/09/2026: o Evocador voltou ao menu, e esconder ele de novo sem tirar do menu acende
+def c1_oculto_e_no_menu(d):
+    d["C1_evocador"]["caminho_oculto"] = "Evocador"
+perturba("C1 escondendo um Caminho que esta no menu", c1_oculto_e_no_menu,
+         "menu + oculto = o catalogo inteiro")
 
 print()
 print("=" * 70)
@@ -142,11 +160,21 @@ perturba_arquivo("o Parrudo muda de numero no capitulo 35",
                  "equivalente a **`5 ×` a sua maestria**",
                  "equivalente a **`7 ×` a sua maestria**",
                  "o numero que o C1 declara e o mesmo")
-perturba_arquivo("o manual.txt foi re-extraido e perdeu a frase do Casco",
+perturba_arquivo("o manual.txt reextraido da outro numero ao Parrudo",
                  "manual.txt",
-                 "Casco — as suas invocações têm mais vida.",
-                 "Parrudo — as suas invocações têm mais vida, 5 × a sua maestria.",
-                 "nunca podia acender")
+                 "equivalente a 5 × a sua maestria.",
+                 "equivalente a 7 × a sua maestria.",
+                 "mesmo numero do capitulo 35")
+perturba_arquivo("o manual.txt perde a regra da energia temporaria",
+                 "manual.txt",
+                 "Energia temporária segue a regra da vida temporária, com o PE no lugar da vida.",
+                 "Energia temporária acumula.",
+                 "regra da energia temporaria")
+perturba_arquivo("o manual-temporario.md esquece que foi superado",
+                 "manual-temporario.md",
+                 "SUPERADO",
+                 "PROPOSTO",
+                 "se declara superado")
 
 print()
 print("=" * 70)

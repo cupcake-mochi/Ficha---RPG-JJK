@@ -27,6 +27,8 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 ORIG = sys.argv[1] if len(sys.argv) > 1 else os.path.join(AQUI, "original.xlsx")
 SAIDA = os.path.join(AQUI, "layout.json")
 ARTE = os.path.join(AQUI, "arte")
+sys.path.insert(0, os.path.join(os.path.dirname(AQUI), "ficha"))
+from estilo import CORPO
 
 # --- as quatro limpezas, nomeadas para o comparador poder cobra-las --------
 RUIDO_FONTE = ("Arial", 10.0)          # limpeza 1
@@ -45,6 +47,27 @@ LARGURA_CERTA = 4.0                    # limpeza 2 (o Sheets devolve 3.63)
 BARRAS_CHEIAS = {"FICHA": {"D23": "=J23", "D27": "=J27", "D31": "=J31"}}
 CF_DE_FABRICA = "FFB7E1CD"             # limpeza 3
 
+# limpeza 5, de 14/09/2026: o estado de mesa que nao e desenho volta VAZIO.
+#
+# E a regra da limpeza 4 aplicada a mais quatro celulas -- o numero esta certo
+# na planilha dele, e errado no molde. Os tres `_delta` o Codigo.gs apaga sozinho
+# depois de aplicar (`e.range.clearContent()`), entao um 0 ali foi digitado. E o
+# `equipamento` vazio quer dizer "usa a protecao da aptidao", que e o que a nota
+# da propria celula diz: um 1 ali e a protecao de um personagem.
+ESTADO_VAZIO = {"FICHA": ["AM23", "AM27", "AM31", "Z40"]}
+
+# limpeza 6, de 14/09/2026, decidida pelo Mizuki: o Arial que sobra depois da limpeza 1
+# vira a fonte de corpo. Ele aparece em celula que o Sheets pintou com o estilo dele,
+# e fica fora das cinco fontes da decisao C4.
+ARIAL_VIRA_CORPO = "Arial"
+
+# limpeza 7, de 14/09/2026: o carimbo de versao volta a ser texto. Numa planilha em
+# portugues o ponto e separador de milhar, e o Sheets leu "0.104" como 104. E ruido de
+# ida e volta, como a largura 3,63 da limpeza 2. O texto volta a ser 0.NNN, o que a planilha
+# escreveu -- e nao a versao do catalogo, que desde a v0.239 do sistema pode estar na frente
+# da planilha viva (a DADOS sai do catalogo no monta.py, limpeza 8).
+CARIMBO = {"DADOS": ["B1", "D1"]}
+
 wb = load_workbook(ORIG)
 estilos, indice = [], {}
 
@@ -60,7 +83,11 @@ def chave_estilo(cel):
     if f and f.name:
         # limpeza 1: o Arial 10 de fabrica nao entra no estilo
         if not (f.name == RUIDO_FONTE[0] and f.sz == RUIDO_FONTE[1]):
-            fonte = [f.name, f.sz, cor(f.color), bool(f.b), bool(f.i)]
+            nome_f = f.name
+            if nome_f == ARIAL_VIRA_CORPO:                     # limpeza 6
+                nome_f = CORPO
+                arial_trocadas.append(f"{cel.parent.title}!{cel.coordinate}")
+            fonte = [nome_f, f.sz, cor(f.color), bool(f.b), bool(f.i)]
     fundo = cor(p.start_color) if (p and p.fill_type == "solid") else None
     bordas = None
     if b:
@@ -88,6 +115,9 @@ def idx_estilo(cel):
 
 abas = []
 barras_repostas = []
+estado_limpo = []
+arial_trocadas = []
+carimbos = []
 for nome in wb.sheetnames:
     s = wb[nome]
     celulas = []
@@ -112,6 +142,17 @@ for nome in wb.sheetnames:
             if _cheia is not None and v != _cheia:
                 barras_repostas.append(f"{nome}!{c.coordinate} {v!r} -> {_cheia}")
                 v = _cheia
+            if c.coordinate in ESTADO_VAZIO.get(nome, []) and v is not None:
+                estado_limpo.append(f"{nome}!{c.coordinate} {v!r} -> vazio")
+                v, ref = None, None
+                if e is None:
+                    continue
+            if (c.coordinate in CARIMBO.get(nome, []) and isinstance(v, (int, float))
+                    and not isinstance(v, bool)
+                    and float(v).is_integer() and 0 < v < 1000):
+                _txt = "0.%03d" % int(v)
+                carimbos.append(f"{nome}!{c.coordinate} {v!r} -> {_txt!r}")
+                v = _txt
             celulas.append([c.coordinate, v, e] + ([ref] if ref else []))
 
     # as colunas: o Sheets colapsa tudo num range so, e a largura volta a 4,0
@@ -177,6 +218,9 @@ layout = {
         # o comparador LE daqui em vez de guardar a propria copia: um numero,
         # um dono. Sem isto ele acusaria as tres como divergencia nao explicada.
         "barras_cheias": BARRAS_CHEIAS,
+        "estado_vazio": ESTADO_VAZIO,
+        "arial_vira_corpo": ARIAL_VIRA_CORPO,
+        "carimbo_texto": CARIMBO,
         "veio_do_sheets": "https://docs.google.com/spreadsheets/d/"
                           "1rH43Xw6nneXwIPkI1VpsnPPkTZTPIqbiocY0KQdPwZ8/edit",
         "limpezas": [
@@ -192,6 +236,18 @@ layout = {
             "Mizuki JOGA, entao ela exporta com o personagem dele em campo; o "
             "molde tem de nascer cheio. Quantas foram repostas, o extrator conta: "
             + (", ".join(barras_repostas) if barras_repostas else "nenhuma nesta rodada"),
+            "o estado de mesa que nao e desenho volta vazio: os tres campos de dano, "
+            "que o Codigo.gs apaga sozinho, e o equipamento, que vazio usa a protecao "
+            "da aptidao. E a regra da limpeza anterior aplicada a mais quatro celulas. "
+            "O extrator conta: " + (", ".join(estado_limpo) if estado_limpo else "nenhuma nesta rodada"),
+            "o Arial que sobra depois da primeira limpeza vira a fonte de corpo, decidido pelo "
+            "Mizuki em 14/09/2026. Quantas, o extrator conta: " + str(len(arial_trocadas)),
+            "o carimbo de versao que o Sheets em portugues leu como numero volta a ser o texto "
+            "0.NNN. O extrator conta: " + (", ".join(carimbos) if carimbos else "nenhum nesta rodada"),
+            "a aba DADOS sai do catalogo, e nao da exportacao: as doze listas das colunas A a L e o "
+            "carimbo em B1 e D1. Decidido pelo Mizuki em 14/09/2026, quando o catalogo foi da v0.104 "
+            "a v0.239 e a planilha viva ainda carregava o de antes. O monta.py aplica, e o comparador "
+            "conta quantas celulas mudaram.",
         ],
         "onde_ela_vive": "Google Sheets. Por isso o IFS fica cru e o SPARKLINE "
                          "continua: no Excel os dois quebram, e isso esta aceito.",

@@ -8,7 +8,7 @@ condicional, as imagens e a ordem das abas.
 As diferencas ESPERADAS sao as tres limpezas declaradas no layout.json, e so
 elas. Qualquer outra e defeito do gerador.
 """
-import json, os, sys
+import json, os, re, sys
 from collections import Counter
 from openpyxl import load_workbook
 from openpyxl.worksheet.formula import ArrayFormula
@@ -17,6 +17,9 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 A = os.path.join(AQUI, "ficha-v01", "original.xlsx")
 B = os.path.join(AQUI, "ficha-v01", "ficha-projeto-m-0.1.xlsx")
 LAY = json.load(open(os.path.join(AQUI, "ficha-v01", "layout.json"), encoding="utf-8"))
+sys.path.insert(0, os.path.join(AQUI, "ficha-v01"))
+import dados_catalogo
+DADOS_CAT = dados_catalogo.valores()
 
 for f in (A, B):
     if not os.path.exists(f):
@@ -24,6 +27,9 @@ for f in (A, B):
 
 wa, wb_ = load_workbook(A), load_workbook(B)
 BARRAS = LAY["_meta"].get("barras_cheias", {})
+VAZIO = LAY["_meta"].get("estado_vazio", {})
+ARIAL = LAY["_meta"].get("arial_vira_corpo")
+CARIMBO = LAY["_meta"].get("carimbo_texto", {})
 difs, esperadas = [], Counter()
 
 def cor(c):
@@ -113,6 +119,29 @@ for n in wa.sheetnames:
             if _cheia is not None and pb["valor"] == _cheia:
                 esperadas["barra 'agora' reposta para nascer cheia"] += 1
                 continue
+            # limpeza 5: o estado de mesa volta vazio, e so o VALOR pode diferir
+            if coord in VAZIO.get(n, []) and pb["valor"] is None and all(pa[k] == pb[k] for k in pa if k != "valor"):
+                esperadas["estado de mesa que volta vazio"] += 1
+                continue
+            # limpeza 6: o Arial vira a fonte de corpo, e so o NOME da fonte muda
+            if (ARIAL and pa["fonte"] and pb["fonte"] and pa["fonte"][0] == ARIAL
+                    and pb["fonte"][0] != ARIAL and pb["fonte"][1:] == pa["fonte"][1:]
+                    and all(pa[k] == pb[k] for k in pa if k != "fonte")):
+                esperadas["Arial que vira a fonte de corpo"] += 1
+                continue
+            # limpeza 7: o carimbo que o Sheets leu como numero volta a ser texto
+            if (coord in CARIMBO.get(n, []) and isinstance(pa["valor"], (int, float))
+                    and isinstance(pb["valor"], str)
+                    and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                esperadas["carimbo de versão que volta a ser texto"] += 1
+                continue
+            # limpeza 8: a aba DADOS sai do catalogo, e nao da exportacao (v0.239 do
+            # sistema). So o VALOR pode diferir, e ele tem de ser o que o catalogo manda.
+            if (n == "DADOS" and (coord in DADOS_CAT or dados_catalogo.e_da_lista(coord))
+                    and pb["valor"] == DADOS_CAT.get(coord)
+                    and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                esperadas["célula da DADOS que sai do catálogo"] += 1
+                continue
             for k in pa:
                 if pa[k] != pb[k]:
                     difs.append(f"{n}!{coord} {k}: {pa[k]!r} != {pb[k]!r}")
@@ -187,7 +216,7 @@ for n in wa.sheetnames:
 
 print()
 print("=" * 74)
-print(f"AS DIFERENÇAS ESPERADAS — as {len(LAY['_meta']['limpezas'])} limpezas que o Mizuki decidiu")
+print(f"AS DIFERENÇAS ESPERADAS — as {len(LAY['_meta']['limpezas'])} limpezas declaradas no layout.json")
 print("=" * 74)
 for k, v in esperadas.items():
     print(f"  {v:>6}  {k}")

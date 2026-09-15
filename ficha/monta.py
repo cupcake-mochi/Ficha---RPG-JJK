@@ -4,7 +4,15 @@
 O .xlsx e o veiculo do layout; quem faz a ficha ser ficha e o Apps Script,
 rodado uma vez no modelo. Nenhum numero esta escrito aqui: tudo vem do
 catalogo-projeto-m.json e do decisoes-ficha.json.
+
+APOSENTADO em 14/09/2026, no B18. A ficha passou a ser editada no Google Sheets, e este
+gerador ficou dez versoes atras dela. O desenho mora na ficha-v01, que e a copia da
+planilha viva, e o Ficha.gs sai de la. O codigo abaixo fica como registro.
 """
+import sys as _sys
+_sys.exit("ficha/monta.py foi aposentado em 14/09/2026 (B18). A ficha sai de:\n"
+          "  python3 ficha-v01/extrair.py <o .xlsx exportado da planilha>\n"
+          "  python3 ficha-v01/monta.py")
 import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from openpyxl import Workbook

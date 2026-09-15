@@ -12,12 +12,17 @@ Agora nada é traduzido, então nada se perde na tradução.
 
 ### 1 · Gerar
 
+A ficha é desenhada **no Sheets**, e a pasta `ficha-v01/` é a cópia dela. Exporta a planilha em `.xlsx`, salva como `ficha-v01/original.xlsx`, e roda:
+
 ```bash
-python3 ficha/monta.py
+python3 ficha-v01/extrair.py
+python3 ficha-v01/monta.py
 ./rodar-tudo.sh
 ```
 
-Sai o `apps-script/Ficha.gs`. Se os dez validadores não passarem, não sobe.
+Sai o `apps-script/Ficha.gs`. Se os dezesseis validadores não passarem, não sobe.
+
+> **O `ficha/monta.py` foi aposentado em 14/09/2026, no B18.** *Ele ficou dez versões atrás da planilha viva, e o `Ficha.gs` que ele gerava montava uma ficha antiga.*
 
 ### 2 · Planilha em branco
 
@@ -37,7 +42,7 @@ Apaga o que estiver no `Código.gs` e cola o conteúdo de **`apps-script/Codigo.
 
 Depois, no `+` ao lado de **Arquivos**, escolhe **Script**, dá o nome `Ficha`, e cola o conteúdo de **`apps-script/Ficha.gs`**.
 
-> O `Ficha.gs` tem 112 KB e a maior parte é a arte em base64. É normal ele demorar a colar.
+> O `Ficha.gs` passa de 100 KB, e boa parte é a arte em base64. É normal ele demorar a colar.
 
 Salva com `Ctrl+S`.
 
@@ -47,7 +52,7 @@ No seletor de funções, escolhe **`construir`** e clica em **▶ Executar**.
 
 Na primeira vez ele pede autorização: **Revisar permissões** → tua conta → **Avançado** → **Acessar** → **Permitir**.
 
-**Demora.** São seis abas, quase oitocentas células com valor, seis imagens e trinta e oito caixas de seleção. Conta com um a dois minutos, e não é travamento.
+**Demora.** São seis abas, mais de mil células com valor, seis imagens e as caixas de seleção. Conta com um a dois minutos, e não é travamento.
 
 Quando terminar, o registro escreve:
 
@@ -75,7 +80,7 @@ A cópia leva os dois arquivos de script junto. O `onEdit` é gatilho simples: f
 
 ### A planilha central do carimbo
 
-1. Cria outra planilha, escreve `0.104` na `A1`, compartilha como leitura.
+1. Cria outra planilha, escreve a versão do catálogo na `A1` — hoje `0.239` —, e compartilha como leitura.
 2. Na ficha, aba `DADOS`, célula `D1`:
 
 ```
@@ -86,16 +91,13 @@ A cópia leva os dois arquivos de script junto. O `onEdit` é gatilho simples: f
 
 Quando o manual mudar, você muda **uma célula** na central e toda ficha em circulação avisa sozinha que está atrasada. Se a central sumir, a ficha perde o aviso e não perde mais nada.
 
+> **⚠ Em 14/09/2026 o catálogo foi da v0.104 à v0.239.** *A aba `DADOS` passou a sair do catálogo, e não da planilha exportada: saíram a condição `Petrificado` e a entrada `Nível`, a Restrição `Lento` virou `Atrasar`, e entrou a Melhoria `Efeito Próprio`.* **Para a planilha viva acompanhar:** *rode o `construir()` do `Ficha.gs` novo numa planilha nova, troque a `A1` da central para `0.239`, e exporte de novo para a `ficha-v01` quando puder.* **As fichas antigas passam a mostrar o aviso de versão, como a A1 prevê.**
+
 ---
 
-## Quando o manual mudar
+## Quando a ficha mudar
 
-```bash
-python3 ficha/monta.py
-./rodar-tudo.sh
-```
-
-Cola o `Ficha.gs` novo por cima do antigo e roda `construir` numa planilha nova. Ficha de jogador não se migra: ele copia o modelo novo e transcreve.
+A mudança acontece no Sheets. Exporta de novo, refaz o passo 1, cola o `Ficha.gs` novo por cima do antigo e roda `construir` numa planilha nova. Ficha de jogador não se migra: ele copia o modelo novo e transcreve.
 
 ---
 
@@ -103,6 +105,6 @@ Cola o `Ficha.gs` novo por cima do antigo e roda `construir` numa planilha nova.
 
 - **A montagem de feitiço não trava sozinha.** As oito regras de ouro e os dois pares incompatíveis rodam no `conferir_feitico.py`, mas ainda não viraram Apps Script. É o próximo pedaço caro, e o que mais vale.
 - **Equipamento é campo digitado**, até o catálogo do capítulo 12 entrar.
-- **O Evocador está fora do menu**, e volta quando as entregas de Trilha dele saírem.
+- **O Evocador voltou ao menu em 14/09/2026**, e a decisão C1 registra isso.
 
 O resto está no `PENDENCIAS.md`.

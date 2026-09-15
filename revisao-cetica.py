@@ -3,7 +3,7 @@
 Procura ativamente o erro no que eu mesmo escrevi."""
 import json, re
 SPEC = open('ESPECIFICACAO-ficha-digital.md', encoding='utf-8').read()
-MAN = open('manual.txt', encoding='utf-8').read()
+MAN = ' '.join(open('manual.txt', encoding='utf-8').read().split())   # o pdftotext -layout muda o espacamento a cada extracao
 CAT = json.load(open('catalogo-projeto-m.json', encoding='utf-8'))
 falhas = []
 def checa(desc, cond, detalhe=""):
@@ -31,7 +31,7 @@ checa(f"a spec diz '27 das 66' e a conta da {orfas}", f"**27 das 66" in SPEC and
 
 print("\nAFIRMACOES DA SPEC vs MANUAL")
 for frase, agulha in [
-    ("Vida do Bastiao 12/7 e PE 4",        "Bastião       d12    12                 7           4"),
+    ("Vida do Bastiao 12/7 e PE 4",        "Bastião d12 12 7 4"),
     ("teto de dano e 4 x Classe",          "Teto de dano = 4 × Classe em dados"),
     ("devolucao maxima e 2 x Classe",      "Devolução máxima = 2 × Classe"),
     ("Liberacao Maxima da + Classe",       "Liberação Máxima = + Classe em dados"),

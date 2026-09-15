@@ -21,14 +21,14 @@
   "A2_temporario": {
     "vida": {
       "empilha": false,
-      "regra": "fica o maior",
+      "regra": "fica a maior",
+      "teto": "metade da vida máxima",
       "expira": "fim da cena",
+      "mestre_pode_atravessar": true,
       "gasta_antes_da_vida_normal": true,
-      "teto_numerico": null,
       "fonte": {
-        "gasta_primeiro": "manual, Melhoria Rasga Escudo: 'o dano ignora pontos de vida temporarios e barreiras: bate direto na vida'",
-        "nao_empilha": "ficha (decisao A2a); copia a forma da energia temporaria e a convencao de d20",
-        "expira": "ficha (decisao A2a); 'fim da cena' e unidade que o manual ja usa"
+        "tudo": "manual, capítulo 1, Vida temporária: 'gasta antes da vida real, não acumula, tem teto de metade da sua vida máxima, e some no fim da cena'. Decisão do Mizuki na v0.108 do sistema",
+        "gasta_primeiro": "manual, Melhoria Rasga Escudo: 'o dano ignora vida temporária e barreiras: bate direto na vida'"
       },
       "fontes_no_manual": {
         "Apoio": "3 por ponto que sobra",
@@ -40,25 +40,28 @@
       }
     },
     "energia": {
-      "empilha": true,
-      "regra": "acumula ate o teto que a propria fonte declarar",
+      "empilha": false,
+      "regra": "fica a maior",
+      "teto": "metade do PE máximo",
       "expira": "fim da cena",
+      "mestre_pode_atravessar": true,
       "gasta_antes_do_pe_normal": true,
-      "teto_numerico": null,
-      "teto_por_fonte": {
-        "Braseiro": 2
-      },
       "fonte": {
-        "tudo": "manual, Braseiro (Trilha Brasa, nivel 11): 'nunca passa de 2 acumulados e some no fim da cena. Energia temporaria gasta como PE, e gasta primeiro'",
-        "teto_e_do_Braseiro_nao_geral": "o Braseiro e hoje a unica fonte de energia temporaria no manual"
+        "tudo": "manual, capítulo 1, Energia temporária: 'segue a regra da vida temporária, com o PE no lugar da vida'. Decisão do Mizuki na v0.239 do sistema: toda fonte temporária não acumula, e o teto é metade do máximo"
+      },
+      "fontes_no_manual": {
+        "Braseiro": "2 (Bastião, Trilha Brasa, nível 11)",
+        "Trindade": "2 PE (Emanador, Trilha Arremate, nível 27)"
       }
     },
-    "sobe_para_o_capitulo": {
-      "alvo": "Vida, energia e alma (manual p.15)",
-      "sobe_vida": true,
-      "sobe_energia": true,
-      "texto_proposto": "manual-temporario.md",
-      "quem_aplica": "Mizuki, no repositorio do manual"
+    "integridade": {
+      "regra": "nada concede hoje; se conceder, a mesma regra, com teto de metade da Integridade máxima",
+      "fontes_no_manual": {}
+    },
+    "no_capitulo": {
+      "alvo": "Vida, energia e alma (manual, capítulo 1)",
+      "estado": "APLICADO: a vida temporária entrou na v0.108 e a energia temporária na v0.239 do sistema, com texto próprio",
+      "texto_proposto_antes": "manual-temporario.md, marcado como SUPERADO"
     }
   },
   "A3_incompatibilidades": {
@@ -73,7 +76,7 @@
       },
       {
         "a": "Rápido",
-        "b": "Lento",
+        "b": "Atrasar",
         "fonte": "ficha",
         "texto": "Um diz Acao Bonus, o outro diz rodada inteira.",
         "onde": "decisao A3"
@@ -140,20 +143,15 @@
     "regra_que_continua_valendo": "a cor nunca e o unico meio: o numero em si ja diz o estado"
   },
   "C1_evocador": {
-    "escolha": "o Evocador sai do menu de Caminhos da ficha, por enquanto",
+    "escolha": "o Evocador VOLTOU ao menu de Caminhos da ficha. Ele saiu em 18/08/2026, por enquanto, e em 14/09/2026 o Mizuki confirmou no B18 que ele volta: a planilha viva ja o trazia",
     "motivo": "o Caminho existe no manual, mas as entregas de Trilha (niveis 2, 11, 19 e 27) estao em escrita, o Casco diz 'mais vida' sem numero, e a ficha da invocacao (manual cap.14, p.180) nao existe em versao nenhuma da ficha",
     "o_catalogo_NAO_muda": "o catalogo espelha o manual, e o manual tem cinco Caminhos. Quem some e a OPCAO no menu da ficha, nao a entrada no catalogo",
-    "caminhos_no_menu": [
-      "Bastião",
-      "Vanguarda",
-      "Guia",
-      "Emanador"
-    ],
-    "caminho_oculto": "Evocador",
-    "a_ficha_diz": "Evocador — em escrita, fale com o mestre",
-    "quando_volta": "quando as entregas de Trilha e o numero do Casco sairem",
+    "caminhos_no_menu": ["Bastião", "Vanguarda", "Guia", "Emanador", "Evocador"],
+    "caminho_oculto": null,
+    "a_ficha_diz": "os cinco Caminhos no menu. Ate 14/09/2026 ela dizia Evocador — em escrita, fale com o mestre",
+    "quando_volta": "voltou em 14/09/2026, quando as entregas de Trilha, o numero do Parrudo e a ficha da invocacao ja existiam",
     "motivo_hoje": {
-      "estado": "os tres motivos do C1 expiraram. A decisao de o Evocador voltar ao menu e do Mizuki, e enquanto ela nao vier a ficha segue com quatro.",
+      "estado": "os tres motivos do C1 expiraram, e o Mizuki decidiu em 14/09/2026 que o Evocador volta ao menu",
       "entregas_de_trilha": "FECHADAS no sistema na v0.164 — as doze entregas do Evocador foram as ultimas das quinze Trilhas",
       "numero_do_casco": "FECHADO: o Casco virou Parrudo na v0.184 e ganhou numero com dono na v0.185, 5 x a maestria. O dono e o capitulo 35, vendorizado aqui como capitulo-35-caminhos-e-trilhas.md",
       "ficha_da_invocacao": "FECHADA: ficha-invocacao/ficha-invocacao.xlsx, com o invocacao.json como dono dos valores",
@@ -162,7 +160,7 @@
   },
   "C2_carimbo": {
     "escolha": "o carimbo e a versao do projeto",
-    "versao_corrente": "0.104",
+    "versao_corrente": "0.239",
     "data_da_versao": "18/08/2026",
     "dona_da_versao": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
     "manual_do_fundamento": "7.10",
@@ -304,13 +302,8 @@
       "o Selo desenhado como carimbo, e ele e a unica coisa vermelha da pagina",
       "assimetria: lombada escura na lateral, conteudo deslocado"
     ],
-    "abas": [
-      "CARTEIRA",
-      "FICHA",
-      "MESA",
-      "QUEM É",
-      "DADOS"
-    ],
+    "abas": ["CARTEIRA", "FICHA", "DADOS", "INVOCAÇÃO", "CATÁLOGO", "DADOS_INV"],
+    "abas_em_14_09": "as seis da planilha viva. A MESA e a QUEM É sairam, e o Mizuki decidiu no B18: \"Ainda vamos manter sem, por enquanto\"",
     "aba_removida": {
       "nome": "TÉCNICA",
       "porque": "o bloco de feitico dela ficou ruim de ler e de usar; o Mizuki preferiu tirar a ficar torto",

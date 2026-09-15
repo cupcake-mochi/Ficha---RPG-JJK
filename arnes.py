@@ -22,7 +22,7 @@ PERTURBACOES = [
     ("Familia fechada",       {**BASE, "melhorias": ["Precisão","Junto"]}, "Familia fechada"),
     ("R2b espalhar o dano",   {**BASE, "melhorias": ["Salto","Queima"], "restricoes": ["Gesto","Barulho"],
                                "familias_livres": ["Castigo","Área"], "familias_fechadas": ["Amparo","Mira","Tempo"]}, "R2b"),
-    ("A3 Rapido + Lento",     {**BASE, "melhorias": ["Rápido"], "restricoes": ["Lento"]}, "A3"),
+    ("A3 Rapido + Atrasar",   {**BASE, "melhorias": ["Rápido"], "restricoes": ["Atrasar"]}, "A3"),
     ("A3 Rapido + Reacao",    {**BASE, "melhorias": ["Rápido","Reação"], "restricoes": []}, "A3"),
 ]
 for nome, f, esperado in PERTURBACOES:
@@ -35,8 +35,8 @@ print("=" * 66)
 print("PASSO 3 - contra-teste: a checagem A3 fica quieta quando devia?")
 print("  (sem isso ela poderia estar acendendo para qualquer feitico)")
 SOZINHAS = [
-    ("so Rapido, sem Lento",  {**BASE, "melhorias": ["Rápido"], "restricoes": ["Gesto"]}),
-    ("so Lento, sem Rapido",  {**BASE, "melhorias": ["Precisão"], "restricoes": ["Lento"]}),
+    ("so Rapido, sem Atrasar", {**BASE, "melhorias": ["Rápido"], "restricoes": ["Gesto"]}),
+    ("so Atrasar, sem Rapido", {**BASE, "melhorias": ["Precisão"], "restricoes": ["Atrasar"]}),
     ("so Reacao, sem Rapido", {**BASE, "melhorias": ["Reação"], "restricoes": ["Gesto"]}),
 ]
 for nome, f in SOZINHAS:

@@ -102,12 +102,14 @@ E duas coisas que quase todo degrau daqui menciona:
 | **PE por nível** | 4 |
 | **Atributos naturais** | Força · Constituição |
 | **Perícias fixas** | `Atletismo` · `Intimidação` |
-| **Perícias à sua escolha** | 4, de qualquer lugar do quadro |
+| **Perícias à sua escolha** | 5, de qualquer uma da lista de perícias do sistema |
 | **Ofícios** | 2, à sua escolha. O Caminho não trava ofício |
 | **Teste de Resistência** | 1 treinado, à sua escolha. A sua Origem treina o outro |
 | **Treino de arma** | **as treze categorias**: Simples, Marciais e Arma de Fogo |
 
 *Perícia, ofício e Teste de Resistência entram na ficha uma vez, na criação. O quadro completo das vinte e três perícias e dos onze ofícios está no capítulo 3, __Perícias e Ofícios__.*
+
+*O Caminho treina você nessa lista de armas; ele não te dá a arma. O que você leva na mão você compra na criação, e as tabelas de `Preços` estão no capítulo 14, __Equipamento__.*
 
 ### Degraus do Bastião
 
@@ -155,7 +157,7 @@ E duas coisas que quase todo degrau daqui menciona:
 
 > **Nível 2: `Fagulha`.** Se você usou a ação de atacar neste turno, você pode lançar um feitiço de **Classe 0** como **ação bônus**. **E se algum dos seus socos acertou, esse feitiço é rolado com vantagem**, quando ele for um ataque.
 >
-> **Nível 11: `Braseiro`.** Quando o seu Classe 0 acerta, você ganha **`2` de energia temporária.** Ela nunca passa de `2` acumulados e some no fim da cena. *Energia temporária gasta como PE, e gasta primeiro.*
+> **Nível 11: `Braseiro`.** Quando o seu Classe 0 acerta, você ganha **`2` de energia temporária.** *A regra dela está no capítulo 1, em `Energia temporária`.*
 >
 > **Nível 19: `Labareda`.** O feitiço que você lança na ação bônus **pode ser de Classe 3 em vez de Classe 0**, e **de Classe 4 a partir do nível 21**, quando a `Classe 6` libera.
 > **Em troca, em todo turno:** você **abre mão do ataque extra** naquela ação de atacar, e **pelo menos um dos seus socos daquela ação tem de ter acertado.** *Se nenhum acertou, você não pode lançar o feitiço de Classe 3 ou 4 na ação bônus, só o Classe 0.*
@@ -177,12 +179,14 @@ E duas coisas que quase todo degrau daqui menciona:
 | **PE por nível** | 5 |
 | **Atributos naturais** | Destreza · Força |
 | **Perícias fixas** | `Acrobacia` · `Percepção` |
-| **Perícias à sua escolha** | 4, de qualquer lugar do quadro |
+| **Perícias à sua escolha** | 5, de qualquer uma da lista de perícias do sistema |
 | **Ofícios** | 2, à sua escolha. O Caminho não trava ofício |
 | **Teste de Resistência** | 1 treinado, à sua escolha. A sua Origem treina o outro |
 | **Treino de arma** | **as treze categorias**: Simples, Marciais e Arma de Fogo |
 
 *Perícia, ofício e Teste de Resistência entram na ficha uma vez, na criação. O quadro completo das vinte e três perícias e dos onze ofícios está no capítulo 3, __Perícias e Ofícios__.*
+
+*O Caminho treina você nessa lista de armas; ele não te dá a arma. O que você leva na mão você compra na criação, e as tabelas de `Preços` estão no capítulo 14, __Equipamento__.*
 
 ### Degraus da Vanguarda
 
@@ -307,7 +311,9 @@ A besta é ferramenta de quem trabalha sozinho e não tem tempo de recarregar. E
 
 Pólvora, ruído e uma profissão que finge não usar isso. É a rota que funciona no aperto: corredor estreito, sala pequena, inimigo colado em você. Quem escolhe `Arma de Fogo` aceita chamar atenção de todo mundo num raio de quarteirão, e o resto do time precisa contar com isso no plano.
 
-> **Nível 2: `Ferrolho`.** A sua arma de fogo só força recarga no **`1` natural**, e não no `1` ou `2`.
+> **Nível 2: `Ferrolho`.** Você pode recarregar gastando a sua **Ação de Movimento**, em vez da Ação Bônus. Quem escolhe é você, na hora — e recarregar assim custa o deslocamento inteiro daquele turno.
+> **É exceção à regra de conversão do capítulo *O turno*, e por isso está escrita:** lá o turno só converte da maior para a menor, e esta é a única troca que sobe.
+> **Gastar a Ação de Movimento assim não é se deslocar**, então você ainda pode `Mirar` na mesma rodada.
 > **E você deixa de sofrer desvantagem por estar colado** contra um inimigo.
 >
 > **Nível 11: `Mirar`.** Você ganha a ação **`Mirar`**, e os seus ataques com arma de longo alcance somam **`+2` no acerto**.
@@ -358,12 +364,14 @@ O `Traje` e o `Revestimento` são as duas formas de proteção do capítulo 14, 
 | **PE por nível** | 5 |
 | **Atributo natural** | Essência |
 | **Perícias fixas** | `Persuasão` · `Medicina` |
-| **Perícias à sua escolha** | 4, de qualquer lugar do quadro |
+| **Perícias à sua escolha** | 5, de qualquer uma da lista de perícias do sistema. Duas delas podem virar treino em **uma arma** da lista — não a categoria e não o tipo, uma arma |
 | **Ofícios** | 2, à sua escolha. O Caminho não trava ofício |
 | **Teste de Resistência** | 1 treinado, à sua escolha. A sua Origem treina o outro |
 | **Treino de arma** | **Arma de Fogo** e **Balestra**, as duas que não pedem treino de verdade |
 
 *Perícia, ofício e Teste de Resistência entram na ficha uma vez, na criação. O quadro completo das vinte e três perícias e dos onze ofícios está no capítulo 3, __Perícias e Ofícios__.*
+
+*O Caminho treina você nessa lista de armas; ele não te dá a arma. O que você leva na mão você compra na criação, e as tabelas de `Preços` estão no capítulo 14, __Equipamento__.*
 
 > **Nenhuma rota dá ataque extra ao Guia.** Quem quiser lutar de Guia paga pela técnica, como todo mundo.
 
@@ -439,12 +447,14 @@ O `Traje` e o `Revestimento` são as duas formas de proteção do capítulo 14, 
 | **PE por nível** | 6 |
 | **Atributos naturais** | Inteligência · Essência |
 | **Perícias fixas** | `Ocultismo` · `Investigação` |
-| **Perícias à sua escolha** | 4, de qualquer lugar do quadro |
+| **Perícias à sua escolha** | 5, de qualquer uma da lista de perícias do sistema. Duas delas podem virar treino em **uma arma** da lista — não a categoria e não o tipo, uma arma |
 | **Ofícios** | 2, à sua escolha. O Caminho não trava ofício |
 | **Teste de Resistência** | 1 treinado, à sua escolha. A sua Origem treina o outro |
 | **Treino de arma** | **Arma de Fogo** e **Balestra**, as duas que não pedem treino de verdade |
 
 *Perícia, ofício e Teste de Resistência entram na ficha uma vez, na criação. O quadro completo das vinte e três perícias e dos onze ofícios está no capítulo 3, __Perícias e Ofícios__.*
+
+*O Caminho treina você nessa lista de armas; ele não te dá a arma. O que você leva na mão você compra na criação, e as tabelas de `Preços` estão no capítulo 14, __Equipamento__.*
 
 ### Degraus do Emanador
 
@@ -514,12 +524,14 @@ O `Traje` e o `Revestimento` são as duas formas de proteção do capítulo 14, 
 | **PE por nível** | 6 |
 | **Atributos naturais** | Inteligência · Essência |
 | **Perícias fixas** | `Religião` · `Lidar com Animais` |
-| **Perícias à sua escolha** | 4, de qualquer lugar do quadro |
+| **Perícias à sua escolha** | 5, de qualquer uma da lista de perícias do sistema. Duas delas podem virar treino em **uma arma** da lista — não a categoria e não o tipo, uma arma |
 | **Ofícios** | 2, à sua escolha. O Caminho não trava ofício |
 | **Teste de Resistência** | 1 treinado, à sua escolha. A sua Origem treina o outro |
 | **Treino de arma** | **Arma de Fogo** e **Balestra**, as duas que não pedem treino de verdade |
 
 *Perícia, ofício e Teste de Resistência entram na ficha uma vez, na criação. O quadro completo das vinte e três perícias e dos onze ofícios está no capítulo 3, __Perícias e Ofícios__.*
+
+*O Caminho treina você nessa lista de armas; ele não te dá a arma. O que você leva na mão você compra na criação, e as tabelas de `Preços` estão no capítulo 14, __Equipamento__.*
 
 ### Degraus do Evocador
 

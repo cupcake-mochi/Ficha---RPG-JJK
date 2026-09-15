@@ -13,7 +13,8 @@ O emissor NAO redesenha nada: ele le a mesma pasta de trabalho que o monta.py
 ja produz, celula a celula, e vira instrucao. Layout e formula continuam
 sendo os mesmos que os dez validadores conferem.
 """
-import base64, json, os
+import base64, json, os, re
+from openpyxl.worksheet.formula import ArrayFormula
 from openpyxl.utils import get_column_letter as L
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
@@ -38,7 +39,43 @@ def _linha_alta(pts):
     """
     return max(21, int(max(pts) * 1.34) + 7) if pts else 21
 
-def emitir(wb, ordem):
+def _valor(v):
+    """o valor como o Sheets tem de receber.
+
+    FORMULA MATRICIAL: o openpyxl devolve um objeto, e o Sheets precisa do texto
+    dentro de ARRAYFORMULA -- escrita crua, ela volta como formula comum.
+
+    TEXTO COM CARA DE NUMERO: numa planilha em portugues o ponto e separador de
+    milhar, e o setValues le "0.104" como 104. Foi assim que o carimbo de versao
+    chegou na planilha viva. O apostrofo segura o texto."""
+    if isinstance(v, ArrayFormula):
+        t = v.text[1:] if v.text.startswith("=") else v.text
+        return "=ARRAYFORMULA(" + t + ")"
+    if isinstance(v, str) and re.fullmatch(r"\d+\.\d+", v):
+        return "'" + v
+    return v
+
+def _alturas(ws, por_fonte):
+    """a altura de cada linha em pixel: a que a aba declara, e senao a da maior letra.
+
+    A planilha viva exporta a altura que o Sheets mostra, em ponto, e 1 pt = 4/3 px
+    devolve o pixel exato. As linhas espacadoras de 4,5 pt da FICHA so existem assim."""
+    out = {str(r): _linha_alta(p) for r, p in por_fonte.items()}
+    for k, dim in ws.row_dimensions.items():
+        if dim.height:
+            out[str(int(k))] = max(2, int(round(dim.height * 4 / 3)))
+    return out
+
+def _larguras(ws):
+    """as colunas que fogem da largura da coluna A, em faixas de pixel"""
+    base = ws.column_dimensions["A"].width or 4.0
+    out = []
+    for k, dim in ws.column_dimensions.items():
+        if dim.width and abs(dim.width - base) > 1e-6:
+            out.append([dim.min, dim.max, int(round(dim.width * 7))])
+    return sorted(out)
+
+def emitir(wb, ordem, imgs=None, arte_dir=None):
     abas = []
     for nome in ordem:
         ws = wb[nome]
@@ -59,7 +96,7 @@ def emitir(wb, ordem):
                     # pelo usuario, e ai a pontuacao segue o idioma da planilha.
                     # Numa planilha em portugues, COUNTIF(a,b) vira erro de
                     # analise. O setFormula sempre usa a notacao americana.
-                    vals.append([r, col, c.value])
+                    vals.append([r, col, _valor(c.value)])
                     alturas.setdefault(r, []).append(f.size or 11)
                 if pintado:
                     fundos.append([r, col, pintado])   # comprimido depois, em faixas
@@ -104,28 +141,50 @@ def emitir(wb, ordem):
             if v.type == "list" and v.formula1:
                 for rg in str(v.sqref).split():
                     dv.append([rg, v.formula1.replace("DADOS!", "DADOS!")])
-        import estilo
-        imgs = [[i["lin"], i["col"], i["larg"], i["alt"], i["nome"]]
-                for i in estilo.COLOCADAS
-                if i["aba"] == nome and i["nome"] not in ARTE_FORA]
+        if imgs is not None:
+            # a ficha-v01: a posicao de cada imagem sai do layout.json
+            imgs_aba = [[i["lin"], i["col"], i["larg"], i["alt"], i["arquivo"]]
+                        for i in imgs.get(nome, [])]
+        else:
+            import estilo
+            imgs_aba = [[i["lin"], i["col"], i["larg"], i["alt"], i["nome"]]
+                        for i in estilo.COLOCADAS
+                        if i["aba"] == nome and i["nome"] not in ARTE_FORA]
+        # as caixas de selecao, medidas: toda celula com VERDADEIRO ou FALSO, em faixas
+        bools = sorted((c.column, c.row) for l in ws.iter_rows() for c in l
+                       if isinstance(c.value, bool))
+        medidas = []
+        for col_b, lin_b in bools:
+            if medidas and medidas[-1][0] == col_b and medidas[-1][1] + medidas[-1][2] == lin_b:
+                medidas[-1][2] += 1
+            else:
+                medidas.append([col_b, lin_b, 1])
         abas.append({
             "nome": nome, "cols": max(max_c, 12), "rows": max_r + 2,
             "larg": int(round((ws.column_dimensions["A"].width or 4.0) * 7)),
             "vals": vals, "estilos": estilos, "fundos": fundos, "bordas": bordas,
-            "merges": merges, "dv": dv, "imgs": imgs,
-            "alturas": {str(r): _linha_alta(p) for r, p in alturas.items()},
+            "merges": merges, "dv": dv, "imgs": imgs_aba, "caixas_medidas": medidas,
+            "alturas": _alturas(ws, alturas), "largs": _larguras(ws),
             "oculta": ws.sheet_state == "hidden",
         })
     arte = {}
-    for f in sorted(os.listdir(ARTE)):
+    pasta = arte_dir or ARTE
+    usadas = {im[4] for a in abas for im in a["imgs"]}
+    for f in sorted(os.listdir(pasta)):
+        if arte_dir and f not in usadas:
+            continue
         if f.endswith(".png") and f not in ARTE_FORA and "contato" not in f:
-            arte[f] = base64.b64encode(open(os.path.join(ARTE, f), "rb").read()).decode()
+            arte[f] = base64.b64encode(open(os.path.join(pasta, f), "rb").read()).decode()
     return abas, arte
 
-def escrever(wb, ordem, caixas=None):
-    abas, arte = emitir(wb, ordem)
+def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None):
+    abas, arte = emitir(wb, ordem, imgs, arte_dir)
     for a in abas:
-        a["caixas"] = caixas if (caixas and a["nome"] == "FICHA") else []
+        medidas = a.pop("caixas_medidas")
+        if caixas is None:
+            a["caixas"] = medidas
+        else:
+            a["caixas"] = caixas if a["nome"] == "FICHA" else []
     os.makedirs(os.path.dirname(SAIDA), exist_ok=True)
     corpo = open(os.path.join(AQUI, "modelo.gs.js"), encoding="utf-8").read()
     with open(SAIDA, "w", encoding="utf-8") as fp:

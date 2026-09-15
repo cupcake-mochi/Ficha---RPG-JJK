@@ -12,7 +12,9 @@ TETO_MEL = lambda c: 2 if c <= 2 else (3 if c <= 4 else 4)
 def preco(peso, c, livre):
     p = math.ceil({"Leve": c/2, "Media": c, "Pesada": c*1.5}[peso])
     return max(1, p - math.ceil(c/2)) if livre else p
-def devolve(niv, c): return math.ceil({"Leve": c/2, "Media": c}[niv])
+# v0.239 do sistema: quatro Restricoes devolvem "Leve ou Media". Esta busca mede o PIOR caso,
+# entao conta o maior.
+def devolve(niv, c): return math.ceil({"Leve": c/2, "Media": c}[niv.split(" ou ")[-1]])
 
 print(f"{'Cl':>3} {'orc':>4} {'teto':>5} {'pior':>6}  {'Melhorias':<22} {'Restricoes':<24} {'Livres':<18}")
 for c in range(1, 8):

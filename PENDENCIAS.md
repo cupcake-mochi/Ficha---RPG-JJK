@@ -11,15 +11,15 @@ Cada item traz **o que está em aberto**, **por que importa**, as **opções com
 | | decisão |
 |---|---|
 | A1 · onde o catálogo mora | cópia local fixa, com uma célula puxando a versão corrente da central |
-| A2 · vida temporária | não empilha, fica o maior · some no fim da cena · gasta primeiro |
-| A2b · onde a regra mora | sobe para o capítulo de vida, energia e alma — vida **e** energia |
-| A3 · `Rápido` + `Lento` | trava na ficha; o manual fica calado |
+| A2 · vida e energia temporárias | não acumulam, fica a maior · teto de metade do máximo · some no fim da cena · gasta primeiro |
+| A2b · onde a regra mora | **aplicada no sistema**: capítulo 1, *Vida, energia e alma* |
+| A3 · `Rápido` + `Atrasar` | trava na ficha; o manual fica calado |
 | A4 · vida e PE | atual editável **e** caixinha de delta, os dois |
 | A5 · o acento colorido | cor de estado no número: osso → âmbar → vermelho |
 
 O `conferir-decisoes.py` confere que esse documento, o `decisoes-ficha.json` e este arquivo continuam de acordo, e que tudo que a decisão atribui ao manual está mesmo lá.
 
-**Entrega pendente do A2b:** o texto está escrito em `manual-temporario.md`, pronto para colar. Ele mexe no repositório do manual, então quem aplica é você.
+~~**Entrega pendente do A2b**~~ **APLICADA no sistema, com texto próprio:** *a vida temporária está no capítulo 1 desde a v0.108, e a energia temporária desde a v0.239.* **O `manual-temporario.md` ficou marcado como superado.**
 
 ---
 
@@ -65,7 +65,7 @@ A ficha de papel não tem campo de equipamento, mas o capítulo 12 existe e **Tr
 
 Enquanto não entrar, a Defesa fica presa em `10 + Destreza + proteção da aptidão`, e qualquer personagem com equipamento terá a Defesa errada na ficha.
 
-### B4 · A checagem 7 das Famílias precisa subir
+### B4 · A checagem 7 das Famílias precisa subir — **FECHADO em 14/09/2026, na v0.239 do repositório do sistema**
 
 Não é dúvida, é ação pendente. O `repo-conserto/checagem-7-familias.py` está
 pronto, acende no estado atual e apaga numa cópia corrigida. Ele conserta um
@@ -81,7 +81,17 @@ Isso é independente da ficha digital e vale sozinho.
 >
 > *Ele também tem duas cópias idênticas nesta pasta, e isso é o **B15**.*
 
-### B5 · `Lento` nomeia duas coisas diferentes
+**Como fechou.** *O trecho entrou no `conferir-ficha.py` do `Claude 2` como bloco `8`, porque o `7` já era o do bloco de inimigo.* **O `dados.js` da ficha passou a ter as nove Famílias do manual, e as duas fichas `.docx` foram regeradas.**
+
+- *A checagem também lê do manual quantas Famílias são, em vez de ter o `9` escrito nela.*
+- *Ela confere as Famílias da Kaori no `make.js` contra a peça 8, e as duas fichas publicadas contra o manual.*
+- **Acendeu no estado antigo pelos quatro motivos certos, e o arnês deu onze de onze.**
+
+*O `repo-conserto/` fica como registro do fragmento original.*
+
+### B5 · `Lento` nomeia duas coisas diferentes — **RESOLVIDO no sistema, na v0.139**
+
+> **A Restrição virou `Atrasar`, e a condição continua `Lento`.** *O conserto "caro" que este item previa foi feito do lado do manual.* **O catálogo desta pasta ficou com o nome velho até a sincronização de 14/09/2026**, *e agora os dois menus não colidem mais.*
 
 Achado ao fechar o A3.
 
@@ -111,7 +121,9 @@ mexe no manual publicado. Fica registrado.
 > `set(condicoes) & set(restricoes)`, e derivá-la faz um nome novo ganhar rótulo
 > sozinho.*
 
-### B6 · O desconto do `Rápido` + `Lento` continua disponível fora da ficha
+### B6 · O desconto do `Rápido` + `Atrasar` continua disponível fora da ficha
+
+> *A Restrição se chamava `Lento` quando este item foi escrito.*
 
 Consequência escolhida do A3, não descuido.
 
@@ -149,6 +161,7 @@ uma célula de troca ao lado, vazia, para quando a regra existir.
 > `8 + o atributo da sua técnica + maestria` — está no capítulo 10 do manual
 > vivo, e em mais três lugares.* **O `manual.txt` daqui, congelado na v0.104,
 > ainda escreve `CD de feitiço = 10 + 2 + maestria` na linha 536.**
+> **Reextraído na v0.239 do sistema, ele escreve a CD de hoje.**
 >
 > **Então este item não se conserta sozinho: ele é parte do B11.** Mudar a
 > fórmula da ficha agora a põe à frente do manual que ela declara como fonte, e
@@ -173,7 +186,17 @@ O bloco de montagem de feitiço ficou ruim de ler e de usar: doze linhas de rót
 
 Ela volta junto com a trava de montagem, que é o próximo pedaço caro.
 
-### B11 · O `manual.txt` e o `catalogo-projeto-m.json` estão 96 versões atrás
+### B11 · O `manual.txt` e o `catalogo-projeto-m.json` estão 96 versões atrás — **FECHADO em 14/09/2026: o `manual.txt` reextraído, e o catálogo na v0.239**
+
+> **Estado em 14/09/2026, na v0.239 do sistema.** *O `manual.txt` saiu do PDF de hoje, e as duas guardas que esperavam ele congelado viraram guardas de concordância.*
+>
+> **O catálogo foi à v0.239.** *Saíram a condição `Petrificado`, que o sistema tirou na v0.198, e a entrada `Nível`, que era um pedaço do capítulo de condições colado como Melhoria. A Restrição `Lento` virou `Atrasar`, a `Condicao` ganhou o acento, entrou a Melhoria `Efeito Próprio`, e 23 Melhorias e 10 Restrições ganharam o texto do livro.* **Quatro Restrições devolvem `Leve ou Media`:** *o `conferir_feitico.py` conta o menor, e o `teto-fechado.py`, que mede o pior caso, conta o maior.*
+>
+> **A aba `DADOS` passou a sair do catálogo**, *decisão do Mizuki, pela limpeza 8 do `comparar-ficha-01.py`.* **O `conferir-catalogo.py` lê as contagens das frases do manual**, *e cobra que cada Melhoria, Forma e Restrição do catálogo apareça nele.*
+>
+> **Ficou por conferir contra o livro, e o `_meta` do catálogo declara:** *fundamento, Origens, sub-origem, rotas de criação, Legados, progressão, Testes de Resistência e atributos.* **Nenhum validador desta pasta lê os Legados.**
+>
+> **Na sua mão:** *rodar o `construir()` do `Ficha.gs` novo numa planilha nova, trocar a `A1` da central para `0.239`, e exportar de novo para a `ficha-v01` quando puder.*
 
 O catálogo se declara **v0.104**, fonte *"Manual da Guilda (199 p.)"*, e o
 `manual.txt` tem **16 capítulos**. O sistema está na **v0.200** e o manual vivo
@@ -212,6 +235,8 @@ checa("o motivo do C1 ainda vale: o manual segue sem o numero do Casco",
 Ela lia o `manual.txt`, que está congelado. **A frase nunca sai de lá, então a
 checagem saía verde para sempre e não tinha como mudar de estado.** Um guarda
 que não pode acender não guarda nada.
+
+> **⚠ Na v0.239 do sistema o `manual.txt` foi reextraído, e a guarda seguinte acendeu como devia.** *Ela passou a cobrar que o `manual.txt` e o capítulo 35 deem o mesmo número ao Parrudo.*
 
 **Hoje ela lê o dono vivo daquele número** — o `capitulo-35-caminhos-e-trilhas.md`
 vendorizado — e cobra que a decisão C1 **declare** o estado de hoje dos três
@@ -323,7 +348,7 @@ são estes, e cada um diz de onde veio:
 
 | arquivo aqui | de onde veio, no `JJK---Project` |
 |---|---|
-| `manual.txt` | o PDF do Manual da Guilda, `pdftotext -layout` — **congelado na v0.104** |
+| `manual.txt` | o PDF do Manual da Guilda, `pdftotext -layout` — **reextraído na v0.239 do sistema** |
 | `capitulo-16-invocacoes.md` | `sistema/05-material/livro/manual/60-invocacoes.md` |
 | `capitulo-35-caminhos-e-trilhas.md` | `sistema/05-material/livro/manual/35-caminhos-e-trilhas.md` |
 | `repos/JJK---PDF---RPG-main/ficha/ficha-exemplo-kaori.docx` | o repositório do PDF |
@@ -332,7 +357,7 @@ são estes, e cada um diz de onde veio:
 com o capítulo vendorizado como dono, e sem tocar em nenhum arquivo do sistema.
 Ela não depende de nada que esteja em obra do outro lado.
 
-### A re-extração do `manual.txt` (B11) — o bloqueio que eu escrevi já venceu
+### A re-extração do `manual.txt` (B11) — o bloqueio que eu escrevi já venceu — **FEITA em 14/09/2026**
 
 > **⚠ Escrito em 02/09/2026 mandando esperar a v0.201 fechar, e conferido no
 > mesmo dia: ela fechou, e mais quatro depois dela.** *O sistema estava na v0.200
@@ -410,7 +435,10 @@ editor de Apps Script da ficha e rodou o `testeDelta`: as cinco passaram. O
 não se executa à mão — chamado pelo seletor de função ele quebra, já que o `e`
 vem vazio.
 
-### B17 · O campo TEMP da INTEGRIDADE não tem fonte no manual
+### B17 · O campo TEMP da INTEGRIDADE não tem fonte no manual — **TIRADO DA FILA em 14/09/2026**
+
+> *Palavras do Mizuki: "Só apague isso da fila, não se preocupe com essa questão".* **O campo continua na
+> ficha, vazio e sem efeito, e o texto abaixo fica como registro.**
 
 A ficha tem `integridade_temp` no índice e o campo na tela, mas **nada no
 sistema concede integridade temporária**. Procurei o termo no `manual.txt`, no
@@ -424,7 +452,7 @@ aberto:** ou algo deveria conceder, ou o campo sai da linha da Integridade.
 
 *Decisão tua. Não é dívida técnica: é desenho de sistema.*
 
-### B18 · O `Ficha.gs` está atrás da planilha viva, e o `construir()` apaga tudo
+### B18 · O `Ficha.gs` está atrás da planilha viva, e o `construir()` apaga tudo — **FECHADO em 14/09/2026**
 
 O `apps-script/Ficha.gs` é o transporte do gerador: o `construir()` **apaga
 todas as abas e monta do zero**. Comparando o que ele emite com a ficha que
@@ -443,6 +471,41 @@ emitir o estado atual — e aí o `emitir_gs.py` regera o `Ficha.gs`.
 
 *Não é dívida de código: é uma arma carregada no editor. Fica registrado para
 ninguém apertar o gatilho por engano.*
+
+> **Fechado em 14/09/2026.** *O Mizuki mandou a planilha exportada, e o `Ficha.gs`
+> passou a sair da `ficha-v01`, que é a cópia dela.* **O `ficha/monta.py` foi
+> aposentado:** *ele sai com uma mensagem apontando o caminho novo, e o código fica
+> como registro.*
+>
+> - **Três limpezas novas no extrator.** *A 5 esvazia no molde os três campos de dano
+>   e o equipamento. A 6 troca o Arial que sobra pela fonte de corpo, decidida por ele.
+>   A 7 devolve o carimbo de versão, que o Sheets em português leu como `104`.*
+> - **O emissor lê a `ficha-v01`.** *Fórmula matricial vai em `ARRAYFORMULA`, texto com
+>   cara de número vai com apóstrofo, e a altura, a largura, as caixas e as imagens são
+>   as da planilha.*
+> - **A decisão C6 tem as seis abas da planilha viva.** *Palavras dele sobre a `MESA`
+>   e a `QUEM É`: "Ainda vamos manter sem, por enquanto".*
+> - **A decisão C1 registra o Evocador de volta ao menu**, confirmado por ele.
+> - **O `conferir-ficha-xlsx.py` e o `regressao-kaori-na-ficha.py` leem a `ficha-v01`.**
+>   *A Kaori passou a esperar Integridade `26` e CD `12`, que é o que o livro publica.
+>   O `28` e o `13` eram das fórmulas aposentadas, e o gerador velho também estava nelas:
+>   um confirmava o outro.*
+>
+> **Os dezesseis validadores passam**, e cinco perturbações novas acendem em cópia
+> isolada, com um contra-teste verde.
+>
+> **⚠ Três coisas ficam registradas.** *O `construir()` continua apagando todas as abas:
+> rode numa planilha nova, nunca na que tem personagem.* **O `Ficha.gs` novo ainda não
+> rodou no Sheets:** *daqui se confere só a metade de dados dele.* **E as abas
+> `INVOCAÇÃO` e `CATÁLOGO` têm cerca de `1610` e `1785` px de largura**, *acima
+> dos `1366` de notebook que a ficha pede. Elas são do gerador da invocação, e o
+> `conferir-ficha-xlsx.py` só imprime a largura delas.*
+
+### B19 · O teto da temporária não é aplicado pela planilha
+
+**O capítulo 1 do manual põe teto de metade do máximo na vida e na energia temporárias**, *e a A2 desta pasta segue ele desde 14/09/2026.* **A planilha não aplica o teto:** *a caixinha de ± come a temporária antes da reserva, mas quem digita a temporária pode passar da metade do máximo.* **A nota da célula avisa.**
+
+*O conserto é o `Codigo.gs` prender o campo TEMP em metade do máximo quando ele é editado.* **Ele precisa ser testado no Sheets, que daqui não roda.**
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 

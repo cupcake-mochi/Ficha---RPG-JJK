@@ -28,6 +28,16 @@ from openpyxl.drawing.image import Image as Img
 AQUI = os.path.dirname(os.path.abspath(__file__))
 LAYOUT = json.load(open(os.path.join(AQUI, "layout.json"), encoding="utf-8"))
 
+# v0.239 do sistema, decisao do Mizuki: a aba DADOS sai do catalogo, e nao da exportacao. O
+# layout.json continua copia fiel da planilha viva; o conteudo da DADOS e escrito por cima
+# dele aqui. Ver dados_catalogo.py.
+import dados_catalogo
+_DADOS_CAT = dados_catalogo.valores()
+for _a in LAYOUT["abas"]:
+    if _a["nome"] == "DADOS":
+        print(f"a DADOS sai do catalogo v{_DADOS_CAT['B1']}: "
+              f"{dados_catalogo.aplica(_a, _DADOS_CAT)} celula(s) diferentes da exportacao")
+
 # a paleta e a fonte de corpo saem do estilo.py, que e o dono delas -- e ele
 # ganhou as quatro cores desta versao na v0.1 (decisao do Mizuki: uma paleta so)
 sys.path.insert(0, os.path.join(os.path.dirname(AQUI), "ficha"))
@@ -129,3 +139,14 @@ saida = os.path.join(AQUI, "ficha-projeto-m-0.1.xlsx")
 wb.save(saida)
 print(f"ficha escrita: {saida}")
 print(f"abas: {wb.sheetnames}")
+
+# E o mesmo desenho como o script que constroi a planilha dentro do Sheets. Desde
+# 14/09/2026 o Ficha.gs sai DAQUI, e nao do ficha/monta.py: a planilha viva e editada
+# no Sheets, e esta pasta e a copia dela. Decisao do Mizuki no B18.
+import emitir_gs
+gs, celulas, pecas = emitir_gs.escrever(
+    wb, [a["nome"] for a in LAYOUT["abas"]],
+    imgs={a["nome"]: a["imagens"] for a in LAYOUT["abas"]},
+    arte_dir=os.path.join(AQUI, "arte"))
+print(f"script escrito: {gs}")
+print(f"  {celulas} células, {pecas} peças de arte embutidas")

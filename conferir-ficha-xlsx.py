@@ -14,9 +14,9 @@ def checa(desc, cond, det=""):
     print(f"  [{'OK' if cond else 'FALHA'}] {desc}" + ("" if cond else f"  <- {det}"))
     if not cond: FALHAS.append(desc)
 
-ARQ = "ficha/ficha-projeto-m.xlsx"
+ARQ = "ficha-v01/ficha-projeto-m-0.1.xlsx"
 if not os.path.exists(ARQ):
-    print(f"FALTA O ARQUIVO '{ARQ}'. Gere com:  python3 ficha/monta.py"); sys.exit(1)
+    print(f"FALTA O ARQUIVO '{ARQ}'. Gere com:  python3 ficha-v01/monta.py"); sys.exit(1)
 
 CAT = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))
 DEC = json.load(open("decisoes-ficha.json", encoding="utf-8"))
@@ -31,7 +31,7 @@ PALETA = {"120F1D","211C35","30294D","493F54","756588","998BA9","F4F1F7"} | \
 
 print("AS ABAS")
 esperadas = DEC["C6_documento"]["abas"]
-checa("as cinco abas existem", all(a in wb.sheetnames for a in esperadas),
+checa("as abas decididas existem", all(a in wb.sheetnames for a in esperadas),
       str([a for a in esperadas if a not in wb.sheetnames]))
 checa("a CARTEIRA abre primeiro (C6: ela é o documento)",
       wb.sheetnames[0] == "CARTEIRA", wb.sheetnames[0])
@@ -86,21 +86,39 @@ checa("o gerador da arte está junto", _os.path.exists("arte/gera.py"))
 usadas = sum(len(ws._images) for ws in wb)
 checa("a ficha usa a arte", usadas >= 5, f"{usadas} imagens")
 
-print("\nA REGRA DURA DA MESA  (o app de celular troca fonte que ele não tem)")
-so_corpo = {c.font.name for l in wb["MESA"].iter_rows() for c in l
-            if c.font and c.font.name}
-checa(f"a MESA usa só {CORPO}", so_corpo <= {CORPO}, str(so_corpo))
-checa("a MESA tem 12 colunas com largura definida",
-      all(L(c) in wb["MESA"].column_dimensions for c in range(1, 13)))
-larg = wb["MESA"].column_dimensions["A"].width
-checa("a largura de coluna está na faixa medida (3.6 a 4.1)", 3.6 <= larg <= 4.1, str(larg))
+print("\nA REGRA DURA DO CELULAR  (o app de celular troca fonte que ele não tem)")
+# Ela valia na aba MESA, e a MESA saiu da planilha viva. Decisão do Mizuki, 14/09/2026:
+# "Ainda vamos manter sem, por enquanto". As duas pontas continuam amarradas: se a aba
+# voltar para a decisão C6, o arquivo tem de ter ela, e vice-versa.
+if "MESA" in DEC["C6_documento"]["abas"] or "MESA" in wb.sheetnames:
+    checa("a MESA está na decisão C6 e no arquivo, as duas",
+          "MESA" in wb.sheetnames and "MESA" in DEC["C6_documento"]["abas"])
+    if "MESA" in wb.sheetnames:
+        so_corpo = {c.font.name for l in wb["MESA"].iter_rows() for c in l
+                    if c.font and c.font.name}
+        checa(f"a MESA usa só {CORPO}", so_corpo <= {CORPO}, str(so_corpo))
+        checa("a MESA tem 12 colunas com largura definida",
+              all(L(c) in wb["MESA"].column_dimensions for c in range(1, 13)))
+        _lm = wb["MESA"].column_dimensions["A"].width
+        checa("a largura de coluna está na faixa medida (3.6 a 4.1)", 3.6 <= _lm <= 4.1, str(_lm))
+else:
+    print("  [--] sem aba de celular na decisão C6 nem no arquivo: a regra do celular não tem onde valer")
 
 print("\nA LARGURA DAS ABAS DE PC")
 # as abas de PC saem da decisão C6, e não de uma lista escrita aqui:
 # a TÉCNICA saiu da ficha e esta linha envelheceu junto
-for aba in [a for a in DEC["C6_documento"]["abas"] if a not in ("MESA", "DADOS")]:
+# 14/09/2026: cada aba com a largura dela, e não a da MESA; as ocultas ficam de fora,
+# porque ninguém as vê. As da invocação têm gerador e validador próprios, e o nome
+# delas sai do arquivo que aquele gerador escreve.
+_INV = set(load_workbook("ficha-invocacao/ficha-invocacao.xlsx").sheetnames) - {"DADOS"}
+for aba in [a for a in DEC["C6_documento"]["abas"]
+            if a in wb.sheetnames and wb[a].sheet_state != "hidden"]:
+    larg = wb[aba].column_dimensions["A"].width or 4.0
     n = sum(1 for c in range(1, 60) if L(c) in wb[aba].column_dimensions)
     px = n * (larg * 7)
+    if aba in _INV:
+        print(f"  [--] {aba}: {n} colunas ≈ {px:.0f} px — aba da invocação, fica com o conferir-invocacao.py")
+        continue
     checa(f"{aba}: {n} colunas ≈ {px:.0f} px, cabe em notebook de 1366",
           1200 <= px <= 1366, f"{px:.0f} px")
 
@@ -121,11 +139,16 @@ print("\nAS DECISÕES APARECEM NO ARQUIVO")
 ws = wb["DADOS"]
 textos = [c.value for l in ws.iter_rows() for c in l if isinstance(c.value, str)]
 c1 = DEC["C1_evocador"]
-checa(f"o menu de Caminhos tem os {len(c1['caminhos_no_menu'])} que ficaram",
+checa(f"o menu de Caminhos tem os {len(c1['caminhos_no_menu'])} da decisão C1",
       all(c in textos for c in c1["caminhos_no_menu"]))
 menu = [c.value for c in ws["A"][3:3+6] if c.value]
-checa("o Evocador NÃO está no menu de Caminhos",
-      c1["caminho_oculto"] not in menu, str(menu))
+# 14/09/2026: o Evocador voltou ao menu. O menu da DADOS tem de ser o da C1, na ordem,
+# e o caminho oculto, se a C1 voltar a ter um, não pode estar nele.
+checa("o menu de Caminhos da DADOS é o da decisão C1, na ordem",
+      menu == c1["caminhos_no_menu"], str(menu))
+if c1.get("caminho_oculto"):
+    checa(f"o {c1['caminho_oculto']} NÃO está no menu de Caminhos",
+          c1["caminho_oculto"] not in menu, str(menu))
 checa("o carimbo de versão está na DADOS",
       str(ws["B1"].value) == CAT["_meta"]["versao"], str(ws["B1"].value))
 
@@ -144,7 +167,7 @@ checa("a maestria usa a lista de marcos, não 'a cada 8 níveis'",
       any('COUNTIF' in x and 'm_maestria' not in x for x in formulas) and
       not any("/8" in x for x in formulas))
 checa("o estágio de alma é calculado, não marcado",
-      any("estágio 4" in x for x in formulas))
+      any("estágio 4" in x.lower() for x in formulas))
 
 print("\nFORMATO DE DATA E NÚMERO  (o Sheets fala inglês)")
 # 'aaaa' nao quebra a formula: ela roda e devolve o dia da semana. Erro que
@@ -186,7 +209,7 @@ if _o.path.exists(GS):
     checa("ele avisa que é gerado, e não editado na mão", "não edite este arquivo" in g)
     checa("ele traz as seis abas", all(f'"{a}"' in g for a in DEC["C6_documento"]["abas"]))
     checa("ele traz a arte embutida, sem depender de URL",
-          '"selo-封.png"' in g and "http" not in g.split("var ARTE")[1][:200])
+          '.png":"' in g.split("var ARTE")[1][:400] and "http" not in g.split("var ARTE")[1][:200])
     checa("ele define as caixas de seleção pela posição medida",
           '"caixas"' in g and "insertCheckboxes" in g)
     checa("a altura de linha vai em pixel, e não em ponto convertido",

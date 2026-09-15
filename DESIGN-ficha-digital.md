@@ -269,6 +269,8 @@ Duas coisas seguem daí:
 >
 > A energia continua **acumulando** até o teto que a fonte declarar, e o teto de 2 é do `Braseiro`, não do sistema. Os detalhes no `DECISOES-bloco-A.md`.
 
+> **⚠ Superado na v0.239 do sistema.** *A regra entrou no capítulo 1 do manual, com teto de metade do máximo, e a energia deixou de acumular.* **A A2 de hoje está no `DECISOES-bloco-A.md`.**
+
 ---
 
 ---
@@ -287,7 +289,7 @@ Você propôs `Nome · Classe · Melhorias · Restrições · Ação · Alcance 
 | Melhorias | **escolhe** | dropdown das 66, filtrado pelas Famílias Fechadas |
 | Restrições | **escolhe** | dropdown das 19 |
 | Descrição | **digita** | dele |
-| **Ação** | nada | Padrão por default; `Rápido` → Bônus; `Reação` → Reação; `Lento` → Completa; `Carregar` → +1 turno |
+| **Ação** | nada | Padrão por default; `Rápido` → Bônus; `Reação` → Reação; `Atrasar` → Completa; `Carregar` → +1 turno |
 | **Alcance** | nada | tabela base por Forma e Classe, mais os degraus que `Longe` e `Muito Longe` sobem |
 | **Alvo** | nada | Forma, mais `Mais Um`, `Rajada` e `Salto` |
 | **Como resolve** | nada | Forma; `Certeiro` tira o acerto, `Inescapável` tira os dois |
@@ -314,13 +316,13 @@ Domo de Gelo        escolhas: Explosão, Classe 3, Terreno+Maior, Condicional
 
 ### Uma contradição que a ficha deve recusar
 
-Testando, apareceu: **`Rápido` (Melhoria) e `Lento` (Restrição) no mesmo feitiço se contradizem.** Um diz Ação Bônus, o outro diz rodada inteira.
+Testando, apareceu: **`Rápido` (Melhoria) e `Atrasar` (Restrição, que se chamava `Lento` até a v0.139 do sistema) no mesmo feitiço se contradizem.** Um diz Ação Bônus, o outro diz rodada inteira.
 
 A regra de ouro nº 7 proíbe duas Restrições que cobram a mesma coisa, mas **não alcança Melhoria contra Restrição.** Hoje isso cai no "o mestre pode recusar". A ficha digital consegue pegar sozinha, e vale a pena: é o tipo de coisa que passa quando sete mestres conferem no olho.
 
 > **Decidido (A3): vira trava na ficha, e o manual fica calado.** A ficha recusa a montagem; o `conferir_feitico.py` já checa, e o `arnes.py` prova que a checagem acende e que ela fica quieta quando devia.
 >
-> A trava pega **dois** pares, e eles têm fontes diferentes: `Rápido` + `Reação` está escrito no manual e nunca tinha sido automatizado; `Rápido` + `Lento` é decisão da ficha.
+> A trava pega **dois** pares, e eles têm fontes diferentes: `Rápido` + `Reação` está escrito no manual e nunca tinha sido automatizado; `Rápido` + `Atrasar` é decisão da ficha.
 >
 > E o problema era maior do que parecia: com as duas juntas o jogador embolsa **um terço do orçamento do feitiço**, em qualquer Classe. A conta está no `DECISOES-bloco-A.md`.
 
@@ -453,7 +455,7 @@ Não repito nenhum número aqui de propósito. Se o mesmo valor morar neste docu
 |---|---|
 | A1 · onde o catálogo mora | seção 11 |
 | A2 · vida temporária | seção 8 |
-| A3 · `Rápido` + `Lento` | seção 10 |
+| A3 · `Rápido` + `Atrasar` | seção 10 |
 | A4 · delta ou valor absoluto | seção 6 |
 | A5 · o acento colorido | seção 3 |
 

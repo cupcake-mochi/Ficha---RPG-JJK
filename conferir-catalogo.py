@@ -21,12 +21,48 @@ checa("toda pericia aponta para um atributo que existe",  CAT["pericias"],  "atr
       {a.replace("Forca","Forca") for a in CAT["atributos"]["lista"]})
 
 print("\nCONTAGENS DECLARADAS NO MANUAL")
-for nome, chave, declarado, pag in [("pericias","pericias",23,26), ("oficios","oficios",11,28),
-        ("Familias","familias",9,105), ("Melhorias","melhorias",66,116),
-        ("condicoes","condicoes",14,118), ("Trilhas","trilhas",15,78), ("Formas","formas",10,140)]:
-    n = len(CAT[chave]); ok = n == declarado
-    if not ok: falhas.append(f"{nome}: {n} != {declarado}")
-    print(f"  [{'OK' if ok else 'FALHA'}] {nome:10} {n:3}   manual p.{pag} declara {declarado}")
+# v0.239 do sistema: o numero e a pagina moravam aqui, e as duas coisas envelheceram -- o
+# catalogo tinha catorze condicoes e o manual passou a dizer treze. Agora cada contagem sai da
+# frase em que o proprio manual a declara, lida do manual.txt. Melhorias, Formas e Restricoes o
+# manual nao conta por extenso, e por isso cada nome delas tem de aparecer nele.
+import re
+MAN = " ".join(open("manual.txt", encoding="utf-8").read().split())
+_U = ["zero", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez",
+      "onze", "doze", "treze", "catorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"]
+EXT = {p: n for n, p in enumerate(_U)}
+EXT.update({"uma": 1, "duas": 2, "vinte": 20, "trinta": 30})
+EXT.update({f"vinte e {p}": 20 + n for n, p in enumerate(_U[1:10], 1)})
+EXT.update({"vinte e uma": 21, "vinte e duas": 22})
+_NUM = "|".join(sorted(map(re.escape, EXT), key=len, reverse=True))
+
+def declarado(rx):
+    m = re.search(rx.replace("NUM", "(" + _NUM + ")"), MAN)
+    return (EXT[m.group(1)], m.group(0)) if m else (None, None)
+
+for nome, chave, rx in [("pericias", "pericias", r"\bNUM perícias"), ("oficios", "oficios", r"\bNUM ofícios"),
+                        ("Familias", "familias", r"divididas em NUM Famílias"),
+                        ("condicoes", "condicoes", r"\bas NUM condições")]:
+    n = len(CAT[chave]); d, frase = declarado(rx)
+    ok = d == n
+    if not ok: falhas.append(f"{nome}: {n} != {d}")
+    print(f"  [{'OK' if ok else 'FALHA'}] {nome:10} {n:3}   o manual declara {d}: '{frase}'")
+mt = re.search(r"São (" + _NUM + r") Caminhos, (" + _NUM + r") Trilhas em cada um", MAN)
+dc, dt = (EXT[mt.group(1)], EXT[mt.group(1)] * EXT[mt.group(2)]) if mt else (None, None)
+for nome, chave, d in (("Caminhos", "caminhos", dc), ("Trilhas", "trilhas", dt)):
+    n = len(CAT[chave]); ok = d == n
+    if not ok: falhas.append(f"{nome}: {n} != {d}")
+    print(f"  [{'OK' if ok else 'FALHA'}] {nome:10} {n:3}   o manual declara {d}: '{mt.group(0) if mt else None}'")
+
+def no_manual(nome):
+    """o pdftotext -layout parte a celula de tabela, e a coluna do lado entra no meio do nome"""
+    rx = r"\b" + r"\b(?:\s+\S+){0,25}?\s+\b".join(re.escape(p) for p in nome.split()) + r"\b"   # "Abre ... Ferida" tem 16 no meio
+    return re.search(rx, MAN) is not None
+
+for nome, chave in (("Melhorias", "melhorias"), ("Formas", "formas"), ("Restricoes", "restricoes")):
+    faltam = [x for x in CAT[chave] if not no_manual(x)]
+    if faltam: falhas.append(f"{nome} que o manual nao tem: {faltam}")
+    print(f"  [{'OK' if not faltam else 'FALHA'}] as {len(CAT[chave])} {nome} do catalogo aparecem no manual"
+          + (f"  <- faltam {faltam}" if faltam else ""))
 
 print("\nTRAVAS DE ESTRUTURA")
 sem_pericia = [a for a in CAT["atributos"]["lista"]

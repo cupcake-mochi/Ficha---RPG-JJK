@@ -1,5 +1,7 @@
 # Texto proposto para o manual · vida e energia temporárias
 
+> **⚠ SUPERADO na v0.239 do sistema.** *As duas regras estão no capítulo 1 do Manual da Guilda, com texto próprio e com o que este arquivo não tinha: o teto de metade do máximo, a exceção do mestre, e a energia que não acumula.* **Não cole isto.** *O arquivo fica porque o `regressao-delta.js` confere a caixinha de ± contra o exemplo abaixo, que foi ajustado ao teto.*
+
 **Onde entra:** capítulo *Vida, energia e alma* (p.15), depois de `Integridade` e antes de `Arredondamento`.
 
 **Por que entra:** hoje o capítulo tem as três reservas e não fala de temporário. A regra da energia temporária existe, mas mora dentro do `Braseiro`, nível 11 da Trilha Brasa — quem não joga Brasa nunca lê. A da vida temporária não existe em lugar nenhum, e seis coisas no manual concedem ela.
@@ -22,7 +24,7 @@
 >
 > **Energia temporária acumula até o teto que a fonte declarar.** Hoje só o `Braseiro` concede energia temporária, e o teto dele é 2.
 >
-> > **Exemplo.** Kaori tem 9 de vida temporária do `Vento a Favor`. Um aliado conjura `Muralha` nela, que dá 18. Ela fica com 18, não com 27 — a maior das duas, e os 9 somem.
+> > **Exemplo.** Uma feiticeira com 40 de vida máxima, e teto de 20, tem 9 de vida temporária do `Vento a Favor`. Um aliado conjura `Muralha` nela, que dá 18. Ela fica com 18, não com 27 — a maior das duas, e os 9 somem.
 > >
 > > Ela toma 20 de dano. Os 18 temporários vão embora e os 2 que sobram descem na vida dela. Se o ataque tivesse a Melhoria `Rasga Escudo`, os 20 iriam direto na vida e os 18 continuariam lá.
 

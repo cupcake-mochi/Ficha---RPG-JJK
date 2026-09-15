@@ -330,11 +330,13 @@ Todos saíram do manual por script e batem com a contagem que o próprio manual 
 | Onda | Pesada | Amparo | pega todos os aliados dentro, sem dividir |
 | Efeito | nada | de todo mundo | fora de combate, sem dano |
 
-### As 14 condições, por nível
+### As 13 condições, por nível
+
+> *Eram catorze até a v0.198 do sistema, quando a `Petrificado` saiu.*
 
 - **Leve** (6): Lento · Incapacitado · Derrubado · Agarrado · Desarmado · Surdo
 - **Media** (2): Calado · Enfeitiçado
-- **Pesada** (6): Petrificado · Impedido · Cego · Amedrontado · Envenenado · Atordoado
+- **Pesada** (5): Impedido · Cego · Amedrontado · Envenenado · Atordoado
 
 ### As 15 Trilhas
 
@@ -384,7 +386,7 @@ São **85 entradas**, divididas por Origem e por formato. Cada personagem escolh
 | Feto | 5 | 4 | 1 |
 | Restrição Celestial | 8 | 9 | 0 |
 
-> **Este é o único catálogo grande que o manual não conta por extenso.** Perícias são "vinte e três", Melhorias são "sessenta e seis", e por isso deu para provar que a extração ficou completa. Nos Legados não existe esse número, então conferi por duas medidas independentes (as tabelas e as descrições em prosa) e elas concordam em 80 entradas. Não é a mesma garantia.
+> **Este é o único catálogo grande que o manual não conta por extenso.** Perícias são "vinte e três" e condições são "treze", e por isso deu para provar que a extração ficou completa. *As Melhorias o manual de hoje não conta por extenso: o `conferir-catalogo.py` cobra que cada nome do catálogo apareça nele.* Nos Legados não existe esse número, então conferi por duas medidas independentes (as tabelas e as descrições em prosa) e elas concordam em 80 entradas. Não é a mesma garantia.
 
 > `Sem Técnica` aparece com zero: o texto dela é único e compartilhado por todas as Origens que a aceitam, e ela **não amplia a conta de Legados**. Ela ocupa uma entrada de Destranca.
 
@@ -404,15 +406,16 @@ Condução · Arrombamento · Herbalismo · Forja · Caligrafia · Burocracia ·
 
 ## 6b · A tira de referência rápida
 
-A ficha de papel imprime cinco linhas de consulta no rodapé da última página. Elas não são campo, mas a digital deve mostrá-las em algum lugar, porque são o que o jogador consulta no meio da mesa.
+A ficha de papel imprime quatro linhas de consulta no rodapé da última página. Elas não são campo, mas a digital deve mostrá-las em algum lugar, porque são o que o jogador consulta no meio da mesa.
 
 | linha | conteúdo |
 |---|---|
 | O turno | movimento 9 m + ação padrão + ação bônus + reação |
 | Arredondamento | sempre para o lado que não te favorece |
 | Crítico | 20 natural, e dobra os dados. **Só onde há rolagem de acerto** |
-| Os dois golpes | um é os dados da Classe e nada mais, um por turno; o outro é arma + Força |
-| Os dois descansos | curto devolve 25% do PE máximo em ambiente propício; longo zera o relógio e a exaustão |
+| Os dois descansos | curto devolve 25% do PE máximo; longo devolve tudo em ambiente propício, e metade fora dele |
+
+> **⚠ A tira mudou na v0.239 do sistema, e são quatro linhas.** *A linha dos dois golpes saiu: o "golpe canalizado" que ela descrevia está morto desde a v0.81, e a peça 5 registra isso.* **A dos descansos dava os 25% "em ambiente propício"**, *e eles valem em qualquer lugar.* **O `conferir-ficha.py` do sistema confere a tira da ficha de papel contra as peças.**
 
 **O crítico dobra menos coisa do que parece.** Dobra os dados da arma se for arma, e os dados da Classe se for feitiço. **Não dobra Força, não dobra dado que veio de Melhoria, e não dobra dano fixo.** Numa ficha digital que calcula dano, esse é um erro fácil de cometer e difícil de notar.
 

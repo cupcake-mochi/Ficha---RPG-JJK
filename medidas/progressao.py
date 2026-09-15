@@ -5,11 +5,15 @@ e nunca desatualiza. Se nao sair, a tabela vira catalogo e precisa de dono."""
 import re, json
 L = open('manual.txt', encoding='utf-8').read().split('\n')
 TAB = {}
-for raw in L[10695:10765]:
+# v0.239 do sistema: a tabela era lida da linha 10695 a 10765 do manual.txt, e a reextracao
+# mudou ela de lugar. Agora ela e achada pelo formato da linha, e o primeiro de cada nivel vale.
+for raw in L:
     s = re.sub(r'\s+', ' ', raw.strip())
     m = re.match(r'^(\d{1,2}) ([\d.]+|—) (\d) (\d{1,2}) (\d) (\d) (\d) (\d)(?: (.*))?$', s)
     if m:
         n = int(m.group(1))
+        if n in TAB:
+            continue
         TAB[n] = {"xp": m.group(2), "maestria": int(m.group(3)), "espacos": int(m.group(4)),
                   "refino": int(m.group(5)), "classe": int(m.group(6)),
                   "passiva": int(m.group(7)), "classe0": int(m.group(8)),
@@ -20,7 +24,7 @@ MARCOS = [6, 10, 14, 18, 22, 26, 30]
 def marcos_ate(n): return sum(1 for m in MARCOS if m <= n)
 # as formulas que o manual declara em texto
 F = {
- "maestria": lambda n: 1 + n // 8,
+ "maestria": lambda n: 1 + max(0, n - 2) // 8,   # peca 1 §2: sobe no 10, no 18 e no 26
  "espacos":  lambda n: 2 + n // 2 + marcos_ate(n),
  "refino":   lambda n: 1 + marcos_ate(n),
  "classe":   lambda n: sum(1 for a in (1, 5, 9, 13, 17, 21, 26) if a <= n),

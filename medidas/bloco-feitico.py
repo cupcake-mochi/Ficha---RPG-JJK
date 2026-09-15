@@ -17,7 +17,7 @@ def deduz(f):
     acao = "Ação Padrão"
     if "Rápido" in mel: acao = "Ação Bônus"
     if "Reação" in mel: acao = "Reação"
-    if "Lento" in res:  acao = "Ação Completa (rodada inteira)"
+    if "Atrasar" in res: acao = "Ação Completa (rodada inteira)"
     if "Carregar" in res: acao += " + 1 turno carregando"
     # ALCANCE
     alc = BASE_ALCANCE.get(forma, {}).get(faixa, "—")
@@ -40,7 +40,7 @@ def deduz(f):
 EXEMPLOS = [
  ("Marca do Carrasco", {"classe":3,"forma":"Projétil","melhorias":["Marca","Queima"],"restricoes":["Uma Vez"]}),
  ("Domo de Gelo",      {"classe":3,"forma":"Explosão","melhorias":["Terreno","Maior"],"restricoes":["Condicional"]}),
- ("um Classe 1 rápido",{"classe":1,"forma":"Projétil","melhorias":["Rápido"],"restricoes":["Lento"]}),
+ ("um Classe 1 rápido",{"classe":1,"forma":"Projétil","melhorias":["Rápido"],"restricoes":["Atrasar"]}),
 ]
 for nome, f in EXEMPLOS:
     print(f"\n{nome}   ·   escolhas: Forma {f['forma']}, Classe {f['classe']}, "

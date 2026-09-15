@@ -35,67 +35,63 @@ E o catálogo inteiro dá 245 linhas. Nesse tamanho, "fica mais lento" não é p
 
 ---
 
-## A2 · Vida temporária: não empilha, fica o maior
+## A2 · Vida e energia temporárias: não acumulam, e o teto é metade do máximo
 
-**Vida temporária não soma com vida temporária.** Fonte nova chega, você fica com a maior das duas. Some no fim da cena, e é gasta antes da vida normal.
+**A regra mora no manual, no capítulo 1, *Vida, energia e alma*.** *A vida temporária entrou na v0.108 do sistema, e a energia temporária na v0.239.* **A ficha segue o capítulo.**
 
-### O que aqui é do manual, e o que é decisão
+> **Toda temporária é gasta antes da reserva, não acumula — duas fontes, fica a maior —, tem teto de metade do máximo, e some no fim da cena.** *O mestre pode deixar ela atravessar para a cena seguinte.*
 
-Isso importa porque a regra de não inventar vale.
+***Decisão do Mizuki, na v0.239 do sistema:*** *"Todo tipo de fonte temporária não acumula, o limite é metade do máximo que o usuário possui base".*
 
-**"Gasta primeiro" já é do manual.** A Melhoria `Rasga Escudo` diz: *"o dano ignora pontos de vida temporários e barreiras: bate direto na vida."* Se a temporária não fosse consumida antes, essa Melhoria não teria o que ignorar. A regra existe, só estava implícita.
+### O que esta decisão dizia antes, e por que mudou
 
-**"Não empilha" e "some no fim da cena" são decisão.** Elas copiam a forma da regra que o `Braseiro` dá para a energia temporária, e batem com o que qualquer jogador de d20 já espera.
+**Ela foi escrita contra o `manual.txt` congelado na v0.104**, *e por isso não sabia de duas coisas que o sistema tinha decidido na v0.108: o teto de metade da vida máxima, e a exceção do mestre.*
 
-### Por que não dá para copiar o teto de 2
+**E ela dizia que a energia acumulava até o teto da fonte**, *porque o `Braseiro` era a única fonte e dizia "nunca passa de 2 acumulados".* **O `Trindade`, nível 27 do `Arremate`, entrou no livro na v0.176 sem teto e sem relógio**, *e a regra única fechou o buraco.*
 
-A energia temporária tem teto: *"nunca passa de 2 acumulados"*. A vida temporária não pode ter um número desses, porque as fontes variam demais:
+### As fontes que o manual tem hoje
 
-| onde | quanto |
-|---|---|
-| `Apoio` (Forma) | 3 por ponto que sobra |
-| `Fluxo` (Legado 2) | 2 × Classe |
-| `Aprumo` (Trilha, nível 11) | 1d10 + atributo de ataque |
-| `Crosta` (Arremate, nível 19) | a sua maior Classe |
-| `Vento a Favor` (feitiço, p.137) | 9 |
-| `Muralha` (feitiço, p.137) | 18 |
+| reserva | fonte | de onde |
+|---|---|---|
+| vida | `Apoio` | Forma |
+| vida | `Fluxo` | Passiva |
+| vida | `Aprumo` | Trilha, nível 11 |
+| vida | `Crosta` | Trilha `Arremate`, nível 19 |
+| vida | `Vento a Favor` | feitiço pronto |
+| vida | `Muralha` | feitiço pronto |
+| energia | `Braseiro` | Trilha `Brasa`, nível 11 |
+| energia | `Trindade` | Trilha `Arremate`, nível 27 |
 
-De 2 a 18. Qualquer teto fixo aqui seria invenção. O "fica o maior" resolve o mesmo problema sem escolher número nenhum.
+**Nada concede Integridade temporária.** *Se um dia conceder, a mesma regra vale, com teto de metade da Integridade máxima.*
 
-> O `PENDENCIAS` antigo dizia três fontes. São seis. As três que faltavam são `Aprumo`, `Crosta` e `Muralha`.
+> **A versão anterior chamava o `Fluxo` de Legado.** *Ele é uma Passiva, e o capítulo 9 do manual lista ele entre elas.*
 
-### E a energia continua diferente da vida
+### O que a ficha ainda não faz
 
-Vale registrar, porque é fácil achar que as duas viraram a mesma regra e elas não viraram.
+**O teto não é aplicado pela planilha.** *A caixinha de ± come a temporária antes da reserva, mas quem digita a temporária pode passar da metade do máximo.* **Isso é o `B19`, no `PENDENCIAS`.**
 
-O `Braseiro` diz *"nunca passa de 2 **acumulados**"*. Ou seja, a energia temporária **acumula** até um teto. A vida temporária **não acumula**, fica a maior. São dois comportamentos, e os dois estão certos: o teto de 2 é do `Braseiro`, não do sistema, e hoje o `Braseiro` é a única fonte de energia temporária que existe no manual.
-
-### A2b · Isso sobe para o capítulo p.15
-
-O capítulo **Vida, energia e alma** tem as três reservas e para aí. Nenhuma palavra sobre temporário, nem de vida nem de energia.
-
-As duas regras sobem para lá. O texto proposto está no `manual-temporario.md`, pronto para colar — **eu não mexi no repositório do manual.**
-
-Com isso, a regra da energia temporária deixa de ser lida só por quem joga Brasa.
+> ~~**A2b · Isso sobe para o capítulo p.15.**~~ **APLICADO no sistema, com texto próprio.** *O `manual-temporario.md` ficou como registro, marcado como superado, porque o `regressao-delta.js` confere a caixinha de ± contra o exemplo dele.*
 
 ---
 
-## A3 · `Rápido` + `Lento` vira trava só na ficha
+## A3 · `Rápido` + `Atrasar` vira trava só na ficha
 
 A ficha recusa a montagem. **O manual fica calado.**
+
+> **A Restrição se chamava `Lento`, e virou `Atrasar` no sistema na v0.139**, *porque o nome carregava duas regras: a condição `Lento` continua existindo.* **O par é o mesmo, e o catálogo desta pasta seguiu o nome novo em 14/09/2026.**
 
 ### O tamanho do problema
 
 Isso não era só contradição de texto. Era desconto.
 
-`Rápido` é Melhoria Pesada. `Lento` é Restrição que devolve Média. Com as duas no mesmo feitiço, o jogador paga a que vale e embolsa a devolução da que não vale:
+`Rápido` é Melhoria Pesada. `Atrasar` é Restrição que devolve Média. Com as duas no mesmo feitiço, o jogador paga a que vale e embolsa a devolução da que não vale:
 
 ```
-Classe  orçamento  Rápido custa  Lento devolve  economia  % do orçamento
-     1          3             2              1         1        33%
-     3          9             5              3         3        33%
-     5         15             8              5         5        33%
-     7         21            11              7         7        33%
+Classe  orçamento  Rápido custa  Atrasar devolve  economia  % do orçamento
+     1          3             2                1         1        33%
+     3          9             5                3         3        33%
+     5         15             8                5         5        33%
+     7         21            11                7         7        33%
 ```
 
 Um terço do orçamento, em toda Classe. E com a Família Tempo Livre, o `Rápido` — a Pesada mais forte da Família — sai **de graça**.
@@ -115,7 +111,7 @@ Duas incompatibilidades, e elas têm fontes diferentes:
 | par | fonte |
 |---|---|
 | `Rápido` + `Reação` | **manual**, tabela da Família Tempo |
-| `Rápido` + `Lento` | **ficha**, decisão A3 |
+| `Rápido` + `Atrasar` | **ficha**, decisão A3 |
 
 A primeira nunca tinha sido automatizada em lugar nenhum, apesar de estar escrita. Entra junto.
 
@@ -191,6 +187,8 @@ O motivo é que o Evocador tem três buracos empilhados:
 A ficha imprime `Evocador — em escrita, fale com o mestre` no lugar da opção.
 
 O `conferir-decisoes.py` checa que o motivo ainda vale: se o `Casco` ganhar número no manual, a checagem acende e o Evocador pode voltar.
+
+> **Voltou ao menu em 14/09/2026.** *Os três motivos já tinham expirado: as entregas de Trilha do Evocador fecharam na v0.164 do Projeto M, o `Casco` virou `Parrudo` com número, e a ficha da invocação existe.* **A planilha viva já trazia o Evocador no menu, e o Mizuki confirmou no B18 que ele fica.** *O `decisoes-ficha.json` guarda os cinco Caminhos no menu e nenhum oculto, e o `conferir-ficha-xlsx.py` confere que o menu da DADOS é esse, na ordem.*
 
 ## C2 · O carimbo é a versão do projeto
 

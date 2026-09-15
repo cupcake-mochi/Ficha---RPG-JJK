@@ -4,7 +4,7 @@
     "dono_da_regra": "Projeto - M, capitulo 16 (Invocacoes) do Manual da Guilda, e a peca 15 de sistema/03-mecanica no repositorio JJK---Project",
     "lido_de": "capitulo-16-invocacoes.md e capitulo-35-caminhos-e-trilhas.md, copias de sistema/05-material/livro/manual/60-invocacoes.md e 35-caminhos-e-trilhas.md",
     "versao_do_sistema": "0.216, mais a regua da morte por corpo (nao fechada em versao)",
-    "por_que_nao_le_do_manual_txt": "o manual.txt deste repositorio esta congelado na v0.104 (199 p., 16 capitulos) e o capitulo de Invocacoes mudou de forma depois disso: a ficha derivada do dono e a venda de numero morreram na v0.180, a regua da morte e a vida do corpo forte mudaram na v0.178, e o Investir ganhou tabela de dano na v0.178. Construir contra o manual.txt seria construir a mecanica morta.",
+    "por_que_nao_le_do_manual_txt": "o manual.txt foi reextraido na v0.239 do sistema e concorda com o capitulo 16, que continua dono: ele e o markdown do livro, sem as quebras de linha e de coluna que o pdftotext poe no texto. Ate ali o manual.txt estava congelado na v0.104, com a ficha derivada do dono e a venda de numero, mortas na v0.180.",
     "regra": "onde este arquivo e o capitulo discordarem, o capitulo vence",
     "conferido_em": "07/09/2026, contra o commit 5dccb3d do JJK---Project, na branch claude/regua-da-morte-por-corpo: o 60-invocacoes.md foi copiado byte a byte para o capitulo-16-invocacoes.md daqui."
   },

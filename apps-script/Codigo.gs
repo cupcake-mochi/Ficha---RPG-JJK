@@ -56,16 +56,17 @@ function notasDeRegra_(ss, idx) {
                 'deles no lugar. Deixe o equipamento vazio para usar a aptidão.',
     'maestria': 'Vira 2 no nível 10, 3 no 18, 4 no 26. Não é "a cada oito níveis".',
     'cd de feitiço': 'Não existe atributo de conjuração na ficha padrão: o 2 é fixo.',
-    'vida_temp': 'Vida temporária não empilha: fica a maior. Some no fim da cena, ' +
-                 'e é gasta antes da vida normal — a caixinha de ± desconta ' +
-                 'daqui primeiro e só o que sobrar desce na vida. Dano com ' +
-                 'Rasga Escudo ignora isto: edite a vida na mão.',
-    'energia_temp': 'Energia temporária acumula até o teto que a fonte declarar ' +
-                    '(hoje só o Braseiro concede, e o teto dele é 2). Some no fim ' +
-                    'da cena, e a caixinha de ± queima daqui antes do seu PE.',
+    'vida_temp': 'Vida temporária não acumula: fica a maior, com teto de metade ' +
+                 'da vida máxima. Some no fim da cena, e é gasta antes da vida ' +
+                 'normal — a caixinha de ± desconta daqui primeiro e só o que ' +
+                 'sobrar desce na vida. Dano com Rasga Escudo ignora isto: ' +
+                 'edite a vida na mão.',
+    'energia_temp': 'Energia temporária não acumula: fica a maior, com teto de ' +
+                    'metade do PE máximo (o Braseiro e o Trindade dão 2). Some no ' +
+                    'fim da cena, e a caixinha de ± queima daqui antes do seu PE.',
     'integridade_temp': 'Nenhuma regra do manual concede integridade temporária. ' +
-                        'O campo está aqui pela forma das outras duas reservas: ' +
-                        'se algo conceder, a caixinha de ± desconta daqui primeiro.',
+                        'Se algo conceder, vale a regra das outras duas: não acumula, ' +
+                        'e o teto é metade da Integridade máxima.',
     'equipamento': 'Enquanto o catálogo do capítulo 12 não entra, digite aqui a ' +
                    'proteção do equipamento. Vazio = usa a da aptidão.'
   };

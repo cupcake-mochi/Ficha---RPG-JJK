@@ -14,6 +14,9 @@ def preco(peso, classe, livre):
     return max(1, p - math.ceil(classe/2)) if livre else p   # desconto de Familia Livre, minimo 1
 
 def devolucao(nivel, classe):
+    # v0.239 do sistema: quatro Restricoes devolvem "Leve ou Media", o nivel do que elas
+    # cobram. Sem o nivel escolhido no feitico, conta o menor: o que voce ganha desce.
+    nivel = nivel.split(" ou ")[0]
     return math.ceil({"Leve": classe/2, "Media": classe}[nivel])
 
 def conferir(f):

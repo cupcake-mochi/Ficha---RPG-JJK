@@ -52,24 +52,38 @@ checa("o PENDENCIAS nao diz mais que o bloco A trava a construcao",
 print("\nO QUE A DECISAO ATRIBUI AO MANUAL ESTA MESMO NO MANUAL")
 # a frase do Rasga Escudo e o unico apoio de 'vida temporaria gasta primeiro'
 checa("Rasga Escudo diz que o dano ignora vida temporaria",
-      "ignora pontos de vida temporários e barreiras" in MAN,
+      "ignora vida temporária e barreiras" in MAN,
       "sem essa frase, 'gasta primeiro' vira invencao")
-checa("o Braseiro carrega a regra da energia temporaria",
-      "gasta como PE, e gasta primeiro" in MAN)
-checa("o Braseiro e quem declara o teto de 2",
-      "nunca passa de 2 acumulados" in MAN)
-checa("o Braseiro e a UNICA fonte de energia temporaria",
-      MAN.count("energia tempo") == 1,
-      f"achei {MAN.count('energia tempo')} mencoes; o teto de 2 pode nao ser mais so dele")
+# v0.239 do sistema: o capitulo "Vida, energia e alma" ganhou as duas regras, e a da energia
+# saiu de dentro do Braseiro. Decisao do Mizuki: toda fonte temporaria nao acumula, e o teto e
+# metade do maximo. A A2 desta pasta segue o capitulo, e o manual-temporario.md ficou superado.
+checa("o capitulo tem a regra da vida temporaria, com teto de metade da vida maxima",
+      "Vida temporária é anteparo, e não vida" in MAN and "teto de metade da sua vida máxima" in MAN)
+checa("o capitulo tem a regra da energia temporaria, com teto de metade do PE maximo",
+      "Energia temporária segue a regra da vida temporária" in MAN and
+      "teto de metade do seu PE máximo" in MAN)
+A2 = DEC["A2_temporario"]
+checa("a A2 segue o capitulo: nenhuma temporaria acumula",
+      A2["vida"].get("empilha") is False and A2["energia"].get("empilha") is False)
+checa("a A2 segue o capitulo: o teto e metade do maximo, nas duas",
+      A2["vida"].get("teto") == "metade da vida máxima" and
+      A2["energia"].get("teto") == "metade do PE máximo",
+      f'vida: {A2["vida"].get("teto")!r} · energia: {A2["energia"].get("teto")!r}')
 
-fontes = DEC["A2_temporario"]["vida"]["fontes_no_manual"]
-faltando = [f for f in fontes if f not in MAN]
-checa(f"as {len(fontes)} fontes de vida temporaria existem no manual",
-      not faltando, str(faltando))
-checa("o capitulo p.15 continua sem falar de temporario",
-      "Vida, energia e alma Três reservas" in MAN and
-      "vida temporária" not in MAN[MAN.index("Vida, energia e alma Três reservas"):][:3000],
-      "se ja falar, o texto de manual-temporario.md duplica regra")
+def no_manual(nome):
+    """O pdftotext -layout parte a celula de tabela em duas linhas, e a coluna do lado entra
+    no meio do nome ("Vento a ... Favor"): as palavras tem de aparecer em ordem, e perto."""
+    rx = r"\b" + r"\b(?:\s+\S+){0,15}?\s+\b".join(re.escape(p) for p in nome.split()) + r"\b"
+    return re.search(rx, MAN) is not None
+
+for reserva in ("vida", "energia"):
+    fontes = A2[reserva]["fontes_no_manual"]
+    faltando = [f for f in fontes if not no_manual(f)]
+    checa(f"as {len(fontes)} fontes de {reserva} temporaria existem no manual",
+          bool(fontes) and not faltando, str(faltando))
+checa("o manual-temporario.md se declara superado pelo capitulo",
+      "SUPERADO" in le("manual-temporario.md")[:900],
+      "o texto proposto ja entrou no manual; sem o aviso ele parece pendente")
 
 for par in DEC["A3_incompatibilidades"]["pares"]:
     existe = (par["a"] in CAT["melhorias"] or par["a"] in CAT["restricoes"]) and \
@@ -119,14 +133,17 @@ print("\nO BLOCO C  (as quatro que sairam do 'falta algo antes de construir')")
 c1 = DEC["C1_evocador"]
 checa("o catalogo continua com os cinco Caminhos do manual",
       len(CAT["caminhos"]) == 5, f"achei {len(CAT['caminhos'])}")
-checa("o Evocador continua no catalogo (some so do menu)",
-      c1["caminho_oculto"] in CAT["caminhos"])
-checa("o menu da ficha traz os outros quatro, e todos existem",
-      len(c1["caminhos_no_menu"]) == 4 and
+# 14/09/2026: o Evocador VOLTOU ao menu, e o Mizuki confirmou no B18. O caminho oculto
+# pode ser nulo, e as duas formas continuam amarradas ao catalogo.
+_oculto = [c1["caminho_oculto"]] if c1.get("caminho_oculto") else []
+checa("o caminho oculto, se existe, continua no catalogo (some so do menu)",
+      all(c in CAT["caminhos"] for c in _oculto), str(_oculto))
+checa("todo Caminho do menu da ficha existe no catalogo",
       all(c in CAT["caminhos"] for c in c1["caminhos_no_menu"]),
       str([c for c in c1["caminhos_no_menu"] if c not in CAT["caminhos"]]))
 checa("menu + oculto = o catalogo inteiro, sem sobra nem falta",
-      set(c1["caminhos_no_menu"]) | {c1["caminho_oculto"]} == set(CAT["caminhos"]))
+      set(c1["caminhos_no_menu"]) | set(_oculto) == set(CAT["caminhos"])
+      and not (set(c1["caminhos_no_menu"]) & set(_oculto)))
 # ------------------------------------------------------------------------
 # C1: o motivo da decisao tem de estar em dia com a realidade.
 #
@@ -151,11 +168,13 @@ checa("o capitulo 35 da um numero ao Parrudo, o ex-Casco",
       m_par is not None,
       "se o Parrudo perdeu o numero, o motivo do C1 voltou a valer e este bloco "
       "todo precisa ser relido")
-checa("o manual.txt daqui NAO tem esse numero — e por isso a checagem velha "
-      "nunca podia acender",
-      "Casco — as suas invocações têm mais vida." in MAN,
-      "o manual.txt foi re-extraido: reveja se este bloco ainda precisa do "
-      "capitulo vendorizado")
+# v0.239 do sistema: o manual.txt foi reextraido e passou a ter o numero do Parrudo. A
+# checagem que guardava a DIVERGENCIA acendeu, como devia, e virou a da CONCORDANCIA: o
+# capitulo vendorizado continua dono, e o manual.txt tem de dizer o mesmo.
+m_man = re.search(r"Parrudo — as suas invocações têm mais vida, equivalente a (\d+) × a sua maestria", MAN)
+checa("o manual.txt reextraido da ao Parrudo o mesmo numero do capitulo 35",
+      m_par is not None and m_man is not None and m_man.group(1) == m_par.group(1),
+      f"capitulo: {m_par.group(1) if m_par else None} · manual.txt: {m_man.group(1) if m_man else None}")
 mh = c1.get("motivo_hoje", {})
 PRECISA_MH = {"estado", "entregas_de_trilha", "numero_do_casco",
               "ficha_da_invocacao"}

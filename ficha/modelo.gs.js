@@ -64,6 +64,11 @@ function montarAba_(ss, spec) {
   if (aba.getMaxColumns() < nc) aba.insertColumnsAfter(aba.getMaxColumns(), nc - aba.getMaxColumns());
   if (aba.getMaxRows() < nr) aba.insertRowsAfter(aba.getMaxRows(), nr - aba.getMaxRows());
   aba.setColumnWidths(1, nc, spec.larg);
+  // as colunas que fogem da largura base, em faixas: a DADOS_INV tem cinco larguras
+  (spec.largs || []).forEach(function (g) {
+    var c2 = Math.min(g[1], nc);
+    if (g[0] <= c2) aba.setColumnWidths(g[0], c2 - g[0] + 1, g[2]);
+  });
 
   // matrizes locais: escrever célula a célula no Sheets é lento demais
   var v = mat_(nr, nc, ''), bg = mat_(nr, nc, '#120F1D');

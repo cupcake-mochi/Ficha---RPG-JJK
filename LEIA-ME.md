@@ -12,9 +12,9 @@ O que mudou nesta rodada: a ficha **ganhou identidade**. Ela deixou de ser plani
 
 1. **`DECISOES-bloco-A.md`** — as nove decisões (bloco A e bloco C), com o porquê e o que foi medido. É o dono delas.
 2. **`COMO-SUBIR.md`** — do repositório até a ficha na mão do jogador, em seis passos.
-3. **`ficha/ficha-projeto-m.xlsx`** — a ficha, seis abas. Gerada por `ficha/monta.py`; não edite o `.xlsx` na mão, edite o gerador.
+3. **`ficha-v01/ficha-projeto-m-0.1.xlsx`** — a ficha, seis abas. É a cópia da planilha viva: o `ficha-v01/extrair.py` tira o desenho da exportação, e o `ficha-v01/monta.py` remonta a ficha e escreve o `Ficha.gs`. *O `ficha/monta.py` foi aposentado no B18.*
 4. **`apps-script/Codigo.gs`** — o que o `.xlsx` não carrega: caixa de seleção, cor de estado, proteção, e a entrada por delta.
-5. **`manual-temporario.md`** — o texto pronto para colar no manual, decisão A2b. **Só você aplica isso**; eu não mexo no repositório.
+5. **`manual-temporario.md`** — **superado.** *A regra entrou no capítulo 1 do manual, com texto próprio; o arquivo fica pelo exemplo que o `regressao-delta.js` confere.*
 6. **`PENDENCIAS.md`** — o bloco A saiu e virou ponteiro. Entraram cinco itens novos, do B5 ao B9.
 
 O `DESIGN-ficha-digital.md` e o `ESPECIFICACAO-ficha-digital.md` continuam valendo. O desenho ganhou uma linha de "decidido" em cada seção que tinha pergunta aberta, e duas correções de fato na parte do script.
@@ -40,10 +40,11 @@ Para regerar a ficha da invocação:
 python3 ficha-invocacao/monta.py
 ```
 
-Para regerar a ficha:
+Para regerar a ficha, com a planilha exportada em `ficha-v01/original.xlsx`:
 
 ```bash
-python3 ficha/monta.py
+python3 ficha-v01/extrair.py
+python3 ficha-v01/monta.py
 ``` O script devolve 1 se algum falhar, e não esconde saída de ninguém.
 
 | validador | o que confere |
@@ -68,7 +69,7 @@ O zip já traz os dois, então `./rodar-tudo.sh` funciona assim que você descom
 
 | arquivo | de onde veio |
 |---|---|
-| `manual.txt` | o seu próprio PDF, extraído com `pdftotext -layout` |
+| `manual.txt` | o seu próprio PDF, extraído com `pdftotext -layout` — o de hoje saiu da v0.239 do sistema |
 | `repos/JJK---PDF---RPG-main/ficha/ficha-exemplo-kaori.docx` | cópia do seu repositório público, só esse arquivo |
 
 Os dois são derivados de material seu. Se for subir isto para o GitHub e preferir não duplicar, pode apagar os dois — o `conferir-decisoes.py` **falha e diz como regerar**, em vez de pular em silêncio. Um verde que pulou checagem não prova nada.
@@ -85,6 +86,7 @@ Nenhum dos dois repete número do outro documento, e o `conferir-decisoes.py` co
 
 ## O que ficou pendente na sua mão
 
-- **Colar o texto do `manual-temporario.md`** no capítulo da p.15, e enxugar a entrada do `Braseiro` (a instrução está lá).
-- **A checagem 7 das Famílias** (`repo-conserto/checagem-7-familias.py`), que conserta um erro que hoje está na ficha em branco que os seus jogadores usam. Independente de tudo isto, e vale sozinha.
+- ~~**Colar o texto do `manual-temporario.md`**~~ **feito no sistema, com texto próprio**, e o `Braseiro` foi enxugado.
+- ~~**A checagem 7 das Famílias**~~ **feita na v0.239 do sistema**, como bloco 8 do `conferir-ficha.py`, e a ficha em branco foi regerada.
+- **Reconstruir a planilha com o `Ficha.gs` novo, e trocar a central para `0.239`.** O catálogo foi à v0.239 e a aba `DADOS` passou a sair dele: o passo a passo está no `COMO-SUBIR.md`, na planilha central.
 - **Escolher o segundo caso de teste** (item B2): uma ficha de nível 15 ou mais, com Famílias Livres que a Kaori não usa.

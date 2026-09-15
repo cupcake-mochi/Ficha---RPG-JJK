@@ -9,15 +9,19 @@ Foi assim que apareceu o bug de a Vida somar Destreza no lugar de Constituicao.
 import json, os, shutil, subprocess, sys, tempfile, csv
 from openpyxl import load_workbook
 
-ARQ = "ficha/ficha-projeto-m.xlsx"
+ARQ = "ficha-v01/ficha-projeto-m-0.1.xlsx"
 if not os.path.exists(ARQ):
-    print("gere a ficha antes:  python3 ficha/monta.py"); sys.exit(1)
+    print("gere a ficha antes:  python3 ficha-v01/monta.py"); sys.exit(1)
 
 KAORI = {"Força": 3, "Constituição": 2, "Destreza": 2, "Inteligência": 1, "Essência": 1}
 CAMINHO, NIVEL = "Bastião", 2
 # a chave e o nome no INDICE que a propria ficha publica na DADOS
-ESPERADO = {"vida_max": 23, "energia_max": 8, "integridade_max": 28, "defesa": 13,
-            "maestria": 1, "cd de feitiço": 13}
+# Os números saem da tabela `Números da Kaori` do livro do Projeto M, capítulo `Criação de
+# Personagem`, na v0.237. Até 14/09/2026 aqui estavam 28 e 13, da ficha-exemplo antiga:
+# Integridade `20 + 8 × (nível − 1)` e CD `10 + 2 + maestria`, duas fórmulas que o sistema
+# aposentou (v0.145 e v0.117). O gerador velho estava nelas também, e por isso isto passava.
+ESPERADO = {"vida_max": 23, "energia_max": 8, "integridade_max": 26, "defesa": 13,
+            "maestria": 1, "cd de feitiço": 12}
 
 d = tempfile.mkdtemp(prefix="kaori-")
 copia = os.path.join(d, "kaori.xlsx")
@@ -55,9 +59,24 @@ for nome, v in KAORI.items():
     ws[IDX["atr_" + nome]] = v
 ws[IDX["caminho"]] = CAMINHO
 ws[IDX["nivel"]]   = NIVEL
+# o atributo da técnica: a Kaori declara Força, e o livro soma 3 no ataque de conjuração.
+# A célula sai da própria fórmula da CD, e não de coordenada decorada.
+import re as _re
+_mt = _re.search(r'IFS\((\$?[A-Z]+\$?\d+)="FORÇA"', str(ws[IDX["cd de feitiço"]].value))
+if not _mt:
+    print("a CD de feitiço não lê o atributo da técnica por IFS: não sei onde escolher"); sys.exit(1)
+ws[_mt.group(1).replace("$", "")] = "FORÇA"
 # o LibreOffice exporta em csv SO a primeira aba, e a primeira agora e a
 # CARTEIRA. Na copia, a FICHA vai para a frente -- o arquivo real nao muda.
 wb.move_sheet("FICHA", -wb.sheetnames.index("FICHA"))
+# O IFS fica cru na ficha, porque ela vive no Sheets. O LibreOffice só reconhece o IFS
+# com o prefixo do Excel, então a CÓPIA ganha o prefixo; o arquivo real não muda.
+for _ws in wb:
+    for _l in _ws.iter_rows():
+        for _c in _l:
+            if isinstance(_c.value, str) and _c.value.startswith("=") and "IFS(" in _c.value \
+                    and "_xlfn.IFS(" not in _c.value:
+                _c.value = _c.value.replace("IFS(", "_xlfn.IFS(")
 wb.save(copia)
 
 subprocess.run(["libreoffice", "--headless", "--convert-to",

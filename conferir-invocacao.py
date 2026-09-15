@@ -570,24 +570,26 @@ checa("o bloco antigo do Parrudo virou ponteiro, e nao segundo dono",
 # =====================================================================
 print()
 print("=" * 74)
-print("9. O GUARDA DA DIVERGENCIA — por que este validador nao le o manual.txt")
+print("9. O MANUAL.TXT E O CAPITULO — os dois dizem a mesma ficha, e o dono e o capitulo")
 print("=" * 74)
+# v0.239 do sistema: o manual.txt foi reextraido. Ate aqui ele estava congelado na v0.104, e
+# esta secao guardava a DIVERGENCIA: a ficha derivada, morta na v0.180, no manual.txt, e a
+# ficha propria no capitulo. A guarda acendeu como devia, e passou a guardar a CONCORDANCIA:
+# ela acende se o manual.txt voltar a ter a mecanica morta, ou deixar de ter a viva.
 if not os.path.exists(MAN_ARQ):
-    pula("a divergencia com o manual.txt", "o manual.txt nao esta aqui")
+    pula("a concordancia com o manual.txt", "o manual.txt nao esta aqui")
 else:
-    MAN = open(MAN_ARQ, encoding="utf-8", errors="replace").read()
+    MAN = " ".join(open(MAN_ARQ, encoding="utf-8", errors="replace").read().split())
     velho = "A ficha dela é derivada da sua"
     novo = "os cinco atributos, e eles são dela"
-    checa("o manual.txt daqui AINDA tem a ficha derivada, que morreu na v0.180",
-          velho in MAN,
-          "o manual.txt parou de ter a mecanica morta -- se ele foi re-extraido, "
-          "esta checagem virou dividida: reveja se o capitulo vendorizado ainda "
-          "precisa existir")
+    checa("o manual.txt nao tem mais a ficha derivada, que morreu na v0.180",
+          velho not in MAN,
+          "o manual.txt voltou a ter a mecanica morta: ele saiu de um PDF velho")
     checa("o capitulo vendorizado tem a ficha PROPRIA", novo in CAP)
-    checa("os dois discordam MESMO, e e por isso que o dono e o capitulo",
-          (velho in MAN) and (velho not in CAP) and (novo in CAP) and (novo not in MAN))
-    checa("o json declara por que nao le do manual.txt",
-          "congelado" in INV["_meta"]["por_que_nao_le_do_manual_txt"])
+    checa("o manual.txt e o capitulo dizem a mesma ficha propria",
+          (novo in MAN) and (novo in CAP) and (velho not in CAP))
+    checa("o json declara por que o dono continua sendo o capitulo",
+          "reextraido" in INV["_meta"]["por_que_nao_le_do_manual_txt"])
     checa("o json declara quem e o dono da regra",
           "capitulo 16" in INV["_meta"]["dono_da_regra"])
 
