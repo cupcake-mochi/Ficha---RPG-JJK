@@ -286,6 +286,72 @@ if _o.path.exists(GS):
           "menusSuspensos_" in g and "setDataValidation" not in
           g[g.index("function montarAba_"):g.index("function mat_")])
 
+
+    # E os menus RODADOS: o menusSuspensos_ do script num Sheets de mentira, que recusa o endereço
+    # que o de verdade recusa. Em 15/09/2026 a montagem parou em 'Range not found', porque o Sheets
+    # exporta menu de itens como lista escrita, "a,b,c", e a checagem de cima deixava ela passar:
+    # lista escrita não tem aba, então caía na própria aba e saía verde.
+    import shutil as _sh, subprocess as _sp
+    _ini = g.find("function menusSuspensos_(")
+    _node = _sh.which("node") or _sh.which("nodejs")
+    if _ini < 0:
+        checa("o script tem o menusSuspensos_", False)
+    elif not _node:
+        print("  [--] node nao existe nesta maquina: os menus nao foram rodados")
+    else:
+        _prof, _fim = 0, None
+        for _k in range(g.index("{", _ini), len(g)):
+            if g[_k] == "{":
+                _prof += 1
+            elif g[_k] == "}":
+                _prof -= 1
+                if _prof == 0:
+                    _fim = _k + 1
+                    break
+        _abas = [{"nome": a["nome"], "dv": a["dv"]} for a in dados]
+        _prog = ("const ABAS = " + _js.dumps(_abas, ensure_ascii=False) + ";\n" + """
+const A1 = /^[A-Z]+[0-9]+(:[A-Z]+[0-9]+)?$/;
+const regras = [];
+const ss = {
+  getSheetByName: (nome) => ({ getRange(r) {
+    if (!A1.test(r)) throw new Error('Range not found: ' + nome + '!' + r);
+    return { setDataValidation: (v) => regras.push([nome, r, v]) };
+  } }),
+  getRange(r) {
+    const m = /^'?([^'!]+)'?!([A-Z]+[0-9]+(:[A-Z]+[0-9]+)?)$/.exec(r);
+    if (!m || !ABAS.some((a) => a.nome === m[1])) throw new Error('Range not found: ' + r);
+    return { faixa: r };
+  },
+};
+const SpreadsheetApp = { newDataValidation() {
+  const v = {};
+  const b = { requireValueInList(l) { v.lista = l; return b; },
+              requireValueInRange(f) { v.faixa = f.faixa; return b; },
+              setAllowInvalid() { return b; }, build() { return v; } };
+  return b;
+} };
+""" + g[_ini:_fim] + """
+try { menusSuspensos_(ss); console.log(JSON.stringify({ regras })); }
+catch (e) { console.log(JSON.stringify({ erro: e.message })); }
+""")
+        _r = _sp.run([_node, "-e", _prog], capture_output=True, text=True)
+        try:
+            _saida = _js.loads(_r.stdout.strip().splitlines()[-1])
+        except Exception:
+            _saida = {"erro": (_r.stderr or _r.stdout)[-300:]}
+        checa("os menus rodam num Sheets que recusa endereço inválido", "erro" not in _saida,
+              _saida.get("erro", ""))
+        if "erro" not in _saida:
+            _esp = {}
+            for a in dados:
+                for alvo, fonte in a["dv"]:
+                    _ml = _re.fullmatch(r'"(.*)"', fonte)
+                    _esp[(a["nome"], alvo.replace("$", ""))] = (
+                        {"lista": _ml.group(1).split(",")} if _ml else {"faixa": fonte.replace("$", "")})
+            _got = {(n, r): v for n, r, v in _saida["regras"]}
+            checa(f"cada um dos {len(_esp)} menus sai com a lista ou a faixa da planilha exportada",
+                  _got == _esp, str([k for k in _esp if _got.get(k) != _esp[k]][:3]))
+
     arte_usada = {im[4] for a in dados for im in a["imgs"]}
     embutida = set(_re.findall(r'"([^"]+\.png)":"', g.split("var ARTE")[1][:200000]))
     checa("toda imagem usada está embutida no script", arte_usada <= embutida,

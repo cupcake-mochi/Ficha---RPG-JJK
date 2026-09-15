@@ -508,6 +508,8 @@ ninguém apertar o gatilho por engano.*
 > `INVOCAÇÃO` e `CATÁLOGO` têm cerca de `1610` e `1785` px de largura**, *acima
 > dos `1366` de notebook que a ficha pede. Elas são do gerador da invocação, e o
 > `conferir-ficha-xlsx.py` só imprime a largura delas.*
+>
+> **⚠ E o `construir()` parou no primeiro teste no Sheets, em 15/09/2026, com `Range not found` no `menusSuspensos_`.** *Oito dos doze menus da FICHA vêm da exportação como lista escrita, `"a,b,c"`, e o script passava a lista ao `getRange`.* **O molde passou a montar esses menus por `requireValueInList`, e o `conferir-ficha-xlsx.py` roda o `menusSuspensos_` no node, num Sheets de mentira que recusa endereço inválido.** *A checagem de antes deixava a lista passar, porque lista escrita não tem aba. O arnês deu cinco de cinco, com o `Ficha.gs` que parou como contra-teste.*
 
 ### B19 · O teto da temporária não é aplicado pela planilha — **ESCRITO em 15/09/2026, falta testar no Sheets**
 

@@ -206,10 +206,16 @@ function menusSuspensos_(ss) {
   ABAS.forEach(function (spec) {
     var aba = ss.getSheetByName(spec.nome);
     (spec.dv || []).forEach(function (d) {
-      var fonte = ss.getRange(d[1].replace(/\$/g, ''));
-      aba.getRange(d[0].replace(/\$/g, '')).setDataValidation(
-        SpreadsheetApp.newDataValidation()
-          .requireValueInRange(fonte, true).setAllowInvalid(true).build());
+      // O Sheets exporta menu de itens como lista escrita, "a,b,c", e ela nao e intervalo:
+      // passar ela ao getRange parou a montagem em 'Range not found' (teste de 15/09/2026).
+      var regra = SpreadsheetApp.newDataValidation().setAllowInvalid(true);
+      var lista = /^"(.*)"$/.exec(d[1]);
+      if (lista) {
+        regra.requireValueInList(lista[1].split(','), true);
+      } else {
+        regra.requireValueInRange(ss.getRange(d[1].replace(/\$/g, '')), true);
+      }
+      aba.getRange(d[0].replace(/\$/g, '')).setDataValidation(regra.build());
       n++;
     });
   });
