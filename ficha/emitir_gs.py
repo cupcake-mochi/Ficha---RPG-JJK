@@ -26,10 +26,98 @@ SAIDA = os.path.join(RAIZ, "apps-script", "Ficha.gs")
 ARTE_FORA = {"textura.png"}
 
 def _cor(c):
-    if c is None or getattr(c, "rgb", None) is None or not isinstance(c.rgb, str):
+    """a cor em #RRGGBB, e None quando nao ha cor. O openpyxl escreve 'sem cor' como 00000000; o
+    preto e FF000000. Ate 15/09/2026 os dois viravam None, e o texto preto da planilha viva saia
+    claro no Sheets."""
+    if c is None or not isinstance(getattr(c, "rgb", None), str) or c.rgb.upper() == "00000000":
         return None
-    h = c.rgb[-6:].upper()
-    return None if h in ("000000",) else "#" + h
+    return "#" + c.rgb[-6:].upper()
+
+
+_PESO_TRACO = {"hair": 0, "dotted": 1, "dashed": 2, "thin": 3, "mediumDashed": 4, "medium": 5,
+               "double": 6, "thick": 7}
+
+
+def _faixas_de_borda(lados, dono):
+    """{(lado, traco, cor): celulas} -> [[lado, traco, cor, [A1, ...]]].
+
+    A borda de celula que mora numa mesclagem vai para o BLOCO inteiro. O Sheets so guarda formato no
+    canto de cima a esquerda da mesclagem, e o .xlsx guarda a borda da direita e a de baixo nas
+    celulas de dentro: aplicada nelas, ela sumia. As soltas vizinhas viram uma faixa -- a de cima e a
+    de baixo pela linha, a da esquerda e a da direita pela coluna. O traco mais grosso vai por
+    ultimo, para ganhar a aresta que duas bordas dividem."""
+    from openpyxl.utils import get_column_letter as L
+    out = []
+    for (lado, traco, cor), todas in sorted(lados.items(), key=lambda kv: (_PESO_TRACO.get(kv[0][1], 3), kv[0])):
+        blocos, cels = set(), []
+        for r, c in todas:
+            if (r, c) in dono:
+                blocos.add(dono[(r, c)])
+            else:
+                cels.append((r, c))
+        por = {}
+        for r, c in cels:
+            fixo, anda = (r, c) if lado in ("top", "bottom") else (c, r)
+            por.setdefault(fixo, []).append(anda)
+        a1 = []
+        for fixo in sorted(por):
+            seq = sorted(por[fixo])
+            ini = ant = seq[0]
+            for x in seq[1:] + [None]:
+                if x is None or x != ant + 1:
+                    if lado in ("top", "bottom"):
+                        a1.append(f"{L(ini)}{fixo}" if ini == ant else f"{L(ini)}{fixo}:{L(ant)}{fixo}")
+                    else:
+                        a1.append(f"{L(fixo)}{ini}" if ini == ant else f"{L(fixo)}{ini}:{L(fixo)}{ant}")
+                    ini = x
+                if x is not None:
+                    ant = x
+        out.append([lado, traco, cor, sorted(blocos) + a1])
+    return out
+
+
+def _caixa(im, larg, largs, alturas):
+    """A caixa de celulas em que a imagem entra, no mesmo pixel que o script aplica: as colunas e as
+    linhas cujo meio cai dentro do retangulo que ela ocupa na planilha viva. A faixa mais fina que
+    meia linha fica na linha onde cai o meio dela. Devolve (lin1, col1, lin2, col2, larg, alt)."""
+    def cpx(c):
+        for c1, c2, px in largs:
+            if c1 <= c <= c2:
+                return px
+        return larg
+    def rpx(r):
+        return alturas.get(str(r), 21)
+    def faixa(ini, tam, px):
+        dentro, pos, i = [], 0, 1
+        while pos < ini + tam:
+            if ini <= pos + px(i) / 2 <= ini + tam:
+                dentro.append(i)
+            pos += px(i)
+            i += 1
+        if not dentro:
+            pos, i = 0, 1
+            while pos + px(i) <= ini + tam / 2:
+                pos += px(i)
+                i += 1
+            dentro = [i]
+        return dentro
+    x0 = sum(cpx(c) for c in range(1, im["col"])) + im.get("desloc_x", 0)
+    y0 = sum(rpx(r) for r in range(1, im["lin"])) + im.get("desloc_y", 0)
+    cols, lins = faixa(x0, im["larg"], cpx), faixa(y0, im["alt"], rpx)
+    return (lins[0], cols[0], lins[-1], cols[-1],
+            sum(cpx(c) for c in cols), sum(rpx(r) for r in lins))
+
+
+def _redimensiona(caminho, bw, bh):
+    """a arte no formato exato da caixa, com o dobro dos pixels. Dentro da celula o Sheets encaixa a
+    imagem sem esticar, e a faixa de pincel da planilha viva e esticada."""
+    import io
+    from PIL import Image as _Img
+    filtro = getattr(getattr(_Img, "Resampling", _Img), "LANCZOS")
+    img = _Img.open(caminho).convert("RGBA").resize((bw * 2, bh * 2), filtro)
+    buf = io.BytesIO()
+    img.save(buf, "PNG", optimize=True)
+    return base64.b64encode(buf.getvalue()).decode()
 
 def _linha_alta(pts):
     """altura em PIXEL, medida pela maior letra da linha.
@@ -38,6 +126,9 @@ def _linha_alta(pts):
     'd20 + 0' aparecia cortado pela metade. 1 pt = 1.333 px, mais folga.
     """
     return max(21, int(max(pts) * 1.34) + 7) if pts else 21
+
+_EMBRULHO = re.compile(r'^=IFERROR\(__xludf\.DUMMYFUNCTION\("(.*)"\),(.*)\)$', re.S)
+
 
 def _valor(v):
     """o valor como o Sheets tem de receber.
@@ -51,6 +142,13 @@ def _valor(v):
     if isinstance(v, ArrayFormula):
         t = v.text[1:] if v.text.startswith("=") else v.text
         return "=ARRAYFORMULA(" + t + ")"
+    if isinstance(v, str):
+        # FUNCAO QUE O EXCEL NAO TEM: o Sheets exporta a SPARKLINE como
+        # IFERROR(__xludf.DUMMYFUNCTION("..."),""), com as aspas dobradas. Remontada assim, ela falha
+        # calada e sobra o "" -- foram as barras de vida, energia e integridade vazias em 15/09/2026.
+        m = _EMBRULHO.match(v)
+        if m:
+            return "=" + m.group(1).replace('""', '"').strip()
     if isinstance(v, str) and re.fullmatch(r"\d+\.\d+", v):
         return "'" + v
     return v
@@ -76,43 +174,61 @@ def _larguras(ws):
     return sorted(out)
 
 def emitir(wb, ordem, imgs=None, arte_dir=None):
-    abas = []
+    import estilo as _est
+    # o formato de fabrica da celula no script: a vazia com este formato nao precisa ser escrita
+    padrao = (_est.CORPO, _est.PT_VALOR, "#" + _est.TEXTO.upper())
+    abas, redimensionar = [], {}
     for nome in ordem:
         ws = wb[nome]
         vals, estilos, chaves, fundos, bordas, merges = [], [], {}, [], [], []
         alturas, max_c, max_r = {}, 0, 0
+        dono = {}
+        for m in ws.merged_cells.ranges:
+            for rr in range(m.min_row, m.max_row + 1):
+                for cc in range(m.min_col, m.max_col + 1):
+                    dono[(rr, cc)] = m.coord
+        bordas_lados = {}
         for linha in ws.iter_rows():
             for c in linha:
+                r, col = c.row, c.column
+                # A borda sai de TODA celula, e dos quatro lados: a mesclada carrega a borda do bloco,
+                # e a vazia carrega a da caixa de digitar. Ate 15/09/2026 so a de cima entrava, e so
+                # em celula com valor -- a FICHA saia do Sheets com 1615 lados de borda, e a viva tem 6272.
+                if c.border:
+                    for lado in ("top", "bottom", "left", "right"):
+                        s = getattr(c.border, lado)
+                        if s is not None and s.style:
+                            bordas_lados.setdefault((lado, s.style, _cor(s.color) or "#000000"),
+                                                    set()).add((r, col))
                 if c.__class__.__name__ == "MergedCell":
                     continue
-                r, col = c.row, c.column
                 f, a = c.font, c.alignment
                 pintado = _cor(c.fill.start_color) if c.fill and c.fill.fill_type else None
                 if c.value is None and pintado is None and (not f or not f.name):
                     continue
                 max_c, max_r = max(max_c, col), max(max_r, r)
                 if c.value is not None:
-                    # formula vai separada: setValues trata o texto como digitado
-                    # pelo usuario, e ai a pontuacao segue o idioma da planilha.
-                    # Numa planilha em portugues, COUNTIF(a,b) vira erro de
-                    # analise. O setFormula sempre usa a notacao americana.
+                    # a formula vai separada, com setFormula, e o construir() monta em ingles
                     vals.append([r, col, _valor(c.value)])
                     alturas.setdefault(r, []).append(f.size or 11)
                 if pintado:
                     fundos.append([r, col, pintado])   # comprimido depois, em faixas
                 if f and f.name:
                     ch = (f.name, f.size, _cor(f.color), bool(f.bold),
-                          a.horizontal or "left", a.vertical or "middle",
-                          int(a.textRotation or 0))
+                          a.horizontal or "left",
+                          "middle" if a.vertical in (None, "center") else a.vertical,
+                          int(a.textRotation or 0), bool(f.italic), bool(a.wrap_text))
+                    if c.value is None:
+                        # A celula vazia entra quando o formato dela nao e o de fabrica do script: a
+                        # caixa de digitar centrada, a que quebra texto, a de fonte propria. Ate
+                        # 15/09/2026 nenhuma entrava, e as caixas vazias saiam alinhadas a esquerda.
+                        if ch == padrao + (False, "left", "middle", 0, False, False):
+                            continue
+                        vals.append([r, col, ""])
                     if ch not in chaves:
                         chaves[ch] = len(estilos)
                         estilos.append(list(ch))
-                    estilos_id = chaves[ch]
-                    vals[-1].append(estilos_id) if (c.value is not None) else None
-                    if c.value is None:
-                        continue
-                if c.border and c.border.top and c.border.top.style:
-                    bordas.append([r, col, _cor(c.border.top.color) or "#493F54"])
+                    vals[-1].append(chaves[ch])
         # o fundo em faixas: 15 mil celulas pintadas viravam 15 mil entradas.
         # Vizinhas da mesma cor na mesma linha viram uma faixa so, e a cor de
         # base nem entra -- o script ja comeca com ela.
@@ -141,13 +257,22 @@ def emitir(wb, ordem, imgs=None, arte_dir=None):
             if v.type == "list" and v.formula1:
                 for rg in str(v.sqref).split():
                     dv.append([rg, v.formula1.replace("DADOS!", "DADOS!")])
+        larg_px = int(round((ws.column_dimensions["A"].width or 4.0) * 7))
+        largs_px, alt_px = _larguras(ws), _alturas(ws, alturas)
+        ncols, nrows = max(max_c, 12), max_r + 2
         if imgs is not None:
-            # a ficha-v01: a posicao de cada imagem sai do layout.json
-            imgs_aba = [[i["lin"], i["col"], i["larg"], i["alt"], i["arquivo"]]
-                        for i in imgs.get(nome, [])]
+            # a ficha-v01: a imagem entra DENTRO da celula, numa caixa medida no pixel do script, e a
+            # arte vai no formato da caixa. [lin1, col1, lin2, col2, arte]
+            imgs_aba = []
+            for i in imgs.get(nome, []):
+                l1, c1, l2, c2, bw, bh = _caixa(i, larg_px, largs_px, alt_px)
+                chave = f"{i['arquivo'][:-4]}-{bw}x{bh}.png"
+                redimensionar[chave] = (i["arquivo"], bw, bh)
+                imgs_aba.append([l1, c1, l2, c2, chave])
+                ncols, nrows = max(ncols, c2), max(nrows, l2)
         else:
             import estilo
-            imgs_aba = [[i["lin"], i["col"], i["larg"], i["alt"], i["nome"]]
+            imgs_aba = [[i["lin"], i["col"], i["lin"], i["col"], i["nome"]]
                         for i in estilo.COLOCADAS
                         if i["aba"] == nome and i["nome"] not in ARTE_FORA]
         # as caixas de selecao, medidas: toda celula com VERDADEIRO ou FALSO, em faixas
@@ -160,21 +285,22 @@ def emitir(wb, ordem, imgs=None, arte_dir=None):
             else:
                 medidas.append([col_b, lin_b, 1])
         abas.append({
-            "nome": nome, "cols": max(max_c, 12), "rows": max_r + 2,
-            "larg": int(round((ws.column_dimensions["A"].width or 4.0) * 7)),
-            "vals": vals, "estilos": estilos, "fundos": fundos, "bordas": bordas,
+            "nome": nome, "cols": ncols, "rows": nrows, "larg": larg_px, "padrao": list(padrao),
+            "vals": vals, "estilos": estilos, "fundos": fundos,
+            "bordas": _faixas_de_borda(bordas_lados, dono),
             "merges": merges, "dv": dv, "imgs": imgs_aba, "caixas_medidas": medidas,
-            "alturas": _alturas(ws, alturas), "largs": _larguras(ws),
+            "alturas": alt_px, "largs": largs_px,
             "oculta": ws.sheet_state == "hidden",
         })
     arte = {}
     pasta = arte_dir or ARTE
-    usadas = {im[4] for a in abas for im in a["imgs"]}
-    for f in sorted(os.listdir(pasta)):
-        if arte_dir and f not in usadas:
-            continue
-        if f.endswith(".png") and f not in ARTE_FORA and "contato" not in f:
-            arte[f] = base64.b64encode(open(os.path.join(pasta, f), "rb").read()).decode()
+    if arte_dir:
+        for chave, (arquivo, bw, bh) in sorted(redimensionar.items()):
+            arte[chave] = _redimensiona(os.path.join(pasta, arquivo), bw, bh)
+    else:
+        for f in sorted(os.listdir(pasta)):
+            if f.endswith(".png") and f not in ARTE_FORA and "contato" not in f:
+                arte[f] = base64.b64encode(open(os.path.join(pasta, f), "rb").read()).decode()
     return abas, arte
 
 def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None):

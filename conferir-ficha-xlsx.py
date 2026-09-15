@@ -369,6 +369,166 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
             checa(f"cada um dos {len(_esp)} menus sai com a lista ou a faixa da planilha exportada",
                   _got == _esp, str([k for k in _esp if _got.get(k) != _esp[k]][:3]))
 
+    # As bordas, o formato da célula vazia e as imagens, contra a planilha que o monta.py gerou. Em
+    # 15/09/2026 a ficha montada no Sheets saiu sem caixa nenhuma: o emissor só levava a borda de cima,
+    # e só de célula com valor -- 1615 lados de 6272 na FICHA --, deixava a caixa vazia de digitar sem
+    # alinhamento, e punha a imagem solta, com o tamanho do arquivo e não o da tela.
+    from openpyxl.utils.cell import range_boundaries as _rb
+    import base64 as _b64, struct as _st
+
+    def _cor_x(c):
+        rgb = getattr(c, "rgb", None) if c is not None else None
+        if not isinstance(rgb, str) or rgb.upper() == "00000000":
+            return None
+        return "#" + rgb[-6:].upper()
+
+    # A borda de célula que mora numa mesclagem conta para o BLOCO: o Sheets só guarda formato no
+    # canto dela, e a borda aplicada numa célula de dentro some -- foram os contornos da direita e
+    # de baixo que faltaram na montagem de 15/09/2026. Faixa que corta mesclagem é defeito.
+    _lados_scr, _lados_viva, _cortes = set(), set(), []
+    for a in dados:
+        ws_ = wb[a["nome"]]
+        _dono = {}
+        for m in ws_.merged_cells.ranges:
+            for rr in range(m.min_row, m.max_row + 1):
+                for cc in range(m.min_col, m.max_col + 1):
+                    _dono[(rr, cc)] = m.coord
+        _blocos = set(_dono.values())
+        for b in a.get("bordas", []):
+            if len(b) != 4 or not isinstance(b[3], list):
+                continue
+            for fx in b[3]:
+                if fx in _blocos:
+                    _lados_scr.add((a["nome"], fx, b[0], b[1], b[2]))
+                    continue
+                mc, mr, xc, xr = _rb(fx)
+                for rr in range(mr, xr + 1):
+                    for cc in range(mc, xc + 1):
+                        if (rr, cc) in _dono:
+                            _cortes.append((a["nome"], fx, b[0], _dono[(rr, cc)]))
+                        _lados_scr.add((a["nome"], f"{L(cc)}{rr}", b[0], b[1], b[2]))
+        for linha in ws_.iter_rows():
+            for cel in linha:
+                for lado in ("top", "bottom", "left", "right"):
+                    s = getattr(cel.border, lado)
+                    if s is not None and s.style:
+                        onde = _dono.get((cel.row, cel.column), cel.coordinate)
+                        _lados_viva.add((a["nome"], onde, lado, s.style, _cor_x(s.color) or "#000000"))
+    checa(f"as bordas do script são as da planilha, e a de mesclagem vai no bloco inteiro ({len(_lados_viva)} lados)",
+          len(_lados_viva) > 0 and _lados_scr == _lados_viva and not _cortes,
+          f"faltam {len(_lados_viva - _lados_scr)}, sobram {len(_lados_scr - _lados_viva)}, "
+          f"faixas que cortam mesclagem {len(_cortes)}: {(_cortes or sorted(_lados_viva - _lados_scr))[:2]}")
+
+    _vazias, _fmt_ruim = 0, []
+    for a in dados:
+        _tem = {(v[0], v[1]): a["estilos"][v[3]] for v in a["vals"] if len(v) > 3}
+        for linha in wb[a["nome"]].iter_rows():
+            for cel in linha:
+                if cel.__class__.__name__ == "MergedCell" or cel.value is not None:
+                    continue
+                al = cel.alignment
+                quer = (al.horizontal or "left",
+                        "middle" if al.vertical in (None, "center") else al.vertical,
+                        bool(al.wrap_text), bool(cel.font.i), bool(cel.font.b))
+                if quer == ("left", "middle", False, False, False):
+                    continue
+                _vazias += 1
+                e = _tem.get((cel.row, cel.column))
+                got = None if e is None else (
+                    e[4], "middle" if e[5] in ("middle", "center") else e[5],
+                    bool(e[8]) if len(e) > 8 else False, bool(e[7]) if len(e) > 7 else False, bool(e[3]))
+                if got != quer:
+                    _fmt_ruim.append((a["nome"], cel.coordinate, quer, got))
+    checa(f"as {_vazias} células vazias levam o alinhamento, a quebra, o itálico e o negrito da planilha",
+          _vazias > 0 and not _fmt_ruim, str(_fmt_ruim[:3]))
+
+    _lay = _js.load(open("ficha-v01/layout.json", encoding="utf-8"))
+    _mart = _re.search(r"var ARTE = (\{.*?\});\n", g, _re.S)
+    _arte = _js.loads(_mart.group(1)) if _mart else {}
+    _por = {a["nome"]: a for a in dados}
+    _img_ruim, _n_img = [], 0
+    for la in _lay["abas"]:
+        sp = _por.get(la["nome"])
+        for i in la["imagens"]:
+            _n_img += 1
+            cand = [im for im in (sp["imgs"] if sp else []) if str(im[4]).startswith(i["arquivo"][:-4] + "-")]
+            if len(cand) != 1 or len(cand[0]) != 5:
+                _img_ruim.append((la["nome"], i["arquivo"], "sem caixa no script"))
+                continue
+            l1, c1, l2, c2, chave = cand[0]
+            cpx = lambda c: next((px for x1, x2, px in sp["largs"] if x1 <= c <= x2), sp["larg"])
+            rpx = lambda r: sp["alturas"].get(str(r), 21)
+            x0 = sum(cpx(c) for c in range(1, i["col"])) + i.get("desloc_x", 0)
+            y0 = sum(rpx(r) for r in range(1, i["lin"])) + i.get("desloc_y", 0)
+            bx, by = sum(cpx(c) for c in range(1, c1)), sum(rpx(r) for r in range(1, l1))
+            bw = sum(cpx(c) for c in range(c1, c2 + 1))
+            bh = sum(rpx(r) for r in range(l1, l2 + 1))
+            tx = max(cpx(c) for c in range(c1, c2 + 1))
+            ty = max(rpx(r) for r in range(l1, l2 + 1))
+            if (abs(bx - x0) > tx or abs(bx + bw - x0 - i["larg"]) > tx
+                    or abs(by - y0) > ty or abs(by + bh - y0 - i["alt"]) > ty):
+                _img_ruim.append((la["nome"], i["arquivo"], "caixa longe da imagem da planilha",
+                                  (bx, by, bw, bh), (x0, y0, i["larg"], i["alt"])))
+            ws_ = wb[la["nome"]]
+            for rr in range(l1, l2 + 1):
+                for cc in range(c1, c2 + 1):
+                    if ws_.cell(rr, cc).value not in (None, ""):
+                        _img_ruim.append((la["nome"], i["arquivo"], "valor embaixo", rr, cc))
+            for m in ws_.merged_cells.ranges:
+                if not (m.max_row < l1 or m.min_row > l2 or m.max_col < c1 or m.min_col > c2):
+                    _img_ruim.append((la["nome"], i["arquivo"], "mesclagem cortada", str(m)))
+            png = _b64.b64decode(_arte.get(chave, ""))[:24]
+            wh = _st.unpack(">II", png[16:24]) if len(png) >= 24 else (0, 0)
+            if wh != (2 * bw, 2 * bh):
+                _img_ruim.append((la["nome"], i["arquivo"], "arte fora do formato da caixa", wh, (2 * bw, 2 * bh)))
+    checa(f"as {_n_img} imagens entram dentro da célula, numa caixa livre do tamanho da tela",
+          _n_img > 0 and not _img_ruim, str(_img_ruim[:3]))
+    checa("o molde põe a imagem na célula, e não solta", "newCellImage" in g and "insertImage" not in g)
+
+    # A função que o Excel não tem sai do .xlsx embrulhada em IFERROR(__xludf.DUMMYFUNCTION("...")),
+    # e remontada assim ela falha calada: foram as barras vazias de 15/09/2026. O script leva a de dentro.
+    _embr = _re.compile(r'^=IFERROR\(__xludf\.DUMMYFUNCTION\("(.*)"\),(.*)\)$', _re.S)
+    _n_emb, _emb_ruim = 0, []
+    for a in dados:
+        _sv = {(v[0], v[1]): v[2] for v in a["vals"]}
+        for linha in wb[a["nome"]].iter_rows():
+            for cel in linha:
+                _me = _embr.match(cel.value) if isinstance(cel.value, str) else None
+                if _me:
+                    _n_emb += 1
+                    if _sv.get((cel.row, cel.column)) != "=" + _me.group(1).replace('""', '"').strip():
+                        _emb_ruim.append((a["nome"], cel.coordinate, str(_sv.get((cel.row, cel.column)))[:50]))
+        _emb_ruim += [(a["nome"], v[0], v[1]) for v in a["vals"] if isinstance(v[2], str) and "__xludf" in v[2]]
+    checa(f"as {_n_emb} fórmulas que o Sheets exportou embrulhadas saem com a função de dentro",
+          _n_emb > 0 and not _emb_ruim, str(_emb_ruim[:3]))
+
+    # As fórmulas que citam uma aba que ainda não nasceu. A montagem segue a ordem do ABAS -- a
+    # CARTEIRA antes da FICHA, a FICHA antes da DADOS, a INVOCAÇÃO antes da DADOS_INV --, e fórmula
+    # gravada antes de a aba existir fica em #REF!. Elas têm de ser gravadas depois do laço das abas.
+    _ordem, _cedo = [a["nome"] for a in dados], 0
+    for _i, a in enumerate(dados):
+        for v in a["vals"]:
+            if isinstance(v[2], str) and v[2].startswith("="):
+                _txt = _re.sub(r'"[^"]*"', '""', v[2])
+                for _m in _re.finditer(r"(?:'([^']+)'|([A-Za-zÀ-ÿ_][\wÀ-ÿ]*))!", _txt):
+                    _alvo = _m.group(1) or _m.group(2)
+                    if _alvo in _ordem and _ordem.index(_alvo) > _i:
+                        _cedo += 1
+                        break
+    _mc = _re.search(r"function construir\(\) \{(.*?)\n\}\n", g, _re.S)
+    _mm = _re.search(r"function montarAba_\(ss, spec\) \{(.*?)\n\}\n", g, _re.S)
+    _cc = _mc.group(1) if _mc else ""
+    _laco = _cc.find("montarAba_(")
+    _fim_laco = _cc.find("});", _laco) if _laco >= 0 else -1
+    _grava = _cc.find("escreverFormulas_(")
+    _fn = g.find("function escreverFormulas_(")
+    checa(f"{_cedo} fórmula(s) citam uma aba que nasce depois da delas, então a ordem da gravação importa",
+          _cedo > 0)
+    checa("as fórmulas são gravadas depois que todas as abas nascem, e não dentro do montarAba_",
+          bool(_mm) and ".setFormula(" not in _mm.group(1) and 0 <= _laco < _fim_laco < _grava
+          and _fn >= 0 and ".setFormula(" in g[_fn:_fn + 400],
+          f"laço {_laco} · fim do laço {_fim_laco} · gravação {_grava}")
+
     arte_usada = {im[4] for a in dados for im in a["imgs"]}
     embutida = set(_re.findall(r'"([^"]+\.png)":"', g.split("var ARTE")[1][:200000]))
     checa("toda imagem usada está embutida no script", arte_usada <= embutida,

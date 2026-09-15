@@ -14119,29 +14119,37 @@
      "arquivo": "carteira-1.png",
      "col": 1,
      "lin": 5,
-     "larg": 1600,
-     "alt": 120
+     "larg": 1240,
+     "alt": 14,
+     "desloc_x": 0,
+     "desloc_y": 0
     },
     {
      "arquivo": "carteira-2.png",
      "col": 4,
      "lin": 8,
-     "larg": 360,
-     "alt": 460
+     "larg": 190,
+     "alt": 242,
+     "desloc_x": 0,
+     "desloc_y": 0
     },
     {
      "arquivo": "carteira-3.png",
      "col": 15,
      "lin": 15,
-     "larg": 1600,
-     "alt": 120
+     "larg": 560,
+     "alt": 11,
+     "desloc_x": 0,
+     "desloc_y": 0
     },
     {
      "arquivo": "carteira-4.png",
      "col": 38,
      "lin": 26,
-     "larg": 420,
-     "alt": 420
+     "larg": 105,
+     "alt": 105,
+     "desloc_x": 0,
+     "desloc_y": 0
     }
    ]
   },
@@ -44413,15 +44421,19 @@
      "arquivo": "ficha-1.png",
      "col": 3,
      "lin": 6,
-     "larg": 1600,
-     "alt": 120
+     "larg": 1180,
+     "alt": 12,
+     "desloc_x": 0,
+     "desloc_y": 0
     },
     {
      "arquivo": "ficha-2.png",
      "col": 41,
      "lin": 85,
-     "larg": 300,
-     "alt": 300
+     "larg": 90,
+     "alt": 90,
+     "desloc_x": 29,
+     "desloc_y": 15
     }
    ]
   },

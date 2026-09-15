@@ -113,6 +113,14 @@ def idx_estilo(cel):
         estilos.append(json.loads(k))
     return indice[k]
 
+# A imagem DENTRO da celula some quando o Sheets exporta .xlsx. Desde 15/09/2026 o script poe as
+# imagens na celula, entao a exportacao da planilha viva pode vir sem nenhuma: nesse caso a aba fica
+# com as imagens do layout anterior, que passa a ser o dono delas, e o extrator avisa.
+try:
+    IMAGENS_ANTES = {a["nome"]: a["imagens"] for a in json.load(open(SAIDA, encoding="utf-8"))["abas"]}
+except (OSError, ValueError, KeyError):
+    IMAGENS_ANTES = {}
+
 abas = []
 barras_repostas = []
 estado_limpo = []
@@ -198,8 +206,20 @@ for nome in wb.sheetnames:
             print(f"  [aviso] nao extrai a imagem {i+1} de {nome}: {exc}")
             continue
         a = im.anchor
+        # O tamanho e o da TELA, e nao o do arquivo: a faixa de pincel tem 1600x120 no arquivo e
+        # aparece com 1240x14 na planilha viva. O deslocamento dentro da celula entra junto, porque o
+        # selo da FICHA nao comeca no canto dela. Ate 15/09/2026 aqui estavam im.width e im.height.
+        ext = getattr(a, "ext", None)
+        if ext is None:
+            print(f"  [aviso] a imagem {i+1} de {nome} nao tem tamanho de tela no .xlsx; usei o do arquivo")
         imagens.append({"arquivo": arq, "col": a._from.col + 1, "lin": a._from.row + 1,
-                        "larg": im.width, "alt": im.height})
+                        "larg": round(ext.width / 9525) if ext is not None else im.width,
+                        "alt": round(ext.height / 9525) if ext is not None else im.height,
+                        "desloc_x": round(a._from.colOff / 9525),
+                        "desloc_y": round(a._from.rowOff / 9525)})
+    if not imagens and IMAGENS_ANTES.get(nome):
+        imagens = IMAGENS_ANTES[nome]
+        print(f"  [aviso] {nome}: o .xlsx nao trouxe imagem, e ficaram as {len(imagens)} do layout anterior")
 
     abas.append({"nome": nome, "estado": s.sheet_state,
                  "linhas": s.max_row, "colunas": s.max_column,
