@@ -25,39 +25,50 @@ function construir() {
   var ss = SpreadsheetApp.getActive();
   var feito = [];
 
-  // uma aba de rascunho segura o lugar enquanto as antigas somem
-  var velha = ss.getSheetByName('__montando__');
-  if (velha) ss.deleteSheet(velha);        // sobra de uma execução que parou no meio
-  var temp = ss.insertSheet('__montando__');
-  ss.getSheets().forEach(function (a) {
-    if (a.getName() !== '__montando__') ss.deleteSheet(a);
-  });
+  // O idioma da planilha manda na pontuação de TODA fórmula que o script escreve, o setFormula e
+  // a regra de cor inclusive: numa planilha em português COUNTIF(a,b) vira #ERROR! e 0.25 não é
+  // número. Foi o que o teste de 15/09/2026 mostrou, com as 104 fórmulas de vírgula quebradas.
+  // A montagem roda em inglês, e o idioma de antes volta no fim, mesmo se ela parar no meio.
+  var idioma = ss.getSpreadsheetLocale();
+  ss.setSpreadsheetLocale('en_US');
+  try {
+    // uma aba de rascunho segura o lugar enquanto as antigas somem
+    var velha = ss.getSheetByName('__montando__');
+    if (velha) ss.deleteSheet(velha);        // sobra de uma execução que parou no meio
+    var temp = ss.insertSheet('__montando__');
+    ss.getSheets().forEach(function (a) {
+      if (a.getName() !== '__montando__') ss.deleteSheet(a);
+    });
 
-  ABAS.forEach(function (spec) {
-    try {
-      feito.push(montarAba_(ss, spec));
-    } catch (err) {
-      throw new Error('parou montando a aba ' + spec.nome + ': ' + err.message);
-    }
-  });
-  ss.deleteSheet(temp);
+    ABAS.forEach(function (spec) {
+      try {
+        feito.push(montarAba_(ss, spec));
+      } catch (err) {
+        throw new Error('parou montando a aba ' + spec.nome + ': ' + err.message);
+      }
+    });
+    ss.deleteSheet(temp);
 
-  // Os menus suspensos SÓ agora: eles apontam para a aba DADOS, e ela é a
-  // última a nascer. Aplicar durante a montagem dava 'Range not found'.
-  feito.push('menus: ' + menusSuspensos_(ss));
+    // Os menus suspensos SÓ agora: eles apontam para a aba DADOS, e ela é a
+    // última a nascer. Aplicar durante a montagem dava 'Range not found'.
+    feito.push('menus: ' + menusSuspensos_(ss));
 
-  // a ordem em que elas aparecem é a ordem do ABAS
-  ABAS.forEach(function (spec, i) {
-    var a = ss.getSheetByName(spec.nome);
-    ss.setActiveSheet(a);
-    ss.moveActiveSheet(i + 1);
-  });
-  ss.setActiveSheet(ss.getSheetByName(ABAS[0].nome));
+    // a ordem em que elas aparecem é a ordem do ABAS
+    ABAS.forEach(function (spec, i) {
+      var a = ss.getSheetByName(spec.nome);
+      ss.setActiveSheet(a);
+      ss.moveActiveSheet(i + 1);
+    });
+    ss.setActiveSheet(ss.getSheetByName(ABAS[0].nome));
 
-  var idx = indice();
-  feito.push('cor de estado: ' + corDeEstado_(ss, idx));
-  feito.push('notas: ' + notasDeRegra_(ss, idx));
-  feito.push('protegidas: ' + protegerFormulas_(ss, idx));
+    var idx = indice();
+    feito.push('cor de estado: ' + corDeEstado_(ss, idx));
+    feito.push('notas: ' + notasDeRegra_(ss, idx));
+    feito.push('protegidas: ' + protegerFormulas_(ss, idx));
+  } finally {
+    ss.setSpreadsheetLocale(idioma);
+  }
+  feito.push('idioma de volta: ' + idioma);
 
   var seg = Math.round((new Date().getTime() - t0) / 1000);
   Logger.log('FICHA PRONTA em ' + seg + 's · ' + feito.join(' · '));
@@ -115,10 +126,10 @@ function montarAba_(ss, spec) {
 
   // As fórmulas vêm DEPOIS, e uma a uma, com setFormula.
   //
-  // O setValues trata o texto como se o usuário tivesse digitado, e aí a
-  // pontuação segue o idioma da planilha: numa planilha em português,
-  // COUNTIF(a,b) precisaria ser COUNTIF(a;b) e vira #ERROR!. O setFormula
-  // sempre fala a notação americana, e o Google converte.
+  // O setValues trata o texto como se o usuário tivesse digitado. E o setFormula
+  // também lê a pontuação no idioma da planilha: o comentário que estava aqui dizia
+  // que não, e o teste de 15/09/2026 desmentiu. Por isso o construir() monta em
+  // inglês e devolve o idioma no fim.
   formulas.forEach(function (f) {
     aba.getRange(f[0], f[1]).setFormula(f[2]);
   });
