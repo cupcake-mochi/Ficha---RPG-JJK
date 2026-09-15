@@ -356,7 +356,7 @@ são estes, e cada um diz de onde veio:
 
 | arquivo aqui | de onde veio, no `JJK---Project` |
 |---|---|
-| `manual.txt` | o PDF do Manual da Guilda, `pdftotext -layout` — **reextraído na v0.239 do sistema** |
+| `manual.txt` | o PDF do Manual da Guilda, `pdftotext -layout` — **reextraído na v0.240 do sistema** |
 | `capitulo-16-invocacoes.md` | `sistema/05-material/livro/manual/60-invocacoes.md` |
 | `capitulo-35-caminhos-e-trilhas.md` | `sistema/05-material/livro/manual/35-caminhos-e-trilhas.md` |
 | `repos/JJK---PDF---RPG-main/ficha/ficha-exemplo-kaori.docx` | o repositório do PDF |
@@ -534,6 +534,20 @@ ninguém apertar o gatilho por engano.*
 > *O "fica a maior" da A2 não entrou: quem digita a temporária pode estar trocando de fonte ou zerando no fim da cena, e o script não sabe qual.*
 >
 > **Testado no Sheets em 15/09/2026, e funcionou.**
+
+### B20 · Seis chaves do catálogo nunca conferidas contra o livro — **FECHADO em 15/09/2026, na v0.240 do sistema**
+
+**`atributos`, `fundamento`, `origens`, `legados`, `legados_formatos` e `progressao` estavam na lista das não conferidas, e estavam atrás do livro.**
+
+- **Legados:** *um `Sem Patente` na Latente e um `Nunca Estive Lá` na Restrição Celestial que o livro não tem, sete Desliga faltando, o `Peso Real` no formato errado, e a entrada da Sem Técnica cortada em cinco Origens.* **Os 90 foram refeitos do capítulo 7**, *com formato, relógio e, na Restrição Celestial, o ramo. O campo `alcanca` saiu: ele não era texto do livro, e nenhum código o lia.*
+- **Progressão:** *a entrega de dezoito níveis estava cortada, e o XP não estava na tabela.*
+- **Origens:** *só duas tinham a frase de abertura, e sem acento. Agora as sete e a Sem Técnica levam a do livro.*
+- **Atributos:** *a página 12 era de uma paginação antiga, e saiu.*
+- **Fundamento:** *a frase "o `Remate` é a única peça acima dos pontos contra um alvo" virou a regra do livro: só a Liberação Máxima passa dos pontos contra um alvo só.*
+
+**O `conferir-catalogo.py` lê as seis do `manual.txt`**, *reextraído do livro da v0.240 — os dezesseis validadores passaram com ele antes da troca.* **Os preços de Melhoria, a devolução, a Liberação e o teto são recalculados classe a classe pela tabela `Números da montagem`.** *A lista das chaves não conferidas ficou vazia.*
+
+> **⚠ Achado, e decisão do Mizuki.** *O livro diz que "Só a Liberação Máxima passa dos pontos da Classe em dano contra um alvo só", e a Melhoria `Remate` dá +25% de dano contra alvo abaixo de metade da vida. As duas regras se tocam, e o catálogo segue a primeira.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 

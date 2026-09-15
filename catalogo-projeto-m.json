@@ -21,16 +21,15 @@
       "caminhos (vida, PE e dado)",
       "testes_de_resistencia",
       "sub_origem",
-      "rotas_de_criacao"
-    ],
-    "nao_conferido_contra_o_livro": [
+      "rotas_de_criacao",
       "fundamento",
       "origens",
       "legados",
       "legados_formatos",
       "progressao",
       "atributos"
-    ]
+    ],
+    "nao_conferido_contra_o_livro": []
   },
   "atributos": {
     "lista": [
@@ -48,8 +47,7 @@
       "pontos": 9,
       "teto_por_atributo": 3
     },
-    "nota": "o numero E o modificador; nao existe tabela de conversao",
-    "pagina": 12
+    "nota": "o numero E o modificador; nao existe tabela de conversao"
   },
   "pericias": {
     "Atletismo": {
@@ -785,24 +783,32 @@
       "Queima"
     ],
     "teto_e_liberacao": "teto 4 x Classe = os 3 x Classe do orcamento + Classe da Liberacao Maxima",
-    "unica_peca_acima_dos_pontos_contra_um_alvo": "Remate (+25% contra alvo abaixo de metade da vida)",
-    "queima_conta_como_repeticao": true
+    "queima_conta_como_repeticao": true,
+    "limite_contra_um_alvo": "os pontos da Classe em dados; so a Liberacao Maxima passa deles"
   },
   "origens": {
     "Latente": {
-      "em_uma_linha": "ninguem te deu nada e ninguem te ensinou"
+      "em_uma_linha": "Você nasceu com. Ninguém te deu nada e ninguém te ensinou."
     },
-    "Receptáculo": {},
+    "Receptáculo": {
+      "em_uma_linha": "Você carrega alguma coisa, e ela ainda está aí."
+    },
     "Descendente": {
-      "em_uma_linha": "voce e' de uma das familias, e elas cobram"
+      "em_uma_linha": "Você é de uma das famílias, e elas cobram."
     },
-    "Reencarnado": {},
-    "Feto": {},
+    "Reencarnado": {
+      "em_uma_linha": "Você já foi outra pessoa, e o corpo em que você está não nasceu seu."
+    },
+    "Feto": {
+      "em_uma_linha": "Alguém te fez, peça por peça."
+    },
     "Corpo Amaldiçoado": {
-      "especial": true
+      "especial": true,
+      "em_uma_linha": "Alguém te fez, e você acordou."
     },
     "Restrição Celestial": {
-      "especial": true
+      "especial": true,
+      "em_uma_linha": "Você trocou uma coisa por outra antes de nascer."
     }
   },
   "sub_origem": {
@@ -814,7 +820,8 @@
         "Reencarnado",
         "Feto"
       ],
-      "legados": "nao amplia a conta de Legados: e uma entrada de Destranca e ocupa uma das duas vagas"
+      "legados": "nao amplia a conta de Legados: e uma entrada de Destranca e ocupa uma das duas vagas",
+      "em_uma_linha": "Você tem energia amaldiçoada e não tem técnica inata."
     }
   },
   "rotas_de_criacao": [
@@ -859,402 +866,362 @@
     "Latente": {
       "Destranca": {
         "O Jeito Errado": {
-          "alcanca": "",
           "relogio": "por dia"
         },
         "O Professor Que Você Não Teve": {
-          "alcanca": "",
           "relogio": "sem relógio"
         },
         "A Testemunha": {
-          "alcanca": "",
           "relogio": "sem relógio"
         },
-        "Sem Patente": {
-          "alcanca": "",
-          "relogio": "sem relógio"
-        },
-        "Sem Técnica → ver adiante neste capítulo": {
-          "alcanca": "",
+        "Sem Técnica": {
           "relogio": "sem relógio"
         }
       },
       "Ajusta": {
         "Aprendi Apanhando": {
-          "alcanca": "qualquer perícia (23)",
           "relogio": "por dia"
         },
         "Instinto Bruto": {
-          "alcanca": "Intuição (1)",
           "relogio": "por cena"
         },
         "Gambiarra": {
-          "alcanca": "qualquer ofício (10)",
           "relogio": "por dia"
         },
         "Desconfiado": {
-          "alcanca": "uma condição nomeada (1)",
           "relogio": "por cena"
         }
       },
       "Desliga": {
         "Inédito": {
-          "alcanca": "ser reconhecido pelo catálogo",
-          "relogio": "sempre"
+          "relogio": "sem relógio"
         },
         "Chão Duro": {
-          "alcanca": "a diferença entre lugar propício e lugar ruim",
-          "relogio": "sempre"
+          "relogio": "sem relógio"
         }
       }
     },
     "Receptáculo": {
       "Destranca": {
         "A Voz de Dentro": {
-          "alcanca": "",
           "relogio": "por dia"
         },
         "De Antes de Você": {
-          "alcanca": "",
           "relogio": "sem relógio"
         },
         "Alcunha": {
-          "alcanca": "",
           "relogio": "sem relógio"
         },
         "O Que Ele Quer": {
-          "alcanca": "",
           "relogio": "por descanso longo"
         },
-        "Sem Técnica → ver adiante neste capítulo": {
-          "alcanca": "",
+        "Sem Técnica": {
           "relogio": "sem relógio"
         }
       },
       "Ajusta": {
         "Não Sou Só Eu": {
-          "alcanca": "Teste de Resistência de Espírito, três situações nomeadas (3)",
           "relogio": "por cena"
         },
         "Costume Antigo": {
-          "alcanca": "uma perícia (1)",
           "relogio": "por cena"
         },
         "Tranco": {
-          "alcanca": "Teste de Resistência Físico (1)",
           "relogio": "por cena"
         },
         "Passagem": {
-          "alcanca": "qualquer rolagem",
           "relogio": "por dia"
         }
       },
       "Desliga": {
         "Máscara": {
-          "alcanca": "ser sentido pelo que você é",
-          "relogio": "sempre"
+          "relogio": "sem relógio"
+        },
+        "Revezamento": {
+          "relogio": "por descanso longo"
         }
       }
     },
     "Descendente": {
       "Destranca": {
         "O Sobrenome": {
-          "alcanca": "o clã do nome: Gojo",
           "relogio": "sem relógio"
         },
         "Armaria": {
-          "alcanca": "o clã da ferramenta: Zen'in",
           "relogio": "sem relógio"
         },
         "Arquivo": {
-          "alcanca": "o clã do corpo: Kamo",
           "relogio": "sem relógio"
         },
         "Palavra Dada": {
-          "alcanca": "o clã da voz: Inumaki",
           "relogio": "sem relógio"
         },
         "Treino de Berço": {
-          "alcanca": "qualquer clã, inclusive o seu",
           "relogio": "sem relógio"
         },
-        "Sem Técnica → ver adiante neste": {
-          "alcanca": "—",
+        "Sem Técnica": {
           "relogio": "sem relógio"
         }
       },
       "Ajusta": {
         "Conversa de Jantar": {
-          "alcanca": "técnica de clã (1)",
           "relogio": "por cena"
         },
         "Etiqueta": {
-          "alcanca": "uma situação nomeada (1)",
           "relogio": "por cena"
         },
         "Repetição": {
-          "alcanca": "um Teste de Resistência nomeado (1)",
-          "relogio": "por cena"
+          "relogio": "por descanso curto"
         },
         "Biblioteca": {
-          "alcanca": "duas perícias (2)",
           "relogio": "por cena"
         }
       },
       "Desliga": {
         "Coleira": {
-          "alcanca": "ser localizado ou rastreado",
-          "relogio": "sempre"
+          "relogio": "sem relógio"
+        },
+        "Cabo": {
+          "relogio": "por cena"
         }
       }
     },
     "Reencarnado": {
       "Destranca": {
         "O Que Ninguém Lembra": {
-          "alcanca": "",
           "relogio": "por descanso longo"
         },
         "Encomenda": {
-          "alcanca": "",
           "relogio": "sem relógio"
         },
         "Quem Morava Aqui": {
-          "alcanca": "",
           "relogio": "sem relógio"
         },
         "Enterrado": {
-          "alcanca": "",
           "relogio": "sem relógio"
         },
-        "Sem Técnica → ver adiante neste capítulo": {
-          "alcanca": "",
+        "Sem Técnica": {
           "relogio": "sem relógio"
         }
       },
       "Ajusta": {
         "Corpo Emprestado": {
-          "alcanca": "uma condição nomeada (1)",
           "relogio": "por cena"
         },
         "Espasmo": {
-          "alcanca": "dois Testes de Resistência nomeados (2)",
-          "relogio": "por cena"
+          "relogio": "por descanso curto"
         },
         "Já Morri": {
-          "alcanca": "uma condição nomeada (1)",
           "relogio": "por cena"
         },
         "Método Velho": {
-          "alcanca": "uma situação nomeada (1)",
           "relogio": "por cena"
-        }
-      },
-      "Desliga": {}
-    },
-    "Corpo Amaldiçoado": {
-      "Destranca": {
-        "Ninhada": {
-          "alcanca": "",
-          "relogio": "sem relógio"
-        },
-        "Gêmeos": {
-          "alcanca": "",
-          "relogio": "sem relógio"
-        },
-        "Inteiro": {
-          "alcanca": "",
-          "relogio": "sem relógio"
-        },
-        "Manutenção": {
-          "alcanca": "",
-          "relogio": "sem relógio"
-        }
-      },
-      "Ajusta": {
-        "Rodízio": {
-          "alcanca": "três perícias nomeadas (3)",
-          "relogio": "por cena"
-        },
-        "Vigília": {
-          "alcanca": "Iniciativa (1)",
-          "relogio": "por cena"
-        },
-        "Desempate": {
-          "alcanca": "qualquer Teste de Resistência (4)",
-          "relogio": "por dia"
-        },
-        "Cabeça Trocada": {
-          "alcanca": "uma perícia nomeada (1)",
-          "relogio": "por cena"
-        },
-        "Nunca os Dois": {
-          "alcanca": "Teste de Resistência de Intelecto (1)",
-          "relogio": "por cena"
-        },
-        "Palpite": {
-          "alcanca": "qualquer perícia não treinada",
-          "relogio": "por dia"
-        },
-        "Feito de Uma Peça": {
-          "alcanca": "Teste de Resistência de Vigor (1)",
-          "relogio": "por cena"
-        },
-        "Teimosia": {
-          "alcanca": "uma situação nomeada (1)",
-          "relogio": "por cena"
-        },
-        "Peça Única": {
-          "alcanca": "uma perícia nomeada (1)",
-          "relogio": "por cena"
-        },
-        "Ajuste Fino": {
-          "alcanca": "um ofício nomeado (1)",
-          "relogio": "por cena"
-        },
-        "Recarga": {
-          "alcanca": "duas perícias nomeadas (2)",
-          "relogio": "por descanso curto"
-        },
-        "Fiado": {
-          "alcanca": "qualquer rolagem",
-          "relogio": "por dia"
         }
       },
       "Desliga": {
-        "Ferro Velho": {
-          "alcanca": "os degraus de exaustão",
-          "relogio": "sempre"
+        "Conhecimento Antigo": {
+          "relogio": "sem relógio"
+        },
+        "Usado": {
+          "relogio": "por cena"
         }
       }
     },
     "Feto": {
       "Destranca": {
         "Irmãos": {
-          "alcanca": "",
           "relogio": "sem relógio"
         },
         "Numeração": {
-          "alcanca": "",
           "relogio": "sem relógio"
         },
         "Guardado": {
-          "alcanca": "",
           "relogio": "sem relógio"
         },
         "Devagar": {
-          "alcanca": "",
           "relogio": "sem relógio"
         },
-        "Sem Técnica → ver adiante neste capítulo": {
-          "alcanca": "",
+        "Sem Técnica": {
           "relogio": "sem relógio"
         }
       },
       "Ajusta": {
         "Meio e Meio": {
-          "alcanca": "veneno e doença (1)",
           "relogio": "por cena"
         },
         "Como Se Monta": {
-          "alcanca": "Medicina (1)",
           "relogio": "por cena"
         },
         "Faro": {
-          "alcanca": "maldição (1)",
           "relogio": "por cena"
         },
         "Paciência": {
-          "alcanca": "qualquer perícia",
           "relogio": "por dia"
         }
       },
       "Desliga": {
         "Sangue que Não é Sangue": {
-          "alcanca": "comer, dormir, respirar",
-          "relogio": "sempre"
+          "relogio": "sem relógio"
+        },
+        "Talhe": {
+          "relogio": "por cena"
+        }
+      }
+    },
+    "Sem Técnica": {
+      "Destranca": {
+        "Sem Técnica": {
+          "relogio": "sem relógio"
+        }
+      }
+    },
+    "Corpo Amaldiçoado": {
+      "Destranca": {
+        "Ninhada": {
+          "relogio": "sem relógio"
+        },
+        "Gêmeos": {
+          "relogio": "sem relógio"
+        },
+        "Inteiro": {
+          "relogio": "sem relógio"
+        },
+        "Manutenção": {
+          "relogio": "sem relógio"
+        }
+      },
+      "Ajusta": {
+        "Rodízio": {
+          "relogio": "por cena"
+        },
+        "Vigília": {
+          "relogio": "por cena"
+        },
+        "Desempate": {
+          "relogio": "por dia"
+        },
+        "Cabeça Trocada": {
+          "relogio": "por cena"
+        },
+        "Nunca os Dois": {
+          "relogio": "por descanso curto"
+        },
+        "Palpite": {
+          "relogio": "por dia"
+        },
+        "Feito de Uma Peça": {
+          "relogio": "por descanso curto"
+        },
+        "Teimosia": {
+          "relogio": "por cena"
+        },
+        "Peça Única": {
+          "relogio": "por cena"
+        },
+        "Ajuste Fino": {
+          "relogio": "por cena"
+        },
+        "Recarga": {
+          "relogio": "por descanso curto"
+        },
+        "Fiado": {
+          "relogio": "por dia"
+        }
+      },
+      "Desliga": {
+        "Ferro Velho": {
+          "relogio": "sem relógio"
         }
       }
     },
     "Restrição Celestial": {
       "Destranca": {
         "Nasci Assim": {
-          "alcanca": "o que o seu corpo não faz, e o que isso cobra todo dia",
-          "relogio": "sem relógio"
+          "relogio": "sem relógio",
+          "ramo": "Corpo pela Técnica"
         },
         "O Substituto": {
-          "alcanca": "as pessoas conhecem uma coisa que não é você",
-          "relogio": "sem relógio"
+          "relogio": "sem relógio",
+          "ramo": "Corpo pela Técnica"
         },
         "A Oferta": {
-          "alcanca": "você já pensou no preço de um corpo que funcione",
-          "relogio": "sem relógio"
-        },
-        "Nunca Estive Lá": {
-          "alcanca": "você conhece lugares onde o seu corpo nunca esteve",
-          "relogio": "sem relógio"
+          "relogio": "sem relógio",
+          "ramo": "Corpo pela Técnica"
         },
         "Descartado": {
-          "alcanca": "o clã que te jogou fora",
-          "relogio": "sem relógio"
+          "relogio": "sem relógio",
+          "ramo": "Sem Energia"
         },
         "Dividido": {
-          "alcanca": "a sua restrição foi partida com outra pessoa",
-          "relogio": "sem relógio"
+          "relogio": "sem relógio",
+          "ramo": "Sem Energia"
         },
         "Desde Criança": {
-          "alcanca": "a ferramenta que te acompanha desde sempre",
-          "relogio": "sem relógio"
+          "relogio": "sem relógio",
+          "ramo": "Sem Energia"
         },
         "Aprendi a Ver": {
-          "alcanca": "você não nasceu enxergando maldição",
-          "relogio": "sem relógio"
+          "relogio": "sem relógio",
+          "ramo": "Sem Energia"
         }
       },
       "Ajusta": {
         "Antena": {
-          "alcanca": "Sentir Energia (1)",
-          "relogio": "por cena"
+          "relogio": "por cena",
+          "ramo": "Corpo pela Técnica"
         },
         "Do Meu Canto": {
-          "alcanca": "uma situação nomeada (1)",
-          "relogio": "por cena"
+          "relogio": "por cena",
+          "ramo": "Corpo pela Técnica"
         },
         "Insônia": {
-          "alcanca": "qualquer perícia",
-          "relogio": "por dia"
+          "relogio": "por dia",
+          "ramo": "Corpo pela Técnica"
         },
         "Li Tudo": {
-          "alcanca": "duas perícias nomeadas (2)",
-          "relogio": "por cena"
+          "relogio": "por cena",
+          "ramo": "Corpo pela Técnica"
         },
         "Sentido Treinado": {
-          "alcanca": "maldição (1)",
-          "relogio": "por cena"
+          "relogio": "por cena",
+          "ramo": "Sem Energia"
         },
         "Couro": {
-          "alcanca": "Teste de Resistência Físico (1)",
-          "relogio": "por cena"
+          "relogio": "por descanso curto",
+          "ramo": "Sem Energia"
         },
         "Ninguém Viu": {
-          "alcanca": "Furtividade (1)",
-          "relogio": "por cena"
+          "relogio": "por cena",
+          "ramo": "Sem Energia"
         },
         "No Braço": {
-          "alcanca": "qualquer perícia de Força ou Destreza",
-          "relogio": "por dia"
-        },
+          "relogio": "por dia",
+          "ramo": "Sem Energia"
+        }
+      },
+      "Desliga": {
         "Peso Real": {
-          "alcanca": "ser enganado por barreira, véu e ferramenta",
-          "relogio": "sempre"
+          "relogio": "sem relógio",
+          "ramo": "os dois"
+        },
+        "Assinado": {
+          "relogio": "por descanso longo",
+          "ramo": "os dois"
         }
       }
-    },
-    "Sem Técnica": {}
+    }
   },
   "legados_formatos": {
-    "Destranca": "abre uma porta. Nunca mexe em acerto, CD ou dano. UM e' obrigatorio",
-    "Ajusta": "mexe num numero de uma rolagem: refaz um teste que falhou, ou da vantagem",
-    "Desliga": "apaga uma coisa que aconteceria com voce. Nao pede rolagem"
+    "Destranca": [
+      "Um Destranca abre uma porta: um lugar onde você é recebido, uma coisa que você sabe, uma pessoa que existe no mundo por sua causa.",
+      "Um deles é obrigatoriamente um Destranca, e Destranca é zero no dado."
+    ],
+    "Ajusta": [
+      "Um Ajusta mexe num número de uma rolagem."
+    ],
+    "Desliga": [
+      "Um Desliga apaga uma coisa que aconteceria com você, sempre que a situação aparecer, sem rolagem nenhuma."
+    ]
   },
   "progressao": {
     "faixa_jogavel": [
@@ -1270,7 +1237,7 @@
       26,
       30
     ],
-    "marco_entrega": "+1 ponto de atributo, +1 de refino e +1 espaço de feitiço, de graça",
+    "marco_entrega": "+1 ponto de atributo, +1 de refino e +1 espaço de feitiço",
     "formulas": {
       "maestria": "1 + quantos de (10,18,26) <= nivel      # manual p.192; NAO e' 'a cada 8 niveis'",
       "espacos": "2 + (nivel // 2) + marcos_alcancados",
@@ -1292,7 +1259,8 @@
         "classe": 1,
         "passiva": 1,
         "classe0": 2,
-        "entrega": "Fundamento, Passiva Livre, dois feitiços de"
+        "entrega": "Fundamento, Passiva Livre, dois feitiços de Classe 0",
+        "xp": "—"
       },
       "2": {
         "maestria": 1,
@@ -1301,7 +1269,8 @@
         "classe": 1,
         "passiva": 1,
         "classe0": 2,
-        "entrega": "degrau de Caminho · entrega de Trilha"
+        "entrega": "degrau de Caminho · entrega de Trilha · +1 espaço de feitiço",
+        "xp": "200"
       },
       "3": {
         "maestria": 1,
@@ -1310,7 +1279,8 @@
         "classe": 1,
         "passiva": 1,
         "classe0": 2,
-        "entrega": "—"
+        "entrega": "—",
+        "xp": "300"
       },
       "4": {
         "maestria": 1,
@@ -1319,7 +1289,8 @@
         "classe": 1,
         "passiva": 1,
         "classe0": 2,
-        "entrega": "—"
+        "entrega": "+1 espaço de feitiço",
+        "xp": "300"
       },
       "5": {
         "maestria": 1,
@@ -1328,7 +1299,8 @@
         "classe": 2,
         "passiva": 1,
         "classe0": 3,
-        "entrega": "Classe 2 · mais um Classe 0"
+        "entrega": "Classe 2 · mais um Classe 0",
+        "xp": "500"
       },
       "6": {
         "maestria": 1,
@@ -1337,7 +1309,8 @@
         "classe": 2,
         "passiva": 1,
         "classe0": 3,
-        "entrega": "marco"
+        "entrega": "marco · +2 espaços de feitiço",
+        "xp": "500"
       },
       "7": {
         "maestria": 1,
@@ -1346,7 +1319,8 @@
         "classe": 2,
         "passiva": 2,
         "classe0": 3,
-        "entrega": "degrau de Caminho · libera Passiva de"
+        "entrega": "degrau de Caminho · libera Passiva de Classe 2",
+        "xp": "500"
       },
       "8": {
         "maestria": 1,
@@ -1355,7 +1329,8 @@
         "classe": 2,
         "passiva": 2,
         "classe0": 3,
-        "entrega": "—"
+        "entrega": "+1 espaço de feitiço",
+        "xp": "700"
       },
       "9": {
         "maestria": 1,
@@ -1364,7 +1339,8 @@
         "classe": 3,
         "passiva": 2,
         "classe0": 3,
-        "entrega": "Classe 3"
+        "entrega": "Classe 3",
+        "xp": "700"
       },
       "10": {
         "maestria": 2,
@@ -1373,7 +1349,8 @@
         "classe": 3,
         "passiva": 2,
         "classe0": 3,
-        "entrega": "marco · 1ª Liberação Máxima"
+        "entrega": "marco · 1ª Liberação Máxima · +2 espaços de feitiço",
+        "xp": "700"
       },
       "11": {
         "maestria": 2,
@@ -1382,7 +1359,8 @@
         "classe": 3,
         "passiva": 2,
         "classe0": 4,
-        "entrega": "entrega de Trilha · mais um Classe 0"
+        "entrega": "entrega de Trilha · mais um Classe 0",
+        "xp": "900"
       },
       "12": {
         "maestria": 2,
@@ -1391,7 +1369,8 @@
         "classe": 3,
         "passiva": 2,
         "classe0": 4,
-        "entrega": "—"
+        "entrega": "+1 espaço de feitiço",
+        "xp": "900"
       },
       "13": {
         "maestria": 2,
@@ -1400,7 +1379,8 @@
         "classe": 4,
         "passiva": 3,
         "classe0": 4,
-        "entrega": "Classe 4 · libera Passiva de Classe 3"
+        "entrega": "Classe 4 · libera Passiva de Classe 3",
+        "xp": "900"
       },
       "14": {
         "maestria": 2,
@@ -1409,7 +1389,8 @@
         "classe": 4,
         "passiva": 3,
         "classe0": 4,
-        "entrega": "marco"
+        "entrega": "marco · +2 espaços de feitiço",
+        "xp": "1.100"
       },
       "15": {
         "maestria": 2,
@@ -1418,7 +1399,8 @@
         "classe": 4,
         "passiva": 3,
         "classe0": 4,
-        "entrega": "degrau de Caminho"
+        "entrega": "degrau de Caminho",
+        "xp": "1.100"
       },
       "16": {
         "maestria": 2,
@@ -1427,7 +1409,8 @@
         "classe": 4,
         "passiva": 3,
         "classe0": 4,
-        "entrega": "—"
+        "entrega": "+1 espaço de feitiço",
+        "xp": "1.100"
       },
       "17": {
         "maestria": 2,
@@ -1436,7 +1419,8 @@
         "classe": 5,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "Classe 5 · Técnica Máxima · mais um Classe"
+        "entrega": "Classe 5 · Técnica Máxima · mais um Classe 0",
+        "xp": "1.300"
       },
       "18": {
         "maestria": 3,
@@ -1445,7 +1429,8 @@
         "classe": 5,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "marco"
+        "entrega": "marco · +2 espaços de feitiço",
+        "xp": "1.300"
       },
       "19": {
         "maestria": 3,
@@ -1454,7 +1439,8 @@
         "classe": 5,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "entrega de Trilha"
+        "entrega": "entrega de Trilha",
+        "xp": "1.300"
       },
       "20": {
         "maestria": 3,
@@ -1463,7 +1449,8 @@
         "classe": 5,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "2ª Liberação Máxima"
+        "entrega": "2ª Liberação Máxima · +1 espaço de feitiço",
+        "xp": "1.500"
       },
       "21": {
         "maestria": 3,
@@ -1472,7 +1459,8 @@
         "classe": 6,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "Classe 6"
+        "entrega": "Classe 6",
+        "xp": "1.500"
       },
       "22": {
         "maestria": 3,
@@ -1481,7 +1469,8 @@
         "classe": 6,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "marco"
+        "entrega": "marco · +2 espaços de feitiço",
+        "xp": "1.500"
       },
       "23": {
         "maestria": 3,
@@ -1490,7 +1479,8 @@
         "classe": 6,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "—"
+        "entrega": "—",
+        "xp": "1.700"
       },
       "24": {
         "maestria": 3,
@@ -1499,7 +1489,8 @@
         "classe": 6,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "—"
+        "entrega": "+1 espaço de feitiço",
+        "xp": "1.700"
       },
       "25": {
         "maestria": 3,
@@ -1508,7 +1499,8 @@
         "classe": 6,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "—"
+        "entrega": "—",
+        "xp": "1.700"
       },
       "26": {
         "maestria": 4,
@@ -1517,7 +1509,8 @@
         "classe": 7,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "marco · Classe 7"
+        "entrega": "marco · Classe 7 · +2 espaços de feitiço",
+        "xp": "1.700"
       },
       "27": {
         "maestria": 4,
@@ -1526,7 +1519,8 @@
         "classe": 7,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "entrega de Trilha"
+        "entrega": "entrega de Trilha",
+        "xp": "1.700"
       },
       "28": {
         "maestria": 4,
@@ -1535,7 +1529,8 @@
         "classe": 7,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "—"
+        "entrega": "+1 espaço de feitiço",
+        "xp": "1.700"
       },
       "29": {
         "maestria": 4,
@@ -1544,7 +1539,8 @@
         "classe": 7,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "—"
+        "entrega": "—",
+        "xp": "1.700"
       },
       "30": {
         "maestria": 4,
@@ -1553,7 +1549,8 @@
         "classe": 7,
         "passiva": 3,
         "classe0": 5,
-        "entrega": "marco · degrau de Caminho · 3ª Liberação"
+        "entrega": "marco · degrau de Caminho · 3ª Liberação Máxima · +2 espaços de feitiço",
+        "xp": "—"
       }
     },
     "xp": "nao automatizar: o jogador digita o nivel direto (decisao do Mizuki)"

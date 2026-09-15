@@ -140,6 +140,165 @@ _sobra = [r for r in _ROT if r not in _tm + _st + _fu]
 if _sobra: falhas.append(f"rotas que nenhuma frase do manual cobre: {_sobra}")
 print(f"  [{'OK' if not _sobra else 'FALHA'}] as {len(_ROT)} rotas estão todas cobertas por uma frase do manual")
 
+print("\nAS SEIS CHAVES QUE FALTAVAM, CONTRA O MANUAL")
+# v0.240 do sistema, 15/09/2026. Atributos, Fundamento, Origens, Legados, formatos de Legado e
+# progressao nunca tinham sido conferidos contra o livro. Os Legados estavam catorze entradas atras
+# -- um `Sem Patente` e um `Nunca Estive La` que o livro nao tem, sete Desliga faltando --, a entrega
+# de dezoito niveis estava cortada, e so duas Origens tinham a frase de abertura. Tudo aqui sai do
+# manual.txt, e nenhum nome ou numero esta escrito nesta secao.
+import math
+
+def _norm(s):
+    s = " ".join(s.split())
+    s = s.replace("‐ ", "")                      # a hifenizacao de fim de linha do pdftotext
+    return re.sub(r" ([,.;:)])", r"\1", s)            # e o espaco antes da pontuacao, depois de codigo
+MANN = _norm(open("manual.txt", encoding="utf-8").read())
+
+def _ok(nome, cond, det=""):
+    if not cond: falhas.append(nome)
+    print(f"  [{'OK' if cond else 'FALHA'}] {nome}" + (f"  <- {det}" if det and not cond else ""))
+
+def _num(p):
+    return int(p) if p.isdigit() else EXT.get(p.lower())
+
+# --- atributos
+A = CAT["atributos"]
+_ma = re.search(r"((?:[A-ZÁÉÍÓÚ]\w+ · ){4}[A-ZÁÉÍÓÚ]\w+) O número é o modificador, numa escala de (\d+) a (\d+)\.", MANN)
+_mc = re.search(r"(\w+) pontos entre os (\w+) atributos\. Nenhum acima de (\d+)\.", MANN)
+_ok("atributos: a lista, a escala e a criação são as do livro",
+    bool(_ma and _mc) and A["lista"] == _ma.group(1).split(" · ") and A["escala"] == [int(_ma.group(2)), int(_ma.group(3))]
+    and A["criacao"] == {"pontos": _num(_mc.group(1)), "teto_por_atributo": int(_mc.group(3))} and _num(_mc.group(2)) == len(A["lista"])
+    and "pagina" not in A, f"{A} · {_ma.group(0) if _ma else None} · {_mc.group(0) if _mc else None}")
+
+# --- origens
+_mo = re.search(r"São (\w+) Origens\. (\w+) principais \(([^)]*)\) e (\w+) especiais, ([^.]+)\.", MANN)
+_nomes = lambda s: [x.strip() for x in re.split(r",| e ", s) if x.strip()]
+if _mo:
+    _pr, _es = _nomes(_mo.group(3)), _nomes(_mo.group(5))
+    _ok("origens: as sete do livro, e as especiais marcadas",
+        list(CAT["origens"]) == _pr + _es and _num(_mo.group(1)) == 7 == len(_pr) + len(_es)
+        and all(bool(CAT["origens"][o].get("especial")) == (o in _es) for o in CAT["origens"]), _mo.group(0))
+else:
+    _ok("origens: as sete do livro, e as especiais marcadas", False, "a frase das Origens sumiu")
+_sem = [o for o, v in list(CAT["origens"].items()) + list(CAT["sub_origem"].items()) if _norm(v.get("em_uma_linha", "")) not in MANN or not v.get("em_uma_linha")]
+_ok("origens: a frase de abertura de cada uma está no livro", not _sem, str(_sem))
+
+# --- legados, lidos do manual.txt
+def _relogio(txt):
+    m = re.search(r"[Uu]ma vez por (cena|dia|descanso curto|descanso longo)", txt)
+    return "por " + m.group(1) if m else "sem relógio"
+_CAB = {"Legados da Latente": "Latente", "Legados do Receptáculo": "Receptáculo", "Legados do Descendente": "Descendente",
+        "Legados do Reencarnado": "Reencarnado", "Legados do Feto": "Feto", "Legado de Sem Técnica": "Sem Técnica",
+        "Legados do Corpo Amaldiçoado": "Corpo Amaldiçoado", "Legados: Corpo pela Técnica": "RC:Corpo pela Técnica",
+        "Legados: Sem Energia": "RC:Sem Energia", "Legados: Desliga": "RC:Desliga", "Criar o seu Legado": None}
+_lido, _st = {}, {"atual": None, "fmt": None, "nome": None, "texto": []}
+def _fecha():
+    e = _st
+    if e["atual"] and e["nome"]:
+        o, ramo = (e["atual"].split(":", 1) if e["atual"].startswith("RC:") else (e["atual"], None))
+        o = next((x for x in CAT["origens"] if x.startswith("Restrição")), o) if ramo else o
+        f = "Desliga" if ramo == "Desliga" else (e["fmt"] or "Destranca")
+        v = {"relogio": _relogio(" ".join(e["texto"]))}
+        if ramo: v["ramo"] = "os dois" if ramo == "Desliga" else ramo
+        _lido.setdefault(o, {}).setdefault(f, {})[e["nome"]] = v
+    e["nome"], e["texto"] = None, []
+for _raw in open("manual.txt", encoding="utf-8").read().split("\n"):
+    s = re.sub(r"^\d{1,2}\s{2,}", "", _raw.strip())          # o numero da margem gruda no comeco da linha
+    if ". . ." in s: continue
+    if s in _CAB:
+        _fecha(); _st["atual"], _st["fmt"] = _CAB[s], None
+        if _CAB[s] is None and _lido: break
+        continue
+    if _st["atual"] is None: continue
+    if s and s.upper() == s and s.replace(" ", "") in ("DESTRANCA", "AJUSTA", "DESLIGA"):
+        _fecha(); _st["fmt"] = s.replace(" ", "").capitalize(); continue
+    _me = re.match(r"^([A-ZÁÉÍÓÚÂÊÔÃÕÇ][^—:.]{0,38}?) — (.*)", s)
+    if _me and not s.startswith(("Na mesa", "Exemplo")):
+        _fecha(); _st["nome"], _st["texto"] = _me.group(1).strip(), [_me.group(2)]; continue
+    if s.startswith("Na mesa"): _fecha(); continue
+    if _st["nome"]: _st["texto"].append(s)
+_fecha()
+_n_leg = sum(len(v) for o in _lido.values() for v in o.values())
+_dif = [(o, f) for o in set(_lido) | set(CAT["legados"]) for f in ("Destranca", "Ajusta", "Desliga")
+        if _lido.get(o, {}).get(f, {}) != CAT["legados"].get(o, {}).get(f, {})]
+_ok(f"legados: os {_n_leg} do livro, com formato, relógio e ramo", _n_leg > 0 and not _dif and list(_lido) == list(CAT["legados"]), str(_dif[:3]))
+_fr = [f for f, frases in CAT["legados_formatos"].items() for x in frases if _norm(x) not in MANN]
+_ok("legados: a frase de cada formato está no livro", set(CAT["legados_formatos"]) == {"Destranca", "Ajusta", "Desliga"} and not _fr, str(_fr))
+
+# --- progressao
+PR = CAT["progressao"]
+_TAB, _LIN = {}, open("manual.txt", encoding="utf-8").read().split("\n")
+_cap = next((i for i, l in enumerate(_LIN) if " ".join(l.split()) == "PROGRESSÃO POR NÍVEL"), len(_LIN))
+for _raw in _LIN[_cap:]:
+    s = re.sub(r"\s+", " ", _raw.strip())
+    # o numero da margem pode vir grudado antes do nivel: foi assim que o 23 sumiu na v0.240
+    m = re.match(r"^(?:\d{1,2} )?(\d{1,2}) ([\d.]+|—) (\d) (\d{1,2}) (\d) (\d) (\d) (\d)(?: (.*))?$", s)
+    if m and 1 <= int(m.group(1)) <= 30 and int(m.group(1)) not in _TAB:
+        _TAB[int(m.group(1))] = (m.group(2), [int(m.group(i)) for i in range(3, 9)], _norm(m.group(9) or "—"))
+    if len(_TAB) == 30:
+        break
+_col = ("maestria", "espacos", "refino", "classe", "passiva", "classe0")
+_pr_ruim = [n for n, (xp, nums, ent) in _TAB.items()
+            if PR["tabela_impressa"].get(str(n), {}).get("xp") != xp
+            or [PR["tabela_impressa"][str(n)][c] for c in _col] != nums
+            or not (_norm(PR["tabela_impressa"][str(n)]["entrega"]).startswith(ent)
+                    or _norm(PR["tabela_impressa"][str(n)]["entrega"]).startswith(re.sub(r" \d{1,3}$", "", ent)))]
+_ok("progressão: as 30 linhas da tabela, com XP e o começo da entrega de cada uma",
+    sorted(_TAB) == list(range(1, 31)) and len(PR["tabela_impressa"]) == 30 and not _pr_ruim, str(_pr_ruim[:5]))
+_mm = re.search(r"chega a um marco: os níveis ((?:\d+, )+\d+ e \d+)\.", MANN)
+_ok("progressão: os marcos são os do livro", bool(_mm) and PR["marcos"] == [int(x) for x in re.findall(r"\d+", _mm.group(1))],
+    _mm.group(0) if _mm else None)
+_ok("progressão: o que todo marco dá de graça", "De graça, em todo marco: " + PR["marco_entrega"] + "." in MANN)
+_ml = re.search(r"rompe o limite de dano num alvo só\. Nos níveis ((?:\d+, )*\d+ e \d+)\.", MANN)
+_ok("progressão: a Liberação Máxima nos níveis do livro",
+    bool(_ml) and sorted(int(k) for k in PR["liberacao_maxima"]) == [int(x) for x in re.findall(r"\d+", _ml.group(1))])
+_mi = re.search(r"Integridade = ([^.]+)\.", MANN)
+_ok("progressão: a Integridade é a do livro", bool(_mi) and PR["formulas"]["integridade"].split("#")[0].strip()
+    == _mi.group(1).replace("×", "*").replace("−", "-").replace("nível", "nivel"), _mi.group(0) if _mi else None)
+_ok("progressão: a ficha começa no nível 2 e vai ao 30", "A ficha começa no nível " + str(PR["faixa_jogavel"][0]) in MANN
+    and PR["faixa_jogavel"][1] == max(_TAB))
+
+# --- fundamento
+FU = CAT["fundamento"]
+_NM = []
+for _raw in open("manual.txt", encoding="utf-8").read().split("\n"):
+    s = re.sub(r"\s+", " ", _raw.strip())
+    m = re.match(r"^([1-7]) (\d{1,2}) (\d{1,2}) (\d) (\d) (\d{1,2}) (\d{1,2}) \+(\d) (\d{1,2}) \d+d8 = \d+ \d+d8 = \d+(?: \d{1,3})?$", s)
+    if m and int(m.group(1)) == len(_NM) + 1:
+        _NM.append([int(x) for x in m.groups()])
+def _conta(expr, c):
+    return math.ceil(eval(expr.replace(" x ", " * ").replace("Classe", str(c))))
+_mt = re.search(r"teto (\d+) x Classe", FU["teto_e_liberacao"])
+_marcos_cl = [int(x) for x in re.search(r"\(([\d,]+)\)", PR["formulas"]["classe"]).group(1).split(",")]
+_nm_ruim = [r for r in _NM if [r[2], r[3], r[4], r[5], r[6], r[7], r[8]] != [
+    _conta(FU["pontos_por_feitico"], r[0]), _conta(FU["preco_melhoria"]["Leve"], r[0]), _conta(FU["preco_melhoria"]["Media"], r[0]),
+    _conta(FU["preco_melhoria"]["Pesada"], r[0]), _conta(FU["restricao_teto_devolucao"], r[0]), r[0],
+    int(_mt.group(1)) * r[0] if _mt else -1] or r[1] != _marcos_cl[r[0] - 1]]
+_ok("fundamento: pontos, preços de Melhoria, devolução, Liberação e teto reproduzem a tabela Números da montagem",
+    len(_NM) == 7 and not _nm_ruim and FU["custo_em_pe"] == FU["pontos_por_feitico"], f"{len(_NM)} linhas · {_nm_ruim[:2]}")
+_frases_fu = {
+    "custo_em_pe": "Custo em PE = 3 × Classe (o mesmo número dos pontos)",
+    "ponto_nao_gasto": "Cada ponto que você não gastar em mais nada " + FU["ponto_nao_gasto"],
+    "arredondamento": "O que você paga sobe. O que você ganha desce. E o que você ganha nunca fica abaixo de 1.",
+    "desconto_familia_livre": "as Melhorias delas custam metade da Classe a menos, com mínimo de 1 ponto",
+    "restricao_so_paga_melhoria": "A devolução das Restrições nunca passa do que você gastou em Melhoria",
+    "limite_contra_um_alvo": "Só a Liberação Máxima passa dos pontos da Classe em dano contra um alvo só",
+    "teto_e_liberacao": "Teto de dano = " + (_mt.group(1) if _mt else "?") + " × Classe em dados",
+}
+_fal_fu = [k for k, fr in _frases_fu.items() if _norm(fr) not in MANN or k not in FU]
+_ok("fundamento: cada regra tem a frase dela no livro", not _fal_fu, str(_fal_fu))
+_mf = re.search(r"(\w+) Livres e (\w+) Fechadas", MANN)
+_mr = re.search(r"Uma Restrição devolve Leve ou Média, nunca (\w+)", MANN)
+_n2 = PR["tabela_impressa"]["2"]
+_ok("fundamento: as Famílias, a Restrição que nunca devolve e o nível 2",
+    bool(_mf and _mr) and [_num(_mf.group(1)), _num(_mf.group(2))] == [FU["familias_livres"], FU["familias_fechadas"]]
+    and FU["restricao_nunca_devolve"] == _mr.group(1)
+    and FU["nivel_2"] == {"classe": _n2["classe"], "feiticos_classe_0_gratis": _n2["classe0"], "feiticos_conhecidos": _n2["espacos"]})
+_ok("fundamento: as Melhorias que espalham dano existem no manual",
+    all(m in CAT["melhorias"] for m in FU["espalham_dano_e_contam_no_teto"]) and len(FU["espalham_dano_e_contam_no_teto"]) > 0)
+_ok("as chaves conferidas cobrem o catálogo inteiro", not CAT["_meta"]["nao_conferido_contra_o_livro"],
+    str(CAT["_meta"]["nao_conferido_contra_o_livro"]))
+
 print("\nTRAVAS DE ESTRUTURA")
 sem_pericia = [a for a in CAT["atributos"]["lista"]
                if not any(v["atributo"] == a for v in CAT["pericias"].values())]
