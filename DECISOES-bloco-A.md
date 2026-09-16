@@ -74,9 +74,11 @@ E o catálogo inteiro dá 245 linhas. Nesse tamanho, "fica mais lento" não é p
 
 ---
 
-## A3 · `Rápido` + `Atrasar` vira trava só na ficha
+## A3 · `Rápido` + `Atrasar` vira trava na ficha, e desde a v0.246 do sistema também no manual
 
-A ficha recusa a montagem. **O manual fica calado.**
+A ficha recusa a montagem. ~~**O manual fica calado.**~~
+
+> **⚠ O manual escreve o veto desde a v0.246 do sistema**, *decisão do Mizuki em 16/09/2026: "Pode travar no livro também".* **Testando a mesma leitura nas outras Restrições, apareceram mais dois pares:** *a `Reação` com o `Atrasar` e com o `Parado`, que só cobram recurso do turno em que você conjura, e a Reação sai no turno de outro.* ***Decisão dele: "Vetar".*** **A régua mora na peça 3 §4 do sistema**, e o B6 do `PENDENCIAS.md` fechou.
 
 > **A Restrição se chamava `Lento`, e virou `Atrasar` no sistema na v0.139**, *porque o nome carregava duas regras: a condição `Lento` continua existindo.* **O par é o mesmo, e o catálogo desta pasta seguiu o nome novo em 14/09/2026.**
 
@@ -96,9 +98,9 @@ Classe  orçamento  Rápido custa  Atrasar devolve  economia  % do orçamento
 
 Um terço do orçamento, em toda Classe. E com a Família Tempo Livre, o `Rápido` — a Pesada mais forte da Família — sai **de graça**.
 
-### O que fica em aberto, e é escolha registrada
+### ~~O que fica em aberto, e é escolha registrada~~ — fechado na v0.246 do sistema
 
-O manual continua sem a frase. Então **quem monta feitiço no papel ou no gerador do manual continua com o desconto disponível**, e continua dependendo de o mestre perceber.
+*Registro do que valia até a v0.245:* o manual continua sem a frase. Então **quem monta feitiço no papel ou no gerador do manual continua com o desconto disponível**, e continua dependendo de o mestre perceber.
 
 Isso é dívida conhecida, não descuido. Está no `PENDENCIAS.md` como B6.
 
@@ -106,14 +108,16 @@ Isso é dívida conhecida, não descuido. Está no `PENDENCIAS.md` como B6.
 
 ### O que a ficha checa
 
-Duas incompatibilidades, e elas têm fontes diferentes:
+Quatro incompatibilidades, e desde a v0.246 do sistema as quatro têm a mesma fonte:
 
 | par | fonte |
 |---|---|
 | `Rápido` + `Reação` | **manual**, tabela da Família Tempo |
-| `Rápido` + `Atrasar` | **ficha**, decisão A3 |
+| `Rápido` + `Atrasar` | **manual** desde a v0.246 — até lá, **ficha**, decisão A3 |
+| `Reação` + `Atrasar` | **manual**, desde a v0.246 |
+| `Reação` + `Parado` | **manual**, desde a v0.246 |
 
-A primeira nunca tinha sido automatizada em lugar nenhum, apesar de estar escrita. Entra junto.
+A primeira nunca tinha sido automatizada em lugar nenhum, apesar de estar escrita. Entra junto. *O `conferir-decisoes.py` procura cada par na linha da Melhoria dele na tabela, para o veto do `Rápido` não valer pela `Reação`.*
 
 ---
 

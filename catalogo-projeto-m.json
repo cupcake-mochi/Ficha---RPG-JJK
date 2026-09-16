@@ -557,12 +557,12 @@
     "Rápido": {
       "familia": "Tempo",
       "peso": "Pesada",
-      "efeito": "Custa Ação Bônus em vez de Ação Padrão. Não entra no mesmo feitiço que Reação."
+      "efeito": "Custa Ação Bônus em vez de Ação Padrão. Não entra no mesmo feitiço que Reação nem com a Restrição Atrasar."
     },
     "Reação": {
       "familia": "Tempo",
       "peso": "Pesada",
-      "efeito": "Você conjura como Reação, a um gatilho que você declara quando monta o feitiço. Não entra no mesmo feitiço que Rápido nem que Armado."
+      "efeito": "Você conjura como Reação, a um gatilho que você declara quando monta o feitiço. Não entra no mesmo feitiço que Rápido nem que Armado, nem com as Restrições Atrasar e Parado."
     },
     "Armado": {
       "familia": "Tempo",
@@ -627,7 +627,7 @@
     "Levanta": {
       "familia": "Amparo",
       "peso": "Pesada",
-      "efeito": "Um aliado caído em 0 pontos de vida volta com 5 × Classe. Uma vez por cena."
+      "efeito": "Um aliado caído em 0 pontos de vida volta de pé com 5 × Classe, seja qual for a vida máxima dele. Uma vez por cena."
     },
     "Divide": {
       "familia": "Amparo",

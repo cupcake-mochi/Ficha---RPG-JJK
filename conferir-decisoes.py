@@ -90,8 +90,14 @@ for par in DEC["A3_incompatibilidades"]["pares"]:
              (par["b"] in CAT["melhorias"] or par["b"] in CAT["restricoes"])
     checa(f"o par {par['a']} + {par['b']} nomeia pecas que existem", existe)
     if par["fonte"] == "manual":
-        checa(f"  ...e o manual escreve mesmo esse par",
-              f"Não entra no mesmo feitiço que {par['b']}" in MAN,
+        # v0.246 do sistema: o veto das Restricoes vem depois do das Melhorias, na mesma
+        # frase ("...que Reação nem com a Restrição Atrasar ."). A busca fica presa na linha
+        # da Melhoria `a` da tabela Tempo, para o veto do `Rápido` nao valer pela `Reação`.
+        _linha = re.search(r"\b" + re.escape(par["a"]) + r"\s+(?:Leve|Média|Pesada)\s+(.{0,400}?)"
+                           r"(?=\s\S+\s+(?:Leve|Média|Pesada)\s|$)", MAN)
+        _frase = _linha and re.search(r"Não entra no mesmo feitiço que(?:\s+\S+){0,14}?\s+"
+                                      + re.escape(par["b"]) + r"\b", _linha.group(1))
+        checa(f"  ...e o manual escreve mesmo esse par, na linha do {par['a']}", bool(_frase),
               "declarado como fonte 'manual' sem estar escrito la")
 
 # ---------------------------------------------------------------- 3

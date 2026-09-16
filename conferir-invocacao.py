@@ -555,8 +555,11 @@ checa("o capitulo 35 NAO chama mais aquela rota de Casco",
 print()
 print("   a Voz aponta para um numero que o sistema nao produz — e a ficha")
 print("   marca como pendente em vez de chutar")
+# v0.246 do sistema: a guarda so via " CD ", "CD da" e "CD dela", e ficava verde em 8 de 10
+# jeitos de escrever a formula -- inclusive a linha "| **CD** | ... |" no molde da tabela
+# da ficha dela. Agora qualquer CD em palavra inteira acende.
 checa("o capitulo 16 nao escreve NENHUMA formula de CD para a invocacao",
-      " CD " not in CAP and "CD da" not in CAP and "CD dela" not in CAP,
+      re.search(r"\bCD\b", CAP) is None,
       "achei CD no capitulo 16: se ela ganhou formula, a pendencia da Voz fechou")
 checa("o json registra a pendencia da Voz", "PENDENTE" in S["rotas"]["Voz"])
 checa("a nota que vai PARA A FICHA existe e esta em portugues de gente",

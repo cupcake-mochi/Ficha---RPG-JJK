@@ -71,9 +71,10 @@ def daltonismo_ruim(d):
 perturba("dois degraus que viram a mesma cor", daltonismo_ruim, "pior caso de daltonismo")
 
 def fonte_mentirosa(d):
-    for p in d["A3_incompatibilidades"]["pares"]:
-        if p["b"] == "Atrasar":
-            p["fonte"] = "manual"                          # o manual NAO escreve esse par
+    # desde a v0.246 do sistema o manual escreve os tres vetos das Restricoes; o
+    # `Rápido` + `Parado` continua legal, entao declarar ele como do manual e mentira
+    d["A3_incompatibilidades"]["pares"].append(
+        {"a": "Rápido", "b": "Parado", "fonte": "manual", "texto": "", "onde": ""})
 perturba("par da ficha declarado como do manual", fonte_mentirosa, "o manual escreve mesmo esse par")
 
 def peca_fantasma(d):

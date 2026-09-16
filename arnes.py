@@ -24,6 +24,8 @@ PERTURBACOES = [
                                "familias_livres": ["Castigo","Área"], "familias_fechadas": ["Amparo","Mira","Tempo"]}, "R2b"),
     ("A3 Rapido + Atrasar",   {**BASE, "melhorias": ["Rápido"], "restricoes": ["Atrasar"]}, "A3"),
     ("A3 Rapido + Reacao",    {**BASE, "melhorias": ["Rápido","Reação"], "restricoes": []}, "A3"),
+    ("A3 Reacao + Atrasar",   {**BASE, "melhorias": ["Reação"], "restricoes": ["Atrasar"]}, "A3"),
+    ("A3 Reacao + Parado",    {**BASE, "melhorias": ["Reação"], "restricoes": ["Parado"]}, "A3"),
 ]
 for nome, f, esperado in PERTURBACOES:
     erros = conferir(f)["erros"]
@@ -38,6 +40,8 @@ SOZINHAS = [
     ("so Rapido, sem Atrasar", {**BASE, "melhorias": ["Rápido"], "restricoes": ["Gesto"]}),
     ("so Atrasar, sem Rapido", {**BASE, "melhorias": ["Precisão"], "restricoes": ["Atrasar"]}),
     ("so Reacao, sem Rapido", {**BASE, "melhorias": ["Reação"], "restricoes": ["Gesto"]}),
+    # v0.246 do sistema: o Parado cobra no Rapido, porque o movimento e recurso separado
+    ("Rapido + Parado",       {**BASE, "melhorias": ["Rápido"], "restricoes": ["Parado"]}),
 ]
 for nome, f in SOZINHAS:
     a3 = [e for e in conferir(f)["erros"] if e.startswith("A3")]

@@ -65,25 +65,39 @@
     }
   },
   "A3_incompatibilidades": {
-    "escolha": "trava so na ficha; o manual fica calado",
+    "escolha": "trava na ficha e no manual: o manual passou a escrever o veto na v0.246 do sistema",
     "pares": [
       {
         "a": "Rápido",
         "b": "Reação",
         "fonte": "manual",
-        "texto": "Nao entra no mesmo feitico que Reacao.",
-        "onde": "manual, tabela da Familia Tempo"
+        "texto": "Não entra no mesmo feitiço que Reação",
+        "onde": "manual, tabela da Família Tempo"
       },
       {
         "a": "Rápido",
         "b": "Atrasar",
-        "fonte": "ficha",
-        "texto": "Um diz Acao Bonus, o outro diz rodada inteira.",
-        "onde": "decisao A3"
+        "fonte": "manual",
+        "texto": "nem com a Restrição Atrasar",
+        "onde": "manual, tabela da Família Tempo, desde a v0.246 do sistema"
+      },
+      {
+        "a": "Reação",
+        "b": "Atrasar",
+        "fonte": "manual",
+        "texto": "nem com as Restrições Atrasar e Parado",
+        "onde": "manual, tabela da Família Tempo, desde a v0.246 do sistema"
+      },
+      {
+        "a": "Reação",
+        "b": "Parado",
+        "fonte": "manual",
+        "texto": "nem com as Restrições Atrasar e Parado",
+        "onde": "manual, tabela da Família Tempo, desde a v0.246 do sistema"
       }
     ],
-    "o_que_fica_exposto": "quem monta feitico no papel ou no gerador continua com o desconto",
-    "tamanho_do_desconto": "um terco do orcamento em toda Classe; com a Familia Tempo Livre, o Rapido sai de graca"
+    "o_que_fica_exposto": "nada desde a v0.246 do sistema: o manual escreve os tres vetos, e quem monta no papel tambem esbarra neles",
+    "tamanho_do_desconto": "um terco do orcamento em toda Classe, pelo Atrasar; o Parado devolve Leve"
   },
   "A4_reservas": {
     "escolha": "os dois",
@@ -146,7 +160,13 @@
     "escolha": "o Evocador VOLTOU ao menu de Caminhos da ficha. Ele saiu em 18/08/2026, por enquanto, e em 14/09/2026 o Mizuki confirmou no B18 que ele volta: a planilha viva ja o trazia",
     "motivo": "o Caminho existe no manual, mas as entregas de Trilha (niveis 2, 11, 19 e 27) estao em escrita, o Casco diz 'mais vida' sem numero, e a ficha da invocacao (manual cap.14, p.180) nao existe em versao nenhuma da ficha",
     "o_catalogo_NAO_muda": "o catalogo espelha o manual, e o manual tem cinco Caminhos. Quem some e a OPCAO no menu da ficha, nao a entrada no catalogo",
-    "caminhos_no_menu": ["Bastião", "Vanguarda", "Guia", "Emanador", "Evocador"],
+    "caminhos_no_menu": [
+      "Bastião",
+      "Vanguarda",
+      "Guia",
+      "Emanador",
+      "Evocador"
+    ],
     "caminho_oculto": null,
     "a_ficha_diz": "os cinco Caminhos no menu. Ate 14/09/2026 ela dizia Evocador — em escrita, fale com o mestre",
     "quando_volta": "voltou em 14/09/2026, quando as entregas de Trilha, o numero do Parrudo e a ficha da invocacao ja existiam",
@@ -302,7 +322,14 @@
       "o Selo desenhado como carimbo, e ele e a unica coisa vermelha da pagina",
       "assimetria: lombada escura na lateral, conteudo deslocado"
     ],
-    "abas": ["CARTEIRA", "FICHA", "DADOS", "INVOCAÇÃO", "CATÁLOGO", "DADOS_INV"],
+    "abas": [
+      "CARTEIRA",
+      "FICHA",
+      "DADOS",
+      "INVOCAÇÃO",
+      "CATÁLOGO",
+      "DADOS_INV"
+    ],
     "abas_em_14_09": "as seis da planilha viva. A MESA e a QUEM É sairam, e o Mizuki decidiu no B18: \"Ainda vamos manter sem, por enquanto\"",
     "aba_removida": {
       "nome": "TÉCNICA",

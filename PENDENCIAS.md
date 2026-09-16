@@ -13,7 +13,7 @@ Cada item traz **o que está em aberto**, **por que importa**, as **opções com
 | A1 · onde o catálogo mora | cópia local fixa, com uma célula puxando a versão corrente da central |
 | A2 · vida e energia temporárias | não acumulam, fica a maior · teto de metade do máximo · some no fim da cena · gasta primeiro |
 | A2b · onde a regra mora | **aplicada no sistema**: capítulo 1, *Vida, energia e alma* |
-| A3 · `Rápido` + `Atrasar` | trava na ficha; o manual fica calado |
+| A3 · `Rápido` + `Atrasar` | trava na ficha e, desde a v0.246 do sistema, no manual — com a `Reação` + `Atrasar` e `Parado` junto |
 | A4 · vida e PE | atual editável **e** caixinha de delta, os dois |
 | A5 · o acento colorido | cor de estado no número: osso → âmbar → vermelho |
 
@@ -59,7 +59,21 @@ A Kaori é nível 2, e ela já deixou passar **dois** defeitos:
 
 **Precisa de uma ficha de nível alto** (15 ou mais) como segundo caso, e de preferência com Famílias Livres que a Kaori não usa. Quem é esse personagem é escolha sua.
 
-### B3 · Equipamento entra na ficha?
+### B3 · Equipamento entra na ficha? — **DECIDIDO em 16/09/2026: opção A, e falta construir**
+
+> **⚠ O texto abaixo está velho em duas coisas.** *A planilha viva já tem o campo `EQUIPAMENTO` (`Z40` da FICHA), que troca a proteção passiva pelo número digitado; e o capítulo de equipamento do livro é o 50, e não o 12.* **O defeito continua, medido em 21.632 combinações legais de nível, Destreza, refino, uniforme e escudo:**
+>
+> | como o jogador preenche o `Z40` | saem erradas | pior erro |
+> |---|---|---|
+> | vazio | `80,8%` | `7` — nível 6, Revestimento 2 + Torre, Destreza 0: livro `18`, planilha `11` |
+> | com a proteção certa | `52,4%` | `6` — a `D40` ignora o teto de Destreza |
+>
+> *Digitar `Traje 2` no campo dá `#VALUE!` na Defesa e no Bloquear.*
+>
+> ***Decisão do Mizuki: opção A*** — **um menu com as 27 combinações de uniforme e escudo, e a tabela na `DADOS`.** *Sobra erro em `8,4%` das combinações, de até `2`, e ele é todo do refino escolhido nos marcos: a planilha só conhece o `REFINO DE GRAÇA` (`O54`), e a linha "Refino Atual" da página de aptidões imprime ele.* **Em aberto: se entra um campo de escolhas de Refino.** *A tabela do menu precisa de dono — a proposta é uma chave nova no catálogo, conferida contra o `manual.txt`.*
+>
+> *A medida, as fórmulas das três opções e o recálculo no LibreOffice estão em `Claude/agentes-2026-09-16/b3-conta/`, fora deste repositório.* **A ficha de papel do sistema também dizia que o escudo desligava a proteção, e isso fechou na v0.246 de lá.**
+
 
 A ficha de papel não tem campo de equipamento, mas o capítulo 12 existe e **Traje e Revestimento desligam a proteção inicial**, que entra na Defesa.
 
@@ -121,7 +135,10 @@ mexe no manual publicado. Fica registrado.
 > `set(condicoes) & set(restricoes)`, e derivá-la faz um nome novo ganhar rótulo
 > sozinho.*
 
-### B6 · O desconto do `Rápido` + `Atrasar` continua disponível fora da ficha
+### B6 · O desconto do `Rápido` + `Atrasar` continua disponível fora da ficha — **FECHADO em 16/09/2026, na v0.246 do sistema**
+
+**Como fechou.** *O manual e o livro passaram a escrever o veto no `Rápido`, e a mesma leitura achou a `Reação` com o `Atrasar` e com o `Parado`.* **Os quatro pares da A3 têm fonte `manual` agora**, *o `manual.txt` foi reextraído do livro da v0.246, e o `catalogo-projeto-m.json` levou o texto novo do `Rápido`, da `Reação` e do `Levanta`.* **O `arnes.py` ganhou os dois pares da `Reação` e o `Rápido` + `Parado` como contra-teste, que fica quieto.**
+
 
 > *A Restrição se chamava `Lento` quando este item foi escrito.*
 
@@ -256,7 +273,20 @@ virando `Parrudo` com número na **v0.184/v0.185**, e a ficha da invocação no
 **B9** desta rodada. A decisão de o Evocador voltar ao menu continua sendo do
 Mizuki, e agora ela está declarada em vez de implícita.
 
-### B13 · A `Voz` soma um número que não existe
+### B13 · A `Voz` soma um número que não existe — **FORMA DECIDIDA em 16/09/2026, e falta a regra**
+
+> ***Decisão do Mizuki: forma B*** — **`CD dos efeitos dela = 8 + atributo dela + maestria do dono`**, *no molde do Teste de Resistência dela.* **Ela vai entrar junto da revisão das invocações**, *que ele anunciou.* **O que ainda falta decidir:**
+>
+> - *qual atributo dela entra: escolhido na montagem, como o TR treinado, ou pelo efeito;*
+> - *quais Traços e Comandos pedem TR — hoje nenhum diz como resolve (`Fisgada`, `Jorro`, `Graúdo`, `Agarrar`, `Arrastar`, `Chamariz`);*
+> - *o `Preito` do `Servo` (capítulo 35) também soma metade da maestria nessa CD, e não aparecia aqui.*
+>
+> **Metade de maestria `1` vale `1`**, *decisão dele na v0.246 do sistema: a `Voz` fica `+1` do nível 2 ao 25 e `+2` do 26 em diante.* **A guarda do `conferir-invocacao.py` estava cega**: *ficava verde em 8 de 10 jeitos de escrever a CD. Agora qualquer `CD` em palavra inteira no capítulo 16 acende, e acendeu na perturbação com a linha de tabela.*
+>
+> **O `Jorro` ataca e empurra**, *decisão dele: o livro dizia "ataca" e a peça 15 dizia "empurra".* **O capítulo 16 vendorizado, o `invocacao.json` e a `ficha-invocacao.xlsx` foram atualizados.** ***Na sua mão:*** *a aba `CATÁLOGO` da ficha viva ainda diz "ataca em linha ou em área" na `P16`, porque ela vem da exportação da planilha.* **Outras duas entradas mudam regra entre o livro e a peça 15 e ficam para a revisão:** *a `Montaria` ("uma pessoa" contra "uma pessoa ou mais") e o `Remoto` (a peça fala em gate fora da cena).*
+>
+> *A pesquisa em outros sistemas e as tabelas de CD por nível estão em `Claude/agentes-2026-09-16/b13-pesquisa/`, fora deste repositório.*
+
 
 Achado montando a ficha da invocação, e é a mesma forma do B8.
 
@@ -548,6 +578,12 @@ ninguém apertar o gatilho por engano.*
 **O `conferir-catalogo.py` lê as seis do `manual.txt`**, *reextraído do livro da v0.240 — os dezesseis validadores passaram com ele antes da troca.* **Os preços de Melhoria, a devolução, a Liberação e o teto são recalculados classe a classe pela tabela `Números da montagem`.** *A lista das chaves não conferidas ficou vazia.*
 
 > **Achado, decidido pelo Mizuki em 15/09/2026: fica como está.** *O livro diz que "Só a Liberação Máxima passa dos pontos da Classe em dano contra um alvo só", e a Melhoria `Remate` dá +25% de dano contra alvo abaixo de metade da vida.* **Os pontos da Classe contam dados, e o `Remate` multiplica o dano final**, *então as duas regras valem juntas e o catálogo não muda. A decisão está na v0.241 do sistema.*
+
+### B21 · O texto do catálogo não é conferido contra o livro
+
+**Achado na v0.246 do sistema:** *com o texto velho do `Rápido` no `catalogo-projeto-m.json`, o `conferir-catalogo.py`, o `conferir-decisoes.py` e o `revisao-cetica.py` saíram verdes.* **O catálogo confere contagem e nome, e não a frase.**
+
+*Medido na mesma hora: das 66 Melhorias com texto, 57 aparecem exatas no `manual.txt` normalizado, e as 9 que não aparecem são artefato do `pdftotext -layout`* — **hífen de quebra, número de página e troca de página no meio da tabela**, *e não texto divergente.* **Uma checagem de frase precisa tolerar isso**, e as Restrições guardam o texto em `o_que_muda`, não em `efeito`.
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 

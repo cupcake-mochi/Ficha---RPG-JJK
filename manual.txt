@@ -191,31 +191,31 @@ O PERSONAGEM
     Emanador . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 116
                                                                                                                     Energia crua . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 185
     Evocador . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 118
-                                                                                                                    Aptidões de kokusen . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 188
-                                                                                                                    Aptidões anti-domínio, e a Extensão de Domínio. . . . . . . 189
+                                                                                                                    Aptidões de kokusen . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 187
+                                                                                                                    Aptidões anti-domínio, e a Extensão de Domínio. . . . . . . 188
 9      Fundamento . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 122
-                                                                                                                    Aptidões de barreira . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 191
+                                                                                                                    Aptidões de barreira . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 190
     Técnica e feitiços. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 122
 
 
 
 
                                                                                                                                                                                                                            5
-     Escrever uma aptidão. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 192                          Catálogo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 226
-     Expansão de Domínio . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 193                          Montar uma invocação . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 229
+     Escrever uma aptidão. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 191                          Catálogo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 226
+     Expansão de Domínio . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 192                          Montar uma invocação . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 229
                                                                                                                       Amarra e alcance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 233
-13 Bênçãos e Lapidação . . . . . . . . . . . . . . . . . . . . . . 194                                                Queda e morte. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 233
+13 Bênçãos e Lapidação . . . . . . . . . . . . . . . . . . . . . . 193                                                Queda e morte. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 233
 
-     Lapidação . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 194              Em aberto . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 235
+     Lapidação . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 193              Em aberto . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 235
 
-     Marco . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 195
-     Bênçãos . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 195        17 Pactos . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 236
-     Catálogo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 196             Formas de pacto . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 236
-     Bênçãos de graça . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 197                       Pacto permanente . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 237
-     Bênçãos de corpo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 198                       Pacto temporário . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 238
+     Marco . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 194
+     Bênçãos . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 194        17 Pactos . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 236
+     Catálogo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 195             Formas de pacto . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 236
+     Bênçãos de graça . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 196                       Pacto permanente . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 237
+     Bênçãos de corpo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 197                       Pacto temporário . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 238
      Bênçãos de perseguição . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 199                             Promessa . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 238
-     Bênçãos de combate . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 200                             Pacto de restrição . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 239
-     Escrever uma Bênção . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 201                          Catálogo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 239
+     Bênçãos de combate . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 199                           Pacto de restrição . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 239
+     Escrever uma Bênção . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 200                            Catálogo . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 239
                                                                                                                       Pactos na criação . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 241
 14 Equipamento . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 202
      Proteção . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 202         A CAMPANHA
@@ -1670,14 +1670,14 @@ vida e recebe vida temporária continua a 0 .
 
 
     32
-COMO JOGAR                                                                   A RREDONDAMENTO
+COMO JOGAR                                                                 A RREDONDAMENTO
 
 
 
 
 Arredondamento
 Boa parte das contas do sistema cai em fração.
-                                                                                                1
+                                                                                              1
 
     Arredonde sempre para o lado que não te favorece.
     O que você paga sobe. O que você ganha desce. E o que você ganha nunca fica
@@ -1699,38 +1699,45 @@ O personagem levou o golpe que zerou a barra, a mesa para, e quem escolhe o que 
 
     Você chega a 0 de vida. Escolha uma das duas, na hora:
 
-    Aguentar — você apaga. Tem uma janela de 3 rodadas. Qualquer cura de 25% ou
-    mais da sua vida máxima te põe de pé. Se a janela acabar sem socorro, você chega ao
-    estágio 4 de dano de alma.
+    Aguentar — você apaga. Tem uma janela de 3 rodadas. Uma cura de 20% ou mais
+    da sua vida máxima, de uma vez, te põe de pé, e a Melhoria Levanta te põe de pé
+    com qualquer valor. Cada dano que você recebe apagado tira uma rodada da janela,
+    no mínimo uma. Se a janela acabar sem socorro, você chega ao estágio 4 de dano de
+    alma.
 
     Insistir — você fica de pé a 0 de vida e age normalmente. Cada rodada custa um
     pedaço da sua vida máxima, e ele dobra: 1/8, depois 1/4, depois 1/2. Na quarta
     rodada você desaba.
 
+    O dano que entra enquanto você está a 0 se acumula. Passou de metade da sua vida
+    máxima original, acaba na hora: no Aguentar você chega ao estágio 4, e no Insistir
+    você desaba. O custo do Insistir não entra nessa conta.
 
-Quem desaba pelo Insistir não levanta com um ponto de cura. Só acorda com uma cura de
-metade da sua vida máxima original, de uma vez só.
+
+Quem desaba pelo Insistir não levanta com um ponto de cura. Só acorda com metade da sua
+vida máxima original, e aqui a cura soma: pode vir de várias fontes, em várias rodadas. A
+Melhoria Levanta põe de pé com qualquer valor, aqui também.
 
 O custo do Insistir usa o arredondamento de sempre.
 
 
-    Exemplo. Kaito tem 80 de vida máxima e chega a 0 com o chefe quase morto. Ele
-    escolhe Insistir. Na primeira rodada paga 10 (1/8 de 80), na segunda 20, na terceira
-    40. Se o chefe não cair até lá, Kaito desaba na quarta.
+
+
+                                                                                         33
+    VIDA A 0                                                                             COMO JOGAR
 
 
 
 
-                                                                                           33
-    VIDA A 0                                                                                  COMO JOGAR
+           Exemplo. Kaito tem 80 de vida máxima e chega a 0 com o chefe quase morto. Ele
+           escolhe Insistir. Na primeira rodada paga 10 (1/8 de 80), na segunda 20, na terceira
+           40. Se o chefe não cair até lá, Kaito desaba na quarta.
 
-
-
-
+1
     Sequela e Cicatriz
 
            Toda vez que você levanta de uma queda, ganha uma Sequela. Cada Sequela tira
-1          uma rodada da janela da sua próxima queda.
+           uma rodada da janela da sua próxima queda.
 
            Na segunda queda você também ganha uma Cicatriz, que é permanente e não sai
            no descanso.
@@ -1771,20 +1778,24 @@ O custo do Insistir usa o arredondamento de sempre.
 
          Incapacitado        condição, e quem está Incapacitado continua com vida
 
-         Derrubado           condição, e quem está Derrubado está no chão, de pé no medidor
-
 
 
 
     34
-COMO JOGAR                                                                         CONDIÇÕES
+COMO JOGAR                                                                            CONDIÇÕES
+
+
+                     O QUE É
+
+  Derrubado          condição, e quem está Derrubado está no chão, de pé no medidor
 
 
 
 
-Condições
+Condições                                                                                         1
+
+
 Condição é um estado nomeado que muda o que você consegue fazer enquanto durar. Ficar
-                                                                                               1
 Cego no meio de uma briga, levar um golpe que te deixa Atordoado , ser agarrado e não sair
 mais do lugar: tudo isso é condição. Cada uma tem um nível, e o nível é o que ela custa
 quando alguém monta um feitiço para aplicá-la.
@@ -1803,7 +1814,7 @@ em algum lugar, e o nome dela é exatamente aquele.
 
 
 
-                                                                                          35
+                                                                                             35
                                                                                                    O TURNO
 
 
@@ -7757,11 +7768,11 @@ TEMPO
  MELHORIA          CUSTO       O QUE FAZ
 
   Rápido            Pesada     Custa Ação Bônus em vez de Ação Padrão. Não entra no mesmo feitiço
-                               que Reação .
+                               que Reação nem com a Restrição Atrasar .
 
   Reação            Pesada     Você conjura como Reação, a um gatilho que você declara quando
                                monta o feitiço. Não entra no mesmo feitiço que Rápido nem que
-                               Armado .
+                               Armado , nem com as Restrições Atrasar e Parado .
 
   Armado            Leve       Você gasta a ação e o PE do feitiço, e ele fica armado até o fim da cena.
                                Na hora de armar, escolha um gatilho que a mesa consiga ver acontecer
@@ -7834,8 +7845,8 @@ TEMPO
       Limpa        Pesada   Remove de um aliado uma condição de qualquer nível.
      Fundo
 
-      Levanta      Pesada   Um aliado caído em 0 pontos de vida volta com 5 × Classe. Uma vez por
-                            cena.
+      Levanta      Pesada   Um aliado caído em 0 pontos de vida volta de pé com 5 × Classe, seja qual
+                            for a vida máxima dele. Uma vez por cena.
 
       Divide       Média    Um aliado a até 9 m passa a receber metade do dano que você receberia,
                             até o fim do próximo turno. Você escolhe na hora de conjurar.
@@ -9971,7 +9982,7 @@ zerou, a luta ainda não terminou e você continua precisando fazer alguma coisa
 
 
                                                                                            185
-     ENERGIA CRUA                                                                   APTIDÕES E REFINO
+     ENERGIA CRUA                                                                     APTIDÕES E REFINO
 
 
 
@@ -9993,7 +10004,7 @@ zerou, a luta ainda não terminou e você continua precisando fazer alguma coisa
 
      Circulação
 
-           Circulação    —    o   teto   por   uso   da   sua   Energia   Reversa   sobe    para
+           Circulação    —    o   teto     por   uso   da   sua   Energia   Reversa   sobe    para
            1,5 × a sua maior Classe de PE, arredondando para baixo.
 
            Você também pode usá-la como Ação Bônus. Usada assim, os dados de cura são d4
@@ -10014,29 +10025,20 @@ zerou, a luta ainda não terminou e você continua precisando fazer alguma coisa
      Na Ação Bônus você cura e ainda ataca na mesma rodada. O dado menor é o preço disso —
      é a diferença entre segurar um golpe e ficar inteiro.
 
-
-           Levantar quem caiu. É o uso que mais rende: quem está em 0 volta de pé com qual‐
-           quer cura, e gastar a Ação Padrão nisso é troca justa — você perde a sua rodada e
-           devolve a dele. Na Ação Bônus você devolve a rodada dele sem perder a sua.
-
-
      Recompor membro é a mesma aptidão fazendo a coisa mais difícil que a energia positiva
      faz. Em combate ela custa a sua rodada e o combustível, e você continua machucado. Fora
      de combate é barata, e é lá que ela deve ser usada.
 
 
+           Membro perdido. Não tem regra neste livro, e isso é decisão: quem tira é o mestre
+           ou um pacto, e as penalidades são as que a mesa combinar, do mesmo jeito que o
+           d20 faz. Esta aptidão desfaz.
+
+
 
 
      186
-APTIDÕES E REFINO                                                             ENERGIA CRUA
-
-
-
-
-    Membro perdido. Não tem regra neste livro, e isso é decisão: quem tira é o mestre
-    ou um pacto, e as penalidades são as que a mesa combinar, do mesmo jeito que o
-    d20 faz. Esta aptidão desfaz.
-
+APTIDÕES E REFINO                                                        APTIDÕES DE KOKUSEN
 
 Curar outra pessoa continua fora daqui. Quem alcança os outros é a Trilha Sutura , no
 nível 11 dela. Uma ficha com as duas recompõe o membro de outra pessoa, e isso é o degrau
@@ -10065,35 +10067,33 @@ Rescaldo acaba com a cena, e na luta seguinte você abre de novo.
 
 
     Exemplo. No nível 26, com Inteligência 5, você tem 2 + 2 = 4 marcas. Você abre a
-                                                                                              12
     Expansão, regrava, e repete até a quarta regravação. Ela devolve a técnica, e a
     Expansão fica fechada até o descanso longo.
 
 
 
 
-                                                                                        187
-     APTIDÕES DE KOKUSEN                                                           APTIDÕES E REFINO
+Aptidões de kokusen                                                                            12
+
+Kokusen
+
+    Kokusen — em crítico no corpo a corpo, role d100. 2 × refino ou menos é koku‐
+    sen: o dano leva +50% depois de todos os valores resolvidos.
+
+    Cada d100 falhado empurra o próximo em +2, e o acumulado zera no descanso
+    longo.
+
+    Requisito: nenhum, e ele não gasta marco. O refino escala a chance no d100.
+
+
+O +50% entra em cima do crítico que já dobrou os dados. Um crítico entrega dois punhados
+de dado; um kokusen entrega três. Por exemplo, com refino 6 o kokusen sai em 12 ou menos
+no d100 — 12% dos seus críticos corpo a corpo.
 
 
 
-
-     Aptidões de kokusen
-
-     Kokusen
-
-           Kokusen — em crítico no corpo a corpo, role d100. 2 × refino ou menos é koku‐
-           sen: o dano leva +50% depois de todos os valores resolvidos.
-
-           Cada d100 falhado empurra o próximo em +2, e o acumulado zera no descanso
-           longo.
-
-           Requisito: nenhum, e ele não gasta marco. O refino escala a chance no d100.
-
-
-     O +50% entra em cima do crítico que já dobrou os dados. Um crítico entrega dois punhados
-     de dado; um kokusen entrega três. Por exemplo, com refino 6 o kokusen sai em 12 ou menos
-     no d100 — 12% dos seus críticos corpo a corpo.
+                                                                                         187
+     APTIDÕES ANTI-DOMÍNIO, E A EXTENSÃO DE DOMÍNIO                                     APTIDÕES E REFINO
 
      O Kokusen em si não é uma aptidão: é uma mecânica, e todo feiticeiro que tem energia
      consegue usar. Ele não ocupa vaga de catálogo e não custa marco. Abaixo estão as duas
@@ -10108,7 +10108,7 @@ Rescaldo acaba com a cena, e na luta seguinte você abre de novo.
            Requisito: refino 5 e nível 14. O refino escala a vantagem no d100.
 
 
-12
+
      Kokusen Constante
 
            Kokusen Constante — mesma regra do Kokusen , exceto que a base sobe para 3 ×
@@ -10119,39 +10119,43 @@ Rescaldo acaba com a cena, e na luta seguinte você abre de novo.
 
 
 
+     Aptidões anti-domínio, e a Extensão de Domínio
+     Uma Expansão de Domínio completa não erra. O Acerto dela simplesmente acontece com
+     quem está lá dentro, sem rolagem e sem Teste de Resistência, e nenhuma defesa da ficha
+     encosta nele.
+
+
+           As quatro anulam o Acerto de uma Expansão de Domínio. Algumas delas servem
+           contra a Expansão incompleta.
+12         Todas exigem concentração, com exceção da Extensão de Domínio .
+
+           A incompleta não tem acerto garantido: o Acerto dela rola. Contra ela você se
+           defende com Defesa e com Teste de Resistência, como se defende de tudo o mais no
+           jogo.
+
+
+     APTIDÕES ANTI-DOMÍNIO
+
+                                                                                           PE POR
+                                       PROTEGE                E COBRA
+                                                                                           RODADA
+
+      Cesta Oca de Vime                só você, dentro de     você segura o símbolo e      nenhum
+                                       uma esfera             não faz mais nada
+
+      Domínio Simples                  um raio em volta de    os pés não saem do chão       1 × maior
+                                       você                                                Classe
+
+
+
+
      188
 APTIDÕES E REFINO                                        APTIDÕES ANTI-DOMÍNIO, E A EXTENSÃO DE DOMÍNIO
 
 
-
-
-Aptidões anti-domínio, e a Extensão de Domínio
-Uma Expansão de Domínio completa não erra. O Acerto dela simplesmente acontece com
-quem está lá dentro, sem rolagem e sem Teste de Resistência, e nenhuma defesa da ficha
-encosta nele.
-
-
-    As quatro anulam o Acerto de uma Expansão de Domínio. Algumas delas servem
-    contra a Expansão incompleta.
-
-    Todas exigem concentração, com exceção da Extensão de Domínio .
-
-    A incompleta não tem acerto garantido: o Acerto dela rola. Contra ela você se
-    defende com Defesa e com Teste de Resistência, como se defende de tudo o mais no
-    jogo.
-
-
-APTIDÕES ANTI-DOMÍNIO
-
                                                                                          PE POR
                                 PROTEGE                    E COBRA
                                                                                          RODADA
-
- Cesta Oca de Vime              só você, dentro de         você segura o símbolo e       nenhum
-                                uma esfera                 não faz mais nada
-
- Domínio Simples                um raio em volta de        os pés não saem do chão        1 × maior
-                                você                                                     Classe
 
  Pétala                         o seu corpo, e devolve     concentração, e não vale       1 × maior
                                 o golpe                    contra ataque físico          Classe
@@ -10159,7 +10163,8 @@ APTIDÕES ANTI-DOMÍNIO
  Extensão de Domínio (não é     o seu corpo, e faz o       nenhum feitiço enquanto        1,5 ×
  anti-domínio: ela serve como   seu ataque acertar         ela estiver de pé             maior
  uma)                                                                                    Classe
-                                                                                                          12
+
+
 
 
 Cesta Oca de Vime
@@ -10176,34 +10181,33 @@ A Cesta Oca de Vime anula o Acerto e mais nada: o Efeito da Expansão continua a
 cendo em cima de você. Em troca ela não quebra, e é a única das quatro assim.
 
 
+Domínio Simples
+
+    Domínio Simples — um domínio pequeno em volta de você, de raio
+     1,5 m + refino ÷ 2 . Dentro dele o Acerto de uma Expansão não acontece, os efei‐
+    tos da Expansão são anulados lá dentro, e ele cobre quem estiver no raio. Custa 1 ×
+    a sua maior Classe de PE por rodada, e ela quebra se os seus pés saírem do chão.
+
+    Requisito: ter visto um sendo usado, ou ter aprendido com alguém; refino 3 e nível
+    10. Classe Passiva 2. O refino escala o raio.                                                         12
+
+
+
+Pétala
+
+    Pétala — a energia cobre o seu corpo e devolve o golpe. Quando o Acerto de uma
+    Expansão te alcança, ele é anulado no ponto de contato, refino ÷ 2 vezes por cena.
+    Custa 1 × a sua maior Classe de PE por rodada.
+
+    Requisito: ser Descendente, ou ter aprendido com alguém de algum clã; refino 2 e
+    nível 10. Classe Passiva 2. O refino escala quantos Acertos ela devolve.
+
+
 
 
                                                                                                     189
-     APTIDÕES ANTI-DOMÍNIO, E A EXTENSÃO DE DOMÍNIO                                       APTIDÕES E REFINO
+     APTIDÕES DE BARREIRA                                                                 APTIDÕES E REFINO
 
-
-
-
-     Domínio Simples
-
-           Domínio Simples — um domínio pequeno em volta de você, de raio
-           1,5 m + refino ÷ 2 . Dentro dele o Acerto de uma Expansão não acontece, os efei‐
-           tos da Expansão são anulados lá dentro, e ele cobre quem estiver no raio. Custa 1 ×
-           a sua maior Classe de PE por rodada, e ela quebra se os seus pés saírem do chão.
-
-           Requisito: ter visto um sendo usado, ou ter aprendido com alguém; refino 3 e nível
-           10. Classe Passiva 2. O refino escala o raio.
-
-
-
-     Pétala
-
-           Pétala — a energia cobre o seu corpo e devolve o golpe. Quando o Acerto de uma
-           Expansão te alcança, ele é anulado no ponto de contato, refino ÷ 2 vezes por cena.
-           Custa 1 × a sua maior Classe de PE por rodada.
-
-           Requisito: ser Descendente, ou ter aprendido com alguém de algum clã; refino 2 e
-           nível 10. Classe Passiva 2. O refino escala quantos Acertos ela devolve.
 
 
 
@@ -10214,7 +10218,7 @@ cendo em cima de você. Em troca ela não quebra, e é a única das quatro assim
            técnicas ao toque. Dura refino rodadas e custa 1,5 × a sua maior Classe de PE
            por rodada. Enquanto ela estiver de pé, você não pode usar a sua técnica amaldiço‐
            ada.
-12         E qualquer técnica que encostar nela é anulada até 1/3 do refino + 1 : uma
+           E qualquer técnica que encostar nela é anulada até 1/3 do refino + 1 : uma
            Classe Passiva, uma Regra Própria, ou um feitiço de Classe até esse número. Acima
            dele, passa.
 
@@ -10223,101 +10227,103 @@ cendo em cima de você. Em troca ela não quebra, e é a única das quatro assim
 
 
 
+     Aptidões de barreira
+
+           As duas levam um minuto para levantar, e um minuto são dez rodadas. As duas são
+           ferramenta de preparação, e se levantam antes da briga começar.
+
+
+
+     Barreira Simples
+
+           Barreira Simples — um domo de raio 6 m , ancorado no lugar onde você o ergueu,
+           que bloqueia passagem e linha de efeito nos dois sentidos. Ele tem 5 × refino de
+           pontos de vida, e cai quando você fica Inconsciente .
+
+           Requisito: nenhum. O refino escala a vida do domo.
+12
+
+     O domo fica onde foi erguido. Você não leva ele junto, e é por isso que ele serve para fechar
+     um cômodo, uma porta, uma escada.
+
+
+     Cortina
+
+           Cortina — mesma preparação de um minuto da Barreira Simples , exceto que ela
+           cobre um lugar inteiro: um prédio, uma escola, um quarteirão. Ela esconde o que
+           está dentro de quem não é feiticeiro, e você pendura uma condição sobre quem
+           atravessa. Ela tem 40 × refino de pontos de vida, e cai quando você fica
+           Inconsciente .
+
+           Requisito: exige a Barreira Simples . O refino escala a vida dela.
+
+
+
+
      190
-APTIDÕES E REFINO                                                            APTIDÕES DE BARREIRA
+APTIDÕES E REFINO                                                              ESCREVER UMA APTIDÃO
 
 
 
-
-Aptidões de barreira
-
-    As duas levam um minuto para levantar, e um minuto são dez rodadas. As duas são
-    ferramenta de preparação, e se levantam antes da briga começar.
-
-
-
-Barreira Simples
-
-    Barreira Simples — um domo de raio 6 m , ancorado no lugar onde você o ergueu,
-    que bloqueia passagem e linha de efeito nos dois sentidos. Ele tem 5 × refino de
-    pontos de vida, e cai quando você fica Inconsciente .
-
-    Requisito: nenhum. O refino escala a vida do domo.
-
-
-O domo fica onde foi erguido. Você não leva ele junto, e é por isso que ele serve para fechar
-um cômodo, uma porta, uma escada.
-
-
-Cortina
-
-    Cortina — mesma preparação de um minuto da Barreira Simples , exceto que ela
-    cobre um lugar inteiro: um prédio, uma escola, um quarteirão. Ela esconde o que
-    está dentro de quem não é feiticeiro, e você pendura uma condição sobre quem
-    atravessa. Ela tem 40 × refino de pontos de vida, e cai quando você fica
-     Inconsciente .
-
-    Requisito: exige a Barreira Simples . O refino escala a vida dela.
-                                                                                                    12
 CORTINA
 
- A CONDIÇÃO PODE                             A CONDIÇÃO NÃO PODE
+ A CONDIÇÃO PODE                                A CONDIÇÃO NÃO PODE
 
- barrar uma pessoa específica                causar dano a quem entra
+ barrar uma pessoa específica                   causar dano a quem entra
 
- deixar entrar quem tem energia              mover a cortina, ou fazer ela seguir você
+ deixar entrar quem tem energia                 mover a cortina, ou fazer ela seguir você
  amaldiçoada, e mais ninguém
 
- impedir que quem está dentro saia           dar bônus a quem está dentro
+ impedir que quem está dentro saia              dar bônus a quem está dentro
 
- deixar passar quem você nomeou na hora de   esconder de quem é feiticeiro, porque o efeito
- levantar                                    base já é o contrário
-
-
-
-
-                                                                                              191
-     ESCREVER UMA APTIDÃO                                                                APTIDÕES E REFINO
+ deixar passar quem você nomeou na hora de      esconder de quem é feiticeiro, porque o efeito
+ levantar                                       base já é o contrário
 
 
 
 
-           Tamanho. A Cortina não se mede em metros: ela cobre um lugar — um prédio,
-           uma escola, um quarteirão —, e nada do que ela faz depende de distância. Quem
-           precisa fechar uma distância com energia usa a Barreira Simples , que tem raio.
+    Tamanho. A Cortina não se mede em metros: ela cobre um lugar — um prédio,
+    uma escola, um quarteirão —, e nada do que ela faz depende de distância. Quem
+    precisa fechar uma distância com energia usa a Barreira Simples , que tem raio.
 
 
 
 
-     Escrever uma aptidão
+Escrever uma aptidão
 
-     Aptidão Própria
-     A vaga em branco do catálogo. É o truque que o seu feiticeiro desenvolveu manejando a
-     própria energia, pequeno o bastante para nunca ter virado regra escrita, e específico o
-     bastante para ninguém mais na mesa fazer igual.
-
-
-           Aptidão Própria — você escreve, com o mestre, uma aptidão que não está no catá‐
-           logo. Antes da sessão, e nunca no meio dela. Ela é Classe Passiva 1 ou 2, nunca 3, e
-           você só pode pegá-la uma vez na ficha inteira.
-
-           A ficha registra duas coisas: a frase, e a resposta de "em quantas cenas por arco isso vai
-           importar?".
-
-           Requisito: uma vez na ficha inteira. Classe Passiva 1 ou 2.
+Aptidão Própria
+A vaga em branco do catálogo. É o truque que o seu feiticeiro desenvolveu manejando a
+própria energia, pequeno o bastante para nunca ter virado regra escrita, e específico o
+bastante para ninguém mais na mesa fazer igual.
 
 
-     A resposta dessa pergunta é o que decide o degrau:
+    Aptidão Própria — você escreve, com o mestre, uma aptidão que não está no catá‐
+    logo. Antes da sessão, e nunca no meio dela. Ela é Classe Passiva 1 ou 2, nunca 3, e
+    você só pode pegá-la uma vez na ficha inteira.
+                                                                                                       12
+    A ficha registra duas coisas: a frase, e a resposta de "em quantas cenas por arco isso vai
+    importar?".
 
-     PESO E DEGRAU
+    Requisito: uma vez na ficha inteira. Classe Passiva 1 ou 2.
 
-      EM QUANTAS CENAS POR ARCO                      O PESO           O DEGRAU
 
-      uma                                            Leve             Classe Passiva 1
+A resposta dessa pergunta é o que decide o degrau:
 
-12    metade                                         Média            Classe Passiva 2
+PESO E DEGRAU
 
-      quase toda                                     Pesada           Classe Passiva 3
+ EM QUANTAS CENAS POR ARCO                    O PESO           O DEGRAU
+
+ uma                                          Leve             Classe Passiva 1
+
+ metade                                       Média            Classe Passiva 2
+
+ quase toda                                   Pesada           Classe Passiva 3
+
+
+
+
+                                                                                                 191
+     EXPANSÃO DE DOMÍNIO                                                             APTIDÕES E REFINO
 
 
 
@@ -10335,260 +10341,263 @@ CORTINA
      3 Não é atalho: ela não repete uma das treze outras entradas do catálogo com outro nome,
            e não entrega uma que o seu requisito ainda não alcança.
 
+     4 Sem dado de dano.
+
+     5 Com limite por cena, se ela for Classe Passiva 2.
+
+     Três propostas, e uma delas é recusada:
+
+     EXEMPLOS DE APTIDÃO PRÓPRIA
+
+                                                            EM QUANTAS
+      PROPOSTA                                                              DEGRAU          VEREDITO
+                                                            CENAS
+
+      "você sabe se um objeto foi tocado por energia        uma por         Classe Pas‐     passa
+      amaldiçoada nas últimas 24 horas"                     arco            siva 1
+
+      "uma vez por cena, quando um aliado a até 9 m falha   metade          Classe Pas‐     passa
+      um Teste de Resistência, ele rerrola"                                 siva 2
+
+      "o seu deslocamento é +3 m "                          quase toda      Classe Pas‐     recu‐
+                                                                            siva 3          sada
+
+
+
+     A trava é de forma e não de tamanho: +3 m é pouca coisa, e mesmo assim está fora. Uma
+     coisa que fica sempre ligada é Classe Passiva 3, no tamanho que for.
+12
+           Quem quiser a mesma ficção com Classe Passiva 3 tem a Passiva Própria , do lado
+           do Fundamento, pagando em espaço de feitiço.
+
+
+
+
+     Expansão de Domínio
+     A regra da Expansão está no capítulo 9, Fundamento, e é lá que ela é montada. Ela gasta
+     espaço de feitiço, como Passiva, e o Acerto dela é o que as três aptidões anti-domínio
+     anulam — mais a Extensão de Domínio , que não é da categoria e anula o mesmo.
+
 
 
 
      192
-APTIDÕES E REFINO                                                               EXPANSÃO DE DOMÍNIO
-
-
-4 Sem dado de dano.
-
-5 Com limite por cena, se ela for Classe Passiva 2.
-
-Três propostas, e uma delas é recusada:
-
-EXEMPLOS DE APTIDÃO PRÓPRIA
-
-                                                       EM QUANTAS
- PROPOSTA                                                              DEGRAU            VEREDITO
-                                                       CENAS
-
- "você sabe se um objeto foi tocado por energia        uma por         Classe Pas‐       passa
- amaldiçoada nas últimas 24 horas"                     arco            siva 1
-
- "uma vez por cena, quando um aliado a até 9 m falha   metade          Classe Pas‐       passa
- um Teste de Resistência, ele rerrola"                                 siva 2
-
- "o seu deslocamento é +3 m "                          quase toda      Classe Pas‐       recu‐
-                                                                       siva 3            sada
-
-
-
-A trava é de forma e não de tamanho: +3 m é pouca coisa, e mesmo assim está fora. Uma
-coisa que fica sempre ligada é Classe Passiva 3, no tamanho que for.
-
-
-    Quem quiser a mesma ficção com Classe Passiva 3 tem a Passiva Própria , do lado
-    do Fundamento, pagando em espaço de feitiço.
+BÊNÇÃOS E L APIDAÇÃO
 
 
 
 
-Expansão de Domínio
-A regra da Expansão está no capítulo 9, Fundamento, e é lá que ela é montada. Ela gasta
-espaço de feitiço, como Passiva, e o Acerto dela é o que as três aptidões anti-domínio
-anulam — mais a Extensão de Domínio , que não é da categoria e anula o mesmo.
+恵 CAPÍTULO 13
 
-                                                                                                       12
-
-
-
-
-                                                                                                 193
-                                                                                   BÊNÇÃOS E L APIDAÇÃO
+Bênçãos e Lapidação
+Bênção e Lapidação valem para uma rota de criação: a Restrição Celestial pelo ramo sem
+energia, no capítulo 7, Origens e Legados. Uma ficha com energia amaldiçoada — inclusive o
+Corpo Amaldiçoado, que produz a própria — usa refino e aptidões, no capítulo 12, Aptidões
+e Refino.
 
 
-
-
-     恵 CAPÍTULO 13
-
-     Bênçãos e Lapidação
-     Bênção e Lapidação valem para uma rota de criação: a Restrição Celestial pelo ramo sem
-     energia, no capítulo 7, Origens e Legados. Uma ficha com energia amaldiçoada — inclusive o
-     Corpo Amaldiçoado, que produz a própria — usa refino e aptidões, no capítulo 12, Aptidões
-     e Refino.
-
-
-           Sem energia amaldiçoada não existe refino nem aptidão. No lugar dos dois vêm a
-           Lapidação e as Bênçãos, e a máquina é a mesma casa por casa. O que muda é o
-           conteúdo do catálogo.
+    Sem energia amaldiçoada não existe refino nem aptidão. No lugar dos dois vêm a
+    Lapidação e as Bênçãos, e a máquina é a mesma casa por casa. O que muda é o
+    conteúdo do catálogo.
 
 
 
 
-     Lapidação
-     A Lapidação mede quanto da folga do corpo o seu personagem já gastou treinando.
+Lapidação
+A Lapidação mede quanto da folga do corpo o seu personagem já gastou treinando.
 
 
-           A Lapidação vai de 1 a 10 . Toda ficha começa em 1, e ela sobe nos marcos: +1 de
-           graça em cada um, e mais +1 se você escolher Lapidação no marco.
+    A Lapidação vai de 1 a 10 . Toda ficha começa em 1, e ela sobe nos marcos: +1 de
+    graça em cada um, e mais +1 se você escolher Lapidação no marco.
 
-           São os mesmos degraus do refino, casa por casa — a tabela Refino por marco do
-           capítulo 12 vale para ela, trocando o nome.
+    São os mesmos degraus do refino, casa por casa — a tabela Refino por marco do
+    capítulo 12 vale para ela, trocando o nome.
 
-           A Lapidação nunca entra num número disputado contra alguém que cresce mais
-           devagar que ela. Ela fica fora de acerto, CD, defesa e Teste de Resistência.
+    A Lapidação nunca entra num número disputado contra alguém que cresce mais
+    devagar que ela. Ela fica fora de acerto, CD, defesa e Teste de Resistência.
 
+                                                                                             13
+Onde ela entra é em custo, em quantas vezes por cena, em alcance e duração, e em
+magnitude fora de disputa — a proteção de Defesa sem Armadura , o piso do Esteio e o
+dano na arma do Estímulo Muscular , que só vale na rodada em que você ataca. Kata nunca
+cresce com Lapidação: ela tem orçamento próprio, no capítulo 10, Técnica Marcial.
+
+
+    Arredondamento. Toda divisão de Lapidação arredonda para baixo: Lapidação 5
+    dividido por 2 dá 2.
+
+
+
+
+                                                                                       193
+     MARCO                                                                                  BÊNÇÃOS E L APIDAÇÃO
+
+
+
+
+     Marco
+
+           Passivo: +1 ponto de atributo, +1 de Lapidação e +1 espaço de Kata.
+
+           Escolha, uma das três:
+
+           Corpo — mais um ponto de atributo.
+
+           Lapidação — mais um de Lapidação, e uma Bênção. Se a sua Lapidação já estiver
+           no teto, você leva duas Bênçãos no lugar.
+
+           Leque — mais uma Kata, que só pode ser Kata, e uma Passiva.
+
+               Quem nunca escolhe Lapidação termina a campanha com zero Bênçãos pagas. A
+               rota existe e é legítima: ela troca dez Bênçãos por sete pontos de atributo a mais.
+
+
+     Defesa sem Armadura e Estímulo Muscular vêm de graça na Lapidação 1, então nenhuma
+     ficha fica sem Bênção nenhuma. A primeira continua crescendo com a Lapidação passiva
+     até 8.
+
+
+
+     Bênçãos
+
+           Bênção não custa espaço de Kata. Espaço de Kata é a moeda das Passivas. As duas
+           economias são separadas: Bênção custa marco, e só marco.
+
+
+
+     Classe Passiva
+     A Classe Passiva é o tamanho da Bênção, e diz o quanto aquela entrada pode entregar. As
+     Bênçãos usam a mesma escada das Passivas e das aptidões: a escada e o que cabe em cada
 13
-     Onde ela entra é em custo, em quantas vezes por cena, em alcance e duração, e em
-     magnitude fora de disputa — a proteção de Defesa sem Armadura , o piso do Esteio e o
-     dano na arma do Estímulo Muscular , que só vale na rodada em que você ataca. Kata nunca
-     cresce com Lapidação: ela tem orçamento próprio, no capítulo 10, Técnica Marcial.
+     altura estão no capítulo 9, Fundamento, na seção Passivas .
 
+     A Classe Passiva não cobra nada aqui: o marco compra uma de qualquer altura. Quem
+     separa as alturas é o requisito.
 
-           Arredondamento. Toda divisão de Lapidação arredonda para baixo: Lapidação 5
-           dividido por 2 dá 2.
+     E se você for escrever uma Bênção Própria , a escada do capítulo 9 é a base: escolha a
+     altura que a sua ideia alcança, e escreva dentro do que aquela linha permite.
 
 
 
 
      194
-BÊNÇÃOS E L APIDAÇÃO                                                                           MARCO
+BÊNÇÃOS E L APIDAÇÃO                                                                   C AT Á L O G O
 
 
 
 
-Marco
+Requisito
 
-    Passivo: +1 ponto de atributo, +1 de Lapidação e +1 espaço de Kata.
+    Requisito de atributo: você precisa daquele atributo em 4 ou mais para pegar a Bên‐
+    ção.
 
-    Escolha, uma das três:
-
-    Corpo — mais um ponto de atributo.
-
-    Lapidação — mais um de Lapidação, e uma Bênção. Se a sua Lapidação já estiver
-    no teto, você leva duas Bênçãos no lugar.
-
-    Leque — mais uma Kata, que só pode ser Kata, e uma Passiva.
-
-         Quem nunca escolhe Lapidação termina a campanha com zero Bênçãos pagas. A
-         rota existe e é legítima: ela troca dez Bênçãos por sete pontos de atributo a mais.
-
-
-Defesa sem Armadura e Estímulo Muscular vêm de graça na Lapidação 1, então nenhuma
-ficha fica sem Bênção nenhuma. A primeira continua crescendo com a Lapidação passiva
-até 8.
-
-
-
-Bênçãos
-
-    Bênção não custa espaço de Kata. Espaço de Kata é a moeda das Passivas. As duas
-    economias são separadas: Bênção custa marco, e só marco.
-
-
-
-Classe Passiva
-A Classe Passiva é o tamanho da Bênção, e diz o quanto aquela entrada pode entregar. As
-Bênçãos usam a mesma escada das Passivas e das aptidões: a escada e o que cabe em cada
-                                                                                                       13
-altura estão no capítulo 9, Fundamento, na seção Passivas .
-
-A Classe Passiva não cobra nada aqui: o marco compra uma de qualquer altura. Quem
-separa as alturas é o requisito.
-
-E se você for escrever uma Bênção Própria , a escada do capítulo 9 é a base: escolha a
-altura que a sua ideia alcança, e escreva dentro do que aquela linha permite.
+    ⚠ Uma Bênção com requisito de atributo não soma aquele atributo na rolagem
+    dela. Ou você paga para destravar, ou usa na conta — nunca os dois.
 
 
 
 
-                                                                                                 195
-     C AT Á L O G O                                                               BÊNÇÃOS E L APIDAÇÃO
+Catálogo
+
+Como funciona uma Bênção
+Cada entrada aparece duas vezes. Primeiro nesta tabela, com três campos: nome, requisito e
+Classe Passiva. Depois na seção dela, com uma caixa de regra.
+
+Traço na coluna de requisito quer dizer que ela não tem requisito. Traço na de Classe
+Passiva quer dizer que a entrada não tem um cálculo baseado em Classe Passiva, e que ela
+não pode ser usada como base.
+
+COMO LER UMA BÊNÇÃO
+
+ BÊNÇÃO                         REQUISITO                            CL ASSE PASSIVA
+
+ Defesa sem Armadura            grátis na Lapidação 1                —
+
+ Estímulo Muscular              grátis na Lapidação 1                —
+
+ Ímpeto                         Destreza 4                           2
+
+ Casco                          Constituição 4                       3
+
+ Presilha                       Força 4                              2
+
+ Vigília                        —                                    2
+                                                                                                        13
+ Esteio                         —                                    3
+
+ Faro                           —                                    1
+
+ Sem Pegada                     —                                    1
+
+ Vulto                          —                                    2
+
+ Antecipar                      Inteligência 4                       2
+
+ Campo                          —                                    1
+
+ Assombro                       Essência 4                           1
+
+ Bênção Própria                 uma vez na ficha inteira             1 ou 2
 
 
 
 
-     Requisito
-
-            Requisito de atributo: você precisa daquele atributo em 4 ou mais para pegar a Bên‐
-            ção.
-
-            ⚠ Uma Bênção com requisito de atributo não soma aquele atributo na rolagem
-            dela. Ou você paga para destravar, ou usa na conta — nunca os dois.
+                                                                                                195
+     BÊNÇÃOS DE GRAÇA                                                                   BÊNÇÃOS E L APIDAÇÃO
 
 
 
 
-     Catálogo
+     Bênçãos de graça
+     Estas duas chegam com a ficha, na Lapidação 1, sem custar marco nenhum.
 
-     Como funciona uma Bênção
-     Cada entrada aparece duas vezes. Primeiro nesta tabela, com três campos: nome, requisito e
-     Classe Passiva. Depois na seção dela, com uma caixa de regra.
 
-     Traço na coluna de requisito quer dizer que ela não tem requisito. Traço na de Classe
-     Passiva quer dizer que a entrada não tem um cálculo baseado em Classe Passiva, e que ela
-     não pode ser usada como base.
+     Defesa sem Armadura
 
-     COMO LER UMA BÊNÇÃO
+           Defesa sem Armadura — sem Traje e sem Revestimento, a sua proteção é 1/3 da
+           Lapidação + 1 . Escudo soma com ela.
 
-       BÊNÇÃO                           REQUISITO                            CL ASSE PASSIVA
+           Como Reação: Redução de Dano de 1,5 × Lapidação num golpe, por 2 PE. Você
+           fica sem proteção até o fim do seu próximo turno.
 
-       Defesa sem Armadura              grátis na Lapidação 1                —
+           Barreira de energia não segura você. Barreira Simples e Cortina não detectam
+           nem impedem você.
 
-       Estímulo Muscular                grátis na Lapidação 1                —
+           Expansão de Domínio. O Acerto garantido de uma Expansão completa não alcança
+           você. O Efeito continua acontecendo em volta, e uma Expansão incompleta funciona
+           normalmente, porque o Acerto dela precisa de uma rolagem: ela não busca alvos
+           com base em energia.
 
-       Ímpeto                           Destreza 4                           2
+           Requisito: grátis na Lapidação 1. A Lapidação escala a proteção e a Redução de
+           Dano da Reação.
 
-       Casco                            Constituição 4                       3
 
-       Presilha                         Força 4                              2
+     Traje e Revestimento. Vestir um dos dois desliga só a proteção. A barreira e o Acerto garan‐
+     tido continuam sendo negados: eles vêm de você não ter energia amaldiçoada, e uniforme
+     sem grau não tem energia.
 
-       Vigília                          —                                    2
+     Quem não tem energia amaldiçoada nunca tem Expansão de Domínio — está no capítulo
+     10, Técnica Marcial.
+
+           Você atravessa, o equipamento não. Ferramenta amaldiçoada e objeto amaldiçoado emanam
 13
-       Esteio                           —                                    3
+           energia, e é o que eles emanam que a barreira lê: você entra na Cortina , e o seu equipamento
+           amaldiçoado é detectado, ou nem atravessa, se for uma barreira física de energia. Contra
+           Expansão de Domínio é diferente — o Acerto garantido busca alvos, e item normalmente não é
+           alvo legível.
 
-       Faro                             —                                    1
 
-       Sem Pegada                       —                                    1
-
-       Vulto                            —                                    2
-
-       Antecipar                        Inteligência 4                       2
-
-       Campo                            —                                    1
-
-       Assombro                         Essência 4                           1
-
-       Bênção Própria                   uma vez na ficha inteira             1 ou 2
+     A Passiva Maldição do Inventário , no capítulo 10, Técnica Marcial, guarda o item dentro
+     do corpo, e lá dentro ele para de emanar energia — o que permite ao Sem energia voltar a
+     atravessar as barreiras normalmente.
 
 
 
 
      196
-BÊNÇÃOS E L APIDAÇÃO                                                                BÊNÇÃOS DE GRAÇA
+BÊNÇÃOS E L APIDAÇÃO                                                              BÊNÇÃOS DE CORPO
 
 
-
-
-Bênçãos de graça
-Estas duas chegam com a ficha, na Lapidação 1, sem custar marco nenhum.
-
-
-Defesa sem Armadura
-
-    Defesa sem Armadura — sem Traje e sem Revestimento, a sua proteção é 1/3 da
-    Lapidação + 1 . Escudo soma com ela.
-
-    Barreira de energia não segura você. Barreira Simples e Cortina não detectam
-    nem impedem você.
-
-    Expansão de Domínio. O Acerto garantido de uma Expansão completa não alcança
-    você. O Efeito continua acontecendo em volta, e uma Expansão incompleta funciona
-    normalmente, porque o Acerto dela precisa de uma rolagem: ela não busca alvos
-    com base em energia.
-
-    Requisito: grátis na Lapidação 1. A Lapidação escala a proteção.
-
-
-Traje e Revestimento. Vestir um dos dois desliga só a proteção. A barreira e o Acerto garan‐
-tido continuam sendo negados: eles vêm de você não ter energia amaldiçoada, e uniforme
-sem grau não tem energia.
-
-Quem não tem energia amaldiçoada nunca tem Expansão de Domínio — está no capítulo
-10, Técnica Marcial.
-
-    Você atravessa, o equipamento não. Ferramenta amaldiçoada e objeto amaldiçoado emanam
-    energia, e é o que eles emanam que a barreira lê: você entra na Cortina , e o seu equipamento
-    amaldiçoado é detectado, ou nem atravessa, se for uma barreira física de energia. Contra
-    Expansão de Domínio é diferente — o Acerto garantido busca alvos, e item normalmente não é
-    alvo legível.
-                                                                                                          13
-
-A Passiva Maldição do Inventário , no capítulo 10, Técnica Marcial, guarda o item dentro
-do corpo, e lá dentro ele para de emanar energia — o que permite ao Sem energia voltar a
-atravessar as barreiras normalmente.
 
 
 Estímulo Muscular
@@ -10598,55 +10607,91 @@ Estímulo Muscular
     Usos. 1× por cena, e 2× se a sua Lapidação for 10 . Cada uso dá vantagem numa
     rolagem de um dos dois escolhidos.
 
+    Dano na arma. Os seus ataques com arma causam 1d4 de dano a mais a cada 3
+    pontos de Lapidação — 1d4 na Lapidação 1 , 2d4 na 3 , 3d4 na 6 , 4d4 na 9 . Na
+    Lapidação 10 os dados viram d6 : 4d6 .
+
+    Só arma. Ele não entra em Kata nenhuma. E se o mesmo ataque já estiver
+    carregando uma Kata de dano de Classe 0 ou mais, este dano não se soma por
+    cima — é o caso do nível 27 da Brasa , em que cada ataque leva uma junto. Nesta
+    rota o degrau de Trilha entrega Kata e não feitiço, e o capítulo 8, Caminhos e Trilhas, diz
+    isso na abertura.
+
+    Requisito: grátis na Lapidação 1. A Lapidação escala o dano na arma e o número de
+    usos.
+
+    Exemplo. Com Lapidação 6, o soco e a lâmina levam 3d4 de dano a mais.
 
 
-
-                                                                                                    197
-     BÊNÇÃOS DE CORPO                                                                  BÊNÇÃOS E L APIDAÇÃO
-
-           Dano na arma. Os seus ataques com arma causam 1d4 de dano a mais a cada 3
-           pontos de Lapidação — 1d4 na Lapidação 1 , 2d4 na 3 , 3d4 na 6 , 4d4 na 9 . Na
-           Lapidação 10 os dados viram d6 : 4d6 .
-
-           Só arma. Ele não entra em Kata nenhuma. E se o mesmo ataque já estiver
-           carregando uma Kata de dano de Classe 0 ou mais, este dano não se soma por
-           cima — é o caso do nível 27 da Brasa , em que cada ataque leva uma junto. Nesta
-           rota o degrau de Trilha entrega Kata e não feitiço, e o capítulo 8, Caminhos e Trilhas, diz
-           isso na abertura.
-
-           Requisito: grátis na Lapidação 1. A Lapidação escala o dano na arma e o número de
-           usos.
-
-           Exemplo. Com Lapidação 6, o soco e a lâmina levam 3d4 de dano a mais.
-
-
-     A escolha não precisa ser física. Ocultismo mais Intelecto é uma opção tão usável quanto
-     Atletismo mais Físico .
+A escolha não precisa ser física. Ocultismo mais Intelecto é uma opção tão usável quanto
+Atletismo mais Físico .
 
 
 
 
-     Bênçãos de corpo
+Bênçãos de corpo
 
-     Ímpeto
+Ímpeto
 
-           Ímpeto — como Ação Bônus, você se move até o seu deslocamento sem provocar
-           ataque de oportunidade.
+    Ímpeto — como Ação Bônus, você se move até o seu deslocamento sem provocar
+    ataque de oportunidade.                                                                             13
 
-           Sem chão. Você anda em parede, em água e no ar enquanto estiver se movendo. Se
-           terminar o turno e o movimento sem apoio, você cai.
+    Sem chão. Você anda em parede, em água e no ar enquanto estiver se movendo. Se
+    terminar o turno e o movimento sem apoio, você cai.
 
-           Requisito: Destreza 4. Classe Passiva 2.
+    Requisito: Destreza 4. Classe Passiva 2.
+
+
+
+
+                                                                                                  197
+     BÊNÇÃOS DE CORPO                                                            BÊNÇÃOS E L APIDAÇÃO
+
 
 
 
      Casco
-13
 
            Casco — você ganha +1 de vida a cada dois níveis e +1 em todo Teste de Resistên‐
            cia de Vigor que fizer.
 
            Requisito: Constituição 4. Classe Passiva 3.
+
+
+
+     Presilha
+
+           Presilha — quando você falha numa rolagem para agarrar, derrubar ou tirar
+           alguém do lugar, role de novo. Uma vez por rodada.
+
+           Requisito: Força 4. Classe Passiva 2.
+
+
+
+     Vigília
+
+           Vigília — você conta um degrau de exaustão a menos do que tem, para todo efeito.
+
+           O degrau continua marcado na ficha. O que muda é o que ele cobra de você.
+
+           Requisito: nenhum. Classe Passiva 2.
+
+
+     Ela não vira imunidade: a escada de exaustão do capítulo 5 tem três degraus e não tem
+     degrau zero, então o pior caso continua sendo dois. E o descanso longo continua limpando
+     no mesmo ritmo.
+
+
+     Esteio
+
+           Esteio — escolha um atributo na hora de pegar esta Bênção. Num Teste de Resis‐
+13
+           tência daquele atributo, se o d20 sair abaixo da sua Lapidação, ele vale a sua Lapi‐
+           dação.
+
+           Teto. Ele nunca passa do atributo escolhido mais 2 , então o máximo dele é 8 .
+
+           Requisito: nenhum. Classe Passiva 3.
 
 
 
@@ -10657,42 +10702,6 @@ Estímulo Muscular
 
 
 
-Presilha
-
-    Presilha — quando você falha numa rolagem para agarrar, derrubar ou tirar
-    alguém do lugar, role de novo. Uma vez por rodada.
-
-    Requisito: Força 4. Classe Passiva 2.
-
-
-
-Vigília
-
-    Vigília — você conta um degrau de exaustão a menos do que tem, para todo efeito.
-
-    O degrau continua marcado na ficha. O que muda é o que ele cobra de você.
-
-    Requisito: nenhum. Classe Passiva 2.
-
-
-Ela não vira imunidade: a escada de exaustão do capítulo 5 tem três degraus e não tem
-degrau zero, então o pior caso continua sendo dois. E o descanso longo continua limpando
-no mesmo ritmo.
-
-
-Esteio
-
-    Esteio — escolha um atributo na hora de pegar esta Bênção. Num Teste de Resis‐
-    tência daquele atributo, se o d20 sair abaixo da sua Lapidação, ele vale a sua Lapi‐
-    dação.
-
-    Teto. Ele nunca passa do atributo escolhido mais 2 , então o máximo dele é 8 .
-
-    Requisito: nenhum. Classe Passiva 3.
-
-
-
-                                                                                                 13
 Bênçãos de perseguição
 
 Faro
@@ -10707,98 +10716,100 @@ Faro
 
 
 
+Sem Pegada
+
+    Sem Pegada — você não deixa rastro físico: pegada, cheiro, marca, som de passo.
+    Nem Faro , nem cão, nem técnica de rastreamento acham por onde você passou.
+
+    Requisito: nenhum. Classe Passiva 1.
+
+
+Não é furtividade: Furtividade continua sendo a perícia, e esta Bênção não soma nada
+nela. Isto apaga o vestígio, não a testemunha ter te visto.
+
+
+
+Bênçãos de combate
+
+Vulto
+
+    Vulto — você percebe tudo o que estiver a 1,5 m × metade da Lapidação de você
+    sem precisar estar com os olhos abertos, só por som e movimento. É visão às cegas.           13
+
+    Requisito: nenhum. Classe Passiva 2.
+
+
+
+Antecipar
+
+    Antecipar — quando você falha num Teste de Resistência contra um efeito, você
+    passa a rolar com vantagem contra aquele mesmo efeito pelo resto da cena.
+
+    Requisito: Inteligência 4. Classe Passiva 2.
+
+
+
 
                                                                                            199
-     B Ê N Ç Ã O S D E C O M B AT E                                              BÊNÇÃOS E L APIDAÇÃO
+     ESCREVER UMA BÊNÇÃO                                                              BÊNÇÃOS E L APIDAÇÃO
 
-
-
-
-     Sem Pegada
-
-            Sem Pegada — você não deixa rastro físico: pegada, cheiro, marca, som de passo.
-            Nem Faro , nem cão, nem técnica de rastreamento acham por onde você passou.
-
-            Requisito: nenhum. Classe Passiva 1.
-
-
-     Não é furtividade: Furtividade continua sendo a perícia, e esta Bênção não soma nada
-     nela. Isto apaga o vestígio, não a testemunha ter te visto.
-
-
-
-     Bênçãos de combate
-
-     Vulto
-
-            Vulto — você percebe tudo o que estiver a 1,5 m × metade da Lapidação de você
-            sem precisar estar com os olhos abertos, só por som e movimento. É visão às cegas.
-
-            Requisito: nenhum. Classe Passiva 2.
-
-
-
-     Antecipar
-
-            Antecipar — quando você falha num Teste de Resistência contra um efeito, você
-            passa a rolar com vantagem contra aquele mesmo efeito pelo resto da cena.
-
-            Requisito: Inteligência 4. Classe Passiva 2.
 
 
 
      Campo
-13
-            Campo — a ação Estudar custa a sua Ação Bônus em vez da Ação Padrão, uma vez
-            por cena.
 
-            Requisito: nenhum. Classe Passiva 1.
+           Campo — a ação Estudar custa a sua Ação Bônus em vez da Ação Padrão, uma vez
+           por cena.
+
+           Requisito: nenhum. Classe Passiva 1.
+
+
+
+     Assombro
+
+           Assombro — uma vez por cena, ao entrar numa cena ou ao ser visto pela primeira
+           vez, escolha uma quantidade de criaturas que enxergam você igual a metade da sua
+           Lapidação, no mínimo 1 .
+
+           O que ela rola. Um Teste de Resistência de Espírito contra a CD da sua técnica, ou
+           ela fica Amedrontado até o fim do próximo turno dela.
+
+           Requisito: Essência 4. Classe Passiva 1.
+
+
+     A CD é a da sua técnica, do capítulo 9: 8 + atributo da técnica + maestria .
+
+
+
+     Escrever uma Bênção
+
+     Bênção Própria
+     A vaga em branco do catálogo: a coisa que o seu personagem descobriu que o corpo dele faz,
+     pequena o bastante para nunca ter virado comum.
+
+
+           Bênção Própria — você escreve, com o mestre, uma Bênção que não está no catá‐
+           logo. Antes da sessão. Ela é Classe Passiva 1 ou 2, nunca 3, e você só pode pegá-la
+13
+           uma vez na ficha inteira.
+
+           A ficha registra duas coisas: a frase, e a resposta de "em quantas cenas por arco isso vai
+           importar?".
+
+           Requisito: uma vez na ficha inteira. Classe Passiva 1 ou 2.
+
+
+     A régua é a mesma da Aptidão Própria , no capítulo 12, e vale inteira: uma frase, verificá‐
+     vel, sem dado de dano, com limite por cena se for Classe Passiva 2, e não pode repetir uma
+     das doze do catálogo com outro nome nem entregar uma que o seu requisito não alcança.
 
 
 
 
      200
-BÊNÇÃOS E L APIDAÇÃO                                                          ESCREVER UMA BÊNÇÃO
+BÊNÇÃOS E L APIDAÇÃO                                                      ESCREVER UMA BÊNÇÃO
 
 
-
-
-Assombro
-
-    Assombro — uma vez por cena, ao entrar numa cena ou ao ser visto pela primeira
-    vez, escolha uma quantidade de criaturas que enxergam você igual a metade da sua
-    Lapidação, no mínimo 1 .
-
-    O que ela rola. Um Teste de Resistência de Espírito contra a CD da sua técnica, ou
-    ela fica Amedrontado até o fim do próximo turno dela.
-
-    Requisito: Essência 4. Classe Passiva 1.
-
-
-A CD é a da sua técnica, do capítulo 9: 8 + atributo da técnica + maestria .
-
-
-
-Escrever uma Bênção
-
-Bênção Própria
-A vaga em branco do catálogo: a coisa que o seu personagem descobriu que o corpo dele faz,
-pequena o bastante para nunca ter virado comum.
-
-
-    Bênção Própria — você escreve, com o mestre, uma Bênção que não está no catá‐
-    logo. Antes da sessão. Ela é Classe Passiva 1 ou 2, nunca 3, e você só pode pegá-la
-    uma vez na ficha inteira.
-
-    A ficha registra duas coisas: a frase, e a resposta de "em quantas cenas por arco isso vai
-    importar?".
-
-    Requisito: uma vez na ficha inteira. Classe Passiva 1 ou 2.
-
-
-A régua é a mesma da Aptidão Própria , no capítulo 12, e vale inteira: uma frase, verificá‐
-vel, sem dado de dano, com limite por cena se for Classe Passiva 2, e não pode repetir uma             13
-das doze do catálogo com outro nome nem entregar uma que o seu requisito não alcança.
 
 
     Na dúvida, Pesada. Pesada é Classe Passiva 3, e a Classe Passiva 3 está fora do que a
@@ -10814,7 +10825,13 @@ E existe uma trava a mais:
 
 
 
-                                                                                                 201
+
+                                                                                                  13
+
+
+
+
+                                                                                            201
                                                                                         E QUIPAMENTO
 
 
@@ -12269,7 +12286,7 @@ Limites do orçamento
 
  PONTOS      TRAÇO      O QUE FAZ
 
- 8           Jorro      ataca em linha ou em área
+ 8           Jorro      ataca e empurra em linha ou em área
 
  8           Graúdo     ocupa espaço maior e barra passagem
 
@@ -13794,64 +13811,63 @@ dizer, veja O vocabulário do sistema, no começo do livro.
 
 
 Ação                                                     Bônus   Expansão                      de                     Domínio
-   15 , 20 , 36 , 55 , 105 , 122 , 186 , 198 , 206 , 222 ,          13 , 92 , 134 , 168 , 176 , 182 , 197 , 249
+   15 , 20 , 36 , 55 , 105 , 122 , 186 , 197 , 206 , 222 ,          13 , 92 , 134 , 168 , 176 , 182 , 196 , 249
    236                                                           Família 13 , 23 , 76 , 103 , 128 , 205
 Ação                                                  Padrão     Feitiço
    15 , 22 , 25 , 36 , 58 , 105 , 143 , 186 , 200 , 222             8 , 12 , 21 , 26 , 38 , 51 , 66 , 76 , 102 , 122 , 167 ,
-Amarra 16 , 227                                                     175 , 181 , 198 , 221 , 225 , 239 , 250
-Ampliar 13 , 138                                                 Ferramenta amaldiçoada 8 , 12 , 48 , 54 , 84 , 168 , 197 ,
-Aptidão 14 , 27 , 80 , 115 , 139 , 170 , 175 , 180 , 194 ,          205 , 216 , 235
+Amarra 16 , 227                                                     175 , 181 , 197 , 221 , 225 , 239 , 250
+Ampliar 13 , 138                                                 Ferramenta amaldiçoada 8 , 12 , 48 , 54 , 84 , 168 , 196 ,
+Aptidão 14 , 27 , 80 , 115 , 139 , 170 , 175 , 180 , 193 ,          205 , 216 , 235
    204 , 219 , 237 , 248                                         Forma 13 , 31 , 52 , 73 , 96 , 103 , 125 , 167 , 179 , 186 ,
-Arredondamento 10 , 33 , 159 , 178 , 181 , 194 , 228 ,              217 , 227 , 236 , 243
+Arredondamento 10 , 33 , 159 , 178 , 181 , 193 , 228 ,              217 , 227 , 236 , 243
    237                                                           Fundamento 8 , 12 , 26 , 53 , 70 , 79 , 122 , 167 , 175 ,
-Ataque de oportunidade 38 , 58 , 114 , 140                          181 , 195 , 237 , 250
+Ataque de oportunidade 38 , 58 , 114 , 140                          181 , 194 , 237 , 250
 
-Atributo                                                         Grau 12 , 43 , 67 , 77 , 168 , 175 , 197 , 213 , 217 , 242
-   10 , 20 , 24 , 43 , 67 , 76 , 102 , 123 , 169 , 182 , 195 ,   Integridade 11 , 21 , 30 , 53 , 62 , 72 , 146 , 221 , 240
+Atributo                                                         Grau 12 , 43 , 67 , 77 , 168 , 175 , 196 , 213 , 217 , 242
+   10 , 20 , 24 , 43 , 67 , 76 , 102 , 123 , 169 , 182 , 194 ,   Integridade 11 , 21 , 30 , 53 , 62 , 72 , 146 , 221 , 240
    212 , 223 , 252                                               Invocação 16 , 47 , 70 , 104 , 158 , 222 , 238
 Caminho 8 , 11 , 21 , 24 , 40 , 49 , 60 , 66 , 76 , 101 ,        Legado 12 , 29 , 67 , 77 , 239
    136 , 168 , 176 , 208 , 223 , 246
                                                                  Liberação Máxima 13 , 122 , 167 , 176 , 250
 CD 10 , 20 , 23 , 39 , 44 , 53 , 72 , 77 , 109 , 124 , 169 ,
                                                                  Maestria 10 , 20 , 24 , 43 , 72 , 102 , 123 , 173 , 182 ,
-   181 , 194 , 221 , 251
-                                                                    201 , 212 , 223 , 250
+   181 , 193 , 221 , 251
+                                                                    200 , 212 , 223 , 250
 Cicatriz 12 , 34 , 233
-                                                                 Marco 14 , 134 , 167 , 175 , 181 , 194 , 223 , 250
-Classe 0 13 , 42 , 71 , 102 , 126 , 185 , 198 , 250
-                                                                 Melhoria 11 , 35 , 54 , 103 , 122 , 175
-Classe Passiva 13 , 130 , 171 , 177 , 183 , 195
+                                                                 Marco 14 , 134 , 167 , 175 , 181 , 193 , 223 , 250
+Classe 0 13 , 42 , 71 , 102 , 126 , 185 , 197 , 250
+                                                                 Melhoria 11 , 33 , 54 , 103 , 122 , 175
+Classe Passiva 13 , 130 , 171 , 177 , 183 , 194
                                                                  Ofício 10 , 26 , 43 , 64 , 71 , 79 , 104 , 182 , 202 , 252
 Cobertura 8 , 15 , 28 , 39 , 46 , 60 , 132 , 217 , 235
                                                                  Origem 12 , 26 , 49 , 66 , 76 , 104 , 183 , 218 , 236
-Concentração 15 , 41 , 131 , 189
-                                                                 Pacto 12 , 73 , 187 , 236
+Concentração 15 , 41 , 131 , 188
+                                                                 Pacto 12 , 73 , 186 , 236
 Condição
-                                                                 Passiva 13 , 31 , 71 , 127 , 171 , 178 , 182 , 195 , 204 ,
-   11 , 21 , 24 , 39 , 54 , 71 , 78 , 106 , 128 , 191 , 203
+                                                                 Passiva 13 , 31 , 71 , 127 , 171 , 178 , 182 , 194 , 204 ,
+   11 , 21 , 24 , 39 , 54 , 71 , 78 , 106 , 128 , 190 , 203
                                                                     250
-Crítico 10 , 27 , 55 , 111 , 143 , 188 , 212 , 220 , 234
+Crítico 10 , 27 , 55 , 111 , 143 , 187 , 212 , 220 , 234
                                                                  Patente 12 , 73 , 77 , 213 , 219 , 247
 Dano na alma 13 , 32 , 52 , 142 , 240
                                                                  Perícia 11 , 24 , 39 , 43 , 57 , 64 , 67 , 76 , 104 , 143 ,
 Defesa 8 , 10 , 20 , 25 , 60 , 66 , 100 , 108 , 124 , 181 ,         182 , 197 , 203 , 252
-   194 , 202 , 223 , 238
+   193 , 202 , 223 , 238
                                                                  Pontos de energia 11 , 32 , 54 , 62 , 72 , 96 , 102 , 237
 Desgaste 16 , 95 , 219
-                                                                 Pontos de vida 11 , 25 , 72 , 95 , 142 , 191
+                                                                 Pontos de vida 11 , 25 , 72 , 95 , 142 , 190
 Desvantagem 10 , 20 , 24 , 38 , 54 , 63 , 103 , 133 , 206
-                                                                 Proteção 10 , 28 , 69 , 113 , 177 , 181 , 194 , 202 , 223
+                                                                 Proteção 10 , 28 , 69 , 113 , 177 , 181 , 193 , 202 , 223
 Espaço de feitiço 13 , 182 , 237 , 250
-                                                                 Reação 10 , 20 , 28 , 36 , 58 , 105 , 128 , 183 , 220 , 238
-Essência
-                                                                 Redução de Dano 11 , 28 , 123 , 184
-   11 , 25 , 38 , 45 , 52 , 68 , 103 , 123 , 169 , 196 , 223 ,
-                                                                 Refino
+                                                                 Reação
+Essência                                                            10 , 20 , 28 , 36 , 58 , 105 , 128 , 183 , 196 , 220 ,
+   11 , 25 , 38 , 45 , 52 , 68 , 103 , 123 , 169 , 195 , 223 ,      238
    236
-                                                                    8 , 14 , 69 , 92 , 115 , 154 , 168 , 176 , 180 , 194 ,
+                                                                 Redução de Dano 11 , 28 , 123 , 184 , 196
 Estigma 16 , 168 , 205 , 216 , 223
+                                                                 Refino
+Exaustão 11 , 30 , 59 , 62 , 95 , 156 , 198                         8 , 14 , 69 , 92 , 115 , 154 , 168 , 176 , 180 , 193 ,
                                                                     204 , 219 , 225 , 237 , 250
-Exaustão 11 , 30 , 59 , 62 , 95 , 156 , 199
 
 
 
@@ -13859,10 +13875,10 @@ Exaustão 11 , 30 , 59 , 62 , 95 , 156 , 199
 254
 ÍNDICE REMISSIVO
 
-Restrição 12 , 42 , 46 , 68 , 76 , 122 , 167 , 176 , 194 ,     Teste de Resistência 10 , 20 , 27 , 40 , 50 , 53 , 64 , 67 ,
+Restrição 12 , 42 , 46 , 68 , 76 , 122 , 167 , 176 , 193 ,     Teste de Resistência 10 , 20 , 27 , 40 , 50 , 53 , 64 , 67 ,
    206 , 233 , 236                                                76 , 104 , 123 , 181 , 197 , 223
 Rodada 11 , 29 , 36 , 53 , 63 , 88 , 104 , 123 , 167 , 181 ,   Teto 11 , 31 , 42 , 59 , 61 , 94 , 115 , 125 , 169 , 178 ,
-   194 , 222                                                      182 , 195 , 202 , 216 , 223 , 236 , 244
+   193 , 222                                                      182 , 194 , 202 , 216 , 223 , 236 , 244
 Rotina 11 , 23                                                 Trilha 12 , 21 , 31 , 68 , 101 , 167 , 175 , 186 , 224 , 250
 Selo 12 , 40 , 44 , 56 , 71 , 85 , 124 , 167 , 204 , 217       Uso Livre 13 , 149
 Sequela 11 , 34                                                Vantagem 10 , 20 , 24 , 38 , 55 , 78 , 102 , 128 , 173 ,

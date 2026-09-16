@@ -39,7 +39,8 @@ def conferir(f):
     # incompatibilidades: pares que nao entram no mesmo feitico.
     # Os pares moram no decisoes-ficha.json, nao aqui, e cada um declara a fonte:
     #   'manual' -> a frase esta escrita na tabela da Familia Tempo
-    #   'ficha'  -> decisao A3, que o manual nao carrega (dividida B6 do PENDENCIAS)
+    #   'ficha'  -> decisao da ficha que o manual nao carrega. Desde a v0.246 do sistema
+    #               nenhum par e so da ficha: o B6 do PENDENCIAS fechou
     escolhidas = set(f["melhorias"]) | set(f["restricoes"])
     if f.get("forma"):
         escolhidas.add(f["forma"])

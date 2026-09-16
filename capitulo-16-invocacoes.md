@@ -156,7 +156,7 @@ Cada linha diz quanto ela custa do orçamento, o nome que vai na ficha, e o efei
 | **8** | `Montaria` | carrega uma pessoa ou mais, dependendo do tamanho |
 | **8** | `Fisgada` | prende à distância. Ela alcança, engancha, e quem ia fugir para de conseguir |
 | **8** | `Emboscada` | surge do chão, fora do alcance de visão |
-| **8** | `Jorro` | ataca em linha ou em área |
+| **8** | `Jorro` | ataca e empurra em linha ou em área |
 | **8** | `Graúdo` | ocupa espaço maior e **barra passagem** |
 | **8** | `Remoto` | funciona além dos 18 metros da amarra. Ver *A amarra, e as três faixas de alcance* |
 
