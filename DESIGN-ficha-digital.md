@@ -367,7 +367,7 @@ O manual diz: *"Sem Traje e sem Revestimento, a sua proteção é 1/3 do refino 
 O `1` está certo **hoje**, porque a ficha nasce no nível 2 com refino 1. Ele fica errado em dois momentos:
 
 1. **refino 3**, quando a proteção vira 2
-2. **qualquer equipamento**, porque Traje, Revestimento e escudo **desligam** a aptidão e entregam a proteção deles no lugar
+2. **qualquer uniforme**, porque Traje e Revestimento **desligam** a aptidão e entregam a proteção deles no lugar; o escudo **soma** por cima de qualquer uma *(esta linha dizia que o escudo desligava até a v0.246 do sistema)*
 
 A correção é a proteção virar célula própria, calculada:
 

@@ -80,7 +80,7 @@ A cópia leva os dois arquivos de script junto. O `onEdit` é gatilho simples: f
 
 ### A planilha central do carimbo
 
-1. Cria outra planilha, escreve a versão do catálogo na `A1` — hoje `0.239` —, e compartilha como leitura.
+1. Cria outra planilha, escreve a versão do catálogo na `A1` — hoje `0.246` —, e compartilha como leitura.
 2. Na ficha, aba `DADOS`, célula `D1`:
 
 ```
@@ -92,6 +92,8 @@ A cópia leva os dois arquivos de script junto. O `onEdit` é gatilho simples: f
 Quando o manual mudar, você muda **uma célula** na central e toda ficha em circulação avisa sozinha que está atrasada. Se a central sumir, a ficha perde o aviso e não perde mais nada.
 
 > **⚠ Em 14/09/2026 o catálogo foi da v0.104 à v0.239.** *A aba `DADOS` passou a sair do catálogo, e não da planilha exportada: saíram a condição `Petrificado` e a entrada `Nível`, a Restrição `Lento` virou `Atrasar`, e entrou a Melhoria `Efeito Próprio`.* **Para a planilha viva acompanhar:** *rode o `construir()` do `Ficha.gs` novo numa planilha nova, troque a `A1` da central para `0.239`, e exporte de novo para a `ficha-v01` quando puder.* **As fichas antigas passam a mostrar o aviso de versão, como a A1 prevê.**
+
+> **⚠ Em 16/09/2026 o catálogo foi à v0.246, e a FICHA mudou de desenho num ponto.** *O `EQUIPAMENTO` virou menu de uniforme e escudo, e entrou o `REFINO ESCOLHIDO` ao lado do `BLOQUEAR` — é o B3.* **Para a planilha viva acompanhar:** *cole o `Codigo.gs` novo, rode o `construir()` do `Ficha.gs` novo numa planilha nova, passe o personagem para ela, troque a `A1` da central para `0.246`, e exporte de novo para a `ficha-v01` quando puder.*
 
 ---
 

@@ -163,5 +163,97 @@ for _n, (_tot, _cx, _ma) in TRS.items():
     print(f"  {_rot:24} {lido:>6} {str(esp):>18}   {'BATE' if ok else 'NÃO BATE'}")
 
 shutil.rmtree(d, ignore_errors=True)
-print(f"\n{'A FICHA REPRODUZ A KAORI' if not falhas else f'{falhas} NÚMERO(S) ERRADO(S)'}")
+
+# ============================================================================================
+# A DEFESA COM UNIFORME, ESCUDO E REFINO ESCOLHIDO — o B3, na v0.246 do sistema
+# Cada caso vira uma copia da ficha gerada, e o LibreOffice recalcula todas numa passada. O numero
+# esperado sai da regra do livro, montada aqui com os valores do catalogo -- que o conferir-catalogo
+# confere contra as tabelas do manual -- e com as frases do manual.txt. Dois casos sao os exemplos
+# que o proprio livro publica.
+_EQ = CAT["equipamento_defesa"]
+_MARCOS = CAT["progressao"]["marcos"]
+_mteto = _re.search(r"o refino é um número de 1 a (\d+)\.", _MAN)
+_mex1 = _re.search(r"com Destreza (\d+) e um Traje de degrau (\d+), a sua Defesa é (\d+)", _MAN)
+_mex2 = _re.search(r"Com refino (\d+) a sua proteção passiva é (\d+)", _MAN)
+if not (_mteto and _mex1 and _mex2 and "1/3 do refino + 1" in _MAN):
+    print("não achei no manual.txt o teto do refino, os dois exemplos de Defesa ou a fórmula do "
+          "cobrir-se"); sys.exit(1)
+_TETO_REF = int(_mteto.group(1))
+
+def _regra(nivel, des, equip, esc):
+    """a Defesa pelo livro: refino de graça + escolhas (uma por marco que passou, até o teto), o
+    cobrir-se desligado por uniforme, o escudo por cima, e o menor teto de Destreza"""
+    m = sum(1 for x in _MARCOS if x <= nivel)
+    refino = min(_TETO_REF, 1 + m + min(m, esc))
+    partes = [p.strip() for p in equip.split("+")] if equip else []
+    uni = [_EQ["uniformes"][p] for p in partes if p in _EQ["uniformes"]]
+    escu = [_EQ["escudos"][p] for p in partes if p in _EQ["escudos"]]
+    prot = (0 if uni else refino // 3 + 1) + sum(x["protecao"] for x in uni + escu)
+    tetos = [x["teto_de_destreza"] for x in uni + escu if x["teto_de_destreza"] is not None]
+    return 10 + min([des] + tetos) + prot, refino
+
+# o refino do exemplo, alcançado no primeiro nível em que dá para chegar nele escolhendo Refino
+_m = lambda n: sum(1 for x in _MARCOS if x <= n)
+_alvo = int(_mex2.group(1))
+_ano = next(n for n in range(1, 31) if 1 + 2 * _m(n) >= _alvo)
+_esc6 = _alvo - 1 - _m(_ano)
+CASOS = [
+    # (rotulo, nivel, Destreza, equipamento, refino escolhido)
+    ("sem nada, nível 2", 2, 2, "", 0),
+    ("o exemplo do livro: Destreza e Traje", 2, int(_mex1.group(1)), f"Traje {_mex1.group(2)}", 0),
+    ("Revestimento corta a Destreza", 10, 6, "Revestimento 1", 0),
+    ("Revestimento 2 + Torre", 6, 0, "Revestimento 2 + Torre", 0),
+    ("escudo soma no cobrir-se, com Refino", 18, 6, "Broquel", 4),
+    (f"o exemplo do livro: refino {_mex2.group(1)}", _ano, 4, "", _esc6),
+    ("Traje 3 + Médio no fim, refino no teto", 30, 6, "Traje 3 + Médio", 7),
+    ("escolha acima dos marcos não conta", 2, 3, "", 7),
+    ("escolha vinda como texto", 22, 5, "Médio", "3"),
+    ("Revestimento 3 + Broquel", 26, 2, "Revestimento 3 + Broquel", 0),
+]
+d2 = tempfile.mkdtemp(prefix="defesa-")
+arqs = []
+for i, (rot, nv, des, eq, esc) in enumerate(CASOS):
+    wbc = load_workbook(ARQ)
+    wsc = wbc["FICHA"]
+    wsc[IDX["nivel"]] = nv
+    wsc[IDX["atr_Destreza"]] = des
+    wsc[IDX["equipamento"]] = eq or None
+    wsc[IDX["refino escolhido"]] = esc
+    wbc.move_sheet("FICHA", -wbc.sheetnames.index("FICHA"))
+    for _ws in wbc:
+        for _l in _ws.iter_rows():
+            for _c in _l:
+                if isinstance(_c.value, str) and _c.value.startswith("=") and "IFS(" in _c.value \
+                        and "_xlfn.IFS(" not in _c.value:
+                    _c.value = _c.value.replace("IFS(", "_xlfn.IFS(")
+    arqs.append(os.path.join(d2, f"caso{i:02d}.xlsx"))
+    wbc.save(arqs[-1])
+subprocess.run(["libreoffice", "--headless", "--convert-to",
+                "csv:Text - txt - csv (StarCalc):44,34,76,1,,0,false,true,true",
+                "--outdir", d2] + arqs, capture_output=True, timeout=600)
+_atual = None
+for _l in load_workbook(ARQ)["FICHA"].iter_rows():
+    for _c in _l:
+        if isinstance(_c.value, str) and "Refino Atual" in _c.value:
+            _atual = _c.coordinate
+_t3, _t4 = "a ficha calcula", "o livro"
+print(f"\n{'Defesa com equipamento':44} {_t3:>16} {_t4:>10}")
+for i, (rot, nv, des, eq, esc) in enumerate(CASOS):
+    esp, refino = _regra(nv, des, eq, int(esc))
+    f2 = os.path.join(d2, f"caso{i:02d}.csv")
+    if not os.path.exists(f2):
+        print(f"  {rot:42} o LibreOffice nao converteu"); falhas += 1; continue
+    linhas = list(csv.reader(open(f2, encoding="utf-8")))
+    lido = le(IDX["defesa"]).replace(".0", "")
+    txt = le(_atual) if _atual else ""
+    ok = lido == str(esp) and txt.endswith(f"{refino}/{_TETO_REF}")
+    falhas += not ok
+    print(f"  {rot:42} {lido + ' · ' + txt.split(': ')[-1]:>16} {str(esp) + ' · ' + str(refino):>10}   "
+          f"{'BATE' if ok else 'NÃO BATE'}")
+shutil.rmtree(d2, ignore_errors=True)
+if _regra(2, int(_mex1.group(1)), f"Traje {_mex1.group(2)}", 0)[0] != int(_mex1.group(3)):
+    print("  a regra montada aqui não reproduz o exemplo do livro: o teste mediria contra si mesmo")
+    falhas += 1
+
+print(f"\n{'A FICHA REPRODUZ A KAORI E A DEFESA DO LIVRO' if not falhas else f'{falhas} NÚMERO(S) ERRADO(S)'}")
 sys.exit(1 if falhas else 0)

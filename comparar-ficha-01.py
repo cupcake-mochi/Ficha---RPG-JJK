@@ -22,6 +22,8 @@ import dados_catalogo
 DADOS_CAT = dados_catalogo.valores()
 import tr_treinado
 TR_NOVAS = tr_treinado.trocas(LAY)
+import defesa_equipamento
+DE = defesa_equipamento.trocas(LAY)
 
 for f in (A, B):
     if not os.path.exists(f):
@@ -152,6 +154,15 @@ for n in wa.sheetnames:
                     and all(pa[k] == pb[k] for k in pa if k != "valor")):
                 esperadas["fórmula de TR que passa a somar a maestria"] += 1
                 continue
+            # limpeza 10: a Defesa com uniforme, escudo e refino escolhido (v0.246 do sistema, o B3). O
+            # VALOR tem de ser o que o defesa_equipamento.py monta, e o ESTILO tem de ser o da celula que
+            # ele declara como molde, na ficha gerada.
+            _de = DE["celulas"].get(n, {}).get(coord)
+            if _de is not None:
+                _molde = perfil(sb[_de[1]])
+                if pb["valor"] == _de[0] and all(pb[k] == _molde[k] for k in pb if k != "valor"):
+                    esperadas["célula da Defesa com equipamento e refino escolhido"] += 1
+                    continue
             for k in pa:
                 if pa[k] != pb[k]:
                     difs.append(f"{n}!{coord} {k}: {pa[k]!r} != {pb[k]!r}")
@@ -161,7 +172,11 @@ for n in wa.sheetnames:
     ma, mb = {str(x) for x in sa.merged_cells.ranges}, {str(x) for x in sb.merged_cells.ranges}
     print(f"  mesclagens: {len(ma)} original · {len(mb)} gerada")
     for x in sorted(ma - mb): difs.append(f"{n}: mesclagem {x} faltou")
-    for x in sorted(mb - ma): difs.append(f"{n}: mesclagem {x} sobrou")
+    for x in sorted(mb - ma):
+        if x in DE["mescladas"].get(n, []):          # limpeza 10: a caixa do refino escolhido
+            esperadas["mesclagem da caixa do refino escolhido"] += 1
+        else:
+            difs.append(f"{n}: mesclagem {x} sobrou")
 
     def largs(s):
         d = {}
@@ -195,7 +210,12 @@ for n in wa.sheetnames:
     vbs = {(str(v.sqref), v.type, v.formula1) for v in sb.data_validations.dataValidation}
     print(f"  menus suspensos: {len(va)} original · {len(vbs)} gerada")
     for x in sorted(va - vbs): difs.append(f"{n}: menu {x} faltou")
-    for x in sorted(vbs - va): difs.append(f"{n}: menu {x} sobrou")
+    _menus_de = {(m["onde"], m["tipo"], m["formula"]) for m in DE["menus"].get(n, [])}
+    for x in sorted(vbs - va):
+        if x in _menus_de:                           # limpeza 10: o menu do equipamento e o do refino
+            esperadas["menu do equipamento e do refino escolhido"] += 1
+        else:
+            difs.append(f"{n}: menu {x} sobrou")
 
     def regras(s):
         out = []

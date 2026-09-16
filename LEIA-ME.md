@@ -69,7 +69,7 @@ O zip já traz os dois, então `./rodar-tudo.sh` funciona assim que você descom
 
 | arquivo | de onde veio |
 |---|---|
-| `manual.txt` | o seu próprio PDF, extraído com `pdftotext -layout` — o de hoje saiu da v0.239 do sistema |
+| `manual.txt` | o seu próprio PDF, extraído com `pdftotext -layout` — o de hoje saiu da v0.246 do sistema |
 | `repos/JJK---PDF---RPG-main/ficha/ficha-exemplo-kaori.docx` | cópia do seu repositório público, só esse arquivo |
 
 Os dois são derivados de material seu. Se for subir isto para o GitHub e preferir não duplicar, pode apagar os dois — o `conferir-decisoes.py` **falha e diz como regerar**, em vez de pular em silêncio. Um verde que pulou checagem não prova nada.
@@ -88,5 +88,5 @@ Nenhum dos dois repete número do outro documento, e o `conferir-decisoes.py` co
 
 - ~~**Colar o texto do `manual-temporario.md`**~~ **feito no sistema, com texto próprio**, e o `Braseiro` foi enxugado.
 - ~~**A checagem 7 das Famílias**~~ **feita na v0.239 do sistema**, como bloco 8 do `conferir-ficha.py`, e a ficha em branco foi regerada.
-- **Reconstruir a planilha com o `Ficha.gs` novo, e trocar a central para `0.239`.** O catálogo foi à v0.239 e a aba `DADOS` passou a sair dele: o passo a passo está no `COMO-SUBIR.md`, na planilha central.
+- **Reconstruir a planilha com o `Ficha.gs` novo, colar o `Codigo.gs` novo, e trocar a central para `0.246`.** O catálogo foi à v0.246, e a FICHA ganhou o menu de equipamento e o `REFINO ESCOLHIDO` (B3): o passo a passo está no `COMO-SUBIR.md`, na planilha central.
 - **Escolher o segundo caso de teste** (item B2): uma ficha de nível 15 ou mais, com Famílias Livres que a Kaori não usa.

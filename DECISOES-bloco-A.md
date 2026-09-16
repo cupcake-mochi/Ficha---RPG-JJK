@@ -213,6 +213,16 @@ O protótipo tinha `10 + Destreza + 1`, com o `1` na mão. Ele acerta hoje por c
 
 **A célula de equipamento entra agora vazia.** O catálogo do capítulo 12 entra depois; até lá o jogador digita o número. O que importa é que a fórmula já sabe que o equipamento **desliga** a aptidão em vez de somar com ela.
 
+> **⚠ Desde a v0.246 do sistema o catálogo entrou, e a fórmula de cima ficou velha.** *Medida em 21.632 combinações legais, a célula digitada errava a Defesa em `80,8%` delas: sem teto de Destreza, sem o escudo por cima do cobrir-se, e com o refino contando só o de graça.* ***Decisão do Mizuki: a opção A, com o campo das escolhas de Refino.*** **O `EQUIPAMENTO` virou menu das 27 combinações de uniforme e escudo, a tabela sai do catálogo para a `DADOS`, e o `REFINO ESCOLHIDO` entrou ao lado do `BLOQUEAR`.**
+>
+> ```
+> refino   = MIN(10 ; refino de graça + MIN(marcos que passou ; refino escolhido))
+> proteção = SE(vazio ; refino/3 + 1 ; SE(uniforme ; 0 ; refino/3 + 1) + a da tabela)
+> Defesa   = 10 + MIN(Destreza ; o menor teto do que veste) + proteção
+> ```
+>
+> *A `regressao-kaori-na-ficha.py` recalcula dez casos no LibreOffice, dois deles exemplos do livro; o `conferir-ficha-xlsx.py` confere a tabela, os menus e as fórmulas; o `conferir-catalogo.py` confere a chave `equipamento_defesa` contra as tabelas do manual.* **Continua sem campo:** *a `Couraça` (+1 vestindo uniforme) e a arma sem o requisito de Força, que tira a Destreza da Defesa.*
+
 ## C4 · Três fontes, e uma regra dura para o celular
 
 | papel | fonte | onde |

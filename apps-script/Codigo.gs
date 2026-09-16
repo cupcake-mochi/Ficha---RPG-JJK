@@ -52,8 +52,8 @@ function corDeEstado_(ss, idx) {
 function notasDeRegra_(ss, idx) {
   var ficha = ss.getSheetByName('FICHA');
   var notas = {
-    'proteção': 'Traje e Revestimento DESLIGAM a proteção da aptidão e entregam a ' +
-                'deles no lugar. Deixe o equipamento vazio para usar a aptidão.',
+    'proteção': 'Traje e Revestimento DESLIGAM a proteção do cobrir-se e entregam a ' +
+                'deles no lugar. Escudo soma por cima de qualquer uma das duas.',
     'maestria': 'Vira 2 no nível 10, 3 no 18, 4 no 26. Não é "a cada oito níveis".',
     'cd de feitiço': 'CD de feitiço = 8 + o atributo da sua técnica + maestria. ' +
                      'O atributo é o que você escolhe em ATRIBUTO DE CONJURAÇÃO.',
@@ -68,8 +68,13 @@ function notasDeRegra_(ss, idx) {
     'integridade_temp': 'Nenhuma regra do manual concede integridade temporária. ' +
                         'Se algo conceder, vale a regra das outras duas: não acumula, ' +
                         'e o teto é metade da Integridade máxima.',
-    'equipamento': 'Enquanto o catálogo do capítulo 12 não entra, digite aqui a ' +
-                   'proteção do equipamento. Vazio = usa a da aptidão.'
+    'equipamento': 'Escolha o que você veste: uniforme, escudo, ou os dois. Vazio = ' +
+                   'nem uniforme nem escudo, e vale a proteção do cobrir-se. Todo ' +
+                   'feiticeiro registrado recebe o Traje 1 na matrícula. Com dois tetos ' +
+                   'de Destreza, vale o menor.',
+    'refino escolhido': 'Quantas vezes você escolheu Refino num marco. Cada escolha ' +
+                        'dá +1 além do +1 de graça do marco. Conta no máximo uma por ' +
+                        'marco que você já passou, e o refino para em 10.'
   };
   var n = 0;
   Object.keys(notas).forEach(function (k) {

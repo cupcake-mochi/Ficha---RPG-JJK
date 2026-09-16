@@ -1,8 +1,8 @@
 {
   "_meta": {
     "sistema": "Projeto M",
-    "versao": "0.240",
-    "versao_data": "15/09/2026",
+    "versao": "0.246",
+    "versao_data": "16/09/2026",
     "versao_dona": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
     "fonte": "Projeto-M-Manual-da-Guilda.pdf, o livro da versão acima",
     "regra": "onde a ficha-em-branco.docx e o manual discordarem, o manual vence",
@@ -27,7 +27,8 @@
       "legados",
       "legados_formatos",
       "progressao",
-      "atributos"
+      "atributos",
+      "equipamento_defesa"
     ],
     "nao_conferido_contra_o_livro": []
   },
@@ -1554,5 +1555,61 @@
       }
     },
     "xp": "nao automatizar: o jogador digita o nivel direto (decisao do Mizuki)"
+  },
+  "equipamento_defesa": {
+    "fonte": "manual, capítulo Equipamento, seção Proteção: as tabelas Traje, Revestimento e Escudo, e as frases de regra",
+    "formula": "Defesa = 10 + Destreza + proteção",
+    "uniformes": {
+      "Traje 1": {
+        "protecao": 1,
+        "teto_de_destreza": null,
+        "requer_forca": null
+      },
+      "Traje 2": {
+        "protecao": 2,
+        "teto_de_destreza": null,
+        "requer_forca": null
+      },
+      "Traje 3": {
+        "protecao": 3,
+        "teto_de_destreza": null,
+        "requer_forca": 3
+      },
+      "Revestimento 1": {
+        "protecao": 4,
+        "teto_de_destreza": 0,
+        "requer_forca": 3
+      },
+      "Revestimento 2": {
+        "protecao": 5,
+        "teto_de_destreza": 0,
+        "requer_forca": 4
+      },
+      "Revestimento 3": {
+        "protecao": 6,
+        "teto_de_destreza": 0,
+        "requer_forca": 6
+      }
+    },
+    "escudos": {
+      "Broquel": {
+        "protecao": 1,
+        "teto_de_destreza": 5,
+        "requer_forca": null
+      },
+      "Médio": {
+        "protecao": 2,
+        "teto_de_destreza": 3,
+        "requer_forca": 3
+      },
+      "Torre": {
+        "protecao": 3,
+        "teto_de_destreza": 1,
+        "requer_forca": 5
+      }
+    },
+    "uniforme_desliga_a_protecao_de_energia": true,
+    "escudo_soma_por_cima": true,
+    "dois_tetos": "vale o menor"
   }
 }

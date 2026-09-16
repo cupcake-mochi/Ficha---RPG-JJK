@@ -290,6 +290,10 @@ layout = {
             "regra do manual da v0.104, e o capitulo 1 soma a maestria desde a v0.117 do sistema. E o "
             "B14. So o termo somado no treino das quatro formulas muda, e ele aponta para a celula que "
             "o indice publica com o nome que o catalogo da. O monta.py aplica, e o comparador conta.",
+            "a Defesa aplica o uniforme, o escudo e o refino escolhido: o EQUIPAMENTO vira menu das "
+            "combinacoes de uniforme e escudo, a tabela delas sai da chave equipamento_defesa do catalogo "
+            "para a DADOS, e o REFINO ESCOLHIDO entra ao lado do BLOQUEAR, com o estilo dele. E o B3, na "
+            "opcao A, decidida pelo Mizuki em 16/09/2026. O monta.py aplica, e o comparador conta.",
         ],
         "onde_ela_vive": "Google Sheets. Por isso o IFS fica cru e o SPARKLINE "
                          "continua: no Excel os dois quebram, e isso esta aceito.",

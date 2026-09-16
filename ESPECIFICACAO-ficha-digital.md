@@ -87,7 +87,7 @@ A ficha de papel tem quatro blocos, e a digital mantém a mesma divisão. Isso n
 
 **Os números derivados.** Nada aqui é escolha; tudo é fórmula, e a ficha digital deve calcular e travar contra edição manual. A lista está na seção 4.
 
-> **A proteção 1 inicial não é equipamento.** Ela vem de `cobrir-se de energia`, uma aptidão gratuita do refino 1, e vale `⌊refino ÷ 3⌋ + 1`. Vestir Traje, Revestimento ou escudo **desliga** ela. Se a ficha somar as duas, a Defesa sai errada, e esse erro já viveu sete versões no repositório.
+> **A proteção 1 inicial não é equipamento.** Ela vem de `cobrir-se de energia`, uma aptidão gratuita do refino 1, e vale `⌊refino ÷ 3⌋ + 1`. Vestir Traje ou Revestimento **desliga** ela; o escudo **soma** por cima. Se a ficha somar a do uniforme com a do cobrir-se, a Defesa sai errada, e esse erro já viveu sete versões no repositório. *Até a v0.246 do sistema esta linha dizia que o escudo também desligava; o escudo soma desde a v0.42 de lá.*
 
 ### Bloco 2 · Perícias, ofícios e Testes de Resistência
 

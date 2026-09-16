@@ -39,7 +39,8 @@
    "o Arial que sobra depois da primeira limpeza vira a fonte de corpo, decidido pelo Mizuki em 14/09/2026. Quantas, o extrator conta: 31",
    "o carimbo de versao que o Sheets em portugues leu como numero volta a ser o texto 0.NNN. O extrator conta: DADOS!B1 104.0 -> '0.104', DADOS!D1 104.0 -> '0.104'",
    "a aba DADOS sai do catalogo, e nao da exportacao: as doze listas das colunas A a L e o carimbo em B1 e D1. Decidido pelo Mizuki em 14/09/2026, quando o catalogo foi da v0.104 a v0.239 e a planilha viva ainda carregava o de antes. O monta.py aplica, e o comparador conta quantas celulas mudaram.",
-   "o Teste de Resistencia treinado soma a maestria, e nao 2: a planilha viva somava a regra do manual da v0.104, e o capitulo 1 soma a maestria desde a v0.117 do sistema. E o B14. So o termo somado no treino das quatro formulas muda, e ele aponta para a celula que o indice publica com o nome que o catalogo da. O monta.py aplica, e o comparador conta."
+   "o Teste de Resistencia treinado soma a maestria, e nao 2: a planilha viva somava a regra do manual da v0.104, e o capitulo 1 soma a maestria desde a v0.117 do sistema. E o B14. So o termo somado no treino das quatro formulas muda, e ele aponta para a celula que o indice publica com o nome que o catalogo da. O monta.py aplica, e o comparador conta.",
+   "a Defesa aplica o uniforme, o escudo e o refino escolhido: o EQUIPAMENTO vira menu das combinacoes de uniforme e escudo, a tabela delas sai da chave equipamento_defesa do catalogo para a DADOS, e o REFINO ESCOLHIDO entra ao lado do BLOQUEAR, com o estilo dele. E o B3, na opcao A, decidida pelo Mizuki em 16/09/2026. O monta.py aplica, e o comparador conta."
   ],
   "onde_ela_vive": "Google Sheets. Por isso o IFS fica cru e o SPARKLINE continua: no Excel os dois quebram, e isso esta aceito."
  },

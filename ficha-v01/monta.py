@@ -45,6 +45,13 @@ _TR = tr_treinado.trocas(LAYOUT)
 print(f"o TR treinado soma o termo do catalogo: {tr_treinado.aplica(LAYOUT, _TR)} formula(s) "
       f"diferentes da exportacao")
 
+# v0.246 do sistema, o B3 na opcao A: o EQUIPAMENTO vira menu de uniforme e escudo, a tabela sai do
+# catalogo para a DADOS, e o REFINO ESCOLHIDO entra ao lado do BLOQUEAR. Ver defesa_equipamento.py.
+import defesa_equipamento
+_DE = defesa_equipamento.trocas(LAYOUT)
+print(f"a Defesa com uniforme, escudo e refino escolhido: {defesa_equipamento.aplica(LAYOUT, _DE)} "
+      f"celula(s) diferentes da exportacao")
+
 # a paleta e a fonte de corpo saem do estilo.py, que e o dono delas -- e ele
 # ganhou as quatro cores desta versao na v0.1 (decisao do Mizuki: uma paleta so)
 sys.path.insert(0, os.path.join(os.path.dirname(AQUI), "ficha"))

@@ -299,6 +299,47 @@ _ok("fundamento: as Melhorias que espalham dano existem no manual",
 _ok("as chaves conferidas cobrem o catálogo inteiro", not CAT["_meta"]["nao_conferido_contra_o_livro"],
     str(CAT["_meta"]["nao_conferido_contra_o_livro"]))
 
+print("\nO EQUIPAMENTO QUE ENTRA NA DEFESA, CONTRA O MANUAL")
+# v0.246 do sistema, o B3: a ficha digital passou a ter um menu de uniforme e escudo, e a tabela dele
+# sai desta chave. As tres tabelas e as tres frases de regra saem do manual.txt, e nenhum numero
+# esta escrito aqui.
+EQ = CAT.get("equipamento_defesa", {})
+_LIN = open("manual.txt", encoding="utf-8").read().splitlines()
+_TRACO = lambda s: None if s == "—" else int(s)
+
+def _tabela(titulo, rx, n_campos):
+    """as linhas de dados logo depois do titulo em caixa alta da tabela"""
+    for _i, _l in enumerate(_LIN):
+        if _l.strip() == titulo:
+            _rows = []
+            for _m in _LIN[_i + 1:_i + 16]:
+                _mm = re.match(rx, _m)
+                if _mm:
+                    _rows.append(_mm.groups())
+            return _rows
+    return []
+
+_num3 = r"^\s*(\d)\s+(\d+)\s+(—|\d+)\s+(—|\d+)\s*$"
+_ok_eq = True
+for _tit, _nome in (("TRAJE", "Traje"), ("REVESTIMENTO", "Revestimento")):
+    _rows = _tabela(_tit, _num3, 4)
+    _livro = {f"{_nome} {g}": {"protecao": int(p), "teto_de_destreza": _TRACO(t), "requer_forca": _TRACO(f)}
+              for g, p, t, f in _rows}
+    _cat = {k: v for k, v in EQ.get("uniformes", {}).items() if k.startswith(_nome + " ")}
+    _ok(f"equipamento: os {len(_livro)} degraus de {_nome} são os do livro",
+        len(_livro) == 3 and _livro == _cat, f"livro {_livro} · catálogo {_cat}")
+_rows = _tabela("ESCUDO", r"^\s*(\d)\s+(\S+)\s+(\d+)\s+(—|\d+)\s+(—|\d+)\s*$", 5)
+_livro = {n: {"protecao": int(p), "teto_de_destreza": _TRACO(t), "requer_forca": _TRACO(f)} for g, n, p, t, f in _rows}
+_ok(f"equipamento: os {len(_livro)} escudos são os do livro",
+    len(_livro) == 3 and _livro == EQ.get("escudos"), f"livro {_livro} · catálogo {EQ.get('escudos')}")
+_ok("equipamento: a Defesa, o uniforme que desliga, o escudo que soma e os dois tetos têm a frase no livro",
+    EQ.get("formula") and _norm(EQ["formula"]) in MANN
+    and EQ.get("uniforme_desliga_a_protecao_de_energia") is True
+    and "Traje e Revestimento desligam a sua proteção passiva de energia amaldiçoada" in MANN
+    and EQ.get("escudo_soma_por_cima") is True and "Escudo soma por cima, sempre" in MANN
+    and EQ.get("dois_tetos") == "vale o menor" and "com teto de Destreza diferente, vale o menor dos dois" in MANN,
+    str({k: EQ.get(k) for k in ("formula", "uniforme_desliga_a_protecao_de_energia", "escudo_soma_por_cima", "dois_tetos")}))
+
 print("\nTRAVAS DE ESTRUTURA")
 sem_pericia = [a for a in CAT["atributos"]["lista"]
                if not any(v["atributo"] == a for v in CAT["pericias"].values())]

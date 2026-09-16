@@ -207,6 +207,51 @@ for campo, atributo in [("vida_max", "Constituição"), ("defesa", "Destreza"),
           isinstance(form, str) and alvo in form.replace("$", ""),
           str(form)[:80])
 
+print("\nA DEFESA COM UNIFORME, ESCUDO E REFINO ESCOLHIDO  (B3, v0.246 do sistema)")
+# O número mora na regressao-kaori-na-ficha.py, que recalcula dez casos no LibreOffice. Aqui fica a
+# estrutura que a regressão supõe: a tabela da DADOS é a do catálogo, o menu aponta para ela, o campo
+# novo está no índice com o rótulo em cima, e as três fórmulas leem o que devem ler.
+import re
+_EQC = CAT.get("equipamento_defesa", {})
+_esp = []
+for _u, _vu in _EQC.get("uniformes", {}).items():
+    _esp.append((_u, _vu["protecao"], _vu["teto_de_destreza"], "sim"))
+for _e, _ve in _EQC.get("escudos", {}).items():
+    _esp.append((_e, _ve["protecao"], _ve["teto_de_destreza"], "não"))
+for _u, _vu in _EQC.get("uniformes", {}).items():
+    for _e, _ve in _EQC.get("escudos", {}).items():
+        _ts = [t for t in (_vu["teto_de_destreza"], _ve["teto_de_destreza"]) if t is not None]
+        _esp.append((f"{_u} + {_e}", _vu["protecao"] + _ve["protecao"], min(_ts) if _ts else None, "sim"))
+_menu_eq = [v for v in f.data_validations.dataValidation if IDX.get("equipamento") and
+            str(v.sqref) == IDX["equipamento"].replace("$", "")]
+_faixa = _menu_eq[0].formula1 if _menu_eq else ""
+_mf = re.search(r"DADOS!\$([A-Z]+)\$(\d+):\$([A-Z]+)\$(\d+)", _faixa)
+_lida = []
+if _mf:
+    from openpyxl.utils import column_index_from_string as _ci
+    for _r in range(int(_mf.group(2)), int(_mf.group(4)) + 1):
+        _c0 = _ci(_mf.group(1))
+        _vals = [dd.cell(row=_r, column=_c0 + k).value for k in range(4)]
+        _lida.append((_vals[0], _vals[1], None if _vals[2] == "—" else _vals[2], _vals[3]))
+checa("o menu do EQUIPAMENTO aponta para uma coluna da DADOS", bool(_mf and _mf.group(1) == _mf.group(3)), _faixa)
+checa("a tabela do menu é a do catálogo: uniforme, escudo e cada par, com o menor teto",
+      bool(_esp) and _lida == _esp, f"{len(_lida)} linhas lidas, {len(_esp)} esperadas")
+_camp = IDX.get("refino escolhido", "")
+_menu_r = [v for v in f.data_validations.dataValidation if _camp and str(v.sqref) == _camp.replace("$", "")]
+_nmarcos = len(CAT["progressao"]["marcos"])
+checa("o REFINO ESCOLHIDO está no índice, com o rótulo em cima e menu de 0 até os marcos",
+      bool(_camp) and f.cell(row=f[_camp].row - 1, column=f[_camp].column).value == "REFINO ESCOLHIDO"
+      and bool(_menu_r) and _menu_r[0].formula1 == '"' + ",".join(map(str, range(_nmarcos + 1))) + '"',
+      f"{_camp} · {[v.formula1 for v in _menu_r]}")
+_fd, _fp = str(f[IDX.get("defesa", "A1")].value), str(f[IDX.get("proteção", "A1")].value)
+checa("a Defesa corta a Destreza pelo teto da tabela (coluna 3), e soma a proteção",
+      "MIN(" in _fd and ",3,FALSE)" in _fd and _fd.replace("$", "").endswith("+" + IDX.get("proteção", "?")), _fd[:90])
+checa("a proteção desliga a passiva pela coluna 4, soma a da tabela pela 2, e a passiva lê o refino escolhido",
+      ",4,FALSE)" in _fp and ",2,FALSE)" in _fp and _camp.replace("$", "") in _fp.replace("$", ""), _fp[:90])
+_fa = [c.value for l in f.iter_rows() for c in l if isinstance(c.value, str) and "Refino Atual" in c.value]
+checa("o Refino Atual impresso soma o refino escolhido",
+      len(_fa) == 1 and _camp.replace("$", "") in _fa[0].replace("$", ""), str(_fa)[:90])
+
 print("\nAS NOTAS DE REGRA DO Codigo.gs")
 # v0.240 do sistema, o resto do B8: a fórmula da CD já era a do manual, e a nota que aparece ao
 # passar o mouse continuava dizendo "o 2 é fixo". Nenhum validador lia as notas. A fórmula sai do
@@ -217,6 +262,16 @@ _CODN = open("apps-script/Codigo.gs", encoding="utf-8").read()
 _mcd = _rn.search(r"CD de feitiço = ([^.]+)\.", _MANN)
 _mno = _rn.search(r"'cd de feitiço':\s*((?:'[^']*'\s*\+?\s*)+)", _CODN)
 _nota = "".join(_rn.findall(r"'([^']*)'", _mno.group(1))) if _mno else ""
+# v0.246 do sistema, o B3: a nota do EQUIPAMENTO mandava digitar a proteção e citava o capítulo 12,
+# e o escudo somava calado. O campo virou menu, e o refino escolhido ganhou nota.
+_nq = _rn.search(r"'equipamento':\s*((?:'[^']*'\s*\+?\s*)+)", _CODN)
+_nr = _rn.search(r"'refino escolhido':\s*((?:'[^']*'\s*\+?\s*)+)", _CODN)
+_np = _rn.search(r"'proteção':\s*((?:'[^']*'\s*\+?\s*)+)", _CODN)
+_txt = lambda m: "".join(_rn.findall(r"'([^']*)'", m.group(1))) if m else ""
+checa("as notas do equipamento, da proteção e do refino escolhido dizem a regra do menu",
+      "Escolha" in _txt(_nq) and "capítulo 12" not in _txt(_nq) and "digite" not in _txt(_nq)
+      and "Escudo soma" in _txt(_np) and "no máximo uma por marco" in _txt(_nr),
+      f"equipamento: {_txt(_nq)[:50]} · proteção: {_txt(_np)[:50]} · refino: {_txt(_nr)[:50]}")
 checa("a nota da CD de feitiço traz a fórmula do manual",
       bool(_mcd) and _mcd.group(1) in _nota,
       f"manual: {_mcd.group(1) if _mcd else '?'} · nota: {_nota[:80]}")
