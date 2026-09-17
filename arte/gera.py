@@ -14,7 +14,16 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 random.seed(4)                      # o mesmo desenho toda vez que rodar
 AQUI   = os.path.dirname(os.path.abspath(__file__))
-FONTES = "/tmp/claude-1000/-media-mizuki-HD-Externo-II-Claude-Ficha/1ff06321-19ca-4c78-a1e7-69f0754d387b/scratchpad/fontes"
+# 17/09/2026: o caminho escrito aqui era uma pasta temporaria de outra conversa, e sumiu. A arte procura as
+# fontes na primeira pasta que tiver as duas.
+_CANDIDATAS = [
+    "/tmp/claude-1000/-media-mizuki-HD-Externo-II-Claude-Ficha/1ff06321-19ca-4c78-a1e7-69f0754d387b/scratchpad/fontes",
+    os.path.expanduser("~/.fonts"),
+    os.path.expanduser("~/.local/share/fonts"),
+]
+FONTES = next((d for d in _CANDIDATAS
+               if os.path.exists(os.path.join(d, "Oswald.ttf")) and os.path.exists(os.path.join(d, "YujiSyuku.ttf"))),
+              _CANDIDATAS[-1])
 VERMELHO = (194, 51, 77)
 OSSO     = (232, 220, 212)
 BLOCO    = (117, 101, 136)

@@ -29,7 +29,9 @@ def listas(CAT, DEC):
         ("F", "Melhorias", list(CAT["melhorias"])),
         ("G", "Restrições", list(CAT["restricoes"])),
         ("H", "Condições", list(CAT["condicoes"])),
-        ("I", "Origens", list(CAT["origens"])),
+        # 17/09/2026: o menu de Origem abre a Sem Técnica nas cinco principais e a Restrição Celestial nos dois
+        # ramos, na ordem das rotas de criação. A ficha precisa da rota; ver ficha_automatica.origens_do_menu.
+        ("I", "Origens", __import__("ficha_automatica").origens_do_menu(CAT)),
         ("J", "Testes", [t for t in tr if isinstance(tr[t], dict)]),
         # a v0.104 escrevia aqui as CHAVES do dicionario (lista, escala, criacao, pagina)
         ("K", "Atributos", list(CAT["atributos"]["lista"])),
@@ -43,7 +45,8 @@ def valores(CAT=None, DEC=None):
         CAT = json.load(open(os.path.join(RAIZ, "catalogo-projeto-m.json"), encoding="utf-8"))
     if DEC is None:
         DEC = json.load(open(os.path.join(RAIZ, "decisoes-ficha.json"), encoding="utf-8"))
-    val = {"B1": CAT["_meta"]["versao"], "D1": CAT["_meta"]["versao"]}
+    # o nome do sistema tambem mora aqui (17/09/2026): a CARTEIRA e a FICHA leem dele, e ele sai do catalogo
+    val = {"B1": CAT["_meta"]["versao"], "D1": CAT["_meta"]["versao"], "E1": "NOME DO SISTEMA", "F1": CAT["_meta"]["sistema"]}
     for col, titulo, itens in listas(CAT, DEC):
         val[f"{col}3"] = titulo
         for i, v in enumerate(itens):

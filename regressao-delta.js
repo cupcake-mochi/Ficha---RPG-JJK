@@ -131,6 +131,51 @@ checa('temporaria negativa digitada vira zero', tetoTemp_(-3, TMAX), 0);
 checa('sem maximo declarado nao ha teto', tetoTemp_(EFEITO, 0), EFEITO);
 checa('texto que nao e numero nao e mexido', tetoTemp_('x', TMAX), 'x');
 
+// --- as perícias fixas do Caminho, 17/09/2026 ----------------------------
+// A tabela sai do catálogo, que o conferir-catalogo.py confere contra o livro. O que se prova: o Caminho
+// novo marca as fixas dele, o de antes desmarca as suas, e uma perícia que os dois fixam não é
+// desmarcada.
+const periciasDoCaminho_ = new Function(extrai(GS, 'periciasDoCaminho_') +
+                                        '; return periciasDoCaminho_;')();
+const CATA = JSON.parse(fs.readFileSync(path.join(RAIZ, 'catalogo-projeto-m.json'), 'utf8'));
+const TAB = Object.entries(CATA.caminhos).map(([c, v]) => ({ caminho: c, pericias: v.pericias_fixas }));
+const [c1, c2] = Object.keys(CATA.caminhos);
+checa(`escolher ${c1} do zero marca as fixas dele`,
+      periciasDoCaminho_(TAB, c1, undefined), { marcar: CATA.caminhos[c1].pericias_fixas, desmarcar: [] });
+checa(`trocar ${c1} por ${c2} desmarca as de ${c1}`,
+      periciasDoCaminho_(TAB, c2, c1), { marcar: CATA.caminhos[c2].pericias_fixas, desmarcar: CATA.caminhos[c1].pericias_fixas });
+checa('apagar o Caminho so desmarca', periciasDoCaminho_(TAB, '', c1).marcar, []);
+const TAB2 = [{ caminho: 'A', pericias: ['X', 'Y'] }, { caminho: 'B', pericias: ['Y', 'Z'] }];
+checa('a perícia fixa nos dois Caminhos continua marcada', periciasDoCaminho_(TAB2, 'B', 'A'), { marcar: ['Y', 'Z'], desmarcar: ['X'] });
+checa('um Caminho que não está na tabela não marca nada', periciasDoCaminho_(TAB, 'Nenhum', c1).marcar, []);
+
+// --- a Trilha que não é do Caminho novo, 17/09/2026 ----------------------
+// As Trilhas saem do catálogo, e o texto de escolha sai do ficha_automatica.py, que o põe na ficha.
+const trilhaQueFica_ = new Function(extrai(GS, 'trilhaQueFica_') + '; return trilhaQueFica_;')();
+const PY = fs.readFileSync(path.join(RAIZ, 'ficha-v01', 'ficha_automatica.py'), 'utf8');
+const mVazio = PY.match(/^ESCOLHA_TRILHA = "([^"]+)"/m);
+if (!mVazio) throw new Error('o ESCOLHA_TRILHA do ficha_automatica.py mudou de forma');
+const VAZIO = mVazio[1];
+const TRI = Object.entries(CATA.trilhas).map(([t, c]) => ({ trilha: t, caminho: c }));
+const tDe = c => TRI.filter(l => l.caminho === c).map(l => l.trilha);
+const [t1] = tDe(c1), [t2] = tDe(c2);
+checa(`${t1} fica quando o Caminho é ${c1}`, trilhaQueFica_(TRI, c1, t1, VAZIO), t1);
+checa(`${t1} volta para "${VAZIO}" quando o Caminho vira ${c2}`, trilhaQueFica_(TRI, c2, t1, VAZIO), VAZIO);
+checa(`${t2} fica quando o Caminho vira ${c2}`, trilhaQueFica_(TRI, c2, t2, VAZIO), t2);
+checa('apagar o Caminho devolve a Trilha para o texto de escolha', trilhaQueFica_(TRI, '', t1, VAZIO), VAZIO);
+checa('a Trilha ainda não escolhida não é mexida', trilhaQueFica_(TRI, c2, VAZIO, VAZIO), VAZIO);
+checa('a Trilha vazia não vira texto de escolha', trilhaQueFica_(TRI, c2, '', VAZIO), '');
+checa('toda Trilha do catálogo fica no próprio Caminho',
+      TRI.every(l => trilhaQueFica_(TRI, l.caminho, l.trilha, VAZIO) === l.trilha), true);
+
+// --- onde a nota mora, 17/09/2026 ----------------------------------------
+const tituloOuCaixa_ = new Function(extrai(GS, 'tituloOuCaixa_') + '; return tituloOuCaixa_;')();
+checa('rótulo digitado em cima leva a nota', tituloOuCaixa_({ formula: '', valor: 'DEFESA' }), 'título');
+checa('fórmula em cima deixa a nota na caixa', tituloOuCaixa_({ formula: '=IF(A1,"x","y")', valor: 'x' }), 'caixa');
+checa('nada em cima deixa a nota na caixa', tituloOuCaixa_({ formula: '', valor: '' }), 'caixa');
+checa('só espaço em cima deixa a nota na caixa', tituloOuCaixa_({ formula: '', valor: '  ' }), 'caixa');
+checa('número em cima deixa a nota na caixa', tituloOuCaixa_({ formula: '', valor: 5 }), 'caixa');
+
 // --- resultado ---------------------------------------------------------
 const barra = '='.repeat(74);
 console.log('');

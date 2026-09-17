@@ -9,7 +9,9 @@ As tres regras do projeto, e nenhuma pode ser pulada:
 import json, os, shutil, subprocess, sys, tempfile
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
-PRECISA = ["regressao-delta.js", "decisoes-ficha.json", "manual-temporario.md", "manual.txt"]
+PRECISA = ["regressao-delta.js", "decisoes-ficha.json", "manual-temporario.md", "manual.txt",
+           "catalogo-projeto-m.json",   # 17/09/2026: as perícias fixas do Caminho saem do catálogo
+           "ficha-v01/ficha_automatica.py"]   # e o texto de escolha da Trilha sai da limpeza 12
 NODE = shutil.which("node") or shutil.which("nodejs")
 
 
@@ -25,7 +27,8 @@ def copia():
     shutil.copy(os.path.join(AQUI, "apps-script", "Codigo.gs"),
                 os.path.join(d, "apps-script"))
     for f in PRECISA:
-        shutil.copy(os.path.join(AQUI, f), d)
+        os.makedirs(os.path.dirname(os.path.join(d, f)), exist_ok=True)
+        shutil.copy(os.path.join(AQUI, f), os.path.join(d, f))
     return d
 
 
@@ -194,8 +197,55 @@ edita_json("a A2 tira a metade do teto da energia",
            lambda d: d["A2_temporario"]["energia"].__setitem__("teto", "o PE máximo"),
            "A2 poe o teto da energia em metade do maximo")
 
+# as perícias fixas do Caminho, a Trilha de outro Caminho e o lugar da nota, 17/09/2026
+edita("o Caminho de antes deixa de desmarcar", GS,
+      "  var desmarcar = fixas(velho).filter(function (p) { return marcar.indexOf(p) < 0; });",
+      "  var desmarcar = [];",
+      "desmarca as de")
+
+edita("a perícia fixa nos dois Caminhos é desmarcada", GS,
+      "  var desmarcar = fixas(velho).filter(function (p) { return marcar.indexOf(p) < 0; });",
+      "  var desmarcar = fixas(velho);",
+      "a perícia fixa nos dois Caminhos continua marcada")
+
+edita("a Trilha de outro Caminho fica na caixa", GS,
+      "  return dele ? trilha : vazio;", "  return trilha;",
+      "quando o Caminho vira")
+
+edita("a Trilha certa também é apagada", GS,
+      "  return dele ? trilha : vazio;", "  return vazio;",
+      "fica quando o Caminho é")
+
+edita("a Trilha ainda não escolhida vira vazio", GS,
+      "  if (trilha === '' || trilha === vazio) return trilha;",
+      "  if (trilha === vazio) return trilha;",
+      "a Trilha vazia não vira texto de escolha")
+
+edita("a Trilha vale para qualquer Caminho", GS,
+      "l.trilha === trilha && l.caminho === caminho", "l.trilha === trilha",
+      "quando o Caminho vira")
+
+edita("o texto de escolha da Trilha muda de forma na limpeza", "ficha-v01/ficha_automatica.py",
+      'ESCOLHA_TRILHA = "Escolha sua Trilha"', 'ESCOLHA_TRILHA = ("Escolha sua Trilha")',
+      "o ESCOLHA_TRILHA do ficha_automatica.py mudou de forma")
+
+edita("fórmula em cima passa a levar a nota", GS,
+      "  if (!acima || acima.formula) return 'caixa';", "  if (!acima) return 'caixa';",
+      "fórmula em cima deixa a nota na caixa")
+
+edita("número em cima passa a levar a nota", GS,
+      "  return (typeof acima.valor === 'string' && acima.valor.trim()) ? 'título' : 'caixa';",
+      "  return acima.valor ? 'título' : 'caixa';",
+      "número em cima deixa a nota na caixa")
+
+edita("só espaço em cima passa a levar a nota", GS,
+      "(typeof acima.valor === 'string' && acima.valor.trim())",
+      "(typeof acima.valor === 'string' && acima.valor)",
+      "só espaço em cima deixa a nota na caixa")
+
 edita("mexida inocua no comentario", GS,
-      "// o mestre precisa poder mexer", "// o mestre tem que poder mexer",
+      "// a ficha que já tinha a nota no número não fica com duas",
+      "// a ficha que já trazia a nota no número não fica com duas",
       None, espera_verde=True)
 
 barra = "=" * 70

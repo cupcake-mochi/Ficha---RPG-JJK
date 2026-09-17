@@ -88,5 +88,5 @@ Nenhum dos dois repete número do outro documento, e o `conferir-decisoes.py` co
 
 - ~~**Colar o texto do `manual-temporario.md`**~~ **feito no sistema, com texto próprio**, e o `Braseiro` foi enxugado.
 - ~~**A checagem 7 das Famílias**~~ **feita na v0.239 do sistema**, como bloco 8 do `conferir-ficha.py`, e a ficha em branco foi regerada.
-- **Reconstruir a planilha com o `Ficha.gs` novo, colar o `Codigo.gs` novo, e trocar a central para `0.246`.** O catálogo foi à v0.246, e a FICHA ganhou o menu de equipamento e o `REFINO ESCOLHIDO` (B3): o passo a passo está no `COMO-SUBIR.md`, na planilha central.
+- **Reconstruir a planilha com o `Ficha.gs` novo e colar o `Codigo.gs` novo.** A FICHA de 17/09/2026 conta sozinha (B22) e traz o desenho que a mesa pediu (B23), e o índice da `DADOS` passou a andar quando a planilha muda de forma: o passo a passo está no `COMO-SUBIR.md`, na planilha central.
 - **Escolher o segundo caso de teste** (item B2): uma ficha de nível 15 ou mais, com Famílias Livres que a Kaori não usa.

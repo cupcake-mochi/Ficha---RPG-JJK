@@ -95,6 +95,10 @@ Quando o manual mudar, você muda **uma célula** na central e toda ficha em cir
 
 > **⚠ Em 16/09/2026 o catálogo foi à v0.246, e a FICHA mudou de desenho num ponto.** *O `EQUIPAMENTO` virou menu de uniforme e escudo, e entrou o `REFINO ESCOLHIDO` ao lado do `BLOQUEAR` — é o B3.* **Para a planilha viva acompanhar:** *cole o `Codigo.gs` novo, rode o `construir()` do `Ficha.gs` novo numa planilha nova, passe o personagem para ela, troque a `A1` da central para `0.246`, e exporte de novo para a `ficha-v01` quando puder.*
 
+> **⚠ Em 17/09/2026 a FICHA passou a contar sozinha (B22).** *Ela saiu da exportação que o Mizuki mandou com o desenho novo, e agora o índice da `DADOS` é fórmula: pode inserir linha no Sheets à vontade, que ele acompanha.* **O mesmo passo a passo de cima vale:** *`Codigo.gs` novo, `construir()` numa planilha nova, e o personagem passado para ela.* **Exporte para a `ficha-v01/original.xlsx` sempre que mudar o desenho, antes de pedir conta nova.**
+
+> **⚠ Na segunda rodada do mesmo dia (B23)** *a FICHA ganhou as caixinhas de Buff/Debuff, o Caminho e a Trilha nascendo em `Escolha…`, e a CARTEIRA ganhou a foto maior.* **O `Codigo.gs` novo é obrigatório:** *é ele que devolve a Trilha ao trocar o Caminho, que muda a nota das aptidões de graça com a Origem, e que põe aviso em toda fórmula.*
+
 ---
 
 ## Quando a ficha mudar

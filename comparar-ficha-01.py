@@ -20,10 +20,30 @@ LAY = json.load(open(os.path.join(AQUI, "ficha-v01", "layout.json"), encoding="u
 sys.path.insert(0, os.path.join(AQUI, "ficha-v01"))
 import dados_catalogo
 DADOS_CAT = dados_catalogo.valores()
+# as limpezas leem o indice da DADOS, e desde 17/09/2026 ele e reescrito em formula antes delas (limpeza
+# 11). O comparador refaz a mesma ordem numa copia do layout, para ler o que o monta.py leu.
+import copy, indice_ficha, ficha_layout
+LAY_FL = copy.deepcopy(LAY)
+FL = ficha_layout.trocas(LAY_FL)
+ficha_layout.aplica(LAY_FL, FL)
+# a testemunha de cada estilo: uma celula que tem aquele estilo e que nenhuma limpeza de desenho mexeu
+_MEXIDAS = {(n, c) for n, cs in FL["celulas"].items() for c in cs}
+TESTEMUNHA = {}
+for _a in LAY["abas"]:
+    for _r in _a["celulas"]:
+        if _r[2] is not None and (_a["nome"], _r[0]) not in _MEXIDAS:
+            TESTEMUNHA.setdefault(_r[2], (_a["nome"], _r[0]))
+IX = indice_ficha.trocas(LAY_FL)
+LAY_IX = copy.deepcopy(LAY_FL)
+indice_ficha.aplica(LAY_IX, IX)
 import tr_treinado
-TR_NOVAS = tr_treinado.trocas(LAY)
+TR_NOVAS = tr_treinado.trocas(LAY_IX)
 import defesa_equipamento
-DE = defesa_equipamento.trocas(LAY)
+DE = defesa_equipamento.trocas(LAY_IX)
+LAY_DE = copy.deepcopy(LAY_IX)
+defesa_equipamento.aplica(LAY_DE, DE)
+import ficha_automatica
+FA = ficha_automatica.trocas(LAY_DE)
 
 for f in (A, B):
     if not os.path.exists(f):
@@ -154,6 +174,38 @@ for n in wa.sheetnames:
                     and all(pa[k] == pb[k] for k in pa if k != "valor")):
                 esperadas["fórmula de TR que passa a somar a maestria"] += 1
                 continue
+            # limpeza 13: o desenho da mesa (17/09/2026). O VALOR tem de ser o que o ficha_layout.py monta, e o
+            # estilo tem de ser o de uma testemunha com o mesmo estilo no layout.
+            _fl = FL["celulas"].get(n, {}).get(coord)
+            if _fl is not None and pb["valor"] == _fl[0]:
+                _t = TESTEMUNHA.get(_fl[1])
+                if _fl[1] is None or _t is None or all(pb[k] == perfil(wb_[_t[0]][_t[1]])[k] for k in pb if k != "valor"):
+                    esperadas["célula do desenho da mesa"] += 1
+                    continue
+            if pb["valor"] is None and pa["valor"] in (None, "") and any(
+                    indice_ficha._lc(m.split(":")[0]) != (r, c) and
+                    indice_ficha._lc(m.split(":")[0])[0] <= r <= indice_ficha._lc(m.split(":")[1])[0] and
+                    indice_ficha._lc(m.split(":")[0])[1] <= c <= indice_ficha._lc(m.split(":")[1])[1]
+                    for m in FL["mescladas"].get(n, [])):
+                esperadas["célula de dentro de caixa mesclada nova, que perde o estilo próprio"] += 1
+                continue
+            if coord in FL["celulas_sai"].get(n, []) and pb["valor"] is None:
+                esperadas["célula pintada depois da margem, que sai"] += 1
+                continue
+            # limpeza 11: o indice da DADOS em formula, derivado dos rotulos da FICHA (17/09/2026)
+            _ix = IX.get(n, {}).get(coord)
+            if _ix is not None:
+                _molde = perfil(sb[_ix[1]])
+                if pb["valor"] == _ix[0] and all(pb[k] == _molde[k] for k in pb if k != "valor"):
+                    esperadas["célula do índice da DADOS em fórmula"] += 1
+                    continue
+            # limpeza 12: a ficha automatica (17/09/2026)
+            _fa = FA["celulas"].get(n, {}).get(coord)
+            if _fa is not None:
+                _molde = perfil(sb[_fa[1]])
+                if pb["valor"] == _fa[0] and all(pb[k] == _molde[k] for k in pb if k != "valor"):
+                    esperadas["célula da ficha automática"] += 1
+                    continue
             # limpeza 10: a Defesa com uniforme, escudo e refino escolhido (v0.246 do sistema, o B3). O
             # VALOR tem de ser o que o defesa_equipamento.py monta, e o ESTILO tem de ser o da celula que
             # ele declara como molde, na ficha gerada.
@@ -171,10 +223,20 @@ for n in wa.sheetnames:
 
     ma, mb = {str(x) for x in sa.merged_cells.ranges}, {str(x) for x in sb.merged_cells.ranges}
     print(f"  mesclagens: {len(ma)} original · {len(mb)} gerada")
-    for x in sorted(ma - mb): difs.append(f"{n}: mesclagem {x} faltou")
+    for x in sorted(ma - mb):
+        if x in FL["mescladas_sai"].get(n, []):      # limpeza 13: as caixas refeitas e a foto
+            esperadas["mesclagem do desenho da mesa"] += 1
+        elif x in FA["mescladas_sai"].get(n, []):    # limpeza 12: o cabecalho das Passivas dividido
+            esperadas["mesclagem das Passivas refeita"] += 1
+        else:
+            difs.append(f"{n}: mesclagem {x} faltou")
     for x in sorted(mb - ma):
-        if x in DE["mescladas"].get(n, []):          # limpeza 10: a caixa do refino escolhido
+        if x in FL["mescladas"].get(n, []):          # limpeza 13: as caixas refeitas e a foto
+            esperadas["mesclagem do desenho da mesa"] += 1
+        elif x in DE["mescladas"].get(n, []):        # limpeza 10: a caixa do refino escolhido
             esperadas["mesclagem da caixa do refino escolhido"] += 1
+        elif x in FA["mescladas"].get(n, []):        # limpeza 12: as Passivas divididas e as linhas novas
+            esperadas["mesclagem das Passivas refeita"] += 1
         else:
             difs.append(f"{n}: mesclagem {x} sobrou")
 
@@ -190,6 +252,9 @@ for n in wa.sheetnames:
     for c in set(la) | set(lb):
         va, vb = la.get(c), lb.get(c)
         if va == vb:
+            continue
+        if n in FL["larguras"] and ((va is None and c == FL["larguras"][n]) or (vb is None and c > FL["larguras"][n])):
+            esperadas["coluna da margem da direita"] += 1
             continue
         if va and vb and abs(va - 3.63) < 0.01 and abs(vb - 4.0) < 0.01:
             trocadas += 1
@@ -211,7 +276,22 @@ for n in wa.sheetnames:
     print(f"  menus suspensos: {len(va)} original · {len(vbs)} gerada")
     for x in sorted(va - vbs): difs.append(f"{n}: menu {x} faltou")
     _menus_de = {(m["onde"], m["tipo"], m["formula"]) for m in DE["menus"].get(n, [])}
+    _troca_fa = FA["menus_troca"].get(n, {})
+    _form_fa = FA.get("menus_formula", {}).get(n, {})
+    for x in sorted(va - vbs):                       # limpeza 12: Caminho, Trilha e Origem com lista nova
+        if x[0] in _form_fa and (x[0], x[1], _form_fa[x[0]]) in vbs:
+            esperadas["menu de Caminho, Trilha ou Origem com a lista nova"] += 1
+            difs.remove(f"{n}: menu {x} faltou")
+            difs.remove(f"{n}: menu {(x[0], x[1], _form_fa[x[0]])} sobrou") if f"{n}: menu {(x[0], x[1], _form_fa[x[0]])} sobrou" in difs else None
+    for x in sorted(va - vbs):
+        if x[0] in _troca_fa and (_troca_fa[x[0]], x[1], x[2]) in vbs:   # limpeza 12: o menu das Passivas
+            esperadas["menu das Passivas estendido"] += 1
+            difs.remove(f"{n}: menu {x} faltou")
     for x in sorted(vbs - va):
+        if x[0] in _troca_fa.values() and any(k for k, v in _troca_fa.items() if v == x[0]):
+            continue
+        if x[0] in _form_fa and x[2] == _form_fa[x[0]]:
+            continue
         if x in _menus_de:                           # limpeza 10: o menu do equipamento e o do refino
             esperadas["menu do equipamento e do refino escolhido"] += 1
         else:

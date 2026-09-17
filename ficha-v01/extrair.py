@@ -45,7 +45,10 @@ LARGURA_DO_SHEETS = 3.63
 #
 # Ela e' limpeza e nao conserto: o numero na planilha dele esta certo. O que
 # esta errado e' ele virar molde.
-BARRAS_CHEIAS = {"FICHA": {"D23": "=J23", "D27": "=J27", "D31": "=J31"}}
+# 17/09/2026: os enderecos deixaram de ser escritos aqui. O Mizuki inseriu linhas na FICHA, e
+# D23/J23 viraram D26/J26 -- as tres barras e os quatro campos de mesa agora saem dos rotulos,
+# depois que a planilha e lida (ver _derivar_enderecos, logo abaixo do load_workbook).
+BARRAS_CHEIAS = {}
 CF_DE_FABRICA = "FFB7E1CD"             # limpeza 3
 
 # limpeza 5, de 14/09/2026: o estado de mesa que nao e desenho volta VAZIO.
@@ -55,7 +58,7 @@ CF_DE_FABRICA = "FFB7E1CD"             # limpeza 3
 # depois de aplicar (`e.range.clearContent()`), entao um 0 ali foi digitado. E o
 # `equipamento` vazio quer dizer "usa a protecao da aptidao", que e o que a nota
 # da propria celula diz: um 1 ali e a protecao de um personagem.
-ESTADO_VAZIO = {"FICHA": ["AM23", "AM27", "AM31", "Z40"]}
+ESTADO_VAZIO = {}
 
 # limpeza 6, de 14/09/2026, decidida pelo Mizuki: o Arial que sobra depois da limpeza 1
 # vira a fonte de corpo. Ele aparece em celula que o Sheets pintou com o estilo dele,
@@ -70,6 +73,35 @@ ARIAL_VIRA_CORPO = "Arial"
 CARIMBO = {"DADOS": ["B1", "D1"]}
 
 wb = load_workbook(ORIG)
+
+
+def _derivar_enderecos(s):
+    """as barras 'agora' e os campos de mesa da FICHA, achados pelo rotulo impresso.
+    A barra e a celula abaixo do rotulo `X - Atual/Máxima`; a maxima e a primeira formula a
+    direita dela na mesma linha que nao e o SPARKLINE. Os campos de mesa sao os de baixo do
+    `± PERDA &/ou GANHO` e do `EQUIPAMENTO`."""
+    barras, vazio = {}, []
+    for lin in s.iter_rows():
+        for c in lin:
+            v = c.value.strip() if isinstance(c.value, str) else None
+            if not v:
+                continue
+            abaixo = s.cell(row=c.row + 1, column=c.column)
+            if v.endswith("- Atual/Máxima"):
+                maxima = next((x for x in s[c.row + 1][c.column:]
+                               if isinstance(x.value, str) and x.value.startswith("=")
+                               and "SPARKLINE" not in x.value), None)
+                if maxima is None:
+                    raise SystemExit(f"nao achei a maxima da barra {v!r} na linha {c.row + 1}")
+                barras[abaixo.coordinate] = "=" + maxima.coordinate
+            elif v in ("± PERDA &/ou GANHO", "EQUIPAMENTO"):
+                vazio.append(abaixo.coordinate)
+    if len(barras) != 3 or len(vazio) != 4:
+        raise SystemExit(f"esperava 3 barras e 4 campos de mesa na FICHA, achei {barras} e {vazio}")
+    return {"FICHA": barras}, {"FICHA": vazio}
+
+
+BARRAS_CHEIAS, ESTADO_VAZIO = _derivar_enderecos(wb["FICHA"])
 estilos, indice = [], {}
 
 def cor(c):
@@ -118,9 +150,34 @@ def idx_estilo(cel):
 # imagens na celula, entao a exportacao da planilha viva pode vir sem nenhuma: nesse caso a aba fica
 # com as imagens do layout anterior, que passa a ser o dono delas, e o extrator avisa.
 try:
-    IMAGENS_ANTES = {a["nome"]: a["imagens"] for a in json.load(open(SAIDA, encoding="utf-8"))["abas"]}
+    _ANTES = json.load(open(SAIDA, encoding="utf-8"))["abas"]
+    IMAGENS_ANTES = {a["nome"]: a["imagens"] for a in _ANTES}
+    TEXTOS_ANTES = {a["nome"]: [(r[0], r[1]) for r in a["celulas"]] for a in _ANTES}
 except (OSError, ValueError, KeyError):
-    IMAGENS_ANTES = {}
+    IMAGENS_ANTES, TEXTOS_ANTES = {}, {}
+
+
+def _linhas_movidas(nome, s):
+    """{linha antiga: linha nova}, pelos textos que aparecem uma vez so nas duas versoes da aba.
+    17/09/2026: o Mizuki inseriu linhas na FICHA, e o selo mantido do layout anterior ficava na
+    linha 85 com a caixa dele indo para a 91."""
+    def unicos(pares):
+        d = {}
+        for coord, v in pares:
+            if isinstance(v, str) and v.strip() and not v.startswith("="):
+                d.setdefault(v.strip(), []).append(int(re.sub(r"^[A-Z]+", "", coord)))
+        return {k: l[0] for k, l in d.items() if len(l) == 1}
+    antes = unicos(TEXTOS_ANTES.get(nome, []))
+    agora = unicos((c.coordinate, c.value) for lin in s.iter_rows() for c in lin)
+    return sorted((antes[k], agora[k]) for k in antes if k in agora)
+
+
+def _move_linha(lin, pares):
+    antes = [(a, b) for a, b in pares if a <= lin]
+    if not antes:
+        return lin
+    a, b = max(antes)
+    return lin + (b - a)
 
 abas = []
 IMAGENS_MANTIDAS = {}
@@ -206,7 +263,14 @@ for nome in wb.sheetnames:
     _exp = list(getattr(s, "_images", []))
     if (_exp and IMAGENS_ANTES.get(nome)
             and all((im.anchor._from.row + 1, im.anchor._from.col + 1) in _cantos for im in _exp)):
-        imagens = IMAGENS_ANTES[nome]
+        _pares = _linhas_movidas(nome, s)
+        imagens = []
+        for _im in IMAGENS_ANTES[nome]:
+            _nova = dict(_im, lin=_move_linha(_im["lin"], _pares))
+            if _nova["lin"] != _im["lin"]:
+                print(f"  [aviso] {nome}: a imagem {_im['arquivo']} andou da linha {_im['lin']} para a "
+                      f"{_nova['lin']}, com as linhas da aba")
+            imagens.append(_nova)
         IMAGENS_MANTIDAS[nome] = len(imagens)
         print(f"  [aviso] {nome}: as {len(_exp)} imagens vieram de dentro da celula; ficaram as do layout anterior")
         _exp = []
@@ -294,6 +358,20 @@ layout = {
             "combinacoes de uniforme e escudo, a tabela delas sai da chave equipamento_defesa do catalogo "
             "para a DADOS, e o REFINO ESCOLHIDO entra ao lado do BLOQUEAR, com o estilo dele. E o B3, na "
             "opcao A, decidida pelo Mizuki em 16/09/2026. O monta.py aplica, e o comparador conta.",
+            "o indice da DADOS guarda o endereco em formula (ADDRESS), derivado dos rotulos da FICHA: "
+            "em 17/09/2026 o Mizuki inseriu linhas pelo Sheets e o indice de texto ficou apontando para "
+            "o lugar antigo. O monta.py aplica antes das outras limpezas, e o comparador conta.",
+            "a ficha conta sozinha: o atributo grande soma o pequeno e o marco de Corpo, os X de Y de "
+            "pontos, pericias, oficios, Testes de Resistencia, aptidoes e Passivas do Leque, o Marco "
+            "Escolhido, o espaco de feitico do Leque, as Passivas divididas com duas linhas a mais, os "
+            "rotulos com erro de digitacao e a coluna de oficio fixo que o livro nao tem. Pedido pelo "
+            "Mizuki em 17/09/2026. O monta.py aplica, e o comparador conta.",
+            "o desenho que a mesa pediu em 17/09/2026: a caixinha de Buff/Debuff ao lado da Defesa, da Iniciativa, "
+            "da CD, da Conjuracao, do Corpo a Corpo, do A Distancia e do Deslocamento; o Marco Escolhido com "
+            "Refino, Corpo e Leque; a foto maior na CARTEIRA, com a moldura redesenhada; o nome do sistema "
+            "saindo da DADOS; o portador e o registrado por com texto de exemplo; o SERVIDOR USADO; e a coluna "
+            "de respiro da direita na CARTEIRA, na INVOCACAO e no CATALOGO. O monta.py aplica antes de todas, e "
+            "o comparador conta.",
         ],
         "onde_ela_vive": "Google Sheets. Por isso o IFS fica cru e o SPARKLINE "
                          "continua: no Excel os dois quebram, e isso esta aceito.",

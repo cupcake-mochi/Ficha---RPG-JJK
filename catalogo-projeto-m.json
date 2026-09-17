@@ -167,7 +167,6 @@
         "Atletismo",
         "Intimidação"
       ],
-      "oficio_fixo": "Forja",
       "atributos_naturais": [
         "Forca",
         "Constituicao"
@@ -182,8 +181,7 @@
       "pericias_fixas": [
         "Acrobacia",
         "Percepção"
-      ],
-      "oficio_fixo": "Arrombamento"
+      ]
     },
     "Guia": {
       "dado": "d8",
@@ -193,8 +191,7 @@
       "pericias_fixas": [
         "Persuasão",
         "Medicina"
-      ],
-      "oficio_fixo": "Herbalismo"
+      ]
     },
     "Evocador": {
       "dado": "d6",
@@ -204,8 +201,7 @@
       "pericias_fixas": [
         "Religião",
         "Lidar com Animais"
-      ],
-      "oficio_fixo": "Entalhador"
+      ]
     },
     "Emanador": {
       "dado": "d6",
@@ -215,8 +211,7 @@
       "pericias_fixas": [
         "Ocultismo",
         "Investigação"
-      ],
-      "oficio_fixo": "Caligrafia"
+      ]
     }
   },
   "trilhas": {

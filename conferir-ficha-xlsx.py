@@ -195,8 +195,11 @@ print("\nCADA FÓRMULA PUXA O ATRIBUTO CERTO")
 # fazia a Vida somar Destreza; esta checagem existe por causa desse bug.
 IDX = {}
 dd = wb["DADOS"]
+# desde 17/09/2026 a célula do índice é fórmula (ADDRESS), e o indice_ficha.py lê as duas formas
+sys.path.insert(0, "ficha-v01")
+from indice_ficha import endereco as _endereco
 for rr in range(5, 200):
-    k, v = dd.cell(row=rr, column=53).value, dd.cell(row=rr, column=54).value
+    k, v = dd.cell(row=rr, column=53).value, _endereco(dd.cell(row=rr, column=54).value)
     if k and v: IDX[k] = v
 checa("a ficha publica o índice das próprias células", len(IDX) >= 20, str(len(IDX)))
 for campo, atributo in [("vida_max", "Constituição"), ("defesa", "Destreza"),
@@ -237,20 +240,177 @@ checa("o menu do EQUIPAMENTO aponta para uma coluna da DADOS", bool(_mf and _mf.
 checa("a tabela do menu é a do catálogo: uniforme, escudo e cada par, com o menor teto",
       bool(_esp) and _lida == _esp, f"{len(_lida)} linhas lidas, {len(_esp)} esperadas")
 _camp = IDX.get("refino escolhido", "")
-_menu_r = [v for v in f.data_validations.dataValidation if _camp and str(v.sqref) == _camp.replace("$", "")]
+# 17/09/2026: o campo mora no `Marco Escolhido` que o Mizuki desenhou, com o rótulo `Refino`, e o menu
+# dele divide a mesma validação com os outros menus de marco
+_menu_r = [v for v in f.data_validations.dataValidation if _camp and _camp.replace("$", "") in str(v.sqref).split()]
 _nmarcos = len(CAT["progressao"]["marcos"])
-checa("o REFINO ESCOLHIDO está no índice, com o rótulo em cima e menu de 0 até os marcos",
-      bool(_camp) and f.cell(row=f[_camp].row - 1, column=f[_camp].column).value == "REFINO ESCOLHIDO"
+checa("o refino escolhido está no índice, com o rótulo em cima e menu de 0 até os marcos",
+      bool(_camp) and f.cell(row=f[_camp].row - 1, column=f[_camp].column).value in ("REFINO ESCOLHIDO", "Refino")
       and bool(_menu_r) and _menu_r[0].formula1 == '"' + ",".join(map(str, range(_nmarcos + 1))) + '"',
       f"{_camp} · {[v.formula1 for v in _menu_r]}")
 _fd, _fp = str(f[IDX.get("defesa", "A1")].value), str(f[IDX.get("proteção", "A1")].value)
 checa("a Defesa corta a Destreza pelo teto da tabela (coluna 3), e soma a proteção",
-      "MIN(" in _fd and ",3,FALSE)" in _fd and _fd.replace("$", "").endswith("+" + IDX.get("proteção", "?")), _fd[:90])
+      "MIN(" in _fd and ",3,FALSE)" in _fd and ("+" + IDX.get("proteção", "?")) in _fd.replace("$", ""), _fd[:90])
+checa("a Defesa soma o Buff/Debuff (17/09/2026)",
+      not IDX.get("buff de defesa") or IDX["buff de defesa"] in _fd.replace("$", ""), _fd[-60:])
 checa("a proteção desliga a passiva pela coluna 4, soma a da tabela pela 2, e a passiva lê o refino escolhido",
       ",4,FALSE)" in _fp and ",2,FALSE)" in _fp and _camp.replace("$", "") in _fp.replace("$", ""), _fp[:90])
 _fa = [c.value for l in f.iter_rows() for c in l if isinstance(c.value, str) and "Refino Atual" in c.value]
+# desde 17/09/2026 a caixa lê a tabela de contas da DADOS: segue a referência até chegar no campo
+def _alcanca(formula, alvo, fundo=4):
+    if not isinstance(formula, str) or fundo == 0:
+        return False
+    if alvo in formula.replace("$", ""):
+        return True
+    return any(_alcanca(dd[c.replace("$", "")].value, alvo, fundo - 1)
+               for c in re.findall(r"DADOS!(\$?[A-Z]+\$?\d+)", formula))
 checa("o Refino Atual impresso soma o refino escolhido",
-      len(_fa) == 1 and _camp.replace("$", "") in _fa[0].replace("$", ""), str(_fa)[:90])
+      len(_fa) == 1 and _alcanca(_fa[0], _camp.replace("$", "")), str(_fa)[:90])
+
+print("\nA FICHA AUTOMÁTICA  (17/09/2026)")
+# O número mora na regressao-kaori-na-ficha.py, que recalcula doze casos no LibreOffice contra um modelo
+# de força bruta. Aqui fica o que a regressão não vê: o índice anda sozinho, e o Codigo.gs sabe das
+# caixas novas.
+_bb = [dd.cell(row=rr, column=54).value for rr in range(5, 200) if dd.cell(row=rr, column=53).value]
+checa("todo endereço do índice é fórmula ADDRESS, e anda quando a planilha muda de forma",
+      bool(_bb) and all(isinstance(v, str) and v.startswith("=ADDRESS(ROW(FICHA!") for v in _bb),
+      str([v for v in _bb if not (isinstance(v, str) and v.startswith("=ADDRESS("))][:3]))
+_NOVAS = ["pontos disponíveis", "pontos de corpo", "marcos escolhidos", "perícias disponíveis",
+          "ofícios disponíveis", "testes disponíveis", "aptidões disponíveis", "passivas do leque"]
+checa("as oito caixas de conta estão no índice", all(k in IDX for k in _NOVAS), str([k for k in _NOVAS if k not in IDX]))
+_CODA = open("apps-script/Codigo.gs", encoding="utf-8").read()
+_avisos = re.search(r"var avisos = \[(.*?)\]", _CODA, re.S)
+checa("o Codigo.gs avisa em vermelho e anota as oito caixas de conta",
+      bool(_avisos) and all(f"'{k}'" in _avisos.group(1) and re.search(rf"'{k}':\s*'", _CODA) for k in _NOVAS),
+      str([k for k in _NOVAS if not (_avisos and f"'{k}'" in _avisos.group(1))]))
+# 17/09/2026: a trava virou varredura de toda fórmula da FICHA e da CARTEIRA, porque o resultado das
+# perícias, dos ofícios e dos Testes de Resistência ficava de fora da lista. O que se confere: o script
+# varre as fórmulas, as livres são só as três barras de agora, e cada linha de perícia, ofício e Teste
+# (a caixa de seleção com o nome ao lado) tem o resultado em fórmula, que é o que a varredura trava.
+_mprot = re.search(r"function protegerFormulas_\(ss, idx\)\s*\{(.*?)\n\}", _CODA, re.S)
+_livres = re.search(r"var LIVRES_DA_TRAVA = \[(.*?)\];", _CODA)
+checa("o Codigo.gs trava toda fórmula da FICHA e da CARTEIRA, e deixa livres só as três barras de agora",
+      bool(_mprot and _livres) and "getFormulas()" in _mprot.group(1) and "'CARTEIRA'" in _mprot.group(1)
+      and sorted(re.findall(r"'([^']+)'", _livres.group(1))) == ["energia", "integridade", "vida"]
+      and all(k in IDX for k in ["vida", "energia", "integridade"]),
+      _livres.group(1) if _livres else "sem LIVRES_DA_TRAVA")
+_sem_resultado = []
+for _l in f.iter_rows():
+    for _c in _l:
+        if _c.value is True or _c.value is False:
+            _nome = next((f.cell(row=_c.row, column=_c.column + k).value for k in (1, 2)
+                          if isinstance(f.cell(row=_c.row, column=_c.column + k).value, str)
+                          and f.cell(row=_c.row, column=_c.column + k).value.strip()), None)
+            if not _nome:
+                continue
+            _res = [f.cell(row=_c.row, column=cc).value for cc in range(_c.column + 1, min(_c.column + 16, f.max_column + 1))]
+            _ate = next((i for i, v in enumerate(_res[2:], 2) if v is True or v is False), len(_res))
+            if not any(isinstance(v, str) and v.startswith("=") for v in _res[:_ate]):
+                _sem_resultado.append(f"{_c.coordinate} {_nome}")
+checa("toda perícia, ofício e Teste de Resistência tem o resultado em fórmula, e a varredura trava",
+      not _sem_resultado, str(_sem_resultado[:4]))
+# a nota que aponta para campo que o índice não publica some calada no Apps Script
+_mnotas = re.search(r"function notasDeRegra_\(ss, idx\)\s*\{(.*?)\n\}", _CODA, re.S)
+_mobj = re.search(r"var notas = \{(.*?)\n  \};", _mnotas.group(1), re.S) if _mnotas else None
+_chaves = set(re.findall(r"^\s{4}'([^']+)':", _mobj.group(1), re.M)) if _mobj else set()
+_bl = re.search(r"\[([^\]]*)\]\.forEach\(function \(k\) \{\s*notas\['buff de ' \+ k\]", _mnotas.group(1)) if _mnotas else None
+_chaves |= {"buff de " + k for k in re.findall(r"'([^']+)'", _bl.group(1))} if _bl else set()
+_chaves |= set(re.findall(r"notas\['([^']+)'\] =", _mnotas.group(1))) if _mnotas else set()
+checa("toda nota do Codigo.gs aponta para um campo que o índice publica",
+      len(_chaves) >= 30 and all(k in IDX for k in _chaves), str(sorted(k for k in _chaves if k not in IDX)))
+_NOTA_PEDIDA = ["defesa", "iniciativa", "conjuração", "corpo a corpo", "à distância", "deslocamento",
+                "feitiços disponíveis", "passivas", "escolhas de perícia", "trilha"] + \
+               ["buff de " + k for k in ["defesa", "iniciativa", "cd de feitiço", "conjuração", "corpo a corpo",
+                                         "à distância", "deslocamento"]]
+checa("a Defesa, as caixas de Buff/Debuff, os ataques, os Feitiços e as Passivas têm nota (17/09/2026)",
+      all(k in _chaves for k in _NOTA_PEDIDA), str([k for k in _NOTA_PEDIDA if k not in _chaves]))
+checa("a nota mora no título quando o de cima é texto (tituloOuCaixa_ no alvoDaNota_)",
+      bool(_mnotas) and "alvoDaNota_(ficha, c)" in _mnotas.group(1) and "function tituloOuCaixa_(" in _CODA)
+_marcos_rot = [f.cell(row=f[IDX[k]].row - 1, column=f[IDX[k]].column).value
+               for k in ("refino escolhido", "marco corpo", "marco leque") if k in IDX]
+checa("o Marco Escolhido tem os rótulos Refino, Corpo e Leque, e as notas falam deles",
+      _marcos_rot == ["Refino", "Corpo", "Leque"] and "Refino, Corpo ou Leque" in _CODA
+      and "Atributo (Corpo)" not in _CODA, str(_marcos_rot))
+# as aptidões de graça: os nomes saem do manual pelo ficha_automatica.regras(), e o texto das notas tem
+# de trazer os números que o manual dá
+import ficha_automatica as _fa_mod
+_RG = _fa_mod.regras(CAT)
+_mgr = re.search(r"var NOTAS_DE_GRACA = \{(.*?)\n\};", _CODA, re.S)
+_gr = dict(re.findall(r"^  '([^']+)':\s*((?:'[^']*'\s*\+?\s*)+)", _mgr.group(1), re.M)) if _mgr else {}
+_gr = {k: "".join(re.findall(r"'([^']*)'", v)) for k, v in _gr.items()}
+checa("as notas de graça cobrem as duas aptidões e as duas Bênçãos que o manual dá",
+      sorted(_gr) == sorted(_RG["aptidoes_de_graca"] + _RG["bencaos_de_graca"]), f"{sorted(_gr)}")
+_MANG = re.sub(r"\s+([,.:;])", r"\1", " ".join(open("manual.txt", encoding="utf-8").read().split()))
+_numeros = {_RG["aptidoes_de_graca"][0]: ["1/3 do refino + 1", "1,5 × refino", "por 2 PE"],
+            _RG["aptidoes_de_graca"][1]: ["2d4 no 3", "3d4 no 6", "4d6"],
+            _RG["bencaos_de_graca"][0]: ["1/3 da Lapidação + 1", "1,5 × Lapidação", "por 2 PE"],
+            _RG["bencaos_de_graca"][1]: ["1× por cena", "2d4 na 3", "3d4 na 6", "4d6"]}
+_fora = [(k, x) for k, xs in _numeros.items() for x in xs if x not in _MANG or x not in _gr.get(k, "")]
+checa("as notas de graça trazem os números do manual", not _fora, str(_fora[:3]))
+_aps = [f[IDX[k]].value for k in ("aptidão de graça 1", "aptidão de graça 2") if k in IDX]
+checa("as duas primeiras linhas de aptidão vêm com as de graça, trocando pelas Bênçãos sem energia",
+      len(_aps) == 2 and all(isinstance(v, str) and a in v and b in v for v, a, b in
+                             zip(_aps, _RG["bencaos_de_graca"], _RG["aptidoes_de_graca"])), str(_aps)[:120])
+_oned = re.search(r"function onEdit\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
+checa("o onEdit devolve a Trilha de outro Caminho para o texto de escolha e refaz as notas de graça",
+      bool(_oned) and "trilhaDoCaminho_(e, idx)" in _oned.group(1) and "notasDeGraca_(" in _oned.group(1))
+_vt = [v for v in f.data_validations.dataValidation if IDX.get("trilha") and IDX["trilha"].replace("$", "") in str(v.sqref).split()]
+_mt = re.search(r"DADOS!\$([A-Z]+)\$(\d+)", _vt[0].formula1) if _vt else None
+_filtro = dd[f"{_mt.group(1)}{int(_mt.group(2)) + 1}"].value if _mt else ""
+checa("o menu da Trilha começa no texto de escolha e filtra as Trilhas pelo Caminho da ficha",
+      bool(_mt) and dd[f"{_mt.group(1)}{_mt.group(2)}"].value == _fa_mod.ESCOLHA_TRILHA
+      and isinstance(_filtro, str) and "FILTER(" in _filtro and IDX["caminho"].replace("$", "") in _filtro.replace("$", ""),
+      f"{_vt[0].formula1 if _vt else '?'} · {str(_filtro)[:70]}")
+checa("a ficha nasce com Escolha seu Caminho e Escolha sua Trilha",
+      f[IDX["caminho"]].value == _fa_mod.ESCOLHA_CAMINHO and f[IDX["trilha"]].value == _fa_mod.ESCOLHA_TRILHA,
+      f"{f[IDX['caminho']].value} · {f[IDX['trilha']].value}")
+checa("o onEdit marca as perícias fixas quando o Caminho muda",
+      bool(re.search(r"function onEdit\(e\)\s*\{[^}]*marcarPericiasDoCaminho_\(e, idx\)", _CODA)))
+checa("a tabela dos Caminhos da DADOS não tem mais ofício fixo, que o livro não tem",
+      not any(c.value == "ofício fixo" for l in dd.iter_rows() for c in l))
+
+print("\nO DESENHO DA MESA  (17/09/2026, a segunda rodada)")
+# O comparador prova que só as células declaradas mudaram. Aqui fica o que elas têm de dizer.
+import ficha_layout as _flm
+_ct = wb["CARTEIRA"]
+_cv = {c.coordinate: c.value for l in _ct.iter_rows() for c in l if c.value not in (None, "")}
+_abaixo = lambda rot: next((_ct.cell(row=_ct[k].row + 1, column=_ct[k].column).value for k, v in _cv.items() if v == rot), "?")
+checa("a CARTEIRA traz o portador e o registrado por com texto de exemplo, e o SERVIDOR USADO no lugar da mesa",
+      _abaixo("PORTADOR") == _flm.NOME_PORTADOR and _abaixo("REGISTRADO POR") == _flm.NICK
+      and "SERVIDOR USADO" in _cv.values() and "MESA DE ORIGEM" not in _cv.values(),
+      f"{_abaixo('PORTADOR')} · {_abaixo('REGISTRADO POR')}")
+_sis = [k for k, v in _cv.items() if isinstance(v, str) and "DADOS!$F$1" in v]
+_mnome = [c.coordinate for l in dd.iter_rows() for c in l if c.value == CAT["_meta"]["sistema"]]
+checa("o nome do sistema sai da DADOS, que o escreve do catálogo, na CARTEIRA e na FICHA",
+      bool(_sis) and _mnome == ["F1"] and "DADOS!$F$1" in str(f["D2"].value) and "ERA DA REVOLUÇÃO" not in _cv.values(),
+      f"{_sis} · {_mnome}")
+_nome_f = str(f[IDX["nome"]].value)
+checa("a FICHA puxa o nome da CARTEIRA e ignora o texto de exemplo",
+      _flm.NOME_PORTADOR in _nome_f and "CARTEIRA!" in _nome_f, _nome_f[:80])
+_tec = [v for v in _cv.values() if isinstance(v, str) and "DECLARADA" in v]
+checa("o rótulo da técnica declarada muda com a rota: amaldiçoada, marcial ou estilo",
+      len(_tec) == 1 and all(x in _tec[0] for x in ("TÉCNICA AMALDIÇOADA DECLARADA", "TÉCNICA MARCIAL DECLARADA",
+                                                   "ESTILO DECLARADO")), str(_tec)[:100])
+_vo = [v for v in f.data_validations.dataValidation if IDX["origem"].replace("$", "") in str(v.sqref).split()]
+_mo2 = re.search(r"DADOS!\$([A-Z]+)\$(\d+):\$([A-Z]+)\$(\d+)", _vo[0].formula1) if _vo else None
+_lista_o = [dd[f"{_mo2.group(1)}{r}"].value for r in range(int(_mo2.group(2)), int(_mo2.group(4)) + 1)] if _mo2 else []
+_rc = [r["origem"] for r in CAT["rotas_de_criacao"] if r["origem"].startswith("Restrição Celestial")]
+checa("o menu de Origem é a lista das rotas de criação, com as duas Restrições Celestiais",
+      _lista_o == _fa_mod.origens_do_menu(CAT) and len(_rc) == 2 and all(x in _lista_o for x in _rc),
+      f"{len(_lista_o)} origens · {_rc}")
+_esc = f[IDX.get("escolhas de perícia", "A1")]
+# a letra do desenho sai da exportação do Mizuki, e não da constante: comparar com a constante deixava a
+# checagem verde com ela de volta em 14 (o arnes da rodada de 17/09/2026 achou)
+_lay_o = json.load(open("ficha-v01/layout.json", encoding="utf-8"))
+_ab_o = next(a for a in _lay_o["abas"] if a["nome"] == "FICHA")
+_cel_o = [r for r in _ab_o["celulas"] if r[0] == IDX.get("escolhas de perícia")]
+_sz_o = _lay_o["estilos"][_cel_o[0][2]][0][1] if _cel_o and _cel_o[0][2] is not None else None
+checa("a caixa das escolhas de perícia fica em letra menor que a do desenho, para a frase caber",
+      _sz_o is not None and _esc.font.sz == _flm.FONTE_DAS_ESCOLHAS < _sz_o and bool(_esc.alignment.wrap_text),
+      f"desenho {_sz_o} · ficha {_esc.font.sz} · quebra {_esc.alignment.wrap_text}")
+_margem = {a: wb[a].max_column for a in ("FICHA", "CARTEIRA", "INVOCAÇÃO", "CATÁLOGO")}
+checa("a CARTEIRA, a INVOCAÇÃO e o CATÁLOGO acabam na mesma coluna da FICHA, com a margem da direita",
+      len(set(_margem.values())) == 1, str(_margem))
 
 print("\nAS NOTAS DE REGRA DO Codigo.gs")
 # v0.240 do sistema, o resto do B8: a fórmula da CD já era a do manual, e a nota que aparece ao
@@ -505,6 +665,11 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
           _vazias > 0 and not _fmt_ruim, str(_fmt_ruim[:3]))
 
     _lay = _js.load(open("ficha-v01/layout.json", encoding="utf-8"))
+    # 17/09/2026: a limpeza 13 aumenta a foto da CARTEIRA, então a caixa esperada é a de depois dela
+    sys.path.insert(0, "ficha-v01")
+    import ficha_layout as _fl
+    for _nome, _ims in _fl.trocas(_js.load(open("ficha-v01/layout.json", encoding="utf-8")))["imagens"].items():
+        next(a for a in _lay["abas"] if a["nome"] == _nome)["imagens"] = _ims
     _mart = _re.search(r"var ARTE = (\{.*?\});\n", g, _re.S)
     _arte = _js.loads(_mart.group(1)) if _mart else {}
     _por = {a["nome"]: a for a in dados}

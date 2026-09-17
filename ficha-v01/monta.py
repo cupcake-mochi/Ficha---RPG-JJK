@@ -31,6 +31,20 @@ LAYOUT = json.load(open(os.path.join(AQUI, "layout.json"), encoding="utf-8"))
 # v0.239 do sistema, decisao do Mizuki: a aba DADOS sai do catalogo, e nao da exportacao. O
 # layout.json continua copia fiel da planilha viva; o conteudo da DADOS e escrito por cima
 # dele aqui. Ver dados_catalogo.py.
+# 17/09/2026, a segunda rodada: o desenho que a mesa pediu -- as caixinhas de Buff/Debuff, o Refino/Corpo/Leque,
+# a foto maior, os textos da CARTEIRA e a margem da direita. Vem antes de tudo, porque o indice sai dos
+# rotulos que ela deixa. Ver ficha_layout.py.
+import ficha_layout
+_FL = ficha_layout.trocas(LAYOUT)
+print(f"o desenho da mesa: {ficha_layout.aplica(LAYOUT, _FL)} mudanca(s) na exportacao")
+ficha_layout.desenha_arte(_FL)
+
+# 17/09/2026: o indice da DADOS passa a guardar o endereco em formula, derivado dos rotulos da FICHA.
+# Ele vem antes de tudo porque as limpezas de baixo leem por ele. Ver indice_ficha.py.
+import indice_ficha
+print(f"o indice da DADOS em formula: {indice_ficha.aplica(LAYOUT, indice_ficha.trocas(LAYOUT))} "
+      f"celula(s) diferentes da exportacao")
+
 import dados_catalogo
 _DADOS_CAT = dados_catalogo.valores()
 for _a in LAYOUT["abas"]:
@@ -51,6 +65,12 @@ import defesa_equipamento
 _DE = defesa_equipamento.trocas(LAYOUT)
 print(f"a Defesa com uniforme, escudo e refino escolhido: {defesa_equipamento.aplica(LAYOUT, _DE)} "
       f"celula(s) diferentes da exportacao")
+
+# 17/09/2026: a ficha automatica -- os X de Y, os marcos, o atributo que soma o Corpo, e as Passivas do
+# Leque em coluna propria. Ver ficha_automatica.py.
+import ficha_automatica
+_FA = ficha_automatica.trocas(LAYOUT)
+print(f"a ficha automatica: {ficha_automatica.aplica(LAYOUT, _FA)} mudanca(s) na exportacao")
 
 # a paleta e a fonte de corpo saem do estilo.py, que e o dono delas -- e ele
 # ganhou as quatro cores desta versao na v0.1 (decisao do Mizuki: uma paleta so)

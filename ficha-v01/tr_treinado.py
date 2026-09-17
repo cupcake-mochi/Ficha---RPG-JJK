@@ -32,10 +32,10 @@ def _aba(layout, nome):
 
 
 def indice(layout):
-    """o indice que a ficha publica na DADOS: a coluna BA e o campo, a BB e a celula"""
-    cel = {reg[0]: reg[1] for reg in _aba(layout, "DADOS")["celulas"]}
-    return {v: cel.get("BB" + k[2:]) for k, v in cel.items()
-            if k.startswith("BA") and k[2:].isdigit() and v}
+    """o indice que a ficha publica na DADOS: a coluna BA e o campo, a BB e a celula. Desde 17/09/2026
+    a celula e formula, e quem sabe ler as duas formas e o indice_ficha.py."""
+    import indice_ficha
+    return indice_ficha.indice(layout)
 
 
 def trocas(layout, CAT=None):

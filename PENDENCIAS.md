@@ -377,7 +377,7 @@ editasse uma delas divergiriam em silêncio, sem validador que alcançasse.
 | celular | aba `MESA` própria, de 12 colunas, lendo da `FICHA` por fórmula |
 | progressão | automática do nível 2 ao 30; **o XP fica manual** |
 | feitiços | linha de uso rápido na `MESA`, bloco completo na `TÉCNICA` |
-| perícias treinadas | 8 ou 9, o jogador escolhe |
+| perícias treinadas | ~~8 ou 9, o jogador escolhe~~ **o livro de hoje: 9 perícias e 2 ofícios, ou 10 e nenhum**, e a ficha deduz a rota (B22), mostrando 9 e 2 enquanto couber (B23) |
 | `Queima` | conta como repetição no teto de dano |
 | largura | desenhar para ~1300 px, que cabe em notebook |
 | **o bloco A inteiro** | **`DECISOES-bloco-A.md`** |
@@ -594,6 +594,64 @@ ninguém apertar o gatilho por engano.*
 **Achado na v0.246 do sistema:** *com o texto velho do `Rápido` no `catalogo-projeto-m.json`, o `conferir-catalogo.py`, o `conferir-decisoes.py` e o `revisao-cetica.py` saíram verdes.* **O catálogo confere contagem e nome, e não a frase.**
 
 *Medido na mesma hora: das 66 Melhorias com texto, 57 aparecem exatas no `manual.txt` normalizado, e as 9 que não aparecem são artefato do `pdftotext -layout`* — **hífen de quebra, número de página e troca de página no meio da tabela**, *e não texto divergente.* **Uma checagem de frase precisa tolerar isso**, e as Restrições guardam o texto em `o_que_muda`, não em `efeito`.
+
+### B22 · A ficha que conta sozinha — **FEITA em 17/09/2026, e testada no Sheets pelo Mizuki no mesmo dia**
+
+**O Mizuki redesenhou a FICHA no Sheets e pediu as contas:** *atributo com a caixa pequena (o que o jogador distribui) e a grande (o total), pontos de marco de Corpo por atributo, o `Marco Escolhido` com Refino, Atributo e Feitiço, o `Buff/Debuff` da Defesa, as caixas `X de Y` de pontos, perícias, ofícios, Testes de Resistência e aptidões, as perícias do Caminho marcadas sozinhas, e aviso e nota nas caixas de conta.* **É a limpeza 12 da `ficha-v01`, no `ficha_automatica.py`**, *com as contas intermediárias numa tabela `contas da ficha` escondida na `DADOS`.*
+
+**O que o livro decide, e a ficha lê do `manual.txt` e do catálogo:**
+
+| caixa | conta |
+|---|---|
+| atributo grande | o pequeno + os marcos de Corpo nele; aviso se passar de 6 |
+| Pontos Disponíveis | 9 da criação + 1 por marco que já passou; aviso se passar de 3 antes do primeiro marco |
+| Marco Escolhido | Refino + Atributo + Feitiço contra os marcos que já passaram |
+| Perícias e Ofícios | 9 e 2, ou 10 e nenhum; cada marco de Corpo dá +1 perícia ou ofício, ou uma especialização do nível 10 em diante |
+| Testes de Resistência | 2 |
+| Aptidões | 2 de graça + 1 por escolha de Refino, e 2 quando o refino já está em 10 |
+| espaços de feitiço | + 1 por escolha de Leque |
+| Passivas do Leque | uma por escolha de Leque, e elas não custam espaço |
+
+- ***Decisão do Mizuki: a rota do ofício é deduzida.*** *(O B23 trocou o que a ficha mostra: 9 e 2 enquanto couber.)* *A ficha mostrava o máximo de cada lista; quando o jogador marca além da base de uma, entende que o marco de Corpo foi para ela; e se passar nas duas, as duas caixas dizem quantos passaram.* **O máximo de uma lista só vem de rota que ainda cabe** — *sem isso, 10 perícias sem marco mostravam "1 de 1" ofício, e marcar esse ofício já passava.*
+- ***Decisão do Mizuki: as Passivas dividem em duas colunas, a normal e a do Leque, com duas linhas a mais.*** *Só a coluna normal entra na conta de Feitiços Disponíveis.*
+- **Aptidões no teto dependem da ordem das escolhas**, *que a ficha não guarda.* **Medido:** *a ordem só muda o número em quatro combinações, todas no nível 26 ou 30, e em uma aptidão.* *A ficha conta como se as escolhas de Refino tivessem sido as últimas, e a nota manda conferir com o mestre.*
+- **O Caminho marca sozinho só as duas perícias fixas.** *O pedido incluía ofício e Teste de Resistência, e o livro dá os dois à escolha: o "ofício fixo" do catálogo e da tabela dos Caminhos era resto do manual da v0.104, sem capítulo nem peça no sistema, e saiu.*
+
+**Achado no caminho: o índice da `DADOS` guardava endereço como texto**, *e as linhas inseridas pelo Sheets o deixaram apontando para o lugar antigo — a vida em D23 com ela em D26.* **A caixinha de ± da planilha viva parou por isso.** *Agora o endereço é `=ADDRESS(ROW(FICHA!D26),COLUMN(FICHA!D26),4)`, derivado dos rótulos, e anda sozinho (limpeza 11, `indice_ficha.py`).* **A mesma derivação, rodada no layout de antes, reproduz os 38 endereços de texto que ele tinha.** *O extrator passou a achar as barras e os campos de mesa pelo rótulo, e a mover junto com as linhas as imagens que mantém.*
+
+**Como é conferido.** *A `regressao-kaori-na-ficha.py` recalcula doze casos no LibreOffice e compara as quinze caixas de cada um com um modelo de força bruta, que testa rota e divisão dos marcos de Corpo uma a uma e conta as aptidões marco a marco; o `conferir-ficha-xlsx.py` confere o índice em fórmula e o `Codigo.gs`; o `regressao-delta.js` roda a marcação das perícias do Caminho no node.*
+
+> ~~**⚠ Na sua mão:** colar o `Codigo.gs` novo, rodar o `construir()` e conferir no Sheets~~ **testado pelo Mizuki em 17/09/2026**, *com a lista de pedidos que virou o B23.*
+
+### B23 · O desenho da mesa, na segunda rodada — **FEITA em 17/09/2026, e falta testar no Sheets**
+
+**O Mizuki testou o B22 e mandou a exportação nova com os pedidos da mesa.** *É a limpeza 13, no `ficha_layout.py`, que roda antes de todas, e mudanças nas limpezas 11 e 12 e no `Codigo.gs`.*
+
+| pedido | o que ficou |
+|---|---|
+| foto maior na CARTEIRA | a caixa vai de D8:J18 para C8:K21, sem coluna nova, e a moldura é redesenhada em 386 × 460 |
+| margem da direita | coluna AU de respiro na CARTEIRA, na INVOCAÇÃO e no CATÁLOGO; o que o CATÁLOGO pintava depois dela sai |
+| portador, registrado por, servidor | `Coloque o nome do personagem aqui` e `Nick do jogador` de exemplo; `MESA DE ORIGEM` vira `SERVIDOR USADO`, com nota |
+| nome do sistema | `=UPPER(DADOS!$F$1)`, e a `DADOS` escreve o `_meta.sistema` do catálogo |
+| técnica declarada | `TÉCNICA MARCIAL DECLARADA` na rota Técnica Marcial, `ESTILO DECLARADO` na Sem Técnica, `TÉCNICA AMALDIÇOADA DECLARADA` no resto |
+| duas Restrições Celestiais | o menu de Origem sai das `rotas_de_criacao`: `corpo pela técnica` é Fundamento, `sem energia` é Técnica Marcial |
+| Caminho e Trilha | a ficha nasce com `Escolha seu Caminho` e `Escolha sua Trilha`; o menu da Trilha filtra pelo Caminho, e trocar o Caminho devolve para o texto de escolha a Trilha que não é dele |
+| 9 e 2 | a ficha mostra 9 perícias e 2 ofícios enquanto essa rota couber, e passa para 10 e nenhum quando só ela cabe |
+| caixa das escolhas | diz o que falta da criação e do marco de Corpo, e a conta sem ofício quando nenhum ofício está marcado; letra 10, para caber em duas linhas |
+| aptidões de graça | as duas primeiras linhas vêm com `Cobrir-se de energia` e `Canalizar energia`, ou `Defesa sem Armadura` e `Estímulo Muscular` na Restrição sem energia; a nota muda com a Origem |
+| Marco Escolhido | rótulos `Refino`, `Corpo` e `Leque` |
+| Buff/Debuff | ao lado da Defesa, Iniciativa, CD, Conjuração, Corpo a Corpo, À Distância e Deslocamento; o EQUIPAMENTO volta a ser uma caixa só |
+| maiúscula | `Um atributo passou de 6`, `Na criação, nenhum acima de 3`, `Especialização só no nível 10` |
+| notas | no título da caixa quando ele é texto; nota nova na Defesa, nos Buff/Debuff, nos ataques, no Deslocamento, nos Feitiços, nas Passivas, na caixa das escolhas, na Trilha e na CARTEIRA |
+| proteção | aviso em toda fórmula da FICHA e da CARTEIRA, menos as três barras de agora; o resultado das perícias, ofícios e Testes de Resistência entra |
+
+- **Os nomes das aptidões e Bênçãos de graça saem do `manual.txt`.** *O texto das quatro notas é resumo do manual, e o `conferir-ficha-xlsx.py` confere que os números delas estão lá.*
+- **O rótulo da técnica segue o capítulo 7:** *a Sem Técnica monta um estilo; Corpo Amaldiçoado e Restrição sem energia são da rota Técnica Marcial; a Restrição corpo pela técnica é Fundamento.*
+- **A caixa das escolhas estava em letra 14, numa linha.** *A frase mais longa medida tem 98 caracteres, e em 14 ela corta.*
+
+**Como é conferido.** *A `regressao-kaori-na-ficha.py` recalcula vinte casos no LibreOffice, com 25 caixas cada, e os casos novos cobrem a caixa das escolhas, as linhas de graça, a Restrição sem energia, a semente da Sem Técnica e os sete Buff/Debuff. O `conferir-ficha-xlsx.py` confere a CARTEIRA, o menu de Origem, a trava por varredura e as notas. O `regressao-delta.js` roda no node a Trilha de outro Caminho e o lugar da nota, e o `arnes-delta.py` perturba as duas e a marcação das perícias do Caminho.*
+
+> **⚠ Na sua mão:** *colar o `Codigo.gs` novo, rodar o `construir()` do `Ficha.gs` novo numa planilha nova e passar o personagem para ela.* **No Sheets, conferir:** *a Trilha voltando para `Escolha sua Trilha` ao trocar o Caminho, a nota das aptidões de graça mudando ao escolher a Restrição sem energia, o aviso ao apagar o resultado de uma perícia, e se a foto da CARTEIRA ficou no tamanho certo.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
