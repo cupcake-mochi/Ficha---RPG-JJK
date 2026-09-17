@@ -775,7 +775,12 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
             for cel in linha:
                 if cel.__class__.__name__ != "MergedCell":
                     _cnt[_cor_x(cel.fill.start_color) if cel.fill and cel.fill.fill_type else None] += 1
-        if a.get("fundo_base", "?") != (_cnt.most_common(1)[0][0] if _cnt else None):
+        # 17/09/2026: None (celula sem pintura) nunca vira base -- vira null no Ficha.gs, e o script
+        # trava tentando pintar a aba inteira de "sem cor" (achado do Mizuki no GLOSSARIO). A DADOS_INV
+        # tinha o mesmo problema, oculta, e nunca apareceu.
+        _cnt_pintado = _Ct({k: v for k, v in _cnt.items() if k is not None})
+        _base_certa = _cnt_pintado.most_common(1)[0][0] if _cnt_pintado else "#120F1D"
+        if a.get("fundo_base", "?") != _base_certa:
             _fundo_r.append((a["nome"], a.get("fundo_base", "?"), _cnt.most_common(2)))
     checa("cada coluna sai com a largura da planilha, pela conta do Sheets", not _larg_r, str(_larg_r[:3]))
     checa("cada linha sai com a altura que a planilha declara, e só ela", not _alt_r, str(_alt_r[:2]))

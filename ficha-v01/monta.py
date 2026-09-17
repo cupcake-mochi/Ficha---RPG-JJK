@@ -72,6 +72,15 @@ import ficha_automatica
 _FA = ficha_automatica.trocas(LAYOUT)
 print(f"a ficha automatica: {ficha_automatica.aplica(LAYOUT, _FA)} mudanca(s) na exportacao")
 
+# 17/09/2026: o GLOSSARIO, entre a DADOS e a INVOCACAO -- o que cada atributo, pericia, oficio e
+# termo da ficha quer dizer. Nao tem planilha viva por tras, ao contrario das outras seis: nasce
+# inteiro aqui, reaproveitando os estilos que o CATALOGO ja usa. Ver glossario.py.
+import glossario
+_pos_gloss = next(i for i, a in enumerate(LAYOUT["abas"]) if a["nome"] == "INVOCAÇÃO")
+_ABA_GLOSS = glossario.aba(LAYOUT)
+LAYOUT["abas"].insert(_pos_gloss, _ABA_GLOSS)
+print(f"o glossario: {_ABA_GLOSS['linhas']} linha(s), {len(_ABA_GLOSS['celulas'])} celula(s)")
+
 # a paleta e a fonte de corpo saem do estilo.py, que e o dono delas -- e ele
 # ganhou as quatro cores desta versao na v0.1 (decisao do Mizuki: uma paleta so)
 sys.path.insert(0, os.path.join(os.path.dirname(AQUI), "ficha"))

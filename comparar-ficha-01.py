@@ -103,8 +103,15 @@ print("AS ABAS")
 print("=" * 74)
 print(f"  original: {wa.sheetnames}")
 print(f"  gerada:   {wb_.sheetnames}")
-if wa.sheetnames != wb_.sheetnames:
-    difs.append(f"ordem/nome das abas: {wa.sheetnames} != {wb_.sheetnames}")
+# 17/09/2026: o GLOSSARIO nasce so no gerador, sem planilha viva por tras -- nao tem original pra
+# comparar, entao ele sai da lista antes de cobrar igualdade, e so se confere que nao sumiu.
+_abas_novas = ["GLOSSÁRIO"]
+_gerada_sem_novas = [n for n in wb_.sheetnames if n not in _abas_novas]
+if wa.sheetnames != _gerada_sem_novas:
+    difs.append(f"ordem/nome das abas: {wa.sheetnames} != {_gerada_sem_novas} (fora as novas {_abas_novas})")
+for nova in _abas_novas:
+    if nova not in wb_.sheetnames:
+        difs.append(f"a aba nova {nova!r} sumiu da geracao")
 for n in wa.sheetnames:
     if n in wb_.sheetnames and wa[n].sheet_state != wb_[n].sheet_state:
         difs.append(f"{n}: estado {wa[n].sheet_state} != {wb_[n].sheet_state}")
@@ -278,6 +285,7 @@ for n in wa.sheetnames:
     _menus_de = {(m["onde"], m["tipo"], m["formula"]) for m in DE["menus"].get(n, [])}
     _troca_fa = FA["menus_troca"].get(n, {})
     _form_fa = FA.get("menus_formula", {}).get(n, {})
+    _novos_fa = {(m["onde"], m["tipo"], m["formula"]) for m in FA.get("menus_novos", {}).get(n, [])}
     for x in sorted(va - vbs):                       # limpeza 12: Caminho, Trilha e Origem com lista nova
         if x[0] in _form_fa and (x[0], x[1], _form_fa[x[0]]) in vbs:
             esperadas["menu de Caminho, Trilha ou Origem com a lista nova"] += 1
@@ -294,6 +302,8 @@ for n in wa.sheetnames:
             continue
         if x in _menus_de:                           # limpeza 10: o menu do equipamento e o do refino
             esperadas["menu do equipamento e do refino escolhido"] += 1
+        elif x in _novos_fa:                         # 17/09/2026: o menu da troca de pericia por arma
+            esperadas["menu de Treinamento em Armas, novo"] += 1
         else:
             difs.append(f"{n}: menu {x} sobrou")
 

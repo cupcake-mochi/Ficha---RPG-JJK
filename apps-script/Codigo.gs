@@ -139,8 +139,9 @@ function notasDeRegra_(ss, idx) {
     'perícias disponíveis': 'Na criação: 9 perícias e 2 ofícios, ou 10 perícias e nenhum ofício. ' +
                             'Cada marco de Corpo dá +1 perícia ou ofício, ou uma especialização ' +
                             'do nível 10 em diante. A ficha deduz para qual lista ele foi; se ' +
-                            'passar nas duas, as duas caixas avisam. Guia, Emanador e Evocador ' +
-                            'podem trocar 2 perícias por treino em arma, e isso a ficha não conta.',
+                            'passar nas duas, as duas caixas avisam. Guia, Emanador e Evocador podem ' +
+                            'trocar 2 perícias por treino numa arma, até duas vezes: é a caixa de ' +
+                            'Treinamento em Armas que desconta.',
     'ofícios disponíveis': 'Na criação: 2 ofícios, ou nenhum trocando os dois por mais uma perícia. ' +
                            'Cada marco de Corpo dá +1 perícia ou ofício, e a ficha deduz para ' +
                            'qual lista ele foi.',
@@ -166,7 +167,19 @@ function notasDeRegra_(ss, idx) {
     'caminho': 'Ao escolher o Caminho, as duas perícias fixas dele são marcadas sozinhas. ' +
                'Ofício e Teste de Resistência são à sua escolha. Se a Trilha escolhida não for ' +
                'do Caminho novo, ela volta para Escolha sua Trilha.',
-    'trilha': 'O menu mostra só as Trilhas do Caminho escolhido.'
+    'trilha': 'O menu mostra só as Trilhas do Caminho escolhido.',
+    'treinado em armas': 'Automático pelo Caminho, sem escolha: Bastião e Vanguarda treinam todas ' +
+                         'as armas; Guia, Emanador e Evocador treinam só Arma de Fogo e Balestra.',
+    'nivel': 'Editável a qualquer hora, sem aviso. Digitar XP na caixa ao lado calcula e escreve o ' +
+             'nível sozinho, pela curva do capítulo 18 — mas quem não usa XP sobe aqui na mão.',
+    'xp': 'Some o total acumulado, não o gasto na última missão. Ao digitar aqui, o nível ao lado ' +
+         'sobe sozinho pra curva do capítulo 18. Apagar esta caixa não mexe no nível.',
+    'trocou por arma': 'Só vale pra Guia, Emanador e Evocador. Cada troca é 2 das 5 perícias ' +
+                       'livres do Caminho por treino numa arma específica — não a categoria, não ' +
+                       'o tipo, uma arma da lista. Pode repetir até 2 vezes.',
+    'grupo de arma da trilha': 'Só a Empunhadura do Arremate (Emanador, nível 2) preenche sozinha: ' +
+                               'um grupo de arma à escolha, treinado, com o acerto e o dano por ' +
+                               'Inteligência ou Essência. Qual grupo é você quem escreve.'
   };
   var buff = 'Soma no número do lado o que nenhuma outra caixa cobre, como um efeito que dura. ' +
              'Número negativo reduz.';
@@ -252,23 +265,46 @@ function notasDeGraca_(ss, idx) {
  */
 var LIVRES_DA_TRAVA = ['vida', 'energia', 'integridade'];
 
+/**
+ * O Spreadsheet Service falha de vez em quando no meio de um construir() longo -- "Service
+ * Spreadsheet failed", erro transitório do Google por causa da fila de operações, não do código.
+ * 17/09/2026, achado do Mizuki: quebrou bem na protegerFormulas_, que é a mais pesada (uma
+ * chamada por célula de fórmula). Tenta de novo com uma pausa curta antes de desistir.
+ */
+function _comRetentativa_(fn, tentativas) {
+  tentativas = tentativas || 4;
+  for (var i = 0; i < tentativas; i++) {
+    try {
+      return fn();
+    } catch (e) {
+      if (i === tentativas - 1) throw e;
+      Utilities.sleep(500 * (i + 1));
+    }
+  }
+}
+
 function protegerFormulas_(ss, idx) {
+  SpreadsheetApp.flush();                        // esvazia a fila antes de começar a pesada
   var livres = LIVRES_DA_TRAVA.map(function (k) { return cel_(idx, k); });
   var n = 0;
   ['FICHA', 'CARTEIRA'].forEach(function (nome) {
     var aba = ss.getSheetByName(nome);
     if (!aba) return;
-    aba.getProtections(SpreadsheetApp.ProtectionType.RANGE).forEach(function (p) {
-      if (p.getDescription().indexOf('fórmula · ') === 0) p.remove();
+    _comRetentativa_(function () {
+      aba.getProtections(SpreadsheetApp.ProtectionType.RANGE).forEach(function (p) {
+        if (p.getDescription().indexOf('fórmula · ') === 0) p.remove();
+      });
     });
     aba.getDataRange().getFormulas().forEach(function (linha, i) {
       linha.forEach(function (formula, j) {
         if (!formula) return;
         var cel = aba.getRange(i + 1, j + 1);
         if (nome === 'FICHA' && livres.indexOf(cel.getA1Notation()) >= 0) return;
-        var p = cel.protect();
-        p.setDescription('fórmula · ' + nome + '!' + cel.getA1Notation());
-        p.setWarningOnly(true);
+        _comRetentativa_(function () {
+          var p = cel.protect();
+          p.setDescription('fórmula · ' + nome + '!' + cel.getA1Notation());
+          p.setWarningOnly(true);
+        });
         n++;
       });
     });
@@ -289,7 +325,68 @@ function onEdit(e) {
   prenderTemp_(e, idx);
   marcarPericiasDoCaminho_(e, idx);
   trilhaDoCaminho_(e, idx);
+  nivelPelaXP_(e, idx);
+  grupoDeArmaDaTrilha_(e, idx);
+  trocaArmaDoCaminho_(e, idx);
   if (e.range.getA1Notation() === cel_(idx, 'origem')) notasDeGraca_(SpreadsheetApp.getActive(), idx);
+}
+
+/**
+ * A caixa "Trocou por arma?" fica presa no valor de um Caminho anterior quando o jogador muda de
+ * Caminho — o desconto já para de valer sozinho (só entra pros três não-marciais), mas a caixa
+ * continuava mostrando "1 arma" ou "2 armas" mesmo depois de virar Bastião ou Vanguarda, o que
+ * confunde. 17/09/2026, achado do Mizuki: volta pra "Não trocou" toda vez que o Caminho muda.
+ */
+function trocaArmaDoCaminho_(e, idx) {
+  var cc = cel_(idx, 'caminho'), ca = cel_(idx, 'trocou por arma');
+  if (!cc || !ca || cc !== e.range.getA1Notation()) return;
+  e.range.getSheet().getRange(ca).setValue('Não trocou');
+}
+
+/**
+ * A única Trilha dos três Caminhos não-marciais que dá treino de arma: a Empunhadura do Arremate
+ * (Emanador), nível 2. Ela concede um grupo de arma à escolha, treinado, com o acerto e o dano por
+ * Inteligência ou Essência — mas qual grupo é decisão do jogador, então a ficha só avisa e deixa a
+ * caixa livre pra ele escrever. 17/09/2026, pedido do Mizuki: aproveita a linha que tinha sobrado
+ * no Treinamento em Armas. Só preenche se a caixa estiver vazia, pra não apagar o que já foi
+ * escrito; trocar de Trilha de novo não limpa o que ficou.
+ */
+function grupoDeArmaDaTrilha_(e, idx) {
+  var ct = cel_(idx, 'trilha'), cg = cel_(idx, 'grupo de arma da trilha');
+  if (!ct || !cg || ct !== e.range.getA1Notation()) return;
+  if (String(e.value || '') !== 'Arremate') return;
+  var cc = cel_(idx, 'caminho');
+  if (!cc || String(e.range.getSheet().getRange(cc).getValue()) !== 'Emanador') return;
+  var alvo = e.range.getSheet().getRange(cg);
+  if (String(alvo.getValue() || '') === '') alvo.setValue('Escolha o grupo de arma (Empunhadura)');
+}
+
+/**
+ * O nível sobe sozinho quando o XP muda, pela curva do capítulo 18: acha o maior nível cujo XP
+ * acumulado cabe no que foi digitado, e põe o valor solto — sem fórmula, sem trava — porque mesa
+ * que não usa XP sobe de nível na mão, e isso não pode ficar bloqueado. 17/09/2026, pedido do Mizuki.
+ * Apagar a caixa de XP não mexe no nível: só some o número se alguém digitar outro no lugar.
+ *
+ * A tabela mora na DADOS, sob os rótulos "nível" e "xp acumulado", e quem escreve é a
+ * ficha_automatica.py, a partir da curva de custo por degrau do catálogo (capítulo 18 do manual).
+ */
+function nivelPelaXP_(e, idx) {
+  var cx = cel_(idx, 'xp'), cn = cel_(idx, 'nivel');
+  if (!cx || !cn || cx !== e.range.getA1Notation()) return;
+  if (e.value === undefined || e.value === '') return;
+  var xp = Number(e.value);
+  if (isNaN(xp)) return;
+  var dados = SpreadsheetApp.getActive().getSheetByName('DADOS').getDataRange().getValues();
+  for (var r = 0; r + 1 < dados.length; r++) {
+    var cNiv = dados[r].indexOf('nível'), cXp = dados[r].indexOf('xp acumulado');
+    if (cNiv < 0 || cXp < 0) continue;
+    var melhor = null;
+    for (var i = r + 1; i < dados.length && dados[i][cNiv] !== ''; i++) {
+      if (Number(dados[i][cXp]) <= xp) melhor = dados[i][cNiv];
+    }
+    if (melhor !== null) e.range.getSheet().getRange(cn).setValue(melhor);
+    return;
+  }
 }
 
 /**
@@ -370,7 +467,10 @@ function marcarPericiasDoCaminho_(e, idx) {
       var j = vals[i].map(function (v) { return String(v).trim(); }).indexOf(nome);
       // o treino fica duas colunas antes do nome, e é caixa de seleção
       if (j >= 2 && typeof vals[i][j - 2] === 'boolean') {
-        ficha.getRange(i + 1, j - 1).setValue(marcado);
+        var cel = ficha.getRange(i + 1, j - 1);
+        cel.setValue(marcado);
+        // 17/09/2026, pedido do Mizuki: a nota diz de onde veio, pra nao confundir com marcada a mao
+        cel.setNote(marcado ? 'Treinado pelo Caminho ' + e.value : '');
         return;
       }
     }

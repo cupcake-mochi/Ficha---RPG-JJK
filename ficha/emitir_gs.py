@@ -246,9 +246,12 @@ def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None):
         # o fundo em faixas: 15 mil celulas pintadas viravam 15 mil entradas.
         # Vizinhas da mesma cor na mesma linha viram uma faixa so, e a cor de
         # base nem entra -- o script ja comeca com ela.
-        # A base e o fundo que a aba mais usa, e None quando ela e sem pintura: a DADOS_INV da viva
-        # tem 2680 celulas sem pintura e 1170 escuras, e saia pintada por inteiro.
-        BASE = fundo_cnt.most_common(1)[0][0] if fundo_cnt else "#120F1D"
+        # A base e a cor pintada que a aba mais usa -- None (celula sem pintura) nunca conta, senao
+        # vira a base de verdade numa aba com mais vazio que pintura, e o Ficha.gs manda o script
+        # pintar o retangulo inteiro de "sem cor": setBackgrounds trava, e a aba sai sem nada. 17/09/2026,
+        # achado do Mizuki no GLOSSARIO -- a DADOS_INV tinha o mesmo problema, oculta, e nunca apareceu.
+        _fundo_cnt_pintado = Counter({c: n for c, n in fundo_cnt.items() if c is not None})
+        BASE = _fundo_cnt_pintado.most_common(1)[0][0] if _fundo_cnt_pintado else "#120F1D"
         por_linha = {}
         for r, c, cor in fundos:
             if cor != BASE:

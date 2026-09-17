@@ -381,6 +381,7 @@ def _modelo(c):
     # as aptidões, marco a marco, com as escolhas de Refino nos últimos marcos
     r = min(c["refino_m"], m)
     se, st = c["origem"] == _R["sem_energia"], c["origem"].endswith(_fa.SEM_TECNICA)
+    tm = c["origem"] in _R["marcial"]
     refino, apt = 1, _R["aptidoes_gratis"] + (_R["semente"] if st else 0)
     for marco in range(1, m + 1):
         refino = min(_R["teto_refino"], refino + 1)
@@ -408,7 +409,8 @@ def _modelo(c):
     out["passivas do leque"] = "Passivas do Leque - " + _texto(len(c["leque_nomes"]), c["leque_m"])
     espacos = 2 + c["nivel"] // 2 + m + c["leque_m"]
     out["espaços de feitiço"] = str(espacos)
-    out["feitiços"] = f"Feitiços - Disponível: {espacos - sum(1 for x in c['feiticos'] if x > 0) - sum(c['passivas'])}"
+    palavra_feit = "Katas" if tm else "Manejos" if st else "Feitiços"
+    out["feitiços"] = f"{palavra_feit} - Disponível: {espacos - sum(1 for x in c['feiticos'] if x > 0) - sum(c['passivas'])}"
     return out
 
 _BASE = dict(nivel=2, bases=[3, 2, 2, 1, 1], corpo=[0, 0, 0, 0, 0], refino_m=0, corpo_m=0, leque_m=0,

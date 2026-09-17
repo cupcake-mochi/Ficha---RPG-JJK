@@ -326,10 +326,17 @@
       "CARTEIRA",
       "FICHA",
       "DADOS",
+      "GLOSSÁRIO",
       "INVOCAÇÃO",
       "CATÁLOGO",
       "DADOS_INV"
     ],
+    "aba_acrescentada_17_09": {
+      "nome": "GLOSSÁRIO",
+      "porque": "o que cada atributo, pericia, oficio e termo da ficha quer dizer, pra quem nunca jogou -- pedido do Mizuki",
+      "onde": "entre a DADOS e a INVOCACAO",
+      "diferenca_das_outras": "nao tem planilha viva por tras: nasce inteira no gerador, em ficha-v01/glossario.py, reaproveitando os estilos que o CATALOGO ja usa"
+    },
     "abas_em_14_09": "as seis da planilha viva. A MESA e a QUEM É sairam, e o Mizuki decidiu no B18: \"Ainda vamos manter sem, por enquanto\"",
     "aba_removida": {
       "nome": "TÉCNICA",

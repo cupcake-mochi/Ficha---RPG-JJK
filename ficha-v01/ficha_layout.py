@@ -14,7 +14,8 @@ porque o indice da DADOS e as contas saem dos rotulos que ela deixa. O que ela f
     redesenhada na proporcao nova; o nome do sistema sai da DADOS; o portador e o registrado por
     ganham texto de exemplo; e a MESA DE ORIGEM vira SERVIDOR USADO;
   - a CARTEIRA, a INVOCACAO e o CATALOGO ganham a coluna de respiro da direita que a FICHA ja tinha, e
-    o CATALOGO perde as colunas pintadas que sobravam depois dela.
+    o CATALOGO perde as colunas pintadas que sobravam depois dela;
+  - a caixa da ORIGEM, na CARTEIRA, perde tamanho de fonte -- o nome mais comprido estourava a caixa.
 
 Nenhum endereco esta escrito: tudo sai dos rotulos e das mesclagens da planilha viva.
 """
@@ -27,6 +28,7 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 COM_BUFF = ["DEFESA", "INICIATIVA", "CD DE FEITIÇO", "CONJURAÇÃO", "CORPO A CORPO", "À DISTÂNCIA", "DESLOCAMENTO"]
 MARCOS = {"Atributo": "Corpo", "Feitiço": "Leque"}
 FONTE_DAS_ESCOLHAS = 10.0
+FONTE_DA_ORIGEM = 10.0
 NOME_PORTADOR = "Coloque o nome do personagem aqui"
 NICK = "Nick do jogador"
 FOTO_A_MAIS = {"esquerda": 1, "direita": 1, "baixo": 3}
@@ -44,6 +46,8 @@ def _estilo(layout, base, **mudar):
         alinha = mudar["alinha"]
     if "fonte" in mudar:
         fonte = mudar["fonte"]
+    if "fundo" in mudar:
+        fundo = mudar["fundo"]
     novo = [fonte, fundo, bordas, alinha, fmt]
     chave = json.dumps(novo, ensure_ascii=False, sort_keys=True)
     for i, e in enumerate(layout["estilos"]):
@@ -156,6 +160,27 @@ def trocas(layout, CAT=None):
             if e and e[0] and e[0][1] != FONTE_DAS_ESCOLHAS:
                 poe("FICHA", c, v, _estilo(L, r[2], fonte=[e[0][0], FONTE_DAS_ESCOLHAS] + e[0][2:]))
 
+    # --- 3c. ANOTACOES RAPIDAS vira o titulo de TREINAMENTO EM ARMAS: o corpo (o texto do que o Caminho
+    #     treina, o menu da troca de pericia por arma e o rotulo que muda) e da ficha_automatica.py, que
+    #     sabe o Caminho e o manual. 17/09/2026, pedido do Mizuki.
+    for c, r in fcel.items():
+        if isinstance(r[1], str) and r[1].strip() == "ANOTAÇÕES RÁPIDAS":
+            poe("FICHA", c, "TREINAMENTO EM ARMAS", est(c))
+            lt, ct = ix._lc(c)
+            # a troca de pericia por arma e o rotulo que muda: destaque no roxo que ja separa linha
+            # na zebra do CATALOGO (FF3D2E78), pra distinguir do "treinado em" e da linha livre
+            for desloc in (3, 5):
+                alvo = f"{ix._letras(ct)}{lt + desloc}"
+                if est(alvo) is not None:
+                    poe("FICHA", alvo, val(alvo), _estilo(L, est(alvo), fundo="FF3D2E78"))
+            # a linha da Empunhadura (a de baixo) herdou a letra grande da caixa de notas livres --
+            # o texto do aviso e mais comprido, entao a fonte cai pra 10, achado do Mizuki em 17/09/2026
+            alvo7 = f"{ix._letras(ct)}{lt + 7}"
+            if est(alvo7) is not None:
+                e7 = L["estilos"][est(alvo7)]
+                if e7[0]:
+                    poe("FICHA", alvo7, val(alvo7), _estilo(L, est(alvo7), fonte=[e7[0][0], 10.0] + e7[0][2:]))
+
     # --- 4. a CARTEIRA -----------------------------------------------------------------------------
     cart = _aba(L, "CARTEIRA")
     ccel = {r[0]: r for r in cart["celulas"]}
@@ -174,6 +199,16 @@ def trocas(layout, CAT=None):
             alvo = ix._letras(ix._lc(c)[1]) + str(ix._lc(c)[0] + 1)
             if ccel.get(alvo, [None, None])[1] in (None, ""):
                 poe("CARTEIRA", alvo, NICK, cest(alvo))
+        elif v == "ORIGEM":
+            # 17/09/2026, achado do Mizuki no teste do B23: "Sem Técnica, com uma das cinco
+            # principais" mede 385px em Castoro 15, contra ~304px de caixa -- estoura. Em 10 cabem
+            # folgados os nove nomes de Origem, inclusive o mais longo.
+            alvo = ix._letras(ix._lc(c)[1]) + str(ix._lc(c)[0] + 1)
+            rv = ccel.get(alvo)
+            if rv and rv[2] is not None:
+                e = L["estilos"][rv[2]]
+                if e[0] and e[0][1] != FONTE_DA_ORIGEM:
+                    poe("CARTEIRA", alvo, rv[1], _estilo(L, rv[2], fonte=[e[0][0], FONTE_DA_ORIGEM] + e[0][2:]))
     for c, r in fcel.items():                                 # o cabecalho pequeno da FICHA
         if isinstance(r[1], str) and r[1].strip().upper() == "ERA DA REVOLUÇÃO":
             poe("FICHA", c, "=UPPER(DADOS!$F$1)", r[2])
