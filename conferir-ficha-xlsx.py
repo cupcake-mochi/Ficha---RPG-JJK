@@ -452,8 +452,13 @@ if _o.path.exists(GS):
           "setRowHeight" in g)
     # O idioma da planilha manda na pontuação de toda fórmula que o script escreve. Em 15/09/2026 a
     # montagem numa planilha em português deixou #ERROR! em todas as fórmulas com vírgula. O
-    # construir() tem de trocar para inglês antes de montar, e devolver o idioma num finally que
-    # venha depois da última escrita.
+    # construir() tem de trocar para inglês antes de montar, e forçar pt_BR num finally que venha
+    # depois da última escrita.
+    #
+    # 18/09/2026: era "devolver o idioma de antes", lido de ss.getSpreadsheetLocale() no começo —
+    # e uma planilha nova do Google Sheets nasce no idioma da CONTA de quem criou, não do produto.
+    # "Devolver" repunha en_US quando a conta já era en_US, e a ficha saía em inglês sem ninguém
+    # ter pedido. A ficha é em português sempre, então o fim é sempre pt_BR, não o que estava antes.
     _fc = _rn.search(r"function construir\(\) \{(.*?)\n\}\n", g, _rn.S)
     _corpo = _fc.group(1) if _fc else ""
     _virg = [x for x in formulas if "," in _rn.sub(r'"[^"]*"', "", x)]
@@ -462,11 +467,13 @@ if _o.path.exists(GS):
     _i_monta = _corpo.find("montarAba_(")
     _i_ultima = max(_corpo.find(k) for k in ("menusSuspensos_(", "corDeEstado_(", "protegerFormulas_("))
     _i_final = _corpo.find("} finally {")
-    _i_volta = _corpo.find("setSpreadsheetLocale(idioma)")
+    _i_volta = _corpo.find("setSpreadsheetLocale('pt_BR')")
     checa(f"a ficha tem {len(_virg)} fórmula(s) com vírgula, então o idioma da montagem importa", len(_virg) > 0)
-    checa("o construir() monta em inglês e devolve o idioma num finally, depois da última escrita",
+    checa("o construir() monta em inglês e força pt_BR num finally, depois da última escrita",
           0 <= _i_le < _i_troca < _i_monta and 0 <= _i_ultima < _i_final < _i_volta,
           f"lê {_i_le} · troca {_i_troca} · monta {_i_monta} · última {_i_ultima} · finally {_i_final} · volta {_i_volta}")
+    checa("o pt_BR final não é o idioma capturado no começo — senão uma planilha que nasceu em "
+          "inglês ficaria em inglês", "setSpreadsheetLocale(idioma)" not in _corpo)
     tam = len(g) / 1024
     checa(f"o arquivo cabe no Apps Script ({tam:.0f} KB, o limite é ~1 MB)", tam < 900)
     # A caixa desmarcada vale FALSO, e FALSO nao e "". A formula antiga somava

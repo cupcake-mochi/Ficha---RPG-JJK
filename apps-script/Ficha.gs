@@ -29,7 +29,11 @@ function construir() {
   // O idioma da planilha manda na pontuação de TODA fórmula que o script escreve, o setFormula e
   // a regra de cor inclusive: numa planilha em português COUNTIF(a,b) vira #ERROR! e 0.25 não é
   // número. Foi o que o teste de 15/09/2026 mostrou, com as 104 fórmulas de vírgula quebradas.
-  // A montagem roda em inglês, e o idioma de antes volta no fim, mesmo se ela parar no meio.
+  // A montagem roda em inglês, e no fim ela força pt_BR — não devolve o idioma de antes. Achado em
+  // 18/09/2026: "o idioma de antes" supõe que a planilha já nasceu em português, e uma planilha
+  // nova do Google Sheets nasce no idioma da conta de quem criou, não do produto. Restaurar
+  // devolvia a mesma en_US que a montagem tinha acabado de ligar — a ficha é em português sempre,
+  // então o fim é sempre pt_BR, mesmo se ela parar no meio.
   var idioma = ss.getSpreadsheetLocale();
   ss.setSpreadsheetLocale('en_US');
   try {
@@ -72,9 +76,9 @@ function construir() {
     feito.push('notas: ' + notasDeRegra_(ss, idx));
     feito.push('protegidas: ' + protegerFormulas_(ss, idx));
   } finally {
-    ss.setSpreadsheetLocale(idioma);
+    ss.setSpreadsheetLocale('pt_BR');
   }
-  feito.push('idioma de volta: ' + idioma);
+  feito.push('idioma de antes: ' + idioma + ' · idioma final: pt_BR');
 
   var seg = Math.round((new Date().getTime() - t0) / 1000);
   Logger.log('FICHA PRONTA em ' + seg + 's · ' + feito.join(' · '));

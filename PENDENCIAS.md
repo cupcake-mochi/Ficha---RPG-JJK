@@ -653,6 +653,25 @@ ninguém apertar o gatilho por engano.*
 
 > **⚠ Na sua mão:** *colar o `Codigo.gs` novo, rodar o `construir()` do `Ficha.gs` novo numa planilha nova e passar o personagem para ela.* **No Sheets, conferir:** *a Trilha voltando para `Escolha sua Trilha` ao trocar o Caminho, a nota das aptidões de graça mudando ao escolher a Restrição sem energia, o aviso ao apagar o resultado de uma perícia, e se a foto da CARTEIRA ficou no tamanho certo.*
 
+### B24 · O `construir()` podia deixar a planilha em inglês — **FECHADO em 18/09/2026**
+
+*Achado ao vivo: a `CARTEIRA` mostrava `Emitida 18.09.2026` certo, mas o Mizuki notou que a
+planilha não estava em português.*
+
+O `finally` do `construir()` restaurava `ss.getSpreadsheetLocale()` — **o idioma que a planilha
+já tinha antes de rodar**, não `pt_BR`. Uma planilha nova do Google Sheets nasce no idioma da
+**conta** de quem criou, não do produto: se a conta já for `en_US`, "devolver o idioma de antes"
+devolve `en_US`, e a ficha de um sistema em português fica com o resto do arquivo — moeda, data
+por extenso, o que quer que dependa do locale — em inglês, sem erro nenhum aparecer.
+
+**Como fechou.** *`ficha/modelo.gs.js` — o `finally` força `'pt_BR'` sempre, em vez de devolver a
+variável `idioma` capturada no começo.* **O `conferir-ficha-xlsx.py` ganhou a checagem que
+confirma isso e a que proíbe o padrão velho de voltar** — *perturbada numa cópia isolada,
+revertendo pro `setSpreadsheetLocale(idioma)`: as duas acendem, e restaurando ficam verdes.*
+
+> **⚠ Na sua mão:** *como qualquer mudança no `Ficha.gs`, só pega rodando o `construir()` de novo
+> numa planilha nova.*
+
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
 Os dois capítulos vendorizados vieram **byte a byte idênticos** do commit
