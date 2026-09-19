@@ -14,7 +14,7 @@
       "restricoes",
       "condicoes",
       "formas (nomes)",
-      "pericias (nomes)",
+      "pericias (nomes e descricao)",
       "oficios (nomes)",
       "familias",
       "trilhas",
@@ -53,11 +53,11 @@
   "pericias": {
     "Atletismo": {
       "atributo": "Força",
-      "descricao": "correr, escalar, nadar, saltar, carregar alguém que não consegue andar."
+      "descricao": "correr, escalar, nadar, saltar, carregar quem não anda."
     },
     "Acrobacia": {
       "atributo": "Destreza",
-      "descricao": "equilíbrio, cair sem se machucar, escapar de um agarrão, passar por espaço              3 apertado."
+      "descricao": "equilíbrio, cair sem se machucar, passar por espaço apertado."
     },
     "Furtividade": {
       "atributo": "Destreza",
@@ -69,7 +69,7 @@
     },
     "Prestidigitação": {
       "atributo": "Destreza",
-      "descricao": "mão rápida: esconder um objeto, tirar do bolso alheio, trocar uma coisa por outra na frente de quem está olhando."
+      "descricao": "mão rápida: esconder um objeto, tirar do bolso alheio, trocar uma coisa por outra."
     },
     "Investigação": {
       "atributo": "Inteligência",
@@ -77,15 +77,15 @@
     },
     "Intuição": {
       "atributo": "Inteligência",
-      "descricao": "ler a pessoa pelo que ela faz: a inconsistência na história, o detalhe que não fecha, a motivação atrás do pedido. É dedução sobre gente, e por isso é Inteligência. Perceber que alguém está nervoso é Percepção ."
+      "descricao": "ler a pessoa pelo que ela faz: a inconsistência, o detalhe que não fecha, a motivação atrás do pedido. Perceber que alguém está nervoso é Percepção."
     },
     "Ocultismo": {
       "atributo": "Inteligência",
-      "descricao": "maldições, técnicas conhecidas, barreiras, o funcionamento da energia amaldiçoada. O lado técnico."
+      "descricao": "maldições, técnicas conhecidas, barreiras, o funcionamento da energia amaldiçoada. O nome da coisa, o grau dela, e o que costuma matá-la."
     },
     "Religião": {
       "atributo": "Inteligência",
-      "descricao": "xintoísmo, budismo, exorcismo, templo, ritual, o que os selos querem dizer. O lado sagrado, que é de onde o jujutsu veio antes de virar instituição."
+      "descricao": "xintoísmo, budismo, exorcismo, templo, ritual, o que os selos querem dizer. O lugar antigo, e o rito que precisa ser feito na ordem certa."
     },
     "História": {
       "atributo": "Inteligência",
@@ -93,7 +93,7 @@
     },
     "Hierarquia": {
       "atributo": "Inteligência",
-      "descricao": "os clãs, a política, quem manda em quem e quem deve o quê a quem. Diz o que você pode pedir, a quem, e o que vai custar."
+      "descricao": "os clãs, a política, quem manda em quem. Diz o que você pode pedir, a quem, e o que vai custar."
     },
     "Medicina": {
       "atributo": "Inteligência",
@@ -105,11 +105,11 @@
     },
     "Natureza": {
       "atributo": "Inteligência",
-      "descricao": "planta, bicho, clima, terreno. O que é o quê, o que é venenoso, quando a chuva vem."
+      "descricao": "planta, bicho, clima, terreno. O que é venenoso, qual vale enche, quando a chuva vem."
     },
     "Lidar com Animais": {
       "atributo": "Inteligência",
-      "descricao": "acalmar, montar, conduzir, mandar num bicho. Vale para o que não é bicho mas se comporta como um."
+      "descricao": "acalmar, montar, conduzir, mandar num bicho. Vale para invocação que ainda não te obedece direito."
     },
     "Tecnologia": {
       "atributo": "Inteligência",
@@ -117,11 +117,11 @@
     },
     "Sentir Energia": {
       "atributo": "Essência",
-      "descricao": "perceber energia amaldiçoada. Notar o feiticeiro escondido, medir o tamanho de uma maldição antes de encostar nela, sacar que alguém está prestes a conjurar. É a perícia mais rolada da mesa."
+      "descricao": "perceber energia amaldiçoada: o feiticeiro escondido, o tamanho de uma maldição, quem está prestes a conjurar."
     },
     "Percepção": {
       "atributo": "Essência",
-      "descricao": "notar o mundano: som, cheiro, movimento, a coisa que está fora do lugar, a pessoa suando frio."
+      "descricao": "notar o mundano: som, cheiro, movimento, a coisa fora do lugar, a pessoa suando frio."
     },
     "Persuasão": {
       "atributo": "Essência",
@@ -137,11 +137,11 @@
     },
     "Atuação": {
       "atributo": "Essência",
-      "descricao": "representar, cantar, tocar para uma plateia, sustentar um personagem que não é você."
+      "descricao": "representar, cantar, tocar para uma plateia."
     },
     "Provocar": {
       "atributo": "Essência",
-      "descricao": "tirar alguém do sério, fazer perder a linha, forçar a vir para cima de você. É o oposto de Intimidação : uma faz recuar, a outra faz avançar. Analisar a técnica do inimigo Não existe perícia para isso, porque são duas perguntas diferentes e cada uma já tem casa. OCULTISMO RECONHECE O QUE VOCÊ ESTÁ SENTIR ENERGIA LÊ COMO A ENERGIA SE MOVE VENDO \"Isso é uma técnica de troca, e troca sempre   \"Ela gasta muito no começo de cada golpe. Se eu forçar tem um custo.\"                                 três seguidos, ela seca.\" Você conhece o catálogo                        Você não precisa saber o nome do que está aconte‐ cendo O Nanami faz a primeira. O Todo faz a segunda."
+      "descricao": "tirar alguém do sério, forçar a vir para cima de você. É o oposto de Intimidação: uma faz recuar, a outra faz avançar."
     }
   },
   "oficios": {

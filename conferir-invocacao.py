@@ -386,6 +386,9 @@ else:
         # no menu e escolher no escuro.
         _cat = {str(c.value) for lin in wb["CATÁLOGO"].iter_rows() for c in lin
                 if c.value is not None}
+        # o texto sai com a inicial maiuscula (ficha-v01/correcoes_texto.py); o invocacao.json guarda a frase
+        # como o livro a escreve, em minuscula, entao a comparacao aceita as duas formas da primeira letra
+        _cat |= {x[:1].lower() + x[1:] for x in _cat}
         _faltam = [n for n in list(INV["traco"]) + list(INV["comando"])
                    if n not in _cat]
         checa("as 20 entradas aparecem na aba CATALOGO", not _faltam,
@@ -394,6 +397,24 @@ else:
                       if INV["traco_texto"].get(n, INV["comando_texto"].get(n, "")) not in _cat]
         checa("cada entrada leva junto o que ela FAZ", not _sem_texto,
               f"sem texto na aba: {_sem_texto}")
+        # 19/09/2026: a mesma regra da ficha principal -- nenhum texto da INVOCACAO nem do CATALOGO abre em
+        # minuscula (a notacao de dado, "d20 +", fica de fora), e as mensagens que as formulas devolvem tambem
+        import re as _re
+        _minusc = [(a, c.coordinate, c.value[:30]) for a in ("INVOCAÇÃO", "CATÁLOGO") for lin in wb[a].iter_rows()
+                   for c in lin if isinstance(c.value, str) and not c.value.startswith("=") and c.value.strip()
+                   and c.value.strip()[0].isalpha() and c.value.strip()[0].islower()
+                   and not _re.match(r"^\s*d\d", c.value)]
+        checa("nenhum texto da INVOCACAO nem do CATALOGO abre com a inicial minuscula", not _minusc,
+              str(_minusc[:3]))
+        _forms = " ".join(c.value for lin in wb["INVOCAÇÃO"].iter_rows() for c in lin
+                          if isinstance(c.value, str) and c.value.startswith("="))
+        checa("as mensagens que as formulas da INVOCACAO devolvem abrem com maiuscula",
+              all(x in _forms for x in ('"Sobrou ponto"', '"Estourou o total"', '"Ok"', '"Custa "&',
+                                        '"Escolha o atributo da montagem"', '"O Preito é do Servo"',
+                                        '"O acerto usa outro atributo: só vale com arma"'))
+              and not any(x in _forms for x in ('"sobrou ponto"', '"estourou o total"', '"ok"', '("custa "&',
+                                                '"escolha o atributo da montagem"', '"o Preito é do Servo"',
+                                                '"o acerto usa outro atributo: só vale com arma"')))
         d = wb["DADOS"]
         idx = next((c for c in range(1, 80) if d.cell(row=2, column=c).value == "campo"),
                    None)
@@ -447,6 +468,44 @@ else:
               "ache na régua" in CAP and "A palavra final é dele" in CAP)
 
         inv = wb["INVOCAÇÃO"]
+        # ---- a CD dos efeitos na planilha: os cinco campos, a formula, e o que ela NAO tem
+        _ic = {d.cell(row=rr, column=idx).value: d.cell(row=rr, column=idx + 1).value
+               for rr in range(3, 200) if idx and d.cell(row=rr, column=idx).value}
+        _cd_campos = ("cd_atributo", "cd_preito", "cd_bonus", "cd", "cd_confere")
+        checa("o indice publica os cinco campos da CD", all(k in _ic for k in _cd_campos),
+              str([k for k in _cd_campos if k not in _ic]))
+        checa("o campo cd_pendente NAO existe mais: a CD deixou de ser pendencia", "cd_pendente" not in _ic)
+        FD, CB, _R = INV["ficha_dela"], INV["cd_bonus"], INV["sintonia"]["rotas"]["Voz"]
+        if all(k in _ic for k in _cd_campos + ("atr_acerto", "maestria")):
+            def _abs(coord):
+                m_ = re.fullmatch(r"\$?([A-Z]+)\$?(\d+)", str(coord))
+                return f"${m_.group(1)}${m_.group(2)}"
+            _f = {k: str(inv[_ic[k]].value) for k in ("cd", "cd_bonus", "cd_confere")}
+            _A, _P, _B, _AC, _MA = (_abs(_ic[k]) for k in ("cd_atributo", "cd_preito", "cd_bonus", "atr_acerto", "maestria"))
+            checa("a formula da CD tem a forma =SE(atributo vazio, vazio, base + INDEX + maestria + bonus)",
+                  _f["cd"].startswith(f'=IF({_A}="","",{FD["cd_base"]}+INDEX(')
+                  and _f["cd"].endswith(f"+{_MA}+{_B})"), _f["cd"])
+            checa("a CD le o campo cd_atributo, e o atributo do ACERTO nao aparece nela",
+                  _f["cd"].count(_A) >= 2 and _AC not in _f["cd"], _f["cd"])
+            checa("o bonus da CD e o MAIOR da Voz e do Preito, e nunca a soma",
+                  _f["cd_bonus"].startswith("=MAX(IF(") and not re.search(r"\)\+(IF|MAX)\(", _f["cd_bonus"]),
+                  _f["cd_bonus"])
+            checa("o Preito so conta no Servo, e so se o campo estiver marcado",
+                  f'AND(' in _f["cd_bonus"] and '"Servo"' in _f["cd_bonus"] and f'{_P}="sim"' in _f["cd_bonus"],
+                  _f["cd_bonus"])
+            checa("o piso da metade da maestria sai do json",
+                  f'MAX({CB["piso"]},FLOOR(' in _f["cd_bonus"], _f["cd_bonus"])
+            checa("a Voz vira metade da maestria no nivel que o json diz, e antes disso soma o numero do json",
+                  f'<{_R["vira_metade_da_maestria_no_nivel"]},{_R["bonus"]},' in _f["cd_bonus"].replace(" ", ""),
+                  _f["cd_bonus"])
+            checa("a conferencia avisa o acerto em outro atributo, o Preito fora do Servo e a falta de atributo",
+                  all(x in _f["cd_confere"] for x in ('"Escolha o atributo da montagem"', '"O Preito é do Servo"',
+                                                       '"O acerto usa outro atributo: só vale com arma"', '"Ok"')),
+                  _f["cd_confere"])
+        _todo = " ".join(str(c.value) for lin in inv.iter_rows() for c in lin if isinstance(c.value, str))
+        checa("a planilha registra a arma como o que a ficha nao calcula", "Invocação com arma" in _todo)
+        checa("a planilha nao diz mais que a CD nao tem formula", "não tem fórmula" not in _todo
+              and "Combine com o mestre. A Voz" not in _todo)
         _menus = {str(dvv.sqref): dvv.formula1
                   for dvv in inv.data_validations.dataValidation}
 
@@ -553,20 +612,85 @@ checa("o capitulo 35 NAO chama mais aquela rota de Casco",
       "**`Casco`**" not in CAP35)
 
 print()
-print("   a Voz aponta para um numero que o sistema nao produz — e a ficha")
-print("   marca como pendente em vez de chutar")
-# v0.246 do sistema: a guarda so via " CD ", "CD da" e "CD dela", e ficava verde em 8 de 10
-# jeitos de escrever a formula -- inclusive a linha "| **CD** | ... |" no molde da tabela
-# da ficha dela. Agora qualquer CD em palavra inteira acende.
-checa("o capitulo 16 nao escreve NENHUMA formula de CD para a invocacao",
-      re.search(r"\bCD\b", CAP) is None,
-      "achei CD no capitulo 16: se ela ganhou formula, a pendencia da Voz fechou")
-checa("o json registra a pendencia da Voz", "PENDENTE" in S["rotas"]["Voz"])
-checa("a nota que vai PARA A FICHA existe e esta em portugues de gente",
-      "não tem fórmula" in S["rotas"]["Voz"].get("nota_na_ficha", "")
-      and "combine o número com o mestre" in S["rotas"]["Voz"]["nota_na_ficha"])
-checa("a pendencia diz por que ela existe",
-      "nao tem formula de cd" in S["rotas"]["Voz"]["PENDENTE"].lower())
+print("   a CD dos efeitos: o capitulo 16 a escreve desde a v0.251, e o json a segue")
+# Ate a v0.250 esta guarda acendia se o capitulo ganhasse uma CD, e a Voz ficava
+# marcada como pendente. O capitulo 16 a escreveu, a guarda acendeu como devia, e
+# ela passou a guardar a CONCORDANCIA: capitulo, json e planilha dizendo a mesma.
+FD = INV["ficha_dela"]
+_mcd = re.search(r"\| \*\*CD dos efeitos\*\* \| `(\d+) \+ o atributo dela \+ a sua maestria`", CAP)
+checa("o capitulo 16 escreve a formula da CD dos efeitos", _mcd is not None,
+      "sumiu a linha `CD dos efeitos` da tabela da ficha dela")
+if _mcd:
+    checa(f'a base da CD: o capitulo diz {_mcd.group(1)} e o json diz {FD["cd_base"]}',
+          int(_mcd.group(1)) == FD["cd_base"])
+checa("o json escreve a CD no molde do capitulo, com a mesma base",
+      FD["cd_efeitos"] == f'{FD["cd_base"]} + o atributo dela + a maestria do dono', FD["cd_efeitos"])
+for frase in ("um dos cinco, e a escolha não muda depois", "A CD usa sempre esse atributo",
+              "e a CD continua onde estava"):
+    checa(f"o capitulo 16 diz {frase!r}", frase in CAP)
+checa("o json guarda a regra do atributo unico e a da arma",
+      all(FD.get(k) for k in ("cd_atributo", "cd_e_a_arma")))
+checa("o capitulo 16 registra a arma em Em aberto",
+      "**Invocação com arma.**" in CAP)
+checa("a Voz deixou de ser pendencia no json",
+      "PENDENTE" not in S["rotas"]["Voz"] and "nota_na_ficha" not in S["rotas"]["Voz"])
+checa("nenhuma rota da Sintonia carrega PENDENTE", not any("PENDENTE" in r_ for r_ in S["rotas"].values()))
+
+# a tabela de efeitos que o alvo resiste: capitulo x json
+ETR = INV["efeitos_com_tr"]
+_i = CAP.find("| entrada | o alvo rola | se ele falhar |")
+_cap_tr = {}
+if _i >= 0:
+    for _lin in CAP[_i:].split("\n")[2:]:
+        if not _lin.startswith("|"):
+            break
+        _c = celulas(_lin)
+        _cap_tr[limpa(_c[0])] = limpa(_c[1])
+checa(f"o capitulo publica a tabela de efeitos com Teste de Resistencia ({len(_cap_tr)} entradas)", bool(_cap_tr))
+checa("o json tem as MESMAS entradas e o MESMO teste que o capitulo",
+      _cap_tr == {n: v["tr"] for n, v in ETR["entradas"].items()},
+      f"capitulo {_cap_tr}, json {{n: v['tr'] for n, v in ETR['entradas'].items()}}")
+checa("cada entrada existe no catalogo, na camada que o json diz",
+      all(n in INV[v["camada"].lower().replace("ç", "c")] for n, v in ETR["entradas"].items()),
+      str([n for n, v in ETR["entradas"].items() if n not in INV[v["camada"].lower().replace("ç", "c")]]))
+checa("cada teste e um dos quatro Testes de Resistencia",
+      all(v["tr"] in INV["testes_de_resistencia"] for v in ETR["entradas"].values()))
+checa("o Graudo fica de fora, no json e no capitulo",
+      "Graúdo" in ETR["fora"] and "Graúdo" not in _cap_tr and "Graúdo" not in ETR["entradas"])
+checa("o capitulo diz por que o Graudo nao pede rolagem",
+      "O `Graúdo` barra passagem, e barrar é o inimigo perdendo movimento" in CAP)
+
+# a Voz e o Preito na CD: a mesma conta, calculada nivel a nivel
+CB = INV["cd_bonus"]
+_R = S["rotas"]["Voz"]
+def _mae(nv):
+    return 1 + sum(1 for x in INV["progressao"]["maestria_em"] if x <= nv)
+def _metade(nv):
+    return max(CB["piso"], _mae(nv) // 2)
+def _voz(nv):
+    return _R["bonus"] if nv < _R["vira_metade_da_maestria_no_nivel"] else _metade(nv)
+_dif = [(nv, _voz(nv), _metade(nv)) for nv in range(2, 31) if _voz(nv) != _metade(nv)]
+checa("a Voz e o Preito na CD dao o mesmo numero nos 29 niveis (e por isso nao somam)", not _dif,
+      f"divergem em {_dif[:4]}")
+_runs = []
+for nv in range(2, 31):
+    if _runs and _runs[-1][2] == _voz(nv):
+        _runs[-1][1] = nv
+    else:
+        _runs.append([nv, nv, _voz(nv)])
+_pc = []
+for _k, (_a, _b, _v) in enumerate(_runs):
+    _pc.append(f"`+{_v}` do {_a} em diante" if _k == len(_runs) - 1 else
+               f"`+{_v}` até o {_b}" if _k == 0 else f"`+{_v}` do {_a} ao {_b}")
+_frase = "As duas dão o mesmo número em todo nível (" + ", ".join(_pc) + ")"
+checa("o capitulo 35 carrega a frase que a conta deriva", _frase in CAP35, _frase)
+checa("o capitulo 35 diz que a Voz e o Preito na CD nao somam",
+      "A `Voz` da `Sintonia` e o `Preito` na CD não somam." in CAP35)
+checa("o Preito tem a opcao CD no capitulo 35", "`metade da sua maestria` **na CD** dela" in CAP35)
+checa("o json declara que nao somam, e quais sao os dois",
+      CB["nao_somam"] == ["Voz", "Preito"])
+checa("o json guarda o Preito do Servo", "preito" in INV["trilhas"]["Servo"]
+      and INV["trilhas"]["Servo"]["preito"]["escolha_que_esta_na_ficha"] == "CD")
 checa("o bloco antigo do Parrudo virou ponteiro, e nao segundo dono",
       set(INV["parrudo"]) == {"ponteiro"}, str(list(INV["parrudo"])))
 

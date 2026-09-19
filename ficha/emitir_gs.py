@@ -116,8 +116,33 @@ def _redimensiona(caminho, bw, bh):
     filtro = getattr(getattr(_Img, "Resampling", _Img), "LANCZOS")
     img = _Img.open(caminho).convert("RGBA").resize((bw * 2, bh * 2), filtro)
     buf = io.BytesIO()
-    img.save(buf, "PNG", optimize=True)
+    _png_de_uma_cor(img).save(buf, "PNG", **_PNG_DE_UMA_COR)
     return base64.b64encode(buf.getvalue()).decode()
+
+
+# 19/09/2026, pedido do Mizuki: as imagens (as pinceladas, a moldura da foto, o selo, as gotinhas) tinham cor
+# fixa, e num tema verde o selo vermelho e a pincelada roxa destoavam. Toda a arte da ficha e de UMA cor, e o
+# que varia e o alfa (a textura do pincel, o desgaste do selo). Entao ela sai como PNG de PALETA: 256 entradas
+# iguais, e o indice de cada pixel e o proprio alfa (tRNS e a rampa 0..255). Trocar a cor da imagem vira trocar
+# os 768 bytes da paleta e refazer o CRC do bloco -- coisa que o Apps Script faz em milissegundos, sem
+# reprocessar a imagem. Ver pngComCor_ no Codigo.gs.
+_PNG_DE_UMA_COR = {"transparency": bytes(range(256)), "optimize": False}
+_TOLERANCIA_DE_COR = 48   # quanto a cor de um pixel opaco pode se afastar da media antes de a imagem nao ser "de uma cor"
+
+
+def _png_de_uma_cor(img):
+    from PIL import Image as _Img
+    opacos = [p for p in img.getdata() if p[3] > 128]
+    if not opacos:
+        raise SystemExit("emitir_gs: imagem de arte sem nenhum pixel opaco")
+    media = tuple(round(sum(p[i] for p in opacos) / len(opacos)) for i in range(3))
+    pior = max(abs(p[i] - media[i]) for p in opacos for i in range(3))
+    if pior > _TOLERANCIA_DE_COR:
+        raise SystemExit(f"emitir_gs: a arte tem mais de uma cor (desvio {pior} da media {media}); ela nao pode "
+                         "virar PNG de uma cor sem perder o desenho")
+    p = _Img.frombytes("P", img.size, bytes(img.getchannel("A").getdata()))
+    p.putpalette(list(media) * 256)
+    return p
 
 def _linha_alta(pts):
     """altura em PIXEL, medida pela maior letra da linha.
@@ -278,7 +303,11 @@ def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None):
                     dv.append([rg, v.formula1.replace("DADOS!", "DADOS!")])
         larg_px = _px_largura(ws.column_dimensions["A"].width or 4.0, limpa)
         largs_px, alt_px = _larguras(ws, limpa), _alturas(ws, alturas, so_declaradas=imgs is not None)
-        ncols, nrows = max(max_c, 12), max_r + 2
+        # Duas linhas de folga embaixo do que tem conteúdo, menos nas abas com lombada: ali a faixa de
+        # tinta (colunas A:B) tem de ir até a última linha, e uma folga que nenhuma célula pinta ficaria
+        # com o fundo comum — a lombada aparecia cortada nas paletas claras (19/09/2026). Essas duas
+        # abas terminam no fim da lombada, ver ficha-v01/correcoes_borda.py.
+        ncols, nrows = max(max_c, 12), max_r + (0 if nome in ("FICHA", "INVOCAÇÃO") else 2)
         if imgs is not None:
             # a ficha-v01: a imagem entra DENTRO da celula, numa caixa medida no pixel do script, e a
             # arte vai no formato da caixa. [lin1, col1, lin2, col2, arte]
@@ -322,6 +351,49 @@ def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None):
                 arte[f] = base64.b64encode(open(os.path.join(pasta, f), "rb").read()).decode()
     return abas, arte
 
+_LIMIAR_LINHA = 2000
+
+
+def _sem_linha_gigante(obj, nivel=0):
+    """json.dumps que nunca deixa uma linha passar de ~2000 caracteres.
+
+    Achado em 18/09/2026: o `Ficha.gs` compacto (um `var ABAS = [...]` numa
+    linha só) tinha uma linha de 256 mil caracteres e outra (o `ARTE`, com a
+    arte em base64) de 131 mil — o navegador do Mizuki fechava sozinho uns
+    segundos depois de rodar `construir()`. O indent padrão do `json.dumps`
+    resolve a linha, mas explode o TAMANHO do arquivo (testado: o ABAS sozinho
+    ia pra 900 KB, perto do limite de ~1 MB do Apps Script) porque expande
+    TODO nível, até `[1,1,"",0]`. Aqui só desce um nível quando o pedaço
+    inteiro, compacto, já passaria do piso — uma lista de milhares de células
+    vira uma célula por linha, mas cada célula continua numa linha só.
+
+    Uma STRING sozinha que já é maior que o piso (a arte em base64 de uma
+    imagem grande) vira pedaços concatenados por `+` — deixa de ser um valor
+    JSON válido sozinho, mas o Apps Script lê `var ARTE = {...}` como CÓDIGO,
+    não como JSON, então roda igual. O `conferir-ficha-xlsx.py` cola os
+    pedaços de volta (troca `"+"` por nada) antes de validar como JSON.
+    """
+    compacto = json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
+    if len(compacto) <= _LIMIAR_LINHA:
+        return compacto
+    ind, ind0 = "  " * (nivel + 1), "  " * nivel
+    if isinstance(obj, list):
+        itens = [ind + _sem_linha_gigante(x, nivel + 1) for x in obj]
+        return "[\n" + ",\n".join(itens) + "\n" + ind0 + "]"
+    if isinstance(obj, dict):
+        partes = [ind + json.dumps(k, ensure_ascii=False) + ":" + _sem_linha_gigante(v, nivel + 1)
+                  for k, v in obj.items()]
+        return "{\n" + ",\n".join(partes) + "\n" + ind0 + "}"
+    if isinstance(obj, str) and json.dumps(obj, ensure_ascii=False) == '"' + obj + '"':
+        # string "limpa" (sem aspas, barra ou caractere de controle pra escapar) — a arte em
+        # base64 é sempre assim. Corta em pedaços de 4000 e concatena com "+"; uma string que
+        # precisasse de escape fica de fora desse corte e desce pro "fica como está" de baixo.
+        pedaco = 4000
+        partes = [obj[i:i + pedaco] for i in range(0, len(obj), pedaco)]
+        return (" +\n" + ind).join('"' + p + '"' for p in partes)
+    return compacto  # string/número atômico que já é maior que o piso sozinho: fica como está
+
+
 def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None):
     abas, arte = emitir(wb, ordem, imgs, arte_dir, limpa)
     for a in abas:
@@ -336,8 +408,7 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None):
         fp.write("// GERADO POR ficha/emitir_gs.py — não edite este arquivo na mão.\n")
         fp.write("// O layout e as fórmulas moram no gerador Python, que os dez\n")
         fp.write("// validadores conferem. Aqui é só o transporte.\n\n")
-        fp.write("var ABAS = " + json.dumps(abas, ensure_ascii=False, separators=(",", ":")) + ";\n\n")
-        fp.write("var ARTE = " + json.dumps(arte, ensure_ascii=False,
-                                    separators=(",", ":")) + ";\n\n")
+        fp.write("var ABAS = " + _sem_linha_gigante(abas) + ";\n\n")
+        fp.write("var ARTE = " + _sem_linha_gigante(arte) + ";\n\n")
         fp.write(corpo)
     return SAIDA, sum(len(a["vals"]) for a in abas), len(arte)

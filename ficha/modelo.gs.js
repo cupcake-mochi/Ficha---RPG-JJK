@@ -47,6 +47,18 @@ function construir() {
     });
     ss.deleteSheet(temp);
 
+    // 19/09/2026, testando no Sheets: o Mizuki reportou borda errada logo no construir() — a
+    // FICHA!AK17 branca, a GLOSSÁRIO!B4 sem borda esquerda —, mas os dados (a viva ORIGINAL, o
+    // ABAS gerado, e o .xlsx exportado depois) concordam os três: a borda gravada está certa nos
+    // três lugares, sem exceção nenhuma. A montagem inteira (mesclar, depois pintar borda, em sete
+    // abas) roda sem UM flush() sequer — cada chamada de Range fica na fila do Apps Script até o
+    // fim da função, e casos relatados na comunidade apontam célula MESCLADA como o ponto onde a
+    // borda desenhada na tela pode ficar pra trás da fila sem um flush no meio. Não é prova (não
+    // consigo abrir o Sheets pra ver a tela), é tentativa dirigida: se a causa for isso, obrigar
+    // a fila a esvaziar aqui, com as sete abas já de pé mas antes da fórmula/menu que vem depois,
+    // resolve. Custa uma ida a mais ao servidor, uma vez por construir(), não por aba.
+    SpreadsheetApp.flush();
+
     // As fórmulas SÓ agora, com as seis abas de pé: gravada antes de a aba citada nascer, a
     // fórmula fica em #REF!. É o mesmo motivo dos menus, logo abaixo.
     feito.push('fórmulas: ' + escreverFormulas_(ss));
@@ -67,6 +79,7 @@ function construir() {
     feito.push('cor de estado: ' + corDeEstado_(ss, idx));
     feito.push('notas: ' + notasDeRegra_(ss, idx));
     feito.push('protegidas: ' + protegerFormulas_(ss, idx));
+    feito.push('paleta: ' + configurarPaleta_(ss, true));
   } finally {
     ss.setSpreadsheetLocale('pt_BR');
   }
@@ -186,8 +199,12 @@ function montarAba_(ss, spec) {
     var caixa = aba.getRange(im[0], im[1], im[2] - im[0] + 1, im[3] - im[1] + 1);
     // a caixa que a planilha exportada ja traz mesclada nao e mesclada de novo
     if ((caixa.getNumRows() > 1 || caixa.getNumColumns() > 1) && !caixa.isPartOfMerge()) caixa.merge();
+    // O título de alt marca a imagem como NOSSA (a troca de paleta recolore só o que tem este título, e nunca
+    // a foto que o jogador pôs no lugar), e a descrição guarda a cor que ela tem agora, pra a troca não
+    // reenviar uma imagem que já está da cor certa. Ver repintarArte_ no Codigo.gs.
     caixa.getCell(1, 1).setValue(SpreadsheetApp.newCellImage()
-      .setSourceUrl('data:image/png;base64,' + ARTE[im[4]]).build());
+      .setSourceUrl('data:image/png;base64,' + ARTE[im[4]])
+      .setAltTextTitle('PM-ARTE:' + im[4]).setAltTextDescription('fabrica').build());
   });
 
   // as caixas de seleção, nas posições que o gerador mediu

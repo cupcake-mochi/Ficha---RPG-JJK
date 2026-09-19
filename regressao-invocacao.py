@@ -193,7 +193,7 @@ for trilha, m in INV["montagens_por_trilha"].items():
           f'a ficha deu {s["gasto"]!r}')
     checa(f"{trilha}: sobra zero", num(s["sobra"]) == 0, f'a ficha deu {s["sobra"]!r}')
     checa(f"{trilha}: o arranjo soma {sum(m['arranjo'])} e a conferencia diz ok",
-          s["aviso_atributo"] == "ok", f'a ficha deu {s["aviso_atributo"]!r}')
+          s["aviso_atributo"] == "Ok", f'a ficha deu {s["aviso_atributo"]!r}')
 
 # =====================================================================
 print()
@@ -221,8 +221,8 @@ print("   contra-teste: uma montagem que NAO cabe tem de acusar")
 v = zerado(nivel=2, tipo="técnica", trilha="Coro")
 v["traco_1"], v["traco_2"] = "Voo", "Montaria"             # 8 + 8 = 16, contra 8
 s = roda(**v)
-checa("Voo + Montaria no nv2 (16 pontos de um orcamento de 8) acusa 'estourou'",
-      isinstance(s["sobra"], str) and "estourou" in s["sobra"], f'a ficha deu {s["sobra"]!r}')
+checa("Voo + Montaria no nv2 (16 pontos de um orcamento de 8) acusa 'Estourou'",
+      isinstance(s["sobra"], str) and "Estourou" in s["sobra"], f'a ficha deu {s["sobra"]!r}')
 
 print()
 print("   os slots comportam a montagem mais CARA que o orçamento paga")
@@ -338,14 +338,8 @@ checa("contra-teste: a Presa NAO mexe na vida",
       num(pr["vida_max"]) == num(nd["vida_max"]),
       f'{pr["vida_max"]!r} contra {nd["vida_max"]!r}')
 
-# a Voz: ela aponta para a CD, que nao existe -- a ficha avisa
+# a Voz mexe na CD, e a secao 11 confere isso. Aqui so o que ela NAO mexe.
 vz = roda(**zerado(nivel=10, tipo="técnica", trilha="Coro", sintonia="Voz"))
-checa("a Voz faz a ficha mandar combinar a CD com o mestre",
-      isinstance(vz["cd_pendente"], str)
-      and "Combine com o mestre" in vz["cd_pendente"],
-      f'a ficha deu {vz["cd_pendente"]!r}')
-checa("sem a Voz o aviso da CD fica calado", nd["cd_pendente"] in ("", None),
-      f'a ficha deu {nd["cd_pendente"]!r}')
 checa("contra-teste: a Voz NAO mexe na vida",
       num(vz["vida_max"]) == num(nd["vida_max"]),
       f'{vz["vida_max"]!r} contra {nd["vida_max"]!r}')
@@ -375,7 +369,7 @@ s = roda(**zerado(nivel=2, tipo="técnica", trilha="Coro",
                   **{"atr_Força": 3, "atr_Destreza": 3, "atr_Constituição": 3}))
 checa(f'nv2: {A["pontos_na_criacao"]} pontos disponiveis',
       num(s["pontos_disp"]) == A["pontos_na_criacao"], f'{s["pontos_disp"]!r}')
-checa("3+3+3 = 9 fecha certo e a conferencia diz ok", s["aviso_atributo"] == "ok",
+checa("3+3+3 = 9 fecha certo e a conferencia diz Ok", s["aviso_atributo"] == "Ok",
       f'{s["aviso_atributo"]!r}')
 
 s = roda(**zerado(nivel=30, tipo="técnica", trilha="Coro"))
@@ -385,14 +379,14 @@ checa(f"nv30: {esperado} pontos — os 9 mais os sete marcos",
 
 s = roda(**zerado(nivel=2, tipo="técnica", trilha="Coro",
                   **{"atr_Força": 3, "atr_Destreza": 3, "atr_Constituição": 4}))
-checa("contra-teste: 10 pontos num orcamento de 9 acusa 'estourou o total'",
-      s["aviso_atributo"] == "estourou o total", f'{s["aviso_atributo"]!r}')
+checa("contra-teste: 10 pontos num orcamento de 9 acusa 'Estourou o total'",
+      s["aviso_atributo"] == "Estourou o total", f'{s["aviso_atributo"]!r}')
 
 s = roda(**zerado(nivel=30, tipo="técnica", trilha="Coro",
                   **{"atr_Força": 7, "atr_Destreza": 3, "atr_Constituição": 3,
                      "atr_Inteligência": 2, "atr_Essência": 1}))
 checa(f'contra-teste: um atributo em 7 acusa o teto de {A["teto"]}',
-      s["aviso_atributo"] == f'estourou o teto de {A["teto"]}',
+      s["aviso_atributo"] == f'Estourou o teto de {A["teto"]}',
       f'{s["aviso_atributo"]!r}')
 
 # =====================================================================
@@ -452,7 +446,97 @@ checa(f"nv30: dois proprios somam {_soma} e a sobra desce igual",
 s = roda(**zerado(**_base, traco_1="Bafo de Fogo", degrau_traco_1=_dt[-1],
                   comando_1="Escoltar", degrau_comando_1=_dc[-1]))
 checa(f"contra-teste: nv2 com {_soma} num orcamento de {_orc:.0f} acusa o estouro",
-      str(s["sobra"]).startswith("estourou"), f'{s["sobra"]!r}')
+      str(s["sobra"]).startswith("Estourou"), f'{s["sobra"]!r}')
+
+# =====================================================================
+print()
+print("=" * 74)
+print("11. A CD DOS EFEITOS — 8 + atributo da montagem + maestria + bonus")
+print("=" * 74)
+# O modelo NAO sai so do json: a base da CD e as faixas do bonus saem do TEXTO dos
+# dois capitulos, e o json entra depois so para a maestria. Assim a planilha nao
+# se mede contra a mesma fonte que ela usa para calcular.
+import re
+_C16 = open(os.path.join(RAIZ, "capitulo-16-invocacoes.md"), encoding="utf-8").read()
+_C35 = open(os.path.join(RAIZ, "capitulo-35-caminhos-e-trilhas.md"), encoding="utf-8").read()
+_mb = re.search(r"\| \*\*CD dos efeitos\*\* \| `(\d+) \+ o atributo dela \+ a sua maestria`", _C16)
+_ms = re.search(r"As duas dão o mesmo número em todo nível \(([^)]*)\)", _C35)
+if not (_mb and _ms):
+    sys.exit("FALHA: nao achei a formula da CD no capitulo 16 ou a frase da Voz e do Preito no capitulo 35")
+BASE_CD = int(_mb.group(1))
+_faixas, _ini = [], 2
+for _tok in [x.strip() for x in _ms.group(1).split(", ")]:
+    _m1 = re.fullmatch(r"`\+(\d+)` até o (\d+)", _tok)
+    _m2 = re.fullmatch(r"`\+(\d+)` do (\d+) em diante", _tok)
+    _m3 = re.fullmatch(r"`\+(\d+)` do (\d+) ao (\d+)", _tok)
+    if _m1:
+        _faixas.append((_ini, int(_m1.group(2)), int(_m1.group(1)))); _ini = int(_m1.group(2)) + 1
+    elif _m2:
+        _faixas.append((int(_m2.group(2)), 99, int(_m2.group(1))))
+    elif _m3:
+        _faixas.append((int(_m3.group(2)), int(_m3.group(3)), int(_m3.group(1)))); _ini = int(_m3.group(3)) + 1
+    else:
+        sys.exit(f"FALHA: nao entendi a faixa {_tok!r} da frase do capitulo 35")
+
+def BON(nv):
+    return next(v for a, b, v in _faixas if a <= nv <= b)
+
+def MAE(nv):
+    return 1 + sum(1 for x in INV["progressao"]["maestria_em"] if x <= nv)
+
+checa(f"a base da CD: o capitulo 16 diz {BASE_CD} e o json diz {INV['ficha_dela']['cd_base']}",
+      BASE_CD == INV["ficha_dela"]["cd_base"])
+print(f"   o bonus, lido da frase do capitulo 35: {[(a, b if b < 99 else 30, v) for a, b, v in _faixas]}")
+
+A0, A1 = INV["atributos"]["lista"][0], INV["atributos"]["lista"][4]
+for nivel in (2, 6, 7, 10, 18, 25, 26, 30):
+    v_atr = 4
+    base = zerado(nivel=nivel, tipo="técnica", trilha="Coro", cd_atributo=A0, **{"atr_" + A0: v_atr})
+    sem = roda(**dict(base, sintonia="—"))
+    checa(f"nv{nivel}: sem bonus, CD = {BASE_CD} + {v_atr} + maestria {MAE(nivel)} = {BASE_CD + v_atr + MAE(nivel)}",
+          num(sem["cd"]) == BASE_CD + v_atr + MAE(nivel) and num(sem["cd_bonus"]) == 0,
+          f'a ficha deu CD {sem["cd"]!r} e bonus {sem["cd_bonus"]!r}')
+    com = roda(**dict(base, sintonia="Voz"))
+    checa(f"nv{nivel}: com a Voz o bonus e +{BON(nivel)} e a CD {BASE_CD + v_atr + MAE(nivel) + BON(nivel)}",
+          num(com["cd_bonus"]) == BON(nivel) and num(com["cd"]) == BASE_CD + v_atr + MAE(nivel) + BON(nivel),
+          f'a ficha deu bonus {com["cd_bonus"]!r} e CD {com["cd"]!r}')
+    pre = roda(**dict(base, trilha="Servo", cd_preito="sim", sintonia="—"))
+    checa(f"nv{nivel}: o Preito do Servo na CD da o mesmo +{BON(nivel)} que a Voz",
+          num(pre["cd_bonus"]) == BON(nivel) and num(pre["cd"]) == num(com["cd"]),
+          f'Preito {pre["cd_bonus"]!r}/{pre["cd"]!r}, Voz {com["cd_bonus"]!r}/{com["cd"]!r}')
+    dois = roda(**dict(base, trilha="Servo", cd_preito="sim", sintonia="Voz"))
+    checa(f"nv{nivel}: a Voz e o Preito JUNTOS nao somam: continua +{BON(nivel)}",
+          num(dois["cd_bonus"]) == BON(nivel),
+          f'a ficha deu bonus {dois["cd_bonus"]!r}')
+    checa(f"nv{nivel}: contra-teste, somar os dois daria {BASE_CD + v_atr + MAE(nivel) + 2 * BON(nivel)} e a ficha nao da",
+          num(dois["cd"]) != BASE_CD + v_atr + MAE(nivel) + 2 * BON(nivel),
+          f'a ficha somou os dois: {dois["cd"]!r}')
+
+print()
+print("   o atributo da CD e o da montagem, e a arma so mexe no acerto")
+_b = zerado(nivel=10, tipo="técnica", trilha="Coro", sintonia="—", cd_atributo=A0,
+            **{"atr_" + A0: 3, "atr_" + A1: 5})
+s0 = roda(**dict(_b, atr_acerto=A0))
+checa("acerto e CD no mesmo atributo: a conferencia diz Ok", s0["cd_confere"] == "Ok",
+      f'a ficha deu {s0["cd_confere"]!r}')
+s1 = roda(**dict(_b, atr_acerto=A1))
+checa("o acerto passa a usar outro atributo (a arma) e a CD NAO se mexe",
+      num(s1["cd"]) == num(s0["cd"]), f'CD {s0["cd"]!r} e depois {s1["cd"]!r}')
+checa("contra-teste: o acerto SE mexeu — o que a arma muda e' ele",
+      num(s1["acerto"]) != num(s0["acerto"]), f'acerto {s0["acerto"]!r} e depois {s1["acerto"]!r}')
+checa("e a conferencia avisa que so vale com arma", "só vale com arma" in str(s1["cd_confere"]),
+      f'a ficha deu {s1["cd_confere"]!r}')
+s2 = roda(**dict(_b, cd_atributo=A1, atr_acerto=A1))
+checa("trocar o atributo DA CD muda a CD, pelo valor do atributo escolhido",
+      num(s2["cd"]) - num(s0["cd"]) == 5 - 3, f'CD {s0["cd"]!r} e depois {s2["cd"]!r}')
+s3 = roda(**zerado(nivel=10, tipo="técnica", trilha="Coro", sintonia="—"))
+checa("sem atributo escolhido a CD fica vazia e a conferencia pede a escolha",
+      s3["cd"] in ("", None) and "Escolha o atributo" in str(s3["cd_confere"]),
+      f'CD {s3["cd"]!r}, conferencia {s3["cd_confere"]!r}')
+s4 = roda(**dict(_b, trilha="Coro", cd_preito="sim", atr_acerto=A0))
+checa("o Preito marcado fora do Servo nao soma, e a ficha avisa",
+      num(s4["cd_bonus"]) == 0 and "Preito é do Servo" in str(s4["cd_confere"]),
+      f'bonus {s4["cd_bonus"]!r}, conferencia {s4["cd_confere"]!r}')
 
 # =====================================================================
 print()

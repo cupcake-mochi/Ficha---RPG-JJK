@@ -22,7 +22,7 @@ import dados_catalogo
 DADOS_CAT = dados_catalogo.valores()
 # as limpezas leem o indice da DADOS, e desde 17/09/2026 ele e reescrito em formula antes delas (limpeza
 # 11). O comparador refaz a mesma ordem numa copia do layout, para ler o que o monta.py leu.
-import copy, indice_ficha, ficha_layout
+import copy, indice_ficha, ficha_layout, correcoes_texto
 LAY_FL = copy.deepcopy(LAY)
 FL = ficha_layout.trocas(LAY_FL)
 ficha_layout.aplica(LAY_FL, FL)
@@ -44,6 +44,13 @@ LAY_DE = copy.deepcopy(LAY_IX)
 defesa_equipamento.aplica(LAY_DE, DE)
 import ficha_automatica
 FA = ficha_automatica.trocas(LAY_DE)
+# 19/09/2026: as celulas onde o gerador poe a divisoria entre a moldura e o miolo. Precisa do layout depois de
+# TODAS as limpezas de cima (a ficha automatica mexe nas linhas da FICHA), como o monta.py o tem na hora.
+import correcoes_borda
+LAY_FA2 = copy.deepcopy(LAY_DE)
+ficha_automatica.aplica(LAY_FA2, FA)
+DIVISORIA = correcoes_borda.celulas_da_divisoria(LAY_FA2)
+DIVISORIA_TRACO = ["medium", "FF8A7EC4"]
 
 for f in (A, B):
     if not os.path.exists(f):
@@ -55,6 +62,17 @@ VAZIO = LAY["_meta"].get("estado_vazio", {})
 ARIAL = LAY["_meta"].get("arial_vira_corpo")
 CARIMBO = LAY["_meta"].get("carimbo_texto", {})
 difs, esperadas = [], Counter()
+# A Origem que a personagem exportada tinha. O molde nasce com "Latente" (o desenho da mesa, ficha_layout.py).
+# A celula sai do rotulo ORIGEM da FICHA (o valor mora logo embaixo), e nao de um endereco escrito aqui: em
+# 17/09/2026 o Mizuki inseriu linhas pelo Sheets, e um endereco fixo teria apontado para o lugar antigo.
+def _origem_da_ficha(wb):
+    achadas = [c for linha in wb["FICHA"].iter_rows() for c in linha
+               if isinstance(c.value, str) and c.value.strip().upper() == "ORIGEM"]
+    if len(achadas) != 1:
+        sys.exit(f"o rotulo ORIGEM devia aparecer uma vez na FICHA de {os.path.basename(A)}, e aparece {len(achadas)}.")
+    return achadas[0].offset(row=1).coordinate
+
+ESTADO_DA_PERSONAGEM = {("FICHA", _origem_da_ficha(wa))}
 
 def cor(c):
     if c is None or getattr(c, "rgb", None) in (None, "00000000"):
@@ -88,6 +106,33 @@ def perfil(cel):
         "fmt": cel.number_format,
     }
 
+ESTILO_PADRAO = ("Roboto", 12.0, "F4F1F7")      # a fonte de corpo que o script poe em toda celula
+ALINHA_PADRAO = ["left", "center", False, 0]
+TINTA = "FF0A0810"
+
+def rgb6(c):
+    return c[-6:] if isinstance(c, str) else None
+
+def base_da_aba(s):
+    """o fundo que a aba mais usa: o mesmo criterio do emissor pra escolher o fundo de base, que o
+    script pinta antes de qualquer coisa e que o gerador, por isso, nao escreve celula a celula."""
+    cont = Counter(cor(c.fill.start_color) for linha in s.iter_rows() for c in linha
+                   if c.fill and c.fill.fill_type == "solid")
+    return cont.most_common(1)[0][0] if cont else None
+
+def eh_vazia_padrao(p, base, gerada):
+    """celula vazia, sem borda, na fonte e no alinhamento de corpo, sem fundo ou com o fundo de base.
+    A original (exportada do Sheets) escreve isso explicitamente em toda celula da aba; o gerador nao
+    escreve, e o script pinta a aba inteira assim antes de tudo -- as duas dizem a mesma coisa."""
+    if p["valor"] not in (None, "") or p["borda"] or p["fundo"] not in (None, base):
+        return False
+    f, a = p["fonte"], p["alinha"]
+    if not f or (f[0], f[1], rgb6(f[2])) != ESTILO_PADRAO or f[3] or f[4]:
+        return False
+    if gerada:                                       # o gerador deixa None onde nao diz nada
+        return a in (ALINHA_PADRAO, [None, None, False, 0]) and p["fmt"] == "General"
+    return a == ALINHA_PADRAO and p["fmt"] == "General"
+
 def eh_ruido_de_fabrica(pa, pb):
     """a limpeza 1: Arial 10 preto em celula VAZIA, e so isso."""
     if pa["valor"] is not None or pb["valor"] is not None:
@@ -107,8 +152,13 @@ print(f"  gerada:   {wb_.sheetnames}")
 # comparar, entao ele sai da lista antes de cobrar igualdade, e so se confere que nao sumiu.
 _abas_novas = ["GLOSSÁRIO"]
 _gerada_sem_novas = [n for n in wb_.sheetnames if n not in _abas_novas]
-if wa.sheetnames != _gerada_sem_novas:
-    difs.append(f"ordem/nome das abas: {wa.sheetnames} != {_gerada_sem_novas} (fora as novas {_abas_novas})")
+# O original que o Mizuki exporta já traz o GLOSSARIO -- ele monta o construir() e exporta a planilha
+# pronta --, mas o desenho dela nao vem dali: vem do glossario.py. Comparar a aba dele com a gerada
+# compara o gerador com o proprio gerador, e foi o que deixou este comparador vermelho (338 celulas
+# de fonte, 338 de alinhamento, 224 de fundo, 39 de valor) desde o commit que criou o GLOSSARIO.
+_original_sem_novas = [n for n in wa.sheetnames if n not in _abas_novas]
+if _original_sem_novas != _gerada_sem_novas:
+    difs.append(f"ordem/nome das abas: {_original_sem_novas} != {_gerada_sem_novas} (fora as novas {_abas_novas})")
 for nova in _abas_novas:
     if nova not in wb_.sheetnames:
         difs.append(f"a aba nova {nova!r} sumiu da geracao")
@@ -118,7 +168,7 @@ for n in wa.sheetnames:
 print(f"  estados: " + ", ".join(f"{n}={wa[n].sheet_state}" for n in wa.sheetnames))
 
 for n in wa.sheetnames:
-    if n not in wb_.sheetnames:
+    if n not in wb_.sheetnames or n in _abas_novas:
         continue
     sa, sb = wa[n], wb_[n]
     print()
@@ -131,10 +181,19 @@ for n in wa.sheetnames:
     print(f"  extensao: original {sa.max_row}x{sa.max_column} · "
           f"gerada {sb.max_row}x{sb.max_column}")
 
+    BASE = base_da_aba(sa)
     iguais = ruido = 0
     for r in range(1, lin + 1):
         for c in range(1, col + 1):
             pa, pb = perfil(sa.cell(row=r, column=c)), perfil(sb.cell(row=r, column=c))
+            # limpeza 21: a divisoria entre a moldura (cabecalho e lombada, em tinta) e o miolo, na cor da regua
+            # (correcoes_borda.py). Tira do gerado o lado que so ele tem, e o resto da celula segue as outras
+            # regras — uma celula da lombada estendida e uma da divisoria ao mesmo tempo, por exemplo.
+            _lados_div = DIVISORIA.get((n, sb.cell(row=r, column=c).coordinate), ())
+            for _lado in _lados_div:
+                if pb["borda"].get(_lado) == DIVISORIA_TRACO and pa["borda"].get(_lado) != DIVISORIA_TRACO:
+                    pb = {**pb, "borda": {k: v for k, v in pb["borda"].items() if k != _lado}}
+                    esperadas["divisória entre a moldura e o miolo"] += 1
             if pa == pb:
                 iguais += 1
                 continue
@@ -147,7 +206,9 @@ for n in wa.sheetnames:
             # personagem que o Mizuki estava jogando, e o molde tem de nascer
             # cheio. A lista mora no layout.json, nunca aqui.
             _cheia = BARRAS.get(n, {}).get(coord)
-            if _cheia is not None and pb["valor"] == _cheia:
+            # (so o VALOR pode diferir: ate 19/09/2026 esta regra engolia qualquer outra diferenca da celula)
+            if (_cheia is not None and pb["valor"] == _cheia
+                    and all(pa[k] == pb[k] for k in pa if k != "valor")):
                 esperadas["barra 'agora' reposta para nascer cheia"] += 1
                 continue
             # limpeza 5: o estado de mesa volta vazio, e so o VALOR pode diferir
@@ -221,6 +282,80 @@ for n in wa.sheetnames:
                 _molde = perfil(sb[_de[1]])
                 if pb["valor"] == _de[0] and all(pb[k] == _molde[k] for k in pb if k != "valor"):
                     esperadas["célula da Defesa com equipamento e refino escolhido"] += 1
+                    continue
+            # limpeza 14: a celula vazia que so tem o formato de corpo (ver eh_vazia_padrao). Cobre as
+            # duas linhas de folga que o emissor poe embaixo de cada aba (max_r + 2) e o fundo de base
+            # da DADOS_INV, que a exportacao escreve celula a celula.
+            if eh_vazia_padrao(pa, BASE, False) and eh_vazia_padrao(pb, BASE, True):
+                esperadas["célula vazia só com o formato de corpo (a exportação escreve, o script pinta antes)"] += 1
+                continue
+            # ... e a celula COM valor ou formato proprio cujo unico desvio e o fundo ser o de base: o
+            # script pinta a aba com ele antes de escrever qualquer celula.
+            if (pa["fundo"] == BASE and pb["fundo"] is None
+                    and all(pa[k] == pb[k] for k in pa if k != "fundo")):
+                esperadas["célula com o fundo de base, que o gerador não escreve"] += 1
+                continue
+            # limpeza 15: a caixa ORIGEM da CARTEIRA nasceu com borda branca fina em tres lados, engano de
+            # formatacao manual; o ficha-v01/correcoes_borda.py da a ela, celula a celula, a borda da CAMINHO
+            # (as duas tem dez colunas: AK:AT e O:X).
+            if n == "CARTEIRA" and r == 17 and 37 <= c <= 46:
+                _irma = perfil(sb.cell(row=17, column=c - 22))
+                if pb["borda"] == _irma["borda"] and all(
+                        pa[k] == pb[k] for k in pa if k not in ("borda", "fonte")) and (
+                        pa["fonte"] == pb["fonte"] or eh_ruido_de_fabrica({**pa, "borda": {}}, {**pb, "borda": {}})):
+                    esperadas["caixa ORIGEM com a borda da CAMINHO"] += 1
+                    continue
+            # limpeza 16: a lombada (fundo tinta, colunas A e B) vai ate a ultima linha da FICHA e da
+            # INVOCACAO; a planilha viva parava de pintar ela antes (correcoes_borda.py).
+            if (n in ("FICHA", "INVOCAÇÃO") and c <= 2 and pb["fundo"] == TINTA and pb["valor"] is None
+                    and pa["valor"] in (None, "") and pa["fundo"] in (None, BASE) and not pa["borda"]
+                    and not pb["borda"]):
+                esperadas["lombada até a última linha"] += 1
+                continue
+            # limpeza 21: o texto que o livro mudou depois da exportacao (o Jorro do CATALOGO, que o capitulo 16
+            # escreve "ataca e empurra"), em correcoes_texto._TROCAS_DO_LIVRO. So essa frase muda.
+            if (n in correcoes_texto.ABAS_CORRIGIDAS and pa["valor"] != pb["valor"]
+                    and correcoes_texto.troca_do_livro(n, pa["valor"]) is not None
+                    and correcoes_texto.corrige_valor(n, pa["valor"]) == pb["valor"]
+                    and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                esperadas["frase que o livro mudou depois da exportação (o Jorro ataca e empurra)"] += 1
+                continue
+            # limpeza 20: o texto curto que abria frase, titulo ou mensagem com a inicial minuscula, na
+            # INVOCACAO e no CATALOGO (correcoes_texto.py). So a inicial muda, e o resto da celula e igual.
+            if (n in correcoes_texto.ABAS_CORRIGIDAS and pa["valor"] != pb["valor"]
+                    and correcoes_texto.corrige_valor(n, pa["valor"]) == pb["valor"]
+                    and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                esperadas["texto que abria frase ou título em minúscula"] += 1
+                continue
+            # limpeza 17: a exportacao do Sheets traz o estado da personagem que o Mizuki estava jogando (a
+            # Origem escolhida, as caixas de selecao marcadas pelo Caminho), e o molde nasce limpo.
+            if (n, coord) in ESTADO_DA_PERSONAGEM and all(pa[k] == pb[k] for k in pa if k != "valor"):
+                esperadas["escolha da personagem exportada (a Origem), que o molde nasce sem"] += 1
+                continue
+            if (pa["valor"] is True and pb["valor"] is False
+                    and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                esperadas["caixa de seleção marcada na exportação, que o molde deixa vazia"] += 1
+                continue
+            # limpeza 18: o Sheets exporta o que uma formula MATRICIAL despeja como celula solta com
+            # COMPUTED_VALUE; o gerador leva so a formula da ancora, e as outras ficam vazias.
+            if (isinstance(pa["valor"], str) and 'DUMMYFUNCTION("""COMPUTED_VALUE"""' in pa["valor"]
+                    and pb["valor"] is None and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                esperadas["resultado de fórmula matricial que a exportação escreve solto"] += 1
+                continue
+            # limpeza 19: a formula que o Sheets exporta embrulhada em IFERROR(__xludf.DUMMYFUNCTION("...")),
+            # porque o Excel nao a conhece. O gerador leva a de dentro (o conferir-ficha-xlsx.py confere).
+            if isinstance(pa["valor"], str) and isinstance(pb["valor"], str):
+                _emb = re.match(r'^=IFERROR\(__xludf\.DUMMYFUNCTION\("(.*)"\),(.*)\)$', pa["valor"], re.S)
+                if (_emb and "=" + _emb.group(1).replace('""', '"').strip() == pb["valor"]
+                        and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                    esperadas["fórmula que a exportação embrulha em DUMMYFUNCTION"] += 1
+                    continue
+                # o embrulho tambem infla a cauda de aspas a cada ida e volta pelo Sheets (`&""""` a mais no
+                # INVOCACAO!O62 da exportacao nova, contra o layout mais velho): a formula de dentro e a mesma
+                _cauda = lambda v: re.sub(r'\}\),[&"]+\)"\),""\)$', "})," + "<aspas>)", v)
+                if (pa["valor"].startswith("=IFERROR(__xludf.DUMMYFUNCTION(") and _cauda(pa["valor"]) == _cauda(pb["valor"])
+                        and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                    esperadas["cauda de aspas que a exportação infla a cada ida e volta"] += 1
                     continue
             for k in pa:
                 if pa[k] != pb[k]:
@@ -319,6 +454,15 @@ for n in wa.sheetnames:
     de_fabrica = [x for x in ra if x[3] == "FFB7E1CD"]
     esperadas["condicional verde de fábrica"] += len(de_fabrica)
     ra_limpa = [x for x in ra if x[3] != "FFB7E1CD"]
+    # O construir() troca TODA a condicional da FICHA (corDeEstado_, no Codigo.gs), entao a do layout so
+    # existe pra a planilha .xlsx e nunca chega ao Sheets. As regras de aviso vermelho ("passou de", "a mais")
+    # seguem os enderecos das caixas, que mudam a cada linha inserida -- e o layout.json e a exportacao
+    # foram tirados em momentos diferentes (a exportacao nao tem o AK76 que o layout tem).
+    if n == "FICHA":
+        _aviso = lambda x: x[1] == "containsText" and x[2] == "FFC2334D"
+        esperadas["condicional de aviso vermelho da FICHA, que o construir() refaz"] += len([x for x in ra_limpa if _aviso(x)])
+        ra_limpa = [x for x in ra_limpa if not _aviso(x)]
+        rb = [x for x in rb if not _aviso(x)]
     print(f"  condicional: {len(ra)} original ({len(de_fabrica)} de fábrica) · "
           f"{len(rb)} gerada")
     # a formula nao entra na comparacao: o Sheets exporta com aspas extras, e

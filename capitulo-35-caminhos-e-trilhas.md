@@ -565,6 +565,8 @@ O `Traje` e o `Revestimento` são as duas formas de proteção do capítulo 14, 
 > **Nível 2: `Preito`.** As perícias e os Testes de Resistência da sua invocação somam **`metade da sua maestria`, mínimo `1`**.
 > **E escolha uma, ao pegar a Trilha:** `metade da sua maestria` **no acerto** dela · `metade da sua maestria` **na CD** dela · **`a sua maestria` na Defesa** dela.
 >
+> **A `Voz` da `Sintonia` e o `Preito` na CD não somam.** As duas dão o mesmo número em todo nível (`+1` até o 25, `+2` do 26 em diante), então a CD dela leva uma só. Quem tem a `Voz` escolhe o acerto ou a Defesa no `Preito`.
+>
 > **Nível 11: `Escolta`.** Escolha **dois** Testes de Resistência. **Enquanto a sua invocação está de pé, você soma `metade da sua maestria` na sua Defesa e nesses dois.**
 >
 > **Nível 19: `Sustento`.** *Ação Bônus.* A sua invocação ganha **`1d6 + metade do seu nível`** de PV temporário. Ela carrega um bloco desses por vez.

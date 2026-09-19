@@ -365,7 +365,7 @@ checa("a ficha nasce com Escolha seu Caminho e Escolha sua Trilha",
       f[IDX["caminho"]].value == _fa_mod.ESCOLHA_CAMINHO and f[IDX["trilha"]].value == _fa_mod.ESCOLHA_TRILHA,
       f"{f[IDX['caminho']].value} · {f[IDX['trilha']].value}")
 checa("o onEdit marca as perícias fixas quando o Caminho muda",
-      bool(re.search(r"function onEdit\(e\)\s*\{[^}]*marcarPericiasDoCaminho_\(e, idx\)", _CODA)))
+      bool(_oned) and "marcarPericiasDoCaminho_(e, idx)" in _oned.group(1))
 checa("a tabela dos Caminhos da DADOS não tem mais ofício fixo, que o livro não tem",
       not any(c.value == "ofício fixo" for l in dd.iter_rows() for c in l))
 
@@ -648,6 +648,21 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
           f"faltam {len(_lados_viva - _lados_scr)}, sobram {len(_lados_scr - _lados_viva)}, "
           f"faixas que cortam mesclagem {len(_cortes)}: {(_cortes or sorted(_lados_viva - _lados_scr))[:2]}")
 
+    # Achado testando no Sheets em 19/09/2026: a caixa ORIGEM nasceu com borda branca fina em três
+    # lados (engano de formatação manual), e a troca de paleta nunca repintava ela porque branco não é
+    # a régua. O ficha-v01/correcoes_borda.py dá a ela a borda da CAMINHO. E o título do GLOSSÁRIO saía
+    # sem a borda da esquerda, porque o CATÁLOGO, de onde o estilo vem, guarda a ponta esquerda numa
+    # célula a parte (C1:C2) que o GLOSSÁRIO não copiava.
+    def _tem_lado(nome_aba, faixa, lado, traco="medium", cor="#8A7EC4"):
+        _aba = next(a for a in dados if a["nome"] == nome_aba)
+        return any(b[0] == lado and b[1] == traco and b[2] == cor and faixa in b[3] for b in _aba["bordas"])
+    checa("a caixa ORIGEM tem a régua média nos quatro lados, igual à CAMINHO",
+          all(_tem_lado("CARTEIRA", "AK17:AT17", l) for l in ("top", "bottom", "left", "right")))
+    checa("nenhuma borda branca fixa sobrou na CARTEIRA (a troca de paleta não repinta o que não é régua)",
+          not any(b[2] == "#FFFFFF" for b in next(a for a in dados if a["nome"] == "CARTEIRA")["bordas"]))
+    checa("o título do GLOSSÁRIO (B1:V2) tem a borda da esquerda, e não só a de cima e a de baixo",
+          all(_tem_lado("GLOSSÁRIO", "B1:V2", l) for l in ("top", "bottom", "left")))
+
     _vazias, _fmt_ruim = 0, []
     for a in dados:
         _tem = {(v[0], v[1]): a["estilos"][v[3]] for v in a["vals"] if len(v) > 3}
@@ -678,7 +693,9 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     for _nome, _ims in _fl.trocas(_js.load(open("ficha-v01/layout.json", encoding="utf-8")))["imagens"].items():
         next(a for a in _lay["abas"] if a["nome"] == _nome)["imagens"] = _ims
     _mart = _re.search(r"var ARTE = (\{.*?\});\n", g, _re.S)
-    _arte = _js.loads(_mart.group(1)) if _mart else {}
+    # 18/09/2026: a arte grande vem em pedaços concatenados por "+" (emitir_gs._sem_linha_gigante),
+    # pra nenhuma linha do Ficha.gs travar o editor do Apps Script — colada de volta antes do JSON.
+    _arte = _js.loads(_re.sub(r'"\s*\+\s*"', '', _mart.group(1))) if _mart else {}
     _por = {a["nome"]: a for a in dados}
     _img_ruim, _n_img = [], 0
     for la in _lay["abas"]:
@@ -720,6 +737,237 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     checa(f"as {_n_img} imagens entram dentro da célula, numa caixa livre do tamanho da tela",
           _n_img > 0 and not _img_ruim, str(_img_ruim[:3]))
     checa("o molde põe a imagem na célula, e não solta", "newCellImage" in g and "insertImage" not in g)
+
+    # B25, achado testando no Sheets em 18/09/2026: configurarPaleta_ ancorava a caixa da paleta
+    # com cart.getImages(), que só enxerga imagem SOLTA sobre a grade — e a linha acima prova que
+    # esta ficha nunca solta imagem. getImages() sempre vinha vazio, e a caixa nunca nascia. A
+    # checagem abaixo trava as duas partes do conserto: acharCaixaDaFoto_ lê o VALOR da célula
+    # (a propriedade valueType da CellImage, não getImages), e configurarPaleta_ passa pela função
+    # nova em vez de voltar a chamar getImages direto.
+    _acha = re.search(r"function acharCaixaDaFoto_\(sh\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("acharCaixaDaFoto_ acha a foto pelo valueType da CellImage, não por getImages",
+          bool(_acha) and "getImages" not in _acha.group(1)
+          and "valueType" in _acha.group(1) and "SpreadsheetApp.ValueType.IMAGE" in _acha.group(1))
+    _confp = re.search(r"function configurarPaleta_\(ss, force\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("configurarPaleta_ ancora a caixa da paleta em acharCaixaDaFoto_, não em getImages direto",
+          bool(_confp) and "acharCaixaDaFoto_(" in _confp.group(1) and "getImages" not in _confp.group(1))
+
+    # B25, achado testando no Sheets em 18/09/2026: o intervalo nomeado da paleta sobrevive ao
+    # construir() apagar e recriar a CARTEIRA (mesmo nome de aba, o Google parece religar por
+    # nome) — sem o force, "já existia" continuava batendo pra sempre depois da primeira rodada,
+    # e a caixa antiga (posição, largura, borda na régua velha) nunca era recriada por uma versão
+    # nova do Codigo.gs, mesmo colando o arquivo certo.
+    checa("configurarPaleta_ recebe force e remove o intervalo nomeado velho quando force é true",
+          bool(_confp) and "force" in _confp.group(1) and "removerNomesDaPaleta_(ss)" in _confp.group(1))
+    # Achado testando no Sheets em 19/09/2026: removeNamedRange num nome que não existe não estoura na
+    # hora, estoura na PRÓXIMA leitura, fora do try/catch — o construir() caiu com "O intervalo
+    # "PALETA_AVISO" não existe." dentro do acharCaixaDaFoto_. Só se remove o que getNamedRanges lista.
+    checa("nenhum removeNamedRange às cegas: os nomes da paleta saem por getNamedRanges, só os que existem",
+          re.sub(r"/\*\*.*?\*/", "", _CODA, flags=re.S).count("removeNamedRange(") == 0
+          and "ss.getNamedRanges().forEach" in _CODA)
+    checa("o construir() chama configurarPaleta_ com force, não deixa a caixa da paleta sobreviver à rodada",
+          "configurarPaleta_(ss, true)" in g)
+
+    # B25, achado testando no Sheets em 18/09/2026: repintar a ficha inteira não cabe nos 30
+    # segundos do onEdit simples, e o Apps Script mata a execução no meio sem avisar — a paleta
+    # ficava "travada" a partir da segunda troca, porque paleta_atual só grava no fim de
+    # repintarPaleta_. A troca de paleta saiu do onEdit(e) simples e foi pra um gatilho instalável
+    # (6 minutos, não 30 segundos), instalado por configurarPaleta_.
+    checa("aplicarPaleta_ saiu do onEdit(e) simples — a troca de paleta não cabe nos 30 segundos dele",
+          bool(_oned) and "aplicarPaleta_" not in _oned.group(1))
+    _instg = re.search(r"function instalarGatilhoPaleta_\(ss\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("instalarGatilhoPaleta_ existe e instala um gatilho de onEdit pra aplicarPaleta_",
+          bool(_instg) and "newTrigger('aplicarPaleta_')" in _instg.group(1)
+          and ".onEdit()" in _instg.group(1))
+    checa("configurarPaleta_ chama instalarGatilhoPaleta_",
+          bool(_confp) and "instalarGatilhoPaleta_(ss)" in _confp.group(1))
+
+    # B25, achado testando no Sheets em 18/09/2026: nada serializava duas execuções de
+    # aplicarPaleta_ — trocar de tema rápido demais (a segunda troca disparando antes do repaint da
+    # primeira terminar) deixava fundo/fonte de algumas células com uma mistura das duas paletas,
+    # um hex que não bate com o papel de nenhum tema — e como repintarPaleta_ só acha o que troca
+    # comparando o hex ATUAL contra o hex ESPERADO do papel na paleta anterior, essa célula não era
+    # encontrada NUNCA MAIS, em troca nenhuma futura. É o "trava depois de algumas tentativas" que o
+    # Mizuki descreveu, e o próprio Mizuki suspeitou da causa. O LockService serializa: a segunda
+    # troca espera a primeira terminar de ler, repintar E escrever antes de começar a sua.
+    _aplp = re.search(r"function aplicarPaleta_\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("aplicarPaleta_ usa LockService pra serializar trocas simultâneas",
+          bool(_aplp) and "LockService.getDocumentLock()" in _aplp.group(1)
+          and "tryLock(" in _aplp.group(1) and "releaseLock()" in _aplp.group(1))
+    checa("o lock embrulha a leitura de paleta_atual, o repaint E a escrita — não só o repaint",
+          bool(_aplp) and re.search(
+              r"tryLock\([^)]*\)[^;]*;.*getProperty\('paleta_atual'\).*repintarPaleta_\(.*"
+              r"setProperty\('paleta_atual'", _aplp.group(1), re.S) is not None)
+
+    # B25, achado testando no Sheets em 19/09/2026, mesmo com o LockService: `repintarPaleta_` só
+    # reconhecia uma célula comparando contra os doze papéis da paleta IMEDIATAMENTE anterior — uma
+    # célula presa na cor de uma paleta de DUAS ou mais trocas atrás (de uma corrida de antes deste
+    # conserto, ou de qualquer outro motivo) nunca mais era achada, porque a busca só olhava um
+    # passo pra trás. `papelPorHexGlobal_` é a busca de resgate: o papel de um hex em QUALQUER uma
+    # das 61 paletas, não só a anterior — chamada só quando a paleta anterior não acha nada, então
+    # o caminho normal (sem corrupção) nunca muda de comportamento.
+    _phg = re.search(r"function papelPorHexGlobal_\(\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("papelPorHexGlobal_ existe e registra a paleta de fábrica mais as 61 do catálogo",
+          bool(_phg) and "PALETA_DE_FABRICA_" in _phg.group(1) and "Object.keys(PALETAS)" in _phg.group(1))
+    _rep = re.search(r"function repintarPaleta_\(ss, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("repintarPaleta_ cai pra papelPorHexGlobal_ quando a paleta anterior não reconhece a célula",
+          bool(_rep) and "papelPorHexAntes[f] || papelPorHexGlobal[f]" in _rep.group(1)
+          and "papelPorHexAntes[t] || papelPorHexGlobal[t]" in _rep.group(1))
+
+    # A5/B25, achado testando no Sheets em 19/09/2026: o vermelho de "passou da conta" só trocava a
+    # FONTE, deixando o FUNDO no que o tema daquela hora estivesse — nalgumas paletas claras o
+    # vermelho quase sumia dentro do fundo, sem contraste garantido nenhum. O vermelho (não o
+    # âmbar, que é aviso mais brando) passou a forçar fundo E fonte junto, pra ficar legível
+    # não importa o tema.
+    _cde = re.search(r"function corDeEstado_\(ss, idx\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("o vermelho de corDeEstado_ força fundo E fonte branca, não só a fonte",
+          bool(_cde) and _cde.group(1).count("setBackground('#C2334D').setFontColor('#FFFFFF')") == 2)
+
+    # B25, 19/09/2026, o "problema grande" do Mizuki testando no Sheets: fonte escura em cima de fundo
+    # escuro ("9 de 23 na criação" no Brasa Claro), porque cada cor trocava pelo SEU papel e nenhuma
+    # checagem olhava o PAR. A rede de segurança lê o contraste que a célula tinha na ficha de fábrica
+    # (do ABAS, sem histórico) e troca a fonte por uma cor da paleta quando o par novo lê pior.
+    _rep = re.search(r"function repintarPaleta_\(ss, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("repintarPaleta_ passa cada fonte pela checagem de legibilidade contra o fundo NOVO da célula",
+          bool(_rep) and "fonteLegivel_(novaFonte, novoFundo, desenho[r][c]" in _rep.group(1)
+          and "contrasteDeFabrica_(spec)" in _rep.group(1))
+    _leg = re.search(r"function fonteLegivel_\(.*?\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("a checagem de legibilidade tem piso de 3,0 pro texto discreto e só cai em branco/preto por último",
+          bool(_leg) and "PISO_DISCRETO_" in _leg.group(1) and "extremo" in _leg.group(1)
+          and "var PISO_DISCRETO_ = 3.0;" in _CODA)
+    checa("o âmbar de texto padrão segue a paleta, achado pelo endereço no ABAS (reversível), não pela cor",
+          "celulasDeAviso_(spec)" in _rep.group(1) and "avisoNovo[papelDoFundo]" in _rep.group(1)
+          and "aviso_por_papel" in _CODA)
+
+    # A troca de paleta lê o PALETAS do próprio Codigo.gs: confere de verdade, nas 122 entradas, o que o
+    # derivar.py prometia — o tinta CLARO nos temas claros (o cartão inteiro e a lombada não ficam
+    # marrons no meio de um tema pêssego), o texto lendo sobre ele, e o aviso com contraste em cada fundo.
+    _mp = re.search(r"var PALETAS = (\{.*?\n\});\n", _CODA, re.S)
+    _pal = _js.loads(_mp.group(1)) if _mp else {}
+    def _lum(h):
+        f = lambda c: c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+        return sum(k * f(int(h[i:i + 2], 16) / 255) for k, i in zip((0.2126, 0.7152, 0.0722), (0, 2, 4)))
+    def _ct(a, b):
+        la, lb = _lum(a), _lum(b)
+        return (max(la, lb) + 0.05) / (min(la, lb) + 0.05)
+    _tinta_ruim = [(n, v) for n, t in _pal.items() for v in ("claro", "escuro")
+                   if (_lum(t[v]["tinta"]) < 0.6 if v == "claro" else _lum(t[v]["tinta"]) > 0.05)]
+    checa(f"o tinta é pastel nas {len(_pal)} paletas claras e quase preto nas escuras, e o texto lê sobre ele",
+          len(_pal) == 61 and not _tinta_ruim
+          and all(_ct(t[v]["texto"], t[v]["tinta"]) >= 4.5 for t in _pal.values() for v in ("claro", "escuro")),
+          str(_tinta_ruim[:3]))
+    _aviso_ruim = [(n, v, k) for n, t in _pal.items() for v in ("claro", "escuro")
+                   for k, h in t[v].get("aviso_por_papel", {}).items() if _ct(h, t[v][k]) < 4.5]
+    checa("o aviso_por_papel lê (4,5) sobre cada um dos fundos onde o âmbar padrão mora",
+          len(_pal) == 61 and not _aviso_ruim and all("aviso_por_papel" in t[v] for t in _pal.values()
+                                                       for v in ("claro", "escuro")), str(_aviso_ruim[:3]))
+
+    # 19/09/2026: a lombada (fundo tinta, colunas A:B) da FICHA parava na linha 144 de 150, e a da
+    # INVOCAÇÃO na 120 de 126 — invisível na ficha escura de fábrica, cortada numa paleta clara.
+    for _nome_l in ("FICHA", "INVOCAÇÃO"):
+        _al = next(a for a in dados if a["nome"] == _nome_l)
+        _m2 = {}
+        for _fx in _al["fundos"]:
+            for _cc in range(_fx[1], min(_fx[2], 2) + 1):
+                _m2[(_fx[0], _cc)] = _fx[3].upper()
+        for _mg in _al["merges"]:      # a mesclagem só guarda a cor no canto: o bloco todo é a cor dele
+            if _mg[1] <= 2:
+                for _rr in range(_mg[0], _mg[2] + 1):
+                    for _cc in (1, 2):
+                        _m2[(_rr, _cc)] = _m2.get((_mg[0], _mg[1]), _al["fundo_base"].upper())
+        _sem = [r for r in range(1, _al["rows"] + 1)
+                if any(_m2.get((r, cc), _al["fundo_base"].upper()) != "#0A0810" for cc in (1, 2))]
+        checa(f"a lombada da {_nome_l} (A:B em tinta) vai até a última das {_al['rows']} linhas",
+              not _sem, f"sem lombada nas linhas {_sem[:6]}")
+
+    # 19/09/2026, pedido do Mizuki: o texto curto que abria frase, título ou mensagem com a inicial
+    # minúscula na INVOCAÇÃO e no CATÁLOGO ("técnica", "prende o alvo", "sobrou ponto"). A notação de dado
+    # ("d20 +") fica minúscula de propósito.
+    _minusc = []
+    for _nome_t in ("INVOCAÇÃO", "CATÁLOGO", "GLOSSÁRIO"):
+        for _v in next(a for a in dados if a["nome"] == _nome_t)["vals"]:
+            _s = _v[2]
+            if isinstance(_s, str) and not _s.startswith("=") and _s.strip() and _s.strip()[0].isalpha() \
+                    and _s.strip()[0].islower() and not re.match(r"^\s*d\d", _s):
+                _minusc.append((_nome_t, _v[0], _v[1], _s[:30]))
+    checa("nenhum texto da INVOCAÇÃO, do CATÁLOGO ou do GLOSSÁRIO abre com a inicial minúscula",
+          not _minusc, str(_minusc[:3]))
+    # B13: o Jorro ataca e empurra (decisão do Mizuki na v0.246 do sistema). O CATÁLOGO da ficha vinha da
+    # exportação, com "ataca em linha ou em área", e o capítulo 16 vendorizado já dizia o outro.
+    _mj = re.search(r"\|\s*\*\*8\*\*\s*\|\s*`Jorro`\s*\|\s*(.*?)\s*\|", open("capitulo-16-invocacoes.md", encoding="utf-8").read())
+    _cat = next(a for a in dados if a["nome"] == "CATÁLOGO")["vals"]
+    _lin_j = [v[0] for v in _cat if v[2] == "Jorro"]
+    _txt_j = [v[2] for v in _cat if _lin_j and v[0] == _lin_j[0] and isinstance(v[2], str) and v[2] != "Jorro"]
+    checa("o Jorro do CATÁLOGO diz o que o capítulo 16 diz (ataca e empurra)",
+          bool(_mj) and len(_lin_j) == 1 and any(t[:1].lower() + t[1:] == _mj.group(1) for t in _txt_j),
+          f"livro {_mj.group(1) if _mj else None!r} · catálogo {_txt_j}")
+    _inv = next(a for a in dados if a["nome"] == "INVOCAÇÃO")
+    _forms = " ".join(v[2] for v in _inv["vals"] if isinstance(v[2], str) and v[2].startswith("="))
+    checa("as mensagens que as fórmulas da INVOCAÇÃO devolvem abrem com maiúscula (Sobrou ponto, Estourou o total, Ok)",
+          all(x in _forms for x in ('"Sobrou ponto"', '"Estourou o total"', '"Ok"', '"Custa "&'))
+          and not any(x in _forms for x in ('"sobrou ponto"', '"estourou o total"', '"ok"')))
+
+    # 19/09/2026, pedido do Mizuki: uma linha simples entre a moldura da ficha (cabeçalho e lombada, em tinta)
+    # e o miolo (em fundo), que numa paleta clara viravam dois pastéis quase iguais sem nada entre eles.
+    def _cobre(nome_aba, lado, celulas):
+        """as (linha, coluna) de `celulas` que NÃO têm a borda `lado` na régua média"""
+        _ab = next(a for a in dados if a["nome"] == nome_aba)
+        _ok = set()
+        for _b in _ab["bordas"]:
+            if _b[0] == lado and _b[1] == "medium" and _b[2] == "#8A7EC4":
+                for _fx in _b[3]:
+                    _c1, _r1, _c2, _r2 = _rb(_fx)
+                    for _rr in range(_r1, _r2 + 1):
+                        for _cc in range(_c1, _c2 + 1):
+                            _ok.add((_rr, _cc))
+        return [x for x in celulas if x not in _ok]
+    _f, _i, _c = (next(a for a in dados if a["nome"] == n_) for n_ in ("FICHA", "INVOCAÇÃO", "CARTEIRA"))
+    _falta = {
+        "FICHA, embaixo do cabeçalho (linha 5)": _cobre("FICHA", "bottom", [(5, c) for c in range(3, _f["cols"] + 1)]),
+        "FICHA, à direita da lombada (coluna B)": _cobre("FICHA", "right", [(r, 2) for r in range(6, _f["rows"] + 1)]),
+        "INVOCAÇÃO, à direita da lombada (coluna B)": _cobre("INVOCAÇÃO", "right", [(r, 2) for r in range(1, _i["rows"] + 1)]),
+        "CARTEIRA, embaixo do cabeçalho (linha 4)": _cobre("CARTEIRA", "bottom", [(4, c) for c in range(1, _c["cols"] + 1)]),
+    }
+    for _onde, _sem in _falta.items():
+        checa(f"a divisória na régua cobre a moldura inteira: {_onde}", not _sem, f"sem divisória em {_sem[:5]}")
+
+    # 19/09/2026, pedido do Mizuki: "as imagens têm cores fixas, e vai rolar o que rolou no Eucalipto". A arte
+    # inteira é de UMA cor (o que varia é o alfa) e sai como PNG de paleta; a troca de paleta reescreve a
+    # paleta e o CRC (pngComCor_) e reenvia a imagem. O regressao-arte.js prova a recoloração no node.
+    _rep_arte = re.search(r"function repintarPaleta_\(ss, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _pap = re.search(r"var PAPEL_DA_ARTE_ = \{(.*?)\};", _CODA, re.S)
+    _prefixos = {re.sub(r"-\d+x\d+\.png$", "", k) for k in _js.loads(re.sub(r'"\s*\+\s*"', "", re.search(r"var ARTE = (\{.*?\n\});", g, re.S).group(1)))}
+    checa("a troca de paleta recolore a arte, depois do fundo (é dele que a cor depende)",
+          bool(_rep_arte) and _rep_arte.group(1).index("repintarArte_(ss, agora, candidatos)") > _rep_arte.group(1).index("setBackgrounds"))
+    checa(f"cada uma das {len(_prefixos)} imagens da ficha tem um papel de paleta em PAPEL_DA_ARTE_",
+          bool(_pap) and all(f"'{p_}'" in _pap.group(1) for p_ in _prefixos), str(sorted(_prefixos)))
+    checa("o construir() marca a imagem como NOSSA (título de alt PM-ARTE:), pra a troca nunca tocar na foto do jogador",
+          "setAltTextTitle('PM-ARTE:' + im[4])" in g and "TAG_ARTE_ + im[4]" in _CODA)
+    if _node:
+        _r = _sp.run([_node, "regressao-arte.js"], capture_output=True, text=True, timeout=120)
+        checa("a recoloração da arte gera PNG bem formado, com a cor pedida e sem mexer no alfa (regressao-arte.js)",
+              _r.returncode == 0, (_r.stdout + _r.stderr).strip()[-300:])
+    else:
+        print("  [--] node nao existe nesta maquina: a recoloracao da arte nao foi rodada")
+
+    # A caixinha que avisa da espera da troca de paleta, com o intervalo nomeado próprio pra a borda dela
+    # ser repintada junto com a régua.
+    _cfg = re.search(r"function configurarPaleta_\(ss, force\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _rb = re.search(r"function repintarBordas_\(ss, paraRegua\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("a caixa de aviso da espera existe, tem intervalo nomeado, e a borda dela é repintada",
+          bool(_cfg) and "NOME_CEL_PALETA_AVISO_" in _cfg.group(1) and "TEXTO_AVISO_PALETA_" in _cfg.group(1)
+          and "30 a 40 segundos" in _CODA and bool(_rb) and "NOME_CEL_PALETA_AVISO_" in _rb.group(1))
+
+    # A arte é imagem e não troca de cor com a paleta: a moldura da foto tem o miolo TRANSPARENTE (o
+    # fundo da célula segue o tema) e a pincelada clara é de meio-tom, que lê no tinta claro e no escuro.
+    from PIL import Image as _PImg
+    _mold = _PImg.open("ficha-v01/arte/carteira-2.png").convert("RGBA")
+    _pinc = _PImg.open("ficha-v01/arte/carteira-3.png").convert("RGBA")
+    _cores_pinc = {p[:3] for p in _pinc.getdata() if p[3] > 200}
+    checa("a moldura da foto não leva miolo opaco, e a pincelada do meio é de meio-tom (lê nos dois extremos)",
+          _mold.getpixel((_mold.width // 2, _mold.height // 4))[3] == 0
+          and len(_cores_pinc) == 1
+          and 0.12 < _lum("%02X%02X%02X" % list(_cores_pinc)[0]) < 0.24)
 
     # A função que o Excel não tem sai do .xlsx embrulhada em IFERROR(__xludf.DUMMYFUNCTION("...")),
     # e remontada assim ela falha calada: foram as barras vazias de 15/09/2026. O script leva a de dentro.

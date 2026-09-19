@@ -100,14 +100,14 @@ def respingo(lado=300, cor=VERMELHO, n=26):
             d.ellipse([x - r, y - r, x + r, y + r], fill=cor + (255,))
     return img.filter(ImageFilter.GaussianBlur(0.4))
 
-def moldura(larg=360, alt=460):
+def moldura(larg=360, alt=460, fundo=(18, 15, 29, 235)):
     """o lugar da foto: canto chanfrado, que e o que o desenho pediu e a
     planilha nao faz sozinha"""
     img = Image.new("RGBA", (larg, alt), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     ch = 34
     pts = [(0, ch), (ch, 0), (larg, 0), (larg, alt - ch), (larg - ch, alt), (0, alt)]
-    d.polygon(pts, fill=(18, 15, 29, 235), outline=BLOCO + (255,))
+    d.polygon(pts, fill=fundo, outline=BLOCO + (255,))
     d.line(pts + [pts[0]], fill=BLOCO + (255,), width=3)
     f = ImageFont.truetype(os.path.join(FONTES, "Oswald.ttf"), 20)
     d.text((larg // 2, alt // 2 - 10), "FOTO", font=f, fill=BLOCO + (170,), anchor="mm")

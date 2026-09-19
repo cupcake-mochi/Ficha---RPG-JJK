@@ -310,5 +310,30 @@ def desenha_arte(tr):
     import gera
     for arquivo, (larg, alt) in tr["arte"].items():
         escala = 460 / alt                               # a moldura foi desenhada com 460 de altura
-        img = gera.moldura(larg=round(larg * escala), alt=460)
+        # SEM fundo: até 19/09/2026 a moldura levava um miolo roxo-escuro quase opaco, que não muda
+        # de paleta — numa paleta clara ficava uma caixa preta no meio do cartão. Só o contorno e o
+        # "FOTO 顔" ficam, e o miolo é o fundo da célula, que segue o tema.
+        img = gera.moldura(larg=round(larg * escala), alt=460, fundo=(0, 0, 0, 0))
         img.save(os.path.join(AQUI, "arte", arquivo))
+    _pincelada_de_meio_tom(os.path.join(AQUI, "arte", "carteira-3.png"))
+
+
+# a cor da pincelada clara do meio da CARTEIRA: tinha o osso (E0D0D0) e sumia inteira sobre o fundo
+# claro de uma paleta clara. Luminância relativa de 0,17 — a que dá o MESMO contraste (4,0) contra o
+# mais escuro (o tinta dos temas escuros) e contra o mais claro (o tinta dos claros) —, porque uma
+# imagem não troca de cor com a paleta e precisa ler nas duas pontas.
+PINCELADA_DE_MEIO_TOM = (130, 112, 108)
+
+
+def _pincelada_de_meio_tom(caminho):
+    from PIL import Image
+    if not os.path.exists(caminho):
+        return
+    img = Image.open(caminho).convert("RGBA")
+    px = img.load()
+    for y in range(img.height):
+        for x in range(img.width):
+            a = px[x, y][3]
+            if a:
+                px[x, y] = PINCELADA_DE_MEIO_TOM + (a,)
+    img.save(caminho)

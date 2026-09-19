@@ -3,10 +3,10 @@
     "o_que_e": "os valores da ficha da invocacao. Este arquivo e o dono dos VALORES; o porque mora no capitulo vendorizado ao lado.",
     "dono_da_regra": "Projeto - M, capitulo 16 (Invocacoes) do Manual da Guilda, e a peca 15 de sistema/03-mecanica no repositorio JJK---Project",
     "lido_de": "capitulo-16-invocacoes.md e capitulo-35-caminhos-e-trilhas.md, copias de sistema/05-material/livro/manual/60-invocacoes.md e 35-caminhos-e-trilhas.md",
-    "versao_do_sistema": "0.216, mais a regua da morte por corpo (nao fechada em versao)",
+    "versao_do_sistema": "0.251",
     "por_que_nao_le_do_manual_txt": "o manual.txt foi reextraido na v0.239 do sistema e concorda com o capitulo 16, que continua dono: ele e o markdown do livro, sem as quebras de linha e de coluna que o pdftotext poe no texto. Ate ali o manual.txt estava congelado na v0.104, com a ficha derivada do dono e a venda de numero, mortas na v0.180.",
     "regra": "onde este arquivo e o capitulo discordarem, o capitulo vence",
-    "conferido_em": "07/09/2026, contra o commit 5dccb3d do JJK---Project, na branch claude/regua-da-morte-por-corpo: o 60-invocacoes.md foi copiado byte a byte para o capitulo-16-invocacoes.md daqui."
+    "conferido_em": "19/09/2026, contra o capitulo 16 e o capitulo 35 da v0.251 do sistema (sem commit ainda quando isto foi escrito): o 60-invocacoes.md e o 35-caminhos-e-trilhas.md foram copiados byte a byte para o capitulo-16-invocacoes.md e o capitulo-35-caminhos-e-trilhas.md daqui."
   },
   "atributos": {
     "lista": [
@@ -109,7 +109,18 @@
       "multiplicador_corpo": 2.5,
       "orcamento_multiplicador": 1.5,
       "vulneravel_a_area": 1.0,
-      "nota": "o orcamento e o da ficha mais metade, arredondando para baixo. Todo orcamento e multiplo de 4, entao fecha redondo."
+      "nota": "o orcamento e o da ficha mais metade, arredondando para baixo. Todo orcamento e multiplo de 4, entao fecha redondo.",
+      "preito": {
+        "nivel": 2,
+        "efeito": "as pericias e os Testes de Resistencia da invocacao somam metade da maestria do dono, minimo 1",
+        "escolha": [
+          "acerto",
+          "CD",
+          "Defesa"
+        ],
+        "escolha_que_esta_na_ficha": "CD",
+        "o_que_a_ficha_nao_calcula": "o efeito nas pericias e nos Testes de Resistencia, e as escolhas de acerto e de Defesa"
+      }
     },
     "Matilha": {
       "corpos": 5,
@@ -149,6 +160,10 @@
   },
   "ficha_dela": {
     "acerto": "o atributo dela + a maestria do dono",
+    "cd_efeitos": "8 + o atributo dela + a maestria do dono",
+    "cd_base": 8,
+    "cd_atributo": "um so, escolhido na montagem entre os cinco, e a escolha nao muda depois: dele saem o acerto e a CD",
+    "cd_e_a_arma": "a arma so mexe no acerto: se ela empunhar uma, o acerto segue o atributo da arma e a CD continua no atributo da montagem",
     "defesa": "10 + a Destreza dela + ARRED.ABAIXO(Essencia OU Inteligencia do dono / 2)",
     "defesa_escolha": [
       "Essência",
@@ -438,8 +453,7 @@
         "bonus": 1,
         "vira_metade_da_maestria_no_nivel": 7,
         "mexe_em": "a CD dos efeitos dela",
-        "PENDENTE": "a invocacao NAO tem formula de CD em documento nenhum: o capitulo 16 nao escreve nenhuma, e a peca 15 tambem nao. Esta rota some um numero que o sistema nao produz, que e a mesma forma do Estopim (PENDENCIAS B8) e do antigo Casco. A ficha marca como pendente em vez de chutar.",
-        "nota_na_ficha": "A CD dos efeitos dela não tem fórmula em documento nenhum — nem o capítulo 16, nem a peça 15 escrevem uma. Enquanto não existir, combine o número com o mestre."
+        "soma_em": "a CD dos efeitos dela, que o capitulo 16 escreve desde a v0.251"
       }
     }
   },
@@ -466,5 +480,44 @@
     "Cavar": "abre buraco, desenterra, revira o terreno. Faz rota onde não havia rota",
     "Interpor": "se põe entre você e o golpe. O corpo dela recebe o que ia em você",
     "Chamariz": "o alvo tem de vir para cima dela. Você escolhe em quem a coisa está prestando atenção"
+  },
+  "efeitos_com_tr": {
+    "contra_a": "a CD dos efeitos dela",
+    "entradas": {
+      "Fisgada": {
+        "camada": "Traço",
+        "tr": "Físico"
+      },
+      "Agarrar": {
+        "camada": "Comando",
+        "tr": "Físico"
+      },
+      "Arrastar": {
+        "camada": "Comando",
+        "tr": "Físico"
+      },
+      "Jorro": {
+        "camada": "Traço",
+        "tr": "Físico"
+      },
+      "Chamariz": {
+        "camada": "Comando",
+        "tr": "Espírito"
+      }
+    },
+    "fora": {
+      "Graúdo": "barrar passagem e o inimigo perdendo movimento: nao pede rolagem"
+    },
+    "o_chamariz_rola_o_mesmo_do": "Provocar"
+  },
+  "cd_bonus": {
+    "piso": 1,
+    "nao_somam": [
+      "Voz",
+      "Preito"
+    ],
+    "por_que": "as duas dao o mesmo numero em todo nivel de 2 a 30, entao a CD leva uma so; quem tem a Voz fica com o Preito na CD sem efeito",
+    "a_ficha_soma": "o maior dos dois, que e o mesmo numero",
+    "preito_na_cd": "metade da maestria do dono, com piso de 1, so no Servo que escolheu a CD no Preito"
   }
 }

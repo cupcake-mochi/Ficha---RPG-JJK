@@ -340,6 +340,61 @@ _ok("equipamento: a Defesa, o uniforme que desliga, o escudo que soma e os dois 
     and EQ.get("dois_tetos") == "vale o menor" and "com teto de Destreza diferente, vale o menor dos dois" in MANN,
     str({k: EQ.get(k) for k in ("formula", "uniforme_desliga_a_protecao_de_energia", "escudo_soma_por_cima", "dois_tetos")}))
 
+print("\nO TEXTO DO CATÁLOGO, CONTRA O LIVRO")
+# B21, achado na v0.246 do sistema: com o texto velho do Rápido no catálogo, tudo saía verde, porque o
+# catálogo só conferia nome e contagem. Aqui cada frase que o catálogo diz ter tirado do livro tem de
+# estar no livro. O `pdftotext -layout` intromete no meio da frase o nome da coluna vizinha, o número da
+# página e às vezes uma palavra dentro de outra ("deslocaPróprio mesmento"), então a comparação não é por
+# igualdade: todo caractere da frase do catálogo tem de aparecer, na ordem, numa janela do livro, e a
+# intromissão tem três tetos, medidos nas 14 frases reais que o PDF parte (no máximo 3 cortes, 11 caracteres
+# num corte, 22 no total) e folgados para 4, 20 e 30. Sem os tetos, uma palavra trocada passa: as letras
+# dela se espalham pelo texto que vem depois (a mutação "próximo turno" -> "turno seguinte" dava 10 cortes
+# e 86 caracteres). Frase do catálogo que difere do livro em uma palavra deixa caractere sem par e reprova.
+import difflib
+_MAX_CORTES, _MAX_CORTE, _MAX_TOTAL = 4, 20, 30
+
+def _frase_no_livro(txt):
+    v = _norm(txt)
+    if v in MANN:
+        return True, "igual ao livro"
+    pos = []
+    for tam in (24, 14):
+        pos = [m.start() for m in re.finditer(re.escape(v[:tam]), MANN)]
+        if pos:
+            break
+    if not pos:
+        return False, "a frase não começa em lugar nenhum do livro"
+    pior = None
+    for i in pos:
+        jan = MANN[i:i + len(v) + _MAX_TOTAL + 30]
+        blocos = [b for b in difflib.SequenceMatcher(None, v, jan, autojunk=False).get_matching_blocks() if b.size]
+        soltos = len(v) - sum(b.size for b in blocos)
+        cortes = [g for g in (blocos[k + 1].b - blocos[k].b - blocos[k].size for k in range(len(blocos) - 1)) if g > 0]
+        if (soltos == 0 and len(cortes) <= _MAX_CORTES and max(cortes, default=0) <= _MAX_CORTE
+                and sum(cortes) <= _MAX_TOTAL):
+            return True, f"{len(cortes)} corte(s) do PDF, {sum(cortes)} caractere(s)"
+        if pior is None or soltos < pior[0]:
+            pior = (soltos, len(cortes), sum(cortes))
+    return False, f"{pior[0]} caractere(s) da frase sem par no livro, {pior[1]} corte(s) e {pior[2]} caractere(s) do livro no meio"
+
+# Só entram os campos que são frase do livro. Os outros textos do catálogo (`embutido`, `alcance`, `nota`
+# das Formas, o `excecao` das Melhorias) são anotação nossa, escrita sem acento, e não têm par no livro.
+for _tab, _campo in (("melhorias", "efeito"), ("restricoes", "o_que_muda"), ("pericias", "descricao"),
+                     ("origens", "em_uma_linha"), ("caminhos", "em_uma_linha")):
+    _res = {n: _frase_no_livro(e[_campo]) for n, e in CAT[_tab].items()
+            if isinstance(e, dict) and isinstance(e.get(_campo), str)}
+    _mal = {n: d for n, (o, d) in _res.items() if not o}
+    _ok(f"as {len(_res)} frases de {_tab}.{_campo} estão no livro", not _mal,
+        "; ".join(f"{n}: {d}" for n, d in _mal.items()))
+
+# controles: o conferidor tem de aceitar a intromissão do PDF e reprovar uma palavra trocada
+_abre = CAT["melhorias"]["Abre Ferida"]["efeito"]
+_ok("controle: aceita a frase que o PDF partiu (Abre Ferida) mesmo ela não sendo igual ao livro",
+    _norm(_abre) not in MANN and _frase_no_livro(_abre)[0])
+_ok("controle: reprova o −2 trocado por −3", not _frase_no_livro(_abre.replace("−2", "−3"))[0])
+_ok("controle: reprova uma palavra trocada no meio da frase",
+    not _frase_no_livro(CAT["restricoes"]["Sem Volta"]["o_que_muda"].replace("próximo turno", "turno seguinte"))[0])
+
 print("\nTRAVAS DE ESTRUTURA")
 sem_pericia = [a for a in CAT["atributos"]["lista"]
                if not any(v["atributo"] == a for v in CAT["pericias"].values())]

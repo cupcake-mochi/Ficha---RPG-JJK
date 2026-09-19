@@ -72,6 +72,16 @@ import ficha_automatica
 _FA = ficha_automatica.trocas(LAYOUT)
 print(f"a ficha automatica: {ficha_automatica.aplica(LAYOUT, _FA)} mudanca(s) na exportacao")
 
+# 19/09/2026: enganos de formatacao manual da planilha viva (a caixa ORIGEM com borda branca), corrigidos
+# na saida. Ver correcoes_borda.py.
+import correcoes_borda
+print(f"as bordas corrigidas: {correcoes_borda.aplica(LAYOUT)} celula(s) diferentes da exportacao")
+
+# 19/09/2026: o texto curto que abre frase ou titulo com a inicial minuscula, na INVOCACAO e no CATALOGO.
+# Ver correcoes_texto.py.
+import correcoes_texto
+print(f"os textos com inicial maiuscula: {correcoes_texto.aplica(LAYOUT)} celula(s) diferentes da exportacao")
+
 # 17/09/2026: o GLOSSARIO, entre a DADOS e a INVOCACAO -- o que cada atributo, pericia, oficio e
 # termo da ficha quer dizer. Nao tem planilha viva por tras, ao contrario das outras seis: nasce
 # inteiro aqui, reaproveitando os estilos que o CATALOGO ja usa. Ver glossario.py.

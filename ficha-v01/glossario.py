@@ -54,6 +54,23 @@ def _estilo_flat(layout, cor):
     return len(layout["estilos"]) - 1
 
 
+def _estilo_com_borda(layout, indice, lado, traco, cor):
+    """o mesmo estilo, com mais um lado de borda. 19/09/2026, achado do Mizuki: o título da página
+    saía sem a borda da esquerda. No CATÁLOGO, de onde o estilo vem, a ponta esquerda do título é uma
+    célula a parte (C1:C2) com borda própria, e este estilo — o do canto do título — só leva o de cima
+    e o de baixo; o GLOSSÁRIO copiava só o canto, e perdia a ponta."""
+    fonte, fundo, bordas, alinha, fmt = json.loads(json.dumps(layout["estilos"][indice]))
+    bordas = dict(bordas or {})
+    bordas[lado] = [traco, cor]
+    novo = [fonte, fundo, bordas, alinha, fmt]
+    chave = json.dumps(novo, ensure_ascii=False, sort_keys=True)
+    for i, e in enumerate(layout["estilos"]):
+        if json.dumps(e, ensure_ascii=False, sort_keys=True) == chave:
+            return i
+    layout["estilos"].append(novo)
+    return len(layout["estilos"]) - 1
+
+
 def _estilo_com_quebra(layout, indice):
     """o mesmo estilo, com wrap_text ligado -- pra descricao nao estourar a coluna estreita desta
     aba (34 colunas, nao as 51 do CATALOGO). Acha um estilo igual se ja existir, senao cria."""
@@ -216,9 +233,10 @@ def aba(layout, CAT=None, M=None):
     dados = conteudo(CAT, M)
     cel, mesclas, alturas = {}, [], [[1, 16.0], [2, 16.0]]
     mesclas.append(f"{ix._letras(C_D)}1:{ix._letras(PAGINA_TITULO_FIM)}2")
-    cel[f"{ix._letras(C_D)}1"] = ("O GLOSSÁRIO — o que cada coisa da ficha quer dizer", E_TITULO)
+    e_titulo = _estilo_com_borda(layout, E_TITULO, "left", "medium", "FF8A7EC4")
+    cel[f"{ix._letras(C_D)}1"] = ("O GLOSSÁRIO — o que cada coisa da ficha quer dizer", e_titulo)
     mesclas.append(f"{ix._letras(PAGINA_TAG_INI)}1:{ix._letras(C_AT)}2")
-    cel[f"{ix._letras(PAGINA_TAG_INI)}1"] = ("capítulo 1 · 2 · 13", E_TAG)
+    cel[f"{ix._letras(PAGINA_TAG_INI)}1"] = ("Capítulo 1 · 2 · 13", E_TAG)
 
     lin = 4
     lin = _secao(cel, mesclas, alturas, "ATRIBUTOS",

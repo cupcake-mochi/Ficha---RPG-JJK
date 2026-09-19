@@ -161,9 +161,55 @@ PERTURBACOES = [
      "o json tem as mesmas 3 rotas"),
     ("o Parrudo volta a ter dois donos",
      ["parrudo", "multiplicador_maestria"], 5, "virou ponteiro"),
-    ("a pendência da Voz é apagada",
-     ["sintonia", "rotas", "Voz", "PENDENTE"], REMOVE,
-     "o json registra a pendencia da Voz"),
+    # v0.251: a CD dos efeitos. A pendencia da Voz morreu com o capitulo escrevendo a CD, e
+    # o que fica de pe e' a CONCORDANCIA entre capitulo 16, capitulo 35, json e planilha.
+    ("a Voz volta a ser pendência no json",
+     ["sintonia", "rotas", "Voz", "PENDENTE"], "x",
+     "a Voz deixou de ser pendencia no json"),
+    ("a base da CD no json", ["ficha_dela", "cd_base"], 9, "a base da CD"),
+    ("a base da CD no CAPÍTULO, o outro lado",
+     ("texto", "capitulo-16-invocacoes.md", "| **CD dos efeitos** | `8 + o atributo", "| **CD dos efeitos** | `9 + o atributo"),
+     None, "a base da CD"),
+    ("a linha da CD some da ficha dela no capítulo",
+     ("texto", "capitulo-16-invocacoes.md", "| **CD dos efeitos** | `8 + o atributo dela + a sua maestria`.",
+      "| **CD dos efeitos** | a CD é a do dono."),
+     None, "o capitulo 16 escreve a formula da CD dos efeitos"),
+    # contra-teste da leitura (b) que a decisao recusou: a CD seguindo o atributo da arma
+    ("CONTRA-TESTE (b): o capítulo diz que a CD segue a arma",
+     ("texto", "capitulo-16-invocacoes.md", "**A CD usa sempre esse atributo.**", "**A CD segue o atributo da arma.**"),
+     None, "A CD usa sempre esse atributo"),
+    ("o capítulo perde a arma do Em aberto",
+     ("texto", "capitulo-16-invocacoes.md", "**Invocação com arma.**", "**Invocação armada.**"),
+     None, "o capitulo 16 registra a arma em Em aberto"),
+    ("o Chamariz rola Vigor no json", ["efeitos_com_tr", "entradas", "Chamariz", "tr"], "Vigor",
+     "o json tem as MESMAS entradas e o MESMO teste que o capitulo"),
+    ("o Chamariz rola Vigor no capítulo, o outro lado",
+     ("texto", "capitulo-16-invocacoes.md", "| `Chamariz` | Espírito |", "| `Chamariz` | Vigor |"),
+     None, "o json tem as MESMAS entradas e o MESMO teste que o capitulo"),
+    ("o Graúdo entra na tabela de Teste de Resistência do capítulo",
+     ("texto", "capitulo-16-invocacoes.md", "| `Chamariz` | Espírito | tem de vir para cima dela |",
+      "| `Chamariz` | Espírito | tem de vir para cima dela |\n| `Graúdo` | Físico | é barrado |"),
+     None, "o Graudo fica de fora, no json e no capitulo"),
+    ("uma entrada de TR muda de camada no json",
+     ["efeitos_com_tr", "entradas", "Fisgada", "camada"], "Comando",
+     "cada entrada existe no catalogo, na camada que o json diz"),
+    # contra-teste: o Preito valendo a maestria inteira, o dobro da Voz
+    ("CONTRA-TESTE: o Preito na CD passa a valer a maestria inteira, o dobro da Voz",
+     ("texto", "capitulo-35-caminhos-e-trilhas.md", "`metade da sua maestria` **na CD** dela", "`a sua maestria` **na CD** dela"),
+     None, "o Preito tem a opcao CD no capitulo 35"),
+    ("a frase da Voz e do Preito com o 26 trocado por 27",
+     ("texto", "capitulo-35-caminhos-e-trilhas.md", "`+2` do 26 em diante", "`+2` do 27 em diante"),
+     None, "o capitulo 35 carrega a frase que a conta deriva"),
+    # contra-teste: as duas somando
+    ("CONTRA-TESTE: o capítulo 35 diz que a Voz e o Preito SOMAM",
+     ("texto", "capitulo-35-caminhos-e-trilhas.md", "na CD não somam.", "na CD somam."),
+     None, "o capitulo 35 diz que a Voz e o Preito na CD nao somam"),
+    ("o json diz que so a Voz nao soma", ["cd_bonus", "nao_somam"], ["Voz"],
+     "o json declara que nao somam"),
+    ("o piso da metade da maestria no json", ["cd_bonus", "piso"], 2,
+     "o piso da metade da maestria sai do json"),
+    ("o Servo perde o Preito no json", ["trilhas", "Servo", "preito"], REMOVE,
+     "o json guarda o Preito do Servo"),
 
     # o DEGRAU do Traco e Comando proprios. As tres perturbam o CAPITULO, e
     # nao o json nem a planilha: o degrau que a ficha oferece se mede contra a
@@ -291,6 +337,21 @@ if cod == 0:
 else:
     print("  [FALHA] uma mudança inócua acendeu o validador")
     falhas.append("contra-teste inócuo")
+shutil.rmtree(tmp, ignore_errors=True)
+
+# v0.251: a mesma pergunta no texto do capitulo, que e o lado que a CD passou a ler
+tmp = monta_copia()
+if edita(tmp, "capitulo-16-invocacoes.md", "Alguns efeitos agem sobre quem está do outro lado",
+         "Uns efeitos agem sobre quem está do outro lado"):
+    cod, _ = roda(tmp)
+    if cod == 0:
+        print("  [CONTINUA VERDE] reescrever a abertura da seção dos efeitos -> saída 0")
+    else:
+        print("  [FALHA] reescrever a abertura da seção acendeu o validador")
+        falhas.append("contra-teste inócuo no capítulo")
+else:
+    print("  [INVÁLIDA] a troca inócua nao bateu no capitulo")
+    falhas.append("contra-teste inócuo no capítulo (troca nao bateu)")
 shutil.rmtree(tmp, ignore_errors=True)
 
 # =====================================================================

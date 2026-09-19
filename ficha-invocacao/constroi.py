@@ -10,7 +10,7 @@ A diferenca entre os dois e uma so: soltas, as tres celulas do dono -- nivel,
 Essencia e Inteligencia -- sao digitadas; como aba, elas puxam da FICHA por
 formula e param de poder divergir dela.
 """
-import json, os, sys
+import importlib.util, json, os, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AQUI = os.path.dirname(os.path.abspath(__file__))
@@ -31,6 +31,12 @@ from gramatica import COLS, GRADE_7, GRADE_10, LARG_7, LARG_10
 
 
 INV = json.load(open(os.path.join(RAIZ, "invocacao.json"), encoding="utf-8"))
+
+# A regra da inicial maiuscula mora na ficha principal (ficha-v01/correcoes_texto.py), e a ficha solta usa a
+# mesma, pra os dois arquivos dizerem as mesmas palavras. Carregada por caminho, sem por a ficha-v01 no sys.path.
+_spec = importlib.util.spec_from_file_location("correcoes_texto", os.path.join(RAIZ, "ficha-v01", "correcoes_texto.py"))
+correcoes_texto = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(correcoes_texto)
 
 
 def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
@@ -192,7 +198,7 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
         "tamanho do orçamento", nome=CORPO, pt=G.PT_NOTA, cor=TEXTO, ate=(COLS, r + 2))
     r = G.nota(ws, r + 3, "A Sintonia é a escolha de nível 2 do Evocador. "
                "Presa: crítico com 19 ou 20. Parrudo: mais vida, 5 × a sua maestria. "
-               "Voz: sobe a CD dos efeitos dela — veja a seção 9.")
+               "Voz: sobe a CD dos efeitos dela, e a seção 9 faz a conta.")
 
     # ---------------------------------------------------- 03 OS ATRIBUTOS DELA
     A = INV["atributos"]
@@ -429,19 +435,68 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
         txt(ws, 15, rr, valor, nome=CORPO, pt=G.PT_NOTA, cor=OSSO, ate=(COLS, rr))
     r += 6
 
-    # ------------------------------------------------- 09 O QUE FICA PENDENTE
-    VOZ = INV["sintonia"]["rotas"]["Voz"]
-    r = G.secao(ws, r, "9", "O QUE A FICHA NÃO CALCULA", ate=32)
-    pinta(ws, 4, r, COLS, r, PAINEL_ALTO)
-    txt(ws, 4, r, "A CD DOS EFEITOS DELA", nome=TITULO, pt=G.PT_ROT, cor=AMBAR,
+    # ------------------------------------------------------ 09 A CD DOS EFEITOS
+    # Ate a v0.250 esta secao era o aviso de que a CD nao existia em documento
+    # nenhum. O capitulo 16 a escreve desde a v0.251, e a ficha passa a calcular.
+    # A regra (decisao de 19/09/2026): a CD guarda o atributo da MONTAGEM, e so o
+    # acerto pode seguir o atributo de uma arma. Por isso o atributo da CD e um
+    # campo PROPRIO aqui embaixo, e nao o "atributo do acerto" da secao 4: com
+    # arma o acerto muda, e a CD nao pode ir junto.
+    FD, CB, SV = INV["ficha_dela"], INV["cd_bonus"], INV["sintonia"]["rotas"]["Voz"]
+    r = G.secao(ws, r, "9", "A CD DOS EFEITOS", ate=24)
+    R["cd_atributo"] = G.campo(ws, GRADE_10[0], r, LARG_10, "atributo da montagem", None,
+                               pt=11, nome=CORPO, alto=2)
+    dv(REF["atributos"], GRADE_10[0], r + 1)
+    ATRM = cel(GRADE_10[0], r + 1)
+    R["cd_preito"] = G.campo(ws, GRADE_10[1], r, LARG_10, "preito na cd (servo)", None,
+                             pt=11, nome=CORPO, alto=2)
+    dv('"sim"', GRADE_10[1], r + 1)
+    PRE = cel(GRADE_10[1], r + 1)
+    # A Voz e o Preito na CD dao o mesmo numero em todo nivel, e a regra diz que
+    # nao somam. A ficha soma o MAIOR dos dois, que e o mesmo numero -- e assim
+    # nao precisa escolher qual dos dois "vale".
+    _piso = CB["piso"]
+    _metade = f"MAX({_piso},FLOOR({MAEC}/2,1))"
+    _voz = (f'IF({SIN}="Voz",IF({NIV}<{SV["vira_metade_da_maestria_no_nivel"]},'
+            f'{SV["bonus"]},{_metade}),0)')
+    _preito = f'IF(AND({TRI}="Servo",{PRE}="sim"),{_metade},0)'
+    R["cd_bonus"] = G.campo(ws, GRADE_10[2], r, LARG_10, "bônus na CD",
+                            f"=MAX({_voz},{_preito})", pt=G.PT_GRANDE, alto=2)
+    BON = cel(GRADE_10[2], r + 1)
+    R["cd"] = G.campo(ws, GRADE_10[3], r, LARG_10, "CD dos efeitos",
+                      f'=IF({ATRM}="","",{FD["cd_base"]}+{valor_de(ATRM)}+{MAEC}+{BON})',
+                      pt=G.PT_GRANDE, alto=2)
+    r += 4
+    R["cd_confere"] = G.campo(ws, GRADE_10[0], r, LARG_10 + 22, "conferência",
+        f'=IF({ATRM}="","Escolha o atributo da montagem",'
+        f'IF(AND({PRE}="sim",{TRI}<>"Servo"),"O Preito é do Servo",'
+        f'IF(AND({ACE}<>"",{ACE}<>{ATRM}),"O acerto usa outro atributo: só vale com arma","Ok")))',
+        pt=12, cor=AMBAR)
+    r = G.nota(ws, r + 3,
+        f'CD = {FD["cd_base"]} + o atributo da montagem + a maestria do dono + o bônus. '
+        'O acerto e a CD saem do mesmo atributo, e a escolha não muda depois; só o '
+        'acerto muda se ela empunhar uma arma, e a CD fica neste atributo.')
+    r = G.nota(ws, r,
+        'A Voz (Sintonia) e o Preito do Servo na CD não somam: dão o mesmo número em '
+        'todo nível, e a planilha leva um só. Marque o Preito aqui só se o Servo '
+        'escolheu a CD nele.')
+    _tr = INV["efeitos_com_tr"]["entradas"]
+    _quem = {}
+    for _n, _v in _tr.items():
+        _quem.setdefault(_v["tr"], []).append(_n)
+    r = G.nota(ws, r,
+        "O alvo rola contra essa CD: " + "; ".join(
+            f'{" · ".join(ns)} ({t})' for t, ns in _quem.items()) +
+        ". O Graúdo não pede rolagem.", cor=TEXTO)
+    txt(ws, 4, r, "O QUE A FICHA NÃO CALCULA", nome=TITULO, pt=G.PT_ROT, cor=AMBAR,
         ate=(COLS, r))
     pinta(ws, 4, r + 1, COLS, r + 3, PAINEL)
-    R["cd_pendente"] = txt(ws, 4, r + 1,
-        f'=IF({SIN}="Voz","A Voz sobe a CD dos efeitos dela, e o sistema ainda não diz '
-        f'qual é essa CD. Combine com o mestre.","")',
-        nome=CORPO, pt=G.PT_NOTA, cor=TEXTO, ate=(COLS, r + 1))
-    txt(ws, 4, r + 2, VOZ["nota_na_ficha"], nome=CORPO, pt=G.PT_LEG, cor=TEXTO_FRACO,
-        ate=(COLS, r + 3))
+    txt(ws, 4, r + 1,
+        "Invocação com arma: o livro ainda não diz quem treina a invocação numa arma, "
+        "nem se o dado da arma soma ao Investir. Combine com o mestre. O Preito também "
+        "soma nas perícias e nos Testes de Resistência dela, e pode somar no acerto ou "
+        "na Defesa: use o Extra dos Testes de Resistência.",
+        nome=CORPO, pt=G.PT_NOTA, cor=TEXTO, ate=(COLS, r + 3))
 
     # ================================================================= CATALOGO
     cat = base(wb, NC, COLS, 64)
@@ -520,6 +575,14 @@ def constroi(wb, dono=None, aba="INVOCAÇÃO", aba_catalogo="CATÁLOGO",
         txt(d, IDX, _b + i, f"degrau_{grupo}_{n_}")
         txt(d, IDX + 1, _b + i, coord.replace("$", ""))
 
+    # 19/09/2026, decisao do Mizuki (B25): o texto que abre frase, titulo ou mensagem sai com a inicial
+    # maiuscula aqui tambem, como na ficha principal. Vale para a INVOCACAO e o CATALOGO; a DADOS e interna.
+    for _ws, _nome in ((wb[NI], "INVOCAÇÃO"), (wb[NC], "CATÁLOGO")):
+        for _linha in _ws.iter_rows():
+            for _c in _linha:
+                _novo = correcoes_texto.corrige_valor(_nome, _c.value)
+                if _novo != _c.value:
+                    _c.value = _novo
 
     return {"campos": R, "slots": SLOTS, "nomes_slot": NOMES_SLOT,
             "dados": d, "coluna_livre": c, "n_traco": N_TRACO,
