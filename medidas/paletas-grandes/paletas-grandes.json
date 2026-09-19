@@ -1,0 +1,6948 @@
+{
+  "Mizuki": {
+    "claro": {
+      "cores": {
+        "fundo": "FDF2F7",
+        "painel": "FAD6E7",
+        "painel_alto": "F5B7D4",
+        "linha": "F0BCD4",
+        "texto": "1E1320",
+        "texto_fraco": "2D0A1A",
+        "acento": "E32175",
+        "tinta": "FBE4EF",
+        "papel": "FDEDF4",
+        "painel_baixo": "FCE7F1",
+        "bloco": "C22B71",
+        "menu_grande": "FFB6D8",
+        "regua": "CB015E"
+      },
+      "contraste": {
+        "texto/fundo": 16.438848845712272,
+        "texto/painel": 13.545328804901903,
+        "acento/fundo": 4.054443226855379,
+        "acento/painel": 3.3407915082136657,
+        "texto/tinta": 14.920852776344447
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.34)"
+      ],
+      "osso_por_papel": {
+        "fundo": "1E1320",
+        "painel": "1E1320",
+        "painel_alto": "1E1320",
+        "linha": "1E1320",
+        "texto": "FBE4EF",
+        "texto_fraco": "FBE4EF",
+        "acento": "000000",
+        "tinta": "1E1320",
+        "papel": "1E1320",
+        "painel_baixo": "1E1320",
+        "bloco": "FFFFFF",
+        "menu_grande": "1E1320",
+        "regua": "FBE4EF"
+      },
+      "aviso_por_papel": {
+        "fundo": "D71B6D",
+        "painel": "BD185F",
+        "painel_alto": "A21452",
+        "linha": "A51553",
+        "texto": "E63B85",
+        "texto_fraco": "E63B85",
+        "acento": "13020A",
+        "tinta": "C81965",
+        "papel": "D01A69",
+        "painel_baixo": "CC1A67",
+        "bloco": "FCE5EF",
+        "menu_grande": "A51553",
+        "regua": "FBDEEA"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "1B111D",
+        "painel": "311E33",
+        "painel_alto": "492D4D",
+        "linha": "64163B",
+        "texto": "FBE4EF",
+        "texto_fraco": "F1BFD6",
+        "acento": "F8C7DC",
+        "tinta": "150817",
+        "papel": "251727",
+        "painel_baixo": "301E33",
+        "bloco": "D44085",
+        "menu_grande": "46244B",
+        "regua": "B377BB"
+      },
+      "contraste": {
+        "texto/fundo": 15.242680019418263,
+        "texto/painel": 12.789038504882084,
+        "acento/fundo": 12.40177446083047,
+        "acento/painel": 10.405438604390342,
+        "texto/tinta": 16.168437509944408
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FBE4EF",
+        "painel": "FBE4EF",
+        "painel_alto": "FBE4EF",
+        "linha": "FBE4EF",
+        "texto": "1E1320",
+        "texto_fraco": "1E1320",
+        "acento": "1E1320",
+        "tinta": "FBE4EF",
+        "papel": "FBE4EF",
+        "painel_baixo": "FBE4EF",
+        "bloco": "000000",
+        "menu_grande": "FBE4EF",
+        "regua": "1E1320"
+      },
+      "aviso_por_papel": {
+        "fundo": "F8C7DC",
+        "painel": "F8C7DC",
+        "painel_alto": "F8C7DC",
+        "linha": "F8C7DC",
+        "texto": "C71963",
+        "texto_fraco": "A61553",
+        "acento": "AC1656",
+        "tinta": "F8C7DC",
+        "papel": "F8C7DC",
+        "painel_baixo": "F8C7DC",
+        "bloco": "1A030D",
+        "menu_grande": "F8C7DC",
+        "regua": "490924"
+      }
+    }
+  },
+  "Noite": {
+    "claro": {
+      "cores": {
+        "fundo": "F7F5F9",
+        "painel": "E8E2EE",
+        "painel_alto": "D6CBE1",
+        "linha": "D6D0DC",
+        "texto": "151122",
+        "texto_fraco": "1B1720",
+        "acento": "3B3360",
+        "tinta": "F0E7F8",
+        "papel": "F5F2F7",
+        "painel_baixo": "F2EEF5",
+        "bloco": "756588",
+        "menu_grande": "DACDE8",
+        "regua": "66428A"
+      },
+      "contraste": {
+        "texto/fundo": 17.075686163253554,
+        "texto/painel": 14.574380493525533,
+        "acento/fundo": 10.601471717972943,
+        "acento/painel": 9.048531410795594,
+        "texto/tinta": 15.408240501350885
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "151122",
+        "painel": "151122",
+        "painel_alto": "151122",
+        "linha": "151122",
+        "texto": "F0ECF4",
+        "texto_fraco": "F0ECF4",
+        "acento": "F0ECF4",
+        "tinta": "151122",
+        "papel": "151122",
+        "painel_baixo": "151122",
+        "bloco": "F0ECF4",
+        "menu_grande": "151122",
+        "regua": "F0ECF4"
+      },
+      "aviso_por_papel": {
+        "fundo": "3B3360",
+        "painel": "3B3360",
+        "painel_alto": "3B3360",
+        "linha": "3B3360",
+        "texto": "8075B6",
+        "texto_fraco": "8479B8",
+        "acento": "A8A0CD",
+        "tinta": "3B3360",
+        "papel": "3B3360",
+        "painel_baixo": "3B3360",
+        "bloco": "F1EFF7",
+        "menu_grande": "3B3360",
+        "regua": "C9C4E0"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "13101E",
+        "painel": "211C36",
+        "painel_alto": "322A51",
+        "linha": "3C3446",
+        "texto": "F0ECF4",
+        "texto_fraco": "D7D2DE",
+        "acento": "7569AF",
+        "tinta": "0B0817",
+        "papel": "191529",
+        "painel_baixo": "211B35",
+        "bloco": "89799C",
+        "menu_grande": "29204F",
+        "regua": "816FC3"
+      },
+      "contraste": {
+        "texto/fundo": 16.072028354465562,
+        "texto/painel": 14.02574182538097,
+        "acento/fundo": 3.9230982100656626,
+        "acento/painel": 3.4236103518761425,
+        "texto/tinta": 16.968783708092754
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.42)"
+      ],
+      "osso_por_papel": {
+        "fundo": "F0ECF4",
+        "painel": "F0ECF4",
+        "painel_alto": "F0ECF4",
+        "linha": "F0ECF4",
+        "texto": "151122",
+        "texto_fraco": "151122",
+        "acento": "FFFFFF",
+        "tinta": "F0ECF4",
+        "papel": "F0ECF4",
+        "painel_baixo": "F0ECF4",
+        "bloco": "151122",
+        "menu_grande": "F0ECF4",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "8175B6",
+        "painel": "8A7FBB",
+        "painel_alto": "9A91C4",
+        "linha": "A39BCA",
+        "texto": "6D60AA",
+        "texto_fraco": "5D5198",
+        "acento": "F9F8FB",
+        "tinta": "7C70B3",
+        "papel": "8378B7",
+        "painel_baixo": "8A7FBB",
+        "bloco": "161325",
+        "menu_grande": "9187BF",
+        "regua": "110F1B"
+      }
+    }
+  },
+  "Blush": {
+    "claro": {
+      "cores": {
+        "fundo": "FFF0F0",
+        "painel": "FFD1D1",
+        "painel_alto": "FFADAD",
+        "linha": "E8C4CB",
+        "texto": "1D1616",
+        "texto_fraco": "280F14",
+        "acento": "D64024",
+        "tinta": "FFE0E0",
+        "papel": "FFEAEA",
+        "painel_baixo": "FFE4E4",
+        "bloco": "AB4257",
+        "menu_grande": "FFB6B6",
+        "regua": "CC0000"
+      },
+      "contraste": {
+        "texto/fundo": 16.09912436823601,
+        "texto/painel": 12.975553427843192,
+        "acento/fundo": 4.10871291066546,
+        "acento/painel": 3.3115356259497175,
+        "texto/tinta": 14.41604411209948
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.31)"
+      ],
+      "osso_por_papel": {
+        "fundo": "280F14",
+        "painel": "280F14",
+        "painel_alto": "280F14",
+        "linha": "280F14",
+        "texto": "FFE0E0",
+        "texto_fraco": "FFE0E0",
+        "acento": "000000",
+        "tinta": "280F14",
+        "papel": "280F14",
+        "painel_baixo": "280F14",
+        "bloco": "FFE0E0",
+        "menu_grande": "280F14",
+        "regua": "FFE0E0"
+      },
+      "aviso_por_papel": {
+        "fundo": "C83C22",
+        "painel": "AF341D",
+        "painel_alto": "922C19",
+        "linha": "9D2F1A",
+        "texto": "DD5137",
+        "texto_fraco": "DD5137",
+        "acento": "090301",
+        "tinta": "BD3920",
+        "papel": "C43B21",
+        "painel_baixo": "BD3920",
+        "bloco": "F9DFDA",
+        "menu_grande": "992E1A",
+        "regua": "F8DCD6"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "1A1414",
+        "painel": "2E2424",
+        "painel_alto": "453636",
+        "linha": "58222D",
+        "texto": "FFE0E0",
+        "texto_fraco": "E9C6CD",
+        "acento": "F7D6D0",
+        "tinta": "170808",
+        "papel": "231B1B",
+        "painel_baixo": "2D2323",
+        "bloco": "BE576B",
+        "menu_grande": "402E2E",
+        "regua": "A58D8D"
+      },
+      "contraste": {
+        "texto/fundo": 14.722146893650814,
+        "texto/painel": 12.18845012140954,
+        "acento/fundo": 13.416911639032772,
+        "acento/painel": 11.107847209854688,
+        "texto/tinta": 15.810068490208339
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFE0E0",
+        "painel": "FFE0E0",
+        "painel_alto": "FFE0E0",
+        "linha": "FFE0E0",
+        "texto": "280F14",
+        "texto_fraco": "280F14",
+        "acento": "280F14",
+        "tinta": "FFE0E0",
+        "papel": "FFE0E0",
+        "painel_baixo": "FFE0E0",
+        "bloco": "000000",
+        "menu_grande": "FFE0E0",
+        "regua": "280F14"
+      },
+      "aviso_por_papel": {
+        "fundo": "F7D6D0",
+        "painel": "F7D6D0",
+        "painel_alto": "F7D6D0",
+        "linha": "F7D6D0",
+        "texto": "BC3820",
+        "texto_fraco": "A2301C",
+        "acento": "AF341E",
+        "tinta": "F7D6D0",
+        "papel": "F7D6D0",
+        "painel_baixo": "F7D6D0",
+        "bloco": "130603",
+        "menu_grande": "F7D6D0",
+        "regua": "4E170D"
+      }
+    }
+  },
+  "Crepúsculo": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFBF0",
+        "painel": "FFF2D1",
+        "painel_alto": "FFE8AD",
+        "linha": "E8C4D1",
+        "texto": "270C1E",
+        "texto_fraco": "280F18",
+        "acento": "DB5757",
+        "tinta": "FFF6E0",
+        "papel": "FFF9EA",
+        "painel_baixo": "FFF7E4",
+        "bloco": "AB4266",
+        "menu_grande": "FFEAB6",
+        "regua": "CC9300"
+      },
+      "contraste": {
+        "texto/fundo": 17.544116750033734,
+        "texto/painel": 16.30398195333604,
+        "acento/fundo": 3.683917357812871,
+        "acento/painel": 3.4235135900612925,
+        "texto/tinta": 16.854367759330803
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.42)"
+      ],
+      "osso_por_papel": {
+        "fundo": "270C1E",
+        "painel": "270C1E",
+        "painel_alto": "270C1E",
+        "linha": "270C1E",
+        "texto": "FFF6E0",
+        "texto_fraco": "FFF6E0",
+        "acento": "270C1E",
+        "tinta": "270C1E",
+        "papel": "270C1E",
+        "painel_baixo": "270C1E",
+        "bloco": "FFF6E0",
+        "menu_grande": "270C1E",
+        "regua": "270C1E"
+      },
+      "aviso_por_papel": {
+        "fundo": "D53A3A",
+        "painel": "D22D2D",
+        "painel_alto": "C52A2A",
+        "linha": "A82424",
+        "texto": "DB5757",
+        "texto_fraco": "DB5757",
+        "acento": "370C0C",
+        "tinta": "D33131",
+        "papel": "D43535",
+        "painel_baixo": "D43535",
+        "bloco": "F8E0E0",
+        "menu_grande": "CA2B2B",
+        "regua": "651616"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "230B1B",
+        "painel": "3F1330",
+        "painel_alto": "5E1C47",
+        "linha": "582235",
+        "texto": "FFF6E0",
+        "texto_fraco": "E9C6D2",
+        "acento": "EA9D9D",
+        "tinta": "180712",
+        "papel": "300E24",
+        "painel_baixo": "3E132F",
+        "bloco": "BE577B",
+        "menu_grande": "5F0F43",
+        "regua": "E052AF"
+      },
+      "contraste": {
+        "texto/fundo": 17.187592384184438,
+        "texto/painel": 14.48258675770473,
+        "acento/fundo": 8.640311532207066,
+        "acento/painel": 7.280488074288434,
+        "texto/tinta": 18.099555329540223
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFF6E0",
+        "painel": "FFF6E0",
+        "painel_alto": "FFF6E0",
+        "linha": "FFF6E0",
+        "texto": "270C1E",
+        "texto_fraco": "270C1E",
+        "acento": "270C1E",
+        "tinta": "FFF6E0",
+        "papel": "FFF6E0",
+        "painel_baixo": "FFF6E0",
+        "bloco": "000000",
+        "menu_grande": "FFF6E0",
+        "regua": "270C1E"
+      },
+      "aviso_por_papel": {
+        "fundo": "EA9D9D",
+        "painel": "EA9D9D",
+        "painel_alto": "EA9D9D",
+        "linha": "EA9D9D",
+        "texto": "D33232",
+        "texto_fraco": "A62424",
+        "acento": "811C1C",
+        "tinta": "EA9D9D",
+        "papel": "EA9D9D",
+        "painel_baixo": "EA9D9D",
+        "bloco": "150505",
+        "menu_grande": "EA9D9D",
+        "regua": "400E0E"
+      }
+    }
+  },
+  "Alfazema": {
+    "claro": {
+      "cores": {
+        "fundo": "FEFBF0",
+        "painel": "FDF4D3",
+        "painel_alto": "FCECB1",
+        "linha": "D6CEDF",
+        "texto": "1D1616",
+        "texto_fraco": "1B1621",
+        "acento": "4489C4",
+        "tinta": "FEF8E2",
+        "papel": "FEFAEB",
+        "painel_baixo": "FEF9E5",
+        "bloco": "755D90",
+        "menu_grande": "FFEFB6",
+        "regua": "CCA100"
+      },
+      "contraste": {
+        "texto/fundo": 17.199593065873348,
+        "texto/painel": 16.169668855824856,
+        "acento/fundo": 3.6062489265971647,
+        "acento/painel": 3.3903041037900907,
+        "texto/tinta": 16.74823378294309
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.39)"
+      ],
+      "osso_por_papel": {
+        "fundo": "1D1616",
+        "painel": "1D1616",
+        "painel_alto": "1D1616",
+        "linha": "1D1616",
+        "texto": "FEF8E2",
+        "texto_fraco": "FEF8E2",
+        "acento": "1D1616",
+        "tinta": "1D1616",
+        "papel": "1D1616",
+        "painel_baixo": "1D1616",
+        "bloco": "FEF8E2",
+        "menu_grande": "1D1616",
+        "regua": "1D1616"
+      },
+      "aviso_por_papel": {
+        "fundo": "3777AE",
+        "painel": "3572A7",
+        "painel_alto": "336EA1",
+        "linha": "2A5C86",
+        "texto": "4489C4",
+        "texto_fraco": "4489C4",
+        "acento": "0E1E2B",
+        "tinta": "3675AB",
+        "papel": "3777AE",
+        "painel_baixo": "3777AE",
+        "bloco": "DDE9F4",
+        "menu_grande": "3470A4",
+        "regua": "1C3E5A"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "1A1313",
+        "painel": "2F2323",
+        "painel_alto": "473434",
+        "linha": "3C304A",
+        "texto": "FEF8E2",
+        "texto_fraco": "D7CFE0",
+        "acento": "B0CDE6",
+        "tinta": "170808",
+        "papel": "241A1A",
+        "painel_baixo": "2E2222",
+        "bloco": "8972A3",
+        "menu_grande": "432C2C",
+        "regua": "AD8585"
+      },
+      "contraste": {
+        "texto/fundo": 17.217407597742486,
+        "texto/painel": 14.24656137768456,
+        "acento/fundo": 11.095912429869255,
+        "acento/painel": 9.181323992949574,
+        "texto/tinta": 18.367779755620393
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FEF8E2",
+        "painel": "FEF8E2",
+        "painel_alto": "FEF8E2",
+        "linha": "FEF8E2",
+        "texto": "1D1616",
+        "texto_fraco": "1D1616",
+        "acento": "1D1616",
+        "tinta": "FEF8E2",
+        "papel": "FEF8E2",
+        "painel_baixo": "FEF8E2",
+        "bloco": "000000",
+        "menu_grande": "FEF8E2",
+        "regua": "1D1616"
+      },
+      "aviso_por_papel": {
+        "fundo": "B0CDE6",
+        "painel": "B0CDE6",
+        "painel_alto": "B0CDE6",
+        "linha": "B0CDE6",
+        "texto": "3674AA",
+        "texto_fraco": "2A5B86",
+        "acento": "295881",
+        "tinta": "B0CDE6",
+        "papel": "B0CDE6",
+        "painel_baixo": "B0CDE6",
+        "bloco": "070E15",
+        "menu_grande": "B0CDE6",
+        "regua": "142A3E"
+      }
+    }
+  },
+  "Meia-Noite": {
+    "claro": {
+      "cores": {
+        "fundo": "F1F7FE",
+        "painel": "D4E8FC",
+        "painel_alto": "B2D6FA",
+        "linha": "B7BEF5",
+        "texto": "060F2D",
+        "texto_fraco": "070B30",
+        "acento": "4A6FFF",
+        "tinta": "E2F0FD",
+        "papel": "ECF5FE",
+        "painel_baixo": "E6F1FD",
+        "bloco": "1D2FD0",
+        "menu_grande": "B6DAFF",
+        "regua": "0065CC"
+      },
+      "contraste": {
+        "texto/fundo": 17.48313794051015,
+        "texto/painel": 15.034317137100501,
+        "acento/fundo": 3.888166414742899,
+        "acento/painel": 3.3435603585566667,
+        "texto/tinta": 16.2627622820152
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.34)"
+      ],
+      "osso_por_papel": {
+        "fundo": "070B30",
+        "painel": "070B30",
+        "painel_alto": "070B30",
+        "linha": "070B30",
+        "texto": "E2F0FD",
+        "texto_fraco": "E2F0FD",
+        "acento": "070B30",
+        "tinta": "070B30",
+        "papel": "070B30",
+        "painel_baixo": "070B30",
+        "bloco": "E2F0FD",
+        "menu_grande": "070B30",
+        "regua": "E2F0FD"
+      },
+      "aviso_por_papel": {
+        "fundo": "345EFF",
+        "painel": "2450FF",
+        "painel_alto": "083BFF",
+        "linha": "002FE6",
+        "texto": "4D71FF",
+        "texto_fraco": "4A6FFF",
+        "acento": "000B37",
+        "tinta": "2F59FF",
+        "papel": "345EFF",
+        "painel_baixo": "2F59FF",
+        "bloco": "A5B7FF",
+        "menu_grande": "0E3FFF",
+        "regua": "E1E7FF"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "060D28",
+        "painel": "0A1748",
+        "painel_alto": "0F236B",
+        "linha": "0F186B",
+        "texto": "E2F0FD",
+        "texto_fraco": "BAC0F5",
+        "acento": "7692FF",
+        "tinta": "04091B",
+        "papel": "081236",
+        "painel_baixo": "0A1746",
+        "bloco": "3345E2",
+        "menu_grande": "00186E",
+        "regua": "3561FD"
+      },
+      "contraste": {
+        "texto/fundo": 16.530041817786273,
+        "texto/painel": 14.740081733805802,
+        "acento/fundo": 6.684466893290367,
+        "acento/painel": 5.960637573705435,
+        "texto/tinta": 17.0896869292159
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "E2F0FD",
+        "painel": "E2F0FD",
+        "painel_alto": "E2F0FD",
+        "linha": "E2F0FD",
+        "texto": "070B30",
+        "texto_fraco": "070B30",
+        "acento": "070B30",
+        "tinta": "E2F0FD",
+        "papel": "E2F0FD",
+        "painel_baixo": "E2F0FD",
+        "bloco": "E2F0FD",
+        "menu_grande": "E2F0FD",
+        "regua": "FFFFFF"
+      },
+      "aviso_por_papel": {
+        "fundo": "7692FF",
+        "painel": "7692FF",
+        "painel_alto": "7692FF",
+        "linha": "7692FF",
+        "texto": "2B57FF",
+        "texto_fraco": "0030EC",
+        "acento": "001E95",
+        "tinta": "7692FF",
+        "papel": "7692FF",
+        "painel_baixo": "7692FF",
+        "bloco": "C6D2FF",
+        "menu_grande": "7692FF",
+        "regua": "F4F6FF"
+      }
+    }
+  },
+  "Pôr do Sol": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFBF0",
+        "painel": "FFF3D1",
+        "painel_alto": "FFEAAD",
+        "linha": "FFE6AD",
+        "texto": "330000",
+        "texto_fraco": "372600",
+        "acento": "DA6000",
+        "tinta": "FFF7E0",
+        "papel": "FFFAEA",
+        "painel_baixo": "FFF8E4",
+        "bloco": "EDA400",
+        "menu_grande": "FFECB6",
+        "regua": "CC9800"
+      },
+      "contraste": {
+        "texto/fundo": 17.803131320026147,
+        "texto/painel": 16.649341039728622,
+        "acento/fundo": 3.5918441602069673,
+        "acento/painel": 3.35906292605809,
+        "texto/tinta": 17.210144238569363
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.36)"
+      ],
+      "osso_por_papel": {
+        "fundo": "330000",
+        "painel": "330000",
+        "painel_alto": "330000",
+        "linha": "330000",
+        "texto": "FFF7E0",
+        "texto_fraco": "FFF7E0",
+        "acento": "330000",
+        "tinta": "330000",
+        "papel": "330000",
+        "painel_baixo": "330000",
+        "bloco": "330000",
+        "menu_grande": "330000",
+        "regua": "330000"
+      },
+      "aviso_por_papel": {
+        "fundo": "BD5300",
+        "painel": "B65000",
+        "painel_alto": "AE4D00",
+        "linha": "AB4B00",
+        "texto": "DA6000",
+        "texto_fraco": "ED6900",
+        "acento": "331600",
+        "tinta": "B95200",
+        "papel": "BD5300",
+        "painel_baixo": "B95200",
+        "bloco": "713200",
+        "menu_grande": "B24E00",
+        "regua": "5B2800"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "2E0000",
+        "painel": "520000",
+        "painel_alto": "7A0000",
+        "linha": "7A5500",
+        "texto": "FFF7E0",
+        "texto_fraco": "FFE7B0",
+        "acento": "FFA259",
+        "tinta": "1F0000",
+        "papel": "3E0000",
+        "painel_baixo": "500000",
+        "bloco": "FFB716",
+        "menu_grande": "6E0000",
+        "regua": "FF3333"
+      },
+      "contraste": {
+        "texto/fundo": 17.58934301232942,
+        "texto/painel": 14.448879008350973,
+        "acento/fundo": 9.464867170438833,
+        "acento/painel": 7.774976045434045,
+        "texto/tinta": 18.55181720463042
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFF7E0",
+        "painel": "FFF7E0",
+        "painel_alto": "FFF7E0",
+        "linha": "FFF7E0",
+        "texto": "330000",
+        "texto_fraco": "330000",
+        "acento": "330000",
+        "tinta": "FFF7E0",
+        "papel": "FFF7E0",
+        "painel_baixo": "FFF7E0",
+        "bloco": "330000",
+        "menu_grande": "FFF7E0",
+        "regua": "330000"
+      },
+      "aviso_por_papel": {
+        "fundo": "FFA259",
+        "painel": "FFA259",
+        "painel_alto": "FFA259",
+        "linha": "FFC99E",
+        "texto": "B75100",
+        "texto_fraco": "AC4C00",
+        "acento": "783500",
+        "tinta": "FFA259",
+        "papel": "FFA259",
+        "painel_baixo": "FFA259",
+        "bloco": "843A00",
+        "menu_grande": "FFA259",
+        "regua": "341700"
+      }
+    }
+  },
+  "Sálvia": {
+    "claro": {
+      "cores": {
+        "fundo": "FBF8F4",
+        "painel": "F2EADE",
+        "painel_alto": "E8D9C5",
+        "linha": "DBD1D1",
+        "texto": "1B1E15",
+        "texto_fraco": "1F1818",
+        "acento": "997B4E",
+        "tinta": "F8F1E7",
+        "papel": "F9F5F0",
+        "painel_baixo": "F7F3EC",
+        "bloco": "856868",
+        "menu_grande": "F0DDC5",
+        "regua": "9F6F2D"
+      },
+      "contraste": {
+        "texto/fundo": 15.955671819422093,
+        "texto/painel": 14.15718162897491,
+        "acento/fundo": 3.744134538637495,
+        "acento/painel": 3.3221034693310116,
+        "texto/tinta": 15.064523362675356
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.32)"
+      ],
+      "osso_por_papel": {
+        "fundo": "1F1818",
+        "painel": "1F1818",
+        "painel_alto": "1F1818",
+        "linha": "1F1818",
+        "texto": "F6F1E9",
+        "texto_fraco": "F6F1E9",
+        "acento": "000000",
+        "tinta": "1F1818",
+        "papel": "1F1818",
+        "painel_baixo": "1F1818",
+        "bloco": "FFFFFF",
+        "menu_grande": "1F1818",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "876D45",
+        "painel": "7F6641",
+        "painel_alto": "735C3A",
+        "linha": "6E5838",
+        "texto": "9F8051",
+        "texto_fraco": "9C7D50",
+        "acento": "19140D",
+        "tinta": "826942",
+        "papel": "856B44",
+        "painel_baixo": "856B44",
+        "bloco": "F6F2ED",
+        "menu_grande": "755E3C",
+        "regua": "0D0A06"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "181B13",
+        "painel": "2B3022",
+        "painel_alto": "414832",
+        "linha": "453636",
+        "texto": "F6F1E9",
+        "texto_fraco": "DCD3D3",
+        "acento": "EAE2D6",
+        "tinta": "121708",
+        "papel": "212519",
+        "painel_baixo": "2A2F21",
+        "bloco": "987C7C",
+        "menu_grande": "3C442A",
+        "regua": "A1B181"
+      },
+      "contraste": {
+        "texto/fundo": 15.499664748427357,
+        "texto/painel": 12.060796249032505,
+        "acento/fundo": 13.566669340403694,
+        "acento/painel": 10.556669279521483,
+        "texto/tinta": 16.215988381371048
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F6F1E9",
+        "painel": "F6F1E9",
+        "painel_alto": "F6F1E9",
+        "linha": "F6F1E9",
+        "texto": "1F1818",
+        "texto_fraco": "1F1818",
+        "acento": "1F1818",
+        "tinta": "F6F1E9",
+        "papel": "F6F1E9",
+        "painel_baixo": "F6F1E9",
+        "bloco": "1F1818",
+        "menu_grande": "F6F1E9",
+        "regua": "1F1818"
+      },
+      "aviso_por_papel": {
+        "fundo": "EAE2D6",
+        "painel": "EAE2D6",
+        "painel_alto": "EAE2D6",
+        "linha": "EAE2D6",
+        "texto": "806742",
+        "texto_fraco": "6D5738",
+        "acento": "775F3D",
+        "tinta": "EAE2D6",
+        "papel": "EAE2D6",
+        "painel_baixo": "EAE2D6",
+        "bloco": "1E180F",
+        "menu_grande": "EAE2D6",
+        "regua": "4A3C26"
+      }
+    }
+  },
+  "Recife": {
+    "claro": {
+      "cores": {
+        "fundo": "F1FEFE",
+        "painel": "D4FCFB",
+        "painel_alto": "B3F9F8",
+        "linha": "C1EAEB",
+        "texto": "2E0505",
+        "texto_fraco": "0D292A",
+        "acento": "ED4747",
+        "tinta": "E3FDFC",
+        "papel": "ECFDFD",
+        "painel_baixo": "E6FDFD",
+        "bloco": "3AB1B4",
+        "menu_grande": "B6FFFE",
+        "regua": "00CCC8"
+      },
+      "contraste": {
+        "texto/fundo": 17.848082440936775,
+        "texto/painel": 16.76792581835516,
+        "acento/fundo": 3.6380030220128026,
+        "acento/painel": 3.4178329802056218,
+        "texto/tinta": 17.29891815654558
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.42)"
+      ],
+      "osso_por_papel": {
+        "fundo": "2E0505",
+        "painel": "2E0505",
+        "painel_alto": "2E0505",
+        "linha": "2E0505",
+        "texto": "E3FDFC",
+        "texto_fraco": "E3FDFC",
+        "acento": "2E0505",
+        "tinta": "2E0505",
+        "papel": "2E0505",
+        "painel_baixo": "2E0505",
+        "bloco": "2E0505",
+        "menu_grande": "2E0505",
+        "regua": "2E0505"
+      },
+      "aviso_por_papel": {
+        "fundo": "E51616",
+        "painel": "DC1515",
+        "painel_alto": "D21515",
+        "linha": "C91414",
+        "texto": "ED4747",
+        "texto_fraco": "EF5959",
+        "acento": "3D0606",
+        "tinta": "E01616",
+        "papel": "E01616",
+        "painel_baixo": "E01616",
+        "bloco": "700B0B",
+        "menu_grande": "D71515",
+        "regua": "910E0E"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "290505",
+        "painel": "490909",
+        "painel_alto": "6D0D0D",
+        "linha": "1E5C5D",
+        "texto": "E3FDFC",
+        "texto_fraco": "C4EBEC",
+        "acento": "F7ADAD",
+        "tinta": "1B0303",
+        "papel": "370707",
+        "painel_baixo": "480808",
+        "bloco": "4FC4C6",
+        "menu_grande": "6E0000",
+        "regua": "FF3333"
+      },
+      "contraste": {
+        "texto/fundo": 17.63749248998285,
+        "texto/painel": 14.869752376163847,
+        "acento/fundo": 10.3164551010178,
+        "acento/painel": 8.697559068505448,
+        "texto/tinta": 18.589086668665264
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "E3FDFC",
+        "painel": "E3FDFC",
+        "painel_alto": "E3FDFC",
+        "linha": "E3FDFC",
+        "texto": "2E0505",
+        "texto_fraco": "2E0505",
+        "acento": "2E0505",
+        "tinta": "E3FDFC",
+        "papel": "E3FDFC",
+        "painel_baixo": "E3FDFC",
+        "bloco": "2E0505",
+        "menu_grande": "E3FDFC",
+        "regua": "2E0505"
+      },
+      "aviso_por_papel": {
+        "fundo": "F7ADAD",
+        "painel": "F7ADAD",
+        "painel_alto": "F7ADAD",
+        "linha": "F8B7B7",
+        "texto": "DF1616",
+        "texto_fraco": "C61313",
+        "acento": "9F1010",
+        "tinta": "F7ADAD",
+        "papel": "F7ADAD",
+        "painel_baixo": "F7ADAD",
+        "bloco": "8C0E0E",
+        "menu_grande": "F7ADAD",
+        "regua": "400606"
+      }
+    }
+  },
+  "Vinho": {
+    "claro": {
+      "cores": {
+        "fundo": "FFF8F0",
+        "painel": "FFEAD1",
+        "painel_alto": "FFD9AD",
+        "linha": "EDD9C0",
+        "texto": "33000D",
+        "texto_fraco": "2B1E0C",
+        "acento": "D45060",
+        "tinta": "FFF1E0",
+        "papel": "FFF5EA",
+        "painel_baixo": "FFF3E4",
+        "bloco": "B87F35",
+        "menu_grande": "FFDDB6",
+        "regua": "CC6E00"
+      },
+      "contraste": {
+        "texto/fundo": 17.388523903924074,
+        "texto/painel": 15.648209779457844,
+        "acento/fundo": 3.8971996525290713,
+        "acento/painel": 3.5071520764015394,
+        "texto/tinta": 16.49304477255416
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "33000D",
+        "painel": "33000D",
+        "painel_alto": "33000D",
+        "linha": "33000D",
+        "texto": "FFF1E0",
+        "texto_fraco": "FFF1E0",
+        "acento": "000000",
+        "tinta": "33000D",
+        "papel": "33000D",
+        "painel_baixo": "33000D",
+        "bloco": "33000D",
+        "menu_grande": "33000D",
+        "regua": "33000D"
+      },
+      "aviso_por_papel": {
+        "fundo": "CF3C4E",
+        "painel": "C73143",
+        "painel_alto": "B82D3E",
+        "linha": "B42C3D",
+        "texto": "D55363",
+        "texto_fraco": "D86170",
+        "acento": "270A0D",
+        "tinta": "CD3547",
+        "papel": "CE394B",
+        "painel_baixo": "CD3547",
+        "bloco": "461118",
+        "menu_grande": "BC2E3F",
+        "regua": "3B0E14"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "2E000B",
+        "painel": "520014",
+        "painel_alto": "7A001F",
+        "linha": "5F421B",
+        "texto": "FFF1E0",
+        "texto_fraco": "EEDBC2",
+        "acento": "D45060",
+        "tinta": "1F0008",
+        "papel": "3E000F",
+        "painel_baixo": "500014",
+        "bloco": "CB934A",
+        "menu_grande": "6E001C",
+        "regua": "FF3366"
+      },
+      "contraste": {
+        "texto/fundo": 16.869284978445553,
+        "texto/painel": 13.814676287448984,
+        "acento/fundo": 4.563582421386973,
+        "acento/painel": 3.7372309462498006,
+        "texto/tinta": 17.81037811745138
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFF1E0",
+        "painel": "FFF1E0",
+        "painel_alto": "FFF1E0",
+        "linha": "FFF1E0",
+        "texto": "33000D",
+        "texto_fraco": "33000D",
+        "acento": "000000",
+        "tinta": "FFF1E0",
+        "papel": "FFF1E0",
+        "painel_baixo": "FFF1E0",
+        "bloco": "33000D",
+        "menu_grande": "FFF1E0",
+        "regua": "33000D"
+      },
+      "aviso_por_papel": {
+        "fundo": "D45060",
+        "painel": "DA6775",
+        "painel_alto": "E38D98",
+        "linha": "E9A5AD",
+        "texto": "CD3547",
+        "texto_fraco": "B42C3D",
+        "acento": "270A0D",
+        "tinta": "D45060",
+        "papel": "D65968",
+        "painel_baixo": "DA6775",
+        "bloco": "661922",
+        "menu_grande": "E0828D",
+        "regua": "3F0F15"
+      }
+    }
+  },
+  "Neon": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFCF0",
+        "painel": "FFF6D1",
+        "painel_alto": "FFF0AD",
+        "linha": "FEAFFD",
+        "texto": "150132",
+        "texto_fraco": "360135",
+        "acento": "FF2B67",
+        "tinta": "FFF9E0",
+        "papel": "FFFBEA",
+        "painel_baixo": "FFFAE4",
+        "bloco": "E904E6",
+        "menu_grande": "FFF2B6",
+        "regua": "CCA600"
+      },
+      "contraste": {
+        "texto/fundo": 18.88080116493694,
+        "texto/painel": 17.883449828790233,
+        "acento/fundo": 3.527185564754611,
+        "acento/painel": 3.340867028527542,
+        "texto/tinta": 18.367277494651685
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.34)"
+      ],
+      "osso_por_papel": {
+        "fundo": "150132",
+        "painel": "150132",
+        "painel_alto": "150132",
+        "linha": "150132",
+        "texto": "FFF9E0",
+        "texto_fraco": "FFF9E0",
+        "acento": "150132",
+        "tinta": "150132",
+        "papel": "150132",
+        "painel_baixo": "150132",
+        "bloco": "150132",
+        "menu_grande": "150132",
+        "regua": "150132"
+      },
+      "aviso_por_papel": {
+        "fundo": "E40041",
+        "painel": "E0003F",
+        "painel_alto": "D6003C",
+        "linha": "A90030",
+        "texto": "FF2B67",
+        "texto_fraco": "FF2B67",
+        "acento": "460014",
+        "tinta": "E40041",
+        "papel": "E40041",
+        "painel_baixo": "E40041",
+        "bloco": "410012",
+        "menu_grande": "DB003E",
+        "regua": "810025"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "13012D",
+        "painel": "210150",
+        "painel_alto": "320279",
+        "linha": "780277",
+        "texto": "FFF9E0",
+        "texto_fraco": "FEB2FD",
+        "acento": "FF467A",
+        "tinta": "0D001E",
+        "papel": "19013D",
+        "painel_baixo": "21014F",
+        "bloco": "FB1AF8",
+        "menu_grande": "2C006E",
+        "regua": "8633FF"
+      },
+      "contraste": {
+        "texto/fundo": 18.57949519481892,
+        "texto/painel": 16.77740554658078,
+        "acento/fundo": 5.9902342542475315,
+        "acento/painel": 5.409220667661428,
+        "texto/tinta": 19.190455228282293
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFF9E0",
+        "painel": "FFF9E0",
+        "painel_alto": "FFF9E0",
+        "linha": "FFF9E0",
+        "texto": "150132",
+        "texto_fraco": "150132",
+        "acento": "150132",
+        "tinta": "FFF9E0",
+        "papel": "FFF9E0",
+        "painel_baixo": "FFF9E0",
+        "bloco": "150132",
+        "menu_grande": "FFF9E0",
+        "regua": "FFF9E0"
+      },
+      "aviso_por_papel": {
+        "fundo": "FF467A",
+        "painel": "FF467A",
+        "painel_alto": "FF467A",
+        "linha": "FF8AAB",
+        "texto": "E40040",
+        "texto_fraco": "AD0031",
+        "acento": "570018",
+        "tinta": "FF467A",
+        "papel": "FF467A",
+        "painel_baixo": "FF467A",
+        "bloco": "570018",
+        "menu_grande": "FF467A",
+        "regua": "FFE6ED"
+      }
+    }
+  },
+  "Oceano Profundo": {
+    "claro": {
+      "cores": {
+        "fundo": "F1FEFB",
+        "painel": "D5FBF4",
+        "painel_alto": "B5F8EB",
+        "linha": "C4E1E9",
+        "texto": "0B0D28",
+        "texto_fraco": "0F2328",
+        "acento": "2E6FA0",
+        "tinta": "E3FCF8",
+        "papel": "ECFDFA",
+        "painel_baixo": "E7FDF8",
+        "bloco": "4197AD",
+        "menu_grande": "B6FFF1",
+        "regua": "00CCA5"
+      },
+      "contraste": {
+        "texto/fundo": 18.4226798362778,
+        "texto/painel": 17.175031837901784,
+        "acento/fundo": 5.210926809115614,
+        "acento/painel": 4.858024709049015,
+        "texto/tinta": 17.729595432164928
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "0B0D28",
+        "painel": "0B0D28",
+        "painel_alto": "0B0D28",
+        "linha": "0B0D28",
+        "texto": "E3FCF8",
+        "texto_fraco": "E3FCF8",
+        "acento": "E3FCF8",
+        "tinta": "0B0D28",
+        "papel": "0B0D28",
+        "painel_baixo": "0B0D28",
+        "bloco": "0B0D28",
+        "menu_grande": "0B0D28",
+        "regua": "0B0D28"
+      },
+      "aviso_por_papel": {
+        "fundo": "2E6FA0",
+        "painel": "2E6FA0",
+        "painel_alto": "2E6FA0",
+        "linha": "296490",
+        "texto": "3682BC",
+        "texto_fraco": "3E8DC8",
+        "acento": "E3EFF7",
+        "tinta": "2E6FA0",
+        "papel": "2E6FA0",
+        "painel_baixo": "2E6FA0",
+        "bloco": "102738",
+        "menu_grande": "2E6FA0",
+        "regua": "1F4A6B"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "0A0C24",
+        "painel": "121640",
+        "painel_alto": "1B2060",
+        "linha": "214E59",
+        "texto": "E3FCF8",
+        "texto_fraco": "C6E2EA",
+        "acento": "2F72A4",
+        "tinta": "070818",
+        "papel": "0D1030",
+        "painel_baixo": "11153F",
+        "bloco": "55AAC0",
+        "menu_grande": "0D1361",
+        "regua": "4E5AE4"
+      },
+      "contraste": {
+        "texto/fundo": 17.91598989210494,
+        "texto/painel": 16.09348451918423,
+        "acento/fundo": 3.724998221496966,
+        "acento/painel": 3.3460725068876966,
+        "texto/tinta": 18.492524375489804
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.35)"
+      ],
+      "osso_por_papel": {
+        "fundo": "E3FCF8",
+        "painel": "E3FCF8",
+        "painel_alto": "E3FCF8",
+        "linha": "E3FCF8",
+        "texto": "0B0D28",
+        "texto_fraco": "0B0D28",
+        "acento": "E3FCF8",
+        "tinta": "E3FCF8",
+        "papel": "E3FCF8",
+        "painel_baixo": "E3FCF8",
+        "bloco": "0B0D28",
+        "menu_grande": "E3FCF8",
+        "regua": "E3FCF8"
+      },
+      "aviso_por_papel": {
+        "fundo": "3682BB",
+        "painel": "3888C3",
+        "painel_alto": "4D96CC",
+        "linha": "8FBDDF",
+        "texto": "2F72A4",
+        "texto_fraco": "2A6591",
+        "acento": "E8F1F8",
+        "tinta": "357FB7",
+        "papel": "3785BF",
+        "painel_baixo": "3888C3",
+        "bloco": "173952",
+        "menu_grande": "3D8CC7",
+        "regua": "E0EDF6"
+      }
+    }
+  },
+  "Tropical": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFAF0",
+        "painel": "FFF1D1",
+        "painel_alto": "FFE6AD",
+        "linha": "B0FDE9",
+        "texto": "04242F",
+        "texto_fraco": "023628",
+        "acento": "F04000",
+        "tinta": "FFF6E0",
+        "papel": "FFF9EA",
+        "painel_baixo": "FFF7E4",
+        "bloco": "06E7AC",
+        "menu_grande": "FFE9B6",
+        "regua": "CC8F00"
+      },
+      "contraste": {
+        "texto/fundo": 15.543752566827845,
+        "texto/painel": 14.442772867556036,
+        "acento/fundo": 3.711469354679843,
+        "acento/painel": 3.448582230325298,
+        "texto/tinta": 15.024849813194253
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.45)"
+      ],
+      "osso_por_papel": {
+        "fundo": "04242F",
+        "painel": "04242F",
+        "painel_alto": "04242F",
+        "linha": "04242F",
+        "texto": "FFF6E0",
+        "texto_fraco": "FFF6E0",
+        "acento": "000000",
+        "tinta": "04242F",
+        "papel": "04242F",
+        "painel_baixo": "04242F",
+        "bloco": "04242F",
+        "menu_grande": "04242F",
+        "regua": "04242F"
+      },
+      "aviso_por_papel": {
+        "fundo": "D43900",
+        "painel": "CC3600",
+        "painel_alto": "C03300",
+        "linha": "C83500",
+        "texto": "FE4400",
+        "texto_fraco": "FF642B",
+        "acento": "300D00",
+        "tinta": "D03700",
+        "papel": "D43900",
+        "painel_baixo": "D03700",
+        "bloco": "A02B00",
+        "menu_grande": "C43400",
+        "regua": "601A00"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "04202A",
+        "painel": "073A4A",
+        "painel_alto": "0B5770",
+        "linha": "037759",
+        "texto": "FFF6E0",
+        "texto_fraco": "B3FDEA",
+        "acento": "FF7F50",
+        "tinta": "03161C",
+        "papel": "052C39",
+        "painel_baixo": "073949",
+        "bloco": "1CF9BF",
+        "menu_grande": "00536E",
+        "regua": "33CCFF"
+      },
+      "contraste": {
+        "texto/fundo": 15.668696884950444,
+        "texto/painel": 11.388842196548383,
+        "acento/fundo": 6.748781092557269,
+        "acento/painel": 4.905373015161701,
+        "texto/tinta": 17.183907225804457
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFF6E0",
+        "painel": "FFF6E0",
+        "painel_alto": "FFF6E0",
+        "linha": "FFF6E0",
+        "texto": "04242F",
+        "texto_fraco": "04242F",
+        "acento": "04242F",
+        "tinta": "FFF6E0",
+        "papel": "FFF6E0",
+        "painel_baixo": "FFF6E0",
+        "bloco": "04242F",
+        "menu_grande": "FFF6E0",
+        "regua": "04242F"
+      },
+      "aviso_por_papel": {
+        "fundo": "FF7F50",
+        "painel": "FF7F50",
+        "painel_alto": "FFB093",
+        "linha": "FFE3D9",
+        "texto": "CF3700",
+        "texto_fraco": "C93600",
+        "acento": "6A1C00",
+        "tinta": "FF7F50",
+        "papel": "FF7F50",
+        "painel_baixo": "FF7F50",
+        "bloco": "B33000",
+        "menu_grande": "FFA887",
+        "regua": "8C2500"
+      }
+    }
+  },
+  "Obsidiana": {
+    "claro": {
+      "cores": {
+        "fundo": "FAF9F5",
+        "painel": "EFECE1",
+        "painel_alto": "E2DDCB",
+        "linha": "E8D5C4",
+        "texto": "1D1616",
+        "texto_fraco": "281B0F",
+        "acento": "412D15",
+        "tinta": "F8F5E7",
+        "papel": "F8F6F2",
+        "painel_baixo": "F5F4EE",
+        "bloco": "AB7442",
+        "menu_grande": "E8E2CC",
+        "regua": "8C7C40"
+      },
+      "contraste": {
+        "texto/fundo": 16.91305909261072,
+        "texto/painel": 15.065080419477178,
+        "acento/fundo": 12.373834706251152,
+        "acento/painel": 11.021827212111779,
+        "texto/tinta": 16.29585904223187
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "1D1616",
+        "painel": "1D1616",
+        "painel_alto": "1D1616",
+        "linha": "1D1616",
+        "texto": "F4F2EB",
+        "texto_fraco": "F4F2EB",
+        "acento": "F4F2EB",
+        "tinta": "1D1616",
+        "papel": "1D1616",
+        "painel_baixo": "1D1616",
+        "bloco": "1D1616",
+        "menu_grande": "1D1616",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "412D15",
+        "painel": "412D15",
+        "painel_alto": "412D15",
+        "linha": "412D15",
+        "texto": "AC7738",
+        "texto_fraco": "B17B39",
+        "acento": "C6904F",
+        "tinta": "412D15",
+        "papel": "412D15",
+        "painel_baixo": "412D15",
+        "bloco": "1F160A",
+        "menu_grande": "412D15",
+        "regua": "191108"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "1A1414",
+        "painel": "2E2424",
+        "painel_alto": "453636",
+        "linha": "583C22",
+        "texto": "F4F2EB",
+        "texto_fraco": "E9D7C6",
+        "acento": "9C6C32",
+        "tinta": "170808",
+        "papel": "231B1B",
+        "painel_baixo": "2D2323",
+        "bloco": "BE8857",
+        "menu_grande": "402E2E",
+        "regua": "A58D8D"
+      },
+      "contraste": {
+        "texto/fundo": 16.244111121963154,
+        "texto/painel": 13.448482725170253,
+        "acento/fundo": 3.989881283054137,
+        "acento/painel": 3.3032185699643843,
+        "texto/tinta": 17.444501216840248
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.30)"
+      ],
+      "osso_por_papel": {
+        "fundo": "F4F2EB",
+        "painel": "F4F2EB",
+        "painel_alto": "F4F2EB",
+        "linha": "F4F2EB",
+        "texto": "1D1616",
+        "texto_fraco": "1D1616",
+        "acento": "000000",
+        "tinta": "F4F2EB",
+        "papel": "F4F2EB",
+        "painel_baixo": "F4F2EB",
+        "bloco": "1D1616",
+        "menu_grande": "F4F2EB",
+        "regua": "1D1616"
+      },
+      "aviso_por_papel": {
+        "fundo": "A87436",
+        "painel": "BB813C",
+        "painel_alto": "CB9A5E",
+        "linha": "D1A671",
+        "texto": "92652F",
+        "texto_fraco": "7F5829",
+        "acento": "000000",
+        "tinta": "A47134",
+        "papel": "AF7938",
+        "painel_baixo": "BB813C",
+        "bloco": "3C2913",
+        "menu_grande": "C6904F",
+        "regua": "392812"
+      }
+    }
+  },
+  "Brasa": {
+    "claro": {
+      "cores": {
+        "fundo": "FDF4F1",
+        "painel": "FADFD6",
+        "painel_alto": "F7C7B5",
+        "linha": "FAB4B2",
+        "texto": "2D0A06",
+        "texto_fraco": "340503",
+        "acento": "740A03",
+        "tinta": "FCEAE3",
+        "papel": "FDF1EC",
+        "painel_baixo": "FCECE7",
+        "bloco": "DF130E",
+        "menu_grande": "FFCAB6",
+        "regua": "CC3500"
+      },
+      "contraste": {
+        "texto/fundo": 16.747215539348616,
+        "texto/painel": 14.331836644583461,
+        "acento/fundo": 10.846880161210834,
+        "acento/painel": 9.28248127030992,
+        "texto/tinta": 15.564145270777486
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "2D0A06",
+        "painel": "2D0A06",
+        "painel_alto": "2D0A06",
+        "linha": "2D0A06",
+        "texto": "FCEAE3",
+        "texto_fraco": "FCEAE3",
+        "acento": "FCEAE3",
+        "tinta": "2D0A06",
+        "papel": "2D0A06",
+        "painel_baixo": "2D0A06",
+        "bloco": "FFFFFF",
+        "menu_grande": "2D0A06",
+        "regua": "FFFFFF"
+      },
+      "aviso_por_papel": {
+        "fundo": "740A03",
+        "painel": "740A03",
+        "painel_alto": "740A03",
+        "linha": "740A03",
+        "texto": "F92214",
+        "texto_fraco": "F92214",
+        "acento": "FB7C73",
+        "tinta": "740A03",
+        "papel": "740A03",
+        "painel_baixo": "740A03",
+        "bloco": "FFF3F2",
+        "menu_grande": "740A03",
+        "regua": "FFEDEC"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "290905",
+        "painel": "491009",
+        "painel_alto": "6D180E",
+        "linha": "730A07",
+        "texto": "FCEAE3",
+        "texto_fraco": "FAB7B5",
+        "acento": "ED1406",
+        "tinta": "1B0603",
+        "papel": "370C07",
+        "painel_baixo": "471009",
+        "bloco": "F12923",
+        "menu_grande": "6E0C00",
+        "regua": "FF4A33"
+      },
+      "contraste": {
+        "texto/fundo": 15.866700942440026,
+        "texto/painel": 13.234926315760584,
+        "acento/fundo": 4.142132394992885,
+        "acento/painel": 3.455086046981689,
+        "texto/tinta": 16.776516793094643
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.46)"
+      ],
+      "osso_por_papel": {
+        "fundo": "FCEAE3",
+        "painel": "FCEAE3",
+        "painel_alto": "FCEAE3",
+        "linha": "FCEAE3",
+        "texto": "2D0A06",
+        "texto_fraco": "2D0A06",
+        "acento": "000000",
+        "tinta": "FCEAE3",
+        "papel": "FCEAE3",
+        "painel_baixo": "FCEAE3",
+        "bloco": "000000",
+        "menu_grande": "FCEAE3",
+        "regua": "2D0A06"
+      },
+      "aviso_por_papel": {
+        "fundo": "F91608",
+        "painel": "FA4B40",
+        "painel_alto": "FB7C74",
+        "linha": "FB7870",
+        "texto": "D51205",
+        "texto_fraco": "AA0E04",
+        "acento": "140201",
+        "tinta": "F11406",
+        "papel": "FA3326",
+        "painel_baixo": "FA4B40",
+        "bloco": "2B0401",
+        "menu_grande": "FB746B",
+        "regua": "4F0702"
+      }
+    }
+  },
+  "Sangue": {
+    "claro": {
+      "cores": {
+        "fundo": "FFF0F0",
+        "painel": "FFD1D1",
+        "painel_alto": "FFADAD",
+        "linha": "DFCDCD",
+        "texto": "000033",
+        "texto_fraco": "221515",
+        "acento": "9E2A3A",
+        "tinta": "FFE0E0",
+        "papel": "FFEAEA",
+        "painel_baixo": "FFE4E4",
+        "bloco": "915C5C",
+        "menu_grande": "FFB6B6",
+        "regua": "CC0000"
+      },
+      "contraste": {
+        "texto/fundo": 18.108637090842173,
+        "texto/painel": 14.595178141566917,
+        "acento/fundo": 6.6667600048294595,
+        "acento/painel": 5.373267430864079,
+        "texto/tinta": 16.215472664255557
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "000033",
+        "painel": "000033",
+        "painel_alto": "000033",
+        "linha": "000033",
+        "texto": "FFE0E0",
+        "texto_fraco": "FFE0E0",
+        "acento": "FFE0E0",
+        "tinta": "000033",
+        "papel": "000033",
+        "painel_baixo": "000033",
+        "bloco": "FFFFFF",
+        "menu_grande": "000033",
+        "regua": "FFE0E0"
+      },
+      "aviso_por_papel": {
+        "fundo": "9E2A3A",
+        "painel": "9E2A3A",
+        "painel_alto": "932736",
+        "linha": "9E2A3A",
+        "texto": "CF4B5E",
+        "texto_fraco": "D35869",
+        "acento": "EFC2C8",
+        "tinta": "9E2A3A",
+        "papel": "9E2A3A",
+        "painel_baixo": "9E2A3A",
+        "bloco": "F8E7E9",
+        "menu_grande": "9B2939",
+        "regua": "F6DEE2"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "00002E",
+        "painel": "000052",
+        "painel_alto": "00007A",
+        "linha": "4B3030",
+        "texto": "FFE0E0",
+        "texto_fraco": "E0CFCF",
+        "acento": "BF3346",
+        "tinta": "00001F",
+        "papel": "00003E",
+        "painel_baixo": "000050",
+        "bloco": "A47171",
+        "menu_grande": "00006E",
+        "regua": "3333FF"
+      },
+      "contraste": {
+        "texto/fundo": 16.34576279626046,
+        "texto/painel": 15.145329867779914,
+        "acento/fundo": 3.633881467290324,
+        "acento/painel": 3.3670091881619073,
+        "texto/tinta": 16.66097464769791
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.37)"
+      ],
+      "osso_por_papel": {
+        "fundo": "FFE0E0",
+        "painel": "FFE0E0",
+        "painel_alto": "FFE0E0",
+        "linha": "FFE0E0",
+        "texto": "000033",
+        "texto_fraco": "000033",
+        "acento": "FFFFFF",
+        "tinta": "FFE0E0",
+        "papel": "FFE0E0",
+        "painel_baixo": "FFE0E0",
+        "bloco": "000033",
+        "menu_grande": "FFE0E0",
+        "regua": "FFE0E0"
+      },
+      "aviso_por_papel": {
+        "fundo": "CE485A",
+        "painel": "D15263",
+        "painel_alto": "D66473",
+        "linha": "DF8793",
+        "texto": "BC3245",
+        "texto_fraco": "A62C3D",
+        "acento": "F7E3E6",
+        "tinta": "CE485A",
+        "papel": "CF4B5D",
+        "painel_baixo": "D15263",
+        "bloco": "290B0F",
+        "menu_grande": "D45D6D",
+        "regua": "F1CACF"
+      }
+    }
+  },
+  "Abismo": {
+    "claro": {
+      "cores": {
+        "fundo": "F5FAF9",
+        "painel": "E1EFEE",
+        "painel_alto": "C9E3E2",
+        "linha": "B5F2F7",
+        "texto": "16042F",
+        "texto_fraco": "052E32",
+        "acento": "065084",
+        "tinta": "E7F8F7",
+        "papel": "F1F8F8",
+        "painel_baixo": "EDF6F5",
+        "bloco": "17C7D6",
+        "menu_grande": "CBEAE9",
+        "regua": "3C908B"
+      },
+      "contraste": {
+        "texto/fundo": 18.2371905682559,
+        "texto/painel": 16.276666243296816,
+        "acento/fundo": 8.00702331368454,
+        "acento/painel": 7.146256743403847,
+        "texto/tinta": 17.544464083686517
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "16042F",
+        "painel": "16042F",
+        "painel_alto": "16042F",
+        "linha": "16042F",
+        "texto": "EBF5F4",
+        "texto_fraco": "EBF5F4",
+        "acento": "EBF5F4",
+        "tinta": "16042F",
+        "papel": "16042F",
+        "painel_baixo": "16042F",
+        "bloco": "16042F",
+        "menu_grande": "16042F",
+        "regua": "16042F"
+      },
+      "aviso_por_papel": {
+        "fundo": "065084",
+        "painel": "065084",
+        "painel_alto": "065084",
+        "linha": "065084",
+        "texto": "0A7FD1",
+        "texto_fraco": "0C94F4",
+        "acento": "7DC6F9",
+        "tinta": "065084",
+        "papel": "065084",
+        "painel_baixo": "065084",
+        "bloco": "054979",
+        "menu_grande": "065084",
+        "regua": "021D30"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "14042A",
+        "painel": "23074B",
+        "painel_alto": "340A70",
+        "linha": "0C676F",
+        "texto": "EBF5F4",
+        "texto_fraco": "B8F2F7",
+        "acento": "0870B9",
+        "tinta": "0D031C",
+        "papel": "1A0539",
+        "painel_baixo": "220749",
+        "bloco": "2CD9E8",
+        "menu_grande": "2D006E",
+        "regua": "8733FF"
+      },
+      "contraste": {
+        "texto/fundo": 17.49092849399797,
+        "texto/painel": 15.704537329716713,
+        "acento/fundo": 3.7282585858776542,
+        "acento/painel": 3.3474824482213257,
+        "texto/tinta": 18.052934115710134
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.35)"
+      ],
+      "osso_por_papel": {
+        "fundo": "EBF5F4",
+        "painel": "EBF5F4",
+        "painel_alto": "EBF5F4",
+        "linha": "EBF5F4",
+        "texto": "16042F",
+        "texto_fraco": "16042F",
+        "acento": "EBF5F4",
+        "tinta": "EBF5F4",
+        "papel": "EBF5F4",
+        "painel_baixo": "EBF5F4",
+        "bloco": "16042F",
+        "menu_grande": "EBF5F4",
+        "regua": "EBF5F4"
+      },
+      "aviso_por_papel": {
+        "fundo": "097FD2",
+        "painel": "0A89E2",
+        "painel_alto": "0C95F4",
+        "linha": "AEDCFB",
+        "texto": "0870B9",
+        "texto_fraco": "086AB0",
+        "acento": "E1F2FE",
+        "tinta": "097CCD",
+        "papel": "0982D7",
+        "painel_baixo": "0A85DC",
+        "bloco": "06548B",
+        "menu_grande": "0A8FEC",
+        "regua": "DCEFFD"
+      }
+    }
+  },
+  "Arcano": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFCF0",
+        "painel": "FFF6D1",
+        "painel_alto": "FFEFAD",
+        "linha": "D0B7F6",
+        "texto": "070033",
+        "texto_fraco": "170631",
+        "acento": "B13BFF",
+        "tinta": "FFF9E0",
+        "papel": "FFFBEA",
+        "painel_baixo": "FFFAE4",
+        "bloco": "641BD2",
+        "menu_grande": "FFF1B6",
+        "regua": "CCA300"
+      },
+      "contraste": {
+        "texto/fundo": 19.335438348951193,
+        "texto/painel": 18.314071453349275,
+        "acento/fundo": 4.137352052299535,
+        "acento/painel": 3.9188023434485526,
+        "texto/tinta": 18.80954936888148
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "070033",
+        "painel": "070033",
+        "painel_alto": "070033",
+        "linha": "070033",
+        "texto": "FFF9E0",
+        "texto_fraco": "FFF9E0",
+        "acento": "070033",
+        "tinta": "070033",
+        "papel": "070033",
+        "painel_baixo": "070033",
+        "bloco": "FFF9E0",
+        "menu_grande": "070033",
+        "regua": "070033"
+      },
+      "aviso_por_papel": {
+        "fundo": "AB2BFF",
+        "painel": "A51CFF",
+        "painel_alto": "A011FF",
+        "linha": "7500C2",
+        "texto": "B13BFF",
+        "texto_fraco": "B23EFF",
+        "acento": "1C002F",
+        "tinta": "A926FF",
+        "papel": "A926FF",
+        "painel_baixo": "A926FF",
+        "bloco": "E0B1FF",
+        "menu_grande": "A216FF",
+        "regua": "5B0098"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "06002E",
+        "painel": "0B0052",
+        "painel_alto": "11007A",
+        "linha": "330E6D",
+        "texto": "FFF9E0",
+        "texto_fraco": "D1B9F6",
+        "acento": "B13BFF",
+        "tinta": "04001F",
+        "papel": "09003E",
+        "painel_baixo": "0B0050",
+        "bloco": "7830E5",
+        "menu_grande": "0F006E",
+        "regua": "5033FF"
+      },
+      "contraste": {
+        "texto/fundo": 18.98274664071002,
+        "texto/painel": 17.497741147291325,
+        "acento/fundo": 4.716417102107899,
+        "acento/painel": 4.347455463497411,
+        "texto/tinta": 19.39477183311831
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFF9E0",
+        "painel": "FFF9E0",
+        "painel_alto": "FFF9E0",
+        "linha": "FFF9E0",
+        "texto": "070033",
+        "texto_fraco": "070033",
+        "acento": "070033",
+        "tinta": "FFF9E0",
+        "papel": "FFF9E0",
+        "painel_baixo": "FFF9E0",
+        "bloco": "FFF9E0",
+        "menu_grande": "FFF9E0",
+        "regua": "FFF9E0"
+      },
+      "aviso_por_papel": {
+        "fundo": "B13BFF",
+        "painel": "B442FF",
+        "painel_alto": "BD58FF",
+        "linha": "C162FF",
+        "texto": "A926FF",
+        "texto_fraco": "7800C7",
+        "acento": "1C002F",
+        "tinta": "B13BFF",
+        "papel": "B13BFF",
+        "painel_baixo": "B442FF",
+        "bloco": "EDD1FF",
+        "menu_grande": "B94FFF",
+        "regua": "ECCEFF"
+      }
+    }
+  },
+  "Rubi": {
+    "claro": {
+      "cores": {
+        "fundo": "FDF2F6",
+        "painel": "FAD7E3",
+        "painel_alto": "F5B7CD",
+        "linha": "EAC2D1",
+        "texto": "2F0414",
+        "texto_fraco": "290E18",
+        "acento": "670D2F",
+        "tinta": "FBE4EC",
+        "papel": "FDEDF2",
+        "painel_baixo": "FCE7EF",
+        "bloco": "B13C67",
+        "menu_grande": "FFB6D0",
+        "regua": "CB014A"
+      },
+      "contraste": {
+        "texto/fundo": 16.726946044575456,
+        "texto/painel": 13.841063477175574,
+        "acento/fundo": 11.465293160797986,
+        "acento/painel": 9.487198081474986,
+        "texto/tinta": 15.161451360223355
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "2F0414",
+        "painel": "2F0414",
+        "painel_alto": "2F0414",
+        "linha": "2F0414",
+        "texto": "FBE4EC",
+        "texto_fraco": "FBE4EC",
+        "acento": "FBE4EC",
+        "tinta": "2F0414",
+        "papel": "2F0414",
+        "painel_baixo": "2F0414",
+        "bloco": "FBE4EC",
+        "menu_grande": "2F0414",
+        "regua": "FBE4EC"
+      },
+      "aviso_por_papel": {
+        "fundo": "670D2F",
+        "painel": "670D2F",
+        "painel_alto": "670D2F",
+        "linha": "670D2F",
+        "texto": "E6397A",
+        "texto_fraco": "E73F7E",
+        "acento": "ED73A1",
+        "tinta": "670D2F",
+        "papel": "670D2F",
+        "painel_baixo": "670D2F",
+        "bloco": "FBE2EB",
+        "menu_grande": "670D2F",
+        "regua": "FBDCE8"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "2A0412",
+        "painel": "4B0620",
+        "painel_alto": "710A31",
+        "linha": "5B1F35",
+        "texto": "FBE4EC",
+        "texto_fraco": "EBC4D3",
+        "acento": "E11C67",
+        "tinta": "1C020C",
+        "papel": "390519",
+        "painel_baixo": "4A0620",
+        "bloco": "C4517B",
+        "menu_grande": "6E002A",
+        "regua": "FF3380"
+      },
+      "contraste": {
+        "texto/fundo": 15.482143671393525,
+        "texto/painel": 12.93419365451349,
+        "acento/fundo": 4.05804056961964,
+        "acento/painel": 3.3901947753084207,
+        "texto/tinta": 16.372922477554933
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.39)"
+      ],
+      "osso_por_papel": {
+        "fundo": "FBE4EC",
+        "painel": "FBE4EC",
+        "painel_alto": "FBE4EC",
+        "linha": "FBE4EC",
+        "texto": "2F0414",
+        "texto_fraco": "2F0414",
+        "acento": "FFFFFF",
+        "tinta": "FBE4EC",
+        "papel": "FBE4EC",
+        "painel_baixo": "FBE4EC",
+        "bloco": "000000",
+        "menu_grande": "FBE4EC",
+        "regua": "2F0414"
+      },
+      "aviso_por_papel": {
+        "fundo": "E63578",
+        "painel": "EA548D",
+        "painel_alto": "EF7DA9",
+        "linha": "EE76A4",
+        "texto": "CB195D",
+        "texto_fraco": "A9154D",
+        "acento": "FFFFFF",
+        "tinta": "E4266E",
+        "papel": "E74180",
+        "painel_baixo": "EA548D",
+        "bloco": "1A030C",
+        "menu_grande": "EE76A4",
+        "regua": "470921"
+      }
+    }
+  },
+  "Ardósia": {
+    "claro": {
+      "cores": {
+        "fundo": "FAF8F4",
+        "painel": "F1EADF",
+        "painel_alto": "E6DAC7",
+        "linha": "D1D5DB",
+        "texto": "15191E",
+        "texto_fraco": "181B1F",
+        "acento": "897E6D",
+        "tinta": "F8F2E7",
+        "papel": "F9F6F1",
+        "painel_baixo": "F7F3ED",
+        "bloco": "687385",
+        "menu_grande": "EDDFC7",
+        "regua": "987234"
+      },
+      "contraste": {
+        "texto/fundo": 16.641446141142584,
+        "texto/painel": 14.772662102831491,
+        "acento/fundo": 3.7575803050877963,
+        "acento/painel": 3.3356154086921954,
+        "texto/tinta": 15.841199686111477
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.34)"
+      ],
+      "osso_por_papel": {
+        "fundo": "15191E",
+        "painel": "15191E",
+        "painel_alto": "15191E",
+        "linha": "15191E",
+        "texto": "F5F1EA",
+        "texto_fraco": "F5F1EA",
+        "acento": "000000",
+        "tinta": "15191E",
+        "papel": "15191E",
+        "painel_baixo": "15191E",
+        "bloco": "FFFFFF",
+        "menu_grande": "15191E",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "7B7162",
+        "painel": "72695B",
+        "painel_alto": "675E52",
+        "linha": "625A4E",
+        "texto": "8B806F",
+        "texto_fraco": "8E8371",
+        "acento": "171512",
+        "tinta": "776D5E",
+        "papel": "796F60",
+        "painel_baixo": "776D5E",
+        "bloco": "F9F9F8",
+        "menu_grande": "6B6355",
+        "regua": "0B0A09"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "13161B",
+        "painel": "212730",
+        "painel_alto": "323B48",
+        "linha": "363C45",
+        "texto": "F5F1EA",
+        "texto_fraco": "D3D7DC",
+        "acento": "948979",
+        "tinta": "080E17",
+        "papel": "191E25",
+        "painel_baixo": "21272F",
+        "bloco": "7C8798",
+        "menu_grande": "2A3544",
+        "regua": "8194B1"
+      },
+      "contraste": {
+        "texto/fundo": 16.10381280662469,
+        "texto/painel": 13.34668510024349,
+        "acento/fundo": 5.278120747329826,
+        "acento/painel": 4.374455688325787,
+        "texto/tinta": 17.183330188646654
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F5F1EA",
+        "painel": "F5F1EA",
+        "painel_alto": "F5F1EA",
+        "linha": "F5F1EA",
+        "texto": "15191E",
+        "texto_fraco": "15191E",
+        "acento": "15191E",
+        "tinta": "F5F1EA",
+        "papel": "F5F1EA",
+        "painel_baixo": "F5F1EA",
+        "bloco": "15191E",
+        "menu_grande": "F5F1EA",
+        "regua": "15191E"
+      },
+      "aviso_por_papel": {
+        "fundo": "948979",
+        "painel": "988D7D",
+        "painel_alto": "ABA396",
+        "linha": "ADA598",
+        "texto": "756C5E",
+        "texto_fraco": "645C50",
+        "acento": "25221E",
+        "tinta": "948979",
+        "papel": "948979",
+        "painel_baixo": "988D7D",
+        "bloco": "201E1A",
+        "menu_grande": "A49B8D",
+        "regua": "2F2B26"
+      }
+    }
+  },
+  "Musgo": {
+    "claro": {
+      "cores": {
+        "fundo": "F3FCF8",
+        "painel": "DAF6EA",
+        "painel_alto": "BEEFD9",
+        "linha": "D3E4C8",
+        "texto": "18240F",
+        "texto_fraco": "192512",
+        "acento": "255F38",
+        "tinta": "E6F9F1",
+        "papel": "EEFBF5",
+        "painel_baixo": "EAFAF2",
+        "bloco": "6D9F4E",
+        "menu_grande": "BCF8DD",
+        "regua": "16B66F"
+      },
+      "contraste": {
+        "texto/fundo": 15.477059199148075,
+        "texto/painel": 14.137343987586156,
+        "acento/fundo": 7.245974641991498,
+        "acento/painel": 6.618753260619365,
+        "texto/tinta": 14.77948267974161
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "18240F",
+        "painel": "18240F",
+        "painel_alto": "18240F",
+        "linha": "18240F",
+        "texto": "E6F9F1",
+        "texto_fraco": "E6F9F1",
+        "acento": "E6F9F1",
+        "tinta": "18240F",
+        "papel": "18240F",
+        "painel_baixo": "18240F",
+        "bloco": "18240F",
+        "menu_grande": "18240F",
+        "regua": "18240F"
+      },
+      "aviso_por_papel": {
+        "fundo": "255F38",
+        "painel": "255F38",
+        "painel_alto": "255F38",
+        "linha": "255F38",
+        "texto": "3C9A5B",
+        "texto_fraco": "3C9A5B",
+        "acento": "97D6AC",
+        "tinta": "255F38",
+        "papel": "255F38",
+        "painel_baixo": "255F38",
+        "bloco": "13311D",
+        "menu_grande": "255F38",
+        "regua": "183E24"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "16200E",
+        "painel": "273918",
+        "painel_alto": "3B5625",
+        "linha": "385228",
+        "texto": "E6F9F1",
+        "texto_fraco": "D4E5CA",
+        "acento": "3A9558",
+        "tinta": "0F1708",
+        "papel": "1E2B13",
+        "painel_baixo": "273818",
+        "bloco": "81B263",
+        "menu_grande": "345519",
+        "regua": "94CE64"
+      },
+      "contraste": {
+        "texto/fundo": 15.38421334184547,
+        "texto/painel": 11.387760766998872,
+        "acento/fundo": 4.506439136186358,
+        "acento/painel": 3.3357734746400243,
+        "texto/tinta": 16.735381128715247
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.34)"
+      ],
+      "osso_por_papel": {
+        "fundo": "E6F9F1",
+        "painel": "E6F9F1",
+        "painel_alto": "E6F9F1",
+        "linha": "E6F9F1",
+        "texto": "18240F",
+        "texto_fraco": "18240F",
+        "acento": "000000",
+        "tinta": "E6F9F1",
+        "papel": "E6F9F1",
+        "painel_baixo": "E6F9F1",
+        "bloco": "18240F",
+        "menu_grande": "E6F9F1",
+        "regua": "18240F"
+      },
+      "aviso_por_papel": {
+        "fundo": "3A9558",
+        "painel": "45B269",
+        "painel_alto": "87D09F",
+        "linha": "7CCC96",
+        "texto": "307C49",
+        "texto_fraco": "2B7042",
+        "acento": "0D2013",
+        "tinta": "3A9558",
+        "papel": "3EA05E",
+        "painel_baixo": "44AE67",
+        "bloco": "1A4328",
+        "menu_grande": "80CD99",
+        "regua": "225733"
+      }
+    }
+  },
+  "Terra": {
+    "claro": {
+      "cores": {
+        "fundo": "F9F8F6",
+        "painel": "EDEAE3",
+        "painel_alto": "DFDACD",
+        "linha": "D1DBD4",
+        "texto": "161D18",
+        "texto_fraco": "181F1A",
+        "acento": "9D7759",
+        "tinta": "F8F4E7",
+        "papel": "F7F6F2",
+        "painel_baixo": "F4F3EF",
+        "bloco": "688571",
+        "menu_grande": "E5DFCF",
+        "regua": "82734A"
+      },
+      "contraste": {
+        "texto/fundo": 16.177319163792994,
+        "texto/painel": 14.291517808565045,
+        "acento/fundo": 3.7928263490379286,
+        "acento/painel": 3.3506939415146664,
+        "texto/tinta": 15.604813810506709
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.35)"
+      ],
+      "osso_por_papel": {
+        "fundo": "161D18",
+        "painel": "161D18",
+        "painel_alto": "161D18",
+        "linha": "161D18",
+        "texto": "F3F1EC",
+        "texto_fraco": "F3F1EC",
+        "acento": "000000",
+        "tinta": "161D18",
+        "papel": "161D18",
+        "painel_baixo": "161D18",
+        "bloco": "000000",
+        "menu_grande": "161D18",
+        "regua": "FFFFFF"
+      },
+      "aviso_por_papel": {
+        "fundo": "8D6B50",
+        "painel": "83634A",
+        "painel_alto": "765943",
+        "linha": "765943",
+        "texto": "A37B5C",
+        "texto_fraco": "A47E5F",
+        "acento": "1A140F",
+        "tinta": "8B694F",
+        "papel": "8B694F",
+        "painel_baixo": "88674D",
+        "bloco": "1A140F",
+        "menu_grande": "7B5D46",
+        "regua": "FFFFFF"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "141A16",
+        "painel": "242E27",
+        "painel_alto": "35453A",
+        "linha": "36453A",
+        "texto": "F3F1EC",
+        "texto_fraco": "D3DCD6",
+        "acento": "A27B5C",
+        "tinta": "08170C",
+        "papel": "1B231D",
+        "painel_baixo": "232D26",
+        "bloco": "7C9885",
+        "menu_grande": "2D4133",
+        "regua": "88AA92"
+      },
+      "contraste": {
+        "texto/fundo": 15.645844151438249,
+        "texto/painel": 12.443434171175172,
+        "acento/fundo": 4.6455791618921545,
+        "acento/painel": 3.6947164965000767,
+        "texto/tinta": 16.34546709056741
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F3F1EC",
+        "painel": "F3F1EC",
+        "painel_alto": "F3F1EC",
+        "linha": "F3F1EC",
+        "texto": "161D18",
+        "texto_fraco": "161D18",
+        "acento": "161D18",
+        "tinta": "F3F1EC",
+        "papel": "F3F1EC",
+        "painel_baixo": "F3F1EC",
+        "bloco": "161D18",
+        "menu_grande": "F3F1EC",
+        "regua": "161D18"
+      },
+      "aviso_por_papel": {
+        "fundo": "A27B5C",
+        "painel": "AF8D71",
+        "painel_alto": "C3A995",
+        "linha": "C3A995",
+        "texto": "87674D",
+        "texto_fraco": "775A43",
+        "acento": "201912",
+        "tinta": "A27B5C",
+        "papel": "A78264",
+        "painel_baixo": "AD8A6F",
+        "bloco": "33271D",
+        "menu_grande": "BEA38D",
+        "regua": "463528"
+      }
+    }
+  },
+  "Eclipse": {
+    "claro": {
+      "cores": {
+        "fundo": "FFF6F0",
+        "painel": "FFE3D1",
+        "painel_alto": "FFCEAD",
+        "linha": "C1D5EC",
+        "texto": "1D1616",
+        "texto_fraco": "0D1B2A",
+        "acento": "0B192C",
+        "tinta": "FFEDE0",
+        "papel": "FFF3EA",
+        "painel_baixo": "FFEFE4",
+        "bloco": "3873B6",
+        "menu_grande": "FFD3B6",
+        "regua": "CC5100"
+      },
+      "contraste": {
+        "texto/fundo": 16.70855661445241,
+        "texto/painel": 14.560028198220603,
+        "acento/fundo": 16.553217086664706,
+        "acento/painel": 14.424663549012612,
+        "texto/tinta": 15.647525099116645
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "1D1616",
+        "painel": "1D1616",
+        "painel_alto": "1D1616",
+        "linha": "1D1616",
+        "texto": "FFEDE0",
+        "texto_fraco": "FFEDE0",
+        "acento": "FFEDE0",
+        "tinta": "1D1616",
+        "papel": "1D1616",
+        "painel_baixo": "1D1616",
+        "bloco": "FFFFFF",
+        "menu_grande": "1D1616",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "0B192C",
+        "painel": "0B192C",
+        "painel_alto": "0B192C",
+        "linha": "0B192C",
+        "texto": "4983D2",
+        "texto_fraco": "4983D2",
+        "acento": "4983D2",
+        "tinta": "0B192C",
+        "papel": "0B192C",
+        "painel_baixo": "0B192C",
+        "bloco": "F3F7FC",
+        "menu_grande": "0B192C",
+        "regua": "040910"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "1A1414",
+        "painel": "2E2424",
+        "painel_alto": "453636",
+        "linha": "1D3B5E",
+        "texto": "FFEDE0",
+        "texto_fraco": "C3D7ED",
+        "acento": "3776CD",
+        "tinta": "170808",
+        "papel": "231B1B",
+        "painel_baixo": "2D2323",
+        "bloco": "4D87C8",
+        "menu_grande": "402E2E",
+        "regua": "A58D8D"
+      },
+      "contraste": {
+        "texto/fundo": 15.979776507338535,
+        "texto/painel": 13.229640372285996,
+        "acento/fundo": 4.016488746349312,
+        "acento/painel": 3.3252468611893784,
+        "texto/tinta": 17.160633083222425
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.33)"
+      ],
+      "osso_por_papel": {
+        "fundo": "FFEDE0",
+        "painel": "FFEDE0",
+        "painel_alto": "FFEDE0",
+        "linha": "FFEDE0",
+        "texto": "1D1616",
+        "texto_fraco": "1D1616",
+        "acento": "000000",
+        "tinta": "FFEDE0",
+        "papel": "FFEDE0",
+        "painel_baixo": "FFEDE0",
+        "bloco": "1D1616",
+        "menu_grande": "FFEDE0",
+        "regua": "1D1616"
+      },
+      "aviso_por_papel": {
+        "fundo": "4881D1",
+        "painel": "5C8FD6",
+        "painel_alto": "7DA6DE",
+        "linha": "7DA6DE",
+        "texto": "306CBF",
+        "texto_fraco": "295CA3",
+        "acento": "020508",
+        "tinta": "3E7BCF",
+        "papel": "4E86D3",
+        "painel_baixo": "5C8FD6",
+        "bloco": "0D1D34",
+        "menu_grande": "709DDB",
+        "regua": "132B4C"
+      }
+    }
+  },
+  "Oliva": {
+    "claro": {
+      "cores": {
+        "fundo": "FBF8F4",
+        "painel": "F3EADE",
+        "painel_alto": "E9DAC4",
+        "linha": "D9DBD1",
+        "texto": "1A1E15",
+        "texto_fraco": "1E1F18",
+        "acento": "697565",
+        "tinta": "F8F1E7",
+        "papel": "F9F6F0",
+        "painel_baixo": "F8F3EB",
+        "bloco": "808568",
+        "menu_grande": "F1DFC4",
+        "regua": "A37129"
+      },
+      "contraste": {
+        "texto/fundo": 15.990142732609717,
+        "texto/painel": 14.216375943155404,
+        "acento/fundo": 4.577602254093135,
+        "acento/painel": 4.0698144882539475,
+        "texto/tinta": 15.097069023110388
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "1A1E15",
+        "painel": "1A1E15",
+        "painel_alto": "1A1E15",
+        "linha": "1A1E15",
+        "texto": "F7F1E9",
+        "texto_fraco": "F7F1E9",
+        "acento": "FFFFFF",
+        "tinta": "1A1E15",
+        "papel": "1A1E15",
+        "painel_baixo": "1A1E15",
+        "bloco": "000000",
+        "menu_grande": "1A1E15",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "697565",
+        "painel": "626D5E",
+        "painel_alto": "596356",
+        "linha": "586254",
+        "texto": "7C8A77",
+        "texto_fraco": "7C8A77",
+        "acento": "F7F8F7",
+        "tinta": "667162",
+        "papel": "677363",
+        "painel_baixo": "677363",
+        "bloco": "191B18",
+        "menu_grande": "5D6759",
+        "regua": "0E100D"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "171B13",
+        "painel": "293022",
+        "painel_alto": "3D4733",
+        "linha": "424536",
+        "texto": "F7F1E9",
+        "texto_fraco": "DBDCD3",
+        "acento": "758270",
+        "tinta": "0F1708",
+        "papel": "1F241A",
+        "painel_baixo": "282F21",
+        "bloco": "94987C",
+        "menu_grande": "37432B",
+        "regua": "99AF83"
+      },
+      "contraste": {
+        "texto/fundo": 15.560834204170526,
+        "texto/painel": 12.15039512287933,
+        "acento/fundo": 4.310135398806259,
+        "acento/painel": 3.3654910425412314,
+        "texto/tinta": 16.324122058881713
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.37)"
+      ],
+      "osso_por_papel": {
+        "fundo": "F7F1E9",
+        "painel": "F7F1E9",
+        "painel_alto": "F7F1E9",
+        "linha": "F7F1E9",
+        "texto": "1A1E15",
+        "texto_fraco": "1A1E15",
+        "acento": "000000",
+        "tinta": "F7F1E9",
+        "papel": "F7F1E9",
+        "painel_baixo": "F7F1E9",
+        "bloco": "1A1E15",
+        "menu_grande": "F7F1E9",
+        "regua": "1A1E15"
+      },
+      "aviso_por_papel": {
+        "fundo": "798774",
+        "painel": "8C9887",
+        "painel_alto": "AAB3A6",
+        "linha": "AAB3A6",
+        "texto": "657161",
+        "texto_fraco": "586154",
+        "acento": "131613",
+        "tinta": "758270",
+        "papel": "808D7B",
+        "painel_baixo": "8C9887",
+        "bloco": "2B3029",
+        "menu_grande": "A5AEA1",
+        "regua": "393F36"
+      }
+    }
+  },
+  "Púrpura Real": {
+    "claro": {
+      "cores": {
+        "fundo": "F9F2FD",
+        "painel": "EDD7F9",
+        "painel_alto": "DFB9F4",
+        "linha": "DFB9F3",
+        "texto": "22052E",
+        "texto_fraco": "22082F",
+        "acento": "7A1CAC",
+        "tinta": "F3E5FB",
+        "papel": "F7EDFC",
+        "painel_baixo": "F4E8FB",
+        "bloco": "9122CC",
+        "menu_grande": "E5B6FE",
+        "regua": "8306C6"
+      },
+      "contraste": {
+        "texto/fundo": 16.956764840552385,
+        "texto/painel": 13.894196383004864,
+        "acento/fundo": 7.394647838478217,
+        "acento/painel": 6.059097370110831,
+        "texto/tinta": 15.419802591372706
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "22052E",
+        "painel": "22052E",
+        "painel_alto": "22052E",
+        "linha": "22052E",
+        "texto": "F3E5FB",
+        "texto_fraco": "F3E5FB",
+        "acento": "F3E5FB",
+        "tinta": "22052E",
+        "papel": "22052E",
+        "painel_baixo": "22052E",
+        "bloco": "F3E5FB",
+        "menu_grande": "22052E",
+        "regua": "F3E5FB"
+      },
+      "aviso_por_papel": {
+        "fundo": "7A1CAC",
+        "painel": "7A1CAC",
+        "painel_alto": "7A1CAC",
+        "linha": "7A1CAC",
+        "texto": "B052E3",
+        "texto_fraco": "B052E3",
+        "acento": "DDB3F3",
+        "tinta": "7A1CAC",
+        "papel": "7A1CAC",
+        "painel_baixo": "7A1CAC",
+        "bloco": "EBD3F8",
+        "menu_grande": "7A1CAC",
+        "regua": "E1BCF4"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "1E0529",
+        "painel": "360849",
+        "painel_alto": "500C6E",
+        "linha": "4B1169",
+        "texto": "F3E5FB",
+        "texto_fraco": "E1BCF4",
+        "acento": "A63BDF",
+        "tinta": "14031C",
+        "papel": "290638",
+        "painel_baixo": "350848",
+        "bloco": "A537DE",
+        "menu_grande": "4C006E",
+        "regua": "C133FF"
+      },
+      "contraste": {
+        "texto/fundo": 15.701306728524033,
+        "texto/painel": 13.520528364869737,
+        "acento/fundo": 3.8889037629203194,
+        "acento/painel": 3.3487680066330063,
+        "texto/tinta": 16.433272572562743
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.35)"
+      ],
+      "osso_por_papel": {
+        "fundo": "F3E5FB",
+        "painel": "F3E5FB",
+        "painel_alto": "F3E5FB",
+        "linha": "F3E5FB",
+        "texto": "22052E",
+        "texto_fraco": "22052E",
+        "acento": "FFFFFF",
+        "tinta": "F3E5FB",
+        "papel": "F3E5FB",
+        "painel_baixo": "F3E5FB",
+        "bloco": "FFFFFF",
+        "menu_grande": "F3E5FB",
+        "regua": "22052E"
+      },
+      "aviso_por_papel": {
+        "fundo": "AF4FE2",
+        "painel": "B862E5",
+        "painel_alto": "C47CEA",
+        "linha": "C279E9",
+        "texto": "9F2BDC",
+        "texto_fraco": "811EB6",
+        "acento": "FBF5FD",
+        "tinta": "AC48E1",
+        "papel": "B255E3",
+        "painel_baixo": "B862E5",
+        "bloco": "F9F2FD",
+        "menu_grande": "C176E9",
+        "regua": "220830"
+      }
+    }
+  },
+  "Céu de Verão": {
+    "claro": {
+      "cores": {
+        "fundo": "FAF8F5",
+        "painel": "EFEBE1",
+        "painel_alto": "E2DCCA",
+        "linha": "CBE1DD",
+        "texto": "0C1927",
+        "texto_fraco": "142320",
+        "acento": "4587A5",
+        "tinta": "F8F4E7",
+        "papel": "F8F6F2",
+        "painel_baixo": "F6F3EE",
+        "bloco": "57968B",
+        "menu_grande": "E9E2CC",
+        "regua": "8D783F"
+      },
+      "contraste": {
+        "texto/fundo": 16.731911801713,
+        "texto/painel": 14.89949424675877,
+        "acento/fundo": 3.7648135695258182,
+        "acento/painel": 3.352505008634246,
+        "texto/tinta": 16.119736434449802
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.35)"
+      ],
+      "osso_por_papel": {
+        "fundo": "0C1927",
+        "painel": "0C1927",
+        "painel_alto": "0C1927",
+        "linha": "0C1927",
+        "texto": "F4F2EB",
+        "texto_fraco": "F4F2EB",
+        "acento": "000000",
+        "tinta": "0C1927",
+        "papel": "0C1927",
+        "painel_baixo": "0C1927",
+        "bloco": "0C1927",
+        "menu_grande": "0C1927",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "3D7792",
+        "painel": "3A718A",
+        "painel_alto": "34657C",
+        "linha": "34657C",
+        "texto": "468AA8",
+        "texto_fraco": "498FAF",
+        "acento": "0C171C",
+        "tinta": "3C758F",
+        "papel": "3D7792",
+        "painel_baixo": "3C758F",
+        "bloco": "14262F",
+        "menu_grande": "366A81",
+        "regua": "070E11"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "0B1723",
+        "painel": "14283E",
+        "painel_alto": "1E3C5D",
+        "linha": "2D4D48",
+        "texto": "F4F2EB",
+        "texto_fraco": "CDE2DF",
+        "acento": "66A3BF",
+        "tinta": "070F17",
+        "papel": "0F1F2F",
+        "painel_baixo": "13283D",
+        "bloco": "6CA99F",
+        "menu_grande": "11355D",
+        "regua": "5597DD"
+      },
+      "contraste": {
+        "texto/fundo": 16.14657208569537,
+        "texto/painel": 13.363856814944404,
+        "acento/fundo": 6.507988583134082,
+        "acento/painel": 5.386395769746519,
+        "texto/tinta": 17.203342545171324
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F4F2EB",
+        "painel": "F4F2EB",
+        "painel_alto": "F4F2EB",
+        "linha": "F4F2EB",
+        "texto": "0C1927",
+        "texto_fraco": "0C1927",
+        "acento": "0C1927",
+        "tinta": "F4F2EB",
+        "papel": "F4F2EB",
+        "painel_baixo": "F4F2EB",
+        "bloco": "0C1927",
+        "menu_grande": "F4F2EB",
+        "regua": "0C1927"
+      },
+      "aviso_por_papel": {
+        "fundo": "66A3BF",
+        "painel": "66A3BF",
+        "painel_alto": "75ACC5",
+        "linha": "8FBCD0",
+        "texto": "3B738D",
+        "texto_fraco": "35687F",
+        "acento": "1B3541",
+        "tinta": "66A3BF",
+        "papel": "66A3BF",
+        "painel_baixo": "66A3BF",
+        "bloco": "1D3845",
+        "menu_grande": "69A5C0",
+        "regua": "172D37"
+      }
+    }
+  },
+  "Cerâmica": {
+    "claro": {
+      "cores": {
+        "fundo": "FEFAF0",
+        "painel": "FDEFD3",
+        "painel_alto": "FBE3B1",
+        "linha": "F5E3B8",
+        "texto": "0A2926",
+        "texto_fraco": "302407",
+        "acento": "E2512C",
+        "tinta": "FEF5E2",
+        "papel": "FEF8EB",
+        "painel_baixo": "FEF6E5",
+        "bloco": "CF9B1F",
+        "menu_grande": "FFE7B6",
+        "regua": "CC8A00"
+      },
+      "contraste": {
+        "texto/fundo": 14.83478230426197,
+        "texto/painel": 13.595594315177172,
+        "acento/fundo": 3.6986090178873776,
+        "acento/painel": 3.38965457708173,
+        "texto/tinta": 14.265344176492647
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.39)"
+      ],
+      "osso_por_papel": {
+        "fundo": "0A2926",
+        "painel": "0A2926",
+        "painel_alto": "0A2926",
+        "linha": "0A2926",
+        "texto": "FEF5E2",
+        "texto_fraco": "FEF5E2",
+        "acento": "000000",
+        "tinta": "0A2926",
+        "papel": "0A2926",
+        "painel_baixo": "0A2926",
+        "bloco": "0A2926",
+        "menu_grande": "0A2926",
+        "regua": "0A2926"
+      },
+      "aviso_por_papel": {
+        "fundo": "CE401C",
+        "painel": "C23D1B",
+        "painel_alto": "BA3A1A",
+        "linha": "B63919",
+        "texto": "E56241",
+        "texto_fraco": "E56545",
+        "acento": "2F0F07",
+        "tinta": "CA3F1C",
+        "papel": "CE401C",
+        "painel_baixo": "CA3F1C",
+        "bloco": "6B210F",
+        "menu_grande": "BE3B1A",
+        "regua": "571B0C"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "092522",
+        "painel": "0F423C",
+        "painel_alto": "17645B",
+        "linha": "6B5010",
+        "texto": "FEF5E2",
+        "texto_fraco": "F5E4BB",
+        "acento": "E76F51",
+        "tinta": "061917",
+        "papel": "0C322E",
+        "painel_baixo": "0F413C",
+        "bloco": "E1AF34",
+        "menu_grande": "09665B",
+        "regua": "46ECD9"
+      },
+      "contraste": {
+        "texto/fundo": 14.910115302910466,
+        "texto/painel": 10.38869852068986,
+        "acento/fundo": 5.22601532884673,
+        "acento/painel": 3.641252707502189,
+        "texto/tinta": 16.71312743254552
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FEF5E2",
+        "painel": "FEF5E2",
+        "painel_alto": "FEF5E2",
+        "linha": "FEF5E2",
+        "texto": "0A2926",
+        "texto_fraco": "0A2926",
+        "acento": "0A2926",
+        "tinta": "FEF5E2",
+        "papel": "FEF5E2",
+        "painel_baixo": "FEF5E2",
+        "bloco": "0A2926",
+        "menu_grande": "FEF5E2",
+        "regua": "0A2926"
+      },
+      "aviso_por_papel": {
+        "fundo": "E76F51",
+        "painel": "EC8C74",
+        "painel_alto": "F5C5B9",
+        "linha": "F4BCAE",
+        "texto": "C93E1C",
+        "texto_fraco": "B73919",
+        "acento": "4E180B",
+        "tinta": "E76F51",
+        "papel": "E77154",
+        "painel_baixo": "EB8971",
+        "bloco": "802812",
+        "menu_grande": "F6C8BC",
+        "regua": "A53317"
+      }
+    }
+  },
+  "Algodão-Doce": {
+    "claro": {
+      "cores": {
+        "fundo": "FCF3F3",
+        "painel": "F6DADA",
+        "painel_alto": "EFBEBE",
+        "linha": "F2BBBB",
+        "texto": "1A1320",
+        "texto_fraco": "2E0909",
+        "acento": "F10000",
+        "tinta": "F9E7E7",
+        "papel": "FBEEEE",
+        "painel_baixo": "FAEAEA",
+        "bloco": "C72626",
+        "menu_grande": "F8BCBC",
+        "regua": "B61616"
+      },
+      "contraste": {
+        "texto/fundo": 16.62757507880168,
+        "texto/painel": 13.782821559941015,
+        "acento/fundo": 4.061795755744379,
+        "acento/painel": 3.3668773617941845,
+        "texto/tinta": 15.210110897493625
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.37)"
+      ],
+      "osso_por_papel": {
+        "fundo": "1A1320",
+        "painel": "1A1320",
+        "painel_alto": "1A1320",
+        "linha": "1A1320",
+        "texto": "F9E7E7",
+        "texto_fraco": "F9E7E7",
+        "acento": "000000",
+        "tinta": "1A1320",
+        "papel": "1A1320",
+        "painel_baixo": "1A1320",
+        "bloco": "F9E7E7",
+        "menu_grande": "1A1320",
+        "regua": "F9E7E7"
+      },
+      "aviso_por_papel": {
+        "fundo": "E10000",
+        "painel": "C90000",
+        "painel_alto": "AD0000",
+        "linha": "AD0000",
+        "texto": "FE0000",
+        "texto_fraco": "FF0404",
+        "acento": "1C0000",
+        "tinta": "D50000",
+        "papel": "DD0000",
+        "painel_baixo": "D90000",
+        "bloco": "FFE0E0",
+        "menu_grande": "AD0000",
+        "regua": "FFC5C5"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "18111D",
+        "painel": "2A1E34",
+        "painel_alto": "3F2D4E",
+        "linha": "671414",
+        "texto": "F9E7E7",
+        "texto_fraco": "F2BDBD",
+        "acento": "FFE2E2",
+        "tinta": "100817",
+        "papel": "201727",
+        "painel_baixo": "2A1D33",
+        "bloco": "D93C3C",
+        "menu_grande": "39234B",
+        "regua": "9D76BC"
+      },
+      "contraste": {
+        "texto/fundo": 15.493357669427299,
+        "texto/painel": 13.20509493718028,
+        "acento/fundo": 15.156014982275874,
+        "acento/painel": 12.917575452686076,
+        "texto/tinta": 16.473296702362184
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F9E7E7",
+        "painel": "F9E7E7",
+        "painel_alto": "F9E7E7",
+        "linha": "F9E7E7",
+        "texto": "1A1320",
+        "texto_fraco": "1A1320",
+        "acento": "1A1320",
+        "tinta": "F9E7E7",
+        "papel": "F9E7E7",
+        "painel_baixo": "F9E7E7",
+        "bloco": "000000",
+        "menu_grande": "F9E7E7",
+        "regua": "1A1320"
+      },
+      "aviso_por_papel": {
+        "fundo": "FFE2E2",
+        "painel": "FFE2E2",
+        "painel_alto": "FFE2E2",
+        "linha": "FFE2E2",
+        "texto": "D00000",
+        "texto_fraco": "A80000",
+        "acento": "D00000",
+        "tinta": "FFE2E2",
+        "papel": "FFE2E2",
+        "painel_baixo": "FFE2E2",
+        "bloco": "100000",
+        "menu_grande": "FFE2E2",
+        "regua": "480000"
+      }
+    }
+  },
+  "Eucalipto": {
+    "claro": {
+      "cores": {
+        "fundo": "F7FBF4",
+        "painel": "E7F2DE",
+        "painel_alto": "D4E8C4",
+        "linha": "CBE2D0",
+        "texto": "151E1C",
+        "texto_fraco": "142317",
+        "acento": "4F8F71",
+        "tinta": "EEF8E7",
+        "papel": "F4F9F0",
+        "painel_baixo": "F1F8EC",
+        "bloco": "569865",
+        "menu_grande": "D8F0C5",
+        "regua": "5EA12B"
+      },
+      "contraste": {
+        "texto/fundo": 16.251321495691833,
+        "texto/painel": 14.706709931994702,
+        "acento/fundo": 3.6473531662284318,
+        "acento/painel": 3.3006894269788405,
+        "texto/tinta": 15.567778296589335
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.30)"
+      ],
+      "osso_por_papel": {
+        "fundo": "151E1C",
+        "painel": "151E1C",
+        "painel_alto": "151E1C",
+        "linha": "151E1C",
+        "texto": "EFF7E9",
+        "texto_fraco": "EFF7E9",
+        "acento": "000000",
+        "tinta": "151E1C",
+        "papel": "151E1C",
+        "painel_baixo": "151E1C",
+        "bloco": "151E1C",
+        "menu_grande": "151E1C",
+        "regua": "151E1C"
+      },
+      "aviso_por_papel": {
+        "fundo": "467E64",
+        "painel": "42775E",
+        "painel_alto": "3D6E57",
+        "linha": "3A6953",
+        "texto": "519273",
+        "texto_fraco": "529576",
+        "acento": "101D17",
+        "tinta": "437A60",
+        "papel": "447C62",
+        "painel_baixo": "447C62",
+        "bloco": "15261E",
+        "menu_grande": "3F725A",
+        "regua": "192D24"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "131B19",
+        "painel": "21302D",
+        "painel_alto": "324843",
+        "linha": "2C4E34",
+        "texto": "EFF7E9",
+        "texto_fraco": "CDE3D2",
+        "acento": "88BDA4",
+        "tinta": "081713",
+        "papel": "192522",
+        "painel_baixo": "212F2C",
+        "bloco": "6AAB79",
+        "menu_grande": "2A443E",
+        "regua": "81B1A5"
+      },
+      "contraste": {
+        "texto/fundo": 15.979214117893715,
+        "texto/painel": 12.55529262462602,
+        "acento/fundo": 8.228580223283313,
+        "acento/painel": 6.465413869937586,
+        "texto/tinta": 16.765570858535824
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "EFF7E9",
+        "painel": "EFF7E9",
+        "painel_alto": "EFF7E9",
+        "linha": "EFF7E9",
+        "texto": "151E1C",
+        "texto_fraco": "151E1C",
+        "acento": "151E1C",
+        "tinta": "EFF7E9",
+        "papel": "EFF7E9",
+        "painel_baixo": "EFF7E9",
+        "bloco": "151E1C",
+        "menu_grande": "EFF7E9",
+        "regua": "151E1C"
+      },
+      "aviso_por_papel": {
+        "fundo": "88BDA4",
+        "painel": "88BDA4",
+        "painel_alto": "88BDA4",
+        "linha": "8CBFA7",
+        "texto": "447A60",
+        "texto_fraco": "3A6953",
+        "acento": "29493A",
+        "tinta": "88BDA4",
+        "papel": "88BDA4",
+        "painel_baixo": "88BDA4",
+        "bloco": "1F382C",
+        "menu_grande": "88BDA4",
+        "regua": "254234"
+      }
+    }
+  },
+  "Pêssego": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFBF0",
+        "painel": "FFF4D1",
+        "painel_alto": "FFECAD",
+        "linha": "FFD9AD",
+        "texto": "330800",
+        "texto_fraco": "371E00",
+        "acento": "F53E00",
+        "tinta": "FFF8E0",
+        "papel": "FFFAEA",
+        "painel_baixo": "FFF9E4",
+        "bloco": "ED8000",
+        "menu_grande": "FFEEB6",
+        "regua": "CC9D00"
+      },
+      "contraste": {
+        "texto/fundo": 17.277089191459567,
+        "texto/painel": 16.259506620647272,
+        "acento/fundo": 3.645151449178834,
+        "acento/painel": 3.430460042452224,
+        "texto/tinta": 16.805966789120276
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.43)"
+      ],
+      "osso_por_papel": {
+        "fundo": "330800",
+        "painel": "330800",
+        "painel_alto": "330800",
+        "linha": "330800",
+        "texto": "FFF8E0",
+        "texto_fraco": "FFF8E0",
+        "acento": "330800",
+        "tinta": "330800",
+        "papel": "330800",
+        "painel_baixo": "330800",
+        "bloco": "330800",
+        "menu_grande": "330800",
+        "regua": "330800"
+      },
+      "aviso_por_papel": {
+        "fundo": "D83700",
+        "painel": "D03500",
+        "painel_alto": "C83300",
+        "linha": "B82E00",
+        "texto": "F53E00",
+        "texto_fraco": "FF4608",
+        "acento": "390E00",
+        "tinta": "D43600",
+        "papel": "D83700",
+        "painel_baixo": "D43600",
+        "bloco": "621900",
+        "menu_grande": "C83300",
+        "regua": "6E1C00"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "2E0800",
+        "painel": "520D00",
+        "painel_alto": "7A1400",
+        "linha": "7A4200",
+        "texto": "FFF8E0",
+        "texto_fraco": "FFDBB0",
+        "acento": "FFB399",
+        "tinta": "1F0500",
+        "papel": "3E0A00",
+        "painel_baixo": "500D00",
+        "bloco": "FF9416",
+        "menu_grande": "6E1200",
+        "regua": "FF5533"
+      },
+      "contraste": {
+        "texto/fundo": 17.16508501316838,
+        "texto/painel": 13.948178644587284,
+        "acento/fundo": 10.56564788637882,
+        "acento/painel": 8.585541178616952,
+        "texto/tinta": 18.29248345508598
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFF8E0",
+        "painel": "FFF8E0",
+        "painel_alto": "FFF8E0",
+        "linha": "FFF8E0",
+        "texto": "330800",
+        "texto_fraco": "330800",
+        "acento": "330800",
+        "tinta": "FFF8E0",
+        "papel": "FFF8E0",
+        "painel_baixo": "FFF8E0",
+        "bloco": "330800",
+        "menu_grande": "FFF8E0",
+        "regua": "330800"
+      },
+      "aviso_por_papel": {
+        "fundo": "FFB399",
+        "painel": "FFB399",
+        "painel_alto": "FFB399",
+        "linha": "FFB399",
+        "texto": "D33600",
+        "texto_fraco": "B82F00",
+        "acento": "962600",
+        "tinta": "FFB399",
+        "papel": "FFB399",
+        "painel_baixo": "FFB399",
+        "bloco": "7A1F00",
+        "menu_grande": "FFB399",
+        "regua": "521500"
+      }
+    }
+  },
+  "Outono": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFCF0",
+        "painel": "FFF5D1",
+        "painel_alto": "FFEEAD",
+        "linha": "B6BCF7",
+        "texto": "131820",
+        "texto_fraco": "060A32",
+        "acento": "F84000",
+        "tinta": "FFF9E0",
+        "papel": "FFFBEA",
+        "painel_baixo": "FFF9E4",
+        "bloco": "182AD5",
+        "menu_grande": "FFF0B6",
+        "regua": "CCA100"
+      },
+      "contraste": {
+        "texto/fundo": 17.32905135540414,
+        "texto/painel": 16.310765518645322,
+        "acento/fundo": 3.569548422271609,
+        "acento/painel": 3.3597954169006354,
+        "texto/tinta": 16.85773247561451
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.36)"
+      ],
+      "osso_por_papel": {
+        "fundo": "060A32",
+        "painel": "060A32",
+        "painel_alto": "060A32",
+        "linha": "060A32",
+        "texto": "FFF9E0",
+        "texto_fraco": "FFF9E0",
+        "acento": "060A32",
+        "tinta": "060A32",
+        "papel": "060A32",
+        "painel_baixo": "060A32",
+        "bloco": "FFF9E0",
+        "menu_grande": "060A32",
+        "regua": "060A32"
+      },
+      "aviso_por_papel": {
+        "fundo": "D73700",
+        "painel": "CF3500",
+        "painel_alto": "C63300",
+        "linha": "952600",
+        "texto": "F84000",
+        "texto_fraco": "F84000",
+        "acento": "3A0F00",
+        "tinta": "D33600",
+        "papel": "D73700",
+        "painel_baixo": "D33600",
+        "bloco": "FFA180",
+        "menu_grande": "CB3400",
+        "regua": "701D00"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "11151D",
+        "painel": "1F2633",
+        "painel_alto": "2E384C",
+        "linha": "0C156E",
+        "texto": "FFF9E0",
+        "texto_fraco": "B8BEF7",
+        "acento": "FF7444",
+        "tinta": "080D17",
+        "papel": "171D27",
+        "painel_baixo": "1E2532",
+        "bloco": "2D3FE8",
+        "menu_grande": "253149",
+        "regua": "798FB9"
+      },
+      "contraste": {
+        "texto/fundo": 17.303194800725723,
+        "texto/painel": 14.37034273308478,
+        "acento/fundo": 6.818716339040682,
+        "acento/painel": 5.662959466166906,
+        "texto/tinta": 18.401600631821328
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFF9E0",
+        "painel": "FFF9E0",
+        "painel_alto": "FFF9E0",
+        "linha": "FFF9E0",
+        "texto": "060A32",
+        "texto_fraco": "060A32",
+        "acento": "060A32",
+        "tinta": "FFF9E0",
+        "papel": "FFF9E0",
+        "painel_baixo": "FFF9E0",
+        "bloco": "FFF9E0",
+        "menu_grande": "FFF9E0",
+        "regua": "060A32"
+      },
+      "aviso_por_papel": {
+        "fundo": "FF7444",
+        "painel": "FF7444",
+        "painel_alto": "FF794A",
+        "linha": "FF7444",
+        "texto": "D23600",
+        "texto_fraco": "972700",
+        "acento": "661A00",
+        "tinta": "FF7444",
+        "papel": "FF7444",
+        "painel_baixo": "FF7444",
+        "bloco": "FFC3AE",
+        "menu_grande": "FF7444",
+        "regua": "4B1300"
+      }
+    }
+  },
+  "Aquarela": {
+    "claro": {
+      "cores": {
+        "fundo": "F2FDF4",
+        "painel": "D7F9DE",
+        "painel_alto": "B9F4C4",
+        "linha": "ADE2FF",
+        "texto": "000133",
+        "texto_fraco": "002337",
+        "acento": "656FFF",
+        "tinta": "E5FBE9",
+        "papel": "EDFCF0",
+        "painel_baixo": "E8FBEC",
+        "bloco": "0098ED",
+        "menu_grande": "B6FEC4",
+        "regua": "06C62A"
+      },
+      "contraste": {
+        "texto/fundo": 19.134143097102523,
+        "texto/painel": 17.577875454865275,
+        "acento/fundo": 3.819284452426072,
+        "acento/painel": 3.5086445256916168,
+        "texto/tinta": 18.350241136928783
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.51)"
+      ],
+      "osso_por_papel": {
+        "fundo": "000133",
+        "painel": "000133",
+        "painel_alto": "000133",
+        "linha": "000133",
+        "texto": "E5FBE9",
+        "texto_fraco": "E5FBE9",
+        "acento": "000133",
+        "tinta": "000133",
+        "papel": "000133",
+        "painel_baixo": "000133",
+        "bloco": "000133",
+        "menu_grande": "000133",
+        "regua": "000133"
+      },
+      "aviso_por_papel": {
+        "fundo": "535EFF",
+        "painel": "4753FF",
+        "painel_alto": "3B48FF",
+        "linha": "303DFF",
+        "texto": "656FFF",
+        "texto_fraco": "6F79FF",
+        "acento": "000659",
+        "tinta": "4D59FF",
+        "papel": "4D59FF",
+        "painel_baixo": "4D59FF",
+        "bloco": "000A94",
+        "menu_grande": "4753FF",
+        "regua": "000DD0"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "00012E",
+        "painel": "000252",
+        "painel_alto": "00037A",
+        "linha": "004F7A",
+        "texto": "E5FBE9",
+        "texto_fraco": "B0E3FF",
+        "acento": "B5BAFF",
+        "tinta": "00011F",
+        "papel": "00013E",
+        "painel_baixo": "000250",
+        "bloco": "16ACFF",
+        "menu_grande": "00036E",
+        "regua": "3337FF"
+      },
+      "contraste": {
+        "texto/fundo": 18.497070689343808,
+        "texto/painel": 17.07804345850556,
+        "acento/fundo": 10.952663456344096,
+        "acento/painel": 10.11241540000115,
+        "texto/tinta": 18.852256211794323
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "E5FBE9",
+        "painel": "E5FBE9",
+        "painel_alto": "E5FBE9",
+        "linha": "E5FBE9",
+        "texto": "000133",
+        "texto_fraco": "000133",
+        "acento": "000133",
+        "tinta": "E5FBE9",
+        "papel": "E5FBE9",
+        "painel_baixo": "E5FBE9",
+        "bloco": "000133",
+        "menu_grande": "E5FBE9",
+        "regua": "E5FBE9"
+      },
+      "aviso_por_papel": {
+        "fundo": "B5BAFF",
+        "painel": "B5BAFF",
+        "painel_alto": "B5BAFF",
+        "linha": "B5BAFF",
+        "texto": "4F5BFF",
+        "texto_fraco": "3240FF",
+        "acento": "0011FE",
+        "tinta": "B5BAFF",
+        "papel": "B5BAFF",
+        "painel_baixo": "B5BAFF",
+        "bloco": "000DC4",
+        "menu_grande": "B5BAFF",
+        "regua": "CED1FF"
+      }
+    }
+  },
+  "Natal": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFCF0",
+        "painel": "FEF6D3",
+        "painel_alto": "FCEFB0",
+        "linha": "ECDCC1",
+        "texto": "270C0C",
+        "texto_fraco": "2A1F0D",
+        "acento": "A31D1D",
+        "tinta": "FEF9E1",
+        "papel": "FEFBEB",
+        "painel_baixo": "FEFAE5",
+        "bloco": "B58739",
+        "menu_grande": "FFF2B6",
+        "regua": "CCA900"
+      },
+      "contraste": {
+        "texto/fundo": 17.859681571008608,
+        "texto/painel": 16.900630034823493,
+        "acento/fundo": 7.428552670923253,
+        "acento/painel": 7.029644951188435,
+        "texto/tinta": 17.35037707863029
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "270C0C",
+        "painel": "270C0C",
+        "painel_alto": "270C0C",
+        "linha": "270C0C",
+        "texto": "FEF9E1",
+        "texto_fraco": "FEF9E1",
+        "acento": "FEF9E1",
+        "tinta": "270C0C",
+        "papel": "270C0C",
+        "painel_baixo": "270C0C",
+        "bloco": "270C0C",
+        "menu_grande": "270C0C",
+        "regua": "270C0C"
+      },
+      "aviso_por_papel": {
+        "fundo": "A31D1D",
+        "painel": "A31D1D",
+        "painel_alto": "A31D1D",
+        "linha": "A31D1D",
+        "texto": "DF4B4B",
+        "texto_fraco": "E25D5D",
+        "acento": "F3BCBC",
+        "tinta": "A31D1D",
+        "papel": "A31D1D",
+        "painel_baixo": "A31D1D",
+        "bloco": "510E0E",
+        "menu_grande": "A31D1D",
+        "regua": "801717"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "230B0B",
+        "painel": "3E1414",
+        "painel_alto": "5D1E1E",
+        "linha": "5D461D",
+        "texto": "FEF9E1",
+        "texto_fraco": "ECDDC3",
+        "acento": "D92C2C",
+        "tinta": "170707",
+        "papel": "2F0F0F",
+        "painel_baixo": "3D1414",
+        "bloco": "C79B4E",
+        "menu_grande": "5D1111",
+        "regua": "DD5555"
+      },
+      "contraste": {
+        "texto/fundo": 17.659032318655314,
+        "texto/painel": 15.096451383855053,
+        "acento/fundo": 3.866852933045655,
+        "acento/painel": 3.30571665869663,
+        "texto/tinta": 18.55486433368697
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.31)"
+      ],
+      "osso_por_papel": {
+        "fundo": "FEF9E1",
+        "painel": "FEF9E1",
+        "painel_alto": "FEF9E1",
+        "linha": "FEF9E1",
+        "texto": "270C0C",
+        "texto_fraco": "270C0C",
+        "acento": "FEF9E1",
+        "tinta": "FEF9E1",
+        "papel": "FEF9E1",
+        "painel_baixo": "FEF9E1",
+        "bloco": "270C0C",
+        "menu_grande": "FEF9E1",
+        "regua": "270C0C"
+      },
+      "aviso_por_papel": {
+        "fundo": "DE4848",
+        "painel": "E25D5D",
+        "painel_alto": "E87D7D",
+        "linha": "EFA7A7",
+        "texto": "D92C2C",
+        "texto_fraco": "BC2222",
+        "acento": "FDF6F6",
+        "tinta": "DD4141",
+        "papel": "E05353",
+        "painel_baixo": "E25D5D",
+        "bloco": "6F1414",
+        "menu_grande": "E67272",
+        "regua": "370A0A"
+      }
+    }
+  },
+  "Halloween": {
+    "claro": {
+      "cores": {
+        "fundo": "FEF7F1",
+        "painel": "FCE7D4",
+        "painel_alto": "F9D3B3",
+        "linha": "E8C5CC",
+        "texto": "121023",
+        "texto_fraco": "271015",
+        "acento": "441752",
+        "tinta": "FDEFE3",
+        "papel": "FEF4EC",
+        "painel_baixo": "FDF1E6",
+        "bloco": "AA4358",
+        "menu_grande": "FFD7B6",
+        "regua": "CC5E00"
+      },
+      "contraste": {
+        "texto/fundo": 17.60389880920983,
+        "texto/painel": 15.585851938654443,
+        "acento/fundo": 13.279309539307695,
+        "acento/painel": 11.757017838510361,
+        "texto/tinta": 16.575253559028656
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "121023",
+        "painel": "121023",
+        "painel_alto": "121023",
+        "linha": "121023",
+        "texto": "FDEFE3",
+        "texto_fraco": "FDEFE3",
+        "acento": "FDEFE3",
+        "tinta": "121023",
+        "papel": "121023",
+        "painel_baixo": "121023",
+        "bloco": "FDEFE3",
+        "menu_grande": "121023",
+        "regua": "121023"
+      },
+      "aviso_por_papel": {
+        "fundo": "441752",
+        "painel": "441752",
+        "painel_alto": "441752",
+        "linha": "441752",
+        "texto": "B356D0",
+        "texto_fraco": "B55CD1",
+        "acento": "C176D9",
+        "tinta": "441752",
+        "papel": "441752",
+        "painel_baixo": "441752",
+        "bloco": "F1DFF6",
+        "menu_grande": "441752",
+        "regua": "210B28"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "110F1F",
+        "painel": "1D1A37",
+        "painel_alto": "2C2753",
+        "linha": "58232E",
+        "texto": "FDEFE3",
+        "texto_fraco": "E9C7CE",
+        "acento": "A941CA",
+        "tinta": "090817",
+        "papel": "16142A",
+        "painel_baixo": "1D1A37",
+        "bloco": "BD586D",
+        "menu_grande": "221C52",
+        "regua": "7469C9"
+      },
+      "contraste": {
+        "texto/fundo": 16.756463117405847,
+        "texto/painel": 14.84451044380548,
+        "acento/fundo": 3.8634628967024693,
+        "acento/painel": 3.4226325040981322,
+        "texto/tinta": 17.598915452978915
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.42)"
+      ],
+      "osso_por_papel": {
+        "fundo": "FDEFE3",
+        "painel": "FDEFE3",
+        "painel_alto": "FDEFE3",
+        "linha": "FDEFE3",
+        "texto": "121023",
+        "texto_fraco": "121023",
+        "acento": "FFFFFF",
+        "tinta": "FDEFE3",
+        "papel": "FDEFE3",
+        "painel_baixo": "FDEFE3",
+        "bloco": "000000",
+        "menu_grande": "FDEFE3",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "B254CF",
+        "painel": "B761D3",
+        "painel_alto": "C177D9",
+        "linha": "C783DD",
+        "texto": "A63AC8",
+        "texto_fraco": "872EA4",
+        "acento": "FBF5FC",
+        "tinta": "AF4ECE",
+        "papel": "B45AD1",
+        "painel_baixo": "B761D3",
+        "bloco": "110615",
+        "menu_grande": "BC6AD5",
+        "regua": "070208"
+      }
+    }
+  },
+  "Páscoa": {
+    "claro": {
+      "cores": {
+        "fundo": "FBFFF0",
+        "painel": "F3FFD1",
+        "painel_alto": "EAFFAD",
+        "linha": "BEE5EF",
+        "texto": "2F041A",
+        "texto_fraco": "0B262C",
+        "acento": "199A2A",
+        "tinta": "F7FFE0",
+        "papel": "FAFFEA",
+        "painel_baixo": "F8FFE4",
+        "bloco": "2FA2BE",
+        "menu_grande": "ECFFB6",
+        "regua": "98CC00"
+      },
+      "contraste": {
+        "texto/fundo": 17.91969228574296,
+        "texto/painel": 17.374687160546657,
+        "acento/fundo": 3.6271843198467266,
+        "acento/painel": 3.5168680257482547,
+        "texto/tinta": 17.63446929813051
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.52)"
+      ],
+      "osso_por_papel": {
+        "fundo": "2F041A",
+        "painel": "2F041A",
+        "painel_alto": "2F041A",
+        "linha": "2F041A",
+        "texto": "F7FFE0",
+        "texto_fraco": "F7FFE0",
+        "acento": "2F041A",
+        "tinta": "2F041A",
+        "papel": "2F041A",
+        "painel_baixo": "2F041A",
+        "bloco": "2F041A",
+        "menu_grande": "2F041A",
+        "regua": "2F041A"
+      },
+      "aviso_por_papel": {
+        "fundo": "168825",
+        "painel": "168524",
+        "painel_alto": "158324",
+        "linha": "12711F",
+        "texto": "199A2A",
+        "texto_fraco": "1A9F2B",
+        "acento": "06240A",
+        "tinta": "168524",
+        "papel": "168524",
+        "painel_baixo": "168524",
+        "bloco": "09360F",
+        "menu_grande": "158324",
+        "regua": "0E5718"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "2B0318",
+        "painel": "4C062A",
+        "painel_alto": "72093F",
+        "linha": "185462",
+        "texto": "F7FFE0",
+        "texto_fraco": "C0E6EF",
+        "acento": "DAF9DE",
+        "tinta": "1C0210",
+        "papel": "390420",
+        "painel_baixo": "4B062A",
+        "bloco": "45B5D0",
+        "menu_grande": "6E0039",
+        "regua": "FF339D"
+      },
+      "contraste": {
+        "texto/fundo": 18.012759784464482,
+        "texto/painel": 14.878141618513055,
+        "acento/fundo": 16.463463122359613,
+        "acento/painel": 13.598456804875207,
+        "texto/tinta": 19.08439114111516
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F7FFE0",
+        "painel": "F7FFE0",
+        "painel_alto": "F7FFE0",
+        "linha": "F7FFE0",
+        "texto": "2F041A",
+        "texto_fraco": "2F041A",
+        "acento": "2F041A",
+        "tinta": "F7FFE0",
+        "papel": "F7FFE0",
+        "painel_baixo": "F7FFE0",
+        "bloco": "2F041A",
+        "menu_grande": "F7FFE0",
+        "regua": "2F041A"
+      },
+      "aviso_por_papel": {
+        "fundo": "DAF9DE",
+        "painel": "DAF9DE",
+        "painel_alto": "DAF9DE",
+        "linha": "DAF9DE",
+        "texto": "168624",
+        "texto_fraco": "12721F",
+        "acento": "157F22",
+        "tinta": "DAF9DE",
+        "papel": "DAF9DE",
+        "painel_baixo": "DAF9DE",
+        "bloco": "0B4312",
+        "menu_grande": "DAF9DE",
+        "regua": "07280B"
+      }
+    }
+  },
+  "Réveillon": {
+    "claro": {
+      "cores": {
+        "fundo": "FCFAF2",
+        "painel": "F7F1D9",
+        "painel_alto": "F1E7BB",
+        "linha": "E8E4C4",
+        "texto": "1D1616",
+        "texto_fraco": "28250F",
+        "acento": "E43636",
+        "tinta": "FAF6E5",
+        "papel": "FCF9EE",
+        "painel_baixo": "FBF7E9",
+        "bloco": "ABA042",
+        "menu_grande": "FBEFBA",
+        "regua": "BE9C0E"
+      },
+      "contraste": {
+        "texto/fundo": 17.05043269841356,
+        "texto/painel": 15.729710135250668,
+        "acento/fundo": 4.11815582392827,
+        "acento/painel": 3.799164428725216,
+        "texto/tinta": 16.442114102336607
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "1D1616",
+        "painel": "1D1616",
+        "painel_alto": "1D1616",
+        "linha": "1D1616",
+        "texto": "FAF6E5",
+        "texto_fraco": "FAF6E5",
+        "acento": "000000",
+        "tinta": "1D1616",
+        "papel": "1D1616",
+        "painel_baixo": "1D1616",
+        "bloco": "1D1616",
+        "menu_grande": "1D1616",
+        "regua": "1D1616"
+      },
+      "aviso_por_papel": {
+        "fundo": "E12121",
+        "painel": "D71D1D",
+        "painel_alto": "CB1B1B",
+        "linha": "C71B1B",
+        "texto": "E64747",
+        "texto_fraco": "E95E5E",
+        "acento": "210404",
+        "tinta": "DC1D1D",
+        "papel": "E01E1E",
+        "painel_baixo": "DC1D1D",
+        "bloco": "6C0E0E",
+        "menu_grande": "D31C1C",
+        "regua": "700F0F"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "1A1414",
+        "painel": "2E2424",
+        "painel_alto": "453636",
+        "linha": "585222",
+        "texto": "FAF6E5",
+        "texto_fraco": "E9E5C6",
+        "acento": "E43636",
+        "tinta": "170808",
+        "papel": "231B1B",
+        "painel_baixo": "2D2323",
+        "bloco": "BEB357",
+        "menu_grande": "402E2E",
+        "regua": "A58D8D"
+      },
+      "contraste": {
+        "texto/fundo": 16.791237400113246,
+        "texto/painel": 13.901448002552506,
+        "acento/fundo": 4.22822094677482,
+        "acento/painel": 3.500539729996138,
+        "texto/tinta": 18.03205845240052
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FAF6E5",
+        "painel": "FAF6E5",
+        "painel_alto": "FAF6E5",
+        "linha": "FAF6E5",
+        "texto": "1D1616",
+        "texto_fraco": "1D1616",
+        "acento": "000000",
+        "tinta": "FAF6E5",
+        "papel": "FAF6E5",
+        "painel_baixo": "FAF6E5",
+        "bloco": "1D1616",
+        "menu_grande": "FAF6E5",
+        "regua": "1D1616"
+      },
+      "aviso_por_papel": {
+        "fundo": "E64343",
+        "painel": "EA6262",
+        "painel_alto": "EF8686",
+        "linha": "F5B5B5",
+        "texto": "DC1D1D",
+        "texto_fraco": "C71B1B",
+        "acento": "210404",
+        "tinta": "E43636",
+        "papel": "E85151",
+        "painel_baixo": "E95E5E",
+        "bloco": "891212",
+        "menu_grande": "ED7676",
+        "regua": "5B0C0C"
+      }
+    }
+  },
+  "Carnaval": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFCF0",
+        "painel": "FFF7D1",
+        "painel_alto": "FFF1AD",
+        "linha": "C4E8DA",
+        "texto": "131920",
+        "texto_fraco": "10281E",
+        "acento": "ED4497",
+        "tinta": "FFFAE0",
+        "papel": "FFFBEA",
+        "painel_baixo": "FFFAE4",
+        "bloco": "43AA82",
+        "menu_grande": "FFF2B6",
+        "regua": "CCA800"
+      },
+      "contraste": {
+        "texto/fundo": 17.20650001993298,
+        "texto/painel": 16.400318588384945,
+        "acento/fundo": 3.4784192475846423,
+        "acento/painel": 3.3154438019511057,
+        "texto/tinta": 16.842901556705254
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.32)"
+      ],
+      "osso_por_papel": {
+        "fundo": "131920",
+        "painel": "131920",
+        "painel_alto": "131920",
+        "linha": "131920",
+        "texto": "FFFAE0",
+        "texto_fraco": "FFFAE0",
+        "acento": "131920",
+        "tinta": "131920",
+        "papel": "131920",
+        "painel_baixo": "131920",
+        "bloco": "131920",
+        "menu_grande": "131920",
+        "regua": "131920"
+      },
+      "aviso_por_papel": {
+        "fundo": "DF1578",
+        "painel": "D51573",
+        "painel_alto": "D11471",
+        "linha": "BE1267",
+        "texto": "ED4497",
+        "texto_fraco": "EE4A9A",
+        "acento": "410623",
+        "tinta": "DA1576",
+        "papel": "DA1576",
+        "painel_baixo": "DA1576",
+        "bloco": "610935",
+        "menu_grande": "D11471",
+        "regua": "7D0C44"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "11161D",
+        "painel": "1E2834",
+        "painel_alto": "2C3B4E",
+        "linha": "225843",
+        "texto": "FFFAE0",
+        "texto_fraco": "C7E9DB",
+        "acento": "F599C6",
+        "tinta": "080F17",
+        "papel": "171E27",
+        "painel_baixo": "1D2733",
+        "bloco": "58BD95",
+        "menu_grande": "22354C",
+        "regua": "7595BD"
+      },
+      "contraste": {
+        "texto/fundo": 17.298211612855194,
+        "texto/painel": 14.20329718253213,
+        "acento/fundo": 8.86801099785879,
+        "acento/painel": 7.281388298368835,
+        "texto/tinta": 18.333746286403017
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFFAE0",
+        "painel": "FFFAE0",
+        "painel_alto": "FFFAE0",
+        "linha": "FFFAE0",
+        "texto": "131920",
+        "texto_fraco": "131920",
+        "acento": "131920",
+        "tinta": "FFFAE0",
+        "papel": "FFFAE0",
+        "painel_baixo": "FFFAE0",
+        "bloco": "131920",
+        "menu_grande": "FFFAE0",
+        "regua": "131920"
+      },
+      "aviso_por_papel": {
+        "fundo": "F599C6",
+        "painel": "F599C6",
+        "painel_alto": "F599C6",
+        "linha": "F7AACF",
+        "texto": "D91575",
+        "texto_fraco": "C11368",
+        "acento": "8B0E4B",
+        "tinta": "F599C6",
+        "papel": "F599C6",
+        "painel_baixo": "F599C6",
+        "bloco": "790C41",
+        "menu_grande": "F599C6",
+        "regua": "55082E"
+      }
+    }
+  },
+  "Ano Novo Chinês": {
+    "claro": {
+      "cores": {
+        "fundo": "FFF9F0",
+        "painel": "FEECD2",
+        "painel_alto": "FEDEAF",
+        "linha": "F5C0B8",
+        "texto": "280B0B",
+        "texto_fraco": "300C07",
+        "acento": "CF6314",
+        "tinta": "FFF3E1",
+        "papel": "FFF7EB",
+        "painel_baixo": "FFF4E5",
+        "bloco": "D0351E",
+        "menu_grande": "FFE1B6",
+        "regua": "CC7A00"
+      },
+      "contraste": {
+        "texto/fundo": 17.55192685035679,
+        "texto/painel": 15.874168592520224,
+        "acento/fundo": 3.6822379431641057,
+        "acento/painel": 3.330259202075795,
+        "texto/tinta": 16.76356204783669
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.33)"
+      ],
+      "osso_por_papel": {
+        "fundo": "280B0B",
+        "painel": "280B0B",
+        "painel_alto": "280B0B",
+        "linha": "280B0B",
+        "texto": "FFF3E1",
+        "texto_fraco": "FFF3E1",
+        "acento": "280B0B",
+        "tinta": "280B0B",
+        "papel": "280B0B",
+        "painel_baixo": "280B0B",
+        "bloco": "FFF3E1",
+        "menu_grande": "280B0B",
+        "regua": "280B0B"
+      },
+      "aviso_por_papel": {
+        "fundo": "B75712",
+        "painel": "AC5211",
+        "painel_alto": "9F4C0F",
+        "linha": "8A420D",
+        "texto": "CF6314",
+        "texto_fraco": "CF6314",
+        "acento": "291404",
+        "tinta": "B35611",
+        "papel": "B75712",
+        "painel_baixo": "B35611",
+        "bloco": "FDF2E9",
+        "menu_grande": "A24E10",
+        "regua": "3E1E06"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "240A0A",
+        "painel": "411111",
+        "painel_alto": "611A1A",
+        "linha": "6B1B0F",
+        "texto": "FFF3E1",
+        "texto_fraco": "F5C2BA",
+        "acento": "EB7F31",
+        "tinta": "180606",
+        "papel": "310D0D",
+        "painel_baixo": "401111",
+        "bloco": "E24A33",
+        "menu_grande": "620C0C",
+        "regua": "E64C4C"
+      },
+      "contraste": {
+        "texto/fundo": 17.0638254570503,
+        "texto/painel": 14.591731069219126,
+        "acento/fundo": 6.7798754986271845,
+        "acento/painel": 5.797651892757764,
+        "texto/tinta": 17.947698512514606
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFF3E1",
+        "painel": "FFF3E1",
+        "painel_alto": "FFF3E1",
+        "linha": "FFF3E1",
+        "texto": "280B0B",
+        "texto_fraco": "280B0B",
+        "acento": "280B0B",
+        "tinta": "FFF3E1",
+        "papel": "FFF3E1",
+        "painel_baixo": "FFF3E1",
+        "bloco": "280B0B",
+        "menu_grande": "FFF3E1",
+        "regua": "280B0B"
+      },
+      "aviso_por_papel": {
+        "fundo": "EB7F31",
+        "painel": "EB7F31",
+        "painel_alto": "EB7F31",
+        "linha": "EC883F",
+        "texto": "B15411",
+        "texto_fraco": "8A420D",
+        "acento": "522708",
+        "tinta": "EB7F31",
+        "papel": "EB7F31",
+        "painel_baixo": "EB7F31",
+        "bloco": "231003",
+        "menu_grande": "EB7F31",
+        "regua": "2B1504"
+      }
+    }
+  },
+  "Tanabata": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFDF0",
+        "painel": "FFF8D1",
+        "painel_alto": "FFF3AD",
+        "linha": "ADFFFD",
+        "texto": "000633",
+        "texto_fraco": "003736",
+        "acento": "003161",
+        "tinta": "FFFAE0",
+        "papel": "FFFCEA",
+        "painel_baixo": "FFFBE4",
+        "bloco": "00EDE6",
+        "menu_grande": "FFF4B6",
+        "regua": "CCAD00"
+      },
+      "contraste": {
+        "texto/fundo": 19.146347305279466,
+        "texto/painel": 18.251704106750445,
+        "acento/fundo": 12.755055391192215,
+        "acento/painel": 12.159055362014616,
+        "texto/tinta": 18.626947188405012
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "000633",
+        "painel": "000633",
+        "painel_alto": "000633",
+        "linha": "000633",
+        "texto": "FFFAE0",
+        "texto_fraco": "FFFAE0",
+        "acento": "FFFAE0",
+        "tinta": "000633",
+        "papel": "000633",
+        "painel_baixo": "000633",
+        "bloco": "000633",
+        "menu_grande": "000633",
+        "regua": "000633"
+      },
+      "aviso_por_papel": {
+        "fundo": "003161",
+        "painel": "003161",
+        "painel_alto": "003161",
+        "linha": "003161",
+        "texto": "0077EB",
+        "texto_fraco": "379CFF",
+        "acento": "379CFF",
+        "tinta": "003161",
+        "papel": "003161",
+        "painel_baixo": "003161",
+        "bloco": "003161",
+        "menu_grande": "003161",
+        "regua": "003161"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "00062E",
+        "painel": "000A52",
+        "painel_alto": "000F7A",
+        "linha": "007A77",
+        "texto": "FFFAE0",
+        "texto_fraco": "B0FFFD",
+        "acento": "0069CF",
+        "tinta": "00041F",
+        "papel": "00083E",
+        "painel_baixo": "000A50",
+        "bloco": "16FFF8",
+        "menu_grande": "000E6E",
+        "regua": "334CFF"
+      },
+      "contraste": {
+        "texto/fundo": 18.77295422928956,
+        "texto/painel": 17.1658509621133,
+        "acento/fundo": 3.680548341115686,
+        "acento/painel": 3.3654662718919424,
+        "texto/tinta": 19.286082134901488
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.37)"
+      ],
+      "osso_por_papel": {
+        "fundo": "FFFAE0",
+        "painel": "FFFAE0",
+        "painel_alto": "FFFAE0",
+        "linha": "FFFAE0",
+        "texto": "000633",
+        "texto_fraco": "000633",
+        "acento": "FFFAE0",
+        "tinta": "FFFAE0",
+        "papel": "FFFAE0",
+        "painel_baixo": "FFFAE0",
+        "bloco": "000633",
+        "menu_grande": "FFFAE0",
+        "regua": "FFFAE0"
+      },
+      "aviso_por_papel": {
+        "fundo": "0078ED",
+        "painel": "007DF7",
+        "painel_alto": "128AFF",
+        "linha": "E6F3FF",
+        "texto": "0069CF",
+        "texto_fraco": "0069CF",
+        "acento": "DCEEFF",
+        "tinta": "0076E8",
+        "papel": "007BF2",
+        "painel_baixo": "007DF7",
+        "bloco": "0065C8",
+        "menu_grande": "0885FF",
+        "regua": "CCE6FF"
+      }
+    }
+  },
+  "Hanami": {
+    "claro": {
+      "cores": {
+        "fundo": "FBFAF4",
+        "painel": "F2EFDE",
+        "painel_alto": "E8E3C4",
+        "linha": "CFDFCD",
+        "texto": "260D0D",
+        "texto_fraco": "172215",
+        "acento": "438D6C",
+        "tinta": "F8F6E7",
+        "papel": "F9F8F0",
+        "painel_baixo": "F7F6EC",
+        "bloco": "61925C",
+        "menu_grande": "F0EAC5",
+        "regua": "A08F2C"
+      },
+      "contraste": {
+        "texto/fundo": 17.527060917237037,
+        "texto/painel": 15.863949933977146,
+        "acento/fundo": 3.8142154117255416,
+        "acento/painel": 3.4522914374942775,
+        "texto/tinta": 16.86820262624551
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.45)"
+      ],
+      "osso_por_papel": {
+        "fundo": "260D0D",
+        "painel": "260D0D",
+        "painel_alto": "260D0D",
+        "linha": "260D0D",
+        "texto": "F6F4E9",
+        "texto_fraco": "F6F4E9",
+        "acento": "260D0D",
+        "tinta": "260D0D",
+        "papel": "260D0D",
+        "painel_baixo": "260D0D",
+        "bloco": "260D0D",
+        "menu_grande": "260D0D",
+        "regua": "260D0D"
+      },
+      "aviso_por_papel": {
+        "fundo": "3C7F61",
+        "painel": "39785C",
+        "painel_alto": "346E55",
+        "linha": "326A51",
+        "texto": "438D6C",
+        "texto_fraco": "489774",
+        "acento": "0B1812",
+        "tinta": "3B7D5F",
+        "papel": "3B7D5F",
+        "painel_baixo": "3B7D5F",
+        "bloco": "11231B",
+        "menu_grande": "377358",
+        "regua": "152D22"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "220C0C",
+        "painel": "3C1515",
+        "painel_alto": "5B2020",
+        "linha": "324B2F",
+        "texto": "F6F4E9",
+        "texto_fraco": "D1E1CF",
+        "acento": "C0E1D2",
+        "tinta": "170808",
+        "papel": "2E1010",
+        "painel_baixo": "3C1515",
+        "bloco": "75A570",
+        "menu_grande": "5B1313",
+        "regua": "D95959"
+      },
+      "contraste": {
+        "texto/fundo": 16.90669094243668,
+        "texto/painel": 14.52838724876305,
+        "acento/fundo": 13.27100407309824,
+        "acento/painel": 11.404140941024071,
+        "texto/tinta": 17.712838773712537
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F6F4E9",
+        "painel": "F6F4E9",
+        "painel_alto": "F6F4E9",
+        "linha": "F6F4E9",
+        "texto": "260D0D",
+        "texto_fraco": "260D0D",
+        "acento": "260D0D",
+        "tinta": "F6F4E9",
+        "papel": "F6F4E9",
+        "painel_baixo": "F6F4E9",
+        "bloco": "260D0D",
+        "menu_grande": "F6F4E9",
+        "regua": "260D0D"
+      },
+      "aviso_por_papel": {
+        "fundo": "C0E1D2",
+        "painel": "C0E1D2",
+        "painel_alto": "C0E1D2",
+        "linha": "C0E1D2",
+        "texto": "3A7A5D",
+        "texto_fraco": "346C53",
+        "acento": "31684F",
+        "tinta": "C0E1D2",
+        "papel": "C0E1D2",
+        "painel_baixo": "C0E1D2",
+        "bloco": "193427",
+        "menu_grande": "C0E1D2",
+        "regua": "0D1C16"
+      }
+    }
+  },
+  "Obon": {
+    "claro": {
+      "cores": {
+        "fundo": "FCFAF3",
+        "painel": "F5EFDC",
+        "painel_alto": "ECE3C0",
+        "linha": "F6C8B6",
+        "texto": "11240F",
+        "texto_fraco": "311206",
+        "acento": "E3530D",
+        "tinta": "F8F5E7",
+        "papel": "FAF8EF",
+        "painel_baixo": "F9F6EA",
+        "bloco": "D44D19",
+        "menu_grande": "F5EAC0",
+        "regua": "AE901E"
+      },
+      "contraste": {
+        "texto/fundo": 15.671279265684841,
+        "texto/painel": 14.233345686269827,
+        "acento/fundo": 3.6497505659266816,
+        "acento/painel": 3.314864127732283,
+        "texto/tinta": 14.968763304858419
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.31)"
+      ],
+      "osso_por_papel": {
+        "fundo": "311206",
+        "painel": "311206",
+        "painel_alto": "311206",
+        "linha": "311206",
+        "texto": "F8F5E7",
+        "texto_fraco": "F8F5E7",
+        "acento": "311206",
+        "tinta": "311206",
+        "papel": "311206",
+        "painel_baixo": "311206",
+        "bloco": "000000",
+        "menu_grande": "311206",
+        "regua": "311206"
+      },
+      "aviso_por_papel": {
+        "fundo": "C9490B",
+        "painel": "BD450B",
+        "painel_alto": "AE400A",
+        "linha": "9B3909",
+        "texto": "EC560D",
+        "texto_fraco": "E3530D",
+        "acento": "311203",
+        "tinta": "C1470B",
+        "papel": "C5480B",
+        "painel_baixo": "C5480B",
+        "bloco": "170801",
+        "menu_grande": "B6420A",
+        "regua": "4F1D05"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "0F200E",
+        "painel": "1B3919",
+        "painel_alto": "285625",
+        "linha": "6D280D",
+        "texto": "F8F5E7",
+        "texto_fraco": "F7CAB9",
+        "acento": "F5824A",
+        "tinta": "091708",
+        "papel": "142B13",
+        "painel_baixo": "1A3818",
+        "bloco": "E6612F",
+        "menu_grande": "1D5519",
+        "regua": "6BCE64"
+      },
+      "contraste": {
+        "texto/fundo": 15.573517960988582,
+        "texto/painel": 11.669158096977384,
+        "acento/fundo": 6.628323823276962,
+        "acento/painel": 4.96656945498977,
+        "texto/tinta": 16.881861414673455
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F8F5E7",
+        "painel": "F8F5E7",
+        "painel_alto": "F8F5E7",
+        "linha": "F8F5E7",
+        "texto": "311206",
+        "texto_fraco": "311206",
+        "acento": "311206",
+        "tinta": "F8F5E7",
+        "papel": "F8F5E7",
+        "painel_baixo": "F8F5E7",
+        "bloco": "311206",
+        "menu_grande": "F8F5E7",
+        "regua": "311206"
+      },
+      "aviso_por_papel": {
+        "fundo": "F5824A",
+        "painel": "F5824A",
+        "painel_alto": "F8AA83",
+        "linha": "F68F5C",
+        "texto": "BF460B",
+        "texto_fraco": "9C3909",
+        "acento": "602305",
+        "tinta": "F5824A",
+        "papel": "F5824A",
+        "painel_baixo": "F5824A",
+        "bloco": "411804",
+        "menu_grande": "F8A57D",
+        "regua": "7E2E07"
+      }
+    }
+  },
+  "Setsubun": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFCF0",
+        "painel": "FFF6D1",
+        "painel_alto": "FFEFAD",
+        "linha": "FFCDAD",
+        "texto": "2D062B",
+        "texto_fraco": "371500",
+        "acento": "B12C00",
+        "tinta": "FFF9E0",
+        "papel": "FFFBEA",
+        "painel_baixo": "FFFAE4",
+        "bloco": "ED5C00",
+        "menu_grande": "FFF1B6",
+        "regua": "CCA300"
+      },
+      "contraste": {
+        "texto/fundo": 17.427906542329705,
+        "texto/painel": 16.507302288072122,
+        "acento/fundo": 6.327041608397939,
+        "acento/painel": 5.992824678360554,
+        "texto/tinta": 16.95389898010688
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "2D062B",
+        "painel": "2D062B",
+        "painel_alto": "2D062B",
+        "linha": "2D062B",
+        "texto": "FFF9E0",
+        "texto_fraco": "FFF9E0",
+        "acento": "FFF9E0",
+        "tinta": "2D062B",
+        "papel": "2D062B",
+        "painel_baixo": "2D062B",
+        "bloco": "2D062B",
+        "menu_grande": "2D062B",
+        "regua": "2D062B"
+      },
+      "aviso_por_papel": {
+        "fundo": "B12C00",
+        "painel": "B12C00",
+        "painel_alto": "B12C00",
+        "linha": "B12C00",
+        "texto": "F43D00",
+        "texto_fraco": "F93E00",
+        "acento": "FFCDBC",
+        "tinta": "B12C00",
+        "papel": "B12C00",
+        "painel_baixo": "B12C00",
+        "bloco": "471200",
+        "menu_grande": "B12C00",
+        "regua": "761D00"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "290527",
+        "painel": "480945",
+        "painel_alto": "6C0E67",
+        "linha": "7A2F00",
+        "texto": "FFF9E0",
+        "texto_fraco": "FFCFB0",
+        "acento": "E33800",
+        "tinta": "1B041A",
+        "papel": "370734",
+        "painel_baixo": "470944",
+        "bloco": "FF7016",
+        "menu_grande": "6E0068",
+        "regua": "FF33F3"
+      },
+      "contraste": {
+        "texto/fundo": 17.356884288861863,
+        "texto/painel": 14.193423966590855,
+        "acento/fundo": 4.218892358176866,
+        "acento/painel": 3.4499583515366665,
+        "texto/tinta": 18.425163931885304
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.45)"
+      ],
+      "osso_por_papel": {
+        "fundo": "FFF9E0",
+        "painel": "FFF9E0",
+        "painel_alto": "FFF9E0",
+        "linha": "FFF9E0",
+        "texto": "2D062B",
+        "texto_fraco": "2D062B",
+        "acento": "000000",
+        "tinta": "FFF9E0",
+        "papel": "FFF9E0",
+        "painel_baixo": "FFF9E0",
+        "bloco": "2D062B",
+        "menu_grande": "FFF9E0",
+        "regua": "2D062B"
+      },
+      "aviso_por_papel": {
+        "fundo": "EC3A00",
+        "painel": "FF4D13",
+        "painel_alto": "FF835A",
+        "linha": "FF9C7B",
+        "texto": "D43400",
+        "texto_fraco": "B22C00",
+        "acento": "170600",
+        "tinta": "E83900",
+        "papel": "FB3E00",
+        "painel_baixo": "FF4D13",
+        "bloco": "621800",
+        "menu_grande": "FF7F55",
+        "regua": "5B1600"
+      }
+    }
+  },
+  "Kitsune": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFCF0",
+        "painel": "FFF7D1",
+        "painel_alto": "FFF1AD",
+        "linha": "FFECAD",
+        "texto": "331300",
+        "texto_fraco": "372A00",
+        "acento": "CC7000",
+        "tinta": "FFFAE0",
+        "papel": "FFFCEA",
+        "painel_baixo": "FFFAE4",
+        "bloco": "EDB500",
+        "menu_grande": "FFF2B6",
+        "regua": "CCAA00"
+      },
+      "contraste": {
+        "texto/fundo": 16.560696238185177,
+        "texto/painel": 15.784772849624698,
+        "acento/fundo": 3.4722043131812557,
+        "acento/painel": 3.3095200577786485,
+        "texto/tinta": 16.21074455160105
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.31)"
+      ],
+      "osso_por_papel": {
+        "fundo": "331300",
+        "painel": "331300",
+        "painel_alto": "331300",
+        "linha": "331300",
+        "texto": "FFFAE0",
+        "texto_fraco": "FFFAE0",
+        "acento": "331300",
+        "tinta": "331300",
+        "papel": "331300",
+        "painel_baixo": "331300",
+        "bloco": "331300",
+        "menu_grande": "331300",
+        "regua": "331300"
+      },
+      "aviso_por_papel": {
+        "fundo": "AD5F00",
+        "painel": "AA5D00",
+        "painel_alto": "A35A00",
+        "linha": "A05800",
+        "texto": "CC7000",
+        "texto_fraco": "E07B00",
+        "acento": "331C00",
+        "tinta": "AD5F00",
+        "papel": "AD5F00",
+        "painel_baixo": "AD5F00",
+        "bloco": "743F00",
+        "menu_grande": "A75B00",
+        "regua": "633600"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "2E1100",
+        "painel": "521E00",
+        "painel_alto": "7A2E00",
+        "linha": "7A5E00",
+        "texto": "FFFAE0",
+        "texto_fraco": "FFEDB0",
+        "acento": "FF8C00",
+        "tinta": "1F0B00",
+        "papel": "3E1700",
+        "painel_baixo": "501E00",
+        "bloco": "FFC816",
+        "menu_grande": "6E2A00",
+        "regua": "FF7F33"
+      },
+      "contraste": {
+        "texto/fundo": 16.719723114494972,
+        "texto/painel": 12.951055419672983,
+        "acento/fundo": 7.525597701247652,
+        "acento/painel": 5.829309027882541,
+        "texto/tinta": 18.08341210383246
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFFAE0",
+        "painel": "FFFAE0",
+        "painel_alto": "FFFAE0",
+        "linha": "FFFAE0",
+        "texto": "331300",
+        "texto_fraco": "331300",
+        "acento": "331300",
+        "tinta": "FFFAE0",
+        "papel": "FFFAE0",
+        "painel_baixo": "FFFAE0",
+        "bloco": "331300",
+        "menu_grande": "FFFAE0",
+        "regua": "331300"
+      },
+      "aviso_por_papel": {
+        "fundo": "FF8C00",
+        "painel": "FF8C00",
+        "painel_alto": "FF9D26",
+        "linha": "FFD7A6",
+        "texto": "AA5D00",
+        "texto_fraco": "A15900",
+        "acento": "5D3300",
+        "tinta": "FF8C00",
+        "papel": "FF8C00",
+        "painel_baixo": "FF8C00",
+        "bloco": "844800",
+        "menu_grande": "FF8C00",
+        "regua": "552F00"
+      }
+    }
+  },
+  "Tengu": {
+    "claro": {
+      "cores": {
+        "fundo": "FAF9F4",
+        "painel": "F1EEDF",
+        "painel_alto": "E7E1C6",
+        "linha": "D6DBD1",
+        "texto": "330000",
+        "texto_fraco": "1B1F18",
+        "acento": "6D0808",
+        "tinta": "F8F5E7",
+        "papel": "F9F7F1",
+        "painel_baixo": "F7F5EC",
+        "bloco": "758568",
+        "menu_grande": "EEE7C6",
+        "regua": "9C8930"
+      },
+      "contraste": {
+        "texto/fundo": 17.463249507923468,
+        "texto/painel": 15.810063578506838,
+        "acento/fundo": 11.79841274085315,
+        "acento/painel": 10.681497476956904,
+        "texto/tinta": 16.836262210997507
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "330000",
+        "painel": "330000",
+        "painel_alto": "330000",
+        "linha": "330000",
+        "texto": "F6F4EA",
+        "texto_fraco": "F6F4EA",
+        "acento": "F6F4EA",
+        "tinta": "330000",
+        "papel": "330000",
+        "painel_baixo": "330000",
+        "bloco": "330000",
+        "menu_grande": "330000",
+        "regua": "330000"
+      },
+      "aviso_por_papel": {
+        "fundo": "6D0808",
+        "painel": "6D0808",
+        "painel_alto": "6D0808",
+        "linha": "6D0808",
+        "texto": "F03030",
+        "texto_fraco": "F24848",
+        "acento": "F57979",
+        "tinta": "6D0808",
+        "papel": "6D0808",
+        "painel_baixo": "6D0808",
+        "bloco": "350404",
+        "menu_grande": "6D0808",
+        "regua": "4C0606"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "2E0000",
+        "painel": "520000",
+        "painel_alto": "7A0000",
+        "linha": "3C4536",
+        "texto": "F6F4EA",
+        "texto_fraco": "D7DCD3",
+        "acento": "E71111",
+        "tinta": "1F0000",
+        "papel": "3E0000",
+        "painel_baixo": "500000",
+        "bloco": "88987C",
+        "menu_grande": "6E0000",
+        "regua": "FF3333"
+      },
+      "contraste": {
+        "texto/fundo": 17.06457698271463,
+        "texto/painel": 14.017806576351555,
+        "acento/fundo": 4.019159137401772,
+        "acento/painel": 3.3015641374962157,
+        "texto/tinta": 17.998336415166644
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.30)"
+      ],
+      "osso_por_papel": {
+        "fundo": "F6F4EA",
+        "painel": "F6F4EA",
+        "painel_alto": "F6F4EA",
+        "linha": "F6F4EA",
+        "texto": "330000",
+        "texto_fraco": "330000",
+        "acento": "FFFFFF",
+        "tinta": "F6F4EA",
+        "papel": "F6F4EA",
+        "painel_baixo": "F6F4EA",
+        "bloco": "330000",
+        "menu_grande": "F6F4EA",
+        "regua": "330000"
+      },
+      "aviso_por_papel": {
+        "fundo": "EF2B2B",
+        "painel": "F25454",
+        "painel_alto": "F68181",
+        "linha": "F79595",
+        "texto": "DF1010",
+        "texto_fraco": "C10E0E",
+        "acento": "FFFFFF",
+        "tinta": "EE1717",
+        "papel": "F13C3C",
+        "painel_baixo": "F25050",
+        "bloco": "5C0707",
+        "menu_grande": "F57575",
+        "regua": "450505"
+      }
+    }
+  },
+  "Yuki-Onna": {
+    "claro": {
+      "cores": {
+        "fundo": "F1F8FE",
+        "painel": "D4EBFC",
+        "painel_alto": "B3DCFA",
+        "linha": "B2DAFB",
+        "texto": "04152F",
+        "texto_fraco": "031E34",
+        "acento": "0C7DD9",
+        "tinta": "E2F2FD",
+        "papel": "ECF6FE",
+        "painel_baixo": "E6F3FD",
+        "bloco": "0C83E1",
+        "menu_grande": "B6E0FF",
+        "regua": "0076CC"
+      },
+      "contraste": {
+        "texto/fundo": 16.990618701807954,
+        "texto/painel": 14.81469996527193,
+        "acento/fundo": 3.958422427456034,
+        "acento/painel": 3.4514835291032933,
+        "texto/tinta": 15.911017105327964
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.45)"
+      ],
+      "osso_por_papel": {
+        "fundo": "04152F",
+        "painel": "04152F",
+        "painel_alto": "04152F",
+        "linha": "04152F",
+        "texto": "E2F2FD",
+        "texto_fraco": "E2F2FD",
+        "acento": "000000",
+        "tinta": "04152F",
+        "papel": "04152F",
+        "painel_baixo": "04152F",
+        "bloco": "04152F",
+        "menu_grande": "04152F",
+        "regua": "FFFFFF"
+      },
+      "aviso_por_papel": {
+        "fundo": "0B73C7",
+        "painel": "0A6AB8",
+        "painel_alto": "095EA3",
+        "linha": "095EA3",
+        "texto": "0C82E2",
+        "texto_fraco": "0D87EB",
+        "acento": "010F19",
+        "tinta": "0B6EC0",
+        "papel": "0B70C3",
+        "painel_baixo": "0B70C3",
+        "bloco": "02192B",
+        "menu_grande": "0962AA",
+        "regua": "FFFFFF"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "03132A",
+        "painel": "06214C",
+        "painel_alto": "093271",
+        "linha": "064374",
+        "texto": "E2F2FD",
+        "texto_fraco": "B4DCFB",
+        "acento": "90CAF9",
+        "tinta": "020C1C",
+        "papel": "051939",
+        "painel_baixo": "06214A",
+        "bloco": "2296F3",
+        "menu_grande": "002B6E",
+        "regua": "3383FF"
+      },
+      "contraste": {
+        "texto/fundo": 16.235042786097903,
+        "texto/painel": 13.802893616753575,
+        "acento/fundo": 10.616954647692506,
+        "acento/painel": 9.026443445007953,
+        "texto/tinta": 17.12129959544336
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "E2F2FD",
+        "painel": "E2F2FD",
+        "painel_alto": "E2F2FD",
+        "linha": "E2F2FD",
+        "texto": "04152F",
+        "texto_fraco": "04152F",
+        "acento": "04152F",
+        "tinta": "E2F2FD",
+        "papel": "E2F2FD",
+        "painel_baixo": "E2F2FD",
+        "bloco": "04152F",
+        "menu_grande": "E2F2FD",
+        "regua": "04152F"
+      },
+      "aviso_por_papel": {
+        "fundo": "90CAF9",
+        "painel": "90CAF9",
+        "painel_alto": "90CAF9",
+        "linha": "90CAF9",
+        "texto": "0A6FC1",
+        "texto_fraco": "095DA2",
+        "acento": "08528F",
+        "tinta": "90CAF9",
+        "papel": "90CAF9",
+        "painel_baixo": "90CAF9",
+        "bloco": "042B4B",
+        "menu_grande": "90CAF9",
+        "regua": "032038"
+      }
+    }
+  },
+  "Kappa": {
+    "claro": {
+      "cores": {
+        "fundo": "F3FBFB",
+        "painel": "DCF4F2",
+        "painel_alto": "C1ECE8",
+        "linha": "C2D4EA",
+        "texto": "09092A",
+        "texto_fraco": "0E1A29",
+        "acento": "232F72",
+        "tinta": "E7F8F7",
+        "papel": "EFFAF9",
+        "painel_baixo": "EBF9F7",
+        "bloco": "3C70B1",
+        "menu_grande": "C0F5F0",
+        "regua": "20ACA0"
+      },
+      "contraste": {
+        "texto/fundo": 18.45067741873491,
+        "texto/painel": 16.84822820765809,
+        "acento/fundo": 11.622435465918066,
+        "acento/painel": 10.613021983666167,
+        "texto/tinta": 17.680478634651145
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "09092A",
+        "painel": "09092A",
+        "painel_alto": "09092A",
+        "linha": "09092A",
+        "texto": "E8F8F6",
+        "texto_fraco": "E8F8F6",
+        "acento": "E8F8F6",
+        "tinta": "09092A",
+        "papel": "09092A",
+        "painel_baixo": "09092A",
+        "bloco": "E8F8F6",
+        "menu_grande": "09092A",
+        "regua": "09092A"
+      },
+      "aviso_por_papel": {
+        "fundo": "232F72",
+        "painel": "232F72",
+        "painel_alto": "232F72",
+        "linha": "232F72",
+        "texto": "6777D0",
+        "texto_fraco": "6C7BD2",
+        "acento": "919CDD",
+        "tinta": "232F72",
+        "papel": "232F72",
+        "painel_baixo": "232F72",
+        "bloco": "F1F3FB",
+        "menu_grande": "232F72",
+        "regua": "212D6C"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "080826",
+        "painel": "0E0F44",
+        "painel_alto": "151666",
+        "linha": "1F3A5B",
+        "texto": "E8F8F6",
+        "texto_fraco": "C4D5EB",
+        "acento": "5062C9",
+        "tinta": "050519",
+        "papel": "0B0B33",
+        "painel_baixo": "0E0E43",
+        "bloco": "5184C4",
+        "menu_grande": "060768",
+        "regua": "4144F1"
+      },
+      "contraste": {
+        "texto/fundo": 17.882629468119873,
+        "texto/painel": 16.394129498543354,
+        "acento/fundo": 3.6639403459440287,
+        "acento/painel": 3.3589642179539845,
+        "texto/tinta": 18.411927003503575
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.36)"
+      ],
+      "osso_por_papel": {
+        "fundo": "E8F8F6",
+        "painel": "E8F8F6",
+        "painel_alto": "E8F8F6",
+        "linha": "E8F8F6",
+        "texto": "09092A",
+        "texto_fraco": "09092A",
+        "acento": "E8F8F6",
+        "tinta": "E8F8F6",
+        "papel": "E8F8F6",
+        "painel_baixo": "E8F8F6",
+        "bloco": "09092A",
+        "menu_grande": "E8F8F6",
+        "regua": "E8F8F6"
+      },
+      "aviso_por_papel": {
+        "fundo": "6474CF",
+        "painel": "6A7AD1",
+        "painel_alto": "7684D5",
+        "linha": "939EDE",
+        "texto": "5062C9",
+        "texto_fraco": "3C50C1",
+        "acento": "EBEDF9",
+        "tinta": "6272CE",
+        "papel": "6777D0",
+        "painel_baixo": "6A7AD1",
+        "bloco": "111636",
+        "menu_grande": "707FD3",
+        "regua": "D6DAF2"
+      }
+    }
+  },
+  "Nekomata": {
+    "claro": {
+      "cores": {
+        "fundo": "F9F9F6",
+        "painel": "EDECE3",
+        "painel_alto": "E0DDCD",
+        "linha": "DBD7D1",
+        "texto": "32012F",
+        "texto_fraco": "1F1C18",
+        "acento": "D06000",
+        "tinta": "F8F5E7",
+        "papel": "F7F6F2",
+        "painel_baixo": "F5F4EE",
+        "bloco": "857A68",
+        "menu_grande": "E6E2CF",
+        "regua": "857B47"
+      },
+      "contraste": {
+        "texto/fundo": 16.857580448727898,
+        "texto/painel": 14.994186798458665,
+        "acento/fundo": 3.717742158774447,
+        "acento/painel": 3.3067924882052457,
+        "texto/tinta": 16.26247571347003
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.31)"
+      ],
+      "osso_por_papel": {
+        "fundo": "32012F",
+        "painel": "32012F",
+        "painel_alto": "32012F",
+        "linha": "32012F",
+        "texto": "F3F2EC",
+        "texto_fraco": "F3F2EC",
+        "acento": "32012F",
+        "tinta": "32012F",
+        "papel": "32012F",
+        "painel_baixo": "32012F",
+        "bloco": "000000",
+        "menu_grande": "32012F",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "B85500",
+        "painel": "AD5000",
+        "painel_alto": "9C4800",
+        "linha": "994600",
+        "texto": "D06000",
+        "texto_fraco": "D56200",
+        "acento": "261200",
+        "tinta": "B45300",
+        "papel": "B45300",
+        "painel_baixo": "B45300",
+        "bloco": "180B00",
+        "menu_grande": "A34B00",
+        "regua": "180B00"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "2D012A",
+        "painel": "50024B",
+        "painel_alto": "780271",
+        "linha": "453F36",
+        "texto": "F3F2EC",
+        "texto_fraco": "DCD9D3",
+        "acento": "F97300",
+        "tinta": "1E011C",
+        "papel": "3D0139",
+        "painel_baixo": "4F024A",
+        "bloco": "988E7C",
+        "menu_grande": "6E0068",
+        "regua": "FF33F3"
+      },
+      "contraste": {
+        "texto/fundo": 16.290050858175157,
+        "texto/painel": 12.900165176607524,
+        "acento/fundo": 6.508220094547994,
+        "acento/painel": 5.153889018293121,
+        "texto/tinta": 17.395502196922465
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F3F2EC",
+        "painel": "F3F2EC",
+        "painel_alto": "F3F2EC",
+        "linha": "F3F2EC",
+        "texto": "32012F",
+        "texto_fraco": "32012F",
+        "acento": "32012F",
+        "tinta": "F3F2EC",
+        "papel": "F3F2EC",
+        "painel_baixo": "F3F2EC",
+        "bloco": "32012F",
+        "menu_grande": "F3F2EC",
+        "regua": "32012F"
+      },
+      "aviso_por_papel": {
+        "fundo": "F97300",
+        "painel": "F97300",
+        "painel_alto": "FF8F2E",
+        "linha": "FF8F2E",
+        "texto": "B25200",
+        "texto_fraco": "9A4700",
+        "acento": "532600",
+        "tinta": "F97300",
+        "papel": "F97300",
+        "painel_baixo": "F97300",
+        "bloco": "421F00",
+        "menu_grande": "FF8114",
+        "regua": "4B2300"
+      }
+    }
+  },
+  "Ryu": {
+    "claro": {
+      "cores": {
+        "fundo": "FBFAF3",
+        "painel": "F4EFDC",
+        "painel_alto": "ECE3C1",
+        "linha": "EEE0BF",
+        "texto": "15171E",
+        "texto_fraco": "2B220C",
+        "acento": "B4752B",
+        "tinta": "F8F5E7",
+        "papel": "FAF8EF",
+        "painel_baixo": "F9F6EB",
+        "bloco": "BB9232",
+        "menu_grande": "F5EAC0",
+        "regua": "AC8F20"
+      },
+      "contraste": {
+        "texto/fundo": 17.10743361076213,
+        "texto/painel": 15.53597690068237,
+        "acento/fundo": 3.6358852344982595,
+        "acento/painel": 3.301899647949625,
+        "texto/tinta": 16.37085968252554
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.30)"
+      ],
+      "osso_por_papel": {
+        "fundo": "15171E",
+        "painel": "15171E",
+        "painel_alto": "15171E",
+        "linha": "15171E",
+        "texto": "F8F4E8",
+        "texto_fraco": "F8F4E8",
+        "acento": "15171E",
+        "tinta": "15171E",
+        "papel": "15171E",
+        "painel_baixo": "15171E",
+        "bloco": "15171E",
+        "menu_grande": "15171E",
+        "regua": "15171E"
+      },
+      "aviso_por_papel": {
+        "fundo": "9F6726",
+        "painel": "936023",
+        "painel_alto": "8A5A21",
+        "linha": "8A5A21",
+        "texto": "B4752B",
+        "texto_fraco": "C07D2E",
+        "acento": "241709",
+        "tinta": "996325",
+        "papel": "9C6525",
+        "painel_baixo": "9C6525",
+        "bloco": "422B10",
+        "menu_grande": "905E22",
+        "regua": "3C270E"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "13151B",
+        "painel": "222530",
+        "painel_alto": "333748",
+        "linha": "614B1A",
+        "texto": "F8F4E8",
+        "texto_fraco": "EEE1C1",
+        "acento": "DAA464",
+        "tinta": "080B17",
+        "papel": "1A1C24",
+        "painel_baixo": "21242F",
+        "bloco": "CEA547",
+        "menu_grande": "2A2F44",
+        "regua": "828DB0"
+      },
+      "contraste": {
+        "texto/fundo": 16.59463322270718,
+        "texto/painel": 13.885318481473929,
+        "acento/fundo": 8.233783226892537,
+        "acento/painel": 6.8894986034629495,
+        "texto/tinta": 17.838044836246116
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F8F4E8",
+        "painel": "F8F4E8",
+        "painel_alto": "F8F4E8",
+        "linha": "F8F4E8",
+        "texto": "15171E",
+        "texto_fraco": "15171E",
+        "acento": "15171E",
+        "tinta": "F8F4E8",
+        "papel": "F8F4E8",
+        "painel_baixo": "F8F4E8",
+        "bloco": "15171E",
+        "menu_grande": "F8F4E8",
+        "regua": "15171E"
+      },
+      "aviso_por_papel": {
+        "fundo": "DAA464",
+        "painel": "DAA464",
+        "painel_alto": "DAA464",
+        "linha": "E2B886",
+        "texto": "9A6425",
+        "texto_fraco": "895921",
+        "acento": "5A3B15",
+        "tinta": "DAA464",
+        "papel": "DAA464",
+        "painel_baixo": "DAA464",
+        "bloco": "563814",
+        "menu_grande": "DAA464",
+        "regua": "33210C"
+      }
+    }
+  },
+  "Kirin": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFDF0",
+        "painel": "FFF9D1",
+        "painel_alto": "FFF5AD",
+        "linha": "FEDCAF",
+        "texto": "2F0404",
+        "texto_fraco": "361F01",
+        "acento": "C77100",
+        "tinta": "FFFBE0",
+        "papel": "FFFCEA",
+        "painel_baixo": "FFFCE4",
+        "bloco": "E98704",
+        "menu_grande": "FFF6B6",
+        "regua": "CCB300"
+      },
+      "contraste": {
+        "texto/fundo": 18.035609818998598,
+        "texto/painel": 17.301037240259532,
+        "acento/fundo": 3.5507226369440605,
+        "acento/painel": 3.406105210087795,
+        "texto/tinta": 17.655666790883323
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.41)"
+      ],
+      "osso_por_papel": {
+        "fundo": "2F0404",
+        "painel": "2F0404",
+        "painel_alto": "2F0404",
+        "linha": "2F0404",
+        "texto": "FFFBE0",
+        "texto_fraco": "FFFBE0",
+        "acento": "2F0404",
+        "tinta": "2F0404",
+        "papel": "2F0404",
+        "painel_baixo": "2F0404",
+        "bloco": "2F0404",
+        "menu_grande": "2F0404",
+        "regua": "2F0404"
+      },
+      "aviso_por_papel": {
+        "fundo": "AC6200",
+        "painel": "A96000",
+        "painel_alto": "A35C00",
+        "linha": "925300",
+        "texto": "C77100",
+        "texto_fraco": "D17700",
+        "acento": "2E1A00",
+        "tinta": "A96000",
+        "papel": "AC6200",
+        "painel_baixo": "AC6200",
+        "bloco": "502D00",
+        "menu_grande": "A65E00",
+        "regua": "673A00"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "2A0404",
+        "painel": "4B0707",
+        "painel_alto": "700A0A",
+        "linha": "784602",
+        "texto": "FFFBE0",
+        "texto_fraco": "FEDDB2",
+        "acento": "FF9B17",
+        "tinta": "1C0303",
+        "papel": "390505",
+        "painel_baixo": "4A0707",
+        "bloco": "FB9B1A",
+        "menu_grande": "6E0000",
+        "regua": "FF3333"
+      },
+      "contraste": {
+        "texto/fundo": 18.00985518941852,
+        "texto/painel": 15.103385621923241,
+        "acento/fundo": 8.905866412164494,
+        "acento/painel": 7.468618337324743,
+        "texto/tinta": 18.92164157217064
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFFBE0",
+        "painel": "FFFBE0",
+        "painel_alto": "FFFBE0",
+        "linha": "FFFBE0",
+        "texto": "2F0404",
+        "texto_fraco": "2F0404",
+        "acento": "2F0404",
+        "tinta": "FFFBE0",
+        "papel": "FFFBE0",
+        "painel_baixo": "FFFBE0",
+        "bloco": "2F0404",
+        "menu_grande": "FFFBE0",
+        "regua": "2F0404"
+      },
+      "aviso_por_papel": {
+        "fundo": "FF9B17",
+        "painel": "FF9B17",
+        "painel_alto": "FF9B17",
+        "linha": "FFB655",
+        "texto": "A75F00",
+        "texto_fraco": "945400",
+        "acento": "663A00",
+        "tinta": "FF9B17",
+        "papel": "FF9B17",
+        "painel_baixo": "FF9B17",
+        "bloco": "663A00",
+        "menu_grande": "FF9B17",
+        "regua": "2E1A00"
+      }
+    }
+  },
+  "Kyuubi": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFDF0",
+        "painel": "FEF9D2",
+        "painel_alto": "FDF3B0",
+        "linha": "F7C6B6",
+        "texto": "2F0904",
+        "texto_fraco": "321106",
+        "acento": "CF6D04",
+        "tinta": "FEFBE1",
+        "papel": "FEFCEB",
+        "painel_baixo": "FEFBE5",
+        "bloco": "D54818",
+        "menu_grande": "FFF5B6",
+        "regua": "CCB300"
+      },
+      "contraste": {
+        "texto/fundo": 17.69858388546009,
+        "texto/painel": 16.953725631306025,
+        "acento/fundo": 3.519231585257545,
+        "acento/painel": 3.3711220691785626,
+        "texto/tinta": 17.30254274749929
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.37)"
+      ],
+      "osso_por_papel": {
+        "fundo": "2F0904",
+        "painel": "2F0904",
+        "painel_alto": "2F0904",
+        "linha": "2F0904",
+        "texto": "FEFBE1",
+        "texto_fraco": "FEFBE1",
+        "acento": "2F0904",
+        "tinta": "2F0904",
+        "papel": "2F0904",
+        "painel_baixo": "2F0904",
+        "bloco": "000000",
+        "menu_grande": "2F0904",
+        "regua": "2F0904"
+      },
+      "aviso_por_papel": {
+        "fundo": "B35E03",
+        "painel": "AC5B03",
+        "painel_alto": "A95903",
+        "linha": "8A4903",
+        "texto": "CF6D04",
+        "texto_fraco": "CF6D04",
+        "acento": "301901",
+        "tinta": "B05D03",
+        "papel": "B35E03",
+        "painel_baixo": "B05D03",
+        "bloco": "0E0700",
+        "menu_grande": "A95903",
+        "regua": "6B3802"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "2A0804",
+        "painel": "4B0F06",
+        "painel_alto": "71170A",
+        "linha": "6E250C",
+        "texto": "FEFBE1",
+        "texto_fraco": "F7C8B8",
+        "acento": "FB9E3A",
+        "tinta": "1C0602",
+        "papel": "390B05",
+        "painel_baixo": "4A0F06",
+        "bloco": "E85D2D",
+        "menu_grande": "6E0E00",
+        "regua": "FF4D33"
+      },
+      "contraste": {
+        "texto/fundo": 17.71052606127091,
+        "texto/painel": 14.670345514337871,
+        "acento/fundo": 8.858385812617728,
+        "acento/painel": 7.337759483869622,
+        "texto/tinta": 18.675326622356113
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FEFBE1",
+        "painel": "FEFBE1",
+        "painel_alto": "FEFBE1",
+        "linha": "FEFBE1",
+        "texto": "2F0904",
+        "texto_fraco": "2F0904",
+        "acento": "2F0904",
+        "tinta": "FEFBE1",
+        "papel": "FEFBE1",
+        "painel_baixo": "FEFBE1",
+        "bloco": "2F0904",
+        "menu_grande": "FEFBE1",
+        "regua": "2F0904"
+      },
+      "aviso_por_papel": {
+        "fundo": "FB9E3A",
+        "painel": "FB9E3A",
+        "painel_alto": "FB9E3A",
+        "linha": "FB9E3A",
+        "texto": "B15D04",
+        "texto_fraco": "884803",
+        "acento": "6A3802",
+        "tinta": "FB9E3A",
+        "papel": "FB9E3A",
+        "painel_baixo": "FB9E3A",
+        "bloco": "321B01",
+        "menu_grande": "FB9E3A",
+        "regua": "3D2001"
+      }
+    }
+  },
+  "Baku": {
+    "claro": {
+      "cores": {
+        "fundo": "F5F5FA",
+        "painel": "E2E1EF",
+        "painel_alto": "CBCAE2",
+        "linha": "CBCEE1",
+        "texto": "070F2C",
+        "texto_fraco": "141623",
+        "acento": "1B1A55",
+        "tinta": "E8E7F8",
+        "papel": "F2F2F8",
+        "painel_baixo": "EEEEF6",
+        "bloco": "566097",
+        "menu_grande": "CDCCE9",
+        "regua": "423E8E"
+      },
+      "contraste": {
+        "texto/fundo": 17.3505451021349,
+        "texto/painel": 14.59077420395205,
+        "acento/fundo": 14.578171261453948,
+        "acento/painel": 12.259373058904348,
+        "texto/tinta": 15.458804157350354
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "070F2C",
+        "painel": "070F2C",
+        "painel_alto": "070F2C",
+        "linha": "070F2C",
+        "texto": "EBEBF4",
+        "texto_fraco": "EBEBF4",
+        "acento": "EBEBF4",
+        "tinta": "070F2C",
+        "papel": "070F2C",
+        "painel_baixo": "070F2C",
+        "bloco": "EBEBF4",
+        "menu_grande": "070F2C",
+        "regua": "EBEBF4"
+      },
+      "aviso_por_papel": {
+        "fundo": "1B1A55",
+        "painel": "1B1A55",
+        "painel_alto": "1B1A55",
+        "linha": "1B1A55",
+        "texto": "7776D5",
+        "texto_fraco": "7776D5",
+        "acento": "8180D8",
+        "tinta": "1B1A55",
+        "papel": "1B1A55",
+        "painel_baixo": "1B1A55",
+        "bloco": "E1E0F6",
+        "menu_grande": "1B1A55",
+        "regua": "B4B3E8"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "060E27",
+        "painel": "0B1846",
+        "painel_alto": "112569",
+        "linha": "2D314E",
+        "texto": "EBEBF4",
+        "texto_fraco": "CDD0E2",
+        "acento": "6361CF",
+        "tinta": "04091A",
+        "papel": "091335",
+        "painel_baixo": "0B1845",
+        "bloco": "6B74AA",
+        "menu_grande": "011A6D",
+        "regua": "3A64F8"
+      },
+      "contraste": {
+        "texto/fundo": 16.113114256245847,
+        "texto/painel": 14.369395476533807,
+        "acento/fundo": 3.765409571687173,
+        "acento/painel": 3.357926866665497,
+        "texto/tinta": 16.732321188657494
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.36)"
+      ],
+      "osso_por_papel": {
+        "fundo": "EBEBF4",
+        "painel": "EBEBF4",
+        "painel_alto": "EBEBF4",
+        "linha": "EBEBF4",
+        "texto": "070F2C",
+        "texto_fraco": "070F2C",
+        "acento": "FFFFFF",
+        "tinta": "EBEBF4",
+        "papel": "EBEBF4",
+        "painel_baixo": "EBEBF4",
+        "bloco": "000000",
+        "menu_grande": "EBEBF4",
+        "regua": "FFFFFF"
+      },
+      "aviso_por_papel": {
+        "fundo": "7371D4",
+        "painel": "7D7BD7",
+        "painel_alto": "8D8BDC",
+        "linha": "9493DE",
+        "texto": "5B59CD",
+        "texto_fraco": "4846C7",
+        "acento": "F2F2FB",
+        "tinta": "706ED3",
+        "papel": "7876D5",
+        "painel_baixo": "7D7BD7",
+        "bloco": "060613",
+        "menu_grande": "8583D9",
+        "regua": "F7F7FD"
+      }
+    }
+  },
+  "Jorogumo": {
+    "claro": {
+      "cores": {
+        "fundo": "FEF1FA",
+        "painel": "FCD4F0",
+        "painel_alto": "FAB3E4",
+        "linha": "E4B4F9",
+        "texto": "030530",
+        "texto_fraco": "250433",
+        "acento": "720455",
+        "tinta": "FDE2F5",
+        "papel": "FEECF8",
+        "painel_baixo": "FDE6F6",
+        "bloco": "9E12DB",
+        "menu_grande": "FFB6E8",
+        "regua": "CC008D"
+      },
+      "contraste": {
+        "texto/fundo": 17.95134934146977,
+        "texto/painel": 14.804200538910843,
+        "acento/fundo": 10.287804951899833,
+        "acento/painel": 8.484193846157714,
+        "texto/tinta": 16.263441985535206
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "030530",
+        "painel": "030530",
+        "painel_alto": "030530",
+        "linha": "030530",
+        "texto": "FDE2F5",
+        "texto_fraco": "FDE2F5",
+        "acento": "FDE2F5",
+        "tinta": "030530",
+        "papel": "030530",
+        "painel_baixo": "030530",
+        "bloco": "FDE2F5",
+        "menu_grande": "030530",
+        "regua": "FFFFFF"
+      },
+      "aviso_por_papel": {
+        "fundo": "720455",
+        "painel": "720455",
+        "painel_alto": "720455",
+        "linha": "720455",
+        "texto": "E408AA",
+        "texto_fraco": "F008B3",
+        "acento": "FA74D7",
+        "tinta": "720455",
+        "papel": "720455",
+        "painel_baixo": "720455",
+        "bloco": "FED9F4",
+        "menu_grande": "720455",
+        "regua": "FEE6F8"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "02052C",
+        "painel": "04084D",
+        "painel_alto": "060D74",
+        "linha": "520A71",
+        "texto": "FDE2F5",
+        "texto_fraco": "E5B7F9",
+        "acento": "C40792",
+        "tinta": "02031D",
+        "papel": "03063B",
+        "painel_baixo": "04084C",
+        "bloco": "B128ED",
+        "menu_grande": "00076E",
+        "regua": "333FFF"
+      },
+      "contraste": {
+        "texto/fundo": 16.379988203436923,
+        "texto/painel": 15.146188184755353,
+        "acento/fundo": 3.5757087227474615,
+        "acento/painel": 3.3063733951432575,
+        "texto/tinta": 16.812912129319418
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.31)"
+      ],
+      "osso_por_papel": {
+        "fundo": "FDE2F5",
+        "painel": "FDE2F5",
+        "painel_alto": "FDE2F5",
+        "linha": "FDE2F5",
+        "texto": "030530",
+        "texto_fraco": "030530",
+        "acento": "FDE2F5",
+        "tinta": "FDE2F5",
+        "papel": "FDE2F5",
+        "painel_baixo": "FDE2F5",
+        "bloco": "FFFFFF",
+        "menu_grande": "FDE2F5",
+        "regua": "FDE2F5"
+      },
+      "aviso_por_papel": {
+        "fundo": "E208A8",
+        "painel": "EC08AF",
+        "painel_alto": "F726C0",
+        "linha": "F95CD0",
+        "texto": "C40792",
+        "texto_fraco": "9D0675",
+        "acento": "FEE1F6",
+        "tinta": "E208A8",
+        "papel": "E708AC",
+        "painel_baixo": "EC08AF",
+        "bloco": "FFFFFF",
+        "menu_grande": "F60DB9",
+        "regua": "FDCEF1"
+      }
+    }
+  },
+  "Tanuki": {
+    "claro": {
+      "cores": {
+        "fundo": "FBF6F3",
+        "painel": "F4E3DC",
+        "painel_alto": "ECCEC0",
+        "linha": "D1D2DB",
+        "texto": "0A1F29",
+        "texto_fraco": "18191F",
+        "acento": "A56F63",
+        "tinta": "F8EDE7",
+        "papel": "FAF3EF",
+        "painel_baixo": "F9EFEA",
+        "bloco": "686C85",
+        "menu_grande": "F5D1C0",
+        "regua": "AE4B1E"
+      },
+      "contraste": {
+        "texto/fundo": 15.777303307997883,
+        "texto/painel": 13.592914496260466,
+        "acento/fundo": 3.8739791873910843,
+        "acento/painel": 3.337621571096101,
+        "texto/tinta": 14.713983078663324
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "18191F",
+        "painel": "18191F",
+        "painel_alto": "18191F",
+        "linha": "18191F",
+        "texto": "F8EDE7",
+        "texto_fraco": "F8EDE7",
+        "acento": "000000",
+        "tinta": "18191F",
+        "papel": "18191F",
+        "painel_baixo": "18191F",
+        "bloco": "FFFFFF",
+        "menu_grande": "18191F",
+        "regua": "F8EDE7"
+      },
+      "aviso_por_papel": {
+        "fundo": "996459",
+        "painel": "8C5B50",
+        "painel_alto": "7B5047",
+        "linha": "7B5047",
+        "texto": "AB796D",
+        "texto_fraco": "AA766B",
+        "acento": "19100E",
+        "tinta": "915F54",
+        "papel": "976357",
+        "painel_baixo": "946155",
+        "bloco": "F5EEED",
+        "menu_grande": "7E5248",
+        "regua": "F0E7E5"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "091C25",
+        "painel": "0F3242",
+        "painel_alto": "174A63",
+        "linha": "363745",
+        "texto": "F8EDE7",
+        "texto_fraco": "D3D4DC",
+        "acento": "A77166",
+        "tinta": "061319",
+        "papel": "0C2632",
+        "painel_baixo": "0F3141",
+        "bloco": "7C8098",
+        "menu_grande": "094765",
+        "regua": "47B6EB"
+      },
+      "contraste": {
+        "texto/fundo": 15.159745209869127,
+        "texto/painel": 11.74036309964022,
+        "acento/fundo": 4.314908590163418,
+        "acento/painel": 3.3416520455301586,
+        "texto/tinta": 16.376697504989938
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.34)"
+      ],
+      "osso_por_papel": {
+        "fundo": "F8EDE7",
+        "painel": "F8EDE7",
+        "painel_alto": "F8EDE7",
+        "linha": "F8EDE7",
+        "texto": "18191F",
+        "texto_fraco": "18191F",
+        "acento": "000000",
+        "tinta": "F8EDE7",
+        "papel": "F8EDE7",
+        "painel_baixo": "F8EDE7",
+        "bloco": "18191F",
+        "menu_grande": "F8EDE7",
+        "regua": "18191F"
+      },
+      "aviso_por_papel": {
+        "fundo": "AA766B",
+        "painel": "B78B82",
+        "painel_alto": "CCACA6",
+        "linha": "C09991",
+        "texto": "915E53",
+        "texto_fraco": "7D5148",
+        "acento": "1C1210",
+        "tinta": "A77166",
+        "papel": "B07F75",
+        "painel_baixo": "B78B82",
+        "bloco": "221614",
+        "menu_grande": "C9A7A1",
+        "regua": "553731"
+      }
+    }
+  },
+  "Nurarihyon": {
+    "claro": {
+      "cores": {
+        "fundo": "F8F6F6",
+        "painel": "EBE5E5",
+        "painel_alto": "DBD1D1",
+        "linha": "E7CDC5",
+        "texto": "1D1616",
+        "texto_fraco": "271510",
+        "acento": "AE6F00",
+        "tinta": "F8E7E7",
+        "papel": "F6F3F3",
+        "painel_baixo": "F3F0F0",
+        "bloco": "A95B44",
+        "menu_grande": "E0D4D4",
+        "regua": "725A5A"
+      },
+      "contraste": {
+        "texto/fundo": 16.548875996052644,
+        "texto/painel": 14.31504317514429,
+        "acento/fundo": 3.8443529444603732,
+        "acento/painel": 3.3254269591221766,
+        "texto/tinta": 14.912345160933821
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.33)"
+      ],
+      "osso_por_papel": {
+        "fundo": "1D1616",
+        "painel": "1D1616",
+        "painel_alto": "1D1616",
+        "linha": "1D1616",
+        "texto": "F2EEEE",
+        "texto_fraco": "F2EEEE",
+        "acento": "000000",
+        "tinta": "1D1616",
+        "papel": "1D1616",
+        "painel_baixo": "1D1616",
+        "bloco": "FFFFFF",
+        "menu_grande": "1D1616",
+        "regua": "F2EEEE"
+      },
+      "aviso_por_papel": {
+        "fundo": "9D6400",
+        "painel": "8E5B00",
+        "painel_alto": "805100",
+        "linha": "805100",
+        "texto": "B47300",
+        "texto_fraco": "B97600",
+        "acento": "1A1100",
+        "tinta": "945E00",
+        "papel": "9A6200",
+        "painel_baixo": "976000",
+        "bloco": "FFF5E3",
+        "menu_grande": "835300",
+        "regua": "FFD489"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "1A1414",
+        "painel": "2E2424",
+        "painel_alto": "453636",
+        "linha": "572F23",
+        "texto": "F2EEEE",
+        "texto_fraco": "E8CFC7",
+        "acento": "FFB22C",
+        "tinta": "170808",
+        "papel": "231B1B",
+        "painel_baixo": "2D2323",
+        "bloco": "BC7059",
+        "menu_grande": "402E2E",
+        "regua": "A58D8D"
+      },
+      "contraste": {
+        "texto/fundo": 15.804602672940371,
+        "texto/painel": 13.084614136740223,
+        "acento/fundo": 10.100223403982229,
+        "acento/painel": 8.361964465089146,
+        "texto/tinta": 16.972514438602612
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F2EEEE",
+        "painel": "F2EEEE",
+        "painel_alto": "F2EEEE",
+        "linha": "F2EEEE",
+        "texto": "1D1616",
+        "texto_fraco": "1D1616",
+        "acento": "1D1616",
+        "tinta": "F2EEEE",
+        "papel": "F2EEEE",
+        "painel_baixo": "F2EEEE",
+        "bloco": "1D1616",
+        "menu_grande": "F2EEEE",
+        "regua": "1D1616"
+      },
+      "aviso_por_papel": {
+        "fundo": "FFB22C",
+        "painel": "FFB22C",
+        "painel_alto": "FFB22C",
+        "linha": "FFB22C",
+        "texto": "965F00",
+        "texto_fraco": "7D4F00",
+        "acento": "6E4600",
+        "tinta": "FFB22C",
+        "papel": "FFB22C",
+        "painel_baixo": "FFB22C",
+        "bloco": "281900",
+        "menu_grande": "FFB22C",
+        "regua": "3C2600"
+      }
+    }
+  },
+  "Momotaro": {
+    "claro": {
+      "cores": {
+        "fundo": "FFFEF0",
+        "painel": "FFFBD1",
+        "painel_alto": "FFF7AD",
+        "linha": "D9E1CB",
+        "texto": "2B1608",
+        "texto_fraco": "1D2314",
+        "acento": "D86B04",
+        "tinta": "FFFCE0",
+        "papel": "FFFDEA",
+        "painel_baixo": "FFFCE4",
+        "bloco": "7D9657",
+        "menu_grande": "FFF8B6",
+        "regua": "CCB800"
+      },
+      "contraste": {
+        "texto/fundo": 16.942814014799506,
+        "texto/painel": 16.356881690636435,
+        "acento/fundo": 3.433741603066034,
+        "acento/painel": 3.3149927224903233,
+        "texto/tinta": 16.58699292524031
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.31)"
+      ],
+      "osso_por_papel": {
+        "fundo": "2B1608",
+        "painel": "2B1608",
+        "painel_alto": "2B1608",
+        "linha": "2B1608",
+        "texto": "FFFCE0",
+        "texto_fraco": "FFFCE0",
+        "acento": "2B1608",
+        "tinta": "2B1608",
+        "papel": "2B1608",
+        "painel_baixo": "2B1608",
+        "bloco": "2B1608",
+        "menu_grande": "2B1608",
+        "regua": "2B1608"
+      },
+      "aviso_por_papel": {
+        "fundo": "B85B03",
+        "painel": "B45903",
+        "painel_alto": "B05703",
+        "linha": "9B4D03",
+        "texto": "D86B04",
+        "texto_fraco": "D86B04",
+        "acento": "361B01",
+        "tinta": "B45903",
+        "papel": "B85B03",
+        "painel_baixo": "B45903",
+        "bloco": "3D1E01",
+        "menu_grande": "B05703",
+        "regua": "733902"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "271407",
+        "painel": "45240C",
+        "painel_alto": "683612",
+        "linha": "414D2D",
+        "texto": "FFFCE0",
+        "texto_fraco": "DAE2CD",
+        "acento": "FDC086",
+        "tinta": "1A0D05",
+        "papel": "351B09",
+        "painel_baixo": "44230C",
+        "bloco": "91A96C",
+        "menu_grande": "6B2F03",
+        "regua": "F6883C"
+      },
+      "contraste": {
+        "texto/fundo": 17.027551644355917,
+        "texto/painel": 13.406043103732229,
+        "acento/fundo": 10.980880355086818,
+        "acento/painel": 8.645409418330306,
+        "texto/tinta": 18.3499404462107
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FFFCE0",
+        "painel": "FFFCE0",
+        "painel_alto": "FFFCE0",
+        "linha": "FFFCE0",
+        "texto": "2B1608",
+        "texto_fraco": "2B1608",
+        "acento": "2B1608",
+        "tinta": "FFFCE0",
+        "papel": "FFFCE0",
+        "painel_baixo": "FFFCE0",
+        "bloco": "2B1608",
+        "menu_grande": "FFFCE0",
+        "regua": "2B1608"
+      },
+      "aviso_por_papel": {
+        "fundo": "FDC086",
+        "painel": "FDC086",
+        "painel_alto": "FDC086",
+        "linha": "FDC086",
+        "texto": "B25803",
+        "texto_fraco": "984C03",
+        "acento": "854202",
+        "tinta": "FDC086",
+        "papel": "FDC086",
+        "painel_baixo": "FDC086",
+        "bloco": "592C01",
+        "menu_grande": "FDC086",
+        "regua": "592C01"
+      }
+    }
+  },
+  "Urashima Tarō": {
+    "claro": {
+      "cores": {
+        "fundo": "F9F9F6",
+        "painel": "ECECE4",
+        "painel_alto": "DDDDD0",
+        "linha": "C1EBE5",
+        "texto": "14151F",
+        "texto_fraco": "0D2A25",
+        "acento": "118AB2",
+        "tinta": "F8F8E7",
+        "papel": "F6F6F3",
+        "painel_baixo": "F4F4EF",
+        "bloco": "3AB4A0",
+        "menu_grande": "E2E2D2",
+        "regua": "7B7B51"
+      },
+      "contraste": {
+        "texto/fundo": 17.210447316240042,
+        "texto/painel": 15.287946120867147,
+        "acento/fundo": 3.754927017052331,
+        "acento/painel": 3.3354811103785824,
+        "texto/tinta": 16.919274598532002
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "14151F",
+        "painel": "14151F",
+        "painel_alto": "14151F",
+        "linha": "14151F",
+        "texto": "F2F2ED",
+        "texto_fraco": "F2F2ED",
+        "acento": "14151F",
+        "tinta": "14151F",
+        "papel": "14151F",
+        "painel_baixo": "14151F",
+        "bloco": "14151F",
+        "menu_grande": "14151F",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "0F7CA0",
+        "painel": "0E7394",
+        "painel_alto": "0D6886",
+        "linha": "0D6C8B",
+        "texto": "118AB2",
+        "texto_fraco": "1399C5",
+        "acento": "031921",
+        "tinta": "0F7A9D",
+        "papel": "0F7A9D",
+        "painel_baixo": "0F789A",
+        "bloco": "083E50",
+        "menu_grande": "0D6C8B",
+        "regua": "010C0F"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "12131C",
+        "painel": "1F2132",
+        "painel_alto": "2F324C",
+        "linha": "1E5D53",
+        "texto": "F2F2ED",
+        "texto_fraco": "C4ECE6",
+        "acento": "118AB2",
+        "tinta": "080917",
+        "papel": "181926",
+        "painel_baixo": "1F2132",
+        "bloco": "4FC6B4",
+        "menu_grande": "262949",
+        "regua": "7A81B8"
+      },
+      "contraste": {
+        "texto/fundo": 16.46581769434387,
+        "texto/painel": 14.146098680669832,
+        "acento/fundo": 4.66883146926679,
+        "acento/painel": 4.01108234730134,
+        "texto/tinta": 17.61130108367589
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "F2F2ED",
+        "painel": "F2F2ED",
+        "painel_alto": "F2F2ED",
+        "linha": "F2F2ED",
+        "texto": "14151F",
+        "texto_fraco": "14151F",
+        "acento": "14151F",
+        "tinta": "F2F2ED",
+        "papel": "F2F2ED",
+        "painel_baixo": "F2F2ED",
+        "bloco": "14151F",
+        "menu_grande": "F2F2ED",
+        "regua": "14151F"
+      },
+      "aviso_por_papel": {
+        "fundo": "118AB2",
+        "painel": "1295C0",
+        "painel_alto": "15A8D8",
+        "linha": "79D4F2",
+        "texto": "0E7597",
+        "texto_fraco": "0E6E8E",
+        "acento": "031921",
+        "tinta": "118AB2",
+        "papel": "118EB7",
+        "painel_baixo": "1295C0",
+        "bloco": "094C62",
+        "menu_grande": "14A0CF",
+        "regua": "04202A"
+      }
+    }
+  },
+  "Kaguya-Hime": {
+    "claro": {
+      "cores": {
+        "fundo": "FAF8F4",
+        "painel": "F1EADF",
+        "painel_alto": "E6DAC6",
+        "linha": "CBD3E1",
+        "texto": "0A0E29",
+        "texto_fraco": "141A23",
+        "acento": "4B5694",
+        "tinta": "F8F2E7",
+        "papel": "F9F6F1",
+        "painel_baixo": "F7F3EC",
+        "bloco": "576E97",
+        "menu_grande": "EEDFC7",
+        "regua": "9A7332"
+      },
+      "contraste": {
+        "texto/fundo": 17.8725023334523,
+        "texto/painel": 15.865474410388623,
+        "acento/fundo": 6.474385719158203,
+        "acento/painel": 5.747331796847974,
+        "texto/tinta": 17.013057396180855
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "0A0E29",
+        "painel": "0A0E29",
+        "painel_alto": "0A0E29",
+        "linha": "0A0E29",
+        "texto": "F6F1EA",
+        "texto_fraco": "F6F1EA",
+        "acento": "F6F1EA",
+        "tinta": "0A0E29",
+        "papel": "0A0E29",
+        "painel_baixo": "0A0E29",
+        "bloco": "F6F1EA",
+        "menu_grande": "0A0E29",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "4B5694",
+        "painel": "4B5694",
+        "painel_alto": "4B5694",
+        "linha": "4B5694",
+        "texto": "6D78B5",
+        "texto_fraco": "7681BA",
+        "acento": "CFD3E7",
+        "tinta": "4B5694",
+        "papel": "4B5694",
+        "painel_baixo": "4B5694",
+        "bloco": "EFF0F7",
+        "menu_grande": "4B5694",
+        "regua": "0A0B14"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "090D25",
+        "painel": "101741",
+        "painel_alto": "182362",
+        "linha": "2D394E",
+        "texto": "F6F1EA",
+        "texto_fraco": "CDD5E2",
+        "acento": "5D69AD",
+        "tinta": "060918",
+        "papel": "0C1132",
+        "painel_baixo": "101740",
+        "bloco": "6B82AA",
+        "menu_grande": "0A1764",
+        "regua": "495FE9"
+      },
+      "contraste": {
+        "texto/fundo": 17.05338114415561,
+        "texto/painel": 15.307121958663146,
+        "acento/fundo": 3.731627143363958,
+        "acento/painel": 3.34951006518175,
+        "texto/tinta": 17.63079830974492
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.35)"
+      ],
+      "osso_por_papel": {
+        "fundo": "F6F1EA",
+        "painel": "F6F1EA",
+        "painel_alto": "F6F1EA",
+        "linha": "F6F1EA",
+        "texto": "0A0E29",
+        "texto_fraco": "0A0E29",
+        "acento": "F6F1EA",
+        "tinta": "F6F1EA",
+        "papel": "F6F1EA",
+        "painel_baixo": "F6F1EA",
+        "bloco": "0A0E29",
+        "menu_grande": "F6F1EA",
+        "regua": "F6F1EA"
+      },
+      "aviso_por_papel": {
+        "fundo": "6D78B5",
+        "painel": "7580B9",
+        "painel_alto": "868FC2",
+        "linha": "98A0CB",
+        "texto": "5D69AD",
+        "texto_fraco": "4C5796",
+        "acento": "EFF0F7",
+        "tinta": "6B76B4",
+        "papel": "707BB7",
+        "painel_baixo": "7580B9",
+        "bloco": "151829",
+        "menu_grande": "7D87BD",
+        "regua": "EFF0F7"
+      }
+    }
+  },
+  "Amaterasu": {
+    "claro": {
+      "cores": {
+        "fundo": "FEFAF1",
+        "painel": "FCF0D4",
+        "painel_alto": "FAE5B2",
+        "linha": "F5CBB8",
+        "texto": "300303",
+        "texto_fraco": "301407",
+        "acento": "DD5800",
+        "tinta": "FDF5E2",
+        "papel": "FEF8EC",
+        "painel_baixo": "FDF6E6",
+        "bloco": "CF571E",
+        "menu_grande": "FFEAB6",
+        "regua": "CC8F00"
+      },
+      "contraste": {
+        "texto/fundo": 17.682727910493302,
+        "texto/painel": 16.275057721205727,
+        "acento/fundo": 3.6850832053675893,
+        "acento/painel": 3.3917245222787678,
+        "texto/tinta": 16.960900995906126
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.39)"
+      ],
+      "osso_por_papel": {
+        "fundo": "300303",
+        "painel": "300303",
+        "painel_alto": "300303",
+        "linha": "300303",
+        "texto": "FDF5E2",
+        "texto_fraco": "FDF5E2",
+        "acento": "300303",
+        "tinta": "300303",
+        "papel": "300303",
+        "painel_baixo": "300303",
+        "bloco": "000000",
+        "menu_grande": "300303",
+        "regua": "300303"
+      },
+      "aviso_por_papel": {
+        "fundo": "C34E00",
+        "painel": "B84900",
+        "painel_alto": "B14600",
+        "linha": "9B3E00",
+        "texto": "DD5800",
+        "texto_fraco": "E25A00",
+        "acento": "2C1200",
+        "tinta": "C04C00",
+        "papel": "C34E00",
+        "painel_baixo": "C04C00",
+        "bloco": "1D0C00",
+        "menu_grande": "B44800",
+        "regua": "582300"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "2B0303",
+        "painel": "4D0505",
+        "painel_alto": "730707",
+        "linha": "6B2D10",
+        "texto": "FDF5E2",
+        "texto_fraco": "F5CDBB",
+        "acento": "FF6500",
+        "tinta": "1D0202",
+        "papel": "3A0404",
+        "painel_baixo": "4C0505",
+        "bloco": "E16C34",
+        "menu_grande": "6E0000",
+        "regua": "FF3333"
+      },
+      "contraste": {
+        "texto/fundo": 17.3094758024724,
+        "texto/painel": 14.43548173270329,
+        "acento/fundo": 6.368041445041637,
+        "acento/painel": 5.310718071535464,
+        "texto/tinta": 18.210258799832975
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "FDF5E2",
+        "painel": "FDF5E2",
+        "painel_alto": "FDF5E2",
+        "linha": "FDF5E2",
+        "texto": "300303",
+        "texto_fraco": "300303",
+        "acento": "300303",
+        "tinta": "FDF5E2",
+        "papel": "FDF5E2",
+        "painel_baixo": "FDF5E2",
+        "bloco": "300303",
+        "menu_grande": "FDF5E2",
+        "regua": "300303"
+      },
+      "aviso_por_papel": {
+        "fundo": "FF6500",
+        "painel": "FF6500",
+        "painel_alto": "FF7A22",
+        "linha": "FF8E44",
+        "texto": "BF4C00",
+        "texto_fraco": "9D3E00",
+        "acento": "512000",
+        "tinta": "FF6500",
+        "papel": "FF6500",
+        "painel_baixo": "FF6500",
+        "bloco": "441B00",
+        "menu_grande": "FF6F11",
+        "regua": "371600"
+      }
+    }
+  },
+  "Vazio Infinito": {
+    "claro": {
+      "cores": {
+        "fundo": "F1F1FD",
+        "painel": "D6D6FA",
+        "painel_alto": "B7B7F6",
+        "linha": "C1C0EC",
+        "texto": "0F0B28",
+        "texto_fraco": "0D0D2A",
+        "acento": "162E93",
+        "tinta": "E4E4FB",
+        "papel": "EDEDFD",
+        "painel_baixo": "E7E7FC",
+        "bloco": "3937B6",
+        "menu_grande": "B6B6FF",
+        "regua": "0000CC"
+      },
+      "contraste": {
+        "texto/fundo": 17.055232860397382,
+        "texto/painel": 13.522024729215266,
+        "acento/fundo": 10.150765821291998,
+        "acento/painel": 8.04790574127555,
+        "texto/tinta": 15.279257073047724
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "0F0B28",
+        "painel": "0F0B28",
+        "painel_alto": "0F0B28",
+        "linha": "0F0B28",
+        "texto": "E4E4FB",
+        "texto_fraco": "E4E4FB",
+        "acento": "E4E4FB",
+        "tinta": "0F0B28",
+        "papel": "0F0B28",
+        "painel_baixo": "0F0B28",
+        "bloco": "E4E4FB",
+        "menu_grande": "0F0B28",
+        "regua": "E4E4FB"
+      },
+      "aviso_por_papel": {
+        "fundo": "162E93",
+        "painel": "162E93",
+        "painel_alto": "162E93",
+        "linha": "162E93",
+        "texto": "5772E6",
+        "texto_fraco": "5C76E7",
+        "acento": "8DA0EE",
+        "tinta": "162E93",
+        "papel": "162E93",
+        "painel_baixo": "162E93",
+        "bloco": "ABB9F2",
+        "menu_grande": "162E93",
+        "regua": "92A4EF"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "0D0A24",
+        "painel": "171140",
+        "painel_alto": "231A60",
+        "linha": "1D1C5E",
+        "texto": "E4E4FB",
+        "texto_fraco": "C3C3ED",
+        "acento": "4362E3",
+        "tinta": "090718",
+        "papel": "120D31",
+        "painel_baixo": "17113F",
+        "bloco": "4E4CC9",
+        "menu_grande": "170C62",
+        "regua": "604DE5"
+      },
+      "contraste": {
+        "texto/fundo": 15.459570201869855,
+        "texto/painel": 14.100906684479364,
+        "acento/fundo": 3.7706485537324235,
+        "acento/painel": 3.4392653031011844,
+        "texto/tinta": 15.910936025909121
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.44)"
+      ],
+      "osso_por_papel": {
+        "fundo": "E4E4FB",
+        "painel": "E4E4FB",
+        "painel_alto": "E4E4FB",
+        "linha": "E4E4FB",
+        "texto": "0F0B28",
+        "texto_fraco": "0F0B28",
+        "acento": "FFFFFF",
+        "tinta": "E4E4FB",
+        "papel": "E4E4FB",
+        "painel_baixo": "E4E4FB",
+        "bloco": "E4E4FB",
+        "menu_grande": "E4E4FB",
+        "regua": "E4E4FB"
+      },
+      "aviso_por_papel": {
+        "fundo": "5672E6",
+        "painel": "5F7AE7",
+        "painel_alto": "6F87EA",
+        "linha": "6F87EA",
+        "texto": "3657E1",
+        "texto_fraco": "1E40CD",
+        "acento": "EFF2FD",
+        "tinta": "536FE5",
+        "papel": "5C77E7",
+        "painel_baixo": "5F7AE7",
+        "bloco": "CDD5F8",
+        "menu_grande": "657FE8",
+        "regua": "E0E5FA"
+      }
+    }
+  },
+  "Santuário Malévolo": {
+    "claro": {
+      "cores": {
+        "fundo": "FFF4F0",
+        "painel": "FFDFD1",
+        "painel_alto": "FFC6AD",
+        "linha": "FFBCAD",
+        "texto": "1B0033",
+        "texto_fraco": "370A00",
+        "acento": "500073",
+        "tinta": "FFEAE0",
+        "papel": "FFF1EA",
+        "painel_baixo": "FFECE4",
+        "bloco": "ED2A00",
+        "menu_grande": "FFCCB6",
+        "regua": "CC3F00"
+      },
+      "contraste": {
+        "texto/fundo": 17.7726863894191,
+        "texto/painel": 15.284790513426067,
+        "acento/fundo": 12.2433882127754,
+        "acento/painel": 10.529506902132344,
+        "texto/tinta": 16.536365553812498
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "1B0033",
+        "painel": "1B0033",
+        "painel_alto": "1B0033",
+        "linha": "1B0033",
+        "texto": "FFEAE0",
+        "texto_fraco": "FFEAE0",
+        "acento": "FFEAE0",
+        "tinta": "1B0033",
+        "papel": "1B0033",
+        "painel_baixo": "1B0033",
+        "bloco": "1B0033",
+        "menu_grande": "1B0033",
+        "regua": "FFFFFF"
+      },
+      "aviso_por_papel": {
+        "fundo": "500073",
+        "painel": "500073",
+        "painel_alto": "500073",
+        "linha": "500073",
+        "texto": "BF2CFF",
+        "texto_fraco": "C540FF",
+        "acento": "D36EFF",
+        "tinta": "500073",
+        "papel": "500073",
+        "painel_baixo": "500073",
+        "bloco": "1F002C",
+        "menu_grande": "500073",
+        "regua": "FCF5FF"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "19002E",
+        "painel": "2C0052",
+        "painel_alto": "42007A",
+        "linha": "7A1600",
+        "texto": "FFEAE0",
+        "texto_fraco": "FFBEB0",
+        "acento": "AC00F7",
+        "tinta": "10001F",
+        "papel": "21003E",
+        "painel_baixo": "2B0050",
+        "bloco": "FF3F16",
+        "menu_grande": "3C006E",
+        "regua": "A133FF"
+      },
+      "contraste": {
+        "texto/fundo": 16.744750010210673,
+        "texto/painel": 14.726172763720276,
+        "acento/fundo": 3.790955225459694,
+        "acento/painel": 3.3339561089658356,
+        "texto/tinta": 17.371074183444946
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.33)"
+      ],
+      "osso_por_papel": {
+        "fundo": "FFEAE0",
+        "painel": "FFEAE0",
+        "painel_alto": "FFEAE0",
+        "linha": "FFEAE0",
+        "texto": "1B0033",
+        "texto_fraco": "1B0033",
+        "acento": "FFFFFF",
+        "tinta": "FFEAE0",
+        "papel": "FFEAE0",
+        "painel_baixo": "FFEAE0",
+        "bloco": "1B0033",
+        "menu_grande": "FFEAE0",
+        "regua": "FFFFFF"
+      },
+      "aviso_por_papel": {
+        "fundo": "BE28FF",
+        "painel": "C643FF",
+        "painel_alto": "D066FF",
+        "linha": "DB89FF",
+        "texto": "A900F3",
+        "texto_fraco": "8A00C6",
+        "acento": "FAEDFF",
+        "tinta": "BA1BFF",
+        "papel": "C031FF",
+        "painel_baixo": "C643FF",
+        "bloco": "3C0056",
+        "menu_grande": "CC58FF",
+        "regua": "FFFFFF"
+      }
+    }
+  },
+  "Dez Sombras": {
+    "claro": {
+      "cores": {
+        "fundo": "FEF5F0",
+        "painel": "FDE1D3",
+        "painel_alto": "FBC9B2",
+        "linha": "D1C5E7",
+        "texto": "171122",
+        "texto_fraco": "181027",
+        "acento": "412B6B",
+        "tinta": "FDEBE2",
+        "papel": "FEF1EB",
+        "painel_baixo": "FEEDE6",
+        "bloco": "6846A7",
+        "menu_grande": "FFCDB6",
+        "regua": "CC4100"
+      },
+      "contraste": {
+        "texto/fundo": 17.1389091105687,
+        "texto/painel": 14.817143770580488,
+        "acento/fundo": 10.957672200030585,
+        "acento/painel": 9.473263632550925,
+        "texto/tinta": 15.932177131570848
+      },
+      "avisos": [],
+      "osso_por_papel": {
+        "fundo": "171122",
+        "painel": "171122",
+        "painel_alto": "171122",
+        "linha": "171122",
+        "texto": "FDEBE2",
+        "texto_fraco": "FDEBE2",
+        "acento": "FDEBE2",
+        "tinta": "171122",
+        "papel": "171122",
+        "painel_baixo": "171122",
+        "bloco": "FDEBE2",
+        "menu_grande": "171122",
+        "regua": "FFFFFF"
+      },
+      "aviso_por_papel": {
+        "fundo": "412B6B",
+        "painel": "412B6B",
+        "painel_alto": "412B6B",
+        "linha": "412B6B",
+        "texto": "8F72C6",
+        "texto_fraco": "8F72C6",
+        "acento": "AD98D6",
+        "tinta": "412B6B",
+        "papel": "412B6B",
+        "painel_baixo": "412B6B",
+        "bloco": "D6CCEA",
+        "menu_grande": "412B6B",
+        "regua": "F8F6FC"
+      }
+    },
+    "escuro": {
+      "cores": {
+        "fundo": "140F1F",
+        "painel": "241A37",
+        "painel_alto": "372853",
+        "linha": "362456",
+        "texto": "FDEBE2",
+        "texto_fraco": "D3C8E8",
+        "acento": "8161BF",
+        "tinta": "0D0817",
+        "papel": "1C142A",
+        "painel_baixo": "241A36",
+        "bloco": "7C5BBA",
+        "menu_grande": "2F1D51",
+        "regua": "8B6AC8"
+      },
+      "contraste": {
+        "texto/fundo": 16.2435919779277,
+        "texto/painel": 14.20886776657257,
+        "acento/fundo": 3.9321751678986048,
+        "acento/painel": 3.439618347443832,
+        "texto/tinta": 17.06233836626261
+      },
+      "avisos": [
+        "acento ajustado (ficou 3.44)"
+      ],
+      "osso_por_papel": {
+        "fundo": "FDEBE2",
+        "painel": "FDEBE2",
+        "painel_alto": "FDEBE2",
+        "linha": "FDEBE2",
+        "texto": "171122",
+        "texto_fraco": "171122",
+        "acento": "FFFFFF",
+        "tinta": "FDEBE2",
+        "papel": "FDEBE2",
+        "painel_baixo": "FDEBE2",
+        "bloco": "FFFFFF",
+        "menu_grande": "FDEBE2",
+        "regua": "000000"
+      },
+      "aviso_por_papel": {
+        "fundo": "8B6EC4",
+        "painel": "9479C9",
+        "painel_alto": "A38BD0",
+        "linha": "A38BD0",
+        "texto": "7957BB",
+        "texto_fraco": "6442A4",
+        "acento": "F9F8FC",
+        "tinta": "8769C2",
+        "papel": "9073C6",
+        "painel_baixo": "9479C9",
+        "bloco": "F2EFF9",
+        "menu_grande": "9A81CC",
+        "regua": "130C1F"
+      }
+    }
+  }
+}
