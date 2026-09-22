@@ -409,7 +409,7 @@ são estes, e cada um diz de onde veio:
 
 | arquivo aqui | de onde veio, no `JJK---Project` |
 |---|---|
-| `manual.txt` | o PDF do Manual da Guilda, `pdftotext -layout` — **reextraído na v0.240 do sistema** |
+| `manual.txt` | o PDF do Manual da Guilda (o de coluna única), `pdftotext -layout` — **reextraído na v0.263 do sistema** |
 | `capitulo-16-invocacoes.md` | `sistema/05-material/livro/manual/60-invocacoes.md` |
 | `capitulo-35-caminhos-e-trilhas.md` | `sistema/05-material/livro/manual/35-caminhos-e-trilhas.md` |
 | `repos/JJK---PDF---RPG-main/ficha/ficha-exemplo-kaori.docx` | o repositório do PDF |

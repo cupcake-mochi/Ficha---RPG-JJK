@@ -203,7 +203,10 @@ def _fecha():
         _lido.setdefault(o, {}).setdefault(f, {})[e["nome"]] = v
     e["nome"], e["texto"] = None, []
 for _raw in open("manual.txt", encoding="utf-8").read().split("\n"):
-    s = re.sub(r"^\d{1,2}\s{2,}", "", _raw.strip())          # o numero da margem gruda no comeco da linha
+    # o numero da margem gruda no comeco da linha — e, desde o livro da v0.263, tambem no FIM:
+    # o `Legados da Latente` caiu numa pagina que imprime o numero na mesma linha do titulo, e a
+    # comparacao por igualdade com o cabecalho passou a ler ZERO legado da Latente sem dizer nada.
+    s = re.sub(r"\s{2,}\d{1,3}$", "", re.sub(r"^\d{1,2}\s{2,}", "", _raw.strip()))
     if ". . ." in s: continue
     if s in _CAB:
         _fecha(); _st["atual"], _st["fmt"] = _CAB[s], None
@@ -319,17 +322,24 @@ def _tabela(titulo, rx, n_campos):
             return _rows
     return []
 
-_num3 = r"^\s*(\d)\s+(\d+)\s+(—|\d+)\s+(—|\d+)\s*$"
+# A coluna `VOLUME` entrou nas tres tabelas no livro da v0.256 e da v0.257 do sistema, e ate a
+# reextracao da v0.263 o `manual.txt` era o da v0.246 — sem ela. O regex terminava a linha no
+# `REQUER FORCA`, entao as tres tabelas passaram a ler ZERO. O ultimo grupo e o Volume, lido e
+# NAO guardado: ele ainda nao tem onde entrar na ficha, e isso e o item 9 da fila do sistema.
+# Ele e' OBRIGATORIO no casamento de proposito — se a coluna sumir do livro, isto reprova em vez
+# de voltar a ler zero em silencio. O rotulo `VOLUME` nao serve de ancora: o `pdftotext` corta ele
+# do cabecalho em duas das tres tabelas, e so os valores sobrevivem.
+_num3 = r"^\s*(\d)\s+(\d+)\s+(—|\d+)\s+(—|\d+)\s+(\S+)\s*$"
 _ok_eq = True
 for _tit, _nome in (("TRAJE", "Traje"), ("REVESTIMENTO", "Revestimento")):
     _rows = _tabela(_tit, _num3, 4)
     _livro = {f"{_nome} {g}": {"protecao": int(p), "teto_de_destreza": _TRACO(t), "requer_forca": _TRACO(f)}
-              for g, p, t, f in _rows}
+              for g, p, t, f, _vol in _rows}
     _cat = {k: v for k, v in EQ.get("uniformes", {}).items() if k.startswith(_nome + " ")}
     _ok(f"equipamento: os {len(_livro)} degraus de {_nome} são os do livro",
         len(_livro) == 3 and _livro == _cat, f"livro {_livro} · catálogo {_cat}")
-_rows = _tabela("ESCUDO", r"^\s*(\d)\s+(\S+)\s+(\d+)\s+(—|\d+)\s+(—|\d+)\s*$", 5)
-_livro = {n: {"protecao": int(p), "teto_de_destreza": _TRACO(t), "requer_forca": _TRACO(f)} for g, n, p, t, f in _rows}
+_rows = _tabela("ESCUDO", r"^\s*(\d)\s+(\S+)\s+(\d+)\s+(—|\d+)\s+(—|\d+)\s+(\S+)\s*$", 6)
+_livro = {n: {"protecao": int(p), "teto_de_destreza": _TRACO(t), "requer_forca": _TRACO(f)} for g, n, p, t, f, _vol in _rows}
 _ok(f"equipamento: os {len(_livro)} escudos são os do livro",
     len(_livro) == 3 and _livro == EQ.get("escudos"), f"livro {_livro} · catálogo {EQ.get('escudos')}")
 _ok("equipamento: a Defesa, o uniforme que desliga, o escudo que soma e os dois tetos têm a frase no livro",
