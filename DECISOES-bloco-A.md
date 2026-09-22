@@ -221,7 +221,7 @@ O protótipo tinha `10 + Destreza + 1`, com o `1` na mão. Ele acerta hoje por c
 > Defesa   = 10 + MIN(Destreza ; o menor teto do que veste) + proteção
 > ```
 >
-> *A `regressao-kaori-na-ficha.py` recalcula dez casos no LibreOffice, dois deles exemplos do livro; o `conferir-ficha-xlsx.py` confere a tabela, os menus e as fórmulas; o `conferir-catalogo.py` confere a chave `equipamento_defesa` contra as tabelas do manual.* **Continua sem campo:** *a `Couraça` (+1 vestindo uniforme) e a arma sem o requisito de Força, que tira a Destreza da Defesa.*
+> *A `regressao-kaori-na-ficha.py` recalcula dez casos no LibreOffice, dois deles exemplos do livro; o `conferir-ficha-xlsx.py` confere a tabela, os menus e as fórmulas; o `conferir-catalogo.py` confere a chave `equipamento_defesa` contra as tabelas do manual.* **Vai ter campo na Ficha Pessoal** *(aba de itens e equipamentos, bio, foto e afins):* *a `Couraça` (+1 vestindo uniforme) e a arma sem o requisito de Força, que tira a Destreza da Defesa.*
 
 ## C4 · Três fontes, e uma regra dura para o celular
 

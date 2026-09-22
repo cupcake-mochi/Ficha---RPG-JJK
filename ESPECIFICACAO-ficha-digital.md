@@ -499,7 +499,7 @@ E existe um validador dono, o `conferir-ficha.py`, com seis checagens que compar
 | `manual/gerador/partB.js` | Alcance · Área · Mira · Controle · Auxiliares · Castigo · Tempo · Marca · Amparo |
 | `gerador-ficha/dados.js` | Ataque · Área · Controle · Castigo · Amparo · Corpo · Movimento · Auxiliares · Percepção |
 
-Só cinco coincidem. A ficha tem `Ataque`, `Corpo`, `Movimento` e `Percepção`, que não existem no manual e não têm uma Melhoria sequer. E não imprime `Alcance`, `Mira`, `Tempo` e `Marca`, que juntas são **27 das 66 Melhorias**.
+Só cinco coincidem. A ficha tem `Ataque`, `Corpo`, `Movimento` e `Percepção`, que não existem no manual e não têm uma Melhoria sequer. E não imprime `Alcance`, `Mira`, `Tempo` e `Marca`, que juntas são **30 das 69 Melhorias**. *Eram 27 das 66 até a v0.258 do sistema, quando a `Concentrada`, a `Duradoura` e o `Alvo de Caça` entraram no catálogo; o `revisao-cetica.py` lê os dois números daqui.*
 
 Confirmado em três lugares: no `dados.js`, na tabela 15 da `ficha-em-branco.docx`, e no gerador do manual.
 

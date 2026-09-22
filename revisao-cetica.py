@@ -26,8 +26,17 @@ checa("as 15 Trilhas aparecem na spec",
 checa("as 10 Formas aparecem na spec",
       all(f in SPEC for f in CAT["formas"]),
       str([f for f in CAT["formas"] if f not in SPEC]))
+# As quatro Familias que a ficha velha nao imprimia, contadas no catalogo. Os
+# dois numeros sao LIDOS da spec, e nao escritos aqui: ate 21/09/2026 esta linha
+# guardava "27 das 66" no codigo, e quando a v0.258 do sistema pos tres Melhorias
+# no catalogo ela passou a imprimir FALHA com o rodar-tudo.sh dizendo que passou.
 orfas = sum(1 for v in CAT["melhorias"].values() if v["familia"] in ["Alcance","Mira","Tempo","Marca"])
-checa(f"a spec diz '27 das 66' e a conta da {orfas}", f"**27 das 66" in SPEC and orfas == 27, f"conta={orfas}")
+total = len(CAT["melhorias"])
+m = re.search(r"\*\*(\d+) das (\d+) Melhorias\*\*", SPEC)
+checa(f"a spec diz '{m.group(1)} das {m.group(2)}' e o catalogo da {orfas} das {total}" if m
+      else "a spec diz quantas Melhorias estao nas quatro Familias que a ficha velha nao imprime",
+      bool(m) and (int(m.group(1)), int(m.group(2))) == (orfas, total),
+      f"catalogo={orfas} das {total}" if m else "nao achei o '**N das M Melhorias**' na spec")
 
 print("\nAFIRMACOES DA SPEC vs MANUAL")
 for frase, agulha in [
@@ -48,3 +57,6 @@ for termo, onde in [("PE da Liberação Máxima", "custo em PE da Liberacao Maxi
     print(f"  [{'presente' if termo in SPEC else 'AUSENTE'}] {onde}  ('{termo}')")
 
 print(f"\n{'REVISAO LIMPA' if not falhas else str(len(falhas)) + ' PROBLEMA(S)'}")
+# Ate 21/09/2026 ela imprimia PROBLEMA e saia 0, e o rodar-tudo.sh le o codigo
+# de saida: o verde que nao e verde.
+raise SystemExit(1 if falhas else 0)

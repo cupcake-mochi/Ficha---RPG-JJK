@@ -180,8 +180,8 @@
   },
   "C2_carimbo": {
     "escolha": "o carimbo e a versao do projeto",
-    "versao_corrente": "0.246",
-    "data_da_versao": "15/09/2026",
+    "versao_corrente": "0.258",
+    "data_da_versao": "20/09/2026",
     "dona_da_versao": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
     "manual_do_fundamento": "7.10",
     "porque_a_do_projeto_e_nao_a_do_manual": "o catalogo foi extraido do PDF inteiro, que e o recorte da versao do projeto; o 7.10 e so do capitulo de Fundamento",
@@ -193,7 +193,7 @@
     "formula_protecao": "SE(equipamento vazio; ARRED.ABAIXO(refino/3) + 1; SE(uniforme; 0; ARRED.ABAIXO(refino/3) + 1) + protecao da tabela), com refino = MIN(10; refino de graca + MIN(marcos que passou; refino escolhido))",
     "porque": "Traje e Revestimento DESLIGAM a protecao do cobrir-se e entregam a deles; o escudo SOMA por cima; com dois tetos de Destreza vale o menor; e o refino conta as escolhas de Refino nos marcos",
     "o_que_entra_agora": "desde a v0.246 do sistema, o B3 na opcao A: o EQUIPAMENTO e menu das combinacoes de uniforme e escudo, a tabela sai do catalogo (equipamento_defesa) para a DADOS, e o REFINO ESCOLHIDO fica ao lado do BLOQUEAR",
-    "o_que_entra_depois": "nada do B3. Fora dele: a Couraca (+1 de Defesa vestindo uniforme) e a arma sem o requisito de Forca, que tira a Destreza da Defesa, nao tem campo",
+    "o_que_entra_depois": "nada do B3. Fora dele: a Couraca (+1 de Defesa vestindo uniforme) e a arma sem o requisito de Forca, que tira a Destreza da Defesa, vao ter campo na Ficha Pessoal (aba de itens e equipamentos, bio, foto e afins)",
     "o_bug_que_isso_conserta": "o prototipo tinha '10 + Destreza + 1' com o 1 escrito na mao; ele fica errado no refino 3, quando a protecao vira 2"
   },
   "C4_fontes": {

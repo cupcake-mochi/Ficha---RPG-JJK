@@ -20,7 +20,7 @@ Anexei um zip com tudo o que já foi levantado, e o manual em PDF. **Uma convers
 
 5. **O `catalogo-projeto-m.json` é a fonte de dados.** Não redigite catálogo, leia dele: 23 perícias, 11 ofícios, 5 Caminhos, 15 Trilhas, 9 Famílias, 10 Formas, 66 Melhorias, 14 condições, 19 Restrições, 9 rotas de criação, 85 Legados e a tabela de progressão.
 
-6. **Rode os validadores antes de mexer em qualquer número.** São seis, e todos passam hoje:
+6. **Rode os validadores antes de mexer em qualquer número:** `./rodar-tudo.sh` roda todos e sai `1` se algum falhar. *Os seis abaixo foram os primeiros; a lista viva é a do script.*
 
 ```
 python3 conferir-catalogo.py      integridade e as contagens que o manual declara por extenso

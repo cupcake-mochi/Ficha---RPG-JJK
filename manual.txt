@@ -711,7 +711,7 @@ Turno
  inteira            A Reação continua sua
 
  Concentração       Manter um efeito de pé. Um por vez, e tomar dano pede Teste de             2
-                    Resistência de Vigor
+                    Resistência de Vigor contra a CD de quem te feriu
 
   Estudar           Ação Padrão: um teste sobre uma criatura ou objeto que você enxerga,       2
                     para saber o que ele é e o que ele vai fazer
@@ -2102,16 +2102,28 @@ continua de pé, a coisa que você está segurando no lugar do outro lado da sal
 concentra em um por vez; começar um segundo derruba o primeiro.
 
 
-    Quando você toma dano concentrando, faça um Teste de Resistência de Vigor. A
-    CD é 10, ou metade do dano que você tomou, o que for maior. Se falhar, o efeito
-    cai.
-
-    Exemplo. O Kaito está concentrando num efeito e leva 26 de dano. Metade de 26 é
-    13, e 13 é maior que 10: a CD é 13. Se o golpe tivesse tirado 12, a metade daria 6, e a
-    CD seria 10 mesmo.
+    Quando você toma dano concentrando, faça um Teste de Resistência de Vigor
+    contra a CD de quem te feriu. Se falhar, o efeito cai.
 
 
-Na corrida entre dois domínios a rolagem é a mesma, com a CD e a contagem trocadas. A
+A CD é a de quem te feriu, a que ele usa para o que faz. Num feitiço, é a CD do feitiço
+dele: 8 + o atributo + a maestria. Num golpe de arma ou desarmado, é a mesma conta com o
+atributo do ataque. Num inimigo, é a CD que a ficha dele diz. Cada golpe que te acerta é um
+teste, mesmo que sejam vários na mesma rodada. Se o dano não tem autor (uma queda, uma
+armadilha), o mestre escolhe a CD na escada de dificuldade do capítulo 1, Como Jogar.
+
+Dano de 10 ou menos não pede o teste para quem tem a Passiva Mão Firme .
+
+Quem monta um feitiço com a Melhoria Concentrada põe o efeito de estado dele no ar por mais
+tempo, e passa a concentrar nele. A Duradoura faz o mesmo sem pedir concentração. As duas
+estão no capítulo 9, na Família Tempo .
+
+    Exemplo. A CD da maldição é 14. O Kaito está concentrando num efeito e ela o
+    acerta duas vezes na rodada. Ele faz dois Testes de Resistência de Vigor contra 14,
+    um por golpe. Se falhar em qualquer um dos dois, o efeito cai.
+
+
+Na corrida entre dois domínios a rolagem é a mesma, com a contagem trocada. A
 regra está no capítulo 40, na seção Domínios sobrepostos.
 
 
@@ -2125,7 +2137,8 @@ regra está no capítulo 40, na seção Domínios sobrepostos.
 
     Concentração e Carregar
     As duas seguram alguma coisa contra o dano, em momentos diferentes da vida de um fei‐
-    tiço.
+    tiço. As duas rolam contra a CD de quem te feriu; o que troca é o teste e o que você
+    perde.
 
     CONCENTRAÇÃO E CARREGAR
 
@@ -7585,7 +7598,8 @@ MIRA
      MELHORIA          CUSTO       O QUE FAZ
 
          Condição      o nível     Aplica uma das treze condições. O preço é o nível dela ( Leve , Média ou
-                       dela        Pesada ), e a seção Condições traz as três listas. Dura uma rodada. As de
+                       dela        Pesada ), e a seção Condições traz as três listas. Dura uma rodada, a não ser que o feitiço tenha a
+                                   Concentrada ou a Duradoura. As de
                                    nível Pesada dão Teste de Resistência no fim de cada turno do alvo, e só
                                    pode ser colocada uma delas por feitiço.
 
@@ -7614,7 +7628,8 @@ MIRA
     Condições
     São treze, e cada uma tem um nível: Leve , Média ou Pesada . O nível faz duas coisas ao
     mesmo tempo. Ele é o preço da Melhoria Condição que aplica ela, e é o que custa em
-    energia para tirar ela de alguém (1 ponto por nível). Uma condição dura uma rodada.
+    energia para tirar ela de alguém (1 ponto por nível). Uma condição dura uma rodada, a
+    não ser que o feitiço tenha a Concentrada ou a Duradoura.
 
     Numa Classe 5, aplicar uma Leve custa 3 pontos, uma Média custa 5 e uma Pesada custa
     8.
@@ -7791,11 +7806,36 @@ TEMPO
   Segura            Leve       Você pode adiar o efeito por até uma rodada e disparar no seu próximo
                                turno, de graça.
 
+  Concentrada       Leve       Os efeitos de estado do feitiço, que hoje duram uma rodada ou até o
+                               fim do próximo turno, passam a durar o tempo da tabela Quanto dura .
+                               Exige concentração. Não vale para o dano, para a Fica nem para o
+                               Anteparo .
+
+  Duradoura         Média      A mesma coisa que a Concentrada , só que sem exigir concentração, e
+                               com o tempo da coluna Duradoura da tabela Quanto dura .
+
 
 
 
     Se você conjurar um feitiço como Ação Bônus ou Reação, o único outro feitiço que
     cabe naquele turno é de Classe 0.
+
+
+O tempo depende do que o feitiço faz, e o feitiço inteiro leva a menor duração entre os
+efeitos dele.
+
+QUANTO DURA
+
+ O QUE O EFEITO FAZ                                    CONCENTRADA   DURADOURA
+
+  Condição, buff ofensivo e debuff                     1 minuto      1 minuto
+
+  Buff defensivo numérico: um bônus fixo na Defesa     10 minutos    1 minuto
+  ou num Teste de Resistência (a Guarda )
+
+  Buff defensivo mecânico: resistência, imunidade,     10 minutos    Classe 1 e 2: 1 hora ·
+  pontos de vida ou dividir dano (a Divide )                         Classe 3: 8 horas ·
+                                                                     Classe 4 em diante: 24 horas
 
 
 
@@ -7816,6 +7856,15 @@ TEMPO
 
       Marca         Leve    O alvo fica marcado até o fim do seu próximo turno. Você tem vantagem
                             no seu próximo ataque contra ele. Só você.
+
+      Alvo de Caça  Leve    O alvo fica marcado até o fim do seu próximo turno. Daí em diante, cada
+                            ataque seu que acertar ele causa 1d4 a mais, e o feitiço que marcou não
+                            ganha o dado. Vale arma, desarmado e feitiço com rolagem de acerto, e
+                            cada tiro da Rajada conta. Se este feitiço tiver o Rápido , o dado é
+                            1d8. Não entram feitiço de Teste de Resistência, dano que volta em
+                            rodada seguinte como o da Queima , respingo, nem ataque da sua
+                            invocação. Um alvo marcado por vez: marcar outro apaga a marca
+                            anterior.
 
       Rastro        Leve    Você sabe onde o alvo está por 1 hora, desde que ele esteja no mesmo
                             plano.
@@ -7912,9 +7961,9 @@ RESTRIÇÕES
                               devolve Pesada .
 
   Carregar           Média    Você gasta um turno carregando o feitiço antes de disparar. Se tomar
-                              dano nesse meio-tempo, faz um Teste de Resistência de Espírito (CD
-                              10, ou metade do dano, o que for maior) para manter. Se falhar, perde o
-                              feitiço. Carregar não é concentração: o feitiço ainda não saiu.
+                              dano nesse meio-tempo, faz um Teste de Resistência de Espírito contra
+                              a CD de quem te feriu para manter. Se falhar, perde o feitiço.
+                              Carregar não é concentração: o feitiço ainda não saiu.
 
   Tudo ou            Leve     Quem passa no Teste de Resistência não toma nada, em vez de tomar
  Nada                         metade. Só em feitiços de Teste de Resistência.
@@ -8515,13 +8564,14 @@ sobre quem o Acerto pega. O dano, quando existe, mora no Acerto.
     outro na hora.
 
     Na corrida, segurar o domínio pede concentração. Quem mantém um domínio e toma dano
-    faz um Teste de Resistência de Vigor contra a CD do dono do outro domínio. Cada falha
-    fica marcada até a corrida acabar, e quando as falhas chegam a metade da sua Essência, o
-    seu domínio cai.
+    faz um Teste de Resistência de Vigor contra a CD de quem te feriu, a mesma rolagem da
+    Concentração. Cada falha fica marcada até a corrida acabar, e quando as falhas chegam a
+    metade da sua Essência, o seu domínio cai.
 
     Personagem de jogador testa a cada dano que toma, sem limite. Inimigo testa no máximo
-    uma vez por jogador que acertou ele na rodada, por mais golpes que esse jogador dê. Golpe
-    de invocação não conta: ele tira vida do inimigo, e não faz o inimigo testar.
+    uma vez por jogador que acertou ele na rodada, por mais golpes que esse jogador dê, e
+    contra a maior CD entre eles. Golpe de invocação não conta: ele tira vida do inimigo, e
+    não faz o inimigo testar.
 
     Este teste não ocupa a sua Concentração, e a Mão Firme não protege dele. Você pode
     segurar o domínio na corrida e seguir concentrando num efeito, e as duas rolagens são sepa‐
@@ -8548,7 +8598,7 @@ sobre quem o Acerto pega. O dano, quando existe, mora no Acerto.
 
     A metade arredonda para baixo e nunca fica abaixo de 1: é a regra de arredondamento, em
     que o que você ganha desce. É a mesma rolagem de Vigor da Concentração, com a
-    CD e a contagem trocadas, e ela só existe enquanto dura a corrida.
+    contagem trocada, e ela só existe enquanto dura a corrida.
 
 
 Quem perde recebe o Acerto do vencedor, e não tem como recusar. O domínio dele já caiu,

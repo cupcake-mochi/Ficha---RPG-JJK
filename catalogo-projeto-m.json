@@ -1,8 +1,8 @@
 {
   "_meta": {
     "sistema": "Projeto M",
-    "versao": "0.246",
-    "versao_data": "16/09/2026",
+    "versao": "0.258",
+    "versao_data": "20/09/2026",
     "versao_dona": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
     "fonte": "Projeto-M-Manual-da-Guilda.pdf, o livro da versão acima",
     "regra": "onde a ficha-em-branco.docx e o manual discordarem, o manual vence",
@@ -580,10 +580,25 @@
       "peso": "Leve",
       "efeito": "Você pode adiar o efeito por até uma rodada e disparar no seu próximo turno, de graça."
     },
+    "Concentrada": {
+      "familia": "Tempo",
+      "peso": "Leve",
+      "efeito": "Os efeitos de estado do feitiço, que hoje duram uma rodada ou até o fim do próximo turno, passam a durar o tempo da tabela Quanto dura. Exige concentração. Não vale para o dano, para a Fica nem para o Anteparo."
+    },
+    "Duradoura": {
+      "familia": "Tempo",
+      "peso": "Media",
+      "efeito": "A mesma coisa que a Concentrada, só que sem exigir concentração, e com o tempo da coluna Duradoura da tabela Quanto dura."
+    },
     "Marca": {
       "familia": "Marca",
       "peso": "Leve",
       "efeito": "O alvo fica marcado até o fim do seu próximo turno. Você tem vantagem no seu próximo ataque contra ele. Só você."
+    },
+    "Alvo de Caça": {
+      "familia": "Marca",
+      "peso": "Leve",
+      "efeito": "O alvo fica marcado até o fim do seu próximo turno. Daí em diante, cada ataque seu que acertar ele causa 1d4 a mais, e o feitiço que marcou não ganha o dado. Vale arma, desarmado e feitiço com rolagem de acerto, e cada tiro da Rajada conta. Se este feitiço tiver o Rápido, o dado é 1d8. Não entram feitiço de Teste de Resistência, dano que volta em rodada seguinte como o da Queima, respingo, nem ataque da sua invocação. Um alvo marcado por vez: marcar outro apaga a marca anterior."
     },
     "Rastro": {
       "familia": "Marca",
@@ -648,7 +663,7 @@
     "Condição": {
       "familia": "Controle",
       "peso": "VARIAVEL",
-      "efeito": "Aplica uma das treze condições. O preço é o nível dela (Leve, Média ou Pesada), e a seção Condições traz as três listas. Dura uma rodada. As de nível Pesada dão Teste de Resistência no fim de cada turno do alvo, e só pode ser colocada uma delas por feitiço.",
+      "efeito": "Aplica uma das treze condições. O preço é o nível dela (Leve, Média ou Pesada), e a seção Condições traz as três listas. Dura uma rodada, a não ser que o feitiço tenha a Concentrada ou a Duradoura. As de nível Pesada dão Teste de Resistência no fim de cada turno do alvo, e só pode ser colocada uma delas por feitiço.",
       "excecao": "unica Melhoria cujo peso nao e fixo: le o nivel da condicao escolhida"
     },
     "Efeito Próprio": {
@@ -700,7 +715,7 @@
     },
     "Carregar": {
       "devolve": "Media",
-      "o_que_muda": "Você gasta um turno carregando o feitiço antes de disparar. Se tomar dano nesse meio-tempo, faz um Teste de Resistência de Espírito (CD 10, ou metade do dano, o que for maior) para manter. Se falhar, perde o feitiço. Carregar não é concentração: o feitiço ainda não saiu."
+      "o_que_muda": "Você gasta um turno carregando o feitiço antes de disparar. Se tomar dano nesse meio-tempo, faz um Teste de Resistência de Espírito contra a CD de quem te feriu para manter. Se falhar, perde o feitiço. Carregar não é concentração: o feitiço ainda não saiu."
     },
     "Tudo ou Nada": {
       "devolve": "Leve",
