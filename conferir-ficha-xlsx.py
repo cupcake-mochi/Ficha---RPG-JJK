@@ -770,51 +770,80 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
 
     # B25, achado testando no Sheets em 18/09/2026: repintar a ficha inteira não cabe nos 30
     # segundos do onEdit simples, e o Apps Script mata a execução no meio sem avisar — a paleta
-    # ficava "travada" a partir da segunda troca, porque paleta_atual só grava no fim de
-    # repintarPaleta_. A troca de paleta saiu do onEdit(e) simples e foi pra um gatilho instalável
-    # (6 minutos, não 30 segundos), instalado por configurarPaleta_.
-    checa("aplicarPaleta_ saiu do onEdit(e) simples — a troca de paleta não cabe nos 30 segundos dele",
-          bool(_oned) and "aplicarPaleta_" not in _oned.group(1))
-    _instg = re.search(r"function instalarGatilhoPaleta_\(ss\)\s*\{(.*?)\n\}", _CODA, re.S)
-    checa("instalarGatilhoPaleta_ existe e instala um gatilho de onEdit pra aplicarPaleta_",
-          bool(_instg) and "newTrigger('aplicarPaleta_')" in _instg.group(1)
-          and ".onEdit()" in _instg.group(1))
-    checa("configurarPaleta_ chama instalarGatilhoPaleta_",
-          bool(_confp) and "instalarGatilhoPaleta_(ss)" in _confp.group(1))
-
-    # Achado do Mizuki em 25/09/2026: numa cópia da ficha a cor não trocava. A cópia não leva o
-    # gatilho instalável, e o onOpen (gatilho simples, sem autorização) não consegue criá-lo. Quem
-    # copia ativa uma vez pelo menu: o onOpen cria o item, ele chama uma função PÚBLICA (com _ no fim
-    # o menu não acha), e o onEdit simples avisa na troca de tema enquanto o gatilho falta.
+    # ficava "travada" a partir da segunda troca. De 18/09 a 25/09/2026 a saída foi um gatilho
+    # instalável (6 minutos). Em 25/09/2026 o Mizuki achou que numa CÓPIA da ficha a cor não trocava:
+    # a cópia não leva gatilho instalável, e criar um pede autorização de quem copia. Ele quer que só
+    # copiar baste, como no código antigo dele. A troca voltou pro gatilho simples, em passos que cabem
+    # no orçamento, e continua no próximo clique (onSelectionChange) — tudo sem autorização. As
+    # checagens abaixo substituem as três do gatilho instalável, que deixou de existir.
+    checa("a troca de paleta no onEdit simples passa por continuarPaleta_, com o valor antigo da caixa",
+          bool(_oned) and "continuarPaleta_(inicio, e.oldValue, true)" in _oned.group(1)
+          and "ehCelulaDaPaleta_(e.range)" in _oned.group(1))
+    _conv = re.search(r"function convergirPaleta_\(inicio, orcamento, dica, primeira\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("convergirPaleta_ confere o tempo ANTES de cada passo e grava o progresso DEPOIS de cada um",
+          bool(_conv) and re.search(r"for \(var i = 0; i < passos\.length; i\+\+\) \{.*?Date\.now\(\) - inicio.*?"
+                                    r"> orcamento.*?props\.setProperty\(PROP_PENDENTE_, novo\).*?return passo;.*?"
+                                    r"props\.setProperties\(\{ paleta_feito", _conv.group(1), re.S) is not None)
+    checa("cada passo termina com SpreadsheetApp.flush(), pra o tempo dele não cair no passo seguinte",
+          bool(_conv) and re.search(r"repintarBordas_\(ss, [^;]*;\s*\}\s*(//[^\n]*\n\s*)*SpreadsheetApp\.flush\(\);\s*feito\[passo\] = novo;",
+                                    _conv.group(1)) is not None)
+    _orc = re.search(r"var ORCAMENTO_SIMPLES_ = (\d+);", _CODA)
+    checa("o orçamento de cada chamada fica abaixo dos 30 s do gatilho simples, com folga de pelo menos 5 s",
+          bool(_orc) and int(_orc.group(1)) <= 25000, _orc.group(1) if _orc else "sem ORCAMENTO_SIMPLES_")
+    # E pra caber de uma vez, sem clique: a régua pinta a caixa de quatro lados iguais numa operação só
+    # (3.420 faixas viram 1.305), e as abas ocultas ficam fora da troca (29 mil células viram 20 mil).
+    _rb2 = re.search(r"function repintarBordas_\(ss, paraRegua, soAba\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("a régua pinta numa operação só a caixa que tem os quatro lados no mesmo traço",
+          bool(_rb2) and "l.top === l.left && l.top === l.bottom && l.top === l.right" in _rb2.group(1)
+          and "todos || lado === 'top'" in _rb2.group(1))
+    _pp = re.search(r"function passosDaPaleta_\(primeira\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("as abas ocultas ficam fora dos passos de cor da troca",
+          bool(_pp) and "return !spec.oculta;" in _pp.group(1))
+    # Com os tempos do Mizuki (25/09/2026) ainda não cabia. Partir da ficha de fábrica sem ler a planilha foi
+    # medido e ficou mais lento (o custo é gravar, não ler): a troca voltou a ler, e a cor pintada à mão fica.
+    # O pedido dele: cor e régua na troca, a arte quando alguém mexer na ficha, sem aviso. Aba por aba,
+    # começando pela que o jogador está olhando, e a aba em que ele clica passa na frente.
+    _rca = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("a troca de cor de cada aba lê a planilha e parte do que está pintado (a cor pintada à mão fica)",
+          bool(_rca) and "faixa.getBackgrounds()" in _rca.group(1) and "faixa.getFontColors()" in _rca.group(1)
+          and "coresDoNome_(nomeAntigo)" in _rca.group(1))
+    checa("cor e régua de cada aba vão juntas, e a aba que o jogador está olhando vem primeiro",
+          bool(_pp) and "passosDaPaleta_(primeira)" in _CODA and "(b.nome === primeira) - (a.nome === primeira)" in _pp.group(1)
+          and re.search(r"passos\.push\('cor:' \+ spec\.nome\);\s*if \(\(spec\.bordas \|\| \[\]\)\.length\) passos\.push\('borda:'", _pp.group(1)) is not None)
+    _onsc2 = re.search(r"function onSelectionChange\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("o clique leva a aba em que o jogador clicou pra frente da fila",
+          bool(_onsc2) and "e && e.range" in _onsc2.group(1) and "onde ? onde.getSheet().getName() : null" in _CODA)
+    _cont2 = re.search(r"function continuarPaleta_\(inicio, dica, marcar, onde\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _conv2 = re.search(r"function convergirPaleta_\(inicio, orcamento, dica, primeira\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("a troca não mostra aviso nenhum ao jogador",
+          bool(_cont2) and bool(_conv2) and "toast(" not in _cont2.group(1) and "toast(" not in _conv2.group(1))
+    checa("o primeiro passo de uma chamada fresca sempre roda (um passo lento não fica parado pra sempre)",
+          bool(_conv) and "var fresca = andou === 0" in _conv.group(1) and "!fresca &&" in _conv.group(1))
+    _onsc = re.search(r"function onSelectionChange\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
     _onop = re.search(r"function onOpen\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
-    checa("o onOpen cria o menu Ficha com o item que chama ativarPaleta (sem _ no fim)",
-          bool(_onop) and "createMenu('Ficha')" in _onop.group(1)
-          and "addItem('Ativar a troca de paleta', 'ativarPaleta')" in _onop.group(1))
-    _ativ = re.search(r"function ativarPaleta\(\)\s*\{(.*?)\n\}", _CODA, re.S)
-    checa("ativarPaleta instala o gatilho e aplica a paleta já escolhida pelo próprio aplicarPaleta_",
-          bool(_ativ) and "instalarGatilhoPaleta_(ss)" in _ativ.group(1)
-          and "aplicarPaleta_(" in _ativ.group(1))
-    checa("o onEdit simples avisa quando a paleta é trocada numa ficha sem o gatilho",
-          bool(_oned) and "avisarPaletaSemGatilho_(e)" in _oned.group(1)
-          and re.search(r"function avisarPaletaSemGatilho_\(e\)\s*\{[^}]*PROP_GATILHO_PALETA_\) === ss\.getId\(\)",
-                        _CODA, re.S) is not None)
-
-    # B25, achado testando no Sheets em 18/09/2026: nada serializava duas execuções de
-    # aplicarPaleta_ — trocar de tema rápido demais (a segunda troca disparando antes do repaint da
-    # primeira terminar) deixava fundo/fonte de algumas células com uma mistura das duas paletas,
-    # um hex que não bate com o papel de nenhum tema — e como repintarPaleta_ só acha o que troca
-    # comparando o hex ATUAL contra o hex ESPERADO do papel na paleta anterior, essa célula não era
-    # encontrada NUNCA MAIS, em troca nenhuma futura. É o "trava depois de algumas tentativas" que o
-    # Mizuki descreveu, e o próprio Mizuki suspeitou da causa. O LockService serializa: a segunda
-    # troca espera a primeira terminar de ler, repintar E escrever antes de começar a sua.
+    checa("o clique (onSelectionChange) e a abertura (onOpen) continuam uma troca pendente",
+          bool(_onsc) and "continuarPaleta_(" in _onsc.group(1) and bool(_onop) and "continuarPaleta_(" in _onop.group(1))
+    _codsc = re.sub(r"/\*\*.*?\*/", "", _CODA, flags=re.S)
+    checa("nenhum gatilho instalável é criado: a cópia de um jogador não o levaria",
+          "newTrigger(" not in _codsc)
     _aplp = re.search(r"function aplicarPaleta_\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
-    checa("aplicarPaleta_ usa LockService pra serializar trocas simultâneas",
-          bool(_aplp) and "LockService.getDocumentLock()" in _aplp.group(1)
-          and "tryLock(" in _aplp.group(1) and "releaseLock()" in _aplp.group(1))
-    checa("o lock embrulha a leitura de paleta_atual, o repaint E a escrita — não só o repaint",
-          bool(_aplp) and re.search(
-              r"tryLock\([^)]*\)[^;]*;.*getProperty\('paleta_atual'\).*repintarPaleta_\(.*"
-              r"setProperty\('paleta_atual'", _aplp.group(1), re.S) is not None)
+    checa("aplicarPaleta_ só apaga o gatilho instalável velho da original, e não repinta nada",
+          bool(_aplp) and "ScriptApp.deleteTrigger(t)" in _aplp.group(1) and "repintar" not in _aplp.group(1))
+    checa("o construir() (configurarPaleta_ com force) zera o registro de passos, porque a ficha nasce de fábrica",
+          bool(_confp) and "PROP_FEITO_" in _confp.group(1) and "PROP_PENDENTE_" in _confp.group(1))
+
+    # B25, achado testando no Sheets em 18/09/2026: nada serializava duas execuções da troca —
+    # trocar de tema rápido demais (a segunda troca disparando antes do repaint da primeira terminar)
+    # deixava fundo/fonte de algumas células com uma mistura das duas paletas, um hex que não bate
+    # com o papel de nenhum tema. É o "trava depois de algumas tentativas" que o Mizuki descreveu, e
+    # o próprio Mizuki suspeitou da causa. O LockService serializa. Desde 25/09/2026 ele mora em
+    # continuarPaleta_, com tryLock(0): quem não pega volta na hora, e o pendente fica pro próximo clique.
+    _cont = re.search(r"function continuarPaleta_\(inicio, dica, marcar, onde\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("continuarPaleta_ usa LockService pra serializar trocas simultâneas",
+          bool(_cont) and "LockService.getDocumentLock()" in _cont.group(1)
+          and "tryLock(0)" in _cont.group(1) and "releaseLock()" in _cont.group(1))
+    checa("o lock embrulha a leitura do estado, o repaint E a escrita — a convergirPaleta_ inteira",
+          bool(_cont) and re.search(r"tryLock\(0\).*convergirPaleta_\(.*releaseLock\(\)", _cont.group(1), re.S) is not None)
 
     # B25, achado testando no Sheets em 19/09/2026, mesmo com o LockService: `repintarPaleta_` só
     # reconhecia uma célula comparando contra os doze papéis da paleta IMEDIATAMENTE anterior — uma
@@ -826,8 +855,8 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     _phg = re.search(r"function papelPorHexGlobal_\(\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("papelPorHexGlobal_ existe e registra a paleta de fábrica mais as 61 do catálogo",
           bool(_phg) and "PALETA_DE_FABRICA_" in _phg.group(1) and "Object.keys(PALETAS)" in _phg.group(1))
-    _rep = re.search(r"function repintarPaleta_\(ss, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
-    checa("repintarPaleta_ cai pra papelPorHexGlobal_ quando a paleta anterior não reconhece a célula",
+    _rep = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("repintarCoresDaAba_ cai pra papelPorHexGlobal_ quando a paleta anterior não reconhece a célula",
           bool(_rep) and "papelPorHexAntes[f] || papelPorHexGlobal[f]" in _rep.group(1)
           and "papelPorHexAntes[t] || papelPorHexGlobal[t]" in _rep.group(1))
 
@@ -844,8 +873,8 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     # escuro ("9 de 23 na criação" no Brasa Claro), porque cada cor trocava pelo SEU papel e nenhuma
     # checagem olhava o PAR. A rede de segurança lê o contraste que a célula tinha na ficha de fábrica
     # (do ABAS, sem histórico) e troca a fonte por uma cor da paleta quando o par novo lê pior.
-    _rep = re.search(r"function repintarPaleta_\(ss, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
-    checa("repintarPaleta_ passa cada fonte pela checagem de legibilidade contra o fundo NOVO da célula",
+    _rep = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("repintarCoresDaAba_ passa cada fonte pela checagem de legibilidade contra o fundo NOVO da célula",
           bool(_rep) and "fonteLegivel_(novaFonte, novoFundo, desenho[r][c]" in _rep.group(1)
           and "contrasteDeFabrica_(spec)" in _rep.group(1))
     _leg = re.search(r"function fonteLegivel_\(.*?\)\s*\{(.*?)\n\}", _CODA, re.S)
@@ -951,11 +980,13 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     # 19/09/2026, pedido do Mizuki: "as imagens têm cores fixas, e vai rolar o que rolou no Eucalipto". A arte
     # inteira é de UMA cor (o que varia é o alfa) e sai como PNG de paleta; a troca de paleta reescreve a
     # paleta e o CRC (pngComCor_) e reenvia a imagem. O regressao-arte.js prova a recoloração no node.
-    _rep_arte = re.search(r"function repintarPaleta_\(ss, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+    # Desde 25/09/2026 a troca roda em passos: a ordem mora em passosDaPaleta_, e a arte vem depois das cores.
+    _rep_arte = re.search(r"function passosDaPaleta_\(primeira\)\s*\{(.*?)\n\}", _CODA, re.S)
     _pap = re.search(r"var PAPEL_DA_ARTE_ = \{(.*?)\};", _CODA, re.S)
     _prefixos = {re.sub(r"-\d+x\d+\.png$", "", k) for k in _js.loads(re.sub(r'"\s*\+\s*"', "", re.search(r"var ARTE = (\{.*?\n\});", g, re.S).group(1)))}
     checa("a troca de paleta recolore a arte, depois do fundo (é dele que a cor depende)",
-          bool(_rep_arte) and _rep_arte.group(1).index("repintarArte_(ss, agora, candidatos)") > _rep_arte.group(1).index("setBackgrounds"))
+          bool(_rep_arte) and _rep_arte.group(1).find("push('arte") > _rep_arte.group(1).find("push('cor:") >= 0
+          and _rep_arte.group(1).find("push('arte") > _rep_arte.group(1).find("push('borda:") >= 0)
     checa(f"cada uma das {len(_prefixos)} imagens da ficha tem um papel de paleta em PAPEL_DA_ARTE_",
           bool(_pap) and all(f"'{p_}'" in _pap.group(1) for p_ in _prefixos), str(sorted(_prefixos)))
     checa("o construir() marca a imagem como NOSSA (título de alt PM-ARTE:), pra a troca nunca tocar na foto do jogador",
@@ -964,16 +995,21 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
         _r = _sp.run([_node, "regressao-arte.js"], capture_output=True, text=True, timeout=120)
         checa("a recoloração da arte gera PNG bem formado, com a cor pedida e sem mexer no alfa (regressao-arte.js)",
               _r.returncode == 0, (_r.stdout + _r.stderr).strip()[-300:])
+        # 25/09/2026: a troca em passos, no gatilho simples, contra a mesma troca feita de uma vez só.
+        _r = _sp.run([_node, "regressao-paleta.js"], capture_output=True, text=True, timeout=300)
+        checa("a troca de paleta em passos cabe nos 30 s e sai igual à feita de uma vez (regressao-paleta.js)",
+              _r.returncode == 0, (_r.stdout + _r.stderr).strip()[-300:])
     else:
         print("  [--] node nao existe nesta maquina: a recoloracao da arte nao foi rodada")
 
     # A caixinha que avisa da espera da troca de paleta, com o intervalo nomeado próprio pra a borda dela
     # ser repintada junto com a régua.
     _cfg = re.search(r"function configurarPaleta_\(ss, force\)\s*\{(.*?)\n\}", _CODA, re.S)
-    _rb = re.search(r"function repintarBordas_\(ss, paraRegua\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _rb = re.search(r"function repintarBordas_\(ss, paraRegua, soAba\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("a caixa de aviso da espera existe, tem intervalo nomeado, e a borda dela é repintada",
           bool(_cfg) and "NOME_CEL_PALETA_AVISO_" in _cfg.group(1) and "TEXTO_AVISO_PALETA_" in _cfg.group(1)
-          and "30 a 40 segundos" in _CODA and bool(_rb) and "NOME_CEL_PALETA_AVISO_" in _rb.group(1))
+          and "var TEXTO_AVISO_PALETA_ = 'O tema leva uns 20 segundos. O que faltar termina enquanto você usa a ficha.';" in _CODA
+          and bool(_rb) and "NOME_CEL_PALETA_AVISO_" in _rb.group(1))
 
     # A arte é imagem e não troca de cor com a paleta: a moldura da foto tem o miolo TRANSPARENTE (o
     # fundo da célula segue o tema) e a pincelada clara é de meio-tom, que lê no tinta claro e no escuro.

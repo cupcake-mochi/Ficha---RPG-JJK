@@ -1375,26 +1375,51 @@ gotinhas) seguiam roxas e vermelhas numa ficha toda verde. E a moldura (cabeçal
 > for isso, a divisória nova fica bem ao lado dele.
 
 **25/09/2026 — numa cópia da ficha a cor não trocava; na original, trocava.** Achado do Mizuki, com a
-original e a cópia exportadas (as duas `.xlsx` saíram iguais, célula a célula: o defeito não está na planilha,
-está no script). "Arquivo › Fazer uma cópia" leva o `Codigo.gs`, mas **não leva gatilho instalável** — ele é
-de quem o criou, não da planilha. O `onOpen` da cópia chama `instalarGatilhoPaleta_`, só que o `onOpen` é
-gatilho simples, roda sem autorização, e o `try/catch` engolia a recusa. O resto da ficha funciona na cópia
-porque mora no `onEdit` simples, que viaja junto.
+original e a cópia exportadas (as duas `.xlsx` saíram iguais, célula a célula: o defeito era do script).
+"Arquivo › Fazer uma cópia" leva o `Codigo.gs`, mas **não leva gatilho instalável** — ele é de quem o criou —, e o
+`onOpen` da cópia, sem autorização, não consegue criar outro. A primeira saída (um menu "Ativar a troca de paleta",
+uma vez por cópia) ele recusou: *"queria q só de copiar já funcionasse"*. O código antigo dele fazia tudo no
+`onEdit` simples e cabia nos 30 s porque só mexia em fundo e fonte; o nosso também repinta a arte e a régua.
 
-*Não tem como a cópia se ativar sozinha:* quem copia precisa autorizar o script uma vez. O conserto é o pedido:
+*O esquema:* a troca voltou pro gatilho simples, em passos (a cor de cada aba visível, a régua de cada aba, e cada
+imagem da arte por último — 16). Antes de cada passo o `convergirPaleta_` confere se ele cabe no orçamento de 25 s
+pelo tempo que o mesmo passo levou da última vez (medido e guardado na planilha), e cada passo termina com
+`SpreadsheetApp.flush()`, senão o Sheets só executa a escrita na leitura seguinte e o tempo cai no passo errado. O
+que não cabe continua no próximo clique (`onSelectionChange`, também gatilho simples). Nada pede autorização. O
+gatilho instalável velho da original se apaga sozinho na primeira troca.
 
-- o `onOpen` cria o menu **Ficha › Ativar a troca de paleta**, que chama `ativarPaleta` (sem `_` no fim, senão o
-  menu não acha a função). Ele instala o gatilho e já aplica o tema que estiver escolhido na caixa;
-- enquanto o gatilho falta, trocar o tema mostra um aviso no canto dizendo pra usar o menu. O `onEdit` simples
-  sabe que falta pela propriedade `gatilho_paleta`, que guarda o **id** da planilha em que o gatilho foi criado —
-  uma cópia tem outro id, então não se engana mesmo se a propriedade viajar junto;
-- se a `paleta_atual` não viajar na cópia (o Google não documenta), o "antes" da troca passa a ser o valor que a
-  caixa tinha, quando é uma paleta de verdade, e não mais a de fábrica.
+*As medidas dele (12:17 e 12:18):* a troca inteira somava ~32 s em duas execuções — cores 15 a 18 s, régua 7 s,
+arte 7 a 9 s; o JS, medido no node, ~100 ms por aba: o tempo é todo do Sheets. *"exigir isso do usuario é meio
+chato"*. O primeiro corte que ele aprovou — **as cores partirem da ficha de fábrica, sem ler a planilha** — foi
+medido (versões d e e, 12:55 a 13:06) e **ficou mais lento**: a FICHA foi de 4,8 s para 7,6 a 9,0 s, e medindo por
+dentro, ler custa pouco e o que pesa é **gravar**, ~0,5 ms por célula em cada gravação (a FICHA grava o fundo em 3,6 s
+e a fonte em 3,9 s). Desfeito: a troca voltou a ler, e **a cor pintada à mão pelo jogador volta a ficar**. Antes de
+desfazer, a versão de fábrica foi conferida contra o `repintarPaleta_` antigo nos 122 temas (igual) e contra o
+`Kaori.xlsx` dele (fundo igual em toda célula; fonte em 12 de ~20 mil, que eram caminho do antigo).
 
-Testado numa simulação em Node com um Sheets de mentira nos dois estados (21 casos, e o `Codigo.gs` de antes
-reprova nos da cópia) e com três checagens novas no `conferir-ficha-xlsx.py`, perturbadas cinco vezes numa cópia
-isolada. **Falta testar no Sheets:** a tela de autorização de uma cópia mostra "O Google não verificou este app";
-passa por "Avançado › Acessar". Na original, montada antes, o aviso pode aparecer uma vez só, na primeira troca.
+*O que ficou (versão f), pelo pedido dele* — *"ele so troca as cores e as bordas, menos com as imagens, e ai ele
+finaliza; as imagens ele dá start dnv caso alguém mexa na ficha"*:
+
+- a troca vai **aba por aba, cor e régua juntas**, começando pela que o jogador está olhando (a CARTEIRA, onde a
+  caixa mora), depois a FICHA; a arte vai por último. Com os tempos dele, cor e régua de todas somam 22 a 25 s,
+  colado no orçamento: o que sobrar é de uma aba que ele não está vendo;
+- **nenhum aviso**: o que sobra termina na próxima vez que alguém mexer na ficha — clique ou edição —, e **a aba em
+  que ele clica passa na frente**, então abrir uma aba atrasada a pinta primeiro;
+- passo ainda não medido (a primeira troca de uma cópia) usa uma estimativa pelos tempos dele, e não mais 6 s fixos;
+- a caixinha diz "O tema leva uns 20 segundos. O que faltar termina enquanto você usa a ficha.", e o
+  `verTemposDaPaleta` mostra cada passo de cor por dentro (lê, conta, grava fundo, grava fonte).
+
+*Conferido:* o `regressao-paleta.js`, com o custo calibrado pelos tempos dele, prevê a troca fazendo cor e régua
+das cinco abas numa execução de ~25 s e a arte no clique seguinte; com o Sheets 40% mais lento, sobram a INVOCAÇÃO e
+o CATÁLOGO, e clicar numa delas a pinta primeiro; três vezes mais lento, nenhuma execução passa de 30 s, e nunca
+aparece aviso.
+
+*Medido no Sheets (versão f, 13:25 e 13:27) — "funcionou":* cor e régua das cinco abas na execução da troca, 24,7 s
+e 22,9 s (cores 18,4 e 17,8 s, régua 6,3 e 5,1 s); a arte, 7,6 e 7,0 s, no clique seguinte, sem aviso. O "do começo
+ao fim" do relatório (46 e 58 s) conta a espera até o clique. Ele viu as cópias mais lentas, mas funcionando. **Fica
+colado no orçamento de 25 s:** num dia lento, a última aba (o GLOSSÁRIO) passa pro clique seguinte, calada. Se um dia
+precisar de folga, o corte é gravar menos célula (hoje a fonte é gravada na aba inteira, e só a célula com texto
+precisa).
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 

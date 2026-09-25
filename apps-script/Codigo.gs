@@ -329,13 +329,18 @@ function protegerFormulas_(ss, idx) {
 // e não pede autorização de ninguém.
 // =====================================================================
 function onEdit(e) {
+  var inicio = Date.now();
   if (!e || !e.range) return;
   var aba = e.range.getSheet().getName();
-  // A troca de paleta NÃO passa mais por aqui — ela precisa de mais que os 30 segundos que um
-  // onEdit simples tem, e mora num gatilho instalável à parte. Ver instalarGatilhoPaleta_. Daqui
-  // só sai o aviso de quando esse gatilho falta, que é o caso de toda cópia nova (ver ativarPaleta).
-  if (aba === 'CARTEIRA') avisarPaletaSemGatilho_(e);
-  if (aba !== 'FICHA') return;
+  // A troca de paleta voltou pra cá em 25/09/2026, em passos que cabem nos 30 segundos, pra
+  // funcionar em toda cópia sem ninguém autorizar nada. Ver convergirPaleta_.
+  if (aba === 'CARTEIRA' && ehCelulaDaPaleta_(e.range)) {
+    continuarPaleta_(inicio, e.oldValue, true);
+    return;
+  }
+  // Qualquer outra edição também continua uma troca que ficou pela metade (a arte, quase sempre): é o
+  // "caso alguém mexa na ficha" do Mizuki. Barato quando não há nada pendente.
+  if (aba !== 'FICHA') { continuarPaleta_(inicio, null, false, e.range); return; }
   var idx = indice();
   aplicarDelta_(e, idx);
   prenderTemp_(e, idx);
@@ -345,6 +350,7 @@ function onEdit(e) {
   grupoDeArmaDaTrilha_(e, idx);
   trocaArmaDoCaminho_(e, idx);
   if (e.range.getA1Notation() === cel_(idx, 'origem')) notasDeGraca_(SpreadsheetApp.getActive(), idx);
+  continuarPaleta_(inicio, null, false, e.range);
 }
 
 /**
@@ -670,7 +676,7 @@ function testeTeto() {
  * `osso_por_papel`, dentro de cada entrada do PALETAS, com o mesmo contraste
  * WCAG das outras treze — porque uma célula em osso pode estar sobre fundo,
  * painel, menu_grande ou acento, cada um com contraste diferente; ver
- * `resolve_osso_por_papel` no derivar.py e o uso em repintarPaleta_.
+ * `resolve_osso_por_papel` no derivar.py e o uso em repintarCoresDaAba_.
  */
 var PALETAS = {
   "Mizuki": {
@@ -5692,7 +5698,9 @@ var NOME_CEL_PALETA_ROTULO_ = 'PALETA_ROTULO';
 // A caixinha de aviso embaixo do valor, com o mesmo problema do rótulo: a borda dela só se repinta se
 // o repintarBordas_ souber onde ela mora.
 var NOME_CEL_PALETA_AVISO_ = 'PALETA_AVISO';
-var TEXTO_AVISO_PALETA_ = 'Aguarde de 30 a 40 segundos para ver o tema inteiro — depende do tema.';
+// Até 25/09/2026 dizia "Aguarde de 30 a 40 segundos para ver o tema inteiro". A troca passou a entrar em
+// passos (ver convergirPaleta_), aba por aba, sem pedir nada ao jogador.
+var TEXTO_AVISO_PALETA_ = 'O tema leva uns 20 segundos. O que faltar termina enquanto você usa a ficha.';
 
 /**
  * O valor que a caixa nasce mostrando, antes de qualquer escolha.
@@ -5709,7 +5717,7 @@ var TEXTO_AVISO_PALETA_ = 'Aguarde de 30 a 40 segundos para ver o tema inteiro �
  *
  * Esta string não existe no catálogo (não tem ' · ' nem bate com nome de
  * tema), então `coresDoNome_` sempre devolve null pra ela, e o "antes" cai
- * no `|| PALETA_DE_FABRICA_` de `repintarPaleta_` — o mesmo fallback que já
+ * no `|| PALETA_DE_FABRICA_` de `repintarCoresDaAba_` — o mesmo fallback que já
  * existia, só que agora alguém aciona ele.
  */
 var PALETA_INICIAL_ = 'Escolha uma paleta';
@@ -5792,98 +5800,219 @@ function paletaJaMontada_(ss) {
 }
 
 /**
- * Instala um gatilho INSTALÁVEL de onEdit pra aplicarPaleta_ — sem ele, a troca de tema roda
- * dentro do onEdit simples, que tem 30 segundos de orçamento. Achado testando no Sheets em
- * 18/09/2026: repintar a ficha inteira (~29 mil células em 7 abas: fundo, fonte, borda) não cabe
- * nisso, e o Apps Script mata a execução no meio sem avisar — a primeira troca, mais rápida às
- * vezes coube; a partir da segunda, quase nunca. Como a paleta_atual só é gravada no FIM de
- * repintarPaleta_, uma execução morta no meio nunca chega lá: a próxima troca compara contra um
- * "antes" que não é o que está pintado de verdade, e a ficha parece "travada" numa paleta antiga
- * pra sempre — o sintoma exato que o Mizuki descreveu.
+ * A TROCA DE PALETA EM PASSOS, DENTRO DO GATILHO SIMPLES — 25/09/2026.
  *
- * Gatilho instalável tem 6 minutos de orçamento, não 30 segundos — o mesmo de uma função rodada
- * na mão. Continua sendo a mesma aplicarPaleta_(e) de sempre, só que citada aqui, não dentro do
- * onEdit(e). Idempotente: confere se já existe antes de criar outro.
+ * O problema: numa cópia da ficha ("Arquivo › Fazer uma cópia") a cor não trocava. Desde 18/09 a troca
+ * rodava num gatilho instalável, porque a ficha inteira (fundo e fonte de ~29 mil células, a arte e 22
+ * chamadas de borda) não cabia nos 30 segundos de um onEdit simples. Só que gatilho instalável é de
+ * quem o criou, não da planilha: a cópia não o leva, e o onOpen da cópia, sem autorização, não
+ * consegue criar outro. O Mizuki não quer que o jogador tenha de ativar nada: "queria q só de copiar
+ * já funcionasse". O código antigo dele, de outra ficha, funcionava em toda cópia porque trocava tudo
+ * dentro do onEdit simples — e cabia, porque só mexia em fundo e fonte.
  *
- * ⚠ Pede autorização nova na próxima vez que rodar alguma função na mão (o construir(), por
- * exemplo) — criar gatilho é um escopo que o script não usava até agora.
+ * A saída é caber em passos. Cada aba é um passo de cor, a arte é um passo, e a régua de cada aba é um
+ * passo (e cada imagem da arte), na ordem em que o jogador vê (CARTEIRA e FICHA primeiro, que é a ordem do ABAS). Antes de
+ * começar um passo, confere se ele cabe no que sobra do orçamento, pelo tempo que o mesmo passo levou
+ * da última vez; se não cabe, para, e o próximo gatilho simples continua de onde parou. O primeiro
+ * passo de uma chamada fresca sempre roda, pra nenhum passo lento ficar parado pra sempre.
  *
- * Devolve true quando o gatilho existe ao fim da chamada, e aí grava o id DESTA planilha em
- * PROP_GATILHO_PALETA_ — é por ele que o onEdit simples sabe que não precisa avisar nada (ver
- * avisarPaletaSemGatilho_). O id, e não um "sim", porque uma cópia nasce com outro id: se a
- * propriedade viajar junto na cópia, ela continua não batendo.
+ * Quem continua: o onSelectionChange (clicar em qualquer célula), que é gatilho simples e viaja na
+ * cópia, e o onOpen. Nenhum dos dois pede autorização.
+ *
+ * O estado mora em propriedades do documento: `paleta_feito` diz, passo a passo, qual paleta está
+ * pintada ali. Por isso a troca é sempre "levar cada passo até a paleta da caixa", sem fila: se o
+ * jogador escolhe outro tema no meio, os passos que já estavam na primeira vão da primeira pra segunda,
+ * e os que não tinham saído vão direto. Um passo que morre no meio não grava, e é refeito; a busca de
+ * resgate (papelPorHexGlobal_) acha a cor de qualquer paleta.
+ *
+ * Com os tempos medidos pelo Mizuki em 25/09/2026 (cores 15 a 18 s, régua 6 a 7 s, arte 6 a 9 s) a troca
+ * não cabia numa execução. O pedido dele: a execução da troca faz as cores e a régua e termina; a arte
+ * vai por último e, quando não cabe, entra na próxima vez que alguém mexer na ficha, sem aviso.
  */
-function instalarGatilhoPaleta_(ss) {
-  // Em try/catch pra não travar o resto de configurarPaleta_ (nem o construir() inteiro, que não
-  // embrulha essa chamada) se a criação do gatilho falhar por algum motivo — a caixa da paleta e
-  // o resto da ficha continuam valendo sem ele; só a troca de tema fica parada até alguém rodar o
-  // ativarPaleta pelo menu. É o que acontece no onOpen de toda cópia, que roda sem autorização.
-  try {
-    var jaTem = ScriptApp.getProjectTriggers().some(function (t) {
-      return t.getHandlerFunction() === 'aplicarPaleta_' && t.getEventType() === ScriptApp.EventType.ON_EDIT;
-    });
-    if (!jaTem) ScriptApp.newTrigger('aplicarPaleta_').forSpreadsheet(ss).onEdit().create();
-    PropertiesService.getDocumentProperties().setProperty(PROP_GATILHO_PALETA_, ss.getId());
-    return true;
-  } catch (err) { return false; /* silencioso — ver comentário acima */ }
+var ORCAMENTO_SIMPLES_ = 25000;   // o gatilho simples morre aos 30 s; a folga cobre um passo mais lento que da última vez
+var ESTIMATIVA_PASSO_ = 6000;     // passo desconhecido (ver estimativaDoPasso_)
+var PROP_FEITO_ = 'paleta_feito', PROP_TEMPOS_ = 'paleta_tempos', PROP_PENDENTE_ = 'paleta_pendente';
+var PROP_ULTIMA_ = 'paleta_ultima_troca', PROP_DETALHE_ = 'paleta_detalhe';
+// Sai no verTemposDaPaleta, pra saber qual Codigo.gs está colado na planilha que mediu.
+var VERSAO_PALETA_ = '25/09/2026-f';
+
+function passosDaPaleta_(primeira) {
+  // As abas ocultas (DADOS, DADOS_INV) ficam de fora desde 25/09/2026: ninguém as vê, e cada aba lida e
+  // reescrita é tempo que falta pra troca caber nos 30 segundos do gatilho simples.
+  var abas = ABAS.filter(function (spec) { return !spec.oculta; });
+  // Aba por aba, cor e régua juntas, começando pela que o jogador está olhando (a CARTEIRA, na troca,
+  // porque a caixa mora lá; a aba em que ele clicou, na continuação). Com os tempos do Mizuki, cor e régua
+  // de todas somam 22 a 25 s, colado no orçamento: o que sobrar é de uma aba que ele não está vendo, e ela
+  // passa pra frente assim que ele a abre (ver onSelectionChange). Ordem do ABAS no resto: FICHA em segundo.
+  abas.sort(function (a, b) { return (b.nome === primeira) - (a.nome === primeira); });
+  var passos = [];
+  abas.forEach(function (spec) {
+    passos.push('cor:' + spec.nome);
+    if ((spec.bordas || []).length) passos.push('borda:' + spec.nome);
+  });
+  // A arte vem por último (25/09/2026): é enfeite, e o Mizuki pediu que ela entre quando alguém mexer na
+  // ficha, sem aviso, quando não couber junto. Depois das cores também porque a cor dela é escolhida contra
+  // o fundo NOVO da célula. Uma imagem por passo: reenviar imagem é a chamada mais cara da troca.
+  abas.forEach(function (spec) {
+    (spec.imgs || []).forEach(function (im, n) { passos.push('arte:' + spec.nome + ':' + n); });
+  });
+  return passos;
 }
 
-var PROP_GATILHO_PALETA_ = 'gatilho_paleta';
+/**
+ * Quanto um passo que esta planilha ainda não mediu deve levar, pelos tempos do Mizuki (25/09/2026): a cor
+ * lê e grava fundo e fonte, ~0,7 ms por célula no total, mais o fixo das chamadas; a régua e cada imagem, ~1,5 s. Chute alto de
+ * propósito, mas não tanto que a primeira troca de uma cópia pare antes da hora.
+ */
+function estimativaDoPasso_(passo) {
+  var partes = passo.split(':');
+  if (partes[0] === 'cor') {
+    var spec = ABAS.filter(function (a) { return a.nome === partes[1]; })[0];
+    return spec ? Math.round(spec.rows * spec.cols * 0.75) + 600 : ESTIMATIVA_PASSO_;
+  }
+  return 1500;
+}
 
 /**
- * O item "Ficha › Ativar a troca de paleta" do menu, que o onOpen cria.
- *
- * Achado do Mizuki em 25/09/2026: numa cópia da ficha ("Arquivo › Fazer uma cópia") a cor não
- * trocava, e na original trocava. A cópia leva o Codigo.gs, mas não leva o gatilho instalável — ele
- * é de quem o criou, não da planilha. O onOpen da cópia até chama instalarGatilhoPaleta_ (pelo
- * configurarPaleta_), só que o onOpen é gatilho simples: roda sem autorização, criar gatilho pede
- * autorização, e o try/catch engolia a recusa. O resto da ficha funcionava porque mora no onEdit
- * simples, que viaja com a cópia.
- *
- * Não tem como a cópia se ativar sozinha: quem copia precisa autorizar o script uma vez, e só uma
- * função chamada por gente (menu ou editor) pode pedir isso. Este é o pedido. Sem sublinhado no
- * fim do nome de propósito: função com _ no fim é privada, e o menu não consegue chamar.
- *
- * Depois de instalar, aplica a paleta que já estiver escolhida na caixa — quem escolheu um tema
- * antes de ativar vê o tema entrar sem precisar escolher de novo. Passa pelo próprio
- * aplicarPaleta_, com o lock e tudo; se a escolhida já é a que está pintada, ele não faz nada.
+ * Pra rodar no editor do Apps Script depois de uma troca de tema: mostra no registro quanto cada passo
+ * levou da última vez, do mais lento pro mais rápido, e o total. É o número que diz se a troca cabe
+ * inteira nos 30 segundos do gatilho simples, e onde cortar se não couber.
  */
-function ativarPaleta() {
+function verTemposDaPaleta() {
+  var props = PropertiesService.getDocumentProperties();
+  var t = lerJson_(props.getProperty(PROP_TEMPOS_));
+  var u = lerJson_(props.getProperty(PROP_ULTIMA_));
+  // Só os passos que esta versão roda: tempo guardado por uma versão anterior não entra na soma.
+  var chaves = passosDaPaleta_().filter(function (k) { return t[k] !== undefined; });
+  chaves.sort(function (a, b) { return t[b] - t[a]; });
+  var soma = chaves.reduce(function (s, k) { return s + t[k]; }, 0);
+  var linhas = ['versão do Codigo.gs: ' + VERSAO_PALETA_,
+                'soma dos passos: ' + soma + ' ms (' + chaves.length + ' de ' + passosDaPaleta_().length + ' medidos)'];
+  if (u.alvo) {
+    linhas.push('última troca: ' + u.alvo + ', em ' + u.execucoes + ' execução(ões)' +
+                (u.fim ? ', do começo ao fim ' + (u.fim - u.inicio) + ' ms' : ', ainda não terminou'));
+  }
+  var d = lerJson_(props.getProperty(PROP_DETALHE_));
+  var detalhe = Object.keys(d).map(function (aba) {
+    return '  ' + aba + ' (' + d[aba].celulas + ' células): lê ' + d[aba].le + ' ms, conta ' + d[aba].conta + ' ms, grava fundo ' +
+           d[aba].fundo + ' ms, grava fonte ' + d[aba].fonte + ' ms';
+  });
+  Logger.log(linhas.concat(chaves.map(function (k) { return k + ': ' + t[k] + ' ms'; }),
+                           ['por dentro dos passos de cor:'], detalhe).join('\n'));
+}
+
+function lerJson_(txt) {
+  try { return JSON.parse(txt || '{}') || {}; } catch (err) { return {}; }
+}
+
+/**
+ * Leva a ficha, passo a passo, até a paleta que está escrita na caixa. Devolve null quando terminou,
+ * e o nome do passo em que parou por falta de tempo (deixando `paleta_pendente` marcado pra quem vier
+ * depois). O "antes" de cada passo de cor é o que `paleta_feito` diz que está pintado ali; `dica` é o
+ * valor que a caixa tinha antes da edição, e vale só pra passo nunca gravado sem `paleta_atual` — a cópia
+ * cujas propriedades não vieram junto.
+ */
+function convergirPaleta_(inicio, orcamento, dica, primeira) {
   var ss = SpreadsheetApp.getActive();
-  if (!instalarGatilhoPaleta_(ss)) {
-    ss.toast('Não deu para ativar a troca de paleta. Tente de novo pelo menu Ficha; se o Google pedir, autorize o script.', 'Paleta', 15);
-    return;
-  }
+  var props = PropertiesService.getDocumentProperties();
   var alvo = ss.getRangeByName(NOME_CEL_PALETA_);
-  var escolhida = alvo ? String(alvo.getCell(1, 1).getValue() || '').trim() : '';
-  if (escolhida && PALETAS[escolhida.split(' · ')[0]]) {
-    ss.toast('Ativada. Aplicando ' + escolhida + ' — ' + TEXTO_AVISO_PALETA_, 'Paleta', 40);
-    aplicarPaleta_({ range: alvo.getCell(1, 1), value: escolhida });
+  var novo = alvo ? String(alvo.getCell(1, 1).getValue() || '').trim() : '';
+  var agora = coresDoNome_(novo);
+  if (!agora) { props.deleteProperty(PROP_PENDENTE_); return null; }
+
+  var feito = lerJson_(props.getProperty(PROP_FEITO_));
+  var tempos = lerJson_(props.getProperty(PROP_TEMPOS_));
+  var geral = props.getProperty('paleta_atual');   // o que o esquema de antes pintou na ficha inteira
+  var velho = String(dica || '').trim();
+  if (!coresDoNome_(velho)) velho = '';
+  var passos = passosDaPaleta_(primeira || 'CARTEIRA'), andou = 0;
+  // O relatório da troca: quando começou, em quantas execuções, e quando acabou (ver verTemposDaPaleta).
+  var ultima = lerJson_(props.getProperty(PROP_ULTIMA_));
+  if (ultima.alvo !== novo || ultima.fim) ultima = { alvo: novo, inicio: inicio, execucoes: 0 };
+  ultima.execucoes++;
+
+  for (var i = 0; i < passos.length; i++) {
+    var passo = passos[i];
+    if (feito[passo] === novo) continue;
+    var gasto = Date.now() - inicio;
+    var fresca = andou === 0 && gasto < 3000;
+    if (!fresca && gasto + (tempos[passo] || estimativaDoPasso_(passo)) > orcamento) {
+      props.setProperty(PROP_PENDENTE_, novo);
+      return passo;
+    }
+    var t0 = Date.now();
+    var partes = passo.split(':'), tipo = partes[0], nome = partes[1];
+    if (tipo === 'cor') {
+      var spec = ABAS.filter(function (a) { return a.nome === nome; })[0];
+      repintarCoresDaAba_(ss, spec, feito[passo] || geral || velho || PALETA_INICIAL_, novo);
+    } else if (tipo === 'arte') {
+      repintarArte_(ss, agora, candidatosDeFonte_(agora, coresOpostas_(novo)), nome, Number(partes[2]));
+    } else {
+      // A régua compara contra a de FÁBRICA (fixa), não contra o "antes": não depende do histórico.
+      repintarBordas_(ss, '#' + String(agora.regua || '').toUpperCase(), nome);
+    }
+    // O Sheets guarda a escrita e só a executa na próxima leitura: sem o flush, o tempo de um passo caía
+    // no seguinte (achado com os números do Mizuki em 25/09/2026), e a conta do orçamento errava junto.
+    SpreadsheetApp.flush();
+    feito[passo] = novo;
+    tempos[passo] = Date.now() - t0;
+    andou++;
+    var detalhe = lerJson_(props.getProperty(PROP_DETALHE_));
+    Object.keys(DETALHE_COR_).forEach(function (k) { detalhe[k] = DETALHE_COR_[k]; });
+    props.setProperties({ paleta_feito: JSON.stringify(feito), paleta_tempos: JSON.stringify(tempos),
+                          paleta_ultima_troca: JSON.stringify(ultima), paleta_detalhe: JSON.stringify(detalhe) });
+    console.log('paleta ' + novo + ' · ' + passo + ': ' + tempos[passo] + ' ms');
   }
-  ss.toast('A troca de paleta está ativa nesta ficha. É só escolher o tema na caixa PALETA, na CARTEIRA.', 'Paleta', 10);
+
+  props.setProperty('paleta_atual', novo);
+  if (andou) { ultima.fim = Date.now(); props.setProperty(PROP_ULTIMA_, JSON.stringify(ultima)); }
+  // Se o jogador escolheu outro tema enquanto este rodava, ainda tem trabalho: não desmarca.
+  if (String(alvo.getCell(1, 1).getValue() || '').trim() !== novo) return passos[0];
+  props.deleteProperty(PROP_PENDENTE_);
+  return null;
 }
 
 /**
- * Chamado pelo onEdit simples quando alguém mexe na CARTEIRA. Se a célula é a da paleta e esta
- * planilha ainda não tem o gatilho (a propriedade não tem o id dela), avisa como ativar — é o
- * que a cópia de um jogador mostra na primeira troca de tema, em vez de não fazer nada calada.
+ * A porta de entrada dos gatilhos simples. Barata quando não há nada pendente (lê uma propriedade e
+ * volta), pra poder morar no onSelectionChange, que roda a cada clique.
  *
- * Ler a propriedade não pede autorização, então isto roda dentro do gatilho simples. Se algo aqui
- * falhar, fica sem aviso: o aviso é ajuda, e não pode derrubar o resto do onEdit.
- *
- * Na original, montada antes de 25/09/2026, a propriedade ainda não existe: o aviso aparece uma
- * vez, e o aplicarPaleta_ grava o id na mesma troca (ou o menu grava, se rodado).
+ * O lock serializa duas chamadas ao mesmo tempo (a edição da caixa e um clique logo depois, por
+ * exemplo), e é tryLock(0): quem não pega volta na hora, e o pendente fica pra próxima. Se o
+ * LockService não estiver disponível, segue sem ele — a busca de resgate conserta uma mistura.
  */
-function avisarPaletaSemGatilho_(e) {
+function continuarPaleta_(inicio, dica, marcar, onde) {
   try {
-    var ss = SpreadsheetApp.getActive();
-    var alvo = ss.getRangeByName(NOME_CEL_PALETA_);
-    if (!alvo || e.range.getSheet().getName() !== alvo.getSheet().getName()
-        || e.range.getA1Notation() !== alvo.getCell(1, 1).getA1Notation()) return;
-    if (PropertiesService.getDocumentProperties().getProperty(PROP_GATILHO_PALETA_) === ss.getId()) return;
-    ss.toast('Nesta cópia a troca de paleta ainda não está ativa. Use o menu Ficha › Ativar a troca de paleta ' +
-             '(só uma vez) e autorize o script quando o Google pedir.', 'Paleta', 20);
-  } catch (err) { /* silencioso — ver comentário acima */ }
+    var props = PropertiesService.getDocumentProperties();
+    if (marcar) props.setProperty(PROP_PENDENTE_, '1');
+    else if (!props.getProperty(PROP_PENDENTE_)) return;
+    var lock = null;
+    try {
+      lock = LockService.getDocumentLock();
+      if (!lock.tryLock(0)) return;
+    } catch (err) { lock = null; }
+    try {
+      // Sem aviso nenhum desde 25/09/2026 ("exigir isso do usuario é meio chato"): o que sobra é de aba
+      // que o jogador não está vendo, ou arte, e termina na próxima vez que ele mexer na ficha.
+      // `onde` é a célula que o jogador tocou: a aba dela passa na frente. Lida só aqui, depois de saber que
+      // há trabalho, porque o onSelectionChange roda a cada clique.
+      convergirPaleta_(inicio, ORCAMENTO_SIMPLES_, dica, onde ? onde.getSheet().getName() : null);
+    } finally {
+      if (lock) lock.releaseLock();
+    }
+  } catch (err) {
+    console.log('paleta: ' + err.message);
+  }
+}
+
+function ehCelulaDaPaleta_(range) {
+  var alvo = SpreadsheetApp.getActive().getRangeByName(NOME_CEL_PALETA_);
+  return !!alvo && range.getSheet().getName() === alvo.getSheet().getName()
+    && range.getA1Notation() === alvo.getCell(1, 1).getA1Notation();
+}
+
+/** Gatilho simples: cada clique continua uma troca de paleta que parou por tempo. */
+function onSelectionChange(e) {
+  continuarPaleta_(Date.now(), null, false, e && e.range);
 }
 
 /**
@@ -5909,10 +6038,17 @@ function avisarPaletaSemGatilho_(e) {
  * já escolheu.
  */
 function configurarPaleta_(ss, force) {
-  instalarGatilhoPaleta_(ss);
   if (force) {
     removerNomesDaPaleta_(ss);
+    // A ficha acabou de nascer nas cores de fábrica: o registro de passos da troca não vale mais.
+    var props = PropertiesService.getDocumentProperties();
+    [PROP_FEITO_, PROP_PENDENTE_].forEach(function (k) { props.deleteProperty(k); });
   } else if (paletaJaMontada_(ss)) {
+    // Ficha montada antes de o texto do aviso mudar: troca só o texto, no onOpen, sem remontar a caixa.
+    try {
+      var aviso = ss.getRangeByName(NOME_CEL_PALETA_AVISO_);
+      if (aviso && aviso.getCell(1, 1).getValue() !== TEXTO_AVISO_PALETA_) aviso.getCell(1, 1).setValue(TEXTO_AVISO_PALETA_);
+    } catch (err) { /* silencioso: é só o texto */ }
     return 'já existia';
   }
   var cart = ss.getSheetByName('CARTEIRA');
@@ -5989,90 +6125,32 @@ function configurarPaleta_(ss, force) {
  * que já foi montada antes desta rodada, sem precisar rodar o construir()
  * de novo. Silencioso se já existir.
  *
- * Desde 25/09/2026 também cria o menu Ficha, com o item que ativa a troca de paleta numa cópia
- * (ver ativarPaleta). Criar menu não pede autorização, então funciona no gatilho simples.
+ * Desde 25/09/2026 também continua uma troca de paleta que tenha ficado pela metade.
  */
 function onOpen(e) {
-  try {
-    SpreadsheetApp.getUi().createMenu('Ficha')
-      .addItem('Ativar a troca de paleta', 'ativarPaleta')
-      .addToUi();
-  } catch (err) { /* silencioso: não trava a abertura */ }
+  var inicio = Date.now();
   try { configurarPaleta_(SpreadsheetApp.getActive()); } catch (err) { /* silencioso: não trava a abertura */ }
+  continuarPaleta_(inicio);
 }
 
 /**
- * Chega aqui pelo onEdit, quando a célula editada é a da paleta. Lê o nome
- * escolhido ("Tema · Claro" ou "Tema · Escuro"), e manda repintar — contra a
- * paleta que estava valendo antes, guardada numa propriedade do documento
- * (não numa célula, pra não competir com o índice da DADOS, que é do
- * Python).
+ * O que sobrou do gatilho instalável (18/09 a 25/09/2026). Ele trocava a paleta com 6 minutos de
+ * orçamento, mas não viajava nas cópias; a troca agora roda em passos no gatilho simples (ver
+ * convergirPaleta_), igual na original e em toda cópia. A função fica porque a original do Mizuki
+ * ainda tem um gatilho instalado apontando pra ela: na primeira edição depois do Codigo.gs novo, ele
+ * se apaga sozinho. Sem esta função, o gatilho velho falharia a cada edição.
  *
- * Bug achado testando no Sheets em 18/09/2026: a cor nunca trocava, porque
- * a caixa da paleta é mesclada (C24:K24) e num edit numa célula mesclada o
- * Apps Script devolve em e.range só a célula-âncora ("C24"), nunca o
- * intervalo inteiro — o antigo `e.range.getA1Notation() !== alvo.getA1Notation()`
- * comparava "C24" contra "C24:K24", que nunca bate, então a função sempre
- * voltava sem fazer nada. Os outros onEdit da ficha (trilhaDoCaminho_ e
- * companhia) não caem nessa porque comparam contra o endereço de uma célula
- * só, vindo do índice; aqui o alvo é o range mesclado inteiro, então o
- * conserto é comparar contra a célula-âncora dele.
- *
- * Segundo bug achado testando no Sheets em 18/09/2026, o "trava depois de
- * algumas trocas" que o Mizuki descreveu: nada aqui impedia DUAS execuções
- * deste gatilho de rodar ao mesmo tempo — o gatilho instalável não serializa
- * edições diferentes sozinho, e trocar de tema rápido demais (escolher um
- * tema enquanto o repaint do anterior ainda está no meio, ~7 abas por
- * getBackgrounds()/setBackgrounds()) dispara a segunda execução ANTES da
- * primeira terminar de escrever. As duas leem 'paleta_atual' e o
- * getBackgrounds() da própria aba ao mesmo tempo; a que escreve por último
- * decide o valor de 'paleta_atual', mas a ficha na tela pode ficar com uma
- * mistura de cor da execução 1 e da execução 2 — nem o tema antigo nem o
- * novo. `repintarPaleta_` só sabe repintar comparando o hex ATUAL da célula
- * contra o hex ESPERADO de cada um dos treze papéis da paleta anterior
- * (`papelPorHexAntes`); uma célula com hex misturado não bate com papel
- * nenhum, e fica presa nessa cor pra sempre — nenhuma troca futura encontra
- * ela de novo, porque a busca é sempre "qual papel tinha exatamente este
- * hex", não "que cor está mais perto". A borda (`repintarBordas_`) não sofre
- * disso porque ela compara contra um alvo FIXO (a régua de fábrica), não
- * contra o "antes" da troca — só fundo e fonte dependem do histórico, e só
- * eles travam.
- *
- * O conserto é LockService: serializa as execuções do MESMO documento, sem
- * afetar a ficha de outro jogador (cada cópia da planilha tem seu próprio
- * lock). A segunda troca agora ESPERA a primeira terminar de vez (ler,
- * repintar, escrever) antes de começar a ler 'paleta_atual' — se não
- * esperasse isso, ela podia ler um 'paleta_atual' que a primeira ainda não
- * tinha escrito, e a mistura continuaria possível mesmo com o lock. Se a
- * espera estourar (fila grande demais), a troca é abandonada em silêncio —
- * melhor que travar uma célula pro resto da vida da ficha.
+ * Duas lições da vida dela continuam no código novo: a caixa da paleta é mesclada, e num edit numa
+ * célula mesclada o e.range é só a âncora — por isso ehCelulaDaPaleta_ compara contra
+ * alvo.getCell(1, 1). E duas trocas ao mesmo tempo misturavam as cores — por isso o lock em
+ * continuarPaleta_.
  */
 function aplicarPaleta_(e) {
-  var alvo = SpreadsheetApp.getActive().getRangeByName(NOME_CEL_PALETA_);
-  if (!alvo || e.range.getA1Notation() !== alvo.getCell(1, 1).getA1Notation()) return;
-  var novo = String(e.value || '').trim();
-  if (!novo || !PALETAS[novo.split(' · ')[0]]) return;
-  // Se chegou aqui pelo gatilho, o gatilho existe: grava, pro onEdit simples parar de avisar numa
-  // ficha montada antes de 25/09/2026 (ver avisarPaletaSemGatilho_).
-  PropertiesService.getDocumentProperties().setProperty(PROP_GATILHO_PALETA_, SpreadsheetApp.getActive().getId());
-
-  var lock = LockService.getDocumentLock();
   try {
-    if (!lock.tryLock(300000)) return; // 5 min de espera; sobra 1 min do orçamento de 6 do gatilho
-    var props = PropertiesService.getDocumentProperties();
-    // 25/09/2026: numa cópia, a propriedade pode não ter vindo junto (o Google não documenta se as
-    // propriedades do documento viajam na cópia). Sem ela, o "antes" é o valor que a caixa tinha
-    // antes desta edição, se for uma paleta de verdade — a cópia nasce pintada com ele. A
-    // propriedade continua mandando quando existe, porque ela é o que terminou de pintar.
-    var velho = String(e.oldValue || '').trim();
-    var antigo = props.getProperty('paleta_atual')
-      || (PALETAS[velho.split(' · ')[0]] ? velho : '') || PALETA_INICIAL_;
-    if (novo === antigo) return;
-    repintarPaleta_(SpreadsheetApp.getActive(), antigo, novo);
-    props.setProperty('paleta_atual', novo);
-  } finally {
-    lock.releaseLock();
-  }
+    ScriptApp.getProjectTriggers().forEach(function (t) {
+      if (t.getHandlerFunction() === 'aplicarPaleta_') ScriptApp.deleteTrigger(t);
+    });
+  } catch (err) { /* sem autorização não chega aqui: quem roda este gatilho já autorizou */ }
 }
 
 function coresDoNome_(nome) {
@@ -6154,11 +6232,15 @@ function contrasteHex_(a, b) {
 }
 
 /** O contraste que cada célula tinha na ficha de FÁBRICA, lido do ABAS — o mesmo que o montarAba_ pintou. */
-function contrasteDeFabrica_(spec) {
+/**
+ * O fundo e a fonte de cada célula como o construir() os pinta (montarAba_, no Ficha.gs): a mesma conta,
+ * do mesmo ABAS. Maiúsculas, como o getBackgrounds devolve.
+ */
+function gradeDeFabrica_(spec) {
   var nl = spec.rows, nc = spec.cols;
   var bg0 = String(spec.fundo_base === undefined ? '#120F1D' : spec.fundo_base).toUpperCase();
   var fc0 = String((spec.padrao || ['Roboto', 11, '#F4F1F7'])[2]).toUpperCase();
-  var bg = [], fc = [], r, c;
+  var bg = [], fc = [], r;
   for (r = 0; r < nl; r++) {
     bg.push(new Array(nc).fill(bg0));
     fc.push(new Array(nc).fill(fc0));
@@ -6170,6 +6252,12 @@ function contrasteDeFabrica_(spec) {
     var e = t.length > 3 ? spec.estilos[t[3]] : null;
     if (e && e[2]) fc[t[0] - 1][t[1] - 1] = String(e[2]).toUpperCase();
   });
+  return { bg: bg, fc: fc };
+}
+
+function contrasteDeFabrica_(spec) {
+  var nl = spec.rows, nc = spec.cols, r, c;
+  var g = gradeDeFabrica_(spec), bg = g.bg, fc = g.fc;
   var out = [];
   for (r = 0; r < nl; r++) {
     var linha = new Array(nc);
@@ -6335,12 +6423,14 @@ function pngComCor_(b64, hex) {
  * célula dela tem agora (o mesmo `fonteLegivel_` das fontes, com piso de 3,0). Roda depois de o fundo ter
  * sido trocado, porque é dele que a cor depende. Uma imagem que falha não derruba a troca inteira.
  */
-function repintarArte_(ss, agora, candidatos) {
+function repintarArte_(ss, agora, candidatos, soAba, soImagem) {
   var cache = {}, feitas = 0;
   ABAS.forEach(function (spec) {
+    if (soAba && spec.nome !== soAba) return;   // 25/09/2026: um passo por imagem, ver convergirPaleta_
     var sh = ss.getSheetByName(spec.nome);
     if (!sh) return;
-    (spec.imgs || []).forEach(function (im) {
+    (spec.imgs || []).forEach(function (im, n) {
+      if (soImagem !== undefined && n !== soImagem) return;
       var papel = PAPEL_DA_ARTE_[String(im[4]).replace(/-\d+x\d+\.png$/, '')];
       if (!papel || !ARTE[im[4]] || agora[papel] === undefined) return;
       try {
@@ -6384,8 +6474,16 @@ function repintarArte_(ss, agora, candidatos) {
  * Achar o papel da célula é olhar o fundo dela ANTES da troca (`f`, nesta
  * função) contra o mesmo papelDoFundo que decide o fundo — a régua/vida não
  * mudam de papel entre paletas, só de hex.
+ *
+ * 25/09/2026: era uma função só pra ficha inteira (repintarPaleta_), com a arte e a régua no fim. Virou
+ * uma aba por chamada, porque a troca passou a rodar em passos dentro do gatilho simples (ver
+ * convergirPaleta_), e cada aba é um passo. A conta de cada célula não mudou.
  */
-function repintarPaleta_(ss, nomeAntigo, nomeNovo) {
+function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo) {
+  // 25/09/2026: a versão d tentou partir da ficha de fábrica, sem ler a planilha, pra caber numa execução
+  // só. Os tempos do Mizuki desmentiram: ler custa pouco, o que pesa é gravar (~0,5 ms por célula em cada
+  // gravação), e sem a leitura o passo ficou mais lento. Voltou a ler, e a cor pintada à mão pelo jogador
+  // volta a ficar.
   var antes = coresDoNome_(nomeAntigo) || PALETA_DE_FABRICA_;
   var agora = coresDoNome_(nomeNovo);
   if (!agora) return;
@@ -6402,65 +6500,65 @@ function repintarPaleta_(ss, nomeAntigo, nomeNovo) {
   var candidatos = candidatosDeFonte_(agora, coresOpostas_(nomeNovo));
   var cacheLegivel = {};
 
-  ABAS.forEach(function (spec) {
-    var sh = ss.getSheetByName(spec.nome);
-    if (!sh) return;
-    // ABAS.rows/cols, não getLastRow()/getLastColumn(): achado em 18/09/2026 — essas duas só
-    // contam célula com VALOR, e boa parte da tinta de fundo da ficha (a CARTEIRA sozinha tem
-    // 14 linhas de fundo puro, sem valor nenhum, do fim do cartão pra baixo) não tem valor
-    // nenhum, só cor. getLastRow() parava antes delas, e elas nunca eram lidas nem trocadas —
-    // "as partes externas da ficha" que ficavam pretas depois da troca de tema. spec.rows e
-    // spec.cols são o tamanho de verdade: o mesmo que montarAba_ pintou por inteiro.
-    var nl = spec.rows, nc = spec.cols;
-    var faixa = sh.getRange(1, 1, nl, nc);
+  var sh = ss.getSheetByName(spec.nome);
+  if (!sh) return;
+  // ABAS.rows/cols, não getLastRow()/getLastColumn(): achado em 18/09/2026 — essas duas só
+  // contam célula com VALOR, e boa parte da tinta de fundo da ficha (a CARTEIRA sozinha tem
+  // 14 linhas de fundo puro, sem valor nenhum, do fim do cartão pra baixo) não tem valor
+  // nenhum, só cor. getLastRow() parava antes delas, e elas nunca eram lidas nem trocadas —
+  // "as partes externas da ficha" que ficavam pretas depois da troca de tema. spec.rows e
+  // spec.cols são o tamanho de verdade: o mesmo que montarAba_ pintou por inteiro.
+  var nl = spec.rows, nc = spec.cols;
+  var faixa = sh.getRange(1, 1, nl, nc);
 
-    var fundos = faixa.getBackgrounds();
-    var fontes = faixa.getFontColors();
-    var mudouFundo = false, mudouFonte = false;
-    var avisos = celulasDeAviso_(spec);
-    var desenho = contrasteDeFabrica_(spec);
+  // Medida por dentro do passo (desde 25/09/2026-e): ler, a conta, gravar o fundo, gravar a fonte. Sai no
+  // verTemposDaPaleta.
+  var t0 = Date.now();
+  var fundos = faixa.getBackgrounds();
+  var fontes = faixa.getFontColors();
+  var tl = Date.now();
+  var mudouFundo = false, mudouFonte = false;
+  var avisos = celulasDeAviso_(spec);
+  var desenho = contrasteDeFabrica_(spec);
 
-    for (var r = 0; r < nl; r++) {
-      for (var c = 0; c < nc; c++) {
-        var f = (fundos[r][c] || '').toUpperCase();
-        var t = (fontes[r][c] || '').toUpperCase();
-        var papelDoFundo = papelPorHexAntes[f] || papelPorHexGlobal[f];
+  for (var r = 0; r < nl; r++) {
+    for (var c = 0; c < nc; c++) {
+      var f = (fundos[r][c] || '').toUpperCase();
+      var t = (fontes[r][c] || '').toUpperCase();
+      var papelDoFundo = papelPorHexAntes[f] || papelPorHexGlobal[f];
 
-        var novoFundo = f;
-        if (papelDoFundo && agora[papelDoFundo] !== undefined) {
-          novoFundo = '#' + String(agora[papelDoFundo]).toUpperCase();
-          if (novoFundo !== f) { fundos[r][c] = novoFundo; mudouFundo = true; }
-        }
-
-        var novaFonte = t;
-        if (avisos[r + ',' + c]) {
-          novaFonte = '#' + String(avisoNovo[papelDoFundo] || agora.texto).toUpperCase();
-        } else if (t === OSSO_HEX_) {
-          var novoOsso = papelDoFundo && ossoNovo[papelDoFundo];
-          if (novoOsso) novaFonte = '#' + String(novoOsso).toUpperCase();
-        } else {
-          var papelDaFonte = papelPorHexAntes[t] || papelPorHexGlobal[t];
-          if (papelDaFonte && agora[papelDaFonte] !== undefined) {
-            novaFonte = '#' + String(agora[papelDaFonte]).toUpperCase();
-          }
-        }
-
-        novaFonte = fonteLegivel_(novaFonte, novoFundo, desenho[r][c], candidatos, cacheLegivel);
-        if (novaFonte !== t) { fontes[r][c] = novaFonte; mudouFonte = true; }
+      var novoFundo = f;
+      if (papelDoFundo && agora[papelDoFundo] !== undefined) {
+        novoFundo = '#' + String(agora[papelDoFundo]).toUpperCase();
+        if (novoFundo !== f) { fundos[r][c] = novoFundo; mudouFundo = true; }
       }
+
+      var novaFonte = t;
+      if (avisos[r + ',' + c]) {
+        novaFonte = '#' + String(avisoNovo[papelDoFundo] || agora.texto).toUpperCase();
+      } else if (t === OSSO_HEX_) {
+        var novoOsso = papelDoFundo && ossoNovo[papelDoFundo];
+        if (novoOsso) novaFonte = '#' + String(novoOsso).toUpperCase();
+      } else {
+        var papelDaFonte = papelPorHexAntes[t] || papelPorHexGlobal[t];
+        if (papelDaFonte && agora[papelDaFonte] !== undefined) {
+          novaFonte = '#' + String(agora[papelDaFonte]).toUpperCase();
+        }
+      }
+
+      novaFonte = fonteLegivel_(novaFonte, novoFundo, desenho[r][c], candidatos, cacheLegivel);
+      if (novaFonte !== t) { fontes[r][c] = novaFonte; mudouFonte = true; }
     }
-    if (mudouFundo) faixa.setBackgrounds(fundos);
-    if (mudouFonte) faixa.setFontColors(fontes);
-  });
-
-  repintarArte_(ss, agora, candidatos);
-
-  // Sempre chama, sem comparar "mudou de verdade" antes — repintarBordas_ compara contra a régua
-  // DE FÁBRICA (fixa), não contra `antes`, então não tem "não mudou" que valha a pena pular; e
-  // chamar sempre faz a régua se autocorrigir mesmo se uma troca anterior tiver ficado pra trás.
-  var paraRegua = '#' + String(agora.regua || '').toUpperCase();
-  repintarBordas_(ss, paraRegua);
+  }
+  var t1 = Date.now();
+  if (mudouFundo) faixa.setBackgrounds(fundos);
+  SpreadsheetApp.flush();
+  var t2 = Date.now();
+  if (mudouFonte) faixa.setFontColors(fontes);
+  SpreadsheetApp.flush();
+  DETALHE_COR_[spec.nome] = { le: tl - t0, conta: t1 - tl, fundo: t2 - t1, fonte: Date.now() - t2, celulas: nl * nc };
 }
+var DETALHE_COR_ = {};
 
 /**
  * A régua (a borda) — achado em 18/09/2026 que dava pra fazer sem varrer
@@ -6499,20 +6597,41 @@ function repintarPaleta_(ss, nomeAntigo, nomeNovo) {
  * `Ficha.gs` rodar (em configurarPaleta_) e não mora no ABAS — repintada à
  * parte, no fim desta função.
  */
-function repintarBordas_(ss, paraRegua) {
+function repintarBordas_(ss, paraRegua, soAba) {
   var deRegua = '#' + PALETA_DE_FABRICA_.regua.toUpperCase();
   var TRACO = { thin: 'SOLID', medium: 'SOLID_MEDIUM', thick: 'SOLID_THICK', dashed: 'DASHED',
                 mediumDashed: 'DASHED', dotted: 'DOTTED', hair: 'DOTTED', double: 'DOUBLE' };
   ABAS.forEach(function (spec) {
+    if (soAba && spec.nome !== soAba) return;   // 25/09/2026: um passo por aba, ver convergirPaleta_
     var aba = ss.getSheetByName(spec.nome);
     if (!aba) return;
+    // 25/09/2026, pra troca caber no gatilho simples: o ABAS guarda a régua lado a lado (uma lista pro
+    // topo, uma pra esquerda...), e pintar assim eram 3.420 faixas. Quase toda faixa é uma caixa com os
+    // quatro lados no mesmo traço — 308 das 479 da FICHA —, e essa vai numa operação só. O resto continua
+    // lado a lado. O resultado é o mesmo: setBorder com null deixa o lado como está.
+    var ladosDa = {};
     (spec.bordas || []).forEach(function (b) {
       if (String(b[2]).toUpperCase() !== deRegua) return;
-      var lado = b[0], traco = SpreadsheetApp.BorderStyle[TRACO[b[1]] || 'SOLID'];
-      for (var i = 0; i < b[3].length; i += 400) {
-        aba.getRangeList(b[3].slice(i, i + 400)).setBorder(
-          lado === 'top' ? true : null, lado === 'left' ? true : null,
-          lado === 'bottom' ? true : null, lado === 'right' ? true : null,
+      b[3].forEach(function (f) { (ladosDa[f] = ladosDa[f] || {})[b[0]] = b[1]; });
+    });
+    var grupos = {};   // 'lado|traço' -> faixas; o lado 'todos' é a caixa inteira
+    Object.keys(ladosDa).forEach(function (f) {
+      var l = ladosDa[f];
+      if (l.top && l.top === l.left && l.top === l.bottom && l.top === l.right) {
+        (grupos['todos|' + l.top] = grupos['todos|' + l.top] || []).push(f);
+      } else {
+        Object.keys(l).forEach(function (lado) {
+          (grupos[lado + '|' + l[lado]] = grupos[lado + '|' + l[lado]] || []).push(f);
+        });
+      }
+    });
+    Object.keys(grupos).forEach(function (k) {
+      var lado = k.split('|')[0], traco = SpreadsheetApp.BorderStyle[TRACO[k.split('|')[1]] || 'SOLID'];
+      var todos = lado === 'todos', faixas = grupos[k];
+      for (var i = 0; i < faixas.length; i += 400) {
+        aba.getRangeList(faixas.slice(i, i + 400)).setBorder(
+          todos || lado === 'top' ? true : null, todos || lado === 'left' ? true : null,
+          todos || lado === 'bottom' ? true : null, todos || lado === 'right' ? true : null,
           null, null, paraRegua, traco);
       }
     });
@@ -6522,7 +6641,7 @@ function repintarBordas_(ss, paraRegua) {
   var valorPaleta = ss.getRangeByName(NOME_CEL_PALETA_);
   var rotuloPaleta = ss.getRangeByName(NOME_CEL_PALETA_ROTULO_);
   var avisoPaleta = ss.getRangeByName(NOME_CEL_PALETA_AVISO_);
-  if (valorPaleta && rotuloPaleta) {
+  if (valorPaleta && rotuloPaleta && (!soAba || soAba === valorPaleta.getSheet().getName())) {
     [rotuloPaleta, valorPaleta, avisoPaleta].forEach(function (r) {
       if (r) r.setBorder(true, true, true, true, false, false, paraRegua, BORDA_CAIXA);
     });
