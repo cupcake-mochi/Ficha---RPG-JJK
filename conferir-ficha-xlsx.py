@@ -782,6 +782,23 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     checa("configurarPaleta_ chama instalarGatilhoPaleta_",
           bool(_confp) and "instalarGatilhoPaleta_(ss)" in _confp.group(1))
 
+    # Achado do Mizuki em 25/09/2026: numa cópia da ficha a cor não trocava. A cópia não leva o
+    # gatilho instalável, e o onOpen (gatilho simples, sem autorização) não consegue criá-lo. Quem
+    # copia ativa uma vez pelo menu: o onOpen cria o item, ele chama uma função PÚBLICA (com _ no fim
+    # o menu não acha), e o onEdit simples avisa na troca de tema enquanto o gatilho falta.
+    _onop = re.search(r"function onOpen\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("o onOpen cria o menu Ficha com o item que chama ativarPaleta (sem _ no fim)",
+          bool(_onop) and "createMenu('Ficha')" in _onop.group(1)
+          and "addItem('Ativar a troca de paleta', 'ativarPaleta')" in _onop.group(1))
+    _ativ = re.search(r"function ativarPaleta\(\)\s*\{(.*?)\n\}", _CODA, re.S)
+    checa("ativarPaleta instala o gatilho e aplica a paleta já escolhida pelo próprio aplicarPaleta_",
+          bool(_ativ) and "instalarGatilhoPaleta_(ss)" in _ativ.group(1)
+          and "aplicarPaleta_(" in _ativ.group(1))
+    checa("o onEdit simples avisa quando a paleta é trocada numa ficha sem o gatilho",
+          bool(_oned) and "avisarPaletaSemGatilho_(e)" in _oned.group(1)
+          and re.search(r"function avisarPaletaSemGatilho_\(e\)\s*\{[^}]*PROP_GATILHO_PALETA_\) === ss\.getId\(\)",
+                        _CODA, re.S) is not None)
+
     # B25, achado testando no Sheets em 18/09/2026: nada serializava duas execuções de
     # aplicarPaleta_ — trocar de tema rápido demais (a segunda troca disparando antes do repaint da
     # primeira terminar) deixava fundo/fonte de algumas células com uma mistura das duas paletas,

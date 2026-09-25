@@ -332,7 +332,9 @@ function onEdit(e) {
   if (!e || !e.range) return;
   var aba = e.range.getSheet().getName();
   // A troca de paleta NÃO passa mais por aqui — ela precisa de mais que os 30 segundos que um
-  // onEdit simples tem, e mora num gatilho instalável à parte. Ver instalarGatilhoPaleta_.
+  // onEdit simples tem, e mora num gatilho instalável à parte. Ver instalarGatilhoPaleta_. Daqui
+  // só sai o aviso de quando esse gatilho falta, que é o caso de toda cópia nova (ver ativarPaleta).
+  if (aba === 'CARTEIRA') avisarPaletaSemGatilho_(e);
   if (aba !== 'FICHA') return;
   var idx = indice();
   aplicarDelta_(e, idx);
@@ -5805,16 +5807,82 @@ function paletaJaMontada_(ss) {
  *
  * ⚠ Pede autorização nova na próxima vez que rodar alguma função na mão (o construir(), por
  * exemplo) — criar gatilho é um escopo que o script não usava até agora.
+ *
+ * Devolve true quando o gatilho existe ao fim da chamada, e aí grava o id DESTA planilha em
+ * PROP_GATILHO_PALETA_ — é por ele que o onEdit simples sabe que não precisa avisar nada (ver
+ * avisarPaletaSemGatilho_). O id, e não um "sim", porque uma cópia nasce com outro id: se a
+ * propriedade viajar junto na cópia, ela continua não batendo.
  */
 function instalarGatilhoPaleta_(ss) {
   // Em try/catch pra não travar o resto de configurarPaleta_ (nem o construir() inteiro, que não
   // embrulha essa chamada) se a criação do gatilho falhar por algum motivo — a caixa da paleta e
-  // o resto da ficha continuam valendo sem ele; só a troca de tema fica sem o orçamento maior.
+  // o resto da ficha continuam valendo sem ele; só a troca de tema fica parada até alguém rodar o
+  // ativarPaleta pelo menu. É o que acontece no onOpen de toda cópia, que roda sem autorização.
   try {
     var jaTem = ScriptApp.getProjectTriggers().some(function (t) {
       return t.getHandlerFunction() === 'aplicarPaleta_' && t.getEventType() === ScriptApp.EventType.ON_EDIT;
     });
     if (!jaTem) ScriptApp.newTrigger('aplicarPaleta_').forSpreadsheet(ss).onEdit().create();
+    PropertiesService.getDocumentProperties().setProperty(PROP_GATILHO_PALETA_, ss.getId());
+    return true;
+  } catch (err) { return false; /* silencioso — ver comentário acima */ }
+}
+
+var PROP_GATILHO_PALETA_ = 'gatilho_paleta';
+
+/**
+ * O item "Ficha › Ativar a troca de paleta" do menu, que o onOpen cria.
+ *
+ * Achado do Mizuki em 25/09/2026: numa cópia da ficha ("Arquivo › Fazer uma cópia") a cor não
+ * trocava, e na original trocava. A cópia leva o Codigo.gs, mas não leva o gatilho instalável — ele
+ * é de quem o criou, não da planilha. O onOpen da cópia até chama instalarGatilhoPaleta_ (pelo
+ * configurarPaleta_), só que o onOpen é gatilho simples: roda sem autorização, criar gatilho pede
+ * autorização, e o try/catch engolia a recusa. O resto da ficha funcionava porque mora no onEdit
+ * simples, que viaja com a cópia.
+ *
+ * Não tem como a cópia se ativar sozinha: quem copia precisa autorizar o script uma vez, e só uma
+ * função chamada por gente (menu ou editor) pode pedir isso. Este é o pedido. Sem sublinhado no
+ * fim do nome de propósito: função com _ no fim é privada, e o menu não consegue chamar.
+ *
+ * Depois de instalar, aplica a paleta que já estiver escolhida na caixa — quem escolheu um tema
+ * antes de ativar vê o tema entrar sem precisar escolher de novo. Passa pelo próprio
+ * aplicarPaleta_, com o lock e tudo; se a escolhida já é a que está pintada, ele não faz nada.
+ */
+function ativarPaleta() {
+  var ss = SpreadsheetApp.getActive();
+  if (!instalarGatilhoPaleta_(ss)) {
+    ss.toast('Não deu para ativar a troca de paleta. Tente de novo pelo menu Ficha; se o Google pedir, autorize o script.', 'Paleta', 15);
+    return;
+  }
+  var alvo = ss.getRangeByName(NOME_CEL_PALETA_);
+  var escolhida = alvo ? String(alvo.getCell(1, 1).getValue() || '').trim() : '';
+  if (escolhida && PALETAS[escolhida.split(' · ')[0]]) {
+    ss.toast('Ativada. Aplicando ' + escolhida + ' — ' + TEXTO_AVISO_PALETA_, 'Paleta', 40);
+    aplicarPaleta_({ range: alvo.getCell(1, 1), value: escolhida });
+  }
+  ss.toast('A troca de paleta está ativa nesta ficha. É só escolher o tema na caixa PALETA, na CARTEIRA.', 'Paleta', 10);
+}
+
+/**
+ * Chamado pelo onEdit simples quando alguém mexe na CARTEIRA. Se a célula é a da paleta e esta
+ * planilha ainda não tem o gatilho (a propriedade não tem o id dela), avisa como ativar — é o
+ * que a cópia de um jogador mostra na primeira troca de tema, em vez de não fazer nada calada.
+ *
+ * Ler a propriedade não pede autorização, então isto roda dentro do gatilho simples. Se algo aqui
+ * falhar, fica sem aviso: o aviso é ajuda, e não pode derrubar o resto do onEdit.
+ *
+ * Na original, montada antes de 25/09/2026, a propriedade ainda não existe: o aviso aparece uma
+ * vez, e o aplicarPaleta_ grava o id na mesma troca (ou o menu grava, se rodado).
+ */
+function avisarPaletaSemGatilho_(e) {
+  try {
+    var ss = SpreadsheetApp.getActive();
+    var alvo = ss.getRangeByName(NOME_CEL_PALETA_);
+    if (!alvo || e.range.getSheet().getName() !== alvo.getSheet().getName()
+        || e.range.getA1Notation() !== alvo.getCell(1, 1).getA1Notation()) return;
+    if (PropertiesService.getDocumentProperties().getProperty(PROP_GATILHO_PALETA_) === ss.getId()) return;
+    ss.toast('Nesta cópia a troca de paleta ainda não está ativa. Use o menu Ficha › Ativar a troca de paleta ' +
+             '(só uma vez) e autorize o script quando o Google pedir.', 'Paleta', 20);
   } catch (err) { /* silencioso — ver comentário acima */ }
 }
 
@@ -5919,9 +5987,17 @@ function configurarPaleta_(ss, force) {
 /**
  * Roda no onOpen: garante que a caixa da paleta existe mesmo numa planilha
  * que já foi montada antes desta rodada, sem precisar rodar o construir()
- * de novo. Não faz mais nada além disso — silencioso se já existir.
+ * de novo. Silencioso se já existir.
+ *
+ * Desde 25/09/2026 também cria o menu Ficha, com o item que ativa a troca de paleta numa cópia
+ * (ver ativarPaleta). Criar menu não pede autorização, então funciona no gatilho simples.
  */
 function onOpen(e) {
+  try {
+    SpreadsheetApp.getUi().createMenu('Ficha')
+      .addItem('Ativar a troca de paleta', 'ativarPaleta')
+      .addToUi();
+  } catch (err) { /* silencioso: não trava a abertura */ }
   try { configurarPaleta_(SpreadsheetApp.getActive()); } catch (err) { /* silencioso: não trava a abertura */ }
 }
 
@@ -5976,12 +6052,21 @@ function aplicarPaleta_(e) {
   if (!alvo || e.range.getA1Notation() !== alvo.getCell(1, 1).getA1Notation()) return;
   var novo = String(e.value || '').trim();
   if (!novo || !PALETAS[novo.split(' · ')[0]]) return;
+  // Se chegou aqui pelo gatilho, o gatilho existe: grava, pro onEdit simples parar de avisar numa
+  // ficha montada antes de 25/09/2026 (ver avisarPaletaSemGatilho_).
+  PropertiesService.getDocumentProperties().setProperty(PROP_GATILHO_PALETA_, SpreadsheetApp.getActive().getId());
 
   var lock = LockService.getDocumentLock();
   try {
     if (!lock.tryLock(300000)) return; // 5 min de espera; sobra 1 min do orçamento de 6 do gatilho
     var props = PropertiesService.getDocumentProperties();
-    var antigo = props.getProperty('paleta_atual') || PALETA_INICIAL_;
+    // 25/09/2026: numa cópia, a propriedade pode não ter vindo junto (o Google não documenta se as
+    // propriedades do documento viajam na cópia). Sem ela, o "antes" é o valor que a caixa tinha
+    // antes desta edição, se for uma paleta de verdade — a cópia nasce pintada com ele. A
+    // propriedade continua mandando quando existe, porque ela é o que terminou de pintar.
+    var velho = String(e.oldValue || '').trim();
+    var antigo = props.getProperty('paleta_atual')
+      || (PALETAS[velho.split(' · ')[0]] ? velho : '') || PALETA_INICIAL_;
     if (novo === antigo) return;
     repintarPaleta_(SpreadsheetApp.getActive(), antigo, novo);
     props.setProperty('paleta_atual', novo);

@@ -1374,6 +1374,28 @@ gotinhas) seguiam roxas e vermelhas numa ficha toda verde. E a moldura (cabeçal
 > congeladas até a 5 e a B) — se você congelou à mão, é isso, e não é recolorível. Confere em Ver → Congelar. Se
 > for isso, a divisória nova fica bem ao lado dele.
 
+**25/09/2026 — numa cópia da ficha a cor não trocava; na original, trocava.** Achado do Mizuki, com a
+original e a cópia exportadas (as duas `.xlsx` saíram iguais, célula a célula: o defeito não está na planilha,
+está no script). "Arquivo › Fazer uma cópia" leva o `Codigo.gs`, mas **não leva gatilho instalável** — ele é
+de quem o criou, não da planilha. O `onOpen` da cópia chama `instalarGatilhoPaleta_`, só que o `onOpen` é
+gatilho simples, roda sem autorização, e o `try/catch` engolia a recusa. O resto da ficha funciona na cópia
+porque mora no `onEdit` simples, que viaja junto.
+
+*Não tem como a cópia se ativar sozinha:* quem copia precisa autorizar o script uma vez. O conserto é o pedido:
+
+- o `onOpen` cria o menu **Ficha › Ativar a troca de paleta**, que chama `ativarPaleta` (sem `_` no fim, senão o
+  menu não acha a função). Ele instala o gatilho e já aplica o tema que estiver escolhido na caixa;
+- enquanto o gatilho falta, trocar o tema mostra um aviso no canto dizendo pra usar o menu. O `onEdit` simples
+  sabe que falta pela propriedade `gatilho_paleta`, que guarda o **id** da planilha em que o gatilho foi criado —
+  uma cópia tem outro id, então não se engana mesmo se a propriedade viajar junto;
+- se a `paleta_atual` não viajar na cópia (o Google não documenta), o "antes" da troca passa a ser o valor que a
+  caixa tinha, quando é uma paleta de verdade, e não mais a de fábrica.
+
+Testado numa simulação em Node com um Sheets de mentira nos dois estados (21 casos, e o `Codigo.gs` de antes
+reprova nos da cópia) e com três checagens novas no `conferir-ficha-xlsx.py`, perturbadas cinco vezes numa cópia
+isolada. **Falta testar no Sheets:** a tela de autorização de uma cópia mostra "O Google não verificou este app";
+passa por "Avançado › Acessar". Na original, montada antes, o aviso pode aparecer uma vez só, na primeira troca.
+
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
 Os dois capítulos vendorizados vieram **byte a byte idênticos** do commit
