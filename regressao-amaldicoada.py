@@ -709,7 +709,6 @@ checa("os lugares cobrem o teto do livro: 24 espaços no nível 30, sete feitiç
       fa.N_FEITICOS >= 2 + 30 // 2 + 2 * len(PROG["marcos"]) + 3 and fa.PAGAS + fa.DO_LEQUE == 12 and len(PASSIVAS) == 12 and len(APTIDOES) >= 11)
 import conferir_feitico as _cf
 checa("as quatro Restrições de frequência são as do conferir_feitico.py", set(fa.FREQUENCIA) == set(_cf.FREQUENCIA) == set(FREQUENCIA))
-sem_trava = WB0[ABA].protection.sheet is False
 formulas_am = [c for linha in ws0.iter_rows() for c in linha if isinstance(c.value, str) and c.value.startswith("=")]
 fora = [c.coordinate for c in formulas_am if "DADOS_AM!" not in c.value and "FICHA!" not in c.value and "DADOS!" not in c.value]
 checa(f"nenhuma das {len(formulas_am)} fórmulas da aba faz conta: todas leem a DADOS_AM, a FICHA ou a DADOS", not fora, str(fora[:5]))
@@ -824,10 +823,14 @@ if M:
     prof = {str(r): (WB0[ABA].row_dimensions[r].outlineLevel or 0) for r in range(1, G["linhas"] + 1) if WB0[ABA].row_dimensions[r].outlineLevel}
     checa("os grupos de linhas têm a profundidade da planilha gerada (seção, lote e fileira)", {k: v for k, v in am["grupos"].items() if v} == prof)
     abertos = [f"{G['sec'][s] + fa.FX},{G['fim'][s]},1" for s, _, _ in fa.SECOES if s not in fa.NASCE_FECHADA]
-    checa("nascem abertas as seções que o nível 2 usa e a primeira fileira de cada tipo; o resto nasce fechado",
+    # as linhas que somem na aba montada (as de todo grupo fechado) são as que a planilha gerada traz escondidas
+    escondidas = {r for r in range(1, G["linhas"] + 1) if WB0[ABA].row_dimensions[r].hidden}
+    somem = {r for g in am["fechados"] for r in range(int(g.split(",")[0]), int(g.split(",")[1]) + 1)}
+    r0 = G["feiticos"][0][0]
+    checa("nascem abertas as seções que o nível 2 usa e a primeira fileira de cada tipo; o resto nasce fechado, como na planilha gerada",
           not any(g in am["fechados"] for g in abertos) and all(f"{G['sec'][s] + fa.FX},{G['fim'][s]},1" in am["fechados"] for s in fa.NASCE_FECHADA)
-          and len(am["fechados"]) == sum(1 for r in WB0[ABA].row_dimensions.values() if False) + len(am["fechados"]) and len(am["fechados"]) >= 40,
-          f"{len(am['fechados'])} fechados")
+          and somem == escondidas and r0 + fa.F_MEL not in somem and G["feiticos"][3][0] + fa.F_MEL in somem,
+          f"{len(am['fechados'])} grupos fechados; {len(somem ^ escondidas)} linha(s) diferentes")
     checa("nenhuma fórmula é gravada antes de a aba que ela cita existir, nem fora do inglês", not M["orfas"], str(M["orfas"][:3]))
     checa("a Classe aparece como 'Classe 3' e continua número", len(am["numeros"]) == fa.N_FEITICOS + fa.N_LIB + 1 and set(am["numeros"].values()) == {'"Classe "0'},
           f"{len(am['numeros'])}")

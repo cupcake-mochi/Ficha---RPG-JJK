@@ -24,6 +24,10 @@ const novo = { ficha: daPasta('apps-script/Ficha.gs'), codigo: daPasta('apps-scr
 const velho = { ficha: doGit('apps-script/Ficha.gs'), codigo: doGit('apps-script/Codigo.gs') };
 const nomesNovos = abasDe(novo.ficha).map((a) => a.nome);
 const sairam = abasDe(velho.ficha).map((a) => a.nome).filter((n) => !nomesNovos.includes(n));
+// 01/10/2026: a aba que só existe na versão da pasta (a FICHA AMALDIÇOADA e a DADOS_AM, quando entraram) não tem montagem
+// antiga para comparar. Ela fica de fora da comparação, e o que se cobra é que as outras não mudem por causa dela.
+const nomesVelhos = abasDe(velho.ficha).map((a) => a.nome);
+const entraram = nomesNovos.filter((n) => !nomesVelhos.includes(n));
 
 let falhas = 0;
 const ok = (nome, cond, det = '') => { console.log((cond ? '  ok    ' : '  FALHA ') + nome + (cond ? '' : '  <- ' + det)); if (!cond) falhas++; };
@@ -39,13 +43,14 @@ function monta(v, tirar) {
 console.log(`A MONTAGEM DE ${rev} CONTRA A DA PASTA`);
 if (sairam.length) console.log(`  (as abas ${sairam.join(', ')} existem em ${rev} e não existem mais: saem da montagem antiga antes de comparar)`);
 // 1. o desenho: o ABAS das abas que ficam é o mesmo?
-const specVelho = abasDe(velho.ficha).filter((a) => !sairam.includes(a.nome)), specNovo = abasDe(novo.ficha);
+if (entraram.length) console.log(`  (as abas ${entraram.join(', ')} são novas na pasta e não existem em ${rev}: ficam fora da comparação)`);
+const specVelho = abasDe(velho.ficha).filter((a) => !sairam.includes(a.nome)), specNovo = abasDe(novo.ficha).filter((a) => !entraram.includes(a.nome));
 const mudou = specNovo.filter((a, i) => JSON.stringify(a) !== JSON.stringify(specVelho[i])).map((a) => a.nome);
 ok(`o desenho das ${specNovo.length} abas que ficam (o ABAS) é o mesmo das duas versões`, specNovo.length === specVelho.length && !mudou.length, 'mudou: ' + mudou.join(', '));
 
 // 2. a planilha montada
 const A = monta(velho, sairam), B = monta(novo, []);
-ok('as abas nascem na mesma ordem, e a planilha termina no mesmo idioma', A.retrato.ordem.join('|') === B.retrato.ordem.join('|') && A.retrato.idioma === B.retrato.idioma,
+ok('as abas nascem na mesma ordem, e a planilha termina no mesmo idioma', A.retrato.ordem.join('|') === B.retrato.ordem.filter((n) => !entraram.includes(n)).join('|') && A.retrato.idioma === B.retrato.idioma,
    A.retrato.ordem.join(', ') + ' / ' + B.retrato.ordem.join(', '));
 ok('os intervalos nomeados são os mesmos', JSON.stringify(A.retrato.nomeados) === JSON.stringify(B.retrato.nomeados), JSON.stringify(B.retrato.nomeados));
 const PARTES = { tamanho: 'o tamanho', oculta: 'oculta ou à vista', grade: 'a grade', valores: 'os valores', formulas: 'as fórmulas', formato: 'o formato de cada célula', bordas: 'as bordas',
@@ -53,6 +58,7 @@ const PARTES = { tamanho: 'o tamanho', oculta: 'oculta ou à vista', grade: 'a g
   grupos: 'os grupos que fecham', larguras: 'as larguras', alturas: 'as alturas', travadas: 'as células travadas' };
 for (const nome of B.retrato.ordem) {
   const a = A.retrato.abas[nome], b = B.retrato.abas[nome], difs = [];
+  if (entraram.includes(nome)) { console.log('  --    ' + nome + ': nova na pasta, sem montagem antiga para comparar'); continue; }
   if (!a) { ok(nome + ': existe nas duas montagens', false); continue; }
   for (const k of Object.keys(PARTES)) {
     const ja = JSON.stringify(a[k]), jb = JSON.stringify(b[k]);
