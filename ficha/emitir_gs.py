@@ -210,7 +210,7 @@ def _larguras(ws, limpa=None):
             out.append([dim.min, dim.max, _px_largura(dim.width, limpa)])
     return sorted(out)
 
-def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None):
+def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None, extras=None):
     from collections import Counter
     import estilo as _est
     # o formato de fabrica da celula no script: a vazia com este formato nao precisa ser escrita
@@ -307,7 +307,7 @@ def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None):
         # tinta (colunas A:B) tem de ir até a última linha, e uma folga que nenhuma célula pinta ficaria
         # com o fundo comum — a lombada aparecia cortada nas paletas claras (19/09/2026). Essas duas
         # abas terminam no fim da lombada, ver ficha-v01/correcoes_borda.py.
-        ncols, nrows = max(max_c, 12), max_r + (0 if nome in ("FICHA", "INVOCAÇÃO") else 2)
+        ncols, nrows = max(max_c, 12), max_r + (0 if nome in ("FICHA", "FICHA PESSOAL", "INVOCAÇÃO") else 2)
         if imgs is not None:
             # a ficha-v01: a imagem entra DENTRO da celula, numa caixa medida no pixel do script, e a
             # arte vai no formato da caixa. [lin1, col1, lin2, col2, arte]
@@ -340,6 +340,9 @@ def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None):
             "alturas": alt_px, "largs": largs_px,
             "oculta": ws.sheet_state == "hidden",
         })
+        # 01/10/2026: a nota da caixa, o grupo de linhas e de colunas, o formato de número, a cor de aviso e as
+        # faixas travadas. Só a aba que nasce no gerador (a FICHA PESSOAL) declara, e as outras saem como saíam.
+        abas[-1].update((extras or {}).get(nome, {}))
     arte = {}
     pasta = arte_dir or ARTE
     if arte_dir:
@@ -394,8 +397,8 @@ def _sem_linha_gigante(obj, nivel=0):
     return compacto  # string/número atômico que já é maior que o piso sozinho: fica como está
 
 
-def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None):
-    abas, arte = emitir(wb, ordem, imgs, arte_dir, limpa)
+def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extras=None):
+    abas, arte = emitir(wb, ordem, imgs, arte_dir, limpa, extras)
     for a in abas:
         medidas = a.pop("caixas_medidas")
         if caixas is None:

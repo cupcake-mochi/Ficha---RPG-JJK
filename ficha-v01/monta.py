@@ -24,6 +24,7 @@ from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.formatting.rule import Rule
 from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.drawing.image import Image as Img
+from openpyxl.comments import Comment
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 LAYOUT = json.load(open(os.path.join(AQUI, "layout.json"), encoding="utf-8"))
@@ -38,6 +39,12 @@ import ficha_layout
 _FL = ficha_layout.trocas(LAYOUT)
 print(f"o desenho da mesa: {ficha_layout.aplica(LAYOUT, _FL)} mudanca(s) na exportacao")
 ficha_layout.desenha_arte(_FL)
+
+# 01/10/2026: o cabecalho da FICHA no molde do estudo da Ficha Pessoal -- a marca, o titulo e a linha de apoio a
+# esquerda, o nome e o Caminho a direita. Vem antes do indice porque o nome muda de celula. Ver cabecalho.py.
+import cabecalho
+_CAB = cabecalho.trocas(LAYOUT)
+print(f"o cabecalho no molde do estudo: {cabecalho.aplica(LAYOUT, _CAB)} mudanca(s) na exportacao")
 
 # 17/09/2026: o indice da DADOS passa a guardar o endereco em formula, derivado dos rotulos da FICHA.
 # Ele vem antes de tudo porque as limpezas de baixo leem por ele. Ver indice_ficha.py.
@@ -72,6 +79,19 @@ import ficha_automatica
 _FA = ficha_automatica.trocas(LAYOUT)
 print(f"a ficha automatica: {ficha_automatica.aplica(LAYOUT, _FA)} mudanca(s) na exportacao")
 
+# 01/10/2026: a FICHA PESSOAL -- o que ela muda na FICHA (o EQUIPAMENTO e o XP viram espelho, o
+# DESLOCAMENTO cai pela metade com a punicao) e as tabelas dela na DADOS. A aba em si entra mais abaixo,
+# depois das correcoes de borda, porque ela copia o cabecalho e a lombada da FICHA. Ver ficha_pessoal.py.
+import ficha_pessoal
+_FP = ficha_pessoal.trocas(LAYOUT)
+print(f"a Ficha Pessoal, na FICHA e na DADOS: {ficha_pessoal.aplica(LAYOUT, _FP)} mudanca(s) na exportacao")
+
+# o cabecalho escreveu o endereco do Caminho, da Trilha e do nivel antes de as limpezas de cima rodarem: se alguma
+# delas mexer nas linhas da FICHA, a formula dele aponta para o lugar antigo, e a montagem para aqui.
+_quem = next(r[1] for a in LAYOUT["abas"] if a["nome"] == "FICHA" for r in a["celulas"] if r[0] == cabecalho.C_QUEM[0])
+if _quem != cabecalho.quem(LAYOUT):
+    raise SystemExit(f"o cabecalho da FICHA le o Caminho no lugar antigo: {_quem} != {cabecalho.quem(LAYOUT)}")
+
 # 19/09/2026: enganos de formatacao manual da planilha viva (a caixa ORIGEM com borda branca), corrigidos
 # na saida. Ver correcoes_borda.py.
 import correcoes_borda
@@ -90,6 +110,13 @@ _pos_gloss = next(i for i, a in enumerate(LAYOUT["abas"]) if a["nome"] == "INVOC
 _ABA_GLOSS = glossario.aba(LAYOUT)
 LAYOUT["abas"].insert(_pos_gloss, _ABA_GLOSS)
 print(f"o glossario: {_ABA_GLOSS['linhas']} linha(s), {len(_ABA_GLOSS['celulas'])} celula(s)")
+
+# 01/10/2026: a FICHA PESSOAL, entre a FICHA e o GLOSSARIO, pedido do Mizuki. Como o GLOSSARIO, ela nao tem
+# planilha viva por tras: nasce inteira no ficha_pessoal.py, do desenho que ele fechou por estudo.
+_pos_fp = next(i for i, a in enumerate(LAYOUT["abas"]) if a["nome"] == "FICHA") + 1
+_ABA_FP = ficha_pessoal.aba(LAYOUT, _FP)
+LAYOUT["abas"].insert(_pos_fp, _ABA_FP)
+print(f"a Ficha Pessoal: {_ABA_FP['linhas']} linha(s), {_ABA_FP['colunas']} coluna(s), {len(_ABA_FP['celulas'])} celula(s)")
 
 # a paleta e a fonte de corpo saem do estilo.py, que e o dono delas -- e ele
 # ganhou as quatro cores desta versao na v0.1 (decisao do Mizuki: uma paleta so)
@@ -178,6 +205,23 @@ for a in LAYOUT["abas"]:
         ws.conditional_formatting.add(
             cf["onde"], Rule(type=cf["tipo"], dxf=dxf, formula=cf["formula"]))
 
+    # o que so a aba nascida no gerador declara: a nota da caixa, e as linhas e colunas que fecham em grupo
+    for coord, texto in a.get("notas", {}).items():
+        ws[coord].comment = Comment(texto, "Projeto M")
+    # um grupo dentro do outro soma um nivel: a extensao do painel de XP mora dentro do painel
+    for l1, l2, fechado in a.get("grupos", {}).get("linhas", []):
+        for r in range(l1, l2 + 1):
+            ws.row_dimensions[r].outlineLevel = (ws.row_dimensions[r].outlineLevel or 0) + 1
+            ws.row_dimensions[r].hidden = bool(ws.row_dimensions[r].hidden) or fechado
+    for c1, c2, fechado in a.get("grupos", {}).get("colunas", []):
+        for c in range(c1, c2 + 1):
+            ws.column_dimensions[L(c)].outlineLevel = (ws.column_dimensions[L(c)].outlineLevel or 0) + 1
+            ws.column_dimensions[L(c)].hidden = bool(ws.column_dimensions[L(c)].hidden) or fechado
+    if a.get("grupos"):
+        # o botao de fechar fica antes do grupo: em cima da lista de treino, e na coluna antes do painel
+        ws.sheet_properties.outlinePr.summaryBelow = False
+        ws.sheet_properties.outlinePr.summaryRight = False
+
     for im in a["imagens"]:
         caminho = os.path.join(AQUI, "arte", im["arquivo"])
         if not os.path.exists(caminho):
@@ -197,8 +241,22 @@ print(f"abas: {wb.sheetnames}")
 # 14/09/2026 o Ficha.gs sai DAQUI, e nao do ficha/monta.py: a planilha viva e editada
 # no Sheets, e esta pasta e a copia dela. Decisao do Mizuki no B18.
 import emitir_gs
+# o que o script precisa e a pasta de trabalho nao guarda do jeito dele: as notas, os grupos, o formato de
+# numero, a cor de aviso e as faixas travadas da aba que as declara
+def _extras(a):
+    fmt = [[r[0], LAYOUT["estilos"][r[2]][4]] for r in a["celulas"] if r[2] is not None and LAYOUT["estilos"][r[2]][4]]
+    def fundos(grupos):
+        """[primeira, ultima, fechado, profundidade]: a profundidade e quantos grupos contem este, ele inclusive"""
+        return [[g[0], g[1], g[2], sum(1 for o in grupos if o[0] <= g[0] and g[1] <= o[1])] for g in grupos]
+    out = {"notas": sorted([k, v] for k, v in a.get("notas", {}).items()),
+           "grupos": {"lin": fundos(a["grupos"]["linhas"]), "col": fundos(a["grupos"]["colunas"])} if a.get("grupos") else None,
+           "formatos": fmt if a.get("grupos") else [], "condicional": a.get("condicional_gs", []),
+           "protegidas": a.get("protegidas", [])}
+    return {k: v for k, v in out.items() if v}
+
 gs, celulas, pecas = emitir_gs.escrever(
     wb, [a["nome"] for a in LAYOUT["abas"]],
+    extras={a["nome"]: _extras(a) for a in LAYOUT["abas"]},
     imgs={a["nome"]: a["imagens"] for a in LAYOUT["abas"]},
     arte_dir=os.path.join(AQUI, "arte"),
     limpa=LAYOUT["_meta"].get("largura_limpa"))

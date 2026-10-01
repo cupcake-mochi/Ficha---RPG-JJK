@@ -114,7 +114,8 @@ function notasDeRegra_(ss, idx) {
     'à distância': 'Ataque à distância = d20 + Destreza + maestria. A ficha usa o atributo de ' +
                    'ATRIBUTO DE ATAQUE - À DISTÂNCIA: troque só se uma regra mandar.',
     'deslocamento': 'O seu deslocamento base é 9 metros, e você corta esse total em quantos pedaços ' +
-                    'quiser dentro do turno. O Buff/Debuff do lado soma em metros.',
+                    'quiser dentro do turno. O Buff/Debuff do lado soma em metros. Cai pela metade com ' +
+                    'uniforme ou escudo sem a Força, ou com a carga acima do limite: a FICHA PESSOAL diz qual.',
     'vida_temp': 'Vida temporária não acumula: fica a maior, com teto de metade ' +
                  'da vida máxima. Some no fim da cena, e é gasta antes da vida ' +
                  'normal — a caixinha de ± desconta daqui primeiro e só o que ' +
@@ -126,8 +127,8 @@ function notasDeRegra_(ss, idx) {
     'integridade_temp': 'Nenhuma regra do manual concede integridade temporária. ' +
                         'Se algo conceder, vale a regra das outras duas: não acumula, ' +
                         'e o teto é metade da Integridade máxima.',
-    'equipamento': 'Escolha o que você veste: uniforme, escudo, ou os dois. Vazio = ' +
-                   'nem uniforme nem escudo, e vale a proteção do cobrir-se. Todo ' +
+    'equipamento': 'Vem da FICHA PESSOAL: o que você veste e o escudo da mão secundária. Troque lá. ' +
+                   'Vazio = nem uniforme nem escudo, e vale a proteção do cobrir-se. Todo ' +
                    'feiticeiro registrado recebe o Traje 1 na matrícula. Com dois tetos ' +
                    'de Destreza, vale o menor.',
     'refino escolhido': 'Quantas vezes você escolheu Refino num marco. Cada escolha ' +
@@ -182,10 +183,11 @@ function notasDeRegra_(ss, idx) {
     'trilha': 'O menu mostra só as Trilhas do Caminho escolhido.',
     'treinado em armas': 'Automático pelo Caminho, sem escolha: Bastião e Vanguarda treinam todas ' +
                          'as armas; Guia, Emanador e Evocador treinam só Arma de Fogo e Balestra.',
-    'nivel': 'Editável a qualquer hora, sem aviso. Digitar XP na caixa ao lado calcula e escreve o ' +
-             'nível sozinho, pela curva do capítulo 18 — mas quem não usa XP sobe aqui na mão.',
-    'xp': 'Some o total acumulado, não o gasto na última missão. Ao digitar aqui, o nível ao lado ' +
-         'sobe sozinho pra curva do capítulo 18. Apagar esta caixa não mexe no nível.',
+    'nivel': 'Editável a qualquer hora, sem aviso. Anotar uma missão na FICHA PESSOAL sobe o nível ' +
+             'sozinho, pela curva do capítulo 18, até o 20: dali em diante o livro pede um feito, e ' +
+             'quem sobe é você. O XP nunca desce o nível, e quem não usa XP sobe aqui na mão.',
+    'xp': 'A soma das missões anotadas na FICHA PESSOAL, no painel depois da coluna AU. Para mudar, ' +
+         'anote a missão lá. O nível ao lado sobe sozinho pela curva do capítulo 18.',
     'trocou por arma': 'Só vale pra Guia, Emanador e Evocador. Cada troca é 2 das 5 perícias ' +
                        'livres do Caminho por treino numa arma específica — não a categoria, não ' +
                        'o tipo, uma arma da lista. Pode repetir até 2 vezes.',
@@ -321,6 +323,25 @@ function protegerFormulas_(ss, idx) {
       });
     });
   });
+  // 01/10/2026: a aba que nasce no gerador (a FICHA PESSOAL) declara as faixas de fórmula dela no ABAS, e leva
+  // uma trava por faixa. Célula a célula seriam mais de duzentas chamadas, e o construir() não tem esse tempo.
+  ABAS.forEach(function (spec) {
+    var aba = ss.getSheetByName(spec.nome);
+    if (!aba || !(spec.protegidas || []).length) return;
+    _comRetentativa_(function () {
+      aba.getProtections(SpreadsheetApp.ProtectionType.RANGE).forEach(function (p) {
+        if (p.getDescription().indexOf('fórmula · ') === 0) p.remove();
+      });
+    });
+    spec.protegidas.forEach(function (a1) {
+      _comRetentativa_(function () {
+        var p = aba.getRange(a1).protect();
+        p.setDescription('fórmula · ' + spec.nome + '!' + a1);
+        p.setWarningOnly(true);
+      });
+      n++;
+    });
+  });
   return n + ' célula(s)';
 }
 
@@ -338,6 +359,12 @@ function onEdit(e) {
     continuarPaleta_(inicio, e.oldValue, true);
     return;
   }
+  // 01/10/2026: a FICHA PESSOAL tem as caixas de treino, as missões que sobem o nível e as notas que mudam.
+  if (aba === ABA_PESSOAL_) {
+    try { pessoalEditada_(e); } catch (err) { console.log('ficha pessoal: ' + err.message); }
+    continuarPaleta_(inicio, null, false, e.range);
+    return;
+  }
   // Qualquer outra edição também continua uma troca que ficou pela metade (a arte, quase sempre): é o
   // "caso alguém mexa na ficha" do Mizuki. Barato quando não há nada pendente.
   if (aba !== 'FICHA') { continuarPaleta_(inicio, null, false, e.range); return; }
@@ -350,7 +377,279 @@ function onEdit(e) {
   grupoDeArmaDaTrilha_(e, idx);
   trocaArmaDoCaminho_(e, idx);
   if (e.range.getA1Notation() === cel_(idx, 'origem')) notasDeGraca_(SpreadsheetApp.getActive(), idx);
+  try { fichaMexeNaPessoal_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }
   continuarPaleta_(inicio, null, false, e.range);
+}
+
+// =====================================================================
+// A FICHA PESSOAL — 01/10/2026, desenho fechado com o Mizuki por estudo.
+//
+// A aba nasce no gerador (ficha-v01/ficha_pessoal.py), e as contas dela moram em fórmula. Aqui fica só o
+// que fórmula não faz: marcar e desmarcar caixas de treino, subir o nível quando uma missão é anotada,
+// devolver a conta do Volume de um item e atualizar as notas que mudam com a ficha.
+//
+// Nenhum endereço da aba está escrito aqui. Ela publica o índice dela na DADOS, sob "campo pessoal" e
+// "célula pessoal", e as tabelas que este arquivo lê são achadas pelo cabeçalho.
+// =====================================================================
+var ABA_PESSOAL_ = 'FICHA PESSOAL';
+var IDXP_COL_CAMPO = 116;   // DL: a coluna do "campo pessoal" na DADOS; a do endereço é a seguinte
+
+/** A tabela da DADOS que tem estes cabeçalhos na mesma linha, linha a linha, até a primeira vazia. */
+function tabelaDaDados_(dados, chave, outras) {
+  outras = outras || [];
+  for (var r = 0; r < dados.length; r++) {
+    var c0 = dados[r].indexOf(chave);
+    if (c0 < 0) continue;
+    var cols = outras.map(function (o) { return dados[r].indexOf(o); });
+    if (cols.some(function (c) { return c < 0; })) continue;
+    var out = [];
+    for (var l = r + 1; l < dados.length && dados[l][c0] !== '' && dados[l][c0] !== null; l++) {
+      var linha = {};
+      linha[chave] = dados[l][c0];
+      outras.forEach(function (o, i) { linha[o] = dados[l][cols[i]]; });
+      out.push(linha);
+    }
+    return out;
+  }
+  return [];
+}
+
+/** O índice da FICHA PESSOAL: {campo: 'D39'} ou {campo: 'D45:AT57'}. Lê só as duas colunas dele. */
+function indicePessoal_() {
+  var dados = SpreadsheetApp.getActive().getSheetByName('DADOS');
+  var vals = dados.getRange(1, IDXP_COL_CAMPO, dados.getLastRow(), 2).getValues();
+  var m = {};
+  vals.forEach(function (l) { if (l[0] && l[1] && l[0] !== 'campo pessoal') m[l[0]] = String(l[1]); });
+  return m;
+}
+
+/** O índice da FICHA lido de uma DADOS que já está na mão. */
+function indiceDosDados_(dados) {
+  var m = {};
+  dados.forEach(function (l) {
+    var k = l[IDX_COL_CAMPO - 1], v = l[IDX_COL_CEL - 1];
+    if (k && v) m[k] = String(v);
+  });
+  return m;
+}
+
+/** 'D45:AT57' ou 'D45' em números. Sem planilha em volta: o regressao-pessoal.js roda no node. */
+function limitesA1_(a1) {
+  var m = /^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(String(a1 || '').replace(/\$/g, ''));
+  if (!m) return null;
+  var col = function (t) { var n = 0; for (var i = 0; i < t.length; i++) n = n * 26 + t.charCodeAt(i) - 64; return n; };
+  return { l1: Number(m[2]), c1: col(m[1]), l2: Number(m[4] || m[2]), c2: col(m[3] || m[1]) };
+}
+
+/** A edição encostou nesta faixa? Vale para célula solta e para colagem de várias. */
+function tocaFaixa_(range, a1) {
+  var f = limitesA1_(a1);
+  if (!f) return false;
+  var l1 = range.getRow(), c1 = range.getColumn();
+  var l2 = l1 + range.getNumRows() - 1, c2 = c1 + range.getNumColumns() - 1;
+  return l1 <= f.l2 && l2 >= f.l1 && c1 <= f.c2 && c2 >= f.c1;
+}
+
+/**
+ * O que muda nas caixas de treino quando uma delas é tocada. Sem planilha em volta.
+ *
+ * `armas` e `grupos` são [{caixa, categoria}], `marcadas` é {caixa: true|false} como a planilha está DEPOIS da
+ * edição, e `editada` é a caixa tocada. A caixa do grupo leva o grupo inteiro, para marcar e para desmarcar; a
+ * caixa de uma arma acerta a do grupo, que só fica marcada com o grupo inteiro. Devolve {caixa: valor} do que
+ * tem de mudar, e mais nada.
+ */
+function treinoDepoisDaCaixa_(armas, grupos, marcadas, editada) {
+  var muda = {};
+  var grupo = grupos.filter(function (g) { return g.caixa === editada; })[0];
+  if (grupo) {
+    var valor = marcadas[editada] === true;
+    armas.forEach(function (a) {
+      if (a.categoria === grupo.categoria && (marcadas[a.caixa] === true) !== valor) muda[a.caixa] = valor;
+    });
+    return muda;
+  }
+  var arma = armas.filter(function (a) { return a.caixa === editada; })[0];
+  if (!arma) return muda;
+  var dono = grupos.filter(function (g) { return g.categoria === arma.categoria; })[0];
+  if (!dono) return muda;
+  var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })
+                   .every(function (a) { return marcadas[a.caixa] === true; });
+  if ((marcadas[dono.caixa] === true) !== todas) muda[dono.caixa] = todas;
+  return muda;
+}
+
+/**
+ * O treino que o Caminho dá, em toda caixa: {caixa: true|false}. Sem planilha em volta.
+ *
+ * Bastião e Vanguarda treinam as treze categorias; os outros Caminhos, as do conjurador (Arma de Fogo e
+ * Balestra). Sem Caminho escolhido, nenhuma. As listas saem da DADOS, que as tira do catálogo.
+ */
+function treinoDoCaminho_(armas, grupos, caminho, caminhos, todas, conjurador) {
+  var existe = caminhos.indexOf(caminho) >= 0, tudo = todas.indexOf(caminho) >= 0;
+  var out = {};
+  armas.concat(grupos).forEach(function (x) {
+    out[x.caixa] = existe && (tudo || conjurador.indexOf(x.categoria) >= 0);
+  });
+  return out;
+}
+
+/** O maior nível cujo XP acumulado cabe no total. `tabela` é [{nivel, xp}]. Sem planilha em volta. */
+function nivelDoXp_(tabela, xp) {
+  var melhor = null;
+  tabela.forEach(function (l) { if (Number(l.xp) <= xp) melhor = Number(l.nivel); });
+  return melhor;
+}
+
+/**
+ * O nível para o qual a missão anotada sobe o personagem, ou null se ele fica onde está. Sem planilha em volta.
+ *
+ * O XP só sobe o nível, nunca desce: quem começou a campanha acima do nível 2, ou sobe na mão, não perde o
+ * nível por anotar uma missão. E ele para no limiar do feito (o 20 do livro) enquanto o personagem não
+ * passou dele: "Você chega ao nível 20 por XP. Você passa dele por feito." Quem já passou sobe normalmente.
+ */
+function nivelQueSobe_(tabela, xp, atual, limiar) {
+  var alvo = nivelDoXp_(tabela, xp);
+  if (alvo === null) return null;
+  if (limiar && atual <= limiar) alvo = Math.min(alvo, limiar);
+  return alvo > atual ? alvo : null;
+}
+
+function caixasDeTreino_(dados) {
+  var armas = tabelaDaDados_(dados, 'equipável', ['categoria do equipável', 'caixa do treino'])
+    .filter(function (l) { return l['caixa do treino']; })
+    .map(function (l) { return { caixa: String(l['caixa do treino']), categoria: String(l['categoria do equipável']) }; });
+  var linhas = tabelaDaDados_(dados, 'categoria de arma', ['conjurador treina', 'caixa do grupo']);
+  var grupos = linhas.map(function (l) { return { caixa: String(l['caixa do grupo']), categoria: String(l['categoria de arma']) }; });
+  var conjurador = linhas.filter(function (l) { return l['conjurador treina'] === 'sim'; })
+                         .map(function (l) { return String(l['categoria de arma']); });
+  return { armas: armas, grupos: grupos, conjurador: conjurador };
+}
+
+/** Grava as caixas de treino que mudaram, em duas chamadas: as que marcam e as que desmarcam. */
+function gravarCaixas_(aba, muda) {
+  var liga = [], desliga = [];
+  Object.keys(muda).forEach(function (c) { (muda[c] ? liga : desliga).push(c); });
+  if (liga.length) aba.getRangeList(liga).check();
+  if (desliga.length) aba.getRangeList(desliga).uncheck();
+  return liga.length + desliga.length;
+}
+
+function treinoMarcado_(e, aba, dados, ip) {
+  var t = caixasDeTreino_(dados), f = limitesA1_(ip['treino']);
+  var vals = aba.getRange(f.l1, f.c1, f.l2 - f.l1 + 1, f.c2 - f.c1 + 1).getValues();
+  var marcadas = {};
+  t.armas.concat(t.grupos).forEach(function (x) {
+    var p = limitesA1_(x.caixa);
+    marcadas[x.caixa] = vals[p.l1 - f.l1][p.c1 - f.c1] === true;
+  });
+  // toda caixa dentro da edição conta (colar ou apagar várias): os grupos primeiro, depois as armas
+  var muda = {};
+  var aplica = function (lista) {
+    lista.filter(function (x) { return tocaFaixa_(e.range, x.caixa); }).forEach(function (x) {
+      var m = treinoDepoisDaCaixa_(t.armas, t.grupos, marcadas, x.caixa);
+      Object.keys(m).forEach(function (c) { muda[c] = m[c]; marcadas[c] = m[c]; });
+    });
+  };
+  aplica(t.grupos);
+  aplica(t.armas);
+  gravarCaixas_(aba, muda);
+}
+
+function treinoPeloCaminho_(ss, dados, caminho) {
+  var aba = ss.getSheetByName(ABA_PESSOAL_);
+  var t = caixasDeTreino_(dados);
+  var caminhos = tabelaDaDados_(dados, 'Caminho').map(function (l) { return String(l['Caminho']); });
+  var todas = tabelaDaDados_(dados, 'Caminho que treina todas as armas')
+    .map(function (l) { return String(l['Caminho que treina todas as armas']); });
+  gravarCaixas_(aba, treinoDoCaminho_(t.armas, t.grupos, caminho, caminhos, todas, t.conjurador));
+}
+
+/** A missão anotada sobe o nível da FICHA, pela curva da DADOS. */
+function nivelPelaMissao_(ss, dados, ip) {
+  var total = Number(ss.getSheetByName(ABA_PESSOAL_).getRange(ip['xp total']).getValue());
+  if (isNaN(total)) return;
+  var tabela = tabelaDaDados_(dados, 'nível', ['xp acumulado'])
+    .map(function (l) { return { nivel: l['nível'], xp: l['xp acumulado'] }; });
+  var limiar = Number((tabelaDaDados_(dados, 'limiar do feito')[0] || {})['limiar do feito']) || 0;
+  var cn = cel_(indiceDosDados_(dados), 'nivel');
+  if (!cn) return;
+  var caixa = ss.getSheetByName('FICHA').getRange(cn);
+  var sobe = nivelQueSobe_(tabela, total, Number(caixa.getValue()) || 0, limiar);
+  if (sobe !== null) caixa.setValue(sobe);
+}
+
+/**
+ * O Volume do item é uma conta (quantidade vezes o item leve), mas o mestre pode pesar o item de outro jeito, e aí
+ * o jogador digita por cima. Apagar a caixa traz a conta de volta: ela é copiada da linha vizinha, em R1C1, que
+ * vale em qualquer linha e não depende do idioma da planilha.
+ */
+function volumeDoItem_(e, aba, ip) {
+  var mexeu = false;
+  ['volume dos itens 1', 'volume dos itens 2'].forEach(function (k) {
+    if (!tocaFaixa_(e.range, ip[k])) return;
+    var f = limitesA1_(ip[k]);
+    var faixa = aba.getRange(f.l1, f.c1, f.l2 - f.l1 + 1, 1);
+    var formulas = faixa.getFormulasR1C1(), valores = faixa.getValues();
+    var molde = formulas.filter(function (l) { return l[0]; })[0];
+    if (!molde) return;
+    formulas.forEach(function (l, i) {
+      if (l[0] || valores[i][0] !== '') return;
+      aba.getRange(f.l1 + i, f.c1).setFormulaR1C1(molde[0]);
+      mexeu = true;
+    });
+  });
+  return mexeu;
+}
+
+/**
+ * As notas que mudam com a ficha: o que falta de Força e o que isso custa, a carga acima do limite e a situação
+ * do Traje. O texto de cada uma é uma fórmula da DADOS, e aqui ele é copiado para a nota da caixa, só se mudou.
+ */
+function notasVivas_(ss, dados) {
+  var aba = ss.getSheetByName(ABA_PESSOAL_);
+  if (!aba) return 0;
+  var n = 0;
+  tabelaDaDados_(dados, 'nota viva', ['texto da nota', 'caixa da nota']).forEach(function (l) {
+    if (!l['caixa da nota']) return;
+    var caixa = aba.getRange(String(l['caixa da nota'])), texto = String(l['texto da nota'] || '');
+    if (caixa.getNote() !== texto) { caixa.setNote(texto); n++; }
+  });
+  return n;
+}
+
+function pessoalEditada_(e) {
+  var ss = SpreadsheetApp.getActive(), aba = e.range.getSheet();
+  var ip = indicePessoal_();
+  var toca = function (k) { return tocaFaixa_(e.range, ip[k]); };
+  // as tabelas de missão são quantas o índice publicar: as duas do painel e as duas da extensão
+  var treino = toca('treino'), missao = Object.keys(ip).some(function (k) { return k.indexOf('missões ') === 0 && toca(k); });
+  var notas = toca('em uso') || toca('fileira') || toca('equipáveis') || toca('itens') || toca('grau');
+  if (!treino && !missao && !notas) return;         // o dossiê e o resto não pedem nada do script
+  if (notas && volumeDoItem_(e, aba, ip)) SpreadsheetApp.flush();
+  var dados = ss.getSheetByName('DADOS').getDataRange().getValues();
+  if (treino) treinoMarcado_(e, aba, dados, ip);
+  if (missao) nivelPelaMissao_(ss, dados, ip);
+  if (notas) notasVivas_(ss, dados);
+}
+
+/** O que a FICHA muda na FICHA PESSOAL: o Caminho marca o treino, e a Força e o Caminho mexem nas notas. */
+function fichaMexeNaPessoal_(e, idx) {
+  var a1 = e.range.getA1Notation();
+  var caminho = a1 === cel_(idx, 'caminho');
+  var forca = a1 === cel_(idx, 'atr_base_Força') || a1 === cel_(idx, 'corpo_Força');
+  if (!caminho && !forca) return;
+  var ss = SpreadsheetApp.getActive();
+  if (!ss.getSheetByName(ABA_PESSOAL_)) return;
+  var dados = ss.getSheetByName('DADOS').getDataRange().getValues();
+  if (caminho) treinoPeloCaminho_(ss, dados, String(e.value || ''));
+  notasVivas_(ss, dados);
+}
+
+/** O que o construir() faz pela FICHA PESSOAL depois de montar: as notas que mudam nascem certas. */
+function configurarPessoal_(ss) {
+  if (!ss.getSheetByName(ABA_PESSOAL_)) return 'sem a aba';
+  SpreadsheetApp.flush();
+  return notasVivas_(ss, ss.getSheetByName('DADOS').getDataRange().getValues()) + ' nota(s) viva(s)';
 }
 
 /**
@@ -684,7 +983,7 @@ var PALETAS = {
       "fundo": "FDF2F7",
       "painel": "FAD6E7",
       "painel_alto": "F5B7D4",
-      "linha": "F0BCD4",
+      "linha": "A44973",
       "texto": "1E1320",
       "texto_fraco": "2D0A1A",
       "acento": "E32175",
@@ -694,11 +993,12 @@ var PALETAS = {
       "bloco": "C22B71",
       "menu_grande": "FFB6D8",
       "regua": "CB015E",
+      "barra": "956E76",
       "osso_por_papel": {
         "fundo": "1E1320",
         "painel": "1E1320",
         "painel_alto": "1E1320",
-        "linha": "1E1320",
+        "linha": "FBE4EF",
         "texto": "FBE4EF",
         "texto_fraco": "FBE4EF",
         "acento": "000000",
@@ -724,7 +1024,7 @@ var PALETAS = {
       "fundo": "1B111D",
       "painel": "311E33",
       "painel_alto": "492D4D",
-      "linha": "64163B",
+      "linha": "B75E87",
       "texto": "FBE4EF",
       "texto_fraco": "F1BFD6",
       "acento": "F8C7DC",
@@ -734,11 +1034,12 @@ var PALETAS = {
       "bloco": "D44085",
       "menu_grande": "46244B",
       "regua": "B377BB",
+      "barra": "B377BB",
       "osso_por_papel": {
         "fundo": "FBE4EF",
         "painel": "FBE4EF",
         "painel_alto": "FBE4EF",
-        "linha": "FBE4EF",
+        "linha": "000000",
         "texto": "1E1320",
         "texto_fraco": "1E1320",
         "acento": "1E1320",
@@ -766,7 +1067,7 @@ var PALETAS = {
       "fundo": "F7F5F9",
       "painel": "E8E2EE",
       "painel_alto": "D6CBE1",
-      "linha": "D6D0DC",
+      "linha": "766B82",
       "texto": "151122",
       "texto_fraco": "1B1720",
       "acento": "3B3360",
@@ -776,11 +1077,12 @@ var PALETAS = {
       "bloco": "756588",
       "menu_grande": "DACDE8",
       "regua": "66428A",
+      "barra": "66428A",
       "osso_por_papel": {
         "fundo": "151122",
         "painel": "151122",
         "painel_alto": "151122",
-        "linha": "151122",
+        "linha": "FFFFFF",
         "texto": "F0ECF4",
         "texto_fraco": "F0ECF4",
         "acento": "F0ECF4",
@@ -806,7 +1108,7 @@ var PALETAS = {
       "fundo": "13101E",
       "painel": "211C36",
       "painel_alto": "322A51",
-      "linha": "3C3446",
+      "linha": "897F96",
       "texto": "F0ECF4",
       "texto_fraco": "D7D2DE",
       "acento": "7569AF",
@@ -816,11 +1118,12 @@ var PALETAS = {
       "bloco": "89799C",
       "menu_grande": "29204F",
       "regua": "816FC3",
+      "barra": "816FC3",
       "osso_por_papel": {
         "fundo": "F0ECF4",
         "painel": "F0ECF4",
         "painel_alto": "F0ECF4",
-        "linha": "F0ECF4",
+        "linha": "151122",
         "texto": "151122",
         "texto_fraco": "151122",
         "acento": "FFFFFF",
@@ -848,7 +1151,7 @@ var PALETAS = {
       "fundo": "FFF0F0",
       "painel": "FFD1D1",
       "painel_alto": "FFADAD",
-      "linha": "E8C4CB",
+      "linha": "965763",
       "texto": "1D1616",
       "texto_fraco": "280F14",
       "acento": "D64024",
@@ -858,11 +1161,12 @@ var PALETAS = {
       "bloco": "AB4257",
       "menu_grande": "FFB6B6",
       "regua": "CC0000",
+      "barra": "936D66",
       "osso_por_papel": {
         "fundo": "280F14",
         "painel": "280F14",
         "painel_alto": "280F14",
-        "linha": "280F14",
+        "linha": "FFFFFF",
         "texto": "FFE0E0",
         "texto_fraco": "FFE0E0",
         "acento": "000000",
@@ -888,7 +1192,7 @@ var PALETAS = {
       "fundo": "1A1414",
       "painel": "2E2424",
       "painel_alto": "453636",
-      "linha": "58222D",
+      "linha": "A96C78",
       "texto": "FFE0E0",
       "texto_fraco": "E9C6CD",
       "acento": "F7D6D0",
@@ -898,11 +1202,12 @@ var PALETAS = {
       "bloco": "BE576B",
       "menu_grande": "402E2E",
       "regua": "A58D8D",
+      "barra": "DCB1B2",
       "osso_por_papel": {
         "fundo": "FFE0E0",
         "painel": "FFE0E0",
         "painel_alto": "FFE0E0",
-        "linha": "FFE0E0",
+        "linha": "000000",
         "texto": "280F14",
         "texto_fraco": "280F14",
         "acento": "280F14",
@@ -930,7 +1235,7 @@ var PALETAS = {
       "fundo": "FFFBF0",
       "painel": "FFF2D1",
       "painel_alto": "FFE8AD",
-      "linha": "E8C4D1",
+      "linha": "96576D",
       "texto": "270C1E",
       "texto_fraco": "280F18",
       "acento": "DB5757",
@@ -940,11 +1245,12 @@ var PALETAS = {
       "bloco": "AB4266",
       "menu_grande": "FFEAB6",
       "regua": "CC9300",
+      "barra": "968364",
       "osso_por_papel": {
         "fundo": "270C1E",
         "painel": "270C1E",
         "painel_alto": "270C1E",
-        "linha": "270C1E",
+        "linha": "FFF6E0",
         "texto": "FFF6E0",
         "texto_fraco": "FFF6E0",
         "acento": "270C1E",
@@ -970,7 +1276,7 @@ var PALETAS = {
       "fundo": "230B1B",
       "painel": "3F1330",
       "painel_alto": "5E1C47",
-      "linha": "582235",
+      "linha": "A96C81",
       "texto": "FFF6E0",
       "texto_fraco": "E9C6D2",
       "acento": "EA9D9D",
@@ -980,11 +1286,12 @@ var PALETAS = {
       "bloco": "BE577B",
       "menu_grande": "5F0F43",
       "regua": "E052AF",
+      "barra": "D6B1C6",
       "osso_por_papel": {
         "fundo": "FFF6E0",
         "painel": "FFF6E0",
         "painel_alto": "FFF6E0",
-        "linha": "FFF6E0",
+        "linha": "000000",
         "texto": "270C1E",
         "texto_fraco": "270C1E",
         "acento": "270C1E",
@@ -1012,16 +1319,17 @@ var PALETAS = {
       "fundo": "FEFBF0",
       "painel": "FDF4D3",
       "painel_alto": "FCECB1",
-      "linha": "D6CEDF",
+      "linha": "A68C29",
       "texto": "1D1616",
       "texto_fraco": "1B1621",
       "acento": "4489C4",
       "tinta": "FEF8E2",
       "papel": "FEFAEB",
       "painel_baixo": "FEF9E5",
-      "bloco": "755D90",
+      "bloco": "A07E00",
       "menu_grande": "FFEFB6",
       "regua": "CCA100",
+      "barra": "4489C4",
       "osso_por_papel": {
         "fundo": "1D1616",
         "painel": "1D1616",
@@ -1033,7 +1341,7 @@ var PALETAS = {
         "tinta": "1D1616",
         "papel": "1D1616",
         "painel_baixo": "1D1616",
-        "bloco": "FEF8E2",
+        "bloco": "1D1616",
         "menu_grande": "1D1616",
         "regua": "1D1616"
       },
@@ -1052,21 +1360,22 @@ var PALETAS = {
       "fundo": "1A1313",
       "painel": "2F2323",
       "painel_alto": "473434",
-      "linha": "3C304A",
+      "linha": "987D7D",
       "texto": "FEF8E2",
       "texto_fraco": "D7CFE0",
       "acento": "B0CDE6",
       "tinta": "170808",
       "papel": "241A1A",
       "painel_baixo": "2E2222",
-      "bloco": "8972A3",
+      "bloco": "A17474",
       "menu_grande": "432C2C",
       "regua": "AD8585",
+      "barra": "DCB1B1",
       "osso_por_papel": {
         "fundo": "FEF8E2",
         "painel": "FEF8E2",
         "painel_alto": "FEF8E2",
-        "linha": "FEF8E2",
+        "linha": "1D1616",
         "texto": "1D1616",
         "texto_fraco": "1D1616",
         "acento": "1D1616",
@@ -1094,7 +1403,7 @@ var PALETAS = {
       "fundo": "F1F7FE",
       "painel": "D4E8FC",
       "painel_alto": "B2D6FA",
-      "linha": "B7BEF5",
+      "linha": "414CAC",
       "texto": "060F2D",
       "texto_fraco": "070B30",
       "acento": "4A6FFF",
@@ -1104,11 +1413,12 @@ var PALETAS = {
       "bloco": "1D2FD0",
       "menu_grande": "B6DAFF",
       "regua": "0065CC",
+      "barra": "1D2FD0",
       "osso_por_papel": {
         "fundo": "070B30",
         "painel": "070B30",
         "painel_alto": "070B30",
-        "linha": "070B30",
+        "linha": "E2F0FD",
         "texto": "E2F0FD",
         "texto_fraco": "E2F0FD",
         "acento": "070B30",
@@ -1134,16 +1444,17 @@ var PALETAS = {
       "fundo": "060D28",
       "painel": "0A1748",
       "painel_alto": "0F236B",
-      "linha": "0F186B",
+      "linha": "5661BF",
       "texto": "E2F0FD",
       "texto_fraco": "BAC0F5",
       "acento": "7692FF",
       "tinta": "04091B",
       "papel": "081236",
       "painel_baixo": "0A1746",
-      "bloco": "3345E2",
+      "bloco": "4F5FE6",
       "menu_grande": "00186E",
       "regua": "3561FD",
+      "barra": "4F5FE6",
       "osso_por_papel": {
         "fundo": "E2F0FD",
         "painel": "E2F0FD",
@@ -1155,7 +1466,7 @@ var PALETAS = {
         "tinta": "E2F0FD",
         "papel": "E2F0FD",
         "painel_baixo": "E2F0FD",
-        "bloco": "E2F0FD",
+        "bloco": "FFFFFF",
         "menu_grande": "E2F0FD",
         "regua": "FFFFFF"
       },
@@ -1176,16 +1487,17 @@ var PALETAS = {
       "fundo": "FFFBF0",
       "painel": "FFF3D1",
       "painel_alto": "FFEAAD",
-      "linha": "FFE6AD",
+      "linha": "B2892C",
       "texto": "330000",
       "texto_fraco": "372600",
       "acento": "DA6000",
       "tinta": "FFF7E0",
       "papel": "FFFAEA",
       "painel_baixo": "FFF8E4",
-      "bloco": "EDA400",
+      "bloco": "AF7900",
       "menu_grande": "FFECB6",
       "regua": "CC9800",
+      "barra": "958464",
       "osso_por_papel": {
         "fundo": "330000",
         "painel": "330000",
@@ -1216,7 +1528,7 @@ var PALETAS = {
       "fundo": "2E0000",
       "painel": "520000",
       "painel_alto": "7A0000",
-      "linha": "7A5500",
+      "linha": "D0A545",
       "texto": "FFF7E0",
       "texto_fraco": "FFE7B0",
       "acento": "FFA259",
@@ -1226,11 +1538,12 @@ var PALETAS = {
       "bloco": "FFB716",
       "menu_grande": "6E0000",
       "regua": "FF3333",
+      "barra": "DCB2AD",
       "osso_por_papel": {
         "fundo": "FFF7E0",
         "painel": "FFF7E0",
         "painel_alto": "FFF7E0",
-        "linha": "FFF7E0",
+        "linha": "330000",
         "texto": "330000",
         "texto_fraco": "330000",
         "acento": "330000",
@@ -1258,16 +1571,17 @@ var PALETAS = {
       "fundo": "FBF8F4",
       "painel": "F2EADE",
       "painel_alto": "E8D9C5",
-      "linha": "DBD1D1",
+      "linha": "9E7D4F",
       "texto": "1B1E15",
       "texto_fraco": "1F1818",
       "acento": "997B4E",
       "tinta": "F8F1E7",
       "papel": "F9F5F0",
       "painel_baixo": "F7F3EC",
-      "bloco": "856868",
+      "bloco": "A9762F",
       "menu_grande": "F0DDC5",
       "regua": "9F6F2D",
+      "barra": "937C5F",
       "osso_por_papel": {
         "fundo": "1F1818",
         "painel": "1F1818",
@@ -1279,7 +1593,7 @@ var PALETAS = {
         "tinta": "1F1818",
         "papel": "1F1818",
         "painel_baixo": "1F1818",
-        "bloco": "FFFFFF",
+        "bloco": "000000",
         "menu_grande": "1F1818",
         "regua": "000000"
       },
@@ -1298,21 +1612,22 @@ var PALETAS = {
       "fundo": "181B13",
       "painel": "2B3022",
       "painel_alto": "414832",
-      "linha": "453636",
+      "linha": "909B7A",
       "texto": "F6F1E9",
       "texto_fraco": "DCD3D3",
       "acento": "EAE2D6",
       "tinta": "121708",
       "papel": "212519",
       "painel_baixo": "2A2F21",
-      "bloco": "987C7C",
+      "bloco": "94A66F",
       "menu_grande": "3C442A",
       "regua": "A1B181",
+      "barra": "B7C4A0",
       "osso_por_papel": {
         "fundo": "F6F1E9",
         "painel": "F6F1E9",
         "painel_alto": "F6F1E9",
-        "linha": "F6F1E9",
+        "linha": "1F1818",
         "texto": "1F1818",
         "texto_fraco": "1F1818",
         "acento": "1F1818",
@@ -1340,16 +1655,17 @@ var PALETAS = {
       "fundo": "F1FEFE",
       "painel": "D4FCFB",
       "painel_alto": "B3F9F8",
-      "linha": "C1EAEB",
+      "linha": "529A9B",
       "texto": "2E0505",
       "texto_fraco": "0D292A",
       "acento": "ED4747",
       "tinta": "E3FDFC",
       "papel": "ECFDFD",
       "painel_baixo": "E6FDFD",
-      "bloco": "3AB1B4",
+      "bloco": "2F9092",
       "menu_grande": "B6FFFE",
       "regua": "00CCC8",
+      "barra": "2F9092",
       "osso_por_papel": {
         "fundo": "2E0505",
         "painel": "2E0505",
@@ -1380,7 +1696,7 @@ var PALETAS = {
       "fundo": "290505",
       "painel": "490909",
       "painel_alto": "6D0D0D",
-      "linha": "1E5C5D",
+      "linha": "66ADAE",
       "texto": "E3FDFC",
       "texto_fraco": "C4EBEC",
       "acento": "F7ADAD",
@@ -1390,11 +1706,12 @@ var PALETAS = {
       "bloco": "4FC4C6",
       "menu_grande": "6E0000",
       "regua": "FF3333",
+      "barra": "4FC4C6",
       "osso_por_papel": {
         "fundo": "E3FDFC",
         "painel": "E3FDFC",
         "painel_alto": "E3FDFC",
-        "linha": "E3FDFC",
+        "linha": "2E0505",
         "texto": "2E0505",
         "texto_fraco": "2E0505",
         "acento": "2E0505",
@@ -1422,16 +1739,17 @@ var PALETAS = {
       "fundo": "FFF8F0",
       "painel": "FFEAD1",
       "painel_alto": "FFD9AD",
-      "linha": "EDD9C0",
+      "linha": "9E7C4F",
       "texto": "33000D",
       "texto_fraco": "2B1E0C",
       "acento": "D45060",
       "tinta": "FFF1E0",
       "papel": "FFF5EA",
       "painel_baixo": "FFF3E4",
-      "bloco": "B87F35",
+      "bloco": "AA7531",
       "menu_grande": "FFDDB6",
       "regua": "CC6E00",
+      "barra": "9B7C66",
       "osso_por_papel": {
         "fundo": "33000D",
         "painel": "33000D",
@@ -1462,7 +1780,7 @@ var PALETAS = {
       "fundo": "2E000B",
       "painel": "520014",
       "painel_alto": "7A001F",
-      "linha": "5F421B",
+      "linha": "B19064",
       "texto": "FFF1E0",
       "texto_fraco": "EEDBC2",
       "acento": "D45060",
@@ -1472,11 +1790,12 @@ var PALETAS = {
       "bloco": "CB934A",
       "menu_grande": "6E001C",
       "regua": "FF3366",
+      "barra": "DCB1B4",
       "osso_por_papel": {
         "fundo": "FFF1E0",
         "painel": "FFF1E0",
         "painel_alto": "FFF1E0",
-        "linha": "FFF1E0",
+        "linha": "33000D",
         "texto": "33000D",
         "texto_fraco": "33000D",
         "acento": "000000",
@@ -1504,7 +1823,7 @@ var PALETAS = {
       "fundo": "FFFCF0",
       "painel": "FFF6D1",
       "painel_alto": "FFF0AD",
-      "linha": "FEAFFD",
+      "linha": "BB32BA",
       "texto": "150132",
       "texto_fraco": "360135",
       "acento": "FF2B67",
@@ -1514,11 +1833,12 @@ var PALETAS = {
       "bloco": "E904E6",
       "menu_grande": "FFF2B6",
       "regua": "CCA600",
+      "barra": "E904E6",
       "osso_por_papel": {
         "fundo": "150132",
         "painel": "150132",
         "painel_alto": "150132",
-        "linha": "150132",
+        "linha": "FFF9E0",
         "texto": "FFF9E0",
         "texto_fraco": "FFF9E0",
         "acento": "150132",
@@ -1544,7 +1864,7 @@ var PALETAS = {
       "fundo": "13012D",
       "painel": "210150",
       "painel_alto": "320279",
-      "linha": "780277",
+      "linha": "CE47CC",
       "texto": "FFF9E0",
       "texto_fraco": "FEB2FD",
       "acento": "FF467A",
@@ -1554,11 +1874,12 @@ var PALETAS = {
       "bloco": "FB1AF8",
       "menu_grande": "2C006E",
       "regua": "8633FF",
+      "barra": "FB1AF8",
       "osso_por_papel": {
         "fundo": "FFF9E0",
         "painel": "FFF9E0",
         "painel_alto": "FFF9E0",
-        "linha": "FFF9E0",
+        "linha": "150132",
         "texto": "150132",
         "texto_fraco": "150132",
         "acento": "150132",
@@ -1586,16 +1907,17 @@ var PALETAS = {
       "fundo": "F1FEFB",
       "painel": "D5FBF4",
       "painel_alto": "B5F8EB",
-      "linha": "C4E1E9",
+      "linha": "568A97",
       "texto": "0B0D28",
       "texto_fraco": "0F2328",
       "acento": "2E6FA0",
       "tinta": "E3FCF8",
       "papel": "ECFDFA",
       "painel_baixo": "E7FDF8",
-      "bloco": "4197AD",
+      "bloco": "3C8CA0",
       "menu_grande": "B6FFF1",
       "regua": "00CCA5",
+      "barra": "3C8CA0",
       "osso_por_papel": {
         "fundo": "0B0D28",
         "painel": "0B0D28",
@@ -1626,7 +1948,7 @@ var PALETAS = {
       "fundo": "0A0C24",
       "painel": "121640",
       "painel_alto": "1B2060",
-      "linha": "214E59",
+      "linha": "6B9DAA",
       "texto": "E3FCF8",
       "texto_fraco": "C6E2EA",
       "acento": "2F72A4",
@@ -1636,11 +1958,12 @@ var PALETAS = {
       "bloco": "55AAC0",
       "menu_grande": "0D1361",
       "regua": "4E5AE4",
+      "barra": "55AAC0",
       "osso_por_papel": {
         "fundo": "E3FCF8",
         "painel": "E3FCF8",
         "painel_alto": "E3FCF8",
-        "linha": "E3FCF8",
+        "linha": "0B0D28",
         "texto": "0B0D28",
         "texto_fraco": "0B0D28",
         "acento": "E3FCF8",
@@ -1668,16 +1991,17 @@ var PALETAS = {
       "fundo": "FFFAF0",
       "painel": "FFF1D1",
       "painel_alto": "FFE6AD",
-      "linha": "B0FDE9",
+      "linha": "2CA082",
       "texto": "04242F",
       "texto_fraco": "023628",
       "acento": "F04000",
       "tinta": "FFF6E0",
       "papel": "FFF9EA",
       "painel_baixo": "FFF7E4",
-      "bloco": "06E7AC",
+      "bloco": "04936E",
       "menu_grande": "FFE9B6",
       "regua": "CC8F00",
+      "barra": "04936E",
       "osso_por_papel": {
         "fundo": "04242F",
         "painel": "04242F",
@@ -1689,7 +2013,7 @@ var PALETAS = {
         "tinta": "04242F",
         "papel": "04242F",
         "painel_baixo": "04242F",
-        "bloco": "04242F",
+        "bloco": "000000",
         "menu_grande": "04242F",
         "regua": "04242F"
       },
@@ -1708,7 +2032,7 @@ var PALETAS = {
       "fundo": "04202A",
       "painel": "073A4A",
       "painel_alto": "0B5770",
-      "linha": "037759",
+      "linha": "48CDAA",
       "texto": "FFF6E0",
       "texto_fraco": "B3FDEA",
       "acento": "FF7F50",
@@ -1718,11 +2042,12 @@ var PALETAS = {
       "bloco": "1CF9BF",
       "menu_grande": "00536E",
       "regua": "33CCFF",
+      "barra": "1CF9BF",
       "osso_por_papel": {
         "fundo": "FFF6E0",
         "painel": "FFF6E0",
         "painel_alto": "FFF6E0",
-        "linha": "FFF6E0",
+        "linha": "04242F",
         "texto": "04242F",
         "texto_fraco": "04242F",
         "acento": "04242F",
@@ -1750,7 +2075,7 @@ var PALETAS = {
       "fundo": "FAF9F5",
       "painel": "EFECE1",
       "painel_alto": "E2DDCB",
-      "linha": "E8D5C4",
+      "linha": "967557",
       "texto": "1D1616",
       "texto_fraco": "281B0F",
       "acento": "412D15",
@@ -1760,11 +2085,12 @@ var PALETAS = {
       "bloco": "AB7442",
       "menu_grande": "E8E2CC",
       "regua": "8C7C40",
+      "barra": "8A805E",
       "osso_por_papel": {
         "fundo": "1D1616",
         "painel": "1D1616",
         "painel_alto": "1D1616",
-        "linha": "1D1616",
+        "linha": "000000",
         "texto": "F4F2EB",
         "texto_fraco": "F4F2EB",
         "acento": "F4F2EB",
@@ -1790,7 +2116,7 @@ var PALETAS = {
       "fundo": "1A1414",
       "painel": "2E2424",
       "painel_alto": "453636",
-      "linha": "583C22",
+      "linha": "A9896C",
       "texto": "F4F2EB",
       "texto_fraco": "E9D7C6",
       "acento": "9C6C32",
@@ -1800,11 +2126,12 @@ var PALETAS = {
       "bloco": "BE8857",
       "menu_grande": "402E2E",
       "regua": "A58D8D",
+      "barra": "DCB1B2",
       "osso_por_papel": {
         "fundo": "F4F2EB",
         "painel": "F4F2EB",
         "painel_alto": "F4F2EB",
-        "linha": "F4F2EB",
+        "linha": "1D1616",
         "texto": "1D1616",
         "texto_fraco": "1D1616",
         "acento": "000000",
@@ -1832,7 +2159,7 @@ var PALETAS = {
       "fundo": "FDF4F1",
       "painel": "FADFD6",
       "painel_alto": "F7C7B5",
-      "linha": "FAB4B2",
+      "linha": "B53B38",
       "texto": "2D0A06",
       "texto_fraco": "340503",
       "acento": "740A03",
@@ -1842,11 +2169,12 @@ var PALETAS = {
       "bloco": "DF130E",
       "menu_grande": "FFCAB6",
       "regua": "CC3500",
+      "barra": "987369",
       "osso_por_papel": {
         "fundo": "2D0A06",
         "painel": "2D0A06",
         "painel_alto": "2D0A06",
-        "linha": "2D0A06",
+        "linha": "FCEAE3",
         "texto": "FCEAE3",
         "texto_fraco": "FCEAE3",
         "acento": "FCEAE3",
@@ -1872,7 +2200,7 @@ var PALETAS = {
       "fundo": "290905",
       "painel": "491009",
       "painel_alto": "6D180E",
-      "linha": "730A07",
+      "linha": "C8504D",
       "texto": "FCEAE3",
       "texto_fraco": "FAB7B5",
       "acento": "ED1406",
@@ -1882,11 +2210,12 @@ var PALETAS = {
       "bloco": "F12923",
       "menu_grande": "6E0C00",
       "regua": "FF4A33",
+      "barra": "DCB2AB",
       "osso_por_papel": {
         "fundo": "FCEAE3",
         "painel": "FCEAE3",
         "painel_alto": "FCEAE3",
-        "linha": "FCEAE3",
+        "linha": "000000",
         "texto": "2D0A06",
         "texto_fraco": "2D0A06",
         "acento": "000000",
@@ -1914,7 +2243,7 @@ var PALETAS = {
       "fundo": "FFF0F0",
       "painel": "FFD1D1",
       "painel_alto": "FFADAD",
-      "linha": "DFCDCD",
+      "linha": "866767",
       "texto": "000033",
       "texto_fraco": "221515",
       "acento": "9E2A3A",
@@ -1924,11 +2253,12 @@ var PALETAS = {
       "bloco": "915C5C",
       "menu_grande": "FFB6B6",
       "regua": "CC0000",
+      "barra": "936D66",
       "osso_por_papel": {
         "fundo": "000033",
         "painel": "000033",
         "painel_alto": "000033",
-        "linha": "000033",
+        "linha": "FFFFFF",
         "texto": "FFE0E0",
         "texto_fraco": "FFE0E0",
         "acento": "FFE0E0",
@@ -1954,7 +2284,7 @@ var PALETAS = {
       "fundo": "00002E",
       "painel": "000052",
       "painel_alto": "00007A",
-      "linha": "4B3030",
+      "linha": "9A7B7B",
       "texto": "FFE0E0",
       "texto_fraco": "E0CFCF",
       "acento": "BF3346",
@@ -1964,11 +2294,12 @@ var PALETAS = {
       "bloco": "A47171",
       "menu_grande": "00006E",
       "regua": "3333FF",
+      "barra": "4040FF",
       "osso_por_papel": {
         "fundo": "FFE0E0",
         "painel": "FFE0E0",
         "painel_alto": "FFE0E0",
-        "linha": "FFE0E0",
+        "linha": "000033",
         "texto": "000033",
         "texto_fraco": "000033",
         "acento": "FFFFFF",
@@ -1996,16 +2327,17 @@ var PALETAS = {
       "fundo": "F5FAF9",
       "painel": "E1EFEE",
       "painel_alto": "C9E3E2",
-      "linha": "B5F2F7",
+      "linha": "389AA3",
       "texto": "16042F",
       "texto_fraco": "052E32",
       "acento": "065084",
       "tinta": "E7F8F7",
       "papel": "F1F8F8",
       "painel_baixo": "EDF6F5",
-      "bloco": "17C7D6",
+      "bloco": "108E98",
       "menu_grande": "CBEAE9",
       "regua": "3C908B",
+      "barra": "108E98",
       "osso_por_papel": {
         "fundo": "16042F",
         "painel": "16042F",
@@ -2036,7 +2368,7 @@ var PALETAS = {
       "fundo": "14042A",
       "painel": "23074B",
       "painel_alto": "340A70",
-      "linha": "0C676F",
+      "linha": "52BAC3",
       "texto": "EBF5F4",
       "texto_fraco": "B8F2F7",
       "acento": "0870B9",
@@ -2046,11 +2378,12 @@ var PALETAS = {
       "bloco": "2CD9E8",
       "menu_grande": "2D006E",
       "regua": "8733FF",
+      "barra": "2CD9E8",
       "osso_por_papel": {
         "fundo": "EBF5F4",
         "painel": "EBF5F4",
         "painel_alto": "EBF5F4",
-        "linha": "EBF5F4",
+        "linha": "16042F",
         "texto": "16042F",
         "texto_fraco": "16042F",
         "acento": "EBF5F4",
@@ -2078,7 +2411,7 @@ var PALETAS = {
       "fundo": "FFFCF0",
       "painel": "FFF6D1",
       "painel_alto": "FFEFAD",
-      "linha": "D0B7F6",
+      "linha": "6B3FAE",
       "texto": "070033",
       "texto_fraco": "170631",
       "acento": "B13BFF",
@@ -2088,11 +2421,12 @@ var PALETAS = {
       "bloco": "641BD2",
       "menu_grande": "FFF1B6",
       "regua": "CCA300",
+      "barra": "641BD2",
       "osso_por_papel": {
         "fundo": "070033",
         "painel": "070033",
         "painel_alto": "070033",
-        "linha": "070033",
+        "linha": "FFF9E0",
         "texto": "FFF9E0",
         "texto_fraco": "FFF9E0",
         "acento": "070033",
@@ -2118,16 +2452,17 @@ var PALETAS = {
       "fundo": "06002E",
       "painel": "0B0052",
       "painel_alto": "11007A",
-      "linha": "330E6D",
+      "linha": "7F54C1",
       "texto": "FFF9E0",
       "texto_fraco": "D1B9F6",
       "acento": "B13BFF",
       "tinta": "04001F",
       "papel": "09003E",
       "painel_baixo": "0B0050",
-      "bloco": "7830E5",
+      "bloco": "8240E7",
       "menu_grande": "0F006E",
       "regua": "5033FF",
+      "barra": "8240E7",
       "osso_por_papel": {
         "fundo": "FFF9E0",
         "painel": "FFF9E0",
@@ -2160,7 +2495,7 @@ var PALETAS = {
       "fundo": "FDF2F6",
       "painel": "FAD7E3",
       "painel_alto": "F5B7CD",
-      "linha": "EAC2D1",
+      "linha": "9A536D",
       "texto": "2F0414",
       "texto_fraco": "290E18",
       "acento": "670D2F",
@@ -2170,11 +2505,12 @@ var PALETAS = {
       "bloco": "B13C67",
       "menu_grande": "FFB6D0",
       "regua": "CB014A",
+      "barra": "966E72",
       "osso_por_papel": {
         "fundo": "2F0414",
         "painel": "2F0414",
         "painel_alto": "2F0414",
-        "linha": "2F0414",
+        "linha": "FBE4EC",
         "texto": "FBE4EC",
         "texto_fraco": "FBE4EC",
         "acento": "FBE4EC",
@@ -2200,7 +2536,7 @@ var PALETAS = {
       "fundo": "2A0412",
       "painel": "4B0620",
       "painel_alto": "710A31",
-      "linha": "5B1F35",
+      "linha": "AD6881",
       "texto": "FBE4EC",
       "texto_fraco": "EBC4D3",
       "acento": "E11C67",
@@ -2210,11 +2546,12 @@ var PALETAS = {
       "bloco": "C4517B",
       "menu_grande": "6E002A",
       "regua": "FF3380",
+      "barra": "DBB1B9",
       "osso_por_papel": {
         "fundo": "FBE4EC",
         "painel": "FBE4EC",
         "painel_alto": "FBE4EC",
-        "linha": "FBE4EC",
+        "linha": "000000",
         "texto": "2F0414",
         "texto_fraco": "2F0414",
         "acento": "FFFFFF",
@@ -2242,16 +2579,17 @@ var PALETAS = {
       "fundo": "FAF8F4",
       "painel": "F1EADF",
       "painel_alto": "E6DAC7",
-      "linha": "D1D5DB",
+      "linha": "997F54",
       "texto": "15191E",
       "texto_fraco": "181B1F",
       "acento": "897E6D",
       "tinta": "F8F2E7",
       "papel": "F9F6F1",
       "painel_baixo": "F7F3ED",
-      "bloco": "687385",
+      "bloco": "A27937",
       "menu_grande": "EDDFC7",
       "regua": "987234",
+      "barra": "917D5F",
       "osso_por_papel": {
         "fundo": "15191E",
         "painel": "15191E",
@@ -2263,7 +2601,7 @@ var PALETAS = {
         "tinta": "15191E",
         "papel": "15191E",
         "painel_baixo": "15191E",
-        "bloco": "FFFFFF",
+        "bloco": "000000",
         "menu_grande": "15191E",
         "regua": "000000"
       },
@@ -2282,7 +2620,7 @@ var PALETAS = {
       "fundo": "13161B",
       "painel": "212730",
       "painel_alto": "323B48",
-      "linha": "363C45",
+      "linha": "7F8896",
       "texto": "F5F1EA",
       "texto_fraco": "D3D7DC",
       "acento": "948979",
@@ -2292,11 +2630,12 @@ var PALETAS = {
       "bloco": "7C8798",
       "menu_grande": "2A3544",
       "regua": "8194B1",
+      "barra": "ABBFDF",
       "osso_por_papel": {
         "fundo": "F5F1EA",
         "painel": "F5F1EA",
         "painel_alto": "F5F1EA",
-        "linha": "F5F1EA",
+        "linha": "15191E",
         "texto": "15191E",
         "texto_fraco": "15191E",
         "acento": "15191E",
@@ -2324,28 +2663,29 @@ var PALETAS = {
       "fundo": "F3FCF8",
       "painel": "DAF6EA",
       "painel_alto": "BEEFD9",
-      "linha": "D3E4C8",
+      "linha": "718F5E",
       "texto": "18240F",
       "texto_fraco": "192512",
       "acento": "255F38",
       "tinta": "E6F9F1",
       "papel": "EEFBF5",
       "painel_baixo": "EAFAF2",
-      "bloco": "6D9F4E",
+      "bloco": "618D45",
       "menu_grande": "BCF8DD",
       "regua": "16B66F",
+      "barra": "618D45",
       "osso_por_papel": {
         "fundo": "18240F",
         "painel": "18240F",
         "painel_alto": "18240F",
-        "linha": "18240F",
+        "linha": "000000",
         "texto": "E6F9F1",
         "texto_fraco": "E6F9F1",
         "acento": "E6F9F1",
         "tinta": "18240F",
         "papel": "18240F",
         "painel_baixo": "18240F",
-        "bloco": "18240F",
+        "bloco": "000000",
         "menu_grande": "18240F",
         "regua": "18240F"
       },
@@ -2364,7 +2704,7 @@ var PALETAS = {
       "fundo": "16200E",
       "painel": "273918",
       "painel_alto": "3B5625",
-      "linha": "385228",
+      "linha": "85A273",
       "texto": "E6F9F1",
       "texto_fraco": "D4E5CA",
       "acento": "3A9558",
@@ -2374,11 +2714,12 @@ var PALETAS = {
       "bloco": "81B263",
       "menu_grande": "345519",
       "regua": "94CE64",
+      "barra": "81B263",
       "osso_por_papel": {
         "fundo": "E6F9F1",
         "painel": "E6F9F1",
         "painel_alto": "E6F9F1",
-        "linha": "E6F9F1",
+        "linha": "18240F",
         "texto": "18240F",
         "texto_fraco": "18240F",
         "acento": "000000",
@@ -2406,21 +2747,22 @@ var PALETAS = {
       "fundo": "F9F8F6",
       "painel": "EDEAE3",
       "painel_alto": "DFDACD",
-      "linha": "D1DBD4",
+      "linha": "8A8063",
       "texto": "161D18",
       "texto_fraco": "181F1A",
       "acento": "9D7759",
       "tinta": "F8F4E7",
       "papel": "F7F6F2",
       "painel_baixo": "F4F3EF",
-      "bloco": "688571",
+      "bloco": "8F7F52",
       "menu_grande": "E5DFCF",
       "regua": "82734A",
+      "barra": "8C7F5E",
       "osso_por_papel": {
         "fundo": "161D18",
         "painel": "161D18",
         "painel_alto": "161D18",
-        "linha": "161D18",
+        "linha": "000000",
         "texto": "F3F1EC",
         "texto_fraco": "F3F1EC",
         "acento": "000000",
@@ -2446,7 +2788,7 @@ var PALETAS = {
       "fundo": "141A16",
       "painel": "242E27",
       "painel_alto": "35453A",
-      "linha": "36453A",
+      "linha": "7F9686",
       "texto": "F3F1EC",
       "texto_fraco": "D3DCD6",
       "acento": "A27B5C",
@@ -2456,11 +2798,12 @@ var PALETAS = {
       "bloco": "7C9885",
       "menu_grande": "2D4133",
       "regua": "88AA92",
+      "barra": "A6C8AF",
       "osso_por_papel": {
         "fundo": "F3F1EC",
         "painel": "F3F1EC",
         "painel_alto": "F3F1EC",
-        "linha": "F3F1EC",
+        "linha": "161D18",
         "texto": "161D18",
         "texto_fraco": "161D18",
         "acento": "161D18",
@@ -2488,7 +2831,7 @@ var PALETAS = {
       "fundo": "FFF6F0",
       "painel": "FFE3D1",
       "painel_alto": "FFCEAD",
-      "linha": "C1D5EC",
+      "linha": "51749C",
       "texto": "1D1616",
       "texto_fraco": "0D1B2A",
       "acento": "0B192C",
@@ -2498,11 +2841,12 @@ var PALETAS = {
       "bloco": "3873B6",
       "menu_grande": "FFD3B6",
       "regua": "CC5100",
+      "barra": "3873B6",
       "osso_por_papel": {
         "fundo": "1D1616",
         "painel": "1D1616",
         "painel_alto": "1D1616",
-        "linha": "1D1616",
+        "linha": "FFFFFF",
         "texto": "FFEDE0",
         "texto_fraco": "FFEDE0",
         "acento": "FFEDE0",
@@ -2528,7 +2872,7 @@ var PALETAS = {
       "fundo": "1A1414",
       "painel": "2E2424",
       "painel_alto": "453636",
-      "linha": "1D3B5E",
+      "linha": "6588B0",
       "texto": "FFEDE0",
       "texto_fraco": "C3D7ED",
       "acento": "3776CD",
@@ -2538,11 +2882,12 @@ var PALETAS = {
       "bloco": "4D87C8",
       "menu_grande": "402E2E",
       "regua": "A58D8D",
+      "barra": "4D87C8",
       "osso_por_papel": {
         "fundo": "FFEDE0",
         "painel": "FFEDE0",
         "painel_alto": "FFEDE0",
-        "linha": "FFEDE0",
+        "linha": "1D1616",
         "texto": "1D1616",
         "texto_fraco": "1D1616",
         "acento": "000000",
@@ -2570,21 +2915,22 @@ var PALETAS = {
       "fundo": "FBF8F4",
       "painel": "F3EADE",
       "painel_alto": "E9DAC4",
-      "linha": "D9DBD1",
+      "linha": "7E826B",
       "texto": "1A1E15",
       "texto_fraco": "1E1F18",
       "acento": "697565",
       "tinta": "F8F1E7",
       "papel": "F9F6F0",
       "painel_baixo": "F8F3EB",
-      "bloco": "808568",
+      "bloco": "7E8367",
       "menu_grande": "F1DFC4",
       "regua": "A37129",
+      "barra": "967F62",
       "osso_por_papel": {
         "fundo": "1A1E15",
         "painel": "1A1E15",
         "painel_alto": "1A1E15",
-        "linha": "1A1E15",
+        "linha": "000000",
         "texto": "F7F1E9",
         "texto_fraco": "F7F1E9",
         "acento": "FFFFFF",
@@ -2610,7 +2956,7 @@ var PALETAS = {
       "fundo": "171B13",
       "painel": "293022",
       "painel_alto": "3D4733",
-      "linha": "424536",
+      "linha": "92967F",
       "texto": "F7F1E9",
       "texto_fraco": "DBDCD3",
       "acento": "758270",
@@ -2620,11 +2966,12 @@ var PALETAS = {
       "bloco": "94987C",
       "menu_grande": "37432B",
       "regua": "99AF83",
+      "barra": "B3C5A3",
       "osso_por_papel": {
         "fundo": "F7F1E9",
         "painel": "F7F1E9",
         "painel_alto": "F7F1E9",
-        "linha": "F7F1E9",
+        "linha": "1A1E15",
         "texto": "1A1E15",
         "texto_fraco": "1A1E15",
         "acento": "000000",
@@ -2652,7 +2999,7 @@ var PALETAS = {
       "fundo": "F9F2FD",
       "painel": "EDD7F9",
       "painel_alto": "DFB9F4",
-      "linha": "DFB9F3",
+      "linha": "8744AA",
       "texto": "22052E",
       "texto_fraco": "22082F",
       "acento": "7A1CAC",
@@ -2662,11 +3009,12 @@ var PALETAS = {
       "bloco": "9122CC",
       "menu_grande": "E5B6FE",
       "regua": "8306C6",
+      "barra": "9122CC",
       "osso_por_papel": {
         "fundo": "22052E",
         "painel": "22052E",
         "painel_alto": "22052E",
-        "linha": "22052E",
+        "linha": "F3E5FB",
         "texto": "F3E5FB",
         "texto_fraco": "F3E5FB",
         "acento": "F3E5FB",
@@ -2692,7 +3040,7 @@ var PALETAS = {
       "fundo": "1E0529",
       "painel": "360849",
       "painel_alto": "500C6E",
-      "linha": "4B1169",
+      "linha": "9A58BD",
       "texto": "F3E5FB",
       "texto_fraco": "E1BCF4",
       "acento": "A63BDF",
@@ -2702,11 +3050,12 @@ var PALETAS = {
       "bloco": "A537DE",
       "menu_grande": "4C006E",
       "regua": "C133FF",
+      "barra": "A537DE",
       "osso_por_papel": {
         "fundo": "F3E5FB",
         "painel": "F3E5FB",
         "painel_alto": "F3E5FB",
-        "linha": "F3E5FB",
+        "linha": "FFFFFF",
         "texto": "22052E",
         "texto_fraco": "22052E",
         "acento": "FFFFFF",
@@ -2734,16 +3083,17 @@ var PALETAS = {
       "fundo": "FAF8F5",
       "painel": "EFEBE1",
       "painel_alto": "E2DCCA",
-      "linha": "CBE1DD",
+      "linha": "92835B",
       "texto": "0C1927",
       "texto_fraco": "142320",
       "acento": "4587A5",
       "tinta": "F8F4E7",
       "papel": "F8F6F2",
       "painel_baixo": "F6F3EE",
-      "bloco": "57968B",
+      "bloco": "967F43",
       "menu_grande": "E9E2CC",
       "regua": "8D783F",
+      "barra": "4587A5",
       "osso_por_papel": {
         "fundo": "0C1927",
         "painel": "0C1927",
@@ -2774,21 +3124,22 @@ var PALETAS = {
       "fundo": "0B1723",
       "painel": "14283E",
       "painel_alto": "1E3C5D",
-      "linha": "2D4D48",
+      "linha": "5C89B9",
       "texto": "F4F2EB",
       "texto_fraco": "CDE2DF",
       "acento": "66A3BF",
       "tinta": "070F17",
       "papel": "0F1F2F",
       "painel_baixo": "13283D",
-      "bloco": "6CA99F",
+      "bloco": "3D88D8",
       "menu_grande": "11355D",
       "regua": "5597DD",
+      "barra": "3D88D8",
       "osso_por_papel": {
         "fundo": "F4F2EB",
         "painel": "F4F2EB",
         "painel_alto": "F4F2EB",
-        "linha": "F4F2EB",
+        "linha": "0C1927",
         "texto": "0C1927",
         "texto_fraco": "0C1927",
         "acento": "0C1927",
@@ -2816,16 +3167,17 @@ var PALETAS = {
       "fundo": "FEFAF0",
       "painel": "FDEFD3",
       "painel_alto": "FBE3B1",
-      "linha": "F5E3B8",
+      "linha": "A98B41",
       "texto": "0A2926",
       "texto_fraco": "302407",
       "acento": "E2512C",
       "tinta": "FEF5E2",
       "papel": "FEF8EB",
       "painel_baixo": "FEF6E5",
-      "bloco": "CF9B1F",
+      "bloco": "A67C19",
       "menu_grande": "FFE7B6",
       "regua": "CC8A00",
+      "barra": "988265",
       "osso_por_papel": {
         "fundo": "0A2926",
         "painel": "0A2926",
@@ -2837,7 +3189,7 @@ var PALETAS = {
         "tinta": "0A2926",
         "papel": "0A2926",
         "painel_baixo": "0A2926",
-        "bloco": "0A2926",
+        "bloco": "000000",
         "menu_grande": "0A2926",
         "regua": "0A2926"
       },
@@ -2856,7 +3208,7 @@ var PALETAS = {
       "fundo": "092522",
       "painel": "0F423C",
       "painel_alto": "17645B",
-      "linha": "6B5010",
+      "linha": "BEA057",
       "texto": "FEF5E2",
       "texto_fraco": "F5E4BB",
       "acento": "E76F51",
@@ -2866,11 +3218,12 @@ var PALETAS = {
       "bloco": "E1AF34",
       "menu_grande": "09665B",
       "regua": "46ECD9",
+      "barra": "46ECD9",
       "osso_por_papel": {
         "fundo": "FEF5E2",
         "painel": "FEF5E2",
         "painel_alto": "FEF5E2",
-        "linha": "FEF5E2",
+        "linha": "0A2926",
         "texto": "0A2926",
         "texto_fraco": "0A2926",
         "acento": "0A2926",
@@ -2898,7 +3251,7 @@ var PALETAS = {
       "fundo": "FCF3F3",
       "painel": "F6DADA",
       "painel_alto": "EFBEBE",
-      "linha": "F2BBBB",
+      "linha": "A74646",
       "texto": "1A1320",
       "texto_fraco": "2E0909",
       "acento": "F10000",
@@ -2908,11 +3261,12 @@ var PALETAS = {
       "bloco": "C72626",
       "menu_grande": "F8BCBC",
       "regua": "B61616",
+      "barra": "99726D",
       "osso_por_papel": {
         "fundo": "1A1320",
         "painel": "1A1320",
         "painel_alto": "1A1320",
-        "linha": "1A1320",
+        "linha": "F9E7E7",
         "texto": "F9E7E7",
         "texto_fraco": "F9E7E7",
         "acento": "000000",
@@ -2938,7 +3292,7 @@ var PALETAS = {
       "fundo": "18111D",
       "painel": "2A1E34",
       "painel_alto": "3F2D4E",
-      "linha": "671414",
+      "linha": "BA5B5B",
       "texto": "F9E7E7",
       "texto_fraco": "F2BDBD",
       "acento": "FFE2E2",
@@ -2948,11 +3302,12 @@ var PALETAS = {
       "bloco": "D93C3C",
       "menu_grande": "39234B",
       "regua": "9D76BC",
+      "barra": "9D76BC",
       "osso_por_papel": {
         "fundo": "F9E7E7",
         "painel": "F9E7E7",
         "painel_alto": "F9E7E7",
-        "linha": "F9E7E7",
+        "linha": "000000",
         "texto": "1A1320",
         "texto_fraco": "1A1320",
         "acento": "1A1320",
@@ -2980,28 +3335,29 @@ var PALETAS = {
       "fundo": "F7FBF4",
       "painel": "E7F2DE",
       "painel_alto": "D4E8C4",
-      "linha": "CBE2D0",
+      "linha": "638A6C",
       "texto": "151E1C",
       "texto_fraco": "142317",
       "acento": "4F8F71",
       "tinta": "EEF8E7",
       "papel": "F4F9F0",
       "painel_baixo": "F1F8EC",
-      "bloco": "569865",
+      "bloco": "518E5F",
       "menu_grande": "D8F0C5",
       "regua": "5EA12B",
+      "barra": "518E5F",
       "osso_por_papel": {
         "fundo": "151E1C",
         "painel": "151E1C",
         "painel_alto": "151E1C",
-        "linha": "151E1C",
+        "linha": "000000",
         "texto": "EFF7E9",
         "texto_fraco": "EFF7E9",
         "acento": "000000",
         "tinta": "151E1C",
         "papel": "151E1C",
         "painel_baixo": "151E1C",
-        "bloco": "151E1C",
+        "bloco": "000000",
         "menu_grande": "151E1C",
         "regua": "151E1C"
       },
@@ -3020,7 +3376,7 @@ var PALETAS = {
       "fundo": "131B19",
       "painel": "21302D",
       "painel_alto": "324843",
-      "linha": "2C4E34",
+      "linha": "779E80",
       "texto": "EFF7E9",
       "texto_fraco": "CDE3D2",
       "acento": "88BDA4",
@@ -3030,11 +3386,12 @@ var PALETAS = {
       "bloco": "6AAB79",
       "menu_grande": "2A443E",
       "regua": "81B1A5",
+      "barra": "6AAB79",
       "osso_por_papel": {
         "fundo": "EFF7E9",
         "painel": "EFF7E9",
         "painel_alto": "EFF7E9",
-        "linha": "EFF7E9",
+        "linha": "151E1C",
         "texto": "151E1C",
         "texto_fraco": "151E1C",
         "acento": "151E1C",
@@ -3062,16 +3419,17 @@ var PALETAS = {
       "fundo": "FFFBF0",
       "painel": "FFF4D1",
       "painel_alto": "FFECAD",
-      "linha": "FFD9AD",
+      "linha": "BE7C2F",
       "texto": "330800",
       "texto_fraco": "371E00",
       "acento": "F53E00",
       "tinta": "FFF8E0",
       "papel": "FFFAEA",
       "painel_baixo": "FFF9E4",
-      "bloco": "ED8000",
+      "bloco": "C66B00",
       "menu_grande": "FFEEB6",
       "regua": "CC9D00",
+      "barra": "938564",
       "osso_por_papel": {
         "fundo": "330800",
         "painel": "330800",
@@ -3102,7 +3460,7 @@ var PALETAS = {
       "fundo": "2E0800",
       "painel": "520D00",
       "painel_alto": "7A1400",
-      "linha": "7A4200",
+      "linha": "D09045",
       "texto": "FFF8E0",
       "texto_fraco": "FFDBB0",
       "acento": "FFB399",
@@ -3112,11 +3470,12 @@ var PALETAS = {
       "bloco": "FF9416",
       "menu_grande": "6E1200",
       "regua": "FF5533",
+      "barra": "DCB3A9",
       "osso_por_papel": {
         "fundo": "FFF8E0",
         "painel": "FFF8E0",
         "painel_alto": "FFF8E0",
-        "linha": "FFF8E0",
+        "linha": "330800",
         "texto": "330800",
         "texto_fraco": "330800",
         "acento": "330800",
@@ -3144,7 +3503,7 @@ var PALETAS = {
       "fundo": "FFFCF0",
       "painel": "FFF5D1",
       "painel_alto": "FFEEAD",
-      "linha": "B6BCF7",
+      "linha": "3E48AF",
       "texto": "131820",
       "texto_fraco": "060A32",
       "acento": "F84000",
@@ -3154,11 +3513,12 @@ var PALETAS = {
       "bloco": "182AD5",
       "menu_grande": "FFF0B6",
       "regua": "CCA100",
+      "barra": "182AD5",
       "osso_por_papel": {
         "fundo": "060A32",
         "painel": "060A32",
         "painel_alto": "060A32",
-        "linha": "060A32",
+        "linha": "FFF9E0",
         "texto": "FFF9E0",
         "texto_fraco": "FFF9E0",
         "acento": "060A32",
@@ -3184,16 +3544,17 @@ var PALETAS = {
       "fundo": "11151D",
       "painel": "1F2633",
       "painel_alto": "2E384C",
-      "linha": "0C156E",
+      "linha": "555FC3",
       "texto": "FFF9E0",
       "texto_fraco": "B8BEF7",
       "acento": "FF7444",
       "tinta": "080D17",
       "papel": "171D27",
       "painel_baixo": "1E2532",
-      "bloco": "2D3FE8",
+      "bloco": "5463EC",
       "menu_grande": "253149",
       "regua": "798FB9",
+      "barra": "5463EC",
       "osso_por_papel": {
         "fundo": "FFF9E0",
         "painel": "FFF9E0",
@@ -3226,16 +3587,17 @@ var PALETAS = {
       "fundo": "F2FDF4",
       "painel": "D7F9DE",
       "painel_alto": "B9F4C4",
-      "linha": "ADE2FF",
+      "linha": "2F8BBE",
       "texto": "000133",
       "texto_fraco": "002337",
       "acento": "656FFF",
       "tinta": "E5FBE9",
       "papel": "EDFCF0",
       "painel_baixo": "E8FBEC",
-      "bloco": "0098ED",
+      "bloco": "0087D2",
       "menu_grande": "B6FEC4",
       "regua": "06C62A",
+      "barra": "0087D2",
       "osso_por_papel": {
         "fundo": "000133",
         "painel": "000133",
@@ -3266,7 +3628,7 @@ var PALETAS = {
       "fundo": "00012E",
       "painel": "000252",
       "painel_alto": "00037A",
-      "linha": "004F7A",
+      "linha": "459ED0",
       "texto": "E5FBE9",
       "texto_fraco": "B0E3FF",
       "acento": "B5BAFF",
@@ -3276,11 +3638,12 @@ var PALETAS = {
       "bloco": "16ACFF",
       "menu_grande": "00036E",
       "regua": "3337FF",
+      "barra": "16ACFF",
       "osso_por_papel": {
         "fundo": "E5FBE9",
         "painel": "E5FBE9",
         "painel_alto": "E5FBE9",
-        "linha": "E5FBE9",
+        "linha": "000133",
         "texto": "000133",
         "texto_fraco": "000133",
         "acento": "000133",
@@ -3308,16 +3671,17 @@ var PALETAS = {
       "fundo": "FFFCF0",
       "painel": "FEF6D3",
       "painel_alto": "FCEFB0",
-      "linha": "ECDCC1",
+      "linha": "9C8051",
       "texto": "270C0C",
       "texto_fraco": "2A1F0D",
       "acento": "A31D1D",
       "tinta": "FEF9E1",
       "papel": "FEFBEB",
       "painel_baixo": "FEFAE5",
-      "bloco": "B58739",
+      "bloco": "A77D35",
       "menu_grande": "FFF2B6",
       "regua": "CCA900",
+      "barra": "938967",
       "osso_por_papel": {
         "fundo": "270C0C",
         "painel": "270C0C",
@@ -3348,7 +3712,7 @@ var PALETAS = {
       "fundo": "230B0B",
       "painel": "3E1414",
       "painel_alto": "5D1E1E",
-      "linha": "5D461D",
+      "linha": "AF9466",
       "texto": "FEF9E1",
       "texto_fraco": "ECDDC3",
       "acento": "D92C2C",
@@ -3358,11 +3722,12 @@ var PALETAS = {
       "bloco": "C79B4E",
       "menu_grande": "5D1111",
       "regua": "DD5555",
+      "barra": "DCB2AF",
       "osso_por_papel": {
         "fundo": "FEF9E1",
         "painel": "FEF9E1",
         "painel_alto": "FEF9E1",
-        "linha": "FEF9E1",
+        "linha": "270C0C",
         "texto": "270C0C",
         "texto_fraco": "270C0C",
         "acento": "FEF9E1",
@@ -3390,7 +3755,7 @@ var PALETAS = {
       "fundo": "FEF7F1",
       "painel": "FCE7D4",
       "painel_alto": "F9D3B3",
-      "linha": "E8C5CC",
+      "linha": "955864",
       "texto": "121023",
       "texto_fraco": "271015",
       "acento": "441752",
@@ -3400,11 +3765,12 @@ var PALETAS = {
       "bloco": "AA4358",
       "menu_grande": "FFD7B6",
       "regua": "CC5E00",
+      "barra": "441752",
       "osso_por_papel": {
         "fundo": "121023",
         "painel": "121023",
         "painel_alto": "121023",
-        "linha": "121023",
+        "linha": "FDEFE3",
         "texto": "FDEFE3",
         "texto_fraco": "FDEFE3",
         "acento": "FDEFE3",
@@ -3430,7 +3796,7 @@ var PALETAS = {
       "fundo": "110F1F",
       "painel": "1D1A37",
       "painel_alto": "2C2753",
-      "linha": "58232E",
+      "linha": "A96C79",
       "texto": "FDEFE3",
       "texto_fraco": "E9C7CE",
       "acento": "A941CA",
@@ -3440,11 +3806,12 @@ var PALETAS = {
       "bloco": "BD586D",
       "menu_grande": "221C52",
       "regua": "7469C9",
+      "barra": "7469C9",
       "osso_por_papel": {
         "fundo": "FDEFE3",
         "painel": "FDEFE3",
         "painel_alto": "FDEFE3",
-        "linha": "FDEFE3",
+        "linha": "121023",
         "texto": "121023",
         "texto_fraco": "121023",
         "acento": "FFFFFF",
@@ -3472,16 +3839,17 @@ var PALETAS = {
       "fundo": "FBFFF0",
       "painel": "F3FFD1",
       "painel_alto": "EAFFAD",
-      "linha": "BEE5EF",
+      "linha": "4C91A1",
       "texto": "2F041A",
       "texto_fraco": "0B262C",
       "acento": "199A2A",
       "tinta": "F7FFE0",
       "papel": "FAFFEA",
       "painel_baixo": "F8FFE4",
-      "bloco": "2FA2BE",
+      "bloco": "2A92AB",
       "menu_grande": "ECFFB6",
       "regua": "98CC00",
+      "barra": "2A92AB",
       "osso_por_papel": {
         "fundo": "2F041A",
         "painel": "2F041A",
@@ -3512,7 +3880,7 @@ var PALETAS = {
       "fundo": "2B0318",
       "painel": "4C062A",
       "painel_alto": "72093F",
-      "linha": "185462",
+      "linha": "61A4B4",
       "texto": "F7FFE0",
       "texto_fraco": "C0E6EF",
       "acento": "DAF9DE",
@@ -3522,11 +3890,12 @@ var PALETAS = {
       "bloco": "45B5D0",
       "menu_grande": "6E0039",
       "regua": "FF339D",
+      "barra": "45B5D0",
       "osso_por_papel": {
         "fundo": "F7FFE0",
         "painel": "F7FFE0",
         "painel_alto": "F7FFE0",
-        "linha": "F7FFE0",
+        "linha": "2F041A",
         "texto": "2F041A",
         "texto_fraco": "2F041A",
         "acento": "2F041A",
@@ -3554,16 +3923,17 @@ var PALETAS = {
       "fundo": "FCFAF2",
       "painel": "F7F1D9",
       "painel_alto": "F1E7BB",
-      "linha": "E8E4C4",
+      "linha": "968F57",
       "texto": "1D1616",
       "texto_fraco": "28250F",
       "acento": "E43636",
       "tinta": "FAF6E5",
       "papel": "FCF9EE",
       "painel_baixo": "FBF7E9",
-      "bloco": "ABA042",
+      "bloco": "8D8436",
       "menu_grande": "FBEFBA",
       "regua": "BE9C0E",
+      "barra": "908664",
       "osso_por_papel": {
         "fundo": "1D1616",
         "painel": "1D1616",
@@ -3594,7 +3964,7 @@ var PALETAS = {
       "fundo": "1A1414",
       "painel": "2E2424",
       "painel_alto": "453636",
-      "linha": "585222",
+      "linha": "A9A36C",
       "texto": "FAF6E5",
       "texto_fraco": "E9E5C6",
       "acento": "E43636",
@@ -3604,11 +3974,12 @@ var PALETAS = {
       "bloco": "BEB357",
       "menu_grande": "402E2E",
       "regua": "A58D8D",
+      "barra": "DCB1B2",
       "osso_por_papel": {
         "fundo": "FAF6E5",
         "painel": "FAF6E5",
         "painel_alto": "FAF6E5",
-        "linha": "FAF6E5",
+        "linha": "1D1616",
         "texto": "1D1616",
         "texto_fraco": "1D1616",
         "acento": "000000",
@@ -3636,16 +4007,17 @@ var PALETAS = {
       "fundo": "FFFCF0",
       "painel": "FFF7D1",
       "painel_alto": "FFF1AD",
-      "linha": "C4E8DA",
+      "linha": "58967D",
       "texto": "131920",
       "texto_fraco": "10281E",
       "acento": "ED4497",
       "tinta": "FFFAE0",
       "papel": "FFFBEA",
       "painel_baixo": "FFFAE4",
-      "bloco": "43AA82",
+      "bloco": "3A9370",
       "menu_grande": "FFF2B6",
       "regua": "CCA800",
+      "barra": "3A9370",
       "osso_por_papel": {
         "fundo": "131920",
         "painel": "131920",
@@ -3676,7 +4048,7 @@ var PALETAS = {
       "fundo": "11161D",
       "painel": "1E2834",
       "painel_alto": "2C3B4E",
-      "linha": "225843",
+      "linha": "6CA991",
       "texto": "FFFAE0",
       "texto_fraco": "C7E9DB",
       "acento": "F599C6",
@@ -3686,11 +4058,12 @@ var PALETAS = {
       "bloco": "58BD95",
       "menu_grande": "22354C",
       "regua": "7595BD",
+      "barra": "58BD95",
       "osso_por_papel": {
         "fundo": "FFFAE0",
         "painel": "FFFAE0",
         "painel_alto": "FFFAE0",
-        "linha": "FFFAE0",
+        "linha": "131920",
         "texto": "131920",
         "texto_fraco": "131920",
         "acento": "131920",
@@ -3718,7 +4091,7 @@ var PALETAS = {
       "fundo": "FFF9F0",
       "painel": "FEECD2",
       "painel_alto": "FEDEAF",
-      "linha": "F5C0B8",
+      "linha": "AC4F41",
       "texto": "280B0B",
       "texto_fraco": "300C07",
       "acento": "CF6314",
@@ -3728,11 +4101,12 @@ var PALETAS = {
       "bloco": "D0351E",
       "menu_grande": "FFE1B6",
       "regua": "CC7A00",
+      "barra": "997D64",
       "osso_por_papel": {
         "fundo": "280B0B",
         "painel": "280B0B",
         "painel_alto": "280B0B",
-        "linha": "280B0B",
+        "linha": "FFF3E1",
         "texto": "FFF3E1",
         "texto_fraco": "FFF3E1",
         "acento": "280B0B",
@@ -3758,7 +4132,7 @@ var PALETAS = {
       "fundo": "240A0A",
       "painel": "411111",
       "painel_alto": "611A1A",
-      "linha": "6B1B0F",
+      "linha": "BF6456",
       "texto": "FFF3E1",
       "texto_fraco": "F5C2BA",
       "acento": "EB7F31",
@@ -3768,11 +4142,12 @@ var PALETAS = {
       "bloco": "E24A33",
       "menu_grande": "620C0C",
       "regua": "E64C4C",
+      "barra": "DCB2AE",
       "osso_por_papel": {
         "fundo": "FFF3E1",
         "painel": "FFF3E1",
         "painel_alto": "FFF3E1",
-        "linha": "FFF3E1",
+        "linha": "280B0B",
         "texto": "280B0B",
         "texto_fraco": "280B0B",
         "acento": "280B0B",
@@ -3800,16 +4175,17 @@ var PALETAS = {
       "fundo": "FFFDF0",
       "painel": "FFF8D1",
       "painel_alto": "FFF3AD",
-      "linha": "ADFFFD",
+      "linha": "279F9C",
       "texto": "000633",
       "texto_fraco": "003736",
       "acento": "003161",
       "tinta": "FFFAE0",
       "papel": "FFFCEA",
       "painel_baixo": "FFFBE4",
-      "bloco": "00EDE6",
+      "bloco": "009490",
       "menu_grande": "FFF4B6",
       "regua": "CCAD00",
+      "barra": "009490",
       "osso_por_papel": {
         "fundo": "000633",
         "painel": "000633",
@@ -3840,7 +4216,7 @@ var PALETAS = {
       "fundo": "00062E",
       "painel": "000A52",
       "painel_alto": "000F7A",
-      "linha": "007A77",
+      "linha": "45D0CC",
       "texto": "FFFAE0",
       "texto_fraco": "B0FFFD",
       "acento": "0069CF",
@@ -3850,11 +4226,12 @@ var PALETAS = {
       "bloco": "16FFF8",
       "menu_grande": "000E6E",
       "regua": "334CFF",
+      "barra": "16FFF8",
       "osso_por_papel": {
         "fundo": "FFFAE0",
         "painel": "FFFAE0",
         "painel_alto": "FFFAE0",
-        "linha": "FFFAE0",
+        "linha": "000633",
         "texto": "000633",
         "texto_fraco": "000633",
         "acento": "FFFAE0",
@@ -3882,16 +4259,17 @@ var PALETAS = {
       "fundo": "FBFAF4",
       "painel": "F2EFDE",
       "painel_alto": "E8E3C4",
-      "linha": "CFDFCD",
+      "linha": "6A8766",
       "texto": "260D0D",
       "texto_fraco": "172215",
       "acento": "438D6C",
       "tinta": "F8F6E7",
       "papel": "F9F8F0",
       "painel_baixo": "F7F6EC",
-      "bloco": "61925C",
+      "bloco": "5F8E5A",
       "menu_grande": "F0EAC5",
       "regua": "A08F2C",
+      "barra": "5F8E5A",
       "osso_por_papel": {
         "fundo": "260D0D",
         "painel": "260D0D",
@@ -3922,7 +4300,7 @@ var PALETAS = {
       "fundo": "220C0C",
       "painel": "3C1515",
       "painel_alto": "5B2020",
-      "linha": "324B2F",
+      "linha": "7E9A7B",
       "texto": "F6F4E9",
       "texto_fraco": "D1E1CF",
       "acento": "C0E1D2",
@@ -3932,11 +4310,12 @@ var PALETAS = {
       "bloco": "75A570",
       "menu_grande": "5B1313",
       "regua": "D95959",
+      "barra": "75A570",
       "osso_por_papel": {
         "fundo": "F6F4E9",
         "painel": "F6F4E9",
         "painel_alto": "F6F4E9",
-        "linha": "F6F4E9",
+        "linha": "260D0D",
         "texto": "260D0D",
         "texto_fraco": "260D0D",
         "acento": "260D0D",
@@ -3964,7 +4343,7 @@ var PALETAS = {
       "fundo": "FCFAF3",
       "painel": "F5EFDC",
       "painel_alto": "ECE3C0",
-      "linha": "F6C8B6",
+      "linha": "AF5E3F",
       "texto": "11240F",
       "texto_fraco": "311206",
       "acento": "E3530D",
@@ -3974,11 +4353,12 @@ var PALETAS = {
       "bloco": "D44D19",
       "menu_grande": "F5EAC0",
       "regua": "AE901E",
+      "barra": "8D8361",
       "osso_por_papel": {
         "fundo": "311206",
         "painel": "311206",
         "painel_alto": "311206",
-        "linha": "311206",
+        "linha": "FFFFFF",
         "texto": "F8F5E7",
         "texto_fraco": "F8F5E7",
         "acento": "311206",
@@ -4004,7 +4384,7 @@ var PALETAS = {
       "fundo": "0F200E",
       "painel": "1B3919",
       "painel_alto": "285625",
-      "linha": "6D280D",
+      "linha": "C27253",
       "texto": "F8F5E7",
       "texto_fraco": "F7CAB9",
       "acento": "F5824A",
@@ -4014,11 +4394,12 @@ var PALETAS = {
       "bloco": "E6612F",
       "menu_grande": "1D5519",
       "regua": "6BCE64",
+      "barra": "6BCE64",
       "osso_por_papel": {
         "fundo": "F8F5E7",
         "painel": "F8F5E7",
         "painel_alto": "F8F5E7",
-        "linha": "F8F5E7",
+        "linha": "311206",
         "texto": "311206",
         "texto_fraco": "311206",
         "acento": "311206",
@@ -4046,21 +4427,22 @@ var PALETAS = {
       "fundo": "FFFCF0",
       "painel": "FFF6D1",
       "painel_alto": "FFEFAD",
-      "linha": "FFCDAD",
+      "linha": "BE672F",
       "texto": "2D062B",
       "texto_fraco": "371500",
       "acento": "B12C00",
       "tinta": "FFF9E0",
       "papel": "FFFBEA",
       "painel_baixo": "FFFAE4",
-      "bloco": "ED5C00",
+      "bloco": "E15700",
       "menu_grande": "FFF1B6",
       "regua": "CCA300",
+      "barra": "958867",
       "osso_por_papel": {
         "fundo": "2D062B",
         "painel": "2D062B",
         "painel_alto": "2D062B",
-        "linha": "2D062B",
+        "linha": "000000",
         "texto": "FFF9E0",
         "texto_fraco": "FFF9E0",
         "acento": "FFF9E0",
@@ -4086,7 +4468,7 @@ var PALETAS = {
       "fundo": "290527",
       "painel": "480945",
       "painel_alto": "6C0E67",
-      "linha": "7A2F00",
+      "linha": "D07B45",
       "texto": "FFF9E0",
       "texto_fraco": "FFCFB0",
       "acento": "E33800",
@@ -4096,11 +4478,12 @@ var PALETAS = {
       "bloco": "FF7016",
       "menu_grande": "6E0068",
       "regua": "FF33F3",
+      "barra": "FF33F3",
       "osso_por_papel": {
         "fundo": "FFF9E0",
         "painel": "FFF9E0",
         "painel_alto": "FFF9E0",
-        "linha": "FFF9E0",
+        "linha": "2D062B",
         "texto": "2D062B",
         "texto_fraco": "2D062B",
         "acento": "000000",
@@ -4128,16 +4511,17 @@ var PALETAS = {
       "fundo": "FFFCF0",
       "painel": "FFF7D1",
       "painel_alto": "FFF1AD",
-      "linha": "FFECAD",
+      "linha": "AB8C2A",
       "texto": "331300",
       "texto_fraco": "372A00",
       "acento": "CC7000",
       "tinta": "FFFAE0",
       "papel": "FFFCEA",
       "painel_baixo": "FFFAE4",
-      "bloco": "EDB500",
+      "bloco": "A67F00",
       "menu_grande": "FFF2B6",
       "regua": "CCAA00",
+      "barra": "938967",
       "osso_por_papel": {
         "fundo": "331300",
         "painel": "331300",
@@ -4168,7 +4552,7 @@ var PALETAS = {
       "fundo": "2E1100",
       "painel": "521E00",
       "painel_alto": "7A2E00",
-      "linha": "7A5E00",
+      "linha": "D0AF45",
       "texto": "FFFAE0",
       "texto_fraco": "FFEDB0",
       "acento": "FF8C00",
@@ -4178,11 +4562,12 @@ var PALETAS = {
       "bloco": "FFC816",
       "menu_grande": "6E2A00",
       "regua": "FF7F33",
+      "barra": "DAB5A3",
       "osso_por_papel": {
         "fundo": "FFFAE0",
         "painel": "FFFAE0",
         "painel_alto": "FFFAE0",
-        "linha": "FFFAE0",
+        "linha": "331300",
         "texto": "331300",
         "texto_fraco": "331300",
         "acento": "331300",
@@ -4210,7 +4595,7 @@ var PALETAS = {
       "fundo": "FAF9F4",
       "painel": "F1EEDF",
       "painel_alto": "E7E1C6",
-      "linha": "D6DBD1",
+      "linha": "75826B",
       "texto": "330000",
       "texto_fraco": "1B1F18",
       "acento": "6D0808",
@@ -4220,6 +4605,7 @@ var PALETAS = {
       "bloco": "758568",
       "menu_grande": "EEE7C6",
       "regua": "9C8930",
+      "barra": "8B8461",
       "osso_por_papel": {
         "fundo": "330000",
         "painel": "330000",
@@ -4250,21 +4636,22 @@ var PALETAS = {
       "fundo": "2E0000",
       "painel": "520000",
       "painel_alto": "7A0000",
-      "linha": "3C4536",
+      "linha": "D04545",
       "texto": "F6F4EA",
       "texto_fraco": "D7DCD3",
       "acento": "E71111",
       "tinta": "1F0000",
       "papel": "3E0000",
       "painel_baixo": "500000",
-      "bloco": "88987C",
+      "bloco": "FF1616",
       "menu_grande": "6E0000",
       "regua": "FF3333",
+      "barra": "DCB2AD",
       "osso_por_papel": {
         "fundo": "F6F4EA",
         "painel": "F6F4EA",
         "painel_alto": "F6F4EA",
-        "linha": "F6F4EA",
+        "linha": "000000",
         "texto": "330000",
         "texto_fraco": "330000",
         "acento": "FFFFFF",
@@ -4292,21 +4679,22 @@ var PALETAS = {
       "fundo": "F1F8FE",
       "painel": "D4EBFC",
       "painel_alto": "B3DCFA",
-      "linha": "B2DAFB",
+      "linha": "377EB6",
       "texto": "04152F",
       "texto_fraco": "031E34",
       "acento": "0C7DD9",
       "tinta": "E2F2FD",
       "papel": "ECF6FE",
       "painel_baixo": "E6F3FD",
-      "bloco": "0C83E1",
+      "bloco": "0C81DE",
       "menu_grande": "B6E0FF",
       "regua": "0076CC",
+      "barra": "0C81DE",
       "osso_por_papel": {
         "fundo": "04152F",
         "painel": "04152F",
         "painel_alto": "04152F",
-        "linha": "04152F",
+        "linha": "000000",
         "texto": "E2F2FD",
         "texto_fraco": "E2F2FD",
         "acento": "000000",
@@ -4332,7 +4720,7 @@ var PALETAS = {
       "fundo": "03132A",
       "painel": "06214C",
       "painel_alto": "093271",
-      "linha": "064374",
+      "linha": "4C92C9",
       "texto": "E2F2FD",
       "texto_fraco": "B4DCFB",
       "acento": "90CAF9",
@@ -4342,11 +4730,12 @@ var PALETAS = {
       "bloco": "2296F3",
       "menu_grande": "002B6E",
       "regua": "3383FF",
+      "barra": "2296F3",
       "osso_por_papel": {
         "fundo": "E2F2FD",
         "painel": "E2F2FD",
         "painel_alto": "E2F2FD",
-        "linha": "E2F2FD",
+        "linha": "04152F",
         "texto": "04152F",
         "texto_fraco": "04152F",
         "acento": "04152F",
@@ -4374,7 +4763,7 @@ var PALETAS = {
       "fundo": "F3FBFB",
       "painel": "DCF4F2",
       "painel_alto": "C1ECE8",
-      "linha": "C2D4EA",
+      "linha": "54729A",
       "texto": "09092A",
       "texto_fraco": "0E1A29",
       "acento": "232F72",
@@ -4384,11 +4773,12 @@ var PALETAS = {
       "bloco": "3C70B1",
       "menu_grande": "C0F5F0",
       "regua": "20ACA0",
+      "barra": "3C70B1",
       "osso_por_papel": {
         "fundo": "09092A",
         "painel": "09092A",
         "painel_alto": "09092A",
-        "linha": "09092A",
+        "linha": "E8F8F6",
         "texto": "E8F8F6",
         "texto_fraco": "E8F8F6",
         "acento": "E8F8F6",
@@ -4414,7 +4804,7 @@ var PALETAS = {
       "fundo": "080826",
       "painel": "0E0F44",
       "painel_alto": "151666",
-      "linha": "1F3A5B",
+      "linha": "6886AD",
       "texto": "E8F8F6",
       "texto_fraco": "C4D5EB",
       "acento": "5062C9",
@@ -4424,11 +4814,12 @@ var PALETAS = {
       "bloco": "5184C4",
       "menu_grande": "060768",
       "regua": "4144F1",
+      "barra": "5184C4",
       "osso_por_papel": {
         "fundo": "E8F8F6",
         "painel": "E8F8F6",
         "painel_alto": "E8F8F6",
-        "linha": "E8F8F6",
+        "linha": "09092A",
         "texto": "09092A",
         "texto_fraco": "09092A",
         "acento": "E8F8F6",
@@ -4456,7 +4847,7 @@ var PALETAS = {
       "fundo": "F9F9F6",
       "painel": "EDECE3",
       "painel_alto": "E0DDCD",
-      "linha": "DBD7D1",
+      "linha": "827A6B",
       "texto": "32012F",
       "texto_fraco": "1F1C18",
       "acento": "D06000",
@@ -4466,11 +4857,12 @@ var PALETAS = {
       "bloco": "857A68",
       "menu_grande": "E6E2CF",
       "regua": "857B47",
+      "barra": "88815E",
       "osso_por_papel": {
         "fundo": "32012F",
         "painel": "32012F",
         "painel_alto": "32012F",
-        "linha": "32012F",
+        "linha": "000000",
         "texto": "F3F2EC",
         "texto_fraco": "F3F2EC",
         "acento": "32012F",
@@ -4496,7 +4888,7 @@ var PALETAS = {
       "fundo": "2D012A",
       "painel": "50024B",
       "painel_alto": "780271",
-      "linha": "453F36",
+      "linha": "968D7F",
       "texto": "F3F2EC",
       "texto_fraco": "DCD9D3",
       "acento": "F97300",
@@ -4506,11 +4898,12 @@ var PALETAS = {
       "bloco": "988E7C",
       "menu_grande": "6E0068",
       "regua": "FF33F3",
+      "barra": "FF33F3",
       "osso_por_papel": {
         "fundo": "F3F2EC",
         "painel": "F3F2EC",
         "painel_alto": "F3F2EC",
-        "linha": "F3F2EC",
+        "linha": "32012F",
         "texto": "32012F",
         "texto_fraco": "32012F",
         "acento": "32012F",
@@ -4538,16 +4931,17 @@ var PALETAS = {
       "fundo": "FBFAF3",
       "painel": "F4EFDC",
       "painel_alto": "ECE3C1",
-      "linha": "EEE0BF",
+      "linha": "A0874E",
       "texto": "15171E",
       "texto_fraco": "2B220C",
       "acento": "B4752B",
       "tinta": "F8F5E7",
       "papel": "FAF8EF",
       "painel_baixo": "F9F6EB",
-      "bloco": "BB9232",
+      "bloco": "9F7C2A",
       "menu_grande": "F5EAC0",
       "regua": "AC8F20",
+      "barra": "8D8361",
       "osso_por_papel": {
         "fundo": "15171E",
         "painel": "15171E",
@@ -4578,7 +4972,7 @@ var PALETAS = {
       "fundo": "13151B",
       "painel": "222530",
       "painel_alto": "333748",
-      "linha": "614B1A",
+      "linha": "B39B62",
       "texto": "F8F4E8",
       "texto_fraco": "EEE1C1",
       "acento": "DAA464",
@@ -4588,11 +4982,12 @@ var PALETAS = {
       "bloco": "CEA547",
       "menu_grande": "2A2F44",
       "regua": "828DB0",
+      "barra": "B2BDDF",
       "osso_por_papel": {
         "fundo": "F8F4E8",
         "painel": "F8F4E8",
         "painel_alto": "F8F4E8",
-        "linha": "F8F4E8",
+        "linha": "15171E",
         "texto": "15171E",
         "texto_fraco": "15171E",
         "acento": "15171E",
@@ -4620,16 +5015,17 @@ var PALETAS = {
       "fundo": "FFFDF0",
       "painel": "FFF9D1",
       "painel_alto": "FFF5AD",
-      "linha": "FEDCAF",
+      "linha": "BB8032",
       "texto": "2F0404",
       "texto_fraco": "361F01",
       "acento": "C77100",
       "tinta": "FFFBE0",
       "papel": "FFFCEA",
       "painel_baixo": "FFFCE4",
-      "bloco": "E98704",
+      "bloco": "C37103",
       "menu_grande": "FFF6B6",
       "regua": "CCB300",
+      "barra": "908A67",
       "osso_por_papel": {
         "fundo": "2F0404",
         "painel": "2F0404",
@@ -4660,7 +5056,7 @@ var PALETAS = {
       "fundo": "2A0404",
       "painel": "4B0707",
       "painel_alto": "700A0A",
-      "linha": "784602",
+      "linha": "CE9447",
       "texto": "FFFBE0",
       "texto_fraco": "FEDDB2",
       "acento": "FF9B17",
@@ -4670,11 +5066,12 @@ var PALETAS = {
       "bloco": "FB9B1A",
       "menu_grande": "6E0000",
       "regua": "FF3333",
+      "barra": "DCB2AD",
       "osso_por_papel": {
         "fundo": "FFFBE0",
         "painel": "FFFBE0",
         "painel_alto": "FFFBE0",
-        "linha": "FFFBE0",
+        "linha": "2F0404",
         "texto": "2F0404",
         "texto_fraco": "2F0404",
         "acento": "2F0404",
@@ -4702,7 +5099,7 @@ var PALETAS = {
       "fundo": "FFFDF0",
       "painel": "FEF9D2",
       "painel_alto": "FDF3B0",
-      "linha": "F7C6B6",
+      "linha": "AF5B3E",
       "texto": "2F0904",
       "texto_fraco": "321106",
       "acento": "CF6D04",
@@ -4712,11 +5109,12 @@ var PALETAS = {
       "bloco": "D54818",
       "menu_grande": "FFF5B6",
       "regua": "CCB300",
+      "barra": "908A67",
       "osso_por_papel": {
         "fundo": "2F0904",
         "painel": "2F0904",
         "painel_alto": "2F0904",
-        "linha": "2F0904",
+        "linha": "FEFBE1",
         "texto": "FEFBE1",
         "texto_fraco": "FEFBE1",
         "acento": "2F0904",
@@ -4742,7 +5140,7 @@ var PALETAS = {
       "fundo": "2A0804",
       "painel": "4B0F06",
       "painel_alto": "71170A",
-      "linha": "6E250C",
+      "linha": "C26F53",
       "texto": "FEFBE1",
       "texto_fraco": "F7C8B8",
       "acento": "FB9E3A",
@@ -4752,11 +5150,12 @@ var PALETAS = {
       "bloco": "E85D2D",
       "menu_grande": "6E0E00",
       "regua": "FF4D33",
+      "barra": "DCB3AA",
       "osso_por_papel": {
         "fundo": "FEFBE1",
         "painel": "FEFBE1",
         "painel_alto": "FEFBE1",
-        "linha": "FEFBE1",
+        "linha": "2F0904",
         "texto": "2F0904",
         "texto_fraco": "2F0904",
         "acento": "2F0904",
@@ -4784,7 +5183,7 @@ var PALETAS = {
       "fundo": "F5F5FA",
       "painel": "E2E1EF",
       "painel_alto": "CBCAE2",
-      "linha": "CBCEE1",
+      "linha": "63698A",
       "texto": "070F2C",
       "texto_fraco": "141623",
       "acento": "1B1A55",
@@ -4794,11 +5193,12 @@ var PALETAS = {
       "bloco": "566097",
       "menu_grande": "CDCCE9",
       "regua": "423E8E",
+      "barra": "566097",
       "osso_por_papel": {
         "fundo": "070F2C",
         "painel": "070F2C",
         "painel_alto": "070F2C",
-        "linha": "070F2C",
+        "linha": "EBEBF4",
         "texto": "EBEBF4",
         "texto_fraco": "EBEBF4",
         "acento": "EBEBF4",
@@ -4824,7 +5224,7 @@ var PALETAS = {
       "fundo": "060E27",
       "painel": "0B1846",
       "painel_alto": "112569",
-      "linha": "2D314E",
+      "linha": "777D9D",
       "texto": "EBEBF4",
       "texto_fraco": "CDD0E2",
       "acento": "6361CF",
@@ -4834,11 +5234,12 @@ var PALETAS = {
       "bloco": "6B74AA",
       "menu_grande": "011A6D",
       "regua": "3A64F8",
+      "barra": "6B74AA",
       "osso_por_papel": {
         "fundo": "EBEBF4",
         "painel": "EBEBF4",
         "painel_alto": "EBEBF4",
-        "linha": "EBEBF4",
+        "linha": "070F2C",
         "texto": "070F2C",
         "texto_fraco": "070F2C",
         "acento": "FFFFFF",
@@ -4866,7 +5267,7 @@ var PALETAS = {
       "fundo": "FEF1FA",
       "painel": "FCD4F0",
       "painel_alto": "FAB3E4",
-      "linha": "E4B4F9",
+      "linha": "8E3AB3",
       "texto": "030530",
       "texto_fraco": "250433",
       "acento": "720455",
@@ -4876,11 +5277,12 @@ var PALETAS = {
       "bloco": "9E12DB",
       "menu_grande": "FFB6E8",
       "regua": "CC008D",
+      "barra": "9E12DB",
       "osso_por_papel": {
         "fundo": "030530",
         "painel": "030530",
         "painel_alto": "030530",
-        "linha": "030530",
+        "linha": "FDE2F5",
         "texto": "FDE2F5",
         "texto_fraco": "FDE2F5",
         "acento": "FDE2F5",
@@ -4906,7 +5308,7 @@ var PALETAS = {
       "fundo": "02052C",
       "painel": "04084D",
       "painel_alto": "060D74",
-      "linha": "520A71",
+      "linha": "A24FC6",
       "texto": "FDE2F5",
       "texto_fraco": "E5B7F9",
       "acento": "C40792",
@@ -4916,11 +5318,12 @@ var PALETAS = {
       "bloco": "B128ED",
       "menu_grande": "00076E",
       "regua": "333FFF",
+      "barra": "B128ED",
       "osso_por_papel": {
         "fundo": "FDE2F5",
         "painel": "FDE2F5",
         "painel_alto": "FDE2F5",
-        "linha": "FDE2F5",
+        "linha": "FFFFFF",
         "texto": "030530",
         "texto_fraco": "030530",
         "acento": "FDE2F5",
@@ -4948,28 +5351,29 @@ var PALETAS = {
       "fundo": "FBF6F3",
       "painel": "F4E3DC",
       "painel_alto": "ECCEC0",
-      "linha": "D1D2DB",
+      "linha": "A96444",
       "texto": "0A1F29",
       "texto_fraco": "18191F",
       "acento": "A56F63",
       "tinta": "F8EDE7",
       "papel": "FAF3EF",
       "painel_baixo": "F9EFEA",
-      "bloco": "686C85",
+      "bloco": "CA5723",
       "menu_grande": "F5D1C0",
       "regua": "AE4B1E",
+      "barra": "9B7769",
       "osso_por_papel": {
         "fundo": "18191F",
         "painel": "18191F",
         "painel_alto": "18191F",
-        "linha": "18191F",
+        "linha": "000000",
         "texto": "F8EDE7",
         "texto_fraco": "F8EDE7",
         "acento": "000000",
         "tinta": "18191F",
         "papel": "18191F",
         "painel_baixo": "18191F",
-        "bloco": "FFFFFF",
+        "bloco": "000000",
         "menu_grande": "18191F",
         "regua": "F8EDE7"
       },
@@ -4988,21 +5392,22 @@ var PALETAS = {
       "fundo": "091C25",
       "painel": "0F3242",
       "painel_alto": "174A63",
-      "linha": "363745",
+      "linha": "529EC3",
       "texto": "F8EDE7",
       "texto_fraco": "D3D4DC",
       "acento": "A77166",
       "tinta": "061319",
       "papel": "0C2632",
       "painel_baixo": "0F3141",
-      "bloco": "7C8098",
+      "bloco": "2DACE8",
       "menu_grande": "094765",
       "regua": "47B6EB",
+      "barra": "2DACE8",
       "osso_por_papel": {
         "fundo": "F8EDE7",
         "painel": "F8EDE7",
         "painel_alto": "F8EDE7",
-        "linha": "F8EDE7",
+        "linha": "18191F",
         "texto": "18191F",
         "texto_fraco": "18191F",
         "acento": "000000",
@@ -5030,7 +5435,7 @@ var PALETAS = {
       "fundo": "F8F6F6",
       "painel": "EBE5E5",
       "painel_alto": "DBD1D1",
-      "linha": "E7CDC5",
+      "linha": "956659",
       "texto": "1D1616",
       "texto_fraco": "271510",
       "acento": "AE6F00",
@@ -5040,11 +5445,12 @@ var PALETAS = {
       "bloco": "A95B44",
       "menu_grande": "E0D4D4",
       "regua": "725A5A",
+      "barra": "9C7575",
       "osso_por_papel": {
         "fundo": "1D1616",
         "painel": "1D1616",
         "painel_alto": "1D1616",
-        "linha": "1D1616",
+        "linha": "FFFFFF",
         "texto": "F2EEEE",
         "texto_fraco": "F2EEEE",
         "acento": "000000",
@@ -5070,7 +5476,7 @@ var PALETAS = {
       "fundo": "1A1414",
       "painel": "2E2424",
       "painel_alto": "453636",
-      "linha": "572F23",
+      "linha": "A87A6D",
       "texto": "F2EEEE",
       "texto_fraco": "E8CFC7",
       "acento": "FFB22C",
@@ -5080,11 +5486,12 @@ var PALETAS = {
       "bloco": "BC7059",
       "menu_grande": "402E2E",
       "regua": "A58D8D",
+      "barra": "DCB1B2",
       "osso_por_papel": {
         "fundo": "F2EEEE",
         "painel": "F2EEEE",
         "painel_alto": "F2EEEE",
-        "linha": "F2EEEE",
+        "linha": "1D1616",
         "texto": "1D1616",
         "texto_fraco": "1D1616",
         "acento": "1D1616",
@@ -5112,16 +5519,17 @@ var PALETAS = {
       "fundo": "FFFEF0",
       "painel": "FFFBD1",
       "painel_alto": "FFF7AD",
-      "linha": "D9E1CB",
+      "linha": "7B8964",
       "texto": "2B1608",
       "texto_fraco": "1D2314",
       "acento": "D86B04",
       "tinta": "FFFCE0",
       "papel": "FFFDEA",
       "painel_baixo": "FFFCE4",
-      "bloco": "7D9657",
+      "bloco": "758D52",
       "menu_grande": "FFF8B6",
       "regua": "CCB800",
+      "barra": "758D52",
       "osso_por_papel": {
         "fundo": "2B1608",
         "painel": "2B1608",
@@ -5152,21 +5560,22 @@ var PALETAS = {
       "fundo": "271407",
       "painel": "45240C",
       "painel_alto": "683612",
-      "linha": "414D2D",
+      "linha": "CA7F4B",
       "texto": "FFFCE0",
       "texto_fraco": "DAE2CD",
       "acento": "FDC086",
       "tinta": "1A0D05",
       "papel": "351B09",
       "painel_baixo": "44230C",
-      "bloco": "91A96C",
+      "bloco": "F57720",
       "menu_grande": "6B2F03",
       "regua": "F6883C",
+      "barra": "D9B5A1",
       "osso_por_papel": {
         "fundo": "FFFCE0",
         "painel": "FFFCE0",
         "painel_alto": "FFFCE0",
-        "linha": "FFFCE0",
+        "linha": "2B1608",
         "texto": "2B1608",
         "texto_fraco": "2B1608",
         "acento": "2B1608",
@@ -5194,16 +5603,17 @@ var PALETAS = {
       "fundo": "F9F9F6",
       "painel": "ECECE4",
       "painel_alto": "DDDDD0",
-      "linha": "C1EBE5",
+      "linha": "529B90",
       "texto": "14151F",
       "texto_fraco": "0D2A25",
       "acento": "118AB2",
       "tinta": "F8F8E7",
       "papel": "F6F6F3",
       "painel_baixo": "F4F4EF",
-      "bloco": "3AB4A0",
+      "bloco": "2E9080",
       "menu_grande": "E2E2D2",
       "regua": "7B7B51",
+      "barra": "2E9080",
       "osso_por_papel": {
         "fundo": "14151F",
         "painel": "14151F",
@@ -5234,7 +5644,7 @@ var PALETAS = {
       "fundo": "12131C",
       "painel": "1F2132",
       "painel_alto": "2F324C",
-      "linha": "1E5D53",
+      "linha": "66AEA3",
       "texto": "F2F2ED",
       "texto_fraco": "C4ECE6",
       "acento": "118AB2",
@@ -5244,11 +5654,12 @@ var PALETAS = {
       "bloco": "4FC6B4",
       "menu_grande": "262949",
       "regua": "7A81B8",
+      "barra": "4FC6B4",
       "osso_por_papel": {
         "fundo": "F2F2ED",
         "painel": "F2F2ED",
         "painel_alto": "F2F2ED",
-        "linha": "F2F2ED",
+        "linha": "14151F",
         "texto": "14151F",
         "texto_fraco": "14151F",
         "acento": "14151F",
@@ -5276,7 +5687,7 @@ var PALETAS = {
       "fundo": "FAF8F4",
       "painel": "F1EADF",
       "painel_alto": "E6DAC6",
-      "linha": "CBD3E1",
+      "linha": "63718A",
       "texto": "0A0E29",
       "texto_fraco": "141A23",
       "acento": "4B5694",
@@ -5286,11 +5697,12 @@ var PALETAS = {
       "bloco": "576E97",
       "menu_grande": "EEDFC7",
       "regua": "9A7332",
+      "barra": "4B5694",
       "osso_por_papel": {
         "fundo": "0A0E29",
         "painel": "0A0E29",
         "painel_alto": "0A0E29",
-        "linha": "0A0E29",
+        "linha": "FFFFFF",
         "texto": "F6F1EA",
         "texto_fraco": "F6F1EA",
         "acento": "F6F1EA",
@@ -5316,7 +5728,7 @@ var PALETAS = {
       "fundo": "090D25",
       "painel": "101741",
       "painel_alto": "182362",
-      "linha": "2D394E",
+      "linha": "78859D",
       "texto": "F6F1EA",
       "texto_fraco": "CDD5E2",
       "acento": "5D69AD",
@@ -5326,11 +5738,12 @@ var PALETAS = {
       "bloco": "6B82AA",
       "menu_grande": "0A1764",
       "regua": "495FE9",
+      "barra": "495FE9",
       "osso_por_papel": {
         "fundo": "F6F1EA",
         "painel": "F6F1EA",
         "painel_alto": "F6F1EA",
-        "linha": "F6F1EA",
+        "linha": "0A0E29",
         "texto": "0A0E29",
         "texto_fraco": "0A0E29",
         "acento": "F6F1EA",
@@ -5358,7 +5771,7 @@ var PALETAS = {
       "fundo": "FEFAF1",
       "painel": "FCF0D4",
       "painel_alto": "FAE5B2",
-      "linha": "F5CBB8",
+      "linha": "AB6442",
       "texto": "300303",
       "texto_fraco": "301407",
       "acento": "DD5800",
@@ -5368,11 +5781,12 @@ var PALETAS = {
       "bloco": "CF571E",
       "menu_grande": "FFEAB6",
       "regua": "CC8F00",
+      "barra": "978364",
       "osso_por_papel": {
         "fundo": "300303",
         "painel": "300303",
         "painel_alto": "300303",
-        "linha": "300303",
+        "linha": "000000",
         "texto": "FDF5E2",
         "texto_fraco": "FDF5E2",
         "acento": "300303",
@@ -5398,7 +5812,7 @@ var PALETAS = {
       "fundo": "2B0303",
       "painel": "4D0505",
       "painel_alto": "730707",
-      "linha": "6B2D10",
+      "linha": "BE7856",
       "texto": "FDF5E2",
       "texto_fraco": "F5CDBB",
       "acento": "FF6500",
@@ -5408,11 +5822,12 @@ var PALETAS = {
       "bloco": "E16C34",
       "menu_grande": "6E0000",
       "regua": "FF3333",
+      "barra": "DCB2AD",
       "osso_por_papel": {
         "fundo": "FDF5E2",
         "painel": "FDF5E2",
         "painel_alto": "FDF5E2",
-        "linha": "FDF5E2",
+        "linha": "300303",
         "texto": "300303",
         "texto_fraco": "300303",
         "acento": "300303",
@@ -5440,7 +5855,7 @@ var PALETAS = {
       "fundo": "F1F1FD",
       "painel": "D6D6FA",
       "painel_alto": "B7B7F6",
-      "linha": "C1C0EC",
+      "linha": "52509D",
       "texto": "0F0B28",
       "texto_fraco": "0D0D2A",
       "acento": "162E93",
@@ -5450,11 +5865,12 @@ var PALETAS = {
       "bloco": "3937B6",
       "menu_grande": "B6B6FF",
       "regua": "0000CC",
+      "barra": "3937B6",
       "osso_por_papel": {
         "fundo": "0F0B28",
         "painel": "0F0B28",
         "painel_alto": "0F0B28",
-        "linha": "0F0B28",
+        "linha": "E4E4FB",
         "texto": "E4E4FB",
         "texto_fraco": "E4E4FB",
         "acento": "E4E4FB",
@@ -5480,28 +5896,29 @@ var PALETAS = {
       "fundo": "0D0A24",
       "painel": "171140",
       "painel_alto": "231A60",
-      "linha": "1D1C5E",
+      "linha": "6665B0",
       "texto": "E4E4FB",
       "texto_fraco": "C3C3ED",
       "acento": "4362E3",
       "tinta": "090718",
       "papel": "120D31",
       "painel_baixo": "17113F",
-      "bloco": "4E4CC9",
+      "bloco": "605ECE",
       "menu_grande": "170C62",
       "regua": "604DE5",
+      "barra": "605ECE",
       "osso_por_papel": {
         "fundo": "E4E4FB",
         "painel": "E4E4FB",
         "painel_alto": "E4E4FB",
-        "linha": "E4E4FB",
+        "linha": "FFFFFF",
         "texto": "0F0B28",
         "texto_fraco": "0F0B28",
         "acento": "FFFFFF",
         "tinta": "E4E4FB",
         "papel": "E4E4FB",
         "painel_baixo": "E4E4FB",
-        "bloco": "E4E4FB",
+        "bloco": "FFFFFF",
         "menu_grande": "E4E4FB",
         "regua": "E4E4FB"
       },
@@ -5522,7 +5939,7 @@ var PALETAS = {
       "fundo": "FFF4F0",
       "painel": "FFDFD1",
       "painel_alto": "FFC6AD",
-      "linha": "FFBCAD",
+      "linha": "BE492F",
       "texto": "1B0033",
       "texto_fraco": "370A00",
       "acento": "500073",
@@ -5532,11 +5949,12 @@ var PALETAS = {
       "bloco": "ED2A00",
       "menu_grande": "FFCCB6",
       "regua": "CC3F00",
+      "barra": "500073",
       "osso_por_papel": {
         "fundo": "1B0033",
         "painel": "1B0033",
         "painel_alto": "1B0033",
-        "linha": "1B0033",
+        "linha": "FFFFFF",
         "texto": "FFEAE0",
         "texto_fraco": "FFEAE0",
         "acento": "FFEAE0",
@@ -5562,7 +5980,7 @@ var PALETAS = {
       "fundo": "19002E",
       "painel": "2C0052",
       "painel_alto": "42007A",
-      "linha": "7A1600",
+      "linha": "D05D45",
       "texto": "FFEAE0",
       "texto_fraco": "FFBEB0",
       "acento": "AC00F7",
@@ -5572,11 +5990,12 @@ var PALETAS = {
       "bloco": "FF3F16",
       "menu_grande": "3C006E",
       "regua": "A133FF",
+      "barra": "A133FF",
       "osso_por_papel": {
         "fundo": "FFEAE0",
         "painel": "FFEAE0",
         "painel_alto": "FFEAE0",
-        "linha": "FFEAE0",
+        "linha": "1B0033",
         "texto": "1B0033",
         "texto_fraco": "1B0033",
         "acento": "FFFFFF",
@@ -5604,7 +6023,7 @@ var PALETAS = {
       "fundo": "FEF5F0",
       "painel": "FDE1D3",
       "painel_alto": "FBC9B2",
-      "linha": "D1C5E7",
+      "linha": "6E5994",
       "texto": "171122",
       "texto_fraco": "181027",
       "acento": "412B6B",
@@ -5614,11 +6033,12 @@ var PALETAS = {
       "bloco": "6846A7",
       "menu_grande": "FFCDB6",
       "regua": "CC4100",
+      "barra": "6846A7",
       "osso_por_papel": {
         "fundo": "171122",
         "painel": "171122",
         "painel_alto": "171122",
-        "linha": "171122",
+        "linha": "FDEBE2",
         "texto": "FDEBE2",
         "texto_fraco": "FDEBE2",
         "acento": "FDEBE2",
@@ -5644,21 +6064,22 @@ var PALETAS = {
       "fundo": "140F1F",
       "painel": "241A37",
       "painel_alto": "372853",
-      "linha": "362456",
+      "linha": "826EA7",
       "texto": "FDEBE2",
       "texto_fraco": "D3C8E8",
       "acento": "8161BF",
       "tinta": "0D0817",
       "papel": "1C142A",
       "painel_baixo": "241A36",
-      "bloco": "7C5BBA",
+      "bloco": "7E5DBB",
       "menu_grande": "2F1D51",
       "regua": "8B6AC8",
+      "barra": "7E5DBB",
       "osso_por_papel": {
         "fundo": "FDEBE2",
         "painel": "FDEBE2",
         "painel_alto": "FDEBE2",
-        "linha": "FDEBE2",
+        "linha": "000000",
         "texto": "171122",
         "texto_fraco": "171122",
         "acento": "FFFFFF",
@@ -5834,7 +6255,7 @@ var ESTIMATIVA_PASSO_ = 6000;     // passo desconhecido (ver estimativaDoPasso_)
 var PROP_FEITO_ = 'paleta_feito', PROP_TEMPOS_ = 'paleta_tempos', PROP_PENDENTE_ = 'paleta_pendente';
 var PROP_ULTIMA_ = 'paleta_ultima_troca', PROP_DETALHE_ = 'paleta_detalhe';
 // Sai no verTemposDaPaleta, pra saber qual Codigo.gs está colado na planilha que mediu.
-var VERSAO_PALETA_ = '25/09/2026-f';
+var VERSAO_PALETA_ = '01/10/2026-h';
 
 function passosDaPaleta_(primeira) {
   // As abas ocultas (DADOS, DADOS_INV) ficam de fora desde 25/09/2026: ninguém as vê, e cada aba lida e
@@ -5845,7 +6266,8 @@ function passosDaPaleta_(primeira) {
   // de todas somam 22 a 25 s, colado no orçamento: o que sobrar é de uma aba que ele não está vendo, e ela
   // passa pra frente assim que ele a abre (ver onSelectionChange). Ordem do ABAS no resto: FICHA em segundo.
   abas.sort(function (a, b) { return (b.nome === primeira) - (a.nome === primeira); });
-  var passos = [];
+  // A barra cheia vem primeiro (01/10/2026): é uma célula só, na DADOS, e as barras de todas as abas a leem.
+  var passos = ['barra'];
   abas.forEach(function (spec) {
     passos.push('cor:' + spec.nome);
     if ((spec.bordas || []).length) passos.push('borda:' + spec.nome);
@@ -5870,6 +6292,15 @@ function estimativaDoPasso_(passo) {
     var spec = ABAS.filter(function (a) { return a.nome === partes[1]; })[0];
     return spec ? Math.round(spec.rows * spec.cols * 0.75) + 600 : ESTIMATIVA_PASSO_;
   }
+  // 01/10/2026: a régua custa por chamada, e a FICHA PESSOAL tem 550 faixas, mais que as 522 da FICHA. As caixas de
+  // quatro lados vão em lotes de 400, e os lados soltos em até quatro chamadas a mais (ver repintarBordas_).
+  if (partes[0] === 'borda') {
+    var aba = ABAS.filter(function (a) { return a.nome === partes[1]; })[0];
+    var faixas = {};
+    ((aba && aba.bordas) || []).forEach(function (b) { b[3].forEach(function (f) { faixas[f] = true; }); });
+    return (Math.ceil(Object.keys(faixas).length / 400) + 4) * 350;
+  }
+  if (partes[0] === 'barra') return 600;   // lê duas colunas da DADOS e grava uma célula
   return 1500;
 }
 
@@ -5942,7 +6373,9 @@ function convergirPaleta_(inicio, orcamento, dica, primeira) {
     }
     var t0 = Date.now();
     var partes = passo.split(':'), tipo = partes[0], nome = partes[1];
-    if (tipo === 'cor') {
+    if (tipo === 'barra') {
+      try { pintarBarra_(ss, agora); } catch (err) { console.log('barra: ' + err.message); }
+    } else if (tipo === 'cor') {
       var spec = ABAS.filter(function (a) { return a.nome === nome; })[0];
       repintarCoresDaAba_(ss, spec, feito[passo] || geral || velho || PALETA_INICIAL_, novo);
     } else if (tipo === 'arte') {
@@ -5970,6 +6403,26 @@ function convergirPaleta_(inicio, orcamento, dica, primeira) {
   if (String(alvo.getCell(1, 1).getValue() || '').trim() !== novo) return passos[0];
   props.deleteProperty(PROP_PENDENTE_);
   return null;
+}
+
+/**
+ * A BARRA CHEIA — 01/10/2026, pedido do Mizuki testando no Sheets: "as cores das barras do sistema não estão
+ * acompanhando tão bem as paletas". A barra de vida, de energia e de integridade da FICHA, e a de carga e a de XP da
+ * FICHA PESSOAL, tinham o osso de fábrica escrito dentro da SPARKLINE: um bege parado em toda paleta. Agora as cinco
+ * leem a cor de uma célula da DADOS, a conta "cor da barra cheia", e a troca de tema só grava essa célula com a
+ * `barra` do tema (ver o derivar.py: a tinta de enfeite, desde que não se confunda com o âmbar e o vermelho). O âmbar
+ * e o vermelho de vida baixa continuam fixos, pela decisão A5. A célula é achada pelo índice da FICHA PESSOAL; numa
+ * ficha de antes desta data ela não existe, e a barra fica no osso, como estava.
+ */
+var CAMPO_DA_BARRA_ = 'cor da barra cheia';
+function pintarBarra_(ss, agora) {
+  if (!agora || !agora.barra) return false;
+  var a1 = indicePessoal_()[CAMPO_DA_BARRA_];
+  if (!a1) return false;
+  var cel = ss.getSheetByName('DADOS').getRange(a1);
+  var cor = '#' + String(agora.barra).toUpperCase();
+  if (String(cel.getValue()) !== cor) cel.setValue(cor);
+  return true;
 }
 
 /**
@@ -6187,6 +6640,25 @@ function celulasDeAviso_(spec) {
   return mapa;
 }
 
+/**
+ * As células cuja letra nasceu na tinta de enfeite (o 呪術廻戦, o número da carteira, a versão: bloco; a lombada:
+ * linha), também achadas no `ABAS` e não pela cor de agora. Devolve {'linha,coluna': papel}. Até 01/10/2026 elas
+ * eram achadas pelo hex, e bastava a rede de legibilidade trocar a lombada pelo acento uma vez para ela ser "acento"
+ * em toda troca seguinte. Pelo endereço, cada troca dá a elas a cor do papel delas, sem depender da anterior.
+ */
+function celulasDeEnfeite_(spec) {
+  var papel = {};
+  papel['#' + PALETA_DE_FABRICA_.bloco] = 'bloco';
+  papel['#' + PALETA_DE_FABRICA_.linha] = 'linha';
+  var mapa = {};
+  (spec.vals || []).forEach(function (t) {
+    var estilo = t.length > 3 ? spec.estilos[t[3]] : null;
+    var p = estilo && papel[String(estilo[2] || '').toUpperCase()];
+    if (p) mapa[(t[0] - 1) + ',' + (t[1] - 1)] = p;
+  });
+  return mapa;
+}
+
 // ---------------------------------------------------------------------------------------------
 // LEGIBILIDADE — 19/09/2026, o "problema grande" que o Mizuki apontou testando no Sheets.
 //
@@ -6294,17 +6766,69 @@ function fonteLegivel_(fonte, fundo, desenho, cands, cache) {
   return resultado;
 }
 
-/** As cores que a rede de segurança pode oferecer: a paleta nova, a variante oposta do mesmo tema, e por último branco e preto. */
+/**
+ * As cores que a rede de segurança pode oferecer: as duas de TEXTO da paleta nova, as duas da variante oposta do
+ * mesmo tema, e por último branco e preto.
+ *
+ * Até 01/10/2026 a lista levava também a linha, o bloco, o acento e os fundos, e a rede ficava com a de contraste
+ * mais parecido: o matiz saía ao acaso. Medido nas 122: a lombada caía no acento em 160 casos e numa cor da variante
+ * oposta em 350, e o subtítulo do GLOSSÁRIO virava ciano num tema e vinho no outro. Era o "roxo meio nada a ver" que
+ * o Mizuki apontou. Agora a rede só troca letra por cor de letra; a tinta de enfeite (bloco e linha) já sai do
+ * derivar.py lendo sobre os fundos onde mora, e não passa mais por aqui.
+ */
 function candidatosDeFonte_(agora, oposta) {
   var lista = [];
   [agora, oposta].forEach(function (p) {
     if (!p) return;
-    ['texto', 'texto_fraco', 'linha', 'bloco', 'acento', 'papel', 'fundo', 'painel', 'tinta'].forEach(function (k) {
+    ['texto', 'texto_fraco'].forEach(function (k) {
       if (p[k]) lista.push({ hex: '#' + String(p[k]).toUpperCase(), extremo: false });
     });
   });
   lista.push({ hex: '#FFFFFF', extremo: true }, { hex: '#000000', extremo: true });
   return lista;
+}
+
+/**
+ * A mesma cor, com a luminosidade andada até ler `alvo` sobre `fundo`: o matiz e a saturação ficam. É a regra da
+ * revisão de 01/10/2026, "ajusta o valor, não troca de cor", a mesma do `le_sobre` do derivar.py. Serve à arte.
+ */
+function mesmaCorQueLe_(hex, fundo, alvo) {
+  if (contrasteHex_(hex, fundo) >= alvo) return hex;
+  var r = parseInt(hex.substr(1, 2), 16) / 255, g = parseInt(hex.substr(3, 2), 16) / 255, b = parseInt(hex.substr(5, 2), 16) / 255;
+  var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn, h = 0, sat = 0;
+  if (d) {
+    sat = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+    h = mx === r ? ((g - b) / d + (g < b ? 6 : 0)) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    h /= 6;
+  }
+  var canal = function (p, q, t) {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    return t < 1 / 6 ? p + (q - p) * 6 * t : t < 1 / 2 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p;
+  };
+  var doisHex = function (v) { var x = Math.max(0, Math.min(255, Math.round(v * 255))).toString(16).toUpperCase(); return x.length < 2 ? '0' + x : x; };
+  var escurecer = luminanciaHex_(fundo) > 0.18, passo = (escurecer ? l : 1 - l) / 80, melhor = hex;
+  for (var i = 0; i < 80; i++) {
+    l = Math.max(0.02, Math.min(0.98, escurecer ? l - passo : l + passo));
+    var q = l < 0.5 ? l * (1 + sat) : l + sat - l * sat, pp = 2 * l - q;
+    melhor = '#' + doisHex(canal(pp, q, h + 1 / 3)) + doisHex(canal(pp, q, h)) + doisHex(canal(pp, q, h - 1 / 3));
+    if (contrasteHex_(melhor, fundo) >= alvo) break;
+  }
+  return melhor;
+}
+
+/**
+ * A cor de uma imagem: a do papel dela, se aparece sobre o fundo onde ela está; senão o acento do tema, que é o
+ * destaque dele e já pinta as faixas de título; e se nem ele aparecer, a cor do papel no mesmo matiz, mais escura ou
+ * mais clara até aparecer. Até 01/10/2026 quem falhava caía na rede das fontes, e a cor saía ao acaso: o selo ia para
+ * o bloco em três temas e para uma cor da variante oposta em seis.
+ */
+function corDaArte_(agora, papel, fundo) {
+  var cor = '#' + String(agora[papel]).toUpperCase();
+  if (contrasteHex_(cor, fundo) >= PISO_ARTE_) return cor;
+  var acento = '#' + String(agora.acento || '').toUpperCase();
+  if (agora.acento && contrasteHex_(acento, fundo) >= PISO_ARTE_) return acento;
+  return mesmaCorQueLe_(cor, fundo, PISO_ARTE_);
 }
 
 function coresOpostas_(nome) {
@@ -6420,8 +6944,8 @@ function pngComCor_(b64, hex) {
 
 /**
  * Recolore cada imagem NOSSA na cor do papel dela na paleta nova, escolhida pra ler contra o fundo que a
- * célula dela tem agora (o mesmo `fonteLegivel_` das fontes, com piso de 3,0). Roda depois de o fundo ter
- * sido trocado, porque é dele que a cor depende. Uma imagem que falha não derruba a troca inteira.
+ * célula dela tem agora (corDaArte_, com piso de 3,0). Roda depois de o fundo ter sido trocado, porque é
+ * dele que a cor depende. Uma imagem que falha não derruba a troca inteira.
  */
 function repintarArte_(ss, agora, candidatos, soAba, soImagem) {
   var cache = {}, feitas = 0;
@@ -6439,7 +6963,7 @@ function repintarArte_(ss, agora, candidatos, soAba, soImagem) {
         if (!v || v.valueType !== SpreadsheetApp.ValueType.IMAGE) return;
         if (String(v.getAltTextTitle()) !== TAG_ARTE_ + im[4]) return;      // a foto do jogador, por exemplo
         var fundo = String(cel.getBackground()).toUpperCase();
-        var cor = fonteLegivel_('#' + String(agora[papel]).toUpperCase(), fundo, PISO_ARTE_, candidatos, cache);
+        var cor = cache[papel + fundo] || (cache[papel + fundo] = corDaArte_(agora, papel, fundo));
         if (String(v.getAltTextDescription()) === cor) return;              // já está dessa cor
         cel.setValue(SpreadsheetApp.newCellImage()
           .setSourceUrl('data:image/png;base64,' + pngComCor_(ARTE[im[4]], cor))
@@ -6519,6 +7043,7 @@ function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo) {
   var tl = Date.now();
   var mudouFundo = false, mudouFonte = false;
   var avisos = celulasDeAviso_(spec);
+  var enfeites = celulasDeEnfeite_(spec);
   var desenho = contrasteDeFabrica_(spec);
 
   for (var r = 0; r < nl; r++) {
@@ -6536,6 +7061,8 @@ function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo) {
       var novaFonte = t;
       if (avisos[r + ',' + c]) {
         novaFonte = '#' + String(avisoNovo[papelDoFundo] || agora.texto).toUpperCase();
+      } else if (enfeites[r + ',' + c]) {
+        novaFonte = '#' + String(agora[enfeites[r + ',' + c]]).toUpperCase();
       } else if (t === OSSO_HEX_) {
         var novoOsso = papelDoFundo && ossoNovo[papelDoFundo];
         if (novoOsso) novaFonte = '#' + String(novoOsso).toUpperCase();

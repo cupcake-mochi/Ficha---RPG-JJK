@@ -28,9 +28,15 @@
       "legados_formatos",
       "progressao",
       "atributos",
-      "equipamento_defesa"
+      "equipamento_defesa",
+      "equipamento",
+      "patentes",
+      "missoes"
     ],
-    "nao_conferido_contra_o_livro": []
+    "nao_conferido_contra_o_livro": [],
+    "fora_do_livro": [
+      "fora_do_livro"
+    ]
   },
   "atributos": {
     "lista": [
@@ -1564,7 +1570,11 @@
         "xp": "—"
       }
     },
-    "xp": "nao automatizar: o jogador digita o nivel direto (decisao do Mizuki)"
+    "xp": "nao automatizar: o jogador digita o nivel direto (decisao do Mizuki)",
+    "limiar_do_feito": {
+      "nivel": 20,
+      "regra": "Você chega ao nível 20 por XP. Você passa dele por feito."
+    }
   },
   "equipamento_defesa": {
     "fonte": "manual, capítulo Equipamento, seção Proteção: as tabelas Traje, Revestimento e Escudo, e as frases de regra",
@@ -1621,5 +1631,846 @@
     "uniforme_desliga_a_protecao_de_energia": true,
     "escudo_soma_por_cima": true,
     "dois_tetos": "vale o menor"
+  },
+  "equipamento": {
+    "fonte": "manual, capítulo Equipamento: as tabelas Catálogo de armas, Treino de arma, Armas de tiro, Armas de arremesso, Munição, Situação do Traje, a coluna Volume das tabelas Traje, Revestimento e Escudo, a tabela do Soco e as frases de Peso e de Dinheiro e acesso",
+    "armas": {
+      "Bastão": {
+        "categoria": "Porrete",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Versátil",
+          "Alcance",
+          "Rompe"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Simples"
+      },
+      "Besta": {
+        "categoria": "Balestra",
+        "mao": 2,
+        "dado": "2d8",
+        "propriedades": [
+          "Longo Alcance",
+          "Munição",
+          "Rompe"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Simples"
+      },
+      "Besta de Uma Mão": {
+        "categoria": "Balestra",
+        "mao": 1,
+        "dado": "1d10",
+        "propriedades": [
+          "Longo Alcance",
+          "Munição",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Bō": {
+        "categoria": "Porrete",
+        "mao": 2,
+        "dado": "d10",
+        "propriedades": [
+          "Alcance",
+          "Emaranha"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Simples"
+      },
+      "Canivete": {
+        "categoria": "Lâmina Curta",
+        "mao": 1,
+        "dado": "d4",
+        "propriedades": [
+          "Fineza",
+          "Oculta",
+          "Rompe"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Cassetete": {
+        "categoria": "Porrete",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Oculta",
+          "Vestida"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Chakram": {
+        "categoria": "Arremesso",
+        "mao": 1,
+        "dado": "d4",
+        "propriedades": [
+          "Longo Alcance",
+          "Fineza",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Faca": {
+        "categoria": "Lâmina Curta",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Fineza",
+          "Rompe"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Simples"
+      },
+      "Foice": {
+        "categoria": "Ceifa",
+        "mao": 2,
+        "dado": "d10",
+        "propriedades": [
+          "Emaranha",
+          "Talha"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Simples"
+      },
+      "Kama": {
+        "categoria": "Ceifa",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Par",
+          "Rompe"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Simples"
+      },
+      "Kanabō": {
+        "categoria": "Massa",
+        "mao": 2,
+        "dado": "d12",
+        "propriedades": [
+          "Talha"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Simples"
+      },
+      "Kunai": {
+        "categoria": "Arremesso",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Longo Alcance",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Kusarigama": {
+        "categoria": "Ceifa",
+        "mao": 2,
+        "dado": "d8",
+        "propriedades": [
+          "Alcance",
+          "Emaranha",
+          "Longo Alcance"
+        ],
+        "requer_forca": null,
+        "volume": 2,
+        "treino": "Simples"
+      },
+      "Maça": {
+        "categoria": "Massa",
+        "mao": 1,
+        "dado": "d8",
+        "propriedades": [
+          "Talha"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Simples"
+      },
+      "Marreta": {
+        "categoria": "Massa",
+        "mao": 2,
+        "dado": "d10",
+        "propriedades": [
+          "Rompe",
+          "Talha"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Simples"
+      },
+      "Maul": {
+        "categoria": "Massa",
+        "mao": 2,
+        "dado": "d12",
+        "propriedades": [
+          "Rompe"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Simples"
+      },
+      "Nunchaku": {
+        "categoria": "Porrete",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Par",
+          "Emaranha"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Simples"
+      },
+      "Punhal": {
+        "categoria": "Lâmina Curta",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Fineza",
+          "Longo Alcance"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Simples"
+      },
+      "Sai": {
+        "categoria": "Lâmina Curta",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Fineza",
+          "Par"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Simples"
+      },
+      "Shuriken": {
+        "categoria": "Arremesso",
+        "mao": 1,
+        "dado": "d4",
+        "propriedades": [
+          "Longo Alcance",
+          "Oculta",
+          "Par"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Soqueira": {
+        "categoria": "Manopla",
+        "mao": 1,
+        "dado": "d4",
+        "propriedades": [
+          "Vestida",
+          "Oculta",
+          "Par"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Taco": {
+        "categoria": "Massa",
+        "mao": 1,
+        "dado": "d8",
+        "propriedades": [
+          "Versátil",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Tanto": {
+        "categoria": "Lâmina Curta",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Fineza",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Tekko": {
+        "categoria": "Manopla",
+        "mao": 1,
+        "dado": "d4",
+        "propriedades": [
+          "Vestida",
+          "Par",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Tessen": {
+        "categoria": "Arremesso",
+        "mao": 1,
+        "dado": "d4",
+        "propriedades": [
+          "Longo Alcance",
+          "Oculta",
+          "Vestida"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Tonfa": {
+        "categoria": "Porrete",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Par",
+          "Vestida"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Simples"
+      },
+      "Chicote": {
+        "categoria": "Flexível",
+        "mao": 1,
+        "dado": "d4",
+        "propriedades": [
+          "Alcance",
+          "Emaranha",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Marciais"
+      },
+      "Corrente": {
+        "categoria": "Flexível",
+        "mao": 2,
+        "dado": "d8",
+        "propriedades": [
+          "Alcance",
+          "Emaranha",
+          "Rompe"
+        ],
+        "requer_forca": null,
+        "volume": 2,
+        "treino": "Marciais"
+      },
+      "Daikyū": {
+        "categoria": "Yumi",
+        "mao": 2,
+        "dado": "1d10",
+        "propriedades": [
+          "Longo Alcance"
+        ],
+        "requer_forca": null,
+        "volume": 2,
+        "treino": "Marciais"
+      },
+      "Espada Longa": {
+        "categoria": "Lâmina Longa",
+        "mao": 1,
+        "dado": "d8",
+        "propriedades": [
+          "Versátil",
+          "Rompe"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Marciais"
+      },
+      "Espadão": {
+        "categoria": "Lâmina Longa",
+        "mao": 2,
+        "dado": "d12",
+        "propriedades": [
+          "Alcance"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Marciais"
+      },
+      "Hankyū": {
+        "categoria": "Yumi",
+        "mao": 2,
+        "dado": "1d8",
+        "propriedades": [
+          "Longo Alcance",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": 2,
+        "treino": "Marciais"
+      },
+      "Katana": {
+        "categoria": "Lâmina Longa",
+        "mao": 1,
+        "dado": "d8",
+        "propriedades": [
+          "Versátil",
+          "Fineza"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Marciais"
+      },
+      "Lança": {
+        "categoria": "Armas Longas",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Alcance",
+          "Longo Alcance"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Marciais"
+      },
+      "Machadinha": {
+        "categoria": "Machado",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Longo Alcance",
+          "Rompe"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Marciais"
+      },
+      "Machado": {
+        "categoria": "Machado",
+        "mao": 1,
+        "dado": "d8",
+        "propriedades": [
+          "Rompe"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Marciais"
+      },
+      "Machado de Guerra": {
+        "categoria": "Machado",
+        "mao": 2,
+        "dado": "d12",
+        "propriedades": [
+          "Rompe",
+          "Talha",
+          "Volumosa"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Marciais"
+      },
+      "Machete": {
+        "categoria": "Lâmina Longa",
+        "mao": 1,
+        "dado": "d8",
+        "propriedades": [
+          "Rompe"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Marciais"
+      },
+      "Manriki": {
+        "categoria": "Flexível",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Emaranha",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Marciais"
+      },
+      "Naginata": {
+        "categoria": "Armas Longas",
+        "mao": 2,
+        "dado": "d10",
+        "propriedades": [
+          "Alcance",
+          "Rompe"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Marciais"
+      },
+      "Nodachi": {
+        "categoria": "Lâmina Longa",
+        "mao": 2,
+        "dado": "d12",
+        "propriedades": [
+          "Alcance",
+          "Rompe",
+          "Volumosa"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Marciais"
+      },
+      "Odachi": {
+        "categoria": "Lâmina Longa",
+        "mao": 2,
+        "dado": "d12",
+        "propriedades": [
+          "Alcance",
+          "Talha",
+          "Embainhada"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Marciais"
+      },
+      "Rapieira": {
+        "categoria": "Lâmina Longa",
+        "mao": 1,
+        "dado": "d6",
+        "propriedades": [
+          "Fineza",
+          "Talha"
+        ],
+        "requer_forca": null,
+        "volume": 1,
+        "treino": "Marciais"
+      },
+      "Wakizashi": {
+        "categoria": "Lâmina Longa",
+        "mao": 1,
+        "dado": "d8",
+        "propriedades": [
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Marciais"
+      },
+      "Yari": {
+        "categoria": "Armas Longas",
+        "mao": 2,
+        "dado": "d10",
+        "propriedades": [
+          "Alcance",
+          "Talha"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Marciais"
+      },
+      "Espingarda": {
+        "categoria": "Arma de Fogo",
+        "mao": 2,
+        "dado": "2d8",
+        "propriedades": [
+          "Longo Alcance",
+          "Munição",
+          "Rompe"
+        ],
+        "requer_forca": 1,
+        "volume": 2,
+        "treino": "Arma de Fogo"
+      },
+      "Metralhadora Pesada": {
+        "categoria": "Arma de Fogo",
+        "mao": 2,
+        "dado": "2d10",
+        "propriedades": [
+          "Longo Alcance",
+          "Munição",
+          "Rompe",
+          "Volumosa"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Arma de Fogo"
+      },
+      "Pistola": {
+        "categoria": "Arma de Fogo",
+        "mao": 1,
+        "dado": "1d10",
+        "propriedades": [
+          "Longo Alcance",
+          "Munição",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Arma de Fogo"
+      },
+      "Revólver": {
+        "categoria": "Arma de Fogo",
+        "mao": 1,
+        "dado": "1d10",
+        "propriedades": [
+          "Longo Alcance",
+          "Munição",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": "leve",
+        "treino": "Arma de Fogo"
+      },
+      "Rifle": {
+        "categoria": "Arma de Fogo",
+        "mao": 2,
+        "dado": "2d8",
+        "propriedades": [
+          "Longo Alcance",
+          "Munição",
+          "Talha"
+        ],
+        "requer_forca": 1,
+        "volume": 2,
+        "treino": "Arma de Fogo"
+      },
+      "Rifle de Precisão": {
+        "categoria": "Arma de Fogo",
+        "mao": 2,
+        "dado": "2d10",
+        "propriedades": [
+          "Longo Alcance",
+          "Munição"
+        ],
+        "requer_forca": 3,
+        "volume": 2,
+        "treino": "Arma de Fogo"
+      },
+      "Submetralhadora": {
+        "categoria": "Arma de Fogo",
+        "mao": 2,
+        "dado": "2d6",
+        "propriedades": [
+          "Longo Alcance",
+          "Munição",
+          "Par",
+          "Oculta"
+        ],
+        "requer_forca": null,
+        "volume": 2,
+        "treino": "Arma de Fogo"
+      }
+    },
+    "treino": {
+      "listas": {
+        "Simples": [
+          "Lâmina Curta",
+          "Porrete",
+          "Ceifa",
+          "Arremesso",
+          "Manopla",
+          "Massa",
+          "Balestra"
+        ],
+        "Marciais": [
+          "Lâmina Longa",
+          "Machado",
+          "Armas Longas",
+          "Flexível",
+          "Yumi"
+        ],
+        "Arma de Fogo": [
+          "Arma de Fogo"
+        ]
+      },
+      "conjurador_treina": [
+        "Arma de Fogo",
+        "Balestra"
+      ]
+    },
+    "faixa_de_projetil": {
+      "tiro": {
+        "Hankyū": [
+          24,
+          96
+        ],
+        "Daikyū": [
+          45,
+          180
+        ],
+        "Besta de Uma Mão": [
+          9,
+          36
+        ],
+        "Besta": [
+          30,
+          120
+        ],
+        "Pistola": [
+          9,
+          27
+        ],
+        "Revólver": [
+          12,
+          36
+        ],
+        "Submetralhadora": [
+          15,
+          45
+        ],
+        "Espingarda": [
+          9,
+          27
+        ],
+        "Rifle": [
+          24,
+          72
+        ],
+        "Rifle de Precisão": [
+          24,
+          72
+        ],
+        "Metralhadora Pesada": [
+          24,
+          72
+        ]
+      },
+      "arremesso": {
+        "armas": [
+          "Punhal",
+          "Machadinha",
+          "Lança",
+          "Kunai",
+          "Shuriken",
+          "Tessen",
+          "Chakram",
+          "Kusarigama"
+        ],
+        "faixa": [
+          6,
+          18
+        ]
+      }
+    },
+    "municao": {
+      "Metralhadora Pesada": 4,
+      "Rifle": 3,
+      "Submetralhadora": 3,
+      "Pistola": 2,
+      "Revólver": 2,
+      "Espingarda": 2,
+      "Rifle de Precisão": 2,
+      "Besta": 1,
+      "Besta de Uma Mão": 1
+    },
+    "soco_por_maestria": {
+      "1": "d4",
+      "2": "d6",
+      "3": "d8",
+      "4": "d10"
+    },
+    "volume": {
+      "limite": "5 + Força",
+      "leve": 0.1,
+      "de_uniforme_e_escudo": {
+        "Traje 1": "leve",
+        "Traje 2": 1,
+        "Traje 3": 2,
+        "Revestimento 1": 2,
+        "Revestimento 2": 3,
+        "Revestimento 3": 4,
+        "Broquel": "leve",
+        "Médio": 1,
+        "Torre": 2
+      },
+      "soma_dos_leves": {
+        "regra": "não arredonda: nove leves são 0,9 e dez são 1",
+        "desde": "v0.327 do sistema",
+        "no_manual_txt": "o manual.txt deste repositório é o da v0.263, e nele dez leves fazem 1 arredondando para baixo; a ficha segue o livro de hoje"
+      }
+    },
+    "situacoes_do_traje": [
+      "vão apertado",
+      "altura e beirada",
+      "escuro",
+      "superfície ruim",
+      "água e chuva",
+      "multidão",
+      "terreno instável",
+      "calor e fogo"
+    ],
+    "grau_minimo": {
+      "Revestimento 2": "Grau 3",
+      "Revestimento 3": "Grau 2"
+    }
+  },
+  "patentes": {
+    "fonte": "manual, capítulo Experiência e Progressão, tabela Salário por patente",
+    "salario_por_mes": {
+      "Grau 4": 150000,
+      "Grau 3": 300000,
+      "Grau 2": 600000,
+      "Grau 1": 1200000,
+      "Especial": 2400000
+    }
+  },
+  "missoes": {
+    "fonte": "manual, capítulo Experiência e Progressão, tabelas Tamanho da missão e Desconto da semana",
+    "tamanho": {
+      "curta": 50,
+      "padrão": 100,
+      "longa": 200,
+      "final de arco": 300
+    },
+    "desconto_da_semana": {
+      "1ª e 2ª": "100%",
+      "3ª": "50%",
+      "4ª": "25%",
+      "5ª": "12%",
+      "6ª": "6%"
+    }
+  },
+  "fora_do_livro": {
+    "o_que_e": "regra que o Mizuki decidiu em 01/10/2026, desenhando a Ficha Pessoal, e que ainda não está no livro. A ficha já segue estas; quando o livro as receber, cada uma sobe para a chave do capítulo dela e sai daqui. Nada aqui é conferido contra o manual.txt.",
+    "missoes_solo": {
+      "Solo simples": 75,
+      "Solo complexa": 150
+    },
+    "xp_adicional": {
+      "1,25x": 1.25,
+      "1,50x": 1.5,
+      "2x": 2
+    },
+    "desconto": {
+      "3ª · 50%": 0.5,
+      "4ª · 25%": 0.25,
+      "5ª · 12,5%": 0.125,
+      "6ª · 6,25%": 0.0625,
+      "Falha · 50%": 0.5
+    },
+    "arredondamento_do_xp": {
+      "multiplo": 12.5,
+      "sentido": "para baixo",
+      "abaixo_do_multiplo": "a missão não paga"
+    },
+    "sem_o_requisito_de_forca": {
+      "arma": "desvantagem ao atacar com ela",
+      "uniforme_ou_escudo": "deslocamento pela metade e desvantagem nos Testes de Resistência Físicos"
+    },
+    "carga_acima_do_limite": "a mesma punição do uniforme e do escudo sem a Força, uma vez só, sem acumular"
   }
 }

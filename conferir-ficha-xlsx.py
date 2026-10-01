@@ -121,7 +121,8 @@ def _px_col(w):
 for aba in [a for a in DEC["C6_documento"]["abas"]
             if a in wb.sheetnames and wb[a].sheet_state != "hidden"]:
     larg = wb[aba].column_dimensions["A"].width or 4.0
-    n = sum(1 for c in range(1, 60) if L(c) in wb[aba].column_dimensions)
+    # 01/10/2026: a coluna de um grupo fechado (o painel de XP da FICHA PESSOAL) não ocupa tela
+    n = sum(1 for c in range(1, 60) if L(c) in wb[aba].column_dimensions and not wb[aba].column_dimensions[L(c)].hidden)
     px = n * _px_col(larg)
     if aba in _INV:
         print(f"  [--] {aba}: {n} colunas ≈ {px:.0f} px — aba da invocação, fica com o conferir-invocacao.py")
@@ -227,17 +228,24 @@ for _u, _vu in _EQC.get("uniformes", {}).items():
         _esp.append((f"{_u} + {_e}", _vu["protecao"] + _ve["protecao"], min(_ts) if _ts else None, "sim"))
 _menu_eq = [v for v in f.data_validations.dataValidation if IDX.get("equipamento") and
             str(v.sqref) == IDX["equipamento"].replace("$", "")]
-_faixa = _menu_eq[0].formula1 if _menu_eq else ""
+# 01/10/2026: o EQUIPAMENTO deixou de ser menu e passou a espelhar a FICHA PESSOAL (o que está vestido e o
+# escudo da mão secundária). A tabela é a mesma, e agora se acha pela fórmula da PROTEÇÃO, que lê as quatro
+# colunas dela; que o espelho monta um nome que a tabela tem, quem confere é o regressao-ficha-pessoal.py.
+_feq = str(f[IDX.get("equipamento", "A1")].value)
+_faixa = str(f[IDX.get("proteção", "A1")].value)
 _mf = re.search(r"DADOS!\$([A-Z]+)\$(\d+):\$([A-Z]+)\$(\d+)", _faixa)
 _lida = []
+from openpyxl.utils import column_index_from_string as _ci
 if _mf:
-    from openpyxl.utils import column_index_from_string as _ci
     for _r in range(int(_mf.group(2)), int(_mf.group(4)) + 1):
         _c0 = _ci(_mf.group(1))
         _vals = [dd.cell(row=_r, column=_c0 + k).value for k in range(4)]
         _lida.append((_vals[0], _vals[1], None if _vals[2] == "—" else _vals[2], _vals[3]))
-checa("o menu do EQUIPAMENTO aponta para uma coluna da DADOS", bool(_mf and _mf.group(1) == _mf.group(3)), _faixa)
-checa("a tabela do menu é a do catálogo: uniforme, escudo e cada par, com o menor teto",
+checa("o EQUIPAMENTO da FICHA não é mais menu: é fórmula que lê a FICHA PESSOAL",
+      not _menu_eq and _feq.startswith("=") and "'FICHA PESSOAL'!" in _feq, _feq[:90])
+checa("a PROTEÇÃO lê a tabela de equipamento da DADOS, quatro colunas",
+      bool(_mf) and _ci(_mf.group(3)) - _ci(_mf.group(1)) == 3, _faixa[:90])
+checa("a tabela de equipamento é a do catálogo: uniforme, escudo e cada par, com o menor teto",
       bool(_esp) and _lida == _esp, f"{len(_lida)} linhas lidas, {len(_esp)} esperadas")
 _camp = IDX.get("refino escolhido", "")
 # 17/09/2026: o campo mora no `Marco Escolhido` que o Mizuki desenhou, com o rótulo `Refino`, e o menu
@@ -382,7 +390,8 @@ checa("a CARTEIRA traz o portador e o registrado por com texto de exemplo, e o S
 _sis = [k for k, v in _cv.items() if isinstance(v, str) and "DADOS!$F$1" in v]
 _mnome = [c.coordinate for l in dd.iter_rows() for c in l if c.value == CAT["_meta"]["sistema"]]
 checa("o nome do sistema sai da DADOS, que o escreve do catálogo, na CARTEIRA e na FICHA",
-      bool(_sis) and _mnome == ["F1"] and "DADOS!$F$1" in str(f["D2"].value) and "ERA DA REVOLUÇÃO" not in _cv.values(),
+      bool(_sis) and _mnome == ["F1"] and any("DADOS!$F$1" in str(c.value) for l in f.iter_rows(max_row=5) for c in l)
+      and "ERA DA REVOLUÇÃO" not in _cv.values(),
       f"{_sis} · {_mnome}")
 _nome_f = str(f[IDX["nome"]].value)
 checa("a FICHA puxa o nome da CARTEIRA e ignora o texto de exemplo",
@@ -412,6 +421,114 @@ _margem = {a: wb[a].max_column for a in ("FICHA", "CARTEIRA", "INVOCAÇÃO", "CA
 checa("a CARTEIRA, a INVOCAÇÃO e o CATÁLOGO acabam na mesma coluna da FICHA, com a margem da direita",
       len(set(_margem.values())) == 1, str(_margem))
 
+print("\nO CABEÇALHO NO MOLDE DO ESTUDO, O TÍTULO NO ACENTO E A BARRA NA COR DO TEMA  (01/10/2026)")
+# Pedidos do Mizuki testando a Ficha Pessoal no Sheets: o cabeçalho da FICHA e da FICHA PESSOAL como o do estudo (a marca
+# e o título à esquerda, o nome e o Caminho à direita), a faixa de título de seção no acento como no GLOSSÁRIO, a barra
+# cheia seguindo a paleta, e a tinta de enfeite sem "roxo nada a ver". O comparador prova que só as células declaradas
+# mudaram; aqui fica o que elas têm de dizer.
+sys.path.insert(0, "ficha-v01")
+import cabecalho as _cab, ficha_pessoal as _fpm
+_fp = wb[_fpm.NOME]
+_cor_de = lambda c: (c.fill.fgColor.rgb or "")[-6:] if c.fill and c.fill.fill_type == "solid" else None
+_topo = lambda ws: {c.coordinate: c.value for l in ws.iter_rows(max_row=_cab.ULTIMA_LINHA) for c in l if c.value not in (None, "")}
+_tf, _tp = _topo(f), _topo(_fp)
+checa("a FICHA abre com a marca, o título e a linha de apoio à esquerda, e o nome e o Caminho à direita",
+      _tf.get(_cab.C_MARCA[0]) == _cab.MARCA and f[_cab.C_MARCA[0]].font.name == "Yuji Syuku"
+      and _tf.get(_cab.C_TITULO[0]) == _cab.TITULO_DA_FICHA and IDX["nome"] == _cab.C_NOME[0]
+      and all(IDX[k].replace("$", "") in str(_tf.get(_cab.C_QUEM[0])).replace("$", "") for k in ("caminho", "trilha", "nivel"))
+      and len(_tf) == 5, str(sorted(_tf)))
+checa("o carimbo de versão continua na FICHA, na linha de apoio, e a palavra CATÁLOGO saiu do cabeçalho",
+      all(x in str(_tf.get(_cab.C_APOIO[0])) for x in ("DADOS!$F$1", "em dia", "a atual é a v", "DADOS!$B$1", "DADOS!$D$1"))
+      and "CATÁLOGO" not in _tf.values() and "CATÁLOGO" not in _tp.values(), str(_tf.get(_cab.C_APOIO[0]))[:90])
+checa("a FICHA PESSOAL abre com o mesmo cabeçalho, com o título e a linha de apoio dela, e espelha o nome e o Caminho",
+      _tp.get(_cab.C_MARCA[0]) == _cab.MARCA and _tp.get(_cab.C_TITULO[0]) == _fpm.NOME
+      and _fpm.APOIO in str(_tp.get(_cab.C_APOIO[0])) and "CARTEIRA!" in str(_tp.get(_cab.C_NOME[0]))
+      and _tp.get(_cab.C_QUEM[0]) == f"=FICHA!{_cab.C_QUEM[0]}" and len(_tp) == 5, str(sorted(_tp.items()))[:160])
+_alt_cab = [(n, r) for n, ws in (("FICHA", f), (_fpm.NOME, _fp)) for r in range(1, _cab.ULTIMA_LINHA + 1) if ws.row_dimensions[r].height]
+checa("as cinco linhas do cabeçalho têm a mesma altura nas duas abas (nenhuma declara altura própria)", not _alt_cab, str(_alt_cab))
+# (a célula de dentro de uma caixa mesclada não guarda cor própria: vale a do canto)
+_miolo = {(r, c) for m in _fp.merged_cells.ranges for r in range(m.min_row, m.max_row + 1) for c in range(m.min_col, m.max_col + 1)
+          if (r, c) != (m.min_row, m.min_col)}
+_sem_tinta = [c.coordinate for l in _fp.iter_rows(min_row=1, max_row=_cab.ULTIMA_LINHA, min_col=3, max_col=_fp.max_column) for c in l
+              if (c.row, c.column) not in _miolo and _cor_de(c) != "0A0810"]
+checa(f"a faixa de tinta do cabeçalho da FICHA PESSOAL vai até a última coluna ({L(_fp.max_column)}), por cima do painel de XP",
+      _fp.max_column == _fpm.PAINEL_FIM and not _sem_tinta, str(_sem_tinta[:6]))
+_num = [k for k, v in _cv.items() if isinstance(v, str) and "Nº M-" in v]
+checa("o número da CARTEIRA lê o nome no lugar novo dele",
+      len(_num) == 1 and f"FICHA!${''.join(ch for ch in _cab.C_NOME[0] if ch.isalpha())}${''.join(ch for ch in _cab.C_NOME[0] if ch.isdigit())}" in _cv[_num[0]],
+      str(_cv.get(_num[0]) if _num else None))
+_faixas_fp = [c for l in _fp.iter_rows(min_row=_cab.ULTIMA_LINHA + 2) for c in l
+              if c.value not in (None, "") and c.font and c.font.name == "Oswald" and c.font.sz == 14]
+_gl = wb["GLOSSÁRIO"]
+_faixas_gl = {_cor_de(c) for l in _gl.iter_rows() for c in l if c.value in ("ATRIBUTOS", "PERÍCIAS")}
+checa(f"as {len(_faixas_fp)} faixas de título de seção da FICHA PESSOAL têm o fundo do acento, o mesmo das do GLOSSÁRIO",
+      len(_faixas_fp) >= 8 and {_cor_de(c) for c in _faixas_fp} == {"211940"} and _faixas_gl == {"211940"},
+      f"{ {_cor_de(c) for c in _faixas_fp} } · glossário {_faixas_gl}")
+# a barra cheia: a conta da DADOS, e as cinco barras que a leem
+_cel_barra = [dd.cell(row=c.row, column=c.column + 1) for l in dd.iter_rows() for c in l
+              if c.value == _fpm.COR_DA_BARRA and str(dd.cell(row=c.row, column=c.column + 1).value).startswith("#")]
+_ref_barra = f"DADOS!${L(_cel_barra[0].column)}${_cel_barra[0].row}" if len(_cel_barra) == 1 else "?"
+_barras = [(n, c.coordinate, str(c.value)) for n, ws in (("FICHA", f), (_fpm.NOME, _fp)) for l in ws.iter_rows() for c in l
+           if isinstance(c.value, str) and "SPARKLINE" in c.value]
+checa(f"as {len(_barras)} barras (vida, energia, integridade, carga e XP) leem a cor da barra cheia na DADOS, que nasce no osso",
+      len(_cel_barra) == 1 and _cel_barra[0].value == "#E8DCD4" and len(_barras) == 5
+      and all(_ref_barra in v and "E8DCD4" not in v for _, _, v in _barras), f"{_ref_barra} · {[(n, c) for n, c, v in _barras if _ref_barra not in v or 'E8DCD4' in v]}")
+checa("o âmbar e o vermelho de vida baixa continuam escritos nas três barras da FICHA (decisão A5)",
+      sum(1 for n, _, v in _barras if n == "FICHA" and "#C2334D" in v and "#D89B3A" in v) == 3)
+_passos = re.search(r"function passosDaPaleta_\(primeira\)\s*\{(.*?)\n\}", _CODA, re.S)
+_pb = re.search(r"function pintarBarra_\(ss, agora\)\s*\{(.*?)\n\}", _CODA, re.S)
+checa("a troca de paleta grava a barra do tema nessa célula, achada pelo índice da FICHA PESSOAL, e é o primeiro passo",
+      bool(_passos) and "var passos = ['barra'];" in _passos.group(1) and bool(_pb) and "indicePessoal_()[CAMPO_DA_BARRA_]" in _pb.group(1)
+      and "agora.barra" in _pb.group(1) and f"var CAMPO_DA_BARRA_ = '{_fpm.COR_DA_BARRA}';" in _CODA)
+_cand = re.search(r"function candidatosDeFonte_\(agora, oposta\)\s*\{(.*?)\n\}", _CODA, re.S)
+checa("a rede de legibilidade só troca letra por cor de letra (texto e texto fraco), e nunca pelo acento, pelo bloco ou por um fundo",
+      bool(_cand) and "['texto', 'texto_fraco'].forEach" in _cand.group(1)
+      and not any(f"'{k}'" in _cand.group(1) for k in ("acento", "bloco", "linha", "papel", "fundo", "painel", "tinta")))
+_rep2 = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+checa("a letra de enfeite (a marca, o número, a lombada) é achada pelo endereço no ABAS, e não pela cor que tem",
+      bool(_rep2) and "celulasDeEnfeite_(spec)" in _rep2.group(1) and "agora[enfeites[r + ',' + c]]" in _rep2.group(1))
+# o PALETAS do Codigo.gs é o que o derivar.py escreve, sem edição à mão
+_pg = json.load(open("medidas/paletas-grandes/paletas-grandes.json", encoding="utf-8"))
+_mp2 = re.search(r"var PALETAS = (\{.*?\n\});\n", _CODA, re.S)
+_pal2 = json.loads(_mp2.group(1)) if _mp2 else {}
+_dif_pal = [(n, v, k) for n in _pg for v in ("claro", "escuro") for k, h in _pg[n][v]["cores"].items()
+            if _pal2.get(n, {}).get(v, {}).get(k) != h]
+checa(f"o PALETAS do Codigo.gs é, cor por cor, o que o derivar.py gravou no paletas-grandes.json ({len(_pg)} temas, com a barra)",
+      len(_pg) == 61 and list(_pal2) == list(_pg) and not _dif_pal and all("barra" in _pg[n][v]["cores"] for n in _pg for v in ("claro", "escuro")),
+      str(_dif_pal[:4]))
+# a barra cheia de cada tema: viva onde a cor não é parente do âmbar nem do vermelho de vida baixa, neutra onde é.
+# A conta é refeita aqui, sem ler o derivar.py: croma e matiz em OKLCH, e o contraste WCAG sobre o painel.
+import math as _m
+def _oklch(h):
+    f = lambda c: c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+    r, g_, b_ = (f(int(h[i:i + 2], 16) / 255) for i in (0, 2, 4))
+    l = (0.4122214708 * r + 0.5363325363 * g_ + 0.0514459929 * b_) ** (1 / 3)
+    m_ = (0.2119034982 * r + 0.6806995451 * g_ + 0.1073969566 * b_) ** (1 / 3)
+    s_ = (0.0883024619 * r + 0.2817188376 * g_ + 0.6299787005 * b_) ** (1 / 3)
+    a_ = 1.9779984951 * l - 2.4285922050 * m_ + 0.4505937099 * s_
+    bb = 0.0259040371 * l + 0.7827717662 * m_ - 0.8086757660 * s_
+    return _m.hypot(a_, bb), _m.degrees(_m.atan2(bb, a_)) % 360
+_longe = lambda h, de: min(abs(_oklch(h)[1] - _oklch(de)[1]) % 360, 360 - abs(_oklch(h)[1] - _oklch(de)[1]) % 360)
+def _lum2(h):
+    f = lambda c: c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    return sum(k * f(int(h[i:i + 2], 16) / 255) for k, i in zip((0.2126, 0.7152, 0.0722), (0, 2, 4)))
+_ct2 = lambda x, y: (max(_lum2(x), _lum2(y)) + 0.05) / (min(_lum2(x), _lum2(y)) + 0.05)
+_vivas, _neutras, _barra_ruim = 0, 0, []
+for _n in _pg:
+    for _v in ("claro", "escuro"):
+        _c = _pg[_n][_v]["cores"]
+        _croma = _oklch(_c["barra"])[0]
+        _viva = _croma >= 0.08 and _longe(_c["barra"], "C2334D") > 35 and _longe(_c["barra"], "D89B3A") > 30
+        _neutra = _croma <= 0.06
+        _vivas, _neutras = _vivas + _viva, _neutras + (_neutra and not _viva)
+        if not (_viva or _neutra) or _ct2(_c["barra"], _c["painel"]) < 3.0:
+            _barra_ruim.append((_n, _v, _c["barra"]))
+checa(f"a barra cheia é viva em {_vivas} temas e neutra em {_neutras}: nenhuma viva é parente do âmbar nem do vermelho de vida baixa, e todas leem sobre o painel",
+      _vivas + _neutras == 122 and _vivas >= 40 and _neutras >= 20 and not _barra_ruim, str(_barra_ruim[:4]))
+_enf = [(n, v) for n in _pg for v in ("claro", "escuro") if any("enfeite no tom da régua" in a for a in _pg[n][v]["avisos"])]
+checa(f"em {len(_enf)} das 122 a tinta de enfeite sai no tom da régua, porque a segunda cor do tema é fraca e sem parente; o Alfazema é uma delas",
+      6 <= len(_enf) <= 30 and ("Alfazema", "claro") in _enf, str(_enf[:5]))
+
 print("\nAS NOTAS DE REGRA DO Codigo.gs")
 # v0.240 do sistema, o resto do B8: a fórmula da CD já era a do manual, e a nota que aparece ao
 # passar o mouse continuava dizendo "o 2 é fixo". Nenhum validador lia as notas. A fórmula sai do
@@ -428,8 +545,8 @@ _nq = _rn.search(r"'equipamento':\s*((?:'[^']*'\s*\+?\s*)+)", _CODN)
 _nr = _rn.search(r"'refino escolhido':\s*((?:'[^']*'\s*\+?\s*)+)", _CODN)
 _np = _rn.search(r"'proteção':\s*((?:'[^']*'\s*\+?\s*)+)", _CODN)
 _txt = lambda m: "".join(_rn.findall(r"'([^']*)'", m.group(1))) if m else ""
-checa("as notas do equipamento, da proteção e do refino escolhido dizem a regra do menu",
-      "Escolha" in _txt(_nq) and "capítulo 12" not in _txt(_nq) and "digite" not in _txt(_nq)
+checa("as notas do equipamento, da proteção e do refino escolhido dizem a regra de hoje",
+      "FICHA PESSOAL" in _txt(_nq) and "capítulo 12" not in _txt(_nq) and "digite" not in _txt(_nq)
       and "Escudo soma" in _txt(_np) and "no máximo uma por marco" in _txt(_nr),
       f"equipamento: {_txt(_nq)[:50]} · proteção: {_txt(_np)[:50]} · refino: {_txt(_nr)[:50]}")
 checa("a nota da CD de feitiço traz a fórmula do manual",
@@ -1115,11 +1232,16 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     _fim_laco = _cc.find("});", _laco) if _laco >= 0 else -1
     _grava = _cc.find("escreverFormulas_(")
     _fn = g.find("function escreverFormulas_(")
+    # 01/10/2026: as fórmulas vizinhas na mesma coluna passaram a ir em lote (setFormulas), porque a FICHA PESSOAL
+    # mais que dobrou a quantidade delas. O que se cobra é o mesmo: a gravação mora no escreverFormulas_.
+    _corpo_fn = _re.search(r"function escreverFormulas_\(ss\) \{(.*?)\n\}\n", g, _re.S)
+    _corpo_fn = _corpo_fn.group(1) if _corpo_fn else ""
     checa(f"{_cedo} fórmula(s) citam uma aba que nasce depois da delas, então a ordem da gravação importa",
           _cedo > 0)
     checa("as fórmulas são gravadas depois que todas as abas nascem, e não dentro do montarAba_",
-          bool(_mm) and ".setFormula(" not in _mm.group(1) and 0 <= _laco < _fim_laco < _grava
-          and _fn >= 0 and ".setFormula(" in g[_fn:_fn + 400],
+          bool(_mm) and ".setFormula(" not in _mm.group(1) and ".setFormulas(" not in _mm.group(1)
+          and 0 <= _laco < _fim_laco < _grava
+          and _fn >= 0 and (".setFormula(" in _corpo_fn or ".setFormulas(" in _corpo_fn),
           f"laço {_laco} · fim do laço {_fim_laco} · gravação {_grava}")
 
     arte_usada = {im[4] for a in dados for im in a["imgs"]}

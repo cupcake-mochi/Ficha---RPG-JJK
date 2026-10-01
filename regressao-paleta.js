@@ -39,7 +39,7 @@ function criaPlanilha(ABAS, {id='x'}={}){
     (s.fundos||[]).forEach(f=>{for(let c=f[1];c<=f[2];c++) bg[f[0]-1][c-1]=String(f[3]).toUpperCase();});
     (s.vals||[]).forEach(t=>{const e=t.length>3?s.estilos[t[3]]:null; if(e&&e[2]) fc[t[0]-1][t[1]-1]=String(e[2]).toUpperCase();});
     const imgs={}; (s.imgs||[]).forEach(im=>{imgs[im[0]+','+im[1]]={nome:im[4],cor:'fabrica'};});
-    abas[s.nome]={bg,fc,imgs,valores:{}};
+    abas[s.nome]={bg,fc,imgs,valores:{},vals:s.vals||[],rows:s.rows};
   }
   for(const [r,c,nl,nc,pb,pf] of Object.values(CAIXA))
     for(let i=r-1;i<r-1+nl;i++) for(let j=c-1;j<c-1+nc;j++){ abas.CARTEIRA.bg[i][j]=FABRICA[pb]; abas.CARTEIRA.fc[i][j]=FABRICA[pf]; }
@@ -50,9 +50,17 @@ function a1(r,c){let s='';c++;while(c>0){const m=(c-1)%26;s=String.fromCharCode(
 function carrega(src, P, {autorizado=false}={}){
   const {abas,clock,props,gatilhos,log}=P;
   const gasta=ms=>{clock.t+=Math.round(ms);};   // o Date.now() do Sheets é inteiro
+  // o valor de uma célula da DADOS como o script a lê: o texto do ABAS, e o endereço quando a fórmula é um ADDRESS
+  const valorDe=v=>{ if(typeof v!=='string'||v[0]!=='=') return v;
+    const m=/^=ADDRESS\(ROW\((?:'[^']+'|[A-ZÇÃ_]+)!\$?([A-Z]+)\$?(\d+)\)/.exec(v.replace(/\s/g,'')); return m?m[1]+m[2]:''; };
   const sheet=(nome)=>{ const A=abas[nome]; if(!A) return null; return {
-    getName:()=>nome,
+    getName:()=>nome, getLastRow:()=>A.rows,
     getRange:(r,c,nl,nc)=>{
+      // 01/10/2026, a barra cheia: a troca lê o índice da FICHA PESSOAL (duas colunas da DADOS) e grava uma célula
+      if(typeof r==='string') return { getValue:()=>{gasta(CUSTO.cel()); return A.valores[r]===undefined?'':A.valores[r];},
+        setValue:(v)=>{gasta(CUSTO.cel()); A.valores[r]=v;} };
+      if(nl!==undefined && nome==='DADOS') return { getValues:()=>{ gasta(CUSTO.ler(nl*nc)); const m=[...Array(nl)].map(()=>Array(nc).fill(''));
+        A.vals.forEach(t=>{const i=t[0]-r,j=t[1]-c; if(i>=0&&i<nl&&j>=0&&j<nc) m[i][j]=valorDe(t[2]);}); return m; } };
       if(nl===undefined){ const k=r+','+c; return {
         getValue:()=>{gasta(CUSTO.imgLer()); const im=A.imgs[k]; if(nome==='CARTEIRA'&&r===27&&c===3) return A.valores.paleta; if(!im) return ''; return {valueType:'IMAGE',getAltTextTitle:()=>'PM-ARTE:'+im.nome,getAltTextDescription:()=>im.cor};},
         getBackground:()=>A.bg[r-1][c-1], setValue:(v)=>{gasta(CUSTO.imgEscrever()); A.imgs[k].cor=v.desc;},
@@ -122,6 +130,7 @@ function igual(P,Q){
     for(const k of Object.keys(a.imgs)) if(a.imgs[k].cor!==b.imgs[k].cor) return `${nome} arte ${k} ${a.imgs[k].cor} x ${b.imgs[k].cor}`;
   }
   for(const k of new Set([...Object.keys(P.log.bordas),...Object.keys(Q.log.bordas)])) if(P.log.bordas[k]!==Q.log.bordas[k]) return `borda ${k} ${P.log.bordas[k]} x ${Q.log.bordas[k]}`;
+  if(JSON.stringify(P.abas.DADOS.valores)!==JSON.stringify(Q.abas.DADOS.valores)) return `barra ${JSON.stringify(P.abas.DADOS.valores)} x ${JSON.stringify(Q.abas.DADOS.valores)}`;
   return '';
 }
 const semArte=(ps)=>ps.filter(p=>!p.startsWith('arte:'));
@@ -154,6 +163,27 @@ ok('igual, célula a célula, à troca feita de uma vez só', !igual(P,umaVez([E
 ok('a caixa da paleta volta com os papéis dela (valor no painel, rótulo no painel_alto)',
    P.abas.CARTEIRA.bg[26][2]==='#'+r.ctx.coresDoNome_(E).painel.toUpperCase() && P.abas.CARTEIRA.bg[25][2]==='#'+r.ctx.coresDoNome_(E).painel_alto.toUpperCase());
 ok('paleta_atual gravada no fim', P.props.paleta_atual===E);
+// 01/10/2026, a revisão das cores. Referências que não dependem do Codigo.gs: a barra, a tinta de enfeite e a arte.
+const hexDe=(n,k)=>'#'+String(r.ctx.coresDoNome_(n)[k]).toUpperCase();
+const lumDe=(h)=>[0,2,4].reduce((s,i,j)=>{const c=parseInt(h.substr(1+i,2),16)/255; return s+[0.2126,0.7152,0.0722][j]*(c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4));},0);
+const contr=(a,b)=>{const x=lumDe(a),y=lumDe(b); return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);};
+const matiz=(h)=>{const R=parseInt(h.substr(1,2),16),G=parseInt(h.substr(3,2),16),B=parseInt(h.substr(5,2),16),mx=Math.max(R,G,B),mn=Math.min(R,G,B),d=mx-mn;
+  if(!d) return null; const x=mx===R?((G-B)/d+6)%6:mx===G?(B-R)/d+2:(R-G)/d+4; return x*60;};
+const enfeiteDoAbas=()=>{ const out=[]; for(const s of ABAS){ if(s.oculta) continue; (s.vals||[]).forEach(t=>{ const e=t.length>3?s.estilos[t[3]]:null;
+  const cor=e&&String(e[2]||'').toUpperCase(); if(cor==='#756588') out.push([s.nome,t[0],t[1],'bloco']); if(cor==='#493F54') out.push([s.nome,t[0],t[1],'linha']); }); } return out; };
+const enfeiteFora=(P,n)=>enfeiteDoAbas().filter(([aba,l,c,papel])=>P.abas[aba].fc[l-1][c-1]!==hexDe(n,papel)).map(x=>x.join(' '));
+// a célula da barra é a conta "cor da barra cheia" da DADOS: o rótulo, e o valor na coluna seguinte (o osso de fábrica)
+const celBarra=()=>{ const V=ABAS.find(s=>s.nome==='DADOS').vals; const viz=t=>V.find(x=>x[0]===t[0]&&x[1]===t[1]+1);
+  const t=V.find(t=>t[2]==='cor da barra cheia' && viz(t) && viz(t)[2]==='#E8DCD4'); return t?a1(t[0]-1,t[1]):'?'; };
+ok('a barra cheia é gravada na DADOS, na conta "cor da barra cheia", com a barra do tema', P.abas.DADOS.valores[celBarra()]===hexDe(E,'barra'),
+   `${celBarra()} = ${P.abas.DADOS.valores[celBarra()]}, e a do tema é ${hexDe(E,'barra')}`);
+ok(`as ${enfeiteDoAbas().length} letras de enfeite (a marca, o número, a lombada) saem no bloco e na linha do tema`, enfeiteDoAbas().length>=10 && enfeiteFora(P,E).length===0, enfeiteFora(P,E).slice(0,4).join(', '));
+{ const ruins=[]; const papelDaArte=r.ctx.PAPEL_DA_ARTE_;
+  for(const s of ABAS) for(const im of (s.imgs||[])){ const cor=P.abas[s.nome].imgs[im[0]+','+im[1]].cor, fundo=P.abas[s.nome].bg[im[0]-1][im[1]-1];
+    const papel=papelDaArte[String(im[4]).replace(/-\d+x\d+\.png$/,'')], doPapel=hexDe(E,papel);
+    const mesmoMatiz=matiz(cor)!==null&&matiz(doPapel)!==null&&Math.min(Math.abs(matiz(cor)-matiz(doPapel)),360-Math.abs(matiz(cor)-matiz(doPapel)))<=4;
+    if(contr(cor,fundo)<3 || !(cor===doPapel||cor===hexDe(E,'acento')||mesmoMatiz)) ruins.push(`${s.nome} ${im[4]} ${cor}`); }
+  ok('cada imagem aparece (3,0 sobre o fundo dela) e é a cor do papel dela, o acento do tema ou o papel dela no mesmo matiz', ruins.length===0, ruins.join(', ')); }
 P.props.paleta_tempos=JSON.stringify(Object.assign(JSON.parse(P.props.paleta_tempos),{'cor:DADOS':99999}));
 { const {ctx}=carrega(SRC_NOVO,P); ctx.verTemposDaPaleta(); const reg=P.log.registro||'';
   ok('o relatório diz a versão, ignora passo de versão anterior, conta as execuções e mostra o passo de cor por dentro',
@@ -163,9 +193,17 @@ P.props.paleta_tempos=JSON.stringify(Object.assign(JSON.parse(P.props.paleta_tem
 console.log('2. segunda troca, com os tempos medidos');
 P.log.toasts=[]; r=emPassos(P,[M]); console.log('       '+resumo(r));
 ok(`nenhuma execução passou de 30 s (maior: ${(r.maior/1000).toFixed(1)} s)`, r.maior<=30000);
-ok('cor e régua de todas as abas na execução da troca, sem aviso',
-   visiveis.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs[0].passos.includes(p))) && P.log.toasts.length===0, r.execs[0].passos.join(', '));
+// 01/10/2026: com a FICHA PESSOAL (4.920 células; a FICHA tem 7.050) cor e régua de todas as abas deixaram de caber
+// numa execução. A troca pinta as que o jogador vê primeiro — a CARTEIRA, a FICHA e a FICHA PESSOAL — e o resto
+// termina no clique seguinte, sem aviso, como a arte já terminava.
+const PRIMEIRAS=['CARTEIRA','FICHA','FICHA PESSOAL'];
+ok('cor e régua da CARTEIRA, da FICHA e da FICHA PESSOAL na execução da troca, sem aviso',
+   PRIMEIRAS.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs[0].passos.includes(p))) && P.log.toasts.length===0, r.execs[0].passos.join(', '));
+ok('as outras abas terminam no primeiro clique depois da troca',
+   r.execs.length===2 && visiveis.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs[0].passos.concat(r.execs[1].passos).includes(p))), resumo(r));
 ok('igual a E→M de uma vez', !igual(P,umaVez([E,M])), igual(P,umaVez([E,M])));
+ok('depois da segunda troca a barra e as letras de enfeite são as do tema novo, sem depender do anterior',
+   P.abas.DADOS.valores[celBarra()]===hexDe(M,'barra') && enfeiteFora(P,M).length===0, `${P.abas.DADOS.valores[celBarra()]} · ${enfeiteFora(P,M).slice(0,4).join(', ')}`);
 
 console.log('3. troca no meio de outra');
 function caminhoLimpo(P, refs){ const achou={}; let todas=true;
@@ -235,5 +273,36 @@ ESCALA=1;
 console.log('9. um passo sozinho mais lento que o orçamento não trava a troca pra sempre');
 P=criaPlanilha(ABAS); P.props.paleta_tempos=JSON.stringify({'cor:FICHA':40000}); r=emPassos(P,[E]);
 ok('terminou mesmo assim', !P.props.paleta_pendente && !igual(P,umaVez([E])));
+
+console.log('10. a revisão das cores de 01/10/2026: a lombada que ficou presa noutro papel volta, e a arte nas 122');
+// a ficha pintada pelo esquema de antes: a rede de legibilidade trocava a lombada pelo acento, e ela ficava "acento" pra sempre
+P=umaVez([M]);
+{ const {ctx}=carrega(SRC_NOVO,P); const presa='#'+String(ctx.coresDoNome_(M).acento).toUpperCase();
+  for(const [aba,l,c,papel] of enfeiteDoAbas()) if(papel==='linha') P.abas[aba].fc[l-1][c-1]=presa; }
+r=emPassos(P,[E]);
+ok('a lombada que uma troca antiga deixou na cor do acento volta pra linha do tema (é achada pelo endereço, e não pela cor)',
+   enfeiteFora(P,E).length===0, enfeiteFora(P,E).slice(0,4).join(', '));
+{ const {ctx}=carrega(SRC_NOVO,criaPlanilha(ABAS)); const ruins=[], usos={papel:0,acento:0,matiz:0};
+  const ondeMora={carteira:'tinta',ficha:'fundo'};
+  for(const tema of Object.keys(ctx.PALETAS)) for(const v of ['Claro','Escuro']){ const n=tema+' · '+v, p=ctx.coresDoNome_(n);
+    for(const [img,papel] of Object.entries(ctx.PAPEL_DA_ARTE_)){ const fundo='#'+String(p[ondeMora[img.split('-')[0]]]).toUpperCase();
+      const doPapel='#'+String(p[papel]).toUpperCase(), acento='#'+String(p.acento).toUpperCase(), cor=ctx.corDaArte_(p,papel,fundo);
+      const esperado = contr(doPapel,fundo)>=3 ? 'papel' : contr(acento,fundo)>=3 ? 'acento' : 'matiz';
+      const dm=matiz(cor)===null||matiz(doPapel)===null?0:Math.min(Math.abs(matiz(cor)-matiz(doPapel)),360-Math.abs(matiz(cor)-matiz(doPapel)));
+      const certo = contr(cor,fundo)>=3 && (esperado==='papel'?cor===doPapel:esperado==='acento'?cor===acento:dm<=4);
+      usos[esperado]++; if(!certo) ruins.push(`${n} ${img}: ${cor} (esperado: ${esperado})`); } }
+  ok(`nas 122 paletas cada imagem sai na cor do papel dela (${usos.papel}), e só quando ela não aparece no acento do tema (${usos.acento}) ou no mesmo matiz (${usos.matiz})`,
+     ruins.length===0 && usos.papel>0 && usos.acento>0, ruins.slice(0,4).join(' · '));
+  // um tema que não existe, onde nem a régua nem o acento aparecem: sobra a régua no mesmo matiz, mais escura
+  const falso={regua:'F3E9A0',acento:'F5F0C8',texto:'101010'}, saiu=ctx.corDaArte_(falso,'regua','#FFFBEA');
+  ok('quando nem o papel nem o acento aparecem, a imagem fica no matiz do papel dela, escurecida até aparecer, e nunca noutra cor',
+     contr(saiu,'#FFFBEA')>=3 && Math.abs(matiz(saiu)-matiz('#F3E9A0'))<=4 && saiu!=='#101010', saiu);
+  const bloco=[], linha=[], barra=[];
+  for(const tema of Object.keys(ctx.PALETAS)) for(const v of ['claro','escuro']){ const p=ctx.PALETAS[tema][v], h=k=>'#'+String(p[k]).toUpperCase();
+    for(const f of ['tinta','fundo','papel']){ if(contr(h('bloco'),h(f))<3.5) bloco.push(`${tema} ${v} ${f}`); if(contr(h('linha'),h(f))<3.0) linha.push(`${tema} ${v} ${f}`); }
+    if(!p.barra || contr(h('barra'),h('painel'))<3.0) barra.push(`${tema} ${v}`); }
+  ok('nas 122 o bloco lê 3,5 e a linha lê 3,0 sobre a tinta, o fundo e o papel: a tinta de enfeite nunca depende da rede de legibilidade',
+     bloco.length===0 && linha.length===0, bloco.concat(linha).slice(0,4).join(' · '));
+  ok('nas 122 a barra cheia existe e lê 3,0 sobre o painel, que é onde as barras moram', barra.length===0, barra.slice(0,4).join(' · ')); }
 
 console.log(falhas?`\n${falhas} FALHA(S)`:'\nTODOS PASSARAM'); process.exit(falhas?1:0);

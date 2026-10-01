@@ -1,0 +1,525 @@
+<title>Ficha Pessoal · Estudos</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Castoro&family=Oswald:wght@400;500&family=Roboto:wght@400;500&family=Yuji+Syuku&display=swap">
+<style>
+/* Layout: uma coluna de leitura; cada estudo é uma folha de planilha de 47 colunas,
+   desenhada na grade real da FICHA e rolando de lado no próprio quadro. */
+:root{
+  /* a página, claro = Mizuki · Claro */
+  --pagina:#FFF6FA; --tinta-pag:#1E1320; --fraco-pag:#7A4A62; --fio-pag:#E9BDD3; --acento-pag:#C22B71;
+  /* a folha (cores da ficha) */
+  --f-fundo:#FBE4EF; --f-painel:#FAD6E7; --f-alto:#F5B7D4; --f-papel:#FDF2F7; --f-tinta:#F3C9DD;
+  --f-regua:#CB015E; --f-texto:#1E1320; --f-fraco:#7A4A62; --f-acento:#C22B71; --f-ambar:#8A5A00; --f-grade:#B98FA6; --f-vermelho:#B3123A; --f-no-vermelho:#FFFFFF;
+  --doc:"Castoro", Georgia, serif; --rot:"Oswald", "Arial Narrow", sans-serif; --corpo:"Roboto", system-ui, sans-serif; --marca:"Yuji Syuku", serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --pagina:#0A0810; --tinta-pag:#F4F1F7; --fraco-pag:#998BA9; --fio-pag:#2C2445; --acento-pag:#B7ABEA;
+    --f-fundo:#120F1D; --f-painel:#1E1733; --f-alto:#3D2E78; --f-papel:#17131F; --f-tinta:#0A0810;
+    --f-regua:#8A7EC4; --f-texto:#F4F1F7; --f-fraco:#998BA9; --f-acento:#B7ABEA; --f-ambar:#D89B3A; --f-grade:#5A5070; --f-vermelho:#C2334D; --f-no-vermelho:#FFFFFF;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --pagina:#0A0810; --tinta-pag:#F4F1F7; --fraco-pag:#998BA9; --fio-pag:#2C2445; --acento-pag:#B7ABEA;
+  --f-fundo:#120F1D; --f-painel:#1E1733; --f-alto:#3D2E78; --f-papel:#17131F; --f-tinta:#0A0810;
+  --f-regua:#8A7EC4; --f-texto:#F4F1F7; --f-fraco:#998BA9; --f-acento:#B7ABEA; --f-ambar:#D89B3A; --f-grade:#5A5070; --f-vermelho:#C2334D; --f-no-vermelho:#FFFFFF;
+  color-scheme:dark;
+}
+/* a folha pode ser fixada numa das duas paletas, sem mexer na página */
+.pal-escura{
+  --f-fundo:#120F1D; --f-painel:#1E1733; --f-alto:#3D2E78; --f-papel:#17131F; --f-tinta:#0A0810;
+  --f-regua:#8A7EC4; --f-texto:#F4F1F7; --f-fraco:#998BA9; --f-acento:#B7ABEA; --f-ambar:#D89B3A; --f-grade:#5A5070; --f-vermelho:#C2334D; --f-no-vermelho:#FFFFFF;
+}
+.pal-clara{
+  --f-fundo:#FBE4EF; --f-painel:#FAD6E7; --f-alto:#F5B7D4; --f-papel:#FDF2F7; --f-tinta:#F3C9DD;
+  --f-regua:#CB015E; --f-texto:#1E1320; --f-fraco:#7A4A62; --f-acento:#C22B71; --f-ambar:#8A5A00; --f-grade:#B98FA6; --f-vermelho:#B3123A; --f-no-vermelho:#FFFFFF;
+}
+
+body{background:var(--pagina); color:var(--tinta-pag); font-family:var(--corpo); font-size:15px; line-height:1.55}
+.pagina{max-width:1040px; margin:0 auto; padding-inline:20px; padding-block:36px 64px; display:flex; flex-direction:column; gap:44px}
+.olho{font-family:var(--rot); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--acento-pag)}
+h1{font-family:var(--doc); font-weight:400; font-size:clamp(28px,5vw,40px); line-height:1.1; margin:6px 0 14px; text-wrap:balance}
+h2{font-family:var(--doc); font-weight:400; font-size:26px; line-height:1.15; margin:0; text-wrap:balance}
+h2 b{font-family:var(--rot); font-weight:500; font-size:15px; letter-spacing:.12em; color:var(--acento-pag); margin-right:10px; vertical-align:3px}
+p{margin:0; max-width:66ch}
+.abre{display:flex; flex-direction:column; gap:10px}
+.abre .nota{color:var(--fraco-pag); font-size:13.5px}
+
+.barra-topo{display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; border-block:1px solid var(--fio-pag); padding-block:12px}
+.saltos{display:flex; flex-wrap:wrap; gap:6px 18px; font-family:var(--rot); letter-spacing:.08em; text-transform:uppercase; font-size:13px}
+.saltos a{color:var(--tinta-pag); text-decoration:none; border-bottom:1px solid var(--acento-pag); padding-bottom:1px}
+.saltos a:hover{color:var(--acento-pag)}
+.paleta{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-left:auto; font-size:13px; color:var(--fraco-pag)}
+.paleta button{font:inherit; font-family:var(--rot); letter-spacing:.06em; text-transform:uppercase; font-size:12px; color:var(--tinta-pag); background:transparent; border:1px solid var(--fio-pag); padding:5px 10px; cursor:pointer}
+.paleta button[aria-pressed="true"]{border-color:var(--acento-pag); color:var(--acento-pag)}
+.exemplo{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:13px; color:var(--fraco-pag)}
+.exemplo button{font:inherit; font-family:var(--rot); letter-spacing:.06em; text-transform:uppercase; font-size:12px; color:var(--tinta-pag); background:transparent; border:1px solid var(--fio-pag); padding:5px 10px; cursor:pointer}
+.exemplo button[aria-pressed="true"]{border-color:var(--acento-pag); color:var(--acento-pag)}
+.paleta button:focus-visible, .exemplo button:focus-visible, .saltos a:focus-visible{outline:2px solid var(--acento-pag); outline-offset:2px}
+
+.legenda{display:flex; flex-wrap:wrap; gap:6px 22px; font-size:13px; color:var(--fraco-pag)}
+.legenda span b{font-weight:500; color:var(--tinta-pag); margin-right:5px}
+
+.estudo{display:flex; flex-direction:column; gap:16px; scroll-margin-top:16px}
+.estudo .ideia{font-size:16px}
+.quadro{overflow-x:auto; border:1px solid var(--fio-pag); background:var(--f-fundo)}
+.dica{display:none; font-size:12.5px; color:var(--fraco-pag)}
+.contas{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px 32px}
+.contas div{min-width:0}
+.contas h3{font-family:var(--rot); font-weight:500; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--acento-pag); margin:0 0 4px}
+.contas ul{margin:0; padding-left:18px}
+.contas li{margin:2px 0}
+.medida{font-variant-numeric:tabular-nums; color:var(--fraco-pag); font-size:13.5px}
+
+/* ---------- a folha ---------- */
+.folha{display:grid; grid-template-columns:18px 28px repeat(47,20px); grid-auto-rows:22px; width:986px; background:var(--f-fundo); color:var(--f-texto); font-family:var(--corpo); font-size:12.5px; line-height:1.2; padding-bottom:10px}
+.col,.lin{display:flex; align-items:center; justify-content:center; font-size:9px; color:var(--f-grade); font-variant-numeric:tabular-nums; user-select:none}
+.c{position:relative; box-sizing:border-box; border:2px solid var(--f-regua); margin:-1px; display:flex; align-items:center; justify-content:center; overflow:hidden; white-space:nowrap; padding:0 6px; min-width:0}
+.faixa{background:var(--f-alto); font-family:var(--rot); font-size:13px; letter-spacing:.1em; text-transform:uppercase; justify-content:flex-start; padding-left:10px}
+.rot{background:var(--f-alto); font-family:var(--rot); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase}
+.val{background:var(--f-painel); font-family:var(--doc); font-size:15px}
+.num{background:var(--f-painel); font-family:var(--rot); font-size:19px; font-variant-numeric:tabular-nums; gap:10px}
+.cel{background:var(--f-painel); font-family:var(--doc); font-size:13px}
+.esq{justify-content:flex-start}
+.peq{font-family:var(--corpo); font-size:11.5px; color:var(--f-fraco)}
+.txt{background:var(--f-papel); white-space:normal; align-items:flex-start; justify-content:flex-start; padding:7px 9px; line-height:1.45; font-size:12px}
+.txt i{color:var(--f-fraco); font-style:normal}
+.menu::after{content:"▾"; position:absolute; right:5px; top:50%; transform:translateY(-50%); font-size:10px; color:var(--f-fraco)}
+.calc::before{content:"ƒ"; position:absolute; left:4px; top:0; font:italic 10px Georgia,serif; color:var(--f-fraco)}
+.nota{cursor:help}
+.nt{position:absolute; top:0; right:0; border-style:solid; border-width:0 8px 8px 0; border-color:transparent var(--f-texto) transparent transparent}
+.chk{padding:0}
+.cx{display:block; width:10px; height:10px; border:1.5px solid var(--f-texto)}
+.cx.on{background:var(--f-regua)}
+.cx[data-arma], .cx[data-grupo]{cursor:pointer}
+.cx:focus-visible{outline:2px solid var(--f-texto); outline-offset:2px}
+.grb{align-self:center; justify-self:center; width:15px; height:15px; padding:0; border:1px solid var(--f-grade); background:var(--f-papel); color:var(--f-texto); font:12px/1 var(--corpo); cursor:pointer}
+.grb:focus-visible{outline:2px solid var(--f-regua); outline-offset:1px}
+.grl{border-left:1px solid var(--f-grade); margin-left:8px}
+.folha.fechado .gr{display:none}
+.folha.pfechado .pc{display:none}
+.grc{border-top:1px solid var(--f-grade); margin-top:8px}
+.cel.agora{background:var(--f-alto)}
+.aviso{background:var(--f-painel); font-size:11.5px; justify-content:flex-start; gap:14px; color:var(--f-fraco)}
+.chip{font-family:var(--rot); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; border:1px solid currentColor; padding:1px 6px; color:var(--f-texto)}
+.chip.at{color:var(--f-ambar)}
+.ruim{background:var(--f-vermelho); color:var(--f-no-vermelho)}
+.chip.ruim{border-color:var(--f-vermelho)}
+.ruim.calc::before, .ruim.menu::after{color:var(--f-no-vermelho)}
+.ruim .nt{border-color:transparent var(--f-no-vermelho) transparent transparent}
+.ruim .med{border-color:var(--f-no-vermelho); background:transparent}
+.ruim .med i{background:var(--f-no-vermelho)}
+.topo{border:0; margin:0; background:var(--f-tinta); justify-content:space-between; padding:0 22px 0 14px; border-bottom:2px solid var(--f-regua)}
+.topo .marca{font-family:var(--marca); font-size:26px; color:var(--f-acento); margin-right:18px}
+.topo .tit{display:flex; align-items:center}
+.topo .tit div{display:flex; flex-direction:column; gap:2px}
+.topo strong{font-family:var(--rot); font-weight:500; font-size:15px; letter-spacing:.12em}
+.topo small{font-size:11px; color:var(--f-fraco)}
+.topo .quem{font-family:var(--doc); font-size:15px; text-align:right}
+.lomb{border:0; margin:0; background:var(--f-tinta); border-right:2px solid var(--f-regua); padding:0}
+.lomb span{writing-mode:vertical-rl; transform:rotate(180deg); font-family:var(--rot); font-size:12px; letter-spacing:.22em; color:var(--f-acento)}
+.foto{background:var(--f-papel); flex-direction:column; gap:6px; color:var(--f-fraco)}
+.foto::before{content:""; position:absolute; inset:8px; border:1px dashed var(--f-grade)}
+.foto .k{font-family:var(--marca); font-size:24px}
+.foto .l{font-family:var(--rot); font-size:10px; letter-spacing:.12em}
+.med{display:block; width:90px; height:8px; border:1px solid var(--f-regua); background:var(--f-papel)}
+.med i{display:block; height:100%; background:var(--f-regua)}
+
+@media (max-width:1020px){ .dica{display:block} }
+@media (max-width:560px){ .paleta{margin-left:0} }
+</style>
+
+<div class="pagina">
+  <header class="abre">
+    <div class="olho">Projeto M · ficha digital</div>
+    <h1>Ficha Pessoal, a folha escolhida</h1>
+    <p>O dossiê abre a página, com a foto, a personalidade, a aparência e a história. Depois vem o que está na mão e no corpo. Logo abaixo fica a lista de treino em armas, que fecha e abre, e em seguida as cinco caixas de carga, dinheiro, salário, requisito de Força e situação do Traje. Os equipáveis e os itens guardados fecham a página. Depois da coluna <code>AU</code> há um painel de missões e XP, em colunas que fecham e abrem. A folha está na grade da <code>FICHA</code> de hoje, com 47 colunas, as caixas de régua e a lombada.</p>
+    <p class="nota">A personagem é a Kaori de nível 2, com Força 3. O kit é um exemplo que eu montei com os preços e os volumes do capítulo de Equipamento, e não a ficha oficial dela. Onde o texto é do jogador, a caixa diz isso em vez de inventar.</p>
+  </header>
+
+  <div class="barra-topo">
+    <nav class="saltos" aria-label="Estudos">
+      <a href="#bc">A folha</a><a href="#escolha">O que falta</a>
+    </nav>
+    <div class="paleta" role="group" aria-label="Paleta das folhas">
+      <span>Paleta das folhas</span>
+      <button id="pal-tema" type="button" data-pal="" aria-pressed="true">Seguir o tema</button>
+      <button id="pal-escura" type="button" data-pal="pal-escura" aria-pressed="false">Fábrica</button>
+      <button id="pal-clara" type="button" data-pal="pal-clara" aria-pressed="false">Mizuki · Claro</button>
+    </div>
+  </div>
+
+  <div class="legenda" aria-label="Como ler as caixas">
+    <span><b>▾</b>menu suspenso</span>
+    <span><b>ƒ</b>a ficha calcula sozinha</span>
+    <span><b>sem marca</b>o jogador digita</span>
+    <span><b>◥</b>canto marcado: nota ao passar o mouse</span>
+    <span><b>− ou +</b>na borda esquerda: fecha e abre as linhas do treino</span>
+    <span><b>− ou +</b>no alto, sobre a coluna AU: fecha e abre as colunas do painel de XP</span>
+    <span><b>letras e números na borda</b>colunas e linhas da planilha</span>
+  </div>
+
+  <section class="estudo" id="bc">
+    <h2><b>1</b>Dossiê, em uso, guardado</h2>
+    <p class="ideia">A aba abre com a cara e a história do personagem, como a <code>CARTEIRA</code>. Logo abaixo fica o que muda na sessão, e por último o que está guardado.</p>
+    <div class="exemplo" role="group" aria-label="Caminho do exemplo"><span>Ver o treino como</span><button id="cam-bastiao" type="button" data-cam="Bastião" aria-pressed="true">Bastião</button><button id="cam-emanador" type="button" data-cam="Emanador" aria-pressed="false">Emanador</button><span>e o exemplo como</span><button id="cen-ok" type="button" data-cen="ok" aria-pressed="true">Tudo certo</button><button id="cen-ruim" type="button" data-cen="ruim" aria-pressed="false">Sem a Força</button><button id="cen-carga" type="button" data-cen="carga" aria-pressed="false">Carga estourada</button><button id="cen-tiro" type="button" data-cen="tiro" aria-pressed="false">Arma de arremesso</button><span>e o painel de XP</span><button id="xp-aberto" type="button" data-xp="aberto" aria-pressed="true">Aberto</button><button id="xp-fechado" type="button" data-xp="fechado" aria-pressed="false">Fechado</button></div>
+    <p class="medida">O painel de XP fica à direita da coluna AU: arraste a folha para o lado, ou toque em "Aberto", que leva até ele. Na aba de verdade ele nasce fechado.</p>
+    <p class="dica">A folha é mais larga que a tela: arraste para o lado.</p>
+    <div class="quadro"><div class="folha" id="folha-bc"></div></div>
+    <div class="contas">
+      <div><h3>Como fica na tela</h3><ul><li id="lista-tela-1"></li><li id="lista-tela-2"></li><li id="lista-tela-3"></li></ul><p class="medida" id="med-bc"></p></div>
+      <div><h3>O que a ficha faz sozinha</h3><ul><li id="lista-graus"></li><li id="lista-salario"></li><li id="lista-uniformes"></li><li id="lista-situacao"></li><li id="lista-treino"></li><li>Os menus das duas mãos listam o <b>Soco</b> e o que estiver nos equipáveis guardados, armas e escudos. O dado do Soco sai da maestria. Com arma de duas mãos na principal, a secundária trava. Com arma <b>Versátil</b> na principal, a secundária ganha a opção "a mesma arma, nas duas mãos", e o dado sobe um passo.</li><li>A linha embaixo do nome da arma mostra o dado e as propriedades, e mais o que ela tiver: as duas faixas de <b>alcance</b> da arma de tiro ou de arremesso, e de quantos em quantos ataques ela <b>recarrega</b>. O botão "Arma de arremesso" mostra a Kunai.</li><li>Escudo na mão ganha a marca <b>Trava Selo de gesto</b>, ao lado da marca de Força. Quando a Ficha Amaldiçoada existir, ela fica vermelha para quem tem esse Selo.</li><li id="lista-armas"></li><li>Quando algo em uso pede mais Força do que você tem, a caixa <b>Requisito de Força</b> e a marca de Força do item ficam vermelhas, e a nota diz o que falta e o que isso custa. A <b>Carga</b> fica vermelha do mesmo jeito quando passa do limite.</li><li>A punição depende do que falta. Arma sem a Força: desvantagem ao atacar com ela. Uniforme ou escudo sem a Força, ou carga acima do limite: deslocamento pela metade e desvantagem nos Testes de Resistência Físicos, uma vez só, sem acumular. O Deslocamento da <code>FICHA</code> cai pela metade sozinho; a desvantagem aparece como aviso.</li><li id="lista-xp"></li><li>O menu <code>EQUIPAMENTO</code> da <code>FICHA</code> deixa de ser escolhido lá e passa a espelhar o que está vestido e o escudo daqui.</li></ul></div>
+      <div><h3>As notas</h3><ul id="lista-notas"></ul></div>
+    </div>
+  </section>
+
+  <section class="estudo" id="escolha">
+    <h2><b>→</b>O que ficou de fora, e o que falta</h2>
+    <p>O desenho da folha está fechado. Ficaram de fora, por decisão: o <b>Traço</b> e os dois <b>Legados</b>, que esperam a remodelagem das Origens; o <b>Pacto</b>, que vai para a Ficha Amaldiçoada; a <code>Couraça</code>, que saiu do livro na v0.270; e o aviso de Grau para arma de fogo.</p>
+    <p>Para a folha virar aba faltam duas coisas. A primeira é pôr no catálogo as armas, os escudos, o salário por patente e o grau mínimo do Revestimento, de onde saem os menus e a lista de treino. A segunda é o livro: as punições desta folha são decisões de 01/10/2026 que ainda não estão nele. Lá, hoje, a arma sem a Força corta o deslocamento e tira a Destreza da Defesa, uniforme e escudo não têm punição escrita, e passar do limite de carga é um muro. A situação do Traje também vai ser revista, e a nota dela repete o texto de hoje.</p>
+    <p>O painel de missões e XP é o adendo de 01/10/2026. A caixa <code>XP</code> da <code>FICHA</code> vira espelho do XP total daqui, e o nível segue subindo por ela. Os tipos <b>Solo simples</b> (75) e <b>Solo complexa</b> (150) e os multiplicadores do Adicional são decisão do mesmo dia e ainda não estão no livro. O arredondamento em múltiplos de 12,5 também é de 01/10 e muda o livro, que hoje diz que a sexta missão da semana ainda paga. Fica aberto o limiar do nível 20: o nível automático de hoje passa do 20 sem pedir o feito. Há também um número a acertar no livro: o capítulo de Experiência diz que o personagem para no nível 20 "aos 12.500 de XP", e a curva do mesmo capítulo soma 14.300, que é o que a ficha usa.</p>
+  </section>
+</div>
+
+<script>
+(function(){
+  // ---------- o exemplo (valores do capítulo de Equipamento) ----------
+  var FUNDO_INICIAL = 150000, LEVE = 0.1;
+  var CATALOGO = [["Bastão","Porrete"],["Besta","Balestra"],["Besta de Uma Mão","Balestra"],["Bō","Porrete"],["Canivete","Lâmina Curta"],["Cassetete","Porrete"],["Chakram","Arremesso"],["Faca","Lâmina Curta"],["Foice","Ceifa"],["Kama","Ceifa"],["Kanabō","Massa"],["Kunai","Arremesso"],["Kusarigama","Ceifa"],["Maça","Massa"],["Marreta","Massa"],["Maul","Massa"],["Nunchaku","Porrete"],["Punhal","Lâmina Curta"],["Sai","Lâmina Curta"],["Shuriken","Arremesso"],["Soqueira","Manopla"],["Taco","Massa"],["Tanto","Lâmina Curta"],["Tekko","Manopla"],["Tessen","Arremesso"],["Tonfa","Porrete"],["Chicote","Flexível"],["Corrente","Flexível"],["Daikyū","Yumi"],["Espada Longa","Lâmina Longa"],["Espadão","Lâmina Longa"],["Hankyū","Yumi"],["Katana","Lâmina Longa"],["Lança","Armas Longas"],["Machadinha","Machado"],["Machado","Machado"],["Machado de Guerra","Machado"],["Machete","Lâmina Longa"],["Manriki","Flexível"],["Naginata","Armas Longas"],["Nodachi","Lâmina Longa"],["Odachi","Lâmina Longa"],["Rapieira","Lâmina Longa"],["Wakizashi","Lâmina Longa"],["Yari","Armas Longas"],["Espingarda","Arma de Fogo"],["Metralhadora Pesada","Arma de Fogo"],["Pistola","Arma de Fogo"],["Revólver","Arma de Fogo"],["Rifle","Arma de Fogo"],["Rifle de Precisão","Arma de Fogo"],["Submetralhadora","Arma de Fogo"]];                       // as armas do livro: [nome, categoria]
+  var COLUNAS_TREINO = [['Lâmina Longa','Machado'],['Arma de Fogo','Arremesso'],['Porrete','Ceifa','Balestra'],['Lâmina Curta','Flexível','Manopla'],['Massa','Armas Longas','Yumi']];
+  var TREINO_TOTAL = ['Bastião','Vanguarda'], TREINO_CONJURADOR = ['Arma de Fogo','Balestra'];
+  var EQUIP = [
+    {n:'Kanabō', cat:'Massa', mao:2, dado:'d12', prop:'Talha', forca:3, vol:2, preco:36000, q:1},
+    {n:'Faca', cat:'Lâmina Curta', mao:1, dado:'d6', prop:'Fineza · Rompe', forca:0, vol:1, preco:16000, q:1},
+    {n:'Kunai', cat:'Arremesso', mao:1, dado:'d6', prop:'Longo Alcance · Oculta', forca:0, vol:LEVE, leve:true, preco:8000, q:2, alc:'6 m, longa 18 m'},
+    {n:'Broquel', cat:'Escudo', mao:1, dado:'—', prop:'Prot. +1 · teto Des 5', forca:0, vol:LEVE, leve:true, preco:12000, q:1, escudo:true}
+  ];
+  var ITENS = [
+    {n:'Corda', q:1, vol:LEVE, leve:true, preco:3000},
+    {n:'Lanterna', q:1, vol:LEVE, leve:true, preco:3000},
+    {n:'Kit de escalada', q:1, vol:LEVE, leve:true, preco:3000}
+  ];
+  var TRAJE = {n:'Traje 1', prot:1, teto:'—', vol:LEVE, leve:true, preco:0, forca:0};
+  var GRAUS = ['Grau 4','Grau 3','Grau 2','Grau 1','Especial'];                    // tabela Salário por patente
+  var SALARIO = {'Grau 4':150000,'Grau 3':300000,'Grau 2':600000,'Grau 1':1200000,'Especial':2400000};
+  var GRAU = GRAUS[0];
+  var UNIFORMES = [{n:'Traje 1'},{n:'Traje 2'},{n:'Traje 3'},{n:'Revestimento 1'},{n:'Revestimento 2', grau:'Grau 3'},{n:'Revestimento 3', grau:'Grau 2'}];
+  var LIBERADOS = UNIFORMES.filter(function(u){ return !u.grau || GRAUS.indexOf(GRAU) >= GRAUS.indexOf(u.grau); });
+  var TRAVADOS  = UNIFORMES.filter(function(u){ return LIBERADOS.indexOf(u) < 0; });
+  var SITUACOES = ['vão apertado','altura e beirada','escuro','superfície ruim','água e chuva','multidão','terreno instável','calor e fogo'];
+  var OUTRA = 'Outra Situação', SITUACAO = 'escuro';
+  var REVEST1 = {n:'Revestimento 1', prot:4, teto:'0', vol:2, forca:3, pesado:true};
+  // dois exemplos: a Kaori como está, e uma Força 2 com Kanabō e Revestimento 1, para ver o aviso
+  var CENARIOS = { ok:{forca:3, mao:1, sec:3, veste:TRAJE}, ruim:{forca:2, mao:0, sec:null, veste:REVEST1}, carga:{forca:3, mao:1, sec:3, veste:TRAJE, extra:5}, tiro:{forca:3, mao:2, sec:3, veste:TRAJE} };
+  var PUNICAO = 'o deslocamento cai pela metade e os Testes de Resistência Físicos saem com desvantagem';
+  function soma(l, f){ return l.reduce(function(s,x){ return s + f(x); }, 0); }
+  function dec(n){ return (Math.round(n*10)/10).toString().replace('.', ','); }
+  function mil(n){ return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  function yen(n){ return '¥ ' + mil(n); }
+  function volTotal(x){ return dec(x.vol * x.q); }
+  var ienes = FUNDO_INICIAL - soma(EQUIP, function(a){return a.preco*a.q;}) - soma(ITENS, function(i){return i.preco*i.q;});
+  function conta(cen){
+    var k = {forca:cen.forca, a:EQUIP[cen.mao], b:cen.sec === null ? null : EQUIP[cen.sec], v:cen.veste};
+    k.carga = soma(EQUIP, function(a){return a.vol*a.q;}) + soma(ITENS, function(i){return i.vol*i.q;}) + k.v.vol + (cen.extra || 0);
+    k.limite = 5 + k.forca;
+    k.estourou = k.carga > k.limite;
+    k.faltam = [k.a, k.b, k.v].filter(function(x){ return x && x.forca > k.forca; });
+    k.faltamArmas = k.faltam.filter(function(x){ return x !== k.v && !x.escudo; });
+    k.faltamVestes = k.faltam.filter(function(x){ return x === k.v || x.escudo; });
+    k.cargaTxt = dec(k.carga) + ' de ' + k.limite;
+    k.medidor = '<span class="med"><i style="width:' + Math.min(100, Math.round(100*k.carga/k.limite)) + '%"></i></span>';
+    return k;
+  }
+  function lista(l){ return l.map(function(x){ return x.n; }).join(' e '); }
+  function notaRequisito(k){
+    if (!k.faltam.length) return 'Tudo o que está em uso cabe na sua Força.';
+    var t = k.faltam.map(function(x){ return x.n + ' pede Força ' + x.forca; }).join(' e ') + '. Você tem ' + k.forca + '.';
+    if (k.faltamArmas.length) t += ' Atacar com ' + lista(k.faltamArmas) + ' sai com desvantagem.';
+    if (k.faltamVestes.length) t += ' Com ' + lista(k.faltamVestes) + ', ' + PUNICAO + '.';
+    return t;
+  }
+  var NOTA_ESCUDO = 'O escudo ocupa a mão. Se o seu Selo é um gesto, com ele na mão a sua técnica não sai.';
+  var NOTA_ESTOURO = 'Você passou do limite: ' + PUNICAO + '. É a mesma punição do uniforme e do escudo sem a Força, e elas não se somam.';
+  var QUEM = 'O clã da Kaori perdeu o nome faz três gerações, e ela cresceu ouvindo a história de quem perdeu. A avó era a única que ainda sabia alguma coisa de valor, ervas principalmente, e fez questão de ensinar.';
+  var LIVRE = '<i>Texto do jogador.</i>';
+
+  // ---------- as notas (aparecem ao passar o mouse no canto marcado) ----------
+  var VANTAGEM = 'você rola com vantagem os testes de perícia e os Testes de Resistência';
+  function notaSituacao(s){
+    return s === OUTRA
+      ? 'Você pode criar a sua, em uma ou duas palavras. O mestre confere três coisas: é condição física que ele já descreveu na cena; não decide o que uma perícia de Destreza já decide; e não acontece toda cena.'
+      : 'Situação "' + s + '": quando a cena estiver nessa condição, ' + VANTAGEM + '.';
+  }
+  var TIPOS_TXT = 'Curta 50, Padrão 100, Longa 200, Final de arco 300, Solo simples 75, Solo complexa 150';
+  var NOTAS = [
+    ['Grau, no dossiê', 'A sua patente na instituição. Ela define o salário e libera o Revestimento 2 e 3. Não é o grau da ferramenta que você carrega.'],
+    ['Grau, na linha do equipável', 'O grau da ferramenta amaldiçoada: a energia que a peça carrega. Arma comum fica em —. Não é a sua patente.'],
+    ['Desgaste', 'Só para ferramenta com Desgaste. Anote quantas missões restam: cada missão em que você usar o Estigma gasta uma.'],
+    ['Carga', 'O limite é 5 + Força, em Volume. Cada item leve vale 0,1. Arrastar, empurrar ou levantar é o dobro.'],
+    ['Treino em armas', 'Marque as armas em que você é treinado. A caixa no nome do grupo marca ou desmarca o grupo inteiro de uma vez. Bastião e Vanguarda já vêm com todas marcadas; os outros Caminhos, com Arma de Fogo e Balestra. Sem treino, o ataque com a arma sai com desvantagem.'],
+    ['Situação do Traje, no título', 'Todo Traje carrega uma situação, escolhida na criação. Quando a cena estiver nessa condição, ' + VANTAGEM + '. Vantagem não empilha: duas fontes valem uma.'],
+    ['Situação do Traje, com uma opção da lista', notaSituacao(SITUACAO)],
+    ['Situação do Traje, com "' + OUTRA + '"', notaSituacao(OUTRA)],
+    ['Vol., nas duas tabelas', 'Quantidade vezes o Volume de um. O item leve vale 0,1. A carga soma esta coluna.'],
+    ['Situação do Traje, vestindo Revestimento', 'Só o Traje carrega situação. O Revestimento não tem.'],
+    ['Requisito de Força, cumprido', notaRequisito(conta(CENARIOS.ok))],
+    ['Requisito de Força, não cumprido (o botão "Sem a Força")', notaRequisito(conta(CENARIOS.ruim))],
+    ['Carga, acima do limite (o botão "Carga estourada")', NOTA_ESTOURO],
+    ['Escudo na mão', NOTA_ESCUDO],
+    ['XP total', 'A soma da coluna Total de todas as missões. A caixa XP da FICHA mostra este mesmo número.'],
+    ['Falta para o próximo nível', 'O XP acumulado que o próximo nível pede, menos o seu XP total. O nível é o da FICHA. Do 20 para o 21 o livro pede também um feito, e o 30 é o topo.'],
+    ['XP, na lista de missões', 'Escolha o tipo da missão. ' + TIPOS_TXT + '.'],
+    ['Adicional, na lista de missões', 'O multiplicador da missão, quando a mesa dá: 1,25x, 1,50x ou 2x. Em branco, a missão vale o XP do tipo.'],
+    ['Níveis', 'A curva do livro, fixa. "Para subir" é o que custa sair daquele nível. "Acumulado" é o XP total em que você chega nele. A linha do seu nível fica marcada.'],
+    ['Total, na lista de missões', 'O XP do tipo, vezes o Adicional, vezes o Desconto, sempre em múltiplo de 12,5, para baixo: Solo simples com 1,25x dá 87,5, e não 93,75. Quando a conta dá menos de 12,5, a missão não paga.'],
+    ['Desconto, na lista de missões', 'Para a missão que pagou menos. Na sua semana, a terceira missão paga 50%, a quarta 25%, a quinta 12,5% e a sexta 6,25%. Missão que falhou e pagou metade também é 50%. Em branco, paga cheio.']
+  ];
+  function nota(i){ return NOTAS[i][1]; }
+
+  // ---------- a grade ----------
+  function letra(i){ var s=''; while(i>0){ var r=(i-1)%26; s=String.fromCharCode(65+r)+s; i=Math.floor((i-1)/26);} return s; }
+  function C(s){ var n=0; for(var i=0;i<s.length;i++){ n=n*26+(s.charCodeAt(i)-64);} return n; }
+  function Folha(){ this.h=[]; this.max=0; this.grupo=null; }
+  var PAINEL = {ini:48, fim:102};   // AV a CX: o painel de XP, num grupo de colunas
+  // a grade tem duas colunas de borda antes da coluna A (a do agrupamento e a dos números de linha)
+  // e duas linhas antes da linha 1 (a do agrupamento de colunas e a das letras)
+  Folha.prototype.add = function(k, c1, r1, c2, r2, html, extra, nt){
+    if (typeof c1 === 'string') c1 = C(c1); if (typeof c2 === 'string') c2 = C(c2);
+    this.max = Math.max(this.max, r2);
+    this.h.push('<div class="c '+k+' '+(extra||'')+(c1>47?' pc':'')+(nt?' nota" title="'+nt.replace(/"/g,'&quot;'):'')+'" style="grid-area:'+(r1+2)+'/'+(c1+2)+'/'+(r2+3)+'/'+(c2+3)+'">'+(html===undefined?'':html)+(nt?'<b class="nt"></b>':'')+'</div>');
+  };
+  Folha.prototype.caixa = function(c1, c2, r, rot, val, extra, tipo, nt){ // rótulo de 1 linha, valor de 2
+    this.add('rot', c1, r, c2, r, rot, '', nt); this.add(tipo||'val', c1, r+1, c2, r+2, val, extra);
+  };
+  Folha.prototype.tabela = function(r, cols, dados, linhas){
+    var me=this;
+    cols.forEach(function(k){ me.add('rot', k[2], r, k[3], r, k[1], '', k[6]); });
+    for (var i=0;i<linhas;i++){
+      cols.forEach(function(k){
+        var d = dados[i], v = d ? (typeof k[0]==='function' ? k[0](d) : d[k[0]]) : '';
+        me.add('cel', k[2], r+1+i, k[3], r+1+i, v===undefined?'':v, (k[4]||'') + (d && k[5] ? ' '+k[5] : ''));
+      });
+    }
+  };
+  Folha.prototype.moldura = function(linhas){
+    this.add('topo', 1, 1, 47, 4,
+      '<div class="tit"><span class="marca">呪術</span><div><strong>FICHA PESSOAL</strong><small>Projeto M · pertences e histórico do portador</small></div></div><div class="quem">Kaori<br><small>Bastião · Muro · nível 2</small></div>');
+    this.add('lomb', 1, 5, 2, linhas, '<span>PROJETO M · FICHA PESSOAL</span>');
+    this.max = linhas;
+  };
+  Folha.prototype.monta = function(el, fechado, semPainel){
+    var g='', i, gr=this.grupo, linhas=['18px','22px'], larg = PAINEL.fim - PAINEL.ini + 1;
+    function dentro(i){ return gr && i >= gr.ini && i <= gr.fim; }
+    for(i=1;i<=PAINEL.fim;i++) g += '<div class="col'+(i>=PAINEL.ini?' pc':'')+'" style="grid-area:2/'+(i+2)+'">'+letra(i)+'</div>';
+    for(i=1;i<=this.max;i++){
+      g += '<div class="lin'+(dentro(i)?' gr':'')+'" style="grid-area:'+(i+2)+'/2">'+i+'</div>';
+      linhas.push(fechado && dentro(i) ? '0px' : '22px');
+    }
+    if (gr){
+      g += '<button class="grb" type="button" id="alterna-treino" data-acao="grupo" aria-expanded="'+(!fechado)+'" title="'+(fechado?'Abrir':'Fechar')+' o treino em armas" style="grid-area:'+(gr.faixa+2)+'/1">'+(fechado?'+':'−')+'</button>';
+      g += '<div class="grl gr" style="grid-area:'+(gr.ini+2)+'/1/'+(gr.fim+3)+'/2"></div>';
+    }
+    // o controle do grupo de colunas fica em cima da coluna anterior ao grupo (a AU)
+    g += '<button class="grb" type="button" id="alterna-xp" data-acao="painel" aria-expanded="'+(!semPainel)+'" title="'+(semPainel?'Abrir':'Fechar')+' o painel de XP" style="grid-area:1/'+(PAINEL.ini+1)+'">'+(semPainel?'+':'−')+'</button>';
+    g += '<div class="grc pc" style="grid-area:1/'+(PAINEL.ini+2)+'/2/'+(PAINEL.fim+3)+'"></div>';
+    el.style.gridTemplateColumns = '18px 28px repeat(47,20px) repeat('+larg+','+(semPainel?'0px':'20px')+')';
+    el.style.width = (46 + 20*47 + (semPainel ? 0 : 20*larg)) + 'px';
+    el.innerHTML = g + this.h.join('');
+    el.style.gridTemplateRows = linhas.join(' ');
+    el.className = 'folha' + (fechado ? ' fechado' : '') + (semPainel ? ' pfechado' : '');
+    return this.max;
+  };
+
+  var MENU_ARMAS = 6, LIVRES_ARMAS = 2;   // 8 linhas de equipável: 6 com menu, 2 digitadas inteiras
+  var COLS_ARMA = [
+    ['n','Equipável','D','J','esq','menu'], ['q','Qtd.','K','L','',''], ['cat','Categoria','M','R','esq','calc'], ['mao','Mão','S','T','','calc'], ['dado','Dado','U','V','','calc'],
+    ['prop','Propriedades','W','AD','esq','calc'], [function(a){return a.forca||'—';},'Força','AE','AF','','calc'], [volTotal,'Vol.','AG','AH','','calc', nota(8)],
+    [function(){return '—';},'Grau','AI','AJ','','menu', nota(1)], [function(){return '';},'Estigma','AK','AP','esq',''], [function(){return '';},'Desgaste','AQ','AT','','', nota(2)]
+  ];
+  var MOCHILA_E = [['n','Item','D','S','esq'], ['q','Qtd.','T','U'], [volTotal,'Vol.','V','X','','calc']];
+  var MOCHILA_D = [['n','Item','Z','AO','esq'], ['q','Qtd.','AP','AQ'], [volTotal,'Vol.','AR','AT','','calc']];
+  var FOTO = '<span class="k">顔</span><span class="l">FOTO DO PERSONAGEM</span>';
+
+  function treinada(arma, caminho){
+    if (estado.marcas.hasOwnProperty(arma)) return estado.marcas[arma];   // o que o jogador marcou à mão
+    if (TREINO_TOTAL.indexOf(caminho) >= 0) return true;
+    var c = CATALOGO.filter(function(a){ return a[0] === arma; })[0];
+    return !!c && TREINO_CONJURADOR.indexOf(c[1]) >= 0;
+  }
+  // a linha de detalhe da arma em uso: dado, propriedades, e só o que ela tiver de duas mãos, alcance e recarga
+  function detalhe(a){ return a.dado + ' · ' + a.prop + (a.mao === 2 ? ' · duas mãos' : '') + (a.alc ? ' · ' + a.alc : '') + (a.rec ? ' · recarga a cada ' + a.rec : ''); }
+  function chipForca(x, forca){ return x.forca ? '<span class="chip'+(x.forca>forca?' ruim':'')+'">Força '+forca+' de '+x.forca+'</span>' : '<span class="chip">Sem requisito de Força</span>'; }
+  function chipTreino(x, caminho){ return treinada(x.n, caminho) ? '<span class="chip">Treinada</span>' : '<span class="chip at">Sem treino: desvantagem</span>'; }
+
+  // o dossiê: foto e personalidade à esquerda; caixas curtas, aparência, história e laços à direita
+  function dossie(f, r){
+    f.add('faixa','D',r,'AT',r,'Dossiê');
+    f.add('foto','D',r+1,'S',r+19, FOTO);
+    f.add('rot','D',r+21,'S',r+21,'Personalidade');      f.add('txt','D',r+22,'S',r+27, LIVRE);
+    f.caixa('U','AC',r+1,'Nome','Kaori'); f.caixa('AE','AI',r+1,'Grau', GRAU, 'menu', 'val', nota(0)); f.caixa('AK','AN',r+1,'Idade',''); f.caixa('AP','AT',r+1,'Altura','');
+    f.caixa('U','Z',r+5,'Olhos',''); f.caixa('AB','AG',r+5,'Cabelo',''); f.caixa('AI','AN',r+5,'Pele',''); f.caixa('AP','AT',r+5,'Gênero','');
+    f.add('rot','U',r+9,'AT',r+9,'Aparência');           f.add('txt','U',r+10,'AT',r+11, LIVRE);
+    f.add('rot','U',r+13,'AT',r+13,'História');          f.add('txt','U',r+14,'AT',r+21, QUEM);
+    f.add('rot','U',r+23,'AT',r+23,'Laços e anotações'); f.add('txt','U',r+24,'AT',r+27, LIVRE);
+    return r + 28;
+  }
+  // o que está na mão e no corpo: três cartões, 6 linhas a partir de r
+  function emUso(f, r, caminho, k){
+    var a = k.a, b = k.b, v = k.v;
+    f.add('faixa','D',r,'AT',r,'Em uso');
+    f.caixa('D','Q',r+1,'Mão principal', a.n, 'menu');
+    f.add('cel peq','D',r+4,'Q',r+4, detalhe(a), 'calc');
+    f.add('aviso','D',r+5,'Q',r+5, chipTreino(a, caminho) + chipForca(a, k.forca),'calc');
+    f.caixa('S','AF',r+1,'Mão secundária', b ? b.n : '—', 'menu');
+    f.add('cel peq','S',r+4,'AF',r+4, b ? (b.escudo ? 'Escudo · ' + b.prop : detalhe(b)) : 'Ocupada: a arma da outra mão é de duas mãos','calc');
+    f.add('aviso','S',r+5,'AF',r+5, b ? chipForca(b, k.forca) + (b.escudo ? '<span class="chip">Trava Selo de gesto</span>' : '') : '<span class="chip">Sem escudo</span>','calc', b && b.escudo ? NOTA_ESCUDO : undefined);
+    f.caixa('AH','AT',r+1,'Vestindo', v.n, 'menu');
+    f.add('cel peq','AH',r+4,'AT',r+4,'Proteção ' + v.prot + ' · ' + (v.teto === '—' ? 'sem teto de Destreza' : 'teto de Destreza ' + v.teto),'calc');
+    f.add('aviso','AH',r+5,'AT',r+5,'<span class="chip">Liberado no ' + GRAU + '</span>' + chipForca(v, k.forca),'calc');
+    return r + 6;
+  }
+  // a fileira de cinco caixas: 3 linhas a partir de r
+  function fileira(f, r, k){
+    var falta = k.faltam.length > 0, sit = k.v.pesado ? null : SITUACAO;
+    f.add('rot','D',r,'M',r,'Carga · limite 5 + Força','', nota(3));
+    f.add('num','D',r+1,'M',r+2, k.cargaTxt + k.medidor, 'calc' + (k.estourou ? ' ruim' : ''), k.estourou ? NOTA_ESTOURO : undefined);
+    f.caixa('O','U',r,'Ienes', yen(ienes), '', 'num');
+    f.caixa('W','AD',r,'Salário por mês', yen(SALARIO[GRAU]), 'calc','num');
+    f.add('rot','AF',r,'AL',r,'Requisito de Força');
+    f.add('val','AF',r+1,'AL',r+2, falta ? 'Não cumprido' : 'Cumprido', 'calc' + (falta ? ' ruim' : ''), notaRequisito(k));
+    f.add('rot','AN',r,'AT',r,'Situação do Traje','', nota(5));
+    f.add('val','AN',r+1,'AT',r+2, sit ? sit.charAt(0).toUpperCase() + sit.slice(1) : '—', 'menu', sit ? notaSituacao(sit) : nota(9));
+    return r + 3;
+  }
+  // a lista de treino: cinco colunas de categorias, uma caixa de seleção por arma. As linhas ficam num grupo que fecha.
+  function treino(f, r, caminho){
+    var x = 4, alt = 0;
+    f.add('faixa','D',r,'AT',r,'Treino em armas','', nota(4));
+    COLUNAS_TREINO.forEach(function(cats, n){
+      var larg = n < 3 ? 9 : 8, rr = r + 1;
+      cats.forEach(function(cat){
+        var doGrupo = CATALOGO.filter(function(a){ return a[1] === cat; }), todas = doGrupo.every(function(a){ return treinada(a[0], caminho); });
+        // a caixa do grupo: marcada quando todas as armas dele estão; marcar ou desmarcar leva o grupo inteiro
+        f.add('rot', x, rr, x, rr, '<span class="cx'+(todas?' on':'')+'" role="checkbox" tabindex="0" aria-checked="'+todas+'" aria-label="Grupo '+cat+'" data-grupo="'+cat+'"></span>', 'gr chk');
+        f.add('rot', x+1, rr, x+larg-1, rr, cat, 'gr'); rr++;
+        doGrupo.forEach(function(a){
+          f.add('cel', x, rr, x, rr, '<span class="cx'+(treinada(a[0], caminho)?' on':'')+'" role="checkbox" tabindex="0" aria-checked="'+treinada(a[0], caminho)+'" aria-label="'+a[0]+'" data-arma="'+a[0]+'"></span>', 'gr chk');
+          f.add('cel', x+1, rr, x+larg-1, rr, a[0], 'gr esq'); rr++;
+        });
+      });
+      alt = Math.max(alt, rr - (r + 1)); x += larg;
+    });
+    f.grupo = {faixa:r, ini:r+1, fim:r+alt};
+    return r + alt + 1;
+  }
+
+  // ---------- o painel de XP: missões em cima, níveis embaixo, no vão das linhas do treino nada ----------
+  // capítulo de Experiência, tabela Curva de XP: do nível, ao nível, quanto custa sair dele
+  var CURVA = [[2,2,200],[3,4,300],[5,7,500],[8,10,700],[11,13,900],[14,16,1100],[17,19,1300],[20,22,1500],[23,29,1700]];
+  var NIVEIS = [];
+  (function(){ var ac = 0; for (var n=2;n<=30;n++){ var c = CURVA.filter(function(x){ return n>=x[0] && n<=x[1]; })[0]; NIVEIS.push({n:n, custo:c?c[2]:null, ac:ac}); if (c) ac += c[2]; } })();
+  // os tipos de missão: os quatro do livro e os dois de missão solo, decididos em 01/10/2026 e ainda fora dele
+  var TIPOS = [['Curta',50],['Padrão',100],['Longa',200],['Final de arco',300],['Solo simples',75],['Solo complexa',150]];
+  var MULT = [['1,25x',1.25],['1,50x',1.5],['2x',2]];
+  var DESC = [['50%',0.5],['25%',0.25],['12,5%',0.125],['6,25%',0.0625]];   // o desconto da semana, cada missão a metade da anterior; a falha que paga metade também é 50%
+  var NIVEL = 2, MISSOES = [{n:'Missão curta (exemplo)', tipo:'Curta', mult:'1,25x', desc:''}, {n:'3ª da semana (exemplo)', tipo:'Padrão', mult:'', desc:'50%'}, {n:'5ª da semana (exemplo)', tipo:'Padrão', mult:'', desc:'12,5%'}];
+  function par(l, k){ return l.filter(function(x){ return x[0] === k; })[0]; }
+  // o total da linha: o XP do tipo, vezes o multiplicador, vezes o desconto, sempre em múltiplo de 12,5 para baixo.
+  // Quem dá exatamente 12,5 ainda paga; menos que isso, não. Decisão de 01/10/2026, fora do livro.
+  function arredonda(x){ return Math.floor(x / 12.5 + 1e-9) * 12.5; }
+  function xpTxt(n){ return mil(Math.floor(n)) + (n % 1 ? ',5' : ''); }
+  function totalMissao(m){ var t = par(TIPOS, m.tipo), x = par(MULT, m.mult), d = par(DESC, m.desc); return t ? arredonda(t[1] * (x ? x[1] : 1) * (d ? d[1] : 1)) : 0; }
+  function nivel(n){ return NIVEIS.filter(function(x){ return x.n === n; })[0]; }
+  function contaXP(){
+    var total = soma(MISSOES, totalMissao), aqui = nivel(NIVEL), prox = nivel(NIVEL+1);
+    return {total:total, falta: prox ? Math.max(0, prox.ac - total) : null, pct: prox ? Math.max(0, Math.min(100, Math.round(100*(total-aqui.ac)/(prox.ac-aqui.ac)))) : 100};
+  }
+  function painelXP(f, r, gr){
+    var P = PAINEL.ini + 1, B = [P, P+27], x = contaXP(), cab = r + 5, ult = gr.fim, n = 0, rn = gr.fim + 2;   // a AV fica de respiro; dois blocos de 26 colunas
+    f.add('faixa', P, r, P+52, r, 'Missões e XP');
+    f.add('rot', P, r+1, P+25, r+1, 'XP total', '', nota(14));
+    f.add('num', P, r+2, P+25, r+3, xpTxt(x.total), 'calc');
+    f.add('rot', P+27, r+1, P+52, r+1, 'Falta para o nível ' + (NIVEL+1), '', nota(15));
+    f.add('num', P+27, r+2, P+52, r+3, (x.falta === null ? '—' : xpTxt(x.falta)) + '<span class="med"><i style="width:' + x.pct + '%"></i></span>', 'calc');
+    B.forEach(function(b){
+      f.add('rot', b, cab, b+8, cab, 'Missão'); f.add('rot', b+9, cab, b+14, cab, 'XP', '', nota(16)); f.add('rot', b+15, cab, b+18, cab, 'Adicional', '', nota(17));
+      f.add('rot', b+19, cab, b+22, cab, 'Desconto', '', nota(20)); f.add('rot', b+23, cab, b+25, cab, 'Total', '', nota(19));
+      for (var l = cab+1; l <= ult; l++, n++){
+        var m = MISSOES[n], g = l >= gr.ini && l <= gr.fim ? ' gr' : '';   // as linhas do treino somem com ele
+        f.add('cel', b, l, b+8, l, m ? m.n : '', 'esq' + g); f.add('cel', b+9, l, b+14, l, m ? m.tipo : '', 'esq' + (m ? ' menu' : '') + g);
+        f.add('cel', b+15, l, b+18, l, m ? (m.mult || '—') : '', (m ? 'menu' : '') + g); f.add('cel', b+19, l, b+22, l, m ? (m.desc || '—') : '', (m ? 'menu' : '') + g);
+        f.add('cel', b+23, l, b+25, l, m ? xpTxt(totalMissao(m)) : '', (m ? 'calc' : '') + g);
+      }
+    });
+    f.add('faixa', P, rn, P+52, rn, 'Níveis', '', nota(18));
+    [NIVEIS.slice(0,15), NIVEIS.slice(15)].forEach(function(lista, i){
+      var b = B[i];
+      f.add('rot', b, rn+1, b+3, rn+1, 'Nível'); f.add('rot', b+4, rn+1, b+14, rn+1, 'Para subir'); f.add('rot', b+15, rn+1, b+25, rn+1, 'Acumulado');
+      lista.forEach(function(v, j){
+        var l = rn + 2 + j, e = v.n === NIVEL ? 'agora' : '';
+        f.add('cel', b, l, b+3, l, v.n, e); f.add('cel', b+4, l, b+14, l, v.custo ? mil(v.custo) + (v.n === 20 ? ' e um feito' : '') : '—', e); f.add('cel', b+15, l, b+25, l, mil(v.ac), e);
+      });
+    });
+    return {missoes:n, m1:cab+1, m2:ult, n1:rn, n2:rn+16, somem:2*(gr.fim-gr.ini+1)};
+  }
+
+  // ---------- a folha: dossiê, em uso, treino, guardados ----------
+  var estado = {caminho:'Bastião', cenario:'ok', fechado:false, painel:true, marcas:{}};
+  function texto(id, t){ document.getElementById(id).textContent = t; }
+  function nomes(l){ return l.map(function(u){ return u.n; }).join(', '); }
+  function desenha(){
+    var f = new Folha(), r0 = 6;
+    var k = conta(CENARIOS[estado.cenario]);
+    var rUso = dossie(f, r0) + 1;
+    var r = emUso(f, rUso, estado.caminho, k) + 1, rTreino = r;
+    r = treino(f, r, estado.caminho) + 1;
+    var rFileira = r; r = fileira(f, r, k) + 1;
+    f.add('faixa','D',r,'AT',r,'Equipáveis guardados'); f.tabela(r+1, COLS_ARMA, EQUIP, MENU_ARMAS);
+    for (var i=0;i<LIVRES_ARMAS;i++) COLS_ARMA.forEach(function(k, n){ f.add('cel', k[2], r+2+MENU_ARMAS+i, k[3], r+2+MENU_ARMAS+i, n===0 ? 'Linha livre' : '', (k[4]||'') + ' peq'); });
+    r += 3 + MENU_ARMAS + LIVRES_ARMAS;
+    f.add('faixa','D',r,'AT',r,'Itens guardados'); f.tabela(r+1, MOCHILA_E, ITENS, 6); f.tabela(r+1, MOCHILA_D, [], 6);
+    var px = painelXP(f, r0, f.grupo), colsP = PAINEL.fim - PAINEL.ini + 1;
+    f.moldura(f.max + 1);
+    var linhas = f.monta(document.getElementById('folha-bc'), estado.fechado, !estado.painel), noGrupo = f.grupo.fim - f.grupo.ini + 1;
+    var cel = linhas*(47+colsP), seg = cel * 7.5 / (47*150);   // a FICHA (47 x 150) grava fundo e fonte em 7,5 s
+    texto('med-bc', linhas + ' linhas com o treino aberto, ' + (linhas - noGrupo) + ' com ele fechado. Com as ' + colsP + ' colunas do painel de XP são ' + mil(cel) + ' células, e isso soma perto de ' + dec(seg) + ' s à troca de paleta, pela medida da FICHA; sem o painel seriam ' + dec(linhas*47*7.5/(47*150)) + ' s. Fechar o treino ou o painel não muda esse tempo.');
+    texto('lista-tela-3', 'O painel de XP mora nas colunas ' + letra(PAINEL.ini) + ' a ' + letra(PAINEL.fim) + ', depois da AU, num grupo de colunas. A aba nasce com ele fechado, e o + em cima da coluna AU abre. As missões ficam das linhas ' + px.m1 + ' à ' + px.m2 + ', em dois blocos, e somam ' + px.missoes + ' linhas. A tabela de níveis fica das linhas ' + px.n1 + ' à ' + px.n2 + '. As linhas ' + f.grupo.ini + ' a ' + f.grupo.fim + ' são as do treino em armas: com o treino fechado, ' + px.somem + ' das ' + px.missoes + ' linhas de missão somem da vista. Elas continuam contando no XP total.');
+    texto('lista-xp', 'No painel de XP, cada missão é uma linha: o nome é digitado, o XP é um menu com o tipo da missão (' + TIPOS_TXT + '), o Adicional é um menu com ' + MULT.map(function(x){ return x[0]; }).join(', ') + ' e o Desconto é um menu com ' + DESC.map(function(x){ return x[0]; }).join(', ') + ', para a terceira missão da semana em diante e para a que falhou e pagou metade. O Total da linha sai sozinho, sempre em múltiplo de 12,5 para baixo; quando a conta dá menos de 12,5 a missão não paga. O XP total soma todos. A caixa XP da FICHA deixa de ser digitada e passa a mostrar esse total; o nível continua subindo por ele. Quem tentar digitar nela recebe o aviso das caixas de fórmula. A caixa ao lado do total diz quanto falta para o próximo nível, e a linha do seu nível fica marcada na tabela.');
+    var cats = {}; CATALOGO.forEach(function(a){ cats[a[1]] = 1; });
+    texto('lista-treino', 'A lista de treino tem as ' + CATALOGO.length + ' armas do livro, em ' + Object.keys(cats).length + ' categorias, cada uma com a sua caixa de seleção. Ao escolher o Caminho, a ficha marca: ' + TREINO_TOTAL.join(' e ') + ', todas; os outros, ' + TREINO_CONJURADOR.join(' e ') + '. Depois o jogador marca o que tiver a mais, à mão. Cada grupo tem a sua caixa no título: marcar ela marca todas as armas do grupo, desmarcar desmarca todas, e ela aparece marcada quando o grupo inteiro está. No estudo as caixas respondem ao clique. O aviso de treino da arma em uso lê essa lista.');
+    texto('lista-armas', 'Os equipáveis guardados têm ' + (MENU_ARMAS + LIVRES_ARMAS) + ' linhas. Nas ' + MENU_ARMAS + ' primeiras o nome vem do menu, que lista as armas e os escudos, e as colunas se preenchem. As ' + LIVRES_ARMAS + ' últimas são livres, digitadas inteiras. A quantidade, o Estigma e o Desgaste são sempre digitados, e o Vol. da linha é a quantidade vezes o Volume de um.');
+    texto('lista-graus', 'O Grau é um menu com as ' + GRAUS.length + ' patentes do livro: ' + GRAUS.join(', ') + '. Ele é registro: quem sobe de grau troca o menu à mão.');
+    texto('lista-salario', 'O salário sai do Grau, pela tabela do livro: ' + GRAUS.map(function(g){ return g + ' ' + yen(SALARIO[g]); }).join(', ') + '.');
+    texto('lista-uniformes', 'O menu do Vestindo só lista o que o Grau libera. No ' + GRAU + ' aparecem ' + nomes(LIBERADOS) + '. Ficam de fora ' + TRAVADOS.map(function(u){ return u.n + ' (pede ' + u.grau + ')'; }).join(' e ') + '.');
+    texto('lista-situacao', 'A Situação do Traje é um menu com as ' + SITUACOES.length + ' do livro (' + SITUACOES.join(', ') + ') e a opção "' + OUTRA + '". A nota da caixa muda com a escolha.');
+    document.getElementById('lista-notas').innerHTML = NOTAS.map(function(n){ return '<li><b>' + n[0] + ':</b> ' + n[1] + '</li>'; }).join('');
+    [].forEach.call(document.querySelectorAll('.exemplo button'), function(b){ b.setAttribute('aria-pressed', String(b.dataset.cam === estado.caminho || b.dataset.cen === estado.cenario || b.dataset.xp === (estado.painel ? 'aberto' : 'fechado'))); });
+  }
+  function rola(){ var q = document.querySelector && document.querySelector('.quadro'); if (q && estado.painel) q.scrollLeft = q.scrollWidth; }
+  desenha();
+  document.addEventListener('keydown', function(e){ var t = e.target; if ((e.key === ' ' || e.key === 'Enter') && t.dataset && (t.dataset.arma || t.dataset.grupo)){ e.preventDefault(); t.click(); } });
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    if (t.closest && t.closest('[data-acao="grupo"]')){ estado.fechado = !estado.fechado; desenha(); var b = document.getElementById('alterna-treino'); if (b && b.focus) b.focus(); return; }
+    if (t.closest && t.closest('[data-acao="painel"]')){ estado.painel = !estado.painel; desenha(); rola(); var p = document.getElementById('alterna-xp'); if (p && p.focus) p.focus(); return; }
+    if (t.dataset && t.dataset.xp){ estado.painel = t.dataset.xp === 'aberto'; desenha(); rola(); }
+    if (t.dataset && t.dataset.arma){ estado.marcas[t.dataset.arma] = !treinada(t.dataset.arma, estado.caminho); desenha(); return; }
+    if (t.dataset && t.dataset.grupo){
+      var g = CATALOGO.filter(function(a){ return a[1] === t.dataset.grupo; }), liga = !g.every(function(a){ return treinada(a[0], estado.caminho); });
+      g.forEach(function(a){ estado.marcas[a[0]] = liga; }); desenha(); return;
+    }
+    if (t.dataset && t.dataset.cam){ estado.caminho = t.dataset.cam; estado.marcas = {}; desenha(); }
+    if (t.dataset && t.dataset.cen){ estado.cenario = t.dataset.cen; desenha(); }
+  });
+
+  // ---------- paleta das folhas ----------
+  var botoes = [].slice.call(document.querySelectorAll('.paleta button'));
+  function aplica(p){
+    [].forEach.call(document.querySelectorAll('.quadro'), function(q){ q.classList.remove('pal-escura','pal-clara'); if(p) q.classList.add(p); });
+    botoes.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.pal === p)); });
+  }
+  botoes.forEach(function(b){ b.addEventListener('click', function(){ aplica(b.dataset.pal); try{ localStorage.setItem('fp-paleta', b.dataset.pal); }catch(e){} }); });
+  var guardada = ''; try{ guardada = localStorage.getItem('fp-paleta') || ''; }catch(e){}
+  if (guardada === 'pal-escura' || guardada === 'pal-clara') aplica(guardada);
+})();
+</script>

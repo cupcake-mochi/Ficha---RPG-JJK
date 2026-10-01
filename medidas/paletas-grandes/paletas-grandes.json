@@ -5,7 +5,7 @@
         "fundo": "FDF2F7",
         "painel": "FAD6E7",
         "painel_alto": "F5B7D4",
-        "linha": "F0BCD4",
+        "linha": "A44973",
         "texto": "1E1320",
         "texto_fraco": "2D0A1A",
         "acento": "E32175",
@@ -14,7 +14,8 @@
         "painel_baixo": "FCE7F1",
         "bloco": "C22B71",
         "menu_grande": "FFB6D8",
-        "regua": "CB015E"
+        "regua": "CB015E",
+        "barra": "956E76"
       },
       "contraste": {
         "texto/fundo": 16.438848845712272,
@@ -24,13 +25,14 @@
         "texto/tinta": 14.920852776344447
       },
       "avisos": [
-        "acento ajustado (ficou 3.34)"
+        "acento ajustado (ficou 3.34)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "1E1320",
         "painel": "1E1320",
         "painel_alto": "1E1320",
-        "linha": "1E1320",
+        "linha": "FBE4EF",
         "texto": "FBE4EF",
         "texto_fraco": "FBE4EF",
         "acento": "000000",
@@ -45,7 +47,7 @@
         "fundo": "D71B6D",
         "painel": "BD185F",
         "painel_alto": "A21452",
-        "linha": "A51553",
+        "linha": "FBE1ED",
         "texto": "E63B85",
         "texto_fraco": "E63B85",
         "acento": "13020A",
@@ -62,7 +64,7 @@
         "fundo": "1B111D",
         "painel": "311E33",
         "painel_alto": "492D4D",
-        "linha": "64163B",
+        "linha": "B75E87",
         "texto": "FBE4EF",
         "texto_fraco": "F1BFD6",
         "acento": "F8C7DC",
@@ -71,7 +73,8 @@
         "painel_baixo": "301E33",
         "bloco": "D44085",
         "menu_grande": "46244B",
-        "regua": "B377BB"
+        "regua": "B377BB",
+        "barra": "B377BB"
       },
       "contraste": {
         "texto/fundo": 15.242680019418263,
@@ -85,7 +88,7 @@
         "fundo": "FBE4EF",
         "painel": "FBE4EF",
         "painel_alto": "FBE4EF",
-        "linha": "FBE4EF",
+        "linha": "000000",
         "texto": "1E1320",
         "texto_fraco": "1E1320",
         "acento": "1E1320",
@@ -100,7 +103,7 @@
         "fundo": "F8C7DC",
         "painel": "F8C7DC",
         "painel_alto": "F8C7DC",
-        "linha": "F8C7DC",
+        "linha": "210411",
         "texto": "C71963",
         "texto_fraco": "A61553",
         "acento": "AC1656",
@@ -119,7 +122,7 @@
         "fundo": "F7F5F9",
         "painel": "E8E2EE",
         "painel_alto": "D6CBE1",
-        "linha": "D6D0DC",
+        "linha": "766B82",
         "texto": "151122",
         "texto_fraco": "1B1720",
         "acento": "3B3360",
@@ -128,7 +131,8 @@
         "painel_baixo": "F2EEF5",
         "bloco": "756588",
         "menu_grande": "DACDE8",
-        "regua": "66428A"
+        "regua": "66428A",
+        "barra": "66428A"
       },
       "contraste": {
         "texto/fundo": 17.075686163253554,
@@ -142,7 +146,7 @@
         "fundo": "151122",
         "painel": "151122",
         "painel_alto": "151122",
-        "linha": "151122",
+        "linha": "FFFFFF",
         "texto": "F0ECF4",
         "texto_fraco": "F0ECF4",
         "acento": "F0ECF4",
@@ -157,7 +161,7 @@
         "fundo": "3B3360",
         "painel": "3B3360",
         "painel_alto": "3B3360",
-        "linha": "3B3360",
+        "linha": "F4F3F9",
         "texto": "8075B6",
         "texto_fraco": "8479B8",
         "acento": "A8A0CD",
@@ -174,7 +178,7 @@
         "fundo": "13101E",
         "painel": "211C36",
         "painel_alto": "322A51",
-        "linha": "3C3446",
+        "linha": "897F96",
         "texto": "F0ECF4",
         "texto_fraco": "D7D2DE",
         "acento": "7569AF",
@@ -183,7 +187,8 @@
         "painel_baixo": "211B35",
         "bloco": "89799C",
         "menu_grande": "29204F",
-        "regua": "816FC3"
+        "regua": "816FC3",
+        "barra": "816FC3"
       },
       "contraste": {
         "texto/fundo": 16.072028354465562,
@@ -199,7 +204,7 @@
         "fundo": "F0ECF4",
         "painel": "F0ECF4",
         "painel_alto": "F0ECF4",
-        "linha": "F0ECF4",
+        "linha": "151122",
         "texto": "151122",
         "texto_fraco": "151122",
         "acento": "FFFFFF",
@@ -214,7 +219,7 @@
         "fundo": "8175B6",
         "painel": "8A7FBB",
         "painel_alto": "9A91C4",
-        "linha": "A39BCA",
+        "linha": "1C182E",
         "texto": "6D60AA",
         "texto_fraco": "5D5198",
         "acento": "F9F8FB",
@@ -233,7 +238,7 @@
         "fundo": "FFF0F0",
         "painel": "FFD1D1",
         "painel_alto": "FFADAD",
-        "linha": "E8C4CB",
+        "linha": "965763",
         "texto": "1D1616",
         "texto_fraco": "280F14",
         "acento": "D64024",
@@ -242,7 +247,8 @@
         "painel_baixo": "FFE4E4",
         "bloco": "AB4257",
         "menu_grande": "FFB6B6",
-        "regua": "CC0000"
+        "regua": "CC0000",
+        "barra": "936D66"
       },
       "contraste": {
         "texto/fundo": 16.09912436823601,
@@ -252,13 +258,14 @@
         "texto/tinta": 14.41604411209948
       },
       "avisos": [
-        "acento ajustado (ficou 3.31)"
+        "acento ajustado (ficou 3.31)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "280F14",
         "painel": "280F14",
         "painel_alto": "280F14",
-        "linha": "280F14",
+        "linha": "FFFFFF",
         "texto": "FFE0E0",
         "texto_fraco": "FFE0E0",
         "acento": "000000",
@@ -273,7 +280,7 @@
         "fundo": "C83C22",
         "painel": "AF341D",
         "painel_alto": "922C19",
-        "linha": "9D2F1A",
+        "linha": "FAE5E1",
         "texto": "DD5137",
         "texto_fraco": "DD5137",
         "acento": "090301",
@@ -290,7 +297,7 @@
         "fundo": "1A1414",
         "painel": "2E2424",
         "painel_alto": "453636",
-        "linha": "58222D",
+        "linha": "A96C78",
         "texto": "FFE0E0",
         "texto_fraco": "E9C6CD",
         "acento": "F7D6D0",
@@ -299,7 +306,8 @@
         "painel_baixo": "2D2323",
         "bloco": "BE576B",
         "menu_grande": "402E2E",
-        "regua": "A58D8D"
+        "regua": "A58D8D",
+        "barra": "DCB1B2"
       },
       "contraste": {
         "texto/fundo": 14.722146893650814,
@@ -308,12 +316,14 @@
         "acento/painel": 11.107847209854688,
         "texto/tinta": 15.810068490208339
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FFE0E0",
         "painel": "FFE0E0",
         "painel_alto": "FFE0E0",
-        "linha": "FFE0E0",
+        "linha": "000000",
         "texto": "280F14",
         "texto_fraco": "280F14",
         "acento": "280F14",
@@ -328,7 +338,7 @@
         "fundo": "F7D6D0",
         "painel": "F7D6D0",
         "painel_alto": "F7D6D0",
-        "linha": "F7D6D0",
+        "linha": "200A06",
         "texto": "BC3820",
         "texto_fraco": "A2301C",
         "acento": "AF341E",
@@ -347,7 +357,7 @@
         "fundo": "FFFBF0",
         "painel": "FFF2D1",
         "painel_alto": "FFE8AD",
-        "linha": "E8C4D1",
+        "linha": "96576D",
         "texto": "270C1E",
         "texto_fraco": "280F18",
         "acento": "DB5757",
@@ -356,7 +366,8 @@
         "painel_baixo": "FFF7E4",
         "bloco": "AB4266",
         "menu_grande": "FFEAB6",
-        "regua": "CC9300"
+        "regua": "CC9300",
+        "barra": "968364"
       },
       "contraste": {
         "texto/fundo": 17.544116750033734,
@@ -366,13 +377,14 @@
         "texto/tinta": 16.854367759330803
       },
       "avisos": [
-        "acento ajustado (ficou 3.42)"
+        "acento ajustado (ficou 3.42)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "270C1E",
         "painel": "270C1E",
         "painel_alto": "270C1E",
-        "linha": "270C1E",
+        "linha": "FFF6E0",
         "texto": "FFF6E0",
         "texto_fraco": "FFF6E0",
         "acento": "270C1E",
@@ -387,7 +399,7 @@
         "fundo": "D53A3A",
         "painel": "D22D2D",
         "painel_alto": "C52A2A",
-        "linha": "A82424",
+        "linha": "FAE6E6",
         "texto": "DB5757",
         "texto_fraco": "DB5757",
         "acento": "370C0C",
@@ -404,7 +416,7 @@
         "fundo": "230B1B",
         "painel": "3F1330",
         "painel_alto": "5E1C47",
-        "linha": "582235",
+        "linha": "A96C81",
         "texto": "FFF6E0",
         "texto_fraco": "E9C6D2",
         "acento": "EA9D9D",
@@ -413,7 +425,8 @@
         "painel_baixo": "3E132F",
         "bloco": "BE577B",
         "menu_grande": "5F0F43",
-        "regua": "E052AF"
+        "regua": "E052AF",
+        "barra": "D6B1C6"
       },
       "contraste": {
         "texto/fundo": 17.187592384184438,
@@ -422,12 +435,14 @@
         "acento/painel": 7.280488074288434,
         "texto/tinta": 18.099555329540223
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FFF6E0",
         "painel": "FFF6E0",
         "painel_alto": "FFF6E0",
-        "linha": "FFF6E0",
+        "linha": "000000",
         "texto": "270C1E",
         "texto_fraco": "270C1E",
         "acento": "270C1E",
@@ -442,7 +457,7 @@
         "fundo": "EA9D9D",
         "painel": "EA9D9D",
         "painel_alto": "EA9D9D",
-        "linha": "EA9D9D",
+        "linha": "260808",
         "texto": "D33232",
         "texto_fraco": "A62424",
         "acento": "811C1C",
@@ -461,16 +476,17 @@
         "fundo": "FEFBF0",
         "painel": "FDF4D3",
         "painel_alto": "FCECB1",
-        "linha": "D6CEDF",
+        "linha": "A68C29",
         "texto": "1D1616",
         "texto_fraco": "1B1621",
         "acento": "4489C4",
         "tinta": "FEF8E2",
         "papel": "FEFAEB",
         "painel_baixo": "FEF9E5",
-        "bloco": "755D90",
+        "bloco": "A07E00",
         "menu_grande": "FFEFB6",
-        "regua": "CCA100"
+        "regua": "CCA100",
+        "barra": "4489C4"
       },
       "contraste": {
         "texto/fundo": 17.199593065873348,
@@ -480,7 +496,8 @@
         "texto/tinta": 16.74823378294309
       },
       "avisos": [
-        "acento ajustado (ficou 3.39)"
+        "acento ajustado (ficou 3.39)",
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)"
       ],
       "osso_por_papel": {
         "fundo": "1D1616",
@@ -493,7 +510,7 @@
         "tinta": "1D1616",
         "papel": "1D1616",
         "painel_baixo": "1D1616",
-        "bloco": "FEF8E2",
+        "bloco": "1D1616",
         "menu_grande": "1D1616",
         "regua": "1D1616"
       },
@@ -501,14 +518,14 @@
         "fundo": "3777AE",
         "painel": "3572A7",
         "painel_alto": "336EA1",
-        "linha": "2A5C86",
+        "linha": "13293C",
         "texto": "4489C4",
         "texto_fraco": "4489C4",
         "acento": "0E1E2B",
         "tinta": "3675AB",
         "papel": "3777AE",
         "painel_baixo": "3777AE",
-        "bloco": "DDE9F4",
+        "bloco": "0D1B28",
         "menu_grande": "3470A4",
         "regua": "1C3E5A"
       }
@@ -518,16 +535,17 @@
         "fundo": "1A1313",
         "painel": "2F2323",
         "painel_alto": "473434",
-        "linha": "3C304A",
+        "linha": "987D7D",
         "texto": "FEF8E2",
         "texto_fraco": "D7CFE0",
         "acento": "B0CDE6",
         "tinta": "170808",
         "papel": "241A1A",
         "painel_baixo": "2E2222",
-        "bloco": "8972A3",
+        "bloco": "A17474",
         "menu_grande": "432C2C",
-        "regua": "AD8585"
+        "regua": "AD8585",
+        "barra": "DCB1B1"
       },
       "contraste": {
         "texto/fundo": 17.217407597742486,
@@ -536,12 +554,15 @@
         "acento/painel": 9.181323992949574,
         "texto/tinta": 18.367779755620393
       },
-      "avisos": [],
+      "avisos": [
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FEF8E2",
         "painel": "FEF8E2",
         "painel_alto": "FEF8E2",
-        "linha": "FEF8E2",
+        "linha": "1D1616",
         "texto": "1D1616",
         "texto_fraco": "1D1616",
         "acento": "1D1616",
@@ -556,14 +577,14 @@
         "fundo": "B0CDE6",
         "painel": "B0CDE6",
         "painel_alto": "B0CDE6",
-        "linha": "B0CDE6",
+        "linha": "0D1C29",
         "texto": "3674AA",
         "texto_fraco": "2A5B86",
         "acento": "295881",
         "tinta": "B0CDE6",
         "papel": "B0CDE6",
         "painel_baixo": "B0CDE6",
-        "bloco": "070E15",
+        "bloco": "0A151F",
         "menu_grande": "B0CDE6",
         "regua": "142A3E"
       }
@@ -575,7 +596,7 @@
         "fundo": "F1F7FE",
         "painel": "D4E8FC",
         "painel_alto": "B2D6FA",
-        "linha": "B7BEF5",
+        "linha": "414CAC",
         "texto": "060F2D",
         "texto_fraco": "070B30",
         "acento": "4A6FFF",
@@ -584,7 +605,8 @@
         "painel_baixo": "E6F1FD",
         "bloco": "1D2FD0",
         "menu_grande": "B6DAFF",
-        "regua": "0065CC"
+        "regua": "0065CC",
+        "barra": "1D2FD0"
       },
       "contraste": {
         "texto/fundo": 17.48313794051015,
@@ -600,7 +622,7 @@
         "fundo": "070B30",
         "painel": "070B30",
         "painel_alto": "070B30",
-        "linha": "070B30",
+        "linha": "E2F0FD",
         "texto": "E2F0FD",
         "texto_fraco": "E2F0FD",
         "acento": "070B30",
@@ -615,7 +637,7 @@
         "fundo": "345EFF",
         "painel": "2450FF",
         "painel_alto": "083BFF",
-        "linha": "002FE6",
+        "linha": "BDCAFF",
         "texto": "4D71FF",
         "texto_fraco": "4A6FFF",
         "acento": "000B37",
@@ -632,16 +654,17 @@
         "fundo": "060D28",
         "painel": "0A1748",
         "painel_alto": "0F236B",
-        "linha": "0F186B",
+        "linha": "5661BF",
         "texto": "E2F0FD",
         "texto_fraco": "BAC0F5",
         "acento": "7692FF",
         "tinta": "04091B",
         "papel": "081236",
         "painel_baixo": "0A1746",
-        "bloco": "3345E2",
+        "bloco": "4F5FE6",
         "menu_grande": "00186E",
-        "regua": "3561FD"
+        "regua": "3561FD",
+        "barra": "4F5FE6"
       },
       "contraste": {
         "texto/fundo": 16.530041817786273,
@@ -662,7 +685,7 @@
         "tinta": "E2F0FD",
         "papel": "E2F0FD",
         "painel_baixo": "E2F0FD",
-        "bloco": "E2F0FD",
+        "bloco": "FFFFFF",
         "menu_grande": "E2F0FD",
         "regua": "FFFFFF"
       },
@@ -670,14 +693,14 @@
         "fundo": "7692FF",
         "painel": "7692FF",
         "painel_alto": "7692FF",
-        "linha": "7692FF",
+        "linha": "E4E9FF",
         "texto": "2B57FF",
         "texto_fraco": "0030EC",
         "acento": "001E95",
         "tinta": "7692FF",
         "papel": "7692FF",
         "painel_baixo": "7692FF",
-        "bloco": "C6D2FF",
+        "bloco": "EDF0FF",
         "menu_grande": "7692FF",
         "regua": "F4F6FF"
       }
@@ -689,16 +712,17 @@
         "fundo": "FFFBF0",
         "painel": "FFF3D1",
         "painel_alto": "FFEAAD",
-        "linha": "FFE6AD",
+        "linha": "B2892C",
         "texto": "330000",
         "texto_fraco": "372600",
         "acento": "DA6000",
         "tinta": "FFF7E0",
         "papel": "FFFAEA",
         "painel_baixo": "FFF8E4",
-        "bloco": "EDA400",
+        "bloco": "AF7900",
         "menu_grande": "FFECB6",
-        "regua": "CC9800"
+        "regua": "CC9800",
+        "barra": "958464"
       },
       "contraste": {
         "texto/fundo": 17.803131320026147,
@@ -708,7 +732,8 @@
         "texto/tinta": 17.210144238569363
       },
       "avisos": [
-        "acento ajustado (ficou 3.36)"
+        "acento ajustado (ficou 3.36)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "330000",
@@ -729,14 +754,14 @@
         "fundo": "BD5300",
         "painel": "B65000",
         "painel_alto": "AE4D00",
-        "linha": "AB4B00",
+        "linha": "451E00",
         "texto": "DA6000",
         "texto_fraco": "ED6900",
         "acento": "331600",
         "tinta": "B95200",
         "papel": "BD5300",
         "painel_baixo": "B95200",
-        "bloco": "713200",
+        "bloco": "2F1500",
         "menu_grande": "B24E00",
         "regua": "5B2800"
       }
@@ -746,7 +771,7 @@
         "fundo": "2E0000",
         "painel": "520000",
         "painel_alto": "7A0000",
-        "linha": "7A5500",
+        "linha": "D0A545",
         "texto": "FFF7E0",
         "texto_fraco": "FFE7B0",
         "acento": "FFA259",
@@ -755,7 +780,8 @@
         "painel_baixo": "500000",
         "bloco": "FFB716",
         "menu_grande": "6E0000",
-        "regua": "FF3333"
+        "regua": "FF3333",
+        "barra": "DCB2AD"
       },
       "contraste": {
         "texto/fundo": 17.58934301232942,
@@ -764,12 +790,14 @@
         "acento/painel": 7.774976045434045,
         "texto/tinta": 18.55181720463042
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FFF7E0",
         "painel": "FFF7E0",
         "painel_alto": "FFF7E0",
-        "linha": "FFF7E0",
+        "linha": "330000",
         "texto": "330000",
         "texto_fraco": "330000",
         "acento": "330000",
@@ -784,7 +812,7 @@
         "fundo": "FFA259",
         "painel": "FFA259",
         "painel_alto": "FFA259",
-        "linha": "FFC99E",
+        "linha": "672D00",
         "texto": "B75100",
         "texto_fraco": "AC4C00",
         "acento": "783500",
@@ -803,16 +831,17 @@
         "fundo": "FBF8F4",
         "painel": "F2EADE",
         "painel_alto": "E8D9C5",
-        "linha": "DBD1D1",
+        "linha": "9E7D4F",
         "texto": "1B1E15",
         "texto_fraco": "1F1818",
         "acento": "997B4E",
         "tinta": "F8F1E7",
         "papel": "F9F5F0",
         "painel_baixo": "F7F3EC",
-        "bloco": "856868",
+        "bloco": "A9762F",
         "menu_grande": "F0DDC5",
-        "regua": "9F6F2D"
+        "regua": "9F6F2D",
+        "barra": "937C5F"
       },
       "contraste": {
         "texto/fundo": 15.955671819422093,
@@ -822,7 +851,9 @@
         "texto/tinta": 15.064523362675356
       },
       "avisos": [
-        "acento ajustado (ficou 3.32)"
+        "acento ajustado (ficou 3.32)",
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "1F1818",
@@ -835,7 +866,7 @@
         "tinta": "1F1818",
         "papel": "1F1818",
         "painel_baixo": "1F1818",
-        "bloco": "FFFFFF",
+        "bloco": "000000",
         "menu_grande": "1F1818",
         "regua": "000000"
       },
@@ -843,14 +874,14 @@
         "fundo": "876D45",
         "painel": "7F6641",
         "painel_alto": "735C3A",
-        "linha": "6E5838",
+        "linha": "1F1910",
         "texto": "9F8051",
         "texto_fraco": "9C7D50",
         "acento": "19140D",
         "tinta": "826942",
         "papel": "856B44",
         "painel_baixo": "856B44",
-        "bloco": "F6F2ED",
+        "bloco": "1C170E",
         "menu_grande": "755E3C",
         "regua": "0D0A06"
       }
@@ -860,16 +891,17 @@
         "fundo": "181B13",
         "painel": "2B3022",
         "painel_alto": "414832",
-        "linha": "453636",
+        "linha": "909B7A",
         "texto": "F6F1E9",
         "texto_fraco": "DCD3D3",
         "acento": "EAE2D6",
         "tinta": "121708",
         "papel": "212519",
         "painel_baixo": "2A2F21",
-        "bloco": "987C7C",
+        "bloco": "94A66F",
         "menu_grande": "3C442A",
-        "regua": "A1B181"
+        "regua": "A1B181",
+        "barra": "B7C4A0"
       },
       "contraste": {
         "texto/fundo": 15.499664748427357,
@@ -878,12 +910,15 @@
         "acento/painel": 10.556669279521483,
         "texto/tinta": 16.215988381371048
       },
-      "avisos": [],
+      "avisos": [
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "F6F1E9",
         "painel": "F6F1E9",
         "painel_alto": "F6F1E9",
-        "linha": "F6F1E9",
+        "linha": "1F1818",
         "texto": "1F1818",
         "texto_fraco": "1F1818",
         "acento": "1F1818",
@@ -898,14 +933,14 @@
         "fundo": "EAE2D6",
         "painel": "EAE2D6",
         "painel_alto": "EAE2D6",
-        "linha": "EAE2D6",
+        "linha": "362C1C",
         "texto": "806742",
         "texto_fraco": "6D5738",
         "acento": "775F3D",
         "tinta": "EAE2D6",
         "papel": "EAE2D6",
         "painel_baixo": "EAE2D6",
-        "bloco": "1E180F",
+        "bloco": "403421",
         "menu_grande": "EAE2D6",
         "regua": "4A3C26"
       }
@@ -917,16 +952,17 @@
         "fundo": "F1FEFE",
         "painel": "D4FCFB",
         "painel_alto": "B3F9F8",
-        "linha": "C1EAEB",
+        "linha": "529A9B",
         "texto": "2E0505",
         "texto_fraco": "0D292A",
         "acento": "ED4747",
         "tinta": "E3FDFC",
         "papel": "ECFDFD",
         "painel_baixo": "E6FDFD",
-        "bloco": "3AB1B4",
+        "bloco": "2F9092",
         "menu_grande": "B6FFFE",
-        "regua": "00CCC8"
+        "regua": "00CCC8",
+        "barra": "2F9092"
       },
       "contraste": {
         "texto/fundo": 17.848082440936775,
@@ -957,14 +993,14 @@
         "fundo": "E51616",
         "painel": "DC1515",
         "painel_alto": "D21515",
-        "linha": "C91414",
+        "linha": "540808",
         "texto": "ED4747",
         "texto_fraco": "EF5959",
         "acento": "3D0606",
         "tinta": "E01616",
         "papel": "E01616",
         "painel_baixo": "E01616",
-        "bloco": "700B0B",
+        "bloco": "3D0606",
         "menu_grande": "D71515",
         "regua": "910E0E"
       }
@@ -974,7 +1010,7 @@
         "fundo": "290505",
         "painel": "490909",
         "painel_alto": "6D0D0D",
-        "linha": "1E5C5D",
+        "linha": "66ADAE",
         "texto": "E3FDFC",
         "texto_fraco": "C4EBEC",
         "acento": "F7ADAD",
@@ -983,7 +1019,8 @@
         "painel_baixo": "480808",
         "bloco": "4FC4C6",
         "menu_grande": "6E0000",
-        "regua": "FF3333"
+        "regua": "FF3333",
+        "barra": "4FC4C6"
       },
       "contraste": {
         "texto/fundo": 17.63749248998285,
@@ -997,7 +1034,7 @@
         "fundo": "E3FDFC",
         "painel": "E3FDFC",
         "painel_alto": "E3FDFC",
-        "linha": "E3FDFC",
+        "linha": "2E0505",
         "texto": "2E0505",
         "texto_fraco": "2E0505",
         "acento": "2E0505",
@@ -1012,7 +1049,7 @@
         "fundo": "F7ADAD",
         "painel": "F7ADAD",
         "painel_alto": "F7ADAD",
-        "linha": "F8B7B7",
+        "linha": "730B0B",
         "texto": "DF1616",
         "texto_fraco": "C61313",
         "acento": "9F1010",
@@ -1031,16 +1068,17 @@
         "fundo": "FFF8F0",
         "painel": "FFEAD1",
         "painel_alto": "FFD9AD",
-        "linha": "EDD9C0",
+        "linha": "9E7C4F",
         "texto": "33000D",
         "texto_fraco": "2B1E0C",
         "acento": "D45060",
         "tinta": "FFF1E0",
         "papel": "FFF5EA",
         "painel_baixo": "FFF3E4",
-        "bloco": "B87F35",
+        "bloco": "AA7531",
         "menu_grande": "FFDDB6",
-        "regua": "CC6E00"
+        "regua": "CC6E00",
+        "barra": "9B7C66"
       },
       "contraste": {
         "texto/fundo": 17.388523903924074,
@@ -1049,7 +1087,9 @@
         "acento/painel": 3.5071520764015394,
         "texto/tinta": 16.49304477255416
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "33000D",
         "painel": "33000D",
@@ -1069,14 +1109,14 @@
         "fundo": "CF3C4E",
         "painel": "C73143",
         "painel_alto": "B82D3E",
-        "linha": "B42C3D",
+        "linha": "330C11",
         "texto": "D55363",
         "texto_fraco": "D86170",
         "acento": "270A0D",
         "tinta": "CD3547",
         "papel": "CE394B",
         "painel_baixo": "CD3547",
-        "bloco": "461118",
+        "bloco": "2B0B0E",
         "menu_grande": "BC2E3F",
         "regua": "3B0E14"
       }
@@ -1086,7 +1126,7 @@
         "fundo": "2E000B",
         "painel": "520014",
         "painel_alto": "7A001F",
-        "linha": "5F421B",
+        "linha": "B19064",
         "texto": "FFF1E0",
         "texto_fraco": "EEDBC2",
         "acento": "D45060",
@@ -1095,7 +1135,8 @@
         "painel_baixo": "500014",
         "bloco": "CB934A",
         "menu_grande": "6E001C",
-        "regua": "FF3366"
+        "regua": "FF3366",
+        "barra": "DCB1B4"
       },
       "contraste": {
         "texto/fundo": 16.869284978445553,
@@ -1104,12 +1145,14 @@
         "acento/painel": 3.7372309462498006,
         "texto/tinta": 17.81037811745138
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FFF1E0",
         "painel": "FFF1E0",
         "painel_alto": "FFF1E0",
-        "linha": "FFF1E0",
+        "linha": "33000D",
         "texto": "33000D",
         "texto_fraco": "33000D",
         "acento": "000000",
@@ -1124,7 +1167,7 @@
         "fundo": "D45060",
         "painel": "DA6775",
         "painel_alto": "E38D98",
-        "linha": "E9A5AD",
+        "linha": "56151D",
         "texto": "CD3547",
         "texto_fraco": "B42C3D",
         "acento": "270A0D",
@@ -1143,7 +1186,7 @@
         "fundo": "FFFCF0",
         "painel": "FFF6D1",
         "painel_alto": "FFF0AD",
-        "linha": "FEAFFD",
+        "linha": "BB32BA",
         "texto": "150132",
         "texto_fraco": "360135",
         "acento": "FF2B67",
@@ -1152,7 +1195,8 @@
         "painel_baixo": "FFFAE4",
         "bloco": "E904E6",
         "menu_grande": "FFF2B6",
-        "regua": "CCA600"
+        "regua": "CCA600",
+        "barra": "E904E6"
       },
       "contraste": {
         "texto/fundo": 18.88080116493694,
@@ -1168,7 +1212,7 @@
         "fundo": "150132",
         "painel": "150132",
         "painel_alto": "150132",
-        "linha": "150132",
+        "linha": "FFF9E0",
         "texto": "FFF9E0",
         "texto_fraco": "FFF9E0",
         "acento": "150132",
@@ -1183,7 +1227,7 @@
         "fundo": "E40041",
         "painel": "E0003F",
         "painel_alto": "D6003C",
-        "linha": "A90030",
+        "linha": "FFF4F7",
         "texto": "FF2B67",
         "texto_fraco": "FF2B67",
         "acento": "460014",
@@ -1200,7 +1244,7 @@
         "fundo": "13012D",
         "painel": "210150",
         "painel_alto": "320279",
-        "linha": "780277",
+        "linha": "CE47CC",
         "texto": "FFF9E0",
         "texto_fraco": "FEB2FD",
         "acento": "FF467A",
@@ -1209,7 +1253,8 @@
         "painel_baixo": "21014F",
         "bloco": "FB1AF8",
         "menu_grande": "2C006E",
-        "regua": "8633FF"
+        "regua": "8633FF",
+        "barra": "FB1AF8"
       },
       "contraste": {
         "texto/fundo": 18.57949519481892,
@@ -1223,7 +1268,7 @@
         "fundo": "FFF9E0",
         "painel": "FFF9E0",
         "painel_alto": "FFF9E0",
-        "linha": "FFF9E0",
+        "linha": "150132",
         "texto": "150132",
         "texto_fraco": "150132",
         "acento": "150132",
@@ -1238,7 +1283,7 @@
         "fundo": "FF467A",
         "painel": "FF467A",
         "painel_alto": "FF467A",
-        "linha": "FF8AAB",
+        "linha": "36000F",
         "texto": "E40040",
         "texto_fraco": "AD0031",
         "acento": "570018",
@@ -1257,16 +1302,17 @@
         "fundo": "F1FEFB",
         "painel": "D5FBF4",
         "painel_alto": "B5F8EB",
-        "linha": "C4E1E9",
+        "linha": "568A97",
         "texto": "0B0D28",
         "texto_fraco": "0F2328",
         "acento": "2E6FA0",
         "tinta": "E3FCF8",
         "papel": "ECFDFA",
         "painel_baixo": "E7FDF8",
-        "bloco": "4197AD",
+        "bloco": "3C8CA0",
         "menu_grande": "B6FFF1",
-        "regua": "00CCA5"
+        "regua": "00CCA5",
+        "barra": "3C8CA0"
       },
       "contraste": {
         "texto/fundo": 18.4226798362778,
@@ -1295,14 +1341,14 @@
         "fundo": "2E6FA0",
         "painel": "2E6FA0",
         "painel_alto": "2E6FA0",
-        "linha": "296490",
+        "linha": "0B1C28",
         "texto": "3682BC",
         "texto_fraco": "3E8DC8",
         "acento": "E3EFF7",
         "tinta": "2E6FA0",
         "papel": "2E6FA0",
         "painel_baixo": "2E6FA0",
-        "bloco": "102738",
+        "bloco": "0B1C28",
         "menu_grande": "2E6FA0",
         "regua": "1F4A6B"
       }
@@ -1312,7 +1358,7 @@
         "fundo": "0A0C24",
         "painel": "121640",
         "painel_alto": "1B2060",
-        "linha": "214E59",
+        "linha": "6B9DAA",
         "texto": "E3FCF8",
         "texto_fraco": "C6E2EA",
         "acento": "2F72A4",
@@ -1321,7 +1367,8 @@
         "painel_baixo": "11153F",
         "bloco": "55AAC0",
         "menu_grande": "0D1361",
-        "regua": "4E5AE4"
+        "regua": "4E5AE4",
+        "barra": "55AAC0"
       },
       "contraste": {
         "texto/fundo": 17.91598989210494,
@@ -1337,7 +1384,7 @@
         "fundo": "E3FCF8",
         "painel": "E3FCF8",
         "painel_alto": "E3FCF8",
-        "linha": "E3FCF8",
+        "linha": "0B0D28",
         "texto": "0B0D28",
         "texto_fraco": "0B0D28",
         "acento": "E3FCF8",
@@ -1352,7 +1399,7 @@
         "fundo": "3682BB",
         "painel": "3888C3",
         "painel_alto": "4D96CC",
-        "linha": "8FBDDF",
+        "linha": "143147",
         "texto": "2F72A4",
         "texto_fraco": "2A6591",
         "acento": "E8F1F8",
@@ -1371,16 +1418,17 @@
         "fundo": "FFFAF0",
         "painel": "FFF1D1",
         "painel_alto": "FFE6AD",
-        "linha": "B0FDE9",
+        "linha": "2CA082",
         "texto": "04242F",
         "texto_fraco": "023628",
         "acento": "F04000",
         "tinta": "FFF6E0",
         "papel": "FFF9EA",
         "painel_baixo": "FFF7E4",
-        "bloco": "06E7AC",
+        "bloco": "04936E",
         "menu_grande": "FFE9B6",
-        "regua": "CC8F00"
+        "regua": "CC8F00",
+        "barra": "04936E"
       },
       "contraste": {
         "texto/fundo": 15.543752566827845,
@@ -1403,7 +1451,7 @@
         "tinta": "04242F",
         "papel": "04242F",
         "painel_baixo": "04242F",
-        "bloco": "04242F",
+        "bloco": "000000",
         "menu_grande": "04242F",
         "regua": "04242F"
       },
@@ -1411,14 +1459,14 @@
         "fundo": "D43900",
         "painel": "CC3600",
         "painel_alto": "C03300",
-        "linha": "C83500",
+        "linha": "4C1400",
         "texto": "FE4400",
         "texto_fraco": "FF642B",
         "acento": "300D00",
         "tinta": "D03700",
         "papel": "D43900",
         "painel_baixo": "D03700",
-        "bloco": "A02B00",
+        "bloco": "300D00",
         "menu_grande": "C43400",
         "regua": "601A00"
       }
@@ -1428,7 +1476,7 @@
         "fundo": "04202A",
         "painel": "073A4A",
         "painel_alto": "0B5770",
-        "linha": "037759",
+        "linha": "48CDAA",
         "texto": "FFF6E0",
         "texto_fraco": "B3FDEA",
         "acento": "FF7F50",
@@ -1437,7 +1485,8 @@
         "painel_baixo": "073949",
         "bloco": "1CF9BF",
         "menu_grande": "00536E",
-        "regua": "33CCFF"
+        "regua": "33CCFF",
+        "barra": "1CF9BF"
       },
       "contraste": {
         "texto/fundo": 15.668696884950444,
@@ -1451,7 +1500,7 @@
         "fundo": "FFF6E0",
         "painel": "FFF6E0",
         "painel_alto": "FFF6E0",
-        "linha": "FFF6E0",
+        "linha": "04242F",
         "texto": "04242F",
         "texto_fraco": "04242F",
         "acento": "04242F",
@@ -1466,7 +1515,7 @@
         "fundo": "FF7F50",
         "painel": "FF7F50",
         "painel_alto": "FFB093",
-        "linha": "FFE3D9",
+        "linha": "862400",
         "texto": "CF3700",
         "texto_fraco": "C93600",
         "acento": "6A1C00",
@@ -1485,7 +1534,7 @@
         "fundo": "FAF9F5",
         "painel": "EFECE1",
         "painel_alto": "E2DDCB",
-        "linha": "E8D5C4",
+        "linha": "967557",
         "texto": "1D1616",
         "texto_fraco": "281B0F",
         "acento": "412D15",
@@ -1494,7 +1543,8 @@
         "painel_baixo": "F5F4EE",
         "bloco": "AB7442",
         "menu_grande": "E8E2CC",
-        "regua": "8C7C40"
+        "regua": "8C7C40",
+        "barra": "8A805E"
       },
       "contraste": {
         "texto/fundo": 16.91305909261072,
@@ -1503,12 +1553,14 @@
         "acento/painel": 11.021827212111779,
         "texto/tinta": 16.29585904223187
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "1D1616",
         "painel": "1D1616",
         "painel_alto": "1D1616",
-        "linha": "1D1616",
+        "linha": "000000",
         "texto": "F4F2EB",
         "texto_fraco": "F4F2EB",
         "acento": "F4F2EB",
@@ -1523,7 +1575,7 @@
         "fundo": "412D15",
         "painel": "412D15",
         "painel_alto": "412D15",
-        "linha": "412D15",
+        "linha": "160F07",
         "texto": "AC7738",
         "texto_fraco": "B17B39",
         "acento": "C6904F",
@@ -1540,7 +1592,7 @@
         "fundo": "1A1414",
         "painel": "2E2424",
         "painel_alto": "453636",
-        "linha": "583C22",
+        "linha": "A9896C",
         "texto": "F4F2EB",
         "texto_fraco": "E9D7C6",
         "acento": "9C6C32",
@@ -1549,7 +1601,8 @@
         "painel_baixo": "2D2323",
         "bloco": "BE8857",
         "menu_grande": "402E2E",
-        "regua": "A58D8D"
+        "regua": "A58D8D",
+        "barra": "DCB1B2"
       },
       "contraste": {
         "texto/fundo": 16.244111121963154,
@@ -1559,13 +1612,14 @@
         "texto/tinta": 17.444501216840248
       },
       "avisos": [
-        "acento ajustado (ficou 3.30)"
+        "acento ajustado (ficou 3.30)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "F4F2EB",
         "painel": "F4F2EB",
         "painel_alto": "F4F2EB",
-        "linha": "F4F2EB",
+        "linha": "1D1616",
         "texto": "1D1616",
         "texto_fraco": "1D1616",
         "acento": "000000",
@@ -1580,7 +1634,7 @@
         "fundo": "A87436",
         "painel": "BB813C",
         "painel_alto": "CB9A5E",
-        "linha": "D1A671",
+        "linha": "342411",
         "texto": "92652F",
         "texto_fraco": "7F5829",
         "acento": "000000",
@@ -1599,7 +1653,7 @@
         "fundo": "FDF4F1",
         "painel": "FADFD6",
         "painel_alto": "F7C7B5",
-        "linha": "FAB4B2",
+        "linha": "B53B38",
         "texto": "2D0A06",
         "texto_fraco": "340503",
         "acento": "740A03",
@@ -1608,7 +1662,8 @@
         "painel_baixo": "FCECE7",
         "bloco": "DF130E",
         "menu_grande": "FFCAB6",
-        "regua": "CC3500"
+        "regua": "CC3500",
+        "barra": "987369"
       },
       "contraste": {
         "texto/fundo": 16.747215539348616,
@@ -1617,12 +1672,14 @@
         "acento/painel": 9.28248127030992,
         "texto/tinta": 15.564145270777486
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "2D0A06",
         "painel": "2D0A06",
         "painel_alto": "2D0A06",
-        "linha": "2D0A06",
+        "linha": "FCEAE3",
         "texto": "FCEAE3",
         "texto_fraco": "FCEAE3",
         "acento": "FCEAE3",
@@ -1637,7 +1694,7 @@
         "fundo": "740A03",
         "painel": "740A03",
         "painel_alto": "740A03",
-        "linha": "740A03",
+        "linha": "FEE1DF",
         "texto": "F92214",
         "texto_fraco": "F92214",
         "acento": "FB7C73",
@@ -1654,7 +1711,7 @@
         "fundo": "290905",
         "painel": "491009",
         "painel_alto": "6D180E",
-        "linha": "730A07",
+        "linha": "C8504D",
         "texto": "FCEAE3",
         "texto_fraco": "FAB7B5",
         "acento": "ED1406",
@@ -1663,7 +1720,8 @@
         "painel_baixo": "471009",
         "bloco": "F12923",
         "menu_grande": "6E0C00",
-        "regua": "FF4A33"
+        "regua": "FF4A33",
+        "barra": "DCB2AB"
       },
       "contraste": {
         "texto/fundo": 15.866700942440026,
@@ -1673,13 +1731,14 @@
         "texto/tinta": 16.776516793094643
       },
       "avisos": [
-        "acento ajustado (ficou 3.46)"
+        "acento ajustado (ficou 3.46)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "FCEAE3",
         "painel": "FCEAE3",
         "painel_alto": "FCEAE3",
-        "linha": "FCEAE3",
+        "linha": "000000",
         "texto": "2D0A06",
         "texto_fraco": "2D0A06",
         "acento": "000000",
@@ -1694,7 +1753,7 @@
         "fundo": "F91608",
         "painel": "FA4B40",
         "painel_alto": "FB7C74",
-        "linha": "FB7870",
+        "linha": "140201",
         "texto": "D51205",
         "texto_fraco": "AA0E04",
         "acento": "140201",
@@ -1713,7 +1772,7 @@
         "fundo": "FFF0F0",
         "painel": "FFD1D1",
         "painel_alto": "FFADAD",
-        "linha": "DFCDCD",
+        "linha": "866767",
         "texto": "000033",
         "texto_fraco": "221515",
         "acento": "9E2A3A",
@@ -1722,7 +1781,8 @@
         "painel_baixo": "FFE4E4",
         "bloco": "915C5C",
         "menu_grande": "FFB6B6",
-        "regua": "CC0000"
+        "regua": "CC0000",
+        "barra": "936D66"
       },
       "contraste": {
         "texto/fundo": 18.108637090842173,
@@ -1731,12 +1791,14 @@
         "acento/painel": 5.373267430864079,
         "texto/tinta": 16.215472664255557
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "000033",
         "painel": "000033",
         "painel_alto": "000033",
-        "linha": "000033",
+        "linha": "FFFFFF",
         "texto": "FFE0E0",
         "texto_fraco": "FFE0E0",
         "acento": "FFE0E0",
@@ -1751,7 +1813,7 @@
         "fundo": "9E2A3A",
         "painel": "9E2A3A",
         "painel_alto": "932736",
-        "linha": "9E2A3A",
+        "linha": "FBEFF0",
         "texto": "CF4B5E",
         "texto_fraco": "D35869",
         "acento": "EFC2C8",
@@ -1768,7 +1830,7 @@
         "fundo": "00002E",
         "painel": "000052",
         "painel_alto": "00007A",
-        "linha": "4B3030",
+        "linha": "9A7B7B",
         "texto": "FFE0E0",
         "texto_fraco": "E0CFCF",
         "acento": "BF3346",
@@ -1777,7 +1839,8 @@
         "painel_baixo": "000050",
         "bloco": "A47171",
         "menu_grande": "00006E",
-        "regua": "3333FF"
+        "regua": "3333FF",
+        "barra": "4040FF"
       },
       "contraste": {
         "texto/fundo": 16.34576279626046,
@@ -1793,7 +1856,7 @@
         "fundo": "FFE0E0",
         "painel": "FFE0E0",
         "painel_alto": "FFE0E0",
-        "linha": "FFE0E0",
+        "linha": "000033",
         "texto": "000033",
         "texto_fraco": "000033",
         "acento": "FFFFFF",
@@ -1808,7 +1871,7 @@
         "fundo": "CE485A",
         "painel": "D15263",
         "painel_alto": "D66473",
-        "linha": "DF8793",
+        "linha": "330E13",
         "texto": "BC3245",
         "texto_fraco": "A62C3D",
         "acento": "F7E3E6",
@@ -1827,16 +1890,17 @@
         "fundo": "F5FAF9",
         "painel": "E1EFEE",
         "painel_alto": "C9E3E2",
-        "linha": "B5F2F7",
+        "linha": "389AA3",
         "texto": "16042F",
         "texto_fraco": "052E32",
         "acento": "065084",
         "tinta": "E7F8F7",
         "papel": "F1F8F8",
         "painel_baixo": "EDF6F5",
-        "bloco": "17C7D6",
+        "bloco": "108E98",
         "menu_grande": "CBEAE9",
-        "regua": "3C908B"
+        "regua": "3C908B",
+        "barra": "108E98"
       },
       "contraste": {
         "texto/fundo": 18.2371905682559,
@@ -1865,14 +1929,14 @@
         "fundo": "065084",
         "painel": "065084",
         "painel_alto": "065084",
-        "linha": "065084",
+        "linha": "032842",
         "texto": "0A7FD1",
         "texto_fraco": "0C94F4",
         "acento": "7DC6F9",
         "tinta": "065084",
         "papel": "065084",
         "painel_baixo": "065084",
-        "bloco": "054979",
+        "bloco": "02192A",
         "menu_grande": "065084",
         "regua": "021D30"
       }
@@ -1882,7 +1946,7 @@
         "fundo": "14042A",
         "painel": "23074B",
         "painel_alto": "340A70",
-        "linha": "0C676F",
+        "linha": "52BAC3",
         "texto": "EBF5F4",
         "texto_fraco": "B8F2F7",
         "acento": "0870B9",
@@ -1891,7 +1955,8 @@
         "painel_baixo": "220749",
         "bloco": "2CD9E8",
         "menu_grande": "2D006E",
-        "regua": "8733FF"
+        "regua": "8733FF",
+        "barra": "2CD9E8"
       },
       "contraste": {
         "texto/fundo": 17.49092849399797,
@@ -1907,7 +1972,7 @@
         "fundo": "EBF5F4",
         "painel": "EBF5F4",
         "painel_alto": "EBF5F4",
-        "linha": "EBF5F4",
+        "linha": "16042F",
         "texto": "16042F",
         "texto_fraco": "16042F",
         "acento": "EBF5F4",
@@ -1922,7 +1987,7 @@
         "fundo": "097FD2",
         "painel": "0A89E2",
         "painel_alto": "0C95F4",
-        "linha": "AEDCFB",
+        "linha": "05416C",
         "texto": "0870B9",
         "texto_fraco": "086AB0",
         "acento": "E1F2FE",
@@ -1941,7 +2006,7 @@
         "fundo": "FFFCF0",
         "painel": "FFF6D1",
         "painel_alto": "FFEFAD",
-        "linha": "D0B7F6",
+        "linha": "6B3FAE",
         "texto": "070033",
         "texto_fraco": "170631",
         "acento": "B13BFF",
@@ -1950,7 +2015,8 @@
         "painel_baixo": "FFFAE4",
         "bloco": "641BD2",
         "menu_grande": "FFF1B6",
-        "regua": "CCA300"
+        "regua": "CCA300",
+        "barra": "641BD2"
       },
       "contraste": {
         "texto/fundo": 19.335438348951193,
@@ -1964,7 +2030,7 @@
         "fundo": "070033",
         "painel": "070033",
         "painel_alto": "070033",
-        "linha": "070033",
+        "linha": "FFF9E0",
         "texto": "FFF9E0",
         "texto_fraco": "FFF9E0",
         "acento": "070033",
@@ -1979,7 +2045,7 @@
         "fundo": "AB2BFF",
         "painel": "A51CFF",
         "painel_alto": "A011FF",
-        "linha": "7500C2",
+        "linha": "E6C1FF",
         "texto": "B13BFF",
         "texto_fraco": "B23EFF",
         "acento": "1C002F",
@@ -1996,16 +2062,17 @@
         "fundo": "06002E",
         "painel": "0B0052",
         "painel_alto": "11007A",
-        "linha": "330E6D",
+        "linha": "7F54C1",
         "texto": "FFF9E0",
         "texto_fraco": "D1B9F6",
         "acento": "B13BFF",
         "tinta": "04001F",
         "papel": "09003E",
         "painel_baixo": "0B0050",
-        "bloco": "7830E5",
+        "bloco": "8240E7",
         "menu_grande": "0F006E",
-        "regua": "5033FF"
+        "regua": "5033FF",
+        "barra": "8240E7"
       },
       "contraste": {
         "texto/fundo": 18.98274664071002,
@@ -2034,14 +2101,14 @@
         "fundo": "B13BFF",
         "painel": "B442FF",
         "painel_alto": "BD58FF",
-        "linha": "C162FF",
+        "linha": "F6E8FF",
         "texto": "A926FF",
         "texto_fraco": "7800C7",
         "acento": "1C002F",
         "tinta": "B13BFF",
         "papel": "B13BFF",
         "painel_baixo": "B442FF",
-        "bloco": "EDD1FF",
+        "bloco": "F5E5FF",
         "menu_grande": "B94FFF",
         "regua": "ECCEFF"
       }
@@ -2053,7 +2120,7 @@
         "fundo": "FDF2F6",
         "painel": "FAD7E3",
         "painel_alto": "F5B7CD",
-        "linha": "EAC2D1",
+        "linha": "9A536D",
         "texto": "2F0414",
         "texto_fraco": "290E18",
         "acento": "670D2F",
@@ -2062,7 +2129,8 @@
         "painel_baixo": "FCE7EF",
         "bloco": "B13C67",
         "menu_grande": "FFB6D0",
-        "regua": "CB014A"
+        "regua": "CB014A",
+        "barra": "966E72"
       },
       "contraste": {
         "texto/fundo": 16.726946044575456,
@@ -2071,12 +2139,14 @@
         "acento/painel": 9.487198081474986,
         "texto/tinta": 15.161451360223355
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "2F0414",
         "painel": "2F0414",
         "painel_alto": "2F0414",
-        "linha": "2F0414",
+        "linha": "FBE4EC",
         "texto": "FBE4EC",
         "texto_fraco": "FBE4EC",
         "acento": "FBE4EC",
@@ -2091,7 +2161,7 @@
         "fundo": "670D2F",
         "painel": "670D2F",
         "painel_alto": "670D2F",
-        "linha": "670D2F",
+        "linha": "FCE8EF",
         "texto": "E6397A",
         "texto_fraco": "E73F7E",
         "acento": "ED73A1",
@@ -2108,7 +2178,7 @@
         "fundo": "2A0412",
         "painel": "4B0620",
         "painel_alto": "710A31",
-        "linha": "5B1F35",
+        "linha": "AD6881",
         "texto": "FBE4EC",
         "texto_fraco": "EBC4D3",
         "acento": "E11C67",
@@ -2117,7 +2187,8 @@
         "painel_baixo": "4A0620",
         "bloco": "C4517B",
         "menu_grande": "6E002A",
-        "regua": "FF3380"
+        "regua": "FF3380",
+        "barra": "DBB1B9"
       },
       "contraste": {
         "texto/fundo": 15.482143671393525,
@@ -2127,13 +2198,14 @@
         "texto/tinta": 16.372922477554933
       },
       "avisos": [
-        "acento ajustado (ficou 3.39)"
+        "acento ajustado (ficou 3.39)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "FBE4EC",
         "painel": "FBE4EC",
         "painel_alto": "FBE4EC",
-        "linha": "FBE4EC",
+        "linha": "000000",
         "texto": "2F0414",
         "texto_fraco": "2F0414",
         "acento": "FFFFFF",
@@ -2148,7 +2220,7 @@
         "fundo": "E63578",
         "painel": "EA548D",
         "painel_alto": "EF7DA9",
-        "linha": "EE76A4",
+        "linha": "290513",
         "texto": "CB195D",
         "texto_fraco": "A9154D",
         "acento": "FFFFFF",
@@ -2167,16 +2239,17 @@
         "fundo": "FAF8F4",
         "painel": "F1EADF",
         "painel_alto": "E6DAC7",
-        "linha": "D1D5DB",
+        "linha": "997F54",
         "texto": "15191E",
         "texto_fraco": "181B1F",
         "acento": "897E6D",
         "tinta": "F8F2E7",
         "papel": "F9F6F1",
         "painel_baixo": "F7F3ED",
-        "bloco": "687385",
+        "bloco": "A27937",
         "menu_grande": "EDDFC7",
-        "regua": "987234"
+        "regua": "987234",
+        "barra": "917D5F"
       },
       "contraste": {
         "texto/fundo": 16.641446141142584,
@@ -2186,7 +2259,9 @@
         "texto/tinta": 15.841199686111477
       },
       "avisos": [
-        "acento ajustado (ficou 3.34)"
+        "acento ajustado (ficou 3.34)",
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "15191E",
@@ -2199,7 +2274,7 @@
         "tinta": "15191E",
         "papel": "15191E",
         "painel_baixo": "15191E",
-        "bloco": "FFFFFF",
+        "bloco": "000000",
         "menu_grande": "15191E",
         "regua": "000000"
       },
@@ -2207,14 +2282,14 @@
         "fundo": "7B7162",
         "painel": "72695B",
         "painel_alto": "675E52",
-        "linha": "625A4E",
+        "linha": "1E1B18",
         "texto": "8B806F",
         "texto_fraco": "8E8371",
         "acento": "171512",
         "tinta": "776D5E",
         "papel": "796F60",
         "painel_baixo": "776D5E",
-        "bloco": "F9F9F8",
+        "bloco": "191714",
         "menu_grande": "6B6355",
         "regua": "0B0A09"
       }
@@ -2224,7 +2299,7 @@
         "fundo": "13161B",
         "painel": "212730",
         "painel_alto": "323B48",
-        "linha": "363C45",
+        "linha": "7F8896",
         "texto": "F5F1EA",
         "texto_fraco": "D3D7DC",
         "acento": "948979",
@@ -2233,7 +2308,8 @@
         "painel_baixo": "21272F",
         "bloco": "7C8798",
         "menu_grande": "2A3544",
-        "regua": "8194B1"
+        "regua": "8194B1",
+        "barra": "ABBFDF"
       },
       "contraste": {
         "texto/fundo": 16.10381280662469,
@@ -2242,12 +2318,14 @@
         "acento/painel": 4.374455688325787,
         "texto/tinta": 17.183330188646654
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "F5F1EA",
         "painel": "F5F1EA",
         "painel_alto": "F5F1EA",
-        "linha": "F5F1EA",
+        "linha": "15191E",
         "texto": "15191E",
         "texto_fraco": "15191E",
         "acento": "15191E",
@@ -2262,7 +2340,7 @@
         "fundo": "948979",
         "painel": "988D7D",
         "painel_alto": "ABA396",
-        "linha": "ADA598",
+        "linha": "23201C",
         "texto": "756C5E",
         "texto_fraco": "645C50",
         "acento": "25221E",
@@ -2281,16 +2359,17 @@
         "fundo": "F3FCF8",
         "painel": "DAF6EA",
         "painel_alto": "BEEFD9",
-        "linha": "D3E4C8",
+        "linha": "718F5E",
         "texto": "18240F",
         "texto_fraco": "192512",
         "acento": "255F38",
         "tinta": "E6F9F1",
         "papel": "EEFBF5",
         "painel_baixo": "EAFAF2",
-        "bloco": "6D9F4E",
+        "bloco": "618D45",
         "menu_grande": "BCF8DD",
-        "regua": "16B66F"
+        "regua": "16B66F",
+        "barra": "618D45"
       },
       "contraste": {
         "texto/fundo": 15.477059199148075,
@@ -2304,14 +2383,14 @@
         "fundo": "18240F",
         "painel": "18240F",
         "painel_alto": "18240F",
-        "linha": "18240F",
+        "linha": "000000",
         "texto": "E6F9F1",
         "texto_fraco": "E6F9F1",
         "acento": "E6F9F1",
         "tinta": "18240F",
         "papel": "18240F",
         "painel_baixo": "18240F",
-        "bloco": "18240F",
+        "bloco": "000000",
         "menu_grande": "18240F",
         "regua": "18240F"
       },
@@ -2319,14 +2398,14 @@
         "fundo": "255F38",
         "painel": "255F38",
         "painel_alto": "255F38",
-        "linha": "255F38",
+        "linha": "0E2415",
         "texto": "3C9A5B",
         "texto_fraco": "3C9A5B",
         "acento": "97D6AC",
         "tinta": "255F38",
         "papel": "255F38",
         "painel_baixo": "255F38",
-        "bloco": "13311D",
+        "bloco": "0B1D11",
         "menu_grande": "255F38",
         "regua": "183E24"
       }
@@ -2336,7 +2415,7 @@
         "fundo": "16200E",
         "painel": "273918",
         "painel_alto": "3B5625",
-        "linha": "385228",
+        "linha": "85A273",
         "texto": "E6F9F1",
         "texto_fraco": "D4E5CA",
         "acento": "3A9558",
@@ -2345,7 +2424,8 @@
         "painel_baixo": "273818",
         "bloco": "81B263",
         "menu_grande": "345519",
-        "regua": "94CE64"
+        "regua": "94CE64",
+        "barra": "81B263"
       },
       "contraste": {
         "texto/fundo": 15.38421334184547,
@@ -2361,7 +2441,7 @@
         "fundo": "E6F9F1",
         "painel": "E6F9F1",
         "painel_alto": "E6F9F1",
-        "linha": "E6F9F1",
+        "linha": "18240F",
         "texto": "18240F",
         "texto_fraco": "18240F",
         "acento": "000000",
@@ -2376,7 +2456,7 @@
         "fundo": "3A9558",
         "painel": "45B269",
         "painel_alto": "87D09F",
-        "linha": "7CCC96",
+        "linha": "163922",
         "texto": "307C49",
         "texto_fraco": "2B7042",
         "acento": "0D2013",
@@ -2395,16 +2475,17 @@
         "fundo": "F9F8F6",
         "painel": "EDEAE3",
         "painel_alto": "DFDACD",
-        "linha": "D1DBD4",
+        "linha": "8A8063",
         "texto": "161D18",
         "texto_fraco": "181F1A",
         "acento": "9D7759",
         "tinta": "F8F4E7",
         "papel": "F7F6F2",
         "painel_baixo": "F4F3EF",
-        "bloco": "688571",
+        "bloco": "8F7F52",
         "menu_grande": "E5DFCF",
-        "regua": "82734A"
+        "regua": "82734A",
+        "barra": "8C7F5E"
       },
       "contraste": {
         "texto/fundo": 16.177319163792994,
@@ -2414,13 +2495,15 @@
         "texto/tinta": 15.604813810506709
       },
       "avisos": [
-        "acento ajustado (ficou 3.35)"
+        "acento ajustado (ficou 3.35)",
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "161D18",
         "painel": "161D18",
         "painel_alto": "161D18",
-        "linha": "161D18",
+        "linha": "000000",
         "texto": "F3F1EC",
         "texto_fraco": "F3F1EC",
         "acento": "000000",
@@ -2435,14 +2518,14 @@
         "fundo": "8D6B50",
         "painel": "83634A",
         "painel_alto": "765943",
-        "linha": "765943",
+        "linha": "1D1610",
         "texto": "A37B5C",
         "texto_fraco": "A47E5F",
         "acento": "1A140F",
         "tinta": "8B694F",
         "papel": "8B694F",
         "painel_baixo": "88674D",
-        "bloco": "1A140F",
+        "bloco": "1D1610",
         "menu_grande": "7B5D46",
         "regua": "FFFFFF"
       }
@@ -2452,7 +2535,7 @@
         "fundo": "141A16",
         "painel": "242E27",
         "painel_alto": "35453A",
-        "linha": "36453A",
+        "linha": "7F9686",
         "texto": "F3F1EC",
         "texto_fraco": "D3DCD6",
         "acento": "A27B5C",
@@ -2461,7 +2544,8 @@
         "painel_baixo": "232D26",
         "bloco": "7C9885",
         "menu_grande": "2D4133",
-        "regua": "88AA92"
+        "regua": "88AA92",
+        "barra": "A6C8AF"
       },
       "contraste": {
         "texto/fundo": 15.645844151438249,
@@ -2470,12 +2554,14 @@
         "acento/painel": 3.6947164965000767,
         "texto/tinta": 16.34546709056741
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "F3F1EC",
         "painel": "F3F1EC",
         "painel_alto": "F3F1EC",
-        "linha": "F3F1EC",
+        "linha": "161D18",
         "texto": "161D18",
         "texto_fraco": "161D18",
         "acento": "161D18",
@@ -2490,7 +2576,7 @@
         "fundo": "A27B5C",
         "painel": "AF8D71",
         "painel_alto": "C3A995",
-        "linha": "C3A995",
+        "linha": "33271D",
         "texto": "87674D",
         "texto_fraco": "775A43",
         "acento": "201912",
@@ -2509,7 +2595,7 @@
         "fundo": "FFF6F0",
         "painel": "FFE3D1",
         "painel_alto": "FFCEAD",
-        "linha": "C1D5EC",
+        "linha": "51749C",
         "texto": "1D1616",
         "texto_fraco": "0D1B2A",
         "acento": "0B192C",
@@ -2518,7 +2604,8 @@
         "painel_baixo": "FFEFE4",
         "bloco": "3873B6",
         "menu_grande": "FFD3B6",
-        "regua": "CC5100"
+        "regua": "CC5100",
+        "barra": "3873B6"
       },
       "contraste": {
         "texto/fundo": 16.70855661445241,
@@ -2532,7 +2619,7 @@
         "fundo": "1D1616",
         "painel": "1D1616",
         "painel_alto": "1D1616",
-        "linha": "1D1616",
+        "linha": "FFFFFF",
         "texto": "FFEDE0",
         "texto_fraco": "FFEDE0",
         "acento": "FFEDE0",
@@ -2547,7 +2634,7 @@
         "fundo": "0B192C",
         "painel": "0B192C",
         "painel_alto": "0B192C",
-        "linha": "0B192C",
+        "linha": "F3F7FC",
         "texto": "4983D2",
         "texto_fraco": "4983D2",
         "acento": "4983D2",
@@ -2564,7 +2651,7 @@
         "fundo": "1A1414",
         "painel": "2E2424",
         "painel_alto": "453636",
-        "linha": "1D3B5E",
+        "linha": "6588B0",
         "texto": "FFEDE0",
         "texto_fraco": "C3D7ED",
         "acento": "3776CD",
@@ -2573,7 +2660,8 @@
         "painel_baixo": "2D2323",
         "bloco": "4D87C8",
         "menu_grande": "402E2E",
-        "regua": "A58D8D"
+        "regua": "A58D8D",
+        "barra": "4D87C8"
       },
       "contraste": {
         "texto/fundo": 15.979776507338535,
@@ -2589,7 +2677,7 @@
         "fundo": "FFEDE0",
         "painel": "FFEDE0",
         "painel_alto": "FFEDE0",
-        "linha": "FFEDE0",
+        "linha": "1D1616",
         "texto": "1D1616",
         "texto_fraco": "1D1616",
         "acento": "000000",
@@ -2604,7 +2692,7 @@
         "fundo": "4881D1",
         "painel": "5C8FD6",
         "painel_alto": "7DA6DE",
-        "linha": "7DA6DE",
+        "linha": "0D1D34",
         "texto": "306CBF",
         "texto_fraco": "295CA3",
         "acento": "020508",
@@ -2623,16 +2711,17 @@
         "fundo": "FBF8F4",
         "painel": "F3EADE",
         "painel_alto": "E9DAC4",
-        "linha": "D9DBD1",
+        "linha": "7E826B",
         "texto": "1A1E15",
         "texto_fraco": "1E1F18",
         "acento": "697565",
         "tinta": "F8F1E7",
         "papel": "F9F6F0",
         "painel_baixo": "F8F3EB",
-        "bloco": "808568",
+        "bloco": "7E8367",
         "menu_grande": "F1DFC4",
-        "regua": "A37129"
+        "regua": "A37129",
+        "barra": "967F62"
       },
       "contraste": {
         "texto/fundo": 15.990142732609717,
@@ -2641,12 +2730,14 @@
         "acento/painel": 4.0698144882539475,
         "texto/tinta": 15.097069023110388
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "1A1E15",
         "painel": "1A1E15",
         "painel_alto": "1A1E15",
-        "linha": "1A1E15",
+        "linha": "000000",
         "texto": "F7F1E9",
         "texto_fraco": "F7F1E9",
         "acento": "FFFFFF",
@@ -2661,14 +2752,14 @@
         "fundo": "697565",
         "painel": "626D5E",
         "painel_alto": "596356",
-        "linha": "586254",
+        "linha": "151714",
         "texto": "7C8A77",
         "texto_fraco": "7C8A77",
         "acento": "F7F8F7",
         "tinta": "667162",
         "papel": "677363",
         "painel_baixo": "677363",
-        "bloco": "191B18",
+        "bloco": "151714",
         "menu_grande": "5D6759",
         "regua": "0E100D"
       }
@@ -2678,7 +2769,7 @@
         "fundo": "171B13",
         "painel": "293022",
         "painel_alto": "3D4733",
-        "linha": "424536",
+        "linha": "92967F",
         "texto": "F7F1E9",
         "texto_fraco": "DBDCD3",
         "acento": "758270",
@@ -2687,7 +2778,8 @@
         "painel_baixo": "282F21",
         "bloco": "94987C",
         "menu_grande": "37432B",
-        "regua": "99AF83"
+        "regua": "99AF83",
+        "barra": "B3C5A3"
       },
       "contraste": {
         "texto/fundo": 15.560834204170526,
@@ -2697,13 +2789,14 @@
         "texto/tinta": 16.324122058881713
       },
       "avisos": [
-        "acento ajustado (ficou 3.37)"
+        "acento ajustado (ficou 3.37)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "F7F1E9",
         "painel": "F7F1E9",
         "painel_alto": "F7F1E9",
-        "linha": "F7F1E9",
+        "linha": "1A1E15",
         "texto": "1A1E15",
         "texto_fraco": "1A1E15",
         "acento": "000000",
@@ -2718,7 +2811,7 @@
         "fundo": "798774",
         "painel": "8C9887",
         "painel_alto": "AAB3A6",
-        "linha": "AAB3A6",
+        "linha": "292D27",
         "texto": "657161",
         "texto_fraco": "586154",
         "acento": "131613",
@@ -2737,7 +2830,7 @@
         "fundo": "F9F2FD",
         "painel": "EDD7F9",
         "painel_alto": "DFB9F4",
-        "linha": "DFB9F3",
+        "linha": "8744AA",
         "texto": "22052E",
         "texto_fraco": "22082F",
         "acento": "7A1CAC",
@@ -2746,7 +2839,8 @@
         "painel_baixo": "F4E8FB",
         "bloco": "9122CC",
         "menu_grande": "E5B6FE",
-        "regua": "8306C6"
+        "regua": "8306C6",
+        "barra": "9122CC"
       },
       "contraste": {
         "texto/fundo": 16.956764840552385,
@@ -2760,7 +2854,7 @@
         "fundo": "22052E",
         "painel": "22052E",
         "painel_alto": "22052E",
-        "linha": "22052E",
+        "linha": "F3E5FB",
         "texto": "F3E5FB",
         "texto_fraco": "F3E5FB",
         "acento": "F3E5FB",
@@ -2775,7 +2869,7 @@
         "fundo": "7A1CAC",
         "painel": "7A1CAC",
         "painel_alto": "7A1CAC",
-        "linha": "7A1CAC",
+        "linha": "EDD7F8",
         "texto": "B052E3",
         "texto_fraco": "B052E3",
         "acento": "DDB3F3",
@@ -2792,7 +2886,7 @@
         "fundo": "1E0529",
         "painel": "360849",
         "painel_alto": "500C6E",
-        "linha": "4B1169",
+        "linha": "9A58BD",
         "texto": "F3E5FB",
         "texto_fraco": "E1BCF4",
         "acento": "A63BDF",
@@ -2801,7 +2895,8 @@
         "painel_baixo": "350848",
         "bloco": "A537DE",
         "menu_grande": "4C006E",
-        "regua": "C133FF"
+        "regua": "C133FF",
+        "barra": "A537DE"
       },
       "contraste": {
         "texto/fundo": 15.701306728524033,
@@ -2817,7 +2912,7 @@
         "fundo": "F3E5FB",
         "painel": "F3E5FB",
         "painel_alto": "F3E5FB",
-        "linha": "F3E5FB",
+        "linha": "FFFFFF",
         "texto": "22052E",
         "texto_fraco": "22052E",
         "acento": "FFFFFF",
@@ -2832,7 +2927,7 @@
         "fundo": "AF4FE2",
         "painel": "B862E5",
         "painel_alto": "C47CEA",
-        "linha": "C279E9",
+        "linha": "FFFFFF",
         "texto": "9F2BDC",
         "texto_fraco": "811EB6",
         "acento": "FBF5FD",
@@ -2851,16 +2946,17 @@
         "fundo": "FAF8F5",
         "painel": "EFEBE1",
         "painel_alto": "E2DCCA",
-        "linha": "CBE1DD",
+        "linha": "92835B",
         "texto": "0C1927",
         "texto_fraco": "142320",
         "acento": "4587A5",
         "tinta": "F8F4E7",
         "papel": "F8F6F2",
         "painel_baixo": "F6F3EE",
-        "bloco": "57968B",
+        "bloco": "967F43",
         "menu_grande": "E9E2CC",
-        "regua": "8D783F"
+        "regua": "8D783F",
+        "barra": "4587A5"
       },
       "contraste": {
         "texto/fundo": 16.731911801713,
@@ -2870,7 +2966,8 @@
         "texto/tinta": 16.119736434449802
       },
       "avisos": [
-        "acento ajustado (ficou 3.35)"
+        "acento ajustado (ficou 3.35)",
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)"
       ],
       "osso_por_papel": {
         "fundo": "0C1927",
@@ -2891,14 +2988,14 @@
         "fundo": "3D7792",
         "painel": "3A718A",
         "painel_alto": "34657C",
-        "linha": "34657C",
+        "linha": "0F1D24",
         "texto": "468AA8",
         "texto_fraco": "498FAF",
         "acento": "0C171C",
         "tinta": "3C758F",
         "papel": "3D7792",
         "painel_baixo": "3C758F",
-        "bloco": "14262F",
+        "bloco": "0E1B21",
         "menu_grande": "366A81",
         "regua": "070E11"
       }
@@ -2908,16 +3005,17 @@
         "fundo": "0B1723",
         "painel": "14283E",
         "painel_alto": "1E3C5D",
-        "linha": "2D4D48",
+        "linha": "5C89B9",
         "texto": "F4F2EB",
         "texto_fraco": "CDE2DF",
         "acento": "66A3BF",
         "tinta": "070F17",
         "papel": "0F1F2F",
         "painel_baixo": "13283D",
-        "bloco": "6CA99F",
+        "bloco": "3D88D8",
         "menu_grande": "11355D",
-        "regua": "5597DD"
+        "regua": "5597DD",
+        "barra": "3D88D8"
       },
       "contraste": {
         "texto/fundo": 16.14657208569537,
@@ -2926,12 +3024,14 @@
         "acento/painel": 5.386395769746519,
         "texto/tinta": 17.203342545171324
       },
-      "avisos": [],
+      "avisos": [
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)"
+      ],
       "osso_por_papel": {
         "fundo": "F4F2EB",
         "painel": "F4F2EB",
         "painel_alto": "F4F2EB",
-        "linha": "F4F2EB",
+        "linha": "0C1927",
         "texto": "0C1927",
         "texto_fraco": "0C1927",
         "acento": "0C1927",
@@ -2946,14 +3046,14 @@
         "fundo": "66A3BF",
         "painel": "66A3BF",
         "painel_alto": "75ACC5",
-        "linha": "8FBCD0",
+        "linha": "101F26",
         "texto": "3B738D",
         "texto_fraco": "35687F",
         "acento": "1B3541",
         "tinta": "66A3BF",
         "papel": "66A3BF",
         "painel_baixo": "66A3BF",
-        "bloco": "1D3845",
+        "bloco": "101F26",
         "menu_grande": "69A5C0",
         "regua": "172D37"
       }
@@ -2965,16 +3065,17 @@
         "fundo": "FEFAF0",
         "painel": "FDEFD3",
         "painel_alto": "FBE3B1",
-        "linha": "F5E3B8",
+        "linha": "A98B41",
         "texto": "0A2926",
         "texto_fraco": "302407",
         "acento": "E2512C",
         "tinta": "FEF5E2",
         "papel": "FEF8EB",
         "painel_baixo": "FEF6E5",
-        "bloco": "CF9B1F",
+        "bloco": "A67C19",
         "menu_grande": "FFE7B6",
-        "regua": "CC8A00"
+        "regua": "CC8A00",
+        "barra": "988265"
       },
       "contraste": {
         "texto/fundo": 14.83478230426197,
@@ -2984,7 +3085,8 @@
         "texto/tinta": 14.265344176492647
       },
       "avisos": [
-        "acento ajustado (ficou 3.39)"
+        "acento ajustado (ficou 3.39)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "0A2926",
@@ -2997,7 +3099,7 @@
         "tinta": "0A2926",
         "papel": "0A2926",
         "painel_baixo": "0A2926",
-        "bloco": "0A2926",
+        "bloco": "000000",
         "menu_grande": "0A2926",
         "regua": "0A2926"
       },
@@ -3005,14 +3107,14 @@
         "fundo": "CE401C",
         "painel": "C23D1B",
         "painel_alto": "BA3A1A",
-        "linha": "B63919",
+        "linha": "4B180A",
         "texto": "E56241",
         "texto_fraco": "E56545",
         "acento": "2F0F07",
         "tinta": "CA3F1C",
         "papel": "CE401C",
         "painel_baixo": "CA3F1C",
-        "bloco": "6B210F",
+        "bloco": "331007",
         "menu_grande": "BE3B1A",
         "regua": "571B0C"
       }
@@ -3022,7 +3124,7 @@
         "fundo": "092522",
         "painel": "0F423C",
         "painel_alto": "17645B",
-        "linha": "6B5010",
+        "linha": "BEA057",
         "texto": "FEF5E2",
         "texto_fraco": "F5E4BB",
         "acento": "E76F51",
@@ -3031,7 +3133,8 @@
         "painel_baixo": "0F413C",
         "bloco": "E1AF34",
         "menu_grande": "09665B",
-        "regua": "46ECD9"
+        "regua": "46ECD9",
+        "barra": "46ECD9"
       },
       "contraste": {
         "texto/fundo": 14.910115302910466,
@@ -3045,7 +3148,7 @@
         "fundo": "FEF5E2",
         "painel": "FEF5E2",
         "painel_alto": "FEF5E2",
-        "linha": "FEF5E2",
+        "linha": "0A2926",
         "texto": "0A2926",
         "texto_fraco": "0A2926",
         "acento": "0A2926",
@@ -3060,7 +3163,7 @@
         "fundo": "E76F51",
         "painel": "EC8C74",
         "painel_alto": "F5C5B9",
-        "linha": "F4BCAE",
+        "linha": "69210E",
         "texto": "C93E1C",
         "texto_fraco": "B73919",
         "acento": "4E180B",
@@ -3079,7 +3182,7 @@
         "fundo": "FCF3F3",
         "painel": "F6DADA",
         "painel_alto": "EFBEBE",
-        "linha": "F2BBBB",
+        "linha": "A74646",
         "texto": "1A1320",
         "texto_fraco": "2E0909",
         "acento": "F10000",
@@ -3088,7 +3191,8 @@
         "painel_baixo": "FAEAEA",
         "bloco": "C72626",
         "menu_grande": "F8BCBC",
-        "regua": "B61616"
+        "regua": "B61616",
+        "barra": "99726D"
       },
       "contraste": {
         "texto/fundo": 16.62757507880168,
@@ -3098,13 +3202,14 @@
         "texto/tinta": 15.210110897493625
       },
       "avisos": [
-        "acento ajustado (ficou 3.37)"
+        "acento ajustado (ficou 3.37)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "1A1320",
         "painel": "1A1320",
         "painel_alto": "1A1320",
-        "linha": "1A1320",
+        "linha": "F9E7E7",
         "texto": "F9E7E7",
         "texto_fraco": "F9E7E7",
         "acento": "000000",
@@ -3119,7 +3224,7 @@
         "fundo": "E10000",
         "painel": "C90000",
         "painel_alto": "AD0000",
-        "linha": "AD0000",
+        "linha": "FFDBDB",
         "texto": "FE0000",
         "texto_fraco": "FF0404",
         "acento": "1C0000",
@@ -3136,7 +3241,7 @@
         "fundo": "18111D",
         "painel": "2A1E34",
         "painel_alto": "3F2D4E",
-        "linha": "671414",
+        "linha": "BA5B5B",
         "texto": "F9E7E7",
         "texto_fraco": "F2BDBD",
         "acento": "FFE2E2",
@@ -3145,7 +3250,8 @@
         "painel_baixo": "2A1D33",
         "bloco": "D93C3C",
         "menu_grande": "39234B",
-        "regua": "9D76BC"
+        "regua": "9D76BC",
+        "barra": "9D76BC"
       },
       "contraste": {
         "texto/fundo": 15.493357669427299,
@@ -3159,7 +3265,7 @@
         "fundo": "F9E7E7",
         "painel": "F9E7E7",
         "painel_alto": "F9E7E7",
-        "linha": "F9E7E7",
+        "linha": "000000",
         "texto": "1A1320",
         "texto_fraco": "1A1320",
         "acento": "1A1320",
@@ -3174,7 +3280,7 @@
         "fundo": "FFE2E2",
         "painel": "FFE2E2",
         "painel_alto": "FFE2E2",
-        "linha": "FFE2E2",
+        "linha": "180000",
         "texto": "D00000",
         "texto_fraco": "A80000",
         "acento": "D00000",
@@ -3193,16 +3299,17 @@
         "fundo": "F7FBF4",
         "painel": "E7F2DE",
         "painel_alto": "D4E8C4",
-        "linha": "CBE2D0",
+        "linha": "638A6C",
         "texto": "151E1C",
         "texto_fraco": "142317",
         "acento": "4F8F71",
         "tinta": "EEF8E7",
         "papel": "F4F9F0",
         "painel_baixo": "F1F8EC",
-        "bloco": "569865",
+        "bloco": "518E5F",
         "menu_grande": "D8F0C5",
-        "regua": "5EA12B"
+        "regua": "5EA12B",
+        "barra": "518E5F"
       },
       "contraste": {
         "texto/fundo": 16.251321495691833,
@@ -3218,14 +3325,14 @@
         "fundo": "151E1C",
         "painel": "151E1C",
         "painel_alto": "151E1C",
-        "linha": "151E1C",
+        "linha": "000000",
         "texto": "EFF7E9",
         "texto_fraco": "EFF7E9",
         "acento": "000000",
         "tinta": "151E1C",
         "papel": "151E1C",
         "painel_baixo": "151E1C",
-        "bloco": "151E1C",
+        "bloco": "000000",
         "menu_grande": "151E1C",
         "regua": "151E1C"
       },
@@ -3233,14 +3340,14 @@
         "fundo": "467E64",
         "painel": "42775E",
         "painel_alto": "3D6E57",
-        "linha": "3A6953",
+        "linha": "0E1A15",
         "texto": "519273",
         "texto_fraco": "529576",
         "acento": "101D17",
         "tinta": "437A60",
         "papel": "447C62",
         "painel_baixo": "447C62",
-        "bloco": "15261E",
+        "bloco": "0E1A15",
         "menu_grande": "3F725A",
         "regua": "192D24"
       }
@@ -3250,7 +3357,7 @@
         "fundo": "131B19",
         "painel": "21302D",
         "painel_alto": "324843",
-        "linha": "2C4E34",
+        "linha": "779E80",
         "texto": "EFF7E9",
         "texto_fraco": "CDE3D2",
         "acento": "88BDA4",
@@ -3259,7 +3366,8 @@
         "painel_baixo": "212F2C",
         "bloco": "6AAB79",
         "menu_grande": "2A443E",
-        "regua": "81B1A5"
+        "regua": "81B1A5",
+        "barra": "6AAB79"
       },
       "contraste": {
         "texto/fundo": 15.979214117893715,
@@ -3273,7 +3381,7 @@
         "fundo": "EFF7E9",
         "painel": "EFF7E9",
         "painel_alto": "EFF7E9",
-        "linha": "EFF7E9",
+        "linha": "151E1C",
         "texto": "151E1C",
         "texto_fraco": "151E1C",
         "acento": "151E1C",
@@ -3288,7 +3396,7 @@
         "fundo": "88BDA4",
         "painel": "88BDA4",
         "painel_alto": "88BDA4",
-        "linha": "8CBFA7",
+        "linha": "1B3127",
         "texto": "447A60",
         "texto_fraco": "3A6953",
         "acento": "29493A",
@@ -3307,16 +3415,17 @@
         "fundo": "FFFBF0",
         "painel": "FFF4D1",
         "painel_alto": "FFECAD",
-        "linha": "FFD9AD",
+        "linha": "BE7C2F",
         "texto": "330800",
         "texto_fraco": "371E00",
         "acento": "F53E00",
         "tinta": "FFF8E0",
         "papel": "FFFAEA",
         "painel_baixo": "FFF9E4",
-        "bloco": "ED8000",
+        "bloco": "C66B00",
         "menu_grande": "FFEEB6",
-        "regua": "CC9D00"
+        "regua": "CC9D00",
+        "barra": "938564"
       },
       "contraste": {
         "texto/fundo": 17.277089191459567,
@@ -3326,7 +3435,8 @@
         "texto/tinta": 16.805966789120276
       },
       "avisos": [
-        "acento ajustado (ficou 3.43)"
+        "acento ajustado (ficou 3.43)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "330800",
@@ -3347,14 +3457,14 @@
         "fundo": "D83700",
         "painel": "D03500",
         "painel_alto": "C83300",
-        "linha": "B82E00",
+        "linha": "451200",
         "texto": "F53E00",
         "texto_fraco": "FF4608",
         "acento": "390E00",
         "tinta": "D43600",
         "papel": "D83700",
         "painel_baixo": "D43600",
-        "bloco": "621900",
+        "bloco": "350D00",
         "menu_grande": "C83300",
         "regua": "6E1C00"
       }
@@ -3364,7 +3474,7 @@
         "fundo": "2E0800",
         "painel": "520D00",
         "painel_alto": "7A1400",
-        "linha": "7A4200",
+        "linha": "D09045",
         "texto": "FFF8E0",
         "texto_fraco": "FFDBB0",
         "acento": "FFB399",
@@ -3373,7 +3483,8 @@
         "painel_baixo": "500D00",
         "bloco": "FF9416",
         "menu_grande": "6E1200",
-        "regua": "FF5533"
+        "regua": "FF5533",
+        "barra": "DCB3A9"
       },
       "contraste": {
         "texto/fundo": 17.16508501316838,
@@ -3382,12 +3493,14 @@
         "acento/painel": 8.585541178616952,
         "texto/tinta": 18.29248345508598
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FFF8E0",
         "painel": "FFF8E0",
         "painel_alto": "FFF8E0",
-        "linha": "FFF8E0",
+        "linha": "330800",
         "texto": "330800",
         "texto_fraco": "330800",
         "acento": "330800",
@@ -3402,7 +3515,7 @@
         "fundo": "FFB399",
         "painel": "FFB399",
         "painel_alto": "FFB399",
-        "linha": "FFB399",
+        "linha": "661A00",
         "texto": "D33600",
         "texto_fraco": "B82F00",
         "acento": "962600",
@@ -3421,7 +3534,7 @@
         "fundo": "FFFCF0",
         "painel": "FFF5D1",
         "painel_alto": "FFEEAD",
-        "linha": "B6BCF7",
+        "linha": "3E48AF",
         "texto": "131820",
         "texto_fraco": "060A32",
         "acento": "F84000",
@@ -3430,7 +3543,8 @@
         "painel_baixo": "FFF9E4",
         "bloco": "182AD5",
         "menu_grande": "FFF0B6",
-        "regua": "CCA100"
+        "regua": "CCA100",
+        "barra": "182AD5"
       },
       "contraste": {
         "texto/fundo": 17.32905135540414,
@@ -3446,7 +3560,7 @@
         "fundo": "060A32",
         "painel": "060A32",
         "painel_alto": "060A32",
-        "linha": "060A32",
+        "linha": "FFF9E0",
         "texto": "FFF9E0",
         "texto_fraco": "FFF9E0",
         "acento": "060A32",
@@ -3461,7 +3575,7 @@
         "fundo": "D73700",
         "painel": "CF3500",
         "painel_alto": "C63300",
-        "linha": "952600",
+        "linha": "FFB89F",
         "texto": "F84000",
         "texto_fraco": "F84000",
         "acento": "3A0F00",
@@ -3478,16 +3592,17 @@
         "fundo": "11151D",
         "painel": "1F2633",
         "painel_alto": "2E384C",
-        "linha": "0C156E",
+        "linha": "555FC3",
         "texto": "FFF9E0",
         "texto_fraco": "B8BEF7",
         "acento": "FF7444",
         "tinta": "080D17",
         "papel": "171D27",
         "painel_baixo": "1E2532",
-        "bloco": "2D3FE8",
+        "bloco": "5463EC",
         "menu_grande": "253149",
-        "regua": "798FB9"
+        "regua": "798FB9",
+        "barra": "5463EC"
       },
       "contraste": {
         "texto/fundo": 17.303194800725723,
@@ -3516,14 +3631,14 @@
         "fundo": "FF7444",
         "painel": "FF7444",
         "painel_alto": "FF794A",
-        "linha": "FF7444",
+        "linha": "FFE3DA",
         "texto": "D23600",
         "texto_fraco": "972700",
         "acento": "661A00",
         "tinta": "FF7444",
         "papel": "FF7444",
         "painel_baixo": "FF7444",
-        "bloco": "FFC3AE",
+        "bloco": "FFF6F3",
         "menu_grande": "FF7444",
         "regua": "4B1300"
       }
@@ -3535,16 +3650,17 @@
         "fundo": "F2FDF4",
         "painel": "D7F9DE",
         "painel_alto": "B9F4C4",
-        "linha": "ADE2FF",
+        "linha": "2F8BBE",
         "texto": "000133",
         "texto_fraco": "002337",
         "acento": "656FFF",
         "tinta": "E5FBE9",
         "papel": "EDFCF0",
         "painel_baixo": "E8FBEC",
-        "bloco": "0098ED",
+        "bloco": "0087D2",
         "menu_grande": "B6FEC4",
-        "regua": "06C62A"
+        "regua": "06C62A",
+        "barra": "0087D2"
       },
       "contraste": {
         "texto/fundo": 19.134143097102523,
@@ -3575,14 +3691,14 @@
         "fundo": "535EFF",
         "painel": "4753FF",
         "painel_alto": "3B48FF",
-        "linha": "303DFF",
+        "linha": "000765",
         "texto": "656FFF",
         "texto_fraco": "6F79FF",
         "acento": "000659",
         "tinta": "4D59FF",
         "papel": "4D59FF",
         "painel_baixo": "4D59FF",
-        "bloco": "000A94",
+        "bloco": "00065F",
         "menu_grande": "4753FF",
         "regua": "000DD0"
       }
@@ -3592,7 +3708,7 @@
         "fundo": "00012E",
         "painel": "000252",
         "painel_alto": "00037A",
-        "linha": "004F7A",
+        "linha": "459ED0",
         "texto": "E5FBE9",
         "texto_fraco": "B0E3FF",
         "acento": "B5BAFF",
@@ -3601,7 +3717,8 @@
         "painel_baixo": "000250",
         "bloco": "16ACFF",
         "menu_grande": "00036E",
-        "regua": "3337FF"
+        "regua": "3337FF",
+        "barra": "16ACFF"
       },
       "contraste": {
         "texto/fundo": 18.497070689343808,
@@ -3615,7 +3732,7 @@
         "fundo": "E5FBE9",
         "painel": "E5FBE9",
         "painel_alto": "E5FBE9",
-        "linha": "E5FBE9",
+        "linha": "000133",
         "texto": "000133",
         "texto_fraco": "000133",
         "acento": "000133",
@@ -3630,7 +3747,7 @@
         "fundo": "B5BAFF",
         "painel": "B5BAFF",
         "painel_alto": "B5BAFF",
-        "linha": "B5BAFF",
+        "linha": "000BA0",
         "texto": "4F5BFF",
         "texto_fraco": "3240FF",
         "acento": "0011FE",
@@ -3649,16 +3766,17 @@
         "fundo": "FFFCF0",
         "painel": "FEF6D3",
         "painel_alto": "FCEFB0",
-        "linha": "ECDCC1",
+        "linha": "9C8051",
         "texto": "270C0C",
         "texto_fraco": "2A1F0D",
         "acento": "A31D1D",
         "tinta": "FEF9E1",
         "papel": "FEFBEB",
         "painel_baixo": "FEFAE5",
-        "bloco": "B58739",
+        "bloco": "A77D35",
         "menu_grande": "FFF2B6",
-        "regua": "CCA900"
+        "regua": "CCA900",
+        "barra": "938967"
       },
       "contraste": {
         "texto/fundo": 17.859681571008608,
@@ -3667,7 +3785,9 @@
         "acento/painel": 7.029644951188435,
         "texto/tinta": 17.35037707863029
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "270C0C",
         "painel": "270C0C",
@@ -3687,14 +3807,14 @@
         "fundo": "A31D1D",
         "painel": "A31D1D",
         "painel_alto": "A31D1D",
-        "linha": "A31D1D",
+        "linha": "3C0B0B",
         "texto": "DF4B4B",
         "texto_fraco": "E25D5D",
         "acento": "F3BCBC",
         "tinta": "A31D1D",
         "papel": "A31D1D",
         "painel_baixo": "A31D1D",
-        "bloco": "510E0E",
+        "bloco": "3C0B0B",
         "menu_grande": "A31D1D",
         "regua": "801717"
       }
@@ -3704,7 +3824,7 @@
         "fundo": "230B0B",
         "painel": "3E1414",
         "painel_alto": "5D1E1E",
-        "linha": "5D461D",
+        "linha": "AF9466",
         "texto": "FEF9E1",
         "texto_fraco": "ECDDC3",
         "acento": "D92C2C",
@@ -3713,7 +3833,8 @@
         "painel_baixo": "3D1414",
         "bloco": "C79B4E",
         "menu_grande": "5D1111",
-        "regua": "DD5555"
+        "regua": "DD5555",
+        "barra": "DCB2AF"
       },
       "contraste": {
         "texto/fundo": 17.659032318655314,
@@ -3723,13 +3844,14 @@
         "texto/tinta": 18.55486433368697
       },
       "avisos": [
-        "acento ajustado (ficou 3.31)"
+        "acento ajustado (ficou 3.31)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "FEF9E1",
         "painel": "FEF9E1",
         "painel_alto": "FEF9E1",
-        "linha": "FEF9E1",
+        "linha": "270C0C",
         "texto": "270C0C",
         "texto_fraco": "270C0C",
         "acento": "FEF9E1",
@@ -3744,7 +3866,7 @@
         "fundo": "DE4848",
         "painel": "E25D5D",
         "painel_alto": "E87D7D",
-        "linha": "EFA7A7",
+        "linha": "601111",
         "texto": "D92C2C",
         "texto_fraco": "BC2222",
         "acento": "FDF6F6",
@@ -3763,7 +3885,7 @@
         "fundo": "FEF7F1",
         "painel": "FCE7D4",
         "painel_alto": "F9D3B3",
-        "linha": "E8C5CC",
+        "linha": "955864",
         "texto": "121023",
         "texto_fraco": "271015",
         "acento": "441752",
@@ -3772,7 +3894,8 @@
         "painel_baixo": "FDF1E6",
         "bloco": "AA4358",
         "menu_grande": "FFD7B6",
-        "regua": "CC5E00"
+        "regua": "CC5E00",
+        "barra": "441752"
       },
       "contraste": {
         "texto/fundo": 17.60389880920983,
@@ -3786,7 +3909,7 @@
         "fundo": "121023",
         "painel": "121023",
         "painel_alto": "121023",
-        "linha": "121023",
+        "linha": "FDEFE3",
         "texto": "FDEFE3",
         "texto_fraco": "FDEFE3",
         "acento": "FDEFE3",
@@ -3801,7 +3924,7 @@
         "fundo": "441752",
         "painel": "441752",
         "painel_alto": "441752",
-        "linha": "441752",
+        "linha": "F3E5F8",
         "texto": "B356D0",
         "texto_fraco": "B55CD1",
         "acento": "C176D9",
@@ -3818,7 +3941,7 @@
         "fundo": "110F1F",
         "painel": "1D1A37",
         "painel_alto": "2C2753",
-        "linha": "58232E",
+        "linha": "A96C79",
         "texto": "FDEFE3",
         "texto_fraco": "E9C7CE",
         "acento": "A941CA",
@@ -3827,7 +3950,8 @@
         "painel_baixo": "1D1A37",
         "bloco": "BD586D",
         "menu_grande": "221C52",
-        "regua": "7469C9"
+        "regua": "7469C9",
+        "barra": "7469C9"
       },
       "contraste": {
         "texto/fundo": 16.756463117405847,
@@ -3843,7 +3967,7 @@
         "fundo": "FDEFE3",
         "painel": "FDEFE3",
         "painel_alto": "FDEFE3",
-        "linha": "FDEFE3",
+        "linha": "121023",
         "texto": "121023",
         "texto_fraco": "121023",
         "acento": "FFFFFF",
@@ -3858,7 +3982,7 @@
         "fundo": "B254CF",
         "painel": "B761D3",
         "painel_alto": "C177D9",
-        "linha": "C783DD",
+        "linha": "1D0A23",
         "texto": "A63AC8",
         "texto_fraco": "872EA4",
         "acento": "FBF5FC",
@@ -3877,16 +4001,17 @@
         "fundo": "FBFFF0",
         "painel": "F3FFD1",
         "painel_alto": "EAFFAD",
-        "linha": "BEE5EF",
+        "linha": "4C91A1",
         "texto": "2F041A",
         "texto_fraco": "0B262C",
         "acento": "199A2A",
         "tinta": "F7FFE0",
         "papel": "FAFFEA",
         "painel_baixo": "F8FFE4",
-        "bloco": "2FA2BE",
+        "bloco": "2A92AB",
         "menu_grande": "ECFFB6",
-        "regua": "98CC00"
+        "regua": "98CC00",
+        "barra": "2A92AB"
       },
       "contraste": {
         "texto/fundo": 17.91969228574296,
@@ -3917,14 +4042,14 @@
         "fundo": "168825",
         "painel": "168524",
         "painel_alto": "158324",
-        "linha": "12711F",
+        "linha": "06270B",
         "texto": "199A2A",
         "texto_fraco": "1A9F2B",
         "acento": "06240A",
         "tinta": "168524",
         "papel": "168524",
         "painel_baixo": "168524",
-        "bloco": "09360F",
+        "bloco": "06240A",
         "menu_grande": "158324",
         "regua": "0E5718"
       }
@@ -3934,7 +4059,7 @@
         "fundo": "2B0318",
         "painel": "4C062A",
         "painel_alto": "72093F",
-        "linha": "185462",
+        "linha": "61A4B4",
         "texto": "F7FFE0",
         "texto_fraco": "C0E6EF",
         "acento": "DAF9DE",
@@ -3943,7 +4068,8 @@
         "painel_baixo": "4B062A",
         "bloco": "45B5D0",
         "menu_grande": "6E0039",
-        "regua": "FF339D"
+        "regua": "FF339D",
+        "barra": "45B5D0"
       },
       "contraste": {
         "texto/fundo": 18.012759784464482,
@@ -3957,7 +4083,7 @@
         "fundo": "F7FFE0",
         "painel": "F7FFE0",
         "painel_alto": "F7FFE0",
-        "linha": "F7FFE0",
+        "linha": "2F041A",
         "texto": "2F041A",
         "texto_fraco": "2F041A",
         "acento": "2F041A",
@@ -3972,7 +4098,7 @@
         "fundo": "DAF9DE",
         "painel": "DAF9DE",
         "painel_alto": "DAF9DE",
-        "linha": "DAF9DE",
+        "linha": "09360E",
         "texto": "168624",
         "texto_fraco": "12721F",
         "acento": "157F22",
@@ -3991,16 +4117,17 @@
         "fundo": "FCFAF2",
         "painel": "F7F1D9",
         "painel_alto": "F1E7BB",
-        "linha": "E8E4C4",
+        "linha": "968F57",
         "texto": "1D1616",
         "texto_fraco": "28250F",
         "acento": "E43636",
         "tinta": "FAF6E5",
         "papel": "FCF9EE",
         "painel_baixo": "FBF7E9",
-        "bloco": "ABA042",
+        "bloco": "8D8436",
         "menu_grande": "FBEFBA",
-        "regua": "BE9C0E"
+        "regua": "BE9C0E",
+        "barra": "908664"
       },
       "contraste": {
         "texto/fundo": 17.05043269841356,
@@ -4009,7 +4136,9 @@
         "acento/painel": 3.799164428725216,
         "texto/tinta": 16.442114102336607
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "1D1616",
         "painel": "1D1616",
@@ -4029,14 +4158,14 @@
         "fundo": "E12121",
         "painel": "D71D1D",
         "painel_alto": "CB1B1B",
-        "linha": "C71B1B",
+        "linha": "4F0B0B",
         "texto": "E64747",
         "texto_fraco": "E95E5E",
         "acento": "210404",
         "tinta": "DC1D1D",
         "papel": "E01E1E",
         "painel_baixo": "DC1D1D",
-        "bloco": "6C0E0E",
+        "bloco": "3A0808",
         "menu_grande": "D31C1C",
         "regua": "700F0F"
       }
@@ -4046,7 +4175,7 @@
         "fundo": "1A1414",
         "painel": "2E2424",
         "painel_alto": "453636",
-        "linha": "585222",
+        "linha": "A9A36C",
         "texto": "FAF6E5",
         "texto_fraco": "E9E5C6",
         "acento": "E43636",
@@ -4055,7 +4184,8 @@
         "painel_baixo": "2D2323",
         "bloco": "BEB357",
         "menu_grande": "402E2E",
-        "regua": "A58D8D"
+        "regua": "A58D8D",
+        "barra": "DCB1B2"
       },
       "contraste": {
         "texto/fundo": 16.791237400113246,
@@ -4064,12 +4194,14 @@
         "acento/painel": 3.500539729996138,
         "texto/tinta": 18.03205845240052
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FAF6E5",
         "painel": "FAF6E5",
         "painel_alto": "FAF6E5",
-        "linha": "FAF6E5",
+        "linha": "1D1616",
         "texto": "1D1616",
         "texto_fraco": "1D1616",
         "acento": "000000",
@@ -4084,7 +4216,7 @@
         "fundo": "E64343",
         "painel": "EA6262",
         "painel_alto": "EF8686",
-        "linha": "F5B5B5",
+        "linha": "700F0F",
         "texto": "DC1D1D",
         "texto_fraco": "C71B1B",
         "acento": "210404",
@@ -4103,16 +4235,17 @@
         "fundo": "FFFCF0",
         "painel": "FFF7D1",
         "painel_alto": "FFF1AD",
-        "linha": "C4E8DA",
+        "linha": "58967D",
         "texto": "131920",
         "texto_fraco": "10281E",
         "acento": "ED4497",
         "tinta": "FFFAE0",
         "papel": "FFFBEA",
         "painel_baixo": "FFFAE4",
-        "bloco": "43AA82",
+        "bloco": "3A9370",
         "menu_grande": "FFF2B6",
-        "regua": "CCA800"
+        "regua": "CCA800",
+        "barra": "3A9370"
       },
       "contraste": {
         "texto/fundo": 17.20650001993298,
@@ -4143,14 +4276,14 @@
         "fundo": "DF1578",
         "painel": "D51573",
         "painel_alto": "D11471",
-        "linha": "BE1267",
+        "linha": "460726",
         "texto": "ED4497",
         "texto_fraco": "EE4A9A",
         "acento": "410623",
         "tinta": "DA1576",
         "papel": "DA1576",
         "painel_baixo": "DA1576",
-        "bloco": "610935",
+        "bloco": "3C0621",
         "menu_grande": "D11471",
         "regua": "7D0C44"
       }
@@ -4160,7 +4293,7 @@
         "fundo": "11161D",
         "painel": "1E2834",
         "painel_alto": "2C3B4E",
-        "linha": "225843",
+        "linha": "6CA991",
         "texto": "FFFAE0",
         "texto_fraco": "C7E9DB",
         "acento": "F599C6",
@@ -4169,7 +4302,8 @@
         "painel_baixo": "1D2733",
         "bloco": "58BD95",
         "menu_grande": "22354C",
-        "regua": "7595BD"
+        "regua": "7595BD",
+        "barra": "58BD95"
       },
       "contraste": {
         "texto/fundo": 17.298211612855194,
@@ -4183,7 +4317,7 @@
         "fundo": "FFFAE0",
         "painel": "FFFAE0",
         "painel_alto": "FFFAE0",
-        "linha": "FFFAE0",
+        "linha": "131920",
         "texto": "131920",
         "texto_fraco": "131920",
         "acento": "131920",
@@ -4198,7 +4332,7 @@
         "fundo": "F599C6",
         "painel": "F599C6",
         "painel_alto": "F599C6",
-        "linha": "F7AACF",
+        "linha": "670A37",
         "texto": "D91575",
         "texto_fraco": "C11368",
         "acento": "8B0E4B",
@@ -4217,7 +4351,7 @@
         "fundo": "FFF9F0",
         "painel": "FEECD2",
         "painel_alto": "FEDEAF",
-        "linha": "F5C0B8",
+        "linha": "AC4F41",
         "texto": "280B0B",
         "texto_fraco": "300C07",
         "acento": "CF6314",
@@ -4226,7 +4360,8 @@
         "painel_baixo": "FFF4E5",
         "bloco": "D0351E",
         "menu_grande": "FFE1B6",
-        "regua": "CC7A00"
+        "regua": "CC7A00",
+        "barra": "997D64"
       },
       "contraste": {
         "texto/fundo": 17.55192685035679,
@@ -4236,13 +4371,14 @@
         "texto/tinta": 16.76356204783669
       },
       "avisos": [
-        "acento ajustado (ficou 3.33)"
+        "acento ajustado (ficou 3.33)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "280B0B",
         "painel": "280B0B",
         "painel_alto": "280B0B",
-        "linha": "280B0B",
+        "linha": "FFF3E1",
         "texto": "FFF3E1",
         "texto_fraco": "FFF3E1",
         "acento": "280B0B",
@@ -4257,7 +4393,7 @@
         "fundo": "B75712",
         "painel": "AC5211",
         "painel_alto": "9F4C0F",
-        "linha": "8A420D",
+        "linha": "FCEADD",
         "texto": "CF6314",
         "texto_fraco": "CF6314",
         "acento": "291404",
@@ -4274,7 +4410,7 @@
         "fundo": "240A0A",
         "painel": "411111",
         "painel_alto": "611A1A",
-        "linha": "6B1B0F",
+        "linha": "BF6456",
         "texto": "FFF3E1",
         "texto_fraco": "F5C2BA",
         "acento": "EB7F31",
@@ -4283,7 +4419,8 @@
         "painel_baixo": "401111",
         "bloco": "E24A33",
         "menu_grande": "620C0C",
-        "regua": "E64C4C"
+        "regua": "E64C4C",
+        "barra": "DCB2AE"
       },
       "contraste": {
         "texto/fundo": 17.0638254570503,
@@ -4292,12 +4429,14 @@
         "acento/painel": 5.797651892757764,
         "texto/tinta": 17.947698512514606
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FFF3E1",
         "painel": "FFF3E1",
         "painel_alto": "FFF3E1",
-        "linha": "FFF3E1",
+        "linha": "280B0B",
         "texto": "280B0B",
         "texto_fraco": "280B0B",
         "acento": "280B0B",
@@ -4312,7 +4451,7 @@
         "fundo": "EB7F31",
         "painel": "EB7F31",
         "painel_alto": "EB7F31",
-        "linha": "EC883F",
+        "linha": "231003",
         "texto": "B15411",
         "texto_fraco": "8A420D",
         "acento": "522708",
@@ -4331,16 +4470,17 @@
         "fundo": "FFFDF0",
         "painel": "FFF8D1",
         "painel_alto": "FFF3AD",
-        "linha": "ADFFFD",
+        "linha": "279F9C",
         "texto": "000633",
         "texto_fraco": "003736",
         "acento": "003161",
         "tinta": "FFFAE0",
         "papel": "FFFCEA",
         "painel_baixo": "FFFBE4",
-        "bloco": "00EDE6",
+        "bloco": "009490",
         "menu_grande": "FFF4B6",
-        "regua": "CCAD00"
+        "regua": "CCAD00",
+        "barra": "009490"
       },
       "contraste": {
         "texto/fundo": 19.146347305279466,
@@ -4369,14 +4509,14 @@
         "fundo": "003161",
         "painel": "003161",
         "painel_alto": "003161",
-        "linha": "003161",
+        "linha": "002951",
         "texto": "0077EB",
         "texto_fraco": "379CFF",
         "acento": "379CFF",
         "tinta": "003161",
         "papel": "003161",
         "painel_baixo": "003161",
-        "bloco": "003161",
+        "bloco": "001E3C",
         "menu_grande": "003161",
         "regua": "003161"
       }
@@ -4386,7 +4526,7 @@
         "fundo": "00062E",
         "painel": "000A52",
         "painel_alto": "000F7A",
-        "linha": "007A77",
+        "linha": "45D0CC",
         "texto": "FFFAE0",
         "texto_fraco": "B0FFFD",
         "acento": "0069CF",
@@ -4395,7 +4535,8 @@
         "painel_baixo": "000A50",
         "bloco": "16FFF8",
         "menu_grande": "000E6E",
-        "regua": "334CFF"
+        "regua": "334CFF",
+        "barra": "16FFF8"
       },
       "contraste": {
         "texto/fundo": 18.77295422928956,
@@ -4411,7 +4552,7 @@
         "fundo": "FFFAE0",
         "painel": "FFFAE0",
         "painel_alto": "FFFAE0",
-        "linha": "FFFAE0",
+        "linha": "000633",
         "texto": "000633",
         "texto_fraco": "000633",
         "acento": "FFFAE0",
@@ -4426,7 +4567,7 @@
         "fundo": "0078ED",
         "painel": "007DF7",
         "painel_alto": "128AFF",
-        "linha": "E6F3FF",
+        "linha": "004B94",
         "texto": "0069CF",
         "texto_fraco": "0069CF",
         "acento": "DCEEFF",
@@ -4445,16 +4586,17 @@
         "fundo": "FBFAF4",
         "painel": "F2EFDE",
         "painel_alto": "E8E3C4",
-        "linha": "CFDFCD",
+        "linha": "6A8766",
         "texto": "260D0D",
         "texto_fraco": "172215",
         "acento": "438D6C",
         "tinta": "F8F6E7",
         "papel": "F9F8F0",
         "painel_baixo": "F7F6EC",
-        "bloco": "61925C",
+        "bloco": "5F8E5A",
         "menu_grande": "F0EAC5",
-        "regua": "A08F2C"
+        "regua": "A08F2C",
+        "barra": "5F8E5A"
       },
       "contraste": {
         "texto/fundo": 17.527060917237037,
@@ -4485,14 +4627,14 @@
         "fundo": "3C7F61",
         "painel": "39785C",
         "painel_alto": "346E55",
-        "linha": "326A51",
+        "linha": "0B1812",
         "texto": "438D6C",
         "texto_fraco": "489774",
         "acento": "0B1812",
         "tinta": "3B7D5F",
         "papel": "3B7D5F",
         "painel_baixo": "3B7D5F",
-        "bloco": "11231B",
+        "bloco": "0D1C16",
         "menu_grande": "377358",
         "regua": "152D22"
       }
@@ -4502,7 +4644,7 @@
         "fundo": "220C0C",
         "painel": "3C1515",
         "painel_alto": "5B2020",
-        "linha": "324B2F",
+        "linha": "7E9A7B",
         "texto": "F6F4E9",
         "texto_fraco": "D1E1CF",
         "acento": "C0E1D2",
@@ -4511,7 +4653,8 @@
         "painel_baixo": "3C1515",
         "bloco": "75A570",
         "menu_grande": "5B1313",
-        "regua": "D95959"
+        "regua": "D95959",
+        "barra": "75A570"
       },
       "contraste": {
         "texto/fundo": 16.90669094243668,
@@ -4525,7 +4668,7 @@
         "fundo": "F6F4E9",
         "painel": "F6F4E9",
         "painel_alto": "F6F4E9",
-        "linha": "F6F4E9",
+        "linha": "260D0D",
         "texto": "260D0D",
         "texto_fraco": "260D0D",
         "acento": "260D0D",
@@ -4540,7 +4683,7 @@
         "fundo": "C0E1D2",
         "painel": "C0E1D2",
         "painel_alto": "C0E1D2",
-        "linha": "C0E1D2",
+        "linha": "162F24",
         "texto": "3A7A5D",
         "texto_fraco": "346C53",
         "acento": "31684F",
@@ -4559,7 +4702,7 @@
         "fundo": "FCFAF3",
         "painel": "F5EFDC",
         "painel_alto": "ECE3C0",
-        "linha": "F6C8B6",
+        "linha": "AF5E3F",
         "texto": "11240F",
         "texto_fraco": "311206",
         "acento": "E3530D",
@@ -4568,7 +4711,8 @@
         "painel_baixo": "F9F6EA",
         "bloco": "D44D19",
         "menu_grande": "F5EAC0",
-        "regua": "AE901E"
+        "regua": "AE901E",
+        "barra": "8D8361"
       },
       "contraste": {
         "texto/fundo": 15.671279265684841,
@@ -4578,13 +4722,14 @@
         "texto/tinta": 14.968763304858419
       },
       "avisos": [
-        "acento ajustado (ficou 3.31)"
+        "acento ajustado (ficou 3.31)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "311206",
         "painel": "311206",
         "painel_alto": "311206",
-        "linha": "311206",
+        "linha": "FFFFFF",
         "texto": "F8F5E7",
         "texto_fraco": "F8F5E7",
         "acento": "311206",
@@ -4599,7 +4744,7 @@
         "fundo": "C9490B",
         "painel": "BD450B",
         "painel_alto": "AE400A",
-        "linha": "9B3909",
+        "linha": "FFFFFF",
         "texto": "EC560D",
         "texto_fraco": "E3530D",
         "acento": "311203",
@@ -4616,7 +4761,7 @@
         "fundo": "0F200E",
         "painel": "1B3919",
         "painel_alto": "285625",
-        "linha": "6D280D",
+        "linha": "C27253",
         "texto": "F8F5E7",
         "texto_fraco": "F7CAB9",
         "acento": "F5824A",
@@ -4625,7 +4770,8 @@
         "painel_baixo": "1A3818",
         "bloco": "E6612F",
         "menu_grande": "1D5519",
-        "regua": "6BCE64"
+        "regua": "6BCE64",
+        "barra": "6BCE64"
       },
       "contraste": {
         "texto/fundo": 15.573517960988582,
@@ -4639,7 +4785,7 @@
         "fundo": "F8F5E7",
         "painel": "F8F5E7",
         "painel_alto": "F8F5E7",
-        "linha": "F8F5E7",
+        "linha": "311206",
         "texto": "311206",
         "texto_fraco": "311206",
         "acento": "311206",
@@ -4654,7 +4800,7 @@
         "fundo": "F5824A",
         "painel": "F5824A",
         "painel_alto": "F8AA83",
-        "linha": "F68F5C",
+        "linha": "371403",
         "texto": "BF460B",
         "texto_fraco": "9C3909",
         "acento": "602305",
@@ -4673,16 +4819,17 @@
         "fundo": "FFFCF0",
         "painel": "FFF6D1",
         "painel_alto": "FFEFAD",
-        "linha": "FFCDAD",
+        "linha": "BE672F",
         "texto": "2D062B",
         "texto_fraco": "371500",
         "acento": "B12C00",
         "tinta": "FFF9E0",
         "papel": "FFFBEA",
         "painel_baixo": "FFFAE4",
-        "bloco": "ED5C00",
+        "bloco": "E15700",
         "menu_grande": "FFF1B6",
-        "regua": "CCA300"
+        "regua": "CCA300",
+        "barra": "958867"
       },
       "contraste": {
         "texto/fundo": 17.427906542329705,
@@ -4691,12 +4838,14 @@
         "acento/painel": 5.992824678360554,
         "texto/tinta": 16.95389898010688
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "2D062B",
         "painel": "2D062B",
         "painel_alto": "2D062B",
-        "linha": "2D062B",
+        "linha": "000000",
         "texto": "FFF9E0",
         "texto_fraco": "FFF9E0",
         "acento": "FFF9E0",
@@ -4711,14 +4860,14 @@
         "fundo": "B12C00",
         "painel": "B12C00",
         "painel_alto": "B12C00",
-        "linha": "B12C00",
+        "linha": "290A00",
         "texto": "F43D00",
         "texto_fraco": "F93E00",
         "acento": "FFCDBC",
         "tinta": "B12C00",
         "papel": "B12C00",
         "painel_baixo": "B12C00",
-        "bloco": "471200",
+        "bloco": "380E00",
         "menu_grande": "B12C00",
         "regua": "761D00"
       }
@@ -4728,7 +4877,7 @@
         "fundo": "290527",
         "painel": "480945",
         "painel_alto": "6C0E67",
-        "linha": "7A2F00",
+        "linha": "D07B45",
         "texto": "FFF9E0",
         "texto_fraco": "FFCFB0",
         "acento": "E33800",
@@ -4737,7 +4886,8 @@
         "painel_baixo": "470944",
         "bloco": "FF7016",
         "menu_grande": "6E0068",
-        "regua": "FF33F3"
+        "regua": "FF33F3",
+        "barra": "FF33F3"
       },
       "contraste": {
         "texto/fundo": 17.356884288861863,
@@ -4753,7 +4903,7 @@
         "fundo": "FFF9E0",
         "painel": "FFF9E0",
         "painel_alto": "FFF9E0",
-        "linha": "FFF9E0",
+        "linha": "2D062B",
         "texto": "2D062B",
         "texto_fraco": "2D062B",
         "acento": "000000",
@@ -4768,7 +4918,7 @@
         "fundo": "EC3A00",
         "painel": "FF4D13",
         "painel_alto": "FF835A",
-        "linha": "FF9C7B",
+        "linha": "4F1400",
         "texto": "D43400",
         "texto_fraco": "B22C00",
         "acento": "170600",
@@ -4787,16 +4937,17 @@
         "fundo": "FFFCF0",
         "painel": "FFF7D1",
         "painel_alto": "FFF1AD",
-        "linha": "FFECAD",
+        "linha": "AB8C2A",
         "texto": "331300",
         "texto_fraco": "372A00",
         "acento": "CC7000",
         "tinta": "FFFAE0",
         "papel": "FFFCEA",
         "painel_baixo": "FFFAE4",
-        "bloco": "EDB500",
+        "bloco": "A67F00",
         "menu_grande": "FFF2B6",
-        "regua": "CCAA00"
+        "regua": "CCAA00",
+        "barra": "938967"
       },
       "contraste": {
         "texto/fundo": 16.560696238185177,
@@ -4806,7 +4957,8 @@
         "texto/tinta": 16.21074455160105
       },
       "avisos": [
-        "acento ajustado (ficou 3.31)"
+        "acento ajustado (ficou 3.31)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "331300",
@@ -4827,14 +4979,14 @@
         "fundo": "AD5F00",
         "painel": "AA5D00",
         "painel_alto": "A35A00",
-        "linha": "A05800",
+        "linha": "3D2200",
         "texto": "CC7000",
         "texto_fraco": "E07B00",
         "acento": "331C00",
         "tinta": "AD5F00",
         "papel": "AD5F00",
         "painel_baixo": "AD5F00",
-        "bloco": "743F00",
+        "bloco": "2C1800",
         "menu_grande": "A75B00",
         "regua": "633600"
       }
@@ -4844,7 +4996,7 @@
         "fundo": "2E1100",
         "painel": "521E00",
         "painel_alto": "7A2E00",
-        "linha": "7A5E00",
+        "linha": "D0AF45",
         "texto": "FFFAE0",
         "texto_fraco": "FFEDB0",
         "acento": "FF8C00",
@@ -4853,7 +5005,8 @@
         "painel_baixo": "501E00",
         "bloco": "FFC816",
         "menu_grande": "6E2A00",
-        "regua": "FF7F33"
+        "regua": "FF7F33",
+        "barra": "DAB5A3"
       },
       "contraste": {
         "texto/fundo": 16.719723114494972,
@@ -4862,12 +5015,14 @@
         "acento/painel": 5.829309027882541,
         "texto/tinta": 18.08341210383246
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FFFAE0",
         "painel": "FFFAE0",
         "painel_alto": "FFFAE0",
-        "linha": "FFFAE0",
+        "linha": "331300",
         "texto": "331300",
         "texto_fraco": "331300",
         "acento": "331300",
@@ -4882,7 +5037,7 @@
         "fundo": "FF8C00",
         "painel": "FF8C00",
         "painel_alto": "FF9D26",
-        "linha": "FFD7A6",
+        "linha": "663800",
         "texto": "AA5D00",
         "texto_fraco": "A15900",
         "acento": "5D3300",
@@ -4901,7 +5056,7 @@
         "fundo": "FAF9F4",
         "painel": "F1EEDF",
         "painel_alto": "E7E1C6",
-        "linha": "D6DBD1",
+        "linha": "75826B",
         "texto": "330000",
         "texto_fraco": "1B1F18",
         "acento": "6D0808",
@@ -4910,7 +5065,8 @@
         "painel_baixo": "F7F5EC",
         "bloco": "758568",
         "menu_grande": "EEE7C6",
-        "regua": "9C8930"
+        "regua": "9C8930",
+        "barra": "8B8461"
       },
       "contraste": {
         "texto/fundo": 17.463249507923468,
@@ -4919,7 +5075,9 @@
         "acento/painel": 10.681497476956904,
         "texto/tinta": 16.836262210997507
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "330000",
         "painel": "330000",
@@ -4939,7 +5097,7 @@
         "fundo": "6D0808",
         "painel": "6D0808",
         "painel_alto": "6D0808",
-        "linha": "6D0808",
+        "linha": "2F0303",
         "texto": "F03030",
         "texto_fraco": "F24848",
         "acento": "F57979",
@@ -4956,16 +5114,17 @@
         "fundo": "2E0000",
         "painel": "520000",
         "painel_alto": "7A0000",
-        "linha": "3C4536",
+        "linha": "D04545",
         "texto": "F6F4EA",
         "texto_fraco": "D7DCD3",
         "acento": "E71111",
         "tinta": "1F0000",
         "papel": "3E0000",
         "painel_baixo": "500000",
-        "bloco": "88987C",
+        "bloco": "FF1616",
         "menu_grande": "6E0000",
-        "regua": "FF3333"
+        "regua": "FF3333",
+        "barra": "DCB2AD"
       },
       "contraste": {
         "texto/fundo": 17.06457698271463,
@@ -4975,13 +5134,15 @@
         "texto/tinta": 17.998336415166644
       },
       "avisos": [
-        "acento ajustado (ficou 3.30)"
+        "acento ajustado (ficou 3.30)",
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "F6F4EA",
         "painel": "F6F4EA",
         "painel_alto": "F6F4EA",
-        "linha": "F6F4EA",
+        "linha": "000000",
         "texto": "330000",
         "texto_fraco": "330000",
         "acento": "FFFFFF",
@@ -4996,14 +5157,14 @@
         "fundo": "EF2B2B",
         "painel": "F25454",
         "painel_alto": "F68181",
-        "linha": "F79595",
+        "linha": "0F0101",
         "texto": "DF1010",
         "texto_fraco": "C10E0E",
         "acento": "FFFFFF",
         "tinta": "EE1717",
         "papel": "F13C3C",
         "painel_baixo": "F25050",
-        "bloco": "5C0707",
+        "bloco": "360404",
         "menu_grande": "F57575",
         "regua": "450505"
       }
@@ -5015,16 +5176,17 @@
         "fundo": "F1F8FE",
         "painel": "D4EBFC",
         "painel_alto": "B3DCFA",
-        "linha": "B2DAFB",
+        "linha": "377EB6",
         "texto": "04152F",
         "texto_fraco": "031E34",
         "acento": "0C7DD9",
         "tinta": "E2F2FD",
         "papel": "ECF6FE",
         "painel_baixo": "E6F3FD",
-        "bloco": "0C83E1",
+        "bloco": "0C81DE",
         "menu_grande": "B6E0FF",
-        "regua": "0076CC"
+        "regua": "0076CC",
+        "barra": "0C81DE"
       },
       "contraste": {
         "texto/fundo": 16.990618701807954,
@@ -5040,7 +5202,7 @@
         "fundo": "04152F",
         "painel": "04152F",
         "painel_alto": "04152F",
-        "linha": "04152F",
+        "linha": "000000",
         "texto": "E2F2FD",
         "texto_fraco": "E2F2FD",
         "acento": "000000",
@@ -5055,14 +5217,14 @@
         "fundo": "0B73C7",
         "painel": "0A6AB8",
         "painel_alto": "095EA3",
-        "linha": "095EA3",
+        "linha": "010D16",
         "texto": "0C82E2",
         "texto_fraco": "0D87EB",
         "acento": "010F19",
         "tinta": "0B6EC0",
         "papel": "0B70C3",
         "painel_baixo": "0B70C3",
-        "bloco": "02192B",
+        "bloco": "021728",
         "menu_grande": "0962AA",
         "regua": "FFFFFF"
       }
@@ -5072,7 +5234,7 @@
         "fundo": "03132A",
         "painel": "06214C",
         "painel_alto": "093271",
-        "linha": "064374",
+        "linha": "4C92C9",
         "texto": "E2F2FD",
         "texto_fraco": "B4DCFB",
         "acento": "90CAF9",
@@ -5081,7 +5243,8 @@
         "painel_baixo": "06214A",
         "bloco": "2296F3",
         "menu_grande": "002B6E",
-        "regua": "3383FF"
+        "regua": "3383FF",
+        "barra": "2296F3"
       },
       "contraste": {
         "texto/fundo": 16.235042786097903,
@@ -5095,7 +5258,7 @@
         "fundo": "E2F2FD",
         "painel": "E2F2FD",
         "painel_alto": "E2F2FD",
-        "linha": "E2F2FD",
+        "linha": "04152F",
         "texto": "04152F",
         "texto_fraco": "04152F",
         "acento": "04152F",
@@ -5110,7 +5273,7 @@
         "fundo": "90CAF9",
         "painel": "90CAF9",
         "painel_alto": "90CAF9",
-        "linha": "90CAF9",
+        "linha": "042744",
         "texto": "0A6FC1",
         "texto_fraco": "095DA2",
         "acento": "08528F",
@@ -5129,7 +5292,7 @@
         "fundo": "F3FBFB",
         "painel": "DCF4F2",
         "painel_alto": "C1ECE8",
-        "linha": "C2D4EA",
+        "linha": "54729A",
         "texto": "09092A",
         "texto_fraco": "0E1A29",
         "acento": "232F72",
@@ -5138,7 +5301,8 @@
         "painel_baixo": "EBF9F7",
         "bloco": "3C70B1",
         "menu_grande": "C0F5F0",
-        "regua": "20ACA0"
+        "regua": "20ACA0",
+        "barra": "3C70B1"
       },
       "contraste": {
         "texto/fundo": 18.45067741873491,
@@ -5152,7 +5316,7 @@
         "fundo": "09092A",
         "painel": "09092A",
         "painel_alto": "09092A",
-        "linha": "09092A",
+        "linha": "E8F8F6",
         "texto": "E8F8F6",
         "texto_fraco": "E8F8F6",
         "acento": "E8F8F6",
@@ -5167,7 +5331,7 @@
         "fundo": "232F72",
         "painel": "232F72",
         "painel_alto": "232F72",
-        "linha": "232F72",
+        "linha": "F6F7FC",
         "texto": "6777D0",
         "texto_fraco": "6C7BD2",
         "acento": "919CDD",
@@ -5184,7 +5348,7 @@
         "fundo": "080826",
         "painel": "0E0F44",
         "painel_alto": "151666",
-        "linha": "1F3A5B",
+        "linha": "6886AD",
         "texto": "E8F8F6",
         "texto_fraco": "C4D5EB",
         "acento": "5062C9",
@@ -5193,7 +5357,8 @@
         "painel_baixo": "0E0E43",
         "bloco": "5184C4",
         "menu_grande": "060768",
-        "regua": "4144F1"
+        "regua": "4144F1",
+        "barra": "5184C4"
       },
       "contraste": {
         "texto/fundo": 17.882629468119873,
@@ -5209,7 +5374,7 @@
         "fundo": "E8F8F6",
         "painel": "E8F8F6",
         "painel_alto": "E8F8F6",
-        "linha": "E8F8F6",
+        "linha": "09092A",
         "texto": "09092A",
         "texto_fraco": "09092A",
         "acento": "E8F8F6",
@@ -5224,7 +5389,7 @@
         "fundo": "6474CF",
         "painel": "6A7AD1",
         "painel_alto": "7684D5",
-        "linha": "939EDE",
+        "linha": "13193D",
         "texto": "5062C9",
         "texto_fraco": "3C50C1",
         "acento": "EBEDF9",
@@ -5243,7 +5408,7 @@
         "fundo": "F9F9F6",
         "painel": "EDECE3",
         "painel_alto": "E0DDCD",
-        "linha": "DBD7D1",
+        "linha": "827A6B",
         "texto": "32012F",
         "texto_fraco": "1F1C18",
         "acento": "D06000",
@@ -5252,7 +5417,8 @@
         "painel_baixo": "F5F4EE",
         "bloco": "857A68",
         "menu_grande": "E6E2CF",
-        "regua": "857B47"
+        "regua": "857B47",
+        "barra": "88815E"
       },
       "contraste": {
         "texto/fundo": 16.857580448727898,
@@ -5262,13 +5428,14 @@
         "texto/tinta": 16.26247571347003
       },
       "avisos": [
-        "acento ajustado (ficou 3.31)"
+        "acento ajustado (ficou 3.31)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "32012F",
         "painel": "32012F",
         "painel_alto": "32012F",
-        "linha": "32012F",
+        "linha": "000000",
         "texto": "F3F2EC",
         "texto_fraco": "F3F2EC",
         "acento": "32012F",
@@ -5283,7 +5450,7 @@
         "fundo": "B85500",
         "painel": "AD5000",
         "painel_alto": "9C4800",
-        "linha": "994600",
+        "linha": "180B00",
         "texto": "D06000",
         "texto_fraco": "D56200",
         "acento": "261200",
@@ -5300,7 +5467,7 @@
         "fundo": "2D012A",
         "painel": "50024B",
         "painel_alto": "780271",
-        "linha": "453F36",
+        "linha": "968D7F",
         "texto": "F3F2EC",
         "texto_fraco": "DCD9D3",
         "acento": "F97300",
@@ -5309,7 +5476,8 @@
         "painel_baixo": "4F024A",
         "bloco": "988E7C",
         "menu_grande": "6E0068",
-        "regua": "FF33F3"
+        "regua": "FF33F3",
+        "barra": "FF33F3"
       },
       "contraste": {
         "texto/fundo": 16.290050858175157,
@@ -5323,7 +5491,7 @@
         "fundo": "F3F2EC",
         "painel": "F3F2EC",
         "painel_alto": "F3F2EC",
-        "linha": "F3F2EC",
+        "linha": "32012F",
         "texto": "32012F",
         "texto_fraco": "32012F",
         "acento": "32012F",
@@ -5338,7 +5506,7 @@
         "fundo": "F97300",
         "painel": "F97300",
         "painel_alto": "FF8F2E",
-        "linha": "FF8F2E",
+        "linha": "3E1D00",
         "texto": "B25200",
         "texto_fraco": "9A4700",
         "acento": "532600",
@@ -5357,16 +5525,17 @@
         "fundo": "FBFAF3",
         "painel": "F4EFDC",
         "painel_alto": "ECE3C1",
-        "linha": "EEE0BF",
+        "linha": "A0874E",
         "texto": "15171E",
         "texto_fraco": "2B220C",
         "acento": "B4752B",
         "tinta": "F8F5E7",
         "papel": "FAF8EF",
         "painel_baixo": "F9F6EB",
-        "bloco": "BB9232",
+        "bloco": "9F7C2A",
         "menu_grande": "F5EAC0",
-        "regua": "AC8F20"
+        "regua": "AC8F20",
+        "barra": "8D8361"
       },
       "contraste": {
         "texto/fundo": 17.10743361076213,
@@ -5376,7 +5545,8 @@
         "texto/tinta": 16.37085968252554
       },
       "avisos": [
-        "acento ajustado (ficou 3.30)"
+        "acento ajustado (ficou 3.30)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "15171E",
@@ -5397,14 +5567,14 @@
         "fundo": "9F6726",
         "painel": "936023",
         "painel_alto": "8A5A21",
-        "linha": "8A5A21",
+        "linha": "301F0B",
         "texto": "B4752B",
         "texto_fraco": "C07D2E",
         "acento": "241709",
         "tinta": "996325",
         "papel": "9C6525",
         "painel_baixo": "9C6525",
-        "bloco": "422B10",
+        "bloco": "211508",
         "menu_grande": "905E22",
         "regua": "3C270E"
       }
@@ -5414,7 +5584,7 @@
         "fundo": "13151B",
         "painel": "222530",
         "painel_alto": "333748",
-        "linha": "614B1A",
+        "linha": "B39B62",
         "texto": "F8F4E8",
         "texto_fraco": "EEE1C1",
         "acento": "DAA464",
@@ -5423,7 +5593,8 @@
         "painel_baixo": "21242F",
         "bloco": "CEA547",
         "menu_grande": "2A2F44",
-        "regua": "828DB0"
+        "regua": "828DB0",
+        "barra": "B2BDDF"
       },
       "contraste": {
         "texto/fundo": 16.59463322270718,
@@ -5432,12 +5603,14 @@
         "acento/painel": 6.8894986034629495,
         "texto/tinta": 17.838044836246116
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "F8F4E8",
         "painel": "F8F4E8",
         "painel_alto": "F8F4E8",
-        "linha": "F8F4E8",
+        "linha": "15171E",
         "texto": "15171E",
         "texto_fraco": "15171E",
         "acento": "15171E",
@@ -5452,7 +5625,7 @@
         "fundo": "DAA464",
         "painel": "DAA464",
         "painel_alto": "DAA464",
-        "linha": "E2B886",
+        "linha": "492F11",
         "texto": "9A6425",
         "texto_fraco": "895921",
         "acento": "5A3B15",
@@ -5471,16 +5644,17 @@
         "fundo": "FFFDF0",
         "painel": "FFF9D1",
         "painel_alto": "FFF5AD",
-        "linha": "FEDCAF",
+        "linha": "BB8032",
         "texto": "2F0404",
         "texto_fraco": "361F01",
         "acento": "C77100",
         "tinta": "FFFBE0",
         "papel": "FFFCEA",
         "painel_baixo": "FFFCE4",
-        "bloco": "E98704",
+        "bloco": "C37103",
         "menu_grande": "FFF6B6",
-        "regua": "CCB300"
+        "regua": "CCB300",
+        "barra": "908A67"
       },
       "contraste": {
         "texto/fundo": 18.035609818998598,
@@ -5490,7 +5664,8 @@
         "texto/tinta": 17.655666790883323
       },
       "avisos": [
-        "acento ajustado (ficou 3.41)"
+        "acento ajustado (ficou 3.41)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "2F0404",
@@ -5511,14 +5686,14 @@
         "fundo": "AC6200",
         "painel": "A96000",
         "painel_alto": "A35C00",
-        "linha": "925300",
+        "linha": "382000",
         "texto": "C77100",
         "texto_fraco": "D17700",
         "acento": "2E1A00",
         "tinta": "A96000",
         "papel": "AC6200",
         "painel_baixo": "AC6200",
-        "bloco": "502D00",
+        "bloco": "2B1800",
         "menu_grande": "A65E00",
         "regua": "673A00"
       }
@@ -5528,7 +5703,7 @@
         "fundo": "2A0404",
         "painel": "4B0707",
         "painel_alto": "700A0A",
-        "linha": "784602",
+        "linha": "CE9447",
         "texto": "FFFBE0",
         "texto_fraco": "FEDDB2",
         "acento": "FF9B17",
@@ -5537,7 +5712,8 @@
         "painel_baixo": "4A0707",
         "bloco": "FB9B1A",
         "menu_grande": "6E0000",
-        "regua": "FF3333"
+        "regua": "FF3333",
+        "barra": "DCB2AD"
       },
       "contraste": {
         "texto/fundo": 18.00985518941852,
@@ -5546,12 +5722,14 @@
         "acento/painel": 7.468618337324743,
         "texto/tinta": 18.92164157217064
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FFFBE0",
         "painel": "FFFBE0",
         "painel_alto": "FFFBE0",
-        "linha": "FFFBE0",
+        "linha": "2F0404",
         "texto": "2F0404",
         "texto_fraco": "2F0404",
         "acento": "2F0404",
@@ -5566,7 +5744,7 @@
         "fundo": "FF9B17",
         "painel": "FF9B17",
         "painel_alto": "FF9B17",
-        "linha": "FFB655",
+        "linha": "4F2D00",
         "texto": "A75F00",
         "texto_fraco": "945400",
         "acento": "663A00",
@@ -5585,7 +5763,7 @@
         "fundo": "FFFDF0",
         "painel": "FEF9D2",
         "painel_alto": "FDF3B0",
-        "linha": "F7C6B6",
+        "linha": "AF5B3E",
         "texto": "2F0904",
         "texto_fraco": "321106",
         "acento": "CF6D04",
@@ -5594,7 +5772,8 @@
         "painel_baixo": "FEFBE5",
         "bloco": "D54818",
         "menu_grande": "FFF5B6",
-        "regua": "CCB300"
+        "regua": "CCB300",
+        "barra": "908A67"
       },
       "contraste": {
         "texto/fundo": 17.69858388546009,
@@ -5604,13 +5783,14 @@
         "texto/tinta": 17.30254274749929
       },
       "avisos": [
-        "acento ajustado (ficou 3.37)"
+        "acento ajustado (ficou 3.37)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "2F0904",
         "painel": "2F0904",
         "painel_alto": "2F0904",
-        "linha": "2F0904",
+        "linha": "FEFBE1",
         "texto": "FEFBE1",
         "texto_fraco": "FEFBE1",
         "acento": "2F0904",
@@ -5625,7 +5805,7 @@
         "fundo": "B35E03",
         "painel": "AC5B03",
         "painel_alto": "A95903",
-        "linha": "8A4903",
+        "linha": "FFF8F0",
         "texto": "CF6D04",
         "texto_fraco": "CF6D04",
         "acento": "301901",
@@ -5642,7 +5822,7 @@
         "fundo": "2A0804",
         "painel": "4B0F06",
         "painel_alto": "71170A",
-        "linha": "6E250C",
+        "linha": "C26F53",
         "texto": "FEFBE1",
         "texto_fraco": "F7C8B8",
         "acento": "FB9E3A",
@@ -5651,7 +5831,8 @@
         "painel_baixo": "4A0F06",
         "bloco": "E85D2D",
         "menu_grande": "6E0E00",
-        "regua": "FF4D33"
+        "regua": "FF4D33",
+        "barra": "DCB3AA"
       },
       "contraste": {
         "texto/fundo": 17.71052606127091,
@@ -5660,12 +5841,14 @@
         "acento/painel": 7.337759483869622,
         "texto/tinta": 18.675326622356113
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FEFBE1",
         "painel": "FEFBE1",
         "painel_alto": "FEFBE1",
-        "linha": "FEFBE1",
+        "linha": "2F0904",
         "texto": "2F0904",
         "texto_fraco": "2F0904",
         "acento": "2F0904",
@@ -5680,7 +5863,7 @@
         "fundo": "FB9E3A",
         "painel": "FB9E3A",
         "painel_alto": "FB9E3A",
-        "linha": "FB9E3A",
+        "linha": "2D1801",
         "texto": "B15D04",
         "texto_fraco": "884803",
         "acento": "6A3802",
@@ -5699,7 +5882,7 @@
         "fundo": "F5F5FA",
         "painel": "E2E1EF",
         "painel_alto": "CBCAE2",
-        "linha": "CBCEE1",
+        "linha": "63698A",
         "texto": "070F2C",
         "texto_fraco": "141623",
         "acento": "1B1A55",
@@ -5708,7 +5891,8 @@
         "painel_baixo": "EEEEF6",
         "bloco": "566097",
         "menu_grande": "CDCCE9",
-        "regua": "423E8E"
+        "regua": "423E8E",
+        "barra": "566097"
       },
       "contraste": {
         "texto/fundo": 17.3505451021349,
@@ -5722,7 +5906,7 @@
         "fundo": "070F2C",
         "painel": "070F2C",
         "painel_alto": "070F2C",
-        "linha": "070F2C",
+        "linha": "EBEBF4",
         "texto": "EBEBF4",
         "texto_fraco": "EBEBF4",
         "acento": "EBEBF4",
@@ -5737,7 +5921,7 @@
         "fundo": "1B1A55",
         "painel": "1B1A55",
         "painel_alto": "1B1A55",
-        "linha": "1B1A55",
+        "linha": "EBEBF9",
         "texto": "7776D5",
         "texto_fraco": "7776D5",
         "acento": "8180D8",
@@ -5754,7 +5938,7 @@
         "fundo": "060E27",
         "painel": "0B1846",
         "painel_alto": "112569",
-        "linha": "2D314E",
+        "linha": "777D9D",
         "texto": "EBEBF4",
         "texto_fraco": "CDD0E2",
         "acento": "6361CF",
@@ -5763,7 +5947,8 @@
         "painel_baixo": "0B1845",
         "bloco": "6B74AA",
         "menu_grande": "011A6D",
-        "regua": "3A64F8"
+        "regua": "3A64F8",
+        "barra": "6B74AA"
       },
       "contraste": {
         "texto/fundo": 16.113114256245847,
@@ -5779,7 +5964,7 @@
         "fundo": "EBEBF4",
         "painel": "EBEBF4",
         "painel_alto": "EBEBF4",
-        "linha": "EBEBF4",
+        "linha": "070F2C",
         "texto": "070F2C",
         "texto_fraco": "070F2C",
         "acento": "FFFFFF",
@@ -5794,7 +5979,7 @@
         "fundo": "7371D4",
         "painel": "7D7BD7",
         "painel_alto": "8D8BDC",
-        "linha": "9493DE",
+        "linha": "100F33",
         "texto": "5B59CD",
         "texto_fraco": "4846C7",
         "acento": "F2F2FB",
@@ -5813,7 +5998,7 @@
         "fundo": "FEF1FA",
         "painel": "FCD4F0",
         "painel_alto": "FAB3E4",
-        "linha": "E4B4F9",
+        "linha": "8E3AB3",
         "texto": "030530",
         "texto_fraco": "250433",
         "acento": "720455",
@@ -5822,7 +6007,8 @@
         "painel_baixo": "FDE6F6",
         "bloco": "9E12DB",
         "menu_grande": "FFB6E8",
-        "regua": "CC008D"
+        "regua": "CC008D",
+        "barra": "9E12DB"
       },
       "contraste": {
         "texto/fundo": 17.95134934146977,
@@ -5836,7 +6022,7 @@
         "fundo": "030530",
         "painel": "030530",
         "painel_alto": "030530",
-        "linha": "030530",
+        "linha": "FDE2F5",
         "texto": "FDE2F5",
         "texto_fraco": "FDE2F5",
         "acento": "FDE2F5",
@@ -5851,7 +6037,7 @@
         "fundo": "720455",
         "painel": "720455",
         "painel_alto": "720455",
-        "linha": "720455",
+        "linha": "FDD3F2",
         "texto": "E408AA",
         "texto_fraco": "F008B3",
         "acento": "FA74D7",
@@ -5868,7 +6054,7 @@
         "fundo": "02052C",
         "painel": "04084D",
         "painel_alto": "060D74",
-        "linha": "520A71",
+        "linha": "A24FC6",
         "texto": "FDE2F5",
         "texto_fraco": "E5B7F9",
         "acento": "C40792",
@@ -5877,7 +6063,8 @@
         "painel_baixo": "04084C",
         "bloco": "B128ED",
         "menu_grande": "00076E",
-        "regua": "333FFF"
+        "regua": "333FFF",
+        "barra": "B128ED"
       },
       "contraste": {
         "texto/fundo": 16.379988203436923,
@@ -5893,7 +6080,7 @@
         "fundo": "FDE2F5",
         "painel": "FDE2F5",
         "painel_alto": "FDE2F5",
-        "linha": "FDE2F5",
+        "linha": "FFFFFF",
         "texto": "030530",
         "texto_fraco": "030530",
         "acento": "FDE2F5",
@@ -5908,7 +6095,7 @@
         "fundo": "E208A8",
         "painel": "EC08AF",
         "painel_alto": "F726C0",
-        "linha": "F95CD0",
+        "linha": "FFFFFF",
         "texto": "C40792",
         "texto_fraco": "9D0675",
         "acento": "FEE1F6",
@@ -5927,16 +6114,17 @@
         "fundo": "FBF6F3",
         "painel": "F4E3DC",
         "painel_alto": "ECCEC0",
-        "linha": "D1D2DB",
+        "linha": "A96444",
         "texto": "0A1F29",
         "texto_fraco": "18191F",
         "acento": "A56F63",
         "tinta": "F8EDE7",
         "papel": "FAF3EF",
         "painel_baixo": "F9EFEA",
-        "bloco": "686C85",
+        "bloco": "CA5723",
         "menu_grande": "F5D1C0",
-        "regua": "AE4B1E"
+        "regua": "AE4B1E",
+        "barra": "9B7769"
       },
       "contraste": {
         "texto/fundo": 15.777303307997883,
@@ -5945,19 +6133,22 @@
         "acento/painel": 3.337621571096101,
         "texto/tinta": 14.713983078663324
       },
-      "avisos": [],
+      "avisos": [
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "18191F",
         "painel": "18191F",
         "painel_alto": "18191F",
-        "linha": "18191F",
+        "linha": "000000",
         "texto": "F8EDE7",
         "texto_fraco": "F8EDE7",
         "acento": "000000",
         "tinta": "18191F",
         "papel": "18191F",
         "painel_baixo": "18191F",
-        "bloco": "FFFFFF",
+        "bloco": "000000",
         "menu_grande": "18191F",
         "regua": "F8EDE7"
       },
@@ -5965,14 +6156,14 @@
         "fundo": "996459",
         "painel": "8C5B50",
         "painel_alto": "7B5047",
-        "linha": "7B5047",
+        "linha": "000000",
         "texto": "AB796D",
         "texto_fraco": "AA766B",
         "acento": "19100E",
         "tinta": "915F54",
         "papel": "976357",
         "painel_baixo": "946155",
-        "bloco": "F5EEED",
+        "bloco": "110B0A",
         "menu_grande": "7E5248",
         "regua": "F0E7E5"
       }
@@ -5982,16 +6173,17 @@
         "fundo": "091C25",
         "painel": "0F3242",
         "painel_alto": "174A63",
-        "linha": "363745",
+        "linha": "529EC3",
         "texto": "F8EDE7",
         "texto_fraco": "D3D4DC",
         "acento": "A77166",
         "tinta": "061319",
         "papel": "0C2632",
         "painel_baixo": "0F3141",
-        "bloco": "7C8098",
+        "bloco": "2DACE8",
         "menu_grande": "094765",
-        "regua": "47B6EB"
+        "regua": "47B6EB",
+        "barra": "2DACE8"
       },
       "contraste": {
         "texto/fundo": 15.159745209869127,
@@ -6001,13 +6193,14 @@
         "texto/tinta": 16.376697504989938
       },
       "avisos": [
-        "acento ajustado (ficou 3.34)"
+        "acento ajustado (ficou 3.34)",
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)"
       ],
       "osso_por_papel": {
         "fundo": "F8EDE7",
         "painel": "F8EDE7",
         "painel_alto": "F8EDE7",
-        "linha": "F8EDE7",
+        "linha": "18191F",
         "texto": "18191F",
         "texto_fraco": "18191F",
         "acento": "000000",
@@ -6022,14 +6215,14 @@
         "fundo": "AA766B",
         "painel": "B78B82",
         "painel_alto": "CCACA6",
-        "linha": "C09991",
+        "linha": "3F2924",
         "texto": "915E53",
         "texto_fraco": "7D5148",
         "acento": "1C1210",
         "tinta": "A77166",
         "papel": "B07F75",
         "painel_baixo": "B78B82",
-        "bloco": "221614",
+        "bloco": "4D322C",
         "menu_grande": "C9A7A1",
         "regua": "553731"
       }
@@ -6041,7 +6234,7 @@
         "fundo": "F8F6F6",
         "painel": "EBE5E5",
         "painel_alto": "DBD1D1",
-        "linha": "E7CDC5",
+        "linha": "956659",
         "texto": "1D1616",
         "texto_fraco": "271510",
         "acento": "AE6F00",
@@ -6050,7 +6243,8 @@
         "painel_baixo": "F3F0F0",
         "bloco": "A95B44",
         "menu_grande": "E0D4D4",
-        "regua": "725A5A"
+        "regua": "725A5A",
+        "barra": "9C7575"
       },
       "contraste": {
         "texto/fundo": 16.548875996052644,
@@ -6060,13 +6254,14 @@
         "texto/tinta": 14.912345160933821
       },
       "avisos": [
-        "acento ajustado (ficou 3.33)"
+        "acento ajustado (ficou 3.33)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "1D1616",
         "painel": "1D1616",
         "painel_alto": "1D1616",
-        "linha": "1D1616",
+        "linha": "FFFFFF",
         "texto": "F2EEEE",
         "texto_fraco": "F2EEEE",
         "acento": "000000",
@@ -6081,7 +6276,7 @@
         "fundo": "9D6400",
         "painel": "8E5B00",
         "painel_alto": "805100",
-        "linha": "805100",
+        "linha": "FFF7E9",
         "texto": "B47300",
         "texto_fraco": "B97600",
         "acento": "1A1100",
@@ -6098,7 +6293,7 @@
         "fundo": "1A1414",
         "painel": "2E2424",
         "painel_alto": "453636",
-        "linha": "572F23",
+        "linha": "A87A6D",
         "texto": "F2EEEE",
         "texto_fraco": "E8CFC7",
         "acento": "FFB22C",
@@ -6107,7 +6302,8 @@
         "painel_baixo": "2D2323",
         "bloco": "BC7059",
         "menu_grande": "402E2E",
-        "regua": "A58D8D"
+        "regua": "A58D8D",
+        "barra": "DCB1B2"
       },
       "contraste": {
         "texto/fundo": 15.804602672940371,
@@ -6116,12 +6312,14 @@
         "acento/painel": 8.361964465089146,
         "texto/tinta": 16.972514438602612
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "F2EEEE",
         "painel": "F2EEEE",
         "painel_alto": "F2EEEE",
-        "linha": "F2EEEE",
+        "linha": "1D1616",
         "texto": "1D1616",
         "texto_fraco": "1D1616",
         "acento": "1D1616",
@@ -6136,7 +6334,7 @@
         "fundo": "FFB22C",
         "painel": "FFB22C",
         "painel_alto": "FFB22C",
-        "linha": "FFB22C",
+        "linha": "281900",
         "texto": "965F00",
         "texto_fraco": "7D4F00",
         "acento": "6E4600",
@@ -6155,16 +6353,17 @@
         "fundo": "FFFEF0",
         "painel": "FFFBD1",
         "painel_alto": "FFF7AD",
-        "linha": "D9E1CB",
+        "linha": "7B8964",
         "texto": "2B1608",
         "texto_fraco": "1D2314",
         "acento": "D86B04",
         "tinta": "FFFCE0",
         "papel": "FFFDEA",
         "painel_baixo": "FFFCE4",
-        "bloco": "7D9657",
+        "bloco": "758D52",
         "menu_grande": "FFF8B6",
-        "regua": "CCB800"
+        "regua": "CCB800",
+        "barra": "758D52"
       },
       "contraste": {
         "texto/fundo": 16.942814014799506,
@@ -6195,14 +6394,14 @@
         "fundo": "B85B03",
         "painel": "B45903",
         "painel_alto": "B05703",
-        "linha": "9B4D03",
+        "linha": "2F1701",
         "texto": "D86B04",
         "texto_fraco": "D86B04",
         "acento": "361B01",
         "tinta": "B45903",
         "papel": "B85B03",
         "painel_baixo": "B45903",
-        "bloco": "3D1E01",
+        "bloco": "2F1701",
         "menu_grande": "B05703",
         "regua": "733902"
       }
@@ -6212,16 +6411,17 @@
         "fundo": "271407",
         "painel": "45240C",
         "painel_alto": "683612",
-        "linha": "414D2D",
+        "linha": "CA7F4B",
         "texto": "FFFCE0",
         "texto_fraco": "DAE2CD",
         "acento": "FDC086",
         "tinta": "1A0D05",
         "papel": "351B09",
         "painel_baixo": "44230C",
-        "bloco": "91A96C",
+        "bloco": "F57720",
         "menu_grande": "6B2F03",
-        "regua": "F6883C"
+        "regua": "F6883C",
+        "barra": "D9B5A1"
       },
       "contraste": {
         "texto/fundo": 17.027551644355917,
@@ -6230,12 +6430,15 @@
         "acento/painel": 8.645409418330306,
         "texto/tinta": 18.3499404462107
       },
-      "avisos": [],
+      "avisos": [
+        "enfeite no tom da régua (a segunda cor é fraca e sem parente)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FFFCE0",
         "painel": "FFFCE0",
         "painel_alto": "FFFCE0",
-        "linha": "FFFCE0",
+        "linha": "2B1608",
         "texto": "2B1608",
         "texto_fraco": "2B1608",
         "acento": "2B1608",
@@ -6250,14 +6453,14 @@
         "fundo": "FDC086",
         "painel": "FDC086",
         "painel_alto": "FDC086",
-        "linha": "FDC086",
+        "linha": "3F1F01",
         "texto": "B25803",
         "texto_fraco": "984C03",
         "acento": "854202",
         "tinta": "FDC086",
         "papel": "FDC086",
         "painel_baixo": "FDC086",
-        "bloco": "592C01",
+        "bloco": "4C2601",
         "menu_grande": "FDC086",
         "regua": "592C01"
       }
@@ -6269,16 +6472,17 @@
         "fundo": "F9F9F6",
         "painel": "ECECE4",
         "painel_alto": "DDDDD0",
-        "linha": "C1EBE5",
+        "linha": "529B90",
         "texto": "14151F",
         "texto_fraco": "0D2A25",
         "acento": "118AB2",
         "tinta": "F8F8E7",
         "papel": "F6F6F3",
         "painel_baixo": "F4F4EF",
-        "bloco": "3AB4A0",
+        "bloco": "2E9080",
         "menu_grande": "E2E2D2",
-        "regua": "7B7B51"
+        "regua": "7B7B51",
+        "barra": "2E9080"
       },
       "contraste": {
         "texto/fundo": 17.210447316240042,
@@ -6307,14 +6511,14 @@
         "fundo": "0F7CA0",
         "painel": "0E7394",
         "painel_alto": "0D6886",
-        "linha": "0D6C8B",
+        "linha": "052C38",
         "texto": "118AB2",
         "texto_fraco": "1399C5",
         "acento": "031921",
         "tinta": "0F7A9D",
         "papel": "0F7A9D",
         "painel_baixo": "0F789A",
-        "bloco": "083E50",
+        "bloco": "031C24",
         "menu_grande": "0D6C8B",
         "regua": "010C0F"
       }
@@ -6324,7 +6528,7 @@
         "fundo": "12131C",
         "painel": "1F2132",
         "painel_alto": "2F324C",
-        "linha": "1E5D53",
+        "linha": "66AEA3",
         "texto": "F2F2ED",
         "texto_fraco": "C4ECE6",
         "acento": "118AB2",
@@ -6333,7 +6537,8 @@
         "painel_baixo": "1F2132",
         "bloco": "4FC6B4",
         "menu_grande": "262949",
-        "regua": "7A81B8"
+        "regua": "7A81B8",
+        "barra": "4FC6B4"
       },
       "contraste": {
         "texto/fundo": 16.46581769434387,
@@ -6347,7 +6552,7 @@
         "fundo": "F2F2ED",
         "painel": "F2F2ED",
         "painel_alto": "F2F2ED",
-        "linha": "F2F2ED",
+        "linha": "14151F",
         "texto": "14151F",
         "texto_fraco": "14151F",
         "acento": "14151F",
@@ -6362,7 +6567,7 @@
         "fundo": "118AB2",
         "painel": "1295C0",
         "painel_alto": "15A8D8",
-        "linha": "79D4F2",
+        "linha": "073C4D",
         "texto": "0E7597",
         "texto_fraco": "0E6E8E",
         "acento": "031921",
@@ -6381,7 +6586,7 @@
         "fundo": "FAF8F4",
         "painel": "F1EADF",
         "painel_alto": "E6DAC6",
-        "linha": "CBD3E1",
+        "linha": "63718A",
         "texto": "0A0E29",
         "texto_fraco": "141A23",
         "acento": "4B5694",
@@ -6390,7 +6595,8 @@
         "painel_baixo": "F7F3EC",
         "bloco": "576E97",
         "menu_grande": "EEDFC7",
-        "regua": "9A7332"
+        "regua": "9A7332",
+        "barra": "4B5694"
       },
       "contraste": {
         "texto/fundo": 17.8725023334523,
@@ -6404,7 +6610,7 @@
         "fundo": "0A0E29",
         "painel": "0A0E29",
         "painel_alto": "0A0E29",
-        "linha": "0A0E29",
+        "linha": "FFFFFF",
         "texto": "F6F1EA",
         "texto_fraco": "F6F1EA",
         "acento": "F6F1EA",
@@ -6419,7 +6625,7 @@
         "fundo": "4B5694",
         "painel": "4B5694",
         "painel_alto": "4B5694",
-        "linha": "4B5694",
+        "linha": "F5F6FA",
         "texto": "6D78B5",
         "texto_fraco": "7681BA",
         "acento": "CFD3E7",
@@ -6436,7 +6642,7 @@
         "fundo": "090D25",
         "painel": "101741",
         "painel_alto": "182362",
-        "linha": "2D394E",
+        "linha": "78859D",
         "texto": "F6F1EA",
         "texto_fraco": "CDD5E2",
         "acento": "5D69AD",
@@ -6445,7 +6651,8 @@
         "painel_baixo": "101740",
         "bloco": "6B82AA",
         "menu_grande": "0A1764",
-        "regua": "495FE9"
+        "regua": "495FE9",
+        "barra": "495FE9"
       },
       "contraste": {
         "texto/fundo": 17.05338114415561,
@@ -6461,7 +6668,7 @@
         "fundo": "F6F1EA",
         "painel": "F6F1EA",
         "painel_alto": "F6F1EA",
-        "linha": "F6F1EA",
+        "linha": "0A0E29",
         "texto": "0A0E29",
         "texto_fraco": "0A0E29",
         "acento": "F6F1EA",
@@ -6476,7 +6683,7 @@
         "fundo": "6D78B5",
         "painel": "7580B9",
         "painel_alto": "868FC2",
-        "linha": "98A0CB",
+        "linha": "181B2F",
         "texto": "5D69AD",
         "texto_fraco": "4C5796",
         "acento": "EFF0F7",
@@ -6495,7 +6702,7 @@
         "fundo": "FEFAF1",
         "painel": "FCF0D4",
         "painel_alto": "FAE5B2",
-        "linha": "F5CBB8",
+        "linha": "AB6442",
         "texto": "300303",
         "texto_fraco": "301407",
         "acento": "DD5800",
@@ -6504,7 +6711,8 @@
         "painel_baixo": "FDF6E6",
         "bloco": "CF571E",
         "menu_grande": "FFEAB6",
-        "regua": "CC8F00"
+        "regua": "CC8F00",
+        "barra": "978364"
       },
       "contraste": {
         "texto/fundo": 17.682727910493302,
@@ -6514,13 +6722,14 @@
         "texto/tinta": 16.960900995906126
       },
       "avisos": [
-        "acento ajustado (ficou 3.39)"
+        "acento ajustado (ficou 3.39)",
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
       ],
       "osso_por_papel": {
         "fundo": "300303",
         "painel": "300303",
         "painel_alto": "300303",
-        "linha": "300303",
+        "linha": "000000",
         "texto": "FDF5E2",
         "texto_fraco": "FDF5E2",
         "acento": "300303",
@@ -6535,7 +6744,7 @@
         "fundo": "C34E00",
         "painel": "B84900",
         "painel_alto": "B14600",
-        "linha": "9B3E00",
+        "linha": "000000",
         "texto": "DD5800",
         "texto_fraco": "E25A00",
         "acento": "2C1200",
@@ -6552,7 +6761,7 @@
         "fundo": "2B0303",
         "painel": "4D0505",
         "painel_alto": "730707",
-        "linha": "6B2D10",
+        "linha": "BE7856",
         "texto": "FDF5E2",
         "texto_fraco": "F5CDBB",
         "acento": "FF6500",
@@ -6561,7 +6770,8 @@
         "painel_baixo": "4C0505",
         "bloco": "E16C34",
         "menu_grande": "6E0000",
-        "regua": "FF3333"
+        "regua": "FF3333",
+        "barra": "DCB2AD"
       },
       "contraste": {
         "texto/fundo": 17.3094758024724,
@@ -6570,12 +6780,14 @@
         "acento/painel": 5.310718071535464,
         "texto/tinta": 18.210258799832975
       },
-      "avisos": [],
+      "avisos": [
+        "barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)"
+      ],
       "osso_por_papel": {
         "fundo": "FDF5E2",
         "painel": "FDF5E2",
         "painel_alto": "FDF5E2",
-        "linha": "FDF5E2",
+        "linha": "300303",
         "texto": "300303",
         "texto_fraco": "300303",
         "acento": "300303",
@@ -6590,7 +6802,7 @@
         "fundo": "FF6500",
         "painel": "FF6500",
         "painel_alto": "FF7A22",
-        "linha": "FF8E44",
+        "linha": "3B1800",
         "texto": "BF4C00",
         "texto_fraco": "9D3E00",
         "acento": "512000",
@@ -6609,7 +6821,7 @@
         "fundo": "F1F1FD",
         "painel": "D6D6FA",
         "painel_alto": "B7B7F6",
-        "linha": "C1C0EC",
+        "linha": "52509D",
         "texto": "0F0B28",
         "texto_fraco": "0D0D2A",
         "acento": "162E93",
@@ -6618,7 +6830,8 @@
         "painel_baixo": "E7E7FC",
         "bloco": "3937B6",
         "menu_grande": "B6B6FF",
-        "regua": "0000CC"
+        "regua": "0000CC",
+        "barra": "3937B6"
       },
       "contraste": {
         "texto/fundo": 17.055232860397382,
@@ -6632,7 +6845,7 @@
         "fundo": "0F0B28",
         "painel": "0F0B28",
         "painel_alto": "0F0B28",
-        "linha": "0F0B28",
+        "linha": "E4E4FB",
         "texto": "E4E4FB",
         "texto_fraco": "E4E4FB",
         "acento": "E4E4FB",
@@ -6647,7 +6860,7 @@
         "fundo": "162E93",
         "painel": "162E93",
         "painel_alto": "162E93",
-        "linha": "162E93",
+        "linha": "C9D1F7",
         "texto": "5772E6",
         "texto_fraco": "5C76E7",
         "acento": "8DA0EE",
@@ -6664,16 +6877,17 @@
         "fundo": "0D0A24",
         "painel": "171140",
         "painel_alto": "231A60",
-        "linha": "1D1C5E",
+        "linha": "6665B0",
         "texto": "E4E4FB",
         "texto_fraco": "C3C3ED",
         "acento": "4362E3",
         "tinta": "090718",
         "papel": "120D31",
         "painel_baixo": "17113F",
-        "bloco": "4E4CC9",
+        "bloco": "605ECE",
         "menu_grande": "170C62",
-        "regua": "604DE5"
+        "regua": "604DE5",
+        "barra": "605ECE"
       },
       "contraste": {
         "texto/fundo": 15.459570201869855,
@@ -6689,14 +6903,14 @@
         "fundo": "E4E4FB",
         "painel": "E4E4FB",
         "painel_alto": "E4E4FB",
-        "linha": "E4E4FB",
+        "linha": "FFFFFF",
         "texto": "0F0B28",
         "texto_fraco": "0F0B28",
         "acento": "FFFFFF",
         "tinta": "E4E4FB",
         "papel": "E4E4FB",
         "painel_baixo": "E4E4FB",
-        "bloco": "E4E4FB",
+        "bloco": "FFFFFF",
         "menu_grande": "E4E4FB",
         "regua": "E4E4FB"
       },
@@ -6704,14 +6918,14 @@
         "fundo": "5672E6",
         "painel": "5F7AE7",
         "painel_alto": "6F87EA",
-        "linha": "6F87EA",
+        "linha": "ECEFFC",
         "texto": "3657E1",
         "texto_fraco": "1E40CD",
         "acento": "EFF2FD",
         "tinta": "536FE5",
         "papel": "5C77E7",
         "painel_baixo": "5F7AE7",
-        "bloco": "CDD5F8",
+        "bloco": "E9EDFC",
         "menu_grande": "657FE8",
         "regua": "E0E5FA"
       }
@@ -6723,7 +6937,7 @@
         "fundo": "FFF4F0",
         "painel": "FFDFD1",
         "painel_alto": "FFC6AD",
-        "linha": "FFBCAD",
+        "linha": "BE492F",
         "texto": "1B0033",
         "texto_fraco": "370A00",
         "acento": "500073",
@@ -6732,7 +6946,8 @@
         "painel_baixo": "FFECE4",
         "bloco": "ED2A00",
         "menu_grande": "FFCCB6",
-        "regua": "CC3F00"
+        "regua": "CC3F00",
+        "barra": "500073"
       },
       "contraste": {
         "texto/fundo": 17.7726863894191,
@@ -6746,7 +6961,7 @@
         "fundo": "1B0033",
         "painel": "1B0033",
         "painel_alto": "1B0033",
-        "linha": "1B0033",
+        "linha": "FFFFFF",
         "texto": "FFEAE0",
         "texto_fraco": "FFEAE0",
         "acento": "FFEAE0",
@@ -6761,7 +6976,7 @@
         "fundo": "500073",
         "painel": "500073",
         "painel_alto": "500073",
-        "linha": "500073",
+        "linha": "FBF2FF",
         "texto": "BF2CFF",
         "texto_fraco": "C540FF",
         "acento": "D36EFF",
@@ -6778,7 +6993,7 @@
         "fundo": "19002E",
         "painel": "2C0052",
         "painel_alto": "42007A",
-        "linha": "7A1600",
+        "linha": "D05D45",
         "texto": "FFEAE0",
         "texto_fraco": "FFBEB0",
         "acento": "AC00F7",
@@ -6787,7 +7002,8 @@
         "painel_baixo": "2B0050",
         "bloco": "FF3F16",
         "menu_grande": "3C006E",
-        "regua": "A133FF"
+        "regua": "A133FF",
+        "barra": "A133FF"
       },
       "contraste": {
         "texto/fundo": 16.744750010210673,
@@ -6803,7 +7019,7 @@
         "fundo": "FFEAE0",
         "painel": "FFEAE0",
         "painel_alto": "FFEAE0",
-        "linha": "FFEAE0",
+        "linha": "1B0033",
         "texto": "1B0033",
         "texto_fraco": "1B0033",
         "acento": "FFFFFF",
@@ -6818,7 +7034,7 @@
         "fundo": "BE28FF",
         "painel": "C643FF",
         "painel_alto": "D066FF",
-        "linha": "DB89FF",
+        "linha": "2B003E",
         "texto": "A900F3",
         "texto_fraco": "8A00C6",
         "acento": "FAEDFF",
@@ -6837,7 +7053,7 @@
         "fundo": "FEF5F0",
         "painel": "FDE1D3",
         "painel_alto": "FBC9B2",
-        "linha": "D1C5E7",
+        "linha": "6E5994",
         "texto": "171122",
         "texto_fraco": "181027",
         "acento": "412B6B",
@@ -6846,7 +7062,8 @@
         "painel_baixo": "FEEDE6",
         "bloco": "6846A7",
         "menu_grande": "FFCDB6",
-        "regua": "CC4100"
+        "regua": "CC4100",
+        "barra": "6846A7"
       },
       "contraste": {
         "texto/fundo": 17.1389091105687,
@@ -6860,7 +7077,7 @@
         "fundo": "171122",
         "painel": "171122",
         "painel_alto": "171122",
-        "linha": "171122",
+        "linha": "FDEBE2",
         "texto": "FDEBE2",
         "texto_fraco": "FDEBE2",
         "acento": "FDEBE2",
@@ -6875,7 +7092,7 @@
         "fundo": "412B6B",
         "painel": "412B6B",
         "painel_alto": "412B6B",
-        "linha": "412B6B",
+        "linha": "E4DDF1",
         "texto": "8F72C6",
         "texto_fraco": "8F72C6",
         "acento": "AD98D6",
@@ -6892,16 +7109,17 @@
         "fundo": "140F1F",
         "painel": "241A37",
         "painel_alto": "372853",
-        "linha": "362456",
+        "linha": "826EA7",
         "texto": "FDEBE2",
         "texto_fraco": "D3C8E8",
         "acento": "8161BF",
         "tinta": "0D0817",
         "papel": "1C142A",
         "painel_baixo": "241A36",
-        "bloco": "7C5BBA",
+        "bloco": "7E5DBB",
         "menu_grande": "2F1D51",
-        "regua": "8B6AC8"
+        "regua": "8B6AC8",
+        "barra": "7E5DBB"
       },
       "contraste": {
         "texto/fundo": 16.2435919779277,
@@ -6917,7 +7135,7 @@
         "fundo": "FDEBE2",
         "painel": "FDEBE2",
         "painel_alto": "FDEBE2",
-        "linha": "FDEBE2",
+        "linha": "000000",
         "texto": "171122",
         "texto_fraco": "171122",
         "acento": "FFFFFF",
@@ -6932,14 +7150,14 @@
         "fundo": "8B6EC4",
         "painel": "9479C9",
         "painel_alto": "A38BD0",
-        "linha": "A38BD0",
+        "linha": "0A0711",
         "texto": "7957BB",
         "texto_fraco": "6442A4",
         "acento": "F9F8FC",
         "tinta": "8769C2",
         "papel": "9073C6",
         "painel_baixo": "9479C9",
-        "bloco": "F2EFF9",
+        "bloco": "F4F2FA",
         "menu_grande": "9A81CC",
         "regua": "130C1F"
       }

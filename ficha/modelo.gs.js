@@ -79,6 +79,7 @@ function construir() {
     feito.push('cor de estado: ' + corDeEstado_(ss, idx));
     feito.push('notas: ' + notasDeRegra_(ss, idx));
     feito.push('protegidas: ' + protegerFormulas_(ss, idx));
+    feito.push('ficha pessoal: ' + configurarPessoal_(ss));
     feito.push('paleta: ' + configurarPaleta_(ss, true));
   } finally {
     ss.setSpreadsheetLocale('pt_BR');
@@ -212,6 +213,33 @@ function montarAba_(ss, spec) {
     aba.getRange(cx[1], cx[0], cx[2], 1).insertCheckboxes();
   });
 
+  // 01/10/2026, a FICHA PESSOAL: o formato de número, a nota da caixa, a cor de aviso e os grupos que fecham.
+  // Só a aba que declara cada um recebe; as outras saem como saíam.
+  (spec.formatos || []).forEach(function (f) { aba.getRange(f[0]).setNumberFormat(f[1]); });
+  (spec.notas || []).forEach(function (n) { aba.getRange(n[0]).setNote(n[1]); });
+  if ((spec.condicional || []).length) {
+    aba.setConditionalFormatRules(spec.condicional.map(function (c) {
+      var regra = SpreadsheetApp.newConditionalFormatRule().whenTextContains(c.contem)
+        .setRanges(c.faixas.map(function (a1) { return aba.getRange(a1); }));
+      if (c.fundo) regra.setBackground(c.fundo);
+      if (c.fonte) regra.setFontColor(c.fonte);
+      return regra.build();
+    }));
+  }
+  if (spec.grupos) {
+    // O botão de fechar fica ANTES do grupo: na linha do título da lista, e na coluna antes do painel.
+    var ANTES = SpreadsheetApp.GroupControlTogglePosition.BEFORE;
+    aba.setRowGroupControlPosition(ANTES);
+    aba.setColumnGroupControlPosition(ANTES);
+    // Cada grupo é [primeira, última, fechado, profundidade]. Um grupo pode morar dentro de outro (a extensão do
+    // painel de XP, dentro do painel): todos nascem primeiro, e depois fecham de dentro para fora.
+    var deDentro = function (a, b) { return b[3] - a[3]; };
+    (spec.grupos.lin || []).forEach(function (g) { aba.getRange(g[0], 1, g[1] - g[0] + 1, 1).shiftRowGroupDepth(1); });
+    (spec.grupos.col || []).forEach(function (g) { aba.getRange(1, g[0], 1, g[1] - g[0] + 1).shiftColumnGroupDepth(1); });
+    (spec.grupos.lin || []).slice().sort(deDentro).forEach(function (g) { if (g[2]) aba.getRowGroup(g[0], g[3]).collapse(); });
+    (spec.grupos.col || []).slice().sort(deDentro).forEach(function (g) { if (g[2]) aba.getColumnGroup(g[0], g[3]).collapse(); });
+  }
+
   if (spec.oculta) aba.hideSheet();
   return spec.nome + ': ' + spec.vals.length + ' células, ' + formulas.length +
        ' fórmulas, ' + spec.imgs.length + ' imagens';
@@ -227,15 +255,28 @@ function mat_(nr, nc, valor) {
   return m;
 }
 
-/** As fórmulas da fila, uma a uma, depois que todas as abas existem. */
+/**
+ * As fórmulas da fila, depois que todas as abas existem. As vizinhas na mesma coluna vão numa chamada só.
+ *
+ * Até 01/10/2026 era uma chamada por fórmula. Com a FICHA PESSOAL e as tabelas dela na DADOS as fórmulas passaram
+ * de 280 para quase 700, e uma a uma elas comiam o tempo do construir(). A coluna de uma tabela é uma faixa só.
+ */
 function escreverFormulas_(ss) {
   var n = 0;
   PENDENTES_.forEach(function (p) {
     var aba = ss.getSheetByName(p[0]);
-    p[1].forEach(function (f) {
-      aba.getRange(f[0], f[1]).setFormula(f[2]);
-      n++;
-    });
+    var fila = p[1].slice().sort(function (a, b) { return a[1] - b[1] || a[0] - b[0]; });
+    var i = 0;
+    while (i < fila.length) {
+      var j = i, bloco = [[fila[i][2]]];
+      while (j + 1 < fila.length && fila[j + 1][1] === fila[i][1] && fila[j + 1][0] === fila[j][0] + 1) {
+        j++;
+        bloco.push([fila[j][2]]);
+      }
+      aba.getRange(fila[i][0], fila[i][1], bloco.length, 1).setFormulas(bloco);
+      n += bloco.length;
+      i = j + 1;
+    }
   });
   return n;
 }

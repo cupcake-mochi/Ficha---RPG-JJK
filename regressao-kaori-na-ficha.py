@@ -399,7 +399,9 @@ def _modelo(c):
     g = dict(zip(_ATR, grandes))
     mae = 1 + sum(1 for x in _MAE if x <= c["nivel"])
     b = lambda k_: c["buff"].get(k_, 0)
-    out["defesa"] = str(_regra(c["nivel"], g["Destreza"], "", c["refino_m"])[0] + b("defesa"))
+    # 01/10/2026: o EQUIPAMENTO da FICHA espelha a FICHA PESSOAL, e a ficha nasce vestindo o uniforme do kit
+    # inicial. O modelo veste o mesmo, lido da ficha gerada: com ele o cobrir-se fica desligado.
+    out["defesa"] = str(_regra(c["nivel"], g["Destreza"], _VESTE_DE_FABRICA, c["refino_m"])[0] + b("defesa"))
     out["iniciativa"] = f"d20 + {g['Destreza'] + b('iniciativa')}"
     out["cd de feitiço"] = str(int(_mcd8.group(1)) + g[c["atr_conj"]] + mae + b("cd de feitiço"))
     out["conjuração"] = f"d20 + {g[c['atr_conj']] + mae + b('conjuração')}"
@@ -452,6 +454,10 @@ CASOS2 = [
 if not all(o_ in _ORIGENS for o_ in (_R["sem_energia"], _ST)):
     print("a origem sem energia ou a Sem Técnica não estão no menu de Origem"); sys.exit(1)
 # a célula de cada atributo escolhido sai da própria fórmula, e não de coordenada decorada
+import ficha_pessoal as _fpm
+_VESTE_DE_FABRICA = load_workbook(ARQ)[_fpm.NOME][_fpm.geometria(_fpm.regras(CAT))["vestindo"]].value
+if _VESTE_DE_FABRICA not in _EQ["uniformes"]:
+    print(f"a FICHA PESSOAL nasce vestindo {_VESTE_DE_FABRICA!r}, que não é uniforme do catálogo"); sys.exit(1)
 _wb0 = load_workbook(ARQ)["FICHA"]
 _SEL = {}
 for _k in ("conjuração", "corpo a corpo", "à distância"):

@@ -20,7 +20,7 @@ python3 ficha-v01/monta.py
 ./rodar-tudo.sh
 ```
 
-Sai o `apps-script/Ficha.gs`. Se os dezesseis validadores não passarem, não sobe.
+Sai o `apps-script/Ficha.gs`. Se os vinte validadores não passarem, não sobe.
 
 > **O `ficha/monta.py` foi aposentado em 14/09/2026, no B18.** *Ele ficou dez versões atrás da planilha viva, e o `Ficha.gs` que ele gerava montava uma ficha antiga.*
 
@@ -52,7 +52,7 @@ No seletor de funções, escolhe **`construir`** e clica em **▶ Executar**.
 
 Na primeira vez ele pede autorização: **Revisar permissões** → tua conta → **Avançado** → **Acessar** → **Permitir**.
 
-**Demora.** São seis abas, mais de mil células com valor, seis imagens e as caixas de seleção. Conta com um a dois minutos, e não é travamento.
+**Demora.** São oito abas, milhares de células com valor, as imagens e as caixas de seleção. Antes da `FICHA PESSOAL` levava de um a dois minutos; com ela a montagem ganhou 340 mesclagens, e o tempo novo ainda não foi medido no Sheets. Não é travamento.
 
 Quando terminar, o registro escreve:
 

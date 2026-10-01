@@ -350,6 +350,160 @@ _ok("equipamento: a Defesa, o uniforme que desliga, o escudo que soma e os dois 
     and EQ.get("dois_tetos") == "vale o menor" and "com teto de Destreza diferente, vale o menor dos dois" in MANN,
     str({k: EQ.get(k) for k in ("formula", "uniforme_desliga_a_protecao_de_energia", "escudo_soma_por_cima", "dois_tetos")}))
 
+print("\nAS ARMAS, O TREINO, A CARGA, O SALÁRIO E AS MISSÕES, CONTRA O MANUAL")
+# 01/10/2026: a FICHA PESSOAL lê as chaves `equipamento`, `patentes` e `missoes`. Cada tabela e cada frase delas é
+# relida do manual.txt aqui, e nenhum número está escrito neste trecho. A chave `fora_do_livro` guarda o que o Mizuki
+# decidiu e o livro ainda não tem: ela é declarada no `_meta`, e não é conferida.
+EQP, PAT, MIS = CAT.get("equipamento", {}), CAT.get("patentes", {}), CAT.get("missoes", {})
+
+
+def _trecho(ini, fim):
+    """as linhas do manual.txt entre a linha que é `ini` e a primeira que começa com `fim`"""
+    for _i, _l in enumerate(_LIN):
+        if _l.strip() == ini:
+            for _j in range(_i + 1, len(_LIN)):
+                if _LIN[_j].strip().startswith(fim):
+                    return _LIN[_i + 1:_j]
+            return _LIN[_i + 1:]
+    return []
+
+
+# --- as 52 armas: a linha da tabela é nome, categoria, mão, dado, propriedades, Força e Volume, e às vezes o número
+#     da página colado no fim. O cabeçalho de cada lista de treino fica numa linha só dele.
+_rx_arma = re.compile(r"^\s*(\S.*?)\s{2,}(\S.*?)\s{2,}([12])\s+(\d*d\d+)\s+(\S.*?)\s{2,}(—|\d+)\s+(leve|\d+)(?:\s+\d+)?\s*$")
+_listas = {"Treino simples": "Simples", "Treino marcial": "Marciais", "Treino de fogo": "Arma de Fogo"}
+_armas_livro, _lista = {}, None
+_tab_armas = _trecho("CATÁLOGO DE ARMAS", "Lâmina Curta")
+for _i, _l in enumerate(_tab_armas):
+    if _l.strip() in _listas:
+        _lista = _listas[_l.strip()]
+        continue
+    _m = _rx_arma.match(_l)
+    if _m and _lista and _m.group(1) != "ARMA":
+        _nome, _props = _m.group(1), _m.group(5)
+        # a linha que não coube: as propriedades terminam em "·", e a de baixo traz o resto delas e, quando o nome
+        # também quebrou, o resto do nome na primeira coluna ("Metralhadora" / "Pesada ... Volumosa")
+        if _props.rstrip().endswith("·"):
+            _resto = re.split(r"\s{2,}", next(x for x in _tab_armas[_i + 1:] if x.strip()).strip())
+            _props += " " + _resto[-1]
+            if len(_resto) == 2:
+                _nome += " " + _resto[0]
+        _armas_livro[_nome] = {"categoria": _m.group(2), "mao": int(_m.group(3)), "dado": _m.group(4),
+                               "propriedades": [x.strip() for x in _props.split("·")],
+                               "requer_forca": _TRACO(_m.group(6)),
+                               "volume": "leve" if _m.group(7) == "leve" else int(_m.group(7)), "treino": _lista}
+_cat_armas = EQP.get("armas", {})
+_dif = [n for n in set(_armas_livro) | set(_cat_armas) if _armas_livro.get(n) != _cat_armas.get(n)]
+_ok(f"armas: as {len(_armas_livro)} do Catálogo de armas do livro são as do catálogo, coluna a coluna",
+    len(_armas_livro) == 52 and not _dif,
+    f"{len(_armas_livro)} no livro, {len(_cat_armas)} no catálogo · diferem: {sorted(_dif)[:4]}")
+_m = re.search(r"São (\d+), divididas em (\w+) categorias", MAN)
+_cats_livro = {}
+for _n, _a in _armas_livro.items():
+    _cats_livro.setdefault(_a["treino"], set()).add(_a["categoria"])
+_cat_listas = {k: set(v) for k, v in EQP.get("treino", {}).get("listas", {}).items()}
+_ok("treino: o livro declara 52 armas em treze categorias, e cada categoria cai numa lista só",
+    bool(_m) and int(_m.group(1)) == len(_cat_armas) and EXT.get(_m.group(2)) == sum(len(v) for v in _cat_listas.values())
+    and _cats_livro == _cat_listas and len(set().union(*_cat_listas.values())) == sum(len(v) for v in _cat_listas.values()),
+    f"livro {_cats_livro} · catálogo {_cat_listas}")
+_m = re.search(r"treinam (Arma de Fogo) e (Balestra), as duas que", MAN)
+_ok("treino: o conjurador treina Arma de Fogo e Balestra, e as duas são categorias do catálogo",
+    bool(_m) and list(_m.groups()) == EQP.get("treino", {}).get("conjurador_treina")
+    and all(c in set().union(*_cat_listas.values()) for c in _m.groups()), str(EQP.get("treino", {}).get("conjurador_treina")))
+
+# --- as faixas de projétil e a munição
+_tiro = {}
+for _l in _trecho("ARMAS DE TIRO", "ARMAS DE ARREMESSO"):
+    _m = re.match(r"^\s*(\S.*?)\s{2,}(\d+)\s*m\s{2,}(\d+)\s*m\s*$", _l)
+    if _m:
+        _tiro[_m.group(1)] = [int(_m.group(2)), int(_m.group(3))]
+_arr = " ".join(" ".join(_trecho("ARMAS DE ARREMESSO", "Munição")).split())
+_m = re.search(r"FAIXA LONGA (.+?) (\d+)\s*m (\d+)\s*m (.+)$", _arr)
+_arr_livro = {"armas": [x.strip() for x in (_m.group(1) + " " + _m.group(4)).split("·") if x.strip()],
+              "faixa": [int(_m.group(2)), int(_m.group(3))]} if _m else {}
+_fx = EQP.get("faixa_de_projetil", {})
+_ok(f"alcance: as {len(_tiro)} armas de tiro e as {len(_arr_livro.get('armas', []))} de arremesso têm as duas faixas do livro",
+    len(_tiro) == 11 and _tiro == _fx.get("tiro") and _arr_livro == _fx.get("arremesso"),
+    f"tiro {_tiro} · arremesso {_arr_livro}")
+_longo = {n for n, a in _cat_armas.items() if "Longo Alcance" in a["propriedades"]}
+_ok("alcance: toda arma com Longo Alcance tem faixa, e só elas",
+    _longo == set(_fx.get("tiro", {})) | set(_fx.get("arremesso", {}).get("armas", [])),
+    str(_longo ^ (set(_fx.get("tiro", {})) | set(_fx.get("arremesso", {}).get("armas", [])))))
+_mun = {}
+for _l in _trecho("MUNIÇÃO", "O Yumi"):
+    _m = re.match(r"^\s*(\d)\s{2,}(\S.*?)(?:\s{2,}\d+)?\s*$", _l)
+    if _m:
+        for _a in _m.group(2).split("·"):
+            _mun[_a.strip()] = int(_m.group(1))
+_ok(f"munição: o X de recarga das {len(_mun)} armas é o do livro, e são as que carregam Munição",
+    len(_mun) == 9 and _mun == EQP.get("municao")
+    and set(_mun) == {n for n, a in _cat_armas.items() if "Munição" in a["propriedades"]}, f"livro {_mun}")
+
+# --- o soco, a carga, a situação do Traje e o acesso por Grau
+_soco = {}
+for _l in _trecho("MAESTRIA                        NÍVEIS                         DADO", "Ele soma Força"):
+    _m = re.match(r"^\s*(\d)\s{2,}\d+\s*a\s*\d+\s{2,}(d\d+)\s*$", _l)
+    if _m:
+        _soco[_m.group(1)] = _m.group(2)
+_ok("soco: o dado por maestria é o do livro", len(_soco) == 4 and _soco == EQP.get("soco_por_maestria"), str(_soco))
+_vol_livro = {}
+for _tit, _nome in (("TRAJE", "Traje"), ("REVESTIMENTO", "Revestimento")):
+    for _g, _p, _t, _f, _v in _tabela(_tit, _num3, 4):
+        _vol_livro[f"{_nome} {_g}"] = "leve" if _v == "leve" else int(_v)
+for _g, _n, _p, _t, _f, _v in _tabela("ESCUDO", r"^\s*(\d)\s+(\S+)\s+(\d+)\s+(—|\d+)\s+(—|\d+)\s+(\S+)\s*$", 6):
+    _vol_livro[_n] = "leve" if _v == "leve" else int(_v)
+_V = EQP.get("volume", {})
+_m_lim = re.search(r"O seu limite é (\d+ \+ Força)", MAN)
+_m_leve = re.search(r"(\w+) coisas leves fazem (\d+) de Volume", MAN)
+_ok("carga: o limite, o Volume de cada uniforme e escudo, e dez leves valendo 1",
+    len(_vol_livro) == 9 and _vol_livro == _V.get("de_uniforme_e_escudo") and bool(_m_lim) and _m_lim.group(1) == _V.get("limite")
+    and bool(_m_leve) and abs(int(_m_leve.group(2)) / EXT[_m_leve.group(1).lower()] - _V.get("leve", 0)) < 1e-9,
+    f"livro {_vol_livro} · limite {_m_lim.group(1) if _m_lim else None}")
+_arred = "arredondando para baixo — nove leves são zero" in MAN
+print(f"  [--] carga: a soma dos leves não arredonda desde a {_V.get('soma_dos_leves', {}).get('desde')}; o manual.txt deste "
+      f"repositório {'ainda arredonda para baixo' if _arred else 'já não arredonda'}")
+_sit = [x.strip() for x in _trecho("SITUAÇÃO", "E existe uma vaga aberta") if x.strip()]
+_ok(f"situação do Traje: as {len(_sit)} da lista fechada do livro", len(_sit) == 8 and _sit == EQP.get("situacoes_do_traje"), str(_sit))
+_m = re.search(r"Revestimento exige (Grau \d) no degrau (\d) e (Grau \d) no degrau (\d)", MAN)
+_ok("acesso: o Revestimento 2 e o 3 pedem o Grau do livro",
+    bool(_m) and {f"Revestimento {_m.group(2)}": _m.group(1), f"Revestimento {_m.group(4)}": _m.group(3)} == EQP.get("grau_minimo"),
+    str(EQP.get("grau_minimo")))
+
+# --- o salário e as missões
+_sal = {}
+for _l in _LIN:
+    _m = re.match(r"^\s*(Grau \d|Especial)\s{2,}¥([\d.]+)\s{2,}¥", _l)
+    if _m:
+        _sal[_m.group(1)] = int(_m.group(2).replace(".", ""))
+_ok(f"salário: as {len(_sal)} patentes e o valor por mês são os do livro, e a ficha começa na primeira",
+    len(_sal) == 5 and _sal == PAT.get("salario_por_mes") and list(_sal)[0] == f"Grau {CAT['_meta']['grau_inicial']}", str(_sal))
+_tam = {}
+for _l in _trecho("Tamanho da missão", "DESCONTO DA SEMANA"):
+    _m = re.match(r"^\s*(curta|padrão|longa|final de arco)\s{2,}(\d+)\s{2,}\S", _l)
+    if _m:
+        _tam[_m.group(1)] = int(_m.group(2))
+_des = {}
+for _l in _trecho("Desconto da semana", "A contagem zera"):
+    _m = re.match(r"^\s*(\dª(?: e \dª)?)\s{2,}(\d+%)\s*$", _l)
+    if _m:
+        _des[_m.group(1)] = _m.group(2)
+_ok("missões: os quatro tamanhos e o desconto da semana são os do livro",
+    len(_tam) == 4 and _tam == MIS.get("tamanho") and len(_des) == 5 and _des == MIS.get("desconto_da_semana"), f"{_tam} · {_des}")
+_m = re.search(r"Você chega ao nível (\d+) por XP\. Você passa dele por feito\.", MAN)
+_lf = PR.get("limiar_do_feito", {})
+_ok("progressão: o limiar do feito é o nível da frase do livro", bool(_m) and int(_m.group(1)) == _lf.get("nivel") and _m.group(0) == _lf.get("regra"),
+    str(_lf))
+# --- o que fica fora do livro é declarado, e só isso fica de fora
+_conferidas = {c.split(" ")[0] for c in CAT["_meta"]["conferido_contra_o_livro"]}
+_fora = set(CAT["_meta"].get("fora_do_livro", []))
+_soltas = [k for k in CAT if not k.startswith("_") and k not in _conferidas and k not in _fora]
+_ok("toda chave do catálogo é conferida contra o livro ou declarada fora dele", not _soltas and _fora <= set(CAT), str(_soltas))
+_FL = CAT.get("fora_do_livro", {})
+_ok("fora do livro: os tipos de missão solo, os multiplicadores e os descontos têm nome e número",
+    all(isinstance(v, (int, float)) and v > 0 for k in ("missoes_solo", "xp_adicional", "desconto") for v in _FL.get(k, {}).values())
+    and len(_FL.get("missoes_solo", {})) == 2 and not set(_FL.get("missoes_solo", {})) & {t[0].upper() + t[1:] for t in MIS.get("tamanho", {})},
+    str({k: _FL.get(k) for k in ("missoes_solo", "xp_adicional", "desconto")}))
+
 print("\nO TEXTO DO CATÁLOGO, CONTRA O LIVRO")
 # B21, achado na v0.246 do sistema: com o texto velho do Rápido no catálogo, tudo saía verde, porque o
 # catálogo só conferia nome e contagem. Aqui cada frase que o catálogo diz ter tirado do livro tem de

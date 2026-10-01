@@ -82,7 +82,7 @@ A Kaori é nível 2, e ela já deixou passar **dois** defeitos:
 
 **Como é conferido.** *O `conferir-catalogo.py` lê as três tabelas e as três frases de regra do `manual.txt`; o `conferir-ficha-xlsx.py` confere a tabela, os dois menus, o índice, as três fórmulas e as notas; o `regressao-kaori-na-ficha.py` recalcula dez casos no LibreOffice, com os dois exemplos que o livro publica; e o `comparar-ficha-01.py` conta a limpeza.* **O catálogo foi à `v0.246`, junto do `manual.txt`.**
 
-> **⚠ Na sua mão:** *colar o `Codigo.gs` novo no projeto do Apps Script, rodar o `construir()` do `Ficha.gs` novo numa planilha nova, trocar a `A1` da central para `0.246`, e conferir no Sheets que o menu do refino escolhido vira número.* **Vai ter campo na Ficha Pessoal, e fica registrado** *(aba de itens e equipamentos, bio, foto e afins):* *a `Couraça` (+1 de Defesa vestindo uniforme) e a arma sem o requisito de Força, que tira a Destreza da Defesa.*
+> **⚠ Na sua mão:** *colar o `Codigo.gs` novo no projeto do Apps Script, rodar o `construir()` do `Ficha.gs` novo numa planilha nova, trocar a `A1` da central para `0.246`, e conferir no Sheets que o menu do refino escolhido vira número.* **Vai ter campo na Ficha Pessoal, e fica registrado** *(aba de itens e equipamentos, bio, foto e afins):* *a `Couraça` (+1 de Defesa vestindo uniforme) e a arma sem o requisito de Força, que tira a Destreza da Defesa.* **Fechado em 01/10/2026, no B26:** *a Ficha Pessoal existe. A `Couraça` saiu do livro na v0.270 do sistema, e o campo dela não entra, por decisão do Mizuki. A arma sem o requisito de Força ganhou a marca dela na aba, com a punição que ele decidiu no mesmo dia (desvantagem ao atacar com ela), que ainda não está no livro.*
 
 
 A ficha de papel não tem campo de equipamento, mas o capítulo 12 existe e **Traje e Revestimento desligam a proteção inicial**, que entra na Defesa.
@@ -1420,6 +1420,180 @@ ao fim" do relatório (46 e 58 s) conta a espera até o clique. Ele viu as cópi
 colado no orçamento de 25 s:** num dia lento, a última aba (o GLOSSÁRIO) passa pro clique seguinte, calada. Se um dia
 precisar de folga, o corte é gravar menos célula (hoje a fonte é gravada na aba inteira, e só a célula com texto
 precisa).
+
+### B26 · A Ficha Pessoal — **FEITA em 01/10/2026, e montada no Sheets pelo Mizuki no mesmo dia; o retorno dele é o B27**
+
+*Pedido do Mizuki em 30/09/2026: a aba de pertences e histórico do personagem. O desenho foi fechado com ele por
+estudo, em dezoito rodadas, antes de qualquer linha de gerador (`mockup/ficha-pessoal-estudo.html`).*
+
+**A aba `FICHA PESSOAL` nasce no gerador, entre a `FICHA` e a `DADOS`.** *Como o `GLOSSÁRIO`, ela não tem planilha
+viva por trás: é o `ficha-v01/ficha_pessoal.py` (a limpeza 22). São 87 linhas e 72 colunas: a folha vai de `A` a `AU`, com a largura de coluna, o cabeçalho e a lombada da `FICHA`, e
+o painel de XP vem depois, com cada coluna na largura do que guarda. Toda linha tem a mesma altura, e o título de
+cada seção ocupa duas linhas mescladas.*
+
+- **Dossiê:** *foto (12 colunas por 19 linhas, mais alta que larga), `Nome` (espelho da `CARTEIRA`), `Grau` (menu das
+  cinco patentes), idade, altura, olhos, cabelo, pele, gênero, aparência, história, personalidade, laços e anotações.*
+- **Em uso:** *`Mão principal` e `Mão secundária` (menus com o `Soco` e o que está nos equipáveis guardados; arma de
+  duas mãos ocupa a secundária, e arma `Versátil` abre a opção das duas mãos, com o dado um passo acima) e `Vestindo`
+  (menu que só lista o que o Grau libera). Embaixo de cada um, a linha de detalhe e as marcas de treino, de Força, de
+  Grau e do Selo de gesto.*
+- **Treino em armas:** *as 52 armas em 13 categorias, uma caixa de seleção por arma e uma por grupo, num grupo de
+  linhas que fecha.*
+- **Fileira:** *carga contra `5 + Força`, ienes, salário do Grau, requisito de Força e situação do Traje.*
+- **Equipáveis guardados** *(seis linhas com menu, duas livres) e* **itens guardados** *(doze linhas).*
+- **Painel de missões e XP,** *depois da coluna `AU`, num grupo de colunas que nasce fechado: duas tabelas de 50
+  missões (tipo, adicional, desconto e total), o XP total, o que falta para o próximo nível e a tabela de níveis.*
+- **Extensão do painel,** *num segundo grupo de colunas, dentro do primeiro, também fechado: mais duas tabelas de
+  50 missões, do mesmo tamanho. O XP total soma as quatro (200 linhas). Pedido dele: "já vi mt player lotando essas
+  tabelas".*
+
+**Três caixas da `FICHA` mudaram.** *O `EQUIPAMENTO` deixou de ser menu e espelha o que está vestido e o escudo da mão
+secundária, montando o mesmo nome que a tabela de equipamento da `DADOS` usa: a Defesa não mudou de conta. O `XP` mostra
+a soma das missões do painel. O `DESLOCAMENTO` cai pela metade com uniforme ou escudo sem a Força, ou com a carga
+acima do limite.* **A ficha nasce vestindo o `Traje 1`, que é o do kit inicial:** *antes o `EQUIPAMENTO` nascia
+vazio. Até o refino 2 a Defesa é a mesma; do refino 3 em diante o cobrir-se protege mais que o `Traje 1`, e quem
+quiser ele escolhe `Sem uniforme`.*
+
+**O catálogo ganhou quatro chaves.** *`equipamento` (as 52 armas, as listas de treino, as faixas de projétil, a
+munição, o soco, o Volume, as situações do Traje e o Grau mínimo do Revestimento), `patentes` (o salário) e `missoes`
+(os tamanhos e o desconto da semana) saem do livro da v0.330, e o `conferir-catalogo.py` relê cada tabela do
+`manual.txt` desta pasta, que é o da v0.263: bate tudo, coluna a coluna. A única regra em que o livro de hoje está à
+frente do `manual.txt` é a soma dos itens leves, que não arredonda mais (v0.327); a ficha segue o livro de hoje, e o
+validador imprime a diferença. A quarta chave, `fora_do_livro`, guarda o que ele decidiu em 01/10 e o livro ainda não
+tem.*
+
+**Regras que o Mizuki decidiu em 01/10/2026 e que ainda não estão no livro** *(a ficha já segue estas)*:
+
+| regra | o que ele decidiu |
+|---|---|
+| arma sem o requisito de Força | desvantagem ao atacar com ela |
+| uniforme ou escudo sem o requisito de Força | veste, com deslocamento pela metade e desvantagem em TR Físico |
+| carga acima do limite | a mesma punição, sem acumular |
+| missão solo | `Solo simples` 75 XP e `Solo complexa` 150 XP |
+| XP adicional | multiplicador: 1,25x, 1,50x ou 2x |
+| arredondamento do XP | múltiplo de 12,5, para baixo; quem dá 12,5 exato ainda paga, e menos que isso não paga |
+| situação do Traje | *fica para revisão dele; a nota da caixa repete o texto de hoje* |
+
+**O que o `Codigo.gs` faz pela aba, tudo em gatilho simples:** *a caixa do grupo marca e desmarca o grupo inteiro, e a
+da arma acerta a do grupo; escolher o Caminho marca o treino dele; anotar missão sobe o nível da `FICHA`; apagar o
+`Vol.` de um item traz a conta de volta; e três notas mudam com a ficha (o requisito de Força, a carga e a situação
+do Traje).*
+
+> **Quatro escolhas minhas que ele ainda não comentou, e que são fáceis de trocar:**
+> 1. *o XP só sobe o nível, nunca desce: quem começou a campanha acima do nível 2, ou sobe na mão, não perde o nível
+>    por anotar uma missão;*
+> 2. *o XP para de subir o nível no 20, que é o limiar do feito do livro; quem já passou dele sobe normalmente;*
+> 3. *desmarcar a caixa do grupo desmarca o grupo inteiro, e ela só aparece marcada com o grupo inteiro;*
+> 4. *o desconto do menu é metade a cada missão (50%, 25%, 12,5%, 6,25%), e o livro escreve 12% e 6%.*
+
+> **⚠ A troca de paleta ficou mais pesada.** *A aba tem 6.264 células (a `FICHA` tem 7.050). Cor e régua de todas as
+> abas deixaram de caber numa execução: a troca pinta a `CARTEIRA`, a `FICHA`, a `FICHA PESSOAL` e o `GLOSSÁRIO`, e o
+> resto termina no clique seguinte, sem aviso, como a arte já terminava. O `regressao-paleta.js` passou a cobrar isso,
+> e a estimativa do passo de régua passou a contar as faixas da aba.*
+> *A primeira versão da aba tinha 90 colunas e 7.380 células, com o painel na grade de 28 px e cada célula de missão
+> mesclada; o painel passou a ter colunas de largura própria, e a aba perdeu um terço das células e 481 mesclagens. Depois vieram as
+> duas linhas do título e a extensão, e ela foi a 87 linhas por 72 colunas.*
+
+**Toda linha da aba tem a mesma altura.** *A primeira versão dava 27 px às linhas de título de seção. Como a linha é da planilha inteira, duas linhas da lista de missões e uma da tabela de níveis saíam mais gordas que as vizinhas, e o Mizuki pediu para tirar ("dá certa agonia, a galera vai reclamar"). Em uma linha comum o título ficava pequeno, e ele pediu o equivalente a duas: o título de seção ocupa duas linhas mescladas, em Oswald 14. O `regressao-pessoal.js` cobra as duas coisas: nenhuma linha do corpo foge da altura padrão, e todo título ocupa duas linhas.*
+
+**Como foi conferido.** *O `regressao-ficha-pessoal.py` preenche doze casos na ficha gerada, manda o LibreOffice
+recalcular e compara com a regra montada do catálogo: as caixas da aba, a Defesa da `FICHA` pelo espelho, os menus que
+mudam, as 144 combinações de tipo, adicional e desconto, e o que falta para o próximo nível. O `regressao-pessoal.js`
+roda o script num Sheets de mentira montado do `ABAS`. O `regressao-construir.js` roda o `construir()` inteiro num
+Sheets de mentira rigoroso (método que o Apps Script não tem, faixa fora da aba, matriz de tamanho errado e mesclagem
+cruzada estouram), confere o que ficou montado e usa a planilha pelo `onEdit`. O `arnes-pessoal.py` planta trinta e um
+defeitos numa cópia e confere que cada um acende a checagem dele. O `medidas/ver-aba.py` desenha a aba a partir do `ABAS`, com os valores
+recalculados, para olhar e comparar com o estudo.* **Os vinte validadores passam.**
+
+> **O que só o Sheets diz, e falta ele testar:** *os dois grupos (o de linhas do treino e o de colunas do painel, que
+> nasce fechado), no computador e no celular; se os grupos sobrevivem à cópia da planilha; as caixas de seleção nos
+> títulos dos grupos; os menus que leem coluna com célula vazia; a cor de aviso; o formato do iene; os dois grupos de colunas, um dentro do outro; o tempo do
+> `construir()`, que ganhou 340 mesclagens (as fórmulas, que passaram de 280 para 801, agora vão em 143 lotes, e
+> não mais uma a uma); e o tempo real da troca de paleta.*
+
+### B27 · O cabeçalho do estudo, o título no acento, a barra do tema e a revisão das 122 paletas — **FEITO em 01/10/2026, e falta testar no Sheets**
+
+*O Mizuki montou a ficha com a Ficha Pessoal no Sheets, trocou de tema e mandou sete pontos. A troca de cor
+funciona; o que ele apontou é desenho e cor.*
+
+| o que ele apontou | o que mudou |
+|---|---|
+| o topo da Ficha Pessoal ficou pior que o do estudo | o cabeçalho voltou ao molde do estudo: a marca 呪術, o título e uma linha de apoio à esquerda; o nome e, embaixo, o Caminho, a Trilha e o nível à direita |
+| a `FICHA` devia ter o mesmo cabeçalho, como a `CARTEIRA` tem o dela | a `FICHA` ganhou o mesmo molde, com o título `FICHA DE REGISTRO`; a Ficha Pessoal copia dela e troca o título e a linha de apoio |
+| a faixa de título de seção devia se destacar, como no `GLOSSÁRIO` e no `CATÁLOGO` | a faixa da Ficha Pessoal usava o painel alto, o mesmo do rótulo; passou a usar o acento, que é o papel das faixas daquelas duas abas |
+| as barras não acompanham a paleta, inclusive a da carga | a barra cheia deixou de ser o osso escrito na fórmula e passou a ser uma cor do tema |
+| imagem e fonte em cor "nada a ver" (o roxo do `Alfazema · Claro`); revisar as 122 | duas regras novas na derivação das paletas e três no `Codigo.gs`, e as 122 foram olhadas uma a uma |
+| o aviso "Pense bem!" ao clicar no `+` do painel de XP | as fórmulas que moram em coluna ou linha de grupo ficaram sem trava |
+| o cabeçalho devia acompanhar o painel aberto | a faixa de tinta e a divisória de baixo dela vão até a última coluna da aba |
+
+**O cabeçalho é a limpeza 23, o `ficha-v01/cabecalho.py`.** *Roda logo depois do desenho da mesa e antes do índice,
+porque o nome da personagem muda de célula (de `D3` para `AB2`) e o índice da `DADOS` publica o endereço dele; o número
+da `CARTEIRA`, que lia `FICHA!D3`, passa a ler o lugar novo. O carimbo de versão continua, na linha de apoio da
+`FICHA` ("Projeto M · v0.258 · em dia"). A palavra `CATÁLOGO` saiu do cabeçalho: para o Mizuki, catálogo é a aba da
+invocação. A linha 3 perdeu a altura maior que tinha para o nome grande, e as cinco linhas ficaram iguais.*
+
+**A barra cheia mora numa célula da `DADOS`.** *As três barras da `FICHA` (vida, energia e integridade) e as duas da
+Ficha Pessoal (carga e XP) leem a conta `cor da barra cheia`, que nasce no osso de fábrica. A troca de tema ganhou um
+passo, o primeiro, que grava ali a `barra` do tema; nenhuma fórmula é reescrita. O âmbar e o vermelho de vida baixa
+continuam fixos, pela decisão A5.* **A barra do tema é viva onde pode e neutra onde não pode.** *Mostrei ao Mizuki três
+opções (neutra, viva e cor do texto) e ele respondeu: "porque não mescla? deixa a melhor opção a depender da paleta
+mesmo". A regra do `derivar.py`: a barra é a primeira cor viva do tema (a tinta de enfeite, depois a régua, depois o
+acento, cada uma acertada para ler 3,0 sobre o painel) que não é parente do âmbar nem do vermelho, medido no círculo
+de matiz do OKLCH (mais de 35 graus do vermelho e mais de 30 do âmbar, com croma de 0,08 para cima). Quando as três
+são da família do âmbar ou do vermelho, ela é neutra: o matiz da régua com pouca croma, clara nos temas escuros, como
+o osso era, e de tom médio nos claros.* **Das 122, 68 saem vivas e 54 neutras.** *Viva: o azul do Meia-Noite, o turquesa
+do Recife, o verde do Carnaval, e no Alfazema claro, que é todo dourado, o azul do acento. Neutra: o Brasa, o Rubi, o
+Kitsune, o Mizuki claro.*
+
+**A revisão das cores, com a medida que a puxou.** *Rodei a troca de verdade (o `convergirPaleta_` do `Codigo.gs`) nas
+122, num Sheets de mentira, e olhei o resultado tema por tema (`medidas/pintar-paletas.js` e `medidas/ver-paletas.py`).
+O `bloco` e a `linha` são a tinta de enfeite: só pintam a pincelada, a moldura da foto e as letras de enfeite (o
+呪術廻戦, o número da carteira, a lombada), e nenhuma célula os usa de fundo. Eles saíam da segunda cor do meio da
+paleta, no matiz que ela tivesse, e dois defeitos apareceram:*
+
+1. **Cor fraca entrando como terceira cor.** *No `Alfazema · Claro` a ficha é amarela, a borda é dourada, o acento é
+   azul e a tinta de enfeite saía num roxo acinzentado. Regra nova no `derivar.py`: se a tinta de enfeite tem pouca
+   croma (abaixo de 0,10, medida em OKLCH) e o matiz dela não é parente nem da régua nem do acento (mais de 40 graus dos
+   dois), ela vira um tom da própria régua. Pega 12 das 122: Alfazema (as duas), Sálvia (as duas), Ardósia claro, Terra
+   claro, Céu de Verão (as duas), Tengu escuro, Tanuki (as duas) e Momotaro escuro. Quando a cor tem força (o verde do
+   Carnaval, o turquesa do Recife, o magenta do Neon), ela fica.*
+2. **A rede de legibilidade trocando de matiz ao acaso.** *Quando uma letra ou uma imagem não lia sobre o fundo, o
+   `Codigo.gs` a trocava pela cor da paleta de contraste mais parecido, qualquer que fosse. Medido nas 122, em quatro
+   abas: a lombada era trocada em 585 células (350 por uma cor da variante oposta do tema, 160 pelo acento, 75 pelo
+   bloco), a marca e o número em 152, e o selo caía no bloco em três temas e numa cor da variante oposta em seis.
+   Regra nova, "ajusta o valor, não troca de cor": o `bloco` e a `linha` já saem do `derivar.py` lendo 3,5 e 3,0
+   sobre a tinta, o fundo e o papel, no mesmo matiz, mais escuros ou mais claros; a rede só oferece cor de texto; a
+   letra de enfeite é achada pelo endereço no `ABAS`, e não pela cor que tem (antes, bastava a rede trocar a lombada
+   pelo acento uma vez para ela ser "acento" em toda troca seguinte); e a imagem que não aparece vai para o acento do
+   tema e, se nem ele aparecer, para a cor dela no mesmo matiz. Nas 122: 673 imagens na cor do papel delas, 59 no
+   acento, nenhuma no terceiro caso.*
+
+*Fora o `bloco`, a `linha` e a `barra`, nenhum papel de nenhuma paleta mudou de hex: fundo, painéis, régua, acento e
+texto são os que ele já aprovou. O `PALETAS` do `Codigo.gs` deixou de ser colado à mão: o `derivar.py --aplicar` o
+reescreve, e o `conferir-ficha-xlsx.py` confere que os dois são iguais.*
+
+**Como foi conferido.** *O `regressao-paleta.js` ganhou nove checagens com referência que não depende do `Codigo.gs`:
+a barra gravada na célula certa com a cor do tema, as letras de enfeite no papel delas depois de uma e de duas
+trocas, a lombada que uma troca antiga deixou "acento" voltando para a linha, cada imagem das 122 na cor que a regra
+manda, e o `bloco`, a `linha` e a `barra` lendo sobre os fundos onde moram. O `arnes-paleta.py`, novo, planta sete
+defeitos numa cópia e confere que cada um acende a checagem dele (roda à mão: são oito rodadas, uns dois minutos). O
+`conferir-ficha-xlsx.py` ganhou quinze checagens (o cabeçalho das duas abas, o carimbo, a faixa no acento, as cinco
+barras, a rede só com cor de texto, o `PALETAS` igual ao derivado). O `comparar-ficha-01.py` cobra a limpeza 23 célula
+a célula. O `regressao-pessoal.js` cobra que nenhuma faixa travada encoste em grupo, e o `arnes-pessoal.py` ganhou a
+perturbação dela (são 31).* **Os vinte validadores passam.**
+
+> **Duas coisas que eu não mexi, para ele decidir:**
+> 1. **o título de seção da `FICHA`.** *Ela tem a caixa do número no acento e a faixa do título no painel alto, que é
+>    o desenho dele. Não mexi. Passar a faixa para o acento, como na Ficha Pessoal, é uma limpeza pequena.*
+> 2. **a régua de alguns temas é mais forte do que a paleta de origem.** *A derivação mede saturação em HLS, que engana
+>    no claro: um quase branco como `FFF5F5` (Blush) tem saturação 1,0 lá, e a régua sai vermelho vivo `CC0000`. É por
+>    isso que o `Alfazema · Claro` é uma ficha amarela de borda dourada. Ele disse que a maioria está boa, então não
+>    toquei em fundo, painel nem régua; se quiser, é outra rodada.*
+
+> **O que só o Sheets diz, e falta ele testar:** *a `SPARKLINE` lendo a cor de uma célula (a conta é a mesma, mas só o
+> Sheets desenha a barra); abrir e fechar o painel de XP sem o aviso da trava; o cabeçalho novo no computador e no
+> celular; e o tempo da troca, que ganhou um passo curto. Ficha montada antes desta data não tem a célula da barra: a
+> troca de tema pula o passo e a barra fica no osso, como estava. Para ganhar tudo, é rodar o `construir()` de novo.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 

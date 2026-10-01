@@ -33,6 +33,24 @@ for _a in LAY["abas"]:
     for _r in _a["celulas"]:
         if _r[2] is not None and (_a["nome"], _r[0]) not in _MEXIDAS:
             TESTEMUNHA.setdefault(_r[2], (_a["nome"], _r[0]))
+# 01/10/2026, limpeza 23: o cabecalho da FICHA no molde do estudo (cabecalho.py). Roda depois do desenho da mesa e
+# antes do indice, como no monta.py, porque o nome da personagem muda de celula.
+import cabecalho
+CAB = cabecalho.trocas(LAY_FL)
+cabecalho.aplica(LAY_FL, CAB)
+def _dentro_de_mescla_do_cabecalho(n, r, c):
+    """a celula esta dentro de uma caixa mesclada nova do cabecalho, e nao e o canto dela"""
+    for m in CAB["mescladas"].get(n, []):
+        (r1, c1), (r2, c2) = (indice_ficha._lc(x) for x in m.split(":"))
+        if r1 <= r <= r2 and c1 <= c <= c2 and (r, c) != (r1, c1):
+            return True
+    return False
+def _perfil_do_estilo(e):
+    """o estilo do layout ([fonte, fundo, bordas, alinha, formato]) na forma do perfil de uma celula"""
+    fonte, fundo, bordas, alinha, fmt = e
+    return {"fonte": list(fonte) if fonte else None, "fundo": fundo,
+            "borda": {l: list(v) for l, v in (bordas or {}).items()}, "alinha": list(alinha) if alinha else None,
+            "fmt": fmt or "General"}
 IX = indice_ficha.trocas(LAY_FL)
 LAY_IX = copy.deepcopy(LAY_FL)
 indice_ficha.aplica(LAY_IX, IX)
@@ -44,6 +62,13 @@ LAY_DE = copy.deepcopy(LAY_IX)
 defesa_equipamento.aplica(LAY_DE, DE)
 import ficha_automatica
 FA = ficha_automatica.trocas(LAY_DE)
+# 01/10/2026, limpeza 22: a FICHA PESSOAL. O que ela muda na FICHA (o EQUIPAMENTO e o XP viram espelho, o
+# DESLOCAMENTO cai pela metade com a punicao) e as tabelas dela na DADOS, depois do indice. Le o layout depois
+# da ficha automatica, como o monta.py o tem na hora.
+import ficha_pessoal
+LAY_FP = copy.deepcopy(LAY_DE)
+ficha_automatica.aplica(LAY_FP, FA)
+FP = ficha_pessoal.trocas(LAY_FP)
 # 19/09/2026: as celulas onde o gerador poe a divisoria entre a moldura e o miolo. Precisa do layout depois de
 # TODAS as limpezas de cima (a ficha automatica mexe nas linhas da FICHA), como o monta.py o tem na hora.
 import correcoes_borda
@@ -150,7 +175,7 @@ print(f"  original: {wa.sheetnames}")
 print(f"  gerada:   {wb_.sheetnames}")
 # 17/09/2026: o GLOSSARIO nasce so no gerador, sem planilha viva por tras -- nao tem original pra
 # comparar, entao ele sai da lista antes de cobrar igualdade, e so se confere que nao sumiu.
-_abas_novas = ["GLOSSÁRIO"]
+_abas_novas = ["GLOSSÁRIO", ficha_pessoal.NOME]
 _gerada_sem_novas = [n for n in wb_.sheetnames if n not in _abas_novas]
 # O original que o Mizuki exporta já traz o GLOSSARIO -- ele monta o construir() e exporta a planilha
 # pronta --, mas o desenho dela nao vem dali: vem do glossario.py. Comparar a aba dele com a gerada
@@ -242,6 +267,23 @@ for n in wa.sheetnames:
                     and all(pa[k] == pb[k] for k in pa if k != "valor")):
                 esperadas["fórmula de TR que passa a somar a maestria"] += 1
                 continue
+            # limpeza 23: o cabecalho no molde do estudo (01/10/2026). O VALOR tem de ser o que o cabecalho.py monta, e
+            # o ESTILO o que ele declara; a celula de dentro de uma caixa mesclada nova fica vazia e perde o estilo
+            # proprio; e a formula de outra aba que lia o nome no lugar antigo so muda o endereco.
+            _cab = CAB["celulas"].get(n, {}).get(coord)
+            if _cab is not None:
+                if _dentro_de_mescla_do_cabecalho(n, r, c):
+                    if pb["valor"] is None:
+                        esperadas["célula de dentro de caixa mesclada do cabeçalho novo"] += 1
+                        continue
+                elif pb["valor"] == _cab[0]:
+                    _est = _perfil_do_estilo(LAY_FL["estilos"][_cab[1]])
+                    if all(pb[k] == _est[k] for k in _est) or all(pa[k] == pb[k] for k in pa if k != "valor"):
+                        esperadas["célula do cabeçalho no molde do estudo"] += 1
+                        continue
+            elif pb["valor"] is None and _dentro_de_mescla_do_cabecalho(n, r, c):
+                esperadas["célula de dentro de caixa mesclada do cabeçalho novo"] += 1
+                continue
             # limpeza 13: o desenho da mesa (17/09/2026). O VALOR tem de ser o que o ficha_layout.py monta, e o
             # estilo tem de ser o de uma testemunha com o mesmo estilo no layout.
             _fl = FL["celulas"].get(n, {}).get(coord)
@@ -273,6 +315,15 @@ for n in wa.sheetnames:
                 _molde = perfil(sb[_fa[1]])
                 if pb["valor"] == _fa[0] and all(pb[k] == _molde[k] for k in pb if k != "valor"):
                     esperadas["célula da ficha automática"] += 1
+                    continue
+            # limpeza 22: a FICHA PESSOAL (01/10/2026). O VALOR tem de ser o que o ficha_pessoal.py monta, e o
+            # ESTILO tem de ser o da celula que ele declara como molde, na ficha gerada. Vem antes da limpeza 10
+            # porque o EQUIPAMENTO, que aquela deixava vazio, agora e formula.
+            _fpc = FP["celulas"].get(n, {}).get(coord)
+            if _fpc is not None:
+                _molde = perfil(sb[_fpc[1]])
+                if pb["valor"] == _fpc[0] and all(pb[k] == _molde[k] for k in pb if k != "valor"):
+                    esperadas["célula da FICHA PESSOAL: o espelho na FICHA e as tabelas na DADOS"] += 1
                     continue
             # limpeza 10: a Defesa com uniforme, escudo e refino escolhido (v0.246 do sistema, o B3). O
             # VALOR tem de ser o que o defesa_equipamento.py monta, e o ESTILO tem de ser o da celula que
@@ -368,6 +419,8 @@ for n in wa.sheetnames:
     for x in sorted(ma - mb):
         if x in FL["mescladas_sai"].get(n, []):      # limpeza 13: as caixas refeitas e a foto
             esperadas["mesclagem do desenho da mesa"] += 1
+        elif x in CAB["mescladas_sai"].get(n, []):   # limpeza 23: o cabecalho antigo
+            esperadas["mesclagem do cabeçalho no molde do estudo"] += 1
         elif x in FA["mescladas_sai"].get(n, []):    # limpeza 12: o cabecalho das Passivas dividido
             esperadas["mesclagem das Passivas refeita"] += 1
         else:
@@ -375,6 +428,8 @@ for n in wa.sheetnames:
     for x in sorted(mb - ma):
         if x in FL["mescladas"].get(n, []):          # limpeza 13: as caixas refeitas e a foto
             esperadas["mesclagem do desenho da mesa"] += 1
+        elif x in CAB["mescladas"].get(n, []):       # limpeza 23: a marca, o titulo, o apoio, o nome e o Caminho
+            esperadas["mesclagem do cabeçalho no molde do estudo"] += 1
         elif x in DE["mescladas"].get(n, []):        # limpeza 10: a caixa do refino escolhido
             esperadas["mesclagem da caixa do refino escolhido"] += 1
         elif x in FA["mescladas"].get(n, []):        # limpeza 12: as Passivas divididas e as linhas novas
@@ -398,6 +453,10 @@ for n in wa.sheetnames:
         if n in FL["larguras"] and ((va is None and c == FL["larguras"][n]) or (vb is None and c > FL["larguras"][n])):
             esperadas["coluna da margem da direita"] += 1
             continue
+        # limpeza 22: as colunas da DADOS depois do indice, onde moram as tabelas da FICHA PESSOAL
+        if n == "DADOS" and va is None and FP["dados_colunas"][0] - 1 <= c <= FP["dados_colunas"][1]:
+            esperadas["coluna da DADOS com as tabelas da FICHA PESSOAL"] += 1
+            continue
         if va and vb and abs(va - 3.63) < 0.01 and abs(vb - 4.0) < 0.01:
             trocadas += 1
             esperadas["largura 3,63 -> 4,0"] += 1
@@ -410,13 +469,20 @@ for n in wa.sheetnames:
     hb = {int(k): v.height for k, v in sb.row_dimensions.items() if v.height}
     for k in set(ha) | set(hb):
         if ha.get(k) != hb.get(k):
+            if k in CAB["alturas_sai"].get(n, []) and hb.get(k) is None:   # limpeza 23: sem o nome grande, a linha e igual as outras
+                esperadas["linha do cabeçalho que perde a altura do nome grande"] += 1
+                continue
             difs.append(f"{n}: altura da linha {k}: {ha.get(k)} != {hb.get(k)}")
     print(f"  alturas de linha: {len(ha)} original · {len(hb)} gerada")
 
     va = {(str(v.sqref), v.type, v.formula1) for v in sa.data_validations.dataValidation}
     vbs = {(str(v.sqref), v.type, v.formula1) for v in sb.data_validations.dataValidation}
     print(f"  menus suspensos: {len(va)} original · {len(vbs)} gerada")
-    for x in sorted(va - vbs): difs.append(f"{n}: menu {x} faltou")
+    for x in sorted(va - vbs):
+        if x[0] in FP["menus_sai"].get(n, []):          # limpeza 22: o EQUIPAMENTO deixou de ser menu
+            esperadas["menu do EQUIPAMENTO, que virou espelho da FICHA PESSOAL"] += 1
+        else:
+            difs.append(f"{n}: menu {x} faltou")
     _menus_de = {(m["onde"], m["tipo"], m["formula"]) for m in DE["menus"].get(n, [])}
     _troca_fa = FA["menus_troca"].get(n, {})
     _form_fa = FA.get("menus_formula", {}).get(n, {})

@@ -13,6 +13,11 @@ automaticamente, sem trocar de matiz, até passar ou até o script avisar.
 """
 import colorsys
 import json
+import math
+import os
+import sys
+
+AQUI = os.path.dirname(os.path.abspath(__file__))
 
 def rgb(h): return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
 def hexa(t): return "%02X%02X%02X" % tuple(max(0, min(255, round(c))) for c in t)
@@ -37,6 +42,52 @@ def de_hls(hh, l, s):
 
 def saturacao(h):
     return hls(h)[2]
+
+
+def oklch(h):
+    """Luz, croma e matiz como o olho mede (OKLCH). A saturação do HLS engana no claro: um quase branco como FFF5F5
+    tem saturação 1,0 lá, e croma 0,01 aqui. Serve para perguntar "essa cor tem força?" e "essas duas são parentes?"."""
+    f = lambda c: c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+    r, g, b = (f(c / 255) for c in rgb(h))
+    l = (0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b) ** (1 / 3)
+    m = (0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b) ** (1 / 3)
+    s = (0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b) ** (1 / 3)
+    L = 0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s
+    a = 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s
+    b_ = 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s
+    return L, math.hypot(a, b_), math.degrees(math.atan2(b_, a)) % 360
+
+
+def de_oklch(L, c, hh):
+    """a volta: luz, croma e matiz para hex. Se a cor não existe na tela, perde croma até existir."""
+    while True:
+        a, b_ = c * math.cos(math.radians(hh)), c * math.sin(math.radians(hh))
+        l = (L + 0.3963377774 * a + 0.2158037573 * b_) ** 3
+        m = (L - 0.1055613458 * a - 0.0638541728 * b_) ** 3
+        s = (L - 0.0894841775 * a - 1.2914855480 * b_) ** 3
+        lin = (4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+               -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+               -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s)
+        if all(-0.0005 <= x <= 1.0005 for x in lin) or c <= 0.001:
+            g = lambda x: 12.92 * x if x <= 0.0031308 else 1.055 * (max(x, 0) ** (1 / 2.4)) - 0.055
+            return hexa([g(max(0, min(1, x))) * 255 for x in lin])
+        c -= 0.004
+
+
+def oklab(h):
+    L, c, hh = oklch(h)
+    return L, c * math.cos(math.radians(hh)), c * math.sin(math.radians(hh))
+
+
+def distancia(a, b):
+    """quanto duas cores diferem para o olho (distância no OKLab)"""
+    return math.dist(oklab(a), oklab(b))
+
+
+def afastamento(a, b):
+    """quantos graus de matiz separam duas cores"""
+    d = abs(oklch(a)[2] - oklch(b)[2]) % 360
+    return min(d, 360 - d)
 
 # ---------------------------------------------------------------------------
 # AS TRINTA — nome escolhido, as quatro cores são a paleta real, sem mudar
@@ -176,6 +227,41 @@ def corrige_contraste(cor, contra_a, contra_b, alvo, escurecer, passos=60):
     return melhor, min(contraste(melhor, contra_a), contraste(melhor, contra_b))
 
 
+def le_sobre(cor, fundos, alvo, passos=80):
+    """A mesma cor, com a luminosidade andada até ler `alvo` sobre TODOS os fundos da lista. O matiz e a saturação
+    ficam: é a regra da revisão de 01/10/2026, "ajusta o valor, não troca de cor". Anda para o lado que afasta dos
+    fundos (escurece sobre fundo claro, clareia sobre fundo escuro)."""
+    pior = lambda c: min(contraste(c, f) for f in fundos)
+    if pior(cor) >= alvo:
+        return cor
+    hh, l, s = hls(cor)
+    escurecer = sum(lum(f) for f in fundos) / len(fundos) > 0.18
+    passo = (l / passos) if escurecer else ((1 - l) / passos)
+    melhor = cor
+    for _ in range(passos):
+        l = max(0.02, min(0.98, l - passo if escurecer else l + passo))
+        melhor = de_hls(hh, l, s)
+        if pior(melhor) >= alvo:
+            break
+    return melhor
+
+
+# As duas cores de estado da decisão A5 (a barra de vida a 50% e a 25%). A barra cheia de um tema não pode se
+# confundir com nenhuma delas.
+AMBAR, VERMELHO = "D89B3A", "C2334D"
+# Abaixo disto a segunda cor do tema é "fraca": tem matiz, mas não tem força para entrar como cor própria.
+CROMA_FRACA = 0.10
+# A croma da barra cheia: o bastante para se ver de que tema ela é, e longe da do âmbar (0,13) e da do vermelho (0,18).
+CROMA_DA_BARRA = 0.05
+# A barra cheia VIVA: a cor tem de ter força (croma) e ficar longe, no círculo, das duas cores de estado. O vermelho
+# mora em 15 graus e o âmbar em 75 (OKLCH): com estas folgas, sai da disputa tudo o que vai do magenta ao amarelo.
+CROMA_VIVA = 0.08
+LONGE_DO_VERMELHO = 35
+LONGE_DO_AMBAR = 30
+# Mais longe que isto no círculo, duas cores já não são parentes (análogas).
+GRAUS_DE_PARENTE = 40
+
+
 def com_sat(cor, l, fator_sat):
     hh, _, s = hls(cor)
     s = max(0.12, min(1.0, s * fator_sat))
@@ -188,7 +274,6 @@ def deriva_variante(escura, clara, acento, linha_base, modo):
     fundo = com_luz(ancora, F["fundo"])
     painel = com_luz(ancora, F["painel"])
     painel_alto = com_luz(ancora, F["painel_alto"])
-    linha = com_luz(linha_base, F["painel_alto"])
     texto = com_luz(clara if modo == "escuro" else escura, F["texto"])
     texto_fraco = com_luz(linha_base, F["texto"] * (0.9 if modo == "escuro" else 1.08))
     ac = acento
@@ -234,7 +319,6 @@ def deriva_variante(escura, clara, acento, linha_base, modo):
         papel = com_luz(ancora, 1 - (1 - F["fundo"]) * 1.35)
         painel_baixo = com_luz(ancora, 1 - (1 - F["fundo"]) * 1.75)
         regua_l, menu_l = 0.40, 1 - (1 - F["painel_alto"]) * 0.90
-    bloco = com_luz(linha_base, (F["painel_alto"] + F["texto"] * 0.9) / 2)
     menu_grande = com_sat(painel_alto, menu_l, 1.35)
     regua = com_sat(ancora, regua_l, 1.30)
 
@@ -257,12 +341,71 @@ def deriva_variante(escura, clara, acento, linha_base, modo):
             regua, fundo, fundo, 1.8, escurecer=(modo == "claro"))
         avisos.append(f"régua ajustada (ficou {pior_regua:.2f})")
 
+    # A TINTA DE ENFEITE — 01/10/2026, a revisão que o Mizuki pediu olhando o "Alfazema · Claro": a pincelada, a
+    # moldura da foto e as letras de enfeite (o 呪術廻戦, o número da carteira, a versão, a lombada) saíam num roxo
+    # acinzentado no meio de uma ficha amarela de borda dourada e acento azul. O `bloco` e a `linha` são o papel
+    # dessas coisas, e só delas: nenhuma célula os usa de fundo. Eles vinham da SEGUNDA cor do meio da paleta
+    # (linha_base), no matiz que ela tivesse. Duas regras entram, e as duas valem para os 122 temas:
+    #
+    #   1. Cor fraca não entra como terceira cor. Se a tinta de enfeite sai com pouca croma (abaixo de 0,10) e o
+    #      matiz dela não é parente nem da régua nem do acento (mais de 40 graus dos dois), ela não tem força para
+    #      ser uma cor do tema e só suja. Aí ela vira um tom da própria régua, que é a cor que já contorna a ficha
+    #      inteira. Quando ela tem força (o verde do Carnaval, o turquesa do Recife, o magenta do Neon), fica.
+    #   2. Ajusta o valor, não troca de cor. A tinta de enfeite tem de aparecer sobre os três fundos onde mora
+    #      (tinta, fundo e papel). Antes, quando não aparecia, a rede de legibilidade do Codigo.gs trocava por outra
+    #      cor qualquer da paleta, a de contraste mais parecido, e o matiz mudava ao acaso: a lombada caía no acento
+    #      em 160 casos e numa cor da variante oposta em 350. Agora o próprio tema já entrega a cor no mesmo matiz,
+    #      mais escura ou mais clara até ler: 3,5 para o bloco, que é o que ele lê na ficha de fábrica (3,5 a 3,8,
+    #      e a rede do Codigo.gs cobra de cada célula o contraste que ela tinha no desenho), e 3,0 para a linha,
+    #      que nasceu discreta.
+    onde_mora = [tinta, fundo, papel]
+    bloco_cru = com_luz(linha_base, (F["painel_alto"] + F["texto"] * 0.9) / 2)
+    fraca = oklch(bloco_cru)[1] < CROMA_FRACA
+    sem_parente = afastamento(bloco_cru, regua) > GRAUS_DE_PARENTE and afastamento(bloco_cru, ac) > GRAUS_DE_PARENTE
+    enfeite = regua if (fraca and sem_parente) else linha_base
+    if enfeite is regua:
+        avisos.append("enfeite no tom da régua (a segunda cor é fraca e sem parente)")
+    hh_e, _, s_e = hls(enfeite)
+    l_bloco = (F["painel_alto"] + F["texto"] * 0.9) / 2
+    bloco = le_sobre(de_hls(hh_e, l_bloco, max(s_e, 0.12)), onde_mora, 3.5)
+    linha = le_sobre(de_hls(hh_e, l_bloco, max(s_e * 0.6, 0.10)), onde_mora, 3.0)
+
+    # A BARRA CHEIA — mesma revisão. A barra de vida, de energia e de integridade (e a de carga e a de XP da FICHA
+    # PESSOAL) era o osso da ficha de fábrica em todo tema: um bege parado no meio de uma ficha rosa. O âmbar e o
+    # vermelho de vida baixa continuam fixos (decisão A5), então a cheia não pode se parecer com eles.
+    #
+    # Mostrei ao Mizuki três opções (neutra, viva e cor do texto) e ele respondeu: "porque não mescla? deixa a melhor
+    # opção a depender da paleta mesmo". A regra é essa:
+    #   - VIVA onde o tema tem uma cor viva que não é parente do âmbar nem do vermelho: primeiro a tinta de enfeite,
+    #     depois a régua, depois o acento, cada uma acertada para ler 3,0 sobre o painel. É o azul do Meia-Noite, o
+    #     turquesa do Recife, e no Alfazema claro, que é todo dourado, o azul do acento.
+    #   - NEUTRA onde as três são da família do âmbar ou do vermelho (o Brasa, o Rubi, o Mizuki claro): o matiz da
+    #     régua com pouca croma, clara nos temas escuros, como o osso era, e de tom médio nos claros.
+    def viva_e_segura(c):
+        return (oklch(c)[1] >= CROMA_VIVA and afastamento(c, VERMELHO) > LONGE_DO_VERMELHO
+                and afastamento(c, AMBAR) > LONGE_DO_AMBAR)
+    candidatas = [le_sobre(c, [painel], 3.0) for c in (bloco, regua, ac)]
+    barra = next((c for c in candidatas if viva_e_segura(c) and contraste(c, painel) >= 3.0), None)
+    if barra is None:
+        matiz_barra = oklch(regua)[2]
+        if modo == "escuro":
+            barra = de_oklch(0.80, CROMA_DA_BARRA, matiz_barra)
+        else:
+            luz = 0.70
+            barra = de_oklch(luz, CROMA_DA_BARRA, matiz_barra)
+            while contraste(barra, painel) < 3.2 and luz > 0.20:
+                luz -= 0.01
+                barra = de_oklch(luz, CROMA_DA_BARRA, matiz_barra)
+        avisos.append("barra cheia neutra (a cor viva do tema é parente do âmbar ou do vermelho)")
+    if contraste(barra, painel) < 3.0 or min(distancia(barra, AMBAR), distancia(barra, VERMELHO)) < 0.09:
+        avisos.append("a barra cheia não lê sobre o painel ou se parece com o âmbar ou o vermelho")
+
     return {
         "fundo": fundo, "painel": painel, "painel_alto": painel_alto,
         "linha": linha, "texto": texto, "texto_fraco": texto_fraco,
         "acento": ac, "tinta": tinta, "papel": papel,
         "painel_baixo": painel_baixo, "bloco": bloco,
-        "menu_grande": menu_grande, "regua": regua,
+        "menu_grande": menu_grande, "regua": regua, "barra": barra,
     }, {
         "texto/fundo": contraste(texto, fundo),
         "texto/painel": contraste(texto, painel),
@@ -299,6 +442,8 @@ def resolve_osso_por_papel(paleta, oposta, piso=4.5):
     resultado = {}
     avisos = []
     for papel, fundo_hex in paleta.items():
+        if papel == "barra":            # não é fundo de célula nenhuma: é a cor da barra cheia
+            continue
         melhor, melhor_c = None, -1.0
         for grupo in (candidatos_mesma, candidatos_outra, candidatos_extremos):
             for cand in grupo:
@@ -333,6 +478,8 @@ def resolve_aviso_por_papel(paleta, piso=4.5):
     resultado, avisos = {}, []
     acento = paleta["acento"]
     for papel, fundo_hex in paleta.items():
+        if papel == "barra":
+            continue
         if contraste(acento, fundo_hex) >= piso:
             melhor = acento
         else:
@@ -395,6 +542,50 @@ else:
           "(4,5 texto · 3,0 acento, contra fundo E painel, com folga até 4,7 e 3,3;",
           "4,5 pro osso_por_papel e pro aviso_por_papel, contra cada um dos treze papéis).")
 
-with open("paletas-grandes.json", "w", encoding="utf-8") as f:
+# A troca de cor do Codigo.gs acha o papel de uma célula pelo hex que ela tem. Dois papéis com o mesmo hex no mesmo
+# tema se confundiriam na troca seguinte, então nenhum par pode repetir.
+PAPEIS_DE_CELULA = ["fundo", "painel", "painel_alto", "linha", "texto", "texto_fraco", "tinta", "papel", "painel_baixo",
+                    "bloco", "acento", "menu_grande"]
+REPETIDOS = []
+for nome in TUDO:
+    for modo in ("claro", "escuro"):
+        c = RESULT[nome][modo]["cores"]
+        vistos = {}
+        for papel in PAPEIS_DE_CELULA:
+            if c[papel] in vistos and {papel, vistos[c[papel]]} & {"bloco", "linha"}:
+                REPETIDOS.append(f"{nome} · {modo}: {papel} e {vistos[c[papel]]} são o mesmo {c[papel]}")
+            vistos.setdefault(c[papel], papel)
+if REPETIDOS:
+    print(f"{len(REPETIDOS)} tema(s) com a tinta de enfeite igual a outro papel:")
+    for r in REPETIDOS:
+        print("  -", r)
+
+with open(os.path.join(AQUI, "paletas-grandes.json"), "w", encoding="utf-8") as f:
     json.dump(RESULT, f, ensure_ascii=False, indent=2)
 print("\nescrito: paletas-grandes.json")
+
+# `--aplicar` reescreve o `var PALETAS = {...};` do apps-script/Codigo.gs com o que saiu daqui. Até 01/10/2026 esse
+# bloco era colado à mão. O formato é o mesmo de sempre: as cores, o osso_por_papel inteiro e o aviso_por_papel só
+# nos oito fundos onde o âmbar de texto mora.
+AVISO_MORA = ["fundo", "painel", "painel_alto", "painel_baixo", "papel", "menu_grande", "tinta", "acento"]
+if "--aplicar" in sys.argv:
+    if PROBLEMAS or REPETIDOS:
+        sys.exit("não aplicado: há problema acima")
+    bloco_js = {}
+    for nome in TUDO:
+        bloco_js[nome] = {}
+        for modo in ("claro", "escuro"):
+            r = RESULT[nome][modo]
+            e = dict(r["cores"])
+            e["osso_por_papel"] = r["osso_por_papel"]
+            e["aviso_por_papel"] = {k: r["aviso_por_papel"][k] for k in AVISO_MORA}
+            bloco_js[nome][modo] = e
+    gs = os.path.join(AQUI, "..", "..", "apps-script", "Codigo.gs")
+    src = open(gs, encoding="utf-8").read()
+    ini, fim = src.index("var PALETAS = {"), src.index("var PALETA_DE_FABRICA_")
+    novo = "var PALETAS = " + json.dumps(bloco_js, ensure_ascii=False, indent=2) + ";\n\n"
+    if src[ini:fim] == novo:
+        print("apps-script/Codigo.gs: o PALETAS já está igual")
+    else:
+        open(gs, "w", encoding="utf-8").write(src[:ini] + novo + src[fim:])
+        print("apps-script/Codigo.gs: PALETAS reescrito")
