@@ -459,12 +459,28 @@ NOVA = {"nivel": 2}
 FICHAS = {"livro": LIVRO, "kaori": KAORI, "velho": VELHO, "meio": MEIO, "nova": NOVA,
           "sorteio-2": sorteada(11, 2, False), "sorteio-7": sorteada(12, 7), "sorteio-13": sorteada(13, 13),
           "sorteio-21": sorteada(14, 21), "sorteio-30": sorteada(15, 30)}
+# o arnes-amaldicoada.py roda esta regressão dezenas de vezes, e pede só algumas fichas para cada rodada ser curta
+SO = [x for x in os.environ.get("AMALDICOADA_SO", "").split(",") if x]
+if SO:
+    FICHAS = {k: v for k, v in FICHAS.items() if k in SO or k == "livro"}
+    print(f"(rodada curta, só com as fichas {', '.join(FICHAS)})")
 for _nome, _f in FICHAS.items():
     prepara(_nome, _f)
 print(f"recalculando {len(FILA)} fichas no LibreOffice...")
 WB = recalcula_tudo()
 
 # ---------------------------------------------------------------------------------------------
+print("\nO QUE A ABA LÊ DO LIVRO")
+_r = subprocess.run([sys.executable, "ficha-v01/extrair_tecnica.py", "--confere"], capture_output=True, text=True)
+if "nao esta nesta maquina" in _r.stdout:
+    print("  [--] o livro não está nesta máquina: o tecnica-do-livro.json não foi comparado com ele")
+else:
+    checa("o tecnica-do-livro.json é o que o extrair_tecnica.py lê do livro hoje (" + TEC["_meta"]["versao_do_livro"] + ")", _r.returncode == 0,
+          (_r.stdout + _r.stderr).strip()[-200:])
+checa("os preços da aba são os da tabela Números da montagem do livro, nas sete Classes",
+      all([preco(1, l["classe"]), preco(2, l["classe"]), preco(3, l["classe"]), 2 * l["classe"], 4 * l["classe"], 3 * l["classe"]] ==
+          [l["leve"], l["media"], l["pesada"], l["devolucao"], l["teto"], l["pontos"]] for l in TEC["numeros_da_montagem"]))
+
 print("\nOS 33 FEITIÇOS PRONTOS DO LIVRO")
 checa("as bases de alcance da regra daqui são as da tabela Base por Classe do livro", _bases_do_livro())
 ws = WB["livro"][ABA]
@@ -514,8 +530,9 @@ for nome, ficha in FICHAS.items():
             x = monta(ft, ft["classe"], fam, nivel, lib, vaga)
             mensagens |= {re.sub(r"\d+", "N", m).split(":")[0][:28] for m in x["erros"] + x["avisos"]}
     checa(f"{nome} (nível {nivel}): as {len(lista)} cartas batem com a regra, caixa por caixa", not ruins, f"{len(ruins)}: " + "; ".join(ruins[:3]))
-checa(f"o sorteio cobriu o certo e o errado: {total} cartas, {com_erro} com erro, {com_aviso} só com aviso, {sem_nome} sem nome, "
-      f"{len(mensagens)} mensagens diferentes", com_erro > 40 and com_aviso > 10 and sem_nome > 5 and len(mensagens) >= 18, str(sorted(mensagens)))
+if not SO:
+    checa(f"o sorteio cobriu o certo e o errado: {total} cartas, {com_erro} com erro, {com_aviso} só com aviso, {sem_nome} sem nome, "
+          f"{len(mensagens)} mensagens diferentes", com_erro > 40 and com_aviso > 10 and sem_nome > 5 and len(mensagens) >= 18, str(sorted(mensagens)))
 
 # ---------------------------------------------------------------------------------------------
 print("\nO ORÇAMENTO, O ÍNDICE E A TÉCNICA")
@@ -539,7 +556,7 @@ def refino_e_aptidoes(nivel, escolhas):
     return r, apt
 
 
-for nome in ("kaori", "velho", "meio", "nova"):
+for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
     ficha, wb = FICHAS[nome], WB[nome]
     ws, f, cel, n = wb[ABA], wb["FICHA"], FICHAS[nome].get("celulas", {}), FICHAS[nome].get("nivel", 2)
     v = lambda c: txt(ws[c].value)
@@ -754,6 +771,36 @@ if M:
                   len(saltos) == len(fa.SECOES) and all(f'&range=D{G["sec"][s]}"' in saltos[f"{G['saltos']},{ix._col(c1)}"]
                                                         for (s, _, _), (c1, _) in zip(fa.SECOES, fa._cols_dos_saltos())), str(list(saltos.items())[:2]))
     am = M["abas"][ABA]
+    # os valores que não são fórmula: os rótulos, os textos e o que cada menu traz escolhido de fábrica
+    saltos_v = {f"{G['saltos']},{ix._col(c1)}" for c1, _ in fa._cols_dos_saltos()}
+    esp_v = {f"{c.row},{c.column}": c.value for linha in WB0[ABA].iter_rows() for c in linha
+             if c.value is not None and not (isinstance(c.value, str) and c.value.startswith("=")) and f"{c.row},{c.column}" not in saltos_v}
+    lido_v = {k: v for k, v in am["valores"].items() if not (isinstance(v, str) and v.startswith("IMAGEM "))}
+    dif_v = [k for k in set(esp_v) | set(lido_v) if esp_v.get(k) != lido_v.get(k)]
+    checa(f"os {len(esp_v)} rótulos, textos e valores de fábrica da aba chegam iguais, as fileiras copiadas inclusive", not dif_v,
+          f"{len(dif_v)}: " + "; ".join(f"{k}: {lido_v.get(k)!r} != {esp_v.get(k)!r}" for k in sorted(dif_v)[:3]))
+    # o ABAS que o script expande quando carrega é o mesmo que o gerador expande
+    sys.path.insert(0, "ficha")
+    import emitir_gs as _eg
+    _js = subprocess.run(["node", "-e", "const fs=require('fs'),vm=require('vm'),c={};vm.createContext(c);vm.runInContext(fs.readFileSync('apps-script/Ficha.gs','utf8'),c);"
+                          "console.log(JSON.stringify(vm.runInContext('ABAS',c)))"], capture_output=True, text=True, timeout=120)
+
+    def _norm(x):
+        if isinstance(x, float) and x.is_integer():
+            return int(x)
+        if isinstance(x, list):
+            return [_norm(y) for y in x]
+        if isinstance(x, dict):
+            return {k: _norm(v) for k, v in x.items() if k != "copias_feitas"}
+        return x
+    _do_script = _norm(json.loads(_js.stdout)) if _js.returncode == 0 else []
+    _do_gerador = _norm(_eg.abas_do_script("apps-script/Ficha.gs"))
+    _cru = json.loads(re.search(r"var ABAS = ([\s\S]*?);\n\nvar ARTE = ", open("apps-script/Ficha.gs", encoding="utf-8").read()).group(1))
+    _n_cru = next(len(a["vals"]) for a in _cru if a["nome"] == ABA)
+    _n_cheio = next((len(a["vals"]) for a in _do_script if a["nome"] == ABA), 0)
+    checa(f"as fileiras copiadas voltam inteiras quando o script carrega ({_n_cru} células escritas viram {_n_cheio}), iguais às que o gerador expande",
+          len(_do_script) == len(_do_gerador) and all(_eg._forma_canonica(a) == _eg._forma_canonica(b) for a, b in zip(_do_script, _do_gerador))
+          and _n_cheio > _n_cru)
     mescladas = sorted(f"{m.min_row},{m.min_col},{m.max_row},{m.max_col}" for m in WB0[ABA].merged_cells.ranges)
     checa(f"as {len(mescladas)} mesclagens da aba chegam iguais, com as fileiras de cartas vindo por cópia de formato", am["mesclagens"] == mescladas
           and "fileiras copiadas" in M["registro"], f"{len(am['mesclagens'])} montadas")

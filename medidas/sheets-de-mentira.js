@@ -133,7 +133,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
         setValues: (m) => { matriz(m, nl, nc, 'setValues'); cada((i, j, a, b) => grava(i, j, m[a][b])); return R; },
         setValue: (x) => { grava(r, c, x); return R; },
         getValue: () => A.le(r, c), getValues: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.le(r + i, c + j))),
-        setFormula: (f) => { if (typeof f !== 'string' || f[0] !== '=') throw new Error('setFormula sem fórmula em ' + nome); confereFormula(nome + '!' + letras(c) + r, f); A.f.set(r + ',' + c, f); return R; },
+        setFormula: (f) => { if (typeof f !== 'string' || f[0] !== '=') throw new Error('setFormula sem fórmula em ' + nome); confereFormula(nome + '!' + letras(c) + r, f); A.v.delete(r + ',' + c); A.f.set(r + ',' + c, f); return R; },
         setFormulas: (m) => { matriz(m, nl, nc, 'setFormulas'); cada((i, j, a, b) => { if (typeof m[a][b] !== 'string' || m[a][b][0] !== '=') throw new Error('setFormulas com célula sem fórmula em ' + nome); confereFormula(nome + '!' + letras(j) + i, m[a][b]); A.f.set(i + ',' + j, m[a][b]); }); return R; },
         getFormula: () => A.f.get(r + ',' + c) || '', getFormulas: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.f.get((r + i) + ',' + (c + j)) || '')),
         getFormulasR1C1: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.f.get((r + i) + ',' + (c + j)) || '')),
