@@ -15,7 +15,7 @@
 //
 // node regressao-construir.js
 'use strict';
-const fs = require('fs'), vm = require('vm'), path = require('path');
+const fs = require('fs'), path = require('path');
 const RAIZ = __dirname;
 const GS = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Codigo.gs'), 'utf8');
 const FICHA_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Ficha.gs'), 'utf8');
@@ -24,223 +24,11 @@ const ABAS = JSON.parse(FICHA_SRC.match(/var ABAS = ([\s\S]*?);\n\nvar ARTE = /)
 let falhas = 0;
 const ok = (nome, cond, det = '') => { console.log((cond ? '  ok    ' : '  FALHA ') + nome + (cond ? '' : '  <- ' + det)); if (!cond) falhas++; };
 
-// ---------------------------------------------------------------------------------------------
-// os nomes que o Apps Script tem, por tipo de objeto (da documentação do Spreadsheet Service)
-// ---------------------------------------------------------------------------------------------
-const REAIS = {
-  Spreadsheet: 'getSpreadsheetLocale setSpreadsheetLocale getSheetByName insertSheet deleteSheet getSheets setActiveSheet moveActiveSheet getRange getRangeByName setNamedRange getNamedRanges removeNamedRange getId toast getActiveSheet getName getNumSheets getRangeList getUrl getSpreadsheetTimeZone rename',
-  Sheet: 'getName setName setHiddenGridlines getMaxColumns getMaxRows deleteColumns deleteRows deleteColumn deleteRow insertColumnsAfter insertRowsAfter insertColumnAfter insertRowAfter setColumnWidths setColumnWidth setRowHeights setRowHeight getRange getRangeList hideSheet showSheet isSheetHidden setConditionalFormatRules getConditionalFormatRules clearConditionalFormatRules setRowGroupControlPosition setColumnGroupControlPosition getRowGroup getColumnGroup getRowGroupDepth getColumnGroupDepth getRowGroupControlPosition getColumnGroupControlPosition getProtections getDataRange getLastRow getLastColumn getImages getParent getSheetId activate getIndex setFrozenRows setFrozenColumns getColumnWidth getRowHeight hideColumns showColumns hideRows showRows collapseAllColumnGroups collapseAllRowGroups expandAllColumnGroups expandAllRowGroups setTabColor protect getSheetName getSheetValues clear',
-  Range: 'setBackgrounds setFontFamilies setFontSizes setFontColors setFontWeights setHorizontalAlignments setVerticalAlignments setFontStyles setWraps setValues setValue getValue getValues getDisplayValue getDisplayValues setFormula setFormulas getFormula getFormulas getFormulaR1C1 getFormulasR1C1 setFormulaR1C1 setFormulasR1C1 setTextRotation merge mergeAcross mergeVertically breakApart isPartOfMerge getMergedRanges getNumRows getNumColumns getRow getColumn getLastRow getLastColumn getCell getA1Notation getSheet setBorder insertCheckboxes removeCheckboxes setNumberFormat setNumberFormats getNumberFormat setNote setNotes clearNote getNote getNotes shiftRowGroupDepth shiftColumnGroupDepth setDataValidation setDataValidations getDataValidation clearDataValidations protect getBackground getBackgrounds getFontColor getFontColors setBackground setFontColor setFontFamily setFontSize setFontWeight setFontStyle setFontLine setHorizontalAlignment setVerticalAlignment setWrap setWrapStrategy clearContent clearFormat clear check uncheck isChecked activate offset copyTo getHeight getWidth isBlank setShowHyperlink setRichTextValue getRichTextValue getGridId',
-  RangeList: 'setBorder check uncheck setBackground setFontColor getRanges activate clearContent insertCheckboxes removeCheckboxes setValue setNote setFormula setNumberFormat setFontFamily setFontSize setHorizontalAlignment setVerticalAlignment setWrap setFontWeight setFontStyle clear clearNote clearFormat clearDataValidations setDataValidation breakApart setTextRotation trimWhitespace',
-  Group: 'collapse expand getControlIndex getDepth getRange isCollapsed remove',
-  Protection: 'setDescription getDescription setWarningOnly isWarningOnly remove getRange addEditor addEditors removeEditor removeEditors getEditors canEdit setRange getProtectionType canDomainEdit setDomainEdit getRangeName setRangeName setNamedRange setUnprotectedRanges getUnprotectedRanges',
-  NamedRange: 'getName getRange remove setName setRange',
-  DataValidationBuilder: 'setAllowInvalid requireValueInList requireValueInRange requireCheckbox setHelpText build requireFormulaSatisfied requireNumberBetween requireTextContains copy withCriteria',
-  ConditionalFormatRuleBuilder: 'whenFormulaSatisfied whenTextContains whenTextDoesNotContain whenTextEqualTo whenTextStartsWith whenTextEndsWith whenCellEmpty whenCellNotEmpty whenNumberGreaterThan whenNumberLessThan whenNumberEqualTo whenNumberBetween setBackground setFontColor setBold setItalic setUnderline setStrikethrough setRanges build copy',
-  CellImageBuilder: 'setSourceUrl setAltTextTitle setAltTextDescription build toBuilder getAltTextTitle getAltTextDescription getContentUrl getUrl',
-  SpreadsheetApp: 'getActive getActiveSpreadsheet getActiveSheet getActiveRange flush newCellImage newDataValidation newConditionalFormatRule newRichTextValue newTextStyle getUi openById openByUrl create',
-};
-const NOMES = Object.fromEntries(Object.entries(REAIS).map(([k, v]) => [k, new Set(v.split(' '))]));
-const CHAMADAS = {};
-/** embrulha o objeto: método fora da lista do Apps Script estoura; método da lista que o teste não imita, também */
-function rigoroso(tipo, obj) {
-  return new Proxy(obj, { get(alvo, nome) {
-    if (typeof nome === 'symbol' || nome === 'then' || nome === 'toJSON' || nome === 'inspect' || nome === 'constructor') return alvo[nome];
-    if (nome in alvo) {
-      if (typeof alvo[nome] === 'function' && NOMES[tipo].has(nome)) CHAMADAS[tipo + '.' + nome] = (CHAMADAS[tipo + '.' + nome] || 0) + 1;
-      return alvo[nome];
-    }
-    if (!NOMES[tipo].has(nome)) throw new Error(`o Apps Script não tem ${tipo}.${nome}()`);
-    throw new Error(`o Sheets de mentira ainda não imita ${tipo}.${nome}()`);
-  } });
-}
-
-const letras = (c) => { let s = ''; while (c > 0) { const m = (c - 1) % 26; s = String.fromCharCode(65 + m) + s; c = Math.floor((c - 1) / 26); } return s; };
-const numero = (t) => [...t].reduce((n, ch) => n * 26 + ch.charCodeAt(0) - 64, 0);
-function partes(a1) {
-  const m = /^(?:'([^']+)'|([^!']+))!(.+)$/.exec(a1);
-  const aba = m ? (m[1] || m[2]) : null, resto = (m ? m[3] : a1).replace(/\$/g, '');
-  const f = /^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(resto);
-  if (!f) throw new Error('endereço que o Sheets não entende: ' + a1);
-  const r1 = Number(f[2]), c1 = numero(f[1]), r2 = Number(f[4] || f[2]), c2 = numero(f[3] || f[1]);
-  return { aba, r: r1, c: c1, nl: r2 - r1 + 1, nc: c2 - c1 + 1 };
-}
-
-function criaSheets() {
-  const P = { locale: 'en_US', abas: [], nomeados: {}, props: {}, ativa: null };
-  const acha = (nome) => P.abas.find((a) => a.nome === nome) || null;
-
-  function criaAba(nome) {
-    const A = { nome, maxR: 1000, maxC: 26, v: new Map(), f: new Map(), notas: new Map(), merges: [], dv: new Map(), cf: [], caixas: new Set(),
-                fmt: new Map(), prot: [], oculta: false, grade: true, profL: new Map(), profC: new Map(), fechL: [], fechC: [], posL: 'AFTER', posC: 'AFTER',
-                bordas: 0, larg: new Map(), alt: new Map() };
-    const dentro = (r, c, nl, nc, que) => {
-      if (!(Number.isInteger(r) && Number.isInteger(c) && Number.isInteger(nl) && Number.isInteger(nc)) || r < 1 || c < 1 || nl < 1 || nc < 1
-          || r + nl - 1 > A.maxR || c + nc - 1 > A.maxC) {
-        throw new Error(`${que}: a faixa ${letras(c)}${r}:${letras(c + nc - 1)}${r + nl - 1} sai da aba ${nome} (${A.maxR} x ${A.maxC})`);
-      }
-    };
-    // o valor de uma fórmula que o script lê de volta: o endereço em ADDRESS, e a referência direta a uma célula
-    const calcula = (f) => {
-      const semEspaco = f.replace(/\s/g, '');
-      const end = [...f.matchAll(/ADDRESS\(ROW\((?:'[^']+'|[A-ZÇÃ_]+)!\$?([A-Z]+)\$?(\d+)\),COLUMN\([^)]*\),4\)/g)].map((m) => m[1] + m[2]);
-      if (end.length && semEspaco.startsWith('=ADDRESS(')) return end.join(':');
-      const ref = /^=(?:(?:'([^']+)'|([A-ZÇÃ_]+))!)?\$?([A-Z]+)\$?(\d+)$/.exec(f);
-      if (ref) { const B = (ref[1] || ref[2]) ? acha(ref[1] || ref[2]) : A; return B ? B.le(Number(ref[4]), numero(ref[3])) : '#REF!'; }
-      if (f === '=TRUE') return true;
-      return f;                                            // o resto fica como texto: quem precisa da conta é o LibreOffice
-    };
-    A.le = (r, c) => { const k = r + ',' + c; return A.f.has(k) ? calcula(A.f.get(k)) : (A.v.has(k) ? A.v.get(k) : ''); };
-    const blocoDe = (r, c) => A.merges.find((m) => r >= m[0] && r <= m[2] && c >= m[1] && c <= m[3]);
-    const matriz = (m, nl, nc, que) => {
-      if (!Array.isArray(m) || m.length !== nl || m.some((l) => !Array.isArray(l) || l.length !== nc)) {
-        throw new Error(`${que}: a matriz não tem o tamanho da faixa (${nl} x ${nc}) na aba ${nome}`);
-      }
-    };
-    const range = (r, c, nl = 1, nc = 1) => {
-      dentro(r, c, nl, nc, 'getRange');
-      const cada = (fn) => { for (let i = 0; i < nl; i++) for (let j = 0; j < nc; j++) fn(r + i, c + j, i, j); };
-      const formato = (que) => (m) => { matriz(m, nl, nc, que); return R; };
-      const R = rigoroso('Range', {
-        getRow: () => r, getColumn: () => c, getNumRows: () => nl, getNumColumns: () => nc, getLastRow: () => r + nl - 1, getLastColumn: () => c + nc - 1,
-        getA1Notation: () => letras(c) + r + (nl > 1 || nc > 1 ? ':' + letras(c + nc - 1) + (r + nl - 1) : ''),
-        getSheet: () => A.api, getCell: (i, j) => range(r + i - 1, c + j - 1),
-        setBackgrounds: formato('setBackgrounds'), setFontFamilies: formato('setFontFamilies'), setFontSizes: formato('setFontSizes'),
-        setFontColors: formato('setFontColors'), setFontWeights: formato('setFontWeights'), setHorizontalAlignments: formato('setHorizontalAlignments'),
-        setVerticalAlignments: formato('setVerticalAlignments'), setFontStyles: formato('setFontStyles'), setWraps: formato('setWraps'),
-        getBackgrounds: () => [...Array(nl)].map(() => Array(nc).fill('#120F1D')), getFontColors: () => [...Array(nl)].map(() => Array(nc).fill('#F4F1F7')),
-        getBackground: () => '#120F1D',
-        setValues: (m) => { matriz(m, nl, nc, 'setValues'); cada((i, j, a, b) => { A.f.delete(i + ',' + j); if (m[a][b] === '') A.v.delete(i + ',' + j); else A.v.set(i + ',' + j, m[a][b]); }); return R; },
-        setValue: (x) => { A.f.delete(r + ',' + c); A.v.set(r + ',' + c, x); return R; },
-        getValue: () => A.le(r, c), getValues: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.le(r + i, c + j))),
-        setFormula: (f) => { if (typeof f !== 'string' || f[0] !== '=') throw new Error('setFormula sem fórmula em ' + nome); A.f.set(r + ',' + c, f); return R; },
-        setFormulas: (m) => { matriz(m, nl, nc, 'setFormulas'); cada((i, j, a, b) => { if (typeof m[a][b] !== 'string' || m[a][b][0] !== '=') throw new Error('setFormulas com célula sem fórmula em ' + nome); A.f.set(i + ',' + j, m[a][b]); }); return R; },
-        getFormula: () => A.f.get(r + ',' + c) || '', getFormulas: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.f.get((r + i) + ',' + (c + j)) || '')),
-        getFormulasR1C1: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.f.get((r + i) + ',' + (c + j)) || '')),
-        setFormulaR1C1: (f) => { A.f.set(r + ',' + c, f); return R; },
-        setTextRotation: (g) => { if (typeof g !== 'number') throw new Error('setTextRotation quer graus'); return R; },
-        merge: () => {
-          for (const m of A.merges) {
-            const cruza = r <= m[2] && r + nl - 1 >= m[0] && c <= m[3] && c + nc - 1 >= m[1];
-            const contem = r <= m[0] && c <= m[1] && r + nl - 1 >= m[2] && c + nc - 1 >= m[3];
-            if (cruza && !contem) throw new Error(`merge: ${R.getA1Notation()} pega um pedaço da mesclagem ${letras(m[1])}${m[0]}:${letras(m[3])}${m[2]} na aba ${nome}`);
-          }
-          A.merges = A.merges.filter((m) => !(r <= m[0] && c <= m[1] && r + nl - 1 >= m[2] && c + nc - 1 >= m[3]));
-          A.merges.push([r, c, r + nl - 1, c + nc - 1]);
-          return R;
-        },
-        isPartOfMerge: () => { let algum = false; cada((i, j) => { if (blocoDe(i, j)) algum = true; }); return algum; },
-        getMergedRanges: () => { const vistos = new Set(), out = []; cada((i, j) => { const m = blocoDe(i, j); if (m && !vistos.has(m)) { vistos.add(m); out.push(range(m[0], m[1], m[2] - m[0] + 1, m[3] - m[1] + 1)); } }); return out; },
-        setBorder: (...a) => { if (a.length !== 8) throw new Error('setBorder quer oito argumentos'); A.bordas++; return R; },
-        insertCheckboxes: () => { cada((i, j) => A.caixas.add(i + ',' + j)); return R; },
-        setNumberFormat: (f) => { if (typeof f !== 'string') throw new Error('setNumberFormat quer texto'); cada((i, j) => A.fmt.set(i + ',' + j, f)); return R; },
-        setNote: (t) => { if (t === '' || t === null) A.notas.delete(r + ',' + c); else A.notas.set(r + ',' + c, String(t)); return R; },
-        clearNote: () => { cada((i, j) => A.notas.delete(i + ',' + j)); return R; }, getNote: () => A.notas.get(r + ',' + c) || '',
-        shiftRowGroupDepth: (d) => { for (let i = r; i < r + nl; i++) A.profL.set(i, (A.profL.get(i) || 0) + d); return R; },
-        shiftColumnGroupDepth: (d) => { for (let j = c; j < c + nc; j++) A.profC.set(j, (A.profC.get(j) || 0) + d); return R; },
-        setDataValidation: (regra) => { if (!regra || !regra.__regra) throw new Error('setDataValidation sem regra montada'); cada((i, j) => A.dv.set(i + ',' + j, regra)); return R; },
-        getDataValidation: () => A.dv.get(r + ',' + c) || null,
-        protect: () => { const p = { desc: '', aviso: false, a1: R.getA1Notation() }; A.prot.push(p);
-          const api = rigoroso('Protection', { setDescription: (d) => { p.desc = d; return api; }, getDescription: () => p.desc, setWarningOnly: (b) => { p.aviso = b; return api; },
-            remove: () => { A.prot = A.prot.filter((x) => x !== p); } }); p.api = api; return api; },
-        setBackground: () => R, setFontColor: () => R, setFontFamily: () => R, setFontSize: () => R, setFontWeight: () => R, setFontStyle: () => R,
-        setHorizontalAlignment: () => R, setVerticalAlignment: () => R,
-        clearContent: () => { cada((i, j) => { A.v.delete(i + ',' + j); A.f.delete(i + ',' + j); }); return R; },
-      });
-      return R;
-    };
-    const porA1 = (a1) => { const p = partes(a1); return range(p.r, p.c, p.nl, p.nc); };
-    const grupo = (prof, fechados, idx, d, que) => {
-      if ((prof.get(idx) || 0) < d) throw new Error(`${que}(${idx}, ${d}): não há grupo dessa profundidade ali, na aba ${nome}`);
-      let a = idx, b = idx;
-      while ((prof.get(a - 1) || 0) >= d) a--;
-      while ((prof.get(b + 1) || 0) >= d) b++;
-      return rigoroso('Group', { collapse: () => { fechados.push([a, b, d]); }, getDepth: () => d, isCollapsed: () => fechados.some((g) => g[0] === a && g[1] === b && g[2] === d) });
-    };
-    A.api = rigoroso('Sheet', {
-      getName: () => A.nome, setHiddenGridlines: (b) => { A.grade = !b; }, getMaxColumns: () => A.maxC, getMaxRows: () => A.maxR,
-      deleteColumns: (ini, n) => { if (ini + n - 1 !== A.maxC) throw new Error('o teste só apaga colunas do fim'); A.maxC -= n; },
-      deleteRows: (ini, n) => { if (ini + n - 1 !== A.maxR) throw new Error('o teste só apaga linhas do fim'); A.maxR -= n; },
-      insertColumnsAfter: (depois, n) => { if (depois !== A.maxC) throw new Error('o teste só insere colunas no fim'); A.maxC += n; },
-      insertRowsAfter: (depois, n) => { if (depois !== A.maxR) throw new Error('o teste só insere linhas no fim'); A.maxR += n; },
-      setColumnWidths: (ini, n, px) => { dentro(1, ini, 1, n, 'setColumnWidths'); for (let j = ini; j < ini + n; j++) A.larg.set(j, px); },
-      setRowHeights: (ini, n, px) => { dentro(ini, 1, n, 1, 'setRowHeights'); for (let i = ini; i < ini + n; i++) A.alt.set(i, px); },
-      getRange: (a, b, c, d) => (typeof a === 'string' ? porA1(a) : range(a, b, c, d)),
-      getRangeList: (lista) => { const rs = lista.map(porA1); return rigoroso('RangeList', {
-        setBorder: (...a) => { if (a.length !== 8) throw new Error('setBorder quer oito argumentos'); A.bordas++; },
-        check: () => rs.forEach((x) => { if (!A.caixas.has(x.getRow() + ',' + x.getColumn())) throw new Error('check numa célula que não é caixa de seleção: ' + x.getA1Notation()); x.setValue(true); }),
-        uncheck: () => rs.forEach((x) => { if (!A.caixas.has(x.getRow() + ',' + x.getColumn())) throw new Error('uncheck numa célula que não é caixa de seleção: ' + x.getA1Notation()); x.setValue(false); }),
-      }); },
-      hideSheet: () => { A.oculta = true; },
-      setConditionalFormatRules: (regras) => { if (!regras.every((x) => x && x.__regraCf)) throw new Error('regra de cor que não foi montada'); A.cf = regras; },
-      setRowGroupControlPosition: (p) => { if (p !== 'BEFORE' && p !== 'AFTER') throw new Error('posição de controle inválida'); A.posL = p; },
-      setColumnGroupControlPosition: (p) => { if (p !== 'BEFORE' && p !== 'AFTER') throw new Error('posição de controle inválida'); A.posC = p; },
-      getRowGroup: (i, d) => grupo(A.profL, A.fechL, i, d, 'getRowGroup'), getColumnGroup: (i, d) => grupo(A.profC, A.fechC, i, d, 'getColumnGroup'),
-      getProtections: () => A.prot.map((p) => p.api),
-      getDataRange: () => range(1, 1, Math.max(1, A.api.getLastRow()), Math.max(1, A.api.getLastColumn())),
-      getLastRow: () => Math.max(0, ...[...A.v.keys(), ...A.f.keys()].map((k) => Number(k.split(',')[0]))),
-      getLastColumn: () => Math.max(0, ...[...A.v.keys(), ...A.f.keys()].map((k) => Number(k.split(',')[1]))),
-      getImages: () => [],
-    });
-    return A;
-  }
-
-  const ss = rigoroso('Spreadsheet', {
-    getSpreadsheetLocale: () => P.locale, setSpreadsheetLocale: (l) => { P.locale = l; },
-    getSheetByName: (n) => { const a = acha(n); return a ? a.api : null; },
-    insertSheet: (n) => { if (acha(n)) throw new Error('já existe a aba ' + n); const A = criaAba(n); P.abas.push(A); P.ativa = A; return A.api; },
-    deleteSheet: (s) => { const n = s.getName(); if (P.abas.length === 1) throw new Error('o Sheets não deixa apagar a última aba'); P.abas = P.abas.filter((a) => a.nome !== n); },
-    getSheets: () => P.abas.map((a) => a.api),
-    setActiveSheet: (s) => { P.ativa = acha(s.getName()); return s; },
-    moveActiveSheet: (pos) => { const i = P.abas.indexOf(P.ativa); P.abas.splice(i, 1); P.abas.splice(pos - 1, 0, P.ativa); },
-    getRange: (a1) => { const p = partes(a1); const A = p.aba ? acha(p.aba) : P.ativa; if (!A) throw new Error('Range not found: ' + a1); return A.api.getRange(p.r, p.c, p.nl, p.nc); },
-    getRangeByName: (n) => P.nomeados[n] || null,
-    setNamedRange: (n, r) => { P.nomeados[n] = r; },
-    getNamedRanges: () => Object.keys(P.nomeados).map((n) => rigoroso('NamedRange', { getName: () => n, getRange: () => P.nomeados[n], remove: () => { delete P.nomeados[n]; } })),
-    getId: () => 'planilha-de-mentira', toast: () => {},
-  });
-  const ctx = {
-    console: { log: () => {} }, Logger: { log: (m) => { P.registro = String(m); } }, Date, Math, JSON,
-    Utilities: { sleep: () => {}, base64Decode: (s) => Array.from(Buffer.from(s, 'base64')), base64Encode: (a) => Buffer.from(a).toString('base64') },
-    SpreadsheetApp: rigoroso('SpreadsheetApp', {
-      getActive: () => ss, flush: () => {},
-      newCellImage: () => { const b = {}; const api = rigoroso('CellImageBuilder', {
-        setSourceUrl: (u) => { if (!/^data:image\/png;base64,/.test(u)) throw new Error('imagem sem data:image/png'); b.url = u; return api; },
-        setAltTextTitle: (t) => { b.titulo = t; return api; }, setAltTextDescription: (d) => { b.desc = d; return api; },
-        build: () => ({ valueType: 'IMAGE', getAltTextTitle: () => b.titulo, getAltTextDescription: () => b.desc }) }); return api; },
-      newDataValidation: () => { const o = { __regra: true }; const api = rigoroso('DataValidationBuilder', {
-        setAllowInvalid: (b) => { o.invalido = b; return api; },
-        requireValueInList: (lista, seta) => { if (!Array.isArray(lista) || !lista.length) throw new Error('lista de menu vazia'); o.lista = lista; return api; },
-        requireValueInRange: (r, seta) => { if (!r || typeof r.getA1Notation !== 'function') throw new Error('requireValueInRange sem faixa'); o.faixa = r.getSheet().getName() + '!' + r.getA1Notation(); return api; },
-        build: () => o }); return api; },
-      newConditionalFormatRule: () => { const o = { __regraCf: true }; const api = rigoroso('ConditionalFormatRuleBuilder', {
-        whenFormulaSatisfied: (f) => { o.formula = f; return api; }, whenTextContains: (t) => { if (!t) throw new Error('whenTextContains sem texto'); o.contem = t; return api; },
-        setBackground: (c) => { o.fundo = c; return api; }, setFontColor: (c) => { o.fonte = c; return api; },
-        setRanges: (rs) => { if (!Array.isArray(rs) || !rs.length || !rs.every((x) => x && typeof x.getA1Notation === 'function')) throw new Error('setRanges sem faixa'); o.faixas = rs.map((x) => x.getA1Notation()); return api; },
-        build: () => { if (!o.faixas) throw new Error('regra de cor sem faixa'); return o; } }); return api; },
-    }),
-    PropertiesService: { getDocumentProperties: () => ({ getProperty: (k) => (k in P.props ? P.props[k] : null), setProperty: (k, v) => { P.props[k] = String(v); },
-      setProperties: (o) => Object.assign(P.props, o), deleteProperty: (k) => { delete P.props[k]; } }) },
-    LockService: { getDocumentLock: () => ({ tryLock: () => true, releaseLock: () => {} }) },
-    ScriptApp: { getProjectTriggers: () => [] },
-  };
-  // os enumerados não passam pelo rigoroso: são valores, e o nome errado dá undefined, que o Sheets de mentira recusa
-  ctx.SpreadsheetApp = new Proxy(ctx.SpreadsheetApp, { get(o, k) {
-    if (k === 'BorderStyle') return new Proxy({}, { get: (_, n) => { if (!['SOLID', 'SOLID_MEDIUM', 'SOLID_THICK', 'DASHED', 'DOTTED', 'DOUBLE'].includes(n)) throw new Error('BorderStyle.' + String(n) + ' não existe'); return n; } });
-    if (k === 'GroupControlTogglePosition') return { BEFORE: 'BEFORE', AFTER: 'AFTER' };
-    if (k === 'ProtectionType') return { RANGE: 'RANGE', SHEET: 'SHEET' };
-    if (k === 'ValueType') return { IMAGE: 'IMAGE' };
-    return o[k];
-  } });
-  vm.createContext(ctx); vm.runInContext(FICHA_SRC, ctx); vm.runInContext(GS, ctx);
-  // a planilha nova do Google nasce com uma aba só
-  P.abas.push(criaAba('Página1')); P.ativa = P.abas[0];
-  return { P, ss, ctx, acha };
-}
+const { criaSheets, retrato, partes, letras, numero, CHAMADAS, zeraChamadas } = require('./medidas/sheets-de-mentira.js');
 
 // ---------------------------------------------------------------------------------------------
 console.log('O construir() DO COMEÇO AO FIM');
-const S = criaSheets();
+const S = criaSheets(FICHA_SRC, GS);
 let erro = null;
 try { S.ctx.construir(); } catch (e) { erro = e; }
 ok('o construir() roda inteiro, sem chamar nada que o Apps Script não tem e sem sair de nenhuma aba', !erro, erro ? erro.message : '');
@@ -256,9 +44,28 @@ ok('toda fórmula do ABAS chega à célula dela, igual',
    ABAS.every((s) => formulasDoAbas(s).every((t) => S.acha(s.nome).f.get(t[0] + ',' + t[1]) === t[2])),
    ABAS.map((s) => s.nome + ' ' + formulasDoAbas(s).filter((t) => S.acha(s.nome).f.get(t[0] + ',' + t[1]) !== t[2]).length).join(' · '));
 const totalF = ABAS.reduce((n, s) => n + formulasDoAbas(s).length, 0);
-ok(`as ${totalF} fórmulas vão em lotes, e não uma chamada por célula`, CHAMADAS['Range.setFormulas'] > 0 && CHAMADAS['Range.setFormulas'] < totalF / 2 && !CHAMADAS['Range.setFormula'],
-   `${CHAMADAS['Range.setFormulas']} chamadas de setFormulas, ${CHAMADAS['Range.setFormula'] || 0} de setFormula`);
+// 01/10/2026: o construir() estourou os seis minutos do Apps Script, e a montagem passou a ir menos vezes ao servidor.
+// As fórmulas vão na mesma gravação dos valores, e por isso toda aba tem de existir antes de a primeira ser preenchida.
+ok(`as ${totalF} fórmulas vão junto com os valores, numa gravação por aba: nenhuma chamada de setFormula`, !CHAMADAS['Range.setFormulas'] && !CHAMADAS['Range.setFormula'],
+   `${CHAMADAS['Range.setFormulas'] || 0} chamadas de setFormulas, ${CHAMADAS['Range.setFormula'] || 0} de setFormula`);
+const reg = S.P.registros, ondeNo = (t) => reg.findIndex((l) => l.indexOf(t) >= 0);
+ok('todas as abas nascem antes de a primeira ser preenchida, e cada etapa vai para o registro na hora, com o tempo dela',
+   ondeNo('abas criadas') === 0 && ABAS.every((s, i) => ondeNo('· ' + s.nome + ' (') === i + 1) && ['menus', 'cor de estado', 'notas', 'travas', 'caixa da paleta'].every((t) => ondeNo('· ' + t + ' (') > ABAS.length)
+   && /^FICHA PRONTA em \d+s · .* · tempos: abas criadas /.test(reg[reg.length - 1]), reg.map((l) => l.slice(0, 40)).join(' | ').slice(0, 400));
+ok('nenhuma fórmula é gravada antes de a aba que ela cita existir e ter o tamanho dela, nem com a planilha fora do inglês', !S.P.orfas.length,
+   `${S.P.orfas.length}: ${S.P.orfas.slice(0, 3).join(' · ')}`);
+const totalM = ABAS.reduce((n, s) => n + s.merges.length, 0), chM = (CHAMADAS['Range.merge'] || 0) + (CHAMADAS['Range.mergeAcross'] || 0) + (CHAMADAS['Range.mergeVertically'] || 0);
+ok(`as ${totalM} mesclagens vão em lotes: menos da metade em chamadas`, chM > 0 && chM < totalM / 2, `${chM} chamadas`);
+ok('nenhuma etapa lê a planilha célula a célula: a mesclagem, a fórmula e o valor de uma célula são lidos de matriz',
+   !CHAMADAS['Range.getFormula'] && !CHAMADAS['Range.isPartOfMerge'] && (CHAMADAS['Range.getMergedRanges'] || 0) <= 5 && (CHAMADAS['Range.getValue'] || 0) <= 5 && !CHAMADAS['Spreadsheet.moveActiveSheet'],
+   `getFormula ${CHAMADAS['Range.getFormula'] || 0}, isPartOfMerge ${CHAMADAS['Range.isPartOfMerge'] || 0}, getMergedRanges ${CHAMADAS['Range.getMergedRanges'] || 0}, getValue ${CHAMADAS['Range.getValue'] || 0}, moveActiveSheet ${CHAMADAS['Spreadsheet.moveActiveSheet'] || 0}`);
+const PESO_DA_MONTAGEM = Object.assign({}, CHAMADAS);
 ok('toda mesclagem do ABAS existe na aba', ABAS.every((s) => s.merges.every((m) => S.acha(s.nome).merges.some((x) => x.join() === m.join()))));
+// as mesclagens em lote não podem mesclar nada a mais: fora o que o ABAS pede, só a caixa de cada imagem e a da paleta
+const aMais = ABAS.map((s) => { const pedidas = new Set(s.merges.map((m) => m.join()).concat(s.imgs.map((im) => [im[0], im[1], im[2], im[3]].join())));
+  const daPaleta = Object.values(P.nomeados).filter((r) => r.getSheet().getName() === s.nome).map((r) => [r.getRow(), r.getColumn(), r.getLastRow(), r.getLastColumn()].join());
+  return S.acha(s.nome).merges.map((m) => m.join()).filter((m) => !pedidas.has(m) && !daPaleta.includes(m)).map((m) => s.nome + ' ' + m); }).flat();
+ok('nenhuma aba tem mesclagem que o ABAS não pede', !aMais.length, aMais.slice(0, 4).join(' · '));
 ok('todo menu do ABAS vira validação na célula dele',
    ABAS.every((s) => (s.dv || []).every((d) => d[0].replace(/\$/g, '').split(' ').every((f) => { const p = partes(f); return S.acha(s.nome).dv.has(p.r + ',' + p.c); }))));
 ok('toda caixa de seleção medida vira caixa', ABAS.every((s) => (s.caixas || []).every((c) => S.acha(s.nome).caixas.has(c[1] + ',' + c[0]) && S.acha(s.nome).caixas.has((c[1] + c[2] - 1) + ',' + c[0]))));
@@ -290,6 +97,24 @@ ok('na FICHA, o XP e o EQUIPAMENTO são fórmula travada com aviso, e o EQUIPAME
    [idx['xp'], idx['equipamento']].every((a1) => { const p = partes(a1); return F.f.has(p.r + ',' + p.c) && travada(a1); })
    && !F.dv.has(partes(idx['equipamento']).r + ',' + partes(idx['equipamento']).c), `xp ${idx['xp']}, equipamento ${idx['equipamento']}`);
 ok('o nível da FICHA continua digitável: valor solto, sem trava', (() => { const p = partes(idx['nivel']); return !F.f.has(p.r + ',' + p.c) && !travada(idx['nivel']); })());
+// as travas por faixa cobrem as mesmas células que a trava por célula cobria: toda fórmula, e mais nada
+const idxLivres = ['vida', 'energia', 'integridade'].map((k) => idx[k]);
+const cobertura = (X) => { const m = new Map(); for (const p of X.prot) { const f = partes(p.a1); for (let i = f.r; i < f.r + f.nl; i++) for (let j = f.c; j < f.c + f.nc; j++) m.set(i + ',' + j, (m.get(i + ',' + j) || 0) + (p.aviso ? 1 : 100)); } return m; };
+for (const nomeT of ['FICHA', 'CARTEIRA']) {
+  const X = S.acha(nomeT), cob = cobertura(X), livres = nomeT === 'FICHA' ? idxLivres.map((a1) => { const p = partes(a1); return p.r + ',' + p.c; }) : [];
+  const devem = [...X.f.keys()].filter((k) => !livres.includes(k));
+  const faltam = devem.filter((k) => cob.get(k) !== 1), sobram = [...cob.keys()].filter((k) => !devem.includes(k));
+  ok(`${nomeT}: as ${devem.length} fórmulas estão travadas com aviso, uma vez cada, em ${X.prot.length} faixas, e nenhuma célula sem fórmula está travada`,
+     !faltam.length && !sobram.length && X.prot.length < devem.length && X.prot.every((p) => p.desc === 'fórmula · ' + nomeT + '!' + p.a1), `faltam ${faltam.slice(0, 4)}, sobram ${sobram.slice(0, 4)}, ${X.prot.length} travas`);
+}
+// a nota de cada caixa da FICHA mora no título quando a célula de cima é texto digitado, e na própria caixa quando não é
+const cabecaDe = (X, r, c) => { const m = X.merges.find((x) => r >= x[0] && r <= x[2] && c >= x[1] && c <= x[3]); return m ? [m[0], m[1]] : [r, c]; };
+const notasCertas = ['defesa', 'iniciativa', 'maestria', 'nivel', 'xp', 'equipamento', 'caminho', 'trilha', 'pontos disponíveis', 'feitiços disponíveis'].map((k) => {
+  const p = partes(idx[k]), [la, ca] = p.r === 1 ? [p.r, p.c] : cabecaDe(F, p.r - 1, p.c), acima = la + ',' + ca;
+  const noTitulo = p.r > 1 && !F.f.has(acima) && typeof F.v.get(acima) === 'string' && F.v.get(acima).trim() !== '';
+  return (noTitulo ? F.notas.has(acima) && !F.notas.has(p.r + ',' + p.c) : F.notas.has(p.r + ',' + p.c)) ? null : k;
+}).filter(Boolean);
+ok('as notas de regra da FICHA moram no título da caixa quando ele é texto, e na caixa quando não é', F.notas.size >= 35 && !notasCertas.length, `${F.notas.size} notas; fora do lugar: ${notasCertas}`);
 const vivas = S.ctx.tabelaDaDados_(S.ss.getSheetByName('DADOS').getDataRange().getValues(), 'nota viva', ['texto da nota', 'caixa da nota']);
 ok('as três notas que mudam com a ficha nascem escritas', vivas.length === 3 && vivas.every((n) => { const p = partes(n['caixa da nota']); return A.notas.has(p.r + ',' + p.c); }));
 
@@ -322,9 +147,35 @@ let erroSel = null;
 try { S.ctx.onSelectionChange({ range: S.ss.getSheetByName(NOME).getRange('D10') }); S.ctx.onOpen({}); } catch (e) { erroSel = e; }
 ok('clicar numa célula e abrir a planilha não estouram', !erroSel, erroSel ? erroSel.message : '');
 
+console.log('\nO ACABAMENTO, SOZINHO');
+// uma montagem limpa serve de referência; nela o acabar() roda de novo, e numa terceira o relógio corre
+const R = criaSheets(FICHA_SRC, GS); R.ctx.construir();
+const antes = JSON.stringify(retrato(R.P));
+let erroAc = null;
+try { R.ctx.acabar(); } catch (e) { erroAc = e; }
+ok('rodar o acabar() numa ficha pronta não muda nada: mesmas notas, mesmas travas, sem duplicar', !erroAc && JSON.stringify(retrato(R.P)) === antes && R.P.locale === 'pt_BR'
+   && /^ACABAMENTO PRONTO em /.test(R.P.registro), erroAc ? erroAc.message : R.P.registro.slice(0, 120));
+// o relógio que corre: cada olhada no relógio adianta um minuto, e a montagem das abas passa do teto
+let agora = 0;
+class RelogioQueCorre { getTime() { agora += 60000; return agora; } }
+const L = criaSheets(FICHA_SRC, GS, { Date: RelogioQueCorre });
+let erroL = null;
+try { L.ctx.construir(); } catch (e) { erroL = e; }
+const semAcabamento = !L.acha('FICHA').prot.length && !L.acha('FICHA').notas.size && !L.P.nomeados['PALETA_ESCOLHIDA'];
+ok('a montagem que passa do teto de tempo deixa as abas de pé, em português, e avisa que falta o acabar()',
+   !erroL && semAcabamento && L.P.locale === 'pt_BR' && L.P.abas.map((a) => a.nome).join('|') === ABAS.map((a) => a.nome).join('|') && /FALTA O ACABAMENTO: rode a função acabar\(\)/.test(L.P.registro),
+   erroL ? erroL.message : `${L.acha('FICHA').prot.length} travas · ${L.P.registro.slice(0, 120)}`);
+try { L.ctx.acabar(); } catch (e) { erroL = e; }
+ok('e o acabar() depois dela deixa a planilha igual à de uma montagem que não parou', !erroL && JSON.stringify(retrato(L.P)) === antes, erroL ? erroL.message : 'a planilha ficou diferente');
+ok('o acabar() escreve a regra de cor com a planilha em inglês, como o construir()', !R.P.orfas.length && !L.P.orfas.length, R.P.orfas.concat(L.P.orfas).slice(0, 3).join(' · '));
+const semAba = criaSheets(FICHA_SRC, GS);
+let erroS = null;
+try { semAba.ctx.acabar(); } catch (e) { erroS = e; }
+ok('o acabar() numa planilha sem a ficha para com um recado, e não mexe no idioma', !!erroS && /rode construir\(\) antes/.test(erroS.message) && semAba.P.locale === 'en_US', erroS ? erroS.message : 'não parou');
+
 console.log('\nO PESO DO construir(), EM CHAMADAS');
-const peso = ['Range.merge', 'Range.setFormulas', 'Range.protect', 'RangeList.setBorder', 'Range.setDataValidation', 'Range.setNote', 'Range.insertCheckboxes', 'Range.setTextRotation']
-  .map((k) => k.split('.')[1] + ' ' + (CHAMADAS[k] || 0)).join(' · ');
+const peso = ['Range.merge', 'Range.mergeAcross', 'Range.protect', 'Range.setValues', 'RangeList.setBorder', 'Range.setDataValidation', 'Range.setNote', 'Range.setNotes', 'Range.insertCheckboxes', 'Range.setTextRotation']
+  .map((k) => k.split('.')[1] + ' ' + (PESO_DA_MONTAGEM[k] || 0)).join(' · ');
 console.log('       ' + peso);
 
 console.log('');

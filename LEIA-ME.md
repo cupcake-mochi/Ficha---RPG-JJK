@@ -12,7 +12,7 @@ O que mudou nesta rodada: a ficha **ganhou identidade**. Ela deixou de ser plani
 
 1. **`DECISOES-bloco-A.md`** — as nove decisões (bloco A e bloco C), com o porquê e o que foi medido. É o dono delas.
 2. **`COMO-SUBIR.md`** — do repositório até a ficha na mão do jogador, em seis passos.
-3. **`ficha-v01/ficha-projeto-m-0.1.xlsx`** — a ficha, oito abas: `CARTEIRA`, `FICHA`, `FICHA PESSOAL`, `GLOSSÁRIO`, `INVOCAÇÃO` e `CATÁLOGO`, e as duas de dados, escondidas. É a cópia da planilha viva: o `ficha-v01/extrair.py` tira o desenho da exportação, e o `ficha-v01/monta.py` remonta a ficha e escreve o `Ficha.gs`. *O `ficha/monta.py` foi aposentado no B18.*
+3. **`ficha-v01/ficha-projeto-m-0.1.xlsx`** — a ficha, cinco abas: `CARTEIRA`, `FICHA`, `FICHA PESSOAL` e `GLOSSÁRIO`, e a `DADOS`, escondida. A `INVOCAÇÃO`, o `CATÁLOGO` e a `DADOS_INV` saíram em 01/10/2026 (`ficha-v01/sem_invocacao.py`), até a invocação ser refeita. É a cópia da planilha viva: o `ficha-v01/extrair.py` tira o desenho da exportação, e o `ficha-v01/monta.py` remonta a ficha e escreve o `Ficha.gs`. *O `ficha/monta.py` foi aposentado no B18.*
 4. **`apps-script/Codigo.gs`** — o que o `.xlsx` não carrega: caixa de seleção, cor de estado, proteção, e a entrada por delta.
 5. **`manual-temporario.md`** — **superado.** *A regra entrou no capítulo 1 do manual, com texto próprio; o arquivo fica pelo exemplo que o `regressao-delta.js` confere.*
 6. **`PENDENCIAS.md`** — o bloco A saiu e virou ponteiro. Entraram cinco itens novos, do B5 ao B9.
@@ -61,7 +61,9 @@ python3 ficha-v01/monta.py
 | `regressao-ficha-pessoal.py` | **01/10/2026.** Preenche doze casos na `FICHA PESSOAL`, recalcula no LibreOffice e compara com a regra do catálogo |
 | `regressao-pessoal.js` | **01/10/2026.** O que o `Codigo.gs` faz pela `FICHA PESSOAL`, num Sheets de mentira |
 | `regressao-construir.js` | **01/10/2026.** Roda o `construir()` inteiro num Sheets de mentira rigoroso, e depois usa a planilha montada pelo `onEdit` |
-| `arnes-pessoal.py` | **01/10/2026.** Planta trinta e um defeitos no script e no molde, numa cópia, e confere que cada um acende |
+| `arnes-pessoal.py` | **01/10/2026.** Planta quarenta defeitos no script e no molde, numa cópia, e confere que cada um acende |
+| `medidas/sheets-de-mentira.js` | **01/10/2026.** Não é validador: é o Sheets de mentira que o `regressao-construir.js` usa. Guarda tudo o que o `construir()` grava, e acusa a fórmula gravada antes de a aba citada existir ou com a planilha fora do inglês |
+| `medidas/comparar-construir.js` | **01/10/2026.** Não é validador, e **roda à mão**: monta a planilha com o script de um commit e com o da pasta, e compara célula a célula. É a prova de que mexer no `construir()` não mudou a planilha |
 | `arnes-paleta.py` | **01/10/2026.** Planta sete defeitos na troca de paleta (a barra, a tinta de enfeite, a cor da arte), numa cópia. **Roda à mão**, fora do `rodar-tudo.sh`: são uns dois minutos |
 | `medidas/pintar-paletas.js` e `medidas/ver-paletas.py` | **01/10/2026.** Não são validadores: pintam a ficha com cada uma das 122 paletas, pelo `Codigo.gs` de verdade, e desenham o resultado para olhar tema por tema |
 | **`regressao-kaori-na-ficha.py`** | **novo.** Preenche a Kaori na ficha, manda o LibreOffice recalcular, e compara com a p.41 |

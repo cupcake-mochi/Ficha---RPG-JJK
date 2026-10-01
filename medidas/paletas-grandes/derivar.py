@@ -583,7 +583,13 @@ if "--aplicar" in sys.argv:
     gs = os.path.join(AQUI, "..", "..", "apps-script", "Codigo.gs")
     src = open(gs, encoding="utf-8").read()
     ini, fim = src.index("var PALETAS = {"), src.index("var PALETA_DE_FABRICA_")
-    novo = "var PALETAS = " + json.dumps(bloco_js, ensure_ascii=False, indent=2) + ";\n\n"
+    # 01/10/2026: cada variante numa linha só. Com um recuo por cor, o bloco tinha cinco mil linhas e 133 KB dos
+    # 240 do Codigo.gs; assim são 88. O conteúdo é o mesmo, cor por cor.
+    _junta = lambda o: json.dumps(o, ensure_ascii=False, separators=(",", ":"))
+    novo = "var PALETAS = {\n" + ",\n".join(
+        "  " + json.dumps(nome, ensure_ascii=False) + ": {\n" + ",\n".join(
+            "    " + json.dumps(modo) + ": " + _junta(bloco_js[nome][modo]) for modo in ("claro", "escuro")) + "\n  }"
+        for nome in bloco_js) + "\n};\n\n"
     if src[ini:fim] == novo:
         print("apps-script/Codigo.gs: o PALETAS já está igual")
     else:

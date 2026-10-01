@@ -381,8 +381,23 @@ def _sem_linha_gigante(obj, nivel=0):
         return compacto
     ind, ind0 = "  " * (nivel + 1), "  " * nivel
     if isinstance(obj, list):
-        itens = [ind + _sem_linha_gigante(x, nivel + 1) for x in obj]
-        return "[\n" + ",\n".join(itens) + "\n" + ind0 + "]"
+        # 01/10/2026: os itens curtos vão vários por linha, até o piso. Com um por linha, as doze mil células do ABAS
+        # gastavam um quinto do arquivo só em recuo e quebra de linha, e o Mizuki reclamou do tamanho do script.
+        # Item que desceu de nível (tem quebra de linha dentro) continua sozinho na linha dele.
+        linhas, atual = [], ""
+        for x in obj:
+            t = _sem_linha_gigante(x, nivel + 1)
+            if "\n" in t or len(t) > _LIMIAR_LINHA // 2:
+                if atual:
+                    linhas.append(atual); atual = ""
+                linhas.append(t)
+            elif atual and len(atual) + 1 + len(t) > _LIMIAR_LINHA:
+                linhas.append(atual); atual = t
+            else:
+                atual = atual + "," + t if atual else t
+        if atual:
+            linhas.append(atual)
+        return "[\n" + ",\n".join(ind + l for l in linhas) + "\n" + ind0 + "]"
     if isinstance(obj, dict):
         partes = [ind + json.dumps(k, ensure_ascii=False) + ":" + _sem_linha_gigante(v, nivel + 1)
                   for k, v in obj.items()]

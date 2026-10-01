@@ -65,7 +65,7 @@ FA = ficha_automatica.trocas(LAY_DE)
 # 01/10/2026, limpeza 22: a FICHA PESSOAL. O que ela muda na FICHA (o EQUIPAMENTO e o XP viram espelho, o
 # DESLOCAMENTO cai pela metade com a punicao) e as tabelas dela na DADOS, depois do indice. Le o layout depois
 # da ficha automatica, como o monta.py o tem na hora.
-import ficha_pessoal
+import ficha_pessoal, sem_invocacao
 LAY_FP = copy.deepcopy(LAY_DE)
 ficha_automatica.aplica(LAY_FP, FA)
 FP = ficha_pessoal.trocas(LAY_FP)
@@ -181,7 +181,14 @@ _gerada_sem_novas = [n for n in wb_.sheetnames if n not in _abas_novas]
 # pronta --, mas o desenho dela nao vem dali: vem do glossario.py. Comparar a aba dele com a gerada
 # compara o gerador com o proprio gerador, e foi o que deixou este comparador vermelho (338 celulas
 # de fonte, 338 de alinhamento, 224 de fundo, 39 de valor) desde o commit que criou o GLOSSARIO.
-_original_sem_novas = [n for n in wa.sheetnames if n not in _abas_novas]
+# 01/10/2026: a INVOCACAO, o CATALOGO e a DADOS_INV sairam da ficha, por decisao do Mizuki (ficha-v01/sem_invocacao.py).
+# A exportacao ainda traz as tres; o que se cobra e que nenhuma delas volte para a ficha gerada.
+_abas_fora = list(sem_invocacao.ABAS_FORA)
+for _n in _abas_fora:
+    if _n in wb_.sheetnames:
+        difs.append(f"a aba {_n!r} saiu da ficha em 01/10/2026 e voltou na geracao")
+print(f"  fora da ficha desde 01/10/2026: {_abas_fora}")
+_original_sem_novas = [n for n in wa.sheetnames if n not in _abas_novas and n not in _abas_fora]
 if _original_sem_novas != _gerada_sem_novas:
     difs.append(f"ordem/nome das abas: {_original_sem_novas} != {_gerada_sem_novas} (fora as novas {_abas_novas})")
 for nova in _abas_novas:

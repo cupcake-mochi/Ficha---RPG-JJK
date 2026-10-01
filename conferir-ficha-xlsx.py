@@ -333,7 +333,8 @@ _NOTA_PEDIDA = ["defesa", "iniciativa", "conjuração", "corpo a corpo", "à dis
 checa("a Defesa, as caixas de Buff/Debuff, os ataques, os Feitiços e as Passivas têm nota (17/09/2026)",
       all(k in _chaves for k in _NOTA_PEDIDA), str([k for k in _NOTA_PEDIDA if k not in _chaves]))
 checa("a nota mora no título quando o de cima é texto (tituloOuCaixa_ no alvoDaNota_)",
-      bool(_mnotas) and "alvoDaNota_(ficha, c)" in _mnotas.group(1) and "function tituloOuCaixa_(" in _CODA)
+      bool(_mnotas) and "alvoDaNota_(c, valores, formulas, mescladas)" in _mnotas.group(1) and "function tituloOuCaixa_(" in _CODA
+      and "tituloOuCaixa_(acima)" in _CODA)
 _marcos_rot = [f.cell(row=f[IDX[k]].row - 1, column=f[IDX[k]].column).value
                for k in ("refino escolhido", "marco corpo", "marco leque") if k in IDX]
 checa("o Marco Escolhido tem os rótulos Refino, Corpo e Leque, e as notas falam deles",
@@ -417,8 +418,8 @@ _sz_o = _lay_o["estilos"][_cel_o[0][2]][0][1] if _cel_o and _cel_o[0][2] is not 
 checa("a caixa das escolhas de perícia fica em letra menor que a do desenho, para a frase caber",
       _sz_o is not None and _esc.font.sz == _flm.FONTE_DAS_ESCOLHAS < _sz_o and bool(_esc.alignment.wrap_text),
       f"desenho {_sz_o} · ficha {_esc.font.sz} · quebra {_esc.alignment.wrap_text}")
-_margem = {a: wb[a].max_column for a in ("FICHA", "CARTEIRA", "INVOCAÇÃO", "CATÁLOGO")}
-checa("a CARTEIRA, a INVOCAÇÃO e o CATÁLOGO acabam na mesma coluna da FICHA, com a margem da direita",
+_margem = {a: wb[a].max_column for a in ("FICHA", "CARTEIRA")}
+checa("a CARTEIRA acaba na mesma coluna da FICHA, com a margem da direita",
       len(set(_margem.values())) == 1, str(_margem))
 
 print("\nO CABEÇALHO NO MOLDE DO ESTUDO, O TÍTULO NO ACENTO E A BARRA NA COR DO TEMA  (01/10/2026)")
@@ -582,7 +583,7 @@ if _o.path.exists(GS):
     _i_le = _corpo.find("getSpreadsheetLocale()")
     _i_troca = _corpo.find("setSpreadsheetLocale('en_US')")
     _i_monta = _corpo.find("montarAba_(")
-    _i_ultima = max(_corpo.find(k) for k in ("menusSuspensos_(", "corDeEstado_(", "protegerFormulas_("))
+    _i_ultima = max(_corpo.find(k) for k in ("menusSuspensos_(", "acabamento_("))
     _i_final = _corpo.find("} finally {")
     _i_volta = _corpo.find("setSpreadsheetLocale('pt_BR')")
     checa(f"a ficha tem {len(_virg)} fórmula(s) com vírgula, então o idioma da montagem importa", len(_virg) > 0)
@@ -1027,7 +1028,7 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
 
     # 19/09/2026: a lombada (fundo tinta, colunas A:B) da FICHA parava na linha 144 de 150, e a da
     # INVOCAÇÃO na 120 de 126 — invisível na ficha escura de fábrica, cortada numa paleta clara.
-    for _nome_l in ("FICHA", "INVOCAÇÃO"):
+    for _nome_l in ("FICHA",):
         _al = next(a for a in dados if a["nome"] == _nome_l)
         _m2 = {}
         for _fx in _al["fundos"]:
@@ -1047,28 +1048,24 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     # minúscula na INVOCAÇÃO e no CATÁLOGO ("técnica", "prende o alvo", "sobrou ponto"). A notação de dado
     # ("d20 +") fica minúscula de propósito.
     _minusc = []
-    for _nome_t in ("INVOCAÇÃO", "CATÁLOGO", "GLOSSÁRIO"):
+    for _nome_t in ("GLOSSÁRIO",):
         for _v in next(a for a in dados if a["nome"] == _nome_t)["vals"]:
             _s = _v[2]
             if isinstance(_s, str) and not _s.startswith("=") and _s.strip() and _s.strip()[0].isalpha() \
                     and _s.strip()[0].islower() and not re.match(r"^\s*d\d", _s):
                 _minusc.append((_nome_t, _v[0], _v[1], _s[:30]))
-    checa("nenhum texto da INVOCAÇÃO, do CATÁLOGO ou do GLOSSÁRIO abre com a inicial minúscula",
+    checa("nenhum texto do GLOSSÁRIO abre com a inicial minúscula",
           not _minusc, str(_minusc[:3]))
-    # B13: o Jorro ataca e empurra (decisão do Mizuki na v0.246 do sistema). O CATÁLOGO da ficha vinha da
-    # exportação, com "ataca em linha ou em área", e o capítulo 16 vendorizado já dizia o outro.
-    _mj = re.search(r"\|\s*\*\*8\*\*\s*\|\s*`Jorro`\s*\|\s*(.*?)\s*\|", open("capitulo-16-invocacoes.md", encoding="utf-8").read())
-    _cat = next(a for a in dados if a["nome"] == "CATÁLOGO")["vals"]
-    _lin_j = [v[0] for v in _cat if v[2] == "Jorro"]
-    _txt_j = [v[2] for v in _cat if _lin_j and v[0] == _lin_j[0] and isinstance(v[2], str) and v[2] != "Jorro"]
-    checa("o Jorro do CATÁLOGO diz o que o capítulo 16 diz (ataca e empurra)",
-          bool(_mj) and len(_lin_j) == 1 and any(t[:1].lower() + t[1:] == _mj.group(1) for t in _txt_j),
-          f"livro {_mj.group(1) if _mj else None!r} · catálogo {_txt_j}")
-    _inv = next(a for a in dados if a["nome"] == "INVOCAÇÃO")
-    _forms = " ".join(v[2] for v in _inv["vals"] if isinstance(v[2], str) and v[2].startswith("="))
-    checa("as mensagens que as fórmulas da INVOCAÇÃO devolvem abrem com maiúscula (Sobrou ponto, Estourou o total, Ok)",
-          all(x in _forms for x in ('"Sobrou ponto"', '"Estourou o total"', '"Ok"', '"Custa "&'))
-          and not any(x in _forms for x in ('"sobrou ponto"', '"estourou o total"', '"ok"')))
+    # 01/10/2026: a INVOCAÇÃO, o CATÁLOGO e a DADOS_INV saíram da ficha (ficha-v01/sem_invocacao.py), e com elas as
+    # checagens do Jorro do CATÁLOGO e das mensagens das fórmulas da INVOCAÇÃO. O que se cobra agora é que nenhuma
+    # das três volte, nem no .xlsx nem no script, e que nada do que ficou as cite.
+    import sem_invocacao as _si
+    _voltou = [n for n in _si.ABAS_FORA if n in wb.sheetnames or any(a["nome"] == n for a in dados)]
+    _cita = [(a["nome"], v[0], v[1]) for a in dados for v in a["vals"] if isinstance(v[2], str) and v[2].startswith("=") and _si.cita(v[2])]
+    _cita += [(a["nome"], d[0]) for a in dados for d in a.get("dv", []) if _si.cita("=" + str(d[1]))]
+    checa("a INVOCAÇÃO, o CATÁLOGO e a DADOS_INV saíram da ficha, e nenhuma fórmula ou menu do que ficou cita uma delas",
+          not _voltou and not _cita and list(DEC["C6_documento"]["abas_removidas_em_01_10"]["quais"]) == list(_si.ABAS_FORA),
+          f"voltou {_voltou} · cita {_cita[:3]}")
 
     # 19/09/2026, pedido do Mizuki: uma linha simples entre a moldura da ficha (cabeçalho e lombada, em tinta)
     # e o miolo (em fundo), que numa paleta clara viravam dois pastéis quase iguais sem nada entre eles.
@@ -1084,11 +1081,10 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
                         for _cc in range(_c1, _c2 + 1):
                             _ok.add((_rr, _cc))
         return [x for x in celulas if x not in _ok]
-    _f, _i, _c = (next(a for a in dados if a["nome"] == n_) for n_ in ("FICHA", "INVOCAÇÃO", "CARTEIRA"))
+    _f, _c = (next(a for a in dados if a["nome"] == n_) for n_ in ("FICHA", "CARTEIRA"))
     _falta = {
         "FICHA, embaixo do cabeçalho (linha 5)": _cobre("FICHA", "bottom", [(5, c) for c in range(3, _f["cols"] + 1)]),
         "FICHA, à direita da lombada (coluna B)": _cobre("FICHA", "right", [(r, 2) for r in range(6, _f["rows"] + 1)]),
-        "INVOCAÇÃO, à direita da lombada (coluna B)": _cobre("INVOCAÇÃO", "right", [(r, 2) for r in range(1, _i["rows"] + 1)]),
         "CARTEIRA, embaixo do cabeçalho (linha 4)": _cobre("CARTEIRA", "bottom", [(4, c) for c in range(1, _c["cols"] + 1)]),
     }
     for _onde, _sem in _falta.items():
@@ -1226,23 +1222,34 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
                         _cedo += 1
                         break
     _mc = _re.search(r"function construir\(\) \{(.*?)\n\}\n", g, _re.S)
-    _mm = _re.search(r"function montarAba_\(ss, spec\) \{(.*?)\n\}\n", g, _re.S)
+    _mm = _re.search(r"function montarAba_\(aba, spec\) \{(.*?)\n\}\n", g, _re.S)
     _cc = _mc.group(1) if _mc else ""
-    _laco = _cc.find("montarAba_(")
-    _fim_laco = _cc.find("});", _laco) if _laco >= 0 else -1
-    _grava = _cc.find("escreverFormulas_(")
-    _fn = g.find("function escreverFormulas_(")
-    # 01/10/2026: as fórmulas vizinhas na mesma coluna passaram a ir em lote (setFormulas), porque a FICHA PESSOAL
-    # mais que dobrou a quantidade delas. O que se cobra é o mesmo: a gravação mora no escreverFormulas_.
-    _corpo_fn = _re.search(r"function escreverFormulas_\(ss\) \{(.*?)\n\}\n", g, _re.S)
-    _corpo_fn = _corpo_fn.group(1) if _corpo_fn else ""
+    # 01/10/2026: o construir() estourou os seis minutos do Apps Script, e as fórmulas deixaram de esperar numa fila
+    # (144 chamadas de setFormulas). Agora TODAS as abas nascem primeiro, vazias e do tamanho certo, e cada uma é
+    # preenchida depois, com as fórmulas na mesma gravação dos valores. O que se cobra é a mesma coisa de antes: a
+    # aba citada já existe quando a fórmula é gravada.
+    _cria = _cc.find("criarAba_(")
+    _fim_cria = _cc.find("});", _cria) if _cria >= 0 else -1
+    _monta = _cc.find("montarAba_(")
+    _fnc = _re.search(r"function criarAba_\(ss, spec, posicao\) \{(.*?)\n\}\n", g, _re.S)
+    _fnc = _fnc.group(1) if _fnc else ""
     checa(f"{_cedo} fórmula(s) citam uma aba que nasce depois da delas, então a ordem da gravação importa",
           _cedo > 0)
-    checa("as fórmulas são gravadas depois que todas as abas nascem, e não dentro do montarAba_",
-          bool(_mm) and ".setFormula(" not in _mm.group(1) and ".setFormulas(" not in _mm.group(1)
-          and 0 <= _laco < _fim_laco < _grava
-          and _fn >= 0 and (".setFormula(" in _corpo_fn or ".setFormulas(" in _corpo_fn),
-          f"laço {_laco} · fim do laço {_fim_laco} · gravação {_grava}")
+    checa("todas as abas nascem, do tamanho certo, antes de a primeira ser preenchida, e as fórmulas vão com os valores",
+          bool(_mm) and "r.setValues(v)" in _mm.group(1) and ".setFormula" not in g.split("function construir()")[1]
+          and 0 <= _cria < _fim_cria < _monta and "insertSheet(spec.nome, posicao)" in _fnc
+          and all(k in _fnc for k in ("deleteColumns(", "deleteRows(", "insertColumnsAfter(", "insertRowsAfter("))
+          and "insertSheet(" not in _mm.group(1),
+          f"cria {_cria} · fim do laço {_fim_cria} · monta {_monta}")
+    # o acabamento pode rodar sozinho, e o construir() passa a vez a ele quando a montagem demora
+    _fa = _re.search(r"function acabar\(\) \{(.*?)\n\}\n", g, _re.S)
+    _fa = _fa.group(1) if _fa else ""
+    checa("o construir() registra cada etapa na hora e, se a montagem passar do teto, deixa o acabamento para o acabar()",
+          "rel.etapa(spec.nome)" in _cc and "rel.passou() > TETO_DA_MONTAGEM_" in _cc and "acabamento_(ss, feito, rel)" in _cc
+          and "acabamento_(ss, feito, rel)" in _fa and "setSpreadsheetLocale('en_US')" in _fa
+          and _fa.find("} finally {") < _fa.find("setSpreadsheetLocale('pt_BR')")
+          and bool(_re.search(r"var TETO_DA_MONTAGEM_ = (\d+);", g)) and int(_re.search(r"var TETO_DA_MONTAGEM_ = (\d+);", g).group(1)) <= 300000,
+          "falta o relógio, o teto ou o acabar()")
 
     arte_usada = {im[4] for a in dados for im in a["imgs"]}
     embutida = set(_re.findall(r'"([^"]+\.png)":"', g.split("var ARTE")[1][:200000]))

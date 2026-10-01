@@ -42,7 +42,7 @@ Apaga o que estiver no `Código.gs` e cola o conteúdo de **`apps-script/Codigo.
 
 Depois, no `+` ao lado de **Arquivos**, escolhe **Script**, dá o nome `Ficha`, e cola o conteúdo de **`apps-script/Ficha.gs`**.
 
-> O `Ficha.gs` passa de 100 KB, e boa parte é a arte em base64. É normal ele demorar a colar.
+> O `Ficha.gs` tem uns 440 KB e o `Codigo.gs` uns 200 KB. É normal eles demorarem a colar.
 
 Salva com `Ctrl+S`.
 
@@ -52,13 +52,26 @@ No seletor de funções, escolhe **`construir`** e clica em **▶ Executar**.
 
 Na primeira vez ele pede autorização: **Revisar permissões** → tua conta → **Avançado** → **Acessar** → **Permitir**.
 
-**Demora.** São oito abas, milhares de células com valor, as imagens e as caixas de seleção. Antes da `FICHA PESSOAL` levava de um a dois minutos; com ela a montagem ganhou 340 mesclagens, e o tempo novo ainda não foi medido no Sheets. Não é travamento.
+**Demora.** São cinco abas, milhares de células com valor, as imagens e as caixas de seleção. Em 01/10/2026 a montagem estourou os seis minutos que o Apps Script dá, e foi reescrita para ir menos vezes ao servidor; **o tempo novo ainda não foi medido no Sheets.** Não é travamento.
+
+Enquanto roda, o registro mostra cada etapa na hora, com o tempo dela:
+
+```
+0s · abas criadas (0.8s)
+9s · CARTEIRA (8.2s)
+31s · FICHA (22.4s)
+...
+```
 
 Quando terminar, o registro escreve:
 
 ```
-FICHA PRONTA em 74s · CARTEIRA: 61 células, 4 imagens · FICHA: ... · cor de estado: 6 regra(s) · notas: 5 nota(s) · protegidas: 15 célula(s)
+FICHA PRONTA em 74s · CARTEIRA: 1503 células, 9 fórmulas, 4 imagens · FICHA: ... · cor de estado: 10 regra(s) · notas: ... · protegidas: ... · tempos: abas criadas 0.8s, CARTEIRA 8.2s, ...
 ```
+
+Os números do exemplo são inventados: servem só para mostrar o formato. **Se a execução expirar de novo, me mande o registro inteiro:** ele diz em que etapa ela estava e quanto cada uma levou.
+
+**Se o registro terminar em `FALTA O ACABAMENTO: rode a função acabar()`**, as abas já estão de pé e faltam a cor de estado, as notas, as travas e a caixa da paleta. No seletor de funções, escolhe **`acabar`** e clica em **▶ Executar**. Ela pode rodar quantas vezes precisar, sem estragar nada.
 
 **Não vai ter pop-up.** O aviso vai para o registro de propósito: `alert()` abre na aba da planilha e trava a execução esperando um clique que você não vê.
 

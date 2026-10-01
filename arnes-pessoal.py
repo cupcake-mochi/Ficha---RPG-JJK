@@ -11,7 +11,8 @@ Cada perturbacao e um defeito que o script poderia ter, e a agulha e a frase da 
 import os, shutil, subprocess, sys, tempfile
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
-PRECISA = ["regressao-pessoal.js", "regressao-construir.js", "catalogo-projeto-m.json", "manual.txt", "apps-script/Codigo.gs", "apps-script/Ficha.gs"]
+PRECISA = ["regressao-pessoal.js", "regressao-construir.js", "medidas/sheets-de-mentira.js", "catalogo-projeto-m.json", "manual.txt", "apps-script/Codigo.gs",
+           "apps-script/Ficha.gs"]
 NODE = shutil.which("node") or shutil.which("nodejs")
 
 
@@ -118,16 +119,35 @@ edita("o grupo de dentro pedido na profundidade errada", F, "aba.getColumnGroup(
       "não há grupo dessa profundidade", teste=K)
 edita("o painel fecha antes da extensao", F, "var deDentro = function (a, b) { return b[3] - a[3]; };", "var deDentro = function (a, b) { return a[3] - b[3]; };",
       "a extensão fecha antes do painel", teste=K)
-edita("a formula em lote com a faixa de uma linha a menos", F, "aba.getRange(fila[i][0], fila[i][1], bloco.length, 1).setFormulas(bloco);",
-      "aba.getRange(fila[i][0], fila[i][1], Math.max(1, bloco.length - 1), 1).setFormulas(bloco);", "a matriz não tem o tamanho da faixa", teste=K)
+edita("as notas de caixa com a faixa de uma linha a menos", F, "aba.getRange(r1, c1, r2 - r1 + 1, c2 - c1 + 1).setNotes(notas);",
+      "aba.getRange(r1, c1, r2 - r1, c2 - c1 + 1).setNotes(notas);", "a matriz não tem o tamanho da faixa", teste=K)
 edita("o botao do grupo fica depois dele", F, "var ANTES = SpreadsheetApp.GroupControlTogglePosition.BEFORE;", "var ANTES = SpreadsheetApp.GroupControlTogglePosition.AFTER;",
       "com o botão em cima", teste=K)
-edita("a trava da FICHA PESSOAL bloqueia em vez de avisar", C, "p.setDescription('fórmula · ' + spec.nome + '!' + a1);\n        p.setWarningOnly(true);",
-      "p.setDescription('fórmula · ' + spec.nome + '!' + a1);", "travadas em", teste=K)
-edita("a nota de caixa vai para a celula errada", F, "(spec.notas || []).forEach(function (n) { aba.getRange(n[0]).setNote(n[1]); });",
-      "(spec.notas || []).forEach(function (n) { aba.getRange('A1').setNote(n[1]); });", "notas de caixa estão nas células delas", teste=K)
-edita("a aba sai uma coluna menor que o desenho", F, "if (aba.getMaxColumns() < nc) aba.insertColumnsAfter(aba.getMaxColumns(), nc - aba.getMaxColumns());",
-      "if (aba.getMaxColumns() < nc - 1) aba.insertColumnsAfter(aba.getMaxColumns(), nc - 1 - aba.getMaxColumns());", "sai da aba", teste=K)
+edita("a trava bloqueia em vez de avisar", C, "p.setDescription('fórmula · ' + nome + '!' + a1);\n      p.setWarningOnly(true);",
+      "p.setDescription('fórmula · ' + nome + '!' + a1);", "travadas em", teste=K)
+edita("a nota de caixa vai para a celula errada", F, "onde.forEach(function (o) { notas[o[0] - r1][o[1] - c1] = o[2]; });",
+      "onde.forEach(function (o) { notas[0][0] = o[2]; });", "notas de caixa estão nas células delas", teste=K)
+edita("a aba sai uma coluna menor que o desenho", F, "if (temC < nc) aba.insertColumnsAfter(temC, nc - temC);",
+      "if (temC < nc - 1) aba.insertColumnsAfter(temC, nc - 1 - temC);", "sai da aba", teste=K)
+# 01/10/2026: o construir() que vai menos vezes ao servidor. Cada atalho novo tem o defeito dele.
+edita("a trava por faixa junta colunas que nao sao vizinhas", C, "faixas[k][3] === r[1] - 1) { faixas[k][3] = r[3]; return; }",
+      "faixas[k][3] <= r[1] - 1) { faixas[k][3] = r[3]; return; }", "nenhuma célula sem fórmula está travada", teste=K)
+edita("a trava por faixa esquece a ultima celula da coluna", C, "corridas.push([v[i], Number(c), v[j], Number(c)]);",
+      "corridas.push([v[i], Number(c), Math.max(v[i], v[j] - 1), Number(c)]);", "fórmulas estão travadas com aviso", teste=K)
+edita("a mesclagem em lote junta linhas que nao sao vizinhas", F, "while (j + 1 < v.length && v[j + 1] === v[j] + 1) j++;",
+      "while (j + 1 < v.length && v[j + 1] <= v[j] + 3) j++;", "mescla", teste=K)
+edita("a formula fica fora da gravacao dos valores", F, "    v[t[0] - 1][t[1] - 1] = t[2];\n    if (typeof t[2] === 'string' && t[2].charAt(0) === '=') formulas++;",
+      "    if (typeof t[2] === 'string' && t[2].charAt(0) === '=') formulas++; else v[t[0] - 1][t[1] - 1] = t[2];", "toda fórmula do ABAS chega à célula dela", teste=K)
+edita("a aba e preenchida antes de as outras nascerem", F, "    var abas = ABAS.map(function (spec, i) { return criarAba_(ss, spec, i + 1); });\n    ss.deleteSheet(temp);",
+      "    var abas = ABAS.map(function (spec, i) { var a = criarAba_(ss, spec, i + 1); if (i === 0) montarAba_(a, spec); return a; });\n    ss.deleteSheet(temp);",
+      "nenhuma fórmula é gravada antes de a aba que ela cita existir", teste=K)
+edita("a nota de regra vai sempre para a caixa, nunca para o titulo", C, "return tituloOuCaixa_(acima) === 'título' ? [la, ca] : [l, c];", "return [l, c];",
+      "as notas de regra da FICHA moram no título", teste=K)
+edita("o construir() nunca passa a vez ao acabar()", F, "var TETO_DA_MONTAGEM_ = 270000;", "var TETO_DA_MONTAGEM_ = 270000000000;",
+      "avisa que falta o acabar()", teste=K)
+edita("o acabar() duplica as travas", C, "    semAsVelhas(aba);\n    var celulas = [];", "    var celulas = [];", "rodar o acabar() numa ficha pronta não muda nada", teste=K)
+edita("o acabar() roda em portugues, e a regra de cor quebra", F, "  ss.setSpreadsheetLocale('en_US');\n  try {\n    acabamento_(ss, feito, rel);",
+      "  try {\n    acabamento_(ss, feito, rel);", "o acabar() escreve a regra de cor com a planilha em inglês", teste=K)
 edita("o Caminho escolhido nao chega a FICHA PESSOAL", C, "try { fichaMexeNaPessoal_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }", "",
       "escolher Bastião na FICHA passa por todos os gatilhos", teste=K)
 

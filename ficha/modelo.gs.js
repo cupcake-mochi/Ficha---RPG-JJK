@@ -1,7 +1,7 @@
 /**
  * Projeto M · a ficha nasce aqui dentro.
  *
- * Rode UMA função: construir(). Ela apaga o que existir e monta as seis abas
+ * Rode UMA função: construir(). Ela apaga o que existir e monta as abas
  * do zero, nativas: cor, fonte, mesclagem, altura de linha em pixel, menu
  * suspenso, caixa de seleção, imagem no tamanho certo e cor de estado.
  *
@@ -10,15 +10,36 @@
  * aparece para a API, então nem dava para consertar o tamanho dela.
  */
 
-var LOTE = 2000;   // células por escrita; acima disso o Apps Script engasga
-var PENDENTES_ = [];   // as fórmulas de cada aba, gravadas depois que todas nascem
+var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
+
+/**
+ * O relógio da montagem. Cada etapa que termina vai para o registro de execução NA HORA, com o tempo dela: se o
+ * Apps Script cortar a função aos seis minutos, o registro mostra em que etapa ela estava e quanto cada uma levou.
+ * Até 01/10/2026 o construir() só escrevia no fim, e uma montagem que estourava o tempo não deixava pista nenhuma.
+ */
+function relogio_() {
+  var t0 = new Date().getTime(), ant = t0;
+  ETAPAS_ = [];
+  return {
+    etapa: function (nome) {
+      var agora = new Date().getTime(), seg = Math.round((agora - ant) / 100) / 10;
+      ant = agora;
+      ETAPAS_.push(nome + ' ' + seg + 's');
+      Logger.log(Math.round((agora - t0) / 1000) + 's · ' + nome + ' (' + seg + 's)');
+    },
+    passou: function () { return new Date().getTime() - t0; }
+  };
+}
+
+// Se a montagem das abas passar disto, o acabamento fica para a função acabar(): seis minutos é o teto do Apps
+// Script, e o acabamento (cor de estado, notas, travas, caixa da paleta) pode ser refeito sozinho, a montagem não.
+var TETO_DA_MONTAGEM_ = 270000;
 
 function construir() {
-  var t0 = new Date().getTime();
   var ss = SpreadsheetApp.getActive();
-  var feito = [];
+  var feito = [], rel = relogio_();
 
-  // O idioma da planilha manda na pontuação de TODA fórmula que o script escreve, o setFormula e
+  // O idioma da planilha manda na pontuação de TODA fórmula que o script escreve, o setValues e
   // a regra de cor inclusive: numa planilha em português COUNTIF(a,b) vira #ERROR! e 0.25 não é
   // número. Foi o que o teste de 15/09/2026 mostrou, com as 104 fórmulas de vírgula quebradas.
   // A montagem roda em inglês, e no fim ela força pt_BR — não devolve o idioma de antes. Achado em
@@ -27,79 +48,159 @@ function construir() {
   // devolvia a mesma en_US que a montagem tinha acabado de ligar — a ficha é em português sempre,
   // então o fim é sempre pt_BR, mesmo se ela parar no meio.
   var idioma = ss.getSpreadsheetLocale();
+  var falta = false;
   ss.setSpreadsheetLocale('en_US');
   try {
     // uma aba de rascunho segura o lugar enquanto as antigas somem
     var velha = ss.getSheetByName('__montando__');
     if (velha) ss.deleteSheet(velha);        // sobra de uma execução que parou no meio
-    var temp = ss.insertSheet('__montando__');
+    var temp = ss.insertSheet('__montando__', 0);
     ss.getSheets().forEach(function (a) {
       if (a.getName() !== '__montando__') ss.deleteSheet(a);
     });
 
-    PENDENTES_ = [];
-    ABAS.forEach(function (spec) {
+    // TODAS as abas nascem primeiro, vazias e já do tamanho certo, na ordem do ABAS. Só depois cada uma é
+    // preenchida: a CARTEIRA cita a FICHA e a FICHA cita a DADOS, e fórmula gravada antes de a aba citada existir
+    // (ou antes de ela ter a coluna citada) fica em #REF!. Até 01/10/2026 as fórmulas esperavam numa fila e eram
+    // gravadas depois, em 144 chamadas; agora vão junto com os valores, numa gravação por aba.
+    var abas = ABAS.map(function (spec, i) { return criarAba_(ss, spec, i + 1); });
+    ss.deleteSheet(temp);
+    rel.etapa('abas criadas');
+
+    ABAS.forEach(function (spec, i) {
       try {
-        feito.push(montarAba_(ss, spec));
+        feito.push(montarAba_(abas[i], spec));
       } catch (err) {
         throw new Error('parou montando a aba ' + spec.nome + ': ' + err.message);
       }
+      rel.etapa(spec.nome);
     });
-    ss.deleteSheet(temp);
 
     // 19/09/2026, testando no Sheets: o Mizuki reportou borda errada logo no construir() — a
     // FICHA!AK17 branca, a GLOSSÁRIO!B4 sem borda esquerda —, mas os dados (a viva ORIGINAL, o
     // ABAS gerado, e o .xlsx exportado depois) concordam os três: a borda gravada está certa nos
-    // três lugares, sem exceção nenhuma. A montagem inteira (mesclar, depois pintar borda, em sete
-    // abas) roda sem UM flush() sequer — cada chamada de Range fica na fila do Apps Script até o
-    // fim da função, e casos relatados na comunidade apontam célula MESCLADA como o ponto onde a
-    // borda desenhada na tela pode ficar pra trás da fila sem um flush no meio. Não é prova (não
-    // consigo abrir o Sheets pra ver a tela), é tentativa dirigida: se a causa for isso, obrigar
-    // a fila a esvaziar aqui, com as sete abas já de pé mas antes da fórmula/menu que vem depois,
-    // resolve. Custa uma ida a mais ao servidor, uma vez por construir(), não por aba.
+    // três lugares, sem exceção nenhuma. Casos relatados na comunidade apontam célula MESCLADA como o
+    // ponto onde a borda desenhada na tela pode ficar pra trás da fila sem um flush no meio. Não é
+    // prova, é tentativa dirigida: obrigar a fila a esvaziar aqui, com as abas já de pé mas antes do
+    // menu que vem depois. Custa uma ida a mais ao servidor, uma vez por construir(), não por aba.
     SpreadsheetApp.flush();
+    rel.etapa('fila esvaziada');
 
-    // As fórmulas SÓ agora, com as seis abas de pé: gravada antes de a aba citada nascer, a
-    // fórmula fica em #REF!. É o mesmo motivo dos menus, logo abaixo.
-    feito.push('fórmulas: ' + escreverFormulas_(ss));
-
-    // Os menus suspensos SÓ agora: eles apontam para a aba DADOS, e ela é a
-    // última a nascer. Aplicar durante a montagem dava 'Range not found'.
+    // Os menus suspensos SÓ agora: eles apontam para a aba DADOS, e ela tem de estar preenchida.
     feito.push('menus: ' + menusSuspensos_(ss));
+    rel.etapa('menus');
 
-    // a ordem em que elas aparecem é a ordem do ABAS
-    ABAS.forEach(function (spec, i) {
-      var a = ss.getSheetByName(spec.nome);
-      ss.setActiveSheet(a);
-      ss.moveActiveSheet(i + 1);
-    });
+    // A ordem em que elas aparecem é a ordem do ABAS. Elas já nascem nessa ordem; só se o Sheets as tiver posto
+    // em outra é que cada uma é movida.
+    var nomes = ss.getSheets().map(function (a) { return a.getName(); });
+    if (nomes.join('|') !== ABAS.map(function (spec) { return spec.nome; }).join('|')) {
+      ABAS.forEach(function (spec, i) {
+        ss.setActiveSheet(ss.getSheetByName(spec.nome));
+        ss.moveActiveSheet(i + 1);
+      });
+    }
     ss.setActiveSheet(ss.getSheetByName(ABAS[0].nome));
 
-    var idx = indice();
-    feito.push('cor de estado: ' + corDeEstado_(ss, idx));
-    feito.push('notas: ' + notasDeRegra_(ss, idx));
-    feito.push('protegidas: ' + protegerFormulas_(ss, idx));
-    feito.push('ficha pessoal: ' + configurarPessoal_(ss));
-    feito.push('paleta: ' + configurarPaleta_(ss, true));
+    if (rel.passou() > TETO_DA_MONTAGEM_) {
+      falta = true;
+    } else {
+      acabamento_(ss, feito, rel);
+    }
   } finally {
     ss.setSpreadsheetLocale('pt_BR');
   }
   feito.push('idioma de antes: ' + idioma + ' · idioma final: pt_BR');
 
-  var seg = Math.round((new Date().getTime() - t0) / 1000);
-  Logger.log('FICHA PRONTA em ' + seg + 's · ' + feito.join(' · '));
+  var seg = Math.round(rel.passou() / 1000);
+  if (falta) {
+    Logger.log('AS ABAS ESTÃO DE PÉ em ' + seg + 's, MAS FALTA O ACABAMENTO: rode a função acabar(). · ' + feito.join(' · '));
+  } else {
+    Logger.log('FICHA PRONTA em ' + seg + 's · ' + feito.join(' · ') + ' · tempos: ' + ETAPAS_.join(', '));
+  }
 }
 
-function montarAba_(ss, spec) {
-  var aba = ss.insertSheet(spec.nome);
+/**
+ * O acabamento: a cor de estado, as notas, as travas de fórmula, as notas da FICHA PESSOAL e a caixa da paleta.
+ * Cada passo pode ser refeito sem estragar o que já está lá, e é por isso que ele pode rodar sozinho, pelo acabar().
+ */
+function acabamento_(ss, feito, rel) {
+  var idx = indice();
+  feito.push('cor de estado: ' + corDeEstado_(ss, idx));
+  rel.etapa('cor de estado');
+  feito.push('notas: ' + notasDeRegra_(ss, idx));
+  rel.etapa('notas');
+  feito.push('protegidas: ' + protegerFormulas_(ss, idx));
+  rel.etapa('travas');
+  feito.push('ficha pessoal: ' + configurarPessoal_(ss));
+  rel.etapa('notas da ficha pessoal');
+  feito.push('paleta: ' + configurarPaleta_(ss, true));
+  rel.etapa('caixa da paleta');
+}
+
+/**
+ * Só o acabamento, numa planilha que o construir() já montou. Rode esta se o construir() avisar que faltou o
+ * acabamento, ou se ele tiver parado no meio dele. A regra de cor é escrita com vírgula e ponto, então o idioma
+ * vai para o inglês enquanto ela roda, como no construir().
+ */
+function acabar() {
+  var ss = SpreadsheetApp.getActive(), feito = [], rel = relogio_();
+  var faltam = ABAS.filter(function (spec) { return !ss.getSheetByName(spec.nome); });
+  if (faltam.length) throw new Error('a planilha não tem a aba ' + faltam[0].nome + ': rode construir() antes.');
+  ss.setSpreadsheetLocale('en_US');
+  try {
+    acabamento_(ss, feito, rel);
+  } finally {
+    ss.setSpreadsheetLocale('pt_BR');
+  }
+  Logger.log('ACABAMENTO PRONTO em ' + Math.round(rel.passou() / 1000) + 's · ' + feito.join(' · ') + ' · tempos: ' + ETAPAS_.join(', '));
+}
+
+/** A aba vazia, na posição dela e já com o número de linhas e de colunas que vai ter. */
+function criarAba_(ss, spec, posicao) {
+  var aba = ss.insertSheet(spec.nome, posicao);
+  var nc = spec.cols, nr = spec.rows, temC = aba.getMaxColumns(), temR = aba.getMaxRows();
+  if (temC > nc) aba.deleteColumns(nc + 1, temC - nc);
+  if (temR > nr) aba.deleteRows(nr + 1, temR - nr);
+  if (temC < nc) aba.insertColumnsAfter(temC, nc - temC);
+  if (temR < nr) aba.insertRowsAfter(temR, nr - temR);
+  return aba;
+}
+
+/**
+ * As mesclagens em lotes. Uma mesclagem de uma linha só que se repete nas linhas de baixo com as mesmas colunas (a
+ * tabela de perícias, a de itens, a de missões) vira uma chamada de mergeAcross na faixa inteira; a de uma coluna só
+ * que se repete nas colunas do lado vira uma de mergeVertically. O resto continua uma a uma. O resultado na planilha
+ * é o mesmo; o que muda é o número de idas ao servidor. Cada grupo é [tipo, linha, coluna, última linha, última coluna].
+ */
+function gruposDeMescla_(merges) {
+  var grupos = [], lin = {}, col = {};
+  merges.forEach(function (m) {
+    if (m[0] === m[2] && m[1] !== m[3]) (lin[m[1] + ',' + m[3]] = lin[m[1] + ',' + m[3]] || []).push(m[0]);
+    else if (m[1] === m[3] && m[0] !== m[2]) (col[m[0] + ',' + m[2]] = col[m[0] + ',' + m[2]] || []).push(m[1]);
+    else grupos.push(['m', m[0], m[1], m[2], m[3]]);
+  });
+  var corridas = function (mapa, monta) {
+    Object.keys(mapa).forEach(function (k) {
+      var a = Number(k.split(',')[0]), b = Number(k.split(',')[1]);
+      var v = mapa[k].slice().sort(function (x, y) { return x - y; }), i = 0;
+      while (i < v.length) {
+        var j = i;
+        while (j + 1 < v.length && v[j + 1] === v[j] + 1) j++;
+        grupos.push(monta(a, b, v[i], v[j]));
+        i = j + 1;
+      }
+    });
+  };
+  corridas(lin, function (c1, c2, r1, r2) { return [r1 === r2 ? 'm' : 'a', r1, c1, r2, c2]; });
+  corridas(col, function (r1, r2, c1, c2) { return [c1 === c2 ? 'm' : 'v', r1, c1, r2, c2]; });
+  return grupos;
+}
+
+function montarAba_(aba, spec) {
   var nc = spec.cols, nr = spec.rows;
   aba.setHiddenGridlines(true);
-  if (aba.getMaxColumns() > nc) aba.deleteColumns(nc + 1, aba.getMaxColumns() - nc);
-  if (aba.getMaxRows() > nr) aba.deleteRows(nr + 1, aba.getMaxRows() - nr);
-  if (aba.getMaxColumns() < nc) aba.insertColumnsAfter(aba.getMaxColumns(), nc - aba.getMaxColumns());
-  if (aba.getMaxRows() < nr) aba.insertRowsAfter(aba.getMaxRows(), nr - aba.getMaxRows());
   aba.setColumnWidths(1, nc, spec.larg);
-  // as colunas que fogem da largura base, em faixas: a DADOS_INV tem cinco larguras
+  // as colunas que fogem da largura base, em faixas
   (spec.largs || []).forEach(function (g) {
     var c2 = Math.min(g[1], nc);
     if (g[0] <= c2) aba.setColumnWidths(g[0], c2 - g[0] + 1, g[2]);
@@ -110,20 +211,20 @@ function montarAba_(ss, spec) {
   var v = mat_(nr, nc, ''), bg = mat_(nr, nc, spec.fundo_base === undefined ? '#120F1D' : spec.fundo_base);
   var ff = mat_(nr, nc, pad[0]), fs = mat_(nr, nc, pad[1]);
   var fc = mat_(nr, nc, pad[2]), fw = mat_(nr, nc, 'normal');
-  var ha = mat_(nr, nc, 'left'), va = mat_(nr, nc, 'middle'), rot = mat_(nr, nc, 0);
+  var ha = mat_(nr, nc, 'left'), va = mat_(nr, nc, 'middle');
   var fst = mat_(nr, nc, 'normal'), wr = mat_(nr, nc, false);
+  var giradas = [], formulas = 0;
 
   // fundo em faixas: [linha, colIni, colFim, cor]
   spec.fundos.forEach(function (f) {
     for (var c = f[1]; c <= f[2]; c++) bg[f[0] - 1][c - 1] = f[3];
   });
-  var formulas = [];
   spec.vals.forEach(function (t) {
-    if (typeof t[2] === 'string' && t[2].charAt(0) === '=') {
-      formulas.push([t[0], t[1], t[2]]);     // fórmula não entra em setValues
-    } else {
-      v[t[0] - 1][t[1] - 1] = t[2];
-    }
+    // A fórmula vai na mesma matriz dos valores: o setValues lê como fórmula o texto que começa com "=", e a aba
+    // que ela cita já existe (ver o construir). O setValues lê a pontuação no idioma da planilha, e é por isso
+    // que a montagem é em inglês.
+    v[t[0] - 1][t[1] - 1] = t[2];
+    if (typeof t[2] === 'string' && t[2].charAt(0) === '=') formulas++;
     if (t.length > 3) {
       var e = spec.estilos[t[3]];
       ff[t[0] - 1][t[1] - 1] = e[0];
@@ -132,7 +233,7 @@ function montarAba_(ss, spec) {
       fw[t[0] - 1][t[1] - 1] = e[3] ? 'bold' : 'normal';
       ha[t[0] - 1][t[1] - 1] = e[4];
       va[t[0] - 1][t[1] - 1] = e[5] === 'center' ? 'middle' : e[5];
-      rot[t[0] - 1][t[1] - 1] = e[6];
+      if (e[6]) giradas.push([t[0], t[1], e[6]]);
       if (e[7]) fst[t[0] - 1][t[1] - 1] = 'italic';
       if (e[8]) wr[t[0] - 1][t[1] - 1] = true;
     }
@@ -145,20 +246,10 @@ function montarAba_(ss, spec) {
    .setFontStyles(fst).setWraps(wr);
   r.setValues(v);
 
-  // As fórmulas NÃO entram aqui: 47 delas citam uma aba que ainda não nasceu -- a CARTEIRA cita
-  // a FICHA, a FICHA cita a DADOS, a INVOCAÇÃO cita a DADOS_INV --, e fórmula gravada antes de a
-  // aba existir fica em #REF!. Elas esperam na fila, e o construir() grava todas com as abas de pé.
-  // O setFormula lê a pontuação no idioma da planilha, e é por isso que a montagem é em inglês.
-  PENDENTES_.push([spec.nome, formulas]);
-
   // A rotação NÃO entra em lote: setTextRotations quer objetos TextRotation, e
   // não graus, então uma matriz de números é recusada. Como só a lombada é
   // girada -- duas células por aba --, uma chamada por célula sai barato.
-  for (var i = 0; i < nr; i++) {
-    for (var j = 0; j < nc; j++) {
-      if (rot[i][j]) aba.getRange(i + 1, j + 1).setTextRotation(rot[i][j]);
-    }
-  }
+  giradas.forEach(function (g) { aba.getRange(g[0], g[1]).setTextRotation(g[2]); });
 
   // altura em PIXEL, calculada pela maior letra da linha. Era isto que estava
   // cortando o 'd20 + 0' pela metade no caminho antigo.
@@ -175,8 +266,11 @@ function montarAba_(ss, spec) {
     ant = l;
   });
 
-  spec.merges.forEach(function (mg) {
-    aba.getRange(mg[0], mg[1], mg[2] - mg[0] + 1, mg[3] - mg[1] + 1).merge();
+  gruposDeMescla_(spec.merges).forEach(function (g) {
+    var faixa = aba.getRange(g[1], g[2], g[3] - g[1] + 1, g[4] - g[2] + 1);
+    if (g[0] === 'a') faixa.mergeAcross();
+    else if (g[0] === 'v') faixa.mergeVertically();
+    else faixa.merge();
   });
 
   // As bordas, os quatro lados, com o traço e a cor da planilha viva: uma chamada por lado, traço e
@@ -195,15 +289,19 @@ function montarAba_(ss, spec) {
 
   // As imagens DENTRO da célula, numa caixa mesclada: solta, ela arrasta com o mouse. Decisão do
   // Mizuki em 15/09/2026. A arte já vem no formato da caixa, porque o Sheets encaixa sem esticar.
+  // A caixa que a planilha exportada já traz mesclada não é mesclada de novo: quem diz é a lista de
+  // mesclagens da própria aba, sem perguntar ao Sheets.
   spec.imgs.forEach(function (im) {
     if (!ARTE[im[4]]) return;
     var caixa = aba.getRange(im[0], im[1], im[2] - im[0] + 1, im[3] - im[1] + 1);
-    // a caixa que a planilha exportada ja traz mesclada nao e mesclada de novo
-    if ((caixa.getNumRows() > 1 || caixa.getNumColumns() > 1) && !caixa.isPartOfMerge()) caixa.merge();
+    var jaMesclada = spec.merges.some(function (m) {
+      return m[0] <= im[2] && m[2] >= im[0] && m[1] <= im[3] && m[3] >= im[1];
+    });
+    if ((im[2] > im[0] || im[3] > im[1]) && !jaMesclada) caixa.merge();
     // O título de alt marca a imagem como NOSSA (a troca de paleta recolore só o que tem este título, e nunca
     // a foto que o jogador pôs no lugar), e a descrição guarda a cor que ela tem agora, pra a troca não
     // reenviar uma imagem que já está da cor certa. Ver repintarArte_ no Codigo.gs.
-    caixa.getCell(1, 1).setValue(SpreadsheetApp.newCellImage()
+    aba.getRange(im[0], im[1]).setValue(SpreadsheetApp.newCellImage()
       .setSourceUrl('data:image/png;base64,' + ARTE[im[4]])
       .setAltTextTitle('PM-ARTE:' + im[4]).setAltTextDescription('fabrica').build());
   });
@@ -216,7 +314,19 @@ function montarAba_(ss, spec) {
   // 01/10/2026, a FICHA PESSOAL: o formato de número, a nota da caixa, a cor de aviso e os grupos que fecham.
   // Só a aba que declara cada um recebe; as outras saem como saíam.
   (spec.formatos || []).forEach(function (f) { aba.getRange(f[0]).setNumberFormat(f[1]); });
-  (spec.notas || []).forEach(function (n) { aba.getRange(n[0]).setNote(n[1]); });
+  // as notas de caixa numa gravação só, na faixa que vai da primeira à última célula com nota
+  if ((spec.notas || []).length) {
+    var onde = spec.notas.map(function (n) {
+      var m = /^([A-Z]+)(\d+)/.exec(n[0]), c = 0;
+      for (var i = 0; i < m[1].length; i++) c = c * 26 + m[1].charCodeAt(i) - 64;
+      return [Number(m[2]), c, n[1]];
+    });
+    var r1 = Math.min.apply(null, onde.map(function (o) { return o[0]; })), r2 = Math.max.apply(null, onde.map(function (o) { return o[0]; }));
+    var c1 = Math.min.apply(null, onde.map(function (o) { return o[1]; })), c2 = Math.max.apply(null, onde.map(function (o) { return o[1]; }));
+    var notas = mat_(r2 - r1 + 1, c2 - c1 + 1, '');
+    onde.forEach(function (o) { notas[o[0] - r1][o[1] - c1] = o[2]; });
+    aba.getRange(r1, c1, r2 - r1 + 1, c2 - c1 + 1).setNotes(notas);
+  }
   if ((spec.condicional || []).length) {
     aba.setConditionalFormatRules(spec.condicional.map(function (c) {
       var regra = SpreadsheetApp.newConditionalFormatRule().whenTextContains(c.contem)
@@ -241,7 +351,7 @@ function montarAba_(ss, spec) {
   }
 
   if (spec.oculta) aba.hideSheet();
-  return spec.nome + ': ' + spec.vals.length + ' células, ' + formulas.length +
+  return spec.nome + ': ' + spec.vals.length + ' células, ' + formulas +
        ' fórmulas, ' + spec.imgs.length + ' imagens';
 }
 
@@ -253,32 +363,6 @@ function mat_(nr, nc, valor) {
     m.push(l);
   }
   return m;
-}
-
-/**
- * As fórmulas da fila, depois que todas as abas existem. As vizinhas na mesma coluna vão numa chamada só.
- *
- * Até 01/10/2026 era uma chamada por fórmula. Com a FICHA PESSOAL e as tabelas dela na DADOS as fórmulas passaram
- * de 280 para quase 700, e uma a uma elas comiam o tempo do construir(). A coluna de uma tabela é uma faixa só.
- */
-function escreverFormulas_(ss) {
-  var n = 0;
-  PENDENTES_.forEach(function (p) {
-    var aba = ss.getSheetByName(p[0]);
-    var fila = p[1].slice().sort(function (a, b) { return a[1] - b[1] || a[0] - b[0]; });
-    var i = 0;
-    while (i < fila.length) {
-      var j = i, bloco = [[fila[i][2]]];
-      while (j + 1 < fila.length && fila[j + 1][1] === fila[i][1] && fila[j + 1][0] === fila[j][0] + 1) {
-        j++;
-        bloco.push([fila[j][2]]);
-      }
-      aba.getRange(fila[i][0], fila[i][1], bloco.length, 1).setFormulas(bloco);
-      n += bloco.length;
-      i = j + 1;
-    }
-  });
-  return n;
 }
 
 /** Os menus suspensos, depois que todas as abas existem. */

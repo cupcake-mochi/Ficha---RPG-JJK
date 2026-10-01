@@ -327,11 +327,18 @@
       "FICHA",
       "FICHA PESSOAL",
       "DADOS",
-      "GLOSSÁRIO",
-      "INVOCAÇÃO",
-      "CATÁLOGO",
-      "DADOS_INV"
+      "GLOSSÁRIO"
     ],
+    "abas_removidas_em_01_10": {
+      "quais": [
+        "INVOCAÇÃO",
+        "CATÁLOGO",
+        "DADOS_INV"
+      ],
+      "porque": "o construir() estourou os seis minutos do Apps Script; o Mizuki: \"Pode tirar o catalogo e invocação, isso vai ganhar tempo e reduzir o codigo, depois implementamos dnv diferente com a att\"",
+      "onde": "ficha-v01/sem_invocacao.py, a limpeza 24: as tres continuam no layout.json, que e a copia da planilha viva, e saem da ficha gerada",
+      "o_que_nao_muda": "a ficha de invocacao separada (ficha-invocacao/, invocacao.json) e os validadores dela"
+    },
     "aba_acrescentada_17_09": {
       "nome": "GLOSSÁRIO",
       "porque": "o que cada atributo, pericia, oficio e termo da ficha quer dizer, pra quem nunca jogou -- pedido do Mizuki",

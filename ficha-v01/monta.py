@@ -118,6 +118,12 @@ _ABA_FP = ficha_pessoal.aba(LAYOUT, _FP)
 LAYOUT["abas"].insert(_pos_fp, _ABA_FP)
 print(f"a Ficha Pessoal: {_ABA_FP['linhas']} linha(s), {_ABA_FP['colunas']} coluna(s), {len(_ABA_FP['celulas'])} celula(s)")
 
+# 01/10/2026: a INVOCACAO, o CATALOGO e a DADOS_INV saem da ficha, decisao do Mizuki quando o construir() estourou
+# os seis minutos do Apps Script. Saem por ultimo: o GLOSSARIO nasce na posicao da INVOCACAO e usa os estilos do
+# CATALOGO. A montagem para se alguma aba que fica ainda citar uma delas. Ver sem_invocacao.py.
+import sem_invocacao
+print(f"as abas que sairam da ficha: {', '.join(sem_invocacao.aplica(LAYOUT))}")
+
 # a paleta e a fonte de corpo saem do estilo.py, que e o dono delas -- e ele
 # ganhou as quatro cores desta versao na v0.1 (decisao do Mizuki: uma paleta so)
 sys.path.insert(0, os.path.join(os.path.dirname(AQUI), "ficha"))

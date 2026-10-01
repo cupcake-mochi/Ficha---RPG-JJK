@@ -1595,6 +1595,59 @@ perturbação dela (são 31).* **Os vinte validadores passam.**
 > celular; e o tempo da troca, que ganhou um passo curto. Ficha montada antes desta data não tem a célula da barra: a
 > troca de tema pula o passo e a barra fica no osso, como estava. Para ganhar tudo, é rodar o `construir()` de novo.*
 
+### B28 · O `construir()` estourou os seis minutos — **REFEITO em 01/10/2026, e falta medir no Sheets**
+
+*Achado do Mizuki em 01/10/2026, com o registro do editor: `Execução iniciada` às 15:08:19 e `Exceeded maximum execution
+time` às 15:14:19. O registro não dizia em que etapa a montagem estava, porque o `construir()` só escrevia no fim.*
+
+**Duas decisões dele:** *"Pode tirar o catalogo e invocação, isso vai ganhar tempo e reduzir o codigo, depois implementamos
+dnv diferente com a att"* e *"Busque otimzar o codigo e o teste se possivel, para ver se os resultados se mantiveram"*.
+
+**1. A `INVOCAÇÃO`, o `CATÁLOGO` e a `DADOS_INV` saíram da ficha.** *É a limpeza 24, `ficha-v01/sem_invocacao.py`: as três
+continuam no `layout.json`, que é a cópia da planilha viva, e saem da ficha gerada, por último (o `GLOSSÁRIO` nasce na
+posição da `INVOCAÇÃO` e usa os estilos do `CATÁLOGO`). A montagem para se alguma aba que fica citar uma delas; nenhuma
+cita. A ficha de invocação separada (`ficha-invocacao/`, o `invocacao.json` e os três validadores dela) não foi tocada. A
+decisão está no `decisoes-ficha.json`, em `C6_documento.abas_removidas_em_01_10`.*
+
+**2. O `construir()` vai menos vezes ao servidor, e a planilha que ele deixa é a mesma.** *O que pesa no Apps Script é a ida
+ao servidor, e a montagem fazia isso célula a célula em quatro lugares:*
+
+| o que era | o que ficou | chamadas, nas cinco abas |
+|---|---|---|
+| uma chamada de `merge()` por mesclagem | a mesclagem de uma linha que se repete nas linhas de baixo vai numa chamada de `mergeAcross()` | 897 → 310 |
+| as fórmulas numa fila, gravadas depois das abas | todas as abas nascem primeiro, vazias e do tamanho certo, e a fórmula vai na mesma gravação dos valores | 112 → 0 |
+| uma trava por célula de fórmula, três idas ao servidor cada | uma trava por faixa de fórmulas vizinhas; as células travadas são as mesmas | 333 → 228 |
+| a nota de regra lia a mesclagem, a fórmula e o valor da célula de cima, nota por nota | a aba é lida uma vez, e as notas voltam numa gravação | 256 → 16 |
+| cada aba era movida para o lugar | elas já nascem na ordem | 11 → 1 |
+
+*A ficha de oito abas fazia 1.195 chamadas de mesclagem e 111 travas; a de cinco faz 310 e 76.* **Isto é contagem de chamada, e não tempo:** *o Apps Script não roda fora do Google, e eu não sei quanto cada
+etapa levava. Por isso o registro mudou:* **cada etapa vai para o registro na hora, com o tempo dela.** *Se a execução
+expirar de novo, o registro diz onde.*
+
+**3. O acabamento pode rodar sozinho.** *A cor de estado, as notas, as travas e a caixa da paleta viraram a função
+`acabamento_`, que o `construir()` chama no fim. Se a montagem das abas passar de quatro minutos e meio, ele para ali,
+deixa a planilha em português e escreve `FALTA O ACABAMENTO: rode a função acabar()`. O `acabar()` roda quantas vezes
+precisar sem duplicar trava nem nota.*
+
+**4. Os dois arquivos ficaram menores,** *sem mudar o conteúdo: o `Ficha.gs` foi de 633 KB para 442 KB (as três abas a
+menos, e as células curtas vão várias por linha) e o `Codigo.gs` de 240 KB para 199 KB (cada variante de paleta numa
+linha). Somados, de 873 KB para 641 KB, e de 26.728 linhas para 3.139. O `PALETAS` continua igual ao
+`paletas-grandes.json`, cor por cor.*
+
+**Como foi conferido.** *O Sheets de mentira do `regressao-construir.js` virou módulo (`medidas/sheets-de-mentira.js`) e
+passou a guardar tudo o que o `construir()` grava: valor, fórmula, formato, borda, mesclagem, nota, menu, caixa de seleção,
+trava, grupo, altura e largura. O `medidas/comparar-construir.js` monta a planilha com o script do commit `aef825f` (sem
+as três abas) e com o da pasta, e compara:* **as cinco abas saem iguais, célula a célula**, *e o `ABAS` delas é o mesmo.
+O `regressao-construir.js` ganhou onze checagens (fórmula junto do valor, nenhuma fórmula gravada antes de a aba citada
+existir ou fora do inglês, mesclagem em lote sem mesclar nada a mais, as travas da `FICHA` e da `CARTEIRA` cobrindo toda
+fórmula e só fórmula, a nota no título, e o `acabar()` sozinho, repetido e depois de uma montagem que passou do teto). O
+`arnes-pessoal.py` foi de 31 para 40 perturbações; duas não acenderam na primeira rodada (a aba preenchida antes de as
+outras nascerem, e o `acabar()` em português), e viraram checagem: o Sheets de mentira agora acusa as duas. Os vinte passam.*
+
+**O que só o Sheets diz, e falta:** *o tempo de verdade do `construir()`; se o `setValues` grava as fórmulas como o
+`setFormulas` gravava (a documentação diz que sim: texto que começa com `=` é fórmula); se o `mergeAcross()` deixa as
+mesmas mesclagens na tela; e se as abas nascem na ordem pedida (se não nascerem, o script move, como antes).*
+
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
 Os dois capítulos vendorizados vieram **byte a byte idênticos** do commit
