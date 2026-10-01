@@ -1595,7 +1595,7 @@ perturbação dela (são 31).* **Os vinte validadores passam.**
 > celular; e o tempo da troca, que ganhou um passo curto. Ficha montada antes desta data não tem a célula da barra: a
 > troca de tema pula o passo e a barra fica no osso, como estava. Para ganhar tudo, é rodar o `construir()` de novo.*
 
-### B28 · O `construir()` estourou os seis minutos — **REFEITO em 01/10/2026, e falta medir no Sheets**
+### B28 · O `construir()` estourou os seis minutos — **REFEITO em 01/10/2026, e medido por ele no Sheets: 220 s com cinco abas**
 
 *Achado do Mizuki em 01/10/2026, com o registro do editor: `Execução iniciada` às 15:08:19 e `Exceeded maximum execution
 time` às 15:14:19. O registro não dizia em que etapa a montagem estava, porque o `construir()` só escrevia no fim.*
@@ -1738,6 +1738,26 @@ celular; e se os textos compridos das aptidões cabem na caixa.*
 
 **Achado no livro, para ele decidir:** *a tabela `Base por Classe` dá `9 m` e `18 m` para "`Cura` e `Onda`", e a tabela
 `Formas` diz que a `Onda` é uma esfera de raio `3 m` centrada em quem conjura. A aba segue a tabela `Formas`, como o estudo.*
+
+### B30 · O menu das mãos só lista o `Soco` — **ABERTO em 01/10/2026, esperando a resposta dele**
+
+*Achado do Mizuki em 01/10/2026, mexendo na ficha montada com o código do commit `8c7279a`, com duas fotos do `EM USO` da
+`FICHA PESSOAL`: o menu da `Mão principal` só com `Soco` e o da `Mão secundária` só com `—`. Palavras dele: "n ta
+aparecendo a lista de armas, da pra escrever e funciona, mas a lista n aparece".*
+
+**O que o gerador faz.** *É o desenho do estudo (B26): o menu das mãos lista o `Soco` e o que estiver nos `Equipáveis
+guardados` (linhas 69 a 76 da aba; as seis primeiras têm o menu das 52 armas), pelas tabelas `menu_principal` e
+`menu_secundaria` do `ficha-v01/ficha_pessoal.py`. A ficha nasce com os equipáveis vazios, e por isso o menu nasce só com
+o `Soco`. A arma digitada na mão sem estar guardada é aceita (o menu só avisa) e a linha de baixo diz "Não está nos
+equipáveis guardados". O `regressao-ficha-pessoal.py` confere a lista com três armas guardadas, e passa.*
+
+**O que eu não sei.** *Se ele tinha arma guardada quando tirou as fotos. Se tinha e o menu não listou, é defeito de
+verdade no Sheets, que a regressão daqui não vê. Nas duas fotos a célula está em edição, e nesse modo o Sheets filtra a
+lista pelo que está escrito.*
+
+**A pergunta feita a ele:** *manter o desenho e pôr um aviso visível embaixo da mão quando não há nada guardado (a minha
+indicação: a carga, o `Grau`, o `Estigma` e o `Desgaste` moram na linha do equipável, e a mão só aponta para ela); listar
+as 52 armas direto na mão (mexe em umas doze contas, na carga e na regressão); ou deixar como está. Nada foi mexido.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
