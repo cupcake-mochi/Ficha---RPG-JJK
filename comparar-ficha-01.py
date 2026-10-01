@@ -175,7 +175,9 @@ print(f"  original: {wa.sheetnames}")
 print(f"  gerada:   {wb_.sheetnames}")
 # 17/09/2026: o GLOSSARIO nasce so no gerador, sem planilha viva por tras -- nao tem original pra
 # comparar, entao ele sai da lista antes de cobrar igualdade, e so se confere que nao sumiu.
-_abas_novas = ["GLOSSÁRIO", ficha_pessoal.NOME]
+# 01/10/2026: a FICHA AMALDIÇOADA e a aba oculta das contas dela, a DADOS_AM, tambem nascem so no gerador
+import ficha_amaldicoada
+_abas_novas = ["GLOSSÁRIO", ficha_pessoal.NOME, ficha_amaldicoada.NOME, ficha_amaldicoada.DADOS_AM]
 _gerada_sem_novas = [n for n in wb_.sheetnames if n not in _abas_novas]
 # O original que o Mizuki exporta já traz o GLOSSARIO -- ele monta o construir() e exporta a planilha
 # pronta --, mas o desenho dela nao vem dali: vem do glossario.py. Comparar a aba dele com a gerada

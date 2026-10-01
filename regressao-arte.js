@@ -71,7 +71,9 @@ Object.keys(ARTE).forEach(chave => {
   const duas = sb.pngComCor_(sb.pngComCor_(ARTE[chave], '#112233'), COR);
   checa(`${chave}: recolorir em cima de recolorido dá o mesmo PNG`, duas === Buffer.from(novo).toString('base64'));
 });
-checa('o ARTE tem as seis imagens da ficha', Object.keys(ARTE).length === 6, String(Object.keys(ARTE).length));
+// 01/10/2026: eram seis. A FICHA AMALDIÇOADA é mais larga que a FICHA, e a pincelada do cabeçalho entra de novo, na largura dela.
+checa('o ARTE tem as sete imagens da ficha: as seis de antes e a pincelada na largura da FICHA AMALDIÇOADA',
+      Object.keys(ARTE).length === 7 && Object.keys(ARTE).filter((k) => k.startsWith('ficha-1-')).length === 2, Object.keys(ARTE).join(', '));
 let erro = null; try { sb.pngComCor_(Buffer.from('iVBORw0KGgo=', 'base64').toString('base64'), COR); } catch (e) { erro = e.message; }
 checa('um PNG sem paleta é recusado em voz alta, não recolorido errado', /sem bloco de paleta/.test(erro || ''), String(erro));
 

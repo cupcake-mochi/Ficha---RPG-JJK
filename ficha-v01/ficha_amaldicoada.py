@@ -65,8 +65,8 @@ FX = 2                                       # o título de seção ocupa duas l
 F_TIT, F_ROT, F_TXT, F_TXT_FIM, F_N1, F_N2, F_MEL, F_RES, F_CONTA, F_AMP, F_AV = 0, 1, 2, 6, 7, 8, 9, 13, 15, 16, 18
 ALT_F = 20                                   # a carta de feitiço; a fileira tem uma linha vazia a mais
 ALT_P = 7                                    # a de Passiva: o menu, e o grupo com "o que faz" e o texto do jogador
-ALT_A = 16                                   # a de aptidão
-TXT_APT = 10                                 # linhas da regra da aptidão: a mais comprida do livro tem 1.300 letras
+TXT_APT = 12                                 # linhas da regra da aptidão: a mais comprida do livro tem 1.300 letras
+ALT_A = 7 + TXT_APT                          # a de aptidão: o menu, o requisito em duas linhas, e o grupo
 
 SECOES = [("tecnica", "TÉCNICA", "Técnica"), ("orcamento", "ORÇAMENTO", "Orçamento"), ("feiticos", "FEITIÇOS", "Feitiços"),
           ("zero", "CLASSE 0", "Classe 0"), ("lib", "LIBERAÇÃO MÁXIMA", "Liberação"), ("tm", "TÉCNICA MÁXIMA", "T. Máxima"),
@@ -93,6 +93,7 @@ ESTILOS = {
     "cel_esq":   [["Roboto", 10.0, OSSO, False, False], PAINEL, _CAIXA, ["left", "center", False, 0], None],
     "peq":       [["Roboto", 9.0, FRACO, False, False], PAINEL, _CAIXA, ["center", "center", False, 0], None],
     "peq_esq":   [["Roboto", 9.0, FRACO, False, False], PAINEL, _CAIXA, ["left", "center", False, 0], None],
+    "peq_txt":   [["Roboto", 9.0, FRACO, False, False], PAINEL, _CAIXA, ["left", "center", True, 0], None],
     "txt":       [["Roboto", 10.0, TEXTO, False, False], PAPEL, _CAIXA, ["left", "top", True, 0], None],
     "txt_peq":   [["Roboto", 9.0, TEXTO, False, False], PAPEL, _CAIXA, ["left", "top", True, 0], None],
     "conta":     [["Roboto", 9.0, TEXTO, False, False], PAPEL, _CAIXA, ["left", "center", True, 0], None],
@@ -444,8 +445,8 @@ def celulas_da_passiva(r0, c0):
 
 
 def celulas_da_aptidao(r0, c0):
-    return {"nome": _a1(c0, r0), "cp": _a1(c0 + 3, r0), "requisito": _a1(c0, r0 + 1), "faz": _a1(c0, r0 + 3),
-            "escala": _a1(c0 + 1, r0 + 3 + TXT_APT), "texto": _a1(c0 + 1, r0 + 4 + TXT_APT)}
+    return {"nome": _a1(c0, r0), "cp": _a1(c0 + 3, r0), "requisito": _a1(c0, r0 + 1), "faz": _a1(c0, r0 + 4),
+            "escala": _a1(c0 + 1, r0 + 4 + TXT_APT), "texto": _a1(c0 + 1, r0 + 5 + TXT_APT)}
 
 
 def celulas_do_pacto(r):
@@ -1322,13 +1323,14 @@ def aba(layout, tr):
         a, b, c, d, e = (c0 + k for k in range(5))
         assert f.add("cel_esq", a, r0, c, r0) == cel["nome"]
         assert f.add("peq", d, r0, e, r0, f"={_abs(cA + 3, 2 + i, DA)}") == cel["cp"]
-        assert f.add("peq_esq", a, r0 + 1, e, r0 + 1, f"={_abs(cA + 2, 2 + i, DA)}") == cel["requisito"]
-        f.add("rot", a, r0 + 2, e, r0 + 2, "O QUE FAZ")
-        assert f.add("txt_peq", a, r0 + 3, e, r0 + 2 + TXT_APT, f"={_abs(cA + 5, 2 + i, DA)}") == cel["faz"]
-        f.add("rot", a, r0 + 3 + TXT_APT, a, r0 + 3 + TXT_APT, "O REFINO ESCALA")
-        assert f.add("peq_esq", b, r0 + 3 + TXT_APT, e, r0 + 3 + TXT_APT, f"={_abs(cA + 4, 2 + i, DA)}") == cel["escala"]
-        f.add("rot", a, r0 + 4 + TXT_APT, a, r0 + 5 + TXT_APT, "SEU TEXTO", NOTAS["seu_texto"] if i == 0 else None)
-        assert f.add("txt", b, r0 + 4 + TXT_APT, e, r0 + 5 + TXT_APT) == cel["texto"]
+        # o requisito em duas linhas: o mais comprido do livro tem 120 letras
+        assert f.add("peq_txt", a, r0 + 1, e, r0 + 2, f"={_abs(cA + 2, 2 + i, DA)}") == cel["requisito"]
+        f.add("rot", a, r0 + 3, e, r0 + 3, "O QUE FAZ")
+        assert f.add("txt_peq", a, r0 + 4, e, r0 + 3 + TXT_APT, f"={_abs(cA + 5, 2 + i, DA)}") == cel["faz"]
+        f.add("rot", a, r0 + 4 + TXT_APT, a, r0 + 4 + TXT_APT, "O REFINO ESCALA")
+        assert f.add("peq_esq", b, r0 + 4 + TXT_APT, e, r0 + 4 + TXT_APT, f"={_abs(cA + 4, 2 + i, DA)}") == cel["escala"]
+        f.add("rot", a, r0 + 5 + TXT_APT, a, r0 + 6 + TXT_APT, "SEU TEXTO", NOTAS["seu_texto"] if i == 0 else None)
+        assert f.add("txt", b, r0 + 5 + TXT_APT, e, r0 + 6 + TXT_APT) == cel["texto"]
         f.menu(cel["nome"], D.faixa("aptidoes", so=5, aba=DA))
     f.add("lote", "D", G["lote_apt"]["faixa"], "T", G["lote_apt"]["faixa"], f"APTIDÕES {APT_LOTE + 1} A {N_APT} · abra quando faltar lugar")
 
@@ -1368,7 +1370,7 @@ def aba(layout, tr):
     for k, r0 in enumerate(fileiras(G["feiticos"]) + fileiras(G["libs"])):
         grupos += [[r0 + F_ROT, r0 + F_TXT_FIM, k > 0], [r0 + F_MEL, r0 + ALT_F - 1, k > 0]]
     grupos += [[r0 + 1, r0 + ALT_P - 1, k > 0] for k, r0 in enumerate(fileiras(G["passivas"]))]
-    grupos += [[r0 + 2, r0 + ALT_A - 1, k > 0] for k, r0 in enumerate(fileiras(G["aptidoes"]))]
+    grupos += [[r0 + 3, r0 + ALT_A - 1, k > 0] for k, r0 in enumerate(fileiras(G["aptidoes"]))]
     grupos += [[r + 1, r + 8, k > 0] for k, r in enumerate(G["pactos"])]
     # dois grupos vizinhos na mesma profundidade virariam um só no Sheets: tem de haver uma linha entre eles
     for a_ in grupos:

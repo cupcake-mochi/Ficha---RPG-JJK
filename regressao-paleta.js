@@ -196,8 +196,11 @@ ok(`nenhuma execução passou de 30 s (maior: ${(r.maior/1000).toFixed(1)} s)`, 
 // 01/10/2026: com a FICHA PESSOAL (4.920 células; a FICHA tem 7.050) cor e régua de todas as abas deixaram de caber
 // numa execução. A troca pinta as que o jogador vê primeiro — a CARTEIRA, a FICHA e a FICHA PESSOAL — e o resto
 // termina no clique seguinte, sem aviso, como a arte já terminava.
-const PRIMEIRAS=['CARTEIRA','FICHA','FICHA PESSOAL'];
-ok('cor e régua da CARTEIRA, da FICHA e da FICHA PESSOAL na execução da troca, sem aviso',
+// Com a FICHA AMALDIÇOADA (11 mil células, em 21 colunas) a terceira aba da ordem passou a ser ela: a troca pinta a
+// CARTEIRA, a FICHA e a FICHA AMALDIÇOADA, e a FICHA PESSOAL, o GLOSSÁRIO e a arte terminam no clique seguinte. A aba
+// em que o jogador clica continua passando na frente (o teste 6).
+const PRIMEIRAS=['CARTEIRA','FICHA','FICHA AMALDIÇOADA'];
+ok('cor e régua da CARTEIRA, da FICHA e da FICHA AMALDIÇOADA na execução da troca, sem aviso',
    PRIMEIRAS.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs[0].passos.includes(p))) && P.log.toasts.length===0, r.execs[0].passos.join(', '));
 ok('as outras abas terminam no primeiro clique depois da troca',
    r.execs.length===2 && visiveis.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs[0].passos.concat(r.execs[1].passos).includes(p))), resumo(r));

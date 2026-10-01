@@ -25,7 +25,9 @@ const igual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 // ---------------------------------------------------------------------------------------------
 // o Sheets de mentira: uma grade de valores por aba, montada do ABAS, com as notas e as fórmulas
 // ---------------------------------------------------------------------------------------------
-const ABAS = JSON.parse(FICHA_SRC.match(/var ABAS = ([\s\S]*?);\n\nvar ARTE = /)[1]);
+// O ABAS como o script o usa: o Ficha.gs escreve por extenso, quando carrega, as fileiras de cartas que são cópia
+// (expandirCopias_). Lido como texto, ele viria só com a primeira fileira de cada tipo.
+const ABAS = (() => { const c = {}; require('vm').createContext(c); require('vm').runInContext(FICHA_SRC, c); return JSON.parse(JSON.stringify(require('vm').runInContext('ABAS', c))); })();
 const NOME = 'FICHA PESSOAL';
 const letras = (c) => { let s = ''; while (c > 0) { const m = (c - 1) % 26; s = String.fromCharCode(65 + m) + s; c = Math.floor((c - 1) / 26); } return s; };
 const numero = (t) => [...t].reduce((n, ch) => n * 26 + ch.charCodeAt(0) - 64, 0);

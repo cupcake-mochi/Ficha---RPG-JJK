@@ -18,15 +18,16 @@ from openpyxl import load_workbook
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(RAIZ, "ficha-v01"))
-import indice_ficha as ix, ficha_pessoal as fp
+sys.path.insert(0, os.path.join(RAIZ, "ficha"))
+import indice_ficha as ix, ficha_pessoal as fp, ficha_amaldicoada as fa, emitir_gs
 
 ARQ = os.path.join(RAIZ, "ficha-v01", "ficha-projeto-m-0.1.xlsx")
 GS = os.path.join(RAIZ, "apps-script", "Ficha.gs")
 
 
 def abas_do_script():
-    src = open(GS, encoding="utf-8").read()
-    return json.loads(re.search(r"var ABAS = ([\s\S]*?);\n\nvar ARTE = ", src).group(1))
+    """o ABAS como o script o usa: com as fileiras copiadas da FICHA AMALDIÇOADA escritas por extenso"""
+    return emitir_gs.abas_do_script(GS)
 
 
 def arte_do_script():
@@ -71,6 +72,56 @@ def exemplo(wb, R, G):
             p.cell(row=lin, column=fp.B1 + desloc).value = v
 
 
+def exemplo_amaldicoada(wb):
+    """a Kaori do estudo da Ficha Amaldiçoada: nível 10, com a técnica dela e seis feitiços prontos do livro"""
+    f, a, c = wb["FICHA"], wb[fa.NOME], wb["CARTEIRA"]
+    G = fa.geometria()
+    idx = {}
+    dd = wb["DADOS"]
+    for r in range(5, 200):
+        k, v = dd.cell(row=r, column=53).value, ix.endereco(dd.cell(row=r, column=54).value)
+        if k and v:
+            idx[k] = v
+    for linha in c.iter_rows():
+        for cel in linha:
+            if isinstance(cel.value, str) and cel.value.startswith("Coloque o nome"):
+                cel.value = "Kaori"
+    f[idx["atr_base_Força"]], f[idx["atr_base_Essência"]], f[idx["caminho"]], f[idx["nivel"]] = 3, 2, "Bastião", 10
+    f[idx["refino escolhido"]] = 2
+    a[G["nome_tecnica"]], a[G["tipo_dano"]] = "Peso Emprestado", "Impacto"
+    a[f"D{G['regra'] + 1}"] = "Tudo que eu prendo entre as minhas mãos fica mais pesado."
+    a[f"L{G['descricao'] + 1}"] = "As duas mãos precisam se tocar antes."
+    a[f"L{G['descricao'] + 4}"] = "Ela sabe o peso exato de qualquer coisa que encoste nela."
+    for fam, estado in {"Controle": "Livre", "Castigo": "Livre", "Amparo": "Fechada", "Área": "Fechada", "Auxiliares": "Fechada"}.items():
+        i = list(fa.regras()["familias"]).index(fam)
+        a[f"{G['cols_fam'][i][0]}{G['familias'] + 1}"] = estado
+    feiticos = [("Estalo", 1, "Projétil", [], [], "Ela bate as mãos e o ar entre elas ganha peso. O que sai é um soco sem braço."),
+                ("Perfurar", 1, "Projétil", ["Precisão"], ["Parado"], "Parada, ela aperta o ar até virar uma ponta e solta num alvo só."),
+                ("Golpe Cru", 1, "Toque", [], [], "A mão encosta e o peso entra direto no corpo do outro."),
+                ("Lança Negra", 2, "Projétil", ["Fura"], ["Atrasar"], "Uma rodada inteira apertando o ar entre as palmas. Sai uma haste escura que atravessa proteção."),
+                ("Marca do Carrasco", 3, "Projétil", ["Marca", "Queima"], ["Uma Vez"], "O peso fica grudado no alvo depois do golpe e continua esmagando. Uma vez por cena."),
+                ("Palma Trovejante", 2, "Cone", ["Derrubado"], ["Atrasar"], "Ela abre as mãos de uma vez e o peso sai em leque, derrubando o que estiver na frente.")]
+    for (nome, classe, forma, mel, res, como), pos in zip(feiticos, G["feiticos"]):
+        cel = fa.celulas_do_feitico(*pos)
+        a[cel["nome"]], a[cel["classe"]], a[cel["forma"]], a[cel["como"]] = nome, classe, forma, como
+        for k, m in zip(cel["mel"], mel):
+            a[k] = m
+        for k, r in zip(cel["res"], res):
+            a[k] = r
+    cel = fa.celulas_do_feitico(*G["libs"][0])
+    a[cel["nome"]], a[cel["como"]] = "Golpe do Voto", "Tudo que ela segurou na luta inteira, devolvido num golpe só."
+    for p, pos in zip(["Raiz", "Fluxo"], G["passivas"]):
+        a[fa.celulas_da_passiva(*pos)["nome"]] = p
+    for p, pos in zip(["Projetar energia", "Barreira Simples"], G["aptidoes"]):
+        a[fa.celulas_da_aptidao(*pos)["nome"]] = p
+    pc = fa.celulas_do_pacto(G["pactos"][0])
+    a[pc["nome"]], a[pc["forma"]] = "Mostrar a mão", "temporário"
+    a[pc["dou"]], a[pc["recebo"]] = "Explicar a própria técnica ao adversário.", "A técnica fica mais forte."
+    cz = G["cols_zero"]
+    a[f"{cz['nome'][0]}{G['zero_ini']}"], a[f"{cz['forma'][0]}{G['zero_ini']}"] = "Tapa de Peso", "Toque"
+    a[f"{cz['nome'][0]}{G['zero_ini'] + 1}"], a[f"{cz['mel'][0]}{G['zero_ini'] + 1}"] = "Pedrada", "Empurrão"
+
+
 def recalculada(preenche):
     d = tempfile.mkdtemp(prefix="ver-aba-")
     copia = os.path.join(d, "ficha.xlsx")
@@ -80,8 +131,8 @@ def recalculada(preenche):
     for ws in wb:
         for linha in ws.iter_rows():
             for c in linha:
-                if isinstance(c.value, str) and c.value.startswith("=") and "IFS(" in c.value and "_xlfn.IFS(" not in c.value:
-                    c.value = re.sub(r"(?<![A-Z_.])IFS\(", "_xlfn.IFS(", c.value)
+                if isinstance(c.value, str) and c.value.startswith("="):
+                    c.value = re.sub(r"(?<![A-Z_.])(IFS|TEXTJOIN)\(", r"_xlfn.\1(", c.value)
     wb.save(copia)
     subprocess.run(["libreoffice", "--headless", "--convert-to", "xlsx", "--outdir", os.path.join(d, "s"), copia],
                    capture_output=True, timeout=300)
@@ -99,13 +150,14 @@ def numero(v):
     return str(v).replace(".", ",") if isinstance(v, float) else v
 
 
-def desenha(spec, valores, crus, aberto=True, barras=None, titulo="", pintura=None, linhas=None, arte=None):
+def desenha(spec, valores, crus, aberto=True, barras=None, titulo="", pintura=None, linhas=None, arte=None, linhas_abertas=None):
     """`pintura` é a aba depois de uma troca de paleta (o que o medidas/pintar-paletas.js grava): fundo e fonte de cada
-    célula, a régua e a cor de cada imagem. `linhas` corta a aba nas primeiras N. `arte` são os PNG do Ficha.gs."""
-    return pagina(grade(spec, valores, crus, aberto, barras, pintura, linhas, arte), titulo)
+    célula, a régua e a cor de cada imagem. `linhas` corta a aba nas primeiras N. `arte` são os PNG do Ficha.gs.
+    `linhas_abertas` diz o que fazer com os grupos de LINHAS: None abre todos, "nasce" deixa como a aba nasce."""
+    return pagina(grade(spec, valores, crus, aberto, barras, pintura, linhas, arte, linhas_abertas), titulo)
 
 
-def grade(spec, valores, crus, aberto=True, barras=None, pintura=None, linhas=None, arte=None):
+def grade(spec, valores, crus, aberto=True, barras=None, pintura=None, linhas=None, arte=None, linhas_abertas=None):
     nl, nc = min(spec["rows"], linhas or spec["rows"]), spec["cols"]
     grupos = spec.get("grupos") or {"lin": [], "col": []}
     col_fechada = set()
@@ -119,6 +171,15 @@ def grade(spec, valores, crus, aberto=True, barras=None, pintura=None, linhas=No
         for c in range(a, min(b, nc) + 1):
             largs[c] = px
     alts = [int(spec["alturas"].get(str(r), 21)) for r in range(nl + 1)]
+    # os grupos de linhas que nascem fechados somem, como no Sheets: a linha fica com altura zero
+    lin_fechada = set()
+    if linhas_abertas == "nasce":
+        for g in grupos.get("lin", []):
+            if g[2]:
+                lin_fechada |= set(range(g[0], g[1] + 1))
+    for r in lin_fechada:
+        if r <= nl:
+            alts[r] = 0
     bg = [[spec.get("fundo_base", "#120F1D")] * (nc + 1) for _ in range(nl + 1)]
     for r, c1, c2, cor in spec["fundos"]:
         if r <= nl:
@@ -169,7 +230,9 @@ def grade(spec, valores, crus, aberto=True, barras=None, pintura=None, linhas=No
     avisos = []
     for regra in spec.get("condicional", []):
         for a1 in regra["faixas"]:
-            avisos.append((ix._lc(a1), regra))
+            ini, _, fim = a1.partition(":")
+            avisos.append((ix._lc(ini), ix._lc(fim or ini), regra))
+    fmt = dict((ix._lc(a), f_) for a, f_ in spec.get("formatos", []))
     cols = [c for c in range(1, nc + 1) if c not in col_fechada]
     grade_c = " ".join(f"{largs[c]}px" for c in cols)
     grade_r = " ".join(f"{alts[r]}px" for r in range(1, nl + 1))
@@ -198,13 +261,17 @@ def grade(spec, valores, crus, aberto=True, barras=None, pintura=None, linhas=No
                 alinh = "left"
             else:
                 txt = html.escape("" if v is None else str(numero(v)))
-            fmt = dict((ix._lc(a), f_) for a, f_ in spec.get("formatos", []))
-            if (r, c) in fmt and isinstance(v, (int, float)):
-                txt = "¥ " + f"{int(v):,}".replace(",", ".")
+            if (r, c) in fmt and isinstance(v, (int, float)) and not isinstance(v, bool):
+                prefixo = re.match(r'"([^"]*)"', fmt[(r, c)]).group(1)
+                txt = prefixo + (f"{int(v):,}".replace(",", ".") if "#" in fmt[(r, c)] else str(int(v)))
             fundo, corf = bg[r][c], cor
-            for (ar, ac), regra in avisos:
-                if (ar, ac) == (r, c) and regra["contem"] in str(v or ""):
+            for (r1_, c1_), (r2_, c2_), regra in avisos:
+                texto = str(v or "")
+                if r1_ <= r <= r2_ and c1_ <= c <= c2_ and (texto.startswith(regra["comeca"]) if regra.get("comeca") else regra["contem"] in texto):
                     fundo, corf = regra.get("fundo", fundo), regra.get("fonte", corf)
+                    break
+            if all(rr in lin_fechada for rr in range(r, r2 + 1)):
+                continue
             b = {}
             for rr in range(r, r2 + 1):
                 for cc in range(c, c2 + 1):
@@ -271,7 +338,18 @@ def main():
     ap.add_argument("--fechado", action="store_true", help="o painel de XP fechado, como a aba nasce")
     ap.add_argument("--vazia", action="store_true", help="a ficha de fábrica, sem o exemplo")
     ap.add_argument("--tudo", action="store_true", help="a extensão do painel aberta também")
+    ap.add_argument("--nasce", action="store_true", help="os grupos de linhas como a aba nasce (os fechados, fechados)")
     a = ap.parse_args()
+    if a.aba == fa.NOME:
+        lido, cru = recalculada((lambda wb: None) if a.vazia else exemplo_amaldicoada)
+        ws, wc = lido[a.aba], cru[a.aba]
+        valores = {(c.row, c.column): c.value for linha in ws.iter_rows() for c in linha if c.value is not None}
+        crus = {(c.row, c.column): c.value for linha in wc.iter_rows() for c in linha if c.value is not None}
+        spec = next(s for s in abas_do_script() if s["nome"] == a.aba)
+        open(a.saida, "w", encoding="utf-8").write(desenha(spec, valores, crus, 2, None, a.aba, arte=arte_do_script(),
+                                                           linhas_abertas="nasce" if a.nasce else None))
+        print(f"{a.aba}: {spec['rows']} linhas, {spec['cols']} colunas -> {a.saida}")
+        return
     CAT = json.load(open(os.path.join(RAIZ, "catalogo-projeto-m.json"), encoding="utf-8"))
     R = fp.regras(CAT)
     G = fp.geometria(R)

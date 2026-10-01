@@ -127,6 +127,14 @@ for aba in [a for a in DEC["C6_documento"]["abas"]
     if aba in _INV:
         print(f"  [--] {aba}: {n} colunas ≈ {px:.0f} px — aba da invocação, fica com o conferir-invocacao.py")
         continue
+    # 01/10/2026: a FICHA AMALDIÇOADA é mais larga que o notebook, por decisão do Mizuki ("dar mais colunas a pagina"), e
+    # as colunas dela não têm todas a mesma largura. A largura dela é a soma de cada coluna, e tem de ser a decidida.
+    _fora = DEC["C6_documento"].get("largura_fora_do_notebook", {}).get(aba)
+    if _fora:
+        px = sum(_px_col(wb[aba].column_dimensions[L(c)].width) for c in range(1, wb[aba].max_column + 1))
+        checa(f"{aba}: {n} colunas, {px:.0f} px, a largura que o Mizuki decidiu (mais larga que o notebook de 1366)",
+              px == _fora["px"] and px > 1366, f"{px:.0f} px, e a decisão diz {_fora['px']}")
+        continue
     checa(f"{aba}: {n} colunas ≈ {px:.0f} px, cabe em notebook de 1366",
           1200 <= px <= 1366, f"{px:.0f} px")
 
@@ -561,7 +569,7 @@ checa("o script foi emitido", _o.path.exists(GS))
 if _o.path.exists(GS):
     g = open(GS, encoding="utf-8").read()
     checa("ele avisa que é gerado, e não editado na mão", "não edite este arquivo" in g)
-    checa("ele traz as seis abas", all(f'"{a}"' in g for a in DEC["C6_documento"]["abas"]))
+    checa(f"ele traz as {len(DEC['C6_documento']['abas'])} abas decididas", all(f'"{a}"' in g for a in DEC["C6_documento"]["abas"]))
     checa("ele traz a arte embutida, sem depender de URL",
           '.png":"' in g.split("var ARTE")[1][:400] and "http" not in g.split("var ARTE")[1][:200])
     checa("ele define as caixas de seleção pela posição medida",
@@ -616,7 +624,11 @@ print("\nOS DADOS DO SCRIPT, CONFERIDOS SEM EXECUTAR")
 # que quebrou a montagem era dessa metade, entao vale.
 if _o.path.exists(GS):
     import json as _js
-    dados = _js.loads(_re.search(r"var ABAS = (\[.*?\]);\n", g, _re.S).group(1))
+    # 01/10/2026: o ABAS como o script o usa. As fileiras de cartas da FICHA AMALDIÇOADA que sao copia vem escritas so
+    # uma vez no Ficha.gs, e o proprio script as expande quando carrega; aqui quem expande e o emitir_gs.expandir.
+    sys.path.insert(0, "ficha")
+    import emitir_gs as _eg
+    dados = [_eg.expandir(a) for a in _js.loads(_re.search(r"var ABAS = (\[.*?\]);\n", g, _re.S).group(1))]
     nomes = {a["nome"] for a in dados}
     checa("as abas do script são as decididas", nomes == set(DEC["C6_documento"]["abas"]),
           str(nomes ^ set(DEC["C6_documento"]["abas"])))

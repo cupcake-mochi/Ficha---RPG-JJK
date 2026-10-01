@@ -17,7 +17,8 @@ const { criaSheets, retrato, CHAMADAS, zeraChamadas } = require('./sheets-de-men
 const rev = process.argv[2] || 'HEAD';
 const doGit = (arq) => execFileSync('git', ['show', rev + ':' + arq], { cwd: RAIZ, maxBuffer: 1 << 28 }).toString('utf8');
 const daPasta = (arq) => fs.readFileSync(path.join(RAIZ, arq), 'utf8');
-const abasDe = (src) => JSON.parse(src.match(/var ABAS = ([\s\S]*?);\n\nvar ARTE = /)[1]);
+// o ABAS como o script o usa, com as fileiras copiadas já escritas por extenso (expandirCopias_, no Ficha.gs)
+const abasDe = (src) => { const c = {}; require('vm').createContext(c); require('vm').runInContext(src, c); return JSON.parse(JSON.stringify(require('vm').runInContext('ABAS', c))); };
 
 const novo = { ficha: daPasta('apps-script/Ficha.gs'), codigo: daPasta('apps-script/Codigo.gs') };
 const velho = { ficha: doGit('apps-script/Ficha.gs'), codigo: doGit('apps-script/Codigo.gs') };
