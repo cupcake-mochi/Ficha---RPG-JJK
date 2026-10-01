@@ -35,6 +35,27 @@ def tabela_do_livro(arquivo, titulo):
 passivas = [{"n": c[0], "cp": c[1], "faz": c[2]} for c in tabela_do_livro("40-fundamento.md", "Lista")]
 aptidoes = [{"n": c[0], "req": c[1], "cp": c[2], "escala": c[3]} for c in tabela_do_livro("45-aptidoes-e-refino.md", "Como ler uma aptidão")]
 
+
+def regra_da_aptidao(nome):
+    """a caixa de regra da aptidão no capítulo: o bloco de citação que abre com **Nome**, sem o parágrafo do requisito"""
+    linhas = open(os.path.join(LIVRO, "45-aptidoes-e-refino.md"), encoding="utf-8").read().split("\n")
+    ini = next((k for k, l in enumerate(linhas) if l.startswith(f"> **{nome}**")), None)
+    if ini is None:
+        return ""
+    bloco = []
+    for l in linhas[ini:]:
+        if not l.startswith(">"):
+            break
+        bloco.append(l[1:].strip())
+    paragrafos = [p.strip() for p in "\n".join(bloco).split("\n\n") if p.strip() and not p.strip().startswith("Requisito")]
+    texto = " ".join(" ".join(p.split()) for p in paragrafos)
+    texto = re.sub(r"^\*\*[^*]+\*\*\s*—\s*", "", texto).replace("`", "").replace("**", "")
+    return texto[:1].upper() + texto[1:]
+
+
+for _a in aptidoes:
+    _a["faz"] = regra_da_aptidao(_a["n"])
+
 def prontos_do_livro():
     """os feitiços prontos do capítulo de Fundamento, lidos da tabela `Como foi montado`: enchem o exemplo de ficha
     cheia e servem de prova da conta, porque cada um traz o resultado que o livro imprime"""

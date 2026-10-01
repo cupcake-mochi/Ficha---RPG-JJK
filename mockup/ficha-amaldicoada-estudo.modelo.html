@@ -64,6 +64,16 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
 .conta.quebra{flex-wrap:wrap; align-content:flex-start; white-space:normal; row-gap:3px; padding-top:4px}
 .novo{cursor:pointer; text-decoration:underline dotted; text-underline-offset:3px}
 .novo:focus-visible{outline:2px solid var(--f-texto); outline-offset:2px}
+/* ---------- quarto estudo: só as cartas, em duas ou três colunas ---------- */
+.conta.quebra{align-content:center}
+.aviso.quebra{flex-wrap:wrap; white-space:normal; align-content:center; row-gap:3px; overflow:hidden}
+.txt.auto{overflow-y:auto; color:var(--f-texto)}
+.c.txt.calc{padding-left:15px}
+.cel.agora{font-weight:500}
+.txt.auto{scrollbar-width:thin}
+/* a carta de 13 colunas: o rótulo de lado e os números de mesa em letra um ponto menor */
+.lado.mini{font-size:8.5px; letter-spacing:.04em; padding-left:5px}
+.res.ap{font-size:12px}
 /* o vermelho vence o fundo da caixa de resumo, que é declarado depois dele */
 .c.ruim{background:var(--f-vermelho); color:var(--f-no-vermelho)}
 .chip.ruim{background:var(--f-vermelho); color:var(--f-no-vermelho)}
@@ -72,14 +82,14 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
 <div class="pagina">
   <header class="abre">
     <div class="olho">Projeto M · ficha digital</div>
-    <h1>Ficha Amaldiçoada, terceiro estudo</h1>
-    <p>O desenho B saiu. Os outros três foram refeitos com o que você pediu: 24 lugares de feitiço, que é o que o nível 30 dá a quem só compra feitiço; descrição maior, num grupo que fecha; e a aba espalhada para os lados em vez de crescer para baixo. O Domínio ganhou os campos de texto e os Pactos viraram três lugares que fecham.</p>
-    <p class="nota">Os menus funcionam nos três: troque a Classe, a Forma ou uma peça e a conta refaz. O exemplo da Kaori usa a técnica dela como o livro descreve, com seis feitiços prontos do capítulo de Fundamento; os textos de "Como é" são só exemplo de preenchimento. O exemplo cheio põe nos 24 lugares os feitiços prontos do livro, com as Famílias todas Neutras, que é como o livro os montou.</p>
+    <h1>Ficha Amaldiçoada, quarto estudo</h1>
+    <p>Ficaram só as cartas, que foi o desenho escolhido. Esta rodada traz o que você pediu em cima delas: mais lugares de feitiço, a opção de três colunas, as Passivas e as aptidões em carta, o índice de preços com menu de Classe e os rótulos centralizados.</p>
+    <p class="nota">Os menus funcionam: troque a Classe, a Forma ou uma peça e a conta refaz. O exemplo da Kaori usa a técnica dela como o livro descreve, com seis feitiços prontos do capítulo de Fundamento; os textos de "Como é" são só exemplo de preenchimento. O exemplo cheio é a ficha de quem escolheu Leque nos sete marcos: os trinta feitiços prontos do livro, com as Famílias Neutras.</p>
   </header>
 
   <div class="barra-topo">
     <nav class="saltos" aria-label="Partes do estudo">
-      <a href="#folha">A folha</a><a href="#lado">Os três, lado a lado</a><a href="#mudou">O que mudou</a><a href="#conta">A conta</a><a href="#falta">O que falta</a>
+      <a href="#folha">A folha</a><a href="#lado">Duas ou três colunas</a><a href="#mudou">O que mudou</a><a href="#conta">A conta</a><a href="#falta">O que falta</a>
     </nav>
     <div class="paleta" role="group" aria-label="Paleta da folha">
       <span>Paleta da folha</span>
@@ -93,24 +103,22 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
     <span><b>▾</b>menu suspenso</span>
     <span><b>ƒ</b>a ficha calcula sozinha</span>
     <span><b>sem marca</b>o jogador digita</span>
-    <span><b>− ou +</b>na borda esquerda: a calha de fora fecha a seção; as de dentro, um lote de feitiços e o feitiço</span>
-    <span><b>− ou +</b>no alto, sobre a coluna AU: abre e fecha as colunas da direita</span>
+    <span><b>− ou +</b>na borda esquerda: a calha de fora fecha a seção; a do meio, um lote de cartas; a de dentro, a descrição ou a montagem da fileira</span>
     <span><b>sublinhado</b>na linha 5: salta para a seção</span>
   </div>
 
   <section class="estudo" id="folha">
-    <h2><b>1</b>A folha, em três desenhos de feitiço</h2>
+    <h2><b>1</b>A folha, em cartas</h2>
     <div class="escolha">
-      <div class="jogo" role="group" aria-label="Desenho do bloco de feitiço"><span>Desenho</span>
-        <button type="button" data-op="A" aria-pressed="true">A · Cartas em par</button>
-        <button type="button" data-op="C" aria-pressed="false">C · Faixas e segunda página</button>
-        <button type="button" data-op="D" aria-pressed="false">D · Mesa e oficina</button>
+      <div class="jogo" role="group" aria-label="Cartas por fileira"><span>Cartas por fileira</span>
+        <button type="button" data-por="2" aria-pressed="true">2 colunas</button>
+        <button type="button" data-por="3" aria-pressed="false">3 colunas</button>
       </div>
       <p class="ideia" id="op-diz"></p>
     </div>
     <div class="jogo" role="group" aria-label="Exemplo"><span>Exemplo</span>
       <button type="button" data-ex="kaori" aria-pressed="true">Kaori, 6 feitiços</button>
-      <button type="button" data-ex="cheio" aria-pressed="false">Só feitiços, os 24 lugares</button>
+      <button type="button" data-ex="cheio" aria-pressed="false">Só feitiços e Leque, 30 feitiços</button>
     </div>
     <div class="jogo" role="group" aria-label="Nível do exemplo"><span>Ver a ficha no</span>
       <button type="button" data-nivel="2" aria-pressed="false">Nível 2</button>
@@ -129,10 +137,10 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
   </section>
 
   <section class="estudo" id="lado">
-    <h2><b>2</b>Os três, lado a lado</h2>
-    <p>As contas são da aba inteira: os 24 lugares de feitiço e as 3 Liberações Máximas, com a linha vazia entre um e outro.</p>
+    <h2><b>2</b>Duas ou três colunas</h2>
+    <p>As duas arrumações cabem nas 47 colunas da <code>FICHA</code>, que na planilha têm 28 px cada. Com três colunas a carta fica com 13 colunas; com duas, 21. As contas são da aba inteira: 36 lugares de feitiço e 3 Liberações Máximas, com a linha vazia entre as fileiras.</p>
     <div class="rolar"><table class="regras" id="tab-lado"></table></div>
-    <p>A troca de tema é estimativa pela medida da <code>FICHA</code> (150 linhas de 47 colunas, perto de 7,5 s). Linha e coluna fechada pesam igual. Nos três, só a parte dos feitiços já passa do que a <code>FICHA</code> inteira leva hoje: é o preço dos 24 lugares, e a troca dessa aba termina no clique seguinte, como já acontece com a arte.</p>
+    <p><b>Por que 36 lugares, e não 30.</b> O nível 30 dá 24 espaços. Cada escolha de Leque no marco dá mais um feitiço, que só pode ser feitiço: com os sete marcos são 31. E cada pacto permanente pode conceder um espaço: com os três, 34. Com três colunas, doze fileiras dão 36 e cobrem o caso todo.</p>
   </section>
 
   <section class="estudo" id="mudou">
@@ -140,19 +148,20 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
     <div class="rolar"><table class="regras">
       <thead><tr><th>Pedido</th><th>Como ficou</th><th>De onde vem</th></tr></thead>
       <tbody>
-        <tr><td>Domínio com os campos de escrever</td><td>Nome do Domínio, Acerto, Efeito e "Como é por dentro". Em cima deles, a linha de abrir já calculada: PE, duração, raio, o desconto dos feitiços lá dentro, a vida da barreira e se o Acerto rola ou acontece. No degrau Sem Barreiras aparecem as duas linhas, fechando a barreira e sem ela.</td><td>Capítulo de Fundamento, <i>Expandindo o seu Domínio</i>. "Como é por dentro" é campo meu, o livro só pede Acerto e Efeito.</td></tr>
-        <tr><td>Três pactos, cada um fechando</td><td>Cada lugar é uma faixa com o nome, a forma (permanente, temporário, Promessa, de restrição) e, no permanente, o que ele concede. O + abre "O que eu dou", "O que eu recebo" e a cláusula. O contador de permanentes confere com a Essência, e o pacto que concede espaço de feitiço soma no Orçamento.</td><td>Capítulo de Pactos. Três lugares é o teto de permanentes, na Essência 6.</td></tr>
-        <tr><td>Descrição maior, que fecha</td><td>De duas ou três linhas para cinco ou seis, num grupo que fecha. No desenho D ela usa a largura inteira da folha.</td><td>O campo "Como é" da ficha de feitiço do apêndice.</td></tr>
-        <tr><td>Lugar para quem só tem feitiço</td><td>24 lugares de feitiço e 3 de Liberação Máxima, nos três desenhos. Cada desenho usa a largura de um jeito: cartas em par, segunda página, oficina.</td><td>Teto de feitiços: 2 + metade do nível + um por marco. No nível 30 são 24.</td></tr>
-        <tr><td>Lugar vazio não mostra número</td><td>O dano, o PE e a ação só aparecem quando o feitiço tem nome. Neste estudo, clicar em "espaço livre" põe um feitiço ali, para testar.</td><td>Ajuste meu, por causa dos 24 lugares.</td></tr>
+        <tr><td>Feitiços até 30, e três colunas</td><td>36 lugares, em três lotes de 12: o primeiro à vista, os outros dois em grupos que abrem. O botão no alto troca entre duas e três colunas, para comparar.</td><td>Teto de feitiços, Marcos (Leque) e Pactos.</td></tr>
+        <tr><td>Domínio com os números automáticos</td><td>Eles já eram calculados, mas só apareciam depois de escolher o degrau, e o exemplo nascia sem degrau. Agora as três linhas (Incompleta, Completa e Sem barreira) saem sempre calculadas pelo refino e pela maior Classe, e a do degrau comprado fica marcada.</td><td><i>Abrir o Domínio</i> e <i>Abrir sem barreira</i>.</td></tr>
+        <tr><td>Passivas em carta</td><td>Doze cartas: cinco pagas, e sete do Leque num lote que abre. A carta tem o menu, a Classe Passiva e o custo; o + abre o que ela faz, que sai da lista do livro. Na <code>Passiva Própria</code> o texto é do jogador e a Classe Passiva vira menu.</td><td>Passivas, e o <i>Teto de Passivas</i> do capítulo de Experiência: cinco pagas e uma por Leque, doze no máximo.</td></tr>
+        <tr><td>Aptidões em carta, com a de criar</td><td>Doze cartas, seis à vista e seis num lote. A carta tem o menu, a Classe Passiva e o requisito; o + abre a regra dela, tirada do livro, e o que o refino escala. A <code>Aptidão Própria</code> está no menu: texto do jogador e Classe Passiva 1 ou 2. A caixa "Compradas" confere com as escolhas de Refino.</td><td>Capítulo de Aptidões e Refino. O máximo são dez compradas (sete marcos, e dois por marco com o refino já em 10), mais a semente do Sem Técnica: onze. A aba traz doze.</td></tr>
+        <tr><td>Índice de preços com menu de Classe</td><td>A caixa "Classe" do meio saiu. O menu fica na ponta esquerda, de Classe 1 a 7, e a fileira mostra os preços da Classe escolhida. Nasce na maior Classe do nível. Classe que o nível ainda não liberou aparece apagada.</td><td>Números da montagem.</td></tr>
+        <tr><td>Rótulos centralizados</td><td>"Melhorias", "Restrições", "Ampliar" e os outros rótulos de lado ficam no meio da caixa, e o texto do Ampliar também.</td><td></td></tr>
+        <tr><td>O que entrou junto</td><td>A caixa "Do Leque" no Orçamento: os feitiços a mais que as escolhas de Leque dão. Passiva e Domínio não podem ser pagos com eles, e a ficha avisa.</td><td>Marcos: "mais um feitiço, que só pode ser feitiço".</td></tr>
       </tbody>
     </table></div>
-    <p>Continuam valendo, nos três: o <code>+</code> que fecha a seção inteira, a linha de saltos, o selo de estado em cada feitiço e a <code>Regra Própria</code> na Técnica.</p>
   </section>
 
   <section class="estudo" id="conta">
     <h2><b>4</b>Como a conta é feita</h2>
-    <p>É a conta do capítulo de Fundamento, a mesma do <code>conferir_feitico.py</code> que já roda nos validadores da ficha. Ela é igual nos três desenhos, e reproduz o resultado impresso dos 33 feitiços prontos do livro.</p>
+    <p>É a conta do capítulo de Fundamento, a mesma do <code>conferir_feitico.py</code> que já roda nos validadores da ficha. Ela reproduz o resultado impresso dos 33 feitiços prontos do livro.</p>
     <div class="rolar"><table class="regras">
       <thead><tr><th>O que a ficha faz</th><th>De onde vem</th></tr></thead>
       <tbody>
@@ -167,22 +176,24 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
         <tr><td>Ampliar: a mesma montagem em cada Classe acima da original, até a maior que o nível liberou, com dados e PE já calculados.</td><td>Ampliar</td></tr>
         <tr><td>Ação, alcance e como resolve saem da Forma e das peças (<code>Rápido</code>, <code>Atrasar</code>, <code>Longe</code>, <code>Maior</code>).</td><td>Formas, Escadas</td></tr>
         <tr><td>Liberação Máxima: + Classe em dados, PE com 50% a mais, fora dos espaços. Técnica Máxima: dano fixo e pontos de montagem da faixa de nível.</td><td>Liberação Máxima, Técnica Máxima</td></tr>
-        <tr><td>Espaços de feitiço: 2 + metade do nível + um por marco, mais os de pacto permanente. Passiva paga, <code>Regra Própria</code> acima da Classe Passiva 1 e Expansão de Domínio gastam desses espaços.</td><td>Teto de feitiços, Passivas, Pactos</td></tr>
+        <tr><td>Espaços de feitiço: 2 + metade do nível + um por marco, mais os de pacto permanente. Cada escolha de Leque soma um feitiço, que não paga Passiva nem Domínio.</td><td>Teto de feitiços, Marcos, Pactos</td></tr>
+        <tr><td>Passivas: cinco pagas, cada uma custando a Classe Passiva dela em espaços, e uma de graça por escolha de Leque. <code>Regra Própria</code> acima da Classe Passiva 1 paga a diferença.</td><td>Passivas, Teto de Passivas</td></tr>
+        <tr><td>Refino e aptidões: cada marco dá +1 de refino; escolher Refino dá mais +1 e uma aptidão, ou duas aptidões se o refino já está em 10. A ficha conta as escolhas de Refino como as últimas, que é a conta que a <code>FICHA</code> já faz.</td><td>Aptidões e Refino, Marco</td></tr>
         <tr><td>Domínio: abrir custa 6 × a maior Classe (7 × sem barreira); dura metade do refino; raio de 1,5 m × refino, com a incompleta parando em 7,5 m; desconto de um terço ou metade do refino, ou de 2 × maestria sem barreira; barreira com 50 × metade do refino de vida.</td><td>Abrir o Domínio, Abrir sem barreira</td></tr>
       </tbody>
     </table></div>
     <p>Nas metades e nos terços do Domínio a ficha arredonda para baixo, com mínimo de 1, que é a regra geral do livro para o que você ganha. O capítulo do Domínio só escreve isso com todas as letras na conta das falhas da corrida; nos outros números é leitura minha.</p>
-    <p>O que a ficha não consegue checar fica para o mestre, como já é hoje: se o feitiço cabe na Regra, se duas Restrições cobram a mesma coisa, e a regra de ouro 8, que troca a Restrição que nunca atrapalhou.</p>
+    <p>O texto de "O que faz" das aptidões é a caixa de regra do capítulo, inteira. Algumas passam de mil letras e não cabem na carta: neste estudo a caixa rola; na planilha o texto ficaria cortado, e o caminho seria pô-lo também na nota da célula.</p>
   </section>
 
   <section class="estudo" id="falta">
     <h2><b>→</b>O que falta decidir</h2>
     <ol class="passos">
-      <li><b>O desenho do bloco de feitiço, entre os três.</b> É a pergunta desta rodada. Vale misturar.</li>
-      <li><b>As seções que ainda não tiveram rodada de opções.</b> Classe 0, Técnica Máxima, Passivas, aptidões e refino. Hoje elas estão como no primeiro estudo.</li>
+      <li><b>Duas ou três colunas.</b> É a pergunta desta rodada.</li>
+      <li><b>As seções que ainda não tiveram rodada.</b> Classe 0 e Técnica Máxima estão como no primeiro estudo.</li>
       <li><b>O que acontece com a seção 8 da <code>FICHA</code>.</b> Espelho do que está aqui, ou sai de lá. Ficou esperando.</li>
       <li><b>As rotas sem Fundamento.</b> Técnica Marcial (<code>Kata</code>, <code>Ruptura</code>, <code>Ōgi</code>), Sem Técnica (<code>Manejo</code>, <code>Auge</code>) e Restrição Celestial (Bênçãos e Lapidação).</li>
-      <li><b>O arquivo de dados não tem as Passivas nem as aptidões.</b> Este estudo leu as duas tabelas direto do livro.</li>
+      <li><b>O arquivo de dados não tem as Passivas nem as aptidões.</b> Este estudo leu as tabelas e as caixas de regra direto do livro.</li>
     </ol>
   </section>
 </div>
@@ -222,13 +233,16 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
   }
 
   // ---------- o exemplo ----------
-  var FAMILIAS = Object.keys(D.familias), LUGARES = 24, LIBERACOES = 3;
+  // 36 lugares de feitiço: 24 espaços no nível 30, 7 feitiços do Leque e 3 de pacto permanente dão 34
+  var FAMILIAS = Object.keys(D.familias), LUGARES = 36, LIBERACOES = 3, PAGAS = 5, DO_LEQUE = 7, APTIDOES = 12;
   function vazio(c){ return {nome:'', classe:c || 1, forma:'Projétil', mel:['','','',''], res:['',''], selo:[false,false], como:''}; }
-  function enche(lista, n, c){ lista = lista.slice(0, n); while (lista.length < n) lista.push(vazio(c)); return lista; }
+  function enche(lista, n, molde){ lista = lista.slice(0, n); while (lista.length < n) lista.push(molde()); return lista; }
   function doLivro(p){ return {nome:p.nome, classe:p.classe, forma:p.forma, mel:p.mel.concat(['','','','']).slice(0, 4), res:p.res.concat(['','']).slice(0, 2), selo:[false,false], como:''}; }
+  function passiva(n){ return {n:n || '', cp:'1'}; }
+  function aptidao(n){ return {n:n || '', cp:'1'}; }
   var EXEMPLOS = {
-    // a técnica da Kaori como o livro descreve, com seis feitiços prontos do capítulo
-    kaori: function(){ return {nivel:10, familias:{Controle:'Livre', Castigo:'Livre', Amparo:'Fechada', 'Área':'Fechada', Auxiliares:'Fechada'},
+    // a técnica da Kaori como o livro descreve, com seis feitiços prontos do capítulo; ela escolheu Refino nos dois marcos
+    kaori: function(){ return {nivel:10, escolhas:{refino:2, corpo:0, leque:0}, familias:{Controle:'Livre', Castigo:'Livre', Amparo:'Fechada', 'Área':'Fechada', Auxiliares:'Fechada'},
       feiticos: enche([
         {nome:'Estalo', classe:1, forma:'Projétil', mel:['','','',''], res:['',''], selo:[false,false], como:'Ela bate as mãos e o ar entre elas ganha peso. O que sai é um soco sem braço.'},
         {nome:'Perfurar', classe:1, forma:'Projétil', mel:['Precisão','','',''], res:['Parado',''], selo:[false,false], como:'Parada, ela aperta o ar até virar uma ponta e solta num alvo só.'},
@@ -236,31 +250,47 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
         {nome:'Lança Negra', classe:2, forma:'Projétil', mel:['Fura','','',''], res:['Atrasar',''], selo:[false,false], como:'Uma rodada inteira apertando o ar entre as palmas. Sai uma haste escura que atravessa proteção.'},
         {nome:'Marca do Carrasco', classe:3, forma:'Projétil', mel:['Marca','Queima','',''], res:['Uma Vez',''], selo:[false,false], como:'O peso fica grudado no alvo depois do golpe e continua esmagando. Uma vez por cena.'},
         {nome:'Palma Trovejante', classe:2, forma:'Cone', mel:['Derrubado','','',''], res:['Atrasar',''], selo:[false,false], como:'Ela abre as mãos de uma vez e o peso sai em leque, derrubando o que estiver na frente.'}
-      ], LUGARES),
-      lib: enche([{nome:'Golpe do Voto', classe:3, forma:'Projétil', mel:['','','',''], res:['',''], selo:[false,false], como:'Tudo que ela segurou na luta inteira, devolvido num golpe só.'}], LIBERACOES, 3)}; },
-    // a ficha de quem gastou todo espaço em feitiço: os 24 primeiros prontos do livro, com as Famílias todas Neutras
-    cheio: function(){ return {nivel:30, familias:{},
-      feiticos: enche(D.prontos.filter(function(p){ return !p.lib; }).map(doLivro), LUGARES),
-      lib: enche(D.prontos.filter(function(p){ return p.lib; }).map(doLivro), LIBERACOES, 3)}; }
+      ], LUGARES, vazio),
+      lib: enche([{nome:'Golpe do Voto', classe:3, forma:'Projétil', mel:['','','',''], res:['',''], selo:[false,false], como:'Tudo que ela segurou na luta inteira, devolvido num golpe só.'}], LIBERACOES, function(){ return vazio(3); }),
+      passivas: enche([passiva('Raiz'), {n:'Fluxo', cp:'2'}], PAGAS + DO_LEQUE, passiva),
+      aptidoes: enche([aptidao('Projetar energia'), aptidao('Barreira Simples')], APTIDOES, aptidao)}; },
+    // a ficha de quem só compra feitiço e escolhe Leque em todo marco: os trinta prontos do livro, com as Famílias Neutras
+    cheio: function(){ return {nivel:30, escolhas:{refino:0, corpo:0, leque:7}, familias:{},
+      feiticos: enche(D.prontos.filter(function(p){ return !p.lib; }).map(doLivro), LUGARES, vazio),
+      lib: enche(D.prontos.filter(function(p){ return p.lib; }).map(doLivro), LIBERACOES, function(){ return vazio(3); }),
+      passivas: enche([], PAGAS, passiva).concat(['Leitura','Instinto','Raiz','Mão Firme','Farejador','Aviso','Fluxo'].map(function(n){ return {n:n, cp:n === 'Fluxo' ? '2' : '1'}; })),
+      aptidoes: enche([], APTIDOES, aptidao)}; }
   };
   var E = {
     atributo:'Força', valor:3, essencia:1,
     zero: [{nome:'Tapa de Peso', forma:'Toque', mel:'', res:''}, {nome:'Pedrada', forma:'Projétil', mel:'Empurrão', res:''}, {nome:'', forma:'Projétil', mel:'', res:''}],
     tm: {nome:'Ponto Final', forma:'Projétil', mel:['Fura','','','']},
     dominio: '—',
-    passivas: ['Raiz','Fluxo','','',''],
-    aptidoes: ['Projetar energia','Barreira Simples','',''],
     // o primeiro é um pacto da obra, da tabela do capítulo de Pactos
     pactos: [{nome:'Mostrar a mão', forma:'temporário', concede:'', dou:'Explicar a própria técnica ao adversário.', recebo:'A técnica fica mais forte.', clausula:''},
              {nome:'', forma:'', concede:'', dou:'', recebo:'', clausula:''}, {nome:'', forma:'', concede:'', dou:'', recebo:'', clausula:''}],
-    regraPropria: '', opcao: 'A', colunas: {C:false, D:true},
-    aberto: {'A:feiticos1d':true, 'A:feiticos1m':true, 'C:feiticos3':true, 'D:feiticos3':true, 'p0':true}
+    regraPropria: '', por: 2, classeDoIndice: '',
+    aberto: {'2:feiticos1d':true, '2:feiticos1m':true, '3:feiticos1d':true, '3:feiticos1m':true, '2:passivas0':true, '3:passivas0':true, '2:aptidoes0':true, '3:aptidoes0':true, 'p0':true}
   };
+  // as escolhas de marco não passam dos marcos que o nível já deu
+  function escolhas(){
+    var resta = marcos(E.nivel), o = {};
+    ['refino','leque','corpo'].forEach(function(k){ o[k] = Math.min(E.escolhas[k] || 0, resta); resta -= o[k]; });
+    return o;
+  }
+  // o refino e as aptidões que os marcos compram, contando as escolhas de Refino como as últimas (é a conta da FICHA)
+  function refinoEAptidoes(){
+    var n = marcos(E.nivel), k = escolhas().refino, r = 1, apt = 0;
+    for (var i = 0; i < n; i++){
+      r = Math.min(10, r + 1);
+      if (i >= n - k){ if (r >= 10) apt += 2; else { r += 1; apt += 1; } }
+    }
+    return {refino:r, aptidoes:apt};
+  }
   function carrega(qual){
     var x = EXEMPLOS[qual]();
-    E.exemplo = qual; E.nivel = x.nivel; E.familias = x.familias; E.feiticos = x.feiticos; E.lib = x.lib; E.refino = 1 + marcos(x.nivel);
-    E.passivas = qual === 'cheio' ? ['','','','',''] : ['Raiz','Fluxo','','',''];
-    if (qual === 'cheio'){ E.colunas.C = true; E.aberto['s-lote1'] = E.aberto['s-lote2'] = true; }
+    E.exemplo = qual; E.nivel = x.nivel; E.escolhas = x.escolhas; E.familias = x.familias; E.feiticos = x.feiticos; E.lib = x.lib; E.passivas = x.passivas; E.aptidoes = x.aptidoes;
+    if (qual === 'cheio') ['feiticos1','feiticos2','passivas1'].forEach(function(l){ E.aberto['s-lote-' + l] = true; });
   }
   carrega('kaori');
   function estado(k){ return E.familias[k] || 'Neutra'; }
@@ -488,28 +518,20 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
     return {linhas:this.max, ocultas:Object.keys(oculta).length};
   };
 
-  // ---------- os três desenhos do bloco de feitiço ----------
-  // faixa: linhas de uma faixa aberta e fechada, com a linha vazia; por: feitiços por faixa; cols: colunas da aba;
-  // lote: quantos feitiços ficam à vista antes de um grupo "mais feitiços" (0: não tem)
-  var OPC = {
-    A:{nome:'A · Cartas em par', faixa:20, fechada:4, por:2, cols:47, gut:3, lote:12,
-       diz:'Duas cartas por fileira, cada uma com 21 colunas. Fechada, a carta mostra o nome e os números de mesa. O + ao lado do nome abre a descrição; o + ao lado dos números abre a montagem, com as peças empilhadas. Os feitiços 13 a 24 ficam num grupo que abre quando faltar lugar.',
-       mostra:'nome, selo de estado e os números de mesa em duas linhas', abre:'dois +: um para a descrição, outro para a montagem', desc:'21 colunas por 5 linhas', lado:'duas cartas lado a lado nas 47 colunas',
-       preco:'O + é da fileira: abre a descrição ou a montagem das duas cartas do par. A carta é estreita, então o Ampliar quebra em duas linhas.'},
-    C:{nome:'C · Faixas e segunda página', faixa:12, fechada:2, por:1, cols:90, gut:2, lote:0,
-       diz:'Fechado, o feitiço é uma faixa com tudo que se usa na mesa. O + abre a descrição à esquerda e as peças à direita. Os feitiços 13 a 24 moram numa segunda página, à direita da coluna AU, que abre e fecha de uma vez só.',
-       mostra:'uma faixa: Classe, nome, Forma, dano, PE, ação, alcance e o selo de estado', abre:'um +: descrição à esquerda, peças à direita, conta embaixo', desc:'21 colunas por 6 linhas', lado:'segunda página em grupo de colunas, de AV a CL',
-       preco:'O + é da fileira: com a segunda página aberta, o feitiço 1 abre junto com o 13. A aba chega a 90 colunas.'},
-    D:{nome:'D · Mesa e oficina', faixa:8, fechada:2, por:1, cols:72, gut:3, lote:8,
-       diz:'A faixa é a do desenho C. O + abre só a descrição, que ocupa a largura inteira. A montagem de todos mora na oficina, à direita da coluna AU, que abre e fecha de uma vez só. Os feitiços 9 a 16 e 17 a 24 ficam em dois grupos que abrem quando faltar lugar.',
-       mostra:'uma faixa: Classe, nome, Forma, dano, PE, ação, alcance e o selo de estado', abre:'um + por feitiço para a descrição; um + no alto para a oficina', desc:'39 colunas por 6 linhas', lado:'oficina em grupo de colunas, de AV a BT',
-       preco:'Para mexer nas peças são dois +: o do feitiço e o da oficina. Três calhas de grupo na borda esquerda.'}
+  // ---------- as cartas: de feitiço, de Passiva e de aptidão ----------
+  // Duas cartas de 21 colunas por fileira, ou três de 13: as duas arrumações cabem nas 47 colunas da FICHA.
+  // faixa: linhas de uma fileira de feitiço aberta, com a linha vazia; fechada: a mesma, com a descrição e a montagem fechadas
+  var GRADES = {
+    2:{nome:'2 colunas', larg:21, onde:[4, 26], faixa:20, fechada:4,
+       diz:'Duas cartas por fileira, de 21 colunas cada. É o desenho que você viu na rodada passada.'},
+    3:{nome:'3 colunas', larg:13, onde:[4, 19, 34], faixa:23, fechada:5,
+       diz:'Três cartas por fileira, de 13 colunas cada, nas mesmas 47 colunas da folha. A carta é mais estreita, então os números de mesa ocupam três linhas e o selo de estado vira um símbolo.'}
   };
   function estadoDe(x){
     var n = x.erros.length, a = x.avisos.length;
-    if (n) return {h:'<span class="chip ruim">⚠ ' + n + (n > 1 ? ' erros' : ' erro') + '</span>', s:'⚠', k:' ruim', nt:x.erros.concat(x.avisos).join(' · ')};
-    if (a) return {h:'<span class="chip at">' + a + (a > 1 ? ' avisos' : ' aviso') + '</span>', s:'!', k:' at', nt:x.avisos.join(' · ')};
-    return {h:'<span class="chip bom">na regra</span>', s:'✓', k:''};
+    if (n) return {h:'<span class="chip ruim">⚠ ' + n + (n > 1 ? ' erros' : ' erro') + '</span>', c:'<span class="chip ruim">⚠ ' + n + '</span>', nt:x.erros.concat(x.avisos).join(' · ')};
+    if (a) return {h:'<span class="chip at">' + a + (a > 1 ? ' avisos' : ' aviso') + '</span>', c:'<span class="chip at">! ' + a + '</span>', nt:x.avisos.join(' · ')};
+    return {h:'<span class="chip bom">na regra</span>', c:'<span class="chip bom">✓</span>'};
   }
   function chips(x){
     var h = '';
@@ -517,13 +539,12 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
     x.avisos.forEach(function(a){ h += '<span class="chip at">' + a + '</span>'; });
     return h || '<span class="chip bom">Dentro das regras que a ficha confere</span>';
   }
-  function linhaConta(x, tipo, curta){
-    var h = curta ? '<b>' + x.pontos + '</b> <span class="sep">−</span> <b>' + x.gasto + '</b> <span class="sep">+</span> <b>' + x.usa + '</b>'
-                  : '<b>' + x.pontos + '</b> pontos <span class="sep">−</span> <b>' + x.gasto + '</b> em peças <span class="sep">+</span> <b>' + x.usa + '</b> devolvidos';
-    if (tipo === 'lib') h += ' <span class="sep">+</span> <b>' + x.C + '</b>' + (curta ? '' : ' da Liberação');
-    h += ' <span class="sep">=</span> <b>' + x.dados + 'd8</b> <span class="sep">· teto ' + (4*x.C) + '</span>';
-    if (x.embutida) h += ' <span class="sep">· a Forma devolve ' + x.embutida + '</span>';
-    if (x.perde) h += ' <span class="sep">· perde ' + x.perde + '</span>';
+  function linhaConta(x, tipo){
+    var h = '<span class="ent"><b>' + x.pontos + '</b> <span class="sep">−</span> <b>' + x.gasto + '</b> <span class="sep">+</span> <b>' + x.usa + '</b>';
+    if (tipo === 'lib') h += ' <span class="sep">+</span> <b>' + x.C + '</b>';
+    h += ' <span class="sep">=</span> <b>' + x.dados + 'd8</b></span><span class="ent sep">teto ' + (4*x.C) + '</span>';
+    if (x.embutida) h += '<span class="ent sep">a Forma devolve ' + x.embutida + '</span>';
+    if (x.perde) h += '<span class="ent sep">perde ' + x.perde + '</span>';
     return h;
   }
   // o mesmo feitiço em cada Classe acima da dele, até a maior que o nível liberou
@@ -545,112 +566,86 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
   var NOTA_RES = 'Até duas. A caixinha marca a Restrição que o Selo já obriga: ela não devolve ponto.';
   var NOTA_AMP = 'O mesmo feitiço lançado numa Classe maior. A conta inteira é refeita com os números da Classe nova.';
   function minClasse(tipo){ return tipo === 'lib' ? 3 : 1; }
-  // um pincel que escreve a partir da coluna c0: os desenhos repetem o mesmo bloco em colunas diferentes
+  // um pincel que escreve a partir da coluna c0: a mesma carta é desenhada em duas ou três colunas da folha
   function pincel(F, c0){ return function(k, a, r1, b, r2, h, e, nt){ F.add(k, c0 + a, r1, c0 + b, r2, h, e, nt); }; }
-  // as seis peças empilhadas numa faixa de 21 colunas: quatro Melhorias e duas Restrições, uma por linha
-  function pecasEmPilha(p, a, r, f, x, caminho){
-    var C = f.classe, lim = limiteMelhorias(C);
-    p('lado alto', a, r, a+3, r+3, 'Melhorias', '', 'A Classe ' + C + ' aceita ' + lim + '. ' + NOTA_MEL);
+
+  // A carta de feitiço. Fechada: nome, selo e os números de mesa. Um + abre a descrição, outro abre a montagem.
+  // Devolve as linhas em que cada parte começa, para a fileira montar os dois grupos.
+  function cartaDeFeitico(F, c0, W, r0, f, x, caminho, tipo){
+    var p = pincel(F, c0), st = estadoDe(x), v = !f.nome, max = maiorClasse(E.nivel), C = f.classe, lim = limiteMelhorias(C), larga = W > 13, u = W - 1;
+    var o = function(val){ return v ? '' : val; }, k = v ? '' : 'calc';
+    p('res n sel', 0, r0, 1, r0, menuClasse(caminho + '.classe', C, minClasse(tipo), max), 'menu');
+    p('nomef', 2, r0, larga ? 14 : 9, r0, nomeDe(f, caminho));
+    p('nomef st', larga ? 15 : 10, r0, u, r0, o(larga ? st.h : st.c), k, v ? undefined : (st.nt || 'Dentro das regras que a ficha confere'));
+    p('rot', 0, r0+1, u, r0+1, 'Como é');
+    p('txt', 0, r0+2, u, r0+6, comoE(f));
+    var n = r0 + 7, m;                     // os números de mesa: duas linhas na carta larga, três na estreita
+    if (larga){
+      p('res sel', 0, n, 6, n, menuForma(caminho + '.forma', f.forma, C), 'menu');
+      p('res forte', 7, n, 15, n, o(x.dano), k); p('res n', 16, n, 20, n, o(x.pe + ' PE'), k);
+      p('res', 0, n+1, 6, n+1, o(x.acao), k); p('res', 7, n+1, 12, n+1, o(resolve(f)), k); p('res peq', 13, n+1, 20, n+1, o(x.alcance), k);
+      m = n + 2;
+    } else {
+      p('res sel', 0, n, 5, n, menuForma(caminho + '.forma', f.forma, C), 'menu');
+      p('res forte', 6, n, 12, n, o(x.dano), k);
+      p('res n', 0, n+1, 2, n+1, o(x.pe + ' PE'), k); p('res ap esq', 3, n+1, 7, n+1, o(x.acao), k); p('res ap', 8, n+1, 12, n+1, o(resolve(f)), k);
+      p('res peq', 0, n+2, 12, n+2, o(x.alcance), k);
+      m = n + 3;
+    }
+    // a montagem: as peças empilhadas, uma por linha, e embaixo a conta, o Ampliar e os avisos
+    var L = larga ? 3 : 2, me = larga ? 15 : 9, re = larga ? 13 : 8, de = larga ? 17 : 10;
+    var lado = larga ? 'lado' : 'lado mini';
+    p(lado, 0, m, L, m+3, 'Melhorias', '', 'A Classe ' + C + ' aceita ' + lim + '. ' + NOTA_MEL);
     f.mel.forEach(function(nome, i){
       var pc = x.precos[i], fora = i >= lim && !nome;
-      p('cel sel' + (fora ? ' fora' : ''), a+4, r+i, a+15, r+i, fora ? '' : menuMelhoria(caminho + '.mel.' + i, nome, C), fora ? '' : 'menu');
-      p('cel peq' + (fora ? ' fora' : ''), a+16, r+i, a+20, r+i, pc ? '−' + pc.p + (pc.livre ? ' · Livre' : '') : '', pc ? 'calc' : '');
+      p('cel sel' + (fora ? ' fora' : ''), L+1, m+i, me, m+i, fora ? '' : menuMelhoria(caminho + '.mel.' + i, nome, C), fora ? '' : 'menu');
+      p('cel peq' + (fora ? ' fora' : ''), me+1, m+i, u, m+i, pc ? '−' + pc.p + (pc.livre && larga ? ' · Livre' : '') : '', pc ? 'calc' : '', pc && pc.livre ? 'Família Livre: metade da Classe a menos' : undefined);
     });
-    p('lado alto', a, r+4, a+3, r+5, 'Restrições', '', NOTA_RES);
-    f.res.forEach(function(v, i){
-      p('cel sel', a+4, r+4+i, a+13, r+4+i, menuRestricao(caminho + '.res.' + i, v, C), 'menu');
-      p('cel peq', a+14, r+4+i, a+17, r+4+i, x.devolucoes[i] === null ? '' : '+' + x.devolucoes[i], x.devolucoes[i] === null ? '' : 'calc');
-      p('cel chk selo', a+18, r+4+i, a+20, r+4+i, cxSelo(caminho, f, i) + '<span class="peq">Selo</span>');
+    p(lado, 0, m+4, L, m+5, 'Restrições', '', NOTA_RES);
+    f.res.forEach(function(val, i){
+      p('cel sel', L+1, m+4+i, re, m+4+i, menuRestricao(caminho + '.res.' + i, val, C), 'menu');
+      p('cel peq', re+1, m+4+i, de, m+4+i, x.devolucoes[i] === null ? '' : '+' + x.devolucoes[i], x.devolucoes[i] === null ? '' : 'calc');
+      p('cel chk selo', de+1, m+4+i, u, m+4+i, cxSelo(caminho, f, i) + (larga ? '<span class="peq">Selo</span>' : ''), '', larga ? undefined : 'O Selo já obriga esta Restrição: ela não devolve ponto.');
     });
+    var c = m + 6, hc = larga ? 1 : 2;      // na carta estreita a conta e os avisos quebram em duas linhas
+    p(lado, 0, c, L, c+hc-1, 'Conta'); p('conta quebra', L+1, c, u, c+hc-1, linhaConta(x, tipo), 'calc');
+    p(lado, 0, c+hc, L, c+hc+1, 'Ampliar', '', NOTA_AMP); p('conta quebra', L+1, c+hc, u, c+hc+1, ampliar(f, tipo), 'calc');
+    p(lado, 0, c+hc+2, L, c+2*hc+1, 'Avisos'); p('aviso' + (larga ? '' : ' quebra'), L+1, c+hc+2, u, c+2*hc+1, chips(x), 'calc');
+    return {numeros:m - 1, montagem:m, fim:c + 2*hc + 1};
   }
-  // a faixa de uma linha dos desenhos C e D: tudo que se usa na mesa, em 43 colunas
-  function faixaDeMesa(p, r0, f, x, caminho, tipo){
-    var st = estadoDe(x), v = !f.nome, max = maiorClasse(E.nivel);
-    p('res n sel', 0, r0, 1, r0, menuClasse(caminho + '.classe', f.classe, minClasse(tipo), max), 'menu');
-    p('nomef', 2, r0, 11, r0, nomeDe(f, caminho));
-    p('res sel', 12, r0, 17, r0, menuForma(caminho + '.forma', f.forma, f.classe), 'menu');
-    p('res forte', 18, r0, 24, r0, v ? '' : x.dano, v ? '' : 'calc');
-    p('res n', 25, r0, 27, r0, v ? '' : x.pe + ' PE', v ? '' : 'calc');
-    p('res', 28, r0, 33, r0, v ? '' : x.acao, v ? '' : 'calc');
-    p('res peq esq', 34, r0, 40, r0, v ? '' : x.alcance, v ? '' : 'calc');
-    p('res simb' + (v ? '' : st.k), 41, r0, 42, r0, v ? '' : st.s, '', v ? undefined : (st.nt || 'Dentro das regras que a ficha confere'));
+  // A carta de Passiva: o menu, a Classe Passiva e o que ela custa; o + abre o que ela faz
+  function cartaDePassiva(F, c0, W, r0, ps, i, caminho, n){
+    var p = pincel(F, c0), u = W - 1, k = D.passivas.filter(function(q){ return q.n === ps.n; })[0], propria = ps.n === 'Passiva Própria';
+    var cp = !k ? 0 : propria ? Number(ps.cp) : parseInt(k.cp, 10), abre = {1:1, 2:7, 3:13}[cp], cedo = k && abre > n, leque = i >= PAGAS;
+    var semVaga = leque && k && i - PAGAS >= escolhas().leque, oCp = '';
+    ['1','2','3'].forEach(function(s){ oCp += opt(s, s, String(ps.cp) === s); });
+    p('res sel', 0, r0, u - 6, r0, menuLista(caminho + '.n', ps.n, NOMES_DE_PASSIVA, 'Passiva'), 'menu');
+    p('res' + (propria ? ' sel' : ''), u - 5, r0, u - 3, r0, !k ? '' : propria ? menu(caminho + '.cp', oCp, 'Classe Passiva') : 'CP ' + cp, !k ? '' : propria ? 'menu' : 'calc' + (cedo ? ' ruim' : ''),
+      cedo ? 'A Classe Passiva ' + cp + ' libera no nível ' + abre + '.' : propria ? 'A Classe Passiva que você e o mestre deram a ela.' : undefined);
+    p('res peq', u - 2, r0, u, r0, !k ? '' : leque ? 'grátis' : cp + ' esp.', !k ? '' : 'calc' + (semVaga ? ' ruim' : ''),
+      semVaga ? 'Esta vaga só existe com mais uma escolha de Leque.' : leque ? 'A Passiva que a escolha de Leque concede não custa espaço.' : 'Custa a Classe Passiva dela em espaços de feitiço.');
+    p('rot', 0, r0+1, u, r0+1, 'O que faz');
+    p('txt' + (k && !propria ? ' auto' : ''), 0, r0+2, u, r0+4, !k ? '<i>Escolha a Passiva no menu.</i>' : propria ? '<i>Texto do jogador: a Passiva escrita com o mestre, na escala das outras.</i>' : k.faz, k && !propria ? 'calc' : '');
+    return cp;
   }
-
-  // A · Cartas em par: duas cartas de 21 colunas por fileira; um + abre a descrição, outro a montagem
-  function cartaA(F, c0, r0, f, x, caminho, tipo){
-    var p = pincel(F, c0), st = estadoDe(x), v = !f.nome, max = maiorClasse(E.nivel);
-    p('res n sel', 0, r0, 1, r0, menuClasse(caminho + '.classe', f.classe, minClasse(tipo), max), 'menu');
-    p('nomef', 2, r0, 14, r0, nomeDe(f, caminho));
-    p('nomef st', 15, r0, 20, r0, v ? '' : st.h, v ? '' : 'calc', v ? undefined : st.nt);
-    p('rot', 0, r0+1, 20, r0+1, 'Como é');
-    p('txt', 0, r0+2, 20, r0+6, comoE(f));
-    p('res sel', 0, r0+7, 6, r0+7, menuForma(caminho + '.forma', f.forma, f.classe), 'menu');
-    p('res forte', 7, r0+7, 15, r0+7, v ? '' : x.dano, v ? '' : 'calc');
-    p('res n', 16, r0+7, 20, r0+7, v ? '' : x.pe + ' PE', v ? '' : 'calc');
-    p('res', 0, r0+8, 6, r0+8, v ? '' : x.acao, v ? '' : 'calc');
-    p('res', 7, r0+8, 12, r0+8, v ? '' : resolve(f), v ? '' : 'calc');
-    p('res peq', 13, r0+8, 20, r0+8, v ? '' : x.alcance, v ? '' : 'calc');
-    pecasEmPilha(p, 0, r0+9, f, x, caminho);
-    p('lado', 0, r0+15, 3, r0+15, 'Conta'); p('conta', 4, r0+15, 20, r0+15, linhaConta(x, tipo, true), 'calc');
-    p('lado alto', 0, r0+16, 3, r0+17, 'Ampliar', '', NOTA_AMP); p('conta quebra', 4, r0+16, 20, r0+17, ampliar(f, tipo), 'calc');
-    p('lado', 0, r0+18, 3, r0+18, 'Avisos'); p('aviso', 4, r0+18, 20, r0+18, chips(x), 'calc');
+  // A carta de aptidão: o menu e a Classe Passiva, o requisito, e o + abre o que ela faz e o que o refino escala
+  function cartaDeAptidao(F, c0, W, r0, ap, caminho){
+    var p = pincel(F, c0), u = W - 1, k = D.aptidoes.filter(function(q){ return q.n === ap.n; })[0], propria = ap.n === 'Aptidão Própria', oCp = '';
+    ['1','2'].forEach(function(s){ oCp += opt(s, s, String(ap.cp) === s); });
+    p('res sel', 0, r0, u - 3, r0, menuLista(caminho + '.n', ap.n, NOMES_DE_APTIDAO, 'Aptidão'), 'menu');
+    p('res' + (propria ? ' sel' : ''), u - 2, r0, u, r0, !k ? '' : propria ? menu(caminho + '.cp', oCp, 'Classe Passiva') : (k.cp === '—' ? '—' : 'CP ' + k.cp), !k ? '' : propria ? 'menu' : 'calc',
+      propria ? 'Classe Passiva 1 ou 2, nunca 3. Uma vez na ficha inteira.' : 'A Classe Passiva é o tamanho da aptidão. Traço: ela não tem uma.');
+    p('cel peq esq', 0, r0+1, u, r0+1, k ? 'Requisito: ' + k.req : '', k ? 'calc' : '', k ? k.req : undefined);
+    p('rot', 0, r0+2, u, r0+2, 'O que faz');
+    p('txt' + (k && !propria ? ' auto' : ''), 0, r0+3, u, r0+6, !k ? '<i>Escolha a aptidão no menu.</i>' : propria ? '<i>Texto do jogador: a frase da aptidão, e em quantas cenas por arco ela vai importar.</i>' : k.faz, k && !propria ? 'calc' : '');
+    p('lado', 0, r0+7, W > 13 ? 5 : 4, r0+7, 'O refino escala'); p('cel peq esq', W > 13 ? 6 : 5, r0+7, u, r0+7, k ? k.escala : '', k ? 'calc' : '');
   }
-  function faixaA(F, lista, i, r0, caminho, tipo, nivel){
-    [0, 1].forEach(function(k){ var f = lista[i + k]; if (f) cartaA(F, k ? 26 : 4, r0, f, calcula(f, tipo, i + k), caminho + '.' + (i + k), tipo); });
-    var id = 'A:' + caminho + (i / 2), quem = [lista[i], lista[i+1]].filter(Boolean).map(function(f){ return f.nome || 'espaço livre'; }).join(' e ');
-    F.grupo(id + 'd', nivel, r0, r0+1, r0+6, !!E.aberto[id + 'd'], 'a descrição de ' + quem, 'feitico');
-    F.grupo(id + 'm', nivel, r0+8, r0+9, r0+18, !!E.aberto[id + 'm'], 'a montagem de ' + quem, 'feitico');
-  }
-  // C · Faixas e segunda página: o + abre a descrição à esquerda e as peças à direita; `par` é o feitiço da segunda página
-  function blocoC(F, c0, r0, f, x, caminho, tipo){
-    var p = pincel(F, c0), v = !f.nome;
-    faixaDeMesa(p, r0, f, x, caminho, tipo);
-    p('rot', 0, r0+1, 20, r0+1, 'Como é');
-    p('txt', 0, r0+2, 20, r0+7, comoE(f));
-    pecasEmPilha(p, 22, r0+1, f, x, caminho);
-    p('lado', 22, r0+7, 25, r0+7, 'Resolve'); p('cel', 26, r0+7, 42, r0+7, v ? '' : resolve(f), v ? '' : 'calc');
-    p('lado', 0, r0+8, 3, r0+8, 'Conta'); p('conta', 4, r0+8, 42, r0+8, linhaConta(x, tipo), 'calc');
-    p('lado', 0, r0+9, 3, r0+9, 'Ampliar', '', NOTA_AMP); p('conta', 4, r0+9, 42, r0+9, ampliar(f, tipo), 'calc');
-    p('lado', 0, r0+10, 3, r0+10, 'Avisos'); p('aviso', 4, r0+10, 42, r0+10, chips(x), 'calc');
-  }
-  function faixaC(F, lista, i, r0, caminho, tipo, nivel, par){
-    var f = lista[i], g = par ? lista[i + par] : null, id = 'C:' + caminho + i;
-    blocoC(F, 4, r0, f, calcula(f, tipo, i), caminho + '.' + i, tipo);
-    if (g) blocoC(F, 48, r0, g, calcula(g, tipo, i + par), caminho + '.' + (i + par), tipo);
-    F.grupo(id, nivel, r0, r0+1, r0+10, !!E.aberto[id], (f.nome || 'um espaço livre') + (g ? ' e, na segunda página, ' + (g.nome || 'um espaço livre') : ''), 'feitico');
-  }
-  // D · Mesa e oficina: o + abre a descrição, na largura inteira; as peças ficam na oficina, de AV a BT, na mesma altura
-  function faixaD(F, lista, i, r0, caminho, tipo, nivel){
-    var f = lista[i], x = calcula(f, tipo, i), cam = caminho + '.' + i, C = f.classe, lim = limiteMelhorias(C), o = pincel(F, 48), v = !f.nome, id = 'D:' + caminho + i;
-    faixaDeMesa(pincel(F, 4), r0, f, x, cam, tipo);
-    F.add('lado alto', 4, r0+1, 7, r0+6, 'Como é');
-    F.add('txt', 8, r0+1, 46, r0+6, comoE(f));
-    o('lado', 0, r0, 3, r0, 'Estado'); o('aviso', 4, r0, 24, r0, v ? '' : chips(x), v ? '' : 'calc');
-    o('lado alto', 0, r0+1, 3, r0+2, 'Melhorias', '', 'A Classe ' + C + ' aceita ' + lim + '. ' + NOTA_MEL);
-    [[4, 11, 12, 13], [15, 22, 23, 24]].forEach(function(k, col){
-      [0, 1].forEach(function(lin){
-        var j = lin * 2 + col, pc = x.precos[j], fora = j >= lim && !f.mel[j];
-        o('cel sel' + (fora ? ' fora' : ''), k[0], r0+1+lin, k[1], r0+1+lin, fora ? '' : menuMelhoria(cam + '.mel.' + j, f.mel[j], C), fora ? '' : 'menu');
-        o('cel peq' + (fora ? ' fora' : ''), k[2], r0+1+lin, k[3], r0+1+lin, pc ? '−' + pc.p : '', pc ? 'calc' : '', pc && pc.livre ? 'Família Livre: metade da Classe a menos' : undefined);
-      });
-    });
-    o('lado', 0, r0+3, 3, r0+3, 'Restrições', '', NOTA_RES);
-    [[4, 10, 11, 12, 13], [15, 21, 22, 23, 24]].forEach(function(k, j){
-      o('cel sel', k[0], r0+3, k[1], r0+3, menuRestricao(cam + '.res.' + j, f.res[j], C), 'menu');
-      o('cel peq', k[2], r0+3, k[3], r0+3, x.devolucoes[j] === null ? '' : '+' + x.devolucoes[j], x.devolucoes[j] === null ? '' : 'calc');
-      o('cel chk', k[4], r0+3, k[4], r0+3, cxSelo(cam, f, j));
-    });
-    o('lado', 0, r0+4, 3, r0+4, 'Conta'); o('conta', 4, r0+4, 24, r0+4, linhaConta(x, tipo, true), 'calc');
-    o('lado', 0, r0+5, 3, r0+5, 'Ampliar', '', NOTA_AMP); o('conta', 4, r0+5, 24, r0+5, ampliar(f, tipo), 'calc');
-    o('lado', 0, r0+6, 3, r0+6, 'Resolve'); o('cel', 4, r0+6, 24, r0+6, v ? '' : resolve(f), v ? '' : 'calc');
-    F.grupo(id, nivel, r0, r0+1, r0+6, !!E.aberto[id], 'a descrição' + (F.cols > 47 ? ' e as peças' : '') + ' de ' + (f.nome || 'um espaço livre'), 'feitico');
-  }
-  var FAIXAS = {A:faixaA, C:faixaC, D:faixaD};
+  var NOMES_DE_PASSIVA = D.passivas.map(function(p){ return p.n; }).filter(function(nm){ return nm !== 'Regra Própria'; });
+  var NOMES_DE_APTIDAO = D.aptidoes.map(function(a){ return a.n; }).filter(function(nm){ return ['Cobrir-se de energia','Canalizar energia'].indexOf(nm) < 0; });
 
   function desenha(){
-    var op = E.opcao, o = OPC[op], cg = op === 'A' ? null : {ini:48, fim:o.cols, aberto:!!E.colunas[op], nome:op === 'C' ? 'a segunda página de feitiços' : 'a oficina'};
-    var F = new Folha(o.gut, cg && cg.aberto ? o.cols : 47, cg), r, n = E.nivel, max = maiorClasse(n);
-    var ptAtr = E.valor + maestria(n), secoes = [], atual = null;
+    var G = GRADES[E.por], F = new Folha(3, 47, null), r, n = E.nivel, max = maiorClasse(n);
+    var ptAtr = E.valor + maestria(n), secoes = [], atual = null, esc = escolhas(), ra = refinoEAptidoes(), ref = ra.refino;
     function fecha(fim){
       if (atual) F.grupo('s-' + atual.id, 1, atual.faixa, atual.faixa + 1, fim, E.aberto['s-' + atual.id] !== false, 'a seção ' + atual.nome);
       atual = null;
@@ -661,23 +656,28 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
       F.add('faixa', 'D', r, 'AT', r+1, nome + (peq ? ' <span class="peq">' + peq + '</span>' : ''), '', undefined, 'data-sec="' + id + '"');
       atual = {id:id, nome:nome, faixa:r+1}; secoes.push({id:id, curto:curto});
     }
-    // os feitiços de uma lista, em faixas; devolve a linha em que a próxima seção começa
-    function feiticos(lista, r, caminho, tipo, lote, par){
-      var passo = o.por, nFaixas = Math.ceil((par || lista.length) / passo), dentro = false, iniLote = 0, k = 0, nLote = 0, nivel = o.gut;
-      function fechaLote(fim){ if (dentro){ nLote++; F.grupo('s-lote' + nLote, 2, iniLote - 1, iniLote, fim, !!E.aberto['s-lote' + nLote], 'mais feitiços'); } }
+    // Uma grade de cartas. `alt` é a altura da fileira com a linha vazia, `carta` desenha uma e `grupos` marca o que
+    // fecha na fileira. `lotes` são [quantas cartas, título] : o primeiro fica à vista, os outros num grupo que fecha.
+    function grade(lista, r, id, alt, lotes, carta, grupos, rotulo){
+      var por = E.por, i = 0, dentro = false, ini = 0, nl = 0;
+      function fechaLote(fim){ if (dentro) F.grupo('s-lote-' + id + nl, 2, ini - 1, ini, fim, !!E.aberto['s-lote-' + id + nl], 'mais ' + rotulo); dentro = false; }
       r += 1;
-      for (var b = 0; b < nFaixas; b++){
-        var i = b * passo;
-        if (lote && i && i % lote === 0){
-          fechaLote(r - 1);
-          F.add('lote', 4, r, 46, r, 'Feitiços ' + (i + 1) + ' a ' + Math.min(lista.length, i + lote) + ' <span class="peq">abra quando faltar lugar</span>');
-          dentro = true; iniLote = r + 1; r += 2;
+      lotes.forEach(function(lote, k){
+        var ate = Math.min(lista.length, i + lote[0]);
+        if (k){
+          fechaLote(r - 1); nl++;
+          F.add('lote', 4, r, 46, r, lote[1]);
+          dentro = true; ini = r + 1; r += 2;
         }
-        FAIXAS[op](F, lista, i, r, caminho, tipo, nivel, par);
-        r += o.faixa; k++;
-      }
+        for (var b = 0; i < ate; b++, i += por){
+          for (var j = 0; j < por && i + j < ate; j++) carta(G.onde[j], G.larg, r, lista[i + j], i + j);
+          grupos(E.por + ':' + id + (k ? 'L' + k + 'f' : '') + b, r, lista.slice(i, Math.min(ate, i + por)));
+          r += alt;
+        }
+        i = ate;
+      });
       fechaLote(r - 1);
-      return dentro ? r + 1 : r;
+      return nl ? r + 1 : r;
     }
     // --- a técnica
     r = 7;
@@ -715,53 +715,69 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
     F.add('cel','AN',r+22,'AT',r+22, nl + ' de 2 · ' + nf + ' de 3', 'calc' + (nl !== 2 || nf !== 3 ? ' ruim' : ''), 'O Fundamento tem duas Famílias Livres e três Fechadas.');
     // --- o orçamento
     r += 24;
-    var usados = E.feiticos.filter(function(f){ return f.nome; }).length;
-    var nasPassivas = custoR; E.passivas.forEach(function(p){ var k = D.passivas.filter(function(q){ return q.n === p; })[0]; if (k) nasPassivas += parseInt(k.cp, 10) || 0; });
+    var usados = E.feiticos.filter(function(f){ return f.nome; }).length, nasPassivas = custoR;
+    E.passivas.slice(0, PAGAS).forEach(function(ps){
+      var k = D.passivas.filter(function(q){ return q.n === ps.n; })[0];
+      if (k) nasPassivas += ps.n === 'Passiva Própria' ? Number(ps.cp) : parseInt(k.cp, 10) || 0;
+    });
     var noDominio = {'—':0, Incompleta:2, Completa:3, 'Sem Barreiras':5}[E.dominio];
     var np = Math.floor(E.essencia / 2), perm = E.pactos.filter(function(p){ return p.forma === 'permanente'; });
     var dePacto = perm.filter(function(p){ return p.concede === 'um espaço de feitiço'; }).length;
-    var total = espacos(n) + dePacto, sobra = total - usados - nasPassivas - noDominio;
+    var total = espacos(n) + dePacto, sobra = total + esc.leque - usados - nasPassivas - noDominio, semEspaco = nasPassivas + noDominio > total;
     secao('orcamento', 'Orçamento', 'Orçamento', r, 'o que o nível ' + n + ' dá, e onde foi gasto');
-    F.caixa('D','I',r+2,'Maior Classe', max, 'calc', 'num', 'Sobe nos níveis 1, 5, 9, 13, 17, 21 e 26.');
-    F.caixa('K','P',r+2,'Espaços', total, 'calc', 'num', '2 + metade do nível + um por marco alcançado' + (dePacto ? ', e mais ' + dePacto + ' de pacto permanente.' : '. Pacto permanente que concede espaço soma aqui.'));
-    F.caixa('R','W',r+2,'Em feitiços', usados, 'calc', 'num');
-    F.caixa('Y','AD',r+2,'Em Passivas', nasPassivas, 'calc', 'num', 'Cada Passiva paga custa a Classe Passiva dela em espaços. A Regra Própria acima da Classe Passiva 1 entra aqui.');
-    F.caixa('AF','AK',r+2,'No Domínio', noDominio, 'calc', 'num', 'A Expansão de Domínio custa 2, 3 ou 5 espaços.');
-    F.caixa('AM','AT',r+2,'Livres', sobra, 'calc' + (sobra < 0 ? ' ruim' : ''), 'num');
+    [['D','H','Maior Classe', max, '', 'Sobe nos níveis 1, 5, 9, 13, 17, 21 e 26.'],
+     ['J','N','Espaços', total, '', '2 + metade do nível + um por marco alcançado' + (dePacto ? ', e mais ' + dePacto + ' de pacto permanente.' : '. Pacto permanente que concede espaço soma aqui.')],
+     ['P','T','Do Leque', '+' + esc.leque, '', 'Cada escolha de Leque no marco dá um feitiço a mais, que só pode ser feitiço, e uma Passiva. A escolha é marcada na FICHA, em MARCO ESCOLHIDO.'],
+     ['V','Z','Em feitiços', usados, '', undefined],
+     ['AB','AF','Em Passivas', nasPassivas, semEspaco ? ' ruim' : '', semEspaco ? 'Passiva e Domínio só gastam espaço: o feitiço do Leque não paga nenhum dos dois.' : 'Cada Passiva paga custa a Classe Passiva dela em espaços. A Regra Própria acima da Classe Passiva 1 entra aqui.'],
+     ['AH','AL','No Domínio', noDominio, semEspaco ? ' ruim' : '', 'A Expansão de Domínio custa 2, 3 ou 5 espaços.'],
+     ['AN','AT','Livres', sobra, sobra < 0 ? ' ruim' : '', 'Espaços mais os feitiços do Leque, menos o que já foi gasto.']
+    ].forEach(function(k){ F.caixa(k[0], k[1], r+2, k[2], k[3], 'calc' + k[4], 'num', k[5]); });
+    // o índice de preços: a Classe escolhida no menu manda nos números da fileira
     r += 6;
-    [['Pontos e PE', 3*max], ['Leve', preco('Leve',max)], ['Média', preco('Media',max)], ['Pesada', preco('Pesada',max)], ['Devolução máx.', 2*max], ['Teto de dados', 4*max], ['Melhorias', limiteMelhorias(max)], ['Classe 0', zeroQuantos(n) + ' · ' + zeroDados(n) + 'd8']].forEach(function(k, i){
-      var c1 = 4 + i * 5 + (i > 3 ? 3 : 0), c2 = c1 + 4;
-      F.add('rot', c1, r, c2, r, k[0]); F.add('cel', c1, r+1, c2, r+1, k[1], 'calc');
+    var ci = Math.min(7, Math.max(1, Number(E.classeDoIndice) || max)), oCi = '';
+    for (var q = 1; q <= 7; q++) oCi += opt(String(q), 'Classe ' + q, q === ci);
+    F.add('rot', 'D', r, 'H', r, 'Preços da', '', 'Escolha a Classe e a fileira mostra os números dela. Nasce na sua maior Classe.');
+    F.add('cel sel', 'D', r+1, 'H', r+1, menu('classeDoIndice', oCi, 'Classe do índice de preços'), 'menu');
+    var cI = 9;
+    [['Pontos e PE', 3*ci, 5], ['Leve', preco('Leve',ci), 4], ['Média', preco('Media',ci), 4], ['Pesada', preco('Pesada',ci), 4], ['Devolução máx.', 2*ci, 6], ['Teto de dados', 4*ci, 5], ['Melhorias', limiteMelhorias(ci), 5],
+     ['Classe 0', zeroQuantos(n) + ' · ' + zeroDados(n) + 'd8', 5]].forEach(function(k){
+      F.add('rot', cI, r, cI + k[2] - 1, r, k[0], '', k[0] === 'Classe 0' ? 'Não muda com o menu: quantos feitiços de Classe 0 o nível dá, e os dados deles.' : undefined);
+      F.add('cel' + (ci > max && k[0] !== 'Classe 0' ? ' fora' : ''), cI, r+1, cI + k[2] - 1, r+1, k[1], 'calc');
+      cI += k[2];
     });
-    F.add('rot','X',r,'Z',r,'');
-    F.add('cel peq','X',r+1,'Z',r+1,'Classe ' + max);
-    // --- os feitiços: a aba traz 24 lugares, que é o que o nível 30 dá a quem só compra feitiço
+    // --- os feitiços
     r += 3;
-    secao('feiticos', 'Feitiços', 'Feitiços', r, usados + ' montados · ' + total + ' espaços no nível ' + n + ' · ' + LUGARES + ' lugares na aba');
-    if (op === 'C') F.add('faixa', 48, r, 90, r+1, 'Feitiços 13 a 24 <span class="peq">a segunda página: mesmas fileiras, outro feitiço</span>');
-    if (op === 'D') F.add('faixa', 48, r, 72, r+1, 'Oficina <span class="peq">as peças de cada feitiço, na altura dele</span>');
-    r = feiticos(E.feiticos, r + 2, 'feiticos', '', o.lote, op === 'C' ? 12 : 0);
+    var cabem = total + esc.leque - nasPassivas - noDominio;
+    secao('feiticos', 'Feitiços', 'Feitiços', r, usados + ' montados · cabem ' + Math.max(0, cabem) + ' no nível ' + n + ' · ' + LUGARES + ' lugares na aba');
+    var feitico = function(caminho, tipo){ return function(c0, W, r0, f, i){ return cartaDeFeitico(F, c0, W, r0, f, calcula(f, tipo, i), caminho + '.' + i, tipo); }; };
+    var doisGrupos = function(id, r0, itens){
+      var quem = itens.map(function(f){ return f.nome || 'espaço livre'; }).join(', '), num = E.por === 2 ? 2 : 3;
+      F.grupo(id + 'd', 3, r0, r0+1, r0+6, !!E.aberto[id + 'd'], 'a descrição de ' + quem, 'feitico');
+      F.grupo(id + 'm', 3, r0+6+num, r0+7+num, r0+G.faixa-2, !!E.aberto[id + 'm'], 'a montagem de ' + quem, 'feitico');
+    };
+    r = grade(E.feiticos, r + 2, 'feiticos', G.faixa, [[12, ''], [12, 'Feitiços 13 a 24 <span class="peq">abra quando faltar lugar</span>'], [12, 'Feitiços 25 a 36 <span class="peq">abra quando faltar lugar</span>']],
+              feitico('feiticos', ''), doisGrupos, 'feitiços');
     // --- Classe 0
     var zq = zeroQuantos(n), zd = zeroDados(n);
     secao('zero', 'Classe 0', 'Classe 0', r, zq + ' feitiços grátis · ' + zd + 'd8 · sem PE e sem ocupar espaço');
     r += 2;
     [['Nome','D','P'],['Forma','Q','V'],['Melhoria Leve','W','AD'],['Restrição Leve','AE','AL'],['Dano','AM','AP'],['Alcance','AQ','AT']].forEach(function(k){ F.add('rot', k[1], r, k[2], r, k[0]); });
     for (var z = 0; z < zq; z++){
-      var q = E.zero[z] || {nome:'', forma:'Projétil', mel:'', res:''}, fz = {forma:q.forma, mel:[q.mel], res:[q.res]}, dz = zd - (q.mel ? 1 : 0);
-      if (!E.zero[z]) E.zero[z] = q;
-      F.add('cel esq','D',r+1+z,'P',r+1+z, q.nome || '<span class="vazio">espaço livre</span>');
-      F.add('cel sel','Q',r+1+z,'V',r+1+z, menuForma('zero.' + z + '.forma', q.forma, 0, true), 'menu');
-      F.add('cel sel','W',r+1+z,'AD',r+1+z, menuMelhoria('zero.' + z + '.mel', q.mel, 1, true), 'menu');
-      F.add('cel sel','AE',r+1+z,'AL',r+1+z, menuRestricao('zero.' + z + '.res', q.res, 1, true), 'menu');
-      F.add('cel','AM',r+1+z,'AP',r+1+z, ['Apoio','Efeito'].indexOf(q.forma) >= 0 ? '—' : dz + 'd8 = ' + media(dz), 'calc', q.mel ? 'A Melhoria Leve tira um dado.' : undefined);
+      var qz = E.zero[z] || {nome:'', forma:'Projétil', mel:'', res:''}, fz = {forma:qz.forma, mel:[qz.mel], res:[qz.res]}, dz = zd - (qz.mel ? 1 : 0);
+      if (!E.zero[z]) E.zero[z] = qz;
+      F.add('cel esq','D',r+1+z,'P',r+1+z, qz.nome || '<span class="vazio">espaço livre</span>');
+      F.add('cel sel','Q',r+1+z,'V',r+1+z, menuForma('zero.' + z + '.forma', qz.forma, 0, true), 'menu');
+      F.add('cel sel','W',r+1+z,'AD',r+1+z, menuMelhoria('zero.' + z + '.mel', qz.mel, 1, true), 'menu');
+      F.add('cel sel','AE',r+1+z,'AL',r+1+z, menuRestricao('zero.' + z + '.res', qz.res, 1, true), 'menu');
+      F.add('cel','AM',r+1+z,'AP',r+1+z, ['Apoio','Efeito'].indexOf(qz.forma) >= 0 ? '—' : dz + 'd8 = ' + media(dz), 'calc', qz.mel ? 'A Melhoria Leve tira um dado.' : undefined);
       F.add('cel peq','AQ',r+1+z,'AT',r+1+z, alcance(fz, 0).split(',')[0], 'calc');
     }
     r += zq + 2;
     // --- Liberação Máxima: três lugares, um por nível 10, 20 e 30
     var nlib = liberacoes(n);
     secao('lib', 'Liberação Máxima', 'Liberação', r, (nlib ? nlib + ' no nível ' + n : 'a primeira chega no nível 10') + ' · + Classe em dados · rodada inteira · PE com 50% a mais · fora dos espaços');
-    if (op === 'D') F.add('faixa', 48, r, 72, r+1, 'Oficina <span class="peq">as peças de cada Liberação</span>');
-    r = feiticos(E.lib, r + 2, 'lib', 'lib', 0, 0);
+    r = grade(E.lib, r + 2, 'lib', G.faixa, [[LIBERACOES, '']], feitico('lib', 'lib'), doisGrupos, 'Liberações');
     // --- Técnica Máxima
     if (n >= 17){
       var fx = n >= 26 ? [32,12,35] : n >= 21 ? [28,8,30] : [24,8,25], gm = 0, t = E.tm, ft = D.formas[t.forma];
@@ -779,66 +795,55 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
       F.add('txt','D',r+9,'AT',r+12,'<i>Texto do jogador.</i>');
       r += 14;
     }
-    // --- Expansão de Domínio: o degrau comprado, os números de abrir, e o que o jogador escreve
-    var dg = E.dominio, tem = dg !== '—', ref = E.refino, meio = Math.max(1, Math.floor(ref / 2)), mst = maestria(n);
+    // --- Expansão de Domínio: os três degraus já calculados pelo refino e pela maior Classe, e o que o jogador escreve
+    var dg = E.dominio, tem = dg !== '—', meio = Math.max(1, Math.floor(ref / 2)), mst = maestria(n), dura = meio + (meio > 1 ? ' rodadas' : ' rodada');
     var DEG = {'—':'', Incompleta:'nível 10 e refino 4', Completa:'nível 14 e refino 5', 'Sem Barreiras':'refino 10 e especialização em Ocultismo'};
     var okDom = {'—':true, Incompleta:n >= 10 && ref >= 4, Completa:n >= 14 && ref >= 5, 'Sem Barreiras':ref >= 10}[dg];
-    secao('dominio', 'Expansão de Domínio', 'Domínio', r, 'comprada com espaços de feitiço');
+    secao('dominio', 'Expansão de Domínio', 'Domínio', r, 'comprada com espaços de feitiço · os números de abrir saem sozinhos');
     F.caixa('D','N',r+2,'Degrau', menuLista('dominio', tem ? dg : '', ['Incompleta','Completa','Sem Barreiras'], 'Degrau'), 'menu sel', 'cel');
     F.caixa('P','U',r+2,'Custa', noDominio + ' espaços', 'calc', 'cel');
     F.caixa('W','AJ',r+2,'Requisito', DEG[dg] || '—', 'calc' + (okDom ? '' : ' ruim'), 'cel', okDom ? undefined : 'A ficha está no nível ' + n + ', com refino ' + ref + '.');
     F.caixa('AL','AT',r+2,'Refino', ref, 'calc', 'num', 'Vem da FICHA. Sobe nos marcos.');
     var colsD = [['Ao abrir','D','L'],['PE','M','P'],['Dura','Q','V'],['Raio','W','AA'],['Feitiço lá dentro','AB','AH'],['Barreira','AI','AN'],['O Acerto','AO','AT']];
-    colsD.forEach(function(k){ F.add('rot', k[1], r+6, k[2], r+6, k[0], '', k[0] === 'Feitiço lá dentro' ? 'O desconto de PE de cada feitiço seu dentro do domínio. Nenhum feitiço custa menos de 1 PE.' : k[0] === 'Barreira' ? 'A vida da barreira por fora: 50 × metade do refino. Por dentro ela não quebra.' : undefined); });
-    var incompleta = dg === 'Incompleta';
-    var l1 = tem ? [incompleta ? 'Incompleta' : dg === 'Completa' ? 'Completa' : 'Fechando a barreira', 6 * max, meio + (meio > 1 ? ' rodadas' : ' rodada'), m(incompleta ? Math.min(7.5, 1.5 * ref) : 1.5 * ref),
-                    '−' + Math.max(1, Math.floor(ref / (incompleta ? 3 : 2))) + ' PE', incompleta ? 'não fecha' : 50 * meio + ' de vida', incompleta ? 'rola' : 'acontece'] : ['—','','','','','',''];
-    var l2 = dg === 'Sem Barreiras' ? ['Sem barreira', 7 * max, meio + (meio > 1 ? ' rodadas' : ' rodada'), '200 m', '−' + 2 * mst + ' PE', 'não tem', 'acontece'] : ['','','','','','',''];
-    [l1, l2].forEach(function(l, j){ colsD.forEach(function(k, i){ F.add('cel' + (i ? '' : ' esq'), k[1], r+7+j, k[2], r+7+j, l[i], l[i] !== '' && i && tem ? 'calc' : ''); }); });
-    F.add('rot','D',r+10,'W',r+10,'Nome do Domínio');
-    F.add('val','D',r+11,'W',r+12, tem ? '' : '<span class="vazio">sem Domínio</span>');
-    F.add('rot','Y',r+10,'AT',r+10,'Acerto', '', 'O que o domínio garante que acontece com quem está lá dentro. Uma frase, escrita com o mestre, cabendo na Regra.');
-    F.add('txt baixo','Y',r+11,'AT',r+12,'<i>Texto do jogador: o que acontece com quem está lá dentro.</i>');
-    F.add('rot','D',r+14,'W',r+14,'Como é por dentro');
-    F.add('txt','D',r+15,'W',r+20,'<i>Texto do jogador: o lugar, o que se vê, o que se ouve, como ele abre.</i>');
-    F.add('rot','Y',r+14,'AT',r+14,'Efeito', '', 'O que o domínio permite você fazer lá dentro que você não faria fora. Quase nunca é dano.');
-    F.add('txt','Y',r+15,'AT',r+18,'<i>Texto do jogador: o que você passa a poder fazer lá dentro.</i>');
+    var NOTAS_D = {'PE':'6 × a sua maior Classe. Sem barreira, 7 ×.', 'Dura':'Metade do refino, em rodadas. No mínimo uma.', 'Raio':'1,5 m × refino. A incompleta para em 7,5 m, e sem barreira são 200 m.',
+      'Feitiço lá dentro':'O desconto de PE de cada feitiço seu dentro do domínio: um terço do refino na incompleta, metade na completa, e 2 × maestria sem barreira. Nenhum feitiço custa menos de 1 PE.',
+      'Barreira':'A vida da barreira por fora: 50 × metade do refino. Por dentro ela não quebra.'};
+    colsD.forEach(function(k){ F.add('rot', k[1], r+6, k[2], r+6, k[0], '', NOTAS_D[k[0]]); });
+    // as três linhas saem sempre calculadas; a do degrau que a ficha comprou fica marcada
+    [['Incompleta', 6 * max, dura, m(Math.min(7.5, 1.5 * ref)), '−' + Math.max(1, Math.floor(ref / 3)) + ' PE', 'não fecha', 'rola', dg === 'Incompleta'],
+     ['Completa', 6 * max, dura, m(1.5 * ref), '−' + meio + ' PE', 50 * meio + ' de vida', 'acontece', dg === 'Completa' || dg === 'Sem Barreiras'],
+     ['Sem barreira', 7 * max, dura, '200 m', '−' + 2 * mst + ' PE', 'não tem', 'acontece', dg === 'Sem Barreiras']
+    ].forEach(function(l, j){ colsD.forEach(function(k, i){ F.add('cel' + (i ? '' : ' esq') + (l[7] ? ' agora' : ''), k[1], r+7+j, k[2], r+7+j, l[i] + (!i && l[7] ? ' · a sua' : ''), i ? 'calc' : ''); }); });
+    F.add('rot','D',r+11,'W',r+11,'Nome do Domínio');
+    F.add('val','D',r+12,'W',r+13, tem ? '' : '<span class="vazio">sem Domínio</span>');
+    F.add('rot','Y',r+11,'AT',r+11,'Acerto', '', 'O que o domínio garante que acontece com quem está lá dentro. Uma frase, escrita com o mestre, cabendo na Regra.');
+    F.add('txt baixo','Y',r+12,'AT',r+13,'<i>Texto do jogador: o que acontece com quem está lá dentro.</i>');
+    F.add('rot','D',r+15,'W',r+15,'Como é por dentro');
+    F.add('txt','D',r+16,'W',r+21,'<i>Texto do jogador: o lugar, o que se vê, o que se ouve, como ele abre.</i>');
+    F.add('rot','Y',r+15,'AT',r+15,'Efeito', '', 'O que o domínio permite você fazer lá dentro que você não faria fora. Quase nunca é dano.');
+    F.add('txt','Y',r+16,'AT',r+19,'<i>Texto do jogador: o que você passa a poder fazer lá dentro.</i>');
     var falhas = Math.max(1, Math.floor(E.essencia / 2));
-    F.add('lado','Y',r+20,'AD',r+20,'Na corrida', '', 'Dois domínios sobrepostos: quem segura o domínio e toma dano testa Vigor. As falhas contam até metade da Essência.');
-    F.add('cel peq','AE',r+20,'AT',r+20, tem ? 'cai na ' + falhas + 'ª falha de concentração' : '', tem ? 'calc' : '');
-    r += 22;
-    // --- as Passivas
-    secao('passivas', 'Passivas', 'Passivas', r, 'até cinco pagas · custam espaços de feitiço');
-    r += 2;
-    [['Passiva','D','N'],['Classe Passiva','O','S'],['Espaços','T','W'],['O que faz','X','AT']].forEach(function(k){ F.add('rot', k[1], r, k[2], r, k[0]); });
-    var nomesP = D.passivas.map(function(p){ return p.n; }).filter(function(nm){ return nm !== 'Regra Própria'; });
-    E.passivas.forEach(function(p, i){
-      var k = D.passivas.filter(function(q){ return q.n === p; })[0], cp = k ? parseInt(k.cp, 10) : 0;
-      var abre = {1:1, 2:7, 3:13}[cp], cedo = k && abre > n;
-      F.add('cel sel','D',r+1+i,'N',r+1+i, menuLista('passivas.' + i, p, nomesP, 'Passiva'), 'menu');
-      F.add('cel','O',r+1+i,'S',r+1+i, k ? k.cp : '', k ? 'calc' + (cedo ? ' ruim' : '') : '', cedo ? 'A Classe Passiva ' + cp + ' libera no nível ' + abre + '.' : undefined);
-      F.add('cel','T',r+1+i,'W',r+1+i, k ? (cp || 'com o mestre') : '', k ? 'calc' : '');
-      F.add('cel peq esq','X',r+1+i,'AT',r+1+i, k ? k.faz : '', k ? 'calc' : '', k ? k.faz : undefined);
-    });
-    r += E.passivas.length + 2;
+    F.add('lado','Y',r+21,'AD',r+21,'Na corrida', '', 'Dois domínios sobrepostos: quem segura o domínio e toma dano testa Vigor. As falhas contam até metade da Essência.');
+    F.add('cel peq','AE',r+21,'AT',r+21, 'cai na ' + falhas + 'ª falha de concentração', 'calc');
+    r += 23;
+    // --- as Passivas: cinco pagas, e uma por escolha de Leque
+    var nPag = E.passivas.slice(0, PAGAS).filter(function(ps){ return ps.n; }).length, nLeq = E.passivas.slice(PAGAS).filter(function(ps){ return ps.n; }).length;
+    secao('passivas', 'Passivas', 'Passivas', r, nPag + ' de ' + PAGAS + ' pagas · ' + nLeq + ' de ' + esc.leque + ' do Leque · o + abre o que ela faz');
+    r = grade(E.passivas, r + 2, 'passivas', 6, [[PAGAS, ''], [DO_LEQUE, 'Passivas do Leque <span class="peq">uma por escolha de Leque, sem custar espaço</span>']],
+              function(c0, W, r0, ps, i){ cartaDePassiva(F, c0, W, r0, ps, i, 'passivas.' + i, n); },
+              function(id, r0, itens){ F.grupo(id, 3, r0, r0+1, r0+4, !!E.aberto[id], 'o que faz ' + itens.map(function(ps){ return ps.n || 'a vaga livre'; }).join(', '), 'carta'); }, 'Passivas');
     // --- aptidões e refino
-    secao('aptidoes', 'Aptidões e refino', 'Aptidões', r, 'o marco de Refino compra uma aptidão');
+    var nApt = E.aptidoes.filter(function(a){ return a.n; }).length;
+    secao('aptidoes', 'Aptidões e refino', 'Aptidões', r, 'cada escolha de Refino no marco compra uma aptidão · o + abre o que ela faz');
     F.caixa('D','I',r+2,'Refino', ref, 'calc', 'num', 'Começa em 1, e cada marco dá +1. Escolher Refino no marco dá mais +1. O teto é 10.');
-    F.caixa('K','T',r+2,'Cobrir-se de energia', 'proteção ' + (Math.floor(ref/3) + 1), 'calc', 'val', 'Sem Traje e sem Revestimento, a proteção é 1/3 do refino + 1. Como Reação, Redução de Dano de 1,5 × refino por 2 PE.');
+    F.caixa('K','P',r+2,'Compradas', nApt + ' de ' + ra.aptidoes, 'calc' + (nApt > ra.aptidoes ? ' ruim' : ''), 'num', esc.refino + ' escolha(s) de Refino, marcadas na FICHA. Com o refino já em 10 a escolha dá duas. A semente do Sem Técnica conta uma a mais.');
+    F.caixa('R','Z',r+2,'Cobrir-se de energia', 'proteção ' + (Math.floor(ref/3) + 1), 'calc', 'val', 'De graça no refino 1. Sem Traje e sem Revestimento, a proteção é 1/3 do refino + 1.');
     var d4 = ref >= 9 ? 4 : ref >= 6 ? 3 : ref >= 3 ? 2 : 1;
-    F.caixa('V','AE',r+2,'Canalizar energia', '+' + d4 + (ref >= 10 ? 'd6' : 'd4') + ' na arma', 'calc', 'val', '1d4 a mais a cada 3 pontos de refino. No refino 10 os dados viram d6.');
-    F.caixa('AG','AT',r+2,'Reação de cobrir-se', 'RD ' + Math.floor(1.5 * ref) + ' por 2 PE', 'calc', 'val');
-    r += 6;
-    [['Aptidão','D','N'],['Requisito','O','AE'],['Classe Passiva','AF','AJ'],['O que o refino escala','AK','AT']].forEach(function(k){ F.add('rot', k[1], r, k[2], r, k[0]); });
-    var nomesA = D.aptidoes.map(function(a){ return a.n; }).filter(function(nm){ return ['Cobrir-se de energia','Canalizar energia'].indexOf(nm) < 0; });
-    E.aptidoes.forEach(function(a, i){
-      var k = D.aptidoes.filter(function(q){ return q.n === a; })[0];
-      F.add('cel sel','D',r+1+i,'N',r+1+i, menuLista('aptidoes.' + i, a, nomesA, 'Aptidão'), 'menu');
-      F.add('cel peq esq','O',r+1+i,'AE',r+1+i, k ? k.req : '', k ? 'calc' : '', k ? k.req : undefined);
-      F.add('cel','AF',r+1+i,'AJ',r+1+i, k ? k.cp : '', k ? 'calc' : '');
-      F.add('cel peq esq','AK',r+1+i,'AT',r+1+i, k ? k.escala : '', k ? 'calc' : '');
-    });
-    r += E.aptidoes.length + 2;
+    F.caixa('AB','AJ',r+2,'Canalizar energia', '+' + d4 + (ref >= 10 ? 'd6' : 'd4') + ' na arma', 'calc', 'val', 'De graça no refino 1. 1d4 a mais a cada 3 pontos de refino. No refino 10 os dados viram d6.');
+    F.caixa('AL','AT',r+2,'Reação de cobrir-se', 'RD ' + Math.floor(1.5 * ref) + ' por 2 PE', 'calc', 'val');
+    r = grade(E.aptidoes, r + 6, 'aptidoes', 9, [[6, ''], [6, 'Aptidões 7 a 12 <span class="peq">abra quando faltar lugar</span>']],
+              function(c0, W, r0, ap, i){ cartaDeAptidao(F, c0, W, r0, ap, 'aptidoes.' + i); },
+              function(id, r0, itens){ F.grupo(id, 3, r0+1, r0+2, r0+7, !!E.aberto[id], 'o que faz ' + itens.map(function(a){ return a.n || 'a vaga livre'; }).join(', '), 'carta'); }, 'aptidões');
     // --- pactos: três lugares, cada um fecha
     secao('pactos', 'Pactos', 'Pactos', r, 'três lugares · o + abre o que foi trocado');
     F.caixa('D','K',r+2,'Permanentes', perm.length + ' de ' + np, 'calc' + (perm.length > np ? ' ruim' : ''), 'num', 'Essência ' + E.essencia + ': ' + np + ' pacto' + (np === 1 ? '' : 's') + ' permanente' + (np === 1 ? '' : 's') + ' na campanha inteira. Temporário, Promessa e de restrição não têm teto.');
@@ -871,27 +876,27 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
     F.moldura(r - 1);
     ULTIMOS = F.grupos;
     var med = F.monta(document.getElementById('folha-am'));
-    document.getElementById('medida').textContent = 'Desenho ' + op + ': a aba tem ' + med.linhas + ' linhas por ' + o.cols + ' colunas, com os ' + LUGARES + ' lugares de feitiço e as ' + LIBERACOES + ' Liberações. Agora ' + (med.linhas - med.ocultas) + ' linhas estão à vista.';
-    document.getElementById('nv-diz').textContent = 'Maior Classe ' + max + ' · ' + total + ' espaços · maestria ' + maestria(n);
-    document.getElementById('op-diz').textContent = o.diz;
+    document.getElementById('medida').textContent = 'Com ' + G.nome + ': a aba tem ' + med.linhas + ' linhas por 47 colunas, com ' + LUGARES + ' lugares de feitiço, ' + LIBERACOES + ' Liberações, ' + (PAGAS + DO_LEQUE) + ' Passivas e ' + APTIDOES + ' aptidões. Agora ' + (med.linhas - med.ocultas) + ' linhas estão à vista.';
+    document.getElementById('nv-diz').textContent = 'Maior Classe ' + max + ' · ' + total + ' espaços' + (esc.leque ? ' + ' + esc.leque + ' do Leque' : '') + ' · refino ' + ref + ' · maestria ' + maestria(n);
+    document.getElementById('op-diz').textContent = G.diz;
   }
   var ULTIMOS = [];
 
-  // a tabela que põe os três lado a lado, tirada dos mesmos números que desenham a folha
+  // a tabela que põe as duas arrumações lado a lado, tirada dos mesmos números que desenham a folha
   (function(){
-    var ks = ['A','C','D'], h = '<thead><tr><th></th>' + ks.map(function(k){ return '<th class="op">' + OPC[k].nome + '</th>'; }).join('') + '</tr></thead><tbody>';
-    function linha(rot, f, n){ h += '<tr><td>' + rot + '</td>' + ks.map(function(k){ return '<td' + (n ? ' class="n"' : '') + '>' + f(OPC[k], k) + '</td>'; }).join('') + '</tr>'; }
-    // as faixas da aba inteira: os 24 feitiços e as 3 Liberações
-    function faixas(o){ return Math.ceil(LUGARES / (o.cols === 90 ? 2 : 1) / o.por) + Math.ceil(LIBERACOES / o.por); }
-    function lotes(o){ return o.lote ? Math.ceil(LUGARES / o.lote) - 1 : 0; }
-    linha('Fechado, mostra', function(o){ return o.mostra; });
-    linha('O + abre', function(o){ return o.abre; });
-    linha('Descrição', function(o){ return o.desc; });
-    linha('Para os lados', function(o){ return o.lado; });
-    linha('Tudo fechado', function(o){ return (faixas(o) * o.fechada + 2 * lotes(o)) + ' linhas'; }, true);
-    linha('Tudo aberto', function(o){ return (faixas(o) * o.faixa + 2 * lotes(o)) + ' linhas por ' + o.cols + ' colunas'; }, true);
-    linha('Troca de tema', function(o){ return 'perto de ' + Math.round((faixas(o) * o.faixa + 2 * lotes(o)) * o.cols * 7.5 / (47 * 150)) + ' s a mais'; }, true);
-    linha('Preço', function(o){ return o.preco; });
+    var ks = [2, 3], h = '<thead><tr><th></th>' + ks.map(function(k){ return '<th class="op">' + GRADES[k].nome + '</th>'; }).join('') + '</tr></thead><tbody>';
+    function linha(rot, f, n){ h += '<tr><td>' + rot + '</td>' + ks.map(function(k){ return '<td' + (n ? ' class="n"' : '') + '>' + f(GRADES[k], k) + '</td>'; }).join('') + '</tr>'; }
+    // as fileiras da aba inteira: feitiços em três lotes de 12, e as Liberações
+    function fileiras(k){ return Math.ceil(LUGARES / k) + Math.ceil(LIBERACOES / k); }
+    linha('Largura da carta', function(g){ return g.larg + ' colunas, ' + g.larg * 28 + ' px na planilha'; }, true);
+    linha('Fechada, a carta mostra', function(g, k){ return k === 2 ? 'nome, selo de estado por extenso e os números de mesa em duas linhas' : 'nome, selo de estado em símbolo e os números de mesa em três linhas'; });
+    linha('Descrição', function(g){ return g.larg + ' colunas por 5 linhas'; });
+    linha('Feitiços: tudo fechado', function(g, k){ return (fileiras(k) * g.fechada + 4) + ' linhas'; }, true);
+    linha('Feitiços: só os 12 primeiros', function(g, k){ return (12 / k * g.fechada + 2 + Math.ceil(LIBERACOES / k) * g.fechada) + ' linhas'; }, true);
+    linha('Feitiços: tudo aberto', function(g, k){ return (fileiras(k) * g.faixa + 4) + ' linhas'; }, true);
+    linha('Passivas e aptidões fechadas', function(g, k){ return ((Math.ceil(PAGAS / k) + Math.ceil(DO_LEQUE / k)) * 2 + 2 + Math.ceil(APTIDOES / k) * 3 + 2) + ' linhas'; }, true);
+    linha('O + de uma fileira abre', function(g, k){ return k + ' cartas de uma vez'; });
+    linha('Preço', function(g, k){ return k === 2 ? 'A aba mais comprida: metade a mais de fileiras para os mesmos lugares.' : 'A carta aperta: o menu de peça e a conta têm 140 px a menos, e textos longos de alcance e de aviso quebram em duas linhas.'; });
     document.getElementById('tab-lado').innerHTML = h + '</tbody>';
   })();
 
@@ -918,15 +923,14 @@ table.regras thead tr > :first-child{color:var(--acento-pag)}
     else if (cx){ var p = cx.split('.'), o = E; for (var i = 0; i < p.length - 1; i++) o = o[p[i]]; o[p[p.length-1]] = !o[p[p.length-1]]; desenha(); }
     else if (s){ var d = folha.querySelector('[data-sec="' + s + '"]'); if (d) d.scrollIntoView({block:'start', behavior:'smooth'}); }
     else if (nv){ poe(nv + '.nome', 'Feitiço novo'); desenha(); }
-    else if (alvo.getAttribute('data-colunas')){ E.colunas[E.opcao] = !E.colunas[E.opcao]; desenha(); if (E.colunas[E.opcao]) folha.parentNode.scrollLeft = folha.parentNode.scrollWidth; }
   }
-  folha.addEventListener('click', function(ev){ var a = ev.target.closest('[data-grupo],[data-cx],[data-salto],[data-colunas],[data-novo]'); if (a) alterna(a); });
+  folha.addEventListener('click', function(ev){ var a = ev.target.closest('[data-grupo],[data-cx],[data-salto],[data-novo]'); if (a) alterna(a); });
   folha.addEventListener('keydown', function(ev){ if ((ev.key === ' ' || ev.key === 'Enter') && (ev.target.getAttribute('data-cx') || ev.target.getAttribute('data-salto') || ev.target.getAttribute('data-novo'))){ ev.preventDefault(); alterna(ev.target); } });
   Array.prototype.forEach.call(document.querySelectorAll('[data-nivel]'), function(b){
-    b.addEventListener('click', function(){ E.nivel = Number(b.getAttribute('data-nivel')); E.refino = 1 + marcos(E.nivel); marca('[data-nivel]', b); desenha(); });
+    b.addEventListener('click', function(){ E.nivel = Number(b.getAttribute('data-nivel')); marca('[data-nivel]', b); desenha(); });
   });
-  Array.prototype.forEach.call(document.querySelectorAll('[data-op]'), function(b){
-    b.addEventListener('click', function(){ E.opcao = b.getAttribute('data-op'); marca('[data-op]', b); folha.parentNode.scrollLeft = 0; desenha(); });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-por]'), function(b){
+    b.addEventListener('click', function(){ E.por = Number(b.getAttribute('data-por')); marca('[data-por]', b); desenha(); });
   });
   Array.prototype.forEach.call(document.querySelectorAll('[data-ex]'), function(b){
     b.addEventListener('click', function(){
