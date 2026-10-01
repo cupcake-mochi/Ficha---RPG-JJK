@@ -1720,14 +1720,16 @@ quais 83 são as travas), e disse que não vê problema em demorar. Com as duas 
 troca pinta a `CARTEIRA`, a `FICHA` e a `FICHA AMALDIÇOADA`, e a `FICHA PESSOAL`, o `GLOSSÁRIO` e a arte terminam no clique
 seguinte, sem aviso. A aba em que o jogador está passa na frente, como antes.*
 
-**Como foi conferido.** *Entrou o `regressao-amaldicoada.py`, no `rodar-tudo.sh`. Ele preenche dez fichas na planilha gerada,
+**Como foi conferido.** *Entrou o `regressao-amaldicoada.py`, no `rodar-tudo.sh`. Ele preenche onze fichas na planilha gerada,
 recalcula no LibreOffice e compara com a regra, escrita de novo em Python:* **os 33 feitiços prontos do livro saem com os
-dados que o livro imprime, e nenhum é acusado de erro; 390 cartas, sorteadas em cinco níveis com Famílias Livres e Fechadas,
-batem caixa por caixa (134 com erro, de propósito); e o Orçamento, o índice, a Classe 0, a Técnica Máxima, o Domínio, as
+dados que o livro imprime, e nenhum é acusado de erro; 429 cartas batem caixa por caixa (151 com erro, de propósito): as sorteadas em cinco níveis, com Famílias Livres e
+Fechadas, e uma ficha de casos de borda, com um feitiço para cada regra que o sorteio quase nunca monta; e o Orçamento, o índice, a Classe 0, a Técnica Máxima, o Domínio, as
 Passivas, as aptidões e os pactos batem em quatro fichas.** *Ele também monta a planilha no Sheets de mentira e confere que
 a aba fica com as mesmas fórmulas, valores, mesclagens, menus, caixas e grupos da planilha gerada, e que o plano B da
 mesclagem deixa a aba igual. O `arnes-amaldicoada.py`, rodado à mão, planta trinta defeitos, um de cada vez, e cada um
-acende a checagem dele. O `medidas/ver-aba.py` desenha a aba (`--aba "FICHA AMALDIÇOADA"`), e eu olhei.*
+acende a checagem dele. Na primeira volta quatro passaram calados: um era o nome da checagem errado no arnês, e três eram
+buraco de verdade (o teto da devolução na conta do Ampliar, as duas Restrições de frequência e os pares proibidos), que
+o sorteio não montava. Foi daí que veio a ficha de casos de borda, e com ela os trinta acendem. O `medidas/ver-aba.py` desenha a aba (`--aba "FICHA AMALDIÇOADA"`), e eu olhei.*
 
 **O que só o Sheets diz, e falta ele testar:** *o tempo de verdade; se a cópia de formato traz a mesclagem (se não trouxer, o
 registro diz "FILEIRAS MESCLADAS UMA A UMA" e a montagem demora mais); o `setDataValidations` com os menus e as caixas de

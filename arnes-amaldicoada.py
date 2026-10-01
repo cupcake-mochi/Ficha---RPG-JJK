@@ -13,7 +13,7 @@ import os, shutil, subprocess, sys, tempfile
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 FORA = {".git", "mockup", "__pycache__", "repos", "repo-conserto", ".claude"}
-FICHAS = "kaori,velho,meio,sorteio-13"
+FICHAS = "kaori,velho,meio,bordas,sorteio-13"
 GER, MOD, EMI, COD = "ficha-v01/ficha_amaldicoada.py", "ficha/modelo.gs.js", "ficha/emitir_gs.py", "apps-script/Codigo.gs"
 
 # (o que e o defeito, arquivo, o trecho certo, o trecho errado, um pedaco do nome da checagem que tem de acender)
@@ -25,7 +25,7 @@ PERTURBACOES = [
     ("a Restrição vira dado: o que ela devolve além do gasto não some", GER,
      '''o["usa"] = f"=MIN({P('dv')},{P('g')})"''', '''o["usa"] = f"={P('dv')}"''', "Rachadura perde o ponto"),
     ("a Liberação Máxima não soma a Classe em dados", GER,
-     '''o["d"] = f"=MAX(0,{P('s')})+{P('liberação')}*{Cc}"''', '''o["d"] = f"=MAX(0,{P('s')})"''', "saem com os dados que o livro imprime"),
+     '''o["d"] = f"=MAX(0,{P('s')})+{P('liberação')}*{Cc}"''', '''o["d"] = f"=MAX(0,{P('s')})"''', "toda caixa das 33 cartas bate com a regra"),
     ("a Liberação Máxima cobra o PE de um feitiço comum", GER,
      '''IF({P("liberação")}=1,CEILING(4.5*{Cc},1),3*{Cc})&" PE"''', '''IF({P("liberação")}=1,3*{Cc},3*{Cc})&" PE"''', "saem com os dados que o livro imprime"),
     ("a Queima deixa de contar no teto de dados", GER,

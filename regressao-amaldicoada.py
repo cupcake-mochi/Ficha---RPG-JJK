@@ -448,15 +448,39 @@ VELHO = {**_outras(30, 7, 0, 6, "Sem Barreiras", 3, ["Escama", "Afinidade", "Res
                    [("permanente", "um espaço de feitiço"), ("permanente", "um espaço de feitiço"), ("permanente", "uma aptidão")],
                    [("Linha", "Longe", "Gesto"), ("Aura", "Maior", None), ("Efeito", None, None), ("Projétil", "Longe", None), ("Cone", None, None)],
                    ("Linha", ["Muito Longe"]), 3),
-         "feiticos": [feitico(f"F{i}", 7) for i in range(20)], "libs": [feitico("L1", 7), feitico("L2", 5), feitico("L3", 3)]}
+         "feiticos": [feitico(f"F{i}", 7) for i in range(20)],
+         "libs": [feitico("L1", 7), feitico("L2", 5), feitico("L3", 3)]}
 MEIO = {**_outras(17, 1, 3, 3, "Completa", 1, ["Leitura", "Recomposição", "Costura", None, None, "Aviso", "Instinto", "Raiz", "Fluxo"],
                   ["Kokusen Constante"], [("Promessa", None), (None, None), ("de restrição", None)],
                   [("Projétil", None, None)] * 5, ("Onda", ["Limpa", "Junto", "Rápido"]), 5),
         "familias": {"Amparo": "Livre", "Tempo": "Fechada"},
         "feiticos": [feitico(f"F{i}", 5, "Cura", ["Junto"]) for i in range(12)], "libs": []}
 NOVA = {"nivel": 2}
+# Um feitiço para cada regra que o sorteio quase nunca monta. O arnês mostrou o buraco: tirar da ficha o teto da devolução na conta
+# do Ampliar, o aviso das duas Restrições de frequência ou os pares proibidos passava calado, porque nenhuma carta sorteada caía ali.
+BORDAS = {"nivel": 30, "feiticos": [
+    # a Forma já devolve, as duas Restrições devolvem Média e o gasto passa de 2 × Classe: o teto da devolução muda os dados em toda Classe
+    feitico("Teto da devolução", 3, "Toque", ["Sem Ver", "Corrói"], ["Atrasar", "Sangra"]),
+    feitico("Duas de frequência", 4, "Projétil", ["Fura"], ["Uma Vez", "Aquecer"]),
+    feitico("Frequência com nível", 5, "Explosão", ["Maior"], ["Condicional (Média)", "Dívida"]),
+    feitico("Par na Melhoria", 6, "Projétil", ["Rápido", "Reação"]),
+    feitico("Rápido que atrasa", 6, "Projétil", ["Rápido"], ["Atrasar"]),
+    feitico("Reação que atrasa", 6, "Projétil", ["Reação"], ["Atrasar"]),
+    feitico("Reação parada", 6, "Projétil", ["Reação"], ["Parado"]),
+    feitico("Corpo no Cone", 3, "Cone", [], ["Corpo a Corpo"]),
+    feitico("Corpo na Linha", 3, "Linha", ["Longe"], ["Corpo a Corpo"]),
+    feitico("Corpo repetido", 3, "Aura", [], ["Corpo a Corpo"]),
+    feitico("Tudo ou Nada no tiro", 2, "Projétil", ["Precisão"], ["Tudo ou Nada"]),
+    feitico("Tudo ou Nada no TR", 2, "Explosão", [], ["Tudo ou Nada"]),
+    feitico("Inescapável com peça", 5, "Projétil", ["Inescapável", "Longe"]),
+    feitico("Inescapável com Restrição", 5, "Projétil", ["Inescapável"], ["Gesto"]),
+    feitico("Carga lenta", 4, "Linha", ["Maior"], ["Atrasar", "Carregar"]),
+    feitico("Reação carregada", 6, "Projétil", ["Reação"], ["Carregar"]),
+    feitico("Selado", 4, "Projétil", ["Fura"], ["Sangra", "Gesto"], (True, False)),
+    feitico("Salto demais", 4, "Projétil", ["Salto"], ["Atrasar"])],
+    "libs": [feitico("Liberação baixa", 2), feitico("Liberação de cura", 4, "Cura"), feitico("Liberação na alma", 5, "Projétil", ["Toca a Alma"])]}
 
-FICHAS = {"livro": LIVRO, "kaori": KAORI, "velho": VELHO, "meio": MEIO, "nova": NOVA,
+FICHAS = {"livro": LIVRO, "kaori": KAORI, "velho": VELHO, "meio": MEIO, "nova": NOVA, "bordas": BORDAS,
           "sorteio-2": sorteada(11, 2, False), "sorteio-7": sorteada(12, 7), "sorteio-13": sorteada(13, 13),
           "sorteio-21": sorteada(14, 21), "sorteio-30": sorteada(15, 30)}
 # o arnes-amaldicoada.py roda esta regressão dezenas de vezes, e pede só algumas fichas para cada rodada ser curta
@@ -532,7 +556,7 @@ for nome, ficha in FICHAS.items():
     checa(f"{nome} (nível {nivel}): as {len(lista)} cartas batem com a regra, caixa por caixa", not ruins, f"{len(ruins)}: " + "; ".join(ruins[:3]))
 if not SO:
     checa(f"o sorteio cobriu o certo e o errado: {total} cartas, {com_erro} com erro, {com_aviso} só com aviso, {sem_nome} sem nome, "
-          f"{len(mensagens)} mensagens diferentes", com_erro > 40 and com_aviso > 10 and sem_nome > 5 and len(mensagens) >= 18, str(sorted(mensagens)))
+          f"{len(mensagens)} mensagens diferentes", com_erro > 40 and com_aviso > 10 and sem_nome > 5 and len(mensagens) >= 25, str(sorted(mensagens)))
 
 # ---------------------------------------------------------------------------------------------
 print("\nO ORÇAMENTO, O ÍNDICE E A TÉCNICA")
