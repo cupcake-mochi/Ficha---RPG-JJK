@@ -58,13 +58,15 @@ python3 ficha-v01/monta.py
 | **`conferir-decisoes.py`** | **novo.** As cinco decisões contra o manual, o catálogo e os outros documentos |
 | `arnes-decisoes.py` | perturba as decisões numa cópia isolada e prova que o validador acende |
 | **`conferir-ficha-xlsx.py`** | **novo.** Lê o `.xlsx` gerado: fonte, cor, largura, e se cada fórmula puxa o atributo certo |
-| `regressao-ficha-pessoal.py` | **01/10/2026.** Preenche doze casos na `FICHA PESSOAL`, recalcula no LibreOffice e compara com a regra do catálogo |
+| `regressao-ficha-pessoal.py` | **01/10/2026.** Preenche vinte casos na `FICHA PESSOAL`, recalcula no LibreOffice e compara com a regra do catálogo; a nota da arma em uso é comparada com o texto lido do livro |
 | `regressao-pessoal.js` | **01/10/2026.** O que o `Codigo.gs` faz pela `FICHA PESSOAL`, num Sheets de mentira |
 | `regressao-construir.js` | **01/10/2026.** Roda o `construir()` inteiro num Sheets de mentira rigoroso, e depois usa a planilha montada pelo `onEdit` |
-| `arnes-pessoal.py` | **01/10/2026.** Planta quarenta defeitos no script e no molde, numa cópia, e confere que cada um acende |
+| `arnes-pessoal.py` | **01/10/2026.** Planta quarenta e dois defeitos no script e no molde, numa cópia, e confere que cada um acende |
 | `regressao-amaldicoada.py` | **01/10/2026.** Preenche onze fichas na `FICHA AMALDIÇOADA` gerada, recalcula no LibreOffice e compara com a regra escrita de novo: os 33 feitiços prontos do livro, 429 cartas (as sorteadas e uma ficha de casos de borda) e o resto da aba. Depois monta a planilha no Sheets de mentira e confere que a aba chega igual |
 | `arnes-amaldicoada.py` | **01/10/2026.** Não mora no `rodar-tudo.sh`, e **roda à mão** (meia hora): planta trinta defeitos na conta e na montagem da `FICHA AMALDIÇOADA`, numa cópia, e confere que cada um acende |
+| `arnes-ficha-pessoal.py` | **01/10/2026.** Não mora no `rodar-tudo.sh`, e **roda à mão** (dez minutos): planta doze defeitos no aviso embaixo da mão e na nota das propriedades da arma da `FICHA PESSOAL`, numa cópia, e confere que cada um acende no `regressao-ficha-pessoal.py` |
 | `ficha-v01/extrair_tecnica.py` | **01/10/2026.** Não é validador: lê dos capítulos do livro o que a `FICHA AMALDIÇOADA` calcula e o catálogo ainda não tem, e grava o `ficha-v01/tecnica-do-livro.json`. Com `--confere`, só compara |
+| `ficha-v01/extrair_equipamento.py` | **01/10/2026.** Não é validador: lê do capítulo de Equipamento do livro o que cada propriedade de arma faz, que o catálogo não traz, e grava o `ficha-v01/equipamento-do-livro.json`. A `FICHA PESSOAL` usa na nota da arma em uso. Com `--confere`, só compara |
 | `medidas/sheets-de-mentira.js` | **01/10/2026.** Não é validador: é o Sheets de mentira que o `regressao-construir.js` usa. Guarda tudo o que o `construir()` grava, e acusa a fórmula gravada antes de a aba citada existir ou com a planilha fora do inglês |
 | `medidas/comparar-construir.js` | **01/10/2026.** Não é validador, e **roda à mão**: monta a planilha com o script de um commit e com o da pasta, e compara célula a célula. É a prova de que mexer no `construir()` não mudou a planilha |
 | `arnes-paleta.py` | **01/10/2026.** Planta sete defeitos na troca de paleta (a barra, a tinta de enfeite, a cor da arte), numa cópia. **Roda à mão**, fora do `rodar-tudo.sh`: são uns dois minutos |

@@ -445,7 +445,7 @@ function onEdit(e) {
 // "célula pessoal", e as tabelas que este arquivo lê são achadas pelo cabeçalho.
 // =====================================================================
 var ABA_PESSOAL_ = 'FICHA PESSOAL';
-var IDXP_COL_CAMPO = 116;   // DL: a coluna do "campo pessoal" na DADOS; a do endereço é a seguinte
+var IDXP_COL_CAMPO = 119;   // DO: a coluna do "campo pessoal" na DADOS; a do endereço é a seguinte
 
 /** A tabela da DADOS que tem estes cabeçalhos na mesma linha, linha a linha, até a primeira vazia. */
 function tabelaDaDados_(dados, chave, outras) {
@@ -655,8 +655,9 @@ function volumeDoItem_(e, aba, ip) {
 }
 
 /**
- * As notas que mudam com a ficha: o que falta de Força e o que isso custa, a carga acima do limite e a situação
- * do Traje. O texto de cada uma é uma fórmula da DADOS, e aqui ele é copiado para a nota da caixa, só se mudou.
+ * As notas que mudam com a ficha: o que falta de Força e o que isso custa, a carga acima do limite, a situação
+ * do Traje e, desde 01/10/2026 (B30), o que faz cada propriedade da arma de cada mão, na linha embaixo da mão.
+ * O texto de cada uma é uma fórmula da DADOS, e aqui ele é copiado para a nota da caixa, só se mudou.
  */
 function notasVivas_(ss, dados) {
   var aba = ss.getSheetByName(ABA_PESSOAL_);

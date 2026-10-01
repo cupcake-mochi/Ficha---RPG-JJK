@@ -144,6 +144,44 @@ def carga_do(equip, itens, vestindo, extra=0):
     return round(v + (UNIF[vestindo]["volume"] if vestindo in UNIF else 0), 1)
 
 
+# O que cada propriedade faz, para a nota da arma em uso: lido do arquivo que o extrair_equipamento.py tira do livro, e
+# montado aqui de novo, sem passar pelo gerador. A ordem é a das duas tabelas do livro.
+LIVRO = json.load(open("ficha-v01/equipamento-do-livro.json", encoding="utf-8"))
+DUAS_MAOS = "Ocupa as duas mãos, então não sobra mão para escudo."
+
+
+def nota_da_arma(nome, a, principal):
+    props = a["propriedades"].split(" · ") if a["propriedades"] else []
+    linhas = [nome]
+    for pr in LIVRO["propriedades"] + LIVRO["restricoes"]:
+        if pr["nome"] == "Duas mãos":
+            if not (principal and a["mao"] == 2):
+                continue
+            t = DUAS_MAOS
+        elif pr["nome"] in props:
+            t = " ".join([pr["faz"]] + (LIVRO["a_regra_da_secao"][pr["ver"]] if pr["ver"] else []))
+        else:
+            continue
+        if pr["nome"] == "Longo Alcance" and a["alcance"]:
+            t += f" Nesta arma: {a['alcance']}."
+        if pr["nome"] == "Munição" and a["recarga"]:
+            t += f" Nesta arma, X = {a['recarga']}."
+        linhas.append(f"{pr['nome']}: {t}")
+    return "\n".join(linhas)
+
+
+def cobertura():
+    """as armas que, juntas, têm todas as propriedades do catálogo: a de mais propriedades novas primeiro"""
+    falta = {x for a in CAT["equipamento"]["armas"].values() for x in a["propriedades"]} | {"Duas mãos"}
+    tem = lambda n: set(CAT["equipamento"]["armas"][n]["propriedades"]) | ({"Duas mãos"} if CAT["equipamento"]["armas"][n]["mao"] == 2 else set())
+    out = []
+    while falta:
+        n = max(sorted(CAT["equipamento"]["armas"]), key=lambda k: len(tem(k) & falta))
+        out.append(n)
+        falta -= tem(n)
+    return out
+
+
 MENU4 = [("Katana", 1), ("Faca", 1), ("Kanabō", 1), ("Broquel", 1)]
 CASOS = {
     "de fábrica": dict(),
@@ -168,6 +206,18 @@ CASOS = {
 }
 
 
+COBRE = cobertura()
+_uma = [n for n in COBRE if ARMAS[n]["mao"] == 1] + ["Torre"]
+for _i, _n in enumerate(COBRE):
+    _s = _uma[_i % len(_uma)] if ARMAS[_n]["mao"] == 1 else fp.MAO_LIVRE
+    CASOS[f"nota · {_n}"] = dict(forca=6, principal=_n, secundaria=_s, equip=[(x, 1) for x in dict.fromkeys([_n, _s]) if x in ARMAS])
+# a arma digitada na mão sem estar guardada: a linha de baixo avisa, e a nota fica vazia
+CASOS["não guardada"] = dict(forca=3, principal="Katana", secundaria="Faca")
+# o aviso de cada mão conta só o que serve a ela: o escudo não entra na principal, e a arma de duas mãos não entra na secundária
+CASOS["só o escudo guardado"] = dict(forca=3, secundaria="Broquel", equip=[("Broquel", 1)])
+CASOS["só arma de duas mãos guardada"] = dict(forca=6, equip=[("Kanabō", 1)])
+
+
 def esperado(c):
     forca, pri, sec, ves = c.get("forca", 0), c.get("principal", fp.SOCO), c.get("secundaria", fp.MAO_LIVRE), c.get("vestindo", "Traje 1")
     grau, equip, itens, livres = c.get("grau", "Grau 4"), c.get("equip", ()), c.get("itens", ()), c.get("livres", ())
@@ -190,11 +240,20 @@ def esperado(c):
     def detalhe(a, dado, extra=""):
         return dado + (f" · {a['propriedades']}" if a["propriedades"] else "") + extra + \
             (f" · {a['alcance']}" if a["alcance"] else "") + (f" · recarga a cada {a['recarga']}" if a["recarga"] else "")
+    # B30: sem equipável guardado que sirva à mão, a linha de baixo diz como pôr um no menu
+    serve_p = [n for n, a in tab.items() if a["categoria"] != "Escudo"]
+    serve_s = [n for n, a in tab.items() if a["categoria"] == "Escudo" or a["mao"] == 1]
     if pri == fp.SOCO:
         mao_p, falta_p = 1, 0
-        out["det_principal"] = f"{R['soco'][maestria - 1]} · sem propriedade · o dado sobe com a maestria"
+        out["det_principal"] = f"{R['soco'][maestria - 1]} · " + ("sem propriedade · o dado sobe com a maestria" if serve_p else
+                                                                 "para outra arma, guarde ela nos Equipáveis guardados")
         out["marca_treino"], out["marca_forca_p"] = "Treinada", "Sem requisito de Força"
         versatil = False
+    elif pri not in tab:
+        mao_p, falta_p, versatil = 0, 0, False
+        out["det_principal"] = "Não está nos equipáveis guardados"
+        out["marca_treino"] = "Treinada" if pri in c.get("treinos", ()) else f"{fp.T_SEM_TREINO}: desvantagem"
+        out["marca_forca_p"] = "Sem requisito de Força"
     else:
         a = tab[pri]
         mao_p, falta_p = a["mao"], forca_de(a) > forca
@@ -208,19 +267,23 @@ def esperado(c):
         out["marca_treino"] = "Treinada" if treinada else f"{fp.T_SEM_TREINO}: desvantagem"
         out["marca_forca_p"] = marca(forca_de(a))
     vale = mao_p != 2 and sec not in ("", fp.MAO_LIVRE, fp.NAS_DUAS)
-    escudo = vale and tab[sec]["categoria"] == "Escudo"
-    falta_s = vale and forca_de(tab[sec]) > forca
+    guardada = vale and sec in tab
+    escudo = guardada and tab[sec]["categoria"] == "Escudo"
+    falta_s = guardada and forca_de(tab[sec]) > forca
     if mao_p == 2:
         out["det_secundaria"] = "Ocupada: a arma da outra mão é de duas mãos"
     elif sec == fp.NAS_DUAS:
         out["det_secundaria"] = "A mesma arma, nas duas mãos" if versatil else "A arma da outra mão não é Versátil"
     elif not vale:
-        out["det_secundaria"] = "Mão livre"
+        out["det_secundaria"] = "Mão livre" if serve_s else "Mão livre · arma de uma mão ou escudo guardado aparece aqui"
+    elif not guardada:
+        out["det_secundaria"] = "Não está nos equipáveis guardados"
     elif escudo:
         out["det_secundaria"] = "Escudo · " + tab[sec]["propriedades"]
     else:
         out["det_secundaria"] = detalhe(tab[sec], tab[sec]["dado"])
-    out["marca_forca_s"] = marca(forca_de(tab[sec])) if vale else "—"
+    out["marca_forca_s"] = (marca(forca_de(tab[sec])) if guardada else "Sem requisito de Força") if vale else "—"
+    vale = guardada                                           # daqui para baixo, o que não está guardado não conta
     out["marca_selo"] = "Trava Selo de gesto" if escudo else "Sem escudo"
     u = UNIF.get(ves)
     falta_u = bool(u) and u["forca"] > forca
@@ -231,6 +294,9 @@ def esperado(c):
         out["marca_forca_v"] = marca(u["forca"])
     else:
         out["det_vestindo"], out["marca_grau"], out["marca_forca_v"] = "Sem uniforme: vale a proteção do cobrir-se", "—", "—"
+    out["nota:arma da principal"] = (f"{fp.SOCO}\n{LIVRO['soco']}" if pri == fp.SOCO else
+                                     nota_da_arma(pri, tab[pri], True) if pri in tab else "")
+    out["nota:arma da secundária"] = ("" if not vale else f"{sec}\n{LIVRO['escudo']}" if escudo else nota_da_arma(sec, tab[sec], False))
     carga = carga_do(equip, itens, ves, sum(l[7] or 0 for l in livres))
     limite = R["limite_base"] + forca
     out["carga"] = f"{num(carga if carga % 1 else int(carga))} de {limite}" + (fp.T_ACIMA if carga > limite else "")
@@ -277,19 +343,53 @@ def coluna(d, titulo):
     return None
 
 
-print("AS CAIXAS DA ABA, CASO A CASO")
+def notas_vivas(d):
+    """as notas que mudam com a ficha: {nome: (texto, caixa)}, da tabela `nota viva` da DADOS"""
+    for linha in d.iter_rows(min_row=1, max_row=8):
+        for c in linha:
+            if c.value == "nota viva":
+                out = {}
+                for r in range(c.row + 1, c.row + 20):
+                    if d.cell(row=r, column=c.column).value:
+                        out[d.cell(row=r, column=c.column).value] = (d.cell(row=r, column=c.column + 1).value, d.cell(row=r, column=c.column + 2).value)
+                return out
+    return {}
+
+
+print("O QUE A ABA LÊ DO LIVRO")
+_r = subprocess.run([sys.executable, "ficha-v01/extrair_equipamento.py", "--confere"], capture_output=True, text=True)
+if "nao esta nesta maquina" in _r.stdout:
+    print("  [--] o livro não está nesta máquina: o equipamento-do-livro.json não foi comparado com ele")
+else:
+    checa(f"o equipamento-do-livro.json é o que o extrair_equipamento.py lê do livro hoje ({LIVRO['_meta']['versao_do_livro']})",
+          _r.returncode == 0, _r.stdout.strip()[-200:])
+_duas = next(pr for pr in LIVRO["propriedades"] if pr["nome"] == "Duas mãos")
+checa("o texto das Duas mãos daqui abre a frase do livro", _duas["faz"].startswith(DUAS_MAOS), _duas["faz"])
+_usadas = {x for a in CAT["equipamento"]["armas"].values() for x in a["propriedades"]}
+_com_texto = {pr["nome"] for pr in LIVRO["propriedades"] + LIVRO["restricoes"]}
+checa(f"as {len(_usadas)} propriedades que as 52 armas do catálogo usam têm texto no livro", _usadas <= _com_texto, str(sorted(_usadas - _com_texto)))
+_cobertas = {x for n in COBRE for x in CAT["equipamento"]["armas"][n]["propriedades"]}
+checa(f"os casos de nota ({', '.join(COBRE)}) passam por todas elas, e por arma de duas mãos",
+      _cobertas == _usadas and any(ARMAS[n]["mao"] == 2 for n in COBRE), str(sorted(_usadas - _cobertas)))
+
+print("\nAS CAIXAS DA ABA, CASO A CASO")
 for nome, c in CASOS.items():
     wb = LIDO["caso-" + nome]
     p, f, d = wb[ABA], wb["FICHA"], wb["DADOS"]
     esp = esperado(c)
     erros = []
+    vivas = notas_vivas(d)
     for k, v in esp.items():
-        lido = txt(f[IDX[k[2:]]].value) if k.startswith("__") else txt(p[G[k]].value)
+        lido = (txt(vivas.get(k[5:], ("<a DADOS não tem esta nota>",))[0]) if k.startswith("nota:") else
+                txt(f[IDX[k[2:]]].value) if k.startswith("__") else txt(p[G[k]].value))
         if k in ("carga", "__deslocamento"):
             lido = lido.replace(".", ",")          # o LibreOffice junta o número com o ponto ou a vírgula do sistema
         if lido != v:
             erros.append(f"{k}: a ficha diz {lido!r}, a regra diz {v!r}")
-    checa(f"{nome}: as {len(esp)} caixas batem com a regra", not erros, " · ".join(erros))
+    checa(f"{nome}: as {len(esp)} caixas e notas batem com a regra", not erros, " · ".join(erros))
+_cx = notas_vivas(LIDO["caso-de fábrica"]["DADOS"])
+checa("a nota da arma mora na linha embaixo de cada mão",
+      (_cx.get("arma da principal", (0, 0))[1], _cx.get("arma da secundária", (0, 0))[1]) == (G["det_principal"], G["det_secundaria"]), str(_cx))
 
 print("\nA DEFESA DA FICHA, PELO ESPELHO DO EQUIPAMENTO")
 for nome, c in CASOS.items():

@@ -152,6 +152,10 @@ edita("o Caminho escolhido nao chega a FICHA PESSOAL", C, "try { fichaMexeNaPess
       "escolher Bastião na FICHA passa por todos os gatilhos", teste=K)
 
 print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
+# 01/10/2026 (B30): a nota que diz de onde vem o menu mora na caixa em que a arma e escolhida, e nao no rotulo de cima
+edita("a nota da mao principal volta para o rotulo", F, '["D41","Para uma arma aparecer neste menu', '["D40","Para uma arma aparecer neste menu',
+      "a caixa de escolha de cada mão nasce com a nota")
+edita("a DADOS deixa de publicar a nota da arma da mao secundaria", F, '"arma da secundária"', '""', "a DADOS publica as cinco notas")
 edita("renomear uma variavel de dentro da conta", C, "var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"
       "                   .every(function (a) { return marcadas[a.caixa] === true; });\n  if ((marcadas[dono.caixa] === true) !== todas) muda[dono.caixa] = todas;",
       "var inteiro = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"

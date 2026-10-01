@@ -115,6 +115,12 @@ T_NAO_CUMPRIDO = "Não cumprido"
 T_PEDE_GRAU = "Pede "
 T_ACIMA = " · acima"
 SOCO, MAO_LIVRE, NAS_DUAS, SEM_UNIFORME = "Soco", "—", "Nas duas mãos", "Sem uniforme"
+# o que a linha embaixo da mão diz quando nenhum equipável guardado serve a ela (B30: o menu nasce só com o Soco)
+T_GUARDE_P = "para outra arma, guarde ela nos Equipáveis guardados"
+T_GUARDE_S = "Mão livre · arma de uma mão ou escudo guardado aparece aqui"
+# as três propriedades que a nota da arma trata à parte: a primeira é a coluna mão do catálogo, e as outras duas
+# ganham o número da arma em uso
+DUAS_MAOS, LONGO_ALCANCE, MUNICAO = "Duas mãos", "Longo Alcance", "Munição"
 OUTRA_SITUACAO = "Outra Situação"
 VERMELHO, BRANCO, AMBAR = "#C2334D", "#FFFFFF", "#D89B3A"
 APOIO = "pertences e histórico do portador"      # a linha de apoio do cabeçalho, embaixo do título
@@ -186,7 +192,21 @@ def regras(CAT=None):
     tipos = [(k[0].upper() + k[1:], v) for k, v in CAT["missoes"]["tamanho"].items()] + list(fora["missoes_solo"].items())
     import ficha_automatica
     caminhos_todas = ficha_automatica.regras(CAT)["caminhos_todas_armas"]   # lido do manual.txt
+    # o que cada propriedade faz: o catálogo não traz, e o equipamento-do-livro.json (extrair_equipamento.py) lê do livro.
+    # Onde a tabela do livro só aponta ("Ver Munição"), entra a regra da seção apontada.
+    LIV = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "equipamento-do-livro.json"), encoding="utf-8"))
+    propriedades = []
+    for pr in LIV["propriedades"] + LIV["restricoes"]:
+        faz = pr["faz"]
+        if pr["nome"] == DUAS_MAOS:                           # a frase sobre a coluna do catálogo não serve na ficha
+            corte = " No catálogo ela aparece como o 2 da coluna mão."
+            assert faz.endswith(corte), faz
+            faz = faz[:-len(corte)]
+        propriedades.append((pr["nome"], " ".join([faz] + (LIV["a_regra_da_secao"][pr["ver"]] if pr["ver"] else []))))
+    sem_texto = sorted({x for a in eq["armas"].values() for x in a["propriedades"]} - {n for n, _ in propriedades})
+    assert not sem_texto and DUAS_MAOS in dict(propriedades) and all(k in dict(propriedades) for k in (LONGO_ALCANCE, MUNICAO)), sem_texto
     return {
+        "propriedades": propriedades, "texto_do_soco": LIV["soco"], "texto_do_escudo": LIV["escudo"],
         "armas": armas, "escudos": escudos, "uniformes": uniformes, "categorias": categorias,
         "conjurador": eq["treino"]["conjurador_treina"], "caminhos_todas": caminhos_todas,
         "patentes": [(p, "¥ " + _milhar(s), i + 1) for i, (p, s) in enumerate(CAT["patentes"]["salario_por_mes"].items())],
@@ -368,6 +388,10 @@ def trocas(layout, CAT=None):
     conta("força da secundária", f'=IF({sv}=1,{da_tabela(S, "Força", True)},0)')
     conta("alcance da secundária", f'=IF({sv}=1,IFERROR(VLOOKUP({S},{EQUIP},8,FALSE)&"",""),"")')
     conta("recarga da secundária", f'=IF({sv}=1,IFERROR(VLOOKUP({S},{EQUIP},9,FALSE)&"",""),"")')
+    # quantos equipáveis guardados entram no menu de cada mão: com zero, a linha embaixo da mão diz como pôr um lá
+    eq_nome, eq_cat, eq_mao = (_faixa(C(c_), G["equip_ini"], C(c_), G["equip_fim"], FP) for c_ in ("D", "M", "S"))
+    conta("guardados para a principal", f'=SUMPRODUCT(--({eq_nome}<>""),--({eq_cat}<>"Escudo"))')
+    conta("guardados para a secundária", f'=SUMPRODUCT(--({eq_nome}<>""),--((({eq_cat}="Escudo")+({eq_mao}=1))>0))')
     conta("uniforme vale", f'=IF(ISNUMBER(MATCH({V},{faixa_t("unif", so=0)},0)),1,0)')
     uv = H["uniforme vale"]
     for nome, col in (("proteção do uniforme", 2), ("teto do uniforme", 3), ("força do uniforme", 4),
@@ -445,7 +469,38 @@ def trocas(layout, CAT=None):
          f'acontece toda cena.","Situação “"&LOWER({SIT})&"”: quando a cena estiver nessa condição, você rola com vantagem os '
          f'testes de perícia e os Testes de Resistência.")))'),
     ]
-    alvo_nota = {"requisito de força": G["requisito"], "carga": G["carga"], "situação do traje": G["situacao"]}
+    # --- o que cada propriedade faz (pedido dele, 01/10/2026): a nota da linha embaixo da mão lista as da arma em uso
+    c_prop = tabela("props", ["propriedade de arma", "o que a propriedade faz"], [[n, t] for n, t in R["propriedades"]])
+    l_prop = T["props"][1]
+
+    def nota_da_arma(quem, props, alc, rec, duas=None):
+        """o nome da arma e, uma por linha, cada propriedade dela com o que faz"""
+        partes = []
+        for i, (nome, _) in enumerate(R["propriedades"]):
+            n_, t_ = _abs(c_prop, l_prop + i, "DADOS!"), _abs(c_prop + 1, l_prop + i, "DADOS!")
+            if nome == DUAS_MAOS:                             # no catálogo ela é o 2 da coluna mão, não uma propriedade
+                if duas is None:
+                    continue
+                tem = duas
+            else:                                             # cercada, para o Alcance não casar com o Longo Alcance
+                tem = f'ISNUMBER(SEARCH(" · "&{n_}&" · "," · "&{props}&" · "))'
+            mais = (f'&IF({alc}<>""," Nesta arma: "&{alc}&".","")' if nome == LONGO_ALCANCE else
+                    f'&IF({rec}&""<>""," Nesta arma, X = "&{rec}&".","")' if nome == MUNICAO else "")
+            partes.append(f'IF({tem},CHAR(10)&{n_}&": "&{t_}{mais},"")')
+        return f'{quem}&' + "&".join(partes)
+
+    cp_, cs_ = H["categoria da principal"], H["categoria da secundária"]
+    notas += [
+        ("arma da principal",
+         f'=IF({H["soco na principal"]}=1,"{SOCO}"&CHAR(10)&"{R["texto_do_soco"]}",IF({cp_}="","",' +
+         nota_da_arma(P, H["propriedades da principal"], H["alcance da principal"], H["recarga da principal"],
+                      f'{H["mão da principal"]}=2') + "))"),
+        ("arma da secundária",
+         f'=IF(OR({H["secundária vale"]}=0,{cs_}=""),"",IF({esc}=1,{S}&CHAR(10)&"{R["texto_do_escudo"]}",' +
+         nota_da_arma(S, H["propriedades da secundária"], H["alcance da secundária"], H["recarga da secundária"]) + "))"),
+    ]
+    alvo_nota = {"requisito de força": G["requisito"], "carga": G["carga"], "situação do traje": G["situacao"],
+                 "arma da principal": G["det_principal"], "arma da secundária": G["det_secundaria"]}
     col_n = tabela("notas", ["nota viva", "texto da nota", "caixa da nota"],
                    [[n, f, _endereco(alvo_nota[n], FP)] for n, f in notas])
 
@@ -563,9 +618,11 @@ NOTAS = {
     "grau": "A sua patente na instituição. Ela define o salário e libera o Revestimento 2 e 3. Não é o grau da "
             "ferramenta que você carrega.",
     "nome": "Vem da CARTEIRA: o nome do portador é digitado lá.",
-    "principal": "O menu lista o Soco e o que estiver nos equipáveis guardados. Com arma de duas mãos aqui, a mão "
-                 "secundária fica ocupada.",
-    "secundaria": "O menu lista as armas de uma mão e os escudos dos equipáveis guardados. Com arma Versátil na mão "
+    "principal": "Para uma arma aparecer neste menu, escolha ela antes nos EQUIPÁVEIS GUARDADOS, mais abaixo nesta aba. "
+                 "O menu lista o Soco e o que estiver guardado lá. Com arma de duas mãos aqui, a mão secundária fica "
+                 "ocupada. A linha de baixo mostra o dado e as propriedades, e a nota dela diz o que cada uma faz.",
+    "secundaria": "Para uma arma ou um escudo aparecer neste menu, escolha antes nos EQUIPÁVEIS GUARDADOS, mais abaixo "
+                  "nesta aba. O menu lista as armas de uma mão e os escudos guardados lá. Com arma Versátil na mão "
                   "principal, aparece a opção de segurar a mesma arma nas duas mãos, e o dado sobe um passo.",
     "vestindo": "O menu só lista o que o seu Grau libera. O que você veste aqui e o escudo da mão secundária vão "
                 "sozinhos para o EQUIPAMENTO da FICHA.",
@@ -685,8 +742,10 @@ def aba(layout, tr):
     # --- em uso: as duas mãos e o que está vestido
     L = _titulo(f, L_USO, "D", "AT", "EM USO")
     P, S, V = (_A(G[k]) for k in ("principal", "secundaria", "vestindo"))
-    f.caixa("D", "Q", L + 1, "MÃO PRINCIPAL", SOCO, nota=NOTAS["principal"])
-    f.caixa("S", "AF", L + 1, "MÃO SECUNDÁRIA", MAO_LIVRE, nota=NOTAS["secundaria"])
+    # a nota das duas mãos mora na caixa em que se escolhe, e não no rótulo: pedido dele em 01/10/2026 (B30)
+    assert f.caixa("D", "Q", L + 1, "MÃO PRINCIPAL", SOCO) == G["principal"]
+    assert f.caixa("S", "AF", L + 1, "MÃO SECUNDÁRIA", MAO_LIVRE) == G["secundaria"]
+    f.notas[G["principal"]], f.notas[G["secundaria"]] = NOTAS["principal"], NOTAS["secundaria"]
     f.caixa("AH", "AT", L + 1, "VESTINDO", R["uniformes"][0]["nome"], nota=NOTAS["vestindo"])
     f.menu(G["principal"], tr["faixa_t"]("menu_principal"))
     f.menu(G["secundaria"], tr["faixa_t"]("menu_secundaria"))
@@ -697,7 +756,8 @@ def aba(layout, tr):
         return (f'{dado}&IF({prop}<>""," · "&{prop},"")&{extra}IF({alc}<>""," · "&{alc},"")&'
                 f'IF({rec}<>""," · recarga a cada "&{rec},"")')
     f.add("peq", "D", L + 4, "Q", L + 4,
-          f'=IF({soco}=1,{H["dado da principal"]}&" · sem propriedade · o dado sobe com a maestria",'
+          f'=IF({soco}=1,{H["dado da principal"]}&IF({H["guardados para a principal"]}=0," · {T_GUARDE_P}",'
+          f'" · sem propriedade · o dado sobe com a maestria"),'
           f'IF({H["categoria da principal"]}="","Não está nos equipáveis guardados",' +
           detalhe(H["dado em uso"], H["propriedades da principal"], H["alcance da principal"], H["recarga da principal"],
                   f'IF({duas}=1," · nas duas mãos",IF({H["mão da principal"]}=2," · duas mãos",""))&') + "))")
@@ -712,7 +772,8 @@ def aba(layout, tr):
     f.add("peq", "S", L + 4, "AF", L + 4,
           f'=IF({H["mão da principal"]}=2,"Ocupada: a arma da outra mão é de duas mãos",'
           f'IF({S}="{NAS_DUAS}",IF({duas}=1,"A mesma arma, nas duas mãos","A arma da outra mão não é Versátil"),'
-          f'IF({sv}=0,"Mão livre",IF({H["categoria da secundária"]}="","Não está nos equipáveis guardados",'
+          f'IF({sv}=0,IF({H["guardados para a secundária"]}=0,"{T_GUARDE_S}","Mão livre"),'
+          f'IF({H["categoria da secundária"]}="","Não está nos equipáveis guardados",'
           f'IF({esc}=1,"Escudo · "&{H["propriedades da secundária"]},' +
           detalhe(H["dado da secundária"], H["propriedades da secundária"], H["alcance da secundária"],
                   H["recarga da secundária"]) + ")))))")

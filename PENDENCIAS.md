@@ -1739,25 +1739,59 @@ celular; e se os textos compridos das aptidões cabem na caixa.*
 **Achado no livro, para ele decidir:** *a tabela `Base por Classe` dá `9 m` e `18 m` para "`Cura` e `Onda`", e a tabela
 `Formas` diz que a `Onda` é uma esfera de raio `3 m` centrada em quem conjura. A aba segue a tabela `Formas`, como o estudo.*
 
-### B30 · O menu das mãos só lista o `Soco` — **ABERTO em 01/10/2026, esperando a resposta dele**
+### B30 · O menu das mãos só lista o `Soco` — **RESPONDIDO e FEITO em 01/10/2026, e falta ver no Sheets**
 
 *Achado do Mizuki em 01/10/2026, mexendo na ficha montada com o código do commit `8c7279a`, com duas fotos do `EM USO` da
 `FICHA PESSOAL`: o menu da `Mão principal` só com `Soco` e o da `Mão secundária` só com `—`. Palavras dele: "n ta
 aparecendo a lista de armas, da pra escrever e funciona, mas a lista n aparece".*
 
-**O que o gerador faz.** *É o desenho do estudo (B26): o menu das mãos lista o `Soco` e o que estiver nos `Equipáveis
-guardados` (linhas 69 a 76 da aba; as seis primeiras têm o menu das 52 armas), pelas tabelas `menu_principal` e
-`menu_secundaria` do `ficha-v01/ficha_pessoal.py`. A ficha nasce com os equipáveis vazios, e por isso o menu nasce só com
-o `Soco`. A arma digitada na mão sem estar guardada é aceita (o menu só avisa) e a linha de baixo diz "Não está nos
-equipáveis guardados". O `regressao-ficha-pessoal.py` confere a lista com três armas guardadas, e passa.*
+**O que o gerador fazia, e continua fazendo.** *É o desenho do estudo (B26): o menu das mãos lista o `Soco` e o que estiver
+nos `Equipáveis guardados` (linhas 69 a 76 da aba; as seis primeiras têm o menu das 52 armas), pelas tabelas
+`menu_principal` e `menu_secundaria` do `ficha-v01/ficha_pessoal.py`. A ficha nasce com os equipáveis vazios, e por isso
+o menu nasce só com o `Soco`. A arma digitada na mão sem estar guardada é aceita (o menu só avisa) e a linha de baixo diz
+"Não está nos equipáveis guardados".*
 
-**O que eu não sei.** *Se ele tinha arma guardada quando tirou as fotos. Se tinha e o menu não listou, é defeito de
-verdade no Sheets, que a regressão daqui não vê. Nas duas fotos a célula está em edição, e nesse modo o Sheets filtra a
-lista pelo que está escrito.*
+**A resposta dele:** *"A, manter com aviso visivel e uma nota na caixa aonde fica a escolha de item (na mão) explicando.
+Por sinal, seria bom se no momento da arma ser escolhida, como logo abaixo mostra propriedades e afins, poderia colocar
+uma nota apresentando o que cada propriedade faz".* **Três coisas entraram:**
 
-**A pergunta feita a ele:** *manter o desenho e pôr um aviso visível embaixo da mão quando não há nada guardado (a minha
-indicação: a carga, o `Grau`, o `Estigma` e o `Desgaste` moram na linha do equipável, e a mão só aponta para ela); listar
-as 52 armas direto na mão (mexe em umas doze contas, na carga e na regressão); ou deixar como está. Nada foi mexido.*
+- **O aviso visível.** *Sem nenhuma arma guardada, a linha embaixo da `Mão principal` diz `d4 · para outra arma, guarde ela
+  nos Equipáveis guardados`; sem arma de uma mão nem escudo guardado, a da secundária diz `Mão livre · arma de uma mão ou
+  escudo guardado aparece aqui`. Cada mão conta só o que serve a ela: o escudo não conta para a principal, e a arma de duas
+  mãos não conta para a secundária. Com algo guardado, as duas linhas voltam ao texto de antes.*
+- **A nota na caixa de escolha.** *A nota das duas mãos saiu do rótulo e foi para a caixa em que a arma é escolhida, e abre
+  dizendo que a arma tem de estar nos `EQUIPÁVEIS GUARDADOS`, mais abaixo na aba. O `Vestindo` não mudou: a nota dele
+  continua no rótulo.*
+- **A nota das propriedades.** *A linha embaixo de cada mão (a que mostra o dado e as propriedades) ganhou uma nota que
+  muda com a arma: o nome dela e, uma por linha, cada propriedade com o que faz. É mais uma "nota viva" da `DADOS`, que o
+  `notasVivas_` do `Codigo.gs` já copiava para a caixa quando o `EM USO` ou os equipáveis mudam: o script não ganhou código
+  novo, só as duas linhas na tabela. O `Soco` e o escudo têm a frase do livro. A arma digitada que não está guardada fica
+  sem nota.*
+
+**De onde vem o texto.** *O `catalogo-projeto-m.json` traz as propriedades de cada arma, mas não o que elas fazem. O texto
+sai do capítulo de Equipamento do livro (v0.330), pelo `ficha-v01/extrair_equipamento.py`, que grava o
+`ficha-v01/equipamento-do-livro.json`: as tabelas `Propriedades` e `Restrições de arma`, e, onde a tabela só aponta ("Ver
+Munição"), as frases da seção apontada, que têm de estar no capítulo palavra por palavra. A ficha acrescenta só o número
+da arma em uso: as duas faixas no `Longo Alcance` e o X da recarga na `Munição`. As `Duas mãos` entram pela coluna `mão`
+do catálogo, sem a frase "No catálogo ela aparece como o 2 da coluna mão". Levar esse texto para o catálogo é decisão do
+Mizuki, e não foi feito.*
+
+**O índice da aba andou três colunas na `DADOS`,** *porque a tabela das propriedades entrou antes dele: o
+`IDXP_COL_CAMPO` do `Codigo.gs` passou de 116 para 119. É a única linha de código que mudou no `Codigo.gs`.*
+
+**Como foi conferido.** *O `regressao-ficha-pessoal.py` ganhou a nota de cada mão e o aviso em todos os casos (são vinte
+agora), com a nota montada de novo a partir do arquivo lido do livro: cinco armas que juntas têm as treze propriedades em
+uso, a arma não guardada, só o escudo guardado e só a arma de duas mãos guardada. O `regressao-pessoal.js` confere as cinco
+notas vivas, a caixa de cada uma e a nota da caixa de escolha. Entrou o `arnes-ficha-pessoal.py`, rodado à mão, com doze
+defeitos plantados nessas contas, e o `arnes-pessoal.py` ganhou dois.*
+
+**Achado no livro, para ele decidir:** *a propriedade `Alcance` manda ver a seção "Alcance no corpo a corpo", que diz "As
+Armas Longas chegam a 3 m". Onze armas têm `Alcance`, e só três são da categoria `Armas Longas` (Lança, Naginata e Yari);
+as outras oito são Bastão, Bō, Kusarigama, Chicote, Corrente, Espadão, Nodachi e Odachi. O livro não diz se essas oito
+chegam a 3 m. A nota repete a frase do livro como está.*
+
+**O que só o Sheets diz:** *se a nota de 860 caracteres da arma mais carregada aparece inteira ao passar o mouse, e como
+a nota fica no celular.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 

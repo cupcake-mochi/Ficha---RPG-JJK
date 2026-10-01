@@ -288,10 +288,22 @@ console.log('\nO onEdit NA FICHA PESSOAL');
 {
   const Q = criaPlanilha();
   const notas = Q.ctx.tabelaDaDados_(dadosDe(Q), 'nota viva', ['texto da nota', 'caixa da nota']);
-  ok('a DADOS publica as três notas que mudam, cada uma com a caixa dela', notas.length === 3 && notas.every((n) => /^[A-Z]+\d+$/.test(n['caixa da nota'])),
+  // 01/10/2026 (B30): duas notas a mais, a da arma de cada mão, na linha de detalhe embaixo da caixa de escolha
+  ok('a DADOS publica as cinco notas que mudam, cada uma com a caixa dela', notas.length === 5 && notas.every((n) => /^[A-Z]+\d+$/.test(n['caixa da nota']))
+     && new Set(notas.map((n) => n['caixa da nota'])).size === 5,
      JSON.stringify(notas.map((n) => [n['nota viva'], n['caixa da nota']])));
+  const caixaDe = (k) => (notas.filter((n) => n['nota viva'] === k)[0] || {})['caixa da nota'];
+  const [lp, cp] = lc(ip['principal']), [ls, cs] = lc(ip['secundária']);
+  ok('a nota da arma de cada mão vai para a linha de detalhe, duas linhas abaixo da caixa em que se escolhe',
+     caixaDe('arma da principal') === letras(cp) + (lp + 2) && caixaDe('arma da secundária') === letras(cs) + (ls + 2),
+     `${caixaDe('arma da principal')} e ${caixaDe('arma da secundária')}, com as mãos em ${ip['principal']} e ${ip['secundária']}`);
+  const daAba = ABAS.filter((s) => s.nome === NOME)[0].notas || [];
+  const notaEm = (a1) => String((daAba.filter((n) => n[0] === a1)[0] || [])[1] || '');
+  ok('a caixa de escolha de cada mão nasce com a nota que diz de onde vem o menu',
+     /EQUIPÁVEIS GUARDADOS/.test(notaEm(ip['principal'])) && /EQUIPÁVEIS GUARDADOS/.test(notaEm(ip['secundária'])),
+     `${notaEm(ip['principal']).slice(0, 60)} | ${notaEm(ip['secundária']).slice(0, 60)}`);
   const n1 = Q.ctx.configurarPessoal_(Q.ss);
-  ok('o construir() grava as três notas, e uma segunda passada não grava de novo', /^3 /.test(n1) && /^0 /.test(Q.ctx.configurarPessoal_(Q.ss)), n1);
+  ok('o construir() grava as notas que nascem com texto, e uma segunda passada não grava de novo', /^[1-5] /.test(n1) && /^0 /.test(Q.ctx.configurarPessoal_(Q.ss)), n1);
   const antes = Q.log.leiturasDaDados;
   Q.ctx.onEdit(editada(Q, 'Q22', 'a história dela'));
   ok('digitar no dossiê não lê a DADOS inteira nem mexe em nada', Q.log.leiturasDaDados === antes && !Q.log.chamadas.slice(-1).some((x) => x[1] === NOME && x[0] !== 'setNote'));
