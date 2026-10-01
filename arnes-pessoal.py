@@ -143,7 +143,7 @@ edita("a aba e preenchida antes de as outras nascerem", F, "    var abas = ABAS.
       "nenhuma fórmula é gravada antes de a aba que ela cita existir", teste=K)
 edita("a nota de regra vai sempre para a caixa, nunca para o titulo", C, "return tituloOuCaixa_(acima) === 'título' ? [la, ca] : [l, c];", "return [l, c];",
       "as notas de regra da FICHA moram no título", teste=K)
-edita("o construir() nunca passa a vez ao acabar()", F, "var TETO_DA_MONTAGEM_ = 270000;", "var TETO_DA_MONTAGEM_ = 270000000000;",
+edita("o construir() nunca passa a vez ao acabar()", F, "var TETO_DA_MONTAGEM_ = 250000;", "var TETO_DA_MONTAGEM_ = 250000000000;",
       "avisa que falta o acabar()", teste=K)
 edita("o acabar() duplica as travas", C, "    semAsVelhas(aba);\n    var celulas = [];", "    var celulas = [];", "rodar o acabar() numa ficha pronta não muda nada", teste=K)
 edita("o acabar() roda em portugues, e a regra de cor quebra", F, "  ss.setSpreadsheetLocale('en_US');\n  try {\n    acabamento_(ss, feito, rel);",

@@ -20,7 +20,7 @@ python3 ficha-v01/monta.py
 ./rodar-tudo.sh
 ```
 
-Sai o `apps-script/Ficha.gs`. Se os vinte validadores não passarem, não sobe.
+Sai o `apps-script/Ficha.gs`. Se os vinte e um validadores não passarem, não sobe.
 
 > **O `ficha/monta.py` foi aposentado em 14/09/2026, no B18.** *Ele ficou dez versões atrás da planilha viva, e o `Ficha.gs` que ele gerava montava uma ficha antiga.*
 
@@ -42,7 +42,7 @@ Apaga o que estiver no `Código.gs` e cola o conteúdo de **`apps-script/Codigo.
 
 Depois, no `+` ao lado de **Arquivos**, escolhe **Script**, dá o nome `Ficha`, e cola o conteúdo de **`apps-script/Ficha.gs`**.
 
-> O `Ficha.gs` tem uns 440 KB e o `Codigo.gs` uns 200 KB. É normal eles demorarem a colar.
+> O `Ficha.gs` tem uns 640 KB e o `Codigo.gs` uns 200 KB. É normal eles demorarem a colar.
 
 Salva com `Ctrl+S`.
 
@@ -52,7 +52,7 @@ No seletor de funções, escolhe **`construir`** e clica em **▶ Executar**.
 
 Na primeira vez ele pede autorização: **Revisar permissões** → tua conta → **Avançado** → **Acessar** → **Permitir**.
 
-**Demora.** São cinco abas, milhares de células com valor, as imagens e as caixas de seleção. Em 01/10/2026 a montagem estourou os seis minutos que o Apps Script dá, e foi reescrita para ir menos vezes ao servidor; **o tempo novo ainda não foi medido no Sheets.** Não é travamento.
+**Demora.** São sete abas (duas ocultas), milhares de células com valor, as imagens e as caixas de seleção. Em 01/10/2026 a montagem estourou os seis minutos que o Apps Script dá, e foi reescrita para ir menos vezes ao servidor: **com cinco abas ela levou 220 segundos, medidos pelo Mizuki.** Com a `FICHA AMALDIÇOADA` e a `DADOS_AM` a conta é de uns 285 segundos, e **esse tempo ainda não foi medido.** Não é travamento.
 
 Enquanto roda, o registro mostra cada etapa na hora, com o tempo dela:
 
@@ -70,6 +70,8 @@ FICHA PRONTA em 74s · CARTEIRA: 1503 células, 9 fórmulas, 4 imagens · FICHA:
 ```
 
 Os números do exemplo são inventados: servem só para mostrar o formato. **Se a execução expirar de novo, me mande o registro inteiro:** ele diz em que etapa ela estava e quanto cada uma levou.
+
+**Na `FICHA AMALDIÇOADA` o registro diz como as fileiras de cartas vieram.** O normal é `fileiras copiadas`. Se aparecer `FILEIRAS MESCLADAS UMA A UMA`, a aba está certa do mesmo jeito, mas a montagem demorou mais: me avise, porque aí vale tirar a cópia do caminho.
 
 **Se o registro terminar em `FALTA O ACABAMENTO: rode a função acabar()`**, as abas já estão de pé e faltam a cor de estado, as notas, as travas e a caixa da paleta. No seletor de funções, escolhe **`acabar`** e clica em **▶ Executar**. Ela pode rodar quantas vezes precisar, sem estragar nada.
 
@@ -124,7 +126,9 @@ A mudança acontece no Sheets. Exporta de novo, refaz o passo 1, cola o `Ficha.g
 
 ## O que ainda não está pronto
 
-- **A montagem de feitiço não trava sozinha.** As oito regras de ouro e os dois pares incompatíveis rodam no `conferir_feitico.py`, mas ainda não viraram Apps Script. É o próximo pedaço caro, e o que mais vale.
+- **A `FICHA AMALDIÇOADA` confere a montagem de feitiço** desde 01/10/2026 (B29): as regras de ouro e os pares incompatíveis viraram fórmula, e a carta avisa. Ela não impede de escolher: avisa.
+- **A seção 8 da `FICHA` continua como estava.** Falta decidir se ela vira espelho da `FICHA AMALDIÇOADA` ou sai.
+- **As rotas sem Fundamento** (Técnica Marcial, Sem Técnica e Restrição Celestial) ainda não têm lugar na `FICHA AMALDIÇOADA`.
 - **Equipamento é campo digitado**, até o catálogo do capítulo 12 entrar.
 - **O Evocador voltou ao menu em 14/09/2026**, e a decisão C1 registra isso.
 

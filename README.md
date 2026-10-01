@@ -25,8 +25,8 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 ./rodar-tudo.sh
 ```
 
-São vinte. Dezoito passam em qualquer máquina; o
-`regressao-kaori-na-ficha.py` e o `regressao-ficha-pessoal.py` precisam de um LibreOffice **com o filtro do
+São vinte e um. Dezoito passam em qualquer máquina; o
+`regressao-kaori-na-ficha.py`, o `regressao-ficha-pessoal.py` e o `regressao-amaldicoada.py` precisam de um LibreOffice **com o filtro do
 Calc** para recalcular a ficha, e onde ele não existe essa checagem falha alto
 em vez de passar em branco — é de propósito. O `regressao-delta.js` roda no
 node, porque o Apps Script não pode ser testado de fora; sem node ele é pulado

@@ -12,7 +12,7 @@ O que mudou nesta rodada: a ficha **ganhou identidade**. Ela deixou de ser plani
 
 1. **`DECISOES-bloco-A.md`** — as nove decisões (bloco A e bloco C), com o porquê e o que foi medido. É o dono delas.
 2. **`COMO-SUBIR.md`** — do repositório até a ficha na mão do jogador, em seis passos.
-3. **`ficha-v01/ficha-projeto-m-0.1.xlsx`** — a ficha, cinco abas: `CARTEIRA`, `FICHA`, `FICHA PESSOAL` e `GLOSSÁRIO`, e a `DADOS`, escondida. A `INVOCAÇÃO`, o `CATÁLOGO` e a `DADOS_INV` saíram em 01/10/2026 (`ficha-v01/sem_invocacao.py`), até a invocação ser refeita. É a cópia da planilha viva: o `ficha-v01/extrair.py` tira o desenho da exportação, e o `ficha-v01/monta.py` remonta a ficha e escreve o `Ficha.gs`. *O `ficha/monta.py` foi aposentado no B18.*
+3. **`ficha-v01/ficha-projeto-m-0.1.xlsx`** — a ficha, sete abas: `CARTEIRA`, `FICHA`, `FICHA AMALDIÇOADA`, `FICHA PESSOAL` e `GLOSSÁRIO`, e a `DADOS` e a `DADOS_AM`, escondidas. A `FICHA AMALDIÇOADA` entrou em 01/10/2026 (`ficha-v01/ficha_amaldicoada.py`, B29 do `PENDENCIAS.md`). A `INVOCAÇÃO`, o `CATÁLOGO` e a `DADOS_INV` saíram em 01/10/2026 (`ficha-v01/sem_invocacao.py`), até a invocação ser refeita. É a cópia da planilha viva: o `ficha-v01/extrair.py` tira o desenho da exportação, e o `ficha-v01/monta.py` remonta a ficha e escreve o `Ficha.gs`. *O `ficha/monta.py` foi aposentado no B18.*
 4. **`apps-script/Codigo.gs`** — o que o `.xlsx` não carrega: caixa de seleção, cor de estado, proteção, e a entrada por delta.
 5. **`manual-temporario.md`** — **superado.** *A regra entrou no capítulo 1 do manual, com texto próprio; o arquivo fica pelo exemplo que o `regressao-delta.js` confere.*
 6. **`PENDENCIAS.md`** — o bloco A saiu e virou ponteiro. Entraram cinco itens novos, do B5 ao B9.
@@ -27,8 +27,8 @@ O `DESIGN-ficha-digital.md` e o `ESPECIFICACAO-ficha-digital.md` continuam valen
 ./rodar-tudo.sh
 ```
 
-São vinte. Dezoito passam em qualquer máquina; o
-`regressao-kaori-na-ficha.py` e o `regressao-ficha-pessoal.py` precisam de um LibreOffice **com o filtro do
+São vinte e um. Dezoito passam em qualquer máquina; o
+`regressao-kaori-na-ficha.py`, o `regressao-ficha-pessoal.py` e o `regressao-amaldicoada.py` precisam de um LibreOffice **com o filtro do
 Calc** para recalcular a ficha, e onde ele não existe essa checagem falha alto
 em vez de passar em branco — é de propósito. O `regressao-delta.js` roda no
 node, porque o Apps Script não pode ser testado de fora; sem node ele é pulado
@@ -62,6 +62,9 @@ python3 ficha-v01/monta.py
 | `regressao-pessoal.js` | **01/10/2026.** O que o `Codigo.gs` faz pela `FICHA PESSOAL`, num Sheets de mentira |
 | `regressao-construir.js` | **01/10/2026.** Roda o `construir()` inteiro num Sheets de mentira rigoroso, e depois usa a planilha montada pelo `onEdit` |
 | `arnes-pessoal.py` | **01/10/2026.** Planta quarenta defeitos no script e no molde, numa cópia, e confere que cada um acende |
+| `regressao-amaldicoada.py` | **01/10/2026.** Preenche dez fichas na `FICHA AMALDIÇOADA` gerada, recalcula no LibreOffice e compara com a regra escrita de novo: os 33 feitiços prontos do livro, 390 cartas sorteadas e o resto da aba. Depois monta a planilha no Sheets de mentira e confere que a aba chega igual |
+| `arnes-amaldicoada.py` | **01/10/2026.** Não mora no `rodar-tudo.sh`, e **roda à mão** (meia hora): planta trinta defeitos na conta e na montagem da `FICHA AMALDIÇOADA`, numa cópia, e confere que cada um acende |
+| `ficha-v01/extrair_tecnica.py` | **01/10/2026.** Não é validador: lê dos capítulos do livro o que a `FICHA AMALDIÇOADA` calcula e o catálogo ainda não tem, e grava o `ficha-v01/tecnica-do-livro.json`. Com `--confere`, só compara |
 | `medidas/sheets-de-mentira.js` | **01/10/2026.** Não é validador: é o Sheets de mentira que o `regressao-construir.js` usa. Guarda tudo o que o `construir()` grava, e acusa a fórmula gravada antes de a aba citada existir ou com a planilha fora do inglês |
 | `medidas/comparar-construir.js` | **01/10/2026.** Não é validador, e **roda à mão**: monta a planilha com o script de um commit e com o da pasta, e compara célula a célula. É a prova de que mexer no `construir()` não mudou a planilha |
 | `arnes-paleta.py` | **01/10/2026.** Planta sete defeitos na troca de paleta (a barra, a tinta de enfeite, a cor da arte), numa cópia. **Roda à mão**, fora do `rodar-tudo.sh`: são uns dois minutos |

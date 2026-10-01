@@ -1648,6 +1648,95 @@ outras nascerem, e o `acabar()` em português), e viraram checagem: o Sheets de 
 `setFormulas` gravava (a documentação diz que sim: texto que começa com `=` é fórmula); se o `mergeAcross()` deixa as
 mesmas mesclagens na tela; e se as abas nascem na ordem pedida (se não nascerem, o script move, como antes).*
 
+### B29 · A Ficha Amaldiçoada — **FEITA em 01/10/2026, e falta montar no Sheets**
+
+*Pedido do Mizuki, depois de quatro rodadas de estudo (`mockup/ficha-amaldicoada-estudo.html`):* **"pode fazer o codigo,
+considerando 3 colunas mesmo, é oq gostaram, so q ta mt amassadinho"**, *e antes disso:* *"a ficha amaldiçoada tem que ser
+basicamente 'tudo' que já de pra automatizar e calcular para o jogador"*.
+
+**O que entrou.** *A aba `FICHA AMALDIÇOADA`, depois da `FICHA`, e a aba oculta `DADOS_AM`, com as tabelas e as contas dela
+(como a `INVOCAÇÃO` tinha a `DADOS_INV`). É a limpeza 25, `ficha-v01/ficha_amaldicoada.py`. A aba tem dez seções, cada uma
+num grupo de linhas que fecha: Técnica, Orçamento (com o índice de preços por Classe), Feitiços (36 lugares em três lotes de
+12), Classe 0, Liberação Máxima (3), Técnica Máxima, Expansão de Domínio, Passivas (5 pagas e 7 do Leque), Aptidões (12) e
+Pactos (3). Uma linha de saltos no alto leva a cada seção.*
+
+**A página mais larga, e por que não é a grade da FICHA.** *Ele pediu as três cartas por fileira com a página mais larga
+("dar mais colunas a pagina"). A aba não usa a grade de colunas de 28 px: cada carta tem cinco colunas na largura do que
+guardam (112, 140, 112, 56 e 56 px), 476 px no total, contra os 364 px da carta do estudo. São 21 colunas e 1.596 px, e as
+seções de cima se alinham nas mesmas colunas. Com isso a aba tem 11 mil células em 537 linhas; na grade de 28 px seriam 33
+mil, e a troca de tema dela não caberia num passo do gatilho simples.* **O preço:** *ela cabe inteira num monitor de 1920 px;
+num notebook de 1366 px pede zoom de 75% ou rolar para o lado. A decisão está no `decisoes-ficha.json`, em
+`C6_documento.largura_fora_do_notebook`.*
+
+**A conta.** *Tudo mora em fórmula, na `DADOS_AM`: uma linha por feitiço, e a carta só mostra o resultado. Nenhuma fórmula usa
+`LET` nem `LAMBDA`. A carta calcula: os pontos, o preço de cada peça pela Classe, o desconto de Família Livre, a devolução
+das Restrições (com o teto de 2 × Classe, o que se perde, e a que o Selo já obriga), os dados, o PE, a ação, como resolve, o
+alcance pelas escadas, o Ampliar em cada Classe acima, e os avisos: Família Fechada, limite de Melhorias e de Restrições,
+orçamento estourado, duas Restrições de frequência, os quatro pares que o livro proíbe, o teto de dados somando alvos e
+repetições, e as regras da Liberação Máxima. A ficha só calcula e só conta o espaço do feitiço que tem nome.*
+
+**De onde sai cada número.** *As Formas, as Melhorias, as condições, as Restrições e a progressão saem do
+`catalogo-projeto-m.json`. As Passivas, as aptidões (com a caixa de regra de cada uma), as escadas de alcance, a Classe 0, a
+Liberação, a Técnica Máxima, o Domínio e os pactos não estão no catálogo, que está na v0.258: saem do
+`ficha-v01/tecnica-do-livro.json`, que o `ficha-v01/extrair_tecnica.py` lê dos capítulos do livro (v0.330) e que carrega a
+versão de onde saiu. O que o livro só escreve em frase é conferido contra a frase.* **Levar essas tabelas para o catálogo é
+decisão do Mizuki, e não foi feito.**
+
+**O que ficou diferente do estudo, e por quê:**
+
+1. **A `Passiva Própria` e a `Aptidão Própria` são entradas do menu** *(`Passiva Própria (CP 1)`, `(CP 2)`, `(CP 3)`), e a
+   carta tem uma caixa "seu texto". No estudo a mesma caixa mostrava o texto do livro ou o do jogador; na planilha uma
+   célula é fórmula ou é digitada, não as duas.*
+2. **Na Classe 0 a Restrição Leve devolve o dado que a Melhoria Leve tirou.** *O estudo ignorava a Restrição. O livro diz
+   "cabe uma Melhoria Leve e uma Restrição Leve numa Classe 0, tirando um dado para pagar".* **É leitura minha, e falta ele
+   confirmar.**
+3. **A Liberação Máxima, a Técnica Máxima e o Domínio nascem fechados,** *porque a ficha nova está no nível 2.*
+4. **O menu mostra só o nome da peça,** *e o preço aparece ao lado, depois de escolhida ("−2 · Média · Livre"). No estudo o
+   menu trazia o preço, que muda de carta para carta; no Sheets a lista do menu é uma só.*
+5. **O `+` é da fileira inteira:** *abre as três cartas dela. Isso já era assim no estudo.*
+
+**O que a aba não faz:** *não toca a seção 8 da `FICHA` (ele ainda não decidiu se ela vira espelho ou sai), e não desenha as
+rotas sem Fundamento (Técnica Marcial, Sem Técnica e Restrição Celestial).*
+
+**O `construir()` com a aba nova.** *A aba tem 1.272 mesclagens e 374 células de menu. Para ela não triplicar a montagem:*
+
+| o que | como | chamadas |
+|---|---|---|
+| as treze fileiras de cartas de feitiço, e as de Passiva e de aptidão | só a primeira de cada tipo é mesclada; as outras recebem o formato dela por cópia, e a mesclagem vem junto. O script confere se veio, e se não veio mescla uma a uma | 573 de mesclagem na planilha inteira (eram 310 sem a aba), e 17 cópias |
+| os menus e as caixas de seleção do Selo | uma regra por lista, numa matriz do tamanho da aba, gravada de uma vez | 1 |
+| os 52 grupos de linhas | nascem todos, fecham todos numa chamada, e os que nascem abertos são abertos | 53 + 1 + 12 |
+| a conta de cada feitiço, 75 fórmulas iguais a menos da linha | só a primeira linha vai no `Ficha.gs`; o script a copia para baixo | 9 cópias |
+
+*O `Ficha.gs` também escreve cada fileira de cartas uma vez só: no arquivo fica a primeira e, das outras, só o que é diferente
+(a fórmula que aponta para a conta de outro feitiço); o script refaz as cópias quando carrega (`expandirCopias_`). Sem isso
+ele teria 1,2 MB. Ficou com 637 KB; com o `Codigo.gs`, 838 KB. Antes de sair a invocação, os dois somavam 873 KB.*
+
+**O tempo.** *Ele mediu a montagem de cinco abas em 220 s (abas criadas 70, as cinco abas 51, menus 8, acabamento 90, dos
+quais 83 são as travas), e disse que não vê problema em demorar. Com as duas abas novas a minha conta, por número de chamadas,
+é de 60 a 70 s a mais:* **uns 285 s, dentro dos 360.** *É estimativa. O teto para o acabamento começar desceu de 270 para
+250 s, porque o acabamento leva 90: se a montagem passar disso, o registro pede o `acabar()`.*
+
+**A troca de tema.** *A aba entra na troca como as outras, num passo de cor e num de régua. Ela é a terceira da ordem: a
+troca pinta a `CARTEIRA`, a `FICHA` e a `FICHA AMALDIÇOADA`, e a `FICHA PESSOAL`, o `GLOSSÁRIO` e a arte terminam no clique
+seguinte, sem aviso. A aba em que o jogador está passa na frente, como antes.*
+
+**Como foi conferido.** *Entrou o `regressao-amaldicoada.py`, no `rodar-tudo.sh`. Ele preenche dez fichas na planilha gerada,
+recalcula no LibreOffice e compara com a regra, escrita de novo em Python:* **os 33 feitiços prontos do livro saem com os
+dados que o livro imprime, e nenhum é acusado de erro; 390 cartas, sorteadas em cinco níveis com Famílias Livres e Fechadas,
+batem caixa por caixa (134 com erro, de propósito); e o Orçamento, o índice, a Classe 0, a Técnica Máxima, o Domínio, as
+Passivas, as aptidões e os pactos batem em quatro fichas.** *Ele também monta a planilha no Sheets de mentira e confere que
+a aba fica com as mesmas fórmulas, valores, mesclagens, menus, caixas e grupos da planilha gerada, e que o plano B da
+mesclagem deixa a aba igual. O `arnes-amaldicoada.py`, rodado à mão, planta trinta defeitos, um de cada vez, e cada um
+acende a checagem dele. O `medidas/ver-aba.py` desenha a aba (`--aba "FICHA AMALDIÇOADA"`), e eu olhei.*
+
+**O que só o Sheets diz, e falta ele testar:** *o tempo de verdade; se a cópia de formato traz a mesclagem (se não trouxer, o
+registro diz "FILEIRAS MESCLADAS UMA A UMA" e a montagem demora mais); o `setDataValidations` com os menus e as caixas de
+seleção juntos; abrir e fechar grupo dentro de grupo; a ligação dos saltos; a página de 1.596 px no monitor dele e no
+celular; e se os textos compridos das aptidões cabem na caixa.*
+
+**Achado no livro, para ele decidir:** *a tabela `Base por Classe` dá `9 m` e `18 m` para "`Cura` e `Onda`", e a tabela
+`Formas` diz que a `Onda` é uma esfera de raio `3 m` centrada em quem conjura. A aba segue a tabela `Formas`, como o estudo.*
+
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
 Os dois capítulos vendorizados vieram **byte a byte idênticos** do commit

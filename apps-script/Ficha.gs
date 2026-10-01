@@ -624,7 +624,9 @@ function relogio_() {
 
 // Se a montagem das abas passar disto, o acabamento fica para a função acabar(): seis minutos é o teto do Apps
 // Script, e o acabamento (cor de estado, notas, travas, caixa da paleta) pode ser refeito sozinho, a montagem não.
-var TETO_DA_MONTAGEM_ = 270000;
+// 01/10/2026: o Mizuki mediu o acabamento em 90 s (as travas sozinhas levam 83). O teto desceu de 270 para 250 s,
+// para o acabamento que começa na última hora ainda caber nos 360.
+var TETO_DA_MONTAGEM_ = 250000;
 
 function construir() {
   var ss = SpreadsheetApp.getActive();
