@@ -225,7 +225,7 @@ var ABAS = [
     "grupos":{"lin":[[11,31,false,1],[35,40,false,1],[44,299,false,1],[303,308,false,1],[312,332,true,1],[336,346,true,1],[350,368,true,1],[372,413,false,1],[417,489,false,1],[493,525,false,1],[130,213,true,2],[216,299,true,2],[390,413,true,2],[456,489,true,2],[46,51,false,2],[54,64,false,2],[67,72,true,2],[75,85,true,2],[88,93,true,2],[96,106,true,2],[109,114,true,2],[117,127,true,2],[132,137,true,3],[140,150,true,3],[153,158,true,3],[161,171,true,3],[174,179,true,3],[182,192,true,3],[195,200,true,3],[203,213,true,3],[218,223,true,3],[226,236,true,3],[239,244,true,3],[247,257,true,3],[260,265,true,3],[268,278,true,3],[281,286,true,3],[289,299,true,3],[314,319,true,2],[322,332,true,2],[374,379,false,2],[382,387,true,2],[392,397,true,3],[400,405,true,3],[408,413,true,3],[423,436,false,2],[440,453,true,2],[459,472,true,3],[476,489,true,3],[498,505,false,2],[508,515,true,2],[518,525,true,2]],"col":[]},
     "formatos":[["D40","\"Classe \"0"],["D45","\"Classe \"0"],["J45","\"Classe \"0"],["P45","\"Classe \"0"]],
     "condicional":[{"faixas":["D9:T525"],"contem":"⚠","fundo":"#C2334D","fonte":"#FFFFFF"},{"faixas":["D9:T525"],"comeca":"! ","fonte":"#D89B3A"},{"faixas":["D9:T525"],"contem":"dê um nome","fonte":"#D89B3A"}],
-    "copias":[[45,64,[66,87,108,131,152,173,194,217,238,259,280,313]],[373,379,[391,399]],[421,436,[438,457,474]]],
+    "copias":[[45,64,[66,87,108,131,152,173,194,217,238,259,280,313],4,20],[373,379,[391,399],4,20],[421,436,[438,457,474],4,20]],
     "validacao_em_matriz":true,
     "caixas":[[8,58,2],[14,58,2],[20,58,2]]
   },
@@ -875,7 +875,7 @@ function montarAba_(aba, spec) {
   var copias = spec.copias || [];
   var naCopia = function (m) {
     return copias.some(function (k) {
-      return k[2].some(function (d) { return m[0] >= d && m[2] <= d + k[1] - k[0]; });
+      return m[1] >= (k[3] || 1) && m[3] <= (k[4] || nc) && k[2].some(function (d) { return m[0] >= d && m[2] <= d + k[1] - k[0]; });
     });
   };
   var mesclar = function (lista) {
@@ -891,19 +891,21 @@ function montarAba_(aba, spec) {
   if (copias.length) {
     var veio = true;
     copias.forEach(function (k) {
-      var alt = k[1] - k[0] + 1, molde = aba.getRange(k[0], 1, alt, nc);
+      // k[3] e k[4] são a primeira e a última coluna da cópia: a lombada fica de fora, porque as mesclagens dela
+      // atravessam as fileiras, e o Sheets não copia meia mesclagem
+      var alt = k[1] - k[0] + 1, c1 = k[3] || 1, larg = (k[4] || nc) - c1 + 1, molde = aba.getRange(k[0], c1, alt, larg);
       k[2].forEach(function (d) {
-        molde.copyTo(aba.getRange(d, 1, alt, nc), SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
+        molde.copyTo(aba.getRange(d, c1, alt, larg), SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
       });
       // a prova de que a mesclagem veio com o formato: a primeira mesclagem da última cópia tem de existir
       var ultima = k[2][k[2].length - 1];
-      var prova = spec.merges.filter(function (m) { return m[0] >= ultima && m[2] <= ultima + alt - 1; })[0];
+      var prova = spec.merges.filter(function (m) { return m[0] >= ultima && m[2] <= ultima + alt - 1 && m[1] >= c1 && m[3] <= c1 + larg - 1; })[0];
       if (prova && !aba.getRange(prova[0], prova[1]).isPartOfMerge()) veio = false;
     });
     if (!veio) {
       // o Sheets não trouxe as mesclagens: desfaz o que tiver vindo pela metade e faz uma a uma, como nas outras abas
       copias.forEach(function (k) {
-        k[2].forEach(function (d) { aba.getRange(d, 1, k[1] - k[0] + 1, nc).breakApart(); });
+        k[2].forEach(function (d) { aba.getRange(d, k[3] || 1, k[1] - k[0] + 1, (k[4] || nc) - (k[3] || 1) + 1).breakApart(); });
       });
       mesclar(spec.merges.filter(naCopia));
     }

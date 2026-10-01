@@ -759,7 +759,6 @@ def trocas(layout, CAT=None, TEC=None):
         for j, v in enumerate(linha_de_feitico(2 + i, lugar)):
             D.poe(cF + j, 2 + i, v)
     FEIT = lambda k, i=None: (_abs(col[k], 2 + i, DA) if i is not None else _faixa(col[k], 2, col[k], 1 + len(lugares)))
-    primeira_uniforme = nomes.index("tem")
 
     # --- as contas com nome
     passivas_c = [celulas_da_passiva(*p) for p in G["passivas"]]
@@ -1381,7 +1380,8 @@ def aba(layout, tr):
     def copias(cartas, altura):
         linhas = fileiras(cartas)
         cheias = [r for r in linhas if sum(1 for r0, _ in cartas if r0 == r) == 3]
-        return [cheias[0], cheias[0] + altura - 1, cheias[1:]] if len(cheias) > 1 else None
+        # só as colunas das cartas: a lombada tem mesclagens que atravessam as fileiras, e o Sheets não copia meia mesclagem
+        return [cheias[0], cheias[0] + altura - 1, cheias[1:], C1, CN] if len(cheias) > 1 else None
     copia = [c for c in (copias(G["feiticos"] + G["libs"], ALT_F), copias(G["passivas"], ALT_P), copias(G["aptidoes"], ALT_A)) if c]
 
     corpo = f"D{G['saltos'] + 2}:T{LIN}"

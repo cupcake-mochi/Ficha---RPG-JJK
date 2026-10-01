@@ -331,7 +331,7 @@ function montarAba_(aba, spec) {
   var copias = spec.copias || [];
   var naCopia = function (m) {
     return copias.some(function (k) {
-      return k[2].some(function (d) { return m[0] >= d && m[2] <= d + k[1] - k[0]; });
+      return m[1] >= (k[3] || 1) && m[3] <= (k[4] || nc) && k[2].some(function (d) { return m[0] >= d && m[2] <= d + k[1] - k[0]; });
     });
   };
   var mesclar = function (lista) {
@@ -347,19 +347,21 @@ function montarAba_(aba, spec) {
   if (copias.length) {
     var veio = true;
     copias.forEach(function (k) {
-      var alt = k[1] - k[0] + 1, molde = aba.getRange(k[0], 1, alt, nc);
+      // k[3] e k[4] são a primeira e a última coluna da cópia: a lombada fica de fora, porque as mesclagens dela
+      // atravessam as fileiras, e o Sheets não copia meia mesclagem
+      var alt = k[1] - k[0] + 1, c1 = k[3] || 1, larg = (k[4] || nc) - c1 + 1, molde = aba.getRange(k[0], c1, alt, larg);
       k[2].forEach(function (d) {
-        molde.copyTo(aba.getRange(d, 1, alt, nc), SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
+        molde.copyTo(aba.getRange(d, c1, alt, larg), SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
       });
       // a prova de que a mesclagem veio com o formato: a primeira mesclagem da última cópia tem de existir
       var ultima = k[2][k[2].length - 1];
-      var prova = spec.merges.filter(function (m) { return m[0] >= ultima && m[2] <= ultima + alt - 1; })[0];
+      var prova = spec.merges.filter(function (m) { return m[0] >= ultima && m[2] <= ultima + alt - 1 && m[1] >= c1 && m[3] <= c1 + larg - 1; })[0];
       if (prova && !aba.getRange(prova[0], prova[1]).isPartOfMerge()) veio = false;
     });
     if (!veio) {
       // o Sheets não trouxe as mesclagens: desfaz o que tiver vindo pela metade e faz uma a uma, como nas outras abas
       copias.forEach(function (k) {
-        k[2].forEach(function (d) { aba.getRange(d, 1, k[1] - k[0] + 1, nc).breakApart(); });
+        k[2].forEach(function (d) { aba.getRange(d, k[3] || 1, k[1] - k[0] + 1, (k[4] || nc) - (k[3] || 1) + 1).breakApart(); });
       });
       mesclar(spec.merges.filter(naCopia));
     }

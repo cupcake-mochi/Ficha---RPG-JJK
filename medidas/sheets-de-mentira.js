@@ -10,8 +10,8 @@ const vm = require('vm');
 // ---------------------------------------------------------------------------------------------
 const REAIS = {
   Spreadsheet: 'getSpreadsheetLocale setSpreadsheetLocale getSheetByName insertSheet deleteSheet getSheets setActiveSheet moveActiveSheet getRange getRangeByName setNamedRange getNamedRanges removeNamedRange getId toast getActiveSheet getName getNumSheets getRangeList getUrl getSpreadsheetTimeZone rename',
-  Sheet: 'getName setName setHiddenGridlines getMaxColumns getMaxRows deleteColumns deleteRows deleteColumn deleteRow insertColumnsAfter insertRowsAfter insertColumnAfter insertRowAfter setColumnWidths setColumnWidth setRowHeights setRowHeight getRange getRangeList hideSheet showSheet isSheetHidden setConditionalFormatRules getConditionalFormatRules clearConditionalFormatRules setRowGroupControlPosition setColumnGroupControlPosition getRowGroup getColumnGroup getRowGroupDepth getColumnGroupDepth getRowGroupControlPosition getColumnGroupControlPosition getProtections getDataRange getLastRow getLastColumn getImages getParent getSheetId activate getIndex setFrozenRows setFrozenColumns getColumnWidth getRowHeight hideColumns showColumns hideRows showRows collapseAllColumnGroups collapseAllRowGroups expandAllColumnGroups expandAllRowGroups setTabColor protect getSheetName getSheetValues clear',
-  Range: 'setBackgrounds setFontFamilies setFontSizes setFontColors setFontWeights setHorizontalAlignments setVerticalAlignments setFontStyles setWraps setValues setValue getValue getValues getDisplayValue getDisplayValues setFormula setFormulas getFormula getFormulas getFormulaR1C1 getFormulasR1C1 setFormulaR1C1 setFormulasR1C1 setTextRotation merge mergeAcross mergeVertically breakApart isPartOfMerge getMergedRanges getNumRows getNumColumns getRow getColumn getLastRow getLastColumn getCell getA1Notation getSheet setBorder insertCheckboxes removeCheckboxes setNumberFormat setNumberFormats getNumberFormat setNote setNotes clearNote getNote getNotes shiftRowGroupDepth shiftColumnGroupDepth setDataValidation setDataValidations getDataValidation clearDataValidations protect getBackground getBackgrounds getFontColor getFontColors setBackground setFontColor setFontFamily setFontSize setFontWeight setFontStyle setFontLine setHorizontalAlignment setVerticalAlignment setWrap setWrapStrategy clearContent clearFormat clear check uncheck isChecked activate offset copyTo getHeight getWidth isBlank setShowHyperlink setRichTextValue getRichTextValue getGridId',
+  Sheet: 'getName setName setHiddenGridlines getMaxColumns getMaxRows deleteColumns deleteRows deleteColumn deleteRow insertColumnsAfter insertRowsAfter insertColumnAfter insertRowAfter setColumnWidths setColumnWidth setRowHeights setRowHeight getRange getRangeList hideSheet showSheet isSheetHidden setConditionalFormatRules getConditionalFormatRules clearConditionalFormatRules setRowGroupControlPosition setColumnGroupControlPosition getRowGroup getColumnGroup getRowGroupDepth getColumnGroupDepth getRowGroupControlPosition getColumnGroupControlPosition getProtections getDataRange getLastRow getLastColumn getImages getParent getSheetId activate getIndex setFrozenRows setFrozenColumns getColumnWidth getRowHeight hideColumns showColumns hideRows showRows collapseAllColumnGroups collapseAllRowGroups expandAllColumnGroups expandAllRowGroups expandRowGroupsUpToDepth expandColumnGroupsUpToDepth setTabColor protect getSheetName getSheetValues clear',
+  Range: 'setBackgrounds setFontFamilies setFontSizes setFontColors setFontWeights setHorizontalAlignments setVerticalAlignments setFontStyles setWraps setValues setValue getValue getValues getDisplayValue getDisplayValues setFormula setFormulas getFormula getFormulas getFormulaR1C1 getFormulasR1C1 setFormulaR1C1 setFormulasR1C1 setTextRotation merge mergeAcross mergeVertically breakApart isPartOfMerge getMergedRanges getNumRows getNumColumns getRow getColumn getLastRow getLastColumn getCell getA1Notation getSheet setBorder insertCheckboxes removeCheckboxes setNumberFormat setNumberFormats getNumberFormat setNote setNotes clearNote getNote getNotes shiftRowGroupDepth shiftColumnGroupDepth setDataValidation setDataValidations getDataValidation getDataValidations clearDataValidations protect getBackground getBackgrounds getFontColor getFontColors setBackground setFontColor setFontFamily setFontSize setFontWeight setFontStyle setFontLine setHorizontalAlignment setVerticalAlignment setWrap setWrapStrategy clearContent clearFormat clear check uncheck isChecked activate offset copyTo getHeight getWidth isBlank setShowHyperlink setRichTextValue getRichTextValue getGridId',
   RangeList: 'setBorder check uncheck setBackground setFontColor getRanges activate clearContent insertCheckboxes removeCheckboxes setValue setNote setFormula setNumberFormat setFontFamily setFontSize setHorizontalAlignment setVerticalAlignment setWrap setFontWeight setFontStyle clear clearNote clearFormat clearDataValidations setDataValidation breakApart setTextRotation trimWhitespace',
   Group: 'collapse expand getControlIndex getDepth getRange isCollapsed remove',
   Protection: 'setDescription getDescription setWarningOnly isWarningOnly remove getRange addEditor addEditors removeEditor removeEditors getEditors canEdit setRange getProtectionType canDomainEdit setDomainEdit getRangeName setRangeName setNamedRange setUnprotectedRanges getUnprotectedRanges',
@@ -38,6 +38,13 @@ function rigoroso(tipo, obj) {
 
 const letras = (c) => { let s = ''; while (c > 0) { const m = (c - 1) % 26; s = String.fromCharCode(65 + m) + s; c = Math.floor((c - 1) / 26); } return s; };
 const numero = (t) => [...t].reduce((n, ch) => n * 26 + ch.charCodeAt(0) - 64, 0);
+// A fórmula como ela fica quando o Sheets a copia `dl` linhas abaixo e `dc` colunas à direita: a linha e a coluna de
+// toda referência sem cifrão andam, e o que está entre aspas fica como está. É a mesma conta do `desloca` do
+// ficha/emitir_gs.py, que decide quais fórmulas saem do ABAS para serem preenchidas por cópia.
+function deslocaFormula(f, dl, dc) {
+  return f.split(/("(?:[^"]|"")*")/).map((p, i) => (i % 2 ? p : p.replace(/(?<![A-Za-z0-9_.])(\$?)([A-Z]{1,3})(\$?)(\d+)(?![A-Za-z0-9_(])/g,
+    (_, ac, col, al, lin) => ac + (ac || !dc ? col : letras(numero(col) + dc)) + al + (al ? lin : Number(lin) + dl)))).join('');
+}
 function partes(a1) {
   const m = /^(?:'([^']+)'|([^!']+))!(.+)$/.exec(a1);
   const aba = m ? (m[1] || m[2]) : null, resto = (m ? m[3] : a1).replace(/\$/g, '');
@@ -138,6 +145,47 @@ function criaSheets(FICHA_SRC, GS, extras) {
         isPartOfMerge: () => { let algum = false; cada((i, j) => { if (blocoDe(i, j)) algum = true; }); return algum; },
         getMergedRanges: () => { const vistos = new Set(), out = []; cada((i, j) => { const m = blocoDe(i, j); if (m && !vistos.has(m)) { vistos.add(m); out.push(range(m[0], m[1], m[2] - m[0] + 1, m[3] - m[1] + 1)); } }); return out; },
         setBorder: (...a) => { borda(r, c, nl, nc, a); return R; },
+        breakApart: () => { A.merges = A.merges.filter((m) => !(m[0] >= r && m[2] <= r + nl - 1 && m[1] >= c && m[3] <= c + nc - 1)); return R; },
+        // A cópia. Sem tipo, é a colagem comum: valor, fórmula (com as referências andando), formato, formato de número
+        // e mesclagem. Com PASTE_FORMAT, só o formato, o formato de número e a mesclagem. O destino que é um múltiplo
+        // do molde recebe o molde repetido, como no Sheets.
+        copyTo: (destino, tipo, transposto) => {
+          if (!destino || typeof destino.getA1Notation !== 'function') throw new Error('copyTo sem faixa de destino');
+          if (tipo !== undefined && tipo !== 'PASTE_NORMAL' && tipo !== 'PASTE_FORMAT' && tipo !== 'PASTE_FORMULA') throw new Error('copyTo com um tipo que o teste não imita: ' + tipo);
+          if (transposto) throw new Error('copyTo transposto: o teste não imita');
+          if (destino.getSheet().getName() !== nome) throw new Error('copyTo para outra aba: o teste não imita');
+          const dr = destino.getRow(), dcl = destino.getColumn(), dnl = destino.getNumRows(), dnc = destino.getNumColumns();
+          if (dnl % nl || dnc % nc) throw new Error(`copyTo: o destino ${destino.getA1Notation()} não é múltiplo do molde ${R.getA1Notation()}`);
+          const formato = tipo === undefined || tipo === 'PASTE_NORMAL' || tipo === 'PASTE_FORMAT', conteudo = tipo !== 'PASTE_FORMAT';
+          const doMolde = A.merges.filter((m) => m[0] >= r && m[2] <= r + nl - 1 && m[1] >= c && m[3] <= c + nc - 1).map((m) => m.slice());
+          if (A.merges.some((m) => m[0] <= r + nl - 1 && m[2] >= r && m[1] <= c + nc - 1 && m[3] >= c && !doMolde.some((x) => x.join() === m.join()))) throw new Error('copyTo: o molde corta uma mesclagem ao meio, em ' + R.getA1Notation());
+          for (let br = 0; br < dnl; br += nl) for (let bc = 0; bc < dnc; bc += nc) {
+            const dl = dr + br - r, dc = dcl + bc - c;
+            for (let i = r; i < r + nl; i++) for (let j = c; j < c + nc; j++) {
+              const de = i + ',' + j, para = (i + dl) + ',' + (j + dc);
+              if (conteudo) {
+                A.v.delete(para); A.f.delete(para);
+                if (A.f.has(de)) { const nova = deslocaFormula(A.f.get(de), dl, dc); confereFormula(nome + '!' + letras(j + dc) + (i + dl), nova); A.f.set(para, nova); }
+                else if (A.v.has(de)) A.v.set(para, A.v.get(de));
+              }
+              if (formato) {
+                if (A.est.has(de)) A.est.set(para, Object.assign({}, A.est.get(de))); else A.est.delete(para);
+                if (A.fmt.has(de)) A.fmt.set(para, A.fmt.get(de)); else A.fmt.delete(para);
+              }
+            }
+            if (formato) {
+              const l1 = dr + br, c1 = dcl + bc;
+              A.merges = A.merges.filter((m) => !(m[0] >= l1 && m[2] <= l1 + nl - 1 && m[1] >= c1 && m[3] <= c1 + nc - 1));
+              if (P.copiaTrazMesclagem !== false) doMolde.forEach((m) => { range(m[0] + dl, m[1] + dc, m[2] - m[0] + 1, m[3] - m[1] + 1).merge(); CHAMADAS['Range.merge']--; });
+            }
+          }
+          return R;
+        },
+        setDataValidations: (m) => { matriz(m, nl, nc, 'setDataValidations'); cada((i, j, a, b) => { const k = i + ',' + j, regra = m[a][b];
+          if (regra !== null && !(regra && regra.__regra)) throw new Error('setDataValidations com uma regra que não foi montada');
+          A.dv.delete(k); A.caixas.delete(k);
+          if (regra && regra.caixa) A.caixas.add(k); else if (regra) A.dv.set(k, regra); }); return R; },
+        getDataValidations: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.dv.get((r + i) + ',' + (c + j)) || null)),
         insertCheckboxes: () => { cada((i, j) => A.caixas.add(i + ',' + j)); return R; },
         setNumberFormat: (f) => { if (typeof f !== 'string') throw new Error('setNumberFormat quer texto'); cada((i, j) => A.fmt.set(i + ',' + j, f)); return R; },
         setNote: (t) => { if (t === '' || t === null) A.notas.delete(r + ',' + c); else A.notas.set(r + ',' + c, String(t)); return R; },
@@ -163,8 +211,16 @@ function criaSheets(FICHA_SRC, GS, extras) {
       let a = idx, b = idx;
       while ((prof.get(a - 1) || 0) >= d) a--;
       while ((prof.get(b + 1) || 0) >= d) b++;
-      return rigoroso('Group', { collapse: () => { fechados.push([a, b, d]); }, getDepth: () => d, isCollapsed: () => fechados.some((g) => g[0] === a && g[1] === b && g[2] === d) });
+      const eh = (g) => g[0] === a && g[1] === b && g[2] === d;
+      return rigoroso('Group', { collapse: () => { if (!fechados.some(eh)) fechados.push([a, b, d]); },
+        expand: () => { const i = fechados.findIndex(eh); if (i >= 0) fechados.splice(i, 1); },
+        getDepth: () => d, isCollapsed: () => fechados.some(eh) });
     };
+    // todos os grupos que as profundidades formam: em cada profundidade, cada corrida de linhas que chega nela
+    const todosOsGrupos = (prof) => { const out = [], max = Math.max(0, ...prof.values()), fim = Math.max(0, ...prof.keys());
+      for (let d = 1; d <= max; d++) { let ini = null; for (let i = 1; i <= fim + 1; i++) { const dentro = (prof.get(i) || 0) >= d;
+        if (dentro && ini === null) ini = i; if (!dentro && ini !== null) { out.push([ini, i - 1, d]); ini = null; } } }
+      return out; };
     A.api = rigoroso('Sheet', {
       getName: () => A.nome, setHiddenGridlines: (b) => { A.grade = !b; }, getMaxColumns: () => A.maxC, getMaxRows: () => A.maxR,
       deleteColumns: (ini, n) => { if (ini + n - 1 !== A.maxC) throw new Error('o teste só apaga colunas do fim'); A.maxC -= n; },
@@ -176,6 +232,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
       getRange: (a, b, c, d) => (typeof a === 'string' ? porA1(a) : range(a, b, c, d)),
       getRangeList: (lista) => { const rs = lista.map(porA1); return rigoroso('RangeList', {
         setBorder: (...a) => { rs.forEach((x) => borda(x.getRow(), x.getColumn(), x.getNumRows(), x.getNumColumns(), a)); },
+        setNumberFormat: (f) => { rs.forEach((x) => { x.setNumberFormat(f); CHAMADAS['Range.setNumberFormat']--; }); },
         check: () => rs.forEach((x) => { if (!A.caixas.has(x.getRow() + ',' + x.getColumn())) throw new Error('check numa célula que não é caixa de seleção: ' + x.getA1Notation()); x.setValue(true); }),
         uncheck: () => rs.forEach((x) => { if (!A.caixas.has(x.getRow() + ',' + x.getColumn())) throw new Error('uncheck numa célula que não é caixa de seleção: ' + x.getA1Notation()); x.setValue(false); }),
       }); },
@@ -185,6 +242,8 @@ function criaSheets(FICHA_SRC, GS, extras) {
       setRowGroupControlPosition: (p) => { if (p !== 'BEFORE' && p !== 'AFTER') throw new Error('posição de controle inválida'); A.posL = p; },
       setColumnGroupControlPosition: (p) => { if (p !== 'BEFORE' && p !== 'AFTER') throw new Error('posição de controle inválida'); A.posC = p; },
       getRowGroup: (i, d) => grupo(A.profL, A.fechL, i, d, 'getRowGroup'), getColumnGroup: (i, d) => grupo(A.profC, A.fechC, i, d, 'getColumnGroup'),
+      collapseAllRowGroups: () => { A.fechL.length = 0; todosOsGrupos(A.profL).forEach((g) => A.fechL.push(g)); },
+      getSheetId: () => 1000 + P.abas.indexOf(A),
       getProtections: () => A.prot.map((p) => p.api),
       getDataRange: () => range(1, 1, Math.max(1, A.api.getLastRow()), Math.max(1, A.api.getLastColumn())),
       getLastRow: () => Math.max(0, ...[...A.v.keys(), ...A.f.keys()].map((k) => Number(k.split(',')[0]))),
@@ -221,10 +280,12 @@ function criaSheets(FICHA_SRC, GS, extras) {
       newDataValidation: () => { const o = { __regra: true }; const api = rigoroso('DataValidationBuilder', {
         setAllowInvalid: (b) => { o.invalido = b; return api; },
         requireValueInList: (lista, seta) => { if (!Array.isArray(lista) || !lista.length) throw new Error('lista de menu vazia'); o.lista = lista; return api; },
+        requireCheckbox: () => { o.caixa = true; return api; },
         requireValueInRange: (r, seta) => { if (!r || typeof r.getA1Notation !== 'function') throw new Error('requireValueInRange sem faixa'); o.faixa = r.getSheet().getName() + '!' + r.getA1Notation(); return api; },
         build: () => o }); return api; },
       newConditionalFormatRule: () => { const o = { __regraCf: true }; const api = rigoroso('ConditionalFormatRuleBuilder', {
         whenFormulaSatisfied: (f) => { o.formula = f; return api; }, whenTextContains: (t) => { if (!t) throw new Error('whenTextContains sem texto'); o.contem = t; return api; },
+        whenTextStartsWith: (t) => { if (!t) throw new Error('whenTextStartsWith sem texto'); o.comeca = t; return api; },
         setBackground: (c) => { o.fundo = c; return api; }, setFontColor: (c) => { o.fonte = c; return api; },
         setRanges: (rs) => { if (!Array.isArray(rs) || !rs.length || !rs.every((x) => x && typeof x.getA1Notation === 'function')) throw new Error('setRanges sem faixa'); o.faixas = rs.map((x) => x.getA1Notation()); return api; },
         build: () => { if (!o.faixas) throw new Error('regra de cor sem faixa'); return o; } }); return api; },
@@ -238,6 +299,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
   ctx.SpreadsheetApp = new Proxy(ctx.SpreadsheetApp, { get(o, k) {
     if (k === 'BorderStyle') return new Proxy({}, { get: (_, n) => { if (!['SOLID', 'SOLID_MEDIUM', 'SOLID_THICK', 'DASHED', 'DOTTED', 'DOUBLE'].includes(n)) throw new Error('BorderStyle.' + String(n) + ' não existe'); return n; } });
     if (k === 'GroupControlTogglePosition') return { BEFORE: 'BEFORE', AFTER: 'AFTER' };
+    if (k === 'CopyPasteType') return new Proxy({}, { get: (_, n) => { if (!['PASTE_NORMAL', 'PASTE_FORMAT', 'PASTE_FORMULA', 'PASTE_VALUES', 'PASTE_NO_BORDERS', 'PASTE_DATA_VALIDATION', 'PASTE_CONDITIONAL_FORMATTING', 'PASTE_COLUMN_WIDTHS'].includes(n)) throw new Error('CopyPasteType.' + String(n) + ' não existe'); return n; } });
     if (k === 'ProtectionType') return { RANGE: 'RANGE', SHEET: 'SHEET' };
     if (k === 'ValueType') return { IMAGE: 'IMAGE' };
     return o[k];
@@ -269,4 +331,4 @@ function retrato(P) {
   return { ordem: P.abas.map((a) => a.nome), idioma: P.locale, nomeados: Object.fromEntries(Object.keys(P.nomeados).sort().map((n) => [n, P.nomeados[n].getSheet().getName() + '!' + P.nomeados[n].getA1Notation()])), abas };
 }
 
-module.exports = { criaSheets, retrato, partes, letras, numero, CHAMADAS, zeraChamadas: () => { for (const k of Object.keys(CHAMADAS)) delete CHAMADAS[k]; } };
+module.exports = { criaSheets, retrato, partes, letras, numero, deslocaFormula, CHAMADAS, zeraChamadas: () => { for (const k of Object.keys(CHAMADAS)) delete CHAMADAS[k]; } };
