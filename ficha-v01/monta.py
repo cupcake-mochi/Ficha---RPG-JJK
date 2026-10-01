@@ -118,6 +118,16 @@ _ABA_FP = ficha_pessoal.aba(LAYOUT, _FP)
 LAYOUT["abas"].insert(_pos_fp, _ABA_FP)
 print(f"a Ficha Pessoal: {_ABA_FP['linhas']} linha(s), {_ABA_FP['colunas']} coluna(s), {len(_ABA_FP['celulas'])} celula(s)")
 
+# 01/10/2026: a FICHA AMALDICOADA, depois da FICHA, e a aba oculta das contas dela, a DADOS_AM, depois da DADOS.
+# Tambem nasce inteira no gerador, do desenho que o Mizuki fechou por estudo. Vem depois da FICHA PESSOAL porque le
+# o cabecalho e a lombada da FICHA ja corrigidos, e nao muda nenhuma celula das outras abas. Ver ficha_amaldicoada.py.
+import ficha_amaldicoada
+_FAM = ficha_amaldicoada.trocas(LAYOUT)
+_ABA_AM = ficha_amaldicoada.aplica(LAYOUT, _FAM)
+print(f"a Ficha Amaldiçoada: {_ABA_AM['linhas']} linha(s), {_ABA_AM['colunas']} coluna(s), {len(_ABA_AM['celulas'])} celula(s), "
+      f"{len(_ABA_AM['mescladas'])} mesclagem(ns), {len(_ABA_AM['grupos']['linhas'])} grupo(s) de linhas; "
+      f"a DADOS_AM: {_FAM['aba_dados']['linhas']} linha(s), {_FAM['aba_dados']['colunas']} coluna(s)")
+
 # 01/10/2026: a INVOCACAO, o CATALOGO e a DADOS_INV saem da ficha, decisao do Mizuki quando o construir() estourou
 # os seis minutos do Apps Script. Saem por ultimo: o GLOSSARIO nasce na posicao da INVOCACAO e usa os estilos do
 # CATALOGO. A montagem para se alguma aba que fica ainda citar uma delas. Ver sem_invocacao.py.
@@ -257,7 +267,11 @@ def _extras(a):
     out = {"notas": sorted([k, v] for k, v in a.get("notas", {}).items()),
            "grupos": {"lin": fundos(a["grupos"]["linhas"]), "col": fundos(a["grupos"]["colunas"])} if a.get("grupos") else None,
            "formatos": fmt if a.get("grupos") else [], "condicional": a.get("condicional_gs", []),
-           "protegidas": a.get("protegidas", [])}
+           "protegidas": a.get("protegidas", []),
+           # 01/10/2026, a FICHA AMALDICOADA: as fileiras de cartas que sao copia da primeira, a validacao numa matriz so,
+           # e, na DADOS_AM, as colunas que o script preenche para baixo a partir da primeira linha
+           "copias": a.get("copias", []), "validacao_em_matriz": a.get("validacao_em_matriz", False),
+           "abaixo": a.get("abaixo", [])}
     return {k: v for k, v in out.items() if v}
 
 gs, celulas, pecas = emitir_gs.escrever(

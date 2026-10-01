@@ -210,6 +210,176 @@ def _larguras(ws, limpa=None):
             out.append([dim.min, dim.max, _px_largura(dim.width, limpa)])
     return sorted(out)
 
+_TEXTO_DE_FORMULA = re.compile(r'("(?:[^"]|"")*")')
+_REFERENCIA = re.compile(r"(?<![A-Za-z0-9_.])(\$?)([A-Z]{1,3})(\$?)(\d+)(?![A-Za-z0-9_(])")
+_MINIMO_DO_BLOCO = 8
+
+
+def desloca(formula, linhas):
+    """a fórmula como ela fica `linhas` abaixo quando o Sheets a copia: a linha de toda referência sem cifrão anda,
+    e o que está entre aspas fica como está. O sheets-de-mentira.js faz a mesma conta, do lado do script."""
+    def anda(m):
+        return m.group(0) if m.group(3) else f"{m.group(1)}{m.group(2)}{int(m.group(4)) + linhas}"
+    partes = _TEXTO_DE_FORMULA.split(formula)
+    return "".join(p if i % 2 else _REFERENCIA.sub(anda, p) for i, p in enumerate(partes))
+
+
+def _blocos_para_baixo(vals):
+    """os retângulos de fórmula que são a primeira linha copiada para baixo: [primeira linha, coluna, última linha,
+    última coluna]. A aba de contas tem uma linha por feitiço com cem fórmulas iguais a menos da linha: escritas
+    todas, elas eram meio megabyte de script. Só a primeira linha vai para o ABAS, e o construir() preenche o resto
+    com uma cópia, que é o que o Sheets faz quando alguém arrasta a alça da célula."""
+    por = {(t[0], t[1]): t for t in vals}
+    cols = {}
+    for (r, c), t in por.items():
+        if isinstance(t[2], str) and t[2].startswith("="):
+            cols.setdefault(c, []).append(r)
+    corridas = {}
+    for c, linhas in cols.items():
+        linhas.sort()
+        i = 0
+        while i < len(linhas):
+            ra, j = linhas[i], i
+            base = por[(ra, c)]
+            while (j + 1 < len(linhas) and linhas[j + 1] == linhas[j] + 1
+                   and por[(linhas[j + 1], c)][2] == desloca(base[2], linhas[j + 1] - ra) and por[(linhas[j + 1], c)][3:] == base[3:]):
+                j += 1
+            if j > i:
+                corridas.setdefault((ra, linhas[j]), []).append(c)
+            i = j + 1
+    blocos = []
+    for (ra, rb), cs in corridas.items():
+        cs.sort()
+        k = 0
+        while k < len(cs):
+            m = k
+            while m + 1 < len(cs) and cs[m + 1] == cs[m] + 1:
+                m += 1
+            if (rb - ra) * (m - k + 1) >= _MINIMO_DO_BLOCO:
+                blocos.append([ra, cs[k], rb, cs[m]])
+            k = m + 1
+    return sorted(blocos)
+
+
+# ---------------------------------------------------------------------------------------------
+# AS FILEIRAS QUE SÃO CÓPIA. A FICHA AMALDIÇOADA tem treze fileiras de cartas de feitiço iguais, e escrita por
+# extenso ela pesava 200 KB no Ficha.gs. A aba declara `copias`: [primeira linha, última linha, [a linha onde cada
+# cópia começa]]. No ABAS fica só a primeira fileira, e, de cada cópia, só o que é DIFERENTE dela (a fórmula que
+# aponta para a conta de outro feitiço). O Ficha.gs refaz as cópias quando carrega (expandirCopias_, no modelo.gs.js),
+# e todo o resto do script continua lendo o ABAS inteiro. `expandir` é a mesma conta, aqui, para quem lê o Ficha.gs
+# de fora: o conferir-ficha-xlsx.py e o medidas/ver-aba.py.
+# ---------------------------------------------------------------------------------------------
+_A1 = re.compile(r"^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$")
+
+
+def _linhas_do_a1(a1):
+    m = _A1.match(a1.replace("$", ""))
+    return int(m.group(2)), int(m.group(4) or m.group(2))
+
+
+def _desce_a1(a1, dl):
+    m = _A1.match(a1)
+    return f"{m.group(1)}{int(m.group(2)) + dl}" + (f":{m.group(3)}{int(m.group(4)) + dl}" if m.group(3) else "")
+
+
+def _pares_de_copia(aba):
+    """[(primeira linha do molde, última, quantas linhas a cópia desce)]"""
+    return [(k[0], k[1], d - k[0]) for k in aba.get("copias") or [] for d in k[2]]
+
+
+def expandir(aba):
+    """a aba com as fileiras copiadas escritas por extenso. Não mexe na que não declara `copias`."""
+    pares = _pares_de_copia(aba)
+    if not pares:
+        return aba
+    out = dict(aba)
+    vals = list(aba["vals"])
+    escritas = {(t[0], t[1]) for t in vals}
+    fundos, merges = list(aba["fundos"]), list(aba["merges"])
+    bordas = [[b[0], b[1], b[2], list(b[3])] for b in aba.get("bordas") or []]
+    dv, caixas, formatos = list(aba.get("dv") or []), list(aba.get("caixas") or []), list(aba.get("formatos") or [])
+    for r1, r2, dl in pares:
+        dentro = lambda lin: r1 <= lin <= r2
+        vals += [[t[0] + dl, t[1]] + list(t[2:]) for t in aba["vals"] if dentro(t[0]) and (t[0] + dl, t[1]) not in escritas]
+        fundos += [[f[0] + dl] + list(f[1:]) for f in aba["fundos"] if dentro(f[0])]
+        merges += [[m[0] + dl, m[1], m[2] + dl, m[3]] for m in aba["merges"] if dentro(m[0]) and dentro(m[2])]
+        for b, molde in zip(bordas, aba.get("bordas") or []):
+            b[3] += [_desce_a1(x, dl) for x in molde[3] if all(dentro(l) for l in _linhas_do_a1(x))]
+        ja = {d[0] for d in aba.get("dv") or []}
+        dv += [[_desce_a1(d[0], dl), d[1]] for d in aba.get("dv") or []
+               if all(dentro(l) for l in _linhas_do_a1(d[0])) and _desce_a1(d[0], dl) not in ja]
+        caixas += [[c[0], c[1] + dl, c[2]] for c in aba.get("caixas") or [] if dentro(c[1]) and dentro(c[1] + c[2] - 1)]
+        ja = {f[0] for f in aba.get("formatos") or []}
+        formatos += [[_desce_a1(f[0], dl), f[1]] for f in aba.get("formatos") or []
+                     if all(dentro(l) for l in _linhas_do_a1(f[0])) and _desce_a1(f[0], dl) not in ja]
+    out.update(vals=vals, fundos=fundos, merges=merges, bordas=bordas)
+    for k, v in (("dv", dv), ("caixas", caixas), ("formatos", formatos)):
+        if k in aba:
+            out[k] = v
+    return out
+
+
+def _forma_canonica(aba):
+    """a aba numa forma que não depende da ordem das listas, para comparar duas"""
+    lista = lambda xs: sorted(json.dumps(x, ensure_ascii=False, sort_keys=True) for x in xs)
+    out = {k: v for k, v in aba.items() if k not in ("vals", "fundos", "merges", "bordas", "dv", "caixas", "formatos")}
+    for k in ("vals", "fundos", "merges", "dv", "caixas", "formatos"):
+        out[k] = lista(aba.get(k) or [])
+    out["bordas"] = [[b[0], b[1], b[2], sorted(b[3])] for b in aba.get("bordas") or []]
+    return json.dumps(out, ensure_ascii=False, sort_keys=True)
+
+
+def compactar(aba):
+    """a aba sem o que as cópias repetem do molde. Para se a cópia expandida não devolver a aba inteira, igual."""
+    pares = _pares_de_copia(aba)
+    if not pares:
+        return aba
+
+    def de_onde(lin):
+        """quantas linhas acima está a linha do molde de que esta é cópia, ou None"""
+        for r1, r2, dl in pares:
+            if r1 + dl <= lin <= r2 + dl:
+                return dl
+        return None
+    por = {(t[0], t[1]): t for t in aba["vals"]}
+    out = dict(aba)
+    out["vals"] = [t for t in aba["vals"]
+                   if de_onde(t[0]) is None or list(por.get((t[0] - de_onde(t[0]), t[1]), [None, None])[2:]) != list(t[2:])]
+    tem_fundo = {json.dumps(f) for f in aba["fundos"]}
+    out["fundos"] = [f for f in aba["fundos"] if de_onde(f[0]) is None or json.dumps([f[0] - de_onde(f[0])] + list(f[1:])) not in tem_fundo]
+    tem_mescla = {tuple(m) for m in aba["merges"]}
+    out["merges"] = [m for m in aba["merges"] if de_onde(m[0]) is None or de_onde(m[0]) != de_onde(m[2])
+                     or (m[0] - de_onde(m[0]), m[1], m[2] - de_onde(m[0]), m[3]) not in tem_mescla]
+
+    def sai_a1(a1, tem):
+        l1, l2 = _linhas_do_a1(a1)
+        dl = de_onde(l1)
+        return dl is not None and dl == de_onde(l2) and _desce_a1(a1.replace("$", ""), -dl) in tem
+    out["bordas"] = [[b[0], b[1], b[2], [x for x in b[3] if not sai_a1(x, set(b[3]))]] for b in aba.get("bordas") or []]
+    if aba.get("dv"):
+        tem_dv = {(d[0], d[1]) for d in aba["dv"]}
+        fora = lambda d: (de_onde(_linhas_do_a1(d[0])[0]) is not None and de_onde(_linhas_do_a1(d[0])[0]) == de_onde(_linhas_do_a1(d[0])[1])
+                          and (_desce_a1(d[0], -de_onde(_linhas_do_a1(d[0])[0])), d[1]) in tem_dv)
+        out["dv"] = [d for d in aba["dv"] if not fora(d)]
+    if aba.get("caixas"):
+        tem_cx = {tuple(c) for c in aba["caixas"]}
+        out["caixas"] = [c for c in aba["caixas"] if de_onde(c[1]) is None or (c[0], c[1] - de_onde(c[1]), c[2]) not in tem_cx]
+    if aba.get("formatos"):
+        tem_fmt = {(f[0], f[1]) for f in aba["formatos"]}
+        out["formatos"] = [f for f in aba["formatos"]
+                           if de_onde(_linhas_do_a1(f[0])[0]) is None or (_desce_a1(f[0], -de_onde(_linhas_do_a1(f[0])[0])), f[1]) not in tem_fmt]
+    if _forma_canonica(expandir(out)) != _forma_canonica(aba):
+        raise SystemExit(f"emitir_gs: as fileiras copiadas da aba {aba['nome']} nao voltam iguais: alguma copia difere do molde "
+                         "de um jeito que a copia nao sabe escrever (uma celula que o molde tem e a copia nao, por exemplo)")
+    return out
+
+
+def abas_do_script(caminho=None):
+    """o ABAS do Ficha.gs como o script o usa: com as fileiras copiadas escritas por extenso"""
+    src = open(caminho or SAIDA, encoding="utf-8").read()
+    return [expandir(a) for a in json.loads(re.search(r"var ABAS = ([\s\S]*?);\n\nvar ARTE = ", src).group(1))]
+
+
 def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None, extras=None):
     from collections import Counter
     import estilo as _est
@@ -307,7 +477,7 @@ def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None, extras=None):
         # tinta (colunas A:B) tem de ir até a última linha, e uma folga que nenhuma célula pinta ficaria
         # com o fundo comum — a lombada aparecia cortada nas paletas claras (19/09/2026). Essas duas
         # abas terminam no fim da lombada, ver ficha-v01/correcoes_borda.py.
-        ncols, nrows = max(max_c, 12), max_r + (0 if nome in ("FICHA", "FICHA PESSOAL", "INVOCAÇÃO") else 2)
+        ncols, nrows = max(max_c, 12), max_r + (0 if nome in ("FICHA", "FICHA PESSOAL", "FICHA AMALDIÇOADA", "INVOCAÇÃO") else 2)
         if imgs is not None:
             # a ficha-v01: a imagem entra DENTRO da celula, numa caixa medida no pixel do script, e a
             # arte vai no formato da caixa. [lin1, col1, lin2, col2, arte]
@@ -343,6 +513,12 @@ def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None, extras=None):
         # 01/10/2026: a nota da caixa, o grupo de linhas e de colunas, o formato de número, a cor de aviso e as
         # faixas travadas. Só a aba que nasce no gerador (a FICHA PESSOAL) declara, e as outras saem como saíam.
         abas[-1].update((extras or {}).get(nome, {}))
+        # a aba que pede: as fórmulas que são a linha de cima copiada saem do ABAS, e fica a lista dos retângulos
+        if abas[-1].get("abaixo"):
+            blocos = _blocos_para_baixo(vals)
+            fora = {(r, c) for ra, c1, rb, c2 in blocos for r in range(ra + 1, rb + 1) for c in range(c1, c2 + 1)}
+            abas[-1]["vals"] = [t for t in vals if (t[0], t[1]) not in fora]
+            abas[-1]["abaixo"] = blocos
     arte = {}
     pasta = arte_dir or ARTE
     if arte_dir:
@@ -420,6 +596,7 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
             a["caixas"] = medidas
         else:
             a["caixas"] = caixas if a["nome"] == "FICHA" else []
+    abas = [compactar(a) for a in abas]
     os.makedirs(os.path.dirname(SAIDA), exist_ok=True)
     corpo = open(os.path.join(AQUI, "modelo.gs.js"), encoding="utf-8").read()
     with open(SAIDA, "w", encoding="utf-8") as fp:

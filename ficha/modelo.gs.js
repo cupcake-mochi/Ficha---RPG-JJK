@@ -10,6 +10,53 @@
  * aparece para a API, então nem dava para consertar o tamanho dela.
  */
 
+/**
+ * AS FILEIRAS QUE SÃO CÓPIA. A FICHA AMALDIÇOADA tem treze fileiras de cartas de feitiço iguais. No ABAS só a primeira
+ * vem escrita; de cada cópia vem só o que é diferente dela. Aqui, quando o script carrega, cada cópia volta a ser
+ * escrita por extenso: o resto do script (a montagem, a troca de paleta, a régua) lê o ABAS inteiro, como sempre leu.
+ * Cada entrada de `copias` é [primeira linha, última linha, [a linha onde cada cópia começa]]. A mesma conta mora no
+ * ficha/emitir_gs.py (`expandir`), e o gerador para se a cópia expandida não devolver a aba inteira.
+ */
+function expandirCopias_(spec) {
+  if (!(spec.copias || []).length || spec.copias_feitas) return spec;
+  var A1 = /^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/;
+  var linhas = function (a1) { var m = A1.exec(a1.replace(/\$/g, '')); return [Number(m[2]), Number(m[4] || m[2])]; };
+  var desce = function (a1, dl) {
+    var m = A1.exec(a1);
+    return m[1] + (Number(m[2]) + dl) + (m[3] ? ':' + m[3] + (Number(m[4]) + dl) : '');
+  };
+  var escritas = {};
+  spec.vals.forEach(function (t) { escritas[t[0] + ',' + t[1]] = true; });
+  var molde = { vals: spec.vals.slice(), fundos: spec.fundos.slice(), merges: spec.merges.slice(),
+                bordas: (spec.bordas || []).map(function (b) { return b[3].slice(); }),
+                dv: (spec.dv || []).slice(), caixas: (spec.caixas || []).slice(), formatos: (spec.formatos || []).slice() };
+  var temDv = {}, temFmt = {};
+  molde.dv.forEach(function (d) { temDv[d[0]] = true; });
+  molde.formatos.forEach(function (f) { temFmt[f[0]] = true; });
+  spec.copias.forEach(function (k) {
+    var r1 = k[0], r2 = k[1];
+    var dentro = function (l) { return l >= r1 && l <= r2; };
+    var noMolde = function (a1) { var l = linhas(a1); return dentro(l[0]) && dentro(l[1]); };
+    k[2].forEach(function (d) {
+      var dl = d - r1;
+      molde.vals.forEach(function (t) {
+        if (dentro(t[0]) && !escritas[(t[0] + dl) + ',' + t[1]]) spec.vals.push([t[0] + dl, t[1]].concat(t.slice(2)));
+      });
+      molde.fundos.forEach(function (f) { if (dentro(f[0])) spec.fundos.push([f[0] + dl].concat(f.slice(1))); });
+      molde.merges.forEach(function (m) { if (dentro(m[0]) && dentro(m[2])) spec.merges.push([m[0] + dl, m[1], m[2] + dl, m[3]]); });
+      molde.bordas.forEach(function (lista, i) {
+        lista.forEach(function (a1) { if (noMolde(a1)) spec.bordas[i][3].push(desce(a1, dl)); });
+      });
+      molde.dv.forEach(function (x) { if (noMolde(x[0]) && !temDv[desce(x[0], dl)]) spec.dv.push([desce(x[0], dl), x[1]]); });
+      molde.caixas.forEach(function (c) { if (dentro(c[1]) && dentro(c[1] + c[2] - 1)) spec.caixas.push([c[0], c[1] + dl, c[2]]); });
+      molde.formatos.forEach(function (f) { if (noMolde(f[0]) && !temFmt[desce(f[0], dl)]) spec.formatos.push([desce(f[0], dl), f[1]]); });
+    });
+  });
+  spec.copias_feitas = true;
+  return spec;
+}
+ABAS.forEach(expandirCopias_);
+
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
 
 /**
@@ -120,7 +167,8 @@ function construir() {
 }
 
 /**
- * O acabamento: a cor de estado, as notas, as travas de fórmula, as notas da FICHA PESSOAL e a caixa da paleta.
+ * O acabamento: a cor de estado, as notas, as travas de fórmula, as notas da FICHA PESSOAL, os saltos da FICHA
+ * AMALDIÇOADA e a caixa da paleta.
  * Cada passo pode ser refeito sem estragar o que já está lá, e é por isso que ele pode rodar sozinho, pelo acabar().
  */
 function acabamento_(ss, feito, rel) {
@@ -133,6 +181,8 @@ function acabamento_(ss, feito, rel) {
   rel.etapa('travas');
   feito.push('ficha pessoal: ' + configurarPessoal_(ss));
   rel.etapa('notas da ficha pessoal');
+  feito.push('saltos: ' + ligarSaltos_(ss));
+  rel.etapa('saltos da ficha amaldiçoada');
   feito.push('paleta: ' + configurarPaleta_(ss, true));
   rel.etapa('caixa da paleta');
 }
@@ -245,6 +295,14 @@ function montarAba_(aba, spec) {
    .setHorizontalAlignments(ha).setVerticalAlignments(va)
    .setFontStyles(fst).setWraps(wr);
   r.setValues(v);
+  // 01/10/2026, a DADOS_AM: a conta de cada feitiço são cem fórmulas iguais a menos da linha. Só a primeira linha de
+  // cada retângulo vem no ABAS, e o resto é a cópia dela para baixo, que é o que o Sheets faz quando alguém arrasta
+  // a alça da célula: a linha de toda referência sem cifrão anda junto. Cada retângulo é [linha, coluna, última
+  // linha, última coluna].
+  (spec.abaixo || []).forEach(function (b) {
+    var n = b[3] - b[1] + 1;
+    aba.getRange(b[0], b[1], 1, n).copyTo(aba.getRange(b[0] + 1, b[1], b[2] - b[0], n));
+  });
 
   // A rotação NÃO entra em lote: setTextRotations quer objetos TextRotation, e
   // não graus, então uma matriz de números é recusada. Como só a lombada é
@@ -266,12 +324,47 @@ function montarAba_(aba, spec) {
     ant = l;
   });
 
-  gruposDeMescla_(spec.merges).forEach(function (g) {
-    var faixa = aba.getRange(g[1], g[2], g[3] - g[1] + 1, g[4] - g[2] + 1);
-    if (g[0] === 'a') faixa.mergeAcross();
-    else if (g[0] === 'v') faixa.mergeVertically();
-    else faixa.merge();
-  });
+  // 01/10/2026, a FICHA AMALDIÇOADA: as fileiras de cartas são todas iguais, e cada uma tem quase cinquenta
+  // mesclagens. Só a primeira fileira de cada tipo é mesclada aqui; as outras recebem o FORMATO dela por cópia, e a
+  // mesclagem vem junto. Cada cópia é [primeira linha, última linha, [a linha onde cada cópia começa]]. O valor de
+  // cada célula já está no lugar e a cópia de formato não toca nele.
+  var copias = spec.copias || [];
+  var naCopia = function (m) {
+    return copias.some(function (k) {
+      return k[2].some(function (d) { return m[0] >= d && m[2] <= d + k[1] - k[0]; });
+    });
+  };
+  var mesclar = function (lista) {
+    gruposDeMescla_(lista).forEach(function (g) {
+      var faixa = aba.getRange(g[1], g[2], g[3] - g[1] + 1, g[4] - g[2] + 1);
+      if (g[0] === 'a') faixa.mergeAcross();
+      else if (g[0] === 'v') faixa.mergeVertically();
+      else faixa.merge();
+    });
+  };
+  mesclar(copias.length ? spec.merges.filter(function (m) { return !naCopia(m); }) : spec.merges);
+  var copiadas = '';
+  if (copias.length) {
+    var veio = true;
+    copias.forEach(function (k) {
+      var alt = k[1] - k[0] + 1, molde = aba.getRange(k[0], 1, alt, nc);
+      k[2].forEach(function (d) {
+        molde.copyTo(aba.getRange(d, 1, alt, nc), SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
+      });
+      // a prova de que a mesclagem veio com o formato: a primeira mesclagem da última cópia tem de existir
+      var ultima = k[2][k[2].length - 1];
+      var prova = spec.merges.filter(function (m) { return m[0] >= ultima && m[2] <= ultima + alt - 1; })[0];
+      if (prova && !aba.getRange(prova[0], prova[1]).isPartOfMerge()) veio = false;
+    });
+    if (!veio) {
+      // o Sheets não trouxe as mesclagens: desfaz o que tiver vindo pela metade e faz uma a uma, como nas outras abas
+      copias.forEach(function (k) {
+        k[2].forEach(function (d) { aba.getRange(d, 1, k[1] - k[0] + 1, nc).breakApart(); });
+      });
+      mesclar(spec.merges.filter(naCopia));
+    }
+    copiadas = veio ? ', fileiras copiadas' : ', FILEIRAS MESCLADAS UMA A UMA (a cópia de formato não trouxe a mesclagem)';
+  }
 
   // As bordas, os quatro lados, com o traço e a cor da planilha viva: uma chamada por lado, traço e
   // cor, com as faixas numa RangeList. Até 15/09/2026 só a de cima entrava, e só em célula com valor.
@@ -307,13 +400,19 @@ function montarAba_(aba, spec) {
   });
 
   // as caixas de seleção, nas posições que o gerador mediu
-  (spec.caixas || []).forEach(function (cx) {
-    aba.getRange(cx[1], cx[0], cx[2], 1).insertCheckboxes();
-  });
+  // (a aba que pede a validação em matriz recebe as caixas junto com os menus, no menusSuspensos_)
+  if (!spec.validacao_em_matriz) {
+    (spec.caixas || []).forEach(function (cx) {
+      aba.getRange(cx[1], cx[0], cx[2], 1).insertCheckboxes();
+    });
+  }
 
   // 01/10/2026, a FICHA PESSOAL: o formato de número, a nota da caixa, a cor de aviso e os grupos que fecham.
   // Só a aba que declara cada um recebe; as outras saem como saíam.
-  (spec.formatos || []).forEach(function (f) { aba.getRange(f[0]).setNumberFormat(f[1]); });
+  // uma chamada por formato, com as células dele numa lista: a FICHA AMALDIÇOADA tem quarenta caixas de Classe
+  var porFormato = {};
+  (spec.formatos || []).forEach(function (f) { (porFormato[f[1]] = porFormato[f[1]] || []).push(f[0]); });
+  Object.keys(porFormato).forEach(function (fmt) { aba.getRangeList(porFormato[fmt]).setNumberFormat(fmt); });
   // as notas de caixa numa gravação só, na faixa que vai da primeira à última célula com nota
   if ((spec.notas || []).length) {
     var onde = spec.notas.map(function (n) {
@@ -329,8 +428,9 @@ function montarAba_(aba, spec) {
   }
   if ((spec.condicional || []).length) {
     aba.setConditionalFormatRules(spec.condicional.map(function (c) {
-      var regra = SpreadsheetApp.newConditionalFormatRule().whenTextContains(c.contem)
-        .setRanges(c.faixas.map(function (a1) { return aba.getRange(a1); }));
+      var regra = SpreadsheetApp.newConditionalFormatRule();
+      regra = c.comeca ? regra.whenTextStartsWith(c.comeca) : regra.whenTextContains(c.contem);
+      regra.setRanges(c.faixas.map(function (a1) { return aba.getRange(a1); }));
       if (c.fundo) regra.setBackground(c.fundo);
       if (c.fonte) regra.setFontColor(c.fonte);
       return regra.build();
@@ -346,13 +446,21 @@ function montarAba_(aba, spec) {
     var deDentro = function (a, b) { return b[3] - a[3]; };
     (spec.grupos.lin || []).forEach(function (g) { aba.getRange(g[0], 1, g[1] - g[0] + 1, 1).shiftRowGroupDepth(1); });
     (spec.grupos.col || []).forEach(function (g) { aba.getRange(1, g[0], 1, g[1] - g[0] + 1).shiftColumnGroupDepth(1); });
-    (spec.grupos.lin || []).slice().sort(deDentro).forEach(function (g) { if (g[2]) aba.getRowGroup(g[0], g[3]).collapse(); });
+    // 01/10/2026: a FICHA AMALDIÇOADA tem cinquenta grupos de linhas, e quase todos nascem fechados. Quando os
+    // fechados são a maioria, todos fecham numa chamada só e os que nascem abertos são abertos de fora para dentro.
+    var lin = spec.grupos.lin || [], fechados = lin.filter(function (g) { return g[2]; }).length;
+    if (fechados > lin.length - fechados) {
+      aba.collapseAllRowGroups();
+      lin.slice().sort(function (a, b) { return a[3] - b[3]; }).forEach(function (g) { if (!g[2]) aba.getRowGroup(g[0], g[3]).expand(); });
+    } else {
+      lin.slice().sort(deDentro).forEach(function (g) { if (g[2]) aba.getRowGroup(g[0], g[3]).collapse(); });
+    }
     (spec.grupos.col || []).slice().sort(deDentro).forEach(function (g) { if (g[2]) aba.getColumnGroup(g[0], g[3]).collapse(); });
   }
 
   if (spec.oculta) aba.hideSheet();
   return spec.nome + ': ' + spec.vals.length + ' células, ' + formulas +
-       ' fórmulas, ' + spec.imgs.length + ' imagens';
+       ' fórmulas, ' + spec.imgs.length + ' imagens' + copiadas;
 }
 
 function mat_(nr, nc, valor) {
@@ -370,17 +478,39 @@ function menusSuspensos_(ss) {
   var n = 0;
   ABAS.forEach(function (spec) {
     var aba = ss.getSheetByName(spec.nome);
-    (spec.dv || []).forEach(function (d) {
+    var regraDe = function (de) {
       // O Sheets exporta menu de itens como lista escrita, "a,b,c", e ela nao e intervalo:
       // passar ela ao getRange parou a montagem em 'Range not found' (teste de 15/09/2026).
       var regra = SpreadsheetApp.newDataValidation().setAllowInvalid(true);
-      var lista = /^"(.*)"$/.exec(d[1]);
+      var lista = /^"(.*)"$/.exec(de);
       if (lista) {
         regra.requireValueInList(lista[1].split(','), true);
       } else {
-        regra.requireValueInRange(ss.getRange(d[1].replace(/\$/g, '')), true);
+        regra.requireValueInRange(ss.getRange(de.replace(/\$/g, '')), true);
       }
-      aba.getRange(d[0].replace(/\$/g, '')).setDataValidation(regra.build());
+      return regra.build();
+    };
+    if (spec.validacao_em_matriz) {
+      // 01/10/2026, a FICHA AMALDIÇOADA: mais de duzentas faixas de menu e quarenta de caixa de seleção. Uma regra por
+      // lista, postas numa matriz do tamanho da aba e gravadas de uma vez. A célula sem regra fica sem validação.
+      var regras = mat_(spec.rows, spec.cols, null), porLista = {};
+      var poe = function (l1, c1, l2, c2, regra) {
+        for (var i = l1; i <= l2; i++) for (var j = c1; j <= c2; j++) regras[i - 1][j - 1] = regra;
+      };
+      (spec.dv || []).forEach(function (d) {
+        var f = limitesA1_(d[0]);
+        poe(f.l1, f.c1, f.l2, f.c2, porLista[d[1]] || (porLista[d[1]] = regraDe(d[1])));
+        n++;
+      });
+      if ((spec.caixas || []).length) {
+        var caixa = SpreadsheetApp.newDataValidation().requireCheckbox().build();
+        spec.caixas.forEach(function (cx) { poe(cx[1], cx[0], cx[1] + cx[2] - 1, cx[0], caixa); });
+      }
+      aba.getRange(1, 1, spec.rows, spec.cols).setDataValidations(regras);
+      return;
+    }
+    (spec.dv || []).forEach(function (d) {
+      aba.getRange(d[0].replace(/\$/g, '')).setDataValidation(regraDe(d[1]));
       n++;
     });
   });

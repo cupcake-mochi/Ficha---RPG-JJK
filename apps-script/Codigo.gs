@@ -705,6 +705,35 @@ function configurarPessoal_(ss) {
   return notasVivas_(ss, ss.getSheetByName('DADOS').getDataRange().getValues()) + ' nota(s) viva(s)';
 }
 
+// =====================================================================
+// A FICHA AMALDIÇOADA — 01/10/2026, desenho fechado com o Mizuki por estudo.
+//
+// A aba nasce no gerador (ficha-v01/ficha_amaldicoada.py), e toda a conta dela mora em fórmula, na aba oculta
+// DADOS_AM. Aqui fica só o que fórmula não faz: a linha de saltos, que precisa do número da aba dentro da planilha.
+// =====================================================================
+var ABA_AMALDICOADA_ = 'FICHA AMALDIÇOADA';
+var DADOS_DA_AMALDICOADA_ = 'DADOS_AM';
+
+/**
+ * Os saltos da linha de cima da FICHA AMALDIÇOADA: cada nome de seção vira uma ligação para o título dela. A ligação
+ * dentro da própria planilha pede o número da aba (o gid), que só existe depois que a aba nasce, e por isso é o
+ * acabamento do construir() que a escreve. A cópia da planilha guarda o mesmo número, então a ligação continua
+ * valendo na ficha de cada jogador. Onde cada salto mora e para onde ele vai, a DADOS_AM publica. Rodar de novo
+ * reescreve as mesmas ligações.
+ */
+function ligarSaltos_(ss) {
+  var aba = ss.getSheetByName(ABA_AMALDICOADA_), dados = ss.getSheetByName(DADOS_DA_AMALDICOADA_);
+  if (!aba || !dados) return 'sem a aba';
+  var gid = aba.getSheetId(), n = 0;
+  tabelaDaDados_(dados.getDataRange().getValues(), 'salto', ['caixa do salto', 'alvo do salto']).forEach(function (l) {
+    if (!l['caixa do salto'] || !l['alvo do salto']) return;
+    aba.getRange(String(l['caixa do salto'])).setFormula(
+      '=HYPERLINK("#gid=' + gid + '&range=' + l['alvo do salto'] + '","' + String(l['salto']).replace(/"/g, '""') + '")');
+    n++;
+  });
+  return n + ' salto(s)';
+}
+
 /**
  * A caixa "Trocou por arma?" fica presa no valor de um Caminho anterior quando o jogador muda de
  * Caminho — o desconto já para de valer sozinho (só entra pros três não-marciais), mas a caixa
