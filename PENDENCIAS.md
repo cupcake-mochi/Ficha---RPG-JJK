@@ -2007,7 +2007,7 @@ numa construção só), a aba nas quatro rotas e o menu foram feitos juntos.*
      mudou: o clique na caixa da paleta pinta a `CARTEIRA` e a `FICHA`, e a Ficha Amaldiçoada, a Ficha Pessoal, o
      Glossário e a arte terminam nos dois cliques seguintes (antes era no primeiro), sem aviso. A aba em que ele clica
      continua passando na frente.*
-   - *O `Ficha.gs` foi de 640 para 695 KB (o `Codigo.gs` tem 205 KB). As fileiras de três cartas do menu vão por cópia de
+   - *O `Ficha.gs` foi de 640 para 703 KB (o `Codigo.gs` tem 205 KB). As fileiras de três cartas do menu vão por cópia de
      formato da primeira, como na Ficha Amaldiçoada: sem isso eram 735 KB e mais de 900 chamadas de mesclagem.*
    - *Quem já escreveu na seção 8 de hoje (os feitiços, as Passivas e as aptidões da Kaori, por exemplo): a seção nova não
      tem onde digitar. O que estava lá passa para a Ficha Amaldiçoada, e o menu mostra.*
