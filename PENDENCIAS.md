@@ -1858,6 +1858,15 @@ ponto 7 é desenho novo e ficou para estudo.*
    exemplo o tipo de resolvição, q nem o 'aliado auto...' que n coube ali e a descrição vai ter mais espaço para aparecer".
    A seção 8 já vai de D a AT, então carta mais larga é menos carta por fileira. O terceiro estudo (mesmo link) compara a
    C3 de quatro por fileira com três por fileira (13 colunas) e duas por fileira (21 colunas), todas na medida.*
+   **Escolha de 02/10/2026:** *"vamos lá, três por fileira, MAS... 1 aumentar o tamanho da altura das descrições é necessario,
+   colocar menu retratil para cada grupo é quase obrigatorio, colocar menu retratil para cada grupo de 2 feitiços é
+   obrigatorio (um encima do outro eu digo)"*. *O quarto estudo (mesmo link) tem cada bloco (Feitiços, Liberações/Técnica
+   Máxima/Domínio, Passivas, Aptidões) num grupo, e cada par de fileiras empilhadas num grupo dentro dele (a leitura é
+   minha: grupo de linha fecha a linha inteira, então dois feitiços um em cima do outro são duas fileiras, seis cartas).
+   Em cima de cada par fica uma linha que leva o + e diz quais cartas ele guarda ("Feitiços 7 a 12"), porque o + do Sheets
+   fica na linha antes do grupo e dois grupos colados no mesmo nível viram um só. O resumo ganhou um botão de folga sobre a
+   altura justa (2, 3 e 4 linhas): +1 dá 3, 4 e 5, com 141 linhas no caso cheio e 62 à vista como nasce. Falta ele dizer a
+   folga.*
 8. **Toda caixa da aba abre em letra maiúscula.** *Palavras dele: "Textos em minusculo, sempre bom padronizar o maisculo
    na letra inicial". Vale para o que a ficha calcula e para o que nasce escrito: os menus de pacto viraram `Permanente`,
    `Temporário`, `De restrição` e `Um espaço de feitiço`, o estado virou `Na regra`, o Domínio diz `Não fecha` e `Rola`.*
