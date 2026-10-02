@@ -235,7 +235,7 @@ console.log('5b. a cor de aviso acesa na hora da troca não fica gravada na cél
 // mostrando. Aqui a regra acesa é imitada pondo o vermelho e o branco de estado (e o âmbar, noutra célula) na grade
 // que a troca lê: depois da troca, a cor gravada tem de ser a do papel da célula, igual à de uma troca sem aviso.
 { const AM='FICHA AMALDIÇOADA', S=ABAS.find(s=>s.nome===AM);
-  const comValor=S.vals.filter(t=>typeof t[2]==='string' && t[2].indexOf('⚠')>=0 && t[2][0]==='=');
+  const comValor=S.vals.filter(t=>typeof t[2]==='string' && t[2][0]==='=' && t[0]>=30);     // caixas calculadas, onde o aviso acende
   const [la,ca]=[comValor[0][0]-1, comValor[0][1]-1], [lb,cb]=[comValor[1][0]-1, comValor[1][1]-1];
   ok('a aba tem caixas que podem acender o aviso', comValor.length>=2, String(comValor.length));
   const limpa=umaVez([E]);
