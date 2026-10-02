@@ -1950,7 +1950,7 @@ português; a paleta rosa com o nome das cartas no acento; e a `Livres · Fechad
 troca de paleta depois de colar o `Codigo.gs` novo. A aba mudou de forma (o respiro, as caixas que apontam para a
 `DADOS_AM`, a caixa do Selo que saiu): para ver, é montar de novo com o `Ficha.gs` novo.*
 
-### B32 · As quatro rotas da Ficha Amaldiçoada e o menu rápido na seção 8 da `FICHA` — **FEITO em 02/10/2026; falta montar no Sheets**
+### B32 · As quatro rotas da Ficha Amaldiçoada e o menu rápido na seção 8 da `FICHA` — **FEITO em 02/10/2026, e montado no Sheets pelo Mizuki no mesmo dia: "está funcionando"**
 
 *O ponto 7 do B31, com o desenho fechado lá, rodada a rodada. Pela escolha dele ("Pode ser A": as rotas antes, e tudo
 numa construção só), a aba nas quatro rotas e o menu foram feitos juntos.*
@@ -2030,10 +2030,30 @@ os 46 da pessoal também. O `medidas/ver-aba.py --aba FICHA` desenha a `FICHA` c
 por ele que o "— PE" e o texto cortado apareceram. A bateria inteira passou: os vinte e um, e a seção do menu na
 regressão com 115 checagens (3 gerais e 7 em cada uma das 16 fichas).*
 
-**O que só o Sheets diz, e falta ele ver:** *montar com o `Ficha.gs` e o `Codigo.gs` novos; abrir e fechar os grupos do
+**Montado no Sheets em 02/10/2026.** *Ele colou os dois arquivos, montou e respondeu "pode fazer comit e está
+funcionando", com a planilha exportada (`Kaori.xlsx`, uma ficha nova, sem personagem: o menu nasce com "FEITIÇOS · 0 de
+36"). Na mesma mensagem ele apontou o número da `CARTEIRA`, que é o B33.*
+
+**O que ele não detalhou, e fica para quando usar:** *abrir e fechar os grupos do
 menu (o + de cada par na linha da legenda, o da descrição na linha dos números); escrever por cima de uma carta do menu
 (o aviso e a conta voltando); trocar a Origem na `FICHA` e ver a Ficha Amaldiçoada e o menu mudarem de nome, e o Domínio
 dizer que a rota não tem; e trocar de paleta, contando os cliques até a última aba terminar.*
+
+### B33 · O número da `CARTEIRA` não acompanha a versão do sistema — **espera a resposta dele**
+
+*Em 02/10/2026, depois de montar o B32: "por sinal a versão n atualizo automatico", com a foto do carimbo da `CARTEIRA`:
+`Nº M-0258-····` e `Emitida 02.10.2026`. O livro está na v0.331.*
+
+*O número é `"Nº M-" & DADOS!B1 & "-" & as quatro primeiras letras do nome` (os pontos são o nome vazio da ficha nova), e
+a `DADOS!B1` é o `_meta.versao` do `catalogo-projeto-m.json`, que está em 0.258. Foi de propósito: na reextração do
+`manual.txt` da v0.263 (22/09/2026, commit 7f83e35) ficou escrito que "o carimbo fica em 0.258, de propósito. Ele é a
+versão do CATÁLOGO". As listas da ficha (perícias, Caminhos, Trilhas, equipamento, legados) saem do catálogo, conferido
+contra o `manual.txt` da v0.263; só a Ficha Amaldiçoada e a nota das armas leem os capítulos direto, na v0.330. O
+número diz a verdade sobre os dados; o que ele não faz é andar sozinho com o livro.*
+
+*Opções levadas a ele: pôr o catálogo em dia com o livro (reextrair o `manual.txt` do PDF da versão atual, conferir, e o
+número vai junto), ou o número passar a mostrar a versão do livro em que a ficha foi gerada, ou deixar como está. O
+`manual.txt` sai do PDF de coluna única do livro, que estava sendo refeito em segundo plano na hora.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
