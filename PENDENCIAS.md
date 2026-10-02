@@ -1799,6 +1799,86 @@ propriedade `Alcance`, e não a categoria `Armas Longas`.*
 **O que só o Sheets diz:** *se a nota de 860 caracteres da arma mais carregada aparece inteira ao passar o mouse, e como
 a nota fica no celular.*
 
+### B31 · O retorno do teste da Ficha Amaldiçoada — **FEITO em 02/10/2026, menos o ponto 7 (a seção 8 da `FICHA`), que espera a resposta dele; falta ver no Sheets**
+
+*Em 01/10/2026, à noite, o Mizuki montou a `FICHA AMALDIÇOADA` no Sheets com o código do B29 (a montagem funcionou),
+trocou para uma paleta rosa e mandou oito pontos, com fotos e a planilha exportada (`Kaori.xlsx`). Sete entraram; o
+ponto 7 é desenho novo e ficou para estudo.*
+
+1. **Os textos pequenos ao lado dos títulos de seção saíram.** *Palavras dele: "achei bem inuteis esses textos pequenos
+   adicionais, melhor remover". O título de cada seção vai de ponta a ponta (`D` a `T`).*
+2. **O nome de cada carta, e a Classe na carta de feitiço, estão na cor de título.** *Ele achou que a paleta ficou "meio
+   ruim nas caixas dos feitiços, liberações" e pediu "as cores de titulo em alguns pontos chave". Os pontos são escolha
+   minha: o nome e a Classe (105 caixas). O estado da carta (`Na regra`, `⚠ 1 erro`) ficou fora, na cor do painel,
+   porque o âmbar de aviso não se lê sobre o acento.* **Falta ele dizer se quer a cor de título em mais ou em menos
+   lugares.**
+3. **Duas linhas de respiro embaixo do último pacto,** *vazias e fora de grupo, para ele não colar no fim da aba. A aba
+   tem 539 linhas agora.*
+4. **A troca de paleta não grava mais na célula a cor de aviso que estava acesa.** *A `Livres · Fechadas` dele continuou
+   vermelha depois de preenchida certo. A planilha exportada mostrou o vermelho gravado como fundo da célula: o
+   `getBackgrounds()` e o `getFontColors()` do Sheets devolvem a cor que a regra condicional está mostrando, e não a da
+   célula, e o `repintarCoresDaAba_` gravava de volta o que leu. A caixa nasce em `⚠ 0 de 2`, a troca pegou o vermelho
+   aceso e deixou ele gravado. Agora, quando a troca lê o vermelho de estado (`#C2334D`) no fundo, ou o âmbar de estado
+   na fonte de uma célula que não nasceu âmbar, ela parte da cor de fábrica daquela célula. Vale para a `FICHA` também,
+   e a troca seguinte desfaz o vermelho que uma troca antiga deixou gravado: a planilha dele se conserta na próxima troca
+   de paleta, depois de colar o `Codigo.gs` novo.*
+5. **A caixa calculada em que alguém digita por cima volta a ser a conta, com um aviso na tela.** *Ele digitou 3 no `No
+   domínio` do Orçamento e nada mudou: a caixa só mostra o custo do degrau escolhido na seção do Domínio, e o número
+   digitado apagou a conta sem aviso. A `FICHA` avisa pela trava; esta aba não pode ter trava, porque quase tudo nela
+   mora em linha de grupo, e trava em linha de grupo faz o Sheets avisar quem clica no `+`. Então a conta volta depois:
+   o `devolverConta_` do `Codigo.gs`, chamado pelo `onEdit`, regrava a fórmula da caixa (o `ABAS` do `Ficha.gs` traz a
+   fórmula de cada uma) e mostra um aviso por 8 segundos. Só volta fórmula que é referência pura a uma célula
+   (`=DADOS_AM!$GH$22`), porque a planilha vive em português, e fórmula com vírgula entre argumentos gravada por script
+   nesse idioma vira erro. Por isso a conta de toda caixa calculada da aba passou a morar na `DADOS_AM` (a tabela
+   `mostra`), e as 727 caixas calculadas da aba só apontam para ela. Apagar a caixa também devolve a conta; as caixas de
+   escolher e de escrever ficam como o jogador pôs.*
+6. **A caixa de seleção do Selo saiu da carta.** *Palavras dele: "o selo n obriga restrição nenhuma é algo mais
+   narrativo, pode remover". A devolução da Restrição não olha mais para o Selo, e a aba ficou sem caixa de
+   seleção. Na volta da bateria achei uma sobra: a nota do rótulo `SELO` ainda dizia "Restrição que cobra a mesma coisa não devolve.", e essa
+   frase saiu. A nota ficou "O que você sempre faz para conjurar. Não custa nem devolve ponto."*
+7. **O "menu rápido" na seção 8 da `FICHA`: não foi feito.** *Ele pediu trocar a seção 8 por um menu retrátil com o que
+   foi pego na `FICHA AMALDIÇOADA` (Passivas, aptidões, feitiços). A seção 8 hoje também serve às rotas sem Fundamento,
+   onde vira "Bênçãos e Katas". Ficou a pergunta: o menu rápido substitui a seção 8 só para quem tem Fundamento (A,
+   indicado) ou para todo mundo (B). Nos dois casos, é estudo com opções de desenho antes de construir.*
+8. **Toda caixa da aba abre em letra maiúscula.** *Palavras dele: "Textos em minusculo, sempre bom padronizar o maisculo
+   na letra inicial". Vale para o que a ficha calcula e para o que nasce escrito: os menus de pacto viraram `Permanente`,
+   `Temporário`, `De restrição` e `Um espaço de feitiço`, o estado virou `Na regra`, o Domínio diz `Não fecha` e `Rola`.*
+
+**Para a revisão do livro (dele, no Claude 2, que eu não edito):** *a regra de que a Restrição que o Selo já obriga não
+devolve ponto continua no livro da v0.330, e a ficha não a aplica mais. Ela está em quatro lugares:*
+
+| arquivo | linha | o que diz |
+|---|---|---|
+| `40-fundamento.md` | 864 | a Restrição Própria "não pode repetir o que o seu Selo já obriga" |
+| `40-fundamento.md` | 874 | "Restrição que o seu Selo já obriga não devolve ponto." |
+| `20-criacao-de-personagem.md` | 135 | no passo do Selo: "Restrição que o Selo já obriga não devolve ponto." |
+| `42-tecnica-marcial.md` | 99 | a Restrição que pede "estar com a minha arma" não devolve ponto, porque "O Selo já obriga isso" |
+
+*Em 02/10/2026 ele explicou a leitura: "o ponto q a restrição do selo é mais narrativa, ela n realmente aplica uma
+restrição nos feitiços, é só algo que você é obrigado a fazer e qualquer feitiço". O Selo não entra na conta de
+Restrição, e as quatro linhas saem do livro. A da Técnica Marcial é a única em que isso muda número: nessa rota o Selo é
+ter a arma em uso ("O seu Selo é ter o equipamento em uso"), e sem a linha uma Restrição "estar com a minha arma" devolve
+ponto por uma coisa que o lutador marcial já faz o tempo todo. É para ele olhar quando mexer no capítulo; a ficha não
+tem a rota marcial e não muda por isso.*
+
+**Como foi conferido.** *O `regressao-amaldicoada.py` ganhou sete checagens: o título de cada seção de ponta a ponta, as
+duas linhas de respiro, as 727 caixas calculadas como referência pura, o nome e a Classe na cor de título, o estado fora
+dela, nenhuma caixa abrindo em minúscula em nenhuma das onze fichas, e a aba sem caixa de seleção. O
+`regressao-construir.js` digita por cima do `No domínio` no Sheets de mentira e confere que a conta volta com um aviso,
+que apagar a caixa também devolve, que a Forma e o nome do feitiço ficam como o jogador pôs, e que a fórmula que não é
+referência pura não é regravada. O `regressao-paleta.js` acende o vermelho e o âmbar na grade que a troca lê e confere
+que a planilha termina igual à da troca sem aviso, e que a troca seguinte desfaz o vermelho gravado por uma antiga. Nos
+arneses: o `arnes-pessoal.py` ganhou quatro defeitos (46), o `arnes-paleta.py` dois (9), e o `arnes-amaldicoada.py` perdeu
+o da caixa do Selo e ganhou seis (35). O `arnes-amaldicoada.py` tinha um erro de aspas na perturbação da proteção do
+cobrir-se, e não rodava; foi consertado antes da volta. Rodado nas perturbações novas ou mexidas (16 e 17, do Domínio;
+18, da vaga do Leque; e 27 a 32, as seis do B31), acendeu as nove, cada uma na checagem dela. A bateria inteira passou
+antes: os vinte e um.*
+
+**O que só o Sheets diz, e falta ele ver:** *o aviso na tela quando digita por cima; a conta voltando na planilha em
+português; a paleta rosa com o nome das cartas no acento; e a `Livres · Fechadas` dele saindo do vermelho na primeira
+troca de paleta depois de colar o `Codigo.gs` novo. A aba mudou de forma (o respiro, as caixas que apontam para a
+`DADOS_AM`, a caixa do Selo que saiu): para ver, é montar de novo com o `Ficha.gs` novo.*
+
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
 Os dois capítulos vendorizados vieram **byte a byte idênticos** do commit
