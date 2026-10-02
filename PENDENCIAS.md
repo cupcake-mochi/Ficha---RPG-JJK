@@ -1739,7 +1739,7 @@ celular; e se os textos compridos das aptidões cabem na caixa.*
 **Achado no livro, para ele decidir:** *a tabela `Base por Classe` dá `9 m` e `18 m` para "`Cura` e `Onda`", e a tabela
 `Formas` diz que a `Onda` é uma esfera de raio `3 m` centrada em quem conjura. A aba segue a tabela `Formas`, como o estudo.*
 
-### B30 · O menu das mãos só lista o `Soco` — **RESPONDIDO e FEITO em 01/10/2026, e falta ver no Sheets**
+### B30 · O menu das mãos só lista o `Soco` — **RESPONDIDO e FEITO em 01/10/2026; falta ver no Sheets, e o `Alcance` de 3 m fica para revisão**
 
 *Achado do Mizuki em 01/10/2026, mexendo na ficha montada com o código do commit `8c7279a`, com duas fotos do `EM USO` da
 `FICHA PESSOAL`: o menu da `Mão principal` só com `Soco` e o da `Mão secundária` só com `—`. Palavras dele: "n ta
@@ -1785,10 +1785,15 @@ uso, a arma não guardada, só o escudo guardado e só a arma de duas mãos guar
 notas vivas, a caixa de cada uma e a nota da caixa de escolha. Entrou o `arnes-ficha-pessoal.py`, rodado à mão, com doze
 defeitos plantados nessas contas: os doze acendem, e o contra-teste fica verde. O `arnes-pessoal.py` ganhou dois.*
 
-**Achado no livro, para ele decidir:** *a propriedade `Alcance` manda ver a seção "Alcance no corpo a corpo", que diz "As
-Armas Longas chegam a 3 m". Onze armas têm `Alcance`, e só três são da categoria `Armas Longas` (Lança, Naginata e Yari);
-as outras oito são Bastão, Bō, Kusarigama, Chicote, Corrente, Espadão, Nodachi e Odachi. O livro não diz se essas oito
-chegam a 3 m. A nota repete a frase do livro como está.*
+**O `Alcance` no corpo a corpo: respondido, e anotado para revisão futura.** *A propriedade `Alcance` manda ver a seção
+"Alcance no corpo a corpo", que diz "As Armas Longas chegam a 3 m". Onze armas têm `Alcance`, e só três são da categoria
+`Armas Longas` (Lança, Naginata e Yari); as outras oito são Bastão, Bō, Kusarigama, Chicote, Corrente, Espadão, Nodachi e
+Odachi, e o livro não diz se elas chegam a 3 m. Perguntei, com três opções, e ele respondeu em 01/10/2026:* **"sim é A"**
+*(toda arma com `Alcance` chega a 3 m), e em seguida* **"deixe anotado para revisão futura"**. *Nada foi mexido: a nota
+da ficha continua repetindo a frase do livro. Na revisão, são duas coisas: ele acerta a frase do capítulo de Equipamento
+(o livro mora no Claude 2, e eu não edito lá), e a nota da arma com `Alcance` ganha "Nesta arma: 3 m", como o `Longo
+Alcance` e a `Munição` já ganham o número da arma (uma linha no `nota_da_arma` do `ficha-v01/ficha_pessoal.py`, a mesma
+no `regressao-ficha-pessoal.py`, e um defeito a mais no `arnes-ficha-pessoal.py`).*
 
 **O que só o Sheets diz:** *se a nota de 860 caracteres da arma mais carregada aparece inteira ao passar o mouse, e como
 a nota fica no celular.*
