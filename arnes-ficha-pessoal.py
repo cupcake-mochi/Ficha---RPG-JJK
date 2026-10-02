@@ -39,6 +39,7 @@ PERTURBACOES = [
      '''"{SOCO}"&CHAR(10)&"{R["texto_do_soco"]}"''', '''"{SOCO}"''', "de fábrica: as"),
     ("a nota da arma vai para a caixa de escolha, e não para a linha de baixo", GER,
      '''"arma da principal": G["det_principal"],''', '''"arma da principal": G["principal"],''', "a nota da arma mora na linha embaixo"),
+    ("a arma com Alcance fica sem os 3 m", GER, '''if nome == ALCANCE else "")''', '''if nome == "nada" else "")''', "nota · Chicote: as"),
     ("a frase do catálogo fica na nota das Duas mãos", GER,
      '''            faz = faz[:-len(corte)]''', '''            faz = faz[:]''', "nota · Metralhadora Pesada: as"),
 ]

@@ -118,9 +118,11 @@ SOCO, MAO_LIVRE, NAS_DUAS, SEM_UNIFORME = "Soco", "—", "Nas duas mãos", "Sem 
 # o que a linha embaixo da mão diz quando nenhum equipável guardado serve a ela (B30: o menu nasce só com o Soco)
 T_GUARDE_P = "para outra arma, guarde ela nos Equipáveis guardados"
 T_GUARDE_S = "Mão livre · arma de uma mão ou escudo guardado aparece aqui"
-# as três propriedades que a nota da arma trata à parte: a primeira é a coluna mão do catálogo, e as outras duas
-# ganham o número da arma em uso
-DUAS_MAOS, LONGO_ALCANCE, MUNICAO = "Duas mãos", "Longo Alcance", "Munição"
+# as propriedades que a nota da arma trata à parte: a primeira é a coluna mão do catálogo, e as outras ganham o número
+# da arma em uso. O do Alcance é decisão do Mizuki de 01/10/2026 ("sim é A"): toda arma com a propriedade chega aos 3 m
+# que o livro escreve para "as Armas Longas", e não só as três da categoria com esse nome. A frase do livro ele acerta
+# depois; a ficha já segue a decisão.
+DUAS_MAOS, LONGO_ALCANCE, MUNICAO, ALCANCE = "Duas mãos", "Longo Alcance", "Munição", "Alcance"
 OUTRA_SITUACAO = "Outra Situação"
 VERMELHO, BRANCO, AMBAR = "#C2334D", "#FFFFFF", "#D89B3A"
 APOIO = "pertences e histórico do portador"      # a linha de apoio do cabeçalho, embaixo do título
@@ -204,9 +206,10 @@ def regras(CAT=None):
             faz = faz[:-len(corte)]
         propriedades.append((pr["nome"], " ".join([faz] + (LIV["a_regra_da_secao"][pr["ver"]] if pr["ver"] else []))))
     sem_texto = sorted({x for a in eq["armas"].values() for x in a["propriedades"]} - {n for n, _ in propriedades})
-    assert not sem_texto and DUAS_MAOS in dict(propriedades) and all(k in dict(propriedades) for k in (LONGO_ALCANCE, MUNICAO)), sem_texto
+    assert not sem_texto and DUAS_MAOS in dict(propriedades) and all(k in dict(propriedades) for k in (LONGO_ALCANCE, MUNICAO, ALCANCE)), sem_texto
     return {
         "propriedades": propriedades, "texto_do_soco": LIV["soco"], "texto_do_escudo": LIV["escudo"],
+        "alcance_da_propriedade": LIV["alcance_no_corpo_a_corpo"]["o_que_chega_mais_longe"],
         "armas": armas, "escudos": escudos, "uniformes": uniformes, "categorias": categorias,
         "conjurador": eq["treino"]["conjurador_treina"], "caminhos_todas": caminhos_todas,
         "patentes": [(p, "¥ " + _milhar(s), i + 1) for i, (p, s) in enumerate(CAT["patentes"]["salario_por_mes"].items())],
@@ -485,7 +488,8 @@ def trocas(layout, CAT=None):
             else:                                             # cercada, para o Alcance não casar com o Longo Alcance
                 tem = f'ISNUMBER(SEARCH(" · "&{n_}&" · "," · "&{props}&" · "))'
             mais = (f'&IF({alc}<>""," Nesta arma: "&{alc}&".","")' if nome == LONGO_ALCANCE else
-                    f'&IF({rec}&""<>""," Nesta arma, X = "&{rec}&".","")' if nome == MUNICAO else "")
+                    f'&IF({rec}&""<>""," Nesta arma, X = "&{rec}&".","")' if nome == MUNICAO else
+                    f'&" Nesta arma: {R["alcance_da_propriedade"]}."' if nome == ALCANCE else "")
             partes.append(f'IF({tem},CHAR(10)&{n_}&": "&{t_}{mais},"")')
         return f'{quem}&' + "&".join(partes)
 

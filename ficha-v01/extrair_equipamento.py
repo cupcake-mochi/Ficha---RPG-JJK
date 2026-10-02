@@ -44,6 +44,9 @@ def extrai():
         ],
         "Munição": [frase(cap, "Você recarrega quando tirar 1 ou 2 natural no ataque, ou depois de X ataques, o que vier primeiro.")],
     }
+    # os dois números da frase do alcance: o de toda arma de mão e o de quem "chega" mais longe
+    m = re.fullmatch(r"O padrão de qualquer arma de mão é ([\d,]+ m)\. As Armas Longas chegam a ([\d,]+ m)\.",
+                     completa["Alcance no corpo a corpo"][0])
     props = [_linha(l[0], l[1]) for l in tabela(cap, "Propriedades")]
     falta = [p["ver"] for p in props if p["ver"] and p["ver"] not in completa]
     if falta:
@@ -54,6 +57,7 @@ def extrai():
         "propriedades": props,
         "restricoes": [_linha(l[0], l[1]) for l in tabela(cap, "Restrições de arma")],
         "a_regra_da_secao": completa,
+        "alcance_no_corpo_a_corpo": {"padrao": m.group(1), "o_que_chega_mais_longe": m.group(2)},
         "soco": frase(cap, "O soco não tem propriedade nenhuma. O dado dele sobe com a maestria."),
         "escudo": frase(cap, "O escudo ocupa uma mão, soma com a sua proteção venha ela de onde vier, e ainda permite somar Destreza — "
                              "se você não estiver de Revestimento —, com um teto para o quanto ela pode entrar."),

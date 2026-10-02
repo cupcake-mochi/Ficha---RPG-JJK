@@ -97,6 +97,10 @@
    "Você recarrega quando tirar 1 ou 2 natural no ataque, ou depois de X ataques, o que vier primeiro."
   ]
  },
+ "alcance_no_corpo_a_corpo": {
+  "padrao": "1,5 m",
+  "o_que_chega_mais_longe": "3 m"
+ },
  "soco": "O soco não tem propriedade nenhuma. O dado dele sobe com a maestria.",
  "escudo": "O escudo ocupa uma mão, soma com a sua proteção venha ela de onde vier, e ainda permite somar Destreza — se você não estiver de Revestimento —, com um teto para o quanto ela pode entrar."
 }

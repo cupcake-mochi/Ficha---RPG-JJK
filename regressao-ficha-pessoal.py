@@ -166,6 +166,8 @@ def nota_da_arma(nome, a, principal):
             t += f" Nesta arma: {a['alcance']}."
         if pr["nome"] == "Munição" and a["recarga"]:
             t += f" Nesta arma, X = {a['recarga']}."
+        if pr["nome"] == "Alcance":                 # decisão dele de 01/10/2026: toda arma com a propriedade chega a 3 m
+            t += " Nesta arma: 3 m."
         linhas.append(f"{pr['nome']}: {t}")
     return "\n".join(linhas)
 
@@ -365,6 +367,8 @@ else:
           _r.returncode == 0, _r.stdout.strip()[-200:])
 _duas = next(pr for pr in LIVRO["propriedades"] if pr["nome"] == "Duas mãos")
 checa("o texto das Duas mãos daqui abre a frase do livro", _duas["faz"].startswith(DUAS_MAOS), _duas["faz"])
+checa("o livro escreve 1,5 m para a arma de mão e 3 m para a que chega mais longe",
+      LIVRO["alcance_no_corpo_a_corpo"] == {"padrao": "1,5 m", "o_que_chega_mais_longe": "3 m"}, str(LIVRO["alcance_no_corpo_a_corpo"]))
 _usadas = {x for a in CAT["equipamento"]["armas"].values() for x in a["propriedades"]}
 _com_texto = {pr["nome"] for pr in LIVRO["propriedades"] + LIVRO["restricoes"]}
 checa(f"as {len(_usadas)} propriedades que as 52 armas do catálogo usam têm texto no livro", _usadas <= _com_texto, str(sorted(_usadas - _com_texto)))
