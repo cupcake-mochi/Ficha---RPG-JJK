@@ -1848,6 +1848,12 @@ ponto 7 é desenho novo e ficou para estudo.*
    `mockup/menu-rapido-estudo.html` (`python3 mockup/estudo_menu_rapido.py`), publicado em
    https://claude.ai/artifact/2KvUsQ9NaraBWNBM8dc7TV: quatro formas (A colunas, B tabela de combate, C mini-cartas, D nomes
    com nota) nas quatro rotas. A pergunta da rodada é qual forma; a seguinte é como a Ficha Amaldiçoada muda em cada rota.*
+   **Escolha de 02/10/2026:** *"pior q eu gostei das mine cartinhas, so acho que o espaço pra descrição poderia ser maior,
+   tipo... ocupas uma ou duas linhas pra baixo, tem q caber o resumo todo de forma visualizável, qualquer coisa é só fazer
+   ser retrateis pra caber melhor". O segundo estudo (mesmo link) mede cada resumo do livro na caixa de cada variação:
+   uma ou duas linhas a mais não fazem caber tudo, e a altura que faz caber é 3 linhas no feitiço, 4 na Passiva e 5 na
+   aptidão e na Bênção (C3), ou a mesma com só as duas primeiras sempre à vista e o resto num grupo por fileira (C4).
+   O resumo da aptidão é a primeira frase da caixa de regra; a caixa inteira (até 1.303 letras) fica na Ficha Amaldiçoada.*
 8. **Toda caixa da aba abre em letra maiúscula.** *Palavras dele: "Textos em minusculo, sempre bom padronizar o maisculo
    na letra inicial". Vale para o que a ficha calcula e para o que nasce escrito: os menus de pacto viraram `Permanente`,
    `Temporário`, `De restrição` e `Um espaço de feitiço`, o estado virou `Na regra`, o Domínio diz `Não fecha` e `Rola`.*

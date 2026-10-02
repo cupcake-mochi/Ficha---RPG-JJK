@@ -123,7 +123,8 @@ def maximas(lib, tecmax, com_dominio):
     if com_dominio:
         out.append({"tipo": "dom", "c": "—", "nome": "Expansão incompleta", "pe": dom["pe_por_classe"] * MAIOR,
                     "forma": "Domínio", "resolve": "Acerto",
-                    "faz": f"Custa {dom['pe_por_classe']} × a maior Classe de PE, {dom['frases'][1].split(',')[0]}. {dom['frases'][2]}",
+                    # o custo cheio (6 × a maior Classe) já está na caixa de PE da carta; o resumo traz o desconto e a duração
+                    "faz": f"{ini(dom['frases'][1].split(',')[0])}. {dom['frases'][2]}",
                     "rot": "Domínio"})
     return out
 
@@ -161,13 +162,29 @@ ROTAS = [
 for r in ROTAS:
     r["lista"] = [poder(n) for n in LISTA]
 
+# a prova dos textos (segundo estudo, 02/10/2026): todo resumo que o livro dá para cada tipo de carta, para a página
+# conferir quantos cabem na caixa de cada variação. O feitiço usa o resultado que o livro imprime; a Passiva, a regra
+# inteira; a aptidão, a primeira frase da caixa de regra (a caixa inteira chega a 1.303 letras e fica na Ficha
+# Amaldiçoada); a Bênção, a linha da entrada.
+NOMES_BENCAOS = [l.split("|")[1].strip() for l in capitulo("47-bencaos-e-lapidacao.md").split("\n")
+                 if re.match(r"^\| [^|]+ \| [^|]+ \| [^|]+ \|$", l) and not l.startswith("| Bênção |") and "---" not in l]
+MARCIAIS = ["Calo", "Maldição do Inventário", "Leitura", "Segundo Fôlego", "Contragolpe", "Aliança"]
+fund = maximas("Liberação Máxima", "Técnica Máxima", True)
+PROVA = {      # [nome, resumo]
+    "feitiços": [[f["nome"], ini(f["livro"])] for f in TEC["feiticos_prontos"]]
+                + [[m["nome"], m["faz"]] for m in fund if m["tipo"] in ("tm", "dom")],
+    "Passivas": [[p["nome"], ini(p["faz"])] for p in TEC["passivas"]] + [[n + " (marcial)", frase_marcial(n)] for n in MARCIAIS],
+    "aptidões e Bênçãos": [[a["nome"], ini(primeira_frase(a["faz"]))] for a in TEC["aptidoes"]]
+                          + [[n, bencao(n)["faz"]] for n in NOMES_BENCAOS],
+}
+
 # o teto da aba, que o menu tem de comportar (B29): 36 lugares de feitiço, 3 Liberações, a Técnica Máxima, o Domínio,
 # 12 Passivas e 12 aptidões
 CAP = {"poderes": 36, "maximas": 5, "passivas": 12, "aptidoes": 12}
 
 css = re.search(r"<style>([\s\S]*?)</style>", open(os.path.join(AQUI, "ficha-pessoal-estudo.html"), encoding="utf-8").read()).group(1)
 modelo = open(os.path.join(AQUI, "menu-rapido-estudo.modelo.html"), encoding="utf-8").read()
-dados = {"rotas": ROTAS, "cap": CAP, "nivel": NIVEL, "versao": TEC["_meta"]["versao_do_livro"]}
+dados = {"rotas": ROTAS, "cap": CAP, "nivel": NIVEL, "versao": TEC["_meta"]["versao_do_livro"], "prova": PROVA}
 html = modelo.replace("/*CSS-DO-ESTUDO-DA-FICHA-PESSOAL*/", css).replace("/*DADOS*/", json.dumps(dados, ensure_ascii=False))
 open(os.path.join(AQUI, "menu-rapido-estudo.html"), "w", encoding="utf-8").write(html)
 print("escrito: mockup/menu-rapido-estudo.html", len(html) // 1024, "KB")
