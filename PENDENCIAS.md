@@ -1899,6 +1899,14 @@ ponto 7 é desenho novo e ficou para estudo.*
    se a linha escondida pelo script continua escondida quando o grupo em volta abre e fecha, se o Domínio volta como
    estava (fechado ou aberto), e se funciona numa cópia só com o gatilho simples. Rodado contra uma imitação mínima do
    Sheets no node, sem erro.*
+   **Resultado do teste e decisões (02/10/2026):** *os passos 1 a 3 funcionaram (o script esconde e mostra por rota, e
+   o Domínio volta como estava); no passo 4 "volta revelada": abrir o grupo em volta revela a linha que o hideRows
+   escondeu. No passo 5 ele estranhou "refino, aptidão e outros seguem lá", que eram os rótulos fixos da aba de teste
+   (na aba de verdade o título e as caixas viram Bênçãos e Lapidação por fórmula). Com isso ele voltou para a A: "Acho
+   que seguirmos com o plano A vai ser melhor mesmo". A linha da rota fica na Técnica, sem script, e o Domínio diz que
+   a rota não tem. Na CD da rota de arma, A: uma CD por grupo na linha da rota (atributo, conjuração e CD de cada
+   grupo), e a linha de cima da Técnica diz "Por grupo" quando os grupos misturam atributos. Fica a dúvida da caixa de
+   CD da própria FICHA na rota de arma. Pergunta seguinte: as Passivas do Fundamento no menu da Técnica Marcial.*
 8. **Toda caixa da aba abre em letra maiúscula.** *Palavras dele: "Textos em minusculo, sempre bom padronizar o maisculo
    na letra inicial". Vale para o que a ficha calcula e para o que nasce escrito: os menus de pacto viraram `Permanente`,
    `Temporário`, `De restrição` e `Um espaço de feitiço`, o estado virou `Na regra`, o Domínio diz `Não fecha` e `Rola`.*

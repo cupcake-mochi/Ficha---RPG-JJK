@@ -87,9 +87,9 @@ table.regras th.agora, table.regras td.agora{color:var(--acento-pag)}
     <h2><b>2</b>Onde a peça da rota mora</h2>
     <div class="escolha">
       <div class="jogo" role="group" aria-label="Forma"><span>Forma</span>
-        <button type="button" data-op="A" aria-pressed="true">A · Linha da rota</button>
+        <button type="button" data-op="A" aria-pressed="true">A · Linha da rota (escolhida)</button>
         <button type="button" data-op="B" aria-pressed="false">B · Seção da rota</button>
-        <button type="button" data-op="C" aria-pressed="false">C · O script esconde (escolhida)</button>
+        <button type="button" data-op="C" aria-pressed="false">C · O script esconde (testada e descartada)</button>
       </div>
       <p class="ideia" id="op-diz"></p>
     </div>
@@ -113,9 +113,9 @@ table.regras th.agora, table.regras td.agora{color:var(--acento-pag)}
   <section class="estudo" id="falta">
     <h2><b>→</b>O que falta decidir</h2>
     <ol class="passos">
-      <li><b><s>Onde a peça da rota mora.</s></b> Fechado em 02/10/2026: C, o script esconde o que a rota não usa ("Eu gosto da C, n vou mentir, vamos testar"). O teste de bancada no Sheets é o <code>medidas/teste-esconder-rota.gs</code>.</li>
-      <li><b>A CD da Técnica Marcial na rota de arma.</b> O livro manda usar o atributo da arma usada na Kata, e os três grupos podem ter atributos diferentes (a Lâmina Longa é Força ou Destreza). A <code>FICHA</code> tem uma caixa só de atributo de conjuração.</li>
-      <li><b>As Passivas no menu da Técnica Marcial.</b> O Sem Técnica diz que as Passivas do Fundamento e as da Técnica Marcial servem; a Técnica Marcial só dá as dela como exemplo, e não diz se as do Fundamento valem.</li>
+       <li><b><s>Onde a peça da rota mora.</s></b> Fechado em 02/10/2026 na A, a linha da rota. A C foi escolhida primeiro e testada no Sheets (<code>medidas/teste-esconder-rota.gs</code>): esconder e mostrar por rota funcionou, mas abrir o grupo em volta revela a linha que o script escondeu.</li>
+      <li><b><s>A CD da Técnica Marcial na rota de arma.</s></b> Fechado em 02/10/2026: uma CD por grupo, na linha da rota, com o atributo, a conjuração e a CD de cada grupo. Na linha de cima da Técnica, quando os grupos misturam atributos, a conjuração e a CD dizem "Por grupo".</li>
+      <li><b>As Passivas no menu da Técnica Marcial.</b> É a pergunta desta rodada. O Sem Técnica diz que as Passivas do Fundamento e as da Técnica Marcial servem; a Técnica Marcial diz que a Passiva funciona igual ao Fundamento, lendo físico, treino e ferramenta onde ele escreve energia, e dá as dela como exemplo.</li>
       <li><b>As Bênçãos, as Passivas da Técnica Marcial e as sementes não estão no arquivo de dados.</b> A aba vai lê-las do livro, como já lê as Passivas e as aptidões.</li>
     </ol>
   </section>
@@ -126,8 +126,8 @@ const D = /*DADOS*/;
 // as 21 colunas da aba (px da planilha) e a escala do desenho
 const LARG = [28, 28, 28, 112, 140, 112, 56, 56, 28, 112, 140, 112, 56, 56, 28, 112, 140, 112, 56, 56, 28], K = 0.7, OFF = 2;
 const COL = (l) => l.charCodeAt(0) - 64;                       // A = 1 ... U = 21
-const est = { op: 'C', rota: 'fund', pal: '', fechado: {} };
-try { const g = JSON.parse(localStorage.getItem('rotas-1') || '{}'); Object.assign(est, { op: g.op || 'C', rota: g.rota || 'fund', pal: g.pal || '' }); } catch (e) {}
+const est = { op: 'A', rota: 'fund', pal: '', fechado: {} };
+try { const g = JSON.parse(localStorage.getItem('rotas-1') || '{}'); Object.assign(est, { op: g.op || 'A', rota: g.rota || 'fund', pal: g.pal || '' }); } catch (e) {}
 const guarda = () => { try { localStorage.setItem('rotas-1', JSON.stringify({ op: est.op, rota: est.rota, pal: est.pal })); } catch (e) {} };
 const DIZ = {
   A: 'Uma linha a mais no alto da Técnica, a mesma em toda ficha: o nome da rota e as caixas do que só ela tem (a semente, ou o equipamento e os três grupos). No Fundamento a linha diz que não há peça a mais. O Domínio continua no lugar, e o título diz quando a rota não tem.',
@@ -156,7 +156,7 @@ function desenho(R, op) {
   const ats = marcial && T.equipamento.rota === 'arma' ? [...new Set(T.equipamento.grupos.flatMap((g) => g.atributo.split(' ou ')))] : [];
   const atributo = !marcial ? 'O da FICHA' : ats.length === 1 ? ats[0] + ', das três armas' : ats.length ? 'O da arma da Kata' : T.atributo;
   poe(L, r, 'D', 'H', 'c val', T.nome); poe(L, r, 'J', 'K', 'c cel', T.tipo); poe(L, r, 'L', 'N', 'c cel calc', atributo);
-  poe(L, r, 'P', 'Q', 'c num calc', ats.length > 1 ? '+5 · +3' : '+5'); poe(L, r, 'R', 'T', 'c num calc', ats.length > 1 ? '15 · 13' : '15');
+  poe(L, r, 'P', 'Q', ats.length > 1 ? 'c cel calc' : 'c num calc', ats.length > 1 ? 'Por grupo' : '+5'); poe(L, r, 'R', 'T', ats.length > 1 ? 'c cel calc' : 'c num calc', ats.length > 1 ? 'Por grupo' : '15');
   r += 2;
   // as caixas do que só a rota tem: três linhas em toda ficha
   const daRota = (comRotulo) => {
@@ -173,9 +173,11 @@ function desenho(R, op) {
       poe(L, r, cols[0][0], cols[0][1], 'c rot', 'Equipamento'); poe(L, r + 1, cols[0][0], cols[0][1], 'c cel menu', 'Três grupos de arma');
       T.equipamento.grupos.forEach((g, i) => {
         const [a1, b1] = cols[i + 1];
-        poe(L, r, a1, b1, 'c rot', 'Grupo ' + (i + 1)); poe(L, r + 1, a1, b1, 'c cel menu', g.grupo); poe(L, r + 2, a1, b1, 'c cel calc', g.atributo);
+        // decidido em 02/10/2026: uma CD por grupo, na linha da rota (o livro manda usar o atributo da arma da Kata)
+        const num = g.atributo.indexOf(' ou ') >= 0 ? 'o maior · +5 · CD 15' : '+5 · CD 15';
+        poe(L, r, a1, b1, 'c rot', 'Grupo ' + (i + 1)); poe(L, r + 1, a1, b1, 'c cel menu', g.grupo); poe(L, r + 2, a1, b1, 'c cel calc', g.atributo + ' · ' + num);
       });
-      poe(L, r + 2, cols[0][0], cols[0][1], 'c rot', 'Atributo de cada um');
+      poe(L, r + 2, cols[0][0], cols[0][1], 'c rot', 'Atributo · conjuração · CD');
     } else {
       const cols = comRotulo ? [['J', 'K'], ['L', 'N'], ['P', 'Q'], ['R', 'T']] : [['D', 'H'], ['J', 'N'], ['P', 'Q'], ['R', 'T']];
       const e = T.equipamento;
