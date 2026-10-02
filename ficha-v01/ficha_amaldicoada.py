@@ -998,7 +998,7 @@ def trocas(layout, CAT=None, TEC=None):
     cS = D.prox
     D.tabela("saltos", ["salto", "caixa do salto", "alvo do salto", "nome do salto"],
              [[curto_de(sid, curto), fp._endereco(_a1(C(cs[i][0]), G["saltos"]), AM), fp._endereco(f"D{G['sec'][sid]}", AM),
-               fp._endereco(_a1(cS, 2 + i), DADOS_AM + "!")]
+               f"{DADOS_AM}!${L(cS)}${2 + i}"]          # o endereço com o nome da aba: o link do script cita a outra aba
               for i, (sid, _, curto) in enumerate(SECOES)])
 
     aba_dados = {
