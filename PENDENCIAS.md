@@ -2039,7 +2039,7 @@ menu (o + de cada par na linha da legenda, o da descrição na linha dos número
 (o aviso e a conta voltando); trocar a Origem na `FICHA` e ver a Ficha Amaldiçoada e o menu mudarem de nome, e o Domínio
 dizer que a rota não tem; e trocar de paleta, contando os cliques até a última aba terminar.*
 
-### B33 · O número da `CARTEIRA` não acompanha a versão do sistema — **espera a resposta dele**
+### B33 · O número da `CARTEIRA` não acompanha a versão do sistema — **respondido "A" (pôr o catálogo em dia); medido em 02/10/2026, e a hora de fazer espera ele**
 
 *Em 02/10/2026, depois de montar o B32: "por sinal a versão n atualizo automatico", com a foto do carimbo da `CARTEIRA`:
 `Nº M-0258-····` e `Emitida 02.10.2026`. O livro está na v0.331.*
@@ -2054,6 +2054,27 @@ número diz a verdade sobre os dados; o que ele não faz é andar sozinho com o 
 *Opções levadas a ele: pôr o catálogo em dia com o livro (reextrair o `manual.txt` do PDF da versão atual, conferir, e o
 número vai junto), ou o número passar a mostrar a versão do livro em que a ficha foi gerada, ou deixar como está. O
 `manual.txt` sai do PDF de coluna única do livro, que estava sendo refeito em segundo plano na hora.*
+
+**Respondido em 02/10/2026: "A".** *Medido antes de mexer: o PDF de coluna única da v0.331
+(`Projeto-M-Manual-da-Guilda.pdf`, 380 páginas, gravado às 16:31; o `-A-atual` é um retrato antigo, sem o Incursor), com
+`pdftotext -layout`, numa cópia isolada do repositório no lugar do `manual.txt`. A v0.331 está no disco do Claude 2
+sem commit, e o CHANGELOG dela diz que "a revisão ampla de nomes, texto e apresentação artística permanece para a
+próxima etapa". Passam com o livro novo: o `conferir-kaori.py`, o `conferir-progressao.py`, o `revisao-cetica.py` e o
+`regressao-exemplos.py`. Falham sete no `conferir-catalogo.py` e três no `conferir-decisoes.py`:*
+
+| o que | é o livro que mudou? |
+|---|---|
+| seis Caminhos e dezoito Trilhas ("São seis Caminhos nesta edição, três Trilhas em cada um"); o catálogo tem cinco e quinze | sim: o **Incursor** (d6, vida 6, 4 por nível, 6 PE, Destreza · Força, `Acrobacia` · `Intuição`, treina as treze categorias) e as Trilhas Assassino, Pugilista e Malabarista |
+| as Trilhas | sim: dez das quinze mudaram de nome. Brasa virou Combatente Amaldiçoado; Elo, Sutura e Perímetro viraram Arquiteto, Analista e Socorrista; Torrente, Explosivo e Arremate viraram Condutor Armado, Ressonante e Catalisador; Servo, Matilha e Coro viraram Invocação Principal, Parceria e Múltiplas Invocações. Muro, Punho, Estocada, Batedor e Executor ficaram |
+| (sem falha no conferidor) as perícias fixas do Bastião | sim: `Atletismo` · `Provocar`; o catálogo tem `Intimidação` |
+| a linha 23 da progressão | sim: o nível 23 dá "degrau de Caminho" (era "—") |
+| as fontes de vida temporária `Aprumo` e `Crosta`, e de energia `Braseiro` e `Trindade` (`decisoes-ficha.json`); o número do Parrudo | sim: os nomes sumiram do livro com as Trilhas novas |
+| armas, treino por categoria, munição, carga | não, ao que parece: no PDF novo o número da página caiu no começo da linha da tabela ("15    Taco…"), e o leitor só tirava do fim. A confirmar no conserto do leitor |
+
+*Na ficha, isso pega o menu de Caminho e o de Trilha, as perícias marcadas pelo Caminho, o treino de arma (o
+`Codigo.gs` nomeia os Caminhos), a Empunhadura do Arremate (agora `Arma Condutora`, do Condutor Armado), as notas que
+citam Caminho e Trilha, o C1 (o Caminho oculto do menu) e o `decisoes-ficha.json`. A pergunta que espera ele: fazer
+agora, contra a v0.331 sem commit, ou depois da revisão de nomes.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
