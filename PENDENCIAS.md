@@ -1891,6 +1891,14 @@ ponto 7 é desenho novo e ficou para estudo.*
    (A linha da rota na Técnica, B seção da rota, C o script esconde o que a rota não usa), com a Régua, a Redoma, a
    Fisga e a Bancada do livro. Ficam para as rodadas seguintes: a CD da rota de arma (o atributo é o da arma da Kata,
    e a FICHA tem uma caixa só), e se as Passivas do Fundamento valem na Técnica Marcial (o livro não diz).*
+   **Escolha de 02/10/2026:** *"Eu gosto da C, n vou menitr, vamos testar"*. *A forma C: o desenho da linha da rota, e o
+   onEdit esconde na Ficha Amaldiçoada o que a rota não usa quando a Origem muda na FICHA (a linha da rota no
+   Fundamento, a Expansão de Domínio fora dele, a linha do Estímulo Muscular fora da Restrição Celestial sem energia).
+   Antes de construir, um teste de bancada para ele rodar numa planilha em branco: `medidas/teste-esconder-rota.gs`
+   (montarTeste, e o roteiro de seis passos fica escrito na aba FICHA). Ele confere o que o Sheets de mentira não sabe:
+   se a linha escondida pelo script continua escondida quando o grupo em volta abre e fecha, se o Domínio volta como
+   estava (fechado ou aberto), e se funciona numa cópia só com o gatilho simples. Rodado contra uma imitação mínima do
+   Sheets no node, sem erro.*
 8. **Toda caixa da aba abre em letra maiúscula.** *Palavras dele: "Textos em minusculo, sempre bom padronizar o maisculo
    na letra inicial". Vale para o que a ficha calcula e para o que nasce escrito: os menus de pacto viraram `Permanente`,
    `Temporário`, `De restrição` e `Um espaço de feitiço`, o estado virou `Na regra`, o Domínio diz `Não fecha` e `Rola`.*

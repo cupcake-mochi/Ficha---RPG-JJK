@@ -89,7 +89,7 @@ table.regras th.agora, table.regras td.agora{color:var(--acento-pag)}
       <div class="jogo" role="group" aria-label="Forma"><span>Forma</span>
         <button type="button" data-op="A" aria-pressed="true">A · Linha da rota</button>
         <button type="button" data-op="B" aria-pressed="false">B · Seção da rota</button>
-        <button type="button" data-op="C" aria-pressed="false">C · O script esconde</button>
+        <button type="button" data-op="C" aria-pressed="false">C · O script esconde (escolhida)</button>
       </div>
       <p class="ideia" id="op-diz"></p>
     </div>
@@ -113,7 +113,7 @@ table.regras th.agora, table.regras td.agora{color:var(--acento-pag)}
   <section class="estudo" id="falta">
     <h2><b>→</b>O que falta decidir</h2>
     <ol class="passos">
-      <li><b>Onde a peça da rota mora: A, B ou C.</b> É a pergunta desta rodada.</li>
+      <li><b><s>Onde a peça da rota mora.</s></b> Fechado em 02/10/2026: C, o script esconde o que a rota não usa ("Eu gosto da C, n vou mentir, vamos testar"). O teste de bancada no Sheets é o <code>medidas/teste-esconder-rota.gs</code>.</li>
       <li><b>A CD da Técnica Marcial na rota de arma.</b> O livro manda usar o atributo da arma usada na Kata, e os três grupos podem ter atributos diferentes (a Lâmina Longa é Força ou Destreza). A <code>FICHA</code> tem uma caixa só de atributo de conjuração.</li>
       <li><b>As Passivas no menu da Técnica Marcial.</b> O Sem Técnica diz que as Passivas do Fundamento e as da Técnica Marcial servem; a Técnica Marcial só dá as dela como exemplo, e não diz se as do Fundamento valem.</li>
       <li><b>As Bênçãos, as Passivas da Técnica Marcial e as sementes não estão no arquivo de dados.</b> A aba vai lê-las do livro, como já lê as Passivas e as aptidões.</li>
@@ -126,8 +126,8 @@ const D = /*DADOS*/;
 // as 21 colunas da aba (px da planilha) e a escala do desenho
 const LARG = [28, 28, 28, 112, 140, 112, 56, 56, 28, 112, 140, 112, 56, 56, 28, 112, 140, 112, 56, 56, 28], K = 0.7, OFF = 2;
 const COL = (l) => l.charCodeAt(0) - 64;                       // A = 1 ... U = 21
-const est = { op: 'A', rota: 'fund', pal: '', fechado: {} };
-try { const g = JSON.parse(localStorage.getItem('rotas-1') || '{}'); Object.assign(est, { op: g.op || 'A', rota: g.rota || 'fund', pal: g.pal || '' }); } catch (e) {}
+const est = { op: 'C', rota: 'fund', pal: '', fechado: {} };
+try { const g = JSON.parse(localStorage.getItem('rotas-1') || '{}'); Object.assign(est, { op: g.op || 'C', rota: g.rota || 'fund', pal: g.pal || '' }); } catch (e) {}
 const guarda = () => { try { localStorage.setItem('rotas-1', JSON.stringify({ op: est.op, rota: est.rota, pal: est.pal })); } catch (e) {} };
 const DIZ = {
   A: 'Uma linha a mais no alto da Técnica, a mesma em toda ficha: o nome da rota e as caixas do que só ela tem (a semente, ou o equipamento e os três grupos). No Fundamento a linha diz que não há peça a mais. O Domínio continua no lugar, e o título diz quando a rota não tem.',
