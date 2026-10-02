@@ -162,6 +162,67 @@ ROTAS = [
 for r in ROTAS:
     r["lista"] = [poder(n) for n in LISTA]
 
+# Quinto estudo (02/10/2026): o menu mostra o que o jogador escreveu, e a Ficha Amaldiçoada mostra a conta ("a ficha
+# amaldiçoada apresenta o calculo, menu rapido as informações do jogador"). Os textos abaixo são de preenchimento, na
+# técnica de peso do exemplo da Kaori; os curtos vêm do estudo da Ficha Amaldiçoada. O Maré Negra é o feitiço com peça
+# criada da pergunta de 02/10: Classe 3, Projétil, Efeito Próprio (Média) e Restrição Própria (Leve), 9 − 3 + 2 = 8d8.
+COMO = {
+    "Estalo": "Ela bate as mãos e o ar entre elas ganha peso. O que sai é um soco sem braço.",
+    "Perfurar": "Parada, ela aperta o ar até virar uma ponta e solta num alvo só.",
+    "Lança Negra": "Uma rodada inteira apertando o ar entre as palmas. Sai uma haste escura que atravessa proteção.",
+    "Palma Trovejante": "Ela abre as mãos de uma vez e o peso sai em leque, derrubando o que estiver na frente.",
+    "Marca do Carrasco": "O peso fica grudado no alvo depois do golpe e continua esmagando. Uma vez por cena.",
+    "Maré Negra": "Ela pisa na poça e o peso sobe pela água até a mão. O jato sai escuro, acerta um alvo só e empurra ele 3 m "
+                  "para trás, na direção em que saiu (Efeito Próprio, Média, combinado com o mestre). Sem água no chão ela não "
+                  "tem o que puxar: o feitiço só sai com o pé molhado (Restrição Própria, Leve).",
+    "Costura": "Ela tira o peso de cima do ferimento de um aliado, e a carne volta para o lugar.",
+    "Julgamento Vertical": "O peso cai de cima numa linha reta, como uma porta de ferro fechando.",
+    "Purga Escarlate": "Ela não mira: o peso acha o alvo e desce sem pedir licença.",
+    "Chuva de Agulhas": "Seis pontas de ar pesado, uma atrás da outra, enquanto ela fica parada.",
+    "Rachadura": "O chão aguenta o peso até não aguentar mais. A rachadura corre em linha reta e engole o que estiver em cima.",
+    "Golpe do Voto": "Tudo que ela segurou na luta inteira, devolvido num golpe só.",
+}
+MARE = {"c": 3, "nome": "Maré Negra", "pe": 9, "forma": "Projétil", "resolve": CURTO[FORMAS["Projétil"]["resolve"]],
+        "faz": "8d8 = 36"}
+COMO_TM = ("Ela fecha as duas mãos sobre o alvo e para de segurar o peso que carregou a vida inteira. O ar em volta fica "
+           "parado, a poeira cai reta no chão, e por um instante tudo ali pesa o mesmo que uma montanha. Quem estiver no meio "
+           "não cai: afunda. O nome vem do que a avó dizia quando ela era criança e não conseguia levantar a mala sozinha.")
+COMO_DOM = ("Uma sala sem paredes, com o chão de pedra polida e uma balança enorme no centro. Tudo que entra tem o peso "
+            "medido, e quem pesa mais que ela sente o corpo puxado para o chão a cada passo. Não há teto: olhando para cima, "
+            "só escuro.")
+LIVRE = {"cp": "Livre", "nome": "Passiva Livre", "faz": "", "marca": "",
+         "texto": "Ela sente o peso de tudo que toca: sabe quanto um objeto pesa só de encostar."}
+REGRA = {"cp": "—", "nome": "Regra Própria", "faz": "", "marca": "", "sem": "Esta técnica não tem Regra Própria"}
+TEXTO_DO_JOGADOR = {
+    "Fluxo": "Quando ela solta uma Classe 3, o peso que sobra fica em volta dela como uma capa.",
+    "Canalizar energia": "O soco dela chega com o peso de um carro.",
+    "Contragolpe": "Errou nela, o peso da arma volta para a mão de quem atacou.",
+    "Ímpeto": "Ela corre baixo, quase encostando o peito no chão.",
+}
+PROPRIAS = {
+    "passiva": {"cp": "1", "nome": "Passiva Própria (CP 1)", "faz": "", "marca": "criada",
+                "texto": "Nada que ela segure cai da mão dela contra a vontade dela."},
+    "aptidao": {"cp": "1", "nome": "Aptidão Própria (CP 1)", "faz": "", "marca": "criada",
+                "texto": "Ela deixa um objeto pesado por uma cena inteira, sem gastar PE, enquanto não soltar ele."},
+    "bencao": {"cp": "1", "nome": "Bênção Própria (CP 1)", "faz": "", "marca": "criada",
+               "texto": "Ela levanta e carrega o dobro do que o corpo dela deveria aguentar, por uma cena."},
+}
+for r in ROTAS:
+    lista = [dict(p, como=COMO[p["nome"]]) for p in r["lista"]]
+    r["lista"] = lista[:5] + [dict(MARE, como=COMO["Maré Negra"])] + lista[5:]
+    for m in r["maximas"]:
+        if m["tipo"] == "lib":
+            m["como"] = COMO[m["nome"]]
+        elif m["tipo"] == "tm":
+            m.update(nome="Peso do Mundo", como=COMO_TM)
+        else:
+            m.update(nome="Balança Escura", como=COMO_DOM)
+    r["passivas"] = [LIVRE, REGRA] + [dict(p, texto=TEXTO_DO_JOGADOR.get(p["nome"], "")) for p in r["passivas"]] + [PROPRIAS["passiva"]]
+    r["aptidoes"] = [dict(a, texto=TEXTO_DO_JOGADOR.get(a["nome"], "")) for a in r["aptidoes"]] + \
+                    [PROPRIAS["bencao" if r["apt"] == "Bênçãos" else "aptidao"]]
+# o texto corrido que enche uma caixa, para a página medir quantas linhas a carta do menu precisa
+ENCHE = " ".join(a["faz"] for a in TEC["aptidoes"]).replace("`", "")
+
 # a prova dos textos (segundo estudo, 02/10/2026): todo resumo que o livro dá para cada tipo de carta, para a página
 # conferir quantos cabem na caixa de cada variação. O feitiço usa o resultado que o livro imprime; a Passiva, a regra
 # inteira; a aptidão, a primeira frase da caixa de regra (a caixa inteira chega a 1.303 letras e fica na Ficha
@@ -180,7 +241,7 @@ PROVA = {      # [nome, resumo]
 
 # o teto da aba, que o menu tem de comportar (B29): 36 lugares de feitiço, 3 Liberações, a Técnica Máxima, o Domínio,
 # 12 Passivas e 12 aptidões
-CAP = {"poderes": 36, "maximas": 5, "passivas": 12, "aptidoes": 12}
+CAP = {"poderes": 36, "maximas": 5, "passivas": 14, "aptidoes": 12}     # Passivas: a Livre e a Regra Própria, mais as 12
 
 css = re.search(r"<style>([\s\S]*?)</style>", open(os.path.join(AQUI, "ficha-pessoal-estudo.html"), encoding="utf-8").read()).group(1)
 modelo = open(os.path.join(AQUI, "menu-rapido-estudo.modelo.html"), encoding="utf-8").read()
@@ -188,7 +249,7 @@ modelo = open(os.path.join(AQUI, "menu-rapido-estudo.modelo.html"), encoding="ut
 LINHA = {"pe": [f"{m} PE" for m in sorted({p["pe"] for r in ROTAS for p in r["lista"] + r["maximas"]})],
          "forma": [f["nome"] for f in TEC["formas"]] + ["Domínio", "—"],
          "resolve": sorted(set(CURTO.values()) | {"Fixo"})}
-dados = {"rotas": ROTAS, "cap": CAP, "nivel": NIVEL, "versao": TEC["_meta"]["versao_do_livro"], "prova": PROVA, "linha": LINHA}
+dados = {"rotas": ROTAS, "cap": CAP, "nivel": NIVEL, "versao": TEC["_meta"]["versao_do_livro"], "prova": PROVA, "linha": LINHA, "enche": ENCHE}
 html = modelo.replace("/*CSS-DO-ESTUDO-DA-FICHA-PESSOAL*/", css).replace("/*DADOS*/", json.dumps(dados, ensure_ascii=False))
 open(os.path.join(AQUI, "menu-rapido-estudo.html"), "w", encoding="utf-8").write(html)
 print("escrito: mockup/menu-rapido-estudo.html", len(html) // 1024, "KB")

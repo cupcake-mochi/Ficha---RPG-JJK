@@ -1871,6 +1871,17 @@ ponto 7 é desenho novo e ficou para estudo.*
    letras. Na mesma mensagem ele perguntou como ficam as peças criadas (Efeito Próprio, Restrição Própria, Passiva,
    Aptidão e Bênção Própria): a carta de feitiço da Ficha Amaldiçoada não tem lugar para o texto do Efeito Próprio nem da
    Restrição Própria, só o nome no menu e o preço. Ficou a pergunta, com três opções.*
+   **Respondido em 02/10/2026:** *"as caixas de descrição, tanto no menu rapido, quanto no ficha amaldiçoada, o plano era
+   revelar a descrição que o player escrever, com a narrativazinha dele e talz, a ficha amaldiçoada apresenta o calculo,
+   menu rapido as informações do jogador. Ent seria B, o 'como é', mas a gente precisa ajustar o tamanho no menu rapido
+   pra caber melhor e compensar nos menus retrateis".* *O quinto estudo (mesmo link): a carta do feitiço mostra o
+   "Como é" do jogador, onde ele descreve também a peça criada; a caixa tem 7 linhas, medidas para caber tudo o que
+   aparece no "Como é" da Ficha Amaldiçoada (476 px, 5 linhas, perto de 346 letras). A Técnica Máxima e o Domínio
+   viram cartas da largura da seção (5 linhas), porque a caixa de lá ocupa a aba inteira. Passivas e aptidões mostram o
+   "seu texto" e, quando ele está vazio, o texto do livro em cinza; a Passiva Livre e a Regra Própria abrem o bloco das
+   Passivas (14 lugares). Cada fileira tem um grupo que fecha a descrição (o + na linha dos números): 216 linhas com tudo
+   aberto, 59 como nasce, 34 com as descrições fechadas, 40 grupos, nenhum colado. Preço novo: a FICHA passa de umas 7 mil
+   para umas 16 mil células na troca de tema, e a troca dela pode ter de ser repartida.*
 8. **Toda caixa da aba abre em letra maiúscula.** *Palavras dele: "Textos em minusculo, sempre bom padronizar o maisculo
    na letra inicial". Vale para o que a ficha calcula e para o que nasce escrito: os menus de pacto viraram `Permanente`,
    `Temporário`, `De restrição` e `Um espaço de feitiço`, o estado virou `Na regra`, o Domínio diz `Não fecha` e `Rola`.*
