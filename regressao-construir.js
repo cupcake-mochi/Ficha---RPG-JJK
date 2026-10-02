@@ -157,6 +157,37 @@ try {
   S.ctx.pessoalEditada_(ed(NOME, letras(m3.c1 + 1) + m3.l1, 'Longa'));
 } catch (e) { erroUso = e; }
 ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4', !erroUso && F.le(partes(idx['nivel']).r, partes(idx['nivel']).c) === 4, erroUso ? erroUso.message : String(F.le(partes(idx['nivel']).r, partes(idx['nivel']).c)));
+// 01/10/2026: o Mizuki digitou um número por cima do NO DOMÍNIO da FICHA AMALDIÇOADA, e a conta sumiu sem aviso.
+{
+  const AM = 'FICHA AMALDIÇOADA', X = S.acha(AM), spec = ABAS.find((s) => s.nome === AM);
+  const rot = spec.vals.find((t) => t[2] === 'NO DOMÍNIO'), calc = [rot[0] + 1, rot[1]], chave = calc.join(',');
+  const conta = X.f.get(chave), a1 = letras(calc[1]) + calc[0];
+  const puras = spec.vals.filter((t) => typeof t[2] === 'string' && t[2][0] === '=' && t[0] >= 7);
+  ok(`as ${puras.length} caixas calculadas da FICHA AMALDIÇOADA só apontam para uma célula: a conta mora na DADOS_AM`,
+     puras.length > 700 && puras.every((t) => /^=(?:'[^']+'|[A-Z_]+)!\$?[A-Z]+\$?\d+$/.test(t[2])), puras.filter((t) => t[2].indexOf(',') >= 0).length + ' com vírgula');
+  let erroAm = null;
+  const antes = S.P.avisos.length;
+  try { S.ss.getSheetByName(AM).getRange(a1).setValue(3); S.ctx.onEdit(ed(AM, a1, '3', '0')); } catch (e) { erroAm = e; }
+  ok('digitar por cima de uma caixa calculada devolve a conta e avisa na tela', !erroAm && !!conta && X.f.get(chave) === conta && S.P.avisos.length === antes + 1,
+     erroAm ? erroAm.message : `${X.f.get(chave)} · ${S.P.avisos.length - antes} aviso(s)`);
+  try { S.ss.getSheetByName(AM).getRange(a1).clearContent(); S.ctx.onEdit(ed(AM, a1, undefined, '0')); } catch (e) { erroAm = e; }
+  ok('apagar a caixa calculada também devolve a conta', !erroAm && X.f.get(chave) === conta, erroAm ? erroAm.message : String(X.f.get(chave)));
+  // a caixa de escolher e a de escrever não são da conta: o onEdit não mexe nelas nem avisa
+  const forma = spec.vals.find((t) => t[2] === 'Projétil'), nome = [forma[0] - 7, forma[1] + 1];
+  const [aF, aN] = [letras(forma[1]) + forma[0], letras(nome[1]) + nome[0]], n0 = S.P.avisos.length;
+  try {
+    S.ss.getSheetByName(AM).getRange(aF).setValue('Toque'); S.ctx.onEdit(ed(AM, aF, 'Toque', 'Projétil'));
+    S.ss.getSheetByName(AM).getRange(aN).setValue('Estalo'); S.ctx.onEdit(ed(AM, aN, 'Estalo'));
+  } catch (e) { erroAm = e; }
+  ok('escolher a Forma e escrever o nome do feitiço ficam como o jogador pôs, sem aviso',
+     !erroAm && X.le(forma[0], forma[1]) === 'Toque' && X.le(nome[0], nome[1]) === 'Estalo' && S.P.avisos.length === n0,
+     erroAm ? erroAm.message : `${X.le(forma[0], forma[1])} · ${X.le(nome[0], nome[1])} · ${S.P.avisos.length - n0} aviso(s)`);
+  // a fórmula com conta (a linha de apoio do cabeçalho) não se escreve igual em todo idioma de planilha: o script não a regrava
+  const apoio = spec.vals.find((t) => typeof t[2] === 'string' && t[2][0] === '=' && t[2].indexOf('&') >= 0), aA = letras(apoio[1]) + apoio[0], n1 = S.P.avisos.length;
+  try { S.ss.getSheetByName(AM).getRange(aA).setValue('x'); S.ctx.onEdit(ed(AM, aA, 'x')); } catch (e) { erroAm = e; }
+  ok('a fórmula que não é referência pura não é regravada pelo script', !erroAm && !!apoio && X.le(apoio[0], apoio[1]) === 'x' && S.P.avisos.length === n1,
+     erroAm ? erroAm.message : `${X.le(apoio[0], apoio[1])} · ${S.P.avisos.length - n1} aviso(s)`);
+}
 let erroSel = null;
 try { S.ctx.onSelectionChange({ range: S.ss.getSheetByName(NOME).getRange('D10') }); S.ctx.onOpen({}); } catch (e) { erroSel = e; }
 ok('clicar numa célula e abrir a planilha não estouram', !erroSel, erroSel ? erroSel.message : '');

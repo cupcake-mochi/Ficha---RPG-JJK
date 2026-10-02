@@ -174,6 +174,10 @@ def _A(coord, aba=""):
     return _abs(col, lin, aba)
 
 
+# a fórmula que só aponta para uma célula de outra aba: é a única que o onEdit sabe devolver (ver `com_conta`, em aba())
+REFERENCIA_PURA = re.compile(r"=(?:'[^']+'|[A-Z_]+)!\$?[A-Z]+\$?\d+")
+
+
 def _ini(texto):
     """a letra inicial maiúscula: toda caixa da aba abre assim (pedido do Mizuki em 01/10/2026). O que vem do livro em
     minúscula (o degrau do Domínio, a forma do pacto, o que o refino escala) passa por aqui antes de ir para a tabela."""
@@ -1361,6 +1365,18 @@ def aba(layout, tr):
         assert f.add("txt", "L", r + 2, "T", r + 5) == cel["recebo"]
         f.add("rot", "D", r + 6, "T", r + 6, "CLÁUSULA, COM QUEM FOI FECHADO E O QUE ACONTECE SE QUEBRAR")
         assert f.add("txt", "D", r + 7, "T", r + 8) == cel["clausula"]
+
+    # --- a conta de cada caixa calculada mora na DADOS_AM, e a caixa só aponta para ela (01/10/2026). O Mizuki digitou um
+    # número por cima do NO DOMÍNIO, a conta sumiu sem aviso, e nada mais lia a caixa. Esta aba não tem trava de fórmula
+    # (trava em linha de grupo faz o Sheets avisar quem clica no +), então quem devolve a conta é o onEdit do Codigo.gs,
+    # que conhece a fórmula de cada caixa pelo ABAS. Ele só consegue gravar o que vale em qualquer idioma de planilha: a
+    # referência pura, sem vírgula entre argumentos e sem decimal. Por isso toda conta sai daqui.
+    com_conta = [(coord, v) for coord, (v, _) in f.cel.items()
+                 if isinstance(v, str) and v.startswith("=") and not REFERENCIA_PURA.fullmatch(v) and ix._lc(coord)[0] >= G["saltos"]]
+    c_mostra = D.tabela("mostra", ["caixa calculada", "o que a caixa mostra"], [[coord, v] for coord, v in com_conta])
+    for i, (coord, _) in enumerate(com_conta):
+        f.cel[coord] = (f"={_abs(c_mostra + 1, 2 + i, DA)}", f.cel[coord][1])
+    tr["aba_dados"].update({"linhas": D.linhas, "colunas": D.prox - 2, "celulas": [[k, v[0], v[1]] for k, v in D.cel.items()]})
 
     # --- o resto da folha é fundo, pintado célula a célula: é ele que diz ao script qual é a cor de base
     canvas = f.estilo("canvas")

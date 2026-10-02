@@ -759,6 +759,11 @@ _resp = [r for r in range(G["fim"]["pactos"] + 1, G["linhas"] + 1)]
 checa("embaixo do último pacto há duas linhas de respiro, vazias e fora de grupo",
       len(_resp) == 2 and all(ws0.cell(row=r, column=c).value is None for r in _resp for c in range(3, fa.COLS + 1))
       and all(not ws0.row_dimensions[r].outlineLevel for r in _resp), str(_resp))
+_contas = [f"{c.coordinate}: {c.value[:50]}" for linha in ws0.iter_rows(min_row=G["saltos"]) for c in linha
+           if isinstance(c.value, str) and c.value.startswith("=") and not fa.REFERENCIA_PURA.fullmatch(c.value)]
+_n_calc = sum(1 for linha in ws0.iter_rows(min_row=G["saltos"]) for c in linha if isinstance(c.value, str) and c.value.startswith("="))
+checa(f"as {_n_calc} caixas calculadas da aba só apontam para uma célula: a conta mora na DADOS_AM, e o script sabe devolver a caixa",
+      _n_calc > 700 and not _contas, f"{len(_contas)}: " + "; ".join(_contas[:3]))
 _cor = lambda coord: (ws0[coord].fill.fgColor.rgb or "")[-6:].upper()
 _nomes = [c["nome"] for c in FEITICOS + LIBS + PASSIVAS + APTIDOES + PACTOS] + [c["classe"] for c in FEITICOS + LIBS]
 _fora = [n for n in _nomes if _cor(n) != fa.ACENTO[-6:].upper()]

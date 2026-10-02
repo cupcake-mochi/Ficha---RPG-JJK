@@ -418,6 +418,12 @@ function onEdit(e) {
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
+  // 01/10/2026: a caixa calculada da FICHA AMALDIÇOADA em que alguém digitou volta a ser a conta.
+  if (aba === ABA_AMALDICOADA_) {
+    try { devolverConta_(e); } catch (err) { console.log('ficha amaldiçoada: ' + err.message); }
+    continuarPaleta_(inicio, null, false, e.range);
+    return;
+  }
   // Qualquer outra edição também continua uma troca que ficou pela metade (a arte, quase sempre): é o
   // "caso alguém mexa na ficha" do Mizuki. Barato quando não há nada pendente.
   if (aba !== 'FICHA') { continuarPaleta_(inicio, null, false, e.range); return; }
@@ -714,6 +720,40 @@ function configurarPessoal_(ss) {
 // =====================================================================
 var ABA_AMALDICOADA_ = 'FICHA AMALDIÇOADA';
 var DADOS_DA_AMALDICOADA_ = 'DADOS_AM';
+
+/**
+ * A caixa calculada da FICHA AMALDIÇOADA em que alguém digitou por cima volta a ser a conta, com um aviso.
+ *
+ * Achado do Mizuki em 01/10/2026: ele digitou 3 no NO DOMÍNIO do Orçamento, a conta sumiu e nada mudou no resto, porque
+ * a caixa só mostrava o custo do degrau escolhido lá embaixo. A FICHA avisa quem mexe em fórmula pela trava de aviso;
+ * esta aba não pode ter trava, porque quase tudo nela mora em linha de grupo, e trava em linha de grupo faz o Sheets
+ * avisar quem clica no +. Então a conta é devolvida depois: o ABAS do Ficha.gs traz a fórmula de cada caixa.
+ *
+ * Só volta a fórmula que é referência pura a uma célula (=DADOS_AM!$GH$22): ela se escreve igual em qualquer idioma
+ * de planilha, e a ficha vive em português, onde a vírgula entre argumentos não vale. O gerador faz toda caixa
+ * calculada da aba ser assim (a conta mora na DADOS_AM). O salto da linha 7 não é devolvido: é o acabar() que o escreve.
+ */
+var REFERENCIA_PURA_ = /^=(?:'[^']+'|[A-Z_]+)!\$?[A-Z]+\$?\d+$/;
+function devolverConta_(e) {
+  var spec = ABAS.filter(function (s) { return s.nome === ABA_AMALDICOADA_; })[0];
+  if (!spec) return 0;
+  var aba = e.range.getSheet();
+  var r1 = e.range.getRow(), c1 = e.range.getColumn(), r2 = e.range.getLastRow(), c2 = e.range.getLastColumn();
+  var n = 0;
+  spec.vals.forEach(function (t) {
+    if (t[0] < r1 || t[0] > r2 || t[1] < c1 || t[1] > c2) return;
+    if (typeof t[2] !== 'string' || !REFERENCIA_PURA_.test(t[2])) return;
+    var cel = aba.getRange(t[0], t[1]);
+    if (cel.getFormula() === t[2]) return;
+    cel.setFormula(t[2]);
+    n++;
+  });
+  if (n) {
+    SpreadsheetApp.getActive().toast('Essa caixa é calculada pela ficha, e a conta voltou. O número dela muda pelas caixas de ' +
+                                     'escolher e de escrever da própria seção.', ABA_AMALDICOADA_, 8);
+  }
+  return n;
+}
 
 /**
  * Os saltos da linha de cima da FICHA AMALDIÇOADA: cada nome de seção vira uma ligação para o título dela. A ligação
@@ -1829,6 +1869,17 @@ var OSSO_HEX_ = '#E8DCD4';
 var AMBAR_HEX_ = '#D89B3A';
 
 /**
+ * O vermelho de ESTADO: o fundo que as regras de cor de aviso acendem (corDeEstado_ na FICHA, o "⚠" da FICHA
+ * AMALDIÇOADA), com fonte branca. Achado do Mizuki em 01/10/2026, na planilha que ele exportou: o getBackgrounds()
+ * e o getFontColors() devolvem a cor que a regra está mostrando, e não a da célula. A troca de paleta lia o
+ * vermelho aceso, não achava papel para ele e gravava de volta: a caixa `Livres · Fechadas` nasce em "⚠ 0 de 2",
+ * a troca gravou o vermelho como fundo dela, e ela continuou vermelha depois de preenchida certo. Por isso o
+ * repintarCoresDaAba_ não confia nessas duas cores: quando lê o vermelho de estado no fundo, ou o âmbar de estado
+ * na fonte de uma célula que não nasceu âmbar, parte da cor de fábrica da célula.
+ */
+var VERMELHO_DE_ESTADO_HEX_ = '#C2334D';
+
+/**
  * As células que nasceram com o âmbar padrão, achadas no `ABAS` (o estilo delas) e não pela cor que
  * têm agora — depois da primeira troca a fonte delas já não é mais âmbar, e uma busca por cor não
  * acharia elas de novo. Achar pelo endereço faz a troca reversível: em toda paleta a fonte delas é
@@ -2248,18 +2299,25 @@ function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo) {
   var avisos = celulasDeAviso_(spec);
   var enfeites = celulasDeEnfeite_(spec);
   var desenho = contrasteDeFabrica_(spec);
+  var fabrica = gradeDeFabrica_(spec);
 
   for (var r = 0; r < nl; r++) {
     for (var c = 0; c < nc; c++) {
-      var f = (fundos[r][c] || '').toUpperCase();
-      var t = (fontes[r][c] || '').toUpperCase();
+      var lidoF = (fundos[r][c] || '').toUpperCase(), lidoT = (fontes[r][c] || '').toUpperCase();
+      var f = lidoF, t = lidoT;
+      // a cor que uma regra de aviso acendeu não é da célula: a conta parte da cor de fábrica dela (ver
+      // VERMELHO_DE_ESTADO_HEX_). Serve também para desfazer o vermelho que uma troca antiga deixou gravado.
+      if (f === VERMELHO_DE_ESTADO_HEX_ && fabrica.bg[r][c] !== VERMELHO_DE_ESTADO_HEX_) {
+        f = fabrica.bg[r][c];
+        t = fabrica.fc[r][c];
+      } else if (t === AMBAR_HEX_ && !avisos[r + ',' + c]) {
+        t = fabrica.fc[r][c];
+      }
       var papelDoFundo = papelPorHexAntes[f] || papelPorHexGlobal[f];
 
       var novoFundo = f;
-      if (papelDoFundo && agora[papelDoFundo] !== undefined) {
-        novoFundo = '#' + String(agora[papelDoFundo]).toUpperCase();
-        if (novoFundo !== f) { fundos[r][c] = novoFundo; mudouFundo = true; }
-      }
+      if (papelDoFundo && agora[papelDoFundo] !== undefined) novoFundo = '#' + String(agora[papelDoFundo]).toUpperCase();
+      if (novoFundo !== lidoF) { fundos[r][c] = novoFundo; mudouFundo = true; }
 
       var novaFonte = t;
       if (avisos[r + ',' + c]) {
@@ -2277,7 +2335,7 @@ function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo) {
       }
 
       novaFonte = fonteLegivel_(novaFonte, novoFundo, desenho[r][c], candidatos, cacheLegivel);
-      if (novaFonte !== t) { fontes[r][c] = novaFonte; mudouFonte = true; }
+      if (novaFonte !== lidoT) { fontes[r][c] = novaFonte; mudouFonte = true; }
     }
   }
   var t1 = Date.now();

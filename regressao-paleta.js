@@ -230,6 +230,24 @@ console.log('5. cor pintada à mão pelo jogador');
 P=umaVez([M]); P.abas.FICHA.bg[40][10]='#FFFF00'; r=emPassos(P,[E]);
 ok('fica na troca de tema', P.abas.FICHA.bg[40][10]==='#FFFF00');
 
+console.log('5b. a cor de aviso acesa na hora da troca não fica gravada na célula');
+// Achado do Mizuki em 01/10/2026, na planilha exportada: o getBackgrounds() devolve a cor que a regra de aviso está
+// mostrando. Aqui a regra acesa é imitada pondo o vermelho e o branco de estado (e o âmbar, noutra célula) na grade
+// que a troca lê: depois da troca, a cor gravada tem de ser a do papel da célula, igual à de uma troca sem aviso.
+{ const AM='FICHA AMALDIÇOADA', S=ABAS.find(s=>s.nome===AM);
+  const comValor=S.vals.filter(t=>typeof t[2]==='string' && t[2].indexOf('⚠')>=0 && t[2][0]==='=');
+  const [la,ca]=[comValor[0][0]-1, comValor[0][1]-1], [lb,cb]=[comValor[1][0]-1, comValor[1][1]-1];
+  ok('a aba tem caixas que podem acender o aviso', comValor.length>=2, String(comValor.length));
+  const limpa=umaVez([E]);
+  P=criaPlanilha(ABAS); P.abas[AM].bg[la][ca]='#C2334D'; P.abas[AM].fc[la][ca]='#FFFFFF'; P.abas[AM].fc[lb][cb]='#D89B3A'; r=emPassos(P,[E]);
+  ok('o vermelho de estado aceso na troca não vira o fundo da célula', P.abas[AM].bg[la][ca]===limpa.abas[AM].bg[la][ca] && P.abas[AM].fc[la][ca]===limpa.abas[AM].fc[la][ca],
+     `${P.abas[AM].bg[la][ca]} ${P.abas[AM].fc[la][ca]}, e a troca limpa dá ${limpa.abas[AM].bg[la][ca]} ${limpa.abas[AM].fc[la][ca]}`);
+  ok('o âmbar de estado aceso na troca não vira a fonte da célula', P.abas[AM].fc[lb][cb]===limpa.abas[AM].fc[lb][cb], `${P.abas[AM].fc[lb][cb]} != ${limpa.abas[AM].fc[lb][cb]}`);
+  ok('a planilha inteira termina igual à da troca sem aviso', !igual(P,limpa), igual(P,limpa));
+  // a planilha que uma troca antiga deixou com o vermelho gravado: a troca seguinte desfaz
+  P=umaVez([E]); P.abas[AM].bg[la][ca]='#C2334D'; P.abas[AM].fc[la][ca]='#FFFFFF'; r=emPassos(P,[M]);
+  ok('o vermelho que uma troca antiga gravou sai na troca seguinte', !igual(P,umaVez([E,M])), igual(P,umaVez([E,M]))); }
+
 console.log('6. o que não cabe: a aba em que o jogador clica passa na frente, e ninguém é avisado');
 ESCALA=1.4; P=criaPlanilha(ABAS);
 { const {ctx:C,celPaleta:cp}=carrega(SRC_NOVO,P); P.abas.CARTEIRA.valores.paleta=E;

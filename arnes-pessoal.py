@@ -156,6 +156,14 @@ print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
 edita("a nota da mao principal volta para o rotulo", F, '["D41","Para uma arma aparecer neste menu', '["D40","Para uma arma aparecer neste menu',
       "a caixa de escolha de cada mão nasce com a nota")
 edita("a DADOS deixa de publicar a nota da arma da mao secundaria", F, '"arma da secundária"', '""', "a DADOS publica as cinco notas")
+# 01/10/2026 (B31): a caixa calculada da FICHA AMALDICOADA em que alguem digitou por cima volta a ser a conta
+edita("a conta digitada por cima nao volta", C, "    cel.setFormula(t[2]);\n    n++;", "    n++;", "digitar por cima de uma caixa calculada devolve a conta", teste=K)
+edita("a conta volta sem aviso na tela", C, "  if (n) {\n    SpreadsheetApp.getActive().toast(", "  if (false) {\n    SpreadsheetApp.getActive().toast(",
+      "digitar por cima de uma caixa calculada devolve a conta", teste=K)
+edita("o onEdit regrava formula que nao vale em todo idioma", C, "var REFERENCIA_PURA_ = /^=(?:'[^']+'|[A-Z_]+)!\\$?[A-Z]+\\$?\\d+$/;", "var REFERENCIA_PURA_ = /^=/;",
+      "não é regravada pelo script", teste=K)
+edita("o onEdit nao reconhece a FICHA AMALDICOADA", C, "if (aba === ABA_AMALDICOADA_) {", "if (aba === 'OUTRA ABA DE NOME PARECIDO') {",
+      "digitar por cima de uma caixa calculada devolve a conta", teste=K)
 edita("renomear uma variavel de dentro da conta", C, "var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"
       "                   .every(function (a) { return marcadas[a.caixa] === true; });\n  if ((marcadas[dono.caixa] === true) !== todas) muda[dono.caixa] = todas;",
       "var inteiro = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"

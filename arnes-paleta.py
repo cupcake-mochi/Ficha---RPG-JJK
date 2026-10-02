@@ -31,6 +31,8 @@ casos = [
  ("a lombada leva o bloco em vez da linha", "papel['#' + PALETA_DE_FABRICA_.linha] = 'linha';", "papel['#' + PALETA_DE_FABRICA_.linha] = 'bloco';", "letras de enfeite"),
  ("a arte que não aparece fica como está", "if (contrasteHex_(cor, fundo) >= PISO_ARTE_) return cor;", "return cor;", "nas 122 paletas cada imagem sai na cor do papel dela"),
  ("a arte que não aparece cai no texto do tema", "return mesmaCorQueLe_(cor, fundo, PISO_ARTE_);\n}", "return '#' + String(agora.texto).toUpperCase();\n}", "quando nem o papel nem o acento aparecem"),
+ ("o vermelho de aviso lido na troca vira o fundo da célula", "if (f === VERMELHO_DE_ESTADO_HEX_ && fabrica.bg[r][c] !== VERMELHO_DE_ESTADO_HEX_) {", "if (false) {", "o vermelho de estado aceso na troca não vira o fundo"),
+ ("o âmbar de aviso lido na troca vira a fonte da célula", "} else if (t === AMBAR_HEX_ && !avisos[r + ',' + c]) {", "} else if (false) {", "o âmbar de estado aceso na troca não vira a fonte"),
  ("a arte cai no texto antes de tentar o acento", "if (agora.acento && contrasteHex_(acento, fundo) >= PISO_ARTE_) return acento;", "if (agora.acento) return '#' + String(agora.texto).toUpperCase();", "nas 122 paletas cada imagem sai na cor do papel dela"),
 ]
 ruins = 0

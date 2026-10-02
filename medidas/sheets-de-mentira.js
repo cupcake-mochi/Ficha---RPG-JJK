@@ -56,7 +56,7 @@ function partes(a1) {
 
 // `extras` troca peças do ambiente: o teste passa um relógio que corre, para a montagem achar que demorou
 function criaSheets(FICHA_SRC, GS, extras) {
-  const P = { locale: 'en_US', abas: [], nomeados: {}, props: {}, ativa: null, registros: [], orfas: [] };
+  const P = { locale: 'en_US', abas: [], nomeados: {}, props: {}, ativa: null, registros: [], orfas: [], avisos: [] };
   // O que o Sheets de verdade estraga calado, e este anota em P.orfas: a fórmula gravada antes de a aba citada existir
   // (ou antes de ela ter a linha e a coluna citadas) fica em #REF!, e a fórmula com vírgula ou ponto decimal gravada
   // com a planilha fora do inglês vira #ERROR!.
@@ -266,7 +266,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
     getRangeByName: (n) => P.nomeados[n] || null,
     setNamedRange: (n, r) => { P.nomeados[n] = r; },
     getNamedRanges: () => Object.keys(P.nomeados).map((n) => rigoroso('NamedRange', { getName: () => n, getRange: () => P.nomeados[n], remove: () => { delete P.nomeados[n]; } })),
-    getId: () => 'planilha-de-mentira', toast: () => {},
+    getId: () => 'planilha-de-mentira', toast: (texto, titulo) => { P.avisos.push([String(titulo || ''), String(texto)]); },
   });
   const ctx = {
     console: { log: () => {} }, Logger: { log: (m) => { P.registro = String(m); P.registros.push(String(m)); } }, Date, Math, JSON,
