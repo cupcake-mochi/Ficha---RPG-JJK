@@ -1783,7 +1783,7 @@ Mizuki, e não foi feito.*
 agora), com a nota montada de novo a partir do arquivo lido do livro: cinco armas que juntas têm as treze propriedades em
 uso, a arma não guardada, só o escudo guardado e só a arma de duas mãos guardada. O `regressao-pessoal.js` confere as cinco
 notas vivas, a caixa de cada uma e a nota da caixa de escolha. Entrou o `arnes-ficha-pessoal.py`, rodado à mão, com doze
-defeitos plantados nessas contas, e o `arnes-pessoal.py` ganhou dois.*
+defeitos plantados nessas contas: os doze acendem, e o contra-teste fica verde. O `arnes-pessoal.py` ganhou dois.*
 
 **Achado no livro, para ele decidir:** *a propriedade `Alcance` manda ver a seção "Alcance no corpo a corpo", que diz "As
 Armas Longas chegam a 3 m". Onze armas têm `Alcance`, e só três são da categoria `Armas Longas` (Lança, Naginata e Yari);

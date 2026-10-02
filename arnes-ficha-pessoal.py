@@ -3,8 +3,9 @@
 e roda o regressao-ficha-pessoal.py. Cada defeito tem de acender a checagem dele.
 
 Nasceu em 01/10/2026 com o B30 (o aviso embaixo da mao e a nota das propriedades da arma), e so cobre essas contas: o
-que o Codigo.gs faz pela aba e do arnes-pessoal.py. Cada rodada gera a ficha e recalcula no LibreOffice, e leva perto
-de um minuto: por isso ele e rodado a mao, e nao mora no rodar-tudo.sh.
+que o Codigo.gs faz pela aba e do arnes-pessoal.py. Cada rodada gera a ficha e recalcula 22 planilhas no LibreOffice,
+e leva uns quatro minutos (55 minutos ao todo em 01/10/2026, com a maquina ocupada): por isso ele e rodado a mao, e nao
+mora no rodar-tudo.sh.
 
     python3 arnes-ficha-pessoal.py            # todas as perturbacoes
     python3 arnes-ficha-pessoal.py 3 7        # so a terceira e a setima

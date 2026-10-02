@@ -130,7 +130,7 @@ const notasCertas = ['defesa', 'iniciativa', 'maestria', 'nivel', 'xp', 'equipam
 }).filter(Boolean);
 ok('as notas de regra da FICHA moram no título da caixa quando ele é texto, e na caixa quando não é', F.notas.size >= 35 && !notasCertas.length, `${F.notas.size} notas; fora do lugar: ${notasCertas}`);
 const vivas = S.ctx.tabelaDaDados_(S.ss.getSheetByName('DADOS').getDataRange().getValues(), 'nota viva', ['texto da nota', 'caixa da nota']);
-ok('as três notas que mudam com a ficha nascem escritas', vivas.length === 3 && vivas.every((n) => { const p = partes(n['caixa da nota']); return A.notas.has(p.r + ',' + p.c); }));
+ok('as cinco notas que mudam com a ficha nascem escritas', vivas.length === 5 && vivas.every((n) => { const p = partes(n['caixa da nota']); return A.notas.has(p.r + ',' + p.c); }));
 
 console.log('\nA PLANILHA MONTADA, EM USO (pelo onEdit de verdade)');
 const ed = (aba, a1, value, oldValue) => ({ range: S.ss.getSheetByName(aba).getRange(a1), value, oldValue });
