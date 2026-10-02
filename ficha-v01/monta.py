@@ -94,6 +94,14 @@ if _quem != cabecalho.quem(LAYOUT):
 
 # 19/09/2026: enganos de formatacao manual da planilha viva (a caixa ORIGEM com borda branca), corrigidos
 # na saida. Ver correcoes_borda.py.
+# 02/10/2026, limpeza 26: o menu rapido. A secao 8 da FICHA deixa de ser digitada e mostra o que esta na FICHA
+# AMALDICOADA. Ele le as contas da aba (as trocas dela, que so entra no layout mais abaixo, depois das bordas) e vem
+# antes das correcoes de borda, porque a FICHA cresce e a lombada tem de ir ate a ultima linha. Ver menu_rapido.py.
+import ficha_amaldicoada, menu_rapido
+_FAM = ficha_amaldicoada.trocas(LAYOUT)
+_MR = menu_rapido.trocas(LAYOUT, _FAM)
+print(f"o menu rapido na secao 8 da FICHA: {menu_rapido.aplica(LAYOUT, _MR)} mudanca(s), da linha {_MR['r0']} a {_MR['fim']}, "
+      f"{len(_MR['grupos'])} grupo(s)")
 import correcoes_borda
 print(f"as bordas corrigidas: {correcoes_borda.aplica(LAYOUT)} celula(s) diferentes da exportacao")
 
@@ -121,8 +129,6 @@ print(f"a Ficha Pessoal: {_ABA_FP['linhas']} linha(s), {_ABA_FP['colunas']} colu
 # 01/10/2026: a FICHA AMALDICOADA, depois da FICHA, e a aba oculta das contas dela, a DADOS_AM, depois da DADOS.
 # Tambem nasce inteira no gerador, do desenho que o Mizuki fechou por estudo. Vem depois da FICHA PESSOAL porque le
 # o cabecalho e a lombada da FICHA ja corrigidos, e nao muda nenhuma celula das outras abas. Ver ficha_amaldicoada.py.
-import ficha_amaldicoada
-_FAM = ficha_amaldicoada.trocas(LAYOUT)
 _ABA_AM = ficha_amaldicoada.aplica(LAYOUT, _FAM)
 print(f"a Ficha Amaldiçoada: {_ABA_AM['linhas']} linha(s), {_ABA_AM['colunas']} coluna(s), {len(_ABA_AM['celulas'])} celula(s), "
       f"{len(_ABA_AM['mescladas'])} mesclagem(ns), {len(_ABA_AM['grupos']['linhas'])} grupo(s) de linhas; "
@@ -271,7 +277,9 @@ def _extras(a):
            # 01/10/2026, a FICHA AMALDICOADA: as fileiras de cartas que sao copia da primeira, a validacao numa matriz so,
            # e, na DADOS_AM, as colunas que o script preenche para baixo a partir da primeira linha
            "copias": a.get("copias", []), "validacao_em_matriz": a.get("validacao_em_matriz", False),
-           "abaixo": a.get("abaixo", [])}
+           "abaixo": a.get("abaixo", []),
+           # 02/10/2026, o menu rapido da FICHA: as linhas que a trava de formula do script deixa de fora
+           "sem_trava": a.get("sem_trava", [])}
     return {k: v for k, v in out.items() if v}
 
 gs, celulas, pecas = emitir_gs.escrever(

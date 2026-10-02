@@ -379,6 +379,9 @@ function protegerFormulas_(ss, idx) {
     semAsVelhas(aba);
     var celulas = [];
     aba.getDataRange().getFormulas().forEach(function (linha, i) {
+      // 02/10/2026: o menu rápido da FICHA mora em linha de grupo, e trava em linha de grupo faz o Sheets avisar quem
+      // clica no +; quem escreve por cima dele recebe a conta de volta pelo onEdit
+      if (linhaSemTrava_(nome, i + 1)) return;
       linha.forEach(function (formula, j) {
         if (!formula) return;
         if (nome === 'FICHA' && livres.indexOf(a1_(i + 1, j + 1)) >= 0) return;
@@ -427,6 +430,12 @@ function onEdit(e) {
   // Qualquer outra edição também continua uma troca que ficou pela metade (a arte, quase sempre): é o
   // "caso alguém mexa na ficha" do Mizuki. Barato quando não há nada pendente.
   if (aba !== 'FICHA') { continuarPaleta_(inicio, null, false, e.range); return; }
+  // 02/10/2026: o menu rápido da seção 8 é todo calculado; quem escrever por cima recebe a conta de volta
+  if (dentroDeSemTrava_('FICHA', e.range)) {
+    try { devolverConta_(e, 'FICHA'); } catch (err) { console.log('menu rápido: ' + err.message); }
+    continuarPaleta_(inicio, null, false, e.range);
+    return;
+  }
   var idx = indice();
   aplicarDelta_(e, idx);
   prenderTemp_(e, idx);
@@ -733,9 +742,20 @@ var DADOS_DA_AMALDICOADA_ = 'DADOS_AM';
  * de planilha, e a ficha vive em português, onde a vírgula entre argumentos não vale. O gerador faz toda caixa
  * calculada da aba ser assim (a conta mora na DADOS_AM). O salto da linha 7 não é devolvido: é o acabar() que o escreve.
  */
+/** As linhas que a aba declara sem trava no ABAS (o menu rápido da FICHA): [[primeira, última], ...] */
+function linhaSemTrava_(nome, linha) {
+  var spec = ABAS.filter(function (s) { return s.nome === nome; })[0];
+  return !!(spec && (spec.sem_trava || []).some(function (f) { return linha >= f[0] && linha <= f[1]; }));
+}
+function dentroDeSemTrava_(nome, range) {
+  for (var l = range.getRow(); l <= range.getLastRow(); l++) if (linhaSemTrava_(nome, l)) return true;
+  return false;
+}
+
 var REFERENCIA_PURA_ = /^=(?:'[^']+'|[A-Z_]+)!\$?[A-Z]+\$?\d+$/;
-function devolverConta_(e) {
-  var spec = ABAS.filter(function (s) { return s.nome === ABA_AMALDICOADA_; })[0];
+function devolverConta_(e, nome) {
+  nome = nome || ABA_AMALDICOADA_;
+  var spec = ABAS.filter(function (s) { return s.nome === nome; })[0];
   if (!spec) return 0;
   var aba = e.range.getSheet();
   var r1 = e.range.getRow(), c1 = e.range.getColumn(), r2 = e.range.getLastRow(), c2 = e.range.getLastColumn();
@@ -749,8 +769,10 @@ function devolverConta_(e) {
     n++;
   });
   if (n) {
-    SpreadsheetApp.getActive().toast('Essa caixa é calculada pela ficha, e a conta voltou. O número dela muda pelas caixas de ' +
-                                     'escolher e de escrever da própria seção.', ABA_AMALDICOADA_, 8);
+    SpreadsheetApp.getActive().toast(nome === 'FICHA'
+      ? 'O menu rápido mostra o que está na FICHA AMALDIÇOADA, e a caixa voltou. Para mudar, mexa lá.'
+      : 'Essa caixa é calculada pela ficha, e a conta voltou. O número dela muda pelas caixas de ' +
+        'escolher e de escrever da própria seção.', nome, 8);
   }
   return n;
 }

@@ -709,7 +709,10 @@ def trocas(layout, CAT=None, TEC=None):
              [f"n{j}" for j in range(1, 7)] + ["dL", "dM", "nm", "nr", "g", "dv0", "dv", "usa", "perde", "s", "d", "dep"] +
              [f"d{c['classe']}" for c in R["classes"]] + [f"t{c['classe']}" for c in R["classes"]] +
              ["erros", "ne", "avisos", "na", "estado", "linha", "pe", "acao", "resolve", "dano", "lg", "mr", "q1", "q2", "alcance",
-              "conta", "ampliar"] + [f"pt{i}" for i in range(1, N_MEL + 1)] + [f"dt{i}" for i in range(1, N_RES + 1)])
+              "conta", "ampliar"] + [f"pt{i}" for i in range(1, N_MEL + 1)] + [f"dt{i}" for i in range(1, N_RES + 1)] +
+             # 02/10/2026, o menu rápido da FICHA: o "Como é" do jogador, e a ordem entre os feitiços com nome, para o menu
+             # listar os feitiços juntos, sem buraco, sem fórmula matricial
+             ["como", "ordem"])
     cF = D.prox
     col = {k: cF + i for i, k in enumerate(nomes)}
     lugares = [("Feitiço", 0, i + 1, celulas_do_feitico(*pos)) for i, pos in enumerate(G["feiticos"])] + \
@@ -839,6 +842,9 @@ def trocas(layout, CAT=None, TEC=None):
         for i in range(1, N_RES + 1):
             c = P(f"c{i}")
             o[f"dt{i}"] = f'=IF(OR({P("tem")}=0,{P(f"r{i}")}=""),"","+"&IF({c}=1,CEILING({Cc}/2,1),{Cc}))'
+        o["como"] = f'={_A(cel["como"], AM)}&""'
+        o["ordem"] = (f'=IF(AND({P("tem")}=1,{P("liberação")}=0),COUNTIFS(${L(col["tem"])}$2:{P("tem")},1,'
+                      f'${L(col["liberação"])}$2:{P("liberação")},0),"")')
         return [o[k] for k in nomes]
 
     # as contas com nome vêm ANTES na escrita das fórmulas (a conta de feitiço cita três), mas moram depois na aba:
@@ -940,7 +946,7 @@ def trocas(layout, CAT=None, TEC=None):
     cP = D.prox
     pp = lambda k, n: f"${L(cP + k)}{n}"
     D.tabela("carta_passiva", ["carta de passiva", "passiva anotada", "classe passiva anotada", "nível que libera", "o que ela faz",
-                               "classe passiva na carta", "custo na carta"],
+                               "classe passiva na carta", "custo na carta", "seu texto da passiva", "ordem da passiva"],
              [[f"Passiva {i + 1}" + (" · Leque" if i >= PAGAS else ""),
                f'={_A(p["nome"], AM)}&""',
                (lambda n: f"=IFERROR(VLOOKUP({pp(1, n)},{PASS},2,FALSE),0)"),
@@ -948,19 +954,23 @@ def trocas(layout, CAT=None, TEC=None):
                (lambda n: f'=IFERROR(VLOOKUP({pp(1, n)},{PASS},3,FALSE),"")'),
                (lambda n: f'=IF({pp(2, n)}=0,"",IF({pp(3, n)}>{H["nível"]},"{T_ERRO} Nível "&{pp(3, n)},"CP "&{pp(2, n)}))'),
                ((lambda n, j=i - PAGAS + 1: f'=IF({pp(2, n)}=0,"",IF({j}>{H["escolhas de Leque"]},"{T_ERRO} Vaga","Grátis"))') if i >= PAGAS
-                else (lambda n: f'=IF({pp(2, n)}=0,"",{pp(2, n)}&" esp.")'))]
+                else (lambda n: f'=IF({pp(2, n)}=0,"",{pp(2, n)}&" esp.")')),
+               f'={_A(p["texto"], AM)}&""',
+               (lambda n: f'=IF({pp(1, n)}="","",COUNTIF(${L(cP + 1)}$2:{pp(1, n)},"?*"))')]
               for i, p in enumerate(passivas_c)])
     APT = D.faixa("aptidoes")
     cA = D.prox
     aa = lambda k, n: f"${L(cA + k)}{n}"
     D.tabela("carta_aptidao", ["carta de aptidão", "aptidão anotada", "requisito na carta", "classe passiva na carta de aptidão",
-                               "o refino escala na carta", "o que a aptidão anotada faz"],
+                               "o refino escala na carta", "o que a aptidão anotada faz", "seu texto da aptidão", "ordem da aptidão"],
              [[f"Aptidão {i + 1}", f'={_A(a["nome"], AM)}&""',
                (lambda n: f'=IF({aa(1, n)}="","","Requisito: "&IFERROR(VLOOKUP({aa(1, n)},{APT},2,FALSE),""))'),
                (lambda n: f'=IF({aa(1, n)}="","",IFERROR(IF(ISNUMBER(VLOOKUP({aa(1, n)},{APT},3,FALSE)),"CP "&VLOOKUP({aa(1, n)},{APT},3,FALSE),'
                           f'VLOOKUP({aa(1, n)},{APT},3,FALSE)),""))'),
                (lambda n: f'=IF({aa(1, n)}="","",IFERROR(VLOOKUP({aa(1, n)},{APT},4,FALSE),""))'),
-               (lambda n: f'=IF({aa(1, n)}="","",IFERROR(VLOOKUP({aa(1, n)},{APT},5,FALSE),""))')]
+               (lambda n: f'=IF({aa(1, n)}="","",IFERROR(VLOOKUP({aa(1, n)},{APT},5,FALSE),""))'),
+               f'={_A(a["texto"], AM)}&""',
+               (lambda n: f'=IF({aa(1, n)}="","",COUNTIF(${L(cA + 1)}$2:{aa(1, n)},"?*"))')]
               for i, a in enumerate(aptidoes_c)])
     # --- a Classe 0: uma linha por lugar
     cZ = D.prox
