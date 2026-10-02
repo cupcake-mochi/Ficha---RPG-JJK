@@ -1865,8 +1865,12 @@ ponto 7 é desenho novo e ficou para estudo.*
    minha: grupo de linha fecha a linha inteira, então dois feitiços um em cima do outro são duas fileiras, seis cartas).
    Em cima de cada par fica uma linha que leva o + e diz quais cartas ele guarda ("Feitiços 7 a 12"), porque o + do Sheets
    fica na linha antes do grupo e dois grupos colados no mesmo nível viram um só. O resumo ganhou um botão de folga sobre a
-   altura justa (2, 3 e 4 linhas): +1 dá 3, 4 e 5, com 141 linhas no caso cheio e 62 à vista como nasce. Falta ele dizer a
-   folga.*
+   altura justa (2, 3 e 4 linhas): +1 dá 3, 4 e 5, com 141 linhas no caso cheio e 62 à vista como nasce.*
+   **Fechado em 02/10/2026:** *"duas linhas e fechamos"*. *Resumo de 4 linhas no feitiço, 5 na Passiva e 6 na aptidão e na
+   Bênção: 163 linhas no caso cheio, 70 à vista como nasce. Na medida conservadora da página cabem perto de 170, 260 e 300
+   letras. Na mesma mensagem ele perguntou como ficam as peças criadas (Efeito Próprio, Restrição Própria, Passiva,
+   Aptidão e Bênção Própria): a carta de feitiço da Ficha Amaldiçoada não tem lugar para o texto do Efeito Próprio nem da
+   Restrição Própria, só o nome no menu e o preço. Ficou a pergunta, com três opções.*
 8. **Toda caixa da aba abre em letra maiúscula.** *Palavras dele: "Textos em minusculo, sempre bom padronizar o maisculo
    na letra inicial". Vale para o que a ficha calcula e para o que nasce escrito: os menus de pacto viraram `Permanente`,
    `Temporário`, `De restrição` e `Um espaço de feitiço`, o estado virou `Na regra`, o Domínio diz `Não fecha` e `Rola`.*

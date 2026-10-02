@@ -226,8 +226,8 @@ table.regras td.falta{color:var(--f-vermelho)}
     <div class="escolha">
       <div class="jogo" role="group" aria-label="Folga do resumo"><span>Resumo</span>
         <button type="button" data-folga="0" aria-pressed="false">Altura justa</button>
-        <button type="button" data-folga="1" aria-pressed="true">Uma linha de folga</button>
-        <button type="button" data-folga="2" aria-pressed="false">Duas linhas de folga</button>
+        <button type="button" data-folga="1" aria-pressed="false">Uma linha de folga</button>
+        <button type="button" data-folga="2" aria-pressed="true">Duas linhas de folga (escolhida)</button>
       </div>
       <p class="ideia" id="folga-diz"></p>
       <p>Cada par de fileiras é um grupo, porque o grupo do Sheets fecha a linha inteira: "dois feitiços um em cima do outro" vira as duas fileiras de três cartas, seis feitiços. O primeiro par de cada bloco nasce aberto e os outros nascem fechados, como os lotes da Ficha Amaldiçoada. As Liberações, a Técnica Máxima e o Domínio são cinco cartas, duas fileiras: o grupo do bloco já fecha as duas.</p>
@@ -280,7 +280,8 @@ table.regras td.falta{color:var(--f-vermelho)}
   <section class="estudo" id="falta">
     <h2><b>→</b>O que falta decidir</h2>
     <ol class="passos">
-      <li><b>Quanta folga no resumo.</b> É a pergunta desta rodada.</li>
+      <li><b><s>Quanta folga no resumo.</s></b> Fechado em 02/10/2026: duas linhas (4 no feitiço, 5 na Passiva, 6 na aptidão).</li>
+      <li><b>O que o menu mostra das peças criadas</b> (Efeito Próprio, Restrição Própria, Passiva, Aptidão e Bênção Própria). É a pergunta desta rodada.</li>
       <li><b>Como a Ficha Amaldiçoada muda em cada rota.</b> A próxima rodada, com opções de desenho, a partir do quadro da seção 3.</li>
       <li><b>O que já está digitado na seção 8 de fichas em uso.</b> Quando a seção virar menu, o que o jogador escreveu lá à mão tem de ser passado para a Ficha Amaldiçoada.</li>
       <li><b>O arquivo de dados não tem as Passivas da Técnica Marcial nem as Bênçãos.</b> Este estudo leu do livro, como o anterior leu as Passivas e as aptidões.</li>
@@ -298,8 +299,8 @@ const POR = 3, W = 13, X = [4, 19, 34], NUM = [3, 4, 6];
 // a altura justa de cada resumo, medida pela página com os textos do livro; a folga soma linhas a ela
 const BASE = { dp: 2, dlp: 3, dla: 4 };
 const FOLGAS = [0, 1, 2];
-const est = { folga: 1, rota: 'fund', pal: '', fechado: {} };
-try { const g = JSON.parse(localStorage.getItem('menu-rapido-4') || '{}'); Object.assign(est, { folga: FOLGAS.includes(g.folga) ? g.folga : 1, rota: g.rota || 'fund', pal: g.pal || '' }); } catch (e) {}
+const est = { folga: 2, rota: 'fund', pal: '', fechado: {} };
+try { const g = JSON.parse(localStorage.getItem('menu-rapido-4') || '{}'); Object.assign(est, { folga: FOLGAS.includes(g.folga) ? g.folga : 2, rota: g.rota || 'fund', pal: g.pal || '' }); } catch (e) {}
 const guarda = () => { try { localStorage.setItem('menu-rapido-4', JSON.stringify({ folga: est.folga, rota: est.rota, pal: est.pal })); } catch (e) {} };
 const alturas = (f) => ({ dp: BASE.dp + f, dlp: BASE.dlp + f, dla: BASE.dla + f });
 
