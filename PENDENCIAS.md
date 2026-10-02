@@ -2024,7 +2024,11 @@ confere o que saiu do índice e do `Codigo.gs` e as cartas de graça do menu pel
 `FICHA` (Defesa, X de Y, espaços de feitiço, ataques: 10 de 10 e 20 de 20). Nos arneses: o `arnes-amaldicoada.py` foi de
 35 para 57 defeitos (12 das rotas e 10 do menu); o 44, que trocava `>=3` por `>=2` numa fórmula que trata o Sem
 Técnica antes, não mudava nada e foi reescrito para fazer o que o nome diz; o `arnes-paleta.py` de 9 para 10 (a troca que pintasse só o primeiro
-trecho da `FICHA`), e três trechos dele que tinham ficado velhos com a troca em trechos foram atualizados.*
+trecho da `FICHA`), e três trechos dele que tinham ficado velhos com a troca em trechos foram atualizados. Rodados nesta
+volta: os 26 da Amaldiçoada que são novos ou mudaram (23, 34 a 57) acendem, cada um na checagem dele; os 10 da paleta e
+os 46 da pessoal também. O `medidas/ver-aba.py --aba FICHA` desenha a `FICHA` com a Kaori da Ficha Amaldiçoada, e foi
+por ele que o "— PE" e o texto cortado apareceram. A bateria inteira passou: os vinte e um, e a seção do menu na
+regressão com 115 checagens (3 gerais e 7 em cada uma das 16 fichas).*
 
 **O que só o Sheets diz, e falta ele ver:** *montar com o `Ficha.gs` e o `Codigo.gs` novos; abrir e fechar os grupos do
 menu (o + de cada par na linha da legenda, o da descrição na linha dos números); escrever por cima de uma carta do menu
