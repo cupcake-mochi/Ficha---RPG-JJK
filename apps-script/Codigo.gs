@@ -1522,7 +1522,22 @@ var ESTIMATIVA_PASSO_ = 6000;     // passo desconhecido (ver estimativaDoPasso_)
 var PROP_FEITO_ = 'paleta_feito', PROP_TEMPOS_ = 'paleta_tempos', PROP_PENDENTE_ = 'paleta_pendente';
 var PROP_ULTIMA_ = 'paleta_ultima_troca', PROP_DETALHE_ = 'paleta_detalhe';
 // Sai no verTemposDaPaleta, pra saber qual Codigo.gs está colado na planilha que mediu.
-var VERSAO_PALETA_ = '01/10/2026-h';
+var VERSAO_PALETA_ = '02/10/2026-a';
+
+/**
+ * 02/10/2026: o menu rápido levou a FICHA de 150 para 345 linhas, 16 mil células, e o passo de cor dela sozinho passou
+ * dos 30 segundos num Sheets lento (o teste 8 da regressao-paleta.js, com o Sheets três vezes mais lento: 33 s). A
+ * aba grande vira passos de linhas, de até CELULAS_POR_PASSO_ células cada: o tamanho que a FICHA tinha antes, e que
+ * cabia. A conta de cada célula não muda; só o trecho lido e gravado de cada vez.
+ */
+var CELULAS_POR_PASSO_ = 7500;
+function trechosDaAba_(spec) {
+  var n = spec.rows * spec.cols;
+  if (n <= CELULAS_POR_PASSO_) return null;
+  var k = Math.ceil(n / CELULAS_POR_PASSO_), por = Math.ceil(spec.rows / k), out = [];
+  for (var r = 1; r <= spec.rows; r += por) out.push([r, Math.min(spec.rows, r + por - 1)]);
+  return out;
+}
 
 function passosDaPaleta_(primeira) {
   // As abas ocultas (DADOS, DADOS_INV) ficam de fora desde 25/09/2026: ninguém as vê, e cada aba lida e
@@ -1536,8 +1551,13 @@ function passosDaPaleta_(primeira) {
   // A barra cheia vem primeiro (01/10/2026): é uma célula só, na DADOS, e as barras de todas as abas a leem.
   var passos = ['barra'];
   abas.forEach(function (spec) {
-    passos.push('cor:' + spec.nome);
-    if ((spec.bordas || []).length) passos.push('borda:' + spec.nome);
+    // a aba grande vai por trechos, e a régua vem logo depois do primeiro: a parte de cima é a que o jogador vê primeiro
+    // (na FICHA, a ficha de antes do menu rápido), e o resto da cor vem depois dela
+    var trechos = trechosDaAba_(spec) || [null];
+    trechos.forEach(function (t, i) {
+      passos.push('cor:' + spec.nome + (t ? ':' + t[0] + '-' + t[1] : ''));
+      if (i === 0 && (spec.bordas || []).length) passos.push('borda:' + spec.nome);
+    });
   });
   // A arte vem por último (25/09/2026): é enfeite, e o Mizuki pediu que ela entre quando alguém mexer na
   // ficha, sem aviso, quando não couber junto. Depois das cores também porque a cor dela é escolhida contra
@@ -1553,11 +1573,27 @@ function passosDaPaleta_(primeira) {
  * lê e grava fundo e fonte, ~0,7 ms por célula no total, mais o fixo das chamadas; a régua e cada imagem, ~1,5 s. Chute alto de
  * propósito, mas não tanto que a primeira troca de uma cópia pare antes da hora.
  */
-function estimativaDoPasso_(passo) {
+function celulasDoPassoDeCor_(passo) {
+  var partes = passo.split(':');
+  var spec = ABAS.filter(function (a) { return a.nome === partes[1]; })[0];
+  if (!spec) return 0;
+  var t = partes[2] ? partes[2].split('-').map(Number) : [1, spec.rows];
+  return (t[1] - t[0] + 1) * spec.cols;
+}
+function estimativaDoPasso_(passo, tempos) {
   var partes = passo.split(':');
   if (partes[0] === 'cor') {
-    var spec = ABAS.filter(function (a) { return a.nome === partes[1]; })[0];
-    return spec ? Math.round(spec.rows * spec.cols * 0.75) + 600 : ESTIMATIVA_PASSO_;
+    var n = celulasDoPassoDeCor_(passo);
+    if (!n) return ESTIMATIVA_PASSO_;
+    // 02/10/2026: num Sheets mais lento que o de fábrica, o passo de cor ainda não medido custava o triplo da conta e
+    // estourava os 30 s (o teste 8). Com algum passo de cor já medido nesta planilha, a estimativa usa o mais lento
+    // deles por célula, se ele passar da conta de fábrica.
+    var porCelula = 0.75;
+    Object.keys(tempos || {}).forEach(function (k) {
+      var nk = k.indexOf('cor:') === 0 ? celulasDoPassoDeCor_(k) : 0;
+      if (nk >= 1000) porCelula = Math.max(porCelula, (tempos[k] - 600) / nk);
+    });
+    return Math.round(n * porCelula) + 600;
   }
   // 01/10/2026: a régua custa por chamada, e a FICHA PESSOAL tem 550 faixas, mais que as 522 da FICHA. As caixas de
   // quatro lados vão em lotes de 400, e os lados soltos em até quatro chamadas a mais (ver repintarBordas_).
@@ -1634,7 +1670,7 @@ function convergirPaleta_(inicio, orcamento, dica, primeira) {
     if (feito[passo] === novo) continue;
     var gasto = Date.now() - inicio;
     var fresca = andou === 0 && gasto < 3000;
-    if (!fresca && gasto + (tempos[passo] || estimativaDoPasso_(passo)) > orcamento) {
+    if (!fresca && gasto + (tempos[passo] || estimativaDoPasso_(passo, tempos)) > orcamento) {
       props.setProperty(PROP_PENDENTE_, novo);
       return passo;
     }
@@ -1644,7 +1680,8 @@ function convergirPaleta_(inicio, orcamento, dica, primeira) {
       try { pintarBarra_(ss, agora); } catch (err) { console.log('barra: ' + err.message); }
     } else if (tipo === 'cor') {
       var spec = ABAS.filter(function (a) { return a.nome === nome; })[0];
-      repintarCoresDaAba_(ss, spec, feito[passo] || geral || velho || PALETA_INICIAL_, novo);
+      var trecho = partes[2] ? partes[2].split('-').map(Number) : null;
+      repintarCoresDaAba_(ss, spec, feito[passo] || geral || velho || PALETA_INICIAL_, novo, trecho);
     } else if (tipo === 'arte') {
       repintarArte_(ss, agora, candidatosDeFonte_(agora, coresOpostas_(novo)), nome, Number(partes[2]));
     } else {
@@ -2281,7 +2318,7 @@ function repintarArte_(ss, agora, candidatos, soAba, soImagem) {
  * uma aba por chamada, porque a troca passou a rodar em passos dentro do gatilho simples (ver
  * convergirPaleta_), e cada aba é um passo. A conta de cada célula não mudou.
  */
-function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo) {
+function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo, trecho) {
   // 25/09/2026: a versão d tentou partir da ficha de fábrica, sem ler a planilha, pra caber numa execução
   // só. Os tempos do Mizuki desmentiram: ler custa pouco, o que pesa é gravar (~0,5 ms por célula em cada
   // gravação), e sem a leitura o passo ficou mais lento. Voltou a ler, e a cor pintada à mão pelo jogador
@@ -2310,8 +2347,11 @@ function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo) {
   // nenhum, só cor. getLastRow() parava antes delas, e elas nunca eram lidas nem trocadas —
   // "as partes externas da ficha" que ficavam pretas depois da troca de tema. spec.rows e
   // spec.cols são o tamanho de verdade: o mesmo que montarAba_ pintou por inteiro.
-  var nl = spec.rows, nc = spec.cols;
-  var faixa = sh.getRange(1, 1, nl, nc);
+  // `trecho` (02/10/2026): [primeira, última] linha, quando a aba é grande demais para um passo (ver trechosDaAba_).
+  // As grades de fábrica, de aviso e de enfeite continuam contadas da linha 1: `de` é o deslocamento até o trecho.
+  var r1 = trecho ? trecho[0] : 1, de = r1 - 1;
+  var nl = trecho ? trecho[1] - trecho[0] + 1 : spec.rows, nc = spec.cols;
+  var faixa = sh.getRange(r1, 1, nl, nc);
 
   // Medida por dentro do passo (desde 25/09/2026-e): ler, a conta, gravar o fundo, gravar a fonte. Sai no
   // verTemposDaPaleta.
@@ -2331,11 +2371,12 @@ function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo) {
       var f = lidoF, t = lidoT;
       // a cor que uma regra de aviso acendeu não é da célula: a conta parte da cor de fábrica dela (ver
       // VERMELHO_DE_ESTADO_HEX_). Serve também para desfazer o vermelho que uma troca antiga deixou gravado.
-      if (f === VERMELHO_DE_ESTADO_HEX_ && fabrica.bg[r][c] !== VERMELHO_DE_ESTADO_HEX_) {
-        f = fabrica.bg[r][c];
-        t = fabrica.fc[r][c];
-      } else if (t === AMBAR_HEX_ && !avisos[r + ',' + c]) {
-        t = fabrica.fc[r][c];
+      var ra = r + de;                          // a linha na aba inteira, para as grades contadas da linha 1
+      if (f === VERMELHO_DE_ESTADO_HEX_ && fabrica.bg[ra][c] !== VERMELHO_DE_ESTADO_HEX_) {
+        f = fabrica.bg[ra][c];
+        t = fabrica.fc[ra][c];
+      } else if (t === AMBAR_HEX_ && !avisos[ra + ',' + c]) {
+        t = fabrica.fc[ra][c];
       }
       var papelDoFundo = papelPorHexAntes[f] || papelPorHexGlobal[f];
 
@@ -2344,10 +2385,10 @@ function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo) {
       if (novoFundo !== lidoF) { fundos[r][c] = novoFundo; mudouFundo = true; }
 
       var novaFonte = t;
-      if (avisos[r + ',' + c]) {
+      if (avisos[ra + ',' + c]) {
         novaFonte = '#' + String(avisoNovo[papelDoFundo] || agora.texto).toUpperCase();
-      } else if (enfeites[r + ',' + c]) {
-        novaFonte = '#' + String(agora[enfeites[r + ',' + c]]).toUpperCase();
+      } else if (enfeites[ra + ',' + c]) {
+        novaFonte = '#' + String(agora[enfeites[ra + ',' + c]]).toUpperCase();
       } else if (t === OSSO_HEX_) {
         var novoOsso = papelDoFundo && ossoNovo[papelDoFundo];
         if (novoOsso) novaFonte = '#' + String(novoOsso).toUpperCase();
@@ -2358,7 +2399,7 @@ function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo) {
         }
       }
 
-      novaFonte = fonteLegivel_(novaFonte, novoFundo, desenho[r][c], candidatos, cacheLegivel);
+      novaFonte = fonteLegivel_(novaFonte, novoFundo, desenho[ra][c], candidatos, cacheLegivel);
       if (novaFonte !== lidoT) { fontes[r][c] = novaFonte; mudouFonte = true; }
     }
   }
@@ -2368,7 +2409,7 @@ function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo) {
   var t2 = Date.now();
   if (mudouFonte) faixa.setFontColors(fontes);
   SpreadsheetApp.flush();
-  DETALHE_COR_[spec.nome] = { le: tl - t0, conta: t1 - tl, fundo: t2 - t1, fonte: Date.now() - t2, celulas: nl * nc };
+  DETALHE_COR_[spec.nome + (trecho ? ' ' + trecho[0] + '-' + trecho[1] : '')] = { le: tl - t0, conta: t1 - tl, fundo: t2 - t1, fonte: Date.now() - t2, celulas: nl * nc };
 }
 var DETALHE_COR_ = {};
 

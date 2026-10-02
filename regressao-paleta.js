@@ -66,9 +66,12 @@ function carrega(src, P, {autorizado=false}={}){
         getBackground:()=>A.bg[r-1][c-1], setValue:(v)=>{gasta(CUSTO.imgEscrever()); A.imgs[k].cor=v.desc;},
         getA1Notation:()=>a1(r-1,c-1), getSheet:()=>sheet(nome)}; }
       const n=nl*nc;
-      return { getBackgrounds:()=>{gasta(CUSTO.ler(n));log.leituras=(log.leituras||0)+1;return A.bg.map(l=>l.slice());},
-        getFontColors:()=>{gasta(CUSTO.ler(n));log.leituras=(log.leituras||0)+1;return A.fc.map(l=>l.slice());},
-        setBackgrounds:(m)=>{gasta(CUSTO.escrever(n));A.bg=m.map(l=>l.slice());}, setFontColors:(m)=>{gasta(CUSTO.escrever(n));A.fc=m.map(l=>l.slice());} };
+      // 02/10/2026: a faixa é a pedida (a troca de paleta pinta a aba grande por trechos de linhas), e não a aba inteira
+      const corta=g=>g.slice(r-1,r-1+nl).map(l=>l.slice(c-1,c-1+nc));
+      const grava=(g,m)=>m.forEach((l,i)=>l.forEach((v,j)=>{g[r-1+i][c-1+j]=v;}));
+      return { getBackgrounds:()=>{gasta(CUSTO.ler(n));log.leituras=(log.leituras||0)+1;return corta(A.bg);},
+        getFontColors:()=>{gasta(CUSTO.ler(n));log.leituras=(log.leituras||0)+1;return corta(A.fc);},
+        setBackgrounds:(m)=>{gasta(CUSTO.escrever(n));grava(A.bg,m);}, setFontColors:(m)=>{gasta(CUSTO.escrever(n));grava(A.fc,m);} };
     },
     // a borda fica registrada faixa a faixa e lado a lado: o que importa é a cor de cada lado, não como foi pedida
     getRangeList:(lista)=>({setBorder:(t,l,b,r,v,h,cor)=>{gasta(CUSTO.borda()); log.chamadasBorda=(log.chamadasBorda||0)+1;
@@ -188,7 +191,8 @@ P.props.paleta_tempos=JSON.stringify(Object.assign(JSON.parse(P.props.paleta_tem
 { const {ctx}=carrega(SRC_NOVO,P); ctx.verTemposDaPaleta(); const reg=P.log.registro||'';
   ok('o relatório diz a versão, ignora passo de versão anterior, conta as execuções e mostra o passo de cor por dentro',
      /versão do Codigo\.gs: /.test(reg) && !/cor:DADOS/.test(reg) && /em \d+ execução/.test(reg) && /do começo ao fim \d+ ms/.test(reg)
-     && /FICHA \(7050 células\): lê \d+ ms, conta \d+ ms, grava fundo \d+ ms, grava fonte \d+ ms/.test(reg), reg.split('\n').slice(0,3).join(' / ')); }
+     // 02/10/2026: a FICHA com o menu rápido vai em trechos de linhas, e o relatório diz cada trecho
+     && /FICHA \d+-\d+ \(\d+ células\): lê \d+ ms, conta \d+ ms, grava fundo \d+ ms, grava fonte \d+ ms/.test(reg), reg.split('\n').slice(0,3).join(' / ')); }
 
 console.log('2. segunda troca, com os tempos medidos');
 P.log.toasts=[]; r=emPassos(P,[M]); console.log('       '+resumo(r));
@@ -199,20 +203,28 @@ ok(`nenhuma execução passou de 30 s (maior: ${(r.maior/1000).toFixed(1)} s)`, 
 // Com a FICHA AMALDIÇOADA (11 mil células, em 21 colunas) a terceira aba da ordem passou a ser ela: a troca pinta a
 // CARTEIRA, a FICHA e a FICHA AMALDIÇOADA, e a FICHA PESSOAL, o GLOSSÁRIO e a arte terminam no clique seguinte. A aba
 // em que o jogador clica continua passando na frente (o teste 6).
-const PRIMEIRAS=['CARTEIRA','FICHA','FICHA AMALDIÇOADA'];
-ok('cor e régua da CARTEIRA, da FICHA e da FICHA AMALDIÇOADA na execução da troca, sem aviso',
+// 02/10/2026: o menu rápido levou a FICHA de 7 mil para 16 mil células, e a troca não pinta mais três abas na primeira
+// execução. Ela pinta a CARTEIRA e a FICHA, cor e régua, e o resto (a FICHA AMALDIÇOADA, a FICHA PESSOAL, o GLOSSÁRIO e a
+// arte) termina nos dois cliques seguintes, sem aviso. A aba em que o jogador clica continua passando na frente.
+const PRIMEIRAS=['CARTEIRA','FICHA'];
+ok('cor e régua da CARTEIRA e da FICHA na execução da troca, sem aviso',
    PRIMEIRAS.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs[0].passos.includes(p))) && P.log.toasts.length===0, r.execs[0].passos.join(', '));
-ok('as outras abas terminam no primeiro clique depois da troca',
-   r.execs.length===2 && visiveis.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs[0].passos.concat(r.execs[1].passos).includes(p))), resumo(r));
+ok('as outras abas terminam até o segundo clique depois da troca',
+   r.execs.length<=3 && visiveis.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs.reduce((t,e)=>t.concat(e.passos),[]).includes(p))), resumo(r));
 ok('igual a E→M de uma vez', !igual(P,umaVez([E,M])), igual(P,umaVez([E,M])));
 ok('depois da segunda troca a barra e as letras de enfeite são as do tema novo, sem depender do anterior',
    P.abas.DADOS.valores[celBarra()]===hexDe(M,'barra') && enfeiteFora(P,M).length===0, `${P.abas.DADOS.valores[celBarra()]} · ${enfeiteFora(P,M).slice(0,4).join(', ')}`);
 
 console.log('3. troca no meio de outra');
-function caminhoLimpo(P, refs){ const achou={}; let todas=true;
+// 02/10/2026: a aba grande é pintada em trechos de linhas, e cada trecho pode ter ido por um caminho (E→M→B num, M→B
+// noutro): o caminho limpo é conferido trecho a trecho
+function caminhoLimpo(P, refs){ const achou={}; let todas=true; const {ctx}=carrega(SRC_NOVO,P);
   for(const s of ABAS){ if(s.oculta) continue; const a=P.abas[s.nome];
-    const k=Object.keys(refs).find(k=>{const b=refs[k].abas[s.nome]; return JSON.stringify(a.bg)===JSON.stringify(b.bg)&&JSON.stringify(a.fc)===JSON.stringify(b.fc);});
-    if(!k) todas=false; achou[s.nome]=k||'NENHUM'; }
+    const trechos=ctx.trechosDaAba_(s)||[[1,s.rows]], ks=[];
+    for(const [r1,r2] of trechos){ const fat=g=>JSON.stringify(g.slice(r1-1,r2));
+      const k=Object.keys(refs).find(k=>{const b=refs[k].abas[s.nome]; return fat(a.bg)===fat(b.bg)&&fat(a.fc)===fat(b.fc);});
+      if(!k) todas=false; ks.push(k||'NENHUM'); }
+    achou[s.nome]=ks.join(' + '); }
   return {todas, achou}; }
 P=criaPlanilha(ABAS); r=emPassos(P,[E,B],{cliquesEntre:1});
 { const c=caminhoLimpo(P,{'E→B':umaVez([E,B]),'B':umaVez([B])}); ok('E, um clique, B: cada aba é um caminho limpo até B '+JSON.stringify(c.achou), !P.props.paleta_pendente && c.todas); }
@@ -254,8 +266,11 @@ ESCALA=1.4; P=criaPlanilha(ABAS);
   C.onEdit({range:cp,value:E});
   const feito=()=>JSON.parse(P.props.paleta_feito||'{}'); const falta=()=>C.passosDaPaleta_().filter(k=>feito()[k]!==E);
   const f0=falta(); console.log('       ficou pra depois da troca: '+f0.join(', '));
-  ok('com o Sheets 40% mais lento, a CARTEIRA e a FICHA entraram na troca, e sobrou trabalho',
-     f0.length>0 && ['CARTEIRA','FICHA'].every(a=>daAba(f0.concat(),a).length===0), f0.join(', '));
+  // 02/10/2026: com a FICHA em trechos, o que entra na troca é a CARTEIRA e a parte de cima da FICHA, cor e régua; o
+  // resto do menu rápido fica para o clique
+  const daFicha=C.passosDaPaleta_().filter(p=>p.split(':')[1]==='FICHA'), cima=daFicha.slice(0,2);
+  ok('com o Sheets 40% mais lento, a CARTEIRA e a parte de cima da FICHA (cor e régua) entraram na troca, e sobrou trabalho',
+     f0.length>0 && daAba(f0.concat(),'CARTEIRA').length===0 && cima.every(p=>!f0.includes(p)) && cima[1]==='borda:FICHA', f0.join(', '));
   const alvo=visiveis.filter(a=>daAba(f0,a).length).pop();
   ok('há uma aba com cor ou régua pendente pra testar o clique', !!alvo, f0.join(', '));
   if(alvo){ P.clock.t+=500; const ini=P.clock.t; const cel={getSheet:()=>({getName:()=>alvo}),getA1Notation:()=>'B5'};
@@ -292,7 +307,8 @@ ok('termina igual à troca de uma vez, sem aviso', !P.props.paleta_pendente && !
 ESCALA=1;
 
 console.log('9. um passo sozinho mais lento que o orçamento não trava a troca pra sempre');
-P=criaPlanilha(ABAS); P.props.paleta_tempos=JSON.stringify({'cor:FICHA':40000}); r=emPassos(P,[E]);
+P=criaPlanilha(ABAS); { const {ctx}=carrega(SRC_NOVO,P); const lento=ctx.passosDaPaleta_().find(p=>p.indexOf('cor:FICHA')===0 && p.indexOf('AMALDIÇOADA')<0);
+  P.props.paleta_tempos=JSON.stringify({[lento]:40000}); } r=emPassos(P,[E]);
 ok('terminou mesmo assim', !P.props.paleta_pendente && !igual(P,umaVez([E])));
 
 console.log('10. a revisão das cores de 01/10/2026: a lombada que ficou presa noutro papel volta, e a arte nas 122');
