@@ -172,6 +172,7 @@ def trocas(layout, tr):
     # --- a seção na FICHA
     f = _Folha(layout)
     grupos = []
+    cheias = {}                    # as fileiras de três cartas, pela altura: as cópias da primeira (ver o aplica)
     r = r0
     f.cel[f"D{r}"] = (8, num_est)
     f.mesclas.append(f"D{r}:F{r + 1}")
@@ -212,6 +213,8 @@ def trocas(layout, tr):
                 i = fi * POR + j
                 if i < cap:
                     poe(r, X[j], i)
+            if (fi + 1) * POR <= cap:
+                cheias.setdefault(alt, []).append(r)
             # a descrição da fileira: o + fica na linha de cima dela, e só a primeira fileira do bloco nasce aberta
             grupos.append([r + d_ini, r + alt - 1, fi > 0])
             r += alt
@@ -231,6 +234,8 @@ def trocas(layout, tr):
     r = cab + 1
     for j in range(fa.N_LIB):
         carta(r, X[j], cL, j, "tag lib")
+    if fa.N_LIB == POR:
+        cheias[2 + ALT["feitico"]].append(r)
     grupos.append([r + 2, r + 1 + ALT["feitico"], False])
     r += 2 + ALT["feitico"] + 1
     for i, tag in ((0, "tag tm"), (1, "tag dom")):
@@ -285,7 +290,8 @@ def trocas(layout, tr):
             cel_dados[fa._a1(cc + 1, lin)] = (f"={valor}", fa._a1(cc + 1, lin))
     return {"r0": r0, "fim": fim, "fim_velho": fim_velho, "celulas": {NOME: {c: (v[0], c) for c, v in f.cel.items()}, "DADOS": cel_dados},
             "_estilos": f.cel, "sai": sai - set(f.cel), "mescladas_sai": {NOME: mesc_sai}, "mescladas": {NOME: f.mesclas},
-            "menus_sai": {NOME: menus_sai}, "grupos": grupos}
+            "menus_sai": {NOME: menus_sai}, "grupos": grupos,
+            "copias": [[v[0], v[0] + alt - 1, v[1:], C1, CN] for alt, v in cheias.items() if len(v) > 1]}
 
 
 def aplica(layout, tm):
@@ -308,4 +314,8 @@ def aplica(layout, tm):
     ficha["grupos"] = {"linhas": tm["grupos"], "colunas": []}
     # as linhas do menu ficam fora da trava de fórmula do script, e o onEdit devolve a conta de quem escrever por cima
     ficha["sem_trava"] = [[tm["r0"], tm["fim"]]]
+    # as fileiras de três cartas são iguais a menos da linha que cada caixa cita: o script mescla a primeira de cada
+    # altura e copia o formato para as outras (expandirCopias_ e montarAba_), como na Ficha Amaldiçoada. São mais de
+    # duzentas mesclagens a menos uma a uma, e o ABAS não repete o que a cópia traz
+    ficha["copias"] = tm["copias"]
     return n

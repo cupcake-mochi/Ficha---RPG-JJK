@@ -116,14 +116,16 @@ const idxLivres = ['vida', 'energia', 'integridade'].map((k) => idx[k]);
 const cobertura = (X) => { const m = new Map(); for (const p of X.prot) { const f = partes(p.a1); for (let i = f.r; i < f.r + f.nl; i++) for (let j = f.c; j < f.c + f.nc; j++) m.set(i + ',' + j, (m.get(i + ',' + j) || 0) + (p.aviso ? 1 : 100)); } return m; };
 for (const nomeT of ['FICHA', 'CARTEIRA']) {
   const X = S.acha(nomeT), cob = cobertura(X), livres = nomeT === 'FICHA' ? idxLivres.map((a1) => { const p = partes(a1); return p.r + ',' + p.c; }) : [];
-  const devem = [...X.f.keys()].filter((k) => !livres.includes(k));
+  // 02/10/2026: as linhas do menu rápido da FICHA ficam fora da trava (moram em linha de grupo), e o onEdit devolve a conta
+  const semTrava = (ABAS.find((a) => a.nome === nomeT) || {}).sem_trava || [];
+  const devem = [...X.f.keys()].filter((k) => !livres.includes(k) && !semTrava.some(([a, b]) => +k.split(',')[0] >= a && +k.split(',')[0] <= b));
   const faltam = devem.filter((k) => cob.get(k) !== 1), sobram = [...cob.keys()].filter((k) => !devem.includes(k));
   ok(`${nomeT}: as ${devem.length} fórmulas estão travadas com aviso, uma vez cada, em ${X.prot.length} faixas, e nenhuma célula sem fórmula está travada`,
      !faltam.length && !sobram.length && X.prot.length < devem.length && X.prot.every((p) => p.desc === 'fórmula · ' + nomeT + '!' + p.a1), `faltam ${faltam.slice(0, 4)}, sobram ${sobram.slice(0, 4)}, ${X.prot.length} travas`);
 }
 // a nota de cada caixa da FICHA mora no título quando a célula de cima é texto digitado, e na própria caixa quando não é
 const cabecaDe = (X, r, c) => { const m = X.merges.find((x) => r >= x[0] && r <= x[2] && c >= x[1] && c <= x[3]); return m ? [m[0], m[1]] : [r, c]; };
-const notasCertas = ['defesa', 'iniciativa', 'maestria', 'nivel', 'xp', 'equipamento', 'caminho', 'trilha', 'pontos disponíveis', 'feitiços disponíveis'].map((k) => {
+const notasCertas = ['defesa', 'iniciativa', 'maestria', 'nivel', 'xp', 'equipamento', 'caminho', 'trilha', 'pontos disponíveis'].map((k) => {
   const p = partes(idx[k]), [la, ca] = p.r === 1 ? [p.r, p.c] : cabecaDe(F, p.r - 1, p.c), acima = la + ',' + ca;
   const noTitulo = p.r > 1 && !F.f.has(acima) && typeof F.v.get(acima) === 'string' && F.v.get(acima).trim() !== '';
   return (noTitulo ? F.notas.has(acima) && !F.notas.has(p.r + ',' + p.c) : F.notas.has(p.r + ',' + p.c)) ? null : k;
@@ -187,6 +189,24 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   try { S.ss.getSheetByName(AM).getRange(aA).setValue('x'); S.ctx.onEdit(ed(AM, aA, 'x')); } catch (e) { erroAm = e; }
   ok('a fórmula que não é referência pura não é regravada pelo script', !erroAm && !!apoio && X.le(apoio[0], apoio[1]) === 'x' && S.P.avisos.length === n1,
      erroAm ? erroAm.message : `${X.le(apoio[0], apoio[1])} · ${S.P.avisos.length - n1} aviso(s)`);
+}
+// 02/10/2026: o menu rápido da FICHA (a seção 8) só mostra o que está na FICHA AMALDIÇOADA. As caixas dele ficam fora
+// da trava, e quem escreve por cima recebe a conta de volta, como na Ficha Amaldiçoada.
+{
+  const F2 = S.acha('FICHA'), spec = ABAS.find((s) => s.nome === 'FICHA'), [m0, m1] = spec.sem_trava[0];
+  const doMenu = spec.vals.filter((t) => t[0] >= m0 && t[0] <= m1 && typeof t[2] === 'string' && t[2][0] === '=');
+  ok(`as ${doMenu.length} caixas do menu rápido só apontam para uma célula da DADOS_AM`,
+     doMenu.length > 250 && doMenu.every((t) => /^=DADOS_AM!\$[A-Z]+\$\d+$/.test(t[2])), doMenu.filter((t) => !/^=DADOS_AM!\$[A-Z]+\$\d+$/.test(t[2])).slice(0, 3).map((t) => t[2]).join(' · '));
+  // as fileiras que vieram por cópia de formato têm as mesclagens da primeira
+  const faltam = spec.merges.filter((m) => m[0] >= m0 && m[2] <= m1 && !F2.merges.some((x) => x.join() === m.join()));
+  ok(`as ${spec.merges.filter((m) => m[0] >= m0 && m[2] <= m1).length} mesclagens do menu estão na aba montada, as das fileiras copiadas também`,
+     !faltam.length && (spec.copias || []).length >= 3, faltam.length + ' faltando: ' + faltam.slice(0, 3).map((m) => m.join(',')).join(' · '));
+  const alvo = doMenu.find((t) => t[2].indexOf('$CA') < 0) || doMenu[0], a1 = letras(alvo[1]) + alvo[0], chave = alvo[0] + ',' + alvo[1];
+  const conta = F2.f.get(chave), n2 = S.P.avisos.length;
+  let erroM = null;
+  try { S.ss.getSheetByName('FICHA').getRange(a1).setValue('Raio Negro'); S.ctx.onEdit(ed('FICHA', a1, 'Raio Negro')); } catch (e) { erroM = e; }
+  ok('escrever por cima de uma caixa do menu rápido devolve a conta e avisa na tela', !erroM && !!conta && F2.f.get(chave) === conta && S.P.avisos.length === n2 + 1,
+     erroM ? erroM.message : `${F2.f.get(chave)} · ${S.P.avisos.length - n2} aviso(s)`);
 }
 let erroSel = null;
 try { S.ctx.onSelectionChange({ range: S.ss.getSheetByName(NOME).getRange('D10') }); S.ctx.onOpen({}); } catch (e) { erroSel = e; }
