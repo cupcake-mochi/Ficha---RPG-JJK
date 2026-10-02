@@ -512,7 +512,20 @@ ROTA_CELESTE = {"nivel": 8, "origem": "Restrição Celestial · sem energia",
 ROTA_FISGA = {"nivel": 5, "origem": "Restrição Celestial · sem energia", "atributos": {"Força": 3},
               "celulas": {G["rota_menu"]: "Três grupos de arma", GM[0]: "Armas Longas", GM[1]: "Ceifa", GM[2]: "Flexível"}}
 
-FICHAS = {"livro": LIVRO, "kaori": KAORI, "velho": VELHO, "meio": MEIO, "nova": NOVA, "bordas": BORDAS,
+# O menu rápido da FICHA (02/10/2026): a Kaori com o que só o jogador escreve (o "Como é" de feitiço, da Técnica Máxima e
+# do Domínio, o texto da Passiva Livre, da Regra Própria, de uma Passiva e de uma aptidão), e um feitiço sem nome no meio,
+# que tem de sumir do menu com o de baixo subindo.
+MENU_F = {**KAORI, "celulas": {**KAORI["celulas"],
+                               FEITICOS[0]["como"]: "Um estalo de dedos que racha o ar.", FEITICOS[3]["como"]: "A lança sai da sombra dela.",
+                               G["tm_nome"]: "Sentença Negra", f"D{G['tm_como'] + 1}": "O céu escurece em volta do alvo.",
+                               G["dom_nome"]: "Jardim de Agulhas", f"D{G['dom_como'] + 1}": "Um campo de agulhas pretas.",
+                               f"L{G['descricao'] + 4}": "Ela sente a energia de quem mente.",
+                               f"D{G['regra_propria'] + 1}": "Quem pisa na sombra dela não corre.",
+                               PASSIVAS[1]["texto"]: "O Fluxo dela é um rio que não para.", APTIDOES[1]["texto"]: "Barreira em forma de guarda-chuva."},
+          "feiticos": [feitico("Estalo"), feitico("", 2, "Cone"), feitico("Perfurar", 1, "Projétil", ["Precisão"], ["Parado"]),
+                       feitico("Lança Negra", 2, "Projétil", ["Fura"], ["Atrasar"]), feitico(""), feitico("Golpe Cru", 1, "Toque")]}
+
+FICHAS = {"livro": LIVRO, "kaori": KAORI, "velho": VELHO, "meio": MEIO, "nova": NOVA, "bordas": BORDAS, "menu": MENU_F,
           "rota-sem": ROTA_SEM, "rota-corpo": ROTA_CORPO, "rota-celeste": ROTA_CELESTE, "rota-fisga": ROTA_FISGA,
           "sorteio-2": sorteada(11, 2, False), "sorteio-7": sorteada(12, 7), "sorteio-13": sorteada(13, 13),
           "sorteio-21": sorteada(14, 21), "sorteio-30": sorteada(15, 30)}
@@ -876,6 +889,104 @@ for nome in [x for x in ("kaori", "rota-sem", "rota-corpo", "rota-celeste", "rot
     checa(f"{nome}: a linha do Estímulo Muscular", lido_est == esp_est, f"{lido_est} != {esp_est}")
 
 # ---------------------------------------------------------------------------------------------
+print("\nO MENU RÁPIDO DA FICHA")
+# 02/10/2026: a seção 8 da FICHA mostra o que está na FICHA AMALDIÇOADA, em cartas e sem buraco. A regra daqui: o feitiço e a
+# carta sem nome somem, e o de baixo sobe; a carta de feitiço traz a Classe, o nome, o PE, a Forma, como resolve e o "Como é"
+# que o jogador escreveu; a de Passiva e a de aptidão, o texto do jogador, ou o do livro quando ele não escreveu; os nomes
+# são os da rota. Os endereços saem da ficha gerada: cada caixa do menu aponta para uma linha de uma tabela da DADOS_AM.
+F0, D0 = WB0["FICHA"], WB0[DAM]
+_cab_am = {ix._letras(c): D0.cell(row=1, column=c).value for c in range(1, D0.max_column + 1)}
+R0_MENU = next(c.row for linha in F0.iter_rows() for c in linha if c.column == 4 and c.value in (8, "8"))
+MENU = {}
+for linha in F0.iter_rows(min_row=R0_MENU):
+    for c in linha:
+        m = re.fullmatch(r"=DADOS_AM!\$([A-Z]+)\$(\d+)", str(c.value or ""))
+        if m:
+            MENU.setdefault(_cab_am.get(m.group(1)), []).append((c.row, c.column, int(m.group(2)), c.coordinate))
+for k in MENU:
+    MENU[k].sort()
+CAMPOS_F = ["menu: classe", "menu: nome", "menu: pe", "menu: forma", "menu: resolve", "menu: como"]
+_ordem = lambda k: [x[2] for x in MENU.get(k, [])]
+checa(f"as {fa.N_FEITICOS} cartas de feitiço do menu leem a lista da DADOS_AM na ordem de leitura (fileira a fileira, da esquerda para a direita)",
+      all(_ordem(k) == list(range(2, 2 + fa.N_FEITICOS)) for k in CAMPOS_F), str({k: _ordem(k)[:5] for k in CAMPOS_F}))
+_n_pas, _n_apt = 2 + fa.PAGAS + fa.DO_LEQUE, 2 + fa.N_APT
+checa(f"as {_n_pas} cartas de Passiva e as {_n_apt} de aptidão também, com a Livre, a Regra Própria e as duas de graça primeiro",
+      all(_ordem(k) == list(range(2, 2 + _n_pas)) for k in ("classe passiva no menu", "passiva no menu", "texto da passiva no menu"))
+      and all(_ordem(k) == list(range(2, 2 + _n_apt)) for k in ("classe passiva da aptidão no menu", "aptidão no menu", "texto da aptidão no menu")))
+ROTULO = {D0.cell(row=r, column=ix._col(c) - 1).value: coord for _, _, r, coord in MENU.get("texto do rótulo", [])
+          for c in [re.match(r"[A-Z]+", F0[coord].value.split("$")[1]).group(0)]}
+CP_TODAS = {**{p["nome"]: p["classe_passiva"] for p in TEC["passivas"] + ROT_L["passivas_marciais"]},
+            **{f"Passiva Própria (CP {k})": str(k) for k in (1, 2, 3)}}
+BEN = {b["nome"]: b for b in ROT_L["bencaos"]}
+APT_TODAS = {a["nome"]: a for a in TEC["aptidoes"]}
+for nome in FICHAS:
+    ficha, wb = FICHAS[nome], WB[nome]
+    ws, f, cel = wb[ABA], wb["FICHA"], ficha.get("celulas", {})
+    v = lambda c: txt(ws[c].value)
+    m_ = lambda k: [txt(f[x[3]].value) for x in MENU[k]]
+    rota = rota_de(ficha.get("origem", txt(WB0["FICHA"][IDX["origem"]].value)))
+    nm = NOMES_R[rota]
+    # os feitiços: só os que têm nome, na ordem da aba, com o que a carta da aba mostra
+    nomeados = [i for i, ft in enumerate(ficha.get("feiticos", [])) if ft["nome"]]
+    pad = lambda xs, n: xs + [""] * (n - len(xs))
+    carta_aba = [le_carta(ws, FEITICOS[i]) for i in nomeados]
+    esp_f = {"menu: nome": pad([ficha["feiticos"][i]["nome"] for i in nomeados], fa.N_FEITICOS),
+             "menu: classe": pad([str(ficha["feiticos"][i]["classe"]) for i in nomeados], fa.N_FEITICOS),
+             "menu: pe": pad([c["pe"] for c in carta_aba], fa.N_FEITICOS),
+             "menu: forma": pad([ficha["feiticos"][i]["forma"] for i in nomeados], fa.N_FEITICOS),
+             "menu: resolve": pad([c["resolve"] for c in carta_aba], fa.N_FEITICOS),
+             "menu: como": pad([cel.get(FEITICOS[i]["como"]) or "" for i in nomeados], fa.N_FEITICOS)}
+    ruins = [f"{k}: {m_(k)[:6]} != {e[:6]}" for k, e in esp_f.items() if m_(k) != e]
+    checa(f"{nome}: o menu traz os {len(nomeados)} {nm['feitico'].lower()}s com nome, sem buraco, com a Classe, o PE, a Forma, como resolve e o Como é",
+          not ruins, "; ".join(ruins[:2]))
+    # as Liberações, no lugar delas
+    libs = ficha.get("libs", [])
+    esp_l = [(libs[i]["nome"] if i < len(libs) else "") for i in range(fa.N_LIB)]
+    checa(f"{nome}: as cartas de {nm['liberacao']} no menu", m_("menu da liberação: nome") == esp_l, f"{m_('menu da liberação: nome')} != {esp_l}")
+    # a Técnica Máxima e o Domínio, em carta larga
+    tm_n = cel.get(G["tm_nome"]) or ""
+    tm_f = cel.get(G["tm_forma"]) or txt(WB0[ABA][G["tm_forma"]].value)          # a Forma nasce escolhida na aba
+    esp_tm = [tm_n, (v(G["tm_pe"]) + " PE") if tm_n else "", tm_f if tm_n else "", cel.get(f"D{G['tm_como'] + 1}") or ""]
+    lido_tm = [txt(f[MENU[k][0][3]].value) for k in ("nome dela", "pe dela", "forma dela", "como é dela")]
+    checa(f"{nome}: a carta da {nm['tecnica_maxima']} traz o nome, o PE, a Forma e o Como é dela", lido_tm == esp_tm, f"{lido_tm} != {esp_tm}")
+    deg = cel.get(G["degrau"]) or ""
+    esp_dom = ([cel.get(G["dom_nome"]) or "", deg, cel.get(f"D{G['dom_como'] + 1}") or ""] if rota == 1 else
+               ["Esta rota não tem Expansão de Domínio", "", ""])
+    lido_dom = [txt(f[MENU[k][1][3]].value) for k in ("nome dela", "forma dela", "como é dela")]
+    checa(f"{nome}: a carta do Domínio" + (" diz que a rota não tem" if rota != 1 else " traz o nome, o degrau e o Como é"),
+          lido_dom == esp_dom, f"{lido_dom} != {esp_dom}")
+    # as Passivas: a Livre, a Regra Própria, e as doze cartas sem buraco, com o texto do jogador ou o do livro
+    pas = [(i, cel.get(c["nome"])) for i, c in enumerate(PASSIVAS) if cel.get(c["nome"])]
+    livro = lambda seu, faz: seu if seu else ("Do livro: " + faz if faz else "")
+    esp_p = ["Passiva Livre", "Regra Própria"] + [p for _, p in pas]
+    esp_pt = [cel.get(f"L{G['descricao'] + 4}") or "", cel.get(f"D{G['regra_propria'] + 1}") or "Esta técnica não tem Regra Própria"] + \
+             [livro(cel.get(PASSIVAS[i]["texto"]), v(PASSIVAS[i]["faz"])) for i, _ in pas]
+    esp_pc = [None, None] + ["CP " + CP_TODAS[p] for _, p in pas]
+    lido_pc = m_("classe passiva no menu")
+    ruins = [x for x in (m_("passiva no menu") != pad(esp_p, _n_pas) and f"{m_('passiva no menu')[:5]} != {esp_p[:5]}",
+                         m_("texto da passiva no menu") != pad(esp_pt, _n_pas) and f"{[t[:30] for t in m_('texto da passiva no menu')[:4]]} != {[t[:30] for t in esp_pt[:4]]}",
+                         lido_pc[2:] != pad(esp_pc[2:], _n_pas - 2) and f"{lido_pc[2:6]} != {esp_pc[2:6]}") if x]
+    checa(f"{nome}: as Passivas no menu, sem buraco, com a Classe Passiva e o texto do jogador ou o do livro", not ruins, "; ".join(ruins))
+    # as aptidões: as duas de graça da rota, com o texto do livro, e as compradas sem buraco
+    gracas = ROT_L["bencaos_de_graca"] if rota == 4 else TEC["aptidoes_de_graca"]
+    fonte = BEN if rota == 4 else APT_TODAS
+    apt = [(i, cel.get(c["nome"])) for i, c in enumerate(APTIDOES) if cel.get(c["nome"])]
+    esp_a = list(gracas) + [a for _, a in apt]
+    esp_at = ["Do livro: " + fonte[g]["faz"] for g in gracas] + [livro(cel.get(APTIDOES[i]["texto"]), v(APTIDOES[i]["faz"])) for i, _ in apt]
+    ruins = [x for x in (m_("aptidão no menu") != pad(esp_a, _n_apt) and f"{m_('aptidão no menu')[:5]} != {esp_a[:5]}",
+                         m_("texto da aptidão no menu") != pad(esp_at, _n_apt) and f"{[t[:30] for t in m_('texto da aptidão no menu')[:4]]} != {[t[:30] for t in esp_at[:4]]}") if x]
+    checa(f"{nome}: as {'Bênçãos' if rota == 4 else 'aptidões'} no menu, as duas de graça primeiro, com o texto do jogador ou o do livro", not ruins, "; ".join(ruins))
+    # os títulos, pela rota
+    apt_nome = "BÊNÇÃOS" if rota == 4 else "APTIDÕES"
+    esp_tit = {"título": f"MENU RÁPIDO · {up(nm['feitico'])}S, PASSIVAS E {apt_nome}",
+               "feitiços": f"{up(nm['feitico'])}S  ·  {len(nomeados)} de {fa.N_FEITICOS}",
+               "máximas": f"{up(nm['liberacao'])}, {up(nm['tecnica_maxima'])}" + (" E DOMÍNIO" if rota == 1 else ""),
+               "passivas": f"PASSIVAS  ·  {len(pas)} de {fa.PAGAS + fa.DO_LEQUE}, mais a Livre e a Regra Própria",
+               "aptidões": f"{apt_nome}  ·  {len(apt)} de {fa.N_APT}, mais as duas de graça"}
+    lido_tit = {k: txt(f[ROTULO[k]].value) for k in esp_tit}
+    checa(f"{nome}: os títulos do menu dizem os nomes da rota {rota} e quantos de cada", lido_tit == esp_tit, f"{lido_tit} != {esp_tit}")
+
+# ---------------------------------------------------------------------------------------------
 print("\nA ABA")
 ws0 = WB0[ABA]
 checa("a aba tem as linhas e as colunas que a geometria diz", ws0.max_row == G["linhas"] and ws0.max_column == fa.COLS, f"{ws0.max_row} x {ws0.max_column}")
@@ -1005,8 +1116,11 @@ if M:
           and "fileiras copiadas" in M["registro"], f"{len(am['mesclagens'])} montadas")
     ch = M["chamadas"]
     n_mescla = ch.get("Range.merge", 0) + ch.get("Range.mergeAcross", 0) + ch.get("Range.mergeVertically", 0)
-    checa(f"a aba nova não triplica a montagem: {n_mescla} chamadas de mesclagem na planilha inteira (eram 310 sem ela), {ch.get('Range.copyTo', 0)} cópias",
-          n_mescla < 700 and ch.get("Range.copyTo", 0) < 40, str(n_mescla))
+    # 02/10/2026: o menu rápido da FICHA também copia as fileiras de cartas, uma cópia por fileira
+    _copias_ficha = sum(len(k[2]) for a in _cru if a["nome"] == "FICHA" for k in a.get("copias") or [])
+    checa(f"a aba nova não triplica a montagem: {n_mescla} chamadas de mesclagem na planilha inteira (eram 310 sem ela), {ch.get('Range.copyTo', 0)} cópias "
+          f"({_copias_ficha} do menu rápido)", n_mescla < 700 and 0 < _copias_ficha and ch.get("Range.copyTo", 0) < 40 + _copias_ficha,
+          f"{n_mescla} · {ch.get('Range.copyTo', 0)}")
     menus = {}
     for dv in WB0[ABA].data_validations.dataValidation:
         for rg in str(dv.sqref).split():

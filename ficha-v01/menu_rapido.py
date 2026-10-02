@@ -104,8 +104,11 @@ def trocas(layout, tr):
     cM = D.prox
     D.tabela("menu_maximas", ["menu: carta larga", "nome dela", "pe dela", "forma dela", "resolve dela", "como é dela"],
              [["Técnica Máxima", f'={fa._A(G["tm_nome"], AM)}&""',
-               f'=IF({fa._A(G["tm_nome"], AM)}="","",{fa._A(G["tm_pe"], AM)}&" PE")', f'={fa._A(G["tm_forma"], AM)}&""',
-               f'=IFERROR(VLOOKUP({fa._A(G["tm_forma"], AM)},{formas},8,FALSE),"")', f'={fa._A(f"D{G['tm_como'] + 1}", AM)}&""'],
+               # a Forma nasce escolhida na aba: sem nome, a carta fica vazia, como a de feitiço
+               f'=IF({fa._A(G["tm_nome"], AM)}="","",{fa._A(G["tm_pe"], AM)}&" PE")',
+               f'=IF({fa._A(G["tm_nome"], AM)}="","",{fa._A(G["tm_forma"], AM)}&"")',
+               f'=IF({fa._A(G["tm_nome"], AM)}="","",IFERROR(VLOOKUP({fa._A(G["tm_forma"], AM)},{formas},8,FALSE),""))',
+               f'={fa._A(f"D{G['tm_como'] + 1}", AM)}&""'],
               ["Domínio",
                f'=IF({ROTA}<>1,"Esta rota não tem Expansão de Domínio",{fa._A(G["dom_nome"], AM)}&"")',
                f'=IF(OR({ROTA}<>1,{deg}=""),"",IF({deg}="{nomes_d[2]}",{dom["pe_por_classe_sem_barreira"]},{dom["pe_por_classe"]})*{maxc}&" PE")',

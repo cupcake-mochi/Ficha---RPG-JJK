@@ -13,8 +13,9 @@ import os, shutil, subprocess, sys, tempfile
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 FORA = {".git", "mockup", "__pycache__", "repos", "repo-conserto", ".claude"}
-FICHAS = "kaori,velho,meio,bordas,sorteio-13,rota-sem,rota-corpo,rota-celeste,rota-fisga"
+FICHAS = "kaori,velho,meio,bordas,menu,sorteio-13,rota-sem,rota-corpo,rota-celeste,rota-fisga"
 GER, MOD, EMI, COD = "ficha-v01/ficha_amaldicoada.py", "ficha/modelo.gs.js", "ficha/emitir_gs.py", "apps-script/Codigo.gs"
+MEN = "ficha-v01/menu_rapido.py"
 
 # (o que e o defeito, arquivo, o trecho certo, o trecho errado, um pedaco do nome da checagem que tem de acender)
 PERTURBACOES = [
@@ -124,6 +125,27 @@ PERTURBACOES = [
     ("o gerador compacta uma fileira que não é igual ao molde", EMI,
      "if de_onde(t[0]) is None or list(por.get((t[0] - de_onde(t[0]), t[1]), [None, None])[2:]) != list(t[2:])]",
      "if de_onde(t[0]) is None]", None),          # o proprio gerador para: a copia expandida nao devolve a aba
+    # 02/10/2026, o menu rápido da FICHA (a seção 8), que lê a Ficha Amaldiçoada
+    ("o menu de feitiço não compacta: o feitiço sem nome deixa buraco", MEN,
+     '''[[k + 1, (lambda n, k=k: f"=IFERROR(MATCH({k + 1},{FEIT('ordem')},0),0)")] +''', '''[[k + 1, (lambda n, k=k: f"={k + 1}")] +''',
+     "sem buraco, com a Classe"),
+    ("a carta de feitiço mostra como resolve no lugar do Como é", MEN,
+     '''f.add("desc", x, r + 2, x + W - 1, r + 1 + alt, ref(lc, linha, k(6)))''', '''f.add("desc", x, r + 2, x + W - 1, r + 1 + alt, ref(lc, linha, k(5)))''',
+     "como resolve e o Como é"),
+    ("as cartas saem da direita para a esquerda", MEN, "POR, W, X = 3, 13, (4, 19, 34)", "POR, W, X = 3, 13, (34, 19, 4)", "na ordem de leitura"),
+    ("a Passiva sem texto do jogador fica em branco, sem o do livro", MEN,
+     '''IF({faz}<>"","Do livro: "&{faz},"")''', '''IF({faz}<>"","","")''', "o texto do jogador ou o do livro"),
+    ("o menu de Passiva não compacta", MEN,
+     '''(lambda n, k=k: f"=IFERROR(MATCH({k + 1},{PCOL(8)},0),0)")''', '''(lambda n, k=k: f"={k + 1}")''', "as Passivas no menu, sem buraco"),
+    ("a rota sem Domínio mostra a carta do Domínio", MEN,
+     '''f'=IF({ROTA}<>1,"Esta rota não tem Expansão de Domínio",''', '''f'=IF({ROTA}<>9,"Esta rota não tem Expansão de Domínio",''',
+     "a carta do Domínio"),
+    ("a Técnica Máxima sem nome mostra a Forma de fábrica", MEN,
+     '''f'=IF({fa._A(G["tm_nome"], AM)}="","",{fa._A(G["tm_forma"], AM)}&"")',''', '''f'={fa._A(G["tm_forma"], AM)}&""',''',
+     "traz o nome, o PE, a Forma e o Como é dela"),
+    ("o título do menu fica com o nome do Fundamento em toda rota", MEN,
+     '''("título", f'="MENU RÁPIDO · "&UPPER({R_("feitiços")})&", PASSIVAS E "&UPPER({R_("aptidões")})'),''',
+     '''("título", '="MENU RÁPIDO · FEITIÇOS, PASSIVAS E APTIDÕES"'),''', "os títulos do menu"),
 ]
 CONTRA = ("um comentário a mais no gerador", GER, "def _se(cond, texto):", "# comentario que nao muda nada\ndef _se(cond, texto):")
 
