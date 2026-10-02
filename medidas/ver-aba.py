@@ -112,6 +112,9 @@ def exemplo_amaldicoada(wb):
     a[cel["nome"]], a[cel["como"]] = "Golpe do Voto", "Tudo que ela segurou na luta inteira, devolvido num golpe só."
     for p, pos in zip(["Raiz", "Fluxo"], G["passivas"]):
         a[fa.celulas_da_passiva(*pos)["nome"]] = p
+    a[fa.celulas_da_passiva(*G["passivas"][1])["texto"]] = "O peso que ela solta volta para as mãos dela, devagar."
+    a[G["tm_nome"]], a[f"D{G['tm_como'] + 1}"] = "Sentença de Chumbo", "Tudo o que ela tocou na luta pesa ao mesmo tempo."
+    a[G["dom_nome"]], a[G["degrau"]] = "Balança Quebrada", "Incompleta"
     for p, pos in zip(["Projetar energia", "Barreira Simples"], G["aptidoes"]):
         a[fa.celulas_da_aptidao(*pos)["nome"]] = p
     pc = fa.celulas_do_pacto(G["pactos"][0])
@@ -340,7 +343,8 @@ def main():
     ap.add_argument("--tudo", action="store_true", help="a extensão do painel aberta também")
     ap.add_argument("--nasce", action="store_true", help="os grupos de linhas como a aba nasce (os fechados, fechados)")
     a = ap.parse_args()
-    if a.aba == fa.NOME:
+    # 02/10/2026: a FICHA vai com a Kaori da Ficha Amaldiçoada, para o menu rápido da seção 8 ter o que mostrar
+    if a.aba in (fa.NOME, "FICHA"):
         lido, cru = recalculada((lambda wb: None) if a.vazia else exemplo_amaldicoada)
         ws, wc = lido[a.aba], cru[a.aba]
         valores = {(c.row, c.column): c.value for linha in ws.iter_rows() for c in linha if c.value is not None}

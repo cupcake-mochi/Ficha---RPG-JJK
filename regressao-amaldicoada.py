@@ -915,6 +915,24 @@ checa(f"as {_n_pas} cartas de Passiva e as {_n_apt} de aptidão também, com a L
       and all(_ordem(k) == list(range(2, 2 + _n_apt)) for k in ("classe passiva da aptidão no menu", "aptidão no menu", "texto da aptidão no menu")))
 ROTULO = {D0.cell(row=r, column=ix._col(c) - 1).value: coord for _, _, r, coord in MENU.get("texto do rótulo", [])
           for c in [re.match(r"[A-Z]+", F0[coord].value.split("$")[1]).group(0)]}
+# o texto do livro na carta: inteiro quando cabe na caixa, a primeira frase quando não (a medida do estudo do menu:
+# perto de 260 letras na caixa de 5 linhas da Passiva, 300 na de 6 da aptidão)
+TETO = {"passiva": 260, "aptidao": 300}
+
+
+def resumo_do_livro(t, teto):
+    if len(t) <= teto:
+        return t
+    frases = re.split(r"(?<=\.) ", t)
+    return frases[0] if len(frases[0]) >= 25 or len(frases) == 1 else frases[0] + " " + frases[1]
+
+
+FAZ_P = {p["nome"]: p["faz"] for p in ROT_L["passivas_marciais"] + TEC["passivas"]}
+FAZ_A = {a["nome"]: a["faz"] for a in TEC["aptidoes"] + ROT_L["bencaos"]}
+base_ = lambda nome: re.sub(r" \(CP \d\)$", "", nome)
+_longos = [(n, len(resumo_do_livro(t, TETO[k]))) for k, d in (("passiva", FAZ_P), ("aptidao", FAZ_A)) for n, t in d.items()
+           if len(resumo_do_livro(t, TETO[k])) > TETO[k]]
+checa("todo texto do livro que o menu mostra cabe na caixa: inteiro, ou a primeira frase", not _longos, str(_longos))
 CP_TODAS = {**{p["nome"]: p["classe_passiva"] for p in TEC["passivas"] + ROT_L["passivas_marciais"]},
             **{f"Passiva Própria (CP {k})": str(k) for k in (1, 2, 3)}}
 BEN = {b["nome"]: b for b in ROT_L["bencaos"]}
@@ -923,7 +941,8 @@ for nome in FICHAS:
     ficha, wb = FICHAS[nome], WB[nome]
     ws, f, cel = wb[ABA], wb["FICHA"], ficha.get("celulas", {})
     v = lambda c: txt(ws[c].value)
-    m_ = lambda k: [txt(f[x[3]].value) for x in MENU[k]]
+    m_ = lambda k: [txt(f[x[3]].value) for x in MENU.get(k, [])]          # a coluna que nenhuma caixa lê vem vazia
+    um_ = lambda k, i: txt(f[MENU[k][i][3]].value) if len(MENU.get(k, [])) > i else "(nenhuma caixa lê)"
     rota = rota_de(ficha.get("origem", txt(WB0["FICHA"][IDX["origem"]].value)))
     nm = NOMES_R[rota]
     # os feitiços: só os que têm nome, na ordem da aba, com o que a carta da aba mostra
@@ -946,13 +965,14 @@ for nome in FICHAS:
     # a Técnica Máxima e o Domínio, em carta larga
     tm_n = cel.get(G["tm_nome"]) or ""
     tm_f = cel.get(G["tm_forma"]) or txt(WB0[ABA][G["tm_forma"]].value)          # a Forma nasce escolhida na aba
-    esp_tm = [tm_n, (v(G["tm_pe"]) + " PE") if tm_n else "", tm_f if tm_n else "", cel.get(f"D{G['tm_como'] + 1}") or ""]
-    lido_tm = [txt(f[MENU[k][0][3]].value) for k in ("nome dela", "pe dela", "forma dela", "como é dela")]
+    pe_tm = v(G["tm_pe"])                                       # "—" antes do nível dela
+    esp_tm = [tm_n, (pe_tm + " PE" if pe_tm.isdigit() else pe_tm) if tm_n else "", tm_f if tm_n else "", cel.get(f"D{G['tm_como'] + 1}") or ""]
+    lido_tm = [um_(k, 0) for k in ("nome dela", "pe dela", "forma dela", "como é dela")]
     checa(f"{nome}: a carta da {nm['tecnica_maxima']} traz o nome, o PE, a Forma e o Como é dela", lido_tm == esp_tm, f"{lido_tm} != {esp_tm}")
     deg = cel.get(G["degrau"]) or ""
     esp_dom = ([cel.get(G["dom_nome"]) or "", deg, cel.get(f"D{G['dom_como'] + 1}") or ""] if rota == 1 else
                ["Esta rota não tem Expansão de Domínio", "", ""])
-    lido_dom = [txt(f[MENU[k][1][3]].value) for k in ("nome dela", "forma dela", "como é dela")]
+    lido_dom = [um_(k, 1) for k in ("nome dela", "forma dela", "como é dela")]
     checa(f"{nome}: a carta do Domínio" + (" diz que a rota não tem" if rota != 1 else " traz o nome, o degrau e o Como é"),
           lido_dom == esp_dom, f"{lido_dom} != {esp_dom}")
     # as Passivas: a Livre, a Regra Própria, e as doze cartas sem buraco, com o texto do jogador ou o do livro
@@ -960,7 +980,7 @@ for nome in FICHAS:
     livro = lambda seu, faz: seu if seu else ("Do livro: " + faz if faz else "")
     esp_p = ["Passiva Livre", "Regra Própria"] + [p for _, p in pas]
     esp_pt = [cel.get(f"L{G['descricao'] + 4}") or "", cel.get(f"D{G['regra_propria'] + 1}") or "Esta técnica não tem Regra Própria"] + \
-             [livro(cel.get(PASSIVAS[i]["texto"]), v(PASSIVAS[i]["faz"])) for i, _ in pas]
+             [livro(cel.get(PASSIVAS[i]["texto"]), resumo_do_livro(FAZ_P[base_(p)], TETO["passiva"])) for i, p in pas]
     esp_pc = [None, None] + ["CP " + CP_TODAS[p] for _, p in pas]
     lido_pc = m_("classe passiva no menu")
     ruins = [x for x in (m_("passiva no menu") != pad(esp_p, _n_pas) and f"{m_('passiva no menu')[:5]} != {esp_p[:5]}",
@@ -972,7 +992,8 @@ for nome in FICHAS:
     fonte = BEN if rota == 4 else APT_TODAS
     apt = [(i, cel.get(c["nome"])) for i, c in enumerate(APTIDOES) if cel.get(c["nome"])]
     esp_a = list(gracas) + [a for _, a in apt]
-    esp_at = ["Do livro: " + fonte[g]["faz"] for g in gracas] + [livro(cel.get(APTIDOES[i]["texto"]), v(APTIDOES[i]["faz"])) for i, _ in apt]
+    esp_at = ["Do livro: " + resumo_do_livro(fonte[g]["faz"], TETO["aptidao"]) for g in gracas] + \
+             [livro(cel.get(APTIDOES[i]["texto"]), resumo_do_livro(FAZ_A[base_(a)], TETO["aptidao"])) for i, a in apt]
     ruins = [x for x in (m_("aptidão no menu") != pad(esp_a, _n_apt) and f"{m_('aptidão no menu')[:5]} != {esp_a[:5]}",
                          m_("texto da aptidão no menu") != pad(esp_at, _n_apt) and f"{[t[:30] for t in m_('texto da aptidão no menu')[:4]]} != {[t[:30] for t in esp_at[:4]]}") if x]
     checa(f"{nome}: as {'Bênçãos' if rota == 4 else 'aptidões'} no menu, as duas de graça primeiro, com o texto do jogador ou o do livro", not ruins, "; ".join(ruins))
@@ -983,7 +1004,7 @@ for nome in FICHAS:
                "máximas": f"{up(nm['liberacao'])}, {up(nm['tecnica_maxima'])}" + (" E DOMÍNIO" if rota == 1 else ""),
                "passivas": f"PASSIVAS  ·  {len(pas)} de {fa.PAGAS + fa.DO_LEQUE}, mais a Livre e a Regra Própria",
                "aptidões": f"{apt_nome}  ·  {len(apt)} de {fa.N_APT}, mais as duas de graça"}
-    lido_tit = {k: txt(f[ROTULO[k]].value) for k in esp_tit}
+    lido_tit = {k: txt(f[ROTULO[k]].value) if k in ROTULO else "(nenhuma caixa lê)" for k in esp_tit}
     checa(f"{nome}: os títulos do menu dizem os nomes da rota {rota} e quantos de cada", lido_tit == esp_tit, f"{lido_tit} != {esp_tit}")
 
 # ---------------------------------------------------------------------------------------------

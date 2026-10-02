@@ -1799,7 +1799,7 @@ propriedade `Alcance`, e não a categoria `Armas Longas`.*
 **O que só o Sheets diz:** *se a nota de 860 caracteres da arma mais carregada aparece inteira ao passar o mouse, e como
 a nota fica no celular.*
 
-### B31 · O retorno do teste da Ficha Amaldiçoada — **FEITO em 02/10/2026, menos o ponto 7 (a seção 8 da `FICHA`), que espera a resposta dele; falta ver no Sheets**
+### B31 · O retorno do teste da Ficha Amaldiçoada — **FEITO em 02/10/2026; o ponto 7 (a seção 8 da `FICHA`) virou o B32; falta ver no Sheets**
 
 *Em 01/10/2026, à noite, o Mizuki montou a `FICHA AMALDIÇOADA` no Sheets com o código do B29 (a montagem funcionou),
 trocou para uma paleta rosa e mandou oito pontos, com fotos e a planilha exportada (`Kaori.xlsx`). Sete entraram; o
@@ -1949,6 +1949,87 @@ antes: os vinte e um.*
 português; a paleta rosa com o nome das cartas no acento; e a `Livres · Fechadas` dele saindo do vermelho na primeira
 troca de paleta depois de colar o `Codigo.gs` novo. A aba mudou de forma (o respiro, as caixas que apontam para a
 `DADOS_AM`, a caixa do Selo que saiu): para ver, é montar de novo com o `Ficha.gs` novo.*
+
+### B32 · As quatro rotas da Ficha Amaldiçoada e o menu rápido na seção 8 da `FICHA` — **FEITO em 02/10/2026; falta montar no Sheets**
+
+*O ponto 7 do B31, com o desenho fechado lá, rodada a rodada. Pela escolha dele ("Pode ser A": as rotas antes, e tudo
+numa construção só), a aba nas quatro rotas e o menu foram feitos juntos.*
+
+1. **A `FICHA AMALDIÇOADA` muda conforme a Origem da `FICHA`, na forma A do estudo.** *A rota sai das marcas que a
+   `FICHA` já tinha (sem energia, Técnica Marcial, Sem Técnica): Fundamento, Sem Técnica, Técnica Marcial com energia
+   (o Corpo Amaldiçoado) e Técnica Marcial sem energia (a Restrição Celestial). O que o livro muda de rota para rota
+   saiu dos capítulos pelo `extrair_tecnica.py` (a chave `rotas` do `tecnica-do-livro.json`, conferida frase a frase):*
+   - *os nomes: os títulos, o Selo, o Orçamento, os lotes, as caixas de graça e os saltos dizem `Manejo`, `Liberação
+     Máxima` e `Auge` no Sem Técnica, `Kata`, `Ruptura` e `Ōgi` na Técnica Marcial, e Bênçãos e Lapidação no lugar das
+     aptidões e do refino na sem energia;*
+   - *a linha da rota, na seção da Técnica: a rota, a semente (Sem Técnica) ou o equipamento (Técnica Marcial), o que a
+     semente dá ou se o golpe simples fere maldição, e, na rota de arma, os três grupos com o atributo, a conjuração e a
+     CD de cada um (a Lâmina Longa acerta com o maior entre Força e Destreza). A linha de cima da Técnica diz o atributo
+     das armas quando os grupos concordam, e "Por grupo" quando misturam (a CD na rota de arma, resposta A);*
+   - *os menus: a Técnica Marcial compra as Passivas do capítulo dela e a Passiva Própria (resposta B), o Sem Técnica as
+     duas listas, a sem energia compra Bênçãos, e o Corpo Amaldiçoado não compra a Extensão de Domínio;*
+   - *a Expansão de Domínio: fora do Fundamento a seção diz que a rota não tem, e não gasta espaço de feitiço;*
+   - *a linha do Estímulo Muscular, nas Bênçãos da sem energia: a perícia, o Teste de Resistência e os usos (1× por
+     cena, 2× na Lapidação 10).*
+
+   *A aba foi de 539 para 548 linhas. O link de cada salto passou a citar a célula do nome dele na `DADOS_AM`, que muda
+   com a rota.*
+2. **O menu rápido no lugar da seção 8 da `FICHA` (`ficha-v01/menu_rapido.py`, a limpeza 26).** *Das linhas 119 a 345:
+   os feitiços (36 lugares), as Liberações com a Técnica Máxima e o Domínio, as Passivas (14 lugares, a Passiva Livre e a
+   Regra Própria primeiro) e as aptidões (14, as duas de graça primeiro). Mini-cartas três por fileira, de 13 colunas
+   cada; a Técnica Máxima e o Domínio em carta da largura da seção. São 42 grupos: um por bloco, um por par de fileiras
+   empilhadas (o + mora na linha que diz "Feitiços 7 a 12") e um pela descrição de cada fileira. A seção nasce com 63 das
+   227 linhas à vista (o primeiro par de cada bloco aberto), e fica em 45 com as descrições fechadas.*
+
+   *Nada ali se digita. Cada caixa aponta para uma célula da `DADOS_AM`, onde a lista é montada sem buraco: o feitiço de
+   nome apagado some, e o de baixo sobe. A carta de feitiço mostra a Classe, o nome, o PE, a Forma, como resolve e o
+   "Como é" que o jogador escreveu; a de Passiva e a de aptidão, o "seu texto", ou "Do livro: ..." quando ele está vazio.
+   Os títulos dizem os nomes da rota e quantos de cada ("FEITIÇOS · 6 de 36"). As linhas do menu ficam fora da trava de
+   fórmula (moram em grupo), e quem escreve por cima recebe a conta de volta com aviso, como na Ficha Amaldiçoada.*
+
+   *Saiu com a seção 8: as seis caixas dela no índice (feitiços disponíveis, Passivas, as duas aptidões de graça,
+   aptidões disponíveis e Passivas do Leque), o "Refino Atual" impresso, as notas e o aviso vermelho delas no
+   `Codigo.gs`, e as notas de graça que o `onEdit` refazia quando a Origem mudava. A conta, o aviso e a nota dessas
+   coisas moram na Ficha Amaldiçoada. As duas contas da `DADOS` que liam a seção (aptidões e Passivas do Leque anotadas)
+   leem a Ficha Amaldiçoada.*
+3. **O que mudou do estudo.** *O menu tem 227 linhas e 42 grupos, e o estudo dizia 216 e 40: as legendas de par e as
+   linhas de respiro entre fileiras que o estudo não desenhou. A carta da Técnica Máxima sem nome fica vazia, como a de
+   feitiço; a regressão achou ela mostrando a Forma que a aba já traz escolhida ("Projétil") e "Rola". Antes do nível
+   dela, o PE mostra "—", como na aba (o desenho da Kaori mostrou "— PE"). O texto do livro, quando o jogador não
+   escreveu o dele, vai inteiro se cabe na caixa (a medida do estudo: perto de 260 letras na Passiva, 300 na aptidão e
+   na Bênção), e a primeira frase se não cabe. O estudo dizia "a primeira frase" para toda aptidão; a leitura de deixar
+   inteiro o que cabe é minha, e fica para ele vetar: 11 das 29 aptidões e Bênçãos e 1 das 24 Passivas vão pela primeira
+   frase. O desenho mostrou o Canalizar energia inteiro (553 letras) cortado na caixa. O texto do livro não sai em cinza como no estudo: a cor viria de regra condicional, que não muda
+   com a paleta, e o "Do livro:" na frente já separa do texto dele.*
+4. **O preço.** *A `FICHA` foi de 150 para 347 linhas, de 7.050 para 16.309 células.*
+   - *A troca de paleta passa de 30 s se pintar a `FICHA` de uma vez num Sheets lento. A aba grande vai em trechos de até
+     7.500 células, com a régua logo depois do primeiro (a parte de cima é a que ele vê primeiro). A promessa da troca
+     mudou: o clique na caixa da paleta pinta a `CARTEIRA` e a `FICHA`, e a Ficha Amaldiçoada, a Ficha Pessoal, o
+     Glossário e a arte terminam nos dois cliques seguintes (antes era no primeiro), sem aviso. A aba em que ele clica
+     continua passando na frente.*
+   - *O `Ficha.gs` foi de 640 para 695 KB (o `Codigo.gs` tem 205 KB). As fileiras de três cartas do menu vão por cópia de
+     formato da primeira, como na Ficha Amaldiçoada: sem isso eram 735 KB e mais de 900 chamadas de mesclagem.*
+   - *Quem já escreveu na seção 8 de hoje (os feitiços, as Passivas e as aptidões da Kaori, por exemplo): a seção nova não
+     tem onde digitar. O que estava lá passa para a Ficha Amaldiçoada, e o menu mostra.*
+
+**Como foi conferido.** *O `regressao-amaldicoada.py` ganhou cinco fichas (as quatro rotas e uma, `menu`, que escreve o
+que só o jogador escreve e deixa feitiço sem nome no meio) e duas seções: as quatro rotas (títulos, linha da rota,
+grupos de arma, linha de cima da Técnica, menus de cada rota, Domínio, caixas de graça e Estímulo) e o menu rápido em
+toda ficha recalculada (a ordem de leitura das cartas, a lista sem buraco, o "Como é", as Liberações, a Técnica Máxima e
+o Domínio, as Passivas e as aptidões com o texto do jogador ou o do livro, as duas de graça da rota e os títulos). O
+`regressao-construir.js` confere que as caixas do menu só apontam para a `DADOS_AM`, que as mesclagens das fileiras
+copiadas chegam na aba montada, e que escrever por cima do menu devolve a conta (com a devolução desligada no
+`Codigo.gs`, ela acusa). O `comparar-ficha-01.py` declara a limpeza 26 e fecha em IGUAIS. O `conferir-ficha-xlsx.py`
+confere o que saiu do índice e do `Codigo.gs` e as cartas de graça do menu pela rota. A Kaori ficou com o que continua na
+`FICHA` (Defesa, X de Y, espaços de feitiço, ataques: 10 de 10 e 20 de 20). Nos arneses: o `arnes-amaldicoada.py` foi de
+35 para 57 defeitos (12 das rotas e 10 do menu); o 44, que trocava `>=3` por `>=2` numa fórmula que trata o Sem
+Técnica antes, não mudava nada e foi reescrito para fazer o que o nome diz; o `arnes-paleta.py` de 9 para 10 (a troca que pintasse só o primeiro
+trecho da `FICHA`), e três trechos dele que tinham ficado velhos com a troca em trechos foram atualizados.*
+
+**O que só o Sheets diz, e falta ele ver:** *montar com o `Ficha.gs` e o `Codigo.gs` novos; abrir e fechar os grupos do
+menu (o + de cada par na linha da legenda, o da descrição na linha dos números); escrever por cima de uma carta do menu
+(o aviso e a conta voltando); trocar a Origem na `FICHA` e ver a Ficha Amaldiçoada e o menu mudarem de nome, e o Domínio
+dizer que a rota não tem; e trocar de paleta, contando os cliques até a última aba terminar.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 

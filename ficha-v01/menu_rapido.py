@@ -105,7 +105,8 @@ def trocas(layout, tr):
     D.tabela("menu_maximas", ["menu: carta larga", "nome dela", "pe dela", "forma dela", "resolve dela", "como é dela"],
              [["Técnica Máxima", f'={fa._A(G["tm_nome"], AM)}&""',
                # a Forma nasce escolhida na aba: sem nome, a carta fica vazia, como a de feitiço
-               f'=IF({fa._A(G["tm_nome"], AM)}="","",{fa._A(G["tm_pe"], AM)}&" PE")',
+               # antes do nível dela, a aba mostra "—" no PE, e o menu também
+               f'=IF({fa._A(G["tm_nome"], AM)}="","",IF(ISNUMBER({fa._A(G["tm_pe"], AM)}),{fa._A(G["tm_pe"], AM)}&" PE",{fa._A(G["tm_pe"], AM)}&""))',
                f'=IF({fa._A(G["tm_nome"], AM)}="","",{fa._A(G["tm_forma"], AM)}&"")',
                f'=IF({fa._A(G["tm_nome"], AM)}="","",IFERROR(VLOOKUP({fa._A(G["tm_forma"], AM)},{formas},8,FALSE),""))',
                f'={fa._A(f"D{G['tm_como'] + 1}", AM)}&""'],
@@ -117,6 +118,7 @@ def trocas(layout, tr):
                f'=IF({ROTA}<>1,"",{fa._A(f"D{G['dom_como'] + 1}", AM)}&"")']])
     # as Passivas: a Livre e a Regra Própria, da Técnica, e as doze cartas sem buraco
     cP = D.T["carta_passiva"][0]
+    PAS = D.faixa("passivas")          # o resumo do livro (ficha_amaldicoada.resumo): inteiro se cabe na caixa, a primeira frase se não
     PCOL = lambda k: fa._faixa(cP + k, 2, cP + k, 1 + fa.PAGAS + fa.DO_LEQUE)
     reg_txt, livre_txt = fa._A(f"D{G['regra_propria'] + 1}", AM), fa._A(f"L{G['descricao'] + 4}", AM)
     cPm = D.prox
@@ -128,7 +130,8 @@ def trocas(layout, tr):
     linhas_p += [[f"Passiva {k + 1}", (lambda n, k=k: f"=IFERROR(MATCH({k + 1},{PCOL(8)},0),0)"),
                   (lambda n: f'=IF({mp(1, n)}=0,"",IF(INDEX({PCOL(2)},{mp(1, n)})=0,"","CP "&INDEX({PCOL(2)},{mp(1, n)})))'),
                   (lambda n: f'=IF({mp(1, n)}=0,"",INDEX({PCOL(1)},{mp(1, n)}))'),
-                  (lambda n: f'=IF({mp(1, n)}=0,"",' + livro(f"INDEX({PCOL(4)},{mp(1, n)})", f"INDEX({PCOL(7)},{mp(1, n)})") + ")")]
+                  (lambda n: f'=IF({mp(1, n)}=0,"",' + livro(f'IFERROR(VLOOKUP(INDEX({PCOL(1)},{mp(1, n)}),{PAS},7,FALSE),"")',
+                                                             f"INDEX({PCOL(7)},{mp(1, n)})") + ")")]
                  for k in range(fa.PAGAS + fa.DO_LEQUE)]
     D.tabela("menu_passivas", ["menu: passiva", "lugar da passiva", "classe passiva no menu", "passiva no menu", "texto da passiva no menu"], linhas_p)
     # as aptidões: as duas de graça (o texto é o do livro), e as doze cartas sem buraco
@@ -138,11 +141,12 @@ def trocas(layout, tr):
     cAm = D.prox
     ma = lambda k, n: f"${fa.L(cAm + k)}{n}"
     linhas_a = [[f"De graça {i + 1}", 0, "—", f"={rot(f'graça {i + 1}').replace(DA, '')}",
-                 (lambda n: f'="Do livro: "&IFERROR(VLOOKUP({ma(3, n)},{APT},5,FALSE),"")')] for i in range(2)]
+                 (lambda n: f'="Do livro: "&IFERROR(VLOOKUP({ma(3, n)},{APT},10,FALSE),"")')] for i in range(2)]
     linhas_a += [[f"Aptidão {k + 1}", (lambda n, k=k: f"=IFERROR(MATCH({k + 1},{ACOL(7)},0),0)"),
                   (lambda n: f'=IF({ma(1, n)}=0,"",INDEX({ACOL(3)},{ma(1, n)}))'),
                   (lambda n: f'=IF({ma(1, n)}=0,"",INDEX({ACOL(1)},{ma(1, n)}))'),
-                  (lambda n: f'=IF({ma(1, n)}=0,"",' + livro(f"INDEX({ACOL(5)},{ma(1, n)})", f"INDEX({ACOL(6)},{ma(1, n)})") + ")")]
+                  (lambda n: f'=IF({ma(1, n)}=0,"",' + livro(f'IFERROR(VLOOKUP(INDEX({ACOL(1)},{ma(1, n)}),{APT},10,FALSE),"")',
+                                                             f"INDEX({ACOL(6)},{ma(1, n)})") + ")")]
                  for k in range(fa.N_APT)]
     D.tabela("menu_aptidoes", ["menu: aptidão", "lugar da aptidão", "classe passiva da aptidão no menu", "aptidão no menu",
                                "texto da aptidão no menu"], linhas_a)

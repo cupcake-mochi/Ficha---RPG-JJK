@@ -27,12 +27,15 @@ print("base na cópia:", "passa" if cod == 0 else "JÁ FALHA", f[:2]); assert co
 casos = [
  ("a barra não é gravada", "if (String(cel.getValue()) !== cor) cel.setValue(cor);", "", "a barra cheia é gravada"),
  ("a barra leva a régua do tema, e não a barra", "var cor = '#' + String(agora.barra).toUpperCase();", "var cor = '#' + String(agora.regua).toUpperCase();", "a barra cheia é gravada"),
- ("a letra de enfeite volta a ser achada pela cor", "} else if (enfeites[r + ',' + c]) {", "} else if (false) {", "a lombada que uma troca antiga deixou"),
+ ("a letra de enfeite volta a ser achada pela cor", "} else if (enfeites[ra + ',' + c]) {", "} else if (false) {", "a lombada que uma troca antiga deixou"),
  ("a lombada leva o bloco em vez da linha", "papel['#' + PALETA_DE_FABRICA_.linha] = 'linha';", "papel['#' + PALETA_DE_FABRICA_.linha] = 'bloco';", "letras de enfeite"),
  ("a arte que não aparece fica como está", "if (contrasteHex_(cor, fundo) >= PISO_ARTE_) return cor;", "return cor;", "nas 122 paletas cada imagem sai na cor do papel dela"),
  ("a arte que não aparece cai no texto do tema", "return mesmaCorQueLe_(cor, fundo, PISO_ARTE_);\n}", "return '#' + String(agora.texto).toUpperCase();\n}", "quando nem o papel nem o acento aparecem"),
- ("o vermelho de aviso lido na troca vira o fundo da célula", "if (f === VERMELHO_DE_ESTADO_HEX_ && fabrica.bg[r][c] !== VERMELHO_DE_ESTADO_HEX_) {", "if (false) {", "o vermelho de estado aceso na troca não vira o fundo"),
- ("o âmbar de aviso lido na troca vira a fonte da célula", "} else if (t === AMBAR_HEX_ && !avisos[r + ',' + c]) {", "} else if (false) {", "o âmbar de estado aceso na troca não vira a fonte"),
+ ("o vermelho de aviso lido na troca vira o fundo da célula", "if (f === VERMELHO_DE_ESTADO_HEX_ && fabrica.bg[ra][c] !== VERMELHO_DE_ESTADO_HEX_) {", "if (false) {", "o vermelho de estado aceso na troca não vira o fundo"),
+ ("o âmbar de aviso lido na troca vira a fonte da célula", "} else if (t === AMBAR_HEX_ && !avisos[ra + ',' + c]) {", "} else if (false) {", "o âmbar de estado aceso na troca não vira a fonte"),
+ # 02/10/2026: a FICHA com o menu rápido é pintada em trechos de linhas; o resto dela não pode ficar para trás
+ ("a troca pinta só o primeiro trecho da aba grande", "var trechos = trechosDaAba_(spec) || [null];",
+  "var trechos = (trechosDaAba_(spec) || [null]).slice(0, 1);", "nenhum fundo nem fonte das abas visíveis ficou na cor de fábrica"),
  ("a arte cai no texto antes de tentar o acento", "if (agora.acento && contrasteHex_(acento, fundo) >= PISO_ARTE_) return acento;", "if (agora.acento) return '#' + String(agora.texto).toUpperCase();", "nas 122 paletas cada imagem sai na cor do papel dela"),
 ]
 ruins = 0

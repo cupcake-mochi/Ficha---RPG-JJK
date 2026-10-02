@@ -190,6 +190,19 @@ def _A(coord, aba=""):
 REFERENCIA_PURA = re.compile(r"=(?:'[^']+'|[A-Z_]+)!\$?[A-Z]+\$?\d+")
 
 
+# O texto do livro que o menu rápido da FICHA mostra quando o jogador não escreveu o dele (02/10/2026): inteiro quando
+# cabe na caixa, e a primeira frase quando não cabe (o segundo estudo do menu: "o resumo da aptidão é a primeira frase
+# da caixa de regra"). O teto é a medida conservadora do estudo para a caixa de 5 linhas (Passiva) e de 6 (aptidão).
+TETO_RESUMO = {"passiva": 260, "aptidao": 300}
+
+
+def resumo(texto, teto):
+    if len(texto) <= teto:
+        return texto
+    fr = re.split(r"(?<=\.) ", texto)
+    return fr[0] if len(fr[0]) >= 25 or len(fr) == 1 else fr[0] + " " + fr[1]
+
+
 def _ini(texto):
     """a letra inicial maiúscula: toda caixa da aba abre assim (pedido do Mizuki em 01/10/2026). O que vem do livro em
     minúscula (o degrau do Domínio, a forma do pacto, o que o refino escala) passa por aqui antes de ir para a tabela."""
@@ -317,12 +330,14 @@ def regras(CAT=None, TEC=None):
             continue                          # tem caixa própria, na seção da técnica
         if p["nome"] == PROPRIA_P:
             passivas += [{"nome": f"{PROPRIA_P} (CP {k})", "cp": k, "faz": p["faz"] + " Escreva a sua na caixa de baixo.",
-                          "fund": 1, "marc": 1} for k in sorted(cp)]
+                          "fund": 1, "marc": 1, "resumo": resumo(p["faz"], TETO_RESUMO["passiva"])} for k in sorted(cp)]
         else:
-            passivas.append({"nome": p["nome"], "cp": int(p["classe_passiva"]), "faz": p["faz"], "fund": 1, "marc": int(p["nome"] in marciais)})
+            passivas.append({"nome": p["nome"], "cp": int(p["classe_passiva"]), "faz": p["faz"], "fund": 1, "marc": int(p["nome"] in marciais),
+                             "resumo": resumo(p["faz"], TETO_RESUMO["passiva"])})
     for p in ROT["passivas_marciais"]:
         if p["classe_passiva"].isdigit() and p["nome"] not in [x["nome"] for x in passivas]:
-            passivas.append({"nome": p["nome"], "cp": int(p["classe_passiva"]), "faz": p["faz"], "fund": 0, "marc": 1})
+            passivas.append({"nome": p["nome"], "cp": int(p["classe_passiva"]), "faz": p["faz"], "fund": 0, "marc": 1,
+                             "resumo": resumo(p["faz"], TETO_RESUMO["passiva"])})
     # As aptidões e as Bênçãos numa tabela só: a Restrição Celestial sem energia lê as Bênçãos, as outras rotas as
     # aptidões, e o Corpo Amaldiçoado não compra a Extensão de Domínio
     aptidoes = []
@@ -331,13 +346,14 @@ def regras(CAT=None, TEC=None):
         for a in lista:
             if a["nome"] == propria:
                 aptidoes += [{"nome": f"{propria} (CP {k})", "requisito": a["requisito"], "cp": k, "escala": a["escala"],
-                              "faz": a["faz"] + " Escreva a sua na caixa de baixo.", "gratis": 0, "bencao": bencao, "extensao": 0}
+                              "faz": a["faz"] + " Escreva a sua na caixa de baixo.", "gratis": 0, "bencao": bencao, "extensao": 0,
+                              "resumo": resumo(a["faz"], TETO_RESUMO["aptidao"])}
                              for k in (int(x) for x in re.findall(r"\d", a["classe_passiva"]))]
             else:
                 aptidoes.append({"nome": a["nome"], "requisito": a["requisito"],
                                  "cp": int(a["classe_passiva"]) if a["classe_passiva"].isdigit() else a["classe_passiva"], "escala": a["escala"],
                                  "faz": a["faz"], "gratis": int(a["nome"] in gratis), "bencao": bencao,
-                                 "extensao": int(a["nome"] == "Extensão de Domínio")})
+                                 "extensao": int(a["nome"] == "Extensão de Domínio"), "resumo": resumo(a["faz"], TETO_RESUMO["aptidao"])})
     if len({a["nome"] for a in aptidoes}) != len(aptidoes) or not any(a["extensao"] for a in aptidoes):
         raise SystemExit("ficha_amaldicoada: uma aptidao e uma Bencao com o mesmo nome, ou a Extensao de Dominio sumiu do livro")
     # os nomes de cada rota, que a aba escreve por fórmula; os do Sem Técnica e os da Técnica Marcial são os do livro
@@ -660,21 +676,22 @@ def trocas(layout, CAT=None, TEC=None):
     RES = D.faixa("res")
     # --- as Passivas e a Classe Passiva
     cPa = D.prox
-    D.tabela("passivas", ["passiva", "classe passiva", "o que a passiva faz", "do fundamento", "da técnica marcial", "menu de passiva"],
+    D.tabela("passivas", ["passiva", "classe passiva", "o que a passiva faz", "do fundamento", "da técnica marcial", "menu de passiva",
+                          "resumo da passiva"],
              [[p["nome"], p["cp"], p["faz"], p["fund"], p["marc"],
-               (lambda n: f'=IF(OR(AND({ROTA}<=2,${L(cPa + 3)}{n}=1),AND({ROTA}>=2,${L(cPa + 4)}{n}=1)),${L(cPa)}{n},"")')]
+               (lambda n: f'=IF(OR(AND({ROTA}<=2,${L(cPa + 3)}{n}=1),AND({ROTA}>=2,${L(cPa + 4)}{n}=1)),${L(cPa)}{n},"")'), p["resumo"]]
               for p in R["passivas"]])
     D.tabela("cp", ["classe passiva liberada", "libera no nível"], [[k, v] for k, v in sorted(R["cp"].items())])
     # --- as aptidões: as duas de graça ficam fora do menu
     cAp = D.prox
     ap = lambda k, n: f"${L(cAp + k)}{n}"
     D.tabela("aptidoes", ["aptidão", "requisito da aptidão", "classe passiva da aptidão", "o que o refino escala", "o que a aptidão faz",
-                          "menu de aptidão", "é bênção", "é a extensão de domínio", "de graça"],
+                          "menu de aptidão", "é bênção", "é a extensão de domínio", "de graça", "resumo da aptidão"],
              [[a["nome"], a["requisito"], _ini(a["cp"]), _ini(a["escala"]), a["faz"],
                # a Restrição Celestial sem energia compra Bênção; as outras rotas, aptidão; o Corpo Amaldiçoado não compra a
                # Extensão de Domínio; as duas de graça ficam fora do menu
                (lambda n: f'=IF({ap(8, n)}=1,"",IF({ROTA}=4,IF({ap(6, n)}=1,{ap(0, n)},""),IF(OR({ap(6, n)}=1,AND({ROTA}=3,{ap(7, n)}=1)),"",{ap(0, n)})))'),
-               a["bencao"], a["extensao"], a["gratis"]] for a in R["aptidoes"]])
+               a["bencao"], a["extensao"], a["gratis"], a["resumo"]] for a in R["aptidoes"]])
     # --- a peça da rota: o menu da linha da rota mostra as sementes no Sem Técnica e o equipamento na Técnica Marcial
     D.tabela("sementes", ["semente"], [[x] for x in R["sementes"]])
     D.tabela("equipamento", ["equipamento"], [[x] for x in EQUIPAMENTO])

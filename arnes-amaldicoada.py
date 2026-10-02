@@ -115,8 +115,10 @@ PERTURBACOES = [
      '"Fere maldição","Fere maldição")', "se o golpe simples fere maldição"),
     ("o Estímulo dá dois usos antes da Lapidação 10", GER, "\"usos do estímulo\": f'=IF({H[\"refino\"]}>=10,2,1)",
      "\"usos do estímulo\": f'=IF({H[\"refino\"]}>=1,2,1)", "a linha do Estímulo Muscular"),
-    ("o menu da peça da rota mostra o equipamento no Sem Técnica", GER, 'IF({ROTA}>=3,IFERROR(INDEX({D.faixa("equipamento"',
-     'IF({ROTA}>=2,IFERROR(INDEX({D.faixa("equipamento"', "o menu da peça da rota"),
+    # (até 02/10/2026 este trocava só o >=3 por >=2, e não mudava nada: o Sem Técnica cai na semente antes de chegar lá)
+    ("o menu da peça da rota mostra o equipamento no Sem Técnica", GER,
+     'IF({ROTA}=2,IFERROR(INDEX({D.faixa("sementes", so=0)},{k + 1}),""),IF({ROTA}>=3,',
+     'IF({ROTA}=9,IFERROR(INDEX({D.faixa("sementes", so=0)},{k + 1}),""),IF({ROTA}>=2,', "o menu da peça da rota"),
     ("o Selo da Técnica Marcial fica com o nome de sempre", GER,
      '"selo": ["Selo", "Selo", "Selo · ter o equipamento em uso", "Selo · ter o equipamento em uso"]',
      '"selo": ["Selo", "Selo", "Selo", "Selo"]', "a linha da rota diz a rota"),
@@ -146,6 +148,11 @@ PERTURBACOES = [
     ("o título do menu fica com o nome do Fundamento em toda rota", MEN,
      '''("título", f'="MENU RÁPIDO · "&UPPER({R_("feitiços")})&", PASSIVAS E "&UPPER({R_("aptidões")})'),''',
      '''("título", '="MENU RÁPIDO · FEITIÇOS, PASSIVAS E APTIDÕES"'),''', "os títulos do menu"),
+    ("o menu mostra o texto inteiro do livro, mesmo o que não cabe na caixa", GER,
+     'TETO_RESUMO = {"passiva": 260, "aptidao": 300}', 'TETO_RESUMO = {"passiva": 260, "aptidao": 3000}', "o texto do jogador ou o do livro"),
+    ("a Técnica Máxima antes do nível dela mostra \"— PE\"", MEN,
+     'IF(ISNUMBER({fa._A(G["tm_pe"], AM)}),{fa._A(G["tm_pe"], AM)}&" PE",{fa._A(G["tm_pe"], AM)}&"")',
+     '{fa._A(G["tm_pe"], AM)}&" PE"', "traz o nome, o PE, a Forma e o Como é dela"),
 ]
 CONTRA = ("um comentário a mais no gerador", GER, "def _se(cond, texto):", "# comentario que nao muda nada\ndef _se(cond, texto):")
 
