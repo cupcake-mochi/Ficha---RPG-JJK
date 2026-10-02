@@ -1854,6 +1854,10 @@ ponto 7 é desenho novo e ficou para estudo.*
    uma ou duas linhas a mais não fazem caber tudo, e a altura que faz caber é 3 linhas no feitiço, 4 na Passiva e 5 na
    aptidão e na Bênção (C3), ou a mesma com só as duas primeiras sempre à vista e o resto num grupo por fileira (C4).
    O resumo da aptidão é a primeira frase da caixa de regra; a caixa inteira (até 1.303 letras) fica na Ficha Amaldiçoada.*
+   **Escolha de 02/10/2026:** *"pode ser C3, mas aumente a largura delas, assim você vai ter mais espaço para caber por
+   exemplo o tipo de resolvição, q nem o 'aliado auto...' que n coube ali e a descrição vai ter mais espaço para aparecer".
+   A seção 8 já vai de D a AT, então carta mais larga é menos carta por fileira. O terceiro estudo (mesmo link) compara a
+   C3 de quatro por fileira com três por fileira (13 colunas) e duas por fileira (21 colunas), todas na medida.*
 8. **Toda caixa da aba abre em letra maiúscula.** *Palavras dele: "Textos em minusculo, sempre bom padronizar o maisculo
    na letra inicial". Vale para o que a ficha calcula e para o que nasce escrito: os menus de pacto viraram `Permanente`,
    `Temporário`, `De restrição` e `Um espaço de feitiço`, o estado virou `Na regra`, o Domínio diz `Não fecha` e `Rola`.*

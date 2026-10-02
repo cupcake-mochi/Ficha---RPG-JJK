@@ -69,8 +69,8 @@ table.regras td.falta{color:var(--f-vermelho)}
 <div class="pagina">
   <header class="abre">
     <div class="olho">Projeto M · ficha digital</div>
-    <h1>Menu rápido, segundo estudo</h1>
-    <p>Ficaram as mini-cartas, com o resumo maior: o texto tem de caber inteiro, à vista, e o que não couber de pé vira grupo que fecha. São quatro jeitos de dar esse espaço, no mesmo exemplo de nível 20 e nas quatro rotas.</p>
+    <h1>Menu rápido, terceiro estudo</h1>
+    <p>Ficou a C3, a carta na medida, e agora mais larga, para a resolução e o resumo terem espaço. A <code>FICHA</code> tem 47 colunas e a seção 8 já vai de D a AT; carta mais larga quer dizer menos cartas por fileira. Aqui estão a C3 de quatro por fileira, para comparar, e duas larguras novas, todas com a altura medida pelos próprios textos.</p>
     <p class="nota">O resumo do feitiço é o resultado que o livro imprime; na planilha, seria a linha que a carta da Ficha Amaldiçoada já calcula. O da Passiva é a regra inteira; o da aptidão, a primeira frase da caixa de regra, porque a caixa inteira chega a 1.303 letras e fica na Ficha Amaldiçoada; o da Bênção, a linha da entrada. Caixa com risco vermelho embaixo é texto que não coube.</p>
   </header>
 
@@ -87,7 +87,7 @@ table.regras td.falta{color:var(--f-vermelho)}
   </div>
 
   <div class="legenda" aria-label="Como ler a folha">
-    <span><b>− ou +</b>na borda esquerda: a calha de fora fecha a seção; a do meio, um lote de cartas; a de dentro, o resto do resumo de uma fileira</span>
+    <span><b>− ou +</b>na borda esquerda: a calha de fora fecha a seção; a de dentro, um lote de cartas</span>
     <span><b>número cinza</b>a linha da planilha; ele pula onde um grupo está fechado</span>
     <span><b>nada aqui se digita</b>tudo vem da Ficha Amaldiçoada</span>
   </div>
@@ -96,10 +96,9 @@ table.regras td.falta{color:var(--f-vermelho)}
     <h2><b>1</b>As mini-cartas, com o resumo maior</h2>
     <div class="escolha">
       <div class="jogo" role="group" aria-label="Variação da carta"><span>Carta</span>
-        <button type="button" data-var="C1" aria-pressed="true">C1 · Uma linha a mais</button>
-        <button type="button" data-var="C2" aria-pressed="false">C2 · Duas linhas a mais</button>
-        <button type="button" data-var="C3" aria-pressed="false">C3 · Na medida</button>
-        <button type="button" data-var="C4" aria-pressed="false">C4 · Na medida, que fecha</button>
+        <button type="button" data-var="C3" aria-pressed="false">C3 · Quatro por fileira</button>
+        <button type="button" data-var="L3" aria-pressed="true">Três por fileira</button>
+        <button type="button" data-var="L2" aria-pressed="false">Duas por fileira</button>
       </div>
       <p class="ideia" id="var-diz"></p>
     </div>
@@ -122,7 +121,7 @@ table.regras td.falta{color:var(--f-vermelho)}
   <section class="estudo" id="cabe">
     <h2><b>2</b>O que cabe em cada uma</h2>
     <p>A página escreve cada resumo do livro na caixa de cada variação e conta quantos cabem inteiros: os 33 feitiços prontos com a Técnica Máxima e o Domínio, as 24 Passivas (Fundamento e Técnica Marcial) e as 15 aptidões com as 14 Bênçãos. As linhas são da seção no caso cheio: 36 lugares de feitiço, as 3 Liberações, a Técnica Máxima, o Domínio, 12 Passivas e 12 aptidões. Hoje a seção 8 tem 26 linhas, e a forma C do primeiro estudo tinha 66.</p>
-    <p>Uma ou duas linhas a mais não bastam para os textos mais compridos do livro: é o que as duas primeiras colunas mostram. Testei também três cartas por fileira, mais largas, com o resumo em duas linhas: coube menos aptidão que a C2, e a seção ficou mais alta, então saiu. A C3 e a C4 têm a altura medida pelos próprios textos.</p>
+    <p>No segundo estudo, uma ou duas linhas a mais não fizeram caber os textos mais compridos, e a altura passou a ser medida. Aqui ela é medida de novo para cada largura, e a linha dos números (o PE, a Forma e como resolve) também é conferida: cada valor tem de caber inteiro na caixa dele.</p>
     <div class="rolar"><table class="regras" id="tab-cabe"></table></div>
     <p>A conta é de folga: a folha desta página tem colunas de 20 px e letra de 11,5 px; na planilha as colunas têm 28 px e a letra de 10 pt cabe um pouco mais por linha. O que cabe aqui cabe lá; o contrário, só o Sheets confirma.</p>
   </section>
@@ -150,7 +149,7 @@ table.regras td.falta{color:var(--f-vermelho)}
   <section class="estudo" id="falta">
     <h2><b>→</b>O que falta decidir</h2>
     <ol class="passos">
-      <li><b>Qual das quatro cartas, valendo misturar.</b> É a pergunta desta rodada.</li>
+      <li><b>Qual largura de carta.</b> É a pergunta desta rodada.</li>
       <li><b>Como a Ficha Amaldiçoada muda em cada rota.</b> A próxima rodada, com opções de desenho, a partir do quadro da seção 3.</li>
       <li><b>O que já está digitado na seção 8 de fichas em uso.</b> Quando a seção virar menu, o que o jogador escreveu lá à mão tem de ser passado para a Ficha Amaldiçoada.</li>
       <li><b>O arquivo de dados não tem as Passivas da Técnica Marcial nem as Bênçãos.</b> Este estudo leu do livro, como o anterior leu as Passivas e as aptidões.</li>
@@ -163,14 +162,16 @@ table.regras td.falta{color:var(--f-vermelho)}
 const D = /*DADOS*/;
 const COLS = 47, LIN0 = 119, CAP = D.cap, OFF = 4;    // a coluna A da planilha é a quinta da grade: três calhas e o número da linha
 const LETRA = (n) => { let s = ''; while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; };
+// a carta pela quantidade por fileira: largura (colunas), onde cada uma começa, e a linha de números (PE, Forma, resolve)
+const GEO = { 4: { W: 10, X: [4, 15, 26, 37], num: [3, 3, 4] }, 3: { W: 13, X: [4, 19, 34], num: [3, 4, 6] }, 2: { W: 21, X: [4, 26], num: [4, 6, 11] } };
 const VAR = {
-  C1: { por: 4, dp: 2, dlp: 2, dla: 2, diz: () => 'A carta do primeiro estudo com uma linha a mais embaixo: o resumo ocupa duas linhas, nas cartas de feitiço e nas de Passiva e aptidão.' },
-  C2: { por: 4, dp: 3, dlp: 3, dla: 3, diz: () => 'Duas linhas a mais: o resumo ocupa três, em toda carta.' },
-  C3: { por: 4, medida: true, diz: (V) => `Na medida: cada tipo de carta tem a altura que faz caber todo resumo do livro, ${V.dp} linhas no feitiço, ${V.dlp} na Passiva e ${V.dla} na aptidão e na Bênção. A página mede de novo quando abre.` },
-  C4: { por: 4, medida: true, vista: 2, diz: (V) => `A C3 com as duas primeiras linhas do resumo sempre à vista; as outras (até ${V.dla - 2}) ficam num grupo por fileira, que nasce aberto. Quem quiser a seção curta fecha as fileiras que já conhece.` }
+  C3: { por: 4, diz: (V) => `A C3 do segundo estudo: quatro cartas de 10 colunas por fileira, com o resumo na altura que faz caber todo texto do livro (${V.dp} linhas no feitiço, ${V.dlp} na Passiva, ${V.dla} na aptidão e na Bênção).` },
+  L3: { por: 3, diz: (V) => `Três cartas por fileira, de 13 colunas cada, com duas colunas de folga entre elas: a seção continua indo de D a AT. Mais largas, elas pedem menos altura: ${V.dp} linhas no feitiço, ${V.dlp} na Passiva, ${V.dla} na aptidão e na Bênção.` },
+  L2: { por: 2, diz: (V) => `Duas cartas por fileira, de 21 colunas cada, metade da seção para cada uma. É a mais larga: ${V.dp} linhas no feitiço, ${V.dlp} na Passiva, ${V.dla} na aptidão e na Bênção.` }
 };
-const est = { v: 'C1', rota: 'fund', pal: '', fechado: {} };
-try { const g = JSON.parse(localStorage.getItem('menu-rapido-2') || '{}'); Object.assign(est, { v: VAR[g.v] ? g.v : 'C1', rota: g.rota || 'fund', pal: g.pal || '' }); } catch (e) {}
+const NOMES = { C3: 'C3 · Quatro por fileira', L3: 'Três por fileira', L2: 'Duas por fileira' };
+const est = { v: 'L3', rota: 'fund', pal: '', fechado: {} };
+try { const g = JSON.parse(localStorage.getItem('menu-rapido-2') || '{}'); Object.assign(est, { v: VAR[g.v] ? g.v : 'L3', rota: g.rota || 'fund', pal: g.pal || '' }); } catch (e) {}
 const guarda = () => { try { localStorage.setItem('menu-rapido-2', JSON.stringify({ v: est.v, rota: est.rota, pal: est.pal })); } catch (e) {} };
 
 function nova() { return { cel: [], grupos: [], linhas: 0 }; }
@@ -188,13 +189,10 @@ function maximasDa(R) {
 
 function desenho(R, V) {
   const L = nova();
-  const W = V.por === 4 ? 10 : 13, X = V.por === 4 ? [4, 15, 26, 37] : [4, 19, 34];
-  const numeros = V.por === 4 ? [3, 3, 4] : [4, 4, 5];
+  const { W, X, num: numeros } = GEO[V.por];
   poe(L, 0, 4, 5, 'c faixa n8', '8');
   poe(L, 0, 6, 46, 'c faixa', 'Menu rápido · ' + R.poderes + ', Passivas e ' + R.apt);
   const altP = 2 + V.dp + 1;                            // a altura da fileira, com a linha vazia embaixo
-  // na C4 o resumo mostra as primeiras linhas sempre; o resto fica num grupo da fileira, que nasce aberto
-  const resumoRet = (r0, fil, dr) => { if (V.vista && dr > V.vista) grupo(L, 'res-' + r0, r0 + V.vista, r0 + dr - 1, 3, true, r0 + V.vista - 1); };
   const carta = (r, x, p, tag) => {
     const [a, b] = numeros;
     if (p && !p.vazio && !p.sem) {
@@ -216,7 +214,6 @@ function desenho(R, V) {
   for (let f = 0; f < filP; f++) {
     const r = 2 + f * altP;
     for (let j = 0; j < V.por; j++) { const i = f * V.por + j; if (i < CAP.poderes) carta(r, X[j], R.lista[i]); }
-    resumoRet(r + 2, f, V.dp);
   }
   for (let f = porLote; f < filP; f += porLote) grupo(L, 'lote-p' + f, 2 + f * altP, 2 + Math.min(filP, f + porLote) * altP - 1, 2, false, 2 + f * altP - 1);
   let r = 2 + filP * altP;
@@ -226,7 +223,6 @@ function desenho(R, V) {
   for (let f = 0; f < filM; f++) {
     const rr = r + 1 + f * altP;
     for (let j = 0; j < V.por; j++) { const m = mx[f * V.por + j]; if (m) carta(rr, X[j], m, m.tag || tagMax(m)); }
-    resumoRet(rr + 2, f, V.dp);
   }
   r += 1 + filM * altP;
   // as Passivas e as aptidões
@@ -236,7 +232,6 @@ function desenho(R, V) {
     for (let f = 0; f < fil; f++) {
       const rr = r + 1 + f * altL;
       for (let j = 0; j < V.por; j++) { const i = f * V.por + j; if (i < cap) pequena(rr, X[j], lista[i], dl); }
-      resumoRet(rr + 1, f, dl);
     }
     grupo(L, 'lote-' + nome, r + 1 + altL, r + fil * altL, 2, false, r + altL);
     r += 1 + fil * altL;
@@ -296,7 +291,7 @@ function desenha() {
   const m = medidas(est.v);
   document.getElementById('var-diz').textContent = V.diz(V);
   document.getElementById('rota-diz').textContent = 'Quem monta por esta rota: ' + R.quem + '.';
-  document.getElementById('medida').textContent = `${est.v}: ${m.linhas} linhas com tudo aberto, ${m.nasce} à vista como a ficha nasce, ${m.caixas} caixas mescladas. A seção 8 de hoje tem 26 linhas.`;
+  document.getElementById('medida').textContent = `${NOMES[est.v]}: ${m.linhas} linhas com tudo aberto, ${m.nasce} à vista como a ficha nasce, ${m.caixas} caixas mescladas. A seção 8 de hoje tem 26 linhas.`;
   document.querySelectorAll('[data-var]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.var === est.v)));
   document.querySelectorAll('[data-rota]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.rota === est.rota)));
   document.querySelectorAll('[data-pal]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pal === est.pal)));
@@ -310,7 +305,7 @@ function medidas(v) {
 }
 function cabem(v) {
   // cada resumo numa caixa do tamanho da carta da variação; conta o que coube inteiro
-  const V = VAR[v], W = V.por === 4 ? 10 : 13, caixa = document.getElementById('prova');
+  const V = VAR[v], W = GEO[V.por].W, caixa = document.getElementById('prova');
   const out = {};
   Object.entries(D.prova).forEach(([tipo, textos]) => {
     const linhas = V[LINHAS_DE[tipo]];
@@ -323,18 +318,29 @@ function cabem(v) {
     });
     out[tipo] = { ok, n: textos.length, fora };
   });
+  // a linha de números: cada valor numa caixa da largura dele, numa linha só
+  let ok = 0, n = 0; const fora = [];
+  [['pe', 0], ['forma', 1], ['resolve', 2]].forEach(([k, i]) => D.linha[k].forEach((t) => {
+    const e = el('div', 'c vl meio'); e.style.width = (GEO[V.por].num[i] * 20) + 'px'; e.style.height = '22px';
+    const s = el('span', null, t); e.appendChild(s); caixa.appendChild(e);
+    n++; if (s.scrollWidth <= s.clientWidth + 1 && e.scrollWidth <= e.clientWidth + 1) ok++; else fora.push(t);
+    e.remove();
+  }));
+  out.linha = { ok, n, fora };
   return out;
 }
 function tabela() {
   const vs = Object.keys(VAR), M = Object.fromEntries(vs.map((v) => [v, medidas(v)])), C = Object.fromEntries(vs.map((v) => [v, cabem(v)]));
-  const nomes = { C1: 'C1 · Uma linha a mais', C2: 'C2 · Duas linhas a mais', C3: 'C3 · Na medida', C4: 'C4 · Na medida, que fecha' };
+  const nomes = NOMES;
   const linhas = [
-    ['Resumo, em linhas de 10 colunas', (v) => `${VAR[v].dp} no feitiço, ${VAR[v].dlp} na Passiva, ${VAR[v].dla} na aptidão` + (VAR[v].vista ? `; ${VAR[v].vista} sempre à vista` : '')],
+    ['Carta', (v) => `${VAR[v].por} por fileira, ${GEO[VAR[v].por].W} colunas`],
+    ['Resumo, em linhas', (v) => `${VAR[v].dp} no feitiço, ${VAR[v].dlp} na Passiva, ${VAR[v].dla} na aptidão`],
     ['Linhas com tudo aberto', (v) => M[v].linhas],
-    ['À vista como nasce', (v) => M[v].nasce + (VAR[v].vista ? '; com as fileiras do resumo fechadas, ' + (M[v].nasce - fechaRes(v)) : '')],
+    ['À vista como nasce', (v) => M[v].nasce],
     ['Caixas mescladas', (v) => M[v].caixas],
     ['Células que a troca de tema pinta', (v) => (M[v].linhas * 43).toLocaleString('pt-BR')],
   ];
+  linhas.push(['PE, Forma e resolução inteiros', (v) => ({ txt: C[v].linha.ok + ' de ' + C[v].linha.n, cls: C[v].linha.ok === C[v].linha.n ? 'ok' : 'falta' })]);
   Object.keys(D.prova).forEach((tipo) => linhas.push([tipo[0].toUpperCase() + tipo.slice(1) + ' que cabem inteiros', (v) => ({ txt: C[v][tipo].ok + ' de ' + C[v][tipo].n, cls: C[v][tipo].ok === C[v][tipo].n ? 'ok' : 'falta' })]));
   linhas.push(['O que não coube', (v) => {
     const f = Object.values(C[v]).flatMap((x) => x.fora);
@@ -354,27 +360,20 @@ function tabela() {
 // qual altura de cada variação lê cada tipo de resumo
 const LINHAS_DE = { 'feitiços': 'dp', 'Passivas': 'dlp', 'aptidões e Bênçãos': 'dla' };
 function naMedida() {
-  // a menor altura em que todo resumo do livro daquele tipo cabe inteiro, na carta de 10 colunas
-  const caixa = document.getElementById('prova'), alt = {};
-  Object.entries(D.prova).forEach(([tipo, textos]) => {
+  // a menor altura em que todo resumo do livro daquele tipo cabe inteiro, na largura de carta de cada variação
+  const caixa = document.getElementById('prova');
+  Object.values(VAR).forEach((V) => Object.entries(D.prova).forEach(([tipo, textos]) => {
     let n = 1;
     for (; n < 20; n++) {
       const cabe = textos.every(([, t]) => {
-        const e = el('div', 'c desc'); e.style.width = '200px'; e.style.height = (n * 22) + 'px';
+        const e = el('div', 'c desc'); e.style.width = (GEO[V.por].W * 20) + 'px'; e.style.height = (n * 22) + 'px';
         e.appendChild(el('span', null, t)); caixa.appendChild(e);
         const ok = e.scrollHeight <= e.clientHeight + 1; e.remove(); return ok;
       });
       if (cabe) break;
     }
-    alt[LINHAS_DE[tipo]] = n;
-  });
-  ['C3', 'C4'].forEach((v) => Object.assign(VAR[v], alt));
-}
-function fechaRes(v) {
-  // as linhas que somem quando todas as fileiras do resumo são fechadas (só a C4 tem esses grupos)
-  const L = desenho(D.rotas[0], VAR[v]), s = escondidas(L, true), a = s.size;
-  L.grupos.forEach((g) => { if (g.nivel === 3) for (let r = g.a; r <= g.b; r++) s.add(r); });
-  return s.size - a;
+    V[LINHAS_DE[tipo]] = n;
+  }));
 }
 
 document.querySelectorAll('[data-var]').forEach((b) => b.addEventListener('click', () => { est.v = b.dataset.var; desenha(); tabela(); }));

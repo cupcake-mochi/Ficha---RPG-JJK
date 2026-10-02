@@ -184,7 +184,11 @@ CAP = {"poderes": 36, "maximas": 5, "passivas": 12, "aptidoes": 12}
 
 css = re.search(r"<style>([\s\S]*?)</style>", open(os.path.join(AQUI, "ficha-pessoal-estudo.html"), encoding="utf-8").read()).group(1)
 modelo = open(os.path.join(AQUI, "menu-rapido-estudo.modelo.html"), encoding="utf-8").read()
-dados = {"rotas": ROTAS, "cap": CAP, "nivel": NIVEL, "versao": TEC["_meta"]["versao_do_livro"], "prova": PROVA}
+# a linha de números da carta (terceiro estudo): o PE, a Forma e como resolve têm de caber inteiros, numa linha só
+LINHA = {"pe": [f"{m} PE" for m in sorted({p["pe"] for r in ROTAS for p in r["lista"] + r["maximas"]})],
+         "forma": [f["nome"] for f in TEC["formas"]] + ["Domínio", "—"],
+         "resolve": sorted(set(CURTO.values()) | {"Fixo"})}
+dados = {"rotas": ROTAS, "cap": CAP, "nivel": NIVEL, "versao": TEC["_meta"]["versao_do_livro"], "prova": PROVA, "linha": LINHA}
 html = modelo.replace("/*CSS-DO-ESTUDO-DA-FICHA-PESSOAL*/", css).replace("/*DADOS*/", json.dumps(dados, ensure_ascii=False))
 open(os.path.join(AQUI, "menu-rapido-estudo.html"), "w", encoding="utf-8").write(html)
 print("escrito: mockup/menu-rapido-estudo.html", len(html) // 1024, "KB")
