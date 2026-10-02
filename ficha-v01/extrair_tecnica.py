@@ -113,8 +113,40 @@ def prontos(fund, cat):
     return out
 
 
+def passivas_marciais(marc):
+    """as Passivas de exemplo do capítulo da Técnica Marcial: cada uma é um `### Nome` com uma caixa de citação, e a
+    Classe Passiva vem escrita na linha "Classe Passiva X." da caixa"""
+    txt = marc[marc.index("## Passivas"):marc.index("## Técnicas Marciais prontas")]
+    out = []
+    for bloco in re.split(r"\n### ", txt)[1:]:
+        nome = _limpa(bloco.split("\n", 1)[0])
+        cp = re.search(r"Classe Passiva (Livre|\d)", bloco).group(1)
+        caixa = "\n".join(l[1:].strip() for l in bloco.split("\n") if l.startswith(">"))
+        paragrafos = [p.strip() for p in caixa.split("\n\n") if p.strip() and not p.strip().startswith("Classe Passiva")]
+        t = " ".join(" ".join(p.split()) for p in paragrafos)
+        t = re.sub(r"^\*\*`?[^*`]+`?\*\*\s*—\s*", "", t).replace("`", "").replace("**", "").replace("*", "")
+        out.append({"nome": nome, "classe_passiva": cp, "faz": t[:1].upper() + t[1:]})
+    return out
+
+
+def bencaos(ben):
+    """as Bênçãos da tabela `Como ler uma Bênção`, com a caixa de regra de cada uma e o que a Lapidação escala"""
+    out = []
+    for l in tabela(ben, "Como ler uma Bênção"):
+        bloco = ben[ben.index(f"> **{l[0]}**"):] if f"> **{l[0]}**" in ben else ""
+        escala = re.search(r"A Lapidação escala ([^.]+)\.", bloco.split("\n\n#")[0]) if bloco else None
+        out.append({"nome": l[0], "requisito": l[1], "classe_passiva": l[2], "faz": regra_da_aptidao(ben, l[0]),
+                    "escala": escala.group(1) if escala else "—"})
+    return out
+
+
 def extrai():
     fund, apt, pac, exp = _cap("40-fundamento.md"), _cap("45-aptidoes-e-refino.md"), _cap("65-pactos.md"), _cap("80-experiencia-e-progressao.md")
+    ori, marc, sem, ben = _cap("25-origens.md"), _cap("42-tecnica-marcial.md"), _cap("43-sem-tecnica.md"), _cap("47-bencaos-e-lapidacao.md")
+    grupos = {}
+    for atributo, _, quais in tabela(marc, "Grupos por atributo de acerto"):
+        for g in quais.split(" · "):
+            grupos.setdefault(g, []).append(atributo)
     cat = json.load(open(os.path.join(os.path.dirname(AQUI), "catalogo-projeto-m.json"), encoding="utf-8"))
     versao = re.search(r"\*\*Versão (v[\d.]+)\.\*\*", open(ESTADO, encoding="utf-8").read()).group(1)
     num = lambda s: int(re.search(r"\d+", s).group(0))
@@ -136,7 +168,8 @@ def extrai():
         "_meta": {
             "o_que_e": "o que a FICHA AMALDIÇOADA calcula e o catalogo-projeto-m.json ainda não tem, lido dos capítulos do livro",
             "versao_do_livro": versao, "extraido_por": "ficha-v01/extrair_tecnica.py",
-            "capitulos": ["40-fundamento.md", "45-aptidoes-e-refino.md", "65-pactos.md", "80-experiencia-e-progressao.md"],
+            "capitulos": ["40-fundamento.md", "45-aptidoes-e-refino.md", "65-pactos.md", "80-experiencia-e-progressao.md",
+                          "25-origens.md", "42-tecnica-marcial.md", "43-sem-tecnica.md", "47-bencaos-e-lapidacao.md"],
             "aviso": "o catálogo está numa versão anterior do livro; levar estas tabelas para ele é decisão do Mizuki",
         },
         "passivas": [{"nome": l[0], "classe_passiva": l[1], "faz": l[2]} for l in tabela(fund, "Lista")],
@@ -191,6 +224,42 @@ def extrai():
                                  "devolucao": int(l[6]), "teto": int(l[8])} for l in tabela(fund, "Números da montagem")],
         "melhorias_por_classe": tabela(fund, "Melhorias e Restrições por Classe"),
         "feiticos_prontos": prontos(fund, cat),
+        # 02/10/2026: as rotas de criação que não são o Fundamento (o Sem Técnica e a Técnica Marcial, com energia e sem
+        # energia). A Ficha Amaldiçoada muda o nome das peças e o que existe em cada uma; o menu rápido da FICHA lê a aba.
+        "rotas": {
+            "nomes": {
+                "Sem Técnica": {"feitico": "Manejo", "liberacao": "Liberação Máxima", "tecnica_maxima": "Auge"},
+                "Técnica Marcial": {"feitico": "Kata", "liberacao": "Ruptura", "tecnica_maxima": "Ōgi"},
+            },
+            "frases": [frase(sem, "Onde qualquer capítulo escreve feitiço, leia também Manejo"),
+                       frase(sem, "Onde qualquer capítulo escreve Técnica Máxima, leia Auge."),
+                       frase(sem, "Você tem Liberação Máxima, e ela não muda de nome."),
+                       frase(sem, "Você não tem Expansão de Domínio. Nem incompleta, nem completa."),
+                       frase(marc, "Onde qualquer capítulo escreve feitiço, leia também Kata"),
+                       frase(marc, "Onde qualquer capítulo escreve Liberação Máxima, leia Ruptura."),
+                       frase(marc, "Onde qualquer capítulo escreve Técnica Máxima, leia Ōgi."),
+                       frase(marc, "Você não tem Expansão de Domínio. Nem incompleta, nem completa, tenha a sua ficha energia amaldiçoada ou não."),
+                       frase(marc, "O seu Selo é ter o equipamento em uso. Uma das três armas, ou a ferramenta."),
+                       frase(ori, "Por isso a Extensão de Domínio você não compra"),
+                       frase(ori, "Nesta rota ele se lê Pontos de Esforço em vez de Pontos de Energia")],
+            "sementes": [l[0] for l in tabela(sem, "Sementes")],
+            "semente_frase": frase(sem, "Ela conta como uma aptidão a mais para a lista."),
+            "grupos_de_arma": grupos,
+            "rota_de_arma": frase(marc, "Escolha três das treze categorias de arma, diferentes entre si."),
+            "atributo_de_arma": frase(marc, "A CD das suas Katas, as rolagens de acerto e o resto exigem uma rolagem de conjuração usando o atributo principal da arma usada na Kata."),
+            "ferramenta": [frase(marc, "Coisa que dá para usar para atacar"), frase(marc, "Coisa que você só carrega")],
+            "passivas_marciais": passivas_marciais(marc),
+            "passivas_sem_tecnica": frase(sem, "Os exemplos do capítulo 9 e do capítulo 10, Técnica Marcial, servem todos."),
+            "bencaos": bencaos(ben),
+            "bencaos_de_graca": ["Defesa sem Armadura", "Estímulo Muscular"],
+            "bencaos_frases": [frase(ben, "Defesa sem Armadura e Estímulo Muscular vêm de graça na Lapidação 1"),
+                               frase(ben, "No lugar dos dois vêm a Lapidação e as Bênçãos"),
+                               frase(ben, "sem Traje e sem Revestimento, a sua proteção é 1/3 da Lapidação + 1"),
+                               frase(ben, "Redução de Dano de 1,5 × Lapidação num golpe, por 2 PE"),
+                               frase(ben, "1d4 na Lapidação 1, 2d4 na 3, 3d4 na 6, 4d4 na 9. Na Lapidação 10 os dados viram d6: 4d6."),
+                               frase(ben, "1× por cena, e 2× se a sua Lapidação for 10"),
+                               frase(ben, "escolha uma perícia e um Teste de Resistência na criação")],
+        },
     }
 
 

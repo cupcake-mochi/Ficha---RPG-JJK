@@ -7,7 +7,11 @@
    "40-fundamento.md",
    "45-aptidoes-e-refino.md",
    "65-pactos.md",
-   "80-experiencia-e-progressao.md"
+   "80-experiencia-e-progressao.md",
+   "25-origens.md",
+   "42-tecnica-marcial.md",
+   "43-sem-tecnica.md",
+   "47-bencaos-e-lapidacao.md"
   ],
   "aviso": "o catálogo está numa versão anterior do livro; levar estas tabelas para ele é decisão do Mizuki"
  },
@@ -1073,5 +1077,232 @@
    "dados": 17,
    "pe": 23
   }
- ]
+ ],
+ "rotas": {
+  "nomes": {
+   "Sem Técnica": {
+    "feitico": "Manejo",
+    "liberacao": "Liberação Máxima",
+    "tecnica_maxima": "Auge"
+   },
+   "Técnica Marcial": {
+    "feitico": "Kata",
+    "liberacao": "Ruptura",
+    "tecnica_maxima": "Ōgi"
+   }
+  },
+  "frases": [
+   "Onde qualquer capítulo escreve feitiço, leia também Manejo",
+   "Onde qualquer capítulo escreve Técnica Máxima, leia Auge.",
+   "Você tem Liberação Máxima, e ela não muda de nome.",
+   "Você não tem Expansão de Domínio. Nem incompleta, nem completa.",
+   "Onde qualquer capítulo escreve feitiço, leia também Kata",
+   "Onde qualquer capítulo escreve Liberação Máxima, leia Ruptura.",
+   "Onde qualquer capítulo escreve Técnica Máxima, leia Ōgi.",
+   "Você não tem Expansão de Domínio. Nem incompleta, nem completa, tenha a sua ficha energia amaldiçoada ou não.",
+   "O seu Selo é ter o equipamento em uso. Uma das três armas, ou a ferramenta.",
+   "Por isso a Extensão de Domínio você não compra",
+   "Nesta rota ele se lê Pontos de Esforço em vez de Pontos de Energia"
+  ],
+  "sementes": [
+   "Domínio Simples",
+   "Energia Reversa",
+   "aptidão própria"
+  ],
+  "semente_frase": "Ela conta como uma aptidão a mais para a lista.",
+  "grupos_de_arma": {
+   "Lâmina Longa": [
+    "Força",
+    "Destreza"
+   ],
+   "Massa": [
+    "Força"
+   ],
+   "Porrete": [
+    "Força"
+   ],
+   "Manopla": [
+    "Força"
+   ],
+   "Machado": [
+    "Força"
+   ],
+   "Ceifa": [
+    "Força"
+   ],
+   "Armas Longas": [
+    "Força"
+   ],
+   "Flexível": [
+    "Força"
+   ],
+   "Lâmina Curta": [
+    "Destreza"
+   ],
+   "Arremesso": [
+    "Destreza"
+   ],
+   "Yumi": [
+    "Destreza"
+   ],
+   "Balestra": [
+    "Destreza"
+   ],
+   "Arma de Fogo": [
+    "Destreza"
+   ]
+  },
+  "rota_de_arma": "Escolha três das treze categorias de arma, diferentes entre si.",
+  "atributo_de_arma": "A CD das suas Katas, as rolagens de acerto e o resto exigem uma rolagem de conjuração usando o atributo principal da arma usada na Kata.",
+  "ferramenta": [
+   "Coisa que dá para usar para atacar",
+   "Coisa que você só carrega"
+  ],
+  "passivas_marciais": [
+   {
+    "nome": "Calo",
+    "classe_passiva": "Livre",
+    "faz": "Vale sobre qualquer arma que você já empunhou uma vez. O que você reconhece. Só de segurar uma arma você sabe qual é, sem precisar ver: basta sentir o peso."
+   },
+   {
+    "nome": "Maldição do Inventário",
+    "classe_passiva": "1",
+    "faz": "Vale sobre o que você carrega, o tempo todo. Saque. Você saca ou guarda dois itens de graça por turno, em vez de um. O que guarda. Não é o seu corpo: é uma maldição pequena, presa a você, que engole o que você põe nela. Ela encolhe até caber na mão, e é ela que você engole — a carga vai junto. Energia. Item amaldiçoado guardado ali para de emanar. Barreira Simples e Cortina deixam de segurar ele, e ele atravessa com você."
+   },
+   {
+    "nome": "Leitura",
+    "classe_passiva": "1",
+    "faz": "Vale quando alguém conjura a até 18 m de você. O que você lê. Você identifica a Classe e a Forma do feitiço."
+   },
+   {
+    "nome": "Segundo Fôlego",
+    "classe_passiva": "2",
+    "faz": "Vale quando você chega a 0 de vida. A escolha sai de graça. Escolher Insistir não custa a sua rodada. Relógio. Uma vez por descanso longo."
+   },
+   {
+    "nome": "Contragolpe",
+    "classe_passiva": "2",
+    "faz": "Vale quando alguém erra um ataque corpo a corpo contra você. A resposta. A sua próxima Kata contra ele tem vantagem. Relógio. maestria× por cena."
+   },
+   {
+    "nome": "Aliança",
+    "classe_passiva": "3",
+    "faz": "Vale sobre a sua arma (uma arma), o tempo todo. Desarmar. A sua arma nunca é desarmada. Quem empunha. Ninguém além de você a empunha."
+   }
+  ],
+  "passivas_sem_tecnica": "Os exemplos do capítulo 9 e do capítulo 10, Técnica Marcial, servem todos.",
+  "bencaos": [
+   {
+    "nome": "Defesa sem Armadura",
+    "requisito": "grátis na Lapidação 1",
+    "classe_passiva": "—",
+    "faz": "Sem Traje e sem Revestimento, a sua proteção é 1/3 da Lapidação + 1. Escudo soma com ela. Como Reação: Redução de Dano de 1,5 × Lapidação num golpe, por 2 PE. Você fica sem proteção até o fim do seu próximo turno. Barreira de energia não segura você. Barreira Simples e Cortina não detectam nem impedem você. Expansão de Domínio. O Acerto garantido de uma Expansão completa não alcança você. O Efeito continua acontecendo em volta, e uma Expansão incompleta funciona normalmente, porque o Acerto dela precisa de uma rolagem: ela não busca alvos com base em energia.",
+    "escala": "a proteção e a Redução de Dano da Reação"
+   },
+   {
+    "nome": "Estímulo Muscular",
+    "requisito": "grátis na Lapidação 1",
+    "classe_passiva": "—",
+    "faz": "Escolha uma perícia e um Teste de Resistência na criação. Usos. 1× por cena, e 2× se a sua Lapidação for 10. Cada uso dá vantagem numa rolagem de um dos dois escolhidos. Dano na arma. Os seus ataques com arma causam 1d4 de dano a mais a cada 3 pontos de Lapidação — 1d4 na Lapidação 1, 2d4 na 3, 3d4 na 6, 4d4 na 9. Na Lapidação 10 os dados viram d6: 4d6. Só arma. Ele não entra em Kata nenhuma. E se o mesmo ataque já estiver carregando uma Kata de dano de Classe 0 ou mais, este dano não se soma por cima — é o caso do Ferrão, o nível 27 da Estocada, em que o golpe leva uma junto. Nesta rota o degrau de Trilha entrega Kata e não feitiço, e o capítulo 8, Caminhos e Trilhas, diz isso na abertura.",
+    "escala": "o dano na arma e o número de usos"
+   },
+   {
+    "nome": "Ímpeto",
+    "requisito": "Destreza 4",
+    "classe_passiva": "2",
+    "faz": "Como Ação Bônus, você se move até o seu deslocamento sem provocar ataque de oportunidade. Sem chão. Você anda em parede, em água e no ar enquanto estiver se movendo. Se terminar o turno e o movimento sem apoio, você cai.",
+    "escala": "—"
+   },
+   {
+    "nome": "Casco",
+    "requisito": "Constituição 4",
+    "classe_passiva": "3",
+    "faz": "Você ganha +1 de vida a cada dois níveis e +1 em todo Teste de Resistência de Vigor que fizer.",
+    "escala": "—"
+   },
+   {
+    "nome": "Presilha",
+    "requisito": "Força 4",
+    "classe_passiva": "2",
+    "faz": "Quando você falha numa rolagem para agarrar, derrubar ou tirar alguém do lugar, role de novo. Uma vez por rodada.",
+    "escala": "—"
+   },
+   {
+    "nome": "Vigília",
+    "requisito": "—",
+    "classe_passiva": "2",
+    "faz": "Você conta um degrau de exaustão a menos do que tem, para todo efeito. O degrau continua marcado na ficha. O que muda é o que ele cobra de você.",
+    "escala": "—"
+   },
+   {
+    "nome": "Esteio",
+    "requisito": "—",
+    "classe_passiva": "3",
+    "faz": "Escolha um atributo na hora de pegar esta Bênção. Num Teste de Resistência daquele atributo, se o d20 sair abaixo da sua Lapidação, ele vale a sua Lapidação. Teto. Ele nunca passa do atributo escolhido mais 2, então o máximo dele é 8.",
+    "escala": "—"
+   },
+   {
+    "nome": "Faro",
+    "requisito": "—",
+    "classe_passiva": "1",
+    "faz": "Você segue rastro de feiticeiro e de maldição pelo rastro que eles deixaram: cheiro, marca, o que ficou fora do lugar. Vestígio de técnica. Encostando no que uma técnica fez, você sabe o superficial do que ela fez ali: o tipo de coisa que aconteceu, e nunca o detalhe nem de quem é.",
+    "escala": "—"
+   },
+   {
+    "nome": "Sem Pegada",
+    "requisito": "—",
+    "classe_passiva": "1",
+    "faz": "Você não deixa rastro físico: pegada, cheiro, marca, som de passo. Nem Faro, nem cão, nem técnica de rastreamento acham por onde você passou.",
+    "escala": "—"
+   },
+   {
+    "nome": "Vulto",
+    "requisito": "—",
+    "classe_passiva": "2",
+    "faz": "Você percebe tudo o que estiver a 1,5 m × metade da Lapidação de você sem precisar estar com os olhos abertos, só por som e movimento. É visão às cegas.",
+    "escala": "—"
+   },
+   {
+    "nome": "Antecipar",
+    "requisito": "Inteligência 4",
+    "classe_passiva": "2",
+    "faz": "Quando você falha num Teste de Resistência contra um efeito, você passa a rolar com vantagem contra aquele mesmo efeito pelo resto da cena.",
+    "escala": "—"
+   },
+   {
+    "nome": "Campo",
+    "requisito": "—",
+    "classe_passiva": "1",
+    "faz": "A ação Estudar custa a sua Ação Bônus em vez da Ação Padrão, uma vez por cena.",
+    "escala": "—"
+   },
+   {
+    "nome": "Assombro",
+    "requisito": "Essência 4",
+    "classe_passiva": "1",
+    "faz": "Uma vez por cena, ao entrar numa cena ou ao ser visto pela primeira vez, escolha uma quantidade de criaturas que enxergam você igual a metade da sua Lapidação, no mínimo 1. O que ela rola. Um Teste de Resistência de Espírito contra a CD da sua técnica, ou ela fica Amedrontado até o fim do próximo turno dela.",
+    "escala": "—"
+   },
+   {
+    "nome": "Bênção Própria",
+    "requisito": "uma vez na ficha inteira",
+    "classe_passiva": "1 ou 2",
+    "faz": "Você escreve, com o mestre, uma Bênção que não está no catálogo. Antes da sessão. Ela é Classe Passiva 1 ou 2, nunca 3, e você só pode pegá-la uma vez na ficha inteira. A ficha registra duas coisas: a frase, e a resposta de \"em quantas cenas por arco isso vai importar?\".",
+    "escala": "—"
+   }
+  ],
+  "bencaos_de_graca": [
+   "Defesa sem Armadura",
+   "Estímulo Muscular"
+  ],
+  "bencaos_frases": [
+   "Defesa sem Armadura e Estímulo Muscular vêm de graça na Lapidação 1",
+   "No lugar dos dois vêm a Lapidação e as Bênçãos",
+   "sem Traje e sem Revestimento, a sua proteção é 1/3 da Lapidação + 1",
+   "Redução de Dano de 1,5 × Lapidação num golpe, por 2 PE",
+   "1d4 na Lapidação 1, 2d4 na 3, 3d4 na 6, 4d4 na 9. Na Lapidação 10 os dados viram d6: 4d6.",
+   "1× por cena, e 2× se a sua Lapidação for 10",
+   "escolha uma perícia e um Teste de Resistência na criação"
+  ]
+ }
 }

@@ -1907,6 +1907,10 @@ ponto 7 é desenho novo e ficou para estudo.*
    a rota não tem. Na CD da rota de arma, A: uma CD por grupo na linha da rota (atributo, conjuração e CD de cada
    grupo), e a linha de cima da Técnica diz "Por grupo" quando os grupos misturam atributos. Fica a dúvida da caixa de
    CD da própria FICHA na rota de arma. Pergunta seguinte: as Passivas do Fundamento no menu da Técnica Marcial.*
+   **Respondido em 02/10/2026: "B".** *Na Técnica Marcial (as duas rotas), o menu de Passiva traz as 6 do capítulo da
+   Técnica Marcial (Calo, Maldição do Inventário, Leitura, Segundo Fôlego, Contragolpe, Aliança) e a Passiva Própria;
+   uma Passiva do Fundamento entra como Passiva Própria, com o mestre. A Regra Própria segue na seção da Técnica em
+   todas as rotas. Com isso o desenho fechou, e a construção da aba nas quatro rotas e do menu rápido começa.*
 8. **Toda caixa da aba abre em letra maiúscula.** *Palavras dele: "Textos em minusculo, sempre bom padronizar o maisculo
    na letra inicial". Vale para o que a ficha calcula e para o que nasce escrito: os menus de pacto viraram `Permanente`,
    `Temporário`, `De restrição` e `Um espaço de feitiço`, o estado virou `Na regra`, o Domínio diz `Não fecha` e `Rola`.*
