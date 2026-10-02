@@ -766,10 +766,12 @@ function ligarSaltos_(ss) {
   var aba = ss.getSheetByName(ABA_AMALDICOADA_), dados = ss.getSheetByName(DADOS_DA_AMALDICOADA_);
   if (!aba || !dados) return 'sem a aba';
   var gid = aba.getSheetId(), n = 0;
-  tabelaDaDados_(dados.getDataRange().getValues(), 'salto', ['caixa do salto', 'alvo do salto']).forEach(function (l) {
+  // 02/10/2026: o nome de quatro saltos muda com a rota (Feitiços, Manejos ou Katas), e o link cita a célula do nome na
+  // DADOS_AM ('nome do salto'), e não o texto.
+  tabelaDaDados_(dados.getDataRange().getValues(), 'salto', ['caixa do salto', 'alvo do salto', 'nome do salto']).forEach(function (l) {
     if (!l['caixa do salto'] || !l['alvo do salto']) return;
-    aba.getRange(String(l['caixa do salto'])).setFormula(
-      '=HYPERLINK("#gid=' + gid + '&range=' + l['alvo do salto'] + '","' + String(l['salto']).replace(/"/g, '""') + '")');
+    var nome = l['nome do salto'] ? String(l['nome do salto']) : '"' + String(l['salto']).replace(/"/g, '""') + '"';
+    aba.getRange(String(l['caixa do salto'])).setFormula('=HYPERLINK("#gid=' + gid + '&range=' + l['alvo do salto'] + '",' + nome + ')');
     n++;
   });
   return n + ' salto(s)';

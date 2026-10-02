@@ -13,7 +13,7 @@ import os, shutil, subprocess, sys, tempfile
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 FORA = {".git", "mockup", "__pycache__", "repos", "repo-conserto", ".claude"}
-FICHAS = "kaori,velho,meio,bordas,sorteio-13"
+FICHAS = "kaori,velho,meio,bordas,sorteio-13,rota-sem,rota-corpo,rota-celeste,rota-fisga"
 GER, MOD, EMI, COD = "ficha-v01/ficha_amaldicoada.py", "ficha/modelo.gs.js", "ficha/emitir_gs.py", "apps-script/Codigo.gs"
 
 # (o que e o defeito, arquivo, o trecho certo, o trecho errado, um pedaco do nome da checagem que tem de acender)
@@ -68,7 +68,7 @@ PERTURBACOES = [
     ("os pares que o livro proíbe deixam de ser cobrados", GER,
      '''"pares": [(p["a"], p["b"]) for p in DEC["A3_incompatibilidades"]["pares"]],''', '''"pares": [],''', "cartas batem com a regra"),
     ("as aptidões compráveis contam as duas de graça", GER,
-     '''-{len([a for a in R['aptidoes'] if a['gratis']])})",''', '''-0)",''', "as aptidões compradas"),
+     '''-{len([a for a in R['aptidoes'] if a['gratis'] and not a['bencao']])})",''', '''-0)",''', "as aptidões compradas"),
     ("o preenchimento para baixo para uma linha antes do fim", MOD,
      "aba.getRange(b[0], b[1], 1, n).copyTo(aba.getRange(b[0] + 1, b[1], b[2] - b[0], n));",
      "aba.getRange(b[0], b[1], 1, n).copyTo(aba.getRange(b[0] + 1, b[1], b[2] - b[0] - 1, n));", "fórmulas montadas são as da planilha gerada"),
@@ -93,7 +93,34 @@ PERTURBACOES = [
      "lin.slice().sort(function (a, b) { return a[3] - b[3]; }).forEach(function (g) { if (!g[2]) aba.getRowGroup(g[0], g[3]).expand(); });",
      "", "nascem abertas as seções"),
     ("o salto aponta para a própria caixa, e não para a seção", COD,
-     "'&range=' + l['alvo do salto'] + '\",\"'", "'&range=' + l['caixa do salto'] + '\",\"'", "saltos da linha 7"),
+     "'&range=' + l['alvo do salto'] + '\",' + nome", "'&range=' + l['caixa do salto'] + '\",' + nome", "saltos da linha 7"),
+    # 02/10/2026, a aba nas quatro rotas de criação
+    ("a rota olha a Técnica Marcial antes da sem energia", GER,
+     'IF(N({_conta_da_ficha(layout, "sem energia")})=1,4,IF(N({_conta_da_ficha(layout, "técnica marcial")})=1,3,',
+     'IF(N({_conta_da_ficha(layout, "técnica marcial")})=1,3,IF(N({_conta_da_ficha(layout, "sem energia")})=1,4,', "os títulos das seções"),
+    ("o Sem Técnica perde as Passivas da Técnica Marcial", GER, "AND({ROTA}>=2,${L(cPa + 4)}{n}=1)", "AND({ROTA}>=3,${L(cPa + 4)}{n}=1)",
+     "o menu de Passiva traz as da rota"),
+    ("o Corpo Amaldiçoado compra a Extensão de Domínio", GER, "IF(OR({ap(6, n)}=1,AND({ROTA}=3,{ap(7, n)}=1)),",
+     "IF(OR({ap(6, n)}=1,AND({ROTA}=9,{ap(7, n)}=1)),", "o menu de aptidão traz as aptidões da rota"),
+    ("a Lâmina Longa acerta sempre com Força", GER, 'N({F_("atr_Destreza")})>N({F_("atr_Força")})),"Destreza","Força")',
+     '1=0),"Destreza","Força")', "cada grupo de arma com o atributo"),
+    ("a CD do grupo esquece a maestria", GER, "cd_de = lambda v: f'(8+{MAE}+{v}+{buff_cd})'", "cd_de = lambda v: f'(8+{v}+{buff_cd})'",
+     "cada grupo de arma com o atributo"),
+    ("o Domínio gasta espaço fora do Fundamento", GER, '"espaços no domínio": f"=IF({ROTA}<>1,0,', '"espaços no domínio": f"=IF({ROTA}<>9,0,',
+     "o Domínio gasta"),
+    ("o título das Bênçãos fica com o refino", GER, "texto = f'=UPPER({ROT(\"aptidões\")}&\" e \"&{ROT(\"escala\")})'",
+     "texto = f'=UPPER({ROT(\"aptidões\")}&\" e Refino\")'", "os títulos das seções"),
+    ("a ferramenta que só se carrega fere maldição", GER, '"Não fere maldição: só as Katas ferem","Fere maldição")',
+     '"Fere maldição","Fere maldição")', "se o golpe simples fere maldição"),
+    ("o Estímulo dá dois usos antes da Lapidação 10", GER, "\"usos do estímulo\": f'=IF({H[\"refino\"]}>=10,2,1)",
+     "\"usos do estímulo\": f'=IF({H[\"refino\"]}>=1,2,1)", "a linha do Estímulo Muscular"),
+    ("o menu da peça da rota mostra o equipamento no Sem Técnica", GER, 'IF({ROTA}>=3,IFERROR(INDEX({D.faixa("equipamento"',
+     'IF({ROTA}>=2,IFERROR(INDEX({D.faixa("equipamento"', "o menu da peça da rota"),
+    ("o Selo da Técnica Marcial fica com o nome de sempre", GER,
+     '"selo": ["Selo", "Selo", "Selo · ter o equipamento em uso", "Selo · ter o equipamento em uso"]',
+     '"selo": ["Selo", "Selo", "Selo", "Selo"]', "a linha da rota diz a rota"),
+    ("o salto cita o texto, e não a célula do nome", COD, "var nome = l['nome do salto'] ? String(l['nome do salto']) :",
+     "var nome = false ? String(l['nome do salto']) :", "citam a célula do nome na DADOS_AM"),
     ("o gerador compacta uma fileira que não é igual ao molde", EMI,
      "if de_onde(t[0]) is None or list(por.get((t[0] - de_onde(t[0]), t[1]), [None, None])[2:]) != list(t[2:])]",
      "if de_onde(t[0]) is None]", None),          # o proprio gerador para: a copia expandida nao devolve a aba
