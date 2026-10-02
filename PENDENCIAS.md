@@ -1840,6 +1840,14 @@ ponto 7 é desenho novo e ficou para estudo.*
    foi pego na `FICHA AMALDIÇOADA` (Passivas, aptidões, feitiços). A seção 8 hoje também serve às rotas sem Fundamento,
    onde vira "Bênçãos e Katas". Ficou a pergunta: o menu rápido substitui a seção 8 só para quem tem Fundamento (A,
    indicado) ou para todo mundo (B). Nos dois casos, é estudo com opções de desenho antes de construir.*
+   **Respondido em 02/10/2026:** *"B - Por sinal o 'ficha amaldiçoada' tem q se modificar para cada origem, é pra aquele
+   menu funcionar para todo mundo igualmente". O menu vale para todo mundo, e a Ficha Amaldiçoada passa a mudar conforme
+   a Origem, que no livro decide a rota de criação: Fundamento, Sem Técnica (`Manejo`, `Auge`, a semente, sem Domínio),
+   Técnica Marcial com energia (Corpo Amaldiçoado: `Kata`, `Ruptura`, `Ōgi`, sem Domínio) e sem energia (Restrição
+   Celestial: Bênçãos e Lapidação no lugar das aptidões e do refino). O primeiro estudo do menu está em
+   `mockup/menu-rapido-estudo.html` (`python3 mockup/estudo_menu_rapido.py`), publicado em
+   https://claude.ai/artifact/2KvUsQ9NaraBWNBM8dc7TV: quatro formas (A colunas, B tabela de combate, C mini-cartas, D nomes
+   com nota) nas quatro rotas. A pergunta da rodada é qual forma; a seguinte é como a Ficha Amaldiçoada muda em cada rota.*
 8. **Toda caixa da aba abre em letra maiúscula.** *Palavras dele: "Textos em minusculo, sempre bom padronizar o maisculo
    na letra inicial". Vale para o que a ficha calcula e para o que nasce escrito: os menus de pacto viraram `Permanente`,
    `Temporário`, `De restrição` e `Um espaço de feitiço`, o estado virou `Na regra`, o Domínio diz `Não fecha` e `Rola`.*

@@ -1,0 +1,425 @@
+<title>Menu Rápido · Estudos</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Castoro&family=Oswald:wght@400;500&family=Roboto:wght@400;500&family=Yuji+Syuku&display=swap">
+<style>
+/*CSS-DO-ESTUDO-DA-FICHA-PESSOAL*/
+/* ---------- o que este estudo acrescenta ---------- */
+/* Layout: a mesma coluna de leitura do estudo da Ficha Pessoal; a folha é a seção 8 da FICHA, na grade de 47 colunas,
+   com duas calhas de grupo (a da seção e a dos lotes) e o número da linha da planilha. */
+:root{ --f-faixa:#E32175; --f-na-faixa:#1E1320; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --f-faixa:#211940; --f-na-faixa:#F4F1F7; } }
+:root[data-theme="dark"]{ --f-faixa:#211940; --f-na-faixa:#F4F1F7; }
+.pal-escura{ --f-faixa:#211940; --f-na-faixa:#F4F1F7; }
+.pal-clara{ --f-faixa:#E32175; --f-na-faixa:#1E1320; }
+.folha.menu-r{grid-template-columns:14px 14px 30px repeat(47,20px); width:998px}
+.faixa{background:var(--f-faixa); color:var(--f-na-faixa)}
+.faixa.n8{justify-content:center; padding-left:0; font-size:15px}
+.jogo{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:13px; color:var(--fraco-pag)}
+.jogo button{font:inherit; font-family:var(--rot); letter-spacing:.06em; text-transform:uppercase; font-size:12px; color:var(--tinta-pag); background:transparent; border:1px solid var(--fio-pag); padding:5px 10px; cursor:pointer}
+.jogo button[aria-pressed="true"]{border-color:var(--acento-pag); color:var(--acento-pag)}
+.jogo button:focus-visible{outline:2px solid var(--acento-pag); outline-offset:2px}
+.escolha{display:flex; flex-direction:column; gap:10px}
+.escolha p{max-width:74ch}
+.passos{margin:0; padding-left:20px; max-width:70ch}
+.passos li{margin:6px 0}
+table.regras{border-collapse:collapse; font-size:13.5px; width:100%}
+table.regras th, table.regras td{border-bottom:1px solid var(--fio-pag); padding:6px 10px 6px 0; text-align:left; vertical-align:top}
+table.regras th{font-family:var(--rot); font-weight:500; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acento-pag)}
+table.regras td.n{font-variant-numeric:tabular-nums; white-space:nowrap}
+table.regras tr > :first-child{color:var(--fraco-pag); min-width:150px}
+table.regras thead tr > :first-child{color:var(--acento-pag)}
+table.regras th.agora, table.regras td.agora{color:var(--acento-pag)}
+.rolar{overflow-x:auto}
+.cab{background:var(--f-alto); font-family:var(--rot); font-size:10px; letter-spacing:.08em; text-transform:uppercase; justify-content:flex-start; padding-left:7px}
+.cab.meio{justify-content:center; padding-left:0}
+.cab .peq{margin-left:8px; text-transform:none; letter-spacing:0; color:var(--f-texto); opacity:.75}
+.cl{background:var(--f-painel); font-family:var(--rot); font-size:14px; font-variant-numeric:tabular-nums}
+.nm{background:var(--f-painel); font-family:var(--doc); font-size:13px; justify-content:flex-start}
+.nm.acento{color:var(--f-acento)}
+.nm .peq{margin-left:7px}
+.vl{background:var(--f-papel); font-size:11.5px; justify-content:flex-start; font-variant-numeric:tabular-nums}
+.vl.meio{justify-content:center}
+.ct{background:var(--f-papel); font-size:11.5px; justify-content:flex-start; color:var(--f-texto); text-overflow:ellipsis}
+.vz{background:var(--f-papel)}
+.vz.p{background:var(--f-painel)}
+.sem{background:var(--f-papel); font-size:11.5px; color:var(--f-fraco); justify-content:flex-start; font-style:italic}
+.tg{background:var(--f-alto); font-family:var(--rot); font-size:9.5px; letter-spacing:.06em; text-transform:uppercase}
+.calha{position:relative}
+.calha .linha{position:absolute; left:6px; top:2px; bottom:2px; border-left:1px solid var(--f-grade)}
+.calha .pe{position:absolute; left:6px; bottom:2px; width:6px; border-top:1px solid var(--f-grade)}
+.grb2{align-self:center; justify-self:center; width:13px; height:13px; padding:0; border:1px solid var(--f-grade); background:var(--f-papel); color:var(--f-texto); font:11px/1 var(--corpo); cursor:pointer; z-index:1}
+.grb2:focus-visible{outline:2px solid var(--f-regua); outline-offset:1px}
+.com-nota{cursor:help}
+.com-nota:focus-visible{outline:2px solid var(--f-texto); outline-offset:-3px}
+#balao{position:fixed; z-index:20; max-width:320px; background:#FFFDE7; color:#1E1A10; border:1px solid #B9A95A; box-shadow:0 2px 6px rgba(0,0,0,.25); padding:8px 10px; font:12.5px/1.45 var(--corpo); white-space:pre-line; pointer-events:none}
+.lado-a-lado{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px 28px}
+.lado-a-lado div{min-width:0}
+.lado-a-lado h3{font-family:var(--rot); font-weight:500; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--acento-pag); margin:0 0 4px}
+.lado-a-lado p{font-size:14px}
+</style>
+
+<div class="pagina">
+  <header class="abre">
+    <div class="olho">Projeto M · ficha digital</div>
+    <h1>Menu rápido, primeiro estudo</h1>
+    <p>A seção 8 da <code>FICHA</code> deixa de ser digitada à mão e passa a mostrar o que está na Ficha Amaldiçoada: os feitiços, as Liberações, a Técnica Máxima, o Domínio, as Passivas e as aptidões. Vale para todo mundo, e a aba muda conforme a Origem. Aqui estão quatro formas do menu, nas quatro rotas de criação do livro.</p>
+    <p class="nota">O exemplo é uma ficha de nível 20. Ele usa os feitiços prontos do capítulo de Fundamento nas quatro rotas, para encher a tela com números do livro; o que muda de uma rota para outra é o nome das peças, o que existe e o que não existe. As Passivas da Técnica Marcial e as Bênçãos são as de exemplo dos capítulos delas. A coluna "o que faz" traz o resultado que o livro imprime; na planilha, seria a linha que a carta da Ficha Amaldiçoada já calcula.</p>
+  </header>
+
+  <div class="barra-topo">
+    <nav class="saltos" aria-label="Partes do estudo">
+      <a href="#folha">A seção 8</a><a href="#lado">Lado a lado</a><a href="#rotas">A aba em cada rota</a><a href="#falta">O que falta</a>
+    </nav>
+    <div class="paleta" role="group" aria-label="Paleta da folha">
+      <span>Paleta da folha</span>
+      <button id="pal-tema" type="button" data-pal="" aria-pressed="true">Seguir o tema</button>
+      <button id="pal-escura" type="button" data-pal="pal-escura" aria-pressed="false">Fábrica</button>
+      <button id="pal-clara" type="button" data-pal="pal-clara" aria-pressed="false">Mizuki · Claro</button>
+    </div>
+  </div>
+
+  <div class="legenda" aria-label="Como ler a folha">
+    <span><b>− ou +</b>na borda esquerda: a calha de fora fecha a seção inteira; a de dentro, um lote de linhas</span>
+    <span><b>número cinza</b>a linha da planilha; ele pula onde um grupo está fechado</span>
+    <span><b>canto escuro</b>a caixa tem nota: passe o mouse ou dê Tab</span>
+    <span><b>nada aqui se digita</b>tudo vem da Ficha Amaldiçoada</span>
+  </div>
+
+  <section class="estudo" id="folha">
+    <h2><b>1</b>A seção 8, em quatro formas</h2>
+    <div class="escolha">
+      <div class="jogo" role="group" aria-label="Forma do menu"><span>Forma</span>
+        <button type="button" data-forma="A" aria-pressed="true">A · Colunas</button>
+        <button type="button" data-forma="B" aria-pressed="false">B · Tabela de combate</button>
+        <button type="button" data-forma="C" aria-pressed="false">C · Mini-cartas</button>
+        <button type="button" data-forma="D" aria-pressed="false">D · Nomes com nota</button>
+      </div>
+      <p class="ideia" id="forma-diz"></p>
+    </div>
+    <div class="jogo" role="group" aria-label="Rota de criação do exemplo"><span>Rota</span>
+      <button type="button" data-rota="fund" aria-pressed="true">Fundamento</button>
+      <button type="button" data-rota="sem" aria-pressed="false">Sem Técnica</button>
+      <button type="button" data-rota="corpo" aria-pressed="false">Corpo Amaldiçoado</button>
+      <button type="button" data-rota="celeste" aria-pressed="false">Restrição Celestial sem energia</button>
+    </div>
+    <p id="rota-diz" class="nota"></p>
+    <div class="jogo" role="group" aria-label="Grupos"><span>Grupos</span>
+      <button type="button" data-grupos="nasce">Como nasce</button>
+      <button type="button" data-grupos="abre">Abrir todos os lotes</button>
+    </div>
+    <p class="dica">A folha é mais larga que a tela: arraste para o lado.</p>
+    <div class="quadro"><div class="folha menu-r" id="folha-m"></div></div>
+    <p class="medida" id="medida"></p>
+  </section>
+
+  <section class="estudo" id="lado">
+    <h2><b>2</b>Lado a lado</h2>
+    <p>As contas são da seção no caso cheio, que a aba comporta: 36 lugares de feitiço, as 3 Liberações, a Técnica Máxima, o Domínio, 12 Passivas e 12 aptidões. Hoje a seção 8 vai da linha 119 à 144, com 26 linhas. As linhas, as caixas e as notas saem do próprio desenho acima, contadas pela página.</p>
+    <div class="rolar"><table class="regras" id="tab-lado"></table></div>
+    <div class="lado-a-lado">
+      <div><h3>O que vale para as quatro</h3><p>Nada se digita: cada caixa é uma referência à <code>DADOS_AM</code>, como as caixas calculadas da Ficha Amaldiçoada, e o <code>onEdit</code> devolve a conta se alguém escrever por cima. A lista fica junta, sem buraco: o feitiço apagado na Ficha Amaldiçoada some do menu, e o de baixo sobe.</p></div>
+      <div><h3>O nome muda pela rota</h3><p>O título e os rótulos seguem a rota que a <code>FICHA</code> já lê do menu de Origem: Feitiços, Manejos ou Katas; Liberação Máxima ou Ruptura; Técnica Máxima, Auge ou Ōgi; Aptidões ou Bênçãos. É o que a seção 8 de hoje já faz com o título.</p></div>
+      <div><h3>O que não existe na rota</h3><p>A linha continua lá, porque a planilha não apaga linha por rota, e diz que a rota não tem a peça. É o caso da Expansão de Domínio fora do Fundamento.</p></div>
+    </div>
+  </section>
+
+  <section class="estudo" id="rotas">
+    <h2><b>3</b>O que muda na Ficha Amaldiçoada em cada rota</h2>
+    <p>Para o menu ler a mesma coisa em qualquer ficha, a Ficha Amaldiçoada tem de ter as mesmas seções em toda rota, com o nome e o conteúdo que o livro dá a cada uma. É o assunto da próxima rodada; o quadro é o que o livro diz.</p>
+    <div class="rolar"><table class="regras">
+      <thead><tr><th>Peça</th><th>Fundamento</th><th>Sem Técnica</th><th>Corpo Amaldiçoado</th><th>Restrição Celestial sem energia</th></tr></thead>
+      <tbody>
+        <tr><td>A aplicação montada com pontos</td><td><code>Feitiço</code></td><td><code>Manejo</code></td><td><code>Kata</code></td><td><code>Kata</code></td></tr>
+        <tr><td>A dos níveis 10, 20 e 30</td><td>Liberação Máxima</td><td>Liberação Máxima</td><td><code>Ruptura</code></td><td><code>Ruptura</code></td></tr>
+        <tr><td>O golpe fixo, do nível 17</td><td>Técnica Máxima</td><td><code>Auge</code></td><td><code>Ōgi</code></td><td><code>Ōgi</code></td></tr>
+        <tr><td>Expansão de Domínio</td><td>tem</td><td>não tem</td><td>não tem</td><td>não tem</td></tr>
+        <tr><td>Selo</td><td>o Selo</td><td>o Selo</td><td>ter o equipamento em uso</td><td>ter o equipamento em uso</td></tr>
+        <tr><td>Peça só desta rota</td><td>—</td><td>a semente: uma aptidão que vem aberta e conta como uma a mais</td><td>rota de arma (três grupos) ou de ferramenta</td><td>rota de arma (três grupos) ou de ferramenta</td></tr>
+        <tr><td>Atributo da técnica</td><td>o que a técnica declara</td><td>o que a técnica declara</td><td>o da arma usada, ou o que a ferramenta declara</td><td>o da arma usada, ou o que a ferramenta declara</td></tr>
+        <tr><td>Aptidões</td><td>aptidões e refino</td><td>aptidões e refino, mais a semente</td><td>aptidões e refino; a Extensão de Domínio não se compra</td><td><b>Bênçãos e Lapidação</b>, no lugar das aptidões e do refino</td></tr>
+        <tr><td>Passivas</td><td>as do capítulo de Fundamento</td><td>as do Fundamento e as da Técnica Marcial servem</td><td>as de exemplo da Técnica Marcial</td><td>as de exemplo da Técnica Marcial</td></tr>
+      </tbody>
+    </table></div>
+    <p>A Restrição Celestial pelo corpo monta pelo Fundamento normal, com a limitação do corpo escrita na ficha: para a aba ela é Fundamento.</p>
+  </section>
+
+  <section class="estudo" id="falta">
+    <h2><b>→</b>O que falta decidir</h2>
+    <ol class="passos">
+      <li><b>Qual das quatro formas, valendo misturar.</b> É a pergunta desta rodada.</li>
+      <li><b>Como a Ficha Amaldiçoada muda em cada rota.</b> A próxima rodada, com opções de desenho, a partir do quadro da seção 3.</li>
+      <li><b>O que já está digitado na seção 8 de fichas em uso.</b> Quando a seção virar menu, o que o jogador escreveu lá à mão tem de ser passado para a Ficha Amaldiçoada.</li>
+      <li><b>O arquivo de dados não tem as Passivas da Técnica Marcial nem as Bênçãos.</b> Este estudo leu do livro, como o anterior leu as Passivas e as aptidões.</li>
+    </ol>
+  </section>
+</div>
+<div id="balao" hidden></div>
+
+<script>
+const D = /*DADOS*/;
+const COLS = 47, LIN0 = 119, CAP = D.cap;
+const LETRA = (n) => { let s = ''; while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; };
+const est = { forma: 'A', rota: 'fund', pal: '', fechado: {} };
+try { const g = JSON.parse(localStorage.getItem('menu-rapido') || '{}'); Object.assign(est, { forma: g.forma || 'A', rota: g.rota || 'fund', pal: g.pal || '' }); } catch (e) {}
+const guarda = () => { try { localStorage.setItem('menu-rapido', JSON.stringify({ forma: est.forma, rota: est.rota, pal: est.pal })); } catch (e) {} };
+
+const DIZ = {
+  A: 'As três colunas da seção 8 de hoje, preenchidas sozinhas: o nome, a Classe e o PE de cada poder, as Liberações e a Técnica Máxima no alto da coluna do meio, e as Passivas e as aptidões com a Classe Passiva. Para saber o que o feitiço faz, o jogador abre a Ficha Amaldiçoada.',
+  B: 'Uma linha por poder com o que se usa na rodada: PE, Forma, como resolve e o que faz. As Liberações, a Técnica Máxima e o Domínio num bloco à parte, e embaixo as Passivas e as aptidões, cada uma com a primeira frase da regra.',
+  C: 'Cartinhas, no jeito das cartas da Ficha Amaldiçoada, quatro por fileira: nome e Classe, PE com Forma e resolução, e o que faz. Passivas e aptidões em cartas de duas linhas.',
+  D: 'Só os nomes, cinco por linha, com a Classe na frente. O resto (PE, Forma, como resolve e o que faz) fica na nota da caixa, que aparece ao passar o mouse. É a forma mais curta.'
+};
+
+// ---------- o desenho de cada forma: caixas por linha local (0 = título) e grupos ----------
+function nova() { return { cel: [], grupos: [], linhas: 0 }; }
+function poe(L, r, c1, c2, cls, txt, op) { L.cel.push(Object.assign({ r, c1, c2, cls, txt: txt == null ? '' : String(txt), rs: 1 }, op || {})); L.linhas = Math.max(L.linhas, r + (op && op.rs || 1)); }
+function grupo(L, id, a, b, nivel, aberto, botao) { L.grupos.push({ id, a, b, nivel, aberto, botao: botao == null ? a - 1 : botao }); }
+function titulo(L, R) {
+  poe(L, 0, 4, 5, 'c faixa n8', '8');
+  poe(L, 0, 6, 46, 'c faixa', 'Menu rápido · ' + R.poderes + ', Passivas e ' + R.apt);
+}
+function lotes(L, a, total, por, primeiro) {
+  // o primeiro lote fica à vista; cada um dos outros é um grupo que nasce fechado
+  for (let i = por; i < total; i += por) grupo(L, 'lote' + a + '-' + i, a + i, Math.min(a + total, a + i + por) - 1, 2, false, a + i - 1);
+}
+const notaPoder = (p, R) => p.rot ? `${p.rot} · Classe ${p.c}\n${p.pe} PE · ${p.forma} · ${p.resolve}\n${p.faz}` : `${R.poder} de Classe ${p.c}\n${p.pe} PE · ${p.forma} · ${p.resolve}\n${p.faz}`;
+const notaPas = (p, tipo) => `${tipo}${p.cp === '—' ? '' : ' · Classe Passiva ' + p.cp}${p.marca ? ' · ' + p.marca : ''}\n${p.faz}`;
+const tagMax = (p) => p.tipo === 'lib' ? 'Lib' : p.tipo === 'tm' ? 'Máx' : 'Dom';
+
+function maximasDa(R) {
+  // três lugares de Liberação (10, 20 e 30), a Técnica Máxima e o Domínio; o que a rota não tem diz que não tem
+  const libs = R.maximas.filter((m) => m.tipo === 'lib'), tm = R.maximas.find((m) => m.tipo === 'tm'), dm = R.maximas.find((m) => m.tipo === 'dom');
+  const out = [];
+  for (let i = 0; i < 3; i++) out.push(libs[i] || { vazio: true, tag: 'Lib' });
+  out.push(tm || { vazio: true, tag: 'Máx' });
+  out.push(dm || { sem: 'Esta rota não tem Expansão de Domínio', tag: 'Dom' });
+  return out;
+}
+
+function formaA(R) {
+  const L = nova(); titulo(L, R);
+  poe(L, 1, 4, 5, 'c cab meio', 'C'); poe(L, 1, 6, 18, 'c cab', R.poderes, { peq: R.lista.length + ' de ' + CAP.poderes }); poe(L, 1, 19, 21, 'c cab meio', 'PE');
+  poe(L, 1, 23, 24, 'c cab meio', ''); poe(L, 1, 25, 34, 'c cab', R.lib + ' e ' + R.tm);
+  poe(L, 1, 36, 37, 'c cab meio', 'CP'); poe(L, 1, 38, 46, 'c cab', R.apt, { peq: String(R.aptidoes.length) });
+  for (let i = 0; i < CAP.poderes; i++) {
+    const p = R.lista[i], r = 2 + i;
+    if (p) { poe(L, r, 4, 5, 'c cl', p.c); poe(L, r, 6, 18, 'c nm', p.nome); poe(L, r, 19, 21, 'c vl meio', p.pe); }
+    else { poe(L, r, 4, 5, 'c vz p', ''); poe(L, r, 6, 18, 'c vz p', ''); poe(L, r, 19, 21, 'c vz', ''); }
+  }
+  maximasDa(R).forEach((m, i) => {
+    const r = 2 + i;
+    if (m.sem) { poe(L, r, 23, 24, 'c tg', m.tag); poe(L, r, 25, 34, 'c sem', m.sem); }
+    else if (m.vazio) { poe(L, r, 23, 24, 'c tg', m.tag); poe(L, r, 25, 34, 'c vz p', ''); }
+    else { poe(L, r, 23, 24, 'c tg', tagMax(m)); poe(L, r, 25, 32, 'c nm', m.nome); poe(L, r, 33, 34, 'c vl meio', m.pe); }
+  });
+  poe(L, 7, 23, 24, 'c cab meio', 'CP'); poe(L, 7, 25, 34, 'c cab', 'Passivas', { peq: R.passivas.length + ' de ' + CAP.passivas });
+  for (let i = 0; i < CAP.passivas; i++) {
+    const p = R.passivas[i], r = 8 + i;
+    if (p) { poe(L, r, 23, 24, 'c cl', p.cp); poe(L, r, 25, 34, 'c nm', p.nome); } else { poe(L, r, 23, 24, 'c vz p', ''); poe(L, r, 25, 34, 'c vz p', ''); }
+  }
+  for (let i = 0; i < CAP.aptidoes; i++) {
+    const p = R.aptidoes[i], r = 2 + i;
+    if (p) { poe(L, r, 36, 37, 'c cl', p.cp); poe(L, r, 38, 46, 'c nm', p.nome, { peq: p.marca }); } else { poe(L, r, 36, 37, 'c vz p', ''); poe(L, r, 38, 46, 'c vz p', ''); }
+  }
+  grupo(L, 'secao', 1, L.linhas - 1, 1, true, 0);
+  lotes(L, 2, CAP.poderes, 12);
+  return L;
+}
+
+function formaB(R) {
+  const L = nova(); titulo(L, R);
+  const cab = (r) => { poe(L, r, 4, 5, 'c cab meio', 'C'); poe(L, r, 16, 17, 'c cab meio', 'PE'); poe(L, r, 18, 21, 'c cab meio', 'Forma'); poe(L, r, 22, 26, 'c cab meio', 'Resolve'); poe(L, r, 27, 46, 'c cab', 'O que faz'); };
+  const linha = (r, p, tag) => {
+    poe(L, r, 4, 5, tag ? 'c tg' : 'c cl', tag || p.c); poe(L, r, 6, 15, 'c nm', p.nome); poe(L, r, 16, 17, 'c vl meio', p.pe);
+    poe(L, r, 18, 21, 'c vl meio', p.forma); poe(L, r, 22, 26, 'c vl meio', p.resolve); poe(L, r, 27, 46, 'c ct', p.faz);
+  };
+  const vazia = (r, tag) => { poe(L, r, 4, 5, tag ? 'c tg' : 'c vz p', tag || ''); poe(L, r, 6, 15, 'c vz p', ''); [[16, 17], [18, 21], [22, 26], [27, 46]].forEach(([a, b]) => poe(L, r, a, b, 'c vz', '')); };
+  cab(1); poe(L, 1, 6, 15, 'c cab', R.poderes, { peq: R.lista.length + ' de ' + CAP.poderes });
+  for (let i = 0; i < CAP.poderes; i++) { const p = R.lista[i]; if (p) linha(2 + i, p); else vazia(2 + i); }
+  let r = 2 + CAP.poderes;
+  cab(r); poe(L, r, 6, 15, 'c cab', R.lib + ', ' + R.tm + (R.dom ? ' e Domínio' : ''));
+  maximasDa(R).forEach((m, i) => {
+    const rr = r + 1 + i;
+    if (m.sem) { poe(L, rr, 4, 5, 'c tg', m.tag); poe(L, rr, 6, 46, 'c sem', m.sem); }
+    else if (m.vazio) vazia(rr, m.tag);
+    else linha(rr, m, tagMax(m));
+  });
+  r += 6;
+  poe(L, r, 4, 5, 'c cab meio', 'CP'); poe(L, r, 6, 13, 'c cab', 'Passivas', { peq: R.passivas.length + ' de ' + CAP.passivas }); poe(L, r, 14, 24, 'c cab', 'O que faz');
+  poe(L, r, 26, 27, 'c cab meio', 'CP'); poe(L, r, 28, 35, 'c cab', R.apt, { peq: String(R.aptidoes.length) }); poe(L, r, 36, 46, 'c cab', 'O que faz');
+  for (let i = 0; i < CAP.passivas; i++) {
+    const p = R.passivas[i], a = R.aptidoes[i], rr = r + 1 + i;
+    if (p) { poe(L, rr, 4, 5, 'c cl', p.cp); poe(L, rr, 6, 13, 'c nm', p.nome); poe(L, rr, 14, 24, 'c ct', p.faz); }
+    else { poe(L, rr, 4, 5, 'c vz p', ''); poe(L, rr, 6, 13, 'c vz p', ''); poe(L, rr, 14, 24, 'c vz', ''); }
+    if (a) { poe(L, rr, 26, 27, 'c cl', a.cp); poe(L, rr, 28, 35, 'c nm', a.nome); poe(L, rr, 36, 46, 'c ct', (a.marca ? a.marca[0].toUpperCase() + a.marca.slice(1) + '. ' : '') + a.faz); }
+    else { poe(L, rr, 26, 27, 'c vz p', ''); poe(L, rr, 28, 35, 'c vz p', ''); poe(L, rr, 36, 46, 'c vz', ''); }
+  }
+  grupo(L, 'secao', 1, L.linhas - 1, 1, true, 0);
+  lotes(L, 2, CAP.poderes, 12);
+  lotes(L, r + 1, CAP.passivas, 6);
+  return L;
+}
+
+function formaC(R) {
+  const L = nova(); titulo(L, R);
+  const X = [4, 15, 26, 37];                       // quatro cartas de 10 colunas, com uma de folga entre elas
+  const carta = (r, x, p, tag) => {
+    poe(L, r, x, x + 1, tag ? 'c tg' : 'c cl', tag || p.c); poe(L, r, x + 2, x + 9, 'c nm acento', p.nome);
+    poe(L, r + 1, x, x + 2, 'c vl meio', p.pe + ' PE'); poe(L, r + 1, x + 3, x + 5, 'c vl meio', p.forma); poe(L, r + 1, x + 6, x + 9, 'c vl meio', p.resolve);
+    poe(L, r + 2, x, x + 9, 'c ct', p.faz);
+  };
+  const vazia = (r, x, tag, sem) => {
+    poe(L, r, x, x + 1, tag ? 'c tg' : 'c vz p', tag || ''); poe(L, r, x + 2, x + 9, sem ? 'c sem' : 'c vz p', sem || '');
+    poe(L, r + 1, x, x + 9, 'c vz', ''); poe(L, r + 2, x, x + 9, 'c vz', '');
+  };
+  poe(L, 1, 4, 46, 'c cab', R.poderes, { peq: R.lista.length + ' de ' + CAP.poderes });
+  const fil = Math.ceil(CAP.poderes / 4);
+  for (let i = 0; i < CAP.poderes; i++) { const r = 2 + Math.floor(i / 4) * 4, x = X[i % 4], p = R.lista[i]; if (p) carta(r, x, p); else vazia(r, x); }
+  let r = 2 + fil * 4;
+  poe(L, r, 4, 46, 'c cab', R.lib + ', ' + R.tm + (R.dom ? ' e Domínio' : ''));
+  maximasDa(R).forEach((m, i) => {
+    const rr = r + 1 + Math.floor(i / 4) * 4, x = X[i % 4];
+    if (m.sem) vazia(rr, x, m.tag, m.sem); else if (m.vazio) vazia(rr, x, m.tag); else carta(rr, x, m, tagMax(m));
+  });
+  r += 1 + 8;
+  const pequena = (rr, x, p) => {
+    if (p) { poe(L, rr, x, x + 1, 'c cl', p.cp); poe(L, rr, x + 2, x + 9, 'c nm acento', p.nome, { peq: p.marca }); poe(L, rr + 1, x, x + 9, 'c ct', p.faz); }
+    else { poe(L, rr, x, x + 1, 'c vz p', ''); poe(L, rr, x + 2, x + 9, 'c vz p', ''); poe(L, rr + 1, x, x + 9, 'c vz', ''); }
+  };
+  [['Passivas', R.passivas, CAP.passivas], [R.apt, R.aptidoes, CAP.aptidoes]].forEach(([nome, lista, cap]) => {
+    poe(L, r, 4, 46, 'c cab', nome, { peq: lista.length + ' de ' + cap });
+    for (let i = 0; i < cap; i++) pequena(r + 1 + Math.floor(i / 4) * 3, X[i % 4], lista[i]);
+    const ini = r + 1, linhas = Math.ceil(cap / 4) * 3;
+    grupo(L, 'lote-' + nome, ini + 3, ini + linhas - 1, 2, false, ini + 2);
+    r += 1 + linhas;
+  });
+  grupo(L, 'secao', 1, L.linhas - 1, 1, true, 0);
+  for (let f = 3; f < fil; f += 3) grupo(L, 'lote-p' + f, 2 + f * 4, 2 + Math.min(fil, f + 3) * 4 - 1, 2, false, 2 + f * 4 - 1);
+  return L;
+}
+
+function formaD(R) {
+  const L = nova(); titulo(L, R);
+  const X = [12, 19, 26, 33, 40];                  // cinco caixas de 7 colunas
+  let r = 1;
+  const faixa = (rot, peq, itens, cap, nota, rotulo) => {
+    const linhas = Math.ceil(cap / 5), ini = r;
+    poe(L, ini, 4, 11, 'c cab', rot, { peq, rs: 1 });
+    for (let k = 1; k < linhas; k++) poe(L, ini + k, 4, 11, 'c vz p', '');
+    for (let i = 0; i < cap; i++) {
+      const p = itens[i], rr = ini + Math.floor(i / 5), x = X[i % 5];
+      if (p && p.sem) poe(L, rr, x, x + 6, 'c sem', p.sem);
+      else if (p && !p.vazio) poe(L, rr, x, x + 6, 'c nm com-nota', rotulo(p), { nota: nota(p) });
+      else poe(L, rr, x, x + 6, 'c vz p', p && p.tag ? '' : '');
+    }
+    if (linhas > 2) grupo(L, 'lote-' + rot, ini + 2, ini + linhas - 1, 2, false, ini + 1);
+    else if (linhas > 1 && cap > 5) grupo(L, 'lote-' + rot, ini + 1, ini + linhas - 1, 2, false, ini);
+    r += linhas;
+  };
+  faixa(R.poderes, R.lista.length + ' de ' + CAP.poderes, R.lista, CAP.poderes, (p) => notaPoder(p, R), (p) => p.c + ' · ' + p.nome);
+  faixa(R.lib.split(' ')[0] + ' e ' + R.tm, '', maximasDa(R), 5, (p) => notaPoder(p, R), (p) => tagMax(p) + ' · ' + p.nome);
+  faixa('Passivas', R.passivas.length + ' de ' + CAP.passivas, R.passivas, CAP.passivas, (p) => notaPas(p, 'Passiva'), (p) => p.nome);
+  faixa(R.apt, String(R.aptidoes.length), R.aptidoes, CAP.aptidoes, (p) => notaPas(p, R.apt === 'Bênçãos' ? 'Bênção' : 'Aptidão'), (p) => p.nome);
+  grupo(L, 'secao', 1, L.linhas - 1, 1, true, 0);
+  return L;
+}
+const FORMA = { A: formaA, B: formaB, C: formaC, D: formaD };
+
+// ---------- desenhar ----------
+const folha = document.getElementById('folha-m');
+function fechadoDe(g) { const k = est.forma + ':' + g.id; return k in est.fechado ? est.fechado[k] : !g.aberto; }
+function el(tag, cls, txt) { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+
+function desenha() {
+  const R = D.rotas.find((x) => x.id === est.rota), L = FORMA[est.forma](R);
+  const esconde = new Set();
+  L.grupos.forEach((g) => { if (fechadoDe(g)) for (let r = g.a; r <= g.b; r++) esconde.add(r); });
+  const vis = []; for (let r = 0; r < L.linhas; r++) if (!esconde.has(r)) vis.push(r);
+  const lin = {}; vis.forEach((r, i) => { lin[r] = i + 2; });
+  folha.replaceChildren();
+  folha.className = 'folha menu-r ' + (est.pal || '');
+  folha.style.gridTemplateRows = '18px repeat(' + vis.length + ', 22px)';
+  for (let c = 1; c <= COLS; c++) { const e = el('div', 'col', LETRA(c)); e.style.gridColumn = String(c + 3); e.style.gridRow = '1'; folha.appendChild(e); }
+  vis.forEach((r) => { const e = el('div', 'lin', String(LIN0 + r)); e.style.gridColumn = '3'; e.style.gridRow = String(lin[r]); folha.appendChild(e); });
+  L.cel.forEach((k) => {
+    if (esconde.has(k.r)) return;
+    const e = el('div', k.cls);
+    const t = el('span', null, k.txt); t.style.overflow = 'hidden'; t.style.textOverflow = 'ellipsis'; e.appendChild(t);
+    if (k.peq) e.appendChild(el('span', 'peq', k.peq));
+    e.style.gridColumn = (k.c1 + 3) + ' / ' + (k.c2 + 4);
+    e.style.gridRow = String(lin[k.r]);
+    if (k.nota) { e.dataset.nota = k.nota; e.tabIndex = 0; e.appendChild(el('i', 'nt')); }
+    folha.appendChild(e);
+  });
+  L.grupos.forEach((g) => {
+    const fech = fechadoDe(g), col = String(g.nivel);
+    if (!fech) {
+      const de = vis.filter((r) => r >= g.a && r <= g.b);
+      if (de.length) { const c = el('div', 'calha'); c.style.gridColumn = col; c.style.gridRow = lin[de[0]] + ' / ' + (lin[de[de.length - 1]] + 1); c.appendChild(el('span', 'linha')); c.appendChild(el('span', 'pe')); folha.appendChild(c); }
+    }
+    if (lin[g.botao] == null) return;
+    const b = el('button', 'grb2', fech ? '+' : '−');
+    b.type = 'button'; b.setAttribute('aria-expanded', String(!fech));
+    b.setAttribute('aria-label', (fech ? 'Abrir' : 'Fechar') + (g.id === 'secao' ? ' a seção 8' : ' as linhas ' + (LIN0 + g.a) + ' a ' + (LIN0 + g.b)));
+    b.style.gridColumn = col; b.style.gridRow = String(lin[g.botao]);
+    b.addEventListener('click', () => { est.fechado[est.forma + ':' + g.id] = !fech; desenha(); });
+    folha.appendChild(b);
+  });
+  document.getElementById('forma-diz').textContent = DIZ[est.forma];
+  document.getElementById('rota-diz').textContent = 'Quem monta por esta rota: ' + R.quem + '.';
+  const m = medidas(est.forma);
+  document.getElementById('medida').textContent = `Forma ${est.forma}: ${m.linhas} linhas com tudo aberto, ${m.nasce} à vista como a ficha nasce (com a seção aberta), ${m.caixas} caixas mescladas` + (m.notas ? `, ${m.notas} notas que o script reescreve` : '') + '. A seção 8 de hoje tem 26 linhas.';
+  document.querySelectorAll('[data-forma]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.forma === est.forma)));
+  document.querySelectorAll('[data-rota]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.rota === est.rota)));
+  document.querySelectorAll('[data-pal]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pal === est.pal)));
+  tabela();
+  guarda();
+}
+
+// ---------- as contas da tabela, tiradas do próprio desenho ----------
+function medidas(f) {
+  const L = FORMA[f](D.rotas[0]);
+  const esconde = new Set(); L.grupos.forEach((g) => { if (!g.aberto) for (let r = g.a; r <= g.b; r++) esconde.add(r); });
+  return { linhas: L.linhas, nasce: L.linhas - esconde.size, caixas: L.cel.filter((k) => k.c2 > k.c1).length,
+           // a nota existe em todo lugar que pode ter nome, cheio ou não: os lugares da forma D
+           notas: f === 'D' ? CAP.poderes + 5 + CAP.passivas + CAP.aptidoes : 0,
+           celulas: L.linhas * 43 };
+}
+function tabela() {
+  const M = Object.fromEntries(['A', 'B', 'C', 'D'].map((f) => [f, medidas(f)]));
+  const linhas = [
+    ['Linhas com tudo aberto', (f) => M[f].linhas],
+    ['À vista como nasce', (f) => M[f].nasce],
+    ['Caixas mescladas', (f) => M[f].caixas],
+    ['Células que a troca de tema pinta', (f) => M[f].celulas.toLocaleString('pt-BR')],
+    ['Notas que o script reescreve', (f) => M[f].notas],
+    ['O que se lê sem abrir nem passar o mouse', (f) => ({ A: 'nome, Classe e PE', B: 'tudo: PE, Forma, como resolve e o que faz', C: 'tudo, em cartas', D: 'só o nome e a Classe' })[f]],
+    ['No celular', (f) => ({ A: 'cabe; três colunas estreitas', B: 'a coluna "o que faz" pede rolar para o lado', C: 'pede rolar para o lado', D: 'a nota abre com toque na caixa; falta conferir no Sheets do celular' })[f]],
+    ['Preço no script', (f) => ({ A: 'nenhum: só fórmula', B: 'nenhum: só fórmula', C: 'nenhum: só fórmula; mais mesclagem no construir()', D: 'nota é texto parado: o script reescreve as notas quando a Ficha Amaldiçoada muda, como a nota da arma da Ficha Pessoal' })[f]],
+  ];
+  const nomes = { A: 'A · Colunas', B: 'B · Tabela de combate', C: 'C · Mini-cartas', D: 'D · Nomes com nota' };
+  const t = document.getElementById('tab-lado'); t.replaceChildren();
+  const th = el('thead'), tr = el('tr'); tr.appendChild(el('th', null, ''));
+  ['A', 'B', 'C', 'D'].forEach((f) => tr.appendChild(el('th', f === est.forma ? 'agora' : null, nomes[f]))); th.appendChild(tr); t.appendChild(th);
+  const tb = el('tbody');
+  linhas.forEach(([rot, fn]) => { const r = el('tr'); r.appendChild(el('td', null, rot)); ['A', 'B', 'C', 'D'].forEach((f) => { const v = fn(f); r.appendChild(el('td', (typeof v === 'number' ? 'n' : '') + (f === est.forma ? ' agora' : ''), String(v))); }); tb.appendChild(r); });
+  t.appendChild(tb);
+}
+
+// ---------- o balão da nota ----------
+const balao = document.getElementById('balao');
+function mostra(e) { const c = e.target.closest('[data-nota]'); if (!c) return; balao.textContent = c.dataset.nota; balao.hidden = false; const b = c.getBoundingClientRect(); const w = Math.min(320, window.innerWidth - 24); balao.style.left = Math.max(12, Math.min(b.left, window.innerWidth - w - 12)) + 'px'; balao.style.top = (b.bottom + 4) + 'px'; }
+function some(e) { if (e.target.closest('[data-nota]')) balao.hidden = true; }
+folha.addEventListener('mouseover', mostra); folha.addEventListener('mouseout', some);
+folha.addEventListener('focusin', mostra); folha.addEventListener('focusout', some);
+window.addEventListener('scroll', () => { balao.hidden = true; }, { passive: true });
+
+document.querySelectorAll('[data-forma]').forEach((b) => b.addEventListener('click', () => { est.forma = b.dataset.forma; desenha(); }));
+document.querySelectorAll('[data-rota]').forEach((b) => b.addEventListener('click', () => { est.rota = b.dataset.rota; desenha(); }));
+document.querySelectorAll('[data-pal]').forEach((b) => b.addEventListener('click', () => { est.pal = b.dataset.pal; desenha(); }));
+document.querySelectorAll('[data-grupos]').forEach((b) => b.addEventListener('click', () => {
+  const L = FORMA[est.forma](D.rotas[0]);
+  L.grupos.forEach((g) => { if (g.id !== 'secao') est.fechado[est.forma + ':' + g.id] = b.dataset.grupos === 'nasce'; });
+  est.fechado[est.forma + ':secao'] = false; desenha();
+}));
+desenha();
+</script>
