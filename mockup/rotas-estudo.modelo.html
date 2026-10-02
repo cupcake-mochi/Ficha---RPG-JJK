@@ -1,0 +1,325 @@
+<title>Ficha Amaldiçoada · Rotas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Castoro&family=Oswald:wght@400;500&family=Roboto:wght@400;500&family=Yuji+Syuku&display=swap">
+<style>
+/*CSS-DO-ESTUDO-DA-FICHA-PESSOAL*/
+/* ---------- o que este estudo acrescenta ---------- */
+/* Layout: a coluna de leitura do estudo da Ficha Pessoal; a folha é um pedaço da FICHA AMALDIÇOADA, nas 21 colunas de
+   largura própria da aba (a 70% do tamanho), com a calha de grupo das seções e o número da linha. */
+:root{ --f-faixa:#E32175; --f-na-faixa:#1E1320; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --f-faixa:#211940; --f-na-faixa:#F4F1F7; } }
+:root[data-theme="dark"]{ --f-faixa:#211940; --f-na-faixa:#F4F1F7; }
+.pal-escura{ --f-faixa:#211940; --f-na-faixa:#F4F1F7; }
+.pal-clara{ --f-faixa:#E32175; --f-na-faixa:#1E1320; }
+.folha.rotas{grid-template-columns:var(--colunas); width:var(--largura)}
+.faixa{background:var(--f-faixa); color:var(--f-na-faixa)}
+.faixa .peq{color:var(--f-na-faixa); opacity:.85; margin-left:12px; text-transform:none; letter-spacing:0}
+.sem{background:var(--f-papel); font-size:11.5px; color:var(--f-fraco); justify-content:flex-start; font-style:italic}
+.saltos-l{background:var(--f-papel); font-family:var(--rot); font-size:10px; letter-spacing:.08em; text-transform:uppercase; justify-content:flex-start; gap:12px; color:var(--f-acento)}
+.saltos-l span{text-decoration:underline; text-underline-offset:3px}
+.saltos-l span.risca{color:var(--f-fraco); text-decoration:line-through}
+.saltos-l span.nova{font-weight:500}
+.esc{border:0; margin:0; background:transparent; font-size:10.5px; color:var(--f-fraco); justify-content:center; border-top:1px dashed var(--f-grade); border-bottom:1px dashed var(--f-grade)}
+.rot.esq{justify-content:flex-start; padding-left:8px}
+.c.calc.esq, .c.calc.sem{padding-left:15px}
+.val.esq{justify-content:flex-start}
+.txt.calc{color:var(--f-texto)}
+.jogo{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:13px; color:var(--fraco-pag)}
+.jogo button{font:inherit; font-family:var(--rot); letter-spacing:.06em; text-transform:uppercase; font-size:12px; color:var(--tinta-pag); background:transparent; border:1px solid var(--fio-pag); padding:5px 10px; cursor:pointer}
+.jogo button[aria-pressed="true"]{border-color:var(--acento-pag); color:var(--acento-pag)}
+.jogo button:focus-visible{outline:2px solid var(--acento-pag); outline-offset:2px}
+.escolha{display:flex; flex-direction:column; gap:10px}
+.escolha p{max-width:74ch}
+.passos{margin:0; padding-left:20px; max-width:70ch}
+.passos li{margin:6px 0}
+table.regras{border-collapse:collapse; font-size:13.5px; width:100%}
+table.regras th, table.regras td{border-bottom:1px solid var(--fio-pag); padding:6px 10px 6px 0; text-align:left; vertical-align:top}
+table.regras th{font-family:var(--rot); font-weight:500; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acento-pag)}
+table.regras td.n{font-variant-numeric:tabular-nums; white-space:nowrap}
+table.regras tr > :first-child{color:var(--fraco-pag); min-width:150px}
+table.regras thead tr > :first-child{color:var(--acento-pag)}
+table.regras th.agora, table.regras td.agora{color:var(--acento-pag)}
+.rolar{overflow-x:auto}
+.grb2{align-self:center; justify-self:center; width:13px; height:13px; padding:0; border:1px solid var(--f-grade); background:var(--f-papel); color:var(--f-texto); font:11px/1 var(--corpo); cursor:pointer; z-index:1}
+.grb2:focus-visible{outline:2px solid var(--f-regua); outline-offset:1px}
+.calha{position:relative}
+.calha .linha{position:absolute; left:6px; top:2px; bottom:2px; border-left:1px solid var(--f-grade)}
+</style>
+
+<div class="pagina">
+  <header class="abre">
+    <div class="olho">Projeto M · ficha digital</div>
+    <h1>A Ficha Amaldiçoada nas quatro rotas, primeiro estudo</h1>
+    <p>A aba muda conforme a Origem, para o menu rápido da <code>FICHA</code> ler a mesma coisa em qualquer ficha. Quase tudo que muda é nome. O que não é nome são três coisas: a peça que só uma rota tem (a semente do Sem Técnica e o equipamento da Técnica Marcial), a Expansão de Domínio que só o Fundamento tem, e as Bênçãos no lugar das aptidões na Restrição Celestial sem energia. Esta rodada é sobre onde essas três coisas moram na aba.</p>
+    <p class="nota">Os exemplos são as técnicas prontas do livro: a Régua (Fundamento), a Redoma (Sem Técnica), a Fisga (Técnica Marcial na rota de arma, posta no Corpo Amaldiçoado) e a Bancada (na rota de ferramenta, posta na Restrição Celestial sem energia). O livro não traz o Selo da Redoma, e a caixa fica vazia. A conjuração e a CD da linha de cima, e as caixas das aptidões no refino 6, são números de exemplo.</p>
+  </header>
+
+  <div class="barra-topo">
+    <nav class="saltos" aria-label="Partes do estudo">
+      <a href="#muda">O que muda</a><a href="#folha">Onde mora</a><a href="#lado">Lado a lado</a><a href="#falta">O que falta</a>
+    </nav>
+    <div class="paleta" role="group" aria-label="Paleta da folha">
+      <span>Paleta da folha</span>
+      <button id="pal-tema" type="button" data-pal="" aria-pressed="true">Seguir o tema</button>
+      <button id="pal-escura" type="button" data-pal="pal-escura" aria-pressed="false">Fábrica</button>
+      <button id="pal-clara" type="button" data-pal="pal-clara" aria-pressed="false">Mizuki · Claro</button>
+    </div>
+  </div>
+
+  <section class="estudo" id="muda">
+    <h2><b>1</b>O que muda, pelo livro</h2>
+    <div class="rolar"><table class="regras">
+      <thead><tr><th>Parte da aba</th><th>Fundamento</th><th>Sem Técnica</th><th>Corpo Amaldiçoado</th><th>Restrição Celestial sem energia</th><th>Na aba</th></tr></thead>
+      <tbody>
+        <tr><td>Feitiços</td><td>Feitiço</td><td><code>Manejo</code></td><td><code>Kata</code></td><td><code>Kata</code></td><td>só o nome, por fórmula</td></tr>
+        <tr><td>Liberação Máxima</td><td>Liberação Máxima</td><td>Liberação Máxima</td><td><code>Ruptura</code></td><td><code>Ruptura</code></td><td>só o nome: o preço na hora (Vazio, Sangue, Peso) é o mesmo</td></tr>
+        <tr><td>Técnica Máxima</td><td>Técnica Máxima</td><td><code>Auge</code></td><td><code>Ōgi</code></td><td><code>Ōgi</code></td><td>só o nome</td></tr>
+        <tr><td>Expansão de Domínio</td><td>tem</td><td>não tem</td><td>não tem</td><td>não tem</td><td><b>some</b> fora do Fundamento</td></tr>
+        <tr><td>Selo</td><td>o Selo</td><td>o Selo</td><td>ter o equipamento em uso</td><td>ter o equipamento em uso</td><td>na Técnica Marcial a ficha escreve sozinha</td></tr>
+        <tr><td>Peça só da rota</td><td>—</td><td>a semente</td><td>três grupos de arma, ou uma ferramenta</td><td>três grupos de arma, ou uma ferramenta</td><td><b>peça nova</b></td></tr>
+        <tr><td>Atributo da técnica</td><td>o que a técnica declara</td><td>o que a técnica declara</td><td>o da arma usada na Kata, ou o que a ferramenta declara</td><td>o mesmo</td><td>na rota de arma, um por grupo</td></tr>
+        <tr><td>Aptidões e refino</td><td>aptidões e refino</td><td>mais a semente, que conta como uma aptidão a mais</td><td>a Extensão de Domínio não se compra</td><td><b>Bênçãos e Lapidação</b></td><td>as duas de graça têm os mesmos números: Cobrir-se e Defesa sem Armadura, Canalizar e Estímulo Muscular</td></tr>
+        <tr><td>PE</td><td>Pontos de Energia</td><td>Pontos de Energia</td><td>Pontos de Energia</td><td>Pontos de Esforço</td><td>a mesma sigla e o mesmo número</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="estudo" id="folha">
+    <h2><b>2</b>Onde a peça da rota mora</h2>
+    <div class="escolha">
+      <div class="jogo" role="group" aria-label="Forma"><span>Forma</span>
+        <button type="button" data-op="A" aria-pressed="true">A · Linha da rota</button>
+        <button type="button" data-op="B" aria-pressed="false">B · Seção da rota</button>
+        <button type="button" data-op="C" aria-pressed="false">C · O script esconde</button>
+      </div>
+      <p class="ideia" id="op-diz"></p>
+    </div>
+    <div class="jogo" role="group" aria-label="Rota"><span>Rota</span>
+      <button type="button" data-rota="fund" aria-pressed="true">Fundamento · Régua</button>
+      <button type="button" data-rota="sem" aria-pressed="false">Sem Técnica · Redoma</button>
+      <button type="button" data-rota="corpo" aria-pressed="false">Corpo Amaldiçoado · Fisga</button>
+      <button type="button" data-rota="celeste" aria-pressed="false">Restrição Celestial sem energia · Bancada</button>
+    </div>
+    <p class="dica">A folha é mais larga que a tela: arraste para o lado.</p>
+    <div class="quadro"><div class="folha rotas" id="folha-r"></div></div>
+    <p class="medida" id="medida"></p>
+  </section>
+
+  <section class="estudo" id="lado">
+    <h2><b>3</b>Lado a lado</h2>
+    <div class="rolar"><table class="regras" id="tab-lado"></table></div>
+    <p>A planilha não muda de forma por rota: a aba nasce no <code>construir()</code>, antes de o jogador escolher a Origem. Por isso, na A e na B, a linha ou a seção da rota existe em toda ficha, e diz o que vale para a rota escolhida. A Expansão de Domínio já nasce fechada em toda ficha, desde o B29.</p>
+  </section>
+
+  <section class="estudo" id="falta">
+    <h2><b>→</b>O que falta decidir</h2>
+    <ol class="passos">
+      <li><b>Onde a peça da rota mora: A, B ou C.</b> É a pergunta desta rodada.</li>
+      <li><b>A CD da Técnica Marcial na rota de arma.</b> O livro manda usar o atributo da arma usada na Kata, e os três grupos podem ter atributos diferentes (a Lâmina Longa é Força ou Destreza). A <code>FICHA</code> tem uma caixa só de atributo de conjuração.</li>
+      <li><b>As Passivas no menu da Técnica Marcial.</b> O Sem Técnica diz que as Passivas do Fundamento e as da Técnica Marcial servem; a Técnica Marcial só dá as dela como exemplo, e não diz se as do Fundamento valem.</li>
+      <li><b>As Bênçãos, as Passivas da Técnica Marcial e as sementes não estão no arquivo de dados.</b> A aba vai lê-las do livro, como já lê as Passivas e as aptidões.</li>
+    </ol>
+  </section>
+</div>
+
+<script>
+const D = /*DADOS*/;
+// as 21 colunas da aba (px da planilha) e a escala do desenho
+const LARG = [28, 28, 28, 112, 140, 112, 56, 56, 28, 112, 140, 112, 56, 56, 28, 112, 140, 112, 56, 56, 28], K = 0.7, OFF = 2;
+const COL = (l) => l.charCodeAt(0) - 64;                       // A = 1 ... U = 21
+const est = { op: 'A', rota: 'fund', pal: '', fechado: {} };
+try { const g = JSON.parse(localStorage.getItem('rotas-1') || '{}'); Object.assign(est, { op: g.op || 'A', rota: g.rota || 'fund', pal: g.pal || '' }); } catch (e) {}
+const guarda = () => { try { localStorage.setItem('rotas-1', JSON.stringify({ op: est.op, rota: est.rota, pal: est.pal })); } catch (e) {} };
+const DIZ = {
+  A: 'Uma linha a mais no alto da Técnica, a mesma em toda ficha: o nome da rota e as caixas do que só ela tem (a semente, ou o equipamento e os três grupos). No Fundamento a linha diz que não há peça a mais. O Domínio continua no lugar, e o título diz quando a rota não tem.',
+  B: 'Uma seção nova, "Rota", entre a Técnica e o Orçamento, com salto na linha de cima: a rota, a Origem e o capítulo de onde ela vem, as caixas do que só ela tem, e um texto que a ficha escreve dizendo o que muda nela. O Domínio fica como na A.',
+  C: 'O desenho da A, mas quando a Origem muda na FICHA o onEdit esconde as linhas que a rota não usa: a linha da rota no Fundamento, a Expansão de Domínio fora dele, e a linha do Estímulo Muscular fora da Restrição Celestial sem energia. Cada rota vê só o que é dela.'
+};
+
+function nova() { return { cel: [], esc: [], grupos: [], n: 0 }; }
+function poe(L, r, a, b, cls, txt, op) { const k = Object.assign({ r, c1: COL(a), c2: COL(b), cls, txt: txt == null ? '' : String(txt), rs: 1 }, op || {}); L.cel.push(k); L.n = Math.max(L.n, r + k.rs); }
+
+function desenho(R, op) {
+  const L = nova(), T = R.tec, marcial = !!T.equipamento, C = D.caixas;
+  let r = 0;
+  const esconde = (de, ate, porque) => { if (op === 'C') L.esc.push({ de, ate, porque }); };
+  // a linha 7 da aba: os saltos para as seções, com os nomes da rota
+  const saltos = ['Técnica'].concat(op === 'B' ? ['Rota'] : [], ['Orçamento', R.poderes, 'Classe 0', R.lib, R.tm, 'Domínio', 'Passivas', R.apt, 'Pactos']);
+  poe(L, r, 'D', 'T', 'c saltos-l', '', { saltos: saltos.filter((s) => !(op === 'C' && s === 'Domínio' && !R.dom)).map((s) => ({ s, risca: s === 'Domínio' && !R.dom, nova: s === 'Rota' })) });
+  r += 2;
+  const secao = (n, titulo, peq, id) => { const a = r; poe(L, r, 'D', 'T', 'c faixa', n + '   ' + titulo, { peq }); r++; return () => L.grupos.push({ id, a: a + 1, b: r - 1, botao: a }); };
+
+  // --- a Técnica
+  let fecha = secao(1, 'Técnica', '', 'tec');
+  poe(L, r, 'D', 'H', 'c rot', 'Nome da técnica'); poe(L, r, 'J', 'K', 'c rot', 'Tipo de dano'); poe(L, r, 'L', 'N', 'c rot', 'Atributo da técnica'); poe(L, r, 'P', 'Q', 'c rot', 'Conjuração'); poe(L, r, 'R', 'T', 'c rot', 'CD');
+  r++;
+  // na rota de arma o atributo é o da arma usada na Kata: se os três grupos têm o mesmo, é um só; se não, dois números
+  const ats = marcial && T.equipamento.rota === 'arma' ? [...new Set(T.equipamento.grupos.flatMap((g) => g.atributo.split(' ou ')))] : [];
+  const atributo = !marcial ? 'O da FICHA' : ats.length === 1 ? ats[0] + ', das três armas' : ats.length ? 'O da arma da Kata' : T.atributo;
+  poe(L, r, 'D', 'H', 'c val', T.nome); poe(L, r, 'J', 'K', 'c cel', T.tipo); poe(L, r, 'L', 'N', 'c cel calc', atributo);
+  poe(L, r, 'P', 'Q', 'c num calc', ats.length > 1 ? '+5 · +3' : '+5'); poe(L, r, 'R', 'T', 'c num calc', ats.length > 1 ? '15 · 13' : '15');
+  r += 2;
+  // as caixas do que só a rota tem: três linhas em toda ficha
+  const daRota = (comRotulo) => {
+    const a = r, x = comRotulo ? 'J' : 'D';
+    if (comRotulo) { poe(L, r, 'D', 'H', 'c rot', 'Rota'); poe(L, r + 1, 'D', 'H', 'c cel calc', R.nome); }
+    if (R.id === 'fund') {
+      poe(L, r, x, 'T', 'c rot esq', 'O que só esta rota tem'); poe(L, r + 1, x, 'T', 'c sem calc', 'O Fundamento não tem peça a mais.');
+    } else if (T.semente) {
+      poe(L, r, x, comRotulo ? 'N' : 'H', 'c rot', 'Semente'); poe(L, r + 1, x, comRotulo ? 'N' : 'H', 'c cel menu', T.semente);
+      poe(L, r, comRotulo ? 'P' : 'J', 'T', 'c rot esq', 'O que ela dá');
+      poe(L, r + 1, comRotulo ? 'P' : 'J', 'T', 'c cel calc esq', 'Aberta desde o nível 2, sem gate · conta como uma aptidão a mais');
+    } else if (T.equipamento.rota === 'arma') {
+      const cols = comRotulo ? [['J', 'K'], ['L', 'N'], ['P', 'Q'], ['R', 'T']] : [['D', 'H'], ['J', 'K'], ['L', 'N'], ['P', 'T']];
+      poe(L, r, cols[0][0], cols[0][1], 'c rot', 'Equipamento'); poe(L, r + 1, cols[0][0], cols[0][1], 'c cel menu', 'Três grupos de arma');
+      T.equipamento.grupos.forEach((g, i) => {
+        const [a1, b1] = cols[i + 1];
+        poe(L, r, a1, b1, 'c rot', 'Grupo ' + (i + 1)); poe(L, r + 1, a1, b1, 'c cel menu', g.grupo); poe(L, r + 2, a1, b1, 'c cel calc', g.atributo);
+      });
+      poe(L, r + 2, cols[0][0], cols[0][1], 'c rot', 'Atributo de cada um');
+    } else {
+      const cols = comRotulo ? [['J', 'K'], ['L', 'N'], ['P', 'Q'], ['R', 'T']] : [['D', 'H'], ['J', 'N'], ['P', 'Q'], ['R', 'T']];
+      const e = T.equipamento;
+      [['Equipamento', 'Uma ferramenta', 'menu'], ['Ferramenta', e.ferramenta, ''], ['Atributo', T.atributo, 'menu'], ['Golpe simples', e.ataca, 'menu']].forEach(([rot, v, m], i) => {
+        poe(L, r, cols[i][0], cols[i][1], 'c rot', rot); poe(L, r + 1, cols[i][0], cols[i][1], 'c cel ' + m, v);
+      });
+    }
+    r = a + 3;
+  };
+  if (op !== 'B') { const a = r; daRota(true); if (R.id === 'fund') esconde(a, r, 'a linha da rota'); r++; }
+  poe(L, r, 'D', 'T', 'c rot esq', 'Regra'); poe(L, r + 1, 'D', 'T', 'c txt', '“' + T.regra + '”', { rs: 2 }); r += 4;
+  poe(L, r, 'D', 'K', 'c rot esq', 'Descrição'); poe(L, r, 'L', 'T', 'c rot esq', marcial ? 'Selo · o equipamento' : 'Selo');
+  poe(L, r + 1, 'D', 'K', 'c txt', T.descricao, { rs: 5 });
+  if (marcial) poe(L, r + 1, 'L', 'T', 'c txt calc', 'Ter o equipamento em uso: ' + (T.equipamento.rota === 'arma' ? 'uma das três armas.' : 'a ferramenta.'), { rs: 2 });
+  else poe(L, r + 1, 'L', 'T', 'c txt', T.selo || '', { rs: 2 });
+  poe(L, r + 3, 'L', 'T', 'c rot esq', 'Passiva Livre'); poe(L, r + 4, 'L', 'T', 'c txt', '', { rs: 2 });
+  r += 7;
+  poe(L, r, 'D', 'N', 'c rot esq', 'Regra Própria'); poe(L, r, 'P', 'Q', 'c rot', 'Classe Passiva'); poe(L, r, 'R', 'T', 'c rot', 'Espaços');
+  poe(L, r + 1, 'D', 'N', 'c txt', '', { rs: 2 }); poe(L, r + 1, 'P', 'Q', 'c cel menu', '—', { rs: 2 }); poe(L, r + 1, 'R', 'T', 'c cel calc', '—', { rs: 2 });
+  r += 4;
+  poe(L, r, 'D', 'P', 'c rot esq', 'Famílias'); poe(L, r, 'Q', 'T', 'c rot', 'Livres · Fechadas');
+  poe(L, r + 1, 'D', 'P', 'c cel esq', 'Livres: ' + T.livres.join(', ') + '   ·   Fechadas: ' + T.fechadas.join(', '));
+  poe(L, r + 1, 'Q', 'T', 'c cel calc', T.livres.length + ' de 2 · ' + T.fechadas.length + ' de 3');
+  r += 2; fecha(); r++;
+
+  // --- a seção da rota (só na B)
+  if (op === 'B') {
+    fecha = secao(2, 'Rota · ' + R.nome, '', 'rota');
+    poe(L, r, 'D', 'H', 'c rot', 'Rota'); poe(L, r, 'J', 'N', 'c rot', 'Origem'); poe(L, r, 'P', 'T', 'c rot', 'Criação');
+    poe(L, r + 1, 'D', 'H', 'c cel calc', R.nome); poe(L, r + 1, 'J', 'N', 'c cel calc', R.origem); poe(L, r + 1, 'P', 'T', 'c cel calc', R.criacao);
+    r += 3;
+    daRota(false); r++;
+    poe(L, r, 'D', 'T', 'c rot esq', 'O que muda nesta rota'); poe(L, r + 1, 'D', 'T', 'c txt calc', R.muda, { rs: 3 }); r += 4;
+    fecha(); r++;
+  }
+
+  // --- o que fica igual, encolhido
+  const n0 = op === 'B' ? 3 : 2;
+  poe(L, r, 'D', 'T', 'c sem', `${n0} a ${n0 + 4} · Orçamento, ${R.poderes}, Classe 0, ${R.lib} e ${R.tm}: só o nome muda, e o estudo não desenha.`); r += 2;
+
+  // --- a Expansão de Domínio
+  const nd = n0 + 5, aDom = r;
+  if (R.dom || op !== 'C') {
+    fecha = secao(nd, 'Expansão de Domínio', R.dom ? '' : '· esta rota não tem', 'dom');
+    [['D', 'H', 'Degrau'], ['J', 'K', 'Custa'], ['L', 'N', 'Dura'], ['P', 'Q', 'Raio'], ['R', 'T', 'Desconto']].forEach(([a, b, t]) => poe(L, r, a, b, 'c rot', t));
+    const v = R.dom ? ['Incompleta', '30 PE', '3 rodadas', '7,5 m', '−2 PE'] : ['—', '—', '—', '—', '—'];
+    [['D', 'H'], ['J', 'K'], ['L', 'N'], ['P', 'Q'], ['R', 'T']].forEach(([a, b], i) => poe(L, r + 1, a, b, i ? 'c cel calc' : 'c cel menu', v[i]));
+    r += 2; fecha(); r++;
+  } else { esconde(r, r + 3, 'a Expansão de Domínio'); r += 4; }
+  poe(L, r, 'D', 'T', 'c sem', `${nd + 1} · Passivas: iguais nas quatro rotas.`); r += 2;
+
+  // --- as aptidões, ou as Bênçãos
+  const sem = R.apt === 'Bênçãos';
+  fecha = secao(nd + 2, R.apt + ' e ' + R.escala, '', 'apt');
+  [['D', 'E', R.escala], ['F', 'H', 'Compradas'], ['J', 'N', R.graca[0]], ['P', 'Q', R.graca[1]], ['R', 'T', sem ? 'Reação da Defesa' : 'Reação de Cobrir-se']].forEach(([a, b, t]) => poe(L, r, a, b, 'c rot', t));
+  [['D', 'E', C.ref, 'num'], ['F', 'H', '1 de 2', 'num'], ['J', 'N', C.protecao, 'val'], ['P', 'Q', C.arma, 'val'], ['R', 'T', C.reacao, 'val']].forEach(([a, b, v, k]) => poe(L, r + 1, a, b, 'c calc ' + k, v));
+  r += 2;
+  if (sem) {
+    poe(L, r, 'D', 'H', 'c rot', 'Estímulo: perícia'); poe(L, r, 'J', 'N', 'c rot', 'Estímulo: Teste'); poe(L, r, 'P', 'T', 'c rot', 'Usos');
+    poe(L, r + 1, 'D', 'H', 'c cel menu', 'Atletismo'); poe(L, r + 1, 'J', 'N', 'c cel menu', 'Físico'); poe(L, r + 1, 'P', 'T', 'c cel calc', '1 por cena');
+  } else if (op !== 'C') {
+    poe(L, r, 'D', 'T', 'c rot esq', 'Estímulo Muscular'); poe(L, r + 1, 'D', 'T', 'c sem', 'Só na Restrição Celestial sem energia: a perícia e o Teste do Estímulo Muscular.');
+  } else esconde(r, r + 2, 'a linha do Estímulo Muscular');
+  r += 2; fecha();
+  L.n = Math.max(L.n, r);
+  return L;
+}
+
+// ---------- desenhar ----------
+const folha = document.getElementById('folha-r');
+function el(tag, cls, txt) { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+const fechado = (g) => !!est.fechado[est.op + ':' + g.id];
+function desenha() {
+  const R = D.rotas.find((x) => x.id === est.rota), L = desenho(R, est.op);
+  const fora = new Set(); L.grupos.forEach((g) => { if (fechado(g)) for (let r = g.a; r <= g.b; r++) fora.add(r); });
+  const marca = {}; L.esc.forEach((s) => { marca[s.de] = s; });
+  const vis = []; for (let r = 0; r < L.n; r++) if (!fora.has(r)) vis.push(r);
+  // as linhas que o script esconde não são da planilha à vista: viram uma faixa tracejada no lugar delas
+  const lin = {}; let i = 2; const marcas = [];
+  vis.forEach((r) => { const m = L.esc.find((s) => r >= s.de && r < s.ate); if (m) { if (marca[r]) { marcas.push([i, m]); i++; } return; } lin[r] = i++; });
+  folha.replaceChildren();
+  folha.className = 'folha rotas ' + (est.pal || '');
+  folha.style.setProperty('--colunas', '14px 30px ' + LARG.map((w) => Math.round(w * K) + 'px').join(' '));
+  folha.style.setProperty('--largura', (44 + LARG.reduce((s, w) => s + Math.round(w * K), 0)) + 'px');
+  folha.style.gridTemplateRows = '18px repeat(' + (i - 2) + ', 22px)';
+  for (let c = 1; c <= LARG.length; c++) { const e = el('div', 'col', String.fromCharCode(64 + c)); e.style.gridColumn = String(c + OFF); e.style.gridRow = '1'; folha.appendChild(e); }
+  Object.entries(lin).forEach(([r, g]) => { const e = el('div', 'lin', String(7 + Number(r))); e.style.gridColumn = '2'; e.style.gridRow = String(g); folha.appendChild(e); });
+  marcas.forEach(([g, m]) => { const e = el('div', 'c esc', `${m.ate - m.de} linhas de ${m.porque}, escondidas pelo script nesta rota`); e.style.gridColumn = (COL('D') + OFF) + ' / ' + (COL('T') + OFF + 1); e.style.gridRow = String(g); folha.appendChild(e); });
+  L.cel.forEach((k) => {
+    const dentro = []; for (let r = k.r; r < k.r + k.rs; r++) if (lin[r] != null) dentro.push(r);
+    if (!dentro.length) return;
+    const e = el('div', k.cls);
+    if (k.saltos) k.saltos.forEach((s) => e.appendChild(el('span', (s.risca ? 'risca' : '') + (s.nova ? ' nova' : ''), s.s)));
+    else { const t = el('span', null, k.txt); t.style.overflow = 'hidden'; t.style.textOverflow = 'ellipsis'; e.appendChild(t); }
+    if (k.peq) e.appendChild(el('span', 'peq', k.peq));
+    e.style.gridColumn = (k.c1 + OFF) + ' / ' + (k.c2 + OFF + 1);
+    e.style.gridRow = lin[dentro[0]] + ' / span ' + dentro.length;
+    folha.appendChild(e);
+  });
+  L.grupos.forEach((g) => {
+    if (lin[g.botao] == null) return;
+    const f = fechado(g), b = el('button', 'grb2', f ? '+' : '−');
+    b.type = 'button'; b.setAttribute('aria-expanded', String(!f)); b.setAttribute('aria-label', (f ? 'Abrir' : 'Fechar') + ' a seção');
+    b.style.gridColumn = '1'; b.style.gridRow = String(lin[g.botao]);
+    b.addEventListener('click', () => { est.fechado[est.op + ':' + g.id] = !f; desenha(); });
+    folha.appendChild(b);
+    if (!f) { const de = vis.filter((r) => r >= g.a && r <= g.b && lin[r] != null); if (de.length) { const c = el('div', 'calha'); c.style.gridColumn = '1'; c.style.gridRow = lin[de[0]] + ' / ' + (lin[de[de.length - 1]] + 1); c.appendChild(el('span', 'linha')); folha.appendChild(c); } }
+  });
+  document.getElementById('op-diz').textContent = DIZ[est.op];
+  document.getElementById('medida').textContent = 'O pedaço desenhado: ' + contas(est.op, R).vistas + ' linhas à vista nesta rota.';
+  document.querySelectorAll('[data-op]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.op === est.op)));
+  document.querySelectorAll('[data-rota]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.rota === est.rota)));
+  document.querySelectorAll('[data-pal]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pal === est.pal)));
+  tabela();
+  guarda();
+}
+
+// ---------- o lado a lado, contado do próprio desenho ----------
+function contas(op, R) {
+  const L = desenho(R, op), escondidas = L.esc.reduce((s, x) => s + x.ate - x.de, 0);
+  return { linhas: L.n, vistas: L.n - escondidas };
+}
+function tabela() {
+  const ops = ['A', 'B', 'C'], base = (R) => contas('A', R).linhas - 3;     // a aba de hoje não tem as três linhas da rota
+  const rs = D.rotas;
+  const linhas = [
+    ['Linhas a mais no pedaço desenhado, em toda ficha', (op) => contas(op, rs[0]).linhas - base(rs[0])],
+    ['Linhas à vista: Fundamento · Sem Técnica · Corpo · Restrição', (op) => rs.map((R) => contas(op, R).vistas).join(' · ')],
+    ['O que a rota vê que não é dela', (op) => ({ A: 'no Fundamento, a linha da rota dizendo que não há peça a mais; fora dele, o Domínio dizendo que a rota não tem (ele já nasce fechado); fora da Restrição Celestial, a linha do Estímulo Muscular', B: 'no Fundamento, a seção da rota dizendo que nada muda; o Domínio e o Estímulo como na A', C: 'nada' })[op]],
+    ['O que explica a rota', (op) => ({ A: 'as notas das caixas', B: 'a seção inteira, com o texto do que muda nela', C: 'as notas das caixas' })[op]],
+    ['Script', (op) => ({ A: 'nenhum', B: 'nenhum', C: 'o onEdit esconde e mostra as linhas quando a Origem muda na FICHA, e o construir() deixa tudo à vista até a Origem ser escolhida' })[op]],
+    ['Saltos da linha 7', (op) => ({ A: 'os de hoje; o Domínio fica riscado fora do Fundamento', B: 'um a mais, "Rota"', C: 'o Domínio some fora do Fundamento' })[op]],
+  ];
+  const t = document.getElementById('tab-lado'); t.replaceChildren();
+  const th = el('thead'), tr = el('tr'); tr.appendChild(el('th', null, ''));
+  const nomes = { A: 'A · Linha da rota', B: 'B · Seção da rota', C: 'C · O script esconde' };
+  ops.forEach((o) => tr.appendChild(el('th', o === est.op ? 'agora' : null, nomes[o]))); th.appendChild(tr); t.appendChild(th);
+  const tb = el('tbody');
+  linhas.forEach(([rot, fn]) => { const r = el('tr'); r.appendChild(el('td', null, rot)); ops.forEach((o) => { const v = fn(o); r.appendChild(el('td', (typeof v === 'number' ? 'n' : '') + (o === est.op ? ' agora' : ''), String(v))); }); tb.appendChild(r); });
+  t.appendChild(tb);
+}
+
+document.querySelectorAll('[data-op]').forEach((b) => b.addEventListener('click', () => { est.op = b.dataset.op; desenha(); }));
+document.querySelectorAll('[data-rota]').forEach((b) => b.addEventListener('click', () => { est.rota = b.dataset.rota; desenha(); }));
+document.querySelectorAll('[data-pal]').forEach((b) => b.addEventListener('click', () => { est.pal = b.dataset.pal; desenha(); }));
+desenha();
+</script>

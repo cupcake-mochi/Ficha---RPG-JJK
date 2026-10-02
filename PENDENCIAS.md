@@ -1882,6 +1882,15 @@ ponto 7 é desenho novo e ficou para estudo.*
    Passivas (14 lugares). Cada fileira tem um grupo que fecha a descrição (o + na linha dos números): 216 linhas com tudo
    aberto, 59 como nasce, 34 com as descrições fechadas, 40 grupos, nenhum colado. Preço novo: a FICHA passa de umas 7 mil
    para umas 16 mil células na troca de tema, e a troca dela pode ter de ser repartida.*
+   **Decidido em 02/10/2026:** *"Pode ser A"*: *antes de construir o menu, a rodada de como a Ficha Amaldiçoada muda em
+   cada rota, e depois a aba nas quatro rotas e o menu numa construção só. O primeiro estudo das rotas está em
+   `mockup/rotas-estudo.html` (`python3 mockup/estudo_rotas.py`), publicado em https://claude.ai/artifact/WkNP6o5RUuiRQN7Zaw5U6k:
+   o que o livro muda em cada parte da aba (quase tudo é nome; a Expansão de Domínio some fora do Fundamento; a semente
+   do Sem Técnica e o equipamento da Técnica Marcial são peças novas; as Bênçãos e a Lapidação entram no lugar das
+   aptidões e do refino, com os mesmos números nas duas de graça), e três formas de pôr na aba o que só uma rota tem
+   (A linha da rota na Técnica, B seção da rota, C o script esconde o que a rota não usa), com a Régua, a Redoma, a
+   Fisga e a Bancada do livro. Ficam para as rodadas seguintes: a CD da rota de arma (o atributo é o da arma da Kata,
+   e a FICHA tem uma caixa só), e se as Passivas do Fundamento valem na Técnica Marcial (o livro não diz).*
 8. **Toda caixa da aba abre em letra maiúscula.** *Palavras dele: "Textos em minusculo, sempre bom padronizar o maisculo
    na letra inicial". Vale para o que a ficha calcula e para o que nasce escrito: os menus de pacto viraram `Permanente`,
    `Temporário`, `De restrição` e `Um espaço de feitiço`, o estado virou `Na regra`, o Domínio diz `Não fecha` e `Rola`.*
