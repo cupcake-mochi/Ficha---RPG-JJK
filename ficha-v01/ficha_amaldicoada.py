@@ -914,7 +914,7 @@ NOTAS = {
     "conjuracao": "d20 + o atributo da técnica + maestria. Vem da FICHA.",
     "cd": "8 + o atributo da técnica + maestria. Vem da FICHA.",
     "regra": "Uma frase, verificável pela mesa, sem número. Todo feitiço tem de caber nela.",
-    "selo": "O que você sempre faz para conjurar. Não custa nem devolve ponto. Restrição que cobra a mesma coisa não devolve.",
+    "selo": "O que você sempre faz para conjurar. Não custa nem devolve ponto.",
     "passiva_livre": "De graça. Não rola dado, não muda número, não faz ninguém rolar.",
     "regra_propria": "Só se a técnica impõe uma regra ao mundo. Uma frase, verificável, simétrica, sem dano direto e com limite por "
                      "cena. Não conta nas cinco Passivas pagas.",

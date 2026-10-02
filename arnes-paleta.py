@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """Arnes de perturbacao das checagens de cor do regressao-paleta.js (a revisao de 01/10/2026): a barra cheia, a tinta de
-enfeite e a cor da arte.
+enfeite e a cor da arte; e, desde o B31, a cor de aviso que a troca lia acesa e gravava na celula.
 
 As tres regras do projeto: numa copia isolada, nunca nos arquivos reais; a base tem de passar NA COPIA antes de
 perturbar; e cada perturbacao tem de mudar o arquivo de verdade antes de eu ler o resultado. Cada perturbacao e um
 defeito que o Codigo.gs poderia ter, e a agulha e a frase da checagem que tem de acender.
 
-Nao entra no rodar-tudo.sh: sao oito rodadas do regressao-paleta.js, uns dois minutos. Roda a mao, depois de mexer na
+Nao entra no rodar-tudo.sh: sao onze rodadas do regressao-paleta.js, uns dois minutos. Roda a mao, depois de mexer na
 troca de paleta:    python3 arnes-paleta.py
 """
 import os, shutil, subprocess, sys, tempfile

@@ -86,7 +86,7 @@ PERTURBACOES = [
      '''"nome":      [["Castoro", 11.0, OSSO, False, False], ACENTO,''', '''"nome":      [["Castoro", 11.0, OSSO, False, False], ALTO,''',
      "está na cor de título"),
     ("o estado da carta abre em minúscula", GER, '''NA_REGRA = "Na regra"''', '''NA_REGRA = "na regra"''', "abre em letra minúscula"),
-    ("a proteção do cobrir-se abre em minúscula", GER, '''f'="Proteção "&(FLOOR({REF}/3,1)+1)'''', '''f'="proteção "&(FLOOR({REF}/3,1)+1)'''', "abre em letra minúscula"),
+    ("a proteção do cobrir-se abre em minúscula", GER, """f'="Proteção "&(FLOOR({REF}/3,1)+1)'""", """f'="proteção "&(FLOOR({REF}/3,1)+1)'""", "abre em letra minúscula"),
     ("a conta de uma caixa calculada fica na aba, onde o script não sabe devolver", GER,
      '''and ix._lc(coord)[0] >= G["saltos"]]''', '''and ix._lc(coord)[0] >= 99999]''', "só apontam para uma célula"),
     ("os grupos que nascem abertos ficam fechados", MOD,

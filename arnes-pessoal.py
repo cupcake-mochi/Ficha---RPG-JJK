@@ -151,7 +151,6 @@ edita("o acabar() roda em portugues, e a regra de cor quebra", F, "  ss.setSprea
 edita("o Caminho escolhido nao chega a FICHA PESSOAL", C, "try { fichaMexeNaPessoal_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }", "",
       "escolher Bastião na FICHA passa por todos os gatilhos", teste=K)
 
-print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
 # 01/10/2026 (B30): a nota que diz de onde vem o menu mora na caixa em que a arma e escolhida, e nao no rotulo de cima
 edita("a nota da mao principal volta para o rotulo", F, '["D41","Para uma arma aparecer neste menu', '["D40","Para uma arma aparecer neste menu',
       "a caixa de escolha de cada mão nasce com a nota")
@@ -164,6 +163,7 @@ edita("o onEdit regrava formula que nao vale em todo idioma", C, "var REFERENCIA
       "não é regravada pelo script", teste=K)
 edita("o onEdit nao reconhece a FICHA AMALDICOADA", C, "if (aba === ABA_AMALDICOADA_) {", "if (aba === 'OUTRA ABA DE NOME PARECIDO') {",
       "digitar por cima de uma caixa calculada devolve a conta", teste=K)
+print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
 edita("renomear uma variavel de dentro da conta", C, "var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"
       "                   .every(function (a) { return marcadas[a.caixa] === true; });\n  if ((marcadas[dono.caixa] === true) !== todas) muda[dono.caixa] = todas;",
       "var inteiro = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"
