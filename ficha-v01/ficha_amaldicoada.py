@@ -60,6 +60,7 @@ PAGAS, DO_LEQUE = 5, 7
 N_APT, APT_LOTE = 12, 6
 N_PACTOS, N_ZERO, N_MEL, N_RES = 3, 5, 4, 2
 FX = 2                                       # o título de seção ocupa duas linhas, como na FICHA PESSOAL
+RESPIRO = 2                                  # linhas de fundo embaixo do último pacto, para ele não colar no fim da aba
 
 # as linhas de uma carta, contadas da primeira dela
 F_TIT, F_ROT, F_TXT, F_TXT_FIM, F_N1, F_N2, F_MEL, F_RES, F_CONTA, F_AMP, F_AV = 0, 1, 2, 6, 7, 8, 9, 13, 15, 16, 18
@@ -85,7 +86,6 @@ _CAIXA = fp._CAIXA
 ESTILOS = {
     "canvas":    [None, FUNDO, None, None, None],
     "faixa":     [["Oswald", 14.0, OSSO, False, False], ACENTO, _CAIXA, ["left", "center", False, 0], None],
-    "faixa_peq": [["Roboto", 9.0, OSSO, False, False], ACENTO, _CAIXA, ["left", "center", False, 0], None],
     "rot":       [["Oswald", 8.0, OSSO, False, False], ALTO, _CAIXA, ["center", "center", False, 0], None],
     "val":       [["Roboto", 11.0, OSSO, False, False], PAINEL, _CAIXA, ["center", "center", False, 0], None],
     "num":       [["Oswald", 16.0, OSSO, False, False], PAINEL, _CAIXA, ["center", "center", False, 0], None],
@@ -97,7 +97,12 @@ ESTILOS = {
     "txt":       [["Roboto", 10.0, TEXTO, False, False], PAPEL, _CAIXA, ["left", "top", True, 0], None],
     "txt_peq":   [["Roboto", 9.0, TEXTO, False, False], PAPEL, _CAIXA, ["left", "top", True, 0], None],
     "conta":     [["Roboto", 9.0, TEXTO, False, False], PAPEL, _CAIXA, ["left", "center", True, 0], None],
-    "nome":      [["Castoro", 11.0, OSSO, False, False], ALTO, _CAIXA, ["left", "center", False, 0], None],
+    # O nome de cada carta (e a Classe, na de feitiço) fica na cor de título: pedido do Mizuki em 01/10/2026, ao usar a aba
+    # no Sheets. Com as caixas da carta coladas uma na outra e as três tintas do painel parecidas, a carta não tinha
+    # começo. O estado continua escuro, porque a cor de aviso dele (âmbar na letra) não se lê em cima do acento.
+    "nome":      [["Castoro", 11.0, OSSO, False, False], ACENTO, _CAIXA, ["left", "center", False, 0], None],
+    "nome_menu": [["Roboto", 10.0, OSSO, False, False], ACENTO, _CAIXA, ["left", "center", False, 0], None],
+    "classe_carta": [["Oswald", 10.0, OSSO, False, False], ACENTO, _CAIXA, ["center", "center", False, 0], '"Classe "0'],
     "estado":    [["Roboto", 9.0, OSSO, False, False], ALTO, _CAIXA, ["center", "center", False, 0], None],
     "classe":    [["Oswald", 10.0, OSSO, False, False], PAINEL, _CAIXA, ["center", "center", False, 0], '"Classe "0'],
     "dano":      [["Oswald", 11.0, OSSO, False, False], PAINEL, _CAIXA, ["center", "center", False, 0], None],
@@ -110,12 +115,12 @@ ESTILOS = {
 # o aviso que não é erro abre com o segundo. Uma regra de cor só, na aba inteira, pinta os dois.
 T_ERRO, T_AVISO = "⚠", "! "
 VERMELHO, BRANCO, AMBAR = fp.VERMELHO, fp.BRANCO, fp.AMBAR
-NA_REGRA = "na regra"
+NA_REGRA = "Na regra"
 DENTRO = "Dentro das regras que a ficha confere"
-SEM_NOME = "dê um nome"
+SEM_NOME = "Dê um nome"
 FORMA_INICIAL = "Projétil"
 NEUTRA, LIVRE, FECHADA = "Neutra", "Livre", "Fechada"
-PERMANENTE, ESPACO_DE_PACTO = "permanente", "um espaço de feitiço"
+PERMANENTE, ESPACO_DE_PACTO = "Permanente", "Um espaço de feitiço"
 PROPRIA_P, PROPRIA_A = "Passiva Própria", "Aptidão Própria"
 
 # As peças que mudam a conta, pelo nome que têm no catálogo. Cada uma é conferida contra ele em regras(): peça que
@@ -167,6 +172,12 @@ def _faixa(c1, l1, c2, l2, aba=""):
 def _A(coord, aba=""):
     lin, col = ix._lc(coord)
     return _abs(col, lin, aba)
+
+
+def _ini(texto):
+    """a letra inicial maiúscula: toda caixa da aba abre assim (pedido do Mizuki em 01/10/2026). O que vem do livro em
+    minúscula (o degrau do Domínio, a forma do pacto, o que o refino escala) passa por aqui antes de ir para a tabela."""
+    return texto[:1].upper() + texto[1:] if isinstance(texto, str) else texto
 
 
 def _metros(texto):
@@ -268,7 +279,7 @@ def regras(CAT=None, TEC=None):
                     continue
                 b = a_base(f["nome"], escada, faixa)
                 partes.append(["—" if b is None else antes + sobe(esc[escada], b, g) + depois for g in range(GRAUS_NA_TABELA)])
-            alcance.append([f"{f['nome']} · {faixa.replace('_', ' ')}"] + partes[0] + partes[1])
+            alcance.append([f"{f['nome']} · {faixa.replace('_', ' ')}"] + [_ini(x) for x in partes[0]] + partes[1])
     prog = CAT["progressao"]
     limiares = lambda chave: [int(x) for x in re.search(r"\(([\d,]+)\)", prog["formulas"][chave]).group(1).split(",")]
     # o teto de feitiços do livro tem de caber nos lugares da aba
@@ -421,8 +432,8 @@ def geometria():
     t = abre("pactos")
     g.update({"pac_caixas": t + 1, "pac_permanentes": f"D{t + 2}"})
     g["pactos"] = [t + 5 + 10 * i for i in range(N_PACTOS)]
-    lin = fecha("pactos", g["pactos"][-1] + 8)
-    g["linhas"] = lin - 2
+    fecha("pactos", g["pactos"][-1] + 8)
+    g["linhas"] = g["fim"]["pactos"] + RESPIRO
     return g
 
 
@@ -435,7 +446,6 @@ def celulas_do_feitico(r0, c0):
         "acao": _a1(a, r0 + F_N2), "alcance": _a1(b, r0 + F_N2),
         "mel": [_a1(b, r0 + F_MEL + i) for i in range(N_MEL)], "preco": [_a1(d, r0 + F_MEL + i) for i in range(N_MEL)],
         "res": [_a1(b, r0 + F_RES + i) for i in range(N_RES)], "dev": [_a1(d, r0 + F_RES + i) for i in range(N_RES)],
-        "selo": [_a1(e, r0 + F_RES + i) for i in range(N_RES)],
         "conta": _a1(b, r0 + F_CONTA), "ampliar": _a1(b, r0 + F_AMP), "avisos": _a1(b, r0 + F_AV),
     }
 
@@ -581,7 +591,7 @@ def trocas(layout, CAT=None, TEC=None):
     # --- as aptidões: as duas de graça ficam fora do menu
     D.tabela("aptidoes", ["aptidão", "requisito da aptidão", "classe passiva da aptidão", "o que o refino escala", "o que a aptidão faz",
                           "menu de aptidão"],
-             [[a["nome"], a["requisito"], a["cp"], a["escala"], a["faz"],
+             [[a["nome"], a["requisito"], _ini(a["cp"]), _ini(a["escala"]), a["faz"],
                "" if a["gratis"] else a["nome"]] for a in R["aptidoes"]])
     # --- a Classe 0, a Liberação, a Técnica Máxima, o Domínio e os pactos
     z = R["zero"]
@@ -591,15 +601,15 @@ def trocas(layout, CAT=None, TEC=None):
     D.tabela("tm", ["nível da técnica máxima", "dados da técnica máxima", "pontos de montagem"],
              [[f["de"], f["dados"], f["montagem"]] for f in R["tm"]["faixas"]])
     D.tabela("dom", ["degrau do domínio", "espaços do degrau", "nível do degrau", "refino do degrau", "o degrau abre em"],
-             [[d["degrau"], d["espacos"], d["nivel"] or 0, d["refino"], d["abre_em"]] for d in R["dominio"]["degraus"]])
-    D.tabela("pacto_forma", ["forma do pacto", "quando se fecha"], [[f["forma"], f["quando"]] for f in R["pactos"]["formas"]])
-    D.tabela("pacto_concede", ["o pacto concede"], [[c["concede"]] for c in R["pactos"]["concede"]])
-    if PERMANENTE not in [f["forma"] for f in R["pactos"]["formas"]] or ESPACO_DE_PACTO not in [c["concede"] for c in R["pactos"]["concede"]]:
+             [[d["degrau"], d["espacos"], d["nivel"] or 0, d["refino"], _ini(d["abre_em"])] for d in R["dominio"]["degraus"]])
+    D.tabela("pacto_forma", ["forma do pacto", "quando se fecha"], [[_ini(f["forma"]), f["quando"]] for f in R["pactos"]["formas"]])
+    D.tabela("pacto_concede", ["o pacto concede"], [[_ini(c["concede"])] for c in R["pactos"]["concede"]])
+    if PERMANENTE not in [_ini(f["forma"]) for f in R["pactos"]["formas"]] or ESPACO_DE_PACTO not in [_ini(c["concede"]) for c in R["pactos"]["concede"]]:
         raise SystemExit("ficha_amaldicoada: o livro nao tem mais o pacto permanente ou o espaco de feitico que ele concede")
 
     # --- a conta de cada feitiço: uma linha por lugar, as 36 de feitiço e as 3 de Liberação
     nomes = (["lugar", "liberação", "vaga", "classe", "nome", "forma"] + [f"m{i}" for i in range(1, N_MEL + 1)] +
-             [f"r{i}" for i in range(1, N_RES + 1)] + [f"s{i}" for i in range(1, N_RES + 1)] +
+             [f"r{i}" for i in range(1, N_RES + 1)] +
              ["tem", "lf"] + [f"k{i}" for i in range(N_MEL + 1)] + [f"x{i}" for i in range(N_MEL + 1)] +
              ["ct", "emb", "tp", "tr"] + [f"c{i}" for i in range(1, N_RES + 1)] + [f"b{i}" for i in range(1, N_RES + 1)] +
              [f"n{j}" for j in range(1, 7)] + ["dL", "dM", "nm", "nr", "g", "dv0", "dv", "usa", "perde", "s", "d", "dep"] +
@@ -630,7 +640,6 @@ def trocas(layout, CAT=None, TEC=None):
             o[f"m{i + 1}"] = f'={_A(cel["mel"][i], AM)}&""'
         for i in range(N_RES):
             o[f"r{i + 1}"] = f'={_A(cel["res"][i], AM)}&""'
-            o[f"s{i + 1}"] = f'=IF({_A(cel["selo"][i], AM)}=TRUE,1,0)'
         # --- daqui para baixo a fórmula é a mesma em toda linha: só as próprias colunas, sem endereço da aba
         o["tem"] = f'=IF({P("nome")}<>"",1,0)'
         o["lf"] = f"=IFERROR(MATCH({forma},{forma_col(0)},0),0)"
@@ -641,7 +650,7 @@ def trocas(layout, CAT=None, TEC=None):
         o["ct"] = "=" + "+".join(f"IFERROR(VLOOKUP({P(f'm{i}')},{PECAS},6,FALSE),0)" for i in range(1, N_MEL + 1))
         o["emb"], o["tp"], o["tr"] = "=" + da_forma(5), "=" + da_forma(6), "=" + da_forma(8)
         for i in range(1, N_RES + 1):
-            o[f"c{i}"] = f"=IF({P(f's{i}')}=1,0,IFERROR(VLOOKUP({P(f'r{i}')},{RES},3,FALSE),0))"
+            o[f"c{i}"] = f"=IFERROR(VLOOKUP({P(f'r{i}')},{RES},3,FALSE),0)"
             o[f"b{i}"] = f'=IFERROR(VLOOKUP({P(f"r{i}")},{RES},2,FALSE),"")'
         for j in range(1, 7):
             o[f"n{j}"] = f"=COUNTIF({KK},{j})"
@@ -711,6 +720,7 @@ def trocas(layout, CAT=None, TEC=None):
         o["resolve"] = (f'=IF(OR({P("tem")}=0,{lf}=0),"",IF({tem_m(ines)}>0,"Automático",IF({tem_m("Certeiro")}>0,"TR para metade",'
                         f'INDEX({forma_col(7)},{lf}))))')
         tC = f'INDEX({Rg("t1", f"t{n_classes}")},1,{Cc})'
+        tC = f'UPPER(LEFT({tC},1))&MID({tC},2,99)'
         o["dano"] = (f'=IF(OR({P("tem")}=0,{lf}=0),"",IF(OR({P("tp")}>=2,{P("d")}=0),{tC},{tC}&" = "&FLOOR({P("d")}*4.5,1)&'
                      f'IF({P("dep")}>0," · +"&{P("dep")}&"d8","")))')
         o["lg"] = f'={tem_m("Longe")}+3*{tem_m("Muito Longe")}'
@@ -734,7 +744,7 @@ def trocas(layout, CAT=None, TEC=None):
             o[f"pt{i}"] = f'=IF(OR({P("tem")}=0,{k}=0),"","−"&INDEX({PRECOS},{Cc},{k})&" · "&CHOOSE({k},{pesos}))'
         for i in range(1, N_RES + 1):
             c = P(f"c{i}")
-            o[f"dt{i}"] = (f'=IF(OR({P("tem")}=0,{P(f"r{i}")}=""),"",IF({P(f"s{i}")}=1,"Selo","+"&IF({c}=1,CEILING({Cc}/2,1),{Cc})))')
+            o[f"dt{i}"] = f'=IF(OR({P("tem")}=0,{P(f"r{i}")}=""),"","+"&IF({c}=1,CEILING({Cc}/2,1),{Cc}))'
         return [o[k] for k in nomes]
 
     # as contas com nome vêm ANTES na escrita das fórmulas (a conta de feitiço cita três), mas moram depois na aba:
@@ -826,8 +836,8 @@ def trocas(layout, CAT=None, TEC=None):
                (lambda n: f"=IFERROR(VLOOKUP({pp(1, n)},{PASS},2,FALSE),0)"),
                (lambda n: f"=IFERROR(VLOOKUP({pp(2, n)},{CPT},2,FALSE),0)"),
                (lambda n: f'=IFERROR(VLOOKUP({pp(1, n)},{PASS},3,FALSE),"")'),
-               (lambda n: f'=IF({pp(2, n)}=0,"",IF({pp(3, n)}>{H["nível"]},"{T_ERRO} nível "&{pp(3, n)},"CP "&{pp(2, n)}))'),
-               ((lambda n, j=i - PAGAS + 1: f'=IF({pp(2, n)}=0,"",IF({j}>{H["escolhas de Leque"]},"{T_ERRO} vaga","grátis"))') if i >= PAGAS
+               (lambda n: f'=IF({pp(2, n)}=0,"",IF({pp(3, n)}>{H["nível"]},"{T_ERRO} Nível "&{pp(3, n)},"CP "&{pp(2, n)}))'),
+               ((lambda n, j=i - PAGAS + 1: f'=IF({pp(2, n)}=0,"",IF({j}>{H["escolhas de Leque"]},"{T_ERRO} Vaga","Grátis"))') if i >= PAGAS
                 else (lambda n: f'=IF({pp(2, n)}=0,"",{pp(2, n)}&" esp.")'))]
               for i, p in enumerate(passivas_c)])
     APT = D.faixa("aptidoes")
@@ -855,7 +865,7 @@ def trocas(layout, CAT=None, TEC=None):
                (lambda n: f"=IFERROR(MATCH({zz(1, n)},{forma_col(0)},0),0)"),
                # a Melhoria Leve tira um dado; a Restrição Leve devolve o dado, e só paga a Melhoria
                (lambda n: f'={H["classe 0 dados"]}-IF({zz(2, n)}<>"",1,0)+IF(AND({zz(2, n)}<>"",{zz(3, n)}<>""),1,0)'),
-               (lambda n, i=i: f'=IF({i + 1}>{H["classe 0 quantos"]},"nível {abre_no(i)}",IF({zz(4, n)}=0,"",IF(INDEX({forma_col(6)},{zz(4, n)})>=2,"—",'
+               (lambda n, i=i: f'=IF({i + 1}>{H["classe 0 quantos"]},"Nível {abre_no(i)}",IF({zz(4, n)}=0,"",IF(INDEX({forma_col(6)},{zz(4, n)})>=2,"—",'
                                f'{zz(5, n)}&"d8 = "&FLOOR({zz(5, n)}*4.5,1))))'),
                (lambda n, i=i: f'=IF(OR({i + 1}>{H["classe 0 quantos"]},{zz(4, n)}=0),"",INDEX({ALC1},({zz(4, n)}-1)*3+1,'
                                f'1+IF(OR(AND({zz(2, n)}="Longe",INDEX({forma_col(9)},{zz(4, n)})<>2),AND({zz(2, n)}="Maior",INDEX({forma_col(9)},{zz(4, n)})>=2)),1,0))&'
@@ -893,8 +903,7 @@ NOTAS = {
     "classe": "A Classe do feitiço. Ela define os pontos (3 × Classe), o PE e quantas Melhorias cabem.",
     "melhorias": "As Classes 1 e 2 aceitam 2 Melhorias, a 3 e a 4 aceitam 3, e da 5 em diante 4. A Forma não conta no limite. "
                  "Família Livre sai metade da Classe mais barata, e Família Fechada some do menu.",
-    "restricoes": "Até duas. Restrição só paga peça: o que passar do que foi gasto some. A caixinha marca a Restrição que o Selo "
-                  "já obriga: ela não devolve ponto.",
+    "restricoes": "Até duas. Restrição só paga peça: o que passar do que foi gasto some.",
     "ampliar": "O mesmo feitiço lançado numa Classe maior, até a maior que o nível liberou. A conta inteira é refeita com os "
                "números da Classe nova.",
     "atributo": "Escolhido na criação, e não muda. É o menu ATRIBUTO DE CONJURAÇÃO da FICHA: aqui ele aparece espelhado.",
@@ -998,7 +1007,7 @@ def _carta_de_feitico(f, tr, r0, c0, i, lib, com_nota):
     v = lambda k: f"={FEIT(k, i)}"
     nota = (lambda k: NOTAS[k]) if com_nota else (lambda k: None)
     cel = celulas_do_feitico(r0, c0)
-    assert f.add("classe", a, r0, a, r0, R["liberacao"]["classe_minima"] if lib else 1, nota("classe")) == cel["classe"]
+    assert f.add("classe_carta", a, r0, a, r0, R["liberacao"]["classe_minima"] if lib else 1, nota("classe")) == cel["classe"]
     assert f.add("nome", b, r0, c, r0, None, nota("nome_feitico")) == cel["nome"]
     assert f.add("estado", d, r0, e, r0, v("estado")) == cel["estado"]
     f.add("rot", a, r0 + F_ROT, e, r0 + F_ROT, "COMO É")
@@ -1016,8 +1025,7 @@ def _carta_de_feitico(f, tr, r0, c0, i, lib, com_nota):
     f.add("rot", a, r0 + F_RES, a, r0 + F_RES + N_RES - 1, "RESTRIÇÕES", nota("restricoes"))
     for k in range(N_RES):
         assert f.add("cel_esq", b, r0 + F_RES + k, c, r0 + F_RES + k) == cel["res"][k]
-        f.add("peq", d, r0 + F_RES + k, d, r0 + F_RES + k, v(f"dt{k + 1}"))
-        assert f.add("cel", e, r0 + F_RES + k, e, r0 + F_RES + k, False) == cel["selo"][k]
+        f.add("peq", d, r0 + F_RES + k, e, r0 + F_RES + k, v(f"dt{k + 1}"))
     f.add("rot", a, r0 + F_CONTA, a, r0 + F_CONTA, "CONTA")
     f.add("conta", b, r0 + F_CONTA, e, r0 + F_CONTA, v("conta"))
     f.add("rot", a, r0 + F_AMP, a, r0 + F_AMP + 1, "AMPLIAR", nota("ampliar"))
@@ -1099,18 +1107,19 @@ def aba(layout, tr):
                 f.cel[_a1(col, lin)] = (None, liso[col - 1])
                 f.dentro.add((lin, col))
 
-    def titulo(sec, sub):
+    def titulo(sec):
+        """a faixa do título, de ponta a ponta. Até 01/10/2026 ela tinha um texto pequeno ao lado ("0 montados · cabem 3 no
+        nível 2"); o Mizuki achou inútil ao usar a aba no Sheets, e saiu."""
         lin = G["sec"][sec]
-        f.add("faixa", "D", lin, "H", lin + FX - 1, next(t for s, t, _ in SECOES if s == sec))
-        f.add("faixa_peq", "I", lin, "T", lin + FX - 1, sub)
+        f.add("faixa", "D", lin, "T", lin + FX - 1, next(t for s, t, _ in SECOES if s == sec))
 
     # --- os saltos: um nome de seção por caixa, na linha 7. O acabamento do construir() liga cada um à seção.
     for (sid, _, curto), (c1, c2) in zip(SECOES, _cols_dos_saltos()):
         f.add("salto", c1, G["saltos"], c2, G["saltos"], curto)
-    f.add("dica", "R", G["saltos"], "T", G["saltos"], "← clique num nome para ir à seção")
+    f.add("dica", "R", G["saltos"], "T", G["saltos"], "← Clique num nome para ir à seção")
 
     # --- a técnica
-    titulo("tecnica", "o Fundamento, escrito na criação")
+    titulo("tecnica")
     t = G["tec_caixas"]
     atributo = ix._Ficha(layout)
     atributo = atributo.abaixo(atributo.unico("ATRIBUTO DE CONJURAÇÃO"))
@@ -1140,7 +1149,7 @@ def aba(layout, tr):
     cpr = H["classe passiva da regra própria"]
     assert f.add("cel", "R", t + 1, "T", t + 2,
                  f'=IF({cpr}=0,"—",IF(IFERROR(VLOOKUP({cpr},{D.faixa("cp", aba=DA)},2,FALSE),0)>{NIV},'
-                 f'"{T_ERRO} nível "&VLOOKUP({cpr},{D.faixa("cp", aba=DA)},2,FALSE),IF({cpr}>1,{cpr}-1,"de graça")))') == G["espacos_regra"]
+                 f'"{T_ERRO} Nível "&VLOOKUP({cpr},{D.faixa("cp", aba=DA)},2,FALSE),IF({cpr}>1,{cpr}-1,"De graça")))') == G["espacos_regra"]
     t = G["familias"]
     CAT = json.load(open(os.path.join(RAIZ, "catalogo-projeto-m.json"), encoding="utf-8"))
     n_livres, n_fechadas = CAT["fundamento"]["familias_livres"], CAT["fundamento"]["familias_fechadas"]
@@ -1154,7 +1163,7 @@ def aba(layout, tr):
                  f'=IF(OR({nl}<>{n_livres},{nf}<>{n_fechadas}),"{T_ERRO} ","")&{nl}&" de {n_livres} · "&{nf}&" de {n_fechadas}"') == G["resumo_familias"]
 
     # --- o orçamento e o índice de preços
-    titulo("orcamento", f'="o que o nível "&{NIV}&" dá, e onde foi gasto"')
+    titulo("orcamento")
     t = G["orc_caixas"]
     sem = H["sem espaço"]
     caixas = [("MAIOR CLASSE", f"={MAXC}", "maior_classe"), ("ESPAÇOS", f"={H['espaços']}", "espacos"),
@@ -1181,14 +1190,14 @@ def aba(layout, tr):
         G["itens_do_indice"][rot] = f.add("cel", c1, t + 1, c2, t + 1, formula)
 
     # --- os feitiços
-    titulo("feiticos", f'={H["feitiços montados"]}&" montados · cabem "&MAX(0,{H["cabem"]})&" no nível "&{NIV}&" · {N_FEITICOS} lugares na aba"')
+    titulo("feiticos")
     for i, (r0, c0) in enumerate(G["feiticos"]):
         _carta_de_feitico(f, tr, r0, c0, i, False, i < 3)
     for lote in G["lotes_feitico"]:
         f.add("lote", "D", lote["faixa"], "T", lote["faixa"], f"FEITIÇOS {lote['de']} A {lote['ate']} · abra quando faltar lugar")
 
     # --- a Classe 0
-    titulo("zero", f'={H["classe 0 quantos"]}&" feitiços grátis · "&{H["classe 0 dados"]}&"d8 · sem PE e sem ocupar espaço"')
+    titulo("zero")
     t, cz = G["zero_cab"], G["cols_zero"]
     for k, rot, nota in (("nome", "NOME", None), ("forma", "FORMA", None), ("mel", "MELHORIA LEVE", NOTAS["zero_mel"]),
                          ("res", "RESTRIÇÃO LEVE", NOTAS["zero_res"]), ("dano", "DANO", None), ("alcance", "ALCANCE", None)):
@@ -1208,9 +1217,7 @@ def aba(layout, tr):
     f.menu(faixa_z("res"), D.faixa("res", so=4, aba=DA))
 
     # --- a Liberação Máxima
-    lib = R["liberacao"]
-    titulo("lib", f'=IF({H["liberações"]}=0,"a primeira chega no nível {lib["niveis"][0]}",{H["liberações"]}&" no nível "&{NIV})&'
-                  f'" · + Classe em dados · rodada inteira · PE com 50% a mais · fora dos espaços"')
+    titulo("lib")
     for i, (r0, c0) in enumerate(G["libs"]):
         _carta_de_feitico(f, tr, r0, c0, N_FEITICOS + i, True, True)
 
@@ -1219,12 +1226,12 @@ def aba(layout, tr):
     n_tm = tm["faixas"][0]["de"]
     dados_tm, mont_tm, gasto_tm, fech_tm = (H[k] for k in ("dados da técnica máxima", "montagem da técnica máxima",
                                                            "gasto da técnica máxima", "fechada na técnica máxima"))
-    titulo("tm", f'=IF({dados_tm}=0,"chega no nível {n_tm}","dano fixo · preços da Classe "&{MAXC}&" · não aceita Restrição")')
+    titulo("tm")
     t = G["tm_caixas"]
     assert f.caixa("D", "H", t, "NOME") == G["tm_nome"]
     assert f.caixa("J", "K", t, "FORMA", FORMA_INICIAL, "cel") == G["tm_forma"]
     f.menu(G["tm_forma"], D.faixa("formas", so=13, aba=DA))
-    assert f.caixa("L", "N", t, "DANO", f'=IF({dados_tm}=0,"nível {n_tm}",{dados_tm}&"d8 = "&FLOOR({dados_tm}*4.5,1))', "num",
+    assert f.caixa("L", "N", t, "DANO", f'=IF({dados_tm}=0,"Nível {n_tm}",{dados_tm}&"d8 = "&FLOOR({dados_tm}*4.5,1))', "num",
                    NOTAS["tm_dano"]) == G["tm_dano"]
     assert f.caixa("P", "Q", t, "PE", f'=IF({dados_tm}=0,"—",{tm["pe_por_classe"]}*{MAXC})', "num",
                    NOTAS["tm_pe"].format(pe=tm["pe_por_classe"])) == G["tm_pe"]
@@ -1241,7 +1248,7 @@ def aba(layout, tr):
 
     # --- a Expansão de Domínio
     dom = R["dominio"]
-    titulo("dominio", "comprada com espaços de feitiço · os números de abrir saem sozinhos")
+    titulo("dominio")
     t = G["dom_caixas"]
     deg, DOM = H["degrau do domínio"], D.faixa("dom", aba=DA)
     meio, terco = H["metade do refino"], H["terço do refino"]
@@ -1252,7 +1259,7 @@ def aba(layout, tr):
                    f'=IF({deg}="","—",IF(AND({NIV}>=IFERROR(VLOOKUP({deg},{DOM},3,FALSE),0),{REF}>=IFERROR(VLOOKUP({deg},{DOM},4,FALSE),0)),"",'
                    f'"{T_ERRO} ")&IFERROR(VLOOKUP({deg},{DOM},5,FALSE),""))', "cel") == G["dom_requisito"]
     assert f.caixa("P", "Q", t, "REFINO", f"={REF}", "num", NOTAS["dom_refino"]) == G["dom_refino"]
-    assert f.caixa("R", "T", t, "NA CORRIDA", f'="cai na "&MAX(1,FLOOR({H["essência"]}/2,1))&"ª falha"', "cel",
+    assert f.caixa("R", "T", t, "NA CORRIDA", f'="Cai na "&MAX(1,FLOOR({H["essência"]}/2,1))&"ª falha"', "cel",
                    NOTAS["dom_corrida"]) == G["dom_corrida"]
     t = G["dom_tabela"]
     raio, teto_inc = dom["raio_por_refino"].replace(",", "."), dom["raio_da_incompleta"].split(" ")[0].replace(",", ".")
@@ -1267,11 +1274,11 @@ def aba(layout, tr):
     sua = lambda cond: f'&IF({cond}," · a sua","")'
     linhas_d = [
         [f'="{nomes_d[0]}"' + sua(f'{deg}="{nomes_d[0]}"'), f"={dom['pe_por_classe']}*{MAXC}", dura,
-         "=" + virgula(f"MIN({teto_inc},{raio}*{REF})"), f'="−"&{terco}&" PE"', "não fecha", "rola"],
+         "=" + virgula(f"MIN({teto_inc},{raio}*{REF})"), f'="−"&{terco}&" PE"', "Não fecha", "Rola"],
         [f'="{nomes_d[1]}"' + sua(f'OR({deg}="{nomes_d[1]}",{deg}="{nomes_d[2]}")'), f"={dom['pe_por_classe']}*{MAXC}", dura,
-         "=" + virgula(f"{raio}*{REF}"), f'="−"&{meio}&" PE"', f'={dom["vida_da_barreira"]}*{meio}&" de vida"', "acontece"],
+         "=" + virgula(f"{raio}*{REF}"), f'="−"&{meio}&" PE"', f'={dom["vida_da_barreira"]}*{meio}&" de vida"', "Acontece"],
         [f'="Sem barreira"' + sua(f'{deg}="{nomes_d[2]}"'), f"={dom['pe_por_classe_sem_barreira']}*{MAXC}", dura,
-         dom["raio_sem_barreira"], f'="−"&2*{MAE}&" PE"', "não tem", "acontece"],
+         dom["raio_sem_barreira"], f'="−"&2*{MAE}&" PE"', "Não tem", "Acontece"],
     ]
     G["dominio_tabela"] = []
     for (rot, nota), (c1, c2) in zip(cab_d, G["cols_dom"]):
@@ -1291,12 +1298,11 @@ def aba(layout, tr):
     f.add("txt", "D", t + 1, "T", t + 4)
 
     # --- as Passivas
-    titulo("passivas", f'={H["passivas pagas"]}&" de {PAGAS} pagas · "&{H["passivas do Leque"]}&" de "&{H["escolhas de Leque"]}&'
-                       f'" do Leque · o + abre o que ela faz"')
+    titulo("passivas")
     cP = D.T["carta_passiva"][0]
     for i, ((r0, c0), cel) in enumerate(zip(G["passivas"], tr["passivas_c"])):
         a, b, c, d, e = (c0 + k for k in range(5))
-        assert f.add("cel_esq", a, r0, b, r0) == cel["nome"]
+        assert f.add("nome_menu", a, r0, b, r0) == cel["nome"]
         assert f.add("peq", c, r0, c, r0, f"={_abs(cP + 5, 2 + i, DA)}") == cel["cp"]
         assert f.add("peq", d, r0, e, r0, f"={_abs(cP + 6, 2 + i, DA)}", NOTAS["passiva_custo"] if i in (0, PAGAS) else None) == cel["custo"]
         f.add("rot", a, r0 + 1, e, r0 + 1, "O QUE FAZ")
@@ -1308,20 +1314,20 @@ def aba(layout, tr):
           "PASSIVAS DO LEQUE · uma por escolha de Leque, sem custar espaço")
 
     # --- as aptidões e o refino
-    titulo("aptidoes", "cada escolha de Refino no marco compra uma aptidão · o + abre o que ela faz")
+    titulo("aptidoes")
     t = G["apt_caixas"]
     anot, comp = H["aptidões anotadas"], H["aptidões compráveis"]
     cx = G["cols_apt"]
     assert f.caixa(*cx[0], t, "REFINO", f"={REF}", "num", NOTAS["apt_refino"]) == G["apt_refino"]
     assert f.caixa(*cx[1], t, "COMPRADAS", f'=IF({anot}>{comp},"{T_ERRO} ","")&{anot}&" de "&{comp}', "num", NOTAS["apt_compradas"]) == G["apt_compradas"]
-    G["apt_cobrir"] = f.caixa(*cx[2], t, "COBRIR-SE DE ENERGIA", f'="proteção "&(FLOOR({REF}/3,1)+1)', "val", NOTAS["apt_cobrir"])
+    G["apt_cobrir"] = f.caixa(*cx[2], t, "COBRIR-SE DE ENERGIA", f'="Proteção "&(FLOOR({REF}/3,1)+1)', "val", NOTAS["apt_cobrir"])
     G["apt_canalizar"] = f.caixa(*cx[3], t, "CANALIZAR ENERGIA",
                                  f'="+"&IF({REF}>=9,4,IF({REF}>=6,3,IF({REF}>=3,2,1)))&IF({REF}>=10,"d6","d4")&" na arma"', "val", NOTAS["apt_canalizar"])
     G["apt_reacao"] = f.caixa(*cx[4], t, "REAÇÃO DE COBRIR-SE", f'="RD "&FLOOR(1.5*{REF},1)&" por 2 PE"', "val", NOTAS["apt_reacao"])
     cA = D.T["carta_aptidao"][0]
     for i, ((r0, c0), cel) in enumerate(zip(G["aptidoes"], tr["aptidoes_c"])):
         a, b, c, d, e = (c0 + k for k in range(5))
-        assert f.add("cel_esq", a, r0, c, r0) == cel["nome"]
+        assert f.add("nome_menu", a, r0, c, r0) == cel["nome"]
         assert f.add("peq", d, r0, e, r0, f"={_abs(cA + 3, 2 + i, DA)}") == cel["cp"]
         # o requisito em duas linhas: o mais comprido do livro tem 120 letras
         assert f.add("peq_txt", a, r0 + 1, e, r0 + 2, f"={_abs(cA + 2, 2 + i, DA)}") == cel["requisito"]
@@ -1335,7 +1341,7 @@ def aba(layout, tr):
     f.add("lote", "D", G["lote_apt"]["faixa"], "T", G["lote_apt"]["faixa"], f"APTIDÕES {APT_LOTE + 1} A {N_APT} · abra quando faltar lugar")
 
     # --- os pactos
-    titulo("pactos", "três lugares · o + abre o que foi trocado")
+    titulo("pactos")
     t = G["pac_caixas"]
     perm, teto = H["pactos permanentes"], H["teto de pactos"]
     assert f.caixa("D", "E", t, "PERMANENTES", f'=IF({perm}>{teto},"{T_ERRO} ","")&{perm}&" de "&{teto}', "num", NOTAS["permanentes"]) == G["pac_permanentes"]
