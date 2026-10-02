@@ -235,11 +235,8 @@ for i, (rot, nv, des, eq, esc) in enumerate(CASOS):
 subprocess.run(["libreoffice", "--headless", "--convert-to",
                 "csv:Text - txt - csv (StarCalc):44,34,76,1,,0,false,true,true",
                 "--outdir", d2] + arqs, capture_output=True, timeout=600)
-_atual = None
-for _l in load_workbook(ARQ)["FICHA"].iter_rows():
-    for _c in _l:
-        if isinstance(_c.value, str) and "Refino Atual" in _c.value:
-            _atual = _c.coordinate
+# 02/10/2026: o "Refino Atual" impresso saiu da FICHA com a seção 8 (o menu rápido). O refino que os marcos e as
+# escolhas dão é conferido na FICHA AMALDIÇOADA, pela regressao-amaldicoada.py; aqui ele entra pela Defesa, no cobrir-se.
 _t3, _t4 = "a ficha calcula", "o livro"
 print(f"\n{'Defesa com equipamento':44} {_t3:>16} {_t4:>10}")
 for i, (rot, nv, des, eq, esc) in enumerate(CASOS):
@@ -249,21 +246,17 @@ for i, (rot, nv, des, eq, esc) in enumerate(CASOS):
         print(f"  {rot:42} o LibreOffice nao converteu"); falhas += 1; continue
     linhas = list(csv.reader(open(f2, encoding="utf-8")))
     lido = le(IDX["defesa"]).replace(".0", "")
-    txt = le(_atual) if _atual else ""
-    # desde 17/09/2026 a caixa segue com as aptidões depois do refino: "Refino Atual: 9/10 - Aptidões ..."
-    _mref = _re.search(r"Atual: (\d+)/(\d+)", txt)
-    ok = lido == str(esp) and bool(_mref) and (_mref.group(1), _mref.group(2)) == (str(refino), str(_TETO_REF))
+    ok = lido == str(esp)
     falhas += not ok
-    print(f"  {rot:42} {lido + ' · ' + (_mref.group(1) + '/' + _mref.group(2) if _mref else txt[:12]):>16} {str(esp) + ' · ' + str(refino):>10}   "
-          f"{'BATE' if ok else 'NÃO BATE'}")
+    print(f"  {rot:42} {lido:>16} {str(esp):>10}   {'BATE' if ok else 'NÃO BATE'}")
 shutil.rmtree(d2, ignore_errors=True)
 if _regra(2, int(_mex1.group(1)), f"Traje {_mex1.group(2)}", 0)[0] != int(_mex1.group(3)):
     print("  a regra montada aqui não reproduz o exemplo do livro: o teste mediria contra si mesmo")
     falhas += 1
 
 # ============================================================================================
-# A FICHA AUTOMÁTICA — o atributo que soma o Corpo, os X de Y, os marcos e as Passivas do Leque
-# (17/09/2026). Cada caso preenche uma cópia, o LibreOffice recalcula, e o texto de cada caixa é
+# A FICHA AUTOMÁTICA — o atributo que soma o Corpo, os X de Y e os marcos (17/09/2026; as aptidões e as
+# Passivas do Leque foram para a FICHA AMALDIÇOADA com o menu rápido, em 02/10/2026). Cada caso preenche uma cópia, o LibreOffice recalcula, e o texto de cada caixa é
 # comparado com um modelo feito AQUI por força bruta: a rota do ofício e a divisão dos marcos de Corpo
 # são testadas uma a uma, e as aptidões são contadas marco a marco. Nenhuma fórmula da planilha é
 # copiada para o modelo; as regras saem do manual.txt e do catálogo, pelo mesmo leitor da limpeza.
@@ -275,7 +268,7 @@ _LAY = json.load(open("ficha-v01/layout.json", encoding="utf-8"))
 _fl.aplica(_LAY, _fl.trocas(_LAY)); _ix.aplica(_LAY, _ix.trocas(_LAY)); _de.aplica(_LAY, _de.trocas(_LAY))
 _FA = _fa.trocas(_LAY)
 _R = _fa.regras(CAT)
-_CX, _TX = _FA["caixas"], _FA["textos"]
+_CX = _FA["caixas"]
 _ATR = [n for n, _, _ in _ix.ATRS]
 _PER, _OFI = list(CAT["pericias"]), list(CAT["oficios"])
 _ROTAS = [(_R["pericias_com"], _R["oficios_com"]), (_R["pericias_troca"], _R["oficios_troca"])]
@@ -378,23 +371,8 @@ def _modelo(c):
                                          (u2, "escolha de Corpo", "escolhas de Corpo")]) + " sem ofício"
             out["escolhas de perícia"] = txt
     out["testes disponíveis"] = _texto(len(c["tr"]), _R["testes"])
-    # as aptidões, marco a marco, com as escolhas de Refino nos últimos marcos
-    r = min(c["refino_m"], m)
-    se, st = c["origem"] == _R["sem_energia"], c["origem"].endswith(_fa.SEM_TECNICA)
-    tm = c["origem"] in _R["marcial"]
-    refino, apt = 1, _R["aptidoes_gratis"] + (_R["semente"] if st else 0)
-    for marco in range(1, m + 1):
-        refino = min(_R["teto_refino"], refino + 1)
-        if marco > m - r:
-            if refino >= _R["teto_refino"]:
-                apt += _R["aptidoes_no_teto"]
-            else:
-                refino += 1
-                apt += 1
-    out["aptidões"] = (("Lapidação Atual: " if se else "Refino Atual: ") + f"{refino}/{_R['teto_refino']} - " +
-                       ("Bênçãos" if se else "Aptidões") + " Disponíveis: " + _texto(c["aptidoes"], apt))
-    gracas = _R["bencaos_de_graca"] if se else _R["aptidoes_de_graca"]
-    out["aptidão de graça 1"], out["aptidão de graça 2"] = gracas
+    # 02/10/2026: as aptidões, as de graça, as Passivas do Leque e os feitiços saíram da FICHA com a seção 8, e a conta
+    # deles mora na FICHA AMALDIÇOADA (regressao-amaldicoada.py, contra o mesmo modelo de marco a marco)
     # as caixas de ataque, pelas fórmulas do capítulo 1, com o Buff/Debuff do lado
     g = dict(zip(_ATR, grandes))
     mae = 1 + sum(1 for x in _MAE if x <= c["nivel"])
@@ -408,16 +386,11 @@ def _modelo(c):
     out["corpo a corpo"] = f"d20 + {g['Força'] + mae + b('corpo a corpo')}"
     out["à distância"] = f"d20 + {g['Destreza'] + mae + b('à distância')}"
     out["deslocamento"] = f"{int(_mdesl.group(1)) + b('deslocamento')} m"
-    out["passivas do leque"] = "Passivas do Leque - " + _texto(len(c["leque_nomes"]), c["leque_m"])
-    espacos = 2 + c["nivel"] // 2 + m + c["leque_m"]
-    out["espaços de feitiço"] = str(espacos)
-    palavra_feit = "Katas" if tm else "Manejos" if st else "Feitiços"
-    out["feitiços"] = f"{palavra_feit} - Disponível: {espacos - sum(1 for x in c['feiticos'] if x > 0) - sum(c['passivas'])}"
+    out["espaços de feitiço"] = str(2 + c["nivel"] // 2 + m + c["leque_m"])
     return out
 
 _BASE = dict(nivel=2, bases=[3, 2, 2, 1, 1], corpo=[0, 0, 0, 0, 0], refino_m=0, corpo_m=0, leque_m=0,
-             per=_PER[:9], ofi=_OFI[:2], espec=[], tr=["Físico", "Vigor"], aptidoes=2, leque_nomes=[],
-             feiticos=[1, 1, 1], passivas=[0], leque_classes=[], origem="Latente", atr_conj="Essência", buff={})
+             per=_PER[:9], ofi=_OFI[:2], espec=[], tr=["Físico", "Vigor"], origem="Latente", atr_conj="Essência", buff={})
 CASOS2 = [
     ("criação cheia, nove e dois", {}),
     ("criação trocando os ofícios", dict(per=_PER[:10], ofi=[])),
@@ -429,15 +402,14 @@ CASOS2 = [
     ("especialização antes do nível 10", dict(nivel=6, bases=[3, 3, 2, 1, 1], corpo=[1, 0, 0, 0, 0], corpo_m=1, espec=_PER[:1])),
     ("passou nas duas listas", dict(nivel=10, bases=[3, 3, 2, 2, 1], corpo=[0, 0, 1, 0, 0], corpo_m=1, refino_m=1,
                                     per=_PER[:11], ofi=_OFI[:2])),
-    ("refino no teto, rota pura", dict(nivel=30, bases=[4, 4, 3, 2, 3], refino_m=7, aptidoes=12)),
-    ("refino misturado no nível 30", dict(nivel=30, bases=[4, 4, 3, 2, 3], corpo=[1, 1, 0, 0, 0], refino_m=5, corpo_m=2, aptidoes=5)),
-    # a Passiva do Leque tem Classe 3 e não custa espaço: se a conta de Feitiços cobrar a coluna dela, cai
-    ("Leque e Passivas", dict(nivel=14, bases=[3, 3, 2, 2, 2], refino_m=1, leque_m=2, leque_nomes=["Eco"],
-                              leque_classes=[3], feiticos=[1, 1, 2, 0], passivas=[2, 1])),
-    ("pontos a mais e TR a mais", dict(bases=[3, 3, 2, 1, 1], tr=["Físico", "Vigor", "Espírito"], aptidoes=3)),
+    ("refino no teto, rota pura", dict(nivel=30, bases=[4, 4, 3, 2, 3], refino_m=7)),
+    ("refino misturado no nível 30", dict(nivel=30, bases=[4, 4, 3, 2, 3], corpo=[1, 1, 0, 0, 0], refino_m=5, corpo_m=2)),
+    # o Leque soma nos espaços de feitiço (a conta das Passivas do Leque mora na FICHA AMALDIÇOADA desde 02/10/2026)
+    ("Leque nos espaços", dict(nivel=14, bases=[3, 3, 2, 2, 2], refino_m=1, leque_m=2)),
+    ("pontos a mais e TR a mais", dict(bases=[3, 3, 2, 1, 1], tr=["Físico", "Vigor", "Espírito"])),
     ("atributo acima de 6", dict(nivel=30, bases=[6, 4, 3, 2, 1], corpo=[1, 0, 0, 0, 0], corpo_m=1, marcos_extra=0)),
     # 17/09/2026, a segunda rodada: a caixa das escolhas, as aptidões de graça, as duas Restrições e o Buff/Debuff
-    ("ficha em branco", dict(bases=[0, 0, 0, 0, 0], per=[], ofi=[], tr=[], feiticos=[], atr_conj="Força")),
+    ("ficha em branco", dict(bases=[0, 0, 0, 0, 0], per=[], ofi=[], tr=[], atr_conj="Força")),
     ("nove perícias sem ofício", dict(ofi=[])),
     ("Corpo por escolher no nível 10", dict(nivel=10, bases=[3, 3, 2, 2, 1], corpo=[1, 0, 0, 0, 0], corpo_m=1, refino_m=1)),
     ("dez perícias e Corpo, sem ofício", dict(nivel=6, bases=[3, 3, 2, 1, 1], corpo=[1, 0, 0, 0, 0], corpo_m=1,
@@ -445,9 +417,9 @@ CASOS2 = [
     ("faltando da criação e do Corpo", dict(nivel=6, bases=[3, 3, 2, 1, 1], corpo=[0, 0, 1, 0, 0], corpo_m=1,
                                            per=_PER[:5], ofi=[])),
     ("Restrição Celestial sem energia", dict(origem=_R["sem_energia"], nivel=10, bases=[3, 3, 2, 2, 1],
-                                             corpo=[0, 1, 0, 0, 0], corpo_m=1, refino_m=1, aptidoes=3,
+                                             corpo=[0, 1, 0, 0, 0], corpo_m=1, refino_m=1,
                                              per=_PER[:10], ofi=_OFI[:2])),
-    ("Sem Técnica com a semente", dict(origem=_ST, aptidoes=3, atr_conj="Inteligência")),
+    ("Sem Técnica com a semente", dict(origem=_ST, atr_conj="Inteligência")),
     ("Buff/Debuff em todas as caixas", dict(buff={"defesa": 1, "iniciativa": 2, "cd de feitiço": -1, "conjuração": 1,
                                                   "corpo a corpo": 3, "à distância": -2, "deslocamento": 3})),
 ]
@@ -465,7 +437,6 @@ for _k in ("conjuração", "corpo a corpo", "à distância"):
     if not _ms:
         print(f"a caixa {_k} não lê o atributo por IFS: não sei onde escolher"); sys.exit(1)
     _SEL[_k] = _ms.group(1).replace("$", "")
-_GRACA = [IDX["aptidão de graça 1"], IDX["aptidão de graça 2"]]
 d3 = tempfile.mkdtemp(prefix="auto-")
 arqs3 = []
 for i, (rot, mud) in enumerate(CASOS2):
@@ -489,18 +460,6 @@ for i, (rot, mud) in enumerate(CASOS2):
             wsc[cx] = nome in marcadas
     for nome, cx in zip([t for t, v in _TRC.items() if isinstance(v, dict)], _CX["testes"]):
         wsc[cx] = nome in c["tr"]
-    # as duas de graça já vêm na ficha, em fórmula: a cópia não mexe nelas, e anota as outras
-    assert c["aptidoes"] >= len(_GRACA)
-    for j, cx in enumerate([x for x in _CX["aptidoes"] if x not in _GRACA], len(_GRACA)):
-        wsc[cx] = f"aptidão {j + 1}" if j < c["aptidoes"] else None
-    for j, cx in enumerate(_CX["leque_nome"]):
-        wsc[cx] = c["leque_nomes"][j] if j < len(c["leque_nomes"]) else None
-    for j, cx in enumerate(_CX["leque_classe"]):
-        wsc[cx] = c["leque_classes"][j] if j < len(c["leque_classes"]) else 0
-    for j, cx in enumerate(_CX["passivas_classe"]):
-        wsc[cx] = c["passivas"][j] if j < len(c["passivas"]) else 0
-    for j, cx in enumerate(_CX["feitico_classe"]):
-        wsc[cx] = c["feiticos"][j] if j < len(c["feiticos"]) else 0
     wbc.move_sheet("FICHA", -wbc.sheetnames.index("FICHA"))
     for _ws in wbc:
         for _l in _ws.iter_rows():
@@ -516,9 +475,8 @@ subprocess.run(["libreoffice", "--headless", "--convert-to",
 _ONDE = dict({"atr_" + n: IDX["atr_" + n] for n in _ATR},
              **{k: IDX[k] for k in ("pontos disponíveis", "pontos de corpo", "marcos escolhidos", "perícias disponíveis",
                                     "ofícios disponíveis", "testes disponíveis", "espaços de feitiço", "escolhas de perícia",
-                                    "aptidão de graça 1", "aptidão de graça 2", "defesa", "iniciativa", "cd de feitiço",
-                                    "conjuração", "corpo a corpo", "à distância", "deslocamento")},
-             **{"aptidões": _TX["aptidoes"], "passivas do leque": _TX["passivas_do_leque"], "feitiços": _TX["feiticos"]})
+                                    "defesa", "iniciativa", "cd de feitiço",
+                                    "conjuração", "corpo a corpo", "à distância", "deslocamento")})
 print(f"\n{'A ficha automática · caso':44} {'caixas que batem':>18}")
 for i, (rot, mud) in enumerate(CASOS2):
     c = dict(_BASE, **mud)
@@ -531,8 +489,6 @@ for i, (rot, mud) in enumerate(CASOS2):
     for campo, alvo in _ONDE.items():
         lido = le(alvo)
         lido = lido.replace(".0", "") if campo in ("espaços de feitiço", "defesa", "cd de feitiço") or campo.startswith("atr_") else lido
-        if campo == "feitiços":
-            lido = lido.split(" - Conhecidos")[0]
         if lido != esp[campo]:
             erradas.append(f"{campo}: a ficha diz {lido!r}, o modelo diz {esp[campo]!r}")
     falhas += len(erradas)

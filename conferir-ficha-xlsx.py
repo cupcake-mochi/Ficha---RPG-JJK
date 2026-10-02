@@ -280,8 +280,12 @@ def _alcanca(formula, alvo, fundo=4):
         return True
     return any(_alcanca(dd[c.replace("$", "")].value, alvo, fundo - 1)
                for c in re.findall(r"DADOS!(\$?[A-Z]+\$?\d+)", formula))
-checa("o Refino Atual impresso soma o refino escolhido",
-      len(_fa) == 1 and _alcanca(_fa[0], _camp.replace("$", "")), str(_fa)[:90])
+# 02/10/2026: o Refino Atual impresso saiu com a seção 8 da FICHA (o menu rápido), e o refino que a conta usa mora na
+# FICHA AMALDIÇOADA, que lê a conta do refino atual da DADOS
+_am = wb["DADOS_AM"]
+_ref_am = next((_am.cell(row=c.row, column=c.column + 1).value for l in _am.iter_rows() for c in l if c.value == "refino"), None)
+checa("o Refino Atual impresso saiu com a seção 8, e o refino da FICHA AMALDIÇOADA soma o refino escolhido",
+      not _fa and _alcanca(_ref_am, _camp.replace("$", "")), f"{len(_fa)} impresso(s) · {str(_ref_am)[:80]}")
 
 print("\nA FICHA AUTOMÁTICA  (17/09/2026)")
 # O número mora na regressao-kaori-na-ficha.py, que recalcula doze casos no LibreOffice contra um modelo
@@ -291,12 +295,16 @@ _bb = [dd.cell(row=rr, column=54).value for rr in range(5, 200) if dd.cell(row=r
 checa("todo endereço do índice é fórmula ADDRESS, e anda quando a planilha muda de forma",
       bool(_bb) and all(isinstance(v, str) and v.startswith("=ADDRESS(ROW(FICHA!") for v in _bb),
       str([v for v in _bb if not (isinstance(v, str) and v.startswith("=ADDRESS("))][:3]))
+# 02/10/2026: as aptidões disponíveis e as Passivas do Leque saíram com a seção 8; a conta delas mora na FICHA AMALDIÇOADA
 _NOVAS = ["pontos disponíveis", "pontos de corpo", "marcos escolhidos", "perícias disponíveis",
-          "ofícios disponíveis", "testes disponíveis", "aptidões disponíveis", "passivas do leque"]
-checa("as oito caixas de conta estão no índice", all(k in IDX for k in _NOVAS), str([k for k in _NOVAS if k not in IDX]))
+          "ofícios disponíveis", "testes disponíveis"]
+_SAIRAM = ["feitiços disponíveis", "passivas", "aptidão de graça 1", "aptidão de graça 2", "aptidões disponíveis", "passivas do leque"]
+checa("as seis caixas de conta estão no índice, e as seis da seção 8 saíram dele",
+      all(k in IDX for k in _NOVAS) and not any(k in IDX for k in _SAIRAM),
+      str([k for k in _NOVAS if k not in IDX] + [k for k in _SAIRAM if k in IDX]))
 _CODA = open("apps-script/Codigo.gs", encoding="utf-8").read()
 _avisos = re.search(r"var avisos = \[(.*?)\]", _CODA, re.S)
-checa("o Codigo.gs avisa em vermelho e anota as oito caixas de conta",
+checa("o Codigo.gs avisa em vermelho e anota as seis caixas de conta",
       bool(_avisos) and all(f"'{k}'" in _avisos.group(1) and re.search(rf"'{k}':\s*'", _CODA) for k in _NOVAS),
       str([k for k in _NOVAS if not (_avisos and f"'{k}'" in _avisos.group(1))]))
 # 17/09/2026: a trava virou varredura de toda fórmula da FICHA e da CARTEIRA, porque o resultado das
@@ -335,10 +343,10 @@ _chaves |= set(re.findall(r"notas\['([^']+)'\] =", _mnotas.group(1))) if _mnotas
 checa("toda nota do Codigo.gs aponta para um campo que o índice publica",
       len(_chaves) >= 30 and all(k in IDX for k in _chaves), str(sorted(k for k in _chaves if k not in IDX)))
 _NOTA_PEDIDA = ["defesa", "iniciativa", "conjuração", "corpo a corpo", "à distância", "deslocamento",
-                "feitiços disponíveis", "passivas", "escolhas de perícia", "trilha"] + \
+                "escolhas de perícia", "trilha"] + \
                ["buff de " + k for k in ["defesa", "iniciativa", "cd de feitiço", "conjuração", "corpo a corpo",
                                          "à distância", "deslocamento"]]
-checa("a Defesa, as caixas de Buff/Debuff, os ataques, os Feitiços e as Passivas têm nota (17/09/2026)",
+checa("a Defesa, as caixas de Buff/Debuff e os ataques têm nota (17/09/2026; os Feitiços e as Passivas saíram com a seção 8)",
       all(k in _chaves for k in _NOTA_PEDIDA), str([k for k in _NOTA_PEDIDA if k not in _chaves]))
 checa("a nota mora no título quando o de cima é texto (tituloOuCaixa_ no alvoDaNota_)",
       bool(_mnotas) and "alvoDaNota_(c, valores, formulas, mescladas)" in _mnotas.group(1) and "function tituloOuCaixa_(" in _CODA
@@ -348,29 +356,32 @@ _marcos_rot = [f.cell(row=f[IDX[k]].row - 1, column=f[IDX[k]].column).value
 checa("o Marco Escolhido tem os rótulos Refino, Corpo e Leque, e as notas falam deles",
       _marcos_rot == ["Refino", "Corpo", "Leque"] and "Refino, Corpo ou Leque" in _CODA
       and "Atributo (Corpo)" not in _CODA, str(_marcos_rot))
-# as aptidões de graça: os nomes saem do manual pelo ficha_automatica.regras(), e o texto das notas tem
-# de trazer os números que o manual dá
+# as aptidões de graça: os nomes saem do manual pelo ficha_automatica.regras(). Desde 02/10/2026 elas aparecem no menu
+# rápido da FICHA, que lê a carta "De graça" da DADOS_AM, e essa lê o rótulo da rota: as duas aptidões, ou as duas Bênçãos
+# na Restrição Celestial sem energia. A nota que o script punha na caixa da seção 8 saiu com ela, e a da FICHA AMALDIÇOADA
+# é do gerador (a regressao-amaldicoada confere).
 import ficha_automatica as _fa_mod
 _RG = _fa_mod.regras(CAT)
-_mgr = re.search(r"var NOTAS_DE_GRACA = \{(.*?)\n\};", _CODA, re.S)
-_gr = dict(re.findall(r"^  '([^']+)':\s*((?:'[^']*'\s*\+?\s*)+)", _mgr.group(1), re.M)) if _mgr else {}
-_gr = {k: "".join(re.findall(r"'([^']*)'", v)) for k, v in _gr.items()}
-checa("as notas de graça cobrem as duas aptidões e as duas Bênçãos que o manual dá",
-      sorted(_gr) == sorted(_RG["aptidoes_de_graca"] + _RG["bencaos_de_graca"]), f"{sorted(_gr)}")
-_MANG = re.sub(r"\s+([,.:;])", r"\1", " ".join(open("manual.txt", encoding="utf-8").read().split()))
-_numeros = {_RG["aptidoes_de_graca"][0]: ["1/3 do refino + 1", "1,5 × refino", "por 2 PE"],
-            _RG["aptidoes_de_graca"][1]: ["2d4 no 3", "3d4 no 6", "4d6"],
-            _RG["bencaos_de_graca"][0]: ["1/3 da Lapidação + 1", "1,5 × Lapidação", "por 2 PE"],
-            _RG["bencaos_de_graca"][1]: ["1× por cena", "2d4 na 3", "3d4 na 6", "4d6"]}
-_fora = [(k, x) for k, xs in _numeros.items() for x in xs if x not in _MANG or x not in _gr.get(k, "")]
-checa("as notas de graça trazem os números do manual", not _fora, str(_fora[:3]))
-_aps = [f[IDX[k]].value for k in ("aptidão de graça 1", "aptidão de graça 2") if k in IDX]
-checa("as duas primeiras linhas de aptidão vêm com as de graça, trocando pelas Bênçãos sem energia",
-      len(_aps) == 2 and all(isinstance(v, str) and a in v and b in v for v, a, b in
-                             zip(_aps, _RG["bencaos_de_graca"], _RG["aptidoes_de_graca"])), str(_aps)[:120])
+def _segue_am(v, fundo=3):
+    """a fórmula de referência pura dentro da DADOS_AM, seguida até a que faz conta"""
+    m = re.fullmatch(r"=\$?([A-Z]+)\$?(\d+)", v or "") if isinstance(v, str) else None
+    return _segue_am(_am[f"{m.group(1)}{m.group(2)}"].value, fundo - 1) if m and fundo else v
+_gr_am = [next((c for l in _am.iter_rows() for c in l if c.value == f"De graça {i}"), None) for i in (1, 2)]
+_gr_nome = [_am.cell(row=c.row, column=c.column + 3) if c else None for c in _gr_am]
+def _nomes_da_rota(v):
+    """o INDEX da linha de rótulos da rota: os nomes de cada rota, juntos"""
+    m = re.fullmatch(r"=INDEX\(\$([A-Z]+)\$(\d+):\$([A-Z]+)\$(\d+),1,.*\)", v or "") if isinstance(v, str) else None
+    return " | ".join(str(c.value) for l in _am[f"{m.group(1)}{m.group(2)}:{m.group(3)}{m.group(4)}"] for c in l) if m else v
+_gr_fim = [_nomes_da_rota(_segue_am(c.value)) if c else None for c in _gr_nome]
+_no_menu = {c.value for l in f.iter_rows() for c in l if isinstance(c.value, str) and c.value.startswith("=DADOS_AM!")}
+checa("as duas cartas de graça do menu rápido vêm com as de graça, trocando pelas Bênçãos sem energia",
+      all(c is not None and f"=DADOS_AM!${c.column_letter}${c.row}" in _no_menu for c in _gr_nome)
+      and all(isinstance(v, str) and a in v and b in v for v, a, b in zip(_gr_fim, _RG["bencaos_de_graca"], _RG["aptidoes_de_graca"])),
+      str(_gr_fim)[:120])
+checa("as notas de graça da seção 8 saíram do Codigo.gs com ela", "notasDeGraca_" not in _CODA and "NOTAS_DE_GRACA" not in _CODA)
 _oned = re.search(r"function onEdit\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
-checa("o onEdit devolve a Trilha de outro Caminho para o texto de escolha e refaz as notas de graça",
-      bool(_oned) and "trilhaDoCaminho_(e, idx)" in _oned.group(1) and "notasDeGraca_(" in _oned.group(1))
+checa("o onEdit devolve a Trilha de outro Caminho para o texto de escolha",
+      bool(_oned) and "trilhaDoCaminho_(e, idx)" in _oned.group(1))
 _vt = [v for v in f.data_validations.dataValidation if IDX.get("trilha") and IDX["trilha"].replace("$", "") in str(v.sqref).split()]
 _mt = re.search(r"DADOS!\$([A-Z]+)\$(\d+)", _vt[0].formula1) if _vt else None
 _filtro = dd[f"{_mt.group(1)}{int(_mt.group(2)) + 1}"].value if _mt else ""
@@ -493,9 +504,9 @@ _cand = re.search(r"function candidatosDeFonte_\(agora, oposta\)\s*\{(.*?)\n\}",
 checa("a rede de legibilidade só troca letra por cor de letra (texto e texto fraco), e nunca pelo acento, pelo bloco ou por um fundo",
       bool(_cand) and "['texto', 'texto_fraco'].forEach" in _cand.group(1)
       and not any(f"'{k}'" in _cand.group(1) for k in ("acento", "bloco", "linha", "papel", "fundo", "painel", "tinta")))
-_rep2 = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+_rep2 = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo, trecho\)\s*\{(.*?)\n\}", _CODA, re.S)
 checa("a letra de enfeite (a marca, o número, a lombada) é achada pelo endereço no ABAS, e não pela cor que tem",
-      bool(_rep2) and "celulasDeEnfeite_(spec)" in _rep2.group(1) and "agora[enfeites[r + ',' + c]]" in _rep2.group(1))
+      bool(_rep2) and "celulasDeEnfeite_(spec)" in _rep2.group(1) and "agora[enfeites[ra + ',' + c]]" in _rep2.group(1))
 # o PALETAS do Codigo.gs é o que o derivar.py escreve, sem edição à mão
 _pg = json.load(open("medidas/paletas-grandes/paletas-grandes.json", encoding="utf-8"))
 _mp2 = re.search(r"var PALETAS = (\{.*?\n\});\n", _CODA, re.S)
@@ -933,13 +944,13 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     # medido e ficou mais lento (o custo é gravar, não ler): a troca voltou a ler, e a cor pintada à mão fica.
     # O pedido dele: cor e régua na troca, a arte quando alguém mexer na ficha, sem aviso. Aba por aba,
     # começando pela que o jogador está olhando, e a aba em que ele clica passa na frente.
-    _rca = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _rca = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo, trecho\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("a troca de cor de cada aba lê a planilha e parte do que está pintado (a cor pintada à mão fica)",
           bool(_rca) and "faixa.getBackgrounds()" in _rca.group(1) and "faixa.getFontColors()" in _rca.group(1)
           and "coresDoNome_(nomeAntigo)" in _rca.group(1))
     checa("cor e régua de cada aba vão juntas, e a aba que o jogador está olhando vem primeiro",
           bool(_pp) and "passosDaPaleta_(primeira)" in _CODA and "(b.nome === primeira) - (a.nome === primeira)" in _pp.group(1)
-          and re.search(r"passos\.push\('cor:' \+ spec\.nome\);\s*if \(\(spec\.bordas \|\| \[\]\)\.length\) passos\.push\('borda:'", _pp.group(1)) is not None)
+          and re.search(r"passos\.push\('cor:' \+ spec\.nome \+ \(t \? ':' \+ t\[0\] \+ '-' \+ t\[1\] : ''\)\);\s*if \(i === 0 && \(spec\.bordas \|\| \[\]\)\.length\) passos\.push\('borda:'", _pp.group(1)) is not None)
     _onsc2 = re.search(r"function onSelectionChange\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("o clique leva a aba em que o jogador clicou pra frente da fila",
           bool(_onsc2) and "e && e.range" in _onsc2.group(1) and "onde ? onde.getSheet().getName() : null" in _CODA)
@@ -985,7 +996,7 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     _phg = re.search(r"function papelPorHexGlobal_\(\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("papelPorHexGlobal_ existe e registra a paleta de fábrica mais as 61 do catálogo",
           bool(_phg) and "PALETA_DE_FABRICA_" in _phg.group(1) and "Object.keys(PALETAS)" in _phg.group(1))
-    _rep = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _rep = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo, trecho\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("repintarCoresDaAba_ cai pra papelPorHexGlobal_ quando a paleta anterior não reconhece a célula",
           bool(_rep) and "papelPorHexAntes[f] || papelPorHexGlobal[f]" in _rep.group(1)
           and "papelPorHexAntes[t] || papelPorHexGlobal[t]" in _rep.group(1))
@@ -1003,9 +1014,9 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     # escuro ("9 de 23 na criação" no Brasa Claro), porque cada cor trocava pelo SEU papel e nenhuma
     # checagem olhava o PAR. A rede de segurança lê o contraste que a célula tinha na ficha de fábrica
     # (do ABAS, sem histórico) e troca a fonte por uma cor da paleta quando o par novo lê pior.
-    _rep = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _rep = re.search(r"function repintarCoresDaAba_\(ss, spec, nomeAntigo, nomeNovo, trecho\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("repintarCoresDaAba_ passa cada fonte pela checagem de legibilidade contra o fundo NOVO da célula",
-          bool(_rep) and "fonteLegivel_(novaFonte, novoFundo, desenho[r][c]" in _rep.group(1)
+          bool(_rep) and "fonteLegivel_(novaFonte, novoFundo, desenho[ra][c]" in _rep.group(1)
           and "contrasteDeFabrica_(spec)" in _rep.group(1))
     _leg = re.search(r"function fonteLegivel_\(.*?\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("a checagem de legibilidade tem piso de 3,0 pro texto discreto e só cai em branco/preto por último",

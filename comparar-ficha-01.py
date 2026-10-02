@@ -71,9 +71,23 @@ ficha_automatica.aplica(LAY_FP, FA)
 FP = ficha_pessoal.trocas(LAY_FP)
 # 19/09/2026: as celulas onde o gerador poe a divisoria entre a moldura e o miolo. Precisa do layout depois de
 # TODAS as limpezas de cima (a ficha automatica mexe nas linhas da FICHA), como o monta.py o tem na hora.
+# 02/10/2026, limpeza 26: o menu rapido, que troca a secao 8 da FICHA. Le o layout depois da FICHA PESSOAL e as
+# trocas da Ficha Amaldicoada, como o monta.py o tem na hora. O VALOR de cada caixa tem de ser o que o menu_rapido.py
+# monta, e o ESTILO o que ele declara.
+import menu_rapido, ficha_amaldicoada
+LAY_MR = copy.deepcopy(LAY_FP)
+ficha_pessoal.aplica(LAY_MR, FP)
+MR = menu_rapido.trocas(LAY_MR, ficha_amaldicoada.trocas(LAY_MR))
+def _dentro_de_mescla_do_menu(n, r, c):
+    """a celula esta dentro de uma caixa mesclada do menu rapido, e nao e o canto dela"""
+    for m in MR["mescladas"].get(n, []):
+        (r1, c1), (r2, c2) = (indice_ficha._lc(x) for x in m.split(":"))
+        if r1 <= r <= r2 and c1 <= c <= c2 and (r, c) != (r1, c1):
+            return True
+    return False
 import correcoes_borda
-LAY_FA2 = copy.deepcopy(LAY_DE)
-ficha_automatica.aplica(LAY_FA2, FA)
+LAY_FA2 = copy.deepcopy(LAY_MR)     # 02/10/2026: depois do menu rapido, que leva a FICHA ate a linha nova
+menu_rapido.aplica(LAY_FA2, MR)
 DIVISORIA = correcoes_borda.celulas_da_divisoria(LAY_FA2)
 DIVISORIA_TRACO = ["medium", "FF8A7EC4"]
 
@@ -334,6 +348,24 @@ for n in wa.sheetnames:
                 if pb["valor"] == _fpc[0] and all(pb[k] == _molde[k] for k in pb if k != "valor"):
                     esperadas["célula da FICHA PESSOAL: o espelho na FICHA e as tabelas na DADOS"] += 1
                     continue
+            # limpeza 26: o menu rapido (02/10/2026). Vem antes da 10 e da 11: as caixas da secao 8 que o indice
+            # apontava sairam dele, e a celula do indice fica vazia
+            if n == "FICHA" and r >= MR["r0"] and c >= 3:
+                _mr = MR["_estilos"].get(coord)
+                if _mr is not None:
+                    _est = _perfil_do_estilo(LAY_MR["estilos"][_mr[1]])
+                    if pb["valor"] == _mr[0] and all(pb[k] == _est[k] for k in _est if k != "fmt"):
+                        esperadas["caixa do menu rápido, na seção 8 da FICHA"] += 1
+                        continue
+                elif pb["valor"] is None and (_dentro_de_mescla_do_menu(n, r, c) or coord in MR["sai"]):
+                    esperadas["célula de dentro de caixa do menu rápido, ou da seção 8 antiga que saiu"] += 1
+                    continue
+            _mrd = MR["celulas"].get(n, {}).get(coord) if n == "DADOS" else None
+            if _mrd is not None and pb["valor"] == _mrd[0]:
+                _molde = perfil(sb[_mrd[1]])
+                if all(pb[k] == _molde[k] for k in pb if k != "valor"):
+                    esperadas["célula da DADOS que o menu rápido muda (o índice da seção 8 e as anotadas)"] += 1
+                    continue
             # limpeza 10: a Defesa com uniforme, escudo e refino escolhido (v0.246 do sistema, o B3). O
             # VALOR tem de ser o que o defesa_equipamento.py monta, e o ESTILO tem de ser o da celula que
             # ele declara como molde, na ficha gerada.
@@ -432,6 +464,8 @@ for n in wa.sheetnames:
             esperadas["mesclagem do cabeçalho no molde do estudo"] += 1
         elif x in FA["mescladas_sai"].get(n, []):    # limpeza 12: o cabecalho das Passivas dividido
             esperadas["mesclagem das Passivas refeita"] += 1
+        elif x in MR["mescladas_sai"].get(n, []):    # limpeza 26: a secao 8 antiga
+            esperadas["mesclagem da seção 8 antiga, que o menu rápido troca"] += 1
         else:
             difs.append(f"{n}: mesclagem {x} faltou")
     for x in sorted(mb - ma):
@@ -443,6 +477,8 @@ for n in wa.sheetnames:
             esperadas["mesclagem da caixa do refino escolhido"] += 1
         elif x in FA["mescladas"].get(n, []):        # limpeza 12: as Passivas divididas e as linhas novas
             esperadas["mesclagem das Passivas refeita"] += 1
+        elif x in MR["mescladas"].get(n, []):        # limpeza 26: as cartas do menu rapido
+            esperadas["mesclagem do menu rápido"] += 1
         else:
             difs.append(f"{n}: mesclagem {x} sobrou")
 
@@ -481,6 +517,9 @@ for n in wa.sheetnames:
             if k in CAB["alturas_sai"].get(n, []) and hb.get(k) is None:   # limpeza 23: sem o nome grande, a linha e igual as outras
                 esperadas["linha do cabeçalho que perde a altura do nome grande"] += 1
                 continue
+            if n == "FICHA" and k >= MR["r0"] and hb.get(k) == (27.0 if k == MR["r0"] else None):   # limpeza 26
+                esperadas["linha da seção 8 com a altura do menu rápido"] += 1
+                continue
             difs.append(f"{n}: altura da linha {k}: {ha.get(k)} != {hb.get(k)}")
     print(f"  alturas de linha: {len(ha)} original · {len(hb)} gerada")
 
@@ -490,6 +529,8 @@ for n in wa.sheetnames:
     for x in sorted(va - vbs):
         if x[0] in FP["menus_sai"].get(n, []):          # limpeza 22: o EQUIPAMENTO deixou de ser menu
             esperadas["menu do EQUIPAMENTO, que virou espelho da FICHA PESSOAL"] += 1
+        elif x[0] in MR["menus_sai"].get(n, []):        # limpeza 26: a secao 8 deixou de ser digitada
+            esperadas["menu da seção 8, que virou o menu rápido"] += 1
         else:
             difs.append(f"{n}: menu {x} faltou")
     _menus_de = {(m["onde"], m["tipo"], m["formula"]) for m in DE["menus"].get(n, [])}

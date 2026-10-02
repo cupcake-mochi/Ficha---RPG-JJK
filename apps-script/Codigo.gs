@@ -57,8 +57,9 @@ function corDeEstado_(ss, idx) {
   });
   // 17/09/2026: as caixas de X de Y ficam vermelhas quando a conta avisa que passou. O texto do aviso
   // sai da fórmula da própria caixa, e estes trechos são os que ela escreve.
+  // 02/10/2026: as aptidões disponíveis e as Passivas do Leque saíram com a seção 8, e o aviso delas mora na FICHA AMALDIÇOADA
   var avisos = ['pontos disponíveis', 'pontos de corpo', 'marcos escolhidos', 'perícias disponíveis',
-                'ofícios disponíveis', 'testes disponíveis', 'aptidões disponíveis', 'passivas do leque']
+                'ofícios disponíveis', 'testes disponíveis']
     .map(function (k) { return cel_(idx, k); })
     .filter(function (c) { return c; })
     .map(function (c) { return ficha.getRange(c); });
@@ -182,20 +183,6 @@ function notasDeRegra_(ss, idx) {
                            'escolhas dos marcos de Corpo (+1 perícia, +1 ofício, ou uma especialização ' +
                            'do nível 10 em diante). A ficha começa contando 9 perícias e 2 ofícios, e só ' +
                            'passa para 10 e nenhum quando você marca a décima perícia.',
-    'aptidões disponíveis': 'Duas de graça no refino 1, +1 por escolha de Refino, e duas quando o ' +
-                            'refino já está em 10 na hora de escolher. A ficha conta como se as ' +
-                            'escolhas de Refino tivessem sido as últimas: se você escolheu Refino ' +
-                            'cedo, no nível 26 ou 30 confira com o mestre. As duas de graça já vêm ' +
-                            'anotadas nas duas primeiras linhas.',
-    'feitiços disponíveis': 'Disponível: os espaços de feitiço, menos cada feitiço anotado com Classe ' +
-                            'acima de 0, menos a Classe das Passivas da coluna Passivas - Regras. ' +
-                            'Conhecidos (Total): os espaços de feitiço. Classe 0: quantos feitiços de ' +
-                            'Classe 0 grátis ainda cabem.',
-    'passivas': 'Passiva é efeito que fica ligado sozinho, e custa espaço de feitiço: a Classe dela, ' +
-                'de Livre a 3, diz quantos espaços cobra, e sai de Feitiços - Disponível. A Passiva ' +
-                'que veio de uma escolha de Leque vai na coluna do lado, e não custa espaço.',
-    'passivas do leque': 'Cada escolha de Leque dá uma Passiva que não custa espaço de feitiço. ' +
-                         'As Passivas da coluna da esquerda custam, e entram na conta de Feitiços.',
     'caminho': 'Ao escolher o Caminho, as duas perícias fixas dele são marcadas sozinhas. ' +
                'Ofício e Teste de Resistência são à sua escolha. Se a Trilha escolhida não for ' +
                'do Caminho novo, ela volta para Escolha sua Trilha.',
@@ -252,46 +239,7 @@ function notasDeRegra_(ss, idx) {
       });
     });
   }
-  return n + ' nota(s) · ' + notasDeGraca_(ss, idx);
-}
-
-/**
- * As duas aptidões de graça já vêm anotadas, e a nota delas acompanha a Origem: com Restrição
- * Celestial · sem energia, as duas linhas viram as duas Bênçãos de graça. A nota não segue fórmula,
- * então o onEdit refaz quando a Origem muda. O texto resume o manual; o conferir-ficha-xlsx.py
- * confere que os números dele estão lá.
- */
-var NOTAS_DE_GRACA = {
-  'Cobrir-se de energia': 'De graça no refino 1. Sem Traje e sem Revestimento, a sua proteção é ' +
-                          '1/3 do refino + 1. Escudo soma com ela. Como Reação, por 2 PE: Redução de ' +
-                          'Dano de 1,5 × refino num golpe, e você fica sem proteção até o fim do seu ' +
-                          'próximo turno.',
-  'Canalizar energia': 'De graça no refino 1. O seu ataque com arma ou soco vem imbuído de energia ' +
-                       'amaldiçoada, e fere maldição. Com arma: 1d4 de dano a mais no refino 1, 2d4 no ' +
-                       '3, 3d4 no 6, 4d4 no 9, e 4d6 no 10. Não entra em feitiço.',
-  'Defesa sem Armadura': 'De graça na Lapidação 1. Sem Traje e sem Revestimento, a sua proteção é ' +
-                         '1/3 da Lapidação + 1. Escudo soma com ela. Como Reação, por 2 PE: Redução de ' +
-                         'Dano de 1,5 × Lapidação num golpe, e você fica sem proteção até o fim do seu ' +
-                         'próximo turno. Barreira de energia não segura você.',
-  'Estímulo Muscular': 'De graça na Lapidação 1. Escolha uma perícia e um Teste de Resistência na ' +
-                       'criação: 1× por cena, e 2× na Lapidação 10, vantagem numa rolagem de um dos ' +
-                       'dois. Com arma: 1d4 de dano a mais na Lapidação 1, 2d4 na 3, 3d4 na 6, 4d4 ' +
-                       'na 9, e 4d6 na 10.'
-};
-
-function notasDeGraca_(ss, idx) {
-  var ficha = ss.getSheetByName('FICHA');
-  SpreadsheetApp.flush();
-  var n = 0;
-  ['aptidão de graça 1', 'aptidão de graça 2'].forEach(function (k) {
-    var c = cel_(idx, k);
-    if (!c) return;
-    var cel = ficha.getRange(c);
-    var nota = NOTAS_DE_GRACA[String(cel.getValue()).trim()];
-    cel.setNote(nota || '');
-    if (nota) n++;
-  });
-  return n + ' nota(s) de graça';
+  return n + ' nota(s)';
 }
 
 /**
@@ -444,7 +392,6 @@ function onEdit(e) {
   nivelPelaXP_(e, idx);
   grupoDeArmaDaTrilha_(e, idx);
   trocaArmaDoCaminho_(e, idx);
-  if (e.range.getA1Notation() === cel_(idx, 'origem')) notasDeGraca_(SpreadsheetApp.getActive(), idx);
   try { fichaMexeNaPessoal_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }
   continuarPaleta_(inicio, null, false, e.range);
 }
