@@ -68,16 +68,20 @@ class _Folha:
         return coord
 
 
-def trocas(layout, tr):
+def trocas(layout, tr, r0=None, guarda=frozenset()):
     """o que a limpeza muda na FICHA, na DADOS e na DADOS_AM. Lê a FICHA depois das limpezas de cima, e a DADOS_AM
-    das trocas da Ficha Amaldiçoada (tr), que ainda não entrou no layout"""
+    das trocas da Ficha Amaldiçoada (tr), que ainda não entrou no layout.
+    02/10/2026: a seção 7 virou as Habilidades (limpeza 27) e cresceu. `r0` é a linha onde o menu começa agora (o fim
+    dela), e `guarda` são as células dela, que o menu não apaga mesmo estando nas linhas da seção 8 de hoje. O estilo
+    do título e do fundo continua sendo lido da seção 8 de hoje."""
     ficha, dados = ix._aba(layout, NOME), ix._aba(layout, "DADOS")
     fcel = {r[0]: r for r in ficha["celulas"]}
-    # a seção 8: a linha do número dela, e o que está daí para baixo
-    r0 = next(ix._lc(c)[0] for c, r in fcel.items() if ix._lc(c)[1] == C1 and r[1] in (8, 8.0, "8"))
+    # a seção 8 de hoje: a linha do número dela, e o que está daí para baixo
+    r8 = next(ix._lc(c)[0] for c, r in fcel.items() if ix._lc(c)[1] == C1 and r[1] in (8, 8.0, "8"))
+    r0 = r8 if r0 is None else r0
     fim_velho = ficha["linhas"]
-    num_est, tit_est, fundo = fcel[f"D{r0}"][2], fcel[f"G{r0}"][2], fcel[f"C{r0 + 2}"][2]
-    tit_fim = next(ix._lc(m.split(":")[1])[1] for m in ficha["mescladas"] if m.split(":")[0] == f"G{r0}")
+    num_est, tit_est, fundo = fcel[f"D{r8}"][2], fcel[f"G{r8}"][2], fcel[f"C{r8 + 2}"][2]
+    tit_fim = next(ix._lc(m.split(":")[1])[1] for m in ficha["mescladas"] if m.split(":")[0] == f"G{r8}")
     G, D, R = tr["G"], tr["D"], tr["R"]
     AM = fa.AM
     ROTA, rot = tr["ROTA"], tr["rotulo"]
@@ -280,9 +284,9 @@ def trocas(layout, tr):
                 f.cel[fa._a1(c, l)] = (None, fundo)
 
     # o que sai: as células, as mesclagens, os menus e as alturas da seção 8 de hoje
-    sai = {c for c in fcel if ix._lc(c)[0] >= r0 and ix._lc(c)[1] >= 3}
-    mesc_sai = [m for m in ficha["mescladas"] if ix._lc(m.split(":")[0])[0] >= r0 and ix._lc(m.split(":")[0])[1] >= 3]
-    menus_sai = [m["onde"] for m in ficha["menus"] if all(ix._lc(p.split(":")[0])[0] >= r0 for p in m["onde"].split())]
+    sai = {c for c in fcel if ix._lc(c)[0] >= r8 and ix._lc(c)[1] >= 3} - set(guarda)
+    mesc_sai = [m for m in ficha["mescladas"] if ix._lc(m.split(":")[0])[0] >= r8 and ix._lc(m.split(":")[0])[1] >= 3]
+    menus_sai = [m["onde"] for m in ficha["menus"] if all(ix._lc(p.split(":")[0])[0] >= r8 for p in m["onde"].split())]
     # o índice: as seis caixas da seção 8 saem dele, e as duas contas da DADOS que liam a seção leem a Ficha Amaldiçoada
     dcel = {x[0]: x for x in dados["celulas"]}
     saem_do_indice = ("feitiços disponíveis", "passivas", "aptidão de graça 1", "aptidão de graça 2", "aptidões disponíveis", "passivas do leque")
@@ -295,7 +299,7 @@ def trocas(layout, tr):
             lin, cc = ix._lc(c)
             valor = H["aptidões anotadas"] if x[1] == "aptidões anotadas" else H["passivas do Leque"]
             cel_dados[fa._a1(cc + 1, lin)] = (f"={valor}", fa._a1(cc + 1, lin))
-    return {"r0": r0, "fim": fim, "fim_velho": fim_velho, "celulas": {NOME: {c: (v[0], c) for c, v in f.cel.items()}, "DADOS": cel_dados},
+    return {"r0": r0, "r8_velho": r8, "fim": fim, "fim_velho": fim_velho, "celulas": {NOME: {c: (v[0], c) for c, v in f.cel.items()}, "DADOS": cel_dados},
             "_estilos": f.cel, "sai": sai - set(f.cel), "mescladas_sai": {NOME: mesc_sai}, "mescladas": {NOME: f.mesclas},
             "menus_sai": {NOME: menus_sai}, "grupos": grupos,
             "copias": [[v[0], v[0] + alt - 1, v[1:], C1, CN] for alt, v in cheias.items() if len(v) > 1]}
@@ -318,11 +322,11 @@ def aplica(layout, tm):
     ficha["menus"] = [m for m in ficha["menus"] if m["onde"] not in tm["menus_sai"][NOME]]
     ficha["linhas_alt"] = [a for a in ficha["linhas_alt"] if a[0] < tm["r0"]] + [[tm["r0"], 27.0]]
     ficha["linhas"] = tm["fim"]
-    ficha["grupos"] = {"linhas": tm["grupos"], "colunas": []}
+    ficha["grupos"] = {"linhas": (ficha.get("grupos") or {}).get("linhas", []) + tm["grupos"], "colunas": []}
     # as linhas do menu ficam fora da trava de fórmula do script, e o onEdit devolve a conta de quem escrever por cima
-    ficha["sem_trava"] = [[tm["r0"], tm["fim"]]]
+    ficha["sem_trava"] = ficha.get("sem_trava", []) + [[tm["r0"], tm["fim"]]]
     # as fileiras de três cartas são iguais a menos da linha que cada caixa cita: o script mescla a primeira de cada
     # altura e copia o formato para as outras (expandirCopias_ e montarAba_), como na Ficha Amaldiçoada. São mais de
     # duzentas mesclagens a menos uma a uma, e o ABAS não repete o que a cópia traz
-    ficha["copias"] = tm["copias"]
+    ficha["copias"] = ficha.get("copias", []) + tm["copias"]
     return n

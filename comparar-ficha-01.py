@@ -74,19 +74,23 @@ FP = ficha_pessoal.trocas(LAY_FP)
 # 02/10/2026, limpeza 26: o menu rapido, que troca a secao 8 da FICHA. Le o layout depois da FICHA PESSOAL e as
 # trocas da Ficha Amaldicoada, como o monta.py o tem na hora. O VALOR de cada caixa tem de ser o que o menu_rapido.py
 # monta, e o ESTILO o que ele declara.
-import menu_rapido, ficha_amaldicoada
+import menu_rapido, ficha_amaldicoada, habilidades
 LAY_MR = copy.deepcopy(LAY_FP)
 ficha_pessoal.aplica(LAY_MR, FP)
-MR = menu_rapido.trocas(LAY_MR, ficha_amaldicoada.trocas(LAY_MR))
+_FAM_C = ficha_amaldicoada.trocas(LAY_MR)
+# 02/10/2026, limpeza 27: as Habilidades, na secao 7. Ela cresce, e o menu rapido comeca onde ela termina (como no monta.py)
+HB = habilidades.trocas(LAY_MR, _FAM_C)
+MR = menu_rapido.trocas(LAY_MR, _FAM_C, r0=HB["fim"], guarda=frozenset(HB["_estilos"]))
 def _dentro_de_mescla_do_menu(n, r, c):
-    """a celula esta dentro de uma caixa mesclada do menu rapido, e nao e o canto dela"""
-    for m in MR["mescladas"].get(n, []):
+    """a celula esta dentro de uma caixa mesclada do menu rapido ou das Habilidades, e nao e o canto dela"""
+    for m in MR["mescladas"].get(n, []) + HB["mescladas"].get(n, []):
         (r1, c1), (r2, c2) = (indice_ficha._lc(x) for x in m.split(":"))
         if r1 <= r <= r2 and c1 <= c <= c2 and (r, c) != (r1, c1):
             return True
     return False
 import correcoes_borda
-LAY_FA2 = copy.deepcopy(LAY_MR)     # 02/10/2026: depois do menu rapido, que leva a FICHA ate a linha nova
+LAY_FA2 = copy.deepcopy(LAY_MR)     # 02/10/2026: depois das Habilidades e do menu rapido, que levam a FICHA ate a linha nova
+habilidades.aplica(LAY_FA2, HB)
 menu_rapido.aplica(LAY_FA2, MR)
 DIVISORIA = correcoes_borda.celulas_da_divisoria(LAY_FA2)
 DIVISORIA_TRACO = ["medium", "FF8A7EC4"]
@@ -350,15 +354,17 @@ for n in wa.sheetnames:
                     continue
             # limpeza 26: o menu rapido (02/10/2026). Vem antes da 10 e da 11: as caixas da secao 8 que o indice
             # apontava sairam dele, e a celula do indice fica vazia
-            if n == "FICHA" and r >= MR["r0"] and c >= 3:
-                _mr = MR["_estilos"].get(coord)
+            # limpeza 27: as Habilidades, na secao 7 (02/10/2026), que vem antes do menu e o empurra para baixo
+            if n == "FICHA" and r >= HB["r7"] and c >= 3:
+                _dono = HB if r < MR["r0"] else MR
+                _mr = _dono["_estilos"].get(coord)
                 if _mr is not None:
                     _est = _perfil_do_estilo(LAY_MR["estilos"][_mr[1]])
                     if pb["valor"] == _mr[0] and all(pb[k] == _est[k] for k in _est if k != "fmt"):
-                        esperadas["caixa do menu rápido, na seção 8 da FICHA"] += 1
+                        esperadas["caixa do menu rápido, na seção 8 da FICHA" if _dono is MR else "caixa das Habilidades, na seção 7 da FICHA"] += 1
                         continue
-                elif pb["valor"] is None and (_dentro_de_mescla_do_menu(n, r, c) or coord in MR["sai"]):
-                    esperadas["célula de dentro de caixa do menu rápido, ou da seção 8 antiga que saiu"] += 1
+                elif pb["valor"] is None and (_dentro_de_mescla_do_menu(n, r, c) or coord in MR["sai"] or coord in HB["sai"]):
+                    esperadas["célula de dentro de caixa do menu rápido ou das Habilidades, ou das seções 7 e 8 antigas que saíram"] += 1
                     continue
             _mrd = MR["celulas"].get(n, {}).get(coord) if n == "DADOS" else None
             if _mrd is not None and pb["valor"] == _mrd[0]:
@@ -466,6 +472,8 @@ for n in wa.sheetnames:
             esperadas["mesclagem das Passivas refeita"] += 1
         elif x in MR["mescladas_sai"].get(n, []):    # limpeza 26: a secao 8 antiga
             esperadas["mesclagem da seção 8 antiga, que o menu rápido troca"] += 1
+        elif x in HB["mescladas_sai"].get(n, []):    # limpeza 27: a secao 7 antiga
+            esperadas["mesclagem da seção 7 antiga, que as Habilidades trocam"] += 1
         else:
             difs.append(f"{n}: mesclagem {x} faltou")
     for x in sorted(mb - ma):
@@ -479,6 +487,8 @@ for n in wa.sheetnames:
             esperadas["mesclagem das Passivas refeita"] += 1
         elif x in MR["mescladas"].get(n, []):        # limpeza 26: as cartas do menu rapido
             esperadas["mesclagem do menu rápido"] += 1
+        elif x in HB["mescladas"].get(n, []):        # limpeza 27: as cartas das Habilidades
+            esperadas["mesclagem das Habilidades"] += 1
         else:
             difs.append(f"{n}: mesclagem {x} sobrou")
 
@@ -517,8 +527,8 @@ for n in wa.sheetnames:
             if k in CAB["alturas_sai"].get(n, []) and hb.get(k) is None:   # limpeza 23: sem o nome grande, a linha e igual as outras
                 esperadas["linha do cabeçalho que perde a altura do nome grande"] += 1
                 continue
-            if n == "FICHA" and k >= MR["r0"] and hb.get(k) == (27.0 if k == MR["r0"] else None):   # limpeza 26
-                esperadas["linha da seção 8 com a altura do menu rápido"] += 1
+            if n == "FICHA" and k >= HB["r7"] and hb.get(k) == (27.0 if k in (HB["r7"], MR["r0"]) else None):   # limpezas 26 e 27
+                esperadas["linha das seções 7 e 8 com a altura das Habilidades e do menu rápido"] += 1
                 continue
             difs.append(f"{n}: altura da linha {k}: {ha.get(k)} != {hb.get(k)}")
     print(f"  alturas de linha: {len(ha)} original · {len(hb)} gerada")

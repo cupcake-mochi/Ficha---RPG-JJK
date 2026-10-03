@@ -287,6 +287,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
         whenFormulaSatisfied: (f) => { o.formula = f; return api; }, whenTextContains: (t) => { if (!t) throw new Error('whenTextContains sem texto'); o.contem = t; return api; },
         whenTextStartsWith: (t) => { if (!t) throw new Error('whenTextStartsWith sem texto'); o.comeca = t; return api; },
         setBackground: (c) => { o.fundo = c; return api; }, setFontColor: (c) => { o.fonte = c; return api; },
+        setStrikethrough: (b) => { if (typeof b !== 'boolean') throw new Error('setStrikethrough sem booleano'); o.riscado = b; return api; },
         setRanges: (rs) => { if (!Array.isArray(rs) || !rs.length || !rs.every((x) => x && typeof x.getA1Notation === 'function')) throw new Error('setRanges sem faixa'); o.faixas = rs.map((x) => x.getA1Notation()); return api; },
         build: () => { if (!o.faixas) throw new Error('regra de cor sem faixa'); return o; } }); return api; },
     }),

@@ -193,7 +193,10 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
 // 02/10/2026: o menu rápido da FICHA (a seção 8) só mostra o que está na FICHA AMALDIÇOADA. As caixas dele ficam fora
 // da trava, e quem escreve por cima recebe a conta de volta, como na Ficha Amaldiçoada.
 {
-  const F2 = S.acha('FICHA'), spec = ABAS.find((s) => s.nome === 'FICHA'), [m0, m1] = spec.sem_trava[0];
+  const F2 = S.acha('FICHA'), spec = ABAS.find((s) => s.nome === 'FICHA');
+  // a faixa sem trava de cada seção, achada pelo número dela na coluna D (desde 02/10/2026 a seção 7 também tem uma)
+  const faixaDa = (n) => spec.sem_trava.find(([a]) => spec.vals.some((t) => t[0] === a && t[1] === 4 && String(t[2]) === String(n)));
+  const [m0, m1] = faixaDa(8);
   const doMenu = spec.vals.filter((t) => t[0] >= m0 && t[0] <= m1 && typeof t[2] === 'string' && t[2][0] === '=');
   ok(`as ${doMenu.length} caixas do menu rápido só apontam para uma célula da DADOS_AM`,
      doMenu.length > 250 && doMenu.every((t) => /^=DADOS_AM!\$[A-Z]+\$\d+$/.test(t[2])), doMenu.filter((t) => !/^=DADOS_AM!\$[A-Z]+\$\d+$/.test(t[2])).slice(0, 3).map((t) => t[2]).join(' · '));
@@ -207,6 +210,21 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   try { S.ss.getSheetByName('FICHA').getRange(a1).setValue('Raio Negro'); S.ctx.onEdit(ed('FICHA', a1, 'Raio Negro')); } catch (e) { erroM = e; }
   ok('escrever por cima de uma caixa do menu rápido devolve a conta e avisa na tela', !erroM && !!conta && F2.f.get(chave) === conta && S.P.avisos.length === n2 + 1,
      erroM ? erroM.message : `${F2.f.get(chave)} · ${S.P.avisos.length - n2} aviso(s)`);
+  // 02/10/2026, as Habilidades (seção 7): a etiqueta de nível e o título de cada bloco são conta na DADOS_AM, fora da trava;
+  // o nome e o texto de cada carta são do jogador; e o que ele escrever numa carta acima do nível sai riscado
+  const [h0, h1] = faixaDa(7);
+  const daHab = spec.vals.filter((t) => t[0] >= h0 && t[0] <= h1 && typeof t[2] === 'string' && t[2][0] === '=');
+  ok(`as ${daHab.length} contas das Habilidades (9 etiquetas de nível e 2 títulos) só apontam para uma célula da DADOS_AM`,
+     daHab.length === 11 && daHab.every((t) => /^=DADOS_AM!\$[A-Z]+\$\d+$/.test(t[2])), daHab.map((t) => t[2]).slice(0, 3).join(' · '));
+  const risca = F2.cf.filter((c) => c.riscado && /^=LEFT\(\$[A-Z]+\$\d+,4\)="Abre"$/.test(c.formula || ''));
+  const etiquetas = daHab.filter((t) => risca.some((c) => c.formula.indexOf('$' + letras(t[1]) + '$' + t[0] + ',') >= 0));
+  ok('a FICHA montada risca o nome e o texto das 9 cartas enquanto a etiqueta disser "Abre", e as outras regras dela continuam',
+     risca.length === 9 && etiquetas.length === 9 && risca.every((c) => c.faixas.length === 2) && F2.cf.length > 9,
+     `${risca.length} regra(s) de riscar, ${etiquetas.length} etiqueta(s), ${F2.cf.length} regra(s) na aba`);
+  const et = daHab[0], aE = letras(et[1]) + et[0], kE = et[0] + ',' + et[1], contaE = F2.f.get(kE), n3 = S.P.avisos.length;
+  try { S.ss.getSheetByName('FICHA').getRange(aE).setValue('Nível 30'); S.ctx.onEdit(ed('FICHA', aE, 'Nível 30')); } catch (e) { erroM = e; }
+  ok('escrever por cima da etiqueta de nível devolve a conta e avisa na tela', !erroM && !!contaE && F2.f.get(kE) === contaE && S.P.avisos.length === n3 + 1,
+     erroM ? erroM.message : `${F2.f.get(kE)} · ${S.P.avisos.length - n3} aviso(s)`);
 }
 let erroSel = null;
 try { S.ctx.onSelectionChange({ range: S.ss.getSheetByName(NOME).getRange('D10') }); S.ctx.onOpen({}); } catch (e) { erroSel = e; }

@@ -72,6 +72,24 @@ def exemplo(wb, R, G):
             p.cell(row=lin, column=fp.B1 + desloc).value = v
 
 
+def _escrever_habilidades(f, caminho, trilha):
+    """escreve nome e texto nas cartas da seção 7 da FICHA, achadas pelo número 7 e pela geometria do habilidades.py"""
+    import habilidades as _hb
+    r7 = next(c.row for linha in f.iter_rows() for c in linha if c.column == 4 and c.value in (7, "7"))
+    r = r7 + 4                                 # o título, duas linhas, o título do bloco do Caminho, e a primeira fileira
+    pos = []
+    for fileira in range(2):                   # o Caminho: duas fileiras de três (a última carta é de anotação)
+        pos += [(r, x) for x in _hb.X]
+        r += 1 + _hb.TX + 1
+    for (nome, texto), (rr, x) in zip(caminho, pos):
+        f.cell(row=rr, column=x + _hb.TAG).value = nome
+        f.cell(row=rr + 1, column=x).value = texto
+    rt = r + 1                                 # a linha vazia do fim do bloco e o título do bloco da Trilha
+    for (nome, texto), x in zip(trilha, _hb.X):
+        f.cell(row=rt, column=x + _hb.TAG).value = nome
+        f.cell(row=rt + 1, column=x).value = texto
+
+
 def exemplo_amaldicoada(wb):
     """a Kaori do estudo da Ficha Amaldiçoada: nível 10, com a técnica dela e seis feitiços prontos do livro"""
     f, a, c = wb["FICHA"], wb[fa.NOME], wb["CARTEIRA"]
@@ -115,6 +133,14 @@ def exemplo_amaldicoada(wb):
     a[fa.celulas_da_passiva(*G["passivas"][1])["texto"]] = "O peso que ela solta volta para as mãos dela, devagar."
     a[G["tm_nome"]], a[f"D{G['tm_como'] + 1}"] = "Sentença de Chumbo", "Tudo o que ela tocou na luta pesa ao mesmo tempo."
     a[G["dom_nome"]], a[G["degrau"]] = "Balança Quebrada", "Incompleta"
+    # a seção 7 da FICHA (as Habilidades): o que a Kaori anotou do Bastião e do Muro, até a carta do nível 15, que ainda
+    # não abriu para ela e sai riscada
+    import habilidades as _hb
+    hab = [("Olhos Em Mim", "Ação Bônus: área de 6 m que me acompanha a cena toda. Provoco quem entrar, e assumo o golpe num aliado."),
+           ("Ataque Extra · Nem Um Arranhão · Ainda de Pé", "Um ataque a mais na Ação Atacar. Vantagem no TR Físico dentro da área. Uma vez por cena, 1d8 + metade do nível."),
+           ("Duro de Matar", "Bloquear que falha ainda reduz o dano pelos dados + Constituição.")]
+    tri = [("Alicerce", "Fim do descanso longo: dois tipos de dano pela metade com Olhos Em Mim ativo.")]
+    _escrever_habilidades(f, hab, tri)
     for p, pos in zip(["Projetar energia", "Barreira Simples"], G["aptidoes"]):
         a[fa.celulas_da_aptidao(*pos)["nome"]] = p
     pc = fa.celulas_do_pacto(G["pactos"][0])
@@ -267,11 +293,19 @@ def grade(spec, valores, crus, aberto=True, barras=None, pintura=None, linhas=No
             if (r, c) in fmt and isinstance(v, (int, float)) and not isinstance(v, bool):
                 prefixo = re.match(r'"([^"]*)"', fmt[(r, c)]).group(1)
                 txt = prefixo + (f"{int(v):,}".replace(",", ".") if "#" in fmt[(r, c)] else str(int(v)))
-            fundo, corf = bg[r][c], cor
+            fundo, corf, riscado = bg[r][c], cor, False
             for (r1_, c1_), (r2_, c2_), regra in avisos:
                 texto = str(v or "")
-                if r1_ <= r <= r2_ and c1_ <= c <= c2_ and (texto.startswith(regra["comeca"]) if regra.get("comeca") else regra["contem"] in texto):
-                    fundo, corf = regra.get("fundo", fundo), regra.get("fonte", corf)
+                if not (r1_ <= r <= r2_ and c1_ <= c <= c2_):
+                    continue
+                if regra.get("formula"):
+                    # 02/10/2026: a única regra por fórmula é a das Habilidades, '=LEFT($D$92,4)="Abre"' (ver habilidades.py)
+                    m = re.fullmatch(r'=LEFT\(\$([A-Z]+)\$(\d+),(\d+)\)="(.*)"', regra["formula"])
+                    bate = bool(m) and str(valores.get(ix._lc(m.group(1) + m.group(2)), "") or "")[:int(m.group(3))] == m.group(4)
+                else:
+                    bate = texto.startswith(regra["comeca"]) if regra.get("comeca") else regra["contem"] in texto
+                if bate:
+                    fundo, corf, riscado = regra.get("fundo", fundo), regra.get("fonte", corf), bool(regra.get("riscado"))
                     break
             if all(rr in lin_fechada for rr in range(r, r2 + 1)):
                 continue
@@ -287,6 +321,8 @@ def grade(spec, valores, crus, aberto=True, barras=None, pintura=None, linhas=No
                    "align-items:" + {"top": "flex-start", "middle": "center", "bottom": "flex-end"}.get(valinh, "center")]
             if e and e[8]:
                 css.append("white-space:normal")
+            if riscado:
+                css.append("text-decoration:line-through")
             if e and e[6]:
                 txt = f'<span style="writing-mode:vertical-rl;transform:rotate(180deg)">{txt}</span>'
             for lado, (px, corb) in b.items():

@@ -97,9 +97,13 @@ if _quem != cabecalho.quem(LAYOUT):
 # 02/10/2026, limpeza 26: o menu rapido. A secao 8 da FICHA deixa de ser digitada e mostra o que esta na FICHA
 # AMALDICOADA. Ele le as contas da aba (as trocas dela, que so entra no layout mais abaixo, depois das bordas) e vem
 # antes das correcoes de borda, porque a FICHA cresce e a lombada tem de ir ate a ultima linha. Ver menu_rapido.py.
-import ficha_amaldicoada, menu_rapido
+# 02/10/2026, limpeza 27: as Habilidades. A secao 7 deixa de ser "Anotacoes" e vira cartas, uma por degrau de Caminho e
+# uma por entrega de Trilha, escritas pelo jogador. Ela cresce, e o menu rapido comeca onde ela termina. Ver habilidades.py.
+import ficha_amaldicoada, menu_rapido, habilidades
 _FAM = ficha_amaldicoada.trocas(LAYOUT)
-_MR = menu_rapido.trocas(LAYOUT, _FAM)
+_HB = habilidades.trocas(LAYOUT, _FAM)
+_MR = menu_rapido.trocas(LAYOUT, _FAM, r0=_HB["fim"], guarda=frozenset(_HB["_estilos"]))
+print(f"as habilidades na secao 7 da FICHA: {habilidades.aplica(LAYOUT, _HB)} mudanca(s), da linha {_HB['r7']} a {_HB['fim'] - 1}")
 print(f"o menu rapido na secao 8 da FICHA: {menu_rapido.aplica(LAYOUT, _MR)} mudanca(s), da linha {_MR['r0']} a {_MR['fim']}, "
       f"{len(_MR['grupos'])} grupo(s)")
 import correcoes_borda

@@ -833,6 +833,10 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     import ficha_layout as _fl
     for _nome, _ims in _fl.trocas(_js.load(open("ficha-v01/layout.json", encoding="utf-8")))["imagens"].items():
         next(a for a in _lay["abas"] if a["nome"] == _nome)["imagens"] = _ims
+    # 02/10/2026: a limpeza 27 (as Habilidades) põe a arte de respingos ao lado do título da seção 7
+    import habilidades as _hb
+    _fl7 = next(a for a in _lay["abas"] if a["nome"] == "FICHA")
+    _fl7["imagens"] = [_hb.arte_no_titulo(i, _hb.linha_do_titulo(_fl7, 7)) if i["arquivo"] == _hb.ARTE else i for i in _fl7["imagens"]]
     _mart = _re.search(r"var ARTE = (\{.*?\});\n", g, _re.S)
     # 18/09/2026: a arte grande vem em pedaços concatenados por "+" (emitir_gs._sem_linha_gigante),
     # pra nenhuma linha do Ficha.gs travar o editor do Apps Script — colada de volta antes do JSON.

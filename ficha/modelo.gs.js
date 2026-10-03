@@ -248,6 +248,21 @@ function gruposDeMescla_(merges) {
   return grupos;
 }
 
+/**
+ * Uma regra de cor que o gerador declara na aba (`condicional` no ABAS): o texto que começa ou contém um trecho, ou uma
+ * fórmula; e o que ela faz (o fundo, a letra, o riscado). A FICHA refaz todas as regras dela no corDeEstado_, e por
+ * isso as declaradas entram de novo lá.
+ */
+function regraDeCor_(aba, c) {
+  var regra = SpreadsheetApp.newConditionalFormatRule();
+  regra = c.formula ? regra.whenFormulaSatisfied(c.formula) : c.comeca ? regra.whenTextStartsWith(c.comeca) : regra.whenTextContains(c.contem);
+  regra.setRanges(c.faixas.map(function (a1) { return aba.getRange(a1); }));
+  if (c.fundo) regra.setBackground(c.fundo);
+  if (c.fonte) regra.setFontColor(c.fonte);
+  if (c.riscado) regra.setStrikethrough(true);
+  return regra.build();
+}
+
 function montarAba_(aba, spec) {
   var nc = spec.cols, nr = spec.rows;
   aba.setHiddenGridlines(true);
@@ -431,14 +446,7 @@ function montarAba_(aba, spec) {
     aba.getRange(r1, c1, r2 - r1 + 1, c2 - c1 + 1).setNotes(notas);
   }
   if ((spec.condicional || []).length) {
-    aba.setConditionalFormatRules(spec.condicional.map(function (c) {
-      var regra = SpreadsheetApp.newConditionalFormatRule();
-      regra = c.comeca ? regra.whenTextStartsWith(c.comeca) : regra.whenTextContains(c.contem);
-      regra.setRanges(c.faixas.map(function (a1) { return aba.getRange(a1); }));
-      if (c.fundo) regra.setBackground(c.fundo);
-      if (c.fonte) regra.setFontColor(c.fonte);
-      return regra.build();
-    }));
+    aba.setConditionalFormatRules(spec.condicional.map(function (c) { return regraDeCor_(aba, c); }));
   }
   if (spec.grupos) {
     // O botão de fechar fica ANTES do grupo: na linha do título da lista, e na coluna antes do painel.

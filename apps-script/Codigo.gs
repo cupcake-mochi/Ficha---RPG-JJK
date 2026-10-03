@@ -70,6 +70,10 @@ function corDeEstado_(ss, idx) {
         .setBackground('#C2334D').setFontColor('#FFFFFF').setRanges(avisos).build());
     });
   }
+  // 02/10/2026: as regras que o gerador declara na FICHA (o riscado das Habilidades acima do nível) entram junto, porque
+  // esta função troca todas as regras da aba
+  var spec = ABAS.filter(function (a) { return a.nome === 'FICHA'; })[0];
+  ((spec && spec.condicional) || []).forEach(function (c) { regras.push(regraDeCor_(ficha, c)); });
   ficha.setConditionalFormatRules(regras);
   return regras.length + ' regra(s)';
 }
