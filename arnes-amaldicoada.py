@@ -15,7 +15,7 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 FORA = {".git", "mockup", "__pycache__", "repos", "repo-conserto", ".claude"}
 FICHAS = "kaori,velho,meio,bordas,menu,sorteio-13,rota-sem,rota-corpo,rota-celeste,rota-fisga"
 GER, MOD, EMI, COD = "ficha-v01/ficha_amaldicoada.py", "ficha/modelo.gs.js", "ficha/emitir_gs.py", "apps-script/Codigo.gs"
-MEN = "ficha-v01/menu_rapido.py"
+MEN, HAB = "ficha-v01/menu_rapido.py", "ficha-v01/habilidades.py"
 
 # (o que e o defeito, arquivo, o trecho certo, o trecho errado, um pedaco do nome da checagem que tem de acender)
 PERTURBACOES = [
@@ -153,6 +153,13 @@ PERTURBACOES = [
     ("a Técnica Máxima antes do nível dela mostra \"— PE\"", MEN,
      'IF(ISNUMBER({fa._A(G["tm_pe"], AM)}),{fa._A(G["tm_pe"], AM)}&" PE",{fa._A(G["tm_pe"], AM)}&"")',
      '{fa._A(G["tm_pe"], AM)}&" PE"', "traz o nome, o PE, a Forma e o Como é dela"),
+    # 02/10/2026, as Habilidades na seção 7 da FICHA (B34)
+    ("a etiqueta da carta só abre um nível depois", HAB, """f'=IF({NIV}>={n},"Nível {n}","Abre no {n}")'""",
+     """f'=IF({NIV}>{n},"Nível {n}","Abre no {n}")'""", "as etiquetas dizem o nível ou quando a carta abre"),
+    ("o Caminho volta aos quatro degraus de antes do livro novo", HAB, "NIV_CAMINHO, NIV_TRILHA = (2, 7, 15, 23, 30), (2, 11, 19, 27)",
+     "NIV_CAMINHO, NIV_TRILHA = (2, 7, 15, 30), (2, 11, 19, 27)", "níveis da tabela Entregas por nível"),
+    ("o título da Trilha esquece a Trilha escolhida", HAB, """["Trilha", f'="TRILHA"&{escolha("trilha")}&"  ·  QUATRO ENTREGAS"']""",
+     """["Trilha", '="TRILHA  ·  QUATRO ENTREGAS"']""", "os títulos dizem o Caminho e a Trilha"),
 ]
 CONTRA = ("um comentário a mais no gerador", GER, "def _se(cond, texto):", "# comentario que nao muda nada\ndef _se(cond, texto):")
 

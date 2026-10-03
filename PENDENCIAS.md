@@ -2076,7 +2076,7 @@ próxima etapa". Passam com o livro novo: o `conferir-kaori.py`, o `conferir-pro
 citam Caminho e Trilha, o C1 (o Caminho oculto do menu) e o `decisoes-ficha.json`. A pergunta que espera ele: fazer
 agora, contra a v0.331 sem commit, ou depois da revisão de nomes.*
 
-### B34 · A seção 7 da `FICHA` vira "Habilidades" — **forma escolhida em 02/10/2026: C, as cartas; espera a carta acima do nível**
+### B34 · A seção 7 da `FICHA` vira "Habilidades" — **FEITA em 02/10/2026 (forma C, escrita à mão, a carta acima do nível riscada); falta montar no Sheets**
 
 *Pedido dele em 02/10/2026, antes de pôr o catálogo em dia: "Recomendo que refaçamos o 'anotações' (ja que agora caminho
 da 5 habilidades) e outras partes do ficha que necessitam de 'atualização', para aproveitar melhor das novas partes da
@@ -2108,6 +2108,40 @@ nível 15" ou fica vazia; e o nome da seção.*
 cartas e uma de anotação) e um para a Trilha (quatro cartas, as escolhas e uma de anotação), três por fileira, cada
 fileira com o seu grupo. O nome da seção é "Habilidades", o que ele mesmo pôs no pedido. Pergunta seguinte: a carta de
 um degrau que o personagem ainda não alcançou diz "Abre no nível 15" ou fica vazia.*
+
+**Respondido em 02/10/2026: "A e o texto fica 'riscado' (esqueci o nome), até desbloquear".** *A carta diz quando abre,
+e o que estiver escrito nela fica riscado até o nível chegar. O aviso foi para a etiqueta do nível, que ganhou três
+colunas ("Nível 15" quando abriu, "Abre no 15" quando não), porque o nome é onde o jogador escreve e não pode ser conta.
+O estudo foi atualizado com isso (mesmo link).*
+
+**Como ficou (a limpeza 27, `ficha-v01/habilidades.py`).** *A seção 7 vai da linha 88 à 124: o título "HABILIDADES", o
+bloco do Caminho (as cartas dos níveis 2, 7, 15, 23 e 30, e uma de anotação) e o da Trilha (2, 11, 19 e 27, as escolhas
+da Trilha e uma de anotação), três por fileira, com um grupo por bloco e um pelo texto de cada fileira; nasce aberta a
+primeira fileira de cada bloco. O nome e o texto de cada carta são do jogador. A etiqueta de nível e o título de cada
+bloco ("CAMINHO · BASTIÃO · CINCO DEGRAUS") são conta numa tabela da `DADOS_AM`, e a caixa da FICHA só aponta para ela:
+fica fora da trava, e quem escreve por cima recebe a conta de volta, como no menu rápido. O riscado é regra de cor
+declarada no ABAS (`=LEFT($D$92,4)="Abre"` sobre o nome e o texto da carta), que o `corDeEstado_` junta às regras dele,
+porque ele troca todas as regras da FICHA; ela só risca, sem mudar cor, para não brigar com a troca de paleta. O menu
+rápido passou a começar na linha 125 (o `menu_rapido.trocas` recebe a linha e as células da seção 7 que não pode
+apagar). A arte de respingos que morava no canto da seção foi para o lado do título (AQ a AS, três linhas), onde as
+cartas não chegam. Os níveis das cartas são os do livro novo (cap. 35 da v0.331); o catálogo da v0.258 e o
+`manual.txt` da v0.263 ainda dão ao Caminho só quatro degraus (sem o 23): é o atraso do B33.*
+
+**Como foi conferido.** *O `regressao-amaldicoada.py` lê os níveis das cartas na tabela "Entregas por nível" do capítulo
+35 do livro (quando o livro está na máquina) e confere, em toda ficha recalculada, a etiqueta de cada carta pelo nível e
+o título de cada bloco pelo Caminho e pela Trilha (a ficha `menu` escolhe Bastião e Muro). O `regressao-construir.js`
+confere que as 11 contas da seção só apontam para a `DADOS_AM`, que a FICHA montada tem as 9 regras de riscar junto com as
+outras, e que escrever por cima da etiqueta devolve a conta. O `comparar-ficha-01.py` declara a limpeza 27 e fecha em
+IGUAIS; o `conferir-ficha-xlsx.py` confere a arte no lugar novo. O `medidas/ver-aba.py` desenha a riscada (a regra de
+fórmula) e a Kaori com quatro habilidades escritas, até a do nível 15; o desenho bate com o estudo. Nos arneses: o
+`arnes-amaldicoada.py` vai a 60 (a etiqueta abrindo um nível depois, o Caminho de volta a quatro degraus, o título
+esquecendo a Trilha) e o `arnes-pessoal.py` a 48 (o riscado apagado pelo corDeEstado_, a etiqueta que não volta). No
+caminho, o `tecnica-do-livro.json` e o `equipamento-do-livro.json` passaram a dizer v0.331: o livro no disco do Claude 2
+virou v0.331 durante a rodada, e a bateria acusou os dois arquivos; o conteúdo que a Ficha Amaldiçoada e a Ficha Pessoal
+leem é o mesmo, e só o carimbo mudou (o Ficha.gs não mudou com isso).*
+
+**O que só o Sheets diz, e falta ele ver:** *o riscado aparecendo e sumindo quando o NÍVEL muda; a etiqueta "Abre no 15"
+cabendo nas três colunas; os grupos de cada fileira; e a arte ao lado do título.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 

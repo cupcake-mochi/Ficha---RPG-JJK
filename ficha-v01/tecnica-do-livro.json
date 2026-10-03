@@ -1,7 +1,7 @@
 {
  "_meta": {
   "o_que_e": "o que a FICHA AMALDIÇOADA calcula e o catalogo-projeto-m.json ainda não tem, lido dos capítulos do livro",
-  "versao_do_livro": "v0.330",
+  "versao_do_livro": "v0.331",
   "extraido_por": "ficha-v01/extrair_tecnica.py",
   "capitulos": [
    "40-fundamento.md",

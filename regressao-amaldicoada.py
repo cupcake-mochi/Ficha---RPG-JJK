@@ -331,6 +331,9 @@ def prepara(nome, ficha):
     # 02/10/2026: a rota vem da Origem da FICHA, e a CD de cada grupo de arma lê os atributos de lá
     if ficha.get("origem"):
         f[IDX["origem"]] = ficha["origem"]
+    for k in ("caminho", "trilha"):              # 02/10/2026: o título dos blocos das Habilidades lê os dois
+        if ficha.get(k):
+            f[IDX[k]] = ficha[k]
     for atr, v in ficha.get("atributos", {}).items():
         f[IDX[f"atr_base_{atr}"]] = v
     for fam, estado in ficha.get("familias", {}).items():
@@ -515,7 +518,7 @@ ROTA_FISGA = {"nivel": 5, "origem": "Restrição Celestial · sem energia", "atr
 # O menu rápido da FICHA (02/10/2026): a Kaori com o que só o jogador escreve (o "Como é" de feitiço, da Técnica Máxima e
 # do Domínio, o texto da Passiva Livre, da Regra Própria, de uma Passiva e de uma aptidão), e um feitiço sem nome no meio,
 # que tem de sumir do menu com o de baixo subindo.
-MENU_F = {**KAORI, "celulas": {**KAORI["celulas"],
+MENU_F = {**KAORI, "caminho": "Bastião", "trilha": "Muro", "celulas": {**KAORI["celulas"],
                                FEITICOS[0]["como"]: "Um estalo de dedos que racha o ar.", FEITICOS[3]["como"]: "A lança sai da sombra dela.",
                                G["tm_nome"]: "Sentença Negra", f"D{G['tm_como'] + 1}": "O céu escurece em volta do alvo.",
                                G["dom_nome"]: "Jardim de Agulhas", f"D{G['dom_como'] + 1}": "Um campo de agulhas pretas.",
@@ -1006,6 +1009,53 @@ for nome in FICHAS:
                "aptidões": f"{apt_nome}  ·  {len(apt)} de {fa.N_APT}, mais as duas de graça"}
     lido_tit = {k: txt(f[ROTULO[k]].value) if k in ROTULO else "(nenhuma caixa lê)" for k in esp_tit}
     checa(f"{nome}: os títulos do menu dizem os nomes da rota {rota} e quantos de cada", lido_tit == esp_tit, f"{lido_tit} != {esp_tit}")
+
+# ---------------------------------------------------------------------------------------------
+print("\nAS HABILIDADES DA FICHA (SEÇÃO 7)")
+# 02/10/2026 (B34): a seção 7 da FICHA virou cartas, uma por degrau de Caminho e uma por entrega de Trilha, escritas pelo
+# jogador. A regra daqui: os níveis são os da tabela "Entregas por nível" do capítulo 35 do livro; a etiqueta da carta diz
+# "Nível L" quando o nível da ficha chegou nele, e "Abre no L" quando não; o título do bloco diz o Caminho e a Trilha da
+# FICHA quando estão escolhidos. O riscado é regra de cor do Sheets, e o regressao-construir.js confere.
+LIVRO_35 = "/media/mizuki/HD Externo II/Claude/Claude 2/sistema/05-material/livro/manual/35-caminhos-e-trilhas.md"
+_cab_hab = {D0.cell(row=1, column=c).value: c for c in range(1, D0.max_column + 1)}
+_c_niv = _cab_hab["nível da carta"]
+_lin_hab = [r for r in range(2, 40) if D0.cell(row=r, column=_c_niv).value not in (None, "")]
+NIV_HAB = [int(D0.cell(row=r, column=_c_niv).value) for r in _lin_hab]
+FONTE_HAB = [str(D0.cell(row=r, column=_c_niv - 1).value).split(" ")[0] for r in _lin_hab]
+if os.path.exists(LIVRO_35):
+    _t35 = open(LIVRO_35, encoding="utf-8").read()
+    _ent = re.search(r"\*\*Entregas por nível\*\*\n\{: \.tab-titulo \}\n\n\| Nível \| O que chega \|\n\|[-| ]+\|\n((?:\|.*\|\n)+)", _t35)
+    _linhas = [[x.strip() for x in l.strip("|").split("|")] for l in _ent.group(1).strip().split("\n")] if _ent else []
+    _cam = [int(n) for n, o in _linhas if "Caminho" in o]
+    _tri = [int(n) for n, o in _linhas if "Trilha" in o]
+    checa(f"as cartas estão nos níveis da tabela Entregas por nível do capítulo 35 do livro (Caminho {_cam}, Trilha {_tri})",
+          bool(_linhas) and NIV_HAB == _cam + _tri and FONTE_HAB == ["Caminho"] * len(_cam) + ["Trilha"] * len(_tri), f"{FONTE_HAB} {NIV_HAB}")
+else:
+    print("  [--] o livro não está nesta máquina: os níveis das cartas não foram comparados com ele")
+R7 = next(c.row for linha in F0.iter_rows() for c in linha if c.column == 4 and c.value in (7, "7"))
+ETIQ, TIT = [], []
+for linha in F0.iter_rows(min_row=R7, max_row=R0_MENU - 1):
+    for c in linha:
+        m = re.fullmatch(r"=DADOS_AM!\$([A-Z]+)\$(\d+)", str(c.value or ""))
+        if m and _cab_am.get(m.group(1)) == "etiqueta da carta":
+            ETIQ.append((c.row, c.column, int(m.group(2)), c.coordinate))
+        elif m and _cab_am.get(m.group(1)) == "texto do título":
+            TIT.append((c.row, int(m.group(2)), c.coordinate))
+ETIQ.sort(); TIT.sort()
+checa("as 9 etiquetas leem as cartas na ordem do bloco (o Caminho e depois a Trilha), e os 2 títulos, o do Caminho e o da Trilha",
+      [x[2] for x in ETIQ] == list(range(2, 11)) and [x[1] for x in TIT] == [2, 3], f"{[x[2] for x in ETIQ]} {[x[1] for x in TIT]}")
+_vazias = [f"{x[3]}" for x in ETIQ if F0.cell(row=x[0], column=x[1] + 3).value not in (None, "")]
+checa("o nome de cada carta nasce vazio, para o jogador escrever", not _vazias, str(_vazias[:3]))
+for nome in FICHAS:
+    ficha, f = FICHAS[nome], WB[nome]["FICHA"]
+    n = ficha.get("nivel", 2)
+    esp = [f"Nível {L}" if L <= n else f"Abre no {L}" for L in NIV_HAB]
+    lido = [txt(f[x[3]].value) for x in ETIQ]
+    up_ = lambda k, padrao: "" if not ficha.get(k) else "  ·  " + ficha[k].upper()
+    esp_t = ["CAMINHO" + up_("caminho", "") + "  ·  CINCO DEGRAUS", "TRILHA" + up_("trilha", "") + "  ·  QUATRO ENTREGAS"]
+    lido_t = [txt(f[x[2]].value) for x in TIT]
+    checa(f"{nome} (nível {n}): as etiquetas dizem o nível ou quando a carta abre, e os títulos dizem o Caminho e a Trilha",
+          lido == esp and lido_t == esp_t, f"{lido} {lido_t} != {esp} {esp_t}")
 
 # ---------------------------------------------------------------------------------------------
 print("\nA ABA")

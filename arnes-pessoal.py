@@ -163,6 +163,13 @@ edita("o onEdit regrava formula que nao vale em todo idioma", C, "var REFERENCIA
       "não é regravada pelo script", teste=K)
 edita("o onEdit nao reconhece a FICHA AMALDICOADA", C, "if (aba === ABA_AMALDICOADA_) {", "if (aba === 'OUTRA ABA DE NOME PARECIDO') {",
       "digitar por cima de uma caixa calculada devolve a conta", teste=K)
+# 02/10/2026, as Habilidades (B34): o riscado das cartas acima do nível é regra de cor declarada no ABAS, que o corDeEstado_
+# junta às dele; sem isso a troca de todas as regras da FICHA apaga o riscado
+edita("o corDeEstado_ apaga o riscado das Habilidades", C,
+      "  ((spec && spec.condicional) || []).forEach(function (c) { regras.push(regraDeCor_(ficha, c)); });\n", "",
+      "risca o nome e o texto das 9 cartas", teste=K)
+edita("escrever por cima da etiqueta de nivel nao devolve a conta", C,
+      "  if (dentroDeSemTrava_('FICHA', e.range)) {", "  if (false) {", "escrever por cima da etiqueta de nível devolve a conta", teste=K)
 print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
 edita("renomear uma variavel de dentro da conta", C, "var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"
       "                   .every(function (a) { return marcadas[a.caixa] === true; });\n  if ((marcadas[dono.caixa] === true) !== todas) muda[dono.caixa] = todas;",

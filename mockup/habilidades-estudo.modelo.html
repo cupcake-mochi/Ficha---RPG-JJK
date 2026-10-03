@@ -57,6 +57,8 @@ table.regras .agora{color:var(--acento-pag)}
 .c.desc{background:var(--f-papel); white-space:normal; align-items:flex-start; justify-content:flex-start; padding:3px 7px; font-size:11.5px; line-height:16px; color:var(--f-texto)}
 .c.desc > span{overflow:visible !important}
 .c.desc.dica-c{color:var(--f-fraco); font-style:italic}
+.c.riscado > span{text-decoration:line-through}
+.tg.abre{color:var(--f-fraco)}
 .c.desc.cortado{box-shadow:inset 0 -3px 0 var(--f-vermelho)}
 .prova{position:absolute; left:-9999px; top:0; visibility:hidden}
 .prova .c{position:relative; display:flex}
@@ -90,7 +92,7 @@ table.regras .agora{color:var(--acento-pag)}
   </div>
 
   <div class="legenda" aria-label="Como ler a folha">
-    <span><b>Nv 7</b>o nível em que o degrau ou a entrega chega, fixo na caixa</span>
+    <span><b>Nível 7</b>o nível em que o degrau ou a entrega chega, fixo na carta; "Abre no 15" quando o personagem ainda não chegou, e a carta sai riscada</span>
     <span><b>− ou +</b>na borda esquerda: um grupo que fecha</span>
     <span><b>número cinza</b>a linha da planilha; ele pula onde um grupo está fechado</span>
     <span><b>texto em itálico</b>o que a caixa vazia diz ao jogador</span>
@@ -111,7 +113,7 @@ table.regras .agora{color:var(--acento-pag)}
       <label for="nivel">Nível do exemplo</label>
       <select id="nivel"></select>
       <span>Caixa acima do nível:</span>
-      <button id="marca-sim" type="button" data-marca="1" aria-pressed="true">Diz "Abre no nível"</button>
+      <button id="marca-sim" type="button" data-marca="1" aria-pressed="true">Diz "Abre no" e risca</button>
       <button id="marca-nao" type="button" data-marca="0" aria-pressed="false">Fica vazia</button>
     </div>
     <div class="jogo" role="group" aria-label="Grupos"><span>Grupos</span>
@@ -159,7 +161,7 @@ table.regras .agora{color:var(--acento-pag)}
     <h2><b>→</b>O que falta decidir</h2>
     <ol class="passos">
       <li><b><s>Qual forma, valendo misturar.</s></b> Fechado em 02/10/2026: a C, as cartas ("Vai a C mesmo").</li>
-      <li><b>A carta acima do nível:</b> diz "Abre no nível 15" ou fica vazia. É a pergunta desta rodada.</li>
+      <li><b><s>A carta acima do nível.</s></b> Fechado em 02/10/2026: diz quando abre, e o que estiver escrito fica riscado até o nível chegar ("A e o texto fica 'riscado' (esqueci o nome), até desbloquear"). O aviso fica na etiqueta do nível, de três colunas ("Abre no 15"), porque o nome é onde o jogador escreve.</li>
       <li><b><s>O nome da seção.</s></b> "Habilidades", como ele sugeriu no pedido.</li>
       <li><b>A ordem com o catálogo:</b> a seção nova pode ser construída antes do catálogo em dia (B33), porque ela não lê o livro.</li>
     </ol>
@@ -179,8 +181,8 @@ const FORMAS = {
   d: 'Para a mesa: uma linha por degrau com o nível, de onde vem, o nome, o uso (Ação Bônus, Reação, uma vez por cena) e um resumo de uma linha, tudo escrito pelo jogador. O texto maior fica num grupo embaixo de cada linha, que nasce fechado.',
 };
 const est = { forma: 'c', cam: 0, tri: 0, nivel: 10, marca: true, pal: '', fechado: {} };
-try { const g = JSON.parse(localStorage.getItem('habilidades-2') || '{}'); Object.assign(est, g, { fechado: {} }); } catch (e) {}
-const guarda = () => { try { localStorage.setItem('habilidades-2', JSON.stringify({ forma: est.forma, cam: est.cam, tri: est.tri, nivel: est.nivel, marca: est.marca, pal: est.pal })); } catch (e) {} };
+try { const g = JSON.parse(localStorage.getItem('habilidades-3') || '{}'); Object.assign(est, g, { fechado: {} }); } catch (e) {}
+const guarda = () => { try { localStorage.setItem('habilidades-3', JSON.stringify({ forma: est.forma, cam: est.cam, tri: est.tri, nivel: est.nivel, marca: est.marca, pal: est.pal })); } catch (e) {} };
 
 function nova() { return { cel: [], grupos: [], linhas: 0, caixas: [] }; }
 function poe(L, r, c1, c2, cls, txt, op) { const k = Object.assign({ r, c1, c2, cls, txt: txt == null ? '' : String(txt), rs: 1 }, op || {}); L.cel.push(k); L.linhas = Math.max(L.linhas, r + k.rs); if (k.hab) L.caixas.push(k); return k; }
@@ -192,17 +194,21 @@ function exemplo() {
   return { C, T, cam: C.slots, tri: T.slots, todos: [...C.slots, ...T.slots].sort((a, b) => a.nivel - b.nivel || (a.fonte === 'Caminho' ? -1 : 1)) };
 }
 const aberto = (s) => s.nivel <= est.nivel;
-// o nome: o que o jogador escreveu, ou o aviso do nível, ou nada
+// o nome: o que o jogador escreveu; acima do nível, riscado (decidido em 02/10/2026: "A e o texto fica riscado até
+// desbloquear"), ou vazio na opção B
 function nome(L, r, c1, c2, s) {
   if (aberto(s)) poe(L, r, c1, c2, 'c nm acento', s.nomes);
-  else if (est.marca) poe(L, r, c1, c2, 'c sem p', 'Abre no nível ' + s.nivel);
+  else if (est.marca) poe(L, r, c1, c2, 'c nm acento riscado', s.nomes);
   else poe(L, r, c1, c2, 'c vz p', '');
 }
 // a caixa de texto de uma habilidade (a que as medidas contam): o resumo que o jogador escreveu, ou vazia
 function texto(L, r, c1, c2, rs, s) {
-  poe(L, r, c1, c2, aberto(s) ? 'c desc' : 'c desc vz', aberto(s) ? s.resumo : '', { rs, hab: true, slot: s });
+  const cls = aberto(s) ? 'c desc' : est.marca ? 'c desc riscado' : 'c desc vz';
+  poe(L, r, c1, c2, cls, aberto(s) || est.marca ? s.resumo : '', { rs, hab: true, slot: s });
 }
-const tag = (s) => 'Nv ' + s.nivel;
+// a etiqueta do nível: na forma escolhida (C) ela tem três colunas e diz quando a carta abre
+const tag = (s) => est.marca && !aberto(s) ? 'Abre no ' + s.nivel : (est.forma === 'c' ? 'Nível ' : 'Nv ') + s.nivel;
+const tagCls = (s) => (s.fonte === 'Caminho' ? 'c tg' : 'c tg tri') + (est.marca && !aberto(s) ? ' abre' : '');
 const ESCOLHAS = 'Escolhas da Trilha: o atributo, a rota, os tipos de dano do Alicerce.';
 const ANOTA = 'Anotações.';
 
@@ -267,7 +273,7 @@ function formaC() {
         const s = itens[f * POR + j], x = X[j];
         if (!s) continue;
         if (s.livre) { poe(L, r, x, x + W - 1, 'c cab', s.livre); poe(L, r + 1, x, x + W - 1, 'c desc dica-c', s.dica, { rs: TX }); continue; }
-        poe(L, r, x, x + 1, s.fonte === 'Caminho' ? 'c tg' : 'c tg tri', tag(s)); nome(L, r, x + 2, x + W - 1, s);
+        poe(L, r, x, x + 2, tagCls(s), tag(s)); nome(L, r, x + 3, x + W - 1, s);
         texto(L, r + 1, x, x + W - 1, TX, s);
       }
       grupo(L, id + '-txt' + f, r + 1, r + TX, 3, f === 0, r);
