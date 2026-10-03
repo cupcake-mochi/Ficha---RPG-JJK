@@ -119,8 +119,10 @@ edita("o grupo de dentro pedido na profundidade errada", F, "aba.getColumnGroup(
       "não há grupo dessa profundidade", teste=K)
 edita("o painel fecha antes da extensao", F, "var deDentro = function (a, b) { return b[3] - a[3]; };", "var deDentro = function (a, b) { return a[3] - b[3]; };",
       "a extensão fecha antes do painel", teste=K)
+# 03/10/2026: desde o B35 a CARTEIRA, a primeira aba, tem uma nota de uma linha só (a da foto); a faixa de uma linha a menos
+# fica vazia ali, e a montagem para logo nela, antes de chegar à matriz das outras
 edita("as notas de caixa com a faixa de uma linha a menos", F, "aba.getRange(r1, c1, r2 - r1 + 1, c2 - c1 + 1).setNotes(notas);",
-      "aba.getRange(r1, c1, r2 - r1, c2 - c1 + 1).setNotes(notas);", "a matriz não tem o tamanho da faixa", teste=K)
+      "aba.getRange(r1, c1, r2 - r1, c2 - c1 + 1).setNotes(notas);", "o construir() roda inteiro", teste=K)
 edita("o botao do grupo fica depois dele", F, "var ANTES = SpreadsheetApp.GroupControlTogglePosition.BEFORE;", "var ANTES = SpreadsheetApp.GroupControlTogglePosition.AFTER;",
       "com o botão em cima", teste=K)
 edita("a trava bloqueia em vez de avisar", C, "p.setDescription('fórmula · ' + nome + '!' + a1);\n      p.setWarningOnly(true);",
@@ -170,6 +172,16 @@ edita("o corDeEstado_ apaga o riscado das Habilidades", C,
       "risca o nome e o texto das 9 cartas", teste=K)
 edita("escrever por cima da etiqueta de nivel nao devolve a conta", C,
       "  if (dentroDeSemTrava_('FICHA', e.range)) {", "  if (false) {", "escrever por cima da etiqueta de nível devolve a conta", teste=K)
+# 03/10/2026, a moldura da foto da CARTEIRA saiu de dentro da caixa (ficha-v01/moldura_foto.py): a caixa nasce vazia, e a da
+# paleta se ancora na caixa que a CARTEIRA declara, e não na imagem mais alta
+# (sem a caixa declarada, a caixa da paleta cai embaixo de outra arte, e o merge dela pega um pedaço de outra caixa: a
+# montagem para, como pararia no Sheets)
+edita("a caixa da paleta volta a se ancorar na imagem mais alta", C, "  if (spec && spec.foto) {", "  if (false) {",
+      "o construir() roda inteiro", teste=K)
+edita("a CARTEIRA deixa de declarar a caixa da foto", F, '"foto":[8,3,21,11]', '"foto_":[8,3,21,11]',
+      "o construir() roda inteiro", teste=K)
+edita("a CARTEIRA declara a caixa da foto uma linha mais curta", F, '"foto":[8,3,21,11]', '"foto":[8,3,20,11]',
+      "a caixa da paleta nasce embaixo da foto", teste=K)
 print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
 edita("renomear uma variavel de dentro da conta", C, "var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"
       "                   .every(function (a) { return marcadas[a.caixa] === true; });\n  if ((marcadas[dono.caixa] === true) !== todas) muda[dono.caixa] = todas;",

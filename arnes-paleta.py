@@ -6,7 +6,7 @@ As tres regras do projeto: numa copia isolada, nunca nos arquivos reais; a base 
 perturbar; e cada perturbacao tem de mudar o arquivo de verdade antes de eu ler o resultado. Cada perturbacao e um
 defeito que o Codigo.gs poderia ter, e a agulha e a frase da checagem que tem de acender.
 
-Nao entra no rodar-tudo.sh: sao onze rodadas do regressao-paleta.js, uns dois minutos. Roda a mao, depois de mexer na
+Nao entra no rodar-tudo.sh: sao treze rodadas do regressao-paleta.js, uns dois minutos. Roda a mao, depois de mexer na
 troca de paleta:    python3 arnes-paleta.py
 """
 import os, shutil, subprocess, sys, tempfile
@@ -36,6 +36,9 @@ casos = [
  # 02/10/2026: a FICHA com o menu rápido é pintada em trechos de linhas; o resto dela não pode ficar para trás
  ("a troca pinta só o primeiro trecho da aba grande", "var trechos = trechosDaAba_(spec) || [null];",
   "var trechos = (trechosDaAba_(spec) || [null]).slice(0, 1);", "nenhum fundo nem fonte das abas visíveis ficou na cor de fábrica"),
+ # 03/10/2026: o canto chanfrado da moldura da foto emenda na borda, e segue a régua exata, sem o piso da arte
+ ("o canto da moldura da foto passa pelo piso de contraste da arte", "var cor = ARTE_DA_BORDA_[nome] ? '#' + String(agora.regua).toUpperCase()",
+  "var cor = false ? '#' + String(agora.regua).toUpperCase()", "cantos da moldura da foto saem na régua exata"),
  ("a arte cai no texto antes de tentar o acento", "if (agora.acento && contrasteHex_(acento, fundo) >= PISO_ARTE_) return acento;", "if (agora.acento) return '#' + String(agora.texto).toUpperCase();", "nas 122 paletas cada imagem sai na cor do papel dela"),
 ]
 ruins = 0

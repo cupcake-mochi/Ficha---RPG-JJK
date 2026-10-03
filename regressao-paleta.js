@@ -183,10 +183,12 @@ ok('a barra cheia é gravada na DADOS, na conta "cor da barra cheia", com a barr
 ok(`as ${enfeiteDoAbas().length} letras de enfeite (a marca, o número, a lombada) saem no bloco e na linha do tema`, enfeiteDoAbas().length>=10 && enfeiteFora(P,E).length===0, enfeiteFora(P,E).slice(0,4).join(', '));
 { const ruins=[]; const papelDaArte=r.ctx.PAPEL_DA_ARTE_;
   for(const s of ABAS) for(const im of (s.imgs||[])){ const cor=P.abas[s.nome].imgs[im[0]+','+im[1]].cor, fundo=P.abas[s.nome].bg[im[0]-1][im[1]-1];
+    // 03/10/2026: a arte que emenda numa borda (o canto chanfrado da moldura da foto) segue a régua exata, como a borda
+    if(r.ctx.ARTE_DA_BORDA_[String(im[4]).replace(/-\d+x\d+\.png$/,'')]){ if(cor!==hexDe(E,'regua')) ruins.push(`${s.nome} ${im[4]} ${cor}, e a régua é ${hexDe(E,'regua')}`); continue; }
     const papel=papelDaArte[String(im[4]).replace(/-\d+x\d+\.png$/,'')], doPapel=hexDe(E,papel);
     const mesmoMatiz=matiz(cor)!==null&&matiz(doPapel)!==null&&Math.min(Math.abs(matiz(cor)-matiz(doPapel)),360-Math.abs(matiz(cor)-matiz(doPapel)))<=4;
     if(contr(cor,fundo)<3 || !(cor===doPapel||cor===hexDe(E,'acento')||mesmoMatiz)) ruins.push(`${s.nome} ${im[4]} ${cor}`); }
-  ok('cada imagem aparece (3,0 sobre o fundo dela) e é a cor do papel dela, o acento do tema ou o papel dela no mesmo matiz', ruins.length===0, ruins.join(', ')); }
+  ok('cada imagem aparece (3,0 sobre o fundo dela) e é a cor do papel dela, o acento do tema ou o papel dela no mesmo matiz; a que emenda numa borda, a régua', ruins.length===0, ruins.join(', ')); }
 P.props.paleta_tempos=JSON.stringify(Object.assign(JSON.parse(P.props.paleta_tempos),{'cor:DADOS':99999}));
 { const {ctx}=carrega(SRC_NOVO,P); ctx.verTemposDaPaleta(); const reg=P.log.registro||'';
   ok('o relatório diz a versão, ignora passo de versão anterior, conta as execuções e mostra o passo de cor por dentro',
@@ -322,7 +324,8 @@ ok('a lombada que uma troca antiga deixou na cor do acento volta pra linha do te
 { const {ctx}=carrega(SRC_NOVO,criaPlanilha(ABAS)); const ruins=[], usos={papel:0,acento:0,matiz:0};
   const ondeMora={carteira:'tinta',ficha:'fundo'};
   for(const tema of Object.keys(ctx.PALETAS)) for(const v of ['Claro','Escuro']){ const n=tema+' · '+v, p=ctx.coresDoNome_(n);
-    for(const [img,papel] of Object.entries(ctx.PAPEL_DA_ARTE_)){ const fundo='#'+String(p[ondeMora[img.split('-')[0]]]).toUpperCase();
+    for(const [img,papel] of Object.entries(ctx.PAPEL_DA_ARTE_)){ if(ctx.ARTE_DA_BORDA_[img]) continue;   // não passa pelo corDaArte_, ver abaixo
+      const fundo='#'+String(p[ondeMora[img.split('-')[0]]]).toUpperCase();
       const doPapel='#'+String(p[papel]).toUpperCase(), acento='#'+String(p.acento).toUpperCase(), cor=ctx.corDaArte_(p,papel,fundo);
       const esperado = contr(doPapel,fundo)>=3 ? 'papel' : contr(acento,fundo)>=3 ? 'acento' : 'matiz';
       const dm=matiz(cor)===null||matiz(doPapel)===null?0:Math.min(Math.abs(matiz(cor)-matiz(doPapel)),360-Math.abs(matiz(cor)-matiz(doPapel)));
@@ -341,5 +344,20 @@ ok('a lombada que uma troca antiga deixou na cor do acento volta pra linha do te
   ok('nas 122 o bloco lê 3,5 e a linha lê 3,0 sobre a tinta, o fundo e o papel: a tinta de enfeite nunca depende da rede de legibilidade',
      bloco.length===0 && linha.length===0, bloco.concat(linha).slice(0,4).join(' · '));
   ok('nas 122 a barra cheia existe e lê 3,0 sobre o painel, que é onde as barras moram', barra.length===0, barra.slice(0,4).join(' · ')); }
+
+// 03/10/2026, a moldura da foto da CARTEIRA (ficha-v01/moldura_foto.py): as retas são borda na régua e os dois cantos
+// chanfrados são imagem dentro da célula do canto. O canto emenda na borda, e tem de sair na cor dela em toda paleta,
+// inclusive onde a régua lê menos de 3,0 contra a tinta, porque a borda (repintarBordas_) não tem piso. O caminho é o
+// da troca: o repintarArte_ de cada paleta, e a cor que ele grava na imagem.
+{ const P2=criaPlanilha(ABAS); const {ctx,ss}=carrega(SRC_NOVO,P2); const ruins=[]; let fracas=0;
+  const cantos=ABAS.flatMap(s=>(s.imgs||[]).filter(im=>ctx.ARTE_DA_BORDA_[String(im[4]).replace(/-\d+x\d+\.png$/,'')]).map(im=>[s.nome,im]));
+  for(const tema of Object.keys(ctx.PALETAS)) for(const v of ['Claro','Escuro']){ const n=tema+' · '+v, p=ctx.coresDoNome_(n), regua='#'+String(p.regua).toUpperCase();
+    for(const [aba,im] of cantos) P2.abas[aba].bg[im[0]-1][im[1]-1]='#'+String(p.tinta).toUpperCase();   // a troca pinta o fundo antes da arte
+    ctx.repintarArte_(ss,p,ctx.candidatosDeFonte_(p,ctx.coresOpostas_(n)));
+    for(const [aba,im] of cantos){ const cor=P2.abas[aba].imgs[im[0]+','+im[1]].cor;
+      if(cor!==regua) ruins.push(`${n} ${aba}!${a1(im[0]-1,im[1]-1)}: ${cor}, e a régua é ${regua}`);
+      if(contr(regua,'#'+String(p.tinta).toUpperCase())<3) fracas++; } }
+  ok(`nas 122 paletas os ${cantos.length} cantos da moldura da foto saem na régua exata, a cor da borda em que emendam (${fracas / 2} paletas com a régua abaixo de 3,0 contra a tinta)`,
+     cantos.length===2 && ruins.length===0 && fracas>0, ruins.slice(0,4).join(' · ')); }
 
 console.log(falhas?`\n${falhas} FALHA(S)`:'\nTODOS PASSARAM'); process.exit(falhas?1:0);

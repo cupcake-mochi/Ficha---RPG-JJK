@@ -837,6 +837,12 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     import habilidades as _hb
     _fl7 = next(a for a in _lay["abas"] if a["nome"] == "FICHA")
     _fl7["imagens"] = [_hb.arte_no_titulo(i, _hb.linha_do_titulo(_fl7, 7)) if i["arquivo"] == _hb.ARTE else i for i in _fl7["imagens"]]
+    # 03/10/2026: a limpeza 28 (moldura_foto.py) tira a moldura de dentro da caixa da foto e põe um canto em cada quina
+    import moldura_foto as _mf
+    _lmf = _js.load(open("ficha-v01/layout.json", encoding="utf-8"))
+    _fl.aplica(_lmf, _fl.trocas(_lmf))
+    _cmf = next(a for a in _lay["abas"] if a["nome"] == "CARTEIRA")
+    _cmf["imagens"] = [i for i in _cmf["imagens"] if i["arquivo"] != _mf.ARTE_VELHA] + _mf.trocas(_lmf)["cantos"]
     _mart = _re.search(r"var ARTE = (\{.*?\});\n", g, _re.S)
     # 18/09/2026: a arte grande vem em pedaços concatenados por "+" (emitir_gs._sem_linha_gigante),
     # pra nenhuma linha do Ficha.gs travar o editor do Apps Script — colada de volta antes do JSON.
@@ -848,6 +854,8 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
         for i in la["imagens"]:
             _n_img += 1
             cand = [im for im in (sp["imgs"] if sp else []) if str(im[4]).startswith(i["arquivo"][:-4] + "-")]
+            if len(cand) > 1:          # a mesma arte em duas caixas (os cantos da moldura da foto): a da célula da imagem
+                cand = [im for im in cand if im[0] <= i["lin"] <= im[2] and im[1] <= i["col"] <= im[3]]
             if len(cand) != 1 or len(cand[0]) != 5:
                 _img_ruim.append((la["nome"], i["arquivo"], "sem caixa no script"))
                 continue
@@ -892,7 +900,9 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     _acha = re.search(r"function acharCaixaDaFoto_\(sh\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("acharCaixaDaFoto_ acha a foto pelo valueType da CellImage, não por getImages",
           bool(_acha) and "getImages" not in _acha.group(1)
-          and "valueType" in _acha.group(1) and "SpreadsheetApp.ValueType.IMAGE" in _acha.group(1))
+          and "valueType" in _acha.group(1) and "SpreadsheetApp.ValueType.IMAGE" in _acha.group(1)
+          # 03/10/2026: a caixa da foto fica vazia até o jogador inserir a imagem, e a CARTEIRA declara onde ela mora
+          and _acha.group(1).find("spec.foto") >= 0 and _acha.group(1).find("spec.foto") < _acha.group(1).find("valueType"))
     _confp = re.search(r"function configurarPaleta_\(ss, force\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("configurarPaleta_ ancora a caixa da paleta em acharCaixaDaFoto_, não em getImages direto",
           bool(_confp) and "acharCaixaDaFoto_(" in _confp.group(1) and "getImages" not in _confp.group(1))
@@ -1151,16 +1161,81 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
           and "var TEXTO_AVISO_PALETA_ = 'O tema leva uns 20 segundos. O que faltar termina enquanto você usa a ficha.';" in _CODA
           and bool(_rb) and "NOME_CEL_PALETA_AVISO_" in _rb.group(1))
 
-    # A arte é imagem e não troca de cor com a paleta: a moldura da foto tem o miolo TRANSPARENTE (o
-    # fundo da célula segue o tema) e a pincelada clara é de meio-tom, que lê no tinta claro e no escuro.
+    # A pincelada clara do meio da CARTEIRA é de meio-tom, que lê no tinta claro e no escuro. (Até 03/10/2026 esta
+    # checagem também via a moldura da foto sem miolo opaco: a moldura saiu de dentro da caixa, ver abaixo.)
     from PIL import Image as _PImg
-    _mold = _PImg.open("ficha-v01/arte/carteira-2.png").convert("RGBA")
     _pinc = _PImg.open("ficha-v01/arte/carteira-3.png").convert("RGBA")
     _cores_pinc = {p[:3] for p in _pinc.getdata() if p[3] > 200}
-    checa("a moldura da foto não leva miolo opaco, e a pincelada do meio é de meio-tom (lê nos dois extremos)",
-          _mold.getpixel((_mold.width // 2, _mold.height // 4))[3] == 0
-          and len(_cores_pinc) == 1
-          and 0.12 < _lum("%02X%02X%02X" % list(_cores_pinc)[0]) < 0.24)
+    checa("a pincelada do meio é de meio-tom (lê nos dois extremos)",
+          len(_cores_pinc) == 1 and 0.12 < _lum("%02X%02X%02X" % list(_cores_pinc)[0]) < 0.24)
+
+    # 03/10/2026, pedido do Mizuki: a foto entra NA célula, e não solta por cima ("a parte central ser uma celula só
+    # mesclada, que o jogador clica e insere"), com a moldura em volta (a B+ do estudo: "vamos de B+"). A moldura solta
+    # por cima foi recusada: "o jogador quando clicar vai acabar clicando na imagem ao invés do fundo". A regra, lida do
+    # que o script manda para o Sheets:
+    #   · a CARTEIRA declara a caixa da foto, e ela é uma caixa mesclada, sem imagem nenhuma dentro, com o convite
+    #     escrito e a nota de como inserir;
+    #   · no anel de uma célula em volta, cada célula tem o lado de fora na régua média, menos as duas quinas chanfradas
+    #     (em cima à esquerda e embaixo à direita, como no desenho antigo da moldura);
+    #   · cada quina chanfrada tem uma imagem na célula dela, só nela, o traço "/" de canto a canto, que nasce na régua
+    #     e que a troca de paleta pinta na régua exata, a cor da borda em que ela emenda.
+    from openpyxl.utils.cell import range_boundaries as _rbx
+    _car = next(a for a in dados if a["nome"] == "CARTEIRA")
+    _ft = _car.get("foto")
+    _lados_regua = {}
+    for _b in _car["bordas"]:
+        if _b[1] == "medium" and str(_b[2]).upper() == "#8A7EC4":
+            for _fx in _b[3]:
+                _c1, _r1, _c2, _r2 = _rbx(_fx)
+                for _rr in range(_r1, _r2 + 1):
+                    for _cc in range(_c1, _c2 + 1):
+                        _lados_regua.setdefault((_rr, _cc), set()).add(_b[0])
+    _mold_ruim = []
+    if not (_ft and len(_ft) == 4 and list(_ft) in [list(m) for m in _car["merges"]]):
+        _mold_ruim.append(f"a caixa da foto {_ft} não é uma caixa mesclada da CARTEIRA")
+    else:
+        _l1, _c1, _l2, _c2 = _ft
+        _dentro = [im[4] for im in _car["imgs"] if not (im[2] < _l1 or im[0] > _l2 or im[3] < _c1 or im[1] > _c2)]
+        if _dentro:
+            _mold_ruim.append(f"imagem dentro da caixa da foto: {_dentro}")
+        _v = next((v for v in _car["vals"] if v[0] == _l1 and v[1] == _c1), None)
+        if not _v or _v[2] != "FOTO\n顔":
+            _mold_ruim.append(f"a caixa da foto não tem o convite: {_v}")
+        if "Inserir imagem na célula" not in dict((n[0], n[1]) for n in _car.get("notas", [])).get(f"{L(_c1)}{_l1}", ""):
+            _mold_ruim.append("a caixa da foto não tem a nota de como inserir")
+        _quinas = {(_l1 - 1, _c1 - 1), (_l2 + 1, _c2 + 1)}
+        _anel = {}
+        for _cc in range(_c1 - 1, _c2 + 2):
+            _anel.setdefault((_l1 - 1, _cc), set()).add("top"); _anel.setdefault((_l2 + 1, _cc), set()).add("bottom")
+        for _rr in range(_l1 - 1, _l2 + 2):
+            _anel.setdefault((_rr, _c1 - 1), set()).add("left"); _anel.setdefault((_rr, _c2 + 1), set()).add("right")
+        for _k, _ls in sorted(_anel.items()):
+            if _k in _quinas:          # a quina é chanfrada: reta nenhuma no lado de fora dela
+                if _ls & _lados_regua.get(_k, set()):
+                    _mold_ruim.append(f"a quina {L(_k[1])}{_k[0]} tem reta em {sorted(_ls & _lados_regua.get(_k, set()))}")
+                continue
+            if not _ls <= _lados_regua.get(_k, set()):
+                _mold_ruim.append(f"{L(_k[1])}{_k[0]} sem a régua em {sorted(_ls - _lados_regua.get(_k, set()))}")
+        _pap_mf = re.search(r"var PAPEL_DA_ARTE_ = \{(.*?)\};", _CODA, re.S).group(1)
+        _borda_mf = re.search(r"var ARTE_DA_BORDA_ = \{(.*?)\};", _CODA, re.S)
+        _arte_mf = _js.loads(_re.sub(r'"\s*\+\s*"', '', _re.search(r"var ARTE = (\{.*?\});\n", g, _re.S).group(1)))
+        for _q in sorted(_quinas):
+            _im = [im for im in _car["imgs"] if im[:4] == [_q[0], _q[1], _q[0], _q[1]]]
+            if len(_im) != 1:
+                _mold_ruim.append(f"a quina {L(_q[1])}{_q[0]} não tem uma imagem só, na célula dela: {_im}")
+                continue
+            _pref = re.sub(r"-\d+x\d+\.png$", "", _im[0][4])
+            if f"'{_pref}': 'regua'" not in _pap_mf or not _borda_mf or f"'{_pref}': true" not in _borda_mf.group(1):
+                _mold_ruim.append(f"a quina {_im[0][4]} não segue a régua exata na troca (PAPEL_DA_ARTE_ e ARTE_DA_BORDA_)")
+            _png = _PImg.open(__import__("io").BytesIO(_b64.b64decode(_arte_mf[_im[0][4]]))).convert("RGBA")
+            _w, _h = _png.size
+            _a = lambda x, y: _png.getpixel((min(_w - 1, max(0, round(x * (_w - 1)))), min(_h - 1, max(0, round(y * (_h - 1))))))[3]
+            _cor = {p[:3] for p in _png.getdata() if p[3] > 200}
+            if not (_a(0.02, 0.98) > 128 and _a(0.98, 0.02) > 128 and _a(0.5, 0.5) > 128
+                    and _a(0.02, 0.02) == 0 and _a(0.98, 0.98) == 0 and _cor == {(0x8A, 0x7E, 0xC4)}):
+                _mold_ruim.append(f"a quina {_im[0][4]} não é o traço / de canto a canto na régua: {sorted(_cor)[:2]}")
+    checa("a foto entra na célula: a caixa livre, com o convite e a nota, a moldura em volta na régua, e as duas quinas "
+          "chanfradas em imagem na célula do canto, na régua exata", not _mold_ruim, str(_mold_ruim[:3]))
 
     # A função que o Excel não tem sai do .xlsx embrulhada em IFERROR(__xludf.DUMMYFUNCTION("...")),
     # e remontada assim ela falha calada: foram as barras vazias de 15/09/2026. O script leva a de dentro.

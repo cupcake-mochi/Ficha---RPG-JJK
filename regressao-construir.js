@@ -85,6 +85,14 @@ ok('todo menu do ABAS vira validação na célula dele',
 ok('toda caixa de seleção medida vira caixa', ABAS.every((s) => (s.caixas || []).every((c) => S.acha(s.nome).caixas.has(c[1] + ',' + c[0]) && S.acha(s.nome).caixas.has((c[1] + c[2] - 1) + ',' + c[0]))));
 ok('a caixa da paleta nasce na CARTEIRA, com os três intervalos nomeados', ['PALETA_ESCOLHIDA', 'PALETA_ROTULO', 'PALETA_AVISO'].every((n) => P.nomeados[n]) && /paleta: criada em CARTEIRA!/.test(P.registro || ''),
    String(P.registro).slice(0, 200));
+// 03/10/2026: a moldura saiu de dentro da caixa da foto, que nasce vazia (ver ficha-v01/moldura_foto.py), e a caixa da
+// paleta, que se ancora na foto, não pode ir parar embaixo de outra imagem. O lugar é o que o Mizuki aprovou no Kaori.xlsx
+// em 18/09/2026, o mesmo do regressao-paleta.js: o rótulo em C26:I26, o valor em C27:M28 e o aviso em C29:M29.
+{ const letra = (c) => { let t = ''; while (c > 0) { const m = (c - 1) % 26; t = String.fromCharCode(65 + m) + t; c = Math.floor((c - 1) / 26); } return t; };
+  const onde = (n) => { const r = P.nomeados[n]; return r ? letra(r.getColumn()) + r.getRow() + ':' + letra(r.getLastColumn()) + r.getLastRow() : '—'; };
+  ok('a caixa da paleta nasce embaixo da foto, onde o Mizuki aprovou no Kaori.xlsx, com a caixa da foto vazia',
+     onde('PALETA_ROTULO') === 'C26:I26' && onde('PALETA_ESCOLHIDA') === 'C27:M28' && onde('PALETA_AVISO') === 'C29:M29',
+     ['PALETA_ROTULO', 'PALETA_ESCOLHIDA', 'PALETA_AVISO'].map(onde).join(' · ')); }
 ok('o registro do construir() fala da ficha pessoal', /ficha pessoal: \d+ nota/.test(P.registro || ''), String(P.registro).slice(-200));
 
 console.log('\nA FICHA PESSOAL, MONTADA');

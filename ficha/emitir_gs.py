@@ -114,9 +114,10 @@ def _redimensiona(caminho, bw, bh):
     import io
     from PIL import Image as _Img
     filtro = getattr(getattr(_Img, "Resampling", _Img), "LANCZOS")
-    img = _Img.open(caminho).convert("RGBA").resize((bw * 2, bh * 2), filtro)
+    desenho = _Img.open(caminho).convert("RGBA")
+    img = desenho.resize((bw * 2, bh * 2), filtro)
     buf = io.BytesIO()
-    _png_de_uma_cor(img).save(buf, "PNG", **_PNG_DE_UMA_COR)
+    _png_de_uma_cor(img, desenho).save(buf, "PNG", **_PNG_DE_UMA_COR)
     return base64.b64encode(buf.getvalue()).decode()
 
 
@@ -130,9 +131,13 @@ _PNG_DE_UMA_COR = {"transparency": bytes(range(256)), "optimize": False}
 _TOLERANCIA_DE_COR = 48   # quanto a cor de um pixel opaco pode se afastar da media antes de a imagem nao ser "de uma cor"
 
 
-def _png_de_uma_cor(img):
+def _png_de_uma_cor(img, desenho=None):
+    """a cor sai do `desenho` (a arte antes de reduzida), quando vem: 03/10/2026, o Pillow 10 reduz o RGBA com o alfa
+    pre-multiplicado, e o LANCZOS estoura a cor na beira do traco. A media da arte reduzida saia 1 a 3 tons fora da
+    desenhada, e o canto da moldura da foto (ver ficha-v01/moldura_foto.py), que emenda na borda da regua, saia 8E81C9
+    em vez de 8A7EC4. O alfa, que e o desenho, continua o da arte reduzida."""
     from PIL import Image as _Img
-    opacos = [p for p in img.getdata() if p[3] > 128]
+    opacos = [p for p in (desenho or img).getdata() if p[3] > 128]
     if not opacos:
         raise SystemExit("emitir_gs: imagem de arte sem nenhum pixel opaco")
     media = tuple(round(sum(p[i] for p in opacos) / len(opacos)) for i in range(3))

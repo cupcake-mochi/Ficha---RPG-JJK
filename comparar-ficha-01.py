@@ -93,6 +93,12 @@ LAY_FA2 = copy.deepcopy(LAY_MR)     # 02/10/2026: depois das Habilidades e do me
 habilidades.aplica(LAY_FA2, HB)
 menu_rapido.aplica(LAY_FA2, MR)
 DIVISORIA = correcoes_borda.celulas_da_divisoria(LAY_FA2)
+# 03/10/2026, limpeza 28: a moldura da foto da CARTEIRA sai de dentro da caixa (moldura_foto.py). O anel em volta ganha a
+# regua, a caixa ganha o convite, e a imagem da moldura da lugar aos dois cantos chanfrados. Le o layout depois das limpezas
+# de cima, como o monta.py o tem na hora (nenhuma delas mexe nessas celulas da CARTEIRA).
+import moldura_foto
+LAY_MF = copy.deepcopy(LAY_FA2)
+MF = moldura_foto.trocas(LAY_MF)
 DIVISORIA_TRACO = ["medium", "FF8A7EC4"]
 
 for f in (A, B):
@@ -393,6 +399,14 @@ for n in wa.sheetnames:
                     and all(pa[k] == pb[k] for k in pa if k != "fundo")):
                 esperadas["célula com o fundo de base, que o gerador não escreve"] += 1
                 continue
+            # limpeza 28: a moldura da foto (03/10/2026). O VALOR tem de ser o que o moldura_foto.py monta, e o ESTILO o que
+            # ele declara: o anel em volta da caixa com a regua no lado de fora, e a caixa com o convite
+            if n == "CARTEIRA" and coord in MF["celulas"]:
+                _mf = MF["celulas"][coord]
+                _est = _perfil_do_estilo(LAY_MF["estilos"][_mf[1]])
+                if pb["valor"] == _mf[0] and all(pb[k] == _est[k] for k in _est if k != "fmt"):
+                    esperadas["moldura da foto: o anel na régua em volta da caixa, e o convite dentro dela"] += 1
+                    continue
             # limpeza 15: a caixa ORIGEM da CARTEIRA nasceu com borda branca fina em tres lados, engano de
             # formatacao manual; o ficha-v01/correcoes_borda.py da a ela, celula a celula, a borda da CAMINHO
             # (as duas tem dez colunas: AK:AT e O:X).
@@ -601,10 +615,21 @@ for n in wa.sheetnames:
     ia = [(round(i.width), round(i.height)) for i in getattr(sa, "_images", [])]
     ib = [(round(i.width), round(i.height)) for i in getattr(sb, "_images", [])]
     print(f"  imagens: {len(ia)} original · {len(ib)} gerada")
-    if sorted(ia) != sorted(ib) and n in LAY["_meta"].get("imagens_mantidas", {}) \
-            and len(ia) == len(ib) == LAY["_meta"]["imagens_mantidas"][n]:
+    # limpeza 28: na CARTEIRA, a moldura de dentro da foto sai e os dois cantos chanfrados entram. A pasta de trabalho
+    # lida de volta da o tamanho do PNG, e nao o da ancora
+    from PIL import Image as _PI
+    _cantos = [_PI.open(os.path.join(AQUI, "ficha-v01", "arte", c["arquivo"])).size for c in MF["cantos"]] if n == "CARTEIRA" else []
+    _ib_sem = list(ib)
+    for _c in _cantos:
+        if _c in _ib_sem:
+            _ib_sem.remove(_c)
+    _mantidas = LAY["_meta"].get("imagens_mantidas", {}).get(n)
+    if sorted(ia) != sorted(ib) and _mantidas is not None and len(ia) == _mantidas \
+            and len(_ib_sem) == _mantidas - (1 if _cantos else 0) and len(ib) - len(_ib_sem) == len(_cantos):
         # a exportacao trouxe a imagem de dentro da celula, e o extrator manteve a do layout anterior
-        esperadas["imagem de dentro da célula, mantida do layout anterior"] += len(ia)
+        esperadas["imagem de dentro da célula, mantida do layout anterior"] += len(_ib_sem)
+        if _cantos:
+            esperadas["moldura da foto: a imagem de dentro da caixa sai, e entram os dois cantos chanfrados"] += len(_cantos)
     elif sorted(ia) != sorted(ib):
         difs.append(f"{n}: tamanhos de imagem {sorted(ia)} != {sorted(ib)}")
 

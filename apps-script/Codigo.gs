@@ -1382,6 +1382,14 @@ var PALETA_INICIAL_ = 'Escolha uma paleta';
  * OverGridImage mesmo.
  */
 function acharCaixaDaFoto_(sh) {
+  // 03/10/2026: a moldura saiu de dentro da caixa da foto, que ficou livre pro jogador inserir a imagem na célula (ver
+  // ficha-v01/moldura_foto.py). A caixa vazia não tem imagem pra ser achada, e a imagem mais alta passaria a ser a de
+  // outra arte: a CARTEIRA declara onde a caixa mora (`foto` no ABAS, [linha 1, coluna 1, linha 2, coluna 2]). A busca
+  // pela imagem fica pra uma aba sem a declaração.
+  var spec = ABAS.filter(function (a) { return a.nome === sh.getName(); })[0];
+  if (spec && spec.foto) {
+    return sh.getRange(spec.foto[0], spec.foto[1], spec.foto[2] - spec.foto[0] + 1, spec.foto[3] - spec.foto[1] + 1);
+  }
   var nl = sh.getLastRow(), nc = sh.getLastColumn();
   if (nl < 1 || nc < 1) return null;
   var vals = sh.getRange(1, 1, nl, nc).getValues();
@@ -2166,8 +2174,13 @@ var PISO_ARTE_ = 3.0;
 // do tema (régua, a cor mais saturada que ele tem).
 var PAPEL_DA_ARTE_ = {
   'carteira-1': 'bloco', 'carteira-2': 'bloco', 'carteira-3': 'acento', 'carteira-4': 'regua',
-  'ficha-1': 'bloco', 'ficha-2': 'regua'
+  'ficha-1': 'bloco', 'ficha-2': 'regua', 'carteira-canto': 'regua'
 };
+// 03/10/2026: a arte que CONTINUA uma borda, e não fica solta. O canto chanfrado da moldura da foto (ver
+// ficha-v01/moldura_foto.py) emenda nas retas, que são borda na régua, e repintarBordas_ pinta a borda com a régua
+// exata, sem piso de contraste. Com o piso da arte, o canto sairia de outra cor que a borda em 30 das 122 paletas
+// (nelas a régua tem menos de 3,0 contra a tinta, o fundo da CARTEIRA). Esta arte segue a régua exata, como a borda.
+var ARTE_DA_BORDA_ = { 'carteira-canto': true };
 var CRC_TABELA_ = null;
 
 function crc32_(bytes, ini, fim) {
@@ -2221,7 +2234,8 @@ function repintarArte_(ss, agora, candidatos, soAba, soImagem) {
     if (!sh) return;
     (spec.imgs || []).forEach(function (im, n) {
       if (soImagem !== undefined && n !== soImagem) return;
-      var papel = PAPEL_DA_ARTE_[String(im[4]).replace(/-\d+x\d+\.png$/, '')];
+      var nome = String(im[4]).replace(/-\d+x\d+\.png$/, '');
+      var papel = PAPEL_DA_ARTE_[nome];
       if (!papel || !ARTE[im[4]] || agora[papel] === undefined) return;
       try {
         var cel = sh.getRange(im[0], im[1]);
@@ -2229,7 +2243,8 @@ function repintarArte_(ss, agora, candidatos, soAba, soImagem) {
         if (!v || v.valueType !== SpreadsheetApp.ValueType.IMAGE) return;
         if (String(v.getAltTextTitle()) !== TAG_ARTE_ + im[4]) return;      // a foto do jogador, por exemplo
         var fundo = String(cel.getBackground()).toUpperCase();
-        var cor = cache[papel + fundo] || (cache[papel + fundo] = corDaArte_(agora, papel, fundo));
+        var cor = ARTE_DA_BORDA_[nome] ? '#' + String(agora.regua).toUpperCase()
+          : cache[papel + fundo] || (cache[papel + fundo] = corDaArte_(agora, papel, fundo));
         if (String(v.getAltTextDescription()) === cor) return;              // já está dessa cor
         cel.setValue(SpreadsheetApp.newCellImage()
           .setSourceUrl('data:image/png;base64,' + pngComCor_(ARTE[im[4]], cor))

@@ -2143,6 +2143,62 @@ leem é o mesmo, e só o carimbo mudou (o Ficha.gs não mudou com isso).*
 **O que só o Sheets diz, e falta ele ver:** *o riscado aparecendo e sumindo quando o NÍVEL muda; a etiqueta "Abre no 15"
 cabendo nas três colunas; os grupos de cada fileira; e a arte ao lado do título.*
 
+### B35 · A foto da `CARTEIRA` entra na célula, com a moldura em volta — **FEITA em 03/10/2026 (a B+); falta montar no Sheets, e a ligação com a `FICHA PESSOAL` espera o teste dele**
+
+*Pedido dele em 03/10/2026: "Sabe no ficha aonde temos a foto? Então, é uma 'imagem', então não dá pra inserir imagem
+nela, tem que ser uma imagem 'solta' por cima que o jogador põe, oq não é muito bom. Eu não sei se teria alguma forma de
+manter a imagem, o contorno bunitinho, sem fazer com que o jogador tenha q inserir a imagem do personagem encima da
+célula ao invés de na célula. Porque na célula também daria pra ligar a imagem no ficha com o espaço no ficha pessoal".
+A moldura era a imagem `carteira-2` DENTRO da caixa `C8:K21`, e uma célula guarda uma coisa só.*
+
+*As opções: A, a moldura solta por cima com o miolo transparente; B, só a borda da célula (perde os cantos chanfrados);
+C, a moldura cortada em pedaços nas células em volta; e a B+, a borda no anel em volta da caixa e os dois chanfros como
+imagem pequena na célula do canto. A A caiu com a pergunta dele: "se for A, o jogador quando clicar vai acabar clicando
+na imagem ao invés do fundo, não?" (a imagem solta pega o clique no retângulo inteiro, até no transparente).*
+
+**Escolha de 03/10/2026: "vamos de B+ ... ai a gente fazer a parte central ser uma celula só mesclada, que o jogador
+clica e insere".**
+
+**Como ficou (a limpeza 28, `ficha-v01/moldura_foto.py`).** *A caixa `C8:K21` continua mesclada e do mesmo tamanho
+(252 x 300), sem imagem dentro, com "FOTO / 顔" escrito em Yuji Syuku 22 (a fonte do 呪術廻戦 do cabeçalho, a única
+das três que tem as letras e o kanji; 22 é o piso de kanji da ficha) e a nota "Clique na caixa e use Inserir › Imagem
+› Inserir imagem na célula."; a imagem inserida toma o lugar do texto. A moldura foi para o anel `B7:L22`: as retas
+são borda média na régua (que a troca de paleta já repinta), e os chanfros de cima à esquerda (`B7`) e de baixo à
+direita (`L22`), os mesmos do desenho antigo, são a arte `carteira-canto`, o traço "/" de canto a canto da célula
+(28 x 21 em cima, 28 x 27 embaixo, porque a linha 22 é mais alta). Fica uma margem de uma célula entre a linha e a
+foto.*
+
+*Três coisas que a rodada achou e consertou:*
+- *a caixa da paleta se ancorava na imagem mais alta da `CARTEIRA` (`acharCaixaDaFoto_`), que era a moldura; com a
+  caixa vazia, ia ancorar noutra arte. A `CARTEIRA` passou a declarar a caixa da foto (`foto` no ABAS), e a função lê
+  essa caixa primeiro. O `regressao-construir.js` só via que a caixa nascia na CARTEIRA; agora confere o lugar
+  (`C26:I26`, `C27:M28`, `C29:M29`, o do Kaori.xlsx);*
+- *a troca de paleta põe na arte um piso de contraste de 3,0, e a borda não tem piso: em 30 das 122 paletas a régua lê
+  menos de 3,0 contra a tinta, e o canto sairia de outra cor que a reta em que emenda. O canto segue a régua exata
+  (`ARTE_DA_BORDA_`, no `Codigo.gs`);*
+- *a arte embutida saía 1 a 3 tons fora da cor desenhada (o Pillow 10 reduz com o alfa pré-multiplicado, e o LANCZOS
+  estoura a beira do traço), e o canto nascia 8E81C9 contra a borda 8A7EC4. O `emitir_gs.py` passou a tirar a cor da
+  arte desenhada, antes da redução; as outras artes mudaram 1 a 3 tons, para a cor que foi desenhada.*
+
+*Conferido pelo `conferir-ficha-xlsx.py` (a regra da moldura, lida do que o script manda para o Sheets: a caixa
+declarada é mesclada, sem imagem, com o convite e a nota; o anel com a régua no lado de fora e reta nenhuma nas quinas;
+cada quina com uma imagem só, o traço "/" na régua, que a troca pinta na régua exata), pelo `regressao-paleta.js` (os 2
+cantos saem na régua exata nas 122 paletas, a troca de verdade), pelo `regressao-construir.js` (o lugar da caixa da
+paleta), pelo `regressao-arte.js` (oito imagens, sem a moldura antiga e com os dois cantos) e pelo comparador (IGUAIS,
+com a limpeza 28). O `arnes-moldura.py`, novo e rodado à mão, planta nove defeitos na moldura; o `arnes-pessoal.py` vai
+a 51 (a caixa da paleta de volta na imagem mais alta e a CARTEIRA sem declarar a caixa, que param a montagem, e
+a caixa declarada uma linha mais curta, que tira a caixa da paleta do lugar) e o `arnes-paleta.py` a 11 (o
+canto passando pelo piso da arte).*
+
+**O que fica para depois:**
+- *a ligação com a `FICHA PESSOAL` (ele: "num geral o jogador colocaria a imagem na carteira e ela iria para o ficha
+  pessoal"). A caixa "FOTO DO PERSONAGEM" da FICHA PESSOAL passaria a ser `=CARTEIRA!C8`, e a documentação do Google
+  não diz se uma fórmula que aponta para uma célula com imagem inserida mostra a imagem. Espera o teste dele numa
+  planilha em branco: uma imagem inserida na `A1`, `=A1` na `B1` e numa outra aba. Se não mostrar, o caminho é o
+  `IMAGE` com o link da foto;*
+- *o que só o Sheets diz: se a imagem dentro da célula do canto encosta nas bordas da célula ou fica com folga (se
+  ficar, aparece um vãozinho na quina, e a saída é a B, só a borda), e a foto inserida no lugar do "FOTO / 顔".*
+
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
 Os dois capítulos vendorizados vieram **byte a byte idênticos** do commit

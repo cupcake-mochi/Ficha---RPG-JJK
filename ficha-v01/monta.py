@@ -109,6 +109,14 @@ print(f"o menu rapido na secao 8 da FICHA: {menu_rapido.aplica(LAYOUT, _MR)} mud
 import correcoes_borda
 print(f"as bordas corrigidas: {correcoes_borda.aplica(LAYOUT)} celula(s) diferentes da exportacao")
 
+# 03/10/2026, limpeza 28: a moldura da foto da CARTEIRA sai de dentro da caixa, pedido do Mizuki, para o jogador inserir
+# a foto NA celula, e nao solta por cima. As retas viram borda na regua e os dois cantos chanfrados, imagem pequena na
+# celula do canto. Ver moldura_foto.py.
+import moldura_foto
+_MF = moldura_foto.trocas(LAYOUT)
+print(f"a moldura da foto em volta da caixa: {moldura_foto.aplica(LAYOUT, _MF)} mudanca(s), a caixa {_MF['caixa']} livre")
+moldura_foto.desenha(_MF)
+
 # 19/09/2026: o texto curto que abre frase ou titulo com a inicial minuscula, na INVOCACAO e no CATALOGO.
 # Ver correcoes_texto.py.
 import correcoes_texto
@@ -283,7 +291,9 @@ def _extras(a):
            "copias": a.get("copias", []), "validacao_em_matriz": a.get("validacao_em_matriz", False),
            "abaixo": a.get("abaixo", []),
            # 02/10/2026, o menu rapido da FICHA: as linhas que a trava de formula do script deixa de fora
-           "sem_trava": a.get("sem_trava", [])}
+           "sem_trava": a.get("sem_trava", []),
+           # 03/10/2026, a CARTEIRA: a caixa da foto, onde a caixa da paleta se ancora (ver moldura_foto.py)
+           "foto": a.get("foto")}
     return {k: v for k, v in out.items() if v}
 
 gs, celulas, pecas = emitir_gs.escrever(

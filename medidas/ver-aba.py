@@ -349,7 +349,7 @@ def grade(spec, valores, crus, aberto=True, barras=None, pintura=None, linhas=No
 
 # a cor com que cada imagem nasce, antes de qualquer troca de paleta (ficha-v01/arte)
 FABRICA_DA_ARTE = {"carteira-1": "756588", "carteira-2": "756588", "carteira-3": "998BA9", "carteira-4": "8A7EC4",
-                   "ficha-1": "756588", "ficha-2": "8A7EC4"}
+                   "ficha-1": "756588", "ficha-2": "8A7EC4", "carteira-canto": "8A7EC4"}
 CSS = """
 .aba{display:grid}
 .c{position:relative;box-sizing:border-box;display:flex;overflow:hidden;white-space:nowrap;padding:0 3px;min-width:0;line-height:1.15}
