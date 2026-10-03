@@ -1,0 +1,434 @@
+<title>Habilidades · Estudos</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Castoro&family=Oswald:wght@400;500&family=Roboto:wght@400;500&family=Yuji+Syuku&display=swap">
+<style>
+/*CSS-DO-ESTUDO-DA-FICHA-PESSOAL*/
+/* ---------- o que este estudo acrescenta ---------- */
+/* Layout: a mesma coluna de leitura dos estudos anteriores; a folha é a seção 7 da FICHA, na grade de 47 colunas, com
+   quatro calhas de grupo (a seção, os blocos, as fileiras e o texto) e o número da linha da planilha. */
+:root{ --f-faixa:#E32175; --f-na-faixa:#1E1320; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --f-faixa:#211940; --f-na-faixa:#F4F1F7; } }
+:root[data-theme="dark"]{ --f-faixa:#211940; --f-na-faixa:#F4F1F7; }
+.pal-escura{ --f-faixa:#211940; --f-na-faixa:#F4F1F7; }
+.pal-clara{ --f-faixa:#E32175; --f-na-faixa:#1E1320; }
+.folha.hab{grid-template-columns:14px 14px 14px 14px 30px repeat(47,20px); width:1026px}
+.faixa{background:var(--f-faixa); color:var(--f-na-faixa)}
+.faixa.n7{justify-content:center; padding-left:0; font-size:15px}
+.jogo{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:13px; color:var(--fraco-pag)}
+.jogo > span:first-child{min-width:64px}
+.jogo button{font:inherit; font-family:var(--rot); letter-spacing:.06em; text-transform:uppercase; font-size:12px; color:var(--tinta-pag); background:transparent; border:1px solid var(--fio-pag); padding:5px 10px; cursor:pointer}
+.jogo button[aria-pressed="true"]{border-color:var(--acento-pag); color:var(--acento-pag)}
+.jogo button:focus-visible, .jogo select:focus-visible{outline:2px solid var(--acento-pag); outline-offset:2px}
+.jogo select{font:inherit; font-size:13px; color:var(--tinta-pag); background:var(--pagina); border:1px solid var(--fio-pag); padding:4px 6px}
+.formas{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:10px}
+.formas button{display:flex; flex-direction:column; align-items:flex-start; gap:3px; text-align:left; font:inherit; color:var(--tinta-pag); background:transparent; border:1px solid var(--fio-pag); padding:10px 12px; cursor:pointer}
+.formas button b{font-family:var(--rot); font-weight:500; font-size:13px; letter-spacing:.08em; text-transform:uppercase}
+.formas button span{font-size:13px; color:var(--fraco-pag); line-height:1.4}
+.formas button[aria-pressed="true"]{border-color:var(--acento-pag); box-shadow:inset 0 0 0 1px var(--acento-pag)}
+.formas button[aria-pressed="true"] b{color:var(--acento-pag)}
+.formas button:focus-visible{outline:2px solid var(--acento-pag); outline-offset:2px}
+.escolha{display:flex; flex-direction:column; gap:10px}
+.escolha p, .estudo > p{max-width:74ch; margin:0}
+.passos{margin:0; padding-left:20px; max-width:72ch}
+.passos li{margin:6px 0}
+table.regras{border-collapse:collapse; font-size:13.5px; width:100%}
+table.regras th, table.regras td{border-bottom:1px solid var(--fio-pag); padding:6px 10px 6px 0; text-align:left; vertical-align:top}
+table.regras th{font-family:var(--rot); font-weight:500; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acento-pag)}
+table.regras td.n{font-variant-numeric:tabular-nums}
+table.regras tr > :first-child{color:var(--fraco-pag); min-width:150px}
+table.regras thead tr > :first-child{color:var(--acento-pag)}
+table.regras .agora{color:var(--acento-pag)}
+.rolar{overflow-x:auto}
+.cab{background:var(--f-alto); font-family:var(--rot); font-size:10px; letter-spacing:.08em; text-transform:uppercase; justify-content:flex-start; padding-left:7px}
+.nm{background:var(--f-painel); font-family:var(--doc); font-size:13px; justify-content:flex-start}
+.nm.acento{color:var(--f-acento)}
+.vl{background:var(--f-papel); font-size:11.5px; justify-content:flex-start; font-variant-numeric:tabular-nums}
+.vl.meio{justify-content:center}
+.vz{background:var(--f-papel)}
+.vz.p{background:var(--f-painel)}
+.sem{background:var(--f-papel); font-size:11.5px; color:var(--f-fraco); justify-content:flex-start; font-style:italic}
+.sem.p{background:var(--f-painel)}
+.tg{background:var(--f-alto); font-family:var(--rot); font-size:9.5px; letter-spacing:.06em; text-transform:uppercase}
+.tg.tri{background:var(--f-painel); color:var(--f-acento)}
+.calha{position:relative}
+.calha .linha{position:absolute; left:6px; top:2px; bottom:2px; border-left:1px solid var(--f-grade)}
+.calha .pe{position:absolute; left:6px; bottom:2px; width:6px; border-top:1px solid var(--f-grade)}
+.grb2{align-self:center; justify-self:center; width:13px; height:13px; padding:0; border:1px solid var(--f-grade); background:var(--f-papel); color:var(--f-texto); font:11px/1 var(--corpo); cursor:pointer; z-index:1}
+.grb2:focus-visible{outline:2px solid var(--f-regua); outline-offset:1px}
+.c.desc{background:var(--f-papel); white-space:normal; align-items:flex-start; justify-content:flex-start; padding:3px 7px; font-size:11.5px; line-height:16px; color:var(--f-texto)}
+.c.desc > span{overflow:visible !important}
+.c.desc.dica-c{color:var(--f-fraco); font-style:italic}
+.c.desc.cortado{box-shadow:inset 0 -3px 0 var(--f-vermelho)}
+.prova{position:absolute; left:-9999px; top:0; visibility:hidden}
+.prova .c{position:relative; display:flex}
+.aviso-livro{border-left:3px solid var(--acento-pag); padding:10px 14px; max-width:76ch}
+.aviso-livro b{font-family:var(--rot); font-weight:500; letter-spacing:.06em; text-transform:uppercase; font-size:12.5px; color:var(--acento-pag); display:block; margin-bottom:3px}
+.lado-a-lado{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px 28px}
+.lado-a-lado div{min-width:0}
+.lado-a-lado h3{font-family:var(--rot); font-weight:500; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--acento-pag); margin:0 0 4px}
+.lado-a-lado p{font-size:14px; margin:0}
+</style>
+
+<div class="pagina">
+  <header class="abre">
+    <div class="olho">Projeto M · ficha digital · seção 7 da FICHA</div>
+    <h1>De Anotações a Habilidades</h1>
+    <p>A seção 7 hoje tem quatro caixas de "Skill Base de Caminho", quatro de Trilha e quatro de anotação. O livro novo entrega cinco degraus de Caminho e quatro entregas de Trilha, sempre nos mesmos níveis. Quatro formas de pôr isso na ficha, com o mesmo exemplo.</p>
+    <div class="aviso-livro" role="note"><b>Escrita à mão, por enquanto</b>Nada aqui vem do livro sozinho: o jogador escreve o nome e o resumo de cada habilidade, porque o livro está sendo reescrito. A forma já é a do livro (uma caixa por degrau, no nível dele), para que mais tarde o nome e o texto possam vir de lá sem refazer a seção.</div>
+    <p class="nota">O exemplo é o que um jogador anotaria: os nomes de cada nível e o começo do texto, tirados do capítulo 35 da v0.331, que está no disco do Claude 2 sem commit e vai mudar. O texto do livro de um nível vai de <span id="livro-min"></span> a <span id="livro-max"></span> letras (mediana de <span id="livro-med"></span>): nenhuma caixa da ficha comporta o texto inteiro.</p>
+  </header>
+
+  <div class="barra-topo">
+    <nav class="saltos" aria-label="Partes do estudo">
+      <a href="#folha">A seção 7</a><a href="#medidas">As medidas</a><a href="#preparado">O que fica preparado</a><a href="#outras">O resto da FICHA</a><a href="#falta">O que falta decidir</a>
+    </nav>
+    <div class="paleta" role="group" aria-label="Paleta da folha">
+      <span>Paleta da folha</span>
+      <button id="pal-tema" type="button" data-pal="" aria-pressed="true">Seguir o tema</button>
+      <button id="pal-escura" type="button" data-pal="pal-escura" aria-pressed="false">Fábrica</button>
+      <button id="pal-clara" type="button" data-pal="pal-clara" aria-pressed="false">Mizuki · Claro</button>
+    </div>
+  </div>
+
+  <div class="legenda" aria-label="Como ler a folha">
+    <span><b>Nv 7</b>o nível em que o degrau ou a entrega chega, fixo na caixa</span>
+    <span><b>− ou +</b>na borda esquerda: um grupo que fecha</span>
+    <span><b>número cinza</b>a linha da planilha; ele pula onde um grupo está fechado</span>
+    <span><b>texto em itálico</b>o que a caixa vazia diz ao jogador</span>
+  </div>
+
+  <section class="estudo" id="folha">
+    <h2><b>1</b>Quatro formas da seção</h2>
+    <div class="formas" role="group" aria-label="Forma da seção">
+      <button id="forma-a" type="button" data-forma="a" aria-pressed="true"><b>A · Três colunas</b><span>A seção de hoje, com cinco linhas: Caminho, Trilha e Anotações lado a lado.</span></button>
+      <button id="forma-b" type="button" data-forma="b" aria-pressed="false"><b>B · Linha do tempo</b><span>Uma lista só, na ordem dos níveis, na largura da seção.</span></button>
+      <button id="forma-c" type="button" data-forma="c" aria-pressed="false"><b>C · Cartas</b><span>As cartas do menu rápido: três por fileira, um bloco para o Caminho e um para a Trilha.</span></button>
+      <button id="forma-d" type="button" data-forma="d" aria-pressed="false"><b>D · Consulta</b><span>Uma linha por degrau, com o uso e um resumo de uma linha; o texto abre embaixo.</span></button>
+    </div>
+    <p id="forma-diz"></p>
+    <div class="jogo" role="group" aria-label="Caminho do exemplo"><span>Caminho</span><span id="bt-caminhos" class="jogo"></span></div>
+    <div class="jogo" role="group" aria-label="Trilha do exemplo"><span>Trilha</span><span id="bt-trilhas" class="jogo"></span></div>
+    <div class="jogo">
+      <label for="nivel">Nível do exemplo</label>
+      <select id="nivel"></select>
+      <span>Caixa acima do nível:</span>
+      <button id="marca-sim" type="button" data-marca="1" aria-pressed="true">Diz "Abre no nível"</button>
+      <button id="marca-nao" type="button" data-marca="0" aria-pressed="false">Fica vazia</button>
+    </div>
+    <div class="jogo" role="group" aria-label="Grupos"><span>Grupos</span>
+      <button type="button" data-grupos="nasce">Como nasce</button>
+      <button type="button" data-grupos="texto">Fechar os textos</button>
+      <button type="button" data-grupos="abre">Abrir tudo</button>
+    </div>
+    <p class="dica">A folha é mais larga que a tela: arraste para o lado.</p>
+    <div class="quadro"><div class="folha hab" id="folha-h"></div></div>
+    <p class="medida" id="medida"></p>
+  </section>
+
+  <section class="estudo" id="medidas">
+    <h2><b>2</b>As quatro, lado a lado</h2>
+    <p>Medido na própria folha, com o Caminho e a Trilha escolhidos acima. Hoje a seção 7 tem 30 linhas e 12 caixas de texto de 4 linhas (11 colunas cada), e não usa as colunas AM a AT.</p>
+    <div class="rolar"><table class="regras" id="tab-formas"></table></div>
+    <p>As letras por caixa são a medida desta página (colunas de 20 px, letra de 11,5 px); na planilha a coluna tem 28 px e cabe um pouco mais. Toda forma empurra o menu rápido para baixo pelo que crescer.</p>
+  </section>
+
+  <section class="estudo" id="preparado">
+    <h2><b>3</b>O que fica preparado para o livro</h2>
+    <div class="lado-a-lado">
+      <div><h3>Agora</h3><p>O jogador escreve o nome, o resumo e as escolhas. O nível de cada caixa é fixo (2, 7, 15, 23 e 30 no Caminho; 2, 11, 19 e 27 na Trilha), e o título do bloco lê o Caminho e a Trilha da seção 1. Com "Diz Abre no nível", a caixa acima do nível do personagem avisa quando abre: é a única conta, e ela lê só o nível da FICHA.</p></div>
+      <div><h3>Quando o livro assentar</h3><p>Cada caixa já tem lugar fixo para o nome e para o texto. O nome pode passar a vir do livro pela Trilha e pelo nível, como a Ficha Amaldiçoada lê as Passivas, e o texto do jogador continua por cima, com o do livro aparecendo quando ele está vazio, como no menu rápido.</p></div>
+      <div><h3>O que não muda com o livro</h3><p>Os níveis das entregas. Se a reescrita mudar os níveis, muda a tabela "Entregas por nível" do capítulo 35, e a seção muda junto. Os nomes de Trilha e de habilidade podem mudar à vontade sem mexer na seção.</p></div>
+    </div>
+  </section>
+
+  <section class="estudo" id="outras">
+    <h2><b>4</b>O que mais na FICHA pede atualização</h2>
+    <p>A minha leitura do que a FICHA ainda faz do jeito de antes das abas novas. Cada uma é uma rodada própria; nenhuma é decidida aqui.</p>
+    <div class="rolar"><table class="regras">
+      <thead><tr><th>Onde</th><th>O que é hoje</th><th>O que poderia virar</th></tr></thead>
+      <tbody>
+        <tr><td>4 · Progressão</td><td>Espaços de feitiço, refino de graça, Classe máxima e Classe 0 contados na própria FICHA</td><td>Ler da Ficha Amaldiçoada, que já conta isso por rota, e dizer os nomes da rota (Lapidação na Restrição Celestial sem energia). Hoje são duas contas da mesma coisa</td></tr>
+        <tr><td>3 · Registro</td><td>CD de feitiço, conjuração e atributo de conjuração numa caixa só</td><td>Na rota de arma da Técnica Marcial a CD é por grupo (B32): a FICHA pode mostrar "Por grupo" e apontar para a linha da rota</td></tr>
+        <tr><td>2 · Valores</td><td>Marco Escolhido: Refino, Corpo e Leque</td><td>O nome da rota (Lapidação na sem energia), como a Ficha Amaldiçoada já faz</td></tr>
+        <tr><td>1 · Perfil e 5 · Perícias</td><td>Cinco Caminhos e quinze Trilhas no menu; perícias fixas do Bastião com Intimidação; treino de arma por Caminho no script</td><td>Vem com o catálogo em dia (B33): o Incursor, as Trilhas novas, Provocar, e o Incursor treinando as treze categorias</td></tr>
+        <tr><td>7 · Anotações</td><td>Doze caixas soltas</td><td>Esta rodada</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="estudo" id="falta">
+    <h2><b>→</b>O que falta decidir</h2>
+    <ol class="passos">
+      <li><b>Qual forma, valendo misturar.</b> É a pergunta desta rodada.</li>
+      <li><b>A caixa acima do nível:</b> diz "Abre no nível 15" ou fica vazia.</li>
+      <li><b>O nome da seção:</b> "Habilidades", como você sugeriu, ou "Caminho e Trilha".</li>
+      <li><b>A ordem com o catálogo:</b> a seção nova pode ser construída antes do catálogo em dia (B33), porque ela não lê o livro.</li>
+    </ol>
+  </section>
+</div>
+<div class="prova" id="prova" aria-hidden="true"></div>
+
+<script>
+const D = /*DADOS*/;
+const COLS = 47, LIN0 = 88, OFF = 5;                     // a coluna A da planilha é a quinta da grade: quatro calhas e o número da linha
+const LETRA = (n) => { let s = ''; while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; };
+const POR = 3, W = 13, X = [4, 19, 34];                  // a carta do menu rápido: três por fileira, 13 colunas
+const FORMAS = {
+  a: 'A seção de hoje, com as caixas no nível delas: cinco linhas de Caminho, Trilha e Anotações. A quinta caixa da Trilha guarda as escolhas dela (o atributo do Arquiteto, a rota do Batedor), porque a Trilha tem quatro entregas. Cada linha é um grupo que fecha o texto.',
+  b: 'Os nove degraus e entregas numa lista só, na ordem em que chegam, cada um com o texto na largura da seção. Lê de cima para baixo como a ficha sobe de nível. Embaixo, as escolhas da Trilha e as anotações.',
+  c: 'A linguagem do menu rápido, logo abaixo: cartas três por fileira, um bloco para o Caminho e um para a Trilha, cada um com o seu +. A sexta carta do Caminho é de anotação, e na Trilha sobram duas: as escolhas e as anotações.',
+  d: 'Para a mesa: uma linha por degrau com o nível, de onde vem, o nome, o uso (Ação Bônus, Reação, uma vez por cena) e um resumo de uma linha, tudo escrito pelo jogador. O texto maior fica num grupo embaixo de cada linha, que nasce fechado.',
+};
+const est = { forma: 'a', cam: 0, tri: 0, nivel: 10, marca: true, pal: '', fechado: {} };
+try { const g = JSON.parse(localStorage.getItem('habilidades-1') || '{}'); Object.assign(est, g, { fechado: {} }); } catch (e) {}
+const guarda = () => { try { localStorage.setItem('habilidades-1', JSON.stringify({ forma: est.forma, cam: est.cam, tri: est.tri, nivel: est.nivel, marca: est.marca, pal: est.pal })); } catch (e) {} };
+
+function nova() { return { cel: [], grupos: [], linhas: 0, caixas: [] }; }
+function poe(L, r, c1, c2, cls, txt, op) { const k = Object.assign({ r, c1, c2, cls, txt: txt == null ? '' : String(txt), rs: 1 }, op || {}); L.cel.push(k); L.linhas = Math.max(L.linhas, r + k.rs); if (k.hab) L.caixas.push(k); return k; }
+function grupo(L, id, a, b, nivel, aberto, botao) { if (b >= a) L.grupos.push({ id, a, b, nivel, aberto, botao }); }
+
+// ---------- o exemplo ----------
+function exemplo() {
+  const C = D.caminhos[est.cam], T = C.trilhas[Math.min(est.tri, C.trilhas.length - 1)];
+  return { C, T, cam: C.slots, tri: T.slots, todos: [...C.slots, ...T.slots].sort((a, b) => a.nivel - b.nivel || (a.fonte === 'Caminho' ? -1 : 1)) };
+}
+const aberto = (s) => s.nivel <= est.nivel;
+// o nome: o que o jogador escreveu, ou o aviso do nível, ou nada
+function nome(L, r, c1, c2, s) {
+  if (aberto(s)) poe(L, r, c1, c2, 'c nm acento', s.nomes);
+  else if (est.marca) poe(L, r, c1, c2, 'c sem p', 'Abre no nível ' + s.nivel);
+  else poe(L, r, c1, c2, 'c vz p', '');
+}
+// a caixa de texto de uma habilidade (a que as medidas contam): o resumo que o jogador escreveu, ou vazia
+function texto(L, r, c1, c2, rs, s) {
+  poe(L, r, c1, c2, aberto(s) ? 'c desc' : 'c desc vz', aberto(s) ? s.resumo : '', { rs, hab: true, slot: s });
+}
+const tag = (s) => 'Nv ' + s.nivel;
+const ESCOLHAS = 'Escolhas da Trilha: o atributo, a rota, os tipos de dano do Alicerce.';
+const ANOTA = 'Anotações.';
+
+// ---------- A · três colunas ----------
+function formaA() {
+  const L = nova(), E = exemplo(), TX = 5;
+  poe(L, 0, 4, 5, 'c faixa n7', '7'); poe(L, 0, 6, 46, 'c faixa', 'Habilidades');
+  poe(L, 2, X[0], X[0] + W - 1, 'c cab', 'Caminho · ' + E.C.nome); poe(L, 2, X[1], X[1] + W - 1, 'c cab', 'Trilha · ' + E.T.nome); poe(L, 2, X[2], X[2] + W - 1, 'c cab', 'Anotações');
+  let r = 3;
+  for (let k = 0; k < 5; k++) {
+    const s1 = E.cam[k], s2 = E.tri[k];
+    poe(L, r, X[0], X[0] + 1, 'c tg', tag(s1)); nome(L, r, X[0] + 2, X[0] + W - 1, s1);
+    if (s2) { poe(L, r, X[1], X[1] + 1, 'c tg tri', tag(s2)); nome(L, r, X[1] + 2, X[1] + W - 1, s2); }
+    else poe(L, r, X[1], X[1] + W - 1, 'c cab', 'Escolhas da Trilha');
+    poe(L, r, X[2], X[2] + W - 1, 'c vz p', '');
+    texto(L, r + 1, X[0], X[0] + W - 1, TX, s1);
+    if (s2) texto(L, r + 1, X[1], X[1] + W - 1, TX, s2);
+    else poe(L, r + 1, X[1], X[1] + W - 1, 'c desc dica-c', ESCOLHAS, { rs: TX });
+    poe(L, r + 1, X[2], X[2] + W - 1, 'c desc dica-c', k === 0 ? ANOTA : '', { rs: TX });
+    grupo(L, 'a-txt' + k, r + 1, r + TX, 3, k < 2, r);
+    r += 1 + TX + 1;
+  }
+  L.linhas = Math.max(L.linhas, r);
+  grupo(L, 'secao', 1, L.linhas - 1, 1, true, 0);
+  return L;
+}
+
+// ---------- B · linha do tempo ----------
+function formaB() {
+  const L = nova(), E = exemplo(), TX = 3;
+  poe(L, 0, 4, 5, 'c faixa n7', '7'); poe(L, 0, 6, 46, 'c faixa', 'Habilidades · ' + E.C.nome + ' · ' + E.T.nome);
+  poe(L, 2, 4, 5, 'c cab', 'Nível'); poe(L, 2, 6, 10, 'c cab', 'De onde'); poe(L, 2, 11, 46, 'c cab', 'Habilidade e o que ela faz');
+  let r = 3;
+  E.todos.forEach((s, i) => {
+    poe(L, r, 4, 5, s.fonte === 'Caminho' ? 'c tg' : 'c tg tri', tag(s));
+    poe(L, r, 6, 10, 'c vl meio', s.fonte);
+    nome(L, r, 11, 46, s);
+    texto(L, r + 1, 4, 46, TX, s);
+    grupo(L, 'b-txt' + i, r + 1, r + TX, 3, i < 2, r);
+    r += 1 + TX;
+  });
+  r += 1;
+  poe(L, r, 4, 46, 'c cab', 'Escolhas da Trilha'); poe(L, r + 1, 4, 46, 'c desc dica-c', ESCOLHAS, { rs: 2 }); grupo(L, 'b-esc', r + 1, r + 2, 3, true, r);
+  r += 4;
+  poe(L, r, 4, 46, 'c cab', 'Anotações'); poe(L, r + 1, 4, 46, 'c desc dica-c', ANOTA, { rs: 5 }); grupo(L, 'b-ano', r + 1, r + 5, 3, true, r);
+  r += 7;
+  L.linhas = Math.max(L.linhas, r);
+  grupo(L, 'secao', 1, L.linhas - 1, 1, true, 0);
+  return L;
+}
+
+// ---------- C · cartas ----------
+function formaC() {
+  const L = nova(), E = exemplo(), TX = 6;
+  poe(L, 0, 4, 5, 'c faixa n7', '7'); poe(L, 0, 6, 46, 'c faixa', 'Habilidades');
+  let r = 2;
+  const bloco = (id, rotulo, itens) => {
+    const cab = r; poe(L, cab, 4, 46, 'c cab', rotulo); r = cab + 1;
+    const fil = Math.ceil(itens.length / POR);
+    for (let f = 0; f < fil; f++) {
+      for (let j = 0; j < POR; j++) {
+        const s = itens[f * POR + j], x = X[j];
+        if (!s) continue;
+        if (s.livre) { poe(L, r, x, x + W - 1, 'c cab', s.livre); poe(L, r + 1, x, x + W - 1, 'c desc dica-c', s.dica, { rs: TX }); continue; }
+        poe(L, r, x, x + 1, s.fonte === 'Caminho' ? 'c tg' : 'c tg tri', tag(s)); nome(L, r, x + 2, x + W - 1, s);
+        texto(L, r + 1, x, x + W - 1, TX, s);
+      }
+      grupo(L, id + '-txt' + f, r + 1, r + TX, 3, f === 0, r);
+      r += 1 + TX + (f + 1 < fil ? 1 : 0);
+    }
+    r += 1; grupo(L, id, cab + 1, r - 1, 2, true, cab);
+  };
+  bloco('c-cam', 'Caminho · ' + E.C.nome + '  ·  cinco degraus', [...E.cam, { livre: 'Anotações', dica: ANOTA }]);
+  bloco('c-tri', 'Trilha · ' + E.T.nome + '  ·  quatro entregas', [...E.tri, { livre: 'Escolhas da Trilha', dica: ESCOLHAS }, { livre: 'Anotações', dica: '' }]);
+  L.linhas = Math.max(L.linhas, r);
+  grupo(L, 'secao', 1, L.linhas - 1, 1, true, 0);
+  return L;
+}
+
+// ---------- D · consulta ----------
+function formaD() {
+  const L = nova(), E = exemplo(), TX = 3;
+  poe(L, 0, 4, 5, 'c faixa n7', '7'); poe(L, 0, 6, 46, 'c faixa', 'Habilidades · ' + E.C.nome + ' · ' + E.T.nome);
+  poe(L, 2, 4, 5, 'c cab', 'Nível'); poe(L, 2, 6, 9, 'c cab', 'De onde'); poe(L, 2, 10, 21, 'c cab', 'Habilidade'); poe(L, 2, 22, 27, 'c cab', 'Uso'); poe(L, 2, 28, 46, 'c cab', 'Em uma linha');
+  let r = 3;
+  E.todos.forEach((s, i) => {
+    poe(L, r, 4, 5, s.fonte === 'Caminho' ? 'c tg' : 'c tg tri', tag(s));
+    poe(L, r, 6, 9, 'c vl meio', s.fonte);
+    nome(L, r, 10, 21, s);
+    poe(L, r, 22, 27, aberto(s) ? 'c vl' : 'c vz', aberto(s) ? s.uso : '');
+    poe(L, r, 28, 46, aberto(s) ? 'c vl' : 'c vz', aberto(s) ? s.linha : '');
+    texto(L, r + 1, 4, 46, TX, s);
+    grupo(L, 'd-txt' + i, r + 1, r + TX, 3, false, r);
+    r += 1 + TX;
+  });
+  r += 1;
+  poe(L, r, 4, 46, 'c cab', 'Escolhas da Trilha'); poe(L, r + 1, 4, 46, 'c desc dica-c', ESCOLHAS, { rs: 2 }); grupo(L, 'd-esc', r + 1, r + 2, 3, true, r);
+  r += 4;
+  poe(L, r, 4, 46, 'c cab', 'Anotações'); poe(L, r + 1, 4, 46, 'c desc dica-c', ANOTA, { rs: 5 }); grupo(L, 'd-ano', r + 1, r + 5, 3, true, r);
+  r += 7;
+  L.linhas = Math.max(L.linhas, r);
+  grupo(L, 'secao', 1, L.linhas - 1, 1, true, 0);
+  return L;
+}
+const DESENHA = { a: formaA, b: formaB, c: formaC, d: formaD };
+
+// ---------- desenhar ----------
+const folha = document.getElementById('folha-h');
+function fechadoDe(g) { return g.id in est.fechado ? est.fechado[g.id] : !g.aberto; }
+function el(tag, cls, txt) { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+function escondidas(L, modo) {
+  const s = new Set();
+  L.grupos.forEach((g) => { const f = modo === 'agora' ? fechadoDe(g) : modo === 'nasce' ? !g.aberto : modo(g); if (f) for (let r = g.a; r <= g.b; r++) s.add(r); });
+  return s;
+}
+function desenha() {
+  const L = DESENHA[est.forma]();
+  const esc = escondidas(L, 'agora');
+  const vis = []; for (let r = 0; r < L.linhas; r++) if (!esc.has(r)) vis.push(r);
+  const lin = {}; vis.forEach((r, i) => { lin[r] = i + 2; });
+  folha.replaceChildren();
+  folha.className = 'folha hab ' + (est.pal || '');
+  folha.style.gridTemplateRows = '18px repeat(' + vis.length + ', 22px)';
+  for (let c = 1; c <= COLS; c++) { const e = el('div', 'col', LETRA(c)); e.style.gridColumn = String(c + OFF); e.style.gridRow = '1'; folha.appendChild(e); }
+  vis.forEach((r) => { const e = el('div', 'lin', String(LIN0 + r)); e.style.gridColumn = String(OFF); e.style.gridRow = String(lin[r]); folha.appendChild(e); });
+  L.cel.forEach((k) => {
+    const dentro = []; for (let r = k.r; r < k.r + k.rs; r++) if (lin[r] != null) dentro.push(r);
+    if (!dentro.length) return;
+    const e = el('div', k.cls);
+    const t = el('span', null, k.txt); t.style.overflow = 'hidden'; t.style.textOverflow = 'ellipsis'; e.appendChild(t);
+    e.style.gridColumn = (k.c1 + OFF) + ' / ' + (k.c2 + OFF + 1);
+    e.style.gridRow = lin[dentro[0]] + ' / span ' + dentro.length;
+    folha.appendChild(e);
+  });
+  L.grupos.forEach((g) => {
+    const fech = fechadoDe(g), col = String(g.nivel);
+    if (!fech) {
+      const de = vis.filter((r) => r >= g.a && r <= g.b);
+      if (de.length) { const c = el('div', 'calha'); c.style.gridColumn = col; c.style.gridRow = lin[de[0]] + ' / ' + (lin[de[de.length - 1]] + 1); c.appendChild(el('span', 'linha')); c.appendChild(el('span', 'pe')); folha.appendChild(c); }
+    }
+    if (lin[g.botao] == null) return;
+    const b = el('button', 'grb2', fech ? '+' : '−');
+    b.type = 'button'; b.setAttribute('aria-expanded', String(!fech));
+    b.setAttribute('aria-label', (fech ? 'Abrir' : 'Fechar') + (g.id === 'secao' ? ' a seção 7' : ' as linhas ' + (LIN0 + g.a) + ' a ' + (LIN0 + g.b)));
+    b.style.gridColumn = col; b.style.gridRow = String(lin[g.botao]);
+    b.addEventListener('click', () => { est.fechado[g.id] = !fech; desenha(); });
+    folha.appendChild(b);
+  });
+  folha.querySelectorAll('.c.desc').forEach((e) => { e.classList.toggle('cortado', e.scrollHeight > e.clientHeight + 1); });
+  const m = medidas(est.forma);
+  document.getElementById('forma-diz').textContent = FORMAS[est.forma];
+  document.getElementById('medida').textContent = `${m.linhas} linhas com tudo aberto, ${m.nasce} à vista como a ficha nasce, ${m.semTexto} com os textos fechados; ${m.grupos} grupos. A seção 7 de hoje tem 30 linhas.`;
+  botoes();
+  tabela();
+  guarda();
+}
+
+// ---------- os botões do exemplo ----------
+function botoes() {
+  const bc = document.getElementById('bt-caminhos'); bc.replaceChildren();
+  D.caminhos.forEach((c, i) => { const b = el('button', null, c.nome); b.type = 'button'; b.id = 'cam-' + i; b.setAttribute('aria-pressed', String(i === est.cam)); b.addEventListener('click', () => { est.cam = i; est.tri = 0; est.fechado = {}; desenha(); }); bc.appendChild(b); });
+  const bt = document.getElementById('bt-trilhas'); bt.replaceChildren();
+  D.caminhos[est.cam].trilhas.forEach((t, i) => { const b = el('button', null, t.nome); b.type = 'button'; b.id = 'tri-' + i; b.setAttribute('aria-pressed', String(i === est.tri)); b.addEventListener('click', () => { est.tri = i; desenha(); }); bt.appendChild(b); });
+  document.querySelectorAll('[data-forma]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.forma === est.forma)));
+  document.querySelectorAll('[data-pal]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pal === est.pal)));
+  document.querySelectorAll('[data-marca]').forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.marca === '1') === est.marca)));
+  document.getElementById('nivel').value = String(est.nivel);
+}
+
+// ---------- as medidas ----------
+function medidas(f) {
+  const L = DESENHA[f]();
+  const colados = L.grupos.filter((a) => L.grupos.some((b) => a !== b && a.nivel === b.nivel && b.a === a.b + 1)).length;
+  return { linhas: L.linhas, nasce: L.linhas - escondidas(L, 'nasce').size, semTexto: L.linhas - escondidas(L, (g) => g.nivel === 3).size,
+           grupos: L.grupos.length, colados, L };
+}
+function cabe(t, px, n) {
+  const e = el('div', 'c desc'); e.style.width = px + 'px'; e.style.height = (n * 22) + 'px';
+  e.appendChild(el('span', null, t)); document.getElementById('prova').appendChild(e);
+  const ok = e.scrollHeight <= e.clientHeight + 1; e.remove(); return ok;
+}
+const ENCHE = D.caminhos.flatMap((c) => c.slots.map((s) => s.resumo)).join(' ');
+function letras(px, n) {
+  let lo = 0, hi = ENCHE.length;
+  while (lo < hi) { const m = Math.floor((lo + hi + 1) / 2); if (cabe(ENCHE.slice(0, m).replace(/\s+\S*$/, ''), px, n)) lo = m; else hi = m - 1; }
+  return lo;
+}
+const CAPAC = {};
+function tabela() {
+  const nomes = ['Linhas com tudo aberto', 'À vista como nasce', 'Com os textos fechados', 'Grupos', 'Grupos colados no mesmo nível',
+                 'Caixa de texto de cada habilidade', 'Letras que cabem nela', 'Resumos do exemplo que cabem inteiros', 'Células que a troca de tema pinta'];
+  const linhas = nomes.map((n) => [n]);
+  const cols = ['a', 'b', 'c', 'd'];
+  cols.forEach((f) => {
+    const m = medidas(f), k = m.L.caixas[0];
+    const ncol = k.c2 - k.c1 + 1, larg = ncol * 20, chave = larg + 'x' + k.rs;
+    if (!(chave in CAPAC)) CAPAC[chave] = letras(larg, k.rs);
+    const cabem = m.L.caixas.filter((x) => cabe(x.slot.resumo, (x.c2 - x.c1 + 1) * 20, x.rs)).length;
+    [m.linhas, m.nasce, m.semTexto, m.grupos, m.colados, `${ncol} colunas × ${k.rs} linhas`, 'perto de ' + CAPAC[chave], cabem + ' de ' + m.L.caixas.length,
+     (m.linhas * 43).toLocaleString('pt-BR')].forEach((x, i) => linhas[i].push(x));
+  });
+  const t = document.getElementById('tab-formas'); t.replaceChildren();
+  const th = el('thead'), tr = el('tr'); tr.appendChild(el('th', null, 'Medida'));
+  ['A · Três colunas', 'B · Linha do tempo', 'C · Cartas', 'D · Consulta'].forEach((n, i) => tr.appendChild(el('th', cols[i] === est.forma ? 'agora' : null, n)));
+  th.appendChild(tr); t.appendChild(th);
+  const tb = el('tbody');
+  linhas.forEach((l) => { const r = el('tr'); l.forEach((x, i) => r.appendChild(el('td', i === 0 ? null : 'n' + (cols[i - 1] === est.forma ? ' agora' : ''), String(x)))); tb.appendChild(r); });
+  t.appendChild(tb);
+}
+
+// ---------- os controles ----------
+const sel = document.getElementById('nivel');
+for (let n = 2; n <= 30; n++) { const o = el('option', null, String(n)); o.value = String(n); sel.appendChild(o); }
+sel.addEventListener('change', () => { est.nivel = Number(sel.value); desenha(); });
+document.querySelectorAll('[data-forma]').forEach((b) => b.addEventListener('click', () => { est.forma = b.dataset.forma; est.fechado = {}; desenha(); }));
+document.querySelectorAll('[data-pal]').forEach((b) => b.addEventListener('click', () => { est.pal = b.dataset.pal; desenha(); }));
+document.querySelectorAll('[data-marca]').forEach((b) => b.addEventListener('click', () => { est.marca = b.dataset.marca === '1'; desenha(); }));
+document.querySelectorAll('[data-grupos]').forEach((b) => b.addEventListener('click', () => {
+  const L = DESENHA[est.forma](), modo = b.dataset.grupos;
+  L.grupos.forEach((g) => { est.fechado[g.id] = modo === 'nasce' ? !g.aberto : modo === 'texto' ? g.nivel === 3 : false; });
+  desenha();
+}));
+document.getElementById('livro-min').textContent = D.livro_min.toLocaleString('pt-BR');
+document.getElementById('livro-max').textContent = D.livro_max.toLocaleString('pt-BR');
+document.getElementById('livro-med').textContent = D.livro_med.toLocaleString('pt-BR');
+if (est.cam >= D.caminhos.length) est.cam = 0;
+desenha();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { for (const k in CAPAC) delete CAPAC[k]; desenha(); });
+</script>

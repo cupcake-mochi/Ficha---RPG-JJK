@@ -2076,6 +2076,34 @@ próxima etapa". Passam com o livro novo: o `conferir-kaori.py`, o `conferir-pro
 citam Caminho e Trilha, o C1 (o Caminho oculto do menu) e o `decisoes-ficha.json`. A pergunta que espera ele: fazer
 agora, contra a v0.331 sem commit, ou depois da revisão de nomes.*
 
+### B34 · A seção 7 da `FICHA` vira "Habilidades" — **estudo publicado em 02/10/2026; espera a forma**
+
+*Pedido dele em 02/10/2026, antes de pôr o catálogo em dia: "Recomendo que refaçamos o 'anotações' (ja que agora caminho
+da 5 habilidades) e outras partes do ficha que necessitam de 'atualização', para aproveitar melhor das novas partes da
+ficha que foram feitas", com protótipos de como pode ficar a seção, "que provavelmente vai mudar para 'habilidades'". E,
+no meio da rodada: "nem precisa de automação AINDA (deixar preparado é o ideal), ja q o livro está sendo reescrito,
+deixando claro isso".*
+
+*O livro novo (capítulo 35, v0.331 no disco do Claude 2, sem commit) dá ao Caminho cinco degraus, nos níveis 2, 7, 15,
+23 e 30, e à Trilha quatro entregas, nos níveis 2, 11, 19 e 27; um degrau pode trazer mais de uma habilidade (o nível 7
+do Bastião traz três; o nível 2 do Assassino, cinco). O texto do livro de um nível vai de 136 a 8.562 letras (mediana
+944): nenhuma caixa da ficha comporta o texto inteiro, e o jogador anota o nome e um resumo. A seção de hoje tem 30
+linhas, doze caixas de 11 colunas por 4 linhas, e não usa as colunas AM a AT.*
+
+*O estudo está em `mockup/habilidades-estudo.html` (`python3 mockup/estudo_habilidades.py`, que lê os nomes e o começo do
+texto de cada nível do capítulo 35 só para o exemplo), publicado em https://claude.ai/artifact/VaWxcwKG8eTGUMTVgq8bGq:
+quatro formas, todas escritas à mão, com uma caixa fixa por degrau e por entrega e lugar para as escolhas da Trilha e
+para as anotações. A três colunas (a de hoje com cinco linhas, 38 linhas), B linha do tempo (uma lista na ordem dos
+níveis, 51), C cartas (a linguagem do menu rápido, 36) e D consulta (uma linha por degrau com uso e resumo de uma
+linha, o texto num grupo que nasce fechado, 51 com tudo aberto e 24 como nasce). Preparado para o livro: o nível de
+cada caixa é fixo, e mais tarde o nome e o texto podem vir de lá pela Trilha e pelo nível sem refazer a seção. A
+página também lista o que mais na FICHA pede atualização, na minha leitura (a Progressão contando de novo o que a Ficha
+Amaldiçoada conta, a CD por grupo na rota de arma, os nomes da rota no Marco Escolhido), cada um para uma rodada
+própria.*
+
+*A pergunta que espera ele: qual forma, valendo misturar. Depois: a caixa acima do nível do personagem diz "Abre no
+nível 15" ou fica vazia; e o nome da seção.*
+
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
 Os dois capítulos vendorizados vieram **byte a byte idênticos** do commit
