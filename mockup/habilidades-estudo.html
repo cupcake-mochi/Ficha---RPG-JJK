@@ -228,7 +228,7 @@ table.regras .agora{color:var(--acento-pag)}
     <div class="formas" role="group" aria-label="Forma da seção">
       <button id="forma-a" type="button" data-forma="a" aria-pressed="true"><b>A · Três colunas</b><span>A seção de hoje, com cinco linhas: Caminho, Trilha e Anotações lado a lado.</span></button>
       <button id="forma-b" type="button" data-forma="b" aria-pressed="false"><b>B · Linha do tempo</b><span>Uma lista só, na ordem dos níveis, na largura da seção.</span></button>
-      <button id="forma-c" type="button" data-forma="c" aria-pressed="false"><b>C · Cartas</b><span>As cartas do menu rápido: três por fileira, um bloco para o Caminho e um para a Trilha.</span></button>
+      <button id="forma-c" type="button" data-forma="c" aria-pressed="false"><b>C · Cartas · escolhida</b><span>As cartas do menu rápido: três por fileira, um bloco para o Caminho e um para a Trilha.</span></button>
       <button id="forma-d" type="button" data-forma="d" aria-pressed="false"><b>D · Consulta</b><span>Uma linha por degrau, com o uso e um resumo de uma linha; o texto abre embaixo.</span></button>
     </div>
     <p id="forma-diz"></p>
@@ -285,9 +285,9 @@ table.regras .agora{color:var(--acento-pag)}
   <section class="estudo" id="falta">
     <h2><b>→</b>O que falta decidir</h2>
     <ol class="passos">
-      <li><b>Qual forma, valendo misturar.</b> É a pergunta desta rodada.</li>
-      <li><b>A caixa acima do nível:</b> diz "Abre no nível 15" ou fica vazia.</li>
-      <li><b>O nome da seção:</b> "Habilidades", como você sugeriu, ou "Caminho e Trilha".</li>
+      <li><b><s>Qual forma, valendo misturar.</s></b> Fechado em 02/10/2026: a C, as cartas ("Vai a C mesmo").</li>
+      <li><b>A carta acima do nível:</b> diz "Abre no nível 15" ou fica vazia. É a pergunta desta rodada.</li>
+      <li><b><s>O nome da seção.</s></b> "Habilidades", como ele sugeriu no pedido.</li>
       <li><b>A ordem com o catálogo:</b> a seção nova pode ser construída antes do catálogo em dia (B33), porque ela não lê o livro.</li>
     </ol>
   </section>
@@ -305,9 +305,9 @@ const FORMAS = {
   c: 'A linguagem do menu rápido, logo abaixo: cartas três por fileira, um bloco para o Caminho e um para a Trilha, cada um com o seu +. A sexta carta do Caminho é de anotação, e na Trilha sobram duas: as escolhas e as anotações.',
   d: 'Para a mesa: uma linha por degrau com o nível, de onde vem, o nome, o uso (Ação Bônus, Reação, uma vez por cena) e um resumo de uma linha, tudo escrito pelo jogador. O texto maior fica num grupo embaixo de cada linha, que nasce fechado.',
 };
-const est = { forma: 'a', cam: 0, tri: 0, nivel: 10, marca: true, pal: '', fechado: {} };
-try { const g = JSON.parse(localStorage.getItem('habilidades-1') || '{}'); Object.assign(est, g, { fechado: {} }); } catch (e) {}
-const guarda = () => { try { localStorage.setItem('habilidades-1', JSON.stringify({ forma: est.forma, cam: est.cam, tri: est.tri, nivel: est.nivel, marca: est.marca, pal: est.pal })); } catch (e) {} };
+const est = { forma: 'c', cam: 0, tri: 0, nivel: 10, marca: true, pal: '', fechado: {} };
+try { const g = JSON.parse(localStorage.getItem('habilidades-2') || '{}'); Object.assign(est, g, { fechado: {} }); } catch (e) {}
+const guarda = () => { try { localStorage.setItem('habilidades-2', JSON.stringify({ forma: est.forma, cam: est.cam, tri: est.tri, nivel: est.nivel, marca: est.marca, pal: est.pal })); } catch (e) {} };
 
 function nova() { return { cel: [], grupos: [], linhas: 0, caixas: [] }; }
 function poe(L, r, c1, c2, cls, txt, op) { const k = Object.assign({ r, c1, c2, cls, txt: txt == null ? '' : String(txt), rs: 1 }, op || {}); L.cel.push(k); L.linhas = Math.max(L.linhas, r + k.rs); if (k.hab) L.caixas.push(k); return k; }

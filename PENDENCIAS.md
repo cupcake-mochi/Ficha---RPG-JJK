@@ -2076,7 +2076,7 @@ próxima etapa". Passam com o livro novo: o `conferir-kaori.py`, o `conferir-pro
 citam Caminho e Trilha, o C1 (o Caminho oculto do menu) e o `decisoes-ficha.json`. A pergunta que espera ele: fazer
 agora, contra a v0.331 sem commit, ou depois da revisão de nomes.*
 
-### B34 · A seção 7 da `FICHA` vira "Habilidades" — **estudo publicado em 02/10/2026; espera a forma**
+### B34 · A seção 7 da `FICHA` vira "Habilidades" — **forma escolhida em 02/10/2026: C, as cartas; espera a carta acima do nível**
 
 *Pedido dele em 02/10/2026, antes de pôr o catálogo em dia: "Recomendo que refaçamos o 'anotações' (ja que agora caminho
 da 5 habilidades) e outras partes do ficha que necessitam de 'atualização', para aproveitar melhor das novas partes da
@@ -2103,6 +2103,11 @@ própria.*
 
 *A pergunta que espera ele: qual forma, valendo misturar. Depois: a caixa acima do nível do personagem diz "Abre no
 nível 15" ou fica vazia; e o nome da seção.*
+
+**Escolha de 02/10/2026: "Vai a C mesmo".** *As cartas, na linguagem do menu rápido: um bloco para o Caminho (cinco
+cartas e uma de anotação) e um para a Trilha (quatro cartas, as escolhas e uma de anotação), três por fileira, cada
+fileira com o seu grupo. O nome da seção é "Habilidades", o que ele mesmo pôs no pedido. Pergunta seguinte: a carta de
+um degrau que o personagem ainda não alcançou diz "Abre no nível 15" ou fica vazia.*
 
 ### A ficha da invocação foi conferida contra a v0.205, e está inteira
 
