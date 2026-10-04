@@ -1,110 +1,110 @@
 {
  "_meta": {
-  "o_que_e": "o que a FICHA AMALDIÇOADA calcula e o catalogo-projeto-m.json ainda não tem, lido dos capítulos do livro",
-  "versao_do_livro": "v0.331",
+  "o_que_e": "o que a FICHA AMALDIÇOADA calcula e o catalogo-projeto-m.json não tem, lido do manual.txt",
+  "versao_do_livro": "candidata editorial reconstruída, revisada em 04/10/2026 (382 páginas)",
+  "sha256_do_livro": "f51056f705ab376b1a8038ebef6431a4934ea7823a23667146fcda71f0ad7646",
   "extraido_por": "ficha-v01/extrair_tecnica.py",
   "capitulos": [
-   "40-fundamento.md",
-   "45-aptidoes-e-refino.md",
-   "65-pactos.md",
-   "80-experiencia-e-progressao.md",
-   "25-origens.md",
-   "42-tecnica-marcial.md",
-   "43-sem-tecnica.md",
-   "47-bencaos-e-lapidacao.md"
+   "9. Progressão",
+   "10. Fundamento",
+   "11. Catálogo de criação",
+   "12. Aptidões e Refino",
+   "13. Rotas de criação",
+   "14. Poderes avançados",
+   "15. Ritual e Pactos"
   ],
-  "aviso": "o catálogo está numa versão anterior do livro; levar estas tabelas para ele é decisão do Mizuki"
+  "nomes_das_chaves": "passivas e classe_passiva são os Talentos e a Categoria de Efeito do livro novo"
  },
  "passivas": [
   {
    "nome": "Leitura",
    "classe_passiva": "1",
-   "faz": "Você identifica a Classe e a Forma de qualquer feitiço conjurado a até 18 m."
+   "faz": "Você identifica a Classe e a Forma de qualquer feitiço conjurado a até 18 m de você. A informação não fornece a montagem completa, o custo de cada peça ou a localização de um alvo oculto."
   },
   {
    "nome": "Instinto",
    "classe_passiva": "1",
-   "faz": "Você não é pego de surpresa enquanto estiver acordado."
+   "faz": "Você não é pego de surpresa enquanto estiver acordado. Isso não revela criaturas escondidas, não muda sua posição na iniciativa e não concede uma ação adicional."
   },
   {
    "nome": "Raiz",
    "classe_passiva": "1",
-   "faz": "Você não é movido à força nem derrubado contra a sua vontade."
+   "faz": "Você não é movido à força nem fica Derrubado contra a sua vontade. Pode aceitar um deslocamento ou se deitar por escolha própria. O Talento não impede o dano de um efeito que também empurre ou derrube."
   },
   {
    "nome": "Mão Firme",
    "classe_passiva": "1",
-   "faz": "Você não perde concentração nem carga por dano de 10 ou menos."
+   "faz": "Quando uma ocorrência de dano causar 10 pontos ou menos, você não precisa fazer o teste para manter Concentração ou Carregar. Confira o dano de cada ocorrência depois das reduções aplicáveis. Não some todos os golpes da rodada."
   },
   {
    "nome": "Farejador",
    "classe_passiva": "1",
-   "faz": "Você sente se alguém conjurou num lugar nas últimas 24 horas, e de que Classe."
+   "faz": "Você sente se houve uma conjuração no local onde está nas últimas 24 horas, e identifica a Classe deixada por ela. Se houver vestígios de mais de uma Classe, reconhece essas Classes."
   },
   {
-   "nome": "Aviso",
+   "nome": "Leitura de Feitiços",
    "classe_passiva": "1",
-   "faz": "Você sabe qual foi o último feitiço que um inimigo à vista usou."
+   "faz": "Ao ter um inimigo à vista, você sabe qual foi o último feitiço que ele usou, mesmo que não tenha presenciado aquela conjuração. Recebe o nome ou uma descrição suficiente para reconhecer a aplicação, não sua ficha completa."
   },
   {
    "nome": "Fluxo",
    "classe_passiva": "2",
-   "faz": "Ao conjurar Classe 3 ou mais, você ganha 2 × Classe de vida temporária."
+   "faz": "Ao conjurar um feitiço de Classe 3 ou maior, você recebe 2 × a Classe usada em pontos de vida temporária. Uma conjuração concede a reserva uma vez, mesmo que alcance vários alvos ou produza vários ataques."
   },
   {
    "nome": "Recomposição",
    "classe_passiva": "2",
-   "faz": "Uma vez por descanso curto, gasta a ação e recupera 5 × a sua maior Classe em vida."
+   "faz": "Uma vez por descanso curto, use Ação Padrão para recuperar 5 × sua maior Classe em pontos de vida, até sua vida máxima. Não gasta PE. Recuperar vida não remove condições por conta própria."
   },
   {
    "nome": "Segunda Natureza",
    "classe_passiva": "2",
-   "faz": "Uma vez por dia, conjura um feitiço de Classe até metade da sua maior sem gastar PE."
+   "faz": "Uma vez por dia, você pode conjurar um feitiço conhecido de Classe até metade da sua maior Classe, arredondada para baixo, sem pagar seu custo normal de PE. Declare o uso antes de conjurar."
   },
   {
    "nome": "Eco",
    "classe_passiva": "2",
-   "faz": "Quando você derruba um inimigo com feitiço, o próximo feitiço da cena custa metade."
+   "faz": "Quando um feitiço seu reduzir um inimigo a 0 pontos de vida, o próximo feitiço que você conjurar nesta cena custa metade do seu PE normal, arredondada para cima. Derrubado, a condição, não ativa Eco."
   },
   {
    "nome": "Costura",
    "classe_passiva": "2",
-   "faz": "Uma vez por cena, um aliado a até 9 m que cairia a 0 fica com 1."
+   "faz": "Uma vez por cena, quando um aliado a até 9 m sofreria uma redução de seus pontos de vida a 0, você pode fazer com que ele permaneça com 1 ponto de vida. Não exige ação nem Reação."
   },
   {
    "nome": "Contramedida",
    "classe_passiva": "2",
-   "faz": "Como Reação, quando alguém conjura a até 9 m, gasta PE e sobe em 2 a CD daquele feitiço."
+   "faz": "Quando outra criatura a até 9 m conjurar um feitiço, você pode gastar sua Reação e 2 PE para aumentar a CD desse feitiço em 2. Declare depois que a conjuração for anunciada e antes dos TR. O aumento vale para os TR contra aquela aplicação enquanto ela durar."
   },
   {
    "nome": "Peso da Presença",
    "classe_passiva": "2",
-   "faz": "Inimigos fracos que começam o turno a até 6 m fazem Teste de Resistência ou ficam Amedrontados por uma rodada."
+   "faz": "Um inimigo da categoria Capanga que comece o turno a até 6 m de você faz um TR Espírito contra a CD da sua técnica. Se falhar, fica Amedrontado por você até o começo do próximo turno dele. Como Amedrontado é uma condição Pesada, ele repete o TR no fim do turno e encerra essa aplicação se passar. Se permanecer na área, faz o teste do novo turno normalmente."
   },
   {
    "nome": "Escama",
    "classe_passiva": "3",
-   "faz": "Escolha um tipo de dano que a sua Regra justifique. Você tem resistência a ele: todo dano daquele tipo cai pela metade."
+   "faz": "Escolha um tipo de dano que a Regra da sua técnica justifique. Você tem resistência a esse tipo: sofre metade do dano, com o arredondamento das regras de dano."
   },
   {
    "nome": "Afinidade",
    "classe_passiva": "3",
-   "faz": "Escolha um tema da sua Regra. Feitiços daquele tema ignoram cobertura Parcial e resistência ao seu tipo de dano."
+   "faz": "Escolha um tema presente na Regra da sua técnica. Seus feitiços desse tema ignoram cobertura Parcial e resistência ao tipo de dano que causam."
   },
   {
    "nome": "Reserva Profunda",
    "classe_passiva": "3",
-   "faz": "Seu PE máximo sobe em 3 × a sua maior Classe."
+   "faz": "Seu PE máximo aumenta em 3 × sua maior Classe. Atualize esse acréscimo quando sua maior Classe aumentar."
   },
   {
    "nome": "Regra Própria",
-   "classe_passiva": "1 a 3",
-   "faz": "Sua técnica impõe uma regra ao mundo. Ver abaixo."
+   "classe_passiva": "1, 2 ou 3",
+   "faz": "Técnicas baseadas em aposta, contrato, julgamento ou obrigação podem ter uma Regra Própria, definida com o mestre antes da campanha. Ela é um Talento específico, com aquisição diferente das demais."
   },
   {
-   "nome": "Passiva Própria",
-   "classe_passiva": "1 a 3",
-   "faz": "Qualquer outra coisa, montada com o mestre na escala das outras entradas desta tabela."
+   "nome": "Talento Próprio",
+   "classe_passiva": "1, 2 ou 3",
+   "faz": "Categoria de Efeito 1, 2 ou 3. Custos e níveis da Categoria escolhida. Se o catálogo não representar a ideia, escreva o efeito com o mestre antes da sessão. Ele ocupa os espaços correspondentes e conta no máximo de cinco Talentos pagos."
   }
  ],
  "classe_passiva": [
@@ -131,129 +131,138 @@
  ],
  "passivas_pagas": {
   "cinco": 5,
-  "frase": "Máximo de cinco Passivas pagas."
+  "frase": "O máximo é cinco Talentos pagos."
  },
  "regra_propria": {
-  "frase": "1 espaço para a Classe Passiva 2, e 2 para a 3"
+  "frase": "Ao melhorar de Categoria de Efeito 2 para 3, ocupe somente mais um espaço.",
+  "espacos": {
+   "1": "Nenhum. É a versão inicial.",
+   "2": "1 espaço no total.",
+   "3": "2 espaços no total."
+  }
  },
  "aptidoes": [
   {
-   "nome": "Cobrir-se de energia",
-   "requisito": "grátis no refino 1",
+   "nome": "Cobrir-se de Energia",
+   "requisito": "Gratuita no Refino 1",
    "classe_passiva": "—",
-   "escala": "a proteção, e a Redução de Dano da Reação",
-   "faz": "Sem Traje e sem Revestimento, a sua proteção é 1/3 do refino + 1. Escudo soma com ela. Como Reação, você concentra a energia no impacto: Redução de Dano de 1,5 × refino num golpe, por 2 PE. Você fica sem proteção até o fim do seu próximo turno."
+   "escala": "proteção e Redução de Dano da Reação",
+   "faz": "A energia que envolve seu corpo concede proteção e pode ser concentrada para amortecer um golpe. Sem Traje e sem Revestimento, sua proteção é 1 + um terço do Refino, arredondado para baixo. Escudo soma com essa proteção. Vestir Traje ou Revestimento faz você usar a proteção do equipamento, em vez da proteção passiva desta aptidão. Depois de determinar o dano de um golpe contra você, antes de descontá-lo, pode gastar Reação e 2 PE. Reduza esse dano em 1,5 × Refino, arredondado para baixo. A redução pode zerar o dano. Você fica sem proteção até o fim do seu próximo turno. Isso inclui a proteção do equipamento e do escudo. Conserve os demais componentes da Defesa. Atualize também a base de Bloquear para os ataques seguintes. O acerto já resolvido não é recalculado. Esta Reação pode ser usada mesmo vestindo proteção, mas a perda da proteção continua sendo o seu custo. Ela não devolve uma Reação já gasta."
   },
   {
-   "nome": "Canalizar energia",
-   "requisito": "grátis no refino 1",
+   "nome": "Canalizar Energia",
+   "requisito": "Gratuita no Refino 1",
+   "classe_passiva": "—",
+   "escala": "dados adicionais",
+   "faz": "Você envolve seus golpes em energia amaldiçoada. Atacar com uma arma mundana ou desarmado passa a poder ferir maldições. Esse revestimento não cobra PE nem uma ação separada. Canalizar em Golpe é o dano adicional desta aptidão. Acrescente os dados da tabela a cada ataque com arma ou desarmado que acertar e puder receber esse dano. Esses dados acompanham o tipo de dano do ataque. Revestir uma espada não troca automaticamente Cortante por Força. O revestimento também não muda o alcance, o atributo ou a quantidade de ataques que você pode fazer. Não acrescente esses dados a feitiços, Manejos ou Katas. Se uma habilidade fizer um ataque carregar um feitiço de dano, inclusive de Classe 0, aquele ataque não recebe Canalizar em Golpe. Outro ataque permanece sujeito às próprias regras. Conjurar em outro momento do turno ou da rodada não apaga esse dano dos demais ataques. Ações disponíveis e limites de conjuração continuam valendo. No crítico, dobre os dados básicos da arma ou do ataque desarmado. Os dados adicionais de Canalizar não dobram, salvo uma habilidade que autorize expressamente."
+  },
+  {
+   "nome": "Projetar Energia",
+   "requisito": "Uma escolha de aptidão",
    "classe_passiva": "—",
    "escala": "—",
-   "faz": "Você ataca com uma arma ou com o soco, e o ataque vem imbuído de energia amaldiçoada, o que permite a um item mundano matar maldição. Dano na arma. Os seus ataques com arma causam 1d4 de dano a mais a cada 3 pontos de refino — 1d4 no refino 1, 2d4 no 3, 3d4 no 6, 4d4 no 9. No refino 10 os dados viram d6: 4d6. Só arma. Ele não entra em feitiço nem em Kata. E se o mesmo ataque já estiver carregando um feitiço de dano de Classe 0 ou mais — como no Ferrão, o nível 27 da Estocada, em que o golpe leva um Classe 0 junto —, este dano não se soma por cima."
-  },
-  {
-   "nome": "Projetar energia",
-   "requisito": "sem requisito",
-   "classe_passiva": "—",
-   "escala": "o dano",
-   "faz": "Você dispara energia crua. O dano é Xd6, e ela gasta PE num valor menor ou igual ao seu refino: cada 1 PE aumenta o X em 1. O alcance segue o da sua maior Classe disponível."
+   "faz": "Você dispara energia amaldiçoada pura contra um alvo. Ação Padrão. Escolha quanto gastar, de 1 PE até seu Refino, e pague antes da rolagem. Faça um ataque de conjuração: d20 + atributo de conjuração da ficha + maestria, contra a Defesa. O atributo é o já definido pela técnica ou pelo estilo que você usa para criar suas aplicações. Escolha um alvo que você enxergue, com caminho desimpedido dentro do alcance. No acerto, cause 1d6 de Força por PE gasto. No erro, não cause dano. Os PE ficam gastos em ambos os casos. Projetar é um uso de aptidão, com sua própria Ação Padrão. Não ocupa espaço conhecido, não exige o Selo da técnica e não aceita Melhorias ou Restrições. Ter ataques adicionais na Ação Atacar não acrescenta disparos a esse uso. Os d6 são os dados básicos deste ataque. Em um crítico, eles dobram. Não some Canalizar em Golpe nem o dano de uma arma. Como o ataque é à distância, ele não provoca Kokusen. Sem PE suficiente para pagar ao menos 1, você não pode usar Projetar Energia."
   },
   {
    "nome": "Energia Reversa",
-   "requisito": "refino 7 e nível 14",
+   "requisito": "Refino 7 e nível 14",
    "classe_passiva": "3",
    "escala": "—",
-   "faz": "Ação padrão. Gaste até a sua maior Classe de PE e recupere 1d8 de vida por PE gasto, em você."
+   "faz": "Você usa energia reversa para restaurar seu próprio corpo. Ação Padrão. Gaste de 1 PE até sua maior Classe e recupere 1d8 de vida por PE gasto. Escolha e pague antes de rolar. A cura não ultrapassa sua vida máxima e não gera vida temporária. As primeiras faixas atendem às concessões específicas que permitem aprender a aptidão antes dos requisitos comuns. A aptidão cura você. Para aplicá-la diretamente a outra criatura, você precisa de uma permissão que altere esse alvo. Aprendê-la não aumenta o alcance de um feitiço de Cura nem substitui sua montagem. O Corpo Amaldiçoado não recupera vida com Energia Reversa nem com cura construída a partir dela. Suas formas de reparo estão na Origem. Outras incompatibilidades de alvo também continuam valendo. Energia Reversa é requisito para usar um feitiço da Forma Cura ofensivamente contra uma maldição. A exceção está em Ferir maldições. A aptidão de autocura, sozinha, não concede um ataque."
   },
   {
    "nome": "Circulação",
-   "requisito": "Energia Reversa, refino 8",
+   "requisito": "Energia Reversa e Refino 8",
    "classe_passiva": "3",
    "escala": "—",
-   "faz": "O teto por uso da sua Energia Reversa sobe para 1,5 × a sua maior Classe de PE, arredondando para baixo. Você também pode usá-la como Ação Bônus. Usada assim, os dados de cura são d4 em vez de d8. E você recompõe o que foi arrancado — braço, olho, o que a mesa tiver tirado de você. Isso gasta o teto inteiro do uso, e naquele uso você não cura vida nenhuma."
+   "faz": "Você melhora o uso de Energia Reversa e aprende a reconstruir partes perdidas do corpo. O limite de PE por uso de sua Energia Reversa passa a ser 1,5 × sua maior Classe, arredondado para baixo. Você ainda escolhe quanto gastar antes de rolar. Você pode usar Energia Reversa como Ação Bônus. Nesse uso, cada PE cura 1d4, em vez de 1d8. A mudança de ação não aumenta os alvos permitidos. Como Ação Padrão, gaste o limite inteiro de PE de um uso para recompor uma parte perdida do seu corpo, como um braço ou um olho. Esse uso não recupera pontos de vida. A opção de Ação Bônus serve à cura em d4, não a essa reconstrução. Esta regra desfaz a perda registrada pela mesa. Não cria um procedimento para amputar oponentes nem remove, por si só, uma condição com outra causa. As incompatibilidades de alvo da Energia Reversa continuam valendo."
   },
   {
    "nome": "Regravação",
    "requisito": "Circulação",
    "classe_passiva": "3",
    "escala": "—",
-   "faz": "Ação Bônus, durante o seu Rescaldo. Gaste o teto inteiro da sua Energia Reversa, e o Rescaldo acaba: a sua técnica volta a responder. Nesse uso você não cura vida nenhuma. Cada uso deixa uma marca, e as marcas somem no descanso longo. Com metade da sua Inteligência + metade da sua maestria marcas, cada metade arredondando para baixo, você não abre Expansão de Domínio."
+   "faz": "Você pode encerrar o Rescaldo de sua técnica antes do fim da cena, mas usos repetidos impedem novas Expansões de Domínio naquele dia. Ação Bônus, durante seu Rescaldo. Gaste o limite inteiro de PE de sua Energia Reversa, considerando Circulação. O Rescaldo termina e sua técnica volta a responder. Esse uso não cura vida nem recompõe outra parte do corpo. Cada uso acrescenta uma marca de Regravação. As marcas desaparecem no descanso longo. Seu limite é: Metade de Inteligência + metade da maestria, arredondando cada metade para baixo separadamente. Ao alcançar ou ultrapassar esse limite, você não pode abrir uma Expansão de Domínio enquanto as marcas permanecerem. O uso que alcançou o limite ainda encerra o Rescaldo normalmente. Esperar o Rescaldo terminar normalmente não acrescenta marcas e não apaga as existentes. Regravar também não devolve PE, ações ou recursos gastos para abrir a Expansão anterior."
   },
   {
    "nome": "Kokusen Melhorado",
-   "requisito": "refino 5 e nível 14",
+   "requisito": "Refino 5 e nível 14",
    "classe_passiva": "—",
-   "escala": "vantagem no d100",
-   "faz": "Mesma regra do Kokusen, exceto que você rola dois d100 e fica com o melhor."
+   "escala": "—",
+   "faz": "Em cada teste de Kokusen, role dois d100 e use o menor. Se os dois resultados falharem, acrescente +2 ao bônus acumulado uma vez, não duas."
   },
   {
    "nome": "Kokusen Constante",
-   "requisito": "refino 5",
+   "requisito": "Refino 5",
    "classe_passiva": "—",
-   "escala": "a chance no d100",
-   "faz": "Mesma regra do Kokusen, exceto que a base sobe para 3 × refino."
+   "escala": "—",
+   "faz": "O limite básico do teste passa a ser 3 × Refino, antes do bônus por tentativas falhadas. As duas melhorias funcionam juntas. Com Refino 10 e sem bônus acumulado, o limite normal é 20. Constante o leva a 30. Com Melhorado também, basta um dos dois d100 resultar em 30 ou menos."
   },
   {
    "nome": "Cesta Oca de Vime",
-   "requisito": "ser Reencarnado, ou treinado em História",
+   "requisito": "Ser Encarnado ou treinado em História",
    "classe_passiva": "1",
    "escala": "—",
-   "faz": "Você faz o símbolo e uma esfera se fecha em volta de você. Enquanto você o segurar, o Acerto de uma Expansão não te alcança, e as suas duas mãos ficam presas nele: nada de arma, escudo, feitiço com Gesto ou Agarrar. Andar e chutar, pode. Ela levanta com uma Reação quando uma Expansão abre, ou com uma Ação Bônus no seu turno. Erguer custa a sua maior Classe em PE, toda vez que ela sobe; de pé, ela não custa nada. Ela cai pelos golpes em você, e não pela Expansão. Cada golpe que te acerta pede o teste do Carregar: um Teste de Resistência de Espírito contra a CD de quem te feriu. As falhas se acumulam, e com metade da sua Essência em falhas (no mínimo 1) a esfera se desfaz. Esse teste não ocupa a sua Concentração, e a Mão Firme não protege dele. Se você soltar o símbolo, ela fica de pé e você recupera as mãos, mas cada Acerto letal da Expansão conta uma falha, no máximo uma por rodada. Quando ela cai, a Expansão te alcança na hora, com um Acerto a mais: o do começo do turno do dono continua vindo. Você pode levantar de novo sem espera, com as falhas zeradas, gastando a Ação Bônus do seu turno."
+   "faz": "Você forma um símbolo com as duas mãos e cria uma barreira em volta de si. Use a ativação de Proteção contra domínios. A Cesta não cobra manutenção. Ela anula o Acerto garantido contra você, mas não o Efeito da Expansão. Enquanto mantém as duas mãos no símbolo, pode agir, mover-se e atacar com partes livres do corpo. Não pode usar essas mãos para empunhar arma ou escudo, agarrar ou realizar um gesto exigido por outra ação. Soltar o símbolo libera suas mãos e não encerra imediatamente a Cesta. Enquanto estiver solto, cada Acerto que causa dano que a Cesta impedir acrescenta uma falha, no máximo uma dessas falhas por rodada. Um Acerto que não causa dano não acrescenta essa falha automática. Retomar o símbolo interrompe esse desgaste, sem apagar as falhas anteriores. Cada golpe que acertar você exige TR Espírito contra a CD de quem o atingiu, mesmo se o dano for reduzido a zero. Uma falha acrescenta uma falha à Cesta. O Acerto já anulado pela própria Cesta não é um golpe recebido para esse teste. Ela cai quando acumula metade de sua Essência em falhas, arredondada para baixo, mínimo 1. O teste é próprio da Cesta: não ocupa Concentração e não recebe a dispensa de Mão Firme."
   },
   {
    "nome": "Domínio Simples",
-   "requisito": "ter visto um sendo usado, ou ter aprendido com alguém; refino 5, ou 4 com o voto",
+   "requisito": "Refino 5, ou 4 com o voto do iniciante; aprendizado registrado",
    "classe_passiva": "2",
-   "escala": "o raio",
-   "faz": "Um domínio pequeno em volta de você, de raio 1,5 m + refino ÷ 2, que cobre quem estiver nele. Lá dentro a Expansão não alcança ninguém: nem o Acerto dela, nem o que ela faz com as pessoas ou com o lugar. Ele levanta com uma Reação quando uma Expansão abre, ou com uma Ação Bônus no seu turno, e custa 2 PE por rodada. Erguer custa a sua maior Classe em PE, toda vez que ele sobe. Ele aguenta a Expansão por 3 rodadas, 4 se a sua Essência for maior que a do dono dela e 2 se for menor. Cada Acerto que ele segura gasta uma rodada, a começar pelo de quando ela abre. Quando as rodadas acabam, o Acerto seguinte o derruba e alcança quem ele protegia. Golpe em você não o derruba. Cada Acerto que ele segura pede o teste do Carregar: um Teste de Resistência de Espírito contra a CD do dono da Expansão. Uma falha tira uma rodada, mas as falhas nunca levam a duração abaixo de metade da sua Essência (no mínimo 1). Esse teste não ocupa a sua Concentração, e a Mão Firme não protege dele. Se ele cair pelo voto, no meio da rodada, a Expansão alcança na hora, com um Acerto a mais: o do começo do turno do dono continua vindo. Você pode erguer de novo sem espera, mas da segunda vez em diante, na mesma Expansão, isso custa a Ação Padrão, e ele aguenta metade das rodadas (no mínimo 1)."
+   "escala": "raio",
+   "faz": "Você precisa ter visto um Domínio Simples sendo usado ou ter aprendido com alguém. Registre essa origem do aprendizado. Você cria uma área ao seu redor que protege quem estiver nela. Ative conforme Proteção contra domínios e pague 2 PE de manutenção. As faixas inferiores servem a concessões específicas da criação. O raio acompanha você, salvo o voto abaixo. A proteção alcança todas as criaturas dentro dele, sem uma lista escolhida de aliados. Dentro do raio, uma Expansão com Acerto garantido não aplica seu Acerto nem seu Efeito às criaturas ou ao lugar protegido. Os benefícios do dono continuam com ele. Seus ataques e feitiços comuns ainda podem entrar na área, usando suas resoluções normais. Com Refino abaixo de 5, quando uma regra permitir adquirir esta aptidão, o Domínio Simples fica fixo no ponto de ativação. Se seus dois pés saírem desse ponto, por movimento próprio ou imposto, ele termina. Ao chegar a Refino 5, você pode abandonar esse voto. Se terminar pelo voto, por encerramento voluntário, falta de manutenção ou inconsciência enquanto segurava uma Expansão, quem perdeu essa proteção recebe um Acerto adicional imediatamente, além dos Acertos normais que ainda virão. O fim por esgotar a capacidade segue Duração do Domínio Simples."
   },
   {
    "nome": "Pétala",
-   "requisito": "ser Descendente, ou ter aprendido com alguém de um clã; refino 4 e nível 10",
+   "requisito": "Refino 4 e nível 10; ser Descendente ou aprendizado com alguém de um clã",
    "classe_passiva": "2",
    "escala": "—",
-   "faz": "A energia cobre o seu corpo e rebate o que encosta nela, energia contra energia. Quando o Acerto de uma Expansão toca você, o dano dele depende da sua Essência contra a do dono da Expansão: maior, ele não te fere; igual, você leva um quarto; menor, você leva metade. O que a Expansão traz por contato e não é dano, como agarrar, condição ou marca, ela anula de qualquer jeito. Ela levanta com uma Reação quando uma Expansão abre, ou com uma Ação Bônus no seu turno. Erguer custa a sua maior Classe em PE, toda vez que ela sobe, e de pé ela custa 1 PE por rodada. Ela cai pelos golpes em você. Cada golpe que te acerta, de qualquer um, pede o teste do Carregar: um Teste de Resistência de Espírito contra a CD de quem te feriu. Com metade da sua Essência em falhas (no mínimo 1), ela se desfaz. Esse teste não ocupa a sua Concentração, e a Mão Firme não protege dele. Quando ela cai, a Expansão não te alcança na hora: o próximo Acerto te pega inteiro se ela ainda estiver caída. Erguer de novo custa a Ação Bônus, com as falhas zeradas. Com uma arma corpo a corpo empunhada, ela contra-ataca. Quando um golpe corpo a corpo te acerta, você pode gastar a Reação num ataque de oportunidade com vantagem contra quem te acertou, se ele estiver ao seu alcance. Cada contra-ataque custa 3 PE. O soco não conta."
+   "faz": "Sua energia reage ao contato do Acerto de uma Expansão. Ative conforme Proteção contra domínios. A manutenção custa 1 PE. Quando o Acerto garantido chega ao seu corpo por contato, compare sua Essência com a do dono da Expansão. Cortes, chamas ou criaturas que atingem seu corpo são formas de contato. Uma informação ou regra aplicada sem contato não é impedida por Pétala. Os efeitos do Acerto por contato que não sejam dano, como uma condição ou marca, são anulados nos três casos. A fração da tabela é o dano que passa. Aplique as demais defesas e o arredondamento pelas regras de Dano. A proteção não reduz um golpe comum só porque ele foi realizado dentro de uma Expansão. Cada golpe que acertar você exige TR Espírito contra a CD de quem o atingiu. Isso inclui um Acerto por contato que ainda lhe cause dano após Pétala. Um Acerto inteiramente anulado por ela não exige o teste. Acumule as falhas. Com metade de sua Essência em falhas, para baixo, mínimo 1, Pétala termina. Esse teste não ocupa Concentração e não é dispensado por Mão Firme. Sua queda não causa um Acerto adicional. Você pode erguer novamente com Ação Bônus e novo pagamento, zerando as falhas."
   },
   {
    "nome": "Extensão de Domínio",
-   "requisito": "ter visto uma sendo usada, ou ter estudado, ou aprendido com alguém; refino 7 e nível 18; o Corpo Amaldiçoado não compra",
+   "requisito": "Refino 7 e nível 18; aprendizado registrado; indisponível ao Corpo Amaldiçoado",
    "classe_passiva": "3",
-   "escala": "a duração",
-   "faz": "Você se envolve numa camada fina de domínio sem técnica dentro. Enquanto ela estiver de pé, nada do que uma Expansão faz te alcança: nem o Acerto dela, nem o que ela faz com as pessoas ou com o lugar, seja ela completa, incompleta ou sem barreiras. A barreira continua te prendendo, e o que a Expansão dá ao dono dela continua com ele. Ela levanta com uma Reação quando uma Expansão abre, ou com uma Ação Bônus no seu turno. Erguer custa a sua maior Classe em PE, toda vez que ela sobe; de pé, ela custa 1,5 × a sua maior Classe de PE por rodada, e dura refino rodadas. Ela não cai por golpe. A técnica que encostar nela é anulada até 1/3 do refino + 1: uma Classe Passiva, uma Regra Própria ou um feitiço de Classe até esse número. Acima dele, ela reduz o dano em um quarto, e você leva 3/4. Enquanto ela estiver de pé, você não usa feitiço nem Manejo. Se a sua Expansão já estava aberta, ela continua; abrir uma nova derruba a Extensão."
+   "escala": "—",
+   "faz": "Você precisa ter visto uma Extensão em uso, estudado seu funcionamento ou aprendido com alguém. Registre isso na ficha. Corpo Amaldiçoado não pode adquirir esta aptidão. Você se envolve em uma camada de domínio que neutraliza técnicas. Ative conforme Proteção contra domínios. A manutenção custa 1,5 × sua maior Classe em PE, arredondado para cima. A ativação e sua primeira manutenção cobrem o período até o começo do seu próximo turno. Depois, você pode pagar até Refino − 1 manutenções adicionais, uma no começo de cada turno. A Extensão termina no começo do turno seguinte à última manutenção, ou antes se for encerrada. Golpes não a derrubam. Enquanto ativa, ela impede que o Acerto e o Efeito de qualquer Expansão atinjam você, inclusive incompleta ou sem barreiras. A barreira ainda prende você, e os benefícios do dono permanecem. Uma técnica que encostar na Extensão é anulada, naquele contato, se sua Classe, Categoria de Efeito ou escala de Regra Própria for de até 1 + um terço de seu Refino, para baixo. O limite é 3 nos Refino 7–8 e 4 nos Refino 9–10. Isso não apaga a técnica de quem a criou nem seus efeitos longe de você."
   },
   {
    "nome": "Barreira Simples",
-   "requisito": "sem requisito",
+   "requisito": "Uma escolha de aptidão",
    "classe_passiva": "—",
-   "escala": "a vida do domo",
-   "faz": "Um domo de raio 6 m, ancorado no lugar onde você o ergueu, que bloqueia passagem e linha de efeito nos dois sentidos. Ele tem 5 × refino de pontos de vida, e cai quando você fica Inconsciente."
+   "escala": "—",
+   "faz": "Você ergue um domo fixo para impedir a passagem por um lugar. Permaneça no ponto escolhido enquanto prepara a barreira. Em combate, isso exige dez turnos consecutivos dedicando a Ação Padrão, sem usar outra Ação Padrão para tarefa diferente. Se deixar o ponto, não puder agir ou abandonar a preparação, recomece o minuto. Sofrer dano, sozinho, não interrompe esse trabalho. A barreira surge inteira ao terminar. Não empurra nem corta criaturas ou objetos. Pode se apoiar nos limites físicos do lugar para fechar uma passagem, sem destruir o que já existia ali. O solo ou a estrutura de apoio fecha a base protegida. O domo permanece no lugar. Você pode se afastar e agir normalmente. Ele não ocupa Concentração. Uma única reserva de vida vale para toda a barreira: destruir um trecho desfaz o domo inteiro. Ela não recupera vida com cura destinada a criaturas. Um ataque capaz de alcançar sua superfície acerta automaticamente, sem crítico, pagando suas ações e recursos normais. Se um efeito que possa ferir barreiras exigir TR, ela falha automaticamente. Não recebe condições de criaturas. Ataques que não possam afetar uma barreira não ganham essa capacidade por acertar."
   },
   {
    "nome": "Cortina",
-   "requisito": "exige a Barreira Simples",
+   "requisito": "Barreira Simples",
    "classe_passiva": "—",
-   "escala": "a vida dela",
-   "faz": "Mesma preparação de um minuto da Barreira Simples, exceto que ela cobre um lugar inteiro: um prédio, uma escola, um quarteirão. Ela esconde o que está dentro de quem não é feiticeiro, e você pendura uma condição sobre quem atravessa. Ela tem 40 × refino de pontos de vida, e cai quando você fica Inconsciente."
+   "escala": "—",
+   "faz": "Você delimita uma área para esconder seu interior de pessoas que não são feiticeiras e controlar a passagem por suas bordas. A preparação segue Barreira Simples: 1 minuto, sem custo em PE. Antes de começar, registre o lugar e suas bordas: um prédio, uma escola, uma quadra ou outro local contínuo. O ponto mais distante da borda deve estar a até 90 m de você ao concluir. Essa medida limita a Cortina inteira, não cada trecho isolado. A Cortina tem 40 × Refino pontos de vida, compartilhados por toda a superfície. Sofre ataques e TRs pelo procedimento de Barreira Simples. Fica ancorada no lugar e termina com vida zero, se você ficar Inconsciente ou se decidir encerrá-la. Ela ocupa a mesma manutenção única de Barreira Simples: concluir uma substitui a outra. Ao preparar, escreva uma condição verificável sobre quem pode atravessar e em qual sentido. Ela vale até a Cortina terminar. As bordas escolhidas não se movem. A condição regula a travessia das criaturas que ela identifica. Não cria a vedação completa da Barreira Simples: ataques e efeitos ainda seguem seu alcance, sua trajetória e a visibilidade disponível. Uma criatura impedida de atravessar pode tentar destruir a Cortina."
+  },
+  {
+   "nome": "Ritual",
+   "requisito": "Inteligência 5, nível 10 e Técnica Inata. Regras em Ritual e Pactos",
+   "classe_passiva": "—",
+   "escala": "—",
+   "faz": "Um Ritual reforça um feitiço com gestos e recitação. Você escolhe quanto tempo dedicar à conjuração e quais benefícios procura. O feitiço continua sendo aquele registrado na ficha, com seus alvos, efeito e custo de energia. Ritual é uma aptidão. Requisitos: Inteligência 5, nível 10 e Técnica Inata. Ela usa uma escolha de aptidão. Técnica Marcial e Sem Técnica não podem adquiri-la nem auxiliar um Ritual. A rota sem energia amaldiçoada também não tem acesso. Escolha um feitiço de Classe 1 ou maior, a modalidade de Ritual e as Melhorias de Ritual antes de fazer qualquer rolagem. Confira se consegue cumprir todos os gestos, recitar e pagar o custo normal mais a eventual penalidade por falha. Cada conjuração recebe apenas um Ritual. Você precisa falar, ter pelo menos uma mão livre para os gestos e cumprir qualquer exigência adicional de mãos da sua técnica. Calado impede Ritual. Silencioso não dispensa seus gestos ou sua voz. Um Selo mais discreto também não esconde a recitação. Atacar sem revelar sua posição exige outra capacidade que expressamente inclua essas circunstâncias."
   },
   {
    "nome": "Aptidão Própria",
-   "requisito": "uma vez na ficha inteira",
+   "requisito": "Uma única vez na ficha",
    "classe_passiva": "1 ou 2",
-   "escala": "conforme o que for escrito",
-   "faz": "Você escreve, com o mestre, uma aptidão que não está no catálogo. Antes da sessão, e nunca no meio dela. Ela é Classe Passiva 1 ou 2, nunca 3, e você só pode pegá-la uma vez na ficha inteira. A ficha registra duas coisas: a frase, e a resposta de \"em quantas cenas por arco isso vai importar?\"."
+   "escala": "—",
+   "faz": "Você cria uma aptidão com o mestre antes da sessão. Ela representa um aprendizado específico de energia que o catálogo ainda não cobre. Escreva uma frase de regra. Ela precisa dizer quando funciona, quem afeta e o que permite fazer. Acrescente ação, custo, distância e encerramento quando forem necessários. A descrição pode ser curta, mas deve bastar para outra mesa aplicar a mesma regra. A proposta não pode copiar uma aptidão existente com outro nome, dispensar seus requisitos ou acrescentar dados de dano. Aptidão Própria de Categoria de Efeito 2 também precisa de um limite por cena. Avalie a frequência real de uso no tipo de missão da campanha. Compare também a magnitude, o custo de ação, os alvos e o alcance com os Talentos da mesma Categoria de Efeito. Efeitos pequenos ou de informação costumam caber na Categoria 1. Intervenções mais relevantes podem exigir Categoria 2 e seu limite por cena. Permanência, sozinha, não transforma um benefício pequeno em Categoria 3. Efeitos que precisem dessa terceira Categoria ficam fora desta opção. Aptidão Própria usa uma escolha de aptidão. Uma concessão da criação que já preencha essa opção também consome a escolha única da ficha. Mudanças posteriores precisam ficar registradas junto da regra aprovada."
   }
  ],
  "aptidoes_de_graca": [
-  "Cobrir-se de energia",
-  "Canalizar energia"
+  "Cobrir-se de Energia",
+  "Canalizar Energia"
  ],
  "aptidoes_frases": [
-  "Cobrir-se de energia e Canalizar energia já estão na sua ficha desde o refino 1",
-  "Refino — mais um de refino, e uma aptidão. Se o seu refino já estiver no teto, você leva duas aptidões no lugar.",
-  "Ela é Classe Passiva 1 ou 2, nunca 3, e você só pode pegá-la uma vez na ficha inteira.",
-  "sem Traje e sem Revestimento, a sua proteção é 1/3 do refino + 1",
-  "Redução de Dano de 1,5 × refino num golpe, por 2 PE",
-  "1d4 no refino 1, 2d4 no 3, 3d4 no 6, 4d4 no 9. No refino 10 os dados viram d6: 4d6."
+  "Quem tem energia amaldiçoada começa com Cobrir-se de Energia e Canalizar Energia, sem gastar uma escolha.",
+  "Se escolher Refino, receba mais +1 de Refino e uma aptidão. Se o ganho básico já deixou seu Refino em 10, receba duas aptidões, em vez desse aumento adicional e de uma aptidão.",
+  "Sem Traje e sem Revestimento, sua proteção é 1 + um terço do Refino, arredondado para baixo."
  ],
  "escadas": {
   "alcance": [
@@ -262,7 +271,7 @@
    "18 m",
    "36 m",
    "90 m",
-   "o que você enxergar"
+   "visão a olho nu"
   ],
   "raio": [
    "3 m",
@@ -286,9 +295,9 @@
    "classes_6_e_7": "36 m"
   },
   "Toque": {
-   "classe_0": "9 m",
-   "classes_1_a_5": "18 m",
-   "classes_6_e_7": "36 m"
+   "classe_0": "1,5 m",
+   "classes_1_a_5": "1,5 m",
+   "classes_6_e_7": "1,5 m"
   },
   "Explosão": {
    "classe_0": "raio 3 m, a 9 m",
@@ -310,85 +319,85 @@
    "classes_1_a_5": "18 × 1,5 m",
    "classes_6_e_7": "30 × 1,5 m"
   },
-  "Apoio": {
-   "classe_0": "4,5 m",
-   "classes_1_a_5": "9 m",
-   "classes_6_e_7": "18 m"
-  },
   "Cura": {
    "classe_0": "—",
    "classes_1_a_5": "9 m",
    "classes_6_e_7": "18 m"
   },
-  "Onda": {
-   "classe_0": "—",
+  "Apoio": {
+   "classe_0": "4,5 m",
    "classes_1_a_5": "9 m",
    "classes_6_e_7": "18 m"
+  },
+  "Onda": {
+   "classe_0": "—",
+   "classes_1_a_5": "raio 3 m, em você",
+   "classes_6_e_7": "raio 4,5 m, em você"
   }
  },
  "formas": [
   {
    "nome": "Projétil",
    "custa": "—",
-   "o_que_e": "18 m, um alvo",
-   "resolve": "Rolagem de acerto"
+   "o_que_e": "Um alvo a até 18 m.",
+   "resolve": "Ataque."
   },
   {
    "nome": "Toque",
    "custa": "—",
-   "o_que_e": "1,5 m, um alvo. Projétil com a Restrição Corpo a Corpo embutida (devolve Média).",
-   "resolve": "Rolagem de acerto"
+   "o_que_e": "Um alvo a até 1,5 m.",
+   "resolve": "Ataque."
   },
   {
    "nome": "Explosão",
    "custa": "Leve",
-   "o_que_e": "Esfera de raio 3 m, num ponto a até 18 m",
-   "resolve": "Teste de Resistência, metade no sucesso"
+   "o_que_e": "Esfera de raio 3 m, num ponto a até 18 m.",
+   "resolve": "TR; metade dos dados no sucesso."
   },
   {
    "nome": "Aura",
    "custa": "Leve",
-   "o_que_e": "Esfera de raio 3 m centrada em você. Explosão com Corpo a Corpo embutida (devolve Média).",
-   "resolve": "Teste de Resistência, metade no sucesso"
+   "o_que_e": "Esfera de raio 3 m, centrada em você.",
+   "resolve": "TR; metade dos dados no sucesso."
   },
   {
    "nome": "Cone",
    "custa": "Leve",
-   "o_que_e": "4,5 m saindo de você. A largura do cone em qualquer ponto é igual à distância daquele ponto até você.",
-   "resolve": "Teste de Resistência, metade no sucesso"
+   "o_que_e": "Cone de 4,5 m, partindo de você.",
+   "resolve": "TR; metade dos dados no sucesso."
   },
   {
    "nome": "Linha",
    "custa": "Leve",
-   "o_que_e": "18 m por 1,5 m. Quando o comprimento chega ao topo da escada, Maior passa a subir a largura: 1,5 m → 3 m → 4,5 m.",
-   "resolve": "Teste de Resistência, metade no sucesso"
+   "o_que_e": "Linha de 18 m por 1,5 m, partindo de você.",
+   "resolve": "TR; metade dos dados no sucesso."
   },
   {
    "nome": "Cura",
    "custa": "Média",
-   "o_que_e": "Um aliado a até 9 m. Os dados viram cura. Pode escolher alvo hostil.",
-   "resolve": "Automático no aliado, acerto no hostil"
+   "o_que_e": "Um aliado a até 9 m. O saldo vira dados de cura, até 2 × Classe em d8.",
+   "resolve": "Cura e Apoio são automáticos em alvos dispostos"
   },
   {
    "nome": "Apoio",
    "custa": "—",
-   "o_que_e": "Um aliado a até 9 m. Sem dano. Cada ponto que sobra vira 3 de vida temporária.",
-   "resolve": "Automático"
+   "o_que_e": "Um aliado a até 9 m. Cada ponto do saldo concede 3 pontos de vida temporária.",
+   "resolve": "Cura e Apoio são automáticos em alvos dispostos"
   },
   {
    "nome": "Onda",
    "custa": "Pesada",
-   "o_que_e": "Esfera de raio 3 m centrada em você. A cura ou o apoio pega todos os aliados dentro, sem dividir.",
-   "resolve": "Automático"
+   "o_que_e": "Aliados numa esfera de raio 3 m centrada em você. Escolha cura ou apoio ao montar.",
+   "resolve": "Cura e Apoio são automáticos em alvos dispostos"
   },
   {
    "nome": "Efeito",
    "custa": "—",
-   "o_que_e": "Fora de combate. Sem dano. Ver *Fora de combate*.",
-   "resolve": "Automático"
+   "o_que_e": "Uma aplicação fora de combate. Usa a escala de Efeitos fora de combate, sem dano ou vida temporária.",
+   "resolve": "Sem dano"
   }
  ],
- "toque": "Toque fica em 1,5 m em qualquer Classe.",
+ "toque": "Toque permanece a 1,5 m.",
  "classe_0": {
   "niveis": [
    1,
@@ -411,8 +420,8 @@
    5,
    6
   ],
-  "frase": "Cabe uma Melhoria Leve e uma Restrição Leve numa Classe 0, tirando um dado para pagar.",
-  "nao_cura": "As Formas Cura e Onda ficam de fora dela."
+  "frase": "Você pode acrescentar uma Melhoria Leve, retirando um dado do dano-base.",
+  "nao_cura": "Cura e Onda não estão disponíveis."
  },
  "liberacao": {
   "niveis": [
@@ -422,11 +431,9 @@
   ],
   "classe_minima": 3,
   "frases": [
-   "Você ganha uma no nível 10, outra no 20 e outra no 30.",
-   "Cada uma é um feitiço de Classe 3 ou mais",
-   "+Classe em dados de dano em cima do que a montagem der.",
-   "Custa a rodada inteira e +50% de PE, arredondando para cima.",
-   "Não serve para cura"
+   "Você recebe uma no nível 10, outra no 20 e outra no 30.",
+   "acrescente +Classe em d8 ao dano da montagem. Ela não serve para cura.",
+   "O custo é 3 × Classe de PE, aumentado em 50%, arredondado para cima. A Liberação exige Ação Completa."
   ]
  },
  "tecnica_maxima": {
@@ -442,21 +449,21 @@
     "de": 21,
     "ate": 25,
     "dados": 28,
-    "montagem": 8,
+    "montagem": 12,
     "pe": 30
    },
    {
     "de": 26,
     "ate": 30,
     "dados": 32,
-    "montagem": 12,
+    "montagem": 16,
     "pe": 35
    }
   ],
   "pe_por_classe": 5,
   "frases": [
-   "custa 5 × a sua maior Classe",
-   "Não aceita Restrição."
+   "A Máxima custa Ação Completa e 5 × sua maior Classe em PE.",
+   "A Máxima não aceita Restrições que devolvam pontos."
   ]
  },
  "dominio": {
@@ -466,96 +473,87 @@
     "espacos": 2,
     "nivel": 10,
     "refino": 4,
-    "abre_em": "nível 10 e refino 4",
-    "acerto": "resolve por rolagem, como um feitiço"
+    "abre_em": "Nível 10 e refino 4",
+    "acerto": "Exige a resolução registrada na ficha"
    },
    {
     "degrau": "Completa",
     "espacos": 3,
     "nivel": 14,
     "refino": 5,
-    "abre_em": "nível 14 e refino 5",
-    "acerto": "acontece. Sem rolagem e sem Teste de Resistência"
+    "abre_em": "Incompleta, nível 14 e refino 5",
+    "acerto": "Garantido, sem ataque nem TR"
    },
    {
     "degrau": "Sem Barreiras",
     "espacos": 5,
     "nivel": null,
     "refino": 10,
-    "abre_em": "refino 10 e especialização em Ocultismo",
-    "acerto": "acontece, com barreira ou sem, e você escolhe a cada abertura"
+    "abre_em": "Completa, refino 10 e especialização em Ocultismo",
+    "acerto": "Garantido; permite escolher o modo aberto"
    }
   ],
   "pe_por_classe": 6,
   "pe_por_classe_sem_barreira": 7,
   "raio_por_refino": "1,5",
   "raio_da_incompleta": "7,5 m",
-  "raio_sem_barreira": "200 m",
+  "raio_sem_barreira": "199,5 m",
   "vida_da_barreira": 50,
   "frases": [
-   "as duas cobram 6 × a sua maior Classe de PE",
-   "−⅓ do refino de PE na incompleta, −metade do refino na completa",
-   "Dura metade do refino em rodadas, no mínimo uma.",
-   "O domínio tem raio de 1,5 m × refino. A incompleta para em 7,5 m.",
-   "Por fora ela tem 50 × metade do refino de vida",
-   "Sem barreira, abrir cobra 7 × a sua maior Classe de PE, e lá dentro cada feitiço custa maestria × 2 a menos",
-   "O raio é de 200 m",
-   "Nenhum feitiço custa menos de 1 PE."
+   "Depois da abertura, conte metade do refino, arredondada para baixo, em turnos seus, no mínimo um.",
+   "Um custo positivo não cai abaixo de 1 PE; Classe 0 continua gratuita.",
+   "Por fora, a barreira possui 50 × metade do refino em pontos de vida"
   ]
  },
  "pactos": {
   "formas": [
    {
-    "forma": "permanente",
-    "quando": "fora de cena, com o mestre lendo",
-    "teto": "metade da Essência"
+    "forma": "Permanente",
+    "quando": "Fora de cena, com registro aprovado",
+    "teto": "Benefício contínuo. Quantidade limitada pela Essência"
    },
    {
-    "forma": "temporário",
-    "quando": "Ação Bônus, no seu turno",
-    "teto": "não tem"
+    "forma": "Temporário",
+    "quando": "No seu turno, como Ação Bônus ou Reação",
+    "teto": "Benefício até o fim da cena. A perda segue o acordo"
    },
    {
     "forma": "Promessa",
-    "quando": "entre duas partes, as duas aceitando",
-    "teto": "não tem"
+    "quando": "Quando duas partes capazes de decidir aceitam os termos",
+    "teto": "Prazo e consequências registrados no acordo"
    },
    {
-    "forma": "de restrição",
-    "quando": "na criação, junto da Origem ou da técnica",
-    "teto": "não se aplica"
+    "forma": "Pacto de restrição",
+    "quando": "Na criação, com a Origem ou técnica",
+    "teto": "Registra uma limitação já considerada na ficha"
    }
   ],
   "concede": [
    {
-    "concede": "pontos de energia",
-    "quem": "qualquer ficha"
-   },
-   {
     "concede": "uma aptidão",
-    "quem": "quem tem aptidão — capítulo 12, *Aptidões e Refino*"
+    "quem": "quem tem aptidão"
    },
    {
-    "concede": "um espaço de feitiço",
-    "quem": "quem escreve Fundamento — capítulo 9, *Fundamento*"
+    "concede": "um espaço conhecido",
+    "quem": "qualquer rota, no repertório dela"
    },
    {
-    "concede": "um estilo",
-    "quem": "só a sub-origem Sem Técnica, no capítulo 7, *Origens e Legados*"
+    "concede": "PE máximo igual à maior Classe",
+    "quem": "qualquer ficha"
    }
   ],
-  "frase": "um número de pactos permanentes igual a metade da sua Essência, arredondando para baixo"
+  "frase": "O pacto pode conceder uma aptidão, um espaço conhecido adicional ou um aumento do PE máximo igual à sua maior Classe.",
+  "quantos": "metade da Essência em pactos permanentes, arredondada para baixo"
  },
  "leque": {
   "frases": [
-   "Leque — mais um feitiço, que só pode ser feitiço, e uma Passiva.",
-   "Cada escolha de Leque abre uma vaga a mais no teto"
+   "Leque | Um feitiço adicional e um Talento, sem pagar espaços por eles.",
+   "Cada Leque abre uma vaga própria para ele além do limite de cinco Talentos pagos."
   ]
  },
  "controle": {
   "frases": [
-   "Se o dano final for um quarto do teto (o teto é 4 × Classe): os efeitos de Controle duram uma rodada a mais.",
-   "além da rodada extra, a CD contra esses efeitos sobe +2"
+   "Com saldo de dano até a Classe, seus efeitos de Controle duram uma rodada a mais. Com saldo zero, eles também recebem +2 na CD."
   ]
  },
  "numeros_da_montagem": [
@@ -625,457 +623,185 @@
  ],
  "melhorias_por_classe": [
   [
-   "1 e 2",
+   "1 a 2",
    "2",
    "2"
   ],
   [
-   "3 e 4",
+   "3 a 4",
    "3",
    "2"
   ],
   [
-   "5 em diante",
+   "5 a 7",
    "4",
    "2"
   ]
  ],
  "feiticos_prontos": [
   {
-   "nome": "Estalo",
+   "nome": "Fio de Arrasto",
    "classe": 1,
    "lib": false,
-   "mel": [],
-   "res": [],
-   "livro": "3d8 = 13",
    "forma": "Projétil",
-   "dados": 3
-  },
-  {
-   "nome": "Chicote",
-   "classe": 1,
-   "lib": false,
-   "mel": [],
-   "res": [],
-   "livro": "2d8 = 9 numa linha de 18 m",
-   "forma": "Linha",
-   "dados": 2
-  },
-  {
-   "nome": "Perfurar",
-   "classe": 1,
-   "lib": false,
    "mel": [
+    "Empurrão"
+   ],
+   "res": [],
+   "livres": [
+    "Alcance"
+   ],
+   "dados": 2,
+   "pe": 3,
+   "frase": "Sobram 3 − 0 − 1 = 2 pontos, que viram 2d8 de dano."
+  },
+  {
+   "nome": "Peso nas Mãos",
+   "classe": 1,
+   "lib": false,
+   "forma": "Toque",
+   "mel": [
+    "Derrubado"
+   ],
+   "res": [],
+   "livres": [
+    "Controle",
+    "Castigo"
+   ],
+   "dados": 3,
+   "pe": 3,
+   "frase": "No acerto, causa 3d8 de Concussão e aplica Derrubado por uma rodada."
+  },
+  {
+   "nome": "Corte Medido 2",
+   "classe": 2,
+   "lib": false,
+   "forma": "Projétil",
+   "mel": [
+    "Fura",
     "Precisão"
    ],
    "res": [
     "Parado"
    ],
-   "livro": "3d8 = 13, +2 no acerto",
+   "livres": [
+    "Mira"
+   ],
+   "dados": 5,
+   "pe": 6,
+   "frase": "2 | 6 | 1 | 1 | +1 | 5d8 | 6"
+  },
+  {
+   "nome": "Corte Medido 3",
+   "classe": 3,
+   "lib": false,
    "forma": "Projétil",
-   "dados": 3
-  },
-  {
-   "nome": "Golpe Cru",
-   "classe": 1,
-   "lib": false,
-   "mel": [],
-   "res": [],
-   "livro": "3d8 = 13 no toque. A devolução some",
-   "forma": "Toque",
-   "dados": 3
-  },
-  {
-   "nome": "Palma Trovejante",
-   "classe": 2,
-   "lib": false,
    "mel": [
-    "Derrubado"
+    "Fura",
+    "Precisão"
    ],
    "res": [
-    "Atrasar"
+    "Parado"
    ],
-   "livro": "6d8 = 27 + Derrubado por uma rodada",
-   "forma": "Cone",
-   "dados": 6
+   "livres": [
+    "Mira"
+   ],
+   "dados": 9,
+   "pe": 9,
+   "frase": "Parado devolve os 2 pontos gastos: 9 − 2 + 2 = 9d8."
   },
   {
-   "nome": "Lança Negra",
-   "classe": 2,
+   "nome": "Corte Medido 5",
+   "classe": 5,
    "lib": false,
+   "forma": "Projétil",
    "mel": [
-    "Fura"
+    "Fura",
+    "Precisão"
    ],
    "res": [
-    "Atrasar"
+    "Parado"
    ],
-   "livro": "6d8 = 27, fura 4 de RD. O Atrasar pagou a Fura inteira",
-   "forma": "Projétil",
-   "dados": 6
+   "livres": [
+    "Mira"
+   ],
+   "dados": 15,
+   "pe": 15,
+   "frase": "Parado paga esses 3 pontos: 15 − 3 + 3 = 15d8"
   },
   {
-   "nome": "Faísca em Cadeia",
+   "nome": "Salto de exemplo",
    "classe": 2,
    "lib": false,
+   "forma": "Projétil",
    "mel": [
     "Salto"
    ],
    "res": [
     "Gesto"
    ],
-   "livro": "5d8 = 22 e 2d8 = 9 no segundo alvo",
-   "forma": "Projétil",
-   "dados": 5
+   "livres": [],
+   "dados": 5,
+   "pe": 6,
+   "frase": "Projétil + Salto, de preço normal, gasta 2; Gesto devolve 1. São 5d8 no primeiro alvo."
   },
   {
-   "nome": "Sopro",
-   "classe": 2,
-   "lib": false,
-   "mel": [],
-   "res": [],
-   "livro": "cura 4d8 = 18",
-   "forma": "Cura",
-   "dados": 4
-  },
-  {
-   "nome": "Vento a Favor",
-   "classe": 2,
-   "lib": false,
-   "mel": [
-    "Impulso",
-    "Pressa"
-   ],
-   "res": [],
-   "livro": "9 de vida temporária, vantagem no próximo teste, +6 m sem provocar ataque",
-   "forma": "Apoio",
-   "dados": 3
-  },
-  {
-   "nome": "Marca do Carrasco",
+   "nome": "Rede de contenção",
    "classe": 3,
    "lib": false,
-   "mel": [
-    "Marca",
-    "Queima"
-   ],
-   "res": [
-    "Uma Vez"
-   ],
-   "livro": "6d8 = 27 e 3d8 = 13 no turno seguinte",
-   "forma": "Projétil",
-   "dados": 6
-  },
-  {
-   "nome": "Domo de Gelo",
-   "classe": 3,
-   "lib": false,
-   "mel": [
-    "Terreno",
-    "Maior"
-   ],
-   "res": [
-    "Condicional|Leve"
-   ],
-   "livro": "5d8 = 22 num raio de 4,5 m + terreno difícil por uma rodada",
    "forma": "Explosão",
-   "dados": 5
-  },
-  {
-   "nome": "Passo Cortante",
-   "classe": 3,
-   "lib": false,
-   "mel": [
-    "Passo",
-    "Precisão"
-   ],
-   "res": [],
-   "livro": "8d8 = 36 no toque, anda 6 m, +2 no acerto",
-   "forma": "Toque",
-   "dados": 8
-  },
-  {
-   "nome": "Costura",
-   "classe": 3,
-   "lib": false,
-   "mel": [
-    "Limpa"
-   ],
-   "res": [
-    "Gesto"
-   ],
-   "livro": "cura 5d8 = 22 e tira uma condição de nível Leve ou Média",
-   "forma": "Cura",
-   "dados": 5
-  },
-  {
-   "nome": "Rede",
-   "classe": 3,
-   "lib": false,
    "mel": [
     "Atordoado",
     "Terreno"
    ],
    "res": [],
-   "livro": "zero dano: Atordoado + terreno difícil, CD +2, tudo durando uma rodada a mais",
-   "forma": "Explosão",
-   "dados": 0
+   "livres": [
+    "Amparo",
+    "Tempo"
+   ],
+   "dados": 0,
+   "pe": 9,
+   "frase": "Gasta os 9 pontos, usa duas Melhorias e não compra Restrição. O saldo é zero: não causa dano."
   },
   {
-   "nome": "Hora Morta",
+   "nome": "Fura sem desconto",
    "classe": 3,
    "lib": false,
-   "mel": [
-    "Longe"
-   ],
-   "res": [],
-   "livro": "um quarteirão em silêncio absoluto por uma hora",
-   "forma": "Efeito",
-   "dados": null
-  },
-  {
-   "nome": "Fissura",
-   "classe": 3,
-   "lib": false,
-   "mel": [
-    "Toca a Alma"
-   ],
-   "res": [],
-   "livro": "7 dados viram 3d8 = 13 na alma",
    "forma": "Projétil",
-   "dados": 7
+   "mel": [
+    "Fura"
+   ],
+   "res": [],
+   "livres": [],
+   "dados": 6,
+   "pe": 9,
+   "frase": "Um Projétil de Classe 3 tem Fura por 3 pontos, sem desconto, e causa 6d8."
   },
   {
-   "nome": "Prisão de Sombras",
-   "classe": 4,
+   "nome": "Aura com Fura",
+   "classe": 3,
    "lib": false,
+   "forma": "Aura",
    "mel": [
-    "Atordoado",
-    "Escolher"
+    "Fura"
    ],
-   "res": [
-    "Sangra"
-   ],
-   "livro": "4d8 = 18 + Atordoado durando uma rodada a mais; você toma 8",
-   "forma": "Explosão",
-   "dados": 4
+   "res": [],
+   "livres": [],
+   "dados": 7,
+   "pe": 9,
+   "frase": "Uma Aura de Classe 3, sem desconto, tem Fura: custo 2 + 3, com devolução 3 de Corpo a Corpo. Causa 7d8."
   },
   {
-   "nome": "Julgamento Vertical",
-   "classe": 4,
-   "lib": false,
-   "mel": [
-    "Fura",
-    "Precisão"
-   ],
-   "res": [
-    "Atrasar"
-   ],
-   "livro": "8d8 = 36, fura 8 de RD, +2 na CD",
+   "nome": "Corte de ruptura",
+   "classe": 3,
+   "lib": true,
    "forma": "Linha",
-   "dados": 8
-  },
-  {
-   "nome": "Roubo de Fôlego",
-   "classe": 4,
-   "lib": false,
-   "mel": [
-    "Sugar",
-    "Remate"
-   ],
-   "res": [
-    "Condicional|Media"
-   ],
-   "livro": "8d8 = 36, cura 9, +25% em alvo abaixo de metade",
-   "forma": "Projétil",
-   "dados": 8
-  },
-  {
-   "nome": "Passo do Espelho",
-   "classe": 4,
-   "lib": false,
-   "mel": [
-    "Rápido",
-    "Passo"
-   ],
-   "res": [
-    "Recuo|Media"
-   ],
-   "livro": "12d8 = 54 como Ação Bônus, no toque",
-   "forma": "Toque",
-   "dados": 12
-  },
-  {
-   "nome": "Muralha",
-   "classe": 4,
-   "lib": false,
-   "mel": [
-    "Anteparo",
-    "Guarda"
-   ],
-   "res": [
-    "Parado"
-   ],
-   "livro": "parede com 40 de vida, aliado com +2 de defesa e 18 de vida temporária",
-   "forma": "Apoio",
-   "dados": 6
-  },
-  {
-   "nome": "Maré Branca",
-   "classe": 4,
-   "lib": false,
    "mel": [],
    "res": [],
-   "livro": "cura 6d8 = 27 em todos os aliados num raio de 3 m",
-   "forma": "Onda",
-   "dados": 6
-  },
-  {
-   "nome": "Alinhavo",
-   "classe": 4,
-   "lib": false,
-   "mel": [
-    "Remenda"
-   ],
-   "res": [
-    "Gesto"
-   ],
-   "livro": "cura 4d8 = 18 e devolve 20 de Integridade",
-   "forma": "Cura",
-   "dados": 4
-  },
-  {
-   "nome": "Purga Escarlate",
-   "classe": 5,
-   "lib": false,
-   "mel": [
-    "Inescapável"
-   ],
-   "res": [],
-   "livro": "10d8 = 45 automático, sem acerto e sem resistência",
-   "forma": "Projétil",
-   "dados": 10
-  },
-  {
-   "nome": "Chuva de Agulhas",
-   "classe": 5,
-   "lib": false,
-   "mel": [
-    "Rajada",
-    "Precisão"
-   ],
-   "res": [
-    "Parado"
-   ],
-   "livro": "12d8 = 54 em 6 tiros, +2 cada",
-   "forma": "Projétil",
-   "dados": 12
-  },
-  {
-   "nome": "Vala Comum",
-   "classe": 5,
-   "lib": false,
-   "mel": [
-    "Maior",
-    "Derrubado"
-   ],
-   "res": [
-    "Atrasar"
-   ],
-   "livro": "11d8 = 49 num raio de 4,5 m, todos Derrubados por uma rodada",
-   "forma": "Explosão",
-   "dados": 11
-  },
-  {
-   "nome": "Fim de Turno",
-   "classe": 5,
-   "lib": false,
-   "mel": [
-    "Escolher"
-   ],
-   "res": [
-    "Atrasar"
-   ],
-   "livro": "12d8 = 54 num raio de 3 m, só em quem você escolher",
-   "forma": "Explosão",
-   "dados": 12
-  },
-  {
-   "nome": "Segunda Vida",
-   "classe": 5,
-   "lib": false,
-   "mel": [
-    "Levanta"
-   ],
-   "res": [
-    "Uma Vez",
-    "Gesto"
-   ],
-   "livro": "cura 8d8 = 36, ou levanta um aliado caído com 25",
-   "forma": "Cura",
-   "dados": 8
-  },
-  {
-   "nome": "Fio Preso",
-   "classe": 5,
-   "lib": false,
-   "mel": [
-    "Fica"
-   ],
-   "res": [],
-   "livro": "um bairro de onde ninguém sai, até alguém desfazer",
-   "forma": "Efeito",
-   "dados": null
-  },
-  {
-   "nome": "Sete Palmos",
-   "classe": 5,
-   "lib": false,
-   "mel": [
-    "Toca a Alma"
-   ],
-   "res": [],
-   "livro": "15 dados viram 7d8 = 31 na alma, no toque",
-   "forma": "Toque",
-   "dados": 15
-  },
-  {
-   "nome": "Golpe do Voto",
-   "classe": 5,
-   "lib": true,
-   "mel": [],
-   "res": [],
-   "livro": "20d8 = 90, o máximo do nível 20. 23 PE",
-   "forma": "Projétil",
-   "dados": 20,
-   "pe": 23
-  },
-  {
-   "nome": "Rachadura",
-   "classe": 3,
-   "lib": true,
-   "mel": [],
-   "res": [
-    "Atrasar"
-   ],
-   "livro": "12d8 = 54 numa linha de 18 m, o teto da Classe 3. 14 PE",
-   "forma": "Linha",
-   "dados": 12,
-   "pe": 14
-  },
-  {
-   "nome": "Sentença Final",
-   "classe": 5,
-   "lib": true,
-   "mel": [
-    "Escolher"
-   ],
-   "res": [
-    "Atrasar"
-   ],
-   "livro": "17d8 = 76 num raio de 3 m, só em quem você escolher. 23 PE",
-   "forma": "Explosão",
-   "dados": 17,
-   "pe": 23
+   "livres": [],
+   "dados": 10,
+   "pe": 14,
+   "frase": "A Liberação acrescenta 3d8: 10d8 numa linha de 18 m por 1,5 m."
   }
  ],
  "rotas": {
@@ -1092,202 +818,196 @@
    }
   },
   "frases": [
-   "Onde qualquer capítulo escreve feitiço, leia também Manejo",
-   "Onde qualquer capítulo escreve Técnica Máxima, leia Auge.",
-   "Você tem Liberação Máxima, e ela não muda de nome.",
-   "Você não tem Expansão de Domínio. Nem incompleta, nem completa.",
-   "Onde qualquer capítulo escreve feitiço, leia também Kata",
-   "Onde qualquer capítulo escreve Liberação Máxima, leia Ruptura.",
-   "Onde qualquer capítulo escreve Técnica Máxima, leia Ōgi.",
-   "Você não tem Expansão de Domínio. Nem incompleta, nem completa, tenha a sua ficha energia amaldiçoada ou não.",
-   "O seu Selo é ter o equipamento em uso. Uma das três armas, ou a ferramenta.",
-   "Por isso a Extensão de Domínio você não compra",
-   "Nesta rota ele se lê Pontos de Esforço em vez de Pontos de Energia"
+   "Kata é uma aplicação de Técnica Marcial. Manejo é uma aplicação da rota Sem Técnica.",
+   "Esta rota não concede Expansão de Domínio, incompleta ou completa, nem Extensão de Domínio.",
+   "O equipamento em uso é seu Selo.",
+   "PE significa Pontos de Energia para quem possui energia amaldiçoada e Pontos de Esforço para quem não possui."
   ],
   "sementes": [
    "Domínio Simples",
    "Energia Reversa",
-   "aptidão própria"
+   "Pétala",
+   "Aptidão Própria"
   ],
-  "semente_frase": "Ela conta como uma aptidão a mais para a lista.",
+  "semente_frase": "Ela conta como uma aptidão adicional.",
   "grupos_de_arma": {
+   "Porrete": [
+    "Força"
+   ],
+   "Balestra": [
+    "Destreza"
+   ],
+   "Lâmina Curta": [
+    "Força",
+    "Destreza"
+   ],
+   "Arremesso": [
+    "Força",
+    "Destreza"
+   ],
+   "Flexível": [
+    "Força"
+   ],
+   "Yumi": [
+    "Destreza"
+   ],
    "Lâmina Longa": [
+    "Força",
+    "Destreza"
+   ],
+   "Arma de Fogo": [
+    "Destreza"
+   ],
+   "Ceifa": [
     "Força",
     "Destreza"
    ],
    "Massa": [
     "Força"
    ],
-   "Porrete": [
-    "Força"
+   "Armas Longas": [
+    "Força",
+    "Destreza"
+   ],
+   "Machado": [
+    "Força",
+    "Destreza"
    ],
    "Manopla": [
     "Força"
-   ],
-   "Machado": [
-    "Força"
-   ],
-   "Ceifa": [
-    "Força"
-   ],
-   "Armas Longas": [
-    "Força"
-   ],
-   "Flexível": [
-    "Força"
-   ],
-   "Lâmina Curta": [
-    "Destreza"
-   ],
-   "Arremesso": [
-    "Destreza"
-   ],
-   "Yumi": [
-    "Destreza"
-   ],
-   "Balestra": [
-    "Destreza"
-   ],
-   "Arma de Fogo": [
-    "Destreza"
    ]
   },
-  "rota_de_arma": "Escolha três das treze categorias de arma, diferentes entre si.",
-  "atributo_de_arma": "A CD das suas Katas, as rolagens de acerto e o resto exigem uma rolagem de conjuração usando o atributo principal da arma usada na Kata.",
+  "rota_de_arma": "Ao escolher esta rota, selecione três categorias de armas diferentes entre as categorias de Equipamento.",
+  "atributo_de_arma": "Use o atributo de ataque da arma empregada naquela execução tanto para o ataque quanto para a CD da Kata:",
   "ferramenta": [
-   "Coisa que dá para usar para atacar",
-   "Coisa que você só carrega"
+   "Na criação, registre se seus ataques desarmados passam pelo objeto.",
+   "Escolha um dos cinco atributos para os ataques e a CD de suas Katas."
   ],
   "passivas_marciais": [
    {
-    "nome": "Calo",
-    "classe_passiva": "Livre",
-    "faz": "Vale sobre qualquer arma que você já empunhou uma vez. O que você reconhece. Só de segurar uma arma você sabe qual é, sem precisar ver: basta sentir o peso."
-   },
-   {
     "nome": "Maldição do Inventário",
     "classe_passiva": "1",
-    "faz": "Vale sobre o que você carrega, o tempo todo. Saque. Você saca ou guarda dois itens de graça por turno, em vez de um. O que guarda. Não é o seu corpo: é uma maldição pequena, presa a você, que engole o que você põe nela. Ela encolhe até caber na mão, e é ela que você engole — a carga vai junto. Energia. Item amaldiçoado guardado ali para de emanar. Barreira Simples e Cortina deixam de segurar ele, e ele atravessa com você."
+    "faz": "Uma pequena maldição vinculada ao seu estilo guarda o equipamento entregue a ela. Pode encolher para ser abrigada em seu corpo. Você pode sacar ou guardar até dois itens gratuitamente por turno, em vez de um. Interações adicionais usam a ação normal."
    },
    {
     "nome": "Leitura",
     "classe_passiva": "1",
-    "faz": "Vale quando alguém conjura a até 18 m de você. O que você lê. Você identifica a Classe e a Forma do feitiço."
+    "faz": "Use o Talento Leitura, do Catálogo de criação: ele identifica Classe e Forma de feitiços conjurados a até 18 m. O efeito precisa ser compatível com o funcionamento declarado do seu estilo."
    },
    {
     "nome": "Segundo Fôlego",
     "classe_passiva": "2",
-    "faz": "Vale quando você chega a 0 de vida. A escolha sai de graça. Escolher Insistir não custa a sua rodada. Relógio. Uma vez por descanso longo."
+    "faz": "Uma vez por descanso longo, ao escolher Insistir, você pode dispensar o primeiro custo de vida máxima, correspondente a 1/8 do máximo de referência daquela queda."
    },
    {
     "nome": "Contragolpe",
     "classe_passiva": "2",
-    "faz": "Vale quando alguém erra um ataque corpo a corpo contra você. A resposta. A sua próxima Kata contra ele tem vantagem. Relógio. maestria× por cena."
+    "faz": "Quando uma criatura errar um ataque corpo a corpo contra você, pode guardar uma resposta contra ela. Sua próxima rolagem de ataque de uma Kata contra essa criatura tem vantagem. O benefício termina depois dessa rolagem ou ao fim da cena."
    },
    {
     "nome": "Aliança",
     "classe_passiva": "3",
-    "faz": "Vale sobre a sua arma (uma arma), o tempo todo. Desarmar. A sua arma nunca é desarmada. Quem empunha. Ninguém além de você a empunha."
+    "faz": "Escolha uma de suas armas ao adquirir este Talento. Ela não pode ser desarmada contra sua vontade e somente você pode empunhá-la para utilizá-la."
    }
   ],
-  "passivas_sem_tecnica": "Os exemplos do capítulo 9 e do capítulo 10, Técnica Marcial, servem todos.",
+  "passivas_sem_tecnica": "Você pode escolher Talentos do Catálogo de criação e Talentos marciais compatíveis com sua semente",
   "bencaos": [
    {
     "nome": "Defesa sem Armadura",
-    "requisito": "grátis na Lapidação 1",
+    "requisito": "Gratuita na Lapidação 1",
     "classe_passiva": "—",
-    "faz": "Sem Traje e sem Revestimento, a sua proteção é 1/3 da Lapidação + 1. Escudo soma com ela. Como Reação: Redução de Dano de 1,5 × Lapidação num golpe, por 2 PE. Você fica sem proteção até o fim do seu próximo turno. Barreira de energia não segura você. Barreira Simples e Cortina não detectam nem impedem você. Expansão de Domínio. O Acerto garantido de uma Expansão completa não alcança você. O Efeito continua acontecendo em volta, e uma Expansão incompleta funciona normalmente, porque o Acerto dela precisa de uma rolagem: ela não busca alvos com base em energia.",
-    "escala": "a proteção e a Redução de Dano da Reação"
+    "faz": "Enquanto não usar Traje nem Revestimento, você recebe proteção igual a um terço da Lapidação, arredondado para baixo, +1. Um escudo pode ser somado conforme suas regras. Quando sofrer dano de um golpe, depois das defesas aplicáveis e antes de descontar vida, você pode gastar sua Reação e 2 PE para reduzi-lo em 1,5 × Lapidação, arredondado para baixo. Depois, fica sem proteção até o fim do seu próximo turno, inclusive a de Traje, Revestimento e escudo. Você pode usar essa redução mesmo com equipamento de proteção ou enquanto estiver sem proteção, pagando a Reação e os PE em cada uso. O novo uso mantém a perda até o fim do próximo turno correspondente. Outros valores da Defesa seguem suas regras. Pelas regras desta Origem, Barreira Simples e Cortina não reconhecem nem impedem seu corpo pela energia amaldiçoada. O Acerto garantido de uma Expansão completa também não seleciona você por esse critério. Os efeitos que acontecem no ambiente e os ataques de uma Expansão incompleta continuam usando suas regras. Essas permissões vêm da ausência de energia e permanecem quando você usa um Traje ou Revestimento. Vestir proteção desliga apenas a proteção passiva desta Bênção. A redução como Reação continua disponível com seu custo completo.",
+    "escala": "proteção"
    },
    {
     "nome": "Estímulo Muscular",
-    "requisito": "grátis na Lapidação 1",
+    "requisito": "Gratuita na Lapidação 1",
     "classe_passiva": "—",
-    "faz": "Escolha uma perícia e um Teste de Resistência na criação. Usos. 1× por cena, e 2× se a sua Lapidação for 10. Cada uso dá vantagem numa rolagem de um dos dois escolhidos. Dano na arma. Os seus ataques com arma causam 1d4 de dano a mais a cada 3 pontos de Lapidação — 1d4 na Lapidação 1, 2d4 na 3, 3d4 na 6, 4d4 na 9. Na Lapidação 10 os dados viram d6: 4d6. Só arma. Ele não entra em Kata nenhuma. E se o mesmo ataque já estiver carregando uma Kata de dano de Classe 0 ou mais, este dano não se soma por cima — é o caso do Ferrão, o nível 27 da Estocada, em que o golpe leva uma junto. Nesta rota o degrau de Trilha entrega Kata e não feitiço, e o capítulo 8, Caminhos e Trilhas, diz isso na abertura.",
-    "escala": "o dano na arma e o número de usos"
+    "faz": "Escolha uma perícia e um Teste de Resistência na criação. As escolhas são permanentes. Uma vez por cena, antes de rolar um deles, você pode receber vantagem naquela rolagem. No máximo de Lapidação 10, passa a ter dois usos por cena, compartilhados entre a perícia e o TR escolhidos. A perícia não precisa usar Força ou Destreza. Você pode escolher Ocultismo e TR de Intelecto, por exemplo. A Bênção não fornece treinamento nem muda o atributo utilizado nesses testes. Seus ataques com arma ou desarmados recebem os dados abaixo. Cada ataque válido aplica esse adicional uma vez, do mesmo tipo de dano do golpe. Os dados adicionais não são dobrados por crítico, salvo uma habilidade que permita isso expressamente. O adicional não entra no dano de Katas. Se o mesmo ataque transportar uma Kata de dano de Classe 0 ou maior, use a montagem dela sem acrescentar estes dados. Outro ataque da rodada que não transporte essa Kata continua elegível. Uma manobra que substitui um ataque sem causar dano não recebe o adicional. Empurrar alguém ou agarrá-lo não se transforma num golpe com dados por causa da Bênção.",
+    "escala": "dano adicional"
    },
    {
     "nome": "Ímpeto",
-    "requisito": "Destreza 4",
+    "requisito": "Lapidação 4 e Destreza 4",
     "classe_passiva": "2",
-    "faz": "Como Ação Bônus, você se move até o seu deslocamento sem provocar ataque de oportunidade. Sem chão. Você anda em parede, em água e no ar enquanto estiver se movendo. Se terminar o turno e o movimento sem apoio, você cai.",
+    "faz": "Como Ação Bônus, mova-se até seu deslocamento sem provocar ataques de oportunidade. Durante esse movimento, você pode percorrer paredes, líquidos e o ar. Ao terminar o movimento sem um apoio que o sustente, você cai. Essa travessia não concede permanência no ar. Carga, terreno e condições que alterem seu deslocamento continuam valendo. Você precisa dispor da Ação Bônus para iniciar cada uso.",
     "escala": "—"
    },
    {
     "nome": "Casco",
-    "requisito": "Constituição 4",
+    "requisito": "Lapidação 7 e Constituição 4",
     "classe_passiva": "3",
-    "faz": "Você ganha +1 de vida a cada dois níveis e +1 em todo Teste de Resistência de Vigor que fizer.",
+    "faz": "Seu máximo de pontos de vida aumenta em metade do seu nível, arredondada para baixo. Recalcule ao subir de nível. Você também recebe +1 nos TRs de Vigor. No nível 14, o aumento é 7 pontos de vida. No nível 30, é 15. O benefício não recupera vida perdida por si só nem aumenta Integridade.",
     "escala": "—"
    },
    {
     "nome": "Presilha",
-    "requisito": "Força 4",
+    "requisito": "Lapidação 4 e Força 4",
     "classe_passiva": "2",
-    "faz": "Quando você falha numa rolagem para agarrar, derrubar ou tirar alguém do lugar, role de novo. Uma vez por rodada.",
+    "faz": "Uma vez por rodada, quando uma criatura passar num TR para evitar que você a agarre, derrube ou mova à força, pode obrigá-la a repetir esse TR. Use o novo resultado. Faça a repetição antes de resolver as consequências daquele TR, sem gastar outra ação. Preserve a mesma CD e os modificadores. O benefício não permite uma tentativa proibida por tamanho, alcance ou imunidade. Se um único TR também decidir o dano, mantenha o resultado original para o dano e use a repetição somente para a manobra ou o deslocamento.",
     "escala": "—"
    },
    {
     "nome": "Vigília",
-    "requisito": "—",
+    "requisito": "Lapidação 4",
     "classe_passiva": "2",
-    "faz": "Você conta um degrau de exaustão a menos do que tem, para todo efeito. O degrau continua marcado na ficha. O que muda é o que ele cobra de você.",
-    "escala": "—"
-   },
-   {
-    "nome": "Esteio",
-    "requisito": "—",
-    "classe_passiva": "3",
-    "faz": "Escolha um atributo na hora de pegar esta Bênção. Num Teste de Resistência daquele atributo, se o d20 sair abaixo da sua Lapidação, ele vale a sua Lapidação. Teto. Ele nunca passa do atributo escolhido mais 2, então o máximo dele é 8.",
+    "faz": "Ao aplicar as consequências de Exaustão, conte um estágio a menos, até o mínimo de zero. Mantenha na ficha o estágio real: ganhar nova Exaustão e removê-la pelo descanso continua usando esse valor. Ter Exaustão 1 elimina suas consequências enquanto a Bênção estiver ativa. Ter Exaustão 3 aplica as consequências do estágio 2. A Bênção não remove o estágio marcado.",
     "escala": "—"
    },
    {
     "nome": "Faro",
-    "requisito": "—",
+    "requisito": "Lapidação 1",
     "classe_passiva": "1",
-    "faz": "Você segue rastro de feiticeiro e de maldição pelo rastro que eles deixaram: cheiro, marca, o que ficou fora do lugar. Vestígio de técnica. Encostando no que uma técnica fez, você sabe o superficial do que ela fez ali: o tipo de coisa que aconteceu, e nunca o detalhe nem de quem é.",
+    "faz": "Você pode seguir feiticeiros e maldições pelos vestígios físicos que deixaram: cheiro, marcas e objetos fora do lugar. A Bênção permite perceber essas pistas sem Sentir Energia. Ao tocar uma marca deixada por uma técnica, reconhece superficialmente o que aconteceu ali, como um corte, um impacto ou a deformação de um material. Não identifica o autor, sua localização atual, a montagem da técnica ou detalhes ausentes no vestígio.",
     "escala": "—"
    },
    {
     "nome": "Sem Pegada",
-    "requisito": "—",
+    "requisito": "Lapidação 1",
     "classe_passiva": "1",
-    "faz": "Você não deixa rastro físico: pegada, cheiro, marca, som de passo. Nem Faro, nem cão, nem técnica de rastreamento acham por onde você passou.",
+    "faz": "Sua passagem não deixa pegadas, cheiro, marcas ou som de passos que possam servir de rastro. Faro, animais e técnicas que dependam desses vestígios não conseguem seguir seu caminho por eles. Uma testemunha ainda pode enxergar você. Voz, armas e objetos que você manipule continuam produzindo seus próprios sons. Esconder-se segue a ação e os requisitos de Furtividade. A Bênção não concede um teste gratuito para se ocultar nem mantém oculto um ataque que revele sua posição.",
     "escala": "—"
    },
    {
     "nome": "Vulto",
-    "requisito": "—",
+    "requisito": "Lapidação 4",
     "classe_passiva": "2",
-    "faz": "Você percebe tudo o que estiver a 1,5 m × metade da Lapidação de você sem precisar estar com os olhos abertos, só por som e movimento. É visão às cegas.",
+    "faz": "Você possui visão às cegas a até 1,5 m × metade da Lapidação, arredondada para baixo. Percebe criaturas e objetos nessa área por som e movimento, mesmo sem usar os olhos. Um obstáculo sólido bloqueia essa percepção. Vulto não revela o interior de uma sala fechada. Se a cena impedir tanto som quanto sinais de movimento de chegarem até você, esses sinais deixam de fornecer percepção. Com Lapidação 4 ou 5, o alcance é 3 m. Com Lapidação 10, é 7,5 m. Fora dessa distância, use seus outros sentidos normalmente. A percepção não altera o alcance de seus ataques ou Katas.",
+    "escala": "—"
+   },
+   {
+    "nome": "Esteio",
+    "requisito": "Lapidação 7",
+    "classe_passiva": "3",
+    "faz": "Ao adquirir a Bênção, escolha um TR: Físico, Vigor, Intelecto ou Espírito. O menor resultado do d20 nesse TR passa a ser sua Lapidação, limitada ao atributo do TR +2. No Físico, use Força ou Destreza conforme a escolha fixa da sua ficha. Vigor usa Constituição, Intelecto usa Inteligência e Espírito usa Essência. Some os modificadores normais depois de aplicar o piso. O piso não modifica o número efetivamente rolado para uma regra que exija um resultado natural. Com Lapidação 7 e atributo 4, o piso é 6. Com Lapidação 10 e atributo 6, é 8. Um resultado maior permanece como foi rolado.",
     "escala": "—"
    },
    {
     "nome": "Antecipar",
-    "requisito": "Inteligência 4",
+    "requisito": "Lapidação 4 e Inteligência 4",
     "classe_passiva": "2",
-    "faz": "Quando você falha num Teste de Resistência contra um efeito, você passa a rolar com vantagem contra aquele mesmo efeito pelo resto da cena.",
+    "faz": "Depois de falhar num TR contra um efeito, você recebe vantagem nos próximos TRs contra esse mesmo efeito, produzido pela mesma fonte, até o fim da cena. Uma nova aplicação daquela mesma capacidade pela mesma criatura mantém o benefício. Um efeito diferente, outra criatura ou outra fonte exige sua própria falha anterior. A vantagem não refaz o TR que ativou a Bênção.",
     "escala": "—"
    },
    {
     "nome": "Campo",
-    "requisito": "—",
+    "requisito": "Lapidação 1",
     "classe_passiva": "1",
-    "faz": "A ação Estudar custa a sua Ação Bônus em vez da Ação Padrão, uma vez por cena.",
+    "faz": "Uma vez por cena, você pode realizar Estudar como Ação Bônus, em vez de Ação Padrão. Use a ação descrita em Ações — Estudar, com seus alvos, testes e informações disponíveis.",
     "escala": "—"
    },
    {
     "nome": "Assombro",
-    "requisito": "Essência 4",
+    "requisito": "Lapidação 1 e Essência 4",
     "classe_passiva": "1",
-    "faz": "Uma vez por cena, ao entrar numa cena ou ao ser visto pela primeira vez, escolha uma quantidade de criaturas que enxergam você igual a metade da sua Lapidação, no mínimo 1. O que ela rola. Um Teste de Resistência de Espírito contra a CD da sua técnica, ou ela fica Amedrontado até o fim do próximo turno dela.",
+    "faz": "Uma vez por cena, ao entrar nela ou ser visto pela primeira vez, escolha até metade de sua Lapidação, arredondada para baixo, mínimo 1, entre as criaturas presentes que enxerguem você. Cada uma faz TR de Espírito contra CD 8 + sua Essência + sua maestria. Na falha, fica Amedrontada até o fim do próximo turno dela. A presença do personagem provoca o efeito, sem exigir arma ou ferramenta em uso. Essência entra uma única vez na CD. O requisito de acesso não acrescenta um segundo bônus.",
     "escala": "—"
    },
    {
     "nome": "Bênção Própria",
-    "requisito": "uma vez na ficha inteira",
+    "requisito": "Uma por personagem",
     "classe_passiva": "1 ou 2",
-    "faz": "Você escreve, com o mestre, uma Bênção que não está no catálogo. Antes da sessão. Ela é Classe Passiva 1 ou 2, nunca 3, e você só pode pegá-la uma vez na ficha inteira. A ficha registra duas coisas: a frase, e a resposta de \"em quantas cenas por arco isso vai importar?\".",
+    "faz": "Você pode desenvolver uma Bênção Própria por personagem, de Categoria de Efeito 1 ou 2. Crie-a com o mestre antes da sessão e adquira-a por uma escolha de Bênção, respeitando a Lapidação mínima da Categoria de Efeito. Escreva primeiro uma frase que diga o que o corpo consegue fazer. Depois, registre gatilho, alcance, duração e limites necessários. A mesa deve conseguir decidir quando o efeito aconteceu sem discutir novamente a proposta a cada uso. A Bênção segue a orientação de Aptidões e Refino — Aptidão Própria. Ela não acrescenta dados de dano. Se for Categoria de Efeito 2, precisa de um limite por cena. Não pode copiar uma Bênção existente ou fornecer uma capacidade cujo requisito você não alcançou. Uma proposta com requisito de Força ou Constituição deve conceder um feito corporal específico, ligado a sobrevivência, recuperação ou outra capacidade física. Bônus, vantagem ou repetição de uma perícia não bastam para representar esse feito. Efeitos de Categoria de Efeito 3 ficam fora desta opção. Se a mesa não conseguir limitar a proposta à Categoria de Efeito 1 ou 2, reduza seu alcance ou escolha outra ideia.",
     "escala": "—"
    }
   ],
@@ -1296,13 +1016,7 @@
    "Estímulo Muscular"
   ],
   "bencaos_frases": [
-   "Defesa sem Armadura e Estímulo Muscular vêm de graça na Lapidação 1",
-   "No lugar dos dois vêm a Lapidação e as Bênçãos",
-   "sem Traje e sem Revestimento, a sua proteção é 1/3 da Lapidação + 1",
-   "Redução de Dano de 1,5 × Lapidação num golpe, por 2 PE",
-   "1d4 na Lapidação 1, 2d4 na 3, 3d4 na 6, 4d4 na 9. Na Lapidação 10 os dados viram d6: 4d6.",
-   "1× por cena, e 2× se a sua Lapidação for 10",
-   "escolha uma perícia e um Teste de Resistência na criação"
+   "Defesa sem Armadura e Estímulo Muscular são gratuitas desde Lapidação 1."
   ]
  }
 }

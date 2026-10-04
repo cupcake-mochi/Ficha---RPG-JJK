@@ -2,7 +2,9 @@
 
 Este pacote continua o trabalho da conversa anterior. **Nada foi recomeçado do zero, e nenhum arquivo dos seus repositórios foi editado.**
 
-O que mudou nesta rodada: a ficha **ganhou identidade**. Ela deixou de ser planilha organizada e virou o documento oficial do feiticeiro — carteira com foto e selo, régua no lugar de caixa, arte desenhada por código, e cinco fontes com papéis separados.
+**04/10/2026: a ficha foi posta em dia com o livro reconstruído** (382 páginas, o `LIVRO-COMPLETO.md` do JJK---Project): seis Caminhos com o Incursor, dezoito Trilhas, Talento no lugar de Passiva, as regras novas de Força, carga e XP. O que mudou e o que ficou para depois estão no B36 do `PENDENCIAS.md`.
+
+O que mudou numa rodada anterior: a ficha **ganhou identidade**. Ela deixou de ser planilha organizada e virou o documento oficial do feiticeiro — carteira com foto e selo, régua no lugar de caixa, arte desenhada por código, e cinco fontes com papéis separados.
 
 **Para subir isso e virar uma planilha de verdade: [`COMO-SUBIR.md`](COMO-SUBIR.md).**
 
@@ -49,10 +51,10 @@ python3 ficha-v01/monta.py
 
 | validador | o que confere |
 |---|---|
-| `conferir-catalogo.py` | integridade referencial e as contagens que o manual declara |
-| `conferir-kaori.py` | os onze números derivados, contra a ficha de exemplo |
+| `conferir-catalogo.py` | **reescrito em 04/10/2026.** O catálogo inteiro contra o `manual.txt` do livro reconstruído: nomes, números, tabelas e frases, lidos por seção e tabela pelo `livro.py` |
+| `conferir-kaori.py` | os onze números derivados, contra o quadro da Kaori no livro (e a ficha de exemplo onde o quadro não traz o campo) |
 | `conferir-progressao.py` | as cinco colunas de progressão, nos trinta níveis, com contra-teste |
-| `regressao-exemplos.py` | os dois feitiços publicados na p.137 |
+| `regressao-exemplos.py` | os dez exemplos de montagem que o livro reconstruído imprime, pelo `conferir_feitico.py` |
 | `arnes.py` | prova que cada checagem de feitiço acende — **e as duas novas do A3** |
 | `revisao-cetica.py` | a especificação contra o manual |
 | **`conferir-decisoes.py`** | **novo.** As cinco decisões contra o manual, o catálogo e os outros documentos |
@@ -62,18 +64,18 @@ python3 ficha-v01/monta.py
 | `regressao-pessoal.js` | **01/10/2026.** O que o `Codigo.gs` faz pela `FICHA PESSOAL`, num Sheets de mentira |
 | `regressao-construir.js` | **01/10/2026.** Roda o `construir()` inteiro num Sheets de mentira rigoroso, e depois usa a planilha montada pelo `onEdit`. Desde o B32, o menu rápido da `FICHA`: as fileiras copiadas chegam mescladas, e escrever por cima devolve a conta |
 | `arnes-pessoal.py` | **01/10/2026.** Planta cinquenta e um defeitos no script e no molde (os dois do B34 são o riscado das Habilidades e a etiqueta que volta; os três do B35, a caixa da paleta ancorada fora da foto), numa cópia, e confere que cada um acende. Os quatro do B31 são a conta que volta quando alguém digita por cima de uma caixa calculada da `FICHA AMALDIÇOADA` |
-| `regressao-amaldicoada.py` | **01/10/2026.** Preenche dezesseis fichas na `FICHA AMALDIÇOADA` gerada, recalcula no LibreOffice e compara com a regra escrita de novo: os 33 feitiços prontos do livro, 429 cartas (as sorteadas e uma ficha de casos de borda) e o resto da aba. Desde o B31, também o desenho que ele pediu: o título de ponta a ponta, o respiro, o nome no acento, a inicial maiúscula em toda caixa e toda caixa calculada apontando para a `DADOS_AM`. Desde o B32, as quatro rotas (uma ficha para cada) e o menu rápido da `FICHA` em toda ficha: a lista sem buraco, o "Como é", o texto do jogador ou o do livro, os nomes da rota. Depois monta a planilha no Sheets de mentira e confere que a aba chega igual |
+| `regressao-amaldicoada.py` | **01/10/2026.** Preenche dezesseis fichas na `FICHA AMALDIÇOADA` gerada, recalcula no LibreOffice e compara com a regra escrita de novo: os 10 exemplos de montagem do livro (desde 04/10/2026; eram os 33 feitiços prontos, que o livro reconstruído não tem), 429 cartas (as sorteadas e uma ficha de casos de borda) e o resto da aba. Desde o B31, também o desenho que ele pediu: o título de ponta a ponta, o respiro, o nome no acento, a inicial maiúscula em toda caixa e toda caixa calculada apontando para a `DADOS_AM`. Desde o B32, as quatro rotas (uma ficha para cada) e o menu rápido da `FICHA` em toda ficha: a lista sem buraco, o "Como é", o texto do jogador ou o do livro, os nomes da rota. Depois monta a planilha no Sheets de mentira e confere que a aba chega igual |
 | `arnes-amaldicoada.py` | **01/10/2026.** Não mora no `rodar-tudo.sh`, e **roda à mão** (meia hora): planta sessenta defeitos na conta, no desenho e na montagem da `FICHA AMALDIÇOADA`, nas rotas (35 a 46), no menu rápido (48 a 57) e nas Habilidades (58 a 60), numa cópia, e confere que cada um acende. Aceita os números das perturbações (`python3 arnes-amaldicoada.py 16 17 18`) para rodar só as que mudaram |
 | `arnes-ficha-pessoal.py` | **01/10/2026.** Não mora no `rodar-tudo.sh`, e **roda à mão** (perto de uma hora: cada rodada gera a ficha e recalcula 22 planilhas): planta treze defeitos no aviso embaixo da mão e na nota das propriedades da arma da `FICHA PESSOAL`, numa cópia, e confere que cada um acende no `regressao-ficha-pessoal.py` |
-| `ficha-v01/extrair_tecnica.py` | **01/10/2026.** Não é validador: lê dos capítulos do livro o que a `FICHA AMALDIÇOADA` calcula e o catálogo ainda não tem, e grava o `ficha-v01/tecnica-do-livro.json`. Com `--confere`, só compara |
-| `ficha-v01/extrair_equipamento.py` | **01/10/2026.** Não é validador: lê do capítulo de Equipamento do livro o que cada propriedade de arma faz, que o catálogo não traz, e grava o `ficha-v01/equipamento-do-livro.json`. A `FICHA PESSOAL` usa na nota da arma em uso. Com `--confere`, só compara |
+| `ficha-v01/extrair_tecnica.py` | **01/10/2026; desde 04/10/2026 lê o `manual.txt`.** Não é validador: lê do livro o que a `FICHA AMALDIÇOADA` calcula e o catálogo ainda não tem, e grava o `ficha-v01/tecnica-do-livro.json`. Com `--confere`, só compara |
+| `ficha-v01/extrair_equipamento.py` | **01/10/2026; desde 04/10/2026 lê o `manual.txt`.** Não é validador: lê do capítulo de Equipamento do livro o que cada propriedade de arma faz, que o catálogo não traz, e grava o `ficha-v01/equipamento-do-livro.json`. A `FICHA PESSOAL` usa na nota da arma em uso. Com `--confere`, só compara |
 | `medidas/sheets-de-mentira.js` | **01/10/2026.** Não é validador: é o Sheets de mentira que o `regressao-construir.js` usa. Guarda tudo o que o `construir()` grava, e acusa a fórmula gravada antes de a aba citada existir ou com a planilha fora do inglês |
 | `medidas/comparar-construir.js` | **01/10/2026.** Não é validador, e **roda à mão**: monta a planilha com o script de um commit e com o da pasta, e compara célula a célula. É a prova de que mexer no `construir()` não mudou a planilha |
 | `arnes-paleta.py` | **01/10/2026.** Planta onze defeitos na troca de paleta (a barra, a tinta de enfeite, a cor da arte, desde o B31 a cor de aviso acesa que a troca gravava na célula, desde o B32 a aba grande pintada em trechos, e desde o B35 o canto da moldura da foto fora da régua exata), numa cópia. **Roda à mão**, fora do `rodar-tudo.sh`: são uns dois minutos |
 | `arnes-moldura.py` | **03/10/2026.** Não mora no `rodar-tudo.sh`, e **roda à mão** (uns quinze minutos, sem LibreOffice): planta nove defeitos na moldura da foto da `CARTEIRA` (B35: a moldura que fica dentro da caixa, a quina sem canto, a reta que falta ou que entra na quina, a caixa sem o convite ou sem a nota, a caixa não declarada, o canto fora da régua no nascimento ou na troca), numa cópia, gera a ficha e confere que o `conferir-ficha-xlsx.py` acusa cada um |
 | `medidas/pintar-paletas.js` e `medidas/ver-paletas.py` | **01/10/2026.** Não são validadores: pintam a ficha com cada uma das 122 paletas, pelo `Codigo.gs` de verdade, e desenham o resultado para olhar tema por tema |
 | **`regressao-kaori-na-ficha.py`** | **novo.** Preenche a Kaori na ficha, manda o LibreOffice recalcular, e compara com a p.41. Desde o B32 confere só o que ficou na `FICHA`; o refino, as aptidões e o Leque são da `regressao-amaldicoada.py` |
-| **`conferir-invocacao.py`** | **novo.** O `invocacao.json` contra os capítulos 16 e 35 vendorizados, e a planilha contra o JSON |
+| **`conferir-invocacao.py`** | **novo.** O `invocacao.json` contra os capítulos 16 e 35 vendorizados, e a planilha contra o JSON. Desde 04/10/2026 exige que o JSON declare a pendência com o livro reconstruído, que reescreveu as invocações |
 | **`regressao-invocacao.py`** | **novo.** Recalcula a ficha da invocação e bate com os números que o capítulo 16 publica |
 | **`arnes-invocacao.py`** | **novo.** Perturba o `invocacao.json` numa cópia isolada e prova que a checagem certa acende |
 
@@ -83,7 +85,7 @@ O zip já traz os dois, então `./rodar-tudo.sh` funciona assim que você descom
 
 | arquivo | de onde veio |
 |---|---|
-| `manual.txt` | o seu próprio PDF, extraído com `pdftotext -layout` — o de hoje saiu do livro da **v0.263** do sistema |
+| `manual.txt` | desde 04/10/2026, o `LIVRO-COMPLETO.md` do livro reconstruído, pelo `extrair-manual.py` (`python3 extrair-manual.py <clone do JJK---Project>`); o arquivo e o hash ficam no `manual-fonte.json`. Até ali saía do PDF da v0.263 com `pdftotext -layout` |
 | `repos/JJK---PDF---RPG-main/ficha/ficha-exemplo-kaori.docx` | cópia do seu repositório público, só esse arquivo |
 
 Os dois são derivados de material seu. Se for subir isto para o GitHub e preferir não duplicar, pode apagar os dois — o `conferir-decisoes.py` **falha e diz como regerar**, em vez de pular em silêncio. Um verde que pulou checagem não prova nada.

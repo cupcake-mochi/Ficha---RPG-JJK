@@ -157,7 +157,7 @@ PERTURBACOES = [
     ("a etiqueta da carta só abre um nível depois", HAB, """f'=IF({NIV}>={n},"Nível {n}","Abre no {n}")'""",
      """f'=IF({NIV}>{n},"Nível {n}","Abre no {n}")'""", "as etiquetas dizem o nível ou quando a carta abre"),
     ("o Caminho volta aos quatro degraus de antes do livro novo", HAB, "NIV_CAMINHO, NIV_TRILHA = (2, 7, 15, 23, 30), (2, 11, 19, 27)",
-     "NIV_CAMINHO, NIV_TRILHA = (2, 7, 15, 30), (2, 11, 19, 27)", "níveis da tabela Entregas por nível"),
+     "NIV_CAMINHO, NIV_TRILHA = (2, 7, 15, 30), (2, 11, 19, 27)", "níveis de entrega da Progressão"),
     ("o título da Trilha esquece a Trilha escolhida", HAB, """["Trilha", f'="TRILHA"&{escolha("trilha")}&"  ·  QUATRO ENTREGAS"']""",
      """["Trilha", '="TRILHA  ·  QUATRO ENTREGAS"']""", "os títulos dizem o Caminho e a Trilha"),
 ]

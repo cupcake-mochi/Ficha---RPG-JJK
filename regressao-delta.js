@@ -105,12 +105,13 @@ checa('passo zero nao move nada', aplicaPasso_(10, 19, 5, 0), { atual: 10, temp:
 // --- 7. o teto do campo TEMP, o B19 -----------------------------------
 const tetoTemp_ = new Function(extrai(GS, 'tetoTemp_') + '; return tetoTemp_;')();
 const CAP1 = fs.readFileSync(path.join(RAIZ, 'manual.txt'), 'utf8').split(/\s+/).join(' ');
-// "com 40 de vida máxima o seu teto é 20: um efeito que daria 27 te deixa em 20"
-const mTeto = CAP1.match(/com (\d+) de vida máxima o seu teto é (\d+): um efeito que daria (\d+) te deixa em (\d+)/);
-// "O que você ganha desce. E o que você ganha nunca fica abaixo de 1."
-const mPiso = CAP1.match(/o que você ganha nunca fica abaixo de (\d+)/);
-if (!mTeto || !mPiso) throw new Error('o exemplo do teto no capitulo 1 do manual.txt mudou de forma');
-const [TMAX, TETO, EFEITO, FICA] = mTeto.slice(1).map(Number);
+// 04/10/2026, o livro reconstruido (Dano e recuperacao, Vida e energia temporarias):
+// "Mei tem vida máxima 23 e recebe 15 de vida temporária. Seu teto é 11, então anota 11."
+const mTeto = CAP1.match(/Mei tem vida máxima (\d+) e recebe (\d+) de vida temporária\. Seu teto é (\d+), então anota (\d+)\./);
+// "Arredonde as metades para baixo, com mínimo 1 quando o máximo for positivo."
+const mPiso = CAP1.match(/, com mínimo (\d+) quando o máximo for positivo\./);
+if (!mTeto || !mPiso) throw new Error('o exemplo do teto em Dano e recuperacao do manual.txt mudou de forma');
+const [TMAX, EFEITO, TETO, FICA] = mTeto.slice(1).map(Number);
 const PISO = Number(mPiso[1]);
 
 checa(`exemplo do manual · ${EFEITO} com maximo ${TMAX} fica em ${FICA}`,
@@ -119,7 +120,7 @@ checa('exemplo do manual · abaixo do teto nao e mexido', tetoTemp_(TETO - 1, TM
 checa('exemplo do manual · o proprio teto passa', tetoTemp_(TETO, TMAX), TETO);
 checa('A2 poe o teto da vida em metade do maximo', /^metade /.test(A2.vida.teto), true);
 checa('A2 poe o teto da energia em metade do maximo', /^metade /.test(A2.energia.teto), true);
-checa('o manual arredonda para baixo o que voce ganha', CAP1.includes('O que você ganha desce.'), true);
+checa('o manual arredonda para baixo o que voce ganha', CAP1.includes('Arredonde as metades para baixo'), true);
 
 const outro = TMAX - 1;                // um maximo com a paridade trocada
 const tOutro = tetoTemp_(outro, outro);

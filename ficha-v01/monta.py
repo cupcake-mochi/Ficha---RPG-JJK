@@ -58,6 +58,8 @@ for _a in LAYOUT["abas"]:
     if _a["nome"] == "DADOS":
         print(f"a DADOS sai do catalogo v{_DADOS_CAT['B1']}: "
               f"{dados_catalogo.aplica(_a, _DADOS_CAT)} celula(s) diferentes da exportacao")
+print(f"a vida e o PE da FICHA leem a faixa {dados_catalogo.faixa_dos_caminhos(json.load(open(os.path.join(dados_catalogo.RAIZ, 'decisoes-ficha.json'), encoding='utf-8')))}: "
+      f"{dados_catalogo.troca_na_ficha(LAYOUT)} formula(s)")
 
 # v0.240 do sistema, o B14: o Teste de Resistencia treinado soma a maestria, e nao 2. O termo sai do
 # catalogo, e a celula dele sai do indice da DADOS. Ver tr_treinado.py.

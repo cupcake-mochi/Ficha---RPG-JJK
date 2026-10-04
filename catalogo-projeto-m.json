@@ -1,2476 +1,2685 @@
 {
-  "_meta": {
-    "sistema": "Projeto M",
-    "versao": "0.258",
-    "versao_data": "20/09/2026",
-    "versao_dona": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
-    "fonte": "Projeto-M-Manual-da-Guilda.pdf, o livro da versão acima",
-    "regra": "onde a ficha-em-branco.docx e o manual discordarem, o manual vence",
-    "nivel_inicial": 2,
-    "nivel_maximo": 30,
-    "grau_inicial": 4,
-    "conferido_contra_o_livro": [
-      "melhorias",
-      "restricoes",
-      "condicoes",
-      "formas (nomes)",
-      "pericias (nomes e descricao)",
-      "oficios (nomes)",
-      "familias",
-      "trilhas",
-      "caminhos (vida, PE e dado)",
-      "testes_de_resistencia",
-      "sub_origem",
-      "rotas_de_criacao",
-      "fundamento",
-      "origens",
-      "legados",
-      "legados_formatos",
-      "progressao",
-      "atributos",
-      "equipamento_defesa",
-      "equipamento",
-      "patentes",
-      "missoes"
-    ],
-    "nao_conferido_contra_o_livro": [],
-    "fora_do_livro": [
-      "fora_do_livro"
-    ]
-  },
-  "atributos": {
-    "lista": [
-      "Força",
-      "Destreza",
-      "Constituição",
-      "Inteligência",
-      "Essência"
-    ],
-    "escala": [
-      0,
-      6
-    ],
-    "criacao": {
-      "pontos": 9,
-      "teto_por_atributo": 3
-    },
-    "nota": "o numero E o modificador; nao existe tabela de conversao"
-  },
-  "pericias": {
-    "Atletismo": {
-      "atributo": "Força",
-      "descricao": "correr, escalar, nadar, saltar, carregar quem não anda."
-    },
-    "Acrobacia": {
-      "atributo": "Destreza",
-      "descricao": "equilíbrio, cair sem se machucar, passar por espaço apertado."
-    },
-    "Furtividade": {
-      "atributo": "Destreza",
-      "descricao": "mover-se sem ser visto nem ouvido."
-    },
-    "Pontaria": {
-      "atributo": "Destreza",
-      "descricao": "acertar o que é pequeno, o que está longe ou o que se mexe, fora de uma rolagem de ataque."
-    },
-    "Prestidigitação": {
-      "atributo": "Destreza",
-      "descricao": "mão rápida: esconder um objeto, tirar do bolso alheio, trocar uma coisa por outra."
-    },
-    "Investigação": {
-      "atributo": "Inteligência",
-      "descricao": "vasculhar, deduzir, ligar duas pistas que ninguém tinha ligado."
-    },
-    "Intuição": {
-      "atributo": "Inteligência",
-      "descricao": "ler a pessoa pelo que ela faz: a inconsistência, o detalhe que não fecha, a motivação atrás do pedido. Perceber que alguém está nervoso é Percepção."
-    },
-    "Ocultismo": {
-      "atributo": "Inteligência",
-      "descricao": "maldições, técnicas conhecidas, barreiras, o funcionamento da energia amaldiçoada. O nome da coisa, o grau dela, e o que costuma matá-la."
-    },
-    "Religião": {
-      "atributo": "Inteligência",
-      "descricao": "xintoísmo, budismo, exorcismo, templo, ritual, o que os selos querem dizer. O lugar antigo, e o rito que precisa ser feito na ordem certa."
-    },
-    "História": {
-      "atributo": "Inteligência",
-      "descricao": "o que aconteceu e quem estava lá, no mundo comum e no registro das famílias."
-    },
-    "Hierarquia": {
-      "atributo": "Inteligência",
-      "descricao": "os clãs, a política, quem manda em quem. Diz o que você pode pedir, a quem, e o que vai custar."
-    },
-    "Medicina": {
-      "atributo": "Inteligência",
-      "descricao": "ferimento, veneno, doença, corpo. É o saber; a prática de campo é o ofício Herbalismo ."
-    },
-    "Sobrevivência": {
-      "atributo": "Inteligência",
-      "descricao": "aguentar o ambiente, achar água e abrigo, se orientar, e seguir um rastro, seja pegada ou resíduo de energia."
-    },
-    "Natureza": {
-      "atributo": "Inteligência",
-      "descricao": "planta, bicho, clima, terreno. O que é venenoso, qual vale enche, quando a chuva vem."
-    },
-    "Lidar com Animais": {
-      "atributo": "Inteligência",
-      "descricao": "acalmar, montar, conduzir, mandar num bicho. Vale para invocação que ainda não te obedece direito."
-    },
-    "Tecnologia": {
-      "atributo": "Inteligência",
-      "descricao": "computador, câmera, rede, equipamento moderno."
-    },
-    "Sentir Energia": {
-      "atributo": "Essência",
-      "descricao": "perceber energia amaldiçoada: o feiticeiro escondido, o tamanho de uma maldição, quem está prestes a conjurar."
-    },
-    "Percepção": {
-      "atributo": "Essência",
-      "descricao": "notar o mundano: som, cheiro, movimento, a coisa fora do lugar, a pessoa suando frio."
-    },
-    "Persuasão": {
-      "atributo": "Essência",
-      "descricao": "convencer, negociar, conseguir que façam o que você quer porque querem."
-    },
-    "Enganação": {
-      "atributo": "Essência",
-      "descricao": "mentir, blefar, se passar por outro."
-    },
-    "Intimidação": {
-      "atributo": "Essência",
-      "descricao": "ameaçar, dominar pela presença, fazer alguém recuar."
-    },
-    "Atuação": {
-      "atributo": "Essência",
-      "descricao": "representar, cantar, tocar para uma plateia."
-    },
-    "Provocar": {
-      "atributo": "Essência",
-      "descricao": "tirar alguém do sério, forçar a vir para cima de você. É o oposto de Intimidação: uma faz recuar, a outra faz avançar."
-    }
-  },
-  "oficios": {
-    "Condução": "carro, moto, van, o que estiver na garagem.",
-    "Arrombamento": "tranca, alarme, cofre, janela que não devia abrir.",
-    "Herbalismo": "planta que cura, planta que mata, chá, unguento, e o que dá para fazer no mato quando não tem hospital.",
-    "Forja": "fazer, afiar e manter arma, e cuidar de ferramenta amaldiçoada sem estragar o que tem dentro.",
-    "Caligrafia": "talismã, papel de barreira, documento oficial. E documento oficial que não é oficial.",
-    "Burocracia": "a máquina jujutsu por dentro: relatório, requisição, quem assina o quê, como se pede uma janela e como se encobre o que não devia ter sido visto.",
-    "Entalhador": "madeira, pedra, osso. Fazer o corpo que vai receber alguma coisa.",
-    "Alfaiate": "tecido, corte, remendo. O uniforme que aguenta energia amaldiçoada sai daqui, e o traje sob medida também. O de prateleira veste todo mundo e ninguém.",
-    "Culinária": "cozinhar de verdade, para gente ou para o que aceitar comida.",
-    "Instrumento": "um instrumento, escolhido no treino.",
-    "Jogatina": "carta, dado, aposta, e ler a mesa enquanto joga."
-  },
-  "caminhos": {
-    "Bastião": {
-      "dado": "d12",
-      "vida_inicial": 12,
-      "vida_por_nivel": 7,
-      "pe_por_nivel": 4,
-      "pericias_fixas": [
-        "Atletismo",
-        "Intimidação"
-      ],
-      "atributos_naturais": [
-        "Forca",
-        "Constituicao"
-      ],
-      "em_uma_linha": "o corpo como resposta: aguentar, encarar, prender"
-    },
-    "Vanguarda": {
-      "dado": "d8",
-      "vida_inicial": 8,
-      "vida_por_nivel": 5,
-      "pe_por_nivel": 5,
-      "pericias_fixas": [
-        "Acrobacia",
-        "Percepção"
-      ]
-    },
-    "Guia": {
-      "dado": "d8",
-      "vida_inicial": 8,
-      "vida_por_nivel": 5,
-      "pe_por_nivel": 5,
-      "pericias_fixas": [
-        "Persuasão",
-        "Medicina"
-      ]
-    },
-    "Evocador": {
-      "dado": "d6",
-      "vida_inicial": 6,
-      "vida_por_nivel": 4,
-      "pe_por_nivel": 6,
-      "pericias_fixas": [
-        "Religião",
-        "Lidar com Animais"
-      ]
-    },
-    "Emanador": {
-      "dado": "d6",
-      "vida_inicial": 6,
-      "vida_por_nivel": 4,
-      "pe_por_nivel": 6,
-      "pericias_fixas": [
-        "Ocultismo",
-        "Investigação"
-      ]
-    }
-  },
-  "trilhas": {
-    "Muro": "Bastião",
-    "Punho": "Bastião",
-    "Brasa": "Bastião",
-    "Estocada": "Vanguarda",
-    "Batedor": "Vanguarda",
-    "Executor": "Vanguarda",
-    "Elo": "Guia",
-    "Sutura": "Guia",
-    "Perímetro": "Guia",
-    "Torrente": "Emanador",
-    "Explosivo": "Emanador",
-    "Arremate": "Emanador",
-    "Servo": "Evocador",
-    "Matilha": "Evocador",
-    "Coro": "Evocador"
-  },
-  "testes_de_resistencia": {
-    "Físico": {
-      "atributo": [
-        "Força",
-        "Destreza"
-      ],
-      "nota": "escolhido e travado na criacao"
-    },
-    "Vigor": {
-      "atributo": [
-        "Constituição"
-      ]
-    },
-    "Intelecto": {
-      "atributo": [
-        "Inteligência"
-      ]
-    },
-    "Espírito": {
-      "atributo": [
-        "Essência"
-      ]
-    },
-    "treinados_na_criacao": 2,
-    "bonus_se_treinado": "maestria"
-  },
-  "familias": {
-    "Alcance": "chegar longe, se mexer, mexer o inimigo de lugar",
-    "Área": "pegar mais de um alvo, aumentar tamanho, dividir o ataque",
-    "Mira": "acertar, não errar, atravessar defesa",
-    "Controle": "derrubar, prender, calar, barreira, terreno",
-    "Auxiliares": "somar e tirar número: vantagem, defesa, CD, deslocamento",
-    "Castigo": "fazer o dano render mais",
-    "Tempo": "ação bônus, reação, deixar armado, conjurar escondido",
-    "Marca": "preparar o próximo golpe, roubar vida, rastrear",
-    "Amparo": "curar, limpar condição, levantar aliado"
-  },
-  "formas": {
-    "Projétil": {
-      "custa": null,
-      "familia": null,
-      "alcance": "18 m, um alvo",
-      "resolve": "rolagem de acerto"
-    },
-    "Toque": {
-      "custa": null,
-      "familia": null,
-      "alcance": "1,5 m, um alvo",
-      "embutido": "Restricao Corpo a Corpo embutida, devolve Media"
-    },
-    "Explosão": {
-      "custa": "Leve",
-      "familia": "Área",
-      "alcance": "esfera raio 3 m a ate 18 m"
-    },
-    "Aura": {
-      "custa": "Leve",
-      "familia": "Área",
-      "alcance": "esfera raio 3 m centrada em voce",
-      "embutido": "Corpo a Corpo embutida, devolve Media"
-    },
-    "Cone": {
-      "custa": "Leve",
-      "familia": "Área",
-      "alcance": "4,5 m saindo de voce"
-    },
-    "Linha": {
-      "custa": "Leve",
-      "familia": "Área",
-      "alcance": "18 m por 1,5 m"
-    },
-    "Cura": {
-      "custa": "Media",
-      "familia": "Amparo",
-      "nota": "os dados viram cura"
-    },
-    "Apoio": {
-      "custa": null,
-      "familia": "Amparo",
-      "nota": "cada ponto que sobra vira 3 de vida temporaria"
-    },
-    "Onda": {
-      "custa": "Pesada",
-      "familia": "Amparo",
-      "nota": "pega todos os aliados dentro, sem dividir"
-    },
-    "Efeito": {
-      "custa": null,
-      "familia": null,
-      "nota": "fora de combate, sem dano"
-    }
-  },
-  "_pendente": [],
-  "melhorias": {
-    "Longe": {
-      "familia": "Alcance",
-      "peso": "Leve",
-      "efeito": "Sobe um degrau na escada de alcance. Pode comprar duas vezes."
-    },
-    "Muito Longe": {
-      "familia": "Alcance",
-      "peso": "Media",
-      "efeito": "Sobe três degraus de uma vez."
-    },
-    "Sem Ver": {
-      "familia": "Alcance",
-      "peso": "Pesada",
-      "efeito": "Você conjura contra um alvo fora da sua linha de visão, desde que saiba onde ele está. Alcance normal do feitiço."
-    },
-    "Passo": {
-      "familia": "Alcance",
-      "peso": "Leve",
-      "efeito": "Você anda até 6 m antes ou depois do feitiço, sem provocar ataque de oportunidade."
-    },
-    "Empurrão": {
-      "familia": "Alcance",
-      "peso": "Leve",
-      "efeito": "Move o alvo até 6 m na direção que você quiser."
-    },
-    "Troca": {
-      "familia": "Alcance",
-      "peso": "Media",
-      "efeito": "Você e o alvo trocam de lugar."
-    },
-    "Perseguir": {
-      "familia": "Alcance",
-      "peso": "Media",
-      "efeito": "Se o alvo sair do alcance antes de o feitiço concluir, o feitiço vai atrás."
-    },
-    "Maior": {
-      "familia": "Área",
-      "peso": "Leve",
-      "efeito": "Sobe um degrau de tamanho de área. Pode comprar duas vezes."
-    },
-    "Muito Maior": {
-      "familia": "Área",
-      "peso": "Pesada",
-      "efeito": "Sobe três degraus de tamanho de uma vez."
-    },
-    "Escolher": {
-      "familia": "Área",
-      "peso": "Media",
-      "efeito": "Você decide quem, dentro da área, é atingido."
-    },
-    "Fica": {
-      "familia": "Área",
-      "peso": "Media",
-      "efeito": "A área continua ali por 1 minuto. Quem entrar ou começar o turno nela leva metade dos dados. Exige concentração."
-    },
-    "Mais Um": {
-      "familia": "Área",
-      "peso": "Leve",
-      "efeito": "Um alvo a mais. Os dados são divididos entre os alvos. Pode comprar duas vezes."
-    },
-    "Rajada": {
-      "familia": "Área",
-      "peso": "Leve",
-      "efeito": "Divide o feitiço em (Classe + 1) tiros, cada um com sua rolagem de acerto, distribuídos como você quiser."
-    },
-    "Salto": {
-      "familia": "Área",
-      "peso": "Media",
-      "efeito": "Depois do primeiro alvo, pula para o inimigo mais perto a até 9 m com metade dos dados."
-    },
-    "Contorno": {
-      "familia": "Área",
-      "peso": "Leve",
-      "efeito": "A área faz curva. Ignora cobertura e dobra esquinas."
-    },
-    "Precisão": {
-      "familia": "Mira",
-      "peso": "Leve",
-      "efeito": "+2 na rolagem de acerto, ou +2 na CD do Teste de Resistência."
-    },
-    "Certeiro": {
-      "familia": "Mira",
-      "peso": "Media",
-      "efeito": "Sem rolagem de acerto. O alvo ainda faz o Teste de Resistência para metade."
-    },
-    "Inescapável": {
-      "familia": "Mira",
-      "peso": "Media",
-      "efeito": "Sem acerto e sem Teste de Resistência: o dano é automático. Este feitiço não pode ter mais nenhuma peça, nem Melhoria nem Restrição, e não pode ser uma Liberação Máxima."
-    },
-    "Fura": {
-      "familia": "Mira",
-      "peso": "Media",
-      "efeito": "Ignora até 2 × Classe de Redução de Dano."
-    },
-    "Corrói": {
-      "familia": "Mira",
-      "peso": "Pesada",
-      "efeito": "Resistência ao seu tipo de dano deixa de valer neste feitiço. Só pode ser comprada se Mira for uma das suas Famílias Livres."
-    },
-    "Sem Cobertura": {
-      "familia": "Mira",
-      "peso": "Leve",
-      "efeito": "Cobertura Parcial não atrapalha. A Total não se fura: ela não é bônus, é a ausência de alvo legal."
-    },
-    "De Novo": {
-      "familia": "Mira",
-      "peso": "Media",
-      "efeito": "Se você errar, rola de novo. Uma vez por cena."
-    },
-    "Toca a Alma": {
-      "familia": "Mira",
-      "peso": "Leve",
-      "efeito": "Só da Classe 3 em diante, e só para Fundamento cuja Regra seja direta sobre alma. Os dados de dano deste feitiço viram dano na alma, e você fica com metade deles, arredondando para baixo. Não entra numa Liberação Máxima."
-    },
-    "Terreno": {
-      "familia": "Controle",
-      "peso": "Leve",
-      "efeito": "A área vira terreno difícil, ou fica obscurecida, por uma rodada."
-    },
-    "Anteparo": {
-      "familia": "Controle",
-      "peso": "Media",
-      "efeito": "Deixa uma parede ou escudo com 10 × Classe de pontos de vida, por 1 minuto. Ocupa os mesmos quadrados que a Linha da Classe dele, arrumados como você quiser, cada um partilhando um lado com outro. Altura mínima 2 quadrados. Colocado num ponto a até o alcance do feitiço."
-    },
-    "Prende": {
-      "familia": "Controle",
-      "peso": "Media",
-      "efeito": "O alvo não sai do lugar até o fim do próximo turno dele. Ele pode gastar uma ação — qualquer uma, menos livre — para tentar um Teste de Resistência e se soltar. O Teste é decidido na criação do feitiço."
-    },
-    "Cerca": {
-      "familia": "Controle",
-      "peso": "Leve",
-      "efeito": "O alvo não consegue se aproximar de você até o fim do próximo turno dele. Acaba assim que você causar dano a ele — inclusive o dano do próprio feitiço que comprou esta Melhoria."
-    },
-    "Puxa": {
-      "familia": "Controle",
-      "peso": "Media",
-      "efeito": "Todo mundo na área é puxado 6 m na direção do centro."
-    },
-    "Desarma o Feitiço": {
-      "familia": "Controle",
-      "peso": "Media",
-      "efeito": "Cancela um efeito contínuo ou uma barreira de Classe igual ou menor que a sua."
-    },
-    "Impulso": {
-      "familia": "Auxiliares",
-      "peso": "Leve",
-      "efeito": "O alvo tem vantagem no próximo teste dele, até o fim do próximo turno."
-    },
-    "Trava": {
-      "familia": "Auxiliares",
-      "peso": "Leve",
-      "efeito": "O alvo tem desvantagem no próximo ataque dele."
-    },
-    "Abre Ferida": {
-      "familia": "Auxiliares",
-      "peso": "Leve",
-      "efeito": "O alvo fica com −2 em um Teste de Resistência até o fim do próximo turno dele."
-    },
-    "Sobrecarga": {
-      "familia": "Auxiliares",
-      "peso": "Leve",
-      "efeito": "Até o fim do próximo turno do alvo, ele não usa Reação, e o feitiço dele sai com a CD 2 menor."
-    },
-    "Firmeza": {
-      "familia": "Auxiliares",
-      "peso": "Media",
-      "efeito": "O alvo tem vantagem no próximo Teste de Resistência dele."
-    },
-    "Guarda": {
-      "familia": "Auxiliares",
-      "peso": "Media",
-      "efeito": "Até o fim do próximo turno, o alvo tem +2 de defesa."
-    },
-    "Pressa": {
-      "familia": "Auxiliares",
-      "peso": "Media",
-      "efeito": "O alvo ganha +6 m de deslocamento e não provoca ataques de oportunidade até o fim do próximo turno."
-    },
-    "Enfraquece": {
-      "familia": "Auxiliares",
-      "peso": "Media",
-      "efeito": "O dano do alvo cai Xd4 até o fim do próximo turno dele, com X sendo metade do seu atributo de técnica."
-    },
-    "Ecoa": {
-      "familia": "Auxiliares",
-      "peso": "Media",
-      "efeito": "O próximo ataque de um aliado contra o alvo tem vantagem."
-    },
-    "Queima": {
-      "familia": "Castigo",
-      "peso": "Media",
-      "efeito": "Metade dos dados de novo, no começo do próximo turno do alvo."
-    },
-    "Acúmulo": {
-      "familia": "Castigo",
-      "peso": "Media",
-      "efeito": "+1 dado por rodada seguida usando este feitiço no mesmo alvo. Para de somar em +3."
-    },
-    "Remate": {
-      "familia": "Castigo",
-      "peso": "Media",
-      "efeito": "+25% de dano contra alvo abaixo de metade da vida. Não entra num feitiço que tenha uma Condicional ligada à vida do alvo ou à duração, nem num feitiço com a Restrição Aquecer."
-    },
-    "Estilhaço": {
-      "familia": "Castigo",
-      "peso": "Leve",
-      "efeito": "Em crítico, ou quando o alvo falha o Teste de Resistência por 5 ou mais, metade dos dados respinga em quem estiver do lado."
-    },
-    "Quebra Coisa": {
-      "familia": "Castigo",
-      "peso": "Leve",
-      "efeito": "Dano dobrado contra barreiras, objetos e estruturas."
-    },
-    "Rasga Escudo": {
-      "familia": "Castigo",
-      "peso": "Media",
-      "efeito": "O dano ignora vida temporária e barreiras: bate direto na vida. Não ignora Redução de Dano."
-    },
-    "Sem Cura": {
-      "familia": "Castigo",
-      "peso": "Media",
-      "efeito": "O alvo não pode receber cura até o fim do próximo turno dele."
-    },
-    "Rápido": {
-      "familia": "Tempo",
-      "peso": "Pesada",
-      "efeito": "Custa Ação Bônus em vez de Ação Padrão. Não entra no mesmo feitiço que Reação nem com a Restrição Atrasar."
-    },
-    "Reação": {
-      "familia": "Tempo",
-      "peso": "Pesada",
-      "efeito": "Você conjura como Reação, a um gatilho que você declara quando monta o feitiço. Não entra no mesmo feitiço que Rápido nem que Armado, nem com as Restrições Atrasar e Parado."
-    },
-    "Armado": {
-      "familia": "Tempo",
-      "peso": "Leve",
-      "efeito": "Você gasta a ação e o PE do feitiço, e ele fica armado até o fim da cena. Na hora de armar, escolha um gatilho que a mesa consiga ver acontecer e que não seja um momento do seu próprio turno. Quando ele acontece, o feitiço sai sem gastar Reação, com alcance e alvo conferidos naquela hora. Um armado por vez. Se ele não sair, porque a cena acabou ou porque você armou outro, metade do PE volta. Não entra no mesmo feitiço que Reação nem com a Restrição Carregar."
-    },
-    "Silencioso": {
-      "familia": "Tempo",
-      "peso": "Leve",
-      "efeito": "Sem gesto, sem palavra. Usar não revela a sua posição e não exige nenhum sinal. Dispensa Selo de gesto ou de som; Selo de condição, como enxergar o alvo, continua valendo."
-    },
-    "Adianta": {
-      "familia": "Tempo",
-      "peso": "Media",
-      "efeito": "Se você conjurar antes de qualquer inimigo agir na rodada, +2 na CD."
-    },
-    "Segura": {
-      "familia": "Tempo",
-      "peso": "Leve",
-      "efeito": "Você pode adiar o efeito por até uma rodada e disparar no seu próximo turno, de graça."
-    },
-    "Concentrada": {
-      "familia": "Tempo",
-      "peso": "Leve",
-      "efeito": "Os efeitos de estado do feitiço, que hoje duram uma rodada ou até o fim do próximo turno, passam a durar o tempo da tabela Quanto dura. Exige concentração. Não vale para o dano, para a Fica nem para o Anteparo."
-    },
-    "Duradoura": {
-      "familia": "Tempo",
-      "peso": "Media",
-      "efeito": "A mesma coisa que a Concentrada, só que sem exigir concentração, e com o tempo da coluna Duradoura da tabela Quanto dura."
-    },
-    "Marca": {
-      "familia": "Marca",
-      "peso": "Leve",
-      "efeito": "O alvo fica marcado até o fim do seu próximo turno. Você tem vantagem no seu próximo ataque contra ele. Só você."
-    },
-    "Alvo de Caça": {
-      "familia": "Marca",
-      "peso": "Leve",
-      "efeito": "O alvo fica marcado até o fim do seu próximo turno. Daí em diante, cada ataque seu que acertar ele causa 1d4 a mais, e o feitiço que marcou não ganha o dado. Vale arma, desarmado e feitiço com rolagem de acerto, e cada tiro da Rajada conta. Se este feitiço tiver o Rápido, o dado é 1d8. Não entram feitiço de Teste de Resistência, dano que volta em rodada seguinte como o da Queima, respingo, nem ataque da sua invocação. Um alvo marcado por vez: marcar outro apaga a marca anterior."
-    },
-    "Rastro": {
-      "familia": "Marca",
-      "peso": "Leve",
-      "efeito": "Você sabe onde o alvo está por 1 hora, desde que ele esteja no mesmo plano."
-    },
-    "Sugar": {
-      "familia": "Marca",
-      "peso": "Media",
-      "efeito": "Você recupera um quarto do dano causado, até no máximo 5 × Classe."
-    },
-    "Isca": {
-      "familia": "Marca",
-      "peso": "Leve",
-      "efeito": "Até o fim do próximo turno do alvo, ele tem desvantagem em qualquer ataque que não mire você."
-    },
-    "Cobrança": {
-      "familia": "Marca",
-      "peso": "Media",
-      "efeito": "Se o alvo cair nesta cena, o seu próximo feitiço custa metade."
-    },
-    "Aviso": {
-      "familia": "Marca",
-      "peso": "Leve",
-      "efeito": "Você sabe qual foi o último feitiço que o alvo usou e de que Classe ele era."
-    },
-    "Limpa": {
-      "familia": "Amparo",
-      "peso": "Media",
-      "efeito": "Remove de um aliado uma condição de nível Leve ou Média."
-    },
-    "Limpa Fundo": {
-      "familia": "Amparo",
-      "peso": "Pesada",
-      "efeito": "Remove de um aliado uma condição de qualquer nível."
-    },
-    "Levanta": {
-      "familia": "Amparo",
-      "peso": "Pesada",
-      "efeito": "Um aliado caído em 0 pontos de vida volta de pé com 5 × Classe, seja qual for a vida máxima dele. Uma vez por cena."
-    },
-    "Divide": {
-      "familia": "Amparo",
-      "peso": "Media",
-      "efeito": "Um aliado a até 9 m passa a receber metade do dano que você receberia, até o fim do próximo turno. Você escolhe na hora de conjurar."
-    },
-    "Junto": {
-      "familia": "Amparo",
-      "peso": "Leve",
-      "efeito": "A cura ou o apoio pega um aliado a mais. O efeito é dividido entre eles. Pode comprar duas vezes."
-    },
-    "Reserva": {
-      "familia": "Amparo",
-      "peso": "Media",
-      "efeito": "A cura fica guardada no aliado e é usada sozinha quando ele cair abaixo da metade da vida. Dura até o fim da cena."
-    },
-    "Remenda": {
-      "familia": "Amparo",
-      "peso": "Pesada",
-      "efeito": "Devolve 5 × Classe de Integridade a um aliado. Uma vez por cena, por alvo."
-    },
-    "Condição": {
-      "familia": "Controle",
-      "peso": "VARIAVEL",
-      "efeito": "Aplica uma das treze condições. O preço é o nível dela (Leve, Média ou Pesada), e a seção Condições traz as três listas. Dura uma rodada, a não ser que o feitiço tenha a Concentrada ou a Duradoura. As de nível Pesada dão Teste de Resistência no fim de cada turno do alvo, e só pode ser colocada uma delas por feitiço.",
-      "excecao": "unica Melhoria cujo peso nao e fixo: le o nivel da condicao escolhida"
-    },
-    "Efeito Próprio": {
-      "familia": null,
-      "peso": "MESTRE",
-      "efeito": "Uma mecânica que não existe em lugar nenhum desta lista. Um deslocamento junto com o dano, um efeito que só funciona em superfície molhada, o que for. Um por feitiço, e ele conta como uma Melhoria no limite da Classe. Combinado antes da sessão e nunca no meio dela. Não pertence a nenhuma Família, então Família Fechada não bloqueia.",
-      "excecao": "fora de família: o mestre decide quanto ela custa"
-    }
-  },
-  "condicoes": {
-    "Lento": "Leve",
-    "Incapacitado": "Leve",
-    "Derrubado": "Leve",
-    "Agarrado": "Leve",
-    "Desarmado": "Leve",
-    "Surdo": "Leve",
-    "Calado": "Media",
-    "Enfeitiçado": "Media",
-    "Impedido": "Pesada",
-    "Cego": "Pesada",
-    "Amedrontado": "Pesada",
-    "Envenenado": "Pesada",
-    "Atordoado": "Pesada"
-  },
-  "restricoes": {
-    "Corpo a Corpo": {
-      "devolve": "Media",
-      "o_que_muda": "Projétil vira Toque (1,5 m). Explosão vira Aura, centrada em você. Cone e Linha já saem de você, então não podem pegar esta."
-    },
-    "Atrasar": {
-      "devolve": "Media",
-      "o_que_muda": "Custa a rodada inteira (Ação Completa): você não se move, não usa ação bônus e não faz mais nada naquele turno."
-    },
-    "Parado": {
-      "devolve": "Leve",
-      "o_que_muda": "Você não se move no turno em que conjura. A ação bônus continua sua."
-    },
-    "Gesto": {
-      "devolve": "Leve",
-      "o_que_muda": "Precisa das duas mãos livres e de falar em voz audível."
-    },
-    "Sangra": {
-      "devolve": "Media",
-      "o_que_muda": "Você toma 2 × Classe de dano que não pode ser reduzido."
-    },
-    "Recuo": {
-      "devolve": "Leve ou Media",
-      "o_que_muda": "Você fica com uma condição até o fim do seu próximo turno. Ela devolve o nível dela: uma condição Leve devolve Leve, uma Média devolve Média. Nível Pesada não entra, porque Restrição nunca devolve Pesada."
-    },
-    "Carregar": {
-      "devolve": "Media",
-      "o_que_muda": "Você gasta um turno carregando o feitiço antes de disparar. Se tomar dano nesse meio-tempo, faz um Teste de Resistência de Espírito contra a CD de quem te feriu para manter. Se falhar, perde o feitiço. Carregar não é concentração: o feitiço ainda não saiu."
-    },
-    "Tudo ou Nada": {
-      "devolve": "Leve",
-      "o_que_muda": "Quem passa no Teste de Resistência não toma nada, em vez de tomar metade. Só em feitiços de Teste de Resistência."
-    },
-    "Uma Vez": {
-      "devolve": "Leve",
-      "o_que_muda": "Uma vez por cena."
-    },
-    "Condicional": {
-      "devolve": "Leve ou Media",
-      "o_que_muda": "Só funciona quando uma condição de cena ou de alvo, escrita na ficha, é verdadeira: no escuro, marcado por você, abaixo de metade da vida, perto de água corrente. Falha em menos de uma cena a cada três: devolve Leve. Falha na maioria das cenas: devolve Média."
-    },
-    "Fraqueza": {
-      "devolve": "Leve ou Media",
-      "o_que_muda": "Depois de usar, você fica com desvantagem num dos quatro Testes de Resistência, escolhido na montagem, até o fim da cena. Vigor ou Intelecto: Leve. Físico ou Espírito: Média."
-    },
-    "Frágil": {
-      "devolve": "Leve",
-      "o_que_muda": "Se você tomar dano antes do seu próximo turno, o efeito do feitiço acaba na hora. Só serve em feitiço que deixa algo durando."
-    },
-    "Barulho": {
-      "devolve": "Leve",
-      "o_que_muda": "Todo mundo num raio de 90 m ouve, e sabe de onde veio."
-    },
-    "Assinatura": {
-      "devolve": "Leve",
-      "o_que_muda": "O feitiço deixa uma marca visível que dura 1 hora e aponta para você."
-    },
-    "Aquecer": {
-      "devolve": "Leve",
-      "o_que_muda": "Não pode ser usado na primeira rodada do combate."
-    },
-    "Dívida": {
-      "devolve": "Media",
-      "o_que_muda": "Depois de usar, o próximo feitiço que você conjurar nesta cena custa 2 × a Classe deste feitiço de energia a mais — mesmo que ele seja de Classe 0."
-    },
-    "Peso Morto": {
-      "devolve": "Leve",
-      "o_que_muda": "Seu deslocamento cai pela metade até o fim do próximo turno, e você recebe −1 no seu Teste de Resistência Físico."
-    },
-    "Sem Volta": {
-      "devolve": "Media",
-      "o_que_muda": "Se o feitiço não acertar ninguém, você não conjura nada no seu próximo turno."
-    },
-    "Restrição Própria": {
-      "devolve": "Leve ou Media",
-      "o_que_muda": "Uma desvantagem que não existe nesta lista. Escrita com o mestre antes da sessão, nunca no meio dela, e vale só para o feitiço onde nasceu. Conta no limite de duas Restrições e obedece as mesmas travas de todas as outras."
-    }
-  },
-  "fundamento": {
-    "pontos_por_feitico": "3 x Classe",
-    "custo_em_pe": "3 x Classe",
-    "ponto_nao_gasto": "vira 1d8 de dano",
-    "preco_melhoria": {
-      "Leve": "Classe / 2",
-      "Media": "Classe",
-      "Pesada": "Classe * 1.5"
-    },
-    "arredondamento": "sempre para cima no custo; ganho arredonda para baixo; nunca abaixo de 1",
-    "desconto_familia_livre": "tira metade da Classe do preco, minimo 1",
-    "familias_livres": 2,
-    "familias_fechadas": 3,
-    "restricao_teto_devolucao": "2 x Classe",
-    "restricao_nunca_devolve": "Pesada",
-    "restricao_so_paga_melhoria": true,
-    "nivel_2": {
-      "classe": 1,
-      "feiticos_classe_0_gratis": 2,
-      "feiticos_conhecidos": 3
-    },
-    "espalham_dano_e_contam_no_teto": [
-      "Salto",
-      "Rajada",
-      "Mais Um",
-      "Queima"
-    ],
-    "teto_e_liberacao": "teto 4 x Classe = os 3 x Classe do orcamento + Classe da Liberacao Maxima",
-    "queima_conta_como_repeticao": true,
-    "limite_contra_um_alvo": "os pontos da Classe em dados; so a Liberacao Maxima passa deles"
-  },
-  "origens": {
-    "Latente": {
-      "em_uma_linha": "Você nasceu com. Ninguém te deu nada e ninguém te ensinou."
-    },
-    "Receptáculo": {
-      "em_uma_linha": "Você carrega alguma coisa, e ela ainda está aí."
-    },
-    "Descendente": {
-      "em_uma_linha": "Você é de uma das famílias, e elas cobram."
-    },
-    "Reencarnado": {
-      "em_uma_linha": "Você já foi outra pessoa, e o corpo em que você está não nasceu seu."
-    },
-    "Feto": {
-      "em_uma_linha": "Alguém te fez, peça por peça."
-    },
-    "Corpo Amaldiçoado": {
-      "especial": true,
-      "em_uma_linha": "Alguém te fez, e você acordou."
-    },
-    "Restrição Celestial": {
-      "especial": true,
-      "em_uma_linha": "Você trocou uma coisa por outra antes de nascer."
-    }
-  },
-  "sub_origem": {
-    "Sem Técnica": {
-      "origens": [
-        "Latente",
-        "Receptáculo",
-        "Descendente",
-        "Reencarnado",
-        "Feto"
-      ],
-      "legados": "nao amplia a conta de Legados: e uma entrada de Destranca e ocupa uma das duas vagas",
-      "em_uma_linha": "Você tem energia amaldiçoada e não tem técnica inata."
-    }
-  },
-  "rotas_de_criacao": [
-    {
-      "origem": "Latente",
-      "rota": "Fundamento"
-    },
-    {
-      "origem": "Receptáculo",
-      "rota": "Fundamento"
-    },
-    {
-      "origem": "Descendente",
-      "rota": "Fundamento"
-    },
-    {
-      "origem": "Reencarnado",
-      "rota": "Fundamento"
-    },
-    {
-      "origem": "Feto",
-      "rota": "Fundamento"
-    },
-    {
-      "origem": "Restrição Celestial · corpo pela técnica",
-      "rota": "Fundamento"
-    },
-    {
-      "origem": "Sem Técnica, com uma das cinco principais",
-      "rota": "Sem Técnica"
-    },
-    {
-      "origem": "Corpo Amaldiçoado",
-      "rota": "Técnica Marcial"
-    },
-    {
-      "origem": "Restrição Celestial · sem energia",
-      "rota": "Técnica Marcial"
-    }
+ "_meta": {
+  "sistema": "Projeto M",
+  "versao": "0.331 · 04/10",
+  "versao_data": "04/10/2026",
+  "versao_dona": "o livro reconstruído do JJK---Project (LIVRO-COMPLETO.md), revisado em 04/10/2026, depois da v0.331",
+  "fonte": "manual.txt, gerado do LIVRO-COMPLETO.md pelo extrair-manual.py; o arquivo e o hash estão no manual-fonte.json",
+  "regra": "onde a ficha e o manual discordarem, o manual vence",
+  "nivel_inicial": 2,
+  "nivel_maximo": 30,
+  "grau_inicial": 4,
+  "conferido_contra_o_livro": [
+   "atributos",
+   "pericias",
+   "oficios",
+   "oficios_atributo",
+   "caminhos",
+   "trilhas",
+   "testes_de_resistencia",
+   "familias",
+   "formas",
+   "melhorias",
+   "condicoes",
+   "restricoes",
+   "fundamento",
+   "origens",
+   "sub_origem",
+   "rotas_de_criacao",
+   "legados",
+   "legados_formatos",
+   "progressao",
+   "equipamento_defesa",
+   "equipamento",
+   "patentes",
+   "missoes"
   ],
-  "legados": {
-    "Latente": {
-      "Destranca": {
-        "O Jeito Errado": {
-          "relogio": "por dia"
-        },
-        "O Professor Que Você Não Teve": {
-          "relogio": "sem relógio"
-        },
-        "A Testemunha": {
-          "relogio": "sem relógio"
-        },
-        "Sem Técnica": {
-          "relogio": "sem relógio"
-        }
-      },
-      "Ajusta": {
-        "Aprendi Apanhando": {
-          "relogio": "por dia"
-        },
-        "Instinto Bruto": {
-          "relogio": "por cena"
-        },
-        "Gambiarra": {
-          "relogio": "por dia"
-        },
-        "Desconfiado": {
-          "relogio": "por cena"
-        }
-      },
-      "Desliga": {
-        "Inédito": {
-          "relogio": "sem relógio"
-        },
-        "Chão Duro": {
-          "relogio": "sem relógio"
-        }
-      }
-    },
-    "Receptáculo": {
-      "Destranca": {
-        "A Voz de Dentro": {
-          "relogio": "por dia"
-        },
-        "De Antes de Você": {
-          "relogio": "sem relógio"
-        },
-        "Alcunha": {
-          "relogio": "sem relógio"
-        },
-        "O Que Ele Quer": {
-          "relogio": "por descanso longo"
-        },
-        "Sem Técnica": {
-          "relogio": "sem relógio"
-        }
-      },
-      "Ajusta": {
-        "Não Sou Só Eu": {
-          "relogio": "por cena"
-        },
-        "Costume Antigo": {
-          "relogio": "por cena"
-        },
-        "Tranco": {
-          "relogio": "por cena"
-        },
-        "Passagem": {
-          "relogio": "por dia"
-        }
-      },
-      "Desliga": {
-        "Máscara": {
-          "relogio": "sem relógio"
-        },
-        "Revezamento": {
-          "relogio": "por descanso longo"
-        }
-      }
-    },
-    "Descendente": {
-      "Destranca": {
-        "O Sobrenome": {
-          "relogio": "sem relógio"
-        },
-        "Armaria": {
-          "relogio": "sem relógio"
-        },
-        "Arquivo": {
-          "relogio": "sem relógio"
-        },
-        "Palavra Dada": {
-          "relogio": "sem relógio"
-        },
-        "Treino de Berço": {
-          "relogio": "sem relógio"
-        },
-        "Sem Técnica": {
-          "relogio": "sem relógio"
-        }
-      },
-      "Ajusta": {
-        "Conversa de Jantar": {
-          "relogio": "por cena"
-        },
-        "Etiqueta": {
-          "relogio": "por cena"
-        },
-        "Repetição": {
-          "relogio": "por descanso curto"
-        },
-        "Biblioteca": {
-          "relogio": "por cena"
-        }
-      },
-      "Desliga": {
-        "Coleira": {
-          "relogio": "sem relógio"
-        },
-        "Cabo": {
-          "relogio": "por cena"
-        }
-      }
-    },
-    "Reencarnado": {
-      "Destranca": {
-        "O Que Ninguém Lembra": {
-          "relogio": "por descanso longo"
-        },
-        "Encomenda": {
-          "relogio": "sem relógio"
-        },
-        "Quem Morava Aqui": {
-          "relogio": "sem relógio"
-        },
-        "Enterrado": {
-          "relogio": "sem relógio"
-        },
-        "Sem Técnica": {
-          "relogio": "sem relógio"
-        }
-      },
-      "Ajusta": {
-        "Corpo Emprestado": {
-          "relogio": "por cena"
-        },
-        "Espasmo": {
-          "relogio": "por descanso curto"
-        },
-        "Já Morri": {
-          "relogio": "por cena"
-        },
-        "Método Velho": {
-          "relogio": "por cena"
-        }
-      },
-      "Desliga": {
-        "Conhecimento Antigo": {
-          "relogio": "sem relógio"
-        },
-        "Usado": {
-          "relogio": "por cena"
-        }
-      }
-    },
-    "Feto": {
-      "Destranca": {
-        "Irmãos": {
-          "relogio": "sem relógio"
-        },
-        "Numeração": {
-          "relogio": "sem relógio"
-        },
-        "Guardado": {
-          "relogio": "sem relógio"
-        },
-        "Devagar": {
-          "relogio": "sem relógio"
-        },
-        "Sem Técnica": {
-          "relogio": "sem relógio"
-        }
-      },
-      "Ajusta": {
-        "Meio e Meio": {
-          "relogio": "por cena"
-        },
-        "Como Se Monta": {
-          "relogio": "por cena"
-        },
-        "Faro": {
-          "relogio": "por cena"
-        },
-        "Paciência": {
-          "relogio": "por dia"
-        }
-      },
-      "Desliga": {
-        "Sangue que Não é Sangue": {
-          "relogio": "sem relógio"
-        },
-        "Talhe": {
-          "relogio": "por cena"
-        }
-      }
-    },
-    "Sem Técnica": {
-      "Destranca": {
-        "Sem Técnica": {
-          "relogio": "sem relógio"
-        }
-      }
-    },
-    "Corpo Amaldiçoado": {
-      "Destranca": {
-        "Ninhada": {
-          "relogio": "sem relógio"
-        },
-        "Gêmeos": {
-          "relogio": "sem relógio"
-        },
-        "Inteiro": {
-          "relogio": "sem relógio"
-        },
-        "Manutenção": {
-          "relogio": "sem relógio"
-        }
-      },
-      "Ajusta": {
-        "Rodízio": {
-          "relogio": "por cena"
-        },
-        "Vigília": {
-          "relogio": "por cena"
-        },
-        "Desempate": {
-          "relogio": "por dia"
-        },
-        "Cabeça Trocada": {
-          "relogio": "por cena"
-        },
-        "Nunca os Dois": {
-          "relogio": "por descanso curto"
-        },
-        "Palpite": {
-          "relogio": "por dia"
-        },
-        "Feito de Uma Peça": {
-          "relogio": "por descanso curto"
-        },
-        "Teimosia": {
-          "relogio": "por cena"
-        },
-        "Peça Única": {
-          "relogio": "por cena"
-        },
-        "Ajuste Fino": {
-          "relogio": "por cena"
-        },
-        "Recarga": {
-          "relogio": "por descanso curto"
-        },
-        "Fiado": {
-          "relogio": "por dia"
-        }
-      },
-      "Desliga": {
-        "Ferro Velho": {
-          "relogio": "sem relógio"
-        }
-      }
-    },
-    "Restrição Celestial": {
-      "Destranca": {
-        "Nasci Assim": {
-          "relogio": "sem relógio",
-          "ramo": "Corpo pela Técnica"
-        },
-        "O Substituto": {
-          "relogio": "sem relógio",
-          "ramo": "Corpo pela Técnica"
-        },
-        "A Oferta": {
-          "relogio": "sem relógio",
-          "ramo": "Corpo pela Técnica"
-        },
-        "Descartado": {
-          "relogio": "sem relógio",
-          "ramo": "Sem Energia"
-        },
-        "Dividido": {
-          "relogio": "sem relógio",
-          "ramo": "Sem Energia"
-        },
-        "Desde Criança": {
-          "relogio": "sem relógio",
-          "ramo": "Sem Energia"
-        },
-        "Aprendi a Ver": {
-          "relogio": "sem relógio",
-          "ramo": "Sem Energia"
-        }
-      },
-      "Ajusta": {
-        "Antena": {
-          "relogio": "por cena",
-          "ramo": "Corpo pela Técnica"
-        },
-        "Do Meu Canto": {
-          "relogio": "por cena",
-          "ramo": "Corpo pela Técnica"
-        },
-        "Insônia": {
-          "relogio": "por dia",
-          "ramo": "Corpo pela Técnica"
-        },
-        "Li Tudo": {
-          "relogio": "por cena",
-          "ramo": "Corpo pela Técnica"
-        },
-        "Sentido Treinado": {
-          "relogio": "por cena",
-          "ramo": "Sem Energia"
-        },
-        "Couro": {
-          "relogio": "por descanso curto",
-          "ramo": "Sem Energia"
-        },
-        "Ninguém Viu": {
-          "relogio": "por cena",
-          "ramo": "Sem Energia"
-        },
-        "No Braço": {
-          "relogio": "por dia",
-          "ramo": "Sem Energia"
-        }
-      },
-      "Desliga": {
-        "Peso Real": {
-          "relogio": "sem relógio",
-          "ramo": "os dois"
-        },
-        "Assinado": {
-          "relogio": "por descanso longo",
-          "ramo": "os dois"
-        }
-      }
-    }
+  "nao_conferido_contra_o_livro": [],
+  "fora_do_livro": [
+   "fora_do_livro"
+  ]
+ },
+ "atributos": {
+  "lista": [
+   "Força",
+   "Destreza",
+   "Constituição",
+   "Inteligência",
+   "Essência"
+  ],
+  "escala": [
+   0,
+   6
+  ],
+  "criacao": {
+   "pontos": 9,
+   "teto_por_atributo": 3
   },
-  "legados_formatos": {
-    "Destranca": [
-      "Um Destranca abre uma porta: um lugar onde você é recebido, uma coisa que você sabe, uma pessoa que existe no mundo por sua causa.",
-      "Um deles é obrigatoriamente um Destranca, e Destranca é zero no dado."
-    ],
-    "Ajusta": [
-      "Um Ajusta mexe num número de uma rolagem."
-    ],
-    "Desliga": [
-      "Um Desliga apaga uma coisa que aconteceria com você, sempre que a situação aparecer, sem rolagem nenhuma."
-    ]
+  "nota": "o numero E o modificador; nao existe tabela de conversao"
+ },
+ "pericias": {
+  "Atletismo": {
+   "atributo": "Força",
+   "descricao": "Use Atletismo para superar uma correnteza, escalar um apoio difícil, saltar sob condições adversas ou forçar uma porta."
   },
-  "progressao": {
-    "faixa_jogavel": [
-      2,
-      30
-    ],
-    "marcos": [
-      6,
-      10,
-      14,
-      18,
-      22,
-      26,
-      30
-    ],
-    "marco_entrega": "+1 ponto de atributo, +1 de refino e +1 espaço de feitiço",
-    "formulas": {
-      "maestria": "1 + quantos de (10,18,26) <= nivel      # manual p.192; NAO e' 'a cada 8 niveis'",
-      "espacos": "2 + (nivel // 2) + marcos_alcancados",
-      "refino": "1 + marcos_alcancados                    # so a linha de graca; o teto e 10",
-      "classe": "quantos de (1,5,9,13,17,21,26) <= nivel",
-      "classe_0": "2 + quantos de (5,11,17) <= nivel",
-      "integridade": "20 + (Essência + 5) * (nivel - 1)      # capitulo 1 do manual; o 20 + 8 morreu na v0.145"
-    },
-    "liberacao_maxima": {
-      "10": "1a",
-      "20": "2a",
-      "30": "3a"
-    },
-    "tabela_impressa": {
-      "1": {
-        "maestria": 1,
-        "espacos": 2,
-        "refino": 1,
-        "classe": 1,
-        "passiva": 1,
-        "classe0": 2,
-        "entrega": "Fundamento, Passiva Livre, dois feitiços de Classe 0",
-        "xp": "—"
-      },
-      "2": {
-        "maestria": 1,
-        "espacos": 3,
-        "refino": 1,
-        "classe": 1,
-        "passiva": 1,
-        "classe0": 2,
-        "entrega": "degrau de Caminho · entrega de Trilha · +1 espaço de feitiço",
-        "xp": "200"
-      },
-      "3": {
-        "maestria": 1,
-        "espacos": 3,
-        "refino": 1,
-        "classe": 1,
-        "passiva": 1,
-        "classe0": 2,
-        "entrega": "—",
-        "xp": "300"
-      },
-      "4": {
-        "maestria": 1,
-        "espacos": 4,
-        "refino": 1,
-        "classe": 1,
-        "passiva": 1,
-        "classe0": 2,
-        "entrega": "+1 espaço de feitiço",
-        "xp": "300"
-      },
-      "5": {
-        "maestria": 1,
-        "espacos": 4,
-        "refino": 1,
-        "classe": 2,
-        "passiva": 1,
-        "classe0": 3,
-        "entrega": "Classe 2 · mais um Classe 0",
-        "xp": "500"
-      },
-      "6": {
-        "maestria": 1,
-        "espacos": 6,
-        "refino": 2,
-        "classe": 2,
-        "passiva": 1,
-        "classe0": 3,
-        "entrega": "marco · +2 espaços de feitiço",
-        "xp": "500"
-      },
-      "7": {
-        "maestria": 1,
-        "espacos": 6,
-        "refino": 2,
-        "classe": 2,
-        "passiva": 2,
-        "classe0": 3,
-        "entrega": "degrau de Caminho · libera Passiva de Classe 2",
-        "xp": "500"
-      },
-      "8": {
-        "maestria": 1,
-        "espacos": 7,
-        "refino": 2,
-        "classe": 2,
-        "passiva": 2,
-        "classe0": 3,
-        "entrega": "+1 espaço de feitiço",
-        "xp": "700"
-      },
-      "9": {
-        "maestria": 1,
-        "espacos": 7,
-        "refino": 2,
-        "classe": 3,
-        "passiva": 2,
-        "classe0": 3,
-        "entrega": "Classe 3",
-        "xp": "700"
-      },
-      "10": {
-        "maestria": 2,
-        "espacos": 9,
-        "refino": 3,
-        "classe": 3,
-        "passiva": 2,
-        "classe0": 3,
-        "entrega": "marco · 1ª Liberação Máxima · +2 espaços de feitiço",
-        "xp": "700"
-      },
-      "11": {
-        "maestria": 2,
-        "espacos": 9,
-        "refino": 3,
-        "classe": 3,
-        "passiva": 2,
-        "classe0": 4,
-        "entrega": "entrega de Trilha · mais um Classe 0",
-        "xp": "900"
-      },
-      "12": {
-        "maestria": 2,
-        "espacos": 10,
-        "refino": 3,
-        "classe": 3,
-        "passiva": 2,
-        "classe0": 4,
-        "entrega": "+1 espaço de feitiço",
-        "xp": "900"
-      },
-      "13": {
-        "maestria": 2,
-        "espacos": 10,
-        "refino": 3,
-        "classe": 4,
-        "passiva": 3,
-        "classe0": 4,
-        "entrega": "Classe 4 · libera Passiva de Classe 3",
-        "xp": "900"
-      },
-      "14": {
-        "maestria": 2,
-        "espacos": 12,
-        "refino": 4,
-        "classe": 4,
-        "passiva": 3,
-        "classe0": 4,
-        "entrega": "marco · +2 espaços de feitiço",
-        "xp": "1.100"
-      },
-      "15": {
-        "maestria": 2,
-        "espacos": 12,
-        "refino": 4,
-        "classe": 4,
-        "passiva": 3,
-        "classe0": 4,
-        "entrega": "degrau de Caminho",
-        "xp": "1.100"
-      },
-      "16": {
-        "maestria": 2,
-        "espacos": 13,
-        "refino": 4,
-        "classe": 4,
-        "passiva": 3,
-        "classe0": 4,
-        "entrega": "+1 espaço de feitiço",
-        "xp": "1.100"
-      },
-      "17": {
-        "maestria": 2,
-        "espacos": 13,
-        "refino": 4,
-        "classe": 5,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "Classe 5 · Técnica Máxima · mais um Classe 0",
-        "xp": "1.300"
-      },
-      "18": {
-        "maestria": 3,
-        "espacos": 15,
-        "refino": 5,
-        "classe": 5,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "marco · +2 espaços de feitiço",
-        "xp": "1.300"
-      },
-      "19": {
-        "maestria": 3,
-        "espacos": 15,
-        "refino": 5,
-        "classe": 5,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "entrega de Trilha",
-        "xp": "1.300"
-      },
-      "20": {
-        "maestria": 3,
-        "espacos": 16,
-        "refino": 5,
-        "classe": 5,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "2ª Liberação Máxima · +1 espaço de feitiço",
-        "xp": "1.500"
-      },
-      "21": {
-        "maestria": 3,
-        "espacos": 16,
-        "refino": 5,
-        "classe": 6,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "Classe 6",
-        "xp": "1.500"
-      },
-      "22": {
-        "maestria": 3,
-        "espacos": 18,
-        "refino": 6,
-        "classe": 6,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "marco · +2 espaços de feitiço",
-        "xp": "1.500"
-      },
-      "23": {
-        "maestria": 3,
-        "espacos": 18,
-        "refino": 6,
-        "classe": 6,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "—",
-        "xp": "1.700"
-      },
-      "24": {
-        "maestria": 3,
-        "espacos": 19,
-        "refino": 6,
-        "classe": 6,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "+1 espaço de feitiço",
-        "xp": "1.700"
-      },
-      "25": {
-        "maestria": 3,
-        "espacos": 19,
-        "refino": 6,
-        "classe": 6,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "—",
-        "xp": "1.700"
-      },
-      "26": {
-        "maestria": 4,
-        "espacos": 21,
-        "refino": 7,
-        "classe": 7,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "marco · Classe 7 · +2 espaços de feitiço",
-        "xp": "1.700"
-      },
-      "27": {
-        "maestria": 4,
-        "espacos": 21,
-        "refino": 7,
-        "classe": 7,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "entrega de Trilha",
-        "xp": "1.700"
-      },
-      "28": {
-        "maestria": 4,
-        "espacos": 22,
-        "refino": 7,
-        "classe": 7,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "+1 espaço de feitiço",
-        "xp": "1.700"
-      },
-      "29": {
-        "maestria": 4,
-        "espacos": 22,
-        "refino": 7,
-        "classe": 7,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "—",
-        "xp": "1.700"
-      },
-      "30": {
-        "maestria": 4,
-        "espacos": 24,
-        "refino": 8,
-        "classe": 7,
-        "passiva": 3,
-        "classe0": 5,
-        "entrega": "marco · degrau de Caminho · 3ª Liberação Máxima · +2 espaços de feitiço",
-        "xp": "—"
-      }
-    },
-    "xp": "nao automatizar: o jogador digita o nivel direto (decisao do Mizuki)",
-    "limiar_do_feito": {
-      "nivel": 20,
-      "regra": "Você chega ao nível 20 por XP. Você passa dele por feito."
-    }
+  "Acrobacia": {
+   "atributo": "Destreza",
+   "descricao": "Use Acrobacia para manter o equilíbrio num apoio instável, executar uma manobra corporal difícil ou se contorcer numa passagem que comporte seu corpo."
   },
-  "equipamento_defesa": {
-    "fonte": "manual, capítulo Equipamento, seção Proteção: as tabelas Traje, Revestimento e Escudo, e as frases de regra",
-    "formula": "Defesa = 10 + Destreza + proteção",
-    "uniformes": {
-      "Traje 1": {
-        "protecao": 1,
-        "teto_de_destreza": null,
-        "requer_forca": null
-      },
-      "Traje 2": {
-        "protecao": 2,
-        "teto_de_destreza": null,
-        "requer_forca": null
-      },
-      "Traje 3": {
-        "protecao": 3,
-        "teto_de_destreza": null,
-        "requer_forca": 3
-      },
-      "Revestimento 1": {
-        "protecao": 4,
-        "teto_de_destreza": 0,
-        "requer_forca": 3
-      },
-      "Revestimento 2": {
-        "protecao": 5,
-        "teto_de_destreza": 0,
-        "requer_forca": 4
-      },
-      "Revestimento 3": {
-        "protecao": 6,
-        "teto_de_destreza": 0,
-        "requer_forca": 6
-      }
-    },
-    "escudos": {
-      "Broquel": {
-        "protecao": 1,
-        "teto_de_destreza": 5,
-        "requer_forca": null
-      },
-      "Médio": {
-        "protecao": 2,
-        "teto_de_destreza": 3,
-        "requer_forca": 3
-      },
-      "Torre": {
-        "protecao": 3,
-        "teto_de_destreza": 1,
-        "requer_forca": 5
-      }
-    },
-    "uniforme_desliga_a_protecao_de_energia": true,
-    "escudo_soma_por_cima": true,
-    "dois_tetos": "vale o menor"
+  "Furtividade": {
+   "atributo": "Destreza",
+   "descricao": "Use Furtividade para esconder sua presença e mover-se com discrição, aproveitando as condições do ambiente."
   },
-  "equipamento": {
-    "fonte": "manual, capítulo Equipamento: as tabelas Catálogo de armas, Treino de arma, Armas de tiro, Armas de arremesso, Munição, Situação do Traje, a coluna Volume das tabelas Traje, Revestimento e Escudo, a tabela do Soco e as frases de Peso e de Dinheiro e acesso",
-    "armas": {
-      "Bastão": {
-        "categoria": "Porrete",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Versátil",
-          "Alcance",
-          "Rompe"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Simples"
-      },
-      "Besta": {
-        "categoria": "Balestra",
-        "mao": 2,
-        "dado": "2d8",
-        "propriedades": [
-          "Longo Alcance",
-          "Munição",
-          "Rompe"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Simples"
-      },
-      "Besta de Uma Mão": {
-        "categoria": "Balestra",
-        "mao": 1,
-        "dado": "1d10",
-        "propriedades": [
-          "Longo Alcance",
-          "Munição",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Bō": {
-        "categoria": "Porrete",
-        "mao": 2,
-        "dado": "d10",
-        "propriedades": [
-          "Alcance",
-          "Emaranha"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Simples"
-      },
-      "Canivete": {
-        "categoria": "Lâmina Curta",
-        "mao": 1,
-        "dado": "d4",
-        "propriedades": [
-          "Fineza",
-          "Oculta",
-          "Rompe"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Cassetete": {
-        "categoria": "Porrete",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Oculta",
-          "Vestida"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Chakram": {
-        "categoria": "Arremesso",
-        "mao": 1,
-        "dado": "d4",
-        "propriedades": [
-          "Longo Alcance",
-          "Fineza",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Faca": {
-        "categoria": "Lâmina Curta",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Fineza",
-          "Rompe"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Simples"
-      },
-      "Foice": {
-        "categoria": "Ceifa",
-        "mao": 2,
-        "dado": "d10",
-        "propriedades": [
-          "Emaranha",
-          "Talha"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Simples"
-      },
-      "Kama": {
-        "categoria": "Ceifa",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Par",
-          "Rompe"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Simples"
-      },
-      "Kanabō": {
-        "categoria": "Massa",
-        "mao": 2,
-        "dado": "d12",
-        "propriedades": [
-          "Talha"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Simples"
-      },
-      "Kunai": {
-        "categoria": "Arremesso",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Longo Alcance",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Kusarigama": {
-        "categoria": "Ceifa",
-        "mao": 2,
-        "dado": "d8",
-        "propriedades": [
-          "Alcance",
-          "Emaranha",
-          "Longo Alcance"
-        ],
-        "requer_forca": null,
-        "volume": 2,
-        "treino": "Simples"
-      },
-      "Maça": {
-        "categoria": "Massa",
-        "mao": 1,
-        "dado": "d8",
-        "propriedades": [
-          "Talha"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Simples"
-      },
-      "Marreta": {
-        "categoria": "Massa",
-        "mao": 2,
-        "dado": "d10",
-        "propriedades": [
-          "Rompe",
-          "Talha"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Simples"
-      },
-      "Maul": {
-        "categoria": "Massa",
-        "mao": 2,
-        "dado": "d12",
-        "propriedades": [
-          "Rompe"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Simples"
-      },
-      "Nunchaku": {
-        "categoria": "Porrete",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Par",
-          "Emaranha"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Simples"
-      },
-      "Punhal": {
-        "categoria": "Lâmina Curta",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Fineza",
-          "Longo Alcance"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Simples"
-      },
-      "Sai": {
-        "categoria": "Lâmina Curta",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Fineza",
-          "Par"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Simples"
-      },
-      "Shuriken": {
-        "categoria": "Arremesso",
-        "mao": 1,
-        "dado": "d4",
-        "propriedades": [
-          "Longo Alcance",
-          "Oculta",
-          "Par"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Soqueira": {
-        "categoria": "Manopla",
-        "mao": 1,
-        "dado": "d4",
-        "propriedades": [
-          "Vestida",
-          "Oculta",
-          "Par"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Taco": {
-        "categoria": "Massa",
-        "mao": 1,
-        "dado": "d8",
-        "propriedades": [
-          "Versátil",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Tanto": {
-        "categoria": "Lâmina Curta",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Fineza",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Tekko": {
-        "categoria": "Manopla",
-        "mao": 1,
-        "dado": "d4",
-        "propriedades": [
-          "Vestida",
-          "Par",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Tessen": {
-        "categoria": "Arremesso",
-        "mao": 1,
-        "dado": "d4",
-        "propriedades": [
-          "Longo Alcance",
-          "Oculta",
-          "Vestida"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Tonfa": {
-        "categoria": "Porrete",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Par",
-          "Vestida"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Simples"
-      },
-      "Chicote": {
-        "categoria": "Flexível",
-        "mao": 1,
-        "dado": "d4",
-        "propriedades": [
-          "Alcance",
-          "Emaranha",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Marciais"
-      },
-      "Corrente": {
-        "categoria": "Flexível",
-        "mao": 2,
-        "dado": "d8",
-        "propriedades": [
-          "Alcance",
-          "Emaranha",
-          "Rompe"
-        ],
-        "requer_forca": null,
-        "volume": 2,
-        "treino": "Marciais"
-      },
-      "Daikyū": {
-        "categoria": "Yumi",
-        "mao": 2,
-        "dado": "1d10",
-        "propriedades": [
-          "Longo Alcance"
-        ],
-        "requer_forca": null,
-        "volume": 2,
-        "treino": "Marciais"
-      },
-      "Espada Longa": {
-        "categoria": "Lâmina Longa",
-        "mao": 1,
-        "dado": "d8",
-        "propriedades": [
-          "Versátil",
-          "Rompe"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Marciais"
-      },
-      "Espadão": {
-        "categoria": "Lâmina Longa",
-        "mao": 2,
-        "dado": "d12",
-        "propriedades": [
-          "Alcance"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Marciais"
-      },
-      "Hankyū": {
-        "categoria": "Yumi",
-        "mao": 2,
-        "dado": "1d8",
-        "propriedades": [
-          "Longo Alcance",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": 2,
-        "treino": "Marciais"
-      },
-      "Katana": {
-        "categoria": "Lâmina Longa",
-        "mao": 1,
-        "dado": "d8",
-        "propriedades": [
-          "Versátil",
-          "Fineza"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Marciais"
-      },
-      "Lança": {
-        "categoria": "Armas Longas",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Alcance",
-          "Longo Alcance"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Marciais"
-      },
-      "Machadinha": {
-        "categoria": "Machado",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Longo Alcance",
-          "Rompe"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Marciais"
-      },
-      "Machado": {
-        "categoria": "Machado",
-        "mao": 1,
-        "dado": "d8",
-        "propriedades": [
-          "Rompe"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Marciais"
-      },
-      "Machado de Guerra": {
-        "categoria": "Machado",
-        "mao": 2,
-        "dado": "d12",
-        "propriedades": [
-          "Rompe",
-          "Talha",
-          "Volumosa"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Marciais"
-      },
-      "Machete": {
-        "categoria": "Lâmina Longa",
-        "mao": 1,
-        "dado": "d8",
-        "propriedades": [
-          "Rompe"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Marciais"
-      },
-      "Manriki": {
-        "categoria": "Flexível",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Emaranha",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Marciais"
-      },
-      "Naginata": {
-        "categoria": "Armas Longas",
-        "mao": 2,
-        "dado": "d10",
-        "propriedades": [
-          "Alcance",
-          "Rompe"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Marciais"
-      },
-      "Nodachi": {
-        "categoria": "Lâmina Longa",
-        "mao": 2,
-        "dado": "d12",
-        "propriedades": [
-          "Alcance",
-          "Rompe",
-          "Volumosa"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Marciais"
-      },
-      "Odachi": {
-        "categoria": "Lâmina Longa",
-        "mao": 2,
-        "dado": "d12",
-        "propriedades": [
-          "Alcance",
-          "Talha",
-          "Embainhada"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Marciais"
-      },
-      "Rapieira": {
-        "categoria": "Lâmina Longa",
-        "mao": 1,
-        "dado": "d6",
-        "propriedades": [
-          "Fineza",
-          "Talha"
-        ],
-        "requer_forca": null,
-        "volume": 1,
-        "treino": "Marciais"
-      },
-      "Wakizashi": {
-        "categoria": "Lâmina Longa",
-        "mao": 1,
-        "dado": "d8",
-        "propriedades": [
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Marciais"
-      },
-      "Yari": {
-        "categoria": "Armas Longas",
-        "mao": 2,
-        "dado": "d10",
-        "propriedades": [
-          "Alcance",
-          "Talha"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Marciais"
-      },
-      "Espingarda": {
-        "categoria": "Arma de Fogo",
-        "mao": 2,
-        "dado": "2d8",
-        "propriedades": [
-          "Longo Alcance",
-          "Munição",
-          "Rompe"
-        ],
-        "requer_forca": 1,
-        "volume": 2,
-        "treino": "Arma de Fogo"
-      },
-      "Metralhadora Pesada": {
-        "categoria": "Arma de Fogo",
-        "mao": 2,
-        "dado": "2d10",
-        "propriedades": [
-          "Longo Alcance",
-          "Munição",
-          "Rompe",
-          "Volumosa"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Arma de Fogo"
-      },
-      "Pistola": {
-        "categoria": "Arma de Fogo",
-        "mao": 1,
-        "dado": "1d10",
-        "propriedades": [
-          "Longo Alcance",
-          "Munição",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Arma de Fogo"
-      },
-      "Revólver": {
-        "categoria": "Arma de Fogo",
-        "mao": 1,
-        "dado": "1d10",
-        "propriedades": [
-          "Longo Alcance",
-          "Munição",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": "leve",
-        "treino": "Arma de Fogo"
-      },
-      "Rifle": {
-        "categoria": "Arma de Fogo",
-        "mao": 2,
-        "dado": "2d8",
-        "propriedades": [
-          "Longo Alcance",
-          "Munição",
-          "Talha"
-        ],
-        "requer_forca": 1,
-        "volume": 2,
-        "treino": "Arma de Fogo"
-      },
-      "Rifle de Precisão": {
-        "categoria": "Arma de Fogo",
-        "mao": 2,
-        "dado": "2d10",
-        "propriedades": [
-          "Longo Alcance",
-          "Munição"
-        ],
-        "requer_forca": 3,
-        "volume": 2,
-        "treino": "Arma de Fogo"
-      },
-      "Submetralhadora": {
-        "categoria": "Arma de Fogo",
-        "mao": 2,
-        "dado": "2d6",
-        "propriedades": [
-          "Longo Alcance",
-          "Munição",
-          "Par",
-          "Oculta"
-        ],
-        "requer_forca": null,
-        "volume": 2,
-        "treino": "Arma de Fogo"
-      }
-    },
-    "treino": {
-      "listas": {
-        "Simples": [
-          "Lâmina Curta",
-          "Porrete",
-          "Ceifa",
-          "Arremesso",
-          "Manopla",
-          "Massa",
-          "Balestra"
-        ],
-        "Marciais": [
-          "Lâmina Longa",
-          "Machado",
-          "Armas Longas",
-          "Flexível",
-          "Yumi"
-        ],
-        "Arma de Fogo": [
-          "Arma de Fogo"
-        ]
-      },
-      "conjurador_treina": [
-        "Arma de Fogo",
-        "Balestra"
-      ]
-    },
-    "faixa_de_projetil": {
-      "tiro": {
-        "Hankyū": [
-          24,
-          96
-        ],
-        "Daikyū": [
-          45,
-          180
-        ],
-        "Besta de Uma Mão": [
-          9,
-          36
-        ],
-        "Besta": [
-          30,
-          120
-        ],
-        "Pistola": [
-          9,
-          27
-        ],
-        "Revólver": [
-          12,
-          36
-        ],
-        "Submetralhadora": [
-          15,
-          45
-        ],
-        "Espingarda": [
-          9,
-          27
-        ],
-        "Rifle": [
-          24,
-          72
-        ],
-        "Rifle de Precisão": [
-          24,
-          72
-        ],
-        "Metralhadora Pesada": [
-          24,
-          72
-        ]
-      },
-      "arremesso": {
-        "armas": [
-          "Punhal",
-          "Machadinha",
-          "Lança",
-          "Kunai",
-          "Shuriken",
-          "Tessen",
-          "Chakram",
-          "Kusarigama"
-        ],
-        "faixa": [
-          6,
-          18
-        ]
-      }
-    },
-    "municao": {
-      "Metralhadora Pesada": 4,
-      "Rifle": 3,
-      "Submetralhadora": 3,
-      "Pistola": 2,
-      "Revólver": 2,
-      "Espingarda": 2,
-      "Rifle de Precisão": 2,
-      "Besta": 1,
-      "Besta de Uma Mão": 1
-    },
-    "soco_por_maestria": {
-      "1": "d4",
-      "2": "d6",
-      "3": "d8",
-      "4": "d10"
-    },
-    "volume": {
-      "limite": "5 + Força",
-      "leve": 0.1,
-      "de_uniforme_e_escudo": {
-        "Traje 1": "leve",
-        "Traje 2": 1,
-        "Traje 3": 2,
-        "Revestimento 1": 2,
-        "Revestimento 2": 3,
-        "Revestimento 3": 4,
-        "Broquel": "leve",
-        "Médio": 1,
-        "Torre": 2
-      },
-      "soma_dos_leves": {
-        "regra": "não arredonda: nove leves são 0,9 e dez são 1",
-        "desde": "v0.327 do sistema",
-        "no_manual_txt": "o manual.txt deste repositório é o da v0.263, e nele dez leves fazem 1 arredondando para baixo; a ficha segue o livro de hoje"
-      }
-    },
-    "situacoes_do_traje": [
-      "vão apertado",
-      "altura e beirada",
-      "escuro",
-      "superfície ruim",
-      "água e chuva",
-      "multidão",
-      "terreno instável",
-      "calor e fogo"
-    ],
-    "grau_minimo": {
-      "Revestimento 2": "Grau 3",
-      "Revestimento 3": "Grau 2"
-    }
+  "Pontaria": {
+   "atributo": "Destreza",
+   "descricao": "Use Pontaria para acertar um ponto numa tarefa de precisão, como lançar a ponta de uma corda por uma abertura ou colocar um objeto num recipiente distante."
   },
-  "patentes": {
-    "fonte": "manual, capítulo Experiência e Progressão, tabela Salário por patente",
-    "salario_por_mes": {
-      "Grau 4": 150000,
-      "Grau 3": 300000,
-      "Grau 2": 600000,
-      "Grau 1": 1200000,
-      "Especial": 2400000
-    }
+  "Prestidigitação": {
+   "atributo": "Destreza",
+   "descricao": "Use Prestidigitação para esconder um objeto pequeno na mão, trocar discretamente duas peças ou retirar algo de um bolso acessível sem chamar atenção."
   },
-  "missoes": {
-    "fonte": "manual, capítulo Experiência e Progressão, tabelas Tamanho da missão e Desconto da semana",
-    "tamanho": {
-      "curta": 50,
-      "padrão": 100,
-      "longa": 200,
-      "final de arco": 300
-    },
-    "desconto_da_semana": {
-      "1ª e 2ª": "100%",
-      "3ª": "50%",
-      "4ª": "25%",
-      "5ª": "12%",
-      "6ª": "6%"
-    }
+  "Investigação": {
+   "atributo": "Inteligência",
+   "descricao": "Use Investigação para vasculhar documentos, examinar uma cena e relacionar pistas."
   },
-  "fora_do_livro": {
-    "o_que_e": "regra que o Mizuki decidiu em 01/10/2026, desenhando a Ficha Pessoal, e que ainda não está no livro. A ficha já segue estas; quando o livro as receber, cada uma sobe para a chave do capítulo dela e sai daqui. Nada aqui é conferido contra o manual.txt.",
-    "missoes_solo": {
-      "Solo simples": 75,
-      "Solo complexa": 150
-    },
-    "xp_adicional": {
-      "1,25x": 1.25,
-      "1,50x": 1.5,
-      "2x": 2
-    },
-    "desconto": {
-      "3ª · 50%": 0.5,
-      "4ª · 25%": 0.25,
-      "5ª · 12,5%": 0.125,
-      "6ª · 6,25%": 0.0625,
-      "Falha · 50%": 0.5
-    },
-    "arredondamento_do_xp": {
-      "multiplo": 12.5,
-      "sentido": "para baixo",
-      "abaixo_do_multiplo": "a missão não paga"
-    },
-    "sem_o_requisito_de_forca": {
-      "arma": "desvantagem ao atacar com ela",
-      "uniforme_ou_escudo": "deslocamento pela metade e desvantagem nos Testes de Resistência Físicos"
-    },
-    "carga_acima_do_limite": "a mesma punição do uniforme e do escudo sem a Força, uma vez só, sem acumular"
+  "Intuição": {
+   "atributo": "Inteligência",
+   "descricao": "Use Intuição para interpretar intenções e perceber inconsistências no comportamento de alguém."
+  },
+  "Ocultismo": {
+   "atributo": "Inteligência",
+   "descricao": "Use Ocultismo para reconhecer conhecimentos de feitiçaria, símbolos, procedimentos e fenômenos que o personagem tenha condições de conhecer."
+  },
+  "Religião": {
+   "atributo": "Inteligência",
+   "descricao": "Use Religião para reconhecer tradições, símbolos, práticas religiosas e a função de um local de culto."
+  },
+  "História": {
+   "atributo": "Inteligência",
+   "descricao": "Use História para recordar acontecimentos, personagens, conflitos e costumes do passado."
+  },
+  "Hierarquia": {
+   "atributo": "Inteligência",
+   "descricao": "Use Hierarquia para reconhecer cargos, relações políticas, responsabilidades e canais de autoridade."
+  },
+  "Medicina": {
+   "atributo": "Inteligência",
+   "descricao": "Use Medicina para examinar ferimentos, sintomas e sinais do funcionamento do corpo."
+  },
+  "Sobrevivência": {
+   "atributo": "Inteligência",
+   "descricao": "Use Sobrevivência para se orientar, procurar água e abrigo, avaliar um percurso e seguir rastros acessíveis."
+  },
+  "Natureza": {
+   "atributo": "Inteligência",
+   "descricao": "Use Natureza para identificar plantas e animais, reconhecer terreno, avaliar sinais do clima e compreender fenômenos naturais."
+  },
+  "Lidar com Animais": {
+   "atributo": "Inteligência",
+   "descricao": "Use Lidar com Animais para acalmar, conduzir ou interpretar o comportamento de um animal."
+  },
+  "Tecnologia": {
+   "atributo": "Inteligência",
+   "descricao": "Use Tecnologia para compreender aparelhos e sistemas, examinar registros digitais ou diagnosticar uma falha."
+  },
+  "Sentir Energia": {
+   "atributo": "Essência",
+   "descricao": "Use Sentir Energia para procurar ou examinar sinais de energia amaldiçoada que sua capacidade de percepção alcance."
+  },
+  "Percepção": {
+   "atributo": "Essência",
+   "descricao": "Use Percepção para notar sons, cheiros, movimentos e outros sinais acessíveis aos seus sentidos."
+  },
+  "Persuasão": {
+   "atributo": "Essência",
+   "descricao": "Use Persuasão para negociar, apresentar argumentos ou obter colaboração voluntária."
+  },
+  "Enganação": {
+   "atributo": "Essência",
+   "descricao": "Use Enganação para sustentar uma mentira, blefar ou apresentar uma identidade falsa."
+  },
+  "Intimidação": {
+   "atributo": "Essência",
+   "descricao": "Use Intimidação para pressionar alguém por meio de uma ameaça que essa pessoa possa levar a sério."
+  },
+  "Atuação": {
+   "atributo": "Essência",
+   "descricao": "Use Atuação para cantar, representar, contar uma história ou conduzir uma apresentação."
+  },
+  "Provocar": {
+   "atributo": "Essência",
+   "descricao": "Use Provocar para irritar, desafiar ou fazer alguém perder a compostura."
   }
+ },
+ "oficios": {
+  "Condução": "Dirigir e manobrar veículos. Familiaridade e meios de controle continuam necessários.",
+  "Arrombamento": "Abrir fechaduras, contornar alarmes e outros dispositivos de acesso.",
+  "Herbalismo": "Preparar substâncias de origem vegetal, com ingredientes e procedimento conhecidos.",
+  "Forja": "Fabricar e manter armas e peças de metal com ferramentas adequadas.",
+  "Caligrafia": "Produzir escrita, inscrições, cópias e documentos; reproduzir um traço.",
+  "Burocracia": "Preparar relatórios, requisições e registros conforme os procedimentos de uma organização.",
+  "Entalhador": "Trabalhar madeira, pedra ou osso para produzir peças e recipientes.",
+  "Alfaiate": "Cortar, costurar, ajustar e remendar roupas e uniformes.",
+  "Culinária": "Preparar alimentos, combinar ingredientes e conservar refeições.",
+  "Instrumento": "Tocar um instrumento escolhido ao adquirir o treino.",
+  "Jogatina": "Jogar e avaliar uma partida de cartas, dados ou outro jogo conhecido."
+ },
+ "oficios_atributo": {
+  "Condução": "Destreza",
+  "Arrombamento": "Destreza",
+  "Herbalismo": "Inteligência",
+  "Forja": "Força",
+  "Caligrafia": "Destreza",
+  "Burocracia": "Inteligência",
+  "Entalhador": "Destreza",
+  "Alfaiate": "Destreza",
+  "Culinária": "Inteligência",
+  "Instrumento": "Essência",
+  "Jogatina": "Essência"
+ },
+ "caminhos": {
+  "Bastião": {
+   "vida_inicial": 12,
+   "vida_por_nivel": 7,
+   "pe_por_nivel": 4,
+   "pericias_fixas": [
+    "Atletismo",
+    "Provocar"
+   ],
+   "atributos_naturais": [
+    "Força",
+    "Constituição"
+   ],
+   "armas": "todas",
+   "troca_duas_pericias_por_arma": false
+  },
+  "Vanguarda": {
+   "vida_inicial": 8,
+   "vida_por_nivel": 5,
+   "pe_por_nivel": 5,
+   "pericias_fixas": [
+    "Acrobacia",
+    "Percepção"
+   ],
+   "atributos_naturais": [
+    "Destreza",
+    "Força"
+   ],
+   "armas": "todas",
+   "troca_duas_pericias_por_arma": false
+  },
+  "Guia": {
+   "vida_inicial": 8,
+   "vida_por_nivel": 5,
+   "pe_por_nivel": 5,
+   "pericias_fixas": [
+    "Persuasão",
+    "Medicina"
+   ],
+   "atributos_naturais": [
+    "Essência"
+   ],
+   "armas": "Arma de Fogo e Balestra",
+   "troca_duas_pericias_por_arma": true
+  },
+  "Emanador": {
+   "vida_inicial": 6,
+   "vida_por_nivel": 4,
+   "pe_por_nivel": 6,
+   "pericias_fixas": [
+    "Ocultismo",
+    "Investigação"
+   ],
+   "atributos_naturais": [
+    "Inteligência",
+    "Essência"
+   ],
+   "armas": "Arma de Fogo e Balestra",
+   "troca_duas_pericias_por_arma": true
+  },
+  "Evocador": {
+   "vida_inicial": 6,
+   "vida_por_nivel": 4,
+   "pe_por_nivel": 6,
+   "pericias_fixas": [
+    "Religião",
+    "Lidar com Animais"
+   ],
+   "atributos_naturais": [
+    "Inteligência",
+    "Essência"
+   ],
+   "armas": "Arma de Fogo e Balestra",
+   "troca_duas_pericias_por_arma": true
+  },
+  "Incursor": {
+   "vida_inicial": 6,
+   "vida_por_nivel": 4,
+   "pe_por_nivel": 6,
+   "pericias_fixas": [
+    "Acrobacia",
+    "Intuição"
+   ],
+   "atributos_naturais": [
+    "Destreza",
+    "Força"
+   ],
+   "armas": "todas",
+   "troca_duas_pericias_por_arma": false
+  }
+ },
+ "trilhas": {
+  "Muro": "Bastião",
+  "Punho": "Bastião",
+  "Combatente Amaldiçoado": "Bastião",
+  "Estocada": "Vanguarda",
+  "Batedor": "Vanguarda",
+  "Executor": "Vanguarda",
+  "Arquiteto": "Guia",
+  "Analista": "Guia",
+  "Socorrista": "Guia",
+  "Condutor Armado": "Emanador",
+  "Ressonante": "Emanador",
+  "Catalisador": "Emanador",
+  "Invocação Principal": "Evocador",
+  "Parceria": "Evocador",
+  "Múltiplas Invocações": "Evocador",
+  "Assassino": "Incursor",
+  "Pugilista": "Incursor",
+  "Malabarista": "Incursor"
+ },
+ "testes_de_resistencia": {
+  "Físico": {
+   "atributo": [
+    "Força",
+    "Destreza"
+   ],
+   "nota": "escolhido e travado na criacao"
+  },
+  "Vigor": {
+   "atributo": [
+    "Constituição"
+   ]
+  },
+  "Intelecto": {
+   "atributo": [
+    "Inteligência"
+   ]
+  },
+  "Espírito": {
+   "atributo": [
+    "Essência"
+   ]
+  },
+  "treinados_na_criacao": 2,
+  "bonus_se_treinado": "maestria"
+ },
+ "familias": {
+  "Alcance": "Aumentar distância; mover você ou um alvo",
+  "Área": "Aumentar uma área; dividir um ataque; alcançar mais alvos",
+  "Mira": "Melhorar o acerto; atravessar proteção",
+  "Controle": "Aplicar condições; criar obstáculos; limitar movimento",
+  "Auxiliares": "Dar vantagens e bônus; prejudicar rolagens",
+  "Castigo": "Acrescentar dano em situações determinadas",
+  "Tempo": "Mudar a ação, o momento ou a duração",
+  "Marca": "Preparar ataques; rastrear; recuperar recursos",
+  "Amparo": "Curar, proteger e remover condições"
+ },
+ "formas": {
+  "Projétil": {
+   "custa": null,
+   "familia": null,
+   "alcance": "Um alvo a até 18 m",
+   "resolve": "Ataque"
+  },
+  "Toque": {
+   "custa": null,
+   "familia": null,
+   "alcance": "Um alvo a até 1,5 m",
+   "resolve": "Ataque",
+   "embutido": "Restrição Corpo a Corpo embutida, devolve Media"
+  },
+  "Explosão": {
+   "custa": "Leve",
+   "familia": "Área",
+   "alcance": "Esfera de raio 3 m, num ponto a até 18 m",
+   "resolve": "TR; metade dos dados no sucesso"
+  },
+  "Aura": {
+   "custa": "Leve",
+   "familia": "Área",
+   "alcance": "Esfera de raio 3 m, centrada em você",
+   "resolve": "TR; metade dos dados no sucesso",
+   "embutido": "Restrição Corpo a Corpo embutida, devolve Media"
+  },
+  "Cone": {
+   "custa": "Leve",
+   "familia": "Área",
+   "alcance": "Cone de 4,5 m, partindo de você",
+   "resolve": "TR; metade dos dados no sucesso"
+  },
+  "Linha": {
+   "custa": "Leve",
+   "familia": "Área",
+   "alcance": "Linha de 18 m por 1,5 m, partindo de você",
+   "resolve": "TR; metade dos dados no sucesso"
+  },
+  "Cura": {
+   "custa": "Media",
+   "familia": "Amparo",
+   "nota": "Um aliado a até 9 m. O saldo vira dados de cura, até 2 × Classe em d8"
+  },
+  "Apoio": {
+   "custa": null,
+   "familia": "Amparo",
+   "nota": "Um aliado a até 9 m. Cada ponto do saldo concede 3 pontos de vida temporária"
+  },
+  "Onda": {
+   "custa": "Pesada",
+   "familia": "Amparo",
+   "nota": "Aliados numa esfera de raio 3 m centrada em você. Escolha cura ou apoio ao montar"
+  },
+  "Efeito": {
+   "custa": null,
+   "familia": null,
+   "nota": "Uma aplicação fora de combate. Usa a escala de Efeitos fora de combate, sem dano ou vida temporária"
+  }
+ },
+ "_pendente": [],
+ "melhorias": {
+  "Longe": {
+   "familia": "Alcance",
+   "peso": "Leve",
+   "efeito": "Aumenta o alcance em um degrau. Pode comprar duas vezes. Use a escada de distância da Forma. Em Cone e Linha, aumente o comprimento pela escada própria. Não aumenta o raio nem muda a origem de uma área centrada em você. Não combina com Toque, Aura ou Onda."
+  },
+  "Muito Longe": {
+   "familia": "Alcance",
+   "peso": "Media",
+   "efeito": "Aumenta o alcance em três degraus, pelas mesmas escadas e limites de Longe. Não ultrapassa o último degrau. Não combina com Toque, Aura ou Onda."
+  },
+  "Sem Ver": {
+   "familia": "Alcance",
+   "peso": "Pesada",
+   "efeito": "Permite escolher um alvo ou ponto de origem que você não enxerga, desde que saiba sua posição atual. Mantém alcance e trajetória da Forma. Não localiza criaturas nem atravessa um obstáculo sólido. Uma parede ainda pode impedir a aplicação. Não dispensa um Selo que exija usar os próprios olhos."
+  },
+  "Perseguir": {
+   "familia": "Alcance",
+   "peso": "Media",
+   "efeito": "Só se aplica a um feitiço dirigido a um alvo individual. Se um deslocamento ocorrido entre a escolha válida desse alvo e a resolução o levar para fora do alcance, a aplicação acompanha esse deslocamento e resolve em seguida. Não adia a resolução, não procura um alvo perdido e não segue teleporte. Visão exigida e trajeto aberto continuam necessários. Não amplia Toque. Em Armado, a escolha do alvo só ocorre quando o gatilho dispara."
+  },
+  "Passo": {
+   "familia": "Alcance",
+   "peso": "Leve",
+   "efeito": "Antes ou depois de resolver o feitiço, você pode se deslocar até 6 m, sem ataques de oportunidade e sem gastar outra Ação de Movimento. Escolha o momento ao usar. Terreno, limites e condições do seu movimento continuam valendo. Não concede voo, escalada nem teleporte. Ação Completa, sozinha, não impede esse deslocamento. Atrasar e Parado impedem usar Passo no turno."
+  },
+  "Empurrão": {
+   "familia": "Alcance",
+   "peso": "Leve",
+   "efeito": "Depois da resolução, escolha um alvo que tenha sido acertado ou falhado no TR e mova-o até 6 m, na direção escolhida por você. Só um alvo por conjuração, mesmo em área, Mais Um ou Rajada. Em benefício aplicado a um aliado disposto, ele aceita o movimento. O percurso precisa estar livre. Pare diante de uma parede ou de um espaço que não comporte o alvo. Não concede dano de colisão nem permite escolher um destino suspenso no ar. Quedas de uma beirada seguem as regras comuns. Se houver Puxa na mesma ficha, escolha para esse alvo qual dos dois movimentos aplicar. Eles não se somam."
+  },
+  "Troca": {
+   "familia": "Alcance",
+   "peso": "Media",
+   "efeito": "Escolha um alvo que tenha sido acertado ou falhado no TR: você e ele trocam de posição imediatamente. Só uma troca por conjuração, mesmo em área ou com vários alvos. Um alvo disposto aceita a troca. Ambos precisam caber e ter apoio nos espaços de chegada. Se um dos destinos não for possível, ninguém muda de lugar. A troca não percorre os espaços intermediários nem provoca ataques de oportunidade. Ainda exige escolher o alvo com o alcance e a visão permitidos pela ficha e não atravessa uma barreira que proíba esse transporte."
+  },
+  "Maior": {
+   "familia": "Área",
+   "peso": "Leve",
+   "efeito": "Aumenta o tamanho de uma área em um degrau. Pode comprar duas vezes. Use a escada de raio ou de comprimento da Forma. Na Linha, aumente primeiro o comprimento até 60 m. Depois a largura para 3 m e então 4,5 m. Não cria área numa Forma de alvo individual nem aumenta a distância até seu ponto de origem."
+  },
+  "Muito Maior": {
+   "familia": "Área",
+   "peso": "Pesada",
+   "efeito": "Aumenta o tamanho da área em três degraus, seguindo a mesma ordem e os mesmos limites de Maior. Não ultrapassa o último degrau nem cria área onde não existe."
+  },
+  "Escolher": {
+   "familia": "Área",
+   "peso": "Media",
+   "efeito": "Ao criar a área, escolha quais criaturas presentes ela pode atingir. As demais ficam excluídas daquela aplicação. Não muda o formato, não cria alvos adicionais nem seleciona quem você não consegue distinguir por percepção válida. Com Fica, registre as criaturas excluídas no disparo: novas criaturas não ficam protegidas automaticamente, e a lista não muda a cada entrada."
+  },
+  "Mais Um": {
+   "familia": "Área",
+   "peso": "Leve",
+   "efeito": "Acrescenta um alvo individual ao feitiço. Pode comprar duas vezes. Divida os dados disponíveis em parcelas inteiras antes de rolar, com pelo menos um dado para cada alvo que receber o efeito. Confira alcance, visão e resolução para cada um. Não duplica uma área nem substitui Junto nas Formas Cura e Apoio. Toque exige todos os alvos a até 1,5 m de você."
+  },
+  "Rajada": {
+   "familia": "Área",
+   "peso": "Leve",
+   "efeito": "Divide o feitiço em Classe + 1 tiros, cada um com ataque próprio. Só em Forma de alvo individual com ataque. Distribua os dados e indique os alvos antes de rolar. Cada tiro precisa de pelo menos um dado. Se faltarem dados, reduza o número de tiros. Você pode dirigir vários ao mesmo alvo. Todos cumprem alcance e requisitos da Forma. Não combina com resolução só por TR nem transforma uma área em várias áreas."
+  },
+  "Fica": {
+   "familia": "Área",
+   "peso": "Media",
+   "efeito": "Mantém a área na rodada da conjuração e nas cinco seguintes, com concentração, até o fim da última. A aplicação inicial resolve normalmente. Depois, entrar na área ou começar o turno nela resolve metade dos dados iniciais, para baixo, pelo ataque ou TR da ficha. Uma resolução por criatura por rodada, incluindo a inicial, mesmo se o ataque errar ou o TR evitar o dano."
+  },
+  "Salto": {
+   "familia": "Área",
+   "peso": "Media",
+   "efeito": "Uma vez por conjuração, após a resolução inicial, escolha um alvo que tenha sido acertado ou falhado no TR. Metade dos dados iniciais destinados a esse alvo, antes do crítico e arredondada para baixo, salta para outro inimigo: o mais próximo dele a até 9 m, por trajeto aberto. Escolha em caso de empate."
+  },
+  "Contorno": {
+   "familia": "Área",
+   "peso": "Leve",
+   "efeito": "Permite à área seguir um percurso aberto, dobrando esquinas e passando ao redor de cobertura. Meça alcance e extensão pelo percurso real, respeitando comprimento, largura ou raio da Forma. Ignore a proteção de uma cobertura somente quando o efeito conseguir contorná-la. Não atravessa sólido nem enche outro cômodo além dessas medidas."
+  },
+  "Precisão": {
+   "familia": "Mira",
+   "peso": "Leve",
+   "efeito": "Concede +2 no ataque ou +2 na CD do TR que resolve o feitiço, conforme a resolução da ficha. Não concede bônus a efeito inteiramente automático. Um TR de saída que use a mesma CD conserva esse valor. Não aumenta cura, dano ou testes de perícia."
+  },
+  "Certeiro": {
+   "familia": "Mira",
+   "peso": "Media",
+   "efeito": "Só em ficha com ataque. Se o resultado final errar um alvo válido, causa metade dos dados daquele ataque, para baixo, sem outros efeitos nem crítico. No acerto, aplica dano e crítico normalmente. Resolva De Novo antes de conferir o erro final. Não some uma parcela de erro a outra de acerto. Bloquear ou Aparar pode produzir esse erro final. Uma redução de dano após o acerto não o produz."
+  },
+  "Inescapável": {
+   "familia": "Mira",
+   "peso": "Media",
+   "efeito": "Só em Projétil de dano. O dano é automático, sem ataque nem TR, e não pode ser crítico. Esta é a única Melhoria da ficha. Não aceita Restrição, incluindo uma embutida na Forma. Você ainda precisa escolher alvo válido, dentro do alcance e com visão e trajeto exigidos. Não se combina com área, Controle, outras Formas, Liberação Máxima ou Técnica Máxima."
+  },
+  "De Novo": {
+   "familia": "Mira",
+   "peso": "Media",
+   "efeito": "Uma vez por cena, compartilhando esse uso entre suas fichas, depois de um ataque deste feitiço errar, repita essa rolagem de ataque, com os mesmos modificadores e o mesmo alvo. Use o novo resultado. Em Rajada, repete somente um tiro. Não obriga alguém a repetir TR nem repete o feitiço inteiro. Alvo e requisitos precisam continuar válidos."
+  },
+  "Fura": {
+   "familia": "Mira",
+   "peso": "Media",
+   "efeito": "Ao causar dano, ignore até 2 × Classe de Redução de Dano do alvo para este feitiço. Não elimina resistência, imunidade, cobertura ou pontos de vida de uma barreira. Um valor ignorado não se transforma em dano adicional."
+  },
+  "Corrói": {
+   "familia": "Mira",
+   "peso": "Pesada",
+   "efeito": "Só pode ser comprada se Mira for uma Família Livre. A resistência ao tipo de dano deste feitiço não reduz seu dano nesta aplicação. Não remove a resistência do alvo contra outras fontes e não ignora imunidade ou Redução de Dano."
+  },
+  "Sem Cobertura": {
+   "familia": "Mira",
+   "peso": "Leve",
+   "efeito": "Ignore os bônus de Cobertura Parcial contra este feitiço. Cobertura Boa mantém seus bônus; Cobertura Total continua impedindo escolher diretamente o alvo. Esta peça não concede visão nem muda a trajetória."
+  },
+  "Toca a Alma": {
+   "familia": "Mira",
+   "peso": "Leve",
+   "efeito": "Requer Classe 3 ou superior e Fundamento cuja Regra trate diretamente da alma. Troque os dados de dano do feitiço por dano de Alma e reduza sua quantidade à metade, para baixo. Aplique depois Dano na alma, inclusive suas defesas e Integridade. Não combina com Liberação Máxima. Na Técnica Máxima, conserva a redução e os requisitos."
+  },
+  "Condição": {
+   "familia": "Controle",
+   "peso": "VARIAVEL",
+   "efeito": "Escolha na montagem uma das treze condições compráveis de Condições. Pague seu nível: Leve, Média ou Pesada. Ela se aplica no acerto ou na falha do TR, dura uma rodada e termina no começo do seu próximo turno, salvo duração diferente da ficha. Só pode haver uma Pesada por feitiço.",
+   "excecao": "unica Melhoria cujo peso nao e fixo: le o nivel da condicao escolhida"
+  },
+  "Terreno": {
+   "familia": "Controle",
+   "peso": "Leve",
+   "efeito": "Requer Forma de área. Escolha ao montar: a área vira terreno difícil ou recebe obscurecimento denso, bloqueando a visão através dela, por uma rodada. O local fica fixo. Afeta quem passar por ele enquanto durar, sem TR por entrada. Não causa dano nem aplica condição. Obscurecimento não cria cobertura física nem deixa alguém Oculto automaticamente."
+  },
+  "Cerca": {
+   "familia": "Controle",
+   "peso": "Leve",
+   "efeito": "No acerto ou na falha do TR, o alvo não pode se aproximar voluntariamente de você até o fim do próximo turno dele. Você se mover até ele não o afasta. Movimento imposto continua possível. A aplicação termina assim que você lhe causar dano, inclusive o dano do feitiço que a aplicou."
+  },
+  "Desarma o Feitiço": {
+   "familia": "Controle",
+   "peso": "Media",
+   "efeito": "Escolha um efeito contínuo ou uma barreira com Classe registrada, ao alcance da Forma. Se sua Classe for igual ou maior, essa aplicação termina, sem ataque ou TR adicional. O efeito precisa ser percebido e ter acesso válido. Não é necessário atingir seu criador. Cancelar o efeito não causa dano nem aplica as outras peças ao criador."
+  },
+  "Anteparo": {
+   "familia": "Controle",
+   "peso": "Media",
+   "efeito": "Cria uma barreira fixa, num ponto válido ao alcance do feitiço, com 10 × Classe PV e duração de 1 minuto. Seus painéis de 1,5 m usam a quantidade de quadrados da Linha básica da Classe, distribuídos numa superfície vertical contínua. Cada painel compartilha um lado com outro e a altura mínima é 3 m. Registre o formato."
+  },
+  "Prende": {
+   "familia": "Controle",
+   "peso": "Media",
+   "efeito": "No acerto ou na falha do TR, o alvo não pode se deslocar voluntariamente até o fim do próximo turno dele. Ainda pode atacar, conjurar e usar outras ações. No próprio turno, pode gastar Ação Padrão, Ação Bônus ou Ação de Movimento para fazer o TR de saída registrado na ficha contra sua CD. No sucesso, a aplicação termina. Cada tentativa paga uma dessas ações."
+  },
+  "Puxa": {
+   "familia": "Controle",
+   "peso": "Media",
+   "efeito": "Requer uma área com centro definido. No disparo, cada alvo atingido ou que falhe no TR é movido até 6 m em direção ao centro. O trajeto precisa estar livre e a chegada deve comportá-lo. Pare antes de um obstáculo ou de sobrepor criaturas. Quem já chegou ao centro não é arrastado além dele."
+  },
+  "Impulso": {
+   "familia": "Auxiliares",
+   "peso": "Leve",
+   "efeito": "O alvo tem vantagem no próximo teste que fizer até o fim do próximo turno dele. O benefício termina depois desse teste, mesmo se ele falhar. Não modifica rolagens de dano."
+  },
+  "Trava": {
+   "familia": "Auxiliares",
+   "peso": "Leve",
+   "efeito": "O alvo tem desvantagem no próximo ataque que fizer. A peça termina depois dessa tentativa ou no começo do seu próximo turno, o que acontecer primeiro."
+  },
+  "Abre Ferida": {
+   "familia": "Auxiliares",
+   "peso": "Leve",
+   "efeito": "Escolha um dos quatro TRs na criação. Até o fim do próximo turno do alvo, ele sofre -2 nesse tipo de TR. A penalidade só entra depois da resolução que aplicou a peça: não reduz o próprio TR usado para resistir a este feitiço."
+  },
+  "Sobrecarga": {
+   "familia": "Auxiliares",
+   "peso": "Leve",
+   "efeito": "Até o fim do próximo turno dele, o alvo não pode usar Reação e a CD dos feitiços que conjurar diminui em 2. Não altera o bônus de ataque nem a CD de efeitos que ele já havia aplicado."
+  },
+  "Firmeza": {
+   "familia": "Auxiliares",
+   "peso": "Media",
+   "efeito": "O alvo tem vantagem no próximo TR que fizer. O benefício termina depois desse teste ou no começo do seu próximo turno, o que acontecer primeiro. Ele não substitui o TR por sucesso automático."
+  },
+  "Guarda": {
+   "familia": "Auxiliares",
+   "peso": "Media",
+   "efeito": "O alvo recebe +2 na Defesa até o fim do próximo turno dele. O bônus não altera seus TRs. A relação entre Defesa e Bloquear segue o procedimento de combate."
+  },
+  "Pressa": {
+   "familia": "Auxiliares",
+   "peso": "Media",
+   "efeito": "O alvo recebe +6 m de deslocamento e seus movimentos não provocam ataques de oportunidade até o fim do próximo turno dele. A peça não concede um movimento imediato nem ações adicionais. Terreno e condições continuam afetando o movimento disponível."
+  },
+  "Enfraquece": {
+   "familia": "Auxiliares",
+   "peso": "Media",
+   "efeito": "Até o fim do próximo turno do alvo, reduza o dano que ele causar em Xd4, sendo X metade do seu atributo da técnica, arredondada para baixo, mínimo zero."
+  },
+  "Ecoa": {
+   "familia": "Auxiliares",
+   "peso": "Media",
+   "efeito": "O próximo ataque de um aliado seu, diferente de você, contra o alvo tem vantagem. A peça termina depois dessa tentativa, mesmo se errar, ou no começo do seu próximo turno. Não beneficia TRs nem rolagens feitas apenas para resolver um dano secundário."
+  },
+  "Queima": {
+   "familia": "Castigo",
+   "peso": "Media",
+   "efeito": "Se o alvo for acertado ou falhar no TR inicial, recebe novamente metade dos dados daquela parcela inicial, arredondada para baixo, no começo do próximo turno dele. Em Rajada ou Mais Um, use somente os dados destinados àquela aplicação no alvo, nunca os dados de todos os tiros ou alvos. Use a quantidade anterior ao crítico. O dano conserva seu tipo, não exige outro ataque ou TR e não aplica as outras peças da ficha."
+  },
+  "Acúmulo": {
+   "familia": "Castigo",
+   "peso": "Media",
+   "efeito": "Mantenha uma sequência deste feitiço contra um alvo escolhido. Usá-lo em rodadas seguidas contra esse alvo dá +1d8 no segundo uso, +2d8 no terceiro e +3d8 no quarto e nos seguintes. O primeiro começa sem bônus. Um ataque que erre ainda conta como uso. Uma tentativa sem alvo válido não conta."
+  },
+  "Remate": {
+   "familia": "Castigo",
+   "peso": "Media",
+   "efeito": "Aumente em 25% o dano inicial deste uso contra uma criatura que esteja abaixo da metade da vida, conferida antes da parcela de dano. O multiplicador entra antes das defesas. Um tiro de Rajada que leve o alvo abaixo da metade pode habilitar os tiros seguintes. Queima, Fica, Salto e Estilhaço não reaplicam este multiplicador."
+  },
+  "Estilhaço": {
+   "familia": "Castigo",
+   "peso": "Leve",
+   "efeito": "Uma vez por conjuração, depois da resolução inicial, escolha um alvo que sofreu crítico ou falhou no TR por 5 ou mais. Metade dos dados iniciais destinados àquela origem, arredondada para baixo e sem os dados adicionais do crítico, atinge as outras criaturas a até 1,5 m dele, respeitando obstáculos."
+  },
+  "Quebra Coisa": {
+   "familia": "Castigo",
+   "peso": "Leve",
+   "efeito": "Dobre o dano inicial contra barreiras, objetos e estruturas que possam ser afetados pela ficha. Queima, Fica, Salto e Estilhaço não reaplicam o multiplicador. Isso não permite atingir algo sem alcance ou passagem, nem tratar uma criatura como objeto. Conte o multiplicador na montagem e mantenha as defesas do objeto que a peça não ignora."
+  },
+  "Rasga Escudo": {
+   "familia": "Castigo",
+   "peso": "Media",
+   "efeito": "O dano ignora a vida temporária e uma barreira que esteja absorvendo dano no lugar do alvo: desconte diretamente da vida. Não ignora RD, resistência, imunidade, cobertura ou uma parede que impeça o feitiço de alcançar o alvo."
+  },
+  "Sem Cura": {
+   "familia": "Castigo",
+   "peso": "Media",
+   "efeito": "O alvo não pode recuperar vida até o fim do próximo turno dele. Isso não remove vida temporária já recebida, não impede uma concessão de vida temporária e não retira condições por si só. Integridade usa seu procedimento próprio."
+  },
+  "Rápido": {
+   "familia": "Tempo",
+   "peso": "Pesada",
+   "efeito": "Use Ação Bônus no lugar da Padrão. Não combina com Reação ou Atrasar, e não substitui a Ação Completa de uma Liberação Máxima ou Técnica Máxima. O limite de conjuração no turno permanece."
+  },
+  "Reação": {
+   "familia": "Tempo",
+   "peso": "Pesada",
+   "efeito": "Conjure com sua Reação quando ocorrer um gatilho perceptível, definido na criação. Resolva depois de o gatilho terminar, salvo regra expressa que permita intervir antes. Um gatilho de sofrer dano não evita o dano que já aconteceu."
+  },
+  "Armado": {
+   "familia": "Tempo",
+   "peso": "Leve",
+   "efeito": "No seu turno, gaste a ação, o PE e os demais custos da ficha e cumpra seus requisitos de conjuração. Escolha um gatilho que você possa perceber, fora do seu próprio turno. O feitiço fica preparado até o fim da cena. Você só mantém um feitiço Armado por vez."
+  },
+  "Silencioso": {
+   "familia": "Tempo",
+   "peso": "Leve",
+   "efeito": "A conjuração dispensa gesto e palavra. O uso não revela automaticamente sua posição, e perceber o efeito não localiza sua origem. Isso não torna invisível um corpo exposto nem impede uma busca independente."
+  },
+  "Adianta": {
+   "familia": "Tempo",
+   "peso": "Media",
+   "efeito": "Se conjurar antes de qualquer inimigo ter agido na rodada, a CD deste uso aumenta em 2. Uma ação ou Reação inimiga já conta como ter agido. Apenas receber um ataque ou fazer o TR exigido por ele não conta. O benefício não modifica ataques. Com Armado ou Segura, confira a exigência também ao disparar. O bônus não fica guardado para uma rodada posterior."
+  },
+  "Segura": {
+   "familia": "Tempo",
+   "peso": "Leve",
+   "efeito": "Ao conjurar, pague os custos e adie a resolução. Dispare em qualquer momento do seu próximo turno, sem gastar outra ação, conferindo alvo, visão, alcance e obstáculos a partir da posição que ocupa então. Se não disparar até o fim desse turno, perde a aplicação, sem recuperar PE."
+  },
+  "Concentrada": {
+   "familia": "Tempo",
+   "peso": "Leve",
+   "efeito": "Amplie efeitos de estado que normalmente durariam uma rodada ou até o fim do próximo turno. Concentrada exige concentração; Duradoura usa a coluna sem concentração. Se a ficha reunir estados de categorias diferentes, todos usam o menor prazo aplicável. Escolha Concentrada ou Duradoura para a ficha, nunca as duas."
+  },
+  "Duradoura": {
+   "familia": "Tempo",
+   "peso": "Media",
+   "efeito": "Amplie efeitos de estado que normalmente durariam uma rodada ou até o fim do próximo turno. Concentrada exige concentração; Duradoura usa a coluna sem concentração. Se a ficha reunir estados de categorias diferentes, todos usam o menor prazo aplicável. Escolha Concentrada ou Duradoura para a ficha, nunca as duas."
+  },
+  "Marca": {
+   "familia": "Marca",
+   "peso": "Leve",
+   "efeito": "Até o fim do seu próximo turno, você tem vantagem no próximo ataque contra o alvo. A vantagem se encerra depois dessa tentativa, mesmo se errar. Só você a recebe. A conjuração que aplicou Marca não se beneficia dela."
+  },
+  "Alvo de Caça": {
+   "familia": "Marca",
+   "peso": "Leve",
+   "efeito": "Até o fim do seu próximo turno, cada ataque seu que acertar o alvo causa +1d4. Se a ficha que aplica a marca tiver Rápido, o dado é 1d8. O feitiço que marcou não recebe esse adicional, incluindo seus demais tiros."
+  },
+  "Rastro": {
+   "familia": "Marca",
+   "peso": "Leve",
+   "efeito": "Por 1 hora, você sabe a posição atual do alvo enquanto ele permanecer no mesmo plano. Se sair, a informação para. Volta se ele retornar dentro do prazo. Saber a posição não concede visão, passagem por obstáculos ou conhecimento do caminho até ela."
+  },
+  "Isca": {
+   "familia": "Marca",
+   "peso": "Leve",
+   "efeito": "Até o fim do próximo turno do alvo, ele tem desvantagem em ataques que não incluam você como alvo. Num ataque dirigido a várias criaturas, confira cada rolagem: apenas a dirigida a você fica sem essa penalidade. A peça não modifica um efeito resolvido só por TR."
+  },
+  "Sugar": {
+   "familia": "Marca",
+   "peso": "Media",
+   "efeito": "Depois da resolução inicial, recupere vida igual a um quarto do dano causado a criaturas, arredondado para baixo, até 5 × Classe. Some apenas as parcelas iniciais em que Sugar foi aplicado por acerto ou falha no TR. Dano parcial de Certeiro ou de um TR bem-sucedido não entra nessa soma. Depois, reúna o dano elegível de todos os alvos e tiros antes de calcular a cura. O limite pertence à conjuração inteira."
+  },
+  "Cobrança": {
+   "familia": "Marca",
+   "peso": "Media",
+   "efeito": "Escolha uma criatura que recebeu a peça. Se ela passar de vida positiva para zero ainda nesta cena, seu próximo feitiço custa metade do PE, arredondada para cima. A queda provocada pelo dano inicial que aplica Cobrança também conta. A queda consome esta marca. Recuperar vida e cair novamente não dá outro desconto."
+  },
+  "Identificar Feitiço": {
+   "familia": "Marca",
+   "peso": "Leve",
+   "efeito": "Você descobre qual foi o último feitiço conjurado pelo alvo e sua Classe. Se ele ainda não conjurou nenhum, recebe essa informação. O resultado identifica aquela aplicação. Não entrega a lista inteira de feitiços, as Famílias ou a ficha de criação."
+  },
+  "Limpa": {
+   "familia": "Amparo",
+   "peso": "Media",
+   "efeito": "Remova do aliado uma condição Leve ou Média. Escolha a condição ao resolver a ficha. Isso encerra aquela aplicação, sem impedir que uma fonte ainda ativa a aplique novamente por seu próprio procedimento."
+  },
+  "Limpa Fundo": {
+   "familia": "Amparo",
+   "peso": "Pesada",
+   "efeito": "Remova uma condição de qualquer nível. O efeito não é uma imunidade nem remove todas as condições do aliado de uma vez."
+  },
+  "Levanta": {
+   "familia": "Amparo",
+   "peso": "Pesada",
+   "efeito": "Um aliado a 0 de vida, ainda Morrendo, recupera 5 × Classe de vida, limitado à vida máxima, e pode voltar a agir mesmo abaixo do limiar normal de recuperação. Ele fica de pé se tiver apoio e não houver outro efeito que o mantenha Derrubado. A peça não encerra esse impedimento."
+  },
+  "Remenda": {
+   "familia": "Amparo",
+   "peso": "Pesada",
+   "efeito": "Recupere 5 × Classe de Integridade de um aliado, sem ultrapassar seu máximo. O mesmo alvo só pode receber Remenda uma vez por cena, independentemente de quem a use. A peça não recupera vida nem permite voltar a agir a zero de vida por si só. Consulte Estágios de Integridade para a redução das penalidades e Derrota e morte para a recuperação após chegar a zero de Integridade."
+  },
+  "Divide": {
+   "familia": "Amparo",
+   "peso": "Media",
+   "efeito": "Escolha um aliado disposto a até 9 m ao conjurar. Até o fim do próximo turno dele, ele recebe metade do dano que você receberia. Depois das suas defesas e antes de gastar suas reservas, envie metade do valor restante, arredondada para cima, ao aliado. Desconte de você somente o restante."
+  },
+  "Junto": {
+   "familia": "Amparo",
+   "peso": "Leve",
+   "efeito": "Cura ou Apoio alcança mais um aliado dentro do alcance da Forma. Pode comprar esta peça duas vezes, para acrescentar até dois aliados. Antes de resolver, distribua os dados de cura ou os pontos de vida temporária entre todos os beneficiários, em quantidades inteiras, sem ultrapassar o total da ficha."
+  },
+  "Reserva": {
+   "familia": "Amparo",
+   "peso": "Media",
+   "efeito": "Adie a cura da ficha: role os dados agora e anote o valor no aliado, em vez de recuperar vida. Na próxima vez, ainda nesta cena, em que ele passar de pelo menos metade da vida para abaixo dela, aplique a cura guardada depois de resolver o dano que provocou a queda, sem gastar ação."
+  },
+  "Efeito Próprio": {
+   "familia": null,
+   "peso": "MESTRE",
+   "efeito": "Preço: definido com o mestre, antes da sessão. Esta Melhoria cria uma capacidade que não existe no catálogo. Você pode ter um Efeito Próprio por ficha, contando no limite de Melhorias da Classe.",
+   "excecao": "fora de família: o mestre decide quanto ela custa"
+  }
+ },
+ "condicoes": {
+  "Lento": "Leve",
+  "Guarda Aberta": "Leve",
+  "Derrubado": "Leve",
+  "Agarrado": "Leve",
+  "Desarmado": "Leve",
+  "Surdo": "Leve",
+  "Calado": "Media",
+  "Enfeitiçado": "Media",
+  "Impedido": "Pesada",
+  "Cego": "Pesada",
+  "Amedrontado": "Pesada",
+  "Envenenado": "Pesada",
+  "Atordoado": "Pesada"
+ },
+ "restricoes": {
+  "Corpo a Corpo": {
+   "devolve": "Media",
+   "o_que_muda": "Projétil se torna Toque, com alcance de 1,5 m. Explosão se torna Aura, centrada em você. A Restrição já faz parte dessas duas Formas e ocupa uma das duas escolhas disponíveis."
+  },
+  "Atrasar": {
+   "devolve": "Media",
+   "o_que_muda": "A conjuração exige Ação Completa: compromete sua Ação Padrão, sua Ação Bônus e sua Ação de Movimento daquele turno. Você precisa ter esses recursos disponíveis e não pode se deslocar voluntariamente nesse turno, antes ou depois da conjuração. Sua Reação permanece disponível."
+  },
+  "Parado": {
+   "devolve": "Leve",
+   "o_que_muda": "Você não pode ter se deslocado voluntariamente no turno da conjuração, nem fazê-lo depois dela nesse turno. Conserva sua Ação Bônus. Movimento imposto por outra criatura não impede o uso nem desfaz um feitiço já resolvido."
+  },
+  "Gesto": {
+   "devolve": "Leve",
+   "o_que_muda": "A conjuração exige as duas mãos livres e fala audível. Se não puder cumprir as duas partes, não pode usar o feitiço."
+  },
+  "Carregar": {
+   "devolve": "Media",
+   "o_que_muda": "No primeiro turno, gaste Ação Padrão para iniciar a carga e pague o PE do feitiço. Você conserva Movimento e Bônus. No seu turno seguinte, use a ação de conjuração indicada na ficha para liberar o feitiço. Se não o liberar até o fim desse turno, perde a carga e o que pagou por ela."
+  },
+  "Sangra": {
+   "devolve": "Media",
+   "o_que_muda": "Ao usar o feitiço, você sofre 2 × Classe de dano que não pode ser reduzido, mesmo se errar ou os alvos resistirem. Esse custo faz parte de cada conjuração."
+  },
+  "Recuo": {
+   "devolve": "Leve ou Media",
+   "o_que_muda": "Escolha uma condição na montagem. Ao conjurar, você recebe essa condição até o fim do seu próximo turno, mesmo se o feitiço não afetar ninguém. A devolução tem a gravidade da condição escolhida. Condições Pesadas não entram."
+  },
+  "Fraqueza": {
+   "devolve": "Leve ou Media",
+   "o_que_muda": "Escolha um dos quatro TR na montagem. Depois de conjurar, você faz esse TR com desvantagem até o fim da cena. Vigor ou Intelecto devolvem Leve. Físico ou Espírito devolvem Média."
+  },
+  "Peso Morto": {
+   "devolve": "Leve",
+   "o_que_muda": "Depois de conjurar, seu deslocamento cai à metade e você sofre -1 nos TR Físicos, até o fim do seu próximo turno. Os dois efeitos pertencem à mesma Restrição. Um novo uso renova o prazo, sem acumular reduções ou penalidades iguais."
+  },
+  "Frágil": {
+   "devolve": "Leve",
+   "o_que_muda": "Se você sofrer dano antes do começo do seu próximo turno, o efeito que este feitiço mantém termina imediatamente. Só cabe em uma aplicação que deixe um efeito em andamento."
+  },
+  "Sem Volta": {
+   "devolve": "Media",
+   "o_que_muda": "Se a resolução do feitiço terminar sem acertar nem afetar nenhum alvo, você não pode conjurar no seu próximo turno, nem mesmo Classe 0. Basta um ataque acertar. Numa aplicação por TR, basta um alvo sofrer um dos efeitos."
+  },
+  "Uma Vez": {
+   "devolve": "Leve",
+   "o_que_muda": "Você pode conjurar este feitiço uma vez por cena. A tentativa consome o uso, mesmo se errar, for interrompida ou não afetar ninguém. Ampliar a Classe não cria outro uso."
+  },
+  "Condicional": {
+   "devolve": "Leve ou Media",
+   "o_que_muda": "Escreva uma condição de cena ou de alvo que precisa existir para conjurar: estar no escuro, atacar alguém marcado por você ou estar perto de água corrente, por exemplo. Registre também seus limites; “perto de água” precisa dizer qual distância e o que conta como água corrente."
+  },
+  "Aquecer": {
+   "devolve": "Leve",
+   "o_que_muda": "Você não pode usar este feitiço na primeira rodada do combate. A restrição considera a rodada do combate, não a primeira rodada em que você resolveu participar. Fora de combate, ela não impõe um atraso novo."
+  },
+  "Dívida": {
+   "devolve": "Media",
+   "o_que_muda": "Depois de conjurar, anote uma dívida de 2 × a Classe usada neste feitiço. Seu próximo feitiço nesta cena custa essa quantidade de PE a mais, mesmo que seja Classe 0. Pague a dívida junto com a conjuração seguinte e apague a anotação."
+  },
+  "Tudo ou Nada": {
+   "devolve": "Leve",
+   "o_que_muda": "Num feitiço que causa dano por TR, um alvo que passe no teste não sofre dano, em vez de sofrer metade. Os demais efeitos seguem sua própria resolução."
+  },
+  "Barulho": {
+   "devolve": "Leve",
+   "o_que_muda": "Ao conjurar, você produz um som que pode ser ouvido a até 90 m e denuncia de onde veio. Quem puder ouvi-lo identifica a origem. A Restrição não concede audição a uma criatura surda nem faz o som atravessar um bloqueio que o impeça por completo."
+  },
+  "Assinatura": {
+   "devolve": "Leve",
+   "o_que_muda": "O feitiço deixa uma marca visível por 1 hora, que permite reconhecer você como seu autor. Registre na ficha onde a marca aparece e como ela o identifica. A marca não pode ficar deliberadamente escondida na montagem."
+  },
+  "Restrição Própria": {
+   "devolve": "Leve ou Media",
+   "o_que_muda": "Escreva com o mestre uma dificuldade que as outras entradas não representem. Ela vale para o feitiço em que foi criada, ocupa uma das duas Restrições e precisa estar definida antes da sessão."
+  }
+ },
+ "fundamento": {
+  "pontos_por_feitico": "3 x Classe",
+  "custo_em_pe": "3 x Classe",
+  "ponto_nao_gasto": "vira 1d8 de dano",
+  "preco_melhoria": {
+   "Leve": "Classe / 2",
+   "Media": "Classe",
+   "Pesada": "Classe * 1.5"
+  },
+  "arredondamento": "preços para cima",
+  "desconto_familia_livre": "metade da Classe, arredondada para cima; o preço final nunca fica abaixo de 1",
+  "familias_livres": 2,
+  "familias_fechadas": 3,
+  "formas_sem_desconto": true,
+  "restricao_teto_devolucao": "2 x Classe",
+  "restricao_nunca_devolve": "Pesada",
+  "restricao_paga": "peças, incluindo a Forma; a devolução aproveitada nunca passa do gasto",
+  "restricoes_por_feitico": 2,
+  "melhorias_por_classe": {
+   "1 e 2": 2,
+   "3 e 4": 3,
+   "5 a 7": 4
+  },
+  "nivel_2": {
+   "classe": 1,
+   "feiticos_classe_0_gratis": 2,
+   "feiticos_conhecidos": 3
+  },
+  "acrescentam_dano_e_contam_no_teto": [
+   "Salto",
+   "Queima",
+   "Estilhaço"
+  ],
+  "dividem_os_dados": [
+   "Rajada",
+   "Mais Um"
+  ],
+  "teto_de_dados": "4 x Classe em d8, somando Salto, Queima, Estilhaço e o multiplicador de Remate",
+  "liberacao": "+Classe em d8; custa 3 x Classe de PE mais 50%, para cima, e Ação Completa"
+ },
+ "origens": {
+  "Latente": {
+   "em_uma_linha": "Descobriu o próprio poder fora da tradição de um clã.",
+   "criacao": "Fundamento",
+   "pericias": [
+    "Sentir Energia",
+    "Sobrevivência",
+    "Furtividade",
+    "Intuição"
+   ]
+  },
+  "Receptáculo": {
+   "em_uma_linha": "Divide o corpo com outra presença.",
+   "criacao": "Fundamento",
+   "pericias": [
+    "Sentir Energia",
+    "Ocultismo",
+    "Intuição",
+    "Religião"
+   ]
+  },
+  "Descendente": {
+   "em_uma_linha": "Pertence a uma família do meio jujutsu.",
+   "criacao": "Fundamento",
+   "pericias": [
+    "Hierarquia",
+    "História",
+    "Ocultismo",
+    "Persuasão"
+   ]
+  },
+  "Encarnado": {
+   "em_uma_linha": "Voltou a viver no corpo de outra pessoa.",
+   "criacao": "Fundamento",
+   "pericias": [
+    "História",
+    "Ocultismo",
+    "Investigação",
+    "Intimidação"
+   ]
+  },
+  "Feto": {
+   "em_uma_linha": "É uma criação que reúne natureza humana e amaldiçoada.",
+   "criacao": "Fundamento",
+   "pericias": [
+    "Ocultismo",
+    "Medicina",
+    "Sentir Energia",
+    "Natureza"
+   ]
+  },
+  "Corpo Amaldiçoado": {
+   "em_uma_linha": "É um corpo construído, com consciência própria.",
+   "criacao": "Técnica Marcial",
+   "especial": true,
+   "pericias": [
+    "Atletismo",
+    "Percepção",
+    "Ocultismo",
+    "Intimidação"
+   ]
+  },
+  "Restrição Celestial": {
+   "em_uma_linha": "Nasceu com uma troca entre corpo e energia.",
+   "criacao": "Depende do ramo escolhido",
+   "especial": true,
+   "pericias": [
+    "Sentir Energia",
+    "Tecnologia",
+    "Ocultismo",
+    "Percepção"
+   ]
+  }
+ },
+ "sub_origem": {
+  "Sem Técnica": {
+   "origens": [
+    "Latente",
+    "Receptáculo",
+    "Descendente",
+    "Encarnado",
+    "Feto"
+   ],
+   "legados": "ocupa um dos dois Legados (é o Legado narrativo Sem Técnica)",
+   "em_uma_linha": "Você não possui técnica inata. Escolha uma semente pelo procedimento de Rotas de criação — Sem Técnica."
+  }
+ },
+ "rotas_de_criacao": [
+  {
+   "origem": "Latente",
+   "rota": "Fundamento"
+  },
+  {
+   "origem": "Receptáculo",
+   "rota": "Fundamento"
+  },
+  {
+   "origem": "Descendente",
+   "rota": "Fundamento"
+  },
+  {
+   "origem": "Encarnado",
+   "rota": "Fundamento"
+  },
+  {
+   "origem": "Feto",
+   "rota": "Fundamento"
+  },
+  {
+   "origem": "Restrição Celestial · corpo pela técnica",
+   "rota": "Fundamento"
+  },
+  {
+   "origem": "Sem Técnica, com uma das cinco principais",
+   "rota": "Sem Técnica"
+  },
+  {
+   "origem": "Corpo Amaldiçoado",
+   "rota": "Técnica Marcial"
+  },
+  {
+   "origem": "Restrição Celestial · sem energia",
+   "rota": "Técnica Marcial"
+  }
+ ],
+ "legados": {
+  "Latente": {
+   "narrativo": [
+    "O Jeito Errado",
+    "O Professor Que Você Não Teve",
+    "A Testemunha"
+   ],
+   "rolagem": [
+    "Aprendi Apanhando",
+    "Instinto Bruto",
+    "Gambiarra",
+    "Desconfiado"
+   ],
+   "exceção": [
+    "Inédito",
+    "Chão Duro"
+   ]
+  },
+  "Receptáculo": {
+   "narrativo": [
+    "A Voz de Dentro",
+    "De Antes de Você",
+    "Alcunha",
+    "O Que Ele Quer"
+   ],
+   "rolagem": [
+    "Não Sou Só Eu",
+    "Costume Antigo",
+    "Tranco",
+    "Passagem"
+   ],
+   "exceção": [
+    "Máscara",
+    "Revezamento"
+   ]
+  },
+  "Descendente": {
+   "narrativo": [
+    "O Sobrenome",
+    "Armaria",
+    "Arquivo",
+    "Palavra Dada",
+    "Treino de Berço"
+   ],
+   "rolagem": [
+    "Conversa de Jantar",
+    "Etiqueta",
+    "Repetição",
+    "Biblioteca"
+   ],
+   "exceção": [
+    "Coleira",
+    "Cabo"
+   ]
+  },
+  "Encarnado": {
+   "narrativo": [
+    "O Que Ninguém Lembra",
+    "Encomenda",
+    "Quem Morava Aqui",
+    "Enterrado"
+   ],
+   "rolagem": [
+    "Corpo Emprestado",
+    "Espasmo",
+    "Já Morri",
+    "Método Velho"
+   ],
+   "exceção": [
+    "Conhecimento Antigo",
+    "Usado"
+   ]
+  },
+  "Feto": {
+   "narrativo": [
+    "Irmãos",
+    "Numeração",
+    "Guardado",
+    "Devagar",
+    "Sem Técnica"
+   ],
+   "rolagem": [
+    "Meio e Meio",
+    "Como Se Monta",
+    "Faro",
+    "Paciência"
+   ],
+   "exceção": [
+    "Sangue que Não é Sangue",
+    "Talhe"
+   ]
+  },
+  "Corpo Amaldiçoado": {
+   "narrativo": [
+    "Ninhada",
+    "Gêmeos",
+    "Inteiro",
+    "Manutenção"
+   ],
+   "rolagem": [
+    "Rodízio",
+    "Vigília",
+    "Desempate",
+    "Cabeça Trocada",
+    "Nunca os Dois",
+    "Palpite",
+    "Feito de Uma Peça",
+    "Teimosia",
+    "Peça Única",
+    "Ajuste Fino",
+    "Recarga",
+    "Fiado"
+   ],
+   "exceção": [
+    "Ferro Velho"
+   ]
+  },
+  "Restrição Celestial": {
+   "narrativo": [
+    "Nasci Assim",
+    "O Substituto",
+    "A Oferta",
+    "Descartado",
+    "Dividido",
+    "Desde Criança",
+    "Aprendi a Ver"
+   ],
+   "rolagem": [
+    "Antena",
+    "Do Meu Canto",
+    "Insônia",
+    "Li Tudo",
+    "Sentido Treinado",
+    "Couro",
+    "Ninguém Viu",
+    "No Braço"
+   ],
+   "exceção": [
+    "Peso Real",
+    "Assinado"
+   ]
+  }
+ },
+ "legados_formatos": {
+  "narrativo": [
+   "Uma pessoa, informação, relação, acesso ou característica da sua história."
+  ],
+  "rolagem": [
+   "Vantagem, repetição ou mudança específica de um teste."
+  ],
+  "exceção": [
+   "Dispensa uma exigência ou impede um efeito nomeado, com uma contrapartida."
+  ]
+ },
+ "progressao": {
+  "faixa_jogavel": [
+   2,
+   30
+  ],
+  "marcos": [
+   6,
+   10,
+   14,
+   18,
+   22,
+   26,
+   30
+  ],
+  "marco_entrega": "+1 ponto de atributo, +1 de Refino e +1 espaço de repertório",
+  "formulas": {
+   "maestria": "1 + quantos de (10,18,26) <= nivel      # manual p.192; NAO e' 'a cada 8 niveis'",
+   "espacos": "2 + (nivel // 2) + marcos_alcancados",
+   "refino": "1 + marcos_alcancados                    # so a linha de graca; o teto e 10",
+   "classe": "quantos de (1,5,9,13,17,21,26) <= nivel",
+   "classe_0": "2 + quantos de (5,11,17) <= nivel",
+   "integridade": "20 + (Essência + 5) * (nivel - 1)      # capitulo 1 do manual; o 20 + 8 morreu na v0.145"
+  },
+  "liberacao_maxima": {
+   "10": "1a",
+   "20": "2a",
+   "30": "3a"
+  },
+  "tabela_impressa": {
+   "1": {
+    "maestria": 1,
+    "espacos": 2,
+    "refino": 1,
+    "classe": 1,
+    "passiva": 1,
+    "classe0": 2,
+    "entrega": "—",
+    "xp": "—"
+   },
+   "2": {
+    "maestria": 1,
+    "espacos": 3,
+    "refino": 1,
+    "classe": 1,
+    "passiva": 1,
+    "classe0": 2,
+    "entrega": "habilidade de Caminho · habilidade de Trilha",
+    "xp": "200"
+   },
+   "3": {
+    "maestria": 1,
+    "espacos": 3,
+    "refino": 1,
+    "classe": 1,
+    "passiva": 1,
+    "classe0": 2,
+    "entrega": "—",
+    "xp": "300"
+   },
+   "4": {
+    "maestria": 1,
+    "espacos": 4,
+    "refino": 1,
+    "classe": 1,
+    "passiva": 1,
+    "classe0": 2,
+    "entrega": "—",
+    "xp": "300"
+   },
+   "5": {
+    "maestria": 1,
+    "espacos": 4,
+    "refino": 1,
+    "classe": 2,
+    "passiva": 1,
+    "classe0": 3,
+    "entrega": "—",
+    "xp": "500"
+   },
+   "6": {
+    "maestria": 1,
+    "espacos": 6,
+    "refino": 2,
+    "classe": 2,
+    "passiva": 1,
+    "classe0": 3,
+    "entrega": "marco",
+    "xp": "500"
+   },
+   "7": {
+    "maestria": 1,
+    "espacos": 6,
+    "refino": 2,
+    "classe": 2,
+    "passiva": 2,
+    "classe0": 3,
+    "entrega": "habilidade de Caminho",
+    "xp": "500"
+   },
+   "8": {
+    "maestria": 1,
+    "espacos": 7,
+    "refino": 2,
+    "classe": 2,
+    "passiva": 2,
+    "classe0": 3,
+    "entrega": "—",
+    "xp": "700"
+   },
+   "9": {
+    "maestria": 1,
+    "espacos": 7,
+    "refino": 2,
+    "classe": 3,
+    "passiva": 2,
+    "classe0": 3,
+    "entrega": "—",
+    "xp": "700"
+   },
+   "10": {
+    "maestria": 2,
+    "espacos": 9,
+    "refino": 3,
+    "classe": 3,
+    "passiva": 2,
+    "classe0": 3,
+    "entrega": "marco",
+    "xp": "700"
+   },
+   "11": {
+    "maestria": 2,
+    "espacos": 9,
+    "refino": 3,
+    "classe": 3,
+    "passiva": 2,
+    "classe0": 4,
+    "entrega": "habilidade de Trilha",
+    "xp": "900"
+   },
+   "12": {
+    "maestria": 2,
+    "espacos": 10,
+    "refino": 3,
+    "classe": 3,
+    "passiva": 2,
+    "classe0": 4,
+    "entrega": "—",
+    "xp": "900"
+   },
+   "13": {
+    "maestria": 2,
+    "espacos": 10,
+    "refino": 3,
+    "classe": 4,
+    "passiva": 3,
+    "classe0": 4,
+    "entrega": "—",
+    "xp": "900"
+   },
+   "14": {
+    "maestria": 2,
+    "espacos": 12,
+    "refino": 4,
+    "classe": 4,
+    "passiva": 3,
+    "classe0": 4,
+    "entrega": "marco",
+    "xp": "1100"
+   },
+   "15": {
+    "maestria": 2,
+    "espacos": 12,
+    "refino": 4,
+    "classe": 4,
+    "passiva": 3,
+    "classe0": 4,
+    "entrega": "habilidade de Caminho",
+    "xp": "1100"
+   },
+   "16": {
+    "maestria": 2,
+    "espacos": 13,
+    "refino": 4,
+    "classe": 4,
+    "passiva": 3,
+    "classe0": 4,
+    "entrega": "—",
+    "xp": "1100"
+   },
+   "17": {
+    "maestria": 2,
+    "espacos": 13,
+    "refino": 4,
+    "classe": 5,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "—",
+    "xp": "1300"
+   },
+   "18": {
+    "maestria": 3,
+    "espacos": 15,
+    "refino": 5,
+    "classe": 5,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "marco",
+    "xp": "1300"
+   },
+   "19": {
+    "maestria": 3,
+    "espacos": 15,
+    "refino": 5,
+    "classe": 5,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "habilidade de Trilha",
+    "xp": "1300"
+   },
+   "20": {
+    "maestria": 3,
+    "espacos": 16,
+    "refino": 5,
+    "classe": 5,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "—",
+    "xp": "1500"
+   },
+   "21": {
+    "maestria": 3,
+    "espacos": 16,
+    "refino": 5,
+    "classe": 6,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "—",
+    "xp": "1500"
+   },
+   "22": {
+    "maestria": 3,
+    "espacos": 18,
+    "refino": 6,
+    "classe": 6,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "marco",
+    "xp": "1500"
+   },
+   "23": {
+    "maestria": 3,
+    "espacos": 18,
+    "refino": 6,
+    "classe": 6,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "habilidade de Caminho",
+    "xp": "1700"
+   },
+   "24": {
+    "maestria": 3,
+    "espacos": 19,
+    "refino": 6,
+    "classe": 6,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "—",
+    "xp": "1700"
+   },
+   "25": {
+    "maestria": 3,
+    "espacos": 19,
+    "refino": 6,
+    "classe": 6,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "—",
+    "xp": "1700"
+   },
+   "26": {
+    "maestria": 4,
+    "espacos": 21,
+    "refino": 7,
+    "classe": 7,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "marco",
+    "xp": "1700"
+   },
+   "27": {
+    "maestria": 4,
+    "espacos": 21,
+    "refino": 7,
+    "classe": 7,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "habilidade de Trilha",
+    "xp": "1700"
+   },
+   "28": {
+    "maestria": 4,
+    "espacos": 22,
+    "refino": 7,
+    "classe": 7,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "—",
+    "xp": "1700"
+   },
+   "29": {
+    "maestria": 4,
+    "espacos": 22,
+    "refino": 7,
+    "classe": 7,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "—",
+    "xp": "1700"
+   },
+   "30": {
+    "maestria": 4,
+    "espacos": 24,
+    "refino": 8,
+    "classe": 7,
+    "passiva": 3,
+    "classe0": 5,
+    "entrega": "habilidade de Caminho · marco",
+    "xp": "—"
+   }
+  },
+  "xp": "nao automatizar: o jogador digita o nivel direto (decisao do Mizuki)",
+  "limiar_do_feito": {
+   "nivel": 20,
+   "regra": "Do nível 20 para o 21, é preciso também um dos feitos de Limiar do nível 20."
+  },
+  "colunas": "passiva é a Categoria de Efeito do livro",
+  "caminho_nos_niveis": [
+   2,
+   7,
+   15,
+   23,
+   30
+  ],
+  "trilha_nos_niveis": [
+   2,
+   11,
+   19,
+   27
+  ]
+ },
+ "equipamento_defesa": {
+  "fonte": "manual, capítulo Equipamento: Proteção, Trajes, Revestimentos e escudos",
+  "formula": "Defesa = 10 + Destreza permitida + proteção",
+  "uniformes": {
+   "Traje 1": {
+    "protecao": 1,
+    "teto_de_destreza": null,
+    "requer_forca": null
+   },
+   "Traje 2": {
+    "protecao": 2,
+    "teto_de_destreza": null,
+    "requer_forca": null
+   },
+   "Traje 3": {
+    "protecao": 3,
+    "teto_de_destreza": null,
+    "requer_forca": 3
+   },
+   "Revestimento 1": {
+    "protecao": 4,
+    "teto_de_destreza": 0,
+    "requer_forca": 3
+   },
+   "Revestimento 2": {
+    "protecao": 5,
+    "teto_de_destreza": 0,
+    "requer_forca": 4
+   },
+   "Revestimento 3": {
+    "protecao": 6,
+    "teto_de_destreza": 0,
+    "requer_forca": 6
+   }
+  },
+  "escudos": {
+   "Broquel": {
+    "protecao": 1,
+    "teto_de_destreza": 5,
+    "requer_forca": null
+   },
+   "Médio": {
+    "protecao": 2,
+    "teto_de_destreza": 3,
+    "requer_forca": 3
+   },
+   "Torre": {
+    "protecao": 3,
+    "teto_de_destreza": 1,
+    "requer_forca": 5
+   }
+  },
+  "uniforme_desliga_a_protecao_de_energia": true,
+  "escudo_soma_por_cima": true,
+  "dois_tetos": "vale o menor",
+  "sem_a_forca": "não pode preparar a peça nem receber sua proteção"
+ },
+ "equipamento": {
+  "fonte": "manual, capítulo Equipamento: as tabelas de armas, Treino por categoria, Munição, Trajes, Revestimentos e escudos, Preços de proteção, Equipamento restrito; Regras gerais: Carga e o dado desarmado",
+  "armas": {
+   "Bastão": {
+    "categoria": "Porrete",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Versátil",
+     "Alcance",
+     "Rompe"
+    ],
+    "requer_forca": null,
+    "volume": 1,
+    "treino": "Simples",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": null
+   },
+   "Besta": {
+    "categoria": "Balestra",
+    "mao": 2,
+    "dado": "2d8",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Munição",
+     "Rompe"
+    ],
+    "requer_forca": 3,
+    "volume": 2,
+    "treino": "Simples",
+    "preco": 80000,
+    "preco_na_criacao": 80000,
+    "longo_alcance": [
+     30,
+     120
+    ]
+   },
+   "Besta de Uma Mão": {
+    "categoria": "Balestra",
+    "mao": 1,
+    "dado": "1d10",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Munição",
+     "Oculta",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 1,
+    "treino": "Simples",
+    "preco": 50000,
+    "preco_na_criacao": 50000,
+    "longo_alcance": [
+     9,
+     36
+    ]
+   },
+   "Bō": {
+    "categoria": "Porrete",
+    "mao": 2,
+    "dado": "1d10",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Alcance",
+     "Emaranha"
+    ],
+    "requer_forca": 3,
+    "volume": 2,
+    "treino": "Simples",
+    "preco": 20000,
+    "preco_na_criacao": 20000,
+    "longo_alcance": null
+   },
+   "Canivete": {
+    "categoria": "Lâmina Curta",
+    "mao": 1,
+    "dado": "1d4",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Fineza",
+     "Oculta",
+     "Rompe",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.1,
+    "treino": "Simples",
+    "preco": 8000,
+    "preco_na_criacao": 8000,
+    "longo_alcance": null
+   },
+   "Cassetete": {
+    "categoria": "Porrete",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Oculta",
+     "Vestida",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.3,
+    "treino": "Simples",
+    "preco": 8000,
+    "preco_na_criacao": 8000,
+    "longo_alcance": null
+   },
+   "Chakram": {
+    "categoria": "Arremesso",
+    "mao": 1,
+    "dado": "1d4",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Longo Alcance",
+     "Fineza",
+     "Oculta",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.2,
+    "treino": "Simples",
+    "preco": 8000,
+    "preco_na_criacao": 8000,
+    "longo_alcance": [
+     6,
+     18
+    ]
+   },
+   "Chicote": {
+    "categoria": "Flexível",
+    "mao": 1,
+    "dado": "1d4",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Alcance",
+     "Emaranha",
+     "Oculta",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.5,
+    "treino": "Marcial",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": null
+   },
+   "Corrente": {
+    "categoria": "Flexível",
+    "mao": 2,
+    "dado": "1d8",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Alcance",
+     "Emaranha",
+     "Rompe"
+    ],
+    "requer_forca": null,
+    "volume": 2,
+    "treino": "Marcial",
+    "preco": 20000,
+    "preco_na_criacao": 20000,
+    "longo_alcance": null
+   },
+   "Daikyū": {
+    "categoria": "Yumi",
+    "mao": 2,
+    "dado": "1d10",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance"
+    ],
+    "requer_forca": null,
+    "volume": 2,
+    "treino": "Marcial",
+    "preco": 60000,
+    "preco_na_criacao": 60000,
+    "longo_alcance": [
+     45,
+     180
+    ]
+   },
+   "Espada Longa": {
+    "categoria": "Lâmina Longa",
+    "mao": 1,
+    "dado": "1d8",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Versátil",
+     "Rompe"
+    ],
+    "requer_forca": null,
+    "volume": 1,
+    "treino": "Marcial",
+    "preco": 48000,
+    "preco_na_criacao": 48000,
+    "longo_alcance": null
+   },
+   "Espadão": {
+    "categoria": "Lâmina Longa",
+    "mao": 2,
+    "dado": "1d12",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Alcance"
+    ],
+    "requer_forca": 3,
+    "volume": 2,
+    "treino": "Marcial",
+    "preco": 60000,
+    "preco_na_criacao": 60000,
+    "longo_alcance": null
+   },
+   "Espingarda": {
+    "categoria": "Arma de Fogo",
+    "mao": 2,
+    "dado": "2d8",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Munição",
+     "Rompe"
+    ],
+    "requer_forca": 1,
+    "volume": 2,
+    "treino": "Arma de Fogo",
+    "preco": 300000,
+    "preco_na_criacao": 150000,
+    "longo_alcance": [
+     9,
+     27
+    ]
+   },
+   "Faca": {
+    "categoria": "Lâmina Curta",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Fineza",
+     "Rompe",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.2,
+    "treino": "Simples",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": null
+   },
+   "Foice": {
+    "categoria": "Ceifa",
+    "mao": 2,
+    "dado": "1d10",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Emaranha",
+     "Talha"
+    ],
+    "requer_forca": 3,
+    "volume": 2,
+    "treino": "Simples",
+    "preco": 36000,
+    "preco_na_criacao": 36000,
+    "longo_alcance": null
+   },
+   "Hankyū": {
+    "categoria": "Yumi",
+    "mao": 2,
+    "dado": "1d8",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Oculta"
+    ],
+    "requer_forca": null,
+    "volume": 1,
+    "treino": "Marcial",
+    "preco": 40000,
+    "preco_na_criacao": 40000,
+    "longo_alcance": [
+     24,
+     96
+    ]
+   },
+   "Kama": {
+    "categoria": "Ceifa",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Par",
+     "Rompe"
+    ],
+    "requer_forca": null,
+    "volume": 0.5,
+    "treino": "Simples",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": null
+   },
+   "Kanabō": {
+    "categoria": "Massa",
+    "mao": 2,
+    "dado": "1d12",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Talha"
+    ],
+    "requer_forca": 3,
+    "volume": 3,
+    "treino": "Simples",
+    "preco": 36000,
+    "preco_na_criacao": 36000,
+    "longo_alcance": null
+   },
+   "Katana": {
+    "categoria": "Lâmina Longa",
+    "mao": 1,
+    "dado": "1d8",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Versátil",
+     "Fineza"
+    ],
+    "requer_forca": null,
+    "volume": 1,
+    "treino": "Marcial",
+    "preco": 48000,
+    "preco_na_criacao": 48000,
+    "longo_alcance": null
+   },
+   "Kunai": {
+    "categoria": "Arremesso",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Oculta",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.2,
+    "treino": "Simples",
+    "preco": 8000,
+    "preco_na_criacao": 8000,
+    "longo_alcance": [
+     6,
+     18
+    ]
+   },
+   "Kusarigama": {
+    "categoria": "Ceifa",
+    "mao": 2,
+    "dado": "1d8",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Alcance",
+     "Emaranha",
+     "Longo Alcance"
+    ],
+    "requer_forca": null,
+    "volume": 2,
+    "treino": "Simples",
+    "preco": 20000,
+    "preco_na_criacao": 20000,
+    "longo_alcance": [
+     6,
+     18
+    ]
+   },
+   "Lança": {
+    "categoria": "Armas Longas",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Alcance",
+     "Longo Alcance"
+    ],
+    "requer_forca": null,
+    "volume": 2,
+    "treino": "Marcial",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": [
+     6,
+     18
+    ]
+   },
+   "Machadinha": {
+    "categoria": "Machado",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Longo Alcance",
+     "Rompe"
+    ],
+    "requer_forca": null,
+    "volume": 0.5,
+    "treino": "Marcial",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": [
+     6,
+     18
+    ]
+   },
+   "Machado": {
+    "categoria": "Machado",
+    "mao": 1,
+    "dado": "1d8",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Rompe"
+    ],
+    "requer_forca": null,
+    "volume": 1,
+    "treino": "Marcial",
+    "preco": 32000,
+    "preco_na_criacao": 32000,
+    "longo_alcance": null
+   },
+   "Machado de Guerra": {
+    "categoria": "Machado",
+    "mao": 2,
+    "dado": "1d12",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Rompe",
+     "Talha",
+     "Volumosa"
+    ],
+    "requer_forca": 3,
+    "volume": 2,
+    "treino": "Marcial",
+    "preco": 60000,
+    "preco_na_criacao": 60000,
+    "longo_alcance": null
+   },
+   "Machete": {
+    "categoria": "Lâmina Longa",
+    "mao": 1,
+    "dado": "1d8",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Rompe"
+    ],
+    "requer_forca": null,
+    "volume": 0.5,
+    "treino": "Marcial",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": null
+   },
+   "Manriki": {
+    "categoria": "Flexível",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Emaranha",
+     "Oculta",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.5,
+    "treino": "Marcial",
+    "preco": 8000,
+    "preco_na_criacao": 8000,
+    "longo_alcance": null
+   },
+   "Marreta": {
+    "categoria": "Massa",
+    "mao": 2,
+    "dado": "1d10",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Rompe",
+     "Talha"
+    ],
+    "requer_forca": 3,
+    "volume": 3,
+    "treino": "Simples",
+    "preco": 36000,
+    "preco_na_criacao": 36000,
+    "longo_alcance": null
+   },
+   "Maul": {
+    "categoria": "Massa",
+    "mao": 2,
+    "dado": "1d12",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Rompe"
+    ],
+    "requer_forca": 3,
+    "volume": 3,
+    "treino": "Simples",
+    "preco": 36000,
+    "preco_na_criacao": 36000,
+    "longo_alcance": null
+   },
+   "Maça": {
+    "categoria": "Massa",
+    "mao": 1,
+    "dado": "1d8",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Talha"
+    ],
+    "requer_forca": null,
+    "volume": 1,
+    "treino": "Simples",
+    "preco": 32000,
+    "preco_na_criacao": 32000,
+    "longo_alcance": null
+   },
+   "Metralhadora Pesada": {
+    "categoria": "Arma de Fogo",
+    "mao": 2,
+    "dado": "2d10",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Munição",
+     "Rompe",
+     "Volumosa"
+    ],
+    "requer_forca": 3,
+    "volume": 4,
+    "treino": "Arma de Fogo",
+    "preco": 900000,
+    "preco_na_criacao": 450000,
+    "longo_alcance": [
+     24,
+     72
+    ]
+   },
+   "Naginata": {
+    "categoria": "Armas Longas",
+    "mao": 2,
+    "dado": "1d10",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Alcance",
+     "Rompe"
+    ],
+    "requer_forca": 3,
+    "volume": 2,
+    "treino": "Marcial",
+    "preco": 36000,
+    "preco_na_criacao": 36000,
+    "longo_alcance": null
+   },
+   "Nodachi": {
+    "categoria": "Lâmina Longa",
+    "mao": 2,
+    "dado": "1d12",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Alcance",
+     "Rompe",
+     "Volumosa"
+    ],
+    "requer_forca": 3,
+    "volume": 2,
+    "treino": "Marcial",
+    "preco": 60000,
+    "preco_na_criacao": 60000,
+    "longo_alcance": null
+   },
+   "Nunchaku": {
+    "categoria": "Porrete",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Par",
+     "Emaranha"
+    ],
+    "requer_forca": null,
+    "volume": 0.5,
+    "treino": "Simples",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": null
+   },
+   "Odachi": {
+    "categoria": "Lâmina Longa",
+    "mao": 2,
+    "dado": "1d12",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Alcance",
+     "Talha",
+     "Embainhada"
+    ],
+    "requer_forca": 3,
+    "volume": 2,
+    "treino": "Marcial",
+    "preco": 90000,
+    "preco_na_criacao": 90000,
+    "longo_alcance": null
+   },
+   "Pistola": {
+    "categoria": "Arma de Fogo",
+    "mao": 1,
+    "dado": "1d10",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Munição",
+     "Oculta",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.5,
+    "treino": "Arma de Fogo",
+    "preco": 250000,
+    "preco_na_criacao": 125000,
+    "longo_alcance": [
+     9,
+     27
+    ]
+   },
+   "Punhal": {
+    "categoria": "Lâmina Curta",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Fineza",
+     "Longo Alcance",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.3,
+    "treino": "Simples",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": [
+     6,
+     18
+    ]
+   },
+   "Rapieira": {
+    "categoria": "Lâmina Longa",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Fineza",
+     "Talha"
+    ],
+    "requer_forca": null,
+    "volume": 1,
+    "treino": "Marcial",
+    "preco": 32000,
+    "preco_na_criacao": 32000,
+    "longo_alcance": null
+   },
+   "Revólver": {
+    "categoria": "Arma de Fogo",
+    "mao": 1,
+    "dado": "1d10",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Munição",
+     "Oculta",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.5,
+    "treino": "Arma de Fogo",
+    "preco": 300000,
+    "preco_na_criacao": 150000,
+    "longo_alcance": [
+     12,
+     36
+    ]
+   },
+   "Rifle": {
+    "categoria": "Arma de Fogo",
+    "mao": 2,
+    "dado": "2d8",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Munição",
+     "Talha"
+    ],
+    "requer_forca": 1,
+    "volume": 2,
+    "treino": "Arma de Fogo",
+    "preco": 350000,
+    "preco_na_criacao": 175000,
+    "longo_alcance": [
+     24,
+     72
+    ]
+   },
+   "Rifle de Precisão": {
+    "categoria": "Arma de Fogo",
+    "mao": 2,
+    "dado": "2d10",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Munição"
+    ],
+    "requer_forca": 3,
+    "volume": 3,
+    "treino": "Arma de Fogo",
+    "preco": 600000,
+    "preco_na_criacao": 300000,
+    "longo_alcance": [
+     24,
+     72
+    ]
+   },
+   "Sai": {
+    "categoria": "Lâmina Curta",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Fineza",
+     "Par",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.5,
+    "treino": "Simples",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": null
+   },
+   "Shuriken": {
+    "categoria": "Arremesso",
+    "mao": 1,
+    "dado": "1d4",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Oculta",
+     "Par",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.1,
+    "treino": "Simples",
+    "preco": 8000,
+    "preco_na_criacao": 8000,
+    "longo_alcance": [
+     6,
+     18
+    ]
+   },
+   "Soqueira": {
+    "categoria": "Manopla",
+    "mao": 1,
+    "dado": "1d4",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Vestida",
+     "Oculta",
+     "Par",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.2,
+    "treino": "Simples",
+    "preco": 8000,
+    "preco_na_criacao": 8000,
+    "longo_alcance": null
+   },
+   "Submetralhadora": {
+    "categoria": "Arma de Fogo",
+    "mao": 2,
+    "dado": "2d6",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Longo Alcance",
+     "Munição",
+     "Par",
+     "Oculta"
+    ],
+    "requer_forca": null,
+    "volume": 2,
+    "treino": "Arma de Fogo",
+    "preco": 400000,
+    "preco_na_criacao": 200000,
+    "longo_alcance": [
+     15,
+     45
+    ]
+   },
+   "Taco": {
+    "categoria": "Massa",
+    "mao": 1,
+    "dado": "1d8",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Versátil",
+     "Discreta"
+    ],
+    "requer_forca": null,
+    "volume": 1,
+    "treino": "Simples",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": null
+   },
+   "Tanto": {
+    "categoria": "Lâmina Curta",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Fineza",
+     "Oculta",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.3,
+    "treino": "Simples",
+    "preco": 32000,
+    "preco_na_criacao": 32000,
+    "longo_alcance": null
+   },
+   "Tekko": {
+    "categoria": "Manopla",
+    "mao": 1,
+    "dado": "1d4",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Vestida",
+     "Par",
+     "Oculta",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.2,
+    "treino": "Simples",
+    "preco": 8000,
+    "preco_na_criacao": 8000,
+    "longo_alcance": null
+   },
+   "Tessen": {
+    "categoria": "Arremesso",
+    "mao": 1,
+    "dado": "1d4",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Longo Alcance",
+     "Oculta",
+     "Vestida",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.3,
+    "treino": "Simples",
+    "preco": 8000,
+    "preco_na_criacao": 8000,
+    "longo_alcance": [
+     6,
+     18
+    ]
+   },
+   "Tonfa": {
+    "categoria": "Porrete",
+    "mao": 1,
+    "dado": "1d6",
+    "tipo": "Concussão",
+    "propriedades": [
+     "Par",
+     "Vestida",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.5,
+    "treino": "Simples",
+    "preco": 16000,
+    "preco_na_criacao": 16000,
+    "longo_alcance": null
+   },
+   "Wakizashi": {
+    "categoria": "Lâmina Longa",
+    "mao": 1,
+    "dado": "1d8",
+    "tipo": "Cortante",
+    "propriedades": [
+     "Oculta",
+     "Leve"
+    ],
+    "requer_forca": null,
+    "volume": 0.5,
+    "treino": "Marcial",
+    "preco": 32000,
+    "preco_na_criacao": 32000,
+    "longo_alcance": null
+   },
+   "Yari": {
+    "categoria": "Armas Longas",
+    "mao": 2,
+    "dado": "1d10",
+    "tipo": "Perfurante",
+    "propriedades": [
+     "Alcance",
+     "Talha"
+    ],
+    "requer_forca": 3,
+    "volume": 2,
+    "treino": "Marcial",
+    "preco": 36000,
+    "preco_na_criacao": 36000,
+    "longo_alcance": null
+   }
+  },
+  "treino": {
+   "listas": {
+    "Simples": [
+     "Lâmina Curta",
+     "Porrete",
+     "Ceifa",
+     "Arremesso",
+     "Manopla",
+     "Massa",
+     "Balestra"
+    ],
+    "Marcial": [
+     "Lâmina Longa",
+     "Machado",
+     "Armas Longas",
+     "Flexível",
+     "Yumi"
+    ],
+    "Arma de Fogo": [
+     "Arma de Fogo"
+    ]
+   },
+   "conjurador_treina": [
+    "Arma de Fogo",
+    "Balestra"
+   ]
+  },
+  "faixa_de_projetil": {
+   "tiro": {
+    "Besta": [
+     30,
+     120
+    ],
+    "Besta de Uma Mão": [
+     9,
+     36
+    ],
+    "Daikyū": [
+     45,
+     180
+    ],
+    "Espingarda": [
+     9,
+     27
+    ],
+    "Hankyū": [
+     24,
+     96
+    ],
+    "Metralhadora Pesada": [
+     24,
+     72
+    ],
+    "Pistola": [
+     9,
+     27
+    ],
+    "Revólver": [
+     12,
+     36
+    ],
+    "Rifle": [
+     24,
+     72
+    ],
+    "Rifle de Precisão": [
+     24,
+     72
+    ],
+    "Submetralhadora": [
+     15,
+     45
+    ]
+   },
+   "arremesso": {
+    "armas": [
+     "Chakram",
+     "Kunai",
+     "Kusarigama",
+     "Lança",
+     "Machadinha",
+     "Punhal",
+     "Shuriken",
+     "Tessen"
+    ],
+    "faixa": [
+     6,
+     18
+    ]
+   }
+  },
+  "municao": {
+   "Pistola": 2,
+   "Revólver": 2,
+   "Espingarda": 2,
+   "Rifle": 3,
+   "Submetralhadora": 3,
+   "Rifle de Precisão": 2,
+   "Metralhadora Pesada": 4,
+   "Besta": 1,
+   "Besta de Uma Mão": 1
+  },
+  "soco_por_maestria": {
+   "1": "d4",
+   "2": "d6",
+   "3": "d8",
+   "4": "d10"
+  },
+  "volume": {
+   "limite": "5 + Força",
+   "leve": 0.1,
+   "de_uniforme_e_escudo": {
+    "Traje 1": 0.3,
+    "Traje 2": 1,
+    "Traje 3": 2,
+    "Revestimento 1": 2,
+    "Revestimento 2": 3,
+    "Revestimento 3": 4,
+    "Broquel": 0.5,
+    "Médio": 1,
+    "Torre": 2
+   },
+   "soma": "sem arredondar",
+   "acima_do_limite": "não pode se deslocar com a carga"
+  },
+  "situacoes_do_traje": [
+   "Vão apertado",
+   "Água e chuva",
+   "Altura e beirada",
+   "Multidão",
+   "Escuro",
+   "Terreno instável",
+   "Superfície ruim",
+   "Calor e fogo"
+  ],
+  "grau_minimo": {
+   "Revestimento 2": "Grau 3",
+   "Revestimento 3": "Grau 2",
+   "Arma de Fogo": "Grau 2"
+  },
+  "precos_de_protecao": {
+   "Traje 1": 30000,
+   "Traje 2": 90000,
+   "Traje 3": 270000,
+   "Revestimento 1": 150000,
+   "Revestimento 2": 450000,
+   "Revestimento 3": 1350000,
+   "Broquel": 12000,
+   "Escudo Médio": 36000,
+   "Escudo Torre": 108000
+  },
+  "sem_a_forca_da_arma": "deslocamento pela metade e não soma Destreza à Defesa enquanto empunhar a arma",
+  "sem_treino": "desvantagem nos ataques com a arma"
+ },
+ "patentes": {
+  "fonte": "manual, capítulo Progressão, Recompensas da guilda",
+  "salario_por_mes": {
+   "Grau 4": 150000,
+   "Grau 3": 300000,
+   "Grau 2": 600000,
+   "Grau 1": 1200000,
+   "Especial": 2400000
+  }
+ },
+ "missoes": {
+  "fonte": "manual, capítulo Progressão: Recompensas e custos, Experiência semanal",
+  "tamanho": {
+   "curta": 50,
+   "padrão": 100,
+   "longa": 200,
+   "final de arco": 300
+  },
+  "desconto_da_semana": {
+   "1ª e 2ª": "100%",
+   "3ª": "50%",
+   "4ª": "25%",
+   "5ª": "12,5%",
+   "6ª": "6,25%",
+   "7ª": "3,125%"
+  },
+  "seguintes": "metade da parcela anterior",
+  "falha": "metade ou nada, conforme o mestre",
+  "arredondamento": "para baixo, só no XP final; positivo e menor que 1 vira 1"
+ },
+ "fora_do_livro": {
+  "o_que_e": "regra que o Mizuki decidiu e que o livro não traz. A ficha segue estas; quando o livro as receber, cada uma sobe para a chave do capítulo dela e sai daqui. Nada aqui é conferido contra o manual.txt.",
+  "missoes_solo": {
+   "Solo simples": 75,
+   "Solo complexa": 150
+  },
+  "xp_adicional": {
+   "1,25x": 1.25,
+   "1,50x": 1.5,
+   "2x": 2
+  },
+  "xp_adicional_nota": "o livro manda aplicar 'evento de dobro ou outro ajuste anunciado' antes do arredondamento final; estes são os ajustes da guilda",
+  "vida_inicial_da_vanguarda": {
+   "valor": 8,
+   "porque": "a tabela de Características da Vanguarda no livro reconstruído só traz 'Vida por nível 5'; 8 é o da v0.331, até o livro decidir"
+  }
+ }
 }

@@ -2039,7 +2039,7 @@ menu (o + de cada par na linha da legenda, o da descrição na linha dos número
 (o aviso e a conta voltando); trocar a Origem na `FICHA` e ver a Ficha Amaldiçoada e o menu mudarem de nome, e o Domínio
 dizer que a rota não tem; e trocar de paleta, contando os cliques até a última aba terminar.*
 
-### B33 · O número da `CARTEIRA` não acompanha a versão do sistema — **respondido "A" (pôr o catálogo em dia); medido em 02/10/2026, e a hora de fazer espera ele**
+### B33 · O número da `CARTEIRA` não acompanha a versão do sistema — **FEITO em 04/10/2026: o catálogo foi posto em dia com o livro reconstruído (ver o B36)**
 
 *Em 02/10/2026, depois de montar o B32: "por sinal a versão n atualizo automatico", com a foto do carimbo da `CARTEIRA`:
 `Nº M-0258-····` e `Emitida 02.10.2026`. O livro está na v0.331.*
@@ -2224,3 +2224,59 @@ continuam verdes.
 - o **B15**, que é arrumação de arquivo desta pasta
 - o **B7** e o **B10**, que são desenho da ficha
 
+### B36 · A ficha posta em dia com o livro reconstruído — **FEITA em 04/10/2026; falta montar no Sheets**
+
+*Pedido dele em 04/10/2026, antes de mesclar a revisão do livro (a PR #2 do JJK---Project): "atualize a ficha do sistema
+pfvr, colocando o que faltava e modificando o que foi mudado (origens ainda vão ser mudadas, mas siga como estão agora)".
+O livro passou a ser a candidata editorial reconstruída (`LIVRO-COMPLETO.md`, 382 páginas), e o B33 fechou junto: o
+carimbo da `CARTEIRA` passou de `0.258` para `0.331 · 04/10`.*
+
+**De onde o livro entra agora.** *O `manual.txt` deixou de sair do PDF com `pdftotext`: o `extrair-manual.py` o tira do
+`LIVRO-COMPLETO.md`, sem as marcas de formatação, com o `#` dos títulos e as tabelas uma fileira por linha (" | " entre
+as colunas). O `manual-fonte.json` guarda o arquivo e o hash. O `livro.py` lê seção e tabela. Os dois extratores
+(`extrair_tecnica.py` e `extrair_equipamento.py`) deixaram de ler os capítulos do HD e leem o `manual.txt`, que mora aqui.
+O catálogo foi remontado do livro e é conferido por outro caminho no `conferir-catalogo.py` (reescrito: 134 checagens,
+e 14 perturbações numa cópia acendem todas).*
+
+| o que mudou no livro | o que mudou na ficha |
+|---|---|
+| seis Caminhos: entrou o **Incursor** (6 + 4 de vida, 6 PE, Acrobacia · Intuição, as treze categorias) | menu de Caminho com seis, tabela de Caminhos da DADOS escrita pelo catálogo (a vida e o PE da FICHA leem a faixa nova), o treino de arma do Incursor |
+| o Bastião treina `Atletismo` · `Provocar` | a perícia fixa marcada sozinha |
+| dezoito Trilhas, dez com nome novo | menu de Trilha; a Empunhadura do Arremate virou Arma Condutora (Condutor Armado), e o Treino de Combate (Parceria) entrou no mesmo aviso |
+| `Incapacitado` virou `Guarda Aberta` | menu de condição |
+| Passiva virou **Talento**, Classe Passiva virou **Categoria de Efeito**, Passiva Livre virou **Expressão da técnica** | os textos e rótulos da FICHA AMALDIÇOADA e do menu rápido (CP → CE); as chaves internas continuam `passivas` e `classe_passiva` |
+| a Restrição da Classe 0 não devolve mais o dado | a conta da Classe 0 |
+| Salto, Queima e **Estilhaço** acrescentam dados; o Remate conta 25% no teto de 4 × Classe | a checagem do teto do feitiço |
+| a Técnica Máxima monta com 8, 12 e 16 pontos (eram 8, 8 e 12) | a tabela da DADOS_AM, lida do livro |
+| o Toque fica em 1,5 m também na Classe 0; a Onda vai a raio 4,5 m nas Classes 6 e 7; o último degrau de distância é "visão a olho nu" | o alcance das cartas |
+| arma empunhada sem a Força: deslocamento pela metade e **sem Destreza na Defesa**; uniforme ou escudo sem a Força: **sem a proteção dele** | a FICHA PESSOAL reescreve o DESLOCAMENTO e a DEFESA da FICHA |
+| carga acima do limite: **não anda** (era a metade) | o DESLOCAMENTO vai a 0 m |
+| o Volume é decimal (Traje 1 = 0,3; Broquel = 0,5; armas de 0,1 a 4) e soma sem arredondar | a carga |
+| XP: desconto da semana até a 7ª e "metade da anterior"; arredonda para baixo **só no fim**, e o positivo menor que 1 vira 1 | o Total de cada missão (o múltiplo de 12,5 saiu do `fora_do_livro`) |
+| os Legados viraram narrativo, de rolagem e de exceção; Reencarnado virou **Encarnado** | o catálogo, como o livro está hoje (ele avisou que as Origens ainda vão mudar) |
+| as fontes de reserva temporária mudaram (Embalo, Refluxo, Proteger a Manifestação) | a A2 do `decisoes-ficha.json` |
+| os vetos de combinação (Rápido, Reação, Atrasar, Parado, Armado, Carregar) estão na tabela de Combinar peças | a A3, com sete pares |
+
+*Conferido pelos validadores da bateria, cada um posto no texto novo; os arneses de decisão, de delta, de invocação, da
+pessoal e do feitiço passam com as perturbações novas. A prova da conta da FICHA AMALDIÇOADA deixou de ser os 33
+feitiços prontos (o livro novo não tem a tabela) e passou a ser os **10 exemplos de montagem** que o livro imprime, cada
+um com a frase do resultado conferida: Fio de Arrasto, Peso nas Mãos, Corte Medido nas Classes 2, 3 e 5, o Salto de
+exemplo, a Rede de contenção, o Projétil e a Aura com Fura, e o Corte de ruptura. Os dez saem iguais na planilha e no
+`conferir_feitico.py`.*
+
+**O que fica para ele, e fica fora desta rodada:**
+
+- **A vida inicial da Vanguarda.** *A tabela de Características dela no livro reconstruído só traz "Vida por nível 5".
+  A ficha usa 8, o da v0.331, e o número mora no `fora_do_livro` do catálogo até o livro decidir. O
+  `conferir-catalogo.py` acende se o livro passar a ter o número ou se o catálogo sair do 8 sem ele.*
+- **A troca de duas perícias por arma, até duas vezes.** *O livro diz "pode trocar duas das cinco perícias por treino em
+  uma arma específica", sem dizer quantas vezes; a ficha continua com a extensão que ele confirmou em 17/09/2026 (até
+  duas trocas).*
+- **A falha e a posição da semana na mesma missão.** *O livro aplica as duas ("200 × ½ × ½"); o menu de desconto da
+  FICHA PESSOAL tem uma caixa só, então a missão que falhou fora das duas primeiras da semana pede a conta do mestre.*
+- **A ficha da invocação** (`ficha-invocacao/`) *segue o capítulo 16 da v0.251. O livro reconstruído reescreveu as
+  invocações e trocou as Trilhas do Evocador; refazê-la é uma rodada própria, e ele decidiu em 04/10/2026 que fica para outra parte do trabalho ("pode deixar a reconstrução das invocações na ficha para depois mesmo, isso irei fazer em outra parte"). O `invocacao.json` declara a pendência, e
+  o `conferir-invocacao.py` acende se a declaração sair.*
+- **A ficha .docx da Kaori** *é de 07/09 e marca Intimidação. O `conferir-kaori.py` passou a ler o quadro da Kaori no
+  livro, que vence a .docx onde os dois trazem o campo.*
+- **Montar no Sheets** *e conferir o Incursor no menu, a DEFESA com arma pesada sem a Força e a carga acima do limite.*

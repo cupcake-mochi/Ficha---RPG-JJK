@@ -713,8 +713,16 @@ else:
           velho not in MAN,
           "o manual.txt voltou a ter a mecanica morta: ele saiu de um PDF velho")
     checa("o capitulo vendorizado tem a ficha PROPRIA", novo in CAP)
-    checa("o manual.txt e o capitulo dizem a mesma ficha propria",
-          (novo in MAN) and (novo in CAP) and (velho not in CAP))
+    # 04/10/2026: o livro reconstruido reescreveu as invocacoes, e a frase da ficha propria saiu do manual.txt. A ficha
+    # da invocacao continua no capitulo 16 vendorizado, e o json tem de DECLARAR a divergencia e a pendencia; a checagem
+    # volta a exigir a concordancia se a frase reaparecer no manual.txt.
+    if novo in MAN:
+        checa("o manual.txt e o capitulo dizem a mesma ficha propria",
+              (novo in CAP) and (velho not in CAP))
+    else:
+        _lr = INV["_meta"].get("livro_reconstruido", "")
+        checa("o manual.txt e o livro reconstruido, que reescreveu as invocacoes: o json declara a divergencia e a pendencia",
+              "PENDENTE" in _lr and "04/10/2026" in _lr and "Invocação Principal" in MAN, _lr[:80])
     checa("o json declara por que o dono continua sendo o capitulo",
           "reextraido" in INV["_meta"]["por_que_nao_le_do_manual_txt"])
     checa("o json declara quem e o dono da regra",

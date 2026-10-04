@@ -146,15 +146,20 @@ console.log('\nO TREINO QUE O CAMINHO DÁ');
 {
   const caminhos = Object.keys(CAT.caminhos);
   const conj = eq.treino.conjurador_treina;
-  const man = fs.readFileSync(path.join(RAIZ, 'manual.txt'), 'utf8').split(/\s+/).join(' ');
-  const mt = man.match(/corpo a corpo\s*—\s*([\w, À-ÿ]+?)\s*—\s*treinam as treze categorias/);
-  const todas = mt[1].replace(' e ', ', ').split(', ').map((s) => s.trim());
+  // 04/10/2026: o livro reconstruído diz o treino de arma na tabela de Características de cada Caminho
+  const linhas = fs.readFileSync(path.join(RAIZ, 'manual.txt'), 'utf8').split('\n');
+  const armaDo = (cam) => {
+    const i = linhas.findIndex((l) => l === '### ' + cam);
+    const l = i < 0 ? null : linhas.slice(i, i + 40).find((x) => /^(Armas|Treino de arma|Armas treinadas) \| /.test(x));
+    return l || '';
+  };
+  const todas = caminhos.filter((c) => /treze categorias|todas as categorias/i.test(armaDo(c)));
   const conta = (cam) => Object.values(C.treinoDoCaminho_(armas, grupos, cam, caminhos, todas, conj)).filter(Boolean).length;
   const doConj = armas.filter((a) => conj.includes(a.categoria)).length + conj.length;
-  ok(`o livro dá todas as armas a ${todas.join(' e ')}`, todas.length === 2 && todas.every((c) => caminhos.includes(c)), String(todas));
+  ok(`o livro dá todas as armas a ${todas.join(', ')}`, todas.length === 3 && todas.every((c) => CAT.caminhos[c].armas === 'todas'), String(todas));
   ok(`${todas.join(' e ')}: as ${armas.length + grupos.length} caixas marcadas`, todas.every((c) => conta(c) === armas.length + grupos.length));
   const outros = caminhos.filter((c) => !todas.includes(c));
-  ok(`${outros.join(', ')}: só ${conj.join(' e ')}, ${doConj} caixas`, outros.length === 3 && outros.every((c) => conta(c) === doConj),
+  ok(`${outros.join(', ')}: só ${conj.join(' e ')}, ${doConj} caixas`, outros.length === 3 && outros.every((c) => conta(c) === doConj && /Arma(s)? de Fogo e Balestra/.test(armaDo(c))),
      outros.map((c) => c + ' ' + conta(c)).join(' · '));
   ok('sem Caminho escolhido, nenhuma caixa', conta('Escolha seu Caminho') === 0 && conta('') === 0);
 }

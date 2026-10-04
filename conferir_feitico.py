@@ -6,7 +6,20 @@ CAT = json.load(open('catalogo-projeto-m.json', encoding='utf-8'))
 DEC = json.load(open('decisoes-ficha.json', encoding='utf-8'))
 MEL, RES, FUN = CAT["melhorias"], CAT["restricoes"], CAT["fundamento"]
 FREQUENCIA = {"Uma Vez", "Condicional", "Aquecer", "Dívida"}   # manual p.124
-TETO_MELHORIAS = lambda c: 2 if c <= 2 else (3 if c <= 4 else 4)
+# 04/10/2026: o limite de Melhorias por Classe sai do catálogo (Fundamento, Quantidade de peças)
+_LIM = {}
+for _faixa, _n in FUN["melhorias_por_classe"].items():
+    _ns = [int(x) for x in __import__("re").findall(r"\d", _faixa)]
+    for _c in range(_ns[0], (_ns[1] if len(_ns) > 1 else _ns[0]) + 1):
+        _LIM[_c] = _n
+TETO_MELHORIAS = lambda c: _LIM[c]
+
+
+def _peca(m):
+    """a Melhoria pelo nome; a condição escolhida na Melhoria Condição custa o nível dela, na Família da Condição"""
+    if m in CAT["condicoes"]:
+        return {"peso": CAT["condicoes"][m], "familia": MEL["Condição"]["familia"]}
+    return MEL[m]
 
 def preco(peso, classe, livre):
     base = {"Leve": classe/2, "Media": classe, "Pesada": classe*1.5}[peso]
@@ -29,7 +42,7 @@ def conferir(f):
         erros.append(f"R3: {len(f['restricoes'])} Restricoes; o teto e 2")
     # familia fechada
     for m in f["melhorias"]:
-        fam = MEL[m]["familia"]
+        fam = _peca(m)["familia"]
         if fam in fechadas:
             erros.append(f"Familia fechada: '{m}' e de {fam}, que voce fechou")
     # regra 7
@@ -52,23 +65,26 @@ def conferir(f):
     # nota: Restricao que o Selo ja obriga nao devolve ponto
     devolvido = sum(devolucao(RES[r]["devolve"], c) for r in f["restricoes"]
                     if r not in f.get("obrigadas_pelo_selo", []))
+    # Toque e Aura já trazem o Corpo a Corpo, que devolve o valor Médio (livro reconstruído, Formas de ataque)
+    if f.get("forma") and CAT["formas"][f["forma"]].get("embutido"):
+        devolvido += devolucao(RES["Corpo a Corpo"]["devolve"], c)
     teto_dev = 2 * c                                          # regra 4
     if devolvido > teto_dev:
         devolvido = teto_dev
-    custo = sum(preco(MEL[m]["peso"], c, MEL[m]["familia"] in livres) for m in f["melhorias"])
+    custo = sum(preco(_peca(m)["peso"], c, _peca(m)["familia"] in livres) for m in f["melhorias"])
     # a Forma tambem custa ponto (manual p.110). Ela nao conta no LIMITE de Melhorias (regra 3),
     # mas conta no orcamento. Achado pela regressao contra o Domo de Gelo, p.137.
     forma = f.get("forma")
     if forma and CAT["formas"][forma].get("custa"):
         F = CAT["formas"][forma]
-        custo += preco(F["custa"], c, F["familia"] in livres)
-    # regra 1: Restricao so paga Melhoria; o excedente some, nunca vira dano
+        custo += preco(F["custa"], c, False)                   # livro reconstruído: Formas não recebem desconto de Família Livre
+    # regra 1: a Restrição paga peças, a Forma incluída; o excedente some, nunca vira dano
     pago_por_restricao = min(devolvido, custo)
     liquido = custo - pago_por_restricao
     sobra = orcamento - liquido
     if sobra < 0:
         erros.append(f"Orcamento estourado: custo liquido {liquido}, orcamento {orcamento}")
-    dados = max(0, sobra)                                     # ponto nao gasto vira 1d8
+    dados = max(0, sobra) + (c if f.get("liberacao_maxima") else 0)   # ponto nao gasto vira 1d8; a Liberação soma +Classe
     # regra 2 tem DUAS metades, e sao tetos diferentes (manual p.132 e p.137):
     #   (a) contra um alvo so: o dano para nos pontos da Classe (3 x Classe).
     #       Liberacao Maxima e a excecao, e pode chegar a 4 x Classe num alvo.
@@ -79,8 +95,9 @@ def conferir(f):
     # (b) total somando alvos e repeticoes. O manual p.135 nomeia as quatro pecas que
     # espalham dano: Salto, Rajada, Mais Um e Queima. Salto e Queima ADICIONAM metade
     # dos dados; Mais Um e Rajada DIVIDEM (a soma das partes nao cresce).
-    ESPALHA = {"Salto": 0.5, "Queima": 0.5}
-    total = dados + sum(dados * ESPALHA[m] for m in f["melhorias"] if m in ESPALHA)
+    # 04/10/2026, o livro reconstruído: Salto, Queima e Estilhaço acrescentam metade, e o Remate conta como 25% a mais
+    ESPALHA = {m: 0.5 for m in FUN["acrescentam_dano_e_contam_no_teto"]}
+    total = dados * (1.25 if "Remate" in f["melhorias"] else 1) + sum(dados // 2 for m in f["melhorias"] if m in ESPALHA)
     if total > 4 * c:
         erros.append(f"R2b: {total:g} dados somando alvos e repeticoes passa do teto de {4*c} na Classe {c}")
     return {"orcamento": orcamento, "custo_bruto": custo, "restricao_devolveu": devolvido,

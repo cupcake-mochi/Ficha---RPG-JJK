@@ -134,7 +134,7 @@ Fechar uma Família bloqueia as Formas dela junto. Quem fecha Amparo nunca vai c
 
 > A Kaori: *"As duas mãos precisam se tocar antes."*
 
-**Passiva Livre.** Uma, de graça. Não rola dado, não muda número, não faz ninguém rolar.
+**Expressão da técnica.** Uma, de graça e sem ocupar espaço: uma manifestação ligada à Descrição. Não dá vantagem, não resolve teste e não revela informação. *Era a Passiva Livre até o livro reconstruído, que também chama a Passiva de Talento e a Classe Passiva de Categoria de Efeito.*
 
 **Os feitiços.** Cada um tem um orçamento fechado:
 
@@ -283,15 +283,18 @@ Só estas quatro fazem o total crescer acima do golpe base, e são as que a regr
 
 Todos saíram do manual por script e batem com a contagem que o próprio manual declara por extenso. O arquivo `catalogo-projeto-m.json` traz todos eles em forma de dados, com a descrição de cada item.
 
-### Os cinco Caminhos
+### Os seis Caminhos
 
-| Caminho | dado | vida no nível 1 | vida por nível | PE por nível | perícias fixas | ofício fixo |
+> *Eram cinco até o livro reconstruído de 04/10/2026, que trouxe o Incursor, trocou as perícias fixas do Bastião e tirou o dado de vida. A Vanguarda não tem vida inicial na tabela dela: os 8 vêm do `fora_do_livro` do catálogo, até o livro decidir.*
+
+| Caminho | vida no nível 1 | vida por nível | PE por nível | perícias fixas | atributos naturais | armas |
 |---|---|---|---|---|---|---|
-| Bastião | d12 | 12 | 7 | 4 | Atletismo · Intimidação | Forja |
-| Vanguarda | d8 | 8 | 5 | 5 | Acrobacia · Percepção | Arrombamento |
-| Guia | d8 | 8 | 5 | 5 | Persuasão · Medicina | Herbalismo |
-| Evocador | d6 | 6 | 4 | 6 | Religião · Lidar com Animais | Entalhador |
-| Emanador | d6 | 6 | 4 | 6 | Ocultismo · Investigação | Caligrafia |
+| Bastião | 12 | 7 | 4 | Atletismo · Provocar | Força · Constituição | as treze categorias |
+| Vanguarda | 8 | 5 | 5 | Acrobacia · Percepção | Destreza · Força | as treze categorias |
+| Guia | 8 | 5 | 5 | Persuasão · Medicina | Essência | Arma de Fogo e Balestra |
+| Emanador | 6 | 4 | 6 | Ocultismo · Investigação | Inteligência · Essência | Arma de Fogo e Balestra |
+| Evocador | 6 | 4 | 6 | Religião · Lidar com Animais | Inteligência · Essência | Arma de Fogo e Balestra |
+| Incursor | 6 | 4 | 6 | Acrobacia · Intuição | Destreza · Força | as treze categorias |
 
 ### As 23 perícias, por atributo
 
@@ -303,50 +306,69 @@ Todos saíram do manual por script e batem com a contagem que o próprio manual 
 | Inteligência | Investigação · Intuição · Ocultismo · Religião · História · Hierarquia · Medicina · Sobrevivência · Natureza · Lidar com Animais · Tecnologia | 11 |
 | Essência | Sentir Energia · Percepção · Persuasão · Enganação · Intimidação · Atuação · Provocar | 7 |
 
+### Os 11 ofícios
+
+A Origem dá dois, e eles podem ser trocados por mais uma perícia livre. O atributo é o padrão da tabela do livro; a tarefa pode pedir outro.
+
+| ofício | atributo padrão |
+|---|---|
+| Condução | Destreza |
+| Arrombamento | Destreza |
+| Herbalismo | Inteligência |
+| Forja | Força |
+| Caligrafia | Destreza |
+| Burocracia | Inteligência |
+| Entalhador | Destreza |
+| Alfaiate | Destreza |
+| Culinária | Inteligência |
+| Instrumento | Essência |
+| Jogatina | Essência |
+
 ### As nove Famílias
 
 | Família | do que trata | Melhorias |
 |---|---|---|
-| Alcance | chegar longe, se mexer, mexer o inimigo de lugar | 7 |
-| Área | pegar mais de um alvo, aumentar tamanho, dividir o ataque | 8 |
-| Mira | acertar, nao errar, atravessar defesa | 8 |
-| Controle | derrubar, prender, calar, barreira, terreno | 8 |
-| Auxiliares | somar e tirar numero: vantagem, defesa, CD, deslocamento | 9 |
-| Castigo | fazer o dano render mais | 7 |
-| Tempo | acao bonus, reacao, deixar armado, conjurar escondido | 6 |
-| Marca | preparar o proximo golpe, roubar vida, rastrear | 6 |
-| Amparo | curar, limpar condicao, levantar aliado | 7 |
+| Alcance | Aumentar distância; mover você ou um alvo | 7 |
+| Área | Aumentar uma área; dividir um ataque; alcançar mais alvos | 8 |
+| Mira | Melhorar o acerto; atravessar proteção | 8 |
+| Controle | Aplicar condições; criar obstáculos; limitar movimento | 7 |
+| Auxiliares | Dar vantagens e bônus; prejudicar rolagens | 9 |
+| Castigo | Acrescentar dano em situações determinadas | 7 |
+| Tempo | Mudar a ação, o momento ou a duração | 8 |
+| Marca | Preparar ataques; rastrear; recuperar recursos | 7 |
+| Amparo | Curar, proteger e remover condições | 7 |
 
 ### As dez Formas
 
 | Forma | custa | Família | o que é |
 |---|---|---|---|
-| Projétil | nada | de todo mundo | 18 m, um alvo |
-| Toque | nada | de todo mundo | 1,5 m, um alvo |
-| Explosão | Leve | Área | esfera raio 3 m a ate 18 m |
-| Aura | Leve | Área | esfera raio 3 m centrada em voce |
-| Cone | Leve | Área | 4,5 m saindo de voce |
-| Linha | Leve | Área | 18 m por 1,5 m |
-| Cura | Media | Amparo | os dados viram cura |
-| Apoio | nada | Amparo | cada ponto que sobra vira 3 de vida temporaria |
-| Onda | Pesada | Amparo | pega todos os aliados dentro, sem dividir |
-| Efeito | nada | de todo mundo | fora de combate, sem dano |
+| Projétil | nada | de todo mundo | Um alvo a até 18 m |
+| Toque | nada | de todo mundo | Um alvo a até 1,5 m |
+| Explosão | Leve | Área | Esfera de raio 3 m, num ponto a até 18 m |
+| Aura | Leve | Área | Esfera de raio 3 m, centrada em você |
+| Cone | Leve | Área | Cone de 4,5 m, partindo de você |
+| Linha | Leve | Área | Linha de 18 m por 1,5 m, partindo de você |
+| Cura | Media | Amparo | Um aliado a até 9 m. O saldo vira dados de cura, até 2 × Classe em d8 |
+| Apoio | nada | Amparo | Um aliado a até 9 m. Cada ponto do saldo concede 3 pontos de vida temporária |
+| Onda | Pesada | Amparo | Aliados numa esfera de raio 3 m centrada em você. Escolha cura ou apoio ao montar |
+| Efeito | nada | de todo mundo | Uma aplicação fora de combate. Usa a escala de Efeitos fora de combate, sem dano ou vida temporária |
 
 ### As 13 condições, por nível
 
-> *Eram catorze até a v0.198 do sistema, quando a `Petrificado` saiu.*
+> *Eram catorze até a v0.198 do sistema, quando a `Petrificado` saiu. No livro reconstruído, a `Incapacitado` virou `Guarda Aberta`.*
 
-- **Leve** (6): Lento · Incapacitado · Derrubado · Agarrado · Desarmado · Surdo
+- **Leve** (6): Lento · Guarda Aberta · Derrubado · Agarrado · Desarmado · Surdo
 - **Media** (2): Calado · Enfeitiçado
 - **Pesada** (5): Impedido · Cego · Amedrontado · Envenenado · Atordoado
 
-### As 15 Trilhas
+### As 18 Trilhas
 
-- **Bastião**: Muro · Punho · Brasa
+- **Bastião**: Muro · Punho · Combatente Amaldiçoado
 - **Vanguarda**: Estocada · Batedor · Executor
-- **Guia**: Elo · Sutura · Perímetro
-- **Emanador**: Torrente · Explosivo · Arremate
-- **Evocador**: Servo · Matilha · Coro
+- **Guia**: Arquiteto · Analista · Socorrista
+- **Emanador**: Condutor Armado · Ressonante · Catalisador
+- **Evocador**: Invocação Principal · Parceria · Múltiplas Invocações
+- **Incursor**: Assassino · Pugilista · Malabarista
 
 ### As nove rotas de criação
 
@@ -357,7 +379,7 @@ Todos saíram do manual por script e batem com a contagem que o próprio manual 
 | Latente | Fundamento | sim |
 | Receptáculo | Fundamento | sim |
 | Descendente | Fundamento | sim |
-| Reencarnado | Fundamento | sim |
+| Encarnado | Fundamento | sim |
 | Feto | Fundamento | sim |
 | Restrição Celestial · corpo pela técnica | Fundamento | sim |
 | qualquer uma + Sem Técnica | Aptidão ou Estilo da Sombra | **não**: Estilo da Sombra esta sendo escrito |
@@ -370,39 +392,14 @@ Seis das nove rodam. As três que faltam dependem de Técnica Marcial e de Estil
 
 ### Os Legados
 
-São **85 entradas**, divididas por Origem e por formato. Cada personagem escolhe dois, e ambos da lista da própria Origem.
+São **85 entradas**, divididas por Origem e por tipo. Cada personagem escolhe dois, ambos da lista da própria Origem, e pelo menos um narrativo. *Até o livro reconstruído os tipos eram Destranca, Ajusta e Desliga.*
 
-| formato | o que faz |
+| tipo | o que oferece |
 |---|---|
-| Destranca | abre uma porta. Nunca mexe em acerto, CD ou dano. UM e' obrigatorio |
-| Ajusta | mexe num numero de uma rolagem: refaz um teste que falhou, ou da vantagem |
-| Desliga | apaga uma coisa que aconteceria com voce. Nao pede rolagem |
+| narrativo | Uma pessoa, informação, relação, acesso ou característica da sua história. |
+| rolagem | Vantagem, repetição ou mudança específica de um teste. |
+| exceção | Dispensa uma exigência ou impede um efeito nomeado, com uma contrapartida. |
 
-| Origem | Destranca | Ajusta | Desliga |
-|---|---|---|---|
-| Latente | 5 | 4 | 2 |
-| Receptáculo | 5 | 4 | 1 |
-| Descendente | 6 | 4 | 1 |
-| Reencarnado | 5 | 4 | 0 |
-| Corpo Amaldiçoado | 4 | 12 | 1 |
-| Feto | 5 | 4 | 1 |
-| Restrição Celestial | 8 | 9 | 0 |
-
-> **Este é o único catálogo grande que o manual não conta por extenso.** Perícias são "vinte e três" e condições são "treze", e por isso deu para provar que a extração ficou completa. *As Melhorias o manual de hoje não conta por extenso: o `conferir-catalogo.py` cobra que cada nome do catálogo apareça nele.* Nos Legados não existe esse número, então conferi por duas medidas independentes (as tabelas e as descrições em prosa) e elas concordam em 80 entradas. Não é a mesma garantia.
-
-> `Sem Técnica` aparece com zero: o texto dela é único e compartilhado por todas as Origens que a aceitam, e ela **não amplia a conta de Legados**. Ela ocupa uma entrada de Destranca.
-
-### As 19 Restrições
-
-Cada uma devolve `Leve` ou `Média`. **Nenhuma devolve Pesada**, porque duas Médias já batem no teto de `2 × Classe`.
-
-As quatro de frequência (`Uma Vez`, `Condicional`, `Aquecer`, `Dívida`) estão marcadas no JSON, porque a regra 7 depende delas.
-
-### Os 11 ofícios
-
-Condução · Arrombamento · Herbalismo · Forja · Caligrafia · Burocracia · Entalhador · Alfaiate · Culinária · Instrumento · Jogatina
-
-> Não existe Primeiros Socorros, e Herbalismo não cobre o mesmo. Estancar sangue no meio da missão vira cena em vez de rolagem.
 
 ---
 
@@ -449,7 +446,7 @@ A `ficha-exemplo-kaori.docx` é uma ficha de nível 2 conferida. Se a sua ficha 
 
 **Perícias treinadas (8):** Atletismo, Intuição, História, Hierarquia, Sobrevivência, Sentir Energia, Percepção, Intimidação.
 
-Atletismo e Intimidação são as duas fixas do Bastião, então elas conferem que o Caminho foi aplicado.
+Atletismo é uma das duas fixas do Bastião, e o quadro da Kaori no livro reconstruído traz `Atletismo treinado | d20 + 4`. *A outra fixa passou de Intimidação para Provocar no livro reconstruído; a .docx da Kaori é de 07/09 e ainda marca Intimidação, e o `conferir-kaori.py` lê o quadro do livro.*
 
 **Famílias:** Livres `Controle` e `Castigo`. Fechadas `Área`, `Auxiliares` e `Amparo`.
 
@@ -479,7 +476,7 @@ Ele sai em `.docx`, três páginas exatas, e monta tanto a versão em branco qua
 O layout já resolvido é referência boa para a digital:
 
 - página 1: identidade, atributos, os números, TRs, 23 perícias, ofícios
-- página 2: Regra, descrição, Famílias, Selo, Passiva Livre, os feitiços
+- página 2: Regra, descrição, Famílias, Selo, Expressão da técnica, os feitiços
 - página 3: aparência, história, traço, Legado, laços, instituição, pacto, e uma tira de referência rápida
 
 E existe um validador dono, o `conferir-ficha.py`, com seis checagens que comparam o `dados.js` contra as peças de regra. Ele não lê o `.docx` e não precisa de `python-docx`.

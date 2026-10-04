@@ -1,106 +1,99 @@
 {
  "_meta": {
-  "versao_do_livro": "v0.331",
-  "capitulo": "50-equipamento.md",
+  "versao_do_livro": "candidata editorial reconstruída, revisada em 04/10/2026 (382 páginas)",
+  "sha256_do_livro": "f51056f705ab376b1a8038ebef6431a4934ea7823a23667146fcda71f0ad7646",
+  "capitulo": "8. Equipamento",
   "o_que_e": "o texto das propriedades e das restrições de arma, que o catalogo-projeto-m.json não traz"
  },
  "propriedades": [
   {
-   "nome": "Alcance",
-   "faz": "Estica o corpo a corpo.",
-   "ver": "Alcance no corpo a corpo"
-  },
-  {
-   "nome": "Longo Alcance",
-   "faz": "A arma alcança à distância, em metros.",
-   "ver": "Faixa de projétil"
-  },
-  {
-   "nome": "Duas mãos",
-   "faz": "Ocupa as duas mãos, então não sobra mão para escudo. No catálogo ela aparece como o 2 da coluna mão.",
+   "nome": "Leve",
+   "faz": "Atende aos requisitos que peçam arma Leve. Não concede outro ataque, muda o atributo do golpe ou reduz Volume. Só as armas marcadas na tabela possuem a propriedade.",
    "ver": null
   },
   {
    "nome": "Fineza",
-   "faz": "No corpo a corpo, troca Força por Destreza no acerto e no dano.",
-   "ver": null
-  },
-  {
-   "nome": "Par",
-   "faz": "Role dois dados de dano e fique com o melhor.",
-   "ver": null
-  },
-  {
-   "nome": "Oculta",
-   "faz": "Você esconde a arma no corpo: arma com esta propriedade se esconde nas vestes ou no corpo sem precisar de teste, diferente das outras.",
+   "faz": "Em ataques corpo a corpo, pode usar Destreza no lugar de Força no acerto e no dano.",
    "ver": null
   },
   {
    "nome": "Versátil",
-   "faz": "Nas duas mãos, o dado sobe um passo: d6→d8, d8→d10, d10→d12.",
+   "faz": "Ao atacar com as duas mãos, aumenta o dado: d6 para d8, d8 para d10 ou d10 para d12.",
    "ver": null
   },
   {
-   "nome": "Munição",
-   "faz": "Recarregar custa Ação Bônus.",
-   "ver": "Munição"
-  },
-  {
-   "nome": "Rompe",
-   "faz": "Vantagem contra objeto e estrutura.",
+   "nome": "Par",
+   "faz": "Role duas vezes os dados de dano próprios da arma e use o conjunto de maior soma. Aplique os demais acréscimos uma única vez.",
    "ver": null
   },
   {
-   "nome": "Emaranha",
-   "faz": "Você pode Agarrar sem largar a arma.",
+   "nome": "Alcance",
+   "faz": "O alcance corpo a corpo da arma é 3 m. Sem essa propriedade, o alcance comum é 1,5 m.",
+   "ver": null
+  },
+  {
+   "nome": "Longo Alcance",
+   "faz": "Permite o disparo ou arremesso indicado pela arma. Use suas faixas normal e longa.",
+   "ver": null
+  },
+  {
+   "nome": "Duas mãos",
+   "faz": "Exige ambas as mãos para atacar. Aparece como 2 na coluna Mãos.",
    "ver": null
   },
   {
    "nome": "Vestida",
-   "faz": "Não ocupa a mão.",
+   "faz": "A arma equipada não ocupa a mão. O ataque ainda exige as mãos indicadas pela arma, livres de outros objetos ou tarefas.",
+   "ver": null
+  },
+  {
+   "nome": "Emaranha",
+   "faz": "Permite Agarrar com o alcance corpo a corpo da arma, mantendo teste, custo e limites da manobra. A arma e as mãos necessárias ficam ocupadas na contenção; solte o alvo antes de atacar com ela.",
+   "ver": null
+  },
+  {
+   "nome": "Rompe",
+   "faz": "Concede vantagem nos ataques contra objetos e estruturas que a arma possa danificar.",
    "ver": null
   },
   {
    "nome": "Talha",
-   "faz": "A arma é ruim de aparar: −1 no Bloquear de quem se defende dela.",
+   "faz": "Impõe −1 ao Bloquear feito contra o ataque dessa arma.",
+   "ver": null
+  },
+  {
+   "nome": "Oculta",
+   "faz": "Permite esconder a arma nas vestes ou junto ao corpo. Veja Armas escondidas.",
+   "ver": null
+  },
+  {
+   "nome": "Discreta",
+   "faz": "Tem aparência de objeto comum. Veja Armas escondidas.",
+   "ver": null
+  },
+  {
+   "nome": "Munição",
+   "faz": "Exige recarga. O procedimento, a capacidade e os suprimentos estão em Munição.",
    "ver": null
   }
  ],
  "restricoes": [
   {
    "nome": "Volumosa",
-   "faz": "Não dá para esconder, e atrapalha em espaço apertado.",
+   "faz": "Não pode ser escondida e atrapalha em espaços apertados. Se o lugar não permite manejar a arma, você não pode atacar com ela dali. Se houver passagem suficiente para se espremer, aplique as regras de passagens estreitas, sem acrescentar outra penalidade pelo mesmo aperto.",
    "ver": null
   },
   {
    "nome": "Embainhada",
-   "faz": "Não se saca sozinha: precisa de tempo, ou de outra pessoa.",
-   "ver": null
-  },
-  {
-   "nome": "Comprida",
-   "faz": "Perde no corpo a corpo colado.",
+   "faz": "Sacar sozinho exige uma Ação de Movimento inteira, mesmo que ainda tenha a manipulação gratuita. No turno de um aliado a até 1,5 m, com a arma ao alcance de ambos, ele pode sacá-la e entregá-la a você. Precisa de uma mão livre e paga uma manipulação pelos custos de Sacar e guardar. Você precisa de uma mão disponível para recebê-la, sem outro custo. Atacar ainda exige as mãos indicadas pela arma. A ajuda não concede ataque nem reutiliza uma manipulação já gasta.",
    "ver": null
   }
  ],
- "a_regra_da_secao": {
-  "Alcance no corpo a corpo": [
-   "O padrão de qualquer arma de mão é 1,5 m. As Armas Longas chegam a 3 m."
-  ],
-  "Faixa de projétil": [
-   "Faixa normal — até o Longo Alcance da arma. Ataque normal.",
-   "Faixa longa — até o segundo número da tabela. Você rola com desvantagem: joga dois d20 e fica com o pior.",
-   "Além da faixa longa, você não consegue atingir um alvo.",
-   "Colado: atacar com arma de projétil estando adjacente a um inimigo (qualquer inimigo, não só o seu alvo) também é desvantagem."
-  ],
-  "Munição": [
-   "Você recarrega quando tirar 1 ou 2 natural no ataque, ou depois de X ataques, o que vier primeiro."
-  ]
- },
+ "a_regra_da_secao": {},
  "alcance_no_corpo_a_corpo": {
   "padrao": "1,5 m",
   "o_que_chega_mais_longe": "3 m"
  },
- "soco": "O soco não tem propriedade nenhuma. O dado dele sobe com a maestria.",
- "escudo": "O escudo ocupa uma mão, soma com a sua proteção venha ela de onde vier, e ainda permite somar Destreza — se você não estiver de Revestimento —, com um teto para o quanto ela pode entrar."
+ "soco": "O dado desarmado é d4 com maestria 1, d6 com maestria 2, d8 com maestria 3 e d10 com maestria 4.",
+ "escudo": "Some a proteção de um escudo empunhado à proteção que já utiliza, respeitando o teto de Destreza dele."
 }

@@ -96,21 +96,13 @@ _ATRS = ["Força", "Destreza", "Constituição", "Inteligência", "Essência"]
 
 
 def _atributos_governa(M):
-    """a tabela ATRIBUTO / O QUE GOVERNA, do capitulo 1 -- cada linha ate o nome do proximo
-    atributo, e a ultima ate o numero de pagina que a extracao do manual deixa colado"""
-    anc = M.find("O QUE GOVERNA")
-    if anc < 0:
-        raise SystemExit("nao achei a tabela 'O QUE GOVERNA' dos atributos no manual.txt")
-    janela = M[anc:anc + 800]
-    out = []
-    for i, nome in enumerate(_ATRS):
-        prox = _ATRS[i + 1] if i + 1 < len(_ATRS) else None
-        rx = rf"{nome}\s+(.+?)\s+{prox}\s" if prox else rf"{nome}\s+([^\d]+?)\s+\d"
-        pad = re.search(rx, janela)
-        if not pad:
-            raise SystemExit(f"nao achei 'o que governa' do atributo {nome!r}")
-        out.append((nome, pad.group(1).strip()))
-    return out
+    """a frase de Criar um personagem que diz do que cada atributo participa (04/10/2026: o livro reconstruído trocou a
+    tabela ATRIBUTO / O QUE GOVERNA por esta frase)"""
+    m = re.search(r"Força participa (do .+?)\. Destreza, (da .+?)\. Constituição, (da .+?)\. Inteligência, (do .+?)\. "
+                  r"Essência, (da .+?)\.", M)
+    if not m:
+        raise SystemExit("nao achei no manual.txt a frase de que cada atributo participa ('Força participa do ...')")
+    return [(n, "participa " + g) for n, g in zip(_ATRS, m.groups())]
 
 
 # pra que serve cada perícia -- uma frase antes do exemplo (que já vem do catálogo), no molde de
@@ -170,19 +162,23 @@ def conteudo(CAT=None, M=None):
         M = " ".join(open(os.path.join(RAIZ, "manual.txt"), encoding="utf-8").read().split())
     def _maiuscula(s):
         return s[0].upper() + s[1:] if s else s
-    atributos = [(n, _maiuscula(f"{PROPOSITO_ATRIBUTO[n]} Governa: {g}")) for n, g in _atributos_governa(M)]
+    atributos = [(n, _maiuscula(f"{PROPOSITO_ATRIBUTO[n]} No livro: {g}.")) for n, g in _atributos_governa(M)]
     pericias = sorted(((n, v["atributo"], _maiuscula(f"{PROPOSITO_PERICIA[n]} Exemplo: {_limpa(v['descricao'])}"))
                        for n, v in CAT["pericias"].items()), key=lambda x: x[0])
     oficios = sorted(((n, _maiuscula(f"{PROPOSITO_OFICIO[n]} Exemplo: {_limpa(v)}"))
                       for n, v in CAT["oficios"].items()), key=lambda x: x[0])
+    # 04/10/2026: os três textos conferidos contra o livro reconstruído; cada número tem a frase dele no manual.txt
+    for fr in ("Treino acrescenta Maestria à rolagem.", "A maestria sobe nos níveis 10, 18 e 26.",
+               "Refino mede o domínio da energia amaldiçoada. Começa em 1 e tem limite 10."):
+        if fr not in M:
+            raise SystemExit(f"o GLOSSÁRIO cita uma frase que o manual.txt nao tem mais: {fr!r}")
     conceitos = [
-        ("Treino", "Ter a perícia ou o ofício marcado na ficha. O mestre põe uma CD; com Destreza 3 e "
-                   "maestria 1, uma Furtividade treinada rola d20 + 4, sem treino d20 + 3 (capítulo 2)."),
-        ("Maestria", "O bônus que mede o tempo de estrada do personagem: começa em 1 e sobe um ponto a "
-                     "cada oito níveis. Entra em toda rolagem de ataque, na CD dos seus feitiços, e no "
-                     "que você treinou (capítulo 1)."),
-        ("Refino", "O eixo de controle da ficha: é o refino que compra as suas Aptidões. Poder é quanto "
-                   "você tem — Refino é quanto você não desperdiça (capítulo 13)."),
+        ("Treino", "Ter a perícia ou o ofício marcado na ficha. Treino acrescenta a maestria à rolagem: com Destreza 3 e "
+                   "maestria 1, uma Furtividade treinada rola d20 + 4, sem treino d20 + 3 (Perícias e Ofícios)."),
+        ("Maestria", "O bônus que mede o tempo de estrada do personagem: começa em 1 e sobe nos níveis 10, 18 e 26. Entra "
+                     "na rolagem de ataque, na CD dos seus feitiços e no que você treinou (Progressão)."),
+        ("Refino", "O domínio da energia amaldiçoada: começa em 1, tem limite 10 e sobe nos marcos. Ele só entra na conta "
+                   "quando uma aptidão manda, e a escolha Refino de um marco é o que traz aptidões novas (Aptidões e Refino)."),
     ]
     return {"atributos": atributos, "pericias": pericias, "oficios": oficios, "conceitos": conceitos}
 

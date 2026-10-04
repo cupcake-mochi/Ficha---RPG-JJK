@@ -141,13 +141,14 @@ LEVE = R["leve"]
 
 def carga_do(equip, itens, vestindo, extra=0):
     v = sum(ARMAS[n]["volume"] * (q or 1) for n, q in equip) + sum(LEVE * (q or 1) for _, q in itens) + extra
-    return round(v + (UNIF[vestindo]["volume"] if vestindo in UNIF else 0), 1)
+    return round(v + (UNIF[vestindo]["volume"] if vestindo in UNIF else 0), 2)
 
 
 # O que cada propriedade faz, para a nota da arma em uso: lido do arquivo que o extrair_equipamento.py tira do livro, e
 # montado aqui de novo, sem passar pelo gerador. A ordem é a das duas tabelas do livro.
 LIVRO = json.load(open("ficha-v01/equipamento-do-livro.json", encoding="utf-8"))
-DUAS_MAOS = "Ocupa as duas mãos, então não sobra mão para escudo."
+# a frase do livro sobre a coluna Mãos não serve na ficha: o gerador corta, e aqui também
+DUAS_MAOS = next(p["faz"] for p in LIVRO["propriedades"] if p["nome"] == "Duas mãos").replace(" Aparece como 2 na coluna Mãos.", "")
 
 
 def nota_da_arma(nome, a, principal):
@@ -165,7 +166,7 @@ def nota_da_arma(nome, a, principal):
         if pr["nome"] == "Longo Alcance" and a["alcance"]:
             t += f" Nesta arma: {a['alcance']}."
         if pr["nome"] == "Munição" and a["recarga"]:
-            t += f" Nesta arma, X = {a['recarga']}."
+            t += f" Nesta arma: {a['recarga']} {'ataque' if a['recarga'] == 1 else 'ataques'} por carga."
         if pr["nome"] == "Alcance":                 # decisão dele de 01/10/2026: toda arma com a propriedade chega a 3 m
             t += " Nesta arma: 3 m."
         linhas.append(f"{pr['nome']}: {t}")
@@ -305,8 +306,10 @@ def esperado(c):
     out["salario"] = dict((p[0], p[1]) for p in R["patentes"])[grau]
     out["requisito"] = fp.T_NAO_CUMPRIDO if (falta_p or falta_s or falta_u) else "Cumprido"
     out["__equipamento"] = " + ".join(x for x in (ves if u else "", sec if escudo else "") if x)
-    meia = falta_u or (falta_s and escudo) or carga > limite
-    out["__deslocamento"] = "4,5 m" if meia else "9 m"
+    # 04/10/2026, o livro reconstruído: arma empunhada sem a Força corta o deslocamento pela metade; carga acima do limite
+    # não deixa andar. Uniforme e escudo sem a Força só perdem a proteção (a Defesa, mais abaixo)
+    meia = falta_p or (falta_s and not escudo)
+    out["__deslocamento"] = "0 m" if carga > limite else "4,5 m" if meia else "9 m"
     # a Defesa da FICHA continua a mesma conta, agora pelo espelho: 10 + Destreza (com o teto) + proteção
     return out
 
@@ -319,8 +322,9 @@ LOTES = [combos[i:i + _cabem] for i in range(0, len(combos), _cabem)]
 
 
 def total(tipo, mult, desc):
-    bruto = tipos[tipo] * (mults[mult] if mult else 1) * (descs[desc] if desc else 1)
-    return math.floor(round(bruto, 4) / R["multiplo"]) * R["multiplo"]
+    # o livro: arredonda para baixo só o XP final, e o positivo menor que 1 vira 1
+    bruto = round(tipos[tipo] * (mults[mult] if mult else 1) * (descs[desc] if desc else 1), 4)
+    return max(1, math.floor(bruto)) if bruto > 0 else 0
 
 
 for nome, c in CASOS.items():
@@ -402,7 +406,13 @@ for nome, c in CASOS.items():
     u, e = _ED["uniformes"].get(ves), (None if duas else _ED["escudos"].get(sec))
     tetos = [x["teto_de_destreza"] for x in (u, e) if x and x["teto_de_destreza"] is not None]
     prot = (u["protecao"] if u else 1) + (e["protecao"] if e else 0)       # sem uniforme, o cobrir-se do refino 1: 1/3 + 1
-    esp = 10 + min([des] + tetos) + prot
+    # 04/10/2026: a peça usada sem a Força não dá a proteção dela, e a arma empunhada sem a Força tira a Destreza
+    fc = c.get("forca", 0)
+    req = lambda x: x["requer_forca"] or 0
+    prot -= (u["protecao"] if u and req(u) > fc else 0) + (e["protecao"] if e and req(e) > fc else 0)
+    armas_em_uso = [n for n in (c.get("principal"), None if e else sec) if n in ARMAS and ARMAS[n]["categoria"] != "Escudo"]
+    sem_forca = any((0 if ARMAS[n]["forca"] == "—" else ARMAS[n]["forca"]) > fc for n in armas_em_uso)
+    esp = 10 + (0 if sem_forca else min([des] + tetos)) + prot
     lido = LIDO["caso-" + nome]["FICHA"][IDX["defesa"]].value
     checa(f"{nome}: {ves}, {sec if e else 'sem escudo'}, Destreza {des}: Defesa {esp}", lido == esp, f"a ficha diz {lido}")
 
@@ -439,13 +449,14 @@ for n, lote in enumerate(LOTES):
     if not (xp_ficha == xp_painel == soma):
         soma_ok = False
         errados.append(f"lote {n}: XP da FICHA {xp_ficha}, do painel {xp_painel}, a regra {soma}")
-checa(f"as {len(combos)} combinações de tipo, adicional e desconto dão o Total da regra (múltiplo de "
-      f"{num(R['multiplo'])}, para baixo)", not errados, " · ".join(errados[:6]))
+checa(f"as {len(combos)} combinações de tipo, adicional e desconto dão o Total da regra (para baixo no fim, e no mínimo 1)",
+      not errados, " · ".join(errados[:6]))
 checa("o XP total do painel e o XP da FICHA são a soma da coluna Total das quatro tabelas, as duas da extensão inclusive",
       soma_ok and len(combos) > 2 * por_bloco, f"{len(combos)} missões para {por_bloco} linhas por tabela")
-checa("a conta exata de 12,5 ainda paga, e menos que isso não paga",
-      total("Padrão", None, "5ª · 12,5%") == 12.5 and total("Padrão", None, "6ª · 6,25%") == 0
-      and total("Curta", None, "4ª · 25%") == 12.5 and total("Longa", None, "6ª · 6,25%") == 12.5)
+# os exemplos do livro: "Uma quinta missão longa paga 200 ÷ 8 = 25 XP, e não 24", e a coluna da missão padrão da tabela
+checa("os exemplos do livro: a quinta longa paga 25, a padrão paga 12 na quinta e 6 na sexta, e o positivo pequeno paga 1",
+      total("Longa", None, "5ª · 12,5%") == 25 and total("Padrão", None, "5ª · 12,5%") == 12 and total("Padrão", None, "6ª · 6,25%") == 6
+      and total("Padrão", None, "7ª · 3,125%") == 3 and total("Curta", None, "7ª · 3,125%") == 1)
 
 print("\nO QUE FALTA PARA O PRÓXIMO NÍVEL")
 for nome, c in CASOS.items():

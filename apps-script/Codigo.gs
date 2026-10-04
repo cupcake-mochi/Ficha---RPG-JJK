@@ -129,7 +129,7 @@ function notasDeRegra_(ss, idx) {
     'iniciativa': 'Iniciativa = d20 + Destreza. Quem tirar mais age primeiro. O Buff/Debuff do lado ' +
                   'soma por cima.',
     'maestria': 'Vira 2 no nível 10, 3 no 18, 4 no 26. Não é "a cada oito níveis".',
-    'cd de feitiço': 'CD de feitiço = 8 + o atributo da sua técnica + maestria. ' +
+    'cd de feitiço': 'CD de feitiço = 8 + atributo da técnica + Maestria. ' +
                      'O atributo é o que você escolhe em ATRIBUTO DE CONJURAÇÃO.',
     'conjuração': 'Ataque de conjuração = d20 + o atributo da sua técnica + maestria. O atributo é o ' +
                   'que você escolhe em ATRIBUTO DE CONJURAÇÃO.',
@@ -139,15 +139,15 @@ function notasDeRegra_(ss, idx) {
                    'ATRIBUTO DE ATAQUE - À DISTÂNCIA: troque só se uma regra mandar.',
     'deslocamento': 'O seu deslocamento base é 9 metros, e você corta esse total em quantos pedaços ' +
                     'quiser dentro do turno. O Buff/Debuff do lado soma em metros. Cai pela metade com ' +
-                    'uniforme ou escudo sem a Força, ou com a carga acima do limite: a FICHA PESSOAL diz qual.',
+                    'uma arma empunhada sem a Força, e vai a zero com a carga acima do limite: a FICHA PESSOAL diz qual.',
     'vida_temp': 'Vida temporária não acumula: fica a maior, com teto de metade ' +
-                 'da vida máxima. Some no fim da cena, e é gasta antes da vida ' +
+                 'da vida máxima, para baixo e no mínimo 1. Some no fim da cena, e é gasta antes da vida ' +
                  'normal — a caixinha de ± desconta daqui primeiro e só o que ' +
                  'sobrar desce na vida. Dano com Rasga Escudo ignora isto: ' +
                  'edite a vida na mão.',
     'energia_temp': 'Energia temporária não acumula: fica a maior, com teto de ' +
-                    'metade do PE máximo (o Braseiro e o Trindade dão 2). Some no ' +
-                    'fim da cena, e a caixinha de ± queima daqui antes do seu PE.',
+                    'metade do PE máximo, para baixo e no mínimo 1 (o Embalo e o Refluxo dão energia ' +
+                    'temporária). Some no fim da cena, e a caixinha de ± queima daqui antes do seu PE.',
     'integridade_temp': 'Nenhuma regra do manual concede integridade temporária. ' +
                         'Se algo conceder, vale a regra das outras duas: não acumula, ' +
                         'e o teto é metade da Integridade máxima.',
@@ -161,8 +161,8 @@ function notasDeRegra_(ss, idx) {
     'marco corpo': 'Quantas vezes você escolheu Corpo num marco. Cada uma dá +1 ponto de atributo, e ' +
                    '+1 perícia ou ofício treinado. Do nível 10 em diante, pode especializar um que já ' +
                    'treina no lugar. Marque em Pontos de Marco de Corpo em qual atributo o ponto foi.',
-    'marco leque': 'Quantas vezes você escolheu Leque num marco. Cada uma dá +1 espaço de feitiço, e ' +
-                   'uma Passiva que não custa espaço. Anote essa Passiva na coluna Passivas do Leque.',
+    'marco leque': 'Quantas vezes você escolheu Leque num marco. Cada uma dá um feitiço a mais e um ' +
+                   'Talento, sem pagar espaços. Anote o Talento nos Talentos do Leque, na FICHA AMALDIÇOADA.',
     'marcos escolhidos': 'Os marcos caem nos níveis 6, 10, 14, 18, 22, 26 e 30. Em cada um, ' +
                          'escolha Refino, Corpo ou Leque, e marque embaixo quantas vezes escolheu cada.',
     'buff de defesa': 'Soma na Defesa o que nenhuma outra caixa cobre, como a Couraça (+1 ' +
@@ -191,19 +191,19 @@ function notasDeRegra_(ss, idx) {
                'Ofício e Teste de Resistência são à sua escolha. Se a Trilha escolhida não for ' +
                'do Caminho novo, ela volta para Escolha sua Trilha.',
     'trilha': 'O menu mostra só as Trilhas do Caminho escolhido.',
-    'treinado em armas': 'Automático pelo Caminho, sem escolha: Bastião e Vanguarda treinam todas ' +
-                         'as armas; Guia, Emanador e Evocador treinam só Arma de Fogo e Balestra.',
+    'treinado em armas': 'Automático pelo Caminho, sem escolha: Bastião, Vanguarda e Incursor treinam as ' +
+                         'treze categorias; Guia, Emanador e Evocador treinam só Arma de Fogo e Balestra.',
     'nivel': 'Editável a qualquer hora, sem aviso. Anotar uma missão na FICHA PESSOAL sobe o nível ' +
-             'sozinho, pela curva do capítulo 18, até o 20: dali em diante o livro pede um feito, e ' +
+             'sozinho, pela curva do capítulo Progressão, até o 20: dali em diante o livro pede um feito, e ' +
              'quem sobe é você. O XP nunca desce o nível, e quem não usa XP sobe aqui na mão.',
     'xp': 'A soma das missões anotadas na FICHA PESSOAL, no painel depois da coluna AU. Para mudar, ' +
-         'anote a missão lá. O nível ao lado sobe sozinho pela curva do capítulo 18.',
+         'anote a missão lá. O nível ao lado sobe sozinho pela curva do capítulo Progressão.',
     'trocou por arma': 'Só vale pra Guia, Emanador e Evocador. Cada troca é 2 das 5 perícias ' +
                        'livres do Caminho por treino numa arma específica — não a categoria, não ' +
                        'o tipo, uma arma da lista. Pode repetir até 2 vezes.',
-    'grupo de arma da trilha': 'Só a Empunhadura do Arremate (Emanador, nível 2) preenche sozinha: ' +
-                               'um grupo de arma à escolha, treinado, com o acerto e o dano por ' +
-                               'Inteligência ou Essência. Qual grupo é você quem escreve.'
+    'grupo de arma da trilha': 'Duas Trilhas dão treino numa categoria de arma à escolha, no nível 2: ' +
+                               'Condutor Armado (Emanador, Arma Condutora, com acerto e dano por Inteligência ' +
+                               'ou Essência) e Parceria (Evocador, Treino de Combate). Qual categoria é você quem escreve.'
   };
   var buff = 'Soma no número do lado o que nenhuma outra caixa cobre, como um efeito que dura. ' +
              'Número negativo reduz.';
@@ -500,7 +500,7 @@ function treinoDepoisDaCaixa_(armas, grupos, marcadas, editada) {
 /**
  * O treino que o Caminho dá, em toda caixa: {caixa: true|false}. Sem planilha em volta.
  *
- * Bastião e Vanguarda treinam as treze categorias; os outros Caminhos, as do conjurador (Arma de Fogo e
+ * Bastião, Vanguarda e Incursor treinam as treze categorias; os outros, as do conjurador (Arma de Fogo e
  * Balestra). Sem Caminho escolhido, nenhuma. As listas saem da DADOS, que as tira do catálogo.
  */
 function treinoDoCaminho_(armas, grupos, caminho, caminhos, todas, conjurador) {
@@ -763,21 +763,24 @@ function trocaArmaDoCaminho_(e, idx) {
 }
 
 /**
- * A única Trilha dos três Caminhos não-marciais que dá treino de arma: a Empunhadura do Arremate
- * (Emanador), nível 2. Ela concede um grupo de arma à escolha, treinado, com o acerto e o dano por
- * Inteligência ou Essência — mas qual grupo é decisão do jogador, então a ficha só avisa e deixa a
- * caixa livre pra ele escrever. 17/09/2026, pedido do Mizuki: aproveita a linha que tinha sobrado
- * no Treinamento em Armas. Só preenche se a caixa estiver vazia, pra não apagar o que já foi
- * escrito; trocar de Trilha de novo não limpa o que ficou.
+ * As Trilhas dos Caminhos conjuradores que dão treino numa categoria de arma, no nível 2. Desde o livro
+ * reconstruído (04/10/2026) são duas: Condutor Armado (Emanador, Arma Condutora) e Parceria (Evocador,
+ * Treino de Combate). Qual categoria é decisão do jogador, então a ficha só avisa e deixa a caixa livre
+ * pra ele escrever. 17/09/2026, pedido do Mizuki: aproveita a linha que tinha sobrado no Treinamento em
+ * Armas. Só preenche se a caixa estiver vazia, pra não apagar o que já foi escrito; trocar de Trilha de
+ * novo não limpa o que ficou.
  */
+var TRILHAS_COM_CATEGORIA_ = {'Condutor Armado': ['Emanador', 'Arma Condutora'], 'Parceria': ['Evocador', 'Treino de Combate']};
+
 function grupoDeArmaDaTrilha_(e, idx) {
   var ct = cel_(idx, 'trilha'), cg = cel_(idx, 'grupo de arma da trilha');
   if (!ct || !cg || ct !== e.range.getA1Notation()) return;
-  if (String(e.value || '') !== 'Arremate') return;
+  var t = TRILHAS_COM_CATEGORIA_[String(e.value || '')];
+  if (!t) return;
   var cc = cel_(idx, 'caminho');
-  if (!cc || String(e.range.getSheet().getRange(cc).getValue()) !== 'Emanador') return;
+  if (!cc || String(e.range.getSheet().getRange(cc).getValue()) !== t[0]) return;
   var alvo = e.range.getSheet().getRange(cg);
-  if (String(alvo.getValue() || '') === '') alvo.setValue('Escolha o grupo de arma (Empunhadura)');
+  if (String(alvo.getValue() || '') === '') alvo.setValue('Escolha a categoria de arma (' + t[1] + ')');
 }
 
 /**

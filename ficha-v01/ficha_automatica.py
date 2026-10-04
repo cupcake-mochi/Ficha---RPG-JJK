@@ -57,42 +57,51 @@ def regras(CAT=None):
     if CAT is None:
         CAT = json.load(open(os.path.join(RAIZ, "catalogo-projeto-m.json"), encoding="utf-8"))
     M = " ".join(open(os.path.join(RAIZ, "manual.txt"), encoding="utf-8").read().split())
+    # 04/10/2026: o livro passou a ser a candidata reconstruída, e as frases são as dela
     achar = {
-        "com": r"ficando com os ofícios (\d+) de \d+ (\d+) de \d+",
-        "troca": r"trocando os dois (\d+) de \d+ (\d+) de \d+",
-        "gratis": r"No refino 1 você já tem (\w+) aptidões, de graça",
-        "tetos": r"Teto de atributo: (\d+)\. Teto de refino: (\d+)\.",
-        "no_teto": r"Se o seu refino já estiver no teto, você leva (\w+) aptidões",
-        "especializa": r"Do nível (\d+) em diante, no lugar da perícia ou do ofício novo, você pode especializar",
+        "com": r"a criação reúne (\w+) perícias e (\w+) ofícios",
+        "troca": r"ou (\w+) perícias sem ofícios",
+        "gratis": r"Quem tem energia amaldiçoada começa com (.+?) e (.+?), sem gastar uma escolha\.",
+        "tetos": r"O máximo de cada atributo é (\d+); o de Refino é (\d+)\.",
+        "no_teto": r"Se o ganho básico já deixou seu Refino em \d+, receba (\w+) aptidões",
+        "especializa": r"A partir do nível (\d+), pode especializar um que já treina",
     }
     m = {k: re.search(rx, M) for k, rx in achar.items()}
     falta = [k for k, v in m.items() if not v]
     if falta:
         raise SystemExit(f"nao achei no manual.txt as frases de {falta}")
     cr = CAT["atributos"]["criacao"]
-    ga = re.search(r"duas aptidões, de graça: (.+?) , que dá .{0,80}?, e (.+?) , que permite", M)
-    gb = re.search(r"(\w[\w ]+?) e (\w[\w ]+?) vêm de graça na Lapidação 1", M)
-    sem = re.search(r"você escolhe uma semente: (\w+) aptidão que vem aberta", M)
+    ga = m["gratis"]
+    gb = re.search(r"(\w[\w ]+?) e (\w[\w ]+?) são gratuitas desde Lapidação 1", M)
+    sem = re.search(r"Você recebe a aptidão escolhida como semente no nível 2, .{0,120}?Ela conta como (\w+) aptidão adicional", M)
     if not (ga and gb and sem):
         raise SystemExit("nao achei no manual.txt as aptidoes de graca, as Bencaos de graca ou a semente")
     rotas = CAT["rotas_de_criacao"]
     marcial = [r["origem"] for r in rotas if r["rota"] == "Técnica Marcial"]
     sem_energia = [o for o in marcial if "sem energia" in o]
-    # 17/09/2026, achado do Mizuki: a mesma frase se repete no quadro de armas (capitulo 14), sem o
-    # travessao em volta dos nomes e colada numa tabela de dados numericos -- sem ancorar no que vem
-    # antes, o re.search pulava a ocorrencia limpa (bloqueada pelo travessao) e caia na sujeira.
-    tz = re.search(r"corpo a corpo\s*—\s*([\w, ]+?)\s*—\s*treinam as treze categorias", M)
-    du = re.search(r"conjuradores\s*—\s*([\w, ]+?)\s*—\s*treinam Arma de Fogo e Balestra", M)
-    if not (tz and du):
-        raise SystemExit("nao achei no manual.txt quem treina todas as armas e quem treina so duas")
+    # 04/10/2026: o livro deixou de ter a frase que juntava os Caminhos por treino de arma. Cada
+    # Caminho diz o treino na própria tabela de Características; a ficha lê de lá.
+    import sys
+    sys.path.insert(0, RAIZ)
+    import livro
+    todas, duas = [], []
+    for cam in CAT["caminhos"]:
+        tab = [f for _, fil in livro.tabelas(livro.secao(cam)) for f in fil if len(f) == 2]
+        arma = next((v for k, v in tab if k in ("Armas", "Treino de arma", "Armas treinadas")), "")
+        if re.search(r"treze categorias|todas as categorias", arma, re.I):
+            todas.append(cam)
+        elif re.search(r"Armas? de Fogo e Balestra", arma):
+            duas.append(cam)
+        else:
+            raise SystemExit(f"nao achei no manual.txt o treino de armas do {cam}: {arma!r}")
     def _lista_e(s):
         return [p.strip() for p in s.replace(" e ", ", ").split(", ") if p.strip()]
     extra = {"aptidoes_de_graca": [ga.group(1), ga.group(2)], "bencaos_de_graca": [gb.group(1), gb.group(2)],
              "semente": _n(sem.group(1)), "marcial": marcial, "sem_energia": sem_energia[0],
-             "caminhos_todas_armas": _lista_e(tz.group(1)), "caminhos_duas_armas": _lista_e(du.group(1))}
-    return dict(extra, **{"pericias_com": int(m["com"].group(1)), "oficios_com": int(m["com"].group(2)),
-            "pericias_troca": int(m["troca"].group(1)), "oficios_troca": int(m["troca"].group(2)),
-            "aptidoes_gratis": _n(m["gratis"].group(1)), "aptidoes_no_teto": _n(m["no_teto"].group(1)),
+             "caminhos_todas_armas": todas, "caminhos_duas_armas": duas}
+    return dict(extra, **{"pericias_com": _n(m["com"].group(1)), "oficios_com": _n(m["com"].group(2)),
+            "pericias_troca": _n(m["troca"].group(1)), "oficios_troca": 0,
+            "aptidoes_gratis": 2, "aptidoes_no_teto": _n(m["no_teto"].group(1)),
             "teto_atributo": int(m["tetos"].group(1)), "teto_refino": int(m["tetos"].group(2)),
             "especializa": int(m["especializa"].group(1)),
             "pontos_criacao": cr["pontos"], "teto_criacao": cr["teto_por_atributo"],

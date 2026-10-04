@@ -163,7 +163,7 @@ TETO = "  var teto = Math.max(1, Math.floor(max / 2));"
 
 edita("o teto arredonda para cima", GS, TETO,
       "  var teto = Math.max(1, Math.ceil(max / 2));",
-      "o teto nao passa da metade")
+      "fica em 11")
 
 edita("o teto vira um terco", GS, TETO,
       "  var teto = Math.max(1, Math.floor(max / 3));",
@@ -175,22 +175,23 @@ edita("o piso de 1 do teto cai", GS, TETO,
 
 edita("o campo TEMP deixa de ser preso", GS,
       "  return Math.min(v, teto);", "  return v;",
-      "fica em 20")
+      "fica em 11")
 
 edita("a funcao do teto desaparece do Codigo.gs", GS,
       "function tetoTemp_(", "function tetoOutroNome_(",
       "tetoTemp_ nao existe no Codigo.gs")
 
+# 04/10/2026: o exemplo do livro reconstruido e o da Mei, com vida maxima 23
 edita("o exemplo do teto muda de numero", "manual.txt",
-      "te deixa em 20", "te deixa em 21",
-      "fica em 21")
+      "então anota 11.", "então anota 12.",
+      "fica em 12")
 
 edita("o exemplo do teto muda de forma", "manual.txt",
-      "o seu teto é 20: um efeito", "o seu teto fica em 20: um efeito",
-      "o exemplo do teto no capitulo 1 do manual.txt mudou de forma")
+      "Seu teto é 11, então anota", "Seu teto fica em 11, então anota",
+      "mudou de forma")
 
 edita("o manual deixa de arredondar para baixo", "manual.txt",
-      "O que você ganha desce.", "O que você ganha fica.",
+      "Arredonde as metades para baixo, com mínimo 1", "Arredonde as metades para cima, com mínimo 1",
       "o manual arredonda para baixo o que voce ganha")
 
 edita_json("a A2 tira a metade do teto da energia",
