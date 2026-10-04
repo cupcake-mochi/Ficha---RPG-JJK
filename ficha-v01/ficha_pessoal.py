@@ -176,14 +176,15 @@ def tabela_da_defesa(dados, lin_cab):
 
 def descontos(missoes):
     """o menu de desconto da missão: as posições da semana que pagam menos que cheio, da tabela do livro, e a falha
-    que pagou metade. A posição e a falha são escolhas separadas no livro; o menu tem uma caixa só, então a missão que
-    falhou fora das duas primeiras da semana anota a falha e o mestre aplica a posição (ver PENDENCIAS)."""
-    out = []
-    for pos, pct in missoes["desconto_da_semana"].items():
+    que pagou metade. O livro aplica as duas juntas ("200 × ½ × ½ = 50 XP" na terceira longa que falhou), e o Mizuki
+    decidiu em 04/10/2026 que o menu traz as duas opções: cada posição que paga menos ganha também a versão com falha,
+    pela metade dela."""
+    pos = []
+    for p, pct in missoes["desconto_da_semana"].items():
         v = float(pct.rstrip("%").replace(",", ".")) / 100
         if v < 1:
-            out.append((f"{pos} · {pct}", v))
-    return out + [("Falha · metade", 0.5)]
+            pos.append((f"{p} · {pct}", v))
+    return pos + [("Falha · metade", 0.5)] + [(f"{n} · falha", v / 2) for n, v in pos]
 
 
 def regras(CAT=None):
@@ -701,7 +702,8 @@ NOTAS = {
     "adicional": "O multiplicador da missão, quando a mesa dá: {mults}. Em branco, a missão vale o XP do tipo.",
     "desconto": "Para a missão que pagou menos. Na sua semana, as duas primeiras pagam cheio, a terceira 50%, a quarta 25%, "
                 "a quinta 12,5%, a sexta 6,25%, e cada uma depois paga metade da anterior. Missão que falhou e o mestre deu "
-                "metade é Falha. Em branco, paga cheio.",
+                "metade é Falha; se ela também foi da terceira em diante, escolha a posição com falha (a terceira longa "
+                "que falhou paga 200 × ½ × ½ = 50). Em branco, paga cheio.",
     "total": "O XP do tipo, vezes o Adicional, vezes o Desconto, arredondado para baixo só no fim. Quando a conta dá mais "
              "que zero e menos que 1, a missão paga 1.",
     "extensao": "Mais duas tabelas de missão, para quando as duas primeiras encherem. O XP total soma as quatro. Elas ficam "

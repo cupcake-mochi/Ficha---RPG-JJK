@@ -365,6 +365,15 @@ _ok("fora do livro: as missões solo e os multiplicadores têm nome e número, e
 _ok("fora do livro: a vida inicial da Vanguarda continua fora porque o livro não a traz",
     not any(f[0] in ("Vida inicial", "Vida no nível 1") for _, fs in Lv.tabelas(Lv.secao("Vanguarda", dentro=C6)) for f in fs)
     and CAT["caminhos"]["Vanguarda"]["vida_inicial"] == _FL["vida_inicial_da_vanguarda"]["valor"])
+# a regra que o Mizuki decidiu em 04/10/2026 ("Toda vida inicial é a máxima do dado"): o ganho por nível é a média do dado
+# para cima, máximo ÷ 2 + 1, então o máximo é 2 × (ganho − 1). Os cinco que o livro numera têm de obedecer, senão a regra
+# não é a do livro; e a Vanguarda sai da mesma conta
+_dado = {c: 2 * (d["vida_por_nivel"] - 1) for c, d in CAT["caminhos"].items()}
+_ok("fora do livro: toda vida inicial é o máximo do dado (12/7 é d12, 8/5 é d8, 6/4 é d6), e a da Vanguarda sai dessa conta",
+    all(d["vida_inicial"] == _dado[c] for c, d in CAT["caminhos"].items()) and _dado["Vanguarda"] in (6, 8, 10, 12)
+    and _FL["vida_inicial_da_vanguarda"]["valor"] == _dado["Vanguarda"]
+    and "máximo do dado" in _FL["vida_inicial_da_vanguarda"]["regra"],
+    str({c: (d["vida_inicial"], _dado[c]) for c, d in CAT["caminhos"].items()}))
 _ok("nada do fora do livro foi para o livro: o desconto e o arredondamento antigos saíram",
     not {"desconto", "arredondamento_do_xp", "sem_o_requisito_de_forca", "carga_acima_do_limite"} & set(_FL))
 

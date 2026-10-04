@@ -2266,17 +2266,34 @@ exemplo, a Rede de contenção, o Projétil e a Aura com Fura, e o Corte de rupt
 
 **O que fica para ele, e fica fora desta rodada:**
 
-- **A vida inicial da Vanguarda.** *A tabela de Características dela no livro reconstruído só traz "Vida por nível 5".
-  A ficha usa 8, o da v0.331, e o número mora no `fora_do_livro` do catálogo até o livro decidir. O
-  `conferir-catalogo.py` acende se o livro passar a ter o número ou se o catálogo sair do 8 sem ele.*
-- **A troca de duas perícias por arma, até duas vezes.** *O livro diz "pode trocar duas das cinco perícias por treino em
-  uma arma específica", sem dizer quantas vezes; a ficha continua com a extensão que ele confirmou em 17/09/2026 (até
-  duas trocas).*
-- **A falha e a posição da semana na mesma missão.** *O livro aplica as duas ("200 × ½ × ½"); o menu de desconto da
-  FICHA PESSOAL tem uma caixa só, então a missão que falhou fora das duas primeiras da semana pede a conta do mestre.*
+- **Montar no Sheets** *e conferir o Incursor no menu, a DEFESA com arma pesada sem a Força e a carga acima do limite.*
+
+**O que ele decidiu depois, ainda em 04/10/2026, e já está na ficha:**
+
+- **A vida inicial da Vanguarda: "Toda vida inicial é a máxima do dado".** *A tabela de Características dela no livro
+  reconstruído só traz "Vida por nível 5". O ganho por nível é a média do dado para cima, e os cinco Caminhos que o livro
+  numera obedecem (12/7 é d12, 8/5 é d8, 6/4 é d6); 5 por nível é o d8, então a Vanguarda começa com 8. O número não
+  mudou, mudou a fonte: o `fora_do_livro` do catálogo guarda a regra, e o `conferir-catalogo.py` confere os seis
+  Caminhos contra ela. A checagem antiga só via se o catálogo e o `fora_do_livro` batiam entre si, e ficava verde com 10
+  nos dois; a nova acende.*
+- **A troca de duas perícias por arma: "Até duas armas, ja q todo caminho da no máximo duas pericias".** *O livro diz
+  "pode trocar duas das cinco perícias por treino em uma arma específica", sem dizer quantas vezes. A ficha já fazia
+  assim desde a extensão de 17/09/2026 (o menu vai até "2 armas (-4 pericias)"); agora a decisão está registrada.*
+- **A falha e a posição da semana na mesma missão: "Sim, falta colocar as duas opções".** *O livro aplica as duas ("Sua
+  terceira missão da semana era longa e terminou em falha com metade da recompensa. A conta é 200 × ½ × ½ = 50 XP."). O
+  menu de desconto da FICHA PESSOAL ganhou, para cada posição que paga menos que cheio, a versão com falha pela metade
+  dela (da "3ª · 50% · falha", que paga 25%, à "7ª · 3,125% · falha"); a "Falha · metade" continua para as duas
+  primeiras. A `regressao-ficha-pessoal.py` passa todas as combinações pela planilha e confere o exemplo do livro.*
+
+**Achado na bateria final:** *a troca da faixa dos Caminhos na FICHA (`DADOS!$N$5:$U$10`, para caber o Incursor) passou o
+escape do `re.sub` para dentro da fórmula, e a vida e o PE da FICHA davam `Err:508`. Só a `regressao-kaori-na-ficha.py`
+viu, porque as outras comparam o script com a planilha gerada, e os dois saíam quebrados iguais. Consertado no
+`dados_catalogo.py`, e o `conferir-ficha-xlsx.py` passou a reprovar fórmula com barra invertida.*
+
+**Fica para outra rodada:**
+
 - **A ficha da invocação** (`ficha-invocacao/`) *segue o capítulo 16 da v0.251. O livro reconstruído reescreveu as
   invocações e trocou as Trilhas do Evocador; refazê-la é uma rodada própria, e ele decidiu em 04/10/2026 que fica para outra parte do trabalho ("pode deixar a reconstrução das invocações na ficha para depois mesmo, isso irei fazer em outra parte"). O `invocacao.json` declara a pendência, e
   o `conferir-invocacao.py` acende se a declaração sair.*
 - **A ficha .docx da Kaori** *é de 07/09 e marca Intimidação. O `conferir-kaori.py` passou a ler o quadro da Kaori no
   livro, que vence a .docx onde os dois trazem o campo.*
-- **Montar no Sheets** *e conferir o Incursor no menu, a DEFESA com arma pesada sem a Força e a carga acima do limite.*

@@ -2679,7 +2679,8 @@
   "xp_adicional_nota": "o livro manda aplicar 'evento de dobro ou outro ajuste anunciado' antes do arredondamento final; estes são os ajustes da guilda",
   "vida_inicial_da_vanguarda": {
    "valor": 8,
-   "porque": "a tabela de Características da Vanguarda no livro reconstruído só traz 'Vida por nível 5'; 8 é o da v0.331, até o livro decidir"
+   "regra": "toda vida inicial é o máximo do dado de vida, e o ganho por nível é a média para cima (máximo ÷ 2 + 1)",
+   "porque": "a tabela de Características da Vanguarda no livro reconstruído só traz 'Vida por nível 5'. O Mizuki decidiu em 04/10/2026: 'Toda vida inicial é a máxima do dado'. 5 por nível é o d8, e o máximo do d8 é 8; os cinco Caminhos que o livro numera seguem a mesma conta"
   }
  }
 }

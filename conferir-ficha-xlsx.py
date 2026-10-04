@@ -172,6 +172,11 @@ f = wb["FICHA"]
 formulas = [c.value for l in f.iter_rows() for c in l
             if isinstance(c.value, str) and c.value.startswith("=")]
 checa("a FICHA tem fórmula, e não número digitado", len(formulas) >= 20, str(len(formulas)))
+# 04/10/2026: a troca da faixa dos Caminhos passou o escape do re.sub para dentro da fórmula (DADOS!\$N\$5), e a vida e o
+# PE davam Err:508; as regressões que comparam o script com a planilha gerada não viam, porque as duas saíam iguais
+_barra = [(a.title, c.coordinate) for a in wb.worksheets for l in a.iter_rows() for c in l
+          if isinstance(c.value, str) and c.value.startswith("=") and "\\" in c.value]
+checa("nenhuma fórmula da planilha tem barra invertida (escape que vazou da geração)", not _barra, str(_barra[:6]))
 checa("existe o aviso de catálogo desatualizado (A1)",
       any("a atual é a v" in x for x in formulas))
 checa("a Defesa soma uma célula de proteção, não uma constante (C3)",

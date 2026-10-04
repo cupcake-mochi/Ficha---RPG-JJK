@@ -113,7 +113,7 @@ def troca_na_ficha(layout, DEC=None):
     n = 0
     for reg in ficha["celulas"]:
         if isinstance(reg[1], str) and reg[1].startswith("="):
-            novo = re.sub(r"DADOS!\$N\$5:\$U\$\d+", nova.replace("$", "\\$"), reg[1])
+            novo = re.sub(r"DADOS!\$N\$5:\$U\$\d+", lambda _: nova, reg[1])
             if novo != reg[1]:
                 reg[1], n = novo, n + 1
     return n

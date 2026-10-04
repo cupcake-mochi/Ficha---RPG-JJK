@@ -457,6 +457,14 @@ checa("o XP total do painel e o XP da FICHA são a soma da coluna Total das quat
 checa("os exemplos do livro: a quinta longa paga 25, a padrão paga 12 na quinta e 6 na sexta, e o positivo pequeno paga 1",
       total("Longa", None, "5ª · 12,5%") == 25 and total("Padrão", None, "5ª · 12,5%") == 12 and total("Padrão", None, "6ª · 6,25%") == 6
       and total("Padrão", None, "7ª · 3,125%") == 3 and total("Curta", None, "7ª · 3,125%") == 1)
+# a falha junto da posição (decisão de 04/10/2026): "Sua terceira missão da semana era longa e terminou em falha com metade
+# da recompensa. A conta é 200 × ½ × ½ = 50 XP." Cada posição que paga menos tem a versão com falha, e só ela
+_MANUAL = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "manual.txt"), encoding="utf-8").read()
+_pos = [d for d in descs if d != "Falha · metade" and not d.endswith(" · falha")]
+checa("a falha e a posição da semana vão juntas: a terceira longa que falhou paga 200 × ½ × ½ = 50, e cada posição tem a sua com falha",
+      "A conta é 200 × ½ × ½ = 50 XP." in _MANUAL and total("Longa", None, "3ª · 50% · falha") == 50
+      and sorted(d for d in descs if d.endswith(" · falha")) == sorted(f"{d} · falha" for d in _pos)
+      and all(descs[f"{d} · falha"] == descs[d] / 2 for d in _pos), str(list(descs)))
 
 print("\nO QUE FALTA PARA O PRÓXIMO NÍVEL")
 for nome, c in CASOS.items():

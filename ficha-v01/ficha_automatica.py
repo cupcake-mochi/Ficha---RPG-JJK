@@ -347,7 +347,8 @@ def trocas(layout, CAT=None):
     conta("rota do ofício", f"=IF({e_com}<={k},1,IF({e_tro}<={k},2,IF({e_com}<={e_tro},1,2)))")
     # a troca de pericia por arma: so nos tres Caminhos que nao treinam arma de verdade, e so conta se
     # o jogador marcou na caixa de TREINAMENTO EM ARMAS -- cada troca e 2 das cinco livres por 1 arma,
-    # ate duas vezes (peca 07 §6 do sistema, e a extensao dela que o Mizuki confirmou em 17/09/2026)
+    # ate duas vezes (peca 07 §6 do sistema, e a extensao dela que o Mizuki confirmou em 17/09/2026; em 04/10/2026, com o
+    # livro reconstruido sem dizer quantas vezes: "Ate duas armas, ja q todo caminho da no maximo duas pericias")
     duas_or = "OR(" + ",".join(f'{CAM}="{n}"' for n in R["caminhos_duas_armas"]) + ")"
     TROCA_ARMA_F = _A(TROCA_ARMA, "FICHA!")   # esta conta mora na DADOS: sem o prefixo, AK65 lia a
                                               # propria DADOS, vazia, em vez da FICHA
