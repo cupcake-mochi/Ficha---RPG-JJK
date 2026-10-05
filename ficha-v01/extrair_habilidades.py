@@ -124,21 +124,25 @@ def extrai():
         return out
 
     def bloco(l, n, nome):
-        """(tipo, texto) da linha: título, fileira de tabela, item de lista ou parágrafo. O título que só repete o nome
+        """[(tipo, texto)] da linha: título, fileira de tabela, item de lista ou parágrafo. O título que só repete o nome
         sai (o nome já está na carta), e a marca "Nível N:" do começo do parágrafo também (a etiqueta da carta já diz o
-        nível)"""
+        nível). Quando a carta junta mais de uma habilidade e o parágrafo abre com o nome de uma delas ("Nível 7:
+        Execução Preparada."), o nome fica, como subtítulo: sem ele, a segunda habilidade perdia o nome na carta (o
+        nível 7 da Vanguarda, 05/10/2026)"""
         s = l.strip()
         if not s or s.startswith("Exemplo") or re.fullmatch(r"Nível \d+\.", s):
-            return None
+            return []
         if s.startswith("#"):
             t = re.sub(rf"^Nível {n} — ", "", s.lstrip("#").strip())
-            return None if _sem_ponto(t).lower() == nome.lower() else ("titulo", t)
+            return [] if _sem_ponto(t).lower() == nome.lower() else [("titulo", t)]
         if " | " in s:
-            return ("tabela", s)
+            return [("tabela", s)]
         if s.startswith("- "):
-            return ("item", s)
+            return [("item", s)]
+        m = re.match(r"^Nível \d+: ([^.]{1,80})\. ", s)
+        sub = [("titulo", m.group(1))] if m and m.group(1).lower() != nome.lower() and m.group(1) in _nomes(nome) else []
         s = re.sub(r"^Nível \d+(?:: [^.]{1,80}\.|\.| ·) ", "", s)
-        return ("par", s) if s else None
+        return sub + [("par", s)] if s else []
 
     def junta(blocos):
         """o texto da carta, legível ("espaçar os paragrafos e talz", pedido do Mizuki em 05/10/2026): uma linha em
@@ -177,7 +181,7 @@ def extrai():
             for a, b in zip(corte, corte[1:]):
                 if dona[a] != k:
                     continue
-                trecho = [x for x in (bloco(l, n, nome) for l in L[a:b]) if x]
+                trecho = [x for l in L[a:b] for x in bloco(l, n, nome)]
                 while trecho and trecho[-1][0] == "titulo":
                     trecho.pop()                      # o título que fecha o trecho é da seção seguinte
                 blocos += trecho

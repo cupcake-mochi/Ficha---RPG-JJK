@@ -43,6 +43,6 @@ if __name__ == "__main__":
     (RAIZ / "manual.txt").write_text(texto(md), encoding="utf-8")
     (RAIZ / "manual-fonte.json").write_text(json.dumps({
         "arquivo": REL, "sha256": hashlib.sha256(md.encode()).hexdigest(),
-        "livro": "candidata editorial reconstruída, revisada em 04/10/2026 (382 páginas)",
+        "livro": "candidata editorial reconstruída, revisada em 04/10/2026 e em 05/10/2026 (382 páginas)",
         "gerado_por": "extrair-manual.py"}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print("manual.txt gerado de", REL)

@@ -1,6 +1,6 @@
 {
   "arquivo": "sistema/05-material/livro/planejamento-editorial/consolidacao/lote-01/LIVRO-COMPLETO.md",
-  "sha256": "f51056f705ab376b1a8038ebef6431a4934ea7823a23667146fcda71f0ad7646",
-  "livro": "candidata editorial reconstruída, revisada em 04/10/2026 (382 páginas)",
+  "sha256": "e747cf7407d50f1e3a2a768f24936b4f1c40c82272d5be9d6f4d91a96166363b",
+  "livro": "candidata editorial reconstruída, revisada em 04/10/2026 e em 05/10/2026 (382 páginas)",
   "gerado_por": "extrair-manual.py"
 }
