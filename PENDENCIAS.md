@@ -2298,7 +2298,7 @@ viu, porque as outras comparam o script com a planilha gerada, e os dois saíam 
 - **A ficha .docx da Kaori** *é de 07/09 e marca Intimidação. O `conferir-kaori.py` passou a ler o quadro da Kaori no
   livro, que vence a .docx onde os dois trazem o campo.*
 
-### B37 · As cartas de Habilidades trazem o livro — **FEITA em 05/10/2026; falta montar no Sheets**
+### B37 · As cartas de Habilidades trazem o livro, numa coluna só — **FEITA em 05/10/2026; falta montar no Sheets**
 
 *Pergunta do Mizuki sobre as cartas da seção 7 (B34), que nasceram escritas à mão e prontas para o livro: "nas caixas
 de habilidades dos caminhos e trilhas, imagino que vai ser automatico / mas... vai caber? kkkk".*
@@ -2309,6 +2309,9 @@ e as 3 rotas do Batedor com 4 cada, menos o nível 7 do Incursor, que é espalha
 típica pede 23 linhas e a maior, 133 (o nível 2, que é a mecânica central de cada Caminho e Trilha, pede 47 no meio).
 O primeiro parágrafo cabe em 108, mas às vezes não diz o principal (o Chega Mais abria só com "O raio de Olhos Em Mim
 aumenta para 9 m."). Aumentar a caixa não dava.
+
+*A primeira versão, abaixo, foi a de três cartas por fileira com o resumo; a coluna única, mais abaixo, substituiu o
+resumo pelo texto inteiro.*
 
 **O que ele escolheu:** *"B - mas dando permissão para o jogador apagar o texto e colocar oq preferir"*: o nome e o
 resumo do livro na carta, o texto inteiro na nota. E, perguntado no mesmo dia: a rota do Batedor se escolhe no menu de
@@ -2336,7 +2339,34 @@ apagada, sem Caminho, o Pugilista); e pelo `regressao-construir.js`, na planilha
 constante do próprio gerador, e mudar a constante mudava a checagem junto. Agora ela mede contra a linha comum da FICHA
 (o dobro de 15,75 pt).*
 
-**Fica para ele, no Sheets:** colar o `Habilidades.gs` (o `COMO-SUBIR.md` virou "Colar os três arquivos"); ver se as 7
-linhas de resumo cabem de verdade na caixa (a altura de linha do Sheets não foi medida, e os resumos ficaram em até 6);
-e ver se o projeto aceita os três arquivos juntos (o teto de ~1 MB que o projeto usa é por arquivo, e as fontes que
+**Fica para ele, no Sheets:** colar o `Habilidades.gs` (o `COMO-SUBIR.md` virou "Colar os três arquivos"); ver a
+altura da caixa (ver a coluna única, abaixo); e ver se o projeto aceita os três arquivos juntos (o teto de ~1 MB que o projeto usa é por arquivo, e as fontes que
 achei falam em 50 MB por projeto, nenhuma delas oficial).
+
+
+**A coluna única, no mesmo dia.** *Pedido dele depois de ver a primeira versão: "faça ser apenas uma coluna ao invés de
+três / assim o texto vai ter bastante espaço, mantenha uma boa altura em linhas pra cada carta e vemos se agora cabe
+tudo. Não só isso, como n esqueça do espaçamento de uma linha entre uma carta e outra".* Na largura da seção (D a AT,
+1.204 px), o texto inteiro pede 9 linhas na carta típica, mas o nível 2 vai a 62 (o do Evocador). Medido: altura igual
+de 15 linhas cabia 83 de 111 (a seção iria a uns 170 linhas); do tamanho da maior de cada nível, 111 de 111 e uns 287.
+Ele escolheu *"Acompanha a Escolha, mas ainda tendo a caixa retratil da descrição"*, e pediu o texto legível: *"n
+esqueça de tentar deixar de forma legivel, espaçar os paragrafos e talz"*.
+
+| o que mudou | como |
+|---|---|
+| a carta | a largura da seção: a etiqueta e o nome numa linha, a caixa do texto em 4 linhas, num grupo que abre e fecha (nasce aberto), e uma linha vazia antes da carta seguinte. A seção vai de 37 para 77 linhas (da 88 à 164), e o menu rápido começa na 165 |
+| o texto | o texto inteiro do livro, na carta; o resumo e o nome encurtado saíram (o nome inteiro cabe numa linha: o maior tem 685 de 1.114 px). Legível: uma linha em branco entre os parágrafos, a tabela e a lista inteiras, e os subtítulos do livro numa linha própria, em negrito (texto rico, `setRichTextValue`). Sai a marca "Nível 7: Ataque Extra." do começo, que a etiqueta e o nome já dizem |
+| a caixa estica | o `linhasDoTexto_` conta as linhas pela largura de cada letra da Roboto 10 (`ficha-v01/larguras-roboto-10.json`, do `medir_fonte.py`: somar as letras dá a medida da frase com 0,16% de diferença no meio e 0,56% no pior caso), e o `alturaDaCaixa_` divide a altura pelas 4 linhas da caixa (no texto mais longo, uns 285 px cada, longe de qualquer teto de altura de linha). Estica quando o Caminho ou a Trilha mudam e quando o jogador escreve numa caixa, as livres inclusive |
+| a nota | só aparece quando o texto da carta não é o do livro: aí ela mostra o livro |
+
+**Conferido:** o `regressao-delta.js` (70 checagens: o script conta as linhas dos 111 textos igual ao gerador em
+Python, a caixa comporta o texto e sobra só o arredondamento, o negrito cai exatamente nos subtítulos, os parágrafos vêm
+separados); o `regressao-construir.js` (pelo onEdit de verdade: as cartas, a altura de cada caixa, o negrito, o texto do
+jogador sem negrito e com o livro na nota, a caixa livre que estica); e a `regressao-amaldicoada.py` (a largura da
+seção, a linha vazia entre as cartas, o grupo que abre e fecha, a medida do `Habilidades.gs` igual à das colunas da
+planilha, e toda letra do livro na tabela). Os arneses ganham os defeitos da coluna única: 65 no `arnes-amaldicoada`, 57
+no `arnes-pessoal` e os do `arnes-delta`. O `medidas/ver-aba.py` desenha as cartas com o livro e a altura que o script
+dá, e passou a respeitar as quebras de linha do texto (o Sheets respeita).
+
+**Fica para ele, no Sheets:** a altura da linha de texto é estimada (18 px por linha de Roboto 10); se sobrar ou faltar
+espaço embaixo do texto, o número mora no `LINHA_PX` do `habilidades.py`.

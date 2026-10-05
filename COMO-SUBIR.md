@@ -44,7 +44,7 @@ Depois, no `+` ao lado de **Arquivos**, escolhe **Script**, dá o nome `Ficha`, 
 
 De novo no `+`, **Script**, nome `Habilidades`, e cola o conteúdo de **`apps-script/Habilidades.gs`**. *Desde 05/10/2026: é o texto do livro que vai nas cartas de Habilidades da seção 7 da `FICHA`, e mora num arquivo à parte porque no `Ficha.gs` passaria do teto de tamanho. Sem ele a ficha monta igual, mas escolher o Caminho e a Trilha não escreve as cartas, e a tela avisa.*
 
-> O `Ficha.gs` tem uns 760 KB, o `Habilidades.gs` uns 220 KB e o `Codigo.gs` uns 210 KB. É normal eles demorarem a colar.
+> O `Ficha.gs` tem uns 760 KB, o `Habilidades.gs` uns 200 KB e o `Codigo.gs` uns 215 KB. É normal eles demorarem a colar.
 
 Salva com `Ctrl+S`.
 

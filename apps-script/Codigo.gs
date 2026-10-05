@@ -386,6 +386,7 @@ function onEdit(e) {
   // 02/10/2026: o menu rápido da seção 8 é todo calculado; quem escrever por cima recebe a conta de volta
   if (dentroDeSemTrava_('FICHA', e.range)) {
     try { devolverConta_(e, 'FICHA'); } catch (err) { console.log('menu rápido: ' + err.message); }
+    try { caixaDeHabilidadeEditada_(e); } catch (err) { console.log('habilidades: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
@@ -850,24 +851,36 @@ function trilhaDoCaminho_(e, idx) {
 }
 
 /**
- * As cartas de Habilidades da seção 7 da FICHA, escritas do livro quando o Caminho ou a Trilha mudam. 05/10/2026,
- * a opção B que o Mizuki escolheu depois da medida (o texto inteiro do livro cabe em 4 das 109 cartas): o nome e o
- * resumo vão na carta, e o texto inteiro vai na nota da caixa do texto. "B - mas dando permissão para o jogador apagar
- * o texto e colocar oq preferir": por isso é valor solto, e não fórmula, e a carta só é reescrita se estiver vazia
- * ou ainda com um texto do livro daquela carta (de qualquer Caminho ou Trilha). O que o jogador escreveu fica, e a
- * nota continua mostrando o livro. Apagar a carta deixa ela vazia; ela volta a encher na próxima troca de Caminho ou
- * de Trilha.
+ * As cartas de Habilidades da seção 7 da FICHA, escritas do livro quando o Caminho ou a Trilha mudam (B37, 05/10/2026).
+ * O Mizuki escolheu que a carta traga o livro e que o jogador possa apagar e escrever por cima ("B - mas dando
+ * permissão para o jogador apagar o texto e colocar oq preferir"), e pôs as cartas numa coluna só, com a caixa do
+ * texto esticando conforme a escolha ("Acompanha a Escolha, mas ainda tendo a caixa retratil da descrição").
  *
- * A DADOS_AM publica a tabela das cartas, com o endereço do nome e do texto de cada uma (habilidades.py), e o texto
- * do livro mora no Habilidades.gs, gerado pelo monta.py: são 200 KB, que no Ficha.gs passariam do teto. A carta de
+ * Por isso o nome e o texto são valor solto, e não fórmula, e a carta só é reescrita se estiver vazia ou ainda com um
+ * texto do livro daquela carta (de qualquer Caminho ou Trilha). O que o jogador escreveu fica, e a nota da caixa
+ * mostra o livro enquanto o texto dela não for o do livro. Apagar a carta deixa ela vazia (com o livro na nota); ela
+ * volta a encher na próxima troca de Caminho ou de Trilha.
+ *
+ * A caixa estica: o linhasDoTexto_ conta as linhas pela largura de cada letra da Roboto 10, e o alturaDaCaixa_ divide
+ * a altura pelas linhas da caixa. Escrever numa caixa também estica ela, e põe o livro na nota.
+ *
+ * A DADOS_AM publica o endereço do nome e do texto de cada carta, e o das caixas livres (habilidades.py). O livro e a
+ * medida moram no Habilidades.gs, gerado pelo monta.py: são 200 KB, que no Ficha.gs passariam do teto. A carta de
  * Caminho procura primeiro a linha "Caminho com a Trilha" (o nível 7 do Pugilista mora na carta 7 do Incursor), e
  * depois a do Caminho.
  *
- * A conta mora no cartasDaFicha_ e no habilidadeQueFica_, sem planilha em volta, e o regressao-delta.js roda os dois
- * no node.
+ * O texto do livro vem legível ("espaçar os paragrafos e talz"): o gerador já separa os parágrafos com uma linha em
+ * branco, e o escreverTextoDoLivro_ põe os subtítulos em negrito, com texto rico.
+ *
+ * A conta mora no cartasDaFicha_, no habilidadeQueFica_, no notaDaCarta_, no negritosDoTexto_, no linhasDoTexto_ e no
+ * alturaDaCaixa_, sem planilha em volta, e o regressao-delta.js roda todos no node.
  */
 function habilidadeQueFica_(atual, autos, novo) {
   return (atual === '' || autos.indexOf(atual) >= 0) ? novo : atual;
+}
+
+function notaDaCarta_(texto, doLivro) {
+  return (doLivro && texto !== doLivro) ? doLivro : '';
 }
 
 function cartasDaFicha_(livro, cartas, caminho, trilha, atuais) {
@@ -880,13 +893,75 @@ function cartasDaFicha_(livro, cartas, caminho, trilha, atuais) {
       ? (acha('Caminho com a Trilha', trilha, c.nivel) || acha('Caminho', caminho, c.nivel))
       : acha('Trilha', trilha, c.nivel);
     var daCarta = livro.filter(function (l) { return fontes.indexOf(l.fonte) >= 0 && l.nivel === c.nivel; });
-    var nomes = daCarta.map(function (l) { return l.nome; }), resumos = daCarta.map(function (l) { return l.resumo; });
+    var nomes = daCarta.map(function (l) { return l.nome; }), textos = daCarta.map(function (l) { return l.texto; });
+    var texto = habilidadeQueFica_(atuais[i].texto, textos, linha ? linha.texto : '');
     return {
       nome: habilidadeQueFica_(atuais[i].nome, nomes, linha ? linha.nome : ''),
-      texto: habilidadeQueFica_(atuais[i].texto, resumos, linha ? linha.resumo : ''),
-      nota: linha ? linha.texto : ''
+      texto: texto,
+      livro: linha ? linha.texto : '',
+      titulos: linha ? linha.titulos : [],
+      nota: notaDaCarta_(texto, linha ? linha.texto : '')
     };
   });
+}
+
+function linhasDoTexto_(texto, M) {
+  var larg = function (t) {
+    var x = 0;
+    for (var i = 0; i < t.length; i++) x += (M.larguras[t[i]] === undefined ? M.media : M.larguras[t[i]]);
+    return x;
+  };
+  var esp = M.larguras[' '], n = 0;
+  String(texto).split('\n').forEach(function (par) {
+    n++;
+    var linha = null;
+    par.split(' ').filter(function (p) { return p !== ''; }).forEach(function (p) {
+      var w = larg(p);
+      if (linha === null) linha = w;
+      else if (linha + esp + w <= M.largura) linha += esp + w;
+      else { n++; linha = w; }
+    });
+  });
+  return n;
+}
+
+function alturaDaCaixa_(texto, M) {
+  var total = String(texto) === '' ? 0 : linhasDoTexto_(texto, M) * M.linha + M.respiro;
+  return Math.max(M.minima, Math.ceil(total / M.caixa));
+}
+
+// os trechos do texto que vão em negrito: as linhas que são subtítulo do livro, [início, fim] de cada uma
+function negritosDoTexto_(texto, titulos) {
+  var out = [], ini = 0;
+  String(texto).split('\n').forEach(function (l) {
+    if (l !== '' && titulos.indexOf(l) >= 0) out.push([ini, ini + l.length]);
+    ini += l.length + 1;
+  });
+  return out;
+}
+
+// o texto do livro na carta: texto rico, com os subtítulos em negrito ("deixar de forma legivel", 05/10/2026)
+function escreverTextoDoLivro_(celula, texto, titulos) {
+  var negrito = SpreadsheetApp.newTextStyle().setBold(true).build();
+  var rico = SpreadsheetApp.newRichTextValue().setText(texto);
+  negritosDoTexto_(texto, titulos).forEach(function (t) { rico.setTextStyle(t[0], t[1], negrito); });
+  celula.setRichTextValue(rico.build());
+}
+
+// as cartas e as caixas livres que a DADOS_AM publica: [{fonte, nivel, nome, texto, linha}] e [{texto, linha}]
+function cartasDaDadosAm_(ss) {
+  var v = ss.getSheetByName(DADOS_DA_AMALDICOADA_).getDataRange().getValues(), h = v[0];
+  var cC = h.indexOf('habilidade: carta'), cN = h.indexOf('nível da carta');
+  var cNm = h.indexOf('célula do nome'), cTx = h.indexOf('célula do texto'), cL = h.indexOf('célula do texto livre');
+  if (cC < 0 || cN < 0 || cNm < 0 || cTx < 0 || cL < 0) return null;
+  var linhaDe = function (a1) { return Number(String(a1).replace(/^[A-Z]+/, '')); };
+  var cartas = [], livres = [];
+  for (var r = 1; r < v.length && v[r][cC] !== ''; r++) {
+    cartas.push({ fonte: String(v[r][cC]).split(' ')[0], nivel: Number(v[r][cN]), nome: String(v[r][cNm]),
+                  texto: String(v[r][cTx]), linha: linhaDe(v[r][cTx]) });
+  }
+  for (var l = 1; l < v.length && v[l][cL] !== ''; l++) livres.push({ texto: String(v[l][cL]), linha: linhaDe(v[l][cL]) });
+  return { cartas: cartas, livres: livres };
 }
 
 function habilidadesDaFicha_(e, idx) {
@@ -897,25 +972,41 @@ function habilidadesDaFicha_(e, idx) {
                                      'escritas. Veja o COMO-SUBIR.', 'Habilidades', 8);
     return;
   }
-  var ss = SpreadsheetApp.getActive(), ficha = ss.getSheetByName('FICHA');
-  var v = ss.getSheetByName(DADOS_DA_AMALDICOADA_).getDataRange().getValues(), h = v[0];
-  var cC = h.indexOf('habilidade: carta'), cN = h.indexOf('nível da carta');
-  var cNm = h.indexOf('célula do nome'), cTx = h.indexOf('célula do texto');
-  if (cC < 0 || cN < 0 || cNm < 0 || cTx < 0) return;
-  var cartas = [];
-  for (var r = 1; r < v.length && v[r][cC] !== ''; r++) {
-    cartas.push({ fonte: String(v[r][cC]).split(' ')[0], nivel: Number(v[r][cN]),
-                  nome: String(v[r][cNm]), texto: String(v[r][cTx]) });
-  }
+  var ss = SpreadsheetApp.getActive(), ficha = ss.getSheetByName('FICHA'), D = cartasDaDadosAm_(ss);
+  if (!D) return;
   var caminho = String(ficha.getRange(cc).getValue()), trilha = String(ficha.getRange(ct).getValue());
-  var atuais = cartas.map(function (c) {
+  var atuais = D.cartas.map(function (c) {
     return { nome: String(ficha.getRange(c.nome).getValue()), texto: String(ficha.getRange(c.texto).getValue()) };
   });
-  cartasDaFicha_(HABILIDADES_DO_LIVRO_, cartas, caminho, trilha, atuais).forEach(function (n, i) {
-    if (n.nome !== atuais[i].nome) ficha.getRange(cartas[i].nome).setValue(n.nome);
-    if (n.texto !== atuais[i].texto) ficha.getRange(cartas[i].texto).setValue(n.texto);
-    ficha.getRange(cartas[i].texto).setNote(n.nota);
+  cartasDaFicha_(HABILIDADES_DO_LIVRO_, D.cartas, caminho, trilha, atuais).forEach(function (n, i) {
+    var c = D.cartas[i];
+    if (n.nome !== atuais[i].nome) ficha.getRange(c.nome).setValue(n.nome);
+    if (n.texto !== atuais[i].texto) {
+      if (n.texto !== '' && n.texto === n.livro) escreverTextoDoLivro_(ficha.getRange(c.texto), n.texto, n.titulos);
+      else ficha.getRange(c.texto).setValue(n.texto);
+    }
+    ficha.getRange(c.texto).setNote(n.nota);
+    ficha.setRowHeights(c.linha, MEDIDA_DAS_CARTAS_.caixa, alturaDaCaixa_(n.texto, MEDIDA_DAS_CARTAS_));
   });
+}
+
+// o jogador escreveu numa caixa de texto das Habilidades: a caixa estica, e a nota mostra o livro se o texto mudou
+function caixaDeHabilidadeEditada_(e) {
+  // as caixas das Habilidades começam na coluna D (a C1 do habilidades.py): edição em outra coluna nem lê a DADOS_AM
+  if (e.range.getColumn() !== 4 || typeof HABILIDADES_DO_LIVRO_ === 'undefined') return;
+  var ss = SpreadsheetApp.getActive(), ficha = ss.getSheetByName('FICHA'), D = cartasDaDadosAm_(ss);
+  if (!D) return;
+  var r = e.range.getRow(), carta = D.cartas.filter(function (c) { return c.linha === r; })[0];
+  var livre = D.livres.filter(function (c) { return c.linha === r; })[0], alvo = carta || livre;
+  if (!alvo) return;
+  var texto = String(ficha.getRange(alvo.texto).getValue());
+  ficha.setRowHeights(alvo.linha, MEDIDA_DAS_CARTAS_.caixa, alturaDaCaixa_(texto, MEDIDA_DAS_CARTAS_));
+  if (!carta) return;
+  var idx = indice(), cc = cel_(idx, 'caminho'), ct = cel_(idx, 'trilha');
+  var i = D.cartas.indexOf(carta), atuais = D.cartas.map(function (c) { return { nome: '', texto: '' }; });
+  var n = cartasDaFicha_(HABILIDADES_DO_LIVRO_, D.cartas, String(ficha.getRange(cc).getValue()),
+                         String(ficha.getRange(ct).getValue()), atuais)[i];
+  ficha.getRange(carta.texto).setNote(notaDaCarta_(texto, n.livro));
 }
 
 /**

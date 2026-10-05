@@ -5,10 +5,10 @@
     python3 ficha-v01/extrair_habilidades.py --confere  # só compara o arquivo com o manual.txt, sem gravar
 
 Por que este arquivo existe: a seção 7 da FICHA (as cartas de Habilidades, B34) nasceu escrita à mão, com a forma já
-pronta para o livro. Em 05/10/2026 o Mizuki escolheu a opção B da medida: a carta traz o nome e o primeiro
-parágrafo do livro, o texto inteiro fica na nota da carta, e o jogador pode apagar e escrever o que preferir ("B - mas
-dando permissão para o jogador apagar o texto e colocar oq preferir"). O texto inteiro não cabe: das 109 cartas, só 4
-cabem inteiras nas 7 linhas da caixa, e o primeiro parágrafo cabe em 108.
+pronta para o livro. Em 05/10/2026 o Mizuki escolheu que a carta traga o livro e que o jogador possa apagar e escrever o
+que preferir ("B - mas dando permissão para o jogador apagar o texto e colocar oq preferir"), e no mesmo dia pôs as
+cartas numa coluna só, com a caixa do texto esticando conforme a escolha ("Acompanha a Escolha, mas ainda tendo a caixa
+retratil da descrição"): a carta traz o nome e o texto inteiro.
 
 De onde sai cada coisa, sem nada digitado:
   · os níveis e os nomes, da tabela de progressão de cada Caminho e de cada Trilha ("Nível | Habilidade"); as Trilhas
@@ -19,15 +19,15 @@ De onde sai cada coisa, sem nada digitado:
     título com "nível N", e a primeira vez que o nome dela abre um título ou um parágrafo. Cada marca abre um trecho, que
     vai até a marca seguinte, e o trecho é da habilidade dona da marca: o livro nem sempre segue a ordem dos níveis (o
     Pugilista põe a Rajada Marcial, do nível 7, entre o Corpo Treinado e o Quebrar o Compasso, do nível 2);
-  · o texto inteiro são os parágrafos, os subtítulos e as fileiras de tabela dos trechos, sem os exemplos e sem as
-    marcas "Nível N." soltas. O resumo é o primeiro parágrafo, sem a marca do começo; o parágrafo curto (menos de CURTO
-    letras) e a linha de ficha ("Reação + 2 PE.") levam o seguinte junto, e o resumo fica em frases inteiras até CABE
-    letras. O nome na carta vai inteiro até NOME_CABE letras, e acima disso, "as primeiras e mais N".
+  · o texto são os parágrafos, os subtítulos, as fileiras de tabela e os itens de lista dos trechos, sem os exemplos,
+    sem as marcas "Nível N." soltas e sem a marca "Nível N:" do começo do parágrafo. Ele vem legível ("n esqueça de
+    tentar deixar de forma legivel, espaçar os paragrafos e talz"): uma linha em branco entre os blocos, a tabela e a
+    lista inteiras, e os subtítulos à parte, em `titulos`, que o Codigo.gs põe em negrito.
   · uma entrega de Trilha num nível que não é de Trilha (o nível 7 do Pugilista, a Rajada Marcial) vai para
     `no_caminho`: o livro diz que ela "Não acrescenta um novo degrau de Trilha no nível 7", e o Mizuki a pôs na carta
     do nível 7 do Caminho ("No caso do pungilista, o nv7 seria do caminho mesmo").
 
-O --confere refaz tudo e compara; e cada parágrafo, cada resumo e cada nome gravados têm de estar no manual.
+O --confere refaz tudo e compara; e cada parágrafo e cada nome gravados têm de estar no manual.
 """
 import json, os, re, sys
 
@@ -40,11 +40,6 @@ SAIDA = os.path.join(AQUI, "habilidades-do-livro.json")
 CAPITULO = "## 6. Caminhos e Trilhas"
 NIV_CAMINHO, NIV_TRILHA = (2, 7, 15, 23, 30), (2, 11, 19, 27)
 SEP_ROTA = " · "
-CURTO = 80                  # o parágrafo com menos letras que isto não diz sozinho o que a habilidade faz
-CABE = 330                  # letras que a caixa da carta mostra: 13 colunas de 28 px por 6 linhas de 21 px, em Roboto 10
-                            # (medido em 05/10/2026 com a fonte: 330 letras em frases inteiras cabem nas 7 linhas)
-NOME_CABE = 75              # o nome da carta tem duas linhas de 10 colunas, em Castoro 11 (pedido do Mizuki em 05/10/2026);
-                            # medido com a fonte: os nomes de até 73 letras cabem, e os de 84 ou mais pedem três linhas
 
 
 def _sem_ponto(s):
@@ -54,31 +49,6 @@ def _sem_ponto(s):
 def _nomes(s):
     """"Ataque Extra, Nem Um Arranhão e Ainda de Pé" -> as três"""
     return [x for x in (_sem_ponto(p) for p in re.split(r",|;| e |: ", s)) if x]
-
-
-def _corta(t):
-    """o resumo em frases inteiras até CABE letras; a primeira frase fica sempre, mesmo maior"""
-    if len(t) <= CABE:
-        return t
-    frases = re.findall(r".+?[.:](?= |\n|$)|.+$", t, re.S)
-    out = frases[0]
-    for f in frases[1:]:
-        if len(out + f) > CABE:
-            break
-        out += f
-    return out.rstrip()
-
-
-def nome_na_carta(nome):
-    """o nome inteiro, se cabe; se não, as primeiras habilidades da lista que cabem e "e mais N" (a nota tem o resto)"""
-    if len(nome) <= NOME_CABE:
-        return nome
-    itens = [x.strip() for x in re.split(r", | e ", nome)]
-    for k in range(len(itens) - 1, 0, -1):
-        t = ", ".join(itens[:k]) + f" e mais {len(itens) - k}"
-        if len(t) <= NOME_CABE:
-            return t
-    return itens[0] + f" e mais {len(itens) - 1}"
 
 
 def extrai():
@@ -153,27 +123,32 @@ def extrai():
                     out.add(i); achados.add(x)
         return out
 
-    def linha(l, n, nome):
-        """a linha como vai para o texto: título vira linha comum, e o título que só repete o nome sai"""
+    def bloco(l, n, nome):
+        """(tipo, texto) da linha: título, fileira de tabela, item de lista ou parágrafo. O título que só repete o nome
+        sai (o nome já está na carta), e a marca "Nível N:" do começo do parágrafo também (a etiqueta da carta já diz o
+        nível)"""
         s = l.strip()
-        if not s.startswith("#"):
-            return s
-        t = s.lstrip("#").strip()
-        t = re.sub(rf"^Nível {n} — ", "", t)
-        return None if _sem_ponto(t).lower() == nome.lower() else t
+        if not s or s.startswith("Exemplo") or re.fullmatch(r"Nível \d+\.", s):
+            return None
+        if s.startswith("#"):
+            t = re.sub(rf"^Nível {n} — ", "", s.lstrip("#").strip())
+            return None if _sem_ponto(t).lower() == nome.lower() else ("titulo", t)
+        if " | " in s:
+            return ("tabela", s)
+        if s.startswith("- "):
+            return ("item", s)
+        s = re.sub(r"^Nível \d+(?:: [^.]{1,80}\.|\.| ·) ", "", s)
+        return ("par", s) if s else None
 
-    def resumo(pars):
-        """o primeiro parágrafo, sem a marca do começo. A linha de ficha ("Ação Bônus · Sem custo de PE.") e o parágrafo
-        curto ("O raio de Olhos Em Mim aumenta para 9 m.") levam junto o parágrafo seguinte, que é o que a habilidade faz"""
-        limpos = []
-        for p in pars:
-            if " | " in p or len(p) <= 12 or p.startswith("- ") or not re.search(r"[.:]$|[.:] ", p):
-                continue
-            p = re.sub(r"^Nível \d+(?:: [^.]{1,80}\.|\.| ·) ", "", p)
-            limpos.append(p)
-            if len(limpos) == 2 or not ((" · " in p and len(p) < 120) or len(p) < CURTO):
-                break
-        return _corta("\n".join(limpos))
+    def junta(blocos):
+        """o texto da carta, legível ("espaçar os paragrafos e talz", pedido do Mizuki em 05/10/2026): uma linha em
+        branco entre os blocos, e as fileiras de uma tabela e os itens de uma lista um embaixo do outro"""
+        out = ""
+        for k, (tipo, t) in enumerate(blocos):
+            if k:
+                out += "\n" if tipo == blocos[k - 1][0] and tipo in ("tabela", "item") else "\n\n"
+            out += t
+        return out
 
     out = {"caminhos": {}, "trilhas": {}, "no_caminho": {}}
     for d, (tipo, _) in donos.items():
@@ -190,16 +165,15 @@ def extrai():
                 dona[i] = k
         corte = sorted(dona) + [fim[d]]
         for k, (n, nome) in enumerate(ents):
-            pars = []
+            blocos = []
             for a, b in zip(corte, corte[1:]):
                 if dona[a] != k:
                     continue
-                trecho = [linha(l, n, nome) for l in L[a:b]]
-                trecho = [x for x in trecho if x and not x.startswith("Exemplo") and not re.fullmatch(r"Nível \d+\.", x)]
-                while trecho and not re.search(r"[.:]$|[.:] | \| ", trecho[-1]):
+                trecho = [x for x in (bloco(l, n, nome) for l in L[a:b]) if x]
+                while trecho and trecho[-1][0] == "titulo":
                     trecho.pop()                      # o título que fecha o trecho é da seção seguinte
-                pars += trecho
-            h = {"nome": nome, "nome_na_carta": nome_na_carta(nome), "resumo": resumo(pars), "texto": "\n".join(pars)}
+                blocos += trecho
+            h = {"nome": nome, "texto": junta(blocos), "titulos": [t for tipo, t in blocos if tipo == "titulo"]}
             if n in niveis:
                 out["caminhos" if tipo == "caminho" else "trilhas"].setdefault(d, {})[str(n)] = h
             elif tipo == "trilha" and n in NIV_CAMINHO:
@@ -211,20 +185,20 @@ def extrai():
             raise SystemExit(f"{d}: os níveis {sorted(tem)} não são {list(niveis)}")
     fonte = json.load(open(os.path.join(RAIZ, "manual-fonte.json"), encoding="utf-8"))
     return {"_meta": {"versao_do_livro": fonte["livro"], "sha256_do_livro": fonte["sha256"], "capitulo": CAPITULO[3:],
-                      "o_que_e": "o nome, o primeiro parágrafo e o texto inteiro de cada habilidade de Caminho e de Trilha, "
+                      "o_que_e": "o nome e o texto de cada habilidade de Caminho e de Trilha, "
                                  "para as cartas da seção 7 da FICHA",
                       "niveis": {"caminho": list(NIV_CAMINHO), "trilha": list(NIV_TRILHA)}},
             "rotas": rotas, **out}
 
 
 def confere_no_manual(dados):
-    """cada nome, resumo e parágrafo gravado está no manual palavra por palavra"""
+    """cada nome e cada parágrafo gravado está no manual palavra por palavra"""
     M = Lv.texto(os.path.join(RAIZ, "manual.txt"))
     ruins = []
     for grupo in ("caminhos", "trilhas", "no_caminho"):
         for d, por in dados[grupo].items():
             for n, h in por.items():
-                for p in [h["nome"]] + h["resumo"].split("\n") + h["texto"].split("\n"):
+                for p in [h["nome"]] + h["texto"].split("\n") + h["titulos"]:
                     if p and p not in M:
                         ruins.append(f"{d} {n}: {p[:60]}")
     return ruins

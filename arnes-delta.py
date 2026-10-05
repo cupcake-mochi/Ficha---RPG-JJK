@@ -255,9 +255,16 @@ edita("a carta apagada não volta a encher", GS,
 edita("a carta do Caminho esquece a Rajada do Pugilista", GS,
       "(acha('Caminho com a Trilha', trilha, c.nivel) || acha('Caminho', caminho, c.nivel))", "acha('Caminho', caminho, c.nivel)",
       "é a junta")
-edita("a nota some na carta que o jogador mexeu", GS,
-      "nota: linha ? linha.texto : ''", "nota: (linha && atuais[i].texto === '') ? linha.texto : ''",
-      "a nota mostra o livro")
+edita("a nota nunca mostra o livro", GS,
+      "return (doLivro && texto !== doLivro) ? doLivro : '';", "return '';",
+      "a nota mostra o livro só quando")
+edita("o script conta as linhas diferente do gerador", GS,
+      "else if (linha + esp + w <= M.largura) linha += esp + w;", "else if (linha + w <= M.largura) linha += esp + w;",
+      "conta as linhas dos")
+edita("a caixa não comporta o texto", GS, "return Math.max(M.minima, Math.ceil(total / M.caixa));",
+      "return Math.max(M.minima, Math.floor(total / M.caixa));", "comporta as linhas dele")
+edita("o negrito escorrega para fora do subtítulo", GS, "    ini += l.length + 1;", "    ini += l.length;",
+      "o negrito cai exatamente")
 edita("o texto do livro de outro Caminho passa a contar como do jogador", GS,
       "return fontes.indexOf(l.fonte) >= 0 && l.nivel === c.nivel; });",
       "return fontes.indexOf(l.fonte) >= 0 && l.nivel === c.nivel && (l.dono === caminho || l.dono === trilha); });",
