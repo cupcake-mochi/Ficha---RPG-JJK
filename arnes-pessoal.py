@@ -12,7 +12,7 @@ import os, shutil, subprocess, sys, tempfile
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 PRECISA = ["regressao-pessoal.js", "regressao-construir.js", "medidas/sheets-de-mentira.js", "catalogo-projeto-m.json", "manual.txt", "apps-script/Codigo.gs",
-           "apps-script/Ficha.gs"]
+           "apps-script/Ficha.gs", "apps-script/Habilidades.gs"]   # 05/10/2026: o texto das cartas da seção 7
 NODE = shutil.which("node") or shutil.which("nodejs")
 
 
@@ -182,6 +182,17 @@ edita("a CARTEIRA deixa de declarar a caixa da foto", F, '"foto":[8,3,21,11]', '
       "o construir() roda inteiro", teste=K)
 edita("a CARTEIRA declara a caixa da foto uma linha mais curta", F, '"foto":[8,3,21,11]', '"foto":[8,3,20,11]',
       "a caixa da paleta nasce embaixo da foto", teste=K)
+# 05/10/2026, a opção B das Habilidades: escolher o Caminho e a Trilha escreve as cartas pelo onEdit de verdade
+edita("o onEdit esquece as cartas de Habilidades", C,
+      "  try { habilidadesDaFicha_(e, idx); } catch (err) { console.log('habilidades: ' + err.message); }\n", "",
+      "escreve as 9 cartas", teste=K)
+edita("as cartas trocam o endereço do nome pelo do texto", C,
+      "var cNm = h.indexOf('célula do nome'), cTx = h.indexOf('célula do texto');",
+      "var cNm = h.indexOf('célula do texto'), cTx = h.indexOf('célula do nome');", "escreve as 9 cartas", teste=K)
+edita("o script ignora o que está escrito nas cartas", C,
+      "cartasDaFicha_(HABILIDADES_DO_LIVRO_, cartas, caminho, trilha, atuais)",
+      "cartasDaFicha_(HABILIDADES_DO_LIVRO_, cartas, caminho, trilha, atuais.map(function () { return { nome: '', texto: '' }; }))",
+      "o texto que o jogador escreveu fica", teste=K)
 print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
 edita("renomear uma variavel de dentro da conta", C, "var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"
       "                   .every(function (a) { return marcadas[a.caixa] === true; });\n  if ((marcadas[dono.caixa] === true) !== todas) muda[dono.caixa] = todas;",

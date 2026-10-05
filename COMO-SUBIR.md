@@ -20,7 +20,7 @@ python3 ficha-v01/monta.py
 ./rodar-tudo.sh
 ```
 
-Sai o `apps-script/Ficha.gs`. Se os vinte e um validadores não passarem, não sobe.
+Saem o `apps-script/Ficha.gs` e o `apps-script/Habilidades.gs`. Se os vinte e um validadores não passarem, não sobe.
 
 > **O `ficha/monta.py` foi aposentado em 14/09/2026, no B18.** *Ele ficou dez versões atrás da planilha viva, e o `Ficha.gs` que ele gerava montava uma ficha antiga.*
 
@@ -34,7 +34,7 @@ Sai o `apps-script/Ficha.gs`. Se os vinte e um validadores não passarem, não s
 Oswald  ·  Castoro  ·  Yuji Syuku
 ```
 
-### 3 · Colar os dois arquivos
+### 3 · Colar os três arquivos
 
 **Extensões → Apps Script.**
 
@@ -42,7 +42,9 @@ Apaga o que estiver no `Código.gs` e cola o conteúdo de **`apps-script/Codigo.
 
 Depois, no `+` ao lado de **Arquivos**, escolhe **Script**, dá o nome `Ficha`, e cola o conteúdo de **`apps-script/Ficha.gs`**.
 
-> O `Ficha.gs` tem uns 640 KB e o `Codigo.gs` uns 200 KB. É normal eles demorarem a colar.
+De novo no `+`, **Script**, nome `Habilidades`, e cola o conteúdo de **`apps-script/Habilidades.gs`**. *Desde 05/10/2026: é o texto do livro que vai nas cartas de Habilidades da seção 7 da `FICHA`, e mora num arquivo à parte porque no `Ficha.gs` passaria do teto de tamanho. Sem ele a ficha monta igual, mas escolher o Caminho e a Trilha não escreve as cartas, e a tela avisa.*
+
+> O `Ficha.gs` tem uns 760 KB, o `Habilidades.gs` uns 220 KB e o `Codigo.gs` uns 210 KB. É normal eles demorarem a colar.
 
 Salva com `Ctrl+S`.
 

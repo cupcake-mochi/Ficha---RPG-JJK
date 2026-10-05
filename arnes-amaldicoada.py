@@ -160,6 +160,13 @@ PERTURBACOES = [
      "NIV_CAMINHO, NIV_TRILHA = (2, 7, 15, 30), (2, 11, 19, 27)", "níveis de entrega da Progressão"),
     ("o título da Trilha esquece a Trilha escolhida", HAB, """["Trilha", f'="TRILHA"&{escolha("trilha")}&"  ·  QUATRO ENTREGAS"']""",
      """["Trilha", '="TRILHA  ·  QUATRO ENTREGAS"']""", "os títulos dizem o Caminho e a Trilha"),
+    # 05/10/2026, as cartas com o livro (B37)
+    ("o nome da carta volta a ter uma linha só", HAB, "ALT_NOME = 31.5 ", "ALT_NOME = 15.75 ", "o nome da carta tem duas linhas"),
+    ("o resumo da carta deixa de caber na caixa (o json fica velho)", "ficha-v01/extrair_habilidades.py",
+     "CABE = 330 ", "CABE = 3300 ", "é o que o extrair_habilidades.py tira do manual.txt hoje"),
+    ("o menu de Trilha volta a ter o Batedor sem rota", "ficha-v01/ficha_automatica.py",
+     'out += [(f"{t} · {r}", c) for r in hab["rotas"][t]] if t in hab["rotas"] else [(t, c)]', "out += [(t, c)]",
+     "com o Batedor aberto nas três rotas"),
 ]
 CONTRA = ("um comentário a mais no gerador", GER, "def _se(cond, texto):", "# comentario que nao muda nada\ndef _se(cond, texto):")
 

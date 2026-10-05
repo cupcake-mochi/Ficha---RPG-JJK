@@ -19,6 +19,8 @@ const fs = require('fs'), path = require('path');
 const RAIZ = __dirname;
 const GS = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Codigo.gs'), 'utf8');
 const FICHA_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Ficha.gs'), 'utf8');
+// 05/10/2026: o texto das habilidades mora num terceiro arquivo do projeto, e o Apps Script junta os .gs num escopo só
+const HAB_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Habilidades.gs'), 'utf8');
 // O ABAS como o script o usa: o Ficha.gs escreve por extenso, quando carrega, as fileiras de cartas que são cópia
 // (expandirCopias_). Lido como texto, ele viria só com a primeira fileira de cada tipo.
 const ABAS = (() => { const c = {}; require('vm').createContext(c); require('vm').runInContext(FICHA_SRC, c); return JSON.parse(JSON.stringify(require('vm').runInContext('ABAS', c))); })();
@@ -30,7 +32,7 @@ const { criaSheets, retrato, partes, letras, numero, CHAMADAS, zeraChamadas } = 
 
 // ---------------------------------------------------------------------------------------------
 console.log('O construir() DO COMEÇO AO FIM');
-const S = criaSheets(FICHA_SRC, GS);
+const S = criaSheets(FICHA_SRC, HAB_SRC + '\n' + GS);
 let erro = null;
 try { S.ctx.construir(); } catch (e) { erro = e; }
 ok('o construir() roda inteiro, sem chamar nada que o Apps Script não tem e sem sair de nenhuma aba', !erro, erro ? erro.message : '');
@@ -233,6 +235,36 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   try { S.ss.getSheetByName('FICHA').getRange(aE).setValue('Nível 30'); S.ctx.onEdit(ed('FICHA', aE, 'Nível 30')); } catch (e) { erroM = e; }
   ok('escrever por cima da etiqueta de nível devolve a conta e avisa na tela', !erroM && !!contaE && F2.f.get(kE) === contaE && S.P.avisos.length === n3 + 1,
      erroM ? erroM.message : `${F2.f.get(kE)} · ${S.P.avisos.length - n3} aviso(s)`);
+}
+// 05/10/2026, a opção B: escolher o Caminho e a Trilha escreve o nome e o resumo do livro em cada carta, e o texto
+// inteiro na nota; o que o jogador escrever numa carta fica. O esperado sai do Habilidades.gs, não daqui.
+{
+  const LIVRO = (() => { const c = {}; require('vm').createContext(c); require('vm').runInContext(HAB_SRC + '; this.L = HABILIDADES_DO_LIVRO_;', c); return c.L; })();
+  const FI = S.ss.getSheetByName('FICHA'), DA = S.ss.getSheetByName('DADOS_AM').getDataRange().getValues(), h = DA[0];
+  const cC = h.indexOf('habilidade: carta'), cN = h.indexOf('nível da carta'), cNm = h.indexOf('célula do nome'), cTx = h.indexOf('célula do texto');
+  const cartas = [];
+  for (let r = 1; r < DA.length && DA[r][cC] !== ''; r++) cartas.push({ fonte: String(DA[r][cC]).split(' ')[0], nivel: Number(DA[r][cN]), nome: DA[r][cNm], texto: DA[r][cTx] });
+  const linha = (fonte, dono, nivel) => LIVRO.find((l) => l.fonte === fonte && l.dono === dono && l.nivel === nivel);
+  const lida = (c) => [FI.getRange(c.nome).getValue(), FI.getRange(c.texto).getValue(), FI.getRange(c.texto).getNote()];
+  const doLivro = (l) => [l.nome, l.resumo, l.texto];
+  const escolhe = (k, v) => { const a = FI.getRange(idx[k]).getValue(); FI.getRange(idx[k]).setValue(v); S.ctx.onEdit(ed('FICHA', idx[k], v, a)); };
+  let erroH = null;
+  try { escolhe('caminho', 'Emanador'); escolhe('trilha', 'Ressonante'); } catch (e) { erroH = e; }
+  const certas = (cam, tri) => cartas.every((c) => JSON.stringify(lida(c)) === JSON.stringify(doLivro(
+    c.fonte === 'Caminho' ? (linha('Caminho com a Trilha', tri, c.nivel) || linha('Caminho', cam, c.nivel)) : linha('Trilha', tri, c.nivel))));
+  ok(`escolher Emanador e Ressonante na FICHA escreve as ${cartas.length} cartas: o nome, o resumo e, na nota, o texto do livro`,
+     !erroH && cartas.length === 9 && certas('Emanador', 'Ressonante'), erroH ? erroH.message : JSON.stringify(lida(cartas[0])).slice(0, 120));
+  const c7 = cartas.find((c) => c.fonte === 'Caminho' && c.nivel === 7);
+  FI.getRange(c7.texto).setValue('O que eu anotei.');
+  try { S.ctx.onEdit(ed('FICHA', c7.texto, 'O que eu anotei.')); escolhe('caminho', 'Incursor'); escolhe('trilha', 'Pugilista'); } catch (e) { erroH = e; }
+  const j = linha('Caminho com a Trilha', 'Pugilista', 7);
+  ok('o texto que o jogador escreveu fica quando o Caminho e a Trilha mudam, e o nome e a nota da carta seguem o livro',
+     !erroH && !!j && JSON.stringify(lida(c7)) === JSON.stringify([j.nome, 'O que eu anotei.', j.texto]), erroH ? erroH.message : JSON.stringify(lida(c7)).slice(0, 160));
+  ok('com Incursor e Pugilista, as outras cartas são as do livro, e a 7 do Caminho junta a Rajada Marcial',
+     cartas.filter((c) => c !== c7).every((c) => JSON.stringify(lida(c)) === JSON.stringify(doLivro(c.fonte === 'Caminho' ? linha('Caminho', 'Incursor', c.nivel) : linha('Trilha', 'Pugilista', c.nivel)))));
+  try { escolhe('caminho', 'Vanguarda'); escolhe('trilha', 'Batedor · Besta'); } catch (e) { erroH = e; }
+  ok('a rota do Batedor se escolhe no menu de Trilha, e as cartas da Trilha são as da rota', !erroH && cartas.filter((c) => c.fonte === 'Trilha')
+     .every((c) => JSON.stringify(lida(c)) === JSON.stringify(doLivro(linha('Trilha', 'Batedor · Besta', c.nivel)))), erroH ? erroH.message : '');
 }
 let erroSel = null;
 try { S.ctx.onSelectionChange({ range: S.ss.getSheetByName(NOME).getRange('D10') }); S.ctx.onOpen({}); } catch (e) { erroSel = e; }

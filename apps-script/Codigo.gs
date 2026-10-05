@@ -190,7 +190,8 @@ function notasDeRegra_(ss, idx) {
     'caminho': 'Ao escolher o Caminho, as duas perícias fixas dele são marcadas sozinhas. ' +
                'Ofício e Teste de Resistência são à sua escolha. Se a Trilha escolhida não for ' +
                'do Caminho novo, ela volta para Escolha sua Trilha.',
-    'trilha': 'O menu mostra só as Trilhas do Caminho escolhido.',
+    'trilha': 'O menu mostra só as Trilhas do Caminho escolhido. O Batedor entra uma vez por rota. Escolher o ' +
+              'Caminho e a Trilha escreve as cartas de Habilidades, na seção 7.',
     'treinado em armas': 'Automático pelo Caminho, sem escolha: Bastião, Vanguarda e Incursor treinam as ' +
                          'treze categorias; Guia, Emanador e Evocador treinam só Arma de Fogo e Balestra.',
     'nivel': 'Editável a qualquer hora, sem aviso. Anotar uma missão na FICHA PESSOAL sobe o nível ' +
@@ -393,6 +394,7 @@ function onEdit(e) {
   prenderTemp_(e, idx);
   marcarPericiasDoCaminho_(e, idx);
   trilhaDoCaminho_(e, idx);
+  try { habilidadesDaFicha_(e, idx); } catch (err) { console.log('habilidades: ' + err.message); }
   nivelPelaXP_(e, idx);
   grupoDeArmaDaTrilha_(e, idx);
   trocaArmaDoCaminho_(e, idx);
@@ -845,6 +847,75 @@ function trilhaDoCaminho_(e, idx) {
     if (fica !== antes) caixa.setValue(fica);
     return;
   }
+}
+
+/**
+ * As cartas de Habilidades da seção 7 da FICHA, escritas do livro quando o Caminho ou a Trilha mudam. 05/10/2026,
+ * a opção B que o Mizuki escolheu depois da medida (o texto inteiro do livro cabe em 4 das 109 cartas): o nome e o
+ * resumo vão na carta, e o texto inteiro vai na nota da caixa do texto. "B - mas dando permissão para o jogador apagar
+ * o texto e colocar oq preferir": por isso é valor solto, e não fórmula, e a carta só é reescrita se estiver vazia
+ * ou ainda com um texto do livro daquela carta (de qualquer Caminho ou Trilha). O que o jogador escreveu fica, e a
+ * nota continua mostrando o livro. Apagar a carta deixa ela vazia; ela volta a encher na próxima troca de Caminho ou
+ * de Trilha.
+ *
+ * A DADOS_AM publica a tabela das cartas, com o endereço do nome e do texto de cada uma (habilidades.py), e o texto
+ * do livro mora no Habilidades.gs, gerado pelo monta.py: são 200 KB, que no Ficha.gs passariam do teto. A carta de
+ * Caminho procura primeiro a linha "Caminho com a Trilha" (o nível 7 do Pugilista mora na carta 7 do Incursor), e
+ * depois a do Caminho.
+ *
+ * A conta mora no cartasDaFicha_ e no habilidadeQueFica_, sem planilha em volta, e o regressao-delta.js roda os dois
+ * no node.
+ */
+function habilidadeQueFica_(atual, autos, novo) {
+  return (atual === '' || autos.indexOf(atual) >= 0) ? novo : atual;
+}
+
+function cartasDaFicha_(livro, cartas, caminho, trilha, atuais) {
+  var acha = function (fonte, dono, nivel) {
+    return livro.filter(function (l) { return l.fonte === fonte && l.dono === dono && l.nivel === nivel; })[0];
+  };
+  return cartas.map(function (c, i) {
+    var fontes = c.fonte === 'Caminho' ? ['Caminho com a Trilha', 'Caminho'] : ['Trilha'];
+    var linha = c.fonte === 'Caminho'
+      ? (acha('Caminho com a Trilha', trilha, c.nivel) || acha('Caminho', caminho, c.nivel))
+      : acha('Trilha', trilha, c.nivel);
+    var daCarta = livro.filter(function (l) { return fontes.indexOf(l.fonte) >= 0 && l.nivel === c.nivel; });
+    var nomes = daCarta.map(function (l) { return l.nome; }), resumos = daCarta.map(function (l) { return l.resumo; });
+    return {
+      nome: habilidadeQueFica_(atuais[i].nome, nomes, linha ? linha.nome : ''),
+      texto: habilidadeQueFica_(atuais[i].texto, resumos, linha ? linha.resumo : ''),
+      nota: linha ? linha.texto : ''
+    };
+  });
+}
+
+function habilidadesDaFicha_(e, idx) {
+  var cc = cel_(idx, 'caminho'), ct = cel_(idx, 'trilha'), a1 = e.range.getA1Notation();
+  if (!cc || !ct || (a1 !== cc && a1 !== ct)) return;
+  if (typeof HABILIDADES_DO_LIVRO_ === 'undefined') {
+    SpreadsheetApp.getActive().toast('Falta o arquivo Habilidades no Apps Script: as cartas da seção 7 não foram ' +
+                                     'escritas. Veja o COMO-SUBIR.', 'Habilidades', 8);
+    return;
+  }
+  var ss = SpreadsheetApp.getActive(), ficha = ss.getSheetByName('FICHA');
+  var v = ss.getSheetByName(DADOS_DA_AMALDICOADA_).getDataRange().getValues(), h = v[0];
+  var cC = h.indexOf('habilidade: carta'), cN = h.indexOf('nível da carta');
+  var cNm = h.indexOf('célula do nome'), cTx = h.indexOf('célula do texto');
+  if (cC < 0 || cN < 0 || cNm < 0 || cTx < 0) return;
+  var cartas = [];
+  for (var r = 1; r < v.length && v[r][cC] !== ''; r++) {
+    cartas.push({ fonte: String(v[r][cC]).split(' ')[0], nivel: Number(v[r][cN]),
+                  nome: String(v[r][cNm]), texto: String(v[r][cTx]) });
+  }
+  var caminho = String(ficha.getRange(cc).getValue()), trilha = String(ficha.getRange(ct).getValue());
+  var atuais = cartas.map(function (c) {
+    return { nome: String(ficha.getRange(c.nome).getValue()), texto: String(ficha.getRange(c.texto).getValue()) };
+  });
+  cartasDaFicha_(HABILIDADES_DO_LIVRO_, cartas, caminho, trilha, atuais).forEach(function (n, i) {
+    if (n.nome !== atuais[i].nome) ficha.getRange(cartas[i].nome).setValue(n.nome);
+    if (n.texto !== atuais[i].texto) ficha.getRange(cartas[i].texto).setValue(n.texto);
+    ficha.getRange(cartas[i].texto).setNote(n.nota);
+  });
 }
 
 /**

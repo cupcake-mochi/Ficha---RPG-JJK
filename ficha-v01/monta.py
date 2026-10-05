@@ -306,3 +306,7 @@ gs, celulas, pecas = emitir_gs.escrever(
     limpa=LAYOUT["_meta"].get("largura_limpa"))
 print(f"script escrito: {gs}")
 print(f"  {celulas} células, {pecas} peças de arte embutidas")
+# 05/10/2026: o texto das habilidades de Caminho e de Trilha, num script à parte (ver habilidades.py)
+_hab_gs = os.path.join(os.path.dirname(AQUI), "apps-script", "Habilidades.gs")
+_n, _t = habilidades.escreve_gs(_hab_gs)
+print(f"script escrito: {_hab_gs}\n  {_n} habilidades, {_t // 1024} KB")

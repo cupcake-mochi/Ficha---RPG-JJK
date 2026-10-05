@@ -2297,3 +2297,46 @@ viu, porque as outras comparam o script com a planilha gerada, e os dois saíam 
   o `conferir-invocacao.py` acende se a declaração sair.*
 - **A ficha .docx da Kaori** *é de 07/09 e marca Intimidação. O `conferir-kaori.py` passou a ler o quadro da Kaori no
   livro, que vence a .docx onde os dois trazem o campo.*
+
+### B37 · As cartas de Habilidades trazem o livro — **FEITA em 05/10/2026; falta montar no Sheets**
+
+*Pergunta do Mizuki sobre as cartas da seção 7 (B34), que nasceram escritas à mão e prontas para o livro: "nas caixas
+de habilidades dos caminhos e trilhas, imagino que vai ser automatico / mas... vai caber? kkkk".*
+
+**A medida.** A caixa de texto da carta tem 13 colunas de 28 px por 6 linhas de 21 px, em Roboto 10: umas 7 linhas,
+perto de 340 letras. Medidas com a fonte, contra o livro reconstruído, as 109 cartas (6 Caminhos com 5 cada, 15 Trilhas
+e as 3 rotas do Batedor com 4 cada, menos o nível 7 do Incursor, que é espalhado): o texto inteiro cabe em 4, a carta
+típica pede 23 linhas e a maior, 133 (o nível 2, que é a mecânica central de cada Caminho e Trilha, pede 47 no meio).
+O primeiro parágrafo cabe em 108, mas às vezes não diz o principal (o Chega Mais abria só com "O raio de Olhos Em Mim
+aumenta para 9 m."). Aumentar a caixa não dava.
+
+**O que ele escolheu:** *"B - mas dando permissão para o jogador apagar o texto e colocar oq preferir"*: o nome e o
+resumo do livro na carta, o texto inteiro na nota. E, perguntado no mesmo dia: a rota do Batedor se escolhe no menu de
+Trilha (*"No menu de Trilha"*), e o nome tem duas linhas (*"Nome em duas linhas"*). A Rajada Marcial do Pugilista, que
+o livro dá no nível 7 e que "Não acrescenta um novo degrau de Trilha no nível 7", vai na carta 7 do Caminho: *"No caso
+do pungilista, o nv7 seria do caminho mesmo, sei que é uma trilha ligada a um nv do caminho, mas é aonde pensei"*.
+
+**Como ficou:**
+
+| peça | o que faz |
+|---|---|
+| `ficha-v01/extrair_habilidades.py` | lê do `manual.txt` o nome, o resumo e o texto de cada habilidade, e grava o `habilidades-do-livro.json`. O começo de cada uma é a marca do livro ("Nível N:", "Nível N.", o título "Nível N — Nome", um título com "nível N" ou com o nome); cada marca abre um trecho, e o trecho vai para a habilidade dona dela (o Pugilista intercala o nível 7 no meio do 2). O resumo é o primeiro parágrafo; se ele é curto (menos de 80 letras) ou só a linha de ficha ("Reação + 2 PE."), leva o seguinte junto, e tudo fica em frases inteiras até 330 letras: com a fonte, todos cabem em 6 linhas, uma de folga. O nome vai inteiro até 75 letras (os de até 73 cabem nas duas linhas; os de 84 ou mais pedem três); acima, "as primeiras e mais N", em 3 nomes do nível 2. `--confere` refaz e compara, e todo texto gravado tem de estar no manual |
+| `ficha_automatica.trilhas_do_menu` | o menu de Trilha com o Batedor aberto nas três rotas ("Batedor · Yumi"), lidas dos títulos do livro; a Vanguarda passa a ter 5 entradas, e o menu, 20 |
+| `ficha-v01/habilidades.py` | publica na DADOS_AM o endereço do nome e do texto de cada carta (ADDRESS, que anda com a planilha), põe o nome em duas linhas (31,5 pt) e escreve o `apps-script/Habilidades.gs` |
+| `apps-script/Habilidades.gs` | o texto do livro, 111 habilidades (a 111ª é a carta 7 do Incursor com a Rajada Marcial). Mora num terceiro arquivo do Apps Script porque são uns 220 KB, e o `Ficha.gs` iria a 950 KB, acima do teto de 900 KB que o `conferir-ficha-xlsx.py` guarda; a montagem também não ganha 111 células de texto longo |
+| `Codigo.gs`: `habilidadesDaFicha_`, `cartasDaFicha_`, `habilidadeQueFica_` | quando o Caminho ou a Trilha mudam, escreve o nome e o resumo como valor solto (não fórmula: o `devolverConta_` devolveria a conta por cima do jogador) e o texto na nota. Só reescreve a carta vazia ou ainda com um texto do livro daquela carta; o que o jogador escreveu fica, e a nota continua sendo o livro. Apagar a carta deixa ela vazia, e ela volta a encher na próxima troca de Caminho ou de Trilha |
+
+**Conferido:** pela `regressao-amaldicoada.py` (o `--confere`, o endereço de cada carta, o nome em duas linhas, o
+`Habilidades.gs` igual ao gerador e abaixo do teto, todo Caminho e toda Trilha do menu com as cartas completas, o menu
+com as rotas do livro, a carta junta do Pugilista, e o nome e o resumo dentro da medida); pelo `regressao-delta.js` (a
+conta do script contra o livro inteiro: todo Caminho com cada Trilha dele, a troca, o que o jogador escreveu, a carta
+apagada, sem Caminho, o Pugilista); e pelo `regressao-construir.js`, na planilha montada, pelo onEdit de verdade. O
+`arnes-delta.py` planta 6 defeitos novos (vai a 37), o `arnes-pessoal.py` 3 (vai a 54) e o `arnes-amaldicoada.py` 3 (vai a
+63); todos acendem. *O do nome em uma linha só passava calado na primeira rodada: a checagem media a altura contra a
+constante do próprio gerador, e mudar a constante mudava a checagem junto. Agora ela mede contra a linha comum da FICHA
+(o dobro de 15,75 pt).*
+
+**Fica para ele, no Sheets:** colar o `Habilidades.gs` (o `COMO-SUBIR.md` virou "Colar os três arquivos"); ver se as 7
+linhas de resumo cabem de verdade na caixa (a altura de linha do Sheets não foi medida, e os resumos ficaram em até 6);
+e ver se o projeto aceita os três arquivos juntos (o teto de ~1 MB que o projeto usa é por arquivo, e as fontes que
+achei falam em 50 MB por projeto, nenhuma delas oficial).

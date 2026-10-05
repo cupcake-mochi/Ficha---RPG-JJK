@@ -391,11 +391,11 @@ def trocas(layout, CAT=None):
     c_cam = c_val + 2
     DEC = json.load(open(os.path.join(RAIZ, "decisoes-ficha.json"), encoding="utf-8"))
     caminhos = DEC["C1_evocador"]["caminhos_no_menu"]
-    trilhas = list(CAT["trilhas"])
+    trilhas = trilhas_do_menu(CAT)
     CAM = _A(idx["caminho"], "FICHA!")
     tab = [("menu de Caminho", [ESCOLHA_CAMINHO] + [f"=$A${4 + i}" for i in range(len(caminhos))]),
            ("Trilha", [f"=$L${4 + i}" for i in range(len(trilhas))]),
-           ("Caminho da Trilha", [CAT["trilhas"][tr_] for tr_ in trilhas]),
+           ("Caminho da Trilha", [c for _, c in trilhas]),
            ("menu de Trilha", [ESCOLHA_TRILHA,
                                f'=IFERROR(FILTER(${ix._letras(c_cam + 1)}${lin_cab + 1}:${ix._letras(c_cam + 1)}${lin_cab + len(trilhas)},'
                                f'${ix._letras(c_cam + 2)}${lin_cab + 1}:${ix._letras(c_cam + 2)}${lin_cab + len(trilhas)}={CAM}),"")'])]
@@ -613,6 +613,19 @@ def trocas(layout, CAT=None):
                                                  and ix._lc(feit)[0] < ix._lc(c)[0] <= novo_fim_feit and isinstance(v[1], (int, float))),
                                                 key=ix._lc)},
             "textos": {"aptidoes": atual, "feiticos": feit, "passivas_do_leque": f"{ix._letras(c4)}{lc}"}}
+
+
+def trilhas_do_menu(CAT):
+    """[(Trilha do menu, Caminho dela)]: as Trilhas do catálogo, com a que tem rotas aberta numa entrada por rota
+    ("Batedor · Yumi"). 05/10/2026, pedido do Mizuki: a rota do Batedor se escolhe no menu de Trilha, que é onde o
+    livro manda escolher ("O Batedor possui três rotas, das quais você escolhe uma"), e as cartas de Habilidades da
+    seção 7 precisam dela. As rotas saem do habilidades-do-livro.json (extrair_habilidades.py), que as lê dos títulos
+    do capítulo 6."""
+    hab = json.load(open(os.path.join(RAIZ, "ficha-v01", "habilidades-do-livro.json"), encoding="utf-8"))
+    out = []
+    for t, c in CAT["trilhas"].items():
+        out += [(f"{t} · {r}", c) for r in hab["rotas"][t]] if t in hab["rotas"] else [(t, c)]
+    return out
 
 
 def origens_do_menu(CAT):

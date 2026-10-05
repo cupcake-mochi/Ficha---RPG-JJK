@@ -17,13 +17,27 @@ O desenho foi fechado com o Mizuki por estudo em 02/10/2026 (mockup/habilidades-
 Os níveis vêm da tabela "Entregas por nível" do capítulo 35 (cinco degraus de Caminho nos níveis 2, 7, 15, 23 e 30;
 quatro entregas de Trilha nos níveis 2, 11, 19 e 27), e são os mesmos para todos os Caminhos.
 
+05/10/2026, a opção B do estudo de medida (o texto inteiro não cabe: 4 das 109 cartas): a carta traz o nome e o resumo
+do livro, e o texto inteiro fica na nota da caixa do texto ("B - mas dando permissão para o jogador apagar o texto e
+colocar oq preferir"). Quem escreve é o Codigo.gs (habilidadesDaFicha_), quando o Caminho ou a Trilha mudam: valor
+solto, não fórmula, para o jogador poder apagar e escrever por cima, e a carta que o jogador mudou fica como está. Este
+módulo publica na DADOS_AM o endereço do nome e do texto de cada carta (ADDRESS, que anda com a planilha), e escreve o
+apps-script/Habilidades.gs, com o texto do livro (habilidades-do-livro.json, do extrair_habilidades.py). O texto mora
+num arquivo de script próprio, e não na DADOS_AM, porque são 200 KB: o Ficha.gs passaria do teto de 900 KB que o
+conferir-ficha-xlsx guarda (o Apps Script engasga perto de 1 MB por arquivo), e a montagem, que já beira os seis
+minutos, escreveria 111 células de texto longo a mais. O nome ganha duas linhas (42 px),
+pedido dele no mesmo dia; a rota do Batedor se escolhe no menu de Trilha (ficha_automatica.trilhas_do_menu), e a Rajada
+Marcial do Pugilista vai na carta do nível 7 do Caminho ("o nv7 seria do caminho mesmo").
+
 A seção cresce, e o menu rápido (limpeza 26) começa onde ela termina: o monta.py passa ao menu_rapido.trocas a linha
 nova e as células desta seção, para ele não apagar nenhuma. A arte de respingos que morava no canto direito da seção
 (ficha-2.png) muda para o lado direito do título, onde as cartas não chegam.
 """
+import json, os, re
 import indice_ficha as ix
 import ficha_amaldicoada as fa
 import menu_rapido as mr
+import extrair_habilidades as xh
 
 NOME = "FICHA"
 DA = fa.DA
@@ -32,8 +46,39 @@ POR, W, X = mr.POR, mr.W, mr.X                # as cartas do menu rápido: três
 C1, CN = mr.C1, mr.CN
 TAG, TX = 3, 6                                # a etiqueta do nível tem 3 colunas ("Abre no 15"); o texto, 6 linhas
 ARTE = "ficha-2.png"
+ALT_NOME = 31.5                               # a linha do nome: duas linhas de 15,75 pt (42 px), para o nome do livro caber
 ESTILOS = {**mr.ESTILOS,
-           "tag": [["Oswald", 10.0, mr.fp.OSSO, False, False], mr.fp.ACENTO, mr.fp._CAIXA, ["center", "center", False, 0], None]}
+           "tag": [["Oswald", 10.0, mr.fp.OSSO, False, False], mr.fp.ACENTO, mr.fp._CAIXA, ["center", "center", False, 0], None],
+           "nm2": [["Castoro", 11.0, mr.fp.OSSO, False, False], mr.fp.ACENTO, mr.fp._CAIXA, ["left", "center", True, 0], None]}
+FONTE_CAMINHO, FONTE_TRILHA, FONTE_JUNTO = "Caminho", "Trilha", "Caminho com a Trilha"
+
+
+def livro():
+    """o habilidades-do-livro.json, que o extrair_habilidades.py lê do manual.txt"""
+    return json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "habilidades-do-livro.json"), encoding="utf-8"))
+
+
+def linhas_do_livro(HAB=None, CAT=None):
+    """a tabela que o Codigo.gs lê para escrever as cartas: [dono, fonte, nível, nome na carta, resumo, texto]. A entrega
+    de Trilha que mora na carta do Caminho (o nível 7 do Pugilista) entra como "Caminho com a Trilha", já junta com a
+    habilidade do Caminho daquele nível: o nome dos dois, o resumo do Caminho e a primeira frase da Trilha, e os dois
+    textos inteiros na nota"""
+    HAB = HAB or livro()
+    if CAT is None:
+        CAT = json.load(open(os.path.join(fa.RAIZ, "catalogo-projeto-m.json"), encoding="utf-8"))
+    out = [[d, FONTE_CAMINHO, int(n), h["nome_na_carta"], h["resumo"], h["texto"]]
+           for d, por in HAB["caminhos"].items() for n, h in por.items()]
+    out += [[d, FONTE_TRILHA, int(n), h["nome_na_carta"], h["resumo"], h["texto"]]
+            for d, por in HAB["trilhas"].items() for n, h in por.items()]
+    for t, por in HAB["no_caminho"].items():
+        cam = CAT["trilhas"][t.split(" · ")[0]]
+        for n, h in por.items():
+            base, curto = HAB["caminhos"][cam][n], re.split(r", | e ", h["nome"])[0]
+            frase = re.match(r".+?[.:](?= |\n|$)", h["resumo"], re.S).group(0)
+            out.append([t, FONTE_JUNTO, int(n), xh.nome_na_carta(f"{base['nome']} · {curto}"),
+                        f"{base['resumo']}\n{curto}: {frase}",
+                        f"{base['texto']}\n\n{t.upper()} · {h['nome']}\n{h['texto']}"])
+    return out
 
 
 class _Folha(mr._Folha):
@@ -65,6 +110,21 @@ def cartas():
     return [("Caminho", n) for n in NIV_CAMINHO] + [("Trilha", n) for n in NIV_TRILHA]
 
 
+def escreve_gs(destino, linhas=None):
+    """o apps-script/Habilidades.gs: a lista do livro que o habilidadesDaFicha_ do Codigo.gs lê. Gerado; não se edita"""
+    linhas = linhas if linhas is not None else linhas_do_livro()
+    chaves = ("dono", "fonte", "nivel", "nome", "resumo", "texto")
+    corpo = ",\n".join("  " + json.dumps(dict(zip(chaves, l)), ensure_ascii=False) for l in linhas)
+    txt = ("/**\n * GERADO pelo ficha-v01/monta.py (habilidades.escreve_gs), do ficha-v01/habilidades-do-livro.json, que o\n"
+           " * extrair_habilidades.py lê do manual.txt. Não edite à mão: rode o monta.py.\n *\n"
+           " * As habilidades de cada Caminho e de cada Trilha, para as cartas da seção 7 da FICHA. O habilidadesDaFicha_,\n"
+           " * no Codigo.gs, escreve o nome e o resumo na carta e o texto na nota. Fonte \"Caminho com a Trilha\" é a entrega\n"
+           " * de Trilha que mora na carta do Caminho (o nível 7 do Pugilista).\n */\n"
+           f"var HABILIDADES_DO_LIVRO_ = [\n{corpo}\n];\n")
+    open(destino, "w", encoding="utf-8").write(txt)
+    return len(linhas), len(txt)
+
+
 def trocas(layout, tr):
     """o que a limpeza muda na FICHA e na DADOS_AM. Lê a FICHA depois das limpezas de cima, e a DADOS_AM das trocas
     da Ficha Amaldiçoada (tr), que ainda não entrou no layout"""
@@ -80,8 +140,8 @@ def trocas(layout, tr):
 
     # --- a DADOS_AM: a etiqueta de cada carta pelo nível da FICHA, e o título de cada bloco pelo Caminho e pela Trilha
     lista = cartas()
-    cH = D.tabela("habilidades", ["habilidade: carta", "nível da carta", "etiqueta da carta"],
-                  [[f"{fonte} {n}", n, f'=IF({NIV}>={n},"Nível {n}","Abre no {n}")'] for fonte, n in lista])
+    cH = D.tabela("habilidades", ["habilidade: carta", "nível da carta", "etiqueta da carta", "célula do nome", "célula do texto"],
+                  [[f"{fonte} {n}", n, f'=IF({NIV}>={n},"Nível {n}","Abre no {n}")', None, None] for fonte, n in lista])
     escolha = lambda k: f'IF(OR({F_(k)}="",LEFT({F_(k)},7)="Escolha"),"","  ·  "&UPPER({F_(k)}))'
     cT = D.tabela("habilidades_titulos", ["habilidades: título", "texto do título"],
                   [["Caminho", f'="CAMINHO"&{escolha("caminho")}&"  ·  CINCO DEGRAUS"'],
@@ -91,7 +151,7 @@ def trocas(layout, tr):
 
     # --- a seção na FICHA
     f = _Folha(layout)
-    grupos, riscar = [], []
+    grupos, riscar, pos, alt_nome = [], [], {}, set()
     f.cel[f"D{r7}"] = (7, num_est)
     f.mesclas.append(f"D{r7}:F{r7 + 1}")
     f.cel[f"G{r7}"] = ("HABILIDADES", tit_est)
@@ -100,10 +160,13 @@ def trocas(layout, tr):
     a_secao = r
 
     def carta(r, x, i):
-        """a carta de uma habilidade: a etiqueta do nível, o nome e o texto, os dois escritos pelo jogador"""
+        """a carta de uma habilidade: a etiqueta do nível, o nome e o texto, que o Codigo.gs escreve do livro e o
+        jogador pode trocar"""
         tag = f.add("tag", x, r, x + TAG - 1, r, etiqueta(i))
-        nome = f.add("nm", x + TAG, r, x + W - 1, r, None)
+        nome = f.add("nm2", x + TAG, r, x + W - 1, r, None)
         texto = f.add("desc", x, r + 1, x + W - 1, r + TX, None)
+        pos[i] = (nome, texto)
+        alt_nome.add(r)
         riscar.append({"faixas": [f"{nome}:{fa._a1(x + W - 1, r)}", f"{texto}:{fa._a1(x + W - 1, r + TX)}"],
                        "formula": f'=LEFT(${fa.L(x)}${r},4)="Abre"', "riscado": True})
 
@@ -140,6 +203,9 @@ def trocas(layout, tr):
     bloco("trilha", 1, list(range(nc, len(lista))) + ["Escolhas da Trilha", "Anotações"])
     fim = r
     grupos.append([a_secao, fim - 1, False])
+    for i, (cn, ct) in pos.items():
+        D.poe(cH + 3, 2 + i, ix.FORMULA.format(c=cn))
+        D.poe(cH + 4, 2 + i, ix.FORMULA.format(c=ct))
     prof = lambda g: sum(1 for o in grupos if o[0] <= g[0] and g[1] <= o[1])
     for a_ in grupos:
         for b_ in grupos:
@@ -171,7 +237,7 @@ def trocas(layout, tr):
     return {"r7": r7, "r8_velho": r8, "fim": fim, "celulas": {NOME: {c: (v[0], c) for c, v in f.cel.items()}},
             "_estilos": f.cel, "sai": sai, "mescladas_sai": {NOME: mesc_sai}, "mescladas": {NOME: f.mesclas},
             "grupos": grupos, "riscar": riscar, "arte": arte, "copias": copias, "cartas": lista,
-            "tabela": cH, "titulos": cT}
+            "tabela": cH, "titulos": cT, "alt_nome": sorted(alt_nome)}
 
 
 def aplica(layout, tm):
@@ -190,6 +256,7 @@ def aplica(layout, tm):
     # as alturas: o título da seção fica com a do título, e as linhas finas de hoje (5,25) saem; as que estão depois da
     # seção nova são da seção 8 de hoje, e o menu rápido cuida delas
     ficha["linhas_alt"] = ([a for a in ficha["linhas_alt"] if a[0] < tm["r7"]] + [[tm["r7"], 27.0]] +
+                           [[r, ALT_NOME] for r in tm["alt_nome"]] +
                            [a for a in ficha["linhas_alt"] if a[0] >= tm["fim"]])
     ficha["grupos"] = {"linhas": (ficha.get("grupos") or {}).get("linhas", []) + tm["grupos"], "colunas": []}
     # as etiquetas e os títulos são conta: ficam fora da trava (moram em linha de grupo), e o onEdit devolve a conta

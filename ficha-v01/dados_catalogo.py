@@ -38,7 +38,8 @@ def listas(CAT, DEC):
         ("J", "Testes", [t for t in tr if isinstance(tr[t], dict)]),
         # a v0.104 escrevia aqui as CHAVES do dicionario (lista, escala, criacao, pagina)
         ("K", "Atributos", list(CAT["atributos"]["lista"])),
-        ("L", "Trilhas", list(CAT["trilhas"])),
+        # 05/10/2026: a Trilha com rotas entra uma vez por rota ("Batedor · Yumi"); ver ficha_automatica.trilhas_do_menu
+        ("L", "Trilhas", [t for t, _ in __import__("ficha_automatica").trilhas_do_menu(CAT)]),
     ]
 
 

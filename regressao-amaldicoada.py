@@ -1059,7 +1059,59 @@ ETIQ.sort(); TIT.sort()
 checa("as 9 etiquetas leem as cartas na ordem do bloco (o Caminho e depois a Trilha), e os 2 títulos, o do Caminho e o da Trilha",
       [x[2] for x in ETIQ] == list(range(2, 11)) and [x[1] for x in TIT] == [2, 3], f"{[x[2] for x in ETIQ]} {[x[1] for x in TIT]}")
 _vazias = [f"{x[3]}" for x in ETIQ if F0.cell(row=x[0], column=x[1] + 3).value not in (None, "")]
-checa("o nome de cada carta nasce vazio, para o jogador escrever", not _vazias, str(_vazias[:3]))
+checa("o nome de cada carta nasce vazio: quem escreve é o script, quando o Caminho ou a Trilha mudam", not _vazias, str(_vazias[:3]))
+# 05/10/2026, a opção B (o nome e o resumo do livro na carta, o texto inteiro na nota, o jogador pode escrever por cima):
+# o habilidadesDaFicha_ do Codigo.gs acha cada carta pelo endereço que a DADOS_AM publica, e lê o livro do Habilidades.gs.
+# O regressao-delta.js roda a conta do script no node; aqui, o que ela lê.
+import habilidades as _hb, extrair_habilidades as _xh, ficha_automatica as _fau
+_r = subprocess.run([sys.executable, "ficha-v01/extrair_habilidades.py", "--confere"], capture_output=True, text=True)
+checa("o habilidades-do-livro.json é o que o extrair_habilidades.py tira do manual.txt hoje, e cada texto está no manual",
+      _r.returncode == 0, (_r.stdout + _r.stderr).strip()[-200:])
+_c_cn, _c_ct = _cab_hab.get("célula do nome"), _cab_hab.get("célula do texto")
+_end = lambda v: ix.endereco(v) or ""
+_mesc_f = {str(m).split(":")[0]: str(m) for m in F0.merged_cells.ranges}
+_ruins_end = []
+for k, (lin, col, linha_am, _co) in enumerate(ETIQ):
+    nm, tx = (_end(D0.cell(row=linha_am, column=c).value) if c else "" for c in (_c_cn, _c_ct))
+    nm_ok = nm == ix._letras(col + _hb.TAG) + str(lin) and _mesc_f.get(nm, "").endswith(ix._letras(col + _hb.W - 1) + str(lin))
+    tx_ok = tx == ix._letras(col) + str(lin + 1) and _mesc_f.get(tx, "").endswith(ix._letras(col + _hb.W - 1) + str(lin + _hb.TX))
+    if not (nm_ok and tx_ok):
+        _ruins_end.append(f"carta {k + 1}: {nm} {tx}")
+checa("a DADOS_AM publica o endereço do nome e do texto de cada carta (ADDRESS, que anda com a planilha), e eles são as caixas da carta",
+      bool(ETIQ) and not _ruins_end, "; ".join(_ruins_end[:3]))
+_nm_cel = [F0[_end(D0.cell(row=x[2], column=_c_cn).value)] for x in ETIQ] if _c_cn else []
+# a altura se mede contra a da aba, e não contra a constante do gerador (uma checagem que lê a própria constante fica
+# verde quando a constante muda: o arnes-amaldicoada achou, 05/10/2026)
+_duas = 2 * F0.sheet_format.defaultRowHeight
+checa(f"o nome da carta tem duas linhas: quebra o texto, e a linha dele tem {_duas} pt, o dobro da linha comum da FICHA",
+      bool(_nm_cel) and all(c.alignment.wrap_text and F0.row_dimensions[c.row].height == _duas for c in _nm_cel),
+      str([(c.coordinate, c.alignment.wrap_text, F0.row_dimensions[c.row].height) for c in _nm_cel][:3]))
+_gs = open("apps-script/Habilidades.gs", encoding="utf-8").read()
+_m = re.search(r"var HABILIDADES_DO_LIVRO_ = (\[.*\]);\s*$", _gs, re.S)
+_lido = json.loads(_m.group(1)) if _m else []
+_esp = [dict(zip(("dono", "fonte", "nivel", "nome", "resumo", "texto"), l)) for l in _hb.linhas_do_livro()]
+checa(f"o Habilidades.gs é o livro que o gerador monta ({len(_esp)} habilidades), e cabe no teto do Apps Script ({len(_gs) // 1024} KB)",
+      _lido == _esp and len(_gs) / 1024 < 900, f"{len(_lido)} lidas, {len(_esp)} esperadas")
+_CATj = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))
+_tem = lambda fonte, dono: sorted(l["nivel"] for l in _lido if l["fonte"] == fonte and l["dono"] == dono)
+_menu_t = [t for t, _ in _fau.trilhas_do_menu(_CATj)]
+_falta = [c for c in _CATj["caminhos"] if _tem("Caminho", c) != _cam] + [t for t in _menu_t if _tem("Trilha", t) != _tri]
+checa(f"todo Caminho tem as {len(_cam)} cartas e toda Trilha do menu ({len(_menu_t)}, com as rotas do Batedor) tem as {len(_tri)}",
+      bool(_cam) and not _falta, str(_falta[:4]))
+_DADOS = WB0["DADOS"]
+_L = [_DADOS.cell(row=r, column=12).value for r in range(4, 4 + len(_menu_t) + 1)]
+checa("a lista de Trilhas da DADOS é a do menu, com o Batedor aberto nas três rotas do livro",
+      _L[:-1] == _menu_t and _L[-1] in (None, "") and "Batedor" not in _L
+      and [t for t in _menu_t if t.startswith("Batedor · ")] == [f"Batedor · {r}" for r in _xh.extrai()["rotas"]["Batedor"]], str(_L))
+_junto = [l for l in _lido if l["fonte"] == _hb.FONTE_JUNTO]
+checa("a Rajada Marcial do Pugilista mora na carta 7 do Caminho dele, junto da habilidade do Incursor no 7",
+      [(l["dono"], l["nivel"]) for l in _junto] == [("Pugilista", 7)] and _CATj["trilhas"]["Pugilista"] == "Incursor"
+      and _junto[0]["texto"].startswith(next(l["texto"] for l in _lido if l["fonte"] == "Caminho" and l["dono"] == "Incursor" and l["nivel"] == 7)),
+      str([(l["dono"], l["nivel"]) for l in _junto]))
+_longos = [f'{l["dono"]} {l["nivel"]}' for l in _lido if len(l["nome"]) > _xh.NOME_CABE
+           or (len(l["resumo"]) > _xh.CABE and len(re.findall(r"[.:](?= |\n|$)", l["resumo"])) > 1)]
+checa(f"o nome cabe nas duas linhas ({_xh.NOME_CABE} letras) e o resumo na caixa ({_xh.CABE} letras, ou uma frase só)",
+      not _longos, str(_longos[:4]))
 for nome in FICHAS:
     ficha, f = FICHAS[nome], WB[nome]["FICHA"]
     n = ficha.get("nivel", 2)

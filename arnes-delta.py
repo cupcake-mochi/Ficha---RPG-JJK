@@ -11,7 +11,8 @@ import json, os, shutil, subprocess, sys, tempfile
 AQUI = os.path.dirname(os.path.abspath(__file__))
 PRECISA = ["regressao-delta.js", "decisoes-ficha.json", "manual-temporario.md", "manual.txt",
            "catalogo-projeto-m.json",   # 17/09/2026: as perícias fixas do Caminho saem do catálogo
-           "ficha-v01/ficha_automatica.py"]   # e o texto de escolha da Trilha sai da limpeza 12
+           "ficha-v01/ficha_automatica.py",   # e o texto de escolha da Trilha sai da limpeza 12
+           "apps-script/Habilidades.gs", "ficha-v01/habilidades-do-livro.json"]   # 05/10/2026: as cartas da seção 7
 NODE = shutil.which("node") or shutil.which("nodejs")
 
 
@@ -243,6 +244,27 @@ edita("só espaço em cima passa a levar a nota", GS,
       "(typeof acima.valor === 'string' && acima.valor.trim())",
       "(typeof acima.valor === 'string' && acima.valor)",
       "só espaço em cima deixa a nota na caixa")
+
+# 05/10/2026: as cartas de Habilidades da seção 7 (a opção B: o livro na carta, o jogador pode escrever por cima)
+edita("o script escreve por cima do que o jogador escreveu", GS,
+      "return (atual === '' || autos.indexOf(atual) >= 0) ? novo : atual;", "return novo;",
+      "o texto que o jogador escreveu fica")
+edita("a carta apagada não volta a encher", GS,
+      "return (atual === '' || autos.indexOf(atual) >= 0) ? novo : atual;", "return (autos.indexOf(atual) >= 0) ? novo : atual;",
+      "a carta apagada volta a encher")
+edita("a carta do Caminho esquece a Rajada do Pugilista", GS,
+      "(acha('Caminho com a Trilha', trilha, c.nivel) || acha('Caminho', caminho, c.nivel))", "acha('Caminho', caminho, c.nivel)",
+      "é a junta")
+edita("a nota some na carta que o jogador mexeu", GS,
+      "nota: linha ? linha.texto : ''", "nota: (linha && atuais[i].texto === '') ? linha.texto : ''",
+      "a nota mostra o livro")
+edita("o texto do livro de outro Caminho passa a contar como do jogador", GS,
+      "return fontes.indexOf(l.fonte) >= 0 && l.nivel === c.nivel; });",
+      "return fontes.indexOf(l.fonte) >= 0 && l.nivel === c.nivel && (l.dono === caminho || l.dono === trilha); });",
+      "troca as cartas que ainda são do livro")
+edita("o Habilidades.gs perde a carta junta do Pugilista", "apps-script/Habilidades.gs",
+      '"fonte": "Caminho com a Trilha"', '"fonte": "Caminho"',
+      "a carta junta do Pugilista")
 
 edita("mexida inocua no comentario", GS,
       "// a ficha que já tinha a nota no número não fica com duas",
