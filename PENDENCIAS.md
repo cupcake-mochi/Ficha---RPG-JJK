@@ -2143,7 +2143,7 @@ leem é o mesmo, e só o carimbo mudou (o Ficha.gs não mudou com isso).*
 **O que só o Sheets diz, e falta ele ver:** *o riscado aparecendo e sumindo quando o NÍVEL muda; a etiqueta "Abre no 15"
 cabendo nas três colunas; os grupos de cada fileira; e a arte ao lado do título.*
 
-### B35 · A foto da `CARTEIRA` entra na célula, com a moldura em volta — **FEITA em 03/10/2026 (a B+); falta montar no Sheets, e a ligação com a `FICHA PESSOAL` espera o teste dele**
+### B35 · A foto da `CARTEIRA` entra na célula, com a moldura em volta — **FEITA em 03/10/2026 (a B+); falta montar no Sheets; a ligação com a `FICHA PESSOAL` foi feita no B38**
 
 *Pedido dele em 03/10/2026: "Sabe no ficha aonde temos a foto? Então, é uma 'imagem', então não dá pra inserir imagem
 nela, tem que ser uma imagem 'solta' por cima que o jogador põe, oq não é muito bom. Eu não sei se teria alguma forma de
@@ -2386,3 +2386,46 @@ primeiro no livro (D42 do `JJK---Project`, que o registra em `revisao-interfaces
 Caminho e Trilha, os parágrafos "Nível N: Nome." de carta que junta habilidades, e exige o nome em subtítulo seguido do
 texto, no `Habilidades.gs` e no que o extrator tira hoje (são 5 nomes, entre eles a Execução Preparada). O
 `arnes-amaldicoada.py` vai a 66: o extrator que volta a tirar o nome acende a checagem nova.
+
+### B38 · A foto da `CARTEIRA` na `FICHA PESSOAL`, e o nome da técnica da `CARTEIRA` na `FICHA AMALDIÇOADA` — **FEITA em 05/10/2026; falta montar no Sheets e ver se a foto aparece**
+
+*Pedido dele em 05/10/2026: "uma coisa q é bom implementar na ficha e notei q faltou / 1 - A imagem que for colocada
+na carteira aparecer no ficha pessoal / 2 - Nome da técnica aparecer na ficha amaldiçoada". As duas seguem o que a
+ficha já faz com o nome do personagem: a `CARTEIRA` é onde se escreve, e as outras abas mostram.*
+
+**A foto (a ligação que o B35 deixou para depois).** A caixa FOTO DO PERSONAGEM da `FICHA PESSOAL` virou
+`=CARTEIRA!$C$8`, o canto da caixa da foto que a `CARTEIRA` declara (`foto`, do `moldura_foto.py`, o mesmo endereço que o
+`Codigo.gs` usa para ancorar a caixa da paleta). *A documentação do Google não diz se uma fórmula que aponta para uma
+célula com imagem inserida mostra a imagem: procurei em 05/10/2026 e só achei a função `IMAGE`, com link, e um relato de
+que o `IMPORTRANGE` não traz imagem inserida de outro arquivo, que é outro caso.* Por isso a caixa ficou fora da trava:
+se a foto não aparecer, o jogador insere a mesma foto nela, por cima da conta, sem aviso. A nota diz isso.
+
+**O nome da técnica.** Perguntado, ele escolheu *"Espelha a CARTEIRA"*: o jogador escreve uma vez, no campo TÉCNICA
+DECLARADA da `CARTEIRA`, e a caixa NOME DA TÉCNICA da `FICHA AMALDIÇOADA` mostra. Ela é referência pura para uma conta da
+`DADOS_AM` (`=CARTEIRA!$O$27&""`), como toda caixa calculada da aba: quem escreve por cima recebe a conta de volta pelo
+onEdit. O aviso dessa caixa é outro: *"O nome da técnica vem da CARTEIRA, e a caixa voltou. Para mudar, escreva na
+TÉCNICA DECLARADA de lá."* A aba declara a caixa em `da_carteira`, e o `devolverConta_` escolhe o aviso por ela. O
+campo da `CARTEIRA` é achado pelo rótulo (a caixa logo abaixo de "TÉCNICA … DECLARADA"), e o gerador para se não houver
+caixa ali.
+
+| peça | o que mudou |
+|---|---|
+| `ficha-v01/ficha_pessoal.py` | a caixa da foto aponta para a foto da `CARTEIRA` e entra nas `livres` (fora da trava); a nota nova |
+| `ficha-v01/ficha_amaldicoada.py` | `campo_da_tecnica`, a caixa NOME DA TÉCNICA com a conta, a nota, e `da_carteira` na aba |
+| `ficha-v01/monta.py` | passa `da_carteira` para o `Ficha.gs` |
+| `apps-script/Codigo.gs` | o `devolverConta_` escolhe o aviso da `CARTEIRA` |
+
+**Conferido:** o `conferir-ficha-xlsx.py` (uma caixa só da `FICHA PESSOAL` aponta para a foto declarada, do tamanho de uma
+foto, com a nota e fora da trava); o `regressao-pessoal.js` (a trava cobre toda fórmula da aba, menos o Volume dos
+itens, o que mora em grupo e, agora, só a fórmula que é exatamente a referência da foto); a `regressao-amaldicoada.py`
+(a caixa aponta para a conta, a conta lê o campo achado pelo rótulo na planilha gerada, a aba declara a caixa, e a Kaori,
+com "Peso Emprestado" escrito na `CARTEIRA`, mostra o nome depois de recalculada no LibreOffice); e o
+`regressao-construir.js` (escrever por cima devolve a conta, e o aviso manda escrever na `CARTEIRA`, e o da caixa comum
+não). Os arneses ganham: o `arnes-moldura.py` 2 (a caixa que deixa de apontar e a que entra na trava; vai a 11), o
+`arnes-pessoal.py` 2 (o aviso que esquece a `CARTEIRA` e a aba que não declara a caixa; vai a 59) e o
+`arnes-amaldicoada.py` 3 (a caixa escrita à mão, o script que não sabe de onde ela vem, e o campo uma linha abaixo, que
+para o gerador; vai a 69). Todos acendem.
+
+**Fica para ele, no Sheets:** inserir uma foto na caixa FOTO da `CARTEIRA` e olhar a `FICHA PESSOAL`. Se a foto não
+aparecer, me avise: o plano B é o jogador inserir nas duas, e o C é o script copiar a imagem (o Apps Script lê e grava
+imagem de célula, pela documentação dele).

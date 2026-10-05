@@ -183,6 +183,21 @@ def _faixa(c1, l1, c2, l2, aba=""):
     return f"{aba}${L(c1)}${l1}:${L(c2)}${l2}"
 
 
+def campo_da_tecnica(layout):
+    """o campo TÉCNICA DECLARADA da CARTEIRA, onde o jogador escreve o nome da técnica: a caixa mesclada logo abaixo do
+    rótulo (que diz TÉCNICA AMALDIÇOADA, TÉCNICA MARCIAL ou ESTILO DECLARADO, conforme a rota). A caixa NOME DA TÉCNICA
+    desta aba espelha ele (05/10/2026)"""
+    car = next(a for a in layout["abas"] if a["nome"] == "CARTEIRA")
+    rot = [c for c, v, _ in car["celulas"] if isinstance(v, str) and "DECLARAD" in v]
+    if len(rot) != 1:
+        raise SystemExit(f"ficha_amaldicoada: a CARTEIRA devia ter um rótulo de técnica declarada, e tem {rot}")
+    lin, col = ix._lc(rot[0])
+    campo = _a1(col, lin + 1)
+    if not any(m.split(":")[0] == campo for m in car["mescladas"]):
+        raise SystemExit(f"ficha_amaldicoada: abaixo do rótulo {rot[0]} da CARTEIRA não há a caixa do nome da técnica")
+    return campo
+
+
 def _A(coord, aba=""):
     lin, col = ix._lc(coord)
     return _abs(col, lin, aba)
@@ -1060,6 +1075,8 @@ NOTAS = {
     "restricoes": "Até duas. Restrição paga peças, incluindo a Forma: o que passar do que foi gasto some.",
     "ampliar": "O mesmo feitiço lançado numa Classe maior, até a maior que o nível liberou. A conta inteira é refeita com os "
                "números da Classe nova.",
+    "nome_tecnica": "Vem da CARTEIRA: o nome da técnica é escrito no campo TÉCNICA DECLARADA de lá. Escrever aqui não "
+                    "muda nada: a caixa volta a mostrar o da CARTEIRA.",
     "atributo": "Escolhido na criação, e não muda. É o menu ATRIBUTO DE CONJURAÇÃO da FICHA: aqui ele aparece espelhado. Na "
                 "Técnica Marcial de arma, é o atributo da arma usada na Kata: a linha da rota mostra o de cada grupo.",
     "rota_nome": "Vem da Origem escolhida na FICHA. O Fundamento é a rota das cinco Origens principais e da Restrição Celestial "
@@ -1304,7 +1321,9 @@ def aba(layout, tr):
     t = G["tec_caixas"]
     atributo = ix._Ficha(layout)
     atributo = atributo.abaixo(atributo.unico("ATRIBUTO DE CONJURAÇÃO"))
-    f.caixa("D", "H", t, "NOME DA TÉCNICA")
+    # 05/10/2026, pedido do Mizuki: "Nome da técnica aparecer na ficha amaldiçoada". Ele escolheu "Espelha a CARTEIRA":
+    # o jogador escreve uma vez, na TÉCNICA DECLARADA de lá, e quem escreve por cima aqui recebe a conta de volta
+    f.caixa("D", "H", t, "NOME DA TÉCNICA", f'={_A(campo_da_tecnica(layout), "CARTEIRA!")}&""', nota=NOTAS["nome_tecnica"])
     f.caixa("J", "K", t, "TIPO DE DANO")
     # na Técnica Marcial de arma, o atributo é o da arma da Kata: com os grupos num atributo só, a linha mostra ele e os
     # números dele; com dois, "Por grupo", e a linha da rota mostra os números de cada grupo
@@ -1651,6 +1670,8 @@ def aba(layout, tr):
         # nenhuma fórmula desta aba é travada: quase todas moram em linha de grupo, e trava em linha de grupo faz o
         # Sheets avisar quem clica no + (o achado do painel de XP da FICHA PESSOAL)
         "protegidas": [],
+        # a caixa que espelha a CARTEIRA: quem escreve por cima dela recebe a conta de volta com o aviso de escrever lá
+        "da_carteira": [G["nome_tecnica"]],
         "copias": copia,
         # menus e caixas de seleção numa gravação só: são mais de duzentas faixas
         "validacao_em_matriz": True,

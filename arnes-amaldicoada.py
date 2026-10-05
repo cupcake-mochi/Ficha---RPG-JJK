@@ -177,6 +177,14 @@ PERTURBACOES = [
     ("a segunda habilidade da carta perde o nome (a Execução Preparada)", "ficha-v01/extrair_habilidades.py",
      'sub = [("titulo", m.group(1))] if m and m.group(1).lower() != nome.lower() and m.group(1) in _nomes(nome) else []',
      "sub = []", "mostra o nome de cada uma que o livro abre"),
+    # 05/10/2026, o nome da técnica espelha a TÉCNICA DECLARADA da CARTEIRA ("Espelha a CARTEIRA")
+    ("a caixa NOME DA TÉCNICA volta a ser escrita à mão", "ficha-v01/ficha_amaldicoada.py",
+     """f.caixa("D", "H", t, "NOME DA TÉCNICA", f'={_A(campo_da_tecnica(layout), "CARTEIRA!")}&""', nota=NOTAS["nome_tecnica"])""",
+     """f.caixa("D", "H", t, "NOME DA TÉCNICA", nota=NOTAS["nome_tecnica"])""", "NOME DA TÉCNICA espelha"),
+    ("o script não sabe que o nome da técnica vem da CARTEIRA", "ficha-v01/ficha_amaldicoada.py",
+     '"da_carteira": [G["nome_tecnica"]],', '"da_carteira": [],', "NOME DA TÉCNICA espelha"),
+    ("o campo da técnica sai uma linha abaixo do da CARTEIRA", "ficha-v01/ficha_amaldicoada.py",
+     "campo = _a1(col, lin + 1)", "campo = _a1(col, lin + 2)", None),
 ]
 CONTRA = ("um comentário a mais no gerador", GER, "def _se(cond, texto):", "# comentario que nao muda nada\ndef _se(cond, texto):")
 

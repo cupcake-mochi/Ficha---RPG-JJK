@@ -6,6 +6,9 @@ A moldura saiu de dentro da caixa da foto, pedido do Mizuki, para o jogador inse
 livre, com o convite e a nota, as retas viram borda na regua no anel em volta, e as duas quinas chanfradas sao imagem na
 celula do canto, na regua exata. Ver ficha-v01/moldura_foto.py.
 
+Desde 05/10/2026 ele tambem planta os dois defeitos da foto na FICHA PESSOAL (a caixa que deixa de apontar para a foto da
+CARTEIRA e a que entra na trava), e cada um tem de acender a checagem dela, que e outra.
+
 Cada rodada gera a ficha e confere, e leva perto de um minuto e meio: por isso ele e rodado a mao, e nao mora no
 rodar-tudo.sh. Nao usa o LibreOffice.
 
@@ -17,7 +20,9 @@ import os, shutil, subprocess, sys, tempfile
 AQUI = os.path.dirname(os.path.abspath(__file__))
 FORA = {".git", "mockup", "__pycache__", "repos", "repo-conserto", ".claude"}
 MF, EMI, MON, COD = "ficha-v01/moldura_foto.py", "ficha/emitir_gs.py", "ficha-v01/monta.py", "apps-script/Codigo.gs"
+FP = "ficha-v01/ficha_pessoal.py"
 CHECA = "a foto entra na célula"
+LIGA = "mostra a foto da CARTEIRA"         # 05/10/2026: a foto da CARTEIRA na FICHA PESSOAL
 
 # (o que e o defeito, arquivo, o trecho certo, o trecho errado)
 PERTURBACOES = [
@@ -31,9 +36,13 @@ PERTURBACOES = [
     ("a caixa da foto nasce sem o convite", MF, "celulas[canto] = (TEXTO, ", "celulas[canto] = (None, "),
     ("a caixa da foto nasce sem a nota de como inserir", MF, 'NOTA = "Clique na caixa e use Inserir › Imagem › Inserir imagem na célula."',
      'NOTA = "Clique na caixa."'),
-    ("a CARTEIRA deixa de declarar a caixa da foto", MON, '"foto": a.get("foto")}', '"foto": None}'),
+    ("a CARTEIRA deixa de declarar a caixa da foto", MON, '"foto": a.get("foto"),', '"foto": None,'),
     ("o canto nasce na média da arte reduzida, e não na cor desenhada", EMI, "_png_de_uma_cor(img, desenho).save(", "_png_de_uma_cor(img).save("),
     ("o canto passa pelo piso de contraste da arte na troca", COD, "var ARTE_DA_BORDA_ = { 'carteira-canto': true };", "var ARTE_DA_BORDA_ = {};"),
+    # 05/10/2026, "A imagem que for colocada na carteira aparecer no ficha pessoal": a quinta coluna é a checagem que acende
+    ("a FICHA PESSOAL deixa de apontar para a foto da CARTEIRA", FP, "f\"={_abs(foto[1], foto[0], 'CARTEIRA!')}\"",
+     '"FOTO DO PERSONAGEM"', LIGA),
+    ("a caixa da foto da FICHA PESSOAL entra na trava", FP, "livres = [foto_fp]", "livres = []", LIGA),
 ]
 CONTRA = ("um comentário a mais na limpeza", MF, "def desenha(tr):", "# comentario que nao muda nada\ndef desenha(tr):")
 
@@ -79,14 +88,14 @@ assert not parou and cod == 0, "A BASE FALHA NA COPIA. O arnes inteiro seria fal
 
 print("\nPASSO 2 - cada defeito plantado acende a checagem da moldura")
 ruins = 0
-for i, (desc, arq, certo, errado) in enumerate(PERTURBACOES, 1):
+for i, (desc, arq, certo, errado, *agulha) in enumerate(PERTURBACOES, 1):
     if quais and i not in quais:
         continue
     original = aplica(base, arq, certo, errado)
     parou, cod, saida = roda(base)
     open(os.path.join(base, arq), "w", encoding="utf-8").write(original)
     falhas = [l.strip() for l in saida.split("\n") if "[FALHA]" in l]
-    acendeu = not parou and cod != 0 and any(CHECA in l for l in falhas)
+    acendeu = not parou and cod != 0 and any((agulha or [CHECA])[0] in l for l in falhas)
     det = ("o gerador parou: " + saida[-200:].replace("\n", " ") if parou
            else f"{len(falhas)} checagem(ns)" + ("" if acendeu else " · " + "; ".join(l[:90] for l in falhas[:3])))
     ruins += not acendeu

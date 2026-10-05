@@ -77,6 +77,8 @@ Os números do exemplo são inventados: servem só para mostrar o formato. **Se 
 
 **Se o registro terminar em `FALTA O ACABAMENTO: rode a função acabar()`**, as abas já estão de pé e faltam a cor de estado, as notas, as travas e a caixa da paleta. No seletor de funções, escolhe **`acabar`** e clica em **▶ Executar**. Ela pode rodar quantas vezes precisar, sem estragar nada.
 
+**Depois de montar, um teste de um minuto (B38):** insira uma foto na caixa FOTO da `CARTEIRA` (clique nela e use Inserir › Imagem › Inserir imagem na célula) e olhe a caixa FOTO DO PERSONAGEM da `FICHA PESSOAL`. Ela aponta para a da `CARTEIRA`, e a documentação do Google não diz se a foto aparece por referência. **Se não aparecer, me avise.** Enquanto isso, dá para inserir a mesma foto direto na `FICHA PESSOAL`.
+
 **Não vai ter pop-up.** O aviso vai para o registro de propósito: `alert()` abre na aba da planilha e trava a execução esperando um clique que você não vê.
 
 ---

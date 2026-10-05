@@ -713,7 +713,7 @@ function devolverConta_(e, nome) {
   if (!spec) return 0;
   var aba = e.range.getSheet();
   var r1 = e.range.getRow(), c1 = e.range.getColumn(), r2 = e.range.getLastRow(), c2 = e.range.getLastColumn();
-  var n = 0;
+  var n = 0, daCarteira = false;
   spec.vals.forEach(function (t) {
     if (t[0] < r1 || t[0] > r2 || t[1] < c1 || t[1] > c2) return;
     if (typeof t[2] !== 'string' || !REFERENCIA_PURA_.test(t[2])) return;
@@ -721,10 +721,14 @@ function devolverConta_(e, nome) {
     if (cel.getFormula() === t[2]) return;
     cel.setFormula(t[2]);
     n++;
+    // 05/10/2026: o nome da técnica espelha a CARTEIRA, e o aviso diz onde se escreve
+    if ((spec.da_carteira || []).indexOf(a1_(t[0], t[1])) >= 0) daCarteira = true;
   });
   if (n) {
     SpreadsheetApp.getActive().toast(nome === 'FICHA'
       ? 'O menu rápido mostra o que está na FICHA AMALDIÇOADA, e a caixa voltou. Para mudar, mexa lá.'
+      : daCarteira
+      ? 'O nome da técnica vem da CARTEIRA, e a caixa voltou. Para mudar, escreva na TÉCNICA DECLARADA de lá.'
       : 'Essa caixa é calculada pela ficha, e a conta voltou. O número dela muda pelas caixas de ' +
         'escolher e de escrever da própria seção.', nome, 8);
   }

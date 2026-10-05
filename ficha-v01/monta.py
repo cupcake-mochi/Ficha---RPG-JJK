@@ -295,7 +295,10 @@ def _extras(a):
            # 02/10/2026, o menu rapido da FICHA: as linhas que a trava de formula do script deixa de fora
            "sem_trava": a.get("sem_trava", []),
            # 03/10/2026, a CARTEIRA: a caixa da foto, onde a caixa da paleta se ancora (ver moldura_foto.py)
-           "foto": a.get("foto")}
+           "foto": a.get("foto"),
+           # 05/10/2026, a FICHA AMALDICOADA: a caixa que espelha a CARTEIRA (o nome da tecnica), para o aviso de quem
+           # escreve por cima dela dizer onde se escreve
+           "da_carteira": a.get("da_carteira", [])}
     return {k: v for k, v in out.items() if v}
 
 gs, celulas, pecas = emitir_gs.escrever(

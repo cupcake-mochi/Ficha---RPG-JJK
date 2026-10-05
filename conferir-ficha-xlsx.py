@@ -1241,6 +1241,29 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
                 _mold_ruim.append(f"a quina {_im[0][4]} não é o traço / de canto a canto na régua: {sorted(_cor)[:2]}")
     checa("a foto entra na célula: a caixa livre, com o convite e a nota, a moldura em volta na régua, e as duas quinas "
           "chanfradas em imagem na célula do canto, na régua exata", not _mold_ruim, str(_mold_ruim[:3]))
+    # 05/10/2026, pedido do Mizuki: "A imagem que for colocada na carteira aparecer no ficha pessoal". Uma caixa só da
+    # FICHA PESSOAL aponta para o canto da caixa da foto que a CARTEIRA declara; ela é do tamanho de uma foto (uma
+    # mesclagem de 10 linhas ou mais), tem a nota que manda inserir na CARTEIRA, e fica fora da trava: se a referência
+    # não mostrar a imagem inserida na célula (a documentação do Google não diz), o jogador insere a foto por cima.
+    _fpa = next(a for a in dados if a["nome"] == "FICHA PESSOAL")
+    _liga = f"=CARTEIRA!${L(_ft[1])}${_ft[0]}" if _ft and len(_ft) == 4 else None
+    _aponta = [v for v in _fpa["vals"] if isinstance(v[2], str) and v[2].replace("$", "") == (_liga or "?").replace("$", "")]
+    _foto_ruim = []
+    if len(_aponta) != 1:
+        _foto_ruim.append(f"{len(_aponta)} caixa(s) da FICHA PESSOAL apontam para a foto da CARTEIRA ({_liga})")
+    else:
+        _r, _c = _aponta[0][0], _aponta[0][1]
+        _mf = next((m for m in _fpa["merges"] if m[0] == _r and m[1] == _c), None)
+        if not _mf or _mf[2] - _mf[0] + 1 < 10:
+            _foto_ruim.append(f"a caixa {L(_c)}{_r} não é do tamanho de uma foto: {_mf}")
+        if "CARTEIRA" not in dict((n[0], n[1]) for n in _fpa.get("notas", [])).get(f"{L(_c)}{_r}", ""):
+            _foto_ruim.append(f"a caixa {L(_c)}{_r} não tem a nota que manda inserir a foto na CARTEIRA")
+        for _fx in _fpa.get("protegidas", []):
+            _x1, _y1, _x2, _y2 = _rbx(_fx)
+            if _y1 <= _r <= _y2 and _x1 <= _c <= _x2:
+                _foto_ruim.append(f"a caixa {L(_c)}{_r} está na trava {_fx}")
+    checa("a FICHA PESSOAL mostra a foto da CARTEIRA: uma caixa do tamanho de uma foto aponta para a caixa dela, com a nota, "
+          "e fora da trava", not _foto_ruim, str(_foto_ruim[:3]))
 
     # A função que o Excel não tem sai do .xlsx embrulhada em IFERROR(__xludf.DUMMYFUNCTION("...")),
     # e remontada assim ela falha calada: foram as barras vazias de 15/09/2026. O script leva a de dentro.

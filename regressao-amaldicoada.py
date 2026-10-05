@@ -309,6 +309,10 @@ def indice_da_ficha(wb):
 
 
 IDX = indice_da_ficha(WB0)
+# 05/10/2026: o campo TÉCNICA DECLARADA da CARTEIRA, a caixa logo abaixo do rótulo (que diz TÉCNICA AMALDIÇOADA, TÉCNICA
+# MARCIAL ou ESTILO DECLARADO); a caixa NOME DA TÉCNICA desta aba espelha ele. Achado na planilha gerada, e não no gerador.
+_rot_tec = [c for linha in WB0["CARTEIRA"].iter_rows() for c in linha if isinstance(c.value, str) and "DECLARAD" in c.value]
+CAMPO_TEC = f"{_rot_tec[0].column_letter}{_rot_tec[0].row + 1}" if len(_rot_tec) == 1 else None
 FEITICOS = [fa.celulas_do_feitico(*p) for p in G["feiticos"]]
 LIBS = [fa.celulas_do_feitico(*p) for p in G["libs"]]
 PASSIVAS = [fa.celulas_da_passiva(*p) for p in G["passivas"]]
@@ -355,6 +359,8 @@ def prepara(nome, ficha):
         poe(cel, ft)
     for cel, v in ficha.get("celulas", {}).items():
         a[cel] = v
+    if ficha.get("tecnica_declarada") and CAMPO_TEC:      # 05/10/2026: escrito na CARTEIRA, como o jogador faz
+        wb["CARTEIRA"][CAMPO_TEC] = ficha["tecnica_declarada"]
     # o IFS e o TEXTJOIN ficam crus na ficha, porque ela vive no Sheets; o LibreOffice só os reconhece com o prefixo do Excel
     for ws in wb:
         for linha in ws.iter_rows():
@@ -545,6 +551,7 @@ FICHAS = {**{k: v[1] for k, v in LIVROS.items()}, "kaori": KAORI, "velho": VELHO
           "rota-sem": ROTA_SEM, "rota-corpo": ROTA_CORPO, "rota-celeste": ROTA_CELESTE, "rota-fisga": ROTA_FISGA,
           "sorteio-2": sorteada(11, 2, False), "sorteio-7": sorteada(12, 7), "sorteio-13": sorteada(13, 13),
           "sorteio-21": sorteada(14, 21), "sorteio-30": sorteada(15, 30)}
+FICHAS["kaori"] = {**FICHAS["kaori"], "tecnica_declarada": "Peso Emprestado"}
 # o arnes-amaldicoada.py roda esta regressão dezenas de vezes, e pede só algumas fichas para cada rodada ser curta
 SO = [x for x in os.environ.get("AMALDICOADA_SO", "").split(",") if x]
 if SO:
@@ -1154,6 +1161,22 @@ for l in _lido:
                 _sem_nome.append(f"{l['dono']} {l['nivel']}, {m.group(1)} ({onde})")
 checa("a carta que junta duas habilidades mostra o nome de cada uma que o livro abre por \"Nível N: Nome.\", em subtítulo",
       ("Vanguarda", 7, "Execução Preparada") in _com_nome and not _sem_nome, f"{_sem_nome[:3]} · achadas {len(_com_nome)}")
+# 05/10/2026, pedido do Mizuki: "Nome da técnica aparecer na ficha amaldiçoada". Ele escolheu "Espelha a CARTEIRA": a caixa
+# NOME DA TÉCNICA é referência pura para uma conta da DADOS_AM (quem escreve por cima recebe a conta de volta, pelo onEdit),
+# a conta lê o campo TÉCNICA DECLARADA da CARTEIRA, o script sabe que a caixa vem de lá (o aviso diz onde escrever), e,
+# recalculada, a Kaori mostra o nome que está escrito na CARTEIRA dela.
+_rot_nt = [c for linha in WB0[ABA].iter_rows() for c in linha if c.value == "NOME DA TÉCNICA"]
+_cel_nt = f"{_rot_nt[0].column_letter}{_rot_nt[0].row + 1}" if len(_rot_nt) == 1 else None
+_m_nt = re.fullmatch(rf"={DAM}!\$([A-Z]+)\$(\d+)", str(WB0[ABA][_cel_nt].value)) if _cel_nt else None
+_conta_nt = str(WB0[DAM][_m_nt.group(1) + _m_nt.group(2)].value).replace("$", "") if _m_nt else None
+_cru_am = json.loads(re.search(r"var ABAS = ([\s\S]*?);\n\nvar ARTE = ", open("apps-script/Ficha.gs", encoding="utf-8").read()).group(1))
+_da_car = next((a.get("da_carteira") for a in _cru_am if a["nome"] == ABA), None)
+_lido_nt = txt(WB["kaori"][ABA][_cel_nt].value) if "kaori" in WB and _cel_nt else None
+checa("a caixa NOME DA TÉCNICA espelha a TÉCNICA DECLARADA da CARTEIRA: aponta para a conta, a conta lê o campo, o script "
+      "avisa que ela vem de lá, e a Kaori recalculada mostra o nome escrito na CARTEIRA",
+      bool(CAMPO_TEC and _m_nt) and _conta_nt == f'=CARTEIRA!{CAMPO_TEC}&""' and _da_car == [_cel_nt]
+      and ("kaori" not in WB or _lido_nt == "Peso Emprestado"),
+      f"campo {CAMPO_TEC}, caixa {_cel_nt}, conta {_conta_nt}, script {_da_car}, Kaori {_lido_nt!r}")
 for nome in FICHAS:
     ficha, f = FICHAS[nome], WB[nome]["FICHA"]
     n = ficha.get("nivel", 2)

@@ -710,7 +710,8 @@ NOTAS = {
                 "num grupo de colunas fechado, dentro do painel.",
     "niveis": "A curva do livro, fixa. Para subir é o que custa sair daquele nível. Acumulado é o XP total em que você "
               "chega nele. A seta marca o seu nível.",
-    "foto": "Clique na caixa e use Inserir › Imagem › Inserir imagem na célula.",
+    "foto": "Vem da CARTEIRA: insira a foto na caixa FOTO de lá (Inserir › Imagem › Inserir imagem na célula), e ela "
+            "aparece aqui. Se não aparecer, insira a mesma foto nesta caixa.",
 }
 
 
@@ -767,7 +768,15 @@ def aba(layout, tr):
 
     # --- o dossiê
     L = _titulo(f, L_DOSSIE, "D", "AT", "DOSSIÊ")
-    f.add("foto", "D", L + 1, "O", L + 19, "FOTO DO PERSONAGEM", NOTAS["foto"])
+    # 05/10/2026, pedido do Mizuki: "A imagem que for colocada na carteira aparecer no ficha pessoal" (o B35 deixou a
+    # ligação para depois). A caixa aponta para a caixa da foto da CARTEIRA. A documentação do Google não diz se a
+    # referência mostra a imagem inserida na célula; se não mostrar, o jogador insere a foto aqui também, por cima da
+    # conta, e por isso a caixa fica fora da trava (lá embaixo, com as livres). O endereço é o que a CARTEIRA declara
+    # (`foto`, do moldura_foto.py), o mesmo que o Codigo.gs lê para ancorar a caixa da paleta.
+    foto = next(a for a in layout["abas"] if a["nome"] == "CARTEIRA").get("foto")
+    if not foto:
+        raise SystemExit("ficha_pessoal: a CARTEIRA não declara a caixa da foto (moldura_foto.py)")
+    foto_fp = f.add("foto", "D", L + 1, "O", L + 19, f"={_abs(foto[1], foto[0], 'CARTEIRA!')}", NOTAS["foto"])
     f.add("rot", "D", L + 21, "O", L + 21, "PERSONALIDADE")
     f.add("txt", "D", L + 22, "O", L + 27)
     f.caixa("Q", "Z", L + 1, "NOME", f"=FICHA!{ix.indice(layout)['nome']}", nota=NOTAS["nome"])
@@ -890,7 +899,7 @@ def aba(layout, tr):
 
     # --- os itens guardados
     L = _titulo(f, L_ITENS, "D", "AT", "ITENS GUARDADOS")
-    livres = []
+    livres = [foto_fp]
     for cols in COLS_ITENS:
         (_, i1, i2), (_, q1, q2), (_, v1, v2) = cols
         f.add("rot", i1, L + 1, i2, L + 1, "ITEM")

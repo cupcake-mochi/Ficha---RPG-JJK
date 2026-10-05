@@ -184,6 +184,16 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
      erroAm ? erroAm.message : `${X.f.get(chave)} · ${S.P.avisos.length - antes} aviso(s)`);
   try { S.ss.getSheetByName(AM).getRange(a1).clearContent(); S.ctx.onEdit(ed(AM, a1, undefined, '0')); } catch (e) { erroAm = e; }
   ok('apagar a caixa calculada também devolve a conta', !erroAm && X.f.get(chave) === conta, erroAm ? erroAm.message : String(X.f.get(chave)));
+  // 05/10/2026, "Nome da técnica aparecer na ficha amaldiçoada" ("Espelha a CARTEIRA"): a caixa NOME DA TÉCNICA aponta para
+  // o campo TÉCNICA DECLARADA da CARTEIRA; quem escreve por cima recebe a conta de volta, e o aviso diz onde se escreve. O
+  // aviso da caixa calculada comum (o NO DOMÍNIO, acima) não fala da CARTEIRA.
+  const rotT = spec.vals.find((t) => t[2] === 'NOME DA TÉCNICA'), lT = rotT ? [rotT[0] + 1, rotT[1]] : [0, 0];
+  const aT = letras(lT[1]) + lT[0], chT = lT.join(','), contaT = X.f.get(chT), nT = S.P.avisos.length;
+  try { S.ss.getSheetByName(AM).getRange(aT).setValue('Outra Técnica'); S.ctx.onEdit(ed(AM, aT, 'Outra Técnica')); } catch (e) { erroAm = e; }
+  const avT = S.P.avisos[nT] || ['', ''], avComum = S.P.avisos[antes] || ['', ''];
+  ok('escrever por cima do NOME DA TÉCNICA devolve a conta, e o aviso manda escrever na CARTEIRA (o da caixa comum não)',
+     !erroAm && !!contaT && X.f.get(chT) === contaT && S.P.avisos.length === nT + 1 && avT[1].indexOf('CARTEIRA') >= 0
+     && avComum[1].indexOf('CARTEIRA') < 0, erroAm ? erroAm.message : `${X.f.get(chT)} · ${avT[1]} · ${avComum[1]}`);
   // a caixa de escolher e a de escrever não são da conta: o onEdit não mexe nelas nem avisa
   const forma = spec.vals.find((t) => t[2] === 'Projétil'), nome = [forma[0] - 7, forma[1] + 1];
   const [aF, aN] = [letras(forma[1]) + forma[0], letras(nome[1]) + nome[0]], n0 = S.P.avisos.length;

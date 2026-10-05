@@ -201,6 +201,12 @@ edita("escrever numa carta não estica a caixa", C,
       "escrever numa carta encolhe", teste=K)
 edita("o texto do livro vai sem negrito", C, "if (n.texto !== '' && n.texto === n.livro) escreverTextoDoLivro_(",
       "if (false) escreverTextoDoLivro_(", "subtítulos do livro em negrito", teste=K)
+# 05/10/2026, o nome da técnica espelha a CARTEIRA: quem escreve por cima recebe a conta, e o aviso manda escrever lá
+edita("o aviso do nome da técnica esquece a CARTEIRA", C,
+      "    if ((spec.da_carteira || []).indexOf(a1_(t[0], t[1])) >= 0) daCarteira = true;\n", "",
+      "o aviso manda escrever na CARTEIRA", teste=K)
+edita("a FICHA AMALDIÇOADA deixa de declarar a caixa que vem da CARTEIRA", F, '"da_carteira":["D12"]', '"da_carteira":[]',
+      "o aviso manda escrever na CARTEIRA", teste=K)
 print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
 edita("renomear uma variavel de dentro da conta", C, "var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"
       "                   .every(function (a) { return marcadas[a.caixa] === true; });\n  if ((marcadas[dono.caixa] === true) !== todas) muda[dono.caixa] = todas;",
