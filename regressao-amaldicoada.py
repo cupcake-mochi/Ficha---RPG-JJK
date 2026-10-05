@@ -1122,6 +1122,38 @@ checa("a Rajada Marcial do Pugilista mora na carta 7 do Caminho dele, junto da h
       [(l["dono"], l["nivel"]) for l in _junto] == [("Pugilista", 7)] and _CATj["trilhas"]["Pugilista"] == "Incursor"
       and _junto[0]["texto"].startswith(next(l["texto"] for l in _lido if l["fonte"] == "Caminho" and l["dono"] == "Incursor" and l["nivel"] == 7)),
       str([(l["dono"], l["nivel"]) for l in _junto]))
+# 05/10/2026, o nível 7 da Vanguarda ganhou a Execução Preparada (D42 do livro): quando a carta junta mais de uma
+# habilidade e o livro abre o parágrafo com o nome de uma delas ("Nível 7: Execução Preparada."), o nome fica na carta,
+# como subtítulo em negrito. Antes, a marca saía inteira e a segunda habilidade ficava sem nome. A lista sai do
+# manual.txt, pela seção de cada dono no capítulo, e não do extrator; e confere a carta do Habilidades.gs e o que o
+# extrator tira hoje.
+_man = open("manual.txt", encoding="utf-8").read().splitlines()
+_ini6 = _man.index("## 6. Caminhos e Trilhas")
+_fim6 = next(i for i in range(_ini6 + 1, len(_man)) if _man[i].startswith("## "))
+_xe = _xh.extrai()
+_cab_donos = {"### " + d.replace(" · ", ": ") for g in ("caminhos", "trilhas") for d in _xe[g]}
+def _secao(dono):
+    """do título do dono até o título do dono seguinte (ou o fim do capítulo): os subtítulos ### do meio são dele"""
+    a = _man.index("### " + dono.replace(" · ", ": "), _ini6, _fim6)
+    return _man[a + 1:next(i for i in range(a + 1, _fim6 + 1) if i == _fim6 or _man[i] in _cab_donos)]
+_com_nome, _sem_nome = [], []
+for l in _lido:
+    if l["fonte"] not in (_hb.FONTE_CAMINHO, _hb.FONTE_TRILHA):
+        continue
+    partes = [p.strip() for p in re.split(r",| e ", l["nome"]) if p.strip()]
+    if len(partes) < 2:
+        continue
+    ext = _xe["caminhos" if l["fonte"] == _hb.FONTE_CAMINHO else "trilhas"][l["dono"]][str(l["nivel"])]
+    for linha in _secao(l["dono"]):
+        m = re.match(rf"^Nível {l['nivel']}: ([^.]{{1,80}})\. (.+)", linha)
+        if not (m and m.group(1) in partes):
+            continue
+        _com_nome.append((l["dono"], l["nivel"], m.group(1)))
+        for onde, h in (("Habilidades.gs", l), ("extrator", ext)):
+            if m.group(1) not in h["titulos"] or f"{m.group(1)}\n\n{m.group(2)}" not in h["texto"]:
+                _sem_nome.append(f"{l['dono']} {l['nivel']}, {m.group(1)} ({onde})")
+checa("a carta que junta duas habilidades mostra o nome de cada uma que o livro abre por \"Nível N: Nome.\", em subtítulo",
+      ("Vanguarda", 7, "Execução Preparada") in _com_nome and not _sem_nome, f"{_sem_nome[:3]} · achadas {len(_com_nome)}")
 for nome in FICHAS:
     ficha, f = FICHAS[nome], WB[nome]["FICHA"]
     n = ficha.get("nivel", 2)

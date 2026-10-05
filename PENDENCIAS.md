@@ -2370,3 +2370,19 @@ dá, e passou a respeitar as quebras de linha do texto (o Sheets respeita).
 
 **Fica para ele, no Sheets:** a altura da linha de texto é estimada (18 px por linha de Roboto 10); se sobrar ou faltar
 espaço embaixo do texto, o número mora no `LINHA_PX` do `habilidades.py`.
+
+**O nível 7 da Vanguarda, no mesmo dia.** *O Mizuki notou que a Vanguarda era o único Caminho com uma habilidade só no
+nível 7 ("o nv7 do vanguarda é o unico caminho com só uma habilidade, né?") e escreveu a segunda: "Execução Preparada:
+1× por Sequência, ao Concluir depois de duas ou mais Conduções, imponha −1 a um TR adicional da Conclusão."* Ela entrou
+primeiro no livro (D42 do `JJK---Project`, que o registra em `revisao-interfaces/CORRECOES-APLICADAS.md`), e daí na ficha:
+
+| o que mudou | como |
+|---|---|
+| `manual.txt` | tirado de novo do `LIVRO-COMPLETO.md` (hash `e747cf74…`). Só mudaram a linha da tabela da Vanguarda ("Ataque Extra e Execução Preparada") e o parágrafo novo |
+| a carta 7 da Vanguarda | "Ataque Extra e Execução Preparada", com os dois textos |
+| o subtítulo | o extrator tirava a marca "Nível 7: Ataque Extra." inteira do começo do parágrafo, porque a etiqueta e o nome da carta já diziam. Com duas habilidades na mesma carta, a segunda ficava sem nome. Agora, quando a carta junta mais de uma e o parágrafo abre com o nome de uma delas, o nome fica, como subtítulo em negrito, como já ficava no Bastião 7, que o livro escreve com títulos. Mudou em três cartas: Vanguarda 7 (Ataque Extra e Execução Preparada), Vanguarda 2 (Sequência de Condução e Escola de Arma) e Executor 2 (Finta de Execução) |
+
+**Conferido:** a `regressao-amaldicoada.py` ganhou a checagem do subtítulo. Ela acha no `manual.txt`, na seção de cada
+Caminho e Trilha, os parágrafos "Nível N: Nome." de carta que junta habilidades, e exige o nome em subtítulo seguido do
+texto, no `Habilidades.gs` e no que o extrator tira hoje (são 5 nomes, entre eles a Execução Preparada). O
+`arnes-amaldicoada.py` vai a 66: o extrator que volta a tirar o nome acende a checagem nova.

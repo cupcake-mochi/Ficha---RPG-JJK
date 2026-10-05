@@ -174,6 +174,9 @@ PERTURBACOES = [
     ("o menu de Trilha volta a ter o Batedor sem rota", "ficha-v01/ficha_automatica.py",
      'out += [(f"{t} · {r}", c) for r in hab["rotas"][t]] if t in hab["rotas"] else [(t, c)]', "out += [(t, c)]",
      "com o Batedor aberto nas três rotas"),
+    ("a segunda habilidade da carta perde o nome (a Execução Preparada)", "ficha-v01/extrair_habilidades.py",
+     'sub = [("titulo", m.group(1))] if m and m.group(1).lower() != nome.lower() and m.group(1) in _nomes(nome) else []',
+     "sub = []", "mostra o nome de cada uma que o livro abre"),
 ]
 CONTRA = ("um comentário a mais no gerador", GER, "def _se(cond, texto):", "# comentario que nao muda nada\ndef _se(cond, texto):")
 

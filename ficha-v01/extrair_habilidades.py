@@ -22,7 +22,8 @@ De onde sai cada coisa, sem nada digitado:
   · o texto são os parágrafos, os subtítulos, as fileiras de tabela e os itens de lista dos trechos, sem os exemplos,
     sem as marcas "Nível N." soltas e sem a marca "Nível N:" do começo do parágrafo. Ele vem legível ("n esqueça de
     tentar deixar de forma legivel, espaçar os paragrafos e talz"): uma linha em branco entre os blocos, a tabela e a
-    lista inteiras, e os subtítulos à parte, em `titulos`, que o Codigo.gs põe em negrito.
+    lista inteiras, e os subtítulos à parte, em `titulos`, que o Codigo.gs põe em negrito. Na carta que junta mais de
+    uma habilidade, a marca "Nível 7: Execução Preparada." deixa o nome, como subtítulo (o nível 7 da Vanguarda);
   · uma entrega de Trilha num nível que não é de Trilha (o nível 7 do Pugilista, a Rajada Marcial) vai para
     `no_caminho`: o livro diz que ela "Não acrescenta um novo degrau de Trilha no nível 7", e o Mizuki a pôs na carta
     do nível 7 do Caminho ("No caso do pungilista, o nv7 seria do caminho mesmo").
