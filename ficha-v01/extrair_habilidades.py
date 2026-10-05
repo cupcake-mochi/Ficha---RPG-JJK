@@ -163,6 +163,14 @@ def extrai():
                 if i in dona and dona[i] != k:
                     raise SystemExit(f"{d}: a linha {i + 1} abre duas habilidades")
                 dona[i] = k
+        # a seção que lista entradas com o nível no subtítulo ("#### Corrigir uma Falha — nível 2") abre com regras
+        # comuns a todas elas: a introdução é da primeira entrada da lista, e não da habilidade de antes (o Evocador:
+        # as Intervenções de Vínculo vinham parar na carta do nível 7, achado em 05/10/2026)
+        for i in range(inicio[d] + 1, fim[d]):
+            if L[i].startswith("### ") and i not in dona:
+                j = next((x for x in sorted(dona) if x > i), None)
+                if j is not None and not any(L[x].startswith("### ") for x in range(i + 1, j)) and re.search(r" — nível \d+$", L[j]):
+                    dona[i] = dona[j]
         corte = sorted(dona) + [fim[d]]
         for k, (n, nome) in enumerate(ents):
             blocos = []
