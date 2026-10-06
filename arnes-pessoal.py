@@ -12,7 +12,8 @@ import os, shutil, subprocess, sys, tempfile
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 PRECISA = ["regressao-pessoal.js", "regressao-construir.js", "medidas/sheets-de-mentira.js", "catalogo-projeto-m.json", "manual.txt", "apps-script/Codigo.gs",
-           "apps-script/Ficha.gs", "apps-script/Habilidades.gs"]   # 05/10/2026: o texto das cartas da seção 7
+           "apps-script/Ficha.gs", "apps-script/Habilidades.gs",   # 05/10/2026: o texto das cartas da seção 7
+           "apps-script/Invocacoes.gs"]                             # 06/10/2026: as abas da invocação, que se juntam ao ABAS
 NODE = shutil.which("node") or shutil.which("nodejs")
 
 

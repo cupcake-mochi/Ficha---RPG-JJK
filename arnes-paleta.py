@@ -16,7 +16,7 @@ if shutil.which("node") is None:
 def copia():
     d = tempfile.mkdtemp(prefix="arnes-cores-")
     os.makedirs(os.path.join(d, "apps-script"))
-    for f in ("regressao-paleta.js", "apps-script/Codigo.gs", "apps-script/Ficha.gs"):
+    for f in ("regressao-paleta.js", "apps-script/Codigo.gs", "apps-script/Ficha.gs", "apps-script/Invocacoes.gs"):
         shutil.copy(os.path.join(AQUI, f), os.path.join(d, f))
     return d
 def roda(d):

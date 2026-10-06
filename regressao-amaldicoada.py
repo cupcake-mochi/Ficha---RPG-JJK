@@ -1235,7 +1235,7 @@ checa("nenhuma fórmula usa LET, LAMBDA, IFS ou SWITCH (o LibreOffice da regress
 print("\nO FICHA.GS: A ABA MONTADA NO SHEETS DE MENTIRA")
 PROG_JS = r"""
 const fs = require('fs'), { criaSheets, CHAMADAS } = require('./medidas/sheets-de-mentira.js');
-const S = criaSheets(fs.readFileSync('apps-script/Ficha.gs', 'utf8') + '\\n' + fs.readFileSync('apps-script/Invocacoes.gs', 'utf8'), fs.readFileSync('apps-script/Codigo.gs', 'utf8'), JSON.parse(process.argv[2] || '{}'));
+const S = criaSheets(fs.readFileSync('apps-script/Ficha.gs', 'utf8') + '\n' + fs.readFileSync('apps-script/Invocacoes.gs', 'utf8'), fs.readFileSync('apps-script/Codigo.gs', 'utf8'), JSON.parse(process.argv[2] || '{}'));
 if (process.argv[3] === 'sem-mesclagem') S.P.copiaTrazMesclagem = false;
 S.ctx.construir();
 const out = { registro: S.P.registros[S.P.registros.length - 1], orfas: S.P.orfas, chamadas: CHAMADAS, abas: {} };
@@ -1329,7 +1329,9 @@ if M:
     # 06/10/2026: a INVOCAÇÕES também é montada nesta planilha. As mesclagens que ela faz fora das fileiras copiadas (as
     # que o Invocacoes.gs escreve) e as cópias dela saem da conta daqui; quem as mede é a regressao-invocacoes.py
     _inv = next((a for a in _cru if a["nome"] == "INVOCAÇÕES"), {})
-    _mescla_inv, _copias_inv = len(_inv.get("merges") or []), sum(len(k[2]) for k in _inv.get("copias") or [])
+    # as cópias da aba são as fileiras de cartas e, na DADOS_INVOC, os retângulos de fórmula preenchidos para baixo
+    _mescla_inv = len(_inv.get("merges") or [])
+    _copias_inv = sum(len(k[2]) for k in _inv.get("copias") or []) + sum(len(a.get("abaixo") or []) for a in _cru if a["nome"] == "DADOS_INVOC")
     checa(f"a aba nova não triplica a montagem: {n_mescla} chamadas de mesclagem na planilha inteira (eram 310 sem ela; até {_mescla_inv} são da INVOCAÇÕES), "
           f"{ch.get('Range.copyTo', 0)} cópias ({_copias_ficha} do menu rápido, {_copias_inv} da INVOCAÇÕES)",
           n_mescla < 700 + _mescla_inv and 0 < _copias_ficha and ch.get("Range.copyTo", 0) < 40 + _copias_ficha + _copias_inv,

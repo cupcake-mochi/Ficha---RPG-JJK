@@ -2466,3 +2466,82 @@ fontes), e por isso não foram subidos daqui: rode o `monta.py` na sua máquina 
 `e747cf74…`). O livro de hoje tem a D43 (Condição, Prende e Cerca pedem TR), o nome Ciclo Maldito e a D44 (a Execução
 Preparada da Vanguarda com −2): a carta 7 da Vanguarda ainda diz −1. Puxar o livro novo é rodar o `extrair-manual.py` e
 pôr o catálogo em dia, que é uma passada própria.
+
+
+### B40 · A aba `INVOCAÇÕES`, a invocação refeita depois do livro reconstruído — **EM ANDAMENTO desde 06/10/2026: a primeira etapa, com uma ficha, está no gerador; falta ele montar no Sheets e medir**
+
+*Pedido dele em 06/10/2026: "precisamos olhar o como fazer a ficha de invocação após a atualização do sistema", com
+protótipos antes de aplicar. É a pendência que o B36 deixou ("pode deixar a reconstrução das invocações na ficha para
+depois mesmo, isso irei fazer em outra parte").*
+
+**O que o livro mudou.** *A invocação deixou de ser ficha derivada do dono (orçamento da Trilha, Traço, Comando, Investir,
+Sintonia) e virou **entidade**, com ficha própria: 9 pontos de atributo e 1 por marco, ataque e CD com a maestria do
+invocador, três Famílias abertas com uma Livre, uma básica, especiais montadas por Classe e pontos, talentos por marco,
+quatro formas de aquisição (capítulo 17), e as regras de campo num capítulo à parte (16). Da `ficha-invocacao/` de
+antes, que segue a v0.251, quase nada serve; ela e os três validadores dela não foram tocados nesta rodada.*
+
+**O estudo, em cinco rodadas** *(`mockup/invocacao-estudo.html`, `python3 mockup/estudo_invocacao.py`).*
+
+| rodada | o que eu trouxe | o que ele disse |
+|---|---|---|
+| 1 | quatro formas, numa página de site com campos soltos | *"Eu n gostei de nenhuma das opções ... algo mais, visualmente atrativo, semelhante as outras paginas ... tendo como colocar a imagem da invocação, nome e afins"*, e o estudo *"no formato de ficha de excel/planilhas"* |
+| 2 | a aba na grade da planilha: A deitadas e empilhadas, B deitadas lado a lado, C em pé | *"Que tal fazer a A+B? umas 2-3 colunas com a mesma lista que temos na A, ai umas 5-6 linhas ... mantem o 'conjunto' ali na esquerda"*; Buff/Debuff *"que nem no sistema da ficha principal"*; Liberação Máxima, Expansão e Técnica Máxima, *"n precisa de automação para liberar ou n essas abas, so deixa oculto"* |
+| 3 | a grade de fichas, o conjunto à esquerda, o Buff/Debuff e os trunfos | *"2 x 6 acho q fica bom, so recomendo aumentar a largura da imagem"* |
+| 4 | a foto com 15 colunas | *"Deixa um pouco mais largo e ta bom assim, de uma avaliada se falta nada na ficha e ta aprovado"* |
+| 5 | a foto com 17 colunas, e a conferência contra o livro | *"aprovado"* |
+
+**O que a conferência contra o livro acrescentou, e ele aprovou:** *o tipo de dano e a resolução (ataque ou Teste de
+Resistência) em cada habilidade; o equipamento, com o limite de carga de 5 + Força; o bônus de cada perícia treinada; a
+reserva da domada e a carga do talismã; cinco menus de Família, porque as Trilhas do Evocador abrem uma ou duas a mais; o
+grupo fechado "Repertório da Trilha", com três cartas e três talentos de Categoria 1 para as escolhas a mais da
+Invocação Principal e do Repertório do Conjunto; e, no conjunto, o Aprimoramento de Vínculo, a beneficiária, os três usos
+da rodada e o limite de quatro ativas em Múltiplas Invocações.*
+
+**A primeira etapa da construção: uma ficha, para medir.** *Combinado com ele antes de aprovar: montar uma ficha no
+gerador, medir o `construir()` no Sheets, e só então repetir para as doze. `ficha_invocacoes.N_COLUNAS` e
+`N_FILEIRAS` estão em 1 e 1; a grade fechada é 2 e 6.*
+
+| peça | o que é |
+|---|---|
+| `ficha-v01/extrair_invocacao.py` e `ficha-v01/invocacao-do-livro.json` | o que a aba lê do livro e o catálogo não tem: a progressão da entidade, os pontos e o PE por Classe, as Formas, o alcance e a área, os talentos, os tipos, as aquisições, os trunfos da domada, as Trilhas e os aprimoramentos do Evocador. 53 frases do livro conferidas palavra por palavra, cada uma com a conta que a aba tira dela, e os dois exemplos do capítulo 17 |
+| `ficha-v01/ficha_invocacoes.py` | **a limpeza 29.** A aba `INVOCAÇÕES`, depois da `FICHA AMALDIÇOADA`, e a aba oculta `DADOS_INVOC`, depois da `DADOS_AM`: as tabelas do livro, uma linha de conta por ficha e uma por carta de habilidade. As Melhorias, as condições, as Restrições e os pares proibidos são os da `FICHA AMALDIÇOADA` (`ficha_amaldicoada.regras()`) |
+| `apps-script/Invocacoes.gs` | **o quarto arquivo do Apps Script.** Com uma ficha o `Ficha.gs` foi de 760 para 950 KB, acima do teto de 900 KB por arquivo; com as doze passaria de 1,3 MB. As duas abas saem do `Ficha.gs` e moram aqui. O arquivo só declara a lista delas, e o `juntarAbas_` do `Ficha.gs` as põe no `ABAS`, cada uma depois da aba que ela nomeia, no arquivo que carregar por último, porque o Apps Script não promete a ordem dos arquivos. Sem ele no projeto a ficha é montada sem as duas abas |
+| `apps-script/Codigo.gs` | o `onEdit` devolve a conta de quem escrever por cima de uma caixa calculada da aba, como na `FICHA AMALDIÇOADA` |
+| `regressao-invocacoes.py` | **entra no `rodar-tudo.sh`, que passa a ter vinte e dois.** Os exemplos do livro com o número que o livro imprime, o Buff/Debuff, o que a ficha recusa, e 18 fichas sorteadas com 157 cartas (77 fora da regra, de propósito) contra a regra escrita de novo em Python |
+| `medidas/ver-aba.py --aba "INVOCAÇÕES"` | desenha a aba com o Cão de sombra do livro |
+
+**O que mudou do estudo, e por quê.** *O estudo foi desenhado numa grade de colunas finas, como os outros. Com doze
+fichas a aba teria 120 mil células nessa grade, e a troca de tema é feita célula a célula. Como a `FICHA AMALDIÇOADA`,
+cada coluna tem a largura do que guarda:*
+
+- **A ficha são três blocos de cinco colunas de 96 px** *(a foto, os números e a mesa), que são também as três cartas de
+  habilidade de cada fileira. Cada carta fica com 480 px, a largura das da `FICHA AMALDIÇOADA`; no estudo ela tinha 364,
+  o tamanho que ele achou "mt amassadinho" lá. A foto fica com 480 por 399 px.*
+- **O Buff/Debuff fica embaixo do número, e não ao lado**, *em toda caixa calculada: é o que deixa cada valor numa
+  coluna só. O atributo mostra o total, os pontos embaixo e o Buff/Debuff embaixo dos pontos.*
+- **A carta de habilidade ganhou a linha AMPLIAR**, *como a de feitiço: a mesma especial numa Classe maior, com o dano e o
+  PE de cada Classe que o nível já liberou. É o "poderá ser ampliada para 4d8 por 6 PE" do Cão de sombra.*
+- **A ficha ficou mais larga:** *1.496 px, contra 1.204 no estudo. Com uma ficha a aba tem 1.985 px (o
+  `decisoes-ficha.json` guarda); com as duas colunas, perto de 3.500.*
+- **A lista do conjunto ainda não leva até a ficha:** *é texto; a ligação pede o número da aba, e entra com a grade.*
+
+**Conferido:** *a bateria inteira rodou em 06/10/2026 com o `original.xlsx`: dos vinte e dois, vinte e um passam, a `regressao-invocacoes.py` entre eles (os exemplos do livro batem um a um, e as 157 cartas sorteadas também). O que sai vermelho é o `comparar-ficha-01.py`, pelas 22 diferenças do B36 descritas abaixo, que são de antes desta rodada. O `construir()` roda inteiro no Sheets de mentira com a aba nova, nas duas ordens de carga dos arquivos, e a troca de tema passa a aba em passos, como a `FICHA`. O `Ficha.gs` ficou com 760 KB e o `Invocacoes.gs` com 170. Nada disto rodou no Sheets de verdade.*
+
+**O que fica para ele:**
+
+- **Colar o `Invocacoes.gs` no projeto do Apps Script, como quarto arquivo** *(e o `Ficha.gs` e o `Codigo.gs` novos),
+  rodar o `construir()` e mandar o registro de tempo: é ele que diz se as doze fichas cabem, e em quantas execuções.*
+- **Olhar a aba no Sheets:** *a foto inserida na caixa, o Buff/Debuff embaixo do número, os grupos de linhas e os dois de
+  colunas (o conjunto e a coluna de fichas), e os menus de Melhoria, que só trazem as Famílias abertas da ficha.*
+
+**O que falta fazer aqui, depois da medida:**
+
+- *a grade de 2 × 6, com as fileiras de fichas vindo por cópia de formato;*
+- *a ligação de cada linha da lista do conjunto com a ficha dela;*
+- *um arnês para a aba, como o `arnes-amaldicoada.py`;*
+- *decidir com ele o que fazer da `ficha-invocacao/` e dos três validadores da invocação de antes.*
+
+**Achado de passagem:** *o `comparar-ficha-01.py` já saía vermelho antes desta rodada, com o `original.xlsx` de
+17/09/2026: 22 diferenças não explicadas na `DADOS` e na `FICHA`, todas do B36 (o Incursor na tabela dos Caminhos, o
+Bastião com Provocar, a faixa `N5:U10`). Conferido numa cópia do commit `676f093`, sem nada desta rodada. Ele não
+aparecia porque as últimas rodadas rodaram sem o `original.xlsx`.*

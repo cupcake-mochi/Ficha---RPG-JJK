@@ -34,7 +34,7 @@ Saem o `apps-script/Ficha.gs` e o `apps-script/Habilidades.gs`. Se os vinte e um
 Oswald  ·  Castoro  ·  Yuji Syuku
 ```
 
-### 3 · Colar os três arquivos
+### 3 · Colar os quatro arquivos
 
 **Extensões → Apps Script.**
 
@@ -44,7 +44,9 @@ Depois, no `+` ao lado de **Arquivos**, escolhe **Script**, dá o nome `Ficha`, 
 
 De novo no `+`, **Script**, nome `Habilidades`, e cola o conteúdo de **`apps-script/Habilidades.gs`**. *Desde 05/10/2026: é o texto do livro que vai nas cartas de Habilidades da seção 7 da `FICHA`, e mora num arquivo à parte porque no `Ficha.gs` passaria do teto de tamanho. Sem ele a ficha monta igual, mas escolher o Caminho e a Trilha não escreve as cartas, e a tela avisa.*
 
-> O `Ficha.gs` tem uns 760 KB, o `Habilidades.gs` uns 200 KB e o `Codigo.gs` uns 215 KB. É normal eles demorarem a colar.
+E mais uma vez no `+`, **Script**, nome `Invocacoes`, e cola o conteúdo de **`apps-script/Invocacoes.gs`**. *Desde 06/10/2026: são as abas `INVOCAÇÕES` e `DADOS_INVOC`, que não cabem no `Ficha.gs`. Sem ele a ficha monta igual, mas sem essas duas abas. A ordem em que os arquivos aparecem no projeto não importa.*
+
+> O `Ficha.gs` tem uns 760 KB, o `Habilidades.gs` uns 200 KB, o `Codigo.gs` uns 215 KB e o `Invocacoes.gs` uns 170 KB. É normal eles demorarem a colar.
 
 Salva com `Ctrl+S`.
 
@@ -54,7 +56,7 @@ No seletor de funções, escolhe **`construir`** e clica em **▶ Executar**.
 
 Na primeira vez ele pede autorização: **Revisar permissões** → tua conta → **Avançado** → **Acessar** → **Permitir**.
 
-**Demora.** São sete abas (duas ocultas), milhares de células com valor, as imagens e as caixas de seleção. Em 01/10/2026 a montagem estourou os seis minutos que o Apps Script dá, e foi reescrita para ir menos vezes ao servidor: **com cinco abas ela levou 220 segundos, medidos pelo Mizuki.** Com a `FICHA AMALDIÇOADA` e a `DADOS_AM` a conta é de uns 285 segundos, e **esse tempo ainda não foi medido.** Não é travamento.
+**Demora.** São nove abas (três ocultas), milhares de células com valor, as imagens e as caixas de seleção. Em 01/10/2026 a montagem estourou os seis minutos que o Apps Script dá, e foi reescrita para ir menos vezes ao servidor: **com cinco abas ela levou 220 segundos, medidos pelo Mizuki.** Com a `FICHA AMALDIÇOADA` e a `DADOS_AM` a conta é de uns 285 segundos, e **esse tempo ainda não foi medido.** Não é travamento.
 
 Enquanto roda, o registro mostra cada etapa na hora, com o tempo dela:
 
