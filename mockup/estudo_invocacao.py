@@ -27,11 +27,12 @@ CAP = MAN[INI:FIM]
 TEXTO = "\n".join(CAP)
 
 
-def tabela(cabecalho):
-    """as fileiras da tabela do capítulo 17 que abre com esse cabeçalho, sem ele"""
-    i = CAP.index(cabecalho)
+def tabela(cabecalho, onde=None):
+    """as fileiras da tabela do capítulo 17 (ou de `onde`) que abre com esse cabeçalho, sem ele"""
+    onde = onde or CAP
+    i = onde.index(cabecalho)
     out = []
-    for l in CAP[i + 1:]:
+    for l in onde[i + 1:]:
         if " | " not in l:
             break
         out.append([c.strip() for c in l.split(" | ")])
@@ -112,15 +113,30 @@ for frase in [
     "Deslocamento terrestre-base: 9 m.",
 ]:
     assert frase in TEXTO, frase
-CAMPO = "\n".join(MAN[MAN.index("## 16. Invocações em campo"):INI])
+CAP16 = MAN[MAN.index("## 16. Invocações em campo"):INI]
+CAMPO = "\n".join(CAP16)
 for frase in [
     "O custo normal de entrada é a maior Classe permitida pelo nível da entidade.",
     "pague o dobro do PE da entrada e sua Bônus",
     "Reserva máxima = nível da entidade × (1 + um terço da Essência dela, arredondado para baixo).",
     "Você pode manter duas entidades ativas ao mesmo tempo",
     "Cada corpo mantém uma especial aguardando execução: antecipada, preparada, Armado, Segura ou Carregar.",
+    "Somente maldições domadas com técnica própria podem ter Liberação Máxima, Técnica Máxima e Expansão de Domínio.",
+    "A domada conhece uma no nível 10, duas no 20 e três no 30.", "O custo é 3 × Classe × 1,5 PE, para cima.",
+    "Use os pontos da especial daquela Classe e acrescente Classe d8",
+    "Abrir custa sua Ação Completa, uma básica da domada e 6 × a maior Classe dela em PE. Abrir sem barreira custa 7 × essa Classe.",
+    "Um Acerto de dano da domada causa Classe d8.",
 ]:
     assert frase in CAMPO, frase
+
+
+# os trunfos da domada (capítulo 16): a tabela da Técnica Máxima e os degraus da Expansão
+maxima = []
+for nivel, dados_fixos, pontos, custo in tabela("Nível da domada | Dados fixos | Pontos de montagem | Custo", CAP16):
+    de, ate = faixa(nivel)
+    maxima.append({"de": de, "ate": ate, "dados": dados_fixos, "pontos": int(pontos), "pe": custo})
+expansao = [{"n": n, "custa": a, "pede": q} for n, a, q in tabela("Desenvolvimento | Aquisição na domada | Requisitos", CAP16)]
+assert [m["de"] for m in maxima] == [17, 21, 26] and [e["n"] for e in expansao] == ["Incompleta", "Completa", "Sem Barreiras"]
 
 
 def hab(nome="", como="", forma="Projétil", mel=(), res=(), classe=1):
@@ -131,8 +147,10 @@ def ficha(**k):
     base = {"nome": "", "def": "", "corpo": "", "tipo": "Shikigami de técnica", "aquis": "Espaço conhecido", "nivel": 1,
             "atr": {"FOR": 0, "DES": 0, "CON": 0, "INT": 0, "ESS": 0}, "acerto": "", "trT": "", "fis": "Força",
             "per": [""] * 7, "livre": "", "a1": "", "a2": "", "bas": [hab(classe=0), hab(classe=0)],
-            "esp": [hab() for _ in range(8)], "tal": [""] * 8, "desl": "9 m",
-            "mesa": {"vida": "", "mov": "9 m", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Guardada", "tarefa": "", "cond": ""}}
+            "esp": [hab() for _ in range(8)], "tal": [""] * 8, "buff": {}, "notas": "",
+            "lib": [{"nome": "", "como": "", "classe": 3} for _ in range(3)], "max": {"nome": "", "como": ""},
+            "exp": {"nome": "", "como": "", "des": "Incompleta"},
+            "mesa": {"vida": "", "temp": "", "mov": "", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Guardada", "tarefa": "", "cond": ""}}
     base.update(k)
     return base
 
@@ -146,7 +164,7 @@ cao = ficha(
     bas=[hab("Mordida", "Perfurante. Consome a atuação básica do cão.", "Toque", classe=0), hab(classe=0)],
     esp=[hab("Mordida precisa", "Perfurante. Não aplica condição nem deixa efeito contínuo.", "Toque", ["Precisão"])] + [hab() for _ in range(7)],
     tal=["Farejador"] + [""] * 7,
-    mesa={"vida": "", "mov": "9 m", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Em campo", "tarefa": "Perseguir a criatura apontada.", "cond": ""})
+    mesa={"vida": "", "temp": "", "mov": "", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Em campo", "tarefa": "Perseguir a criatura apontada.", "cond": ""})
 vigia = ficha(
     nome="Vigia de papel",
     **{"def": "Uma pequena figura de papel que registra os sons da missão e desdobra tiras para amparar pessoas."},
@@ -157,12 +175,19 @@ vigia = ficha(
     esp=[hab("Tiras de resgate", "O aliado recebe +2 na Defesa e pode aceitar ser movido até 6 m.", "Apoio", ["Guarda", "Empurrão"], classe=2),
          hab("Remendo de papel", "Não remove condições.", "Cura")] + [hab() for _ in range(6)],
     tal=["Talento Próprio"] + [""] * 7,
-    mesa={"vida": "", "mov": "9 m", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Em campo", "tarefa": "Amparar quem está na escada.", "cond": ""})
+    mesa={"vida": 19, "temp": "", "mov": "", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Em campo", "tarefa": "Amparar quem está na escada.", "cond": ""})
 for f in (cao, vigia):
     for h in f["bas"] + f["esp"]:
         assert h["forma"] in formas and all(m == "" or m in melhorias for m in h["mel"]), h
 
+# a FICHA AMALDIÇOADA da planilha gerada, para dar tamanho ao que esta aba pede
+import openpyxl
+_ws = openpyxl.load_workbook(os.path.join(RAIZ, "ficha-v01", "ficha-projeto-m-0.1.xlsx"))["FICHA AMALDIÇOADA"]
+ref = {"linhas": _ws.max_row, "mescladas": len(_ws.merged_cells.ranges),
+       "menus": sum(len(str(d.sqref).split()) for d in _ws.data_validations.dataValidation)}
+
 dados = {
+    "maxima": maxima, "expansao": expansao, "ref": ref,
     "versao": CAT["_meta"]["versao"], "livro": FONTE["sha256"][:8],
     "prog": prog, "limite": limite, "formas": formas, "alcance": alcance, "area": area,
     "talentos": talentos, "tipos": tipos, "aquis": aquis,
