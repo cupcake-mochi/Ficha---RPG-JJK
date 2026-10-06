@@ -1,0 +1,755 @@
+{
+ "_meta": {
+  "o_que_e": "o que a aba INVOCAÇÕES lê do livro e o catálogo não tem",
+  "livro": "candidata editorial reconstruída, revisada em 04/10/2026 e em 05/10/2026 (382 páginas)",
+  "sha256_do_livro": "e747cf7407d50f1e3a2a768f24936b4f1c40c82272d5be9d6f4d91a96166363b",
+  "gerado_por": "ficha-v01/extrair_invocacao.py"
+ },
+ "frases": {
+  "atributos": {
+   "livro": "Distribua 9 pontos entre Força, Destreza, Constituição, Inteligência e Essência.",
+   "conta": "9 pontos"
+  },
+  "inicio": {
+   "livro": "Cada atributo começa entre 0 e 3.",
+   "conta": "de 0 a 3 na criação"
+  },
+  "marcos": {
+   "livro": "Nos níveis 6, 10, 14, 18, 22, 26 e 30, acrescente 1 ponto a um atributo, até o máximo de 6.",
+   "conta": "1 ponto por marco, teto 6"
+  },
+  "ataque": {
+   "livro": "Ataque | d20 + atributo de acerto da entidade + maestria do invocador.",
+   "conta": "acerto + maestria"
+  },
+  "cd": {
+   "livro": "CD das habilidades | 8 + atributo de acerto da entidade + maestria do invocador.",
+   "conta": "8 + acerto + maestria"
+  },
+  "tr": {
+   "livro": "TR treinado | d20 + atributo do TR + maestria do invocador.",
+   "conta": "atributo + maestria"
+  },
+  "tr_atributos": {
+   "livro": "Físico usa Força ou Destreza, escolhida na montagem. Vigor usa Constituição, Intelecto usa Inteligência e Espírito usa Essência.",
+   "conta": ""
+  },
+  "pericias": {
+   "livro": "A entidade tem treino em 4 + metade da Inteligência, arredondada para baixo, perícias.",
+   "conta": "4 + INT/2"
+  },
+  "vida": {
+   "livro": "Entidade comum | 5 + Constituição + (3 + Constituição) × (nível − 1).",
+   "conta": "5 + CON + (3 + CON) × (nível − 1)"
+  },
+  "vida_criacao": {
+   "livro": "Corpo amaldiçoado de criação | 5 + Constituição + (4 + Constituição) × (nível − 1).",
+   "conta": "5 + CON + (4 + CON) × (nível − 1)"
+  },
+  "defesa": {
+   "livro": "Some 10 + Destreza da entidade + metade da Essência ou da Inteligência do invocador, arredondada para baixo.",
+   "conta": "10 + DES + metade"
+  },
+  "deslocamento": {
+   "livro": "Deslocamento terrestre-base: 9 m.",
+   "conta": "9 m"
+  },
+  "basicas": {
+   "livro": "A entidade conhece uma básica até o nível 10 e duas a partir do nível 11.",
+   "conta": "1 até o 10, 2 do 11"
+  },
+  "espacos": {
+   "livro": "Os espaços de especiais são metade de (2 + nível ÷ 2), arredondada para baixo.",
+   "conta": "INT((2 + nível/2)/2)"
+  },
+  "talentos": {
+   "livro": "A entidade ganha um no nível 1 e outro nos níveis 6, 10, 14, 18, 22, 26 e 30.",
+   "conta": "1 + marcos"
+  },
+  "pe": {
+   "livro": "A especial custa 3 × sua Classe real em PE a cada uso.",
+   "conta": "3 × Classe"
+  },
+  "livre": {
+   "livro": "Ao comprar uma Melhoria dessa Família, desconte metade da Classe real, arredondada para baixo, com desconto mínimo de 1. O preço final também tem mínimo de 1.",
+   "conta": "MAX(1, preço − MAX(1, INT(Classe/2)))"
+  },
+  "forma_sem_livre": {
+   "livro": "Formas não recebem desconto de Família Livre.",
+   "conta": ""
+  },
+  "formas_exigem": {
+   "livro": "Explosão, Aura, Cone e Linha exigem Área aberta. Cura, Apoio e Onda exigem Amparo aberto.",
+   "conta": ""
+  },
+  "embutida": {
+   "livro": "Toque e Aura incluem Corpo a Corpo, com devolução Média nas especiais.",
+   "conta": ""
+  },
+  "devolucao": {
+   "livro": "As Restrições devolvem pontos para pagar Forma e Melhorias, até 2 × a Classe real e até o total gasto nessas peças.",
+   "conta": "MIN(devolução, 2 × Classe, gasto)"
+  },
+  "teto": {
+   "livro": "O total não passa de 4 × Classe.",
+   "conta": "4 × Classe"
+  },
+  "apoio": {
+   "livro": "Em Apoio, cada ponto útil vira 3 pontos de vida temporária.",
+   "conta": "3 por ponto"
+  },
+  "basica_leve": {
+   "livro": "A básica pode ter uma Melhoria Leve. Retire um dado de seu dano-base para pagá-la.",
+   "conta": "−1 dado"
+  },
+  "basica_restricao": {
+   "livro": "Pode haver uma Restrição Leve, que precisa ser cumprida, mas não devolve pontos nem o dado gasto.",
+   "conta": "não devolve"
+  },
+  "basica_sem": {
+   "livro": "Cura e Onda não estão disponíveis na Classe 0.",
+   "conta": ""
+  },
+  "controle": {
+   "livro": "Uma especial com Melhoria de Controle e dano final de até a Classe real em dados recebe uma rodada adicional nos efeitos de Controle. Sem dano, recebe também +2 na CD desses efeitos.",
+   "conta": ""
+  },
+  "resolucao": {
+   "livro": "Na montagem, trocar ataque por TR, ou o contrário, não custa pontos. Registre o TR, a resolução e o resultado no sucesso.",
+   "conta": ""
+  },
+  "tipo_de_dano": {
+   "livro": "Escolha também um tipo de dano permitido pelo catálogo geral para cada ataque.",
+   "conta": ""
+  },
+  "equipamento": {
+   "livro": "Registre o equipamento usado, a proteção, os requisitos e a carga.",
+   "conta": ""
+  },
+  "ativas": {
+   "livro": "Você pode manter duas entidades ativas ao mesmo tempo",
+   "conta": "2"
+  },
+  "entrada": {
+   "livro": "O custo normal de entrada é a maior Classe permitida pelo nível da entidade.",
+   "conta": "Classe máxima"
+  },
+  "retorno": {
+   "livro": "pague o dobro do PE da entrada e sua Bônus",
+   "conta": "2 × entrada"
+  },
+  "talisma": {
+   "livro": "Na entrada comum, pague metade do custo normal, arredondada para cima, com mínimo de 1 PE.",
+   "conta": "MAX(1, CEILING(entrada/2))"
+  },
+  "reserva": {
+   "livro": "Reserva máxima = nível da entidade × (1 + um terço da Essência dela, arredondado para baixo).",
+   "conta": "nível × (1 + INT(ESS/3))"
+  },
+  "carga": {
+   "livro": "Uma entidade segue o limite geral de carga de 5 + Força, em Volume",
+   "conta": "5 + Força"
+  },
+  "corpos": {
+   "livro": "Você pode manter um total de corpos igual ao atributo escolhido para a Defesa das entidades + sua capacidade de entidades ativas.",
+   "conta": "atributo + ativas"
+  },
+  "ordens": {
+   "livro": "Cada corpo mantém uma especial aguardando execução: antecipada, preparada, Armado, Segura ou Carregar.",
+   "conta": ""
+  },
+  "trunfos": {
+   "livro": "Somente maldições domadas com técnica própria podem ter Liberação Máxima, Técnica Máxima e Expansão de Domínio.",
+   "conta": ""
+  },
+  "liberacoes": {
+   "livro": "A domada conhece uma no nível 10, duas no 20 e três no 30.",
+   "conta": "10, 20 e 30"
+  },
+  "liberacao_pe": {
+   "livro": "O custo é 3 × Classe × 1,5 PE, para cima.",
+   "conta": "CEILING(4,5 × Classe)"
+  },
+  "liberacao_dados": {
+   "livro": "Use os pontos da especial daquela Classe e acrescente Classe d8",
+   "conta": "pontos + Classe d8"
+  },
+  "expansao_pe": {
+   "livro": "Abrir custa sua Ação Completa, uma básica da domada e 6 × a maior Classe dela em PE. Abrir sem barreira custa 7 × essa Classe.",
+   "conta": "6 × ou 7 × Classe"
+  },
+  "expansao_acerto": {
+   "livro": "Um Acerto de dano da domada causa Classe d8.",
+   "conta": "Classe d8"
+  },
+  "trilhas": {
+   "livro": "Escolha uma Trilha no nível 2: Invocação Principal, Parceria ou Múltiplas Invocações.",
+   "conta": ""
+  },
+  "principal_familias": {
+   "livro": "A ficha da principal passa a ter quatro Famílias Fechadas e cinco abertas.",
+   "conta": "5 abertas"
+  },
+  "principal_livre": {
+   "livro": "Entre as abertas, escolha uma Família Livre adicional, totalizando duas.",
+   "conta": "2 Livres"
+  },
+  "principal_escolhas": {
+   "livro": "Nos níveis 8, 16 e 24 da invocação, acrescente uma escolha à ficha: uma capacidade básica de Classe 0, uma especial normal ou um talento de Categoria de Efeito 1",
+   "conta": "3 escolhas"
+  },
+  "parceria_familias": {
+   "livro": "A ficha passa a ter cinco Famílias Fechadas, quatro abertas e uma Livre.",
+   "conta": "4 abertas"
+  },
+  "multiplas_familias": {
+   "livro": "Sua ficha passa a ter cinco Famílias Fechadas e quatro abertas, mantendo uma Família Livre.",
+   "conta": "4 abertas"
+  },
+  "multiplas_ativas": {
+   "livro": "Durante o combate, seu limite é de quatro invocações ativas.",
+   "conta": "4"
+  },
+  "vinculo": {
+   "livro": "Você começa o combate com 0 Pontos de Vínculo. No começo de cada turno seu, enquanto consciente, recebe 1 ponto, até o máximo de 3.",
+   "conta": "0 a 3"
+  },
+  "aprimoramento": {
+   "livro": "Você mantém um aprimoramento em uma invocação por vez.",
+   "conta": ""
+  }
+ },
+ "progressao": [
+  {
+   "de": 1,
+   "ate": 4,
+   "classe": 1,
+   "basica": 1,
+   "pontos": 2
+  },
+  {
+   "de": 5,
+   "ate": 8,
+   "classe": 2,
+   "basica": 2,
+   "pontos": 4
+  },
+  {
+   "de": 9,
+   "ate": 12,
+   "classe": 3,
+   "basica": 2,
+   "pontos": 6
+  },
+  {
+   "de": 13,
+   "ate": 16,
+   "classe": 4,
+   "basica": 2,
+   "pontos": 9
+  },
+  {
+   "de": 17,
+   "ate": 20,
+   "classe": 5,
+   "basica": 3,
+   "pontos": 11
+  },
+  {
+   "de": 21,
+   "ate": 25,
+   "classe": 6,
+   "basica": 3,
+   "pontos": 13
+  },
+  {
+   "de": 26,
+   "ate": 30,
+   "classe": 7,
+   "basica": 3,
+   "pontos": 16
+  }
+ ],
+ "classes": [
+  {
+   "classe": 1,
+   "pontos": 2,
+   "pe": 3,
+   "melhorias": 2
+  },
+  {
+   "classe": 2,
+   "pontos": 4,
+   "pe": 6,
+   "melhorias": 2
+  },
+  {
+   "classe": 3,
+   "pontos": 6,
+   "pe": 9,
+   "melhorias": 3
+  },
+  {
+   "classe": 4,
+   "pontos": 9,
+   "pe": 12,
+   "melhorias": 3
+  },
+  {
+   "classe": 5,
+   "pontos": 11,
+   "pe": 15,
+   "melhorias": 4
+  },
+  {
+   "classe": 6,
+   "pontos": 13,
+   "pe": 18,
+   "melhorias": 4
+  },
+  {
+   "classe": 7,
+   "pontos": 16,
+   "pe": 21,
+   "melhorias": 4
+  }
+ ],
+ "marcos": [
+  6,
+  10,
+  14,
+  18,
+  22,
+  26,
+  30
+ ],
+ "familias": [
+  "Alcance",
+  "Área",
+  "Mira",
+  "Controle",
+  "Auxiliares",
+  "Castigo",
+  "Tempo",
+  "Marca",
+  "Amparo"
+ ],
+ "formas": [
+  {
+   "nome": "Projétil",
+   "custa": null,
+   "exige": null,
+   "embutida": false,
+   "aplicacao": "Um alvo distante, por ataque."
+  },
+  {
+   "nome": "Toque",
+   "custa": null,
+   "exige": null,
+   "embutida": true,
+   "aplicacao": "Um alvo a 1,5 m, por ataque. Inclui Corpo a Corpo."
+  },
+  {
+   "nome": "Explosão",
+   "custa": "Leve",
+   "exige": "Área",
+   "embutida": false,
+   "aplicacao": "Área esférica em um ponto escolhido."
+  },
+  {
+   "nome": "Aura",
+   "custa": "Leve",
+   "exige": "Área",
+   "embutida": true,
+   "aplicacao": "Área esférica centrada na entidade. Inclui Corpo a Corpo."
+  },
+  {
+   "nome": "Cone",
+   "custa": "Leve",
+   "exige": "Área",
+   "embutida": false,
+   "aplicacao": "Área em cone partindo da entidade."
+  },
+  {
+   "nome": "Linha",
+   "custa": "Leve",
+   "exige": "Área",
+   "embutida": false,
+   "aplicacao": "Área em linha partindo da entidade."
+  },
+  {
+   "nome": "Cura",
+   "custa": "Media",
+   "exige": "Amparo",
+   "embutida": false,
+   "aplicacao": "Cura de um aliado."
+  },
+  {
+   "nome": "Apoio",
+   "custa": null,
+   "exige": "Amparo",
+   "embutida": false,
+   "aplicacao": "Vida temporária para um aliado."
+  },
+  {
+   "nome": "Onda",
+   "custa": "Pesada",
+   "exige": "Amparo",
+   "embutida": false,
+   "aplicacao": "Cura ou apoio para aliados na área."
+  },
+  {
+   "nome": "Efeito",
+   "custa": null,
+   "exige": null,
+   "embutida": false,
+   "aplicacao": "Aplicação registrada fora de combate."
+  }
+ ],
+ "alcance": {
+  "Projétil": [
+   "9 m",
+   "18 m",
+   "36 m",
+   "36 m"
+  ],
+  "Explosão": [
+   "9 m",
+   "18 m",
+   "36 m",
+   "36 m"
+  ],
+  "Toque": [
+   "1,5 m",
+   "1,5 m",
+   "1,5 m",
+   "1,5 m"
+  ],
+  "Apoio": [
+   "4,5 m",
+   "9 m",
+   "18 m",
+   "18 m"
+  ],
+  "Cura": [
+   "Indisponível",
+   "9 m",
+   "18 m",
+   "18 m"
+  ],
+  "Aura": [
+   "Centradas na entidade",
+   "Centradas na entidade",
+   "Centradas na entidade",
+   "Centradas na entidade"
+  ],
+  "Onda": [
+   "Centradas na entidade",
+   "Centradas na entidade",
+   "Centradas na entidade",
+   "Centradas na entidade"
+  ]
+ },
+ "area": {
+  "Explosão": [
+   "3 m",
+   "3 m",
+   "3 m",
+   "4,5 m"
+  ],
+  "Aura": [
+   "3 m",
+   "3 m",
+   "3 m",
+   "4,5 m"
+  ],
+  "Cone": [
+   "3 m",
+   "4,5 m",
+   "4,5 m",
+   "9 m"
+  ],
+  "Linha": [
+   "9 × 1,5 m",
+   "18 × 1,5 m",
+   "18 × 1,5 m",
+   "30 × 1,5 m"
+  ],
+  "Onda": [
+   "Indisponível",
+   "3 m",
+   "3 m",
+   "4,5 m"
+  ]
+ },
+ "reduzidas": [
+  "Rajada",
+  "Fura",
+  "Anteparo",
+  "Desarma o Feitiço",
+  "Sugar",
+  "Levanta",
+  "Remenda"
+ ],
+ "talentos": [
+  {
+   "nome": "Leitura",
+   "ce": 1,
+   "funcao": "Identifica Classe e Forma de conjurações próximas."
+  },
+  {
+   "nome": "Instinto",
+   "ce": 1,
+   "funcao": "Protege contra surpresa enquanto acordada."
+  },
+  {
+   "nome": "Raiz",
+   "ce": 1,
+   "funcao": "Impede movimento imposto e Derrubado involuntário."
+  },
+  {
+   "nome": "Mão Firme",
+   "ce": 1,
+   "funcao": "Protege Concentração e Carregar de ocorrências pequenas de dano."
+  },
+  {
+   "nome": "Farejador",
+   "ce": 1,
+   "funcao": "Reconhece vestígios locais de conjuração."
+  },
+  {
+   "nome": "Leitura de Feitiços",
+   "ce": 1,
+   "funcao": "Identifica o último feitiço de um inimigo à vista."
+  },
+  {
+   "nome": "Fluxo",
+   "ce": 2,
+   "funcao": "Vida temporária por conjuração."
+  },
+  {
+   "nome": "Eco",
+   "ce": 2,
+   "funcao": "Redução no custo após reduzir um inimigo a zero."
+  },
+  {
+   "nome": "Costura",
+   "ce": 2,
+   "funcao": "Impede que um aliado caia a zero."
+  },
+  {
+   "nome": "Contramedida",
+   "ce": 2,
+   "funcao": "Reação que aumenta a CD de outro feitiço."
+  },
+  {
+   "nome": "Escama",
+   "ce": 3,
+   "funcao": "Resistência a um tipo de dano."
+  },
+  {
+   "nome": "Afinidade",
+   "ce": 3,
+   "funcao": "Supera cobertura Parcial e resistência no tema escolhido."
+  },
+  {
+   "nome": "Talento Próprio",
+   "ce": [
+    1,
+    3
+   ],
+   "funcao": "Capacidade escrita e comparada antes da sessão."
+  }
+ ],
+ "teto_de_ce": [
+  {
+   "niveis": [
+    1,
+    6
+   ],
+   "ce": 1
+  },
+  {
+   "niveis": [
+    10
+   ],
+   "ce": 2
+  },
+  {
+   "niveis": [
+    14,
+    18,
+    22,
+    26,
+    30
+   ],
+   "ce": 3
+  }
+ ],
+ "tipos": [
+  {
+   "nome": "Shikigami de técnica",
+   "corpo": "Criatura ligada à técnica.",
+   "ficha": "Usa a ficha normal de entidade."
+  },
+  {
+   "nome": "Corpo amaldiçoado de técnica",
+   "corpo": "Corpo ligado à técnica.",
+   "ficha": "Usa a vida normal e as regras de corpo amaldiçoado."
+  },
+  {
+   "nome": "Shikigami de criação",
+   "corpo": "Criatura guardada em um talismã.",
+   "ficha": "Registra o talismã e sua carga."
+  },
+  {
+   "nome": "Corpo amaldiçoado de criação",
+   "corpo": "Corpo fabricado.",
+   "ficha": "Ganha 4 + Constituição por nível depois do primeiro."
+  },
+  {
+   "nome": "Maldição domada",
+   "corpo": "Maldição submetida.",
+   "ficha": "Mantém seu nível e suas capacidades de origem."
+  }
+ ],
+ "aquisicoes": [
+  {
+   "nome": "Espaço conhecido",
+   "custa": "Uma vaga de feitiço, Manejo ou Kata.",
+   "evolui": "Acompanha seu nível.",
+   "acompanha": true
+  },
+  {
+   "nome": "Lista de ritual",
+   "custa": "Um feitiço com uma lista própria e desafios individuais de submissão.",
+   "evolui": "As entidades conquistadas acompanham seu nível.",
+   "acompanha": true
+  },
+  {
+   "nome": "Maldição domada",
+   "custa": "Encontrar, derrotar e submeter uma maldição.",
+   "evolui": "Conserva o nível em que foi domada.",
+   "acompanha": false
+  },
+  {
+   "nome": "Criação",
+   "custa": "Tempo, testes e materiais de fabricação.",
+   "evolui": "Conserva o nível em que foi criada.",
+   "acompanha": false
+  }
+ ],
+ "tecnica_maxima": [
+  {
+   "de": 17,
+   "ate": 20,
+   "dados": "19d8",
+   "pontos": 8,
+   "pe": 25
+  },
+  {
+   "de": 21,
+   "ate": 25,
+   "dados": "22d8",
+   "pontos": 12,
+   "pe": 30
+  },
+  {
+   "de": 26,
+   "ate": 30,
+   "dados": "26d8",
+   "pontos": 16,
+   "pe": 35
+  }
+ ],
+ "expansao": [
+  {
+   "degrau": "Incompleta",
+   "custa": "2 espaços.",
+   "pede": "Nível 10 dela e seu refino 4."
+  },
+  {
+   "degrau": "Completa",
+   "custa": "Mais 1 espaço; total 3.",
+   "pede": "Incompleta, nível 14 dela e seu refino 5."
+  },
+  {
+   "degrau": "Sem Barreiras",
+   "custa": "Mais 2 espaços; total 5.",
+   "pede": "Completa, seu refino 10 e sua especialização em Ocultismo."
+  }
+ ],
+ "carga_do_talisma": [
+  {
+   "classe": "1",
+   "adianta": "0 PE",
+   "paga": "1 PE"
+  },
+  {
+   "classe": "2 ou 3",
+   "adianta": "1 PE",
+   "paga": "1 ou 2 PE"
+  },
+  {
+   "classe": "4 ou 5",
+   "adianta": "2 PE",
+   "paga": "2 ou 3 PE"
+  },
+  {
+   "classe": "6 ou 7",
+   "adianta": "3 PE",
+   "paga": "3 ou 4 PE"
+  }
+ ],
+ "trilhas": [
+  "Invocação Principal",
+  "Parceria",
+  "Múltiplas Invocações"
+ ],
+ "aprimoramentos": [
+  {
+   "nome": "Precisão à Distância",
+   "nivel": 2
+  },
+  {
+   "nome": "Avanço Corpo a Corpo",
+   "nivel": 2
+  },
+  {
+   "nome": "Proteção Reforçada",
+   "nivel": 2
+  },
+  {
+   "nome": "Execução de Tarefas",
+   "nivel": 2
+  },
+  {
+   "nome": "Dificultar a Resistência",
+   "nivel": 7
+  }
+ ],
+ "tipos_de_dano": [
+  "Cortante",
+  "Perfurante",
+  "Concussão",
+  "Fogo",
+  "Frio",
+  "Elétrico",
+  "Ácido",
+  "Trovejante",
+  "Veneno",
+  "Radiante",
+  "Necrótico",
+  "Psíquico",
+  "Energia Reversa",
+  "Força",
+  "Alma"
+ ],
+ "ordens": [
+  "Antecipada",
+  "Preparada",
+  "Armado",
+  "Segura",
+  "Carregar"
+ ]
+}

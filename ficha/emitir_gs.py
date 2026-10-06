@@ -379,10 +379,33 @@ def compactar(aba):
     return out
 
 
+# ---------------------------------------------------------------------------------------------
+# AS ABAS QUE MORAM EM OUTRO ARQUIVO (06/10/2026). A aba de invocações sozinha, com uma ficha, levou o Ficha.gs de 760
+# para 950 KB, acima do teto de 900 KB por arquivo que o conferir-ficha-xlsx.py guarda; com as doze fichas passaria de
+# 1,3 MB. Como o Habilidades.gs, ela vai num arquivo de script à parte: {arquivo: (a variável, as abas)}. O arquivo só
+# declara a lista; quem junta é o juntarAbas_ do Ficha.gs (modelo.gs.js), no arquivo que carregar por último, porque o
+# Apps Script não promete a ordem em que carrega os arquivos. Cada aba de fora diz depois de qual ela entra (`depois`).
+# ---------------------------------------------------------------------------------------------
+SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVOC"))}
+
+
+def abas_cruas(caminho=None):
+    """o ABAS como está escrito no Ficha.gs e nos arquivos à parte, na ordem em que o script o junta"""
+    caminho = caminho or SAIDA
+    abas = json.loads(re.search(r"var ABAS = ([\s\S]*?);\n\nvar ARTE = ", open(caminho, encoding="utf-8").read()).group(1))
+    for arq, (var, _) in SEPARADAS.items():
+        p = os.path.join(os.path.dirname(caminho), arq)
+        if not os.path.exists(p):
+            continue
+        for e in json.loads(re.search(r"var %s = ([\s\S]*?);\n\nif \(typeof juntarAbas_" % var, open(p, encoding="utf-8").read()).group(1)):
+            i = next((k for k, a in enumerate(abas) if a["nome"] == e.get("depois")), len(abas) - 1)
+            abas.insert(i + 1, e)
+    return abas
+
+
 def abas_do_script(caminho=None):
-    """o ABAS do Ficha.gs como o script o usa: com as fileiras copiadas escritas por extenso"""
-    src = open(caminho or SAIDA, encoding="utf-8").read()
-    return [expandir(a) for a in json.loads(re.search(r"var ABAS = ([\s\S]*?);\n\nvar ARTE = ", src).group(1))]
+    """o ABAS como o script o usa: as abas dos arquivos à parte no lugar, e as fileiras copiadas escritas por extenso"""
+    return [expandir(a) for a in abas_cruas(caminho)]
 
 
 def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None, extras=None):
@@ -482,7 +505,7 @@ def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None, extras=None):
         # tinta (colunas A:B) tem de ir até a última linha, e uma folga que nenhuma célula pinta ficaria
         # com o fundo comum — a lombada aparecia cortada nas paletas claras (19/09/2026). Essas duas
         # abas terminam no fim da lombada, ver ficha-v01/correcoes_borda.py.
-        ncols, nrows = max(max_c, 12), max_r + (0 if nome in ("FICHA", "FICHA PESSOAL", "FICHA AMALDIÇOADA", "INVOCAÇÃO") else 2)
+        ncols, nrows = max(max_c, 12), max_r + (0 if nome in ("FICHA", "FICHA PESSOAL", "FICHA AMALDIÇOADA", "INVOCAÇÕES", "INVOCAÇÃO") else 2)
         if imgs is not None:
             # a ficha-v01: a imagem entra DENTRO da celula, numa caixa medida no pixel do script, e a
             # arte vai no formato da caixa. [lin1, col1, lin2, col2, arte]
@@ -602,6 +625,17 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
         else:
             a["caixas"] = caixas if a["nome"] == "FICHA" else []
     abas = [compactar(a) for a in abas]
+    celulas = sum(len(a["vals"]) for a in abas)
+    # as abas que moram em outro arquivo saem do ABAS, cada uma dizendo depois de qual ela entra
+    fora = {}
+    for arq, (var, nomes) in SEPARADAS.items():
+        saem = [a for a in abas if a["nome"] in nomes]
+        for a in saem:
+            antes = [b["nome"] for b in abas[:abas.index(a)] if b["nome"] not in nomes]
+            a["depois"] = antes[-1] if antes else None
+        if saem:
+            fora[arq] = (var, saem)
+            abas = [a for a in abas if a["nome"] not in nomes]
     os.makedirs(os.path.dirname(SAIDA), exist_ok=True)
     corpo = open(os.path.join(AQUI, "modelo.gs.js"), encoding="utf-8").read()
     with open(SAIDA, "w", encoding="utf-8") as fp:
@@ -611,4 +645,11 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
         fp.write("var ABAS = " + _sem_linha_gigante(abas) + ";\n\n")
         fp.write("var ARTE = " + _sem_linha_gigante(arte) + ";\n\n")
         fp.write(corpo)
-    return SAIDA, sum(len(a["vals"]) for a in abas), len(arte)
+    for arq, (var, saem) in fora.items():
+        with open(os.path.join(os.path.dirname(SAIDA), arq), "w", encoding="utf-8") as fp:
+            fp.write("// GERADO POR ficha/emitir_gs.py — não edite este arquivo na mão.\n")
+            fp.write("// As abas " + " e ".join(a["nome"] for a in saem) + ", que não cabem no Ficha.gs. Cole este arquivo no mesmo projeto\n")
+            fp.write("// do Apps Script, ao lado do Ficha.gs e do Codigo.gs: sem ele a ficha é montada sem essas abas.\n\n")
+            fp.write(f"var {var} = " + _sem_linha_gigante(saem) + ";\n\n")
+            fp.write(f"if (typeof juntarAbas_ === 'function') juntarAbas_({var});\n")
+    return SAIDA, celulas, len(arte)

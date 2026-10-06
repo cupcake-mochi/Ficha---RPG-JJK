@@ -16,7 +16,7 @@
 const fs=require('fs'), vm=require('vm'), path=require('path');
 const RAIZ=__dirname;
 const NOVO=path.join(RAIZ,'apps-script/Codigo.gs'), FICHA=path.join(RAIZ,'apps-script/Ficha.gs');
-const FICHA_SRC=fs.readFileSync(FICHA,'utf8');
+const FICHA_SRC=fs.readFileSync(FICHA,'utf8')+'\n'+fs.readFileSync(path.join(RAIZ,'apps-script/Invocacoes.gs'),'utf8');   // 06/10/2026: as abas da invocação
 let falhas=0; const ok=(n,c,d='')=>{console.log((c?'  ok   ':'  FALHA ')+n+(c?'':'  '+d)); if(!c) falhas++;};
 
 // custo das chamadas ao Sheets (ms), calibrado pelos tempos do Mizuki (25/09/2026): um passo de cor, que lia e

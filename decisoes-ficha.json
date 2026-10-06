@@ -350,9 +350,11 @@
    "CARTEIRA",
    "FICHA",
    "FICHA AMALDIÇOADA",
+   "INVOCAÇÕES",
    "FICHA PESSOAL",
    "DADOS",
    "DADOS_AM",
+   "DADOS_INVOC",
    "GLOSSÁRIO"
   ],
   "abas_acrescentadas_em_01_10": {
@@ -408,7 +410,31 @@
     "px": 1596,
     "porque": "pedido do Mizuki em 01/10/2026, escolhendo as tres cartas por fileira: \"teria como alargar a opção de 3 colunas? ... dar mais colunas a pagina\", porque a carta de 364 px estava \"mt amassadinho\". Cada carta ficou com 476 px",
     "preco": "num monitor de 1920 px ela cabe inteira; num notebook de 1366 px ela pede zoom de 75% ou rolar para o lado. As outras abas continuam cabendo no notebook"
+   },
+   "INVOCAÇÕES": {
+    "px": 1985,
+    "porque": "a ficha deitada tem tres blocos de 480 px (a foto, os numeros e a mesa), que sao tambem as tres cartas de habilidade de cada fileira, da largura das cartas da FICHA AMALDIÇOADA; e o conjunto fica a esquerda, pedido dele (\"mantem o conjunto ali na esquerda com a lista grande de invocações\")",
+    "preco": "nao cabe num notebook de 1366 px: o grupo de colunas fecha o conjunto e cada coluna de fichas, e mesmo assim uma ficha sozinha pede zoom ou rolar para o lado. Ele viu no estudo que o conjunto aberto e uma coluna passavam da largura das outras abas. O numero muda quando a grade de 2 x 6 entrar"
    }
+  },
+  "abas_acrescentadas_em_06_10": {
+   "quais": [
+    "INVOCAÇÕES",
+    "DADOS_INVOC"
+   ],
+   "porque": "pedido do Mizuki em 06/10/2026: \"precisamos olhar o como fazer a ficha de invocação após a atualização do sistema\". O livro reconstruido fez da invocacao uma entidade com ficha propria (capitulos 16 e 17), e a aba velha (INVOCAÇÃO, CATÁLOGO e DADOS_INV, fora desde 01/10) nao servia mais",
+   "onde": "ficha-v01/ficha_invocacoes.py (limpeza 29), do estudo que ele fechou em cinco rodadas (mockup/invocacao-estudo.html); os numeros do livro vem do ficha-v01/invocacao-do-livro.json (extrair_invocacao.py)",
+   "o_que_ele_decidiu": [
+    "a ficha deitada, com foto, nome, caixas e menus (\"visualmente atrativo, semelhante as outras paginas\")",
+    "varias fichas numa grade: \"2 x 6 acho q fica bom\", cada coluna com o grupo de colunas dela e cada fileira com o grupo de linhas",
+    "o conjunto a esquerda, com a lista de todas",
+    "valor automatico com Buff/Debuff, como na FICHA",
+    "Liberacao Maxima, Tecnica Maxima e Expansao num grupo fechado, sem automacao para liberar",
+    "a foto larga (\"Deixa um pouco mais largo e ta bom assim\")"
+   ],
+   "a_aba_oculta": "a DADOS_INVOC guarda as tabelas do livro, uma linha de conta por ficha e uma por carta de habilidade; fica oculta, e a troca de paleta nao passa por ela",
+   "em_etapas": "a primeira etapa monta UMA ficha (ficha_invocacoes.N_COLUNAS e N_FILEIRAS), para ele medir o construir() no Sheets; a grade de 2 x 6 entra depois da medida",
+   "arquivo_de_script": "as duas abas moram no apps-script/Invocacoes.gs, e nao no Ficha.gs: com uma ficha o Ficha.gs ja passava do teto de 900 KB por arquivo"
   }
  },
  "C7_paleta_v01": {

@@ -19,7 +19,7 @@ from openpyxl import load_workbook
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(RAIZ, "ficha-v01"))
 sys.path.insert(0, os.path.join(RAIZ, "ficha"))
-import indice_ficha as ix, ficha_pessoal as fp, ficha_amaldicoada as fa, emitir_gs
+import indice_ficha as ix, ficha_pessoal as fp, ficha_amaldicoada as fa, ficha_invocacoes as fi, emitir_gs
 
 ARQ = os.path.join(RAIZ, "ficha-v01", "ficha-projeto-m-0.1.xlsx")
 GS = os.path.join(RAIZ, "apps-script", "Ficha.gs")
@@ -153,6 +153,39 @@ def exemplo_amaldicoada(wb):
     cz = G["cols_zero"]
     a[f"{cz['nome'][0]}{G['zero_ini']}"], a[f"{cz['forma'][0]}{G['zero_ini']}"] = "Tapa de Peso", "Toque"
     a[f"{cz['nome'][0]}{G['zero_ini'] + 1}"], a[f"{cz['mel'][0]}{G['zero_ini'] + 1}"] = "Pedrada", "Empurrão"
+
+
+def exemplo_invocacoes(wb):
+    """o Cão de sombra do capítulo 17, no nível 5 do Kaito (Essência 2): a ficha que o livro monta passo a passo"""
+    f, a, c = wb["FICHA"], wb[fi.NOME], wb["CARTEIRA"]
+    idx = {}
+    dd = wb["DADOS"]
+    for r in range(5, 200):
+        k, v = dd.cell(row=r, column=53).value, ix.endereco(dd.cell(row=r, column=54).value)
+        if k and v:
+            idx[k] = v
+    for linha in c.iter_rows():
+        for cel in linha:
+            if isinstance(cel.value, str) and cel.value.startswith("Coloque o nome"):
+                cel.value = "Kaito"
+    f[idx["atr_base_Essência"]], f[idx["caminho"]], f[idx["nivel"]] = 2, "Evocador", 5
+    g = fi.celulas_da_ficha(fi.L0, 0)
+    a[g["nome"]], a[g["acerto"]], a[g["fis"]], a[g["trT"]], a[g["estado"]] = "Cão de sombra", "Força", "Força", "Físico", "Em campo"
+    a[g["def"]] = "Um cão feito de sombra que reconhece vestígios de energia amaldiçoada e persegue o que seu invocador aponta."
+    a[g["corpo"]] = ("Médio, quatro patas, sem mãos; usa a boca para segurar. Visão, audição e olfato comuns. Entende ordens "
+                     "faladas e responde por latidos e gestos.")
+    a[g["tarefa"]], a[g["vida"]] = "Perseguir a criatura apontada.", 19
+    for cel, v in zip(g["pts"], (3, 2, 2, 1, 1)):
+        a[cel] = v
+    for cel, v in zip(g["fam"], ("Mira", None, "Alcance", "Controle", None)):
+        a[cel] = v
+    for cel, v in zip(g["per"], ("Atletismo", "Furtividade", "Percepção", "Sobrevivência")):
+        a[cel] = v
+    a[g["tal"][0]] = "Farejador"
+    for chave, nome, forma, mel, como in ((("bas", 0), "Mordida", "Toque", None, "Consome a atuação básica do cão."),
+                                          (("esp", 0), "Mordida precisa", "Toque", "Precisão", "Não aplica condição nem deixa efeito contínuo.")):
+        cel = fi.celulas_da_carta(*g["cartas"][chave])
+        a[cel["nome"]], a[cel["forma"]], a[cel["tdano"]], a[cel["como"]], a[cel["mel"][0]] = nome, forma, "Perfurante", como, mel
 
 
 def recalculada(preenche):
@@ -295,8 +328,11 @@ def grade(spec, valores, crus, aberto=True, barras=None, pintura=None, linhas=No
             else:
                 txt = html.escape("" if v is None else str(numero(v)))
             if (r, c) in fmt and isinstance(v, (int, float)) and not isinstance(v, bool):
-                prefixo = re.match(r'"([^"]*)"', fmt[(r, c)]).group(1)
-                txt = prefixo + (f"{int(v):,}".replace(",", ".") if "#" in fmt[(r, c)] else str(int(v)))
+                # o texto do formato vem antes do número ("Classe "0), depois dele (0" pt") ou antes, com o sinal ("B/D "+0)
+                f_ = fmt[(r, c)].split(";")[0]
+                antes, depois = re.match(r'(?:"([^"]*)")?[+]?[#,0]+(?:"([^"]*)")?$', f_).groups()
+                num = f"{int(v):,}".replace(",", ".") if "#" in f_ else ("+" if "+" in f_ and int(v) > 0 else "") + str(int(v))
+                txt = (antes or "") + num + (depois or "")
             fundo, corf, riscado = bg[r][c], cor, False
             for (r1_, c1_), (r2_, c2_), regra in avisos:
                 texto = str(v or "")
@@ -393,6 +429,24 @@ def main():
         if a.aba == "FICHA":       # a caixa das Habilidades como o script a estica, e não como a aba nasce
             spec["alturas"].update({str(r): px for r, px in ALTURAS_DO_SCRIPT.items()})
         open(a.saida, "w", encoding="utf-8").write(desenha(spec, valores, crus, 2, None, a.aba, arte=arte_do_script(),
+                                                           linhas_abertas="nasce" if a.nasce else None))
+        print(f"{a.aba}: {spec['rows']} linhas, {spec['cols']} colunas -> {a.saida}")
+        return
+    # 06/10/2026: a INVOCAÇÕES vai com o Cão de sombra do livro; a barra de vida é desenhada pela conta dela
+    if a.aba == fi.NOME:
+        lido, cru = recalculada((lambda wb: None) if a.vazia else exemplo_invocacoes)
+        ws, wc, dd = lido[a.aba], cru[a.aba], lido[fi.DADOS_IV]
+        valores = {(c.row, c.column): c.value for linha in ws.iter_rows() for c in linha if c.value is not None}
+        crus = {(c.row, c.column): c.value for linha in wc.iter_rows() for c in linha if c.value is not None}
+        cab = {dd.cell(row=1, column=c).value: c for c in range(1, dd.max_column + 1)}
+        barras = {}
+        for i, (_, j, k) in enumerate(fi.lugares()):
+            atual, vida = (dd.cell(row=2 + i, column=cab[x]).value for x in ("atual", "vida"))
+            tem = dd.cell(row=2 + i, column=cab["tem"]).value
+            if tem and vida:
+                barras[ix._lc(fi.celulas_da_ficha(fi.linha_da_fileira(j), k)["barra"])] = (round(100 * atual / vida), "#E8DCD4")
+        spec = next(s for s in abas_do_script() if s["nome"] == a.aba)
+        open(a.saida, "w", encoding="utf-8").write(desenha(spec, valores, crus, 2, barras, a.aba, arte=arte_do_script(),
                                                            linhas_abertas="nasce" if a.nasce else None))
         print(f"{a.aba}: {spec['rows']} linhas, {spec['cols']} colunas -> {a.saida}")
         return

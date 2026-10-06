@@ -74,8 +74,9 @@ Object.keys(ARTE).forEach(chave => {
 // 01/10/2026: eram seis. A FICHA AMALDIÇOADA é mais larga que a FICHA, e a pincelada do cabeçalho entra de novo, na largura dela.
 // 03/10/2026: eram sete. A moldura da foto saiu de dentro da caixa (ver ficha-v01/moldura_foto.py), e no lugar dela entram
 // os dois cantos chanfrados, a mesma arte em duas caixas de tamanho diferente (a linha de baixo é mais alta).
-checa('o ARTE tem as oito imagens da ficha: as sete de antes, sem a moldura da foto, e os dois cantos chanfrados dela',
-      Object.keys(ARTE).length === 8 && Object.keys(ARTE).filter((k) => k.startsWith('ficha-1-')).length === 2
+// 06/10/2026: eram oito. A INVOCAÇÕES tem a largura dela, e a pincelada do cabeçalho entra mais uma vez.
+checa('o ARTE tem as nove imagens da ficha: as sete de antes, sem a moldura da foto, os dois cantos chanfrados dela e a pincelada na largura da INVOCAÇÕES',
+      Object.keys(ARTE).length === 9 && Object.keys(ARTE).filter((k) => k.startsWith('ficha-1-')).length === 3
       && !Object.keys(ARTE).some((k) => k.startsWith('carteira-2-'))
       && Object.keys(ARTE).filter((k) => k.startsWith('carteira-canto-')).length === 2, Object.keys(ARTE).join(', '));
 let erro = null; try { sb.pngComCor_(Buffer.from('iVBORw0KGgo=', 'base64').toString('base64'), COR); } catch (e) { erro = e.message; }

@@ -9,7 +9,7 @@
 // pelo que o setBorder recebeu, e os valores que a troca grava (a cor da barra, na DADOS).
 const fs = require('fs'), vm = require('vm'), path = require('path');
 const RAIZ = path.dirname(__dirname);
-const FICHA_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script/Ficha.gs'), 'utf8');
+const FICHA_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script/Ficha.gs'), 'utf8') + '\n' + fs.readFileSync(path.join(RAIZ, 'apps-script/Invocacoes.gs'), 'utf8');
 const CODIGO_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script/Codigo.gs'), 'utf8');
 // onde o configurarPaleta_ põe a caixa da paleta na CARTEIRA: [linha, coluna, linhas, colunas, fundo, fonte]
 const CAIXA = { PALETA_ROTULO: [26, 3, 1, 7, '#3D2E78', '#998BA9'], PALETA_ESCOLHIDA: [27, 3, 2, 11, '#1E1733', '#F4F1F7'],

@@ -380,6 +380,12 @@ function onEdit(e) {
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
+  // 06/10/2026: a INVOCAÇÕES é como a FICHA AMALDIÇOADA: a conta mora na aba oculta dela, e a caixa calculada volta.
+  if (aba === ABA_INVOCACOES_) {
+    try { devolverConta_(e, ABA_INVOCACOES_); } catch (err) { console.log('invocações: ' + err.message); }
+    continuarPaleta_(inicio, null, false, e.range);
+    return;
+  }
   // Qualquer outra edição também continua uma troca que ficou pela metade (a arte, quase sempre): é o
   // "caso alguém mexa na ficha" do Mizuki. Barato quando não há nada pendente.
   if (aba !== 'FICHA') { continuarPaleta_(inicio, null, false, e.range); return; }
@@ -682,6 +688,7 @@ function configurarPessoal_(ss) {
 // DADOS_AM. Aqui fica só o que fórmula não faz: a linha de saltos, que precisa do número da aba dentro da planilha.
 // =====================================================================
 var ABA_AMALDICOADA_ = 'FICHA AMALDIÇOADA';
+var ABA_INVOCACOES_ = 'INVOCAÇÕES';
 var DADOS_DA_AMALDICOADA_ = 'DADOS_AM';
 
 /**

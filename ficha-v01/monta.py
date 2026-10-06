@@ -148,6 +148,17 @@ print(f"a Ficha Amaldiçoada: {_ABA_AM['linhas']} linha(s), {_ABA_AM['colunas']}
       f"{len(_ABA_AM['mescladas'])} mesclagem(ns), {len(_ABA_AM['grupos']['linhas'])} grupo(s) de linhas; "
       f"a DADOS_AM: {_FAM['aba_dados']['linhas']} linha(s), {_FAM['aba_dados']['colunas']} coluna(s)")
 
+# 06/10/2026, limpeza 29: a INVOCAÇÕES, depois da FICHA AMALDICOADA, e a aba oculta das contas dela, a DADOS_INVOC. E a
+# invocacao refeita depois do livro reconstruido (a entidade com ficha propria, capitulos 16 e 17), no desenho que o
+# Mizuki fechou por estudo. Nasce inteira no gerador e nao muda nenhuma celula das outras abas. Ver ficha_invocacoes.py.
+import ficha_invocacoes
+_FIV = ficha_invocacoes.trocas(LAYOUT, _FP["H"][ficha_pessoal.COR_DA_BARRA])
+_ABA_IV = ficha_invocacoes.aplica(LAYOUT, _FIV)
+print(f"a aba de invocações: {_ABA_IV['linhas']} linha(s), {_ABA_IV['colunas']} coluna(s), {len(_ABA_IV['celulas'])} celula(s), "
+      f"{len(_ABA_IV['mescladas'])} mesclagem(ns), {sum(len(m['onde'].split()) for m in _ABA_IV['menus'])} faixa(s) de menu, "
+      f"{len(_FIV['cartas'])} carta(s) em {len(_FIV['LUG'])} ficha(s); a DADOS_INVOC: {_FIV['aba_dados']['linhas']} linha(s), "
+      f"{_FIV['aba_dados']['colunas']} coluna(s)")
+
 # 01/10/2026: a INVOCACAO, o CATALOGO e a DADOS_INV saem da ficha, decisao do Mizuki quando o construir() estourou
 # os seis minutos do Apps Script. Saem por ultimo: o GLOSSARIO nasce na posicao da INVOCACAO e usa os estilos do
 # CATALOGO. A montagem para se alguma aba que fica ainda citar uma delas. Ver sem_invocacao.py.

@@ -585,7 +585,14 @@ checa("o script foi emitido", _o.path.exists(GS))
 if _o.path.exists(GS):
     g = open(GS, encoding="utf-8").read()
     checa("ele avisa que é gerado, e não editado na mão", "não edite este arquivo" in g)
-    checa(f"ele traz as {len(DEC['C6_documento']['abas'])} abas decididas", all(f'"{a}"' in g for a in DEC["C6_documento"]["abas"]))
+    # 06/10/2026: a INVOCAÇÕES e a DADOS_INVOC moram no Invocacoes.gs, que se junta ao ABAS quando o script carrega
+    GS_INV = "apps-script/Invocacoes.gs"
+    g_inv = open(GS_INV, encoding="utf-8").read() if _o.path.exists(GS_INV) else ""
+    checa(f"ele e o Invocacoes.gs trazem as {len(DEC['C6_documento']['abas'])} abas decididas", all(f'"{a}"' in g + g_inv for a in DEC["C6_documento"]["abas"]))
+    checa("o Invocacoes.gs só declara as abas dele e chama a junção: quem carregar por último junta",
+          "var ABAS_DA_INVOCACAO = " in g_inv and "if (typeof juntarAbas_ === 'function') juntarAbas_(ABAS_DA_INVOCACAO);" in g_inv
+          and "if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);" in g and "function " not in g_inv)
+    checa(f"o Invocacoes.gs cabe no Apps Script ({len(g_inv) / 1024:.0f} KB, o teto é de 900 por arquivo)", 0 < len(g_inv) / 1024 < 900)
     checa("ele traz a arte embutida, sem depender de URL",
           '.png":"' in g.split("var ARTE")[1][:400] and "http" not in g.split("var ARTE")[1][:200])
     checa("ele define as caixas de seleção pela posição medida",
@@ -644,7 +651,7 @@ if _o.path.exists(GS):
     # uma vez no Ficha.gs, e o proprio script as expande quando carrega; aqui quem expande e o emitir_gs.expandir.
     sys.path.insert(0, "ficha")
     import emitir_gs as _eg
-    dados = [_eg.expandir(a) for a in _js.loads(_re.search(r"var ABAS = (\[.*?\]);\n", g, _re.S).group(1))]
+    dados = _eg.abas_do_script(GS)
     nomes = {a["nome"] for a in dados}
     checa("as abas do script são as decididas", nomes == set(DEC["C6_documento"]["abas"]),
           str(nomes ^ set(DEC["C6_documento"]["abas"])))

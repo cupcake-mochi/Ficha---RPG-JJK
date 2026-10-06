@@ -1235,7 +1235,7 @@ checa("nenhuma fórmula usa LET, LAMBDA, IFS ou SWITCH (o LibreOffice da regress
 print("\nO FICHA.GS: A ABA MONTADA NO SHEETS DE MENTIRA")
 PROG_JS = r"""
 const fs = require('fs'), { criaSheets, CHAMADAS } = require('./medidas/sheets-de-mentira.js');
-const S = criaSheets(fs.readFileSync('apps-script/Ficha.gs', 'utf8'), fs.readFileSync('apps-script/Codigo.gs', 'utf8'), JSON.parse(process.argv[2] || '{}'));
+const S = criaSheets(fs.readFileSync('apps-script/Ficha.gs', 'utf8') + '\\n' + fs.readFileSync('apps-script/Invocacoes.gs', 'utf8'), fs.readFileSync('apps-script/Codigo.gs', 'utf8'), JSON.parse(process.argv[2] || '{}'));
 if (process.argv[3] === 'sem-mesclagem') S.P.copiaTrazMesclagem = false;
 S.ctx.construir();
 const out = { registro: S.P.registros[S.P.registros.length - 1], orfas: S.P.orfas, chamadas: CHAMADAS, abas: {} };
@@ -1300,7 +1300,7 @@ if M:
     # o ABAS que o script expande quando carrega é o mesmo que o gerador expande
     sys.path.insert(0, "ficha")
     import emitir_gs as _eg
-    _js = subprocess.run(["node", "-e", "const fs=require('fs'),vm=require('vm'),c={};vm.createContext(c);vm.runInContext(fs.readFileSync('apps-script/Ficha.gs','utf8'),c);"
+    _js = subprocess.run(["node", "-e", "const fs=require('fs'),vm=require('vm'),c={};vm.createContext(c);vm.runInContext(fs.readFileSync('apps-script/Ficha.gs','utf8')+'\\n'+fs.readFileSync('apps-script/Invocacoes.gs','utf8'),c);"
                           "console.log(JSON.stringify(vm.runInContext('ABAS',c)))"], capture_output=True, text=True, timeout=120)
 
     def _norm(x):
@@ -1313,7 +1313,7 @@ if M:
         return x
     _do_script = _norm(json.loads(_js.stdout)) if _js.returncode == 0 else []
     _do_gerador = _norm(_eg.abas_do_script("apps-script/Ficha.gs"))
-    _cru = json.loads(re.search(r"var ABAS = ([\s\S]*?);\n\nvar ARTE = ", open("apps-script/Ficha.gs", encoding="utf-8").read()).group(1))
+    _cru = _eg.abas_cruas("apps-script/Ficha.gs")
     _n_cru = next(len(a["vals"]) for a in _cru if a["nome"] == ABA)
     _n_cheio = next((len(a["vals"]) for a in _do_script if a["nome"] == ABA), 0)
     checa(f"as fileiras copiadas voltam inteiras quando o script carrega ({_n_cru} células escritas viram {_n_cheio}), iguais às que o gerador expande",
@@ -1326,8 +1326,13 @@ if M:
     n_mescla = ch.get("Range.merge", 0) + ch.get("Range.mergeAcross", 0) + ch.get("Range.mergeVertically", 0)
     # 02/10/2026: o menu rápido da FICHA também copia as fileiras de cartas, uma cópia por fileira
     _copias_ficha = sum(len(k[2]) for a in _cru if a["nome"] == "FICHA" for k in a.get("copias") or [])
-    checa(f"a aba nova não triplica a montagem: {n_mescla} chamadas de mesclagem na planilha inteira (eram 310 sem ela), {ch.get('Range.copyTo', 0)} cópias "
-          f"({_copias_ficha} do menu rápido)", n_mescla < 700 and 0 < _copias_ficha and ch.get("Range.copyTo", 0) < 40 + _copias_ficha,
+    # 06/10/2026: a INVOCAÇÕES também é montada nesta planilha. As mesclagens que ela faz fora das fileiras copiadas (as
+    # que o Invocacoes.gs escreve) e as cópias dela saem da conta daqui; quem as mede é a regressao-invocacoes.py
+    _inv = next((a for a in _cru if a["nome"] == "INVOCAÇÕES"), {})
+    _mescla_inv, _copias_inv = len(_inv.get("merges") or []), sum(len(k[2]) for k in _inv.get("copias") or [])
+    checa(f"a aba nova não triplica a montagem: {n_mescla} chamadas de mesclagem na planilha inteira (eram 310 sem ela; até {_mescla_inv} são da INVOCAÇÕES), "
+          f"{ch.get('Range.copyTo', 0)} cópias ({_copias_ficha} do menu rápido, {_copias_inv} da INVOCAÇÕES)",
+          n_mescla < 700 + _mescla_inv and 0 < _copias_ficha and ch.get("Range.copyTo", 0) < 40 + _copias_ficha + _copias_inv,
           f"{n_mescla} · {ch.get('Range.copyTo', 0)}")
     menus = {}
     for dv in WB0[ABA].data_validations.dataValidation:
@@ -1337,7 +1342,8 @@ if M:
                 for c in range(c1, c2 + 1):
                     menus[f"{l},{c}"] = dv.formula1.replace("$", "")
     checa(f"os {len(menus)} menus chegam à célula certa com a lista certa, numa gravação só",
-          {k: v.replace("$", "") for k, v in am["menus"].items()} == menus and ch.get("Range.setDataValidations", 0) == 1,
+          {k: v.replace("$", "") for k, v in am["menus"].items()} == menus
+          and ch.get("Range.setDataValidations", 0) == sum(1 for a in _cru if a.get("validacao_em_matriz")),      # uma por aba que pede
           f"{len(am['menus'])} montados, {ch.get('Range.setDataValidations', 0)} gravações")
     caixas = sorted(f"{c.row},{c.column}" for linha in WB0[ABA].iter_rows() for c in linha if isinstance(c.value, bool))
     # 01/10/2026: a caixa de seleção do Selo saiu da carta ("o selo n obriga restrição nenhuma é algo mais narrativo")

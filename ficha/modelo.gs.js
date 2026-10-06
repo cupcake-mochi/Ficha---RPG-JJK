@@ -57,6 +57,25 @@ function expandirCopias_(spec) {
 }
 ABAS.forEach(expandirCopias_);
 
+/**
+ * AS ABAS QUE MORAM EM OUTRO ARQUIVO (06/10/2026). A INVOCAÇÕES e a DADOS_INVOC não cabem neste arquivo, e vêm no
+ * Invocacoes.gs, que só declara a lista delas (ABAS_DA_INVOCACAO). Esta função põe cada uma no ABAS, depois da aba que
+ * ela nomeia em `depois`, com as fileiras copiadas já por extenso. O Apps Script não promete a ordem em que carrega os
+ * arquivos: quem carregar por último chama a função (o Invocacoes.gs, no fim dele; ou este arquivo, logo abaixo), e a
+ * aba que já entrou não entra de novo. Sem o Invocacoes.gs no projeto, a ficha é montada sem as duas abas.
+ */
+function juntarAbas_(extras) {
+  if (typeof ABAS === 'undefined' || !ABAS || !extras) return;
+  extras.forEach(function (spec) {
+    if (ABAS.some(function (s) { return s.nome === spec.nome; })) return;
+    expandirCopias_(spec);
+    var i = -1;
+    ABAS.forEach(function (s, k) { if (s.nome === spec.depois) i = k; });
+    if (i < 0) ABAS.push(spec); else ABAS.splice(i + 1, 0, spec);
+  });
+}
+if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
+
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
 
 /**
