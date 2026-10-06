@@ -6,7 +6,9 @@ DADOS da planilha viva ainda carregava o de antes. A planilha viva continua dona
 desta aba; o catalogo e dono do CONTEUDO dela.
 
 O monta.py escreve estes valores por cima do layout.json, e o comparar-ficha-01.py le a mesma
-funcao para contar a limpeza. Uma funcao, dois leitores: e a licao no 9.
+funcao para contar a limpeza. Uma funcao, dois leitores: e a licao no 9. Vale tambem para a tabela
+dos Caminhos (e_dos_caminhos) e para a faixa dela na FICHA (trocas_na_ficha): de 04/10 a 06/10/2026
+o comparador so conhecia as colunas A a L, e as 22 celulas do B36 saiam como diferenca nao explicada.
 
 As doze listas -- colunas A a L, titulo na linha 3 e itens da 4 em diante --, o carimbo em B1 e
 D1 e, desde 04/10/2026, a tabela dos Caminhos (N4 em diante): o livro reconstruido trouxe o
@@ -104,20 +106,38 @@ def valores(CAT=None, DEC=None):
     return val
 
 
-def troca_na_ficha(layout, DEC=None):
-    """a vida e o PE da FICHA leem a tabela dos Caminhos por VLOOKUP numa faixa escrita na formula: ela cresce com o
-    menu. Devolve quantas formulas mudaram."""
+def com_a_faixa(valor, nova):
+    """a formula com a faixa dos Caminhos trocada pela nova; o que nao e formula volta como veio"""
+    if isinstance(valor, str) and valor.startswith("="):
+        return re.sub(r"DADOS!\$N\$5:\$U\$\d+", lambda _: nova, valor)
+    return valor
+
+
+def trocas_na_ficha(layout, DEC=None):
+    """{celula: formula nova} da FICHA: a vida e o PE leem a tabela dos Caminhos por VLOOKUP numa faixa escrita na
+    formula, e ela cresce com o menu. O monta.py aplica (troca_na_ficha) e o comparar-ficha-01.py conta."""
     if DEC is None:
         DEC = json.load(open(os.path.join(RAIZ, "decisoes-ficha.json"), encoding="utf-8"))
     nova = faixa_dos_caminhos(DEC)
     ficha = next(a for a in layout["abas"] if a["nome"] == "FICHA")
-    n = 0
-    for reg in ficha["celulas"]:
-        if isinstance(reg[1], str) and reg[1].startswith("="):
-            novo = re.sub(r"DADOS!\$N\$5:\$U\$\d+", lambda _: nova, reg[1])
-            if novo != reg[1]:
-                reg[1], n = novo, n + 1
-    return n
+    return {reg[0]: com_a_faixa(reg[1], nova) for reg in ficha["celulas"] if com_a_faixa(reg[1], nova) != reg[1]}
+
+
+def troca_na_ficha(layout, DEC=None):
+    """poe as trocas_na_ficha no layout. Devolve quantas formulas mudaram."""
+    val = trocas_na_ficha(layout, DEC)
+    for reg in next(a for a in layout["abas"] if a["nome"] == "FICHA")["celulas"]:
+        if reg[0] in val:
+            reg[1] = val[reg[0]]
+    return len(val)
+
+
+def e_dos_caminhos(coord):
+    """a celula e da tabela dos Caminhos: o cabecalho e as linhas reservadas, nas colunas que o catalogo escreve"""
+    m = re.match(r"^([A-Z]+)(\d+)$", coord)
+    c0 = _col(CAMINHOS_COL)
+    return (bool(m) and c0 <= _col(m.group(1)) < c0 + len(CAMINHOS_CAB)
+            and CAMINHOS_LIN <= int(m.group(2)) <= CAMINHOS_LIN + CAMINHOS_MAX)
 
 
 def e_da_lista(coord):

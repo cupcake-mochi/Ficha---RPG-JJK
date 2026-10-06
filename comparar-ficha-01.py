@@ -54,6 +54,11 @@ def _perfil_do_estilo(e):
 IX = indice_ficha.trocas(LAY_FL)
 LAY_IX = copy.deepcopy(LAY_FL)
 indice_ficha.aplica(LAY_IX, IX)
+# 04/10/2026, o B36, na limpeza 8: a vida e o PE da FICHA leem a tabela dos Caminhos numa faixa escrita na formula, e
+# ela cresceu com o Incursor. Roda depois do indice e antes do TR, como no monta.py.
+FAIXA = dados_catalogo.faixa_dos_caminhos(json.load(open(os.path.join(AQUI, "decisoes-ficha.json"), encoding="utf-8")))
+FX = dados_catalogo.trocas_na_ficha(LAY_IX)
+dados_catalogo.troca_na_ficha(LAY_IX)
 import tr_treinado
 TR_NOVAS = tr_treinado.trocas(LAY_IX)
 import defesa_equipamento
@@ -295,6 +300,22 @@ for n in wa.sheetnames:
                     and pb["valor"] == DADOS_CAT.get(coord)
                     and all(pa[k] == pb[k] for k in pa if k != "valor")):
                 esperadas["célula da DADOS que sai do catálogo"] += 1
+                continue
+            # ... e, desde 04/10/2026 (o B36), a tabela dos Caminhos, de N4 em diante: o livro reconstruido trouxe o
+            # Incursor e o Provocar do Bastiao, a coluna do dado virou a dos atributos naturais, e as linhas seguem a
+            # ordem do menu (o Emanador antes do Evocador). Quem le a tabela le pelo nome do Caminho e do cabecalho.
+            if (n == "DADOS" and dados_catalogo.e_dos_caminhos(coord) and coord in DADOS_CAT
+                    and pb["valor"] == DADOS_CAT[coord]
+                    and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                esperadas["célula da tabela dos Caminhos da DADOS, que sai do catálogo"] += 1
+                continue
+            # ... e a faixa dessa tabela nas formulas da vida e do PE da FICHA, que o dados_catalogo.py troca. So a
+            # faixa muda: a formula da exportacao com a faixa nova tem de ser a gerada. (Nao se cobra a FX[coord] em si:
+            # a ficha automatica embrulha a formula em IFERROR depois, e a exportacao de 17/09/2026 ja veio embrulhada.)
+            if (n == "FICHA" and coord in FX and pa["valor"] != pb["valor"]
+                    and dados_catalogo.com_a_faixa(pa["valor"], FAIXA) == pb["valor"]
+                    and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                esperadas["fórmula da vida ou do PE da FICHA com a faixa nova da tabela dos Caminhos"] += 1
                 continue
             # limpeza 9: o TR treinado soma a maestria, e nao 2 (v0.240 do sistema, o B14). So o
             # VALOR pode diferir, e ele tem de ser a formula que o tr_treinado.py monta.
