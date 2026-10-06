@@ -214,7 +214,7 @@ table.regras .agora{color:var(--acento-pag)}
   <header class="abre">
     <div class="olho">Projeto M · ficha digital · aba nova</div>
     <h1>Invocações</h1>
-    <p>A aba das invocações depois do livro reconstruído, na forma que você pediu: a ficha deitada da forma A, repetida em duas ou três colunas e cinco ou seis linhas, com o conjunto e a lista de todas à esquerda. O jogador preenche o lugar que quiser e fecha o resto.</p>
+    <p>A aba das invocações depois do livro reconstruído, na forma que você escolheu: a ficha deitada, em duas colunas de seis fichas, com o conjunto e a lista de todas à esquerda. O jogador preenche o lugar que quiser e fecha o resto.</p>
     <p class="nota">Nada aqui entrou na planilha. As tabelas vêm do <i>manual.txt</i> (livro <span id="carimbo"></span>) e as peças do arquivo de dados da ficha. Os menus e as caixas de Buff/Debuff funcionam: mexa e a conta refaz.</p>
   </header>
 
@@ -245,6 +245,10 @@ table.regras .agora{color:var(--acento-pag)}
       <button type="button" data-k="2">2</button><button type="button" data-k="3">3</button>
       <span style="margin-left:14px">Linhas</span>
       <button type="button" data-r="5">5</button><button type="button" data-r="6">6</button>
+    </div>
+    <div class="jogo" role="group" aria-label="Largura da coluna"><span>Coluna</span>
+      <button type="button" data-col="20">Da página · 20 px</button><button type="button" data-col="28">Do Sheets · 28 px</button>
+      <span>a segunda mostra a foto e as caixas na proporção da planilha</span>
     </div>
     <div class="jogo">
       <label for="nivel">Seu nível</label><select id="nivel"></select>
@@ -283,7 +287,7 @@ table.regras .agora{color:var(--acento-pag)}
   <section class="estudo" id="falta">
     <h2><b>4</b>O que falta decidir</h2>
     <ol class="passos">
-      <li><b>O tamanho da grade.</b> Duas ou três colunas, cinco ou seis linhas.</li>
+      <li><b>A foto.</b> Agora ela tem 15 colunas por 19 linhas, perto de 420 por 400 px na planilha. Nesta página a coluna é mais estreita que a do Sheets, então aqui ela parece mais em pé do que vai ficar.</li>
       <li><b>O conjunto e a primeira linha.</b> O conjunto divide as linhas com a primeira fileira de fichas. Por isso o grupo da primeira fileira fecha só das habilidades para baixo; as outras fecham inteiras.</li>
       <li><b>A largura.</b> O conjunto aberto e uma coluna de fichas passam das 47 colunas das outras abas. Com o conjunto fechado, uma coluna cabe exata.</li>
       <li><b>O que fica de fora por enquanto.</b> Lista de ritual, fabricação e as Intervenções de Vínculo do Evocador não estão desenhadas.</li>
@@ -314,7 +318,7 @@ table.regras .agora{color:var(--acento-pag)}
   function zera(){
     var v = JSON.stringify(D.fichas[2]), l = [D.fichas[0], D.fichas[1]].map(function(f){ return JSON.parse(JSON.stringify(f)); });
     while (l.length < MAXF) l.push(JSON.parse(v));
-    E = {K: E ? E.K : 2, R: E ? E.R : 5, pal: E ? E.pal : '', nivel:5, defA:'Essência', defV:2, vinc:'1', reac:'Livre', dano:'0', aberto:{lin1:true}, fichas:l};
+    E = {K: E ? E.K : 2, R: E ? E.R : 6, pal: E ? E.pal : '', col: E ? E.col : 20, nivel:5, defA:'Essência', defV:2, vinc:'1', reac:'Livre', dano:'0', aberto:{lin1:true}, fichas:l};
   }
   zera();
 
@@ -439,8 +443,8 @@ table.regras .agora{color:var(--acento-pag)}
   };
   Folha.prototype.monta = function(el){
     var g = '', i, linhas = ['18px','18px'], colunas = [], o = this.ocultas(aberto), N = this.cols, G = this.gut;
-    for (i = 1; i <= N; i++){ colunas.push(o.c[i] ? '0px' : '20px'); if (!o.c[i]) g += '<div class="col" style="grid-area:2/'+(i+G+1)+'">'+letra(i)+'</div>'; }
-    for (i = 1; i <= this.max; i++){ linhas.push(o.l[i] ? '0px' : '22px'); if (!o.l[i]) g += '<div class="lin" style="grid-area:'+(i+2)+'/'+(G+1)+'">'+i+'</div>'; }
+    for (i = 1; i <= N; i++){ colunas.push(o.c[i] ? '0px' : E.col + 'px'); if (!o.c[i]) g += '<div class="col" style="grid-area:2/'+(i+G+1)+'">'+letra(i)+'</div>'; }
+    for (i = 1; i <= this.max; i++){ linhas.push(o.l[i] ? '0px' : (E.col === 28 ? '21px' : '22px')); if (!o.l[i]) g += '<div class="lin" style="grid-area:'+(i+2)+'/'+(G+1)+'">'+i+'</div>'; }
     this.grupos.forEach(function(x){
       if (o.l[x.faixa]) return;
       var ab = aberto(x);
@@ -561,7 +565,7 @@ table.regras .agora{color:var(--acento-pag)}
   var NOTA_BD = 'Buff/Debuff: o que você digitar aqui soma (ou tira) do valor ao lado, como na FICHA.';
 
   // onde cada parte da ficha deitada começa, contado da faixa do nome
-  var OFF = {hab:42, h:44, t:62, l:72, m:74, u:128, fim:146};
+  var OFF = {hab:47, h:49, t:67, l:77, m:79, u:133, fim:151};
   // A ficha deitada: 43 colunas. Foto e identidade à esquerda, os números no meio, a mesa à direita; embaixo as cartas.
   function deitada(F, c0, r, f, i){
     var p = pincel(F, c0), c = calc(f), K = 'fichas.' + i, vz = !f.nome, o = function(v){ return vz ? '' : v; }, k = vz ? '' : 'calc', j;
@@ -569,59 +573,60 @@ table.regras .agora{color:var(--acento-pag)}
     // o valor calculado com a caixinha de Buff/Debuff do lado: as duas últimas colunas, como na FICHA
     function comBD(a, b, rr, rot, val, nt, chave){ cx(a, b - 2, rr, rot, val, 'num', k, nt); p('rot bd', b - 1, rr, b, rr, 'B/D', '', NOTA_BD); p('cel dg', b - 1, rr+1, b, rr+2, dig(K + '.buff.' + chave, vz ? '' : bf(f, chave), 'Buff/Debuff de ' + rot)); }
     p('faixa nsec', 0, r, 2, r+1, i + 1); p('faixa', 3, r, 42, r+1, (f.nome || 'Invocação ' + (i + 1)) + ' <span class="peq">' + resumo(f, c) + '</span>');
-    // --- à esquerda: quem ela é
-    cx(0, 10, r+3, 'Nome', f.nome || '<span class="vazio">nome da invocação</span>');
-    p('foto', 0, r+6, 10, r+24, FOTO);
-    cx(0, 10, r+26, 'Tipo', menuLista(K + '.tipo', f.tipo, D.tipos.map(function(t){ return t.n; }), 'Tipo', false), 'val sel', 'menu', (D.tipos.filter(function(t){ return t.n === f.tipo; })[0] || {}).ficha);
-    cx(0, 10, r+30, 'Aquisição', menuLista(K + '.aquis', f.aquis, D.aquis.map(function(t){ return t.n; }), 'Aquisição', false), 'val sel', 'menu', (D.aquis.filter(function(t){ return t.n === f.aquis; })[0] || {}).evolui);
-    // --- no meio: os números
-    if (segue(f)) cx(12, 14, r+3, 'Nível', c.n, 'num', 'calc', 'Acompanha o seu nível.');
-    else cx(12, 14, r+3, 'Nível', menuNum(K + '.nivel', c.n, 1, E.nivel, 'Nível'), 'num sel', 'menu', 'Fica no nível em que foi domada ou criada, até o seu.');
-    cx(16, 18, r+3, 'Classe', c.cl, 'num', 'calc', 'A maior Classe que o nível dela permite.');
-    cx(20, 22, r+3, 'Maestria', sg(c.M), 'num', 'calc', 'Sempre a sua, mesmo numa domada de nível menor.');
-    cx(24, 26, r+3, 'Entrada', c.cl + ' PE', 'num', 'calc', 'Manifestar custa a maior Classe dela, e a sua Ação Bônus. Recolher não custa PE.');
+    // --- à esquerda: quem ela é. 15 colunas: a foto fica quase quadrada na planilha (pedido dele em 06/10/2026)
+    cx(0, 14, r+3, 'Nome', f.nome || '<span class="vazio">nome da invocação</span>');
+    p('foto', 0, r+6, 14, r+24, FOTO);
+    cx(0, 14, r+26, 'Tipo', menuLista(K + '.tipo', f.tipo, D.tipos.map(function(t){ return t.n; }), 'Tipo', false), 'val sel', 'menu', (D.tipos.filter(function(t){ return t.n === f.tipo; })[0] || {}).ficha);
+    cx(0, 14, r+30, 'Aquisição', menuLista(K + '.aquis', f.aquis, D.aquis.map(function(t){ return t.n; }), 'Aquisição', false), 'val sel', 'menu', (D.aquis.filter(function(t){ return t.n === f.aquis; })[0] || {}).evolui);
+    // --- no meio: os números (15 colunas, da 16 à 30)
+    var B = 16;
+    if (segue(f)) cx(B, B+2, r+3, 'Nível', c.n, 'num', 'calc', 'Acompanha o seu nível.');
+    else cx(B, B+2, r+3, 'Nível', menuNum(K + '.nivel', c.n, 1, E.nivel, 'Nível'), 'num sel', 'menu', 'Fica no nível em que foi domada ou criada, até o seu.');
+    cx(B+4, B+6, r+3, 'Classe', c.cl, 'num', 'calc', 'A maior Classe que o nível dela permite.');
+    cx(B+8, B+10, r+3, 'Maestria', sg(c.M), 'num', 'calc', 'Sempre a sua, mesmo numa domada de nível menor.');
+    cx(B+12, B+14, r+3, 'Entrada', c.cl + ' PE', 'num', 'calc', 'Manifestar custa a maior Classe dela, e a sua Ação Bônus. Recolher não custa PE.');
     var st = c.gastos > c.disp ? 'ruim' : c.gastos < c.disp && !vz ? 'at' : '';
-    p('rot', 12, r+7, 26, r+7, 'Atributos · ' + c.gastos + ' de ' + c.disp + ' pontos', st, st === 'at' ? 'Sobrou ponto: um marco de atributo chegou.' : st === 'ruim' ? 'Passou do total: 9 pontos e 1 por marco.' : '9 pontos, e 1 nos níveis 6, 10, 14, 18, 22, 26 e 30. Teto de 6 por atributo.');
-    ATR.forEach(function(a, n){ var x = 12 + 3*n;
+    p('rot', B, r+7, B+14, r+7, 'Atributos · ' + c.gastos + ' de ' + c.disp + ' pontos', st, st === 'at' ? 'Sobrou ponto: um marco de atributo chegou.' : st === 'ruim' ? 'Passou do total: 9 pontos e 1 por marco.' : '9 pontos, e 1 nos níveis 6, 10, 14, 18, 22, 26 e 30. Teto de 6 por atributo.');
+    ATR.forEach(function(a, n){ var x = B + 3*n;
       p('rot', x, r+8, x+2, r+8, a, '', NOME[a] + ': o número grande é o total, a caixa de baixo à esquerda são os pontos que você distribuiu e a da direita é o Buff/Debuff.');
       p('num', x, r+9, x+2, r+10, o(c.A[a]), k);
       p('cel sel', x, r+11, x+1, r+11, menuNum(K + '.atr.' + a, f.atr[a], 0, 6, 'Pontos de ' + NOME[a]), 'menu');
       p('cel dg', x+2, r+11, x+2, r+11, dig(K + '.buff.' + a, vz ? '' : bf(f, a), 'Buff/Debuff de ' + NOME[a]), '', NOTA_BD); });
-    cx(12, 18, r+13, 'Atributo de acerto', menuLista(K + '.acerto', f.acerto, ATR.map(function(a){ return NOME[a]; }), 'Atributo de acerto'), 'val sel', 'menu', 'Escolhido na montagem. Vale para o ataque e para a CD.');
-    comBD(20, 26, r+13, 'Ataque', o(c.ataque === null ? '' : sg(c.ataque)), 'Atributo de acerto + a sua maestria.', 'atq');
-    comBD(12, 18, r+17, 'CD', o(c.cd === null ? '' : c.cd), '8 + atributo de acerto + a sua maestria.', 'cd');
-    comBD(20, 26, r+17, 'Defesa', o(c.def), '10 + Destreza dela + metade da sua ' + E.defA + ' (' + E.defV + '). Com traje, a proteção entra no lugar dessa metade.', 'def');
-    p('rot', 12, r+21, 17, r+21, 'Vida · atual e máxima'); p('num dg', 12, r+22, 14, r+23, dig(K + '.mesa.vida', vz ? '' : c.atual, 'Vida atual'));
-    p('num', 15, r+22, 17, r+23, o('<small>de</small> ' + c.vida), k, '5 + Constituição + (' + (f.tipo === 'Corpo amaldiçoado de criação' ? 4 : 3) + ' + Constituição) × (nível − 1).');
-    p('rot bd', 18, r+21, 19, r+21, 'B/D', '', NOTA_BD); p('cel dg', 18, r+22, 19, r+23, dig(K + '.buff.vida', vz ? '' : bf(f, 'vida'), 'Buff/Debuff da vida máxima'));
-    cx(21, 26, r+21, 'Vida temporária', dig(K + '.mesa.temp', f.mesa.temp, 'Vida temporária'), 'num dg');
-    p('cel', 12, r+24, 19, r+24, '<span class="med"><i style="width:' + (vz ? 0 : Math.max(0, Math.round(100 * c.atual / c.vida))) + '%"></i></span>', k);
-    c.trs.forEach(function(t, n){ var x = 12 + 4*n;
+    cx(B, B+6, r+13, 'Atributo de acerto', menuLista(K + '.acerto', f.acerto, ATR.map(function(a){ return NOME[a]; }), 'Atributo de acerto'), 'val sel', 'menu', 'Escolhido na montagem. Vale para o ataque e para a CD.');
+    comBD(B+8, B+14, r+13, 'Ataque', o(c.ataque === null ? '' : sg(c.ataque)), 'Atributo de acerto + a sua maestria.', 'atq');
+    comBD(B, B+6, r+17, 'CD', o(c.cd === null ? '' : c.cd), '8 + atributo de acerto + a sua maestria.', 'cd');
+    comBD(B+8, B+14, r+17, 'Defesa', o(c.def), '10 + Destreza dela + metade da sua ' + E.defA + ' (' + E.defV + '). Com traje, a proteção entra no lugar dessa metade.', 'def');
+    p('rot', B, r+21, B+5, r+21, 'Vida · atual e máxima'); p('num dg', B, r+22, B+2, r+23, dig(K + '.mesa.vida', vz ? '' : c.atual, 'Vida atual'));
+    p('num', B+3, r+22, B+5, r+23, o('<small>de</small> ' + c.vida), k, '5 + Constituição + (' + (f.tipo === 'Corpo amaldiçoado de criação' ? 4 : 3) + ' + Constituição) × (nível − 1).');
+    p('rot bd', B+6, r+21, B+7, r+21, 'B/D', '', NOTA_BD); p('cel dg', B+6, r+22, B+7, r+23, dig(K + '.buff.vida', vz ? '' : bf(f, 'vida'), 'Buff/Debuff da vida máxima'));
+    cx(B+9, B+14, r+21, 'Vida temporária', dig(K + '.mesa.temp', f.mesa.temp, 'Vida temporária'), 'num dg');
+    p('cel', B, r+24, B+7, r+24, '<span class="med"><i style="width:' + (vz ? 0 : Math.max(0, Math.round(100 * c.atual / c.vida))) + '%"></i></span>', k);
+    c.trs.forEach(function(t, n){ var x = B + 4*n;
       p('rot', x, r+26, x+2, r+26, t.nome, '', 'Teste de Resistência de ' + t.nome + ': ' + NOME[t.k] + (t.tr ? ' + a sua maestria (treinado).' : '.') + ' A caixa de baixo é o Buff/Debuff.');
       p('num' + (t.tr ? ' agora' : ''), x, r+27, x+2, r+28, o(sg(t.v)), k);
       p('cel dg', x, r+29, x+2, r+29, dig(K + '.buff.tr' + n, vz ? '' : bf(f, 'tr' + n), 'Buff/Debuff do TR de ' + t.nome), '', NOTA_BD); });
-    p('rot', 12, r+31, 18, r+31, 'TR treinado'); p('cel sel', 12, r+32, 18, r+32, menuLista(K + '.trT', f.trT, TRS.map(function(t){ return t[0]; }), 'Teste de Resistência treinado'), 'menu');
-    p('rot', 20, r+31, 26, r+31, 'Físico usa'); p('cel sel', 20, r+32, 26, r+32, menuLista(K + '.fis', f.fis, ['Força','Destreza'], 'Físico usa', false), 'menu');
-    // --- à direita: a mesa
-    cx(28, 42, r+3, 'Tarefa', f.mesa.tarefa || '<i>A tarefa que ela está cumprindo: um alvo, um lugar ou um grupo.</i>', 'txt');
-    cx(28, 34, r+7, 'Básica do ciclo', menuLista(K + '.mesa.bas', f.mesa.bas, ['Disponível','Gasta','Investida em preparar'], 'Básica do ciclo', false), 'val sel', 'menu', 'Uma atuação básica por ciclo. Volta no começo do seu turno, se ela estiver em campo.');
-    cx(36, 42, r+7, 'Ordem pendente', menuLista(K + '.mesa.ordem', f.mesa.ordem, ORDENS, 'Ordem pendente', false), 'val sel', 'menu', 'Cada corpo mantém uma especial aguardando.');
-    cx(28, 34, r+11, 'Estado', menuLista(K + '.mesa.estado', f.mesa.estado, ESTADOS, 'Estado', false), 'val sel', 'menu');
-    p('rot', 36, r+11, 40, r+11, 'Movimento', '', 'O que ainda resta neste ciclo, e o total.'); p('num dg', 36, r+12, 37, r+13, dig(K + '.mesa.mov', vz ? '' : f.mesa.mov === '' ? c.desl : f.mesa.mov, 'Movimento restante'));
-    p('num', 38, r+12, 40, r+13, o('<small>de</small> ' + String(c.desl).replace('.', ',') + ' m'), k, 'Deslocamento terrestre-base de 9 m, mais o Buff/Debuff.');
-    p('rot bd', 41, r+11, 42, r+11, 'B/D', '', NOTA_BD); p('cel dg', 41, r+12, 42, r+13, dig(K + '.buff.desl', vz ? '' : bf(f, 'desl'), 'Buff/Debuff do deslocamento'));
-    cx(28, 42, r+15, 'Condições e usos gastos', f.mesa.cond || '<i>Condições, usos por cena já gastos, excedente da queda.</i>', 'txt', '', undefined, 3);
-    cx(28, 32, r+20, 'Família Livre', menuLista(K + '.livre', f.livre, D.familias, 'Família Livre'), 'val sel', 'menu', 'Desconto de ' + LIVRE[c.cl] + ' nas Melhorias dela na Classe ' + c.cl + '.');
-    cx(33, 37, r+20, 'Aberta', menuLista(K + '.a1', f.a1, D.familias, 'Família aberta'), 'val sel', 'menu');
-    cx(38, 42, r+20, 'Aberta', menuLista(K + '.a2', f.a2, D.familias, 'Família aberta'), 'val sel', 'menu');
-    cx(28, 34, r+24, 'Retorno', 2 * c.cl + ' PE', 'num', 'calc', 'Trazer de volta quem caiu sem ser destruída: o dobro da entrada. Volta com metade da vida.');
-    var ex = extra(f, c); p('rot', 36, r+24, 42, r+24, ex[0], '', ex[2]); p('num', 36, r+25, 42, r+26, vz ? '' : ex[1], !vz && ex[1] !== '—' ? 'calc' : '');
-    cx(28, 42, r+28, 'Anotações', f.notas || '<i>Espaço livre.</i>', 'txt', '', undefined, 4);
-    // --- embaixo: a definição, as perícias e as habilidades
-    cx(0, 20, r+34, 'Definição', f.def || '<i>Uma ou duas frases: o que ela é e o que faz na equipe.</i>', 'txt', '', undefined, 3);
-    cx(22, 42, r+34, 'Corpo, sentidos e comunicação', f.corpo || '<i>Tamanho, membros, sentidos, como entende ordens e como avisa o que achou.</i>', 'txt', '', undefined, 3);
-    p('rot', 0, r+39, 42, r+39, 'Perícias treinadas · ' + c.nper + ' <span class="vazio" style="margin-left:8px;text-transform:none;letter-spacing:0">(4 + metade da Inteligência)</span>');
-    [0,6,12,18,24,30,36].forEach(function(a, n){ var fora = n >= c.nper; p('cel sel' + (fora ? ' fora' : ''), a, r+40, n === 6 ? 42 : a + 5, r+40, fora ? '' : menuLista(K + '.per.' + n, f.per[n], D.pericias, 'Perícia'), fora ? '' : 'menu'); });
+    p('rot', B, r+31, B+6, r+31, 'TR treinado'); p('cel sel', B, r+32, B+6, r+32, menuLista(K + '.trT', f.trT, TRS.map(function(t){ return t[0]; }), 'Teste de Resistência treinado'), 'menu');
+    p('rot', B+8, r+31, B+14, r+31, 'Físico usa'); p('cel sel', B+8, r+32, B+14, r+32, menuLista(K + '.fis', f.fis, ['Força','Destreza'], 'Físico usa', false), 'menu');
+    // --- à direita: a mesa (11 colunas, uma caixa por linha)
+    cx(32, 42, r+3, 'Tarefa', f.mesa.tarefa || '<i>A tarefa que ela está cumprindo: um alvo, um lugar ou um grupo.</i>', 'txt');
+    cx(32, 42, r+7, 'Básica do ciclo', menuLista(K + '.mesa.bas', f.mesa.bas, ['Disponível','Gasta','Investida em preparar'], 'Básica do ciclo', false), 'val sel', 'menu', 'Uma atuação básica por ciclo. Volta no começo do seu turno, se ela estiver em campo.');
+    cx(32, 42, r+11, 'Ordem pendente', menuLista(K + '.mesa.ordem', f.mesa.ordem, ORDENS, 'Ordem pendente', false), 'val sel', 'menu', 'Cada corpo mantém uma especial aguardando.');
+    cx(32, 42, r+15, 'Estado', menuLista(K + '.mesa.estado', f.mesa.estado, ESTADOS, 'Estado', false), 'val sel', 'menu');
+    p('rot', 32, r+19, 40, r+19, 'Movimento · resta e total'); p('num dg', 32, r+20, 35, r+21, dig(K + '.mesa.mov', vz ? '' : f.mesa.mov === '' ? c.desl : f.mesa.mov, 'Movimento restante'));
+    p('num', 36, r+20, 40, r+21, o('<small>de</small> ' + String(c.desl).replace('.', ',') + ' m'), k, 'Deslocamento terrestre-base de 9 m, mais o Buff/Debuff.');
+    p('rot bd', 41, r+19, 42, r+19, 'B/D', '', NOTA_BD); p('cel dg', 41, r+20, 42, r+21, dig(K + '.buff.desl', vz ? '' : bf(f, 'desl'), 'Buff/Debuff do deslocamento'));
+    cx(32, 42, r+23, 'Condições e usos gastos', f.mesa.cond || '<i>Condições, usos por cena já gastos, excedente da queda.</i>', 'txt', '', undefined, 3);
+    cx(32, 36, r+28, 'Retorno', 2 * c.cl + ' PE', 'num', 'calc', 'Trazer de volta quem caiu sem ser destruída: o dobro da entrada. Volta com metade da vida.');
+    var ex = extra(f, c); p('rot', 38, r+28, 42, r+28, ex[0], '', ex[2]); p('num', 38, r+29, 42, r+30, vz ? '' : ex[1], !vz && ex[1] !== '—' ? 'calc' : '');
+    // --- embaixo: três colunas iguais, com a definição, o corpo e as anotações, e as Famílias alinhadas com elas
+    cx(0, 13, r+34, 'Definição', f.def || '<i>Uma ou duas frases: o que ela é e o que faz na equipe.</i>', 'txt', '', undefined, 4);
+    cx(15, 28, r+34, 'Corpo, sentidos e comunicação', f.corpo || '<i>Tamanho, membros, sentidos, como entende ordens e como avisa o que achou.</i>', 'txt', '', undefined, 4);
+    cx(30, 42, r+34, 'Anotações', f.notas || '<i>Espaço livre.</i>', 'txt', '', undefined, 4);
+    cx(0, 13, r+40, 'Família Livre', menuLista(K + '.livre', f.livre, D.familias, 'Família Livre'), 'val sel', 'menu', 'Desconto de ' + LIVRE[c.cl] + ' nas Melhorias dela na Classe ' + c.cl + '.');
+    cx(15, 28, r+40, 'Família aberta', menuLista(K + '.a1', f.a1, D.familias, 'Família aberta'), 'val sel', 'menu');
+    cx(30, 42, r+40, 'Família aberta', menuLista(K + '.a2', f.a2, D.familias, 'Família aberta'), 'val sel', 'menu');
+    p('rot', 0, r+44, 42, r+44, 'Perícias treinadas · ' + c.nper + ' <span class="vazio" style="margin-left:8px;text-transform:none;letter-spacing:0">(4 + metade da Inteligência)</span>');
+    [0,6,12,18,24,30,36].forEach(function(a, n){ var fora = n >= c.nper; p('cel sel' + (fora ? ' fora' : ''), a, r+45, n === 6 ? 42 : a + 5, r+45, fora ? '' : menuLista(K + '.per.' + n, f.per[n], D.pericias, 'Perícia'), fora ? '' : 'menu'); });
     p('lote', 0, r+OFF.hab, 42, r+OFF.hab, 'Habilidades <span class="peq">básica de ' + c.P.basica + 'd6 · ' + c.esp + ' espaço(s) de especial até a Classe ' + c.cl + ' · ' + c.ntal + ' talento(s)</span>');
     var X = [0, 15, 30];
     [0,1,2].forEach(function(n){ cartaN(F, c0 + X[n], r+OFF.h, f, c, i, ORDEM[n]); });
@@ -694,10 +699,11 @@ table.regras .agora{color:var(--acento-pag)}
     F.monta(folha);
     var m = F.mede(aberto), t = F.mede(function(){ return true; });
     document.getElementById('forma-diz').textContent = 'São ' + E.K + ' colunas de ' + E.R + ' fichas: ' + (E.K * E.R) + ' lugares. O + acima das letras fecha uma coluna inteira e deixa a lombada com os nomes; o + da borda esquerda fecha uma fileira e deixa a faixa com o nome, o nível, a vida e o estado. As fichas da mesma fileira dividem as linhas, então fechar a fileira fecha as ' + E.K + ' fichas dela. A lista do conjunto leva até cada ficha.';
-    document.getElementById('medida').textContent = t.colunas + ' colunas e ' + t.linhas + ' linhas com tudo aberto; à vista agora, ' + m.colunas + ' colunas e ' + m.linhas + ' linhas.';
+    document.getElementById('medida').textContent = (E.K === 2 && E.R === 6 ? 'Grade escolhida: 2 × 6. ' : '') + t.colunas + ' colunas e ' + t.linhas + ' linhas com tudo aberto; à vista agora, ' + m.colunas + ' colunas e ' + m.linhas + ' linhas.';
     document.querySelectorAll('[data-pal]').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.pal === E.pal)); });
     document.querySelectorAll('.jogo [data-k]').forEach(function(b){ b.setAttribute('aria-pressed', String(Number(b.dataset.k) === E.K)); });
     document.querySelectorAll('.jogo [data-r]').forEach(function(b){ b.setAttribute('aria-pressed', String(Number(b.dataset.r) === E.R)); });
+    document.querySelectorAll('.jogo [data-col]').forEach(function(b){ b.setAttribute('aria-pressed', String(Number(b.dataset.col) === E.col)); });
     document.getElementById('nivel').value = String(E.nivel); document.getElementById('defv').value = String(E.defV);
   }
   function tabela(){
@@ -741,6 +747,7 @@ table.regras .agora{color:var(--acento-pag)}
   document.querySelectorAll('[data-pal]').forEach(function(b){ b.addEventListener('click', function(){ E.pal = b.dataset.pal; desenha(); }); });
   document.querySelectorAll('.jogo [data-k]').forEach(function(b){ b.addEventListener('click', function(){ mudaGrade(Number(b.dataset.k), E.R); }); });
   document.querySelectorAll('.jogo [data-r]').forEach(function(b){ b.addEventListener('click', function(){ mudaGrade(E.K, Number(b.dataset.r)); }); });
+  document.querySelectorAll('.jogo [data-col]').forEach(function(b){ b.addEventListener('click', function(){ E.col = Number(b.dataset.col); desenha(); }); });
   // ao mudar a grade, as fichas preenchidas continuam no começo da primeira coluna
   function mudaGrade(K, R){ E.K = K; E.R = R; E.aberto = {lin1:true}; desenha(); }
   document.querySelectorAll('[data-grupos]').forEach(function(b){ b.addEventListener('click', function(){
