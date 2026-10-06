@@ -1019,11 +1019,17 @@ for nome in FICHAS:
     fonte = BEN if rota == 4 else APT_TODAS
     apt = [(i, cel.get(c["nome"])) for i, c in enumerate(APTIDOES) if cel.get(c["nome"])]
     esp_a = list(gracas) + [a for _, a in apt]
-    esp_at = ["Do livro: " + resumo_do_livro(fonte[g]["faz"], TETO["aptidao"]) for g in gracas] + \
+    # 06/10/2026 (pedido do Mizuki): as duas de graça abrem com o valor da conta, refeito aqui pelo refino da ficha
+    ref_m = int(float(contas(wb)["refino"]))
+    d4_m = 4 if ref_m >= 9 else 3 if ref_m >= 6 else 2 if ref_m >= 3 else 1
+    reacao_m = "Reação da Defesa" if rota == 4 else "Reação de Cobrir-se"
+    valor_m = [f"Proteção {ref_m // 3 + 1} · {reacao_m}: RD {math.floor(1.5 * ref_m)} por 2 PE. ",
+               f"+{d4_m}{'d6' if ref_m >= 10 else 'd4'} na arma. "]
+    esp_at = [valor_m[k] + "Do livro: " + resumo_do_livro(fonte[g]["faz"], TETO["aptidao"]) for k, g in enumerate(gracas)] + \
              [livro(cel.get(APTIDOES[i]["texto"]), resumo_do_livro(FAZ_A[base_(a)], TETO["aptidao"])) for i, a in apt]
     ruins = [x for x in (m_("aptidão no menu") != pad(esp_a, _n_apt) and f"{m_('aptidão no menu')[:5]} != {esp_a[:5]}",
                          m_("texto da aptidão no menu") != pad(esp_at, _n_apt) and f"{[t[:30] for t in m_('texto da aptidão no menu')[:4]]} != {[t[:30] for t in esp_at[:4]]}") if x]
-    checa(f"{nome}: as {'Bênçãos' if rota == 4 else 'aptidões'} no menu, as duas de graça primeiro, com o texto do jogador ou o do livro", not ruins, "; ".join(ruins))
+    checa(f"{nome}: as {'Bênçãos' if rota == 4 else 'aptidões'} no menu, as duas de graça primeiro, com o valor e o texto do livro, e as compradas com o do jogador ou o do livro", not ruins, "; ".join(ruins))
     # os títulos, pela rota
     apt_nome = "BÊNÇÃOS" if rota == 4 else "APTIDÕES"
     esp_tit = {"título": f"MENU RÁPIDO · {up(nm['feitico'])}S, TALENTOS E {apt_nome}",

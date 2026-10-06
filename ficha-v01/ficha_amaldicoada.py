@@ -508,7 +508,10 @@ def geometria():
     t = abre("aptidoes")
     # a linha do Estímulo Muscular (02/10/2026): a perícia e o Teste de Resistência que a Bênção de graça da Restrição
     # Celestial sem energia escolhe na criação, e os usos por cena
+    # 06/10/2026: os três valores das de graça ganham endereço no layout, como o Refino, porque o menu rápido da FICHA
+    # (montado antes desta aba) mostra o valor na carta (pedido do Mizuki: "o mecânico, pelo menos o valor")
     g.update({"apt_caixas": t + 1, "apt_refino": f"D{t + 2}", "apt_compradas": f"F{t + 2}", "estimulo": t + 5,
+              "apt_cobrir": f"J{t + 2}", "apt_canalizar": f"L{t + 2}", "apt_reacao": f"P{t + 2}",
               "estimulo_pericia": f"D{t + 6}", "estimulo_teste": f"J{t + 6}", "estimulo_usos": f"P{t + 6}"})
     g["cols_apt"] = [("D", "E"), ("F", "H"), ("J", "K"), ("L", "N"), ("P", "T")]
     g["aptidoes"], lin = [], t + 8
@@ -1552,10 +1555,10 @@ def aba(layout, tr):
     cx = G["cols_apt"]
     assert f.caixa(*cx[0], t, f'=UPPER({ROT("escala")})', f"={REF}", "num", NOTAS["apt_refino"]) == G["apt_refino"]
     assert f.caixa(*cx[1], t, "COMPRADAS", f'=IF({anot}>{comp},"{T_ERRO} ","")&{anot}&" de "&{comp}', "num", NOTAS["apt_compradas"]) == G["apt_compradas"]
-    G["apt_cobrir"] = f.caixa(*cx[2], t, f'=UPPER({ROT("graça 1")})', f'="Proteção "&(FLOOR({REF}/3,1)+1)', "val", NOTAS["apt_cobrir"])
-    G["apt_canalizar"] = f.caixa(*cx[3], t, f'=UPPER({ROT("graça 2")})',
+    assert G["apt_cobrir"] == f.caixa(*cx[2], t, f'=UPPER({ROT("graça 1")})', f'="Proteção "&(FLOOR({REF}/3,1)+1)', "val", NOTAS["apt_cobrir"])
+    assert G["apt_canalizar"] == f.caixa(*cx[3], t, f'=UPPER({ROT("graça 2")})',
                                  f'="+"&IF({REF}>=9,4,IF({REF}>=6,3,IF({REF}>=3,2,1)))&IF({REF}>=10,"d6","d4")&" na arma"', "val", NOTAS["apt_canalizar"])
-    G["apt_reacao"] = f.caixa(*cx[4], t, f'=UPPER({ROT("reação")})', f'="RD "&FLOOR(1.5*{REF},1)&" por 2 PE"', "val", NOTAS["apt_reacao"])
+    assert G["apt_reacao"] == f.caixa(*cx[4], t, f'=UPPER({ROT("reação")})', f'="RD "&FLOOR(1.5*{REF},1)&" por 2 PE"', "val", NOTAS["apt_reacao"])
     # a linha do Estímulo Muscular: a perícia e o Teste de Resistência escolhidos na criação, e os usos
     t = G["estimulo"]
     sem_en = lambda txt: f'=IF({ROTA}=4,"{txt}","—")'

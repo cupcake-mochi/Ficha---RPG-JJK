@@ -144,8 +144,14 @@ def trocas(layout, tr, r0=None, guarda=frozenset()):
     APT = D.faixa("aptidoes")
     cAm = D.prox
     ma = lambda k, n: f"${fa.L(cAm + k)}{n}"
+    # 06/10/2026, pedido do Mizuki: a carta das de graça abre com o valor que a FICHA AMALDIÇOADA calcula ("o mecânico,
+    # pelo menos o valor, já q é um acesso rápido"), antes do texto do livro. A primeira leva a proteção e a Reação; a
+    # segunda, o dado na arma. Na Restrição Celestial sem energia são as Bênçãos, com os mesmos números na Lapidação.
+    val = lambda k: fa._A(G[k], AM)
+    valor = [f'{val("apt_cobrir")}&" · "&{rot("reação").replace(DA, "")}&": "&{val("apt_reacao")}&". "',
+             f'{val("apt_canalizar")}&". "']
     linhas_a = [[f"De graça {i + 1}", 0, "—", f"={rot(f'graça {i + 1}').replace(DA, '')}",
-                 (lambda n: f'="Do livro: "&IFERROR(VLOOKUP({ma(3, n)},{APT},10,FALSE),"")')] for i in range(2)]
+                 (lambda n, i=i: f'={valor[i]}&"Do livro: "&IFERROR(VLOOKUP({ma(3, n)},{APT},10,FALSE),"")')] for i in range(2)]
     linhas_a += [[f"Aptidão {k + 1}", (lambda n, k=k: f"=IFERROR(MATCH({k + 1},{ACOL(7)},0),0)"),
                   (lambda n: f'=IF({ma(1, n)}=0,"",INDEX({ACOL(3)},{ma(1, n)}))'),
                   (lambda n: f'=IF({ma(1, n)}=0,"",INDEX({ACOL(1)},{ma(1, n)}))'),

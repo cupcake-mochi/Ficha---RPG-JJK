@@ -137,6 +137,11 @@ PERTURBACOES = [
     ("as cartas saem da direita para a esquerda", MEN, "POR, W, X = 3, 13, (4, 19, 34)", "POR, W, X = 3, 13, (34, 19, 4)", "na ordem de leitura"),
     ("a Passiva sem texto do jogador fica em branco, sem o do livro", MEN,
      '''IF({faz}<>"","Do livro: "&{faz},"")''', '''IF({faz}<>"","","")''', "o texto do jogador ou o do livro"),
+    # 06/10/2026, pedido do Mizuki: as cartas de graça do menu abrem com o valor da conta
+    ("a carta de graça do menu volta a mostrar só o texto do livro, sem o valor", MEN,
+     """f'={valor[i]}&"Do livro: "&IFERROR(""", """f'="Do livro: "&IFERROR(""", "as duas de graça primeiro, com o valor"),
+    ("a carta do Canalizar mostra a proteção do Cobrir-se", MEN,
+     """             f'{val("apt_canalizar")}&". "']""", """             f'{val("apt_cobrir")}&". "']""", "as duas de graça primeiro, com o valor"),
     ("o menu de Passiva não compacta", MEN,
      '''(lambda n, k=k: f"=IFERROR(MATCH({k + 1},{PCOL(8)},0),0)")''', '''(lambda n, k=k: f"={k + 1}")''', "as Passivas no menu, sem buraco"),
     ("a rota sem Domínio mostra a carta do Domínio", MEN,

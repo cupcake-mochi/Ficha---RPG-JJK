@@ -2429,3 +2429,40 @@ para o gerador; vai a 69). Todos acendem.
 **Fica para ele, no Sheets:** inserir uma foto na caixa FOTO da `CARTEIRA` e olhar a `FICHA PESSOAL`. Se a foto não
 aparecer, me avise: o plano B é o jogador inserir nas duas, e o C é o script copiar a imagem (o Apps Script lê e grava
 imagem de célula, pela documentação dele).
+
+### B39 · As duas aptidões de graça do menu rápido mostram o valor — **FEITA em 06/10/2026; falta montar no Sheets**
+
+*Pedido dele em 06/10/2026: "na ficha, tem as aptidões (e lapidações) base, seria bom se o mecanico (pelo menor o
+valor), estivesse incluso / ja q é um acesso rapido da ficha amaldiçoada".* **As cartas das duas de graça, no menu rápido
+da `FICHA` (seção 8), traziam só o "Do livro:", e o valor morava na `FICHA AMALDIÇOADA`, nas caixas do cabeçalho de
+APTIDÕES E REFINO.** *Agora a carta abre com o mesmo valor, e depois vem o texto do livro:*
+
+- **Cobrir-se de Energia:** *"Proteção 1 · Reação de Cobrir-se: RD 1 por 2 PE. Do livro: …"*
+- **Canalizar Energia:** *"+1d4 na arma. Do livro: …"*
+
+*Na Restrição Celestial sem energia são a Defesa sem Armadura e o Estímulo Muscular, com os mesmos números na
+Lapidação, e a reação vira "Reação da Defesa".* **A carta lê as três caixas da `FICHA AMALDIÇOADA`, e não refaz a conta:**
+*a regra continua num lugar só.* Como o menu é montado antes da aba, os três endereços passaram a nascer no layout, como o
+do Refino, e a aba confere que a caixa sai neles.
+
+| peça | o que mudou |
+|---|---|
+| `ficha-v01/ficha_amaldicoada.py` | `apt_cobrir`, `apt_canalizar` e `apt_reacao` no layout, e a aba confere que a caixa sai neles |
+| `ficha-v01/menu_rapido.py` | o texto das duas cartas de graça abre com o valor |
+| `apps-script/Ficha.gs` | as duas fórmulas novas (e só elas: o resto do arquivo saiu igual) |
+
+**Conferido:** a `regressao-amaldicoada.py` refaz o valor pelo refino de cada uma das 20 fichas de teste, nas quatro
+rotas, e confere a carta recalculada no LibreOffice (354 checagens, todas passando); o `arnes-amaldicoada.py` ganha 2
+(a carta volta a mostrar só o livro, e a do Canalizar mostra a proteção do Cobrir-se; vai a 71), e os dois acendem.
+**Dos vinte e um, vinte passam; o `comparar-ficha-01.py` pede o `original.xlsx`, que é a exportação da planilha viva e não
+está no repositório.** *Rodado numa máquina de nuvem com o Python 3.12 (o 3.11 não lê as f-strings do gerador), o
+LibreOffice Calc instalado na hora e as fontes baixadas do Google Fonts. O `Ficha.gs` e o `Habilidades.gs` saíram iguais
+aos commitados antes da mudança; o `.xlsx` e a arte da carteira, não (outra versão de `openpyxl`, de Pillow e das
+fontes), e por isso não foram subidos daqui: rode o `monta.py` na sua máquina para o `.xlsx` acompanhar.*
+
+**Fica para ele:** colar o `Ficha.gs` novo no Sheets e olhar o menu rápido.
+
+**Achado de passagem, para depois:** o `manual.txt` saiu do livro de antes da D43 (`manual-fonte.json`, hash
+`e747cf74…`). O livro de hoje tem a D43 (Condição, Prende e Cerca pedem TR), o nome Ciclo Maldito e a D44 (a Execução
+Preparada da Vanguarda com −2): a carta 7 da Vanguarda ainda diz −1. Puxar o livro novo é rodar o `extrair-manual.py` e
+pôr o catálogo em dia, que é uma passada própria.
