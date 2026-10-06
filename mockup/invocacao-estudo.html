@@ -220,7 +220,7 @@ table.regras .agora{color:var(--acento-pag)}
 
   <div class="barra-topo">
     <nav class="saltos" aria-label="Partes do estudo">
-      <a href="#folha">A aba</a><a href="#tamanho">O tamanho</a><a href="#conta">O que a planilha calcula</a><a href="#falta">O que falta decidir</a>
+      <a href="#folha">A aba</a><a href="#tamanho">O tamanho</a><a href="#conta">O que a planilha calcula</a><a href="#falta">A conferência</a>
     </nav>
     <div class="paleta" role="group" aria-label="Paleta da folha">
       <span>Paleta da folha</span>
@@ -251,13 +251,14 @@ table.regras .agora{color:var(--acento-pag)}
       <span>a segunda mostra a foto e as caixas na proporção da planilha</span>
     </div>
     <div class="jogo">
+      <label for="trilha">Sua Trilha</label><select id="trilha"><option value="">não sou Evocador</option></select>
       <label for="nivel">Seu nível</label><select id="nivel"></select>
       <label for="defv">Sua Essência ou Inteligência (a que vale para a Defesa delas)</label><select id="defv"></select>
     </div>
     <div class="jogo" role="group" aria-label="Grupos"><span>Grupos</span>
       <button type="button" data-grupos="nasce">Como nasce</button>
       <button type="button" data-grupos="cheias">Abrir as preenchidas</button>
-      <button type="button" data-grupos="trunfos">Abrir os trunfos</button>
+      <button type="button" data-grupos="trunfos">Abrir a Trilha e os trunfos</button>
       <button type="button" data-grupos="fecha">Fechar tudo</button>
       <button type="button" id="volta">Voltar ao exemplo do livro</button>
     </div>
@@ -270,14 +271,14 @@ table.regras .agora{color:var(--acento-pag)}
     <h2><b>2</b>O tamanho de cada grade</h2>
     <p>Medido na própria folha. A última coluna é a FICHA AMALDIÇOADA da planilha gerada hoje, para comparar: é a aba mais pesada da ficha.</p>
     <div class="rolar"><table class="regras" id="tab-formas"></table></div>
-    <p>Cada ficha traz dez cartas de habilidade com a conta inteira, e são elas que pesam: são 104 menus por ficha. Não medi o <code>construir()</code> com esta aba. Pela quantidade de menus e de cartas, ela sozinha deve passar do que as abas de hoje levam juntas, e vai precisar ser montada numa execução só dela. Antes de construir a grade inteira, vale montar uma ficha só e medir.</p>
+    <p>Cada ficha traz dez cartas de habilidade com a conta inteira, e são elas que pesam: são 13 cartas e 160 menus por ficha. Não medi o <code>construir()</code> com esta aba. Pela quantidade de menus e de cartas, ela sozinha deve passar do que as abas de hoje levam juntas, e vai precisar ser montada numa execução só dela. Antes de construir a grade inteira, vale montar uma ficha só e medir.</p>
   </section>
 
   <section class="estudo" id="conta">
     <h2><b>3</b>O que a planilha calcula</h2>
     <div class="contas">
       <div><h3>Lê da sua FICHA</h3><ul><li>O seu nível e a maestria, que vale para todas</li><li>A Essência ou a Inteligência, para a Defesa delas</li></ul></div>
-      <div><h3>Da ficha da invocação</h3><ul><li>Pontos de atributo gastos contra os 9 e os marcos</li><li>O total de cada atributo: os pontos mais o Buff/Debuff</li><li>Ataque, CD, Defesa, vida máxima, deslocamento e os quatro Testes de Resistência, cada um com o seu Buff/Debuff</li><li>Quantas perícias, espaços de especial, básicas e talentos o nível dá</li><li>Entrada, retorno, reserva da domada e carga do talismã</li></ul></div>
+      <div><h3>Da ficha da invocação</h3><ul><li>Pontos de atributo gastos contra os 9 e os marcos, e o bônus de cada perícia</li><li>O total de cada atributo: os pontos mais o Buff/Debuff</li><li>Ataque, CD, Defesa, vida máxima, deslocamento e os quatro Testes de Resistência, cada um com o seu Buff/Debuff</li><li>Quantas perícias, espaços de especial, básicas e talentos o nível dá</li><li>Entrada, retorno, reserva da domada e carga do talismã</li></ul></div>
       <div><h3>De cada habilidade</h3><ul><li>Preço da Forma e de cada Melhoria, com o desconto da Família Livre</li><li>Devolução das Restrições, com Corpo a Corpo embutida em Toque e Aura</li><li>O saldo virando d8, cura ou vida temporária, e o PE</li><li>Alcance e área da tabela das entidades</li></ul></div>
       <div><h3>Dos trunfos</h3><ul><li>O grupo nasce fechado e nada o abre sozinho</li><li>Liberação: o PE e os pontos mais os d8 da Classe escolhida</li><li>Técnica Máxima: dados fixos, pontos e custo da faixa de nível</li><li>Expansão: custo, Acerto e requisito do degrau escolhido</li></ul></div>
     </div>
@@ -285,19 +286,26 @@ table.regras .agora{color:var(--acento-pag)}
   </section>
 
   <section class="estudo" id="falta">
-    <h2><b>4</b>O que falta decidir</h2>
+    <h2><b>4</b>A conferência contra o livro</h2>
+    <p>Antes de fechar, passei a ficha pela tabela "Conferência da ficha" do capítulo 17, pelo registro de cada corpo do capítulo 16 e pelo que o Evocador muda. O que faltava e entrou:</p>
     <ol class="passos">
-      <li><b>A foto.</b> Agora ela tem 15 colunas por 19 linhas, perto de 420 por 400 px na planilha. Nesta página a coluna é mais estreita que a do Sheets, então aqui ela parece mais em pé do que vai ficar.</li>
-      <li><b>O conjunto e a primeira linha.</b> O conjunto divide as linhas com a primeira fileira de fichas. Por isso o grupo da primeira fileira fecha só das habilidades para baixo; as outras fecham inteiras.</li>
-      <li><b>A largura.</b> O conjunto aberto e uma coluna de fichas passam das 47 colunas das outras abas. Com o conjunto fechado, uma coluna cabe exata.</li>
-      <li><b>O que fica de fora por enquanto.</b> Lista de ritual, fabricação e as Intervenções de Vínculo do Evocador não estão desenhadas.</li>
+      <li><b>Tipo de dano e resolução em cada habilidade.</b> O livro pede um tipo de dano por ataque e deixa trocar ataque por Teste de Resistência sem custo. Cada carta ganhou os dois menus.</li>
+      <li><b>Equipamento e carga.</b> Uma caixa de texto, com o limite de 5 + Força calculado no rótulo.</li>
+      <li><b>O bônus de cada perícia treinada.</b> O atributo da perícia mais a sua maestria, ao lado do menu.</li>
+      <li><b>A reserva atual da domada</b> e <b>a carga do talismã</b>, que muda o custo da entrada.</li>
+      <li><b>Famílias da Trilha.</b> O Evocador abre uma Família a mais (Parceria e Múltiplas) ou duas, com uma segunda Livre (a principal). São cinco menus em vez de três.</li>
+      <li><b>Repertório da Trilha.</b> Um grupo fechado, como o dos trunfos, com três cartas e três linhas de talento para as escolhas a mais da Invocação Principal e do Repertório do Conjunto.</li>
+      <li><b>No conjunto:</b> o Aprimoramento de Vínculo, em quem ele está e os três usos da rodada; e o limite de ativas passa a quatro com Múltiplas Invocações.</li>
+      <li><b>Três avisos novos:</b> atributo acima de 3 sem ponto de marco, Família repetida ou a mais, e as peças cujo efeito usa uma Classe a menos.</li>
     </ol>
+    <p>O que continua de fora, de propósito: as Intervenções de Vínculo (são ações, a ficha guarda só os pontos), a lista de ritual e a fabricação. A ficha também não confere se os degraus de Domínio da domada gastaram espaços de especial.</p>
+    <p>Uma dúvida que é do livro: o capítulo 16 diz que a entidade com alma tem Integridade e sofre os estágios dela, mas o capítulo 17 não dá a Integridade máxima de uma entidade. Não pus a caixa.</p>
   </section>
 </div>
 
 <script>
 (function(){
-  var D = {"maxima":[{"de":17,"ate":20,"dados":"19d8","pontos":8,"pe":"25 PE"},{"de":21,"ate":25,"dados":"22d8","pontos":12,"pe":"30 PE"},{"de":26,"ate":30,"dados":"26d8","pontos":16,"pe":"35 PE"}],"expansao":[{"n":"Incompleta","custa":"2 espaços.","pede":"Nível 10 dela e seu refino 4."},{"n":"Completa","custa":"Mais 1 espaço; total 3.","pede":"Incompleta, nível 14 dela e seu refino 5."},{"n":"Sem Barreiras","custa":"Mais 2 espaços; total 5.","pede":"Completa, seu refino 10 e sua especialização em Ocultismo."}],"ref":{"linhas":548,"mescladas":1361,"menus":212},"versao":"0.331 · 04/10","livro":"e747cf74","prog":[{"de":1,"ate":4,"classe":1,"basica":1,"pontos":2},{"de":5,"ate":8,"classe":2,"basica":2,"pontos":4},{"de":9,"ate":12,"classe":3,"basica":2,"pontos":6},{"de":13,"ate":16,"classe":4,"basica":2,"pontos":9},{"de":17,"ate":20,"classe":5,"basica":3,"pontos":11},{"de":21,"ate":25,"classe":6,"basica":3,"pontos":13},{"de":26,"ate":30,"classe":7,"basica":3,"pontos":16}],"limite":{"1":2,"2":2,"3":3,"4":3,"5":4,"6":4,"7":4},"formas":{"Projétil":{"custa":null,"exige":null,"aplic":"Um alvo distante, por ataque.","embutida":false},"Toque":{"custa":null,"exige":null,"aplic":"Um alvo a 1,5 m, por ataque. Inclui Corpo a Corpo.","embutida":true},"Explosão":{"custa":"Leve","exige":"Área","aplic":"Área esférica em um ponto escolhido.","embutida":false},"Aura":{"custa":"Leve","exige":"Área","aplic":"Área esférica centrada na entidade. Inclui Corpo a Corpo.","embutida":true},"Cone":{"custa":"Leve","exige":"Área","aplic":"Área em cone partindo da entidade.","embutida":false},"Linha":{"custa":"Leve","exige":"Área","aplic":"Área em linha partindo da entidade.","embutida":false},"Cura":{"custa":"Media","exige":"Amparo","aplic":"Cura de um aliado.","embutida":false},"Apoio":{"custa":null,"exige":"Amparo","aplic":"Vida temporária para um aliado.","embutida":false},"Onda":{"custa":"Pesada","exige":"Amparo","aplic":"Cura ou apoio para aliados na área.","embutida":false},"Efeito":{"custa":null,"exige":null,"aplic":"Aplicação registrada fora de combate.","embutida":false}},"alcance":{"Projétil":["9 m","18 m","36 m"],"Explosão":["9 m","18 m","36 m"],"Toque":["1,5 m","1,5 m","1,5 m"],"Apoio":["4,5 m","9 m","18 m"],"Cura":["Indisponível","9 m","18 m"],"Aura":["Centradas na entidade","Centradas na entidade","Centradas na entidade"],"Onda":["Centradas na entidade","Centradas na entidade","Centradas na entidade"]},"area":{"Explosão":{"mede":"raio","v":["3 m","3 m","4,5 m"]},"Aura":{"mede":"raio","v":["3 m","3 m","4,5 m"]},"Cone":{"mede":"comprimento","v":["3 m","4,5 m","9 m"]},"Linha":{"mede":"comprimento × largura","v":["9 × 1,5 m","18 × 1,5 m","30 × 1,5 m"]},"Onda":{"mede":"raio","v":["Indisponível","3 m","4,5 m"]}},"talentos":[{"n":"Leitura","ce":1,"faz":"Identifica Classe e Forma de conjurações próximas."},{"n":"Instinto","ce":1,"faz":"Protege contra surpresa enquanto acordada."},{"n":"Raiz","ce":1,"faz":"Impede movimento imposto e Derrubado involuntário."},{"n":"Mão Firme","ce":1,"faz":"Protege Concentração e Carregar de ocorrências pequenas de dano."},{"n":"Farejador","ce":1,"faz":"Reconhece vestígios locais de conjuração."},{"n":"Leitura de Feitiços","ce":1,"faz":"Identifica o último feitiço de um inimigo à vista."},{"n":"Fluxo","ce":"2","faz":"Vida temporária por conjuração."},{"n":"Eco","ce":"2","faz":"Redução no custo após reduzir um inimigo a zero."},{"n":"Costura","ce":"2","faz":"Impede que um aliado caia a zero."},{"n":"Contramedida","ce":"2","faz":"Reação que aumenta a CD de outro feitiço."},{"n":"Escama","ce":"3","faz":"Resistência a um tipo de dano."},{"n":"Afinidade","ce":"3","faz":"Supera cobertura Parcial e resistência no tema escolhido."},{"n":"Talento Próprio","ce":"1–3","faz":"Capacidade escrita e comparada antes da sessão."}],"tipos":[{"n":"Shikigami de técnica","corpo":"Criatura ligada à técnica.","ficha":"Usa a ficha normal de entidade."},{"n":"Corpo amaldiçoado de técnica","corpo":"Corpo ligado à técnica.","ficha":"Usa a vida normal e as regras de corpo amaldiçoado."},{"n":"Shikigami de criação","corpo":"Criatura guardada em um talismã.","ficha":"Registra o talismã e sua carga."},{"n":"Corpo amaldiçoado de criação","corpo":"Corpo fabricado.","ficha":"Ganha 4 + Constituição por nível depois do primeiro."},{"n":"Maldição domada","corpo":"Maldição submetida.","ficha":"Mantém seu nível e suas capacidades de origem."}],"aquis":[{"n":"Espaço conhecido","custa":"Uma vaga de feitiço, Manejo ou Kata.","evolui":"Acompanha seu nível."},{"n":"Lista de ritual","custa":"Um feitiço com uma lista própria e desafios individuais de submissão.","evolui":"As entidades conquistadas acompanham seu nível."},{"n":"Maldição domada","custa":"Encontrar, derrotar e submeter uma maldição.","evolui":"Conserva o nível em que foi domada."},{"n":"Criação","custa":"Tempo, testes e materiais de fabricação.","evolui":"Conserva o nível em que foi criada."}],"familias":["Alcance","Área","Mira","Controle","Auxiliares","Castigo","Tempo","Marca","Amparo"],"melhorias":{"Longe":{"familia":"Alcance","peso":"Leve"},"Muito Longe":{"familia":"Alcance","peso":"Media"},"Sem Ver":{"familia":"Alcance","peso":"Pesada"},"Perseguir":{"familia":"Alcance","peso":"Media"},"Passo":{"familia":"Alcance","peso":"Leve"},"Empurrão":{"familia":"Alcance","peso":"Leve"},"Troca":{"familia":"Alcance","peso":"Media"},"Maior":{"familia":"Área","peso":"Leve"},"Muito Maior":{"familia":"Área","peso":"Pesada"},"Escolher":{"familia":"Área","peso":"Media"},"Mais Um":{"familia":"Área","peso":"Leve"},"Rajada":{"familia":"Área","peso":"Leve"},"Fica":{"familia":"Área","peso":"Media"},"Salto":{"familia":"Área","peso":"Media"},"Contorno":{"familia":"Área","peso":"Leve"},"Precisão":{"familia":"Mira","peso":"Leve"},"Certeiro":{"familia":"Mira","peso":"Media"},"Inescapável":{"familia":"Mira","peso":"Media"},"De Novo":{"familia":"Mira","peso":"Media"},"Fura":{"familia":"Mira","peso":"Media"},"Corrói":{"familia":"Mira","peso":"Pesada"},"Sem Cobertura":{"familia":"Mira","peso":"Leve"},"Toca a Alma":{"familia":"Mira","peso":"Leve"},"Condição: Lento":{"familia":"Controle","peso":"Leve"},"Condição: Guarda Aberta":{"familia":"Controle","peso":"Leve"},"Condição: Derrubado":{"familia":"Controle","peso":"Leve"},"Condição: Agarrado":{"familia":"Controle","peso":"Leve"},"Condição: Desarmado":{"familia":"Controle","peso":"Leve"},"Condição: Surdo":{"familia":"Controle","peso":"Leve"},"Condição: Calado":{"familia":"Controle","peso":"Media"},"Condição: Enfeitiçado":{"familia":"Controle","peso":"Media"},"Condição: Impedido":{"familia":"Controle","peso":"Pesada"},"Condição: Cego":{"familia":"Controle","peso":"Pesada"},"Condição: Amedrontado":{"familia":"Controle","peso":"Pesada"},"Condição: Envenenado":{"familia":"Controle","peso":"Pesada"},"Condição: Atordoado":{"familia":"Controle","peso":"Pesada"},"Terreno":{"familia":"Controle","peso":"Leve"},"Cerca":{"familia":"Controle","peso":"Leve"},"Desarma o Feitiço":{"familia":"Controle","peso":"Media"},"Anteparo":{"familia":"Controle","peso":"Media"},"Prende":{"familia":"Controle","peso":"Media"},"Puxa":{"familia":"Controle","peso":"Media"},"Impulso":{"familia":"Auxiliares","peso":"Leve"},"Trava":{"familia":"Auxiliares","peso":"Leve"},"Abre Ferida":{"familia":"Auxiliares","peso":"Leve"},"Sobrecarga":{"familia":"Auxiliares","peso":"Leve"},"Firmeza":{"familia":"Auxiliares","peso":"Media"},"Guarda":{"familia":"Auxiliares","peso":"Media"},"Pressa":{"familia":"Auxiliares","peso":"Media"},"Enfraquece":{"familia":"Auxiliares","peso":"Media"},"Ecoa":{"familia":"Auxiliares","peso":"Media"},"Queima":{"familia":"Castigo","peso":"Media"},"Acúmulo":{"familia":"Castigo","peso":"Media"},"Remate":{"familia":"Castigo","peso":"Media"},"Estilhaço":{"familia":"Castigo","peso":"Leve"},"Quebra Coisa":{"familia":"Castigo","peso":"Leve"},"Rasga Escudo":{"familia":"Castigo","peso":"Media"},"Sem Cura":{"familia":"Castigo","peso":"Media"},"Rápido":{"familia":"Tempo","peso":"Pesada"},"Reação":{"familia":"Tempo","peso":"Pesada"},"Armado":{"familia":"Tempo","peso":"Leve"},"Silencioso":{"familia":"Tempo","peso":"Leve"},"Adianta":{"familia":"Tempo","peso":"Media"},"Segura":{"familia":"Tempo","peso":"Leve"},"Concentrada":{"familia":"Tempo","peso":"Leve"},"Duradoura":{"familia":"Tempo","peso":"Media"},"Marca":{"familia":"Marca","peso":"Leve"},"Alvo de Caça":{"familia":"Marca","peso":"Leve"},"Rastro":{"familia":"Marca","peso":"Leve"},"Isca":{"familia":"Marca","peso":"Leve"},"Sugar":{"familia":"Marca","peso":"Media"},"Cobrança":{"familia":"Marca","peso":"Media"},"Identificar Feitiço":{"familia":"Marca","peso":"Leve"},"Limpa":{"familia":"Amparo","peso":"Media"},"Limpa Fundo":{"familia":"Amparo","peso":"Pesada"},"Levanta":{"familia":"Amparo","peso":"Pesada"},"Remenda":{"familia":"Amparo","peso":"Pesada"},"Divide":{"familia":"Amparo","peso":"Media"},"Junto":{"familia":"Amparo","peso":"Leve"},"Reserva":{"familia":"Amparo","peso":"Media"},"Efeito Próprio":{"familia":null,"peso":"MESTRE"}},"restricoes":{"Corpo a Corpo":"Media","Atrasar":"Media","Parado":"Leve","Gesto":"Leve","Carregar":"Media","Sangra":"Media","Recuo":"Leve ou Media","Fraqueza":"Leve ou Media","Peso Morto":"Leve","Frágil":"Leve","Sem Volta":"Media","Uma Vez":"Leve","Condicional":"Leve ou Media","Aquecer":"Leve","Dívida":"Media","Tudo ou Nada":"Leve","Barulho":"Leve","Assinatura":"Leve","Restrição Própria":"Leve ou Media"},"pericias":["Atletismo","Acrobacia","Furtividade","Pontaria","Prestidigitação","Investigação","Intuição","Ocultismo","Religião","História","Hierarquia","Medicina","Sobrevivência","Natureza","Lidar com Animais","Tecnologia","Sentir Energia","Percepção","Persuasão","Enganação","Intimidação","Atuação","Provocar"],"fichas":[{"nome":"Cão de sombra","def":"Um cão feito de sombra que reconhece vestígios de energia amaldiçoada e persegue o que seu invocador aponta.","corpo":"Médio, quatro patas, sem mãos; usa a boca para segurar. Visão, audição e olfato comuns. Entende ordens faladas e responde por latidos e gestos.","tipo":"Shikigami de técnica","aquis":"Espaço conhecido","nivel":1,"atr":{"FOR":3,"DES":2,"CON":2,"INT":1,"ESS":1},"acerto":"Força","trT":"Físico","fis":"Força","per":["Atletismo","Furtividade","Percepção","Sobrevivência","","",""],"livre":"Mira","a1":"Alcance","a2":"Controle","bas":[{"nome":"Mordida","como":"Perfurante. Consome a atuação básica do cão.","forma":"Toque","mel":["","","",""],"res":["",""],"classe":0},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":0}],"esp":[{"nome":"Mordida precisa","como":"Perfurante. Não aplica condição nem deixa efeito contínuo.","forma":"Toque","mel":["Precisão","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1}],"tal":["Farejador","","","","","","",""],"buff":{},"notas":"","lib":[{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3}],"max":{"nome":"","como":""},"exp":{"nome":"","como":"","des":"Incompleta"},"mesa":{"vida":"","temp":"","mov":"","bas":"Disponível","ordem":"Nenhuma","estado":"Em campo","tarefa":"Perseguir a criatura apontada.","cond":""}},{"nome":"Vigia de papel","def":"Uma pequena figura de papel que registra os sons da missão e desdobra tiras para amparar pessoas.","corpo":"Pequena, duas pernas, mãos de papel. Visão e audição comuns. Entende ordens faladas e reproduz gravações. Não voa.","tipo":"Shikigami de técnica","aquis":"Espaço conhecido","nivel":1,"atr":{"FOR":0,"DES":2,"CON":2,"INT":3,"ESS":2},"acerto":"Inteligência","trT":"Intelecto","fis":"Destreza","per":["Acrobacia","Furtividade","Investigação","Percepção","Sobrevivência","",""],"livre":"Amparo","a1":"Auxiliares","a2":"Alcance","bas":[{"nome":"Orientação","como":"O vigia aponta um apoio seguro com suas tiras: vantagem no próximo teste do aliado.","forma":"Apoio","mel":["Impulso","","",""],"res":["",""],"classe":0},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":0}],"esp":[{"nome":"Tiras de resgate","como":"O aliado recebe +2 na Defesa e pode aceitar ser movido até 6 m.","forma":"Apoio","mel":["Guarda","Empurrão","",""],"res":["",""],"classe":2},{"nome":"Remendo de papel","como":"Não remove condições.","forma":"Cura","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1}],"tal":["Talento Próprio","","","","","","",""],"buff":{},"notas":"","lib":[{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3}],"max":{"nome":"","como":""},"exp":{"nome":"","como":"","des":"Incompleta"},"mesa":{"vida":19,"temp":"","mov":"","bas":"Disponível","ordem":"Nenhuma","estado":"Em campo","tarefa":"Amparar quem está na escada.","cond":""}},{"nome":"","def":"","corpo":"","tipo":"Shikigami de técnica","aquis":"Espaço conhecido","nivel":1,"atr":{"FOR":0,"DES":0,"CON":0,"INT":0,"ESS":0},"acerto":"","trT":"","fis":"Força","per":["","","","","","",""],"livre":"","a1":"","a2":"","bas":[{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":0},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":0}],"esp":[{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1}],"tal":["","","","","","","",""],"buff":{},"notas":"","lib":[{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3}],"max":{"nome":"","como":""},"exp":{"nome":"","como":"","des":"Incompleta"},"mesa":{"vida":"","temp":"","mov":"","bas":"Disponível","ordem":"Nenhuma","estado":"Guardada","tarefa":"","cond":""}}]};
+  var D = {"maxima":[{"de":17,"ate":20,"dados":"19d8","pontos":8,"pe":"25 PE"},{"de":21,"ate":25,"dados":"22d8","pontos":12,"pe":"30 PE"},{"de":26,"ate":30,"dados":"26d8","pontos":16,"pe":"35 PE"}],"expansao":[{"n":"Incompleta","custa":"2 espaços.","pede":"Nível 10 dela e seu refino 4."},{"n":"Completa","custa":"Mais 1 espaço; total 3.","pede":"Incompleta, nível 14 dela e seu refino 5."},{"n":"Sem Barreiras","custa":"Mais 2 espaços; total 5.","pede":"Completa, seu refino 10 e sua especialização em Ocultismo."}],"ref":{"linhas":548,"mescladas":1361,"menus":212},"versao":"0.331 · 04/10","livro":"e747cf74","prog":[{"de":1,"ate":4,"classe":1,"basica":1,"pontos":2},{"de":5,"ate":8,"classe":2,"basica":2,"pontos":4},{"de":9,"ate":12,"classe":3,"basica":2,"pontos":6},{"de":13,"ate":16,"classe":4,"basica":2,"pontos":9},{"de":17,"ate":20,"classe":5,"basica":3,"pontos":11},{"de":21,"ate":25,"classe":6,"basica":3,"pontos":13},{"de":26,"ate":30,"classe":7,"basica":3,"pontos":16}],"limite":{"1":2,"2":2,"3":3,"4":3,"5":4,"6":4,"7":4},"formas":{"Projétil":{"custa":null,"exige":null,"aplic":"Um alvo distante, por ataque.","embutida":false},"Toque":{"custa":null,"exige":null,"aplic":"Um alvo a 1,5 m, por ataque. Inclui Corpo a Corpo.","embutida":true},"Explosão":{"custa":"Leve","exige":"Área","aplic":"Área esférica em um ponto escolhido.","embutida":false},"Aura":{"custa":"Leve","exige":"Área","aplic":"Área esférica centrada na entidade. Inclui Corpo a Corpo.","embutida":true},"Cone":{"custa":"Leve","exige":"Área","aplic":"Área em cone partindo da entidade.","embutida":false},"Linha":{"custa":"Leve","exige":"Área","aplic":"Área em linha partindo da entidade.","embutida":false},"Cura":{"custa":"Media","exige":"Amparo","aplic":"Cura de um aliado.","embutida":false},"Apoio":{"custa":null,"exige":"Amparo","aplic":"Vida temporária para um aliado.","embutida":false},"Onda":{"custa":"Pesada","exige":"Amparo","aplic":"Cura ou apoio para aliados na área.","embutida":false},"Efeito":{"custa":null,"exige":null,"aplic":"Aplicação registrada fora de combate.","embutida":false}},"alcance":{"Projétil":["9 m","18 m","36 m"],"Explosão":["9 m","18 m","36 m"],"Toque":["1,5 m","1,5 m","1,5 m"],"Apoio":["4,5 m","9 m","18 m"],"Cura":["Indisponível","9 m","18 m"],"Aura":["Centradas na entidade","Centradas na entidade","Centradas na entidade"],"Onda":["Centradas na entidade","Centradas na entidade","Centradas na entidade"]},"area":{"Explosão":{"mede":"raio","v":["3 m","3 m","4,5 m"]},"Aura":{"mede":"raio","v":["3 m","3 m","4,5 m"]},"Cone":{"mede":"comprimento","v":["3 m","4,5 m","9 m"]},"Linha":{"mede":"comprimento × largura","v":["9 × 1,5 m","18 × 1,5 m","30 × 1,5 m"]},"Onda":{"mede":"raio","v":["Indisponível","3 m","4,5 m"]}},"talentos":[{"n":"Leitura","ce":1,"faz":"Identifica Classe e Forma de conjurações próximas."},{"n":"Instinto","ce":1,"faz":"Protege contra surpresa enquanto acordada."},{"n":"Raiz","ce":1,"faz":"Impede movimento imposto e Derrubado involuntário."},{"n":"Mão Firme","ce":1,"faz":"Protege Concentração e Carregar de ocorrências pequenas de dano."},{"n":"Farejador","ce":1,"faz":"Reconhece vestígios locais de conjuração."},{"n":"Leitura de Feitiços","ce":1,"faz":"Identifica o último feitiço de um inimigo à vista."},{"n":"Fluxo","ce":"2","faz":"Vida temporária por conjuração."},{"n":"Eco","ce":"2","faz":"Redução no custo após reduzir um inimigo a zero."},{"n":"Costura","ce":"2","faz":"Impede que um aliado caia a zero."},{"n":"Contramedida","ce":"2","faz":"Reação que aumenta a CD de outro feitiço."},{"n":"Escama","ce":"3","faz":"Resistência a um tipo de dano."},{"n":"Afinidade","ce":"3","faz":"Supera cobertura Parcial e resistência no tema escolhido."},{"n":"Talento Próprio","ce":"1–3","faz":"Capacidade escrita e comparada antes da sessão."}],"tipos":[{"n":"Shikigami de técnica","corpo":"Criatura ligada à técnica.","ficha":"Usa a ficha normal de entidade."},{"n":"Corpo amaldiçoado de técnica","corpo":"Corpo ligado à técnica.","ficha":"Usa a vida normal e as regras de corpo amaldiçoado."},{"n":"Shikigami de criação","corpo":"Criatura guardada em um talismã.","ficha":"Registra o talismã e sua carga."},{"n":"Corpo amaldiçoado de criação","corpo":"Corpo fabricado.","ficha":"Ganha 4 + Constituição por nível depois do primeiro."},{"n":"Maldição domada","corpo":"Maldição submetida.","ficha":"Mantém seu nível e suas capacidades de origem."}],"aquis":[{"n":"Espaço conhecido","custa":"Uma vaga de feitiço, Manejo ou Kata.","evolui":"Acompanha seu nível."},{"n":"Lista de ritual","custa":"Um feitiço com uma lista própria e desafios individuais de submissão.","evolui":"As entidades conquistadas acompanham seu nível."},{"n":"Maldição domada","custa":"Encontrar, derrotar e submeter uma maldição.","evolui":"Conserva o nível em que foi domada."},{"n":"Criação","custa":"Tempo, testes e materiais de fabricação.","evolui":"Conserva o nível em que foi criada."}],"familias":["Alcance","Área","Mira","Controle","Auxiliares","Castigo","Tempo","Marca","Amparo"],"melhorias":{"Longe":{"familia":"Alcance","peso":"Leve"},"Muito Longe":{"familia":"Alcance","peso":"Media"},"Sem Ver":{"familia":"Alcance","peso":"Pesada"},"Perseguir":{"familia":"Alcance","peso":"Media"},"Passo":{"familia":"Alcance","peso":"Leve"},"Empurrão":{"familia":"Alcance","peso":"Leve"},"Troca":{"familia":"Alcance","peso":"Media"},"Maior":{"familia":"Área","peso":"Leve"},"Muito Maior":{"familia":"Área","peso":"Pesada"},"Escolher":{"familia":"Área","peso":"Media"},"Mais Um":{"familia":"Área","peso":"Leve"},"Rajada":{"familia":"Área","peso":"Leve"},"Fica":{"familia":"Área","peso":"Media"},"Salto":{"familia":"Área","peso":"Media"},"Contorno":{"familia":"Área","peso":"Leve"},"Precisão":{"familia":"Mira","peso":"Leve"},"Certeiro":{"familia":"Mira","peso":"Media"},"Inescapável":{"familia":"Mira","peso":"Media"},"De Novo":{"familia":"Mira","peso":"Media"},"Fura":{"familia":"Mira","peso":"Media"},"Corrói":{"familia":"Mira","peso":"Pesada"},"Sem Cobertura":{"familia":"Mira","peso":"Leve"},"Toca a Alma":{"familia":"Mira","peso":"Leve"},"Condição: Lento":{"familia":"Controle","peso":"Leve"},"Condição: Guarda Aberta":{"familia":"Controle","peso":"Leve"},"Condição: Derrubado":{"familia":"Controle","peso":"Leve"},"Condição: Agarrado":{"familia":"Controle","peso":"Leve"},"Condição: Desarmado":{"familia":"Controle","peso":"Leve"},"Condição: Surdo":{"familia":"Controle","peso":"Leve"},"Condição: Calado":{"familia":"Controle","peso":"Media"},"Condição: Enfeitiçado":{"familia":"Controle","peso":"Media"},"Condição: Impedido":{"familia":"Controle","peso":"Pesada"},"Condição: Cego":{"familia":"Controle","peso":"Pesada"},"Condição: Amedrontado":{"familia":"Controle","peso":"Pesada"},"Condição: Envenenado":{"familia":"Controle","peso":"Pesada"},"Condição: Atordoado":{"familia":"Controle","peso":"Pesada"},"Terreno":{"familia":"Controle","peso":"Leve"},"Cerca":{"familia":"Controle","peso":"Leve"},"Desarma o Feitiço":{"familia":"Controle","peso":"Media"},"Anteparo":{"familia":"Controle","peso":"Media"},"Prende":{"familia":"Controle","peso":"Media"},"Puxa":{"familia":"Controle","peso":"Media"},"Impulso":{"familia":"Auxiliares","peso":"Leve"},"Trava":{"familia":"Auxiliares","peso":"Leve"},"Abre Ferida":{"familia":"Auxiliares","peso":"Leve"},"Sobrecarga":{"familia":"Auxiliares","peso":"Leve"},"Firmeza":{"familia":"Auxiliares","peso":"Media"},"Guarda":{"familia":"Auxiliares","peso":"Media"},"Pressa":{"familia":"Auxiliares","peso":"Media"},"Enfraquece":{"familia":"Auxiliares","peso":"Media"},"Ecoa":{"familia":"Auxiliares","peso":"Media"},"Queima":{"familia":"Castigo","peso":"Media"},"Acúmulo":{"familia":"Castigo","peso":"Media"},"Remate":{"familia":"Castigo","peso":"Media"},"Estilhaço":{"familia":"Castigo","peso":"Leve"},"Quebra Coisa":{"familia":"Castigo","peso":"Leve"},"Rasga Escudo":{"familia":"Castigo","peso":"Media"},"Sem Cura":{"familia":"Castigo","peso":"Media"},"Rápido":{"familia":"Tempo","peso":"Pesada"},"Reação":{"familia":"Tempo","peso":"Pesada"},"Armado":{"familia":"Tempo","peso":"Leve"},"Silencioso":{"familia":"Tempo","peso":"Leve"},"Adianta":{"familia":"Tempo","peso":"Media"},"Segura":{"familia":"Tempo","peso":"Leve"},"Concentrada":{"familia":"Tempo","peso":"Leve"},"Duradoura":{"familia":"Tempo","peso":"Media"},"Marca":{"familia":"Marca","peso":"Leve"},"Alvo de Caça":{"familia":"Marca","peso":"Leve"},"Rastro":{"familia":"Marca","peso":"Leve"},"Isca":{"familia":"Marca","peso":"Leve"},"Sugar":{"familia":"Marca","peso":"Media"},"Cobrança":{"familia":"Marca","peso":"Media"},"Identificar Feitiço":{"familia":"Marca","peso":"Leve"},"Limpa":{"familia":"Amparo","peso":"Media"},"Limpa Fundo":{"familia":"Amparo","peso":"Pesada"},"Levanta":{"familia":"Amparo","peso":"Pesada"},"Remenda":{"familia":"Amparo","peso":"Pesada"},"Divide":{"familia":"Amparo","peso":"Media"},"Junto":{"familia":"Amparo","peso":"Leve"},"Reserva":{"familia":"Amparo","peso":"Media"},"Efeito Próprio":{"familia":null,"peso":"MESTRE"}},"restricoes":{"Corpo a Corpo":"Media","Atrasar":"Media","Parado":"Leve","Gesto":"Leve","Carregar":"Media","Sangra":"Media","Recuo":"Leve ou Media","Fraqueza":"Leve ou Media","Peso Morto":"Leve","Frágil":"Leve","Sem Volta":"Media","Uma Vez":"Leve","Condicional":"Leve ou Media","Aquecer":"Leve","Dívida":"Media","Tudo ou Nada":"Leve","Barulho":"Leve","Assinatura":"Leve","Restrição Própria":"Leve ou Media"},"pericias":{"Atletismo":"Força","Acrobacia":"Destreza","Furtividade":"Destreza","Pontaria":"Destreza","Prestidigitação":"Destreza","Investigação":"Inteligência","Intuição":"Inteligência","Ocultismo":"Inteligência","Religião":"Inteligência","História":"Inteligência","Hierarquia":"Inteligência","Medicina":"Inteligência","Sobrevivência":"Inteligência","Natureza":"Inteligência","Lidar com Animais":"Inteligência","Tecnologia":"Inteligência","Sentir Energia":"Essência","Percepção":"Essência","Persuasão":"Essência","Enganação":"Essência","Intimidação":"Essência","Atuação":"Essência","Provocar":"Essência"},"danos":["Cortante","Perfurante","Concussão","Fogo","Frio","Elétrico","Ácido","Trovejante","Veneno","Radiante","Necrótico","Psíquico","Energia Reversa","Força","Alma"],"aprimoramentos":[{"n":"Precisão à Distância","nivel":2},{"n":"Avanço Corpo a Corpo","nivel":2},{"n":"Proteção Reforçada","nivel":2},{"n":"Execução de Tarefas","nivel":2},{"n":"Dificultar a Resistência","nivel":7}],"trilhas":["Invocação Principal","Parceria","Múltiplas Invocações"],"reduzidas":["Rajada","Fura","Anteparo","Desarma o Feitiço","Sugar","Levanta","Remenda"],"fichas":[{"nome":"Cão de sombra","def":"Um cão feito de sombra que reconhece vestígios de energia amaldiçoada e persegue o que seu invocador aponta.","corpo":"Médio, quatro patas, sem mãos; usa a boca para segurar. Visão, audição e olfato comuns. Entende ordens faladas e responde por latidos e gestos.","tipo":"Shikigami de técnica","aquis":"Espaço conhecido","nivel":1,"atr":{"FOR":3,"DES":2,"CON":2,"INT":1,"ESS":1},"acerto":"Força","trT":"Físico","fis":"Força","per":["Atletismo","Furtividade","Percepção","Sobrevivência","","",""],"livre":"Mira","livre2":"","a1":"Alcance","a2":"Controle","a3":"","equip":"","carga":"Sem carga","ext":[{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""}],"talx":["","",""],"bas":[{"nome":"Mordida","como":"Consome a atuação básica do cão.","forma":"Toque","mel":["","","",""],"res":["",""],"classe":0,"dano":"Perfurante","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":0,"dano":"","resolve":""}],"esp":[{"nome":"Mordida precisa","como":"Não aplica condição nem deixa efeito contínuo.","forma":"Toque","mel":["Precisão","","",""],"res":["",""],"classe":1,"dano":"Perfurante","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""}],"tal":["Farejador","","","","","","",""],"buff":{},"notas":"","lib":[{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3}],"max":{"nome":"","como":""},"exp":{"nome":"","como":"","des":"Incompleta"},"mesa":{"vida":"","temp":"","mov":"","reserva":"","bas":"Disponível","ordem":"Nenhuma","estado":"Em campo","tarefa":"Perseguir a criatura apontada.","cond":""}},{"nome":"Vigia de papel","def":"Uma pequena figura de papel que registra os sons da missão e desdobra tiras para amparar pessoas.","corpo":"Pequena, duas pernas, mãos de papel. Visão e audição comuns. Entende ordens faladas e reproduz gravações. Não voa.","tipo":"Shikigami de técnica","aquis":"Espaço conhecido","nivel":1,"atr":{"FOR":0,"DES":2,"CON":2,"INT":3,"ESS":2},"acerto":"Inteligência","trT":"Intelecto","fis":"Destreza","per":["Acrobacia","Furtividade","Investigação","Percepção","Sobrevivência","",""],"livre":"Amparo","livre2":"","a1":"Auxiliares","a2":"Alcance","a3":"","equip":"","carga":"Sem carga","ext":[{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""}],"talx":["","",""],"bas":[{"nome":"Orientação","como":"O vigia aponta um apoio seguro com suas tiras: vantagem no próximo teste do aliado.","forma":"Apoio","mel":["Impulso","","",""],"res":["",""],"classe":0,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":0,"dano":"","resolve":""}],"esp":[{"nome":"Tiras de resgate","como":"O aliado recebe +2 na Defesa e pode aceitar ser movido até 6 m.","forma":"Apoio","mel":["Guarda","Empurrão","",""],"res":["",""],"classe":2,"dano":"","resolve":""},{"nome":"Remendo de papel","como":"Não remove condições.","forma":"Cura","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""}],"tal":["Talento Próprio","","","","","","",""],"buff":{},"notas":"","lib":[{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3}],"max":{"nome":"","como":""},"exp":{"nome":"","como":"","des":"Incompleta"},"mesa":{"vida":19,"temp":"","mov":"","reserva":"","bas":"Disponível","ordem":"Nenhuma","estado":"Em campo","tarefa":"Amparar quem está na escada.","cond":""}},{"nome":"","def":"","corpo":"","tipo":"Shikigami de técnica","aquis":"Espaço conhecido","nivel":1,"atr":{"FOR":0,"DES":0,"CON":0,"INT":0,"ESS":0},"acerto":"","trT":"","fis":"Força","per":["","","","","","",""],"livre":"","livre2":"","a1":"","a2":"","a3":"","equip":"","carga":"Sem carga","ext":[{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""}],"talx":["","",""],"bas":[{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":0,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":0,"dano":"","resolve":""}],"esp":[{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""},{"nome":"","como":"","forma":"Projétil","mel":["","","",""],"res":["",""],"classe":1,"dano":"","resolve":""}],"tal":["","","","","","","",""],"buff":{},"notas":"","lib":[{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3},{"nome":"","como":"","classe":3}],"max":{"nome":"","como":""},"exp":{"nome":"","como":"","des":"Incompleta"},"mesa":{"vida":"","temp":"","mov":"","reserva":"","bas":"Disponível","ordem":"Nenhuma","estado":"Guardada","tarefa":"","cond":""}}]};
   // ---------- as regras do capítulo 17, pelas tabelas que o gerador leu do livro ----------
   function conta(l, n){ return l.filter(function(x){ return x <= n; }).length; }
   function faixaDe(n){ return D.prog.filter(function(p){ return n >= p.de && n <= p.ate; })[0]; }
@@ -318,7 +326,7 @@ table.regras .agora{color:var(--acento-pag)}
   function zera(){
     var v = JSON.stringify(D.fichas[2]), l = [D.fichas[0], D.fichas[1]].map(function(f){ return JSON.parse(JSON.stringify(f)); });
     while (l.length < MAXF) l.push(JSON.parse(v));
-    E = {K: E ? E.K : 2, R: E ? E.R : 6, pal: E ? E.pal : '', col: E ? E.col : 20, nivel:5, defA:'Essência', defV:2, vinc:'1', reac:'Livre', dano:'0', aberto:{lin1:true}, fichas:l};
+    E = {K: E ? E.K : 2, R: E ? E.R : 6, pal: E ? E.pal : '', col: E ? E.col : 20, nivel:5, defA:'Essência', defV:2, vinc:'1', reac:'Livre', dano:'0', trilha: E ? E.trilha : '', apr:'', aprEm:'', usos:['Livre','Livre','Livre'], aberto:{lin1:true}, fichas:l};
   }
   zera();
 
@@ -334,15 +342,19 @@ table.regras .agora{color:var(--acento-pag)}
       gastos:ATR.reduce(function(s,k){ return s + a[k]; }, 0), disp:9 + conta(MARCOS, n),
       ataque: ac ? A[ac] + M + bf(f, 'atq') : null, cd: ac ? 8 + A[ac] + M + bf(f, 'cd') : null, def:10 + A.DES + Math.floor(E.defV/2) + bf(f, 'def'),
       nper:4 + Math.floor(a.INT/2), esp:espacos(n), nbas:n >= 11 ? 2 : 1, ntal:conta(ABRE_TAL, n),
-      reserva:n * (1 + Math.floor(a.ESS/3)), adiant:Math.floor(cl/2)};
+      reserva:n * (1 + Math.floor(a.ESS/3)), adiant:Math.floor(cl/2), carga:5 + A.FOR,
+      acima:ATR.reduce(function(s,k){ return s + Math.max(0, a[k] - 3); }, 0), marcos:conta(MARCOS, n)};
+    x.entrada = f.tipo === 'Shikigami de criação' && f.carga === 'Com carga' ? Math.max(1, Math.ceil(cl/2)) : cl;
     x.trs = TRS.map(function(t, i){ var k = t[1] || ABR[f.fis] || 'FOR', tr = f.trT === t[0]; return {nome:t[0], tr:tr, v:A[k] + (tr ? M : 0) + bf(f, 'tr' + i), k:k}; });
     return x;
   }
 
+  function abertasDe(f){ return [f.livre, f.livre2, f.a1, f.a2, f.a3].filter(Boolean); }
+  function ehLivre(f, fam){ return fam === f.livre || fam === f.livre2; }
   // a conta de uma habilidade: preço da Forma e das Melhorias, devolução das Restrições, saldo e o que ele vira
   function monta(f, h, bas, c){
-    var C = bas ? 0 : h.classe, abertas = [f.livre, f.a1, f.a2], fo = D.formas[h.forma] || D.formas['Projétil'];
-    var x = {C:C, precos:[], devol:[], avisos:[], embutida:fo.embutida}, pontos = bas ? 0 : PTS[C], gasto = 0, nm = 0, soma = 0;
+    var C = bas ? 0 : h.classe, abertas = abertasDe(f), fo = D.formas[h.forma] || D.formas['Projétil'];
+    var x = {C:C, precos:[], devol:[], avisos:[], infos:[], embutida:fo.embutida}, pontos = bas ? 0 : PTS[C], gasto = 0, nm = 0, soma = 0;
     if (!bas && fo.custa) gasto += preco(fo.custa, C);
     if (fo.exige && abertas.indexOf(fo.exige) < 0) x.avisos.push(h.forma + ' pede ' + fo.exige + ' aberta');
     if (bas && (h.forma === 'Cura' || h.forma === 'Onda')) x.avisos.push(h.forma + ' não existe na Classe 0');
@@ -352,8 +364,10 @@ table.regras .agora{color:var(--acento-pag)}
       if (!m){ x.precos.push(null); return; }
       nm++;
       if (bas){ x.precos.push({p:'1 dado'}); if (m.peso !== 'Leve') x.avisos.push('A básica só aceita Melhoria Leve'); }
-      else { var p = preco(m.peso, C), livre = m.familia === f.livre; if (livre) p = Math.max(1, p - LIVRE[C]); x.precos.push({p:p, livre:livre}); gasto += p; }
+      else { var p = preco(m.peso, C), livre = ehLivre(f, m.familia); if (livre) p = Math.max(1, p - LIVRE[C]); x.precos.push({p:p, livre:livre}); gasto += p; }
       if (abertas.indexOf(m.familia) < 0) x.avisos.push(m.familia + ' está fechada');
+      if (!bas && D.reduzidas.indexOf(nome) >= 0) x.infos.push('Efeito de ' + nome + ' pela Classe ' + Math.max(1, C - 1));
+      if (m.familia === 'Controle') x.controle = true;
     });
     var lim = bas ? 1 : D.limite[C];
     if (nm > lim) x.avisos.push(bas ? 'A básica aceita uma Melhoria' : 'A Classe ' + C + ' aceita ' + lim + ' Melhorias');
@@ -377,7 +391,11 @@ table.regras .agora{color:var(--acento-pag)}
     var tem = function(nm){ return h.mel.indexOf(nm) >= 0; }, atr = h.res.join(' ');
     x.acao = bas ? 'A atuação básica dela' : /Atrasar/.test(atr) ? 'Sua Ação Completa + a básica dela' : tem('Rápido') ? 'Sua Bônus + a básica dela' : tem('Reação') ? 'Sua Reação + a básica e a coletiva' : 'Sua Padrão + a básica dela';
     var ia = C === 0 ? 0 : C <= 5 ? 1 : 2, ir = C === 0 ? 0 : C <= 6 ? 1 : 2, al = D.alcance[h.forma], ar = D.area[h.forma];
+    var DANO = ['Projétil','Toque','Explosão','Aura','Cone','Linha'].indexOf(h.forma) >= 0;
+    if (!bas && x.controle && DANO && saldo >= 0 && saldo <= C){ x.infos.push('+1 rodada no Controle'); if (saldo === 0) x.infos.push('+2 na CD do Controle'); }
     var prec = tem('Precisão') ? 2 : 0, atq = c.ataque === null ? '' : 'ataque ' + sg(c.ataque + prec), tr = c.cd === null ? '' : 'TR, CD ' + c.cd;
+    // a resolução é escolha da montagem: trocar ataque por TR não custa ponto
+    if (h.resolve === 'Ataque') tr = atq; else if (/^TR /.test(h.resolve || '')){ tr = c.cd === null ? '' : h.resolve + ', CD ' + c.cd; atq = tr; }
     x.alc = h.forma === 'Efeito' ? 'conforme o efeito registrado' : h.forma === 'Explosão' ? ar.v[ir] + ' de raio, a até ' + al[ia] + ' · ' + tr
       : h.forma === 'Aura' || h.forma === 'Onda' ? ar.v[ir] + ' de raio em volta dela' + (h.forma === 'Aura' ? ' · ' + tr : '')
       : h.forma === 'Cone' ? 'cone de ' + ar.v[ir] + ' · ' + tr : h.forma === 'Linha' ? 'linha de ' + ar.v[ir] + ' · ' + tr
@@ -395,17 +413,18 @@ table.regras .agora{color:var(--acento-pag)}
   }
   function menuNum(caminho, atual, de, ate, rotulo){ var l = []; for (var i = de; i <= ate; i++) l.push(i); return menuLista(caminho, atual, l, rotulo, false); }
   function menuForma(caminho, f, h, bas){
-    return menu(caminho, function(){ var abertas = [f.livre, f.a1, f.a2], o = '';
+    return menu(caminho, function(){ var abertas = abertasDe(f), o = '';
       Object.keys(D.formas).forEach(function(n){ var fo = D.formas[n], fora = (fo.exige && abertas.indexOf(fo.exige) < 0) || (bas && (n === 'Cura' || n === 'Onda'));
         o += opt(n, n + (fo.custa && !bas ? ' · ' + preco(fo.custa, h.classe) : ''), h.forma === n, fora && h.forma !== n); });
       return o; }, 'Forma');
   }
   function menuMelhoria(caminho, atual, f, C, bas){
     return menu(caminho, function(){ var o = opt('', '—', !atual), achou = !atual;
-      [f.livre, f.a1, f.a2].filter(Boolean).forEach(function(fam, i){
-        o += '<optgroup label="' + fam + (i === 0 ? ' · Livre' : '') + '">';
+      abertasDe(f).filter(function(x, i, l){ return l.indexOf(x) === i; }).forEach(function(fam){
+        var lv = ehLivre(f, fam);
+        o += '<optgroup label="' + fam + (lv ? ' · Livre' : '') + '">';
         Object.keys(D.melhorias).forEach(function(n){ var m = D.melhorias[n]; if (m.familia !== fam || (bas && m.peso !== 'Leve')) return;
-          var p = preco(m.peso, C); if (i === 0) p = Math.max(1, p - LIVRE[C]);
+          var p = preco(m.peso, C); if (lv) p = Math.max(1, p - LIVRE[C]);
           if (n === atual) achou = true;
           o += opt(n, n + (bas ? '' : ' · ' + p), n === atual); });
         o += '</optgroup>';
@@ -472,21 +491,24 @@ table.regras .agora{color:var(--acento-pag)}
 
   // ---------- as cartas de habilidade (13 colunas, como as da Ficha Amaldiçoada) ----------
   var NOTA_MEL = 'O menu só traz as três Famílias abertas. A da Família Livre já aparece com o desconto.';
-  function carta(F, c0, r0, f, c, h, caminho, tit, abre, bas){
+  function carta(F, c0, r0, f, c, h, caminho, tit, abre, bas, livre){
     var p = pincel(F, c0), tr = abre > c.n, v = !h.nome, u = 12;
     p('rot', 0, r0, u, r0, tit + (tr ? ' · abre no nível ' + abre : ''), tr ? 'fora' : '');
-    if (tr){ p('nomef', 0, r0+1, u, r0+1, '', 'fora'); p('txt', 0, r0+2, u, r0+4, '', 'fora'); p('res', 0, r0+5, u, r0+7, '', 'fora'); p('cel', 0, r0+8, u, r0+16, '', 'fora'); return; }
+    if (tr){ p('nomef', 0, r0+1, u, r0+1, '', 'fora'); p('txt', 0, r0+2, u, r0+4, '', 'fora'); p('res', 0, r0+5, u, r0+8, '', 'fora'); p('cel', 0, r0+9, u, r0+17, '', 'fora'); return; }
     var x = monta(f, h, bas, c), o = function(val){ return v ? '' : val; }, k = v ? '' : 'calc';
-    if (bas) p('res n', 0, r0+1, 1, r0+1, '0', '', 'A básica é sempre Classe 0 e não custa PE.');
+    if (livre) p('res n sel', 0, r0+1, 1, r0+1, menuNum(caminho + '.classe', h.classe, 0, Math.max(c.cl, h.classe), 'Classe'), 'menu', 'Classe 0 faz dela uma básica; de 1 em diante, uma especial.');
+    else if (bas) p('res n', 0, r0+1, 1, r0+1, '0', '', 'A básica é sempre Classe 0 e não custa PE.');
     else p('res n sel', 0, r0+1, 1, r0+1, menuNum(caminho + '.classe', h.classe, 1, Math.max(c.cl, h.classe), 'Classe'), 'menu');
     p('nomef', 2, r0+1, 9, r0+1, h.nome || '<span class="vazio">espaço livre</span>');
     p('nomef st', 10, r0+1, u, r0+1, o(bas ? 'sem PE' : x.pe + ' PE'), k, v ? undefined : bas ? undefined : f.tipo === 'Maldição domada' ? 'Metade sai da reserva dela, e a parcela ímpar fica com você.' : '3 × a Classe, pagos por você.');
     p('txt', 0, r0+2, u, r0+4, h.como || '<i>Texto do jogador: como a habilidade aparece e o que ela deixa.</i>');
     p('res sel', 0, r0+5, 5, r0+5, menuForma(caminho + '.forma', f, h, bas), 'menu');
-    p('res forte', 6, r0+5, u, r0+5, o(x.res), k);
-    p('res ap', 0, r0+6, u, r0+6, o(x.acao), k);
-    p('res peq', 0, r0+7, u, r0+7, o(x.alc), k);
-    var m = r0 + 8;
+    p('res forte', 6, r0+5, u, r0+5, o(x.res + (h.dano && /d[68]$/.test(x.res) ? ' ' + h.dano : '')), k);
+    p('res sel', 0, r0+6, 5, r0+6, menuLista(caminho + '.dano', h.dano, D.danos, 'Tipo de dano', 'tipo de dano'), 'menu', 'Cada ataque tem o seu tipo de dano. Energia pura usa Força.');
+    p('res sel', 6, r0+6, u, r0+6, menuLista(caminho + '.resolve', h.resolve, ['Ataque','TR Físico','TR Vigor','TR Intelecto','TR Espírito'], 'Resolução', 'resolve pela Forma'), 'menu', 'Trocar ataque por Teste de Resistência, ou o contrário, não custa pontos. A escolha fica fixa.');
+    p('res ap', 0, r0+7, u, r0+7, o(x.acao), k);
+    p('res peq', 0, r0+8, u, r0+8, o(x.alc), k);
+    var m = r0 + 9;
     p('lado mini', 0, m, 2, m+3, 'Melhorias', '', (bas ? 'A básica aceita uma Melhoria Leve, que custa um dado. ' : 'A Classe ' + x.C + ' aceita ' + x.lim + '. ') + NOTA_MEL);
     h.mel.forEach(function(nome, i){
       var pc = x.precos[i], fora = i >= x.lim && !nome;
@@ -502,9 +524,10 @@ table.regras .agora{color:var(--acento-pag)}
       p('cel peq', 10, m+4+i, u, m+4+i, x.devol[i] === null ? '' : '+' + x.devol[i], x.devol[i] === null ? '' : 'calc');
     });
     p('lado mini', 0, m+6, 2, m+7, 'Conta'); p('conta quebra', 3, m+6, u, m+7, o(x.conta), k);
-    p('aviso quebra', 0, m+8, u, m+8, v ? '' : x.avisos.length ? x.avisos.map(function(a){ return '<span class="chip ruim">' + a + '</span>'; }).join('') : '<span class="chip bom">Dentro da regra</span>', k);
+    var chips = x.avisos.map(function(a){ return '<span class="chip ruim">' + a + '</span>'; }).concat(x.infos.map(function(a){ return '<span class="chip bom">' + a + '</span>'; }));
+    p('aviso quebra', 0, m+8, u, m+8, v ? '' : chips.length ? chips.join('') : '<span class="chip bom">Dentro da regra</span>', k);
   }
-  var ALT = 18;                             // a fileira de cartas: 17 linhas e uma vazia; a montagem são as 9 de baixo
+  var ALT = 19;                             // a fileira de cartas: 18 linhas e uma vazia; a montagem são as 9 de baixo
   // as dez cartas na ordem em que o nível abre: a primeira fileira é o que uma entidade de nível baixo tem
   var ORDEM = [['bas',0],['esp',0],['esp',1],['bas',1],['esp',2],['esp',3],['esp',4],['esp',5],['esp',6],['esp',7]];
   function cartaN(F, c0, r, f, c, i, q){
@@ -517,7 +540,16 @@ table.regras .agora{color:var(--acento-pag)}
     p('lado mini', 0, r, 4, r, tr ? 'Abre no ' + abre : 'Nv ' + abre + ' · CE ' + teto, tr ? 'fora' : '', 'Talento ganho no nível ' + abre + ', até a Categoria de Efeito ' + teto + '.');
     p('cel sel' + (tr ? ' fora' : '') + (ruim ? ' ruim' : ''), 5, r, 16, r, tr ? '' : menu('fichas.' + i + '.tal.' + k, function(){ var o = opt('', '—', !f.tal[k]);
       D.talentos.forEach(function(q){ var ce = parseInt(q.ce, 10); o += opt(q.n, q.n + ' · CE ' + q.ce, q.n === f.tal[k], ce > teto && q.n !== f.tal[k]); }); return o; }, 'Talento'), tr ? '' : 'menu');
-    p('cel peq esq' + (tr ? ' fora' : ''), 17, r, 42, r, t && !tr ? t.faz : '', t && !tr ? 'calc' : '');
+    var proprio = t && t.n === 'Talento Próprio';
+    p('cel peq esq' + (tr ? ' fora' : ''), 17, r, 42, r, !t || tr ? '' : proprio ? '<i>Texto do jogador: benefício, gatilho, alcance, usos, custo e se pode ser desligado.</i>' : t.faz, t && !tr && !proprio ? 'calc' : '');
+  }
+  // os talentos que a Trilha do Evocador dá a mais: sempre de Categoria de Efeito 1
+  function talentoTrilha(p, r, f, i, k){
+    var t = D.talentos.filter(function(q){ return q.n === f.talx[k]; })[0];
+    p('lado mini', 0, r, 4, r, 'Trilha · CE 1', '', 'Todo talento concedido pela Trilha é de Categoria de Efeito 1.');
+    p('cel sel', 5, r, 16, r, menu('fichas.' + i + '.talx.' + k, function(){ var o = opt('', '—', !f.talx[k]);
+      D.talentos.forEach(function(q){ if (parseInt(q.ce, 10) === 1) o += opt(q.n, q.n, q.n === f.talx[k]); }); return o; }, 'Talento da Trilha'), 'menu');
+    p('cel peq esq', 17, r, 42, r, !t ? '' : t.n === 'Talento Próprio' ? '<i>Texto do jogador.</i>' : t.faz, t && t.n !== 'Talento Próprio' ? 'calc' : '');
   }
 
   // ---------- os trunfos: Liberação Máxima, Técnica Máxima e Expansão (capítulo 16), num grupo que nasce fechado ----------
@@ -553,19 +585,27 @@ table.regras .agora{color:var(--acento-pag)}
   }
 
   function resumo(f, c){ return f.nome ? f.tipo + ' · nível ' + c.n + ' · vida ' + c.atual + ' de ' + c.vida + ' · ' + f.mesa.estado.toLowerCase() : 'lugar vazio'; }
-  function extra(f, c){
+  // a caixa ao lado do Retorno muda com o tipo: devolve o rótulo, a nota e quem desenha o valor
+  function extra(p, f, c, K, r, vz){
     var t = f.tipo;
-    if (t === 'Maldição domada') return ['Reserva de PE', c.reserva, 'Só a domada com técnica própria: nível × (1 + um terço da Essência dela). O descanso curto recupera um quarto.'];
-    if (t === 'Shikigami de criação') return ['Entrada com carga', Math.max(1, c.cl - c.adiant) + ' PE', 'A carga deixada no talismã no descanso longo adianta ' + c.adiant + ' PE da próxima entrada. O talismã ocupa 0,5 de Volume.'];
-    if (/^Corpo/.test(t)) return ['Corpos mantidos', E.defV + 2, 'O atributo da Defesa (' + E.defV + ') + as 2 entidades ativas. Conta ativos e inativos. Corpo não é recolhido.'];
-    return ['Reserva ou carga', '—', 'Shikigami de técnica não tem reserva nem talismã.'];
+    if (t === 'Maldição domada'){
+      p('rot', 38, r, 42, r, 'Reserva de PE', '', 'Só a domada com técnica própria: nível × (1 + um terço da Essência dela). O descanso curto recupera um quarto.');
+      p('num dg', 38, r+1, 39, r+2, dig(K + '.mesa.reserva', vz ? '' : f.mesa.reserva === '' ? c.reserva : f.mesa.reserva, 'Reserva atual')); p('num', 40, r+1, 42, r+2, vz ? '' : '<small>de</small> ' + c.reserva, vz ? '' : 'calc');
+    } else if (t === 'Shikigami de criação'){
+      p('rot', 38, r, 42, r, 'Talismã', '', 'A carga deixada no descanso longo adianta ' + c.adiant + ' PE da próxima entrada. O talismã ocupa 0,5 de Volume.');
+      p('val sel', 38, r+1, 42, r+2, menuLista(K + '.carga', f.carga, ['Sem carga','Com carga'], 'Carga do talismã', false), 'menu');
+    } else if (/^Corpo/.test(t)){
+      var cap = E.trilha === 'Múltiplas Invocações' ? 4 : 2;
+      p('rot', 38, r, 42, r, 'Corpos mantidos', '', 'O atributo da Defesa (' + E.defV + ') + a capacidade de ' + cap + ' ativas. Conta ativos e inativos. Corpo não é recolhido e é imune a Envenenado.');
+      p('num', 38, r+1, 42, r+2, vz ? '' : E.defV + cap, vz ? '' : 'calc');
+    } else { p('rot', 38, r, 42, r, 'Reserva ou carga', '', 'Shikigami de técnica não tem reserva nem talismã.'); p('num', 38, r+1, 42, r+2, vz ? '' : '—'); }
   }
   var FOTO = '<span class="k">式</span><span class="l">FOTO</span><span class="d">clique na caixa e insira a imagem na célula</span>';
   var ESTADOS = ['Em campo','Guardada','Caída','Desligada','Inativa','Destruída'], ORDENS = ['Nenhuma','Antecipada','Preparada','Armado','Segura','Carregar'];
   var NOTA_BD = 'Buff/Debuff: o que você digitar aqui soma (ou tira) do valor ao lado, como na FICHA.';
 
   // onde cada parte da ficha deitada começa, contado da faixa do nome
-  var OFF = {hab:47, h:49, t:67, l:77, m:79, u:133, fim:151};
+  var OFF = {hab:51, h:53, t:72, l:82, m:84, v:141, u:167, fim:185};
   // A ficha deitada: 43 colunas. Foto e identidade à esquerda, os números no meio, a mesa à direita; embaixo as cartas.
   function deitada(F, c0, r, f, i){
     var p = pincel(F, c0), c = calc(f), K = 'fichas.' + i, vz = !f.nome, o = function(v){ return vz ? '' : v; }, k = vz ? '' : 'calc', j;
@@ -573,29 +613,29 @@ table.regras .agora{color:var(--acento-pag)}
     // o valor calculado com a caixinha de Buff/Debuff do lado: as duas últimas colunas, como na FICHA
     function comBD(a, b, rr, rot, val, nt, chave){ cx(a, b - 2, rr, rot, val, 'num', k, nt); p('rot bd', b - 1, rr, b, rr, 'B/D', '', NOTA_BD); p('cel dg', b - 1, rr+1, b, rr+2, dig(K + '.buff.' + chave, vz ? '' : bf(f, chave), 'Buff/Debuff de ' + rot)); }
     p('faixa nsec', 0, r, 2, r+1, i + 1); p('faixa', 3, r, 42, r+1, (f.nome || 'Invocação ' + (i + 1)) + ' <span class="peq">' + resumo(f, c) + '</span>');
-    // --- à esquerda: quem ela é. 15 colunas: a foto fica quase quadrada na planilha (pedido dele em 06/10/2026)
-    cx(0, 14, r+3, 'Nome', f.nome || '<span class="vazio">nome da invocação</span>');
-    p('foto', 0, r+6, 14, r+24, FOTO);
-    cx(0, 14, r+26, 'Tipo', menuLista(K + '.tipo', f.tipo, D.tipos.map(function(t){ return t.n; }), 'Tipo', false), 'val sel', 'menu', (D.tipos.filter(function(t){ return t.n === f.tipo; })[0] || {}).ficha);
-    cx(0, 14, r+30, 'Aquisição', menuLista(K + '.aquis', f.aquis, D.aquis.map(function(t){ return t.n; }), 'Aquisição', false), 'val sel', 'menu', (D.aquis.filter(function(t){ return t.n === f.aquis; })[0] || {}).evolui);
-    // --- no meio: os números (15 colunas, da 16 à 30)
-    var B = 16;
+    // --- à esquerda: quem ela é. 17 colunas: a foto fica mais larga que alta na planilha (pedidos dele em 06/10/2026)
+    cx(0, 16, r+3, 'Nome', f.nome || '<span class="vazio">nome da invocação</span>');
+    p('foto', 0, r+6, 16, r+24, FOTO);
+    cx(0, 16, r+26, 'Tipo', menuLista(K + '.tipo', f.tipo, D.tipos.map(function(t){ return t.n; }), 'Tipo', false), 'val sel', 'menu', (D.tipos.filter(function(t){ return t.n === f.tipo; })[0] || {}).ficha);
+    cx(0, 16, r+30, 'Aquisição', menuLista(K + '.aquis', f.aquis, D.aquis.map(function(t){ return t.n; }), 'Aquisição', false), 'val sel', 'menu', (D.aquis.filter(function(t){ return t.n === f.aquis; })[0] || {}).evolui);
+    // --- no meio: os números (15 colunas, da 18 à 32)
+    var B = 18;
     if (segue(f)) cx(B, B+2, r+3, 'Nível', c.n, 'num', 'calc', 'Acompanha o seu nível.');
     else cx(B, B+2, r+3, 'Nível', menuNum(K + '.nivel', c.n, 1, E.nivel, 'Nível'), 'num sel', 'menu', 'Fica no nível em que foi domada ou criada, até o seu.');
     cx(B+4, B+6, r+3, 'Classe', c.cl, 'num', 'calc', 'A maior Classe que o nível dela permite.');
     cx(B+8, B+10, r+3, 'Maestria', sg(c.M), 'num', 'calc', 'Sempre a sua, mesmo numa domada de nível menor.');
-    cx(B+12, B+14, r+3, 'Entrada', c.cl + ' PE', 'num', 'calc', 'Manifestar custa a maior Classe dela, e a sua Ação Bônus. Recolher não custa PE.');
-    var st = c.gastos > c.disp ? 'ruim' : c.gastos < c.disp && !vz ? 'at' : '';
-    p('rot', B, r+7, B+14, r+7, 'Atributos · ' + c.gastos + ' de ' + c.disp + ' pontos', st, st === 'at' ? 'Sobrou ponto: um marco de atributo chegou.' : st === 'ruim' ? 'Passou do total: 9 pontos e 1 por marco.' : '9 pontos, e 1 nos níveis 6, 10, 14, 18, 22, 26 e 30. Teto de 6 por atributo.');
+    cx(B+12, B+14, r+3, 'Entrada', c.entrada + ' PE', 'num', 'calc', 'Manifestar custa a maior Classe dela, e a sua Ação Bônus. Com o talismã carregado, metade para cima. Recolher não custa PE.');
+    var st = c.gastos > c.disp || c.acima > c.marcos ? 'ruim' : c.gastos < c.disp && !vz ? 'at' : '';
+    p('rot', B, r+7, B+14, r+7, 'Atributos · ' + c.gastos + ' de ' + c.disp + ' pontos', st, c.gastos > c.disp ? 'Passou do total: 9 pontos e 1 por marco.' : c.acima > c.marcos ? 'Atributo acima de 3 só com ponto de marco: cada um começa entre 0 e 3.' : st === 'at' ? 'Sobrou ponto: um marco de atributo chegou.' : '9 pontos, cada atributo entre 0 e 3, e 1 ponto nos níveis 6, 10, 14, 18, 22, 26 e 30. Teto de 6.');
     ATR.forEach(function(a, n){ var x = B + 3*n;
       p('rot', x, r+8, x+2, r+8, a, '', NOME[a] + ': o número grande é o total, a caixa de baixo à esquerda são os pontos que você distribuiu e a da direita é o Buff/Debuff.');
       p('num', x, r+9, x+2, r+10, o(c.A[a]), k);
       p('cel sel', x, r+11, x+1, r+11, menuNum(K + '.atr.' + a, f.atr[a], 0, 6, 'Pontos de ' + NOME[a]), 'menu');
       p('cel dg', x+2, r+11, x+2, r+11, dig(K + '.buff.' + a, vz ? '' : bf(f, a), 'Buff/Debuff de ' + NOME[a]), '', NOTA_BD); });
-    cx(B, B+6, r+13, 'Atributo de acerto', menuLista(K + '.acerto', f.acerto, ATR.map(function(a){ return NOME[a]; }), 'Atributo de acerto'), 'val sel', 'menu', 'Escolhido na montagem. Vale para o ataque e para a CD.');
+    cx(B, B+6, r+13, 'Atributo de acerto', menuLista(K + '.acerto', f.acerto, ATR.map(function(a){ return NOME[a]; }), 'Atributo de acerto'), 'val sel', 'menu', 'Escolhido na montagem. Vale para o ataque e para a CD. Com arma empunhada, o ataque usa o atributo da arma e tem desvantagem.');
     comBD(B+8, B+14, r+13, 'Ataque', o(c.ataque === null ? '' : sg(c.ataque)), 'Atributo de acerto + a sua maestria.', 'atq');
     comBD(B, B+6, r+17, 'CD', o(c.cd === null ? '' : c.cd), '8 + atributo de acerto + a sua maestria.', 'cd');
-    comBD(B+8, B+14, r+17, 'Defesa', o(c.def), '10 + Destreza dela + metade da sua ' + E.defA + ' (' + E.defV + '). Com traje, a proteção entra no lugar dessa metade.', 'def');
+    comBD(B+8, B+14, r+17, 'Defesa', o(c.def), '10 + Destreza dela + metade da sua ' + E.defA + ' (' + E.defV + '). Com traje, a proteção entra no lugar dessa metade: acerte a diferença no Buff/Debuff.', 'def');
     p('rot', B, r+21, B+5, r+21, 'Vida · atual e máxima'); p('num dg', B, r+22, B+2, r+23, dig(K + '.mesa.vida', vz ? '' : c.atual, 'Vida atual'));
     p('num', B+3, r+22, B+5, r+23, o('<small>de</small> ' + c.vida), k, '5 + Constituição + (' + (f.tipo === 'Corpo amaldiçoado de criação' ? 4 : 3) + ' + Constituição) × (nível − 1).');
     p('rot bd', B+6, r+21, B+7, r+21, 'B/D', '', NOTA_BD); p('cel dg', B+6, r+22, B+7, r+23, dig(K + '.buff.vida', vz ? '' : bf(f, 'vida'), 'Buff/Debuff da vida máxima'));
@@ -607,26 +647,32 @@ table.regras .agora{color:var(--acento-pag)}
       p('cel dg', x, r+29, x+2, r+29, dig(K + '.buff.tr' + n, vz ? '' : bf(f, 'tr' + n), 'Buff/Debuff do TR de ' + t.nome), '', NOTA_BD); });
     p('rot', B, r+31, B+6, r+31, 'TR treinado'); p('cel sel', B, r+32, B+6, r+32, menuLista(K + '.trT', f.trT, TRS.map(function(t){ return t[0]; }), 'Teste de Resistência treinado'), 'menu');
     p('rot', B+8, r+31, B+14, r+31, 'Físico usa'); p('cel sel', B+8, r+32, B+14, r+32, menuLista(K + '.fis', f.fis, ['Força','Destreza'], 'Físico usa', false), 'menu');
-    // --- à direita: a mesa (11 colunas, uma caixa por linha)
-    cx(32, 42, r+3, 'Tarefa', f.mesa.tarefa || '<i>A tarefa que ela está cumprindo: um alvo, um lugar ou um grupo.</i>', 'txt');
-    cx(32, 42, r+7, 'Básica do ciclo', menuLista(K + '.mesa.bas', f.mesa.bas, ['Disponível','Gasta','Investida em preparar'], 'Básica do ciclo', false), 'val sel', 'menu', 'Uma atuação básica por ciclo. Volta no começo do seu turno, se ela estiver em campo.');
-    cx(32, 42, r+11, 'Ordem pendente', menuLista(K + '.mesa.ordem', f.mesa.ordem, ORDENS, 'Ordem pendente', false), 'val sel', 'menu', 'Cada corpo mantém uma especial aguardando.');
-    cx(32, 42, r+15, 'Estado', menuLista(K + '.mesa.estado', f.mesa.estado, ESTADOS, 'Estado', false), 'val sel', 'menu');
-    p('rot', 32, r+19, 40, r+19, 'Movimento · resta e total'); p('num dg', 32, r+20, 35, r+21, dig(K + '.mesa.mov', vz ? '' : f.mesa.mov === '' ? c.desl : f.mesa.mov, 'Movimento restante'));
-    p('num', 36, r+20, 40, r+21, o('<small>de</small> ' + String(c.desl).replace('.', ',') + ' m'), k, 'Deslocamento terrestre-base de 9 m, mais o Buff/Debuff.');
-    p('rot bd', 41, r+19, 42, r+19, 'B/D', '', NOTA_BD); p('cel dg', 41, r+20, 42, r+21, dig(K + '.buff.desl', vz ? '' : bf(f, 'desl'), 'Buff/Debuff do deslocamento'));
-    cx(32, 42, r+23, 'Condições e usos gastos', f.mesa.cond || '<i>Condições, usos por cena já gastos, excedente da queda.</i>', 'txt', '', undefined, 3);
-    cx(32, 36, r+28, 'Retorno', 2 * c.cl + ' PE', 'num', 'calc', 'Trazer de volta quem caiu sem ser destruída: o dobro da entrada. Volta com metade da vida.');
-    var ex = extra(f, c); p('rot', 38, r+28, 42, r+28, ex[0], '', ex[2]); p('num', 38, r+29, 42, r+30, vz ? '' : ex[1], !vz && ex[1] !== '—' ? 'calc' : '');
-    // --- embaixo: três colunas iguais, com a definição, o corpo e as anotações, e as Famílias alinhadas com elas
-    cx(0, 13, r+34, 'Definição', f.def || '<i>Uma ou duas frases: o que ela é e o que faz na equipe.</i>', 'txt', '', undefined, 4);
-    cx(15, 28, r+34, 'Corpo, sentidos e comunicação', f.corpo || '<i>Tamanho, membros, sentidos, como entende ordens e como avisa o que achou.</i>', 'txt', '', undefined, 4);
-    cx(30, 42, r+34, 'Anotações', f.notas || '<i>Espaço livre.</i>', 'txt', '', undefined, 4);
-    cx(0, 13, r+40, 'Família Livre', menuLista(K + '.livre', f.livre, D.familias, 'Família Livre'), 'val sel', 'menu', 'Desconto de ' + LIVRE[c.cl] + ' nas Melhorias dela na Classe ' + c.cl + '.');
-    cx(15, 28, r+40, 'Família aberta', menuLista(K + '.a1', f.a1, D.familias, 'Família aberta'), 'val sel', 'menu');
-    cx(30, 42, r+40, 'Família aberta', menuLista(K + '.a2', f.a2, D.familias, 'Família aberta'), 'val sel', 'menu');
-    p('rot', 0, r+44, 42, r+44, 'Perícias treinadas · ' + c.nper + ' <span class="vazio" style="margin-left:8px;text-transform:none;letter-spacing:0">(4 + metade da Inteligência)</span>');
-    [0,6,12,18,24,30,36].forEach(function(a, n){ var fora = n >= c.nper; p('cel sel' + (fora ? ' fora' : ''), a, r+45, n === 6 ? 42 : a + 5, r+45, fora ? '' : menuLista(K + '.per.' + n, f.per[n], D.pericias, 'Perícia'), fora ? '' : 'menu'); });
+    // --- à direita: a mesa (9 colunas, uma caixa por linha)
+    cx(34, 42, r+3, 'Tarefa', f.mesa.tarefa || '<i>A tarefa que ela está cumprindo: um alvo, um lugar ou um grupo.</i>', 'txt', '', undefined, 3);
+    cx(34, 42, r+8, 'Básica do ciclo', menuLista(K + '.mesa.bas', f.mesa.bas, ['Disponível','Gasta','Investida em preparar'], 'Básica do ciclo', false), 'val sel', 'menu', 'Uma atuação básica por ciclo. Volta no começo do seu turno, se ela estiver em campo.');
+    cx(34, 42, r+12, 'Ordem pendente', menuLista(K + '.mesa.ordem', f.mesa.ordem, ORDENS, 'Ordem pendente', false), 'val sel', 'menu', 'Cada corpo mantém uma especial aguardando.');
+    cx(34, 42, r+16, 'Estado', menuLista(K + '.mesa.estado', f.mesa.estado, ESTADOS, 'Estado', false), 'val sel', 'menu');
+    p('rot', 34, r+20, 40, r+20, 'Movimento · resta e total'); p('num dg', 34, r+21, 36, r+22, dig(K + '.mesa.mov', vz ? '' : f.mesa.mov === '' ? c.desl : f.mesa.mov, 'Movimento restante'));
+    p('num', 37, r+21, 40, r+22, o('<small>de</small> ' + String(c.desl).replace('.', ',') + ' m'), k, 'Deslocamento terrestre-base de 9 m, mais o Buff/Debuff.');
+    p('rot bd', 41, r+20, 42, r+20, 'B/D', '', NOTA_BD); p('cel dg', 41, r+21, 42, r+22, dig(K + '.buff.desl', vz ? '' : bf(f, 'desl'), 'Buff/Debuff do deslocamento'));
+    cx(34, 42, r+24, 'Condições e usos gastos', f.mesa.cond || '<i>Condições, usos por cena, excedente da queda.</i>', 'txt', '', undefined, 3);
+    cx(34, 36, r+29, 'Retorno', 2 * c.cl + ' PE', 'num', 'calc', 'Trazer de volta quem caiu sem ser destruída: o dobro da entrada. Volta com metade da vida.');
+    extra(p, f, c, K, r+29, vz);
+    // --- embaixo: a definição e o corpo; o equipamento e as anotações; as Famílias; as perícias
+    cx(0, 20, r+34, 'Definição', f.def || '<i>Uma ou duas frases: o que ela é e o que faz na equipe.</i>', 'txt', '', undefined, 3);
+    cx(22, 42, r+34, 'Corpo, sentidos e comunicação', f.corpo || '<i>Tamanho, membros, sentidos, como entende ordens e como avisa o que achou.</i>', 'txt', '', undefined, 3);
+    p('rot', 0, r+39, 20, r+39, 'Equipamento · carga até ' + (vz ? '5 + Força' : c.carga) + ' de Volume', '', 'O que ela veste, empunha ou leva conta no limite de 5 + Força. Registre a proteção e os requisitos. Arma empunhada: ataque pelo atributo da arma, com desvantagem, e o dano da arma.');
+    p('txt', 0, r+40, 20, r+42, f.equip || '<i>Traje, arma, foco, o que ela carrega e quanto pesa.</i>');
+    cx(22, 42, r+39, 'Anotações', f.notas || '<i>Espaço livre: o espaço de feitiço que ela ocupa, o desafio do ritual, o que mais precisar.</i>', 'txt', '', undefined, 3);
+    var fams = [['livre','Família Livre',0,7],['livre2','Livre · Trilha',9,16],['a1','Aberta',18,25],['a2','Aberta',27,34],['a3','Aberta · Trilha',36,42]], usadas = abertasDe(f);
+    var maxF = E.trilha === 'Invocação Principal' ? 5 : E.trilha ? 4 : 3;
+    fams.forEach(function(q){ var v = f[q[0]], rep = v && usadas.indexOf(v) !== usadas.lastIndexOf(v), demais = v && usadas.indexOf(v) >= maxF;
+      p('rot', q[2], r+44, q[3], r+44, q[1], '', q[0] === 'livre' ? 'Desconto de ' + LIVRE[c.cl] + ' nas Melhorias dela na Classe ' + c.cl + '.' : q[0] === 'livre2' ? 'Só a principal do Evocador de Invocação Principal: a segunda Família Livre.' : q[0] === 'a3' ? 'As Trilhas do Evocador abrem mais uma Família (Parceria e Múltiplas) ou duas (Invocação Principal).' : 'Três abertas no total, contando a Livre.');
+      p('val sel' + (rep || demais ? ' ruim' : ''), q[2], r+45, q[3], r+46, menuLista(K + '.' + q[0], v, D.familias, q[1]), 'menu', rep ? 'Família repetida.' : demais ? 'Família a mais: sem Trilha são três abertas; com Parceria ou Múltiplas, quatro; a principal, cinco.' : undefined); });
+    p('rot', 0, r+48, 42, r+48, 'Perícias treinadas · ' + c.nper + ' <span class="vazio" style="margin-left:8px;text-transform:none;letter-spacing:0">(4 + metade da Inteligência) · o número é o atributo da perícia + a sua maestria</span>');
+    [0,6,12,18,24,30,36].forEach(function(a, n){ var fora = n >= c.nper, b = n === 6 ? 42 : a + 5, pa = ABR[D.pericias[f.per[n]]];
+      p('cel sel' + (fora ? ' fora' : ''), a, r+49, b - 2, r+49, fora ? '' : menuLista(K + '.per.' + n, f.per[n], Object.keys(D.pericias), 'Perícia'), fora ? '' : 'menu');
+      p('cel dg' + (fora ? ' fora' : ''), b - 1, r+49, b, r+49, !fora && pa ? sg(c.A[pa] + c.M) : '', !fora && pa ? 'calc' : ''); });
     p('lote', 0, r+OFF.hab, 42, r+OFF.hab, 'Habilidades <span class="peq">básica de ' + c.P.basica + 'd6 · ' + c.esp + ' espaço(s) de especial até a Classe ' + c.cl + ' · ' + c.ntal + ' talento(s)</span>');
     var X = [0, 15, 30];
     [0,1,2].forEach(function(n){ cartaN(F, c0 + X[n], r+OFF.h, f, c, i, ORDEM[n]); });
@@ -634,6 +680,10 @@ table.regras .agora{color:var(--acento-pag)}
     for (j = 0; j < 8; j++) talento(p, r+OFF.t + 1 + j, f, c, i, j);
     p('lote', 0, r+OFF.l, 42, r+OFF.l, 'Mais habilidades <span class="peq">a segunda básica no nível 11 · as especiais 3 a 8, do nível 8 ao 28</span>');
     [0,1,2].forEach(function(fi){ [0,1,2].forEach(function(n){ var q = ORDEM[3 + 3*fi + n]; if (q) cartaN(F, c0 + X[n], r+OFF.m + ALT*fi, f, c, i, q); }); });
+    p('lote', 0, r+OFF.v, 42, r+OFF.v, 'Repertório da Trilha <span class="peq">só Evocador: as escolhas a mais da Invocação Principal (níveis 8, 16 e 24) e do Repertório do Conjunto (nível 27)</span>');
+    [0,1,2].forEach(function(n){ var h = f.ext[n]; carta(F, c0 + X[n], r+OFF.v + 2, f, c, h, K + '.ext.' + n, 'Escolha da Trilha ' + (n + 1), 0, h.classe === 0, true); });
+    p('rot', 0, r+OFF.v + 21, 42, r+OFF.v + 21, 'Talentos da Trilha', '', 'Cada escolha a mais é uma básica, uma especial ou um talento de CE 1. Use as cartas de cima ou estas linhas.');
+    for (j = 0; j < 3; j++) talentoTrilha(p, r+OFF.v + 22 + j, f, i, j);
     p('lote', 0, r+OFF.u, 42, r+OFF.u, 'Trunfos <span class="peq">Liberação Máxima, Técnica Máxima e Expansão de Domínio · para quem tem técnica própria</span>');
     [0,1,2].forEach(function(n){ liberacao(F, c0 + X[n], r+OFF.u + 2, f, i, n); });
     maxima(F, c0 + X[0], r+OFF.u + 11, f, c, i); expansao(F, c0 + X[1], r+OFF.u + 11, f, c, i);
@@ -644,9 +694,11 @@ table.regras .agora{color:var(--acento-pag)}
     // a primeira fileira divide as linhas com o conjunto: o grupo dela fecha das habilidades para baixo
     if (j === 0) F.grupo(id, 1, r + OFF.hab, r + OFF.hab + 1, r + OFF.fim, true, 'as habilidades da fileira 1');
     else F.grupo(id, 1, r + 1, r + 2, r + OFF.fim, false, 'a fileira ' + (j + 1));
-    F.grupo(id + 'mont0', 2, r + OFF.h + 7, r + OFF.h + 8, r + OFF.h + 16, false, 'a montagem das três primeiras habilidades');
-    F.grupo(id + 'mais', 2, r + OFF.l, r + OFF.l + 1, r + OFF.m + ALT*2 + 16, false, 'as habilidades de nível mais alto');
-    for (fi = 0; fi < 3; fi++) F.grupo(id + 'mont' + (fi + 1), 3, r + OFF.m + ALT*fi + 7, r + OFF.m + ALT*fi + 8, r + OFF.m + ALT*fi + 16, false, 'a montagem desta fileira de cartas');
+    F.grupo(id + 'mont0', 2, r + OFF.h + 8, r + OFF.h + 9, r + OFF.h + 17, false, 'a montagem das três primeiras habilidades');
+    F.grupo(id + 'mais', 2, r + OFF.l, r + OFF.l + 1, r + OFF.m + ALT*2 + 17, false, 'as habilidades de nível mais alto');
+    for (fi = 0; fi < 3; fi++) F.grupo(id + 'mont' + (fi + 1), 3, r + OFF.m + ALT*fi + 8, r + OFF.m + ALT*fi + 9, r + OFF.m + ALT*fi + 17, false, 'a montagem desta fileira de cartas');
+    F.grupo(id + 'trilha', 2, r + OFF.v, r + OFF.v + 1, r + OFF.v + 24, false, 'o repertório da Trilha');
+    F.grupo(id + 'montx', 3, r + OFF.v + 10, r + OFF.v + 11, r + OFF.v + 19, false, 'a montagem das escolhas da Trilha');
     F.grupo(id + 'trunfos', 2, r + OFF.u, r + OFF.u + 1, r + OFF.fim, false, 'os trunfos');
   }
 
@@ -654,23 +706,29 @@ table.regras .agora{color:var(--acento-pag)}
   function conjunto(F, c0, r, K, R){
     var p = pincel(F, c0), n = K * R, ativas = E.fichas.slice(0, n).filter(function(f){ return f.nome && f.mesa.estado === 'Em campo'; }).length;
     function cx(a, b, rr, rot, val, tipo, e, nt){ p('rot', a, rr, b, rr, rot, '', nt); p(tipo, a, rr+1, b, rr+2, val, e); }
+    var teto = E.trilha === 'Múltiplas Invocações' ? 4 : 2, nomes = E.fichas.slice(0, n).filter(function(f){ return f.nome; }).map(function(f){ return f.nome; });
     p('faixa', 0, r, 12, r+1, 'O conjunto');
     cx(0, 5, r+3, 'Seu nível', E.nivel, 'num', 'calc', 'Vem da FICHA.'); cx(7, 12, r+3, 'Maestria', sg(maestria(E.nivel)), 'num', 'calc', 'Vem da FICHA. Vale para o ataque, a CD e os TR treinados de todas.');
     cx(0, 12, r+7, 'Defesa usa', menuLista('defA', E.defA, ['Essência','Inteligência'], 'Atributo da Defesa', false), 'val sel', 'menu', 'Escolhido na primeira invocação. Vale para todas as fichas e para o limite de corpos. Hoje: ' + E.defV + ', metade ' + Math.floor(E.defV/2) + '.');
-    cx(0, 5, r+11, 'Ativas', ativas + ' de 2', 'num', 'calc' + (ativas > 2 ? ' ruim' : ''), 'Conta as fichas com o estado Em campo. O limite geral é de duas.');
-    cx(7, 12, r+11, 'Dano no turno', menuLista('dano', E.dano, ['0','1','2'], 'Corpos que causaram dano', false), 'num sel', 'menu', 'No seu turno, no máximo duas entidades atuam causando dano. Especial comandada fica fora da conta.');
+    cx(0, 5, r+11, 'Ativas', ativas + ' de ' + teto, 'num', 'calc' + (ativas > teto ? ' ruim' : ''), 'Conta as fichas com o estado Em campo. O limite geral é de duas; a Trilha Múltiplas Invocações leva a quatro durante o combate. A Trilha vem da FICHA.');
+    cx(7, 12, r+11, 'Dano no turno', menuLista('dano', E.dano, ['0','1','2'], 'Corpos que causaram dano', false), 'num sel', 'menu', 'No seu turno, no máximo duas entidades atuam causando dano. Especial comandada fica fora da conta. Em Múltiplas Invocações o conjunto faz uma básica com dano e uma especial comandada por rodada.');
     cx(0, 5, r+15, 'Reação coletiva', menuLista('reac', E.reac, ['Livre','Gasta'], 'Reação coletiva', false), 'val sel', 'menu', 'Uma para todas as entidades, separada da sua Reação pessoal.');
     cx(7, 12, r+15, 'Vínculo', menuLista('vinc', E.vinc, ['0','1','2','3'], 'Pontos de Vínculo', false), 'num sel', 'menu', 'Pontos de Vínculo, só do Evocador: começa o combate em 0, ganha 1 no começo de cada turno, até 3.');
-    p('rot', 0, r+19, 12, r+19, 'As invocações · ' + E.fichas.slice(0, n).filter(function(f){ return f.nome; }).length + ' de ' + n, '', 'Clique numa linha para abrir a ficha. Na planilha é um link para a célula.');
+    cx(0, 12, r+19, 'Aprimoramento de Vínculo', menu('apr', function(){ var o = opt('', '—', !E.apr); D.aprimoramentos.forEach(function(a){ o += opt(a.n, a.n, a.n === E.apr, a.nivel > E.nivel); }); return o; }, 'Aprimoramento'), 'val sel', 'menu', 'Só o Evocador: um aprimoramento em uma invocação por vez, escolhido no começo do seu turno.');
+    cx(0, 12, r+23, 'Em quem', menuLista('aprEm', E.aprEm, nomes, 'Beneficiária do aprimoramento'), 'val sel', 'menu', 'A invocação ativa que recebe o aprimoramento, a até 18 m.');
+    [['Ofensivo',0,3],['Proteção',4,8],['Perícia',9,12]].forEach(function(q, k){
+      p('rot', q[1], r+27, q[2], r+27, q[0], '', 'Uso do aprimoramento nesta rodada. Volta no começo do seu turno.');
+      p('cel sel', q[1], r+28, q[2], r+28, menuLista('usos.' + k, E.usos[k], ['Livre','Gasto'], 'Uso ' + q[0], false), 'menu'); });
+    p('rot', 0, r+30, 12, r+30, 'As invocações · ' + nomes.length + ' de ' + n, '', 'Clique numa linha para abrir a ficha. Na planilha é um link para a célula.');
     for (var i = 0; i < n; i++){ var f = E.fichas[i], c = calc(f);
-      F.add('rol', c0, r+20+i, c0+12, r+20+i, '<b>' + (i + 1) + '</b>' + (f.nome ? '<b>' + f.nome + '</b><span class="vazio">nv ' + c.n + ' · ' + c.atual + '/' + c.vida + ' · ' + f.mesa.estado.toLowerCase() + '</span>' : '<span class="vazio">vazia</span>'), f.nome ? 'calc' : '', undefined, 'data-ir="' + i + '" role="button" tabindex="0"'); }
+      F.add('rol', c0, r+31+i, c0+12, r+31+i, '<b>' + (i + 1) + '</b>' + (f.nome ? '<b>' + f.nome + '</b><span class="vazio">nv ' + c.n + ' · ' + c.atual + '/' + c.vida + ' · ' + f.mesa.estado.toLowerCase() + '</span>' : '<span class="vazio">vazia</span>'), f.nome ? 'calc' : '', undefined, 'data-ir="' + i + '" role="button" tabindex="0"'); }
   }
   // A aba: o conjunto à esquerda, e K colunas de R fichas deitadas. modo 'seco' só mede; 'tudo' escreve todas.
   function constroi(K, R, modo){
     var F = new Folha(3, 17 + 45*K), j, k, passo = OFF.fim + 3;
     NMENU = 0;
     SECO = modo === 'seco';
-    F.add('topo', 1, 1, 47, 4, '<div class="tit"><span class="marca">式神</span><div><strong>INVOCAÇÕES</strong><small>Projeto M · as entidades, a montagem e a mesa</small></div></div><div class="quem">Kaito<br><small>nível ' + E.nivel + ' · maestria ' + sg(maestria(E.nivel)) + '</small></div>');
+    F.add('topo', 1, 1, 47, 4, '<div class="tit"><span class="marca">式神</span><div><strong>INVOCAÇÕES</strong><small>Projeto M · as entidades, a montagem e a mesa</small></div></div><div class="quem">Kaito<br><small>nível ' + E.nivel + ' · maestria ' + sg(maestria(E.nivel)) + (E.trilha ? ' · ' + E.trilha : '') + '</small></div>');
     conjunto(F, 4, 6, K, R);
     F.colgrupo('conj', 3, 4, 17, true, 'o conjunto');
     for (j = 0; j < R; j++){
@@ -704,18 +762,18 @@ table.regras .agora{color:var(--acento-pag)}
     document.querySelectorAll('.jogo [data-k]').forEach(function(b){ b.setAttribute('aria-pressed', String(Number(b.dataset.k) === E.K)); });
     document.querySelectorAll('.jogo [data-r]').forEach(function(b){ b.setAttribute('aria-pressed', String(Number(b.dataset.r) === E.R)); });
     document.querySelectorAll('.jogo [data-col]').forEach(function(b){ b.setAttribute('aria-pressed', String(Number(b.dataset.col) === E.col)); });
-    document.getElementById('nivel').value = String(E.nivel); document.getElementById('defv').value = String(E.defV);
+    document.getElementById('nivel').value = String(E.nivel); document.getElementById('defv').value = String(E.defV); document.getElementById('trilha').value = E.trilha;
   }
   function tabela(){
     var grades = [[2,5],[2,6],[3,5],[3,6]], nomes = ['Lugares de ficha', 'Colunas da aba', 'Linhas com tudo aberto', 'Linhas como a aba nasce', 'Caixas desenhadas', 'Menus de escolha', 'Cartas de habilidade'];
     var linhas = nomes.map(function(n){ return [n]; }), nv = E.nivel;
     // medido com tudo liberado (nível 30). Os menus são os que a planilha traz por ficha, com todo nível aberto:
-    // 22 da ficha, 8 por especial, 3 por básica, 8 talentos e 4 dos trunfos; e 4 do conjunto
-    var POR_FICHA = 22 + 8*8 + 2*3 + 8 + 4;
+    // 25 da ficha, 10 por especial, 5 por básica, 8 talentos, 33 do repertório da Trilha e 4 dos trunfos; e 9 do conjunto
+    var POR_FICHA = 25 + 8*10 + 2*5 + 8 + 33 + 4;
     E.nivel = 30;
     grades.forEach(function(g){
       var F = constroi(g[0], g[1], 'seco'), t = F.mede(function(){ return true; }), n = F.mede(function(x){ return x.nasce; });
-      [g[0]*g[1], t.colunas, t.linhas, n.linhas, F.cel.length, g[0]*g[1]*POR_FICHA + 4, g[0]*g[1]*10].forEach(function(x, i){ linhas[i].push(x.toLocaleString('pt-BR')); });
+      [g[0]*g[1], t.colunas, t.linhas, n.linhas, F.cel.length, g[0]*g[1]*POR_FICHA + 9, g[0]*g[1]*13].forEach(function(x, i){ linhas[i].push(x.toLocaleString('pt-BR')); });
     });
     E.nivel = nv;
     ['—', '21', D.ref.linhas, '—', D.ref.mescladas.toLocaleString('pt-BR') + ' mescladas', 'pelo menos ' + D.ref.menus, '—'].forEach(function(x, i){ linhas[i].push(x); });
@@ -754,7 +812,7 @@ table.regras .agora{color:var(--acento-pag)}
     var modo = b.dataset.grupos, i;
     if (modo === 'nasce') E.aberto = {};
     else if (modo === 'fecha'){ E.aberto = {conj:true}; grupos().forEach(function(g){ if (g.id !== 'conj') E.aberto[g.id] = false; }); }
-    else if (modo === 'trunfos') grupos().forEach(function(g){ if (/trunfos$/.test(g.id) && abertoId(g.id.replace('trunfos', ''), g.id === 'lin0trunfos')) E.aberto[g.id] = true; });
+    else if (modo === 'trunfos') grupos().forEach(function(g){ var m = /^(lin\d+)(trunfos|trilha)$/.exec(g.id); if (m && abertoId(m[1], m[1] === 'lin0')) E.aberto[g.id] = true; });
     else for (i = 0; i < E.K * E.R; i++) if (E.fichas[i].nome){ E.aberto['col' + Math.floor(i / E.R)] = true; E.aberto['lin' + (i % E.R)] = true; }
     desenha();
   }); });
@@ -764,6 +822,9 @@ table.regras .agora{color:var(--acento-pag)}
   for (i = 0; i <= 6; i++) sd.add(new Option(i, i));
   sn.addEventListener('change', function(){ E.nivel = Number(sn.value); desenha(); });
   sd.addEventListener('change', function(){ E.defV = Number(sd.value); desenha(); });
+  var stl = document.getElementById('trilha');
+  D.trilhas.forEach(function(x){ stl.add(new Option(x, x)); });
+  stl.addEventListener('change', function(){ E.trilha = stl.value; desenha(); });
   document.getElementById('carimbo').textContent = D.versao + ', arquivo ' + D.livro;
   desenha();
   tabela();

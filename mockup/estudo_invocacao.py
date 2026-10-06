@@ -110,7 +110,12 @@ for frase in [
     "Corpo amaldiçoado de criação | 5 + Constituição + (4 + Constituição) × (nível − 1).",
     "Some 10 + Destreza da entidade + metade da Essência ou da Inteligência do invocador, arredondada para baixo.",
     "CD das habilidades | 8 + atributo de acerto da entidade + maestria do invocador.",
-    "Deslocamento terrestre-base: 9 m.",
+    "Deslocamento terrestre-base: 9 m.", "No acerto, causa 1d6 de Perfurante.", "No acerto, causa 2d8 de Perfurante.",
+    "Cada atributo começa entre 0 e 3.", "Classe do efeito reduzido | 1 | 1 | 2 | 3 | 4 | 5 | 6",
+    "Uma especial com Melhoria de Controle e dano final de até a Classe real em dados recebe uma rodada adicional nos efeitos de Controle. Sem dano, recebe também +2 na CD desses efeitos.",
+    "Na montagem, trocar ataque por TR, ou o contrário, não custa pontos. Registre o TR, a resolução e o resultado no sucesso.",
+    "Escolha também um tipo de dano permitido pelo catálogo geral para cada ataque.",
+    "Registre o equipamento usado, a proteção, os requisitos e a carga.",
 ]:
     assert frase in TEXTO, frase
 CAP16 = MAN[MAN.index("## 16. Invocações em campo"):INI]
@@ -126,8 +131,37 @@ for frase in [
     "Use os pontos da especial daquela Classe e acrescente Classe d8",
     "Abrir custa sua Ação Completa, uma básica da domada e 6 × a maior Classe dela em PE. Abrir sem barreira custa 7 × essa Classe.",
     "Um Acerto de dano da domada causa Classe d8.",
+    "Uma entidade segue o limite geral de carga de 5 + Força, em Volume",
+    "Na entrada comum, pague metade do custo normal, arredondada para cima, com mínimo de 1 PE.",
 ]:
     assert frase in CAMPO, frase
+
+
+# o que o Evocador muda na ficha e no conjunto (capítulo dos Caminhos): as Trilhas, os aprimoramentos e as escolhas a mais
+TUDO = "\n".join(MAN)
+for frase in [
+    "Escolha uma Trilha no nível 2: Invocação Principal, Parceria ou Múltiplas Invocações.",
+    "A ficha da principal passa a ter quatro Famílias Fechadas e cinco abertas.",
+    "Entre as abertas, escolha uma Família Livre adicional, totalizando duas.",
+    "Nos níveis 8, 16 e 24 da invocação, acrescente uma escolha à ficha: uma capacidade básica de Classe 0, uma especial normal ou um talento de Categoria de Efeito 1",
+    "A ficha passa a ter cinco Famílias Fechadas, quatro abertas e uma Livre.",
+    "Sua ficha passa a ter cinco Famílias Fechadas e quatro abertas, mantendo uma Família Livre.",
+    "Durante o combate, seu limite é de quatro invocações ativas.",
+    "Você mantém um aprimoramento em uma invocação por vez.",
+    "Você começa o combate com 0 Pontos de Vínculo. No começo de cada turno seu, enquanto consciente, recebe 1 ponto, até o máximo de 3.",
+]:
+    assert frase in TUDO, frase
+_a, _b = MAN.index("### Usos dos aprimoramentos"), MAN.index("### Intervenções de Vínculo")
+aprimoramentos = []
+for l in MAN[_a:_b]:
+    m = re.match(r"^#### (.+) — nível (\d+)$", l)
+    if m:
+        aprimoramentos.append({"n": m.group(1), "nivel": int(m.group(2))})
+assert [a["nivel"] for a in aprimoramentos] == [2, 2, 2, 2, 7], aprimoramentos
+danos = []
+for _g, lista in tabela("Grupo | Tipos", MAN[MAN.index("### Tipos de dano"):]):
+    danos += [x.strip() for x in re.split(r", | e ", lista.rstrip("."))]
+assert len(danos) == 15 and "Perfurante" in danos and "Energia Reversa" in danos, danos
 
 
 # os trunfos da domada (capítulo 16): a tabela da Técnica Máxima e os degraus da Expansão
@@ -139,18 +173,20 @@ expansao = [{"n": n, "custa": a, "pede": q} for n, a, q in tabela("Desenvolvimen
 assert [m["de"] for m in maxima] == [17, 21, 26] and [e["n"] for e in expansao] == ["Incompleta", "Completa", "Sem Barreiras"]
 
 
-def hab(nome="", como="", forma="Projétil", mel=(), res=(), classe=1):
-    return {"nome": nome, "como": como, "forma": forma, "mel": (list(mel) + [""] * 4)[:4], "res": (list(res) + ["", ""])[:2], "classe": classe}
+def hab(nome="", como="", forma="Projétil", mel=(), res=(), classe=1, dano=""):
+    return {"nome": nome, "como": como, "forma": forma, "mel": (list(mel) + [""] * 4)[:4], "res": (list(res) + ["", ""])[:2],
+            "classe": classe, "dano": dano, "resolve": ""}
 
 
 def ficha(**k):
     base = {"nome": "", "def": "", "corpo": "", "tipo": "Shikigami de técnica", "aquis": "Espaço conhecido", "nivel": 1,
             "atr": {"FOR": 0, "DES": 0, "CON": 0, "INT": 0, "ESS": 0}, "acerto": "", "trT": "", "fis": "Força",
-            "per": [""] * 7, "livre": "", "a1": "", "a2": "", "bas": [hab(classe=0), hab(classe=0)],
+            "per": [""] * 7, "livre": "", "livre2": "", "a1": "", "a2": "", "a3": "", "equip": "", "carga": "Sem carga",
+            "ext": [hab() for _ in range(3)], "talx": [""] * 3, "bas": [hab(classe=0), hab(classe=0)],
             "esp": [hab() for _ in range(8)], "tal": [""] * 8, "buff": {}, "notas": "",
             "lib": [{"nome": "", "como": "", "classe": 3} for _ in range(3)], "max": {"nome": "", "como": ""},
             "exp": {"nome": "", "como": "", "des": "Incompleta"},
-            "mesa": {"vida": "", "temp": "", "mov": "", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Guardada", "tarefa": "", "cond": ""}}
+            "mesa": {"vida": "", "temp": "", "mov": "", "reserva": "", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Guardada", "tarefa": "", "cond": ""}}
     base.update(k)
     return base
 
@@ -161,10 +197,10 @@ cao = ficha(
     corpo="Médio, quatro patas, sem mãos; usa a boca para segurar. Visão, audição e olfato comuns. Entende ordens faladas e responde por latidos e gestos.",
     atr={"FOR": 3, "DES": 2, "CON": 2, "INT": 1, "ESS": 1}, acerto="Força", trT="Físico", fis="Força",
     per=["Atletismo", "Furtividade", "Percepção", "Sobrevivência", "", "", ""], livre="Mira", a1="Alcance", a2="Controle",
-    bas=[hab("Mordida", "Perfurante. Consome a atuação básica do cão.", "Toque", classe=0), hab(classe=0)],
-    esp=[hab("Mordida precisa", "Perfurante. Não aplica condição nem deixa efeito contínuo.", "Toque", ["Precisão"])] + [hab() for _ in range(7)],
+    bas=[hab("Mordida", "Consome a atuação básica do cão.", "Toque", classe=0, dano="Perfurante"), hab(classe=0)],
+    esp=[hab("Mordida precisa", "Não aplica condição nem deixa efeito contínuo.", "Toque", ["Precisão"], dano="Perfurante")] + [hab() for _ in range(7)],
     tal=["Farejador"] + [""] * 7,
-    mesa={"vida": "", "temp": "", "mov": "", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Em campo", "tarefa": "Perseguir a criatura apontada.", "cond": ""})
+    mesa={"vida": "", "temp": "", "mov": "", "reserva": "", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Em campo", "tarefa": "Perseguir a criatura apontada.", "cond": ""})
 vigia = ficha(
     nome="Vigia de papel",
     **{"def": "Uma pequena figura de papel que registra os sons da missão e desdobra tiras para amparar pessoas."},
@@ -175,7 +211,7 @@ vigia = ficha(
     esp=[hab("Tiras de resgate", "O aliado recebe +2 na Defesa e pode aceitar ser movido até 6 m.", "Apoio", ["Guarda", "Empurrão"], classe=2),
          hab("Remendo de papel", "Não remove condições.", "Cura")] + [hab() for _ in range(6)],
     tal=["Talento Próprio"] + [""] * 7,
-    mesa={"vida": 19, "temp": "", "mov": "", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Em campo", "tarefa": "Amparar quem está na escada.", "cond": ""})
+    mesa={"vida": 19, "temp": "", "mov": "", "reserva": "", "bas": "Disponível", "ordem": "Nenhuma", "estado": "Em campo", "tarefa": "Amparar quem está na escada.", "cond": ""})
 for f in (cao, vigia):
     for h in f["bas"] + f["esp"]:
         assert h["forma"] in formas and all(m == "" or m in melhorias for m in h["mel"]), h
@@ -193,7 +229,9 @@ dados = {
     "talentos": talentos, "tipos": tipos, "aquis": aquis,
     "familias": list(CAT["familias"].keys()), "melhorias": melhorias,
     "restricoes": {n: r["devolve"] for n, r in CAT["restricoes"].items()},
-    "pericias": list(CAT["pericias"].keys()),
+    "pericias": {n: v["atributo"] for n, v in CAT["pericias"].items()},
+    "danos": danos, "aprimoramentos": aprimoramentos, "trilhas": ["Invocação Principal", "Parceria", "Múltiplas Invocações"],
+    "reduzidas": [n for n in ["Rajada", "Fura", "Anteparo", "Desarma o Feitiço", "Sugar", "Levanta", "Remenda"] if n in melhorias],
     "fichas": [cao, vigia, ficha()],
 }
 
