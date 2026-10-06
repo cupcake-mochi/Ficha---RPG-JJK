@@ -1,0 +1,634 @@
+<title>Ficha de Invocação</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Castoro&family=Oswald:wght@400;500&family=Roboto:wght@400;500&family=Yuji+Syuku&display=swap">
+<style>
+/*CSS-DO-ESTUDO-DA-FICHA-PESSOAL*/
+/* ---------- o que este estudo acrescenta ---------- */
+/* Layout: a mesma coluna de leitura dos outros estudos; a folha é a aba nova, na grade da planilha, com calhas de grupo
+   de linhas à esquerda e a fileira dos grupos de colunas acima das letras. */
+:root{ --f-faixa:#E32175; --f-na-faixa:#1E1320; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --f-faixa:#211940; --f-na-faixa:#F4F1F7; } }
+:root[data-theme="dark"]{ --f-faixa:#211940; --f-na-faixa:#F4F1F7; }
+.pal-escura{ --f-faixa:#211940; --f-na-faixa:#F4F1F7; }
+.pal-clara{ --f-faixa:#E32175; --f-na-faixa:#1E1320; }
+.faixa{background:var(--f-faixa); color:var(--f-na-faixa)}
+.faixa .peq{color:var(--f-na-faixa); opacity:.8; margin-left:14px; text-transform:none; letter-spacing:0}
+.faixa.nsec{justify-content:center; padding-left:0; font-size:19px}
+.c.sel{padding:0}
+.c select{-webkit-appearance:none; appearance:none; background:transparent; border:0; color:inherit; font:inherit; width:100%; height:100%; padding:0 16px 0 6px; text-align:center; text-align-last:center; cursor:pointer; min-width:0; text-overflow:ellipsis}
+.c select option, .c select optgroup{background:var(--f-papel); color:var(--f-texto); font-family:var(--corpo); font-size:13px}
+.c select:focus-visible{outline:2px solid var(--f-texto); outline-offset:-3px}
+.num.sel select{font-family:var(--rot); font-size:19px}
+.num.agora{background:var(--f-alto)}
+.num small{font-family:var(--corpo); font-size:11px; color:var(--f-fraco)}
+.res{background:var(--f-painel); font-family:var(--doc); font-size:13px}
+.res.n{font-family:var(--rot); font-size:15px; font-variant-numeric:tabular-nums}
+.res.forte{font-family:var(--rot); font-size:14px; letter-spacing:.03em; font-variant-numeric:tabular-nums}
+.res.ap{font-size:12px}
+.lado{background:var(--f-alto); font-family:var(--rot); font-size:10px; letter-spacing:.08em; text-transform:uppercase; justify-content:flex-start; padding-left:8px}
+.lado.mini{font-size:8.5px; letter-spacing:.04em; padding-left:5px}
+.conta{background:var(--f-papel); font-size:11.5px; justify-content:flex-start; gap:6px; font-variant-numeric:tabular-nums}
+.conta.quebra{flex-wrap:wrap; align-content:center; white-space:normal; row-gap:3px}
+.aviso.quebra{flex-wrap:wrap; white-space:normal; align-content:center; row-gap:3px; overflow:hidden}
+.vazio{color:var(--f-fraco)}
+.fora{opacity:.4}
+.chip.bom{color:var(--f-texto)}
+.c.ruim{background:var(--f-vermelho); color:var(--f-no-vermelho)}
+.chip.ruim{background:var(--f-vermelho); color:var(--f-no-vermelho)}
+.c.at{color:var(--f-ambar)}
+.c.calc.esq, .c.calc.conta, .c.calc.aviso, .c.txt.calc{padding-left:15px}
+.nomef{background:var(--f-alto); font-family:var(--doc); font-size:15px; justify-content:flex-start; padding-left:10px}
+.nomef.st{justify-content:flex-end; padding-right:8px; font-family:var(--rot); font-size:13px}
+.lote{background:var(--f-papel); font-family:var(--rot); font-size:11px; letter-spacing:.1em; text-transform:uppercase; justify-content:flex-start; padding-left:10px}
+.lote .peq{margin-left:12px; text-transform:none; letter-spacing:0}
+.txt i{font-style:italic}
+.foto .k{font-size:34px}
+.foto .d{font-size:10.5px; max-width:150px; text-align:center; white-space:normal; line-height:1.35}
+.lomb.esp{align-items:flex-start; padding-top:10px}
+.lomb.esp span{color:var(--f-texto); letter-spacing:.16em; font-size:11.5px}
+.cel .med{width:100%}
+.c.rol{background:var(--f-painel); font-size:11.5px; justify-content:flex-start; gap:8px}
+.c.rol b{font-family:var(--doc); font-weight:400; font-size:13px}
+.jogo{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:13px; color:var(--fraco-pag)}
+.jogo > span:first-child, .jogo > label:first-child{min-width:64px}
+.jogo button{font:inherit; font-family:var(--rot); letter-spacing:.06em; text-transform:uppercase; font-size:12px; color:var(--tinta-pag); background:transparent; border:1px solid var(--fio-pag); padding:5px 10px; cursor:pointer}
+.jogo button[aria-pressed="true"]{border-color:var(--acento-pag); color:var(--acento-pag)}
+.jogo button:focus-visible, .jogo select:focus-visible{outline:2px solid var(--acento-pag); outline-offset:2px}
+.jogo select{font:inherit; font-size:13px; color:var(--tinta-pag); background:var(--pagina); border:1px solid var(--fio-pag); padding:4px 6px}
+.formas{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:10px}
+.formas button{display:flex; flex-direction:column; align-items:flex-start; gap:3px; text-align:left; font:inherit; color:var(--tinta-pag); background:transparent; border:1px solid var(--fio-pag); padding:10px 12px; cursor:pointer}
+.formas button b{font-family:var(--rot); font-weight:500; font-size:13px; letter-spacing:.08em; text-transform:uppercase}
+.formas button span{font-size:13px; color:var(--fraco-pag); line-height:1.4}
+.formas button[aria-pressed="true"]{border-color:var(--acento-pag); box-shadow:inset 0 0 0 1px var(--acento-pag)}
+.formas button[aria-pressed="true"] b{color:var(--acento-pag)}
+.formas button:focus-visible{outline:2px solid var(--acento-pag); outline-offset:2px}
+.estudo > p{max-width:74ch; margin:0}
+.passos{margin:0; padding-left:20px; max-width:72ch}
+.passos li{margin:6px 0}
+table.regras{border-collapse:collapse; font-size:13.5px; width:100%}
+table.regras th, table.regras td{border-bottom:1px solid var(--fio-pag); padding:6px 10px 6px 0; text-align:left; vertical-align:top}
+table.regras th{font-family:var(--rot); font-weight:500; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--acento-pag)}
+table.regras td.n{font-variant-numeric:tabular-nums}
+table.regras tr > :first-child{color:var(--fraco-pag); min-width:150px}
+table.regras thead tr > :first-child{color:var(--acento-pag)}
+table.regras .agora{color:var(--acento-pag)}
+.rolar{overflow-x:auto}
+</style>
+
+<div class="pagina">
+  <header class="abre">
+    <div class="olho">Projeto M · ficha digital · aba nova</div>
+    <h1>Invocações</h1>
+    <p>A aba das invocações depois do livro reconstruído, desenhada na grade da planilha. Cada invocação é uma ficha com foto, nome, caixas e menus, e a planilha faz as contas do capítulo 17. Três formas de arrumar várias fichas na mesma aba, com os dois exemplos do livro e uma ficha vazia.</p>
+    <p class="nota">Nada aqui entrou na planilha. As tabelas vêm do <i>manual.txt</i> (livro <span id="carimbo"></span>) e as peças do arquivo de dados da ficha. Os menus funcionam: troque o nível, a Classe, a Forma ou uma Melhoria e a conta refaz.</p>
+  </header>
+
+  <div class="barra-topo">
+    <nav class="saltos" aria-label="Partes do estudo">
+      <a href="#folha">A aba</a><a href="#lado">Lado a lado</a><a href="#conta">O que a planilha calcula</a><a href="#falta">O que falta decidir</a>
+    </nav>
+    <div class="paleta" role="group" aria-label="Paleta da folha">
+      <span>Paleta da folha</span>
+      <button type="button" data-pal="" aria-pressed="true">Seguir o tema</button>
+      <button type="button" data-pal="pal-escura" aria-pressed="false">Fábrica</button>
+      <button type="button" data-pal="pal-clara" aria-pressed="false">Mizuki · Claro</button>
+    </div>
+  </div>
+
+  <div class="legenda" aria-label="Como ler a folha">
+    <span><b>ƒ</b>a planilha calcula</span>
+    <span><b>▾</b>menu de escolha</span>
+    <span><b>− ou +</b>na borda esquerda fecha linhas; acima das letras fecha colunas</span>
+    <span><b>canto marcado</b>a caixa tem nota: passe o mouse</span>
+    <span><b>vermelho</b>a ficha saiu da regra do livro</span>
+  </div>
+
+  <section class="estudo" id="folha">
+    <h2><b>1</b>Três formas da aba</h2>
+    <div class="formas" role="group" aria-label="Forma da aba">
+      <button type="button" data-forma="a"><b>A · Deitadas, uma embaixo da outra</b><span>Cada ficha ocupa a largura da aba, com a foto à esquerda. O grupo de linhas fecha a ficha e deixa só a faixa com o nome.</span></button>
+      <button type="button" data-forma="b"><b>B · Deitadas, uma ao lado da outra</b><span>A mesma ficha deitada, repetida para a direita. O grupo de colunas fecha cada uma e deixa a lombada com o nome.</span></button>
+      <button type="button" data-forma="c"><b>C · Em pé, lado a lado</b><span>Fichas estreitas, com a foto em cima. Cabem o conjunto e duas fichas na tela, e o grupo de colunas fecha cada uma.</span></button>
+    </div>
+    <p id="forma-diz"></p>
+    <div class="jogo">
+      <label for="nivel">Seu nível</label><select id="nivel"></select>
+      <label for="defv">Sua Essência ou Inteligência (a que vale para a Defesa delas)</label><select id="defv"></select>
+    </div>
+    <div class="jogo" role="group" aria-label="Grupos"><span>Grupos</span>
+      <button type="button" data-grupos="nasce">Como nasce</button>
+      <button type="button" data-grupos="abre">Abrir tudo</button>
+      <button type="button" data-grupos="fecha">Fechar as fichas</button>
+      <button type="button" id="volta">Voltar ao exemplo do livro</button>
+    </div>
+    <p class="dica">A folha é mais larga que a tela: arraste para o lado.</p>
+    <div class="quadro"><div class="folha" id="folha-inv"></div></div>
+    <p class="medida" id="medida"></p>
+  </section>
+
+  <section class="estudo" id="lado">
+    <h2><b>2</b>As três, lado a lado</h2>
+    <p>Medido na própria folha, com três fichas e o seu nível escolhido acima. As outras abas da ficha têm 47 colunas, que é o que cabe num notebook.</p>
+    <div class="rolar"><table class="regras" id="tab-formas"></table></div>
+  </section>
+
+  <section class="estudo" id="conta">
+    <h2><b>3</b>O que a planilha calcula</h2>
+    <div class="contas">
+      <div><h3>Lê da sua FICHA</h3><ul><li>O seu nível e a maestria, que vale para todas</li><li>A Essência ou a Inteligência, para a Defesa delas</li></ul></div>
+      <div><h3>Da ficha da invocação</h3><ul><li>Pontos de atributo gastos contra os 9 e os marcos</li><li>Ataque, CD, Defesa, vida máxima e os quatro Testes de Resistência</li><li>Quantas perícias, espaços de especial, básicas e talentos o nível dá</li><li>Entrada, retorno, reserva da domada e carga do talismã</li></ul></div>
+      <div><h3>De cada habilidade</h3><ul><li>Preço da Forma e de cada Melhoria, com o desconto da Família Livre</li><li>Devolução das Restrições, com Corpo a Corpo embutida em Toque e Aura</li><li>O saldo virando d8, cura ou vida temporária, e o PE</li><li>Alcance e área da tabela das entidades</li></ul></div>
+      <div><h3>O jogador escreve</h3><ul><li>Nome, foto, definição, corpo e comunicação</li><li>Tarefa, condições, usos gastos e a vida atual</li><li>O texto de cada habilidade</li></ul></div>
+    </div>
+    <p>As contas das duas fichas de exemplo batem com o livro: o Cão de sombra tem ataque +4 e CD 12, Defesa 13 com a Essência 2 do Kaito, 12 de vida no nível 2 e 27 no nível 5; a Mordida precisa dá 2d8 na Classe 1 e 4d8 na Classe 2; as Tiras de resgate dão 3 de vida temporária e o Remendo de papel 1d8 de cura.</p>
+  </section>
+
+  <section class="estudo" id="falta">
+    <h2><b>4</b>O que falta decidir</h2>
+    <ol class="passos">
+      <li><b>A forma.</b> A, B ou C, ou uma mistura.</li>
+      <li><b>Quantas fichas a aba traz.</b> A planilha é fixa: três, quatro ou seis fichas prontas, e quem tiver mais duplica a aba.</li>
+      <li><b>O conjunto.</b> Reação coletiva, entidades ativas e Pontos de Vínculo ficam aqui ou vão para a FICHA do personagem.</li>
+      <li><b>O que fica de fora por enquanto.</b> Lista de ritual, fabricação, Liberação e Técnica Máxima da domada, e as Intervenções de Vínculo do Evocador não estão desenhadas.</li>
+    </ol>
+  </section>
+</div>
+
+<script>
+(function(){
+  var D = /*DADOS*/;
+  // ---------- as regras do capítulo 17, pelas tabelas que o gerador leu do livro ----------
+  function conta(l, n){ return l.filter(function(x){ return x <= n; }).length; }
+  function faixaDe(n){ return D.prog.filter(function(p){ return n >= p.de && n <= p.ate; })[0]; }
+  var PTS = {}; D.prog.forEach(function(p){ PTS[p.classe] = p.pontos; });
+  var MARCOS = [6,10,14,18,22,26,30], LIVRE = [0,1,1,1,2,2,3,3];
+  function maestria(n){ return 1 + conta([10,18,26], n); }
+  function espacos(n){ return Math.floor((2 + n/2) / 2); }
+  function preco(peso, C){ return peso === 'Leve' ? Math.ceil(C/2) : peso === 'Media' ? C : Math.ceil(C*1.5); }
+  var ATR = ['FOR','DES','CON','INT','ESS'], NOME = {FOR:'Força', DES:'Destreza', CON:'Constituição', INT:'Inteligência', ESS:'Essência'}, ABR = {};
+  ATR.forEach(function(k){ ABR[NOME[k]] = k; });
+  var TRS = [['Físico', null], ['Vigor', 'CON'], ['Intelecto', 'INT'], ['Espírito', 'ESS']];
+  var ABRE_ESP = [1,4,8,12,16,20,24,28], ABRE_TAL = [1].concat(MARCOS), ABRE_BAS = [1,11];
+  function tetoCE(nv){ return nv < 10 ? 1 : nv < 14 ? 2 : 3; }
+  function sg(n){ return n >= 0 ? '+' + n : '−' + Math.abs(n); }
+
+  // ---------- o estado ----------
+  var E;
+  function zera(){ E = {forma: E ? E.forma : 'a', pal: E ? E.pal : '', nivel:5, defA:'Essência', defV:2, vinc:'1', reac:'Livre', dano:'0', aberto:{}, fichas: JSON.parse(JSON.stringify(D.fichas))};
+    E.fichas[1].perdida = 8; }
+  zera();
+  var FORMAS = {
+    a: 'É o que eu entendi do seu pedido: a ficha deitada, como a do seu exemplo, com a foto à esquerda, os números no meio e a mesa à direita. As fichas ficam uma embaixo da outra, e o + da borda esquerda fecha cada uma, deixando a faixa com o nome, o nível, a vida e o estado.',
+    b: 'A mesma ficha deitada, mas as seguintes vão para a direita, e o + acima das letras fecha as colunas de cada uma. O conjunto vira um painel estreito à esquerda. O conjunto e uma ficha aberta passam das 47 colunas.',
+    c: 'A ficha em pé, estreita, com a foto em cima. O painel do conjunto e duas fichas cabem nas 47 colunas, e a terceira aparece fechando uma das outras. Como todas dividem as mesmas linhas, abrir a montagem de uma abre a de todas.'
+  };
+
+  function segue(f){ var a = D.aquis.filter(function(x){ return x.n === f.aquis; })[0]; return !a || /companha/.test(a.evolui); }
+  function nivelDe(f){ return segue(f) ? E.nivel : Math.max(1, Math.min(f.nivel || 1, E.nivel)); }
+  function calc(f){
+    var n = nivelDe(f), M = maestria(E.nivel), a = f.atr, P = faixaDe(n), cl = P.classe, ac = ABR[f.acerto];
+    var cri = f.tipo === 'Corpo amaldiçoado de criação';
+    var vida = 5 + a.CON + ((cri ? 4 : 3) + a.CON) * (n - 1), perdida = Math.min(f.perdida || 0, vida);
+    var x = {n:n, M:M, cl:cl, P:P, vida:vida, atual:vida - perdida, gastos:ATR.reduce(function(s,k){ return s + a[k]; }, 0), disp:9 + conta(MARCOS, n),
+      ataque: ac ? a[ac] + M : null, cd: ac ? 8 + a[ac] + M : null, def:10 + a.DES + Math.floor(E.defV/2),
+      nper:4 + Math.floor(a.INT/2), esp:espacos(n), nbas:n >= 11 ? 2 : 1, ntal:conta(ABRE_TAL, n),
+      reserva:n * (1 + Math.floor(a.ESS/3)), adiant:Math.floor(cl/2)};
+    x.trs = TRS.map(function(t){ var k = t[1] || ABR[f.fis] || 'FOR', tr = f.trT === t[0]; return {nome:t[0], tr:tr, v:a[k] + (tr ? M : 0), k:k}; });
+    return x;
+  }
+
+  // a conta de uma habilidade: preço da Forma e das Melhorias, devolução das Restrições, saldo e o que ele vira
+  function monta(f, h, bas, c){
+    var C = bas ? 0 : h.classe, abertas = [f.livre, f.a1, f.a2], fo = D.formas[h.forma] || D.formas['Projétil'];
+    var x = {C:C, precos:[], devol:[], avisos:[], embutida:fo.embutida}, pontos = bas ? 0 : PTS[C], gasto = 0, nm = 0, soma = 0;
+    if (!bas && fo.custa) gasto += preco(fo.custa, C);
+    if (fo.exige && abertas.indexOf(fo.exige) < 0) x.avisos.push(h.forma + ' pede ' + fo.exige + ' aberta');
+    if (bas && (h.forma === 'Cura' || h.forma === 'Onda')) x.avisos.push(h.forma + ' não existe na Classe 0');
+    if (!bas && C > c.cl) x.avisos.push('Classe ' + C + ' ainda não abriu');
+    h.mel.forEach(function(nome){
+      var m = D.melhorias[nome];
+      if (!m){ x.precos.push(null); return; }
+      nm++;
+      if (bas){ x.precos.push({p:'1 dado'}); if (m.peso !== 'Leve') x.avisos.push('A básica só aceita Melhoria Leve'); }
+      else { var p = preco(m.peso, C), livre = m.familia === f.livre; if (livre) p = Math.max(1, p - LIVRE[C]); x.precos.push({p:p, livre:livre}); gasto += p; }
+      if (abertas.indexOf(m.familia) < 0) x.avisos.push(m.familia + ' está fechada');
+    });
+    var lim = bas ? 1 : D.limite[C];
+    if (nm > lim) x.avisos.push(bas ? 'A básica aceita uma Melhoria' : 'A Classe ' + C + ' aceita ' + lim + ' Melhorias');
+    var res = fo.embutida ? [h.res[0]] : h.res;
+    res.forEach(function(v){
+      if (!v){ x.devol.push(null); return; }
+      var q = v.split('|'), d = bas ? 0 : preco(q[1] || D.restricoes[q[0]], C);
+      x.devol.push(d); soma += d;
+    });
+    if (fo.embutida && !bas){ x.cac = preco('Media', C); soma += x.cac; }
+    var dev = bas ? 0 : Math.min(soma, 2*C, gasto), saldo = pontos - gasto + dev, dados = c.P.basica - nm;
+    x.pontos = pontos; x.gasto = gasto; x.dev = dev; x.saldo = saldo; x.pe = bas ? 0 : 3*C; x.lim = lim;
+    if (bas){
+      x.res = h.forma === 'Apoio' || h.forma === 'Efeito' ? 'sem dano' : dados > 0 ? dados + 'd6' : 'sem dano';
+      x.conta = c.P.basica + 'd6' + (nm ? ' − ' + nm + ' = ' + Math.max(0, dados) + 'd6' : ' da básica');
+    } else {
+      if (saldo < 0){ x.res = 'faltam ' + (-saldo) + ' ponto(s)'; x.avisos.push('A montagem passou dos ' + pontos + ' pontos'); }
+      else x.res = h.forma === 'Apoio' ? (saldo*3) + ' de vida temp.' : h.forma === 'Cura' ? saldo + 'd8 de cura' : h.forma === 'Onda' ? saldo + 'd8 ou ' + (saldo*3) + ' temp.' : h.forma === 'Efeito' ? 'efeito registrado' : saldo ? saldo + 'd8' : 'sem dano';
+      x.conta = pontos + ' − ' + gasto + ' + ' + dev + ' = ' + saldo + (soma > dev ? ' <span class="vazio">(devolução de ' + soma + ', aproveita ' + dev + ')</span>' : '');
+    }
+    var tem = function(nm){ return h.mel.indexOf(nm) >= 0; }, atr = h.res.join(' ');
+    x.acao = bas ? 'A atuação básica dela' : /Atrasar/.test(atr) ? 'Sua Ação Completa + a básica dela' : tem('Rápido') ? 'Sua Bônus + a básica dela' : tem('Reação') ? 'Sua Reação + a básica e a coletiva' : 'Sua Padrão + a básica dela';
+    var ia = C === 0 ? 0 : C <= 5 ? 1 : 2, ir = C === 0 ? 0 : C <= 6 ? 1 : 2, al = D.alcance[h.forma], ar = D.area[h.forma];
+    var prec = tem('Precisão') ? 2 : 0, atq = c.ataque === null ? '' : 'ataque ' + sg(c.ataque + prec), tr = c.cd === null ? '' : 'TR, CD ' + c.cd;
+    x.alc = h.forma === 'Efeito' ? 'conforme o efeito registrado' : h.forma === 'Explosão' ? ar.v[ir] + ' de raio, a até ' + al[ia] + ' · ' + tr
+      : h.forma === 'Aura' || h.forma === 'Onda' ? ar.v[ir] + ' de raio em volta dela' + (h.forma === 'Aura' ? ' · ' + tr : '')
+      : h.forma === 'Cone' ? 'cone de ' + ar.v[ir] + ' · ' + tr : h.forma === 'Linha' ? 'linha de ' + ar.v[ir] + ' · ' + tr
+      : h.forma === 'Apoio' || h.forma === 'Cura' ? 'aliado a até ' + al[ia] : al[ia] + ' · ' + atq;
+    return x;
+  }
+
+  // ---------- os menus ----------
+  function opt(v, txt, sel, fora){ return '<option value="' + String(v).replace(/"/g,'&quot;') + '"' + (sel ? ' selected' : '') + (fora ? ' disabled' : '') + '>' + txt + '</option>'; }
+  function menu(caminho, opcoes, rotulo){ return '<select data-k="' + caminho + '" aria-label="' + rotulo + '">' + opcoes + '</select>'; }
+  function menuLista(caminho, atual, lista, rotulo, vazio){
+    var o = vazio === false ? '' : opt('', vazio || '—', !atual);
+    lista.forEach(function(v){ o += opt(v, v, String(atual) === String(v)); });
+    return menu(caminho, o, rotulo);
+  }
+  function menuNum(caminho, atual, de, ate, rotulo){ var l = []; for (var i = de; i <= ate; i++) l.push(i); return menuLista(caminho, atual, l, rotulo, false); }
+  function menuForma(caminho, f, h, bas){
+    var abertas = [f.livre, f.a1, f.a2], o = '';
+    Object.keys(D.formas).forEach(function(n){ var fo = D.formas[n], fora = (fo.exige && abertas.indexOf(fo.exige) < 0) || (bas && (n === 'Cura' || n === 'Onda'));
+      o += opt(n, n + (fo.custa && !bas ? ' · ' + preco(fo.custa, h.classe) : ''), h.forma === n, fora && h.forma !== n); });
+    return menu(caminho, o, 'Forma');
+  }
+  function menuMelhoria(caminho, atual, f, C, bas){
+    var o = opt('', '—', !atual), achou = !atual;
+    [f.livre, f.a1, f.a2].filter(Boolean).forEach(function(fam, i){
+      o += '<optgroup label="' + fam + (i === 0 ? ' · Livre' : '') + '">';
+      Object.keys(D.melhorias).forEach(function(n){ var m = D.melhorias[n]; if (m.familia !== fam || (bas && m.peso !== 'Leve')) return;
+        var p = preco(m.peso, C); if (i === 0) p = Math.max(1, p - LIVRE[C]);
+        if (n === atual) achou = true;
+        o += opt(n, n + (bas ? '' : ' · ' + p), n === atual); });
+      o += '</optgroup>';
+    });
+    if (!achou) o += opt(atual, atual + ' · fechada', true);
+    return menu(caminho, o, 'Melhoria');
+  }
+  function menuRestricao(caminho, atual, C, bas){
+    var o = opt('', '—', !atual);
+    Object.keys(D.restricoes).forEach(function(n){ if (n === 'Corpo a Corpo') return;
+      D.restricoes[n].split(' ou ').forEach(function(nv, i, l){ if (bas && nv !== 'Leve') return;
+        var v = l.length > 1 ? n + '|' + nv : n; o += opt(v, n + (l.length > 1 ? ' · ' + (nv === 'Media' ? 'Média' : nv) : '') + (bas ? '' : ' · +' + preco(nv, C)), v === atual); }); });
+    return menu(caminho, o, 'Restrição');
+  }
+
+  // ---------- a folha ----------
+  function letra(i){ var s=''; while(i>0){ var r=(i-1)%26; s=String.fromCharCode(65+r)+s; i=Math.floor((i-1)/26);} return s; }
+  function Folha(gut, cols){ this.cel=[]; this.max=0; this.grupos=[]; this.colgs=[]; this.gut=gut; this.cols=cols; }
+  Folha.prototype.add = function(k, c1, r1, c2, r2, html, extra, nt, attr){
+    if (c1 > this.cols) return;
+    this.max = Math.max(this.max, r2);
+    this.cel.push({r:r1, c:c1, h:'<div class="c '+k+' '+(extra||'')+(nt?' nota" title="'+String(nt).replace(/"/g,'&quot;'):'')+'" '+(attr||'')+' style="grid-area:'+(r1+2)+'/'+(c1+this.gut+1)+'/'+(r2+3)+'/'+(c2+this.gut+2)+'">'+(html===undefined||html===null?'':html)+(nt?'<b class="nt"></b>':'')+'</div>'});
+  };
+  Folha.prototype.grupo = function(id, nivel, faixa, ini, fim, nasce, nome){ if (fim >= ini) this.grupos.push({id:id, nivel:nivel, faixa:faixa, ini:ini, fim:fim, nasce:nasce, nome:nome}); };
+  Folha.prototype.colgrupo = function(id, botao, ini, fim, nasce, nome){ this.colgs.push({id:id, botao:botao, ini:ini, fim:fim, nasce:nasce, nome:nome}); };
+  function aberto(g){ return g.id in E.aberto ? E.aberto[g.id] : g.nasce; }
+  Folha.prototype.ocultas = function(como){
+    var l = {}, c = {};
+    this.grupos.forEach(function(x){ if (!como(x)) for (var k = x.ini; k <= x.fim; k++) l[k] = true; });
+    this.colgs.forEach(function(x){ if (!como(x)) for (var k = x.ini; k <= x.fim; k++) c[k] = true; });
+    return {l:l, c:c};
+  };
+  Folha.prototype.monta = function(el){
+    var g = '', i, linhas = ['18px','18px'], colunas = [], o = this.ocultas(aberto), N = this.cols, G = this.gut;
+    for (i = 1; i <= N; i++){ colunas.push(o.c[i] ? '0px' : '20px'); if (!o.c[i]) g += '<div class="col" style="grid-area:2/'+(i+G+1)+'">'+letra(i)+'</div>'; }
+    for (i = 1; i <= this.max; i++){ linhas.push(o.l[i] ? '0px' : '22px'); if (!o.l[i]) g += '<div class="lin" style="grid-area:'+(i+2)+'/'+(G+1)+'">'+i+'</div>'; }
+    this.grupos.forEach(function(x){
+      if (o.l[x.faixa]) return;
+      var ab = aberto(x);
+      g += '<button class="grb" type="button" data-grupo="'+x.id+'" aria-expanded="'+ab+'" title="'+(ab?'Fechar ':'Abrir ')+x.nome+'" style="grid-area:'+(x.faixa+2)+'/'+x.nivel+'">'+(ab?'−':'+')+'</button>';
+      if (ab) g += '<div class="grl" style="grid-area:'+(x.ini+2)+'/'+x.nivel+'/'+(x.fim+3)+'/'+(x.nivel+1)+'"></div>';
+    });
+    this.colgs.forEach(function(x){
+      var ab = aberto(x);
+      g += '<button class="grb" type="button" data-grupo="'+x.id+'" aria-expanded="'+ab+'" title="'+(ab?'Fechar ':'Abrir ')+x.nome+'" style="grid-area:1/'+(x.botao+G+1)+'">'+(ab?'−':'+')+'</button>';
+      if (ab) g += '<div class="grc" style="grid-area:1/'+(x.ini+G+1)+'/2/'+(x.fim+G+2)+'"></div>';
+    });
+    var larg = G*18 + 28; colunas.forEach(function(c){ larg += parseInt(c, 10); });
+    el.style.gridTemplateColumns = 'repeat('+G+',18px) 28px ' + colunas.join(' ');
+    el.style.gridTemplateRows = linhas.join(' ');
+    el.style.width = larg + 'px';
+    el.innerHTML = g + this.cel.filter(function(c){ return !o.l[c.r] && !o.c[c.c]; }).map(function(c){ return c.h; }).join('');
+  };
+  Folha.prototype.mede = function(como){
+    var o = this.ocultas(como), l = 0, c = 0, i;
+    for (i = 1; i <= this.max; i++) if (!o.l[i]) l++;
+    for (i = 1; i <= this.cols; i++) if (!o.c[i]) c++;
+    return {linhas:l, colunas:c};
+  };
+  function pincel(F, c0){ return function(k, a, r1, b, r2, h, e, nt){ F.add(k, c0 + a, r1, c0 + b, r2, h, e, nt); }; }
+
+  // ---------- as cartas de habilidade (13 colunas, como as da Ficha Amaldiçoada) ----------
+  var NOTA_MEL = 'O menu só traz as três Famílias abertas. A da Família Livre já aparece com o desconto.';
+  function carta(F, c0, r0, f, c, h, caminho, tit, abre, bas){
+    var p = pincel(F, c0), tr = abre > c.n, v = !h.nome, u = 12;
+    p('rot', 0, r0, u, r0, tit + (tr ? ' · abre no nível ' + abre : ''), tr ? 'fora' : '');
+    if (tr){ p('nomef', 0, r0+1, u, r0+1, '', 'fora'); p('txt', 0, r0+2, u, r0+4, '', 'fora'); p('res', 0, r0+5, u, r0+7, '', 'fora'); p('cel', 0, r0+8, u, r0+16, '', 'fora'); return; }
+    var x = monta(f, h, bas, c), o = function(val){ return v ? '' : val; }, k = v ? '' : 'calc';
+    if (bas) p('res n', 0, r0+1, 1, r0+1, '0', '', 'A básica é sempre Classe 0 e não custa PE.');
+    else p('res n sel', 0, r0+1, 1, r0+1, menuNum(caminho + '.classe', h.classe, 1, Math.max(c.cl, h.classe), 'Classe'), 'menu');
+    p('nomef', 2, r0+1, 9, r0+1, h.nome || '<span class="vazio">espaço livre</span>');
+    p('nomef st', 10, r0+1, u, r0+1, o(bas ? 'sem PE' : x.pe + ' PE'), k, v ? undefined : bas ? undefined : f.tipo === 'Maldição domada' ? 'Metade sai da reserva dela, e a parcela ímpar fica com você.' : '3 × a Classe, pagos por você.');
+    p('txt', 0, r0+2, u, r0+4, h.como || '<i>Texto do jogador: como a habilidade aparece e o que ela deixa.</i>');
+    p('res sel', 0, r0+5, 5, r0+5, menuForma(caminho + '.forma', f, h, bas), 'menu');
+    p('res forte', 6, r0+5, u, r0+5, o(x.res), k);
+    p('res ap', 0, r0+6, u, r0+6, o(x.acao), k);
+    p('res peq', 0, r0+7, u, r0+7, o(x.alc), k);
+    var m = r0 + 8;
+    p('lado mini', 0, m, 2, m+3, 'Melhorias', '', (bas ? 'A básica aceita uma Melhoria Leve, que custa um dado. ' : 'A Classe ' + x.C + ' aceita ' + x.lim + '. ') + NOTA_MEL);
+    h.mel.forEach(function(nome, i){
+      var pc = x.precos[i], fora = i >= x.lim && !nome;
+      p('cel sel' + (fora ? ' fora' : ''), 3, m+i, 9, m+i, fora ? '' : menuMelhoria(caminho + '.mel.' + i, nome, f, x.C, bas), fora ? '' : 'menu');
+      p('cel peq' + (fora ? ' fora' : ''), 10, m+i, u, m+i, pc ? (bas ? '−1 dado' : '−' + pc.p) : '', pc ? 'calc' : '', pc && pc.livre ? 'Família Livre: desconto de ' + LIVRE[x.C] + ' na Classe ' + x.C + ', preço mínimo 1.' : undefined);
+    });
+    p('lado mini', 0, m+4, 2, m+5, 'Restrições', '', 'Até duas. Toque e Aura já trazem Corpo a Corpo, que conta como uma.');
+    if (x.embutida){
+      p('cel peq', 3, m+4, 9, m+4, 'Corpo a Corpo', 'calc', 'Vem com a Forma.'); p('cel peq', 10, m+4, u, m+4, bas ? '' : '+' + x.cac, bas ? '' : 'calc');
+      p('cel sel', 3, m+5, 9, m+5, menuRestricao(caminho + '.res.0', h.res[0], x.C, bas), 'menu'); p('cel peq', 10, m+5, u, m+5, x.devol[0] === null ? '' : '+' + x.devol[0], x.devol[0] === null ? '' : 'calc');
+    } else [0, 1].forEach(function(i){
+      p('cel sel', 3, m+4+i, 9, m+4+i, menuRestricao(caminho + '.res.' + i, h.res[i], x.C, bas), 'menu');
+      p('cel peq', 10, m+4+i, u, m+4+i, x.devol[i] === null ? '' : '+' + x.devol[i], x.devol[i] === null ? '' : 'calc');
+    });
+    p('lado mini', 0, m+6, 2, m+7, 'Conta'); p('conta quebra', 3, m+6, u, m+7, o(x.conta), k);
+    p('aviso quebra', 0, m+8, u, m+8, v ? '' : x.avisos.length ? x.avisos.map(function(a){ return '<span class="chip ruim">' + a + '</span>'; }).join('') : '<span class="chip bom">Dentro da regra</span>', k);
+  }
+  var ALT = 18;                             // a fileira de cartas: 17 linhas e uma vazia; a montagem são as 9 de baixo
+  // as dez cartas na ordem em que o nível abre: a primeira fileira é o que uma entidade de nível baixo tem
+  var ORDEM = [['bas',0],['esp',0],['esp',1],['bas',1],['esp',2],['esp',3],['esp',4],['esp',5],['esp',6],['esp',7]];
+  function cartaN(F, c0, r, f, c, i, q){
+    var bas = q[0] === 'bas';
+    carta(F, c0, r, f, c, f[q[0]][q[1]], 'fichas.' + i + '.' + q[0] + '.' + q[1], (bas ? 'Básica ' : 'Especial ') + (q[1] + 1), (bas ? ABRE_BAS : ABRE_ESP)[q[1]], bas);
+  }
+  function talento(p, r, f, c, i, k, a, b, larga){
+    var abre = ABRE_TAL[k], tr = abre > c.n, teto = tetoCE(abre), t = D.talentos.filter(function(q){ return q.n === f.tal[k]; })[0];
+    var o = opt('', '—', !f.tal[k]);
+    D.talentos.forEach(function(q){ var ce = parseInt(q.ce, 10); o += opt(q.n, q.n + ' · CE ' + q.ce, q.n === f.tal[k], ce > teto && q.n !== f.tal[k]); });
+    var ruim = t && parseInt(t.ce, 10) > teto;
+    p('lado mini', 0, r, a, r, tr ? 'Abre no ' + abre : 'Nv ' + abre + ' · CE ' + teto, tr ? 'fora' : '', 'Talento ganho no nível ' + abre + ', até a Categoria de Efeito ' + teto + '.');
+    p('cel sel' + (tr ? ' fora' : '') + (ruim ? ' ruim' : ''), a+1, r, b, r, tr ? '' : menu('fichas.' + i + '.tal.' + k, o, 'Talento'), tr ? '' : 'menu', !larga && t ? t.faz : undefined);
+    if (larga) p('cel peq esq' + (tr ? ' fora' : ''), b+1, r, 42, r, t && !tr ? t.faz : '', t && !tr ? 'calc' : '');
+  }
+  function resumo(f, c){ return f.nome ? f.tipo + ' · nível ' + c.n + ' · vida ' + c.atual + ' de ' + c.vida + ' · ' + f.mesa.estado.toLowerCase() : 'ficha vazia'; }
+  function extra(f, c){
+    var t = f.tipo;
+    if (t === 'Maldição domada') return ['Reserva de PE', c.reserva, 'Só a domada com técnica própria: nível × (1 + um terço da Essência dela). O descanso curto recupera um quarto.'];
+    if (t === 'Shikigami de criação') return ['Entrada com carga', Math.max(1, c.cl - c.adiant) + ' PE', 'A carga deixada no talismã no descanso longo adianta ' + c.adiant + ' PE da próxima entrada. O talismã ocupa 0,5 de Volume.'];
+    if (/^Corpo/.test(t)) return ['Corpos mantidos', E.defV + 2, 'O atributo da Defesa (' + E.defV + ') + as 2 entidades ativas. Conta ativos e inativos. Corpo não é recolhido.'];
+    return ['Reserva ou carga', '—', 'Shikigami de técnica não tem reserva nem talismã.'];
+  }
+  var FOTO = '<span class="k">式</span><span class="l">FOTO</span><span class="d">clique na caixa e insira a imagem na célula</span>';
+  var ESTADOS = ['Em campo','Guardada','Caída','Desligada','Inativa','Destruída'], ORDENS = ['Nenhuma','Antecipada','Preparada','Armado','Segura','Carregar'];
+
+  // os campos da ficha, uma função por caixa: as duas arrumações (deitada e em pé) chamam as mesmas, em outro lugar
+  function campos(f, c, i){
+    var K = 'fichas.' + i, vz = !f.nome, o = function(v){ return vz ? '' : v; }, k = vz ? '' : 'calc';
+    var st = c.gastos > c.disp ? 'ruim' : c.gastos < c.disp && !vz ? 'at' : '', ex = extra(f, c);
+    return {
+      nome: [f.nome || '<span class="vazio">nome da invocação</span>', 'val'],
+      tipo: [menuLista(K + '.tipo', f.tipo, D.tipos.map(function(t){ return t.n; }), 'Tipo', false), 'val sel', 'menu', (D.tipos.filter(function(t){ return t.n === f.tipo; })[0] || {}).ficha],
+      aquis: [menuLista(K + '.aquis', f.aquis, D.aquis.map(function(t){ return t.n; }), 'Aquisição', false), 'val sel', 'menu', (D.aquis.filter(function(t){ return t.n === f.aquis; })[0] || {}).evolui],
+      nivel: segue(f) ? [c.n, 'num', 'calc', 'Acompanha o seu nível.'] : [menuNum(K + '.nivel', c.n, 1, E.nivel, 'Nível'), 'num sel', 'menu', 'Fica no nível em que foi domada ou criada, até o seu.'],
+      classe: [c.cl, 'num', 'calc', 'A maior Classe que o nível dela permite.'],
+      maestria: [sg(c.M), 'num', 'calc', 'Sempre a sua, mesmo numa domada de nível menor.'],
+      entrada: [c.cl + ' PE', 'num', 'calc', 'Manifestar custa a maior Classe dela, e a sua Ação Bônus. Recolher não custa PE.'],
+      pontos: ['Atributos · ' + c.gastos + ' de ' + c.disp + ' pontos', st, st === 'at' ? 'Sobrou ponto: um marco de atributo chegou.' : st === 'ruim' ? 'Passou do total: 9 pontos e 1 por marco.' : '9 pontos, e 1 nos níveis 6, 10, 14, 18, 22, 26 e 30. Teto de 6 por atributo.'],
+      acerto: [menuLista(K + '.acerto', f.acerto, ATR.map(function(a){ return NOME[a]; }), 'Atributo de acerto'), 'val sel', 'menu', 'Escolhido na montagem. Vale para o ataque e para a CD.'],
+      ataque: [o(c.ataque === null ? '' : sg(c.ataque)), 'num', k, 'Atributo de acerto + a sua maestria.'],
+      cd: [o(c.cd === null ? '' : c.cd), 'num', k, '8 + atributo de acerto + a sua maestria.'],
+      vida: [o(c.atual), 'num'], vidaMax: [o('<small>de</small> ' + c.vida), 'num', k, '5 + Constituição + (' + (f.tipo === 'Corpo amaldiçoado de criação' ? 4 : 3) + ' + Constituição) × (nível − 1).'],
+      barra: ['<span class="med"><i style="width:' + (vz ? 0 : Math.round(100 * c.atual / c.vida)) + '%"></i></span>', 'cel', k],
+      defesa: [o(c.def), 'num', k, '10 + Destreza dela + metade da sua ' + E.defA + ' (' + E.defV + '). Com traje, a proteção entra no lugar dessa metade.'],
+      desl: [f.desl, 'num'],
+      trT: [menuLista(K + '.trT', f.trT, TRS.map(function(t){ return t[0]; }), 'Teste de Resistência treinado'), 'cel sel', 'menu'],
+      fis: [menuLista(K + '.fis', f.fis, ['Força','Destreza'], 'Físico usa', false), 'cel sel', 'menu'],
+      tarefa: [f.mesa.tarefa || '<i>A tarefa que ela está cumprindo: um alvo, um lugar ou um grupo.</i>', 'txt'],
+      bas: [menuLista(K + '.mesa.bas', f.mesa.bas, ['Disponível','Gasta','Investida em preparar'], 'Básica do ciclo', false), 'val sel', 'menu', 'Uma atuação básica por ciclo. Volta no começo do seu turno, se ela estiver em campo.'],
+      mov: [f.mesa.mov, 'num'],
+      ordem: [menuLista(K + '.mesa.ordem', f.mesa.ordem, ORDENS, 'Ordem pendente', false), 'val sel', 'menu', 'Cada corpo mantém uma especial aguardando.'],
+      estado: [menuLista(K + '.mesa.estado', f.mesa.estado, ESTADOS, 'Estado', false), 'val sel', 'menu'],
+      cond: [f.mesa.cond || '<i>Condições, usos por cena já gastos, excedente da queda.</i>', 'txt'],
+      livre: [menuLista(K + '.livre', f.livre, D.familias, 'Família Livre'), 'val sel', 'menu', 'Desconto de ' + LIVRE[c.cl] + ' nas Melhorias dela na Classe ' + c.cl + '.'],
+      a1: [menuLista(K + '.a1', f.a1, D.familias, 'Família aberta'), 'val sel', 'menu'], a2: [menuLista(K + '.a2', f.a2, D.familias, 'Família aberta'), 'val sel', 'menu'],
+      retorno: [2 * c.cl + ' PE', 'num', 'calc', 'Trazer de volta quem caiu sem ser destruída: o dobro da entrada. Volta com metade da vida.'],
+      extra: ex, def: [f.def || '<i>Uma ou duas frases: o que ela é e o que faz na equipe.</i>', 'txt'],
+      corpo: [f.corpo || '<i>Tamanho, membros, sentidos, como entende ordens e como avisa o que achou.</i>', 'txt'],
+      per: function(j){ var fora = j >= c.nper; return [fora ? '' : menuLista(K + '.per.' + j, f.per[j], D.pericias, 'Perícia'), 'cel sel' + (fora ? ' fora' : ''), fora ? '' : 'menu']; },
+      perRot: 'Perícias treinadas · ' + c.nper + ' <span class="vazio" style="margin-left:8px;text-transform:none;letter-spacing:0">(4 + metade da Inteligência)</span>',
+      hab: 'Habilidades <span class="peq">básica de ' + c.P.basica + 'd6 · ' + c.esp + ' espaço(s) de especial até a Classe ' + c.cl + ' · ' + c.ntal + ' talento(s)</span>'
+    };
+  }
+  function cx(p, a, b, r, rot, q, alt){ p('rot', a, r, b, r, rot, '', q[3]); p(q[1] || 'val', a, r+1, b, r + (alt || 2), q[0], q[2] || ''); }
+
+  // A ficha deitada: 43 colunas. Foto e identidade à esquerda, os números no meio, a mesa e as Famílias à direita.
+  // gr: função que registra grupo de linhas (ou nada, quando as fichas dividem as linhas e o grupo é um só)
+  function deitada(F, c0, r, f, i, nv, gr){
+    var p = pincel(F, c0), c = calc(f), q = campos(f, c, i), j;
+    p('faixa nsec', 0, r, 2, r+1, i + 1); p('faixa', 3, r, 42, r+1, (f.nome || 'Invocação ' + (i + 1)) + ' <span class="peq">' + resumo(f, c) + '</span>');
+    cx(p, 0, 10, r+3, 'Nome', q.nome); p('foto', 0, r+6, 10, r+18, FOTO);
+    cx(p, 0, 10, r+20, 'Tipo', q.tipo); cx(p, 0, 10, r+24, 'Aquisição', q.aquis);
+    cx(p, 12, 14, r+3, 'Nível', q.nivel); cx(p, 16, 18, r+3, 'Classe', q.classe); cx(p, 20, 22, r+3, 'Maestria', q.maestria); cx(p, 24, 26, r+3, 'Entrada', q.entrada);
+    p('rot', 12, r+7, 26, r+7, q.pontos[0], q.pontos[1], q.pontos[2]);
+    ATR.forEach(function(a, n){ p('rot', 12 + 3*n, r+8, 14 + 3*n, r+8, a, '', NOME[a]); p('num sel', 12 + 3*n, r+9, 14 + 3*n, r+10, menuNum('fichas.' + i + '.atr.' + a, f.atr[a], 0, 6, NOME[a]), 'menu'); });
+    cx(p, 12, 18, r+12, 'Atributo de acerto', q.acerto); cx(p, 20, 22, r+12, 'Ataque', q.ataque); cx(p, 24, 26, r+12, 'CD', q.cd);
+    p('rot', 12, r+16, 18, r+16, 'Vida · atual e máxima'); p('num', 12, r+17, 14, r+18, q.vida[0]); p('num', 15, r+17, 18, r+18, q.vidaMax[0], q.vidaMax[2], q.vidaMax[3]);
+    p('cel', 12, r+19, 18, r+19, q.barra[0], q.barra[2]);
+    cx(p, 20, 22, r+16, 'Defesa', q.defesa); cx(p, 24, 26, r+16, 'Desloc.', q.desl);
+    c.trs.forEach(function(t, n){ p('rot', 12 + 4*n, r+21, 14 + 4*n, r+21, t.nome, '', 'Teste de Resistência de ' + t.nome + ': ' + NOME[t.k] + (t.tr ? ' + a sua maestria (treinado).' : '.')); p('num' + (t.tr ? ' agora' : ''), 12 + 4*n, r+22, 14 + 4*n, r+23, f.nome ? sg(t.v) : '', f.nome ? 'calc' : ''); });
+    p('rot', 12, r+25, 18, r+25, 'TR treinado'); p(q.trT[1], 12, r+26, 18, r+26, q.trT[0], 'menu'); p('rot', 20, r+25, 26, r+25, 'Físico usa'); p(q.fis[1], 20, r+26, 26, r+26, q.fis[0], 'menu');
+    cx(p, 28, 42, r+3, 'Tarefa', q.tarefa);
+    cx(p, 28, 34, r+7, 'Básica do ciclo', q.bas); cx(p, 36, 42, r+7, 'Movimento restante', q.mov);
+    cx(p, 28, 34, r+11, 'Ordem pendente', q.ordem); cx(p, 36, 42, r+11, 'Estado', q.estado);
+    cx(p, 28, 42, r+15, 'Condições e usos gastos', q.cond, 3);
+    cx(p, 28, 32, r+20, 'Família Livre', q.livre); cx(p, 33, 37, r+20, 'Aberta', q.a1); cx(p, 38, 42, r+20, 'Aberta', q.a2);
+    cx(p, 28, 34, r+24, 'Retorno', q.retorno); p('rot', 36, r+24, 42, r+24, q.extra[0], '', q.extra[2]); p('num', 36, r+25, 42, r+26, f.nome ? q.extra[1] : '', f.nome && q.extra[1] !== '—' ? 'calc' : '');
+    cx(p, 0, 20, r+28, 'Definição', q.def, 3); cx(p, 22, 42, r+28, 'Corpo, sentidos e comunicação', q.corpo, 3);
+    p('rot', 0, r+33, 42, r+33, q.perRot);
+    [0,6,12,18,24,30,36].forEach(function(a, n){ var x = q.per(n); p(x[1], a, r+34, n === 6 ? 42 : a + 5, r+34, x[0], x[2]); });
+    p('lote', 0, r+36, 42, r+36, q.hab);
+    var h = r + 38, X = [0, 15, 30];
+    [0,1,2].forEach(function(n){ cartaN(F, c0 + X[n], h, f, c, i, ORDEM[n]); });
+    gr('mont' + '0', nv + 1, h + 7, h + 8, h + 16, false, 'a montagem das três habilidades');
+    var t = h + ALT;
+    p('rot', 0, t, 42, t, 'Talentos · ' + c.ntal + ' de 8');
+    for (j = 0; j < 8; j++) talento(p, t + 1 + j, f, c, i, j, 4, 16, true);
+    var l = t + 10;
+    p('lote', 0, l, 42, l, 'Mais habilidades <span class="peq">a segunda básica no nível 11 · as especiais 3 a 8, do nível 8 ao 28</span>');
+    var m = l + 2;
+    [0,1,2].forEach(function(fi){
+      [0,1,2].forEach(function(n){ var q2 = ORDEM[3 + 3*fi + n]; if (q2) cartaN(F, c0 + X[n], m + ALT*fi, f, c, i, q2); });
+      gr('mont' + (fi + 1), nv + 2, m + ALT*fi + 7, m + ALT*fi + 8, m + ALT*fi + 16, false, 'a montagem desta fileira');
+    });
+    var fim = m + ALT*2 + 16;
+    gr('mais', nv + 1, l, l + 1, fim, c.n >= 8, 'as habilidades de nível mais alto');
+    return fim;
+  }
+
+  // A ficha em pé: 13 colunas. A foto em cima e o resto empilhado.
+  function empe(F, c0, r, f, i, gr){
+    var p = pincel(F, c0), c = calc(f), q = campos(f, c, i), j, W = [[0,1],[2,4],[5,7],[8,10],[11,12]];
+    p('faixa nsec', 0, r, 1, r+1, i + 1); p('faixa', 2, r, 12, r+1, f.nome || 'Invocação ' + (i + 1));
+    p('foto', 0, r+3, 12, r+15, FOTO);
+    cx(p, 0, 12, r+17, 'Nome', q.nome);
+    p('rot', 0, r+21, 12, r+21, 'Tipo', '', q.tipo[3]); p('cel sel', 0, r+22, 12, r+22, q.tipo[0], 'menu');
+    p('rot', 0, r+24, 12, r+24, 'Aquisição', '', q.aquis[3]); p('cel sel', 0, r+25, 12, r+25, q.aquis[0], 'menu');
+    cx(p, 0, 2, r+27, 'Nível', q.nivel); cx(p, 3, 5, r+27, 'Classe', q.classe); cx(p, 6, 8, r+27, 'Maestr.', q.maestria); cx(p, 9, 12, r+27, 'Entrada', q.entrada);
+    p('rot', 0, r+31, 12, r+31, q.pontos[0], q.pontos[1], q.pontos[2]);
+    ATR.forEach(function(a, n){ p('rot', W[n][0], r+32, W[n][1], r+32, a, '', NOME[a]); p('num sel', W[n][0], r+33, W[n][1], r+34, menuNum('fichas.' + i + '.atr.' + a, f.atr[a], 0, 6, NOME[a]), 'menu'); });
+    cx(p, 0, 5, r+36, 'Acerto', q.acerto); cx(p, 6, 8, r+36, 'Ataque', q.ataque); cx(p, 9, 12, r+36, 'CD', q.cd);
+    p('rot', 0, r+40, 5, r+40, 'Vida'); p('num', 0, r+41, 2, r+42, q.vida[0]); p('num', 3, r+41, 5, r+42, q.vidaMax[0], q.vidaMax[2], q.vidaMax[3]); p('cel', 0, r+43, 5, r+43, q.barra[0], q.barra[2]);
+    cx(p, 6, 8, r+40, 'Defesa', q.defesa); cx(p, 9, 12, r+40, 'Desloc.', q.desl);
+    var T = [[0,2],[3,5],[6,8],[9,12]];
+    c.trs.forEach(function(t, n){ p('rot', T[n][0], r+45, T[n][1], r+45, t.nome.slice(0, 6), '', 'Teste de Resistência de ' + t.nome + ': ' + NOME[t.k] + (t.tr ? ' + a sua maestria (treinado).' : '.')); p('num' + (t.tr ? ' agora' : ''), T[n][0], r+46, T[n][1], r+47, f.nome ? sg(t.v) : '', f.nome ? 'calc' : ''); });
+    p('rot', 0, r+49, 5, r+49, 'TR treinado'); p(q.trT[1], 0, r+50, 5, r+50, q.trT[0], 'menu'); p('rot', 6, r+49, 12, r+49, 'Físico usa'); p(q.fis[1], 6, r+50, 12, r+50, q.fis[0], 'menu');
+    cx(p, 0, 12, r+52, 'Tarefa', q.tarefa);
+    cx(p, 0, 6, r+56, 'Básica do ciclo', q.bas); cx(p, 7, 12, r+56, 'Movimento', q.mov);
+    cx(p, 0, 6, r+60, 'Ordem pendente', q.ordem); cx(p, 7, 12, r+60, 'Estado', q.estado);
+    cx(p, 0, 12, r+64, 'Condições e usos gastos', q.cond);
+    p('rot', 0, r+68, 3, r+68, 'Livre', '', q.livre[3]); p('cel sel', 0, r+69, 3, r+69, q.livre[0], 'menu'); p('rot', 4, r+68, 7, r+68, 'Aberta'); p('cel sel', 4, r+69, 7, r+69, q.a1[0], 'menu'); p('rot', 8, r+68, 12, r+68, 'Aberta'); p('cel sel', 8, r+69, 12, r+69, q.a2[0], 'menu');
+    cx(p, 0, 5, r+71, 'Retorno', q.retorno); p('rot', 6, r+71, 12, r+71, q.extra[0], '', q.extra[2]); p('num', 6, r+72, 12, r+73, f.nome ? q.extra[1] : '', f.nome && q.extra[1] !== '—' ? 'calc' : '');
+    cx(p, 0, 12, r+75, 'Definição', q.def, 3); cx(p, 0, 12, r+80, 'Corpo e comunicação', q.corpo, 4);
+    p('rot', 0, r+86, 12, r+86, 'Perícias · ' + c.nper);
+    for (j = 0; j < 7; j++){ var x = q.per(j), a = j % 2 ? 7 : 0; p(x[1], a, r+87 + Math.floor(j/2), j % 2 ? 12 : 6, r+87 + Math.floor(j/2), x[0], x[2]); }
+    p('lote', 0, r+92, 12, r+92, 'Habilidades');
+    var h = r + 94;
+    [0,1,2].forEach(function(n){ cartaN(F, c0, h + ALT*n, f, c, i, ORDEM[n]); gr('mont' + n, 2, h + ALT*n + 7, h + ALT*n + 8, h + ALT*n + 16, false, 'a montagem desta habilidade'); });
+    var t = h + ALT*3;
+    p('rot', 0, t, 12, t, 'Talentos · ' + c.ntal + ' de 8');
+    for (j = 0; j < 8; j++) talento(p, t + 1 + j, f, c, i, j, 3, 12, false);
+    var l = t + 10;
+    p('lote', 0, l, 12, l, 'Mais habilidades');
+    for (j = 3; j < 10; j++){ var m = l + 2 + ALT*(j - 3); cartaN(F, c0, m, f, c, i, ORDEM[j]); gr('mont' + j, 2, m + 7, m + 8, m + 16, false, 'a montagem desta habilidade'); }
+    var fim = l + 2 + ALT*6 + 16;
+    gr('mais', 1, l, l + 1, fim, false, 'as habilidades de nível mais alto');
+    return fim;
+  }
+
+  // o conjunto: o que é do invocador e das invocações juntas (capítulo 16)
+  function conjuntoCampos(){
+    var ativas = E.fichas.filter(function(f){ return f.nome && f.mesa.estado === 'Em campo'; }).length;
+    return [
+      ['Seu nível', E.nivel, 'num', 'calc', 'Vem da FICHA.'], ['Maestria', sg(maestria(E.nivel)), 'num', 'calc', 'Vem da FICHA. Vale para o ataque, a CD e os TR treinados de todas.'],
+      ['Defesa usa', menuLista('defA', E.defA, ['Essência','Inteligência'], 'Atributo da Defesa', false), 'val sel', 'menu', 'Escolhido na primeira invocação. Vale para todas as fichas e para o limite de corpos. Hoje: ' + E.defV + ', metade ' + Math.floor(E.defV/2) + '.'],
+      ['Ativas', ativas + ' de 2', 'num', 'calc' + (ativas > 2 ? ' ruim' : ''), 'Conta as fichas com o estado Em campo. O limite geral é de duas.'],
+      ['Dano no turno', menuLista('dano', E.dano, ['0','1','2'], 'Corpos que causaram dano', false), 'num sel', 'menu', 'No seu turno, no máximo duas entidades atuam causando dano. Especial comandada fica fora da conta.'],
+      ['Reação coletiva', menuLista('reac', E.reac, ['Livre','Gasta'], 'Reação coletiva', false), 'val sel', 'menu', 'Uma para todas as entidades, separada da sua Reação pessoal.'],
+      ['Pontos de Vínculo', menuLista('vinc', E.vinc, ['0','1','2','3'], 'Pontos de Vínculo', false), 'num sel', 'menu', 'Só o Evocador: começa o combate em 0, ganha 1 no começo de cada turno, até 3.']
+    ];
+  }
+  function conjuntoDeitado(F, r){
+    var p = pincel(F, 4), X = [[0,4],[6,10],[12,16],[18,22],[24,28],[30,34],[36,42]];
+    p('faixa', 0, r, 42, r+1, 'O conjunto <span class="peq">o que é seu e delas juntas</span>');
+    conjuntoCampos().forEach(function(q, n){ p('rot', X[n][0], r+3, X[n][1], r+3, q[0], '', q[4]); p(q[2], X[n][0], r+4, X[n][1], r+5, q[1], q[3]); });
+    return r + 5;
+  }
+  function conjuntoEmPe(F, c0, r){
+    var p = pincel(F, c0), q = conjuntoCampos(), X = [[0,5],[7,12],[0,12],[0,5],[7,12],[0,12],[0,12]], R = [3,3,7,11,11,15,19];
+    p('faixa', 0, r, 12, r+1, 'O conjunto');
+    q.forEach(function(x, n){ p('rot', X[n][0], r+R[n], X[n][1], r+R[n], x[0], '', x[4]); p(x[2], X[n][0], r+R[n]+1, X[n][1], r+R[n]+2, x[1], x[3]); });
+    p('rot', 0, r+23, 12, r+23, 'As invocações');
+    E.fichas.forEach(function(f, i){ var c = calc(f);
+      p('rol', 0, r+24+i, 12, r+24+i, f.nome ? '<b>' + f.nome + '</b><span class="vazio">nv ' + c.n + ' · ' + c.atual + '/' + c.vida + ' · ' + f.mesa.estado.toLowerCase() + '</span>' : '<span class="vazio">' + (i + 1) + ' · vazia</span>', f.nome ? 'calc' : ''); });
+  }
+  function moldura(F){
+    F.add('topo', 1, 1, Math.min(F.cols, 47), 4, '<div class="tit"><span class="marca">式神</span><div><strong>INVOCAÇÕES</strong><small>Projeto M · as entidades, a montagem e a mesa</small></div></div><div class="quem">Kaito<br><small>nível ' + E.nivel + ' · maestria ' + sg(maestria(E.nivel)) + '</small></div>');
+  }
+  var DESENHA = {
+    a: function(){
+      var F = new Folha(3, 47), r = conjuntoDeitado(F, 6) + 3;
+      moldura(F);
+      E.fichas.forEach(function(f, i){
+        var fim = deitada(F, 4, r, f, i, 1, function(id, nv, fx, a, b, n, nome){ F.grupo('a' + i + id, nv, fx, a, b, n, nome); });
+        F.grupo('a' + i, 1, r + 1, r + 2, fim, i < 2, 'a ficha ' + (f.nome || i + 1));
+        r = fim + 3;
+      });
+      F.add('lomb', 1, 5, 2, F.max, '<span>PROJETO M · INVOCAÇÕES</span>');
+      return F;
+    },
+    b: function(){ return lado(43, 152, function(F, c0, f, i, gr){ return deitada(F, c0, 6, f, i, 0, gr); }); },
+    c: function(){ return lado(13, 62, function(F, c0, f, i, gr){ return empe(F, c0, 6, f, i, gr); }); }
+  };
+  // as fichas uma ao lado da outra: o painel do conjunto, e cada ficha com a lombada do nome e o seu grupo de colunas
+  function lado(W, cols, desenho){
+    var F = new Folha(2, cols), s = 18, k = E.forma, lombadas = [];
+    moldura(F);
+    conjuntoEmPe(F, 4, 6);
+    F.colgrupo(k + 'conj', 3, 4, 17, true, 'o conjunto');
+    E.fichas.forEach(function(f, i){
+      desenho(F, s + 1, f, i, i === 0 ? function(id, nv, fx, a, b, n, nome){ F.grupo(k + id, nv, fx, a, b, n, nome); } : function(){});
+      F.colgrupo(k + i, s, s + 1, s + W + 1, W === 13 ? i < 2 : i === 0, 'a ficha ' + (f.nome || i + 1));
+      lombadas.push([s, '<span>' + (i + 1) + ' · ' + (f.nome || 'vazia').toUpperCase() + '</span>']);
+      s += W + 2;
+    });
+    var fim = F.max;
+    lombadas.forEach(function(l){ F.add('lomb esp', l[0], 6, l[0], fim, l[1]); });
+    F.add('lomb', 1, 5, 2, F.max, '<span>PROJETO M · INVOCAÇÕES</span>');
+    return F;
+  }
+
+  // ---------- desenhar, medir e os controles ----------
+  var folha = document.getElementById('folha-inv');
+  function desenha(){
+    var F = DESENHA[E.forma]();
+    folha.className = 'folha ' + E.pal;
+    F.monta(folha);
+    var m = F.mede(aberto), t = F.mede(function(){ return true; });
+    document.getElementById('forma-diz').textContent = FORMAS[E.forma];
+    document.getElementById('medida').textContent = t.colunas + ' colunas e ' + t.linhas + ' linhas com tudo aberto; à vista agora, ' + m.colunas + ' colunas e ' + m.linhas + ' linhas. ' + F.cel.length.toLocaleString('pt-BR') + ' caixas desenhadas, ' + F.grupos.length + ' grupos de linhas e ' + F.colgs.length + ' de colunas.';
+    document.querySelectorAll('[data-forma]').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.forma === E.forma)); });
+    document.querySelectorAll('[data-pal]').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.pal === E.pal)); });
+    document.getElementById('nivel').value = String(E.nivel); document.getElementById('defv').value = String(E.defV);
+    tabela();
+  }
+  function tabela(){
+    var guarda = E.forma, cols = ['a','b','c'], nomes = ['Colunas da aba', 'Linhas com tudo aberto', 'Linhas como a aba nasce', 'Colunas como a aba nasce', 'Caixas que o construir() desenha', 'Grupos de linhas e de colunas'];
+    var linhas = nomes.map(function(n){ return [n]; });
+    var nasceB = 0;
+    cols.forEach(function(k){
+      E.forma = k; var F = DESENHA[k](), t = F.mede(function(){ return true; }), n = F.mede(function(g){ return g.nasce; });
+      if (k === 'b') nasceB = n.colunas;
+      [t.colunas, t.linhas, n.linhas, n.colunas, F.cel.length.toLocaleString('pt-BR'), F.grupos.length + ' e ' + F.colgs.length].forEach(function(x, i){ linhas[i].push(x); });
+    });
+    E.forma = guarda;
+    linhas.push(['Cabe em 47 colunas', 'sim', 'não: o conjunto e uma ficha aberta dão ' + nasceB, 'sim, com o conjunto e duas fichas']);
+    linhas.push(['Como fecha uma ficha', 'grupo de linhas; sobra a faixa com nome, nível, vida e estado', 'grupo de colunas; sobra a lombada com o nome', 'grupo de colunas; sobra a lombada com o nome']);
+    linhas.push(['Efeito colateral', 'nenhum: cada ficha tem as linhas dela', 'as fichas dividem as linhas: abrir a montagem abre em todas', 'o mesmo de B, e uma carta de habilidade por linha deixa a ficha comprida']);
+    linhas.push(['Ver duas fichas de uma vez', 'rolando para baixo', 'só em monitor largo', 'sim, lado a lado']);
+    var h = '<thead><tr><th>Medida</th>' + ['A · Deitadas, empilhadas', 'B · Deitadas, lado a lado', 'C · Em pé, lado a lado'].map(function(n, i){ return '<th' + (cols[i] === E.forma ? ' class="agora"' : '') + '>' + n + '</th>'; }).join('') + '</tr></thead><tbody>';
+    linhas.forEach(function(l){ h += '<tr>' + l.map(function(x, i){ return '<td' + (i ? ' class="n' + (cols[i-1] === E.forma ? ' agora' : '') + '"' : '') + '>' + x + '</td>'; }).join('') + '</tr>'; });
+    document.getElementById('tab-formas').innerHTML = h + '</tbody>';
+  }
+  function poe(caminho, valor){
+    var q = caminho.split('.'), o = E, i;
+    for (i = 0; i < q.length - 1; i++) o = o[q[i]];
+    o[q[i]] = typeof o[q[i]] === 'number' ? Number(valor) : valor;
+  }
+  function grupos(){ var F = DESENHA[E.forma](); return F.grupos.concat(F.colgs); }
+  folha.addEventListener('change', function(ev){ var k = ev.target.getAttribute('data-k'); if (k){ poe(k, ev.target.value); desenha(); } });
+  folha.addEventListener('click', function(ev){
+    var b = ev.target.closest('[data-grupo]'); if (!b) return;
+    var id = b.getAttribute('data-grupo'), g = grupos().filter(function(x){ return x.id === id; })[0];
+    E.aberto[id] = !aberto(g); desenha();
+  });
+  document.querySelectorAll('[data-forma]').forEach(function(b){ b.addEventListener('click', function(){ E.forma = b.dataset.forma; desenha(); }); });
+  document.querySelectorAll('[data-pal]').forEach(function(b){ b.addEventListener('click', function(){ E.pal = b.dataset.pal; desenha(); }); });
+  document.querySelectorAll('[data-grupos]').forEach(function(b){ b.addEventListener('click', function(){
+    var modo = b.dataset.grupos;
+    grupos().forEach(function(g){ if (modo === 'nasce') delete E.aberto[g.id]; else if (modo === 'abre') E.aberto[g.id] = true; else if (/^(a|b|c)\d$/.test(g.id)) E.aberto[g.id] = false; });
+    desenha();
+  }); });
+  document.getElementById('volta').addEventListener('click', function(){ zera(); desenha(); });
+  var sn = document.getElementById('nivel'), sd = document.getElementById('defv'), i;
+  for (i = 2; i <= 30; i++) sn.add(new Option(i, i));
+  for (i = 0; i <= 6; i++) sd.add(new Option(i, i));
+  sn.addEventListener('change', function(){ E.nivel = Number(sn.value); desenha(); });
+  sd.addEventListener('change', function(){ E.defV = Number(sd.value); desenha(); });
+  document.getElementById('carimbo').textContent = D.versao + ', arquivo ' + D.livro;
+  desenha();
+})();
+</script>
