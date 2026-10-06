@@ -3,7 +3,7 @@
 Procura ativamente o erro no que eu mesmo escrevi."""
 import json, re
 SPEC = open('ESPECIFICACAO-ficha-digital.md', encoding='utf-8').read()
-MAN = ' '.join(open('manual.txt', encoding='utf-8').read().split())   # o pdftotext -layout muda o espacamento a cada extracao
+MAN = ' '.join(open('manual.txt', encoding='utf-8').read().split())   # 04/10/2026: o manual.txt sai do LIVRO-COMPLETO.md
 CAT = json.load(open('catalogo-projeto-m.json', encoding='utf-8'))
 falhas = []
 def checa(desc, cond, detalhe=""):
@@ -11,7 +11,7 @@ def checa(desc, cond, detalhe=""):
     if not cond: falhas.append(desc)
 
 print("AFIRMACOES DA SPEC vs CATALOGO")
-checa("as 9 Familias da spec sao as do catalogo",
+checa(f"as {len(CAT['familias'])} Familias da spec sao as do catalogo",
       all(f in SPEC for f in CAT["familias"]),
       str([f for f in CAT["familias"] if f not in SPEC]))
 checa("as 23 pericias aparecem na spec",
@@ -20,7 +20,7 @@ checa("as 23 pericias aparecem na spec",
 checa("os 11 oficios aparecem na spec",
       all(o in SPEC for o in CAT["oficios"]),
       str([o for o in CAT["oficios"] if o not in SPEC]))
-checa("as 15 Trilhas aparecem na spec",
+checa(f"as {len(CAT['trilhas'])} Trilhas aparecem na spec",
       all(t in SPEC for t in CAT["trilhas"]),
       str([t for t in CAT["trilhas"] if t not in SPEC]))
 checa("as 10 Formas aparecem na spec",
@@ -39,14 +39,15 @@ checa(f"a spec diz '{m.group(1)} das {m.group(2)}' e o catalogo da {orfas} das {
       f"catalogo={orfas} das {total}" if m else "nao achei o '**N das M Melhorias**' na spec")
 
 print("\nAFIRMACOES DA SPEC vs MANUAL")
+# 04/10/2026: as agulhas sao as frases do livro reconstruido
 for frase, agulha in [
-    ("Vida do Bastiao 12/7 e PE 4",        "Bastião d12 12 7 4"),
-    ("teto de dano e 4 x Classe",          "Teto de dano = 4 × Classe em dados"),
-    ("devolucao maxima e 2 x Classe",      "Devolução máxima = 2 × Classe"),
-    ("Liberacao Maxima da + Classe",       "Liberação Máxima = + Classe em dados"),
+    ("Vida do Bastiao 12/7 e PE 4",        "Vida no nível 1 | 12 + Constituição. Vida em cada nível seguinte | +7 + Constituição. PE máximo | 4 × seu nível"),
+    ("teto de dano e 4 x Classe",          "o total não pode passar de 4 × Classe em d8"),
+    ("devolucao maxima e 2 x Classe",      "O total não passa de 2 × Classe"),
+    ("Liberacao Maxima da + Classe",       "acrescente +Classe em d8 ao dano da montagem"),
     ("a Forma nao conta como Melhoria",    "A Forma não conta como Melhoria."),
-    ("Classe 0 e gratis",                  "Classe 0 é\ngrátis."),
-    ("arredondamento contra voce",         "Arredonde para cima"),
+    ("Classe 0 e gratis",                  "Classe 0 reúne aplicações pequenas que você pode usar sem gastar PE."),
+    ("arredondamento contra voce",         "Arredonde os preços para cima."),
 ]:
     checa(frase, agulha.replace("\n"," ") in MAN.replace("\n"," "), "nao achei no manual")
 

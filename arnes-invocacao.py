@@ -305,8 +305,9 @@ print("PASSO 5 — o guarda da concordância: se o manual.txt voltar a ter a fic
 print("           derivada, que morreu na v0.180, a checagem tem de acender")
 print("=" * 74)
 tmp = monta_copia()
-if edita(tmp, "manual.txt", "A invocação tem os cinco atributos, e eles são dela.",
-         "A ficha dela é derivada da sua."):
+# 04/10/2026: o livro reconstruido nao tem mais a frase da ficha propria; a mecanica morta entra no comeco do capitulo
+if edita(tmp, "manual.txt", "## 16. Invocações em campo",
+         "## 16. Invocações em campo\n\nA ficha dela é derivada da sua."):
     cod, saida = roda(tmp)
     a_certa = any("ficha derivada" in lin or "mesma ficha propria" in lin
                   for lin in saida.split("\n") if lin.strip().startswith("[FALHA]"))
@@ -318,6 +319,20 @@ if edita(tmp, "manual.txt", "A invocação tem os cinco atributos, e eles são d
 else:
     print("  [INVÁLIDA] a troca nao bateu no manual.txt")
     falhas.append("guarda da concordância (troca nao bateu)")
+shutil.rmtree(tmp, ignore_errors=True)
+
+# 04/10/2026: o outro lado: o json para de declarar a divergencia com o livro reconstruido
+tmp = monta_copia()
+if edita(tmp, "invocacao.json", "PENDENTE de ser refeita no livro novo", "igual ao livro novo"):
+    cod, saida = roda(tmp)
+    if cod != 0 and any("declara a divergencia" in lin for lin in saida.split("\n") if lin.strip().startswith("[FALHA]")):
+        print("  [ACENDE] o json sem declarar a pendência do livro reconstruído faz a guarda acender")
+    else:
+        print("  [NÃO ACENDE] a guarda continuou verde sem a declaração da pendência")
+        falhas.append("guarda da pendência do livro reconstruído")
+else:
+    print("  [INVÁLIDA] a troca nao bateu no invocacao.json")
+    falhas.append("guarda da pendência (troca nao bateu)")
 shutil.rmtree(tmp, ignore_errors=True)
 
 # =====================================================================

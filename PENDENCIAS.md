@@ -2039,7 +2039,7 @@ menu (o + de cada par na linha da legenda, o da descrição na linha dos número
 (o aviso e a conta voltando); trocar a Origem na `FICHA` e ver a Ficha Amaldiçoada e o menu mudarem de nome, e o Domínio
 dizer que a rota não tem; e trocar de paleta, contando os cliques até a última aba terminar.*
 
-### B33 · O número da `CARTEIRA` não acompanha a versão do sistema — **respondido "A" (pôr o catálogo em dia); medido em 02/10/2026, e a hora de fazer espera ele**
+### B33 · O número da `CARTEIRA` não acompanha a versão do sistema — **FEITO em 04/10/2026: o catálogo foi posto em dia com o livro reconstruído (ver o B36)**
 
 *Em 02/10/2026, depois de montar o B32: "por sinal a versão n atualizo automatico", com a foto do carimbo da `CARTEIRA`:
 `Nº M-0258-····` e `Emitida 02.10.2026`. O livro está na v0.331.*
@@ -2143,7 +2143,7 @@ leem é o mesmo, e só o carimbo mudou (o Ficha.gs não mudou com isso).*
 **O que só o Sheets diz, e falta ele ver:** *o riscado aparecendo e sumindo quando o NÍVEL muda; a etiqueta "Abre no 15"
 cabendo nas três colunas; os grupos de cada fileira; e a arte ao lado do título.*
 
-### B35 · A foto da `CARTEIRA` entra na célula, com a moldura em volta — **FEITA em 03/10/2026 (a B+); falta montar no Sheets, e a ligação com a `FICHA PESSOAL` espera o teste dele**
+### B35 · A foto da `CARTEIRA` entra na célula, com a moldura em volta — **FEITA em 03/10/2026 (a B+); falta montar no Sheets; a ligação com a `FICHA PESSOAL` foi feita no B38**
 
 *Pedido dele em 03/10/2026: "Sabe no ficha aonde temos a foto? Então, é uma 'imagem', então não dá pra inserir imagem
 nela, tem que ser uma imagem 'solta' por cima que o jogador põe, oq não é muito bom. Eu não sei se teria alguma forma de
@@ -2224,3 +2224,245 @@ continuam verdes.
 - o **B15**, que é arrumação de arquivo desta pasta
 - o **B7** e o **B10**, que são desenho da ficha
 
+### B36 · A ficha posta em dia com o livro reconstruído — **FEITA em 04/10/2026; falta montar no Sheets**
+
+*Pedido dele em 04/10/2026, antes de mesclar a revisão do livro (a PR #2 do JJK---Project): "atualize a ficha do sistema
+pfvr, colocando o que faltava e modificando o que foi mudado (origens ainda vão ser mudadas, mas siga como estão agora)".
+O livro passou a ser a candidata editorial reconstruída (`LIVRO-COMPLETO.md`, 382 páginas), e o B33 fechou junto: o
+carimbo da `CARTEIRA` passou de `0.258` para `0.331 · 04/10`.*
+
+**De onde o livro entra agora.** *O `manual.txt` deixou de sair do PDF com `pdftotext`: o `extrair-manual.py` o tira do
+`LIVRO-COMPLETO.md`, sem as marcas de formatação, com o `#` dos títulos e as tabelas uma fileira por linha (" | " entre
+as colunas). O `manual-fonte.json` guarda o arquivo e o hash. O `livro.py` lê seção e tabela. Os dois extratores
+(`extrair_tecnica.py` e `extrair_equipamento.py`) deixaram de ler os capítulos do HD e leem o `manual.txt`, que mora aqui.
+O catálogo foi remontado do livro e é conferido por outro caminho no `conferir-catalogo.py` (reescrito: 134 checagens,
+e 14 perturbações numa cópia acendem todas).*
+
+| o que mudou no livro | o que mudou na ficha |
+|---|---|
+| seis Caminhos: entrou o **Incursor** (6 + 4 de vida, 6 PE, Acrobacia · Intuição, as treze categorias) | menu de Caminho com seis, tabela de Caminhos da DADOS escrita pelo catálogo (a vida e o PE da FICHA leem a faixa nova), o treino de arma do Incursor |
+| o Bastião treina `Atletismo` · `Provocar` | a perícia fixa marcada sozinha |
+| dezoito Trilhas, dez com nome novo | menu de Trilha; a Empunhadura do Arremate virou Arma Condutora (Condutor Armado), e o Treino de Combate (Parceria) entrou no mesmo aviso |
+| `Incapacitado` virou `Guarda Aberta` | menu de condição |
+| Passiva virou **Talento**, Classe Passiva virou **Categoria de Efeito**, Passiva Livre virou **Expressão da técnica** | os textos e rótulos da FICHA AMALDIÇOADA e do menu rápido (CP → CE); as chaves internas continuam `passivas` e `classe_passiva` |
+| a Restrição da Classe 0 não devolve mais o dado | a conta da Classe 0 |
+| Salto, Queima e **Estilhaço** acrescentam dados; o Remate conta 25% no teto de 4 × Classe | a checagem do teto do feitiço |
+| a Técnica Máxima monta com 8, 12 e 16 pontos (eram 8, 8 e 12) | a tabela da DADOS_AM, lida do livro |
+| o Toque fica em 1,5 m também na Classe 0; a Onda vai a raio 4,5 m nas Classes 6 e 7; o último degrau de distância é "visão a olho nu" | o alcance das cartas |
+| arma empunhada sem a Força: deslocamento pela metade e **sem Destreza na Defesa**; uniforme ou escudo sem a Força: **sem a proteção dele** | a FICHA PESSOAL reescreve o DESLOCAMENTO e a DEFESA da FICHA |
+| carga acima do limite: **não anda** (era a metade) | o DESLOCAMENTO vai a 0 m |
+| o Volume é decimal (Traje 1 = 0,3; Broquel = 0,5; armas de 0,1 a 4) e soma sem arredondar | a carga |
+| XP: desconto da semana até a 7ª e "metade da anterior"; arredonda para baixo **só no fim**, e o positivo menor que 1 vira 1 | o Total de cada missão (o múltiplo de 12,5 saiu do `fora_do_livro`) |
+| os Legados viraram narrativo, de rolagem e de exceção; Reencarnado virou **Encarnado** | o catálogo, como o livro está hoje (ele avisou que as Origens ainda vão mudar) |
+| as fontes de reserva temporária mudaram (Embalo, Refluxo, Proteger a Manifestação) | a A2 do `decisoes-ficha.json` |
+| os vetos de combinação (Rápido, Reação, Atrasar, Parado, Armado, Carregar) estão na tabela de Combinar peças | a A3, com sete pares |
+
+*Conferido pelos validadores da bateria, cada um posto no texto novo; os arneses de decisão, de delta, de invocação, da
+pessoal e do feitiço passam com as perturbações novas. A prova da conta da FICHA AMALDIÇOADA deixou de ser os 33
+feitiços prontos (o livro novo não tem a tabela) e passou a ser os **10 exemplos de montagem** que o livro imprime, cada
+um com a frase do resultado conferida: Fio de Arrasto, Peso nas Mãos, Corte Medido nas Classes 2, 3 e 5, o Salto de
+exemplo, a Rede de contenção, o Projétil e a Aura com Fura, e o Corte de ruptura. Os dez saem iguais na planilha e no
+`conferir_feitico.py`.*
+
+**O que fica para ele, e fica fora desta rodada:**
+
+- **Montar no Sheets** *e conferir o Incursor no menu, a DEFESA com arma pesada sem a Força e a carga acima do limite.*
+
+**O que ele decidiu depois, ainda em 04/10/2026, e já está na ficha:**
+
+- **A vida inicial da Vanguarda: "Toda vida inicial é a máxima do dado".** *A tabela de Características dela no livro
+  reconstruído só traz "Vida por nível 5". O ganho por nível é a média do dado para cima, e os cinco Caminhos que o livro
+  numera obedecem (12/7 é d12, 8/5 é d8, 6/4 é d6); 5 por nível é o d8, então a Vanguarda começa com 8. O número não
+  mudou, mudou a fonte: o `fora_do_livro` do catálogo guarda a regra, e o `conferir-catalogo.py` confere os seis
+  Caminhos contra ela. A checagem antiga só via se o catálogo e o `fora_do_livro` batiam entre si, e ficava verde com 10
+  nos dois; a nova acende.*
+- **A troca de duas perícias por arma: "Até duas armas, ja q todo caminho da no máximo duas pericias".** *O livro diz
+  "pode trocar duas das cinco perícias por treino em uma arma específica", sem dizer quantas vezes. A ficha já fazia
+  assim desde a extensão de 17/09/2026 (o menu vai até "2 armas (-4 pericias)"); agora a decisão está registrada.*
+- **A falha e a posição da semana na mesma missão: "Sim, falta colocar as duas opções".** *O livro aplica as duas ("Sua
+  terceira missão da semana era longa e terminou em falha com metade da recompensa. A conta é 200 × ½ × ½ = 50 XP."). O
+  menu de desconto da FICHA PESSOAL ganhou, para cada posição que paga menos que cheio, a versão com falha pela metade
+  dela (da "3ª · 50% · falha", que paga 25%, à "7ª · 3,125% · falha"); a "Falha · metade" continua para as duas
+  primeiras. A `regressao-ficha-pessoal.py` passa todas as combinações pela planilha e confere o exemplo do livro.*
+
+**Achado na bateria final:** *a troca da faixa dos Caminhos na FICHA (`DADOS!$N$5:$U$10`, para caber o Incursor) passou o
+escape do `re.sub` para dentro da fórmula, e a vida e o PE da FICHA davam `Err:508`. Só a `regressao-kaori-na-ficha.py`
+viu, porque as outras comparam o script com a planilha gerada, e os dois saíam quebrados iguais. Consertado no
+`dados_catalogo.py`, e o `conferir-ficha-xlsx.py` passou a reprovar fórmula com barra invertida.*
+
+**Fica para outra rodada:**
+
+- **A ficha da invocação** (`ficha-invocacao/`) *segue o capítulo 16 da v0.251. O livro reconstruído reescreveu as
+  invocações e trocou as Trilhas do Evocador; refazê-la é uma rodada própria, e ele decidiu em 04/10/2026 que fica para outra parte do trabalho ("pode deixar a reconstrução das invocações na ficha para depois mesmo, isso irei fazer em outra parte"). O `invocacao.json` declara a pendência, e
+  o `conferir-invocacao.py` acende se a declaração sair.*
+- **A ficha .docx da Kaori** *é de 07/09 e marca Intimidação. O `conferir-kaori.py` passou a ler o quadro da Kaori no
+  livro, que vence a .docx onde os dois trazem o campo.*
+
+### B37 · As cartas de Habilidades trazem o livro, numa coluna só — **FEITA em 05/10/2026; falta montar no Sheets**
+
+*Pergunta do Mizuki sobre as cartas da seção 7 (B34), que nasceram escritas à mão e prontas para o livro: "nas caixas
+de habilidades dos caminhos e trilhas, imagino que vai ser automatico / mas... vai caber? kkkk".*
+
+**A medida.** A caixa de texto da carta tem 13 colunas de 28 px por 6 linhas de 21 px, em Roboto 10: umas 7 linhas,
+perto de 340 letras. Medidas com a fonte, contra o livro reconstruído, as 109 cartas (6 Caminhos com 5 cada, 15 Trilhas
+e as 3 rotas do Batedor com 4 cada, menos o nível 7 do Incursor, que é espalhado): o texto inteiro cabe em 4, a carta
+típica pede 23 linhas e a maior, 133 (o nível 2, que é a mecânica central de cada Caminho e Trilha, pede 47 no meio).
+O primeiro parágrafo cabe em 108, mas às vezes não diz o principal (o Chega Mais abria só com "O raio de Olhos Em Mim
+aumenta para 9 m."). Aumentar a caixa não dava.
+
+*A primeira versão, abaixo, foi a de três cartas por fileira com o resumo; a coluna única, mais abaixo, substituiu o
+resumo pelo texto inteiro.*
+
+**O que ele escolheu:** *"B - mas dando permissão para o jogador apagar o texto e colocar oq preferir"*: o nome e o
+resumo do livro na carta, o texto inteiro na nota. E, perguntado no mesmo dia: a rota do Batedor se escolhe no menu de
+Trilha (*"No menu de Trilha"*), e o nome tem duas linhas (*"Nome em duas linhas"*). A Rajada Marcial do Pugilista, que
+o livro dá no nível 7 e que "Não acrescenta um novo degrau de Trilha no nível 7", vai na carta 7 do Caminho: *"No caso
+do pungilista, o nv7 seria do caminho mesmo, sei que é uma trilha ligada a um nv do caminho, mas é aonde pensei"*.
+
+**Como ficou:**
+
+| peça | o que faz |
+|---|---|
+| `ficha-v01/extrair_habilidades.py` | lê do `manual.txt` o nome, o resumo e o texto de cada habilidade, e grava o `habilidades-do-livro.json`. O começo de cada uma é a marca do livro ("Nível N:", "Nível N.", o título "Nível N — Nome", um título com "nível N" ou com o nome); cada marca abre um trecho, e o trecho vai para a habilidade dona dela (o Pugilista intercala o nível 7 no meio do 2). O resumo é o primeiro parágrafo; se ele é curto (menos de 80 letras) ou só a linha de ficha ("Reação + 2 PE."), leva o seguinte junto, e tudo fica em frases inteiras até 330 letras: com a fonte, todos cabem em 6 linhas, uma de folga. O nome vai inteiro até 75 letras (os de até 73 cabem nas duas linhas; os de 84 ou mais pedem três); acima, "as primeiras e mais N", em 3 nomes do nível 2. `--confere` refaz e compara, e todo texto gravado tem de estar no manual |
+| `ficha_automatica.trilhas_do_menu` | o menu de Trilha com o Batedor aberto nas três rotas ("Batedor · Yumi"), lidas dos títulos do livro; a Vanguarda passa a ter 5 entradas, e o menu, 20 |
+| `ficha-v01/habilidades.py` | publica na DADOS_AM o endereço do nome e do texto de cada carta (ADDRESS, que anda com a planilha), põe o nome em duas linhas (31,5 pt) e escreve o `apps-script/Habilidades.gs` |
+| `apps-script/Habilidades.gs` | o texto do livro, 111 habilidades (a 111ª é a carta 7 do Incursor com a Rajada Marcial). Mora num terceiro arquivo do Apps Script porque são uns 220 KB, e o `Ficha.gs` iria a 950 KB, acima do teto de 900 KB que o `conferir-ficha-xlsx.py` guarda; a montagem também não ganha 111 células de texto longo |
+| `Codigo.gs`: `habilidadesDaFicha_`, `cartasDaFicha_`, `habilidadeQueFica_` | quando o Caminho ou a Trilha mudam, escreve o nome e o resumo como valor solto (não fórmula: o `devolverConta_` devolveria a conta por cima do jogador) e o texto na nota. Só reescreve a carta vazia ou ainda com um texto do livro daquela carta; o que o jogador escreveu fica, e a nota continua sendo o livro. Apagar a carta deixa ela vazia, e ela volta a encher na próxima troca de Caminho ou de Trilha |
+
+**Conferido:** pela `regressao-amaldicoada.py` (o `--confere`, o endereço de cada carta, o nome em duas linhas, o
+`Habilidades.gs` igual ao gerador e abaixo do teto, todo Caminho e toda Trilha do menu com as cartas completas, o menu
+com as rotas do livro, a carta junta do Pugilista, e o nome e o resumo dentro da medida); pelo `regressao-delta.js` (a
+conta do script contra o livro inteiro: todo Caminho com cada Trilha dele, a troca, o que o jogador escreveu, a carta
+apagada, sem Caminho, o Pugilista); e pelo `regressao-construir.js`, na planilha montada, pelo onEdit de verdade. O
+`arnes-delta.py` planta 6 defeitos novos (vai a 37), o `arnes-pessoal.py` 3 (vai a 54) e o `arnes-amaldicoada.py` 3 (vai a
+63); todos acendem. *O do nome em uma linha só passava calado na primeira rodada: a checagem media a altura contra a
+constante do próprio gerador, e mudar a constante mudava a checagem junto. Agora ela mede contra a linha comum da FICHA
+(o dobro de 15,75 pt).*
+
+**Fica para ele, no Sheets:** colar o `Habilidades.gs` (o `COMO-SUBIR.md` virou "Colar os três arquivos"); ver a
+altura da caixa (ver a coluna única, abaixo); e ver se o projeto aceita os três arquivos juntos (o teto de ~1 MB que o projeto usa é por arquivo, e as fontes que
+achei falam em 50 MB por projeto, nenhuma delas oficial).
+
+
+**A coluna única, no mesmo dia.** *Pedido dele depois de ver a primeira versão: "faça ser apenas uma coluna ao invés de
+três / assim o texto vai ter bastante espaço, mantenha uma boa altura em linhas pra cada carta e vemos se agora cabe
+tudo. Não só isso, como n esqueça do espaçamento de uma linha entre uma carta e outra".* Na largura da seção (D a AT,
+1.204 px), o texto inteiro pede 9 linhas na carta típica, mas o nível 2 vai a 62 (o do Evocador). Medido: altura igual
+de 15 linhas cabia 83 de 111 (a seção iria a uns 170 linhas); do tamanho da maior de cada nível, 111 de 111 e uns 287.
+Ele escolheu *"Acompanha a Escolha, mas ainda tendo a caixa retratil da descrição"*, e pediu o texto legível: *"n
+esqueça de tentar deixar de forma legivel, espaçar os paragrafos e talz"*.
+
+| o que mudou | como |
+|---|---|
+| a carta | a largura da seção: a etiqueta e o nome numa linha, a caixa do texto em 4 linhas, num grupo que abre e fecha (nasce aberto), e uma linha vazia antes da carta seguinte. A seção vai de 37 para 77 linhas (da 88 à 164), e o menu rápido começa na 165 |
+| o texto | o texto inteiro do livro, na carta; o resumo e o nome encurtado saíram (o nome inteiro cabe numa linha: o maior tem 685 de 1.114 px). Legível: uma linha em branco entre os parágrafos, a tabela e a lista inteiras, e os subtítulos do livro numa linha própria, em negrito (texto rico, `setRichTextValue`). Sai a marca "Nível 7: Ataque Extra." do começo, que a etiqueta e o nome já dizem |
+| a caixa estica | o `linhasDoTexto_` conta as linhas pela largura de cada letra da Roboto 10 (`ficha-v01/larguras-roboto-10.json`, do `medir_fonte.py`: somar as letras dá a medida da frase com 0,16% de diferença no meio e 0,56% no pior caso), e o `alturaDaCaixa_` divide a altura pelas 4 linhas da caixa (no texto mais longo, uns 285 px cada, longe de qualquer teto de altura de linha). Estica quando o Caminho ou a Trilha mudam e quando o jogador escreve numa caixa, as livres inclusive |
+| a nota | só aparece quando o texto da carta não é o do livro: aí ela mostra o livro |
+
+**Conferido:** o `regressao-delta.js` (70 checagens: o script conta as linhas dos 111 textos igual ao gerador em
+Python, a caixa comporta o texto e sobra só o arredondamento, o negrito cai exatamente nos subtítulos, os parágrafos vêm
+separados); o `regressao-construir.js` (pelo onEdit de verdade: as cartas, a altura de cada caixa, o negrito, o texto do
+jogador sem negrito e com o livro na nota, a caixa livre que estica); e a `regressao-amaldicoada.py` (a largura da
+seção, a linha vazia entre as cartas, o grupo que abre e fecha, a medida do `Habilidades.gs` igual à das colunas da
+planilha, e toda letra do livro na tabela). Os arneses ganham os defeitos da coluna única: 65 no `arnes-amaldicoada`, 57
+no `arnes-pessoal` e os do `arnes-delta`. O `medidas/ver-aba.py` desenha as cartas com o livro e a altura que o script
+dá, e passou a respeitar as quebras de linha do texto (o Sheets respeita).
+
+**Fica para ele, no Sheets:** a altura da linha de texto é estimada (18 px por linha de Roboto 10); se sobrar ou faltar
+espaço embaixo do texto, o número mora no `LINHA_PX` do `habilidades.py`.
+
+**O nível 7 da Vanguarda, no mesmo dia.** *O Mizuki notou que a Vanguarda era o único Caminho com uma habilidade só no
+nível 7 ("o nv7 do vanguarda é o unico caminho com só uma habilidade, né?") e escreveu a segunda: "Execução Preparada:
+1× por Sequência, ao Concluir depois de duas ou mais Conduções, imponha −1 a um TR adicional da Conclusão."* Ela entrou
+primeiro no livro (D42 do `JJK---Project`, que o registra em `revisao-interfaces/CORRECOES-APLICADAS.md`), e daí na ficha:
+
+| o que mudou | como |
+|---|---|
+| `manual.txt` | tirado de novo do `LIVRO-COMPLETO.md` (hash `e747cf74…`). Só mudaram a linha da tabela da Vanguarda ("Ataque Extra e Execução Preparada") e o parágrafo novo |
+| a carta 7 da Vanguarda | "Ataque Extra e Execução Preparada", com os dois textos |
+| o subtítulo | o extrator tirava a marca "Nível 7: Ataque Extra." inteira do começo do parágrafo, porque a etiqueta e o nome da carta já diziam. Com duas habilidades na mesma carta, a segunda ficava sem nome. Agora, quando a carta junta mais de uma e o parágrafo abre com o nome de uma delas, o nome fica, como subtítulo em negrito, como já ficava no Bastião 7, que o livro escreve com títulos. Mudou em três cartas: Vanguarda 7 (Ataque Extra e Execução Preparada), Vanguarda 2 (Sequência de Condução e Escola de Arma) e Executor 2 (Finta de Execução) |
+
+**Conferido:** a `regressao-amaldicoada.py` ganhou a checagem do subtítulo. Ela acha no `manual.txt`, na seção de cada
+Caminho e Trilha, os parágrafos "Nível N: Nome." de carta que junta habilidades, e exige o nome em subtítulo seguido do
+texto, no `Habilidades.gs` e no que o extrator tira hoje (são 5 nomes, entre eles a Execução Preparada). O
+`arnes-amaldicoada.py` vai a 66: o extrator que volta a tirar o nome acende a checagem nova.
+
+### B38 · A foto da `CARTEIRA` na `FICHA PESSOAL`, e o nome da técnica da `CARTEIRA` na `FICHA AMALDIÇOADA` — **FEITA em 05/10/2026; falta montar no Sheets e ver se a foto aparece**
+
+*Pedido dele em 05/10/2026: "uma coisa q é bom implementar na ficha e notei q faltou / 1 - A imagem que for colocada
+na carteira aparecer no ficha pessoal / 2 - Nome da técnica aparecer na ficha amaldiçoada". As duas seguem o que a
+ficha já faz com o nome do personagem: a `CARTEIRA` é onde se escreve, e as outras abas mostram.*
+
+**A foto (a ligação que o B35 deixou para depois).** A caixa FOTO DO PERSONAGEM da `FICHA PESSOAL` virou
+`=CARTEIRA!$C$8`, o canto da caixa da foto que a `CARTEIRA` declara (`foto`, do `moldura_foto.py`, o mesmo endereço que o
+`Codigo.gs` usa para ancorar a caixa da paleta). *A documentação do Google não diz se uma fórmula que aponta para uma
+célula com imagem inserida mostra a imagem: procurei em 05/10/2026 e só achei a função `IMAGE`, com link, e um relato de
+que o `IMPORTRANGE` não traz imagem inserida de outro arquivo, que é outro caso.* Por isso a caixa ficou fora da trava:
+se a foto não aparecer, o jogador insere a mesma foto nela, por cima da conta, sem aviso. A nota diz isso.
+
+**O nome da técnica.** Perguntado, ele escolheu *"Espelha a CARTEIRA"*: o jogador escreve uma vez, no campo TÉCNICA
+DECLARADA da `CARTEIRA`, e a caixa NOME DA TÉCNICA da `FICHA AMALDIÇOADA` mostra. Ela é referência pura para uma conta da
+`DADOS_AM` (`=CARTEIRA!$O$27&""`), como toda caixa calculada da aba: quem escreve por cima recebe a conta de volta pelo
+onEdit. O aviso dessa caixa é outro: *"O nome da técnica vem da CARTEIRA, e a caixa voltou. Para mudar, escreva na
+TÉCNICA DECLARADA de lá."* A aba declara a caixa em `da_carteira`, e o `devolverConta_` escolhe o aviso por ela. O
+campo da `CARTEIRA` é achado pelo rótulo (a caixa logo abaixo de "TÉCNICA … DECLARADA"), e o gerador para se não houver
+caixa ali.
+
+| peça | o que mudou |
+|---|---|
+| `ficha-v01/ficha_pessoal.py` | a caixa da foto aponta para a foto da `CARTEIRA` e entra nas `livres` (fora da trava); a nota nova |
+| `ficha-v01/ficha_amaldicoada.py` | `campo_da_tecnica`, a caixa NOME DA TÉCNICA com a conta, a nota, e `da_carteira` na aba |
+| `ficha-v01/monta.py` | passa `da_carteira` para o `Ficha.gs` |
+| `apps-script/Codigo.gs` | o `devolverConta_` escolhe o aviso da `CARTEIRA` |
+
+**Conferido:** o `conferir-ficha-xlsx.py` (uma caixa só da `FICHA PESSOAL` aponta para a foto declarada, do tamanho de uma
+foto, com a nota e fora da trava); o `regressao-pessoal.js` (a trava cobre toda fórmula da aba, menos o Volume dos
+itens, o que mora em grupo e, agora, só a fórmula que é exatamente a referência da foto); a `regressao-amaldicoada.py`
+(a caixa aponta para a conta, a conta lê o campo achado pelo rótulo na planilha gerada, a aba declara a caixa, e a Kaori,
+com "Peso Emprestado" escrito na `CARTEIRA`, mostra o nome depois de recalculada no LibreOffice); e o
+`regressao-construir.js` (escrever por cima devolve a conta, e o aviso manda escrever na `CARTEIRA`, e o da caixa comum
+não). Os arneses ganham: o `arnes-moldura.py` 2 (a caixa que deixa de apontar e a que entra na trava; vai a 11), o
+`arnes-pessoal.py` 2 (o aviso que esquece a `CARTEIRA` e a aba que não declara a caixa; vai a 59) e o
+`arnes-amaldicoada.py` 3 (a caixa escrita à mão, o script que não sabe de onde ela vem, e o campo uma linha abaixo, que
+para o gerador; vai a 69). Todos acendem.
+
+**Fica para ele, no Sheets:** inserir uma foto na caixa FOTO da `CARTEIRA` e olhar a `FICHA PESSOAL`. Se a foto não
+aparecer, me avise: o plano B é o jogador inserir nas duas, e o C é o script copiar a imagem (o Apps Script lê e grava
+imagem de célula, pela documentação dele).
+
+### B39 · As duas aptidões de graça do menu rápido mostram o valor — **FEITA em 06/10/2026; falta montar no Sheets**
+
+*Pedido dele em 06/10/2026: "na ficha, tem as aptidões (e lapidações) base, seria bom se o mecanico (pelo menor o
+valor), estivesse incluso / ja q é um acesso rapido da ficha amaldiçoada".* **As cartas das duas de graça, no menu rápido
+da `FICHA` (seção 8), traziam só o "Do livro:", e o valor morava na `FICHA AMALDIÇOADA`, nas caixas do cabeçalho de
+APTIDÕES E REFINO.** *Agora a carta abre com o mesmo valor, e depois vem o texto do livro:*
+
+- **Cobrir-se de Energia:** *"Proteção 1 · Reação de Cobrir-se: RD 1 por 2 PE. Do livro: …"*
+- **Canalizar Energia:** *"+1d4 na arma. Do livro: …"*
+
+*Na Restrição Celestial sem energia são a Defesa sem Armadura e o Estímulo Muscular, com os mesmos números na
+Lapidação, e a reação vira "Reação da Defesa".* **A carta lê as três caixas da `FICHA AMALDIÇOADA`, e não refaz a conta:**
+*a regra continua num lugar só.* Como o menu é montado antes da aba, os três endereços passaram a nascer no layout, como o
+do Refino, e a aba confere que a caixa sai neles.
+
+| peça | o que mudou |
+|---|---|
+| `ficha-v01/ficha_amaldicoada.py` | `apt_cobrir`, `apt_canalizar` e `apt_reacao` no layout, e a aba confere que a caixa sai neles |
+| `ficha-v01/menu_rapido.py` | o texto das duas cartas de graça abre com o valor |
+| `apps-script/Ficha.gs` | as duas fórmulas novas (e só elas: o resto do arquivo saiu igual) |
+
+**Conferido:** a `regressao-amaldicoada.py` refaz o valor pelo refino de cada uma das 20 fichas de teste, nas quatro
+rotas, e confere a carta recalculada no LibreOffice (354 checagens, todas passando); o `arnes-amaldicoada.py` ganha 2
+(a carta volta a mostrar só o livro, e a do Canalizar mostra a proteção do Cobrir-se; vai a 71), e os dois acendem.
+**Dos vinte e um, vinte passam; o `comparar-ficha-01.py` pede o `original.xlsx`, que é a exportação da planilha viva e não
+está no repositório.** *Rodado numa máquina de nuvem com o Python 3.12 (o 3.11 não lê as f-strings do gerador), o
+LibreOffice Calc instalado na hora e as fontes baixadas do Google Fonts. O `Ficha.gs` e o `Habilidades.gs` saíram iguais
+aos commitados antes da mudança; o `.xlsx` e a arte da carteira, não (outra versão de `openpyxl`, de Pillow e das
+fontes), e por isso não foram subidos daqui: rode o `monta.py` na sua máquina para o `.xlsx` acompanhar.*
+
+**Fica para ele:** colar o `Ficha.gs` novo no Sheets e olhar o menu rápido.
+
+**Achado de passagem, para depois:** o `manual.txt` saiu do livro de antes da D43 (`manual-fonte.json`, hash
+`e747cf74…`). O livro de hoje tem a D43 (Condição, Prende e Cerca pedem TR), o nome Ciclo Maldito e a D44 (a Execução
+Preparada da Vanguarda com −2): a carta 7 da Vanguarda ainda diz −1. Puxar o livro novo é rodar o `extrair-manual.py` e
+pôr o catálogo em dia, que é uma passada própria.

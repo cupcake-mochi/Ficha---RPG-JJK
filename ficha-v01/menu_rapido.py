@@ -128,11 +128,11 @@ def trocas(layout, tr, r0=None, guarda=frozenset()):
     cPm = D.prox
     mp = lambda k, n: f"${fa.L(cPm + k)}{n}"
     livro = lambda faz, seu: f'IF({seu}<>"",{seu},IF({faz}<>"","Do livro: "&{faz},""))'
-    linhas_p = [["Passiva Livre", 0, "Livre", "Passiva Livre", f'={livre_txt}&""'],
-                ["Regra Própria", 0, f'=IF(N({fa._A(G["cp_regra"], AM)})=0,"—","CP "&{fa._A(G["cp_regra"], AM)})', "Regra Própria",
+    linhas_p = [["Expressão da técnica", 0, "Livre", "Expressão da técnica", f'={livre_txt}&""'],
+                ["Regra Própria", 0, f'=IF(N({fa._A(G["cp_regra"], AM)})=0,"—","CE "&{fa._A(G["cp_regra"], AM)})', "Regra Própria",
                  f'=IF({reg_txt}="","Esta técnica não tem Regra Própria",{reg_txt}&"")']]
-    linhas_p += [[f"Passiva {k + 1}", (lambda n, k=k: f"=IFERROR(MATCH({k + 1},{PCOL(8)},0),0)"),
-                  (lambda n: f'=IF({mp(1, n)}=0,"",IF(INDEX({PCOL(2)},{mp(1, n)})=0,"","CP "&INDEX({PCOL(2)},{mp(1, n)})))'),
+    linhas_p += [[f"Talento {k + 1}", (lambda n, k=k: f"=IFERROR(MATCH({k + 1},{PCOL(8)},0),0)"),
+                  (lambda n: f'=IF({mp(1, n)}=0,"",IF(INDEX({PCOL(2)},{mp(1, n)})=0,"","CE "&INDEX({PCOL(2)},{mp(1, n)})))'),
                   (lambda n: f'=IF({mp(1, n)}=0,"",INDEX({PCOL(1)},{mp(1, n)}))'),
                   (lambda n: f'=IF({mp(1, n)}=0,"",' + livro(f'IFERROR(VLOOKUP(INDEX({PCOL(1)},{mp(1, n)}),{PAS},7,FALSE),"")',
                                                              f"INDEX({PCOL(7)},{mp(1, n)})") + ")")]
@@ -144,8 +144,14 @@ def trocas(layout, tr, r0=None, guarda=frozenset()):
     APT = D.faixa("aptidoes")
     cAm = D.prox
     ma = lambda k, n: f"${fa.L(cAm + k)}{n}"
+    # 06/10/2026, pedido do Mizuki: a carta das de graça abre com o valor que a FICHA AMALDIÇOADA calcula ("o mecânico,
+    # pelo menos o valor, já q é um acesso rápido"), antes do texto do livro. A primeira leva a proteção e a Reação; a
+    # segunda, o dado na arma. Na Restrição Celestial sem energia são as Bênçãos, com os mesmos números na Lapidação.
+    val = lambda k: fa._A(G[k], AM)
+    valor = [f'{val("apt_cobrir")}&" · "&{rot("reação").replace(DA, "")}&": "&{val("apt_reacao")}&". "',
+             f'{val("apt_canalizar")}&". "']
     linhas_a = [[f"De graça {i + 1}", 0, "—", f"={rot(f'graça {i + 1}').replace(DA, '')}",
-                 (lambda n: f'="Do livro: "&IFERROR(VLOOKUP({ma(3, n)},{APT},10,FALSE),"")')] for i in range(2)]
+                 (lambda n, i=i: f'={valor[i]}&"Do livro: "&IFERROR(VLOOKUP({ma(3, n)},{APT},10,FALSE),"")')] for i in range(2)]
     linhas_a += [[f"Aptidão {k + 1}", (lambda n, k=k: f"=IFERROR(MATCH({k + 1},{ACOL(7)},0),0)"),
                   (lambda n: f'=IF({ma(1, n)}=0,"",INDEX({ACOL(3)},{ma(1, n)}))'),
                   (lambda n: f'=IF({ma(1, n)}=0,"",INDEX({ACOL(1)},{ma(1, n)}))'),
@@ -159,11 +165,11 @@ def trocas(layout, tr, r0=None, guarda=frozenset()):
     H = tr["H"]
     n_feit = H["feitiços montados"].replace(DA, "")
     rotulos = [
-        ("título", f'="MENU RÁPIDO · "&UPPER({R_("feitiços")})&", PASSIVAS E "&UPPER({R_("aptidões")})'),
+        ("título", f'="MENU RÁPIDO · "&UPPER({R_("feitiços")})&", TALENTOS E "&UPPER({R_("aptidões")})'),
         ("feitiços", f'=UPPER({R_("feitiços")})&"  ·  "&{n_feit}&" de {CAP["feiticos"]}"'),
         ("máximas", f'=UPPER({R_("liberação")})&", "&UPPER({R_("técnica máxima")})&IF({ROTA}=1," E DOMÍNIO","")'),
-        ("passivas", f'="PASSIVAS  ·  "&(COUNTIF({fa._faixa(cPm + 3, 2, cPm + 3, 1 + len(linhas_p))},"?*")-2)&" de {fa.PAGAS + fa.DO_LEQUE}, '
-                     f'mais a Livre e a Regra Própria"'),
+        ("passivas", f'="TALENTOS  ·  "&(COUNTIF({fa._faixa(cPm + 3, 2, cPm + 3, 1 + len(linhas_p))},"?*")-2)&" de {fa.PAGAS + fa.DO_LEQUE}, '
+                     f'mais a Expressão e a Regra Própria"'),
         ("aptidões", f'=UPPER({R_("aptidões")})&"  ·  "&COUNTIF({fa._faixa(cAm + 3, 4, cAm + 3, 1 + len(linhas_a))},"?*")&" de {fa.N_APT}, '
                      f'mais as duas de graça"'),
         ("tag lib", f'=IF({ROTA}>=3,"Rup","Lib")'), ("tag tm", f'=IF({ROTA}=1,"Máx",IF({ROTA}=2,"Auge","Ōgi"))'), ("tag dom", '="Dom"'),
@@ -173,7 +179,7 @@ def trocas(layout, tr, r0=None, guarda=frozenset()):
             rotulos.append((f"par {i}", f'=UPPER({R_("feitiços")})&" {i * POR + 1} A {min(CAP["feiticos"], (i + 2) * POR)}"'))
     for nome_b, cap in (("passivas", CAP["passivas"]), ("aptidões", CAP["aptidoes"])):
         for i in range(2, -(-cap // POR), 2):
-            r_txt = f'"PASSIVAS' if nome_b == "passivas" else f'UPPER({R_("aptidões")})&"'
+            r_txt = f'"TALENTOS' if nome_b == "passivas" else f'UPPER({R_("aptidões")})&"'
             rotulos.append((f"par {nome_b} {i}", f'={r_txt} {i * POR + 1} A {min(cap, (i + 2) * POR)}"'))
     cR = D.prox
     D.tabela("menu_rotulos", ["menu: rótulo", "texto do rótulo"], [[k, v] for k, v in rotulos])

@@ -89,7 +89,7 @@ ESC = {k: [_m(x) for x in v] for k, v in TEC["escadas"].items()}
 
 
 def metros(x):
-    return "o que você enxergar" if x == math.inf else (str(int(x)) if float(x).is_integer() else str(x).replace(".", ",")) + " m"
+    return TEC["escadas"]["alcance"][-1] if x == math.inf else (str(int(x)) if float(x).is_integer() else str(x).replace(".", ",")) + " m"
 
 
 def sobe(escada, base, degraus):
@@ -136,8 +136,8 @@ def _alcance(f, c):
         return "um aliado a " + metros(sobe(ESC["alcance"], [9, 9, 18][faixa], longe))
     if forma == "Apoio":
         return "um aliado a " + metros(sobe(ESC["alcance"], [4.5, 9, 18][faixa], longe))
-    if forma == "Onda":
-        return "raio " + metros(sobe(ESC["raio"], 3, maior)) + ", em você"
+    if forma == "Onda":                       # livro reconstruído: na Classe 6 a base do raio passa a 4,5 m
+        return "raio " + metros(sobe(ESC["raio"], [3, 3, 4.5][faixa], maior)) + ", em você"
     return "fora de combate"
 
 
@@ -242,14 +242,18 @@ def monta(f, c, fam, nivel, lib=False, vaga=1):
             erros.append("Liberação Máxima não serve para cura")
         if "Inescapável" in mel or "Toca a Alma" in mel:
             erros.append("Esta peça não entra numa Liberação Máxima")
-    depois = sum(dados // 2 for n in ("Salto", "Queima") if n in mel)
-    if dados + depois > 4 * c:
-        erros.append(f"{dados + depois} dados somando alvos e repetições: o teto da Classe {c} é {4 * c}")
+    # livro reconstruído: Salto, Queima e Estilhaço acrescentam metade, e o Remate conta como 25% a mais no teto
+    depois = sum(dados // 2 for n in ("Salto", "Queima", "Estilhaço") if n in mel)
+    remate = "Remate" in mel
+    efetivo = dados * (1.25 if remate else 1) + depois
+    if efetivo > 4 * c:
+        t_ef = (str(int(efetivo)) if float(efetivo).is_integer() else str(efetivo).replace(".", ","))
+        erros.append(f"{t_ef} dados somando repetições{' e o Remate' if remate else ''}: o teto da Classe {c} é {4 * c}")
     controle = any(PECAS[x]["familia"] == "Controle" for x in mel)
     if controle and dados == 0:
         avisos.append("Controle sem dano: uma rodada a mais e CD +2")
     elif controle and dados <= c:
-        avisos.append("Controle com um quarto do teto: uma rodada a mais")
+        avisos.append("Controle com saldo até a Classe: uma rodada a mais")
     pe = math.ceil(4.5 * c) if lib else 3 * c
     if lib:
         acao = "Rodada inteira"
@@ -305,6 +309,10 @@ def indice_da_ficha(wb):
 
 
 IDX = indice_da_ficha(WB0)
+# 05/10/2026: o campo TÉCNICA DECLARADA da CARTEIRA, a caixa logo abaixo do rótulo (que diz TÉCNICA AMALDIÇOADA, TÉCNICA
+# MARCIAL ou ESTILO DECLARADO); a caixa NOME DA TÉCNICA desta aba espelha ele. Achado na planilha gerada, e não no gerador.
+_rot_tec = [c for linha in WB0["CARTEIRA"].iter_rows() for c in linha if isinstance(c.value, str) and "DECLARAD" in c.value]
+CAMPO_TEC = f"{_rot_tec[0].column_letter}{_rot_tec[0].row + 1}" if len(_rot_tec) == 1 else None
 FEITICOS = [fa.celulas_do_feitico(*p) for p in G["feiticos"]]
 LIBS = [fa.celulas_do_feitico(*p) for p in G["libs"]]
 PASSIVAS = [fa.celulas_da_passiva(*p) for p in G["passivas"]]
@@ -351,6 +359,8 @@ def prepara(nome, ficha):
         poe(cel, ft)
     for cel, v in ficha.get("celulas", {}).items():
         a[cel] = v
+    if ficha.get("tecnica_declarada") and CAMPO_TEC:      # 05/10/2026: escrito na CARTEIRA, como o jogador faz
+        wb["CARTEIRA"][CAMPO_TEC] = ficha["tecnica_declarada"]
     # o IFS e o TEXTJOIN ficam crus na ficha, porque ela vive no Sheets; o LibreOffice só os reconhece com o prefixo do Excel
     for ws in wb:
         for linha in ws.iter_rows():
@@ -406,9 +416,18 @@ def do_livro(p):
                    [r.split("|")[0] + (f" ({NOME_PESO[PESO[r.split('|')[1]]]})" if "|" in r else "") for r in p["res"]])
 
 
+# 04/10/2026: o livro reconstruído não tem mais a tabela de feitiços prontos; a prova da conta passou a ser os exemplos
+# de montagem que ele imprime (tecnica-do-livro.json, chave feiticos_prontos). Cada exemplo diz as Famílias Livres que
+# usa, e elas são da ficha, não do feitiço: os exemplos vão para uma ficha por conjunto de Famílias Livres.
 PRONTOS = TEC["feiticos_prontos"]
-LIVRO = {"nivel": 30, "leque": 7, "essencia": 6,
-         "feiticos": [do_livro(p) for p in PRONTOS if not p["lib"]], "libs": [do_livro(p) for p in PRONTOS if p["lib"]]}
+_GRUPOS = {}
+for _p in PRONTOS:
+    _GRUPOS.setdefault(tuple(sorted(_p.get("livres", []))), []).append(_p)
+LIVROS = {}
+for _k, (_livres, _ps) in enumerate(sorted(_GRUPOS.items())):
+    LIVROS["livro" if _k == 0 else f"livro_{_k + 1}"] = (_ps, {"nivel": 30, "leque": 7, "essencia": 6, "familias": {f: "Livre" for f in _livres},
+        "feiticos": [do_livro(p) for p in _ps if not p["lib"]], "libs": [do_livro(p) for p in _ps if p["lib"]]})
+LIVRO = LIVROS["livro"][1]
 
 
 def sorteada(semente, nivel, cheia=True):
@@ -454,8 +473,8 @@ def _outras(nivel, refino, leque, essencia, dominio, cp_regra, passivas, aptidoe
     return {"nivel": nivel, "refino": refino, "leque": leque, "essencia": essencia, "celulas": {k: v for k, v in cel.items()}}
 
 
-KAORI = {**_outras(10, 2, 0, 1, "Incompleta", 2, ["Raiz", "Fluxo", None, None, None, "Leitura"], ["Projetar energia", "Barreira Simples", "Energia Reversa"],
-                   [("Temporário", None), ("Permanente", "Um espaço de feitiço"), (None, None)],
+KAORI = {**_outras(10, 2, 0, 1, "Incompleta", 2, ["Raiz", "Fluxo", None, None, None, "Leitura"], ["Projetar Energia", "Barreira Simples", "Energia Reversa"],
+                   [("Temporário", None), ("Permanente", "Um espaço conhecido"), (None, None)],
                    [("Toque", None, None), ("Projétil", "Empurrão", None), ("Cone", "Maior", "Parado"), ("Apoio", "Longe", None), ("Explosão", "Longe", None)],
                    ("Projétil", ["Fura"])),
          "familias": {"Controle": "Livre", "Castigo": "Livre", "Amparo": "Fechada", "Área": "Fechada", "Auxiliares": "Fechada"},
@@ -464,15 +483,15 @@ KAORI = {**_outras(10, 2, 0, 1, "Incompleta", 2, ["Raiz", "Fluxo", None, None, N
                       feitico("Marca do Carrasco", 3, "Projétil", ["Marca", "Queima"], ["Uma Vez"]),
                       feitico("Palma Trovejante", 2, "Cone", ["Derrubado"], ["Atrasar"])],
          "libs": [feitico("Golpe do Voto", 3)]}
-VELHO = {**_outras(30, 7, 0, 6, "Sem Barreiras", 3, ["Escama", "Afinidade", "Reserva Profunda", "Passiva Própria (CP 3)", "Eco"],
-                   ["Domínio Simples", "Pétala", "Aptidão Própria (CP 2)", "Cortina"] * 3,
-                   [("Permanente", "Um espaço de feitiço"), ("Permanente", "Um espaço de feitiço"), ("Permanente", "Uma aptidão")],
+VELHO = {**_outras(30, 7, 0, 6, "Sem Barreiras", 3, ["Escama", "Afinidade", "Reserva Profunda", "Talento Próprio (CE 3)", "Eco"],
+                   ["Domínio Simples", "Pétala", "Aptidão Própria (CE 2)", "Cortina"] * 3,
+                   [("Permanente", "Um espaço conhecido"), ("Permanente", "Um espaço conhecido"), ("Permanente", "Uma aptidão")],
                    [("Linha", "Longe", "Gesto"), ("Aura", "Maior", None), ("Efeito", None, None), ("Projétil", "Longe", None), ("Cone", None, None)],
                    ("Linha", ["Muito Longe"]), 3),
          "feiticos": [feitico(f"F{i}", 7) for i in range(20)],
          "libs": [feitico("L1", 7), feitico("L2", 5), feitico("L3", 3)]}
-MEIO = {**_outras(17, 1, 3, 3, "Completa", 1, ["Leitura", "Recomposição", "Costura", None, None, "Aviso", "Instinto", "Raiz", "Fluxo"],
-                  ["Kokusen Constante"], [("Promessa", None), (None, None), ("De restrição", None)],
+MEIO = {**_outras(17, 1, 3, 3, "Completa", 1, ["Leitura", "Recomposição", "Costura", None, None, "Leitura de Feitiços", "Instinto", "Raiz", "Fluxo"],
+                  ["Kokusen Constante"], [("Promessa", None), (None, None), ("Pacto de restrição", None)],
                   [("Projétil", None, None)] * 5, ("Onda", ["Limpa", "Junto", "Rápido"]), 5),
         "familias": {"Amparo": "Livre", "Tempo": "Fechada"},
         "feiticos": [feitico(f"F{i}", 5, "Cura", ["Junto"]) for i in range(12)], "libs": []}
@@ -528,14 +547,15 @@ MENU_F = {**KAORI, "caminho": "Bastião", "trilha": "Muro", "celulas": {**KAORI[
           "feiticos": [feitico("Estalo"), feitico("", 2, "Cone"), feitico("Perfurar", 1, "Projétil", ["Precisão"], ["Parado"]),
                        feitico("Lança Negra", 2, "Projétil", ["Fura"], ["Atrasar"]), feitico(""), feitico("Golpe Cru", 1, "Toque")]}
 
-FICHAS = {"livro": LIVRO, "kaori": KAORI, "velho": VELHO, "meio": MEIO, "nova": NOVA, "bordas": BORDAS, "menu": MENU_F,
+FICHAS = {**{k: v[1] for k, v in LIVROS.items()}, "kaori": KAORI, "velho": VELHO, "meio": MEIO, "nova": NOVA, "bordas": BORDAS, "menu": MENU_F,
           "rota-sem": ROTA_SEM, "rota-corpo": ROTA_CORPO, "rota-celeste": ROTA_CELESTE, "rota-fisga": ROTA_FISGA,
           "sorteio-2": sorteada(11, 2, False), "sorteio-7": sorteada(12, 7), "sorteio-13": sorteada(13, 13),
           "sorteio-21": sorteada(14, 21), "sorteio-30": sorteada(15, 30)}
+FICHAS["kaori"] = {**FICHAS["kaori"], "tecnica_declarada": "Peso Emprestado"}
 # o arnes-amaldicoada.py roda esta regressão dezenas de vezes, e pede só algumas fichas para cada rodada ser curta
 SO = [x for x in os.environ.get("AMALDICOADA_SO", "").split(",") if x]
 if SO:
-    FICHAS = {k: v for k, v in FICHAS.items() if k in SO or k == "livro"}
+    FICHAS = {k: v for k, v in FICHAS.items() if k in SO or k in LIVROS}
     print(f"(rodada curta, só com as fichas {', '.join(FICHAS)})")
 for _nome, _f in FICHAS.items():
     prepara(_nome, _f)
@@ -554,15 +574,17 @@ checa("os preços da aba são os da tabela Números da montagem do livro, nas se
       all([preco(1, l["classe"]), preco(2, l["classe"]), preco(3, l["classe"]), 2 * l["classe"], 4 * l["classe"], 3 * l["classe"]] ==
           [l["leve"], l["media"], l["pesada"], l["devolucao"], l["teto"], l["pontos"]] for l in TEC["numeros_da_montagem"]))
 
-print("\nOS 33 FEITIÇOS PRONTOS DO LIVRO")
+print(f"\nOS {len(PRONTOS)} EXEMPLOS DE MONTAGEM DO LIVRO")
 checa("as bases de alcance da regra daqui são as da tabela Base por Classe do livro", _bases_do_livro())
-ws = WB["livro"][ABA]
-nl = [p for p in PRONTOS if not p["lib"]]
-ll = [p for p in PRONTOS if p["lib"]]
-ruins, erros, cartas_ruins = [], [], []
-for p, cel, lib, vaga in [(p, FEITICOS[i], False, i + 1) for i, p in enumerate(nl)] + [(p, LIBS[i], True, i + 1) for i, p in enumerate(ll)]:
-    esp = carta(do_livro(p), {}, 30, lib, vaga)
+ruins, erros, cartas_ruins, _lidas = [], [], [], {}
+for _nome_l, (_ps, _ficha_l) in LIVROS.items():
+  ws = WB[_nome_l][ABA]
+  nl = [p for p in _ps if not p["lib"]]
+  ll = [p for p in _ps if p["lib"]]
+  for p, cel, lib, vaga in [(p, FEITICOS[i], False, i + 1) for i, p in enumerate(nl)] + [(p, LIBS[i], True, i + 1) for i, p in enumerate(ll)]:
+    esp = carta(do_livro(p), _ficha_l["familias"], 30, lib, vaga)
     lida = le_carta(ws, cel)
+    _lidas[p["nome"]] = lida
     if p["dados"] is not None and esp["_dados"] != p["dados"]:
         ruins.append(f"{p['nome']}: a regra daqui dá {esp['_dados']}, o livro {p['dados']}")
     m = re.match(r"(?:Cura )?(\d+)d8", lida["dano"])
@@ -574,12 +596,14 @@ for p, cel, lib, vaga in [(p, FEITICOS[i], False, i + 1) for i, p in enumerate(n
     if lida["estado"].startswith("⚠"):
         erros.append(f"{p['nome']}: {lida['avisos']}")
     cartas_ruins += [f"{p['nome']} · {d}" for d in difere(lida, esp)]
-checa(f"os {len(PRONTOS)} saem com os dados que o livro imprime, e as Liberações com o PE dele", not ruins, "; ".join(ruins[:4]))
-checa("nenhum feitiço pronto do livro é acusado de erro pela ficha", not erros, "; ".join(erros[:3]))
-checa("toda caixa das 33 cartas bate com a regra (dano, PE, ação, alcance, preços, conta, Ampliar e avisos)", not cartas_ruins,
+checa(f"os {len(PRONTOS)} saem com os dados que o livro imprime, e com o PE dele", not ruins, "; ".join(ruins[:4]))
+checa("nenhum exemplo do livro é acusado de erro pela ficha", not erros, "; ".join(erros[:3]))
+checa(f"toda caixa das {len(PRONTOS)} cartas bate com a regra (dano, PE, ação, alcance, preços, conta, Ampliar e avisos)", not cartas_ruins,
       f"{len(cartas_ruins)}: " + "; ".join(cartas_ruins[:3]))
-checa("a Rachadura perde o ponto que o livro diz que ela perde, e a ficha avisa",
-      "Devolução perdida: 1 ponto" in le_carta(ws, LIBS[[p["nome"] for p in ll].index("Rachadura")])["avisos"])
+# o livro: "Uma Aura de Classe 3, sem desconto, tem Fura: custo 2 + 3, com devolução 3 de Corpo a Corpo" -- a Restrição
+# embutida paga a Forma também, e a conta da carta mostra a devolução dela
+checa("a Aura com Fura recebe a devolução 3 do Corpo a Corpo da Forma, e a carta mostra",
+      "a Forma devolve 3" in _lidas["Aura com Fura"]["conta"] and _lidas["Aura com Fura"]["dano"].startswith("7d8"), str(_lidas["Aura com Fura"]))
 
 # ---------------------------------------------------------------------------------------------
 print("\nAS CARTAS DE FEITIÇO, FICHA POR FICHA")
@@ -623,7 +647,7 @@ if not SO:
 # ---------------------------------------------------------------------------------------------
 print("\nO ORÇAMENTO, O ÍNDICE E A TÉCNICA")
 CP_PASSIVA = {p["nome"]: int(p["classe_passiva"]) for p in TEC["passivas"] if p["classe_passiva"].isdigit()}
-CP_PASSIVA.update({f"Passiva Própria (CP {k})": k for k in (1, 2, 3)})
+CP_PASSIVA.update({f"Talento Próprio (CE {k})": k for k in (1, 2, 3)})
 ESPACOS_DO_DOMINIO = {d["degrau"]: d["espacos"] for d in TEC["dominio"]["degraus"]}
 NIVEL_DA_CP = {int(l["classe_passiva"]): l["nivel"] for l in TEC["classe_passiva"] if l["classe_passiva"].isdigit()}
 
@@ -648,7 +672,7 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
     v = lambda c: txt(ws[c].value)
     passivas = [cel.get(c["nome"]) for c in PASSIVAS]
     pactos = [(cel.get(c["forma"]), cel.get(c["concede"])) for c in PACTOS]
-    de_pacto = sum(1 for p in pactos if p == ("Permanente", "Um espaço de feitiço"))
+    de_pacto = sum(1 for p in pactos if p == ("Permanente", "Um espaço conhecido"))
     espacos = 2 + n // 2 + marcos(n) + de_pacto
     leque = min(ficha.get("leque", 0), marcos(n))
     montados = sum(1 for ft in ficha.get("feiticos", []) if ft["nome"])
@@ -690,7 +714,7 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
             abre = next(nv for nv, q in zip(TEC["classe_0"]["niveis"], TEC["classe_0"]["quantos"]) if q >= i + 1)
             esp_z = (f"Nível {abre}", "")
         else:
-            dz = zd - (1 if mel else 0) + (1 if mel and res else 0)
+            dz = zd - (1 if mel else 0)           # livro reconstruído: a Restrição Leve não devolve o dado
             esp_z = ("—" if forma in ("Apoio", "Efeito") else f"{dz}d8 = {math.floor(dz * 4.5)}", alcance({"forma": forma, "mel": [mel]}, 0))
         lido_z = (v(f"{cz['dano'][0]}{lin}"), v(f"{cz['alcance'][0]}{lin}"))
         if lido_z != esp_z:
@@ -751,9 +775,9 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
             esp_p = ("", "", "")
         else:
             cp = CP_PASSIVA[p]
-            esp_p = (f"⚠ Nível {NIVEL_DA_CP[cp]}" if NIVEL_DA_CP[cp] > n else f"CP {cp}",
+            esp_p = (f"⚠ Nível {NIVEL_DA_CP[cp]}" if NIVEL_DA_CP[cp] > n else f"CE {cp}",
                      f"{cp} esp." if i < fa.PAGAS else "⚠ Vaga" if i - fa.PAGAS + 1 > leque else "Grátis",
-                     FAZ[p] if p in FAZ else FAZ["Passiva Própria"] + " Escreva a sua na caixa de baixo.")
+                     FAZ[p] if p in FAZ else FAZ["Talento Próprio"] + " Escreva a sua na caixa de baixo.")
         lido_p = (v(c["cp"]), v(c["custo"]), v(c["faz"]))
         if lido_p != esp_p:
             ruins.append(f"Passiva {i + 1} ({p}): {lido_p} != {esp_p}")
@@ -765,10 +789,10 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
         if not a:
             esp_a = ("", "", "", "")
         else:
-            base = APT[a.split(" (CP")[0]]
-            cp = a[-2] if "(CP" in a else base["classe_passiva"]
-            esp_a = (f"CP {cp}" if cp.isdigit() else ini(cp), f"Requisito: {base['requisito']}", ini(base["escala"]),
-                     base["faz"] + (" Escreva a sua na caixa de baixo." if "(CP" in a else ""))
+            base = APT[a.split(" (CE")[0]]
+            cp = a[-2] if "(CE" in a else base["classe_passiva"]
+            esp_a = (f"CE {cp}" if cp.isdigit() else ini(cp), f"Requisito: {base['requisito']}", ini(base["escala"]),
+                     base["faz"] + (" Escreva a sua na caixa de baixo." if "(CE" in a else ""))
         lido_a = (v(c["cp"]), v(c["requisito"]), v(c["escala"]), v(c["faz"]))
         if lido_a != esp_a:
             ruins.append(f"aptidão {i + 1} ({a}): {[x[:40] for x in lido_a]} != {[x[:40] for x in esp_a]}")
@@ -791,9 +815,9 @@ ROT_L = TEC["rotas"]
 NOMES_R = {1: {"feitico": "Feitiço", "liberacao": "Liberação Máxima", "tecnica_maxima": "Técnica Máxima"},
            2: ROT_L["nomes"]["Sem Técnica"], 3: ROT_L["nomes"]["Técnica Marcial"], 4: ROT_L["nomes"]["Técnica Marcial"]}
 rota_de = lambda origem: 4 if origem == "Restrição Celestial · sem energia" else 3 if origem == "Corpo Amaldiçoado" else 2 if "Sem Técnica" in origem else 1
-_propria = lambda nome, cps: [f"{nome} (CP {k})" for k in cps]
-PAS_FUND = [p["nome"] for p in TEC["passivas"] if p["classe_passiva"].isdigit()] + _propria("Passiva Própria", (1, 2, 3))
-PAS_MARC = [p["nome"] for p in ROT_L["passivas_marciais"] if p["classe_passiva"].isdigit()] + _propria("Passiva Própria", (1, 2, 3))
+_propria = lambda nome, cps: [f"{nome} (CE {k})" for k in cps]
+PAS_FUND = [p["nome"] for p in TEC["passivas"] if p["classe_passiva"].isdigit()] + _propria("Talento Próprio", (1, 2, 3))
+PAS_MARC = [p["nome"] for p in ROT_L["passivas_marciais"] if p["classe_passiva"].isdigit()] + _propria("Talento Próprio", (1, 2, 3))
 _cps = lambda txt: [int(x) for x in re.findall(r"\d", txt)]
 APT_LIV = [a["nome"] for a in TEC["aptidoes"] if a["nome"] not in TEC["aptidoes_de_graca"] and a["nome"] != "Aptidão Própria"] + \
           _propria("Aptidão Própria", _cps(next(a["classe_passiva"] for a in TEC["aptidoes"] if a["nome"] == "Aptidão Própria")))
@@ -833,7 +857,7 @@ for nome in [x for x in ("kaori", "rota-sem", "rota-corpo", "rota-celeste", "rot
     menu_r = cel.get(G["rota_menu"], "")
     esp_extra = ("—" if rota == 1 else
                  ("Aberta, sem os gates de nível e de refino · conta como uma aptidão a mais" if menu_r else "") if rota == 2 else
-                 "Fere maldição: o Corpo Amaldiçoado tem Canalizar energia" if rota == 3 else
+                 "Fere maldição: o Corpo Amaldiçoado tem Canalizar Energia" if rota == 3 else
                  "" if not menu_r else "Não fere maldição: só as Katas ferem" if menu_r == fa.EQUIPAMENTO[2] else "Fere maldição")
     checa(f"{nome}: o que a semente dá, ou se o golpe simples fere maldição", v(G["rota_extra"]) == esp_extra, f"{v(G['rota_extra'])!r} != {esp_extra!r}")
     # os grupos de arma: o atributo de cada um (o maior na Lâmina Longa), a conjuração e a CD pela conta da FICHA
@@ -932,12 +956,12 @@ def resumo_do_livro(t, teto):
 
 FAZ_P = {p["nome"]: p["faz"] for p in ROT_L["passivas_marciais"] + TEC["passivas"]}
 FAZ_A = {a["nome"]: a["faz"] for a in TEC["aptidoes"] + ROT_L["bencaos"]}
-base_ = lambda nome: re.sub(r" \(CP \d\)$", "", nome)
+base_ = lambda nome: re.sub(r" \(CE \d\)$", "", nome)
 _longos = [(n, len(resumo_do_livro(t, TETO[k]))) for k, d in (("passiva", FAZ_P), ("aptidao", FAZ_A)) for n, t in d.items()
            if len(resumo_do_livro(t, TETO[k])) > TETO[k]]
 checa("todo texto do livro que o menu mostra cabe na caixa: inteiro, ou a primeira frase", not _longos, str(_longos))
 CP_TODAS = {**{p["nome"]: p["classe_passiva"] for p in TEC["passivas"] + ROT_L["passivas_marciais"]},
-            **{f"Passiva Própria (CP {k})": str(k) for k in (1, 2, 3)}}
+            **{f"Talento Próprio (CE {k})": str(k) for k in (1, 2, 3)}}
 BEN = {b["nome"]: b for b in ROT_L["bencaos"]}
 APT_TODAS = {a["nome"]: a for a in TEC["aptidoes"]}
 for nome in FICHAS:
@@ -981,10 +1005,10 @@ for nome in FICHAS:
     # as Passivas: a Livre, a Regra Própria, e as doze cartas sem buraco, com o texto do jogador ou o do livro
     pas = [(i, cel.get(c["nome"])) for i, c in enumerate(PASSIVAS) if cel.get(c["nome"])]
     livro = lambda seu, faz: seu if seu else ("Do livro: " + faz if faz else "")
-    esp_p = ["Passiva Livre", "Regra Própria"] + [p for _, p in pas]
+    esp_p = ["Expressão da técnica", "Regra Própria"] + [p for _, p in pas]
     esp_pt = [cel.get(f"L{G['descricao'] + 4}") or "", cel.get(f"D{G['regra_propria'] + 1}") or "Esta técnica não tem Regra Própria"] + \
              [livro(cel.get(PASSIVAS[i]["texto"]), resumo_do_livro(FAZ_P[base_(p)], TETO["passiva"])) for i, p in pas]
-    esp_pc = [None, None] + ["CP " + CP_TODAS[p] for _, p in pas]
+    esp_pc = [None, None] + ["CE " + CP_TODAS[p] for _, p in pas]
     lido_pc = m_("classe passiva no menu")
     ruins = [x for x in (m_("passiva no menu") != pad(esp_p, _n_pas) and f"{m_('passiva no menu')[:5]} != {esp_p[:5]}",
                          m_("texto da passiva no menu") != pad(esp_pt, _n_pas) and f"{[t[:30] for t in m_('texto da passiva no menu')[:4]]} != {[t[:30] for t in esp_pt[:4]]}",
@@ -995,17 +1019,23 @@ for nome in FICHAS:
     fonte = BEN if rota == 4 else APT_TODAS
     apt = [(i, cel.get(c["nome"])) for i, c in enumerate(APTIDOES) if cel.get(c["nome"])]
     esp_a = list(gracas) + [a for _, a in apt]
-    esp_at = ["Do livro: " + resumo_do_livro(fonte[g]["faz"], TETO["aptidao"]) for g in gracas] + \
+    # 06/10/2026 (pedido do Mizuki): as duas de graça abrem com o valor da conta, refeito aqui pelo refino da ficha
+    ref_m = int(float(contas(wb)["refino"]))
+    d4_m = 4 if ref_m >= 9 else 3 if ref_m >= 6 else 2 if ref_m >= 3 else 1
+    reacao_m = "Reação da Defesa" if rota == 4 else "Reação de Cobrir-se"
+    valor_m = [f"Proteção {ref_m // 3 + 1} · {reacao_m}: RD {math.floor(1.5 * ref_m)} por 2 PE. ",
+               f"+{d4_m}{'d6' if ref_m >= 10 else 'd4'} na arma. "]
+    esp_at = [valor_m[k] + "Do livro: " + resumo_do_livro(fonte[g]["faz"], TETO["aptidao"]) for k, g in enumerate(gracas)] + \
              [livro(cel.get(APTIDOES[i]["texto"]), resumo_do_livro(FAZ_A[base_(a)], TETO["aptidao"])) for i, a in apt]
     ruins = [x for x in (m_("aptidão no menu") != pad(esp_a, _n_apt) and f"{m_('aptidão no menu')[:5]} != {esp_a[:5]}",
                          m_("texto da aptidão no menu") != pad(esp_at, _n_apt) and f"{[t[:30] for t in m_('texto da aptidão no menu')[:4]]} != {[t[:30] for t in esp_at[:4]]}") if x]
-    checa(f"{nome}: as {'Bênçãos' if rota == 4 else 'aptidões'} no menu, as duas de graça primeiro, com o texto do jogador ou o do livro", not ruins, "; ".join(ruins))
+    checa(f"{nome}: as {'Bênçãos' if rota == 4 else 'aptidões'} no menu, as duas de graça primeiro, com o valor e o texto do livro, e as compradas com o do jogador ou o do livro", not ruins, "; ".join(ruins))
     # os títulos, pela rota
     apt_nome = "BÊNÇÃOS" if rota == 4 else "APTIDÕES"
-    esp_tit = {"título": f"MENU RÁPIDO · {up(nm['feitico'])}S, PASSIVAS E {apt_nome}",
+    esp_tit = {"título": f"MENU RÁPIDO · {up(nm['feitico'])}S, TALENTOS E {apt_nome}",
                "feitiços": f"{up(nm['feitico'])}S  ·  {len(nomeados)} de {fa.N_FEITICOS}",
                "máximas": f"{up(nm['liberacao'])}, {up(nm['tecnica_maxima'])}" + (" E DOMÍNIO" if rota == 1 else ""),
-               "passivas": f"PASSIVAS  ·  {len(pas)} de {fa.PAGAS + fa.DO_LEQUE}, mais a Livre e a Regra Própria",
+               "passivas": f"TALENTOS  ·  {len(pas)} de {fa.PAGAS + fa.DO_LEQUE}, mais a Expressão e a Regra Própria",
                "aptidões": f"{apt_nome}  ·  {len(apt)} de {fa.N_APT}, mais as duas de graça"}
     lido_tit = {k: txt(f[ROTULO[k]].value) if k in ROTULO else "(nenhuma caixa lê)" for k in esp_tit}
     checa(f"{nome}: os títulos do menu dizem os nomes da rota {rota} e quantos de cada", lido_tit == esp_tit, f"{lido_tit} != {esp_tit}")
@@ -1016,22 +1046,19 @@ print("\nAS HABILIDADES DA FICHA (SEÇÃO 7)")
 # jogador. A regra daqui: os níveis são os da tabela "Entregas por nível" do capítulo 35 do livro; a etiqueta da carta diz
 # "Nível L" quando o nível da ficha chegou nele, e "Abre no L" quando não; o título do bloco diz o Caminho e a Trilha da
 # FICHA quando estão escolhidos. O riscado é regra de cor do Sheets, e o regressao-construir.js confere.
-LIVRO_35 = "/media/mizuki/HD Externo II/Claude/Claude 2/sistema/05-material/livro/manual/35-caminhos-e-trilhas.md"
 _cab_hab = {D0.cell(row=1, column=c).value: c for c in range(1, D0.max_column + 1)}
 _c_niv = _cab_hab["nível da carta"]
 _lin_hab = [r for r in range(2, 40) if D0.cell(row=r, column=_c_niv).value not in (None, "")]
 NIV_HAB = [int(D0.cell(row=r, column=_c_niv).value) for r in _lin_hab]
 FONTE_HAB = [str(D0.cell(row=r, column=_c_niv - 1).value).split(" ")[0] for r in _lin_hab]
-if os.path.exists(LIVRO_35):
-    _t35 = open(LIVRO_35, encoding="utf-8").read()
-    _ent = re.search(r"\*\*Entregas por nível\*\*\n\{: \.tab-titulo \}\n\n\| Nível \| O que chega \|\n\|[-| ]+\|\n((?:\|.*\|\n)+)", _t35)
-    _linhas = [[x.strip() for x in l.strip("|").split("|")] for l in _ent.group(1).strip().split("\n")] if _ent else []
-    _cam = [int(n) for n, o in _linhas if "Caminho" in o]
-    _tri = [int(n) for n, o in _linhas if "Trilha" in o]
-    checa(f"as cartas estão nos níveis da tabela Entregas por nível do capítulo 35 do livro (Caminho {_cam}, Trilha {_tri})",
-          bool(_linhas) and NIV_HAB == _cam + _tri and FONTE_HAB == ["Caminho"] * len(_cam) + ["Trilha"] * len(_tri), f"{FONTE_HAB} {NIV_HAB}")
-else:
-    print("  [--] o livro não está nesta máquina: os níveis das cartas não foram comparados com ele")
+# 04/10/2026: os níveis saem das duas frases da Progressão do livro reconstruído, no manual.txt
+_MANP = " ".join(open("manual.txt", encoding="utf-8").read().split())
+_e1 = re.search(r"Você recebe habilidades de Caminho nos níveis (\d+), (\d+) e (\d+) e de Trilha nos níveis (\d+) e (\d+)\.", _MANP)
+_e2 = re.search(r"Receba habilidades de Caminho no (\d+) e no (\d+), e de Trilha no (\d+) e no (\d+)\.", _MANP)
+_cam = [int(x) for x in _e1.groups()[:3] + _e2.groups()[:2]] if _e1 and _e2 else []
+_tri = [int(x) for x in _e1.groups()[3:] + _e2.groups()[2:]] if _e1 and _e2 else []
+checa(f"as cartas estão nos níveis de entrega da Progressão do livro (Caminho {_cam}, Trilha {_tri})",
+      bool(_cam) and NIV_HAB == _cam + _tri and FONTE_HAB == ["Caminho"] * len(_cam) + ["Trilha"] * len(_tri), f"{FONTE_HAB} {NIV_HAB}")
 R7 = next(c.row for linha in F0.iter_rows() for c in linha if c.column == 4 and c.value in (7, "7"))
 ETIQ, TIT = [], []
 for linha in F0.iter_rows(min_row=R7, max_row=R0_MENU - 1):
@@ -1045,7 +1072,117 @@ ETIQ.sort(); TIT.sort()
 checa("as 9 etiquetas leem as cartas na ordem do bloco (o Caminho e depois a Trilha), e os 2 títulos, o do Caminho e o da Trilha",
       [x[2] for x in ETIQ] == list(range(2, 11)) and [x[1] for x in TIT] == [2, 3], f"{[x[2] for x in ETIQ]} {[x[1] for x in TIT]}")
 _vazias = [f"{x[3]}" for x in ETIQ if F0.cell(row=x[0], column=x[1] + 3).value not in (None, "")]
-checa("o nome de cada carta nasce vazio, para o jogador escrever", not _vazias, str(_vazias[:3]))
+checa("o nome de cada carta nasce vazio: quem escreve é o script, quando o Caminho ou a Trilha mudam", not _vazias, str(_vazias[:3]))
+# 05/10/2026, a opção B (o nome e o resumo do livro na carta, o texto inteiro na nota, o jogador pode escrever por cima):
+# o habilidadesDaFicha_ do Codigo.gs acha cada carta pelo endereço que a DADOS_AM publica, e lê o livro do Habilidades.gs.
+# O regressao-delta.js roda a conta do script no node; aqui, o que ela lê.
+import habilidades as _hb, extrair_habilidades as _xh, ficha_automatica as _fau
+_r = subprocess.run([sys.executable, "ficha-v01/extrair_habilidades.py", "--confere"], capture_output=True, text=True)
+checa("o habilidades-do-livro.json é o que o extrair_habilidades.py tira do manual.txt hoje, e cada texto está no manual",
+      _r.returncode == 0, (_r.stdout + _r.stderr).strip()[-200:])
+_c_cn, _c_ct = _cab_hab.get("célula do nome"), _cab_hab.get("célula do texto")
+_end = lambda v: ix.endereco(v) or ""
+_mesc_f = {str(m).split(":")[0]: str(m) for m in F0.merged_cells.ranges}
+_ruins_end, _CN = [], ix._letras(_hb.CN)
+for k, (lin, col, linha_am, _co) in enumerate(ETIQ):
+    nm, tx = (_end(D0.cell(row=linha_am, column=c).value) if c else "" for c in (_c_cn, _c_ct))
+    nm_ok = col == _hb.C1 and nm == ix._letras(col + _hb.TAG) + str(lin) and _mesc_f.get(nm, "").endswith(_CN + str(lin))
+    tx_ok = tx == ix._letras(col) + str(lin + 1) and _mesc_f.get(tx, "").endswith(_CN + str(lin + _hb.CAIXA))
+    if not (nm_ok and tx_ok):
+        _ruins_end.append(f"carta {k + 1}: {nm} {tx}")
+checa(f"cada carta tem a largura da seção (D a {_CN}), e a DADOS_AM publica o endereço do nome e do texto dela (ADDRESS)",
+      bool(ETIQ) and not _ruins_end, "; ".join(_ruins_end[:3]))
+# 05/10/2026: "n esqueça do espaçamento de uma linha entre uma carta e outra"; e a caixa do texto continua retrátil
+_fim_carta = [x[0] + _hb.CAIXA for x in ETIQ]
+_vaos = [r + 1 for r, prox in zip(_fim_carta, [x[0] for x in ETIQ][1:]) if prox > r + 1]
+_vao_ruim = [r for r in _vaos if any(F0.cell(row=r, column=c).value not in (None, "") for c in range(_hb.C1, _hb.CN + 1))
+             or any(m.min_row <= r <= m.max_row for m in F0.merged_cells.ranges if m.min_col <= _hb.CN and m.max_col >= _hb.C1)]
+_seguidas = [(a, b) for a, b in zip([x[0] for x in ETIQ], [x[0] for x in ETIQ][1:]) if b - a != _hb.CAIXA + 2 and b - a < 2 * (_hb.CAIXA + 2)]
+checa("entre uma carta e a seguinte do mesmo bloco há uma linha vazia, sem caixa nem mesclagem",
+      bool(_vaos) and not _vao_ruim and not _seguidas, f"{_vao_ruim[:3]} {_seguidas[:3]}")
+_caixa_grupo = [x[0] for x in ETIQ if not all(F0.row_dimensions[x[0] + 1 + k].outlineLevel > F0.row_dimensions[x[0]].outlineLevel
+                                               and not F0.row_dimensions[x[0] + 1 + k].hidden for k in range(_hb.CAIXA))]
+checa("a caixa do texto de cada carta é um grupo de linhas que abre e fecha, e nasce aberto", not _caixa_grupo, str(_caixa_grupo[:3]))
+_gs = open("apps-script/Habilidades.gs", encoding="utf-8").read()
+_m = re.search(r"var HABILIDADES_DO_LIVRO_ = (\[.*?\]);\n", _gs, re.S)
+_lido = json.loads(_m.group(1)) if _m else []
+_mm = re.search(r"var MEDIDA_DAS_CARTAS_ = (\{.*\});\s*$", _gs, re.S)
+_MED = json.loads(_mm.group(1)) if _mm else {}
+_esp = [dict(zip(("dono", "fonte", "nivel", "nome", "texto", "linhas", "titulos"), l)) for l in _hb.linhas_do_livro()]
+checa(f"o Habilidades.gs é o livro que o gerador monta ({len(_esp)} habilidades), e cabe no teto do Apps Script ({len(_gs) // 1024} KB)",
+      _lido == _esp and _MED == _hb.medida() and len(_gs) / 1024 < 900, f"{len(_lido)} lidas, {len(_esp)} esperadas")
+# a largura da caixa sai das colunas da planilha gerada, e não da constante do gerador
+_px = lambda c: 28 if abs(F0.column_dimensions[ix._letras(c)].width - 4.0) < 1e-6 else None
+_larg = [_px(c) for c in range(_hb.C1, _hb.CN + 1)]
+checa(f"a medida da carta no Habilidades.gs é a da planilha: {len(_larg)} colunas de 28 px, menos a folga ({_MED.get('largura')} px)",
+      None not in _larg and _MED.get("largura") == sum(_larg) - _MED.get("respiro", -1), str(_larg[:3]))
+_letras_livro = set("".join(l["nome"] + l["texto"] for l in _lido)) - {"\n"}
+_sem = sorted(_letras_livro - set(_MED.get("larguras", {})))
+checa(f"toda letra do texto do livro ({len(_letras_livro)}) tem a largura medida na tabela da Roboto 10", not _sem, "".join(_sem[:20]))
+_CATj = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))
+_tem = lambda fonte, dono: sorted(l["nivel"] for l in _lido if l["fonte"] == fonte and l["dono"] == dono)
+_menu_t = [t for t, _ in _fau.trilhas_do_menu(_CATj)]
+_falta = [c for c in _CATj["caminhos"] if _tem("Caminho", c) != _cam] + [t for t in _menu_t if _tem("Trilha", t) != _tri]
+checa(f"todo Caminho tem as {len(_cam)} cartas e toda Trilha do menu ({len(_menu_t)}, com as rotas do Batedor) tem as {len(_tri)}",
+      bool(_cam) and not _falta, str(_falta[:4]))
+_DADOS = WB0["DADOS"]
+_L = [_DADOS.cell(row=r, column=12).value for r in range(4, 4 + len(_menu_t) + 1)]
+checa("a lista de Trilhas da DADOS é a do menu, com o Batedor aberto nas três rotas do livro",
+      _L[:-1] == _menu_t and _L[-1] in (None, "") and "Batedor" not in _L
+      and [t for t in _menu_t if t.startswith("Batedor · ")] == [f"Batedor · {r}" for r in _xh.extrai()["rotas"]["Batedor"]], str(_L))
+_junto = [l for l in _lido if l["fonte"] == _hb.FONTE_JUNTO]
+checa("a Rajada Marcial do Pugilista mora na carta 7 do Caminho dele, junto da habilidade do Incursor no 7",
+      [(l["dono"], l["nivel"]) for l in _junto] == [("Pugilista", 7)] and _CATj["trilhas"]["Pugilista"] == "Incursor"
+      and _junto[0]["texto"].startswith(next(l["texto"] for l in _lido if l["fonte"] == "Caminho" and l["dono"] == "Incursor" and l["nivel"] == 7)),
+      str([(l["dono"], l["nivel"]) for l in _junto]))
+# 05/10/2026, o nível 7 da Vanguarda ganhou a Execução Preparada (D42 do livro): quando a carta junta mais de uma
+# habilidade e o livro abre o parágrafo com o nome de uma delas ("Nível 7: Execução Preparada."), o nome fica na carta,
+# como subtítulo em negrito. Antes, a marca saía inteira e a segunda habilidade ficava sem nome. A lista sai do
+# manual.txt, pela seção de cada dono no capítulo, e não do extrator; e confere a carta do Habilidades.gs e o que o
+# extrator tira hoje.
+_man = open("manual.txt", encoding="utf-8").read().splitlines()
+_ini6 = _man.index("## 6. Caminhos e Trilhas")
+_fim6 = next(i for i in range(_ini6 + 1, len(_man)) if _man[i].startswith("## "))
+_xe = _xh.extrai()
+_cab_donos = {"### " + d.replace(" · ", ": ") for g in ("caminhos", "trilhas") for d in _xe[g]}
+def _secao(dono):
+    """do título do dono até o título do dono seguinte (ou o fim do capítulo): os subtítulos ### do meio são dele"""
+    a = _man.index("### " + dono.replace(" · ", ": "), _ini6, _fim6)
+    return _man[a + 1:next(i for i in range(a + 1, _fim6 + 1) if i == _fim6 or _man[i] in _cab_donos)]
+_com_nome, _sem_nome = [], []
+for l in _lido:
+    if l["fonte"] not in (_hb.FONTE_CAMINHO, _hb.FONTE_TRILHA):
+        continue
+    partes = [p.strip() for p in re.split(r",| e ", l["nome"]) if p.strip()]
+    if len(partes) < 2:
+        continue
+    ext = _xe["caminhos" if l["fonte"] == _hb.FONTE_CAMINHO else "trilhas"][l["dono"]][str(l["nivel"])]
+    for linha in _secao(l["dono"]):
+        m = re.match(rf"^Nível {l['nivel']}: ([^.]{{1,80}})\. (.+)", linha)
+        if not (m and m.group(1) in partes):
+            continue
+        _com_nome.append((l["dono"], l["nivel"], m.group(1)))
+        for onde, h in (("Habilidades.gs", l), ("extrator", ext)):
+            if m.group(1) not in h["titulos"] or f"{m.group(1)}\n\n{m.group(2)}" not in h["texto"]:
+                _sem_nome.append(f"{l['dono']} {l['nivel']}, {m.group(1)} ({onde})")
+checa("a carta que junta duas habilidades mostra o nome de cada uma que o livro abre por \"Nível N: Nome.\", em subtítulo",
+      ("Vanguarda", 7, "Execução Preparada") in _com_nome and not _sem_nome, f"{_sem_nome[:3]} · achadas {len(_com_nome)}")
+# 05/10/2026, pedido do Mizuki: "Nome da técnica aparecer na ficha amaldiçoada". Ele escolheu "Espelha a CARTEIRA": a caixa
+# NOME DA TÉCNICA é referência pura para uma conta da DADOS_AM (quem escreve por cima recebe a conta de volta, pelo onEdit),
+# a conta lê o campo TÉCNICA DECLARADA da CARTEIRA, o script sabe que a caixa vem de lá (o aviso diz onde escrever), e,
+# recalculada, a Kaori mostra o nome que está escrito na CARTEIRA dela.
+_rot_nt = [c for linha in WB0[ABA].iter_rows() for c in linha if c.value == "NOME DA TÉCNICA"]
+_cel_nt = f"{_rot_nt[0].column_letter}{_rot_nt[0].row + 1}" if len(_rot_nt) == 1 else None
+_m_nt = re.fullmatch(rf"={DAM}!\$([A-Z]+)\$(\d+)", str(WB0[ABA][_cel_nt].value)) if _cel_nt else None
+_conta_nt = str(WB0[DAM][_m_nt.group(1) + _m_nt.group(2)].value).replace("$", "") if _m_nt else None
+_cru_am = json.loads(re.search(r"var ABAS = ([\s\S]*?);\n\nvar ARTE = ", open("apps-script/Ficha.gs", encoding="utf-8").read()).group(1))
+_da_car = next((a.get("da_carteira") for a in _cru_am if a["nome"] == ABA), None)
+_lido_nt = txt(WB["kaori"][ABA][_cel_nt].value) if "kaori" in WB and _cel_nt else None
+checa("a caixa NOME DA TÉCNICA espelha a TÉCNICA DECLARADA da CARTEIRA: aponta para a conta, a conta lê o campo, o script "
+      "avisa que ela vem de lá, e a Kaori recalculada mostra o nome escrito na CARTEIRA",
+      bool(CAMPO_TEC and _m_nt) and _conta_nt == f'=CARTEIRA!{CAMPO_TEC}&""' and _da_car == [_cel_nt]
+      and ("kaori" not in WB or _lido_nt == "Peso Emprestado"),
+      f"campo {CAMPO_TEC}, caixa {_cel_nt}, conta {_conta_nt}, script {_da_car}, Kaori {_lido_nt!r}")
 for nome in FICHAS:
     ficha, f = FICHAS[nome], WB[nome]["FICHA"]
     n = ficha.get("nivel", 2)

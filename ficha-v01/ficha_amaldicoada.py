@@ -71,7 +71,7 @@ ALT_A = 7 + TXT_APT                          # a de aptidão: o menu, o requisit
 
 SECOES = [("tecnica", "TÉCNICA", "Técnica"), ("orcamento", "ORÇAMENTO", "Orçamento"), ("feiticos", "FEITIÇOS", "Feitiços"),
           ("zero", "CLASSE 0", "Classe 0"), ("lib", "LIBERAÇÃO MÁXIMA", "Liberação"), ("tm", "TÉCNICA MÁXIMA", "T. Máxima"),
-          ("dominio", "EXPANSÃO DE DOMÍNIO", "Domínio"), ("passivas", "PASSIVAS", "Passivas"),
+          ("dominio", "EXPANSÃO DE DOMÍNIO", "Domínio"), ("passivas", "TALENTOS", "Talentos"),
           ("aptidoes", "APTIDÕES E REFINO", "Aptidões"), ("pactos", "PACTOS", "Pactos")]
 # as seções que nascem fechadas: o nível 2 da ficha nova ainda não chegou em nenhuma das três
 NASCE_FECHADA = ("lib", "tm", "dominio")
@@ -120,8 +120,8 @@ DENTRO = "Dentro das regras que a ficha confere"
 SEM_NOME = "Dê um nome"
 FORMA_INICIAL = "Projétil"
 NEUTRA, LIVRE, FECHADA = "Neutra", "Livre", "Fechada"
-PERMANENTE, ESPACO_DE_PACTO = "Permanente", "Um espaço de feitiço"
-PROPRIA_P, PROPRIA_A, PROPRIA_B = "Passiva Própria", "Aptidão Própria", "Bênção Própria"
+PERMANENTE, ESPACO_DE_PACTO = "Permanente", "Um espaço conhecido"
+PROPRIA_P, PROPRIA_A, PROPRIA_B = "Talento Próprio", "Aptidão Própria", "Bênção Própria"
 
 # As quatro rotas de criação (02/10/2026): a aba muda conforme a Origem escolhida na FICHA, para o menu rápido da seção 8
 # ler a mesma coisa em qualquer ficha. O desenho fechado com o Mizuki foi a forma A do estudo mockup/rotas-estudo.html:
@@ -137,14 +137,16 @@ N_GRUPOS = 3
 
 # As peças que mudam a conta, pelo nome que têm no catálogo. Cada uma é conferida contra ele em regras(): peça que
 # mudar de nome no livro para a montagem, em vez de deixar uma fórmula procurando um nome que não existe mais.
-PECAS_CITADAS = ("Longe", "Muito Longe", "Maior", "Muito Maior", "Mais Um", "Rajada", "Salto", "Queima", "Rápido",
-                 "Reação", "Certeiro", "Inescapável", "Toca a Alma")
+PECAS_CITADAS = ("Longe", "Muito Longe", "Maior", "Muito Maior", "Mais Um", "Rajada", "Salto", "Queima", "Estilhaço", "Remate",
+                 "Rápido", "Reação", "Certeiro", "Inescapável", "Toca a Alma")
 RESTRICOES_CITADAS = ("Corpo a Corpo", "Atrasar", "Carregar", "Tudo ou Nada")
 # as quatro Restrições de frequência (manual p.124; a mesma lista do conferir_feitico.py, que o validador compara)
 FREQUENCIA = ("Uma Vez", "Condicional", "Aquecer", "Dívida")
-# as duas peças que SOMAM metade dos dados ao total (o Mais Um e a Rajada dividem, e a soma das partes não cresce):
-# a conta do conferir_feitico.py, do manual p.135
-SOMAM_METADE = ("Salto", "Queima")
+# as peças que SOMAM metade dos dados ao total (o Mais Um e a Rajada dividem, e a soma das partes não cresce). O livro
+# reconstruído (Fundamento, Dano e repetições): "Salto, Queima e Estilhaço acrescentam os dados que suas entradas
+# indicam", e o Remate conta como multiplicador de 25% no mesmo teto de 4 × Classe
+SOMAM_METADE = ("Salto", "Queima", "Estilhaço")
+MULTIPLICA = ("Remate", 1.25)
 # como os dados de cada Forma aparecem: 0 dano, 1 cura, 2 vida temporária (3 por ponto), 3 sem dano
 TIPO_DE_DANO = {"Cura": 1, "Onda": 1, "Apoio": 2, "Efeito": 3}
 PESO = {"Leve": 1, "Media": 2, "Média": 2, "Pesada": 3}
@@ -179,6 +181,21 @@ def _abs(col, lin, aba=""):
 
 def _faixa(c1, l1, c2, l2, aba=""):
     return f"{aba}${L(c1)}${l1}:${L(c2)}${l2}"
+
+
+def campo_da_tecnica(layout):
+    """o campo TÉCNICA DECLARADA da CARTEIRA, onde o jogador escreve o nome da técnica: a caixa mesclada logo abaixo do
+    rótulo (que diz TÉCNICA AMALDIÇOADA, TÉCNICA MARCIAL ou ESTILO DECLARADO, conforme a rota). A caixa NOME DA TÉCNICA
+    desta aba espelha ele (05/10/2026)"""
+    car = next(a for a in layout["abas"] if a["nome"] == "CARTEIRA")
+    rot = [c for c, v, _ in car["celulas"] if isinstance(v, str) and "DECLARAD" in v]
+    if len(rot) != 1:
+        raise SystemExit(f"ficha_amaldicoada: a CARTEIRA devia ter um rótulo de técnica declarada, e tem {rot}")
+    lin, col = ix._lc(rot[0])
+    campo = _a1(col, lin + 1)
+    if not any(m.split(":")[0] == campo for m in car["mescladas"]):
+        raise SystemExit(f"ficha_amaldicoada: abaixo do rótulo {rot[0]} da CARTEIRA não há a caixa do nome da técnica")
+    return campo
 
 
 def _A(coord, aba=""):
@@ -274,8 +291,8 @@ def regras(CAT=None, TEC=None):
         res = do_livro[n]["resolve"]
         formas.append({"nome": n, "familia": f["familia"], "peso": PESO[f["custa"]] if f["custa"] else 0,
                        "embutida": int("embutido" in f), "tipo": TIPO_DE_DANO.get(n, 0),
-                       "resolve": "Acerto" if res.startswith("Rolagem") else "TR, metade" if res.startswith("Teste") else "Automático",
-                       "tr": int(res.startswith("Teste")),
+                       "resolve": "Acerto" if res.startswith("Ataque") else "TR, metade" if res.startswith("TR") else "Automático",
+                       "tr": int(res.startswith("TR")),
                        "grau1": GRAU[ALCANCE[n][0][2]], "grau2": GRAU[ALCANCE[n][1][2]] if ALCANCE[n][1] else 0,
                        "alvos": int(n in MAIS_ALVOS), "na_zero": int(TEC["base_por_classe"].get(n, {"classe_0": ""})["classe_0"] != "—")})
     # o alcance de cada Forma em cada faixa de Classe (0, 1 a 5, 6 e 7), degrau a degrau
@@ -284,8 +301,6 @@ def regras(CAT=None, TEC=None):
         raise SystemExit("ficha_amaldicoada: a Onda do livro nao e mais uma esfera de raio 3 m")
 
     def a_base(forma, escada, faixa):
-        if forma == "Onda":                  # a `Base por Classe` não traz o raio dela; a tabela `Formas` traz
-            return esc["raio"][0]
         t = base[forma][faixa]
         if t == "—":
             return None
@@ -329,7 +344,7 @@ def regras(CAT=None, TEC=None):
         if p["nome"] == "Regra Própria":
             continue                          # tem caixa própria, na seção da técnica
         if p["nome"] == PROPRIA_P:
-            passivas += [{"nome": f"{PROPRIA_P} (CP {k})", "cp": k, "faz": p["faz"] + " Escreva a sua na caixa de baixo.",
+            passivas += [{"nome": f"{PROPRIA_P} (CE {k})", "cp": k, "faz": p["faz"] + " Escreva a sua na caixa de baixo.",
                           "fund": 1, "marc": 1, "resumo": resumo(p["faz"], TETO_RESUMO["passiva"])} for k in sorted(cp)]
         else:
             passivas.append({"nome": p["nome"], "cp": int(p["classe_passiva"]), "faz": p["faz"], "fund": 1, "marc": int(p["nome"] in marciais),
@@ -345,7 +360,7 @@ def regras(CAT=None, TEC=None):
                                            (ROT["bencaos"], PROPRIA_B, 1, ROT["bencaos_de_graca"])):
         for a in lista:
             if a["nome"] == propria:
-                aptidoes += [{"nome": f"{propria} (CP {k})", "requisito": a["requisito"], "cp": k, "escala": a["escala"],
+                aptidoes += [{"nome": f"{propria} (CE {k})", "requisito": a["requisito"], "cp": k, "escala": a["escala"],
                               "faz": a["faz"] + " Escreva a sua na caixa de baixo.", "gratis": 0, "bencao": bencao, "extensao": 0,
                               "resumo": resumo(a["faz"], TETO_RESUMO["aptidao"])}
                              for k in (int(x) for x in re.findall(r"\d", a["classe_passiva"]))]
@@ -378,8 +393,8 @@ def regras(CAT=None, TEC=None):
     }
     lim = {}
     for faixa, mel, _ in TEC["melhorias_por_classe"]:
-        m = re.match(r"(\d)(?: e (\d)| em diante)?", faixa)
-        for c in range(int(m.group(1)), (int(m.group(2)) if m.group(2) else 7 if "diante" in faixa else int(m.group(1))) + 1):
+        m = re.match(r"(\d) a (\d)$", faixa)
+        for c in range(int(m.group(1)), int(m.group(2)) + 1):
             lim[c] = int(mel)
     classes = [{"classe": c, "precos": [preco(p, c) for p in (1, 2, 3)] + [preco(p, c, True) for p in (1, 2, 3)], "limite": lim[c]}
                for c in range(1, len(limiares("classe")) + 1)]
@@ -493,7 +508,10 @@ def geometria():
     t = abre("aptidoes")
     # a linha do Estímulo Muscular (02/10/2026): a perícia e o Teste de Resistência que a Bênção de graça da Restrição
     # Celestial sem energia escolhe na criação, e os usos por cena
+    # 06/10/2026: os três valores das de graça ganham endereço no layout, como o Refino, porque o menu rápido da FICHA
+    # (montado antes desta aba) mostra o valor na carta (pedido do Mizuki: "o mecânico, pelo menos o valor")
     g.update({"apt_caixas": t + 1, "apt_refino": f"D{t + 2}", "apt_compradas": f"F{t + 2}", "estimulo": t + 5,
+              "apt_cobrir": f"J{t + 2}", "apt_canalizar": f"L{t + 2}", "apt_reacao": f"P{t + 2}",
               "estimulo_pericia": f"D{t + 6}", "estimulo_teste": f"J{t + 6}", "estimulo_usos": f"P{t + 6}"})
     g["cols_apt"] = [("D", "E"), ("F", "H"), ("J", "K"), ("L", "N"), ("P", "T")]
     g["aptidoes"], lin = [], t + 8
@@ -810,8 +828,9 @@ def trocas(layout, CAT=None, TEC=None):
                 f'"Liberação Máxima é de Classe {R["liberacao"]["classe_minima"]} ou mais"'),
             _se(f'AND({P("liberação")}=1,OR({P("tp")}=1,{P("tp")}=2))', '"Liberação Máxima não serve para cura"'),
             _se(f'AND({P("liberação")}=1,{tem_m(ines)}+{tem_m("Toca a Alma")}>0)', '"Esta peça não entra numa Liberação Máxima"'),
-            _se(f'{P("d")}+{P("dep")}>4*{Cc}',
-                f'({P("d")}+{P("dep")})&" dados somando alvos e repetições: o teto da Classe "&{Cc}&" é "&4*{Cc}'),
+            _se(f'{P("d")}*IF({tem_m(MULTIPLICA[0])}>0,{MULTIPLICA[1]},1)+{P("dep")}>4*{Cc}',
+                f'({P("d")}*IF({tem_m(MULTIPLICA[0])}>0,{MULTIPLICA[1]},1)+{P("dep")})&" dados somando repetições'
+                f'"&IF({tem_m(MULTIPLICA[0])}>0," e o Remate","")&": o teto da Classe "&{Cc}&" é "&4*{Cc}'),
         ]
         conta_txt = lambda x: f'IF({x}="",0,(LEN({x})-LEN(SUBSTITUTE({x}," · ","")))/3+1)'
         o["erros"] = f'=IF({P("tem")}=0,"",TEXTJOIN(" · ",TRUE,{",".join(erros)}))'
@@ -820,7 +839,7 @@ def trocas(layout, CAT=None, TEC=None):
             _se(f'{P("dv0")}>2*{Cc}', f'"A devolução parou no teto de "&2*{Cc}'),
             _se(f'{P("perde")}>0', f'"Devolução perdida: "&{P("perde")}&IF({P("perde")}>1," pontos"," ponto")&" sem peça para pagar"'),
             _se(f'AND({P("ct")}>0,{P("d")}=0)', '"Controle sem dano: uma rodada a mais e CD +2"'),
-            _se(f'AND({P("ct")}>0,{P("d")}>0,{P("d")}<={Cc})', '"Controle com um quarto do teto: uma rodada a mais"'),
+            _se(f'AND({P("ct")}>0,{P("d")}>0,{P("d")}<={Cc})', '"Controle com saldo até a Classe: uma rodada a mais"'),
         ]
         o["avisos"] = f'=IF({P("tem")}=0,"",TEXTJOIN(" · ",TRUE,{",".join(avisos)}))'
         o["na"] = "=" + conta_txt(P("avisos"))
@@ -964,12 +983,12 @@ def trocas(layout, CAT=None, TEC=None):
     pp = lambda k, n: f"${L(cP + k)}{n}"
     D.tabela("carta_passiva", ["carta de passiva", "passiva anotada", "classe passiva anotada", "nível que libera", "o que ela faz",
                                "classe passiva na carta", "custo na carta", "seu texto da passiva", "ordem da passiva"],
-             [[f"Passiva {i + 1}" + (" · Leque" if i >= PAGAS else ""),
+             [[f"Talento {i + 1}" + (" · Leque" if i >= PAGAS else ""),
                f'={_A(p["nome"], AM)}&""',
                (lambda n: f"=IFERROR(VLOOKUP({pp(1, n)},{PASS},2,FALSE),0)"),
                (lambda n: f"=IFERROR(VLOOKUP({pp(2, n)},{CPT},2,FALSE),0)"),
                (lambda n: f'=IFERROR(VLOOKUP({pp(1, n)},{PASS},3,FALSE),"")'),
-               (lambda n: f'=IF({pp(2, n)}=0,"",IF({pp(3, n)}>{H["nível"]},"{T_ERRO} Nível "&{pp(3, n)},"CP "&{pp(2, n)}))'),
+               (lambda n: f'=IF({pp(2, n)}=0,"",IF({pp(3, n)}>{H["nível"]},"{T_ERRO} Nível "&{pp(3, n)},"CE "&{pp(2, n)}))'),
                ((lambda n, j=i - PAGAS + 1: f'=IF({pp(2, n)}=0,"",IF({j}>{H["escolhas de Leque"]},"{T_ERRO} Vaga","Grátis"))') if i >= PAGAS
                 else (lambda n: f'=IF({pp(2, n)}=0,"",{pp(2, n)}&" esp.")')),
                f'={_A(p["texto"], AM)}&""',
@@ -982,7 +1001,7 @@ def trocas(layout, CAT=None, TEC=None):
                                "o refino escala na carta", "o que a aptidão anotada faz", "seu texto da aptidão", "ordem da aptidão"],
              [[f"Aptidão {i + 1}", f'={_A(a["nome"], AM)}&""',
                (lambda n: f'=IF({aa(1, n)}="","","Requisito: "&IFERROR(VLOOKUP({aa(1, n)},{APT},2,FALSE),""))'),
-               (lambda n: f'=IF({aa(1, n)}="","",IFERROR(IF(ISNUMBER(VLOOKUP({aa(1, n)},{APT},3,FALSE)),"CP "&VLOOKUP({aa(1, n)},{APT},3,FALSE),'
+               (lambda n: f'=IF({aa(1, n)}="","",IFERROR(IF(ISNUMBER(VLOOKUP({aa(1, n)},{APT},3,FALSE)),"CE "&VLOOKUP({aa(1, n)},{APT},3,FALSE),'
                           f'VLOOKUP({aa(1, n)},{APT},3,FALSE)),""))'),
                (lambda n: f'=IF({aa(1, n)}="","",IFERROR(VLOOKUP({aa(1, n)},{APT},4,FALSE),""))'),
                (lambda n: f'=IF({aa(1, n)}="","",IFERROR(VLOOKUP({aa(1, n)},{APT},5,FALSE),""))'),
@@ -1000,8 +1019,9 @@ def trocas(layout, CAT=None, TEC=None):
                             "dados dela", "dano na carta", "alcance na carta"],
              [[f"Classe 0 · {i + 1}", f'={_A(z_["forma"], AM)}&""', f'={_A(z_["mel"], AM)}&""', f'={_A(z_["res"], AM)}&""',
                (lambda n: f"=IFERROR(MATCH({zz(1, n)},{forma_col(0)},0),0)"),
-               # a Melhoria Leve tira um dado; a Restrição Leve devolve o dado, e só paga a Melhoria
-               (lambda n: f'={H["classe 0 dados"]}-IF({zz(2, n)}<>"",1,0)+IF(AND({zz(2, n)}<>"",{zz(3, n)}<>""),1,0)'),
+               # a Melhoria Leve tira um dado; a Restrição Leve não devolve nada (livro reconstruído: "ela não recupera o
+               # dado pago nem cria pontos de montagem")
+               (lambda n: f'={H["classe 0 dados"]}-IF({zz(2, n)}<>"",1,0)'),
                (lambda n, i=i: f'=IF({i + 1}>{H["classe 0 quantos"]},"Nível {abre_no(i)}",IF({zz(4, n)}=0,"",IF(INDEX({forma_col(6)},{zz(4, n)})>=2,"—",'
                                f'{zz(5, n)}&"d8 = "&FLOOR({zz(5, n)}*4.5,1))))'),
                (lambda n, i=i: f'=IF(OR({i + 1}>{H["classe 0 quantos"]},{zz(4, n)}=0),"",INDEX({ALC1},({zz(4, n)}-1)*3+1,'
@@ -1055,9 +1075,11 @@ NOTAS = {
     "classe": "A Classe do feitiço. Ela define os pontos (3 × Classe), o PE e quantas Melhorias cabem.",
     "melhorias": "As Classes 1 e 2 aceitam 2 Melhorias, a 3 e a 4 aceitam 3, e da 5 em diante 4. A Forma não conta no limite. "
                  "Família Livre sai metade da Classe mais barata, e Família Fechada some do menu.",
-    "restricoes": "Até duas. Restrição só paga peça: o que passar do que foi gasto some.",
+    "restricoes": "Até duas. Restrição paga peças, incluindo a Forma: o que passar do que foi gasto some.",
     "ampliar": "O mesmo feitiço lançado numa Classe maior, até a maior que o nível liberou. A conta inteira é refeita com os "
                "números da Classe nova.",
+    "nome_tecnica": "Vem da CARTEIRA: o nome da técnica é escrito no campo TÉCNICA DECLARADA de lá. Escrever aqui não "
+                    "muda nada: a caixa volta a mostrar o da CARTEIRA.",
     "atributo": "Escolhido na criação, e não muda. É o menu ATRIBUTO DE CONJURAÇÃO da FICHA: aqui ele aparece espelhado. Na "
                 "Técnica Marcial de arma, é o atributo da arma usada na Kata: a linha da rota mostra o de cada grupo.",
     "rota_nome": "Vem da Origem escolhida na FICHA. O Fundamento é a rota das cinco Origens principais e da Restrição Celestial "
@@ -1074,25 +1096,27 @@ NOTAS = {
     "cd": "8 + o atributo da técnica + maestria. Vem da FICHA.",
     "regra": "Uma frase, verificável pela mesa, sem número. Todo feitiço tem de caber nela.",
     "selo": "O que você sempre faz para conjurar. Não custa nem devolve ponto. Na Técnica Marcial, o Selo é ter o equipamento em uso.",
-    "passiva_livre": "De graça. Não rola dado, não muda número, não faz ninguém rolar. Na Técnica Marcial, o exemplo do livro é o Calo.",
+    "passiva_livre": "A Expressão da técnica: de graça, sem ocupar espaço. Uma manifestação ligada à Descrição, que cuida da aparência "
+                     "do personagem. Não dá vantagem, não resolve teste e não revela informação.",
     "regra_propria": "Só se a técnica impõe uma regra ao mundo. Uma frase, verificável, simétrica, sem dano direto e com limite por "
-                     "cena. Não conta nas cinco Passivas pagas.",
-    "cp_regra": "Na criação ela vem na Classe Passiva 1, de graça. A 2 libera no nível {n2} e custa 1 espaço; a 3 libera no nível "
-                "{n3} e custa 2. Deixe em branco se a técnica não tem Regra Própria.",
+                     "cena. Não conta nos cinco Talentos pagos.",
+    "cp_regra": "A Categoria de Efeito da Regra Própria. Na criação ela vem na 1, sem ocupar espaço. A 2 libera no nível {n2} e "
+                "ocupa 1 espaço; a 3 libera no nível {n3} e ocupa 2 no total. Deixe em branco se a técnica não tem Regra Própria.",
     "familias": "O Fundamento tem {livres} Famílias Livres e {fechadas} Fechadas. As outras ficam Neutras.",
     "maior_classe": "Sobe nos níveis 1, 5, 9, 13, 17, 21 e 26. Vem da FICHA.",
-    "espacos": "2 + metade do nível + um por marco alcançado. Pacto permanente que concede um espaço de feitiço soma aqui.",
-    "leque": "Cada escolha de Leque no marco dá um feitiço a mais, que só pode ser feitiço, e uma Passiva. A escolha é marcada na "
-             "FICHA, em Marco Escolhido.",
+    "espacos": "2 + metade do nível + um por marco alcançado. Pacto permanente que concede um espaço conhecido soma aqui.",
+    "leque": "Cada escolha de Leque no marco dá um feitiço a mais e um Talento, sem pagar espaços por eles. A escolha é marcada "
+             "na FICHA, em Marco Escolhido.",
     "em_feiticos": "Os feitiços com nome. Classe 0 e Liberação Máxima não ocupam espaço.",
-    "em_passivas": "Cada Passiva paga custa a Classe Passiva dela em espaços. A Regra Própria acima da Classe Passiva 1 entra aqui. "
-                   "Passiva e Domínio só gastam espaço: o feitiço do Leque não paga nenhum dos dois.",
+    "em_passivas": "Cada Talento pago ocupa tantos espaços quanto a Categoria de Efeito dele. A Regra Própria acima da Categoria 1 "
+                   "entra aqui. Talento e Domínio só gastam espaço: o feitiço do Leque não paga nenhum dos dois.",
     "no_dominio": "A Expansão de Domínio custa 2, 3 ou 5 espaços, conforme o degrau.",
     "livres": "Os espaços, mais os feitiços do Leque, menos o que já foi gasto.",
     "indice": "Escolha a Classe e a fileira mostra os números dela. Em branco, mostra os da sua maior Classe.",
     "zero_indice": "Não muda com o menu: quantos feitiços de Classe 0 o nível dá, e os dados deles.",
     "zero_mel": "Cabe uma Melhoria Leve, e ela tira um dado.",
-    "zero_res": "Cabe uma Restrição Leve. Ela devolve o dado que a Melhoria tirou, e só isso: Restrição só paga peça.",
+    "zero_res": "Cabe uma Restrição Leve, mas ela não devolve o dado que a Melhoria tirou nem cria pontos. Toque e Aura não "
+                "dão a devolução de Corpo a Corpo na Classe 0.",
     "tm_dano": "Fixo pela faixa de nível. Nenhum ponto compra mais dados.",
     "tm_pe": "{pe} × a sua maior Classe.",
     "tm_montagem": "Os pontos de montagem compram só a Forma e as Melhorias, nos preços da sua maior Classe. O que sobrar se perde.",
@@ -1107,19 +1131,20 @@ NOTAS = {
     "dom_efeito": "O que o domínio permite você fazer lá dentro que você não faria fora. Quase nunca é dano.",
     "dom_corrida": "Dois domínios sobrepostos: quem segura o domínio e toma dano testa Vigor. As falhas contam até metade da Essência.",
     "seu_texto": "Para a entrada Própria do menu, escreva aqui o texto dela, fechado com o mestre. Nas outras, é espaço para anotação.",
-    "passiva_custo": "A Passiva paga custa a Classe Passiva dela em espaços de feitiço. A do Leque não custa nada, mas só existe "
-                     "com a escolha de Leque no marco.",
+    "passiva_custo": "O Talento pago ocupa tantos espaços de feitiço quanto a Categoria de Efeito dele. O do Leque não ocupa "
+                     "espaço, mas só existe com a escolha de Leque no marco.",
     "apt_refino": "Começa em 1, e cada marco dá +1. Escolher Refino no marco dá mais +1. O teto é 10. Na Restrição Celestial sem "
                   "energia é a Lapidação, nos mesmos degraus.",
     "apt_compradas": "Cada escolha de Refino, marcada na FICHA, compra uma aptidão; com o refino já em 10, duas. A semente do Sem "
                      "Técnica dá uma a mais.",
-    "apt_cobrir": "De graça no refino 1. Sem Traje e sem Revestimento, a proteção é 1/3 do refino + 1. Na Restrição Celestial sem "
+    "apt_cobrir": "De graça no refino 1. Sem Traje e sem Revestimento, a proteção é 1 + um terço do refino, para baixo. Na Restrição Celestial sem "
                   "energia é a Defesa sem Armadura, com os mesmos números na Lapidação.",
-    "apt_canalizar": "De graça no refino 1. 1d4 a mais na arma a cada 3 pontos de refino. No refino 10 os dados viram d6. Na "
+    "apt_canalizar": "De graça no refino 1. Dados a mais em cada ataque com arma ou desarmado: 1d4 no refino 1 e 2, 2d4 do 3 ao 5, "
+                     "3d4 do 6 ao 8, 4d4 no 9 e 4d6 no 10. Na "
                      "Restrição Celestial sem energia é o Estímulo Muscular, com o mesmo dano na arma, e só na arma.",
     "apt_reacao": "Como Reação, Redução de Dano de 1,5 × refino num golpe. Você fica sem proteção até o fim do seu próximo turno.",
     "permanentes": "Metade da Essência, para baixo, na campanha inteira. Temporário, Promessa e de restrição não têm teto.",
-    "concede": "Só o pacto permanente concede. Um espaço de feitiço soma no Orçamento.",
+    "concede": "Só o pacto permanente concede. Um espaço conhecido soma no Orçamento.",
 }
 
 
@@ -1299,7 +1324,9 @@ def aba(layout, tr):
     t = G["tec_caixas"]
     atributo = ix._Ficha(layout)
     atributo = atributo.abaixo(atributo.unico("ATRIBUTO DE CONJURAÇÃO"))
-    f.caixa("D", "H", t, "NOME DA TÉCNICA")
+    # 05/10/2026, pedido do Mizuki: "Nome da técnica aparecer na ficha amaldiçoada". Ele escolheu "Espelha a CARTEIRA":
+    # o jogador escreve uma vez, na TÉCNICA DECLARADA de lá, e quem escreve por cima aqui recebe a conta de volta
+    f.caixa("D", "H", t, "NOME DA TÉCNICA", f'={_A(campo_da_tecnica(layout), "CARTEIRA!")}&""', nota=NOTAS["nome_tecnica"])
     f.caixa("J", "K", t, "TIPO DE DANO")
     # na Técnica Marcial de arma, o atributo é o da arma da Kata: com os grupos num atributo só, a linha mostra ele e os
     # números dele; com dois, "Por grupo", e a linha da rota mostra os números de cada grupo
@@ -1326,7 +1353,7 @@ def aba(layout, tr):
     f.menu(G["rota_menu"], D.faixa("menu_rota", so=0, aba=DA))
     f.add("cel", "P", t + 1, "T", t + 1,
           f'=IF({ROTA}=2,IF({menu_rota}="","","Aberta, sem os gates de nível e de refino · conta como uma aptidão a mais"),'
-          f'IF({ROTA}=3,"Fere maldição: o Corpo Amaldiçoado tem Canalizar energia",IF({ROTA}=4,IF({menu_rota}="","",'
+          f'IF({ROTA}=3,"Fere maldição: o Corpo Amaldiçoado tem Canalizar Energia",IF({ROTA}=4,IF({menu_rota}="","",'
           f'IF({menu_rota}="{EQUIPAMENTO[2]}","Não fere maldição: só as Katas ferem","Fere maldição")),"—")))')
     for i, (c1, c2) in enumerate((("D", "H"), ("J", "N"), ("P", "T"))):
         f.add("rot", c1, t + 2, c2, t + 2, f'=IF({ARMA}=1,"GRUPO {i + 1}","—")', NOTAS["grupos"] if i == 0 else None)
@@ -1342,13 +1369,13 @@ def aba(layout, tr):
     f.add("txt", "D", t + 1, "K", t + 5)
     f.add("rot", "L", t, "T", t, f'=UPPER({ROT("selo")})', NOTAS["selo"])
     f.add("txt", "L", t + 1, "T", t + 2)
-    f.add("rot", "L", t + 3, "T", t + 3, "PASSIVA LIVRE", NOTAS["passiva_livre"])
+    f.add("rot", "L", t + 3, "T", t + 3, "EXPRESSÃO DA TÉCNICA", NOTAS["passiva_livre"])
     f.add("txt", "L", t + 4, "T", t + 5)
     t = G["regra_propria"]
     cpn = R["cp"]
     f.add("rot", "D", t, "N", t, "REGRA PRÓPRIA", NOTAS["regra_propria"])
     f.add("txt", "D", t + 1, "N", t + 2)
-    f.add("rot", "P", t, "Q", t, "CLASSE PASSIVA", NOTAS["cp_regra"].format(n2=cpn[2], n3=cpn[3]))
+    f.add("rot", "P", t, "Q", t, "CATEGORIA", NOTAS["cp_regra"].format(n2=cpn[2], n3=cpn[3]))
     assert f.add("cel", "P", t + 1, "Q", t + 2) == G["cp_regra"]
     f.menu(G["cp_regra"], D.faixa("cp", so=0, aba=DA))
     f.add("rot", "R", t, "T", t, "ESPAÇOS")
@@ -1374,7 +1401,7 @@ def aba(layout, tr):
     sem = H["sem espaço"]
     caixas = [("MAIOR CLASSE", f"={MAXC}", "maior_classe"), ("ESPAÇOS", f"={H['espaços']}", "espacos"),
               ("DO LEQUE", f'="+"&{H["escolhas de Leque"]}', "leque"), (f'="EM "&UPPER({ROT("feitiços")})', f"={H['feitiços montados']}", "em_feiticos"),
-              ("EM PASSIVAS", f'=IF({sem}=1,"{T_ERRO} ","")&{H["espaços em passivas"]}', "em_passivas"),
+              ("EM TALENTOS", f'=IF({sem}=1,"{T_ERRO} ","")&{H["espaços em passivas"]}', "em_passivas"),
               ("NO DOMÍNIO", f'=IF({sem}=1,"{T_ERRO} ","")&{H["espaços no domínio"]}', "no_dominio"),
               ("LIVRES", f'=IF({H["livres"]}<0,"{T_ERRO} ","")&{H["livres"]}', "livres")]
     G["orcamento"] = {}
@@ -1505,7 +1532,7 @@ def aba(layout, tr):
     f.add("rot", "D", t, "T", t, "COMO É POR DENTRO")
     f.add("txt", "D", t + 1, "T", t + 4)
 
-    # --- as Passivas
+    # --- os Talentos (a Passiva da v0.331)
     titulo("passivas")
     cP = D.T["carta_passiva"][0]
     for i, ((r0, c0), cel) in enumerate(zip(G["passivas"], tr["passivas_c"])):
@@ -1519,7 +1546,7 @@ def aba(layout, tr):
         assert f.add("txt", b, r0 + 5, e, r0 + 6) == cel["texto"]
         f.menu(cel["nome"], D.faixa("passivas", so=5, aba=DA))
     f.add("lote", "D", G["lote_leque"]["faixa"], "T", G["lote_leque"]["faixa"],
-          "PASSIVAS DO LEQUE · uma por escolha de Leque, sem custar espaço")
+          "TALENTOS DO LEQUE · um por escolha de Leque, sem ocupar espaço")
 
     # --- as aptidões e o refino
     titulo("aptidoes")
@@ -1528,10 +1555,10 @@ def aba(layout, tr):
     cx = G["cols_apt"]
     assert f.caixa(*cx[0], t, f'=UPPER({ROT("escala")})', f"={REF}", "num", NOTAS["apt_refino"]) == G["apt_refino"]
     assert f.caixa(*cx[1], t, "COMPRADAS", f'=IF({anot}>{comp},"{T_ERRO} ","")&{anot}&" de "&{comp}', "num", NOTAS["apt_compradas"]) == G["apt_compradas"]
-    G["apt_cobrir"] = f.caixa(*cx[2], t, f'=UPPER({ROT("graça 1")})', f'="Proteção "&(FLOOR({REF}/3,1)+1)', "val", NOTAS["apt_cobrir"])
-    G["apt_canalizar"] = f.caixa(*cx[3], t, f'=UPPER({ROT("graça 2")})',
+    assert G["apt_cobrir"] == f.caixa(*cx[2], t, f'=UPPER({ROT("graça 1")})', f'="Proteção "&(FLOOR({REF}/3,1)+1)', "val", NOTAS["apt_cobrir"])
+    assert G["apt_canalizar"] == f.caixa(*cx[3], t, f'=UPPER({ROT("graça 2")})',
                                  f'="+"&IF({REF}>=9,4,IF({REF}>=6,3,IF({REF}>=3,2,1)))&IF({REF}>=10,"d6","d4")&" na arma"', "val", NOTAS["apt_canalizar"])
-    G["apt_reacao"] = f.caixa(*cx[4], t, f'=UPPER({ROT("reação")})', f'="RD "&FLOOR(1.5*{REF},1)&" por 2 PE"', "val", NOTAS["apt_reacao"])
+    assert G["apt_reacao"] == f.caixa(*cx[4], t, f'=UPPER({ROT("reação")})', f'="RD "&FLOOR(1.5*{REF},1)&" por 2 PE"', "val", NOTAS["apt_reacao"])
     # a linha do Estímulo Muscular: a perícia e o Teste de Resistência escolhidos na criação, e os usos
     t = G["estimulo"]
     sem_en = lambda txt: f'=IF({ROTA}=4,"{txt}","—")'
@@ -1646,6 +1673,8 @@ def aba(layout, tr):
         # nenhuma fórmula desta aba é travada: quase todas moram em linha de grupo, e trava em linha de grupo faz o
         # Sheets avisar quem clica no + (o achado do painel de XP da FICHA PESSOAL)
         "protegidas": [],
+        # a caixa que espelha a CARTEIRA: quem escreve por cima dela recebe a conta de volta com o aviso de escrever lá
+        "da_carteira": [G["nome_tecnica"]],
         "copias": copia,
         # menus e caixas de seleção numa gravação só: são mais de duzentas faixas
         "validacao_em_matriz": True,

@@ -10,14 +10,17 @@ O que ela muda fora dela:
     secundária. Ele monta o mesmo nome que a tabela de equipamento da DADOS usa ("Traje 1 + Broquel"),
     e por isso a Defesa não muda de conta;
   · o XP da FICHA passa a mostrar a soma das missões do painel, e o nível continua subindo por ele;
-  · o DESLOCAMENTO da FICHA cai pela metade com uniforme ou escudo sem a Força, ou com a carga acima
-    do limite;
+  · o DESLOCAMENTO da FICHA cai pela metade com uma arma empunhada sem a Força, e vai a zero com a carga
+    acima do limite (04/10/2026: as duas regras passaram a ser do livro, e mudaram);
+  · a DEFESA da FICHA perde a proteção do uniforme ou do escudo usado sem a Força, e a Destreza enquanto uma
+    arma é empunhada sem ela;
   · a DADOS ganha, depois do índice, as tabelas que os menus e as contas desta aba leem.
 
 De onde sai cada número: as armas, os escudos, os uniformes, o salário e os tipos de missão saem das
 chaves `equipamento`, `equipamento_defesa`, `patentes` e `missoes` do catálogo, que o conferir-catalogo.py
-confere contra o manual.txt. O que o Mizuki decidiu em 01/10/2026 e ainda não está no livro (missão solo,
-multiplicador, desconto, arredondamento e as punições) sai da chave `fora_do_livro`.
+confere contra o manual.txt. O desconto da semana, a falha, o arredondamento do XP e as punições de Força e de
+carga entraram no livro reconstruído, e saem das chaves dele; o que o Mizuki decidiu em 01/10/2026 e o livro ainda
+não traz (missão solo e os multiplicadores da guilda) sai da chave `fora_do_livro`.
 
 Os endereços desta aba são do gerador, e por isso estão escritos aqui. O Codigo.gs não guarda nenhum: ele
 lê o índice que esta limpeza publica na DADOS, sob "campo pessoal" e "célula pessoal".
@@ -160,6 +163,30 @@ def _endereco_faixa(c1, c2, aba):
             f"ADDRESS(ROW({aba}{c2}),COLUMN({aba}{c2}),4)")
 
 
+def tabela_da_defesa(dados, lin_cab):
+    """a tabela de equipamento da Defesa (defesa_equipamento.py), que já traz cada escudo com a proteção dele. A proteção
+    do escudo usado sem a Força sai dela, e não de uma tabela nova: o Codigo.gs acha o índice desta aba numa coluna fixa
+    da DADOS (IDXP_COL_CAMPO), e uma tabela a mais antes dele empurraria o índice."""
+    import defesa_equipamento as de
+    cab = next(r[0] for r in dados["celulas"] if r[1] == de.CABECALHO[0] and ix._lc(r[0])[0] == lin_cab)
+    c0 = ix._lc(cab)[1]
+    fim = max(ix._lc(r[0])[0] for r in dados["celulas"] if ix._lc(r[0])[1] == c0 and r[1] not in (None, ""))
+    return _faixa(c0, lin_cab + 1, c0 + 1, fim, "DADOS!")
+
+
+def descontos(missoes):
+    """o menu de desconto da missão: as posições da semana que pagam menos que cheio, da tabela do livro, e a falha
+    que pagou metade. O livro aplica as duas juntas ("200 × ½ × ½ = 50 XP" na terceira longa que falhou), e o Mizuki
+    decidiu em 04/10/2026 que o menu traz as duas opções: cada posição que paga menos ganha também a versão com falha,
+    pela metade dela."""
+    pos = []
+    for p, pct in missoes["desconto_da_semana"].items():
+        v = float(pct.rstrip("%").replace(",", ".")) / 100
+        if v < 1:
+            pos.append((f"{p} · {pct}", v))
+    return pos + [("Falha · metade", 0.5)] + [(f"{n} · falha", v / 2) for n, v in pos]
+
+
 def regras(CAT=None):
     """tudo o que a aba lê do catálogo, já na forma em que ela usa"""
     if CAT is None:
@@ -179,7 +206,7 @@ def regras(CAT=None):
                       "alcance": alcance.get(n), "recarga": eq["municao"].get(n)})
     escudos = []
     for n, e in ed["escudos"].items():
-        escudos.append({"nome": n, "categoria": "Escudo", "mao": 1, "dado": "—",
+        escudos.append({"nome": n, "categoria": "Escudo", "mao": 1, "dado": "—", "protecao": e["protecao"],
                         "propriedades": f"Proteção +{e['protecao']} · teto de Destreza {e['teto_de_destreza']}",
                         "forca": "—" if e["requer_forca"] is None else e["requer_forca"],
                         "volume": vol(eq["volume"]["de_uniforme_e_escudo"][n]), "alcance": None, "recarga": None})
@@ -201,7 +228,7 @@ def regras(CAT=None):
     for pr in LIV["propriedades"] + LIV["restricoes"]:
         faz = pr["faz"]
         if pr["nome"] == DUAS_MAOS:                           # a frase sobre a coluna do catálogo não serve na ficha
-            corte = " No catálogo ela aparece como o 2 da coluna mão."
+            corte = " Aparece como 2 na coluna Mãos."
             assert faz.endswith(corte), faz
             faz = faz[:-len(corte)]
         propriedades.append((pr["nome"], " ".join([faz] + (LIV["a_regra_da_secao"][pr["ver"]] if pr["ver"] else []))))
@@ -217,8 +244,7 @@ def regras(CAT=None):
         "situacoes": [s[0].upper() + s[1:] for s in eq["situacoes_do_traje"]] + [OUTRA_SITUACAO],
         "soco": [eq["soco_por_maestria"][str(i)] for i in range(1, 5)],
         "leve": leve, "limite_base": int(re.match(r"(\d+) \+ Força", eq["volume"]["limite"]).group(1)),
-        "tipos": tipos, "multiplicadores": list(fora["xp_adicional"].items()), "descontos": list(fora["desconto"].items()),
-        "multiplo": fora["arredondamento_do_xp"]["multiplo"],
+        "tipos": tipos, "multiplicadores": list(fora["xp_adicional"].items()), "descontos": descontos(CAT["missoes"]),
         "niveis": CAT["progressao"]["tabela_impressa"], "limiar": CAT["progressao"]["limiar_do_feito"]["nivel"],
     }
 
@@ -410,12 +436,19 @@ def trocas(layout, CAT=None):
     vols = [_faixa(C("AG"), G["equip_ini"], C("AG"), G["equip_fim"], FP)] + \
            [_faixa(C(cols[2][1]), G["itens_ini"], C(cols[2][1]), G["itens_fim"], FP) for cols in COLS_ITENS]
     conta("volume guardado", "=" + "+".join(f"SUM({v})" for v in vols))
-    conta("carga", f'=ROUND({H["volume guardado"]}+{H["volume do uniforme"]},1)')
+    # o livro soma sem arredondar; o ROUND em duas casas só tira o resto de ponto flutuante (0,1 + 0,2)
+    conta("carga", f'=ROUND({H["volume guardado"]}+{H["volume do uniforme"]},2)')
     conta("limite de carga", f'={R["limite_base"]}+{f_}')
     conta("carga acima", f'=IF({H["carga"]}>{H["limite de carga"]},1,0)')
-    # a punição de 01/10/2026: uniforme ou escudo sem a Força, ou carga acima do limite, uma vez só
-    conta("meia marcha", f'=IF(OR({H["falta força no uniforme"]}=1,AND({H["falta força na secundária"]}=1,'
-                         f'{H["escudo na secundária"]}=1),{H["carga acima"]}=1),1,0)')
+    # 04/10/2026, as regras do livro reconstruído: arma empunhada sem a Força corta o deslocamento pela metade e tira a
+    # Destreza da Defesa; uniforme ou escudo sem a Força não dá a proteção dele; carga acima do limite não deixa andar
+    conta("arma sem força", f'=IF(OR({H["falta força na principal"]}=1,AND({H["falta força na secundária"]}=1,'
+                            f'{H["escudo na secundária"]}=0)),1,0)')
+    conta("meia marcha", f'={H["arma sem força"]}')
+    conta("proteção sem força", f'=IF({H["falta força no uniforme"]}=1,{H["proteção do uniforme"]},0)+'
+                                f'IF(AND({H["falta força na secundária"]}=1,{H["escudo na secundária"]}=1),'
+                                f'IFERROR(VLOOKUP({S},{tabela_da_defesa(dados, lin_cab)},2,FALSE),0),0)')
+    conta("parado pela carga", f'={H["carga acima"]}')
     tot = [_faixa(b + C_TOTAL, G["missao_ini"], b + C_TOTAL, G["missao_fim"], FP) for b in BLOCOS]
     conta("xp total", "=" + "+".join(f"SUM({t})" for t in tot))
     conta("nível", f"=N({NIV})")
@@ -453,24 +486,25 @@ def trocas(layout, CAT=None):
     fp_, fs_, fu_ = H["falta força na principal"], H["falta força na secundária"], H["falta força no uniforme"]
     esc = H["escudo na secundária"]
     SIT = _A(G["situacao"], FP)
-    punicao = ("o deslocamento cai pela metade e os Testes de Resistência Físicos saem com desvantagem")
     notas = [
         ("requisito de força",
          f'=IF({fp_}+{fs_}+{fu_}=0,"Tudo o que está em uso cabe na sua Força.",'
          f'IF({fp_}=1,{P}&" pede Força "&{H["força da principal"]}&". ","")&'
          f'IF({fs_}=1,{S}&" pede Força "&{H["força da secundária"]}&". ","")&'
          f'IF({fu_}=1,{V}&" pede Força "&{H["força do uniforme"]}&". ","")&"Você tem "&{f_}&"."&'
-         f'IF(OR({fp_}=1,AND({fs_}=1,{esc}=0))," Atacar com a arma sem a Força sai com desvantagem.","")&'
-         f'IF(OR({fu_}=1,AND({fs_}=1,{esc}=1))," Com uniforme ou escudo sem a Força, {punicao}.",""))'),
+         f'IF(OR({fp_}=1,AND({fs_}=1,{esc}=0))," Empunhar uma arma sem a Força corta o seu deslocamento pela metade, e a '
+         f'Destreza não entra na Defesa enquanto você a empunha.","")&'
+         f'IF(OR({fu_}=1,AND({fs_}=1,{esc}=1))," Sem a Força, o uniforme ou o escudo não pode ser preparado e não dá a '
+         f'proteção dele: a Defesa já desconta.",""))'),
         ("carga",
-         f'=IF({H["carga acima"]}=1,"Você passou do limite: {punicao}. É a mesma punição do uniforme e do '
-         f'escudo sem a Força, e elas não se somam.","")'),
+         f'=IF({H["carga acima"]}=1,"Você passou do limite: não pode se deslocar com essa carga. Largue ou guarde o que '
+         f'passou antes de andar, nadar, escalar ou voar.","")'),
         ("situação do traje",
          f'=IF(AND({uv}=1,LEFT({V},5)<>"Traje"),"Só o Traje carrega situação. O Revestimento não tem.",'
          f'IF({SIT}="","",IF({SIT}="{OUTRA_SITUACAO}","Você pode criar a sua, em uma ou duas palavras. O mestre confere três '
          f'coisas: é condição física que ele já descreveu na cena; não decide o que uma perícia de Destreza já decide; e não '
-         f'acontece toda cena.","Situação “"&LOWER({SIT})&"”: quando a cena estiver nessa condição, você rola com vantagem os '
-         f'testes de perícia e os Testes de Resistência.")))'),
+         f'acontece toda cena.","Situação “"&LOWER({SIT})&"”: quando a cena estiver nessa condição, você tem vantagem no tipo de '
+         f'Teste de Resistência e nas perícias que escolheu para o Traje (tantas quanto a sua maestria).")))'),
     ]
     # --- o que cada propriedade faz (pedido dele, 01/10/2026): a nota da linha embaixo da mão lista as da arma em uso
     c_prop = tabela("props", ["propriedade de arma", "o que a propriedade faz"], [[n, t] for n, t in R["propriedades"]])
@@ -488,7 +522,7 @@ def trocas(layout, CAT=None):
             else:                                             # cercada, para o Alcance não casar com o Longo Alcance
                 tem = f'ISNUMBER(SEARCH(" · "&{n_}&" · "," · "&{props}&" · "))'
             mais = (f'&IF({alc}<>""," Nesta arma: "&{alc}&".","")' if nome == LONGO_ALCANCE else
-                    f'&IF({rec}&""<>""," Nesta arma, X = "&{rec}&".","")' if nome == MUNICAO else
+                    f'&IF({rec}&""<>""," Nesta arma: "&{rec}&IF({rec}=1," ataque"," ataques")&" por carga.","")' if nome == MUNICAO else
                     f'&" Nesta arma: {R["alcance_da_propriedade"]}."' if nome == ALCANCE else "")
             partes.append(f'IF({tem},CHAR(10)&{n_}&": "&{t_}{mais},"")')
         return f'{quem}&' + "&".join(partes)
@@ -553,7 +587,13 @@ def trocas(layout, CAT=None):
     m = re.match(r'^=\((.*)\)&" m"$', des) if isinstance(des, str) else None
     if not m:
         raise SystemExit(f"o DESLOCAMENTO da FICHA ({des_c}) devia ser '=(metros)&\" m\"', e e {des!r}")
-    cel["FICHA"][des_c] = (f'=(({m.group(1)})/IF({H["meia marcha"]}=1,2,1))&" m"', des_c)
+    cel["FICHA"][des_c] = (f'=IF({H["parado pela carga"]}=1,0,({m.group(1)})/IF({H["meia marcha"]}=1,2,1))&" m"', des_c)
+    # a Defesa (defesa_equipamento.py) perde a proteção da peça usada sem a Força, e a Destreza com arma sem a Força
+    df_c = idx["defesa"]
+    dfm = re.match(r"^=10\+(IF\(.+?\)\)\))\+(\$[A-Z]+\$\d+)(.*)$", fcel[df_c][1]) if isinstance(fcel[df_c][1], str) else None
+    if not dfm:
+        raise SystemExit(f"a DEFESA da FICHA ({df_c}) nao tem a forma que o defesa_equipamento escreve: {fcel[df_c][1]!r}")
+    cel["FICHA"][df_c] = (f'=10+IF({H["arma sem força"]}=1,0,{dfm.group(1)})+{dfm.group(2)}-{H["proteção sem força"]}{dfm.group(3)}', df_c)
     menus_sai = [m_["onde"] for m_ in ficha["menus"] if eq_c in m_["onde"].split()]
     return {"celulas": cel, "menus_sai": {"FICHA": menus_sai}, "dados_colunas": (c0, prox[0] - 2),
             "H": H, "T": T, "faixa_t": faixa_t, "R": R, "G": G, "indice_coluna": col_i, "lin_cab": lin_cab,
@@ -639,8 +679,9 @@ NOTAS = {
     "salario": "Sai do Grau, pela tabela Salário por patente do livro.",
     "requisito": "Olha a arma de cada mão, o escudo e o uniforme. Quando algo pede mais Força do que você tem, a nota "
                  "da caixa de baixo diz o que falta e o que isso custa.",
-    "situacao": "Todo Traje carrega uma situação, escolhida na criação. Quando a cena estiver nessa condição, você rola "
-                "com vantagem os testes de perícia e os Testes de Resistência. Vantagem não empilha: duas fontes valem uma.",
+    "situacao": "Todo Traje carrega uma situação, escolhida na criação, junto com um tipo de Teste de Resistência e tantas "
+                "perícias quanto a sua maestria. Quando a cena estiver nessa condição, você tem vantagem só nesses. Vantagem "
+                "não empilha: duas fontes valem uma.",
     "qtd": "Em branco vale 1.",
     "vol": "Quantidade vezes o Volume de um. O item leve vale 0,1. A carga soma esta coluna.",
     "vol_item": "Quantidade vezes 0,1, que é o item leve. Se o mestre pesar o item de outro jeito, digite o Volume da "
@@ -659,15 +700,18 @@ NOTAS = {
              "livro pede também um feito, e o 30 é o topo.",
     "xp": "Escolha o tipo da missão. {tipos}.",
     "adicional": "O multiplicador da missão, quando a mesa dá: {mults}. Em branco, a missão vale o XP do tipo.",
-    "desconto": "Para a missão que pagou menos. Na sua semana, a terceira missão paga 50%, a quarta 25%, a quinta 12,5% "
-                "e a sexta 6,25%. Missão que falhou e pagou metade também é 50%. Em branco, paga cheio.",
-    "total": "O XP do tipo, vezes o Adicional, vezes o Desconto, sempre em múltiplo de {multiplo}, para baixo. Quando a "
-             "conta dá menos de {multiplo}, a missão não paga.",
+    "desconto": "Para a missão que pagou menos. Na sua semana, as duas primeiras pagam cheio, a terceira 50%, a quarta 25%, "
+                "a quinta 12,5%, a sexta 6,25%, e cada uma depois paga metade da anterior. Missão que falhou e o mestre deu "
+                "metade é Falha; se ela também foi da terceira em diante, escolha a posição com falha (a terceira longa "
+                "que falhou paga 200 × ½ × ½ = 50). Em branco, paga cheio.",
+    "total": "O XP do tipo, vezes o Adicional, vezes o Desconto, arredondado para baixo só no fim. Quando a conta dá mais "
+             "que zero e menos que 1, a missão paga 1.",
     "extensao": "Mais duas tabelas de missão, para quando as duas primeiras encherem. O XP total soma as quatro. Elas ficam "
                 "num grupo de colunas fechado, dentro do painel.",
     "niveis": "A curva do livro, fixa. Para subir é o que custa sair daquele nível. Acumulado é o XP total em que você "
               "chega nele. A seta marca o seu nível.",
-    "foto": "Clique na caixa e use Inserir › Imagem › Inserir imagem na célula.",
+    "foto": "Vem da CARTEIRA: insira a foto na caixa FOTO de lá (Inserir › Imagem › Inserir imagem na célula), e ela "
+            "aparece aqui. Se não aparecer, insira a mesma foto nesta caixa.",
 }
 
 
@@ -724,7 +768,15 @@ def aba(layout, tr):
 
     # --- o dossiê
     L = _titulo(f, L_DOSSIE, "D", "AT", "DOSSIÊ")
-    f.add("foto", "D", L + 1, "O", L + 19, "FOTO DO PERSONAGEM", NOTAS["foto"])
+    # 05/10/2026, pedido do Mizuki: "A imagem que for colocada na carteira aparecer no ficha pessoal" (o B35 deixou a
+    # ligação para depois). A caixa aponta para a caixa da foto da CARTEIRA. A documentação do Google não diz se a
+    # referência mostra a imagem inserida na célula; se não mostrar, o jogador insere a foto aqui também, por cima da
+    # conta, e por isso a caixa fica fora da trava (lá embaixo, com as livres). O endereço é o que a CARTEIRA declara
+    # (`foto`, do moldura_foto.py), o mesmo que o Codigo.gs lê para ancorar a caixa da paleta.
+    foto = next(a for a in layout["abas"] if a["nome"] == "CARTEIRA").get("foto")
+    if not foto:
+        raise SystemExit("ficha_pessoal: a CARTEIRA não declara a caixa da foto (moldura_foto.py)")
+    foto_fp = f.add("foto", "D", L + 1, "O", L + 19, f"={_abs(foto[1], foto[0], 'CARTEIRA!')}", NOTAS["foto"])
     f.add("rot", "D", L + 21, "O", L + 21, "PERSONALIDADE")
     f.add("txt", "D", L + 22, "O", L + 27)
     f.caixa("Q", "Z", L + 1, "NOME", f"=FICHA!{ix.indice(layout)['nome']}", nota=NOTAS["nome"])
@@ -847,7 +899,7 @@ def aba(layout, tr):
 
     # --- os itens guardados
     L = _titulo(f, L_ITENS, "D", "AT", "ITENS GUARDADOS")
-    livres = []
+    livres = [foto_fp]
     for cols in COLS_ITENS:
         (_, i1, i2), (_, q1, q2), (_, v1, v2) = cols
         f.add("rot", i1, L + 1, i2, L + 1, "ITEM")
@@ -868,8 +920,7 @@ def aba(layout, tr):
     f.add("barra", B2 + C_ADIC, L + 2, B2 + ULT, L + 3,
           f'=IFERROR(SPARKLINE(MAX(0,{H["xp total"]}-{H["xp deste nível"]}),{{"charttype","bar";"max",'
           f'MAX(1,N({H["xp do próximo nível"]})-{H["xp deste nível"]});"color1",{H[COR_DA_BARRA]}}}),"")')
-    textos = {"tipos": ", ".join(f"{n} {v}" for n, v in R["tipos"]), "mults": ", ".join(n for n, _ in R["multiplicadores"]),
-              "multiplo": str(R["multiplo"]).replace(".", ",")}
+    textos = {"tipos": ", ".join(f"{n} {v}" for n, v in R["tipos"]), "mults": ", ".join(n for n, _ in R["multiplicadores"])}
     TIPO, MULT, DESC = (tr["faixa_t"](k) for k in ("tipo", "mult", "desc"))
     formulas_total = []
     for b in BLOCOS:
@@ -885,9 +936,11 @@ def aba(layout, tr):
             f.add("cel_esq", cx, lin, ca - 1, lin)
             f.add("cel", ca, lin, cd - 1, lin)
             f.add("cel", cd, lin, ct - 1, lin)
+            v = (f'ROUND(VLOOKUP({x},{TIPO},2,FALSE)*IF({a}="",1,VLOOKUP({a},{MULT},2,FALSE))*'
+                 f'IF({d}="",1,VLOOKUP({d},{DESC},2,FALSE)),4)')
+            # o livro: arredonda para baixo só o XP final; positivo e menor que 1 vira 1
             formulas_total.append(f.add("cel", ct, lin, b + ULT, lin,
-                  f'=IF({x}="","",IFERROR(FLOOR(ROUND(VLOOKUP({x},{TIPO},2,FALSE)*IF({a}="",1,VLOOKUP({a},{MULT},2,FALSE))*'
-                  f'IF({d}="",1,VLOOKUP({d},{DESC},2,FALSE)),4),{R["multiplo"]}),""))'))
+                  f'=IF({x}="","",IFERROR(IF({v}>0,MAX(1,FLOOR({v},1)),0),""))'))
         f.menu(f"{ix._letras(cx)}{G['missao_ini']}:{ix._letras(cx)}{G['missao_fim']}", tr["faixa_t"]("tipo", so=0))
         f.menu(f"{ix._letras(ca)}{G['missao_ini']}:{ix._letras(ca)}{G['missao_fim']}", tr["faixa_t"]("mult", so=0))
         f.menu(f"{ix._letras(cd)}{G['missao_ini']}:{ix._letras(cd)}{G['missao_fim']}", tr["faixa_t"]("desc", so=0))

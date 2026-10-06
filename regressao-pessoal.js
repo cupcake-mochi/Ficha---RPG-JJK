@@ -146,15 +146,20 @@ console.log('\nO TREINO QUE O CAMINHO DÁ');
 {
   const caminhos = Object.keys(CAT.caminhos);
   const conj = eq.treino.conjurador_treina;
-  const man = fs.readFileSync(path.join(RAIZ, 'manual.txt'), 'utf8').split(/\s+/).join(' ');
-  const mt = man.match(/corpo a corpo\s*—\s*([\w, À-ÿ]+?)\s*—\s*treinam as treze categorias/);
-  const todas = mt[1].replace(' e ', ', ').split(', ').map((s) => s.trim());
+  // 04/10/2026: o livro reconstruído diz o treino de arma na tabela de Características de cada Caminho
+  const linhas = fs.readFileSync(path.join(RAIZ, 'manual.txt'), 'utf8').split('\n');
+  const armaDo = (cam) => {
+    const i = linhas.findIndex((l) => l === '### ' + cam);
+    const l = i < 0 ? null : linhas.slice(i, i + 40).find((x) => /^(Armas|Treino de arma|Armas treinadas) \| /.test(x));
+    return l || '';
+  };
+  const todas = caminhos.filter((c) => /treze categorias|todas as categorias/i.test(armaDo(c)));
   const conta = (cam) => Object.values(C.treinoDoCaminho_(armas, grupos, cam, caminhos, todas, conj)).filter(Boolean).length;
   const doConj = armas.filter((a) => conj.includes(a.categoria)).length + conj.length;
-  ok(`o livro dá todas as armas a ${todas.join(' e ')}`, todas.length === 2 && todas.every((c) => caminhos.includes(c)), String(todas));
+  ok(`o livro dá todas as armas a ${todas.join(', ')}`, todas.length === 3 && todas.every((c) => CAT.caminhos[c].armas === 'todas'), String(todas));
   ok(`${todas.join(' e ')}: as ${armas.length + grupos.length} caixas marcadas`, todas.every((c) => conta(c) === armas.length + grupos.length));
   const outros = caminhos.filter((c) => !todas.includes(c));
-  ok(`${outros.join(', ')}: só ${conj.join(' e ')}, ${doConj} caixas`, outros.length === 3 && outros.every((c) => conta(c) === doConj),
+  ok(`${outros.join(', ')}: só ${conj.join(' e ')}, ${doConj} caixas`, outros.length === 3 && outros.every((c) => conta(c) === doConj && /Arma(s)? de Fogo e Balestra/.test(armaDo(c))),
      outros.map((c) => c + ' ' + conta(c)).join(' · '));
   ok('sem Caminho escolhido, nenhuma caixa', conta('Escolha seu Caminho') === 0 && conta('') === 0);
 }
@@ -340,8 +345,13 @@ console.log('\nAS TRAVAS E A COR DE AVISO, NO ABAS');
   // 01/10/2026: o Sheets mostra o aviso da trava também para quem abre ou fecha um grupo com célula travada dentro
   // (o Mizuki o viu ao clicar no + do painel de XP). Fórmula em coluna ou linha de grupo fica sem trava.
   const emGrupo = (l, c) => spec.grupos.col.some((g) => c >= g[0] && c <= g[1]) || spec.grupos.lin.some((g) => l >= g[0] && l <= g[1]);
-  const semTrava = (a1) => { const [l, c] = lc(a1); return ehLivre(a1) || emGrupo(l, c); };
-  ok(`as ${formulas.filter((f) => !semTrava(f)).length} fórmulas da aba estão dentro de uma das ${spec.protegidas.length} faixas travadas, fora o Volume dos itens e o que mora em grupo`,
+  // 05/10/2026: a caixa da foto aponta para a foto da CARTEIRA e fica sem trava: se a referência não mostrar a imagem
+  // inserida na célula, o jogador insere a foto por cima. Só a fórmula que é exatamente essa referência sai da trava.
+  const car = ABAS.find((a) => a.nome === 'CARTEIRA');
+  const fotoCar = car && car.foto ? `=CARTEIRA!$${letras(car.foto[1])}$${car.foto[0]}` : null;
+  const ehFoto = (a1) => { const [l, c] = lc(a1); const v = spec.vals.find((t) => t[0] === l && t[1] === c); return !!fotoCar && !!v && v[2] === fotoCar; };
+  const semTrava = (a1) => { const [l, c] = lc(a1); return ehLivre(a1) || ehFoto(a1) || emGrupo(l, c); };
+  ok(`as ${formulas.filter((f) => !semTrava(f)).length} fórmulas da aba estão dentro de uma das ${spec.protegidas.length} faixas travadas, fora o Volume dos itens, a foto que vem da CARTEIRA e o que mora em grupo`,
      formulas.every((f) => semTrava(f) ? !cobre(f) : cobre(f)), formulas.filter((f) => semTrava(f) ? cobre(f) : !cobre(f)).slice(0, 6).join(', '));
   ok('nenhuma faixa travada encosta em coluna ou linha de grupo: abrir e fechar o painel de XP e o treino não mostra o aviso da trava',
      spec.protegidas.every((f) => { const g = C.limitesA1_(f); return !spec.grupos.col.some((x) => g.c1 <= x[1] && g.c2 >= x[0]) && !spec.grupos.lin.some((x) => g.l1 <= x[1] && g.l2 >= x[0]); }),

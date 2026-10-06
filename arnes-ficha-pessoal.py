@@ -29,7 +29,7 @@ PERTURBACOES = [
      "de fábrica: as"),
     ("o Alcance casa com o Longo Alcance na nota da arma", GER,
      '''tem = f'ISNUMBER(SEARCH(" · "&{n_}&" · "," · "&{props}&" · "))\'''', '''tem = f'ISNUMBER(SEARCH({n_},{props}))\'''', "nota · Metralhadora Pesada: as"),
-    ("a Munição perde o número da arma", GER, '''if nome == MUNICAO else "")''', '''if nome == "nada" else "")''', "nota · Metralhadora Pesada: as"),
+    ("a Munição perde o número da arma", GER, '''if nome == MUNICAO else''', '''if nome == "nada" else''', "nota · Metralhadora Pesada: as"),
     ("o Longo Alcance perde as faixas da arma", GER, '''if nome == LONGO_ALCANCE else''', '''if nome == "nada" else''', "nota · Metralhadora Pesada: as"),
     ("a arma de duas mãos não ganha a linha das Duas mãos", GER,
      '''f'{H["mão da principal"]}=2') + "))"),''', '''"FALSE") + "))"),''', "nota · Metralhadora Pesada: as"),

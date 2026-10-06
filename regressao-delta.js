@@ -105,12 +105,13 @@ checa('passo zero nao move nada', aplicaPasso_(10, 19, 5, 0), { atual: 10, temp:
 // --- 7. o teto do campo TEMP, o B19 -----------------------------------
 const tetoTemp_ = new Function(extrai(GS, 'tetoTemp_') + '; return tetoTemp_;')();
 const CAP1 = fs.readFileSync(path.join(RAIZ, 'manual.txt'), 'utf8').split(/\s+/).join(' ');
-// "com 40 de vida máxima o seu teto é 20: um efeito que daria 27 te deixa em 20"
-const mTeto = CAP1.match(/com (\d+) de vida máxima o seu teto é (\d+): um efeito que daria (\d+) te deixa em (\d+)/);
-// "O que você ganha desce. E o que você ganha nunca fica abaixo de 1."
-const mPiso = CAP1.match(/o que você ganha nunca fica abaixo de (\d+)/);
-if (!mTeto || !mPiso) throw new Error('o exemplo do teto no capitulo 1 do manual.txt mudou de forma');
-const [TMAX, TETO, EFEITO, FICA] = mTeto.slice(1).map(Number);
+// 04/10/2026, o livro reconstruido (Dano e recuperacao, Vida e energia temporarias):
+// "Mei tem vida máxima 23 e recebe 15 de vida temporária. Seu teto é 11, então anota 11."
+const mTeto = CAP1.match(/Mei tem vida máxima (\d+) e recebe (\d+) de vida temporária\. Seu teto é (\d+), então anota (\d+)\./);
+// "Arredonde as metades para baixo, com mínimo 1 quando o máximo for positivo."
+const mPiso = CAP1.match(/, com mínimo (\d+) quando o máximo for positivo\./);
+if (!mTeto || !mPiso) throw new Error('o exemplo do teto em Dano e recuperacao do manual.txt mudou de forma');
+const [TMAX, EFEITO, TETO, FICA] = mTeto.slice(1).map(Number);
 const PISO = Number(mPiso[1]);
 
 checa(`exemplo do manual · ${EFEITO} com maximo ${TMAX} fica em ${FICA}`,
@@ -119,7 +120,7 @@ checa('exemplo do manual · abaixo do teto nao e mexido', tetoTemp_(TETO - 1, TM
 checa('exemplo do manual · o proprio teto passa', tetoTemp_(TETO, TMAX), TETO);
 checa('A2 poe o teto da vida em metade do maximo', /^metade /.test(A2.vida.teto), true);
 checa('A2 poe o teto da energia em metade do maximo', /^metade /.test(A2.energia.teto), true);
-checa('o manual arredonda para baixo o que voce ganha', CAP1.includes('O que você ganha desce.'), true);
+checa('o manual arredonda para baixo o que voce ganha', CAP1.includes('Arredonde as metades para baixo'), true);
 
 const outro = TMAX - 1;                // um maximo com a paridade trocada
 const tOutro = tetoTemp_(outro, outro);
@@ -175,6 +176,86 @@ checa('fórmula em cima deixa a nota na caixa', tituloOuCaixa_({ formula: '=IF(A
 checa('nada em cima deixa a nota na caixa', tituloOuCaixa_({ formula: '', valor: '' }), 'caixa');
 checa('só espaço em cima deixa a nota na caixa', tituloOuCaixa_({ formula: '', valor: '  ' }), 'caixa');
 checa('número em cima deixa a nota na caixa', tituloOuCaixa_({ formula: '', valor: 5 }), 'caixa');
+
+// --- as cartas de Habilidades da seção 7, 05/10/2026 ----------------------
+// O Mizuki: a carta traz o livro e o jogador pode apagar e escrever por cima ("B - mas dando permissão para o jogador
+// apagar o texto e colocar oq preferir"), numa coluna só, com a caixa esticando conforme a escolha ("Acompanha a
+// Escolha, mas ainda tendo a caixa retratil da descrição"). O livro e a medida saem do Habilidades.gs que o monta.py
+// gera, e as cartas dos níveis do habilidades-do-livro.json; nenhum texto esperado está escrito aqui.
+const vm = require('vm');
+const ctxH = {};
+vm.createContext(ctxH);
+vm.runInContext(fs.readFileSync(path.join(RAIZ, 'apps-script', 'Habilidades.gs'), 'utf8') +
+                '; this.L = HABILIDADES_DO_LIVRO_; this.M = MEDIDA_DAS_CARTAS_;', ctxH);
+const LIVRO = ctxH.L, MED = ctxH.M;
+const daConta = (nome) => new Function(['habilidadeQueFica_', 'notaDaCarta_', 'cartasDaFicha_', 'linhasDoTexto_', 'alturaDaCaixa_', 'negritosDoTexto_']
+  .map((f) => extrai(GS, f)).join('\n') + '; return ' + nome + ';')();
+const habilidadeQueFica_ = daConta('habilidadeQueFica_'), notaDaCarta_ = daConta('notaDaCarta_');
+const cartasDaFicha_ = daConta('cartasDaFicha_'), linhasDoTexto_ = daConta('linhasDoTexto_'), alturaDaCaixa_ = daConta('alturaDaCaixa_');
+const negritosDoTexto_ = daConta('negritosDoTexto_');
+const HJ = JSON.parse(fs.readFileSync(path.join(RAIZ, 'ficha-v01', 'habilidades-do-livro.json'), 'utf8'));
+const CARTAS = HJ._meta.niveis.caminho.map(n => ({ fonte: 'Caminho', nivel: n }))
+  .concat(HJ._meta.niveis.trilha.map(n => ({ fonte: 'Trilha', nivel: n })));
+const VAZIAS = CARTAS.map(() => ({ nome: '', texto: '' }));
+const linhaDe = (fonte, dono, nivel) => LIVRO.filter(l => l.fonte === fonte && l.dono === dono && l.nivel === nivel)[0];
+const doLivro = (cam, tri) => CARTAS.map(c => c.fonte === 'Caminho'
+  ? (linhaDe('Caminho com a Trilha', tri, c.nivel) || linhaDe('Caminho', cam, c.nivel)) : linhaDe('Trilha', tri, c.nivel));
+const esperado = (cam, tri) => doLivro(cam, tri).map(l => ({ nome: l ? l.nome : '', texto: l ? l.texto : '', livro: l ? l.texto : '',
+                                                                titulos: l ? l.titulos : [], nota: '' }));
+const lerDe = r => r.map(x => ({ nome: x.nome, texto: x.texto }));
+const trilhasDe = c => Object.keys(HJ.trilhas).filter(t => CATA.trilhas[t.split(' · ')[0]] === c);
+checa('a carta vazia recebe o do livro; a do livro recebe o novo; a escrita pelo jogador fica',
+      [habilidadeQueFica_('', ['a'], 'b'), habilidadeQueFica_('a', ['a'], 'b'), habilidadeQueFica_('meu', ['a'], 'b')], ['b', 'b', 'meu']);
+checa('a nota mostra o livro só quando o texto da carta não é o dele', [notaDaCarta_('x', 'x'), notaDaCarta_('meu', 'x'), notaDaCarta_('', 'x'), notaDaCarta_('meu', '')],
+      ['', 'x', 'x', '']);
+let todas = true;
+for (const cam of Object.keys(CATA.caminhos)) {
+  for (const tri of trilhasDe(cam)) {
+    if (JSON.stringify(cartasDaFicha_(LIVRO, CARTAS, cam, tri, VAZIAS)) !== JSON.stringify(esperado(cam, tri))) todas = false;
+  }
+}
+checa(`todo Caminho com cada Trilha dele enche as ${CARTAS.length} cartas com o nome e o texto inteiro do livro, sem nota`, todas, true);
+checa('as rotas do Batedor são Trilhas diferentes nas cartas', trilhasDe('Vanguarda').filter(t => t.startsWith('Batedor · ')).length,
+      HJ.rotas.Batedor.length);
+const [ca, cb] = Object.keys(CATA.caminhos), ta = trilhasDe(ca)[0], tb = trilhasDe(cb)[0];
+const em_a = lerDe(cartasDaFicha_(LIVRO, CARTAS, ca, ta, VAZIAS));
+checa(`trocar de ${ca} para ${cb} troca as cartas que ainda são do livro`, cartasDaFicha_(LIVRO, CARTAS, cb, tb, em_a), esperado(cb, tb));
+const mexida = em_a.map((x, i) => i === 1 ? { nome: x.nome, texto: 'O que eu escrevi.' } : (i === 6 ? { nome: 'Meu nome', texto: x.texto } : x));
+const depois = cartasDaFicha_(LIVRO, CARTAS, cb, tb, mexida), eb = esperado(cb, tb);
+checa('o texto que o jogador escreveu fica, e o nome da mesma carta, que é do livro, troca',
+      [depois[1].texto, depois[1].nome], ['O que eu escrevi.', eb[1].nome]);
+checa('o nome que o jogador escreveu fica, e o texto da mesma carta troca', [depois[6].nome, depois[6].texto], ['Meu nome', eb[6].texto]);
+checa('a carta com o texto do jogador leva o livro na nota; a com o texto do livro, não', [depois[1].nota, depois[6].nota], [eb[1].texto, '']);
+checa('a carta apagada volta a encher na troca seguinte',
+      cartasDaFicha_(LIVRO, CARTAS, cb, tb, em_a.map((x, i) => i === 0 ? { nome: '', texto: '' } : x))[0], eb[0]);
+const sem = cartasDaFicha_(LIVRO, CARTAS, 'Escolha seu Caminho', VAZIO, mexida);
+checa('sem Caminho nem Trilha, as cartas do livro esvaziam e as do jogador ficam, sem nota',
+      [sem[0].nome, sem[0].texto, sem[1].texto, sem[1].nota, sem[6].nome], ['', '', 'O que eu escrevi.', '', 'Meu nome']);
+const junto = LIVRO.filter(l => l.fonte === 'Caminho com a Trilha');
+const c7 = CARTAS.findIndex(c => c.fonte === 'Caminho' && c.nivel === 7);
+if (junto.length) {
+  const j = junto[0], camJ = CATA.trilhas[j.dono], outra = trilhasDe(camJ).filter(t => t !== j.dono)[0];
+  const comJ = cartasDaFicha_(LIVRO, CARTAS, camJ, j.dono, VAZIAS);
+  checa(`com ${j.dono}, a carta ${j.nivel} do ${camJ} é a junta`, [comJ[c7].nome, comJ[c7].texto], [j.nome, j.texto]);
+  checa(`trocar ${j.dono} por ${outra} devolve a carta ${j.nivel} do ${camJ} sozinha`,
+        cartasDaFicha_(LIVRO, CARTAS, camJ, outra, lerDe(comJ))[c7], esperado(camJ, outra)[c7]);
+}
+checa('o livro tem a carta junta do Pugilista', junto.map(l => [l.dono, l.nivel]), [['Pugilista', 7]]);
+// a caixa que estica: o script conta as linhas igual ao gerador, e a altura comporta o texto sem sobrar
+const difere = LIVRO.filter(l => linhasDoTexto_(l.texto, MED) !== l.linhas).map(l => `${l.dono} ${l.nivel}: ${linhasDoTexto_(l.texto, MED)} != ${l.linhas}`);
+checa(`o script conta as linhas dos ${LIVRO.length} textos igual ao gerador (as duas contas, Python e JS, batem)`, difere, []);
+const cabe = (t) => { const h = alturaDaCaixa_(t, MED) * MED.caixa, precisa = linhasDoTexto_(t, MED) * MED.linha + MED.respiro;
+  return h >= precisa && (h - precisa < MED.caixa || h === MED.minima * MED.caixa); };
+checa('a caixa de cada texto do livro comporta as linhas dele, e sobra no máximo o arredondamento', LIVRO.filter(l => !cabe(l.texto)).map(l => l.dono + ' ' + l.nivel), []);
+checa('a caixa vazia tem a altura das linhas comuns', alturaDaCaixa_('', MED), MED.minima);
+const maior = LIVRO.reduce((a, l) => (l.linhas > a.linhas ? l : a));
+checa('texto do jogador mais longo que o livro estica mais', alturaDaCaixa_(maior.texto + '\n' + maior.texto, MED) > alturaDaCaixa_(maior.texto, MED), true);
+// legível ("espaçar os paragrafos e talz"): o negrito cai exatamente nos subtítulos do livro, e o texto do jogador não tem
+const negritoRuim = LIVRO.filter(l => JSON.stringify(negritosDoTexto_(l.texto, l.titulos).map(([a, b]) => l.texto.slice(a, b))) !== JSON.stringify(l.titulos))
+  .map(l => l.dono + ' ' + l.nivel);
+checa(`o negrito cai exatamente nos subtítulos dos ${LIVRO.length} textos do livro, e em nada mais`, negritoRuim, []);
+checa('os parágrafos do livro vêm separados por uma linha em branco', LIVRO.filter(l => l.texto.split('\n').length > 1 && l.texto.indexOf('\n\n') < 0).length, 0);
+checa('o parágrafo vazio conta uma linha, e a palavra longa não some', [linhasDoTexto_('a\n\nb', MED), linhasDoTexto_('x'.repeat(400), MED) >= 1], [3, true]);
 
 // --- resultado ---------------------------------------------------------
 const barra = '='.repeat(74);

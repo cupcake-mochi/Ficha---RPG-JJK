@@ -77,9 +77,9 @@ def tabela(CAT):
 
 def teto_de_refino():
     man = " ".join(open(os.path.join(RAIZ, "manual.txt"), encoding="utf-8").read().split())
-    m = re.search(r"o refino é um número de 1 a (\d+)\.", man)
+    m = re.search(r"Refino mede o domínio da energia amaldiçoada\. Começa em 1 e tem limite (\d+)\.", man)
     if not m:
-        raise SystemExit("nao achei no manual.txt o teto do refino ('o refino é um número de 1 a N')")
+        raise SystemExit("nao achei no manual.txt o teto do refino ('Começa em 1 e tem limite N.')")
     return int(m.group(1))
 
 

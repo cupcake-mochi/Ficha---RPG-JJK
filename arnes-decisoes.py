@@ -104,11 +104,10 @@ def c1_sem_declaracao(d):
 perturba("C1 sem declarar o estado dos motivos", c1_sem_declaracao,
          "declara o estado de hoje dos tres motivos")
 
-def c1_numero_errado(d):
-    d["C1_evocador"]["motivo_hoje"]["numero_do_casco"] = (
-        "FECHADO: o Casco virou Parrudo e vale 9 x a maestria")
-perturba("C1 declarando um numero que nao e o do capitulo 35", c1_numero_errado,
-         "o numero que o C1 declara e o mesmo")
+# 04/10/2026: o Parrudo saiu do livro reconstruido, e o C1 passou a ler as Trilhas do Evocador e o Incursor no menu
+def c1_sem_incursor(d):
+    d["C1_evocador"]["caminhos_no_menu"].remove("Incursor")
+perturba("C1 tirando o Incursor do menu", c1_sem_incursor, "o catalogo inteiro")
 
 def c1_sem_dono_da_decisao(d):
     d["C1_evocador"]["motivo_hoje"]["estado"] = "fica fora e pronto"
@@ -120,11 +119,6 @@ def c1_sem_a_ficha(d):
 perturba("C1 dizendo que a ficha da invocacao nao existe", c1_sem_a_ficha,
          "aponta a ficha da invocacao como fechada")
 
-def c1_sem_o_porque(d):
-    d["C1_evocador"]["motivo_hoje"]["por_que_a_checagem_velha_nao_servia"] = "sei la"
-perturba("C1 sem explicar por que a checagem velha nao servia", c1_sem_o_porque,
-         "por que a checagem velha nao servia")
-
 # 14/09/2026: o Evocador voltou ao menu, e esconder ele de novo sem tirar do menu acende
 def c1_oculto_e_no_menu(d):
     d["C1_evocador"]["caminho_oculto"] = "Evocador"
@@ -133,7 +127,7 @@ perturba("C1 escondendo um Caminho que esta no menu", c1_oculto_e_no_menu,
 
 print()
 print("=" * 70)
-print("PASSO 2b - e o OUTRO LADO do C1: o capitulo 35, que e o dono vivo")
+print("PASSO 2b - o OUTRO LADO: o livro muda, e a decisao tem de acender")
 
 def perturba_arquivo(nome, arquivo, de, para, agulha):
     d = copia()
@@ -151,26 +145,26 @@ def perturba_arquivo(nome, arquivo, de, para, agulha):
     print(f"  [{veredito:14}] {nome:38} -> saida {cod}")
     shutil.rmtree(d)
 
-perturba_arquivo("o Parrudo perde o numero no capitulo 35",
-                 "capitulo-35-caminhos-e-trilhas.md",
-                 "equivalente a **`5 ×` a sua maestria**",
-                 "e ninguem escreveu quanto",
-                 "da um numero ao Parrudo")
-perturba_arquivo("o Parrudo muda de numero no capitulo 35",
-                 "capitulo-35-caminhos-e-trilhas.md",
-                 "equivalente a **`5 ×` a sua maestria**",
-                 "equivalente a **`7 ×` a sua maestria**",
-                 "o numero que o C1 declara e o mesmo")
-perturba_arquivo("o manual.txt reextraido da outro numero ao Parrudo",
+perturba_arquivo("o livro deixa o Evocador sem Trilhas",
                  "manual.txt",
-                 "equivalente a 5 × a sua maestria.",
-                 "equivalente a 7 × a sua maestria.",
-                 "mesmo numero do capitulo 35")
+                 "Escolha uma Trilha no nível 2: Invocação Principal, Parceria ou Múltiplas Invocações.",
+                 "As Trilhas do Evocador estão em escrita.",
+                 "as tres Trilhas do Evocador")
 perturba_arquivo("o manual.txt perde a regra da energia temporaria",
                  "manual.txt",
-                 "Energia temporária segue a regra da vida temporária, com o PE no lugar da vida.",
-                 "Energia temporária acumula.",
+                 "Energia temporária | Até metade dos PE máximos. É gasta antes dos PE comuns.",
+                 "Energia temporária | Acumula sem teto.",
                  "regra da energia temporaria")
+perturba_arquivo("o Rasga Escudo deixa de ignorar a vida temporaria",
+                 "manual.txt",
+                 "O dano ignora a vida temporária e uma barreira",
+                 "O dano respeita a vida temporária e uma barreira",
+                 "Rasga Escudo diz que o dano ignora")
+perturba_arquivo("o livro volta a ter cinco Caminhos",
+                 "manual.txt",
+                 "Escolha um dos seis Caminhos",
+                 "Escolha um dos cinco Caminhos",
+                 "os Caminhos que o livro diz")
 perturba_arquivo("o manual-temporario.md esquece que foi superado",
                  "manual-temporario.md",
                  "SUPERADO",

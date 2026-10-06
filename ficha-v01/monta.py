@@ -58,6 +58,8 @@ for _a in LAYOUT["abas"]:
     if _a["nome"] == "DADOS":
         print(f"a DADOS sai do catalogo v{_DADOS_CAT['B1']}: "
               f"{dados_catalogo.aplica(_a, _DADOS_CAT)} celula(s) diferentes da exportacao")
+print(f"a vida e o PE da FICHA leem a faixa {dados_catalogo.faixa_dos_caminhos(json.load(open(os.path.join(dados_catalogo.RAIZ, 'decisoes-ficha.json'), encoding='utf-8')))}: "
+      f"{dados_catalogo.troca_na_ficha(LAYOUT)} formula(s)")
 
 # v0.240 do sistema, o B14: o Teste de Resistencia treinado soma a maestria, e nao 2. O termo sai do
 # catalogo, e a celula dele sai do indice da DADOS. Ver tr_treinado.py.
@@ -293,7 +295,10 @@ def _extras(a):
            # 02/10/2026, o menu rapido da FICHA: as linhas que a trava de formula do script deixa de fora
            "sem_trava": a.get("sem_trava", []),
            # 03/10/2026, a CARTEIRA: a caixa da foto, onde a caixa da paleta se ancora (ver moldura_foto.py)
-           "foto": a.get("foto")}
+           "foto": a.get("foto"),
+           # 05/10/2026, a FICHA AMALDICOADA: a caixa que espelha a CARTEIRA (o nome da tecnica), para o aviso de quem
+           # escreve por cima dela dizer onde se escreve
+           "da_carteira": a.get("da_carteira", [])}
     return {k: v for k, v in out.items() if v}
 
 gs, celulas, pecas = emitir_gs.escrever(
@@ -304,3 +309,7 @@ gs, celulas, pecas = emitir_gs.escrever(
     limpa=LAYOUT["_meta"].get("largura_limpa"))
 print(f"script escrito: {gs}")
 print(f"  {celulas} células, {pecas} peças de arte embutidas")
+# 05/10/2026: o texto das habilidades de Caminho e de Trilha, num script à parte (ver habilidades.py)
+_hab_gs = os.path.join(os.path.dirname(AQUI), "apps-script", "Habilidades.gs")
+_n, _t = habilidades.escreve_gs(_hab_gs)
+print(f"script escrito: {_hab_gs}\n  {_n} habilidades, {_t // 1024} KB")

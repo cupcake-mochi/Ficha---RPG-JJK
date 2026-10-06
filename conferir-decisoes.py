@@ -31,7 +31,7 @@ DEC = json.loads(le('decisoes-ficha.json'))
 CAT = json.loads(le('catalogo-projeto-m.json'))
 MD  = le('DECISOES-bloco-A.md')
 MAN = le('manual.txt').replace('\n', ' ')
-MAN = ' '.join(MAN.split())          # normaliza o espacamento do pdftotext -layout
+MAN = ' '.join(MAN.split())          # 04/10/2026: o manual.txt sai do LIVRO-COMPLETO.md do livro reconstruido
 PEN = le('PENDENCIAS.md')
 
 # ---------------------------------------------------------------- 1
@@ -52,16 +52,18 @@ checa("o PENDENCIAS nao diz mais que o bloco A trava a construcao",
 print("\nO QUE A DECISAO ATRIBUI AO MANUAL ESTA MESMO NO MANUAL")
 # a frase do Rasga Escudo e o unico apoio de 'vida temporaria gasta primeiro'
 checa("Rasga Escudo diz que o dano ignora vida temporaria",
-      "ignora vida temporária e barreiras" in MAN,
+      "O dano ignora a vida temporária e uma barreira que esteja absorvendo dano no lugar do alvo" in MAN,
       "sem essa frase, 'gasta primeiro' vira invencao")
 # v0.239 do sistema: o capitulo "Vida, energia e alma" ganhou as duas regras, e a da energia
 # saiu de dentro do Braseiro. Decisao do Mizuki: toda fonte temporaria nao acumula, e o teto e
 # metade do maximo. A A2 desta pasta segue o capitulo, e o manual-temporario.md ficou superado.
+# 04/10/2026: o livro reconstruido escreve as duas numa tabela so, em Dano e recuperacao, Vida e energia temporarias
 checa("o capitulo tem a regra da vida temporaria, com teto de metade da vida maxima",
-      "Vida temporária é anteparo, e não vida" in MAN and "teto de metade da sua vida máxima" in MAN)
+      "Vida temporária | Até metade da vida máxima. Absorve dano antes da vida comum." in MAN)
 checa("o capitulo tem a regra da energia temporaria, com teto de metade do PE maximo",
-      "Energia temporária segue a regra da vida temporária" in MAN and
-      "teto de metade do seu PE máximo" in MAN)
+      "Energia temporária | Até metade dos PE máximos. É gasta antes dos PE comuns." in MAN)
+checa("o capitulo diz que as temporarias nao se somam: fica a maior",
+      "Reservas temporárias do mesmo recurso não se somam. Compare o que resta com a nova concessão, já limitada pelo teto, e fique com o maior valor." in MAN)
 A2 = DEC["A2_temporario"]
 checa("a A2 segue o capitulo: nenhuma temporaria acumula",
       A2["vida"].get("empilha") is False and A2["energia"].get("empilha") is False)
@@ -76,10 +78,11 @@ def no_manual(nome):
     rx = r"\b" + r"\b(?:\s+\S+){0,15}?\s+\b".join(re.escape(p) for p in nome.split()) + r"\b"
     return re.search(rx, MAN) is not None
 
+# 04/10/2026: cada fonte guarda a frase do livro que concede a reserva, e o nome dela tem de estar no livro
 for reserva in ("vida", "energia"):
     fontes = A2[reserva]["fontes_no_manual"]
-    faltando = [f for f in fontes if not no_manual(f)]
-    checa(f"as {len(fontes)} fontes de {reserva} temporaria existem no manual",
+    faltando = [f for f, frase in fontes.items() if not no_manual(f) or " ".join(frase.split()) not in MAN]
+    checa(f"as {len(fontes)} fontes de {reserva} temporaria existem no manual, com a frase delas",
           bool(fontes) and not faltando, str(faltando))
 checa("o manual-temporario.md se declara superado pelo capitulo",
       "SUPERADO" in le("manual-temporario.md")[:900],
@@ -90,15 +93,11 @@ for par in DEC["A3_incompatibilidades"]["pares"]:
              (par["b"] in CAT["melhorias"] or par["b"] in CAT["restricoes"])
     checa(f"o par {par['a']} + {par['b']} nomeia pecas que existem", existe)
     if par["fonte"] == "manual":
-        # v0.246 do sistema: o veto das Restricoes vem depois do das Melhorias, na mesma
-        # frase ("...que Reação nem com a Restrição Atrasar ."). A busca fica presa na linha
-        # da Melhoria `a` da tabela Tempo, para o veto do `Rápido` nao valer pela `Reação`.
-        _linha = re.search(r"\b" + re.escape(par["a"]) + r"\s+(?:Leve|Média|Pesada)\s+(.{0,400}?)"
-                           r"(?=\s\S+\s+(?:Leve|Média|Pesada)\s|$)", MAN)
-        _frase = _linha and re.search(r"Não entra no mesmo feitiço que(?:\s+\S+){0,14}?\s+"
-                                      + re.escape(par["b"]) + r"\b", _linha.group(1))
-        checa(f"  ...e o manual escreve mesmo esse par, na linha do {par['a']}", bool(_frase),
-              "declarado como fonte 'manual' sem estar escrito la")
+        # 04/10/2026: o livro reconstruido escreve os vetos na tabela de Combinar peças (e o Atrasar com o Parado nas
+        # Combinacoes das Restricoes). O texto guardado no par tem de estar no livro e nomear as duas pecas.
+        _t = " ".join(par["texto"].split())
+        checa(f"  ...e o manual escreve mesmo esse par: {_t[:60]}",
+              _t in MAN and par["a"] in _t and par["b"] in _t, "declarado como fonte 'manual' sem estar escrito la")
 
 # ---------------------------------------------------------------- 3
 print("\nOS NUMEROS DO A5, RECALCULADOS DO HEX")
@@ -137,8 +136,10 @@ print("\nO BLOCO C  (as quatro que sairam do 'falta algo antes de construir')")
 
 # C1: o Evocador some do MENU, nunca do catalogo. O catalogo espelha o manual.
 c1 = DEC["C1_evocador"]
-checa("o catalogo continua com os cinco Caminhos do manual",
-      len(CAT["caminhos"]) == 5, f"achei {len(CAT['caminhos'])}")
+_m_cam = re.search(r"Escolha um dos (\w+) Caminhos e, no nível 2, uma de suas três Trilhas\.", MAN)
+_EXT = {"cinco": 5, "seis": 6, "sete": 7}
+checa("o catalogo tem os Caminhos que o livro diz que existem",
+      bool(_m_cam) and len(CAT["caminhos"]) == _EXT.get(_m_cam.group(1)), f"achei {len(CAT['caminhos'])}, o livro diz {_m_cam.group(1) if _m_cam else None}")
 # 14/09/2026: o Evocador VOLTOU ao menu, e o Mizuki confirmou no B18. O caminho oculto
 # pode ser nulo, e as duas formas continuam amarradas ao catalogo.
 _oculto = [c1["caminho_oculto"]] if c1.get("caminho_oculto") else []
@@ -162,48 +163,32 @@ checa("menu + oculto = o catalogo inteiro, sem sobra nem falta",
 # Hoje ela le o dono VIVO daquele numero: o capitulo 35 vendorizado. Se o
 # Parrudo (ex-Casco) tem numero la, o motivo do C1 caiu, e a decisao tem de
 # DECLARAR que caiu -- em vez de continuar escrita como se ainda valesse.
-if not os.path.exists("capitulo-35-caminhos-e-trilhas.md"):
-    print("\nFALTA O ARQUIVO 'capitulo-35-caminhos-e-trilhas.md', e ele e o dono")
-    print("  vivo do numero do Parrudo. Sem ele a checagem do C1 nao confere nada.")
-    print("  copie de: <clone do JJK---Project>/sistema/05-material/livro/manual/")
-    print("            35-caminhos-e-trilhas.md")
-    sys.exit(1)
-CAP35 = ' '.join(le('capitulo-35-caminhos-e-trilhas.md').split())
-m_par = re.search(r"\*\*`Parrudo`\*\*[^|]*?`(\d+) ×` a sua maestria", CAP35)
-checa("o capitulo 35 da um numero ao Parrudo, o ex-Casco",
-      m_par is not None,
-      "se o Parrudo perdeu o numero, o motivo do C1 voltou a valer e este bloco "
-      "todo precisa ser relido")
-# v0.239 do sistema: o manual.txt foi reextraido e passou a ter o numero do Parrudo. A
-# checagem que guardava a DIVERGENCIA acendeu, como devia, e virou a da CONCORDANCIA: o
-# capitulo vendorizado continua dono, e o manual.txt tem de dizer o mesmo.
-m_man = re.search(r"Parrudo — as suas invocações têm mais vida, equivalente a (\d+) × a sua maestria", MAN)
-checa("o manual.txt reextraido da ao Parrudo o mesmo numero do capitulo 35",
-      m_par is not None and m_man is not None and m_man.group(1) == m_par.group(1),
-      f"capitulo: {m_par.group(1) if m_par else None} · manual.txt: {m_man.group(1) if m_man else None}")
+# 04/10/2026: o livro reconstruido nao tem mais o Parrudo (o ex-Casco), e o capitulo 35 vendorizado e da v0.331. O
+# motivo do C1 era o Evocador sem Trilhas escritas; hoje o livro escreve as tres e os niveis de entrega, e e isso que
+# a checagem le. Ela acende se o livro voltar a deixar o Evocador sem Trilha.
+_tri_evo = next((m for m in re.finditer(r"Escolha uma Trilha no nível 2: ([\w ]+), ([\w ]+) ou ([\w ]+)\. Você recebe suas habilidades nos níveis 2, 11, 19 e 27\.", MAN)
+                 if CAT["trilhas"].get(m.group(1)) == "Evocador"), None)
+checa("o livro escreve as tres Trilhas do Evocador e os niveis de entrega delas",
+      bool(_tri_evo) and all(CAT["trilhas"].get(t) == "Evocador" for t in _tri_evo.groups()),
+      str(_tri_evo.groups() if _tri_evo else None))
 mh = c1.get("motivo_hoje", {})
-PRECISA_MH = {"estado", "entregas_de_trilha", "numero_do_casco",
-              "ficha_da_invocacao"}
+PRECISA_MH = {"estado", "entregas_de_trilha", "numero_do_casco", "ficha_da_invocacao"}
 faltando_mh = sorted(PRECISA_MH - set(mh))
 checa("o C1 declara o estado de hoje dos tres motivos dele",
       not faltando_mh, "falta declarar: " + str(faltando_mh))
-if m_par:
-    checa("o numero que o C1 declara e o mesmo do capitulo 35",
-          m_par.group(1) + " x a maestria" in mh.get("numero_do_casco", ""),
-          "o capitulo diz " + m_par.group(1) + ", o C1 diz "
-          + repr(mh.get("numero_do_casco", "")))
 checa("o C1 registra que a decisao de voltar ao menu e do Mizuki",
       "Mizuki" in mh.get("estado", ""))
 checa("o C1 aponta a ficha da invocacao como fechada",
       "ficha-invocacao" in mh.get("ficha_da_invocacao", ""))
-checa("o C1 explica por que a checagem velha nao servia",
-      "congelado" in mh.get("por_que_a_checagem_velha_nao_servia", ""))
+checa("o C1 registra o Incursor no menu",
+      "Incursor" in c1["caminhos_no_menu"] and "Incursor" in c1.get("incursor", ""))
 
 # C2: o carimbo e a versao do projeto, e o dono dela e o CHANGELOG.
 c2 = DEC["C2_carimbo"]
-checa("a versao do carimbo tem forma de versao do projeto",
-      c2["versao_corrente"].count(".") == 1 and
-      all(p.isdigit() for p in c2["versao_corrente"].split(".")))
+# 04/10/2026: o carimbo e a versao do projeto e a data do livro reconstruido, "0.331 · 04/10"
+_v = re.fullmatch(r"(\d+)\.(\d+)(?: · (\d{2})/(\d{2}))?", c2["versao_corrente"])
+checa("a versao do carimbo tem forma de versao do projeto, com a data do livro quando ele e o reconstruido",
+      bool(_v) and (not _v.group(3) or c2["data_da_versao"].startswith(f"{_v.group(3)}/{_v.group(4)}/")), c2["versao_corrente"])
 checa("o catalogo carrega a versao que a ficha carimba",
       CAT["_meta"].get("versao") == c2["versao_corrente"],
       f"_meta.versao = {CAT['_meta'].get('versao')!r}, carimbo = {c2['versao_corrente']!r}")

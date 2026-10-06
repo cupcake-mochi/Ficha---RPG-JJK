@@ -18,6 +18,8 @@ const REAIS = {
   NamedRange: 'getName getRange remove setName setRange',
   DataValidationBuilder: 'setAllowInvalid requireValueInList requireValueInRange requireCheckbox setHelpText build requireFormulaSatisfied requireNumberBetween requireTextContains copy withCriteria',
   ConditionalFormatRuleBuilder: 'whenFormulaSatisfied whenTextContains whenTextDoesNotContain whenTextEqualTo whenTextStartsWith whenTextEndsWith whenCellEmpty whenCellNotEmpty whenNumberGreaterThan whenNumberLessThan whenNumberEqualTo whenNumberBetween setBackground setFontColor setBold setItalic setUnderline setStrikethrough setRanges build copy',
+  RichTextValueBuilder: 'build setLinkUrl setText setTextStyle',
+  TextStyleBuilder: 'build setBold setFontFamily setFontSize setForegroundColor setItalic setStrikethrough setUnderline',
   CellImageBuilder: 'setSourceUrl setAltTextTitle setAltTextDescription build toBuilder getAltTextTitle getAltTextDescription getContentUrl getUrl',
   SpreadsheetApp: 'getActive getActiveSpreadsheet getActiveSheet getActiveRange flush newCellImage newDataValidation newConditionalFormatRule newRichTextValue newTextStyle getUi openById openByUrl create',
 };
@@ -75,7 +77,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
   function criaAba(nome) {
     const A = { nome, maxR: 1000, maxC: 26, v: new Map(), f: new Map(), notas: new Map(), merges: [], dv: new Map(), cf: [], caixas: new Set(),
                 fmt: new Map(), prot: [], oculta: false, grade: true, profL: new Map(), profC: new Map(), fechL: [], fechC: [], posL: 'AFTER', posC: 'AFTER',
-                bordas: 0, larg: new Map(), alt: new Map(), est: new Map(), lados: new Map() };
+                bordas: 0, larg: new Map(), alt: new Map(), est: new Map(), lados: new Map(), ricos: new Map() };
     const poe = (i, j, que, val) => { const k = i + ',' + j; if (!A.est.has(k)) A.est.set(k, {}); A.est.get(k)[que] = val; };
     const borda = (r, c, nl, nc, a) => { if (a.length !== 8) throw new Error('setBorder quer oito argumentos'); A.bordas++;
       const marca = (i, j, lado) => A.lados.set(i + ',' + j + ',' + lado, a[6] + '|' + a[7]);
@@ -131,7 +133,11 @@ function criaSheets(FICHA_SRC, GS, extras) {
         getBackgrounds: () => [...Array(nl)].map(() => Array(nc).fill('#120F1D')), getFontColors: () => [...Array(nl)].map(() => Array(nc).fill('#F4F1F7')),
         getBackground: () => '#120F1D',
         setValues: (m) => { matriz(m, nl, nc, 'setValues'); cada((i, j, a, b) => grava(i, j, m[a][b])); return R; },
-        setValue: (x) => { grava(r, c, x); return R; },
+        setValue: (x) => { grava(r, c, x); A.ricos.delete(r + ',' + c); return R; },
+        // 05/10/2026: o texto rico (as cartas de Habilidades põem os subtítulos do livro em negrito): a célula guarda o
+        // texto, e o teste lê os trechos em negrito
+        setRichTextValue: (v) => { if (!v || !v.__rico) throw new Error('setRichTextValue sem texto rico'); grava(r, c, v.texto);
+          A.ricos.set(r + ',' + c, v.negritos); return R; },
         getValue: () => A.le(r, c), getValues: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.le(r + i, c + j))),
         setFormula: (f) => { if (typeof f !== 'string' || f[0] !== '=') throw new Error('setFormula sem fórmula em ' + nome); confereFormula(nome + '!' + letras(c) + r, f); A.v.delete(r + ',' + c); A.f.set(r + ',' + c, f); return R; },
         setFormulas: (m) => { matriz(m, nl, nc, 'setFormulas'); cada((i, j, a, b) => { if (typeof m[a][b] !== 'string' || m[a][b][0] !== '=') throw new Error('setFormulas com célula sem fórmula em ' + nome); confereFormula(nome + '!' + letras(j) + i, m[a][b]); A.f.set(i + ',' + j, m[a][b]); }); return R; },
@@ -277,6 +283,14 @@ function criaSheets(FICHA_SRC, GS, extras) {
         setSourceUrl: (u) => { if (!/^data:image\/png;base64,/.test(u)) throw new Error('imagem sem data:image/png'); b.url = u; return api; },
         setAltTextTitle: (t) => { b.titulo = t; return api; }, setAltTextDescription: (d) => { b.desc = d; return api; },
         build: () => ({ valueType: 'IMAGE', getAltTextTitle: () => b.titulo, getAltTextDescription: () => b.desc, toJSON: () => 'IMAGEM ' + b.titulo + ' ' + b.desc + ' ' + b.url.length }) }); return api; },
+      newRichTextValue: () => { const o = { __rico: true, texto: null, negritos: [] }; const api = rigoroso('RichTextValueBuilder', {
+        setText: (t) => { o.texto = String(t); return api; },
+        setTextStyle: (ini, fim, est) => { if (o.texto === null) throw new Error('setTextStyle antes do setText');
+          if (!(Number.isInteger(ini) && Number.isInteger(fim) && 0 <= ini && ini < fim && fim <= o.texto.length)) throw new Error(`setTextStyle fora do texto: ${ini}..${fim}`);
+          if (!est || !est.__estilo) throw new Error('setTextStyle sem estilo'); if (est.negrito) o.negritos.push(o.texto.slice(ini, fim)); return api; },
+        build: () => { if (o.texto === null) throw new Error('texto rico sem texto'); return o; } }); return api; },
+      newTextStyle: () => { const o = { __estilo: true }; const api = rigoroso('TextStyleBuilder', {
+        setBold: (b) => { o.negrito = !!b; return api; }, build: () => o }); return api; },
       newDataValidation: () => { const o = { __regra: true }; const api = rigoroso('DataValidationBuilder', {
         setAllowInvalid: (b) => { o.invalido = b; return api; },
         requireValueInList: (lista, seta) => { if (!Array.isArray(lista) || !lista.length) throw new Error('lista de menu vazia'); o.lista = lista; return api; },

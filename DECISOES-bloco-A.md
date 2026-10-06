@@ -74,6 +74,8 @@ E o catálogo inteiro dá 245 linhas. Nesse tamanho, "fica mais lento" não é p
 
 ---
 
+> **04/10/2026, livro reconstruído.** A regra entrou numa tabela só, em *Dano e recuperação, Vida e energia temporárias*, com o arredondamento (metade para baixo, mínimo 1). As fontes mudaram de nome com as Trilhas novas: vida temporária do Apoio, do Fluxo e do Proteger a Manifestação; energia temporária do Embalo e do Refluxo. O Braseiro, o Trindade, o Aprumo, a Crosta, o Vento a Favor e a Muralha saíram do livro. Os nomes e as frases estão na A2 do `decisoes-ficha.json`.
+
 ## A3 · `Rápido` + `Atrasar` vira trava na ficha, e desde a v0.246 do sistema também no manual
 
 A ficha recusa a montagem. ~~**O manual fica calado.**~~
@@ -120,6 +122,8 @@ Quatro incompatibilidades, e desde a v0.246 do sistema as quatro têm a mesma fo
 A primeira nunca tinha sido automatizada em lugar nenhum, apesar de estar escrita. Entra junto. *O `conferir-decisoes.py` procura cada par na linha da Melhoria dele na tabela, para o veto do `Rápido` não valer pela `Reação`.*
 
 ---
+
+> **04/10/2026, livro reconstruído.** Os vetos estão na tabela *Combinar peças* do Fundamento, e são sete: Rápido + Atrasar; Reação com Rápido, Armado, Atrasar e Parado; Atrasar + Parado; Armado + Carregar. O `decisoes-ficha.json` guarda o texto de cada um, e o `conferir-decisoes.py` exige que ele esteja no `manual.txt`.
 
 ## A4 · Vida e PE têm o atual editável **e** uma caixinha de delta
 
@@ -194,6 +198,8 @@ O `conferir-decisoes.py` checa que o motivo ainda vale: se o `Casco` ganhar núm
 
 > **Voltou ao menu em 14/09/2026.** *Os três motivos já tinham expirado: as entregas de Trilha do Evocador fecharam na v0.164 do Projeto M, o `Casco` virou `Parrudo` com número, e a ficha da invocação existe.* **A planilha viva já trazia o Evocador no menu, e o Mizuki confirmou no B18 que ele fica.** *O `decisoes-ficha.json` guarda os cinco Caminhos no menu e nenhum oculto, e o `conferir-ficha-xlsx.py` confere que o menu da DADOS é esse, na ordem.*
 
+> **04/10/2026.** O livro reconstruído tem seis Caminhos, e o Incursor entrou no menu. O Parrudo saiu do livro; a checagem do C1 passou a ler as três Trilhas do Evocador e os níveis de entrega delas.
+
 ## C2 · O carimbo é a versão do projeto
 
 **Hoje `0.104`**, de 18/08/2026. A dona dela é a entrada do topo do `CHANGELOG` do repositório do sistema.
@@ -201,6 +207,8 @@ O `conferir-decisoes.py` checa que o motivo ainda vale: se o `Casco` ganhar núm
 Não é a `v7.10` do Manual do Fundamento: essa é só de um capítulo, e o catálogo saiu do PDF inteiro.
 
 O catálogo ganhou o campo `_meta.versao`, que ele não tinha — sem ele a decisão A1 não tinha o que carimbar.
+
+> **04/10/2026.** O carimbo virou `0.331 · 04/10`: a versão do projeto e a data do livro reconstruído, de onde o catálogo foi remontado (B33 e B36 do `PENDENCIAS.md`).
 
 ## C3 · A proteção vira célula, e ela é uma escolha
 

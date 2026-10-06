@@ -129,7 +129,7 @@ function notasDeRegra_(ss, idx) {
     'iniciativa': 'Iniciativa = d20 + Destreza. Quem tirar mais age primeiro. O Buff/Debuff do lado ' +
                   'soma por cima.',
     'maestria': 'Vira 2 no nível 10, 3 no 18, 4 no 26. Não é "a cada oito níveis".',
-    'cd de feitiço': 'CD de feitiço = 8 + o atributo da sua técnica + maestria. ' +
+    'cd de feitiço': 'CD de feitiço = 8 + atributo da técnica + Maestria. ' +
                      'O atributo é o que você escolhe em ATRIBUTO DE CONJURAÇÃO.',
     'conjuração': 'Ataque de conjuração = d20 + o atributo da sua técnica + maestria. O atributo é o ' +
                   'que você escolhe em ATRIBUTO DE CONJURAÇÃO.',
@@ -139,15 +139,15 @@ function notasDeRegra_(ss, idx) {
                    'ATRIBUTO DE ATAQUE - À DISTÂNCIA: troque só se uma regra mandar.',
     'deslocamento': 'O seu deslocamento base é 9 metros, e você corta esse total em quantos pedaços ' +
                     'quiser dentro do turno. O Buff/Debuff do lado soma em metros. Cai pela metade com ' +
-                    'uniforme ou escudo sem a Força, ou com a carga acima do limite: a FICHA PESSOAL diz qual.',
+                    'uma arma empunhada sem a Força, e vai a zero com a carga acima do limite: a FICHA PESSOAL diz qual.',
     'vida_temp': 'Vida temporária não acumula: fica a maior, com teto de metade ' +
-                 'da vida máxima. Some no fim da cena, e é gasta antes da vida ' +
+                 'da vida máxima, para baixo e no mínimo 1. Some no fim da cena, e é gasta antes da vida ' +
                  'normal — a caixinha de ± desconta daqui primeiro e só o que ' +
                  'sobrar desce na vida. Dano com Rasga Escudo ignora isto: ' +
                  'edite a vida na mão.',
     'energia_temp': 'Energia temporária não acumula: fica a maior, com teto de ' +
-                    'metade do PE máximo (o Braseiro e o Trindade dão 2). Some no ' +
-                    'fim da cena, e a caixinha de ± queima daqui antes do seu PE.',
+                    'metade do PE máximo, para baixo e no mínimo 1 (o Embalo e o Refluxo dão energia ' +
+                    'temporária). Some no fim da cena, e a caixinha de ± queima daqui antes do seu PE.',
     'integridade_temp': 'Nenhuma regra do manual concede integridade temporária. ' +
                         'Se algo conceder, vale a regra das outras duas: não acumula, ' +
                         'e o teto é metade da Integridade máxima.',
@@ -161,8 +161,8 @@ function notasDeRegra_(ss, idx) {
     'marco corpo': 'Quantas vezes você escolheu Corpo num marco. Cada uma dá +1 ponto de atributo, e ' +
                    '+1 perícia ou ofício treinado. Do nível 10 em diante, pode especializar um que já ' +
                    'treina no lugar. Marque em Pontos de Marco de Corpo em qual atributo o ponto foi.',
-    'marco leque': 'Quantas vezes você escolheu Leque num marco. Cada uma dá +1 espaço de feitiço, e ' +
-                   'uma Passiva que não custa espaço. Anote essa Passiva na coluna Passivas do Leque.',
+    'marco leque': 'Quantas vezes você escolheu Leque num marco. Cada uma dá um feitiço a mais e um ' +
+                   'Talento, sem pagar espaços. Anote o Talento nos Talentos do Leque, na FICHA AMALDIÇOADA.',
     'marcos escolhidos': 'Os marcos caem nos níveis 6, 10, 14, 18, 22, 26 e 30. Em cada um, ' +
                          'escolha Refino, Corpo ou Leque, e marque embaixo quantas vezes escolheu cada.',
     'buff de defesa': 'Soma na Defesa o que nenhuma outra caixa cobre, como a Couraça (+1 ' +
@@ -190,20 +190,21 @@ function notasDeRegra_(ss, idx) {
     'caminho': 'Ao escolher o Caminho, as duas perícias fixas dele são marcadas sozinhas. ' +
                'Ofício e Teste de Resistência são à sua escolha. Se a Trilha escolhida não for ' +
                'do Caminho novo, ela volta para Escolha sua Trilha.',
-    'trilha': 'O menu mostra só as Trilhas do Caminho escolhido.',
-    'treinado em armas': 'Automático pelo Caminho, sem escolha: Bastião e Vanguarda treinam todas ' +
-                         'as armas; Guia, Emanador e Evocador treinam só Arma de Fogo e Balestra.',
+    'trilha': 'O menu mostra só as Trilhas do Caminho escolhido. O Batedor entra uma vez por rota. Escolher o ' +
+              'Caminho e a Trilha escreve as cartas de Habilidades, na seção 7.',
+    'treinado em armas': 'Automático pelo Caminho, sem escolha: Bastião, Vanguarda e Incursor treinam as ' +
+                         'treze categorias; Guia, Emanador e Evocador treinam só Arma de Fogo e Balestra.',
     'nivel': 'Editável a qualquer hora, sem aviso. Anotar uma missão na FICHA PESSOAL sobe o nível ' +
-             'sozinho, pela curva do capítulo 18, até o 20: dali em diante o livro pede um feito, e ' +
+             'sozinho, pela curva do capítulo Progressão, até o 20: dali em diante o livro pede um feito, e ' +
              'quem sobe é você. O XP nunca desce o nível, e quem não usa XP sobe aqui na mão.',
     'xp': 'A soma das missões anotadas na FICHA PESSOAL, no painel depois da coluna AU. Para mudar, ' +
-         'anote a missão lá. O nível ao lado sobe sozinho pela curva do capítulo 18.',
+         'anote a missão lá. O nível ao lado sobe sozinho pela curva do capítulo Progressão.',
     'trocou por arma': 'Só vale pra Guia, Emanador e Evocador. Cada troca é 2 das 5 perícias ' +
                        'livres do Caminho por treino numa arma específica — não a categoria, não ' +
                        'o tipo, uma arma da lista. Pode repetir até 2 vezes.',
-    'grupo de arma da trilha': 'Só a Empunhadura do Arremate (Emanador, nível 2) preenche sozinha: ' +
-                               'um grupo de arma à escolha, treinado, com o acerto e o dano por ' +
-                               'Inteligência ou Essência. Qual grupo é você quem escreve.'
+    'grupo de arma da trilha': 'Duas Trilhas dão treino numa categoria de arma à escolha, no nível 2: ' +
+                               'Condutor Armado (Emanador, Arma Condutora, com acerto e dano por Inteligência ' +
+                               'ou Essência) e Parceria (Evocador, Treino de Combate). Qual categoria é você quem escreve.'
   };
   var buff = 'Soma no número do lado o que nenhuma outra caixa cobre, como um efeito que dura. ' +
              'Número negativo reduz.';
@@ -385,6 +386,7 @@ function onEdit(e) {
   // 02/10/2026: o menu rápido da seção 8 é todo calculado; quem escrever por cima recebe a conta de volta
   if (dentroDeSemTrava_('FICHA', e.range)) {
     try { devolverConta_(e, 'FICHA'); } catch (err) { console.log('menu rápido: ' + err.message); }
+    try { caixaDeHabilidadeEditada_(e); } catch (err) { console.log('habilidades: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
@@ -393,6 +395,7 @@ function onEdit(e) {
   prenderTemp_(e, idx);
   marcarPericiasDoCaminho_(e, idx);
   trilhaDoCaminho_(e, idx);
+  try { habilidadesDaFicha_(e, idx); } catch (err) { console.log('habilidades: ' + err.message); }
   nivelPelaXP_(e, idx);
   grupoDeArmaDaTrilha_(e, idx);
   trocaArmaDoCaminho_(e, idx);
@@ -500,7 +503,7 @@ function treinoDepoisDaCaixa_(armas, grupos, marcadas, editada) {
 /**
  * O treino que o Caminho dá, em toda caixa: {caixa: true|false}. Sem planilha em volta.
  *
- * Bastião e Vanguarda treinam as treze categorias; os outros Caminhos, as do conjurador (Arma de Fogo e
+ * Bastião, Vanguarda e Incursor treinam as treze categorias; os outros, as do conjurador (Arma de Fogo e
  * Balestra). Sem Caminho escolhido, nenhuma. As listas saem da DADOS, que as tira do catálogo.
  */
 function treinoDoCaminho_(armas, grupos, caminho, caminhos, todas, conjurador) {
@@ -710,7 +713,7 @@ function devolverConta_(e, nome) {
   if (!spec) return 0;
   var aba = e.range.getSheet();
   var r1 = e.range.getRow(), c1 = e.range.getColumn(), r2 = e.range.getLastRow(), c2 = e.range.getLastColumn();
-  var n = 0;
+  var n = 0, daCarteira = false;
   spec.vals.forEach(function (t) {
     if (t[0] < r1 || t[0] > r2 || t[1] < c1 || t[1] > c2) return;
     if (typeof t[2] !== 'string' || !REFERENCIA_PURA_.test(t[2])) return;
@@ -718,10 +721,14 @@ function devolverConta_(e, nome) {
     if (cel.getFormula() === t[2]) return;
     cel.setFormula(t[2]);
     n++;
+    // 05/10/2026: o nome da técnica espelha a CARTEIRA, e o aviso diz onde se escreve
+    if ((spec.da_carteira || []).indexOf(a1_(t[0], t[1])) >= 0) daCarteira = true;
   });
   if (n) {
     SpreadsheetApp.getActive().toast(nome === 'FICHA'
       ? 'O menu rápido mostra o que está na FICHA AMALDIÇOADA, e a caixa voltou. Para mudar, mexa lá.'
+      : daCarteira
+      ? 'O nome da técnica vem da CARTEIRA, e a caixa voltou. Para mudar, escreva na TÉCNICA DECLARADA de lá.'
       : 'Essa caixa é calculada pela ficha, e a conta voltou. O número dela muda pelas caixas de ' +
         'escolher e de escrever da própria seção.', nome, 8);
   }
@@ -763,21 +770,24 @@ function trocaArmaDoCaminho_(e, idx) {
 }
 
 /**
- * A única Trilha dos três Caminhos não-marciais que dá treino de arma: a Empunhadura do Arremate
- * (Emanador), nível 2. Ela concede um grupo de arma à escolha, treinado, com o acerto e o dano por
- * Inteligência ou Essência — mas qual grupo é decisão do jogador, então a ficha só avisa e deixa a
- * caixa livre pra ele escrever. 17/09/2026, pedido do Mizuki: aproveita a linha que tinha sobrado
- * no Treinamento em Armas. Só preenche se a caixa estiver vazia, pra não apagar o que já foi
- * escrito; trocar de Trilha de novo não limpa o que ficou.
+ * As Trilhas dos Caminhos conjuradores que dão treino numa categoria de arma, no nível 2. Desde o livro
+ * reconstruído (04/10/2026) são duas: Condutor Armado (Emanador, Arma Condutora) e Parceria (Evocador,
+ * Treino de Combate). Qual categoria é decisão do jogador, então a ficha só avisa e deixa a caixa livre
+ * pra ele escrever. 17/09/2026, pedido do Mizuki: aproveita a linha que tinha sobrado no Treinamento em
+ * Armas. Só preenche se a caixa estiver vazia, pra não apagar o que já foi escrito; trocar de Trilha de
+ * novo não limpa o que ficou.
  */
+var TRILHAS_COM_CATEGORIA_ = {'Condutor Armado': ['Emanador', 'Arma Condutora'], 'Parceria': ['Evocador', 'Treino de Combate']};
+
 function grupoDeArmaDaTrilha_(e, idx) {
   var ct = cel_(idx, 'trilha'), cg = cel_(idx, 'grupo de arma da trilha');
   if (!ct || !cg || ct !== e.range.getA1Notation()) return;
-  if (String(e.value || '') !== 'Arremate') return;
+  var t = TRILHAS_COM_CATEGORIA_[String(e.value || '')];
+  if (!t) return;
   var cc = cel_(idx, 'caminho');
-  if (!cc || String(e.range.getSheet().getRange(cc).getValue()) !== 'Emanador') return;
+  if (!cc || String(e.range.getSheet().getRange(cc).getValue()) !== t[0]) return;
   var alvo = e.range.getSheet().getRange(cg);
-  if (String(alvo.getValue() || '') === '') alvo.setValue('Escolha o grupo de arma (Empunhadura)');
+  if (String(alvo.getValue() || '') === '') alvo.setValue('Escolha a categoria de arma (' + t[1] + ')');
 }
 
 /**
@@ -842,6 +852,165 @@ function trilhaDoCaminho_(e, idx) {
     if (fica !== antes) caixa.setValue(fica);
     return;
   }
+}
+
+/**
+ * As cartas de Habilidades da seção 7 da FICHA, escritas do livro quando o Caminho ou a Trilha mudam (B37, 05/10/2026).
+ * O Mizuki escolheu que a carta traga o livro e que o jogador possa apagar e escrever por cima ("B - mas dando
+ * permissão para o jogador apagar o texto e colocar oq preferir"), e pôs as cartas numa coluna só, com a caixa do
+ * texto esticando conforme a escolha ("Acompanha a Escolha, mas ainda tendo a caixa retratil da descrição").
+ *
+ * Por isso o nome e o texto são valor solto, e não fórmula, e a carta só é reescrita se estiver vazia ou ainda com um
+ * texto do livro daquela carta (de qualquer Caminho ou Trilha). O que o jogador escreveu fica, e a nota da caixa
+ * mostra o livro enquanto o texto dela não for o do livro. Apagar a carta deixa ela vazia (com o livro na nota); ela
+ * volta a encher na próxima troca de Caminho ou de Trilha.
+ *
+ * A caixa estica: o linhasDoTexto_ conta as linhas pela largura de cada letra da Roboto 10, e o alturaDaCaixa_ divide
+ * a altura pelas linhas da caixa. Escrever numa caixa também estica ela, e põe o livro na nota.
+ *
+ * A DADOS_AM publica o endereço do nome e do texto de cada carta, e o das caixas livres (habilidades.py). O livro e a
+ * medida moram no Habilidades.gs, gerado pelo monta.py: são 200 KB, que no Ficha.gs passariam do teto. A carta de
+ * Caminho procura primeiro a linha "Caminho com a Trilha" (o nível 7 do Pugilista mora na carta 7 do Incursor), e
+ * depois a do Caminho.
+ *
+ * O texto do livro vem legível ("espaçar os paragrafos e talz"): o gerador já separa os parágrafos com uma linha em
+ * branco, e o escreverTextoDoLivro_ põe os subtítulos em negrito, com texto rico.
+ *
+ * A conta mora no cartasDaFicha_, no habilidadeQueFica_, no notaDaCarta_, no negritosDoTexto_, no linhasDoTexto_ e no
+ * alturaDaCaixa_, sem planilha em volta, e o regressao-delta.js roda todos no node.
+ */
+function habilidadeQueFica_(atual, autos, novo) {
+  return (atual === '' || autos.indexOf(atual) >= 0) ? novo : atual;
+}
+
+function notaDaCarta_(texto, doLivro) {
+  return (doLivro && texto !== doLivro) ? doLivro : '';
+}
+
+function cartasDaFicha_(livro, cartas, caminho, trilha, atuais) {
+  var acha = function (fonte, dono, nivel) {
+    return livro.filter(function (l) { return l.fonte === fonte && l.dono === dono && l.nivel === nivel; })[0];
+  };
+  return cartas.map(function (c, i) {
+    var fontes = c.fonte === 'Caminho' ? ['Caminho com a Trilha', 'Caminho'] : ['Trilha'];
+    var linha = c.fonte === 'Caminho'
+      ? (acha('Caminho com a Trilha', trilha, c.nivel) || acha('Caminho', caminho, c.nivel))
+      : acha('Trilha', trilha, c.nivel);
+    var daCarta = livro.filter(function (l) { return fontes.indexOf(l.fonte) >= 0 && l.nivel === c.nivel; });
+    var nomes = daCarta.map(function (l) { return l.nome; }), textos = daCarta.map(function (l) { return l.texto; });
+    var texto = habilidadeQueFica_(atuais[i].texto, textos, linha ? linha.texto : '');
+    return {
+      nome: habilidadeQueFica_(atuais[i].nome, nomes, linha ? linha.nome : ''),
+      texto: texto,
+      livro: linha ? linha.texto : '',
+      titulos: linha ? linha.titulos : [],
+      nota: notaDaCarta_(texto, linha ? linha.texto : '')
+    };
+  });
+}
+
+function linhasDoTexto_(texto, M) {
+  var larg = function (t) {
+    var x = 0;
+    for (var i = 0; i < t.length; i++) x += (M.larguras[t[i]] === undefined ? M.media : M.larguras[t[i]]);
+    return x;
+  };
+  var esp = M.larguras[' '], n = 0;
+  String(texto).split('\n').forEach(function (par) {
+    n++;
+    var linha = null;
+    par.split(' ').filter(function (p) { return p !== ''; }).forEach(function (p) {
+      var w = larg(p);
+      if (linha === null) linha = w;
+      else if (linha + esp + w <= M.largura) linha += esp + w;
+      else { n++; linha = w; }
+    });
+  });
+  return n;
+}
+
+function alturaDaCaixa_(texto, M) {
+  var total = String(texto) === '' ? 0 : linhasDoTexto_(texto, M) * M.linha + M.respiro;
+  return Math.max(M.minima, Math.ceil(total / M.caixa));
+}
+
+// os trechos do texto que vão em negrito: as linhas que são subtítulo do livro, [início, fim] de cada uma
+function negritosDoTexto_(texto, titulos) {
+  var out = [], ini = 0;
+  String(texto).split('\n').forEach(function (l) {
+    if (l !== '' && titulos.indexOf(l) >= 0) out.push([ini, ini + l.length]);
+    ini += l.length + 1;
+  });
+  return out;
+}
+
+// o texto do livro na carta: texto rico, com os subtítulos em negrito ("deixar de forma legivel", 05/10/2026)
+function escreverTextoDoLivro_(celula, texto, titulos) {
+  var negrito = SpreadsheetApp.newTextStyle().setBold(true).build();
+  var rico = SpreadsheetApp.newRichTextValue().setText(texto);
+  negritosDoTexto_(texto, titulos).forEach(function (t) { rico.setTextStyle(t[0], t[1], negrito); });
+  celula.setRichTextValue(rico.build());
+}
+
+// as cartas e as caixas livres que a DADOS_AM publica: [{fonte, nivel, nome, texto, linha}] e [{texto, linha}]
+function cartasDaDadosAm_(ss) {
+  var v = ss.getSheetByName(DADOS_DA_AMALDICOADA_).getDataRange().getValues(), h = v[0];
+  var cC = h.indexOf('habilidade: carta'), cN = h.indexOf('nível da carta');
+  var cNm = h.indexOf('célula do nome'), cTx = h.indexOf('célula do texto'), cL = h.indexOf('célula do texto livre');
+  if (cC < 0 || cN < 0 || cNm < 0 || cTx < 0 || cL < 0) return null;
+  var linhaDe = function (a1) { return Number(String(a1).replace(/^[A-Z]+/, '')); };
+  var cartas = [], livres = [];
+  for (var r = 1; r < v.length && v[r][cC] !== ''; r++) {
+    cartas.push({ fonte: String(v[r][cC]).split(' ')[0], nivel: Number(v[r][cN]), nome: String(v[r][cNm]),
+                  texto: String(v[r][cTx]), linha: linhaDe(v[r][cTx]) });
+  }
+  for (var l = 1; l < v.length && v[l][cL] !== ''; l++) livres.push({ texto: String(v[l][cL]), linha: linhaDe(v[l][cL]) });
+  return { cartas: cartas, livres: livres };
+}
+
+function habilidadesDaFicha_(e, idx) {
+  var cc = cel_(idx, 'caminho'), ct = cel_(idx, 'trilha'), a1 = e.range.getA1Notation();
+  if (!cc || !ct || (a1 !== cc && a1 !== ct)) return;
+  if (typeof HABILIDADES_DO_LIVRO_ === 'undefined') {
+    SpreadsheetApp.getActive().toast('Falta o arquivo Habilidades no Apps Script: as cartas da seção 7 não foram ' +
+                                     'escritas. Veja o COMO-SUBIR.', 'Habilidades', 8);
+    return;
+  }
+  var ss = SpreadsheetApp.getActive(), ficha = ss.getSheetByName('FICHA'), D = cartasDaDadosAm_(ss);
+  if (!D) return;
+  var caminho = String(ficha.getRange(cc).getValue()), trilha = String(ficha.getRange(ct).getValue());
+  var atuais = D.cartas.map(function (c) {
+    return { nome: String(ficha.getRange(c.nome).getValue()), texto: String(ficha.getRange(c.texto).getValue()) };
+  });
+  cartasDaFicha_(HABILIDADES_DO_LIVRO_, D.cartas, caminho, trilha, atuais).forEach(function (n, i) {
+    var c = D.cartas[i];
+    if (n.nome !== atuais[i].nome) ficha.getRange(c.nome).setValue(n.nome);
+    if (n.texto !== atuais[i].texto) {
+      if (n.texto !== '' && n.texto === n.livro) escreverTextoDoLivro_(ficha.getRange(c.texto), n.texto, n.titulos);
+      else ficha.getRange(c.texto).setValue(n.texto);
+    }
+    ficha.getRange(c.texto).setNote(n.nota);
+    ficha.setRowHeights(c.linha, MEDIDA_DAS_CARTAS_.caixa, alturaDaCaixa_(n.texto, MEDIDA_DAS_CARTAS_));
+  });
+}
+
+// o jogador escreveu numa caixa de texto das Habilidades: a caixa estica, e a nota mostra o livro se o texto mudou
+function caixaDeHabilidadeEditada_(e) {
+  // as caixas das Habilidades começam na coluna D (a C1 do habilidades.py): edição em outra coluna nem lê a DADOS_AM
+  if (e.range.getColumn() !== 4 || typeof HABILIDADES_DO_LIVRO_ === 'undefined') return;
+  var ss = SpreadsheetApp.getActive(), ficha = ss.getSheetByName('FICHA'), D = cartasDaDadosAm_(ss);
+  if (!D) return;
+  var r = e.range.getRow(), carta = D.cartas.filter(function (c) { return c.linha === r; })[0];
+  var livre = D.livres.filter(function (c) { return c.linha === r; })[0], alvo = carta || livre;
+  if (!alvo) return;
+  var texto = String(ficha.getRange(alvo.texto).getValue());
+  ficha.setRowHeights(alvo.linha, MEDIDA_DAS_CARTAS_.caixa, alturaDaCaixa_(texto, MEDIDA_DAS_CARTAS_));
+  if (!carta) return;
+  var idx = indice(), cc = cel_(idx, 'caminho'), ct = cel_(idx, 'trilha');
+  var i = D.cartas.indexOf(carta), atuais = D.cartas.map(function (c) { return { nome: '', texto: '' }; });
+  var n = cartasDaFicha_(HABILIDADES_DO_LIVRO_, D.cartas, String(ficha.getRange(cc).getValue()),
+                         String(ficha.getRange(ct).getValue()), atuais)[i];
+  ficha.getRange(carta.texto).setNote(notaDaCarta_(texto, n.livro));
 }
 
 /**

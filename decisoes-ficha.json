@@ -27,17 +27,16 @@
    "mestre_pode_atravessar": true,
    "gasta_antes_da_vida_normal": true,
    "fonte": {
-    "tudo": "manual, capítulo 1, Vida temporária: 'gasta antes da vida real, não acumula, tem teto de metade da sua vida máxima, e some no fim da cena'. Decisão do Mizuki na v0.108 do sistema",
-    "gasta_primeiro": "manual, Melhoria Rasga Escudo: 'o dano ignora vida temporária e barreiras: bate direto na vida'"
+    "tudo": "manual, Dano e recuperação, Vida e energia temporárias: 'Até metade da vida máxima. Absorve dano antes da vida comum.' e 'Reservas temporárias do mesmo recurso não se somam ... fique com o maior valor.' Decisão do Mizuki na v0.108 do sistema, escrita no livro reconstruído",
+    "arredondamento": "manual, Vida e energia temporárias: 'Arredonde as metades para baixo, com mínimo 1 quando o máximo for positivo.'",
+    "gasta_primeiro": "manual, Melhoria Rasga Escudo: 'O dano ignora a vida temporária e uma barreira que esteja absorvendo dano no lugar do alvo'"
    },
    "fontes_no_manual": {
-    "Apoio": "3 por ponto que sobra",
-    "Fluxo": "2 x Classe",
-    "Aprumo": "1d10 + atributo de ataque",
-    "Crosta": "a sua maior Classe",
-    "Vento a Favor": "9",
-    "Muralha": "18"
-   }
+    "Apoio": "Cada ponto do saldo concede 3 pontos de vida temporária.",
+    "Fluxo": "você recebe 2 × a Classe usada em pontos de vida temporária",
+    "Proteger a Manifestação": "Ela recebe vida temporária igual a 5 × a Classe correspondente ao nível dela."
+   },
+   "fontes_que_sairam": "04/10/2026: Aprumo, Crosta, Vento a Favor e Muralha não existem no livro reconstruído; Proteger a Manifestação (Evocador, Invocação Principal) entrou, e é da invocação, não do personagem"
   },
   "energia": {
    "empilha": false,
@@ -47,56 +46,78 @@
    "mestre_pode_atravessar": true,
    "gasta_antes_do_pe_normal": true,
    "fonte": {
-    "tudo": "manual, capítulo 1, Energia temporária: 'segue a regra da vida temporária, com o PE no lugar da vida'. Decisão do Mizuki na v0.239 do sistema: toda fonte temporária não acumula, e o teto é metade do máximo"
+    "tudo": "manual, Dano e recuperação, Vida e energia temporárias: 'Até metade dos PE máximos. É gasta antes dos PE comuns.' Decisão do Mizuki na v0.239 do sistema, escrita no livro reconstruído"
    },
    "fontes_no_manual": {
-    "Braseiro": "2 (Bastião, Trilha Brasa, nível 11)",
-    "Trindade": "2 PE (Emanador, Trilha Arremate, nível 27)"
-   }
+    "Embalo": "receba energia temporária igual à sua maestria",
+    "Refluxo": "receba energia temporária igual à metade do PE de fato gasto nela"
+   },
+   "fontes_que_sairam": "04/10/2026: o Braseiro (Trilha Brasa) e o Trindade (Trilha Arremate) saíram com as Trilhas; Embalo (Bastião, Combatente Amaldiçoado, nível 11) e Refluxo (Vanguarda, Conclusões de feitiço) entraram"
   },
   "integridade": {
    "regra": "nada concede hoje; se conceder, a mesma regra, com teto de metade da Integridade máxima",
    "fontes_no_manual": {}
   },
   "no_capitulo": {
-   "alvo": "Vida, energia e alma (manual, capítulo 1)",
-   "estado": "APLICADO: a vida temporária entrou na v0.108 e a energia temporária na v0.239 do sistema, com texto próprio",
+   "alvo": "Vida e energia temporárias (manual, Dano e recuperação)",
+   "estado": "APLICADO no livro reconstruído, com a tabela das duas reservas e o arredondamento",
    "texto_proposto_antes": "manual-temporario.md, marcado como SUPERADO"
   }
  },
  "A3_incompatibilidades": {
-  "escolha": "trava na ficha e no manual: o manual passou a escrever o veto na v0.246 do sistema",
+  "escolha": "trava na ficha e no manual: o livro reconstruído escreve os vetos na tabela de Combinar peças",
   "pares": [
-   {
-    "a": "Rápido",
-    "b": "Reação",
-    "fonte": "manual",
-    "texto": "Não entra no mesmo feitiço que Reação",
-    "onde": "manual, tabela da Família Tempo"
-   },
    {
     "a": "Rápido",
     "b": "Atrasar",
     "fonte": "manual",
-    "texto": "nem com a Restrição Atrasar",
-    "onde": "manual, tabela da Família Tempo, desde a v0.246 do sistema"
+    "texto": "Rápido + Atrasar | Não combina.",
+    "onde": "manual, Fundamento, Combinar peças (tabela Combinação | Resultado)"
+   },
+   {
+    "a": "Reação",
+    "b": "Rápido",
+    "fonte": "manual",
+    "texto": "Reação + Rápido, Armado, Atrasar ou Parado | Não combina",
+    "onde": "manual, Fundamento, Combinar peças (tabela Combinação | Resultado)"
+   },
+   {
+    "a": "Reação",
+    "b": "Armado",
+    "fonte": "manual",
+    "texto": "Reação + Rápido, Armado, Atrasar ou Parado | Não combina",
+    "onde": "manual, Fundamento, Combinar peças (tabela Combinação | Resultado)"
    },
    {
     "a": "Reação",
     "b": "Atrasar",
     "fonte": "manual",
-    "texto": "nem com as Restrições Atrasar e Parado",
-    "onde": "manual, tabela da Família Tempo, desde a v0.246 do sistema"
+    "texto": "Reação + Rápido, Armado, Atrasar ou Parado | Não combina",
+    "onde": "manual, Fundamento, Combinar peças (tabela Combinação | Resultado)"
    },
    {
     "a": "Reação",
     "b": "Parado",
     "fonte": "manual",
-    "texto": "nem com as Restrições Atrasar e Parado",
-    "onde": "manual, tabela da Família Tempo, desde a v0.246 do sistema"
+    "texto": "Reação + Rápido, Armado, Atrasar ou Parado | Não combina",
+    "onde": "manual, Fundamento, Combinar peças (tabela Combinação | Resultado)"
+   },
+   {
+    "a": "Atrasar",
+    "b": "Parado",
+    "fonte": "manual",
+    "texto": "Atrasar já impede o deslocamento e não se combina com Parado.",
+    "onde": "manual, Fundamento, Restrições, Combinações"
+   },
+   {
+    "a": "Armado",
+    "b": "Carregar",
+    "fonte": "manual",
+    "texto": "Armado + Carregar | Não combina.",
+    "onde": "manual, Fundamento, Combinar peças (tabela Combinação | Resultado)"
    }
   ],
-  "o_que_fica_exposto": "nada desde a v0.246 do sistema: o manual escreve os tres vetos, e quem monta no papel tambem esbarra neles",
+  "o_que_fica_exposto": "nada: o livro reconstruído escreve os sete vetos, e quem monta no papel também esbarra neles",
   "tamanho_do_desconto": "um terco do orcamento em toda Classe, pelo Atrasar; o Parado devolve Leve"
  },
  "A4_reservas": {
@@ -159,16 +180,17 @@
  "C1_evocador": {
   "escolha": "o Evocador VOLTOU ao menu de Caminhos da ficha. Ele saiu em 18/08/2026, por enquanto, e em 14/09/2026 o Mizuki confirmou no B18 que ele volta: a planilha viva ja o trazia",
   "motivo": "o Caminho existe no manual, mas as entregas de Trilha (niveis 2, 11, 19 e 27) estao em escrita, o Casco diz 'mais vida' sem numero, e a ficha da invocacao (manual cap.14, p.180) nao existe em versao nenhuma da ficha",
-  "o_catalogo_NAO_muda": "o catalogo espelha o manual, e o manual tem cinco Caminhos. Quem some e a OPCAO no menu da ficha, nao a entrada no catalogo",
+  "o_catalogo_NAO_muda": "o catalogo espelha o manual, e o manual tem seis Caminhos desde o livro reconstruído. Quem some ou volta é a OPCAO no menu da ficha, não a entrada no catálogo",
   "caminhos_no_menu": [
    "Bastião",
    "Vanguarda",
    "Guia",
    "Emanador",
-   "Evocador"
+   "Evocador",
+   "Incursor"
   ],
   "caminho_oculto": null,
-  "a_ficha_diz": "os cinco Caminhos no menu. Ate 14/09/2026 ela dizia Evocador — em escrita, fale com o mestre",
+  "a_ficha_diz": "os seis Caminhos no menu, na ordem do livro reconstruído. O Incursor entrou em 04/10/2026",
   "quando_volta": "voltou em 14/09/2026, quando as entregas de Trilha, o numero do Parrudo e a ficha da invocacao ja existiam",
   "motivo_hoje": {
    "estado": "os tres motivos do C1 expiraram, e o Mizuki decidiu em 14/09/2026 que o Evocador volta ao menu",
@@ -176,14 +198,15 @@
    "numero_do_casco": "FECHADO: o Casco virou Parrudo na v0.184 e ganhou numero com dono na v0.185, 5 x a maestria. O dono e o capitulo 35, vendorizado aqui como capitulo-35-caminhos-e-trilhas.md",
    "ficha_da_invocacao": "FECHADA: ficha-invocacao/ficha-invocacao.xlsx, com o invocacao.json como dono dos valores",
    "por_que_a_checagem_velha_nao_servia": "ela procurava a frase 'Casco — as suas invocacoes tem mais vida.' no manual.txt, que esta congelado na v0.104. A frase nunca sai de la, entao a checagem saia verde para sempre e nunca podia acender."
-  }
+  },
+  "incursor": "04/10/2026: o livro reconstruído tem seis Caminhos (Criar um personagem, tabela Caminho e Trilha), e o Incursor entra no menu com a vida, o PE, as perícias fixas e o treino de armas da tabela de Características dele"
  },
  "C2_carimbo": {
   "escolha": "o carimbo e a versao do projeto",
-  "versao_corrente": "0.258",
-  "data_da_versao": "20/09/2026",
-  "dona_da_versao": "a entrada do topo de logs/CHANGELOG.md no JJK---Project",
-  "manual_do_fundamento": "7.10",
+  "versao_corrente": "0.331 · 04/10",
+  "data_da_versao": "04/10/2026",
+  "dona_da_versao": "o livro reconstruído do JJK---Project (LIVRO-COMPLETO.md, revisado em 04/10/2026, depois da v0.331); o hash está no manual-fonte.json",
+  "manual_do_fundamento": "o capítulo 10 do livro reconstruído",
   "porque_a_do_projeto_e_nao_a_do_manual": "o catalogo foi extraido do PDF inteiro, que e o recorte da versao do projeto; o 7.10 e so do capitulo de Fundamento",
   "onde_fica_na_ficha": "DADOS!B1, e a central publica a mesma string numa celula so"
  },
@@ -193,8 +216,9 @@
   "formula_protecao": "SE(equipamento vazio; ARRED.ABAIXO(refino/3) + 1; SE(uniforme; 0; ARRED.ABAIXO(refino/3) + 1) + protecao da tabela), com refino = MIN(10; refino de graca + MIN(marcos que passou; refino escolhido))",
   "porque": "Traje e Revestimento DESLIGAM a protecao do cobrir-se e entregam a deles; o escudo SOMA por cima; com dois tetos de Destreza vale o menor; e o refino conta as escolhas de Refino nos marcos",
   "o_que_entra_agora": "desde a v0.246 do sistema, o B3 na opcao A: o EQUIPAMENTO e menu das combinacoes de uniforme e escudo, a tabela sai do catalogo (equipamento_defesa) para a DADOS, e o REFINO ESCOLHIDO fica ao lado do BLOQUEAR",
-  "o_que_entra_depois": "nada do B3. Fora dele: a Couraca (+1 de Defesa vestindo uniforme) e a arma sem o requisito de Forca, que tira a Destreza da Defesa, vao ter campo na Ficha Pessoal (aba de itens e equipamentos, bio, foto e afins)",
-  "o_bug_que_isso_conserta": "o prototipo tinha '10 + Destreza + 1' com o 1 escrito na mao; ele fica errado no refino 3, quando a protecao vira 2"
+  "o_que_entra_depois": "nada do B3. A Couraça (+1 de Defesa vestindo uniforme) segue no Buff/Debuff da Defesa",
+  "o_bug_que_isso_conserta": "o prototipo tinha '10 + Destreza + 1' com o 1 escrito na mao; ele fica errado no refino 3, quando a protecao vira 2",
+  "forca": "04/10/2026, livro reconstruído: a arma empunhada sem a Força tira a Destreza da Defesa (Equipamento, Treino e Força), e o uniforme ou o escudo sem a Força não dá a proteção dele (Proteção, Requisitos e carga). A FICHA PESSOAL reescreve a Defesa por cima da fórmula deste B3, com as contas 'arma sem força' e 'proteção sem força'"
  },
  "C4_fontes": {
   "escolha": "cinco fontes, cada uma com um papel, e a regra dura do celular",

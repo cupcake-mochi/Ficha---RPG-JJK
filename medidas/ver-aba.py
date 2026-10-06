@@ -72,22 +72,31 @@ def exemplo(wb, R, G):
             p.cell(row=lin, column=fp.B1 + desloc).value = v
 
 
+ALTURAS_DO_SCRIPT = {}       # as linhas que o Codigo.gs estica (a caixa das cartas de Habilidades): {linha: px}
+
+
 def _escrever_habilidades(f, caminho, trilha):
-    """escreve nome e texto nas cartas da seção 7 da FICHA, achadas pelo número 7 e pela geometria do habilidades.py"""
+    """escreve nas cartas da seção 7 da FICHA o que o Codigo.gs escreve quando o Caminho e a Trilha são escolhidos: o nome
+    e o texto do livro, e a caixa esticada para o texto. As cartas são achadas pelo endereço que a DADOS_AM publica"""
     import habilidades as _hb
-    r7 = next(c.row for linha in f.iter_rows() for c in linha if c.column == 4 and c.value in (7, "7"))
-    r = r7 + 4                                 # o título, duas linhas, o título do bloco do Caminho, e a primeira fileira
-    pos = []
-    for fileira in range(2):                   # o Caminho: duas fileiras de três (a última carta é de anotação)
-        pos += [(r, x) for x in _hb.X]
-        r += 1 + _hb.TX + 1
-    for (nome, texto), (rr, x) in zip(caminho, pos):
-        f.cell(row=rr, column=x + _hb.TAG).value = nome
-        f.cell(row=rr + 1, column=x).value = texto
-    rt = r + 1                                 # a linha vazia do fim do bloco e o título do bloco da Trilha
-    for (nome, texto), x in zip(trilha, _hb.X):
-        f.cell(row=rt, column=x + _hb.TAG).value = nome
-        f.cell(row=rt + 1, column=x).value = texto
+    d = f.parent["DADOS_AM"]
+    cab = {d.cell(row=1, column=c).value: c for c in range(1, d.max_column + 1)}
+    livro = {(l[1], l[0], l[2]): l for l in _hb.linhas_do_livro()}
+    M = _hb.medida()
+    for r in range(2, 40):
+        carta = d.cell(row=r, column=cab["habilidade: carta"]).value
+        if not carta:
+            break
+        fonte, nivel = carta.split(" ")[0], int(d.cell(row=r, column=cab["nível da carta"]).value)
+        l = livro.get((fonte, caminho if fonte == "Caminho" else trilha, nivel))
+        if not l:
+            continue
+        cn, ct = (ix.endereco(d.cell(row=r, column=cab[k]).value) for k in ("célula do nome", "célula do texto"))
+        f[cn], f[ct] = l[3], l[4]
+        px = max(M["minima"], -(-(l[5] * M["linha"] + M["respiro"]) // M["caixa"]))
+        for k in range(M["caixa"]):
+            f.row_dimensions[f[ct].row + k].height = px * 0.75
+            ALTURAS_DO_SCRIPT[f[ct].row + k] = px
 
 
 def exemplo_amaldicoada(wb):
@@ -133,14 +142,9 @@ def exemplo_amaldicoada(wb):
     a[fa.celulas_da_passiva(*G["passivas"][1])["texto"]] = "O peso que ela solta volta para as mãos dela, devagar."
     a[G["tm_nome"]], a[f"D{G['tm_como'] + 1}"] = "Sentença de Chumbo", "Tudo o que ela tocou na luta pesa ao mesmo tempo."
     a[G["dom_nome"]], a[G["degrau"]] = "Balança Quebrada", "Incompleta"
-    # a seção 7 da FICHA (as Habilidades): o que a Kaori anotou do Bastião e do Muro, até a carta do nível 15, que ainda
-    # não abriu para ela e sai riscada
-    import habilidades as _hb
-    hab = [("Olhos Em Mim", "Ação Bônus: área de 6 m que me acompanha a cena toda. Provoco quem entrar, e assumo o golpe num aliado."),
-           ("Ataque Extra · Nem Um Arranhão · Ainda de Pé", "Um ataque a mais na Ação Atacar. Vantagem no TR Físico dentro da área. Uma vez por cena, 1d8 + metade do nível."),
-           ("Duro de Matar", "Bloquear que falha ainda reduz o dano pelos dados + Constituição.")]
-    tri = [("Alicerce", "Fim do descanso longo: dois tipos de dano pela metade com Olhos Em Mim ativo.")]
-    _escrever_habilidades(f, hab, tri)
+    # a seção 7 da FICHA (as Habilidades): o livro do Bastião e do Muro, como o script escreve; as cartas acima do nível
+    # 10 da Kaori ainda não abriram e saem riscadas
+    _escrever_habilidades(f, "Bastião", "Muro")
     for p, pos in zip(["Projetar energia", "Barreira Simples"], G["aptidoes"]):
         a[fa.celulas_da_aptidao(*pos)["nome"]] = p
     pc = fa.celulas_do_pacto(G["pactos"][0])
@@ -320,7 +324,7 @@ def grade(spec, valores, crus, aberto=True, barras=None, pintura=None, linhas=No
                    "justify-content:" + {"left": "flex-start", "center": "center", "right": "flex-end"}.get(alinh, "flex-start"),
                    "align-items:" + {"top": "flex-start", "middle": "center", "bottom": "flex-end"}.get(valinh, "center")]
             if e and e[8]:
-                css.append("white-space:normal")
+                css.append("white-space:pre-wrap")      # quebra como o Sheets: na largura, e em cada quebra de linha do texto
             if riscado:
                 css.append("text-decoration:line-through")
             if e and e[6]:
@@ -386,6 +390,8 @@ def main():
         valores = {(c.row, c.column): c.value for linha in ws.iter_rows() for c in linha if c.value is not None}
         crus = {(c.row, c.column): c.value for linha in wc.iter_rows() for c in linha if c.value is not None}
         spec = next(s for s in abas_do_script() if s["nome"] == a.aba)
+        if a.aba == "FICHA":       # a caixa das Habilidades como o script a estica, e não como a aba nasce
+            spec["alturas"].update({str(r): px for r, px in ALTURAS_DO_SCRIPT.items()})
         open(a.saida, "w", encoding="utf-8").write(desenha(spec, valores, crus, 2, None, a.aba, arte=arte_do_script(),
                                                            linhas_abertas="nasce" if a.nasce else None))
         print(f"{a.aba}: {spec['rows']} linhas, {spec['cols']} colunas -> {a.saida}")

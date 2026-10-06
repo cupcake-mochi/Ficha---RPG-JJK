@@ -17,10 +17,29 @@ O desenho foi fechado com o Mizuki por estudo em 02/10/2026 (mockup/habilidades-
 Os níveis vêm da tabela "Entregas por nível" do capítulo 35 (cinco degraus de Caminho nos níveis 2, 7, 15, 23 e 30;
 quatro entregas de Trilha nos níveis 2, 11, 19 e 27), e são os mesmos para todos os Caminhos.
 
+05/10/2026, as cartas com o livro (B37). O Mizuki escolheu que a carta traga o livro e que o jogador possa apagar e
+escrever por cima ("B - mas dando permissão para o jogador apagar o texto e colocar oq preferir"), e no mesmo dia as pôs
+numa coluna só ("faça ser apenas uma coluna ao invés de três ... n esqueça do espaçamento de uma linha entre uma carta e
+outra"), com a caixa do texto esticando conforme o Caminho e a Trilha escolhidos ("Acompanha a Escolha, mas ainda tendo a
+caixa retratil da descrição"). Cada carta tem a largura da seção: a etiqueta do nível e o nome numa linha, a caixa do
+texto em CAIXA linhas, num grupo de linhas que abre e fecha, e uma linha vazia antes da carta seguinte.
+
+Quem escreve é o Codigo.gs (habilidadesDaFicha_), quando o Caminho ou a Trilha mudam: o nome e o texto inteiro do
+livro, como valor solto, para o jogador poder escrever por cima, e a carta que o jogador mudou fica como está, com o
+livro na nota. O texto vem legível ("espaçar os paragrafos e talz"): uma linha em branco entre os parágrafos, e os
+subtítulos do livro numa linha própria, em negrito (texto rico). É ele também que estica a caixa: conta as linhas do texto com a largura de cada letra da Roboto 10
+(larguras-roboto-10.json, do medir_fonte.py) e divide a altura pelas linhas da caixa. Este módulo publica na DADOS_AM o
+endereço do nome e do texto de cada carta (ADDRESS, que anda com a planilha) e escreve o apps-script/Habilidades.gs, com
+o texto do livro (habilidades-do-livro.json, do extrair_habilidades.py) e a medida da carta. O texto mora num arquivo
+de script próprio porque são 200 KB: o Ficha.gs passaria do teto de 900 KB que o conferir-ficha-xlsx guarda. A rota do
+Batedor se escolhe no menu de Trilha (ficha_automatica.trilhas_do_menu), e a Rajada Marcial do Pugilista vai na carta
+do nível 7 do Caminho ("o nv7 seria do caminho mesmo").
+
 A seção cresce, e o menu rápido (limpeza 26) começa onde ela termina: o monta.py passa ao menu_rapido.trocas a linha
 nova e as células desta seção, para ele não apagar nenhuma. A arte de respingos que morava no canto direito da seção
 (ficha-2.png) muda para o lado direito do título, onde as cartas não chegam.
 """
+import json, os, re
 import indice_ficha as ix
 import ficha_amaldicoada as fa
 import menu_rapido as mr
@@ -28,12 +47,74 @@ import menu_rapido as mr
 NOME = "FICHA"
 DA = fa.DA
 NIV_CAMINHO, NIV_TRILHA = (2, 7, 15, 23, 30), (2, 11, 19, 27)
-POR, W, X = mr.POR, mr.W, mr.X                # as cartas do menu rápido: três por fileira, 13 colunas
-C1, CN = mr.C1, mr.CN
-TAG, TX = 3, 6                                # a etiqueta do nível tem 3 colunas ("Abre no 15"); o texto, 6 linhas
+C1, CN = mr.C1, mr.CN                         # a seção inteira, de D a AT: a carta tem a largura dela
+W = CN - C1 + 1
+TAG, CAIXA = 3, 4                             # a etiqueta do nível tem 3 colunas ("Abre no 15"); a caixa do texto, 4 linhas
+PX_COLUNA = 28                                # as colunas da FICHA têm 28 px no Sheets (as 13 do menu rápido dão 364 px)
+LINHA_PX, RESPIRO_PX, MINIMA_PX = 18, 6, 21   # a linha de texto da Roboto 10 no Sheets, a folga da caixa e a linha comum
+                                              # (a linha de texto é estimada: falta medir no Sheets)
 ARTE = "ficha-2.png"
 ESTILOS = {**mr.ESTILOS,
            "tag": [["Oswald", 10.0, mr.fp.OSSO, False, False], mr.fp.ACENTO, mr.fp._CAIXA, ["center", "center", False, 0], None]}
+FONTE_CAMINHO, FONTE_TRILHA, FONTE_JUNTO = "Caminho", "Trilha", "Caminho com a Trilha"
+
+
+def livro():
+    """o habilidades-do-livro.json, que o extrair_habilidades.py lê do manual.txt"""
+    return json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "habilidades-do-livro.json"), encoding="utf-8"))
+
+
+def medida():
+    """a medida da carta que o Codigo.gs usa para esticar a caixa: a largura do texto, a altura da linha, e a largura
+    de cada letra da Roboto 10"""
+    F = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "larguras-roboto-10.json"), encoding="utf-8"))
+    return {"largura": W * PX_COLUNA - RESPIRO_PX, "linha": LINHA_PX, "respiro": RESPIRO_PX, "minima": MINIMA_PX,
+            "caixa": CAIXA, "media": F["media"], "larguras": F["larguras"]}
+
+
+def linhas_na_carta(texto, M=None):
+    """quantas linhas o texto ocupa na caixa: as palavras de cada parágrafo, uma atrás da outra, pela largura de cada
+    letra. É a conta do linhasDoTexto_ do Codigo.gs, passo por passo (a soma é uma letra por vez, como lá)"""
+    M = M or medida()
+    def lg(t):
+        x = 0.0
+        for ch in t:
+            x += M["larguras"].get(ch, M["media"])
+        return x
+    esp, n = M["larguras"][" "], 0
+    for par in str(texto).split("\n"):
+        n += 1
+        linha = None
+        for p in (x for x in par.split(" ") if x):
+            w = lg(p)
+            if linha is None:
+                linha = w
+            elif linha + esp + w <= M["largura"]:
+                linha += esp + w
+            else:
+                n += 1
+                linha = w
+    return n
+
+
+def linhas_do_livro(HAB=None, CAT=None):
+    """a tabela que o Codigo.gs lê para escrever as cartas: [dono, fonte, nível, nome, texto, linhas, títulos]. A
+    entrega de Trilha que mora na carta do Caminho (o nível 7 do Pugilista) entra como "Caminho com a Trilha", já junta
+    com a habilidade do Caminho daquele nível: os dois nomes, e os dois textos, o da Trilha com um título dela"""
+    HAB = HAB or livro()
+    if CAT is None:
+        CAT = json.load(open(os.path.join(fa.RAIZ, "catalogo-projeto-m.json"), encoding="utf-8"))
+    M = medida()
+    out = [[d, FONTE_CAMINHO, int(n), h["nome"], h["texto"], h["titulos"]] for d, por in HAB["caminhos"].items() for n, h in por.items()]
+    out += [[d, FONTE_TRILHA, int(n), h["nome"], h["texto"], h["titulos"]] for d, por in HAB["trilhas"].items() for n, h in por.items()]
+    for t, por in HAB["no_caminho"].items():
+        cam = CAT["trilhas"][t.split(" · ")[0]]
+        for n, h in por.items():
+            base, curto = HAB["caminhos"][cam][n], re.split(r", | e ", h["nome"])[0]
+            tit = f"{t} · {h['nome']}"
+            out.append([t, FONTE_JUNTO, int(n), f"{base['nome']} · {curto}", f"{base['texto']}\n\n{tit}\n\n{h['texto']}",
+                        base["titulos"] + [tit] + h["titulos"]])
+    return [l[:5] + [linhas_na_carta(l[4], M), l[5]] for l in out]
 
 
 class _Folha(mr._Folha):
@@ -65,6 +146,24 @@ def cartas():
     return [("Caminho", n) for n in NIV_CAMINHO] + [("Trilha", n) for n in NIV_TRILHA]
 
 
+def escreve_gs(destino, linhas=None):
+    """o apps-script/Habilidades.gs: o livro e a medida da carta, que o Codigo.gs lê. Gerado; não se edita"""
+    linhas = linhas if linhas is not None else linhas_do_livro()
+    chaves = ("dono", "fonte", "nivel", "nome", "texto", "linhas", "titulos")
+    corpo = ",\n".join("  " + json.dumps(dict(zip(chaves, l)), ensure_ascii=False) for l in linhas)
+    txt = ("/**\n * GERADO pelo ficha-v01/monta.py (habilidades.escreve_gs), do ficha-v01/habilidades-do-livro.json, que o\n"
+           " * extrair_habilidades.py lê do manual.txt, e do ficha-v01/larguras-roboto-10.json. Não edite à mão: rode o monta.py.\n *\n"
+           " * As habilidades de cada Caminho e de cada Trilha, para as cartas da seção 7 da FICHA, e a medida da carta. O\n"
+           " * habilidadesDaFicha_, no Codigo.gs, escreve o nome e o texto na carta, com os títulos em negrito, e estica a\n"
+           " * caixa. Fonte \"Caminho com a Trilha\" é a entrega de Trilha que mora na carta do Caminho (o nível 7 do\n"
+           " * Pugilista). \"linhas\" é quantas linhas o texto ocupa, contadas pelo gerador; o regressao-delta.js confere\n"
+           " * que o script conta igual.\n */\n"
+           f"var HABILIDADES_DO_LIVRO_ = [\n{corpo}\n];\n\n"
+           f"var MEDIDA_DAS_CARTAS_ = {json.dumps(medida(), ensure_ascii=False)};\n")
+    open(destino, "w", encoding="utf-8").write(txt)
+    return len(linhas), len(txt)
+
+
 def trocas(layout, tr):
     """o que a limpeza muda na FICHA e na DADOS_AM. Lê a FICHA depois das limpezas de cima, e a DADOS_AM das trocas
     da Ficha Amaldiçoada (tr), que ainda não entrou no layout"""
@@ -80,8 +179,11 @@ def trocas(layout, tr):
 
     # --- a DADOS_AM: a etiqueta de cada carta pelo nível da FICHA, e o título de cada bloco pelo Caminho e pela Trilha
     lista = cartas()
-    cH = D.tabela("habilidades", ["habilidade: carta", "nível da carta", "etiqueta da carta"],
-                  [[f"{fonte} {n}", n, f'=IF({NIV}>={n},"Nível {n}","Abre no {n}")'] for fonte, n in lista])
+    cH = D.tabela("habilidades", ["habilidade: carta", "nível da carta", "etiqueta da carta", "célula do nome", "célula do texto"],
+                  [[f"{fonte} {n}", n, f'=IF({NIV}>={n},"Nível {n}","Abre no {n}")', None, None] for fonte, n in lista])
+    LIVRES = [("Caminho", "Anotações"), ("Trilha", "Escolhas da Trilha"), ("Trilha", "Anotações")]
+    cL = D.tabela("habilidades_livres", ["habilidade livre: carta", "célula do texto livre"],
+                  [[f"{b} · {n}", None] for b, n in LIVRES])
     escolha = lambda k: f'IF(OR({F_(k)}="",LEFT({F_(k)},7)="Escolha"),"","  ·  "&UPPER({F_(k)}))'
     cT = D.tabela("habilidades_titulos", ["habilidades: título", "texto do título"],
                   [["Caminho", f'="CAMINHO"&{escolha("caminho")}&"  ·  CINCO DEGRAUS"'],
@@ -91,7 +193,7 @@ def trocas(layout, tr):
 
     # --- a seção na FICHA
     f = _Folha(layout)
-    grupos, riscar = [], []
+    grupos, riscar, pos = [], [], {}
     f.cel[f"D{r7}"] = (7, num_est)
     f.mesclas.append(f"D{r7}:F{r7 + 1}")
     f.cel[f"G{r7}"] = ("HABILIDADES", tit_est)
@@ -99,47 +201,50 @@ def trocas(layout, tr):
     r = r7 + 3
     a_secao = r
 
-    def carta(r, x, i):
-        """a carta de uma habilidade: a etiqueta do nível, o nome e o texto, os dois escritos pelo jogador"""
-        tag = f.add("tag", x, r, x + TAG - 1, r, etiqueta(i))
-        nome = f.add("nm", x + TAG, r, x + W - 1, r, None)
-        texto = f.add("desc", x, r + 1, x + W - 1, r + TX, None)
-        riscar.append({"faixas": [f"{nome}:{fa._a1(x + W - 1, r)}", f"{texto}:{fa._a1(x + W - 1, r + TX)}"],
-                       "formula": f'=LEFT(${fa.L(x)}${r},4)="Abre"', "riscado": True})
+    def carta(r, i):
+        """a carta de uma habilidade: a etiqueta do nível e o nome numa linha, e a caixa do texto embaixo, que o
+        Codigo.gs escreve do livro e o jogador pode trocar"""
+        f.add("tag", C1, r, C1 + TAG - 1, r, etiqueta(i))
+        nome = f.add("nm", C1 + TAG, r, CN, r, None)
+        texto = f.add("desc", C1, r + 1, CN, r + CAIXA, None)
+        pos[i] = (nome, texto)
+        riscar.append({"faixas": [f"{nome}:{fa._a1(CN, r)}", f"{texto}:{fa._a1(CN, r + CAIXA)}"],
+                       "formula": f'=LEFT(${fa.L(C1)}${r},4)="Abre"', "riscado": True})
 
-    def livre(r, x, rotulo):
-        f.add("cab", x, r, x + W - 1, r, rotulo)
-        f.add("desc", x, r + 1, x + W - 1, r + TX, None)
+    def livre(r, rotulo):
+        f.add("cab", C1, r, CN, r, rotulo)
+        livres.append(f.add("desc", C1, r + 1, CN, r + CAIXA, None))
 
-    cheias = []
+    cheias, livres = [], []
     def bloco(id_, i_titulo, itens):
         nonlocal r
         cab = r
         f.add("cab", C1, cab, CN, cab, titulo(i_titulo))
         r = cab + 1
-        fil = -(-len(itens) // POR)
-        for fi in range(fil):
-            fileira = itens[fi * POR:(fi + 1) * POR]
-            for j, it in enumerate(fileira):
-                if isinstance(it, int):
-                    carta(r, X[j], it)
-                else:
-                    livre(r, X[j], it)
-            if all(isinstance(it, int) for it in fileira) and len(fileira) == POR:
+        for k, it in enumerate(itens):
+            if isinstance(it, int):
+                carta(r, it)
                 cheias.append(r)
-            # o texto da fileira é um grupo; o + fica na linha das etiquetas, e só a primeira fileira nasce aberta
-            grupos.append([r + 1, r + TX, fi > 0])
-            r += 1 + TX
-            if fi + 1 < fil:
-                r += 1
+            else:
+                livre(r, it)
+            # a caixa do texto é um grupo de linhas: o + fica na linha do nome, e todas nascem abertas
+            grupos.append([r + 1, r + CAIXA, False])
+            r += 1 + CAIXA
+            if k + 1 < len(itens):
+                r += 1                          # uma linha vazia entre uma carta e outra
         r += 1
         grupos.append([cab + 1, r - 1, False])
 
     nc = len(NIV_CAMINHO)
-    bloco("caminho", 0, list(range(nc)) + ["Anotações"])
-    bloco("trilha", 1, list(range(nc, len(lista))) + ["Escolhas da Trilha", "Anotações"])
+    bloco("caminho", 0, list(range(nc)) + [LIVRES[0][1]])
+    bloco("trilha", 1, list(range(nc, len(lista))) + [n for b, n in LIVRES[1:]])
     fim = r
     grupos.append([a_secao, fim - 1, False])
+    for i, (cn, ct) in pos.items():
+        D.poe(cH + 3, 2 + i, ix.FORMULA.format(c=cn))
+        D.poe(cH + 4, 2 + i, ix.FORMULA.format(c=ct))
+    for i, ct in enumerate(livres):
+        D.poe(cL + 1, 2 + i, ix.FORMULA.format(c=ct))
     prof = lambda g: sum(1 for o in grupos if o[0] <= g[0] and g[1] <= o[1])
     for a_ in grupos:
         for b_ in grupos:
@@ -167,7 +272,7 @@ def trocas(layout, tr):
     no_velho = lambda c: r7 <= ix._lc(c)[0] < r8 and ix._lc(c)[1] >= 3
     sai = {c for c in fcel if no_velho(c)} - set(f.cel)
     mesc_sai = [m for m in ficha["mescladas"] if no_velho(m.split(":")[0])]
-    copias = [[cheias[0], cheias[0] + TX, cheias[1:], C1, CN]] if len(cheias) > 1 else []
+    copias = [[cheias[0], cheias[0] + CAIXA, cheias[1:], C1, CN]] if len(cheias) > 1 else []
     return {"r7": r7, "r8_velho": r8, "fim": fim, "celulas": {NOME: {c: (v[0], c) for c, v in f.cel.items()}},
             "_estilos": f.cel, "sai": sai, "mescladas_sai": {NOME: mesc_sai}, "mescladas": {NOME: f.mesclas},
             "grupos": grupos, "riscar": riscar, "arte": arte, "copias": copias, "cartas": lista,

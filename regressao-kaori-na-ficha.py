@@ -75,15 +75,14 @@ ws[_mt.group(1).replace("$", "")] = "FORÇA"
 # atributos saem do catálogo, e a maestria sai da própria ficha recalculada, conferida acima.
 CAT = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))
 _MAN = " ".join(open("manual.txt", encoding="utf-8").read().split())
-_ex = _MAN[_MAN.find("A Kaori, feiticeira de nível 2."):_MAN.find("CD dos feitiços dela")]
-_mo = _re.search(r"Teste de Resistência: (\w+)", _ex)
-_mc = _re.search(r"Teste de Resistência do Caminho: (\w+)", _ex)
-_mr = _re.search(r"Teste de Resistência = d20 \+ atributo do TR \+ (\w+), e a (\w+) só entra "
-                 r"se você for treinado nele", _MAN)
-if not (_mo and _mc and _mr) or _mr.group(1) != _mr.group(2) or _mr.group(1) not in IDX:
+# 04/10/2026: o livro reconstruido escreve os TRs da Kaori no exemplo de Criar um personagem, e a regra do TR em Regras gerais
+_mk = _re.search(r"Kaori escolhe TR Físico com Força e treina (\w+) e (\w+)\.", _MAN)
+_mo, _mc = (_mk, _mk) if _mk else (None, None)
+_mr = _re.search(r"TR treinado: d20 \+ atributo do TR \+ (\w+)\. Sem treino, some apenas o atributo", _MAN)
+if not (_mk and _mr) or _mr.group(1) not in IDX:
     print("não achei no manual.txt os TRs da Kaori, ou a regra do TR com um termo que a ficha "
           "publica no índice"); sys.exit(1)
-TREINADOS = {_mo.group(1), _mc.group(1)}
+TREINADOS = {_mk.group(1), _mk.group(2)}
 _TRC = CAT["testes_de_resistencia"]
 TRS = {}
 for _l in ws.iter_rows():
@@ -176,10 +175,10 @@ shutil.rmtree(d, ignore_errors=True)
 # que o proprio livro publica.
 _EQ = CAT["equipamento_defesa"]
 _MARCOS = CAT["progressao"]["marcos"]
-_mteto = _re.search(r"o refino é um número de 1 a (\d+)\.", _MAN)
-_mex1 = _re.search(r"com Destreza (\d+) e um Traje de degrau (\d+), a sua Defesa é (\d+)", _MAN)
-_mex2 = _re.search(r"Com refino (\d+) a sua proteção passiva é (\d+)", _MAN)
-if not (_mteto and _mex1 and _mex2 and "1/3 do refino + 1" in _MAN):
+_mteto = _re.search(r"Refino mede o domínio da energia amaldiçoada\. Começa em 1 e tem limite (\d+)\.", _MAN)
+_mex1 = _re.search(r"tem Destreza (\d+) e usa Traje (\d+), que fornece proteção \d+ sem teto\. Sua Defesa é 10 \+ \d+ \+ \d+ = (\d+)\.", _MAN)
+_mex2 = _re.search(r"Com Refino (\d+), a proteção passiva é (\d+)", _MAN)
+if not (_mteto and _mex1 and _mex2 and "sua proteção é 1 + um terço do Refino, arredondado para baixo" in _MAN):
     print("não achei no manual.txt o teto do refino, os dois exemplos de Defesa ou a fórmula do "
           "cobrir-se"); sys.exit(1)
 _TETO_REF = int(_mteto.group(1))
@@ -310,8 +309,8 @@ def _lista(itens):
     return v[0] if len(v) == 1 else ", ".join(v[:-1]) + " e " + v[-1]
 
 # o que o manual e o catálogo dão para as caixas de ataque, independente da planilha
-_mcd8 = _re.search(r"CD de feitiço = (\d+) \+ o atributo da sua técnica \+ maestria", _MAN)
-_mdesl = _re.search(r"O seu deslocamento base é (\d+) metros", _MAN)
+_mcd8 = _re.search(r"CD de feitiço = (\d+) \+ atributo da técnica \+ Maestria\.", _MAN)
+_mdesl = _re.search(r"O deslocamento padrão é (\d+) m\.", _MAN)
 _mmae = _re.search(r"1 \+ quantos de \(([\d,]+)\) <= nivel", CAT["progressao"]["formulas"]["maestria"])
 if not (_mcd8 and _mdesl and _mmae):
     print("não achei no manual.txt a CD ou o deslocamento, ou no catálogo a maestria"); sys.exit(1)
