@@ -2143,7 +2143,7 @@ leem é o mesmo, e só o carimbo mudou (o Ficha.gs não mudou com isso).*
 **O que só o Sheets diz, e falta ele ver:** *o riscado aparecendo e sumindo quando o NÍVEL muda; a etiqueta "Abre no 15"
 cabendo nas três colunas; os grupos de cada fileira; e a arte ao lado do título.*
 
-### B35 · A foto da `CARTEIRA` entra na célula, com a moldura em volta — **FEITA em 03/10/2026 (a B+); falta montar no Sheets; a ligação com a `FICHA PESSOAL` foi feita no B38**
+### B35 · A foto da `CARTEIRA` entra na célula, com a moldura em volta — **FEITA em 03/10/2026 (a B+) e MONTADA NO SHEETS: em 07/10/2026 o Mizuki disse "B35 funciono normalmente"; a ligação com a `FICHA PESSOAL` foi feita no B38**
 
 *Pedido dele em 03/10/2026: "Sabe no ficha aonde temos a foto? Então, é uma 'imagem', então não dá pra inserir imagem
 nela, tem que ser uma imagem 'solta' por cima que o jogador põe, oq não é muito bom. Eu não sei se teria alguma forma de
@@ -2425,7 +2425,7 @@ Caminho e Trilha, os parágrafos "Nível N: Nome." de carta que junta habilidade
 texto, no `Habilidades.gs` e no que o extrator tira hoje (são 5 nomes, entre eles a Execução Preparada). O
 `arnes-amaldicoada.py` vai a 66: o extrator que volta a tirar o nome acende a checagem nova.
 
-### B38 · A foto da `CARTEIRA` na `FICHA PESSOAL`, e o nome da técnica da `CARTEIRA` na `FICHA AMALDIÇOADA` — **FEITA em 05/10/2026; falta montar no Sheets e ver se a foto aparece**
+### B38 · A foto da `CARTEIRA` na `FICHA PESSOAL`, e o nome da técnica da `CARTEIRA` na `FICHA AMALDIÇOADA` — **FEITA em 05/10/2026; a foto ele testou no Sheets (07/10/2026: "B35 funciono normalmente", respondendo sobre a ligação da foto com a `FICHA PESSOAL`); do nome da técnica ele não falou**
 
 *Pedido dele em 05/10/2026: "uma coisa q é bom implementar na ficha e notei q faltou / 1 - A imagem que for colocada
 na carteira aparecer no ficha pessoal / 2 - Nome da técnica aparecer na ficha amaldiçoada". As duas seguem o que a
