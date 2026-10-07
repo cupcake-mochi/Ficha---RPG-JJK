@@ -348,8 +348,10 @@ layout = {
             "0.NNN. O extrator conta: " + (", ".join(carimbos) if carimbos else "nenhum nesta rodada"),
             "a aba DADOS sai do catalogo, e nao da exportacao: as doze listas das colunas A a L e o "
             "carimbo em B1 e D1. Decidido pelo Mizuki em 14/09/2026, quando o catalogo foi da v0.104 "
-            "a v0.239 e a planilha viva ainda carregava o de antes. O monta.py aplica, e o comparador "
-            "conta quantas celulas mudaram.",
+            "a v0.239 e a planilha viva ainda carregava o de antes. Desde 04/10/2026, o B36, tambem a "
+            "tabela dos Caminhos, de N4 em diante (o Incursor, o Provocar do Bastiao, os atributos naturais "
+            "no lugar do dado, as linhas na ordem do menu), e a faixa dela nas formulas da vida e do PE da "
+            "FICHA. O monta.py aplica, e o comparador conta quantas celulas mudaram.",
             "o Teste de Resistencia treinado soma a maestria, e nao 2: a planilha viva somava a "
             "regra do manual da v0.104, e o capitulo 1 soma a maestria desde a v0.117 do sistema. E o "
             "B14. So o termo somado no treino das quatro formulas muda, e ele aponta para a celula que "

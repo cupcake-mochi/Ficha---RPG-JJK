@@ -165,6 +165,32 @@ checa("o menu de Caminhos da DADOS é o da decisão C1, na ordem",
 if c1.get("caminho_oculto"):
     checa(f"o {c1['caminho_oculto']} NÃO está no menu de Caminhos",
           c1["caminho_oculto"] not in menu, str(menu))
+# 06/10/2026: a tabela dos Caminhos sai do catálogo desde 04/10 (o Incursor, o Provocar do Bastião), e ninguém cobrava o
+# que ela diz: o comparador só vê o que difere da exportação, e a linha do Incursor vazia ou a faixa da vida parada na
+# linha de antes saem iguais a ela. Lida pelo cabeçalho, como o Codigo.gs lê.
+_cab_cam = [c for l in ws.iter_rows() for c in l if c.value == "Caminho"]
+_tab_cam, _lin_cam = [], []
+if len(_cab_cam) == 1:
+    _r, _c = _cab_cam[0].row, _cab_cam[0].column
+    _tit = {}
+    while ws.cell(row=_r, column=_c + len(_tit)).value:
+        _tit[ws.cell(row=_r, column=_c + len(_tit)).value] = _c + len(_tit)
+    while ws.cell(row=_r + 1 + len(_tab_cam), column=_c).value:
+        _lin_cam.append(_r + 1 + len(_tab_cam))
+        _tab_cam.append([ws.cell(row=_lin_cam[-1], column=_tit[t]).value if t in _tit else None
+                         for t in ("Caminho", "atributos naturais", "vida inicial", "vida por nível", "PE por nível",
+                                   "perícia fixa 1", "perícia fixa 2")])
+_cam_cat = [[n, " · ".join(CAT["caminhos"][n]["atributos_naturais"]), CAT["caminhos"][n]["vida_inicial"],
+             CAT["caminhos"][n]["vida_por_nivel"], CAT["caminhos"][n]["pe_por_nivel"]] + CAT["caminhos"][n]["pericias_fixas"]
+            for n in c1["caminhos_no_menu"]]
+checa(f"a tabela dos Caminhos da DADOS traz os {len(_cam_cat)} do menu, na ordem, com a vida, o PE e as perícias fixas do catálogo",
+      _tab_cam == _cam_cat, str([l for l in _tab_cam if l not in _cam_cat] or [l[0] for l in _tab_cam]))
+import re as _re_cam
+_faixas_cam = [(c.coordinate, int(m.group(1)), int(m.group(2))) for l in wb["FICHA"].iter_rows() for c in l
+               if isinstance(c.value, str) for m in _re_cam.finditer(r"DADOS!\$N\$(\d+):\$U\$(\d+)", c.value)]
+checa("a vida e o PE da FICHA leem a tabela dos Caminhos da primeira linha à última (o Incursor entra na conta)",
+      bool(_lin_cam) and len(_faixas_cam) >= 3 and all((a, b) == (_lin_cam[0], _lin_cam[-1]) for _, a, b in _faixas_cam),
+      f"a tabela vai da linha {_lin_cam[:1]} à {_lin_cam[-1:]}; as faixas: {_faixas_cam}")
 checa("o carimbo de versão está na DADOS",
       str(ws["B1"].value) == CAT["_meta"]["versao"], str(ws["B1"].value))
 

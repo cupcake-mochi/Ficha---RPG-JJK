@@ -2298,6 +2298,44 @@ viu, porque as outras comparam o script com a planilha gerada, e os dois saíam 
 - **A ficha .docx da Kaori** *é de 07/09 e marca Intimidação. O `conferir-kaori.py` passou a ler o quadro da Kaori no
   livro, que vence a .docx onde os dois trazem o campo.*
 
+**Achado em 06/10/2026, e consertado: o `comparar-ficha-01.py` saía vermelho desde esta rodada.** *Com o `original.xlsx`
+no lugar (a exportação de 17/09/2026), ele terminava em "22 DIFERENÇA(S) NÃO EXPLICADA(S)", todas da tabela dos
+Caminhos: vinte células de `DADOS!N4:T10` (a coluna `O`, que era o dado e virou os atributos naturais; `T5`, o Provocar;
+as linhas 8 e 9, com o Emanador antes do Evocador; a linha 10, do Incursor) e as duas fórmulas da `FICHA` que leem a
+faixa (`J26` e `J30`, de `$U$9` para `$U$10`). Ninguém viu porque do B36 ao B39 a bateria rodou sem o `original.xlsx`,
+que é gitignored e só mora no checkout principal, e o comparador parava em "falta ficha-v01/original.xlsx".*
+
+**As causas são duas, e nenhuma das 22 é mudança indevida.** *(1) A limpeza 8 só aceitava célula das colunas `A` a `L`
+(a trava de 15/09 contra a coluna `AB`), e a tabela dos Caminhos mora de `N` a `T`: o `dados_catalogo.valores()` já a
+trazia, e a regra a barrava. (2) O `monta.py` troca a faixa nas fórmulas da `FICHA` e o comparador não refazia a troca;
+como a ficha automática embrulha essas duas em `IFERROR` depois, a limpeza 12 dele esperava a fórmula com a faixa de
+antes. As mudanças foram conferidas uma a uma: a `FICHA` lê a tabela por `VLOOKUP` pelo nome do Caminho, nas colunas 3, 4
+e 5; o `Codigo.gs` lê pelo cabeçalho ("Caminho", "perícia fixa"); nada lê a coluna `O`; e a ordem das linhas é a do menu
+e a do livro (Bastião, Vanguarda, Guia, Emanador, Evocador, Incursor).*
+
+| peça | o que mudou |
+|---|---|
+| `ficha-v01/dados_catalogo.py` | `e_dos_caminhos` (a célula é da tabela), `com_a_faixa` e `trocas_na_ficha` (o que o `troca_na_ficha` aplica): uma função, dois leitores. O que o `monta.py` escreve não mudou (o `Ficha.gs` e o `Habilidades.gs` saem iguais) |
+| `comparar-ficha-01.py` | refaz a troca da faixa na ordem do `monta.py` (depois do índice, antes do TR) e ganha duas regras na limpeza 8: a célula da tabela dos Caminhos com o valor do catálogo, e a fórmula da `FICHA` em que só a faixa muda |
+| `ficha-v01/extrair.py` e `layout.json` | a frase da limpeza 8 declara a tabela dos Caminhos e a faixa (a mesma frase nos dois; o extrator a escreve igual) |
+| `conferir-ficha-xlsx.py` | duas checagens novas: a tabela dos Caminhos traz os seis do menu, na ordem, com os atributos, a vida, o PE e as perícias fixas do catálogo; e a vida e o PE da `FICHA` leem a tabela da primeira linha à última |
+
+**Por que o `conferir-ficha-xlsx.py` entrou:** *o comparador só vê o que difere da exportação. A linha do Incursor
+vazia e a faixa parada em `$U$9` saem iguais a ela, e nenhum validador cobrava o que a tabela diz (só o menu, na coluna
+`A`). As duas checagens novas leem a tabela pelo cabeçalho, como o `Codigo.gs`, e o catálogo direto.*
+
+**Conferido:** *o comparador fecha em IGUAIS, com 20 células da tabela e 2 fórmulas contadas, e as outras contagens
+iguais às de antes do conserto. Dez defeitos plantados na ficha gerada: os oito que diferem da exportação acendem no
+comparador (outra perícia em `T5`, o nome errado e outra vida na linha 10, `O6` em negrito, `U5` escrita fora da
+tabela, a faixa até a linha 11, a coluna 2 no `VLOOKUP`), e os dois que voltam a ser iguais a ela (a linha 10 vazia, a
+faixa de volta a `$U$9`) acendem no `conferir-ficha-xlsx.py`, com a Intimidação de volta em `T5`.* **Bateria, com o
+`original.xlsx` copiado do checkout principal: os vinte e um de antes do B40 passaram, e, com o B40 já na `main` e o
+conserto em cima dele, os vinte e dois passaram.**
+
+**Fica como está:** *o `layout.json` é de uma exportação anterior à do `original.xlsx` de 17/09 (o extrator, rodado
+hoje numa cópia, escreve outro arquivo: a exportação já traz a ficha automática montada). O comparador fecha assim desde
+antes, e reextrair é rodada própria.*
+
 ### B37 · As cartas de Habilidades trazem o livro, numa coluna só — **FEITA em 05/10/2026; falta montar no Sheets**
 
 *Pergunta do Mizuki sobre as cartas da seção 7 (B34), que nasceram escritas à mão e prontas para o livro: "nas caixas
@@ -2544,7 +2582,7 @@ cada coluna tem a largura do que guarda:*
 **Achado de passagem:** *o `comparar-ficha-01.py` já saía vermelho antes desta rodada, com o `original.xlsx` de
 17/09/2026: 22 diferenças não explicadas na `DADOS` e na `FICHA`, todas do B36 (o Incursor na tabela dos Caminhos, o
 Bastião com Provocar, a faixa `N5:U10`). Conferido numa cópia do commit `676f093`, sem nada desta rodada. Ele não
-aparecia porque as últimas rodadas rodaram sem o `original.xlsx`.*
+aparecia porque as últimas rodadas rodaram sem o `original.xlsx`.* **Consertado no mesmo dia: ver o fim do B36.**
 
 
 #### B40, segunda etapa (07/10/2026): a medida dele, a grade de 2 × 6 e o retorno de quem leu a aba
