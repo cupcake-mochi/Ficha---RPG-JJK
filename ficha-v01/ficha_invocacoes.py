@@ -51,7 +51,7 @@ APOIO = "as entidades, a montagem e a mesa"
 # ---------------------------------------------------------------------------------------------
 # Quantas fichas a aba traz. O Mizuki fechou 2 × 6; a primeira etapa da construção monta uma só, para ele medir o
 # construir() antes de a grade inteira entrar.
-N_COLUNAS, N_FILEIRAS = 1, 1
+N_COLUNAS, N_FILEIRAS = 2, 6
 PX_FINA, PX_CONJ, PX_BLOCO = 28, 107, 96
 N_CONJ, N_BLOCO = 3, 5
 C_CONJ = 4                                   # D, E e F; a G é o respiro
@@ -117,9 +117,7 @@ TEXTO_FOTO = "FOTO\n式神"
 
 ATRS = [("Força", "FOR"), ("Destreza", "DES"), ("Constituição", "CON"), ("Inteligência", "INT"), ("Essência", "ESS")]
 TESTES = [("Físico", None), ("Vigor", 2), ("Intelecto", 3), ("Espírito", 4)]
-ESTADOS = ["Em campo", "Guardada", "Caída", "Desligada", "Inativa", "Destruída"]
-BASICA_DO_CICLO = ["Disponível", "Gasta", "Investida em preparar"]
-EM_CAMPO, DOMADA, SH_CRIACAO, CORPO_CRIACAO = "Em campo", "Maldição domada", "Shikigami de criação", "Corpo amaldiçoado de criação"
+DOMADA, SH_CRIACAO, CORPO_CRIACAO = "Maldição domada", "Shikigami de criação", "Corpo amaldiçoado de criação"
 COM_CARGA, SEM_CARGA = "Com carga", "Sem carga"
 RESOLVE = ["Ataque", "TR Físico", "TR Vigor", "TR Intelecto", "TR Espírito"]
 PRINCIPAL, PARCERIA, MULTIPLAS = "Invocação Principal", "Parceria", "Múltiplas Invocações"
@@ -246,10 +244,9 @@ def celulas_da_ficha(r, k):
          "per_rot": _a1(b[0], r + 28), "per": [_a1(b[0], r + 29 + i) for i in range(N_PER)],
          "perb": [_a1(b[3], r + 29 + i) for i in range(N_PER)],
          # --- a mesa
-         "tarefa": _a1(c[0], r + 4), "vida": _a1(c[0], r + 9), "temp": _a1(c[1], r + 9), "mov": _a1(c[2], r + 9),
-         "basica": _a1(c[3], r + 9), "barra": _a1(c[0], r + 11), "mov_de": _a1(c[2], r + 11),
-         "estado": _a1(c[0], r + 14), "ordem": _a1(c[2], r + 14), "reserva_rot": _a1(c[4], r + 13), "reserva": _a1(c[4], r + 14),
-         "cond": _a1(c[0], r + 18), "notas": _a1(c[0], r + 23), "equip_rot": _a1(c[0], r + 28), "equip": _a1(c[0], r + 29),
+         "vida": _a1(c[0], r + 4), "vida_max": _a1(c[1], r + 4), "temp": _a1(c[2], r + 4), "delta": _a1(c[3], r + 4),
+         "reserva_rot": _a1(c[4], r + 3), "reserva": _a1(c[4], r + 4), "barra": _a1(c[0], r + 6),
+         "cond": _a1(c[0], r + 9), "notas": _a1(c[0], r + 18), "equip_rot": _a1(c[0], r + 28), "equip": _a1(c[0], r + 29),
          "corpo": _a1(c[0], r + 34),
          # --- embaixo
          "def": _a1(a[0], r + 40), "hab": _a1(a[0], r + O["hab"]),
@@ -293,10 +290,7 @@ def celulas_do_conjunto():
     r = L0
     return {"nivel": _a1(d, r + 4), "maestria": _a1(e, r + 4), "trilha": _a1(f, r + 4),
             "usa": _a1(d, r + 8), "ativas": _a1(e, r + 8), "corpos": _a1(f, r + 8),
-            "reacao": _a1(d, r + 12), "dano": _a1(e, r + 12), "vinculo": _a1(f, r + 12),
-            "apr": _a1(d, r + 16), "apr_em": _a1(f, r + 16),
-            "usos": [_a1(d + i, r + 20) for i in range(3)],
-            "rol_rot": _a1(d, r + 23), "rol": [_a1(d, r + 24 + i) for i in range(N_ROL)]}
+            "rol_rot": _a1(d, r + 11), "rol": [_a1(d, r + 12 + i) for i in range(N_ROL)]}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -363,9 +357,6 @@ def trocas(layout, cor_da_barra=None):
     D.tabela("fisico", ["físico usa"], [["Força"], ["Destreza"]])
     D.tabela("pericias", ["perícia", "atributo da perícia"], R["pericias"])
     PERICIAS = D.faixa("pericias")
-    D.tabela("estados", ["estado da entidade"], [[x] for x in ESTADOS])
-    D.tabela("ordens", ["ordem pendente"], [["Nenhuma"]] + [[x] for x in LIV["ordens"]])
-    D.tabela("basica", ["básica do ciclo"], [[x] for x in BASICA_DO_CICLO])
     D.tabela("carga", ["carga do talismã"], [[SEM_CARGA], [COM_CARGA]])
     D.tabela("danos", ["tipo de dano"], [[x] for x in LIV["tipos_de_dano"]])
     D.tabela("resolve", ["resolução"], [[x] for x in RESOLVE])
@@ -378,13 +369,6 @@ def trocas(layout, cor_da_barra=None):
     EXPANSAO = D.faixa("expansao")
     SEM_BARREIRA = LIV["expansao"][-1]["degrau"]
     D.tabela("usa", ["a defesa usa"], [["Essência"], ["Inteligência"]])
-    D.tabela("livre_gasta", ["reação coletiva"], [["Livre"], ["Gasta"]])
-    D.tabela("uso", ["uso do aprimoramento"], [["Livre"], ["Gasto"]])
-    D.tabela("zero_a_dois", ["corpos que causaram dano"], [[0], [1], [2]])
-    D.tabela("zero_a_tres", ["pontos de vínculo"], [[0], [1], [2], [3]])
-    c_apr = D.prox
-    D.tabela("aprimoramentos", ["aprimoramento", "nível do aprimoramento", "menu de aprimoramento"],
-             [[a["nome"], a["nivel"], None] for a in LIV["aprimoramentos"]])          # o menu é escrito logo abaixo, com o nível
 
     # --- as contas do conjunto: o que vem da FICHA e o que o conjunto escolhe
     H, ordem_das_contas = {}, []
@@ -393,20 +377,17 @@ def trocas(layout, cor_da_barra=None):
     def reserva(nome):
         H[nome] = _abs(c_contas + 1, 2 + len(ordem_das_contas))
         ordem_das_contas.append(nome)
-    for nome in ("nível", "maestria", "trilha", "a defesa usa", "valor da defesa", "parcela da defesa", "teto de ativas", "ativas",
+    for nome in ("nível", "maestria", "trilha", "a defesa usa", "valor da defesa", "parcela da defesa", "teto de ativas",
                  "corpos mantidos", "fichas com nome", "famílias da trilha", "cor da barra"):
         reserva(nome)
     D.tabela("contas", ["contas do conjunto", "valor do conjunto"], [[None, None] for _ in ordem_das_contas])
-    # o menu de aprimoramento só mostra o que o nível do Evocador já aprendeu
-    for i, a in enumerate(LIV["aprimoramentos"]):
-        D.poe(c_apr + 2, 2 + i, f'=IF(${L(c_apr + 1)}{2 + i}<={H["nível"]},${L(c_apr)}{2 + i},"")')
 
     # --- uma linha por ficha
     LUG = lugares()
     fichas_c = [celulas_da_ficha(linha_da_fileira(j), k) for _, j, k in LUG]
     entradas = (["ficha", "nome", "tipo", "aquis", "nfixo", "talisma"] + [f"p{i}" for i in range(N_ATR)] + [f"u{i}" for i in range(N_ATR)] +
                 ["acerto", "fis", "trT"] + [f"us{i}" for i in range(5)] + [f"ut{i}" for i in range(4)] +
-                ["vida_c", "temp", "mov", "basica", "estado", "ordem", "reserva"] + [f"f{i}" for i in range(N_FAM)] +
+                ["vida_c", "temp", "reserva"] + [f"f{i}" for i in range(N_FAM)] +
                 [f"per{i}" for i in range(N_PER)] + [f"tal{i}" for i in range(N_TAL)] + [f"tx{i}" for i in range(N_TALX)] +
                 [f"lc{i}" for i in range(N_LIB)] + ["exp"])
     contas = (["tem", "acomp", "n", "cl", "db"] + [f"t{i}" for i in range(N_ATR)] + ["gastos", "disp", "marc", "acima", "va", "atq", "cd",
@@ -414,8 +395,8 @@ def trocas(layout, cor_da_barra=None):
                "ent", "ret", "resmax", "carga", "nfam", "rep", "maxfam"] +
               # o que a aba mostra
               ["d_titulo", "d_lomb", "d_mae", "d_ent", "d_ret", "d_pontos", "d_atq", "d_cd", "d_desl"] + [f"d_tr{i}" for i in range(4)] +
-              ["d_per"] + [f"d_pb{i}" for i in range(N_PER)] + ["d_movde", "d_res", "d_equip", "d_fam", "d_hab", "d_tal"] +
-              [f"d_tl{i}" for i in range(N_TAL)] + [f"ce{i}" for i in range(N_TAL)] + [f"d_tt{i}" for i in range(N_TAL)] +
+              ["d_per"] + [f"d_pb{i}" for i in range(N_PER)] + ["d_res", "d_equip", "d_fam", "d_hab", "d_tal"] +
+              [f"ce{i}" for i in range(N_TAL)] + [f"d_tt{i}" for i in range(N_TAL)] +
               [f"d_xt{i}" for i in range(N_TALX)] + [f"d_lp{i}" for i in range(N_LIB)] + [f"d_ld{i}" for i in range(N_LIB)] +
               ["d_mp", "d_md", "d_ep", "d_ea", "d_er", "d_rol"])
     nomes_f = entradas + contas
@@ -430,8 +411,7 @@ def trocas(layout, cor_da_barra=None):
         da = lambda cel: f'={_A(cel, IV)}&""'
         o = {"ficha": i, "nome": da(g["nome"]), "tipo": da(g["tipo"]), "aquis": da(g["aquis"]), "nfixo": f"=N({_A(g['nivel_fixo'], IV)})",
              "talisma": da(g["talisma"]), "acerto": da(g["acerto"]), "fis": da(g["fis"]), "trT": da(g["trT"]),
-             "vida_c": da(g["vida"]), "temp": f"=N({_A(g['temp'], IV)})", "mov": da(g["mov"]), "basica": da(g["basica"]),
-             "estado": da(g["estado"]), "ordem": da(g["ordem"]), "reserva": da(g["reserva"]), "exp": da(g["exp"]["degrau"])}
+             "vida_c": da(g["vida"]), "temp": f"=N({_A(g['temp'], IV)})", "reserva": da(g["reserva"]), "exp": da(g["exp"]["degrau"])}
         for k in range(N_ATR):
             o[f"p{k}"], o[f"u{k}"] = f"=N({_A(g['pts'][k], IV)})", f"=N({_A(g['buff'][k], IV)})"
         for k in range(5):
@@ -481,15 +461,16 @@ def trocas(layout, cor_da_barra=None):
         o["ntal"] = f'=1+{P("marc")}'
         o["ttal"] = f'=COUNTIF({TAL},"?*")'
         o["ent"] = f'=IF(AND({P("tipo")}="{SH_CRIACAO}",{P("talisma")}="{COM_CARGA}"),MAX(1,CEILING({cl}/2,1)),{cl})'
-        o["ret"] = f"=2*{cl}"
+        # o retorno da caída custa 2 × Classe; a carga do talismã abate só o que adiantou (Classe 4: 8 ao todo, os 2
+        # adiantados e mais 6 no retorno). Sem carga a entrada é a Classe, e a conta dá os 2 × Classe.
+        o["ret"] = f'={cl}+{P("ent")}'
         o["resmax"] = f'={nn}*(1+INT({P("p4")}/3))'
         o["carga"] = f'=5+{P("t0")}'
         o["nfam"] = f'=COUNTIF({FF},"?*")'
         o["rep"] = "=" + "+".join(f'IF({P(f"f{k}")}="",0,IF(COUNTIF({FF},{P(f"f{k}")})>1,1,0))' for k in range(N_FAM))
         o["maxfam"] = f"={H['famílias da trilha']}"
         # --- o que a aba mostra
-        o["d_titulo"] = (f'=IF({tem}=0,"INVOCAÇÃO {i} · lugar vazio",{P("nome")}&" · "&{P("tipo")}&" · nível "&{nn}&" · vida "&{P("atual")}&" de "&{P("vida")}'
-                         f'&" · "&LOWER({P("estado")}))')
+        o["d_titulo"] = (f'=IF({tem}=0,"INVOCAÇÃO {i} · lugar vazio",{P("nome")}&" · "&{P("tipo")}&" · nível "&{nn}&" · vida "&{P("atual")}&" de "&{P("vida")})')
         o["d_lomb"] = f'=IF({tem}=0,"VAZIA",UPPER({P("nome")}))'
         o["d_mae"] = f"={sinal(MAE)}"
         o["d_ent"] = f'={P("ent")}&" PE"'
@@ -505,7 +486,6 @@ def trocas(layout, cor_da_barra=None):
         for k in range(N_PER):
             pk = P(f"per{k}")
             o[f"d_pb{k}"] = f'=IF({pk}="","",IFERROR({sinal(f"(INDEX({TT},1,MATCH(VLOOKUP({pk},{PERICIAS},2,FALSE),{ATRIBUTOS},0))+{MAE})")},""))'
-        o["d_movde"] = f'="de "&{P("d_desl")}'
         o["d_res"] = f'=IF({P("tipo")}="{DOMADA}","RESERVA · MÁX. "&{P("resmax")},"RESERVA DE PE")'
         o["d_equip"] = f'="EQUIPAMENTO · CARGA ATÉ "&{P("carga")}&" DE VOLUME"'
         o["d_fam"] = (f'=IF(OR({P("rep")}>0,{P("nfam")}>{P("maxfam")}),"{T_ERRO} ","")&"FAMÍLIAS · "&{P("nfam")}&" ABERTAS"'
@@ -515,7 +495,6 @@ def trocas(layout, cor_da_barra=None):
         o["d_tal"] = f'=IF({P("ttal")}>{P("ntal")},"{T_ERRO} ","")&"TALENTOS · "&{P("ttal")}&" DE "&{P("ntal")}'
         for k in range(N_TAL):
             abre, teto, tk = R["abre_tal"][k], R["teto_tal"][k], P(f"tal{k}")
-            o[f"d_tl{k}"] = f'=IF({abre}>{nn},"ABRE NO {abre}","NV {abre} · CE {teto}")'
             o[f"ce{k}"] = f"=IFERROR(VLOOKUP({tk},{TALENTOS},2,FALSE),0)"
             o[f"d_tt{k}"] = (f'=IF({tk}="","",IF({abre}>{nn},"{T_ERRO} Este talento abre no nível {abre}",IF({P(f"ce{k}")}>{teto},'
                              f'"{T_ERRO} Categoria "&{P(f"ce{k}")}&": este ganho vai até a {teto} · ","")&IFERROR(VLOOKUP({tk},{TALENTOS},3,FALSE),"")))')
@@ -532,7 +511,7 @@ def trocas(layout, cor_da_barra=None):
         o["d_ep"] = f'=IF({P("exp")}="{SEM_BARREIRA}",7,6)*{cl}&" PE"'
         o["d_ea"] = f'="Acerto "&{cl}&"d8"'
         o["d_er"] = f'=IFERROR(VLOOKUP({P("exp")},{EXPANSAO},3,FALSE),"Escolha o degrau")'
-        o["d_rol"] = (f'={i}&" · "&IF({tem}=0,"vazia",{P("nome")}&" · nv "&{nn}&" · "&{P("atual")}&"/"&{P("vida")}&" · "&LOWER({P("estado")}))')
+        o["d_rol"] = (f'={i}&" · "&IF({tem}=0,"vazia",{P("nome")}&" · nv "&{nn}&" · "&{P("atual")}&"/"&{P("vida")})')
         return [o[k] for k in nomes_f]
 
     D.tabela("fichas", [("conta de ficha" if k == "ficha" else k) for k in nomes_f], [[None] for _ in LUG])
@@ -550,7 +529,6 @@ def trocas(layout, cor_da_barra=None):
         "valor da defesa": f'=IF({H["a defesa usa"]}="Inteligência",N({F_("atr_Inteligência")}),N({F_("atr_Essência")}))',
         "parcela da defesa": f"=INT({H['valor da defesa']}/2)",
         "teto de ativas": f'=IF({H["trilha"]}="{MULTIPLAS}",4,2)',
-        "ativas": f'=COUNTIFS({FCOL("tem")},1,{FCOL("estado")},"{EM_CAMPO}")',
         "corpos mantidos": f"={H['valor da defesa']}+{H['teto de ativas']}",
         "fichas com nome": f"=SUM({FCOL('tem')})",
         "famílias da trilha": f'=IF({H["trilha"]}="{PRINCIPAL}",5,IF(OR({H["trilha"]}="{PARCERIA}",{H["trilha"]}="{MULTIPLAS}"),4,3))',
@@ -561,6 +539,14 @@ def trocas(layout, cor_da_barra=None):
         D.poe(c_contas, 2 + i, k)
         D.poe(c_contas + 1, 2 + i, formulas[k])
     HI = {k: v.replace("$" + L(c_contas + 1) + "$", DI + "$" + L(c_contas + 1) + "$") for k, v in H.items()}
+
+    # --- a lista do conjunto leva até cada ficha (07/10/2026). A ligação dentro da planilha pede o número da aba, que só
+    # existe depois que ela nasce: é o acabamento do construir() que escreve cada uma (ligarSaltos_, no Codigo.gs), lendo
+    # daqui a caixa da lista, o alvo e a célula do texto, como nos saltos da FICHA AMALDIÇOADA. O alvo é o número da
+    # lombada da ficha, que fica à vista com a fileira e a coluna de fichas fechadas.
+    D.tabela("saltos", ["salto", "caixa do salto", "alvo do salto", "nome do salto"],
+             [[f"Invocação {i + 1}", fp._endereco(celulas_do_conjunto()["rol"][i], IV), fp._endereco(fichas_c[i]["lombada_num"], IV),
+               FI("d_rol", i)] for i in range(len(LUG))])
 
     # --- os menus de cada ficha: só as Famílias abertas dela aparecem
     menus = []
@@ -667,7 +653,7 @@ def trocas(layout, cor_da_barra=None):
         NV, MAXC = P("nv"), P("mx")
         cac, tudo, ines = "Corpo a Corpo", "Tudo ou Nada", "Inescapável"
         erros = [
-            _se(f"{abre}>{NV}", f'"Este lugar abre no nível {abre}"'),
+            _se(f'{P("abre")}>{NV}', f'"Este lugar abre no nível "&{P("abre")}'),
             _se(f"{Cc}>{MAXC}", f'"Classe "&{Cc}&": o nível "&{NV}&" libera até a "&{MAXC}'),
             _se(f'{P("x0")}=1', f'"A Forma "&{forma}&" pede "&INDEX({forma_col(1)},{lf})&" aberta"'),
             _se(f'AND({Cc}=0,{lf}>0,{da_forma(10)}=0)', f'{forma}&" não existe na Classe 0"'),
@@ -706,7 +692,7 @@ def trocas(layout, cor_da_barra=None):
         o["estado"] = (f'=IF({P("tem")}=0,IF({P("nm")}+COUNTIF({RR},"?*")>0,"{SEM_NOME}",""),IF({P("ne")}>0,"{T_ERRO} "&{P("ne")}&IF({P("ne")}>1," erros"," erro"),'
                        f'IF({P("na")}>0,"{T_AVISO}"&{P("na")}&IF({P("na")}>1," avisos"," aviso"),"{NA_REGRA}")))')
         o["linha"] = (f'=IF({P("tem")}=0,"",IF({P("ne")}+{P("na")}=0,"{DENTRO}",{P("erros")}&IF(AND({P("ne")}>0,{P("na")}>0)," · ","")&{P("avisos")}))')
-        o["titulo"] = f'=IF({abre}>{NV},"{titulo} · ABRE NO NÍVEL {abre}","{titulo}")'
+        o["titulo"] = f'=IF({P("abre")}>{NV},{P("tit")}&" · ABRE NO NÍVEL "&{P("abre")},{P("tit")})'
         o["pe"] = f'=IF({P("tem")}=0,"",IF({Cc}=0,"Sem PE",3*{Cc}&" PE"))'
         o["acao"] = (f'=IF({P("tem")}=0,"",IF({Cc}=0,"A atuação básica dela",IF({tem_b("Atrasar")}>0,"Sua Ação Completa",IF({tem_m("Rápido")}>0,"Sua Bônus",'
                      f'IF({tem_m("Reação")}>0,"Sua Reação","Sua Padrão")))&" + a básica dela"&IF({tem_m("Reação")}>0," e a coletiva","")'
@@ -798,12 +784,9 @@ NOTAS = {
     "acerto": "Escolhido na montagem. Vale para o ataque e para a CD. Com arma empunhada, o ataque usa o atributo da arma e tem "
               "desvantagem, porque a entidade não tem treino em armas.",
     "pericias": "4 + metade da Inteligência, para baixo. O número ao lado é o atributo da perícia mais a sua maestria.",
-    "tarefa": "A tarefa que ela está cumprindo: um alvo, um lugar ou um grupo que ela consiga reconhecer.",
+    "delta": "Escreva −9 ou +5 e aperte Enter: a ficha aplica na vida atual e limpa a caixa. A perda gasta a vida temporária "
+             "primeiro, e a vida não passa da máxima.",
     "vida_atual": "Em branco, a vida está cheia. Curar não funciona a zero: use o retorno ou o descanso longo.",
-    "mov": "O Movimento que ainda resta neste ciclo. Ele só se renova quando ela começa o seu turno em campo.",
-    "basica": "Uma atuação básica por ciclo. Volta no começo do seu turno, se ela estiver em campo.",
-    "ordem": "Cada corpo mantém uma especial aguardando execução.",
-    "estado": "Em campo conta no limite de entidades ativas. Caída volta pelo retorno; desligada e inativa são dos corpos amaldiçoados.",
     "reserva": "Só a maldição domada com técnica própria: nível × (1 + um terço da Essência dela). Escreva quanto ainda resta. O "
                "descanso curto recupera um quarto.",
     "equip": "Registre o que ela veste e empunha, a proteção e os requisitos. Arma empunhada: ataque pelo atributo da arma, com "
@@ -832,15 +815,10 @@ NOTAS = {
     "tm": "A faixa usa o nível dela, que não sobe com o seu. Os pontos pagam Forma e Melhorias, sem comprar dados.",
     "exp": "O refino, a maestria e a especialização são os seus. Posição, vida e Teste de Resistência de Vigor são os dela.",
     "c_usa": "Escolhido ao obter a primeira entidade. Vale para a Defesa de todas e para o limite de corpos mantidos.",
-    "c_ativas": "Conta as fichas com o estado Em campo. O limite geral é de duas; a Trilha Múltiplas Invocações leva a quatro "
-                "durante o combate.",
+    "c_ativas": "Quantas entidades podem estar ativas ao mesmo tempo. O limite geral é de duas; a Trilha Múltiplas Invocações "
+                "leva a quatro durante o combate.",
     "c_corpos": "Quantos corpos amaldiçoados você mantém, ativos e inativos: o atributo da Defesa mais as entidades ativas.",
-    "c_dano": "No seu turno, no máximo duas entidades atuam causando dano. Especial comandada fica fora da conta.",
-    "c_reacao": "Uma para todas as entidades, separada da sua Reação pessoal.",
-    "c_vinculo": "Pontos de Vínculo, só do Evocador: começa o combate em 0, ganha 1 no começo de cada turno seu, até 3.",
-    "c_apr": "Só o Evocador: um aprimoramento em uma invocação por vez, escolhido no começo do seu turno.",
-    "c_usos": "Os usos do aprimoramento nesta rodada: o ofensivo, a proteção e a perícia. Voltam no começo do seu turno.",
-    "c_rol": "Todas as fichas da aba, com o nível, a vida e o estado de cada uma.",
+    "c_rol": "Todas as fichas da aba, com o nível e a vida de cada uma. Clique numa linha e siga a ligação para ir até a ficha.",
 }
 
 
@@ -982,27 +960,18 @@ def aba(layout, tr):
                  "Vem da FICHA. Só as Trilhas do Evocador mudam esta aba.") == CJ["trilha"]
     assert caixa(d, d, r + 7, "DEFESA USA", "Essência", "cel", NOTAS["c_usa"]) == CJ["usa"]
     f.menu(CJ["usa"], D.faixa("usa", aba=DI))
-    assert caixa(e, e, r + 7, "ATIVAS", f'=IF({H["ativas"]}>{H["teto de ativas"]},"{T_ERRO} ","")&{H["ativas"]}&" de "&{H["teto de ativas"]}', "num",
-                 NOTAS["c_ativas"]) == CJ["ativas"]
+    assert caixa(e, e, r + 7, "ATIVAS, NO MÁXIMO", f"={H['teto de ativas']}", "num", NOTAS["c_ativas"]) == CJ["ativas"]
     assert caixa(g_, g_, r + 7, "CORPOS MANTIDOS", f"={H['corpos mantidos']}", "num", NOTAS["c_corpos"]) == CJ["corpos"]
-    assert caixa(d, d, r + 11, "REAÇÃO COLETIVA", "Livre", "cel", NOTAS["c_reacao"]) == CJ["reacao"]
-    f.menu(CJ["reacao"], D.faixa("livre_gasta", aba=DI))
-    assert caixa(e, e, r + 11, "DANO NO TURNO", 0, "digita", NOTAS["c_dano"]) == CJ["dano"]
-    f.menu(CJ["dano"], D.faixa("zero_a_dois", aba=DI))
-    assert caixa(g_, g_, r + 11, "VÍNCULO", 0, "digita", NOTAS["c_vinculo"]) == CJ["vinculo"]
-    f.menu(CJ["vinculo"], D.faixa("zero_a_tres", aba=DI))
-    assert caixa(d, e, r + 15, "APRIMORAMENTO DE VÍNCULO", None, "cel", NOTAS["c_apr"]) == CJ["apr"]
-    f.menu(CJ["apr"], D.faixa("aprimoramentos", so=2, aba=DI))
-    assert caixa(g_, g_, r + 15, "EM QUEM", None, "cel") == CJ["apr_em"]
-    f.menu(CJ["apr_em"], _faixa(tr["colf"]["nome"], 2, tr["colf"]["nome"], 1 + len(tr["LUG"]), DI))
-    for k, rot in enumerate(("OFENSIVO", "PROTEÇÃO", "PERÍCIA")):
-        f.add("rot", d + k, r + 19, d + k, r + 19, rot, NOTAS["c_usos"] if k == 0 else None)
-        assert f.add("cel", d + k, r + 20, d + k, r + 21, "Livre") == CJ["usos"][k]
-    f.menu(f"{CJ['usos'][0]}:{CJ['usos'][-1]}", D.faixa("uso", aba=DI))
-    assert f.add("rot", d, r + 23, g_, r + 23, f'="AS INVOCAÇÕES · "&{H["fichas com nome"]}&" DE {N_ROL}"', NOTAS["c_rol"]) == CJ["rol_rot"]
+    # 07/10/2026: saíram do conjunto a REAÇÃO COLETIVA, o DANO NO TURNO, os Pontos de Vínculo, o Aprimoramento de Vínculo
+    # com a beneficiária e os três usos da rodada; e de cada ficha o MOVIMENTO que resta, a BÁSICA DO CICLO, o ESTADO e a
+    # ORDEM PENDENTE. O retorno que o Mizuki trouxe: "n tem necessidade dessas caixas q basicamente vc muda durante o
+    # turno ... vida, modificadores, energia e essas coisas tudo bem", e, da faixa do Vínculo, "pra q esse tbm". Com o
+    # estado fora, o conjunto mostra o limite de ativas, e não mais a contagem. O deslocamento, com o Buff/Debuff
+    # embaixo, já está nos números da ficha.
+    assert f.add("rot", d, r + 11, g_, r + 11, f'="AS INVOCAÇÕES · "&{H["fichas com nome"]}&" DE {N_ROL}"', NOTAS["c_rol"]) == CJ["rol_rot"]
     for i in range(N_ROL):
-        assert f.add("rol", d, r + 24 + i, g_, r + 24 + i, f"={FI('d_rol', i)}") == CJ["rol"][i]
-    if r + 24 + N_ROL - 1 >= L0 + O["hab"]:
+        assert f.add("rol", d, r + 12 + i, g_, r + 12 + i, f"={FI('d_rol', i)}") == CJ["rol"][i]
+    if r + 12 + N_ROL - 1 >= L0 + O["hab"]:
         raise SystemExit("ficha_invocacoes: a lista do conjunto desce até as habilidades da primeira fileira, que fecham em grupo")
 
     # --- as fichas
@@ -1063,24 +1032,22 @@ def aba(layout, tr):
             assert f.add("cel_esq", b[0], r + 29 + n, b[2], r + 29 + n) == g["per"][n]
             assert f.add("cel", b[3], r + 29 + n, B5, r + 29 + n, v(f"d_pb{n}")) == g["perb"][n]
         f.menu(f"{g['per'][0]}:{g['per'][-1]}", D.faixa("pericias", so=0, aba=DI))
-        # --- à direita: a mesa
-        assert caixa(c[0], C5, r + 3, "TAREFA", None, "txt", nota("tarefa"), alt=3) == g["tarefa"]
-        assert caixa(c[0], c[0], r + 8, "VIDA ATUAL", None, "digita", nota("vida_atual")) == g["vida"]
-        assert caixa(c[1], c[1], r + 8, "VIDA TEMPORÁRIA", None, "digita") == g["temp"]
-        assert caixa(c[2], c[2], r + 8, "MOVIMENTO", None, "digita", nota("mov")) == g["mov"]
-        assert caixa(c[3], C5, r + 8, "BÁSICA DO CICLO", BASICA_DO_CICLO[0], "cel", nota("basica")) == g["basica"]
-        f.menu(g["basica"], D.faixa("basica", aba=DI))
-        assert f.add("barra", c[0], r + 11, c[1], r + 11,
+        # --- à direita: a mesa. 07/10/2026, o retorno que o Mizuki trouxe de quem leu a aba: saiu a TAREFA ("pq o player
+        # iria escrever algo q ele fala pro mestre na mesa assim?") e saiu o que muda de turno em turno ("n tem
+        # necessidade dessas caixas q basicamente vc muda durante o turno"; "Básica do ciclo n faz sentido ter, estado,
+        # ordem, n faz sentido"). A vida fica como na FICHA do jogador: "ideal o vida máxima ficar lado a lado com vida
+        # atual, vida temporaria e ter um redutor automatico, semelhante a ficha de player". A caixa de ± é do onEdit
+        # (redutorDaInvocacao_, no Codigo.gs), que lê os endereços de `redutores`, no ABAS.
+        assert caixa(c[0], c[0], r + 3, "VIDA ATUAL", None, "digita", nota("vida_atual")) == g["vida"]
+        assert caixa(c[1], c[1], r + 3, "VIDA MÁXIMA", f"={FI('vida', i)}", "num", nota("vida")) == g["vida_max"]
+        assert caixa(c[2], c[2], r + 3, "TEMPORÁRIA", None, "digita") == g["temp"]
+        assert caixa(c[3], c[3], r + 3, "± PERDA / GANHO", None, "digita", nota("delta")) == g["delta"]
+        assert f.add("rot", C5, r + 3, C5, r + 3, v("d_res"), nota("reserva")) == g["reserva_rot"]
+        assert f.add("digita", C5, r + 4, C5, r + 5) == g["reserva"]
+        assert f.add("barra", c[0], r + 6, C5, r + 6,
                      f'=IFERROR(SPARKLINE({FI("atual", i)},{{"charttype","bar";"max",MAX(1,{FI("vida", i)});"color1",{H["cor da barra"]}}}),"")') == g["barra"]
-        assert f.add("peq", c[2], r + 11, c[2], r + 11, v("d_movde")) == g["mov_de"]
-        assert caixa(c[0], c[1], r + 13, "ESTADO", ESTADOS[1], "cel", nota("estado")) == g["estado"]
-        f.menu(g["estado"], D.faixa("estados", aba=DI))
-        assert caixa(c[2], c[3], r + 13, "ORDEM PENDENTE", "Nenhuma", "cel", nota("ordem")) == g["ordem"]
-        f.menu(g["ordem"], D.faixa("ordens", aba=DI))
-        assert f.add("rot", C5, r + 13, C5, r + 13, v("d_res"), nota("reserva")) == g["reserva_rot"]
-        assert f.add("digita", C5, r + 14, C5, r + 15) == g["reserva"]
-        assert caixa(c[0], C5, r + 17, "CONDIÇÕES E USOS GASTOS", None, "txt", None, alt=3) == g["cond"]
-        assert caixa(c[0], C5, r + 22, "ANOTAÇÕES", None, "txt", None, alt=4) == g["notas"]
+        assert caixa(c[0], C5, r + 8, "CONDIÇÕES E USOS GASTOS", None, "txt", None, alt=7) == g["cond"]
+        assert caixa(c[0], C5, r + 17, "ANOTAÇÕES", None, "txt", None, alt=9) == g["notas"]
         assert f.add("rot", c[0], r + 28, C5, r + 28, v("d_equip"), nota("equip")) == g["equip_rot"]
         assert f.add("txt", c[0], r + 29, C5, r + 31) == g["equip"]
         assert caixa(c[0], C5, r + 33, "CORPO, SENTIDOS E COMUNICAÇÃO", None, "txt", nota("corpo")) == g["corpo"]
@@ -1097,7 +1064,10 @@ def aba(layout, tr):
         assert f.add("rot", A1, r + O["tal"], C5, r + O["tal"], v("d_tal"), nota("talentos")) == g["tal_rot"]
         for n in range(N_TAL):
             lin = r + O["tal"] + 1 + n
-            assert f.add("rot", A1, lin, A1, lin, v(f"d_tl{n}")) == g["tal_nv"][n]
+            # 07/10/2026: o rótulo é sempre o nível e a Categoria. Antes, o talento que o nível ainda não abriu mostrava
+            # "ABRE NO 6" no lugar; o retorno que o Mizuki trouxe: "tira esse abre no e coloca só o nível, que nem o
+            # primeiro, fica mais bonitinho". Quem escolher um talento antes da hora continua vendo o aviso ao lado.
+            assert f.add("rot", A1, lin, A1, lin, f"NV {R['abre_tal'][n]} · CE {R['teto_tal'][n]}") == g["tal_nv"][n]
             assert f.add("cel_esq", a[1], lin, a[3], lin) == g["tal"][n]
             assert f.add("peq_esq", A5, lin, C5, lin, v(f"d_tt{n}")) == g["tal_txt"][n]
         f.menu(f"{g['tal'][0]}:{g['tal'][-1]}", D.faixa("talentos", so=0, aba=DI))
@@ -1176,10 +1146,24 @@ def aba(layout, tr):
     # --- os grupos de colunas: o conjunto, e cada coluna de fichas (a lombada do nome fica de fora, à vista)
     grupos_col = [[C_CONJ, C_CONJ + N_CONJ, False]] + [[lombada(k) + 1, lombada(k) + PASSO_COL - 1, k > 0] for k in range(N_COLUNAS)]
 
-    # --- as fileiras de cartas que são cópia da primeira: o script mescla a primeira e copia o formato para as outras
-    r = linha_da_fileira(0)
-    cheias = [linha_da_fileira(j) + x for j in range(N_FILEIRAS) for x in (O["h"], O["m"], O["m"] + ALT + 1, O["x"])]
-    copia = [[cheias[0], cheias[0] + ALT - 1, cheias[1:], lombada(0) + 1, COLS - 1]]
+    # --- as fileiras de cartas que são cópia da primeira: o script mescla a primeira e copia o formato para as outras.
+    # A cópia vai coluna de fichas por coluna de fichas (`faixas`), porque a lombada de cada uma atravessa as fileiras
+    # de cartas, e o Sheets não copia meia mesclagem.
+    faixas = [[lombada(k) + 1, lombada(k) + PASSO_COL - 2] for k in range(N_COLUNAS)]
+    das_cartas = (O["h"], O["m"], O["m"] + ALT + 1, O["x"])
+    cheias = [linha_da_fileira(j) + x for j in range(N_FILEIRAS) for x in das_cartas]
+    copia = [[cheias[0], cheias[0] + ALT - 1, cheias[1:], faixas[0][0], faixas[-1][1], faixas]]
+    # --- e o resto de cada fileira de fichas (07/10/2026, a grade de 2 × 6): o que fica entre as fileiras de cartas é
+    # igual da segunda fileira em diante, e a segunda é o molde das outras. A primeira não serve de molde, porque divide
+    # as linhas com o conjunto. Só os números de cada ficha (a fórmula que aponta para a linha dela na DADOS_INVOC, o
+    # menu das Famílias dela) vêm escritos em cada cópia.
+    if N_FILEIRAS > 2:
+        cortes = [-1] + [x for c in das_cartas for x in (c, c + ALT - 1)] + [O["fim"] + 1]
+        trechos = [(cortes[i] + 1, cortes[i + 1] - 1) for i in range(0, len(cortes), 2)]
+        for a_, b_ in trechos:
+            if b_ - a_ >= 1:
+                copia.append([linha_da_fileira(1) + a_, linha_da_fileira(1) + b_, [linha_da_fileira(j) + a_ for j in range(2, N_FILEIRAS)],
+                              faixas[0][0], faixas[-1][1], faixas])
 
     corpo = f"{L(C_CONJ)}{L0}:{L(COLS)}{LIN}"
     condicional = [{"faixas": [corpo], "contem": T_ERRO, "fundo": VERMELHO, "fonte": BRANCO},
@@ -1200,6 +1184,8 @@ def aba(layout, tr):
         "protegidas": [],
         "copias": copia,
         "validacao_em_matriz": True,
+        # a caixa de ± de cada ficha, com a vida atual, a temporária e a máxima dela: o onEdit aplica e limpa
+        "redutores": [[g["delta"], g["vida"], g["temp"], g["vida_max"]] for g in tr["fichas_c"]],
     }
 
 

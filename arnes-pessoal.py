@@ -141,13 +141,36 @@ edita("a mesclagem em lote junta linhas que nao sao vizinhas", F, "while (j + 1 
       "while (j + 1 < v.length && v[j + 1] <= v[j] + 3) j++;", "mescla", teste=K)
 edita("a formula fica fora da gravacao dos valores", F, "    v[t[0] - 1][t[1] - 1] = t[2];\n    if (typeof t[2] === 'string' && t[2].charAt(0) === '=') formulas++;",
       "    if (typeof t[2] === 'string' && t[2].charAt(0) === '=') formulas++; else v[t[0] - 1][t[1] - 1] = t[2];", "toda fórmula do ABAS chega à célula dela", teste=K)
-edita("a aba e preenchida antes de as outras nascerem", F, "    var abas = ABAS.map(function (spec, i) { return criarAba_(ss, spec, i + 1); });\n    ss.deleteSheet(temp);",
-      "    var abas = ABAS.map(function (spec, i) { var a = criarAba_(ss, spec, i + 1); if (i === 0) montarAba_(a, spec); return a; });\n    ss.deleteSheet(temp);",
+edita("a aba e preenchida antes de as outras nascerem", F, "      abas = ABAS.map(function (spec, i) { return criarAba_(ss, spec, i + 1); });\n      ss.deleteSheet(temp);",
+      "      abas = ABAS.map(function (spec, i) { var a = criarAba_(ss, spec, i + 1); if (i === 0) montarAba_(a, spec); return a; });\n      ss.deleteSheet(temp);",
       "nenhuma fórmula é gravada antes de a aba que ela cita existir", teste=K)
 edita("a nota de regra vai sempre para a caixa, nunca para o titulo", C, "return tituloOuCaixa_(acima) === 'título' ? [la, ca] : [l, c];", "return [l, c];",
       "as notas de regra da FICHA moram no título", teste=K)
 edita("o construir() nunca passa a vez ao acabar()", F, "var TETO_DA_MONTAGEM_ = 250000;", "var TETO_DA_MONTAGEM_ = 250000000000;",
       "avisa que falta o acabar()", teste=K)
+# 07/10/2026: a montagem que para sozinha antes de estourar os seis minutos, e o continuar()
+edita("a montagem nunca para, e estoura os seis minutos", F, "if (i > de && rel.passou() + custoDaAba_(spec) > LIMITE_DA_EXECUCAO_) {",
+      "if (false) {", "para ANTES de começar uma aba", teste=K)
+edita("o continuar() recomeca da primeira aba, em vez de seguir", F, "      if (i < de || parou >= 0) return;", "      if (parou >= 0) return;",
+      "fica igual à de uma montagem que não parou", teste=K)
+edita("a montagem para sem guardar em que aba parou", F, "      props.setProperty(CHAVE_DA_MONTAGEM_, String(parou));", "",
+      "guarda em que aba parou", teste=K)
+edita("a montagem parada nao e esquecida quando as abas acabam", F, "    props.deleteProperty(CHAVE_DA_MONTAGEM_);\n\n    // 19/09/2026, testando no Sheets",
+      "\n    // 19/09/2026, testando no Sheets", "segue de onde o anterior parou", teste=K)
+edita("o acabar() roda por cima de uma montagem parada", F, "  if (parada !== null) throw new Error('a montagem das abas parou antes da aba '", "  if (false) throw new Error('a montagem das abas parou antes da aba '",
+      "não roda por cima de uma montagem parada", teste=K)
+edita("o construir() do zero segue a montagem parada de antes", F, "      // do zero: a montagem parada que houver deixa de valer\n      props.deleteProperty(CHAVE_DA_MONTAGEM_);",
+      "", "não deixa valendo a parada de antes", teste=K)
+edita("a copia das fileiras ignora as faixas de colunas e atravessa a lombada", F, "var faixasDe = function (k) { return k[5] || [[k[3] || 1, k[4] || nc]]; };",
+      "var faixasDe = function (k) { return [[k[3] || 1, k[4] || nc]]; };", "corta uma mesclagem", teste=K)
+edita("a lista de invocacoes leva todas as linhas a mesma ficha", C, "'&range=' + l['alvo do salto'] + '\",' + nome", "'&range=H9\",' + nome",
+      "leva ao número da ficha dela", teste=K)
+edita("a caixa de ± da invocacao esquece a vida temporaria", C, "  var fim = aplicaPasso_(tem === '' || tem === null ? max : tem, max, antes, passo);",
+      "  var fim = aplicaPasso_(tem === '' || tem === null ? max : tem, max, 0, passo);", "a caixa de ± de cada ficha de invocação", teste=K)
+edita("a caixa de ± da invocacao parte de zero com a vida em branco", C, "  var fim = aplicaPasso_(tem === '' || tem === null ? max : tem, max, antes, passo);",
+      "  var fim = aplicaPasso_(tem, max, antes, passo);", "a caixa de ± de cada ficha de invocação", teste=K)
+edita("a caixa de ± da invocacao nao se limpa", C, "  if (fim.temp !== antes) temp.setValue(fim.temp);\n  e.range.clearContent();\n  return true;",
+      "  if (fim.temp !== antes) temp.setValue(fim.temp);\n  return true;", "a caixa de ± de cada ficha de invocação", teste=K)
 edita("o acabar() duplica as travas", C, "    semAsVelhas(aba);\n    var celulas = [];", "    var celulas = [];", "rodar o acabar() numa ficha pronta não muda nada", teste=K)
 edita("o acabar() roda em portugues, e a regra de cor quebra", F, "  ss.setSpreadsheetLocale('en_US');\n  try {\n    acabamento_(ss, feito, rel);",
       "  try {\n    acabamento_(ss, feito, rel);", "o acabar() escreve a regra de cor com a planilha em inglês", teste=K)

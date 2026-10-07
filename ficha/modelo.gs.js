@@ -103,9 +103,47 @@ function relogio_() {
 // para o acabamento que começa na última hora ainda caber nos 360.
 var TETO_DA_MONTAGEM_ = 250000;
 
+// 07/10/2026, a INVOCAÇÕES com doze fichas: a montagem das abas sozinha já não cabe com folga nos seis minutos. O
+// Mizuki mediu 288 s com uma ficha (187 s de abas, 101 s de menus e acabamento), e as doze trazem mais de dez vezes as
+// células dela. A montagem agora PARA SOZINHA antes de começar uma aba que pode não acabar, guarda em que aba parou e
+// pede o continuar(), que segue dali. Uma aba que o Apps Script corta no meio não tem conserto (o grupo de linhas
+// nasceria duas vezes), e por isso a conta é feita antes de começar, com folga.
+//
+// O custo de cada aba, pela medida dele em 06/10/2026 (segundos por mil células, contando a aba inteira, linhas vezes
+// colunas): CARTEIRA 2,1 · FICHA 2,1 · FICHA AMALDIÇOADA 2,0 · INVOCAÇÕES 1,5 · FICHA PESSOAL 1,3 · e as ocultas, que
+// não têm mesclagem nem borda, DADOS 0,52 · DADOS_AM 0,58 · DADOS_INVOC 0,53. A estimativa usa o pior de cada tipo com
+// uns 15% a mais, e nenhuma aba começa se a estimativa dela passar do limite da execução, a não ser a primeira da vez.
+var MS_POR_CELULA_ = 2.4, MS_POR_CELULA_OCULTA_ = 0.7;
+var LIMITE_DA_EXECUCAO_ = 300000;
+var CHAVE_DA_MONTAGEM_ = 'montagem_parada';
+var RETOMADA_ = null;       // o continuar() põe aqui a aba em que a montagem parou; o construir() começa do zero
+
+function custoDaAba_(spec) {
+  return spec.rows * spec.cols * (spec.oculta ? MS_POR_CELULA_OCULTA_ : MS_POR_CELULA_);
+}
+
+/**
+ * Segue a montagem que o construir() parou para não estourar os seis minutos. Rode quando o registro pedir, quantas
+ * vezes ele pedir: cada vez monta as abas que couberem, e a última faz os menus e o acabamento.
+ */
+function continuar() {
+  var parada = PropertiesService.getDocumentProperties().getProperty(CHAVE_DA_MONTAGEM_);
+  if (parada === null || !(Number(parada) > 0) || !(Number(parada) <= ABAS.length)) {
+    throw new Error('não há montagem parada para continuar: rode construir() (ou acabar(), se só faltar o acabamento).');
+  }
+  RETOMADA_ = Number(parada);
+  try {
+    construir();
+  } finally {
+    RETOMADA_ = null;
+  }
+}
+
 function construir() {
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();
+  var props = PropertiesService.getDocumentProperties();
+  var de = RETOMADA_ === null ? 0 : RETOMADA_, parou = -1;
 
   // O idioma da planilha manda na pontuação de TODA fórmula que o script escreve, o setValues e
   // a regra de cor inclusive: numa planilha em português COUNTIF(a,b) vira #ERROR! e 0.25 não é
@@ -119,23 +157,40 @@ function construir() {
   var falta = false;
   ss.setSpreadsheetLocale('en_US');
   try {
-    // uma aba de rascunho segura o lugar enquanto as antigas somem
-    var velha = ss.getSheetByName('__montando__');
-    if (velha) ss.deleteSheet(velha);        // sobra de uma execução que parou no meio
-    var temp = ss.insertSheet('__montando__', 0);
-    ss.getSheets().forEach(function (a) {
-      if (a.getName() !== '__montando__') ss.deleteSheet(a);
-    });
+    var abas;
+    if (de === 0) {
+      // do zero: a montagem parada que houver deixa de valer
+      props.deleteProperty(CHAVE_DA_MONTAGEM_);
+      // uma aba de rascunho segura o lugar enquanto as antigas somem
+      var velha = ss.getSheetByName('__montando__');
+      if (velha) ss.deleteSheet(velha);        // sobra de uma execução que parou no meio
+      var temp = ss.insertSheet('__montando__', 0);
+      ss.getSheets().forEach(function (a) {
+        if (a.getName() !== '__montando__') ss.deleteSheet(a);
+      });
 
-    // TODAS as abas nascem primeiro, vazias e já do tamanho certo, na ordem do ABAS. Só depois cada uma é
-    // preenchida: a CARTEIRA cita a FICHA e a FICHA cita a DADOS, e fórmula gravada antes de a aba citada existir
-    // (ou antes de ela ter a coluna citada) fica em #REF!. Até 01/10/2026 as fórmulas esperavam numa fila e eram
-    // gravadas depois, em 144 chamadas; agora vão junto com os valores, numa gravação por aba.
-    var abas = ABAS.map(function (spec, i) { return criarAba_(ss, spec, i + 1); });
-    ss.deleteSheet(temp);
-    rel.etapa('abas criadas');
+      // TODAS as abas nascem primeiro, vazias e já do tamanho certo, na ordem do ABAS. Só depois cada uma é
+      // preenchida: a CARTEIRA cita a FICHA e a FICHA cita a DADOS, e fórmula gravada antes de a aba citada existir
+      // (ou antes de ela ter a coluna citada) fica em #REF!. Até 01/10/2026 as fórmulas esperavam numa fila e eram
+      // gravadas depois, em 144 chamadas; agora vão junto com os valores, numa gravação por aba.
+      abas = ABAS.map(function (spec, i) { return criarAba_(ss, spec, i + 1); });
+      ss.deleteSheet(temp);
+      rel.etapa('abas criadas');
+    } else {
+      // seguindo de onde parou: as abas já nasceram todas, e as primeiras já estão preenchidas
+      abas = ABAS.map(function (spec) { return ss.getSheetByName(spec.nome); });
+      ABAS.forEach(function (spec, i) {
+        if (!abas[i]) throw new Error('a planilha não tem a aba ' + spec.nome + ': rode construir(), do começo.');
+      });
+    }
 
     ABAS.forEach(function (spec, i) {
+      if (i < de || parou >= 0) return;
+      // a aba que pode não acabar nesta execução fica para a próxima; a primeira da vez sempre é montada
+      if (i > de && rel.passou() + custoDaAba_(spec) > LIMITE_DA_EXECUCAO_) {
+        parou = i;
+        return;
+      }
       try {
         feito.push(montarAba_(abas[i], spec));
       } catch (err) {
@@ -143,6 +198,14 @@ function construir() {
       }
       rel.etapa(spec.nome);
     });
+    if (parou >= 0) {
+      props.setProperty(CHAVE_DA_MONTAGEM_, String(parou));
+      Logger.log('A MONTAGEM PAROU ANTES DA ABA ' + ABAS[parou].nome + ', em ' + Math.round(rel.passou() / 1000) +
+                 's, PARA NÃO ESTOURAR OS SEIS MINUTOS: rode a função continuar(). Faltam ' + (ABAS.length - parou) +
+                 ' aba(s), os menus e o acabamento. · ' + feito.join(' · ') + ' · tempos: ' + ETAPAS_.join(', '));
+      return;
+    }
+    props.deleteProperty(CHAVE_DA_MONTAGEM_);
 
     // 19/09/2026, testando no Sheets: o Mizuki reportou borda errada logo no construir() — a
     // FICHA!AK17 branca, a GLOSSÁRIO!B4 sem borda esquerda —, mas os dados (a viva ORIGINAL, o
@@ -217,6 +280,8 @@ function acabar() {
   var ss = SpreadsheetApp.getActive(), feito = [], rel = relogio_();
   var faltam = ABAS.filter(function (spec) { return !ss.getSheetByName(spec.nome); });
   if (faltam.length) throw new Error('a planilha não tem a aba ' + faltam[0].nome + ': rode construir() antes.');
+  var parada = PropertiesService.getDocumentProperties().getProperty(CHAVE_DA_MONTAGEM_);
+  if (parada !== null) throw new Error('a montagem das abas parou antes da aba ' + (ABAS[Number(parada)] || {}).nome + ': rode continuar() antes do acabar().');
   ss.setSpreadsheetLocale('en_US');
   try {
     acabamento_(ss, feito, rel);
@@ -365,9 +430,13 @@ function montarAba_(aba, spec) {
   // mesclagem vem junto. Cada cópia é [primeira linha, última linha, [a linha onde cada cópia começa]]. O valor de
   // cada célula já está no lugar e a cópia de formato não toca nele.
   var copias = spec.copias || [];
+  // 07/10/2026, a INVOCAÇÕES: a cópia pode ir em mais de uma faixa de colunas (k[5], uma por coluna de fichas), porque
+  // a lombada de cada coluna de fichas atravessa as fileiras copiadas. Sem o k[5], é a faixa de k[3] a k[4].
+  var faixasDe = function (k) { return k[5] || [[k[3] || 1, k[4] || nc]]; };
   var naCopia = function (m) {
     return copias.some(function (k) {
-      return m[1] >= (k[3] || 1) && m[3] <= (k[4] || nc) && k[2].some(function (d) { return m[0] >= d && m[2] <= d + k[1] - k[0]; });
+      return faixasDe(k).some(function (f) { return m[1] >= f[0] && m[3] <= f[1]; }) &&
+             k[2].some(function (d) { return m[0] >= d && m[2] <= d + k[1] - k[0]; });
     });
   };
   var mesclar = function (lista) {
@@ -385,19 +454,23 @@ function montarAba_(aba, spec) {
     copias.forEach(function (k) {
       // k[3] e k[4] são a primeira e a última coluna da cópia: a lombada fica de fora, porque as mesclagens dela
       // atravessam as fileiras, e o Sheets não copia meia mesclagem
-      var alt = k[1] - k[0] + 1, c1 = k[3] || 1, larg = (k[4] || nc) - c1 + 1, molde = aba.getRange(k[0], c1, alt, larg);
-      k[2].forEach(function (d) {
-        molde.copyTo(aba.getRange(d, c1, alt, larg), SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
+      var alt = k[1] - k[0] + 1, ultima = k[2][k[2].length - 1];
+      faixasDe(k).forEach(function (f) {
+        var c1 = f[0], larg = f[1] - c1 + 1, molde = aba.getRange(k[0], c1, alt, larg);
+        k[2].forEach(function (d) {
+          molde.copyTo(aba.getRange(d, c1, alt, larg), SpreadsheetApp.CopyPasteType.PASTE_FORMAT, false);
+        });
+        // a prova de que a mesclagem veio com o formato: a primeira mesclagem da última cópia tem de existir
+        var prova = spec.merges.filter(function (m) { return m[0] >= ultima && m[2] <= ultima + alt - 1 && m[1] >= c1 && m[3] <= c1 + larg - 1; })[0];
+        if (prova && !aba.getRange(prova[0], prova[1]).isPartOfMerge()) veio = false;
       });
-      // a prova de que a mesclagem veio com o formato: a primeira mesclagem da última cópia tem de existir
-      var ultima = k[2][k[2].length - 1];
-      var prova = spec.merges.filter(function (m) { return m[0] >= ultima && m[2] <= ultima + alt - 1 && m[1] >= c1 && m[3] <= c1 + larg - 1; })[0];
-      if (prova && !aba.getRange(prova[0], prova[1]).isPartOfMerge()) veio = false;
     });
     if (!veio) {
       // o Sheets não trouxe as mesclagens: desfaz o que tiver vindo pela metade e faz uma a uma, como nas outras abas
       copias.forEach(function (k) {
-        k[2].forEach(function (d) { aba.getRange(d, k[3] || 1, k[1] - k[0] + 1, (k[4] || nc) - (k[3] || 1) + 1).breakApart(); });
+        faixasDe(k).forEach(function (f) {
+          k[2].forEach(function (d) { aba.getRange(d, f[0], k[1] - k[0] + 1, f[1] - f[0] + 1).breakApart(); });
+        });
       });
       mesclar(spec.merges.filter(naCopia));
     }

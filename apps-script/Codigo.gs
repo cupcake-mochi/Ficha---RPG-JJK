@@ -382,7 +382,13 @@ function onEdit(e) {
   }
   // 06/10/2026: a INVOCAÇÕES é como a FICHA AMALDIÇOADA: a conta mora na aba oculta dela, e a caixa calculada volta.
   if (aba === ABA_INVOCACOES_) {
-    try { devolverConta_(e, ABA_INVOCACOES_); } catch (err) { console.log('invocações: ' + err.message); }
+    try { redutorDaInvocacao_(e); } catch (err) { console.log('invocações, a caixa de ±: ' + err.message); }
+    try {
+      // a linha da lista do conjunto volta como referência, sem a ligação até a ficha: a ligação é refeita na hora
+      if (devolverConta_(e, ABA_INVOCACOES_) && e.range.getColumn() <= COLUNA_DA_LISTA_DE_INVOCACOES_) {
+        ligarSaltosDe_(SpreadsheetApp.getActive(), ABA_INVOCACOES_, DADOS_DA_INVOCACAO_);
+      }
+    } catch (err) { console.log('invocações: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
@@ -690,6 +696,8 @@ function configurarPessoal_(ss) {
 var ABA_AMALDICOADA_ = 'FICHA AMALDIÇOADA';
 var ABA_INVOCACOES_ = 'INVOCAÇÕES';
 var DADOS_DA_AMALDICOADA_ = 'DADOS_AM';
+var DADOS_DA_INVOCACAO_ = 'DADOS_INVOC';
+var COLUNA_DA_LISTA_DE_INVOCACOES_ = 6;      // o conjunto mora nas colunas D, E e F da aba
 
 /**
  * A caixa calculada da FICHA AMALDIÇOADA em que alguém digitou por cima volta a ser a conta, com um aviso.
@@ -748,10 +756,50 @@ function devolverConta_(e, nome) {
  * acabamento do construir() que a escreve. A cópia da planilha guarda o mesmo número, então a ligação continua
  * valendo na ficha de cada jogador. Onde cada salto mora e para onde ele vai, a DADOS_AM publica. Rodar de novo
  * reescreve as mesmas ligações.
+ *
+ * 07/10/2026: a lista do conjunto da INVOCAÇÕES usa a mesma peça. Cada linha da lista leva até a ficha dela, e a
+ * DADOS_INVOC publica a mesma tabela (a caixa, o alvo e a célula do texto).
  */
 function ligarSaltos_(ss) {
-  var aba = ss.getSheetByName(ABA_AMALDICOADA_), dados = ss.getSheetByName(DADOS_DA_AMALDICOADA_);
-  if (!aba || !dados) return 'sem a aba';
+  var am = ligarSaltosDe_(ss, ABA_AMALDICOADA_, DADOS_DA_AMALDICOADA_);
+  if (am === null) return 'sem a aba';
+  var inv = ligarSaltosDe_(ss, ABA_INVOCACOES_, DADOS_DA_INVOCACAO_);
+  return am + ' salto(s)' + (inv === null ? '' : ' e ' + inv + ' ligação(ões) da lista de invocações');
+}
+
+/**
+ * A caixa de ± da vida de cada ficha de invocação, como a da FICHA do jogador (pedido do Mizuki em 07/10/2026: "ter um
+ * redutor automatico, semelhante a ficha de player"). Digita −9, a ficha aplica na VIDA ATUAL e limpa a caixa. A conta é
+ * a mesma aplicaPasso_ da FICHA: a perda gasta a vida temporária primeiro, e a vida não passa da máxima. Com a VIDA
+ * ATUAL em branco a vida está cheia, e a conta parte da máxima.
+ *
+ * Onde mora a caixa de cada ficha, o ABAS diz (`redutores`: a caixa de ±, a vida atual, a temporária e a máxima).
+ * Devolve true se a edição foi numa dessas caixas.
+ */
+function redutorDaInvocacao_(e) {
+  var spec = ABAS.filter(function (s) { return s.nome === ABA_INVOCACOES_; })[0];
+  if (!spec || !spec.redutores) return false;
+  var onde = e.range.getA1Notation().split(':')[0];
+  var r = spec.redutores.filter(function (x) { return x[0] === onde; })[0];
+  if (!r) return false;
+  var passo = Number(e.range.getValue());
+  if (!passo) return true;
+  var aba = e.range.getSheet();
+  var atual = aba.getRange(r[1]), temp = aba.getRange(r[2]);
+  var max = Number(aba.getRange(r[3]).getValue()) || 0;
+  var antes = Math.max(0, Number(temp.getValue()) || 0);
+  var tem = atual.getValue();
+  var fim = aplicaPasso_(tem === '' || tem === null ? max : tem, max, antes, passo);
+  atual.setValue(fim.atual);
+  if (fim.temp !== antes) temp.setValue(fim.temp);
+  e.range.clearContent();
+  return true;
+}
+
+/** Os saltos de uma aba, lidos da aba de dados dela. Devolve quantos escreveu, ou null se a aba não existe. */
+function ligarSaltosDe_(ss, nomeDaAba, nomeDosDados) {
+  var aba = ss.getSheetByName(nomeDaAba), dados = ss.getSheetByName(nomeDosDados);
+  if (!aba || !dados) return null;
   var gid = aba.getSheetId(), n = 0;
   // 02/10/2026: o nome de quatro saltos muda com a rota (Feitiços, Manejos ou Katas), e o link cita a célula do nome na
   // DADOS_AM ('nome do salto'), e não o texto.
@@ -761,7 +809,7 @@ function ligarSaltos_(ss) {
     aba.getRange(String(l['caixa do salto'])).setFormula('=HYPERLINK("#gid=' + gid + '&range=' + l['alvo do salto'] + '",' + nome + ')');
     n++;
   });
-  return n + ' salto(s)';
+  return n;
 }
 
 /**
@@ -1682,6 +1730,11 @@ function passosDaPaleta_(primeira) {
   // porque a caixa mora lá; a aba em que ele clicou, na continuação). Com os tempos do Mizuki, cor e régua
   // de todas somam 22 a 25 s, colado no orçamento: o que sobrar é de uma aba que ele não está vendo, e ela
   // passa pra frente assim que ele a abre (ver onSelectionChange). Ordem do ABAS no resto: FICHA em segundo.
+  // 07/10/2026: a aba muito grande (a INVOCAÇÕES com doze fichas: 53 mil células, oito passos de cor e quatro de régua)
+  // vai para o fim da fila, para a FICHA PESSOAL e o GLOSSÁRIO não esperarem por ela. Se é nela que o jogador está, ela
+  // passa na frente como qualquer outra, na linha de baixo.
+  var muitoGrande = function (spec) { return spec.rows * spec.cols > 4 * CELULAS_POR_PASSO_ ? 1 : 0; };
+  abas.sort(function (a, b) { return muitoGrande(a) - muitoGrande(b); });
   abas.sort(function (a, b) { return (b.nome === primeira) - (a.nome === primeira); });
   // A barra cheia vem primeiro (01/10/2026): é uma célula só, na DADOS, e as barras de todas as abas a leem.
   var passos = ['barra'];
@@ -1689,9 +1742,12 @@ function passosDaPaleta_(primeira) {
     // a aba grande vai por trechos, e a régua vem logo depois do primeiro: a parte de cima é a que o jogador vê primeiro
     // (na FICHA, a ficha de antes do menu rápido), e o resto da cor vem depois dela
     var trechos = trechosDaAba_(spec) || [null];
+    // 07/10/2026: a régua da aba grande também vai em partes (ver partesDaBorda_); a da aba pequena segue num passo só
+    var nb = partesDaBorda_(spec);
     trechos.forEach(function (t, i) {
       passos.push('cor:' + spec.nome + (t ? ':' + t[0] + '-' + t[1] : ''));
-      if (i === 0 && (spec.bordas || []).length) passos.push('borda:' + spec.nome);
+      if (i === 0 && (spec.bordas || []).length) passos.push('borda:' + spec.nome + (nb ? ':0' : ''));
+      if (i === 0) for (var p = 1; p < nb; p++) passos.push('borda:' + spec.nome + ':' + p);
     });
   });
   // A arte vem por último (25/09/2026): é enfeite, e o Mizuki pediu que ela entre quando alguém mexer na
@@ -1734,6 +1790,11 @@ function estimativaDoPasso_(passo, tempos) {
   // quatro lados vão em lotes de 400, e os lados soltos em até quatro chamadas a mais (ver repintarBordas_).
   if (partes[0] === 'borda') {
     var aba = ABAS.filter(function (a) { return a.nome === partes[1]; })[0];
+    // a régua em partes: cada parte tem até CHAMADAS_DE_BORDA_POR_PASSO_ chamadas
+    if (aba && partes[2] !== undefined) {
+      var resto = chamadasDeBorda_(aba).length - Number(partes[2]) * CHAMADAS_DE_BORDA_POR_PASSO_;
+      return Math.max(1, Math.min(CHAMADAS_DE_BORDA_POR_PASSO_, resto)) * 350;
+    }
     var faixas = {};
     ((aba && aba.bordas) || []).forEach(function (b) { b[3].forEach(function (f) { faixas[f] = true; }); });
     return (Math.ceil(Object.keys(faixas).length / 400) + 4) * 350;
@@ -1821,7 +1882,7 @@ function convergirPaleta_(inicio, orcamento, dica, primeira) {
       repintarArte_(ss, agora, candidatosDeFonte_(agora, coresOpostas_(novo)), nome, Number(partes[2]));
     } else {
       // A régua compara contra a de FÁBRICA (fixa), não contra o "antes": não depende do histórico.
-      repintarBordas_(ss, '#' + String(agora.regua || '').toUpperCase(), nome);
+      repintarBordas_(ss, '#' + String(agora.regua || '').toUpperCase(), nome, partes[2] === undefined ? null : Number(partes[2]));
     }
     // O Sheets guarda a escrita e só a executa na próxima leitura: sem o flush, o tempo de um passo caía
     // no seguinte (achado com os números do Mizuki em 25/09/2026), e a conta do orçamento errava junto.
@@ -2592,43 +2653,71 @@ var DETALHE_COR_ = {};
  * `Ficha.gs` rodar (em configurarPaleta_) e não mora no ABAS — repintada à
  * parte, no fim desta função.
  */
-function repintarBordas_(ss, paraRegua, soAba) {
+/**
+ * As chamadas de régua de uma aba, na ordem em que são feitas: [[lado, traço, [até 400 faixas]], ...].
+ *
+ * 25/09/2026, pra troca caber no gatilho simples: o ABAS guarda a régua lado a lado (uma lista pro topo, uma pra
+ * esquerda...), e pintar assim eram 3.420 faixas. Quase toda faixa é uma caixa com os quatro lados no mesmo traço — 308
+ * das 479 da FICHA —, e essa vai numa operação só (o lado 'todos'). O resto continua lado a lado. O resultado é o
+ * mesmo: setBorder com null deixa o lado como está.
+ *
+ * 07/10/2026, a INVOCAÇÕES com doze fichas: são 7.810 faixas e 25 chamadas, contra 8 da FICHA AMALDIÇOADA, e o passo
+ * de régua dela sozinho passava dos 30 segundos num Sheets lento (o teste 8 da regressao-paleta.js). A aba com mais de
+ * CHAMADAS_DE_BORDA_POR_PASSO_ chamadas vai em partes ('borda:INVOCAÇÕES:0', ':1'...), cada uma com até esse tanto; a
+ * aba que cabe continua num passo só, com o nome de sempre ('borda:FICHA').
+ */
+var CHAMADAS_DE_BORDA_POR_PASSO_ = 8;
+var CHAMADAS_DE_BORDA_ = {};      // por aba, para não refazer a conta a cada passo da mesma execução
+function chamadasDeBorda_(spec) {
+  if (CHAMADAS_DE_BORDA_[spec.nome]) return CHAMADAS_DE_BORDA_[spec.nome];
   var deRegua = '#' + PALETA_DE_FABRICA_.regua.toUpperCase();
+  var ladosDa = {};
+  (spec.bordas || []).forEach(function (b) {
+    if (String(b[2]).toUpperCase() !== deRegua) return;
+    b[3].forEach(function (f) { (ladosDa[f] = ladosDa[f] || {})[b[0]] = b[1]; });
+  });
+  var grupos = {};   // 'lado|traço' -> faixas; o lado 'todos' é a caixa inteira
+  Object.keys(ladosDa).forEach(function (f) {
+    var l = ladosDa[f];
+    if (l.top && l.top === l.left && l.top === l.bottom && l.top === l.right) {
+      (grupos['todos|' + l.top] = grupos['todos|' + l.top] || []).push(f);
+    } else {
+      Object.keys(l).forEach(function (lado) {
+        (grupos[lado + '|' + l[lado]] = grupos[lado + '|' + l[lado]] || []).push(f);
+      });
+    }
+  });
+  var chamadas = [];
+  Object.keys(grupos).forEach(function (k) {
+    var faixas = grupos[k];
+    for (var i = 0; i < faixas.length; i += 400) chamadas.push([k.split('|')[0], k.split('|')[1], faixas.slice(i, i + 400)]);
+  });
+  CHAMADAS_DE_BORDA_[spec.nome] = chamadas;
+  return chamadas;
+}
+/** Em quantas partes a régua da aba vai: 0 se ela cabe num passo só. */
+function partesDaBorda_(spec) {
+  var n = chamadasDeBorda_(spec).length;
+  return n <= CHAMADAS_DE_BORDA_POR_PASSO_ ? 0 : Math.ceil(n / CHAMADAS_DE_BORDA_POR_PASSO_);
+}
+
+function repintarBordas_(ss, paraRegua, soAba, parte) {
   var TRACO = { thin: 'SOLID', medium: 'SOLID_MEDIUM', thick: 'SOLID_THICK', dashed: 'DASHED',
                 mediumDashed: 'DASHED', dotted: 'DOTTED', hair: 'DOTTED', double: 'DOUBLE' };
   ABAS.forEach(function (spec) {
     if (soAba && spec.nome !== soAba) return;   // 25/09/2026: um passo por aba, ver convergirPaleta_
     var aba = ss.getSheetByName(spec.nome);
     if (!aba) return;
-    // 25/09/2026, pra troca caber no gatilho simples: o ABAS guarda a régua lado a lado (uma lista pro
-    // topo, uma pra esquerda...), e pintar assim eram 3.420 faixas. Quase toda faixa é uma caixa com os
-    // quatro lados no mesmo traço — 308 das 479 da FICHA —, e essa vai numa operação só. O resto continua
-    // lado a lado. O resultado é o mesmo: setBorder com null deixa o lado como está.
-    var ladosDa = {};
-    (spec.bordas || []).forEach(function (b) {
-      if (String(b[2]).toUpperCase() !== deRegua) return;
-      b[3].forEach(function (f) { (ladosDa[f] = ladosDa[f] || {})[b[0]] = b[1]; });
-    });
-    var grupos = {};   // 'lado|traço' -> faixas; o lado 'todos' é a caixa inteira
-    Object.keys(ladosDa).forEach(function (f) {
-      var l = ladosDa[f];
-      if (l.top && l.top === l.left && l.top === l.bottom && l.top === l.right) {
-        (grupos['todos|' + l.top] = grupos['todos|' + l.top] || []).push(f);
-      } else {
-        Object.keys(l).forEach(function (lado) {
-          (grupos[lado + '|' + l[lado]] = grupos[lado + '|' + l[lado]] || []).push(f);
-        });
-      }
-    });
-    Object.keys(grupos).forEach(function (k) {
-      var lado = k.split('|')[0], traco = SpreadsheetApp.BorderStyle[TRACO[k.split('|')[1]] || 'SOLID'];
-      var todos = lado === 'todos', faixas = grupos[k];
-      for (var i = 0; i < faixas.length; i += 400) {
-        aba.getRangeList(faixas.slice(i, i + 400)).setBorder(
-          todos || lado === 'top' ? true : null, todos || lado === 'left' ? true : null,
-          todos || lado === 'bottom' ? true : null, todos || lado === 'right' ? true : null,
-          null, null, paraRegua, traco);
-      }
+    var chamadas = chamadasDeBorda_(spec);
+    if (parte !== null && parte !== undefined) {
+      chamadas = chamadas.slice(parte * CHAMADAS_DE_BORDA_POR_PASSO_, (parte + 1) * CHAMADAS_DE_BORDA_POR_PASSO_);
+    }
+    chamadas.forEach(function (ch) {
+      var lado = ch[0], traco = SpreadsheetApp.BorderStyle[TRACO[ch[1]] || 'SOLID'], todos = lado === 'todos';
+      aba.getRangeList(ch[2]).setBorder(
+        todos || lado === 'top' ? true : null, todos || lado === 'left' ? true : null,
+        todos || lado === 'bottom' ? true : null, todos || lado === 'right' ? true : null,
+        null, null, paraRegua, traco);
     });
   });
 

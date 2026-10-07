@@ -111,6 +111,7 @@ VAZIO = LAY["_meta"].get("estado_vazio", {})
 ARIAL = LAY["_meta"].get("arial_vira_corpo")
 CARIMBO = LAY["_meta"].get("carimbo_texto", {})
 difs, esperadas = [], Counter()
+NOME_DO_SISTEMA = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))["_meta"]["sistema"].upper()
 # A Origem que a personagem exportada tinha. O molde nasce com "Latente" (o desenho da mesa, ficha_layout.py).
 # A celula sai do rotulo ORIGEM da FICHA (o valor mora logo embaixo), e nao de um endereco escrito aqui: em
 # 17/09/2026 o Mizuki inseriu linhas pelo Sheets, e um endereco fixo teria apontado para o lugar antigo.
@@ -425,6 +426,12 @@ for n in wa.sheetnames:
                     and pa["valor"] in (None, "") and pa["fundo"] in (None, BASE) and not pa["borda"]
                     and not pb["borda"]):
                 esperadas["lombada até a última linha"] += 1
+                continue
+            # 07/10/2026: o nome do sistema na lombada. A exportacao diz "PROJETO M"; o Mizuki fechou "Ciclo Maldito", e
+            # a lombada diz o nome que o arquivo de dados da (monta.py). So o texto muda.
+            if (pa["valor"] == "PROJETO M" and pb["valor"] == NOME_DO_SISTEMA
+                    and all(pa[k] == pb[k] for k in pa if k != "valor")):
+                esperadas["o nome do sistema na lombada"] += 1
                 continue
             # limpeza 21: o texto que o livro mudou depois da exportacao (o Jorro do CATALOGO, que o capitulo 16
             # escreve "ataca e empurra"), em correcoes_texto._TROCAS_DO_LIVRO. So essa frase muda.

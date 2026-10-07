@@ -2,6 +2,8 @@
 
 Este pacote continua o trabalho da conversa anterior. **Nada foi recomeçado do zero, e nenhum arquivo dos seus repositórios foi editado.**
 
+**07/10/2026: a aba `INVOCAÇÕES` tem as doze fichas (a grade de 2 × 6), o sistema se chama Ciclo Maldito na ficha e a versão é a 1.0.** A montagem no Sheets passou a levar duas execuções: o `construir()` para sozinho e pede o `continuar()`. Está na segunda etapa do B40, no `PENDENCIAS.md`.
+
 **06/10/2026: a aba `INVOCAÇÕES` começou a ser construída** (a invocação refeita depois do livro reconstruído, com uma ficha na primeira etapa; o `apps-script/Invocacoes.gs` é o quarto arquivo do Apps Script). O que foi decidido, o que mudou do estudo e o que falta estão no B40 do `PENDENCIAS.md`.
 
 **04/10/2026: a ficha foi posta em dia com o livro reconstruído** (382 páginas, o `LIVRO-COMPLETO.md` do JJK---Project): seis Caminhos com o Incursor, dezoito Trilhas, Talento no lugar de Passiva, as regras novas de Força, carga e XP. O que mudou e o que ficou para depois estão no B36 do `PENDENCIAS.md`.

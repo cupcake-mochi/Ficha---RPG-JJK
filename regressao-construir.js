@@ -45,16 +45,32 @@ ok('cada aba fica do tamanho que o gerador mediu', ABAS.every((s) => { const A =
    ABAS.map((s) => { const A = S.acha(s.nome); return `${s.nome} ${A.maxR}x${A.maxC} (${s.rows}x${s.cols})`; }).join(' · '));
 ok('as ocultas ficam ocultas, e só elas', ABAS.every((s) => S.acha(s.nome).oculta === !!s.oculta));
 const formulasDoAbas = (s) => s.vals.filter((t) => typeof t[2] === 'string' && t[2][0] === '=');
-ok('toda fórmula do ABAS chega à célula dela, igual',
-   ABAS.every((s) => formulasDoAbas(s).every((t) => S.acha(s.nome).f.get(t[0] + ',' + t[1]) === t[2])),
-   ABAS.map((s) => s.nome + ' ' + formulasDoAbas(s).filter((t) => S.acha(s.nome).f.get(t[0] + ',' + t[1]) !== t[2]).length).join(' · '));
+// 07/10/2026: as linhas da lista do conjunto da INVOCAÇÕES saem do ABAS como referência à célula do texto, e o acabamento
+// as troca pela ligação até a ficha, que cita a mesma célula. Só elas chegam diferentes, e só desse jeito.
+const chegou = (s, t) => { const f = S.acha(s.nome).f.get(t[0] + ',' + t[1]);
+  return f === t[2] || (s.nome === 'INVOCAÇÕES' && t[1] === 4 && /^=HYPERLINK\("#gid=\d+&range=[A-Z]+\d+",/.test(f || '') && f.endsWith(',' + t[2].slice(1) + ')')); };
+ok('toda fórmula do ABAS chega à célula dela, igual (as linhas da lista de invocações, dentro da ligação)',
+   ABAS.every((s) => formulasDoAbas(s).every((t) => chegou(s, t))),
+   ABAS.map((s) => s.nome + ' ' + formulasDoAbas(s).filter((t) => !chegou(s, t)).length).join(' · '));
 const totalF = ABAS.reduce((n, s) => n + formulasDoAbas(s).length, 0);
 // 01/10/2026: o construir() estourou os seis minutos do Apps Script, e a montagem passou a ir menos vezes ao servidor.
 // As fórmulas vão na mesma gravação dos valores, e por isso toda aba tem de existir antes de a primeira ser preenchida.
 // 01/10/2026: os saltos da FICHA AMALDIÇOADA são a exceção. A ligação pede o número da aba, que só existe depois que ela
 // nasce, e por isso o acabamento grava uma fórmula por salto.
 const nSaltos = [...S.acha('FICHA AMALDIÇOADA').f.values()].filter((f) => f.startsWith('=HYPERLINK(')).length;
-ok(`as ${totalF} fórmulas vão junto com os valores, numa gravação por aba: setFormula só nos ${nSaltos} saltos da FICHA AMALDIÇOADA`, !CHAMADAS['Range.setFormulas'] && (CHAMADAS['Range.setFormula'] || 0) === nSaltos && nSaltos === 10,
+// 07/10/2026: e as doze linhas da lista do conjunto da INVOCAÇÕES, que levam cada uma até a ficha dela
+const INV_ = S.acha('INVOCAÇÕES');
+const ligacoes = [...INV_.f.entries()].filter(([, f]) => f.startsWith('=HYPERLINK('));
+{
+  // cada linha da lista leva ao número da lombada da ficha dela: uma ficha por linha, todas diferentes, na coluna da lombada
+  const specI = ABAS.find((s) => s.nome === 'INVOCAÇÕES');
+  const alvos = ligacoes.map(([k, f]) => /&range=([A-Z]+)(\d+)"/.exec(f)).filter(Boolean).map((m) => m[1] + m[2]);
+  const numeros = alvos.map((a1) => { const m = /^([A-Z]+)(\d+)$/.exec(a1); let c = 0; for (const ch of m[1]) c = c * 26 + ch.charCodeAt(0) - 64; return INV_.v.get(m[2] + ',' + c); });
+  ok('cada linha da lista de invocações leva ao número da ficha dela, de 1 a 12, e a ligação mostra o texto da linha',
+     alvos.length === 12 && new Set(alvos).size === 12 && numeros.join(',') === '1,2,3,4,5,6,7,8,9,10,11,12'
+     && ligacoes.every(([k, f]) => /,DADOS_INVOC!\$[A-Z]+\$\d+\)$/.test(f)) && !!specI, `alvos ${alvos.join(' ')} · números ${numeros.join(',')}`);
+}
+ok(`as ${totalF} fórmulas vão junto com os valores, numa gravação por aba: setFormula só nos ${nSaltos} saltos da FICHA AMALDIÇOADA e nas ${ligacoes.length} linhas da lista de invocações`, !CHAMADAS['Range.setFormulas'] && (CHAMADAS['Range.setFormula'] || 0) === nSaltos + ligacoes.length && nSaltos === 10 && ligacoes.length === 12,
    `${CHAMADAS['Range.setFormulas'] || 0} chamadas de setFormulas, ${CHAMADAS['Range.setFormula'] || 0} de setFormula`);
 const reg = S.P.registros, ondeNo = (t) => reg.findIndex((l) => l.indexOf(t) >= 0);
 ok('todas as abas nascem antes de a primeira ser preenchida, e cada etapa vai para o registro na hora, com o tempo dela',
@@ -65,7 +81,7 @@ ok('nenhuma fórmula é gravada antes de a aba que ela cita existir e ter o tama
 const totalM = ABAS.reduce((n, s) => n + s.merges.length, 0), chM = (CHAMADAS['Range.merge'] || 0) + (CHAMADAS['Range.mergeAcross'] || 0) + (CHAMADAS['Range.mergeVertically'] || 0);
 ok(`as ${totalM} mesclagens vão em lotes: menos de um terço em chamadas`, chM > 0 && chM < totalM / 3, `${chM} chamadas`);
 ok('nenhuma etapa lê a planilha célula a célula: a mesclagem, a fórmula e o valor de uma célula são lidos de matriz',
-   !CHAMADAS['Range.getFormula'] && (CHAMADAS['Range.isPartOfMerge'] || 0) <= ABAS.reduce((n, s) => n + (s.copias || []).length, 0) && (CHAMADAS['Range.getMergedRanges'] || 0) <= 5 && (CHAMADAS['Range.getValue'] || 0) <= 5 && !CHAMADAS['Spreadsheet.moveActiveSheet'],
+   !CHAMADAS['Range.getFormula'] && (CHAMADAS['Range.isPartOfMerge'] || 0) <= ABAS.reduce((n, s) => n + (s.copias || []).reduce((m, k) => m + (k[5] ? k[5].length : 1), 0), 0) && (CHAMADAS['Range.getMergedRanges'] || 0) <= 5 && (CHAMADAS['Range.getValue'] || 0) <= 5 && !CHAMADAS['Spreadsheet.moveActiveSheet'],
    `getFormula ${CHAMADAS['Range.getFormula'] || 0}, isPartOfMerge ${CHAMADAS['Range.isPartOfMerge'] || 0}, getMergedRanges ${CHAMADAS['Range.getMergedRanges'] || 0}, getValue ${CHAMADAS['Range.getValue'] || 0}, moveActiveSheet ${CHAMADAS['Spreadsheet.moveActiveSheet'] || 0}`);
 const PESO_DA_MONTAGEM = Object.assign({}, CHAMADAS);
 // 01/10/2026: a DADOS_AM tem uma linha de conta por feitiço, com 75 fórmulas iguais a menos da linha. Só a primeira
@@ -300,6 +316,25 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   ok(`as ${livres.length} caixas livres (Anotações e Escolhas da Trilha) também esticam quando o jogador escreve`,
      !erroH && livres.length === 3 && alturas(livres[0]).every((x) => x > MED.minima), erroH ? erroH.message : JSON.stringify(alturas(livres[0])));
 }
+{
+  // 07/10/2026: a caixa de ± da vida de cada ficha de invocação, como a da FICHA. A vida máxima é uma conta, e o Sheets
+  // de mentira não calcula: aqui ela vira número, na ficha 8 (a segunda da segunda coluna de fichas)
+  const specI = ABAS.find((s) => s.nome === 'INVOCAÇÕES'), IV = S.ss.getSheetByName('INVOCAÇÕES');
+  const red = specI.redutores || [];
+  let erroR = null, passos = [];
+  try {
+    const [d, atual, temp, max] = red[7];
+    const digita = (x) => { IV.getRange(d).setValue(x); S.ctx.onEdit(ed('INVOCAÇÕES', d, x)); passos.push([IV.getRange(atual).getValue(), IV.getRange(temp).getValue(), IV.getRange(d).getValue()].join('/')); };
+    IV.getRange(max).setValue(27); IV.getRange(temp).setValue(4);
+    digita(-9);     // em branco a vida está cheia: 27, e a perda gasta os 4 de temporária primeiro
+    digita(3);      // o ganho não devolve a temporária
+    digita(50);     // e a vida não passa da máxima
+    digita(-40);    // nem desce de zero
+  } catch (e) { erroR = e; }
+  ok('a caixa de ± de cada ficha de invocação aplica na vida atual e se limpa: a perda gasta a temporária primeiro, e a vida fica entre zero e a máxima',
+     !erroR && red.length === 12 && new Set(red.map((x) => x[0])).size === 12 && passos.join(' ') === '22/0/ 25/0/ 27/0/ 0/0/',
+     erroR ? erroR.message : `${red.length} caixas · ${passos.join(' ')}`);
+}
 let erroSel = null;
 try { S.ctx.onSelectionChange({ range: S.ss.getSheetByName(NOME).getRange('D10') }); S.ctx.onOpen({}); } catch (e) { erroSel = e; }
 ok('clicar numa célula e abrir a planilha não estouram', !erroSel, erroSel ? erroSel.message : '');
@@ -316,6 +351,8 @@ ok('rodar o acabar() numa ficha pronta não muda nada: mesmas notas, mesmas trav
 let agora = 0;
 class RelogioQueCorre { getTime() { agora += 60000; return agora; } }
 const L = criaSheets(FICHA_SRC, GS, { Date: RelogioQueCorre });
+// aqui a montagem das abas não para no meio (isso é o teste de baixo): o que se cobra é a vez passada ao acabar()
+L.ctx.LIMITE_DA_EXECUCAO_ = Infinity;
 let erroL = null;
 try { L.ctx.construir(); } catch (e) { erroL = e; }
 const semAcabamento = !L.acha('FICHA').prot.length && !L.acha('FICHA').notas.size && !L.P.nomeados['PALETA_ESCOLHIDA'];
@@ -325,6 +362,56 @@ ok('a montagem que passa do teto de tempo deixa as abas de pé, em português, e
 try { L.ctx.acabar(); } catch (e) { erroL = e; }
 ok('e o acabar() depois dela deixa a planilha igual à de uma montagem que não parou', !erroL && JSON.stringify(retrato(L.P)) === antes, erroL ? erroL.message : 'a planilha ficou diferente');
 ok('o acabar() escreve a regra de cor com a planilha em inglês, como o construir()', !R.P.orfas.length && !L.P.orfas.length, R.P.orfas.concat(L.P.orfas).slice(0, 3).join(' · '));
+
+console.log('\nA MONTAGEM QUE NÃO CABE NUMA EXECUÇÃO (07/10/2026, a INVOCAÇÕES com doze fichas)');
+// o mesmo relógio que corre, agora com o limite de verdade: a montagem para antes de começar a aba que não cabe
+agora = 0;
+const C = criaSheets(FICHA_SRC, GS, { Date: RelogioQueCorre });
+let erroC = null;
+try { C.ctx.construir(); } catch (e) { erroC = e; }
+const parada = () => (C.P.props.montagem_parada === undefined ? null : Number(C.P.props.montagem_parada));
+const vazias = () => C.P.abas.filter((a) => !a.v.size).map((a) => a.nome);
+const primeira = parada();
+ok('a montagem que não cabe nos seis minutos para ANTES de começar uma aba, em português, guarda em que aba parou e pede o continuar()',
+   !erroC && primeira > 0 && primeira < ABAS.length && C.P.locale === 'pt_BR' && /^A MONTAGEM PAROU ANTES DA ABA .* rode a função continuar\(\)/.test(C.P.registro)
+   && C.P.registro.indexOf('ANTES DA ABA ' + ABAS[primeira].nome + ',') > 0 && C.P.abas.map((a) => a.nome).join('|') === ABAS.map((a) => a.nome).join('|')
+   && vazias().join('|') === ABAS.slice(primeira).map((a) => a.nome).join('|'),
+   erroC ? erroC.message : `parou em ${primeira} · vazias: ${vazias().join(', ')} · ${C.P.registro.slice(0, 120)}`);
+let erroP = null;
+try { C.ctx.acabar(); } catch (e) { erroP = e; }
+ok('o acabar() não roda por cima de uma montagem parada: manda rodar o continuar()', !!erroP && /rode continuar\(\) antes do acabar\(\)/.test(erroP.message) && !C.acha('FICHA').prot.length,
+   erroP ? erroP.message : 'não parou');
+const paradas = [primeira];
+let voltas = 0;
+while (!erroC && parada() !== null && voltas < 30) {
+  voltas++;
+  try { C.ctx.continuar(); } catch (e) { erroC = e; }
+  paradas.push(parada() === null ? ABAS.length : parada());
+}
+ok(`cada continuar() segue de onde o anterior parou e monta pelo menos uma aba: ${voltas} vez(es), paradas em ${paradas.join(', ')}`,
+   !erroC && voltas >= 1 && paradas.every((p, i) => !i || p > paradas[i - 1]) && parada() === null && !vazias().length && C.P.locale === 'pt_BR',
+   erroC ? erroC.message : `paradas em ${paradas.join(', ')} · vazias: ${vazias().join(', ')}`);
+if (!erroC && /FALTA O ACABAMENTO: rode a função acabar\(\)/.test(C.P.registro)) { try { C.ctx.acabar(); } catch (e) { erroC = e; } }
+ok('e a planilha montada em várias execuções fica igual à de uma montagem que não parou', !erroC && JSON.stringify(retrato(C.P)) === antes, erroC ? erroC.message : 'a planilha ficou diferente');
+let erroN = null;
+try { C.ctx.continuar(); } catch (e) { erroN = e; }
+ok('o continuar() sem montagem parada para com um recado, e não mexe em nada', !!erroN && /não há montagem parada/.test(erroN.message) && JSON.stringify(retrato(C.P)) === antes, erroN ? erroN.message : 'não parou');
+// uma montagem do zero esquece a parada que houver, e esquece LOGO: se o Apps Script a cortar no meio, o continuar() não
+// pode seguir de uma parada velha numa planilha que acabou de ser apagada
+C.P.props.montagem_parada = '3';
+const montarDeVerdade = C.ctx.montarAba_;
+let cortada = null;
+C.ctx.montarAba_ = () => { throw new Error('cortada no meio'); };
+try { C.ctx.construir(); } catch (e) { cortada = e; }
+C.ctx.montarAba_ = montarDeVerdade;
+let erroV = null;
+try { C.ctx.continuar(); } catch (e) { erroV = e; }
+ok('a montagem cortada no meio não deixa valendo a parada de antes: o continuar() manda montar do começo',
+   !!cortada && parada() === null && C.P.locale === 'pt_BR' && !!erroV && /não há montagem parada/.test(erroV.message), cortada ? `parada ${parada()} · ${erroV && erroV.message}` : 'a montagem não foi cortada');
+try { C.ctx.LIMITE_DA_EXECUCAO_ = Infinity; C.ctx.TETO_DA_MONTAGEM_ = Infinity; C.ctx.construir(); } catch (e) { erroC = e; }
+ok('o construir() começa do zero e esquece a montagem parada que houver', !erroC && parada() === null && JSON.stringify(retrato(C.P)) === antes && /^FICHA PRONTA em /.test(C.P.registro),
+   erroC ? erroC.message : C.P.registro.slice(0, 100));
+
 const semAba = criaSheets(FICHA_SRC, GS);
 let erroS = null;
 try { semAba.ctx.acabar(); } catch (e) { erroS = e; }

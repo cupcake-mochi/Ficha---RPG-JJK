@@ -959,10 +959,27 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
           bool(_orc) and int(_orc.group(1)) <= 25000, _orc.group(1) if _orc else "sem ORCAMENTO_SIMPLES_")
     # E pra caber de uma vez, sem clique: a régua pinta a caixa de quatro lados iguais numa operação só
     # (3.420 faixas viram 1.305), e as abas ocultas ficam fora da troca (29 mil células viram 20 mil).
-    _rb2 = re.search(r"function repintarBordas_\(ss, paraRegua, soAba\)\s*\{(.*?)\n\}", _CODA, re.S)
+    # 07/10/2026: a conta de quais faixas vão juntas saiu para o chamadasDeBorda_, que a régua em partes também usa
+    _rb2 = re.search(r"function repintarBordas_\(ss, paraRegua, soAba, parte\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _cb2 = re.search(r"function chamadasDeBorda_\(spec\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("a régua pinta numa operação só a caixa que tem os quatro lados no mesmo traço",
-          bool(_rb2) and "l.top === l.left && l.top === l.bottom && l.top === l.right" in _rb2.group(1)
-          and "todos || lado === 'top'" in _rb2.group(1))
+          bool(_rb2) and bool(_cb2) and "l.top === l.left && l.top === l.bottom && l.top === l.right" in _cb2.group(1)
+          and "todos || lado === 'top'" in _rb2.group(1) and "chamadasDeBorda_(spec)" in _rb2.group(1))
+    # a régua da aba grande vai em partes, e a da aba que cabe continua num passo só, com o nome de sempre
+    _gsb = _sp.run(["node", "-e", """
+const fs=require('fs'),vm=require('vm'),c={};vm.createContext(c);
+vm.runInContext(fs.readFileSync('apps-script/Ficha.gs','utf8')+'\\n'+fs.readFileSync('apps-script/Invocacoes.gs','utf8'),c);
+vm.runInContext(fs.readFileSync('apps-script/Codigo.gs','utf8'),c);
+console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oculta}).map(function(s){return [s.nome, chamadasDeBorda_(s).length, partesDaBorda_(s), CHAMADAS_DE_BORDA_POR_PASSO_]})',c)));
+"""], capture_output=True, text=True) if _sh.which("node") else None
+    if _gsb is not None and _gsb.returncode == 0:
+        _partes = json.loads(_gsb.stdout)
+        checa("a régua de cada aba cabe num passo de até 8 chamadas, ou vai em partes (a INVOCAÇÕES, com doze fichas)",
+              all((n <= teto and p == 0) or (n > teto and p == -(-n // teto)) for _, n, p, teto in _partes)
+              and any(p > 1 for _, _, p, _ in _partes) and all(p == 0 for nome_, _, p, _ in _partes if nome_ != "INVOCAÇÕES"),
+              str(_partes))
+    else:
+        print("  [--] node nao existe nesta maquina (ou o script nao carregou): as partes da regua nao foram conferidas")
     _pp = re.search(r"function passosDaPaleta_\(primeira\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("as abas ocultas ficam fora dos passos de cor da troca",
           bool(_pp) and "return !spec.oculta;" in _pp.group(1))
@@ -1167,7 +1184,7 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     # A caixinha que avisa da espera da troca de paleta, com o intervalo nomeado próprio pra a borda dela
     # ser repintada junto com a régua.
     _cfg = re.search(r"function configurarPaleta_\(ss, force\)\s*\{(.*?)\n\}", _CODA, re.S)
-    _rb = re.search(r"function repintarBordas_\(ss, paraRegua, soAba\)\s*\{(.*?)\n\}", _CODA, re.S)
+    _rb = re.search(r"function repintarBordas_\(ss, paraRegua, soAba, parte\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("a caixa de aviso da espera existe, tem intervalo nomeado, e a borda dela é repintada",
           bool(_cfg) and "NOME_CEL_PALETA_AVISO_" in _cfg.group(1) and "TEXTO_AVISO_PALETA_" in _cfg.group(1)
           and "var TEXTO_AVISO_PALETA_ = 'O tema leva uns 20 segundos. O que faltar termina enquanto você usa a ficha.';" in _CODA

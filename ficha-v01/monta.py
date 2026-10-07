@@ -124,6 +124,24 @@ moldura_foto.desenha(_MF)
 import correcoes_texto
 print(f"os textos com inicial maiuscula: {correcoes_texto.aplica(LAYOUT)} celula(s) diferentes da exportacao")
 
+# ---------------------------------------------------------------------------------------------
+# O NOME DO SISTEMA NA LOMBADA (07/10/2026). O Mizuki: "a ficha ta sem o nome, que é ciclo maldito e pode por a versão
+# como 1.0, isso vale pra ficha toda". O cabeçalho de cada aba já lê o nome da DADOS!F1, que vem do arquivo de dados
+# (_meta.sistema); o texto em pé na lateral da FICHA vinha escrito da exportação, "PROJETO M", e as abas novas o copiam
+# de lá. Ele passa a dizer o nome que o arquivo de dados dá.
+# ---------------------------------------------------------------------------------------------
+LOMBADA_DE_ANTES = "PROJETO M"
+_SISTEMA = json.load(open(os.path.join(dados_catalogo.RAIZ, "catalogo-projeto-m.json"), encoding="utf-8"))["_meta"]["sistema"].upper()
+_n_lomb = 0
+for _a in LAYOUT["abas"]:
+    for _c in _a["celulas"]:
+        if _c[1] == LOMBADA_DE_ANTES:
+            _c[1] = _SISTEMA
+            _n_lomb += 1
+if not _n_lomb:
+    raise SystemExit("monta: nao achei o texto da lombada para por o nome do sistema")
+print(f"o nome do sistema na lombada ({_SISTEMA}): {_n_lomb} celula(s) diferentes da exportacao")
+
 # 17/09/2026: o GLOSSARIO, entre a DADOS e a INVOCACAO -- o que cada atributo, pericia, oficio e
 # termo da ficha quer dizer. Nao tem planilha viva por tras, ao contrario das outras seis: nasce
 # inteiro aqui, reaproveitando os estilos que o CATALOGO ja usa. Ver glossario.py.
@@ -309,7 +327,9 @@ def _extras(a):
            "foto": a.get("foto"),
            # 05/10/2026, a FICHA AMALDICOADA: a caixa que espelha a CARTEIRA (o nome da tecnica), para o aviso de quem
            # escreve por cima dela dizer onde se escreve
-           "da_carteira": a.get("da_carteira", [])}
+           "da_carteira": a.get("da_carteira", []),
+           # 07/10/2026, a INVOCAÇÕES: a caixa de ± da vida de cada ficha, que o onEdit aplica (redutorDaInvocacao_)
+           "redutores": a.get("redutores", [])}
     return {k: v for k, v in out.items() if v}
 
 gs, celulas, pecas = emitir_gs.escrever(

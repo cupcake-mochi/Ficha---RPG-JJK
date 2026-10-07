@@ -211,8 +211,14 @@ ok(`nenhuma execução passou de 30 s (maior: ${(r.maior/1000).toFixed(1)} s)`, 
 const PRIMEIRAS=['CARTEIRA','FICHA'];
 ok('cor e régua da CARTEIRA e da FICHA na execução da troca, sem aviso',
    PRIMEIRAS.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs[0].passos.includes(p))) && P.log.toasts.length===0, r.execs[0].passos.join(', '));
-ok('as outras abas terminam até o segundo clique depois da troca',
-   r.execs.length<=3 && visiveis.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs.reduce((t,e)=>t.concat(e.passos),[]).includes(p))), resumo(r));
+// 07/10/2026: a INVOCAÇÕES com doze fichas tem 53 mil células, mais que todas as outras juntas, e sozinha pede duas ou
+// três execuções. Ela vai para o fim da fila: as outras continuam terminando nos dois cliques seguintes, e ela, até o
+// quarto. Se é nela que o jogador está, ela passa na frente (o teste 6).
+const GRANDE='INVOCAÇÕES', ateAqui=(n)=>r.execs.slice(0,n).reduce((t,e)=>t.concat(e.passos),[]);
+ok('as outras abas terminam até o segundo clique depois da troca, e a INVOCAÇÕES, que vai por último, até o quarto',
+   r.execs.length<=5 && visiveis.filter(a=>a!==GRANDE).every(a=>daAba(r.ctx.passosDaPaleta_(),a).filter(p=>p.indexOf('arte:')!==0).every(p=>ateAqui(3).includes(p)))
+   && visiveis.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>ateAqui(5).includes(p)))
+   && r.ctx.passosDaPaleta_().filter(p=>/^(cor|borda):/.test(p)).slice(-12).every(p=>p.split(':')[1]===GRANDE), resumo(r));
 ok('igual a E→M de uma vez', !igual(P,umaVez([E,M])), igual(P,umaVez([E,M])));
 ok('depois da segunda troca a barra e as letras de enfeite são as do tema novo, sem depender do anterior',
    P.abas.DADOS.valores[celBarra()]===hexDe(M,'barra') && enfeiteFora(P,M).length===0, `${P.abas.DADOS.valores[celBarra()]} · ${enfeiteFora(P,M).slice(0,4).join(', ')}`);

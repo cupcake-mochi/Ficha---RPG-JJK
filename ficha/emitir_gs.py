@@ -340,12 +340,23 @@ def compactar(aba):
     if not pares:
         return aba
 
+    def copia_de(lin):
+        """a cópia em que esta linha está: (primeira linha do molde, última, quantas linhas ela desce), ou None"""
+        for par in pares:
+            if par[0] + par[2] <= lin <= par[1] + par[2]:
+                return par
+        return None
+
     def de_onde(lin):
         """quantas linhas acima está a linha do molde de que esta é cópia, ou None"""
-        for r1, r2, dl in pares:
-            if r1 + dl <= lin <= r2 + dl:
-                return dl
-        return None
+        par = copia_de(lin)
+        return par[2] if par else None
+
+    def mesma(l1, l2):
+        """as duas linhas estão na MESMA cópia. 07/10/2026, a INVOCAÇÕES: uma fileira de fichas é copiada em trechos
+        (o que fica entre as fileiras de cartas), e todos descem o mesmo tanto; a lombada do nome começa num trecho e
+        acaba em outro, e não é cópia de nenhum."""
+        return copia_de(l1) is not None and copia_de(l1) == copia_de(l2)
     por = {(t[0], t[1]): t for t in aba["vals"]}
     out = dict(aba)
     out["vals"] = [t for t in aba["vals"]
@@ -353,17 +364,17 @@ def compactar(aba):
     tem_fundo = {json.dumps(f) for f in aba["fundos"]}
     out["fundos"] = [f for f in aba["fundos"] if de_onde(f[0]) is None or json.dumps([f[0] - de_onde(f[0])] + list(f[1:])) not in tem_fundo]
     tem_mescla = {tuple(m) for m in aba["merges"]}
-    out["merges"] = [m for m in aba["merges"] if de_onde(m[0]) is None or de_onde(m[0]) != de_onde(m[2])
+    out["merges"] = [m for m in aba["merges"] if not mesma(m[0], m[2])
                      or (m[0] - de_onde(m[0]), m[1], m[2] - de_onde(m[0]), m[3]) not in tem_mescla]
 
     def sai_a1(a1, tem):
         l1, l2 = _linhas_do_a1(a1)
         dl = de_onde(l1)
-        return dl is not None and dl == de_onde(l2) and _desce_a1(a1.replace("$", ""), -dl) in tem
+        return mesma(l1, l2) and _desce_a1(a1.replace("$", ""), -dl) in tem
     out["bordas"] = [[b[0], b[1], b[2], [x for x in b[3] if not sai_a1(x, set(b[3]))]] for b in aba.get("bordas") or []]
     if aba.get("dv"):
         tem_dv = {(d[0], d[1]) for d in aba["dv"]}
-        fora = lambda d: (de_onde(_linhas_do_a1(d[0])[0]) is not None and de_onde(_linhas_do_a1(d[0])[0]) == de_onde(_linhas_do_a1(d[0])[1])
+        fora = lambda d: (mesma(*_linhas_do_a1(d[0]))
                           and (_desce_a1(d[0], -de_onde(_linhas_do_a1(d[0])[0])), d[1]) in tem_dv)
         out["dv"] = [d for d in aba["dv"] if not fora(d)]
     if aba.get("caixas"):
@@ -372,10 +383,21 @@ def compactar(aba):
     if aba.get("formatos"):
         tem_fmt = {(f[0], f[1]) for f in aba["formatos"]}
         out["formatos"] = [f for f in aba["formatos"]
-                           if de_onde(_linhas_do_a1(f[0])[0]) is None or (_desce_a1(f[0], -de_onde(_linhas_do_a1(f[0])[0])), f[1]) not in tem_fmt]
+                           if not mesma(*_linhas_do_a1(f[0])) or (_desce_a1(f[0], -de_onde(_linhas_do_a1(f[0])[0])), f[1]) not in tem_fmt]
     if _forma_canonica(expandir(out)) != _forma_canonica(aba):
+        # o que não voltou, para quem for consertar o desenho: os primeiros de cada lista, a mais e a menos
+        volta, onde = expandir(out), []
+        lista = lambda xs: {json.dumps(x, ensure_ascii=False, sort_keys=True) for x in xs}
+        for k in ("vals", "fundos", "merges", "dv", "caixas", "formatos"):
+            a_, b_ = lista(volta.get(k) or []), lista(aba.get(k) or [])
+            if a_ != b_:
+                onde.append(f"{k}: {len(a_ - b_)} a mais {sorted(a_ - b_)[:4]}, {len(b_ - a_)} a menos {sorted(b_ - a_)[:4]}")
+        for x, y in zip(volta.get("bordas") or [], aba.get("bordas") or []):
+            if sorted(x[3]) != sorted(y[3]):
+                onde.append(f"bordas {x[:3]}: a mais {sorted(set(x[3]) - set(y[3]))[:6]}, a menos {sorted(set(y[3]) - set(x[3]))[:6]}")
         raise SystemExit(f"emitir_gs: as fileiras copiadas da aba {aba['nome']} nao voltam iguais: alguma copia difere do molde "
-                         "de um jeito que a copia nao sabe escrever (uma celula que o molde tem e a copia nao, por exemplo)")
+                         "de um jeito que a copia nao sabe escrever (uma celula que o molde tem e a copia nao, por exemplo). "
+                         + " | ".join(onde))
     return out
 
 

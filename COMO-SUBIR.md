@@ -46,7 +46,7 @@ De novo no `+`, **Script**, nome `Habilidades`, e cola o conteúdo de **`apps-sc
 
 E mais uma vez no `+`, **Script**, nome `Invocacoes`, e cola o conteúdo de **`apps-script/Invocacoes.gs`**. *Desde 06/10/2026: são as abas `INVOCAÇÕES` e `DADOS_INVOC`, que não cabem no `Ficha.gs`. Sem ele a ficha monta igual, mas sem essas duas abas. A ordem em que os arquivos aparecem no projeto não importa.*
 
-> O `Ficha.gs` tem uns 760 KB, o `Habilidades.gs` uns 200 KB, o `Codigo.gs` uns 215 KB e o `Invocacoes.gs` uns 170 KB. É normal eles demorarem a colar.
+> O `Ficha.gs` tem uns 790 KB, o `Habilidades.gs` uns 210 KB, o `Codigo.gs` uns 220 KB e o `Invocacoes.gs` uns 440 KB. É normal eles demorarem a colar.
 
 Salva com `Ctrl+S`.
 
@@ -76,6 +76,8 @@ FICHA PRONTA em 74s · CARTEIRA: 1503 células, 9 fórmulas, 4 imagens · FICHA:
 Os números do exemplo são inventados: servem só para mostrar o formato. **Se a execução expirar de novo, me mande o registro inteiro:** ele diz em que etapa ela estava e quanto cada uma levou.
 
 **Na `FICHA AMALDIÇOADA` o registro diz como as fileiras de cartas vieram.** O normal é `fileiras copiadas`. Se aparecer `FILEIRAS MESCLADAS UMA A UMA`, a aba está certa do mesmo jeito, mas a montagem demorou mais: me avise, porque aí vale tirar a cópia do caminho.
+
+**Desde 07/10/2026 a montagem não cabe mais numa execução**, por causa da aba `INVOCAÇÕES` com as doze fichas. O `construir()` para sozinho antes de começar uma aba que pode não acabar nos seis minutos, e o registro termina em **`A MONTAGEM PAROU ANTES DA ABA … rode a função continuar()`**. No seletor de funções, escolhe **`continuar`** e clica em **▶ Executar**: ela segue de onde parou. Se o registro pedir de novo, roda de novo. Pela conta são duas execuções ao todo (o `construir()` e um `continuar()`), e a última termina em `FICHA PRONTA`. Enquanto o registro pedir o `continuar()`, a planilha está pela metade: as abas existem, e as últimas estão vazias. *Com uma ficha só, em 06/10/2026, o Mizuki mediu 288 segundos numa execução.*
 
 **Se o registro terminar em `FALTA O ACABAMENTO: rode a função acabar()`**, as abas já estão de pé e faltam a cor de estado, as notas, as travas e a caixa da paleta. No seletor de funções, escolhe **`acabar`** e clica em **▶ Executar**. Ela pode rodar quantas vezes precisar, sem estragar nada.
 

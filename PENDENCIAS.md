@@ -2468,7 +2468,7 @@ Preparada da Vanguarda com −2): a carta 7 da Vanguarda ainda diz −1. Puxar o
 pôr o catálogo em dia, que é uma passada própria.
 
 
-### B40 · A aba `INVOCAÇÕES`, a invocação refeita depois do livro reconstruído — **EM ANDAMENTO desde 06/10/2026: a primeira etapa, com uma ficha, está no gerador; falta ele montar no Sheets e medir**
+### B40 · A aba `INVOCAÇÕES`, a invocação refeita depois do livro reconstruído — **EM ANDAMENTO desde 06/10/2026: a grade de 2 × 6 está no gerador desde 07/10 (segunda etapa, no fim desta seção); falta ele montar no Sheets com `construir()` e `continuar()`**
 
 *Pedido dele em 06/10/2026: "precisamos olhar o como fazer a ficha de invocação após a atualização do sistema", com
 protótipos antes de aplicar. É a pendência que o B36 deixou ("pode deixar a reconstrução das invocações na ficha para
@@ -2545,3 +2545,56 @@ cada coluna tem a largura do que guarda:*
 17/09/2026: 22 diferenças não explicadas na `DADOS` e na `FICHA`, todas do B36 (o Incursor na tabela dos Caminhos, o
 Bastião com Provocar, a faixa `N5:U10`). Conferido numa cópia do commit `676f093`, sem nada desta rodada. Ele não
 aparecia porque as últimas rodadas rodaram sem o `original.xlsx`.*
+
+
+#### B40, segunda etapa (07/10/2026): a medida dele, a grade de 2 × 6 e o retorno de quem leu a aba
+
+**A medida, com uma ficha.** *Ele colou os quatro arquivos, rodou o `construir()` e mandou o registro: "Deu certinho,
+apareceu aq". `FICHA PRONTA em 288s`, numa execução só. Abas criadas 62,9 s · CARTEIRA 5,2 · FICHA 38,5 · FICHA
+AMALDIÇOADA 23,4 · **INVOCAÇÕES 8,0** · FICHA PESSOAL 8,2 · DADOS 5,1 · DADOS_AM 15,5 · **DADOS_INVOC 18,6** · GLOSSÁRIO
+1,4 · menus 12,8 (350 menus) · travas 81,3 (70 travas) · o resto do acabamento 6. A planilha que ele exportou
+(`Ficha - Era da Revolução.xlsx`) não tem erro de fórmula em nenhuma das duas abas da invocação.*
+
+**O que a medida diz das doze fichas.** *Sobravam 72 s dos 360, e as doze fichas trazem dez vezes as células de uma:
+a aba vai de 203 × 26 para 1.178 × 45 (53 mil células) e a `DADOS_INVOC` de 86 × 406 para 159 × 446 (71 mil). Pela
+medida, a aba visível custa de 1,3 a 2,1 s por mil células e a oculta 0,5 a 0,6: a `INVOCAÇÕES` deve levar de 80 a 110 s
+e a `DADOS_INVOC` uns 40. A montagem das abas sozinha fica perto dos 300 s, e com o acabamento passa dos 360. **Não cabe
+mais numa execução.***
+
+| o que mudou | por quê |
+|---|---|
+| **`N_COLUNAS, N_FILEIRAS = 2, 6`** no `ficha_invocacoes.py` | a grade que ele fechou. Doze fichas, 156 cartas de habilidade, 5.188 mesclagens, 1.093 faixas de menu |
+| **as fileiras de fichas vêm por cópia** | a segunda fileira é o molde da terceira à sexta, em cinco trechos (o que fica entre as fileiras de cartas, que já eram cópia da primeira). A primeira não serve de molde, porque divide as linhas com o conjunto. A cópia vai coluna de fichas por coluna de fichas (`k[5]` do `copias`), porque a lombada do nome atravessa os trechos e o Sheets não copia meia mesclagem. O `compactar` do `emitir_gs.py` passou a exigir que as duas pontas de uma mesclagem estejam na MESMA cópia, e a diz qual lista não voltou quando o desenho não fecha |
+| **a linha de cada carta na `DADOS_INVOC` é igual em todas** | o nível em que a carta abre e o título dela estavam escritos dentro da fórmula, e a coluna de erros sozinha pesava 535 KB. Agora saem das colunas `abre` e `tit`, e a fórmula é preenchida para baixo |
+| **o `Invocacoes.gs` ficou com 437 KB** | com a grade ligada e nada mais ele saía com 1,2 MB, acima do teto de 900 KB por arquivo. O `Ficha.gs` tem 790 KB |
+| **o `construir()` para sozinho, e o `continuar()` segue** (`ficha/modelo.gs.js`) | antes de começar cada aba ele estima o custo dela pela medida de 06/10 (2,4 ms por célula na aba visível e 0,7 na oculta, o pior de cada tipo com uns 15% a mais) e, se a conta passar de 300 s, guarda em que aba parou (propriedade `montagem_parada`) e pede o `continuar()`. A primeira aba de cada execução sempre é montada. O `acabar()` recusa rodar por cima de uma montagem parada, e o `construir()` do zero esquece a parada de antes logo no começo. Pela conta, são **duas execuções**: a primeira para antes da `DADOS_INVOC`, e a segunda faz ela, o `GLOSSÁRIO`, os menus e o acabamento |
+| **a lista do conjunto leva até cada ficha** | a `DADOS_INVOC` publica a tabela de saltos (a caixa, o alvo e a célula do texto), e o `ligarSaltos_` do `Codigo.gs`, que já fazia os dez da `FICHA AMALDIÇOADA`, escreve as doze ligações no acabamento. O alvo é o número da lombada da ficha, que fica à vista com a fileira e a coluna fechadas. Quem escrever por cima de uma linha recebe a conta de volta, e a ligação é refeita na hora |
+| **a régua da aba troca de cor em quatro partes** | a troca de tema tem 30 s por execução. A aba tem 7.810 faixas de borda e 25 chamadas, contra 8 da `FICHA AMALDIÇOADA`, e o passo dela sozinho passava do tempo num Sheets lento (o teste 8 da `regressao-paleta.js`). A aba com mais de 8 chamadas vai em partes (`borda:INVOCAÇÕES:0` a `:3`); as outras continuam num passo só, com o nome de sempre. A cor da aba vai em oito passos. **A troca de tema inteira fica bem mais longa** do que era com cinco abas |
+
+**O retorno de quem leu a aba.** *Ele mostrou a aba a um amigo e trouxe os pontos durante a rodada:*
+
+| o que ele disse | o que mudou |
+|---|---|
+| *"ele achou desnecessario ter o 'tarefa' na ficha, pq o player iria escrever algo q ele fala pro mestre na mesa assim?"* | saiu a caixa `TAREFA` |
+| *"tira esse 'abre no' e coloca ou só o nível que nem o primeiro, fica mais bonitinho"* (o amigo, sobre a coluna dos talentos) | o rótulo de cada talento é sempre `NV 6 · CE 1`. Quem escolher um talento antes da hora continua vendo o aviso ao lado. O título da carta de habilidade ainda diz `ABRE NO NÍVEL`, e ele não falou dele |
+| *"n tem necessidade dessas caixas q basicamente vc muda durante o turno, tipo movimento ali. reduzir, vida, modificadores, energia e essas coisas tudo bem"*; *"Básica do ciclo n faz sentido ter, estado, ordem, n faz sentido"*; *"pra q esse tbm"* (a faixa do Vínculo); *"mais coisa do turno"* (os três usos) | saíram de cada ficha o `MOVIMENTO` que resta, a `BÁSICA DO CICLO`, o `ESTADO` e a `ORDEM PENDENTE`; e do conjunto a `REAÇÃO COLETIVA`, o `DANO NO TURNO`, o `VÍNCULO`, o `APRIMORAMENTO DE VÍNCULO` com a beneficiária e os três usos da rodada. Sem o estado, o conjunto mostra o limite de ativas (`ATIVAS, NO MÁXIMO`: 2, ou 4 com Múltiplas Invocações) e não mais a contagem, e a lista e o título da ficha não dizem mais "em campo". O deslocamento com o Buff/Debuff embaixo já estava nos números da ficha, e por isso as duas caixas de movimento da mesa não foram aproveitadas |
+| *"ideal o vida máxima ficar lado a lado com vida atual, vida temporaria e ter um redutor automatico, semelhante a ficha de player"* | a mesa abre com `VIDA ATUAL`, `VIDA MÁXIMA`, `TEMPORÁRIA`, `± PERDA / GANHO` e a reserva, e a barra embaixo, na largura inteira. A caixa de ± é do `onEdit` (`redutorDaInvocacao_`): digita −9, ela aplica na vida atual e se limpa, com a mesma conta da `FICHA` (`aplicaPasso_`: a perda gasta a temporária primeiro, e a vida não passa da máxima). Em branco, a vida atual está cheia. A `VIDA MÁXIMA` continua também nos números, com o Buff/Debuff dela. O teto da temporária (metade da máxima), que a `FICHA` prende, não foi posto aqui |
+| *"a carga n funciona como escrito"* | **não sei de qual carga ele fala, e perguntei.** São duas na ficha, e as duas dizem o que o livro diz: a `CARGA MÁXIMA` é 5 + Força (capítulo 16: "Uma entidade segue o limite geral de carga de 5 + Força, em Volume"), e a carga do talismã adianta parte da entrada (a tabela de Talismãs). Na conferência achei um furo de verdade na segunda: com o talismã carregado o `RETORNO` mostrava os 2 × Classe cheios, e o livro abate o que a carga adiantou ("o retorno custaria 8 PE ao todo: os 2 adiantados e mais 6 no retorno"). Agora mostra 6 |
+| *"a ficha ta sem o nome nome, que é ciclo maldito e pode por a versão como 1.0, isso vale pra ficha toda"* | o `_meta.sistema` do arquivo de dados é `Ciclo Maldito` e o `_meta.versao` é `1.0`; o carimbo do `decisoes-ficha.json` acompanha. O cabeçalho de cada aba já lia o nome da `DADOS!F1`, e a lombada de cada aba, que vinha escrita da exportação (`PROJETO M`), passa a dizer o nome do arquivo de dados (uma limpeza no `monta.py`, com a diferença registrada no comparador). A versão vai ao Sheets com apóstrofo, como todo texto com cara de número, senão a célula ficaria com 1. O número da `CARTEIRA` passa a ser `Nº M-10-…`: o `M-` não foi mexido |
+
+**Conferido:** *RESULTADO_DA_BATERIA*
+
+**O que fica para ele:**
+
+- **Colar os quatro arquivos de novo** *(`Ficha.gs`, `Codigo.gs`, `Invocacoes.gs` e o `Habilidades.gs`, que não mudou),
+  rodar o `construir()` e, quando o registro terminar em `rode a função continuar()`, rodar o `continuar()`. Mandar os
+  dois registros: eles dizem se a estimativa de custo está certa.*
+- **Olhar a aba:** *a caixa de ± (digitar −5 numa ficha com nome), a lista do conjunto levando até cada ficha, a segunda
+  coluna de fichas, que nasce fechada, e as fileiras 2 a 6, fechadas.*
+- **Dizer de qual carga o amigo falava.**
+
+**O que falta fazer aqui:**
+
+- *um arnês para a aba, como o `arnes-amaldicoada.py` (as perturbações do `construir()` e do `continuar()` entraram no
+  `arnes-pessoal.py`);*
+- *decidir com ele o que fazer da `ficha-invocacao/` e dos três validadores da invocação de antes.*

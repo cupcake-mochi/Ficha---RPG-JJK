@@ -14,6 +14,12 @@ tabela que o gerador montou; do ficha_invocacoes.py so vem o endereco de cada ca
   4. Fichas sorteadas, em varios niveis, tipos e Familias: os numeros da ficha e o resultado de toda carta batem com a
      regra daqui, a certa e a errada (o sorteio monta habilidade ilegal de proposito).
 
+07/10/2026, a grade de 2 x 6: a aba tem doze lugares. As fichas de teste que dividem o mesmo invocador (nivel, Essencia,
+Inteligencia, o atributo da Defesa e a Trilha) vao na mesma planilha, cada uma num lugar, e as sorteadas passam pelos
+doze. Os enderecos daqui sao os do primeiro lugar; `desloca` os leva ao lugar de cada ficha. A planilha gerada e lida
+uma vez so, e cada planilha recalculada e lida sem carregar as outras abas: com as doze fichas cada leitura inteira
+leva quatorze segundos, e eram duas por caso.
+
     python3 regressao-invocacoes.py
 """
 import json, math, os, random, re, shutil, subprocess, sys, tempfile
@@ -102,7 +108,9 @@ def regra_da_ficha(nivel, usa, ess, inte, trilha, f):
             "ataque": None if va is None else va + M + bs[0], "cd": None if va is None else 8 + va + M + bs[1],
             "defesa": 10 + T[1] + (inte if usa == "Inteligência" else ess) // 2 + bs[2], "vida": vida, "desl": 9 + bs[4], "tr": tr,
             "nper": 4 + pts[3] // 2, "esp": (2 + n / 2) // 2, "ntal": 1 + marc, "db": dados_da_basica(n),
-            "entrada": max(1, math.ceil(cl / 2)) if carregado else cl, "retorno": 2 * cl, "reserva": n * (1 + pts[4] // 3),
+            "entrada": max(1, math.ceil(cl / 2)) if carregado else cl,
+            # o retorno da caida: 2 x Classe, e a carga do talisma abate so o que adiantou (Classe - a entrada carregada)
+            "retorno": 2 * cl - ((cl - max(1, math.ceil(cl / 2))) if carregado else 0), "reserva": n * (1 + pts[4] // 3),
             "carga": 5 + T[0], "fam_erro": len(set(fam)) < len(fam) or len(fam) > maxfam, "fam": f.get("fam", [])}
 
 
@@ -181,10 +189,23 @@ def regra_da_carta(F, tipo, num, c):
 # ---------------------------------------------------------------------------------------------
 # Preencher, recalcular e ler.
 # ---------------------------------------------------------------------------------------------
-G = fi.celulas_da_ficha(fi.L0, 0)
+G = fi.celulas_da_ficha(fi.L0, 0)          # os enderecos do PRIMEIRO lugar; `desloca` os leva aos outros
 CJ = fi.celulas_do_conjunto()
+LUGARES = fi.lugares()                     # [(numero, fileira, coluna de fichas)]
 PASTA = tempfile.mkdtemp(prefix="reg-inv-")
-FILA, CASOS = [], {}
+PLANILHAS, CASOS = [], {}                  # cada planilha: um invocador, e ate doze fichas
+
+
+def desloca(cel, lugar):
+    """o endereco do primeiro lugar, levado ao lugar da ficha. O conjunto, a esquerda da primeira lombada, nao anda."""
+    lin, col = ix._lc(cel)
+    if lugar == 0 or col < fi.lombada(0):
+        return cel
+    _, j, k = LUGARES[lugar]
+    return fi._a1(col + fi.PASSO_COL * k, lin + fi.PASSO_LIN * j)
+
+
+BARRAS = {desloca(G["barra"], i) for i in range(len(LUGARES))}      # a barra e uma SPARKLINE, que so o Sheets desenha
 
 
 def indice(wb):
@@ -196,59 +217,98 @@ def indice(wb):
     return out
 
 
-def monta(nome, nivel, ficha, ess=2, inte=0, usa="Essência", trilha=None):
+def monta(nome, nivel, ficha, ess=2, inte=0, usa="Essência", trilha=None, sozinha=False, lugar=None):
+    """guarda a ficha para ser escrita. As fichas do mesmo invocador dividem a planilha; `sozinha` da uma planilha so
+    para ela (o teste que olha o conjunto ou a aba inteira), no primeiro lugar."""
+    chave = (nivel, ess, inte, usa, trilha)
+    pl = None if sozinha else next((p for p in PLANILHAS if p["chave"] == chave and not p["fechada"]
+                                    and len(p["casos"]) < len(LUGARES) and (lugar is None or lugar not in p["lugares"])), None)
+    if pl is None:
+        pl = {"chave": chave, "casos": [], "lugares": set(), "fechada": sozinha, "n": len(PLANILHAS)}
+        PLANILHAS.append(pl)
+    if lugar is None:
+        # cada planilha comeca num lugar diferente e anda de cinco em cinco: os exemplos do livro tambem saem do primeiro
+        lugar = 0 if sozinha else next(x for x in ((pl["n"] * 5 + 5 * i) % len(LUGARES) for i in range(len(LUGARES))) if x not in pl["lugares"])
+    pl["casos"].append(nome)
+    pl["lugares"].add(lugar)
+    CASOS[nome] = {"planilha": pl, "lugar": lugar, "nivel": nivel, "ess": ess, "inte": inte, "usa": usa, "trilha": trilha, "ficha": ficha}
+
+
+def escreve_tudo():
+    """a planilha gerada e lida uma vez; cada planilha de teste e ela com as fichas escritas, e depois volta ao que era"""
     wb = load_workbook(ARQ)
     idx, f, a = indice(wb), wb["FICHA"], wb[ABA]
-    f[idx["nivel"]], f[idx["atr_base_Essência"]], f[idx["atr_base_Inteligência"]] = nivel, ess, inte
-    if trilha:
-        f[idx["caminho"]], f[idx["trilha"]] = "Evocador", trilha
-    a[CJ["usa"]] = usa
-    for k, v in ficha.items():
-        if k == "cartas":
-            for (tipo, n), c in v.items():
-                cel = fi.celulas_da_carta(*G["cartas"][(tipo, n)])
-                for kk, vv in c.items():
-                    if isinstance(vv, list):
-                        for i, x in enumerate(vv):
-                            a[cel[kk][i]] = x
-                    else:
-                        a[cel[kk]] = vv
-        elif k == "lib":
-            for i, c in enumerate(v):
-                a[G["lib"][i]["classe"]] = c
-        elif k == "exp":
-            a[G["exp"]["degrau"]] = v
-        elif isinstance(v, list):
-            for i, x in enumerate(v):
-                a[G[k][i]] = x
-        else:
-            a[G[k]] = v
+    # a arte fica de fora: o openpyxl so consegue gravar a mesma imagem uma vez, e a conta nao depende dela
+    for ws in wb:
+        ws._images = []
     # o IFS e o TEXTJOIN ficam crus na ficha, porque ela vive no Sheets; o LibreOffice so os reconhece com o prefixo do Excel
     for ws in wb:
         for linha in ws.iter_rows():
             for c in linha:
                 if isinstance(c.value, str) and c.value.startswith("="):
                     c.value = re.sub(r"(?<![A-Z_.])(IFS|TEXTJOIN)\(", r"_xlfn.\1(", c.value)
-    copia = os.path.join(PASTA, f"{len(FILA):03d}.xlsx")
-    wb.save(copia)
-    FILA.append(copia)
-    CASOS[nome] = {"arquivo": copia, "nivel": nivel, "ess": ess, "inte": inte, "usa": usa, "trilha": trilha, "ficha": ficha}
+    for pl in PLANILHAS:
+        antes = []
+
+        def poe(ws, cel, valor):
+            antes.append((ws, cel, ws[cel].value))
+            ws[cel] = valor
+        nivel, ess, inte, usa, trilha = pl["chave"]
+        poe(f, idx["nivel"], nivel); poe(f, idx["atr_base_Essência"], ess); poe(f, idx["atr_base_Inteligência"], inte)
+        if trilha:
+            poe(f, idx["caminho"], "Evocador"); poe(f, idx["trilha"], trilha)
+        poe(a, CJ["usa"], usa)
+        for nome in pl["casos"]:
+            lug = CASOS[nome]["lugar"]
+            la = lambda cel: desloca(cel, lug)
+            for k, v in CASOS[nome]["ficha"].items():
+                if k == "cartas":
+                    for (tipo, n), c in v.items():
+                        cel = fi.celulas_da_carta(*G["cartas"][(tipo, n)])
+                        for kk, vv in c.items():
+                            if isinstance(vv, list):
+                                for i, x in enumerate(vv):
+                                    poe(a, la(cel[kk][i]), x)
+                            else:
+                                poe(a, la(cel[kk]), vv)
+                elif k == "lib":
+                    for i, c in enumerate(v):
+                        poe(a, la(G["lib"][i]["classe"]), c)
+                elif k == "exp":
+                    poe(a, la(G["exp"]["degrau"]), v)
+                elif isinstance(v, list):
+                    for i, x in enumerate(v):
+                        poe(a, la(G[k][i]), x)
+                else:
+                    poe(a, la(G[k]), v)
+        pl["arquivo"] = os.path.join(PASTA, f"{pl['n']:03d}.xlsx")
+        wb.save(pl["arquivo"])
+        for ws, cel, valor in reversed(antes):
+            ws[cel] = valor
 
 
 def recalcula_tudo():
     saida = os.path.join(PASTA, "saida")
-    for i in range(0, len(FILA), 20):                # em lotes: o LibreOffice engasga com cem arquivos numa chamada
-        subprocess.run(["libreoffice", "--headless", "--convert-to", "xlsx", "--outdir", saida] + FILA[i:i + 20], capture_output=True, timeout=900)
-    for caso in CASOS.values():
-        feito = os.path.join(saida, os.path.basename(caso["arquivo"]))
+    arquivos = [pl["arquivo"] for pl in PLANILHAS]
+    for i in range(0, len(arquivos), 20):            # em lotes: o LibreOffice engasga com cem arquivos numa chamada
+        subprocess.run(["libreoffice", "--headless", "--convert-to", "xlsx", "--outdir", saida] + arquivos[i:i + 20], capture_output=True, timeout=1800)
+    for pl in PLANILHAS:
+        feito = os.path.join(saida, os.path.basename(pl["arquivo"]))
         if not os.path.exists(feito):
-            print(f"o LibreOffice nao recalculou {caso['arquivo']}"); sys.exit(1)
-        caso["wb"] = load_workbook(feito, data_only=True)
+            print(f"o LibreOffice nao recalculou {pl['arquivo']}"); sys.exit(1)
+        # so as duas abas da invocacao, e so o valor: a leitura inteira da planilha leva quatorze segundos
+        wb = load_workbook(feito, data_only=True, read_only=True)
+        pl["v"] = {}
+        for nome_aba in (ABA, DIV):
+            pl["v"][nome_aba] = {f"{ix._letras(c + 1)}{r + 1}": x for r, linha in enumerate(wb[nome_aba].iter_rows(values_only=True))
+                                 for c, x in enumerate(linha) if x is not None}
+        wb.close()
 
 
 def le(nome):
-    a = CASOS[nome]["wb"][ABA]
-    return lambda cel: a[cel].value
+    caso = CASOS[nome]
+    v, lug = caso["planilha"]["v"][ABA], caso["lugar"]
+    return lambda cel: v.get(desloca(cel, lug))
 
 
 def carta(nome, tipo, n):
@@ -261,19 +321,19 @@ def carta(nome, tipo, n):
 # ---------------------------------------------------------------------------------------------
 CAO = {"nome": "Cão de sombra", "pts": [3, 2, 2, 1, 1], "acerto": "Força", "fis": "Força", "trT": "Físico",
        "fam": ["Mira", None, "Alcance", "Controle", None], "per": ["Atletismo", "Furtividade", "Percepção", "Sobrevivência"],
-       "tal": ["Farejador"], "estado": "Em campo",
+       "tal": ["Farejador"],
        "cartas": {("bas", 0): {"nome": "Mordida", "forma": "Toque", "tdano": "Perfurante"},
                   ("esp", 0): {"nome": "Mordida precisa", "classe": 1, "forma": "Toque", "tdano": "Perfurante", "mel": ["Precisão"]}}}
 VIGIA = {"nome": "Vigia de papel", "pts": [0, 2, 2, 3, 2], "acerto": "Inteligência", "fis": "Destreza", "trT": "Intelecto",
          "fam": ["Amparo", None, "Auxiliares", "Alcance", None], "per": ["Acrobacia", "Furtividade", "Investigação", "Percepção", "Sobrevivência"],
-         "tal": ["Talento Próprio (CE 1)"], "estado": "Em campo",
+         "tal": ["Talento Próprio (CE 1)"],
          "cartas": {("bas", 0): {"nome": "Orientação", "forma": "Apoio", "mel": ["Impulso"]},
                     ("esp", 0): {"nome": "Tiras de resgate", "classe": 2, "forma": "Apoio", "mel": ["Guarda", "Empurrão"]},
                     ("esp", 1): {"nome": "Remendo de papel", "classe": 1, "forma": "Cura"}}}
 com = lambda base, **k: {**base, **k}
 monta("cão 2", 2, CAO)
 monta("cão 4", 4, CAO)
-monta("cão 5", 5, CAO)
+monta("cão 5", 5, CAO, sozinha=True)                 # o teste do conjunto e da lista olha esta planilha
 monta("cão 6", 6, com(CAO, pts=[3, 2, 3, 1, 1]))
 monta("vigia 5", 5, VIGIA, ess=2, inte=4, usa="Inteligência")
 monta("fura", 5, com(CAO, cartas={("esp", 0): {"nome": "Espinho", "classe": 2, "forma": "Projétil", "mel": ["Fura"]}}))
@@ -286,7 +346,7 @@ monta("talismã", 13, com(CAO, tipo=fi.SH_CRIACAO, aquis="Criação", nivel_fixo
 monta("corpo de criação", 5, com(CAO, tipo=fi.CORPO_CRIACAO, aquis="Criação", nivel_fixo=5))
 monta("trunfos 17", 17, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=17, lib=[3, 4, 7]))
 monta("expansão 14", 14, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=14, exp="Completa"))
-monta("vazia", 5, {})
+monta("vazia", 5, {}, sozinha=True)                  # nenhuma caixa da aba inteira acende
 # 2. o Buff/Debuff
 monta("buff", 5, com(CAO, buff=[1, 0, 0, 0, 0], bstat=[2, 1, -1, 5, 3], btr=[0, 2, 0, -1]))
 # 3. o que a ficha recusa
@@ -297,15 +357,15 @@ monta("recusa", 2, com(CAO, pts=[4, 2, 2, 1, 0], fam=["Mira", None, "Mira", "Con
                                ("ext", 0): {"nome": "Estouro", "classe": 1, "forma": "Projétil", "mel": ["Cego", "Prende"]}}))
 monta("quatro famílias", 5, com(CAO, fam=["Mira", None, "Alcance", "Controle", "Castigo"]))
 monta("quatro famílias, Parceria", 5, com(CAO, fam=["Mira", None, "Alcance", "Controle", "Castigo"]), trilha=fi.PARCERIA)
-monta("Múltiplas", 5, CAO, trilha=fi.MULTIPLAS)
+monta("Múltiplas", 5, CAO, trilha=fi.MULTIPLAS, sozinha=True)
+monta("talismã sem carga", 13, com(CAO, tipo=fi.SH_CRIACAO, aquis="Criação", nivel_fixo=13, talisma=fi.SEM_CARGA))
 
 # 4. as fichas sorteadas
 random.seed(20261006)
 FAMILIAS = list(CAT["familias"])
 
 
-def sorteia(k):
-    nivel = random.choice([2, 3, 4, 5, 8, 9, 11, 13, 16, 17, 21, 26, 30])
+def sorteia(k, nivel):
     tipo = random.choice([t["nome"] for t in LIV["tipos"]])
     aquis = random.choice([a["nome"] for a in LIV["aquisicoes"]])
     total = 9 + sum(1 for m in MARCOS if m <= nivel) + random.choice([0, 0, 0, 1, -1])
@@ -319,7 +379,7 @@ def sorteia(k):
          "pts": pts, "buff": [random.choice([0, 0, 0, 1, -1]) for _ in range(5)], "acerto": random.choice(ATR),
          "fis": random.choice(["Força", "Destreza"]), "trT": random.choice(["Físico", "Vigor", "Intelecto", "Espírito"]),
          "bstat": [random.choice([0, 0, 1, -2]) for _ in range(5)], "btr": [random.choice([0, 0, 1]) for _ in range(4)],
-         "talisma": random.choice([fi.SEM_CARGA, fi.COM_CARGA]), "fam": fam, "estado": "Em campo", "cartas": {}}
+         "talisma": random.choice([fi.SEM_CARGA, fi.COM_CARGA]), "fam": fam, "cartas": {}}
     abertas = [x for x in fam if x]
     n_ficha = nivel if aquis in ("Espaço conhecido", "Lista de ritual") else max(1, min(nivel, f["nivel_fixo"] or nivel))
     cl = classe_maxima(n_ficha)
@@ -341,19 +401,30 @@ def sorteia(k):
                                     "tdano": random.choice(LIV["tipos_de_dano"]), "mel": mel + [None] * (4 - len(mel)), "res": res + [None] * (2 - len(res))}
         if tipo_c == "bas":
             del f["cartas"][(tipo_c, n)]["classe"]
-    return nivel, f
+    return f
 
 
+# seis invocadores sorteados, cada um com tres fichas; os lugares de cada trio andam pela grade, e os seis juntos passam
+# pelos doze lugares
 SORTEADAS = []
-for k in range(18):
-    nivel, f = sorteia(k)
+NIVEIS = [2, 3, 4, 5, 8, 9, 11, 13, 16, 17, 21, 26, 30]
+for g_ in range(6):
+    nivel = random.choice(NIVEIS)
     usa = random.choice(["Essência", "Inteligência"])
     trilha = random.choice([None, None, fi.PRINCIPAL, fi.PARCERIA, fi.MULTIPLAS])
-    monta(f"sorteada {k}", nivel, f, ess=random.randint(0, 6), inte=random.randint(0, 6), usa=usa, trilha=trilha)
-    SORTEADAS.append(f"sorteada {k}")
+    ess, inte = random.randint(0, 6), random.randint(0, 6)
+    for lug in ((g_ * 2) % len(LUGARES), (g_ * 2 + 7) % len(LUGARES), (g_ * 2 + 5) % len(LUGARES)):
+        k = len(SORTEADAS)
+        monta(f"sorteada {k}", nivel, sorteia(k, nivel), ess=ess, inte=inte, usa=usa, trilha=trilha, lugar=lug)
+        SORTEADAS.append(f"sorteada {k}")
 
-print(f"\nrecalculando {len(FILA)} fichas no LibreOffice...")
+print(f"\nescrevendo {len(CASOS)} fichas em {len(PLANILHAS)} planilhas e recalculando no LibreOffice...")
+escreve_tudo()
 recalcula_tudo()
+_usados = {c["lugar"] for c in CASOS.values()}
+checa(f"as {len(CASOS)} fichas de teste passam pelos {len(LUGARES)} lugares da grade (as duas colunas de fichas e as seis fileiras)",
+      len(LUGARES) == fi.N_COLUNAS * fi.N_FILEIRAS and _usados == set(range(len(LUGARES)))
+      and {CASOS[n]["lugar"] for n in SORTEADAS} == set(range(len(LUGARES))), str(sorted(_usados)))
 
 print("\n1. OS EXEMPLOS DO LIVRO")
 v = le("cão 2")
@@ -404,6 +475,10 @@ checa("a domada de nível 5 de um invocador de nível 10: o nível é o dela, a 
       v(G["status"][0]) == 5 and v(G["status"][2]) == "+2" and v(G["stat"][0]) == "+5" and v(G["stat"][3]) == 27, f'{[v(c) for c in G["status"]]} {v(G["stat"][0])}')
 v = le("talismã")
 checa("a entidade de nível 13 (Classe 4) com o talismã carregado entra por 2 PE", v(G["status"][1]) == 4 and v(G["status"][3]) == "2 PE", str([v(c) for c in G["status"]]))
+# o exemplo do livro, em Talismãs: "Se ela estivesse caída, o retorno custaria 8 PE ao todo: os 2 adiantados e mais 6 no retorno"
+checa("e, caída, volta por mais 6 PE (os 8 do retorno, menos os 2 que a carga adiantou); sem carga, entra por 4 e volta por 8",
+      v(G["status"][4]) == "6 PE" and (le("talismã sem carga")(G["status"][3]), le("talismã sem carga")(G["status"][4])) == ("4 PE", "8 PE"),
+      f'{v(G["status"][4])} | {le("talismã sem carga")(G["status"][3])} {le("talismã sem carga")(G["status"][4])}')
 v = le("corpo de criação")
 checa("o corpo de criação de nível 5 com Constituição 2 tem 7 + 6 × 4 = 31 de vida", v(G["stat"][3]) == 31, str(v(G["stat"][3])))
 v = le("trunfos 17")
@@ -417,11 +492,26 @@ checa("Expansão completa da domada de nível 14 (Classe 4): 24 PE e Acerto de 4
       f'{v(G["exp"]["pe"])} {v(G["exp"]["acerto"])} {v(G["exp"]["pede"])}')
 v = le("vazia")
 checa("a ficha vazia não mostra erro nem número de ataque", "lugar vazio" in v(G["titulo"]) and v(G["stat"][0]) in (None, "") and
-      all(fi.T_ERRO not in str(x.value) for l in CASOS["vazia"]["wb"][ABA].iter_rows() for x in l if x.value is not None))
+      all(fi.T_ERRO not in str(x) for x in CASOS["vazia"]["planilha"]["v"][ABA].values()))
 v = le("cão 5")
-checa("o conjunto: nível 5, maestria +1, uma ativa de duas, e a lista traz a ficha", (v(CJ["nivel"]), v(CJ["maestria"]), v(CJ["ativas"])) == (5, "+1", "1 de 2")
-      and v(CJ["rol"][0]) == "1 · Cão de sombra · nv 5 · 27/27 · em campo", f'{v(CJ["nivel"])} {v(CJ["maestria"])} {v(CJ["ativas"])} {v(CJ["rol"][0])}')
-checa("com Múltiplas Invocações o limite de ativas vai a quatro", le("Múltiplas")(CJ["ativas"]) == "1 de 4", str(le("Múltiplas")(CJ["ativas"])))
+checa("o conjunto: nível 5, maestria +1, até duas ativas, e a lista traz a ficha no lugar dela e as outras vazias",
+      (v(CJ["nivel"]), v(CJ["maestria"]), v(CJ["ativas"])) == (5, "+1", 2)
+      and v(CJ["rol"][0]) == "1 · Cão de sombra · nv 5 · 27/27" and [v(c) for c in CJ["rol"][1:]] == [f"{i} · vazia" for i in range(2, len(LUGARES) + 1)]
+      and v(CJ["rol_rot"]) == f"AS INVOCAÇÕES · 1 DE {len(LUGARES)}",
+      f'{v(CJ["nivel"])} {v(CJ["maestria"])} {v(CJ["ativas"])} {v(CJ["rol"][0])} | {v(CJ["rol"][1])} | {v(CJ["rol_rot"])}')
+checa("com Múltiplas Invocações o limite de ativas vai a quatro", le("Múltiplas")(CJ["ativas"]) == 4, str(le("Múltiplas")(CJ["ativas"])))
+# 07/10/2026: a vida como na FICHA do jogador, e o que saiu da mesa
+checa("a VIDA MÁXIMA aparece ao lado da VIDA ATUAL, com o mesmo número da caixa dos números (27), e o título da ficha diz a vida",
+      v(G["vida_max"]) == 27 == v(G["stat"][3]) and v(G["titulo"]).endswith("vida 27 de 27"), f'{v(G["vida_max"])} {v(G["stat"][3])} {v(G["titulo"])}')
+_rotulos = {str(x).split(" · ")[0] for x in CASOS["cão 5"]["planilha"]["v"][ABA].values() if isinstance(x, str)}
+_fora = ("TAREFA", "MOVIMENTO", "BÁSICA DO CICLO", "ESTADO", "ORDEM PENDENTE", "REAÇÃO COLETIVA", "DANO NO TURNO", "VÍNCULO",
+         "APRIMORAMENTO DE VÍNCULO", "EM QUEM", "OFENSIVO", "PROTEÇÃO", "PERÍCIA")
+checa("a aba não traz mais as caixas de turno (tarefa, movimento, básica do ciclo, estado, ordem, reação, dano no turno, Vínculo, usos da rodada)",
+      not [x for x in _fora if x in _rotulos] and {"VIDA ATUAL", "VIDA MÁXIMA", "TEMPORÁRIA", "± PERDA / GANHO", "CONDIÇÕES E USOS GASTOS", "ANOTAÇÕES"} <= _rotulos,
+      str([x for x in _fora if x in _rotulos]))
+checa("o rótulo de cada talento é sempre o nível e a Categoria, sem o ABRE NO",
+      [v(c) for c in G["tal_nv"]][:3] == ["NV 1 · CE 1", "NV 6 · CE 1", "NV 10 · CE 2"] and not any(str(x).startswith("ABRE NO") for x in CASOS["cão 5"]["planilha"]["v"][ABA].values()),
+      str([v(c) for c in G["tal_nv"]]))
 
 print("\n2. O BUFF/DEBUFF")
 v = le("buff")
@@ -470,10 +560,10 @@ for nome in SORTEADAS:
             dif.append(f"{nome} {tipo}{n} {c}: a planilha diz {lc['dano']!r}, {lc['pe']!r}, {lc['estado']!r} ({lc['avisos']!r}); a regra, {r['dano']!r}, {r['pe']!r}, erros {r['erros']}")
 checa(f"{len(SORTEADAS)} fichas sorteadas: os números de cada uma e as {cartas_vistas} cartas ({com_erro} fora da regra) batem com a regra escrita aqui",
       not dif and cartas_vistas > 100 and 20 < com_erro < cartas_vistas - 20, " || ".join(dif[:4]) or f"{cartas_vistas} cartas, {com_erro} com erro")
-erros_de_formula = [(nome, x.coordinate, x.value) for nome, caso in CASOS.items() for ws in (caso["wb"][ABA], caso["wb"][DIV])
-                    for l in ws.iter_rows() for x in l if isinstance(x.value, str) and re.match(r"^(#[A-Z/0!?]+|Err:\d+)$", x.value)
-                    and x.coordinate != G["barra"]]              # a barra é uma SPARKLINE, que só o Sheets desenha
-checa(f"nenhuma fórmula da aba ou da DADOS_INVOC dá erro em nenhuma das {len(CASOS)} fichas", not erros_de_formula, str(erros_de_formula[:4]))
+erros_de_formula = [(pl["casos"][0], aba_, cel, x) for pl in PLANILHAS for aba_ in (ABA, DIV) for cel, x in pl["v"][aba_].items()
+                    if isinstance(x, str) and re.match(r"^(#[A-Z/0!?]+|Err:\d+)$", x)
+                    and not (aba_ == ABA and cel in BARRAS)]     # a barra é uma SPARKLINE, que só o Sheets desenha
+checa(f"nenhuma fórmula da aba ou da DADOS_INVOC dá erro em nenhuma das {len(PLANILHAS)} planilhas ({len(CASOS)} fichas)", not erros_de_formula, str(erros_de_formula[:4]))
 
 shutil.rmtree(PASTA, ignore_errors=True)
 print()

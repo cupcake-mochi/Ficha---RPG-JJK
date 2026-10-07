@@ -170,11 +170,11 @@ def exemplo_invocacoes(wb):
                 cel.value = "Kaito"
     f[idx["atr_base_Essência"]], f[idx["caminho"]], f[idx["nivel"]] = 2, "Evocador", 5
     g = fi.celulas_da_ficha(fi.L0, 0)
-    a[g["nome"]], a[g["acerto"]], a[g["fis"]], a[g["trT"]], a[g["estado"]] = "Cão de sombra", "Força", "Força", "Físico", "Em campo"
+    a[g["nome"]], a[g["acerto"]], a[g["fis"]], a[g["trT"]] = "Cão de sombra", "Força", "Força", "Físico"
     a[g["def"]] = "Um cão feito de sombra que reconhece vestígios de energia amaldiçoada e persegue o que seu invocador aponta."
     a[g["corpo"]] = ("Médio, quatro patas, sem mãos; usa a boca para segurar. Visão, audição e olfato comuns. Entende ordens "
                      "faladas e responde por latidos e gestos.")
-    a[g["tarefa"]], a[g["vida"]] = "Perseguir a criatura apontada.", 19
+    a[g["vida"]] = 19
     for cel, v in zip(g["pts"], (3, 2, 2, 1, 1)):
         a[cel] = v
     for cel, v in zip(g["fam"], ("Mira", None, "Alcance", "Controle", None)):
@@ -186,6 +186,26 @@ def exemplo_invocacoes(wb):
                                           (("esp", 0), "Mordida precisa", "Toque", "Precisão", "Não aplica condição nem deixa efeito contínuo.")):
         cel = fi.celulas_da_carta(*g["cartas"][chave])
         a[cel["nome"]], a[cel["forma"]], a[cel["tdano"]], a[cel["como"]], a[cel["mel"][0]] = nome, forma, "Perfurante", como, mel
+    # 07/10/2026, a grade de 2 × 6: o Vigia de papel do capítulo 17 no primeiro lugar da segunda coluna de fichas (a 7)
+    if fi.N_COLUNAS > 1:
+        g = fi.celulas_da_ficha(fi.L0, 1)
+        a[g["nome"]], a[g["acerto"]], a[g["fis"]], a[g["trT"]] = "Vigia de papel", "Inteligência", "Destreza", "Intelecto"
+        a[g["def"]] = "Uma figura de tiras de papel que vigia um lugar, avisa o invocador e ampara quem cai."
+        for cel, v in zip(g["pts"], (0, 2, 2, 3, 2)):
+            a[cel] = v
+        for cel, v in zip(g["fam"], ("Amparo", None, "Auxiliares", "Alcance", None)):
+            a[cel] = v
+        for cel, v in zip(g["per"], ("Acrobacia", "Furtividade", "Investigação", "Percepção", "Sobrevivência")):
+            a[cel] = v
+        for chave, nome, classe, forma, mels in ((("bas", 0), "Orientação", None, "Apoio", ["Impulso"]),
+                                                 (("esp", 0), "Tiras de resgate", 2, "Apoio", ["Guarda", "Empurrão"]),
+                                                 (("esp", 1), "Remendo de papel", 1, "Cura", [])):
+            cel = fi.celulas_da_carta(*g["cartas"][chave])
+            a[cel["nome"]], a[cel["forma"]] = nome, forma
+            if classe:
+                a[cel["classe"]] = classe
+            for c_, m_ in zip(cel["mel"], mels):
+                a[c_] = m_
 
 
 def recalculada(preenche):
@@ -438,7 +458,10 @@ def main():
         ws, wc, dd = lido[a.aba], cru[a.aba], lido[fi.DADOS_IV]
         valores = {(c.row, c.column): c.value for linha in ws.iter_rows() for c in linha if c.value is not None}
         crus = {(c.row, c.column): c.value for linha in wc.iter_rows() for c in linha if c.value is not None}
-        cab = {dd.cell(row=1, column=c).value: c for c in range(1, dd.max_column + 1)}
+        # a primeira coluna com cada nome: a tabela das fichas vem antes da das cartas, que repete "tem"
+        cab = {}
+        for c in range(1, dd.max_column + 1):
+            cab.setdefault(dd.cell(row=1, column=c).value, c)
         barras = {}
         for i, (_, j, k) in enumerate(fi.lugares()):
             atual, vida = (dd.cell(row=2 + i, column=cab[x]).value for x in ("atual", "vida"))

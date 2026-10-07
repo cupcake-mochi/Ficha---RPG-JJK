@@ -203,7 +203,8 @@
  },
  "C2_carimbo": {
   "escolha": "o carimbo e a versao do projeto",
-  "versao_corrente": "0.331 · 04/10",
+  "versao_corrente": "1.0",
+  "nome_e_versao_em_07_10": "07/10/2026, o Mizuki: 'a ficha ta sem o nome, que é ciclo maldito e pode por a versão como 1.0, isso vale pra ficha toda'. O sistema passa a se chamar Ciclo Maldito na ficha (o _meta.sistema do arquivo de dados, que a DADOS!F1 escreve e o cabeçalho de cada aba lê, e a lombada de cada aba), e a versão é a 1.0. Até 07/10 a ficha dizia Projeto M e v0.331 · 04/10; o livro por trás é o mesmo, o reconstruído de 04/10/2026.",
   "data_da_versao": "04/10/2026",
   "dona_da_versao": "o livro reconstruído do JJK---Project (LIVRO-COMPLETO.md, revisado em 04/10/2026, depois da v0.331); o hash está no manual-fonte.json",
   "manual_do_fundamento": "o capítulo 10 do livro reconstruído",
@@ -412,9 +413,9 @@
     "preco": "num monitor de 1920 px ela cabe inteira; num notebook de 1366 px ela pede zoom de 75% ou rolar para o lado. As outras abas continuam cabendo no notebook"
    },
    "INVOCAÇÕES": {
-    "px": 1985,
+    "px": 3537,
     "porque": "a ficha deitada tem tres blocos de 480 px (a foto, os numeros e a mesa), que sao tambem as tres cartas de habilidade de cada fileira, da largura das cartas da FICHA AMALDIÇOADA; e o conjunto fica a esquerda, pedido dele (\"mantem o conjunto ali na esquerda com a lista grande de invocações\")",
-    "preco": "nao cabe num notebook de 1366 px: o grupo de colunas fecha o conjunto e cada coluna de fichas, e mesmo assim uma ficha sozinha pede zoom ou rolar para o lado. Ele viu no estudo que o conjunto aberto e uma coluna passavam da largura das outras abas. O numero muda quando a grade de 2 x 6 entrar"
+    "preco": "nao cabe num notebook de 1366 px: a aba inteira aberta tem 3.537 px (o conjunto, 349; cada coluna de fichas, 1.552). O grupo de colunas fecha o conjunto e cada coluna de fichas, e a segunda nasce fechada: com ela fechada sao 1.985 px, e uma ficha sozinha pede zoom ou rolar para o lado. Ele viu no estudo que o conjunto aberto e uma coluna passavam da largura das outras abas, e fechou a grade de 2 x 6, que entrou em 07/10/2026"
    }
   },
   "abas_acrescentadas_em_06_10": {
