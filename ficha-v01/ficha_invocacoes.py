@@ -83,8 +83,9 @@ N_MEL, N_RES = 4, 2
 F_TIT, F_NOME, F_ROT, F_TXT, F_TXT_FIM, F_N1, F_N2, F_N3, F_ALC, F_MEL, F_RES, F_CONTA, F_AMP, F_AV = 0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 14, 16, 17, 19
 ALT = 21
 ALT_TRUNFO = 8
-O = {"hab": 43, "h": 45, "tal": 67, "mais": 77, "m": 79, "trilha": 145, "x": 147, "talx": 169, "trunfos": 174, "lib": 176,
-     "tm": 185, "fim": 192}
+# 07/10/2026: a foto ficou mais alta que larga (480 por 546 px), pedido do Mizuki, e a ficha desceu três linhas
+O = {"hab": 46, "h": 48, "tal": 70, "mais": 80, "m": 82, "trilha": 148, "x": 150, "talx": 172, "trunfos": 177, "lib": 179,
+     "tm": 188, "fim": 195}
 PASSO_LIN = O["fim"] + 3
 ABRE_BAS, ABRE_ESP = (1, 11), (1, 4, 8, 12, 16, 20, 24, 28)
 # as dez cartas na ordem em que o nível abre: a primeira fileira é o que uma entidade de nível baixo tem
@@ -231,9 +232,9 @@ def celulas_da_ficha(r, k):
     a, b, c = ([x + i for i in range(N_BLOCO)] for x in blocos(k))
     g = {"lombada_num": _a1(sp, r), "lombada": _a1(sp, r + 2), "numero": _a1(a[0], r), "titulo": _a1(a[1], r),
          # --- quem ela é
-         "nome": _a1(a[0], r + 4), "foto": _a1(a[0], r + 6), "tipo": _a1(a[0], r + 27), "aquis": _a1(a[0], r + 31),
-         "nivel_fixo": _a1(a[2], r + 31), "talisma": _a1(a[3], r + 31),
-         "fam_rot": _a1(a[0], r + 34), "fam": [_a1(a[i], r + 36) for i in range(N_FAM)],
+         "nome": _a1(a[0], r + 4), "foto": _a1(a[0], r + 6), "tipo": _a1(a[0], r + 34), "aquis": _a1(a[0], r + 38),
+         "nivel_fixo": _a1(a[2], r + 38), "talisma": _a1(a[3], r + 38),
+         "fam_rot": _a1(b[0], r + 37), "fam": [_a1(b[i], r + 39) for i in range(N_FAM)],
          # --- os números
          "status": [_a1(b[i], r + 4) for i in range(5)], "pontos_rot": _a1(b[0], r + 7),
          "total": [_a1(b[i], r + 9) for i in range(N_ATR)], "pts": [_a1(b[i], r + 11) for i in range(N_ATR)],
@@ -246,10 +247,10 @@ def celulas_da_ficha(r, k):
          # --- a mesa
          "vida": _a1(c[0], r + 4), "vida_max": _a1(c[1], r + 4), "temp": _a1(c[2], r + 4), "delta": _a1(c[3], r + 4),
          "reserva_rot": _a1(c[4], r + 3), "reserva": _a1(c[4], r + 4), "barra": _a1(c[0], r + 6),
-         "cond": _a1(c[0], r + 9), "notas": _a1(c[0], r + 18), "equip_rot": _a1(c[0], r + 28), "equip": _a1(c[0], r + 29),
-         "corpo": _a1(c[0], r + 34),
+         "cond": _a1(c[0], r + 9), "notas": _a1(c[0], r + 18), "equip_rot": _a1(c[0], r + 31), "equip": _a1(c[0], r + 32),
+         "corpo": _a1(c[0], r + 37),
          # --- embaixo
-         "def": _a1(a[0], r + 40), "hab": _a1(a[0], r + O["hab"]),
+         "def": _a1(a[0], r + 43), "hab": _a1(a[0], r + O["hab"]),
          "tal_rot": _a1(a[0], r + O["tal"]), "tal_nv": [_a1(a[0], r + O["tal"] + 1 + i) for i in range(N_TAL)],
          "tal": [_a1(a[1], r + O["tal"] + 1 + i) for i in range(N_TAL)], "tal_txt": [_a1(a[4], r + O["tal"] + 1 + i) for i in range(N_TAL)],
          "talx": [_a1(a[1], r + O["talx"] + 1 + i) for i in range(N_TALX)], "talx_txt": [_a1(a[4], r + O["talx"] + 1 + i) for i in range(N_TALX)],
@@ -988,19 +989,17 @@ def aba(layout, tr):
         assert f.add("faixa", a[1], r, C5, r + 1, v("d_titulo")) == g["titulo"]
         # --- à esquerda: quem ela é
         assert caixa(A1, A5, r + 3, "NOME", None, "val", nota("nome")) == g["nome"]
-        assert f.add("foto", A1, r + 6, A5, r + 24, TEXTO_FOTO, nota("foto")) == g["foto"]
-        assert caixa(A1, A5, r + 26, "TIPO", LIV["tipos"][0]["nome"], "cel", nota("tipo")) == g["tipo"]
+        # 07/10/2026: a foto mais alta que larga. O Mizuki: "ideal alongar a foto, ficar mt quadradinha achatada é dificil de
+        # achar imagens, ser um pouco, n mt, mais alta que larga ajuda". São 26 linhas de 21 px por 480 de largura (480 por
+        # 546). As Famílias saem de baixo dela e vão para baixo das perícias, e a ficha desce só três linhas.
+        assert f.add("foto", A1, r + 6, A5, r + 31, TEXTO_FOTO, nota("foto")) == g["foto"]
+        assert caixa(A1, A5, r + 33, "TIPO", LIV["tipos"][0]["nome"], "cel", nota("tipo")) == g["tipo"]
         f.menu(g["tipo"], D.faixa("tipos", aba=DI))
-        assert caixa(A1, a[1], r + 30, "AQUISIÇÃO", LIV["aquisicoes"][0]["nome"], "cel", nota("aquis")) == g["aquis"]
+        assert caixa(A1, a[1], r + 37, "AQUISIÇÃO", LIV["aquisicoes"][0]["nome"], "cel", nota("aquis")) == g["aquis"]
         f.menu(g["aquis"], D.faixa("aquis", so=0, aba=DI))
-        assert caixa(a[2], a[2], r + 30, "OBTIDA NO NÍVEL", None, "cel", nota("nivel_fixo")) == g["nivel_fixo"]
-        assert caixa(a[3], A5, r + 30, "TALISMÃ", SEM_CARGA, "cel", nota("talisma")) == g["talisma"]
+        assert caixa(a[2], a[2], r + 37, "OBTIDA NO NÍVEL", None, "cel", nota("nivel_fixo")) == g["nivel_fixo"]
+        assert caixa(a[3], A5, r + 37, "TALISMÃ", SEM_CARGA, "cel", nota("talisma")) == g["talisma"]
         f.menu(g["talisma"], D.faixa("carga", aba=DI))
-        assert f.add("rot", A1, r + 34, A5, r + 34, v("d_fam"), nota("familias")) == g["fam_rot"]
-        for n, rot in enumerate(("LIVRE", "LIVRE · TRILHA", "ABERTA", "ABERTA", "ABERTA · TRILHA")):
-            f.add("rot", a[n], r + 35, a[n], r + 35, rot)
-            assert f.add("cel", a[n], r + 36, a[n], r + 37) == g["fam"][n]
-        f.menu(f"{g['fam'][0]}:{_a1(a[N_FAM - 1], r + 36)}", D.faixa("familias", aba=DI))
         # --- no meio: os números
         for n, (rot, val, est, nt) in enumerate((("NÍVEL", v("n"), "num", "nivel"), ("CLASSE", v("cl"), "num", "classe"),
                                                  ("MAESTRIA", v("d_mae"), "num", "maestria"), ("ENTRADA", v("d_ent"), "num", "entrada"),
@@ -1032,6 +1031,12 @@ def aba(layout, tr):
             assert f.add("cel_esq", b[0], r + 29 + n, b[2], r + 29 + n) == g["per"][n]
             assert f.add("cel", b[3], r + 29 + n, B5, r + 29 + n, v(f"d_pb{n}")) == g["perb"][n]
         f.menu(f"{g['per'][0]}:{g['per'][-1]}", D.faixa("pericias", so=0, aba=DI))
+        # as Famílias, embaixo das perícias (até 07/10/2026 ficavam embaixo da foto, que cresceu)
+        assert f.add("rot", b[0], r + 37, B5, r + 37, v("d_fam"), nota("familias")) == g["fam_rot"]
+        for n, rot in enumerate(("LIVRE", "LIVRE · TRILHA", "ABERTA", "ABERTA", "ABERTA · TRILHA")):
+            f.add("rot", b[n], r + 38, b[n], r + 38, rot)
+            assert f.add("cel", b[n], r + 39, b[n], r + 40) == g["fam"][n]
+        f.menu(f"{g['fam'][0]}:{_a1(b[N_FAM - 1], r + 39)}", D.faixa("familias", aba=DI))
         # --- à direita: a mesa. 07/10/2026, o retorno que o Mizuki trouxe de quem leu a aba: saiu a TAREFA ("pq o player
         # iria escrever algo q ele fala pro mestre na mesa assim?") e saiu o que muda de turno em turno ("n tem
         # necessidade dessas caixas q basicamente vc muda durante o turno"; "Básica do ciclo n faz sentido ter, estado,
@@ -1047,12 +1052,12 @@ def aba(layout, tr):
         assert f.add("barra", c[0], r + 6, C5, r + 6,
                      f'=IFERROR(SPARKLINE({FI("atual", i)},{{"charttype","bar";"max",MAX(1,{FI("vida", i)});"color1",{H["cor da barra"]}}}),"")') == g["barra"]
         assert caixa(c[0], C5, r + 8, "CONDIÇÕES E USOS GASTOS", None, "txt", None, alt=7) == g["cond"]
-        assert caixa(c[0], C5, r + 17, "ANOTAÇÕES", None, "txt", None, alt=9) == g["notas"]
-        assert f.add("rot", c[0], r + 28, C5, r + 28, v("d_equip"), nota("equip")) == g["equip_rot"]
-        assert f.add("txt", c[0], r + 29, C5, r + 31) == g["equip"]
-        assert caixa(c[0], C5, r + 33, "CORPO, SENTIDOS E COMUNICAÇÃO", None, "txt", nota("corpo")) == g["corpo"]
+        assert caixa(c[0], C5, r + 17, "ANOTAÇÕES", None, "txt", None, alt=12) == g["notas"]
+        assert f.add("rot", c[0], r + 31, C5, r + 31, v("d_equip"), nota("equip")) == g["equip_rot"]
+        assert f.add("txt", c[0], r + 32, C5, r + 34) == g["equip"]
+        assert caixa(c[0], C5, r + 36, "CORPO, SENTIDOS E COMUNICAÇÃO", None, "txt", nota("corpo"), alt=4) == g["corpo"]
         # --- embaixo: a definição, e as habilidades
-        assert caixa(A1, C5, r + 39, "DEFINIÇÃO", None, "txt", nota("definicao")) == g["def"]
+        assert caixa(A1, C5, r + 42, "DEFINIÇÃO", None, "txt", nota("definicao")) == g["def"]
         assert f.add("lote", A1, r + O["hab"], C5, r + O["hab"], v("d_hab")) == g["hab"]
         com_nota = i == 0
         for n_c, carta in enumerate(tr["cartas"]):
