@@ -504,7 +504,7 @@ checa("com Múltiplas Invocações o limite de ativas vai a quatro", le("Múltip
 checa("a VIDA MÁXIMA aparece ao lado da VIDA ATUAL, com o mesmo número da caixa dos números (27), e o título da ficha diz a vida",
       v(G["vida_max"]) == 27 == v(G["stat"][3]) and v(G["titulo"]).endswith("vida 27 de 27"), f'{v(G["vida_max"])} {v(G["stat"][3])} {v(G["titulo"])}')
 _rotulos = {str(x).split(" · ")[0] for x in CASOS["cão 5"]["planilha"]["v"][ABA].values() if isinstance(x, str)}
-_fora = ("TAREFA", "MOVIMENTO", "BÁSICA DO CICLO", "ESTADO", "ORDEM PENDENTE", "REAÇÃO COLETIVA", "DANO NO TURNO", "VÍNCULO",
+_fora = ("CARGA MÁXIMA", "TAREFA", "MOVIMENTO", "BÁSICA DO CICLO", "ESTADO", "ORDEM PENDENTE", "REAÇÃO COLETIVA", "DANO NO TURNO", "VÍNCULO",
          "APRIMORAMENTO DE VÍNCULO", "EM QUEM", "OFENSIVO", "PROTEÇÃO", "PERÍCIA")
 checa("a aba não traz mais as caixas de turno (tarefa, movimento, básica do ciclo, estado, ordem, reação, dano no turno, Vínculo, usos da rodada)",
       not [x for x in _fora if x in _rotulos] and {"VIDA ATUAL", "VIDA MÁXIMA", "TEMPORÁRIA", "± PERDA / GANHO", "CONDIÇÕES E USOS GASTOS", "ANOTAÇÕES"} <= _rotulos,
@@ -516,8 +516,8 @@ checa("o rótulo de cada talento é sempre o nível e a Categoria, sem o ABRE NO
 print("\n2. O BUFF/DEBUFF")
 v = le("buff")
 checa("Força +1 no Buff/Debuff: o total vai a 4, e o ataque (+2 no dele) a +7, a CD (+1) a 14, a carga a 9",
-      v(G["total"][0]) == 4 and v(G["stat"][0]) == "+7" and v(G["stat"][1]) == 14 and v(G["carga"]) == 9 and v(G["pontos_rot"]) == "ATRIBUTOS · 9 DE 9 PONTOS",
-      f'{v(G["total"][0])} {v(G["stat"][0])} {v(G["stat"][1])} {v(G["carga"])} {v(G["pontos_rot"])}')
+      v(G["total"][0]) == 4 and v(G["stat"][0]) == "+7" and v(G["stat"][1]) == 14 and v(G["equip_rot"]) == "EQUIPAMENTO · VESTE E EMPUNHA ATÉ 9 DE VOLUME" and v(G["pontos_rot"]) == "ATRIBUTOS · 9 DE 9 PONTOS",
+      f'{v(G["total"][0])} {v(G["stat"][0])} {v(G["stat"][1])} {v(G["equip_rot"])} {v(G["pontos_rot"])}')
 checa("Defesa −1, vida máxima +5 e deslocamento +3 m", (v(G["stat"][2]), v(G["stat"][3]), v(G["stat"][4])) == (12, 32, "12 m"), str([v(c) for c in G["stat"]]))
 checa("o Buff/Debuff de cada Teste de Resistência", [v(c) for c in G["tr"]] == ["+5", "+4", "+1", "+0"], str([v(c) for c in G["tr"]]))
 
@@ -549,7 +549,8 @@ for nome in SORTEADAS:
                 "pontos acendem": F["gastos"] > F["disp"] or F["acima"], "famílias acendem": F["fam_erro"]}
     lido = {"nível": v(G["status"][0]), "classe": v(G["status"][1]), "maestria": v(G["status"][2]), "entrada": v(G["status"][3]),
             "retorno": v(G["status"][4]), "totais": [v(c) for c in G["total"]], "ataque": v(G["stat"][0]), "cd": v(G["stat"][1]),
-            "defesa": v(G["stat"][2]), "vida": v(G["stat"][3]), "desl": v(G["stat"][4]), "tr": [v(c) for c in G["tr"]], "carga": v(G["carga"]),
+            "defesa": v(G["stat"][2]), "vida": v(G["stat"][3]), "desl": v(G["stat"][4]), "tr": [v(c) for c in G["tr"]],
+            "carga": int(re.search(r"ATÉ (\d+) DE VOLUME", str(v(G["equip_rot"]))).group(1)),
             "pontos acendem": str(v(G["pontos_rot"])).startswith(fi.T_ERRO), "famílias acendem": str(v(G["fam_rot"])).startswith(fi.T_ERRO)}
     dif += [f"{nome}: {k} = {lido[k]!r}, e a regra diz {esperado[k]!r}" for k in esperado if lido[k] != esperado[k]]
     for (tipo, n), c in f["cartas"].items():

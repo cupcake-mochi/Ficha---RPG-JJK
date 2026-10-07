@@ -240,8 +240,8 @@ def celulas_da_ficha(r, k):
          "total": [_a1(b[i], r + 9) for i in range(N_ATR)], "pts": [_a1(b[i], r + 11) for i in range(N_ATR)],
          "buff": [_a1(b[i], r + 12) for i in range(N_ATR)],
          "stat": [_a1(b[i], r + 15) for i in range(5)], "bstat": [_a1(b[i], r + 17) for i in range(5)],
-         "tr": [_a1(b[i], r + 20) for i in range(4)], "btr": [_a1(b[i], r + 22) for i in range(4)], "carga": _a1(b[4], r + 20),
-         "acerto": _a1(b[0], r + 25), "fis": _a1(b[2], r + 25), "trT": _a1(b[4], r + 25),
+         "tr": [_a1(b[i], r + 20) for i in range(4)], "btr": [_a1(b[i], r + 22) for i in range(4)], "trT": _a1(b[4], r + 20),
+         "acerto": _a1(b[0], r + 25), "fis": _a1(b[3], r + 25),
          "per_rot": _a1(b[0], r + 28), "per": [_a1(b[0], r + 29 + i) for i in range(N_PER)],
          "perb": [_a1(b[3], r + 29 + i) for i in range(N_PER)],
          # --- a mesa
@@ -488,7 +488,11 @@ def trocas(layout, cor_da_barra=None):
             pk = P(f"per{k}")
             o[f"d_pb{k}"] = f'=IF({pk}="","",IFERROR({sinal(f"(INDEX({TT},1,MATCH(VLOOKUP({pk},{PERICIAS},2,FALSE),{ATRIBUTOS},0))+{MAE})")},""))'
         o["d_res"] = f'=IF({P("tipo")}="{DOMADA}","RESERVA · MÁX. "&{P("resmax")},"RESERVA DE PE")'
-        o["d_equip"] = f'="EQUIPAMENTO · CARGA ATÉ "&{P("carga")}&" DE VOLUME"'
+        # 07/10/2026: a entidade não carrega item por conta própria. O Mizuki: "carga, a q a invocação carrega, ela em si n
+        # pode carregar itens, lembra? precisa de caracteristica". O livro (Invocações em campo): "Sem o talento, fica
+        # limitada ao que pode segurar e ao equipamento que pode vestir, dentro do mesmo limite". A caixa CARGA MÁXIMA
+        # saiu dos números, e o limite de 5 + Força fica só aqui, dizendo do que ele é.
+        o["d_equip"] = f'="EQUIPAMENTO · VESTE E EMPUNHA ATÉ "&{P("carga")}&" DE VOLUME"'
         o["d_fam"] = (f'=IF(OR({P("rep")}>0,{P("nfam")}>{P("maxfam")}),"{T_ERRO} ","")&"FAMÍLIAS · "&{P("nfam")}&" ABERTAS"'
                       f'&IF({P("rep")}>0," · REPETIDA","")&IF({P("nfam")}>{P("maxfam")}," · O LIMITE É "&{P("maxfam")},"")')
         o["d_hab"] = (f'="HABILIDADES · básica de "&{P("db")}&"d6 · "&{P("esp")}&IF({P("esp")}>1," espaços"," espaço")&" de especial até a Classe "&{cl}'
@@ -781,7 +785,6 @@ NOTAS = {
     "vida": "5 + Constituição + (3 + Constituição) × (nível − 1). No corpo amaldiçoado de criação, 4 no lugar do 3.",
     "desl": "O deslocamento terrestre-base é de 9 m.",
     "tr": "O atributo do teste, mais a sua maestria no treinado. O Físico usa Força ou Destreza, a que você escolher embaixo.",
-    "carga": "5 + Força, em Volume: o que ela veste, empunha ou leva.",
     "acerto": "Escolhido na montagem. Vale para o ataque e para a CD. Com arma empunhada, o ataque usa o atributo da arma e tem "
               "desvantagem, porque a entidade não tem treino em armas.",
     "pericias": "4 + metade da Inteligência, para baixo. O número ao lado é o atributo da perícia mais a sua maestria.",
@@ -790,7 +793,8 @@ NOTAS = {
     "vida_atual": "Em branco, a vida está cheia. Curar não funciona a zero: use o retorno ou o descanso longo.",
     "reserva": "Só a maldição domada com técnica própria: nível × (1 + um terço da Essência dela). Escreva quanto ainda resta. O "
                "descanso curto recupera um quarto.",
-    "equip": "Registre o que ela veste e empunha, a proteção e os requisitos. Arma empunhada: ataque pelo atributo da arma, com "
+    "equip": "Registre o que ela veste e empunha, a proteção e os requisitos. Ela só leva o que veste e o que as mãos seguram, até 5 + Força de Volume; "
+             "transportar carga ou passageiros pede uma característica própria, que ocupa um talento. Arma empunhada: ataque pelo atributo da arma, com "
              "desvantagem, e o dano da arma.",
     "corpo": "Tamanho, membros, sentidos, como entende ordens e como avisa o que achou. O que ela não tem aqui, ela não faz.",
     "familias": "Três Famílias abertas, uma delas Livre. As Trilhas do Evocador abrem mais uma (Parceria e Múltiplas Invocações) ou "
@@ -1019,13 +1023,13 @@ def aba(layout, tr):
         for n, (nome_tr, _) in enumerate(TESTES):
             assert caixa(b[n], b[n], r + 19, nome_tr.upper(), v(f"d_tr{n}"), "num", nota("tr") if n == 0 else None) == g["tr"][n]
             assert f.add("bd", b[n], r + 22, b[n], r + 22, 0) == g["btr"][n]
-        assert caixa(B5, B5, r + 19, "CARGA MÁXIMA", v("carga"), "num", nota("carga")) == g["carga"]
-        assert caixa(b[0], b[1], r + 24, "ATRIBUTO DE ACERTO", None, "cel", nota("acerto")) == g["acerto"]
-        f.menu(g["acerto"], D.faixa("atributos", aba=DI))
-        assert caixa(b[2], b[3], r + 24, "FÍSICO USA", "Força", "cel") == g["fis"]
-        f.menu(g["fis"], D.faixa("fisico", aba=DI))
-        assert caixa(B5, B5, r + 24, "TR TREINADO", None, "cel") == g["trT"]
+        # o TR treinado fica ao lado dos quatro testes, no lugar que era da CARGA MÁXIMA
+        assert caixa(B5, B5, r + 19, "TR TREINADO", None, "cel") == g["trT"]
         f.menu(g["trT"], D.faixa("testes", aba=DI))
+        assert caixa(b[0], b[2], r + 24, "ATRIBUTO DE ACERTO", None, "cel", nota("acerto")) == g["acerto"]
+        f.menu(g["acerto"], D.faixa("atributos", aba=DI))
+        assert caixa(b[3], B5, r + 24, "FÍSICO USA", "Força", "cel") == g["fis"]
+        f.menu(g["fis"], D.faixa("fisico", aba=DI))
         assert f.add("rot", b[0], r + 28, B5, r + 28, v("d_per"), nota("pericias")) == g["per_rot"]
         for n in range(N_PER):
             assert f.add("cel_esq", b[0], r + 29 + n, b[2], r + 29 + n) == g["per"][n]
