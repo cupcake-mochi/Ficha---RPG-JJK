@@ -358,6 +358,9 @@ monta("recusa", 2, com(CAO, pts=[4, 2, 2, 1, 0], fam=["Mira", None, "Mira", "Con
 monta("quatro famílias", 5, com(CAO, fam=["Mira", None, "Alcance", "Controle", "Castigo"]))
 monta("quatro famílias, Parceria", 5, com(CAO, fam=["Mira", None, "Alcance", "Controle", "Castigo"]), trilha=fi.PARCERIA)
 monta("Múltiplas", 5, CAO, trilha=fi.MULTIPLAS, sozinha=True)
+# o inventário pequeno: o Volume do que ela empunha, veste e guarda, contra o limite de 5 + Força (8, com Força 3)
+monta("equipada", 5, com(CAO, eq=["Katana", None, "Traje 1"], eq_vol=[1, None, 1], guarda=["Kit de primeiros socorros"], guarda_vol=[0.5]))
+monta("carregada demais", 5, com(CAO, eq_vol=[3, 2, 2], guarda_vol=[0.5, None, None, None, None, 1]))
 monta("talismã sem carga", 13, com(CAO, tipo=fi.SH_CRIACAO, aquis="Criação", nivel_fixo=13, talisma=fi.SEM_CARGA))
 
 # 4. as fichas sorteadas
@@ -500,6 +503,11 @@ checa("o conjunto: nível 5, maestria +1, até duas ativas, e a lista traz a fic
       and v(CJ["rol_rot"]) == f"AS INVOCAÇÕES · 1 DE {len(LUGARES)}",
       f'{v(CJ["nivel"])} {v(CJ["maestria"])} {v(CJ["ativas"])} {v(CJ["rol"][0])} | {v(CJ["rol"][1])} | {v(CJ["rol_rot"])}')
 checa("com Múltiplas Invocações o limite de ativas vai a quatro", le("Múltiplas")(CJ["ativas"]) == 4, str(le("Múltiplas")(CJ["ativas"])))
+_eq, _dm = le("equipada")(G["equip_rot"]), le("carregada demais")(G["equip_rot"])
+checa("o equipamento soma o Volume do que ela empunha, veste e guarda (1 + 1 + 0,5 de 8), e acende quando passa do limite (8,5 de 8)",
+      re.fullmatch(r"EQUIPAMENTO · 2[.,]5 DE 8 DE VOLUME", str(_eq)) is not None and str(_dm).startswith(fi.T_ERRO)
+      and re.search(r"EQUIPAMENTO · 8[.,]5 DE 8 DE VOLUME · PASSOU DO LIMITE$", str(_dm)) is not None
+      and le("equipada")(G["guarda_rot"]) == "GUARDADO · SÓ COM A CARACTERÍSTICA DE TRANSPORTE", f"{_eq} | {_dm}")
 # 07/10/2026: a vida como na FICHA do jogador, e o que saiu da mesa
 checa("a VIDA MÁXIMA aparece ao lado da VIDA ATUAL, com o mesmo número da caixa dos números (27), e o título da ficha diz a vida",
       v(G["vida_max"]) == 27 == v(G["stat"][3]) and v(G["titulo"]).endswith("vida 27 de 27"), f'{v(G["vida_max"])} {v(G["stat"][3])} {v(G["titulo"])}')
@@ -516,7 +524,7 @@ checa("o rótulo de cada talento é sempre o nível e a Categoria, sem o ABRE NO
 print("\n2. O BUFF/DEBUFF")
 v = le("buff")
 checa("Força +1 no Buff/Debuff: o total vai a 4, e o ataque (+2 no dele) a +7, a CD (+1) a 14, a carga a 9",
-      v(G["total"][0]) == 4 and v(G["stat"][0]) == "+7" and v(G["stat"][1]) == 14 and v(G["equip_rot"]) == "EQUIPAMENTO · VESTE E EMPUNHA ATÉ 9 DE VOLUME" and v(G["pontos_rot"]) == "ATRIBUTOS · 9 DE 9 PONTOS",
+      v(G["total"][0]) == 4 and v(G["stat"][0]) == "+7" and v(G["stat"][1]) == 14 and v(G["equip_rot"]) == "EQUIPAMENTO · 0 DE 9 DE VOLUME" and v(G["pontos_rot"]) == "ATRIBUTOS · 9 DE 9 PONTOS",
       f'{v(G["total"][0])} {v(G["stat"][0])} {v(G["stat"][1])} {v(G["equip_rot"])} {v(G["pontos_rot"])}')
 checa("Defesa −1, vida máxima +5 e deslocamento +3 m", (v(G["stat"][2]), v(G["stat"][3]), v(G["stat"][4])) == (12, 32, "12 m"), str([v(c) for c in G["stat"]]))
 checa("o Buff/Debuff de cada Teste de Resistência", [v(c) for c in G["tr"]] == ["+5", "+4", "+1", "+0"], str([v(c) for c in G["tr"]]))
@@ -550,7 +558,7 @@ for nome in SORTEADAS:
     lido = {"nível": v(G["status"][0]), "classe": v(G["status"][1]), "maestria": v(G["status"][2]), "entrada": v(G["status"][3]),
             "retorno": v(G["status"][4]), "totais": [v(c) for c in G["total"]], "ataque": v(G["stat"][0]), "cd": v(G["stat"][1]),
             "defesa": v(G["stat"][2]), "vida": v(G["stat"][3]), "desl": v(G["stat"][4]), "tr": [v(c) for c in G["tr"]],
-            "carga": int(re.search(r"ATÉ (\d+) DE VOLUME", str(v(G["equip_rot"]))).group(1)),
+            "carga": int(re.search(r" DE (\d+) DE VOLUME", str(v(G["equip_rot"]))).group(1)),
             "pontos acendem": str(v(G["pontos_rot"])).startswith(fi.T_ERRO), "famílias acendem": str(v(G["fam_rot"])).startswith(fi.T_ERRO)}
     dif += [f"{nome}: {k} = {lido[k]!r}, e a regra diz {esperado[k]!r}" for k in esperado if lido[k] != esperado[k]]
     for (tipo, n), c in f["cartas"].items():

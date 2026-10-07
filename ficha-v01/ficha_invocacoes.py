@@ -77,6 +77,8 @@ assert len(PX_COLUNAS) == COLS
 # as linhas de uma ficha, contadas da faixa do nome
 L0 = 9                                       # a primeira fileira de fichas, e o conjunto
 N_ATR, N_PER, N_FAM, N_TAL, N_TALX, N_LIB = 5, 7, 5, 8, 3, 3
+EM_USO = ("MÃO 1", "MÃO 2", "VESTE")         # o equipamento em uso, um lugar por linha
+N_GUARDA = 6                                 # as linhas de item guardado
 N_BAS, N_ESP, N_EXT = 2, 8, 3
 N_MEL, N_RES = 4, 2
 # a carta de habilidade
@@ -247,8 +249,11 @@ def celulas_da_ficha(r, k):
          # --- a mesa
          "vida": _a1(c[0], r + 4), "vida_max": _a1(c[1], r + 4), "temp": _a1(c[2], r + 4), "delta": _a1(c[3], r + 4),
          "reserva_rot": _a1(c[4], r + 3), "reserva": _a1(c[4], r + 4), "barra": _a1(c[0], r + 6),
-         "cond": _a1(c[0], r + 9), "notas": _a1(c[0], r + 18), "equip_rot": _a1(c[0], r + 31), "equip": _a1(c[0], r + 32),
-         "corpo": _a1(c[0], r + 37),
+         "cond": _a1(c[0], r + 9), "notas": _a1(c[0], r + 16), "equip_rot": _a1(c[0], r + 23),
+         "eq": [_a1(c[1], r + 24 + i) for i in range(len(EM_USO))], "eq_vol": [_a1(c[4], r + 24 + i) for i in range(len(EM_USO))],
+         "guarda_rot": _a1(c[0], r + 27), "guarda": [_a1(c[0], r + 28 + i) for i in range(N_GUARDA)],
+         "guarda_vol": [_a1(c[4], r + 28 + i) for i in range(N_GUARDA)],
+         "corpo": _a1(c[0], r + 36),
          # --- embaixo
          "def": _a1(a[0], r + 43), "hab": _a1(a[0], r + O["hab"]),
          "tal_rot": _a1(a[0], r + O["tal"]), "tal_nv": [_a1(a[0], r + O["tal"] + 1 + i) for i in range(N_TAL)],
@@ -388,7 +393,7 @@ def trocas(layout, cor_da_barra=None):
     fichas_c = [celulas_da_ficha(linha_da_fileira(j), k) for _, j, k in LUG]
     entradas = (["ficha", "nome", "tipo", "aquis", "nfixo", "talisma"] + [f"p{i}" for i in range(N_ATR)] + [f"u{i}" for i in range(N_ATR)] +
                 ["acerto", "fis", "trT"] + [f"us{i}" for i in range(5)] + [f"ut{i}" for i in range(4)] +
-                ["vida_c", "temp", "reserva"] + [f"f{i}" for i in range(N_FAM)] +
+                ["vida_c", "temp", "reserva", "evol"] + [f"f{i}" for i in range(N_FAM)] +
                 [f"per{i}" for i in range(N_PER)] + [f"tal{i}" for i in range(N_TAL)] + [f"tx{i}" for i in range(N_TALX)] +
                 [f"lc{i}" for i in range(N_LIB)] + ["exp"])
     contas = (["tem", "acomp", "n", "cl", "db"] + [f"t{i}" for i in range(N_ATR)] + ["gastos", "disp", "marc", "acima", "va", "atq", "cd",
@@ -412,7 +417,10 @@ def trocas(layout, cor_da_barra=None):
         da = lambda cel: f'={_A(cel, IV)}&""'
         o = {"ficha": i, "nome": da(g["nome"]), "tipo": da(g["tipo"]), "aquis": da(g["aquis"]), "nfixo": f"=N({_A(g['nivel_fixo'], IV)})",
              "talisma": da(g["talisma"]), "acerto": da(g["acerto"]), "fis": da(g["fis"]), "trT": da(g["trT"]),
-             "vida_c": da(g["vida"]), "temp": f"=N({_A(g['temp'], IV)})", "reserva": da(g["reserva"]), "exp": da(g["exp"]["degrau"])}
+             "vida_c": da(g["vida"]), "temp": f"=N({_A(g['temp'], IV)})",
+             # o Volume do que ela empunha, veste e guarda: a soma das caixas de VOL. do equipamento
+             "evol": f"=SUM({_A(g['eq_vol'][0], IV)}:{_A(g['eq_vol'][-1], IV)},{_A(g['guarda_vol'][0], IV)}:{_A(g['guarda_vol'][-1], IV)})",
+             "reserva": da(g["reserva"]), "exp": da(g["exp"]["degrau"])}
         for k in range(N_ATR):
             o[f"p{k}"], o[f"u{k}"] = f"=N({_A(g['pts'][k], IV)})", f"=N({_A(g['buff'][k], IV)})"
         for k in range(5):
@@ -488,11 +496,13 @@ def trocas(layout, cor_da_barra=None):
             pk = P(f"per{k}")
             o[f"d_pb{k}"] = f'=IF({pk}="","",IFERROR({sinal(f"(INDEX({TT},1,MATCH(VLOOKUP({pk},{PERICIAS},2,FALSE),{ATRIBUTOS},0))+{MAE})")},""))'
         o["d_res"] = f'=IF({P("tipo")}="{DOMADA}","RESERVA · MÁX. "&{P("resmax")},"RESERVA DE PE")'
-        # 07/10/2026: a entidade não carrega item por conta própria. O Mizuki: "carga, a q a invocação carrega, ela em si n
-        # pode carregar itens, lembra? precisa de caracteristica". O livro (Invocações em campo): "Sem o talento, fica
-        # limitada ao que pode segurar e ao equipamento que pode vestir, dentro do mesmo limite". A caixa CARGA MÁXIMA
-        # saiu dos números, e o limite de 5 + Força fica só aqui, dizendo do que ele é.
-        o["d_equip"] = f'="EQUIPAMENTO · VESTE E EMPUNHA ATÉ "&{P("carga")}&" DE VOLUME"'
+        # 07/10/2026: o equipamento é um inventário pequeno, e a entidade não leva item por conta própria. O Mizuki: "carga, a
+        # q a invocação carrega, ela em si n pode carregar itens, lembra? precisa de caracteristica"; e, do desenho: "n era
+        # ideal só ser uma versão menor do inventario do jogador, aonde tem item equipado, item guardado (caso tenha
+        # possibilidade)". O título soma o Volume das caixas e o compara com o limite de 5 + Força, que vale para tudo o
+        # que ela veste, empunha ou leva (Invocações em campo). A caixa CARGA MÁXIMA saiu dos números.
+        o["d_equip"] = (f'=IF({P("evol")}>{P("carga")},"{T_ERRO} ","")&"EQUIPAMENTO · "&{P("evol")}&" DE "&{P("carga")}&" DE VOLUME"'
+                        f'&IF({P("evol")}>{P("carga")}," · PASSOU DO LIMITE","")')
         o["d_fam"] = (f'=IF(OR({P("rep")}>0,{P("nfam")}>{P("maxfam")}),"{T_ERRO} ","")&"FAMÍLIAS · "&{P("nfam")}&" ABERTAS"'
                       f'&IF({P("rep")}>0," · REPETIDA","")&IF({P("nfam")}>{P("maxfam")}," · O LIMITE É "&{P("maxfam")},"")')
         o["d_hab"] = (f'="HABILIDADES · básica de "&{P("db")}&"d6 · "&{P("esp")}&IF({P("esp")}>1," espaços"," espaço")&" de especial até a Classe "&{cl}'
@@ -793,9 +803,10 @@ NOTAS = {
     "vida_atual": "Em branco, a vida está cheia. Curar não funciona a zero: use o retorno ou o descanso longo.",
     "reserva": "Só a maldição domada com técnica própria: nível × (1 + um terço da Essência dela). Escreva quanto ainda resta. O "
                "descanso curto recupera um quarto.",
-    "equip": "Registre o que ela veste e empunha, a proteção e os requisitos. Ela só leva o que veste e o que as mãos seguram, até 5 + Força de Volume; "
-             "transportar carga ou passageiros pede uma característica própria, que ocupa um talento. Arma empunhada: ataque pelo atributo da arma, com "
-             "desvantagem, e o dano da arma.",
+    "equip": "O que ela empunha e veste, com o Volume de cada coisa ao lado. O limite é de 5 + Força, e vale para tudo o que ela "
+             "veste, empunha ou leva. Arma empunhada: ataque pelo atributo da arma, com desvantagem, e o dano da arma.",
+    "guarda": "A entidade só leva o que as mãos seguram e o que veste. Guardar itens ou levar passageiros pede uma característica "
+              "própria, que ocupa um dos talentos dela; o que ela guarda conta no mesmo limite de Volume.",
     "corpo": "Tamanho, membros, sentidos, como entende ordens e como avisa o que achou. O que ela não tem aqui, ela não faz.",
     "familias": "Três Famílias abertas, uma delas Livre. As Trilhas do Evocador abrem mais uma (Parceria e Múltiplas Invocações) ou "
                 "duas, com uma segunda Livre (a principal da Invocação Principal). As outras ficam Fechadas e somem dos menus.",
@@ -1055,11 +1066,25 @@ def aba(layout, tr):
         assert f.add("digita", C5, r + 4, C5, r + 5) == g["reserva"]
         assert f.add("barra", c[0], r + 6, C5, r + 6,
                      f'=IFERROR(SPARKLINE({FI("atual", i)},{{"charttype","bar";"max",MAX(1,{FI("vida", i)});"color1",{H["cor da barra"]}}}),"")') == g["barra"]
-        assert caixa(c[0], C5, r + 8, "CONDIÇÕES E USOS GASTOS", None, "txt", None, alt=7) == g["cond"]
-        assert caixa(c[0], C5, r + 17, "ANOTAÇÕES", None, "txt", None, alt=12) == g["notas"]
-        assert f.add("rot", c[0], r + 31, C5, r + 31, v("d_equip"), nota("equip")) == g["equip_rot"]
-        assert f.add("txt", c[0], r + 32, C5, r + 34) == g["equip"]
-        assert caixa(c[0], C5, r + 36, "CORPO, SENTIDOS E COMUNICAÇÃO", None, "txt", nota("corpo"), alt=4) == g["corpo"]
+        assert caixa(c[0], C5, r + 8, "CONDIÇÕES E USOS GASTOS", None, "txt", None, alt=5) == g["cond"]
+        assert caixa(c[0], C5, r + 15, "ANOTAÇÕES", None, "txt", None, alt=6) == g["notas"]
+        # o equipamento: a forma C do estudo de 07/10/2026 ("pode ser a C, é mais simples, ai faz uma listinha maior de
+        # itens guardados"). Um lugar por linha para o que está em uso, e a lista do que ela guarda. A lista vai numa
+        # coluna só: as colunas do bloco têm 96 px (são as das cartas), e duas colunas iguais com o Volume não fecham.
+        assert f.add("rot", c[0], r + 23, c[3], r + 23, v("d_equip"), nota("equip")) == g["equip_rot"]
+        f.add("rot", C5, r + 23, C5, r + 23, "VOL.")
+        for n, rot in enumerate(EM_USO):
+            lin = r + 24 + n
+            f.add("rot", c[0], lin, c[0], lin, rot)
+            assert f.add("cel_esq", c[1], lin, c[3], lin) == g["eq"][n]
+            assert f.add("cel", C5, lin, C5, lin) == g["eq_vol"][n]
+        assert f.add("rot", c[0], r + 27, c[3], r + 27, "GUARDADO · SÓ COM A CARACTERÍSTICA DE TRANSPORTE", nota("guarda")) == g["guarda_rot"]
+        f.add("rot", C5, r + 27, C5, r + 27, "VOL.")
+        for n in range(N_GUARDA):
+            lin = r + 28 + n
+            assert f.add("cel_esq", c[0], lin, c[3], lin) == g["guarda"][n]
+            assert f.add("cel", C5, lin, C5, lin) == g["guarda_vol"][n]
+        assert caixa(c[0], C5, r + 35, "CORPO, SENTIDOS E COMUNICAÇÃO", None, "txt", nota("corpo"), alt=5) == g["corpo"]
         # --- embaixo: a definição, e as habilidades
         assert caixa(A1, C5, r + 42, "DEFINIÇÃO", None, "txt", nota("definicao")) == g["def"]
         assert f.add("lote", A1, r + O["hab"], C5, r + O["hab"], v("d_hab")) == g["hab"]

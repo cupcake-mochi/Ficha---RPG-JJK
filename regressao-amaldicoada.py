@@ -1329,9 +1329,12 @@ if M:
     # 06/10/2026: a INVOCAÇÕES também é montada nesta planilha. As mesclagens que ela faz fora das fileiras copiadas (as
     # que o Invocacoes.gs escreve) e as cópias dela saem da conta daqui; quem as mede é a regressao-invocacoes.py
     _inv = next((a for a in _cru if a["nome"] == "INVOCAÇÕES"), {})
-    # as cópias da aba são as fileiras de cartas e, na DADOS_INVOC, os retângulos de fórmula preenchidos para baixo
+    # as cópias da aba são as fileiras de cartas e, na DADOS_INVOC, os retângulos de fórmula preenchidos para baixo.
+    # 07/10/2026: com a grade de 2 x 6 cada destino é copiado uma vez por coluna de fichas (as faixas, k[5]), porque a
+    # lombada atravessa os trechos; a conta daqui contava uma cópia por destino e passou a acusar a aba à toa
     _mescla_inv = len(_inv.get("merges") or [])
-    _copias_inv = sum(len(k[2]) for k in _inv.get("copias") or []) + sum(len(a.get("abaixo") or []) for a in _cru if a["nome"] == "DADOS_INVOC")
+    _copias_inv = (sum(len(k[2]) * len((k[5] if len(k) > 5 else None) or [0]) for k in _inv.get("copias") or [])
+                   + sum(len(a.get("abaixo") or []) for a in _cru if a["nome"] == "DADOS_INVOC"))
     checa(f"a aba nova não triplica a montagem: {n_mescla} chamadas de mesclagem na planilha inteira (eram 310 sem ela; até {_mescla_inv} são da INVOCAÇÕES), "
           f"{ch.get('Range.copyTo', 0)} cópias ({_copias_ficha} do menu rápido, {_copias_inv} da INVOCAÇÕES)",
           n_mescla < 700 + _mescla_inv and 0 < _copias_ficha and ch.get("Range.copyTo", 0) < 40 + _copias_ficha + _copias_inv,

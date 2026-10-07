@@ -175,6 +175,7 @@ def exemplo_invocacoes(wb):
     a[g["corpo"]] = ("Médio, quatro patas, sem mãos; usa a boca para segurar. Visão, audição e olfato comuns. Entende ordens "
                      "faladas e responde por latidos e gestos.")
     a[g["vida"]] = 19
+    a[g["eq"][2]], a[g["eq_vol"][2]] = "Coleira reforçada", 0.5
     for cel, v in zip(g["pts"], (3, 2, 2, 1, 1)):
         a[cel] = v
     for cel, v in zip(g["fam"], ("Mira", None, "Alcance", "Controle", None)):
@@ -197,6 +198,7 @@ def exemplo_invocacoes(wb):
             a[cel] = v
         for cel, v in zip(g["per"], ("Acrobacia", "Furtividade", "Investigação", "Percepção", "Sobrevivência")):
             a[cel] = v
+        a[g["eq"][0]], a[g["eq_vol"][0]], a[g["guarda"][0]], a[g["guarda_vol"][0]] = "Lanterna de papel", 0.5, "Corda de 15 m", 1
         for chave, nome, classe, forma, mels in ((("bas", 0), "Orientação", None, "Apoio", ["Impulso"]),
                                                  (("esp", 0), "Tiras de resgate", 2, "Apoio", ["Guarda", "Empurrão"]),
                                                  (("esp", 1), "Remendo de papel", 1, "Cura", [])):
