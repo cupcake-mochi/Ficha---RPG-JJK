@@ -94,7 +94,7 @@ PERTURBACOES = [
      "lin.slice().sort(function (a, b) { return a[3] - b[3]; }).forEach(function (g) { if (!g[2]) aba.getRowGroup(g[0], g[3]).expand(); });",
      "", "nascem abertas as seções"),
     ("o salto aponta para a própria caixa, e não para a seção", COD,
-     "'&range=' + l['alvo do salto'] + '\",' + nome", "'&range=' + l['caixa do salto'] + '\",' + nome", "saltos da linha 7"),
+     "'&range=' + l['alvo do salto'] + '\"' + sep + nome", "'&range=' + l['caixa do salto'] + '\"' + sep + nome", "saltos da linha 7"),
     # 02/10/2026, a aba nas quatro rotas de criação
     ("a rota olha a Técnica Marcial antes da sem energia", GER,
      'IF(N({_conta_da_ficha(layout, "sem energia")})=1,4,IF(N({_conta_da_ficha(layout, "técnica marcial")})=1,3,',
@@ -163,8 +163,8 @@ PERTURBACOES = [
      """f'=IF({NIV}>{n},"Nível {n}","Abre no {n}")'""", "as etiquetas dizem o nível ou quando a carta abre"),
     ("o Caminho volta aos quatro degraus de antes do livro novo", HAB, "NIV_CAMINHO, NIV_TRILHA = (2, 7, 15, 23, 30), (2, 11, 19, 27)",
      "NIV_CAMINHO, NIV_TRILHA = (2, 7, 15, 30), (2, 11, 19, 27)", "níveis de entrega da Progressão"),
-    ("o título da Trilha esquece a Trilha escolhida", HAB, """["Trilha", f'="TRILHA"&{escolha("trilha")}&"  ·  QUATRO ENTREGAS"']""",
-     """["Trilha", '="TRILHA  ·  QUATRO ENTREGAS"']""", "os títulos dizem o Caminho e a Trilha"),
+    ("o título da Trilha esquece a Trilha escolhida", HAB, """["Trilha", f'="TRILHA"&{escolha("trilha")}&"  ·  QUATRO NÍVEIS"']""",
+     """["Trilha", '="TRILHA  ·  QUATRO NÍVEIS"']""", "os títulos dizem o Caminho e a Trilha"),
     # 05/10/2026, as cartas com o livro (B37)
     ("a carta cola na seguinte, sem a linha vazia entre elas", HAB,
      "                r += 1                          # uma linha vazia entre uma carta e outra", "                r += 0",

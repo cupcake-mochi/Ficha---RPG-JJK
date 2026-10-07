@@ -186,8 +186,8 @@ def trocas(layout, tr):
                   [[f"{b} · {n}", None] for b, n in LIVRES])
     escolha = lambda k: f'IF(OR({F_(k)}="",LEFT({F_(k)},7)="Escolha"),"","  ·  "&UPPER({F_(k)}))'
     cT = D.tabela("habilidades_titulos", ["habilidades: título", "texto do título"],
-                  [["Caminho", f'="CAMINHO"&{escolha("caminho")}&"  ·  CINCO DEGRAUS"'],
-                   ["Trilha", f'="TRILHA"&{escolha("trilha")}&"  ·  QUATRO ENTREGAS"']])
+                  [["Caminho", f'="CAMINHO"&{escolha("caminho")}&"  ·  CINCO NÍVEIS"'],
+                   ["Trilha", f'="TRILHA"&{escolha("trilha")}&"  ·  QUATRO NÍVEIS"']])
     etiqueta = lambda i: f"={DA}${fa.L(cH + 2)}${2 + i}"
     titulo = lambda i: f"={DA}${fa.L(cT + 1)}${2 + i}"
 

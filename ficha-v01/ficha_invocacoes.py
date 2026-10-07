@@ -344,8 +344,10 @@ def trocas(layout, cor_da_barra=None):
     D.tabela("alcance", ["alcance de"] + [f"primeira parte +{g}" for g in range(G_)] + [f"segunda parte +{g}" for g in range(G_)], R["alcance"])
     ALC1 = _faixa(D.T["alcance"][0] + 1, 2, D.T["alcance"][0] + G_, D.T["alcance"][2])
     ALC2 = _faixa(D.T["alcance"][0] + 1 + G_, 2, D.T["alcance"][0] + 2 * G_, D.T["alcance"][2])
-    D.tabela("pecas", ["peça", "família da peça", "peso da peça", "peça de controle", "efeito pela classe reduzida"],
-             [[p["nome"], p["familia"] or "", p["peso"], int(p["familia"] == "Controle"), int(p["nome"] in R["reduzidas"])] for p in R["pecas"]])
+    # 07/10/2026 (D43 do livro): Condição, Prende e Cerca só entram na falha de um TR, mesmo numa habilidade de ataque
+    D.tabela("pecas", ["peça", "família da peça", "peso da peça", "peça de controle", "efeito pela classe reduzida", "peça que pede TR"],
+             [[p["nome"], p["familia"] or "", p["peso"], int(p["familia"] == "Controle"), int(p["nome"] in R["reduzidas"]),
+               p.get("pede_tr", 0)] for p in R["pecas"]])
     PECAS = D.faixa("pecas")
     D.tabela("res", ["menu de restrição", "restrição", "o que devolve", "é de frequência", "menu de restrição leve"],
              [[r["rotulo"], r["nome"], r["devolve"], r["frequencia"], r["rotulo"] if r["devolve"] == 1 else ""] for r in R["restricoes"]])
@@ -397,7 +399,7 @@ def trocas(layout, cor_da_barra=None):
                 [f"per{i}" for i in range(N_PER)] + [f"tal{i}" for i in range(N_TAL)] + [f"tx{i}" for i in range(N_TALX)] +
                 [f"lc{i}" for i in range(N_LIB)] + ["exp"])
     contas = (["tem", "acomp", "n", "cl", "db"] + [f"t{i}" for i in range(N_ATR)] + ["gastos", "disp", "marc", "acima", "va", "atq", "cd",
-               "def", "cri", "vida", "atual", "desl", "vf"] + [f"tr{i}" for i in range(4)] + ["nper", "tper", "esp", "nbas", "ntal", "ttal",
+               "def", "cri", "vida", "vida0", "atual", "desl", "vf"] + [f"tr{i}" for i in range(4)] + ["nper", "tper", "esp", "nbas", "ntal", "ttal",
                "ent", "ret", "resmax", "carga", "nfam", "rep", "maxfam"] +
               # o que a aba mostra
               ["d_titulo", "d_lomb", "d_mae", "d_ent", "d_ret", "d_pontos", "d_atq", "d_cd", "d_desl"] + [f"d_tr{i}" for i in range(4)] +
@@ -457,6 +459,11 @@ def trocas(layout, cor_da_barra=None):
         o["def"] = f'=10+{P("t1")}+{H["parcela da defesa"]}+{P("us2")}'
         o["cri"] = f'=IF({P("tipo")}="{CORPO_CRIACAO}",1,0)'
         o["vida"] = f'=5+{P("t2")}+(3+{P("cri")}+{P("t2")})*({nn}-1)+{P("us3")}'
+        # 07/10/2026: a vida atual nasce cheia. O Mizuki, depois de montar no Sheets: "seria bom ao preencher a vida máxima,
+        # a vida atual preencher tbm, na criação da ficha, pq a vida atual fica com nada mesmo após criação da invocação".
+        # A caixa nasce apontando para cá (a máxima, quando a ficha tem nome) e é livre: o jogador escreve por cima, e a
+        # caixa de ± grava o número. Enquanto ninguém mexe, acompanha a máxima.
+        o["vida0"] = f'=IF({P("tem")}=0,"",{P("vida")})'
         o["atual"] = f'=IF({P("vida_c")}="",{P("vida")},MAX(0,MIN(IFERROR(VALUE({P("vida_c")}),{P("vida")}),{P("vida")})))'
         o["desl"] = f'=9+{P("us4")}'
         o["vf"] = f'=IF({P("fis")}="Destreza",{P("t1")},{P("t0")})'
@@ -583,7 +590,7 @@ def trocas(layout, cor_da_barra=None):
     nomes = (["lugar", "ficha", "tipo", "abre", "tit", "classe", "nome", "forma", "tdano", "rmenu"] + [f"m{i}" for i in range(1, N_MEL + 1)] +
              [f"r{i}" for i in range(1, N_RES + 1)] +
              ["tem", "nv", "mx", "db", "atk", "cdf", "lf"] + [f"f{i}" for i in range(1, N_MEL + 1)] + [f"w{i}" for i in range(1, N_MEL + 1)] +
-             [f"k{i}" for i in range(N_MEL + 1)] + [f"x{i}" for i in range(N_MEL + 1)] + ["ct", "rdz", "emb", "tp", "tr"] +
+             [f"k{i}" for i in range(N_MEL + 1)] + [f"x{i}" for i in range(N_MEL + 1)] + ["ct", "ptr", "rdz", "emb", "tp", "tr"] +
              [f"c{i}" for i in range(1, N_RES + 1)] + [f"b{i}" for i in range(1, N_RES + 1)] + [f"n{j}" for j in range(1, 7)] +
              ["dL", "dM", "nm", "nr", "g", "dv0", "dv", "usa", "perde", "pts", "s", "d", "dep"] +
              [f"d{c['classe']}" for c in R["classes"]] + [f"t{c['classe']}" for c in R["classes"]] +
@@ -637,6 +644,7 @@ def trocas(layout, cor_da_barra=None):
         o["k0"] = f"=IF({Cc}=0,0,{da_forma(2)})"
         o["x0"] = f'=IF({lf}=0,0,IF(INDEX({forma_col(1)},{lf})="",0,IF(COUNTIF({FAMS},INDEX({forma_col(1)},{lf}))=0,1,0)))'
         o["ct"] = "=" + "+".join(f"IFERROR(VLOOKUP({P(f'm{k}')},{PECAS},4,FALSE),0)" for k in range(1, N_MEL + 1))
+        o["ptr"] = "=" + "+".join(f"IFERROR(VLOOKUP({P(f'm{k}')},{PECAS},6,FALSE),0)" for k in range(1, N_MEL + 1))
         o["rdz"] = "=TEXTJOIN(\", \",TRUE," + ",".join(f'IF(IFERROR(VLOOKUP({P(f"m{k}")},{PECAS},5,FALSE),0)=1,{P(f"m{k}")},"")' for k in range(1, N_MEL + 1)) + ")"
         o["emb"], o["tp"], o["tr"] = "=" + da_forma(3), "=" + da_forma(4), "=" + da_forma(6)
         for k in range(1, N_RES + 1):
@@ -716,7 +724,7 @@ def trocas(layout, cor_da_barra=None):
         o["rs"] = f'=IF({P("rmenu")}<>"",{P("rmenu")},IF({lf}=0,"",INDEX({forma_col(5)},{lf})))'
         rs = P("rs")
         atq_total = f'({P("atk")}+2*IF({tem_m("Precisão")}>0,1,0))'
-        o["resolve"] = (f'=IF(OR({P("tem")}=0,{lf}=0),"",IF({tem_m(ines)}>0,"Automático",IF({rs}="Ataque",IF({P("atk")}="","Ataque","Ataque "&{sinal(atq_total)}),'
+        o["resolve"] = (f'=IF(OR({P("tem")}=0,{lf}=0),"",IF({tem_m(ines)}>0,"Automático",IF({rs}="Ataque",IF({P("atk")}="","Ataque","Ataque "&{sinal(atq_total)})&IF({P("ptr")}>0," · TR"&IF({P("cdf")}="",""," CD "&{P("cdf")}),""),'
                         f'IF(LEFT({rs},2)="TR",{rs}&IF({P("cdf")}="",""," · CD "&{P("cdf")})&IF({tem_m("Certeiro")}>0," · metade",""),"Sem rolagem"))))')
         tC = f'INDEX({Rg("t1", f"t{n_classes}")},1,MAX(1,{Cc}))'
         tC = f'UPPER(LEFT({tC},1))&MID({tC},2,99)'
@@ -800,7 +808,8 @@ NOTAS = {
     "pericias": "4 + metade da Inteligência, para baixo. O número ao lado é o atributo da perícia mais a sua maestria.",
     "delta": "Escreva −9 ou +5 e aperte Enter: a ficha aplica na vida atual e limpa a caixa. A perda gasta a vida temporária "
              "primeiro, e a vida não passa da máxima.",
-    "vida_atual": "Em branco, a vida está cheia. Curar não funciona a zero: use o retorno ou o descanso longo.",
+    "vida_atual": "Nasce cheia, igual à máxima, e a acompanha até você escrever aqui ou usar a caixa de ±. Em branco, a vida "
+                  "conta como cheia. Curar não funciona a zero: use o retorno ou o descanso longo.",
     "reserva": "Só a maldição domada com técnica própria: nível × (1 + um terço da Essência dela). Escreva quanto ainda resta. O "
                "descanso curto recupera um quarto.",
     "equip": "O que ela empunha e veste, com o Volume de cada coisa ao lado. O limite é de 5 + Força, e vale para tudo o que ela "
@@ -1058,7 +1067,7 @@ def aba(layout, tr):
         # ordem, n faz sentido"). A vida fica como na FICHA do jogador: "ideal o vida máxima ficar lado a lado com vida
         # atual, vida temporaria e ter um redutor automatico, semelhante a ficha de player". A caixa de ± é do onEdit
         # (redutorDaInvocacao_, no Codigo.gs), que lê os endereços de `redutores`, no ABAS.
-        assert caixa(c[0], c[0], r + 3, "VIDA ATUAL", None, "digita", nota("vida_atual")) == g["vida"]
+        assert caixa(c[0], c[0], r + 3, "VIDA ATUAL", f"={FI('vida0', i)}", "digita", nota("vida_atual")) == g["vida"]
         assert caixa(c[1], c[1], r + 3, "VIDA MÁXIMA", f"={FI('vida', i)}", "num", nota("vida")) == g["vida_max"]
         assert caixa(c[2], c[2], r + 3, "TEMPORÁRIA", None, "digita") == g["temp"]
         assert caixa(c[3], c[3], r + 3, "± PERDA / GANHO", None, "digita", nota("delta")) == g["delta"]
@@ -1220,6 +1229,8 @@ def aba(layout, tr):
         "validacao_em_matriz": True,
         # a caixa de ± de cada ficha, com a vida atual, a temporária e a máxima dela: o onEdit aplica e limpa
         "redutores": [[g["delta"], g["vida"], g["temp"], g["vida_max"]] for g in tr["fichas_c"]],
+        # a caixa que nasce com conta e o jogador escreve por cima: o devolverConta_ do Codigo.gs não a devolve
+        "livres": [g["vida"] for g in tr["fichas_c"]],
     }
 
 

@@ -267,7 +267,7 @@ EXEMPLOS = [
     {"nome": "Fio de Arrasto", "classe": 1, "lib": False, "forma": "Projétil", "mel": ["Empurrão"], "res": [], "livres": ["Alcance"],
      "dados": 2, "pe": 3, "frase": "Sobram 3 − 0 − 1 = 2 pontos, que viram 2d8 de dano."},
     {"nome": "Peso nas Mãos", "classe": 1, "lib": False, "forma": "Toque", "mel": ["Derrubado"], "res": [], "livres": ["Controle", "Castigo"],
-     "dados": 3, "pe": 3, "frase": "No acerto, causa 3d8 de Concussão e aplica Derrubado por uma rodada."},
+     "dados": 3, "pe": 3, "frase": "No acerto, causa 3d8 de Concussão, e o alvo faz TR Físico contra CD 12."},
     {"nome": "Corte Medido 2", "classe": 2, "lib": False, "forma": "Projétil", "mel": ["Fura", "Precisão"], "res": ["Parado"], "livres": ["Mira"],
      "dados": 5, "pe": 6, "frase": "2 | 6 | 1 | 1 | +1 | 5d8 | 6"},
     {"nome": "Corte Medido 3", "classe": 3, "lib": False, "forma": "Projétil", "mel": ["Fura", "Precisão"], "res": ["Parado"], "livres": ["Mira"],

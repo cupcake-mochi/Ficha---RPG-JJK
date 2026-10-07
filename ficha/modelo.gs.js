@@ -102,6 +102,10 @@ function relogio_() {
 // 01/10/2026: o Mizuki mediu o acabamento em 90 s (as travas sozinhas levam 83). O teto desceu de 270 para 250 s,
 // para o acabamento que começa na última hora ainda caber nos 360.
 var TETO_DA_MONTAGEM_ = 250000;
+// 07/10/2026: as travas só começam se a execução ainda estiver abaixo disto. Num dia em que o Sheets do Mizuki criou as
+// abas em 165 s (contra 63 s na véspera), as travas levaram 148,2 s no acabar() (ele mandou o registro), contra 81 e 83 s
+// de antes. 190 + 148 cabem nos 360, com pouca folga.
+var TETO_DAS_TRAVAS_ = 190000;
 
 // 07/10/2026, a INVOCAÇÕES com doze fichas: a montagem das abas sozinha já não cabe com folga nos seis minutos. O
 // Mizuki mediu 288 s com uma ficha (187 s de abas, 101 s de menus e acabamento), e as doze trazem mais de dez vezes as
@@ -113,8 +117,12 @@ var TETO_DA_MONTAGEM_ = 250000;
 // colunas): CARTEIRA 2,1 · FICHA 2,1 · FICHA AMALDIÇOADA 2,0 · INVOCAÇÕES 1,5 · FICHA PESSOAL 1,3 · e as ocultas, que
 // não têm mesclagem nem borda, DADOS 0,52 · DADOS_AM 0,58 · DADOS_INVOC 0,53. A estimativa usa o pior de cada tipo com
 // uns 15% a mais, e nenhuma aba começa se a estimativa dela passar do limite da execução, a não ser a primeira da vez.
-var MS_POR_CELULA_ = 2.4, MS_POR_CELULA_OCULTA_ = 0.7;
-var LIMITE_DA_EXECUCAO_ = 300000;
+// 07/10/2026, à noite, com as doze fichas e o Sheets lento (as abas criadas em 165 s, contra 63 s na véspera): a
+// DADOS_INVOC levou 89,6 s (70.650 células: 1,27 ms cada, contra os 0,7 da estimativa), a DADOS_AM 35,4 s (26.316: 1,35) e
+// os menus, que vêm depois da última aba e ninguém estimava, 35,1 s. A execução fechou em 304 s. A oculta passa a 1,4 ms
+// por célula, e o limite desce de 300 para 270 s, para os menus caberem depois da última aba.
+var MS_POR_CELULA_ = 2.4, MS_POR_CELULA_OCULTA_ = 1.4;
+var LIMITE_DA_EXECUCAO_ = 270000;
 var CHAVE_DA_MONTAGEM_ = 'montagem_parada';
 var RETOMADA_ = null;       // o continuar() põe aqui a aba em que a montagem parou; o construir() começa do zero
 
@@ -154,7 +162,7 @@ function construir() {
   // devolvia a mesma en_US que a montagem tinha acabado de ligar — a ficha é em português sempre,
   // então o fim é sempre pt_BR, mesmo se ela parar no meio.
   var idioma = ss.getSpreadsheetLocale();
-  var falta = false;
+  var falta = false, soTravas = false;
   ss.setSpreadsheetLocale('en_US');
   try {
     var abas;
@@ -234,8 +242,9 @@ function construir() {
 
     if (rel.passou() > TETO_DA_MONTAGEM_) {
       falta = true;
-    } else {
-      acabamento_(ss, feito, rel);
+    } else if (!acabamento_(ss, feito, rel, true)) {
+      falta = true;
+      soTravas = true;
     }
   } finally {
     ss.setSpreadsheetLocale('pt_BR');
@@ -244,7 +253,8 @@ function construir() {
 
   var seg = Math.round(rel.passou() / 1000);
   if (falta) {
-    Logger.log('AS ABAS ESTÃO DE PÉ em ' + seg + 's, MAS FALTA O ACABAMENTO: rode a função acabar(). · ' + feito.join(' · '));
+    Logger.log('AS ABAS ESTÃO DE PÉ em ' + seg + 's, MAS ' + (soTravas ? 'FALTAM AS TRAVAS DO ACABAMENTO' : 'FALTA O ACABAMENTO') +
+               ': rode a função acabar(). · ' + feito.join(' · ') + ' · tempos: ' + ETAPAS_.join(', '));
   } else {
     Logger.log('FICHA PRONTA em ' + seg + 's · ' + feito.join(' · ') + ' · tempos: ' + ETAPAS_.join(', '));
   }
@@ -255,20 +265,26 @@ function construir() {
  * AMALDIÇOADA e a caixa da paleta.
  * Cada passo pode ser refeito sem estragar o que já está lá, e é por isso que ele pode rodar sozinho, pelo acabar().
  */
-function acabamento_(ss, feito, rel) {
+function acabamento_(ss, feito, rel, comTeto) {
   var idx = indice();
   feito.push('cor de estado: ' + corDeEstado_(ss, idx));
   rel.etapa('cor de estado');
   feito.push('notas: ' + notasDeRegra_(ss, idx));
   rel.etapa('notas');
-  feito.push('protegidas: ' + protegerFormulas_(ss, idx));
-  rel.etapa('travas');
   feito.push('ficha pessoal: ' + configurarPessoal_(ss));
   rel.etapa('notas da ficha pessoal');
   feito.push('saltos: ' + ligarSaltos_(ss));
   rel.etapa('saltos da ficha amaldiçoada');
   feito.push('paleta: ' + configurarPaleta_(ss, true));
   rel.etapa('caixa da paleta');
+  // 07/10/2026: as travas por último. São a etapa mais lenta (o Mizuki mediu 81 e 83 s), e um acabamento cortado no
+  // meio delas deixava a ficha sem os saltos e sem a caixa da paleta, que vinham depois. Agora, se o tempo que sobra
+  // não dá para elas, o acabamento do construir() para antes de começar e pede o acabar(), que refaz tudo com os seis
+  // minutos inteiros (e por isso o acabar() não olha o teto).
+  if (comTeto && rel.passou() > TETO_DAS_TRAVAS_) return false;
+  feito.push('protegidas: ' + protegerFormulas_(ss, idx));
+  rel.etapa('travas');
+  return true;
 }
 
 /**
@@ -284,7 +300,7 @@ function acabar() {
   if (parada !== null) throw new Error('a montagem das abas parou antes da aba ' + (ABAS[Number(parada)] || {}).nome + ': rode continuar() antes do acabar().');
   ss.setSpreadsheetLocale('en_US');
   try {
-    acabamento_(ss, feito, rel);
+    acabamento_(ss, feito, rel, false);
   } finally {
     ss.setSpreadsheetLocale('pt_BR');
   }

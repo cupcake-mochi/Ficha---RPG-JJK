@@ -163,7 +163,7 @@ edita("o construir() do zero segue a montagem parada de antes", F, "      // do 
       "", "não deixa valendo a parada de antes", teste=K)
 edita("a copia das fileiras ignora as faixas de colunas e atravessa a lombada", F, "var faixasDe = function (k) { return k[5] || [[k[3] || 1, k[4] || nc]]; };",
       "var faixasDe = function (k) { return [[k[3] || 1, k[4] || nc]]; };", "corta uma mesclagem", teste=K)
-edita("a lista de invocacoes leva todas as linhas a mesma ficha", C, "'&range=' + l['alvo do salto'] + '\",' + nome", "'&range=H9\",' + nome",
+edita("a lista de invocacoes leva todas as linhas a mesma ficha", C, "'&range=' + l['alvo do salto'] + '\"' + sep + nome", "'&range=H9\"' + sep + nome",
       "leva ao número da ficha dela", teste=K)
 edita("a caixa de ± da invocacao esquece a vida temporaria", C, "  var fim = aplicaPasso_(tem === '' || tem === null ? max : tem, max, antes, passo);",
       "  var fim = aplicaPasso_(tem === '' || tem === null ? max : tem, max, 0, passo);", "a caixa de ± de cada ficha de invocação", teste=K)
@@ -172,8 +172,8 @@ edita("a caixa de ± da invocacao parte de zero com a vida em branco", C, "  var
 edita("a caixa de ± da invocacao nao se limpa", C, "  if (fim.temp !== antes) temp.setValue(fim.temp);\n  e.range.clearContent();\n  return true;",
       "  if (fim.temp !== antes) temp.setValue(fim.temp);\n  return true;", "a caixa de ± de cada ficha de invocação", teste=K)
 edita("o acabar() duplica as travas", C, "    semAsVelhas(aba);\n    var celulas = [];", "    var celulas = [];", "rodar o acabar() numa ficha pronta não muda nada", teste=K)
-edita("o acabar() roda em portugues, e a regra de cor quebra", F, "  ss.setSpreadsheetLocale('en_US');\n  try {\n    acabamento_(ss, feito, rel);",
-      "  try {\n    acabamento_(ss, feito, rel);", "o acabar() escreve a regra de cor com a planilha em inglês", teste=K)
+edita("o acabar() roda em portugues, e a regra de cor quebra", F, "  ss.setSpreadsheetLocale('en_US');\n  try {\n    acabamento_(ss, feito, rel, false);",
+      "  try {\n    acabamento_(ss, feito, rel, false);", "o acabar() escreve a regra de cor com a planilha em inglês", teste=K)
 edita("o Caminho escolhido nao chega a FICHA PESSOAL", C, "try { fichaMexeNaPessoal_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }", "",
       "escolher Bastião na FICHA passa por todos os gatilhos", teste=K)
 
@@ -182,11 +182,40 @@ edita("a nota da mao principal volta para o rotulo", F, '["D41","Para uma arma a
       "a caixa de escolha de cada mão nasce com a nota")
 edita("a DADOS deixa de publicar a nota da arma da mao secundaria", F, '"arma da secundária"', '""', "a DADOS publica as cinco notas")
 # 01/10/2026 (B31): a caixa calculada da FICHA AMALDICOADA em que alguem digitou por cima volta a ser a conta
-edita("a conta digitada por cima nao volta", C, "    cel.setFormula(t[2]);\n    n++;", "    n++;", "digitar por cima de uma caixa calculada devolve a conta", teste=K)
-edita("a conta volta sem aviso na tela", C, "  if (n) {\n    SpreadsheetApp.getActive().toast(", "  if (false) {\n    SpreadsheetApp.getActive().toast(",
+edita("a conta digitada por cima nao volta", C, "      if (cel.getFormula() === t[2]) return;\n      cel.setFormula(t[2]);", "      if (cel.getFormula() === t[2]) return;",
       "digitar por cima de uma caixa calculada devolve a conta", teste=K)
-edita("o onEdit regrava formula que nao vale em todo idioma", C, "var REFERENCIA_PURA_ = /^=(?:'[^']+'|[A-Z_]+)!\\$?[A-Z]+\\$?\\d+$/;", "var REFERENCIA_PURA_ = /^=/;",
-      "não é regravada pelo script", teste=K)
+edita("a conta volta sem aviso na tela", C, "  if (n) {\n    ss.toast(doMenu", "  if (false) {\n    ss.toast(doMenu",
+      "digitar por cima de uma caixa calculada devolve a conta", teste=K)
+# 07/10/2026: toda caixa calculada volta, em toda aba, e a fórmula de fábrica é escrita na pontuação do idioma da planilha
+edita("a formula de fabrica volta na pontuacao do ingles, numa planilha em portugues", C,
+      "  if (/^en/i.test(String(idioma || ''))) return f;\n  var out = '', i = 0, n = f.length, chaves = 0;",
+      "  if (true) return f;\n  var out = '', i = 0, n = f.length, chaves = 0;", "a fórmula de fábrica vira a do idioma da planilha", teste=K)
+edita("o numero com ponto fica com ponto na planilha em portugues", C, "      out += m.replace('.', ',');", "      out += m;",
+      "a fórmula de fábrica vira a do idioma da planilha", teste=K)
+edita("a conta da FICHA em que alguem escreve por cima nao volta", C,
+      "  try { devolverConta_(e, 'FICHA'); } catch (err) { console.log('ficha, a conta: ' + err.message); }\n", "",
+      "escrever por cima de uma conta da FICHA, da CARTEIRA ou da FICHA PESSOAL", teste=K)
+edita("a conta da CARTEIRA em que alguem escreve por cima nao volta", C,
+      "    try { devolverConta_(e, 'CARTEIRA'); } catch (err) { console.log('carteira: ' + err.message); }\n", "",
+      "escrever por cima de uma conta da FICHA, da CARTEIRA ou da FICHA PESSOAL", teste=K)
+edita("a conta da FICHA PESSOAL em que alguem escreve por cima nao volta", C,
+      "    try { devolverConta_(e, ABA_PESSOAL_); } catch (err) { console.log('ficha pessoal, a conta: ' + err.message); }\n", "",
+      "escrever por cima de uma conta da FICHA, da CARTEIRA ou da FICHA PESSOAL", teste=K)
+edita("a caixa livre (a vida, o Volume do item) e devolvida como se fosse conta", C, "    if (livres[a1_(t[0], t[1])]) return;\n", "",
+      "ficam como o jogador escreveu, sem aviso", teste=K)
+edita("a conta que o Sheets nao entende fica em #ERROR!", C,
+      "  var erradas = outras.filter(function (o) { return String(o[0].getDisplayValue()) === '#ERROR!'; });", "  var erradas = [];",
+      "é gravada em inglês, com a planilha em inglês por um instante", teste=K)
+edita("o religamento escreve o salto com virgula numa planilha em portugues", C,
+      "  var sep = /^en/i.test(String(ss.getSpreadsheetLocale())) ? ',' : ';';", "  var sep = ',';",
+      "volta com a ligação, com ponto e vírgula", teste=K)
+edita("o salto da FICHA AMALDICOADA em que alguem escreve por cima fica sem a ligacao", C,
+      "      if (e.range.getRow() <= LINHA_DOS_SALTOS_) ligarSaltosDe_(SpreadsheetApp.getActive(), ABA_AMALDICOADA_, DADOS_DA_AMALDICOADA_);\n", "",
+      "o salto em que alguém escreve por cima volta a ser a ligação", teste=K)
+edita("o acabamento do construir() comeca as travas sem tempo para elas", F,
+      "  if (comTeto && rel.passou() > TETO_DAS_TRAVAS_) return false;", "", "quando o tempo não dá para as travas", teste=K)
+edita("o acabar() tambem pula as travas quando o relogio esta alto", F,
+      "    acabamento_(ss, feito, rel, false);\n  } finally {", "    acabamento_(ss, feito, rel, true);\n  } finally {", "o acabar() depois põe as travas", teste=K)
 edita("o onEdit nao reconhece a FICHA AMALDICOADA", C, "if (aba === ABA_AMALDICOADA_) {", "if (aba === 'OUTRA ABA DE NOME PARECIDO') {",
       "digitar por cima de uma caixa calculada devolve a conta", teste=K)
 # 02/10/2026, as Habilidades (B34): o riscado das cartas acima do nível é regra de cor declarada no ABAS, que o corDeEstado_
@@ -195,7 +224,8 @@ edita("o corDeEstado_ apaga o riscado das Habilidades", C,
       "  ((spec && spec.condicional) || []).forEach(function (c) { regras.push(regraDeCor_(ficha, c)); });\n", "",
       "risca o nome e o texto das 9 cartas", teste=K)
 edita("escrever por cima da etiqueta de nivel nao devolve a conta", C,
-      "  if (dentroDeSemTrava_('FICHA', e.range)) {", "  if (false) {", "escrever por cima da etiqueta de nível devolve a conta", teste=K)
+      "    try { devolverConta_(e, 'FICHA'); } catch (err) { console.log('menu rápido: ' + err.message); }\n", "",
+      "escrever por cima da etiqueta de nível devolve a conta", teste=K)
 # 03/10/2026, a moldura da foto da CARTEIRA saiu de dentro da caixa (ficha-v01/moldura_foto.py): a caixa nasce vazia, e a da
 # paleta se ancora na caixa que a CARTEIRA declara, e não na imagem mais alta
 # (sem a caixa declarada, a caixa da paleta cai embaixo de outra arte, e o merge dela pega um pedaço de outra caixa: a

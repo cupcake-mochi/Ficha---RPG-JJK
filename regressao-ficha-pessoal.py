@@ -406,13 +406,14 @@ for nome, c in CASOS.items():
     u, e = _ED["uniformes"].get(ves), (None if duas else _ED["escudos"].get(sec))
     tetos = [x["teto_de_destreza"] for x in (u, e) if x and x["teto_de_destreza"] is not None]
     prot = (u["protecao"] if u else 1) + (e["protecao"] if e else 0)       # sem uniforme, o cobrir-se do refino 1: 1/3 + 1
-    # 04/10/2026: a peça usada sem a Força não dá a proteção dela, e a arma empunhada sem a Força tira a Destreza
+    # 04/10/2026: a peça usada sem a Força não dá a proteção dela. 07/10/2026: a arma empunhada sem a Força não tira
+    # mais a Destreza da Defesa (decisão do Mizuki, no fora_do_livro): dá desvantagem no ataque e metade do deslocamento
     fc = c.get("forca", 0)
     req = lambda x: x["requer_forca"] or 0
     prot -= (u["protecao"] if u and req(u) > fc else 0) + (e["protecao"] if e and req(e) > fc else 0)
     armas_em_uso = [n for n in (c.get("principal"), None if e else sec) if n in ARMAS and ARMAS[n]["categoria"] != "Escudo"]
     sem_forca = any((0 if ARMAS[n]["forca"] == "—" else ARMAS[n]["forca"]) > fc for n in armas_em_uso)
-    esp = 10 + (0 if sem_forca else min([des] + tetos)) + prot
+    esp = 10 + min([des] + tetos) + prot
     lido = LIDO["caso-" + nome]["FICHA"][IDX["defesa"]].value
     checa(f"{nome}: {ves}, {sec if e else 'sem escudo'}, Destreza {des}: Defesa {esp}", lido == esp, f"a ficha diz {lido}")
 

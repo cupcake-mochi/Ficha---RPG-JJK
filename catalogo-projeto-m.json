@@ -505,7 +505,7 @@
   "Condição": {
    "familia": "Controle",
    "peso": "VARIAVEL",
-   "efeito": "Escolha na montagem uma das treze condições compráveis de Condições. Pague seu nível: Leve, Média ou Pesada. Ela se aplica no acerto ou na falha do TR, dura uma rodada e termina no começo do seu próximo turno, salvo duração diferente da ficha. Só pode haver uma Pesada por feitiço.",
+   "efeito": "Escolha na montagem uma das treze condições compráveis de Condições. Pague seu nível: Leve, Média ou Pesada. Ela se aplica na falha do TR, mesmo numa ficha de ataque, dura uma rodada e termina no começo do seu próximo turno, salvo duração diferente da ficha. Só pode haver uma Pesada por feitiço.",
    "excecao": "unica Melhoria cujo peso nao e fixo: le o nivel da condicao escolhida"
   },
   "Terreno": {
@@ -516,7 +516,7 @@
   "Cerca": {
    "familia": "Controle",
    "peso": "Leve",
-   "efeito": "No acerto ou na falha do TR, o alvo não pode se aproximar voluntariamente de você até o fim do próximo turno dele. Você se mover até ele não o afasta. Movimento imposto continua possível. A aplicação termina assim que você lhe causar dano, inclusive o dano do feitiço que a aplicou."
+   "efeito": "Na falha do TR, mesmo numa ficha de ataque, o alvo não pode se aproximar voluntariamente de você até o fim do próximo turno dele. Você se mover até ele não o afasta. Movimento imposto continua possível. A aplicação termina assim que você lhe causar dano, inclusive o dano do feitiço que a aplicou."
   },
   "Desarma o Feitiço": {
    "familia": "Controle",
@@ -531,7 +531,7 @@
   "Prende": {
    "familia": "Controle",
    "peso": "Media",
-   "efeito": "No acerto ou na falha do TR, o alvo não pode se deslocar voluntariamente até o fim do próximo turno dele. Ainda pode atacar, conjurar e usar outras ações. No próprio turno, pode gastar Ação Padrão, Ação Bônus ou Ação de Movimento para fazer o TR de saída registrado na ficha contra sua CD. No sucesso, a aplicação termina. Cada tentativa paga uma dessas ações."
+   "efeito": "Na falha do TR, mesmo numa ficha de ataque, o alvo não pode se deslocar voluntariamente até o fim do próximo turno dele. Ainda pode atacar, conjurar e usar outras ações. No próprio turno, pode gastar Ação Padrão, Ação Bônus ou Ação de Movimento para fazer o TR de saída registrado na ficha contra sua CD. No sucesso, a aplicação termina. Cada tentativa paga uma dessas ações."
   },
   "Puxa": {
    "familia": "Controle",
@@ -2681,6 +2681,11 @@
    "valor": 8,
    "regra": "toda vida inicial é o máximo do dado de vida, e o ganho por nível é a média para cima (máximo ÷ 2 + 1)",
    "porque": "a tabela de Características da Vanguarda no livro reconstruído só traz 'Vida por nível 5'. O Mizuki decidiu em 04/10/2026: 'Toda vida inicial é a máxima do dado'. 5 por nível é o d8, e o máximo do d8 é 8; os cinco Caminhos que o livro numera seguem a mesma conta"
+  },
+  "arma_sem_a_forca": {
+   "regra": "empunhar uma arma sem a Força exigida dá desvantagem nos ataques com ela e corta o deslocamento pela metade; a Destreza continua somando à Defesa",
+   "o_livro_diz": "Sem a Força exigida, seu deslocamento cai pela metade e você não soma Destreza à Defesa enquanto empunhar a arma.",
+   "porque": "o Mizuki decidiu em 07/10/2026, depois de testar a ficha no Sheets: 'a gente precisa mexer nessa penalidade, ideal é ser só a desvantagem no ataque e metade do deslocamento, mas tem q mexer no livro tbm, ja pode atualizar na ficha'. O livro ainda traz a frase antiga; quando ele mudar, esta chave sai daqui"
   }
  }
 }

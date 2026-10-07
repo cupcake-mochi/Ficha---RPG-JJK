@@ -443,6 +443,10 @@ c = carta("cão 2", "esp", 0)
 checa("Mordida precisa: 2 − 1 + 1 = 2d8, ataque +6 com a Precisão, 3 PE, a 1,5 m",
       (c["dano"], c["resolve"], c["pe"], c["estado"], c["alcance"]) == ("2d8 Perfurante", "Ataque +6", "3 PE", "Na regra", "1,5 m, um alvo") and c["conta"].startswith("2 − 1 + 1 = 2"), str(c))
 checa("a Precisão custa 1 mesmo com a Mira Livre, pelo preço mínimo", c["preco"][0] == "−1 · Leve · Livre", str(c["preco"]))
+# 07/10/2026, a D43 do livro: Condição, Prende e Cerca só entram na falha de um TR, mesmo numa habilidade de ataque
+_c = carta("recusa", "ext", 0)
+checa("o ataque com Condição ou Prende mostra também o TR e a CD dela (Estouro: Projétil com Cego e Prende); sem essas peças, só o ataque",
+      re.fullmatch(r"Ataque [+−-]\d+ · TR CD \d+", _c["resolve"] or "") is not None and " · TR" not in c["resolve"], f'{_c["resolve"]} | {c["resolve"]}')
 v = le("cão 4")
 checa("no nível 4 o cão tem 22 de vida e um segundo espaço de especial", v(G["stat"][3]) == 22 and "2 espaços de especial" in v(G["hab"]), f'{v(G["stat"][3])} | {v(G["hab"])}')
 v = le("cão 5")
@@ -511,6 +515,9 @@ checa("o equipamento soma o Volume do que ela empunha, veste e guarda (1 + 1 + 0
 # 07/10/2026: a vida como na FICHA do jogador, e o que saiu da mesa
 checa("a VIDA MÁXIMA aparece ao lado da VIDA ATUAL, com o mesmo número da caixa dos números (27), e o título da ficha diz a vida",
       v(G["vida_max"]) == 27 == v(G["stat"][3]) and v(G["titulo"]).endswith("vida 27 de 27"), f'{v(G["vida_max"])} {v(G["stat"][3])} {v(G["titulo"])}')
+# 07/10/2026, depois de ele montar no Sheets: "seria bom ao preencher a vida máxima, a vida atual preencher tbm, na criação da ficha"
+checa("a VIDA ATUAL nasce cheia: na ficha com nome em que ninguém escreveu a vida ela mostra a máxima (27), e na ficha vazia fica em branco",
+      v(G["vida"]) == 27 and le("vazia")(G["vida"]) in (None, ""), f'{v(G["vida"])} | {le("vazia")(G["vida"])!r}')
 _rotulos = {str(x).split(" · ")[0] for x in CASOS["cão 5"]["planilha"]["v"][ABA].values() if isinstance(x, str)}
 _fora = ("CARGA MÁXIMA", "TAREFA", "MOVIMENTO", "BÁSICA DO CICLO", "ESTADO", "ORDEM PENDENTE", "REAÇÃO COLETIVA", "DANO NO TURNO", "VÍNCULO",
          "APRIMORAMENTO DE VÍNCULO", "EM QUEM", "OFENSIVO", "PROTEÇÃO", "PERÍCIA")

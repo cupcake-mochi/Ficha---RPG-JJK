@@ -1,7 +1,7 @@
 {
  "_meta": {
-  "versao_do_livro": "candidata editorial reconstruída, revisada em 04/10/2026 e em 05/10/2026 (382 páginas)",
-  "sha256_do_livro": "e747cf7407d50f1e3a2a768f24936b4f1c40c82272d5be9d6f4d91a96166363b",
+  "versao_do_livro": "candidata editorial reconstruída, como está na v0.340 do JJK---Project (lida em 07/10/2026)",
+  "sha256_do_livro": "bbaf760bb0094928b85c1c8d51d309ea88decf1606bfc35ba9690174592a6a9e",
   "capitulo": "6. Caminhos e Trilhas",
   "o_que_e": "o nome e o texto de cada habilidade de Caminho e de Trilha, para as cartas da seção 7 da FICHA",
   "niveis": {
@@ -79,7 +79,7 @@
    },
    "7": {
     "nome": "Ataque Extra e Execução Preparada",
-    "texto": "Ataque Extra\n\nSua Ação Atacar permite um ataque simples adicional por rodada. Se uma habilidade deste Caminho permitir usar esse ataque em outra ação, ele continua sujeito ao mesmo limite por rodada.\n\nExecução Preparada\n\nUma vez por Sequência, ao Concluir depois de duas ou mais Conduções acertadas, imponha −1 a um TR adicional da Conclusão.",
+    "texto": "Ataque Extra\n\nSua Ação Atacar permite um ataque simples adicional por rodada. Se uma habilidade deste Caminho permitir usar esse ataque em outra ação, ele continua sujeito ao mesmo limite por rodada.\n\nExecução Preparada\n\nUma vez por Sequência, ao Concluir depois de duas ou mais Conduções acertadas, imponha −2 a um TR adicional da Conclusão.",
     "titulos": [
      "Ataque Extra",
      "Execução Preparada"

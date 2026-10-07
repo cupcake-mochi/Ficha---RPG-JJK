@@ -292,9 +292,14 @@ for nome, fil, pref in (("Traje", tab(sec("Trajes", C8), "Degrau"), "Traje "), (
 _ok("a Defesa, o uniforme que substitui a proteção passiva, o escudo que soma e os dois tetos têm a frase no livro",
     tem("Defesa = 10 + Destreza permitida + proteção.") and tem("Enquanto usar um uniforme, a proteção dele substitui a proteção passiva da sua rota.")
     and tem("Some a proteção de um escudo empunhado à proteção que já utiliza") and tem("Se duas peças tiverem tetos diferentes, use o menor."))
-_ok("sem a Força: arma corta o deslocamento e a Destreza da Defesa; uniforme e escudo não dão proteção",
-    tem("Sem a Força exigida, seu deslocamento cai pela metade e você não soma Destreza à Defesa enquanto empunhar a arma.")
-    and tem("Sem o valor exigido, você não pode prepará-la nem receber sua proteção ou seus benefícios de uso."))
+# 07/10/2026: a arma sem a Força segue a decisão do Mizuki (desvantagem no ataque e metade do deslocamento, sem mexer na
+# Defesa), que mora no fora_do_livro enquanto o livro traz a frase antiga. No dia em que o livro mudar, a frase antiga
+# some, esta checagem acende e a regra sai do fora_do_livro
+_asf = CAT["fora_do_livro"].get("arma_sem_a_forca", {})
+_ok("sem a Força: uniforme e escudo não dão proteção (livro); a arma dá desvantagem e metade do deslocamento (fora do livro, que ainda diz a frase antiga)",
+    tem("Sem o valor exigido, você não pode prepará-la nem receber sua proteção ou seus benefícios de uso.")
+    and tem(_asf.get("o_livro_diz", "?")) and "desvantagem nos ataques" in _asf.get("regra", "")
+    and "metade" in _asf.get("regra", "") and "continua somando" in _asf.get("regra", ""))
 _armas_livro = {}
 for g in titulos_de(C8, 3):
     for cat_ in titulos_de(sec(g, C8), 4):

@@ -2224,7 +2224,7 @@ continuam verdes.
 - o **B15**, que é arrumação de arquivo desta pasta
 - o **B7** e o **B10**, que são desenho da ficha
 
-### B36 · A ficha posta em dia com o livro reconstruído — **FEITA em 04/10/2026; falta montar no Sheets**
+### B36 · A ficha posta em dia com o livro reconstruído — **FEITA em 04/10/2026 e MONTADA NO SHEETS: em 07/10/2026 ele conferiu o Incursor, a Defesa e a carga acima do limite ("Sim" nos três), e pediu a mudança da arma sem a Força, que está na terceira etapa do B40**
 
 *Pedido dele em 04/10/2026, antes de mesclar a revisão do livro (a PR #2 do JJK---Project): "atualize a ficha do sistema
 pfvr, colocando o que faltava e modificando o que foi mudado (origens ainda vão ser mudadas, mas siga como estão agora)".
@@ -2336,7 +2336,7 @@ conserto em cima dele, os vinte e dois passaram.**
 hoje numa cópia, escreve outro arquivo: a exportação já traz a ficha automática montada). O comparador fecha assim desde
 antes, e reextrair é rodada própria.*
 
-### B37 · As cartas de Habilidades trazem o livro, numa coluna só — **FEITA em 05/10/2026; falta montar no Sheets**
+### B37 · As cartas de Habilidades trazem o livro, numa coluna só — **FEITA em 05/10/2026 e MONTADA NO SHEETS: em 07/10/2026 ele disse que o texto cabe ("Cabe sim")**
 
 *Pergunta do Mizuki sobre as cartas da seção 7 (B34), que nasceram escritas à mão e prontas para o livro: "nas caixas
 de habilidades dos caminhos e trilhas, imagino que vai ser automatico / mas... vai caber? kkkk".*
@@ -2425,7 +2425,7 @@ Caminho e Trilha, os parágrafos "Nível N: Nome." de carta que junta habilidade
 texto, no `Habilidades.gs` e no que o extrator tira hoje (são 5 nomes, entre eles a Execução Preparada). O
 `arnes-amaldicoada.py` vai a 66: o extrator que volta a tirar o nome acende a checagem nova.
 
-### B38 · A foto da `CARTEIRA` na `FICHA PESSOAL`, e o nome da técnica da `CARTEIRA` na `FICHA AMALDIÇOADA` — **FEITA em 05/10/2026; a foto ele testou no Sheets (07/10/2026: "B35 funciono normalmente", respondendo sobre a ligação da foto com a `FICHA PESSOAL`); do nome da técnica ele não falou**
+### B38 · A foto da `CARTEIRA` na `FICHA PESSOAL`, e o nome da técnica da `CARTEIRA` na `FICHA AMALDIÇOADA` — **FEITA em 05/10/2026; a foto ele testou no Sheets (07/10/2026: "B35 funciono normalmente", respondendo sobre a ligação da foto com a `FICHA PESSOAL`); o nome da técnica ele testou no mesmo dia: "Funciona"**
 
 *Pedido dele em 05/10/2026: "uma coisa q é bom implementar na ficha e notei q faltou / 1 - A imagem que for colocada
 na carteira aparecer no ficha pessoal / 2 - Nome da técnica aparecer na ficha amaldiçoada". As duas seguem o que a
@@ -2468,7 +2468,7 @@ para o gerador; vai a 69). Todos acendem.
 aparecer, me avise: o plano B é o jogador inserir nas duas, e o C é o script copiar a imagem (o Apps Script lê e grava
 imagem de célula, pela documentação dele).
 
-### B39 · As duas aptidões de graça do menu rápido mostram o valor — **FEITA em 06/10/2026; falta montar no Sheets**
+### B39 · As duas aptidões de graça do menu rápido mostram o valor — **FEITA em 06/10/2026 e MONTADA NO SHEETS: em 07/10/2026 ele disse "Certinho"**
 
 *Pedido dele em 06/10/2026: "na ficha, tem as aptidões (e lapidações) base, seria bom se o mecanico (pelo menor o
 valor), estivesse incluso / ja q é um acesso rapido da ficha amaldiçoada".* **As cartas das duas de graça, no menu rápido
@@ -2506,7 +2506,7 @@ Preparada da Vanguarda com −2): a carta 7 da Vanguarda ainda diz −1. Puxar o
 pôr o catálogo em dia, que é uma passada própria.
 
 
-### B40 · A aba `INVOCAÇÕES`, a invocação refeita depois do livro reconstruído — **EM ANDAMENTO desde 06/10/2026: a grade de 2 × 6 está no gerador desde 07/10 (segunda etapa, no fim desta seção); falta ele montar no Sheets com `construir()` e `continuar()`**
+### B40 · A aba `INVOCAÇÕES`, a invocação refeita depois do livro reconstruído — **EM ANDAMENTO desde 06/10/2026: a grade de 2 × 6 e o inventário ele montou e testou no Sheets em 07/10; a terceira etapa (no fim desta seção) é o retorno desse teste, e falta ele montar de novo**
 
 *Pedido dele em 06/10/2026: "precisamos olhar o como fazer a ficha de invocação após a atualização do sistema", com
 protótipos antes de aplicar. É a pendência que o B36 deixou ("pode deixar a reconstrução das invocações na ficha para
@@ -2636,6 +2636,91 @@ mais numa execução.***
 
 **O que falta fazer aqui:**
 
-- *um arnês para a aba, como o `arnes-amaldicoada.py` (as perturbações do `construir()` e do `continuar()` entraram no
-  `arnes-pessoal.py`);*
+- *~~um arnês para a aba~~ feito na terceira etapa, abaixo (`arnes-invocacoes.py`);*
 - *decidir com ele o que fazer da `ficha-invocacao/` e dos três validadores da invocação de antes.*
+
+#### A terceira etapa (07/10/2026, à noite): o retorno dele depois de montar tudo no Sheets
+
+*Ele rodou o `construir()` e o `continuar()` com o inventário pequeno e passou a lista de testes que eu tinha pedido. O
+`construir()` parou sozinho antes da `INVOCAÇÕES`, como desenhado; nesse dia o Sheets estava bem mais lento que na
+véspera (abas criadas em **164,9 s**, contra 62,9; `FICHA` em 55,6 s, contra 38,5; `FICHA AMALDIÇOADA` em 37,6 s,
+contra 23,4). Os registros do `continuar()` e do `acabar()` ele mandou depois, e estão na tabela abaixo.* **O que funcionou, nas palavras dele:** *o título e a lista
+do conjunto preenchendo sozinhos, a caixa de ±, o inventário, as fichas fechadas, os erros das cartas, a troca de tema;
+o Incursor no menu, a carga acima do limite, as cartas de Habilidades ("cabe sim"), o nome da técnica (B38:
+"Funciona"), o menu rápido (B39: "Certinho") e a foto na `FICHA PESSOAL` (B35/B38: "funciono normalmente").*
+
+| o que ele disse | o que mudou |
+|---|---|
+| *"1.3: Parou de funcionar, os links da ficha amaldiçoada também"* (a lista do conjunto e os saltos da linha 7 não levam a lugar nenhum) | **a causa: o `acabar()` não tinha sido rodado.** O registro do `continuar()`, que ele mandou depois, termina em `AS ABAS ESTÃO DE PÉ em 304s, MAS FALTA O ACABAMENTO: rode a função acabar()`; sem o acabamento a ficha fica sem saltos e sem a trava de aviso, que ele também não viu ao escrever por cima da perícia. Ele rodou o `acabar()` (166 s: 10 saltos, 12 ligações da lista, 70 travas) e disse: "funciona certinho". Mesmo assim mudou, porque um acabamento cortado no meio das travas daria no mesmo: **as travas são a última etapa**, depois dos saltos e da caixa da paleta; o acabamento do `construir()` não as começa se a execução já passou de 190 s (`TETO_DAS_TRAVAS_`; as travas levaram 148,2 s no `acabar()` dele, contra 81 e 83 s de antes), e o registro termina em `FALTAM AS TRAVAS DO ACABAMENTO: rode a função acabar()`; o `acabar()` as faz sempre. **E um defeito meu, achado na conferência:** o `onEdit` da `INVOCAÇÕES` religava a lista com vírgula entre os argumentos do `HYPERLINK`, e a planilha vive em português, onde a vírgula não vale; quem escrevesse por cima de uma linha da lista ficava com as doze em erro. O `ligarSaltosDe_` escolhe o separador pelo idioma da planilha, e a `regressao-construir.js` ganhou o teste que faltava (não havia nenhum do religamento) |
+| *"1.4: seria bom ao preencher a vida máxima, a vida atual preencher tbm, na criação da ficha, pq a vida atual fica com nada mesmo após criação da invocação"* | a `VIDA ATUAL` nasce apontando para a conta nova `vida0` da `DADOS_INVOC` (a máxima, quando a ficha tem nome; em branco na ficha vazia). É caixa livre (`livres`, no `ABAS`): o jogador escreve por cima, a caixa de ± grava o número, e enquanto ninguém mexe ela acompanha a máxima |
+| *"1.7: Recomendo tirar o aviso de clicks, pode vir a incomodar o jogador"* | nada: perguntei de qual aviso ele falava (o script não mostra nenhum durante a troca de tema desde 25/09), e ele respondeu *"Achei q avisava, erro meu"* |
+| *"2.2: a gente precisa mexer nessa penalidade, ideal é ser só a desvantagem no ataque e metade do deslocamento, mas tem q mexer no livro tbm, ja pode atualizar na ficha"* (a arma empunhada sem a Força) | a `DEFESA` da `FICHA` deixa de perder a Destreza; o deslocamento continua caindo pela metade; a desvantagem, que não é número, está na nota do requisito de Força (`FICHA PESSOAL`) e na nota do CORPO A CORPO e do À DISTÂNCIA. A regra mora no `fora_do_livro` do arquivo de dados (`arma_sem_a_forca`), com a frase que o livro ainda traz; o `conferir-catalogo.py` acende no dia em que o livro mudar. **O livro continua com a frase antiga: mudar lá é dele** |
+| *"6: Escrevi por cima da pericia e n corrigiu. Esses de codigo ideal só impedir de poder modificar. Mas por exemplo, na ficha amaldiçoada q n leva codigo na celula, ele funciona certinho"* | o Sheets não impede o dono da planilha de escrever numa célula (a trava só avisa), e cada jogador é dono da cópia dele. O que dá é devolver a conta na hora, e agora **toda caixa calculada volta, em toda aba** (`devolverConta_`): `FICHA`, `CARTEIRA`, `FICHA PESSOAL` (em grupo ou não), além das duas que já voltavam. A fórmula de fábrica está no `ABAS` em inglês; a `formulaNoIdioma_` a escreve na pontuação do português (ponto e vírgula no argumento, vírgula no número, barra invertida na matriz, o que está entre aspas intacto). Se mesmo assim a caixa mostrar `#ERROR!`, o script a grava como o `construir()` grava, com a planilha em inglês por um instante. Ficam de fora as caixas livres: vida, energia e integridade da `FICHA`, o Volume de um item e a foto da `FICHA PESSOAL`, a vida atual de uma invocação. **As travas de aviso ficaram**, até ele dizer se a devolução funciona no Sheets de verdade: a pontuação do português eu não tenho como testar aqui, e o Sheets de mentira só sabe o que o projeto já viu. Se funcionar, as travas podem sair, e a montagem fica uns 80 s mais curta |
+| *"de resto pode aplicar tbm oq vc falou q falta"*: o livro | o `manual.txt` saiu do livro de hoje (v0.340 do `JJK---Project`, hash `bbaf760b…`, baixado do GitHub para a área de rascunho, porque o clone do disco é de 03/10). Três mudanças: o nome (**Ciclo Maldito** em todo o texto), a **D44** (a Execução Preparada da Vanguarda impõe −2, e a carta de nível 7 diz) e a **D43** (*"Condição, Prende e Cerca sempre pedem TR ... Numa ficha de ataque, o acerto aplica o dano e as outras peças; depois, cada alvo acertado faz o TR registrado"*). Pela D43: o texto das três peças no arquivo de dados é o do livro novo; a carta de feitiço de ataque com uma delas diz **`Acerto + TR`** (coluna nova `peça que pede TR` na `DADOS_AM`); a carta de habilidade da invocação diz `Ataque +4 · TR CD 12`; o exemplo `Peso nas Mãos` do `extrair_tecnica.py` usa a frase nova |
+| *"de resto pode aplicar tbm oq vc falou q falta"*: o arnês | `arnes-invocacoes.py`, 26 defeitos plantados no gerador (os números da ficha, a entrada e o retorno, o conjunto, a vida que nasce cheia, o inventário, as cartas, a D43) contra a `regressao-invocacoes.py`, e um contra-teste. Roda à mão, como o da Amaldiçoada |
+
+**Os tempos, pelos dois registros dele (07/10/2026, Sheets lento).** *O `continuar()` montou tudo o que faltava numa execução
+só e fechou em 304 s, a 56 s do teto do Apps Script:*
+
+| etapa | estimativa | levou |
+|---|---|---|
+| `DADOS` | 3,5 s | 12,7 s |
+| `DADOS_AM` | 18 s | 35,4 s |
+| `DADOS_INVOC` (157 × 450) | 49 s | **89,6 s** |
+| `GLOSSÁRIO` | — | 3,7 s |
+| menus (1.342) | fora da conta | **35,1 s** |
+| travas, no `acabar()` | 81 a 83 s | **148,2 s** |
+
+*A estimativa da aba oculta passa de 0,7 para 1,4 ms por célula, o limite da execução desce de 300 para 270 s (os menus
+vêm depois da última aba e ninguém os contava) e o teto das travas fica em 190 s. Num dia lento a montagem vai a três
+execuções (`construir()`, `continuar()`, `continuar()`), e a última faz o acabamento. O tempo da `INVOCAÇÕES` e o da
+`FICHA PESSOAL` ficaram fora do pedaço do registro que ele mandou (as duas juntas, uns 126 s).*
+
+**Dois rótulos das Habilidades, no mesmo dia.** *"cinco degraus fica ruim, coloca 'cinco níveis'. Quatro entregas pra ser
+trilha - Quatro níveis, coisas assim q n precisa circundar a informação, só ser direto". O título do bloco diz `CAMINHO ·
+CINCO NÍVEIS` e `TRILHA · QUATRO NÍVEIS`. Procurei o mesmo vício nas outras abas e não achei outro rótulo que diga nível
+com outra palavra; o `DEGRAU` do Domínio é o termo do livro. Perguntei se o `Abre no 7` da etiqueta das cartas acima do
+nível também vira `Nível 7`.*
+
+**A revisão que ele pediu** (*"revisione a ficha se falta algo do sistema nela e me avise"*). *Comparei o capítulo 20 do
+livro (Referências e fichas: os modelos de ficha que o próprio livro traz) e as frases "anote" e "registre" dos outros
+capítulos com os rótulos e as notas das cinco abas. Não é uma leitura do livro inteiro regra por regra. O que o livro
+manda registrar e a ficha não tem onde:*
+
+1. **O traço e os dois Legados da Origem** *(e as escolhas que um Legado pede). A `FICHA` só tem o menu de Origem; os 90
+   Legados estão no arquivo de dados e nenhuma aba os usa.*
+2. **Sequelas, Cicatrizes e Exaustão.** *A Sequela muda a janela da próxima queda e só sai no descanso longo; a
+   Exaustão tem três degraus; a Cicatriz é permanente.*
+3. **Condições e usos gastos do personagem.** *A ficha da invocação tem a caixa; a do jogador não.*
+4. **Munição:** *na arma, na reserva e "precisa recarregar", por arma. A `FICHA PESSOAL` só tem a quantidade do item.*
+5. **As escolhas do Traje:** *o tipo de TR e as perícias (uma a quatro, pela maestria). A aba só tem a situação.*
+6. **Resistências e imunidades** *(os dois tipos do Alicerce do Bastião, a imunidade a Envenenado do Corpo Amaldiçoado,
+   as dos Legados).*
+7. **Na `INVOCAÇÕES`:** *a Integridade da entidade com alma, e os outros modos de deslocamento.*
+8. **Na `FICHA AMALDIÇOADA`:** *o espaço de feitiço ocupado por uma invocação adquirida por espaço conhecido não entra
+   na conta dos espaços livres.*
+
+*Ficou de fora de propósito, pela decisão dele de 07/10 (ficha de mesa sem caixa de turno): Padrão, Bônus, Movimento e
+Reação, a queda em andamento (janela, tratamento) e a folha de entidades na mesa. Nada disto foi construído: a lista é
+para ele decidir.*
+
+**Conferido na terceira etapa:** *a bateria inteira rodou até o fim em 07/10/2026, à noite, com o `original.xlsx` e com tudo desta
+etapa dentro (o livro v0.340, os tempos novos e os dois rótulos): vinte e um dos vinte e dois passaram, e a
+`regressao-paleta.js`, que não mora na bateria, também. O vigésimo segundo era o `arnes-pessoal.py`, com sete defeitos
+plantados que citavam o código de antes (o separador do salto, a devolução só da referência pura, a chamada do
+acabamento); foram atualizados, ganharam doze novos (a pontuação do idioma, a devolução em cada aba, a caixa livre, a
+reserva em inglês, o religamento do salto, o teto das travas) e ele passa: 80 perturbações acendem a checagem certa. Um
+deles não acendia por falta de teste (a caixa de ± com a vida atual apagada), e a `regressao-construir.js` ganhou esse
+caso. O `comparar-ficha-01.py` fecha em IGUAIS. O `arnes-invocacoes.py` estava rodando quando esta etapa foi para o git
+(os cinco primeiros defeitos tinham acendido); o resultado inteiro entra no próximo registro. A primeira bateria desta
+etapa morreu no décimo sexto validador, quando a sessão reiniciou.* **Nada desta etapa rodou no Sheets de verdade**, *e a
+devolução da conta na pontuação do português é a parte que só o teste dele confirma.*
+
+**O que fica para ele, depois desta etapa:**
+
+- **Colar os três arquivos que mudaram** *(`Ficha.gs`, `Codigo.gs` e `Invocacoes.gs`; o `Habilidades.gs` mudou uma letra,
+  o −2 da Execução Preparada) e montar: `construir()`, `continuar()` quantas vezes o registro pedir, `acabar()` se ele
+  pedir. Mandar o registro de cada execução.*
+- **Testar a devolução da conta:** *escrever por cima do total de uma perícia da `FICHA`, de uma caixa da `CARTEIRA` e de
+  uma da `FICHA PESSOAL`. Tem de voltar sozinha, com um aviso, e não pode ficar `#ERROR!`.*
+- **Mudar o livro** *na regra da arma sem a Força, e decidir o que entra da revisão.*

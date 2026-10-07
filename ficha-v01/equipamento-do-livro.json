@@ -1,7 +1,7 @@
 {
  "_meta": {
-  "versao_do_livro": "candidata editorial reconstruída, revisada em 04/10/2026 e em 05/10/2026 (382 páginas)",
-  "sha256_do_livro": "e747cf7407d50f1e3a2a768f24936b4f1c40c82272d5be9d6f4d91a96166363b",
+  "versao_do_livro": "candidata editorial reconstruída, como está na v0.340 do JJK---Project (lida em 07/10/2026)",
+  "sha256_do_livro": "bbaf760bb0094928b85c1c8d51d309ea88decf1606bfc35ba9690174592a6a9e",
   "capitulo": "8. Equipamento",
   "o_que_e": "o texto das propriedades e das restrições de arma, que o catalogo-projeto-m.json não traz"
  },

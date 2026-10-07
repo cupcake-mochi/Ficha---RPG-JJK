@@ -151,6 +151,10 @@ MULTIPLICA = ("Remate", 1.25)
 TIPO_DE_DANO = {"Cura": 1, "Onda": 1, "Apoio": 2, "Efeito": 3}
 PESO = {"Leve": 1, "Media": 2, "Média": 2, "Pesada": 3}
 NOME_DO_PESO = ("Leve", "Média", "Pesada")
+# as peças de Controle que só entram na falha de um TR, mesmo num feitiço de ataque (Controle, no Catálogo do
+# Fundamento); a Melhoria Condição entra no menu como cada uma das treze condições, e todas pedem
+PEDEM_TR = ("Prende", "Cerca")
+ACERTO_E_TR = "Acerto + TR"
 # O alcance de cada Forma: (antes, escada, o que sobe o degrau, depois), duas vezes. É a tabela `Formas` do livro
 # lida como estrutura; os números saem da `Base por Classe` e das `Escadas`. No Cone e na Linha o comprimento sobe
 # com as peças de Alcance e com as de Área (a Técnica Máxima de exemplo leva a Linha de 18 m a 60 m com o Muito Longe).
@@ -270,11 +274,12 @@ def regras(CAT=None, TEC=None):
     pecas = []
     for n, m in CAT["melhorias"].items():
         if n == "Condição":
-            pecas += [{"nome": c, "familia": m["familia"], "peso": PESO[p]} for c, p in CAT["condicoes"].items()]
+            pecas += [{"nome": c, "familia": m["familia"], "peso": PESO[p], "pede_tr": 1} for c, p in CAT["condicoes"].items()]
         elif n == "Efeito Próprio":
             pecas += [{"nome": f"{n} ({p})", "familia": None, "peso": i + 1} for i, p in enumerate(NOME_DO_PESO)]
         else:
-            pecas.append({"nome": n, "familia": m["familia"], "peso": PESO[m["peso"]]})
+            # 07/10/2026, o livro com a D43: Condição, Prende e Cerca sempre pedem TR, mesmo num feitiço de ataque
+            pecas.append({"nome": n, "familia": m["familia"], "peso": PESO[m["peso"]], "pede_tr": int(n in PEDEM_TR)})
     nomes = [p["nome"] for p in pecas]
     if len(set(nomes)) != len(nomes):
         raise SystemExit("ficha_amaldicoada: duas pecas com o mesmo nome no menu de Melhoria")
@@ -680,13 +685,14 @@ def trocas(layout, CAT=None, TEC=None):
     c0p = D.prox
     col_p = lambda k, n: f"${L(c0p + k)}{n}"
     D.tabela("pecas", ["peça", "família da peça", "peso da peça", "código de preço", "peça fechada", "peça de controle",
-                       "menu de melhoria", "menu de melhoria leve"],
+                       "menu de melhoria", "menu de melhoria leve", "peça que pede TR"],
              [[p["nome"], p["familia"] or "", p["peso"],
                (lambda n: f"={col_p(2, n)}+3*{livre(col_p(1, n))}"),
                (lambda n: f"={fechada(col_p(1, n))}"),
                int(p["familia"] == "Controle"),
                (lambda n: f'=IF({col_p(4, n)}=1,"",{col_p(0, n)})'),
-               (lambda n: f'=IF(AND({col_p(2, n)}=1,{col_p(4, n)}=0),{col_p(0, n)},"")')] for p in R["pecas"]])
+               (lambda n: f'=IF(AND({col_p(2, n)}=1,{col_p(4, n)}=0),{col_p(0, n)},"")'),
+               p.get("pede_tr", 0)] for p in R["pecas"]])
     PECAS = D.faixa("pecas")
     # --- as Restrições
     D.tabela("res", ["menu de restrição", "restrição", "o que devolve", "é de frequência", "menu de restrição leve"],
@@ -740,7 +746,7 @@ def trocas(layout, CAT=None, TEC=None):
     nomes = (["lugar", "liberação", "vaga", "classe", "nome", "forma"] + [f"m{i}" for i in range(1, N_MEL + 1)] +
              [f"r{i}" for i in range(1, N_RES + 1)] +
              ["tem", "lf"] + [f"k{i}" for i in range(N_MEL + 1)] + [f"x{i}" for i in range(N_MEL + 1)] +
-             ["ct", "emb", "tp", "tr"] + [f"c{i}" for i in range(1, N_RES + 1)] + [f"b{i}" for i in range(1, N_RES + 1)] +
+             ["ct", "ptr", "emb", "tp", "tr"] + [f"c{i}" for i in range(1, N_RES + 1)] + [f"b{i}" for i in range(1, N_RES + 1)] +
              [f"n{j}" for j in range(1, 7)] + ["dL", "dM", "nm", "nr", "g", "dv0", "dv", "usa", "perde", "s", "d", "dep"] +
              [f"d{c['classe']}" for c in R["classes"]] + [f"t{c['classe']}" for c in R["classes"]] +
              ["erros", "ne", "avisos", "na", "estado", "linha", "pe", "acao", "resolve", "dano", "lg", "mr", "q1", "q2", "alcance",
@@ -780,6 +786,7 @@ def trocas(layout, CAT=None, TEC=None):
             o[f"k{i}"] = f"=IFERROR(VLOOKUP({P(f'm{i}')},{PECAS},4,FALSE),0)"
             o[f"x{i}"] = f"=IFERROR(VLOOKUP({P(f'm{i}')},{PECAS},5,FALSE),0)"
         o["ct"] = "=" + "+".join(f"IFERROR(VLOOKUP({P(f'm{i}')},{PECAS},6,FALSE),0)" for i in range(1, N_MEL + 1))
+        o["ptr"] = "=" + "+".join(f"IFERROR(VLOOKUP({P(f'm{i}')},{PECAS},9,FALSE),0)" for i in range(1, N_MEL + 1))
         o["emb"], o["tp"], o["tr"] = "=" + da_forma(5), "=" + da_forma(6), "=" + da_forma(8)
         for i in range(1, N_RES + 1):
             o[f"c{i}"] = f"=IFERROR(VLOOKUP({P(f'r{i}')},{RES},3,FALSE),0)"
@@ -850,8 +857,10 @@ def trocas(layout, CAT=None, TEC=None):
         carrega = f'IF({tem_b("Carregar")}>0," +1 turno","")'
         o["acao"] = (f'=IF({P("tem")}=0,"",IF({P("liberação")}=1,"Rodada inteira",IF({tem_b("Atrasar")}>0,IF({tem_b("Carregar")}>0,"Rodada +1 turno","Rodada inteira"),'
                      f'IF({tem_m("Rápido")}>0,"Bônus",IF({tem_m("Reação")}>0,"Reação","Padrão"))&{carrega})))')
+        # 07/10/2026 (D43 do livro): num feitiço de ataque, Condição, Prende e Cerca só entram na falha do TR registrado
+        # para o Controle. A carta diz "Acerto + TR"; qual TR é, o jogador anota no Como é
         o["resolve"] = (f'=IF(OR({P("tem")}=0,{lf}=0),"",IF({tem_m(ines)}>0,"Automático",IF({tem_m("Certeiro")}>0,"TR para metade",'
-                        f'INDEX({forma_col(7)},{lf}))))')
+                        f'IF(AND({P("ptr")}>0,{P("tr")}=0,INDEX({forma_col(7)},{lf})="Acerto"),"{ACERTO_E_TR}",INDEX({forma_col(7)},{lf})))))')
         tC = f'INDEX({Rg("t1", f"t{n_classes}")},1,{Cc})'
         tC = f'UPPER(LEFT({tC},1))&MID({tC},2,99)'
         o["dano"] = (f'=IF(OR({P("tem")}=0,{lf}=0),"",IF(OR({P("tp")}>=2,{P("d")}=0),{tC},{tC}&" = "&FLOOR({P("d")}*4.5,1)&'

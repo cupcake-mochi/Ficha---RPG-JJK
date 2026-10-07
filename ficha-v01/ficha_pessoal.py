@@ -12,8 +12,9 @@ O que ela muda fora dela:
   · o XP da FICHA passa a mostrar a soma das missões do painel, e o nível continua subindo por ele;
   · o DESLOCAMENTO da FICHA cai pela metade com uma arma empunhada sem a Força, e vai a zero com a carga
     acima do limite (04/10/2026: as duas regras passaram a ser do livro, e mudaram);
-  · a DEFESA da FICHA perde a proteção do uniforme ou do escudo usado sem a Força, e a Destreza enquanto uma
-    arma é empunhada sem ela;
+  · a DEFESA da FICHA perde a proteção do uniforme ou do escudo usado sem a Força. A arma empunhada sem a Força
+    não mexe mais na Defesa (07/10/2026, decisão do Mizuki que o livro ainda não traz: desvantagem nos ataques
+    com ela e metade do deslocamento; está no `fora_do_livro` do arquivo de dados);
   · a DADOS ganha, depois do índice, as tabelas que os menus e as contas desta aba leem.
 
 De onde sai cada número: as armas, os escudos, os uniformes, o salário e os tipos de missão saem das
@@ -441,7 +442,10 @@ def trocas(layout, CAT=None):
     conta("limite de carga", f'={R["limite_base"]}+{f_}')
     conta("carga acima", f'=IF({H["carga"]}>{H["limite de carga"]},1,0)')
     # 04/10/2026, as regras do livro reconstruído: arma empunhada sem a Força corta o deslocamento pela metade e tira a
-    # Destreza da Defesa; uniforme ou escudo sem a Força não dá a proteção dele; carga acima do limite não deixa andar
+    # Destreza da Defesa; uniforme ou escudo sem a Força não dá a proteção dele; carga acima do limite não deixa andar.
+    # 07/10/2026: a arma sem a Força deixa de tirar a Destreza da Defesa e passa a dar desvantagem nos ataques com ela
+    # ("ideal é ser só a desvantagem no ataque e metade do deslocamento", o Mizuki, que ainda vai mudar o livro). A
+    # desvantagem não é número: fica na nota do requisito de Força e na nota dos ataques da FICHA
     conta("arma sem força", f'=IF(OR({H["falta força na principal"]}=1,AND({H["falta força na secundária"]}=1,'
                             f'{H["escudo na secundária"]}=0)),1,0)')
     conta("meia marcha", f'={H["arma sem força"]}')
@@ -492,8 +496,8 @@ def trocas(layout, CAT=None):
          f'IF({fp_}=1,{P}&" pede Força "&{H["força da principal"]}&". ","")&'
          f'IF({fs_}=1,{S}&" pede Força "&{H["força da secundária"]}&". ","")&'
          f'IF({fu_}=1,{V}&" pede Força "&{H["força do uniforme"]}&". ","")&"Você tem "&{f_}&"."&'
-         f'IF(OR({fp_}=1,AND({fs_}=1,{esc}=0))," Empunhar uma arma sem a Força corta o seu deslocamento pela metade, e a '
-         f'Destreza não entra na Defesa enquanto você a empunha.","")&'
+         f'IF(OR({fp_}=1,AND({fs_}=1,{esc}=0))," Empunhar uma arma sem a Força dá desvantagem nos ataques com ela e corta o '
+         f'seu deslocamento pela metade.","")&'
          f'IF(OR({fu_}=1,AND({fs_}=1,{esc}=1))," Sem a Força, o uniforme ou o escudo não pode ser preparado e não dá a '
          f'proteção dele: a Defesa já desconta.",""))'),
         ("carga",
@@ -588,12 +592,13 @@ def trocas(layout, CAT=None):
     if not m:
         raise SystemExit(f"o DESLOCAMENTO da FICHA ({des_c}) devia ser '=(metros)&\" m\"', e e {des!r}")
     cel["FICHA"][des_c] = (f'=IF({H["parado pela carga"]}=1,0,({m.group(1)})/IF({H["meia marcha"]}=1,2,1))&" m"', des_c)
-    # a Defesa (defesa_equipamento.py) perde a proteção da peça usada sem a Força, e a Destreza com arma sem a Força
+    # a Defesa (defesa_equipamento.py) perde a proteção da peça usada sem a Força. Até 07/10/2026 perdia também a Destreza
+    # com arma empunhada sem a Força; essa parte saiu (ver a conta "arma sem força", acima)
     df_c = idx["defesa"]
     dfm = re.match(r"^=10\+(IF\(.+?\)\)\))\+(\$[A-Z]+\$\d+)(.*)$", fcel[df_c][1]) if isinstance(fcel[df_c][1], str) else None
     if not dfm:
         raise SystemExit(f"a DEFESA da FICHA ({df_c}) nao tem a forma que o defesa_equipamento escreve: {fcel[df_c][1]!r}")
-    cel["FICHA"][df_c] = (f'=10+IF({H["arma sem força"]}=1,0,{dfm.group(1)})+{dfm.group(2)}-{H["proteção sem força"]}{dfm.group(3)}', df_c)
+    cel["FICHA"][df_c] = (f'=10+{dfm.group(1)}+{dfm.group(2)}-{H["proteção sem força"]}{dfm.group(3)}', df_c)
     menus_sai = [m_["onde"] for m_ in ficha["menus"] if eq_c in m_["onde"].split()]
     return {"celulas": cel, "menus_sai": {"FICHA": menus_sai}, "dados_colunas": (c0, prox[0] - 2),
             "H": H, "T": T, "faixa_t": faixa_t, "R": R, "G": G, "indice_coluna": col_i, "lin_cab": lin_cab,
@@ -1020,6 +1025,9 @@ def aba(layout, tr):
                    "colunas": [[PAINEL_INI, PAINEL_FIM, True], [EXT_INI, PAINEL_FIM, True]]},
         "condicional_gs": condicional,
         "protegidas": linhas_de(formulas),
+        # 07/10/2026: as caixas que nascem com conta e o jogador escreve por cima (a foto e o Volume de cada item). O
+        # devolverConta_ do Codigo.gs devolve a conta de todas as outras, em grupo ou não
+        "livres": sorted(livres),
     }
 
 

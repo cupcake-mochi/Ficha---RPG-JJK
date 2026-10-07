@@ -221,11 +221,67 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   ok('escolher a Forma e escrever o nome do feitiço ficam como o jogador pôs, sem aviso',
      !erroAm && X.le(forma[0], forma[1]) === 'Toque' && X.le(nome[0], nome[1]) === 'Estalo' && S.P.avisos.length === n0,
      erroAm ? erroAm.message : `${X.le(forma[0], forma[1])} · ${X.le(nome[0], nome[1])} · ${S.P.avisos.length - n0} aviso(s)`);
-  // a fórmula com conta (a linha de apoio do cabeçalho) não se escreve igual em todo idioma de planilha: o script não a regrava
+  // 07/10/2026: a fórmula com conta (a linha de apoio do cabeçalho) também volta. Antes só a referência pura voltava
   const apoio = spec.vals.find((t) => typeof t[2] === 'string' && t[2][0] === '=' && t[2].indexOf('&') >= 0), aA = letras(apoio[1]) + apoio[0], n1 = S.P.avisos.length;
   try { S.ss.getSheetByName(AM).getRange(aA).setValue('x'); S.ctx.onEdit(ed(AM, aA, 'x')); } catch (e) { erroAm = e; }
-  ok('a fórmula que não é referência pura não é regravada pelo script', !erroAm && !!apoio && X.le(apoio[0], apoio[1]) === 'x' && S.P.avisos.length === n1,
-     erroAm ? erroAm.message : `${X.le(apoio[0], apoio[1])} · ${S.P.avisos.length - n1} aviso(s)`);
+  ok('a fórmula que não é referência pura também volta, com o aviso', !erroAm && !!apoio && X.f.get(apoio[0] + ',' + apoio[1]) === apoio[2] && S.P.avisos.length === n1 + 1,
+     erroAm ? erroAm.message : `${X.f.get(apoio[0] + ',' + apoio[1])} · ${S.P.avisos.length - n1} aviso(s)`);
+  // o salto em que alguém escreve por cima volta a ser a ligação, escrita na pontuação do português
+  const salto = [...X.f.entries()].find(([, f]) => f.startsWith('=HYPERLINK(')), [sl, sc] = salto[0].split(',').map(Number), aS = letras(sc) + sl;
+  try { S.ss.getSheetByName(AM).getRange(aS).setValue('x'); S.ctx.onEdit(ed(AM, aS, 'x')); } catch (e) { erroAm = e; }
+  ok('o salto em que alguém escreve por cima volta a ser a ligação, com ponto e vírgula, porque a planilha está em português',
+     !erroAm && /^=HYPERLINK\("#gid=\d+&range=[A-Z]+\d+";/.test(X.f.get(salto[0]) || '') && !S.P.orfas.length, erroAm ? erroAm.message : `${X.f.get(salto[0])} · ${S.P.orfas.slice(0, 2).join(' · ')}`);
+}
+{
+  // 07/10/2026: toda caixa calculada volta, em toda aba ("Escrevi por cima da pericia e n corrigiu"). A fórmula de fábrica
+  // está no ABAS como o construir() a grava, em inglês, e a planilha vive em português
+  const F = S.ctx.formulaNoIdioma_;
+  const casos = [['=IF(A1>0.25,"a,b",{1,2;3,4})', '=IF(A1>0,25;"a,b";{1\\2;3\\4})'], ["=SUM('FICHA, X'!A1,$B$2)*1.5+J26", "=SUM('FICHA, X'!A1;$B$2)*1,5+J26"],
+                 ['=DADOS!$F$1&" · técnica, 1.5"', '=DADOS!$F$1&" · técnica, 1.5"'], ['=IF(N($J$26)=0,10,"x ""y, z"" 0.5")', '=IF(N($J$26)=0;10;"x ""y, z"" 0.5")']];
+  ok('a fórmula de fábrica vira a do idioma da planilha: ponto e vírgula no argumento, vírgula no número, barra na matriz, e o que está entre aspas fica',
+     casos.every(([en, pt]) => F(en, 'pt_BR') === pt && F(en, 'en_US') === en), casos.map(([en]) => F(en, 'pt_BR')).join('  '));
+  let erroD = null;
+  const tenta = (nomeAba, escolhe) => {
+    const sp = ABAS.find((a) => a.nome === nomeAba), Y = S.acha(nomeAba), livres = S.ctx.livresDaAba_(sp);
+    const t = sp.vals.find((v) => typeof v[2] === 'string' && v[2][0] === '=' && !livres[letras(v[1]) + v[0]] && escolhe(v, sp));
+    const a1 = letras(t[1]) + t[0], n0 = S.P.avisos.length;
+    try { S.ss.getSheetByName(nomeAba).getRange(a1).setValue('rew'); S.ctx.onEdit(ed(nomeAba, a1, 'rew')); } catch (e) { erroD = e; }
+    return { t, a1, voltou: Y.f.get(t[0] + ',' + t[1]) === F(t[2], 'pt_BR'), avisos: S.P.avisos.length - n0, ficou: Y.f.get(t[0] + ',' + t[1]) || Y.le(t[0], t[1]) };
+  };
+  const comVirgula = (v) => v[2].replace(/"[^"]*"/g, '').includes(',');
+  const naFicha = tenta('FICHA', (v, sp) => comVirgula(v) && !S.ctx.linhaSemTrava_('FICHA', v[0]));
+  const naCarteira = tenta('CARTEIRA', comVirgula), naPessoal = tenta('FICHA PESSOAL', comVirgula);
+  const emGrupo = tenta('FICHA PESSOAL', (v, sp) => comVirgula(v) && !sp.protegidas.some((p) => { const m = /^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(p); return m && v[0] >= Number(m[2]) && v[0] <= Number(m[4] || m[2]); }));
+  ok('escrever por cima de uma conta da FICHA, da CARTEIRA ou da FICHA PESSOAL (em grupo ou não) devolve a conta, na pontuação do português, com um aviso cada',
+     !erroD && [naFicha, naCarteira, naPessoal, emGrupo].every((x) => x.voltou && x.avisos === 1 && x.t[2] !== F(x.t[2], 'pt_BR')) && !S.P.orfas.length,
+     erroD ? erroD.message : [naFicha, naCarteira, naPessoal, emGrupo].map((x) => `${x.a1}: ${String(x.ficou).slice(0, 50)} (${x.avisos})`).join(' · ') + ' · ' + S.P.orfas.slice(0, 2).join(' · '));
+  // as caixas livres nascem com conta e são do jogador: a vida da FICHA, o Volume de um item, a vida atual da invocação
+  const livre = (nomeAba, a1) => { const n0 = S.P.avisos.length; try { S.ss.getSheetByName(nomeAba).getRange(a1).setValue(7); S.ctx.onEdit(ed(nomeAba, a1, 7)); } catch (e) { erroD = e; }
+    return S.ss.getSheetByName(nomeAba).getRange(a1).getValue() === 7 && S.P.avisos.length === n0; };
+  const spP = ABAS.find((a) => a.nome === 'FICHA PESSOAL'), spI = ABAS.find((a) => a.nome === 'INVOCAÇÕES'), idxF = S.ctx.indice();
+  ok('a vida da FICHA, o Volume de um item e a vida atual de uma invocação ficam como o jogador escreveu, sem aviso',
+     !erroD && (spP.livres || []).length > 1 && (spI.livres || []).length === 12 && livre('FICHA', S.ctx.cel_(idxF, 'vida')) && livre('FICHA PESSOAL', spP.livres[1]) && livre('INVOCAÇÕES', spI.livres[4]),
+     erroD ? erroD.message : `${(spP.livres || []).length} · ${(spI.livres || []).length}`);
+  // se o Sheets não entender a fórmula na pontuação do português (a caixa mostra #ERROR!), ela vai como o construir() grava
+  const G = S.acha('GLOSSÁRIO'), onde = 'A' + G.maxR, deVerdade = S.ctx.formulaNoIdioma_;
+  let idiomas = [], erroE = null, foi = null;
+  try {
+    S.ss.getSheetByName('GLOSSÁRIO').getRange(onde).setValue('#ERROR!');
+    S.ctx.formulaNoIdioma_ = () => "='GLOSSÁRIO'!$A$" + G.maxR;
+    const trocaDeIdioma = S.ss.setSpreadsheetLocale;
+    S.ss.getSheetByName('FICHA').getRange(naFicha.a1).setValue('rew');
+    S.ctx.onEdit(ed('FICHA', naFicha.a1, 'rew'));
+    foi = S.acha('FICHA').f.get(naFicha.t[0] + ',' + naFicha.t[1]);
+  } catch (e) { erroE = e; }
+  S.ctx.formulaNoIdioma_ = deVerdade;
+  S.ss.getSheetByName('GLOSSÁRIO').getRange(onde).clearContent();
+  ok('a conta que o Sheets não entende na pontuação do português é gravada em inglês, com a planilha em inglês por um instante, e volta ao português',
+     !erroE && foi === naFicha.t[2] && S.P.locale === 'pt_BR' && !S.P.orfas.length, erroE ? erroE.message : `${foi} · ${S.P.locale} · ${S.P.orfas.slice(0, 2).join(' · ')}`);
+  // a linha da lista de invocações em que alguém escreve por cima volta com a ligação até a ficha
+  const IVx = S.acha('INVOCAÇÕES'), lig = [...IVx.f.entries()].find(([, f]) => f.startsWith('=HYPERLINK(')), [ll, lc] = lig[0].split(',').map(Number);
+  try { S.ss.getSheetByName('INVOCAÇÕES').getRange(ll, lc).setValue('x'); S.ctx.onEdit(ed('INVOCAÇÕES', letras(lc) + ll, 'x')); } catch (e) { erroD = e; }
+  ok('a linha da lista de invocações em que alguém escreve por cima volta com a ligação, com ponto e vírgula',
+     !erroD && /^=HYPERLINK\("#gid=\d+&range=[A-Z]+\d+";/.test(IVx.f.get(lig[0]) || '') && !S.P.orfas.length, erroD ? erroD.message : `${IVx.f.get(lig[0])} · ${S.P.orfas.slice(0, 2).join(' · ')}`);
 }
 // 02/10/2026: o menu rápido da FICHA (a seção 8) só mostra o que está na FICHA AMALDIÇOADA. As caixas dele ficam fora
 // da trava, e quem escreve por cima recebe a conta de volta, como na Ficha Amaldiçoada.
@@ -325,14 +381,22 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   try {
     const [d, atual, temp, max] = red[7];
     const digita = (x) => { IV.getRange(d).setValue(x); S.ctx.onEdit(ed('INVOCAÇÕES', d, x)); passos.push([IV.getRange(atual).getValue(), IV.getRange(temp).getValue(), IV.getRange(d).getValue()].join('/')); };
+    // a vida atual nasce apontando para a conta da DADOS_INVOC (a máxima, quando a ficha tem nome), que aqui vira número
+    const m0 = /^=DADOS_INVOC!\$([A-Z]+)\$(\d+)$/.exec(IV.getRange(atual).getFormula());
+    S.ss.getSheetByName('DADOS_INVOC').getRange(m0[1] + m0[2]).setValue(27);
     IV.getRange(max).setValue(27); IV.getRange(temp).setValue(4);
-    digita(-9);     // em branco a vida está cheia: 27, e a perda gasta os 4 de temporária primeiro
+    digita(-9);     // a vida nasce cheia: 27, e a perda gasta os 4 de temporária primeiro
     digita(3);      // o ganho não devolve a temporária
     digita(50);     // e a vida não passa da máxima
     digita(-40);    // nem desce de zero
+    // a vida atual apagada conta como cheia: a conta parte da máxima (na ficha 3)
+    const [d3, atual3, , max3] = red[2];
+    IV.getRange(max3).setValue(27); IV.getRange(atual3).clearContent();
+    IV.getRange(d3).setValue(-5); S.ctx.onEdit(ed('INVOCAÇÕES', d3, -5));
+    passos.push('em branco: ' + IV.getRange(atual3).getValue());
   } catch (e) { erroR = e; }
   ok('a caixa de ± de cada ficha de invocação aplica na vida atual e se limpa: a perda gasta a temporária primeiro, e a vida fica entre zero e a máxima',
-     !erroR && red.length === 12 && new Set(red.map((x) => x[0])).size === 12 && passos.join(' ') === '22/0/ 25/0/ 27/0/ 0/0/',
+     !erroR && red.length === 12 && new Set(red.map((x) => x[0])).size === 12 && passos.join(' ') === '22/0/ 25/0/ 27/0/ 0/0/ em branco: 22',
      erroR ? erroR.message : `${red.length} caixas · ${passos.join(' ')}`);
 }
 let erroSel = null;
@@ -391,7 +455,7 @@ while (!erroC && parada() !== null && voltas < 30) {
 ok(`cada continuar() segue de onde o anterior parou e monta pelo menos uma aba: ${voltas} vez(es), paradas em ${paradas.join(', ')}`,
    !erroC && voltas >= 1 && paradas.every((p, i) => !i || p > paradas[i - 1]) && parada() === null && !vazias().length && C.P.locale === 'pt_BR',
    erroC ? erroC.message : `paradas em ${paradas.join(', ')} · vazias: ${vazias().join(', ')}`);
-if (!erroC && /FALTA O ACABAMENTO: rode a função acabar\(\)/.test(C.P.registro)) { try { C.ctx.acabar(); } catch (e) { erroC = e; } }
+if (!erroC && /(FALTA O ACABAMENTO|FALTAM AS TRAVAS DO ACABAMENTO): rode a função acabar\(\)/.test(C.P.registro)) { try { C.ctx.acabar(); } catch (e) { erroC = e; } }
 ok('e a planilha montada em várias execuções fica igual à de uma montagem que não parou', !erroC && JSON.stringify(retrato(C.P)) === antes, erroC ? erroC.message : 'a planilha ficou diferente');
 let erroN = null;
 try { C.ctx.continuar(); } catch (e) { erroN = e; }
@@ -408,9 +472,24 @@ let erroV = null;
 try { C.ctx.continuar(); } catch (e) { erroV = e; }
 ok('a montagem cortada no meio não deixa valendo a parada de antes: o continuar() manda montar do começo',
    !!cortada && parada() === null && C.P.locale === 'pt_BR' && !!erroV && /não há montagem parada/.test(erroV.message), cortada ? `parada ${parada()} · ${erroV && erroV.message}` : 'a montagem não foi cortada');
-try { C.ctx.LIMITE_DA_EXECUCAO_ = Infinity; C.ctx.TETO_DA_MONTAGEM_ = Infinity; C.ctx.construir(); } catch (e) { erroC = e; }
+try { C.ctx.LIMITE_DA_EXECUCAO_ = Infinity; C.ctx.TETO_DA_MONTAGEM_ = Infinity; C.ctx.TETO_DAS_TRAVAS_ = Infinity; C.ctx.construir(); } catch (e) { erroC = e; }
 ok('o construir() começa do zero e esquece a montagem parada que houver', !erroC && parada() === null && JSON.stringify(retrato(C.P)) === antes && /^FICHA PRONTA em /.test(C.P.registro),
    erroC ? erroC.message : C.P.registro.slice(0, 100));
+
+// 07/10/2026: as travas são a etapa mais lenta e vão por último. Quando o tempo que sobra não dá para elas, o resto do
+// acabamento já está feito (os saltos e a caixa da paleta inclusive), e o registro pede o acabar()
+agora = 0;
+const T = criaSheets(FICHA_SRC, GS, { Date: RelogioQueCorre });
+let erroT = null;
+try { T.ctx.LIMITE_DA_EXECUCAO_ = Infinity; T.ctx.TETO_DA_MONTAGEM_ = Infinity; T.ctx.construir(); } catch (e) { erroT = e; }
+const saltosT = [...T.acha('FICHA AMALDIÇOADA').f.values()].filter((f) => f.startsWith('=HYPERLINK(')).length;
+ok('quando o tempo não dá para as travas, o acabamento faz o resto (as notas, os saltos, a caixa da paleta) e o registro pede o acabar()',
+   !erroT && /FALTAM AS TRAVAS DO ACABAMENTO: rode a função acabar\(\)/.test(T.P.registro) && !T.acha('FICHA').prot.length && T.acha('FICHA').notas.size > 0
+   && saltosT === nSaltos && !!T.P.nomeados['PALETA_ESCOLHIDA'] && T.P.locale === 'pt_BR',
+   erroT ? erroT.message : `${T.acha('FICHA').prot.length} travas · ${saltosT} saltos · ${T.P.registro.slice(0, 90)}`);
+try { T.ctx.acabar(); } catch (e) { erroT = e; }
+ok('e o acabar() depois põe as travas, mesmo com o relógio alto, e a planilha fica igual à de uma montagem que não parou',
+   !erroT && JSON.stringify(retrato(T.P)) === antes, erroT ? erroT.message : 'a planilha ficou diferente');
 
 const semAba = criaSheets(FICHA_SRC, GS);
 let erroS = null;

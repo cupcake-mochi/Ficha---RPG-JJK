@@ -1425,11 +1425,20 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
     _fa = _re.search(r"function acabar\(\) \{(.*?)\n\}\n", g, _re.S)
     _fa = _fa.group(1) if _fa else ""
     checa("o construir() registra cada etapa na hora e, se a montagem passar do teto, deixa o acabamento para o acabar()",
-          "rel.etapa(spec.nome)" in _cc and "rel.passou() > TETO_DA_MONTAGEM_" in _cc and "acabamento_(ss, feito, rel)" in _cc
-          and "acabamento_(ss, feito, rel)" in _fa and "setSpreadsheetLocale('en_US')" in _fa
+          "rel.etapa(spec.nome)" in _cc and "rel.passou() > TETO_DA_MONTAGEM_" in _cc and "acabamento_(ss, feito, rel, true)" in _cc
+          and "acabamento_(ss, feito, rel, false)" in _fa and "setSpreadsheetLocale('en_US')" in _fa
           and _fa.find("} finally {") < _fa.find("setSpreadsheetLocale('pt_BR')")
           and bool(_re.search(r"var TETO_DA_MONTAGEM_ = (\d+);", g)) and int(_re.search(r"var TETO_DA_MONTAGEM_ = (\d+);", g).group(1)) <= 300000,
           "falta o relógio, o teto ou o acabar()")
+    # 07/10/2026: as travas são a etapa mais lenta e vão por último. O acabamento do construir() não as começa se o tempo
+    # que sobra não dá (e pede o acabar()); o do acabar() começa sempre. Os saltos e a caixa da paleta vêm antes delas
+    _ac = _re.search(r"function acabamento_\(ss, feito, rel, comTeto\) \{(.*?)\n\}\n", g, _re.S)
+    _ac = _ac.group(1) if _ac else ""
+    _tt = _re.search(r"var TETO_DAS_TRAVAS_ = (\d+);", g)
+    checa("as travas são a última etapa do acabamento, depois dos saltos e da caixa da paleta, e só o construir() as deixa para o acabar() quando falta tempo",
+          0 <= _ac.find("ligarSaltos_(ss)") < _ac.find("configurarPaleta_(ss, true)") < _ac.find("comTeto && rel.passou() > TETO_DAS_TRAVAS_")
+          < _ac.find("protegerFormulas_(ss, idx)") and bool(_tt) and int(_tt.group(1)) <= 240000 and "FALTAM AS TRAVAS DO ACABAMENTO" in _cc,
+          f"teto {_tt.group(1) if _tt else None}")
 
     arte_usada = {im[4] for a in dados for im in a["imgs"]}
     embutida = set(_re.findall(r'"([^"]+\.png)":"', g.split("var ARTE")[1][:200000]))

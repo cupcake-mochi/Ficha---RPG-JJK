@@ -65,7 +65,8 @@ function criaSheets(FICHA_SRC, GS, extras) {
   const semAspas = (f) => f.replace(/"[^"]*"/g, '""');
   const confereFormula = (onde, f) => {
     const limpa = semAspas(f);
-    if (P.locale !== 'en_US' && (limpa.includes(',') || /\d\.\d/.test(limpa))) P.orfas.push(`${onde}: fórmula com vírgula ou ponto gravada em ${P.locale}`);
+    // 07/10/2026: fora do inglês a vírgula entre dois algarismos é a do número (0,25), e essa vale; a que separa argumento não
+    if (P.locale !== 'en_US' && (limpa.replace(/(\d),(?=\d)/g, '$1').includes(',') || /\d\.\d/.test(limpa))) P.orfas.push(`${onde}: fórmula com vírgula ou ponto gravada em ${P.locale}`);
     for (const m of limpa.matchAll(/(?:'([^']+)'|([A-Za-zÀ-ÿ_][\wÀ-ÿ]*))!\$?([A-Z]+)\$?(\d+)(?::\$?([A-Z]+)\$?(\d+))?/g)) {
       const B = acha(m[1] || m[2]);
       if (!B) { P.orfas.push(`${onde}: cita a aba ${m[1] || m[2]}, que ainda não existe`); continue; }
@@ -138,6 +139,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
         // texto, e o teste lê os trechos em negrito
         setRichTextValue: (v) => { if (!v || !v.__rico) throw new Error('setRichTextValue sem texto rico'); grava(r, c, v.texto);
           A.ricos.set(r + ',' + c, v.negritos); return R; },
+        getDisplayValue: () => String(A.le(r, c)),
         getValue: () => A.le(r, c), getValues: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.le(r + i, c + j))),
         setFormula: (f) => { if (typeof f !== 'string' || f[0] !== '=') throw new Error('setFormula sem fórmula em ' + nome); confereFormula(nome + '!' + letras(c) + r, f); A.v.delete(r + ',' + c); A.f.set(r + ',' + c, f); return R; },
         setFormulas: (m) => { matriz(m, nl, nc, 'setFormulas'); cada((i, j, a, b) => { if (typeof m[a][b] !== 'string' || m[a][b][0] !== '=') throw new Error('setFormulas com célula sem fórmula em ' + nome); confereFormula(nome + '!' + letras(j) + i, m[a][b]); A.f.set(i + ',' + j, m[a][b]); }); return R; },

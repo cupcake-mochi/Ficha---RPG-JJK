@@ -1,8 +1,8 @@
 {
  "_meta": {
   "o_que_e": "o que a FICHA AMALDIÇOADA calcula e o catalogo-projeto-m.json não tem, lido do manual.txt",
-  "versao_do_livro": "candidata editorial reconstruída, revisada em 04/10/2026 e em 05/10/2026 (382 páginas)",
-  "sha256_do_livro": "e747cf7407d50f1e3a2a768f24936b4f1c40c82272d5be9d6f4d91a96166363b",
+  "versao_do_livro": "candidata editorial reconstruída, como está na v0.340 do JJK---Project (lida em 07/10/2026)",
+  "sha256_do_livro": "bbaf760bb0094928b85c1c8d51d309ea88decf1606bfc35ba9690174592a6a9e",
   "extraido_por": "ficha-v01/extrair_tecnica.py",
   "capitulos": [
    "9. Progressão",
@@ -670,7 +670,7 @@
    ],
    "dados": 3,
    "pe": 3,
-   "frase": "No acerto, causa 3d8 de Concussão e aplica Derrubado por uma rodada."
+   "frase": "No acerto, causa 3d8 de Concussão, e o alvo faz TR Físico contra CD 12."
   },
   {
    "nome": "Corte Medido 2",

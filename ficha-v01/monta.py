@@ -329,7 +329,9 @@ def _extras(a):
            # escreve por cima dela dizer onde se escreve
            "da_carteira": a.get("da_carteira", []),
            # 07/10/2026, a INVOCAÇÕES: a caixa de ± da vida de cada ficha, que o onEdit aplica (redutorDaInvocacao_)
-           "redutores": a.get("redutores", [])}
+           "redutores": a.get("redutores", []),
+           # 07/10/2026: as caixas que nascem com conta e sao do jogador (o devolverConta_ nao as devolve)
+           "livres": a.get("livres", [])}
     return {k: v for k, v in out.items() if v}
 
 gs, celulas, pecas = emitir_gs.escrever(

@@ -134,9 +134,11 @@ function notasDeRegra_(ss, idx) {
     'conjuração': 'Ataque de conjuração = d20 + o atributo da sua técnica + maestria. O atributo é o ' +
                   'que você escolhe em ATRIBUTO DE CONJURAÇÃO.',
     'corpo a corpo': 'Ataque corpo a corpo = d20 + Força + maestria. A ficha usa o atributo de ' +
-                     'ATRIBUTO DE ATAQUE - CORPO A CORPO: troque só se uma regra mandar.',
+                     'ATRIBUTO DE ATAQUE - CORPO A CORPO: troque só se uma regra mandar. Com uma arma empunhada sem a ' +
+                     'Força que ela pede, o ataque com ela é com desvantagem: a FICHA PESSOAL diz qual.',
     'à distância': 'Ataque à distância = d20 + Destreza + maestria. A ficha usa o atributo de ' +
-                   'ATRIBUTO DE ATAQUE - À DISTÂNCIA: troque só se uma regra mandar.',
+                   'ATRIBUTO DE ATAQUE - À DISTÂNCIA: troque só se uma regra mandar. Com uma arma empunhada sem a ' +
+                     'Força que ela pede, o ataque com ela é com desvantagem: a FICHA PESSOAL diz qual.',
     'deslocamento': 'O seu deslocamento base é 9 metros, e você corta esse total em quantos pedaços ' +
                     'quiser dentro do turno. O Buff/Debuff do lado soma em metros. Cai pela metade com ' +
                     'uma arma empunhada sem a Força, e vai a zero com a carga acima do limite: a FICHA PESSOAL diz qual.',
@@ -370,13 +372,18 @@ function onEdit(e) {
   }
   // 01/10/2026: a FICHA PESSOAL tem as caixas de treino, as missões que sobem o nível e as notas que mudam.
   if (aba === ABA_PESSOAL_) {
+    try { devolverConta_(e, ABA_PESSOAL_); } catch (err) { console.log('ficha pessoal, a conta: ' + err.message); }
     try { pessoalEditada_(e); } catch (err) { console.log('ficha pessoal: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
   // 01/10/2026: a caixa calculada da FICHA AMALDIÇOADA em que alguém digitou volta a ser a conta.
   if (aba === ABA_AMALDICOADA_) {
-    try { devolverConta_(e); } catch (err) { console.log('ficha amaldiçoada: ' + err.message); }
+    try {
+      devolverConta_(e);
+      // 07/10/2026: o salto em que alguém escreveu por cima volta a ser a ligação até a seção
+      if (e.range.getRow() <= LINHA_DOS_SALTOS_) ligarSaltosDe_(SpreadsheetApp.getActive(), ABA_AMALDICOADA_, DADOS_DA_AMALDICOADA_);
+    } catch (err) { console.log('ficha amaldiçoada: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
@@ -394,6 +401,10 @@ function onEdit(e) {
   }
   // Qualquer outra edição também continua uma troca que ficou pela metade (a arte, quase sempre): é o
   // "caso alguém mexa na ficha" do Mizuki. Barato quando não há nada pendente.
+  if (aba === 'CARTEIRA') {
+    // 07/10/2026: a caixa calculada da CARTEIRA volta, como a das outras abas
+    try { devolverConta_(e, 'CARTEIRA'); } catch (err) { console.log('carteira: ' + err.message); }
+  }
   if (aba !== 'FICHA') { continuarPaleta_(inicio, null, false, e.range); return; }
   // 02/10/2026: o menu rápido da seção 8 é todo calculado; quem escrever por cima recebe a conta de volta
   if (dentroDeSemTrava_('FICHA', e.range)) {
@@ -402,6 +413,8 @@ function onEdit(e) {
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
+  // 07/10/2026: e toda caixa calculada da FICHA, fora a vida, a energia e a integridade, que o jogador escreve
+  try { devolverConta_(e, 'FICHA'); } catch (err) { console.log('ficha, a conta: ' + err.message); }
   var idx = indice();
   aplicarDelta_(e, idx);
   prenderTemp_(e, idx);
@@ -697,6 +710,7 @@ var ABA_AMALDICOADA_ = 'FICHA AMALDIÇOADA';
 var ABA_INVOCACOES_ = 'INVOCAÇÕES';
 var DADOS_DA_AMALDICOADA_ = 'DADOS_AM';
 var DADOS_DA_INVOCACAO_ = 'DADOS_INVOC';
+var LINHA_DOS_SALTOS_ = 7;                  // a linha dos saltos da FICHA AMALDIÇOADA (o G["saltos"] do gerador)
 var COLUNA_DA_LISTA_DE_INVOCACOES_ = 6;      // o conjunto mora nas colunas D, E e F da aba
 
 /**
@@ -722,30 +736,115 @@ function dentroDeSemTrava_(nome, range) {
 }
 
 var REFERENCIA_PURA_ = /^=(?:'[^']+'|[A-Z_]+)!\$?[A-Z]+\$?\d+$/;
+
+/**
+ * A fórmula de fábrica escrita na pontuação do idioma da planilha. O Ficha.gs guarda toda fórmula como o construir()
+ * a grava, com a planilha em inglês: vírgula entre os argumentos e ponto no número. A ficha vive em português, onde o
+ * argumento se separa com ponto e vírgula, o número leva vírgula e, dentro de uma matriz entre chaves, as colunas se
+ * separam com barra invertida. O que está entre aspas (texto, ou nome de aba) passa como está.
+ */
+function formulaNoIdioma_(f, idioma) {
+  if (/^en/i.test(String(idioma || ''))) return f;
+  var out = '', i = 0, n = f.length, chaves = 0;
+  while (i < n) {
+    var ch = f.charAt(i);
+    if (ch === '"' || ch === "'") {
+      var j = i + 1;
+      while (j < n) {
+        if (f.charAt(j) === ch) {
+          if (f.charAt(j + 1) === ch) { j += 2; continue; }
+          break;
+        }
+        j++;
+      }
+      out += f.slice(i, j + 1);
+      i = j + 1;
+      continue;
+    }
+    if (ch === '{') chaves++;
+    if (ch === '}') chaves--;
+    if (ch === ',') { out += chaves > 0 ? '\\' : ';'; i++; continue; }
+    if (/[0-9]/.test(ch) && !/[A-Za-z0-9_$.]/.test(f.charAt(i - 1))) {
+      var m = /^[0-9]+(?:\.[0-9]+)?/.exec(f.slice(i))[0];
+      out += m.replace('.', ',');
+      i += m.length;
+      continue;
+    }
+    out += ch;
+    i++;
+  }
+  return out;
+}
+
+/** As caixas da aba cuja fórmula é só o valor de partida, e que o jogador pode escrever por cima: {A1: true} */
+function livresDaAba_(spec) {
+  var out = {};
+  (spec.livres || []).forEach(function (a1) { out[a1] = true; });
+  if (spec.nome === 'FICHA') {
+    var idx = indice();
+    LIVRES_DA_TRAVA.forEach(function (k) { var c = cel_(idx, k); if (c) out[c] = true; });
+  }
+  return out;
+}
+
+/**
+ * 07/10/2026: toda caixa calculada volta, em toda aba. O Mizuki escreveu por cima do total de uma perícia da FICHA e a
+ * conta sumiu ("Escrevi por cima da pericia e n corrigiu. Esses de codigo ideal só impedir de poder modificar"). O Sheets
+ * não impede o dono da planilha de escrever numa célula, e cada jogador é dono da cópia dele; o que dá para fazer é
+ * devolver a conta na hora, como a FICHA AMALDIÇOADA já fazia com as referências.
+ *
+ * A fórmula de fábrica de cada caixa está no ABAS. A referência pura se escreve igual em qualquer idioma; as outras
+ * passam pelo formulaNoIdioma_. Se mesmo assim o Sheets não entender alguma (a caixa mostra #ERROR!), ela é gravada
+ * como o construir() grava: com a planilha em inglês por um instante, e de volta ao português.
+ *
+ * Ficam de fora as caixas livres (a vida, a energia e a integridade da FICHA, o Volume de um item, a foto da FICHA
+ * PESSOAL, a vida atual de uma invocação): a fórmula delas é só o valor de partida.
+ */
 function devolverConta_(e, nome) {
   nome = nome || ABA_AMALDICOADA_;
   var spec = ABAS.filter(function (s) { return s.nome === nome; })[0];
   if (!spec) return 0;
-  var aba = e.range.getSheet();
+  var aba = e.range.getSheet(), ss = SpreadsheetApp.getActive();
   var r1 = e.range.getRow(), c1 = e.range.getColumn(), r2 = e.range.getLastRow(), c2 = e.range.getLastColumn();
-  var n = 0, daCarteira = false;
+  var n = 0, daCarteira = false, doMenu = false, livres = null, idioma = null, outras = [];
   spec.vals.forEach(function (t) {
     if (t[0] < r1 || t[0] > r2 || t[1] < c1 || t[1] > c2) return;
-    if (typeof t[2] !== 'string' || !REFERENCIA_PURA_.test(t[2])) return;
+    if (typeof t[2] !== 'string' || t[2].charAt(0) !== '=') return;
+    livres = livres || livresDaAba_(spec);
+    if (livres[a1_(t[0], t[1])]) return;
     var cel = aba.getRange(t[0], t[1]);
-    if (cel.getFormula() === t[2]) return;
-    cel.setFormula(t[2]);
+    if (REFERENCIA_PURA_.test(t[2])) {
+      if (cel.getFormula() === t[2]) return;
+      cel.setFormula(t[2]);
+    } else {
+      idioma = idioma || ss.getSpreadsheetLocale();
+      cel.setFormula(formulaNoIdioma_(t[2], idioma));
+      outras.push([cel, t[2]]);
+    }
     n++;
     // 05/10/2026: o nome da técnica espelha a CARTEIRA, e o aviso diz onde se escreve
     if ((spec.da_carteira || []).indexOf(a1_(t[0], t[1])) >= 0) daCarteira = true;
+    if (nome === 'FICHA' && linhaSemTrava_(nome, t[0])) doMenu = true;
   });
+  // a que o Sheets não entendeu na pontuação do idioma vai como o construir() escreve
+  var erradas = outras.filter(function (o) { return String(o[0].getDisplayValue()) === '#ERROR!'; });
+  if (erradas.length) {
+    var antes = ss.getSpreadsheetLocale();
+    ss.setSpreadsheetLocale('en_US');
+    try {
+      erradas.forEach(function (o) { o[0].setFormula(o[1]); });
+      SpreadsheetApp.flush();
+    } finally {
+      ss.setSpreadsheetLocale(antes);
+    }
+  }
   if (n) {
-    SpreadsheetApp.getActive().toast(nome === 'FICHA'
+    ss.toast(doMenu
       ? 'O menu rápido mostra o que está na FICHA AMALDIÇOADA, e a caixa voltou. Para mudar, mexa lá.'
       : daCarteira
       ? 'O nome da técnica vem da CARTEIRA, e a caixa voltou. Para mudar, escreva na TÉCNICA DECLARADA de lá.'
       : 'Essa caixa é calculada pela ficha, e a conta voltou. O número dela muda pelas caixas de ' +
-        'escolher e de escrever da própria seção.', nome, 8);
+        'escolher e de escrever.', nome, 8);
   }
   return n;
 }
@@ -801,12 +900,15 @@ function ligarSaltosDe_(ss, nomeDaAba, nomeDosDados) {
   var aba = ss.getSheetByName(nomeDaAba), dados = ss.getSheetByName(nomeDosDados);
   if (!aba || !dados) return null;
   var gid = aba.getSheetId(), n = 0;
+  // 07/10/2026: o acabamento escreve com a planilha em inglês, e o onEdit, que religa a lista de invocações, com ela em
+  // português, onde a vírgula entre os dois argumentos não vale
+  var sep = /^en/i.test(String(ss.getSpreadsheetLocale())) ? ',' : ';';
   // 02/10/2026: o nome de quatro saltos muda com a rota (Feitiços, Manejos ou Katas), e o link cita a célula do nome na
   // DADOS_AM ('nome do salto'), e não o texto.
   tabelaDaDados_(dados.getDataRange().getValues(), 'salto', ['caixa do salto', 'alvo do salto', 'nome do salto']).forEach(function (l) {
     if (!l['caixa do salto'] || !l['alvo do salto']) return;
     var nome = l['nome do salto'] ? String(l['nome do salto']) : '"' + String(l['salto']).replace(/"/g, '""') + '"';
-    aba.getRange(String(l['caixa do salto'])).setFormula('=HYPERLINK("#gid=' + gid + '&range=' + l['alvo do salto'] + '",' + nome + ')');
+    aba.getRange(String(l['caixa do salto'])).setFormula('=HYPERLINK("#gid=' + gid + '&range=' + l['alvo do salto'] + '"' + sep + nome + ')');
     n++;
   });
   return n;

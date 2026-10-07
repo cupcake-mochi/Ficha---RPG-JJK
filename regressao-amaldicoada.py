@@ -261,7 +261,11 @@ def monta(f, c, fam, nivel, lib=False, vaga=1):
         acao = "Rodada +1 turno" if "Carregar" in bases else "Rodada inteira"
     else:
         acao = ("Bônus" if "Rápido" in mel else "Reação" if "Reação" in mel else "Padrão") + (" +1 turno" if "Carregar" in bases else "")
+    # 07/10/2026, a D43 do livro ("Condição, Prende e Cerca sempre pedem TR ... Numa ficha de ataque, o acerto aplica o dano
+    # e as outras peças; depois, cada alvo acertado faz o TR registrado"): a carta de ataque com uma delas diz Acerto + TR
+    pede_tr = any(m in CAT["condicoes"] or m in ("Prende", "Cerca") for m in mel)
     resolve = ("Automático" if "Inescapável" in mel else "TR para metade" if "Certeiro" in mel else
+               "Acerto + TR" if f["forma"] in ("Projétil", "Toque") and pede_tr else
                "Acerto" if f["forma"] in ("Projétil", "Toque") else "TR, metade" if f["forma"] in POR_TR else "Automático")
     conta_txt = (f"{3 * c} − {gasto} + {usa}" + (f" + {c}" if lib else "") + f" = {dados}d8 · teto {4 * c}" +
                  (f" · a Forma devolve {c}" if emb else "") + (f" · perde {perde}" if perde else ""))
@@ -1189,7 +1193,7 @@ for nome in FICHAS:
     esp = [f"Nível {L}" if L <= n else f"Abre no {L}" for L in NIV_HAB]
     lido = [txt(f[x[3]].value) for x in ETIQ]
     up_ = lambda k, padrao: "" if not ficha.get(k) else "  ·  " + ficha[k].upper()
-    esp_t = ["CAMINHO" + up_("caminho", "") + "  ·  CINCO DEGRAUS", "TRILHA" + up_("trilha", "") + "  ·  QUATRO ENTREGAS"]
+    esp_t = ["CAMINHO" + up_("caminho", "") + "  ·  CINCO NÍVEIS", "TRILHA" + up_("trilha", "") + "  ·  QUATRO NÍVEIS"]
     lido_t = [txt(f[x[2]].value) for x in TIT]
     checa(f"{nome} (nível {n}): as etiquetas dizem o nível ou quando a carta abre, e os títulos dizem o Caminho e a Trilha",
           lido == esp and lido_t == esp_t, f"{lido} {lido_t} != {esp} {esp_t}")
