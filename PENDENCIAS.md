@@ -2506,7 +2506,7 @@ Preparada da Vanguarda com −2): a carta 7 da Vanguarda ainda diz −1. Puxar o
 pôr o catálogo em dia, que é uma passada própria.
 
 
-### B40 · A aba `INVOCAÇÕES`, a invocação refeita depois do livro reconstruído — **EM ANDAMENTO desde 06/10/2026: a grade de 2 × 6 e o inventário ele montou e testou no Sheets em 07/10; a terceira etapa (no fim desta seção) é o retorno desse teste, e falta ele montar de novo**
+### B40 · A aba `INVOCAÇÕES`, a invocação refeita depois do livro reconstruído — **CONSTRUÍDA E MONTADA NO SHEETS em 07/10/2026 (quatro etapas, no fim desta seção): ele testou a grade, o inventário, a devolução da conta e a ficha sem travas. Ficam com ele a regra da arma sem a Força no livro, a lista da revisão e o destino da `ficha-invocacao/` antiga**
 
 *Pedido dele em 06/10/2026: "precisamos olhar o como fazer a ficha de invocação após a atualização do sistema", com
 protótipos antes de aplicar. É a pendência que o B36 deixou ("pode deixar a reconstrução das invocações na ficha para
@@ -2764,6 +2764,12 @@ devolução sem o teto de 2 × Classe e a devolução além do gasto), e o únic
 *A bateria inteira rodou até o fim com a ficha sem travas: vinte e um dos vinte e dois passaram, e a `regressao-paleta.js`
 também. O vigésimo segundo era de novo o `arnes-pessoal.py`, com três defeitos plantados que citavam o que saiu com as
 travas (dois da função que juntava as fórmulas em faixas, e o teto da montagem, que mudou de número); os dois primeiros
-saíram, o terceiro foi acertado, e ele passa: 78 perturbações acendem a checagem certa. Esta etapa não rodou no Sheets
-de verdade: falta ele montar a versão sem travas.*
+saíram, o terceiro foi acertado, e ele passa: 78 perturbações acendem a checagem certa. Esta etapa não tinha rodado no
+Sheets de verdade quando foi para o git.*
+
+**Ele montou a versão sem travas, do zero, ainda em 07/10/2026**, *e conferiu os três pontos: escreveu por cima do total de uma
+perícia e "a fórmula voltou sozinha, com aviso no canto, sem perguntar 'editar mesmo assim?' e sem #ERROR!"; os links
+das invocações e os saltos da Amaldiçoada "funcionaram após reconstruir"; e a montagem levou **11 min 14 s somando as
+execuções, com cerca de 14 s de acabamento**, sem travas. O registro completo de cada execução ele não mandou (só o
+resumo), então o tempo de cada aba nessa montagem não está conferido.*
 
