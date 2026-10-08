@@ -21,8 +21,8 @@ escreve "ataca e empurra em linha ou em área" desde a decisão do Mizuki na v0.
 
 O comparar-ficha-01.py importa `corrige_valor` daqui pra saber que essa diferença é esperada, e o
 conferir-ficha-xlsx.py confere que não sobrou texto minúsculo pra trás.
-A ficha de invocação solta (ficha-invocacao/constroi.py) carrega este módulo por caminho e roda a mesma
-`corrige_valor` no fim do `constroi()`, então os dois arquivos dizem as mesmas palavras.
+Até 07/10/2026 a ficha de invocação solta (ficha-invocacao/constroi.py) carregava este módulo por caminho e rodava a
+mesma `corrige_valor`; ela foi apagada nesse dia, a pedido do Mizuki, porque a aba INVOCAÇÕES a substituiu.
 """
 import re
 

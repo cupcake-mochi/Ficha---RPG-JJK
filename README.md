@@ -16,7 +16,6 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 | [`DECISOES-bloco-A.md`](DECISOES-bloco-A.md) | as cinco decisões que travavam a construção, com o porquê e o que foi medido |
 | [`PENDENCIAS.md`](PENDENCIAS.md) | o que ainda espera decisão |
 | [`DESIGN-ficha-digital.md`](DESIGN-ficha-digital.md) | paleta, tipografia, abas, automação |
-| [`ficha-invocacao/`](ficha-invocacao/) | a ficha da invocação, planilha separada. O dono dos valores é o [`invocacao.json`](invocacao.json) |
 | [`ESPECIFICACAO-ficha-digital.md`](ESPECIFICACAO-ficha-digital.md) | toda fórmula, todo catálogo, todas as travas |
 
 ## Rodar os validadores
@@ -25,8 +24,8 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 ./rodar-tudo.sh
 ```
 
-São vinte e um. Dezoito passam em qualquer máquina; o
-`regressao-kaori-na-ficha.py`, o `regressao-ficha-pessoal.py` e o `regressao-amaldicoada.py` precisam de um LibreOffice **com o filtro do
+São dezenove (desde 08/10/2026, quando a ficha de invocação solta e os três validadores dela foram apagados). Quinze passam em qualquer máquina; o
+`regressao-kaori-na-ficha.py`, o `regressao-ficha-pessoal.py`, o `regressao-amaldicoada.py` e o `regressao-invocacoes.py` precisam de um LibreOffice **com o filtro do
 Calc** para recalcular a ficha, e onde ele não existe essa checagem falha alto
 em vez de passar em branco — é de propósito. O `regressao-delta.js` roda no
 node, porque o Apps Script não pode ser testado de fora; sem node ele é pulado

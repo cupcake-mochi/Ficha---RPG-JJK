@@ -7,7 +7,8 @@ continuam na planilha viva e no layout.json, que é a cópia fiel dela; o que mu
 depois de todas as outras limpezas, porque o GLOSSÁRIO nasce na posição da INVOCAÇÃO e reaproveita os estilos do
 CATÁLOGO.
 
-O que NÃO muda: a ficha de invocação separada (ficha-invocacao/, o invocacao.json e os três validadores dela) não
+O que NÃO mudava (até 07/10/2026, quando a aba INVOCAÇÕES a substituiu e o Mizuki mandou apagar): a ficha de invocação
+separada (ficha-invocacao/, o invocacao.json e os três validadores dela) não
 passa por aqui, e segue como estava.
 """
 import re

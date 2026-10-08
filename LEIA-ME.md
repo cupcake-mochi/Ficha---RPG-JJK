@@ -33,18 +33,12 @@ O `DESIGN-ficha-digital.md` e o `ESPECIFICACAO-ficha-digital.md` continuam valen
 ./rodar-tudo.sh
 ```
 
-São vinte e um. Dezoito passam em qualquer máquina; o
-`regressao-kaori-na-ficha.py`, o `regressao-ficha-pessoal.py` e o `regressao-amaldicoada.py` precisam de um LibreOffice **com o filtro do
+São dezenove (desde 08/10/2026, quando a ficha de invocação solta e os três validadores dela foram apagados). Quinze passam em qualquer máquina; o
+`regressao-kaori-na-ficha.py`, o `regressao-ficha-pessoal.py`, o `regressao-amaldicoada.py` e o `regressao-invocacoes.py` precisam de um LibreOffice **com o filtro do
 Calc** para recalcular a ficha, e onde ele não existe essa checagem falha alto
 em vez de passar em branco — é de propósito. O `regressao-delta.js` roda no
 node, porque o Apps Script não pode ser testado de fora; sem node ele é pulado
 com aviso, também não em silêncio.
-
-Para regerar a ficha da invocação:
-
-```bash
-python3 ficha-invocacao/monta.py
-```
 
 Para regerar a ficha, com a planilha exportada em `ficha-v01/original.xlsx`:
 
@@ -80,9 +74,6 @@ python3 ficha-v01/monta.py
 | `arnes-moldura.py` | **03/10/2026.** Não mora no `rodar-tudo.sh`, e **roda à mão** (uns quinze minutos, sem LibreOffice): planta onze defeitos na moldura da foto da `CARTEIRA` (B35: a moldura que fica dentro da caixa, a quina sem canto, a reta que falta ou que entra na quina, a caixa sem o convite ou sem a nota, a caixa não declarada, o canto fora da régua no nascimento ou na troca; B38: a `FICHA PESSOAL` que deixa de apontar para a foto, e a caixa dela na trava), numa cópia, gera a ficha e confere que o `conferir-ficha-xlsx.py` acusa cada um |
 | `medidas/pintar-paletas.js` e `medidas/ver-paletas.py` | **01/10/2026.** Não são validadores: pintam a ficha com cada uma das 122 paletas, pelo `Codigo.gs` de verdade, e desenham o resultado para olhar tema por tema |
 | **`regressao-kaori-na-ficha.py`** | **novo.** Preenche a Kaori na ficha, manda o LibreOffice recalcular, e compara com a p.41. Desde o B32 confere só o que ficou na `FICHA`; o refino, as aptidões e o Leque são da `regressao-amaldicoada.py` |
-| **`conferir-invocacao.py`** | **novo.** O `invocacao.json` contra os capítulos 16 e 35 vendorizados, e a planilha contra o JSON. Desde 04/10/2026 exige que o JSON declare a pendência com o livro reconstruído, que reescreveu as invocações |
-| **`regressao-invocacao.py`** | **novo.** Recalcula a ficha da invocação e bate com os números que o capítulo 16 publica |
-| **`arnes-invocacao.py`** | **novo.** Perturba o `invocacao.json` numa cópia isolada e prova que a checagem certa acende |
 
 ### Dois arquivos que os validadores leem de fora
 

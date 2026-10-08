@@ -5,7 +5,6 @@ cd "$(dirname "$0")"
 FALHOU=0
 for v in conferir-catalogo.py conferir-kaori.py conferir-progressao.py \
          regressao-exemplos.py arnes.py revisao-cetica.py conferir-decisoes.py arnes-decisoes.py conferir-ficha-xlsx.py regressao-kaori-na-ficha.py \
-         conferir-invocacao.py regressao-invocacao.py arnes-invocacao.py \
          regressao-delta.js arnes-delta.py \
          regressao-ficha-pessoal.py regressao-pessoal.js regressao-construir.js arnes-pessoal.py \
          regressao-amaldicoada.py regressao-invocacoes.py \

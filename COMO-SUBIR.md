@@ -20,7 +20,7 @@ python3 ficha-v01/monta.py
 ./rodar-tudo.sh
 ```
 
-Saem o `apps-script/Ficha.gs` e o `apps-script/Habilidades.gs`. Se os vinte e um validadores não passarem, não sobe.
+Saem o `apps-script/Ficha.gs` e o `apps-script/Habilidades.gs`. Se os dezenove validadores não passarem, não sobe.
 
 > **O `ficha/monta.py` foi aposentado em 14/09/2026, no B18.** *Ele ficou dez versões atrás da planilha viva, e o `Ficha.gs` que ele gerava montava uma ficha antiga.*
 

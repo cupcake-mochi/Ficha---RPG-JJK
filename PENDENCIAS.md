@@ -2809,6 +2809,12 @@ nome, do tempo em que a versão era 0.258 e saía `M-0258`; com a versão em 1.0
 como é escrita, `Nº M-1.0-KAOR` (uma limpeza no `monta.py`, com a diferença contada no comparador e a checagem no
 `conferir-ficha-xlsx.py`). O `M` do número eu não mexi.*
 
-**A pasta `ficha-invocacao/` antiga.** *Perguntei se apagava ou guardava, e ele respondeu "pode atualizar". Não ficou claro
-o que atualizar numa pasta que a aba nova substituiu, e perguntei de novo antes de mexer.*
+**A pasta `ficha-invocacao/` antiga: apagada em 08/10/2026.** *Perguntei se apagava ou guardava, ele respondeu "pode atualizar", perguntei
+de novo e ele disse: "é pra apagar kkk". Saíram a pasta (a planilha solta, o `constroi.py`, o `monta.py`, a `gramatica.py`,
+a `previa.py` e quatro scripts de conserto), os três validadores dela (`conferir-invocacao.py`, `regressao-invocacao.py` e
+`arnes-invocacao.py`) e os dois arquivos que só eles liam: o `invocacao.json` e o `capitulo-16-invocacoes.md`. A bateria
+passa de vinte e dois para **dezenove** validadores. O `conferir-ficha-xlsx.py` deixou de abrir a planilha solta para
+saber o nome das abas dela; o C1 do `decisoes-ficha.json` aponta a aba `INVOCAÇÕES` como a ficha da invocação, e o
+`conferir-decisoes.py` cobra isso e que a pasta não exista. O `HANDOFF-sessao-invocacoes.md`, de setembro, ficou: é
+histórico. Tudo continua no git, do commit `0b3339c` para trás.*
 

@@ -108,9 +108,8 @@ print("\nA LARGURA DAS ABAS DE PC")
 # as abas de PC saem da decisão C6, e não de uma lista escrita aqui:
 # a TÉCNICA saiu da ficha e esta linha envelheceu junto
 # 14/09/2026: cada aba com a largura dela, e não a da MESA; as ocultas ficam de fora,
-# porque ninguém as vê. As da invocação têm gerador e validador próprios, e o nome
-# delas sai do arquivo que aquele gerador escreve.
-_INV = set(load_workbook("ficha-invocacao/ficha-invocacao.xlsx").sheetnames) - {"DADOS"}
+# porque ninguém as vê. 07/10/2026: a ficha de invocação solta (ficha-invocacao/) foi apagada, a pedido do Mizuki; as
+# abas dela já não estavam na ficha desde 01/10, e a aba INVOCAÇÕES de hoje tem a largura decidida mais abaixo.
 _LIMPA = json.load(open("ficha-v01/layout.json", encoding="utf-8"))["_meta"].get("largura_limpa")
 def _px_col(w):
     """a conta do Sheets, a mesma do emissor: pixel = 8 x largura - 1 (medidas/larguras-sheets.json),
@@ -124,9 +123,6 @@ for aba in [a for a in DEC["C6_documento"]["abas"]
     # 01/10/2026: a coluna de um grupo fechado (o painel de XP da FICHA PESSOAL) não ocupa tela
     n = sum(1 for c in range(1, 60) if L(c) in wb[aba].column_dimensions and not wb[aba].column_dimensions[L(c)].hidden)
     px = n * _px_col(larg)
-    if aba in _INV:
-        print(f"  [--] {aba}: {n} colunas ≈ {px:.0f} px — aba da invocação, fica com o conferir-invocacao.py")
-        continue
     # 01/10/2026: a FICHA AMALDIÇOADA é mais larga que o notebook, por decisão do Mizuki ("dar mais colunas a pagina"), e
     # as colunas dela não têm todas a mesma largura. A largura dela é a soma de cada coluna, e tem de ser a decidida.
     _fora = DEC["C6_documento"].get("largura_fora_do_notebook", {}).get(aba)

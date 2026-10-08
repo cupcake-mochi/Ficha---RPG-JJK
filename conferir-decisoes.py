@@ -178,8 +178,10 @@ checa("o C1 declara o estado de hoje dos tres motivos dele",
       not faltando_mh, "falta declarar: " + str(faltando_mh))
 checa("o C1 registra que a decisao de voltar ao menu e do Mizuki",
       "Mizuki" in mh.get("estado", ""))
+# 07/10/2026: a ficha da invocacao e a aba INVOCACOES da propria ficha; a planilha solta foi apagada
 checa("o C1 aponta a ficha da invocacao como fechada",
-      "ficha-invocacao" in mh.get("ficha_da_invocacao", ""))
+      mh.get("ficha_da_invocacao", "").startswith("FECHADA") and "ficha_invocacoes.py" in mh.get("ficha_da_invocacao", "")
+      and not os.path.exists("ficha-invocacao"))
 checa("o C1 registra o Incursor no menu",
       "Incursor" in c1["caminhos_no_menu"] and "Incursor" in c1.get("incursor", ""))
 
