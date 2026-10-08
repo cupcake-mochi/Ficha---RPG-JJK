@@ -1681,7 +1681,6 @@ def aba(layout, tr):
         "condicional_gs": condicional,
         # nenhuma fórmula desta aba é travada: quase todas moram em linha de grupo, e trava em linha de grupo faz o
         # Sheets avisar quem clica no + (o achado do painel de XP da FICHA PESSOAL)
-        "protegidas": [],
         # a caixa que espelha a CARTEIRA: quem escreve por cima dela recebe a conta de volta com o aviso de escrever lá
         "da_carteira": [G["nome_tecnica"]],
         "copias": copia,

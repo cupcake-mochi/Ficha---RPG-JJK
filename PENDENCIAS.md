@@ -2651,11 +2651,11 @@ o Incursor no menu, a carga acima do limite, as cartas de Habilidades ("cabe sim
 
 | o que ele disse | o que mudou |
 |---|---|
-| *"1.3: Parou de funcionar, os links da ficha amaldiçoada também"* (a lista do conjunto e os saltos da linha 7 não levam a lugar nenhum) | **a causa: o `acabar()` não tinha sido rodado.** O registro do `continuar()`, que ele mandou depois, termina em `AS ABAS ESTÃO DE PÉ em 304s, MAS FALTA O ACABAMENTO: rode a função acabar()`; sem o acabamento a ficha fica sem saltos e sem a trava de aviso, que ele também não viu ao escrever por cima da perícia. Ele rodou o `acabar()` (166 s: 10 saltos, 12 ligações da lista, 70 travas) e disse: "funciona certinho". Mesmo assim mudou, porque um acabamento cortado no meio das travas daria no mesmo: **as travas são a última etapa**, depois dos saltos e da caixa da paleta; o acabamento do `construir()` não as começa se a execução já passou de 190 s (`TETO_DAS_TRAVAS_`; as travas levaram 148,2 s no `acabar()` dele, contra 81 e 83 s de antes), e o registro termina em `FALTAM AS TRAVAS DO ACABAMENTO: rode a função acabar()`; o `acabar()` as faz sempre. **E um defeito meu, achado na conferência:** o `onEdit` da `INVOCAÇÕES` religava a lista com vírgula entre os argumentos do `HYPERLINK`, e a planilha vive em português, onde a vírgula não vale; quem escrevesse por cima de uma linha da lista ficava com as doze em erro. O `ligarSaltosDe_` escolhe o separador pelo idioma da planilha, e a `regressao-construir.js` ganhou o teste que faltava (não havia nenhum do religamento) |
+| *"1.3: Parou de funcionar, os links da ficha amaldiçoada também"* (a lista do conjunto e os saltos da linha 7 não levam a lugar nenhum) | **a causa: o `acabar()` não tinha sido rodado.** O registro do `continuar()`, que ele mandou depois, termina em `AS ABAS ESTÃO DE PÉ em 304s, MAS FALTA O ACABAMENTO: rode a função acabar()`; sem o acabamento a ficha fica sem saltos e sem a trava de aviso, que ele também não viu ao escrever por cima da perícia. Ele rodou o `acabar()` (166 s: 10 saltos, 12 ligações da lista, 70 travas) e disse: "funciona certinho". Mesmo assim mudou, porque um acabamento cortado no meio das travas daria no mesmo: **as travas são a última etapa**, depois dos saltos e da caixa da paleta; o acabamento do `construir()` não as começava se a execução já tivesse passado de 190 s (as travas levaram 148,2 s no `acabar()` dele, contra 81 e 83 s de antes). Isto valeu por uma etapa: as travas saíram na quarta, abaixo. **E um defeito meu, achado na conferência:** o `onEdit` da `INVOCAÇÕES` religava a lista com vírgula entre os argumentos do `HYPERLINK`, e a planilha vive em português, onde a vírgula não vale; quem escrevesse por cima de uma linha da lista ficava com as doze em erro. O `ligarSaltosDe_` escolhe o separador pelo idioma da planilha, e a `regressao-construir.js` ganhou o teste que faltava (não havia nenhum do religamento) |
 | *"1.4: seria bom ao preencher a vida máxima, a vida atual preencher tbm, na criação da ficha, pq a vida atual fica com nada mesmo após criação da invocação"* | a `VIDA ATUAL` nasce apontando para a conta nova `vida0` da `DADOS_INVOC` (a máxima, quando a ficha tem nome; em branco na ficha vazia). É caixa livre (`livres`, no `ABAS`): o jogador escreve por cima, a caixa de ± grava o número, e enquanto ninguém mexe ela acompanha a máxima |
 | *"1.7: Recomendo tirar o aviso de clicks, pode vir a incomodar o jogador"* | nada: perguntei de qual aviso ele falava (o script não mostra nenhum durante a troca de tema desde 25/09), e ele respondeu *"Achei q avisava, erro meu"* |
 | *"2.2: a gente precisa mexer nessa penalidade, ideal é ser só a desvantagem no ataque e metade do deslocamento, mas tem q mexer no livro tbm, ja pode atualizar na ficha"* (a arma empunhada sem a Força) | a `DEFESA` da `FICHA` deixa de perder a Destreza; o deslocamento continua caindo pela metade; a desvantagem, que não é número, está na nota do requisito de Força (`FICHA PESSOAL`) e na nota do CORPO A CORPO e do À DISTÂNCIA. A regra mora no `fora_do_livro` do arquivo de dados (`arma_sem_a_forca`), com a frase que o livro ainda traz; o `conferir-catalogo.py` acende no dia em que o livro mudar. **O livro continua com a frase antiga: mudar lá é dele** |
-| *"6: Escrevi por cima da pericia e n corrigiu. Esses de codigo ideal só impedir de poder modificar. Mas por exemplo, na ficha amaldiçoada q n leva codigo na celula, ele funciona certinho"* | o Sheets não impede o dono da planilha de escrever numa célula (a trava só avisa), e cada jogador é dono da cópia dele. O que dá é devolver a conta na hora, e agora **toda caixa calculada volta, em toda aba** (`devolverConta_`): `FICHA`, `CARTEIRA`, `FICHA PESSOAL` (em grupo ou não), além das duas que já voltavam. A fórmula de fábrica está no `ABAS` em inglês; a `formulaNoIdioma_` a escreve na pontuação do português (ponto e vírgula no argumento, vírgula no número, barra invertida na matriz, o que está entre aspas intacto). Se mesmo assim a caixa mostrar `#ERROR!`, o script a grava como o `construir()` grava, com a planilha em inglês por um instante. Ficam de fora as caixas livres: vida, energia e integridade da `FICHA`, o Volume de um item e a foto da `FICHA PESSOAL`, a vida atual de uma invocação. **As travas de aviso ficaram**, até ele dizer se a devolução funciona no Sheets de verdade: a pontuação do português eu não tenho como testar aqui, e o Sheets de mentira só sabe o que o projeto já viu. Se funcionar, as travas podem sair, e a montagem fica uns 80 s mais curta |
+| *"6: Escrevi por cima da pericia e n corrigiu. Esses de codigo ideal só impedir de poder modificar. Mas por exemplo, na ficha amaldiçoada q n leva codigo na celula, ele funciona certinho"* | o Sheets não impede o dono da planilha de escrever numa célula (a trava só avisa), e cada jogador é dono da cópia dele. O que dá é devolver a conta na hora, e agora **toda caixa calculada volta, em toda aba** (`devolverConta_`): `FICHA`, `CARTEIRA`, `FICHA PESSOAL` (em grupo ou não), além das duas que já voltavam. A fórmula de fábrica está no `ABAS` em inglês; a `formulaNoIdioma_` a escreve na pontuação do português (ponto e vírgula no argumento, vírgula no número, barra invertida na matriz, o que está entre aspas intacto). Se mesmo assim a caixa mostrar `#ERROR!`, o script a grava como o `construir()` grava, com a planilha em inglês por um instante. Ficam de fora as caixas livres: vida, energia e integridade da `FICHA`, o Volume de um item e a foto da `FICHA PESSOAL`, a vida atual de uma invocação. As travas de aviso ficaram nesta etapa, até ele testar a devolução no Sheets de verdade; ele testou, e elas saíram na quarta etapa, abaixo |
 | *"de resto pode aplicar tbm oq vc falou q falta"*: o livro | o `manual.txt` saiu do livro de hoje (v0.340 do `JJK---Project`, hash `bbaf760b…`, baixado do GitHub para a área de rascunho, porque o clone do disco é de 03/10). Três mudanças: o nome (**Ciclo Maldito** em todo o texto), a **D44** (a Execução Preparada da Vanguarda impõe −2, e a carta de nível 7 diz) e a **D43** (*"Condição, Prende e Cerca sempre pedem TR ... Numa ficha de ataque, o acerto aplica o dano e as outras peças; depois, cada alvo acertado faz o TR registrado"*). Pela D43: o texto das três peças no arquivo de dados é o do livro novo; a carta de feitiço de ataque com uma delas diz **`Acerto + TR`** (coluna nova `peça que pede TR` na `DADOS_AM`); a carta de habilidade da invocação diz `Ataque +4 · TR CD 12`; o exemplo `Peso nas Mãos` do `extrair_tecnica.py` usa a frase nova |
 | *"de resto pode aplicar tbm oq vc falou q falta"*: o arnês | `arnes-invocacoes.py`, 26 defeitos plantados no gerador (os números da ficha, a entrada e o retorno, o conjunto, a vida que nasce cheia, o inventário, as cartas, a D43) contra a `regressao-invocacoes.py`, e um contra-teste. Roda à mão, como o da Amaldiçoada |
 
@@ -2724,3 +2724,46 @@ devolução da conta na pontuação do português é a parte que só o teste del
 - **Testar a devolução da conta:** *escrever por cima do total de uma perícia da `FICHA`, de uma caixa da `CARTEIRA` e de
   uma da `FICHA PESSOAL`. Tem de voltar sozinha, com um aviso, e não pode ficar `#ERROR!`.*
 - **Mudar o livro** *na regra da arma sem a Força, e decidir o que entra da revisão.*
+
+#### A quarta etapa (07/10/2026, à noite): ele testou a terceira no Sheets, e as travas de aviso saíram
+
+*Ele colou os quatro arquivos, montou e mandou o resultado dos seis testes:*
+
+| teste | o que ele viu |
+|---|---|
+| a devolução da conta | *"Passou nas três abas, com aviso no canto. Nenhuma ficou em #ERROR!."* |
+| a invocação nova | *"Vida começou cheia: 8/8."* |
+| a arma sem a Força | *"Bō exigindo 3, personagem com 0: Defesa continuou 11; deslocamento 9 → 4,5 m."* |
+| Condição, Prende e Cerca | *"As três cartas mostraram 'Acerto + TR'."* |
+| as Habilidades | *"'Cinco níveis', 'Quatro níveis' e Execução Preparada com −2 conferidos."* |
+| os links | *"Lista de invocações e saltos da Amaldiçoada funcionando; cliquei e confirmei os destinos."* |
+
+**A pontuação do português funciona no Sheets de verdade:** *a `formulaNoIdioma_` escreve a fórmula de fábrica com ponto e
+vírgula, vírgula no número e barra invertida na matriz, e nenhuma caixa ficou em `#ERROR!`. Era a parte que só o teste
+dele confirmava.*
+
+**As travas de aviso saíram.** *Com a conta voltando sozinha, a trava virou um segundo aviso para a mesma coisa, e era a
+etapa mais lenta da montagem (81, 83 e 148,2 s nas três medidas dele). O `protegerFormulas_` saiu do `Codigo.gs`; no
+lugar dele o acabamento tem o `tirarTravasDeFormula_`, que só tira as travas de uma ficha montada antes (pela
+descrição `fórmula · ...`) e deixa as que o jogador ou o mestre criaram. A `FICHA PESSOAL` não declara mais faixas
+travadas (`protegidas` saiu do `ABAS`); declara as `livres`. Sem as travas o acabamento levou 17,4 s no registro dele, e
+o teto da montagem sobe de 250 para 300 s; o `TETO_DAS_TRAVAS_` e o recado `FALTAM AS TRAVAS` da terceira etapa saíram.*
+
+**O que a trava fazia e a devolução não faz**, *para ele saber: a conta só volta quando o `onEdit` enxerga a edição na
+própria caixa. Recortar uma caixa calculada e colar noutro lugar esvazia a origem sem avisar o script (o evento é o do
+destino), e inserir ou apagar linha não gera evento nenhum. A trava de aviso também não impedia nenhum dos dois.*
+
+**Conferido na quarta etapa:** *a `regressao-construir.js` ganhou o teste que escreve por cima de cada conta, uma a uma (433
+da `FICHA`, 9 da `CARTEIRA`, 286 da `FICHA PESSOAL`), e todas voltam; o teste do `acabar()` numa ficha com três travas
+de antes e uma do mestre; e saíram os que cobravam a trava. O `arnes-pessoal.py` trocou as perturbações das travas
+pelas da devolução. O `arnes-invocacoes.py` rodou inteiro: 23 dos 26 defeitos acenderam de primeira e três passaram
+calados, por lacuna de teste, e não por defeito da ficha: a linha da CONTA das cartas sorteadas não era conferida (a
+devolução sem o teto de 2 × Classe e a devolução além do gasto), e o único teste do TR usava Cego e Prende juntos. A
+`regressao-invocacoes.py` confere agora a conta de 114 cartas sorteadas e o TR das cartas de ataque, e ganhou os casos
+`Laço` (só Prende) e `Garra` (Toque com duas Restrições Médias, que passa do teto); replantados, os três acendem.*
+*A bateria inteira rodou até o fim com a ficha sem travas: vinte e um dos vinte e dois passaram, e a `regressao-paleta.js`
+também. O vigésimo segundo era de novo o `arnes-pessoal.py`, com três defeitos plantados que citavam o que saiu com as
+travas (dois da função que juntava as fórmulas em faixas, e o teto da montagem, que mudou de número); os dois primeiros
+saíram, o terceiro foi acertado, e ele passa: 78 perturbações acendem a checagem certa. Esta etapa não rodou no Sheets
+de verdade: falta ele montar a versão sem travas.*
+

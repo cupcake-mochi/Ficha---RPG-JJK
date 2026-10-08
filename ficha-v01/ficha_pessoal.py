@@ -986,29 +986,8 @@ def aba(layout, tr):
     ]
     # as fórmulas que o jogador não deve apagar sem querer, em faixas (uma trava por célula levaria minutos);
     # o Vol. dos itens fica de fora, porque ele pode ser digitado por cima
-    def linhas_de(coords):
-        """as células de uma coluna em faixas contínuas"""
-        por = {}
-        for c in coords:
-            l, k = ix._lc(c)
-            por.setdefault(k, []).append(l)
-        out = []
-        for k, ls in sorted(por.items()):
-            ls.sort()
-            ini = ant = ls[0]
-            for l in ls[1:] + [None]:
-                if l is None or l != ant + 1:
-                    out.append(f"{_a1(k, ini)}:{_a1(k, ant)}")
-                    ini = l
-                ant = l if l is not None else ant
-        return out
-    # A trava é só aviso, e mesmo assim o Sheets a mostra para quem abre ou fecha um grupo que tenha célula travada
-    # dentro ("Pense bem! Você está tentando editar uma parte da página que não deve ser alterada"). O Mizuki achou
-    # isso no botão do painel de XP, em 01/10/2026: ninguém deve ser avisado por clicar no +. Por isso as fórmulas
-    # que moram nas colunas ou nas linhas de um grupo ficam sem trava.
-    em_grupo = lambda c: (ix._lc(c)[1] >= PAINEL_INI or G["treino_ini"] <= ix._lc(c)[0] <= G["treino_fim"])
-    formulas = [c for c, (v, _) in f.cel.items() if isinstance(v, str) and v.startswith("=") and c not in livres
-                and ix._lc(c)[0] > 7 and not em_grupo(c)]
+    # 07/10/2026: a aba não declara mais faixas travadas. As travas de aviso saíram da ficha (ver LIVRES_DA_TRAVA, no
+    # Codigo.gs): a conta em que alguém escreve por cima volta sozinha, em grupo ou não, e só as `livres` ficam.
     return {
         "nome": NOME, "estado": "visible", "linhas": L_FIM, "colunas": PAINEL_FIM,
         # a folha na largura da FICHA; no painel, cada coluna na largura dela (pixel = 8 x largura - 1, a conta do Sheets)
@@ -1024,7 +1003,6 @@ def aba(layout, tr):
         "grupos": {"linhas": [[G["treino_ini"], G["treino_fim"], False]],
                    "colunas": [[PAINEL_INI, PAINEL_FIM, True], [EXT_INI, PAINEL_FIM, True]]},
         "condicional_gs": condicional,
-        "protegidas": linhas_de(formulas),
         # 07/10/2026: as caixas que nascem com conta e o jogador escreve por cima (a foto e o Volume de cada item). O
         # devolverConta_ do Codigo.gs devolve a conta de todas as outras, em grupo ou não
         "livres": sorted(livres),

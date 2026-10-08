@@ -250,20 +250,24 @@ function notasDeRegra_(ss, idx) {
 }
 
 /**
- * O jogador não apaga fórmula sem querer. Avisa, não bloqueia: o mestre precisa poder mexer.
+ * As caixas da FICHA que nascem com conta e são do jogador: a vida, a energia e a integridade de agora (decisão A4).
+ * Quem escreve por cima delas fica com o que escreveu; toda outra conta volta (devolverConta_).
  *
- * 17/09/2026: a lista de campos virou varredura, a pedido do Mizuki, porque o resultado das perícias,
- * dos ofícios e dos Testes de Resistência e o cabeçalho dos Feitiços ficavam de fora, e cada caixa
- * nova pedia lembrar de pôr o nome aqui. Toda fórmula da FICHA e da CARTEIRA é travada, menos as três
- * barras de agora, que a decisão A4 deixa editáveis. Rodar de novo troca as travas, não duplica.
+ * 07/10/2026: AS TRAVAS DE AVISO SAÍRAM. Até aqui toda fórmula da FICHA, da CARTEIRA e da FICHA PESSOAL nascia com
+ * uma trava que só avisava ("você está tentando editar...") e deixava escrever, e a conta sumia. O Mizuki escreveu por
+ * cima de uma perícia e pediu que a ficha impedisse ("Esses de codigo ideal só impedir de poder modificar"). O Sheets
+ * não impede o dono da planilha, e cada jogador é dono da cópia dele; o que a ficha faz desde então é devolver a conta
+ * na hora, em toda aba. Ele testou no Sheets ("Passou nas três abas, com aviso no canto. Nenhuma ficou em #ERROR!"), e
+ * a trava virou um segundo aviso para a mesma coisa. Era também a etapa mais lenta da montagem: 81, 83 e 148 s nas
+ * três medidas dele.
  */
 var LIVRES_DA_TRAVA = ['vida', 'energia', 'integridade'];
 
 /**
  * O Spreadsheet Service falha de vez em quando no meio de um construir() longo -- "Service
  * Spreadsheet failed", erro transitório do Google por causa da fila de operações, não do código.
- * 17/09/2026, achado do Mizuki: quebrou bem na protegerFormulas_, que é a mais pesada (uma
- * chamada por célula de fórmula). Tenta de novo com uma pausa curta antes de desistir.
+ * 17/09/2026, achado do Mizuki: quebrou bem na etapa das travas, que era a mais pesada. Tenta de novo com uma pausa
+ * curta antes de desistir.
  */
 function _comRetentativa_(fn, tentativas) {
   tentativas = tentativas || 4;
@@ -278,82 +282,20 @@ function _comRetentativa_(fn, tentativas) {
 }
 
 /**
- * As células em faixas: as vizinhas na mesma coluna viram uma faixa, e as faixas de mesma altura em colunas
- * coladas viram um retângulo. Sem planilha em volta. Recebe [[linha, coluna], ...] e devolve ['D5', 'F7:F12', ...].
- * As faixas cobrem exatamente as células recebidas, nem uma a mais.
+ * Tira as travas de fórmula de uma ficha montada antes de 07/10/2026 (as que este script criava, pela descrição
+ * "fórmula · ..."). Numa ficha montada do zero não há nenhuma, e a etapa custa uma ida ao servidor por aba. Trava
+ * que o jogador ou o mestre criou por conta própria fica.
  */
-function faixasDeCelulas_(celulas) {
-  var porColuna = {}, corridas = [], faixas = [];
-  celulas.forEach(function (x) { (porColuna[x[1]] = porColuna[x[1]] || []).push(x[0]); });
-  Object.keys(porColuna).forEach(function (c) {
-    var v = porColuna[c].sort(function (a, b) { return a - b; }), i = 0;
-    while (i < v.length) {
-      var j = i;
-      while (j + 1 < v.length && v[j + 1] === v[j] + 1) j++;
-      corridas.push([v[i], Number(c), v[j], Number(c)]);
-      i = j + 1;
-    }
-  });
-  corridas.sort(function (a, b) { return a[0] - b[0] || a[2] - b[2] || a[1] - b[1]; });
-  corridas.forEach(function (r) {
-    for (var k = 0; k < faixas.length; k++) {
-      if (faixas[k][0] === r[0] && faixas[k][2] === r[2] && faixas[k][3] === r[1] - 1) { faixas[k][3] = r[3]; return; }
-    }
-    faixas.push(r.slice());
-  });
-  return faixas.map(function (f) {
-    return a1_(f[0], f[1]) + (f[0] === f[2] && f[1] === f[3] ? '' : ':' + a1_(f[2], f[3]));
-  });
-}
-
-function protegerFormulas_(ss, idx) {
-  SpreadsheetApp.flush();                        // esvazia a fila antes de começar a pesada
-  var livres = LIVRES_DA_TRAVA.map(function (k) { return cel_(idx, k); });
-  var n = 0, travas = 0;
-  var semAsVelhas = function (aba) {
+function tirarTravasDeFormula_(ss) {
+  var n = 0;
+  ss.getSheets().forEach(function (aba) {
     _comRetentativa_(function () {
       aba.getProtections(SpreadsheetApp.ProtectionType.RANGE).forEach(function (p) {
-        if (p.getDescription().indexOf('fórmula · ') === 0) p.remove();
+        if (String(p.getDescription()).indexOf('fórmula · ') === 0) { p.remove(); n++; }
       });
     });
-  };
-  var travar = function (aba, nome, a1) {
-    _comRetentativa_(function () {
-      var p = aba.getRange(a1).protect();
-      p.setDescription('fórmula · ' + nome + '!' + a1);
-      p.setWarningOnly(true);
-    });
-    travas++;
-  };
-  // 01/10/2026: uma trava por FAIXA de fórmulas vizinhas, e não mais uma por célula. Cada trava são três idas ao
-  // servidor, e com 94 fórmulas na FICHA e na CARTEIRA essa era a etapa mais lenta do construir(). As células
-  // travadas são as mesmas: as faixas cobrem as fórmulas, e nada além delas.
-  ['FICHA', 'CARTEIRA'].forEach(function (nome) {
-    var aba = ss.getSheetByName(nome);
-    if (!aba) return;
-    semAsVelhas(aba);
-    var celulas = [];
-    aba.getDataRange().getFormulas().forEach(function (linha, i) {
-      // 02/10/2026: o menu rápido da FICHA mora em linha de grupo, e trava em linha de grupo faz o Sheets avisar quem
-      // clica no +; quem escreve por cima dele recebe a conta de volta pelo onEdit
-      if (linhaSemTrava_(nome, i + 1)) return;
-      linha.forEach(function (formula, j) {
-        if (!formula) return;
-        if (nome === 'FICHA' && livres.indexOf(a1_(i + 1, j + 1)) >= 0) return;
-        celulas.push([i + 1, j + 1]);
-      });
-    });
-    faixasDeCelulas_(celulas).forEach(function (a1) { travar(aba, nome, a1); });
-    n += celulas.length;
   });
-  // A aba que nasce no gerador (a FICHA PESSOAL) declara as faixas de fórmula dela no ABAS.
-  ABAS.forEach(function (spec) {
-    var aba = ss.getSheetByName(spec.nome);
-    if (!aba || !(spec.protegidas || []).length) return;
-    semAsVelhas(aba);
-    spec.protegidas.forEach(function (a1) { travar(aba, spec.nome, a1); n++; });
-  });
-  return n + ' célula(s) e faixa(s), em ' + travas + ' trava(s)';
+  return n ? n + ' trava(s) de antes retirada(s)' : 'nenhuma, e a conta volta pelo onEdit';
 }
 
 // =====================================================================

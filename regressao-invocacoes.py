@@ -182,8 +182,15 @@ def regra_da_carta(F, tipo, num, c):
         dano = f"Cura {d}d8"
     else:
         dano = f"{d}d8{td}" + (f" · +{dep}d8" if dep else "")
+    # 07/10/2026, pelo arnes-invocacoes.py: a linha da CONTA não era conferida nas sorteadas, e a devolução sem o teto de
+    # 2 × Classe, ou somada além do gasto, passava calada (o dano da carta sai de outra coluna, que refaz a conta)
+    dv = min(dev, 2 * C)
+    conta = None if C == 0 else (f"{PONTOS[C]} − {gasto} + {usa} = {saldo} · teto {4 * C}d8" + (f" · a Forma devolve {C}" if forma["embutida"] else "")
+                                 + (f" · perde {dv - usa}" if dv > usa else ""))
+    # a D43 do livro: Condição, Prende e Cerca só entram na falha de um TR, mesmo numa habilidade de ataque
+    pede_tr = any(m in CAT["condicoes"] or m in ("Prende", "Cerca") for m in mel)
     return {"C": C, "saldo": saldo, "erro": bool(erros), "erros": erros, "dano": dano, "pe": "Sem PE" if C == 0 else f"{3 * C} PE",
-            "reduzida": C > 0 and any(m in REDUZIDAS for m in mel)}
+            "reduzida": C > 0 and any(m in REDUZIDAS for m in mel), "conta": conta, "pede_tr": pede_tr}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -354,7 +361,10 @@ monta("recusa", 2, com(CAO, pts=[4, 2, 2, 1, 0], fam=["Mira", None, "Mira", "Con
                        cartas={("bas", 0): {"nome": "Mordida", "forma": "Toque", "mel": ["Fura"]},
                                ("esp", 0): {"nome": "Sopro", "classe": 1, "forma": "Cone", "mel": ["Guarda", "Lento"]},
                                ("esp", 1): {"nome": "Cedo demais", "classe": 1, "forma": "Projétil"},
-                               ("ext", 0): {"nome": "Estouro", "classe": 1, "forma": "Projétil", "mel": ["Cego", "Prende"]}}))
+                               ("ext", 0): {"nome": "Estouro", "classe": 1, "forma": "Projétil", "mel": ["Cego", "Prende"]},
+                               ("ext", 1): {"nome": "Laço", "classe": 1, "forma": "Projétil", "mel": ["Prende"]},
+                               # o Toque já traz uma devolução Média, e com mais duas a soma (3) passa do teto de 2 × Classe
+                               ("ext", 2): {"nome": "Garra", "classe": 1, "forma": "Toque", "mel": ["Fura"], "res": ["Sangra", "Sem Volta"]}}))
 monta("quatro famílias", 5, com(CAO, fam=["Mira", None, "Alcance", "Controle", "Castigo"]))
 monta("quatro famílias, Parceria", 5, com(CAO, fam=["Mira", None, "Alcance", "Controle", "Castigo"]), trilha=fi.PARCERIA)
 monta("Múltiplas", 5, CAO, trilha=fi.MULTIPLAS, sozinha=True)
@@ -444,9 +454,16 @@ checa("Mordida precisa: 2 − 1 + 1 = 2d8, ataque +6 com a Precisão, 3 PE, a 1,
       (c["dano"], c["resolve"], c["pe"], c["estado"], c["alcance"]) == ("2d8 Perfurante", "Ataque +6", "3 PE", "Na regra", "1,5 m, um alvo") and c["conta"].startswith("2 − 1 + 1 = 2"), str(c))
 checa("a Precisão custa 1 mesmo com a Mira Livre, pelo preço mínimo", c["preco"][0] == "−1 · Leve · Livre", str(c["preco"]))
 # 07/10/2026, a D43 do livro: Condição, Prende e Cerca só entram na falha de um TR, mesmo numa habilidade de ataque
-_c = carta("recusa", "ext", 0)
-checa("o ataque com Condição ou Prende mostra também o TR e a CD dela (Estouro: Projétil com Cego e Prende); sem essas peças, só o ataque",
-      re.fullmatch(r"Ataque [+−-]\d+ · TR CD \d+", _c["resolve"] or "") is not None and " · TR" not in c["resolve"], f'{_c["resolve"]} | {c["resolve"]}')
+_c, _l = carta("recusa", "ext", 0), carta("recusa", "ext", 1)
+checa("o ataque com Condição ou Prende mostra também o TR e a CD dela (Estouro: Projétil com Cego e Prende; Laço: só com Prende); sem essas peças, só o ataque",
+      all(re.fullmatch(r"Ataque [+−-]\d+ · TR CD \d+", x["resolve"] or "") is not None for x in (_c, _l)) and " · TR" not in c["resolve"],
+      f'{_c["resolve"]} | {_l["resolve"]} | {c["resolve"]}')
+# pelo arnes-invocacoes.py: nenhuma carta sorteada tinha devolução acima do teto, e tirar o teto passava calado
+_k = CASOS["recusa"]
+_rg = regra_da_carta(regra_da_ficha(_k["nivel"], _k["usa"], _k["ess"], _k["inte"], _k["trilha"], _k["ficha"]), "ext", 2, _k["ficha"]["cartas"][("ext", 2)])
+_lg = carta("recusa", "ext", 2)
+checa("a devolução para em 2 × Classe: o Toque com duas Restrições Médias na Classe 1 devolveria 3, e a conta trabalha com 2",
+      _lg["conta"] == _rg["conta"] and str(_rg["conta"]).endswith(" · a Forma devolve 1 · perde 1"), f'{_lg["conta"]} | {_rg["conta"]}')
 v = le("cão 4")
 checa("no nível 4 o cão tem 22 de vida e um segundo espaço de especial", v(G["stat"][3]) == 22 and "2 espaços de especial" in v(G["hab"]), f'{v(G["stat"][3])} | {v(G["hab"])}')
 v = le("cão 5")
@@ -553,7 +570,7 @@ checa("quatro Famílias sem Trilha: acende; com Parceria, não", le("quatro fam�
       le("quatro famílias, Parceria")(G["fam_rot"]) == "FAMÍLIAS · 4 ABERTAS", f'{le("quatro famílias")(G["fam_rot"])} | {le("quatro famílias, Parceria")(G["fam_rot"])}')
 
 print("\n4. AS FICHAS SORTEADAS")
-dif, cartas_vistas, com_erro = [], 0, 0
+dif, cartas_vistas, com_erro, contas_vistas, ataques_vistos, com_tr = [], 0, 0, 0, 0, 0
 for nome in SORTEADAS:
     caso, v = CASOS[nome], le(nome)
     f = caso["ficha"]
@@ -574,8 +591,19 @@ for nome in SORTEADAS:
         com_erro += r["erro"]
         if lc["dano"] != r["dano"] or lc["pe"] != r["pe"] or (fi.T_ERRO in str(lc["estado"])) != r["erro"] or ("pela Classe" in str(lc["avisos"])) != r["reduzida"]:
             dif.append(f"{nome} {tipo}{n} {c}: a planilha diz {lc['dano']!r}, {lc['pe']!r}, {lc['estado']!r} ({lc['avisos']!r}); a regra, {r['dano']!r}, {r['pe']!r}, erros {r['erros']}")
-checa(f"{len(SORTEADAS)} fichas sorteadas: os números de cada uma e as {cartas_vistas} cartas ({com_erro} fora da regra) batem com a regra escrita aqui",
-      not dif and cartas_vistas > 100 and 20 < com_erro < cartas_vistas - 20, " || ".join(dif[:4]) or f"{cartas_vistas} cartas, {com_erro} com erro")
+        if r["conta"] is not None and lc["conta"] != r["conta"]:
+            dif.append(f"{nome} {tipo}{n} {c}: a CONTA da planilha é {lc['conta']!r}; a regra, {r['conta']!r}")
+            contas_vistas -= 1
+        contas_vistas += r["conta"] is not None
+        if str(lc["resolve"]).startswith("Ataque"):
+            ataques_vistos += 1
+            com_tr += r["pede_tr"]
+            if (" · TR" in str(lc["resolve"])) != r["pede_tr"]:
+                dif.append(f"{nome} {tipo}{n} {c}: a carta de ataque diz {lc['resolve']!r}, e {'devia' if r['pede_tr'] else 'não devia'} pedir o TR")
+checa(f"{len(SORTEADAS)} fichas sorteadas: os números de cada uma e as {cartas_vistas} cartas ({com_erro} fora da regra) batem com a regra escrita aqui, "
+      f"a linha da conta de {contas_vistas} e o TR de {com_tr} das {ataques_vistos} de ataque inclusive",
+      not dif and cartas_vistas > 100 and 20 < com_erro < cartas_vistas - 20 and contas_vistas > 60 and ataques_vistos > 20 and 3 < com_tr < ataques_vistos,
+      " || ".join(dif[:4]) or f"{cartas_vistas} cartas, {com_erro} com erro, {contas_vistas} contas, {com_tr} de {ataques_vistos} ataques com TR")
 erros_de_formula = [(pl["casos"][0], aba_, cel, x) for pl in PLANILHAS for aba_ in (ABA, DIV) for cel, x in pl["v"][aba_].items()
                     if isinstance(x, str) and re.match(r"^(#[A-Z/0!?]+|Err:\d+)$", x)
                     and not (aba_ == ABA and cel in BARRAS)]     # a barra é uma SPARKLINE, que só o Sheets desenha

@@ -74,7 +74,7 @@ ok(`as ${totalF} fórmulas vão junto com os valores, numa gravação por aba: s
    `${CHAMADAS['Range.setFormulas'] || 0} chamadas de setFormulas, ${CHAMADAS['Range.setFormula'] || 0} de setFormula`);
 const reg = S.P.registros, ondeNo = (t) => reg.findIndex((l) => l.indexOf(t) >= 0);
 ok('todas as abas nascem antes de a primeira ser preenchida, e cada etapa vai para o registro na hora, com o tempo dela',
-   ondeNo('abas criadas') === 0 && ABAS.every((s, i) => ondeNo('· ' + s.nome + ' (') === i + 1) && ['menus', 'cor de estado', 'notas', 'travas', 'caixa da paleta'].every((t) => ondeNo('· ' + t + ' (') > ABAS.length)
+   ondeNo('abas criadas') === 0 && ABAS.every((s, i) => ondeNo('· ' + s.nome + ' (') === i + 1) && ['menus', 'cor de estado', 'notas', 'caixa da paleta', 'travas de antes'].every((t) => ondeNo('· ' + t + ' (') > ABAS.length)
    && /^FICHA PRONTA em \d+s · .* · tempos: abas criadas /.test(reg[reg.length - 1]), reg.map((l) => l.slice(0, 40)).join(' | ').slice(0, 400));
 ok('nenhuma fórmula é gravada antes de a aba que ela cita existir e ter o tamanho dela, nem com a planilha fora do inglês', !S.P.orfas.length,
    `${S.P.orfas.length}: ${S.P.orfas.slice(0, 3).join(' · ')}`);
@@ -130,26 +130,15 @@ ok('o painel de XP é um grupo de colunas fechado, com o botão antes dele', pro
    && A.fechC.some((g) => g[0] === painel[0] && g[1] === painel[1] && g[2] === 1) && A.posC === 'BEFORE', JSON.stringify(A.fechC));
 ok('a extensão é um grupo dentro do painel, e também nasce fechada', prof(A.profC, ext[0], ext[1]) === '2' && A.fechC.some((g) => g[0] === ext[0] && g[1] === ext[1] && g[2] === 2), JSON.stringify(A.fechC));
 ok('a extensão fecha antes do painel (de dentro para fora)', A.fechC.findIndex((g) => g[2] === 2) < A.fechC.findIndex((g) => g[2] === 1));
-ok(`as fórmulas da aba estão travadas em ${spec.protegidas.length} faixas, só com aviso`, A.prot.length === spec.protegidas.length && A.prot.every((p) => p.aviso && p.desc.indexOf('fórmula · ' + NOME + '!') === 0),
-   `${A.prot.length} travas`);
+// 07/10/2026: as travas de aviso saíram da ficha. A conta em que alguém escreve por cima volta pelo onEdit (mais abaixo)
+ok('nenhuma aba nasce com trava: a conta em que alguém escreve por cima volta sozinha', S.P.abas.every((a) => !a.prot.length) && ABAS.every((a) => !('protegidas' in a)),
+   S.P.abas.filter((a) => a.prot.length).map((a) => `${a.nome}: ${a.prot.length}`).join(', '));
 const F = S.acha('FICHA'), idx = S.ctx.indice();
-const travada = (a1) => F.prot.some((p) => p.a1 === a1 && p.aviso);
-ok('na FICHA, o XP e o EQUIPAMENTO são fórmula travada com aviso, e o EQUIPAMENTO não tem mais menu',
-   [idx['xp'], idx['equipamento']].every((a1) => { const p = partes(a1); return F.f.has(p.r + ',' + p.c) && travada(a1); })
+ok('na FICHA, o XP e o EQUIPAMENTO são conta, e o EQUIPAMENTO não tem mais menu',
+   [idx['xp'], idx['equipamento']].every((a1) => { const p = partes(a1); return F.f.has(p.r + ',' + p.c); })
    && !F.dv.has(partes(idx['equipamento']).r + ',' + partes(idx['equipamento']).c), `xp ${idx['xp']}, equipamento ${idx['equipamento']}`);
-ok('o nível da FICHA continua digitável: valor solto, sem trava', (() => { const p = partes(idx['nivel']); return !F.f.has(p.r + ',' + p.c) && !travada(idx['nivel']); })());
-// as travas por faixa cobrem as mesmas células que a trava por célula cobria: toda fórmula, e mais nada
+ok('o nível da FICHA continua digitável: valor solto', (() => { const p = partes(idx['nivel']); return !F.f.has(p.r + ',' + p.c); })());
 const idxLivres = ['vida', 'energia', 'integridade'].map((k) => idx[k]);
-const cobertura = (X) => { const m = new Map(); for (const p of X.prot) { const f = partes(p.a1); for (let i = f.r; i < f.r + f.nl; i++) for (let j = f.c; j < f.c + f.nc; j++) m.set(i + ',' + j, (m.get(i + ',' + j) || 0) + (p.aviso ? 1 : 100)); } return m; };
-for (const nomeT of ['FICHA', 'CARTEIRA']) {
-  const X = S.acha(nomeT), cob = cobertura(X), livres = nomeT === 'FICHA' ? idxLivres.map((a1) => { const p = partes(a1); return p.r + ',' + p.c; }) : [];
-  // 02/10/2026: as linhas do menu rápido da FICHA ficam fora da trava (moram em linha de grupo), e o onEdit devolve a conta
-  const semTrava = (ABAS.find((a) => a.nome === nomeT) || {}).sem_trava || [];
-  const devem = [...X.f.keys()].filter((k) => !livres.includes(k) && !semTrava.some(([a, b]) => +k.split(',')[0] >= a && +k.split(',')[0] <= b));
-  const faltam = devem.filter((k) => cob.get(k) !== 1), sobram = [...cob.keys()].filter((k) => !devem.includes(k));
-  ok(`${nomeT}: as ${devem.length} fórmulas estão travadas com aviso, uma vez cada, em ${X.prot.length} faixas, e nenhuma célula sem fórmula está travada`,
-     !faltam.length && !sobram.length && X.prot.length < devem.length && X.prot.every((p) => p.desc === 'fórmula · ' + nomeT + '!' + p.a1), `faltam ${faltam.slice(0, 4)}, sobram ${sobram.slice(0, 4)}, ${X.prot.length} travas`);
-}
 // a nota de cada caixa da FICHA mora no título quando a célula de cima é texto digitado, e na própria caixa quando não é
 const cabecaDe = (X, r, c) => { const m = X.merges.find((x) => r >= x[0] && r <= x[2] && c >= x[1] && c <= x[3]); return m ? [m[0], m[1]] : [r, c]; };
 const notasCertas = ['defesa', 'iniciativa', 'maestria', 'nivel', 'xp', 'equipamento', 'caminho', 'trilha', 'pontos disponíveis'].map((k) => {
@@ -251,10 +240,28 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   const comVirgula = (v) => v[2].replace(/"[^"]*"/g, '').includes(',');
   const naFicha = tenta('FICHA', (v, sp) => comVirgula(v) && !S.ctx.linhaSemTrava_('FICHA', v[0]));
   const naCarteira = tenta('CARTEIRA', comVirgula), naPessoal = tenta('FICHA PESSOAL', comVirgula);
-  const emGrupo = tenta('FICHA PESSOAL', (v, sp) => comVirgula(v) && !sp.protegidas.some((p) => { const m = /^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(p); return m && v[0] >= Number(m[2]) && v[0] <= Number(m[4] || m[2]); }));
+  const emGrupo = tenta('FICHA PESSOAL', (v, sp) => comVirgula(v) && (sp.grupos.col.some((g) => v[1] >= g[0] && v[1] <= g[1]) || sp.grupos.lin.some((g) => v[0] >= g[0] && v[0] <= g[1])));
   ok('escrever por cima de uma conta da FICHA, da CARTEIRA ou da FICHA PESSOAL (em grupo ou não) devolve a conta, na pontuação do português, com um aviso cada',
      !erroD && [naFicha, naCarteira, naPessoal, emGrupo].every((x) => x.voltou && x.avisos === 1 && x.t[2] !== F(x.t[2], 'pt_BR')) && !S.P.orfas.length,
      erroD ? erroD.message : [naFicha, naCarteira, naPessoal, emGrupo].map((x) => `${x.a1}: ${String(x.ficou).slice(0, 50)} (${x.avisos})`).join(' · ') + ' · ' + S.P.orfas.slice(0, 2).join(' · '));
+  // e não só uma de cada aba: TODA conta que não é livre volta. Era o que a trava cobria (toda fórmula, e mais nada)
+  const todas = {};
+  for (const nomeAba of ['FICHA', 'CARTEIRA', 'FICHA PESSOAL']) {
+    const sp = ABAS.find((a) => a.nome === nomeAba), Y = S.acha(nomeAba), livres = S.ctx.livresDaAba_(sp), aba = S.ss.getSheetByName(nomeAba);
+    const contas = sp.vals.filter((v) => typeof v[2] === 'string' && v[2][0] === '=' && !livres[letras(v[1]) + v[0]]);
+    const naoVoltou = [];
+    for (const v of contas) {
+      const a1 = letras(v[1]) + v[0];
+      try { aba.getRange(a1).setValue('rew'); S.ctx.onEdit(ed(nomeAba, a1, 'rew')); } catch (e) { erroD = e; }
+      const f = Y.f.get(v[0] + ',' + v[1]) || '';
+      // o salto e a ligação que o acabamento escreve por cima de uma referência voltam como a referência ou como a ligação
+      if (f !== F(v[2], 'pt_BR') && !(f.startsWith('=HYPERLINK(') && f.endsWith(v[2].slice(1) + ')'))) naoVoltou.push(a1);
+    }
+    todas[nomeAba] = { contas: contas.length, livres: Object.keys(livres).length, naoVoltou };
+  }
+  ok(`toda conta que não é livre volta: as ${todas['FICHA'].contas} da FICHA, as ${todas['CARTEIRA'].contas} da CARTEIRA e as ${todas['FICHA PESSOAL'].contas} da FICHA PESSOAL, uma a uma`,
+     !erroD && Object.values(todas).every((x) => x.contas > 5 && !x.naoVoltou.length) && todas['FICHA'].livres === 3 && !S.P.orfas.length,
+     erroD ? erroD.message : Object.entries(todas).map(([k, x]) => `${k}: ${x.naoVoltou.slice(0, 5).join(',')}`).join(' · ') + ' · ' + S.P.orfas.slice(0, 2).join(' · '));
   // as caixas livres nascem com conta e são do jogador: a vida da FICHA, o Volume de um item, a vida atual da invocação
   const livre = (nomeAba, a1) => { const n0 = S.P.avisos.length; try { S.ss.getSheetByName(nomeAba).getRange(a1).setValue(7); S.ctx.onEdit(ed(nomeAba, a1, 7)); } catch (e) { erroD = e; }
     return S.ss.getSheetByName(nomeAba).getRange(a1).getValue() === 7 && S.P.avisos.length === n0; };
@@ -409,7 +416,7 @@ const R = criaSheets(FICHA_SRC, GS); R.ctx.construir();
 const antes = JSON.stringify(retrato(R.P));
 let erroAc = null;
 try { R.ctx.acabar(); } catch (e) { erroAc = e; }
-ok('rodar o acabar() numa ficha pronta não muda nada: mesmas notas, mesmas travas, sem duplicar', !erroAc && JSON.stringify(retrato(R.P)) === antes && R.P.locale === 'pt_BR'
+ok('rodar o acabar() numa ficha pronta não muda nada: mesmas notas, sem duplicar, e nenhuma trava', !erroAc && JSON.stringify(retrato(R.P)) === antes && R.P.locale === 'pt_BR'
    && /^ACABAMENTO PRONTO em /.test(R.P.registro), erroAc ? erroAc.message : R.P.registro.slice(0, 120));
 // o relógio que corre: cada olhada no relógio adianta um minuto, e a montagem das abas passa do teto
 let agora = 0;
@@ -476,20 +483,23 @@ try { C.ctx.LIMITE_DA_EXECUCAO_ = Infinity; C.ctx.TETO_DA_MONTAGEM_ = Infinity; 
 ok('o construir() começa do zero e esquece a montagem parada que houver', !erroC && parada() === null && JSON.stringify(retrato(C.P)) === antes && /^FICHA PRONTA em /.test(C.P.registro),
    erroC ? erroC.message : C.P.registro.slice(0, 100));
 
-// 07/10/2026: as travas são a etapa mais lenta e vão por último. Quando o tempo que sobra não dá para elas, o resto do
-// acabamento já está feito (os saltos e a caixa da paleta inclusive), e o registro pede o acabar()
-agora = 0;
-const T = criaSheets(FICHA_SRC, GS, { Date: RelogioQueCorre });
-let erroT = null;
-try { T.ctx.LIMITE_DA_EXECUCAO_ = Infinity; T.ctx.TETO_DA_MONTAGEM_ = Infinity; T.ctx.construir(); } catch (e) { erroT = e; }
-const saltosT = [...T.acha('FICHA AMALDIÇOADA').f.values()].filter((f) => f.startsWith('=HYPERLINK(')).length;
-ok('quando o tempo não dá para as travas, o acabamento faz o resto (as notas, os saltos, a caixa da paleta) e o registro pede o acabar()',
-   !erroT && /FALTAM AS TRAVAS DO ACABAMENTO: rode a função acabar\(\)/.test(T.P.registro) && !T.acha('FICHA').prot.length && T.acha('FICHA').notas.size > 0
-   && saltosT === nSaltos && !!T.P.nomeados['PALETA_ESCOLHIDA'] && T.P.locale === 'pt_BR',
-   erroT ? erroT.message : `${T.acha('FICHA').prot.length} travas · ${saltosT} saltos · ${T.P.registro.slice(0, 90)}`);
-try { T.ctx.acabar(); } catch (e) { erroT = e; }
-ok('e o acabar() depois põe as travas, mesmo com o relógio alto, e a planilha fica igual à de uma montagem que não parou',
-   !erroT && JSON.stringify(retrato(T.P)) === antes, erroT ? erroT.message : 'a planilha ficou diferente');
+// 07/10/2026: a ficha montada antes disto tem as travas de aviso. O acabar() as tira, pela descrição que este script
+// punha, e deixa a que o jogador ou o mestre criou por conta própria
+let erroT = null, ficaram = null, registroT = '';
+try {
+  const FI_ = R.ss.getSheetByName('FICHA'), CA_ = R.ss.getSheetByName('CARTEIRA');
+  FI_.getRange('D26').protect().setDescription('fórmula · FICHA!D26').setWarningOnly(true);
+  FI_.getRange('J30:J31').protect().setDescription('fórmula · FICHA!J30:J31').setWarningOnly(true);
+  CA_.getRange('C2').protect().setDescription('fórmula · CARTEIRA!C2').setWarningOnly(true);
+  FI_.getRange('D40').protect().setDescription('do mestre: não mexer').setWarningOnly(true);
+  R.ctx.acabar();
+  registroT = R.P.registro;
+  ficaram = R.P.abas.flatMap((a) => a.prot.map((p) => p.desc));
+  R.acha('FICHA').prot.length = 0;
+} catch (e) { erroT = e; }
+ok('o acabar() tira as travas de fórmula de uma ficha montada antes (3) e deixa a que o mestre criou; a ficha fica igual à de uma montagem nova',
+   !erroT && JSON.stringify(ficaram) === JSON.stringify(['do mestre: não mexer']) && /3 trava\(s\) de antes retirada\(s\)/.test(registroT) && JSON.stringify(retrato(R.P)) === antes,
+   erroT ? erroT.message : `${JSON.stringify(ficaram)} · ${registroT.slice(0, 160)}`);
 
 const semAba = criaSheets(FICHA_SRC, GS);
 let erroS = null;

@@ -335,27 +335,23 @@ console.log('\nO CAMINHO ESCOLHIDO NA FICHA');
   ok('edição da FICHA que não é o Caminho nem a Força não encosta na FICHA PESSOAL', Q.log.chamadas.length === antes);
 }
 
-console.log('\nAS TRAVAS E A COR DE AVISO, NO ABAS');
+console.log('\nAS CAIXAS LIVRES E A COR DE AVISO, NO ABAS');
 {
   const spec = ABAS.find((a) => a.nome === NOME);
   const formulas = spec.vals.filter((t) => typeof t[2] === 'string' && t[2].startsWith('=') && t[0] > 7).map((t) => letras(t[1]) + t[0]);
-  const cobre = (a1) => spec.protegidas.some((f) => { const g = C.limitesA1_(f); const [l, c] = lc(a1); return l >= g.l1 && l <= g.l2 && c >= g.c1 && c <= g.c2; });
   const livres = ['volume dos itens 1', 'volume dos itens 2'].map((k) => C.limitesA1_(ip[k]));
   const ehLivre = (a1) => { const [l, c] = lc(a1); return livres.some((g) => l >= g.l1 && l <= g.l2 && c >= g.c1 && c <= g.c2); };
-  // 01/10/2026: o Sheets mostra o aviso da trava também para quem abre ou fecha um grupo com célula travada dentro
-  // (o Mizuki o viu ao clicar no + do painel de XP). Fórmula em coluna ou linha de grupo fica sem trava.
-  const emGrupo = (l, c) => spec.grupos.col.some((g) => c >= g[0] && c <= g[1]) || spec.grupos.lin.some((g) => l >= g[0] && l <= g[1]);
   // 05/10/2026: a caixa da foto aponta para a foto da CARTEIRA e fica sem trava: se a referência não mostrar a imagem
   // inserida na célula, o jogador insere a foto por cima. Só a fórmula que é exatamente essa referência sai da trava.
   const car = ABAS.find((a) => a.nome === 'CARTEIRA');
   const fotoCar = car && car.foto ? `=CARTEIRA!$${letras(car.foto[1])}$${car.foto[0]}` : null;
   const ehFoto = (a1) => { const [l, c] = lc(a1); const v = spec.vals.find((t) => t[0] === l && t[1] === c); return !!fotoCar && !!v && v[2] === fotoCar; };
-  const semTrava = (a1) => { const [l, c] = lc(a1); return ehLivre(a1) || ehFoto(a1) || emGrupo(l, c); };
-  ok(`as ${formulas.filter((f) => !semTrava(f)).length} fórmulas da aba estão dentro de uma das ${spec.protegidas.length} faixas travadas, fora o Volume dos itens, a foto que vem da CARTEIRA e o que mora em grupo`,
-     formulas.every((f) => semTrava(f) ? !cobre(f) : cobre(f)), formulas.filter((f) => semTrava(f) ? cobre(f) : !cobre(f)).slice(0, 6).join(', '));
-  ok('nenhuma faixa travada encosta em coluna ou linha de grupo: abrir e fechar o painel de XP e o treino não mostra o aviso da trava',
-     spec.protegidas.every((f) => { const g = C.limitesA1_(f); return !spec.grupos.col.some((x) => g.c1 <= x[1] && g.c2 >= x[0]) && !spec.grupos.lin.some((x) => g.l1 <= x[1] && g.l2 >= x[0]); }),
-     spec.protegidas.filter((f) => { const g = C.limitesA1_(f); return spec.grupos.col.some((x) => g.c1 <= x[1] && g.c2 >= x[0]) || spec.grupos.lin.some((x) => g.l1 <= x[1] && g.l2 >= x[0]); }).join(', '));
+  // 07/10/2026: as travas de aviso saíram, e toda conta em que alguém escreve por cima volta pelo onEdit, em grupo ou não.
+  // Ficam de fora só as caixas que nascem com conta e são do jogador, que a aba declara em `livres`
+  const declaradas = spec.livres || [];
+  ok(`a aba declara livres só o Volume de cada item e a foto que vem da CARTEIRA (${declaradas.length} caixas), e não declara mais faixa travada`,
+     declaradas.length > 2 && declaradas.every((a1) => ehLivre(a1) || ehFoto(a1)) && formulas.filter((f) => ehLivre(f) || ehFoto(f)).every((f) => declaradas.includes(f))
+     && declaradas.filter(ehFoto).length === 1 && !('protegidas' in spec), declaradas.filter((a1) => !ehLivre(a1) && !ehFoto(a1)).join(', '));
   const valorDe = (a1) => { const [l, c] = lc(a1); const t = spec.vals.find((x) => x[0] === l && x[1] === c); return t ? String(t[2]) : ''; };
   ok('cada regra de cor de aviso procura um texto que a fórmula da própria caixa escreve',
      spec.condicional.length >= 5 && spec.condicional.every((r) => r.faixas.every((a1) => valorDe(a1).includes(r.contem))),

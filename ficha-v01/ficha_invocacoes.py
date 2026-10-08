@@ -1224,7 +1224,6 @@ def aba(layout, tr):
         "condicional": [], "imagens": pincel, "notas": f.notas,
         "grupos": {"linhas": grupos, "colunas": grupos_col},
         "condicional_gs": condicional,
-        "protegidas": [],
         "copias": copia,
         "validacao_em_matriz": True,
         # a caixa de ± de cada ficha, com a vida atual, a temporária e a máxima dela: o onEdit aplica e limpa

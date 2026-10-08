@@ -316,7 +316,6 @@ def _extras(a):
     out = {"notas": sorted([k, v] for k, v in a.get("notas", {}).items()),
            "grupos": {"lin": fundos(a["grupos"]["linhas"]), "col": fundos(a["grupos"]["colunas"])} if a.get("grupos") else None,
            "formatos": fmt if a.get("grupos") else [], "condicional": a.get("condicional_gs", []),
-           "protegidas": a.get("protegidas", []),
            # 01/10/2026, a FICHA AMALDICOADA: as fileiras de cartas que sao copia da primeira, a validacao numa matriz so,
            # e, na DADOS_AM, as colunas que o script preenche para baixo a partir da primeira linha
            "copias": a.get("copias", []), "validacao_em_matriz": a.get("validacao_em_matriz", False),

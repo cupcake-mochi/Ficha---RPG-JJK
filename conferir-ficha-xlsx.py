@@ -342,10 +342,14 @@ checa("o Codigo.gs avisa em vermelho e anota as seis caixas de conta",
 # perícias, dos ofícios e dos Testes de Resistência ficava de fora da lista. O que se confere: o script
 # varre as fórmulas, as livres são só as três barras de agora, e cada linha de perícia, ofício e Teste
 # (a caixa de seleção com o nome ao lado) tem o resultado em fórmula, que é o que a varredura trava.
-_mprot = re.search(r"function protegerFormulas_\(ss, idx\)\s*\{(.*?)\n\}", _CODA, re.S)
 _livres = re.search(r"var LIVRES_DA_TRAVA = \[(.*?)\];", _CODA)
-checa("o Codigo.gs trava toda fórmula da FICHA e da CARTEIRA, e deixa livres só as três barras de agora",
-      bool(_mprot and _livres) and "getFormulas()" in _mprot.group(1) and "'CARTEIRA'" in _mprot.group(1)
+# 07/10/2026: as travas de aviso saíram, e o Codigo.gs devolve a conta de toda caixa calculada. O que se confere aqui: o
+# script não cria mais trava (só tira as de uma ficha de antes), as livres da FICHA são as três barras de agora, e o
+# onEdit chama a devolução na FICHA, na CARTEIRA e na FICHA PESSOAL
+_tira = re.search(r"function tirarTravasDeFormula_\(ss\)\s*\{(.*?)\n\}", _CODA, re.S)
+checa("o Codigo.gs não trava mais fórmula (só tira as travas de antes), devolve a conta nas três abas, e deixa livres só as três barras de agora",
+      bool(_tira and _livres) and ".protect()" not in _CODA and "p.remove()" in _tira.group(1) and "'fórmula · '" in _tira.group(1)
+      and all(x in _CODA for x in ("devolverConta_(e, 'FICHA')", "devolverConta_(e, 'CARTEIRA')", "devolverConta_(e, ABA_PESSOAL_)"))
       and sorted(re.findall(r"'([^']+)'", _livres.group(1))) == ["energia", "integridade", "vida"]
       and all(k in IDX for k in ["vida", "energia", "integridade"]),
       _livres.group(1) if _livres else "sem LIVRES_DA_TRAVA")
@@ -1308,12 +1312,10 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
             _foto_ruim.append(f"a caixa {L(_c)}{_r} não é do tamanho de uma foto: {_mf}")
         if "CARTEIRA" not in dict((n[0], n[1]) for n in _fpa.get("notas", [])).get(f"{L(_c)}{_r}", ""):
             _foto_ruim.append(f"a caixa {L(_c)}{_r} não tem a nota que manda inserir a foto na CARTEIRA")
-        for _fx in _fpa.get("protegidas", []):
-            _x1, _y1, _x2, _y2 = _rbx(_fx)
-            if _y1 <= _r <= _y2 and _x1 <= _c <= _x2:
-                _foto_ruim.append(f"a caixa {L(_c)}{_r} está na trava {_fx}")
+        if f"{L(_c)}{_r}" not in _fpa.get("livres", []):
+            _foto_ruim.append(f"a caixa {L(_c)}{_r} não está entre as livres: o onEdit devolveria a referência por cima da foto que o jogador inserir")
     checa("a FICHA PESSOAL mostra a foto da CARTEIRA: uma caixa do tamanho de uma foto aponta para a caixa dela, com a nota, "
-          "e fora da trava", not _foto_ruim, str(_foto_ruim[:3]))
+          "e é caixa livre", not _foto_ruim, str(_foto_ruim[:3]))
 
     # A função que o Excel não tem sai do .xlsx embrulhada em IFERROR(__xludf.DUMMYFUNCTION("...")),
     # e remontada assim ela falha calada: foram as barras vazias de 15/09/2026. O script leva a de dentro.
@@ -1425,20 +1427,17 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
     _fa = _re.search(r"function acabar\(\) \{(.*?)\n\}\n", g, _re.S)
     _fa = _fa.group(1) if _fa else ""
     checa("o construir() registra cada etapa na hora e, se a montagem passar do teto, deixa o acabamento para o acabar()",
-          "rel.etapa(spec.nome)" in _cc and "rel.passou() > TETO_DA_MONTAGEM_" in _cc and "acabamento_(ss, feito, rel, true)" in _cc
-          and "acabamento_(ss, feito, rel, false)" in _fa and "setSpreadsheetLocale('en_US')" in _fa
+          "rel.etapa(spec.nome)" in _cc and "rel.passou() > TETO_DA_MONTAGEM_" in _cc and "acabamento_(ss, feito, rel)" in _cc
+          and "acabamento_(ss, feito, rel)" in _fa and "setSpreadsheetLocale('en_US')" in _fa
           and _fa.find("} finally {") < _fa.find("setSpreadsheetLocale('pt_BR')")
           and bool(_re.search(r"var TETO_DA_MONTAGEM_ = (\d+);", g)) and int(_re.search(r"var TETO_DA_MONTAGEM_ = (\d+);", g).group(1)) <= 300000,
           "falta o relógio, o teto ou o acabar()")
-    # 07/10/2026: as travas são a etapa mais lenta e vão por último. O acabamento do construir() não as começa se o tempo
-    # que sobra não dá (e pede o acabar()); o do acabar() começa sempre. Os saltos e a caixa da paleta vêm antes delas
-    _ac = _re.search(r"function acabamento_\(ss, feito, rel, comTeto\) \{(.*?)\n\}\n", g, _re.S)
+    # 07/10/2026: o acabamento não cria trava, e os saltos e a caixa da paleta fazem parte dele
+    _ac = _re.search(r"function acabamento_\(ss, feito, rel\) \{(.*?)\n\}\n", g, _re.S)
     _ac = _ac.group(1) if _ac else ""
-    _tt = _re.search(r"var TETO_DAS_TRAVAS_ = (\d+);", g)
-    checa("as travas são a última etapa do acabamento, depois dos saltos e da caixa da paleta, e só o construir() as deixa para o acabar() quando falta tempo",
-          0 <= _ac.find("ligarSaltos_(ss)") < _ac.find("configurarPaleta_(ss, true)") < _ac.find("comTeto && rel.passou() > TETO_DAS_TRAVAS_")
-          < _ac.find("protegerFormulas_(ss, idx)") and bool(_tt) and int(_tt.group(1)) <= 240000 and "FALTAM AS TRAVAS DO ACABAMENTO" in _cc,
-          f"teto {_tt.group(1) if _tt else None}")
+    checa("o acabamento liga os saltos, monta a caixa da paleta e tira as travas de antes, sem criar nenhuma",
+          0 <= _ac.find("ligarSaltos_(ss)") < _ac.find("configurarPaleta_(ss, true)") < _ac.find("tirarTravasDeFormula_(ss)")
+          and "protegerFormulas_" not in g and "TETO_DAS_TRAVAS_" not in g, "o acabamento não tem as três etapas nesta ordem")
 
     arte_usada = {im[4] for a in dados for im in a["imgs"]}
     embutida = set(_re.findall(r'"([^"]+\.png)":"', g.split("var ARTE")[1][:200000]))

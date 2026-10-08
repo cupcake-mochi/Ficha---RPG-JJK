@@ -107,8 +107,8 @@ edita("a cor de aviso procura um texto que a formula nao escreve", F, '"contem":
       "cada regra de cor de aviso procura um texto")
 edita("o painel de XP nasce aberto", F, '"col":[[48,72,true,1]', '"col":[[48,72,false,1]', "a aba fecha o treino em grupo de linhas aberto")
 edita("a extensao nasce aberta", F, ',true,2]]}', ',false,2]]}', "a extensão é um segundo grupo de colunas")
-edita("uma formula do painel de XP volta a ser travada", F, '"protegidas":["', '"protegidas":["BA15:BA64","',
-      "nenhuma faixa travada encosta em coluna ou linha de grupo")
+# 07/10/2026: as travas de aviso sairam; a aba declara as caixas livres, que o onEdit nao devolve
+edita("uma conta da aba passa a ser caixa livre, e deixa de voltar", F, '"livres":["', '"livres":["D20","', "a aba declara livres só o Volume de cada item")
 edita("a missao da extensao nao conta", C, "return k.indexOf('missões ') === 0 && toca(k); });",
       "return (k === 'missões 1' || k === 'missões 2') && toca(k); });", "a da extensão, também sobe o nível")
 
@@ -126,17 +126,18 @@ edita("as notas de caixa com a faixa de uma linha a menos", F, "aba.getRange(r1,
       "aba.getRange(r1, c1, r2 - r1, c2 - c1 + 1).setNotes(notas);", "o construir() roda inteiro", teste=K)
 edita("o botao do grupo fica depois dele", F, "var ANTES = SpreadsheetApp.GroupControlTogglePosition.BEFORE;", "var ANTES = SpreadsheetApp.GroupControlTogglePosition.AFTER;",
       "com o botão em cima", teste=K)
-edita("a trava bloqueia em vez de avisar", C, "p.setDescription('fórmula · ' + nome + '!' + a1);\n      p.setWarningOnly(true);",
-      "p.setDescription('fórmula · ' + nome + '!' + a1);", "travadas em", teste=K)
+edita("o acabar() deixa as travas de formula de uma ficha de antes", C, "=== 0) { p.remove(); n++; }", "=== 0) { n++; }",
+      "tira as travas de fórmula de uma ficha montada antes", teste=K)
+edita("o acabar() tira tambem a trava que o mestre criou", C, "if (String(p.getDescription()).indexOf('fórmula · ') === 0) {",
+      "if (String(p.getDescription()).length) {", "tira as travas de fórmula de uma ficha montada antes", teste=K)
+edita("a ficha volta a nascer com trava", C, "  var n = 0;\n  ss.getSheets().forEach(function (aba) {\n    _comRetentativa_(function () {",
+      "  var n = 0;\n  ss.getSheets()[0].getRange('A1').protect();\n  ss.getSheets().forEach(function (aba) {\n    _comRetentativa_(function () {",
+      "nenhuma aba nasce com trava", teste=K)
 edita("a nota de caixa vai para a celula errada", F, "onde.forEach(function (o) { notas[o[0] - r1][o[1] - c1] = o[2]; });",
       "onde.forEach(function (o) { notas[0][0] = o[2]; });", "notas de caixa estão nas células delas", teste=K)
 edita("a aba sai uma coluna menor que o desenho", F, "if (temC < nc) aba.insertColumnsAfter(temC, nc - temC);",
       "if (temC < nc - 1) aba.insertColumnsAfter(temC, nc - 1 - temC);", "sai da aba", teste=K)
 # 01/10/2026: o construir() que vai menos vezes ao servidor. Cada atalho novo tem o defeito dele.
-edita("a trava por faixa junta colunas que nao sao vizinhas", C, "faixas[k][3] === r[1] - 1) { faixas[k][3] = r[3]; return; }",
-      "faixas[k][3] <= r[1] - 1) { faixas[k][3] = r[3]; return; }", "nenhuma célula sem fórmula está travada", teste=K)
-edita("a trava por faixa esquece a ultima celula da coluna", C, "corridas.push([v[i], Number(c), v[j], Number(c)]);",
-      "corridas.push([v[i], Number(c), Math.max(v[i], v[j] - 1), Number(c)]);", "fórmulas estão travadas com aviso", teste=K)
 edita("a mesclagem em lote junta linhas que nao sao vizinhas", F, "while (j + 1 < v.length && v[j + 1] === v[j] + 1) j++;",
       "while (j + 1 < v.length && v[j + 1] <= v[j] + 3) j++;", "mescla", teste=K)
 edita("a formula fica fora da gravacao dos valores", F, "    v[t[0] - 1][t[1] - 1] = t[2];\n    if (typeof t[2] === 'string' && t[2].charAt(0) === '=') formulas++;",
@@ -146,7 +147,7 @@ edita("a aba e preenchida antes de as outras nascerem", F, "      abas = ABAS.ma
       "nenhuma fórmula é gravada antes de a aba que ela cita existir", teste=K)
 edita("a nota de regra vai sempre para a caixa, nunca para o titulo", C, "return tituloOuCaixa_(acima) === 'título' ? [la, ca] : [l, c];", "return [l, c];",
       "as notas de regra da FICHA moram no título", teste=K)
-edita("o construir() nunca passa a vez ao acabar()", F, "var TETO_DA_MONTAGEM_ = 250000;", "var TETO_DA_MONTAGEM_ = 250000000000;",
+edita("o construir() nunca passa a vez ao acabar()", F, "var TETO_DA_MONTAGEM_ = 300000;", "var TETO_DA_MONTAGEM_ = 300000000000;",
       "avisa que falta o acabar()", teste=K)
 # 07/10/2026: a montagem que para sozinha antes de estourar os seis minutos, e o continuar()
 edita("a montagem nunca para, e estoura os seis minutos", F, "if (i > de && rel.passou() + custoDaAba_(spec) > LIMITE_DA_EXECUCAO_) {",
@@ -171,9 +172,8 @@ edita("a caixa de ± da invocacao parte de zero com a vida em branco", C, "  var
       "  var fim = aplicaPasso_(tem, max, antes, passo);", "a caixa de ± de cada ficha de invocação", teste=K)
 edita("a caixa de ± da invocacao nao se limpa", C, "  if (fim.temp !== antes) temp.setValue(fim.temp);\n  e.range.clearContent();\n  return true;",
       "  if (fim.temp !== antes) temp.setValue(fim.temp);\n  return true;", "a caixa de ± de cada ficha de invocação", teste=K)
-edita("o acabar() duplica as travas", C, "    semAsVelhas(aba);\n    var celulas = [];", "    var celulas = [];", "rodar o acabar() numa ficha pronta não muda nada", teste=K)
-edita("o acabar() roda em portugues, e a regra de cor quebra", F, "  ss.setSpreadsheetLocale('en_US');\n  try {\n    acabamento_(ss, feito, rel, false);",
-      "  try {\n    acabamento_(ss, feito, rel, false);", "o acabar() escreve a regra de cor com a planilha em inglês", teste=K)
+edita("o acabar() roda em portugues, e a regra de cor quebra", F, "  ss.setSpreadsheetLocale('en_US');\n  try {\n    acabamento_(ss, feito, rel);",
+      "  try {\n    acabamento_(ss, feito, rel);", "o acabar() escreve a regra de cor com a planilha em inglês", teste=K)
 edita("o Caminho escolhido nao chega a FICHA PESSOAL", C, "try { fichaMexeNaPessoal_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }", "",
       "escolher Bastião na FICHA passa por todos os gatilhos", teste=K)
 
@@ -212,10 +212,10 @@ edita("o religamento escreve o salto com virgula numa planilha em portugues", C,
 edita("o salto da FICHA AMALDICOADA em que alguem escreve por cima fica sem a ligacao", C,
       "      if (e.range.getRow() <= LINHA_DOS_SALTOS_) ligarSaltosDe_(SpreadsheetApp.getActive(), ABA_AMALDICOADA_, DADOS_DA_AMALDICOADA_);\n", "",
       "o salto em que alguém escreve por cima volta a ser a ligação", teste=K)
-edita("o acabamento do construir() comeca as travas sem tempo para elas", F,
-      "  if (comTeto && rel.passou() > TETO_DAS_TRAVAS_) return false;", "", "quando o tempo não dá para as travas", teste=K)
-edita("o acabar() tambem pula as travas quando o relogio esta alto", F,
-      "    acabamento_(ss, feito, rel, false);\n  } finally {", "    acabamento_(ss, feito, rel, true);\n  } finally {", "o acabar() depois põe as travas", teste=K)
+edita("uma conta da FICHA PESSOAL que mora em grupo nao volta", C,
+      "    livres = livres || livresDaAba_(spec);\n    if (livres[a1_(t[0], t[1])]) return;",
+      "    livres = livres || livresDaAba_(spec);\n    if (livres[a1_(t[0], t[1])] || (nome === ABA_PESSOAL_ && t[1] >= 48)) return;",
+      "toda conta que não é livre volta", teste=K)
 edita("o onEdit nao reconhece a FICHA AMALDICOADA", C, "if (aba === ABA_AMALDICOADA_) {", "if (aba === 'OUTRA ABA DE NOME PARECIDO') {",
       "digitar por cima de uma caixa calculada devolve a conta", teste=K)
 # 02/10/2026, as Habilidades (B34): o riscado das cartas acima do nível é regra de cor declarada no ABAS, que o corDeEstado_

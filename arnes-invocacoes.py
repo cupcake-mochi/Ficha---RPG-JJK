@@ -69,14 +69,14 @@ PERTURBACOES = [
     ("a Precisão deixa de somar 2 no ataque", GER,
      '''atq_total = f'({P("atk")}+2*IF({tem_m("Precisão")}>0,1,0))\'''', '''atq_total = f'({P("atk")}+0*IF({tem_m("Precisão")}>0,1,0))\'''', "Mordida precisa"),
     ("a devolução da Restrição deixa de parar em 2 × Classe", GER,
-     '''o["dv"] = f"=MIN(2*{Cc},{P('dv0')})"''', '''o["dv"] = f"={P('dv0')}"''', "fichas sorteadas"),
+     '''o["dv"] = f"=MIN(2*{Cc},{P('dv0')})"''', '''o["dv"] = f"={P('dv0')}"''', "a devolução para em 2 × Classe"),
     ("a Restrição vira dado: o que ela devolve além do gasto não some", GER,
      '''o["usa"] = f"=MIN({P('dv')},{P('g')})"''', '''o["usa"] = f"={P('dv')}"''', "fichas sorteadas"),
     ("a básica com Melhoria não perde o dado", GER,
      '''MAX(0,{P('db')}-IF({P('nm')}>0,1,0))''', '''MAX(0,{P('db')})''', "fichas sorteadas"),
     ("o ataque com Condição ou Prende deixa de mostrar o TR (a D43 do livro)", GER,
      '''&IF({P("ptr")}>0," · TR"&IF({P("cdf")}="",""," CD "&{P("cdf")}),""),\'''', ''',\'''', "mostra também o TR e a CD"),
-    ("Prende deixa de ser peça que pede TR", AMA, 'PEDEM_TR = ("Prende", "Cerca")', 'PEDEM_TR = ("Cerca",)', "fichas sorteadas"),
+    ("Prende deixa de ser peça que pede TR", AMA, 'PEDEM_TR = ("Prende", "Cerca")', 'PEDEM_TR = ("Cerca",)', "mostra também o TR e a CD"),
 ]
 
 # o contra-teste: mudança que não muda regra nenhuma tem de ficar verde
