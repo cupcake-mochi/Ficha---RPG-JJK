@@ -117,6 +117,7 @@ ARIAL = LAY["_meta"].get("arial_vira_corpo")
 CARIMBO = LAY["_meta"].get("carimbo_texto", {})
 difs, esperadas = [], Counter()
 NOME_DO_SISTEMA = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))["_meta"]["sistema"].upper()
+VERSAO_SEM_PONTO = 'SUBSTITUTE(DADOS!$B$1,".","")'       # como a exportacao escrevia a versao no numero da CARTEIRA
 # A Origem que a personagem exportada tinha. O molde nasce com "Latente" (o desenho da mesa, ficha_layout.py).
 # A celula sai do rotulo ORIGEM da FICHA (o valor mora logo embaixo), e nao de um endereco escrito aqui: em
 # 17/09/2026 o Mizuki inseriu linhas pelo Sheets, e um endereco fixo teria apontado para o lugar antigo.
@@ -329,6 +330,11 @@ for n in wa.sheetnames:
             # proprio; e a formula de outra aba que lia o nome no lugar antigo so muda o endereco.
             _cab = CAB["celulas"].get(n, {}).get(coord)
             if _cab is not None:
+                # 07/10/2026 (B33): o numero da CARTEIRA mostra a versao com o ponto ("M-1.0", e nao "M-10"); o monta.py tira
+                # o SUBSTITUTE da formula que o cabecalho.py montou. So esse trecho muda.
+                if isinstance(_cab[0], str) and VERSAO_SEM_PONTO in _cab[0]:
+                    _cab = (_cab[0].replace(VERSAO_SEM_PONTO, "DADOS!$B$1"),) + tuple(_cab[1:])
+                    esperadas["a versão no número da CARTEIRA"] += int(pb["valor"] == _cab[0])
                 if _dentro_de_mescla_do_cabecalho(n, r, c):
                     if pb["valor"] is None:
                         esperadas["célula de dentro de caixa mesclada do cabeçalho novo"] += 1

@@ -509,8 +509,10 @@ _sem_tinta = [c.coordinate for l in _fp.iter_rows(min_row=1, max_row=_cab.ULTIMA
 checa(f"a faixa de tinta do cabeçalho da FICHA PESSOAL vai até a última coluna ({L(_fp.max_column)}), por cima do painel de XP",
       _fp.max_column == _fpm.PAINEL_FIM and not _sem_tinta, str(_sem_tinta[:6]))
 _num = [k for k, v in _cv.items() if isinstance(v, str) and "Nº M-" in v]
-checa("o número da CARTEIRA lê o nome no lugar novo dele",
-      len(_num) == 1 and f"FICHA!${''.join(ch for ch in _cab.C_NOME[0] if ch.isalpha())}${''.join(ch for ch in _cab.C_NOME[0] if ch.isdigit())}" in _cv[_num[0]],
+# 07/10/2026 (B33): a versão aparece como é escrita, com o ponto ("M-1.0"); até aqui a fórmula tirava o ponto, e a 1.0 saía "M-10"
+checa("o número da CARTEIRA lê o nome no lugar novo dele, e mostra a versão do arquivo de dados com o ponto",
+      len(_num) == 1 and f"FICHA!${''.join(ch for ch in _cab.C_NOME[0] if ch.isalpha())}${''.join(ch for ch in _cab.C_NOME[0] if ch.isdigit())}" in _cv[_num[0]]
+      and '"Nº M-"&DADOS!$B$1&"-"' in _cv[_num[0]] and "SUBSTITUTE" not in _cv[_num[0]],
       str(_cv.get(_num[0]) if _num else None))
 _faixas_fp = [c for l in _fp.iter_rows(min_row=_cab.ULTIMA_LINHA + 2) for c in l
               if c.value not in (None, "") and c.font and c.font.name == "Oswald" and c.font.sz == 14]

@@ -2039,7 +2039,7 @@ menu (o + de cada par na linha da legenda, o da descrição na linha dos número
 (o aviso e a conta voltando); trocar a Origem na `FICHA` e ver a Ficha Amaldiçoada e o menu mudarem de nome, e o Domínio
 dizer que a rota não tem; e trocar de paleta, contando os cliques até a última aba terminar.*
 
-### B33 · O número da `CARTEIRA` não acompanha a versão do sistema — **FEITO em 04/10/2026: o catálogo foi posto em dia com o livro reconstruído (ver o B36)**
+### B33 · O número da `CARTEIRA` não acompanha a versão do sistema — **FEITO em 04/10/2026: o catálogo foi posto em dia com o livro reconstruído (ver o B36); em 07/10/2026 o número passou a mostrar a versão com o ponto, `Nº M-1.0` (no fim do B41)**
 
 *Em 02/10/2026, depois de montar o B32: "por sinal a versão n atualizo automatico", com a foto do carimbo da `CARTEIRA`:
 `Nº M-0258-····` e `Emitida 02.10.2026`. O livro está na v0.331.*
@@ -2772,4 +2772,43 @@ perícia e "a fórmula voltou sozinha, com aviso no canto, sem perguntar 'editar
 das invocações e os saltos da Amaldiçoada "funcionaram após reconstruir"; e a montagem levou **11 min 14 s somando as
 execuções, com cerca de 14 s de acabamento**, sem travas. O registro completo de cada execução ele não mandou (só o
 resumo), então o tempo de cada aba nessa montagem não está conferido.*
+
+### B41 · A revisão: o que o livro manda registrar e a ficha não tinha — **ESTUDO ENTREGUE em 07/10/2026; espera ele escolher as formas**
+
+*Da lista da revisão (terceira etapa do B40) ele escolheu, em 07/10/2026: "Traços, sequelas, cicatrizes, exaustão,
+resistencias e imunidades, integridade da entidade com alma, espaço de feitiço ocupado por invocação". Ficaram de fora
+as condições e usos gastos do personagem, a munição e as escolhas do Traje. Ele escreveu "Traços", e o item era "o
+traço e os dois Legados": perguntei se os Legados entram.*
+
+**O que cada um é, no livro:**
+
+| item | a regra | o que a ficha precisa |
+|---|---|---|
+| traço | Escolhas da Origem: "Um traço: escreva um detalhe importante da sua história"; não dá bônus | uma linha de texto |
+| Sequelas | uma por queda encerrada; 0, 1, 2 ou 3 antes de cair dão janela de 3, 2 ou 1 rodada, ou Derrotado na hora; saem no descanso longo | um número de 0 a 3 e a janela da próxima queda |
+| Cicatrizes | depois da segunda queda na mesma missão, registrada com o mestre; permanente, sem modificador | texto |
+| Exaustão | da quarta luta do dia em diante, um degrau por luta, até 3; 1: desvantagem em perícias e ofícios; 2: deslocamento até 4,5 m; 3: desvantagem em ataques e TRs | um número de 0 a 3, o efeito, e o limite de 4,5 m no DESLOCAMENTO |
+| resistências e imunidades | vêm de habilidade (o Alicerce do Bastião: dois tipos por descanso longo), de Origem (o Corpo Amaldiçoado é imune a Envenenado) e de Legado | texto |
+| Integridade da entidade | "Criaturas que não sejam personagens jogadores usam metade da vida máxima, arredondada para baixo, com mínimo 1"; o corpo não autônomo não tem alma | atual, máxima (conta) e um menu de com ou sem alma |
+| espaço por invocação | "um espaço dá uma entidade do seu nível. A vaga continua ocupada quando ela está recolhida" | uma caixa no Orçamento da `FICHA AMALDIÇOADA`, que conta as fichas com aquisição `Espaço conhecido` |
+
+**O estudo:** *`mockup/revisao-estudo.png` (montado por `python3 mockup/estudo_revisao.py mockup/revisao-estudo.html`, e a foto
+pelo Firefox sem tela). Quatro blocos, desenhados como a planilha, com o novo em âmbar:*
+
+1. *Sequelas, Exaustão, resistências e imunidades, na `FICHA`: **A** uma linha embaixo das barras, na seção 2; **B** uma
+   linha no fim da seção 3; **C** dividido (o estado com as barras, as proteções com a Defesa).*
+2. *Traço e cicatrizes: **A** o traço na `FICHA`, embaixo da Origem, e as cicatrizes na `FICHA PESSOAL`, ao lado da
+   Aparência; **B** os dois no dossiê da `FICHA PESSOAL`.*
+3. *Integridade da entidade: **A** uma linha embaixo da barra de vida, com o estágio; **B** a mesma, sem o estágio.*
+4. *O espaço por invocação: uma caixa `EM INVOCAÇÕES` no Orçamento, sem forma para escolher.*
+
+*Indiquei A, B e A. Nada foi construído.*
+
+**O número da `CARTEIRA` (B33), no mesmo dia.** *"atualiza la pra 1.0". O número era `"Nº M-"` + a versão sem o ponto + o
+nome, do tempo em que a versão era 0.258 e saía `M-0258`; com a versão em 1.0 saía `M-10`. Passa a mostrar a versão
+como é escrita, `Nº M-1.0-KAOR` (uma limpeza no `monta.py`, com a diferença contada no comparador e a checagem no
+`conferir-ficha-xlsx.py`). O `M` do número eu não mexi.*
+
+**A pasta `ficha-invocacao/` antiga.** *Perguntei se apagava ou guardava, e ele respondeu "pode atualizar". Não ficou claro
+o que atualizar numa pasta que a aba nova substituiu, e perguntei de novo antes de mexer.*
 

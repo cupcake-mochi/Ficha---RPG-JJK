@@ -142,6 +142,22 @@ if not _n_lomb:
     raise SystemExit("monta: nao achei o texto da lombada para por o nome do sistema")
 print(f"o nome do sistema na lombada ({_SISTEMA}): {_n_lomb} celula(s) diferentes da exportacao")
 
+# ---------------------------------------------------------------------------------------------
+# A VERSAO NO NUMERO DA CARTEIRA (07/10/2026, o B33). O numero era "Nº M-" + a versao sem o ponto + o nome, do tempo
+# em que a versao era 0.258 e saia "M-0258". Com a versao em 1.0 saia "M-10". O Mizuki: "atualiza la pra 1.0". O numero
+# passa a mostrar a versao como ela e escrita, com o ponto: "Nº M-1.0-KAOR".
+# ---------------------------------------------------------------------------------------------
+VERSAO_SEM_PONTO, VERSAO_COMO_E = 'SUBSTITUTE(DADOS!$B$1,".","")', "DADOS!$B$1"
+_n_num = 0
+for _a in LAYOUT["abas"]:
+    for _c in _a["celulas"]:
+        if isinstance(_c[1], str) and VERSAO_SEM_PONTO in _c[1]:
+            _c[1] = _c[1].replace(VERSAO_SEM_PONTO, VERSAO_COMO_E)
+            _n_num += 1
+if _n_num != 1:
+    raise SystemExit(f"monta: o numero da CARTEIRA devia ser uma celula so, e achei {_n_num}")
+print("a versao no numero da CARTEIRA: 1 formula diferente da exportacao")
+
 # 17/09/2026: o GLOSSARIO, entre a DADOS e a INVOCACAO -- o que cada atributo, pericia, oficio e
 # termo da ficha quer dizer. Nao tem planilha viva por tras, ao contrario das outras seis: nasce
 # inteiro aqui, reaproveitando os estilos que o CATALOGO ja usa. Ver glossario.py.
