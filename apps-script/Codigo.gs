@@ -141,7 +141,21 @@ function notasDeRegra_(ss, idx) {
                      'Força que ela pede, o ataque com ela é com desvantagem: a FICHA PESSOAL diz qual.',
     'deslocamento': 'O seu deslocamento base é 9 metros, e você corta esse total em quantos pedaços ' +
                     'quiser dentro do turno. O Buff/Debuff do lado soma em metros. Cai pela metade com ' +
-                    'uma arma empunhada sem a Força, e vai a zero com a carga acima do limite: a FICHA PESSOAL diz qual.',
+                    'uma arma empunhada sem a Força, fica em até 4,5 m do degrau 2 de Exaustão em diante, e vai a zero ' +
+                    'com a carga acima do limite: a FICHA PESSOAL diz qual.',
+    // 08/10/2026 (B41): o estado do personagem, embaixo das barras
+    'sequelas': 'Sair de uma queda por chegar a zero de vida deixa uma Sequela. Ela não penaliza testes: encurta a ' +
+                'janela da próxima queda (3, 2 e 1 rodada; com 3 Sequelas, Derrotado na hora). Sai no descanso longo; ' +
+                'cura comum não a remove.',
+    'exaustão': 'Da quarta luta do dia em diante, cada luta acrescenta um degrau, até 3. Os efeitos somam. O descanso ' +
+                'longo em ambiente propício remove tudo; fora dele, ela fica. No descanso curto fora de ambiente ' +
+                'propício o PE volta menos: 25%, 15%, 5% e nada, do degrau 0 ao 3.',
+    'resistências': 'Os tipos de dano de que você recebe metade, e de onde vêm (o Alicerce do Bastião, um Legado, ' +
+                    'uma capacidade). Metades de fontes equivalentes não se multiplicam.',
+    'imunidades': 'As condições e os tipos de dano que não o afetam, e de onde vêm (o Corpo Amaldiçoado é imune a ' +
+                  'Envenenado, por exemplo).',
+    'legado 1': 'Vem da FICHA PESSOAL: o nome, o tipo e o que o Legado faz são escritos no dossiê de lá.',
+    'legado 2': 'Vem da FICHA PESSOAL: o nome, o tipo e o que o Legado faz são escritos no dossiê de lá.',
     'vida_temp': 'Vida temporária não acumula: fica a maior, com teto de metade ' +
                  'da vida máxima, para baixo e no mínimo 1. Some no fim da cena, e é gasta antes da vida ' +
                  'normal — a caixinha de ± desconta daqui primeiro e só o que ' +

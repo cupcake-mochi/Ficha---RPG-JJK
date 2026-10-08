@@ -178,7 +178,7 @@ edita("o Caminho escolhido nao chega a FICHA PESSOAL", C, "try { fichaMexeNaPess
       "escolher Bastião na FICHA passa por todos os gatilhos", teste=K)
 
 # 01/10/2026 (B30): a nota que diz de onde vem o menu mora na caixa em que a arma e escolhida, e nao no rotulo de cima
-edita("a nota da mao principal volta para o rotulo", F, '["D41","Para uma arma aparecer neste menu', '["D40","Para uma arma aparecer neste menu',
+edita("a nota da mao principal volta para o rotulo", F, '["D49","Para uma arma aparecer neste menu', '["D48","Para uma arma aparecer neste menu',
       "a caixa de escolha de cada mão nasce com a nota")
 edita("a DADOS deixa de publicar a nota da arma da mao secundaria", F, '"arma da secundária"', '""', "a DADOS publica as cinco notas")
 # 01/10/2026 (B31): a caixa calculada da FICHA AMALDICOADA em que alguem digitou por cima volta a ser a conta

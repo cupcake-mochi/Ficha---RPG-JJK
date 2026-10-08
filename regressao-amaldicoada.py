@@ -23,7 +23,7 @@ ARQ = "ficha-v01/ficha-projeto-m-0.1.xlsx"
 if not os.path.exists(ARQ):
     print("gere a ficha antes:  python3 ficha-v01/monta.py"); sys.exit(1)
 sys.path.insert(0, "ficha-v01")
-import indice_ficha as ix, ficha_amaldicoada as fa
+import indice_ficha as ix, ficha_amaldicoada as fa, ficha_invocacoes as fi
 
 CAT = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))
 TEC = json.load(open("ficha-v01/tecnica-do-livro.json", encoding="utf-8"))
@@ -313,6 +313,11 @@ def indice_da_ficha(wb):
 
 
 IDX = indice_da_ficha(WB0)
+# 08/10/2026 (B41): o menu ATRIBUTO DE CONJURAÇÃO da FICHA, a caixa logo abaixo do rótulo. Era um endereço escrito
+# aqui (Z51), e desceu com as linhas que o B41 abriu no meio da aba; achado na planilha gerada, como o campo de baixo.
+_rot_atr = [c for linha in WB0["FICHA"].iter_rows() for c in linha if isinstance(c.value, str) and c.value.strip() == "ATRIBUTO DE CONJURAÇÃO"]
+assert len(_rot_atr) == 1, f"o rotulo ATRIBUTO DE CONJURACAO devia ser um so na FICHA, e achei {len(_rot_atr)}"
+ATRIBUTO_DE_CONJURACAO = f"{_rot_atr[0].column_letter}{_rot_atr[0].row + 1}"
 # 05/10/2026: o campo TÉCNICA DECLARADA da CARTEIRA, a caixa logo abaixo do rótulo (que diz TÉCNICA AMALDIÇOADA, TÉCNICA
 # MARCIAL ou ESTILO DECLARADO); a caixa NOME DA TÉCNICA desta aba espelha ele. Achado na planilha gerada, e não no gerador.
 _rot_tec = [c for linha in WB0["CARTEIRA"].iter_rows() for c in linha if isinstance(c.value, str) and "DECLARAD" in c.value]
@@ -363,6 +368,10 @@ def prepara(nome, ficha):
         poe(cel, ft)
     for cel, v in ficha.get("celulas", {}).items():
         a[cel] = v
+    # 08/10/2026 (B41): as invocações que a ficha tem, escritas na aba INVOCAÇÕES como o jogador faz (o nome e a aquisição)
+    for (_, j, k), (nome_i, aquis_i) in zip(fi.lugares(), ficha.get("invocacoes", [])):
+        g = fi.celulas_da_ficha(fi.linha_da_fileira(j), k)
+        wb[fi.NOME][g["nome"]], wb[fi.NOME][g["aquis"]] = nome_i, aquis_i
     if ficha.get("tecnica_declarada") and CAMPO_TEC:      # 05/10/2026: escrito na CARTEIRA, como o jogador faz
         wb["CARTEIRA"][CAMPO_TEC] = ficha["tecnica_declarada"]
     # o IFS e o TEXTJOIN ficam crus na ficha, porque ela vive no Sheets; o LibreOffice só os reconhece com o prefixo do Excel
@@ -556,6 +565,10 @@ FICHAS = {**{k: v[1] for k, v in LIVROS.items()}, "kaori": KAORI, "velho": VELHO
           "sorteio-2": sorteada(11, 2, False), "sorteio-7": sorteada(12, 7), "sorteio-13": sorteada(13, 13),
           "sorteio-21": sorteada(14, 21), "sorteio-30": sorteada(15, 30)}
 FICHAS["kaori"] = {**FICHAS["kaori"], "tecnica_declarada": "Peso Emprestado"}
+# 08/10/2026 (B41): duas por espaço conhecido e uma domada na ficha do meio (ocupam 2); na velha, uma por espaço, uma
+# criada e um lugar sem nome com a aquisição de fábrica (ocupa 1)
+FICHAS["meio"] = {**FICHAS["meio"], "invocacoes": [("Cão de sombra", "Espaço conhecido"), ("Vigia", "Maldição domada"), ("Gato", "Espaço conhecido")]}
+FICHAS["velho"] = {**FICHAS["velho"], "invocacoes": [("Coruja", "Espaço conhecido"), ("Boneco", "Criação"), (None, "Espaço conhecido")]}
 # o arnes-amaldicoada.py roda esta regressão dezenas de vezes, e pede só algumas fichas para cada rodada ser curta
 SO = [x for x in os.environ.get("AMALDICOADA_SO", "").split(",") if x]
 if SO:
@@ -683,13 +696,17 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
     cp_regra = cel.get(G["cp_regra"]) or 0
     em_passivas = sum(CP_PASSIVA[p] for p in passivas[:fa.PAGAS] if p) + max(0, cp_regra - 1)
     no_dominio = ESPACOS_DO_DOMINIO.get(cel.get(G["degrau"]), 0)
-    livres = espacos + leque - montados - em_passivas - no_dominio
-    sem = "⚠ " if em_passivas + no_dominio > espacos else ""
+    # 08/10/2026 (B41): a invocação adquirida por espaço conhecido ocupa um espaço (Construir invocações); a domada, a
+    # criada e a de lista de ritual, não. A ficha de invocação sem nome não existe
+    em_invoc = sum(1 for nome_i, aquis_i in ficha.get("invocacoes", []) if nome_i and aquis_i == "Espaço conhecido")
+    livres = espacos + leque - montados - em_passivas - no_dominio - em_invoc
+    sem = "⚠ " if em_passivas + no_dominio + em_invoc > espacos else ""
     esperado = {"maior_classe": str(maior_classe(n)), "espacos": str(espacos), "leque": f"+{leque}", "em_feiticos": str(montados),
-                "em_passivas": f"{sem}{em_passivas}", "no_dominio": f"{sem}{no_dominio}", "livres": ("⚠ " if livres < 0 else "") + str(livres)}
+                "em_passivas": f"{sem}{em_passivas}", "no_dominio": f"{sem}{no_dominio}", "em_invocacoes": f"{sem}{em_invoc}",
+                "livres": ("⚠ " if livres < 0 else "") + str(livres)}
     t = G["orc_caixas"] + 1
     lido = {k: v(f"{c1}{t}") for k, (c1, _) in zip(esperado, G["cols_orc"])}
-    checa(f"{nome}: o Orçamento (maior Classe, espaços, Leque, feitiços, Passivas, Domínio e livres)", lido == esperado, f"{lido} != {esperado}")
+    checa(f"{nome}: o Orçamento (maior Classe, espaços, Leque, feitiços, Passivas, Domínio, invocações e livres)", lido == esperado, f"{lido} != {esperado}")
     ci = cel.get(G["classe_do_indice"]) or (1 if nome == "nova" else maior_classe(n))
     zq = TEC["classe_0"]["quantos"][conta(TEC["classe_0"]["niveis"], n) - 1]
     zd = TEC["classe_0"]["dados"][conta(TEC["classe_0"]["niveis"], n) - 1]
@@ -888,7 +905,7 @@ for nome in [x for x in ("kaori", "rota-sem", "rota-corpo", "rota-celeste", "rot
                    (f"{distintos[0]}, das armas", f"d20 + {mae + atr[distintos[0]]}", str(8 + mae + atr[distintos[0]])) if len(distintos) == 1 else
                    ("Por grupo", "Por grupo", "Por grupo"))
     else:
-        esp_top = tuple(txt(f[IDX[k]].value) if k != "atributo" else txt(f["Z51"].value) for k in ("atributo", "conjuração", "cd de feitiço"))
+        esp_top = tuple(txt(f[IDX[k]].value) if k != "atributo" else txt(f[ATRIBUTO_DE_CONJURACAO].value) for k in ("atributo", "conjuração", "cd de feitiço"))
     lido_top = (v(G["atributo"]), v(G["conjuracao"]), v(G["cd"]))
     checa(f"{nome}: a linha de cima da Técnica (atributo, conjuração e CD)", lido_top == esp_top, f"{lido_top} != {esp_top}")
     # o que cada rota compra: os menus de Passiva e de aptidão, e o menu da peça da rota

@@ -77,6 +77,12 @@ assert len(PX_COLUNAS) == COLS
 # as linhas de uma ficha, contadas da faixa do nome
 L0 = 9                                       # a primeira fileira de fichas, e o conjunto
 N_ATR, N_PER, N_FAM, N_TAL, N_TALX, N_LIB = 5, 7, 5, 8, 3, 3
+# 08/10/2026 (B41): a Integridade da entidade com alma. O corpo não autônomo não tem alma (Invocações em campo)
+COM_ALMA, SEM_ALMA = "Com alma", "Sem alma"
+# o que a caixa do estágio diz: inteira, os quatro estágios (Estágios de Integridade) e a entidade sem alma
+ESTAGIOS = ("Alma inteira", "Estágio 1 · desvantagem em perícias", "Estágio 2 · metade do deslocamento, +1 PE por Classe",
+            "Estágio 3 · desvantagem em ataques e TRs, Classe pela metade", "Estágio 4 · caída, como a zero de vida",
+            "Sem alma · imune a dano de Alma")
 EM_USO = ("MÃO 1", "MÃO 2", "VESTE")         # o equipamento em uso, um lugar por linha
 N_GUARDA = 6                                 # as linhas de item guardado
 N_BAS, N_ESP, N_EXT = 2, 8, 3
@@ -249,7 +255,8 @@ def celulas_da_ficha(r, k):
          # --- a mesa
          "vida": _a1(c[0], r + 4), "vida_max": _a1(c[1], r + 4), "temp": _a1(c[2], r + 4), "delta": _a1(c[3], r + 4),
          "reserva_rot": _a1(c[4], r + 3), "reserva": _a1(c[4], r + 4), "barra": _a1(c[0], r + 6),
-         "cond": _a1(c[0], r + 9), "notas": _a1(c[0], r + 16), "equip_rot": _a1(c[0], r + 23),
+         "alma": _a1(c[0], r + 9), "integ": _a1(c[1], r + 9), "integ_max": _a1(c[2], r + 9), "estagio": _a1(c[3], r + 9),
+         "cond": _a1(c[0], r + 13), "notas": _a1(c[0], r + 18), "equip_rot": _a1(c[0], r + 23),
          "eq": [_a1(c[1], r + 24 + i) for i in range(len(EM_USO))], "eq_vol": [_a1(c[4], r + 24 + i) for i in range(len(EM_USO))],
          "guarda_rot": _a1(c[0], r + 27), "guarda": [_a1(c[0], r + 28 + i) for i in range(N_GUARDA)],
          "guarda_vol": [_a1(c[4], r + 28 + i) for i in range(N_GUARDA)],
@@ -363,6 +370,7 @@ def trocas(layout, cor_da_barra=None):
     ATRIBUTOS = D.faixa("atributos")
     D.tabela("testes", ["teste de resistência"], [[n] for n, _ in TESTES])
     D.tabela("fisico", ["físico usa"], [["Força"], ["Destreza"]])
+    D.tabela("alma", ["a alma da entidade"], [[COM_ALMA], [SEM_ALMA]])
     D.tabela("pericias", ["perícia", "atributo da perícia"], R["pericias"])
     PERICIAS = D.faixa("pericias")
     D.tabela("carga", ["carga do talismã"], [[SEM_CARGA], [COM_CARGA]])
@@ -395,11 +403,11 @@ def trocas(layout, cor_da_barra=None):
     fichas_c = [celulas_da_ficha(linha_da_fileira(j), k) for _, j, k in LUG]
     entradas = (["ficha", "nome", "tipo", "aquis", "nfixo", "talisma"] + [f"p{i}" for i in range(N_ATR)] + [f"u{i}" for i in range(N_ATR)] +
                 ["acerto", "fis", "trT"] + [f"us{i}" for i in range(5)] + [f"ut{i}" for i in range(4)] +
-                ["vida_c", "temp", "reserva", "evol"] + [f"f{i}" for i in range(N_FAM)] +
+                ["vida_c", "temp", "reserva", "evol", "alma", "integ_c"] + [f"f{i}" for i in range(N_FAM)] +
                 [f"per{i}" for i in range(N_PER)] + [f"tal{i}" for i in range(N_TAL)] + [f"tx{i}" for i in range(N_TALX)] +
                 [f"lc{i}" for i in range(N_LIB)] + ["exp"])
     contas = (["tem", "acomp", "n", "cl", "db"] + [f"t{i}" for i in range(N_ATR)] + ["gastos", "disp", "marc", "acima", "va", "atq", "cd",
-               "def", "cri", "vida", "vida0", "atual", "desl", "vf"] + [f"tr{i}" for i in range(4)] + ["nper", "tper", "esp", "nbas", "ntal", "ttal",
+               "def", "cri", "vida", "vida0", "atual", "imax", "integ0", "iatual", "d_imax", "d_est", "desl", "vf"] + [f"tr{i}" for i in range(4)] + ["nper", "tper", "esp", "nbas", "ntal", "ttal",
                "ent", "ret", "resmax", "carga", "nfam", "rep", "maxfam"] +
               # o que a aba mostra
               ["d_titulo", "d_lomb", "d_mae", "d_ent", "d_ret", "d_pontos", "d_atq", "d_cd", "d_desl"] + [f"d_tr{i}" for i in range(4)] +
@@ -422,7 +430,7 @@ def trocas(layout, cor_da_barra=None):
              "vida_c": da(g["vida"]), "temp": f"=N({_A(g['temp'], IV)})",
              # o Volume do que ela empunha, veste e guarda: a soma das caixas de VOL. do equipamento
              "evol": f"=SUM({_A(g['eq_vol'][0], IV)}:{_A(g['eq_vol'][-1], IV)},{_A(g['guarda_vol'][0], IV)}:{_A(g['guarda_vol'][-1], IV)})",
-             "reserva": da(g["reserva"]), "exp": da(g["exp"]["degrau"])}
+             "reserva": da(g["reserva"]), "exp": da(g["exp"]["degrau"]), "alma": da(g["alma"]), "integ_c": da(g["integ"])}
         for k in range(N_ATR):
             o[f"p{k}"], o[f"u{k}"] = f"=N({_A(g['pts'][k], IV)})", f"=N({_A(g['buff'][k], IV)})"
         for k in range(5):
@@ -465,6 +473,20 @@ def trocas(layout, cor_da_barra=None):
         # caixa de ± grava o número. Enquanto ninguém mexe, acompanha a máxima.
         o["vida0"] = f'=IF({P("tem")}=0,"",{P("vida")})'
         o["atual"] = f'=IF({P("vida_c")}="",{P("vida")},MAX(0,MIN(IFERROR(VALUE({P("vida_c")}),{P("vida")}),{P("vida")})))'
+        # 08/10/2026 (B41): a Integridade da entidade. "Criaturas que não sejam personagens jogadores usam metade da vida
+        # máxima, arredondada para baixo, com mínimo 1" (Dano na alma); "Uma entidade com alma que chega a zero de
+        # Integridade cai sem ser destruída ... Os estágios de Integridade também valem para ela: o PE adicional e o teto
+        # de Classe se aplicam às especiais que ela executa" (Queda e destruição); "Um corpo não autônomo não tem alma".
+        # A caixa da atual nasce cheia, como a da vida, e é livre.
+        com = f'AND({P("tem")}=1,{P("alma")}<>"{SEM_ALMA}")'
+        o["imax"] = f'=IF({com},MAX(1,INT({P("vida")}/2)),"")'
+        o["integ0"] = f'={P("imax")}'
+        o["iatual"] = (f'=IF({P("imax")}="","",IF({P("integ_c")}="",{P("imax")},'
+                       f'MAX(0,MIN(IFERROR(VALUE({P("integ_c")}),{P("imax")}),{P("imax")}))))')
+        o["d_imax"] = f'=IF({P("tem")}=0,"",IF({P("imax")}="","—",{P("imax")}))'
+        ia, im = P("iatual"), P("imax")
+        o["d_est"] = (f'=IF({P("tem")}=0,"",IF({im}="","{ESTAGIOS[5]}",IF({ia}<=0,"{ESTAGIOS[4]}",IF({ia}<={im}/4,"{ESTAGIOS[3]}",'
+                      f'IF({ia}<={im}/2,"{ESTAGIOS[2]}",IF({ia}<={im}*3/4,"{ESTAGIOS[1]}","{ESTAGIOS[0]}"))))))')
         o["desl"] = f'=9+{P("us4")}'
         o["vf"] = f'=IF({P("fis")}="Destreza",{P("t1")},{P("t0")})'
         for k, (nome_tr, atr) in enumerate(TESTES):
@@ -566,6 +588,13 @@ def trocas(layout, cor_da_barra=None):
     # existe depois que ela nasce: é o acabamento do construir() que escreve cada uma (ligarSaltos_, no Codigo.gs), lendo
     # daqui a caixa da lista, o alvo e a célula do texto, como nos saltos da FICHA AMALDIÇOADA. O alvo é o número da
     # lombada da ficha, que fica à vista com a fileira e a coluna de fichas fechadas.
+    # --- o que a FICHA AMALDIÇOADA lê daqui (08/10/2026, B41): quantas fichas com nome foram adquiridas por espaço
+    # conhecido. Cada uma ocupa um espaço de feitiço, Manejo ou Kata, e o Orçamento de lá desconta. Ela acha a coluna
+    # pelo cabeçalho, na linha 1, e o valor na linha 2
+    por_espaco = LIV["aquisicoes"][0]["nome"]
+    if por_espaco != "Espaço conhecido" or DADOS_IV != fa.DADOS_DA_INVOCACAO:
+        raise SystemExit(f"ficha_invocacoes: a aquisicao por espaco devia ser a primeira do livro, e e {por_espaco!r}")
+    D.tabela("para_fora", [fa.ESPACOS_POR_INVOCACAO], [[f'=COUNTIFS({FCOL("tem")},1,{FCOL("aquis")},"{por_espaco}")']])
     D.tabela("saltos", ["salto", "caixa do salto", "alvo do salto", "nome do salto"],
              [[f"Invocação {i + 1}", fp._endereco(celulas_do_conjunto()["rol"][i], IV), fp._endereco(fichas_c[i]["lombada_num"], IV),
                FI("d_rol", i)] for i in range(len(LUG))])
@@ -810,6 +839,13 @@ NOTAS = {
              "primeiro, e a vida não passa da máxima.",
     "vida_atual": "Nasce cheia, igual à máxima, e a acompanha até você escrever aqui ou usar a caixa de ±. Em branco, a vida "
                   "conta como cheia. Curar não funciona a zero: use o retorno ou o descanso longo.",
+    "alma": "O corpo amaldiçoado não autônomo não tem alma: é imune ao dano de Alma e não tem Integridade. O autônomo, com alma, "
+            "precisa constar da definição.",
+    "integ": "Nasce cheia e acompanha a máxima até você escrever aqui. Cada ponto de dano de Alma tira 1 de vida e 1 de "
+             "Integridade. A zero ela cai, como a zero de vida, e volta com pelo menos 1.",
+    "integ_max": "Metade da vida máxima, para baixo, com mínimo 1: a regra das criaturas que não são personagens.",
+    "estagio": "Pelo que falta da Integridade: um quarto, desvantagem em perícias; metade, deslocamento pela metade e +1 PE por "
+               "Classe nas especiais; três quartos, desvantagem em ataques e TRs e a Classe das especiais pela metade; toda, ela cai.",
     "reserva": "Só a maldição domada com técnica própria: nível × (1 + um terço da Essência dela). Escreva quanto ainda resta. O "
                "descanso curto recupera um quarto.",
     "equip": "O que ela empunha e veste, com o Volume de cada coisa ao lado. O limite é de 5 + Força, e vale para tudo o que ela "
@@ -1075,8 +1111,15 @@ def aba(layout, tr):
         assert f.add("digita", C5, r + 4, C5, r + 5) == g["reserva"]
         assert f.add("barra", c[0], r + 6, C5, r + 6,
                      f'=IFERROR(SPARKLINE({FI("atual", i)},{{"charttype","bar";"max",MAX(1,{FI("vida", i)});"color1",{H["cor da barra"]}}}),"")') == g["barra"]
-        assert caixa(c[0], C5, r + 8, "CONDIÇÕES E USOS GASTOS", None, "txt", None, alt=5) == g["cond"]
-        assert caixa(c[0], C5, r + 15, "ANOTAÇÕES", None, "txt", None, alt=6) == g["notas"]
+        # 08/10/2026 (B41): a Integridade, embaixo da barra de vida (a forma A do estudo). As condições e as anotações
+        # cederam duas linhas cada uma, e a ficha não cresceu
+        assert caixa(c[0], c[0], r + 8, "ALMA", COM_ALMA, "cel", nota("alma")) == g["alma"]
+        f.menu(g["alma"], D.faixa("alma", aba=DI))
+        assert caixa(c[1], c[1], r + 8, "INTEGRIDADE ATUAL", f"={FI('integ0', i)}", "digita", nota("integ")) == g["integ"]
+        assert caixa(c[2], c[2], r + 8, "INTEGRIDADE MÁXIMA", v("d_imax"), "num", nota("integ_max")) == g["integ_max"]
+        assert caixa(c[3], C5, r + 8, "ESTÁGIO", v("d_est"), "cel", nota("estagio")) == g["estagio"]
+        assert caixa(c[0], C5, r + 12, "CONDIÇÕES E USOS GASTOS", None, "txt", None, alt=3) == g["cond"]
+        assert caixa(c[0], C5, r + 17, "ANOTAÇÕES", None, "txt", None, alt=4) == g["notas"]
         # o equipamento: a forma C do estudo de 07/10/2026 ("pode ser a C, é mais simples, ai faz uma listinha maior de
         # itens guardados"). Um lugar por linha para o que está em uso, e a lista do que ela guarda. A lista vai numa
         # coluna só: as colunas do bloco têm 96 px (são as das cartas), e duas colunas iguais com o Volume não fecham.
@@ -1229,7 +1272,7 @@ def aba(layout, tr):
         # a caixa de ± de cada ficha, com a vida atual, a temporária e a máxima dela: o onEdit aplica e limpa
         "redutores": [[g["delta"], g["vida"], g["temp"], g["vida_max"]] for g in tr["fichas_c"]],
         # a caixa que nasce com conta e o jogador escreve por cima: o devolverConta_ do Codigo.gs não a devolve
-        "livres": [g["vida"] for g in tr["fichas_c"]],
+        "livres": [g[k] for g in tr["fichas_c"] for k in ("vida", "integ")],
     }
 
 

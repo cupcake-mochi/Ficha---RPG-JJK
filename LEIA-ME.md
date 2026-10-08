@@ -2,6 +2,8 @@
 
 Este pacote continua o trabalho da conversa anterior. **Nada foi recomeçado do zero, e nenhum arquivo dos seus repositórios foi editado.**
 
+**08/10/2026: a ficha ganhou o que o livro manda registrar e ela não tinha (B41).** Na `FICHA`, embaixo das barras: `SEQUELAS`, `EXAUSTÃO`, `RESISTÊNCIAS`, `IMUNIDADES` e o espelho dos dois Legados; na `FICHA PESSOAL`, o traço, as cicatrizes e os Legados; na `INVOCAÇÕES`, a Integridade da entidade; na `FICHA AMALDIÇOADA`, a caixa `EM INVOCAÇÕES` do Orçamento. Para isso o gerador abre oito linhas no meio da `FICHA` (`ficha-v01/linhas_novas.py`) e as preenche (`ficha-v01/estado_do_personagem.py`): quem lê o `layout.json` por conta própria usa o `linhas_novas.carrega()`, e nenhum teste deve trazer endereço da `FICHA` escrito à mão.
+
 **07/10/2026: a aba `INVOCAÇÕES` tem as doze fichas (a grade de 2 × 6), o sistema se chama Ciclo Maldito na ficha e a versão é a 1.0.** A montagem no Sheets passou a levar duas execuções: o `construir()` para sozinho e pede o `continuar()`. Está na segunda etapa do B40, no `PENDENCIAS.md`.
 
 **06/10/2026: a aba `INVOCAÇÕES` começou a ser construída** (a invocação refeita depois do livro reconstruído, com uma ficha na primeira etapa; o `apps-script/Invocacoes.gs` é o quarto arquivo do Apps Script). O que foi decidido, o que mudou do estudo e o que falta estão no B40 do `PENDENCIAS.md`.

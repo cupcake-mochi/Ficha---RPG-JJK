@@ -76,6 +76,18 @@ PERTURBACOES = [
      '''MAX(0,{P('db')}-IF({P('nm')}>0,1,0))''', '''MAX(0,{P('db')})''', "fichas sorteadas"),
     ("o ataque com Condição ou Prende deixa de mostrar o TR (a D43 do livro)", GER,
      '''&IF({P("ptr")}>0," · TR"&IF({P("cdf")}="",""," CD "&{P("cdf")}),""),\'''', ''',\'''', "mostra também o TR e a CD"),
+    # --- 08/10/2026 (B41): a Integridade da entidade com alma
+    ("a Integridade da entidade usa a vida inteira, e não a metade", GER,
+     '''o["imax"] = f'=IF({com},MAX(1,INT({P("vida")}/2)),"")\'''', '''o["imax"] = f'=IF({com},MAX(1,INT({P("vida")})),"")\'''',
+     "a Integridade da entidade é metade da vida máxima"),
+    ("a entidade sem alma ganha Integridade", GER,
+     '''com = f'AND({P("tem")}=1,{P("alma")}<>"{SEM_ALMA}")\'''', '''com = f'AND({P("tem")}=1,{P("alma")}<>"outra coisa")\'''',
+     "a entidade sem alma não tem Integridade"),
+    ("o estágio 1 da entidade só começa na metade da Integridade", GER,
+     '''IF({ia}<={im}*3/4,"{ESTAGIOS[1]}","{ESTAGIOS[0]}")''', '''IF({ia}<={im}*2/4,"{ESTAGIOS[1]}","{ESTAGIOS[0]}")''',
+     "os estágios da entidade seguem o que falta"),
+    ("a Integridade atual da entidade nasce em branco", GER,
+     '''o["integ0"] = f'={P("imax")}\'''', '''o["integ0"] = \'=""\'''', "a Integridade da entidade é metade da vida máxima"),
     ("Prende deixa de ser peça que pede TR", AMA, 'PEDEM_TR = ("Prende", "Cerca")', 'PEDEM_TR = ("Cerca",)', "mostra também o TR e a CD"),
 ]
 

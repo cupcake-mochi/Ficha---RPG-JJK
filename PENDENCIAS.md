@@ -2773,7 +2773,7 @@ das invocações e os saltos da Amaldiçoada "funcionaram após reconstruir"; e 
 execuções, com cerca de 14 s de acabamento**, sem travas. O registro completo de cada execução ele não mandou (só o
 resumo), então o tempo de cada aba nessa montagem não está conferido.*
 
-### B41 · A revisão: o que o livro manda registrar e a ficha não tinha — **ESTUDO ENTREGUE em 07/10/2026; espera ele escolher as formas**
+### B41 · A revisão: o que o livro manda registrar e a ficha não tinha — **CONSTRUÍDA em 08/10/2026, com as formas que ele escolheu; falta montar no Sheets**
 
 *Da lista da revisão (terceira etapa do B40) ele escolheu, em 07/10/2026: "Traços, sequelas, cicatrizes, exaustão,
 resistencias e imunidades, integridade da entidade com alma, espaço de feitiço ocupado por invocação". Ficaram de fora
@@ -2802,7 +2802,7 @@ pelo Firefox sem tela). Quatro blocos, desenhados como a planilha, com o novo em
 3. *Integridade da entidade: **A** uma linha embaixo da barra de vida, com o estágio; **B** a mesma, sem o estágio.*
 4. *O espaço por invocação: uma caixa `EM INVOCAÇÕES` no Orçamento, sem forma para escolher.*
 
-*Indiquei A, B e A. Nada foi construído.*
+*Indiquei A, B e A. Nada foi construído nesse dia; a construção está no fim desta seção.*
 
 **O número da `CARTEIRA` (B33), no mesmo dia.** *"atualiza la pra 1.0". O número era `"Nº M-"` + a versão sem o ponto + o
 nome, do tempo em que a versão era 0.258 e saía `M-0258`; com a versão em 1.0 saía `M-10`. Passa a mostrar a versão
@@ -2818,3 +2818,58 @@ saber o nome das abas dela; o C1 do `decisoes-ficha.json` aponta a aba `INVOCAÇ
 `conferir-decisoes.py` cobra isso e que a pasta não exista. O `HANDOFF-sessao-invocacoes.md`, de setembro, ficou: é
 histórico. Tudo continua no git, do commit `0b3339c` para trás.*
 
+
+
+#### A construção (08/10/2026)
+
+**O que ele escolheu das formas:** *"1 - A, mas acredito que pode ser +- como na C, colocar espaços separados e talz"; "2 - B, mas acho
+que ter um espaço para acesso na ficha pra ver pelo menos o legado de exceção/mecanico seria ideal, lembrando q da pra
+criar legado, ent n precisa fazer lista acho eu"; "3 - A"; "4 - Perfeito". E, dos Legados: "Ambos" (entram o traço e os
+dois Legados).*
+
+| onde | o que entrou |
+|---|---|
+| `FICHA`, embaixo das barras | uma linha com quatro caixas separadas, no passo das caixas do REGISTRO: `SEQUELAS` e `EXAUSTÃO` (menus de 0 a 3, com a consequência escrita embaixo: a janela da próxima queda, e o efeito do degrau), `RESISTÊNCIAS` e `IMUNIDADES` (texto). Embaixo, `LEGADO 1` e `LEGADO 2`, que espelham o dossiê da `FICHA PESSOAL` (o nome, o tipo e o que faz). Do degrau 2 de Exaustão em diante o `DESLOCAMENTO` fica em até 4,5 m, sem aumentar o que já está menor |
+| `FICHA PESSOAL`, no dossiê | `CICATRIZES` divide a linha da aparência; `TRAÇO · UMA FRASE DA SUA HISTÓRIA` entra em cima da história; e os dois Legados fecham o dossiê, de ponta a ponta: o nome, o tipo (menu: Narrativo, De rolagem, De exceção) e o que faz, em texto livre. O dossiê foi de 27 para 35 linhas |
+| `INVOCAÇÕES`, em cada ficha | uma linha embaixo da barra de vida: `ALMA` (menu: Com alma, Sem alma), `INTEGRIDADE ATUAL` (nasce cheia e é livre, como a vida), `INTEGRIDADE MÁXIMA` (metade da vida máxima, para baixo, mínimo 1) e `ESTÁGIO` (pelo que falta, em fração exata). Sem alma, a máxima fica em traço. As condições e as anotações cederam duas linhas cada, e a ficha não cresceu |
+| `FICHA AMALDIÇOADA`, no Orçamento | a caixa `EM INVOCAÇÕES`: conta as fichas da aba `INVOCAÇÕES` com nome e aquisição `Espaço conhecido`, e desconta dos livres; como o Talento e o Domínio, o feitiço do Leque não a paga |
+
+**Como as linhas entraram no meio da `FICHA`.** *As seções 1 a 6 vêm da planilha exportada, e até aqui tudo o que as limpezas
+acrescentaram entrou no fim da aba. O `ficha-v01/linhas_novas.py` abre oito linhas depois da linha em branco que fica
+embaixo da faixa do estágio de Integridade, antes de qualquer limpeza, e desloca o que aponta para baixo dali: as
+células, as mesclagens (a lombada, que atravessa, estica), os menus, as regras de cor, as alturas e a âncora das
+imagens da `FICHA`; as fórmulas da `FICHA`, e as da `CARTEIRA` e do índice da `DADOS` que a citam; e as coordenadas do
+`_meta`. Daí em diante as limpezas acham as caixas pelo rótulo e pelo índice, como já faziam. O
+`ficha-v01/estado_do_personagem.py` preenche as linhas. O `comparar-ficha-01.py` usa o mesmo mapa para comparar a
+exportação com a ficha gerada (a linha 39 da exportação é a 47 da gerada), e fecha em IGUAIS, contando as caixas
+novas. Quem lê o `layout.json` por conta própria (o `conferir-ficha-xlsx.py`, a `regressao-kaori-na-ficha.py`) passa a
+usar o `linhas_novas.carrega()`.*
+
+**O espaço por invocação atravessa duas abas.** *A `FICHA AMALDIÇOADA` é gerada antes da `INVOCAÇÕES` e não sabe o endereço
+dela: a `DADOS_INVOC` publica a contagem numa coluna com o cabeçalho `espaços por invocação`, e o Orçamento a acha pelo
+cabeçalho (`INDEX` e `MATCH` na linha 1).*
+
+**Os Legados na `FICHA` mostram os dois, e não só os de exceção ou de rolagem.** *Ele pediu "pelo menos o legado de
+exceção/mecanico". O espelho mostra os dois Legados, com o tipo escrito ao lado do nome: os narrativos do livro também
+têm uso de mesa. Se ele preferir só os mecânicos, é uma troca na conta do espelho. Avisei.*
+
+**O que não entrou.** *A Exaustão não muda sozinha a recuperação de PE fora de ambiente propício (a nota da caixa diz a
+porcentagem de cada degrau), nem marca a desvantagem nas perícias, nos ofícios, nos ataques e nos TRs: o texto embaixo
+da caixa diz o efeito, e a rolagem é da mesa. As Sequelas também não mexem em conta nenhuma. O limite de 4,5 m é a
+única consequência que virou conta.*
+
+**Dois testes traziam endereço da `FICHA` escrito à mão, e a bateria os acendeu.** *Com as oito linhas, a
+`regressao-amaldicoada.py` lia o menu do atributo de conjuração em `Z51` (hoje `Z59`) e falhava em três fichas; e o
+`arnes-pessoal.py` plantava um defeito na nota da mão principal em `D41` (hoje `D49`). Nenhum era defeito da ficha. A
+regressão passa a achar a caixa pelo rótulo, na planilha gerada; o arnês segue com o endereço no trecho, e avisa
+sozinho quando ele ficar velho.*
+
+**Conferido (08/10/2026).** *A bateria inteira rodou até o fim com tudo dentro: dezessete dos dezenove passaram de
+primeira, e a `regressao-paleta.js` também. Os dois que acenderam foram os do parágrafo de cima; consertados, a
+`regressao-amaldicoada.py` rodou inteira de novo e passa, e o `arnes-pessoal.py` também (78 defeitos plantados acendem,
+e o contra-teste fica verde). Dos arneses que rodam à mão, só os defeitos novos: os cinco do `arnes-invocacoes.py` (a
+Integridade com a vida inteira, a entidade sem alma com Integridade, o estágio 1 na metade, a atual em branco, e o
+`Prende` sem TR) e os dois do `arnes-amaldicoada.py` (a invocação por espaço conhecido que não desconta, e a domada
+que desconta) acendem; os outros 25 e 71 não rodaram de novo, e os trechos deles existem todos no código de hoje.
+Tamanhos: `Ficha.gs` perto de 820 KB (o teto é 900). Nada disto rodou no Sheets de verdade: as oito linhas novas mudam
+o endereço de quase tudo na `FICHA`, e quem tem ficha montada precisa montar de novo.*

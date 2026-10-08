@@ -266,8 +266,9 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   const livre = (nomeAba, a1) => { const n0 = S.P.avisos.length; try { S.ss.getSheetByName(nomeAba).getRange(a1).setValue(7); S.ctx.onEdit(ed(nomeAba, a1, 7)); } catch (e) { erroD = e; }
     return S.ss.getSheetByName(nomeAba).getRange(a1).getValue() === 7 && S.P.avisos.length === n0; };
   const spP = ABAS.find((a) => a.nome === 'FICHA PESSOAL'), spI = ABAS.find((a) => a.nome === 'INVOCAÇÕES'), idxF = S.ctx.indice();
+  // 08/10/2026 (B41): a Integridade atual da invocação é livre como a vida (duas caixas por ficha)
   ok('a vida da FICHA, o Volume de um item e a vida atual de uma invocação ficam como o jogador escreveu, sem aviso',
-     !erroD && (spP.livres || []).length > 1 && (spI.livres || []).length === 12 && livre('FICHA', S.ctx.cel_(idxF, 'vida')) && livre('FICHA PESSOAL', spP.livres[1]) && livre('INVOCAÇÕES', spI.livres[4]),
+     !erroD && (spP.livres || []).length > 1 && (spI.livres || []).length === 24 && livre('FICHA', S.ctx.cel_(idxF, 'vida')) && livre('FICHA PESSOAL', spP.livres[1]) && livre('INVOCAÇÕES', spI.livres[4]),
      erroD ? erroD.message : `${(spP.livres || []).length} · ${(spI.livres || []).length}`);
   // se o Sheets não entender a fórmula na pontuação do português (a caixa mostra #ERROR!), ela vai como o construir() grava
   const G = S.acha('GLOSSÁRIO'), onde = 'A' + G.maxR, deVerdade = S.ctx.formulaNoIdioma_;

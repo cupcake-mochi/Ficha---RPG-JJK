@@ -29,6 +29,16 @@ from openpyxl.comments import Comment
 AQUI = os.path.dirname(os.path.abspath(__file__))
 LAYOUT = json.load(open(os.path.join(AQUI, "layout.json"), encoding="utf-8"))
 
+# 08/10/2026 (B41): as linhas que abrem no meio da FICHA, embaixo das barras, para o estado do personagem. Vem antes de
+# TUDO: daqui para a frente a exportacao e uma planilha que ja tinha essas linhas, e as limpezas acham as caixas pelo
+# rotulo e pelo indice. Ver linhas_novas.py; quem preenche as linhas e o estado_do_personagem.py, la embaixo.
+import linhas_novas
+_LN = linhas_novas.insere(LAYOUT)
+print(f"as linhas novas da FICHA: {_LN['n']} linha(s) abertas depois da {_LN['depois']}; o que estava abaixo desceu")
+import estado_do_personagem
+_EP = estado_do_personagem.trocas(LAYOUT, _LN)
+print(f"o estado do personagem embaixo das barras: {estado_do_personagem.aplica(LAYOUT, _EP)} celula(s) nas linhas novas")
+
 # v0.239 do sistema, decisao do Mizuki: a aba DADOS sai do catalogo, e nao da exportacao. O
 # layout.json continua copia fiel da planilha viva; o conteudo da DADOS e escrito por cima
 # dele aqui. Ver dados_catalogo.py.

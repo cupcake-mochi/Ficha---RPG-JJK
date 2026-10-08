@@ -37,6 +37,9 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NOME = "FICHA AMALDIÇOADA"
 AM = f"'{NOME}'!"
 DADOS_AM = "DADOS_AM"
+# 08/10/2026 (B41): o espaço que uma invocação ocupa. A aba de dados das invocações publica a contagem numa coluna com
+# este cabeçalho, e o Orçamento a acha pelo cabeçalho, porque esta aba é gerada antes daquela e não sabe o endereço
+DADOS_DA_INVOCACAO, ESPACOS_POR_INVOCACAO = "DADOS_INVOC", "espaços por invocação"
 DA = f"{DADOS_AM}!"
 APOIO = "técnica, feitiços e aptidões"      # a linha de apoio do cabeçalho
 
@@ -455,7 +458,7 @@ def geometria():
     # --- o orçamento e o índice de preços
     t = abre("orcamento")
     g.update({"orc_caixas": t + 1, "indice": t + 5, "classe_do_indice": f"D{t + 6}"})
-    g["cols_orc"] = [("D", "E"), ("F", "H"), ("J", "K"), ("L", "N"), ("P", "P"), ("Q", "Q"), ("R", "T")]
+    g["cols_orc"] = [("D", "E"), ("F", "H"), ("J", "K"), ("L", "N"), ("P", "P"), ("Q", "Q"), ("R", "R"), ("S", "T")]
     g["cols_indice"] = [("E", "E"), ("F", "F"), ("G", "H"), ("J", "J"), ("K", "K"), ("L", "L"), ("M", "N"), ("P", "T")]
     lin = fecha("orcamento", t + 6)
     # --- os feitiços: três lotes de 12, quatro fileiras de três cartas cada
@@ -903,7 +906,7 @@ def trocas(layout, CAT=None, TEC=None):
     for nome in ("nível", "maestria", "maior classe", "marcos", "refino", "essência", "escolhas de Leque", "liberações",
                  "classe 0 quantos", "classe 0 dados", "espaços do nível", "espaços de pacto", "espaços", "feitiços montados",
                  "classe passiva da regra própria", "espaços da regra própria", "espaços em passivas", "espaços no domínio",
-                 "sem espaço", "cabem", "livres", "passivas pagas", "passivas do Leque", "aptidões anotadas", "aptidões compráveis",
+                 "espaços em invocações", "sem espaço", "cabem", "livres", "passivas pagas", "passivas do Leque", "aptidões anotadas", "aptidões compráveis",
                  "pactos permanentes", "teto de pactos", "classe do índice", "famílias livres", "famílias fechadas",
                  "metade do refino", "terço do refino", "degrau do domínio", "dados da técnica máxima", "montagem da técnica máxima",
                  "gasto da técnica máxima", "fechada na técnica máxima", "rota", "equipamento", "arma",
@@ -949,8 +952,15 @@ def trocas(layout, CAT=None, TEC=None):
         "espaços em passivas": "=" + "+".join(cp_de(p["nome"]) for p in passivas_c[:PAGAS]) + f"+{H['espaços da regra própria']}",
         "degrau do domínio": f'={_A(G["degrau"], AM)}&""',
         "espaços no domínio": f"=IF({ROTA}<>1,0,IFERROR(VLOOKUP({H['degrau do domínio']},{DOM},2,FALSE),0))",
-        "sem espaço": f"=IF({H['espaços em passivas']}+{H['espaços no domínio']}>{H['espaços']},1,0)",
-        "cabem": f"={H['espaços']}+{H['escolhas de Leque']}-{H['espaços em passivas']}-{H['espaços no domínio']}",
+        # 08/10/2026 (B41): "um espaço dá uma entidade do seu nível. A vaga continua ocupada quando ela está recolhida ou
+        # fora da cena. Classe 0 e outros benefícios recebidos fora da lista de espaços não fornecem vagas para essa troca"
+        # (Construir invocações, Espaço conhecido). Cada ficha da aba INVOCAÇÕES com nome e essa aquisição ocupa um; e,
+        # como o Talento e o Domínio, só gasta espaço: o feitiço do Leque não paga
+        "espaços em invocações": (f'=IFERROR(INDEX({DADOS_DA_INVOCACAO}!$2:$2,MATCH("{ESPACOS_POR_INVOCACAO}",'
+                                  f'{DADOS_DA_INVOCACAO}!$1:$1,0)),0)'),
+        "sem espaço": f"=IF({H['espaços em passivas']}+{H['espaços no domínio']}+{H['espaços em invocações']}>{H['espaços']},1,0)",
+        "cabem": (f"={H['espaços']}+{H['escolhas de Leque']}-{H['espaços em passivas']}-{H['espaços no domínio']}"
+                  f"-{H['espaços em invocações']}"),
         "livres": f"={H['cabem']}-{H['feitiços montados']}",
         "passivas pagas": "=" + "+".join(f'IF({_A(p["nome"], AM)}<>"",1,0)' for p in passivas_c[:PAGAS]),
         "passivas do Leque": "=" + "+".join(f'IF({_A(p["nome"], AM)}<>"",1,0)' for p in passivas_c[PAGAS:]),
@@ -1120,6 +1130,8 @@ NOTAS = {
     "em_passivas": "Cada Talento pago ocupa tantos espaços quanto a Categoria de Efeito dele. A Regra Própria acima da Categoria 1 "
                    "entra aqui. Talento e Domínio só gastam espaço: o feitiço do Leque não paga nenhum dos dois.",
     "no_dominio": "A Expansão de Domínio custa 2, 3 ou 5 espaços, conforme o degrau.",
+    "em_invocacoes": "Cada invocação da aba INVOCAÇÕES com nome e aquisição Espaço conhecido ocupa um espaço, mesmo recolhida. "
+                     "Domada, criada ou de lista de ritual não ocupa.",
     "livres": "Os espaços, mais os feitiços do Leque, menos o que já foi gasto.",
     "indice": "Escolha a Classe e a fileira mostra os números dela. Em branco, mostra os da sua maior Classe.",
     "zero_indice": "Não muda com o menu: quantos feitiços de Classe 0 o nível dá, e os dados deles.",
@@ -1412,6 +1424,7 @@ def aba(layout, tr):
               ("DO LEQUE", f'="+"&{H["escolhas de Leque"]}', "leque"), (f'="EM "&UPPER({ROT("feitiços")})', f"={H['feitiços montados']}", "em_feiticos"),
               ("EM TALENTOS", f'=IF({sem}=1,"{T_ERRO} ","")&{H["espaços em passivas"]}', "em_passivas"),
               ("NO DOMÍNIO", f'=IF({sem}=1,"{T_ERRO} ","")&{H["espaços no domínio"]}', "no_dominio"),
+              ("EM INVOCAÇÕES", f'=IF({sem}=1,"{T_ERRO} ","")&{H["espaços em invocações"]}', "em_invocacoes"),
               ("LIVRES", f'=IF({H["livres"]}<0,"{T_ERRO} ","")&{H["livres"]}', "livres")]
     G["orcamento"] = {}
     for (rot, formula, nota), (c1, c2) in zip(caixas, G["cols_orc"]):

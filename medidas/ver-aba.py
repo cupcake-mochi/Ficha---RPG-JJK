@@ -40,6 +40,20 @@ def arte_do_script():
     return arte
 
 
+def estado_de_exemplo(wb, idx, G):
+    """08/10/2026 (B41): o estado do personagem embaixo das barras da FICHA, e o traço, as cicatrizes e os dois Legados
+    do dossiê da FICHA PESSOAL, que a FICHA espelha"""
+    f, p = wb["FICHA"], wb[fp.NOME]
+    f[idx["sequelas"]], f[idx["exaustão"]] = 1, 2
+    f[idx["resistências"]], f[idx["imunidades"]] = "Fogo · Cortante (Alicerce)", "Envenenado"
+    p[G["traco"]] = "Meu irmão entrou para a escola antes de mim e desapareceu numa missão."
+    p[G["cicatrizes"]] = "Queimadura no antebraço esquerdo (missão do metrô)."
+    for k, (nome, tipo, texto) in enumerate((
+            ("O Jeito Errado", "Narrativo", "Uma vez por dia, ao ver alguém cometer o mesmo erro, pergunte ao mestre o que aquilo está custando à pessoa."),
+            ("Casca Grossa", "De exceção", "Uma vez por descanso longo, ignore uma condição Leve quando ela seria aplicada."))):
+        p[G["legado_nome"][k]], p[G["legado_tipo"][k]], p[G["legado_texto"][k]] = nome, tipo, texto
+
+
 def exemplo(wb, R, G):
     """a Kaori do estudo: nível 2, Bastião, Força 3, com o kit que o estudo mostra"""
     f, p, c = wb["FICHA"], wb[fp.NOME], wb["CARTEIRA"]
@@ -54,6 +68,7 @@ def exemplo(wb, R, G):
             if isinstance(cel.value, str) and cel.value.startswith("Coloque o nome"):
                 cel.value = "Kaori"
     f[idx["atr_base_Força"]], f[idx["atr_base_Destreza"]], f[idx["caminho"]], f[idx["nivel"]] = 3, 2, "Bastião", 2
+    estado_de_exemplo(wb, idx, G)
     p[G["principal"]], p[G["secundaria"]], p[G["situacao"]] = "Faca", "Broquel", "Escuro"
     p[G["ienes"]] = 61000
     for i, (nome, qtd) in enumerate([("Kanabō", 1), ("Faca", 1), ("Kunai", 2), ("Broquel", 1)]):
@@ -114,6 +129,7 @@ def exemplo_amaldicoada(wb):
             if isinstance(cel.value, str) and cel.value.startswith("Coloque o nome"):
                 cel.value = "Kaori"
     f[idx["atr_base_Força"]], f[idx["atr_base_Essência"]], f[idx["caminho"]], f[idx["nivel"]] = 3, 2, "Bastião", 10
+    estado_de_exemplo(wb, idx, fp.geometria(fp.regras()))
     f[idx["refino escolhido"]] = 2
     a[G["nome_tecnica"]], a[G["tipo_dano"]] = "Peso Emprestado", "Impacto"
     a[f"D{G['regra'] + 1}"] = "Tudo que eu prendo entre as minhas mãos fica mais pesado."

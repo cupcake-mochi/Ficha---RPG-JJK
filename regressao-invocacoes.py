@@ -371,6 +371,10 @@ monta("Múltiplas", 5, CAO, trilha=fi.MULTIPLAS, sozinha=True)
 # o inventário pequeno: o Volume do que ela empunha, veste e guarda, contra o limite de 5 + Força (8, com Força 3)
 monta("equipada", 5, com(CAO, eq=["Katana", None, "Traje 1"], eq_vol=[1, None, 1], guarda=["Kit de primeiros socorros"], guarda_vol=[0.5]))
 monta("carregada demais", 5, com(CAO, eq_vol=[3, 2, 2], guarda_vol=[0.5, None, None, None, None, 1]))
+# 08/10/2026 (B41): a Integridade da entidade. O cão de nível 5 tem 27 de vida, e 13 de Integridade (metade, para baixo)
+for _nome, _int in (("alma 10", 10), ("alma 9", 9), ("alma 6", 6), ("alma 3", 3), ("alma 0", 0), ("alma demais", 40)):
+    monta(_nome, 5, com(CAO, integ=_int))
+monta("sem alma", 5, com(CAO, alma=fi.SEM_ALMA, integ=5))
 monta("talismã sem carga", 13, com(CAO, tipo=fi.SH_CRIACAO, aquis="Criação", nivel_fixo=13, talisma=fi.SEM_CARGA))
 
 # 4. as fichas sorteadas
@@ -529,6 +533,20 @@ checa("o equipamento soma o Volume do que ela empunha, veste e guarda (1 + 1 + 0
       re.fullmatch(r"EQUIPAMENTO · 2[.,]5 DE 8 DE VOLUME", str(_eq)) is not None and str(_dm).startswith(fi.T_ERRO)
       and re.search(r"EQUIPAMENTO · 8[.,]5 DE 8 DE VOLUME · PASSOU DO LIMITE$", str(_dm)) is not None
       and le("equipada")(G["guarda_rot"]) == "GUARDADO · SÓ COM A CARACTERÍSTICA DE TRANSPORTE", f"{_eq} | {_dm}")
+# 08/10/2026 (B41): a Integridade da entidade com alma. Metade da vida máxima, para baixo (27 -> 13); nasce cheia; os
+# estágios pelo que falta (um quarto, metade, três quartos, toda), com frações exatas: de 13, perder 3 ainda não é um
+# quarto (3,25), perder 4 é; e o corpo sem alma não tem Integridade
+_i = lambda nome: (le(nome)(G["integ_max"]), le(nome)(G["estagio"]))
+checa("a Integridade da entidade é metade da vida máxima (13 de 27), nasce cheia e sem estágio, e a ficha vazia não mostra nada",
+      (v(G["integ"]), v(G["integ_max"]), v(G["estagio"]), v(G["alma"])) == (13, 13, fi.ESTAGIOS[0], fi.COM_ALMA)
+      and [le("vazia")(G[k]) or "" for k in ("integ", "integ_max", "estagio")] == ["", "", ""],
+      f'{v(G["integ"])} {v(G["integ_max"])} {v(G["estagio"])} | {[le("vazia")(G[k]) for k in ("integ", "integ_max", "estagio")]}')
+_esp = {"alma 10": fi.ESTAGIOS[0], "alma 9": fi.ESTAGIOS[1], "alma 6": fi.ESTAGIOS[2], "alma 3": fi.ESTAGIOS[3], "alma 0": fi.ESTAGIOS[4],
+        "alma demais": fi.ESTAGIOS[0]}
+checa("os estágios da entidade seguem o que falta da Integridade, em fração exata: com 10 de 13 inteira, 9 estágio 1, 6 estágio 2, 3 estágio 3, 0 estágio 4",
+      all(_i(n) == (13, e) for n, e in _esp.items()), str({n: _i(n) for n in _esp}))
+checa("a entidade sem alma não tem Integridade: a máxima fica em traço e o estágio diz que ela é imune ao dano de Alma",
+      _i("sem alma") == ("—", fi.ESTAGIOS[5]), str(_i("sem alma")))
 # 07/10/2026: a vida como na FICHA do jogador, e o que saiu da mesa
 checa("a VIDA MÁXIMA aparece ao lado da VIDA ATUAL, com o mesmo número da caixa dos números (27), e o título da ficha diz a vida",
       v(G["vida_max"]) == 27 == v(G["stat"][3]) and v(G["titulo"]).endswith("vida 27 de 27"), f'{v(G["vida_max"])} {v(G["stat"][3])} {v(G["titulo"])}')

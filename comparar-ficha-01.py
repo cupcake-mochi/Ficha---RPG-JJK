@@ -23,6 +23,25 @@ DADOS_CAT = dados_catalogo.valores()
 # as limpezas leem o indice da DADOS, e desde 17/09/2026 ele e reescrito em formula antes delas (limpeza
 # 11). O comparador refaz a mesma ordem numa copia do layout, para ler o que o monta.py leu.
 import copy, indice_ficha, ficha_layout, correcoes_texto
+# 08/10/2026 (B41): o monta.py abre oito linhas no meio da FICHA, embaixo das barras, antes de qualquer limpeza
+# (linhas_novas.py), e as preenche com o estado do personagem (estado_do_personagem.py). O comparador faz o mesmo no
+# layout dele, e compara a exportacao pela linha em que cada coisa foi parar: a linha 39 da exportacao e a 47 da
+# ficha gerada. As linhas novas, a exportacao nao tem; o que se cobra delas e o que o estado_do_personagem declara.
+import linhas_novas, estado_do_personagem
+LN = linhas_novas.insere(LAY)
+EP = estado_do_personagem.trocas(LAY, LN)
+estado_do_personagem.aplica(LAY, EP)
+_NOVAS = set(LN["linhas"])
+def _linha_da_exportacao(n, r):
+    """a linha da exportacao que foi parar na linha r da ficha gerada; None nas linhas que o monta.py abriu"""
+    if n != linhas_novas.ABA or r <= LN["depois"]:
+        return r
+    return None if r in _NOVAS else r - LN["n"]
+def _faixas_na_gerada(n, sqref):
+    """as faixas de uma mesclagem, de um menu ou de uma regra de cor da exportacao, no endereco da ficha gerada"""
+    if n != linhas_novas.ABA:
+        return str(sqref)
+    return " ".join(linhas_novas._faixa(x, LN["depois"], LN["n"]) for x in str(sqref).split())
 LAY_FL = copy.deepcopy(LAY)
 FL = ficha_layout.trocas(LAY_FL)
 ficha_layout.aplica(LAY_FL, FL)
@@ -41,6 +60,13 @@ cabecalho.aplica(LAY_FL, CAB)
 def _dentro_de_mescla_do_cabecalho(n, r, c):
     """a celula esta dentro de uma caixa mesclada nova do cabecalho, e nao e o canto dela"""
     for m in CAB["mescladas"].get(n, []):
+        (r1, c1), (r2, c2) = (indice_ficha._lc(x) for x in m.split(":"))
+        if r1 <= r <= r2 and c1 <= c <= c2 and (r, c) != (r1, c1):
+            return True
+    return False
+def _dentro_de_mescla_do_estado(n, r, c):
+    """a celula esta dentro de uma caixa mesclada do estado do personagem (B41), e nao e o canto dela"""
+    for m in EP["mescladas"].get(n, []):
         (r1, c1), (r2, c2) = (indice_ficha._lc(x) for x in m.split(":"))
         if r1 <= r <= r2 and c1 <= c <= c2 and (r, c) != (r1, c1):
             return True
@@ -243,7 +269,7 @@ for n in wa.sheetnames:
     print(f"A ABA {n}")
     print("=" * 74)
 
-    lin = max(sa.max_row, sb.max_row)
+    lin = max(sa.max_row + (LN["n"] if n == linhas_novas.ABA else 0), sb.max_row)
     col = max(sa.max_column, sb.max_column)
     print(f"  extensao: original {sa.max_row}x{sa.max_column} · "
           f"gerada {sb.max_row}x{sb.max_column}")
@@ -252,7 +278,15 @@ for n in wa.sheetnames:
     iguais = ruido = 0
     for r in range(1, lin + 1):
         for c in range(1, col + 1):
-            pa, pb = perfil(sa.cell(row=r, column=c)), perfil(sb.cell(row=r, column=c))
+            _ra = _linha_da_exportacao(n, r)
+            if _ra is None:
+                # linha que o monta.py abriu: a exportacao nao a tem. Parte da linha em branco de cima, sem valor
+                pa = {**perfil(sa.cell(row=LN["depois"], column=c)), "valor": None}
+            else:
+                pa = perfil(sa.cell(row=_ra, column=c))
+                if isinstance(pa["valor"], str):
+                    pa["valor"] = linhas_novas.desloca_formula(pa["valor"], n == linhas_novas.ABA, LN["depois"], LN["n"])
+            pb = perfil(sb.cell(row=r, column=c))
             # limpeza 21: a divisoria entre a moldura (cabecalho e lombada, em tinta) e o miolo, na cor da regua
             # (correcoes_borda.py). Tira do gerado o lado que so ele tem, e o resto da celula segue as outras
             # regras — uma celula da lombada estendida e uma da divisoria ao mesmo tempo, por exemplo.
@@ -268,7 +302,22 @@ for n in wa.sheetnames:
                 ruido += 1
                 esperadas["Arial 10 de fábrica em célula vazia"] += 1
                 continue
-            coord = sa.cell(row=r, column=c).coordinate
+            coord = sb.cell(row=r, column=c).coordinate
+            # 08/10/2026 (B41): as caixas do estado do personagem, nas linhas novas. O estilo e o que o
+            # estado_do_personagem declara; o valor tambem, fora o espelho dos dois Legados, que o ficha_pessoal.py
+            # escreve depois (aponta para o dossie da FICHA PESSOAL)
+            _ep = EP["celulas"].get(n, {}).get(coord)
+            if _ep is not None and _ra is None and _dentro_de_mescla_do_estado(n, r, c):
+                # a celula de dentro de uma caixa mesclada nao guarda o estilo proprio na pasta de trabalho
+                if pb["valor"] is None:
+                    esperadas["célula de dentro de caixa mesclada do estado do personagem"] += 1
+                    continue
+            elif _ep is not None and _ra is None:
+                _est = _perfil_do_estilo(LAY["estilos"][_ep[1]])
+                _espelho = coord in EP["G"]["legado"] and isinstance(pb["valor"], str) and "'FICHA PESSOAL'!" in pb["valor"]
+                if all(pb[k] == _est[k] for k in _est) and (pb["valor"] == _ep[0] or _espelho):
+                    esperadas["caixa do estado do personagem, nas linhas novas embaixo das barras"] += 1
+                    continue
             # limpeza 4: a barra "agora" do original vem com o numero do
             # personagem que o Mizuki estava jogando, e o molde tem de nascer
             # cheio. A lista mora no layout.json, nunca aqui.
@@ -511,7 +560,7 @@ for n in wa.sheetnames:
     print(f"  células idênticas: {iguais}")
     print(f"  células que só diferem pelo Arial de fábrica: {ruido}")
 
-    ma, mb = {str(x) for x in sa.merged_cells.ranges}, {str(x) for x in sb.merged_cells.ranges}
+    ma, mb = {_faixas_na_gerada(n, x) for x in sa.merged_cells.ranges}, {str(x) for x in sb.merged_cells.ranges}
     print(f"  mesclagens: {len(ma)} original · {len(mb)} gerada")
     for x in sorted(ma - mb):
         if x in FL["mescladas_sai"].get(n, []):      # limpeza 13: as caixas refeitas e a foto
@@ -527,7 +576,9 @@ for n in wa.sheetnames:
         else:
             difs.append(f"{n}: mesclagem {x} faltou")
     for x in sorted(mb - ma):
-        if x in FL["mescladas"].get(n, []):          # limpeza 13: as caixas refeitas e a foto
+        if x in EP["mescladas"].get(n, []):          # 08/10/2026 (B41): as caixas do estado do personagem
+            esperadas["mesclagem do estado do personagem"] += 1
+        elif x in FL["mescladas"].get(n, []):        # limpeza 13: as caixas refeitas e a foto
             esperadas["mesclagem do desenho da mesa"] += 1
         elif x in CAB["mescladas"].get(n, []):       # limpeza 23: a marca, o titulo, o apoio, o nome e o Caminho
             esperadas["mesclagem do cabeçalho no molde do estudo"] += 1
@@ -570,7 +621,8 @@ for n in wa.sheetnames:
     print(f"  larguras: {len(la)} original · {len(lb)} gerada · "
           f"{trocadas} trocadas de 3,63 para 4,0")
 
-    ha = {int(k): v.height for k, v in sa.row_dimensions.items() if v.height}
+    ha = {(linhas_novas.linha_nova(int(k), LN["depois"], LN["n"]) if n == linhas_novas.ABA else int(k)): v.height
+          for k, v in sa.row_dimensions.items() if v.height}
     hb = {int(k): v.height for k, v in sb.row_dimensions.items() if v.height}
     for k in set(ha) | set(hb):
         if ha.get(k) != hb.get(k):
@@ -583,7 +635,7 @@ for n in wa.sheetnames:
             difs.append(f"{n}: altura da linha {k}: {ha.get(k)} != {hb.get(k)}")
     print(f"  alturas de linha: {len(ha)} original · {len(hb)} gerada")
 
-    va = {(str(v.sqref), v.type, v.formula1) for v in sa.data_validations.dataValidation}
+    va = {(_faixas_na_gerada(n, v.sqref), v.type, v.formula1) for v in sa.data_validations.dataValidation}
     vbs = {(str(v.sqref), v.type, v.formula1) for v in sb.data_validations.dataValidation}
     print(f"  menus suspensos: {len(va)} original · {len(vbs)} gerada")
     for x in sorted(va - vbs):
@@ -609,6 +661,9 @@ for n in wa.sheetnames:
     for x in sorted(vbs - va):
         if x[0] in _troca_fa.values() and any(k for k, v in _troca_fa.items() if v == x[0]):
             continue
+        if x in {(m["onde"], m["tipo"], m["formula"]) for m in EP["menus"].get(n, [])}:   # 08/10/2026 (B41)
+            esperadas["menu de 0 a 3 das Sequelas e da Exaustão"] += 1
+            continue
         if x[0] in _form_fa and x[2] == _form_fa[x[0]]:
             continue
         if x in _menus_de:                           # limpeza 10: o menu do equipamento e o do refino
@@ -626,7 +681,7 @@ for n in wa.sheetnames:
                 fb = cor(r.dxf.fill.bgColor) if (r.dxf and r.dxf.fill and r.dxf.fill.bgColor) else None
                 out.append((str(faixa.sqref), r.type, fc, fb))
         return out
-    ra, rb = regras(sa), regras(sb)
+    ra, rb = [(_faixas_na_gerada(n, x[0]),) + x[1:] for x in regras(sa)], regras(sb)
     de_fabrica = [x for x in ra if x[3] == "FFB7E1CD"]
     esperadas["condicional verde de fábrica"] += len(de_fabrica)
     ra_limpa = [x for x in ra if x[3] != "FFB7E1CD"]

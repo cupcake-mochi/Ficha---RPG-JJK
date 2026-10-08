@@ -45,7 +45,12 @@ PERTURBACOES = [
     ("os espaços de feitiço esquecem os marcos", GER,
      '''"espaços do nível": f"=2+INT({H['nível']}/2)+{H['marcos']}"''', '''"espaços do nível": f"=2+INT({H['nível']}/2)"''', "o Orçamento"),
     ("o feitiço do Leque não entra no que cabe", GER,
-     '''"cabem": f"={H['espaços']}+{H['escolhas de Leque']}-''', '''"cabem": f"={H['espaços']}-''', "o Orçamento"),
+     '''"cabem": (f"={H['espaços']}+{H['escolhas de Leque']}-''', '''"cabem": (f"={H['espaços']}-''', "o Orçamento"),
+    # 08/10/2026 (B41): a invocação adquirida por espaço conhecido ocupa um espaço
+    ("a invocação por espaço conhecido não desconta dos espaços livres", GER,
+     '''                  f"-{H['espaços em invocações']}"),''', '''                  f""),''', "o Orçamento"),
+    ("a invocação domada ou criada passa a ocupar espaço", "ficha-v01/ficha_invocacoes.py",
+     '''[[f'=COUNTIFS({FCOL("tem")},1,{FCOL("aquis")},"{por_espaco}")']]''', '''[[f'=COUNTIFS({FCOL("tem")},1)']]''', "o Orçamento"),
     ("o pacto permanente que concede espaço não soma", GER,
      '''"espaços": f"={H['espaços do nível']}+{H['espaços de pacto']}"''', '''"espaços": f"={H['espaços do nível']}"''', "o Orçamento"),
     ("a Regra Própria cobra a Classe Passiva inteira", GER,

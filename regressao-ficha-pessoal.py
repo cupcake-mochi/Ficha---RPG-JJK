@@ -86,6 +86,9 @@ def num(s):
 
 WB0 = load_workbook(ARQ)
 IDX = indice_da_ficha(WB0)
+import linhas_novas as _lnv
+# a linha depois da qual o monta.py abre as linhas novas da FICHA (B41), lida da exportação
+_ln_depois = _lnv.depois_de(json.load(open("ficha-v01/layout.json", encoding="utf-8")))
 ATR = {n: IDX["atr_base_" + n] for n in ("Força", "Destreza", "Constituição", "Inteligência", "Essência")}
 ARMAS = {a["nome"]: a for a in R["armas"] + R["escudos"]}
 UNIF = {u["nome"]: u for u in R["uniformes"]}
@@ -93,9 +96,17 @@ E_INI = G["equip_ini"]
 
 
 def monta(forca=0, destreza=0, principal=fp.SOCO, secundaria=fp.MAO_LIVRE, vestindo="Traje 1", grau="Grau 4",
-          equip=(), itens=(), livres=(), treinos=(), grupos=(), caminho=None, nivel=2, missoes=()):
+          equip=(), itens=(), livres=(), treinos=(), grupos=(), caminho=None, nivel=2, missoes=(),
+          exaustao=None, sequelas=None, legados=()):
     def preenche(wb):
         f, p = wb["FICHA"], wb[ABA]
+        # 08/10/2026 (B41): o estado do personagem, embaixo das barras da FICHA, e os Legados, no dossiê desta aba
+        if exaustao is not None:
+            f[IDX["exaustão"]] = exaustao
+        if sequelas is not None:
+            f[IDX["sequelas"]] = sequelas
+        for k, (nome_l, tipo_l, texto_l) in enumerate(legados):
+            p[G["legado_nome"][k]], p[G["legado_tipo"][k]], p[G["legado_texto"][k]] = nome_l, tipo_l, texto_l
         f[ATR["Força"]], f[ATR["Destreza"]] = forca, destreza
         f[IDX["nivel"]] = nivel
         if caminho:
@@ -206,6 +217,15 @@ CASOS = {
     "linha livre": dict(forca=3, principal="Lança-foguete", secundaria="Faca", equip=[("Faca", 1)], grupos=["Lâmina Curta"],
                         livres=[("Lança-foguete", 1, "Massa", 1, "3d6", "Rompe", 5, 3, None, None, None)], nivel=30),
     "duas mãos": dict(forca=6, destreza=2, principal="Kanabō", vestindo="Traje 3", equip=MENU4[1:]),
+    # 08/10/2026 (B41): a Exaustão e as Sequelas da FICHA, e os dois Legados do dossiê
+    "exaustão 1": dict(forca=3, principal="Faca", equip=KIT, exaustao=1, sequelas=1),
+    "exaustão 2": dict(forca=3, principal="Faca", equip=KIT, exaustao=2, sequelas=2,
+                       legados=[("O Jeito Errado", "Narrativo", "Uma vez por dia, pergunte ao mestre o que o erro está custando."),
+                                ("Casca Grossa", "De exceção", None)]),
+    "exaustão 3, sem a Força": dict(forca=2, destreza=2, principal="Kanabō", secundaria="Broquel", vestindo="Revestimento 1",
+                                    equip=KIT, itens=ITENS, grupos=["Massa"], exaustao=3, sequelas=3),
+    "exausta e carregada": dict(forca=3, principal="Faca", secundaria="Broquel", equip=KIT, itens=ITENS, exaustao=2,
+                                livres=[("Cofre", 1, "Carga", None, None, None, None, 9, None, None, None)]),
 }
 
 
@@ -309,7 +329,10 @@ def esperado(c):
     # 04/10/2026, o livro reconstruído: arma empunhada sem a Força corta o deslocamento pela metade; carga acima do limite
     # não deixa andar. Uniforme e escudo sem a Força só perdem a proteção (a Defesa, mais abaixo)
     meia = falta_p or (falta_s and not escudo)
-    out["__deslocamento"] = "0 m" if carga > limite else "4,5 m" if meia else "9 m"
+    # 08/10/2026 (B41): do degrau 2 de Exaustão em diante o deslocamento fica limitado a 4,5 m, e o limite não aumenta o
+    # que já está menor ou zerado (Dano e Recuperação, Exaustão)
+    exausto = (c.get("exaustao") or 0) >= 2
+    out["__deslocamento"] = "0 m" if carga > limite else "4,5 m" if (meia or exausto) else "9 m"
     # a Defesa da FICHA continua a mesma conta, agora pelo espelho: 10 + Destreza (com o teto) + proteção
     return out
 
@@ -395,6 +418,23 @@ for nome, c in CASOS.items():
         if lido != v:
             erros.append(f"{k}: a ficha diz {lido!r}, a regra diz {v!r}")
     checa(f"{nome}: as {len(esp)} caixas e notas batem com a regra", not erros, " · ".join(erros))
+# 08/10/2026 (B41): o que as caixas do estado dizem embaixo, e o espelho dos Legados na FICHA
+import estado_do_personagem as _ep
+_EG = _ep.lugares(_ln_depois)
+_le = lambda caso, cel: txt(LIDO["caso-" + caso]["FICHA"][cel].value)
+_jan = {0: "Próxima queda: 3 rodadas de janela", 1: "Próxima queda: 2 rodadas de janela", 2: "Próxima queda: 1 rodada de janela",
+        3: "Próxima queda: Derrotado na hora"}
+_efe = {0: "Sem penalidade", 1: "Desvantagem em perícias e ofícios", 2: "Desv. em perícias e ofícios · até 4,5 m",
+        3: "Desv. em perícias, ofícios, ataques e TRs · até 4,5 m"}
+_casos_e = {"de fábrica": (0, 0), "exaustão 1": (1, 1), "exaustão 2": (2, 2), "exaustão 3, sem a Força": (3, 3)}
+checa("as Sequelas dizem a janela da próxima queda (3, 2 e 1 rodada, e Derrotado na hora com 3), e a Exaustão o efeito de cada degrau, que somam",
+      all((_le(n, _EG["janela"]), _le(n, _EG["efeito"])) == (_jan[s], _efe[e]) for n, (e, s) in _casos_e.items())
+      and (IDX["sequelas"], IDX["exaustão"]) == (_EG["sequelas"], _EG["exaustao"]),
+      str({n: (_le(n, _EG["janela"]), _le(n, _EG["efeito"])) for n in _casos_e}))
+checa("a FICHA espelha os dois Legados do dossiê: o nome, o tipo e o que faz; o Legado sem texto mostra o nome e o tipo, e a ficha sem Legado fica em branco",
+      _le("exaustão 2", IDX["legado 1"]) == "O Jeito Errado · Narrativo: Uma vez por dia, pergunte ao mestre o que o erro está custando."
+      and _le("exaustão 2", IDX["legado 2"]) == "Casca Grossa · De exceção" and _le("de fábrica", IDX["legado 1"]) == "" == _le("de fábrica", IDX["legado 2"]),
+      f'{_le("exaustão 2", IDX["legado 1"])!r} | {_le("exaustão 2", IDX["legado 2"])!r} | {_le("de fábrica", IDX["legado 1"])!r}')
 _cx = notas_vivas(LIDO["caso-de fábrica"]["DADOS"])
 checa("a nota da arma mora na linha embaixo de cada mão",
       (_cx.get("arma da principal", (0, 0))[1], _cx.get("arma da secundária", (0, 0))[1]) == (G["det_principal"], G["det_secundaria"]), str(_cx))

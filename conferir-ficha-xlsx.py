@@ -110,7 +110,14 @@ print("\nA LARGURA DAS ABAS DE PC")
 # 14/09/2026: cada aba com a largura dela, e não a da MESA; as ocultas ficam de fora,
 # porque ninguém as vê. 07/10/2026: a ficha de invocação solta (ficha-invocacao/) foi apagada, a pedido do Mizuki; as
 # abas dela já não estavam na ficha desde 01/10, e a aba INVOCAÇÕES de hoje tem a largura decidida mais abaixo.
-_LIMPA = json.load(open("ficha-v01/layout.json", encoding="utf-8"))["_meta"].get("largura_limpa")
+def _layout_de_hoje():
+    """o layout.json como o monta.py o usa: desde 08/10/2026 (B41) com as oito linhas abertas no meio da FICHA e as caixas
+    do estado do personagem nelas (ficha-v01/linhas_novas.py). Os endereços abaixo da linha 38 são os de depois."""
+    if "ficha-v01" not in sys.path:
+        sys.path.insert(0, "ficha-v01")
+    import linhas_novas
+    return linhas_novas.carrega()
+_LIMPA = _layout_de_hoje()["_meta"].get("largura_limpa")
 def _px_col(w):
     """a conta do Sheets, a mesma do emissor: pixel = 8 x largura - 1 (medidas/larguras-sheets.json),
     com a largura da limpeza 2 voltando a ser a exportada. Até 15/09/2026 aqui era 7 x largura."""
@@ -461,7 +468,7 @@ checa("o menu de Origem é a lista das rotas de criação, com as duas Restriç�
 _esc = f[IDX.get("escolhas de perícia", "A1")]
 # a letra do desenho sai da exportação do Mizuki, e não da constante: comparar com a constante deixava a
 # checagem verde com ela de volta em 14 (o arnes da rodada de 17/09/2026 achou)
-_lay_o = json.load(open("ficha-v01/layout.json", encoding="utf-8"))
+_lay_o = _layout_de_hoje()
 _ab_o = next(a for a in _lay_o["abas"] if a["nome"] == "FICHA")
 _cel_o = [r for r in _ab_o["celulas"] if r[0] == IDX.get("escolhas de perícia")]
 _sz_o = _lay_o["estilos"][_cel_o[0][2]][0][1] if _cel_o and _cel_o[0][2] is not None else None
@@ -867,11 +874,11 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     checa(f"as {_vazias} células vazias levam o alinhamento, a quebra, o itálico e o negrito da planilha",
           _vazias > 0 and not _fmt_ruim, str(_fmt_ruim[:3]))
 
-    _lay = _js.load(open("ficha-v01/layout.json", encoding="utf-8"))
+    _lay = _layout_de_hoje()
     # 17/09/2026: a limpeza 13 aumenta a foto da CARTEIRA, então a caixa esperada é a de depois dela
     sys.path.insert(0, "ficha-v01")
     import ficha_layout as _fl
-    for _nome, _ims in _fl.trocas(_js.load(open("ficha-v01/layout.json", encoding="utf-8")))["imagens"].items():
+    for _nome, _ims in _fl.trocas(_layout_de_hoje())["imagens"].items():
         next(a for a in _lay["abas"] if a["nome"] == _nome)["imagens"] = _ims
     # 02/10/2026: a limpeza 27 (as Habilidades) põe a arte de respingos ao lado do título da seção 7
     import habilidades as _hb
@@ -879,7 +886,7 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     _fl7["imagens"] = [_hb.arte_no_titulo(i, _hb.linha_do_titulo(_fl7, 7)) if i["arquivo"] == _hb.ARTE else i for i in _fl7["imagens"]]
     # 03/10/2026: a limpeza 28 (moldura_foto.py) tira a moldura de dentro da caixa da foto e põe um canto em cada quina
     import moldura_foto as _mf
-    _lmf = _js.load(open("ficha-v01/layout.json", encoding="utf-8"))
+    _lmf = _layout_de_hoje()
     _fl.aplica(_lmf, _fl.trocas(_lmf))
     _cmf = next(a for a in _lay["abas"] if a["nome"] == "CARTEIRA")
     _cmf["imagens"] = [i for i in _cmf["imagens"] if i["arquivo"] != _mf.ARTE_VELHA] + _mf.trocas(_lmf)["cantos"]

@@ -32,6 +32,7 @@ import indice_ficha as ix
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NOME = "FICHA PESSOAL"
+TIPOS_DE_LEGADO = ("Narrativo", "De rolagem", "De exceção")
 FP = f"'{NOME}'!"
 
 # ---------------------------------------------------------------------------------------------
@@ -63,7 +64,8 @@ ULT = len(PX_BLOCO) - 1              # a última coluna de um bloco
 FX = 2
 EQUIP_MENU, EQUIP_LIVRE, ITENS_LINHAS = 6, 2, 6
 L_DOSSIE = 8
-L_USO = L_DOSSIE + FX + 27 + 1       # o dossiê tem 27 linhas embaixo do título
+DOSSIE_LINHAS = 35                   # 08/10/2026 (B41): eram 27; entraram o traço, as cicatrizes e os dois Legados
+L_USO = L_DOSSIE + FX + DOSSIE_LINHAS + 1
 L_TREINO = L_USO + FX + 5 + 1        # em uso: rótulo, valor em duas linhas, detalhe e marcas
 L_FILEIRA = L_TREINO + FX + 13 + 1   # a lista de treino tem 13 linhas
 L_EQUIP = L_FILEIRA + 3 + 1
@@ -256,7 +258,11 @@ def regras(CAT=None):
 def geometria(R):
     d, u = L_DOSSIE + FX - 1, L_USO + FX - 1          # a última linha do título: o que vem embaixo conta dela
     g = {
-        "grau": f"AB{d + 2}", "nome": f"Q{d + 2}", "historia": f"Q{d + 14}",
+        "grau": f"AB{d + 2}", "nome": f"Q{d + 2}", "historia": f"Q{d + 18}",
+        # 08/10/2026 (B41): o traço, as cicatrizes e os dois Legados (o nome, o tipo e o que faz)
+        "traco": f"Q{d + 14}", "cicatrizes": f"AI{d + 10}",
+        "legado_nome": [f"D{d + 32}", f"Y{d + 32}"], "legado_tipo": [f"Q{d + 32}", f"AM{d + 32}"],
+        "legado_texto": [f"D{d + 33}", f"Y{d + 33}"],
         "principal": f"D{u + 2}", "secundaria": f"S{u + 2}", "vestindo": f"AH{u + 2}",
         "det_principal": f"D{u + 4}", "det_secundaria": f"S{u + 4}", "det_vestindo": f"AH{u + 4}",
         "marca_treino": f"D{u + 5}", "marca_forca_p": f"K{u + 5}",
@@ -564,6 +570,9 @@ def trocas(layout, CAT=None):
         (COR_DA_BARRA, _endereco(H[COR_DA_BARRA].replace("DADOS!", "").replace("$", ""), "DADOS!")),
     ]
     col_i = tabela("indice", ["campo pessoal", "célula pessoal"], [[k, v] for k, v in indice])
+    # 08/10/2026 (B41): os três tipos de Legado do livro (Origens e Legados). A tabela vai por último, depois do índice,
+    # para as colunas de antes não mudarem de lugar: o Codigo.gs acha o índice desta aba numa coluna fixa
+    tabela("legado_tipo", ["tipo de legado"], [[t_] for t_ in TIPOS_DE_LEGADO])
 
     # as colunas depois do índice são desta limpeza: o que uma exportação trouxer de uma rodada anterior é
     # reescrito, e a célula que sobrar fica vazia. Antes delas, nada pode ser tocado.
@@ -591,7 +600,19 @@ def trocas(layout, CAT=None):
     m = re.match(r'^=\((.*)\)&" m"$', des) if isinstance(des, str) else None
     if not m:
         raise SystemExit(f"o DESLOCAMENTO da FICHA ({des_c}) devia ser '=(metros)&\" m\"', e e {des!r}")
-    cel["FICHA"][des_c] = (f'=IF({H["parado pela carga"]}=1,0,({m.group(1)})/IF({H["meia marcha"]}=1,2,1))&" m"', des_c)
+    # 08/10/2026 (B41): a Exaustão no degrau 2 limita o deslocamento a 4,5 m, sem aumentar o que já está menor ("O limite
+    # de 4,5 m não aumenta um deslocamento que já esteja menor ou zerado"). A caixa da Exaustão mora embaixo das barras
+    # (estado_do_personagem.py); numa exportação de antes dela, a conta fica como era
+    import estado_do_personagem as _ep
+    metros = f'({m.group(1)})/IF({H["meia marcha"]}=1,2,1)'
+    if idx.get("exaustão"):
+        metros = f'MIN(IF(N({_A(idx["exaustão"])})>=2,{_ep.LIMITE_DA_EXAUSTAO},9999),{metros})'
+    cel["FICHA"][des_c] = (f'=IF({H["parado pela carga"]}=1,0,{metros})&" m"', des_c)
+    # e o espelho dos dois Legados: o nome, o tipo e o que faz, como estão escritos no dossiê
+    for k_, campo in enumerate(("legado 1", "legado 2")):
+        if idx.get(campo):
+            nm, tp, tx = (_A(G[q][k_], FP) for q in ("legado_nome", "legado_tipo", "legado_texto"))
+            cel["FICHA"][idx[campo]] = (f'=IF({nm}="","",{nm}&IF({tp}="",""," · "&{tp})&IF({tx}="","",": "&{tx}))', idx[campo])
     # a Defesa (defesa_equipamento.py) perde a proteção da peça usada sem a Força. Até 07/10/2026 perdia também a Destreza
     # com arma empunhada sem a Força; essa parte saiu (ver a conta "arma sem força", acima)
     df_c = idx["defesa"]
@@ -667,6 +688,14 @@ NOTAS = {
     "grau": "A sua patente na instituição. Ela define o salário e libera o Revestimento 2 e 3. Não é o grau da "
             "ferramenta que você carrega.",
     "nome": "Vem da CARTEIRA: o nome do portador é digitado lá.",
+    "traco": "Uma relação, uma lembrança, uma ambição ou um problema ainda aberto, numa frase. É uma das escolhas da Origem, "
+             "e não dá bônus.",
+    "cicatrizes": "Depois da segunda queda na mesma missão, registre com o mestre se ficou uma cicatriz e como ela é. Não dá "
+                  "modificador, e a cura não a apaga.",
+    "legado": "Você escolhe dois na criação, da lista da sua Origem ou escritos com o mestre; pelo menos um é narrativo. "
+              "Escreva o nome aqui e o que ele faz na caixa de baixo, com a frequência de uso. A FICHA mostra os dois.",
+    "legado_tipo": "Narrativo: uma pessoa, informação, relação ou acesso. De rolagem: vantagem, repetição ou mudança de um "
+                   "teste. De exceção: dispensa uma exigência ou impede um efeito, com uma contrapartida.",
     "principal": "Para uma arma aparecer neste menu, escolha ela antes nos EQUIPÁVEIS GUARDADOS, mais abaixo nesta aba. "
                  "O menu lista o Soco e o que estiver guardado lá. Com arma de duas mãos aqui, a mão secundária fica "
                  "ocupada. A linha de baixo mostra o dado e as propriedades, e a nota dela diz o que cada uma faz.",
@@ -783,7 +812,7 @@ def aba(layout, tr):
         raise SystemExit("ficha_pessoal: a CARTEIRA não declara a caixa da foto (moldura_foto.py)")
     foto_fp = f.add("foto", "D", L + 1, "O", L + 19, f"={_abs(foto[1], foto[0], 'CARTEIRA!')}", NOTAS["foto"])
     f.add("rot", "D", L + 21, "O", L + 21, "PERSONALIDADE")
-    f.add("txt", "D", L + 22, "O", L + 27)
+    f.add("txt", "D", L + 22, "O", L + 29)
     f.caixa("Q", "Z", L + 1, "NOME", f"=FICHA!{ix.indice(layout)['nome']}", nota=NOTAS["nome"])
     f.caixa("AB", "AG", L + 1, "GRAU", R["patentes"][0][0], nota=NOTAS["grau"])
     f.caixa("AI", "AM", L + 1, "IDADE")
@@ -792,12 +821,26 @@ def aba(layout, tr):
     f.caixa("Y", "AE", L + 5, "CABELO")
     f.caixa("AG", "AM", L + 5, "PELE")
     f.caixa("AO", "AT", L + 5, "GÊNERO")
-    f.add("rot", "Q", L + 9, "AT", L + 9, "APARÊNCIA")
-    f.add("txt", "Q", L + 10, "AT", L + 11)
-    f.add("rot", "Q", L + 13, "AT", L + 13, "HISTÓRIA")
-    assert f.add("txt", "Q", L + 14, "AT", L + 21) == G["historia"]
-    f.add("rot", "Q", L + 23, "AT", L + 23, "LAÇOS E ANOTAÇÕES")
-    f.add("txt", "Q", L + 24, "AT", L + 27)
+    # 08/10/2026 (B41), a forma B do estudo da revisão: as cicatrizes dividem a linha da aparência, o traço entra em
+    # cima da história, e os dois Legados fecham o dossiê, de ponta a ponta. Os Legados são texto livre ("da pra criar
+    # legado, ent n precisa fazer lista"), com o tipo num menu, e a FICHA os espelha embaixo das barras.
+    f.add("rot", "Q", L + 9, "AG", L + 9, "APARÊNCIA")
+    f.add("txt", "Q", L + 10, "AG", L + 11)
+    f.add("rot", "AI", L + 9, "AT", L + 9, "CICATRIZES", NOTAS["cicatrizes"])
+    assert f.add("txt", "AI", L + 10, "AT", L + 11) == G["cicatrizes"]
+    f.add("rot", "Q", L + 13, "AT", L + 13, "TRAÇO · UMA FRASE DA SUA HISTÓRIA", NOTAS["traco"])
+    assert f.add("txt", "Q", L + 14, "AT", L + 15) == G["traco"]
+    f.add("rot", "Q", L + 17, "AT", L + 17, "HISTÓRIA")
+    assert f.add("txt", "Q", L + 18, "AT", L + 23) == G["historia"]
+    f.add("rot", "Q", L + 25, "AT", L + 25, "LAÇOS E ANOTAÇÕES")
+    f.add("txt", "Q", L + 26, "AT", L + 29)
+    for k, ((n1, n2), (t1, t2)) in enumerate(((("D", "P"), ("Q", "W")), (("Y", "AL"), ("AM", "AT")))):
+        f.add("rot", n1, L + 31, n2, L + 31, f"LEGADO {k + 1}", NOTAS["legado"])
+        f.add("rot", t1, L + 31, t2, L + 31, "TIPO", NOTAS["legado_tipo"])
+        assert f.add("cel_esq", n1, L + 32, n2, L + 32) == G["legado_nome"][k]
+        assert f.add("cel", t1, L + 32, t2, L + 32) == G["legado_tipo"][k]
+        assert f.add("txt", n1, L + 33, t2, L + 35) == G["legado_texto"][k]
+    f.menu(" ".join(G["legado_tipo"]), tr["faixa_t"]("legado_tipo"))
     f.menu(G["grau"], tr["faixa_t"]("grau", so=0))
 
     # --- em uso: as duas mãos e o que está vestido

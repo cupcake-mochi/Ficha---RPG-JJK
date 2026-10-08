@@ -262,7 +262,8 @@ if _regra(2, int(_mex1.group(1)), f"Traje {_mex1.group(2)}", 0)[0] != int(_mex1.
 import copy as _copy
 sys.path.insert(0, "ficha-v01")
 import indice_ficha as _ix, defesa_equipamento as _de, ficha_automatica as _fa, ficha_layout as _fl
-_LAY = json.load(open("ficha-v01/layout.json", encoding="utf-8"))
+import linhas_novas as _ln
+_LAY = _ln.carrega()        # 08/10/2026 (B41): a exportação com as linhas novas da FICHA abertas, como o monta.py a usa
 # a mesma ordem do monta.py: o desenho da mesa antes do índice
 _fl.aplica(_LAY, _fl.trocas(_LAY)); _ix.aplica(_LAY, _ix.trocas(_LAY)); _de.aplica(_LAY, _de.trocas(_LAY))
 _FA = _fa.trocas(_LAY)
