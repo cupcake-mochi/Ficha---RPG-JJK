@@ -1266,6 +1266,12 @@ def aba(layout, tr):
                   for formula, onde in f.menus.items()],
         "condicional": [], "imagens": pincel, "notas": f.notas,
         "grupos": {"linhas": grupos, "colunas": grupos_col},
+        # 08/10/2026, do pente-fino no Sheets: "O link da segunda invocação chega ao cabeçalho, mas a ficha continua
+        # recolhida". Para cada ficha, a célula em que o link da lista cai, a primeira linha do grupo da fileira dela e
+        # a primeira coluna do grupo da coluna de fichas dela: o abrirFichaDaInvocacao_ do Codigo.gs abre os dois
+        # quando a seleção chega nessa célula
+        "abrir": [[tr["fichas_c"][i]["lombada_num"],
+                   linha_da_fileira(j) + (O["hab"] + 1 if j == 0 else 2), lombada(k) + 1] for i, (_, j, k) in enumerate(tr["LUG"])],
         "condicional_gs": condicional,
         "copias": copia,
         "validacao_em_matriz": True,

@@ -144,7 +144,36 @@ function continuar() {
   }
 }
 
+/**
+ * 08/10/2026: uma montagem de cada vez. Num teste desse dia o editor mostrou um erro que não dizia nada, a função foi
+ * rodada de novo e duas execuções correram juntas: a última começou com a planilha ainda em inglês ("idioma de antes:
+ * en_US" no registro, que só acontece com outra execução no meio do caminho), e a ficha terminou em FICHA PRONTA com
+ * os 22 saltos em #ERROR!. Cada execução troca o idioma da planilha inteira, na ida e na volta, e quem escreve
+ * fórmula depois que a outra devolveu o português escreve na pontuação errada.
+ *
+ * A trava é a do script (a do documento é a da troca de paleta, que solta a dela no fim de cada passo). Quem não a
+ * pega para na hora, com o recado, sem tocar na planilha. Ela se solta sozinha quando a execução acaba, mesmo morta
+ * pelos seis minutos. Sem o LockService a montagem segue sem trava, como era.
+ */
+function umaDeCadaVez_(nome, f) {
+  var trava = null;
+  try { trava = LockService.getScriptLock(); } catch (err) { trava = null; }
+  if (trava && !trava.tryLock(0)) {
+    throw new Error('já tem uma montagem rodando nesta planilha, e duas ao mesmo tempo estragam uma à outra: espere ela ' +
+                    'terminar (a página Execuções mostra) e só então rode ' + nome + '() de novo.');
+  }
+  try {
+    return f();
+  } finally {
+    if (trava) { try { trava.releaseLock(); } catch (err) { /* a execução acabando solta do mesmo jeito */ } }
+  }
+}
+
 function construir() {
+  return umaDeCadaVez_(RETOMADA_ === null ? 'construir' : 'continuar', montar_);
+}
+
+function montar_() {
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();
   var props = PropertiesService.getDocumentProperties();
@@ -246,6 +275,11 @@ function construir() {
     ss.setSpreadsheetLocale('pt_BR');
   }
   feito.push('idioma de antes: ' + idioma + ' · idioma final: pt_BR');
+  // 08/10/2026: com a planilha de volta ao português, os saltos são conferidos (ver conferirSaltos_, no Codigo.gs)
+  if (!falta) {
+    try { feito.push(conferirSaltos_(ss)); } catch (err) { feito.push('saltos NÃO conferidos: ' + err.message); }
+    rel.etapa('saltos conferidos');
+  }
 
   var seg = Math.round(rel.passou() / 1000);
   if (falta) {
@@ -285,6 +319,10 @@ function acabamento_(ss, feito, rel) {
  * vai para o inglês enquanto ela roda, como no construir().
  */
 function acabar() {
+  return umaDeCadaVez_('acabar', soOAcabamento_);
+}
+
+function soOAcabamento_() {
   var ss = SpreadsheetApp.getActive(), feito = [], rel = relogio_();
   var faltam = ABAS.filter(function (spec) { return !ss.getSheetByName(spec.nome); });
   if (faltam.length) throw new Error('a planilha não tem a aba ' + faltam[0].nome + ': rode construir() antes.');
@@ -296,6 +334,8 @@ function acabar() {
   } finally {
     ss.setSpreadsheetLocale('pt_BR');
   }
+  try { feito.push(conferirSaltos_(ss)); } catch (err) { feito.push('saltos NÃO conferidos: ' + err.message); }
+  rel.etapa('saltos conferidos');
   Logger.log('ACABAMENTO PRONTO em ' + Math.round(rel.passou() / 1000) + 's · ' + feito.join(' · ') + ' · tempos: ' + ETAPAS_.join(', '));
 }
 
@@ -649,6 +689,11 @@ function verificar() {
   var idx = indice();
   ['vida_max', 'defesa', 'maestria', 'cd de feitiço'].forEach(function (k) {
     if (!idx[k]) falhas.push('o índice não tem ' + k);
+  });
+  // 08/10/2026: os saltos da FICHA AMALDIÇOADA e da lista de invocações, que já amanheceram em #ERROR! numa montagem
+  [[ABA_AMALDICOADA_, DADOS_DA_AMALDICOADA_], [ABA_INVOCACOES_, DADOS_DA_INVOCACAO_]].forEach(function (par) {
+    var n = saltosComErro_(ss, par[0], par[1]);
+    if (n) falhas.push(par[0] + ': ' + n + ' salto(s) em erro (rode o acabar())');
   });
   var fontes = {};
   ABAS.forEach(function (spec) {

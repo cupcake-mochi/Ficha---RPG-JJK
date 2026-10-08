@@ -13,7 +13,8 @@ import os, shutil, subprocess, sys, tempfile
 AQUI = os.path.dirname(os.path.abspath(__file__))
 PRECISA = ["regressao-pessoal.js", "regressao-construir.js", "medidas/sheets-de-mentira.js", "catalogo-projeto-m.json", "manual.txt", "apps-script/Codigo.gs",
            "apps-script/Ficha.gs", "apps-script/Habilidades.gs",   # 05/10/2026: o texto das cartas da seção 7
-           "apps-script/Invocacoes.gs"]                             # 06/10/2026: as abas da invocação, que se juntam ao ABAS
+           "apps-script/Invocacoes.gs",                            # 06/10/2026: as abas da invocação, que se juntam ao ABAS
+           "regressao-paleta.js"]                                  # 08/10/2026: o clique comum, que não lê a aba
 NODE = shutil.which("node") or shutil.which("nodejs")
 
 
@@ -207,7 +208,7 @@ edita("a conta que o Sheets nao entende fica em #ERROR!", C,
       "  var erradas = outras.filter(function (o) { return String(o[0].getDisplayValue()) === '#ERROR!'; });", "  var erradas = [];",
       "é gravada em inglês, com a planilha em inglês por um instante", teste=K)
 edita("o religamento escreve o salto com virgula numa planilha em portugues", C,
-      "  var sep = /^en/i.test(String(ss.getSpreadsheetLocale())) ? ',' : ';';", "  var sep = ',';",
+      "  var sep = separador || (/^en/i.test(String(ss.getSpreadsheetLocale())) ? ',' : ';');", "  var sep = separador || ',';",
       "volta com a ligação, com ponto e vírgula", teste=K)
 edita("o salto da FICHA AMALDICOADA em que alguem escreve por cima fica sem a ligacao", C,
       "      if (e.range.getRow() <= LINHA_DOS_SALTOS_) ligarSaltosDe_(SpreadsheetApp.getActive(), ABA_AMALDICOADA_, DADOS_DA_AMALDICOADA_);\n", "",
@@ -261,6 +262,69 @@ edita("o aviso do nome da técnica esquece a CARTEIRA", C,
       "o aviso manda escrever na CARTEIRA", teste=K)
 edita("a FICHA AMALDIÇOADA deixa de declarar a caixa que vem da CARTEIRA", F, '"da_carteira":["D12"]', '"da_carteira":[]',
       "o aviso manda escrever na CARTEIRA", teste=K)
+# 08/10/2026: as caixas de texto que esticam (resistências, imunidades e os Legados), os saltos conferidos depois do
+# idioma e a trava de uma montagem de cada vez
+edita("escrever nas resistências não estica a caixa", C,
+      "  try { esticarCaixas_(e, 'FICHA'); } catch (err) { console.log('ficha, a caixa que estica: ' + err.message); }\n", "",
+      "nas resistências estica a caixa", teste=K)
+edita("a caixa de resistências esquece a linha de cima, que não estica", C,
+      " * M.linha + M.respiro - (c[4] || 0);", " * M.linha + M.respiro;",
+      "nas resistências estica a caixa", teste=K)
+edita("a caixa que estica mede só o primeiro texto", C,
+      "    if (String(textos[i]) === '') return;\n    var pede = linhasDoTexto_(", "    if (i > 0 || String(textos[i]) === '') return;\n    var pede = linhasDoTexto_(",
+      "só nas imunidades também", teste=K)
+edita("a caixa que estica não soma o que as linhas dela já têm", C,
+      "    if (pede <= tem) return;\n    var mais = Math.ceil((pede - tem) / c[3]);", "    var mais = Math.ceil(pede / c[3]);",
+      "estica a caixa dele na FICHA PESSOAL e o espelho da FICHA", teste=K)
+edita("as linhas do grupo não voltam à altura comum antes da conta", C,
+      "  caixas.forEach(function (c) { for (var k = 0; k < c[3]; k++) h[c[2] + k] = M.minima; });", "  caixas.forEach(function (c) { for (var k = 0; k < c[3]; k++) h[c[2] + k] = h[c[2] + k] || 0; });",
+      "volta à altura comum", teste=K)
+edita("as cicatrizes saem das caixas que esticam", F,
+      '"gatilhos":["D31:O38","Q19:AG20","AI19:AT20",', '"gatilhos":["D31:O38","Q19:AG20",',
+      "as cicatrizes com", teste=K)
+edita("o link da lista não abre a ficha recolhida", C,
+      "  try { abrirFichaDaInvocacao_(e); } catch (err) { console.log('invocações, abrir a ficha: ' + err.message); }\n", "",
+      "abre a fileira e a coluna de fichas dela", teste=K)
+edita("o link abre a fileira e esquece a coluna de fichas", C,
+      "  try { abre(aba.getColumnGroup(a[2], 1)); }", "  try { abre(null); }",
+      "abre a fileira e a coluna de fichas dela", teste=K)
+edita("qualquer clique na INVOCAÇÕES abre a ficha 8", C,
+      "  var a = spec.abrir.filter(function (x) { return x[0] === onde; })[0];\n  if (!a) return false;\n  var aba = e.range.getSheet();", "  var a = spec.abrir[7];\n  var aba = e.range.getSheet();",
+      "outra célula não abre nada", teste=K)
+edita("o clique comum volta a ler a aba", C,
+      "  var a = spec.abrir.filter(function (x) { return x[0] === onde; })[0];\n  if (!a) return false;\n  var aba = e.range.getSheet();", "  var aba = e.range.getSheet();\n  var a = spec.abrir.filter(function (x) { return x[0] === onde; })[0];\n  if (!a) return false;",
+      "clique sem pendente custa uma leitura de propriedade", teste="regressao-paleta.js")
+edita("o atual acima do máximo não fica vermelho", C,
+      "      .whenFormulaSatisfied('=AND(N(' + max + ')>0,N(' + atual + ')>N(' + max + '))')", "      .whenFormulaSatisfied('=AND(N(' + max + ')>0,N(' + atual + ')>N(' + max + ')+9999)')",
+      "o atual acima do máximo fica vermelho", teste=K)
+edita("escrever o Legado na FICHA PESSOAL não estica nada", C,
+      "    try { esticarCaixas_(e, ABA_PESSOAL_); } catch (err) { console.log('ficha pessoal, a caixa que estica: ' + err.message); }\n", "",
+      "estica a caixa dele na FICHA PESSOAL e o espelho da FICHA", teste=K)
+edita("o Legado estica a caixa da FICHA PESSOAL e esquece o espelho da FICHA", C,
+      "    var alvo = x.aba === nomeDaAba ? origem : ss.getSheetByName(x.aba);", "    var alvo = x.aba === nomeDaAba ? origem : null;",
+      "estica a caixa dele na FICHA PESSOAL e o espelho da FICHA", teste=K)
+edita("o espelho do Legado mede só o texto, sem o nome e o tipo", F,
+      '"textos":[[582,["D41","Q41","D42"],44,2,0],[582,["Y41","AM41","Y42"],44,2,0]]', '"textos":[[582,["D42"],44,2,0],[582,["Y42"],44,2,0]]',
+      "a FICHA PESSOAL declara as caixas dos Legados", teste=K)
+edita("os saltos em erro são escritos de novo com vírgula", C,
+      "    ligarSaltosDe_(ss, par[0], par[1], ';');", "    ligarSaltosDe_(ss, par[0], par[1], ',');",
+      "são escritos de novo com ponto e vírgula", teste=K)
+edita("a montagem não confere os saltos depois do idioma", F,
+      "  if (!falta) {\n    try { feito.push(conferirSaltos_(ss)); }", "  if (false) {\n    try { feito.push(conferirSaltos_(ss)); }",
+      "os saltos foram conferidos depois do idioma", teste=K)
+edita("o verificar() não olha os saltos", F,
+      "    if (n) falhas.push(par[0] + ': ' + n + ' salto(s) em erro (rode o acabar())');", "",
+      "o verificar() acusa os saltos em erro", teste=K)
+edita("duas montagens rodam ao mesmo tempo", F,
+      "  if (trava && !trava.tryLock(0)) {", "  if (false) {",
+      "com outra montagem rodando o acabar() para na hora", teste=K)
+edita("o acabar() não passa pela trava da montagem", F,
+      "function acabar() {\n  return umaDeCadaVez_('acabar', soOAcabamento_);\n}", "function acabar() {\n  return soOAcabamento_();\n}",
+      "com outra montagem rodando o acabar() para na hora", teste=K)
+edita("a montagem termina sem soltar a trava", F,
+      "    if (trava) { try { trava.releaseLock(); }", "    if (false) { try { trava.releaseLock(); }",
+      "a montagem que termina solta a trava", teste=K)
+
 print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
 edita("renomear uma variavel de dentro da conta", C, "var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"
       "                   .every(function (a) { return marcadas[a.caixa] === true; });\n  if ((marcadas[dono.caixa] === true) !== todas) muda[dono.caixa] = todas;",

@@ -2773,7 +2773,7 @@ das invocações e os saltos da Amaldiçoada "funcionaram após reconstruir"; e 
 execuções, com cerca de 14 s de acabamento**, sem travas. O registro completo de cada execução ele não mandou (só o
 resumo), então o tempo de cada aba nessa montagem não está conferido.*
 
-### B41 · A revisão: o que o livro manda registrar e a ficha não tinha — **CONSTRUÍDA em 08/10/2026, com as formas que ele escolheu; falta montar no Sheets**
+### B41 · A revisão: o que o livro manda registrar e a ficha não tinha — **CONSTRUÍDA e MONTADA NO SHEETS em 08/10/2026: 7 dos 8 pontos passaram no teste dele, e um pente-fino achou mais três; as correções das duas rodadas estão no fim desta seção (as caixas de texto que esticam, uma montagem de cada vez, o link que abre a ficha recolhida, o aviso do atual acima do máximo, o glossário). Falta ele ver as correções no Sheets**
 
 *Da lista da revisão (terceira etapa do B40) ele escolheu, em 07/10/2026: "Traços, sequelas, cicatrizes, exaustão,
 resistencias e imunidades, integridade da entidade com alma, espaço de feitiço ocupado por invocação". Ficaram de fora
@@ -2873,3 +2873,122 @@ Integridade com a vida inteira, a entidade sem alma com Integridade, o estágio 
 que desconta) acendem; os outros 25 e 71 não rodaram de novo, e os trechos deles existem todos no código de hoje.
 Tamanhos: `Ficha.gs` perto de 820 KB (o teto é 900). Nada disto rodou no Sheets de verdade: as oito linhas novas mudam
 o endereço de quase tudo na `FICHA`, e quem tem ficha montada precisa montar de novo.*
+
+#### O teste no Sheets (08/10/2026): 7 de 8, as caixas que esticam e uma montagem de cada vez
+
+*O Mizuki mandou o resumo do teste (o relatório inteiro e os registros estão em `Downloads/Testes-ficha-2026-10-08/`): os três
+arquivos colados, a planilha reconstruída e a lista conferida, "7 dos 8 pontos passaram". Passaram as Sequelas, a
+Exaustão (com o deslocamento que já era de 3 m ficando em 3 m), os Legados, o traço e as cicatrizes, a Integridade da
+invocação, o `EM INVOCAÇÕES` do Orçamento e o resto da `FICHA`. A montagem levou três execuções: 272, 196 e 165 segundos.*
+
+**O que falhou: resistências e imunidades.** *"Textos de aproximadamente 170 caracteres ficam cortados pela altura das
+caixas." Cabiam duas linhas e meia. E, medindo o livro, o mesmo problema estava escondido nos Legados, que o teste fez
+com texto curto: os 85 Legados têm de 58 a 546 letras (os de exceção, que ele pediu para ver na `FICHA`, têm mediana de
+352), e a caixa de três linhas da `FICHA PESSOAL` e o espelho de duas linhas da `FICHA` cortavam a maior parte.*
+
+*As quatro caixas passam a esticar com o que for escrito, como as cartas de Habilidades. Cada aba declara as dela no
+`ABAS`, em `esticam`, em grupos (os gatilhos, a aba cujas linhas mudam de altura e, para cada texto, a largura em
+pixels, as células que o formam, as linhas que esticam e a altura das que não mudam), e o `esticarCaixas_` do
+`Codigo.gs` conta as linhas com a medida da Roboto 10 que já existia (`linhasDoTexto_`). As caixas de um grupo podem
+dividir linhas: todas partem da altura comum, e cada caixa aumenta as dela até o texto caber:*
+
+- *resistências e imunidades dividem a linha com as Sequelas e a Exaustão: estica só a linha de baixo, pelo texto mais
+  comprido das duas; a linha do número fica como está;*
+- *escrever o nome, o tipo ou o texto de um Legado na `FICHA PESSOAL` estica a caixa dele ali e o espelho da `FICHA`
+  (o espelho junta os três, e é isso que se mede);*
+- *apagar o texto devolve a altura comum.*
+
+**Os links em `#ERROR!`, e uma montagem de cada vez.** *O relatório: "Leitura dos valores calculados de oito abas encontrou
+inicialmente 22 #ERROR!, todos em links: Amaldiçoada D7:G7,J7:M7,P7:Q7 e Invocações D21:D32", com o registro em `FICHA
+PRONTA`; "duas tentativas anteriores à continuação final iniciaram no servidor e falharam, com sobreposição"; e rodar o
+`acabar()` de novo consertou os 22. O registro da execução final diz `idioma de antes: en_US`, e toda execução devolve
+o português no fim, mesmo quando para no meio: a planilha só amanhece em inglês com outra execução ainda rodando (ou
+morta sem chegar ao `finally`). Cada execução troca o idioma da planilha inteira; se a outra devolveu o português no
+meio do caminho, o que esta escreveu depois saiu com vírgula numa planilha que pedia ponto e vírgula, e os saltos são a
+última fórmula que a montagem escreve. É a causa mais provável, e não está provada: não reproduzi no Sheets.*
+
+- *`umaDeCadaVez_` (no `ficha/modelo.gs.js`): o `construir()`, o `continuar()` e o `acabar()` pegam a trava do script
+  (`LockService.getScriptLock()`, e não a do documento, que é a da troca de paleta), e quem não a pega para na hora com
+  o recado "já tem uma montagem rodando nesta planilha", sem tocar em nada. O corpo da montagem passou a se chamar
+  `montar_`, e o do acabamento, `soOAcabamento_`.*
+- *`conferirSaltos_` (no `Codigo.gs`): depois que a planilha volta ao português, a montagem e o `acabar()` leem o que
+  cada caixa de salto mostra; as que estiverem em erro são escritas de novo com ponto e vírgula, e o registro diz
+  quantas eram (`saltos conferidos depois do idioma: …`). O registro não diz mais `PRONTA` com link quebrado sem contar.*
+- *o `verificar()` acusa salto em erro.*
+
+**Conferido.** *A `regressao-construir.js` ganha os testes das quatro caixas (o texto do teste, de 169 letras; um Legado de 538;
+o segundo texto que não encolhe a caixa do primeiro; apagar), dos saltos em erro escritos de novo e do `verificar()`, e da
+trava (o `construir()` e o `acabar()` param com o recado, e a montagem que termina a solta). O `conferir-ficha-xlsx.py`
+confere que as caixas declaradas são as mesclagens da planilha gerada, que o espelho lê as três caixas que o script
+mede e que os 85 Legados do livro cabem esticados; e as duas entradas com a trava. O `arnes-pessoal.py` ganha doze
+defeitos. Nada disto rodou no Sheets de verdade: a trava e a conferência dos saltos só se confirmam lá.*
+
+#### O pente-fino no Sheets (08/10/2026): três problemas, e o link que abre a ficha
+
+*No mesmo dia ele mandou um segundo relatório (`Downloads/Pente-fino-ficha-2026-10-08/`), de uso comum pelo navegador, com
+"três problemas concretos" e "dificuldades de navegação", e escreveu: "Mais alguns problemas extras"; depois, sobre as
+dificuldades: "a parte do 'Também há dificuldades de navegação: Missões/XP fica escondido atrás de um pequeno +' pode
+ignorar, o resto é mais importante, tirando" (a mensagem chegou cortada aí; perguntei o que vinha depois).*
+
+| o que o relatório achou | o que foi feito |
+|---|---|
+| "Vida acima da máxima: após usar os controles de combate e trocar de Caminho, ficou 25/23, sem aviso" | a caixa do atual fica vermelha enquanto ele passar do máximo, na vida, na energia e na integridade (uma regra a mais no `corDeEstado_`, antes das do atual baixo). **O atual não desce sozinho**: ver abaixo |
+| "Cicatrizes corta texto: uma descrição de 189 caracteres ficou parcialmente escondida" | as seis caixas de texto livre do dossiê esticam (aparência, cicatrizes, traço, história, laços e personalidade), num grupo só, porque dividem linhas |
+| "Glossário: os cabeçalhos NOME e ATRIBUTO estão invertidos na tabela de perícias" | trocados no `glossario.py`: estava assim desde que a aba nasceu, em 17/09 |
+| "os links das invocações chegam ao cabeçalho sem abrir a ficha recolhida" | o `abrirFichaDaInvocacao_`, no `onSelectionChange`: a seleção que chega no número da ficha (onde o link cai) abre o grupo da fileira e o da coluna de fichas dela. Clicar nesse número com a ficha fechada também a abre. O `ABAS` da `INVOCAÇÕES` declara o que abrir (`abrir`) |
+| "Missões/XP fica escondido atrás de um pequeno +" | nada, a pedido dele |
+| "Em 100%, alguns controles exigem rolagem lateral; em 75%, os textos auxiliares ficam pequenos" | nada: é a largura da página, que foi escolha do estudo |
+| "Uma alteração rápida de Energia ficou pendente uma vez", sem se repetir | nada: o próprio relatório não a classifica como defeito. Três edições em menos de dois segundos disputam o `onEdit`, e a caixa de ± que ficar preenchida é aplicada quando for editada de novo |
+
+**Por que o atual não desce sozinho.** *Descer o atual para o máximo assim que o máximo cai parece o certo, e estraga a ficha
+num engano: quem escolher o nível errado no menu, ou apagar o Caminho para trocar, veria a vida cair para o máximo
+errado e ficar lá depois de consertar o menu. O vermelho avisa, e a caixa de ± já não deixa a cura passar do máximo.
+Perguntei, e ele decidiu: "Só aviso vermelho, descer automático pode ser ruim."*
+
+**O gatilho do link roda a cada clique.** *O `onSelectionChange` já existia, para a troca de paleta, e a regra dele era
+"clique sem pendente custa uma leitura de propriedade, e não lê a aba". O gatilho novo olha primeiro o endereço da
+seleção, que quase nunca é o de uma ficha, e só então pergunta em que aba está. Não sei se o Sheets dispara o
+`onSelectionChange` quando a seleção muda por um link, e não por um clique: só o teste dele diz. Se não disparar,
+clicar no número da ficha abre do mesmo jeito.*
+
+**Conferido.** *A `regressao-construir.js` ganha os testes do dossiê (as cicatrizes com 192 letras; a história com 2135 e a
+personalidade com 799, que dividem linhas, cabendo as duas), do link (a ficha 8, recolhida nas duas direções, abre; outra
+célula não abre nada) e da regra do atual acima do máximo; o `conferir-ficha-xlsx.py`, as seis caixas do dossiê contra
+as mesclagens da planilha e os cabeçalhos do glossário; o `arnes-pessoal.py`, mais dez defeitos (são 98). O teste
+"clique sem pendente" da `regressao-paleta.js` passa a entregar um endereço na seleção, como o Sheets entrega.*
+
+**A bateria inteira, com as duas rodadas do dia dentro.** *Rodou até o fim: dezoito dos dezenove passaram, e a `regressao-paleta.js`
+também. O décimo nono era o `arnes-pessoal.py`, com 97 dos 98 defeitos acendendo a checagem certa: o que não acendeu
+("o clique comum volta a ler a aba") roda a `regressao-paleta.js`, e o arnês não a levava para a cópia em que planta o
+defeito. Ela entrou na lista da cópia, e o mesmo defeito, plantado à mão numa cópia com ela, acende a checagem certa; o
+arnês inteiro não rodou de novo depois disso (leva perto de quarenta minutos). Os arneses que rodam à mão
+(`arnes-amaldicoada.py` e `arnes-invocacoes.py`) não rodaram nesta rodada: os trechos deles existem todos no código de
+hoje. Nada disto rodou no Sheets de verdade.*
+
+### B42 · Buff/Debuff dos máximos: vida, energia, Integridade, Proteção e carga — **ESCOLHIDO em 08/10/2026 (a forma A do estudo); falta construir**
+
+*Junto com a decisão do aviso vermelho ele pediu: "existe a possibilidade do jogador ganhar vida máxima extra de alguma forma,
+como no caso da lapidação e/ou habilidades de técnica, seria interessante uma caixa que pudesse permitir o jogador
+aumentar os máximos dos valores da ficha, entre carga, vida, energia e integridade. Oq recomendo fazermos? Já q quase
+tudo a ficha automaticamente corrige de valor pro original. Talvez fazer uma guia só pra mexer nesses valores?"*
+
+*Recomendei não abrir guia nova (mais uma aba na montagem, que já leva três execuções, e o lugar que o jogador mais
+esquece), e sim uma caixa ao lado de cada máximo, igual às de Buff/Debuff que a `FICHA` já tem na Defesa, na iniciativa,
+na CD, na conjuração, nos ataques e no deslocamento: o bônus entra na própria conta do máximo, e a ficha não o
+"corrige de volta". Aceita negativo (o livro manda pagar vida máxima ao Insistir numa queda). Ele: "Então podemos sim,
+colocar essas caixas, lembrando q tem muitos locais aonde podem ter mais ou menos nesse valor". A caixa guarda o
+saldo, e o jogador pode digitar a conta inteira nela (`=5+10-3`); a alternativa que registra cada origem com nome, uma
+tabela de ajustes na `FICHA PESSOAL`, eu ofereci e ele não pediu.*
+
+**O estudo:** *`mockup/maximos-estudo.png` (montado por `python3 mockup/estudo_maximos.py mockup/maximos-estudo.html`), com
+três posições na linha de cada barra: **A** logo depois do máximo, antes da barra; **B** depois da barra, antes do
+temporário; **C** no fim da linha, depois da caixa de ±. Ele: "Opção A, lembrando de fazer isso até em invocações e
+outros menus que possam ser alterados assim".*
+
+| onde | o que fazer |
+|---|---|
+| `FICHA`, as três barras | a caixa `Buff/Debuff` de duas colunas logo depois do máximo; a barra perde 3 das 15 colunas. O máximo vira a conta do livro mais a caixa; o teto da temporária, os estágios de Integridade e o aviso vermelho acompanham |
+| `FICHA`, a Proteção | a mesma caixa, no fim da caixa da Proteção: é o único número de combate do Registro sem ela (o Bloquear sai da Defesa, e segue o Buff/Debuff dela) |
+| `FICHA PESSOAL`, a carga | a caixa no fim da carga; a barra dela passa de 5 para 3 colunas, e o limite vira 5 + Força + a caixa |
+| `INVOCAÇÕES` | nada: cada ficha já tem a caixinha `B/D` embaixo de todo número calculado (atributos, ataque, CD, Defesa, vida máxima, deslocamento e os quatro TRs), e a Integridade máxima da entidade é metade da vida máxima |
+| Maestria, espaços de feitiço, Refino de graça, Classe máxima, Classe 0 | ficam de fora, a menos que ele peça: a Maestria vem só do nível, e as outras são contagens de progressão (os espaços já recebem o Marco e os pactos) |

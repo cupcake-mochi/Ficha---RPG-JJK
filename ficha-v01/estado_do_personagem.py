@@ -21,6 +21,9 @@ As linhas quem abre é o linhas_novas.py. Este módulo as preenche, antes do ín
     +7
     +8
 
+As caixas de texto esticam (08/10/2026): a de resistências e a de imunidades, pela linha de baixo delas, e o espelho
+dos Legados, pelas duas linhas dele. Quem declara é a chave `esticam` da aba, e quem estica é o Codigo.gs.
+
 O que é conta e depende da FICHA PESSOAL (o espelho dos Legados e a Exaustão no DESLOCAMENTO) é o ficha_pessoal.py
 que escreve, quando sabe os endereços dela.
 
@@ -36,6 +39,7 @@ BLOCOS = (("D", "M"), ("O", "X"), ("Z", "AI"), ("AK", "AT"))        # o passo da
 ROTULOS = ("SEQUELAS", "EXAUSTÃO", "RESISTÊNCIAS", "IMUNIDADES")
 LEGADOS = ("LEGADO 1", "LEGADO 2")
 METADES = (("D", "X"), ("Z", "AT"))
+LEGADO_LINHAS = 2                                                     # as linhas do espelho de cada Legado
 GRAUS = '"0,1,2,3"'                                                   # o menu das duas caixas de número
 LIMITE_DA_EXAUSTAO = 4.5                                              # metros, do degrau 2 em diante
 
@@ -70,6 +74,13 @@ def efeito(cel):
     return (f'=IF(N({cel})<=0,"Sem penalidade",IF(N({cel})=1,"Desvantagem em perícias e ofícios",'
             f'IF(N({cel})=2,"Desv. em perícias e ofícios · até 4,5 m",'
             f'"Desv. em perícias, ofícios, ataques e TRs · até 4,5 m")))')
+
+
+def largura_px(c1, c2):
+    """a largura útil, em pixels do Sheets, de uma caixa de texto que vai da coluna c1 à c2 da FICHA: é a conta da
+    carta de Habilidades (habilidades.medida), que o Codigo.gs usa para saber quantas linhas o texto ocupa"""
+    import habilidades as hb
+    return (ix._lc(f"{c2}1")[1] - ix._lc(f"{c1}1")[1] + 1) * hb.PX_COLUNA - hb.RESPIRO_PX
 
 
 def lugares(depois):
@@ -113,9 +124,20 @@ def trocas(layout, ln):
     assert add("txt", i1, r + 1, i2, r + 2) == G["imunidades"]
     for k, (rot, (c1, c2)) in enumerate(zip(LEGADOS, METADES)):
         assert add("rot", c1, r + 4, c2, r + 4, rot) == G["legado_rot"][k]
-        assert add("txt", c1, r + 5, c2, r + 6) == G["legado"][k]
+        assert add("txt", c1, r + 5, c2, r + 5 + LEGADO_LINHAS - 1) == G["legado"][k]
     menus = [{"onde": f"{G['sequelas']} {G['exaustao']}", "tipo": "list", "formula": GRAUS, "vazio_ok": True, "mostra_seta": True}]
-    return {"celulas": {ABA: cel}, "mescladas": {ABA: mescla}, "menus": {ABA: menus}, "G": G, "linhas": ln["linhas"]}
+    # 08/10/2026, do teste no Sheets: "textos de aproximadamente 170 caracteres ficam cortados pela altura das caixas".
+    # As duas caixas de texto esticam com o que for escrito, como as cartas de Habilidades: o esticarCaixas_ do
+    # Codigo.gs conta as linhas do texto mais comprido e acerta a altura da linha de baixo da caixa (a de cima é a do
+    # número das Sequelas e da Exaustão, e fica como está: `fixo` é a altura dela, que a conta desconta)
+    import habilidades as hb
+    # cada texto: [a largura dele, as células que o formam, a primeira linha que estica, quantas, o fixo]. A chave não
+    # se chama `caixas` porque esse nome o ABAS já usa para as caixas de seleção
+    estica = [{"gatilhos": [f"{r1}{r + 1}:{r2}{r + 2}", f"{i1}{r + 1}:{i2}{r + 2}"], "aba": ABA,
+               "textos": [[largura_px(r1, r2), [G["resistencias"]], r + 2, 1, hb.MINIMA_PX],
+                          [largura_px(i1, i2), [G["imunidades"]], r + 2, 1, hb.MINIMA_PX]]}]
+    return {"celulas": {ABA: cel}, "mescladas": {ABA: mescla}, "menus": {ABA: menus}, "G": G, "linhas": ln["linhas"],
+            "esticam": {ABA: estica}}
 
 
 def aplica(layout, tr):
@@ -133,4 +155,5 @@ def aplica(layout, tr):
                 n += 1
         aba["mescladas"] += [m for m in tr["mescladas"].get(nome, []) if m not in aba["mescladas"]]
         aba["menus"] += [m for m in tr["menus"].get(nome, []) if m not in aba["menus"]]
+        aba["esticam"] = aba.get("esticam", []) + [x for x in tr.get("esticam", {}).get(nome, []) if x not in aba.get("esticam", [])]
     return n

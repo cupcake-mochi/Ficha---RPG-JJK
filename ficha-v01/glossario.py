@@ -240,7 +240,9 @@ def aba(layout, CAT=None, M=None):
                  (None, "ATRIBUTO", "O QUE GOVERNA"), dados["atributos"], lin, e_d, e_h, e_p)
     lin = _secao(cel, mesclas, alturas, "PERÍCIAS",
                  "9 de 23 na criação — ou 10, trocando os dois ofícios da Origem.",
-                 ("ATRIBUTO", "NOME", "O QUE FAZ"), dados["pericias"], lin, e_d, e_h, e_p)
+                 # 08/10/2026, do pente-fino no Sheets: os dois primeiros cabeçalhos estavam trocados (ATRIBUTO em cima
+                 # de Acrobacia, NOME em cima de Destreza). A primeira coluna é o nome da perícia, e a segunda, o atributo
+                 ("NOME", "ATRIBUTO", "O QUE FAZ"), dados["pericias"], lin, e_d, e_h, e_p)
     lin = _secao(cel, mesclas, alturas, "OFÍCIOS",
                  "2 de 11 na criação. O atributo é do mestre, na hora — não é fixo.",
                  (None, "NOME", "O QUE FAZ"), dados["oficios"], lin, e_d, e_h, e_p)

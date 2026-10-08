@@ -341,6 +341,79 @@ _avisos = re.search(r"var avisos = \[(.*?)\]", _CODA, re.S)
 checa("o Codigo.gs avisa em vermelho e anota as seis caixas de conta",
       bool(_avisos) and all(f"'{k}'" in _avisos.group(1) and re.search(rf"'{k}':\s*'", _CODA) for k in _NOVAS),
       str([k for k in _NOVAS if not (_avisos and f"'{k}'" in _avisos.group(1))]))
+# 08/10/2026: as caixas de texto que esticam (resistências, imunidades e os Legados). O ABAS declara os gatilhos, as
+# linhas e a largura; aqui se confere que isso bate com a planilha gerada: cada gatilho de caixa é uma mesclagem que
+# existe, o texto mora no canto dela, a largura é a das colunas dela, e as linhas que esticam são as da caixa. E que o
+# Legado mais comprido do livro cabe: o espelho junta o nome, o tipo e o texto.
+def _esticam_de(nome):
+    m_ = re.search(r'"nome":\s*"' + re.escape(nome) + r'".*?"esticam":\s*(\[.*?\}\])', open("apps-script/Ficha.gs", encoding="utf-8").read(), re.S)
+    return json.loads(m_.group(1)) if m_ else []
+def _mescla_de(ws, a1):
+    return next((str(r_) for r_ in ws.merged_cells.ranges if r_.coord.split(":")[0] == a1), None)
+def _px(faixa):
+    from openpyxl.utils import range_boundaries
+    c1_, _, c2_, _ = range_boundaries(faixa)
+    return (c2_ - c1_ + 1) * 28 - 6
+_eF, _eP = _esticam_de("FICHA"), _esticam_de("FICHA PESSOAL")
+_wsF, _wsP = wb["FICHA"], wb["FICHA PESSOAL"]
+def _linhas_de(m_):
+    a_, b_ = re.match(r"[A-Z]+(\d+):[A-Z]+(\d+)", m_).groups()
+    return int(a_), int(b_)
+# cada caixa: [largura, células do texto, primeira linha que estica, quantas, fixo]
+_cxF = _eF[0]["textos"] if len(_eF) == 1 else []
+_okF = (len(_cxF) == 2 and _eF[0]["aba"] == "FICHA"
+        and [_mescla_de(_wsF, c_[1][0]) for c_ in _cxF] == _eF[0]["gatilhos"]
+        and all(_px(g_) == c_[0] and _linhas_de(g_)[1] == c_[2] and c_[3] == 1 and c_[4] == 21 for g_, c_ in zip(_eF[0]["gatilhos"], _cxF))
+        and [c_[1][0] for c_ in _cxF] == [IDX["resistências"], IDX["imunidades"]])
+checa("as caixas de resistências e de imunidades que o script estica são as da planilha: a mesclagem, a largura e a linha de baixo",
+      _okF, json.dumps(_eF, ensure_ascii=False)[:300])
+_esp = next((x_ for x_ in _eP if x_["aba"] == "FICHA"), None)
+_dosP = [x_ for x_ in _eP if x_["aba"] == "FICHA PESSOAL"]
+_txt = next((x_ for x_ in _dosP if len(x_["textos"]) == 2), None)
+_dos = next((x_ for x_ in _dosP if len(x_["textos"]) > 2), None)
+_mesp = [_mescla_de(_wsF, IDX[k_]) for k_ in ("legado 1", "legado 2")]
+def _caixas_batem(ws_, x_):
+    """cada caixa do grupo é uma mesclagem da aba, com a largura e as linhas dela, e nenhuma linha tem altura própria"""
+    ms_ = [_mescla_de(ws_, c_[1][-1] if len(c_[1]) > 1 else c_[1][0]) for c_ in x_["textos"]]
+    return (all(ms_) and all(_px(m_) == c_[0] and _linhas_de(m_) == (c_[2], c_[2] + c_[3] - 1) and c_[4] == 0 for m_, c_ in zip(ms_, x_["textos"]))
+            and all(ws_.row_dimensions[l_].height in (None, 15.75) for c_ in x_["textos"] for l_ in range(c_[2], c_[2] + c_[3])))
+_okP = bool(_esp and _txt and all(_mesp) and len(_eP) == 3
+            and all(_linhas_de(m_) == (c_[2], c_[2] + c_[3] - 1) and _px(m_) == c_[0] and c_[4] == 0 for m_, c_ in zip(_mesp, _esp["textos"]))
+            and _caixas_batem(_wsP, _txt) and [_mescla_de(_wsP, c_[1][0]) for c_ in _txt["textos"]] == _txt["gatilhos"]
+            and all(set(c_[1]) <= set(_esp["gatilhos"]) | {g_.split(":")[0] for g_ in _esp["gatilhos"]} for c_ in _esp["textos"])
+            # o espelho da FICHA lê as mesmas três caixas que o script mede
+            and all(all(a_ in str(_wsF[IDX[k_]].value).replace("$", "") for a_ in c_[1]) for k_, c_ in zip(("legado 1", "legado 2"), _esp["textos"])))
+checa("as caixas dos Legados que o script estica são as da planilha, na FICHA PESSOAL e no espelho da FICHA, e o espelho lê as três caixas que o script mede",
+      _okP, json.dumps(_eP, ensure_ascii=False)[:400])
+# 08/10/2026, do pente-fino: as caixas de texto do dossiê também (as cicatrizes cortavam com 189 letras). São as seis
+# caixas de texto livre do dossiê, num grupo só, porque dividem linhas
+_rot_dos = {"APARÊNCIA", "CICATRIZES", "TRAÇO · UMA FRASE DA SUA HISTÓRIA", "HISTÓRIA", "LAÇOS E ANOTAÇÕES", "PERSONALIDADE"}
+_acima = {str(_wsP[re.sub(r"\d+$", lambda m_: str(int(m_.group(0)) - 1), c_[1][0])].value) for c_ in (_dos["textos"] if _dos else [])}
+checa("as seis caixas de texto do dossiê esticam (aparência, cicatrizes, traço, história, laços e personalidade), cada uma com a mesclagem, a largura e as linhas dela",
+      bool(_dos) and _acima == _rot_dos and _caixas_batem(_wsP, _dos) and [_mescla_de(_wsP, c_[1][0]) for c_ in _dos["textos"]] == _dos["gatilhos"],
+      f"{sorted(_acima)} · {json.dumps(_dos, ensure_ascii=False)[:300]}")
+_cat_l = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))["legados"]
+_nomes_l = {n_ for o_ in _cat_l.values() for l_ in o_.values() for n_ in l_}
+_textos_l = {n_: l_[len(n_) + 2:] for l_ in open("manual.txt", encoding="utf-8").read().split("\n") for n_ in _nomes_l if l_.startswith(n_ + ". ")}
+import habilidades as _hb_e
+def _cabe(texto, x_, k_):
+    larg_, _, _, n_, fixo_ = x_["textos"][k_]
+    M_ = dict(_hb_e.medida(), largura=larg_)
+    pede_ = _hb_e.linhas_na_carta(texto, M_) * M_["linha"] + M_["respiro"]
+    alt_ = max(M_["minima"], -(-(pede_ - fixo_) // n_))
+    return alt_ * n_ + fixo_ >= pede_ and alt_ <= 400
+_nao_cabem = [n_ for n_, t_ in _textos_l.items()
+              if not (_esp and _txt and all(_cabe(f"{n_} · De exceção · {t_}", _esp, k_) and _cabe(t_, _txt, k_) for k_ in range(2)))]
+checa(f"os {len(_nomes_l)} Legados do livro cabem inteiros, esticados, na caixa da FICHA PESSOAL e no espelho da FICHA (o mais comprido tem {max(map(len, _textos_l.values()), default=0)} letras)",
+      len(_textos_l) == len(_nomes_l) == 85 and not _nao_cabem, f"{len(_textos_l)} textos achados · não cabem: {_nao_cabem[:5]}")
+# 08/10/2026, do pente-fino: na tabela de perícias do GLOSSÁRIO, ATRIBUTO estava em cima dos nomes e NOME em cima dos
+# atributos. O cabeçalho de cada coluna tem de dizer o que a coluna traz
+_wsG = wb["GLOSSÁRIO"]
+_cab_g = [c_ for l_ in _wsG.iter_rows() for c_ in l_ if c_.value == "NOME" and _wsG.cell(row=c_.row + 1, column=c_.column).value == "Acrobacia"]
+_atr_g = {"Força", "Destreza", "Constituição", "Inteligência", "Essência"}
+checa("no GLOSSÁRIO, a coluna dos nomes das perícias se chama NOME e a dos atributos se chama ATRIBUTO",
+      len(_cab_g) == 1 and any(c_.value == "ATRIBUTO" and _wsG.cell(row=c_.row + 1, column=c_.column).value in _atr_g for c_ in _wsG[_cab_g[0].row]),
+      str([(c_.coordinate, c_.value) for c_ in _wsG[_cab_g[0].row] if c_.value] if _cab_g else "não achei NOME em cima de Acrobacia"))
 # 17/09/2026: a trava virou varredura de toda fórmula da FICHA e da CARTEIRA, porque o resultado das
 # perícias, dos ofícios e dos Testes de Resistência ficava de fora da lista. O que se confere: o script
 # varre as fórmulas, as livres são só as três barras de agora, e cada linha de perícia, ofício e Teste
@@ -643,7 +716,7 @@ if _o.path.exists(GS):
     # e uma planilha nova do Google Sheets nasce no idioma da CONTA de quem criou, não do produto.
     # "Devolver" repunha en_US quando a conta já era en_US, e a ficha saía em inglês sem ninguém
     # ter pedido. A ficha é em português sempre, então o fim é sempre pt_BR, não o que estava antes.
-    _fc = _rn.search(r"function construir\(\) \{(.*?)\n\}\n", g, _rn.S)
+    _fc = _rn.search(r"function montar_\(\) \{(.*?)\n\}\n", g, _rn.S)
     _corpo = _fc.group(1) if _fc else ""
     _virg = [x for x in formulas if "," in _rn.sub(r'"[^"]*"', "", x)]
     _i_le = _corpo.find("getSpreadsheetLocale()")
@@ -1086,7 +1159,10 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
     # não importa o tema.
     _cde = re.search(r"function corDeEstado_\(ss, idx\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("o vermelho de corDeEstado_ força fundo E fonte branca, não só a fonte",
-          bool(_cde) and _cde.group(1).count("setBackground('#C2334D').setFontColor('#FFFFFF')") == 2)
+          # 08/10/2026: são três vermelhos: o atual acima do máximo, o atual em um quarto, e o aviso de "passou"
+          bool(_cde) and _cde.group(1).count("setBackground('#C2334D').setFontColor('#FFFFFF')") == 3
+          and "whenFormulaSatisfied('=AND(N(' + max + ')>0,N(' + atual + ')>N(' + max + '))')" in _cde.group(1)
+          and _cde.group(1).find("N(' + atual + ')>N(' + max") < _cde.group(1).find("var formula25"))
 
     # B25, 19/09/2026, o "problema grande" do Mizuki testando no Sheets: fonte escura em cima de fundo
     # escuro ("9 de 23 na criação" no Brasa Claro), porque cada cor trocava pelo SEU papel e nenhuma
@@ -1408,7 +1484,7 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
                     if _alvo in _ordem and _ordem.index(_alvo) > _i:
                         _cedo += 1
                         break
-    _mc = _re.search(r"function construir\(\) \{(.*?)\n\}\n", g, _re.S)
+    _mc = _re.search(r"function montar_\(\) \{(.*?)\n\}\n", g, _re.S)
     _mm = _re.search(r"function montarAba_\(aba, spec\) \{(.*?)\n\}\n", g, _re.S)
     _cc = _mc.group(1) if _mc else ""
     # 01/10/2026: o construir() estourou os seis minutos do Apps Script, e as fórmulas deixaram de esperar numa fila
@@ -1423,13 +1499,13 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
     checa(f"{_cedo} fórmula(s) citam uma aba que nasce depois da delas, então a ordem da gravação importa",
           _cedo > 0)
     checa("todas as abas nascem, do tamanho certo, antes de a primeira ser preenchida, e as fórmulas vão com os valores",
-          bool(_mm) and "r.setValues(v)" in _mm.group(1) and ".setFormula" not in g.split("function construir()")[1]
+          bool(_mm) and "r.setValues(v)" in _mm.group(1) and ".setFormula" not in g.split("function montar_()")[1]
           and 0 <= _cria < _fim_cria < _monta and "insertSheet(spec.nome, posicao)" in _fnc
           and all(k in _fnc for k in ("deleteColumns(", "deleteRows(", "insertColumnsAfter(", "insertRowsAfter("))
           and "insertSheet(" not in _mm.group(1),
           f"cria {_cria} · fim do laço {_fim_cria} · monta {_monta}")
     # o acabamento pode rodar sozinho, e o construir() passa a vez a ele quando a montagem demora
-    _fa = _re.search(r"function acabar\(\) \{(.*?)\n\}\n", g, _re.S)
+    _fa = _re.search(r"function soOAcabamento_\(\) \{(.*?)\n\}\n", g, _re.S)
     _fa = _fa.group(1) if _fa else ""
     checa("o construir() registra cada etapa na hora e, se a montagem passar do teto, deixa o acabamento para o acabar()",
           "rel.etapa(spec.nome)" in _cc and "rel.passou() > TETO_DA_MONTAGEM_" in _cc and "acabamento_(ss, feito, rel)" in _cc
@@ -1437,6 +1513,22 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
           and _fa.find("} finally {") < _fa.find("setSpreadsheetLocale('pt_BR')")
           and bool(_re.search(r"var TETO_DA_MONTAGEM_ = (\d+);", g)) and int(_re.search(r"var TETO_DA_MONTAGEM_ = (\d+);", g).group(1)) <= 300000,
           "falta o relógio, o teto ou o acabar()")
+    # 08/10/2026: uma montagem de cada vez (o construir(), o continuar() e o acabar() passam pela trava do script), e os
+    # saltos são conferidos depois que a planilha volta ao português. Do teste no Sheets em que duas execuções correram
+    # juntas e a ficha terminou em FICHA PRONTA com os 22 saltos em #ERROR!. O corpo da montagem mora no montar_
+    _uv = _re.search(r"function umaDeCadaVez_\(nome, f\) \{(.*?)\n\}\n", g, _re.S)
+    _uv = _uv.group(1) if _uv else ""
+    checa("o construir() e o acabar() passam pela trava do script, e quem não a pega para com o recado, sem tocar na planilha",
+          "LockService.getScriptLock()" in _uv and "!trava.tryLock(0)" in _uv and "throw new Error('já tem uma montagem rodando" in _uv
+          and _uv.find("throw new Error") < _uv.find("return f();") < _uv.find("trava.releaseLock()")
+          and "function construir() {\n  return umaDeCadaVez_(RETOMADA_ === null ? 'construir' : 'continuar', montar_);\n}" in g
+          and "function acabar() {\n  return umaDeCadaVez_('acabar', soOAcabamento_);\n}" in g
+          and "SpreadsheetApp" not in _uv, "a trava nao esta em volta das duas entradas")
+    checa("os saltos são conferidos depois que a planilha volta ao português, na montagem que fez o acabamento e no acabar()",
+          0 <= _cc.find("ss.setSpreadsheetLocale('pt_BR');") < _cc.find("if (!falta) {\n    try { feito.push(conferirSaltos_(ss));")
+          and 0 <= _fa.find("ss.setSpreadsheetLocale('pt_BR');") < _fa.find("try { feito.push(conferirSaltos_(ss));")
+          and "ligarSaltosDe_(ss, par[0], par[1], ';')" in _CODA,
+          "falta a conferencia dos saltos depois do idioma")
     # 07/10/2026: o acabamento não cria trava, e os saltos e a caixa da paleta fazem parte dele
     _ac = _re.search(r"function acabamento_\(ss, feito, rel\) \{(.*?)\n\}\n", g, _re.S)
     _ac = _ac.group(1) if _ac else ""

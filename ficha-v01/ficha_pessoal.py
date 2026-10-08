@@ -33,6 +33,8 @@ import indice_ficha as ix
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NOME = "FICHA PESSOAL"
 TIPOS_DE_LEGADO = ("Narrativo", "De rolagem", "De exceção")
+# a caixa do texto de cada Legado, no dossiê: de que coluna a que coluna, e quantas linhas (elas esticam com o texto)
+LEGADO_COLUNAS, LEGADO_LINHAS = (("D", "W"), ("Y", "AT")), 3
 FP = f"'{NOME}'!"
 
 # ---------------------------------------------------------------------------------------------
@@ -621,9 +623,27 @@ def trocas(layout, CAT=None):
         raise SystemExit(f"a DEFESA da FICHA ({df_c}) nao tem a forma que o defesa_equipamento escreve: {fcel[df_c][1]!r}")
     cel["FICHA"][df_c] = (f'=10+{dfm.group(1)}+{dfm.group(2)}-{H["proteção sem força"]}{dfm.group(3)}', df_c)
     menus_sai = [m_["onde"] for m_ in ficha["menus"] if eq_c in m_["onde"].split()]
+    # 08/10/2026: as caixas dos Legados esticam com o texto. O Legado do livro vai de 58 a 546 letras, e a caixa de
+    # três linhas daqui e o espelho de duas linhas da FICHA cortavam a maior parte deles. Escrever o nome, o tipo ou o
+    # texto de um Legado acerta a altura da caixa de texto desta aba e a do espelho da FICHA (o esticarCaixas_ do
+    # Codigo.gs; a medida é a da carta de Habilidades). O espelho junta o nome, o tipo e o texto, e é isso que se mede
+    estica = []
+    if idx.get("legado 1") and idx.get("legado 2"):
+        lin_esp = ix._lc(idx["legado 1"])[0]
+        cx = [[G[q][k_] for q in ("legado_nome", "legado_tipo", "legado_texto")] for k_ in range(2)]
+        caixas_tx = [f"{c1_}{ix._lc(G['legado_texto'][k_])[0]}:{c2_}{ix._lc(G['legado_texto'][k_])[0] + LEGADO_LINHAS - 1}"
+                     for k_, (c1_, c2_) in enumerate(LEGADO_COLUNAS)]
+        gatilhos = [G[q][k_] for k_ in range(2) for q in ("legado_nome", "legado_tipo")] + caixas_tx
+        lin_tx = ix._lc(G["legado_texto"][0])[0]
+        estica = [
+            {"gatilhos": gatilhos, "aba": "FICHA",
+             "textos": [[_ep.largura_px(*_ep.METADES[k_]), cx[k_], lin_esp, _ep.LEGADO_LINHAS, 0] for k_ in range(2)]},
+            {"gatilhos": caixas_tx, "aba": NOME,
+             "textos": [[_ep.largura_px(*LEGADO_COLUNAS[k_]), [G["legado_texto"][k_]], lin_tx, LEGADO_LINHAS, 0] for k_ in range(2)]},
+        ]
     return {"celulas": cel, "menus_sai": {"FICHA": menus_sai}, "dados_colunas": (c0, prox[0] - 2),
             "H": H, "T": T, "faixa_t": faixa_t, "R": R, "G": G, "indice_coluna": col_i, "lin_cab": lin_cab,
-            "notas_coluna": col_n}
+            "notas_coluna": col_n, "esticam": estica}
 
 
 def _A(coord, aba=""):
@@ -749,6 +769,20 @@ NOTAS = {
 }
 
 
+def _sem_altura_propria(alturas, esticam):
+    """as alturas da aba, depois de conferir que nenhuma linha que estica tem altura própria: a conta do Codigo.gs
+    parte da altura comum de cada uma"""
+    proprias = {a[0] for a in alturas}
+    for x in esticam:
+        if x["aba"] != NOME:
+            continue
+        for c_ in x["textos"]:
+            ruins = [l for l in range(c_[2], c_[2] + c_[3]) if l in proprias]
+            if ruins:
+                raise SystemExit(f"ficha_pessoal: a caixa {c_[1]} estica, e as linhas {ruins} dela têm altura própria")
+    return alturas
+
+
 def aba(layout, tr):
     """a aba inteira, pronta para entrar em layout['abas']. Lê o cabeçalho e a lombada da FICHA do `layout`,
     que por isso tem de vir depois das correções de borda."""
@@ -811,8 +845,17 @@ def aba(layout, tr):
     if not foto:
         raise SystemExit("ficha_pessoal: a CARTEIRA não declara a caixa da foto (moldura_foto.py)")
     foto_fp = f.add("foto", "D", L + 1, "O", L + 19, f"={_abs(foto[1], foto[0], 'CARTEIRA!')}", NOTAS["foto"])
+    # 08/10/2026, do pente-fino no Sheets: "Cicatrizes: um texto de 189 caracteres ... ficou cortado". As caixas de
+    # texto do dossiê esticam com o que for escrito, todas (a história e os laços cortariam do mesmo jeito). Elas
+    # dividem linhas entre si (a personalidade, à esquerda, com a história e os laços, à direita), e por isso vão num
+    # grupo só: o esticarCaixas_ do Codigo.gs acerta as linhas de todas de uma vez.
+    import estado_do_personagem as _ep
+    do_dossie = []
+    def texto_do_dossie(c1, l1, c2, l2):
+        do_dossie.append([_ep.largura_px(c1, c2), [f"{c1}{l1}"], l1, l2 - l1 + 1, 0, f"{c1}{l1}:{c2}{l2}"])
+        return f.add("txt", c1, l1, c2, l2)
     f.add("rot", "D", L + 21, "O", L + 21, "PERSONALIDADE")
-    f.add("txt", "D", L + 22, "O", L + 29)
+    texto_do_dossie("D", L + 22, "O", L + 29)
     f.caixa("Q", "Z", L + 1, "NOME", f"=FICHA!{ix.indice(layout)['nome']}", nota=NOTAS["nome"])
     f.caixa("AB", "AG", L + 1, "GRAU", R["patentes"][0][0], nota=NOTAS["grau"])
     f.caixa("AI", "AM", L + 1, "IDADE")
@@ -825,21 +868,23 @@ def aba(layout, tr):
     # cima da história, e os dois Legados fecham o dossiê, de ponta a ponta. Os Legados são texto livre ("da pra criar
     # legado, ent n precisa fazer lista"), com o tipo num menu, e a FICHA os espelha embaixo das barras.
     f.add("rot", "Q", L + 9, "AG", L + 9, "APARÊNCIA")
-    f.add("txt", "Q", L + 10, "AG", L + 11)
+    texto_do_dossie("Q", L + 10, "AG", L + 11)
     f.add("rot", "AI", L + 9, "AT", L + 9, "CICATRIZES", NOTAS["cicatrizes"])
-    assert f.add("txt", "AI", L + 10, "AT", L + 11) == G["cicatrizes"]
+    assert texto_do_dossie("AI", L + 10, "AT", L + 11) == G["cicatrizes"]
     f.add("rot", "Q", L + 13, "AT", L + 13, "TRAÇO · UMA FRASE DA SUA HISTÓRIA", NOTAS["traco"])
-    assert f.add("txt", "Q", L + 14, "AT", L + 15) == G["traco"]
+    assert texto_do_dossie("Q", L + 14, "AT", L + 15) == G["traco"]
     f.add("rot", "Q", L + 17, "AT", L + 17, "HISTÓRIA")
-    assert f.add("txt", "Q", L + 18, "AT", L + 23) == G["historia"]
+    assert texto_do_dossie("Q", L + 18, "AT", L + 23) == G["historia"]
     f.add("rot", "Q", L + 25, "AT", L + 25, "LAÇOS E ANOTAÇÕES")
-    f.add("txt", "Q", L + 26, "AT", L + 29)
+    texto_do_dossie("Q", L + 26, "AT", L + 29)
+    estica_do_dossie = {"gatilhos": [c_[5] for c_ in do_dossie], "aba": NOME, "textos": [c_[:5] for c_ in do_dossie]}
     for k, ((n1, n2), (t1, t2)) in enumerate(((("D", "P"), ("Q", "W")), (("Y", "AL"), ("AM", "AT")))):
+        assert (n1, t2) == LEGADO_COLUNAS[k]
         f.add("rot", n1, L + 31, n2, L + 31, f"LEGADO {k + 1}", NOTAS["legado"])
         f.add("rot", t1, L + 31, t2, L + 31, "TIPO", NOTAS["legado_tipo"])
         assert f.add("cel_esq", n1, L + 32, n2, L + 32) == G["legado_nome"][k]
         assert f.add("cel", t1, L + 32, t2, L + 32) == G["legado_tipo"][k]
-        assert f.add("txt", n1, L + 33, t2, L + 35) == G["legado_texto"][k]
+        assert f.add("txt", n1, L + 33, t2, L + 33 + LEGADO_LINHAS - 1) == G["legado_texto"][k]
     f.menu(" ".join(G["legado_tipo"]), tr["faixa_t"]("legado_tipo"))
     f.menu(G["grau"], tr["faixa_t"]("grau", so=0))
 
@@ -1037,7 +1082,7 @@ def aba(layout, tr):
         "colunas_larg": [[1, PAINEL_INI, ficha["colunas_larg"][0][2]]] +
                         [[b + k, b + k, (px + 1) / 8] for b in BLOCOS for k, px in enumerate(PX_BLOCO)] +
                         [[b + len(PX_BLOCO), b + len(PX_BLOCO), ficha["colunas_larg"][0][2]] for b in BLOCOS],
-        "linhas_alt": alturas,
+        "linhas_alt": _sem_altura_propria(alturas, tr.get("esticam", []) + [estica_do_dossie]),
         "altura_padrao": ficha.get("altura_padrao"), "grade": False,
         "celulas": [[k, v[0], v[1]] for k, v in f.cel.items()],
         "mescladas": f.mesclas, "menus": f.menus, "condicional": [], "imagens": imagens,
@@ -1049,6 +1094,8 @@ def aba(layout, tr):
         # 07/10/2026: as caixas que nascem com conta e o jogador escreve por cima (a foto e o Volume de cada item). O
         # devolverConta_ do Codigo.gs devolve a conta de todas as outras, em grupo ou não
         "livres": sorted(livres),
+        # 08/10/2026: as caixas de texto que esticam com o que o jogador escreve (os Legados, aqui e no espelho da FICHA)
+        "esticam": tr.get("esticam", []) + [estica_do_dossie],
     }
 
 

@@ -147,6 +147,7 @@ var ABAS = [
     "condicional":[{"faixas":["G100:AT100","D101:AT104"],"formula":"=LEFT($D$100,4)=\"Abre\"","riscado":true},{"faixas":["G106:AT106","D107:AT110"],"formula":"=LEFT($D$106,4)=\"Abre\"","riscado":true},{"faixas":["G112:AT112","D113:AT116"],"formula":"=LEFT($D$112,4)=\"Abre\"","riscado":true},{"faixas":["G118:AT118","D119:AT122"],"formula":"=LEFT($D$118,4)=\"Abre\"","riscado":true},{"faixas":["G124:AT124","D125:AT128"],"formula":"=LEFT($D$124,4)=\"Abre\"","riscado":true},{"faixas":["G137:AT137","D138:AT141"],"formula":"=LEFT($D$137,4)=\"Abre\"","riscado":true},{"faixas":["G143:AT143","D144:AT147"],"formula":"=LEFT($D$143,4)=\"Abre\"","riscado":true},{"faixas":["G149:AT149","D150:AT153"],"formula":"=LEFT($D$149,4)=\"Abre\"","riscado":true},{"faixas":["G155:AT155","D156:AT159"],"formula":"=LEFT($D$155,4)=\"Abre\"","riscado":true}],
     "copias":[[100,104,[106,112,118,124,137,143,149,155],4,46],[177,185,[187,197,207,217,227,237,247,257,267,277,287,298],4,46],[323,328,[330,337,344],4,46],[359,365,[367,375,383],4,46]],
     "sem_trava":[[96,172],[173,399]],
+    "esticam":[{"gatilhos":["Z40:AI41","AK40:AT41"],"aba":"FICHA","textos":[[274,["Z40"],41,1,21],[274,["AK40"],41,1,21]]}],
     "caixas":[[4,72,11],[4,87,6],[5,72,11],[5,87,6],[17,87,5],[18,87,5],[20,71,12],[21,71,12],[32,87,4]]
   },
   {
@@ -392,6 +393,7 @@ var ABAS = [
     "formatos":[["O71","\"¥ \"#,##0"]],
     "condicional":[{"faixas":["K52","S52","AO52"],"contem":"Falta Força","fundo":"#C2334D","fonte":"#FFFFFF"},{"faixas":["AH52"],"contem":"Pede ","fundo":"#C2334D","fonte":"#FFFFFF"},{"faixas":["AF71"],"contem":"Não cumprido","fundo":"#C2334D","fonte":"#FFFFFF"},{"faixas":["D71"],"contem":" · acima","fundo":"#C2334D","fonte":"#FFFFFF"},{"faixas":["D52"],"contem":"Sem treino","fonte":"#D89B3A"}],
     "livres":["AR89","AR90","AR91","AR92","AR93","AR94","D10","V89","V90","V91","V92","V93","V94"],
+    "esticam":[{"gatilhos":["D41","Q41","Y41","AM41","D42:W44","Y42:AT44"],"aba":"FICHA","textos":[[582,["D41","Q41","D42"],44,2,0],[582,["Y41","AM41","Y42"],44,2,0]]},{"gatilhos":["D42:W44","Y42:AT44"],"aba":"FICHA PESSOAL","textos":[[554,["D42"],42,3,0],[610,["Y42"],42,3,0]]},{"gatilhos":["D31:O38","Q19:AG20","AI19:AT20","Q23:AT24","Q27:AT32","Q35:AT38"],"aba":"FICHA PESSOAL","textos":[[330,["D31"],31,8,0],[470,["Q19"],19,2,0],[330,["AI19"],19,2,0],[834,["Q23"],23,2,0],[834,["Q27"],27,6,0],[834,["Q35"],35,4,0]]}],
     "caixas":[[4,56,13],[13,56,13],[22,56,13],[31,56,13],[39,56,13]]
   },
   {
@@ -597,7 +599,7 @@ var ABAS = [
     "padrao":["Roboto",12,"#F4F1F7"],
     "fundo_base":"#120F1D",
     "vals":[
-      [1,2,"O GLOSSÁRIO — o que cada coisa da ficha quer dizer",0],[1,23,"Capítulo 1 · 2 · 13",1],[4,2,"ATRIBUTOS",2],[4,13,"O número é o modificador. Escala de 0 a 6, sem tabela de conversão.",3],[5,5,"ATRIBUTO",4],[5,11,"O QUE GOVERNA",4],[6,2,"",5],[6,5,"Força",6],[6,11,"Quanto o seu corpo aguenta e impõe, na base do músculo. No livro: participa do esforço físico.",7],[7,2,"",5],[7,5,"Destreza",6],[7,11,"Sua velocidade e precisão — o corpo respondendo rápido, a mira certa. No livro: participa da precisão e dos movimentos.",7],[8,2,"",5],[8,5,"Constituição",6],[8,11,"Sua resistência bruta a dano e a desgaste. No livro: participa da resistência corporal.",7],[9,2,"",5],[9,5,"Inteligência",6],[9,11,"O que você sabe e deduz — o raciocínio frio. No livro: participa do raciocínio e do conhecimento.",7],[10,2,"",5],[10,5,"Essência",6],[10,11,"Sua sensibilidade à energia amaldiçoada e às pessoas — o que você sente, não o que você calcula. No livro: participa da presença e da relação com energia amaldiçoada.",7],[12,2,"PERÍCIAS",2],[12,13,"9 de 23 na criação — ou 10, trocando os dois ofícios da Origem.",3],[13,2,"ATRIBUTO",8],[13,5,"NOME",4],[13,11,"O QUE FAZ",4],[14,2,"Acrobacia",5],[14,5,"Destreza",6],[14,11,"Mede seu equilíbrio e o controle fino do próprio corpo em movimento. Exemplo: Use Acrobacia para manter o equilíbrio num apoio instável, executar uma manobra corporal difícil ou se contorcer numa passagem que comporte seu corpo.",7],[15,2,"Atletismo",5],[15,5,"Força",6],[15,11,"Mede seu corpo em esforço físico direto. Exemplo: Use Atletismo para superar uma correnteza, escalar um apoio difícil, saltar sob condições adversas ou forçar uma porta.",7],[16,2,"Atuação",5],[16,5,"Essência",6],[16,11,"Mede sua capacidade de performar ou sustentar um papel diante de alguém. Exemplo: Use Atuação para cantar, representar, contar uma história ou conduzir uma apresentação.",7],[17,2,"Enganação",5],[17,5,"Essência",6],
+      [1,2,"O GLOSSÁRIO — o que cada coisa da ficha quer dizer",0],[1,23,"Capítulo 1 · 2 · 13",1],[4,2,"ATRIBUTOS",2],[4,13,"O número é o modificador. Escala de 0 a 6, sem tabela de conversão.",3],[5,5,"ATRIBUTO",4],[5,11,"O QUE GOVERNA",4],[6,2,"",5],[6,5,"Força",6],[6,11,"Quanto o seu corpo aguenta e impõe, na base do músculo. No livro: participa do esforço físico.",7],[7,2,"",5],[7,5,"Destreza",6],[7,11,"Sua velocidade e precisão — o corpo respondendo rápido, a mira certa. No livro: participa da precisão e dos movimentos.",7],[8,2,"",5],[8,5,"Constituição",6],[8,11,"Sua resistência bruta a dano e a desgaste. No livro: participa da resistência corporal.",7],[9,2,"",5],[9,5,"Inteligência",6],[9,11,"O que você sabe e deduz — o raciocínio frio. No livro: participa do raciocínio e do conhecimento.",7],[10,2,"",5],[10,5,"Essência",6],[10,11,"Sua sensibilidade à energia amaldiçoada e às pessoas — o que você sente, não o que você calcula. No livro: participa da presença e da relação com energia amaldiçoada.",7],[12,2,"PERÍCIAS",2],[12,13,"9 de 23 na criação — ou 10, trocando os dois ofícios da Origem.",3],[13,2,"NOME",8],[13,5,"ATRIBUTO",4],[13,11,"O QUE FAZ",4],[14,2,"Acrobacia",5],[14,5,"Destreza",6],[14,11,"Mede seu equilíbrio e o controle fino do próprio corpo em movimento. Exemplo: Use Acrobacia para manter o equilíbrio num apoio instável, executar uma manobra corporal difícil ou se contorcer numa passagem que comporte seu corpo.",7],[15,2,"Atletismo",5],[15,5,"Força",6],[15,11,"Mede seu corpo em esforço físico direto. Exemplo: Use Atletismo para superar uma correnteza, escalar um apoio difícil, saltar sob condições adversas ou forçar uma porta.",7],[16,2,"Atuação",5],[16,5,"Essência",6],[16,11,"Mede sua capacidade de performar ou sustentar um papel diante de alguém. Exemplo: Use Atuação para cantar, representar, contar uma história ou conduzir uma apresentação.",7],[17,2,"Enganação",5],[17,5,"Essência",6],
       [17,11,"Mede sua capacidade de mentir de um jeito convincente. Exemplo: Use Enganação para sustentar uma mentira, blefar ou apresentar uma identidade falsa.",7],[18,2,"Furtividade",5],[18,5,"Destreza",6],[18,11,"Mede sua capacidade de passar despercebido. Exemplo: Use Furtividade para esconder sua presença e mover-se com discrição, aproveitando as condições do ambiente.",7],[19,2,"Hierarquia",5],[19,5,"Inteligência",6],[19,11,"Mede seu conhecimento da política entre clãs e feiticeiros — quem manda em quem. Exemplo: Use Hierarquia para reconhecer cargos, relações políticas, responsabilidades e canais de autoridade.",7],[20,2,"História",5],[20,5,"Inteligência",6],[20,11,"Mede sua memória do que já aconteceu e de quem estava lá. Exemplo: Use História para recordar acontecimentos, personagens, conflitos e costumes do passado.",7],[21,2,"Intimidação",5],[21,5,"Essência",6],[21,11,"Mede sua capacidade de fazer alguém recuar pela ameaça ou pela presença. Exemplo: Use Intimidação para pressionar alguém por meio de uma ameaça que essa pessoa possa levar a sério.",7],[22,2,"Intuição",5],[22,5,"Inteligência",6],[22,11,"Mede sua leitura racional do comportamento alheio — dedução sobre gente. Exemplo: Use Intuição para interpretar intenções e perceber inconsistências no comportamento de alguém.",7],[23,2,"Investigação",5],[23,5,"Inteligência",6],[23,11,"Mede sua capacidade de vasculhar um lugar e ligar pistas soltas. Exemplo: Use Investigação para vasculhar documentos, examinar uma cena e relacionar pistas.",7],[24,2,"Lidar com Animais",5],[24,5,"Inteligência",6],[24,11,"Mede sua capacidade de acalmar, montar ou conduzir um animal. Exemplo: Use Lidar com Animais para acalmar, conduzir ou interpretar o comportamento de um animal.",7],[25,2,"Medicina",5],[25,5,"Inteligência",6],[25,11,"Mede seu conhecimento teórico de ferimento, veneno e doença. Exemplo: Use Medicina para examinar ferimentos, sintomas e sinais do funcionamento do corpo.",7],[26,2,"Natureza",5],
       [26,5,"Inteligência",6],[26,11,"Mede seu conhecimento do mundo natural — planta, bicho, clima, terreno. Exemplo: Use Natureza para identificar plantas e animais, reconhecer terreno, avaliar sinais do clima e compreender fenômenos naturais.",7],[27,2,"Ocultismo",5],[27,5,"Inteligência",6],[27,11,"Mede seu conhecimento técnico de maldições e do funcionamento da energia amaldiçoada. Exemplo: Use Ocultismo para reconhecer conhecimentos de feitiçaria, símbolos, procedimentos e fenômenos que o personagem tenha condições de conhecer.",7],[28,2,"Percepção",5],[28,5,"Essência",6],[28,11,"Mede sua atenção ao que os cinco sentidos comuns captam — o lado mundano. Exemplo: Use Percepção para notar sons, cheiros, movimentos e outros sinais acessíveis aos seus sentidos.",7],[29,2,"Persuasão",5],[29,5,"Essência",6],[29,11,"Mede sua capacidade de convencer alguém a fazer o que você quer porque quer. Exemplo: Use Persuasão para negociar, apresentar argumentos ou obter colaboração voluntária.",7],[30,2,"Pontaria",5],[30,5,"Destreza",6],[30,11,"Mede sua precisão ao mirar num alvo específico, fora de uma rolagem de ataque. Exemplo: Use Pontaria para acertar um ponto numa tarefa de precisão, como lançar a ponta de uma corda por uma abertura ou colocar um objeto num recipiente distante.",7],[31,2,"Prestidigitação",5],[31,5,"Destreza",6],[31,11,"Mede a destreza manual fina — mão rápida, gesto discreto. Exemplo: Use Prestidigitação para esconder um objeto pequeno na mão, trocar discretamente duas peças ou retirar algo de um bolso acessível sem chamar atenção.",7],[32,2,"Provocar",5],[32,5,"Essência",6],[32,11,"Mede sua capacidade de tirar alguém do sério e puxá-lo pra cima de você — o oposto de Intimidação. Exemplo: Use Provocar para irritar, desafiar ou fazer alguém perder a compostura.",7],[33,2,"Religião",5],[33,5,"Inteligência",6],
       [33,11,"Mede seu conhecimento do lado sagrado e ritual do jujutsu. Exemplo: Use Religião para reconhecer tradições, símbolos, práticas religiosas e a função de um local de culto.",7],[34,2,"Sentir Energia",5],[34,5,"Essência",6],[34,11,"Mede sua sensibilidade direta à energia amaldiçoada. Exemplo: Use Sentir Energia para procurar ou examinar sinais de energia amaldiçoada que sua capacidade de percepção alcance.",7],[35,2,"Sobrevivência",5],[35,5,"Inteligência",6],[35,11,"Mede sua capacidade de aguentar e se orientar num ambiente hostil. Exemplo: Use Sobrevivência para se orientar, procurar água e abrigo, avaliar um percurso e seguir rastros acessíveis.",7],[36,2,"Tecnologia",5],[36,5,"Inteligência",6],[36,11,"Mede seu domínio de equipamento e sistema moderno. Exemplo: Use Tecnologia para compreender aparelhos e sistemas, examinar registros digitais ou diagnosticar uma falha.",7],[38,2,"OFÍCIOS",2],[38,13,"2 de 11 na criação. O atributo é do mestre, na hora — não é fixo.",3],[39,5,"NOME",4],[39,11,"O QUE FAZ",4],[40,2,"",5],[40,5,"Alfaiate",6],[40,11,"Mede sua capacidade de cortar, costurar e remendar tecido. Exemplo: Cortar, costurar, ajustar e remendar roupas e uniformes.",7],[41,2,"",5],[41,5,"Arrombamento",6],[41,11,"Mede sua capacidade de vencer uma trava sem ter a chave. Exemplo: Abrir fechaduras, contornar alarmes e outros dispositivos de acesso.",7],[42,2,"",5],[42,5,"Burocracia",6],[42,11,"Mede seu domínio da máquina administrativa jujutsu por dentro. Exemplo: Preparar relatórios, requisições e registros conforme os procedimentos de uma organização.",7],[43,2,"",5],[43,5,"Caligrafia",6],[43,11,"Mede sua capacidade de produzir documento escrito, oficial ou falsificado. Exemplo: Produzir escrita, inscrições, cópias e documentos; reproduzir um traço.",7],[44,2,"",5],[44,5,"Condução",6],[44,11,"Mede sua capacidade de operar um veículo. Exemplo: Dirigir e manobrar veículos. Familiaridade e meios de controle continuam necessários.",7],[45,2,"",5],
@@ -799,7 +801,36 @@ function continuar() {
   }
 }
 
+/**
+ * 08/10/2026: uma montagem de cada vez. Num teste desse dia o editor mostrou um erro que não dizia nada, a função foi
+ * rodada de novo e duas execuções correram juntas: a última começou com a planilha ainda em inglês ("idioma de antes:
+ * en_US" no registro, que só acontece com outra execução no meio do caminho), e a ficha terminou em FICHA PRONTA com
+ * os 22 saltos em #ERROR!. Cada execução troca o idioma da planilha inteira, na ida e na volta, e quem escreve
+ * fórmula depois que a outra devolveu o português escreve na pontuação errada.
+ *
+ * A trava é a do script (a do documento é a da troca de paleta, que solta a dela no fim de cada passo). Quem não a
+ * pega para na hora, com o recado, sem tocar na planilha. Ela se solta sozinha quando a execução acaba, mesmo morta
+ * pelos seis minutos. Sem o LockService a montagem segue sem trava, como era.
+ */
+function umaDeCadaVez_(nome, f) {
+  var trava = null;
+  try { trava = LockService.getScriptLock(); } catch (err) { trava = null; }
+  if (trava && !trava.tryLock(0)) {
+    throw new Error('já tem uma montagem rodando nesta planilha, e duas ao mesmo tempo estragam uma à outra: espere ela ' +
+                    'terminar (a página Execuções mostra) e só então rode ' + nome + '() de novo.');
+  }
+  try {
+    return f();
+  } finally {
+    if (trava) { try { trava.releaseLock(); } catch (err) { /* a execução acabando solta do mesmo jeito */ } }
+  }
+}
+
 function construir() {
+  return umaDeCadaVez_(RETOMADA_ === null ? 'construir' : 'continuar', montar_);
+}
+
+function montar_() {
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();
   var props = PropertiesService.getDocumentProperties();
@@ -901,6 +932,11 @@ function construir() {
     ss.setSpreadsheetLocale('pt_BR');
   }
   feito.push('idioma de antes: ' + idioma + ' · idioma final: pt_BR');
+  // 08/10/2026: com a planilha de volta ao português, os saltos são conferidos (ver conferirSaltos_, no Codigo.gs)
+  if (!falta) {
+    try { feito.push(conferirSaltos_(ss)); } catch (err) { feito.push('saltos NÃO conferidos: ' + err.message); }
+    rel.etapa('saltos conferidos');
+  }
 
   var seg = Math.round(rel.passou() / 1000);
   if (falta) {
@@ -940,6 +976,10 @@ function acabamento_(ss, feito, rel) {
  * vai para o inglês enquanto ela roda, como no construir().
  */
 function acabar() {
+  return umaDeCadaVez_('acabar', soOAcabamento_);
+}
+
+function soOAcabamento_() {
   var ss = SpreadsheetApp.getActive(), feito = [], rel = relogio_();
   var faltam = ABAS.filter(function (spec) { return !ss.getSheetByName(spec.nome); });
   if (faltam.length) throw new Error('a planilha não tem a aba ' + faltam[0].nome + ': rode construir() antes.');
@@ -951,6 +991,8 @@ function acabar() {
   } finally {
     ss.setSpreadsheetLocale('pt_BR');
   }
+  try { feito.push(conferirSaltos_(ss)); } catch (err) { feito.push('saltos NÃO conferidos: ' + err.message); }
+  rel.etapa('saltos conferidos');
   Logger.log('ACABAMENTO PRONTO em ' + Math.round(rel.passou() / 1000) + 's · ' + feito.join(' · ') + ' · tempos: ' + ETAPAS_.join(', '));
 }
 
@@ -1304,6 +1346,11 @@ function verificar() {
   var idx = indice();
   ['vida_max', 'defesa', 'maestria', 'cd de feitiço'].forEach(function (k) {
     if (!idx[k]) falhas.push('o índice não tem ' + k);
+  });
+  // 08/10/2026: os saltos da FICHA AMALDIÇOADA e da lista de invocações, que já amanheceram em #ERROR! numa montagem
+  [[ABA_AMALDICOADA_, DADOS_DA_AMALDICOADA_], [ABA_INVOCACOES_, DADOS_DA_INVOCACAO_]].forEach(function (par) {
+    var n = saltosComErro_(ss, par[0], par[1]);
+    if (n) falhas.push(par[0] + ': ' + n + ' salto(s) em erro (rode o acabar())');
   });
   var fontes = {};
   ABAS.forEach(function (spec) {

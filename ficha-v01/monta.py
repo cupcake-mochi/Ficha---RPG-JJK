@@ -356,7 +356,11 @@ def _extras(a):
            # 07/10/2026, a INVOCAÇÕES: a caixa de ± da vida de cada ficha, que o onEdit aplica (redutorDaInvocacao_)
            "redutores": a.get("redutores", []),
            # 07/10/2026: as caixas que nascem com conta e sao do jogador (o devolverConta_ nao as devolve)
-           "livres": a.get("livres", [])}
+           "livres": a.get("livres", []),
+           # 08/10/2026: as caixas de texto que esticam com o que o jogador escreve (o esticarCaixas_ do Codigo.gs)
+           "esticam": a.get("esticam", []),
+           # 08/10/2026, a INVOCAÇÕES: o que abrir quando o link da lista chega numa ficha recolhida
+           "abrir": a.get("abrir", [])}
     return {k: v for k, v in out.items() if v}
 
 gs, celulas, pecas = emitir_gs.escrever(

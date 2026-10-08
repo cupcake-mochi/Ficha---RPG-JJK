@@ -309,7 +309,9 @@ function criaSheets(FICHA_SRC, GS, extras) {
     }),
     PropertiesService: { getDocumentProperties: () => ({ getProperty: (k) => (k in P.props ? P.props[k] : null), setProperty: (k, v) => { P.props[k] = String(v); },
       setProperties: (o) => Object.assign(P.props, o), deleteProperty: (k) => { delete P.props[k]; } }) },
-    LockService: { getDocumentLock: () => ({ tryLock: () => true, releaseLock: () => {} }) },
+    // 08/10/2026: a trava do script é a da montagem (umaDeCadaVez_). P.montagemOcupada faz de conta que outra execução a tem
+    LockService: { getDocumentLock: () => ({ tryLock: () => true, releaseLock: () => {} }),
+                   getScriptLock: () => ({ tryLock: () => !P.montagemOcupada, releaseLock: () => { P.travasSoltas = (P.travasSoltas || 0) + 1; } }) },
     ScriptApp: { getProjectTriggers: () => [] },
   };
   // os enumerados não passam pelo rigoroso: são valores, e o nome errado dá undefined, que o Sheets de mentira recusa

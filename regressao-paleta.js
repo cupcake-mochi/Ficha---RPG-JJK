@@ -305,7 +305,7 @@ console.log('7. escolher a mesma paleta de novo, e clicar sem nada pendente');
 P=umaVez([E]); const antesT=P.clock.t; r=emPassos(P,[E]);
 ok('não repinta nada', P.clock.t-antesT < 3000, `${P.clock.t-antesT} ms`);
 { const {ctx}=carrega(SRC_NOVO,P); const t0=P.clock.t; let leu=false;
-  ctx.onSelectionChange({range:{getSheet:()=>{leu=true; return {getName:()=>'FICHA'};}}});
+  ctx.onSelectionChange({range:{getA1Notation:()=>'B5', getSheet:()=>{leu=true; return {getName:()=>'FICHA'};}}});
   ok('clique sem pendente custa uma leitura de propriedade, e não lê a aba', P.clock.t-t0<=CUSTO.prop() && !leu, `${P.clock.t-t0} ms, leu a aba: ${leu}`); }
 
 console.log('8. o Sheets três vezes mais lento');

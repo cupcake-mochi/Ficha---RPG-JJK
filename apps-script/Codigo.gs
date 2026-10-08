@@ -46,6 +46,12 @@ function corDeEstado_(ss, idx) {
     var atual = idx[r], max = idx[r + '_max'];
     if (!atual || !max) return;
     var alvo = ficha.getRange(cel_(idx, r));
+    // 08/10/2026, do pente-fino no Sheets: depois de trocar de Caminho a vida ficou em 25 de 23, "sem aviso de
+    // excesso". O atual é do jogador (a caixa de ± escreve nele), e não desce sozinho quando o máximo desce; a caixa
+    // fica vermelha enquanto ele passar do máximo. Vem antes das outras duas regras, que são do atual baixo.
+    regras.push(SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=AND(N(' + max + ')>0,N(' + atual + ')>N(' + max + '))')
+      .setBackground('#C2334D').setFontColor('#FFFFFF').setRanges([alvo]).build());
     var formula25 = '=AND(N(' + max + ')>0,' + atual + '/' + max + '<=0.25)';
     var formula50 = '=AND(N(' + max + ')>0,' + atual + '/' + max + '<=0.5)';
     regras.push(SpreadsheetApp.newConditionalFormatRule()
@@ -329,6 +335,7 @@ function onEdit(e) {
   // 01/10/2026: a FICHA PESSOAL tem as caixas de treino, as missões que sobem o nível e as notas que mudam.
   if (aba === ABA_PESSOAL_) {
     try { devolverConta_(e, ABA_PESSOAL_); } catch (err) { console.log('ficha pessoal, a conta: ' + err.message); }
+    try { esticarCaixas_(e, ABA_PESSOAL_); } catch (err) { console.log('ficha pessoal, a caixa que estica: ' + err.message); }
     try { pessoalEditada_(e); } catch (err) { console.log('ficha pessoal: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
     return;
@@ -371,6 +378,7 @@ function onEdit(e) {
   }
   // 07/10/2026: e toda caixa calculada da FICHA, fora a vida, a energia e a integridade, que o jogador escreve
   try { devolverConta_(e, 'FICHA'); } catch (err) { console.log('ficha, a conta: ' + err.message); }
+  try { esticarCaixas_(e, 'FICHA'); } catch (err) { console.log('ficha, a caixa que estica: ' + err.message); }
   var idx = indice();
   aplicarDelta_(e, idx);
   prenderTemp_(e, idx);
@@ -823,6 +831,42 @@ function ligarSaltos_(ss) {
 }
 
 /**
+ * 08/10/2026: os saltos são conferidos depois que a planilha volta ao português. Num teste desse dia a montagem
+ * terminou em FICHA PRONTA com os 22 saltos em #ERROR! (os 10 da FICHA AMALDIÇOADA e as 12 linhas da lista de
+ * invocações), e rodar o acabar() de novo consertou todos. Duas execuções tinham se sobreposto antes, e não deu para
+ * saber se foi isso. Seja qual for a causa, o registro não pode dizer PRONTA com salto quebrado: se alguma caixa de
+ * salto mostra erro, os saltos da aba são escritos de novo, com o ponto e vírgula do português (quem chama acabou de
+ * devolver a planilha a ele), e o registro conta. A causa mais provável, as duas execuções juntas, o umaDeCadaVez_ do
+ * Ficha.gs impede; esta conferência fica para o que mais houver.
+ */
+function saltosComErro_(ss, nomeDaAba, nomeDosDados) {
+  var aba = ss.getSheetByName(nomeDaAba), dados = ss.getSheetByName(nomeDosDados);
+  if (!aba || !dados) return 0;
+  var n = 0;
+  tabelaDaDados_(dados.getDataRange().getValues(), 'salto', ['caixa do salto', 'alvo do salto']).forEach(function (l) {
+    if (!l['caixa do salto'] || !l['alvo do salto']) return;
+    if (/^#[A-Z\/]+[!?]?$/.test(String(aba.getRange(String(l['caixa do salto'])).getDisplayValue()))) n++;
+  });
+  return n;
+}
+
+function conferirSaltos_(ss) {
+  var refeitos = 0, ficaram = 0;
+  SpreadsheetApp.flush();
+  [[ABA_AMALDICOADA_, DADOS_DA_AMALDICOADA_], [ABA_INVOCACOES_, DADOS_DA_INVOCACAO_]].forEach(function (par) {
+    var comErro = saltosComErro_(ss, par[0], par[1]);
+    if (!comErro) return;
+    ligarSaltosDe_(ss, par[0], par[1], ';');
+    SpreadsheetApp.flush();
+    refeitos += comErro;
+    ficaram += saltosComErro_(ss, par[0], par[1]);
+  });
+  if (!refeitos) return 'saltos conferidos depois do idioma: nenhum em erro';
+  return 'saltos conferidos depois do idioma: ' + refeitos + ' em erro, escritos de novo' +
+         (ficaram ? ', e ' + ficaram + ' CONTINUAM EM ERRO (rode o acabar())' : ', e nenhum ficou em erro');
+}
+
+/**
  * A caixa de ± da vida de cada ficha de invocação, como a da FICHA do jogador (pedido do Mizuki em 07/10/2026: "ter um
  * redutor automatico, semelhante a ficha de player"). Digita −9, a ficha aplica na VIDA ATUAL e limpa a caixa. A conta é
  * a mesma aplicaPasso_ da FICHA: a perda gasta a vida temporária primeiro, e a vida não passa da máxima. Com a VIDA
@@ -852,13 +896,15 @@ function redutorDaInvocacao_(e) {
 }
 
 /** Os saltos de uma aba, lidos da aba de dados dela. Devolve quantos escreveu, ou null se a aba não existe. */
-function ligarSaltosDe_(ss, nomeDaAba, nomeDosDados) {
+function ligarSaltosDe_(ss, nomeDaAba, nomeDosDados, separador) {
   var aba = ss.getSheetByName(nomeDaAba), dados = ss.getSheetByName(nomeDosDados);
   if (!aba || !dados) return null;
   var gid = aba.getSheetId(), n = 0;
   // 07/10/2026: o acabamento escreve com a planilha em inglês, e o onEdit, que religa a lista de invocações, com ela em
   // português, onde a vírgula entre os dois argumentos não vale
-  var sep = /^en/i.test(String(ss.getSpreadsheetLocale())) ? ',' : ';';
+  // 08/10/2026: quem sabe em que idioma a planilha está (o conferirSaltos_, logo depois de ela voltar ao português)
+  // diz o separador, e a pergunta ao Sheets fica para quem não sabe
+  var sep = separador || (/^en/i.test(String(ss.getSpreadsheetLocale())) ? ',' : ';');
   // 02/10/2026: o nome de quatro saltos muda com a rota (Feitiços, Manejos ou Katas), e o link cita a célula do nome na
   // DADOS_AM ('nome do salto'), e não o texto.
   tabelaDaDados_(dados.getDataRange().getValues(), 'salto', ['caixa do salto', 'alvo do salto', 'nome do salto']).forEach(function (l) {
@@ -1045,6 +1091,63 @@ function linhasDoTexto_(texto, M) {
 function alturaDaCaixa_(texto, M) {
   var total = String(texto) === '' ? 0 : linhasDoTexto_(texto, M) * M.linha + M.respiro;
   return Math.max(M.minima, Math.ceil(total / M.caixa));
+}
+
+/**
+ * 08/10/2026: as caixas de texto que esticam fora das Habilidades. Do teste no Sheets: nas caixas de resistências e de
+ * imunidades, "textos de aproximadamente 170 caracteres ficam cortados pela altura das caixas"; e o Legado do livro
+ * passa de 500 letras, mais do que cabia na caixa dele da FICHA PESSOAL e no espelho da FICHA.
+ *
+ * Cada aba declara as dela no ABAS, em `esticam`, em grupos: os `gatilhos` (as caixas em que escrever dispara a
+ * conta), a `aba` cujas linhas mudam de altura (pode ser outra: escrever o Legado na FICHA PESSOAL estica o espelho da
+ * FICHA) e os `textos`, cada caixa com [a largura do texto em pixels, as células que formam o texto (lidas na aba em que
+ * se escreveu), a primeira linha que estica, quantas linhas, e o fixo, que é a altura das linhas da caixa que não
+ * mudam]. As caixas de um grupo podem dividir linhas (resistências e imunidades; a personalidade com a história e os
+ * laços, no dossiê): todas as linhas do grupo partem da altura comum, e cada caixa, na ordem, aumenta as dela até o
+ * texto caber. A altura só cresce de uma caixa para a outra, então nenhuma estraga a anterior.
+ *
+ * A conta das linhas é a das cartas (linhasDoTexto_), com a medida da Roboto 10 que mora no Habilidades.gs.
+ */
+function alturasQueEsticam_(caixas, textos, M) {
+  var h = {};
+  caixas.forEach(function (c) { for (var k = 0; k < c[3]; k++) h[c[2] + k] = M.minima; });
+  caixas.forEach(function (c, i) {
+    if (String(textos[i]) === '') return;
+    var pede = linhasDoTexto_(textos[i], { largura: c[0], larguras: M.larguras, media: M.media }) * M.linha + M.respiro - (c[4] || 0);
+    var tem = 0, k;
+    for (k = 0; k < c[3]; k++) tem += h[c[2] + k];
+    if (pede <= tem) return;
+    var mais = Math.ceil((pede - tem) / c[3]);
+    for (k = 0; k < c[3]; k++) h[c[2] + k] += mais;
+  });
+  return h;
+}
+
+function esticarCaixas_(e, nomeDaAba) {
+  if (typeof MEDIDA_DAS_CARTAS_ === 'undefined') return 0;
+  var spec = ABAS.filter(function (s) { return s.nome === nomeDaAba; })[0];
+  if (!spec || !spec.esticam) return 0;
+  var origem = e.range.getSheet(), ss = SpreadsheetApp.getActive(), n = 0;
+  spec.esticam.forEach(function (x) {
+    if (!x.gatilhos.some(function (g) { return tocaFaixa_(e.range, g); })) return;
+    var alvo = x.aba === nomeDaAba ? origem : ss.getSheetByName(x.aba);
+    if (!alvo) return;
+    var textos = x.textos.map(function (c) {
+      return c[1].map(function (a1) { return String(origem.getRange(a1).getDisplayValue()); })
+                 .filter(function (t) { return t !== ''; }).join(' · ');
+    });
+    var h = alturasQueEsticam_(x.textos, textos, MEDIDA_DAS_CARTAS_);
+    // as linhas seguidas de mesma altura vão numa chamada só
+    var linhas = Object.keys(h).map(Number).sort(function (a, b) { return a - b; });
+    for (var i = 0; i < linhas.length;) {
+      var f = i;
+      while (f + 1 < linhas.length && linhas[f + 1] === linhas[f] + 1 && h[linhas[f + 1]] === h[linhas[i]]) f++;
+      alvo.setRowHeights(linhas[i], f - i + 1, h[linhas[i]]);
+      i = f + 1;
+    }
+    n++;
+  });
+  return n;
 }
 
 // os trechos do texto que vão em negrito: as linhas que são subtítulo do livro, [início, fim] de cada uma
@@ -2023,7 +2126,32 @@ function ehCelulaDaPaleta_(range) {
 
 /** Gatilho simples: cada clique continua uma troca de paleta que parou por tempo. */
 function onSelectionChange(e) {
+  try { abrirFichaDaInvocacao_(e); } catch (err) { console.log('invocações, abrir a ficha: ' + err.message); }
   continuarPaleta_(Date.now(), null, false, e && e.range);
+}
+
+/**
+ * 08/10/2026, do pente-fino no Sheets: "O link da segunda invocação chega ao cabeçalho, mas a ficha continua recolhida
+ * e é preciso abrir o grupo pelo + lateral". A ligação é uma fórmula e não abre grupo; quem abre é este gatilho,
+ * quando a seleção chega na célula em que o link cai (o número da ficha, na lombada dela): o grupo de linhas da
+ * fileira e o grupo de colunas da coluna de fichas, se estiverem fechados. Clicar nesse número com a ficha fechada
+ * também a abre. Onde cada ficha cai e o que abrir, o ABAS diz (`abrir`). Devolve true se abriu alguma coisa.
+ */
+function abrirFichaDaInvocacao_(e) {
+  if (!e || !e.range) return false;
+  var spec = ABAS.filter(function (s) { return s.nome === ABA_INVOCACOES_; })[0];
+  if (!spec || !spec.abrir) return false;
+  // este gatilho roda a cada clique, em toda aba: primeiro o endereço, que quase nunca bate, e só então a aba
+  var onde = e.range.getA1Notation().split(':')[0];
+  var a = spec.abrir.filter(function (x) { return x[0] === onde; })[0];
+  if (!a) return false;
+  var aba = e.range.getSheet();
+  if (aba.getName() !== ABA_INVOCACOES_) return false;
+  var abriu = false;
+  var abre = function (grupo) { if (grupo && grupo.isCollapsed()) { grupo.expand(); abriu = true; } };
+  try { abre(aba.getRowGroup(a[1], 1)); } catch (err) { console.log('invocações, o grupo da fileira: ' + err.message); }
+  try { abre(aba.getColumnGroup(a[2], 1)); } catch (err) { console.log('invocações, o grupo da coluna: ' + err.message); }
+  return abriu;
 }
 
 /**
