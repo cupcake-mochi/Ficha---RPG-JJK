@@ -170,7 +170,8 @@ def enderecos(layout):
             lb, cb = _lc(b)
             dono = max((c for c, v in f.val.items() if _lc(c)[0] == lb and _lc(c)[1] < cb and isinstance(v, str)
                         and not v.startswith("=") and v.strip() and v.strip() != "Buff/Debuff"), key=lambda c: _lc(c)[1])
-            out["buff de " + f.val[dono].strip().lower()] = f.abaixo(b)
+            # 08/10/2026 (B42): o dos máximos mora ao lado de "VIDA - Atual/Máxima", e se chama "buff de vida"
+            out["buff de " + re.sub(r"\s*-\s*atual/máxima$", "", f.val[dono].strip().lower())] = f.abaixo(b)
     if tem_corpo:
         lin_dex = _lc(f.unico("DEX"))[0]
         for nome, rot, rot_corpo in ATRS:

@@ -2965,7 +2965,7 @@ arnês inteiro não rodou de novo depois disso (leva perto de quarenta minutos).
 (`arnes-amaldicoada.py` e `arnes-invocacoes.py`) não rodaram nesta rodada: os trechos deles existem todos no código de
 hoje. Nada disto rodou no Sheets de verdade.*
 
-### B42 · Buff/Debuff dos máximos: vida, energia, Integridade, Proteção e carga — **ESCOLHIDO em 08/10/2026 (a forma A do estudo); falta construir**
+### B42 · Buff/Debuff dos máximos: vida, energia, Integridade, Proteção e carga — **CONSTRUÍDO em 08/10/2026 (a forma A do estudo); falta montar no Sheets**
 
 *Junto com a decisão do aviso vermelho ele pediu: "existe a possibilidade do jogador ganhar vida máxima extra de alguma forma,
 como no caso da lapidação e/ou habilidades de técnica, seria interessante uma caixa que pudesse permitir o jogador
@@ -2992,3 +2992,39 @@ outros menus que possam ser alterados assim".*
 | `FICHA PESSOAL`, a carga | a caixa no fim da carga; a barra dela passa de 5 para 3 colunas, e o limite vira 5 + Força + a caixa |
 | `INVOCAÇÕES` | nada: cada ficha já tem a caixinha `B/D` embaixo de todo número calculado (atributos, ataque, CD, Defesa, vida máxima, deslocamento e os quatro TRs), e a Integridade máxima da entidade é metade da vida máxima |
 | Maestria, espaços de feitiço, Refino de graça, Classe máxima, Classe 0 | ficam de fora, a menos que ele peça: a Maestria vem só do nível, e as outras são contagens de progressão (os espaços já recebem o Marco e os pactos) |
+
+**A construção (08/10/2026).** *A `FICHA` já tinha a engrenagem dessas caixas, a que pôs o Buff/Debuff ao lado da Defesa e dos
+ataques em 17/09, e as novas entram por ela, sem módulo novo:*
+
+- *`ficha_layout.py`: a `PROTEÇÃO` entra na lista `COM_BUFF` (a caixa toma as duas últimas colunas dela, como nas
+  outras), e a lista nova `DOS_MAXIMOS` leva a caixa para a linha das três barras: o rótulo e a caixa de duas colunas
+  logo depois do máximo, uma coluna de vão, e a barra, com a conta e o estilo do canto dela, três colunas adiante
+  (`P26:Q27` a caixa da vida, `S26:AD27` a barra);*
+- *`indice_ficha.py`: a caixa ao lado de "VIDA - Atual/Máxima" entra no índice como `buff de vida` (e `buff de
+  energia`, `buff de integridade`, `buff de proteção`);*
+- *`ficha_automatica.py`: cada máximo vira `IFERROR((a conta do livro)+a caixa,"")`, e a Proteção soma a dela. A
+  Defesa soma a Proteção, e sobe junto. Sem Caminho o máximo continua vazio;*
+- *`ficha_pessoal.py`: na carga, o rótulo e a barra cedem duas colunas à caixa (`L:M`), e o limite é 5 + Força + a caixa;*
+- *`Codigo.gs`: as notas das quatro caixas da `FICHA` (a dos máximos fala da Lapidação, do custo de Insistir e de
+  escrever a conta, `=5+10-3`); a da carga é do gerador.*
+
+*A caixa é número digitado, e não conta: o `onEdit` não a devolve. O `comparar-ficha-01.py` fecha em IGUAIS sem regra
+nova, porque as trocas passam pelo `ficha_layout.py` e pelo `ficha_automatica.py`, que ele já refaz.*
+
+**O que acompanha sozinho.** *O teto da vida temporária (metade da máxima), os estágios de Integridade, a cor da barra, o
+aviso vermelho do atual acima do máximo e, na carga, o "acima" e o deslocamento zerado.*
+
+**Conferido (08/10/2026).** *Testes novos: a `regressao-kaori-na-ficha.py` compara dois casos iguais fora as quatro caixas, com a
+conta feita pelo LibreOffice (vida 23 e 28 com +5, energia 8 e 5 com −3, Integridade 26 e 36 com +10, Proteção 1 e 3
+com +2), e a Defesa do modelo passa a somar o Buff/Debuff da Proteção; a `regressao-ficha-pessoal.py` ganha a carga com
+bônus e com redução (a mesma carga passa do limite com −5); a `regressao-construir.js`, que as caixas nascem em 0, que o
+máximo as soma, que o que o jogador digita nelas fica sem aviso, e as notas; o `conferir-ficha-xlsx.py`, a posição de
+cada caixa (logo depois do máximo, duas colunas, a barra depois do vão), a soma por fora da conta do livro, a Proteção
+e a carga. Defeitos plantados: três no `arnes-pessoal.py` (são 101) e dois no `arnes-ficha-pessoal.py`, que roda à mão e
+rodou só com esses dois: acendem. O desenho foi conferido contra o estudo pelo `medidas/ver-aba.py`.*
+
+*A bateria inteira rodou até o fim com tudo dentro e **os dezenove passaram**, e a `regressao-paleta.js` também. (Uma
+primeira rodada foi cortada no meio porque ele precisou reiniciar o computador; esta é a segunda, inteira.) A frase final
+do `rodar-tudo.sh` ainda dizia "os vinte e dois passaram", do tempo dos três validadores da invocação antiga, e foi
+acertada depois da rodada. Os outros arneses que rodam à mão (`arnes-amaldicoada.py`, `arnes-invocacoes.py`) não rodaram.
+Nada disto rodou no Sheets de verdade.*

@@ -25,7 +25,14 @@ import indice_ficha as ix
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AQUI = os.path.dirname(os.path.abspath(__file__))
-COM_BUFF = ["DEFESA", "INICIATIVA", "CD DE FEITIÇO", "CONJURAÇÃO", "CORPO A CORPO", "À DISTÂNCIA", "DESLOCAMENTO"]
+# 08/10/2026 (B42): a PROTEÇÃO entra na lista. Era o único número de combate do REGISTRO sem a caixa
+COM_BUFF = ["DEFESA", "INICIATIVA", "CD DE FEITIÇO", "CONJURAÇÃO", "CORPO A CORPO", "À DISTÂNCIA", "DESLOCAMENTO", "PROTEÇÃO"]
+# 08/10/2026 (B42): os três máximos também. O Mizuki: "existe a possibilidade do jogador ganhar vida máxima extra de
+# alguma forma, como no caso da lapidação e/ou habilidades de técnica, seria interessante uma caixa que pudesse permitir
+# o jogador aumentar os máximos". Do estudo (mockup/maximos-estudo.png) ele escolheu a forma A: a caixa logo depois do
+# máximo, antes da barra, que perde três colunas (duas da caixa e uma do vão).
+DOS_MAXIMOS = ["VIDA - Atual/Máxima", "ENERGIA - Atual/Máxima", "INTEGRIDADE - Atual/Máxima"]
+COLUNAS_DO_BUFF = 2
 MARCOS = {"Atributo": "Corpo", "Feitiço": "Leque"}
 FONTE_DAS_ESCOLHAS = 10.0
 FONTE_DA_ORIGEM = 10.0
@@ -126,6 +133,34 @@ def trocas(layout, CAT=None):
                 poe("FICHA", f"{ix._letras(c1 - 2)}{lin}", val(f"{ix._letras(c1 - 2)}{lin}"), est(f"{ix._letras(c1)}{lin}"))
                 poe("FICHA", f"{ix._letras(c1 - 1)}{lin}", v, e1)
                 poe("FICHA", f"{ix._letras(c1)}{lin}", None, e2)
+        # --- 1b. o Buff/Debuff dos máximos: a caixa toma o começo da barra, e a barra anda para a direita
+        for rot in DOS_MAXIMOS:
+            achados = [c for c, r in fcel.items() if isinstance(r[1], str) and r[1].strip() == rot]
+            if len(achados) != 1:
+                raise SystemExit(f"ficha_layout: o rotulo {rot!r} devia ser um so na FICHA, e achei {achados}")
+            lr = ix._lc(achados[0])[0]
+            c_fim = ix._lc(_merge_de(ficha, achados[0]).split(":")[1])[1]
+            barra = [m for m in ficha["mescladas"] if ix._lc(m.split(":")[0]) == (lr + 1, c_fim + 2)]
+            if len(barra) != 1 or "SPARKLINE" not in str(val(barra[0].split(":")[0])):
+                raise SystemExit(f"ficha_layout: a barra de {rot!r} devia comecar duas colunas depois do rotulo, e achei {barra}")
+            (l1, cb), (l2, cf) = (ix._lc(x) for x in barra[0].split(":"))
+            col = lambda k: ix._letras(cb + k)
+            vao, nova = COLUNAS_DO_BUFF, COLUNAS_DO_BUFF + 1          # a coluna do vão, e onde a barra passa a começar
+            sai.setdefault("FICHA", []).append(barra[0])
+            entra.setdefault("FICHA", []).extend([f"{col(0)}{lr}:{col(vao - 1)}{lr}", f"{col(0)}{l1}:{col(vao - 1)}{l2}",
+                                                  f"{col(nova)}{l1}:{ix._letras(cf)}{l2}"])
+            # a barra: a conta e o estilo do canto e da borda esquerda andam com ela
+            for lin in range(l1, l2 + 1):
+                poe("FICHA", f"{col(nova)}{lin}", val(f"{col(0)}{lin}"), est(f"{col(0)}{lin}"))
+            # a caixa: o rótulo na linha do rótulo, e o número nas linhas da barra
+            poe("FICHA", f"{col(0)}{lr}", "Buff/Debuff", E_BUFF["rot1"])
+            poe("FICHA", f"{col(1)}{lr}", None, E_BUFF["rot2"])
+            for lin in range(l1, l2 + 1):
+                poe("FICHA", f"{col(0)}{lin}", 0 if lin == l1 else None, E_BUFF["val1"])
+                poe("FICHA", f"{col(1)}{lin}", None, E_BUFF["val2"])
+            # o vão entre a caixa e a barra, como o que separa o máximo da caixa
+            for lin in range(lr, l2 + 1):
+                poe("FICHA", f"{col(vao)}{lin}", None, est(f"{ix._letras(cb - 1)}{lin}"))
         for c in buffs:                                    # a caixinha velha do EQUIPAMENTO some
             if c == molde and val(rot_eq) == "EQUIPAMENTO":
                 poe("FICHA", c, None, cel["FICHA"].get(c, (None, est(c)))[1])

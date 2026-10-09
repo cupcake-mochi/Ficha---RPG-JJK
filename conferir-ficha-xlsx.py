@@ -303,6 +303,44 @@ checa("a Defesa corta a Destreza pelo teto da tabela (coluna 3), e soma a prote�
       "MIN(" in _fd and ",3,FALSE)" in _fd and ("+" + IDX.get("proteção", "?")) in _fd.replace("$", ""), _fd[:90])
 checa("a Defesa soma o Buff/Debuff (17/09/2026)",
       not IDX.get("buff de defesa") or IDX["buff de defesa"] in _fd.replace("$", ""), _fd[-60:])
+# 08/10/2026 (B42): o Buff/Debuff dos máximos, da Proteção e da carga. O Mizuki escolheu a forma A do estudo: a caixa
+# logo depois do máximo, antes da barra. Cada máximo soma a caixa dele, por fora da conta do livro; a caixa é número
+# digitado, e não conta (senão o onEdit a devolveria); e a barra começa depois dela.
+from openpyxl.utils import range_boundaries as _rb, get_column_letter as _gl
+def _mescla_em(ws_, a1_):
+    return next((str(r_) for r_ in ws_.merged_cells.ranges if r_.coord.split(":")[0] == a1_), None)
+_ruins_b = []
+for _r_ in ("vida", "energia", "integridade"):
+    _b, _mx = IDX.get("buff de " + _r_), IDX.get(_r_ + "_max")
+    if not _b or not _mx:
+        _ruins_b.append(f"{_r_}: o índice não tem a caixa ou o máximo"); continue
+    _fm = str(f[_mx].value)
+    _mm, _mb = _mescla_em(f, _mx), _mescla_em(f, _b)
+    _c_max_fim = _rb(_mm)[2] if _mm else 0
+    _cb1, _lb1, _cb2, _lb2 = _rb(_mb) if _mb else (0, 0, 0, 0)
+    _barra = _mescla_em(f, f"{_gl(_cb2 + 2)}{_lb1}")
+    if not (_fm.startswith("=IFERROR((") and _fm.endswith(f'+IFERROR(VALUE(${_gl(_cb1)}${_lb1}&""),0),"")')):
+        _ruins_b.append(f"{_r_}: o máximo não soma a caixa por fora da conta ({_fm[-50:]})")
+    if f[_b].value != 0 or f.cell(row=_lb1 - 1, column=_cb1).value != "Buff/Debuff":
+        _ruins_b.append(f"{_r_}: a caixa {_b} devia nascer em 0, com o rótulo em cima")
+    if not (_mm and _mb and _cb1 == _c_max_fim + 2 and _cb2 == _cb1 + 1 and _rb(_mm)[1::2] == (_lb1, _lb2)):
+        _ruins_b.append(f"{_r_}: a caixa {_mb} devia vir logo depois do máximo {_mm}, com duas colunas e a altura dele")
+    if not (_barra and "SPARKLINE" in str(f[_barra.split(':')[0]].value) and _rb(_barra)[1::2] == (_lb1, _lb2)):
+        _ruins_b.append(f"{_r_}: a barra devia começar depois do vão da caixa, e achei {_barra}")
+checa("vida, energia e Integridade têm a caixa de Buff/Debuff logo depois do máximo, antes da barra, e o máximo soma a caixa (B42)",
+      not _ruins_b, " · ".join(_ruins_b))
+checa("a Proteção soma o Buff/Debuff dela, e a Defesa, que soma a Proteção, sobe junto (B42)",
+      bool(IDX.get("buff de proteção")) and _fp.replace("$", "").endswith(f'+IFERROR(VALUE({IDX["buff de proteção"]}&""),0)')
+      and f[IDX["buff de proteção"]].value == 0 and ("+" + IDX.get("proteção", "?")) in _fd.replace("$", ""), _fp[-70:])
+import ficha_pessoal as _fp42
+_G42 = _fp42.geometria(_fp42.regras(CAT))
+_wsP42, _cb42 = wb["FICHA PESSOAL"], _G42["carga_buff"]
+_lim42 = [str(c_.value) for l_ in wb["DADOS"].iter_rows() for c_ in l_
+          if isinstance(c_.value, str) and c_.value.replace("$", "").endswith(f"+N('FICHA PESSOAL'!{_cb42})")]
+checa("o limite de carga da FICHA PESSOAL soma a caixa de Buff/Debuff, que nasce em 0 ao lado da barra (B42)",
+      len(_lim42) == 1 and _wsP42[_cb42].value == 0 and _wsP42.cell(row=_wsP42[_cb42].row - 1, column=_wsP42[_cb42].column).value == "Buff/Debuff"
+      and _mescla_em(_wsP42, _G42["carga_barra"]) is not None
+      and _rb(_mescla_em(_wsP42, _G42["carga_barra"]))[2] + 1 == _wsP42[_cb42].column, f"{_lim42} · {_wsP42[_cb42].value!r}")
 checa("a proteção desliga a passiva pela coluna 4, soma a da tabela pela 2, e a passiva lê o refino escolhido",
       ",4,FALSE)" in _fp and ",2,FALSE)" in _fp and _camp.replace("$", "") in _fp.replace("$", ""), _fp[:90])
 _fa = [c.value for l in f.iter_rows() for c in l if isinstance(c.value, str) and "Refino Atual" in c.value]
@@ -448,15 +486,16 @@ checa("toda perícia, ofício e Teste de Resistência tem o resultado em fórmul
 _mnotas = re.search(r"function notasDeRegra_\(ss, idx\)\s*\{(.*?)\n\}", _CODA, re.S)
 _mobj = re.search(r"var notas = \{(.*?)\n  \};", _mnotas.group(1), re.S) if _mnotas else None
 _chaves = set(re.findall(r"^\s{4}'([^']+)':", _mobj.group(1), re.M)) if _mobj else set()
-_bl = re.search(r"\[([^\]]*)\]\.forEach\(function \(k\) \{\s*notas\['buff de ' \+ k\]", _mnotas.group(1)) if _mnotas else None
-_chaves |= {"buff de " + k for k in re.findall(r"'([^']+)'", _bl.group(1))} if _bl else set()
+# 08/10/2026 (B42): são duas listas (a dos números de combate e a dos três máximos), e valem todas
+_bl = list(re.finditer(r"\[([^\]]*)\]\.forEach\(function \(k\) \{\s*notas\['buff de ' \+ k\]", _mnotas.group(1))) if _mnotas else []
+_chaves |= {"buff de " + k for m_ in _bl for k in re.findall(r"'([^']+)'", m_.group(1))}
 _chaves |= set(re.findall(r"notas\['([^']+)'\] =", _mnotas.group(1))) if _mnotas else set()
 checa("toda nota do Codigo.gs aponta para um campo que o índice publica",
       len(_chaves) >= 30 and all(k in IDX for k in _chaves), str(sorted(k for k in _chaves if k not in IDX)))
 _NOTA_PEDIDA = ["defesa", "iniciativa", "conjuração", "corpo a corpo", "à distância", "deslocamento",
                 "escolhas de perícia", "trilha"] + \
                ["buff de " + k for k in ["defesa", "iniciativa", "cd de feitiço", "conjuração", "corpo a corpo",
-                                         "à distância", "deslocamento"]]
+                                         "à distância", "deslocamento", "proteção", "vida", "energia", "integridade"]]
 checa("a Defesa, as caixas de Buff/Debuff e os ataques têm nota (17/09/2026; os Feitiços e as Passivas saíram com a seção 8)",
       all(k in _chaves for k in _NOTA_PEDIDA), str([k for k in _NOTA_PEDIDA if k not in _chaves]))
 checa("a nota mora no título quando o de cima é texto (tituloOuCaixa_ no alvoDaNota_)",

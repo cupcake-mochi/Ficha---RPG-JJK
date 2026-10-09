@@ -325,6 +325,17 @@ edita("a montagem termina sem soltar a trava", F,
       "    if (trava) { try { trava.releaseLock(); }", "    if (false) { try { trava.releaseLock(); }",
       "a montagem que termina solta a trava", teste=K)
 
+# 08/10/2026 (B42): o Buff/Debuff dos máximos e da Proteção
+edita("a vida máxima esquece o Buff/Debuff", F,
+      '+IFERROR(VALUE($P$26&\\"\\"),0),\\"\\")', ',\\"\\")',
+      "somam a caixa de Buff/Debuff delas", teste=K)
+edita("a caixa de Buff/Debuff da vida nasce como conta, e o que o jogador digita é devolvido", F,
+      '[26,16,0,', '[26,16,"=0",',
+      "o que o jogador digita na caixa de Buff/Debuff da vida fica", teste=K)
+edita("os Buff/Debuff dos máximos ficam sem nota", C,
+      "  ['vida', 'energia', 'integridade'].forEach(function (k) {\n    notas['buff de ' + k] =", "  [].forEach(function (k) {\n    notas['buff de ' + k] =",
+      "as caixas de Buff/Debuff dos máximos e da Proteção têm nota", teste=K)
+
 print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
 edita("renomear uma variavel de dentro da conta", C, "var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"
       "                   .every(function (a) { return marcadas[a.caixa] === true; });\n  if ((marcadas[dono.caixa] === true) !== todas) muda[dono.caixa] = todas;",

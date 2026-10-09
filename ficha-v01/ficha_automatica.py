@@ -536,7 +536,8 @@ def trocas(layout, CAT=None):
         cel["FICHA"][f"{ix._letras(c4)}{lc}"] = (
             f'="Passivas do Leque - "&{texto(H_["Passivas do Leque anotadas"], H_["escolhas de Leque"])}', molde_cab)
     # os Buffs somam no resultado da caixa ao lado
-    for chave in ("iniciativa", "cd de feitiço", "conjuração", "corpo a corpo", "à distância", "deslocamento"):
+    # 08/10/2026 (B42): a Proteção também. A Defesa soma a Proteção, e por isso sobe junto
+    for chave in ("iniciativa", "cd de feitiço", "conjuração", "corpo a corpo", "à distância", "deslocamento", "proteção"):
         b = idx.get("buff de " + chave)
         if not b or not idx.get(chave):
             continue
@@ -568,6 +569,15 @@ def trocas(layout, CAT=None):
         vf = fcel[idx[chave]][1]
         if isinstance(vf, str) and vf.startswith("=") and not vf.startswith("=IFERROR("):
             poe(chave, f'=IFERROR({vf[1:]},"")')
+    # 08/10/2026 (B42): o Buff/Debuff de cada máximo soma na conta do livro, e pode ser negativo (o custo de Insistir
+    # numa queda). Sem Caminho o máximo é texto vazio, a soma dá erro, e o IFERROR de fora devolve o vazio
+    for chave in ("vida", "energia", "integridade"):
+        b, k = idx.get("buff de " + chave), chave + "_max"
+        if not b or not idx.get(k):
+            continue
+        vf = cel["FICHA"].get(idx[k], (fcel[idx[k]][1],))[0]
+        if isinstance(vf, str) and vf.startswith("=") and _N(b) not in vf:
+            poe(k, f'=IFERROR(({vf[1:]})+{_N(b)},"")')
     nome = idx.get("nome")
     if nome:
         cel["FICHA"][nome] = (f'=IF(OR(CARTEIRA!$O$9="",CARTEIRA!$O$9="{NOME_PORTADOR}"),"",CARTEIRA!$O$9)', nome) \

@@ -492,6 +492,26 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
        && c.formula === `=AND(N(${idx[recursos[k] + '_max']})>0,N(${idx[recursos[k]]})>N(${idx[recursos[k] + '_max']}))`
        && /<=0\.25\)$/.test((cf[i + 1] || {}).formula || '')), JSON.stringify(acima.map(([c, i]) => [i, c.formula, c.faixas, c.fundo])).slice(0, 400));
 }
+// 08/10/2026 (B42): o Buff/Debuff dos máximos, da Proteção e da carga. O máximo soma a caixa na própria conta, e a caixa
+// é número do jogador: o que ele digitar fica, sem aviso, e a nota diz para que serve.
+{
+  const FI = S.ss.getSheetByName('FICHA'), spF = ABAS.find((a) => a.nome === 'FICHA');
+  const noAbas = (a1) => { const x = partes(a1); const t = spF.vals.find((v) => v[0] === x.r && v[1] === x.c); return t ? t[2] : undefined; };
+  const fixa = (a1) => a1.replace(/^([A-Z]+)(\d+)$/, '$$$1$$$2');
+  const pares = [['vida', 'vida_max'], ['energia', 'energia_max'], ['integridade', 'integridade_max'], ['proteção', 'proteção']];
+  ok('a vida, a energia, a Integridade e a Proteção somam a caixa de Buff/Debuff delas, que nasce em 0 e não é conta',
+     pares.every(([r, alvo]) => { const b = idx['buff de ' + r]; return !!b && noAbas(b) === 0 && String(noAbas(idx[alvo]) || '').indexOf('+IFERROR(VALUE(' + fixa(b) + '&""),0)') > 0; }),
+     JSON.stringify(pares.map(([r, alvo]) => [r, idx['buff de ' + r], String(noAbas(idx[alvo]) || '').slice(-50)])));
+  let erroB = null; const nB = S.P.avisos.length, bV = idx['buff de vida'], xB = partes(bV);
+  try { FI.getRange(bV).setValue(5); S.ctx.onEdit(ed('FICHA', bV, 5)); } catch (e) { erroB = e; }
+  ok('o que o jogador digita na caixa de Buff/Debuff da vida fica: não é devolvido, e não há aviso',
+     !erroB && FI.getRange(bV).getValue() === 5 && !S.acha('FICHA').f.has(xB.r + ',' + xB.c) && S.P.avisos.length === nB,
+     erroB ? erroB.message : `${FI.getRange(bV).getValue()} · ${S.P.avisos.length - nB} aviso(s)`);
+  try { FI.getRange(bV).setValue(0); S.ctx.onEdit(ed('FICHA', bV, 0)); } catch (e) { erroB = e; }
+  ok('as caixas de Buff/Debuff dos máximos e da Proteção têm nota no título',
+     pares.every(([r]) => { const x = partes(idx['buff de ' + r]); return /Número negativo reduz/.test(FI.getRange(x.r - 1, x.c).getNote() || ''); })
+     && /Lapidação/.test(FI.getRange(xB.r - 1, xB.c).getNote() || ''), JSON.stringify(pares.map(([r]) => { const x = partes(idx['buff de ' + r]); return (FI.getRange(x.r - 1, x.c).getNote() || '').slice(0, 30); })));
+}
 // 08/10/2026: os saltos são conferidos depois que a planilha volta ao português, e uma montagem não começa com outra
 // rodando. Num teste no Sheets a ficha terminou em FICHA PRONTA com os 22 saltos em #ERROR!, depois de duas execuções juntas.
 {

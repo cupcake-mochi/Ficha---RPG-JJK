@@ -42,6 +42,11 @@ PERTURBACOES = [
     ("a arma com Alcance fica sem os 3 m", GER, '''if nome == ALCANCE else "")''', '''if nome == "nada" else "")''', "nota · Chicote: as"),
     ("a frase do catálogo fica na nota das Duas mãos", GER,
      '''            faz = faz[:-len(corte)]''', '''            faz = faz[:]''', "nota · Metralhadora Pesada: as"),
+    # 08/10/2026 (B42): o Buff/Debuff do limite de carga
+    ("o limite de carga esquece o Buff/Debuff", GER,
+     '''+{f_}+N({_A(G["carga_buff"], FP)})')''', '''+{f_}')''', "carga com buff: as"),
+    ("o Buff/Debuff negativo não tira do limite de carga", GER,
+     '''+{f_}+N({_A(G["carga_buff"], FP)})')''', '''+{f_}+MAX(0,N({_A(G["carga_buff"], FP)}))')''', "carga com debuff: as"),
 ]
 CONTRA = ("um comentário a mais no gerador", GER, "def geometria(R):", "# comentario que nao muda nada\ndef geometria(R):")
 

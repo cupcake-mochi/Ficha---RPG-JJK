@@ -270,7 +270,7 @@ def geometria(R):
         "marca_treino": f"D{u + 5}", "marca_forca_p": f"K{u + 5}",
         "marca_forca_s": f"S{u + 5}", "marca_selo": f"Z{u + 5}",
         "marca_grau": f"AH{u + 5}", "marca_forca_v": f"AO{u + 5}",
-        "carga": f"D{L_FILEIRA + 1}", "carga_barra": f"I{L_FILEIRA + 1}", "ienes": f"O{L_FILEIRA + 1}",
+        "carga": f"D{L_FILEIRA + 1}", "carga_barra": f"I{L_FILEIRA + 1}", "carga_buff": f"L{L_FILEIRA + 1}", "ienes": f"O{L_FILEIRA + 1}",
         "salario": f"W{L_FILEIRA + 1}", "requisito": f"AF{L_FILEIRA + 1}", "situacao": f"AN{L_FILEIRA + 1}",
         "xp_total": _a1(B1, d + 2), "falta_rot": _a1(B2, d + 1), "falta": _a1(B2, d + 2),
         "falta_barra": _a1(B2 + C_ADIC, d + 2),
@@ -447,7 +447,8 @@ def trocas(layout, CAT=None):
     conta("volume guardado", "=" + "+".join(f"SUM({v})" for v in vols))
     # o livro soma sem arredondar; o ROUND em duas casas só tira o resto de ponto flutuante (0,1 + 0,2)
     conta("carga", f'=ROUND({H["volume guardado"]}+{H["volume do uniforme"]},2)')
-    conta("limite de carga", f'={R["limite_base"]}+{f_}')
+    # 08/10/2026 (B42): o Buff/Debuff da carga soma no limite (uma habilidade que deixa carregar mais, ou menos)
+    conta("limite de carga", f'={R["limite_base"]}+{f_}+N({_A(G["carga_buff"], FP)})')
     conta("carga acima", f'=IF({H["carga"]}>{H["limite de carga"]},1,0)')
     # 04/10/2026, as regras do livro reconstruído: arma empunhada sem a Força corta o deslocamento pela metade e tira a
     # Destreza da Defesa; uniforme ou escudo sem a Força não dá a proteção dele; carga acima do limite não deixa andar.
@@ -728,7 +729,8 @@ NOTAS = {
     "treino": "Marque as armas em que você é treinado. A caixa no nome do grupo marca ou desmarca o grupo inteiro de uma "
               "vez. Bastião e Vanguarda já vêm com todas marcadas; os outros Caminhos, com Arma de Fogo e Balestra. Sem "
               "treino, o ataque com a arma sai com desvantagem.",
-    "carga": "O limite é 5 + Força, em Volume. Cada item leve vale 0,1. Arrastar, empurrar ou levantar é o dobro.",
+    "carga": "O limite é 5 + Força, em Volume, mais o Buff/Debuff ao lado. Cada item leve vale 0,1. Arrastar, empurrar ou levantar é o dobro.",
+    "carga_buff": "Soma no limite de carga o que a conta do livro não cobre, como uma habilidade. Número negativo reduz.",
     "ienes": "Digite quanto você tem. A ficha nova começa com a mensalidade do Grau 4, que é o fundo da criação.",
     "salario": "Sai do Grau, pela tabela Salário por patente do livro.",
     "requisito": "Olha a arma de cada mão, o escudo e o uniforme. Quando algo pede mais Força do que você tem, a nota "
@@ -954,9 +956,12 @@ def aba(layout, tr):
 
     # --- a fileira: carga, ienes, salário, requisito de Força e situação do Traje
     L = L_FILEIRA
-    f.add("rot", "D", L, "M", L, "CARGA · LIMITE 5 + FORÇA", NOTAS["carga"])
+    # 08/10/2026 (B42): a caixa de Buff/Debuff entra no fim da carga, e a barra dela passa de cinco para três colunas
+    f.add("rot", "D", L, "K", L, "CARGA · LIMITE 5 + FORÇA", NOTAS["carga"])
     f.add("num", "D", L + 1, "H", L + 2, f'={H["carga"]}&" de "&{H["limite de carga"]}&IF({H["carga acima"]}=1,"{T_ACIMA}","")')
-    f.add("barra", "I", L + 1, "M", L + 2,
+    f.add("rot", "L", L, "M", L, "Buff/Debuff", NOTAS["carga_buff"])
+    assert f.add("num", "L", L + 1, "M", L + 2, 0) == G["carga_buff"]
+    f.add("barra", "I", L + 1, "K", L + 2,
           f'=IFERROR(SPARKLINE(MIN({H["carga"]},{H["limite de carga"]}),{{"charttype","bar";"max",{H["limite de carga"]};'
           f'"color1",IF({H["carga acima"]}=1,"{VERMELHO}",{H[COR_DA_BARRA]})}}),"")')
     f.caixa("O", "U", L, "IENES", R["fundo_inicial"], "iene", NOTAS["ienes"])

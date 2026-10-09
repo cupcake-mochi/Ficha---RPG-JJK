@@ -233,6 +233,15 @@ function notasDeRegra_(ss, idx) {
   ['iniciativa', 'cd de feitiço', 'conjuração', 'corpo a corpo', 'à distância'].forEach(function (k) {
     notas['buff de ' + k] = buff;
   });
+  // 08/10/2026 (B42): a Proteção e os três máximos
+  notas['buff de proteção'] = 'Soma na Proteção o que nenhuma outra caixa cobre. A Defesa soma a Proteção, e sobe junto. ' +
+                              'Número negativo reduz.';
+  ['vida', 'energia', 'integridade'].forEach(function (k) {
+    notas['buff de ' + k] = 'Soma no máximo o que a conta do livro não cobre: a Lapidação, uma habilidade de técnica, um ' +
+                            'efeito que dura. Número negativo reduz (o custo de Insistir numa queda, na vida). Se várias ' +
+                            'coisas somam, escreva a conta, como =5+10-3. O atual não muda sozinho: se ficar acima do ' +
+                            'máximo, a caixa dele fica vermelha.';
+  });
   notas['buff de deslocamento'] = 'Soma no deslocamento, em metros, o que nenhuma outra caixa cobre. ' +
                                   'Número negativo reduz.';
   var n = 0;

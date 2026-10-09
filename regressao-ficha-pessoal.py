@@ -97,9 +97,12 @@ E_INI = G["equip_ini"]
 
 def monta(forca=0, destreza=0, principal=fp.SOCO, secundaria=fp.MAO_LIVRE, vestindo="Traje 1", grau="Grau 4",
           equip=(), itens=(), livres=(), treinos=(), grupos=(), caminho=None, nivel=2, missoes=(),
-          exaustao=None, sequelas=None, legados=()):
+          exaustao=None, sequelas=None, legados=(), carga_buff=None):
     def preenche(wb):
         f, p = wb["FICHA"], wb[ABA]
+        # 08/10/2026 (B42): o Buff/Debuff do limite de carga
+        if carga_buff is not None:
+            p[G["carga_buff"]] = carga_buff
         # 08/10/2026 (B41): o estado do personagem, embaixo das barras da FICHA, e os Legados, no dossiê desta aba
         if exaustao is not None:
             f[IDX["exaustão"]] = exaustao
@@ -226,6 +229,9 @@ CASOS = {
                                     equip=KIT, itens=ITENS, grupos=["Massa"], exaustao=3, sequelas=3),
     "exausta e carregada": dict(forca=3, principal="Faca", secundaria="Broquel", equip=KIT, itens=ITENS, exaustao=2,
                                 livres=[("Cofre", 1, "Carga", None, None, None, None, 9, None, None, None)]),
+    # 08/10/2026 (B42): o Buff/Debuff da carga soma no limite, e o negativo tira: com ele a mesma carga passa do limite
+    "carga com buff": dict(forca=3, principal="Faca", equip=KIT, itens=ITENS, carga_buff=2),
+    "carga com debuff": dict(forca=3, principal="Faca", equip=KIT, itens=ITENS, carga_buff=-5),
 }
 
 
@@ -321,7 +327,7 @@ def esperado(c):
                                      nota_da_arma(pri, tab[pri], True) if pri in tab else "")
     out["nota:arma da secundária"] = ("" if not vale else f"{sec}\n{LIVRO['escudo']}" if escudo else nota_da_arma(sec, tab[sec], False))
     carga = carga_do(equip, itens, ves, sum(l[7] or 0 for l in livres))
-    limite = R["limite_base"] + forca
+    limite = R["limite_base"] + forca + c.get("carga_buff", 0)
     out["carga"] = f"{num(carga if carga % 1 else int(carga))} de {limite}" + (fp.T_ACIMA if carga > limite else "")
     out["salario"] = dict((p[0], p[1]) for p in R["patentes"])[grau]
     out["requisito"] = fp.T_NAO_CUMPRIDO if (falta_p or falta_s or falta_u) else "Cumprido"

@@ -379,7 +379,8 @@ def _modelo(c):
     b = lambda k_: c["buff"].get(k_, 0)
     # 01/10/2026: o EQUIPAMENTO da FICHA espelha a FICHA PESSOAL, e a ficha nasce vestindo o uniforme do kit
     # inicial. O modelo veste o mesmo, lido da ficha gerada: com ele o cobrir-se fica desligado.
-    out["defesa"] = str(_regra(c["nivel"], g["Destreza"], _VESTE_DE_FABRICA, c["refino_m"])[0] + b("defesa"))
+    # 08/10/2026 (B42): a Defesa soma a Proteção, e por isso sobe com o Buff/Debuff dela
+    out["defesa"] = str(_regra(c["nivel"], g["Destreza"], _VESTE_DE_FABRICA, c["refino_m"])[0] + b("defesa") + b("proteção"))
     out["iniciativa"] = f"d20 + {g['Destreza'] + b('iniciativa')}"
     out["cd de feitiço"] = str(int(_mcd8.group(1)) + g[c["atr_conj"]] + mae + b("cd de feitiço"))
     out["conjuração"] = f"d20 + {g[c['atr_conj']] + mae + b('conjuração')}"
@@ -389,6 +390,8 @@ def _modelo(c):
     out["espaços de feitiço"] = str(2 + c["nivel"] // 2 + m + c["leque_m"])
     return out
 
+_SEM_BUFF, _COM_BUFF = "Sem Buff/Debuff, para comparar", "Buff/Debuff nos máximos e na Proteção"
+_BUFF_DOS_MAXIMOS = {"vida": 5, "energia": -3, "integridade": 10, "proteção": 2}
 _BASE = dict(nivel=2, bases=[3, 2, 2, 1, 1], corpo=[0, 0, 0, 0, 0], refino_m=0, corpo_m=0, leque_m=0,
              per=_PER[:9], ofi=_OFI[:2], espec=[], tr=["Físico", "Vigor"], origem="Latente", atr_conj="Essência", buff={})
 CASOS2 = [
@@ -422,6 +425,10 @@ CASOS2 = [
     ("Sem Técnica com a semente", dict(origem=_ST, atr_conj="Inteligência")),
     ("Buff/Debuff em todas as caixas", dict(buff={"defesa": 1, "iniciativa": 2, "cd de feitiço": -1, "conjuração": 1,
                                                   "corpo a corpo": 3, "à distância": -2, "deslocamento": 3})),
+    # 08/10/2026 (B42): o Buff/Debuff dos três máximos e da Proteção. O modelo não refaz a conta da vida, da energia e
+    # da Integridade: os dois casos são iguais fora as quatro caixas, e a diferença entre eles tem de ser o que foi digitado
+    (_SEM_BUFF, dict()),
+    (_COM_BUFF, dict(buff=_BUFF_DOS_MAXIMOS)),
 ]
 if not all(o_ in _ORIGENS for o_ in (_R["sem_energia"], _ST)):
     print("a origem sem energia ou a Sem Técnica não estão no menu de Origem"); sys.exit(1)
@@ -477,6 +484,8 @@ _ONDE = dict({"atr_" + n: IDX["atr_" + n] for n in _ATR},
                                     "ofícios disponíveis", "testes disponíveis", "espaços de feitiço", "escolhas de perícia",
                                     "defesa", "iniciativa", "cd de feitiço",
                                     "conjuração", "corpo a corpo", "à distância", "deslocamento")})
+_DOS_MAXIMOS = {"vida": "vida_max", "energia": "energia_max", "integridade": "integridade_max", "proteção": "proteção"}
+_lidos_max = {}
 print(f"\n{'A ficha automática · caso':44} {'caixas que batem':>18}")
 for i, (rot, mud) in enumerate(CASOS2):
     c = dict(_BASE, **mud)
@@ -486,6 +495,8 @@ for i, (rot, mud) in enumerate(CASOS2):
         print(f"  {rot:42} o LibreOffice nao converteu"); falhas += 1; continue
     linhas = list(csv.reader(open(f3, encoding="utf-8")))
     erradas = []
+    if rot in (_SEM_BUFF, _COM_BUFF):
+        _lidos_max[rot] = {k_: le(IDX[v_]) for k_, v_ in _DOS_MAXIMOS.items()}
     for campo, alvo in _ONDE.items():
         lido = le(alvo)
         lido = lido.replace(".0", "") if campo in ("espaços de feitiço", "defesa", "cd de feitiço") or campo.startswith("atr_") else lido
@@ -496,6 +507,17 @@ for i, (rot, mud) in enumerate(CASOS2):
     for e_ in erradas:
         print(f"      {e_}")
 shutil.rmtree(d3, ignore_errors=True)
+
+# 08/10/2026 (B42): o máximo com o Buff/Debuff é o máximo sem ele mais o que foi digitado, nos três recursos e na Proteção
+print(f"\n{'O Buff/Debuff dos máximos':30} {'sem':>8} {'com':>8} {'digitado':>9}")
+for k_, buff_ in _BUFF_DOS_MAXIMOS.items():
+    try:
+        sem_, com_ = float(_lidos_max[_SEM_BUFF][k_]), float(_lidos_max[_COM_BUFF][k_])
+    except (KeyError, ValueError) as e_:
+        print(f"  {k_:28} não li os dois casos ({e_})"); falhas += 1; continue
+    bate_ = sem_ > 0 and com_ == sem_ + buff_
+    falhas += not bate_
+    print(f"  {k_:28} {sem_:8g} {com_:8g} {buff_:>+9d}   {'BATE' if bate_ else 'NÃO BATE'}")
 
 print(f"\n{'A FICHA REPRODUZ A KAORI, A DEFESA DO LIVRO E AS CONTAS AUTOMÁTICAS' if not falhas else f'{falhas} NÚMERO(S) ERRADO(S)'}")
 sys.exit(1 if falhas else 0)

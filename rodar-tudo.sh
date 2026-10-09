@@ -22,5 +22,5 @@ for v in conferir-catalogo.py conferir-kaori.py conferir-progressao.py \
   echo
 done
 echo "================================================================"
-if [ $FALHOU -eq 0 ]; then echo "OS VINTE E DOIS PASSARAM"; else echo "ALGUM VALIDADOR FALHOU"; fi
+if [ $FALHOU -eq 0 ]; then echo "OS DEZENOVE PASSARAM"; else echo "ALGUM VALIDADOR FALHOU"; fi
 exit $FALHOU
