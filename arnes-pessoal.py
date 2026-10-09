@@ -304,7 +304,7 @@ edita("o Legado estica a caixa da FICHA PESSOAL e esquece o espelho da FICHA", C
       "    var alvo = x.aba === nomeDaAba ? origem : ss.getSheetByName(x.aba);", "    var alvo = x.aba === nomeDaAba ? origem : null;",
       "estica a caixa dele na FICHA PESSOAL e o espelho da FICHA", teste=K)
 edita("o espelho do Legado mede só o texto, sem o nome e o tipo", F,
-      '"textos":[[582,["D41","Q41","D42"],44,2,0],[582,["Y41","AM41","Y42"],44,2,0]]', '"textos":[[582,["D42"],44,2,0],[582,["Y42"],44,2,0]]',
+      '"textos":[[582,["D41","Q41","D42"],47,2,0],[582,["Y41","AM41","Y42"],47,2,0]]', '"textos":[[582,["D42"],47,2,0],[582,["Y42"],47,2,0]]',
       "a FICHA PESSOAL declara as caixas dos Legados", teste=K)
 edita("os saltos em erro são escritos de novo com vírgula", C,
       "    ligarSaltosDe_(ss, par[0], par[1], ';');", "    ligarSaltosDe_(ss, par[0], par[1], ',');",
@@ -335,6 +335,41 @@ edita("a caixa de Buff/Debuff da vida nasce como conta, e o que o jogador digita
 edita("os Buff/Debuff dos máximos ficam sem nota", C,
       "  ['vida', 'energia', 'integridade'].forEach(function (k) {\n    notas['buff de ' + k] =", "  [].forEach(function (k) {\n    notas['buff de ' + k] =",
       "as caixas de Buff/Debuff dos máximos e da Proteção têm nota", teste=K)
+
+# 09/10/2026 (B43): o descanso
+edita("o descanso curto fora de lugar propício ignora a Exaustão", C,
+      "    var pct = PE_DO_DESCANSO_CURTO_[d.propicio ? 0 : fim.exaustao];", "    var pct = PE_DO_DESCANSO_CURTO_[0];",
+      "2, 1, 1 ou zero pelo degrau de Exaustão", teste=K)
+edita("o descanso curto perde o mínimo de 1 PE", C,
+      "    if (ganho < 1 && peMax * pct > 0) ganho = 1;\n", "",
+      "2, 1, 1 ou zero pelo degrau de Exaustão", teste=K)
+edita("o descanso curto passa do PE máximo", C,
+      "    if (peMax > 0) fim.pe = Math.max(fim.pe, Math.min(peMax, fim.pe + ganho));", "    if (peMax > 0) fim.pe = fim.pe + ganho;",
+      "Rina com 1 de 10 PE vai a 3, e com 9 vai a 10", teste=K)
+edita("o descanso longo fora leva a vida ao máximo", C,
+      "  if (vidaMax > 0) fim.vida = d.propicio ? vidaMax : Math.max(fim.vida, metade(vidaMax));", "  if (vidaMax > 0) fim.vida = vidaMax;",
+      "Mei com 3 de 23 vai a 11", teste=K)
+edita("o descanso longo fora reduz a vida que já estava acima da metade", C,
+      "  if (vidaMax > 0) fim.vida = d.propicio ? vidaMax : Math.max(fim.vida, metade(vidaMax));", "  if (vidaMax > 0) fim.vida = d.propicio ? vidaMax : metade(vidaMax);",
+      "Mei com 3 de 23 vai a 11", teste=K)
+edita("o descanso longo fora tira a Exaustão", C,
+      "  if (d.propicio) fim.exaustao = 0;", "  fim.exaustao = 0;",
+      "Mei com 3 de 23 vai a 11", teste=K)
+edita("o descanso longo deixa as Sequelas", C,
+      "  fim.sequelas = 0;\n  if (d.propicio) fim.exaustao = 0;", "  if (d.propicio) fim.exaustao = 0;",
+      "Mei com 3 de 23 vai a 11", teste=K)
+edita("o onEdit da FICHA esquece o descanso", C,
+      "  try { descansar_(e, idx); } catch (err) { console.log('ficha, o descanso: ' + err.message); }\n", "",
+      'escolher "Longo · fora" no menu aplica a conta', teste=K)
+edita("o menu do descanso fica com o tipo escolhido", C,
+      "  e.range.setValue(SEM_DESCANSO_);", "",
+      'escolher "Longo · fora" no menu aplica a conta', teste=K)
+edita("o descanso não avisa", C,
+      "  SpreadsheetApp.getActive().toast(texto + lembra, 'Descanso', 8);", "",
+      'escolher "Longo · fora" no menu aplica a conta', teste=K)
+edita("o descanso não lembra do máximo perdido por Insistir", C,
+      "(DESCANSOS_[tipo].longo && le('buff de vida') < 0)", "(false)",
+      "o aviso lembra do máximo perdido por Insistir", teste=K)
 
 print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
 edita("renomear uma variavel de dentro da conta", C, "var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"

@@ -520,6 +520,55 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
      pares.every(([r]) => { const x = partes(idx['buff de ' + r]); return /Número negativo reduz/.test(FI.getRange(x.r - 1, x.c).getNote() || ''); })
      && /Lapidação/.test(FI.getRange(xB.r - 1, xB.c).getNote() || ''), JSON.stringify(pares.map(([r]) => { const x = partes(idx['buff de ' + r]); return (FI.getRange(x.r - 1, x.c).getNote() || '').slice(0, 30); })));
 }
+// 09/10/2026 (B43): o descanso. Um menu com os quatro tipos do livro; escolher um faz a conta nas caixas, devolve o menu
+// ao convite, escreve ao lado o que mudou e avisa. Os números são os exemplos do capítulo Dano e Recuperação.
+{
+  const conta = S.ctx.contaDoDescanso_, texto = S.ctx.textoDoDescanso_;
+  const CP = 'Curto · lugar propício', CF = 'Curto · fora', LP = 'Longo · lugar propício', LF = 'Longo · fora';
+  ok('descanso curto, os exemplos do livro: Rina com 1 de 10 PE vai a 3, e com 9 vai a 10; a vida não muda',
+     conta(CP, { vida: 4, vidaMax: 20, pe: 1, peMax: 10 }).pe === 3 && conta(CP, { pe: 9, peMax: 10 }).pe === 10 && conta(CP, { vida: 4, vidaMax: 20, pe: 1, peMax: 10 }).vida === 4,
+     JSON.stringify([conta(CP, { vida: 4, vidaMax: 20, pe: 1, peMax: 10 }), conta(CP, { pe: 9, peMax: 10 })]));
+  const fora = [0, 1, 2, 3].map((x) => conta(CF, { pe: 0, peMax: 8, exaustao: x }).pe);
+  ok('descanso curto fora de lugar propício: com 8 PE máximos, 2, 1, 1 ou zero pelo degrau de Exaustão; em lugar propício, 2 em qualquer degrau',
+     JSON.stringify(fora) === '[2,1,1,0]' && [0, 1, 2, 3].every((x) => conta(CP, { pe: 0, peMax: 8, exaustao: x }).pe === 2), JSON.stringify(fora));
+  const mei = conta(LF, { vida: 3, vidaMax: 23, pe: 8, peMax: 60, integ: 18, integMax: 25, sequelas: 2, exaustao: 1 });
+  ok('descanso longo fora, os exemplos do livro: Mei com 3 de 23 vai a 11, e com 18 fica em 18; 60 PE com 8 vai a 30; a Integridade volta, as Sequelas saem e a Exaustão fica',
+     JSON.stringify(mei) === JSON.stringify({ vida: 11, pe: 30, integ: 25, sequelas: 0, exaustao: 1 }) && conta(LF, { vida: 18, vidaMax: 23 }).vida === 18, JSON.stringify(mei));
+  const cheio = conta(LP, { vida: 3, vidaMax: 23, pe: 8, peMax: 60, integ: 18, integMax: 25, sequelas: 2, exaustao: 3 });
+  ok('descanso longo em lugar propício: tudo ao máximo, sem Sequelas e sem Exaustão; e um tipo que não existe não faz nada',
+     JSON.stringify(cheio) === JSON.stringify({ vida: 23, pe: 60, integ: 25, sequelas: 0, exaustao: 0 }) && conta('Soneca', { vida: 1, vidaMax: 2 }) === null, JSON.stringify(cheio));
+
+  const FI = S.ss.getSheetByName('FICHA'), spF = ABAS.find((a) => a.nome === 'FICHA');
+  const deFabrica = (a1) => { const x = partes(a1); const t = spF.vals.find((v) => v[0] === x.r && v[1] === x.c); return t ? t[2] : ''; };
+  const repoe = (a1) => { const v = deFabrica(a1); if (typeof v === 'string' && v[0] === '=') FI.getRange(a1).setFormula(v); else FI.getRange(a1).setValue(v); };
+  const K = { vida: 'vida', vidaMax: 'vida_max', pe: 'energia', peMax: 'energia_max', integ: 'integridade', integMax: 'integridade_max', sequelas: 'sequelas', exaustao: 'exaustão' };
+  const poe = (o) => Object.keys(o).forEach((k) => FI.getRange(idx[K[k]]).setValue(o[k]));
+  const le = () => Object.fromEntries(['vida', 'pe', 'integ', 'sequelas', 'exaustao'].map((k) => [k, FI.getRange(idx[K[k]]).getValue()]));
+  const escolhe = (tipo) => { FI.getRange(idx['descanso']).setValue(tipo); S.ctx.onEdit(ed('FICHA', idx['descanso'], tipo)); };
+  let erroD = null, r1 = null, r2 = null, r3 = null; const nD = S.P.avisos.length;
+  ok('a FICHA nasce com o menu do descanso no convite, e o índice publica o menu e o registro do último descanso',
+     !!idx['descanso'] && !!idx['último descanso'] && deFabrica(idx['descanso']) === S.ctx.SEM_DESCANSO_ && Object.keys(S.ctx.DESCANSOS_).join('|') === [CP, CF, LP, LF].join('|'),
+     `${idx['descanso']} · ${deFabrica(idx['descanso'] || 'A1')} · ${Object.keys(S.ctx.DESCANSOS_ || {})}`);
+  try {
+    poe({ vidaMax: 23, vida: 3, peMax: 60, pe: 8, integMax: 25, integ: 18, sequelas: 2, exaustao: 1 });
+    escolhe(LF);
+    r1 = [JSON.stringify(le()), FI.getRange(idx['descanso']).getValue(), FI.getRange(idx['último descanso']).getValue(), S.P.avisos.length - nD];
+    escolhe(CF);                                            // 15% de 60 = 9, com a Exaustão em 1
+    r2 = [le().pe, FI.getRange(idx['descanso']).getValue(), FI.getRange(idx['último descanso']).getValue()];
+    FI.getRange(idx['buff de vida']).setValue(-5);
+    escolhe(LP);
+    r3 = [JSON.stringify(le()), String(S.P.avisos[S.P.avisos.length - 1])];
+    FI.getRange(idx['buff de vida']).setValue(0);
+  } catch (e) { erroD = e; }
+  ok('escolher "Longo · fora" no menu aplica a conta nas caixas, devolve o menu ao convite, escreve o que mudou ao lado e avisa uma vez',
+     !erroD && r1[0] === JSON.stringify({ vida: 11, pe: 30, integ: 25, sequelas: 0, exaustao: 1 }) && r1[1] === S.ctx.SEM_DESCANSO_ && r1[3] === 1
+     && r1[2] === 'Longo, fora de lugar propício · vida 3 → 11 · PE 8 → 30 · Integridade 18 → 25 · Sequelas 2 → 0 · Exaustão fica em 1', erroD ? erroD.message : JSON.stringify(r1));
+  ok('em seguida "Curto · fora", com a Exaustão em 1, devolve 15% do PE máximo (30 → 39), e o registro passa a ser o do curto',
+     !erroD && r2[0] === 39 && r2[1] === S.ctx.SEM_DESCANSO_ && r2[2] === 'Curto, fora de lugar propício · PE 30 → 39', erroD ? erroD.message : JSON.stringify(r2));
+  ok('e "Longo · lugar propício" leva tudo ao máximo e tira a Exaustão; com o Buff/Debuff da vida negativo, o aviso lembra do máximo perdido por Insistir',
+     !erroD && r3[0] === JSON.stringify({ vida: 23, pe: 60, integ: 25, sequelas: 0, exaustao: 0 }) && /Insistir/.test(r3[1]) && /Longo, em lugar propício · vida 11 → 23/.test(r3[1]), erroD ? erroD.message : JSON.stringify(r3));
+  try { Object.values(K).concat(['último descanso']).forEach((k) => repoe(idx[k])); } catch (e) { erroD = e; }
+}
 // 08/10/2026: os saltos são conferidos depois que a planilha volta ao português, e uma montagem não começa com outra
 // rodando. Num teste no Sheets a ficha terminou em FICHA PRONTA com os 22 saltos em #ERROR!, depois de duas execuções juntas.
 {

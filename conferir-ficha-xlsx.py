@@ -444,6 +444,26 @@ _nao_cabem = [n_ for n_, t_ in _textos_l.items()
               if not (_esp and _txt and all(_cabe(f"{n_} · De exceção · {t_}", _esp, k_) and _cabe(t_, _txt, k_) for k_ in range(2)))]
 checa(f"os {len(_nomes_l)} Legados do livro cabem inteiros, esticados, na caixa da FICHA PESSOAL e no espelho da FICHA (o mais comprido tem {max(map(len, _textos_l.values()), default=0)} letras)",
       len(_textos_l) == len(_nomes_l) == 85 and not _nao_cabem, f"{len(_textos_l)} textos achados · não cabem: {_nao_cabem[:5]}")
+# 09/10/2026 (B43): o descanso. O menu que o gerador escreve na FICHA tem de ser o que o Codigo.gs sabe aplicar (os
+# quatro tipos e o convite), a linha fica entre as barras e o estado, e o registro do último descanso nasce vazio.
+import estado_do_personagem as _ep43
+_cd43, _cu43 = IDX.get("descanso"), IDX.get("último descanso")
+_dv43 = [str(v_.formula1) for v_ in wb["FICHA"].data_validations.dataValidation if _cd43 and _cd43 in str(v_.sqref).split()]
+_gs43 = re.search(r"var DESCANSOS_ = \{(.*?)\n\};", _CODA, re.S)
+_tipos43 = re.findall(r"^\s*'([^']+)': \{", _gs43.group(1), re.M) if _gs43 else []
+_sem43 = re.search(r"var SEM_DESCANSO_ = '([^']+)';", _CODA)
+checa("o menu do descanso da FICHA traz o convite e os quatro tipos que o Codigo.gs aplica, e nasce no convite",
+      bool(_cd43) and _dv43 == ['"' + ",".join((_ep43.SEM_DESCANSO,) + _ep43.DESCANSOS) + '"'] and tuple(_tipos43) == _ep43.DESCANSOS
+      and bool(_sem43) and _sem43.group(1) == _ep43.SEM_DESCANSO == wb["FICHA"][_cd43].value, f"{_dv43} · {_tipos43} · {_sem43.group(1) if _sem43 else None}")
+_l43 = wb["FICHA"][_cd43].row if _cd43 else 0
+checa("a linha do descanso fica entre as barras e o estado, com o registro do último descanso ao lado, vazio",
+      bool(_cd43 and _cu43) and wb["FICHA"][_cu43].value in (None, "") and wb["FICHA"][_cu43].row == _l43
+      and wb["FICHA"][IDX["integridade"]].row < _l43 < wb["FICHA"][IDX["sequelas"]].row
+      and wb["FICHA"].cell(row=_l43 - 1, column=wb["FICHA"][_cd43].column).value == "DESCANSO"
+      and wb["FICHA"].cell(row=_l43 - 1, column=wb["FICHA"][_cu43].column).value == "O ÚLTIMO DESCANSO", f"{_cd43} {_cu43}")
+checa("o Codigo.gs faz a conta do descanso pela tabela do livro (25, 15, 5 e nada), e o onEdit da FICHA o chama",
+      "var PE_DO_DESCANSO_CURTO_ = [25, 15, 5, 0];" in _CODA and "try { descansar_(e, idx); }" in _CODA
+      and "'descanso':" in _CODA and "'último descanso':" in _CODA)
 # 08/10/2026, do pente-fino: na tabela de perícias do GLOSSÁRIO, ATRIBUTO estava em cima dos nomes e NOME em cima dos
 # atributos. O cabeçalho de cada coluna tem de dizer o que a coluna traz
 _wsG = wb["GLOSSÁRIO"]

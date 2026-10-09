@@ -3093,7 +3093,7 @@ também no atual enquanto a ficha está intocada. É o que a ficha já faz, e na
 quando a regra da arma sem a Força estiver no `JJK---Project`, falta reler o livro (`extrair-manual.py`) e tirar o
 `arma_sem_a_forca` do `fora_do_livro`.*
 
-### B43 · O descanso, e duas notas — **ESTUDO ENTREGUE em 09/10/2026 (o descanso espera ele escolher a forma); as duas notas estão no gerador e vão junto**
+### B43 · O descanso, e duas notas — **CONSTRUÍDO em 09/10/2026 (o descanso na forma A, e as duas notas); falta montar no Sheets**
 
 *Perguntou "falta mais algo na ficha?", e da lista que eu trouxe respondeu três itens.*
 
@@ -3128,3 +3128,26 @@ ela não guarda.*
 três lugares: **A** uma linha própria entre as barras e o estado, com o registro do último descanso ao lado (a `FICHA`
 cresce três linhas); **B** ao lado dos atributos, nas dez colunas livres à direita da Essência, com o registro resumido
 embaixo; **C** na linha do estado, como quinta caixa, sem registro. Indiquei a A.*
+
+**A construção do descanso (09/10/2026).** *Ele: "Pode ser A". A linha entra entre a faixa do estágio de Integridade e o estado:
+o `linhas_novas.py` passa a abrir onze linhas, e não oito (a linha 39 da exportação é a 50 da gerada), e o
+`estado_do_personagem.py` põe nas três primeiras o rótulo `DESCANSO` com o menu (o convite "Escolha o descanso" e os
+quatro tipos), e `O ÚLTIMO DESCANSO` com o registro, no resto da linha. O índice publica `descanso` e `último descanso`.*
+
+*No `Codigo.gs`, o `descansar_` (chamado pelo `onEdit` da `FICHA`) lê os atuais, os máximos, as Sequelas e a Exaustão,
+faz a conta no `contaDoDescanso_`, escreve só o que mudou (o atual que nasceu como conta numa ficha intocada fica como
+está), escreve o registro (`textoDoDescanso_`: "Longo, fora de lugar propício · vida 3 → 11 · PE 8 → 30 · …"), devolve o
+menu ao convite e avisa no canto. Se o descanso é longo e o Buff/Debuff da vida está negativo, o aviso lembra de zerar
+o máximo perdido por Insistir. A vida temporária, os usos por dia e as condições ficam com o jogador.*
+
+**Conferido.** *A conta bate com os quatro exemplos do livro: Rina com 1 de 10 PE vai a 3, e com 9 vai a 10; com 8 PE máximos
+fora de lugar propício, 2, 1, 1 ou zero pelo degrau de Exaustão; Mei com 3 de 23 de vida vai a 11, e com 18 fica em 18; 60
+PE com 8 vai a 30. A `regressao-construir.js` roda esses e o caminho inteiro pelo menu (a conta, o menu de volta ao
+convite, o registro, um aviso só, o lembrete de Insistir); o `conferir-ficha-xlsx.py` confere que o menu do gerador é o
+que o script aplica e onde a linha fica; o `arnes-pessoal.py` ganha onze defeitos (são 112). O desenho foi conferido
+contra o estudo pelo `medidas/ver-aba.py`.*
+
+*A bateria inteira rodou até o fim com o descanso e as duas notas dentro, e **os dezenove passaram** (o `arnes-pessoal.py`
+com os 112 defeitos acendendo a checagem certa), e a `regressao-paleta.js` também. Os arneses que rodam à mão
+(`arnes-amaldicoada.py`, `arnes-invocacoes.py`, `arnes-ficha-pessoal.py`) não rodaram: os trechos deles existem todos no
+código de hoje. Nada disto rodou no Sheets de verdade; como a `FICHA` cresceu três linhas, é preciso montar de novo.*

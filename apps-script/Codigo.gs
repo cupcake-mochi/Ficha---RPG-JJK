@@ -149,6 +149,14 @@ function notasDeRegra_(ss, idx) {
                     'quiser dentro do turno. O Buff/Debuff do lado soma em metros. Cai pela metade com ' +
                     'uma arma empunhada sem a Força, fica em até 4,5 m do degrau 2 de Exaustão em diante, e vai a zero ' +
                     'com a carga acima do limite: a FICHA PESSOAL diz qual.',
+    // 09/10/2026 (B43): o descanso
+    'descanso': 'Escolha o tipo e a ficha aplica: o curto devolve PE (25% do máximo em lugar propício; fora dele, 25%, ' +
+                '15%, 5% ou nada, pelo degrau de Exaustão); o longo devolve vida, PE e Integridade e tira as Sequelas ' +
+                '(em lugar propício, tudo ao máximo e a Exaustão sai; fora, vida e PE vão à metade, se estiverem ' +
+                'abaixo, e a Exaustão fica). O mestre diz se o lugar é propício. O menu volta sozinho ao convite.',
+    'último descanso': 'O que o último descanso mudou, para conferir ou desfazer à mão. A ficha não devolve o máximo ' +
+                       'perdido por Insistir (zere o Buff/Debuff da vida), nem mexe na vida temporária, nos usos por ' +
+                       'dia e nas condições.',
     // 08/10/2026 (B41): o estado do personagem, embaixo das barras
     'sequelas': 'Sair de uma queda por chegar a zero de vida deixa uma Sequela. Ela não penaliza testes: encurta a ' +
                 'janela da próxima queda (3, 2 e 1 rodada; com 3 Sequelas, Derrotado na hora). Sai no descanso longo; ' +
@@ -389,6 +397,7 @@ function onEdit(e) {
   try { devolverConta_(e, 'FICHA'); } catch (err) { console.log('ficha, a conta: ' + err.message); }
   try { esticarCaixas_(e, 'FICHA'); } catch (err) { console.log('ficha, a caixa que estica: ' + err.message); }
   var idx = indice();
+  try { descansar_(e, idx); } catch (err) { console.log('ficha, o descanso: ' + err.message); }
   aplicarDelta_(e, idx);
   prenderTemp_(e, idx);
   marcarPericiasDoCaminho_(e, idx);
@@ -1388,6 +1397,99 @@ function aplicarDelta_(e, idx) {
     if (temp && fim.temp !== antes) temp.setValue(fim.temp);
     e.range.clearContent();
   });
+}
+
+/**
+ * 09/10/2026 (B43): o descanso. O Mizuki: "Problema q tem tipos, ficaria na ficha e como fariamos?". Um menu na FICHA,
+ * embaixo das barras, com os quatro tipos do livro (curto ou longo, em lugar propício ou fora). Escolher um deles faz a
+ * conta do capítulo Dano e Recuperação nas caixas, devolve o menu ao convite, escreve ao lado o que mudou e avisa.
+ *
+ *   curto, em lugar propício   +25% do PE máximo
+ *   curto, fora                +25%, +15%, +5% ou nada, pelo degrau de Exaustão (0, 1, 2, 3)
+ *   longo, em lugar propício   vida, PE e Integridade voltam ao máximo; as Sequelas e a Exaustão saem
+ *   longo, fora                vida e PE vão à metade do máximo, se estiverem abaixo; a Integridade volta ao máximo;
+ *                              as Sequelas saem, e a Exaustão fica
+ *
+ * A recuperação do curto arredonda para baixo, com mínimo 1 quando a fração é positiva, e não passa do máximo. A metade
+ * do longo arredonda para baixo, com mínimo 1, e "não se soma ao saldo nem reduz uma reserva que já esteja acima".
+ *
+ * O que a ficha não faz: devolver o máximo perdido por Insistir. Essa redução mora no Buff/Debuff da vida, junto com
+ * os outros bônus, e a ficha não sabe que parte dela é de Insistir; se a caixa estiver negativa, o aviso lembra.
+ * A vida temporária, os usos por dia e as condições também ficam com o jogador.
+ *
+ * A conta mora no contaDoDescanso_ e o texto no textoDoDescanso_, sem planilha em volta: a regressao-construir.js roda
+ * os dois com os exemplos do livro.
+ */
+var SEM_DESCANSO_ = 'Escolha o descanso';
+var DESCANSOS_ = {
+  'Curto · lugar propício': { longo: false, propicio: true },
+  'Curto · fora': { longo: false, propicio: false },
+  'Longo · lugar propício': { longo: true, propicio: true },
+  'Longo · fora': { longo: true, propicio: false }
+};
+var PE_DO_DESCANSO_CURTO_ = [25, 15, 5, 0];   // % do PE máximo, pelo degrau de Exaustão, fora de lugar propício
+
+/** `s` é {vida, vidaMax, pe, peMax, integ, integMax, sequelas, exaustao}. Devolve {vida, pe, integ, sequelas, exaustao}. */
+function contaDoDescanso_(tipo, s) {
+  var d = DESCANSOS_[tipo];
+  if (!d) return null;
+  var n = function (x) { return Number(x) || 0; };
+  var fim = { vida: n(s.vida), pe: n(s.pe), integ: n(s.integ), sequelas: n(s.sequelas),
+              exaustao: Math.max(0, Math.min(PE_DO_DESCANSO_CURTO_.length - 1, n(s.exaustao))) };
+  var vidaMax = n(s.vidaMax), peMax = n(s.peMax), integMax = n(s.integMax);
+  if (!d.longo) {
+    var pct = PE_DO_DESCANSO_CURTO_[d.propicio ? 0 : fim.exaustao];
+    var ganho = Math.floor(peMax * pct / 100);
+    if (ganho < 1 && peMax * pct > 0) ganho = 1;
+    if (peMax > 0) fim.pe = Math.max(fim.pe, Math.min(peMax, fim.pe + ganho));
+    return fim;
+  }
+  var metade = function (max) { return Math.max(1, Math.floor(max / 2)); };
+  if (vidaMax > 0) fim.vida = d.propicio ? vidaMax : Math.max(fim.vida, metade(vidaMax));
+  if (peMax > 0) fim.pe = d.propicio ? peMax : Math.max(fim.pe, metade(peMax));
+  if (integMax > 0) fim.integ = integMax;
+  fim.sequelas = 0;
+  if (d.propicio) fim.exaustao = 0;
+  return fim;
+}
+
+/** O que o descanso mudou, numa linha: é o que fica escrito ao lado do menu e o que o aviso diz. */
+function textoDoDescanso_(tipo, antes, fim) {
+  var d = DESCANSOS_[tipo];
+  var partes = [(d.longo ? 'Longo' : 'Curto') + (d.propicio ? ', em lugar propício' : ', fora de lugar propício')];
+  [['vida', 'vida'], ['PE', 'pe'], ['Integridade', 'integ'], ['Sequelas', 'sequelas'], ['Exaustão', 'exaustao']].forEach(function (p) {
+    if (antes[p[1]] !== fim[p[1]]) partes.push(p[0] + ' ' + antes[p[1]] + ' → ' + fim[p[1]]);
+  });
+  if (d.longo && !d.propicio && fim.exaustao > 0) partes.push('Exaustão fica em ' + fim.exaustao);
+  if (partes.length === 1) partes.push('nada mudou');
+  return partes.join(' · ');
+}
+
+/** O menu do descanso foi escolhido: aplica, registra, devolve o menu ao convite e avisa. Devolve true se descansou. */
+function descansar_(e, idx) {
+  var cd = cel_(idx, 'descanso');
+  if (!cd || cd !== e.range.getA1Notation().split(':')[0]) return false;
+  var tipo = String(e.range.getValue());
+  if (!DESCANSOS_[tipo]) return false;
+  var ficha = e.range.getSheet();
+  var le = function (k) { var c = cel_(idx, k); return c ? Number(ficha.getRange(c).getValue()) || 0 : 0; };
+  var onde = { vida: 'vida', pe: 'energia', integ: 'integridade', sequelas: 'sequelas', exaustao: 'exaustão' };
+  var antes = { vidaMax: le('vida_max'), peMax: le('energia_max'), integMax: le('integridade_max') };
+  Object.keys(onde).forEach(function (k) { antes[k] = le(onde[k]); });
+  var fim = contaDoDescanso_(tipo, antes);
+  // só o que mudou é escrito: a caixa que nasceu como conta (o atual de uma ficha intocada) fica como está
+  Object.keys(onde).forEach(function (k) {
+    var c = cel_(idx, onde[k]);
+    if (c && fim[k] !== antes[k]) ficha.getRange(c).setValue(fim[k]);
+  });
+  var texto = textoDoDescanso_(tipo, antes, fim);
+  var cu = cel_(idx, 'último descanso');
+  if (cu) ficha.getRange(cu).setValue(texto);
+  e.range.setValue(SEM_DESCANSO_);
+  var lembra = (DESCANSOS_[tipo].longo && le('buff de vida') < 0)
+    ? ' O Buff/Debuff da vida está negativo: se for o máximo perdido por Insistir, zere a caixa.' : '';
+  SpreadsheetApp.getActive().toast(texto + lembra, 'Descanso', 8);
+  return true;
 }
 
 // =====================================================================

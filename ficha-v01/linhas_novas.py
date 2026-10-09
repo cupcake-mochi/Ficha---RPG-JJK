@@ -17,12 +17,12 @@ e pelo índice da DADOS, e não por endereço escrito. As linhas novas nascem em
 de cima (a moldura e o miolo continuam), e quem as preenche é o `estado_do_personagem.py`.
 
 O `comparar-ficha-01.py` usa o mesmo mapa (`linha_nova`, `desloca_formula`) para comparar a exportação com a ficha
-gerada: a linha 39 da exportação é a 47 da gerada.
+gerada: a linha 39 da exportação é a 50 da gerada.
 """
 import re
 
 ABA = "FICHA"
-N_LINHAS = 8                 # as linhas que abrem: ver estado_do_personagem.py
+N_LINHAS = 11                # as linhas que abrem: ver estado_do_personagem.py (eram 8 até o descanso, B43)
 MARCA_DO_ESTAGIO = "Estágio 4"
 
 _REF = re.compile(r"(?P<aba>(?:'[^']+'|[A-Za-zÀ-ÿ_][\wÀ-ÿ.]*)!)?(?<![A-Za-zÀ-ÿ_\d.$])(?P<c1>\$?[A-Z]{1,3})(?P<l1>\$?)(?P<r1>\d+)"

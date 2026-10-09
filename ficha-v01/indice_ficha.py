@@ -206,7 +206,9 @@ def enderecos(layout):
     # 08/10/2026 (B41): o estado do personagem, embaixo das barras (estado_do_personagem.py). Entram no fim, para o
     # índice de antes não mudar de linha
     for campo, rot in (("sequelas", "SEQUELAS"), ("exaustão", "EXAUSTÃO"), ("resistências", "RESISTÊNCIAS"),
-                       ("imunidades", "IMUNIDADES"), ("legado 1", "LEGADO 1"), ("legado 2", "LEGADO 2")):
+                       ("imunidades", "IMUNIDADES"), ("legado 1", "LEGADO 1"), ("legado 2", "LEGADO 2"),
+                       # 09/10/2026 (B43): o menu do descanso e o registro do último
+                       ("descanso", "DESCANSO"), ("último descanso", "O ÚLTIMO DESCANSO")):
         if f.rotulos(rot):
             out[campo] = f.abaixo(f.unico(rot))
     return out
