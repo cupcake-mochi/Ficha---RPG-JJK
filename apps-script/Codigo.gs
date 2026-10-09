@@ -2144,7 +2144,9 @@ function onSelectionChange(e) {
  * e é preciso abrir o grupo pelo + lateral". A ligação é uma fórmula e não abre grupo; quem abre é este gatilho,
  * quando a seleção chega na célula em que o link cai (o número da ficha, na lombada dela): o grupo de linhas da
  * fileira e o grupo de colunas da coluna de fichas, se estiverem fechados. Clicar nesse número com a ficha fechada
- * também a abre. Onde cada ficha cai e o que abrir, o ABAS diz (`abrir`). Devolve true se abriu alguma coisa.
+ * também a abre, e clicar no número grande ou no título dela também (do teste dele: "clicar no número grande '2' em
+ * I207 não abriu a invocação"; é onde o olho vai). Onde cada ficha cai e o que abrir, o ABAS diz (`abrir`). Devolve
+ * true se abriu alguma coisa.
  */
 function abrirFichaDaInvocacao_(e) {
   if (!e || !e.range) return false;

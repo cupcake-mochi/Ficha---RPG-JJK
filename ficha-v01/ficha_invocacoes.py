@@ -1270,8 +1270,12 @@ def aba(layout, tr):
         # recolhida". Para cada ficha, a célula em que o link da lista cai, a primeira linha do grupo da fileira dela e
         # a primeira coluna do grupo da coluna de fichas dela: o abrirFichaDaInvocacao_ do Codigo.gs abre os dois
         # quando a seleção chega nessa célula
-        "abrir": [[tr["fichas_c"][i]["lombada_num"],
-                   linha_da_fileira(j) + (O["hab"] + 1 if j == 0 else 2), lombada(k) + 1] for i, (_, j, k) in enumerate(tr["LUG"])],
+        # No mesmo dia, do teste dele: "clicar no número grande '2' em I207 não abriu a invocação ... Clicar no pequeno
+        # número lateral em H207 abriu". O número grande e o título da ficha, que ficam à vista com a fileira fechada,
+        # abrem também. As doze primeiras entradas são as da lombada, na ordem das fichas (é onde o link cai).
+        "abrir": [[tr["fichas_c"][i][onde],
+                   linha_da_fileira(j) + (O["hab"] + 1 if j == 0 else 2), lombada(k) + 1]
+                  for onde in ("lombada_num", "numero", "titulo") for i, (_, j, k) in enumerate(tr["LUG"])],
         "condicional_gs": condicional,
         "copias": copia,
         "validacao_em_matriz": True,

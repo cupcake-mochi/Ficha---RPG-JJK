@@ -3028,3 +3028,43 @@ primeira rodada foi cortada no meio porque ele precisou reiniciar o computador; 
 do `rodar-tudo.sh` ainda dizia "os vinte e dois passaram", do tempo dos três validadores da invocação antiga, e foi
 acertada depois da rodada. Os outros arneses que rodam à mão (`arnes-amaldicoada.py`, `arnes-invocacoes.py`) não rodaram.
 Nada disto rodou no Sheets de verdade.*
+
+#### O teste dele no Sheets (08/10/2026): 8 de 9
+
+*Ele colou os três arquivos, reconstruiu e mandou o relatório (`Downloads/Testes-buff-ficha-2026-10-08/`): "8 dos 9 itens
+passaram". A montagem levou três execuções (243, 189 e 111 s; "9min03s de execução") e terminou em `FICHA PRONTA` com
+"saltos conferidos depois do idioma: nenhum em erro", sem pedir o `acabar()`. Antes dela, uma tentativa apareceu como
+cancelada depois de 21 s, sem causa confirmada, e outra parou com "Service Spreadsheets failed while accessing document",
+que é erro do serviço do Google, e não do script.*
+
+| item | resultado |
+|---|---|
+| negativos e contas na caixa | passou: com −3 os máximos foram a 16/5/22 sem mexer nos atuais; `=5+10-3` ficou como fórmula e mostrou 12 |
+| o atual acima do máximo | passou: as três caixas ficaram vermelhas |
+| Proteção e Defesa | passou: com +5 a Proteção foi de 1 a 6 e a Defesa de 11 a 16 |
+| carga | passou: "0,3 de 10" com +5; com −20, "acima", em vermelho, e o deslocamento em 0 m |
+| caixas de texto | passou: resistências (386 letras), imunidades (397), cicatrizes (205), história (1.392), o Legado (662) e o espelho dele na `FICHA` (694), todos com o fim à vista |
+| o link que abre a ficha recolhida | passou: a lista levou a `H207` e abriu as linhas 209 a 402; levou a `AA9` e abriu as colunas da sétima ficha. **O Sheets dispara o `onSelectionChange` quando a seleção muda por um link**, que era a dúvida |
+| glossário e conferência dos saltos | passaram |
+| o bônus do máximo numa ficha nova | o relatório dá como falha: com +5, vida 19/19 virou 24/24 (e energia e Integridade idem). Ver abaixo |
+
+**O bônus sobe o atual numa ficha recém-criada, e ficou assim.** *O atual nasce como `=máximo` (a ficha nasce cheia, desde
+a limpeza das barras), e enquanto ninguém mexe nele ele acompanha o máximo, com o bônus ou sem. Assim que o atual vira
+número (o jogador digita, ou usa a caixa de ±), o bônus muda só o máximo: o relatório confirma ("Após preencher
+manualmente os atuais com 19/8/25, os bônus preservaram os atuais corretamente"). Quem errou foi a minha instrução de
+teste, que dizia "o atual não muda" sem dizer que a ficha nova nasce cheia. Não mexi: a alternativa (o atual de fábrica
+descontar o bônus positivo) faria a ficha de quem tem um bônus permanente nascer com a vida abaixo do máximo. Expliquei a
+ele, e a troca é uma fórmula se ele preferir.*
+
+**O número grande da invocação.** *"Clicar no número grande '2' em I207 não abriu a invocação mesmo após espera. Clicar no
+pequeno número lateral em H207 abriu." O `abrir` da `INVOCAÇÕES` passa a declarar três células por ficha (o número da
+lombada, o número grande e o título), e as três abrem a fileira e a coluna de fichas. A `regressao-construir.js` confere
+as 36 entradas e que o número grande (`I207`) e o título abrem.*
+
+**O que o teste não cobriu.** *A trava de uma montagem de cada vez ("Não foram provocadas duas montagens simultâneas"), os
+links das doze invocações (testou duas) e o aplicativo de celular.*
+
+**Conferido (a correção do número grande).** *Passam a `regressao-construir.js`, a `regressao-pessoal.js`, a `regressao-delta.js`,
+a `regressao-paleta.js`, o `comparar-ficha-01.py` (IGUAIS), o `conferir-ficha-xlsx.py`, o `conferir-decisoes.py`, a
+`regressao-invocacoes.py` e o `arnes-pessoal.py` (101 defeitos plantados acendem, e o contra-teste fica verde). A bateria
+inteira não rodou de novo para esta mudança, que é uma lista mais comprida no `ABAS` da `INVOCAÇÕES`. Não rodou no Sheets.*

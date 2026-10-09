@@ -468,15 +468,23 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   const spI = ABAS.find((a) => a.nome === 'INVOCAÇÕES'), IV = S.ss.getSheetByName('INVOCAÇÕES'), abrir = spI.abrir || [];
   const fechado = (a) => [IV.getRowGroup(a[1], 1).isCollapsed(), IV.getColumnGroup(a[2], 1).isCollapsed()];
   const alvos = [...S.acha('INVOCAÇÕES').f.values()].filter((f) => f.startsWith('=HYPERLINK(')).map((f) => /&range=([A-Z]+\d+)"/.exec(f)[1]);
-  let erroA = null, antes = null, depois = null, outra = null, fora = null;
+  let erroA = null, antes = null, depois = null, outra = null, fora = null, pelosOutros = null;
   try {
     antes = fechado(abrir[7]);
     S.ctx.onSelectionChange({ range: IV.getRange('B3') }); fora = fechado(abrir[7]);
     S.ctx.onSelectionChange({ range: IV.getRange(abrir[7][0]) });
     depois = fechado(abrir[7]); outra = fechado(abrir[9]);
+    // o número grande e o título da ficha 2, que ficam à vista com a fileira fechada (a coluna dela nasce aberta)
+    pelosOutros = [12 + 1, 24 + 1].map((k) => { IV.getRowGroup(abrir[k][1], 1).collapse(); const a = IV.getRowGroup(abrir[k][1], 1).isCollapsed();
+      S.ctx.onSelectionChange({ range: IV.getRange(abrir[k][0]) }); return [a, IV.getRowGroup(abrir[k][1], 1).isCollapsed()]; });
+    IV.getRowGroup(abrir[1][1], 1).collapse();
   } catch (e) { erroA = e; }
-  ok('a INVOCAÇÕES declara, para as 12 fichas, a célula em que o link da lista cai e o que abrir',
-     abrir.length === 12 && JSON.stringify(abrir.map((a) => a[0]).sort()) === JSON.stringify(alvos.slice().sort()), `${JSON.stringify(abrir.map((a) => a[0]))} · ${JSON.stringify(alvos)}`);
+  ok('a INVOCAÇÕES declara, para as 12 fichas, a célula em que o link da lista cai e o que abrir, e mais o número grande e o título de cada uma',
+     abrir.length === 36 && JSON.stringify(abrir.slice(0, 12).map((a) => a[0]).sort()) === JSON.stringify(alvos.slice().sort())
+     && new Set(abrir.map((a) => a[0])).size === 36 && [12, 24].every((d) => abrir.slice(0, 12).every((a, i) => a[1] === abrir[d + i][1] && a[2] === abrir[d + i][2])),
+     `${abrir.length} · ${JSON.stringify(abrir.slice(0, 14).map((a) => a[0]))} · ${JSON.stringify(alvos)}`);
+  ok('clicar no número grande ou no título de uma ficha recolhida também a abre ("clicar no número grande \'2\' em I207 não abriu a invocação")',
+     !erroA && JSON.stringify(pelosOutros) === '[[true,false],[true,false]]' && abrir[13][0] === 'I207', erroA ? erroA.message : `${JSON.stringify(pelosOutros)} · ${abrir[13] && abrir[13][0]}`);
   ok('a seleção que chega na ficha 8, recolhida, abre a fileira e a coluna de fichas dela, e mais nenhuma; outra célula não abre nada',
      !erroA && JSON.stringify(antes) === '[true,true]' && JSON.stringify(fora) === '[true,true]' && JSON.stringify(depois) === '[false,false]' && outra[0] === true,
      erroA ? erroA.message : `${JSON.stringify(antes)} ${JSON.stringify(fora)} ${JSON.stringify(depois)} ${JSON.stringify(outra)}`);
