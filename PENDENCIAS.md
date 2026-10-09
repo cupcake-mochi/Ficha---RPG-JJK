@@ -3077,3 +3077,12 @@ arquivos basta, sem montar de novo.*
 
 **O que continua sem teste no Sheets.** *A trava de uma montagem de cada vez (ninguém provocou duas execuções juntas) e dez
 das doze invocações.*
+
+**As quatro pendências que ficaram com ele, respondidas em 09/10/2026.** *(1) O bônus na ficha recém-criada: "N entendi,
+exemplifique"; expliquei com exemplo, e espera a resposta dele. (2) A trava de uma montagem de cada vez: "N precisa, pq
+só eu rodo esse construir"; fica sem teste no Sheets, por decisão dele. (3) A regra da arma sem a Força no livro: "Ja
+mudei". Conferi e não achei a mudança: o `main` do `JJK---Project` no GitHub continua na v0.340, de 06/10, e a cópia
+local (`Claude 2/.claude/worktrees/ficha-amaldicoada-b31-8d7a7a`) também, as duas com "você não soma Destreza à Defesa
+enquanto empunhar a arma". Perguntei onde ele mudou. Enquanto o livro novo não chega ao repositório, o `manual.txt`
+fica como está e a regra continua no `fora_do_livro` do arquivo de dados (`arma_sem_a_forca`); a ficha já aplica a regra
+nova. (4) A mensagem que chegou cortada em "tirando": "N tinha nada".*
