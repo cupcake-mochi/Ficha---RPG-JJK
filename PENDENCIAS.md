@@ -2965,7 +2965,7 @@ arnês inteiro não rodou de novo depois disso (leva perto de quarenta minutos).
 (`arnes-amaldicoada.py` e `arnes-invocacoes.py`) não rodaram nesta rodada: os trechos deles existem todos no código de
 hoje. Nada disto rodou no Sheets de verdade.*
 
-### B42 · Buff/Debuff dos máximos: vida, energia, Integridade, Proteção e carga — **CONSTRUÍDO E MONTADO NO SHEETS em 08/10/2026 (a forma A do estudo): 8 dos 9 itens passaram no teste dele, e a correção do número grande da invocação ele testou no mesmo dia (os quatro testes passaram). Fica com ele se o bônus sobe o atual na ficha recém-criada**
+### B42 · Buff/Debuff dos máximos: vida, energia, Integridade, Proteção e carga — **CONSTRUÍDO E MONTADO NO SHEETS em 08/10/2026 (a forma A do estudo): 8 dos 9 itens passaram no teste dele, e a correção do número grande da invocação ele testou no mesmo dia (os quatro testes passaram). Em 09/10/2026 ele decidiu que o bônus sobe o atual na ficha recém-criada, como já estava: nada em aberto**
 
 *Junto com a decisão do aviso vermelho ele pediu: "existe a possibilidade do jogador ganhar vida máxima extra de alguma forma,
 como no caso da lapidação e/ou habilidades de técnica, seria interessante uma caixa que pudesse permitir o jogador
@@ -3086,3 +3086,9 @@ local (`Claude 2/.claude/worktrees/ficha-amaldicoada-b31-8d7a7a`) também, as du
 enquanto empunhar a arma". Perguntei onde ele mudou. Enquanto o livro novo não chega ao repositório, o `manual.txt`
 fica como está e a regra continua no `fora_do_livro` do arquivo de dados (`arma_sem_a_forca`); a ficha já aplica a regra
 nova. (4) A mensagem que chegou cortada em "tirando": "N tinha nada".*
+
+**O bônus na ficha recém-criada: fica como está (09/10/2026).** *Com o exemplo (ficha nova, vida 19/19, +5 no Buff/Debuff), ele
+respondeu "Pode sim, adicionar", que servia para os dois lados; perguntei qual, e ele escolheu "Fica 24/24": o bônus soma
+também no atual enquanto a ficha está intocada. É o que a ficha já faz, e nada mudou. Do livro: "vou atualizar jaja";
+quando a regra da arma sem a Força estiver no `JJK---Project`, falta reler o livro (`extrair-manual.py`) e tirar o
+`arma_sem_a_forca` do `fora_do_livro`.*
