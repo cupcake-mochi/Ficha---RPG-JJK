@@ -845,19 +845,23 @@ function montar_() {
   // devolvia a mesma en_US que a montagem tinha acabado de ligar — a ficha é em português sempre,
   // então o fim é sempre pt_BR, mesmo se ela parar no meio.
   var idioma = ss.getSpreadsheetLocale();
-  var falta = false;
+  var falta = false, erroDoIdioma = null;
   ss.setSpreadsheetLocale('en_US');
   try {
     var abas;
     if (de === 0) {
       // do zero: a montagem parada que houver deixa de valer
       props.deleteProperty(CHAVE_DA_MONTAGEM_);
-      // uma aba de rascunho segura o lugar enquanto as antigas somem
-      var velha = ss.getSheetByName('__montando__');
-      if (velha) ss.deleteSheet(velha);        // sobra de uma execução que parou no meio
-      var temp = ss.insertSheet('__montando__', 0);
-      ss.getSheets().forEach(function (a) {
-        if (a.getName() !== '__montando__') ss.deleteSheet(a);
+      // uma aba de rascunho segura o lugar enquanto as antigas somem.
+      // 09/10/2026: a que sobrou de uma execução que parou no meio é aproveitada. Antes ela era apagada e criada de
+      // novo, e quando a execução anterior tinha parado depois de apagar as abas antigas (nas duas últimas montagens
+      // do Mizuki o serviço do Google estourou o tempo bem aí) ela era a única aba da planilha: o Sheets não deixa
+      // apagar a última, o construir() parava de novo, e era preciso criar uma aba em branco à mão para seguir.
+      var temp = ss.getSheetByName('__montando__') || ss.insertSheet('__montando__', 0);
+      // cada aba antiga some numa tentativa própria: o erro passageiro do serviço numa delas não derruba a montagem
+      ss.getSheets().map(function (a) { return a.getName(); }).forEach(function (nome) {
+        if (nome === '__montando__') return;
+        _comRetentativa_(function () { var a = ss.getSheetByName(nome); if (a) ss.deleteSheet(a); });
       });
 
       // TODAS as abas nascem primeiro, vazias e já do tamanho certo, na ordem do ABAS. Só depois cada uma é
@@ -929,8 +933,12 @@ function montar_() {
       acabamento_(ss, feito, rel);
     }
   } finally {
-    ss.setSpreadsheetLocale('pt_BR');
+    // 09/10/2026: quando o serviço do Google estoura o tempo no meio da montagem, ele costuma estourar aqui também, e
+    // o erro daqui escondia o primeiro (o registro dizia que a montagem tinha parado nesta linha). A volta ao português
+    // é tentada de novo; se não der, o erro da montagem segue como veio, e a próxima execução devolve o idioma.
+    try { _comRetentativa_(function () { ss.setSpreadsheetLocale('pt_BR'); }); } catch (err) { erroDoIdioma = err; }
   }
+  if (erroDoIdioma) throw new Error('a montagem terminou, mas a planilha ficou em inglês (' + erroDoIdioma.message + '): rode o acabar().');
   feito.push('idioma de antes: ' + idioma + ' · idioma final: pt_BR');
   // 08/10/2026: com a planilha de volta ao português, os saltos são conferidos (ver conferirSaltos_, no Codigo.gs)
   if (!falta) {
@@ -980,7 +988,7 @@ function acabar() {
 }
 
 function soOAcabamento_() {
-  var ss = SpreadsheetApp.getActive(), feito = [], rel = relogio_();
+  var ss = SpreadsheetApp.getActive(), feito = [], rel = relogio_(), erroDoIdioma = null;
   var faltam = ABAS.filter(function (spec) { return !ss.getSheetByName(spec.nome); });
   if (faltam.length) throw new Error('a planilha não tem a aba ' + faltam[0].nome + ': rode construir() antes.');
   var parada = PropertiesService.getDocumentProperties().getProperty(CHAVE_DA_MONTAGEM_);
@@ -989,8 +997,10 @@ function soOAcabamento_() {
   try {
     acabamento_(ss, feito, rel);
   } finally {
-    ss.setSpreadsheetLocale('pt_BR');
+    // como na montagem: o erro daqui não esconde o do acabamento
+    try { _comRetentativa_(function () { ss.setSpreadsheetLocale('pt_BR'); }); } catch (err) { erroDoIdioma = err; }
   }
+  if (erroDoIdioma) throw new Error('o acabamento terminou, mas a planilha ficou em inglês (' + erroDoIdioma.message + '): rode o acabar() de novo.');
   try { feito.push(conferirSaltos_(ss)); } catch (err) { feito.push('saltos NÃO conferidos: ' + err.message); }
   rel.etapa('saltos conferidos');
   Logger.log('ACABAMENTO PRONTO em ' + Math.round(rel.passou() / 1000) + 's · ' + feito.join(' · ') + ' · tempos: ' + ETAPAS_.join(', '));

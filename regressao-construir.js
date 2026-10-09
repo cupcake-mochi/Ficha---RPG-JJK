@@ -601,6 +601,23 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   ok('e o construir() também: não cria aba nenhuma nem troca o idioma', !!erroK && /já tem uma montagem rodando/.test(erroK.message) && /construir\(\)/.test(erroK.message)
      && T.P.abas.length === abasAntes && T.P.locale === 'en_US', erroK ? erroK.message : 'rodou');
   ok('a montagem que termina solta a trava', soltas >= 1, String(soltas));
+  // 09/10/2026: a execução anterior parou depois de apagar as abas antigas, e sobrou só a __montando__. O Sheets não
+  // deixa apagar a última aba: o construir() tem de aproveitar a que ficou, e não parar pedindo uma aba em branco
+  const U = criaSheets(FICHA_SRC, HAB_SRC + '\n' + GS);
+  let erroU = null;
+  try { const so = U.ss.getSheets()[0]; U.ss.insertSheet('__montando__', 0); U.ss.deleteSheet(so); U.ctx.construir(); while (/rode a função continuar\(\)/.test(U.P.registro)) U.ctx.continuar(); } catch (e) { erroU = e; }
+  ok('o construir() numa planilha em que só sobrou a __montando__ aproveita a aba e monta a ficha inteira, sem deixar a de rascunho',
+     !erroU && U.P.abas.map((a) => a.nome).join('|') === ABAS.map((a) => a.nome).join('|') && U.P.locale === 'pt_BR', erroU ? erroU.message : U.P.abas.map((a) => a.nome).join(', '));
+  // e o erro do serviço na volta ao português não esconde o erro da montagem
+  const W = criaSheets(FICHA_SRC, HAB_SRC + '\n' + GS);
+  let erroW = null; const idiomaDeVerdade = W.ss.setSpreadsheetLocale, criar = W.ss.insertSheet;
+  try {
+    W.ss.insertSheet = (n, pos) => { if (n !== '__montando__') throw new Error('o primeiro erro, criando a aba ' + n); return criar(n, pos); };
+    W.ss.setSpreadsheetLocale = (l) => { if (l === 'pt_BR') throw new Error('Service Spreadsheets timed out'); return idiomaDeVerdade(l); };
+    W.ctx.construir();
+  } catch (e) { erroW = e; }
+  ok('quando a montagem para e o serviço também falha na volta ao português, o erro que aparece é o da montagem',
+     !!erroW && /o primeiro erro, criando a aba CARTEIRA/.test(erroW.message), erroW ? erroW.message : 'não parou');
 }
 {
   // 07/10/2026: a caixa de ± da vida de cada ficha de invocação, como a da FICHA. A vida máxima é uma conta, e o Sheets

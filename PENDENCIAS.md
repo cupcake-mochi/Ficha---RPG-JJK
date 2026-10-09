@@ -3093,7 +3093,7 @@ também no atual enquanto a ficha está intocada. É o que a ficha já faz, e na
 quando a regra da arma sem a Força estiver no `JJK---Project`, falta reler o livro (`extrair-manual.py`) e tirar o
 `arma_sem_a_forca` do `fora_do_livro`.*
 
-### B43 · O descanso, e duas notas — **CONSTRUÍDO em 09/10/2026 (o descanso na forma A, e as duas notas); falta montar no Sheets**
+### B43 · O descanso, e duas notas — **CONSTRUÍDO E MONTADO NO SHEETS em 09/10/2026 (o descanso na forma A, e as duas notas): os nove itens passaram no teste dele**
 
 *Perguntou "falta mais algo na ficha?", e da lista que eu trouxe respondeu três itens.*
 
@@ -3151,3 +3151,37 @@ contra o estudo pelo `medidas/ver-aba.py`.*
 com os 112 defeitos acendendo a checagem certa), e a `regressao-paleta.js` também. Os arneses que rodam à mão
 (`arnes-amaldicoada.py`, `arnes-invocacoes.py`, `arnes-ficha-pessoal.py`) não rodaram: os trechos deles existem todos no
 código de hoje. Nada disto rodou no Sheets de verdade; como a `FICHA` cresceu três linhas, é preciso montar de novo.*
+
+#### O teste dele no Sheets (09/10/2026): os nove itens passaram, e o construir() que não recomeçava sozinho
+
+*Ele colou os três arquivos, reconstruiu e mandou o relatório (`Downloads/Testes-descanso-2026-10-09/`): "Os nove itens da
+imagem passaram no Sheets". Com máximos de 20 de vida, 100 PE e 25 de Integridade: o longo fora levou a vida de 5 a 10 e o
+PE de 10 a 50, devolveu a Integridade, zerou as Sequelas e deixou a Exaustão em 2; o longo em lugar propício levou tudo
+ao máximo; o curto em lugar propício deu +25 PE mesmo com Exaustão 3; o curto fora deu 35, 25, 15 e 10 a partir de 10,
+pelos degraus 0 a 3. O menu voltou ao convite e o registro e o aviso saíram em todos, com o lembrete de Insistir quando o
+Buff/Debuff da vida estava em −5. Numa ficha ainda cheia o longo disse "nada mudou" e preservou as contas dos atuais. As
+duas notas estão certas, e nada saiu do lugar abaixo das barras. A montagem levou três execuções (225, 211 e 129 s).*
+
+**A falha do começo da montagem, que se repetiu.** *O relatório: "As primeiras tentativas de construir falharam com timeout do
+serviço de planilhas / erro genérico do editor ... Após restar só __montando__, criei uma guia em branco e excluí a
+temporária". O registro da falha: `Service Spreadsheets timed out while accessing document`, na linha do `finally` que
+devolve o português. Já tinha acontecido na montagem do B42. O Mizuki explicou o que via: "ao clicar em construir, ele
+deleta todas as guias e deixa o 'montagem', mas ao deixar ele n consegue deletar o montagem em seguida, por justamente
+ser a ultima guia". São duas coisas:*
+
+- *o estouro de tempo é do serviço do Google, apagando as abas antigas de uma ficha cheia; não tem conserto do lado do
+  script, só tentar de novo;*
+- *tentar de novo é que não funcionava: o `construir()` começava apagando a `__montando__` que tinha sobrado, que era a
+  única aba da planilha, e o Sheets não deixa apagar a última. Era defeito meu, e pedia a limpeza à mão.*
+
+*O `montar_` passa a aproveitar a `__montando__` que houver (`getSheetByName(...) || insertSheet(...)`), apaga cada aba
+antiga numa tentativa própria (`_comRetentativa_`), e a volta ao português, no `finally`, é tentada de novo e não esconde
+mais o erro da montagem: se ela falhar, o erro que aparece é o primeiro, e se a montagem terminou e só o idioma ficou em
+inglês o recado manda rodar o `acabar()`. O mesmo no `acabar()`. A `regressao-construir.js` monta a ficha inteira numa
+planilha em que só sobrou a `__montando__`, e confere que o erro que aparece é o da montagem; os dois defeitos
+plantados no `arnes-pessoal.py` (são 114) acendem, conferidos à mão um a um.*
+
+**Conferido.** *Passam a `regressao-construir.js`, a `regressao-pessoal.js`, a `regressao-paleta.js`, o `comparar-ficha-01.py`
+(IGUAIS), o `conferir-ficha-xlsx.py` e o `conferir-decisoes.py`. O `arnes-pessoal.py` inteiro e a bateria não rodaram
+para esta mudança: ele disse "se n quiser usar arnes e deixar o gpt ficar fazendo os testes manualmente, pode". Não rodou
+no Sheets, e só aparece na próxima vez que a primeira tentativa de montar falhar.*

@@ -371,6 +371,16 @@ edita("o descanso não lembra do máximo perdido por Insistir", C,
       "(DESCANSOS_[tipo].longo && le('buff de vida') < 0)", "(false)",
       "o aviso lembra do máximo perdido por Insistir", teste=K)
 
+# 09/10/2026: o construir() depois de uma montagem que parou apagando as abas antigas
+edita("o construir() volta a apagar a aba de rascunho que sobrou, que é a última da planilha", F,
+      "      var temp = ss.getSheetByName('__montando__') || ss.insertSheet('__montando__', 0);",
+      "      var velha = ss.getSheetByName('__montando__');\n      if (velha) ss.deleteSheet(velha);\n      var temp = ss.insertSheet('__montando__', 0);",
+      "só sobrou a __montando__", teste=K)
+edita("o erro do serviço na volta ao português esconde o erro da montagem", F,
+      "    try { _comRetentativa_(function () { ss.setSpreadsheetLocale('pt_BR'); }); } catch (err) { erroDoIdioma = err; }\n  }\n  if (erroDoIdioma) throw new Error('a montagem terminou",
+      "    ss.setSpreadsheetLocale('pt_BR');\n  }\n  if (erroDoIdioma) throw new Error('a montagem terminou",
+      "o erro que aparece é o da montagem", teste=K)
+
 print("\nPASSO 3 - o contra-teste: mudanca que nao muda a regra fica verde")
 edita("renomear uma variavel de dentro da conta", C, "var todas = armas.filter(function (a) { return a.categoria === arma.categoria; })\n"
       "                   .every(function (a) { return marcadas[a.caixa] === true; });\n  if ((marcadas[dono.caixa] === true) !== todas) muda[dono.caixa] = todas;",
