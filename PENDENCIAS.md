@@ -3092,3 +3092,39 @@ respondeu "Pode sim, adicionar", que servia para os dois lados; perguntei qual, 
 também no atual enquanto a ficha está intocada. É o que a ficha já faz, e nada mudou. Do livro: "vou atualizar jaja";
 quando a regra da arma sem a Força estiver no `JJK---Project`, falta reler o livro (`extrair-manual.py`) e tirar o
 `arma_sem_a_forca` do `fora_do_livro`.*
+
+### B43 · O descanso, e duas notas — **ESTUDO ENTREGUE em 09/10/2026 (o descanso espera ele escolher a forma); as duas notas estão no gerador e vão junto**
+
+*Perguntou "falta mais algo na ficha?", e da lista que eu trouxe respondeu três itens.*
+
+**As escolhas do Traje:** *"Só escreve na nota que o jogador tem que escrever quais ele escolheu". A nota da `SITUAÇÃO DO TRAJE`,
+na `FICHA PESSOAL`, ganha: "A ficha não guarda o tipo de TR nem as perícias do Traje: escreva quais você escolheu em
+LAÇOS E ANOTAÇÕES, no dossiê. Essas escolhas são suas, e valem para qualquer Traje que você vestir." (o livro: "Anote o
+TR e as perícias na ficha. Essas escolhas são suas e valem para qualquer Traje que vestir").*
+
+**Os outros modos de deslocamento da invocação:** *"n precisa, só colocar uma nota". A nota do `DESLOCAMENTO` de cada ficha
+ganha: "A ficha só conta o terrestre: se a entidade voa, escala ou nada, escreva o modo e a distância em CORPO, SENTIDOS E
+COMUNICAÇÃO."*
+
+*As duas notas estão no `ficha_pessoal.py` e no `ficha_invocacoes.py`, e a ficha gerada já as traz. São notas do `ABAS`:
+só aparecem numa planilha montada de novo, e por isso vão no mesmo pacote do descanso.*
+
+**O descanso:** *"Problema q tem tipos, ficaria na ficha e como fariamos?". Um menu na `FICHA` com os quatro tipos do livro; o
+`onEdit` aplica e limpa o menu, como a caixa de ±, e avisa o que mudou. O que cada um faz, pela tabela do livro:*
+
+| o menu | vida | PE | Integridade | Sequelas | Exaustão |
+|---|---|---|---|---|---|
+| Curto · lugar propício | não muda | +25% do máximo | não muda | ficam | fica |
+| Curto · fora | não muda | +25%, +15%, +5% ou nada, pelo degrau de Exaustão | não muda | ficam | fica |
+| Longo · lugar propício | volta ao máximo | volta ao máximo | volta ao máximo | saem | sai |
+| Longo · fora | vai à metade do máximo, se estiver abaixo | idem | volta ao máximo | saem | fica |
+
+*A recuperação arredonda para baixo, com mínimo 1 quando a fração é positiva, e não passa do máximo. O que a ficha não
+sabe fazer sozinha: o "máximo perdido por Insistir", que o livro manda restaurar no descanso longo, mora no Buff/Debuff
+da vida junto com os outros bônus, e a ficha não sabe que parte dele é de Insistir; e os usos por dia e as condições, que
+ela não guarda.*
+
+**O estudo:** *`mockup/descanso-estudo.png` (montado por `python3 mockup/estudo_descanso.py mockup/descanso-estudo.html`), com
+três lugares: **A** uma linha própria entre as barras e o estado, com o registro do último descanso ao lado (a `FICHA`
+cresce três linhas); **B** ao lado dos atributos, nas dez colunas livres à direita da Essência, com o registro resumido
+embaixo; **C** na linha do estado, como quinta caixa, sem registro. Indiquei a A.*

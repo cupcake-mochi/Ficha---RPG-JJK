@@ -830,7 +830,9 @@ NOTAS = {
     "defesa": "10 + Destreza dela + metade da sua Essência ou Inteligência, a que o conjunto escolheu. Com traje ou revestimento, a "
               "proteção entra no lugar dessa metade: acerte a diferença no Buff/Debuff.",
     "vida": "5 + Constituição + (3 + Constituição) × (nível − 1). No corpo amaldiçoado de criação, 4 no lugar do 3.",
-    "desl": "O deslocamento terrestre-base é de 9 m.",
+    # 09/10/2026, o Mizuki, dos outros modos de deslocamento: "n precisa, só colocar uma nota"
+    "desl": "O deslocamento terrestre-base é de 9 m. A ficha só conta o terrestre: se a entidade voa, escala ou nada, escreva "
+            "o modo e a distância em CORPO, SENTIDOS E COMUNICAÇÃO.",
     "tr": "O atributo do teste, mais a sua maestria no treinado. O Físico usa Força ou Destreza, a que você escolher embaixo.",
     "acerto": "Escolhido na montagem. Vale para o ataque e para a CD. Com arma empunhada, o ataque usa o atributo da arma e tem "
               "desvantagem, porque a entidade não tem treino em armas.",

@@ -737,7 +737,10 @@ NOTAS = {
                  "da caixa de baixo diz o que falta e o que isso custa.",
     "situacao": "Todo Traje carrega uma situação, escolhida na criação, junto com um tipo de Teste de Resistência e tantas "
                 "perícias quanto a sua maestria. Quando a cena estiver nessa condição, você tem vantagem só nesses. Vantagem "
-                "não empilha: duas fontes valem uma.",
+                "não empilha: duas fontes valem uma. "
+                # 09/10/2026, o Mizuki: "Só escreve na nota que o jogador tem que escrever quais ele escolheu"
+                "A ficha não guarda o tipo de TR nem as perícias do Traje: escreva quais você escolheu em LAÇOS E ANOTAÇÕES, "
+                "no dossiê. Essas escolhas são suas, e valem para qualquer Traje que você vestir.",
     "qtd": "Em branco vale 1.",
     "vol": "Quantidade vezes o Volume de um. O item leve vale 0,1. A carga soma esta coluna.",
     "vol_item": "Quantidade vezes 0,1, que é o item leve. Se o mestre pesar o item de outro jeito, digite o Volume da "
