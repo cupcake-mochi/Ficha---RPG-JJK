@@ -6,6 +6,8 @@ Este pacote continua o trabalho da conversa anterior. **Nada foi recomeçado do 
 
 **09/10/2026: a `FICHA` aplica o descanso (B43).** Um menu embaixo das barras com os quatro tipos do livro; o `descansar_` do `Codigo.gs` faz a conta, devolve o menu ao convite e escreve ao lado o que mudou. Para isso as linhas abertas no meio da `FICHA` passaram de oito para onze.
 
+**09/10/2026: a troca de paleta foi otimizada no Sheets pelo agente que monta e testa a ficha (B44),** e o `apps-script/Codigo.gs` daqui é o dele: a `CARTEIRA` fica pronta primeiro, as 122 paletas têm a descrição das cores no menu, e o aviso mudou. O `Codigo.gs` é escrito à mão; o que ele mudar no `Ficha.gs` tem de ser levado para o gerador, senão a próxima geração apaga (foi o caso da borda esquerda do `Buff/Debuff` das barras, que agora sai do `ficha_layout.py`).
+
 **07/10/2026: a aba `INVOCAÇÕES` tem as doze fichas (a grade de 2 × 6), o sistema se chama Ciclo Maldito na ficha e a versão é a 1.0.** A montagem no Sheets passou a levar duas execuções: o `construir()` para sozinho e pede o `continuar()`. Está na segunda etapa do B40, no `PENDENCIAS.md`.
 
 **06/10/2026: a aba `INVOCAÇÕES` começou a ser construída** (a invocação refeita depois do livro reconstruído, com uma ficha na primeira etapa; o `apps-script/Invocacoes.gs` é o quarto arquivo do Apps Script). O que foi decidido, o que mudou do estudo e o que falta estão no B40 do `PENDENCIAS.md`.

@@ -3185,3 +3185,46 @@ plantados no `arnes-pessoal.py` (são 114) acendem, conferidos à mão um a um.*
 (IGUAIS), o `conferir-ficha-xlsx.py` e o `conferir-decisoes.py`. O `arnes-pessoal.py` inteiro e a bateria não rodaram
 para esta mudança: ele disse "se n quiser usar arnes e deixar o gpt ficar fazendo os testes manualmente, pode". Não rodou
 no Sheets, e só aparece na próxima vez que a primeira tentativa de montar falhar.*
+
+### B44 · A otimização das paletas e as bordas do Buff/Debuff, feitas no Sheets pelo outro agente — **TRAZIDAS PARA O REPOSITÓRIO em 09/10/2026; já estão aplicadas e testadas por ele na planilha**
+
+*O Mizuki mandou o pacote `Downloads/Entrega-ficha-2026-10-09/Ficha-e-codigos-2026-10-09.zip` (os quatro `.gs` e a planilha
+exportada): "Chat fez algumas atualizações na ficha, atualize os arquivos locais e salve no git. de merge também ao fim". As
+anotações do agente que monta e testa a ficha (o GPT) estão em `Downloads/Otimizacao-paletas-2026-10-09/` (`Integracao.txt`,
+`Resultado-dos-testes.txt`, os dois `.diff`).*
+
+| arquivo do pacote | o que tinha | o que foi feito aqui |
+|---|---|---|
+| `Codigo.gs` | a troca de paleta otimizada (345 linhas a mais, 28 a menos, só na parte da paleta) | adotado como está: o `Codigo.gs` é escrito à mão, não tem gerador |
+| `Ficha.gs` | uma linha: `P25:Q25`, `P29:Q29` e `P33:Q33` na lista de bordas esquerdas da `FICHA` | levado para o gerador (abaixo); o `Ficha.gs` gerado tem as mesmas bordas, em outra ordem na lista |
+| `Invocacoes.gs` | igual ao do repositório | nada |
+| `Habilidades.gs` | **a versão de 05/10**, com "imponha −1" na Execução Preparada do Vanguarda | **não entrou**: o do repositório é o de 07/10, com o −2 do livro v0.340, e o agente diz que não mexeu nesse arquivo. Avisei o Mizuki para conferir qual está no projeto dele |
+| a planilha exportada | a ficha montada, na paleta `Mizuki · Escuro` | comparada célula a célula com a que o gerador produz: iguais, fora o que o script cria na montagem (a caixa da paleta, os saltos, a cor da barra e a caixa da imagem do Marco). Não entrou no git |
+
+**A troca de paleta, pelo que o agente escreveu e mediu.** *A `CARTEIRA` termina inteira (fundo, texto, bordas e as imagens) antes
+das outras abas, mesmo quando o jogador muda de aba no meio; o fundo e a fonte de cada trecho são gravados juntos, com uma
+confirmação só, antes de o passo ser dado como pronto; as grades de fábrica, os contrastes e o mapa de cores são
+reaproveitados dentro da execução; as 122 opções ganharam a descrição das cores ("Noite · Escuro · roxo e lilás"), e os
+nomes antigos continuam valendo (`nomeCanonicoDaPaleta_`); o menu que já existe é atualizado no `onOpen` sem perder a
+escolha; o aviso deixou de prometer 20 segundos e diz "Veja a CARTEIRA primeiro; o restante termina enquanto você usa a
+ficha. Durante a troca de cores, não feche nem recarregue esta página." Medido por ele no Sheets: a soma dos passos foi de
+91,7 para 79,9 s no Noite Claro e de 94,1 para 80,9 s no Noite Escuro, em quatro execuções em vez de cinco, com a
+`CARTEIRA` pronta em cerca de 10 s. Não precisou reconstruir.*
+
+**As bordas, no gerador.** *O rótulo `Buff/Debuff` das três barras saía aberto do lado esquerdo: o molde dele é o rótulo que
+fica colado em outra caixa e usa a borda direita dela, e ali ele fica sozinho, depois de um vão. O `ficha_layout.py`
+passa a dar a ele a própria borda esquerda (o `_estilo` aprendeu a acrescentar lados). Sem isso a próxima geração do
+`Ficha.gs` apagaria o conserto do agente.*
+
+**Os testes, postos em dia com o desenho novo.** *A `regressao-paleta.js` cobrava a cor e a régua da `CARTEIRA` e da `FICHA` na
+primeira execução; passa a cobrar a `CARTEIRA` inteira, com a arte, abrindo a execução, e a `FICHA` começando nela (o
+último trecho da `FICHA` foi para a segunda execução, que é a troca que o desenho novo faz), e o relatório de tempos no
+formato novo. O `conferir-ficha-xlsx.py` aceita a medida entre o `flush` e o registro do passo, e cobra o texto novo do
+aviso. O Sheets de mentira aprendeu `Range.setWrap` e `Sheet.setRowHeight`, que a caixa da paleta passou a usar.*
+
+**Conferido.** *Passam a `regressao-paleta.js`, a `regressao-construir.js`, a `regressao-pessoal.js`, a `regressao-delta.js`, a
+`regressao-arte.js`, o `comparar-ficha-01.py` (IGUAIS), o `conferir-ficha-xlsx.py` e o `conferir-decisoes.py`; e o
+`arnes-paleta.py` inteiro (os 11 defeitos plantados na troca de paleta acendem no código novo, e o contra-teste fica
+verde). A bateria inteira e o `arnes-pessoal.py` não rodaram (os trechos dele existem todos no código de hoje). Eu não
+revisei a otimização linha a linha: li as mudanças, e a garantia de que ela pinta igual vem dos testes daqui e dos que
+o agente fez no Sheets.*

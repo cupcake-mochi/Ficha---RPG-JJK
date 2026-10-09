@@ -208,6 +208,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
           const api = rigoroso('Protection', { setDescription: (d) => { p.desc = d; return api; }, getDescription: () => p.desc, setWarningOnly: (b) => { p.aviso = b; return api; },
             remove: () => { A.prot = A.prot.filter((x) => x !== p); } }); p.api = api; return api; },
         setBackground: um('setBackgrounds'), setFontColor: um('setFontColors'), setFontFamily: um('setFontFamilies'), setFontSize: um('setFontSizes'), setFontWeight: um('setFontWeights'), setFontStyle: um('setFontStyles'),
+        setWrap: um('setWraps'),   // 09/10/2026: o menu e o aviso da paleta, com os nomes descritivos
         setHorizontalAlignment: um('setHorizontalAlignments'), setVerticalAlignment: um('setVerticalAlignments'),
         clearContent: () => { cada((i, j) => { A.v.delete(i + ',' + j); A.f.delete(i + ',' + j); }); return R; },
       });
@@ -237,6 +238,8 @@ function criaSheets(FICHA_SRC, GS, extras) {
       insertRowsAfter: (depois, n) => { if (depois !== A.maxR) throw new Error('o teste só insere linhas no fim'); A.maxR += n; },
       setColumnWidths: (ini, n, px) => { dentro(1, ini, 1, n, 'setColumnWidths'); for (let j = ini; j < ini + n; j++) A.larg.set(j, px); },
       setRowHeights: (ini, n, px) => { dentro(ini, 1, n, 1, 'setRowHeights'); for (let i = ini; i < ini + n; i++) A.alt.set(i, px); },
+      // 09/10/2026: a linha do aviso da paleta, que passou a ter duas linhas de texto
+      setRowHeight: (lin, px) => { dentro(lin, 1, 1, 1, 'setRowHeight'); A.alt.set(lin, px); },
       getRange: (a, b, c, d) => (typeof a === 'string' ? porA1(a) : range(a, b, c, d)),
       getRangeList: (lista) => { const rs = lista.map(porA1); return rigoroso('RangeList', {
         setBorder: (...a) => { rs.forEach((x) => borda(x.getRow(), x.getColumn(), x.getNumRows(), x.getNumColumns(), a)); },

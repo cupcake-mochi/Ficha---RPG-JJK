@@ -55,6 +55,8 @@ def _estilo(layout, base, **mudar):
         fonte = mudar["fonte"]
     if "fundo" in mudar:
         fundo = mudar["fundo"]
+    if "bordas" in mudar:                                  # lados a acrescentar, sem tirar os que o estilo tem
+        bordas = dict(bordas or {}, **mudar["bordas"])
     novo = [fonte, fundo, bordas, alinha, fmt]
     chave = json.dumps(novo, ensure_ascii=False, sort_keys=True)
     for i, e in enumerate(layout["estilos"]):
@@ -152,8 +154,12 @@ def trocas(layout, CAT=None):
             # a barra: a conta e o estilo do canto e da borda esquerda andam com ela
             for lin in range(l1, l2 + 1):
                 poe("FICHA", f"{col(nova)}{lin}", val(f"{col(0)}{lin}"), est(f"{col(0)}{lin}"))
-            # a caixa: o rótulo na linha do rótulo, e o número nas linhas da barra
-            poe("FICHA", f"{col(0)}{lr}", "Buff/Debuff", E_BUFF["rot1"])
+            # a caixa: o rótulo na linha do rótulo, e o número nas linhas da barra.
+            # 09/10/2026, achado no Sheets pelo agente que monta e testa a ficha: o rótulo saía aberto do lado esquerdo.
+            # O molde é o rótulo de Buff/Debuff que fica colado em outra caixa e usa a borda direita dela; aqui ele
+            # fica sozinho, depois de um vão, e precisa da própria borda esquerda (a mesma régua dos outros lados).
+            rot_fechado = _estilo(L, E_BUFF["rot1"], bordas={"left": L["estilos"][E_BUFF["rot1"]][2]["right"]})
+            poe("FICHA", f"{col(0)}{lr}", "Buff/Debuff", rot_fechado)
             poe("FICHA", f"{col(1)}{lr}", None, E_BUFF["rot2"])
             for lin in range(l1, l2 + 1):
                 poe("FICHA", f"{col(0)}{lin}", 0 if lin == l1 else None, E_BUFF["val1"])

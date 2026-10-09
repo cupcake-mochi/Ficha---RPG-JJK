@@ -1119,8 +1119,9 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
                                     r"> orcamento.*?props\.setProperty\(PROP_PENDENTE_, novo\).*?return passo;.*?"
                                     r"props\.setProperties\(\{ paleta_feito", _conv.group(1), re.S) is not None)
     checa("cada passo termina com SpreadsheetApp.flush(), pra o tempo dele não cair no passo seguinte",
-          bool(_conv) and re.search(r"repintarBordas_\(ss, [^;]*;\s*\}\s*(//[^\n]*\n\s*)*SpreadsheetApp\.flush\(\);\s*feito\[passo\] = novo;",
-                                    _conv.group(1)) is not None)
+          # 09/10/2026: entre o flush e o registro do passo entra a medida da gravação confirmada (a otimização das paletas)
+          bool(_conv) and re.search(r"repintarBordas_\(ss, [^;]*;\s*\}\s*(//[^\n]*\n\s*)*var antesFlush = Date\.now\(\);\s*"
+                                    r"SpreadsheetApp\.flush\(\);.{0,260}?feito\[passo\] = novo;", _conv.group(1), re.S) is not None)
     _orc = re.search(r"var ORCAMENTO_SIMPLES_ = (\d+);", _CODA)
     checa("o orçamento de cada chamada fica abaixo dos 30 s do gatilho simples, com folga de pelo menos 5 s",
           bool(_orc) and int(_orc.group(1)) <= 25000, _orc.group(1) if _orc else "sem ORCAMENTO_SIMPLES_")
@@ -1357,7 +1358,9 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
     _rb = re.search(r"function repintarBordas_\(ss, paraRegua, soAba, parte\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("a caixa de aviso da espera existe, tem intervalo nomeado, e a borda dela é repintada",
           bool(_cfg) and "NOME_CEL_PALETA_AVISO_" in _cfg.group(1) and "TEXTO_AVISO_PALETA_" in _cfg.group(1)
-          and "var TEXTO_AVISO_PALETA_ = 'O tema leva uns 20 segundos. O que faltar termina enquanto você usa a ficha.';" in _CODA
+          # 09/10/2026: o aviso deixou de prometer 20 segundos; manda olhar a CARTEIRA e não fechar a página
+          and "var TEXTO_AVISO_PALETA_ = 'Veja a CARTEIRA primeiro; o restante termina enquanto você usa a ficha.\\n' +" in _CODA
+          and "'Durante a troca de cores, não feche nem recarregue esta página.';" in _CODA
           and bool(_rb) and "NOME_CEL_PALETA_AVISO_" in _rb.group(1))
 
     # A pincelada clara do meio da CARTEIRA é de meio-tom, que lê no tinta claro e no escuro. (Até 03/10/2026 esta

@@ -1835,7 +1835,8 @@ var NOME_CEL_PALETA_ROTULO_ = 'PALETA_ROTULO';
 var NOME_CEL_PALETA_AVISO_ = 'PALETA_AVISO';
 // Até 25/09/2026 dizia "Aguarde de 30 a 40 segundos para ver o tema inteiro". A troca passou a entrar em
 // passos (ver convergirPaleta_), aba por aba, sem pedir nada ao jogador.
-var TEXTO_AVISO_PALETA_ = 'O tema leva uns 20 segundos. O que faltar termina enquanto você usa a ficha.';
+var TEXTO_AVISO_PALETA_ = 'Veja a CARTEIRA primeiro; o restante termina enquanto você usa a ficha.\n' +
+  'Durante a troca de cores, não feche nem recarregue esta página.';
 
 /**
  * O valor que a caixa nasce mostrando, antes de qualquer escolha.
@@ -1977,7 +1978,7 @@ var ESTIMATIVA_PASSO_ = 6000;     // passo desconhecido (ver estimativaDoPasso_)
 var PROP_FEITO_ = 'paleta_feito', PROP_TEMPOS_ = 'paleta_tempos', PROP_PENDENTE_ = 'paleta_pendente';
 var PROP_ULTIMA_ = 'paleta_ultima_troca', PROP_DETALHE_ = 'paleta_detalhe';
 // Sai no verTemposDaPaleta, pra saber qual Codigo.gs está colado na planilha que mediu.
-var VERSAO_PALETA_ = '02/10/2026-a';
+var VERSAO_PALETA_ = '09/10/2026-carteira-primeiro';
 
 /**
  * 02/10/2026: o menu rápido levou a FICHA de 150 para 345 linhas, 16 mil células, e o passo de cor dela sozinho passou
@@ -2008,7 +2009,8 @@ function passosDaPaleta_(primeira) {
   var muitoGrande = function (spec) { return spec.rows * spec.cols > 4 * CELULAS_POR_PASSO_ ? 1 : 0; };
   abas.sort(function (a, b) { return muitoGrande(a) - muitoGrande(b); });
   abas.sort(function (a, b) { return (b.nome === primeira) - (a.nome === primeira); });
-  // A barra cheia vem primeiro (01/10/2026): é uma célula só, na DADOS, e as barras de todas as abas a leem.
+  // A barra cheia é uma célula na DADOS, lida pelas barras de todas as abas.
+  // A prévia completa da CARTEIRA passa à frente dela no retorno, abaixo.
   var passos = ['barra'];
   abas.forEach(function (spec) {
     // a aba grande vai por trechos, e a régua vem logo depois do primeiro: a parte de cima é a que o jogador vê primeiro
@@ -2022,13 +2024,16 @@ function passosDaPaleta_(primeira) {
       if (i === 0) for (var p = 1; p < nb; p++) passos.push('borda:' + spec.nome + ':' + p);
     });
   });
-  // A arte vem por último (25/09/2026): é enfeite, e o Mizuki pediu que ela entre quando alguém mexer na
+  // A arte das demais abas vem por último. A da CARTEIRA será promovida junto da prévia completa.
+  // O que não cabe termina quando alguém mexer na
   // ficha, sem aviso, quando não couber junto. Depois das cores também porque a cor dela é escolhida contra
   // o fundo NOVO da célula. Uma imagem por passo: reenviar imagem é a chamada mais cara da troca.
   abas.forEach(function (spec) {
     (spec.imgs || []).forEach(function (im, n) { passos.push('arte:' + spec.nome + ':' + n); });
   });
-  return passos;
+  // A prévia inclui imagens e bordas. Mantém os IDs para retomar trocas antigas.
+  var carteira = passos.filter(function (p) { return p.split(':')[1] === 'CARTEIRA'; });
+  return carteira.concat(passos.filter(function (p) { return p.split(':')[1] !== 'CARTEIRA'; }));
 }
 
 /**
@@ -2094,10 +2099,13 @@ function verTemposDaPaleta() {
     linhas.push('última troca: ' + u.alvo + ', em ' + u.execucoes + ' execução(ões)' +
                 (u.fim ? ', do começo ao fim ' + (u.fim - u.inicio) + ' ms' : ', ainda não terminou'));
   }
+  if (u.carteira) linhas.push('CARTEIRA completa em ' + (u.carteira - u.inicio) + ' ms');
+  if (u.passos) linhas.push('passos desta troca: ' + Object.keys(u.passos).length + ', soma ' +
+    Object.keys(u.passos).reduce(function (s, k) { return s + u.passos[k]; }, 0) + ' ms');
   var d = lerJson_(props.getProperty(PROP_DETALHE_));
   var detalhe = Object.keys(d).map(function (aba) {
-    return '  ' + aba + ' (' + d[aba].celulas + ' células): lê ' + d[aba].le + ' ms, conta ' + d[aba].conta + ' ms, grava fundo ' +
-           d[aba].fundo + ' ms, grava fonte ' + d[aba].fonte + ' ms';
+    return '  ' + aba + ' (' + d[aba].celulas + ' células): lê ' + d[aba].le + ' ms, conta ' + d[aba].conta +
+           ' ms, gravação confirmada ' + (d[aba].grava === undefined ? (d[aba].fundo + d[aba].fonte) : d[aba].grava) + ' ms';
   });
   Logger.log(linhas.concat(chaves.map(function (k) { return k + ': ' + t[k] + ' ms'; }),
                            ['por dentro dos passos de cor:'], detalhe).join('\n'));
@@ -2118,19 +2126,21 @@ function convergirPaleta_(inicio, orcamento, dica, primeira) {
   var ss = SpreadsheetApp.getActive();
   var props = PropertiesService.getDocumentProperties();
   var alvo = ss.getRangeByName(NOME_CEL_PALETA_);
-  var novo = alvo ? String(alvo.getCell(1, 1).getValue() || '').trim() : '';
+  var novo = alvo ? nomeCanonicoDaPaleta_(alvo.getCell(1, 1).getValue()) : '';
   var agora = coresDoNome_(novo);
   if (!agora) { props.deleteProperty(PROP_PENDENTE_); return null; }
 
   var feito = lerJson_(props.getProperty(PROP_FEITO_));
+  Object.keys(feito).forEach(function (k) { feito[k] = nomeCanonicoDaPaleta_(feito[k]); });
   var tempos = lerJson_(props.getProperty(PROP_TEMPOS_));
-  var geral = props.getProperty('paleta_atual');   // o que o esquema de antes pintou na ficha inteira
-  var velho = String(dica || '').trim();
+  var detalhe = lerJson_(props.getProperty(PROP_DETALHE_));
+  var geral = nomeCanonicoDaPaleta_(props.getProperty('paleta_atual'));   // o que o esquema de antes pintou na ficha inteira
+  var velho = nomeCanonicoDaPaleta_(dica);
   if (!coresDoNome_(velho)) velho = '';
   var passos = passosDaPaleta_(primeira || 'CARTEIRA'), andou = 0;
   // O relatório da troca: quando começou, em quantas execuções, e quando acabou (ver verTemposDaPaleta).
   var ultima = lerJson_(props.getProperty(PROP_ULTIMA_));
-  if (ultima.alvo !== novo || ultima.fim) ultima = { alvo: novo, inicio: inicio, execucoes: 0 };
+  if (nomeCanonicoDaPaleta_(ultima.alvo) !== novo || ultima.fim) ultima = { alvo: novo, inicio: inicio, execucoes: 0, passos: {} };
   ultima.execucoes++;
 
   for (var i = 0; i < passos.length; i++) {
@@ -2158,11 +2168,19 @@ function convergirPaleta_(inicio, orcamento, dica, primeira) {
     }
     // O Sheets guarda a escrita e só a executa na próxima leitura: sem o flush, o tempo de um passo caía
     // no seguinte (achado com os números do Mizuki em 25/09/2026), e a conta do orçamento errava junto.
+    var antesFlush = Date.now();
     SpreadsheetApp.flush();
+    if (tipo === 'cor') {
+      var chaveDetalhe = nome + (trecho ? ' ' + trecho[0] + '-' + trecho[1] : '');
+      DETALHE_COR_[chaveDetalhe].grava += Date.now() - antesFlush;
+    }
     feito[passo] = novo;
     tempos[passo] = Date.now() - t0;
     andou++;
-    var detalhe = lerJson_(props.getProperty(PROP_DETALHE_));
+    ultima.passos = ultima.passos || {};
+    ultima.passos[passo] = tempos[passo];
+    if (!ultima.carteira && passos.filter(function (p) { return p.split(':')[1] === 'CARTEIRA'; })
+        .every(function (p) { return feito[p] === novo; })) ultima.carteira = Date.now();
     Object.keys(DETALHE_COR_).forEach(function (k) { detalhe[k] = DETALHE_COR_[k]; });
     props.setProperties({ paleta_feito: JSON.stringify(feito), paleta_tempos: JSON.stringify(tempos),
                           paleta_ultima_troca: JSON.stringify(ultima), paleta_detalhe: JSON.stringify(detalhe) });
@@ -2172,7 +2190,10 @@ function convergirPaleta_(inicio, orcamento, dica, primeira) {
   props.setProperty('paleta_atual', novo);
   if (andou) { ultima.fim = Date.now(); props.setProperty(PROP_ULTIMA_, JSON.stringify(ultima)); }
   // Se o jogador escolheu outro tema enquanto este rodava, ainda tem trabalho: não desmarca.
-  if (String(alvo.getCell(1, 1).getValue() || '').trim() !== novo) return passos[0];
+  if (nomeCanonicoDaPaleta_(alvo.getCell(1, 1).getValue()) !== novo) {
+    props.setProperty(PROP_PENDENTE_, '1');
+    return passos[0];
+  }
   props.deleteProperty(PROP_PENDENTE_);
   return null;
 }
@@ -2294,13 +2315,14 @@ function configurarPaleta_(ss, force) {
     removerNomesDaPaleta_(ss);
     // A ficha acabou de nascer nas cores de fábrica: o registro de passos da troca não vale mais.
     var props = PropertiesService.getDocumentProperties();
-    [PROP_FEITO_, PROP_PENDENTE_].forEach(function (k) { props.deleteProperty(k); });
+    [PROP_FEITO_, PROP_PENDENTE_, 'paleta_menu_versao'].forEach(function (k) { props.deleteProperty(k); });
   } else if (paletaJaMontada_(ss)) {
     // Ficha montada antes de o texto do aviso mudar: troca só o texto, no onOpen, sem remontar a caixa.
     try {
       var aviso = ss.getRangeByName(NOME_CEL_PALETA_AVISO_);
       if (aviso && aviso.getCell(1, 1).getValue() !== TEXTO_AVISO_PALETA_) aviso.getCell(1, 1).setValue(TEXTO_AVISO_PALETA_);
     } catch (err) { /* silencioso: é só o texto */ }
+    atualizarMenuDaPaleta_(ss);
     return 'já existia';
   }
   var cart = ss.getSheetByName('CARTEIRA');
@@ -2339,10 +2361,7 @@ function configurarPaleta_(ss, force) {
     .setBackground('#' + PALETA_DE_FABRICA_.painel_alto)
     .setBorder(true, true, true, true, false, false, '#' + PALETA_DE_FABRICA_.regua, BORDA_CAIXA);
 
-  var opcoes = [];
-  Object.keys(PALETAS).forEach(function (nome) {
-    opcoes.push(nome + ' · Claro', nome + ' · Escuro');
-  });
+  var opcoes = opcoesDaPaleta_();
   // Igual ao menu do Caminho e da Trilha (menusSuspensos_, modelo.gs.js): allowInvalid true,
   // porque o valor inicial (PALETA_INICIAL_) não é uma opção de verdade da lista, só um convite.
   var regra = SpreadsheetApp.newDataValidation()
@@ -2351,7 +2370,7 @@ function configurarPaleta_(ss, force) {
   valor.merge()
     .setValue(PALETA_INICIAL_)
     .setDataValidation(regra)
-    .setFontFamily('Castoro').setFontSize(15)
+    .setFontFamily('Castoro').setFontSize(11).setWrap(true)
     .setFontColor('#' + PALETA_DE_FABRICA_.texto)
     .setHorizontalAlignment('center').setVerticalAlignment('middle')
     .setBackground('#' + PALETA_DE_FABRICA_.painel)
@@ -2359,11 +2378,13 @@ function configurarPaleta_(ss, force) {
 
   aviso.merge()
     .setValue(TEXTO_AVISO_PALETA_)
-    .setFontFamily('Oswald').setFontSize(7).setFontWeight('normal').setFontStyle('normal')
+    .setFontFamily('Oswald').setFontSize(8).setWrap(true).setFontWeight('normal').setFontStyle('normal')
     .setFontColor('#' + PALETA_DE_FABRICA_.texto_fraco)
     .setHorizontalAlignment('center').setVerticalAlignment('middle')
     .setBackground('#' + PALETA_DE_FABRICA_.painel)
     .setBorder(true, true, true, true, false, false, '#' + PALETA_DE_FABRICA_.regua, BORDA_CAIXA);
+
+  aviso.getSheet().setRowHeight(aviso.getRow(), 32);
 
   ss.setNamedRange(NOME_CEL_PALETA_, valor);
   ss.setNamedRange(NOME_CEL_PALETA_ROTULO_, rotulo);
@@ -2405,8 +2426,293 @@ function aplicarPaleta_(e) {
   } catch (err) { /* sem autorização não chega aqui: quem roda este gatilho já autorizou */ }
 }
 
+// Nomes antigos continuam válidos; a descrição é apenas a legenda do menu.
+var DESCRICOES_PALETAS_ = {
+  "Mizuki": [
+    "rosa e magenta",
+    "ameixa e rosa"
+  ],
+  "Noite": [
+    "gelo e violeta",
+    "roxo e lilás"
+  ],
+  "Blush": [
+    "rosa e coral",
+    "cinza rosado"
+  ],
+  "Crepúsculo": [
+    "creme e coral",
+    "ameixa e rosa"
+  ],
+  "Alfazema": [
+    "creme e azul",
+    "marrom e azul"
+  ],
+  "Meia-Noite": [
+    "gelo e azul",
+    "azul profundo"
+  ],
+  "Pôr do Sol": [
+    "creme e laranja",
+    "vinho e laranja"
+  ],
+  "Sálvia": [
+    "areia e ocre",
+    "verde e areia"
+  ],
+  "Recife": [
+    "menta e coral",
+    "vinho e coral"
+  ],
+  "Vinho": [
+    "creme e vermelho",
+    "vinho e carmim"
+  ],
+  "Neon": [
+    "creme e pink",
+    "roxo e pink"
+  ],
+  "Oceano Profundo": [
+    "menta e azul",
+    "marinho e azul"
+  ],
+  "Tropical": [
+    "creme e laranja",
+    "petróleo e coral"
+  ],
+  "Obsidiana": [
+    "marfim e bronze",
+    "carvão e bronze"
+  ],
+  "Brasa": [
+    "pêssego e vinho",
+    "vinho e vermelho"
+  ],
+  "Sangue": [
+    "rosa e carmim",
+    "marinho e carmim"
+  ],
+  "Abismo": [
+    "gelo e petróleo",
+    "roxo e azul"
+  ],
+  "Arcano": [
+    "creme e violeta",
+    "índigo e violeta"
+  ],
+  "Rubi": [
+    "rosa e vinho",
+    "vinho e pink"
+  ],
+  "Ardósia": [
+    "areia e cinza",
+    "azulado e taupe"
+  ],
+  "Musgo": [
+    "menta e verde",
+    "verde floresta"
+  ],
+  "Terra": [
+    "areia e marrom",
+    "verde e marrom"
+  ],
+  "Eclipse": [
+    "pêssego e marinho",
+    "carvão e azul"
+  ],
+  "Oliva": [
+    "areia e verde",
+    "verde oliva"
+  ],
+  "Púrpura Real": [
+    "lilás e púrpura",
+    "púrpura intenso"
+  ],
+  "Céu de Verão": [
+    "areia e azul",
+    "marinho e azul"
+  ],
+  "Cerâmica": [
+    "creme e terracota",
+    "petróleo e coral"
+  ],
+  "Algodão-Doce": [
+    "rosa e vermelho",
+    "ameixa e rosa"
+  ],
+  "Eucalipto": [
+    "gelo e verde",
+    "verde e menta"
+  ],
+  "Pêssego": [
+    "creme e laranja",
+    "vinho e pêssego"
+  ],
+  "Outono": [
+    "creme e laranja",
+    "marinho e coral"
+  ],
+  "Aquarela": [
+    "menta e lavanda",
+    "índigo e lavanda"
+  ],
+  "Natal": [
+    "creme e vermelho",
+    "vinho e vermelho"
+  ],
+  "Halloween": [
+    "pêssego e roxo",
+    "índigo e roxo"
+  ],
+  "Páscoa": [
+    "creme e verde",
+    "vinho e menta"
+  ],
+  "Réveillon": [
+    "marfim e coral",
+    "carvão e coral"
+  ],
+  "Carnaval": [
+    "creme e rosa",
+    "marinho e rosa"
+  ],
+  "Ano Novo Chinês": [
+    "creme e laranja",
+    "vinho e laranja"
+  ],
+  "Tanabata": [
+    "creme e marinho",
+    "marinho e azul"
+  ],
+  "Hanami": [
+    "marfim e verde",
+    "vinho e menta"
+  ],
+  "Obon": [
+    "marfim e laranja",
+    "verde e coral"
+  ],
+  "Setsubun": [
+    "creme e ferrugem",
+    "ameixa e vermelho"
+  ],
+  "Kitsune": [
+    "creme e âmbar",
+    "marrom e laranja"
+  ],
+  "Tengu": [
+    "marfim e vinho",
+    "vinho e vermelho"
+  ],
+  "Yuki-Onna": [
+    "gelo e azul",
+    "marinho e gelo"
+  ],
+  "Kappa": [
+    "menta e índigo",
+    "índigo e azul"
+  ],
+  "Nekomata": [
+    "marfim e laranja",
+    "ameixa e laranja"
+  ],
+  "Ryu": [
+    "marfim e bronze",
+    "marinho e dourado"
+  ],
+  "Kirin": [
+    "creme e âmbar",
+    "vinho e âmbar"
+  ],
+  "Kyuubi": [
+    "creme e laranja",
+    "vinho e laranja"
+  ],
+  "Baku": [
+    "gelo e índigo",
+    "marinho e lilás"
+  ],
+  "Jorogumo": [
+    "rosa e magenta",
+    "índigo e magenta"
+  ],
+  "Tanuki": [
+    "pêssego e terracota",
+    "petróleo e terracota"
+  ],
+  "Nurarihyon": [
+    "gelo e âmbar",
+    "carvão e âmbar"
+  ],
+  "Momotaro": [
+    "creme e laranja",
+    "marrom e pêssego"
+  ],
+  "Urashima Tarō": [
+    "marfim e turquesa",
+    "marinho e turquesa"
+  ],
+  "Kaguya-Hime": [
+    "areia e índigo",
+    "marinho e lavanda"
+  ],
+  "Amaterasu": [
+    "creme e laranja",
+    "vinho e laranja"
+  ],
+  "Vazio Infinito": [
+    "gelo e azul",
+    "índigo e azul"
+  ],
+  "Santuário Malévolo": [
+    "pêssego e roxo",
+    "roxo e violeta"
+  ],
+  "Dez Sombras": [
+    "pêssego e roxo",
+    "roxo e lilás"
+  ]
+};
+var VERSAO_MENU_PALETA_ = '09/10/2026-descricoes-2-aviso';
+function nomeCanonicoDaPaleta_(nome) {
+  var p = String(nome || '').trim().split(' · ');
+  return PALETAS[p[0]] && (p[1] === 'Claro' || p[1] === 'Escuro') ? p[0] + ' · ' + p[1] : '';
+}
+function nomeExibidoDaPaleta_(nome) {
+  var base = nomeCanonicoDaPaleta_(nome);
+  if (!base) return String(nome || '');
+  var p = base.split(' · '), descr = DESCRICOES_PALETAS_[p[0]];
+  return base + (descr ? ' · ' + descr[p[1] === 'Claro' ? 0 : 1] : '');
+}
+function opcoesDaPaleta_() {
+  var opcoes = [];
+  Object.keys(PALETAS).forEach(function (nome) {
+    opcoes.push(nomeExibidoDaPaleta_(nome + ' · Claro'), nomeExibidoDaPaleta_(nome + ' · Escuro'));
+  });
+  return opcoes;
+}
+function atualizarMenuDaPaleta_(ss) {
+  var props = PropertiesService.getDocumentProperties();
+  if (props.getProperty('paleta_menu_versao') === VERSAO_MENU_PALETA_) return;
+  var alvo = ss.getRangeByName(NOME_CEL_PALETA_);
+  if (!alvo) return;
+  var anterior = alvo.getCell(1, 1).getValue();
+  alvo.setDataValidation(SpreadsheetApp.newDataValidation()
+    .requireValueInList(opcoesDaPaleta_(), true).setAllowInvalid(true).build())
+    .setFontSize(11).setWrap(true);
+  var nome = nomeExibidoDaPaleta_(anterior);
+  if (nome !== anterior) alvo.getCell(1, 1).setValue(nome);
+  var aviso = ss.getRangeByName(NOME_CEL_PALETA_AVISO_);
+  if (aviso) {
+    aviso.setValue(TEXTO_AVISO_PALETA_).setFontSize(8).setWrap(true);
+    aviso.getSheet().setRowHeight(aviso.getRow(), 32);
+  }
+  SpreadsheetApp.flush();
+  props.setProperty('paleta_menu_versao', VERSAO_MENU_PALETA_);
+}
+
 function coresDoNome_(nome) {
-  var p = nome.split(' · ');
+  var p = nomeCanonicoDaPaleta_(nome).split(' · ');
   var tema = PALETAS[p[0]];
   if (!tema) return null;
   return tema[p[1] === 'Claro' ? 'claro' : 'escuro'];
@@ -2518,7 +2824,10 @@ function contrasteHex_(a, b) {
  * O fundo e a fonte de cada célula como o construir() os pinta (montarAba_, no Ficha.gs): a mesma conta,
  * do mesmo ABAS. Maiúsculas, como o getBackgrounds devolve.
  */
+var CACHE_FABRICA_PALETA_ = {};
 function gradeDeFabrica_(spec) {
+  var guardado = CACHE_FABRICA_PALETA_[spec.nome];
+  if (guardado && guardado.spec === spec) return guardado.grade;
   var nl = spec.rows, nc = spec.cols;
   var bg0 = String(spec.fundo_base === undefined ? '#120F1D' : spec.fundo_base).toUpperCase();
   var fc0 = String((spec.padrao || ['Roboto', 11, '#F4F1F7'])[2]).toUpperCase();
@@ -2534,10 +2843,15 @@ function gradeDeFabrica_(spec) {
     var e = t.length > 3 ? spec.estilos[t[3]] : null;
     if (e && e[2]) fc[t[0] - 1][t[1] - 1] = String(e[2]).toUpperCase();
   });
-  return { bg: bg, fc: fc };
+  var grade = { bg: bg, fc: fc };
+  CACHE_FABRICA_PALETA_[spec.nome] = { spec: spec, grade: grade };
+  return grade;
 }
 
+var CACHE_CONTRASTE_PALETA_ = {};
 function contrasteDeFabrica_(spec) {
+  var guardado = CACHE_CONTRASTE_PALETA_[spec.nome];
+  if (guardado && guardado.spec === spec) return guardado.grade;
   var nl = spec.rows, nc = spec.cols, r, c;
   var g = gradeDeFabrica_(spec), bg = g.bg, fc = g.fc;
   var out = [];
@@ -2546,6 +2860,7 @@ function contrasteDeFabrica_(spec) {
     for (c = 0; c < nc; c++) linha[c] = contrasteHex_(fc[r][c], bg[r][c]);
     out.push(linha);
   }
+  CACHE_CONTRASTE_PALETA_[spec.nome] = { spec: spec, grade: out };
   return out;
 }
 
@@ -2642,7 +2957,7 @@ function corDaArte_(agora, papel, fundo) {
 }
 
 function coresOpostas_(nome) {
-  var p = String(nome).split(' · ');
+  var p = nomeCanonicoDaPaleta_(nome).split(' · ');
   var tema = PALETAS[p[0]];
   return tema ? tema[p[1] === 'Claro' ? 'escuro' : 'claro'] : null;
 }
@@ -2672,7 +2987,9 @@ function coresOpostas_(nome) {
  * mesmo errando o papel por um desses nove ela sai da cor errada pra uma
  * cor VÁLIDA de algum papel, nunca mais fica parada pra sempre.
  */
+var CACHE_PAPEL_HEX_PALETA_ = null;
 function papelPorHexGlobal_() {
+  if (CACHE_PAPEL_HEX_PALETA_) return CACHE_PAPEL_HEX_PALETA_;
   var papeis = ['fundo', 'painel', 'painel_alto', 'linha', 'texto', 'texto_fraco',
                 'tinta', 'papel', 'painel_baixo', 'bloco', 'acento', 'menu_grande'];
   var mapa = {};
@@ -2687,6 +3004,7 @@ function papelPorHexGlobal_() {
     registra(PALETAS[nome].claro);
     registra(PALETAS[nome].escuro);
   });
+  CACHE_PAPEL_HEX_PALETA_ = mapa;
   return mapa;
 }
 
@@ -2855,7 +3173,7 @@ function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo, trecho) {
   var nl = trecho ? trecho[1] - trecho[0] + 1 : spec.rows, nc = spec.cols;
   var faixa = sh.getRange(r1, 1, nl, nc);
 
-  // Medida por dentro do passo (desde 25/09/2026-e): ler, a conta, gravar o fundo, gravar a fonte. Sai no
+  // Medida por dentro do passo: leitura, cálculo e gravação conjunta de fundo e fonte. Sai no
   // verTemposDaPaleta.
   var t0 = Date.now();
   var fundos = faixa.getBackgrounds();
@@ -2906,12 +3224,11 @@ function repintarCoresDaAba_(ss, spec, nomeAntigo, nomeNovo, trecho) {
     }
   }
   var t1 = Date.now();
+  // Fundo e texto entram juntos no cache de escrita. convergirPaleta_ confirma o lote
+  // antes de registrar o passo como pronto; sem três flushes para o mesmo trecho.
   if (mudouFundo) faixa.setBackgrounds(fundos);
-  SpreadsheetApp.flush();
-  var t2 = Date.now();
   if (mudouFonte) faixa.setFontColors(fontes);
-  SpreadsheetApp.flush();
-  DETALHE_COR_[spec.nome + (trecho ? ' ' + trecho[0] + '-' + trecho[1] : '')] = { le: tl - t0, conta: t1 - tl, fundo: t2 - t1, fonte: Date.now() - t2, celulas: nl * nc };
+  DETALHE_COR_[spec.nome + (trecho ? ' ' + trecho[0] + '-' + trecho[1] : '')] = { le: tl - t0, conta: t1 - tl, grava: Date.now() - t1, celulas: nl * nc }; 
 }
 var DETALHE_COR_ = {};
 

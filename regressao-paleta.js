@@ -152,8 +152,14 @@ let P=criaPlanilha(ABAS); let r=emPassos(P,[E]);
 console.log('       '+resumo(r));
 ok('terminou', !P.props.paleta_pendente);
 ok(`nenhuma execução passou de 30 s (maior: ${(r.maior/1000).toFixed(1)} s)`, r.maior<=30000);
-ok('a CARTEIRA e a FICHA (cor e régua) entraram na execução da troca',
-   ['CARTEIRA','FICHA'].every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs[0].passos.includes(p))), r.execs[0].passos.join(', '));
+// 09/10/2026, a otimização feita no Sheets pelo agente que monta e testa a ficha ("CARTEIRA completa primeiro: fundos,
+// textos, bordas e todas as imagens"): a troca termina a CARTEIRA inteira, com a arte, antes de qualquer outra aba, e a
+// FICHA começa na mesma execução. Até 08/10 eram a cor e a régua da CARTEIRA e da FICHA, e a arte ficava para o fim.
+const daCarteira=(r)=>r.ctx.passosDaPaleta_().filter(p=>p.split(':')[1]==='CARTEIRA');
+const carteiraPrimeiro=(r)=>{ const c=daCarteira(r), e=r.execs[0].passos; return c.length>=3 && c.some(p=>p.startsWith('arte:'))
+  && JSON.stringify(e.slice(0,c.length))===JSON.stringify(c) && e.some(p=>p.split(':')[1]==='FICHA'); };
+ok('a CARTEIRA inteira (cor, régua e arte) abre a execução da troca, antes de qualquer outra aba, e a FICHA começa na mesma execução',
+   carteiraPrimeiro(r), r.execs[0].passos.join(', '));
 ok('nenhum aviso na tela', P.log.toasts.length===0, P.log.toasts.join(' | '));
 ok('igual, célula a célula, à troca feita de uma vez só', !igual(P,umaVez([E])), igual(P,umaVez([E])));
 { const fab=new Set(['120F1D','1E1733','3D2E78','493F54','F4F1F7','998BA9','0A0810','17131F','1B142F','756588','211940','3B3360'].map(h=>'#'+h));
@@ -194,7 +200,10 @@ P.props.paleta_tempos=JSON.stringify(Object.assign(JSON.parse(P.props.paleta_tem
   ok('o relatório diz a versão, ignora passo de versão anterior, conta as execuções e mostra o passo de cor por dentro',
      /versão do Codigo\.gs: /.test(reg) && !/cor:DADOS/.test(reg) && /em \d+ execução/.test(reg) && /do começo ao fim \d+ ms/.test(reg)
      // 02/10/2026: a FICHA com o menu rápido vai em trechos de linhas, e o relatório diz cada trecho
-     && /FICHA \d+-\d+ \(\d+ células\): lê \d+ ms, conta \d+ ms, grava fundo \d+ ms, grava fonte \d+ ms/.test(reg), reg.split('\n').slice(0,3).join(' / ')); }
+     // 09/10/2026: o fundo e a fonte são gravados juntos, e o relatório dá a gravação confirmada do trecho, quando a
+     // CARTEIRA ficou pronta e a soma dos passos da troca
+     && /FICHA \d+-\d+ \(\d+ células\): lê \d+ ms, conta \d+ ms, gravação confirmada \d+ ms/.test(reg)
+     && /CARTEIRA completa em \d+ ms/.test(reg) && /passos desta troca: \d+, soma \d+ ms/.test(reg), reg.split('\n').slice(0,6).join(' / ')); }
 
 console.log('2. segunda troca, com os tempos medidos');
 P.log.toasts=[]; r=emPassos(P,[M]); console.log('       '+resumo(r));
@@ -209,8 +218,8 @@ ok(`nenhuma execução passou de 30 s (maior: ${(r.maior/1000).toFixed(1)} s)`, 
 // execução. Ela pinta a CARTEIRA e a FICHA, cor e régua, e o resto (a FICHA AMALDIÇOADA, a FICHA PESSOAL, o GLOSSÁRIO e a
 // arte) termina nos dois cliques seguintes, sem aviso. A aba em que o jogador clica continua passando na frente.
 const PRIMEIRAS=['CARTEIRA','FICHA'];
-ok('cor e régua da CARTEIRA e da FICHA na execução da troca, sem aviso',
-   PRIMEIRAS.every(a=>daAba(r.ctx.passosDaPaleta_(),a).every(p=>r.execs[0].passos.includes(p))) && P.log.toasts.length===0, r.execs[0].passos.join(', '));
+ok('a CARTEIRA inteira abre a execução da troca e a FICHA começa nela, sem aviso',
+   carteiraPrimeiro(r) && P.log.toasts.length===0, r.execs[0].passos.join(', '));
 // 07/10/2026: a INVOCAÇÕES com doze fichas tem 53 mil células, mais que todas as outras juntas, e sozinha pede duas ou
 // três execuções. Ela vai para o fim da fila: as outras continuam terminando nos dois cliques seguintes, e ela, até o
 // quarto. Se é nela que o jogador está, ela passa na frente (o teste 6).
