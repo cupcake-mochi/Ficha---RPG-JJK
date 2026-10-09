@@ -2965,7 +2965,7 @@ arnês inteiro não rodou de novo depois disso (leva perto de quarenta minutos).
 (`arnes-amaldicoada.py` e `arnes-invocacoes.py`) não rodaram nesta rodada: os trechos deles existem todos no código de
 hoje. Nada disto rodou no Sheets de verdade.*
 
-### B42 · Buff/Debuff dos máximos: vida, energia, Integridade, Proteção e carga — **CONSTRUÍDO em 08/10/2026 (a forma A do estudo); falta montar no Sheets**
+### B42 · Buff/Debuff dos máximos: vida, energia, Integridade, Proteção e carga — **CONSTRUÍDO E MONTADO NO SHEETS em 08/10/2026 (a forma A do estudo): 8 dos 9 itens passaram no teste dele, e a correção do número grande da invocação ele testou no mesmo dia (os quatro testes passaram). Fica com ele se o bônus sobe o atual na ficha recém-criada**
 
 *Junto com a decisão do aviso vermelho ele pediu: "existe a possibilidade do jogador ganhar vida máxima extra de alguma forma,
 como no caso da lapidação e/ou habilidades de técnica, seria interessante uma caixa que pudesse permitir o jogador
@@ -3068,3 +3068,12 @@ links das doze invocações (testou duas) e o aplicativo de celular.*
 a `regressao-paleta.js`, o `comparar-ficha-01.py` (IGUAIS), o `conferir-ficha-xlsx.py`, o `conferir-decisoes.py`, a
 `regressao-invocacoes.py` e o `arnes-pessoal.py` (101 defeitos plantados acendem, e o contra-teste fica verde). A bateria
 inteira não rodou de novo para esta mudança, que é uma lista mais comprida no `ABAS` da `INVOCAÇÕES`. Não rodou no Sheets.*
+
+**A correção do número grande, testada por ele (08/10/2026, 23h45).** *Ele colou o `Codigo.gs` e o `Invocacoes.gs` na ficha já
+montada, sem reconstruir, e mandou o resultado: "Esta correção funcionou na ficha já montada. Os quatro testes passaram na
+segunda invocação recolhida": o número grande "2" abriu, o título abriu, o número pequeno lateral abriu, e o link da lista
+"abriu automaticamente". Fica confirmado no Sheets que a lista `abrir` é lida na hora do clique, e que trocar os dois
+arquivos basta, sem montar de novo.*
+
+**O que continua sem teste no Sheets.** *A trava de uma montagem de cada vez (ninguém provocou duas execuções juntas) e dez
+das doze invocações.*
