@@ -3228,3 +3228,55 @@ aviso. O Sheets de mentira aprendeu `Range.setWrap` e `Sheet.setRowHeight`, que 
 verde). A bateria inteira e o `arnes-pessoal.py` não rodaram (os trechos dele existem todos no código de hoje). Eu não
 revisei a otimização linha a linha: li as mudanças, e a garantia de que ela pinta igual vem dos testes daqui e dos que
 o agente fez no Sheets.*
+
+### B45 · A ficha passa a ler o livro final (R42), e não mais a candidata — **DIAGNÓSTICO de 09/10/2026; nada foi mudado na ficha**
+
+*O Mizuki fechou a revisão das regras do livro em 09/10/2026. O livro do sistema passou a ser o R42 (no `JJK---Project`,
+`sistema/05-material/livro/ciclo-maldito-r41/LIVRO-COMPLETO.md`, desde a v0.354 de lá). O `manual.txt` daqui ainda sai da
+candidata editorial (`planejamento-editorial/consolidacao/lote-01/LIVRO-COMPLETO.md`, como está na v0.340), que não recebeu
+a revisão. Ele mandou seguir com a ficha: "pode seguir em ordem".*
+
+**O que foi medido, numa cópia do repositório fora desta pasta:**
+
+- A bateria como está passa: os dezenove (o `comparar-ficha-01.py` precisa do `ficha-v01/original.xlsx`, que o
+  `.gitignore` deixa fora).
+- O `manual.txt` de hoje é exatamente o que o `extrair-manual.py` tira da candidata.
+- Trocando só o `manual.txt` pelo texto do R42 (o mesmo `extrair-manual.py`, com o caminho do R42), doze validadores
+  continuam passando e sete reprovam. O texto tem 13.053 linhas (eram 12.905); 480 títulos mudaram de nível, 200 títulos
+  da candidata não existem com o mesmo nome no R42, e 150 do R42 são novos.
+
+| validador que reprova com o R42 | o que ele diz | o que é |
+|---|---|---|
+| `conferir-catalogo.py` (11 falhas) | `Troca` não está no livro; `De Novo` é Pesada; `Concentrada` e `Duradoura` não são achadas; as condições mudaram de forma; três frases do `fundamento` e as de efeito de `Perseguir`, `Empurrão`, `Fica`, `Certeiro`, `De Novo` e `Assinatura` não estão no livro; uniforme e escudo sem a Força; a carga; a vida inicial da Vanguarda | regra da revisão, mais forma |
+| `conferir-kaori.py` | o quadro da Kaori mudou de forma | forma (o título virou "Exemplo: Kaori") |
+| `revisao-cetica.py` | não acha a frase do teto de dano | forma (a frase foi reescrita; o número é o mesmo) |
+| `regressao-kaori-na-ficha.py` | não acha o teto do refino, os exemplos de Defesa ou a fórmula do cobrir-se | forma, a confirmar |
+| `regressao-ficha-pessoal.py` | o `equipamento-do-livro.json` não bate com o livro | regra da revisão (equipamento sem a Força, carga) |
+| `regressao-amaldicoada.py` | o `tecnica-do-livro.json` não acha a seção "Proteção e presença"; o `habilidades-do-livro.json` não bate; a carta que junta duas habilidades não acha "Nível N: Nome." | forma (o R42 deu título próprio a cada habilidade) e texto novo das cartas |
+| `regressao-invocacoes.py` | o livro não diz mais a frase da devolução das Restrições | regra da revisão (a devolução não cobre a Forma) |
+
+**As regras da revisão que alcançam a ficha, pelo que os validadores acusaram.** *A lista completa das decisões está no
+`JJK---Project`, em `ciclo-maldito-r41/revisao-de-regras/MUDANCAS-DE-REGRA.md`.*
+
+- A Melhoria `Troca` saiu, e `De Novo` passou de Média para Pesada.
+- `Certeiro` voltou a não ter rolagem de acerto; `Perseguir`, `Empurrão`, `Fica` e a Restrição `Assinatura` têm texto novo.
+- Arma, uniforme e escudo sem a Força pedida: a arma dá desvantagem nos ataques e metade do deslocamento (a ficha já
+  faz isso, pela chave `fora_do_livro.arma_sem_a_forca`); **o uniforme e o escudo passam a proteger**, com metade do
+  deslocamento e desvantagem em Teste de Resistência Físico (a ficha hoje zera a proteção); as penalidades não acumulam.
+- A carga acima do limite deixa de travar o personagem: até o dobro do limite ele anda com a mesma penalidade.
+- A vida inicial da Vanguarda (`8 + Constituição`) está no livro, e sai do `fora_do_livro`.
+- Nas invocações, a devolução das Restrições não cobre a Forma.
+- Continuam fora do livro: as missões solo e os multiplicadores de XP.
+
+**O plano, em três fatias que o Mizuki consegue testar no Sheets uma por vez:**
+
+1. **Os leitores passam a aceitar as duas formas do livro,** sem trocar a fonte. Nada muda na planilha; a bateria continua
+   passando com a candidata, e a lista de reprovações com o R42 encolhe para o que é regra.
+2. **A fonte passa a ser o R42,** com o catálogo, o equipamento, a técnica, as habilidades e a invocação extraídos de
+   novo. O `Ficha.gs` e o `Habilidades.gs` são gerados outra vez. É aqui que a planilha muda: as cartas de Habilidades
+   trazem o texto do R42, e a lista de Melhorias perde a `Troca`.
+3. **A conta da Defesa e da carga** segue a regra nova do uniforme, do escudo e do peso. É a única das três que muda
+   número que a ficha calcula, e por isso vai separada.
+
+*Este registro é só o diagnóstico. Os números saíram de duas rodadas da bateria em cópias do repositório, e os arquivos
+desta pasta não foram alterados além desta entrada.*
