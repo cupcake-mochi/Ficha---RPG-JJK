@@ -180,6 +180,7 @@ def monta(f, c, fam, nivel, lib=False, vaga=1):
         erros.append(f"Classe {c}: o nível {nivel} libera até a {maxc}")
     if forma["custa"]:
         gasto += preco_da_peca(PESO[forma["custa"]], c, livre(forma["familia"]))
+    gasto_na_forma = gasto          # 10/10/2026 (B45), o livro final: "Restrição paga Melhorias, nunca a Forma."
     if forma["familia"] and fechada(forma["familia"]):
         erros.append(f"Família Fechada: a Forma {f['forma']}")
     mel = [x for x in f["mel"] if x]
@@ -212,10 +213,10 @@ def monta(f, c, fam, nivel, lib=False, vaga=1):
     dv = min(2 * c, bruto)
     if bruto > 2 * c:
         avisos.append(f"A devolução parou no teto de {2 * c}")
-    usa = min(dv, gasto)
+    usa = min(dv, gasto - gasto_na_forma)
     perde = dv - usa
     if perde:
-        avisos.append(f"Devolução perdida: {perde} ponto{'s' if perde > 1 else ''} sem peça para pagar")
+        avisos.append(f"Devolução perdida: {perde} ponto{'s' if perde > 1 else ''} sem Melhoria para pagar")
     s = 3 * c - gasto + usa
     if s < 0:
         erros.append(f"Orçamento estourado: faltam {-s} ponto{'s' if s < -1 else ''}")
@@ -474,8 +475,8 @@ def _outras(nivel, refino, leque, essencia, dominio, cp_regra, passivas, aptidoe
         cel[c["nome"]] = p
     for c, a in zip(APTIDOES, aptidoes):
         cel[c["nome"]] = a
-    for c, (forma, concede) in zip(PACTOS, pactos):
-        cel[c["forma"]], cel[c["concede"]] = forma, concede
+    for c, (forma, modifica) in zip(PACTOS, pactos):
+        cel[c["forma"]], cel[c["modifica"]] = forma, modifica
     cz = G["cols_zero"]
     for i, (forma, mel, res) in enumerate(zero):
         lin = G["zero_ini"] + i
@@ -487,7 +488,7 @@ def _outras(nivel, refino, leque, essencia, dominio, cp_regra, passivas, aptidoe
 
 
 KAORI = {**_outras(10, 2, 0, 1, "Incompleta", 2, ["Raiz", "Fluxo", None, None, None, "Leitura"], ["Projetar Energia", "Barreira Simples", "Energia Reversa"],
-                   [("Temporário", None), ("Permanente", "Um espaço conhecido"), (None, None)],
+                   [("Temporário", "Um feitiço"), ("Permanente", "A energia"), (None, None)],
                    [("Toque", None, None), ("Projétil", "Empurrão", None), ("Cone", "Maior", "Parado"), ("Apoio", "Longe", None), ("Explosão", "Longe", None)],
                    ("Projétil", ["Fura"])),
          "familias": {"Controle": "Livre", "Castigo": "Livre", "Amparo": "Fechada", "Área": "Fechada", "Auxiliares": "Fechada"},
@@ -498,13 +499,13 @@ KAORI = {**_outras(10, 2, 0, 1, "Incompleta", 2, ["Raiz", "Fluxo", None, None, N
          "libs": [feitico("Golpe do Voto", 3)]}
 VELHO = {**_outras(30, 7, 0, 6, "Sem Barreiras", 3, ["Escama", "Afinidade", "Reserva Profunda", "Talento Próprio (CE 3)", "Eco"],
                    ["Domínio Simples", "Pétala", "Aptidão Própria (CE 2)", "Cortina"] * 3,
-                   [("Permanente", "Um espaço conhecido"), ("Permanente", "Um espaço conhecido"), ("Permanente", "Uma aptidão")],
+                   [("Permanente", "Um feitiço"), ("Pacto de restrição", "Um Estilo"), ("Permanente", "Uma aptidão")],
                    [("Linha", "Longe", "Gesto"), ("Aura", "Maior", None), ("Efeito", None, None), ("Projétil", "Longe", None), ("Cone", None, None)],
                    ("Linha", ["Muito Longe"]), 3),
          "feiticos": [feitico(f"F{i}", 7) for i in range(20)],
          "libs": [feitico("L1", 7), feitico("L2", 5), feitico("L3", 3)]}
 MEIO = {**_outras(17, 1, 3, 3, "Completa", 1, ["Leitura", "Recomposição", "Costura", None, None, "Leitura de Feitiços", "Instinto", "Raiz", "Fluxo"],
-                  ["Kokusen Constante"], [("Promessa", None), (None, None), ("Pacto de restrição", None)],
+                  ["Kokusen Constante"], [("Pacto de restrição", None), ("Promessa", None), ("Pacto de restrição", None)],
                   [("Projétil", None, None)] * 5, ("Onda", ["Limpa", "Junto", "Rápido"]), 5),
         "familias": {"Amparo": "Livre", "Tempo": "Fechada"},
         "feiticos": [feitico(f"F{i}", 5, "Cura", ["Junto"]) for i in range(12)], "libs": []}
@@ -514,6 +515,10 @@ NOVA = {"nivel": 2}
 BORDAS = {"nivel": 30, "feiticos": [
     # a Forma já devolve, as duas Restrições devolvem Média e o gasto passa de 2 × Classe: o teto da devolução muda os dados em toda Classe
     feitico("Teto da devolução", 3, "Toque", ["Sem Ver", "Corrói"], ["Atrasar", "Sangra"]),
+    # 10/10/2026 (B45): a Forma custa e não há Melhoria, então a devolução não tem o que pagar e se perde inteira
+    feitico("Restrição sem Melhoria", 3, "Explosão", [], ["Atrasar"]),
+    # e com uma Melhoria Leve a devolução Média só paga o preço dela: o resto se perde, e a Forma continua paga com pontos
+    feitico("Restrição que não paga a Forma", 4, "Explosão", ["Longe"], ["Atrasar"]),
     feitico("Duas de frequência", 4, "Projétil", ["Fura"], ["Uma Vez", "Aquecer"]),
     feitico("Frequência com nível", 5, "Explosão", ["Maior"], ["Condicional (Média)", "Dívida"]),
     feitico("Par na Melhoria", 6, "Projétil", ["Rápido", "Reação"]),
@@ -618,7 +623,7 @@ checa("nenhum exemplo do livro é acusado de erro pela ficha", not erros, "; ".j
 checa(f"toda caixa das {len(PRONTOS)} cartas bate com a regra (dano, PE, ação, alcance, preços, conta, Ampliar e avisos)", not cartas_ruins,
       f"{len(cartas_ruins)}: " + "; ".join(cartas_ruins[:3]))
 # o livro: "Uma Aura de Classe 3, sem desconto, tem Fura: custo 2 + 3, com devolução 3 de Corpo a Corpo" -- a Restrição
-# embutida paga a Forma também, e a conta da carta mostra a devolução dela
+# embutida paga a Melhoria (a Fura, 3), e a conta da carta mostra a devolução dela
 checa("a Aura com Fura recebe a devolução 3 do Corpo a Corpo da Forma, e a carta mostra",
       "a Forma devolve 3" in _lidas["Aura com Fura"]["conta"] and _lidas["Aura com Fura"]["dano"].startswith("7d8"), str(_lidas["Aura com Fura"]))
 
@@ -688,9 +693,8 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
     ws, f, cel, n = wb[ABA], wb["FICHA"], FICHAS[nome].get("celulas", {}), FICHAS[nome].get("nivel", 2)
     v = lambda c: txt(ws[c].value)
     passivas = [cel.get(c["nome"]) for c in PASSIVAS]
-    pactos = [(cel.get(c["forma"]), cel.get(c["concede"])) for c in PACTOS]
-    de_pacto = sum(1 for p in pactos if p == ("Permanente", "Um espaço conhecido"))
-    espacos = 2 + n // 2 + marcos(n) + de_pacto
+    pactos = [(cel.get(c["forma"]), cel.get(c["modifica"])) for c in PACTOS]
+    espacos = 2 + n // 2 + marcos(n)          # 10/10/2026 (B45): no livro final o pacto não concede mais espaço conhecido
     leque = min(ficha.get("leque", 0), marcos(n))
     montados = sum(1 for ft in ficha.get("feiticos", []) if ft["nome"])
     cp_regra = cel.get(G["cp_regra"]) or 0
@@ -735,7 +739,7 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
             abre = next(nv for nv, q in zip(TEC["classe_0"]["niveis"], TEC["classe_0"]["quantos"]) if q >= i + 1)
             esp_z = (f"Nível {abre}", "")
         else:
-            dz = zd - (1 if mel else 0)           # livro reconstruído: a Restrição Leve não devolve o dado
+            dz = zd - (1 if mel and not res else 0)           # livro final: a Restrição Leve devolve o dado que a Melhoria tirou
             esp_z = ("—" if forma in ("Apoio", "Efeito") else f"{dz}d8 = {math.floor(dz * 4.5)}", alcance({"forma": forma, "mel": [mel]}, 0))
         lido_z = (v(f"{cz['dano'][0]}{lin}"), v(f"{cz['alcance'][0]}{lin}"))
         if lido_z != esp_z:
@@ -825,9 +829,13 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
     lido_c = (v(G["apt_compradas"]), v(f"{G['cols_apt'][2][0]}{G['apt_caixas'] + 1}"), v(f"{G['cols_apt'][3][0]}{G['apt_caixas'] + 1}"),
               v(f"{G['cols_apt'][4][0]}{G['apt_caixas'] + 1}"))
     checa(f"{nome}: as aptidões compradas contra as que os marcos dão, e as duas de graça pelo refino", lido_c == esp_c, f"{lido_c} != {esp_c}")
+    # 10/10/2026 (B45), o livro final: ocupam vaga o permanente e o de restrição; o de restrição "pode existir mesmo sem
+    # vaga", com permissão do mestre, e por isso o aviso só aparece quando há um permanente e as vagas não fecham
     perm = sum(1 for p in pactos if p[0] == "Permanente")
-    esp_pc = ("⚠ " if perm > ess // 2 else "") + f"{perm} de {ess // 2}"
-    checa(f"{nome}: os pactos permanentes contra metade da Essência", v(G["pac_permanentes"]) == esp_pc, f"{v(G['pac_permanentes'])!r} != {esp_pc!r}")
+    com_vaga = sum(1 for p in pactos if p[0] in TEC["pactos"]["ocupa_vaga"])
+    esp_pc = ("⚠ " if perm > 0 and com_vaga > ess // 2 else "") + f"{com_vaga} de {ess // 2}"
+    checa(f"{nome}: os pactos que ocupam vaga (permanente e de restrição) contra metade da Essência", v(G["pac_permanentes"]) == esp_pc,
+          f"{v(G['pac_permanentes'])!r} != {esp_pc!r}")
 
 # ---------------------------------------------------------------------------------------------
 print("\nAS QUATRO ROTAS")
@@ -1178,15 +1186,26 @@ for l in _lido:
     if len(partes) < 2:
         continue
     ext = _xe["caminhos" if l["fonte"] == _hb.FONTE_CAMINHO else "trilhas"][l["dono"]][str(l["nivel"])]
-    for linha in _secao(l["dono"]):
+    # 10/10/2026 (B45): a candidata abria a habilidade numa linha ("Nível 7: Execução Preparada. Uma vez por..."); o livro
+    # final dá um título a cada uma, com o nível na linha de baixo ("#### Execução Preparada", "Nível 7.") e o texto depois
+    _sec = _secao(l["dono"])
+    _abertas = []
+    for k, linha in enumerate(_sec):
         m = re.match(rf"^Nível {l['nivel']}: ([^.]{{1,80}})\. (.+)", linha)
-        if not (m and m.group(1) in partes):
+        if m:
+            _abertas.append((m.group(1), m.group(2)))
+        elif linha.startswith("#") and linha.lstrip("#").strip() in partes:
+            _resto = [x.strip() for x in _sec[k + 1:] if x.strip()]
+            if len(_resto) > 1 and _resto[0] == f"Nível {l['nivel']}.":
+                _abertas.append((linha.lstrip("#").strip(), _resto[1]))
+    for _nm, _tx in _abertas:
+        if _nm not in partes:
             continue
-        _com_nome.append((l["dono"], l["nivel"], m.group(1)))
+        _com_nome.append((l["dono"], l["nivel"], _nm))
         for onde, h in (("Habilidades.gs", l), ("extrator", ext)):
-            if m.group(1) not in h["titulos"] or f"{m.group(1)}\n\n{m.group(2)}" not in h["texto"]:
-                _sem_nome.append(f"{l['dono']} {l['nivel']}, {m.group(1)} ({onde})")
-checa("a carta que junta duas habilidades mostra o nome de cada uma que o livro abre por \"Nível N: Nome.\", em subtítulo",
+            if _nm not in h["titulos"] or f"{_nm}\n\n{_tx}" not in h["texto"]:
+                _sem_nome.append(f"{l['dono']} {l['nivel']}, {_nm} ({onde})")
+checa("a carta que junta duas habilidades mostra o nome de cada uma que o livro abre com nome e nível, em subtítulo",
       ("Vanguarda", 7, "Execução Preparada") in _com_nome and not _sem_nome, f"{_sem_nome[:3]} · achadas {len(_com_nome)}")
 # 05/10/2026, pedido do Mizuki: "Nome da técnica aparecer na ficha amaldiçoada". Ele escolheu "Espelha a CARTEIRA": a caixa
 # NOME DA TÉCNICA é referência pura para uma conta da DADOS_AM (quem escreve por cima recebe a conta de volta, pelo onEdit),

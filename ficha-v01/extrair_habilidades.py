@@ -70,7 +70,10 @@ def extrai():
     if faltam:
         raise SystemExit(f"sem título no capítulo 6: {faltam}")
     inicio = {d: titulos[h] for d, (_, h) in donos.items()}
-    marcos = sorted(inicio.values()) + [fim_cap]
+    # B45, o livro final: a Trilha com rotas tem a página dela ("### Batedor", com a apresentação e a tabela das
+    # rotas) antes das páginas das rotas. Todo título de terceiro nível fecha o dono anterior; sem isso a
+    # apresentação do Batedor ia parar na última carta da Estocada
+    marcos = sorted(set(inicio.values()) | set(titulos.values())) + [fim_cap]
     fim = {d: next(x for x in marcos if x > i) for d, i in inicio.items()}
 
     def tabela(d):
@@ -111,7 +114,12 @@ def extrai():
         for i in range(inicio[d] + 1, fim[d]):
             l = L[i]
             if re.match(rf"^(?:#### )?Nível {n}(?: —|[.:·](?: |$))", l):
-                out.add(i)
+                # B45, o livro final: cada habilidade tem título próprio e o "Nível N." vem no parágrafo logo abaixo. O
+                # título já abriu o trecho; se o parágrafo abrisse outro, o do título ficava só com o título, que
+                # é descartado como "título que fecha o trecho", e a carta que junta habilidades perdia os nomes
+                ant = next((j for j in range(i - 1, max(i - 4, inicio[d]), -1) if L[j].strip()), None)
+                if not (ant in out and L[ant].startswith("#") and re.fullmatch(rf"Nível {n}\.", l.strip())):
+                    out.add(i)
             elif l.startswith("#"):
                 t = _sem_ponto(l.lstrip("#").strip()).lower()
                 if re.search(rf"\bnível {n}\b", t):

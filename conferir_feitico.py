@@ -72,14 +72,15 @@ def conferir(f):
     if devolvido > teto_dev:
         devolvido = teto_dev
     custo = sum(preco(_peca(m)["peso"], c, _peca(m)["familia"] in livres) for m in f["melhorias"])
+    custo_das_melhorias = custo
     # a Forma tambem custa ponto (manual p.110). Ela nao conta no LIMITE de Melhorias (regra 3),
     # mas conta no orcamento. Achado pela regressao contra o Domo de Gelo, p.137.
     forma = f.get("forma")
     if forma and CAT["formas"][forma].get("custa"):
         F = CAT["formas"][forma]
         custo += preco(F["custa"], c, False)                   # livro reconstruído: Formas não recebem desconto de Família Livre
-    # regra 1: a Restrição paga peças, a Forma incluída; o excedente some, nunca vira dano
-    pago_por_restricao = min(devolvido, custo)
+    # regra 1 (livro final, 10/10/2026): "Restrição paga Melhorias, nunca a Forma"; o excedente some, nunca vira dano
+    pago_por_restricao = min(devolvido, custo_das_melhorias)
     liquido = custo - pago_por_restricao
     sobra = orcamento - liquido
     if sobra < 0:

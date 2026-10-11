@@ -1,8 +1,8 @@
 {
  "_meta": {
   "o_que_e": "o que a FICHA AMALDIÇOADA calcula e o catalogo-projeto-m.json não tem, lido do manual.txt",
-  "versao_do_livro": "candidata editorial reconstruída, como está na v0.340 do JJK---Project (lida em 07/10/2026)",
-  "sha256_do_livro": "bbaf760bb0094928b85c1c8d51d309ea88decf1606bfc35ba9690174592a6a9e",
+  "versao_do_livro": "Ciclo Maldito R43, o livro final, como está na v0.357 do JJK---Project (lido em 10/10/2026)",
+  "sha256_do_livro": "5fc5849193aab8a6815a15ca5474d99d30e5c87d40ce2c3fbafb4d3842ee2133",
   "extraido_por": "ficha-v01/extrair_tecnica.py",
   "capitulos": [
    "9. Progressão",
@@ -147,7 +147,7 @@
    "requisito": "Gratuita no Refino 1",
    "classe_passiva": "—",
    "escala": "proteção e Redução de Dano da Reação",
-   "faz": "A energia que envolve seu corpo concede proteção e pode ser concentrada para amortecer um golpe. Sem Traje e sem Revestimento, sua proteção é 1 + um terço do Refino, arredondado para baixo. Escudo soma com essa proteção. Vestir Traje ou Revestimento faz você usar a proteção do equipamento, em vez da proteção passiva desta aptidão. Depois de determinar o dano de um golpe contra você, antes de descontá-lo, pode gastar Reação e 2 PE. Reduza esse dano em 1,5 × Refino, arredondado para baixo. A redução pode zerar o dano. Você fica sem proteção até o fim do seu próximo turno. Isso inclui a proteção do equipamento e do escudo. Conserve os demais componentes da Defesa. Atualize também a base de Bloquear para os ataques seguintes. O acerto já resolvido não é recalculado. Esta Reação pode ser usada mesmo vestindo proteção, mas a perda da proteção continua sendo o seu custo. Ela não devolve uma Reação já gasta."
+   "faz": "A energia que envolve seu corpo concede proteção e pode ser concentrada para amortecer um golpe. Sem Traje e sem Revestimento, sua proteção é 1 + um terço do Refino, arredondado para baixo. Escudo soma com essa proteção. Vestir Traje ou Revestimento faz você usar a proteção do equipamento, em vez da proteção passiva desta aptidão. Depois de determinar o dano de um golpe contra você, antes de descontá-lo, pode gastar Reação e 2 PE. Reduza esse dano em 1,5 × Refino, arredondado para baixo. A redução pode zerar o dano. Você perde somente a proteção passiva desta aptidão até o fim do seu próximo turno. Traje, Revestimento e escudo continuam dando sua proteção. Conserve os demais componentes da Defesa. Se perder a proteção passiva, atualize também a base de Bloquear para os ataques seguintes. O acerto já resolvido não é recalculado. Esta Reação pode ser usada mesmo vestindo proteção; nesse caso, você paga somente a Reação e os 2 PE. Ela não devolve uma Reação já gasta."
   },
   {
    "nome": "Canalizar Energia",
@@ -161,14 +161,14 @@
    "requisito": "Uma escolha de aptidão",
    "classe_passiva": "—",
    "escala": "—",
-   "faz": "Você dispara energia amaldiçoada pura contra um alvo. Ação Padrão. Escolha quanto gastar, de 1 PE até seu Refino, e pague antes da rolagem. Faça um ataque de conjuração: d20 + atributo de conjuração da ficha + maestria, contra a Defesa. O atributo é o já definido pela técnica ou pelo estilo que você usa para criar suas aplicações. Escolha um alvo que você enxergue, com caminho desimpedido dentro do alcance. No acerto, cause 1d6 de Força por PE gasto. No erro, não cause dano. Os PE ficam gastos em ambos os casos. Projetar é um uso de aptidão, com sua própria Ação Padrão. Não ocupa espaço conhecido, não exige o Selo da técnica e não aceita Melhorias ou Restrições. Ter ataques adicionais na Ação Atacar não acrescenta disparos a esse uso. Os d6 são os dados básicos deste ataque. Em um crítico, eles dobram. Não some Canalizar em Golpe nem o dano de uma arma. Como o ataque é à distância, ele não provoca Kokusen. Sem PE suficiente para pagar ao menos 1, você não pode usar Projetar Energia."
+   "faz": "Você dispara energia amaldiçoada pura contra um alvo. Ação Padrão. Escolha quanto gastar, de 1 PE até metade do seu Refino, para baixo, mínimo 1, e pague antes da rolagem. Faça um ataque de conjuração: d20 + atributo de conjuração da ficha + maestria, contra a Defesa. O atributo é o já definido pela técnica ou pelo estilo que você usa para criar suas aplicações. Escolha um alvo que você enxergue, com caminho desimpedido dentro do alcance. No acerto, cause 2d6 de Força por PE gasto. No erro, não cause dano. Os PE ficam gastos em ambos os casos. Projetar é um uso de aptidão, com sua própria Ação Padrão. Não ocupa espaço conhecido, não exige o Selo da técnica e não aceita Melhorias ou Restrições. Ter ataques adicionais na Ação Atacar não acrescenta disparos a esse uso. Os d6 são os dados básicos deste ataque. Em um crítico, eles dobram. Não some Canalizar em Golpe nem o dano de uma arma. Como o ataque é à distância, ele não provoca Kokusen. Sem PE suficiente para pagar ao menos 1, você não pode usar Projetar Energia."
   },
   {
    "nome": "Energia Reversa",
    "requisito": "Refino 7 e nível 14",
    "classe_passiva": "3",
    "escala": "—",
-   "faz": "Você usa energia reversa para restaurar seu próprio corpo. Ação Padrão. Gaste de 1 PE até sua maior Classe e recupere 1d8 de vida por PE gasto. Escolha e pague antes de rolar. A cura não ultrapassa sua vida máxima e não gera vida temporária. As primeiras faixas atendem às concessões específicas que permitem aprender a aptidão antes dos requisitos comuns. A aptidão cura você. Para aplicá-la diretamente a outra criatura, você precisa de uma permissão que altere esse alvo. Aprendê-la não aumenta o alcance de um feitiço de Cura nem substitui sua montagem. O Corpo Amaldiçoado não recupera vida com Energia Reversa nem com cura construída a partir dela. Suas formas de reparo estão na Origem. Outras incompatibilidades de alvo também continuam valendo. Energia Reversa é requisito para usar um feitiço da Forma Cura ofensivamente contra uma maldição. A exceção está em Ferir maldições. A aptidão de autocura, sozinha, não concede um ataque."
+   "faz": "Você usa energia reversa para restaurar seu próprio corpo. Ação Padrão. Gaste de 1 PE até sua maior Classe e recupere 1d8 de vida por PE gasto. Escolha e pague antes de rolar. A cura não ultrapassa sua vida máxima e não gera vida temporária. As primeiras faixas atendem às concessões específicas que permitem aprender a aptidão antes dos requisitos comuns. A aptidão cura você. Para aplicá-la diretamente a outra criatura, você precisa de uma permissão que altere esse alvo. Aprendê-la não aumenta o alcance de um feitiço de Cura nem substitui sua montagem. O Corpo Amaldiçoado não recupera vida com Energia Reversa nem com cura construída a partir dela. Suas formas de reparo estão na Origem. Outras incompatibilidades de alvo também continuam valendo. Energia Reversa é requisito para usar um feitiço da Forma Cura ofensivamente contra uma maldição. A exceção está em Ferir maldições. A aptidão de autocura, sozinha, não concede um ataque. Requisito: Energia Reversa. Você pode usar um feitiço da Forma Cura contra uma maldição hostil. Essa aplicação usa energia positiva para feri-la, em vez de recuperar vida. Pague a ação e os PE normais do feitiço. Confira seu alcance, seu Selo e seus demais requisitos. Faça um ataque de conjuração contra a Defesa, em vez de aplicar a cura automaticamente."
   },
   {
    "nome": "Circulação",
@@ -203,7 +203,7 @@
    "requisito": "Ser Encarnado ou treinado em História",
    "classe_passiva": "1",
    "escala": "—",
-   "faz": "Você forma um símbolo com as duas mãos e cria uma barreira em volta de si. Use a ativação de Proteção contra domínios. A Cesta não cobra manutenção. Ela anula o Acerto garantido contra você, mas não o Efeito da Expansão. Enquanto mantém as duas mãos no símbolo, pode agir, mover-se e atacar com partes livres do corpo. Não pode usar essas mãos para empunhar arma ou escudo, agarrar ou realizar um gesto exigido por outra ação. Soltar o símbolo libera suas mãos e não encerra imediatamente a Cesta. Enquanto estiver solto, cada Acerto que causa dano que a Cesta impedir acrescenta uma falha, no máximo uma dessas falhas por rodada. Um Acerto que não causa dano não acrescenta essa falha automática. Retomar o símbolo interrompe esse desgaste, sem apagar as falhas anteriores. Cada golpe que acertar você exige TR Espírito contra a CD de quem o atingiu, mesmo se o dano for reduzido a zero. Uma falha acrescenta uma falha à Cesta. O Acerto já anulado pela própria Cesta não é um golpe recebido para esse teste. Ela cai quando acumula metade de sua Essência em falhas, arredondada para baixo, mínimo 1. O teste é próprio da Cesta: não ocupa Concentração e não recebe a dispensa de Mão Firme."
+   "faz": "Você forma um símbolo com as duas mãos e cria uma barreira em volta de si. Use a ativação de Proteção contra domínios. A Cesta não cobra manutenção. Ela anula o Acerto garantido contra você, mas não o Efeito da Expansão. Enquanto mantém as duas mãos no símbolo, pode agir, mover-se e atacar com partes livres do corpo. Não pode usar essas mãos para empunhar arma ou escudo, agarrar ou realizar um gesto exigido por outra ação. Soltar o símbolo libera suas mãos e não encerra imediatamente a Cesta. Enquanto o símbolo estiver solto, cada Acerto de dano impedido pela Cesta acrescenta uma falha, no máximo uma dessas falhas por rodada. Um Acerto que não causa dano não acrescenta essa falha automática. Retomar o símbolo interrompe esse desgaste, sem apagar as falhas anteriores. Cada golpe que acertar você exige TR Espírito contra a CD de quem o atingiu, mesmo se o dano for reduzido a zero. Uma falha acrescenta uma falha à Cesta. O Acerto já anulado pela própria Cesta não é um golpe recebido para esse teste. Ela cai quando acumula metade de sua Essência em falhas, arredondada para baixo, mínimo 1. O teste é próprio da Cesta: não ocupa Concentração e não recebe a dispensa de Mão Firme."
   },
   {
    "nome": "Domínio Simples",
@@ -224,7 +224,7 @@
    "requisito": "Refino 7 e nível 18; aprendizado registrado; indisponível ao Corpo Amaldiçoado",
    "classe_passiva": "3",
    "escala": "—",
-   "faz": "Você precisa ter visto uma Extensão em uso, estudado seu funcionamento ou aprendido com alguém. Registre isso na ficha. Corpo Amaldiçoado não pode adquirir esta aptidão. Você se envolve em uma camada de domínio que neutraliza técnicas. Ative conforme Proteção contra domínios. A manutenção custa 1,5 × sua maior Classe em PE, arredondado para cima. A ativação e sua primeira manutenção cobrem o período até o começo do seu próximo turno. Depois, você pode pagar até Refino − 1 manutenções adicionais, uma no começo de cada turno. A Extensão termina no começo do turno seguinte à última manutenção, ou antes se for encerrada. Golpes não a derrubam. Enquanto ativa, ela impede que o Acerto e o Efeito de qualquer Expansão atinjam você, inclusive incompleta ou sem barreiras. A barreira ainda prende você, e os benefícios do dono permanecem. Uma técnica que encostar na Extensão é anulada, naquele contato, se sua Classe, Categoria de Efeito ou escala de Regra Própria for de até 1 + um terço de seu Refino, para baixo. O limite é 3 nos Refino 7–8 e 4 nos Refino 9–10. Isso não apaga a técnica de quem a criou nem seus efeitos longe de você."
+   "faz": "Você precisa ter visto uma Extensão em uso, estudado seu funcionamento ou aprendido com alguém. Registre isso na ficha. Corpo Amaldiçoado não pode adquirir esta aptidão. Você se envolve em uma camada de domínio que neutraliza técnicas. Ative conforme Proteção contra domínios. A manutenção custa 1,5 × sua maior Classe em PE, arredondado para cima. A ativação e sua primeira manutenção cobrem o período até o começo do seu próximo turno. Depois, você pode pagar até Refino − 1 manutenções adicionais, uma no começo de cada turno. A Extensão termina no começo do turno seguinte à última manutenção, ou antes se for encerrada. Golpes não a derrubam. Enquanto ativa, ela impede que o Acerto e o Efeito de qualquer Expansão atinjam você, inclusive incompleta ou sem barreiras. A barreira ainda prende você, e os benefícios do dono permanecem. Uma técnica que encostar na Extensão é anulada, naquele contato, se sua Classe, Categoria de Efeito ou escala de Regra Própria for de até 1 + um terço de seu Refino, para baixo. O limite é 3 com Refino 7–8 e 4 com Refino 9–10. Isso não apaga a técnica de quem a criou nem seus efeitos longe de você."
   },
   {
    "nome": "Barreira Simples",
@@ -238,21 +238,21 @@
    "requisito": "Barreira Simples",
    "classe_passiva": "—",
    "escala": "—",
-   "faz": "Você delimita uma área para esconder seu interior de pessoas que não são feiticeiras e controlar a passagem por suas bordas. A preparação segue Barreira Simples: 1 minuto, sem custo em PE. Antes de começar, registre o lugar e suas bordas: um prédio, uma escola, uma quadra ou outro local contínuo. O ponto mais distante da borda deve estar a até 90 m de você ao concluir. Essa medida limita a Cortina inteira, não cada trecho isolado. A Cortina tem 40 × Refino pontos de vida, compartilhados por toda a superfície. Sofre ataques e TRs pelo procedimento de Barreira Simples. Fica ancorada no lugar e termina com vida zero, se você ficar Inconsciente ou se decidir encerrá-la. Ela ocupa a mesma manutenção única de Barreira Simples: concluir uma substitui a outra. Ao preparar, escreva uma condição verificável sobre quem pode atravessar e em qual sentido. Ela vale até a Cortina terminar. As bordas escolhidas não se movem. A condição regula a travessia das criaturas que ela identifica. Não cria a vedação completa da Barreira Simples: ataques e efeitos ainda seguem seu alcance, sua trajetória e a visibilidade disponível. Uma criatura impedida de atravessar pode tentar destruir a Cortina."
+   "faz": "Você delimita uma área para esconder seu interior de pessoas que não são feiticeiras e controlar a passagem por suas bordas. A preparação segue Barreira Simples: 1 minuto, sem custo em PE. Antes de começar, registre o lugar e suas bordas: um prédio, uma escola, uma quadra ou outro local contínuo. O ponto mais distante da borda deve estar a até 90 m de você ao concluir. Essa medida limita a Cortina inteira, não cada trecho isolado. A Cortina tem 40 × Refino pontos de vida, compartilhados por toda a superfície. Sofre ataques e TRs pelo procedimento de Barreira Simples. Fica ancorada no lugar e termina com vida zero, se você ficar Inconsciente ou se decidir encerrá-la. Ela compartilha o limite de uma barreira mantida com Barreira Simples: concluir uma substitui a outra. Ao preparar, escreva uma condição verificável sobre quem pode atravessar e em qual sentido. Ela vale até a Cortina terminar. As bordas escolhidas não se movem. A condição regula a travessia das criaturas que ela identifica. Não cria a vedação completa da Barreira Simples: ataques e efeitos ainda seguem seu alcance, sua trajetória e a visibilidade disponível. Uma criatura impedida de atravessar pode tentar destruir a Cortina."
   },
   {
    "nome": "Ritual",
    "requisito": "Inteligência 5, nível 10 e Técnica Inata. Regras em Ritual e Pactos",
    "classe_passiva": "—",
    "escala": "—",
-   "faz": "Um Ritual reforça um feitiço com gestos e recitação. Você escolhe quanto tempo dedicar à conjuração e quais benefícios procura. O feitiço continua sendo aquele registrado na ficha, com seus alvos, efeito e custo de energia. Ritual é uma aptidão. Requisitos: Inteligência 5, nível 10 e Técnica Inata. Ela usa uma escolha de aptidão. Técnica Marcial e Sem Técnica não podem adquiri-la nem auxiliar um Ritual. A rota sem energia amaldiçoada também não tem acesso. Escolha um feitiço de Classe 1 ou maior, a modalidade de Ritual e as Melhorias de Ritual antes de fazer qualquer rolagem. Confira se consegue cumprir todos os gestos, recitar e pagar o custo normal mais a eventual penalidade por falha. Cada conjuração recebe apenas um Ritual. Você precisa falar, ter pelo menos uma mão livre para os gestos e cumprir qualquer exigência adicional de mãos da sua técnica. Calado impede Ritual. Silencioso não dispensa seus gestos ou sua voz. Um Selo mais discreto também não esconde a recitação. Atacar sem revelar sua posição exige outra capacidade que expressamente inclua essas circunstâncias."
+   "faz": "Um Ritual reforça um feitiço com gestos e recitação. Você escolhe quanto tempo dedicar à conjuração e quais benefícios procura. O feitiço continua sendo aquele registrado na ficha, com seus alvos, efeito e custo de energia. Ritual é uma aptidão. Requisitos: Inteligência 5, nível 10 e Técnica Inata. Ela usa uma escolha de aptidão. Técnica Marcial e Sem Técnica não podem adquiri-la nem auxiliar um Ritual. A rota sem energia amaldiçoada também não tem acesso. Escolha um feitiço de Classe 1 ou maior, a modalidade de Ritual e as Melhorias de Ritual antes de fazer qualquer rolagem. Confira se consegue cumprir todos os gestos, recitar e pagar o custo normal. Cada conjuração recebe apenas um Ritual. Você precisa falar, ter pelo menos uma mão livre para os gestos e cumprir qualquer exigência adicional de mãos da sua técnica. Calado impede Ritual. Silencioso não dispensa seus gestos ou sua voz. Um Selo mais discreto também não esconde a recitação. Atacar sem revelar sua posição exige outra capacidade que expressamente inclua essas circunstâncias. Ação Completa compromete a Padrão, a Bônus e o Movimento do turno, conservando a Reação. O Ritual breve só pode ser usado se a ficha do feitiço permitir Ação Padrão. Ele não abrevia uma Liberação ou Técnica Máxima."
   },
   {
    "nome": "Aptidão Própria",
    "requisito": "Uma única vez na ficha",
    "classe_passiva": "1 ou 2",
    "escala": "—",
-   "faz": "Você cria uma aptidão com o mestre antes da sessão. Ela representa um aprendizado específico de energia que o catálogo ainda não cobre. Escreva uma frase de regra. Ela precisa dizer quando funciona, quem afeta e o que permite fazer. Acrescente ação, custo, distância e encerramento quando forem necessários. A descrição pode ser curta, mas deve bastar para outra mesa aplicar a mesma regra. A proposta não pode copiar uma aptidão existente com outro nome, dispensar seus requisitos ou acrescentar dados de dano. Aptidão Própria de Categoria de Efeito 2 também precisa de um limite por cena. Avalie a frequência real de uso no tipo de missão da campanha. Compare também a magnitude, o custo de ação, os alvos e o alcance com os Talentos da mesma Categoria de Efeito. Efeitos pequenos ou de informação costumam caber na Categoria 1. Intervenções mais relevantes podem exigir Categoria 2 e seu limite por cena. Permanência, sozinha, não transforma um benefício pequeno em Categoria 3. Efeitos que precisem dessa terceira Categoria ficam fora desta opção. Aptidão Própria usa uma escolha de aptidão. Uma concessão da criação que já preencha essa opção também consome a escolha única da ficha. Mudanças posteriores precisam ficar registradas junto da regra aprovada."
+   "faz": "Você cria uma aptidão com o mestre antes da sessão; ele define o tamanho do efeito. Ela representa um aprendizado específico de energia que o catálogo ainda não cobre. Escreva uma frase de regra. Ela precisa dizer quando funciona, quem afeta e o que permite fazer. Acrescente ação, custo, distância e encerramento quando forem necessários. A descrição pode ser curta, mas deve bastar para outra mesa aplicar a mesma regra. A proposta não pode copiar uma aptidão existente com outro nome, dispensar seus requisitos ou acrescentar dados de dano. Aptidão Própria de Categoria de Efeito 2 também precisa de um limite por cena. Avalie a frequência real de uso no tipo de missão da campanha. Compare também a magnitude, o custo de ação, os alvos e o alcance com os Talentos da mesma Categoria de Efeito. Efeitos pequenos ou de informação costumam caber na Categoria 1. Intervenções mais relevantes podem exigir Categoria 2 e seu limite por cena. Permanência, sozinha, não transforma um benefício pequeno em Categoria 3. Efeitos que precisem dessa terceira Categoria ficam fora desta opção. A comparação abaixo serve como apoio. Quem define o tamanho da Aptidão Própria é o mestre."
   }
  ],
  "aptidoes_de_graca": [
@@ -352,25 +352,25 @@
    "nome": "Explosão",
    "custa": "Leve",
    "o_que_e": "Esfera de raio 3 m, num ponto a até 18 m.",
-   "resolve": "TR; metade dos dados no sucesso."
+   "resolve": "TR; metade do resultado do dano no sucesso."
   },
   {
    "nome": "Aura",
    "custa": "Leve",
    "o_que_e": "Esfera de raio 3 m, centrada em você.",
-   "resolve": "TR; metade dos dados no sucesso."
+   "resolve": "TR; metade do resultado do dano no sucesso."
   },
   {
    "nome": "Cone",
    "custa": "Leve",
    "o_que_e": "Cone de 4,5 m, partindo de você.",
-   "resolve": "TR; metade dos dados no sucesso."
+   "resolve": "TR; metade do resultado do dano no sucesso."
   },
   {
    "nome": "Linha",
    "custa": "Leve",
    "o_que_e": "Linha de 18 m por 1,5 m, partindo de você.",
-   "resolve": "TR; metade dos dados no sucesso."
+   "resolve": "TR; metade do resultado do dano no sucesso."
   },
   {
    "nome": "Cura",
@@ -474,7 +474,7 @@
     "nivel": 10,
     "refino": 4,
     "abre_em": "Nível 10 e refino 4",
-    "acerto": "Exige a resolução registrada na ficha"
+    "acerto": "Quando houver Acerto, rola como um feitiço"
    },
    {
     "degrau": "Completa",
@@ -528,22 +528,47 @@
     "teto": "Registra uma limitação já considerada na ficha"
    }
   ],
-  "concede": [
+  "modifica": [
    {
-    "concede": "uma aptidão",
-    "quem": "quem tem aptidão"
+    "modifica": "um feitiço"
    },
    {
-    "concede": "um espaço conhecido",
-    "quem": "qualquer rota, no repertório dela"
+    "modifica": "a energia"
    },
    {
-    "concede": "PE máximo igual à maior Classe",
-    "quem": "qualquer ficha"
+    "modifica": "uma aptidão"
+   },
+   {
+    "modifica": "um Estilo"
    }
   ],
-  "frase": "O pacto pode conceder uma aptidão, um espaço conhecido adicional ou um aumento do PE máximo igual à sua maior Classe.",
-  "quantos": "metade da Essência em pactos permanentes, arredondada para baixo"
+  "ocupa_vaga": [
+   "Permanente",
+   "Pacto de restrição"
+  ],
+  "vagas": [
+   [
+    "0 ou 1",
+    0
+   ],
+   [
+    "2 ou 3",
+    1
+   ],
+   [
+    "4 ou 5",
+    2
+   ],
+   [
+    "6",
+    3
+   ]
+  ],
+  "frase": "O pacto concede uma mecânica única, decidida com o mestre. Pode modificar o funcionamento de um feitiço, da energia, de uma aptidão ou de um Estilo.",
+  "quantos": "Você pode manter metade da Essência em pactos, arredondada para baixo, contando permanentes e pactos de restrição.",
+  "fora_do_limite": "Promessas e pactos temporários não entram nesse limite.",
+  "sem_numero": "Pactos não concedem bônus numérico a ataques, Defesa ou perícias. Não existe pacto por dano.",
+  "restricao_sem_vaga": "Com permissão do mestre, ele pode existir mesmo sem vaga."
  },
  "leque": {
   "frases": [
@@ -916,7 +941,7 @@
     "nome": "Defesa sem Armadura",
     "requisito": "Gratuita na Lapidação 1",
     "classe_passiva": "—",
-    "faz": "Enquanto não usar Traje nem Revestimento, você recebe proteção igual a um terço da Lapidação, arredondado para baixo, +1. Um escudo pode ser somado conforme suas regras. Quando sofrer dano de um golpe, depois das defesas aplicáveis e antes de descontar vida, você pode gastar sua Reação e 2 PE para reduzi-lo em 1,5 × Lapidação, arredondado para baixo. Depois, fica sem proteção até o fim do seu próximo turno, inclusive a de Traje, Revestimento e escudo. Você pode usar essa redução mesmo com equipamento de proteção ou enquanto estiver sem proteção, pagando a Reação e os PE em cada uso. O novo uso mantém a perda até o fim do próximo turno correspondente. Outros valores da Defesa seguem suas regras. Pelas regras desta Origem, Barreira Simples e Cortina não reconhecem nem impedem seu corpo pela energia amaldiçoada. O Acerto garantido de uma Expansão completa também não seleciona você por esse critério. Os efeitos que acontecem no ambiente e os ataques de uma Expansão incompleta continuam usando suas regras. Essas permissões vêm da ausência de energia e permanecem quando você usa um Traje ou Revestimento. Vestir proteção desliga apenas a proteção passiva desta Bênção. A redução como Reação continua disponível com seu custo completo.",
+    "faz": "Enquanto não usar Traje nem Revestimento, você recebe proteção igual a um terço da Lapidação, arredondado para baixo, +1. Um escudo pode ser somado conforme suas regras. Quando sofrer dano de um golpe, depois das defesas aplicáveis e antes de descontar vida, você pode gastar sua Reação e 2 PE para reduzi-lo em 1,5 × Lapidação, arredondado para baixo. Depois, perde somente a proteção passiva desta Bênção até o fim do seu próximo turno. Traje, Revestimento e escudo continuam dando sua proteção. Você pode usar essa redução mesmo com equipamento de proteção ou enquanto estiver sem proteção, pagando somente a Reação e os 2 PE em cada uso. O novo uso mantém a perda da proteção passiva até o fim do próximo turno correspondente. Outros valores da Defesa seguem suas regras. Pelas regras desta Origem, Barreira Simples e Cortina não reconhecem nem impedem seu corpo pela energia amaldiçoada. O Acerto garantido de uma Expansão completa também não seleciona você por esse critério. Os efeitos que acontecem no ambiente e os ataques de uma Expansão incompleta continuam usando suas regras.",
     "escala": "proteção"
    },
    {
@@ -990,6 +1015,20 @@
     "escala": "—"
    },
    {
+    "nome": "Represália",
+    "requisito": "Lapidação 4 e Força 4 ou Destreza 4",
+    "classe_passiva": "2",
+    "faz": "Fora do seu turno, quando uma criatura que você enxerga ou acompanha por um sentido equivalente à visão usa uma aptidão que custe ação ou Reação, ou conjura um feitiço a até 1,5 m de você, pode gastar sua Reação para realizar um ataque corpo a corpo com arma ou desarmado contra ela. Aptidões e benefícios passivos não contam. Resolva o ataque depois do uso que provocou a resposta. A criatura precisa continuar a até 1,5 m e ao alcance do ataque escolhido. A Reação não interrompe nem desfaz a aptidão ou o feitiço. Manter um efeito já ativo não oferece um novo gatilho. Abrir ou manter uma Expansão de Domínio e o Acerto de uma Expansão incompleta não ativam esta Bênção; feitiços conjurados dentro de um domínio continuam contando normalmente.",
+    "escala": "—"
+   },
+   {
+    "nome": "Sangue Frio",
+    "requisito": "Lapidação 7 e Constituição 4",
+    "classe_passiva": "3",
+    "faz": "Você tem vantagem nos TRs contra feitiços e contra aptidões que custem ação ou Reação produzidos por uma criatura a até 3 m de você. Confira a distância até essa criatura no momento de cada TR. Aptidões e benefícios passivos não contam. Uma vez por cena, depois de falhar em um desses TRs e antes de sofrer suas consequências, pode repetir a rolagem, sem gastar ação. Role um único d20, sem a vantagem desta Bênção, e mantenha a CD e os modificadores. O novo resultado é obrigatório. A repetição também exige que a criatura esteja a até 3 m. A vantagem e a repetição não se aplicam à abertura ou manutenção de uma Expansão de Domínio, nem ao Acerto de uma Expansão incompleta; feitiços conjurados dentro de um domínio continuam contando normalmente.",
+    "escala": "—"
+   },
+   {
     "nome": "Campo",
     "requisito": "Lapidação 1",
     "classe_passiva": "1",
@@ -1007,7 +1046,7 @@
     "nome": "Bênção Própria",
     "requisito": "Uma por personagem",
     "classe_passiva": "1 ou 2",
-    "faz": "Você pode desenvolver uma Bênção Própria por personagem, de Categoria de Efeito 1 ou 2. Crie-a com o mestre antes da sessão e adquira-a por uma escolha de Bênção, respeitando a Lapidação mínima da Categoria de Efeito. Escreva primeiro uma frase que diga o que o corpo consegue fazer. Depois, registre gatilho, alcance, duração e limites necessários. A mesa deve conseguir decidir quando o efeito aconteceu sem discutir novamente a proposta a cada uso. A Bênção segue a orientação de Aptidões e Refino — Aptidão Própria. Ela não acrescenta dados de dano. Se for Categoria de Efeito 2, precisa de um limite por cena. Não pode copiar uma Bênção existente ou fornecer uma capacidade cujo requisito você não alcançou. Uma proposta com requisito de Força ou Constituição deve conceder um feito corporal específico, ligado a sobrevivência, recuperação ou outra capacidade física. Bônus, vantagem ou repetição de uma perícia não bastam para representar esse feito. Efeitos de Categoria de Efeito 3 ficam fora desta opção. Se a mesa não conseguir limitar a proposta à Categoria de Efeito 1 ou 2, reduza seu alcance ou escolha outra ideia.",
+    "faz": "Você pode desenvolver uma Bênção Própria por personagem, de Categoria de Efeito 1 ou 2. Crie-a com o mestre antes da sessão e adquira-a por uma escolha de Bênção, respeitando a Lapidação mínima da Categoria de Efeito. Escreva primeiro uma frase que diga o que o corpo consegue fazer. Depois, registre gatilho, alcance, duração e limites necessários. A mesa deve conseguir decidir quando o efeito aconteceu sem discutir novamente a proposta a cada uso. A Bênção segue a orientação de Aptidões e Refino — Aptidão Própria. Ela não acrescenta dados de dano. Se for Categoria de Efeito 2, precisa de um limite por cena. Não pode copiar uma Bênção existente ou fornecer uma capacidade cujo requisito você não alcançou. Uma proposta com requisito de Força ou Constituição deve conceder um feito corporal específico, ligado à sobrevivência, à recuperação ou a outra capacidade física. Bônus, vantagem ou repetição de uma perícia não bastam para representar esse feito. Efeitos de Categoria de Efeito 3 ficam fora desta opção. Se a mesa não conseguir limitar a proposta à Categoria de Efeito 1 ou 2, reduza seu alcance ou escolha outra ideia.",
     "escala": "—"
    }
   ],

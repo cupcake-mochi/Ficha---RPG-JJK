@@ -1,8 +1,8 @@
 {
  "_meta": {
   "o_que_e": "o que a aba INVOCAÇÕES lê do livro e o catálogo não tem",
-  "livro": "candidata editorial reconstruída, como está na v0.340 do JJK---Project (lida em 07/10/2026)",
-  "sha256_do_livro": "bbaf760bb0094928b85c1c8d51d309ea88decf1606bfc35ba9690174592a6a9e",
+  "livro": "Ciclo Maldito R43, o livro final, como está na v0.357 do JJK---Project (lido em 10/10/2026)",
+  "sha256_do_livro": "5fc5849193aab8a6815a15ca5474d99d30e5c87d40ce2c3fbafb4d3842ee2133",
   "gerado_por": "ficha-v01/extrair_invocacao.py"
  },
  "frases": {
@@ -87,8 +87,8 @@
    "conta": ""
   },
   "devolucao": {
-   "livro": "As Restrições devolvem pontos para pagar Forma e Melhorias, até 2 × a Classe real e até o total gasto nessas peças.",
-   "conta": "MIN(devolução, 2 × Classe, gasto)"
+   "livro": "As Restrições devolvem pontos para pagar Melhorias, até 2 × a Classe real e até o total gasto nelas. A Forma fica fora dessa conta.",
+   "conta": "MIN(devolução, 2 × Classe, gasto em Melhorias)"
   },
   "teto": {
    "livro": "O total não passa de 4 × Classe.",
@@ -103,8 +103,8 @@
    "conta": "−1 dado"
   },
   "basica_restricao": {
-   "livro": "Pode haver uma Restrição Leve, que precisa ser cumprida, mas não devolve pontos nem o dado gasto.",
-   "conta": "não devolve"
+   "livro": "Pode haver uma Restrição Leve, que precisa ser cumprida e devolve o dado que a Melhoria tirou, sem criar pontos de montagem.",
+   "conta": "devolve o dado da Melhoria"
   },
   "basica_sem": {
    "livro": "Cura e Onda não estão disponíveis na Classe 0.",
@@ -147,7 +147,7 @@
    "conta": "nível × (1 + INT(ESS/3))"
   },
   "carga": {
-   "livro": "Uma entidade segue o limite geral de carga de 5 + Força, em Volume",
+   "livro": "Uma entidade segue as regras gerais de Carga, com limite normal de 5 + Força, em Volume",
    "conta": "5 + Força"
   },
   "corpos": {
@@ -179,8 +179,8 @@
    "conta": "6 × ou 7 × Classe"
   },
   "expansao_acerto": {
-   "livro": "Um Acerto de dano da domada causa Classe d8.",
-   "conta": "Classe d8"
+   "livro": "Monte o Acerto de dano com os pontos de especial da maior Classe da domada, menos o preço Médio de Inescapável, com o desconto da Família Livre dela. Cada ponto restante vira 1d8.",
+   "conta": "pontos da Classe − preço Médio de Inescapável"
   },
   "trilhas": {
    "livro": "Escolha uma Trilha no nível 2: Invocação Principal, Parceria ou Múltiplas Invocações.",

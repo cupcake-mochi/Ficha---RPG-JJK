@@ -62,11 +62,11 @@ def ler():
         "forma_sem_livre": ("Formas não recebem desconto de Família Livre.", ""),
         "formas_exigem": ("Explosão, Aura, Cone e Linha exigem Área aberta. Cura, Apoio e Onda exigem Amparo aberto.", ""),
         "embutida": ("Toque e Aura incluem Corpo a Corpo, com devolução Média nas especiais.", ""),
-        "devolucao": ("As Restrições devolvem pontos para pagar Forma e Melhorias, até 2 × a Classe real e até o total gasto nessas peças.", "MIN(devolução, 2 × Classe, gasto)"),
+        "devolucao": ("As Restrições devolvem pontos para pagar Melhorias, até 2 × a Classe real e até o total gasto nelas. A Forma fica fora dessa conta.", "MIN(devolução, 2 × Classe, gasto em Melhorias)"),
         "teto": ("O total não passa de 4 × Classe.", "4 × Classe"),
         "apoio": ("Em Apoio, cada ponto útil vira 3 pontos de vida temporária.", "3 por ponto"),
         "basica_leve": ("A básica pode ter uma Melhoria Leve. Retire um dado de seu dano-base para pagá-la.", "−1 dado"),
-        "basica_restricao": ("Pode haver uma Restrição Leve, que precisa ser cumprida, mas não devolve pontos nem o dado gasto.", "não devolve"),
+        "basica_restricao": ("Pode haver uma Restrição Leve, que precisa ser cumprida e devolve o dado que a Melhoria tirou, sem criar pontos de montagem.", "devolve o dado da Melhoria"),
         "basica_sem": ("Cura e Onda não estão disponíveis na Classe 0.", ""),
         "controle": ("Uma especial com Melhoria de Controle e dano final de até a Classe real em dados recebe uma rodada adicional nos efeitos de Controle. Sem dano, recebe também +2 na CD desses efeitos.", ""),
         "resolucao": ("Na montagem, trocar ataque por TR, ou o contrário, não custa pontos. Registre o TR, a resolução e o resultado no sucesso.", ""),
@@ -77,7 +77,7 @@ def ler():
         "retorno": ("pague o dobro do PE da entrada e sua Bônus", "2 × entrada"),
         "talisma": ("Na entrada comum, pague metade do custo normal, arredondada para cima, com mínimo de 1 PE.", "MAX(1, CEILING(entrada/2))"),
         "reserva": ("Reserva máxima = nível da entidade × (1 + um terço da Essência dela, arredondado para baixo).", "nível × (1 + INT(ESS/3))"),
-        "carga": ("Uma entidade segue o limite geral de carga de 5 + Força, em Volume", "5 + Força"),
+        "carga": ("Uma entidade segue as regras gerais de Carga, com limite normal de 5 + Força, em Volume", "5 + Força"),
         "corpos": ("Você pode manter um total de corpos igual ao atributo escolhido para a Defesa das entidades + sua capacidade de entidades ativas.", "atributo + ativas"),
         "ordens": ("Cada corpo mantém uma especial aguardando execução: antecipada, preparada, Armado, Segura ou Carregar.", ""),
         "trunfos": ("Somente maldições domadas com técnica própria podem ter Liberação Máxima, Técnica Máxima e Expansão de Domínio.", ""),
@@ -85,7 +85,7 @@ def ler():
         "liberacao_pe": ("O custo é 3 × Classe × 1,5 PE, para cima.", "CEILING(4,5 × Classe)"),
         "liberacao_dados": ("Use os pontos da especial daquela Classe e acrescente Classe d8", "pontos + Classe d8"),
         "expansao_pe": ("Abrir custa sua Ação Completa, uma básica da domada e 6 × a maior Classe dela em PE. Abrir sem barreira custa 7 × essa Classe.", "6 × ou 7 × Classe"),
-        "expansao_acerto": ("Um Acerto de dano da domada causa Classe d8.", "Classe d8"),
+        "expansao_acerto": ("Monte o Acerto de dano com os pontos de especial da maior Classe da domada, menos o preço Médio de Inescapável, com o desconto da Família Livre dela. Cada ponto restante vira 1d8.", "pontos da Classe − preço Médio de Inescapável"),
         "trilhas": ("Escolha uma Trilha no nível 2: Invocação Principal, Parceria ou Múltiplas Invocações.", ""),
         "principal_familias": ("A ficha da principal passa a ter quatro Famílias Fechadas e cinco abertas.", "5 abertas"),
         "principal_livre": ("Entre as abertas, escolha uma Família Livre adicional, totalizando duas.", "2 Livres"),
@@ -159,12 +159,39 @@ def ler():
     carga = [{"classe": c, "adianta": a, "paga": p} for c, a, p in tabela("Classe da entidade | Adiantamento | Entrada carregada", CAMPO)]
 
     # --- o Evocador: os aprimoramentos, com o nível em que cada um chega
-    a, b = MAN.index("### Usos dos aprimoramentos"), MAN.index("### Intervenções de Vínculo")
-    aprimoramentos = [{"nome": m.group(1), "nivel": int(m.group(2))} for m in (re.match(r"^#### (.+) — nível (\d+)$", l) for l in MAN[a:b]) if m]
+    # 10/10/2026 (B45): o livro final mudou o nível dos títulos e tirou o nível do aprimoramento do título ("Precisão à
+    # Distância — nível 2") para a primeira linha da entrada ("Nível 2."). O título é achado pelo nome, em qualquer nível
+    def titulo(nome, desde=0):
+        for k in range(desde, len(MAN)):
+            if MAN[k].startswith("#") and MAN[k].lstrip("#").strip() == nome:
+                return k
+        raise SystemExit(f"extrair_invocacao: o livro nao tem mais o titulo {nome!r}")
+    a = titulo("Usos dos aprimoramentos")
+    b = titulo("Intervenções de Vínculo", a)
+    aprimoramentos = []
+    for k in range(a + 1, b):
+        if not MAN[k].startswith("#"):
+            continue
+        m = re.match(r"^#+ (.+) — nível (\d+)$", MAN[k])
+        if m:
+            aprimoramentos.append({"nome": m.group(1), "nivel": int(m.group(2))})
+            continue
+        prox = next((l.strip() for l in MAN[k + 1:b] if l.strip()), "")
+        m = re.fullmatch(r"Nível (\d+)\.", prox)
+        if m:
+            aprimoramentos.append({"nome": MAN[k].lstrip("#").strip(), "nivel": int(m.group(1))})
+    # no livro final o aprimoramento do nível 7 fica na seção daquele nível, depois das Intervenções; a frase diz qual é
+    m7 = re.search(r"Você conhece os quatro aprimoramentos de nível 2\. No nível (\d+), acrescenta ([^.]+)\.", TUDO)
+    if m7 and m7.group(2) not in [x["nome"] for x in aprimoramentos]:
+        k = titulo(m7.group(2), b)
+        prox = next((l.strip() for l in MAN[k + 1:] if l.strip()), "")
+        if prox != f"Nível {m7.group(1)}.":
+            raise SystemExit(f"extrair_invocacao: {m7.group(2)!r} devia abrir com 'Nível {m7.group(1)}.', e abre com {prox!r}")
+        aprimoramentos.append({"nome": m7.group(2), "nivel": int(m7.group(1))})
     if [x["nivel"] for x in aprimoramentos] != [2, 2, 2, 2, 7]:
         raise SystemExit(f"extrair_invocacao: os aprimoramentos do Evocador mudaram: {aprimoramentos}")
     danos = []
-    for _g, lista in tabela("Grupo | Tipos", MAN[MAN.index("### Tipos de dano"):]):
+    for _g, lista in tabela("Grupo | Tipos", MAN[titulo("Tipos de dano"):]):
         danos += [x.strip() for x in re.split(r", | e ", lista.rstrip("."))]
     if len(danos) != 15:
         raise SystemExit(f"extrair_invocacao: o livro tinha quinze tipos de dano, e tem {len(danos)}")

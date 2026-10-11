@@ -18,6 +18,21 @@ GER = "ficha-v01/ficha_pessoal.py"
 
 # (o que e o defeito, arquivo, o trecho certo, o trecho errado, um pedaco do nome da checagem que tem de acender)
 PERTURBACOES = [
+    # 10/10/2026 (B45), o livro final: Força e carga
+    ("a carga acima do limite não corta o deslocamento", GER,
+     '''{H["proteção sem força"]}=1,{H["carga acima"]}=1),1,0)')''', '''{H["proteção sem força"]}=1),1,0)')''', "carga estourada: as"),
+    ("a carga acima do limite volta a parar o personagem", GER,
+     '''conta("parado pela carga", f'=IF({H["carga"]}>2*{H["limite de carga"]},1,0)')''',
+     '''conta("parado pela carga", f'=IF({H["carga"]}>{H["limite de carga"]},1,0)')''', "carga estourada: as"),
+    ("a carga acima do dobro do limite anda", GER,
+     '''conta("parado pela carga", f'=IF({H["carga"]}>2*{H["limite de carga"]},1,0)')''',
+     '''conta("parado pela carga", f'=IF({H["carga"]}>99*{H["limite de carga"]},1,0)')''', "carga além do dobro: as"),
+    ("o uniforme sem a Força não corta o deslocamento", GER,
+     '''conta("meia marcha", f'=IF(OR({H["arma sem força"]}=1,{H["proteção sem força"]}=1,''',
+     '''conta("meia marcha", f'=IF(OR({H["arma sem força"]}=1,''', "só o uniforme sem a Força: as"),
+    ("a nota da carga não distingue o dobro do limite", GER,
+     '''f'=IF({H["parado pela carga"]}=1,"Você passou do dobro do limite''', '''f'=IF({H["carga acima"]}=1,"Você passou do dobro do limite''',
+     "carga estourada: as"),
     ("a mão principal não avisa quando não há arma guardada", GER,
      '''{H["guardados para a principal"]}=0," · {T_GUARDE_P}"''', '''{H["guardados para a principal"]}<0," · {T_GUARDE_P}"''', "de fábrica: as"),
     ("o escudo guardado conta como arma para a mão principal", GER,

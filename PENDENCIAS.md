@@ -3229,7 +3229,7 @@ verde). A bateria inteira e o `arnes-pessoal.py` não rodaram (os trechos dele e
 revisei a otimização linha a linha: li as mudanças, e a garantia de que ela pinta igual vem dos testes daqui e dos que
 o agente fez no Sheets.*
 
-### B45 · A ficha passa a ler o livro final (R42), e não mais a candidata — **DIAGNÓSTICO de 09/10/2026; nada foi mudado na ficha**
+### B45 · A ficha passa a ler o livro final (R43), e não mais a candidata — **FEITA em 10/10/2026; falta o Mizuki montar e testar no Sheets** *(o diagnóstico de 09/10 vem primeiro, depois o andamento e o fechamento)*
 
 *O Mizuki fechou a revisão das regras do livro em 09/10/2026. O livro do sistema passou a ser o R42 (no `JJK---Project`,
 `sistema/05-material/livro/ciclo-maldito-r41/LIVRO-COMPLETO.md`, desde a v0.354 de lá). O `manual.txt` daqui ainda sai da
@@ -3280,3 +3280,105 @@ a revisão. Ele mandou seguir com a ficha: "pode seguir em ordem".*
 
 *Este registro é só o diagnóstico. Os números saíram de duas rodadas da bateria em cópias do repositório, e os arquivos
 desta pasta não foram alterados além desta entrada.*
+
+#### B45, andamento de 10/10/2026: a fonte já é o R42 na cópia de trabalho; falta a parte que muda conta da planilha
+
+*Nada disto foi commitado. Está na cópia de trabalho, com o patch guardado fora do repositório.*
+
+**Feito, e conferido um a um (não pela bateria inteira):**
+
+- `extrair-manual.py` lê o R42. Ele devolve a forma de título às 48 linhas só em negrito que o livro final usa no
+  capítulo de Caminhos ("**Fluidez no nível 15**", "**Conduções**"), um nível abaixo do título em que estão.
+- `catalogo-projeto-m.json`: saiu a `Troca` (68 Melhorias); `De Novo` é Pesada; o efeito de `Perseguir`, `Empurrão`,
+  `Fica`, `Certeiro`, `De Novo`, `Desarma o Feitiço`, `Armado`, `Segura` e `Sugar` e o texto da `Assinatura` são os do
+  R42; a vida inicial da Vanguarda e a arma sem a Força saíram do `fora_do_livro`, porque o livro passou a trazê-las; a
+  chave `_pendente` lista três regras que o livro traz e a planilha ainda não segue.
+- `conferir-catalogo.py` passa (lê as Melhorias que dividem um título, as condições um nível abaixo do grupo, e as
+  frases novas). `conferir-kaori.py`, `revisao-cetica.py`, `conferir-progressao.py`, `conferir-decisoes.py` e
+  `regressao-exemplos.py` passam.
+- `extrair_equipamento.py`: uma frase mudou (a propriedade Leve).
+- `extrair_habilidades.py`: 111 habilidades, como antes; 33 cartas mudam de texto. Dois ajustes: o parágrafo "Nível N."
+  logo abaixo do título da habilidade não abre um trecho próprio, e todo título de terceiro nível fecha o dono anterior
+  (a apresentação do Batedor ia parar na carta do nível 27 da Estocada). No R42 o `Preservar o Aprimoramento` é uma das
+  Intervenções do nível 11 da Invocação Principal; na candidata estava no 19.
+
+**Falta, e é o que muda conta na planilha.** *São cinco regras; cada uma mexe em fórmula gerada, em regressão e em arnês.*
+
+| regra do R42 | o que a planilha faz hoje | onde |
+|---|---|---|
+| Restrição paga Melhorias, nunca a Forma (item 143) | a devolução paga a Forma também | `conferir_feitico.py` (regra 1), `ficha_amaldicoada.py` |
+| a devolução da especial da entidade não cobre a Forma (item 143) | cobre | `extrair_invocacao.py`, `ficha_invocacoes.py` |
+| pacto não concede aptidão nem espaço de feitiço; modifica feitiço, energia, aptidão ou Estilo (itens 34 a 36) | o menu "o pacto concede" tem aptidão, espaço conhecido e PE, e o pacto permanente de espaço soma um espaço conhecido | `extrair_tecnica.py` (pactos), `ficha_amaldicoada.py` (linhas do teto, dos espaços de pacto e do menu) |
+| o limite de metade da Essência conta o pacto permanente e o de restrição (itens 37 e 186) | conta só o permanente | `ficha_amaldicoada.py` |
+| uniforme e escudo sem a Força protegem, com penalidade; carga até o dobro anda com penalidade (itens 157 e 158) | zera a proteção; acima do limite avisa que não anda | `defesa_equipamento.py`, `ficha_pessoal.py` |
+
+**Depois delas:** *gerar de novo (`monta.py`), o que troca o `Ficha.gs`, o `Habilidades.gs` e a planilha de referência;
+acertar o teste da carta que junta habilidades (ele procura "Nível N: Nome.", forma que o R42 não usa mais); rodar a
+bateria inteira; e o Mizuki testar no Sheets.*
+
+#### B45, fechamento de 10/10/2026: a planilha segue o livro final; falta o Mizuki montar e testar no Sheets
+
+*Substitui a tabela "Falta" do andamento acima. O Mizuki respondeu à pergunta do menu de pactos: "A" (o menu passa a
+oferecer o que o pacto modifica, sem conta atrás).*
+
+**As cinco regras da tabela, e mais três que o extrator das invocações só mostrou depois de passar da primeira frase:**
+
+| regra do livro final | o que a planilha passou a fazer | onde |
+|---|---|---|
+| Restrição paga Melhorias, nunca a Forma | a devolução aproveitada para no gasto em Melhorias; o resto aparece como "Devolução perdida: N pontos sem Melhoria para pagar" | `ficha_amaldicoada.py`, `conferir_feitico.py` |
+| na especial da entidade, "a Forma fica fora dessa conta" | a mesma conta, na carta da especial e na linha de cada Classe | `ficha_invocacoes.py`, `extrair_invocacao.py` |
+| o pacto concede uma mecânica única: modifica um feitiço, a energia, uma aptidão ou um Estilo | o menu do pacto oferece essas quatro, lidas da frase do livro, e nenhuma soma espaço, aptidão ou PE | `extrair_tecnica.py`, `ficha_amaldicoada.py` |
+| o limite de metade da Essência conta o permanente e o de restrição | a caixa `PERMANENTES` virou `VAGAS` e conta os dois | `ficha_amaldicoada.py` |
+| uniforme e escudo sem a Força protegem, com metade do deslocamento e desvantagem em TR Físico | a Defesa não muda mais com a Força; o deslocamento cai pela metade | `ficha_pessoal.py`, `Codigo.gs` (a nota do deslocamento) |
+| carga acima do limite e até o dobro: metade do deslocamento; acima do dobro: não se desloca | 4,5 m entre o limite e o dobro, 0 m acima do dobro; as três penalidades cortam uma vez só | `ficha_pessoal.py` |
+| Classe 0 e básica da entidade: a Restrição Leve "devolve o dado que a Melhoria tirou" | com Melhoria e Restrição, os dados voltam ao valor do nível | `ficha_amaldicoada.py`, `ficha_invocacoes.py` |
+| Acerto da Expansão da domada: pontos de especial da maior Classe, menos o preço Médio de Inescapável, com o desconto da Família Livre | "Acerto 5d8" na Classe 4 sem a Mira Livre (9 − 4), "Acerto 7d8" com ela (9 − 2); era Classe d8 | `ficha_invocacoes.py` |
+| a entidade "segue as regras gerais de Carga" | acima do limite é aviso e o deslocamento dela cai pela metade; acima do dobro é erro e vai a 0 m | `ficha_invocacoes.py` |
+
+**Uma leitura minha, para o Mizuki confirmar no teste.** *O livro diz que o pacto de restrição ocupa vaga e que, "com
+permissão do mestre, ele pode existir mesmo sem vaga". A caixa `VAGAS` conta os dois tipos, e o aviso (⚠) só aparece
+quando há um pacto permanente e as vagas não fecham. Um personagem de Essência 0 com um pacto de restrição mostra
+"1 de 0" sem aviso.*
+
+**O que mais mudou de texto, sem mudar conta:** *16 Bênçãos (entraram `Represália` e `Sangue Frio`); o Acerto do
+primeiro degrau do Domínio ("Quando houver Acerto, rola como um feitiço"); as Formas de área passaram a dizer "metade
+do resultado do dano no sucesso"; `Projetar Energia` gasta até metade do Refino; 33 cartas de habilidade.*
+
+**Os extratores aprenderam o formato do livro final**, *que tirou do título o que a candidata punha nele:* a Categoria
+de Efeito dos Talentos e das Bênçãos ("Categoria de Efeito: 2." na primeira linha), o nível do aprimoramento do
+Evocador ("Nível 2.") e o nível das seções (um a menos em vários capítulos). *Os dois formatos são lidos.*
+
+**O `_pendente` do catálogo ficou vazio**, *e o `conferir-catalogo.py` cobra que fique.*
+
+**Testes novos:** *na regressão da AMALDIÇOADA, dois feitiços em que a Forma custa e a Restrição sobra, os três pactos
+por ficha (o de restrição com vaga, sem vaga e junto de permanentes) e a Classe 0 com Melhoria e Restrição; na das
+INVOCAÇÕES, a domada sem a Mira Livre, a entidade acima do dobro da carga e o deslocamento dela; na da FICHA PESSOAL,
+a carga acima do dobro, o uniforme sem a Força e o texto das duas notas. Os três arneses ganharam o defeito de cada
+regra.*
+
+**O livro foi a R43 no mesmo dia.** *O Mizuki mandou a correção da ordem do Bloquear ("estava vindo depois da rolagem
+de acerto"): a escolha entre a Defesa e Bloquear vem antes da rolagem do atacante. Na ficha isso é só texto: onze
+linhas do `manual.txt` e três cartas de habilidade (`Olhos Em Mim` do Bastião, a do nível 2 do Incursor, com o
+`Instante Decisivo`, e a do nível 27 do Pugilista, com o `Redirecionar a Força`, em que o novo alvo passa a usar só a
+Defesa). O `Ficha.gs`, o `Invocacoes.gs` e o `Codigo.gs` saem iguais com a R42 e com a R43; só o `Habilidades.gs` muda.*
+
+**Conferido:** *a bateria inteira passa (os dezenove), sobre o estado com a R43. Os defeitos novos dos arneses
+acenderam: os nove das INVOCAÇÕES, os da AMALDIÇOADA e os da FICHA PESSOAL (a lista com o resultado de cada um está na
+mensagem do commit).* **Não rodou no Sheets.**
+
+**O roteiro do teste no Sheets.** *Cole os quatro arquivos de `apps-script/` e rode o `construir()`.*
+
+| nº | onde | o que fazer | o que tem de aparecer |
+|---|---|---|---|
+| 1 | FICHA AMALDIÇOADA, um feitiço | Classe 3, Forma `Explosão`, nenhuma Melhoria, Restrição `Atrasar` | dano `7d8` (9 pontos − 2 da Explosão; a devolução de 3 não paga a Forma) e o aviso "Devolução perdida: 3 pontos sem Melhoria para pagar". Antes saía `9d8` |
+| 2 | o mesmo feitiço | trocar para Classe 2, `Projétil`, Melhoria `Fura`, Restrição `Atrasar` | dano `6d8` (6 − 2 da Fura + 2 devolvidos), sem aviso |
+| 3 | FICHA AMALDIÇOADA, PACTOS | abrir o menu à direita da forma do pacto | quatro opções: `Um feitiço`, `A energia`, `Uma aptidão`, `Um Estilo` |
+| 4 | PACTOS, caixa `VAGAS` | com Essência 2, pôr um pacto `Permanente` e um `Pacto de restrição` | `⚠ 2 de 1` |
+| 5 | a mesma caixa | apagar o `Permanente` e pôr um segundo `Pacto de restrição` | `2 de 1`, sem o aviso (o de restrição pode existir sem vaga, com permissão do mestre) |
+| 6 | FICHA AMALDIÇOADA, ORÇAMENTO, `ESPAÇOS` | com um pacto `Permanente` preenchido, no nível 2 | `3` (2 + metade do nível; o pacto não soma mais) |
+| 7 | FICHA AMALDIÇOADA, Classe 0 | uma linha com Melhoria Leve e sem Restrição; depois pôr uma Restrição Leve | no nível 2: `1d8` só com a Melhoria, e `2d8` com a Restrição junto |
+| 8 | FICHA PESSOAL, `VESTINDO` | com Força menor que a que o uniforme pede | a `DEFESA` da FICHA não cai, o `DESLOCAMENTO` mostra `4,5 m`, e a nota do requisito de Força diz que a peça protege normalmente |
+| 9 | FICHA PESSOAL, carga | passar do limite (5 + Força) sem chegar ao dobro; depois passar do dobro | `4,5 m` no primeiro caso e `0 m` no segundo, com a nota da carga dizendo qual |
+| 10 | INVOCAÇÕES, uma domada de nível 14 com Expansão | Famílias sem a `Mira` entre as duas primeiras; depois com a `Mira` na primeira | `Acerto 5d8` e depois `Acerto 7d8` |
+| 11 | INVOCAÇÕES, uma básica | Melhoria Leve sem Restrição; depois com uma Restrição Leve | um dado a menos no primeiro caso, e o dado de volta no segundo |
+| 12 | Habilidades, Pugilista nível 27 | ler a carta | "Ele não pode Bloquear esse ataque" |

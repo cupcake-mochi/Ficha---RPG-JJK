@@ -66,8 +66,10 @@ def re_frase(rx, S=None):
     return m
 
 
-def subsecoes(S, nivel=4):
-    """[(título, linhas)] das seções de um nível dentro de um trecho"""
+def subsecoes(S, nivel=None):
+    """[(título, linhas)] das seções de um nível dentro de um trecho; sem o nível, o que fica logo abaixo do título do
+    trecho (10/10/2026: o livro final desceu um nível várias seções, e contar a partir do título vale nos dois)"""
+    nivel = nivel or Lv.nivel(S[0]) + 1
     out, atual = [], None
     for l in S[1:]:
         if Lv.nivel(l) and Lv.nivel(l) <= nivel:
@@ -76,6 +78,24 @@ def subsecoes(S, nivel=4):
                 out.append(atual)
         elif atual:
             atual[1].append(l)
+    return out
+
+
+def entradas_ce(S):
+    """[(nome, Categoria de Efeito, linhas)] das entradas de uma seção de Talentos ou de Bênçãos. A candidata punha a
+    Categoria no título ("Ímpeto — Categoria de Efeito 2"); o livro final põe na primeira linha da entrada
+    ("Categoria de Efeito: 2."). Lê os dois, e a linha da Categoria não entra no texto da entrada."""
+    out = []
+    for nome, L in subsecoes(S):
+        m = re.match(r"(.+?) — Categoria de Efeito (\d)$", nome)
+        if m:
+            out.append((m.group(1), m.group(2), L))
+            continue
+        k = next((i for i, l in enumerate(L) if l.strip()), None)
+        m = re.fullmatch(r"Categoria de Efeito: (\d)\.", L[k].strip()) if k is not None else None
+        if not m:
+            raise SystemExit(f"extrair_tecnica: a entrada {nome!r} nao diz a Categoria de Efeito no titulo nem na primeira linha")
+        out.append((nome, m.group(1), L[k + 1:]))
     return out
 
 
@@ -105,14 +125,19 @@ def texto_curto(L, teto=1300):
 def talentos(cap11):
     out = []
     for titulo in ("Talentos de Categoria 1", "Talentos de Categoria 2", "Proteção e presença", "Talentos de Categoria 3"):
+        if titulo == "Proteção e presença" and not Lv.secao(titulo, 0, dentro=cap11):
+            continue        # B45: no livro final esses Talentos estão dentro de "Talentos de Categoria 2", sem título próprio
         S = sec(titulo, cap11)
         intro = " ".join(Lv.paragrafos(S, ate_subtitulo=True))
         ce = re.search(r"Categoria (\d)$", titulo) or re.search(r"Categoria de Efeito (\d)", intro)
         for nome, L in subsecoes(S):
             out.append({"nome": nome, "classe_passiva": ce.group(1), "faz": re.sub(r"^Talento\. ", "", primeiro(L))})
-    for nome in ("Regra Própria", "Talento Próprio"):
-        S = sec(nome, cap11)
-        out.append({"nome": nome, "classe_passiva": "1, 2 ou 3", "faz": Lv.paragrafos(S, ate_subtitulo=True)[0]})
+    # 10/10/2026 (B45): o livro final abre as duas seções com a mesma frase de convite ("Você continua livre para criar
+    # com o mestre..."), que não diz o que a entrada é. A caixa da aba mostra o primeiro parágrafo que é só de uma delas
+    abre = {nome: Lv.paragrafos(sec(nome, cap11), ate_subtitulo=True) for nome in ("Regra Própria", "Talento Próprio")}
+    comum = set(abre["Regra Própria"]) & set(abre["Talento Próprio"])
+    for nome, pars in abre.items():
+        out.append({"nome": nome, "classe_passiva": "1, 2 ou 3", "faz": [p for p in pars if p not in comum][0]})
     return out
 
 
@@ -229,21 +254,36 @@ def dominio(cap14):
 
 
 def pactos(cap15):
+    """10/10/2026 (B45): no livro final o pacto não concede mais aptidão, espaço conhecido nem PE. Ele modifica como
+    uma de quatro coisas funciona, e a lista sai da frase do livro; o limite conta o permanente e o de restrição."""
     S = sec("Pactos", cap15)
     formas_ = [{"forma": f, "quando": _sem_ponto(q), "teto": _sem_ponto(t)} for f, q, t in tab(S, "Forma")]
-    b = re_frase(r"O pacto pode conceder uma aptidão, um espaço conhecido adicional ou um aumento do PE máximo igual à sua maior Classe\.", cap15)
-    q = re_frase(r"metade da Essência em pactos permanentes, arredondada para baixo", cap15)
-    return {"formas": formas_,
-            "concede": [{"concede": "uma aptidão", "quem": "quem tem aptidão"},
-                        {"concede": "um espaço conhecido", "quem": "qualquer rota, no repertório dela"},
-                        {"concede": "PE máximo igual à maior Classe", "quem": "qualquer ficha"}],
-            "frase": Lv.frase(b.group(0)), "quantos": Lv.frase(q.group(0))}
+    b = re_frase(r"O pacto concede uma mecânica única, decidida com o mestre\. Pode modificar o funcionamento (de [^.]+)\.", cap15)
+    modifica = []
+    for item in re.split(r", | ou ", b.group(1)):
+        m = re.fullmatch(r"d(?:e (uma? .+)|(a .+))", item)
+        if not m:
+            raise SystemExit(f"extrair_tecnica: nao sei ler {item!r} na frase do que o pacto modifica")
+        modifica.append({"modifica": m.group(1) or m.group(2)})
+    q = re_frase(r"Você pode manter metade da Essência em pactos, arredondada para baixo, contando (permanentes) e (pactos de restrição)\.", cap15)
+    fora = re_frase(r"(Promessas) e pactos (temporários) não entram nesse limite\.", cap15)
+    nomes = [f["forma"] for f in formas_]
+    ocupa = [n for n in nomes if n.lower().rstrip("s") in (q.group(1).rstrip("s"), q.group(2).rstrip("s").replace("pactos", "pacto"))]
+    livre = [n for n in nomes if n.lower().rstrip("s") in (fora.group(1).lower().rstrip("s"), fora.group(2).rstrip("s"))]
+    if sorted(ocupa + livre) != sorted(nomes) or len(ocupa) != 2:
+        raise SystemExit(f"extrair_tecnica: as formas de pacto {nomes} nao fecham com quem ocupa vaga {ocupa} e quem nao ocupa {livre}")
+    vagas = [[e, int(v)] for e, v in tab(S, "Essência")]
+    sem_numero = re_frase(r"Pactos não concedem bônus numérico a ataques, Defesa ou perícias\. Não existe pacto por dano\.", cap15)
+    sem_vaga = re_frase(r"Com permissão do mestre, ele pode existir mesmo sem vaga\.", cap15)
+    return {"formas": formas_, "modifica": modifica, "ocupa_vaga": ocupa, "vagas": vagas,
+            "frase": Lv.frase(b.group(0)), "quantos": Lv.frase(q.group(0)), "fora_do_limite": Lv.frase(fora.group(0)),
+            "sem_numero": Lv.frase(sem_numero.group(0)), "restricao_sem_vaga": Lv.frase(sem_vaga.group(0))}
 
 
 def numeros(cap10):
     S = sec("Pontos e preços", cap10)
     dev = {f[0]: f[3] for f in tab(S, "Classe") if len(f) == 4}
-    teto = re_frase(r"o total não pode passar de (\d) × Classe em d8", cap10)
+    teto = re_frase(r"não pode passar de (\d) × Classe em d8", cap10)
     out = []
     for c, _, pts, l, m, p in [f for f in tab(S, "Classe") if len(f) == 6]:
         out.append({"classe": int(c), "pontos": int(pts), "leve": int(l), "media": int(m), "pesada": int(p),
@@ -317,9 +357,8 @@ def rotas(cap13, cap12, catalogo_armas):
     grupos = {k: sorted(v, key=["Força", "Destreza"].index) for k, v in grupos.items()}
     marciais = []
     for titulo in ("Talentos marciais", "Talentos de resposta"):
-        for nome, L in subsecoes(sec(titulo, cap13)):
-            m = re.match(r"(.+?) — Categoria de Efeito (\d)$", nome)
-            marciais.append({"nome": m.group(1), "classe_passiva": m.group(2), "faz": primeiro(L)})
+        for nome, ce, L in entradas_ce(sec(titulo, cap13)):
+            marciais.append({"nome": nome, "classe_passiva": ce, "faz": primeiro(L)})
     ben = sec("Bênçãos", cap13)
     lap = {ce: int(Lv.numero(v)) for ce, v in tab(ben, "Categoria de Efeito")}
     bencaos = []
@@ -329,10 +368,9 @@ def rotas(cap13, cap12, catalogo_armas):
         bencaos.append({"nome": nome, "requisito": "Gratuita na Lapidação 1", "classe_passiva": "—",
                         "faz": texto_curto(S), "escala": escala_de(S, "Lapidação")})
     entradas = {}
-    for titulo in [l.lstrip("#").strip() for l in cap13 if Lv.nivel(l) == 3 and l.lstrip("#").strip().startswith("Bênçãos de ")]:
-        for nome, L in subsecoes(sec(titulo, cap13)):
-            m = re.match(r"(.+?) — Categoria de Efeito (\d)$", nome)
-            entradas[m.group(1)] = texto_curto(L)
+    for titulo in [l.lstrip("#").strip() for l in cap13 if Lv.nivel(l) and l.lstrip("#").strip().startswith("Bênçãos de ")]:
+        for nome, _, L in entradas_ce(sec(titulo, cap13)):
+            entradas[nome] = texto_curto(L)
     for nome, ce, req in tab(ben, "Bênção"):
         if nome == "Bênção Própria":
             S = sec(nome, cap13)

@@ -119,6 +119,7 @@ ESTILOS.update({
     "barra":    fp.ESTILOS["barra"],
 })
 T_ERRO, T_AVISO = fa.T_ERRO, fa.T_AVISO
+INESCAPAVEL = "Inescapável"          # a peça que o Acerto da Expansão da domada paga (preço Médio), pelo livro final
 VERMELHO, BRANCO, AMBAR = fa.VERMELHO, fa.BRANCO, fa.AMBAR
 NA_REGRA, DENTRO, SEM_NOME = fa.NA_REGRA, fa.DENTRO, fa.SEM_NOME
 FORMA_INICIAL = fa.FORMA_INICIAL
@@ -356,6 +357,8 @@ def trocas(layout, cor_da_barra=None):
              [[p["nome"], p["familia"] or "", p["peso"], int(p["familia"] == "Controle"), int(p["nome"] in R["reduzidas"]),
                p.get("pede_tr", 0)] for p in R["pecas"]])
     PECAS = D.faixa("pecas")
+    if [p["peso"] for p in R["pecas"] if p["nome"] == INESCAPAVEL] != [2]:
+        raise SystemExit(f"ficha_invocacoes: {INESCAPAVEL} deixou de ser uma Melhoria Media, e o Acerto da Expansao da domada usa o preco Medio dela")
     D.tabela("res", ["menu de restrição", "restrição", "o que devolve", "é de frequência", "menu de restrição leve"],
              [[r["rotulo"], r["nome"], r["devolve"], r["frequencia"], r["rotulo"] if r["devolve"] == 1 else ""] for r in R["restricoes"]])
     RES = D.faixa("res")
@@ -517,7 +520,10 @@ def trocas(layout, cor_da_barra=None):
                          f'&"ATRIBUTOS · "&{P("gastos")}&" DE "&{P("disp")}&" PONTOS"&IF({P("acima")}>{P("marc")}," · ACIMA DE 3 SÓ COM MARCO","")')
         o["d_atq"] = f'=IF({P("atq")}="","",{sinal(P("atq"))})'
         o["d_cd"] = f'=IF({P("cd")}="","",{P("cd")})'
-        o["d_desl"] = f'=SUBSTITUTE({P("desl")}&" m",".",",")'
+        # 10/10/2026 (B45): a entidade "segue as regras gerais de Carga": acima do limite e até o dobro, metade do
+        # deslocamento; acima do dobro, não se desloca com a carga
+        o["d_desl"] = (f'=SUBSTITUTE(IF({P("evol")}>2*{P("carga")},0,IF({P("evol")}>{P("carga")},{P("desl")}/2,{P("desl")}))'
+                       f'&" m",".",",")')
         for k in range(4):
             o[f"d_tr{k}"] = f'={sinal(P(f"tr{k}"))}'
         o["d_per"] = f'=IF({P("tper")}>{P("nper")},"{T_ERRO} ","")&"PERÍCIAS · "&{P("tper")}&" DE "&{P("nper")}'
@@ -530,8 +536,9 @@ def trocas(layout, cor_da_barra=None):
         # ideal só ser uma versão menor do inventario do jogador, aonde tem item equipado, item guardado (caso tenha
         # possibilidade)". O título soma o Volume das caixas e o compara com o limite de 5 + Força, que vale para tudo o
         # que ela veste, empunha ou leva (Invocações em campo). A caixa CARGA MÁXIMA saiu dos números.
-        o["d_equip"] = (f'=IF({P("evol")}>{P("carga")},"{T_ERRO} ","")&"EQUIPAMENTO · "&{P("evol")}&" DE "&{P("carga")}&" DE VOLUME"'
-                        f'&IF({P("evol")}>{P("carga")}," · PASSOU DO LIMITE","")')
+        o["d_equip"] = (f'=IF({P("evol")}>2*{P("carga")},"{T_ERRO} ",IF({P("evol")}>{P("carga")},"{T_AVISO}",""))'
+                        f'&"EQUIPAMENTO · "&{P("evol")}&" DE "&{P("carga")}&" DE VOLUME"'
+                        f'&IF({P("evol")}>2*{P("carga")}," · PASSOU DO DOBRO",IF({P("evol")}>{P("carga")}," · ACIMA DO LIMITE",""))')
         o["d_fam"] = (f'=IF(OR({P("rep")}>0,{P("nfam")}>{P("maxfam")}),"{T_ERRO} ","")&"FAMÍLIAS · "&{P("nfam")}&" ABERTAS"'
                       f'&IF({P("rep")}>0," · REPETIDA","")&IF({P("nfam")}>{P("maxfam")}," · O LIMITE É "&{P("maxfam")},"")')
         o["d_hab"] = (f'="HABILIDADES · básica de "&{P("db")}&"d6 · "&{P("esp")}&IF({P("esp")}>1," espaços"," espaço")&" de especial até a Classe "&{cl}'
@@ -553,7 +560,12 @@ def trocas(layout, cor_da_barra=None):
         o["d_mp"] = f'=IF({nn}<{n_tm},"—",VLOOKUP({nn},{MAXIMA},4,TRUE)&" PE")'
         o["d_md"] = f'=IF({nn}<{n_tm},"Abre no nível {n_tm}",VLOOKUP({nn},{MAXIMA},2,TRUE)&" fixos · "&VLOOKUP({nn},{MAXIMA},3,TRUE)&" pontos")'
         o["d_ep"] = f'=IF({P("exp")}="{SEM_BARREIRA}",7,6)*{cl}&" PE"'
-        o["d_ea"] = f'="Acerto "&{cl}&"d8"'
+        # 10/10/2026 (B45), o livro final: "Monte o Acerto de dano com os pontos de especial da maior Classe da domada,
+        # menos o preço Médio de Inescapável, com o desconto da Família Livre dela. Cada ponto restante vira 1d8."
+        # O código de preço é o da carta: 2 é o Médio, e três a mais se a Família da peça é uma das Livres da ficha
+        fam_ines = f'IFERROR(VLOOKUP("{INESCAPAVEL}",{PECAS},2,FALSE),"")'
+        o["d_ea"] = (f'="Acerto "&MAX(0,INDEX({PONTOS},{cl})-INDEX({PRECOS},{cl},2+3*IF(AND({fam_ines}<>"",'
+                     f'OR({fam_ines}={P("f0")},{fam_ines}={P("f1")})),1,0)))&"d8"')
         o["d_er"] = f'=IFERROR(VLOOKUP({P("exp")},{EXPANSAO},3,FALSE),"Escolha o degrau")'
         o["d_rol"] = (f'={i}&" · "&IF({tem}=0,"vazia",{P("nome")}&" · nv "&{nn}&" · "&{P("atual")}&"/"&{P("vida")})')
         return [o[k] for k in nomes_f]
@@ -688,17 +700,21 @@ def trocas(layout, cor_da_barra=None):
         o["g"] = f"=IF({Cc}=0,0,SUMPRODUCT({NN},INDEX({PRECOS},MAX(1,{Cc}),0)))"
         o["dv0"] = f"=IF({Cc}=0,0,{P('dL')}*CEILING({Cc}/2,1)+{P('dM')}*{Cc})"
         o["dv"] = f"=MIN(2*{Cc},{P('dv0')})"
-        o["usa"] = f"=MIN({P('dv')},{P('g')})"
+        # 10/10/2026 (B45): "Restrição paga Melhorias, nunca a Forma." A especial é montada como feitiço, e a devolução
+        # aproveitada para no gasto em Melhorias: o gasto todo menos o preço da Forma (o código de preço dela é o k0)
+        o["usa"] = f"=MIN({P('dv')},{P('g')}-IF({P('k0')}=0,0,INDEX({PRECOS},MAX(1,{Cc}),{P('k0')})))"
         o["perde"] = f"={P('dv')}-{P('usa')}"
         o["pts"] = f"=IF({Cc}=0,0,INDEX({PONTOS},MAX(1,{Cc})))"
         o["s"] = f"={P('pts')}-{P('g')}+{P('usa')}"
-        # na básica o dano são os dados do nível, e a Melhoria Leve tira um
-        o["d"] = f"=IF({Cc}=0,MAX(0,{P('db')}-IF({P('nm')}>0,1,0)),MAX(0,{P('s')}))"
+        # na básica o dano são os dados do nível, e a Melhoria Leve tira um. 10/10/2026 (B45), o livro final: a Restrição
+        # Leve "devolve o dado que a Melhoria tirou, sem criar pontos de montagem"
+        o["d"] = f"=IF({Cc}=0,MAX(0,{P('db')}-IF(AND({P('nm')}>0,COUNTIF({RR},\"?*\")=0),1,0)),MAX(0,{P('s')}))"
         o["dep"] = f"=IF({Cc}=0,0,(" + "+".join(f"IF({tem_m(x)}>0,1,0)" for x in fa.SOMAM_METADE) + f")*FLOOR({P('d')}/2,1))"
         for c in R["classes"]:
             k = c["classe"]
             gk = f"SUMPRODUCT({NN},{preco_da_classe(k)})"
-            o[f"d{k}"] = f"=MAX(0,{c['pontos']}-{gk}+MIN({2 * k},{P('dL')}*{math.ceil(k / 2)}+{P('dM')}*{k},{gk}))"
+            gmk = f"{gk}-IF({P('k0')}=0,0,INDEX({preco_da_classe(k)},1,{P('k0')}))"      # o gasto em Melhorias, sem a Forma
+            o[f"d{k}"] = f"=MAX(0,{c['pontos']}-{gk}+MIN({2 * k},{P('dL')}*{math.ceil(k / 2)}+{P('dM')}*{k},{gmk}))"
             dk, tp = P(f"d{k}"), P("tp")
             o[f"t{k}"] = (f'=IF({tp}=2,3*{dk}&" de vida temp.",IF({tp}=3,"sem dano",IF({dk}=0,IF({tp}=1,"sem cura","sem dano"),'
                           f'IF({tp}=1,"cura ","")&{dk}&"d8")))')
@@ -734,7 +750,7 @@ def trocas(layout, cor_da_barra=None):
         com_dano = f'AND({Cc}>0,{P("tp")}=0)'
         avisos = [
             _se(f'{P("dv0")}>2*{Cc}', f'"A devolução parou no teto de "&2*{Cc}'),
-            _se(f'{P("perde")}>0', f'"Devolução perdida: "&{P("perde")}&IF({P("perde")}>1," pontos"," ponto")&" sem peça para pagar"'),
+            _se(f'{P("perde")}>0', f'"Devolução perdida: "&{P("perde")}&IF({P("perde")}>1," pontos"," ponto")&" sem Melhoria para pagar"'),
             _se(f'AND({P("ct")}>0,{com_dano},{P("d")}=0)', '"Controle sem dano: uma rodada a mais e CD +2"'),
             _se(f'AND({P("ct")}>0,{com_dano},{P("d")}>0,{P("d")}<={Cc})', '"Controle com saldo até a Classe: uma rodada a mais"'),
             _se(f'AND({Cc}>0,{P("rdz")}<>"")', f'"Efeito de "&{P("rdz")}&" pela Classe "&MAX(1,{Cc}-1)'),
@@ -851,7 +867,8 @@ NOTAS = {
     "reserva": "Só a maldição domada com técnica própria: nível × (1 + um terço da Essência dela). Escreva quanto ainda resta. O "
                "descanso curto recupera um quarto.",
     "equip": "O que ela empunha e veste, com o Volume de cada coisa ao lado. O limite é de 5 + Força, e vale para tudo o que ela "
-             "veste, empunha ou leva. Arma empunhada: ataque pelo atributo da arma, com desvantagem, e o dano da arma.",
+             "veste, empunha ou leva. Acima do limite e até o dobro, metade do deslocamento e desvantagem em TR Físico; acima do "
+             "dobro, ela não se desloca. Arma empunhada: ataque pelo atributo da arma, com desvantagem, e o dano da arma.",
     "guarda": "A entidade só leva o que as mãos seguram e o que veste. Guardar itens ou levar passageiros pede uma característica "
               "própria, que ocupa um dos talentos dela; o que ela guarda conta no mesmo limite de Volume.",
     "corpo": "Tamanho, membros, sentidos, como entende ordens e como avisa o que achou. O que ela não tem aqui, ela não faz.",
@@ -867,8 +884,8 @@ NOTAS = {
     "rmenu": "Trocar ataque por Teste de Resistência, ou o contrário, não custa pontos. Em branco, vale o que a Forma traz.",
     "melhorias": "As Classes 1 e 2 aceitam 2 Melhorias, a 3 e a 4 aceitam 3, e da 5 em diante 4. A Forma não conta. O menu só traz "
                  "as Famílias abertas, e a da Família Livre sai mais barata. A básica aceita uma Melhoria Leve, que custa um dado.",
-    "restricoes": "Até duas, contando o Corpo a Corpo que Toque e Aura já trazem. Restrição paga peças: o que passar do que foi gasto "
-                  "some. Na básica cabe uma Restrição Leve, que não devolve nada.",
+    "restricoes": "Até duas, contando o Corpo a Corpo que Toque e Aura já trazem. Restrição paga Melhorias, nunca a Forma: o que passar do "
+                  "gasto em Melhorias some. Na básica cabe uma Restrição Leve, que devolve o dado que a Melhoria tirou.",
     "ampliar": "A mesma especial usada numa Classe maior, até a maior que o nível dela liberou. A conta inteira é refeita.",
     "trilha": "Só o Evocador: as escolhas a mais da Invocação Principal (níveis 8, 16 e 24 da invocação) e do Repertório do Conjunto "
               "(nível 27). Cada escolha é uma básica (Classe 0), uma especial ou um talento de Categoria 1.",

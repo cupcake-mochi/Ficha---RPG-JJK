@@ -2,8 +2,8 @@
  "_meta": {
   "sistema": "Ciclo Maldito",
   "versao": "1.0",
-  "versao_data": "04/10/2026",
-  "versao_dona": "o livro reconstruído do JJK---Project (LIVRO-COMPLETO.md), revisado em 04/10/2026, depois da v0.331",
+  "versao_data": "10/10/2026",
+  "versao_dona": "o livro final do JJK---Project, Ciclo Maldito R43 (LIVRO-COMPLETO.md de ciclo-maldito-r41/), com a revisão de regras do Mizuki de 07 a 10/10/2026",
   "fonte": "manual.txt, gerado do LIVRO-COMPLETO.md pelo extrair-manual.py; o arquivo e o hash estão no manual-fonte.json",
   "regra": "onde a ficha e o manual discordarem, o manual vence",
   "nivel_inicial": 2,
@@ -405,7 +405,7 @@
   "Perseguir": {
    "familia": "Alcance",
    "peso": "Media",
-   "efeito": "Só se aplica a um feitiço dirigido a um alvo individual. Se um deslocamento ocorrido entre a escolha válida desse alvo e a resolução o levar para fora do alcance, a aplicação acompanha esse deslocamento e resolve em seguida. Não adia a resolução, não procura um alvo perdido e não segue teleporte. Visão exigida e trajeto aberto continuam necessários. Não amplia Toque. Em Armado, a escolha do alvo só ocorre quando o gatilho dispara."
+   "efeito": "Só se aplica a um feitiço dirigido a um alvo individual. Se um deslocamento ocorrido entre a escolha válida desse alvo e a resolução o levar para fora do alcance, a aplicação acompanha esse deslocamento e resolve em seguida. Segue também um teleporte dentro da cena, desde que o alvo não termine atrás de cobertura. Não adia a resolução nem procura um alvo perdido. Só acompanha o alvo: não contorna obstáculos nem ignora cobertura; isso depende de Contorno. Visão exigida e trajeto aberto continuam necessários. Não amplia Toque. Em Armado, a escolha do alvo só ocorre quando o gatilho dispara."
   },
   "Passo": {
    "familia": "Alcance",
@@ -415,12 +415,7 @@
   "Empurrão": {
    "familia": "Alcance",
    "peso": "Leve",
-   "efeito": "Depois da resolução, escolha um alvo que tenha sido acertado ou falhado no TR e mova-o até 6 m, na direção escolhida por você. Só um alvo por conjuração, mesmo em área, Mais Um ou Rajada. Em benefício aplicado a um aliado disposto, ele aceita o movimento. O percurso precisa estar livre. Pare diante de uma parede ou de um espaço que não comporte o alvo. Não concede dano de colisão nem permite escolher um destino suspenso no ar. Quedas de uma beirada seguem as regras comuns. Se houver Puxa na mesma ficha, escolha para esse alvo qual dos dois movimentos aplicar. Eles não se somam."
-  },
-  "Troca": {
-   "familia": "Alcance",
-   "peso": "Media",
-   "efeito": "Escolha um alvo que tenha sido acertado ou falhado no TR: você e ele trocam de posição imediatamente. Só uma troca por conjuração, mesmo em área ou com vários alvos. Um alvo disposto aceita a troca. Ambos precisam caber e ter apoio nos espaços de chegada. Se um dos destinos não for possível, ninguém muda de lugar. A troca não percorre os espaços intermediários nem provoca ataques de oportunidade. Ainda exige escolher o alvo com o alcance e a visão permitidos pela ficha e não atravessa uma barreira que proíba esse transporte."
+   "efeito": "Depois da resolução, mova os alvos que tenham sido acertados ou falhado no TR até 6 m, na direção escolhida por você. Em benefício aplicado a um aliado disposto, ele aceita o movimento. O percurso precisa estar livre. Pare diante de uma parede ou de um espaço que não comporte o alvo. Não concede dano de colisão nem permite escolher um destino suspenso no ar. Quedas de uma beirada seguem as regras comuns. Se houver Puxa na mesma ficha, escolha para esse alvo qual dos dois movimentos aplicar. Eles não se somam."
   },
   "Maior": {
    "familia": "Área",
@@ -450,7 +445,7 @@
   "Fica": {
    "familia": "Área",
    "peso": "Media",
-   "efeito": "Mantém a área na rodada da conjuração e nas cinco seguintes, com concentração, até o fim da última. A aplicação inicial resolve normalmente. Depois, entrar na área ou começar o turno nela resolve metade dos dados iniciais, para baixo, pelo ataque ou TR da ficha. Uma resolução por criatura por rodada, incluindo a inicial, mesmo se o ataque errar ou o TR evitar o dano."
+   "efeito": "A área continua no lugar por 1 minuto, com concentração. Quem entrar nela ou começar o turno nela leva metade dos dados de dano, arredondada para baixo. Cada criatura recebe no máximo uma aplicação por rodada, incluindo a inicial."
   },
   "Salto": {
    "familia": "Área",
@@ -470,7 +465,7 @@
   "Certeiro": {
    "familia": "Mira",
    "peso": "Media",
-   "efeito": "Só em ficha com ataque. Se o resultado final errar um alvo válido, causa metade dos dados daquele ataque, para baixo, sem outros efeitos nem crítico. No acerto, aplica dano e crítico normalmente. Resolva De Novo antes de conferir o erro final. Não some uma parcela de erro a outra de acerto. Bloquear ou Aparar pode produzir esse erro final. Uma redução de dano após o acerto não o produz."
+   "efeito": "Dispensa a rolagem de acerto. O alvo faz o TR registrado na ficha: na falha, recebe o dano e os efeitos; no sucesso, recebe metade do resultado do dano, sem os efeitos que o teste evitou. Alvo, alcance, visão e os demais requisitos continuam valendo."
   },
   "Inescapável": {
    "familia": "Mira",
@@ -479,8 +474,8 @@
   },
   "De Novo": {
    "familia": "Mira",
-   "peso": "Media",
-   "efeito": "Uma vez por cena, compartilhando esse uso entre suas fichas, depois de um ataque deste feitiço errar, repita essa rolagem de ataque, com os mesmos modificadores e o mesmo alvo. Use o novo resultado. Em Rajada, repete somente um tiro. Não obriga alguém a repetir TR nem repete o feitiço inteiro. Alvo e requisitos precisam continuar válidos."
+   "peso": "Pesada",
+   "efeito": "Depois de um ataque deste feitiço errar, você pode repetir essa rolagem, com os mesmos modificadores e o mesmo alvo, uma vez a cada uso do feitiço. É obrigado a ficar com o novo resultado. Em Rajada, repete somente um tiro. Não obriga alguém a repetir TR nem repete o feitiço inteiro. Alvo e requisitos precisam continuar válidos."
   },
   "Fura": {
    "familia": "Mira",
@@ -521,7 +516,7 @@
   "Desarma o Feitiço": {
    "familia": "Controle",
    "peso": "Media",
-   "efeito": "Escolha um efeito contínuo ou uma barreira com Classe registrada, ao alcance da Forma. Se sua Classe for igual ou maior, essa aplicação termina, sem ataque ou TR adicional. O efeito precisa ser percebido e ter acesso válido. Não é necessário atingir seu criador. Cancelar o efeito não causa dano nem aplica as outras peças ao criador."
+   "efeito": "Na criação, registre o que o feitiço cancela: efeito contínuo, barreira, item ou Selo. Escolha uma aplicação desse tipo ao alcance da Forma, percebida e com acesso válido. Se a Classe do alvo for igual ou menor que a do seu feitiço, ele cancela direto. Se for maior, role d20 + atributo da técnica, sem maestria, contra a CD de quem criou."
   },
   "Anteparo": {
    "familia": "Controle",
@@ -631,7 +626,7 @@
   "Armado": {
    "familia": "Tempo",
    "peso": "Leve",
-   "efeito": "No seu turno, gaste a ação, o PE e os demais custos da ficha e cumpra seus requisitos de conjuração. Escolha um gatilho que você possa perceber, fora do seu próprio turno. O feitiço fica preparado até o fim da cena. Você só mantém um feitiço Armado por vez."
+   "efeito": "Gaste a ação e o PE do feitiço e escolha um gatilho que a mesa consiga ver acontecer, fora do seu próprio turno. Ele fica armado até o fim da cena. Quando o gatilho acontecer, o feitiço sai sem gastar Reação, com alcance e alvo conferidos naquele momento. Você só mantém um Armado por vez. Se ele não sair porque a cena acabou ou você armou outro, recupere metade do PE. Não combina com Reação ou Carregar. Não pode preparar uma Técnica Máxima."
   },
   "Silencioso": {
    "familia": "Tempo",
@@ -646,7 +641,7 @@
   "Segura": {
    "familia": "Tempo",
    "peso": "Leve",
-   "efeito": "Ao conjurar, pague os custos e adie a resolução. Dispare em qualquer momento do seu próximo turno, sem gastar outra ação, conferindo alvo, visão, alcance e obstáculos a partir da posição que ocupa então. Se não disparar até o fim desse turno, perde a aplicação, sem recuperar PE."
+   "efeito": "Você pode adiar o efeito por até uma rodada e disparar no seu próximo turno, sem gastar outra ação. Não pode adiar uma Técnica Máxima."
   },
   "Concentrada": {
    "familia": "Tempo",
@@ -681,7 +676,7 @@
   "Sugar": {
    "familia": "Marca",
    "peso": "Media",
-   "efeito": "Depois da resolução inicial, recupere vida igual a um quarto do dano causado a criaturas, arredondado para baixo, até 5 × Classe. Some apenas as parcelas iniciais em que Sugar foi aplicado por acerto ou falha no TR. Dano parcial de Certeiro ou de um TR bem-sucedido não entra nessa soma. Depois, reúna o dano elegível de todos os alvos e tiros antes de calcular a cura. O limite pertence à conjuração inteira."
+   "efeito": "Depois da resolução inicial, recupere vida igual a um quarto do dano causado a criaturas, arredondado para baixo, até 5 × Classe. Some apenas as parcelas iniciais em que Sugar foi aplicado por acerto ou falha no TR. Dano de um TR bem-sucedido não entra nessa soma. Depois, reúna o dano elegível de todos os alvos e tiros antes de calcular a cura. O limite pertence à conjuração inteira."
   },
   "Cobrança": {
    "familia": "Marca",
@@ -821,7 +816,7 @@
   },
   "Assinatura": {
    "devolve": "Leve",
-   "o_que_muda": "O feitiço deixa uma marca visível por 1 hora, que permite reconhecer você como seu autor. Registre na ficha onde a marca aparece e como ela o identifica. A marca não pode ficar deliberadamente escondida na montagem."
+   "o_que_muda": "O feitiço deixa uma marca visível por 1 hora, que mostra quem fez o feitiço e onde você está. Registre na ficha onde a marca aparece e como ela o identifica. A marca não pode ficar deliberadamente escondida na montagem."
   },
   "Restrição Própria": {
    "devolve": "Leve ou Media",
@@ -844,7 +839,7 @@
   "formas_sem_desconto": true,
   "restricao_teto_devolucao": "2 x Classe",
   "restricao_nunca_devolve": "Pesada",
-  "restricao_paga": "peças, incluindo a Forma; a devolução aproveitada nunca passa do gasto",
+  "restricao_paga": "Melhorias, nunca a Forma; a devolução aproveitada nunca passa do gasto em Melhorias",
   "restricoes_por_feitico": 2,
   "melhorias_por_classe": {
    "1 e 2": 2,
@@ -1552,7 +1547,7 @@
   "uniforme_desliga_a_protecao_de_energia": true,
   "escudo_soma_por_cima": true,
   "dois_tetos": "vale o menor",
-  "sem_a_forca": "não pode preparar a peça nem receber sua proteção"
+  "sem_a_forca": "veste ou empunha e recebe a proteção, com deslocamento pela metade e desvantagem em TR Físico; as penalidades não se multiplicam"
  },
  "equipamento": {
   "fonte": "manual, capítulo Equipamento: as tabelas de armas, Treino por categoria, Munição, Trajes, Revestimentos e escudos, Preços de proteção, Equipamento restrito; Regras gerais: Carga e o dado desarmado",
@@ -2604,7 +2599,7 @@
     "Torre": 2
    },
    "soma": "sem arredondar",
-   "acima_do_limite": "não pode se deslocar com a carga"
+   "acima_do_limite": "até o dobro do limite: deslocamento pela metade e desvantagem em TR Físico; acima do dobro: não pode se deslocar com a carga"
   },
   "situacoes_do_traje": [
    "Vão apertado",
@@ -2632,7 +2627,7 @@
    "Escudo Médio": 36000,
    "Escudo Torre": 108000
   },
-  "sem_a_forca_da_arma": "deslocamento pela metade e não soma Destreza à Defesa enquanto empunhar a arma",
+  "sem_a_forca_da_arma": "desvantagem nos ataques com a arma e deslocamento pela metade enquanto a empunhar; a Destreza continua somando à Defesa",
   "sem_treino": "desvantagem nos ataques com a arma"
  },
  "patentes": {
@@ -2676,16 +2671,6 @@
    "1,50x": 1.5,
    "2x": 2
   },
-  "xp_adicional_nota": "o livro manda aplicar 'evento de dobro ou outro ajuste anunciado' antes do arredondamento final; estes são os ajustes da guilda",
-  "vida_inicial_da_vanguarda": {
-   "valor": 8,
-   "regra": "toda vida inicial é o máximo do dado de vida, e o ganho por nível é a média para cima (máximo ÷ 2 + 1)",
-   "porque": "a tabela de Características da Vanguarda no livro reconstruído só traz 'Vida por nível 5'. O Mizuki decidiu em 04/10/2026: 'Toda vida inicial é a máxima do dado'. 5 por nível é o d8, e o máximo do d8 é 8; os cinco Caminhos que o livro numera seguem a mesma conta"
-  },
-  "arma_sem_a_forca": {
-   "regra": "empunhar uma arma sem a Força exigida dá desvantagem nos ataques com ela e corta o deslocamento pela metade; a Destreza continua somando à Defesa",
-   "o_livro_diz": "Sem a Força exigida, seu deslocamento cai pela metade e você não soma Destreza à Defesa enquanto empunhar a arma.",
-   "porque": "o Mizuki decidiu em 07/10/2026, depois de testar a ficha no Sheets: 'a gente precisa mexer nessa penalidade, ideal é ser só a desvantagem no ataque e metade do deslocamento, mas tem q mexer no livro tbm, ja pode atualizar na ficha'. O livro ainda traz a frase antiga; quando ele mudar, esta chave sai daqui"
-  }
+  "xp_adicional_nota": "o livro manda aplicar 'evento de dobro ou outro ajuste anunciado' antes do arredondamento final; estes são os ajustes da guilda"
  }
 }

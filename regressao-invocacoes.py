@@ -132,6 +132,7 @@ def regra_da_carta(F, tipo, num, c):
         erros.append("forma0")
     erros += ["fechada"] * sum(1 for m in mel if PECAS[m]["familia"] and PECAS[m]["familia"] not in fams)
     gasto = 0 if C == 0 else (preco(forma["peso"], C) if forma["peso"] else 0)
+    gasto_na_forma = gasto          # 10/10/2026 (B45), o livro final: a devolução paga Melhorias, e "a Forma fica fora dessa conta"
     if C > 0:
         gasto += sum(preco_livre(PECAS[m]["peso"], C) if PECAS[m]["familia"] in livres else preco(PECAS[m]["peso"], C) for m in mel)
         if len(mel) > LIMITE[C]:
@@ -148,7 +149,7 @@ def regra_da_carta(F, tipo, num, c):
         if any(RESTRICOES[r]["devolve"] > 1 for r in res):
             erros.append("restricao leve")
     dev = 0 if C == 0 else sum(math.ceil(C / 2) if RESTRICOES[r]["devolve"] == 1 else C for r in res) + (C if forma["embutida"] else 0)
-    usa = min(dev, 2 * C, gasto)
+    usa = min(dev, 2 * C, gasto - gasto_na_forma)
     saldo = (PONTOS[C] if C else 0) - gasto + usa
     if C > 0 and saldo < 0:
         erros.append("orçamento")
@@ -165,7 +166,8 @@ def regra_da_carta(F, tipo, num, c):
         erros.append("tudo ou nada")
     if "Inescapável" in mel and (len(mel) > 1 or len(res) + forma["embutida"] > 0):
         erros.append("inescapável")
-    d = max(0, F["db"] - (1 if mel else 0)) if C == 0 else max(0, saldo)
+    # na básica a Melhoria Leve tira um dado, e a Restrição Leve devolve esse dado (o livro final), sem criar pontos
+    d = max(0, F["db"] - (1 if mel and not res else 0)) if C == 0 else max(0, saldo)
     dep = 0 if C == 0 else sum(1 for x in SOMAM_METADE if x in mel) * (d // 2)
     if C > 0 and d * (1.25 if REMATE in mel else 1) + dep > 4 * C:
         erros.append("teto")
@@ -353,6 +355,9 @@ monta("talismã", 13, com(CAO, tipo=fi.SH_CRIACAO, aquis="Criação", nivel_fixo
 monta("corpo de criação", 5, com(CAO, tipo=fi.CORPO_CRIACAO, aquis="Criação", nivel_fixo=5))
 monta("trunfos 17", 17, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=17, lib=[3, 4, 7]))
 monta("expansão 14", 14, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=14, exp="Completa"))
+# 10/10/2026 (B45): a mesma domada com a Mira aberta, mas fora das duas Livres, como no exemplo do livro ("sem desconto")
+monta("expansão 14 sem Livre", 14, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=14, exp="Completa",
+                                        fam=["Alcance", None, "Mira", "Controle", None]))
 monta("vazia", 5, {}, sozinha=True)                  # nenhuma caixa da aba inteira acende
 # 2. o Buff/Debuff
 monta("buff", 5, com(CAO, buff=[1, 0, 0, 0, 0], bstat=[2, 1, -1, 5, 3], btr=[0, 2, 0, -1]))
@@ -371,6 +376,7 @@ monta("Múltiplas", 5, CAO, trilha=fi.MULTIPLAS, sozinha=True)
 # o inventário pequeno: o Volume do que ela empunha, veste e guarda, contra o limite de 5 + Força (8, com Força 3)
 monta("equipada", 5, com(CAO, eq=["Katana", None, "Traje 1"], eq_vol=[1, None, 1], guarda=["Kit de primeiros socorros"], guarda_vol=[0.5]))
 monta("carregada demais", 5, com(CAO, eq_vol=[3, 2, 2], guarda_vol=[0.5, None, None, None, None, 1]))
+monta("carregada além do dobro", 5, com(CAO, eq_vol=[6, 4, 4], guarda_vol=[1.5, None, None, None, None, 1]))
 # 08/10/2026 (B41): a Integridade da entidade. O cão de nível 5 tem 27 de vida, e 13 de Integridade (metade, para baixo)
 for _nome, _int in (("alma 10", 10), ("alma 9", 9), ("alma 6", 6), ("alma 3", 3), ("alma 0", 0), ("alma demais", 40)):
     monta(_nome, 5, com(CAO, integ=_int))
@@ -516,8 +522,13 @@ checa("Liberação de Classe 3: 6 pontos + 3d8, por 14 PE; a de Classe 7, 16 pon
 checa("Técnica Máxima da domada de nível 17: 19d8 fixos, 8 pontos, 25 PE", (v(G["tm"]["dados"]), v(G["tm"]["pe"])) == ("19d8 fixos · 8 pontos", "25 PE"), f'{v(G["tm"]["dados"])} {v(G["tm"]["pe"])}')
 checa("antes do nível 17 a Técnica Máxima diz quando abre", le("cão 5")(G["tm"]["dados"]) == "Abre no nível 17" and le("cão 5")(G["tm"]["pe"]) == "—")
 v = le("expansão 14")
-checa("Expansão completa da domada de nível 14 (Classe 4): 24 PE e Acerto de 4d8", (v(G["exp"]["pe"]), v(G["exp"]["acerto"])) == ("24 PE", "Acerto 4d8") and "nível 14" in v(G["exp"]["pede"]),
-      f'{v(G["exp"]["pe"])} {v(G["exp"]["acerto"])} {v(G["exp"]["pede"])}')
+# o livro final: "Uma domada de nível 14 tem Classe 4. Com seu refino 6, sua completa custa 24 PE, tem raio de 9 m e Acerto de
+# 9 − 4 = 5d8, sem desconto de Família Livre." Com a Mira Livre, o Inescapável sai por 4 − 2 = 2, e o Acerto é de 7d8
+_sl = le("expansão 14 sem Livre")
+checa("Expansão completa da domada de nível 14 (Classe 4): 24 PE; Acerto de 9 − 4 = 5d8 sem a Família Livre, e de 9 − 2 = 7d8 com a Mira Livre",
+      (v(G["exp"]["pe"]), v(G["exp"]["acerto"]), _sl(G["exp"]["pe"]), _sl(G["exp"]["acerto"])) == ("24 PE", "Acerto 7d8", "24 PE", "Acerto 5d8")
+      and "nível 14" in v(G["exp"]["pede"]),
+      f'{v(G["exp"]["pe"])} {v(G["exp"]["acerto"])} | {_sl(G["exp"]["acerto"])} | {v(G["exp"]["pede"])}')
 v = le("vazia")
 checa("a ficha vazia não mostra erro nem número de ataque", "lugar vazio" in v(G["titulo"]) and v(G["stat"][0]) in (None, "") and
       all(fi.T_ERRO not in str(x) for x in CASOS["vazia"]["planilha"]["v"][ABA].values()))
@@ -529,10 +540,17 @@ checa("o conjunto: nível 5, maestria +1, até duas ativas, e a lista traz a fic
       f'{v(CJ["nivel"])} {v(CJ["maestria"])} {v(CJ["ativas"])} {v(CJ["rol"][0])} | {v(CJ["rol"][1])} | {v(CJ["rol_rot"])}')
 checa("com Múltiplas Invocações o limite de ativas vai a quatro", le("Múltiplas")(CJ["ativas"]) == 4, str(le("Múltiplas")(CJ["ativas"])))
 _eq, _dm = le("equipada")(G["equip_rot"]), le("carregada demais")(G["equip_rot"])
-checa("o equipamento soma o Volume do que ela empunha, veste e guarda (1 + 1 + 0,5 de 8), e acende quando passa do limite (8,5 de 8)",
-      re.fullmatch(r"EQUIPAMENTO · 2[.,]5 DE 8 DE VOLUME", str(_eq)) is not None and str(_dm).startswith(fi.T_ERRO)
-      and re.search(r"EQUIPAMENTO · 8[.,]5 DE 8 DE VOLUME · PASSOU DO LIMITE$", str(_dm)) is not None
-      and le("equipada")(G["guarda_rot"]) == "GUARDADO · SÓ COM A CARACTERÍSTICA DE TRANSPORTE", f"{_eq} | {_dm}")
+# 10/10/2026 (B45): a entidade "segue as regras gerais de Carga". Acima do limite e até o dobro é aviso, e o deslocamento cai
+# pela metade; acima do dobro é erro, e ela não se desloca
+_dd = le("carregada além do dobro")(G["equip_rot"])
+checa("o equipamento soma o Volume do que ela empunha, veste e guarda (1 + 1 + 0,5 de 8); acima do limite avisa (8,5 de 8) e "
+      "acima do dobro acende (16,5 de 8)",
+      re.fullmatch(r"EQUIPAMENTO · 2[.,]5 DE 8 DE VOLUME", str(_eq)) is not None
+      and re.fullmatch(re.escape(fi.T_AVISO) + r"EQUIPAMENTO · 8[.,]5 DE 8 DE VOLUME · ACIMA DO LIMITE", str(_dm)) is not None
+      and re.fullmatch(re.escape(fi.T_ERRO) + r" EQUIPAMENTO · 16[.,]5 DE 8 DE VOLUME · PASSOU DO DOBRO", str(_dd)) is not None
+      and le("equipada")(G["guarda_rot"]) == "GUARDADO · SÓ COM A CARACTERÍSTICA DE TRANSPORTE", f"{_eq} | {_dm} | {_dd}")
+_ds = [le(n)(G["stat"][4]) for n in ("equipada", "carregada demais", "carregada além do dobro")]
+checa("o deslocamento da entidade: 9 m dentro do limite, 4,5 m acima dele e 0 m acima do dobro", _ds == ["9 m", "4,5 m", "0 m"], str(_ds))
 # 08/10/2026 (B41): a Integridade da entidade com alma. Metade da vida máxima, para baixo (27 -> 13); nasce cheia; os
 # estágios pelo que falta (um quarto, metade, três quartos, toda), com frações exatas: de 13, perder 3 ainda não é um
 # quarto (3,25), perder 4 é; e o corpo sem alma não tem Integridade
