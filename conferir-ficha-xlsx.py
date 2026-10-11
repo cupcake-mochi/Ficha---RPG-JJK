@@ -1606,39 +1606,36 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
     checa("o script só usa fonte conferida no seletor", fontes_gs <= CONF,
           str(sorted(fontes_gs - CONF)))
 
-# 11/10/2026 (B45): a ficha posta em dia com o livro da edição R43 (v0.358). O que a regra nova tirou não pode voltar por
-# uma geração de arquivo velho: o menu do que o pacto concede, a Melhoria Troca, a carga que parava no limite.
+# 11/10/2026 (B45, a revisão depois do fechamento): o que o livro final (R43) tirou não pode voltar por uma geração de
+# arquivo velho, e as notas que a releitura achou atrasadas ficam cobradas aqui.
 _am45, _fp45 = wb["FICHA AMALDIÇOADA"], wb["FICHA PESSOAL"]
 _tec45 = json.load(open("ficha-v01/tecnica-do-livro.json", encoding="utf-8"))
 _txt45 = {(ws.title, c.coordinate): c.value for ws in wb for l in ws.iter_rows() for c in l if isinstance(c.value, str)}
 _rot45 = [v for (a, _), v in _txt45.items() if a == "FICHA AMALDIÇOADA"]
-_menus45 = [d.formula1 for d in _am45.data_validations.dataValidation if d.formula1 and "DADOS_AM!" in d.formula1]
-_formas45 = []
-for _f in _menus45:
-    _m = re.fullmatch(r"DADOS_AM!\$([A-Z]+)\$(\d+):\$([A-Z]+)\$(\d+)", _f)
+_menus45 = []
+for _d in _am45.data_validations.dataValidation:
+    _m = re.fullmatch(r"DADOS_AM!\$([A-Z]+)\$(\d+):\$([A-Z]+)\$(\d+)", _d.formula1 or "")
     if _m and _m.group(1) == _m.group(3):
-        _col = [wb["DADOS_AM"][f"{_m.group(1)}{r}"].value for r in range(int(_m.group(2)), int(_m.group(4)) + 1)]
-        if "Promessa" in _col:
-            _formas45.append(_col)
-checa("o pacto tem o menu das quatro formas do livro e a caixa do que se recebe, e não tem mais o menu do que ele concede (R43)",
-      _formas45 == [[f["forma"][:1].upper() + f["forma"][1:] for f in _tec45["pactos"]["formas"]]] and len(_formas45[0]) == 4
-      and _rot45.count("O QUE EU RECEBO") == 3 and "VAGAS DE PACTO" in _rot45 and "PERMANENTES" not in _rot45
-      and not any(v in ("Um espaço conhecido", "Uma aptidão") for v in _txt45.values()), f"{_formas45}")
+        _menus45.append([wb["DADOS_AM"][f"{_m.group(1)}{r}"].value for r in range(int(_m.group(2)), int(_m.group(4)) + 1)])
+_mai45 = lambda t: t[:1].upper() + t[1:]
+checa("o pacto tem o menu das quatro formas do livro e o do que ele modifica, e nenhum menu oferece aptidão, espaço ou PE (R43)",
+      [_mai45(f["forma"]) for f in _tec45["pactos"]["formas"]] in _menus45 and len(_tec45["pactos"]["formas"]) == 4
+      and [_mai45(m["modifica"]) for m in _tec45["pactos"]["modifica"]] in _menus45 and len(_tec45["pactos"]["modifica"]) == 4
+      and _rot45.count("O QUE EU RECEBO") == 3 and "VAGAS" in _rot45 and "PERMANENTES" not in _rot45
+      and not any(v in ("Um espaço conhecido", "Uma aptidão conhecida") for v in _txt45.values()))
 checa("a vaga de pacto conta o permanente e o pacto de restrição, e só eles (R43)",
-      _tec45["pactos"]["ocupam_vaga"] == ["Permanente", "Pacto de restrição"] and "concede" not in _tec45["pactos"])
+      _tec45["pactos"]["ocupa_vaga"] == ["Permanente", "Pacto de restrição"])
 checa("a Melhoria Troca saiu do arquivo de dados e de todas as abas, e a De Novo é Pesada (R43)",
       "Troca" not in CAT["melhorias"] and CAT["melhorias"]["De Novo"]["peso"] == "Pesada" and len(CAT["melhorias"]) == 68
       and not any(v == "Troca" for v in _txt45.values()), str(len(CAT["melhorias"])))
-_carga45 = [v for (a, _), v in _txt45.items() if a == "FICHA PESSOAL" and v.startswith("=") and "acima do dobro" in v]
-checa("a carga da FICHA PESSOAL distingue acima do limite e acima do dobro, e a nota traz a regra nova (R43)",
-      len(_carga45) == 1 and '" · acima do dobro",IF(' in _carga45[0] and '" · acima"' in _carga45[0]
-      and any(isinstance(c.comment.text, str) and "acima do dobro, você não se desloca" in c.comment.text
-              for l in _fp45.iter_rows() for c in l if c.comment), str(_carga45)[:200])
-checa("a nota das cicatrizes traz a escolha de Intimidação e Persuasão (R43)",
-      any("vantagem em Intimidação e desvantagem em Persuasão" in c.comment.text for l in _fp45.iter_rows() for c in l if c.comment))
-_notas45 = {a: [c.comment.text for l in wb[a].iter_rows() for c in l if c.comment] for a in ("FICHA AMALDIÇOADA", "INVOCAÇÕES")}
-checa("a nota das Restrições diz, nas duas abas, que a devolução paga Melhorias e não a Forma (R43, item 143)",
-      all(any("Restrição paga Melhorias, e não a Forma" in t for t in _notas45[a]) for a in _notas45)
+_notas45 = {a: [c.comment.text for l in wb[a].iter_rows() for c in l if c.comment] for a in ("FICHA AMALDIÇOADA", "INVOCAÇÕES", "FICHA PESSOAL")}
+checa("a nota da carga traz a regra nova: metade do deslocamento até o dobro, e parado acima dele (R43, item 158)",
+      any("Acima do limite e até o dobro" in t and "acima do dobro, você não se desloca" in t for t in _notas45["FICHA PESSOAL"]))
+checa("a nota das cicatrizes traz a escolha de Intimidação e Persuasão (R43, item 94)",
+      any("vantagem em Intimidação e desvantagem em Persuasão" in t for t in _notas45["FICHA PESSOAL"])
+      and not any("Não dá modificador" in t for t in _notas45["FICHA PESSOAL"]))
+checa("a nota das Restrições diz, nas duas abas, que a devolução paga Melhorias e nunca a Forma (R43, item 143)",
+      all(any("Restrição paga Melhorias, nunca a Forma" in t for t in _notas45[a]) for a in ("FICHA AMALDIÇOADA", "INVOCAÇÕES"))
       and not any("incluindo a Forma" in t for a in _notas45 for t in _notas45[a]))
 checa("a nota da Reação de Cobrir-se de Energia tira só a proteção passiva e cobra os 2 PE (R43, item 160)",
       any("Como Reação e 2 PE" in t and "só a proteção passiva" in t for t in _notas45["FICHA AMALDIÇOADA"])
@@ -1647,9 +1644,8 @@ checa("a nota do retorno da invocação diz que a carga do talismã não abate o
       any("A carga do talismã não abate este preço" in t for t in _notas45["INVOCAÇÕES"]))
 checa("as Formas de área dizem, no arquivo de dados, metade do resultado do dano no sucesso do TR (R43, item 14)",
       all(CAT["formas"][f]["resolve"] == "TR; metade do resultado do dano no sucesso" for f in ("Explosão", "Aura", "Cone", "Linha")))
-checa("o arquivo de dados diz de que livro saiu: a edição R43, v0.358",
-      "R43" in CAT["_meta"]["versao_dona"] and "v0.358" in CAT["_meta"]["versao_dona"]
-      and "R43" in json.load(open("manual-fonte.json", encoding="utf-8")).get("rotulo", json.dumps(json.load(open("manual-fonte.json", encoding="utf-8")), ensure_ascii=False)))
+checa("o arquivo de dados e o manual dizem de que livro saíram: o Ciclo Maldito R43",
+      "R43" in CAT["_meta"]["versao_dona"] and "R43" in json.load(open("manual-fonte.json", encoding="utf-8"))["livro"])
 
 print(f"\n{'A FICHA CONFERE' if not FALHAS else f'{len(FALHAS)} PROBLEMA(S)'}")
 sys.exit(1 if FALHAS else 0)

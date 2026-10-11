@@ -2,8 +2,8 @@
  "_meta": {
   "sistema": "Ciclo Maldito",
   "versao": "1.0",
-  "versao_data": "11/10/2026",
-  "versao_dona": "o livro Ciclo Maldito na edição R43, como está na v0.358 do JJK---Project (ciclo-maldito-r41/LIVRO-COMPLETO.md), lido em 11/10/2026",
+  "versao_data": "10/10/2026",
+  "versao_dona": "o livro final do JJK---Project, Ciclo Maldito R43 (LIVRO-COMPLETO.md de ciclo-maldito-r41/), com a revisão de regras do Mizuki de 07 a 10/10/2026",
   "fonte": "manual.txt, gerado do LIVRO-COMPLETO.md pelo extrair-manual.py; o arquivo e o hash estão no manual-fonte.json",
   "regra": "onde a ficha e o manual discordarem, o manual vence",
   "nivel_inicial": 2,
@@ -839,7 +839,7 @@
   "formas_sem_desconto": true,
   "restricao_teto_devolucao": "2 x Classe",
   "restricao_nunca_devolve": "Pesada",
-  "restricao_paga": "Melhorias; a Forma não entra nessa conta, e a devolução aproveitada nunca supera o gasto com Melhorias",
+  "restricao_paga": "Melhorias, nunca a Forma; a devolução aproveitada nunca passa do gasto em Melhorias",
   "restricoes_por_feitico": 2,
   "melhorias_por_classe": {
    "1 e 2": 2,
@@ -1547,7 +1547,7 @@
   "uniforme_desliga_a_protecao_de_energia": true,
   "escudo_soma_por_cima": true,
   "dois_tetos": "vale o menor",
-  "sem_a_forca": "não pode preparar a peça nem receber sua proteção"
+  "sem_a_forca": "veste ou empunha e recebe a proteção, com deslocamento pela metade e desvantagem em TR Físico; as penalidades não se multiplicam"
  },
  "equipamento": {
   "fonte": "manual, capítulo Equipamento: as tabelas de armas, Treino por categoria, Munição, Trajes, Revestimentos e escudos, Preços de proteção, Equipamento restrito; Regras gerais: Carga e o dado desarmado",
@@ -2599,7 +2599,7 @@
     "Torre": 2
    },
    "soma": "sem arredondar",
-   "acima_do_limite": "até o dobro do limite, deslocamento pela metade e desvantagem em TR Físico; acima do dobro, não pode se deslocar com a carga"
+   "acima_do_limite": "até o dobro do limite: deslocamento pela metade e desvantagem em TR Físico; acima do dobro: não pode se deslocar com a carga"
   },
   "situacoes_do_traje": [
    "Vão apertado",
@@ -2627,9 +2627,7 @@
    "Escudo Médio": 36000,
    "Escudo Torre": 108000
   },
-  "sem_a_forca_da_arma": "desvantagem nos ataques com a arma e deslocamento pela metade enquanto a empunhar; não se acumula com a desvantagem da falta de treino",
-  "sem_a_forca_da_protecao": "veste ou empunha a peça e recebe a proteção dela, com deslocamento pela metade e desvantagem em TR Físico enquanto a usar",
-  "penalidades_nao_se_multiplicam": "carga, arma sem a Força e proteção sem a Força: o deslocamento cai pela metade uma única vez, e a desvantagem em TR Físico é uma só",
+  "sem_a_forca_da_arma": "desvantagem nos ataques com a arma e deslocamento pela metade enquanto a empunhar; a Destreza continua somando à Defesa",
   "sem_treino": "desvantagem nos ataques com a arma"
  },
  "patentes": {

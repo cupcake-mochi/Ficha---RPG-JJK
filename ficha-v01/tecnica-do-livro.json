@@ -1,7 +1,7 @@
 {
  "_meta": {
   "o_que_e": "o que a FICHA AMALDIÇOADA calcula e o catalogo-projeto-m.json não tem, lido do manual.txt",
-  "versao_do_livro": "Ciclo Maldito, edição R43, como está na v0.358 do JJK---Project (lida em 11/10/2026)",
+  "versao_do_livro": "Ciclo Maldito R43, o livro final, como está na v0.357 do JJK---Project (lido em 10/10/2026)",
   "sha256_do_livro": "5fc5849193aab8a6815a15ca5474d99d30e5c87d40ce2c3fbafb4d3842ee2133",
   "extraido_por": "ficha-v01/extrair_tecnica.py",
   "capitulos": [
@@ -99,12 +99,12 @@
   {
    "nome": "Regra Própria",
    "classe_passiva": "1, 2 ou 3",
-   "faz": "Técnicas baseadas em aposta, contrato, julgamento ou obrigação podem ter uma Regra Própria, definida com o mestre antes da campanha. Ela é um Talento específico, com aquisição diferente das demais. Você continua livre para criar com o mestre fora dos exemplos deste capítulo; os campos abaixo ajudam a registrar a proposta."
+   "faz": "Técnicas baseadas em aposta, contrato, julgamento ou obrigação podem ter uma Regra Própria, definida com o mestre antes da campanha. Ela é um Talento específico, com aquisição diferente das demais."
   },
   {
    "nome": "Talento Próprio",
    "classe_passiva": "1, 2 ou 3",
-   "faz": "Categoria de Efeito 1, 2 ou 3. Custos e níveis da Categoria escolhida. Se o catálogo não representar a ideia, escreva o efeito com o mestre antes da sessão. Ele ocupa os espaços correspondentes e conta no máximo de cinco Talentos pagos. Você continua livre para criar com o mestre fora dos exemplos deste capítulo; os campos abaixo ajudam a registrar a proposta."
+   "faz": "Categoria de Efeito 1, 2 ou 3. Custos e níveis da Categoria escolhida. Se o catálogo não representar a ideia, escreva o efeito com o mestre antes da sessão. Ele ocupa os espaços correspondentes e conta no máximo de cinco Talentos pagos."
   }
  ],
  "classe_passiva": [
@@ -528,7 +528,21 @@
     "teto": "Registra uma limitação já considerada na ficha"
    }
   ],
-  "ocupam_vaga": [
+  "modifica": [
+   {
+    "modifica": "um feitiço"
+   },
+   {
+    "modifica": "a energia"
+   },
+   {
+    "modifica": "uma aptidão"
+   },
+   {
+    "modifica": "um Estilo"
+   }
+  ],
+  "ocupa_vaga": [
    "Permanente",
    "Pacto de restrição"
   ],
@@ -550,12 +564,11 @@
     3
    ]
   ],
-  "frase": "O pacto concede uma mecânica única, decidida com o mestre.",
+  "frase": "O pacto concede uma mecânica única, decidida com o mestre. Pode modificar o funcionamento de um feitiço, da energia, de uma aptidão ou de um Estilo.",
   "quantos": "Você pode manter metade da Essência em pactos, arredondada para baixo, contando permanentes e pactos de restrição.",
-  "frases": [
-   "Promessas e pactos temporários não entram nesse limite.",
-   "o benefício muda como essa capacidade funciona, sem acrescentar diretamente um valor numérico."
-  ]
+  "fora_do_limite": "Promessas e pactos temporários não entram nesse limite.",
+  "sem_numero": "Pactos não concedem bônus numérico a ataques, Defesa ou perícias. Não existe pacto por dano.",
+  "restricao_sem_vaga": "Com permissão do mestre, ele pode existir mesmo sem vaga."
  },
  "leque": {
   "frases": [

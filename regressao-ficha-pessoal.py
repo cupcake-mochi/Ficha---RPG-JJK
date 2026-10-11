@@ -232,13 +232,11 @@ CASOS = {
     # 08/10/2026 (B42): o Buff/Debuff da carga soma no limite, e o negativo tira: com ele a mesma carga passa do limite
     "carga com buff": dict(forca=3, principal="Faca", equip=KIT, itens=ITENS, carga_buff=2),
     "carga com debuff": dict(forca=3, principal="Faca", equip=KIT, itens=ITENS, carga_buff=-5),
-    # 11/10/2026 (edição R43): a carga acima do limite anda pela metade, e acima do dobro não anda; o uniforme usado sem a
-    # Força dá a proteção e corta o deslocamento
-    "carga acima do limite": dict(forca=3, principal="Faca", equip=KIT, itens=ITENS,
-                                  livres=[("Baú", 1, "Carga", None, None, None, None, 5, None, None, None)]),
-    "carga acima do dobro": dict(forca=0, principal="Faca", equip=KIT, itens=ITENS,
-                                 livres=[("Cofre", 1, "Carga", None, None, None, None, 9, None, None, None)]),
-    "uniforme sem a Força": dict(forca=0, destreza=1, vestindo="Revestimento 1"),
+    # 10/10/2026 (B45), o livro final: acima do dobro do limite não se desloca (a "carga estourada" fica entre o limite e o
+    # dobro, e anda pela metade); e o uniforme sem a Força protege, com metade do deslocamento
+    "carga além do dobro": dict(forca=3, principal="Faca", equip=KIT,
+                                livres=[("Cofre", 1, "Carga", None, None, None, None, 20, None, None, None)]),
+    "só o uniforme sem a Força": dict(forca=0, destreza=1, vestindo="Revestimento 1"),
 }
 
 
@@ -335,20 +333,24 @@ def esperado(c):
     out["nota:arma da secundária"] = ("" if not vale else f"{sec}\n{LIVRO['escudo']}" if escudo else nota_da_arma(sec, tab[sec], False))
     carga = carga_do(equip, itens, ves, sum(l[7] or 0 for l in livres))
     limite = R["limite_base"] + forca + c.get("carga_buff", 0)
-    # 11/10/2026 (edição R43 do livro, item 158): acima do limite e até o dobro o personagem anda pela metade; só acima
-    # do dobro ele não sai do lugar
-    out["carga"] = f"{num(carga if carga % 1 else int(carga))} de {limite}" + (fp.T_DOBRO if carga > 2 * limite else fp.T_ACIMA if carga > limite else "")
+    out["carga"] = f"{num(carga if carga % 1 else int(carga))} de {limite}" + (fp.T_ACIMA if carga > limite else "")
     out["salario"] = dict((p[0], p[1]) for p in R["patentes"])[grau]
     out["requisito"] = fp.T_NAO_CUMPRIDO if (falta_p or falta_s or falta_u) else "Cumprido"
     out["__equipamento"] = " + ".join(x for x in (ves if u else "", sec if escudo else "") if x)
-    # 04/10/2026, o livro reconstruído: arma empunhada sem a Força corta o deslocamento pela metade.
-    # 11/10/2026 (edição R43, itens 157 e 158): o uniforme e o escudo usados sem a Força, e a carga acima do limite,
-    # também; as causas não se multiplicam, e só a carga acima do dobro para o personagem
+    # 10/10/2026 (B45), o livro final: arma, uniforme ou escudo usado sem a Força e carga acima do limite cortam o
+    # deslocamento pela metade, uma vez só ("não se multiplicam"); carga acima do dobro do limite não deixa andar
     meia = falta_p or falta_s or falta_u or carga > limite
     # 08/10/2026 (B41): do degrau 2 de Exaustão em diante o deslocamento fica limitado a 4,5 m, e o limite não aumenta o
     # que já está menor ou zerado (Dano e Recuperação, Exaustão)
     exausto = (c.get("exaustao") or 0) >= 2
     out["__deslocamento"] = "0 m" if carga > 2 * limite else "4,5 m" if (meia or exausto) else "9 m"
+    out["nota:carga"] = ("Você passou do dobro do limite: não pode se deslocar com essa carga. Reduza o que leva antes de andar, nadar, "
+                         "escalar ou voar." if carga > 2 * limite else
+                         "Você passou do limite: o seu deslocamento cai pela metade e você tem desvantagem em TR Físico. Acima de "
+                         f"{2 * limite}, o dobro do limite, você não pode se deslocar com a carga." if carga > limite else "")
+    # a nota do requisito de Força: o que a arma sem a Força custa, o que a proteção sem a Força custa, e que não se somam
+    arma_sem, prot_sem = bool(falta_p or (falta_s and not escudo)), bool(falta_u or (falta_s and escudo))
+    out["__nota_da_forca"] = (arma_sem, prot_sem)
     # a Defesa da FICHA continua a mesma conta, agora pelo espelho: 10 + Destreza (com o teto) + proteção
     return out
 
@@ -427,6 +429,14 @@ for nome, c in CASOS.items():
     erros = []
     vivas = notas_vivas(d)
     for k, v in esp.items():
+        if k == "__nota_da_forca":
+            # 10/10/2026 (B45): a arma sem a Força dá desvantagem no ataque; o uniforme e o escudo protegem, com a penalidade;
+            # e, com os dois, o deslocamento cai "uma vez só"
+            nf = txt(vivas.get("requisito de força", ("<a DADOS não tem esta nota>",))[0])
+            tem_n = ("desvantagem nos ataques com ela" in nf, "protege normalmente" in nf and "desvantagem em TR Físico" in nf)
+            if tem_n != v or ("uma vez só" in nf) != (v[0] and v[1]) or "não dá a proteção" in nf:
+                erros.append(f"a nota do requisito de Força diz {nf!r}, e a regra pede arma={v[0]}, proteção={v[1]}")
+            continue
         lido = (txt(vivas.get(k[5:], ("<a DADOS não tem esta nota>",))[0]) if k.startswith("nota:") else
                 txt(f[IDX[k[2:]]].value) if k.startswith("__") else txt(p[G[k]].value))
         if k in ("carga", "__deslocamento"):
@@ -462,8 +472,8 @@ for nome, c in CASOS.items():
     u, e = _ED["uniformes"].get(ves), (None if duas else _ED["escudos"].get(sec))
     tetos = [x["teto_de_destreza"] for x in (u, e) if x and x["teto_de_destreza"] is not None]
     prot = (u["protecao"] if u else 1) + (e["protecao"] if e else 0)       # sem uniforme, o cobrir-se do refino 1: 1/3 + 1
-    # 11/10/2026 (edição R43 do livro): a peça usada sem a Força dá a proteção dela do mesmo jeito (a penalidade é no
-    # deslocamento e no TR Físico), e a arma empunhada sem a Força não mexe na Defesa. Nada é descontado aqui
+    # 10/10/2026 (B45), o livro final: a peça usada sem a Força "recebe sua proteção e seus benefícios de uso normalmente";
+    # a Defesa não muda com a Força (a arma sem a Força já não mexia nela desde 07/10/2026)
     fc = c.get("forca", 0)
     armas_em_uso = [n for n in (c.get("principal"), None if e else sec) if n in ARMAS and ARMAS[n]["categoria"] != "Escudo"]
     sem_forca = any((0 if ARMAS[n]["forca"] == "—" else ARMAS[n]["forca"]) > fc for n in armas_em_uso)

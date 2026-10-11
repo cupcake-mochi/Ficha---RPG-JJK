@@ -54,7 +54,7 @@ for t in DOC.tables:
 # e o quadro do livro, que vence a .docx onde os dois trazem o campo
 sys.path.insert(0, ".")
 import livro as Lv
-# 11/10/2026 (edição R43): a seção do exemplo passou a se chamar "Exemplo: Kaori"
+# B45: no livro final o título da seção é "Exemplo: Kaori"; na candidata era só "Kaori"
 _q = dict(f for f in Lv.tabela(Lv.secao("Exemplo: Kaori") or Lv.secao("Kaori"), "Campo")[1] if len(f) == 2)
 _ve = re.match(r"(\d+) PV e (\d+) PE\.", _q.get("Vida e energia", ""))
 _df = re.match(r"(\d+):", _q.get("Defesa", ""))

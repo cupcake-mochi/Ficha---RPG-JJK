@@ -177,8 +177,15 @@ _EQ = CAT["equipamento_defesa"]
 _MARCOS = CAT["progressao"]["marcos"]
 _mteto = _re.search(r"Refino mede o domínio da energia amaldiçoada\. Começa em 1 e tem limite (\d+)\.", _MAN)
 _mex1 = _re.search(r"tem Destreza (\d+) e usa Traje (\d+), que fornece proteção \d+ sem teto\. Sua Defesa é 10 \+ \d+ \+ \d+ = (\d+)\.", _MAN)
-# 11/10/2026 (edição R43): o exemplo passou a abrir por "Sem Traje, Revestimento ou escudo, com Refino 6, a proteção..."
-_mex2 = _re.search(r"[Cc]om Refino (\d+), a proteção passiva é (\d+)", _MAN)
+_mex2 = _re.search(r"Com Refino (\d+), a proteção passiva é (\d+)", _MAN)
+if not _mex2:
+    # B45: o livro final trocou o exemplo em prosa ("Com Refino N, a proteção passiva é M") pela tabela do Cobrir-se de
+    # Energia ("Refino | Proteção | Redução de Dano da Reação"). O caso de teste sai da terceira faixa dela.
+    _faixas = _re.findall(r"(\d+)[–-](\d+) \| (\d+) \| \d+[–-]\d+",
+                          _MAN.split("Refino | Proteção | Redução de Dano da Reação", 1)[-1][:200])
+    if len(_faixas) >= 3:
+        _mex2 = _re.match(r"Com Refino (\d+), a proteção passiva é (\d+)",
+                          f"Com Refino {_faixas[2][0]}, a proteção passiva é {_faixas[2][2]}")
 if not (_mteto and _mex1 and _mex2 and "sua proteção é 1 + um terço do Refino, arredondado para baixo" in _MAN):
     print("não achei no manual.txt o teto do refino, os dois exemplos de Defesa ou a fórmula do "
           "cobrir-se"); sys.exit(1)

@@ -66,8 +66,10 @@ def re_frase(rx, S=None):
     return m
 
 
-def subsecoes(S, nivel=4):
-    """[(título, linhas)] das seções de um nível dentro de um trecho"""
+def subsecoes(S, nivel=None):
+    """[(título, linhas)] das seções de um nível dentro de um trecho; sem o nível, o que fica logo abaixo do título do
+    trecho (10/10/2026: o livro final desceu um nível várias seções, e contar a partir do título vale nos dois)"""
+    nivel = nivel or Lv.nivel(S[0]) + 1
     out, atual = [], None
     for l in S[1:]:
         if Lv.nivel(l) and Lv.nivel(l) <= nivel:
@@ -79,17 +81,12 @@ def subsecoes(S, nivel=4):
     return out
 
 
-def primeiro(L):
-    p = Lv.paragrafos(L)
-    return p[0] if p else ""
-
-
-def entradas_com_categoria(S):
-    """[(nome, Categoria de Efeito, linhas)] das entradas de uma seção, um nível abaixo do título dela.
-    Até 10/10/2026 a Categoria vinha no título ("#### Golpe Seco — Categoria de Efeito 1"); na edição R43 ela é a
-    primeira linha da entrada ("Categoria de Efeito: 1."), e a seção desceu um nível. As duas formas valem."""
+def entradas_ce(S):
+    """[(nome, Categoria de Efeito, linhas)] das entradas de uma seção de Talentos ou de Bênçãos. A candidata punha a
+    Categoria no título ("Ímpeto — Categoria de Efeito 2"); o livro final põe na primeira linha da entrada
+    ("Categoria de Efeito: 2."). Lê os dois, e a linha da Categoria não entra no texto da entrada."""
     out = []
-    for nome, L in subsecoes(S, Lv.nivel(S[0]) + 1):
+    for nome, L in subsecoes(S):
         m = re.match(r"(.+?) — Categoria de Efeito (\d)$", nome)
         if m:
             out.append((m.group(1), m.group(2), L))
@@ -97,9 +94,14 @@ def entradas_com_categoria(S):
         k = next((i for i, l in enumerate(L) if l.strip()), None)
         m = re.fullmatch(r"Categoria de Efeito: (\d)\.", L[k].strip()) if k is not None else None
         if not m:
-            raise SystemExit(f"a entrada {nome!r} nao diz a Categoria de Efeito, nem no titulo nem na primeira linha")
+            raise SystemExit(f"extrair_tecnica: a entrada {nome!r} nao diz a Categoria de Efeito no titulo nem na primeira linha")
         out.append((nome, m.group(1), L[k + 1:]))
     return out
+
+
+def primeiro(L):
+    p = Lv.paragrafos(L)
+    return p[0] if p else ""
 
 
 # o cabeçalho de aquisição que abre uma entrada: já tem coluna própria na aba (requisito e Categoria de Efeito)
@@ -122,21 +124,20 @@ def texto_curto(L, teto=1300):
 # ---------------------------------------------------------------------------------------------
 def talentos(cap11):
     out = []
-    # 11/10/2026 (edição R43): a seção "Proteção e presença" saiu, e os Talentos dela (Costura, Contramedida e Peso da
-    # Presença) passaram a ser subseções de "Talentos de Categoria 2", que é a Categoria que eles sempre tiveram
-    for titulo in ("Talentos de Categoria 1", "Talentos de Categoria 2", "Talentos de Categoria 3"):
+    for titulo in ("Talentos de Categoria 1", "Talentos de Categoria 2", "Proteção e presença", "Talentos de Categoria 3"):
+        if titulo == "Proteção e presença" and not Lv.secao(titulo, 0, dentro=cap11):
+            continue        # B45: no livro final esses Talentos estão dentro de "Talentos de Categoria 2", sem título próprio
         S = sec(titulo, cap11)
         intro = " ".join(Lv.paragrafos(S, ate_subtitulo=True))
         ce = re.search(r"Categoria (\d)$", titulo) or re.search(r"Categoria de Efeito (\d)", intro)
         for nome, L in subsecoes(S):
             out.append({"nome": nome, "classe_passiva": ce.group(1), "faz": re.sub(r"^Talento\. ", "", primeiro(L))})
-    for nome in ("Regra Própria", "Talento Próprio"):
-        S = sec(nome, cap11)
-        # 11/10/2026 (edição R43): a entrada abre agora com a frase que diz que o jogador é livre para criar fora dos
-        # exemplos (item 80 da revisão); a carta mostra a regra, que é o parágrafo seguinte, e a frase vai depois dela
-        pars = Lv.paragrafos(S, ate_subtitulo=True)
-        livre = [x for x in pars[:1] if x.startswith("Você continua livre para criar com o mestre")]
-        out.append({"nome": nome, "classe_passiva": "1, 2 ou 3", "faz": " ".join(pars[len(livre):len(livre) + 1] + livre)})
+    # 10/10/2026 (B45): o livro final abre as duas seções com a mesma frase de convite ("Você continua livre para criar
+    # com o mestre..."), que não diz o que a entrada é. A caixa da aba mostra o primeiro parágrafo que é só de uma delas
+    abre = {nome: Lv.paragrafos(sec(nome, cap11), ate_subtitulo=True) for nome in ("Regra Própria", "Talento Próprio")}
+    comum = set(abre["Regra Própria"]) & set(abre["Talento Próprio"])
+    for nome, pars in abre.items():
+        out.append({"nome": nome, "classe_passiva": "1, 2 ou 3", "faz": [p for p in pars if p not in comum][0]})
     return out
 
 
@@ -253,29 +254,36 @@ def dominio(cap14):
 
 
 def pactos(cap15):
+    """10/10/2026 (B45): no livro final o pacto não concede mais aptidão, espaço conhecido nem PE. Ele modifica como
+    uma de quatro coisas funciona, e a lista sai da frase do livro; o limite conta o permanente e o de restrição."""
     S = sec("Pactos", cap15)
     formas_ = [{"forma": f, "quando": _sem_ponto(q), "teto": _sem_ponto(t)} for f, q, t in tab(S, "Forma")]
-    # 11/10/2026 (edição R43, itens 34 a 37 e 186 da revisão de regras): o pacto permanente deixou de conceder aptidão,
-    # espaço conhecido ou PE máximo. Ele "concede uma mecânica única, decidida com o mestre", sem valor numérico; e o
-    # limite de metade da Essência conta os permanentes e os pactos de restrição (a Promessa e o temporário ficam fora).
-    b = re_frase(r"O pacto concede uma mecânica única, decidida com o mestre\.", cap15)
-    q = re_frase(r"Você pode manter metade da Essência em pactos, arredondada para baixo, contando permanentes e pactos de restrição\.", cap15)
-    fora = re_frase(r"Promessas e pactos temporários não entram nesse limite\.", cap15)
-    sem_numero = re_frase(r"o benefício muda como essa capacidade funciona, sem acrescentar diretamente um valor numérico\.", cap15)
-    vagas = [[e, int(Lv.numero(v))] for e, v in tab(S, "Essência")]
-    ocupam = [f["forma"] for f in formas_ if f["forma"].lower() in ("permanente", "pacto de restrição")]
-    if len(ocupam) != 2:
-        raise SystemExit(f"a tabela de formas de pacto nao tem mais o permanente e o de restricao: {[f['forma'] for f in formas_]}")
-    return {"formas": formas_, "ocupam_vaga": ocupam, "vagas": vagas,
-            "frase": Lv.frase(b.group(0)), "quantos": Lv.frase(q.group(0)),
-            "frases": [Lv.frase(fora.group(0)), Lv.frase(sem_numero.group(0))]}
+    b = re_frase(r"O pacto concede uma mecânica única, decidida com o mestre\. Pode modificar o funcionamento (de [^.]+)\.", cap15)
+    modifica = []
+    for item in re.split(r", | ou ", b.group(1)):
+        m = re.fullmatch(r"d(?:e (uma? .+)|(a .+))", item)
+        if not m:
+            raise SystemExit(f"extrair_tecnica: nao sei ler {item!r} na frase do que o pacto modifica")
+        modifica.append({"modifica": m.group(1) or m.group(2)})
+    q = re_frase(r"Você pode manter metade da Essência em pactos, arredondada para baixo, contando (permanentes) e (pactos de restrição)\.", cap15)
+    fora = re_frase(r"(Promessas) e pactos (temporários) não entram nesse limite\.", cap15)
+    nomes = [f["forma"] for f in formas_]
+    ocupa = [n for n in nomes if n.lower().rstrip("s") in (q.group(1).rstrip("s"), q.group(2).rstrip("s").replace("pactos", "pacto"))]
+    livre = [n for n in nomes if n.lower().rstrip("s") in (fora.group(1).lower().rstrip("s"), fora.group(2).rstrip("s"))]
+    if sorted(ocupa + livre) != sorted(nomes) or len(ocupa) != 2:
+        raise SystemExit(f"extrair_tecnica: as formas de pacto {nomes} nao fecham com quem ocupa vaga {ocupa} e quem nao ocupa {livre}")
+    vagas = [[e, int(v)] for e, v in tab(S, "Essência")]
+    sem_numero = re_frase(r"Pactos não concedem bônus numérico a ataques, Defesa ou perícias\. Não existe pacto por dano\.", cap15)
+    sem_vaga = re_frase(r"Com permissão do mestre, ele pode existir mesmo sem vaga\.", cap15)
+    return {"formas": formas_, "modifica": modifica, "ocupa_vaga": ocupa, "vagas": vagas,
+            "frase": Lv.frase(b.group(0)), "quantos": Lv.frase(q.group(0)), "fora_do_limite": Lv.frase(fora.group(0)),
+            "sem_numero": Lv.frase(sem_numero.group(0)), "restricao_sem_vaga": Lv.frase(sem_vaga.group(0))}
 
 
 def numeros(cap10):
     S = sec("Pontos e preços", cap10)
     dev = {f[0]: f[3] for f in tab(S, "Classe") if len(f) == 4}
-    # 11/10/2026 (edição R43): a frase do teto mudou de redação, e o número é o mesmo
-    teto = re_frase(r"a soma dos dados iniciais com esses acréscimos não pode passar de (\d) × Classe em d8", cap10)
+    teto = re_frase(r"não pode passar de (\d) × Classe em d8", cap10)
     out = []
     for c, _, pts, l, m, p in [f for f in tab(S, "Classe") if len(f) == 6]:
         out.append({"classe": int(c), "pontos": int(pts), "leve": int(l), "media": int(m), "pesada": int(p),
@@ -349,7 +357,7 @@ def rotas(cap13, cap12, catalogo_armas):
     grupos = {k: sorted(v, key=["Força", "Destreza"].index) for k, v in grupos.items()}
     marciais = []
     for titulo in ("Talentos marciais", "Talentos de resposta"):
-        for nome, ce, L in entradas_com_categoria(sec(titulo, cap13)):
+        for nome, ce, L in entradas_ce(sec(titulo, cap13)):
             marciais.append({"nome": nome, "classe_passiva": ce, "faz": primeiro(L)})
     ben = sec("Bênçãos", cap13)
     lap = {ce: int(Lv.numero(v)) for ce, v in tab(ben, "Categoria de Efeito")}
@@ -360,8 +368,8 @@ def rotas(cap13, cap12, catalogo_armas):
         bencaos.append({"nome": nome, "requisito": "Gratuita na Lapidação 1", "classe_passiva": "—",
                         "faz": texto_curto(S), "escala": escala_de(S, "Lapidação")})
     entradas = {}
-    for titulo in [l.lstrip("#").strip() for l in cap13 if Lv.nivel(l) in (3, 4) and l.lstrip("#").strip().startswith("Bênçãos de ")]:
-        for nome, _, L in entradas_com_categoria(sec(titulo, cap13)):
+    for titulo in [l.lstrip("#").strip() for l in cap13 if Lv.nivel(l) and l.lstrip("#").strip().startswith("Bênçãos de ")]:
+        for nome, _, L in entradas_ce(sec(titulo, cap13)):
             entradas[nome] = texto_curto(L)
     for nome, ce, req in tab(ben, "Bênção"):
         if nome == "Bênção Própria":
@@ -377,8 +385,7 @@ def rotas(cap13, cap12, catalogo_armas):
                    Lv.frase("Esta rota não concede Expansão de Domínio, incompleta ou completa, nem Extensão de Domínio."),
                    Lv.frase("O equipamento em uso é seu Selo."),
                    Lv.frase("PE significa Pontos de Energia para quem possui energia amaldiçoada e Pontos de Esforço para quem não possui.")],
-        # 11/10/2026 (edição R43): a seção das sementes desceu um nível de título; lê o nível logo abaixo do dela
-        "sementes": [n for n, _ in subsecoes(sec("Sementes", cap13), Lv.nivel(sec("Sementes", cap13)[0]) + 1)],
+        "sementes": [n for n, _ in subsecoes(sec("Sementes", cap13))],
         "semente_frase": Lv.frase("Ela conta como uma aptidão adicional."),
         "grupos_de_arma": grupos,
         "rota_de_arma": Lv.frase("Ao escolher esta rota, selecione três categorias de armas diferentes entre as categorias de Equipamento."),

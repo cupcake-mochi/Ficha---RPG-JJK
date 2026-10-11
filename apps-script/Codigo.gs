@@ -147,7 +147,7 @@ function notasDeRegra_(ss, idx) {
                      'Força que ela pede, o ataque com ela é com desvantagem: a FICHA PESSOAL diz qual.',
     'deslocamento': 'O seu deslocamento base é 9 metros, e você corta esse total em quantos pedaços ' +
                     'quiser dentro do turno. O Buff/Debuff do lado soma em metros. Cai pela metade, uma vez só, com ' +
-                    'uma arma, um uniforme ou um escudo usado sem a Força, ou com a carga acima do limite; fica em até ' +
+                    'uma arma, um uniforme ou um escudo usado sem a Força ou com a carga acima do limite; fica em até ' +
                     '4,5 m do degrau 2 de Exaustão em diante; e vai a zero com a carga acima do dobro do limite: a ' +
                     'FICHA PESSOAL diz qual.',
     // 09/10/2026 (B43): o descanso

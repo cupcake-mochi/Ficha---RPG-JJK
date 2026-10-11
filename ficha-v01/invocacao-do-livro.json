@@ -1,7 +1,7 @@
 {
  "_meta": {
   "o_que_e": "o que a aba INVOCAÇÕES lê do livro e o catálogo não tem",
-  "livro": "Ciclo Maldito, edição R43, como está na v0.358 do JJK---Project (lida em 11/10/2026)",
+  "livro": "Ciclo Maldito R43, o livro final, como está na v0.357 do JJK---Project (lido em 10/10/2026)",
   "sha256_do_livro": "5fc5849193aab8a6815a15ca5474d99d30e5c87d40ce2c3fbafb4d3842ee2133",
   "gerado_por": "ficha-v01/extrair_invocacao.py"
  },
@@ -88,7 +88,7 @@
   },
   "devolucao": {
    "livro": "As Restrições devolvem pontos para pagar Melhorias, até 2 × a Classe real e até o total gasto nelas. A Forma fica fora dessa conta.",
-   "conta": "MIN(devolução, 2 × Classe, gasto com Melhorias)"
+   "conta": "MIN(devolução, 2 × Classe, gasto em Melhorias)"
   },
   "teto": {
    "livro": "O total não passa de 4 × Classe.",
@@ -180,7 +180,7 @@
   },
   "expansao_acerto": {
    "livro": "Monte o Acerto de dano com os pontos de especial da maior Classe da domada, menos o preço Médio de Inescapável, com o desconto da Família Livre dela. Cada ponto restante vira 1d8.",
-   "conta": "pontos da especial − Média do Inescapável (com o desconto de Família Livre), 1d8 por ponto"
+   "conta": "pontos da Classe − preço Médio de Inescapável"
   },
   "trilhas": {
    "livro": "Escolha uma Trilha no nível 2: Invocação Principal, Parceria ou Múltiplas Invocações.",

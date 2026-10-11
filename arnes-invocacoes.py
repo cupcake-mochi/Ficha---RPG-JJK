@@ -43,7 +43,7 @@ PERTURBACOES = [
     # --- a entrada, o retorno e o talismã
     ("o talismã carregado não barateia a entrada", GER,
      '''MAX(1,CEILING({cl}/2,1)),{cl})\'''', '''{cl},{cl})\'''', "com o talismã carregado entra por 2 PE"),
-    # 11/10/2026 (edição R43 do livro): o retorno é 2 × Classe, e a carga do talismã deixou de abater
+    # 11/10/2026 (livro final R43, item 23): o retorno é 2 × Classe, e a carga do talismã deixou de abater
     ("o retorno volta a abater a carga do talismã", GER,
      '''o["ret"] = f'=2*{cl}\'''', '''o["ret"] = f'={cl}+{P("ent")}\'''', "o retorno custa 8 PE"),
     # --- o conjunto
@@ -62,8 +62,19 @@ PERTURBACOES = [
      '''"evol": f"=SUM({_A(g['eq_vol'][0], IV)}:{_A(g['eq_vol'][-1], IV)})",''', "o equipamento soma o Volume"),
     ("o limite de Volume da entidade esquece a Força", GER,
      '''o["carga"] = f'=5+{P("t0")}\'''', '''o["carga"] = f'=5\'''', "o equipamento soma o Volume"),
-    ("o equipamento acima do limite não acende", GER,
-     '''o["d_equip"] = (f'=IF({P("evol")}>{P("carga")},"{T_ERRO} ","")''', '''o["d_equip"] = (f'=IF({P("evol")}>99,"{T_ERRO} ","")''', "o equipamento soma o Volume"),
+    # 10/10/2026 (B45), o livro final: a entidade segue as regras gerais de Carga
+    ("o equipamento acima do dobro do limite não acende", GER,
+     '''o["d_equip"] = (f'=IF({P("evol")}>2*{P("carga")},"{T_ERRO} ",''', '''o["d_equip"] = (f'=IF({P("evol")}>99*{P("carga")},"{T_ERRO} ",''',
+     "o equipamento soma o Volume"),
+    ("o equipamento acima do limite volta a acender como erro", GER,
+     '''o["d_equip"] = (f'=IF({P("evol")}>2*{P("carga")},"{T_ERRO} ",''', '''o["d_equip"] = (f'=IF({P("evol")}>{P("carga")},"{T_ERRO} ",''',
+     "o equipamento soma o Volume"),
+    ("a entidade acima do limite de carga anda o deslocamento inteiro", GER,
+     '''IF({P("evol")}>{P("carga")},{P("desl")}/2,{P("desl")}))\'''', '''IF({P("evol")}>{P("carga")},{P("desl")},{P("desl")}))\'''', "o deslocamento da entidade"),
+    ("o Acerto da Expansão da domada esquece o desconto da Família Livre", GER,
+     '''{cl},2+3*IF(AND({fam_ines}<>"",''', '''{cl},2+0*IF(AND({fam_ines}<>"",''', "Expansão completa da domada"),
+    ("o Acerto da Expansão da domada não paga o Inescapável", GER,
+     '''MAX(0,INDEX({PONTOS},{cl})-INDEX({PRECOS},{cl},2+3*IF''', '''MAX(0,INDEX({PONTOS},{cl})-0*INDEX({PRECOS},{cl},2+3*IF''', "Expansão completa da domada"),
     # --- as cartas
     ("a especial cobra 2 PE por Classe", GER,
      '''IF({Cc}=0,"Sem PE",3*{Cc}&" PE"))\'''', '''IF({Cc}=0,"Sem PE",2*{Cc}&" PE"))\'''', "Mordida precisa"),
@@ -72,15 +83,16 @@ PERTURBACOES = [
     ("a devolução da Restrição deixa de parar em 2 × Classe", GER,
      '''o["dv"] = f"=MIN(2*{Cc},{P('dv0')})"''', '''o["dv"] = f"={P('dv0')}"''', "a devolução para em 2 × Classe"),
     ("a Restrição vira dado: o que ela devolve além do gasto não some", GER,
-     '''o["usa"] = f"=MIN({P('dv')},{P('gm')})"''', '''o["usa"] = f"={P('dv')}"''', "fichas sorteadas"),
-    # 11/10/2026 (edição R43 do livro, item 143): a devolução paga só as Melhorias, e a Forma fica de fora
-    ("a devolução da Restrição volta a pagar a Forma", GER,
-     '''o["usa"] = f"=MIN({P('dv')},{P('gm')})"''', '''o["usa"] = f"=MIN({P('dv')},{P('g')})"''', "fichas sorteadas"),
+     '''o["usa"] = f"=MIN({P('dv')},{P('g')}-IF({P('k0')}=0,0,INDEX({PRECOS},MAX(1,{Cc}),{P('k0')})))"''', '''o["usa"] = f"={P('dv')}"''',
+     "fichas sorteadas"),
+    # 10/10/2026 (B45), o livro final: a devolução paga Melhorias, e "a Forma fica fora dessa conta"
+    ("a Restrição da especial volta a pagar a Forma", GER,
+     '''o["usa"] = f"=MIN({P('dv')},{P('g')}-IF({P('k0')}=0,0,INDEX({PRECOS},MAX(1,{Cc}),{P('k0')})))"''', '''o["usa"] = f"=MIN({P('dv')},{P('g')})"''',
+     "fichas sorteadas"),
     ("a básica com Melhoria não perde o dado", GER,
-     '''MAX(0,{P("db")}-IF(AND({P("nm")}>0,COUNTIF({RR},"?*")=0),1,0))''', '''MAX(0,{P("db")})''', "fichas sorteadas"),
-    # 11/10/2026 (edição R43 do livro, item 63): na básica a Restrição Leve devolve o dado que a Melhoria tirou
-    ("na básica a Restrição Leve deixa de devolver o dado da Melhoria", GER,
-     '''MAX(0,{P("db")}-IF(AND({P("nm")}>0,COUNTIF({RR},"?*")=0),1,0))''', '''MAX(0,{P("db")}-IF({P("nm")}>0,1,0))''', "fichas sorteadas"),
+     '''MAX(0,{P('db')}-IF(AND({P('nm')}>0,COUNTIF({RR},\\"?*\\")=0),1,0))''', '''MAX(0,{P('db')})''', "fichas sorteadas"),
+    ("na básica a Restrição Leve deixa de devolver o dado que a Melhoria tirou", GER,
+     '''MAX(0,{P('db')}-IF(AND({P('nm')}>0,COUNTIF({RR},\\"?*\\")=0),1,0))''', '''MAX(0,{P('db')}-IF({P('nm')}>0,1,0))''', "fichas sorteadas"),
     ("o ataque com Condição ou Prende deixa de mostrar o TR (a D43 do livro)", GER,
      '''&IF({P("ptr")}>0," · TR"&IF({P("cdf")}="",""," CD "&{P("cdf")}),""),\'''', ''',\'''', "mostra também o TR e a CD"),
     # --- 08/10/2026 (B41): a Integridade da entidade com alma

@@ -10,11 +10,10 @@ O que ela muda fora dela:
     secundária. Ele monta o mesmo nome que a tabela de equipamento da DADOS usa ("Traje 1 + Broquel"),
     e por isso a Defesa não muda de conta;
   · o XP da FICHA passa a mostrar a soma das missões do painel, e o nível continua subindo por ele;
-  · o DESLOCAMENTO da FICHA cai pela metade com uma arma empunhada sem a Força, e vai a zero com a carga
-    acima do limite (04/10/2026: as duas regras passaram a ser do livro, e mudaram);
-  · a DEFESA da FICHA perde a proteção do uniforme ou do escudo usado sem a Força. A arma empunhada sem a Força
-    não mexe mais na Defesa (07/10/2026, decisão do Mizuki que o livro ainda não traz: desvantagem nos ataques
-    com ela e metade do deslocamento; está no `fora_do_livro` do arquivo de dados);
+  · o DESLOCAMENTO da FICHA cai pela metade, uma vez só, com uma arma, um uniforme ou um escudo usado sem a Força ou
+    com a carga acima do limite, e vai a zero com a carga acima do dobro do limite (10/10/2026, B45: o livro final);
+  · a DEFESA da FICHA não muda mais com a Força: o uniforme e o escudo usados sem ela protegem normalmente, e a arma
+    empunhada sem ela dá desvantagem nos ataques (10/10/2026: as três regras estão no livro final);
   · a DADOS ganha, depois do índice, as tabelas que os menus e as contas desta aba leem.
 
 De onde sai cada número: as armas, os escudos, os uniformes, o salário e os tipos de missão saem das
@@ -122,7 +121,6 @@ T_SEM_TREINO = "Sem treino"
 T_NAO_CUMPRIDO = "Não cumprido"
 T_PEDE_GRAU = "Pede "
 T_ACIMA = " · acima"
-T_DOBRO = " · acima do dobro"      # 11/10/2026: contém o T_ACIMA, e por isso a mesma regra de cor pinta os dois
 SOCO, MAO_LIVRE, NAS_DUAS, SEM_UNIFORME = "Soco", "—", "Nas duas mãos", "Sem uniforme"
 # o que a linha embaixo da mão diz quando nenhum equipável guardado serve a ela (B30: o menu nasce só com o Soco)
 T_GUARDE_P = "para outra arma, guarde ela nos Equipáveis guardados"
@@ -167,17 +165,6 @@ def _endereco(coord, aba):
 def _endereco_faixa(c1, c2, aba):
     return (f"=ADDRESS(ROW({aba}{c1}),COLUMN({aba}{c1}),4)&\":\"&"
             f"ADDRESS(ROW({aba}{c2}),COLUMN({aba}{c2}),4)")
-
-
-def tabela_da_defesa(dados, lin_cab):
-    """a tabela de equipamento da Defesa (defesa_equipamento.py), que já traz cada escudo com a proteção dele. A proteção
-    do escudo usado sem a Força sai dela, e não de uma tabela nova: o Codigo.gs acha o índice desta aba numa coluna fixa
-    da DADOS (IDXP_COL_CAMPO), e uma tabela a mais antes dele empurraria o índice."""
-    import defesa_equipamento as de
-    cab = next(r[0] for r in dados["celulas"] if r[1] == de.CABECALHO[0] and ix._lc(r[0])[0] == lin_cab)
-    c0 = ix._lc(cab)[1]
-    fim = max(ix._lc(r[0])[0] for r in dados["celulas"] if ix._lc(r[0])[1] == c0 and r[1] not in (None, ""))
-    return _faixa(c0, lin_cab + 1, c0 + 1, fim, "DADOS!")
 
 
 def descontos(missoes):
@@ -451,26 +438,18 @@ def trocas(layout, CAT=None):
     # 08/10/2026 (B42): o Buff/Debuff da carga soma no limite (uma habilidade que deixa carregar mais, ou menos)
     conta("limite de carga", f'={R["limite_base"]}+{f_}+N({_A(G["carga_buff"], FP)})')
     conta("carga acima", f'=IF({H["carga"]}>{H["limite de carga"]},1,0)')
-    # 11/10/2026 (edição R43 do livro, item 158 da revisão de regras): "Acima do limite e até o dobro dele, seu
+    # 10/10/2026 (B45), as regras do livro final. Arma empunhada sem a Força: desvantagem nos ataques com ela e metade do
+    # deslocamento. Uniforme ou escudo sem a Força: "recebe sua proteção e seus benefícios de uso normalmente, mas seu
+    # deslocamento cai pela metade e você tem desvantagem em TR Físico". Carga: "Acima do limite e até o dobro dele, seu
     # deslocamento cai pela metade e você tem desvantagem em TR Físico. Acima do dobro, você não pode se deslocar com a
-    # carga". Até 10/10 a carga acima do limite já parava o personagem.
-    conta("carga dobrada", f'=IF({H["carga"]}>2*{H["limite de carga"]},1,0)')
-    # 04/10/2026, as regras do livro reconstruído: arma empunhada sem a Força corta o deslocamento pela metade e tira a
-    # Destreza da Defesa; uniforme ou escudo sem a Força não dá a proteção dele; carga acima do limite não deixa andar.
-    # 07/10/2026: a arma sem a Força deixa de tirar a Destreza da Defesa e passa a dar desvantagem nos ataques com ela
-    # ("ideal é ser só a desvantagem no ataque e metade do deslocamento", o Mizuki, que ainda vai mudar o livro). A
-    # desvantagem não é número: fica na nota do requisito de Força e na nota dos ataques da FICHA
+    # carga". E as três "não se multiplicam: o deslocamento cai pela metade uma única vez". A Defesa não muda mais com a
+    # Força. As desvantagens não são número: ficam na nota do requisito de Força, na da carga e nas da FICHA
     conta("arma sem força", f'=IF(OR({H["falta força na principal"]}=1,AND({H["falta força na secundária"]}=1,'
                             f'{H["escudo na secundária"]}=0)),1,0)')
-    # 11/10/2026 (edição R43, item 157): o Traje, o Revestimento e o escudo usados sem a Força deixaram de perder a
-    # proteção. "Sem o valor exigido, você pode vesti-la ou empunhá-la e recebe sua proteção e seus benefícios de uso
-    # normalmente, mas seu deslocamento cai pela metade e você tem desvantagem em TR Físico enquanto a usar." A Defesa
-    # não desconta mais nada (a conta "proteção sem força" saiu), e a peça entra na meia marcha.
-    conta("proteção sem a força", f'=IF(OR({H["falta força no uniforme"]}=1,AND({H["falta força na secundária"]}=1,'
-                                  f'{H["escudo na secundária"]}=1)),1,0)')
-    # as três causas de metade não se multiplicam: "o deslocamento cai pela metade uma única vez"
-    conta("meia marcha", f'=IF({H["arma sem força"]}+{H["proteção sem a força"]}+{H["carga acima"]}>0,1,0)')
-    conta("parado pela carga", f'={H["carga dobrada"]}')
+    conta("proteção sem força", f'=IF(OR({H["falta força no uniforme"]}=1,AND({H["falta força na secundária"]}=1,'
+                                f'{H["escudo na secundária"]}=1)),1,0)')
+    conta("meia marcha", f'=IF(OR({H["arma sem força"]}=1,{H["proteção sem força"]}=1,{H["carga acima"]}=1),1,0)')
+    conta("parado pela carga", f'=IF({H["carga"]}>2*{H["limite de carga"]},1,0)')
     tot = [_faixa(b + C_TOTAL, G["missao_ini"], b + C_TOTAL, G["missao_fim"], FP) for b in BLOCOS]
     conta("xp total", "=" + "+".join(f"SUM({t})" for t in tot))
     conta("nível", f"=N({NIV})")
@@ -516,14 +495,14 @@ def trocas(layout, CAT=None):
          f'IF({fu_}=1,{V}&" pede Força "&{H["força do uniforme"]}&". ","")&"Você tem "&{f_}&"."&'
          f'IF(OR({fp_}=1,AND({fs_}=1,{esc}=0))," Empunhar uma arma sem a Força dá desvantagem nos ataques com ela e corta o '
          f'seu deslocamento pela metade.","")&'
-         f'IF(OR({fu_}=1,AND({fs_}=1,{esc}=1))," Sem a Força, o uniforme ou o escudo dá a proteção dele do mesmo jeito, mas '
-         f'corta o seu deslocamento pela metade e dá desvantagem em TR Físico enquanto você o usar.","")&'
-         f'IF({fp_}+{fs_}+{fu_}>1," O deslocamento cai pela metade uma vez só.",""))'),
+         f'IF(OR({fu_}=1,AND({fs_}=1,{esc}=1))," Sem a Força, o uniforme ou o escudo protege normalmente, mas corta o seu '
+         f'deslocamento pela metade e dá desvantagem em TR Físico.","")&'
+         f'IF(AND(OR({fp_}=1,AND({fs_}=1,{esc}=0)),OR({fu_}=1,AND({fs_}=1,{esc}=1)))," O deslocamento cai pela metade uma vez só.",""))'),
         ("carga",
-         f'=IF({H["carga dobrada"]}=1,"Você passou do dobro do limite: não pode se deslocar com essa carga. Largue ou guarde '
-         f'o que passou antes de andar, nadar, escalar ou voar.",'
-         f'IF({H["carga acima"]}=1,"Você passou do limite: seu deslocamento cai pela metade e você tem desvantagem em TR '
-         f'Físico. Acima do dobro do limite, você não sai do lugar.",""))'),
+         f'=IF({H["parado pela carga"]}=1,"Você passou do dobro do limite: não pode se deslocar com essa carga. Reduza o que '
+         f'leva antes de andar, nadar, escalar ou voar.",IF({H["carga acima"]}=1,"Você passou do limite: o seu deslocamento '
+         f'cai pela metade e você tem desvantagem em TR Físico. Acima de "&2*{H["limite de carga"]}&", o dobro do limite, '
+         f'você não pode se deslocar com a carga.",""))'),
         ("situação do traje",
          f'=IF(AND({uv}=1,LEFT({V},5)<>"Traje"),"Só o Traje carrega situação. O Revestimento não tem.",'
          f'IF({SIT}="","",IF({SIT}="{OUTRA_SITUACAO}","Você pode criar a sua, em uma ou duas palavras. O mestre confere três '
@@ -628,8 +607,8 @@ def trocas(layout, CAT=None):
         if idx.get(campo):
             nm, tp, tx = (_A(G[q][k_], FP) for q in ("legado_nome", "legado_tipo", "legado_texto"))
             cel["FICHA"][idx[campo]] = (f'=IF({nm}="","",{nm}&IF({tp}="",""," · "&{tp})&IF({tx}="","",": "&{tx}))', idx[campo])
-    # 11/10/2026 (edição R43): esta limpeza não mexe mais na DEFESA. Até 10/10 ela descontava a proteção da peça usada
-    # sem a Força; o livro passou a dar a proteção inteira, com a penalidade no deslocamento e no TR Físico (acima).
+    # 10/10/2026 (B45): a Defesa (defesa_equipamento.py) fica como o defesa_equipamento a escreve. Até aqui esta aba
+    # tirava dela a proteção da peça usada sem a Força; no livro final a peça protege normalmente
     menus_sai = [m_["onde"] for m_ in ficha["menus"] if eq_c in m_["onde"].split()]
     # 08/10/2026: as caixas dos Legados esticam com o texto. O Legado do livro vai de 58 a 546 letras, e a caixa de
     # três linhas daqui e o espelho de duas linhas da FICHA cortavam a maior parte deles. Escrever o nome, o tipo ou o
@@ -718,7 +697,7 @@ NOTAS = {
     "nome": "Vem da CARTEIRA: o nome do portador é digitado lá.",
     "traco": "Uma relação, uma lembrança, uma ambição ou um problema ainda aberto, numa frase. É uma das escolhas da Origem, "
              "e não dá bônus.",
-    # 11/10/2026 (edição R43, item 94 da revisão de regras): a Cicatriz deixou de ser sem modificador nenhum
+    # 11/10/2026 (livro final R43, item 94 da revisão de regras): a Cicatriz deixou de ser sem modificador nenhum
     "cicatrizes": "Depois da segunda queda na mesma missão, registre com o mestre se ficou uma cicatriz e como ela é. Você "
                   "escolhe se ela dá vantagem em Intimidação e desvantagem em Persuasão, ou nenhum dos dois: escreva a escolha "
                   "aqui. A cura não a apaga.",
@@ -738,8 +717,9 @@ NOTAS = {
     "treino": "Marque as armas em que você é treinado. A caixa no nome do grupo marca ou desmarca o grupo inteiro de uma "
               "vez. Bastião e Vanguarda já vêm com todas marcadas; os outros Caminhos, com Arma de Fogo e Balestra. Sem "
               "treino, o ataque com a arma sai com desvantagem.",
-    "carga": "O limite é 5 + Força, em Volume, mais o Buff/Debuff ao lado. Cada item leve vale 0,1. Acima do limite, seu "
-             "deslocamento cai pela metade e você tem desvantagem em TR Físico; acima do dobro, você não se desloca.",
+    "carga": "O limite é 5 + Força, em Volume, mais o Buff/Debuff ao lado. Cada item leve vale 0,1. Acima do limite e até o dobro, "
+             "o deslocamento cai pela metade e os TR Físicos têm desvantagem; acima do dobro, você não se desloca. Arrastar, "
+             "empurrar ou levantar vai até o dobro.",
     "carga_buff": "Soma no limite de carga o que a conta do livro não cobre, como uma habilidade. Número negativo reduz.",
     "ienes": "Digite quanto você tem. A ficha nova começa com a mensalidade do Grau 4, que é o fundo da criação.",
     "salario": "Sai do Grau, pela tabela Salário por patente do livro.",
@@ -971,8 +951,7 @@ def aba(layout, tr):
     L = L_FILEIRA
     # 08/10/2026 (B42): a caixa de Buff/Debuff entra no fim da carga, e a barra dela passa de cinco para três colunas
     f.add("rot", "D", L, "K", L, "CARGA · LIMITE 5 + FORÇA", NOTAS["carga"])
-    f.add("num", "D", L + 1, "H", L + 2, f'={H["carga"]}&" de "&{H["limite de carga"]}'
-                                          f'&IF({H["carga dobrada"]}=1,"{T_DOBRO}",IF({H["carga acima"]}=1,"{T_ACIMA}",""))')
+    f.add("num", "D", L + 1, "H", L + 2, f'={H["carga"]}&" de "&{H["limite de carga"]}&IF({H["carga acima"]}=1,"{T_ACIMA}","")')
     f.add("rot", "L", L, "M", L, "Buff/Debuff", NOTAS["carga_buff"])
     assert f.add("num", "L", L + 1, "M", L + 2, 0) == G["carga_buff"]
     f.add("barra", "I", L + 1, "K", L + 2,

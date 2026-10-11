@@ -70,17 +70,16 @@ def extrai():
     if faltam:
         raise SystemExit(f"sem título no capítulo 6: {faltam}")
     inicio = {d: titulos[h] for d, (_, h) in donos.items()}
-    # 11/10/2026 (edição R43): a Trilha com rotas ganhou uma seção só dela antes da primeira rota ("### Batedor", com a
-    # tabela "Rotas do Batedor"). Ela fecha a Trilha de antes (sem isso a apresentação do Batedor ia parar na carta do
-    # nível 27 da Estocada), e é nela que a tabela das rotas mora.
-    da_trilha = {t: titulos[t] for t in rotas if t in titulos}
-    marcos = sorted(list(inicio.values()) + list(da_trilha.values())) + [fim_cap]
+    # B45, o livro final: a Trilha com rotas tem a página dela ("### Batedor", com a apresentação e a tabela das
+    # rotas) antes das páginas das rotas. Todo título de terceiro nível fecha o dono anterior; sem isso a
+    # apresentação do Batedor ia parar na última carta da Estocada
+    marcos = sorted(set(inicio.values()) | set(titulos.values())) + [fim_cap]
     fim = {d: next(x for x in marcos if x > i) for d, i in inicio.items()}
 
     def tabela(d):
         """[(nível, nome)] da tabela de progressão; as rotas leem a coluna delas na tabela da primeira rota"""
         t, r = (d.split(SEP_ROTA) + [None])[:2]
-        a, b = (da_trilha.get(t, inicio[t + SEP_ROTA + rotas[t][0]]), fim[t + SEP_ROTA + rotas[t][0]]) if r else (inicio[d], fim[d])
+        a, b = (inicio[t + SEP_ROTA + rotas[t][0]], fim[t + SEP_ROTA + rotas[t][0]]) if r else (inicio[d], fim[d])
         for i in range(a, b):
             if L[i].startswith("Nível | "):
                 cab = L[i].split(" | ")
@@ -115,7 +114,12 @@ def extrai():
         for i in range(inicio[d] + 1, fim[d]):
             l = L[i]
             if re.match(rf"^(?:#### )?Nível {n}(?: —|[.:·](?: |$))", l):
-                out.add(i)
+                # B45, o livro final: cada habilidade tem título próprio e o "Nível N." vem no parágrafo logo abaixo. O
+                # título já abriu o trecho; se o parágrafo abrisse outro, o do título ficava só com o título, que
+                # é descartado como "título que fecha o trecho", e a carta que junta habilidades perdia os nomes
+                ant = next((j for j in range(i - 1, max(i - 4, inicio[d]), -1) if L[j].strip()), None)
+                if not (ant in out and L[ant].startswith("#") and re.fullmatch(rf"Nível {n}\.", l.strip())):
+                    out.add(i)
             elif l.startswith("#"):
                 t = _sem_ponto(l.lstrip("#").strip()).lower()
                 if re.search(rf"\bnível {n}\b", t):
@@ -187,11 +191,8 @@ def extrai():
                 if dona[a] != k:
                     continue
                 trecho = [x for l in L[a:b] for x in bloco(l, n, nome)]
-                # o título que fecha o trecho é da seção seguinte. 11/10/2026 (edição R43): menos quando o trecho
-                # seguinte é da mesma habilidade. O livro passou a escrever "#### Ataque Extra" e, embaixo, "Nível 7.":
-                # o título e a linha do nível são duas marcas seguidas da mesma carta, e o título é o subtítulo dela
-                while trecho and trecho[-1][0] == "titulo" and dona.get(b) != k:
-                    trecho.pop()
+                while trecho and trecho[-1][0] == "titulo":
+                    trecho.pop()                      # o título que fecha o trecho é da seção seguinte
                 blocos += trecho
             h = {"nome": nome, "texto": junta(blocos), "titulos": [t for tipo, t in blocos if tipo == "titulo"]}
             if n in niveis:
