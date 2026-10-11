@@ -1,14 +1,14 @@
 {
  "_meta": {
-  "versao_do_livro": "candidata editorial reconstruída, como está na v0.340 do JJK---Project (lida em 07/10/2026)",
-  "sha256_do_livro": "bbaf760bb0094928b85c1c8d51d309ea88decf1606bfc35ba9690174592a6a9e",
+  "versao_do_livro": "Ciclo Maldito, edição R43, como está na v0.358 do JJK---Project (lida em 11/10/2026)",
+  "sha256_do_livro": "5fc5849193aab8a6815a15ca5474d99d30e5c87d40ce2c3fbafb4d3842ee2133",
   "capitulo": "8. Equipamento",
   "o_que_e": "o texto das propriedades e das restrições de arma, que o catalogo-projeto-m.json não traz"
  },
  "propriedades": [
   {
    "nome": "Leve",
-   "faz": "Atende aos requisitos que peçam arma Leve. Não concede outro ataque, muda o atributo do golpe ou reduz Volume. Só as armas marcadas na tabela possuem a propriedade.",
+   "faz": "Atende aos requisitos que peçam arma Leve. Não concede outro ataque, não muda o atributo do golpe nem reduz Volume. Só as armas marcadas na tabela possuem a propriedade.",
    "ver": null
   },
   {

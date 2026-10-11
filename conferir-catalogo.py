@@ -107,7 +107,7 @@ _ok("o número é o modificador: 'Força 3 fornece +3'", tem("Força 3 fornece +
 print("\nCAMINHOS E TRILHAS")
 _menu = [f[0] for f in tab(C4, "Caminho")]
 _ok("os Caminhos do catálogo são os da tabela de Criar um personagem, na ordem", _menu == list(CAT["caminhos"]), str(_menu))
-_fora_vi = CAT["fora_do_livro"].get("vida_inicial_da_vanguarda", {}).get("valor")
+_fora_vi = None      # 11/10/2026 (edição R43): a tabela da Vanguarda passou a trazer a vida inicial, e nada vem de fora
 for c, d in CAT["caminhos"].items():
     S = Lv.secao(c, dentro=C6)
     txt = " ".join("\n".join(S).split())
@@ -170,6 +170,11 @@ for i in range(_ini, _corte):
         mp = re.match(r"Preço: (Leve|Média|Pesada|Nível da condição)\.", par)
         if mp:
             _mel_livro[t] = (fam, _peso.get(mp.group(1), "VARIAVEL"))
+        # 11/10/2026 (edição R43): a entrada que reúne duas Melhorias traz o preço de cada uma na linha do preço
+        # ("#### Concentrada / Duradoura", "Preço: Concentrada - Leve; Duradoura - Média."), e não mais no título
+        elif par.startswith("Preço: "):
+            for n, p in re.findall(r"([^;:]+?)\s+-\s+(Leve|Média|Pesada)", par[len("Preço: "):]):
+                _mel_livro[n.strip()] = (fam, _peso[p])
 _mel_livro["Efeito Próprio"] = (None, "MESTRE")
 _ok(f"as {len(CAT['melhorias'])} Melhorias do catálogo são as {len(_mel_livro)} do livro", set(_mel_livro) == set(CAT["melhorias"]),
     str(sorted(set(_mel_livro) ^ set(CAT["melhorias"]))))
@@ -177,7 +182,8 @@ _dif = {n: (_mel_livro.get(n), (m_["familia"], m_["peso"])) for n, m_ in CAT["me
 _ok("a Família e o peso de cada Melhoria são os do livro", not _dif, str(_dif))
 _cond = {}
 for t, nv in (("Condições leves", "Leve"), ("Condições médias", "Media"), ("Condições pesadas", "Pesada")):
-    for x in titulos_de(sec(t, C3), 4):
+    # 11/10/2026 (edição R43): as três seções desceram um nível de título; as condições são o nível logo abaixo
+    for x in titulos_de(sec(t, C3), Lv.nivel(sec(t, C3)[0]) + 1):
         if x not in ("Remoção", "Testes de saída"):
             _cond[x] = nv
 _ok("as condições e o nível de cada uma são os do livro", _cond == CAT["condicoes"], str(set(_cond.items()) ^ set(CAT["condicoes"].items())))
@@ -207,10 +213,11 @@ for chave, frase in (("pontos_por_feitico", "Os pontos e o PE são 3 × Classe."
                      ("ponto_nao_gasto", "Num feitiço de dano, cada ponto do saldo vira 1d8."),
                      ("desconto_familia_livre", "Uma Melhoria de Família Livre recebe desconto igual à metade da Classe, arredondada para cima. Seu preço final nunca fica abaixo de 1 ponto."),
                      ("formas_sem_desconto", "Formas não recebem desconto de Família Livre."),
-                     ("restricao_paga", "Restrição paga peças, incluindo a Forma."),
-                     ("acrescentam_dano_e_contam_no_teto", "Salto, Queima e Estilhaço acrescentam os dados que suas entradas indicam."),
+                     # 11/10/2026 (edição R43, item 143 da revisão de regras): a devolução não cobre mais a Forma
+                     ("restricao_paga", "a devolução aproveitada nunca supera o gasto com Melhorias. A Forma não entra nessa conta."),
+                     ("acrescentam_dano_e_contam_no_teto", "Salto, Queima e Estilhaço acrescentam os dados que suas entradas indicam"),
                      ("dividem_os_dados", "Rajada e Mais Um dividem a quantidade de dados disponível."),
-                     ("teto_de_dados", "o total não pode passar de 4 × Classe em d8"),
+                     ("teto_de_dados", "a soma dos dados iniciais com esses acréscimos não pode passar de 4 × Classe em d8"),
                      ("liberacao", "acrescente +Classe em d8 ao dano da montagem"),
                      ("arredondamento", "Arredonde os preços para cima.")):
     _ok(f"fundamento.{chave} tem a frase dele no livro", chave in F and tem(frase), frase)
@@ -292,14 +299,15 @@ for nome, fil, pref in (("Traje", tab(sec("Trajes", C8), "Degrau"), "Traje "), (
 _ok("a Defesa, o uniforme que substitui a proteção passiva, o escudo que soma e os dois tetos têm a frase no livro",
     tem("Defesa = 10 + Destreza permitida + proteção.") and tem("Enquanto usar um uniforme, a proteção dele substitui a proteção passiva da sua rota.")
     and tem("Some a proteção de um escudo empunhado à proteção que já utiliza") and tem("Se duas peças tiverem tetos diferentes, use o menor."))
-# 07/10/2026: a arma sem a Força segue a decisão do Mizuki (desvantagem no ataque e metade do deslocamento, sem mexer na
-# Defesa), que mora no fora_do_livro enquanto o livro traz a frase antiga. No dia em que o livro mudar, a frase antiga
-# some, esta checagem acende e a regra sai do fora_do_livro
-_asf = CAT["fora_do_livro"].get("arma_sem_a_forca", {})
-_ok("sem a Força: uniforme e escudo não dão proteção (livro); a arma dá desvantagem e metade do deslocamento (fora do livro, que ainda diz a frase antiga)",
-    tem("Sem o valor exigido, você não pode prepará-la nem receber sua proteção ou seus benefícios de uso.")
-    and tem(_asf.get("o_livro_diz", "?")) and "desvantagem nos ataques" in _asf.get("regra", "")
-    and "metade" in _asf.get("regra", "") and "continua somando" in _asf.get("regra", ""))
+# 11/10/2026 (edição R43, itens 156 e 157 da revisão de regras): o livro recebeu a regra da arma sem a Força que o
+# Mizuki tinha decidido em 07/10 (ela sai do fora_do_livro), e mudou a da proteção: a peça vestida ou empunhada sem a
+# Força dá a proteção dela, com metade do deslocamento e desvantagem em TR Físico
+_ok("sem a Força: a arma dá desvantagem nos ataques e metade do deslocamento; o uniforme e o escudo dão a proteção, com metade do deslocamento e desvantagem em TR Físico",
+    tem("Sem a Força exigida, você tem desvantagem nos ataques com aquela arma e seu deslocamento cai pela metade enquanto a empunhar. Essa desvantagem não se acumula com a da falta de treino.")
+    and tem("Sem o valor exigido, você pode vesti-la ou empunhá-la e recebe sua proteção e seus benefícios de uso normalmente, mas seu deslocamento cai pela metade e você tem desvantagem em TR Físico enquanto a usar.")
+    and "arma_sem_a_forca" not in CAT["fora_do_livro"]
+    and "desvantagem nos ataques" in EQ["sem_a_forca_da_arma"] and "metade" in EQ["sem_a_forca_da_arma"] and "Destreza" not in EQ["sem_a_forca_da_arma"]
+    and "recebe a proteção" in EQ["sem_a_forca_da_protecao"] and "TR Físico" in EQ["sem_a_forca_da_protecao"])
 _armas_livro = {}
 for g in titulos_de(C8, 3):
     for cat_ in titulos_de(sec(g, C8), 4):
@@ -336,10 +344,16 @@ _ok("munição: os ataques por carga são os da tabela, as bestas recarregam a c
     and {n for n, a_ in EQ["armas"].items() if "Munição" in a_["propriedades"]} == set(EQ["municao"]))
 m = re.search(r"O dado desarmado é (d\d+) com maestria 1, (d\d+) com maestria 2, (d\d+) com maestria 3 e (d\d+) com maestria 4\.", MAN)
 _ok("soco: o dado por maestria é o do livro", bool(m) and [EQ["soco_por_maestria"][str(i)] for i in range(1, 5)] == list(m.groups()))
-_ok("carga: 5 + Força, sem arredondar, item leve 0,1, e acima do limite não anda",
+# 11/10/2026 (edição R43, item 158): acima do limite e até o dobro, metade do deslocamento e desvantagem em TR Físico;
+# só acima do dobro o personagem não sai do lugar. E as três penalidades de metade não se multiplicam
+_ok("carga: 5 + Força, sem arredondar, item leve 0,1; acima do limite anda pela metade, e acima do dobro não anda",
     tem("Seu limite de carga é 5 + Força, medido em Volume.") and tem("Use o valor da tabela de cada item e some sem arredondar.")
-    and tem("Se uma regra indicar apenas “item leve”, use 0,1 Volume") and tem("Acima do limite, você não pode se deslocar com a carga.")
-    and EQ["volume"]["limite"] == "5 + Força" and EQ["volume"]["leve"] == 0.1)
+    and tem("Se uma regra indicar apenas “item leve”, use 0,1 Volume")
+    and tem("Acima do limite e até o dobro dele, seu deslocamento cai pela metade e você tem desvantagem em TR Físico. Acima do dobro, você não pode se deslocar com a carga")
+    and tem("não se multiplicam: o deslocamento cai pela metade uma única vez, e a desvantagem em TR Físico é uma só.")
+    and EQ["volume"]["limite"] == "5 + Força" and EQ["volume"]["leve"] == 0.1
+    and "dobro" in EQ["volume"]["acima_do_limite"] and "metade" in EQ["volume"]["acima_do_limite"]
+    and "uma única vez" in EQ["penalidades_nao_se_multiplicam"])
 _sit = [c for f in tab(sec("Trajes", C8), "Situações") for c in f]
 _ok("as oito situações do Traje são as do livro", _sit == EQ["situacoes_do_traje"], str(_sit))
 _ac = {f[0]: f[1] for f in tab(sec("Dinheiro e acesso", C8), "Equipamento")}
@@ -367,18 +381,25 @@ _FL = CAT["fora_do_livro"]
 _ok("fora do livro: as missões solo e os multiplicadores têm nome e número, e nenhum repete um tamanho do livro",
     all(isinstance(v, (int, float)) and v > 0 for k in ("missoes_solo", "xp_adicional") for v in _FL[k].values())
     and len(_FL["missoes_solo"]) == 2 and not set(_FL["missoes_solo"]) & {t[0].upper() + t[1:] for t in MIS["tamanho"]})
-_ok("fora do livro: a vida inicial da Vanguarda continua fora porque o livro não a traz",
-    not any(f[0] in ("Vida inicial", "Vida no nível 1") for _, fs in Lv.tabelas(Lv.secao("Vanguarda", dentro=C6)) for f in fs)
-    and CAT["caminhos"]["Vanguarda"]["vida_inicial"] == _FL["vida_inicial_da_vanguarda"]["valor"])
+# 11/10/2026 (edição R43): a tabela da Vanguarda ganhou a linha "Vida inicial | 8 + Constituição", e a regra que
+# morava no fora_do_livro saiu de lá
+_vg = {f[0]: f[1] for _, fs in Lv.tabelas(Lv.secao("Vanguarda", dentro=C6)) for f in fs if len(f) == 2}
+_ok("a vida inicial da Vanguarda vem do livro, e não mais do fora do livro",
+    Lv.numero(_vg.get("Vida inicial", "")) == CAT["caminhos"]["Vanguarda"]["vida_inicial"] and "vida_inicial_da_vanguarda" not in _FL, str(_vg.get("Vida inicial")))
 # a regra que o Mizuki decidiu em 04/10/2026 ("Toda vida inicial é a máxima do dado"): o ganho por nível é a média do dado
 # para cima, máximo ÷ 2 + 1, então o máximo é 2 × (ganho − 1). Os cinco que o livro numera têm de obedecer, senão a regra
 # não é a do livro; e a Vanguarda sai da mesma conta
 _dado = {c: 2 * (d["vida_por_nivel"] - 1) for c, d in CAT["caminhos"].items()}
-_ok("fora do livro: toda vida inicial é o máximo do dado (12/7 é d12, 8/5 é d8, 6/4 é d6), e a da Vanguarda sai dessa conta",
-    all(d["vida_inicial"] == _dado[c] for c, d in CAT["caminhos"].items()) and _dado["Vanguarda"] in (6, 8, 10, 12)
-    and _FL["vida_inicial_da_vanguarda"]["valor"] == _dado["Vanguarda"]
-    and "máximo do dado" in _FL["vida_inicial_da_vanguarda"]["regra"],
-    str({c: (d["vida_inicial"], _dado[c]) for c, d in CAT["caminhos"].items()}))
+# 11/10/2026 (edição R43, item 147): o livro diz o dado de vida de cada Caminho, para a variante de rolar a vida, e é o
+# mesmo dado desta conta
+_dado_livro = {}
+for c in CAT["caminhos"]:
+    _t = {f[0]: f[1] for cab, fs in Lv.tabelas(Lv.secao(c, dentro=C6)) for f in fs if len(f) == 2}
+    _m = re.search(r"d(\d+)", _t.get("Dado de vida, na variante", ""))
+    _dado_livro[c] = int(_m.group(1)) if _m else None
+_ok("toda vida inicial é o máximo do dado (12/7 é d12, 8/5 é d8, 6/4 é d6), e o dado é o que o livro dá para a variante de rolar a vida",
+    all(d["vida_inicial"] == _dado[c] == _dado_livro[c] for c, d in CAT["caminhos"].items()),
+    str({c: (d["vida_inicial"], _dado[c], _dado_livro[c]) for c, d in CAT["caminhos"].items()}))
 _ok("nada do fora do livro foi para o livro: o desconto e o arredondamento antigos saíram",
     not {"desconto", "arredondamento_do_xp", "sem_o_requisito_de_forca", "carga_acima_do_limite"} & set(_FL))
 

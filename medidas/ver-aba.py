@@ -164,7 +164,7 @@ def exemplo_amaldicoada(wb):
     for p, pos in zip(["Projetar energia", "Barreira Simples"], G["aptidoes"]):
         a[fa.celulas_da_aptidao(*pos)["nome"]] = p
     pc = fa.celulas_do_pacto(G["pactos"][0])
-    a[pc["nome"]], a[pc["forma"]] = "Mostrar a mão", "temporário"
+    a[pc["nome"]], a[pc["forma"]] = "Mostrar a mão", "Temporário"
     a[pc["dou"]], a[pc["recebo"]] = "Explicar a própria técnica ao adversário.", "A técnica fica mais forte."
     cz = G["cols_zero"]
     a[f"{cz['nome'][0]}{G['zero_ini']}"], a[f"{cz['forma'][0]}{G['zero_ini']}"] = "Tapa de Peso", "Toque"

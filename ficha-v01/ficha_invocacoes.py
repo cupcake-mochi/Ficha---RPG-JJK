@@ -499,9 +499,10 @@ def trocas(layout, cor_da_barra=None):
         o["ntal"] = f'=1+{P("marc")}'
         o["ttal"] = f'=COUNTIF({TAL},"?*")'
         o["ent"] = f'=IF(AND({P("tipo")}="{SH_CRIACAO}",{P("talisma")}="{COM_CARGA}"),MAX(1,CEILING({cl}/2,1)),{cl})'
-        # o retorno da caída custa 2 × Classe; a carga do talismã abate só o que adiantou (Classe 4: 8 ao todo, os 2
-        # adiantados e mais 6 no retorno). Sem carga a entrada é a Classe, e a conta dá os 2 × Classe.
-        o["ret"] = f'={cl}+{P("ent")}'
+        # o retorno da caída custa 2 × Classe. 11/10/2026 (edição R43 do livro, item 23): saiu a regra em que a carga do
+        # talismã abatia o que adiantou ("os 2 adiantados e mais 6 no retorno"). A carga vale para a entrada comum; "o caso
+        # não acontece: entrar gasta a carga, e o descanso longo recupera a caída". O retorno mostra o preço cheio.
+        o["ret"] = f'=2*{cl}'
         o["resmax"] = f'={nn}*(1+INT({P("p4")}/3))'
         o["carga"] = f'=5+{P("t0")}'
         o["nfam"] = f'=COUNTIF({FF},"?*")'
@@ -553,7 +554,15 @@ def trocas(layout, cor_da_barra=None):
         o["d_mp"] = f'=IF({nn}<{n_tm},"—",VLOOKUP({nn},{MAXIMA},4,TRUE)&" PE")'
         o["d_md"] = f'=IF({nn}<{n_tm},"Abre no nível {n_tm}",VLOOKUP({nn},{MAXIMA},2,TRUE)&" fixos · "&VLOOKUP({nn},{MAXIMA},3,TRUE)&" pontos")'
         o["d_ep"] = f'=IF({P("exp")}="{SEM_BARREIRA}",7,6)*{cl}&" PE"'
-        o["d_ea"] = f'="Acerto "&{cl}&"d8"'
+        # 11/10/2026 (edição R43, item 16): o Acerto de dano do domínio da domada é montado como o do jogador: os pontos
+        # de especial da maior Classe dela, menos o preço Médio do Inescapável (com o desconto, se a Família dele é uma
+        # das Livres da ficha), e 1d8 por ponto. Até 10/10 era Classe d8.
+        _ines = next((x for x in R["pecas"] if x["nome"] == "Inescapável"), None)
+        if not _ines or _ines["peso"] != 2:
+            raise SystemExit("ficha_invocacoes: o Inescapável deixou de ser Média, e o Acerto da Expansão da domada usa esse preço")
+        _fam_ines = _ines["familia"]
+        _livre = f'OR({P("f0")}="{_fam_ines}",{P("f1")}="{_fam_ines}")'
+        o["d_ea"] = (f'=IFERROR("Acerto "&MAX(0,INDEX({PONTOS},{cl})-INDEX({PRECOS},{cl},IF({_livre},5,2)))&"d8","Acerto —")')
         o["d_er"] = f'=IFERROR(VLOOKUP({P("exp")},{EXPANSAO},3,FALSE),"Escolha o degrau")'
         o["d_rol"] = (f'={i}&" · "&IF({tem}=0,"vazia",{P("nome")}&" · nv "&{nn}&" · "&{P("atual")}&"/"&{P("vida")})')
         return [o[k] for k in nomes_f]
@@ -621,7 +630,7 @@ def trocas(layout, cor_da_barra=None):
              ["tem", "nv", "mx", "db", "atk", "cdf", "lf"] + [f"f{i}" for i in range(1, N_MEL + 1)] + [f"w{i}" for i in range(1, N_MEL + 1)] +
              [f"k{i}" for i in range(N_MEL + 1)] + [f"x{i}" for i in range(N_MEL + 1)] + ["ct", "ptr", "rdz", "emb", "tp", "tr"] +
              [f"c{i}" for i in range(1, N_RES + 1)] + [f"b{i}" for i in range(1, N_RES + 1)] + [f"n{j}" for j in range(1, 7)] +
-             ["dL", "dM", "nm", "nr", "g", "dv0", "dv", "usa", "perde", "pts", "s", "d", "dep"] +
+             ["dL", "dM", "nm", "nr", "g", "gm", "dv0", "dv", "usa", "perde", "pts", "s", "d", "dep"] +
              [f"d{c['classe']}" for c in R["classes"]] + [f"t{c['classe']}" for c in R["classes"]] +
              ["erros", "ne", "avisos", "na", "estado", "linha", "titulo", "pe", "acao", "rs", "resolve", "dano", "lg", "mr", "q1", "q2", "alcance",
               "conta", "ampliar"] + [f"pt{i}" for i in range(1, N_MEL + 1)] + [f"dt{i}" for i in range(1, N_RES + 1)])
@@ -688,17 +697,23 @@ def trocas(layout, cor_da_barra=None):
         o["g"] = f"=IF({Cc}=0,0,SUMPRODUCT({NN},INDEX({PRECOS},MAX(1,{Cc}),0)))"
         o["dv0"] = f"=IF({Cc}=0,0,{P('dL')}*CEILING({Cc}/2,1)+{P('dM')}*{Cc})"
         o["dv"] = f"=MIN(2*{Cc},{P('dv0')})"
-        o["usa"] = f"=MIN({P('dv')},{P('g')})"
+        # 11/10/2026 (edição R43 do livro, item 143 da revisão de regras): "As Restrições devolvem pontos para pagar
+        # Melhorias, até 2 × a Classe real e até o total gasto nelas. A Forma fica fora dessa conta." `gm` é o gasto só
+        # com as Melhorias: o total menos o preço da Forma
+        o["gm"] = f"=IF({Cc}=0,0,{P('g')}-IF({P('k0')}>0,INDEX({PRECOS},MAX(1,{Cc}),{P('k0')}),0))"
+        o["usa"] = f"=MIN({P('dv')},{P('gm')})"
         o["perde"] = f"={P('dv')}-{P('usa')}"
         o["pts"] = f"=IF({Cc}=0,0,INDEX({PONTOS},MAX(1,{Cc})))"
         o["s"] = f"={P('pts')}-{P('g')}+{P('usa')}"
-        # na básica o dano são os dados do nível, e a Melhoria Leve tira um
-        o["d"] = f"=IF({Cc}=0,MAX(0,{P('db')}-IF({P('nm')}>0,1,0)),MAX(0,{P('s')}))"
+        # na básica o dano são os dados do nível, e a Melhoria Leve tira um. 11/10/2026 (edição R43, item 63): a
+        # Restrição Leve "devolve o dado que a Melhoria tirou, sem criar pontos de montagem"
+        o["d"] = f'=IF({Cc}=0,MAX(0,{P("db")}-IF(AND({P("nm")}>0,COUNTIF({RR},"?*")=0),1,0)),MAX(0,{P("s")}))'
         o["dep"] = f"=IF({Cc}=0,0,(" + "+".join(f"IF({tem_m(x)}>0,1,0)" for x in fa.SOMAM_METADE) + f")*FLOOR({P('d')}/2,1))"
         for c in R["classes"]:
             k = c["classe"]
             gk = f"SUMPRODUCT({NN},{preco_da_classe(k)})"
-            o[f"d{k}"] = f"=MAX(0,{c['pontos']}-{gk}+MIN({2 * k},{P('dL')}*{math.ceil(k / 2)}+{P('dM')}*{k},{gk}))"
+            gmk = f"({gk}-IF({P('k0')}>0,INDEX({preco_da_classe(k)},1,{P('k0')}),0))"      # só as Melhorias, nesta Classe
+            o[f"d{k}"] = f"=MAX(0,{c['pontos']}-{gk}+MIN({2 * k},{P('dL')}*{math.ceil(k / 2)}+{P('dM')}*{k},{gmk}))"
             dk, tp = P(f"d{k}"), P("tp")
             o[f"t{k}"] = (f'=IF({tp}=2,3*{dk}&" de vida temp.",IF({tp}=3,"sem dano",IF({dk}=0,IF({tp}=1,"sem cura","sem dano"),'
                           f'IF({tp}=1,"cura ","")&{dk}&"d8")))')
@@ -821,7 +836,8 @@ NOTAS = {
     "maestria": "Sempre a sua, mesmo numa domada de nível menor. Vem da FICHA.",
     "entrada": "Manifestar custa a maior Classe dela em PE, e a sua Ação Bônus. Com o talismã carregado, metade, para cima. "
                "Recolher não custa PE.",
-    "retorno": "Trazer de volta quem caiu sem ser destruída: o dobro da entrada. Ela volta com metade da vida máxima.",
+    "retorno": "Trazer de volta quem caiu sem ser destruída: o dobro da entrada normal, ou 2 × a maior Classe dela em PE, e a sua "
+               "Ação Bônus. A carga do talismã não abate este preço. Ela volta com metade da vida máxima, no mínimo 1.",
     "pontos": "9 pontos, cada atributo entre 0 e 3, e mais 1 ponto nos níveis 6, 10, 14, 18, 22, 26 e 30. O teto é 6.",
     "atributo": "O número grande é o total. Embaixo dele, os pontos que você distribuiu, e embaixo o Buff/Debuff.",
     "bd": "Buff/Debuff: o que você digitar aqui soma, ou tira, do número de cima.",
@@ -867,8 +883,8 @@ NOTAS = {
     "rmenu": "Trocar ataque por Teste de Resistência, ou o contrário, não custa pontos. Em branco, vale o que a Forma traz.",
     "melhorias": "As Classes 1 e 2 aceitam 2 Melhorias, a 3 e a 4 aceitam 3, e da 5 em diante 4. A Forma não conta. O menu só traz "
                  "as Famílias abertas, e a da Família Livre sai mais barata. A básica aceita uma Melhoria Leve, que custa um dado.",
-    "restricoes": "Até duas, contando o Corpo a Corpo que Toque e Aura já trazem. Restrição paga peças: o que passar do que foi gasto "
-                  "some. Na básica cabe uma Restrição Leve, que não devolve nada.",
+    "restricoes": "Até duas, contando o Corpo a Corpo que Toque e Aura já trazem. Restrição paga Melhorias, e não a Forma: o que "
+                  "passar do que foi gasto com elas some. Na básica cabe uma Restrição Leve, que devolve o dado que a Melhoria tirou.",
     "ampliar": "A mesma especial usada numa Classe maior, até a maior que o nível dela liberou. A conta inteira é refeita.",
     "trilha": "Só o Evocador: as escolhas a mais da Invocação Principal (níveis 8, 16 e 24 da invocação) e do Repertório do Conjunto "
               "(nível 27). Cada escolha é uma básica (Classe 0), uma especial ou um talento de Categoria 1.",
@@ -876,7 +892,9 @@ NOTAS = {
     "lib": "A domada conhece uma no nível 10, duas no 20 e três no 30. Classe 3 ou maior, e não ocupa espaço de especial. "
            "Custa 3 × Classe × 1,5 PE, para cima.",
     "tm": "A faixa usa o nível dela, que não sobe com o seu. Os pontos pagam Forma e Melhorias, sem comprar dados.",
-    "exp": "O refino, a maestria e a especialização são os seus. Posição, vida e Teste de Resistência de Vigor são os dela.",
+    "exp": "O refino, a maestria e a especialização são os seus. Posição, vida e Teste de Resistência de Vigor são os dela. O Acerto "
+           "de dano é montado como o do jogador: os pontos de especial da maior Classe dela, menos o preço Médio do Inescapável "
+           "(com o desconto da Família Livre), 1d8 por ponto.",
     "c_usa": "Escolhido ao obter a primeira entidade. Vale para a Defesa de todas e para o limite de corpos mantidos.",
     "c_ativas": "Quantas entidades podem estar ativas ao mesmo tempo. O limite geral é de duas; a Trilha Múltiplas Invocações "
                 "leva a quatro durante o combate.",

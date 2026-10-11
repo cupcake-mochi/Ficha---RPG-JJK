@@ -132,8 +132,10 @@ def regra_da_carta(F, tipo, num, c):
         erros.append("forma0")
     erros += ["fechada"] * sum(1 for m in mel if PECAS[m]["familia"] and PECAS[m]["familia"] not in fams)
     gasto = 0 if C == 0 else (preco(forma["peso"], C) if forma["peso"] else 0)
+    gasto_m = 0                 # 11/10/2026 (edição R43 do livro, item 143): só as Melhorias, que é o que a devolução paga
     if C > 0:
-        gasto += sum(preco_livre(PECAS[m]["peso"], C) if PECAS[m]["familia"] in livres else preco(PECAS[m]["peso"], C) for m in mel)
+        gasto_m = sum(preco_livre(PECAS[m]["peso"], C) if PECAS[m]["familia"] in livres else preco(PECAS[m]["peso"], C) for m in mel)
+        gasto += gasto_m
         if len(mel) > LIMITE[C]:
             erros.append("limite")
         if len(res) + forma["embutida"] > 2:
@@ -148,7 +150,7 @@ def regra_da_carta(F, tipo, num, c):
         if any(RESTRICOES[r]["devolve"] > 1 for r in res):
             erros.append("restricao leve")
     dev = 0 if C == 0 else sum(math.ceil(C / 2) if RESTRICOES[r]["devolve"] == 1 else C for r in res) + (C if forma["embutida"] else 0)
-    usa = min(dev, 2 * C, gasto)
+    usa = min(dev, 2 * C, gasto_m)          # "a devolução aproveitada nunca supera o gasto com Melhorias. A Forma não entra"
     saldo = (PONTOS[C] if C else 0) - gasto + usa
     if C > 0 and saldo < 0:
         erros.append("orçamento")
@@ -165,7 +167,8 @@ def regra_da_carta(F, tipo, num, c):
         erros.append("tudo ou nada")
     if "Inescapável" in mel and (len(mel) > 1 or len(res) + forma["embutida"] > 0):
         erros.append("inescapável")
-    d = max(0, F["db"] - (1 if mel else 0)) if C == 0 else max(0, saldo)
+    # edição R43, item 63: na básica a Restrição Leve devolve o dado que a Melhoria tirou
+    d = max(0, F["db"] - (1 if mel and not res else 0)) if C == 0 else max(0, saldo)
     dep = 0 if C == 0 else sum(1 for x in SOMAM_METADE if x in mel) * (d // 2)
     if C > 0 and d * (1.25 if REMATE in mel else 1) + dep > 4 * C:
         erros.append("teto")
@@ -352,7 +355,11 @@ monta("domada menor", 10, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", ni
 monta("talismã", 13, com(CAO, tipo=fi.SH_CRIACAO, aquis="Criação", nivel_fixo=13, talisma=fi.COM_CARGA))
 monta("corpo de criação", 5, com(CAO, tipo=fi.CORPO_CRIACAO, aquis="Criação", nivel_fixo=5))
 monta("trunfos 17", 17, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=17, lib=[3, 4, 7]))
-monta("expansão 14", 14, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=14, exp="Completa"))
+# o Cão tem a Mira (a Família do Inescapável) como Família Livre; o exemplo do livro é "sem desconto de Família Livre",
+# e por isso a primeira ficha leva a Mira para uma Família fechada
+monta("expansão 14", 14, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=14, exp="Completa",
+                             fam=["Alcance", None, "Mira", "Controle", None]))
+monta("expansão 14 mira", 14, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=14, exp="Completa"))
 monta("vazia", 5, {}, sozinha=True)                  # nenhuma caixa da aba inteira acende
 # 2. o Buff/Debuff
 monta("buff", 5, com(CAO, buff=[1, 0, 0, 0, 0], bstat=[2, 1, -1, 5, 3], btr=[0, 2, 0, -1]))
@@ -503,9 +510,10 @@ checa("a domada de nível 5 de um invocador de nível 10: o nível é o dela, a 
       v(G["status"][0]) == 5 and v(G["status"][2]) == "+2" and v(G["stat"][0]) == "+5" and v(G["stat"][3]) == 27, f'{[v(c) for c in G["status"]]} {v(G["stat"][0])}')
 v = le("talismã")
 checa("a entidade de nível 13 (Classe 4) com o talismã carregado entra por 2 PE", v(G["status"][1]) == 4 and v(G["status"][3]) == "2 PE", str([v(c) for c in G["status"]]))
-# o exemplo do livro, em Talismãs: "Se ela estivesse caída, o retorno custaria 8 PE ao todo: os 2 adiantados e mais 6 no retorno"
-checa("e, caída, volta por mais 6 PE (os 8 do retorno, menos os 2 que a carga adiantou); sem carga, entra por 4 e volta por 8",
-      v(G["status"][4]) == "6 PE" and (le("talismã sem carga")(G["status"][3]), le("talismã sem carga")(G["status"][4])) == ("4 PE", "8 PE"),
+# 11/10/2026 (edição R43, item 23): o livro tirou o retorno com a carga abatida ("os 2 adiantados e mais 6 no retorno").
+# O retorno é "o dobro do PE da entrada", e a carga só vale na entrada comum
+checa("e o retorno custa 8 PE (2 × Classe) com ou sem a carga do talismã; sem carga, entra por 4",
+      v(G["status"][4]) == "8 PE" and (le("talismã sem carga")(G["status"][3]), le("talismã sem carga")(G["status"][4])) == ("4 PE", "8 PE"),
       f'{v(G["status"][4])} | {le("talismã sem carga")(G["status"][3])} {le("talismã sem carga")(G["status"][4])}')
 v = le("corpo de criação")
 checa("o corpo de criação de nível 5 com Constituição 2 tem 7 + 6 × 4 = 31 de vida", v(G["stat"][3]) == 31, str(v(G["stat"][3])))
@@ -516,8 +524,14 @@ checa("Liberação de Classe 3: 6 pontos + 3d8, por 14 PE; a de Classe 7, 16 pon
 checa("Técnica Máxima da domada de nível 17: 19d8 fixos, 8 pontos, 25 PE", (v(G["tm"]["dados"]), v(G["tm"]["pe"])) == ("19d8 fixos · 8 pontos", "25 PE"), f'{v(G["tm"]["dados"])} {v(G["tm"]["pe"])}')
 checa("antes do nível 17 a Técnica Máxima diz quando abre", le("cão 5")(G["tm"]["dados"]) == "Abre no nível 17" and le("cão 5")(G["tm"]["pe"]) == "—")
 v = le("expansão 14")
-checa("Expansão completa da domada de nível 14 (Classe 4): 24 PE e Acerto de 4d8", (v(G["exp"]["pe"]), v(G["exp"]["acerto"])) == ("24 PE", "Acerto 4d8") and "nível 14" in v(G["exp"]["pede"]),
+# 11/10/2026 (edição R43, item 16): o exemplo do livro, "Uma domada de nível 14 tem Classe 4 ... Acerto de 9 − 4 = 5d8, sem
+# desconto de Família Livre". Até 10/10 a ficha mostrava a Classe em d8
+checa("Expansão completa da domada de nível 14 (Classe 4): 24 PE e Acerto de 9 − 4 = 5d8, o exemplo do livro",
+      (v(G["exp"]["pe"]), v(G["exp"]["acerto"])) == ("24 PE", "Acerto 5d8") and "nível 14" in v(G["exp"]["pede"]),
       f'{v(G["exp"]["pe"])} {v(G["exp"]["acerto"])} {v(G["exp"]["pede"])}')
+v = le("expansão 14 mira")
+checa("com a Família do Inescapável (Mira) entre as Famílias Livres da domada, o Acerto é 9 − 2 = 7d8",
+      CAT["melhorias"]["Inescapável"]["familia"] == "Mira" and v(G["exp"]["acerto"]) == "Acerto 7d8", str(v(G["exp"]["acerto"])))
 v = le("vazia")
 checa("a ficha vazia não mostra erro nem número de ataque", "lugar vazio" in v(G["titulo"]) and v(G["stat"][0]) in (None, "") and
       all(fi.T_ERRO not in str(x) for x in CASOS["vazia"]["planilha"]["v"][ABA].values()))

@@ -1,6 +1,6 @@
 {
-  "arquivo": "sistema/05-material/livro/planejamento-editorial/consolidacao/lote-01/LIVRO-COMPLETO.md",
-  "sha256": "bbaf760bb0094928b85c1c8d51d309ea88decf1606bfc35ba9690174592a6a9e",
-  "livro": "candidata editorial reconstruída, como está na v0.340 do JJK---Project (lida em 07/10/2026)",
+  "arquivo": "sistema/05-material/livro/ciclo-maldito-r41/LIVRO-COMPLETO.md",
+  "sha256": "5fc5849193aab8a6815a15ca5474d99d30e5c87d40ce2c3fbafb4d3842ee2133",
+  "livro": "Ciclo Maldito, edição R43, como está na v0.358 do JJK---Project (lida em 11/10/2026)",
   "gerado_por": "extrair-manual.py"
 }

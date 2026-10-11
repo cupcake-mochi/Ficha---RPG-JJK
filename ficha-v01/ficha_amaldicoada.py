@@ -57,7 +57,7 @@ L = ix._letras
 C1, CN = C("D"), C("T")                      # a primeira e a última coluna de conteúdo
 
 # Quantos lugares a aba tem. O teto de feitiços do livro: 24 espaços no nível 30, mais um feitiço por escolha de
-# Leque (sete marcos), mais um espaço por pacto permanente (metade da Essência; a tabela do livro vai até 3).
+# Leque (sete marcos). Até 10/10/2026 somava um espaço por pacto permanente; na edição R43 o pacto não concede espaço.
 N_FEITICOS, POR_LOTE, N_LIB = 36, 12, 3
 PAGAS, DO_LEQUE = 5, 7
 N_APT, APT_LOTE = 12, 6
@@ -123,7 +123,10 @@ DENTRO = "Dentro das regras que a ficha confere"
 SEM_NOME = "Dê um nome"
 FORMA_INICIAL = "Projétil"
 NEUTRA, LIVRE, FECHADA = "Neutra", "Livre", "Fechada"
-PERMANENTE, ESPACO_DE_PACTO = "Permanente", "Um espaço conhecido"
+# 11/10/2026 (edição R43 do livro, itens 34 a 37 e 186 da revisão de regras): o pacto permanente deixou de conceder
+# aptidão, espaço conhecido ou PE. Ele "concede uma mecânica única, decidida com o mestre", sem valor numérico: o menu
+# "o que concede" e o espaço de pacto do Orçamento saíram. E a vaga (metade da Essência) é ocupada pelo pacto permanente
+# e pelo pacto de restrição; a Promessa e o temporário não ocupam. Quais formas ocupam, o tecnica-do-livro.json diz.
 PROPRIA_P, PROPRIA_A, PROPRIA_B = "Talento Próprio", "Aptidão Própria", "Bênção Própria"
 
 # As quatro rotas de criação (02/10/2026): a aba muda conforme a Origem escolhida na FICHA, para o menu rápido da seção 8
@@ -335,7 +338,7 @@ def regras(CAT=None, TEC=None):
     prog = CAT["progressao"]
     limiares = lambda chave: [int(x) for x in re.search(r"\(([\d,]+)\)", prog["formulas"][chave]).group(1).split(",")]
     # o teto de feitiços do livro tem de caber nos lugares da aba
-    teto = 2 + CAT["_meta"]["nivel_maximo"] // 2 + 2 * len(prog["marcos"]) + N_PACTOS
+    teto = 2 + CAT["_meta"]["nivel_maximo"] // 2 + 2 * len(prog["marcos"])
     if teto > N_FEITICOS or PAGAS != TEC["passivas_pagas"]["cinco"] or DO_LEQUE != len(prog["marcos"]) or N_LIB != len(TEC["liberacao"]["niveis"]):
         raise SystemExit(f"ficha_amaldicoada: os lugares da aba nao cobrem o teto do livro ({teto} feiticos)")
     if N_ZERO != max(TEC["classe_0"]["quantos"]) or N_APT < 2 * len(prog["marcos"]) - 3:
@@ -565,7 +568,7 @@ def celulas_da_aptidao(r0, c0):
 
 
 def celulas_do_pacto(r):
-    return {"nome": f"E{r}", "forma": f"L{r}", "concede": f"P{r}", "dou": f"D{r + 2}", "recebo": f"L{r + 2}", "clausula": f"D{r + 7}"}
+    return {"nome": f"E{r}", "forma": f"L{r}", "dou": f"D{r + 2}", "recebo": f"L{r + 2}", "clausula": f"D{r + 7}"}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -741,16 +744,15 @@ def trocas(layout, CAT=None, TEC=None):
     D.tabela("dom", ["degrau do domínio", "espaços do degrau", "nível do degrau", "refino do degrau", "o degrau abre em"],
              [[d["degrau"], d["espacos"], d["nivel"] or 0, d["refino"], _ini(d["abre_em"])] for d in R["dominio"]["degraus"]])
     D.tabela("pacto_forma", ["forma do pacto", "quando se fecha"], [[_ini(f["forma"]), f["quando"]] for f in R["pactos"]["formas"]])
-    D.tabela("pacto_concede", ["o pacto concede"], [[_ini(c["concede"])] for c in R["pactos"]["concede"]])
-    if PERMANENTE not in [_ini(f["forma"]) for f in R["pactos"]["formas"]] or ESPACO_DE_PACTO not in [_ini(c["concede"]) for c in R["pactos"]["concede"]]:
-        raise SystemExit("ficha_amaldicoada: o livro nao tem mais o pacto permanente ou o espaco de feitico que ele concede")
+    if not set(_ini(x) for x in R["pactos"]["ocupam_vaga"]) <= set(_ini(f["forma"]) for f in R["pactos"]["formas"]) or len(R["pactos"]["ocupam_vaga"]) != 2:
+        raise SystemExit("ficha_amaldicoada: as formas de pacto que ocupam vaga nao estao na tabela de formas do livro")
 
     # --- a conta de cada feitiço: uma linha por lugar, as 36 de feitiço e as 3 de Liberação
     nomes = (["lugar", "liberação", "vaga", "classe", "nome", "forma"] + [f"m{i}" for i in range(1, N_MEL + 1)] +
              [f"r{i}" for i in range(1, N_RES + 1)] +
              ["tem", "lf"] + [f"k{i}" for i in range(N_MEL + 1)] + [f"x{i}" for i in range(N_MEL + 1)] +
              ["ct", "ptr", "emb", "tp", "tr"] + [f"c{i}" for i in range(1, N_RES + 1)] + [f"b{i}" for i in range(1, N_RES + 1)] +
-             [f"n{j}" for j in range(1, 7)] + ["dL", "dM", "nm", "nr", "g", "dv0", "dv", "usa", "perde", "s", "d", "dep"] +
+             [f"n{j}" for j in range(1, 7)] + ["dL", "dM", "nm", "nr", "g", "gm", "dv0", "dv", "usa", "perde", "s", "d", "dep"] +
              [f"d{c['classe']}" for c in R["classes"]] + [f"t{c['classe']}" for c in R["classes"]] +
              ["erros", "ne", "avisos", "na", "estado", "linha", "pe", "acao", "resolve", "dano", "lg", "mr", "q1", "q2", "alcance",
               "conta", "ampliar"] + [f"pt{i}" for i in range(1, N_MEL + 1)] + [f"dt{i}" for i in range(1, N_RES + 1)] +
@@ -803,7 +805,11 @@ def trocas(layout, CAT=None, TEC=None):
         o["g"] = f"=SUMPRODUCT({NN},INDEX({PRECOS},{Cc},0))"
         o["dv0"] = f"={P('dL')}*CEILING({Cc}/2,1)+{P('dM')}*{Cc}"
         o["dv"] = f"=MIN(2*{Cc},{P('dv0')})"
-        o["usa"] = f"=MIN({P('dv')},{P('g')})"
+        # 11/10/2026 (edição R43 do livro, item 143 da revisão de regras): "O total não passa de 2 × Classe, e a
+        # devolução aproveitada nunca supera o gasto com Melhorias. A Forma não entra nessa conta." Até 10/10 a
+        # devolução pagava também a Forma. `gm` é o gasto só com as Melhorias: o total menos o preço da Forma
+        o["gm"] = f"={P('g')}-IF({P('k0')}>0,INDEX({PRECOS},{Cc},{P('k0')}),0)"
+        o["usa"] = f"=MIN({P('dv')},{P('gm')})"
         o["perde"] = f"={P('dv')}-{P('usa')}"
         o["s"] = f"=3*{Cc}-{P('g')}+{P('usa')}"
         o["d"] = f"=MAX(0,{P('s')})+{P('liberação')}*{Cc}"
@@ -811,7 +817,8 @@ def trocas(layout, CAT=None, TEC=None):
         for c in R["classes"]:
             k = c["classe"]
             gk = f"SUMPRODUCT({NN},{preco_da_classe(k)})"
-            o[f"d{k}"] = (f"=MAX(0,{3 * k}-{gk}+MIN({2 * k},{P('dL')}*{math.ceil(k / 2)}+{P('dM')}*{k},{gk}))+{P('liberação')}*{k}")
+            gmk = f"({gk}-IF({P('k0')}>0,INDEX({preco_da_classe(k)},1,{P('k0')}),0))"      # só as Melhorias, nesta Classe
+            o[f"d{k}"] = (f"=MAX(0,{3 * k}-{gk}+MIN({2 * k},{P('dL')}*{math.ceil(k / 2)}+{P('dM')}*{k},{gmk}))+{P('liberação')}*{k}")
             dk, tp = P(f"d{k}"), P("tp")
             o[f"t{k}"] = (f'=IF({tp}=2,3*{dk}&" de vida temp.",IF({tp}=3,"sem dano",IF({dk}=0,IF({tp}=1,"sem cura","sem dano"),'
                           f'IF({tp}=1,"cura ","")&{dk}&"d8")))')
@@ -847,7 +854,7 @@ def trocas(layout, CAT=None, TEC=None):
         o["ne"] = "=" + conta_txt(P("erros"))
         avisos = [
             _se(f'{P("dv0")}>2*{Cc}', f'"A devolução parou no teto de "&2*{Cc}'),
-            _se(f'{P("perde")}>0', f'"Devolução perdida: "&{P("perde")}&IF({P("perde")}>1," pontos"," ponto")&" sem peça para pagar"'),
+            _se(f'{P("perde")}>0', f'"Devolução perdida: "&{P("perde")}&IF({P("perde")}>1," pontos"," ponto")&" sem Melhoria para pagar"'),
             _se(f'AND({P("ct")}>0,{P("d")}=0)', '"Controle sem dano: uma rodada a mais e CD +2"'),
             _se(f'AND({P("ct")}>0,{P("d")}>0,{P("d")}<={Cc})', '"Controle com saldo até a Classe: uma rodada a mais"'),
         ]
@@ -904,7 +911,7 @@ def trocas(layout, CAT=None, TEC=None):
         H[nome] = _abs(c_contas + 1, 2 + len(ordem_das_contas))
         ordem_das_contas.append(nome)
     for nome in ("nível", "maestria", "maior classe", "marcos", "refino", "essência", "escolhas de Leque", "liberações",
-                 "classe 0 quantos", "classe 0 dados", "espaços do nível", "espaços de pacto", "espaços", "feitiços montados",
+                 "classe 0 quantos", "classe 0 dados", "espaços do nível", "espaços", "feitiços montados",
                  "classe passiva da regra própria", "espaços da regra própria", "espaços em passivas", "espaços no domínio",
                  "espaços em invocações", "sem espaço", "cabem", "livres", "passivas pagas", "passivas do Leque", "aptidões anotadas", "aptidões compráveis",
                  "pactos permanentes", "teto de pactos", "classe do índice", "famílias livres", "famílias fechadas",
@@ -944,8 +951,7 @@ def trocas(layout, CAT=None, TEC=None):
         "classe 0 quantos": f'=IFERROR(INDEX({D.faixa("zero", so=1)},MATCH({H["nível"]},{D.faixa("zero", so=0)},1)),0)',
         "classe 0 dados": f'=IFERROR(INDEX({D.faixa("zero", so=2)},MATCH({H["nível"]},{D.faixa("zero", so=0)},1)),0)',
         "espaços do nível": f"=2+INT({H['nível']}/2)+{H['marcos']}",
-        "espaços de pacto": "=" + "+".join(f'IF(AND({_A(p["forma"], AM)}="{PERMANENTE}",{_A(p["concede"], AM)}="{ESPACO_DE_PACTO}"),1,0)' for p in pactos_c),
-        "espaços": f"={H['espaços do nível']}+{H['espaços de pacto']}",
+        "espaços": f"={H['espaços do nível']}",
         "feitiços montados": f"=SUM({_faixa(col['tem'], 2, col['tem'], 1 + N_FEITICOS)})",
         "classe passiva da regra própria": f"=N({_A(G['cp_regra'], AM)})",
         "espaços da regra própria": f"=MAX(0,{H['classe passiva da regra própria']}-1)",
@@ -966,7 +972,9 @@ def trocas(layout, CAT=None, TEC=None):
         "passivas do Leque": "=" + "+".join(f'IF({_A(p["nome"], AM)}<>"",1,0)' for p in passivas_c[PAGAS:]),
         "aptidões anotadas": "=" + "+".join(f'IF({_A(a["nome"], AM)}<>"",1,0)' for a in aptidoes_c),
         "aptidões compráveis": f"=MAX(0,N({_conta_da_ficha(layout, 'máximo de aptidões')})-{len([a for a in R['aptidoes'] if a['gratis'] and not a['bencao']])})",
-        "pactos permanentes": "=" + "+".join(f'IF({_A(p["forma"], AM)}="{PERMANENTE}",1,0)' for p in pactos_c),
+        # os pactos que ocupam vaga: o permanente e o de restrição (o nome da conta é o de antes, para não mexer em quem lê)
+        "pactos permanentes": "=" + "+".join(f'IF(OR(' + ",".join(f'{_A(p["forma"], AM)}="{_ini(x)}"' for x in R["pactos"]["ocupam_vaga"]) + '),1,0)'
+                                              for p in pactos_c),
         "teto de pactos": f"=FLOOR({H['essência']}/2,1)",
         "classe do índice": f"=IF(N({_A(G['classe_do_indice'], AM)})<1,{H['maior classe']},MIN({n_classes},N({_A(G['classe_do_indice'], AM)})))",
         "famílias livres": f'=COUNTIF({D.faixa("fam", so=1)},"{LIVRE}")',
@@ -1038,9 +1046,10 @@ def trocas(layout, CAT=None, TEC=None):
                             "dados dela", "dano na carta", "alcance na carta"],
              [[f"Classe 0 · {i + 1}", f'={_A(z_["forma"], AM)}&""', f'={_A(z_["mel"], AM)}&""', f'={_A(z_["res"], AM)}&""',
                (lambda n: f"=IFERROR(MATCH({zz(1, n)},{forma_col(0)},0),0)"),
-               # a Melhoria Leve tira um dado; a Restrição Leve não devolve nada (livro reconstruído: "ela não recupera o
-               # dado pago nem cria pontos de montagem")
-               (lambda n: f'={H["classe 0 dados"]}-IF({zz(2, n)}<>"",1,0)'),
+               # a Melhoria Leve tira um dado. 11/10/2026 (edição R43, item 63): a Restrição Leve "devolve o dado que a
+               # Melhoria tirou, sem criar pontos de montagem" (até 10/10 ela não devolvia nada). Sem a Melhoria não há
+               # dado para devolver
+               (lambda n: f'={H["classe 0 dados"]}-IF(AND({zz(2, n)}<>"",{zz(3, n)}=""),1,0)'),
                (lambda n, i=i: f'=IF({i + 1}>{H["classe 0 quantos"]},"Nível {abre_no(i)}",IF({zz(4, n)}=0,"",IF(INDEX({forma_col(6)},{zz(4, n)})>=2,"—",'
                                f'{zz(5, n)}&"d8 = "&FLOOR({zz(5, n)}*4.5,1))))'),
                (lambda n, i=i: f'=IF(OR({i + 1}>{H["classe 0 quantos"]},{zz(4, n)}=0),"",INDEX({ALC1},({zz(4, n)}-1)*3+1,'
@@ -1094,7 +1103,9 @@ NOTAS = {
     "classe": "A Classe do feitiço. Ela define os pontos (3 × Classe), o PE e quantas Melhorias cabem.",
     "melhorias": "As Classes 1 e 2 aceitam 2 Melhorias, a 3 e a 4 aceitam 3, e da 5 em diante 4. A Forma não conta no limite. "
                  "Família Livre sai metade da Classe mais barata, e Família Fechada some do menu.",
-    "restricoes": "Até duas. Restrição paga peças, incluindo a Forma: o que passar do que foi gasto some.",
+    # 11/10/2026 (edição R43 do livro, item 143): a devolução paga só as Melhorias. Até 10/10 a nota dizia "incluindo a Forma"
+    "restricoes": "Até duas, contando o Corpo a Corpo que Toque e Aura já trazem. Restrição paga Melhorias, e não a Forma: o que "
+                  "passar do que foi gasto com elas some.",
     "ampliar": "O mesmo feitiço lançado numa Classe maior, até a maior que o nível liberou. A conta inteira é refeita com os "
                "números da Classe nova.",
     "nome_tecnica": "Vem da CARTEIRA: o nome da técnica é escrito no campo TÉCNICA DECLARADA de lá. Escrever aqui não "
@@ -1123,7 +1134,7 @@ NOTAS = {
                 "ocupa 1 espaço; a 3 libera no nível {n3} e ocupa 2 no total. Deixe em branco se a técnica não tem Regra Própria.",
     "familias": "O Fundamento tem {livres} Famílias Livres e {fechadas} Fechadas. As outras ficam Neutras.",
     "maior_classe": "Sobe nos níveis 1, 5, 9, 13, 17, 21 e 26. Vem da FICHA.",
-    "espacos": "2 + metade do nível + um por marco alcançado. Pacto permanente que concede um espaço conhecido soma aqui.",
+    "espacos": "2 + metade do nível + um por marco alcançado.",
     "leque": "Cada escolha de Leque no marco dá um feitiço a mais e um Talento, sem pagar espaços por eles. A escolha é marcada "
              "na FICHA, em Marco Escolhido.",
     "em_feiticos": "Os feitiços com nome. Classe 0 e Liberação Máxima não ocupam espaço.",
@@ -1136,7 +1147,7 @@ NOTAS = {
     "indice": "Escolha a Classe e a fileira mostra os números dela. Em branco, mostra os da sua maior Classe.",
     "zero_indice": "Não muda com o menu: quantos feitiços de Classe 0 o nível dá, e os dados deles.",
     "zero_mel": "Cabe uma Melhoria Leve, e ela tira um dado.",
-    "zero_res": "Cabe uma Restrição Leve, mas ela não devolve o dado que a Melhoria tirou nem cria pontos. Toque e Aura não "
+    "zero_res": "Cabe uma Restrição Leve: ela devolve o dado que a Melhoria tirou, sem criar pontos. Toque e Aura não "
                 "dão a devolução de Corpo a Corpo na Classe 0.",
     "tm_dano": "Fixo pela faixa de nível. Nenhum ponto compra mais dados.",
     "tm_pe": "{pe} × a sua maior Classe.",
@@ -1148,7 +1159,10 @@ NOTAS = {
     "dom_desconto": "O desconto de PE de cada feitiço seu dentro do domínio: um terço do refino na incompleta, metade na completa, e "
                     "2 × maestria sem barreira. Nenhum feitiço custa menos de 1 PE.",
     "dom_barreira": "A vida da barreira por fora: {vida} × metade do refino. Por dentro ela não quebra.",
-    "dom_acerto": "O que o domínio garante que acontece com quem está lá dentro. Uma frase, escrita com o mestre, cabendo na Regra.",
+    "dom_acerto": "O que o domínio garante que acontece com quem está lá dentro. Uma frase, escrita com o mestre, cabendo na Regra. "
+                  "O Acerto de dano é montado como um feitiço, pela régua do Inescapável: 3 × a sua maior Classe em pontos, menos "
+                  "o preço Médio dele (com o desconto de Família Livre), e cada ponto que sobra vira 1d8. Ele é o feitiço "
+                  "inteiro, e não aceita outra peça.",
     "dom_efeito": "O que o domínio permite você fazer lá dentro que você não faria fora. Quase nunca é dano.",
     "dom_corrida": "Dois domínios sobrepostos: quem segura o domínio e toma dano testa Vigor. As falhas contam até metade da Essência.",
     "seu_texto": "Para a entrada Própria do menu, escreva aqui o texto dela, fechado com o mestre. Nas outras, é espaço para anotação.",
@@ -1163,9 +1177,15 @@ NOTAS = {
     "apt_canalizar": "De graça no refino 1. Dados a mais em cada ataque com arma ou desarmado: 1d4 no refino 1 e 2, 2d4 do 3 ao 5, "
                      "3d4 do 6 ao 8, 4d4 no 9 e 4d6 no 10. Na "
                      "Restrição Celestial sem energia é o Estímulo Muscular, com o mesmo dano na arma, e só na arma.",
-    "apt_reacao": "Como Reação, Redução de Dano de 1,5 × refino num golpe. Você fica sem proteção até o fim do seu próximo turno.",
-    "permanentes": "Metade da Essência, para baixo, na campanha inteira. Temporário, Promessa e de restrição não têm teto.",
-    "concede": "Só o pacto permanente concede. Um espaço conhecido soma no Orçamento.",
+    # 11/10/2026 (edição R43 do livro, item 160): a Reação tira só a proteção passiva. Até 10/10 a nota dizia "você fica
+    # sem proteção", que era a regra antiga (incluía o Traje, o Revestimento e o escudo), e não trazia os 2 PE
+    "apt_reacao": "Como Reação e 2 PE, reduz o dano de um golpe em 1,5 × refino, para baixo. Você perde só a proteção passiva "
+                  "desta aptidão até o fim do seu próximo turno: Traje, Revestimento e escudo continuam dando a deles.",
+    "permanentes": "Metade da Essência, para baixo. Ocupam vaga o pacto permanente e o pacto de restrição, enquanto existirem; a "
+                   "Promessa e o pacto temporário não ocupam.",
+    "recebo": "O pacto concede uma mecânica única, decidida com o mestre: muda como um feitiço, a energia, uma aptidão ou um "
+              "Estilo funciona, sem somar número. Pacto de energia devolve uma porcentagem da energia máxima, combinada com o "
+              "mestre. Pacto não dá bônus em ataque, Defesa, perícia ou dano, nem concede Estilo.",
 }
 
 
@@ -1615,19 +1635,17 @@ def aba(layout, tr):
     titulo("pactos")
     t = G["pac_caixas"]
     perm, teto = H["pactos permanentes"], H["teto de pactos"]
-    assert f.caixa("D", "E", t, "PERMANENTES", f'=IF({perm}>{teto},"{T_ERRO} ","")&{perm}&" de "&{teto}', "num", NOTAS["permanentes"]) == G["pac_permanentes"]
+    assert f.caixa("D", "E", t, "VAGAS DE PACTO", f'=IF({perm}>{teto},"{T_ERRO} ","")&{perm}&" de "&{teto}', "num", NOTAS["permanentes"]) == G["pac_permanentes"]
     f.add("rot", "F", t, "T", t, "COMO O PACTO SE FECHA")
     f.add("conta", "F", t + 1, "T", t + 2,
           " ".join(f"{p['forma'][:1].upper()}{p['forma'][1:]}: {p['quando']}." for p in R["pactos"]["formas"]))
     for i, (r, cel) in enumerate(zip(G["pactos"], tr["pactos_c"])):
         f.add("rot", "D", r, "D", r, f"PACTO {i + 1}")
         assert f.add("nome", "E", r, "K", r) == cel["nome"]
-        assert f.add("cel", "L", r, "N", r) == cel["forma"]
-        assert f.add("cel", "P", r, "T", r, None, NOTAS["concede"] if i == 0 else None) == cel["concede"]
+        assert f.add("cel", "L", r, "T", r) == cel["forma"]         # a forma ocupa o lugar que era dela e do "o que concede"
         f.menu(cel["forma"], D.faixa("pacto_forma", so=0, aba=DA))
-        f.menu(cel["concede"], D.faixa("pacto_concede", so=0, aba=DA))
         f.add("rot", "D", r + 1, "K", r + 1, "O QUE EU DOU")
-        f.add("rot", "L", r + 1, "T", r + 1, "O QUE EU RECEBO")
+        f.add("rot", "L", r + 1, "T", r + 1, "O QUE EU RECEBO", NOTAS["recebo"] if i == 0 else None)
         assert f.add("txt", "D", r + 2, "K", r + 5) == cel["dou"]
         assert f.add("txt", "L", r + 2, "T", r + 5) == cel["recebo"]
         f.add("rot", "D", r + 6, "T", r + 6, "CLÁUSULA, COM QUEM FOI FECHADO E O QUE ACONTECE SE QUEBRAR")

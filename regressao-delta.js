@@ -265,7 +265,10 @@ if (falhas.length) {
   console.log(`>>> ${falhas.length} FALHA(S) de ${ok + falhas.length} checagens\n`);
   falhas.forEach(f => console.log('  · ' + f));
   console.log(barra);
-  process.exit(1);
+  // 11/10/2026: process.exit(1) cortava a saida quando ela ia para um cano e passava de 64 KB (as cartas de Habilidades
+  // imprimem o texto inteiro do livro na falha), e o arnes-delta.py nao achava o nome da checagem que acendeu
+  process.exitCode = 1;
+  return;
 }
 console.log(`>>> TUDO OK — as ${ok} checagens saem do exemplo do`);
 console.log('    manual-temporario.md, do capitulo 1 do manual.txt e da A2 do decisoes-ficha.json.');

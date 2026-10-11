@@ -174,6 +174,7 @@ def monta(f, c, fam, nivel, lib=False, vaga=1):
     livre, fechada = (lambda k: fam.get(k) == "Livre"), (lambda k: fam.get(k) == "Fechada")
     forma, maxc, libs = FORMAS[f["forma"]], maior_classe(nivel), liberacoes(nivel)
     erros, avisos, gasto, precos = [], [], 0, []
+    gasto_m = 0                 # 11/10/2026 (edição R43 do livro): o gasto só com as Melhorias, que é o que a devolução paga
     if lib and vaga > libs:
         erros.append(f"O nível {nivel} dá {libs} Liberação Máxima")
     if c > maxc:
@@ -191,6 +192,7 @@ def monta(f, c, fam, nivel, lib=False, vaga=1):
         lv = bool(p["familia"]) and livre(p["familia"])
         pr = preco_da_peca(p["peso"], c, lv)
         gasto += pr
+        gasto_m += pr
         precos.append(f"−{pr} · {NOME_PESO[p['peso']]}" + (" · Livre" if lv else ""))
         if p["familia"] and fechada(p["familia"]):
             erros.append(f"Família Fechada: {nome}")
@@ -212,10 +214,12 @@ def monta(f, c, fam, nivel, lib=False, vaga=1):
     dv = min(2 * c, bruto)
     if bruto > 2 * c:
         avisos.append(f"A devolução parou no teto de {2 * c}")
-    usa = min(dv, gasto)
+    # 11/10/2026 (edição R43, item 143): "a devolução aproveitada nunca supera o gasto com Melhorias. A Forma não entra
+    # nessa conta." Até 10/10 a devolução pagava também a Forma
+    usa = min(dv, gasto_m)
     perde = dv - usa
     if perde:
-        avisos.append(f"Devolução perdida: {perde} ponto{'s' if perde > 1 else ''} sem peça para pagar")
+        avisos.append(f"Devolução perdida: {perde} ponto{'s' if perde > 1 else ''} sem Melhoria para pagar")
     s = 3 * c - gasto + usa
     if s < 0:
         erros.append(f"Orçamento estourado: faltam {-s} ponto{'s' if s < -1 else ''}")
@@ -474,8 +478,9 @@ def _outras(nivel, refino, leque, essencia, dominio, cp_regra, passivas, aptidoe
         cel[c["nome"]] = p
     for c, a in zip(APTIDOES, aptidoes):
         cel[c["nome"]] = a
-    for c, (forma, concede) in zip(PACTOS, pactos):
-        cel[c["forma"]], cel[c["concede"]] = forma, concede
+    # 11/10/2026 (edição R43): o pacto não tem mais o menu do que concede; os casos de antes trazem o par, e vale a forma
+    for c, (forma, _) in zip(PACTOS, pactos):
+        cel[c["forma"]] = forma
     cz = G["cols_zero"]
     for i, (forma, mel, res) in enumerate(zero):
         lin = G["zero_ini"] + i
@@ -487,7 +492,7 @@ def _outras(nivel, refino, leque, essencia, dominio, cp_regra, passivas, aptidoe
 
 
 KAORI = {**_outras(10, 2, 0, 1, "Incompleta", 2, ["Raiz", "Fluxo", None, None, None, "Leitura"], ["Projetar Energia", "Barreira Simples", "Energia Reversa"],
-                   [("Temporário", None), ("Permanente", "Um espaço conhecido"), (None, None)],
+                   [("Temporário", None), ("Permanente", None), (None, None)],
                    [("Toque", None, None), ("Projétil", "Empurrão", None), ("Cone", "Maior", "Parado"), ("Apoio", "Longe", None), ("Explosão", "Longe", None)],
                    ("Projétil", ["Fura"])),
          "familias": {"Controle": "Livre", "Castigo": "Livre", "Amparo": "Fechada", "Área": "Fechada", "Auxiliares": "Fechada"},
@@ -498,7 +503,7 @@ KAORI = {**_outras(10, 2, 0, 1, "Incompleta", 2, ["Raiz", "Fluxo", None, None, N
          "libs": [feitico("Golpe do Voto", 3)]}
 VELHO = {**_outras(30, 7, 0, 6, "Sem Barreiras", 3, ["Escama", "Afinidade", "Reserva Profunda", "Talento Próprio (CE 3)", "Eco"],
                    ["Domínio Simples", "Pétala", "Aptidão Própria (CE 2)", "Cortina"] * 3,
-                   [("Permanente", "Um espaço conhecido"), ("Permanente", "Um espaço conhecido"), ("Permanente", "Uma aptidão")],
+                   [("Permanente", None), ("Pacto de restrição", None), ("Promessa", None)],
                    [("Linha", "Longe", "Gesto"), ("Aura", "Maior", None), ("Efeito", None, None), ("Projétil", "Longe", None), ("Cone", None, None)],
                    ("Linha", ["Muito Longe"]), 3),
          "feiticos": [feitico(f"F{i}", 7) for i in range(20)],
@@ -618,7 +623,8 @@ checa("nenhum exemplo do livro é acusado de erro pela ficha", not erros, "; ".j
 checa(f"toda caixa das {len(PRONTOS)} cartas bate com a regra (dano, PE, ação, alcance, preços, conta, Ampliar e avisos)", not cartas_ruins,
       f"{len(cartas_ruins)}: " + "; ".join(cartas_ruins[:3]))
 # o livro: "Uma Aura de Classe 3, sem desconto, tem Fura: custo 2 + 3, com devolução 3 de Corpo a Corpo" -- a Restrição
-# embutida paga a Forma também, e a conta da carta mostra a devolução dela
+# embutida devolve 3, que é o que a Fura custou (a Aura custa 2, e a devolução não a paga desde a edição R43), e a conta
+# da carta mostra a devolução dela
 checa("a Aura com Fura recebe a devolução 3 do Corpo a Corpo da Forma, e a carta mostra",
       "a Forma devolve 3" in _lidas["Aura com Fura"]["conta"] and _lidas["Aura com Fura"]["dano"].startswith("7d8"), str(_lidas["Aura com Fura"]))
 
@@ -688,9 +694,9 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
     ws, f, cel, n = wb[ABA], wb["FICHA"], FICHAS[nome].get("celulas", {}), FICHAS[nome].get("nivel", 2)
     v = lambda c: txt(ws[c].value)
     passivas = [cel.get(c["nome"]) for c in PASSIVAS]
-    pactos = [(cel.get(c["forma"]), cel.get(c["concede"])) for c in PACTOS]
-    de_pacto = sum(1 for p in pactos if p == ("Permanente", "Um espaço conhecido"))
-    espacos = 2 + n // 2 + marcos(n) + de_pacto
+    # 11/10/2026 (edição R43, itens 34 a 37 e 186): o pacto permanente não concede mais espaço conhecido
+    pactos = [cel.get(c["forma"]) for c in PACTOS]
+    espacos = 2 + n // 2 + marcos(n)
     leque = min(ficha.get("leque", 0), marcos(n))
     montados = sum(1 for ft in ficha.get("feiticos", []) if ft["nome"])
     cp_regra = cel.get(G["cp_regra"]) or 0
@@ -735,7 +741,7 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
             abre = next(nv for nv, q in zip(TEC["classe_0"]["niveis"], TEC["classe_0"]["quantos"]) if q >= i + 1)
             esp_z = (f"Nível {abre}", "")
         else:
-            dz = zd - (1 if mel else 0)           # livro reconstruído: a Restrição Leve não devolve o dado
+            dz = zd - (1 if mel and not res else 0)   # edição R43: a Restrição Leve devolve o dado que a Melhoria tirou
             esp_z = ("—" if forma in ("Apoio", "Efeito") else f"{dz}d8 = {math.floor(dz * 4.5)}", alcance({"forma": forma, "mel": [mel]}, 0))
         lido_z = (v(f"{cz['dano'][0]}{lin}"), v(f"{cz['alcance'][0]}{lin}"))
         if lido_z != esp_z:
@@ -825,9 +831,10 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
     lido_c = (v(G["apt_compradas"]), v(f"{G['cols_apt'][2][0]}{G['apt_caixas'] + 1}"), v(f"{G['cols_apt'][3][0]}{G['apt_caixas'] + 1}"),
               v(f"{G['cols_apt'][4][0]}{G['apt_caixas'] + 1}"))
     checa(f"{nome}: as aptidões compradas contra as que os marcos dão, e as duas de graça pelo refino", lido_c == esp_c, f"{lido_c} != {esp_c}")
-    perm = sum(1 for p in pactos if p[0] == "Permanente")
+    # a vaga é do pacto permanente e do pacto de restrição; a Promessa e o temporário não ocupam
+    perm = sum(1 for p in pactos if p in TEC["pactos"]["ocupam_vaga"])
     esp_pc = ("⚠ " if perm > ess // 2 else "") + f"{perm} de {ess // 2}"
-    checa(f"{nome}: os pactos permanentes contra metade da Essência", v(G["pac_permanentes"]) == esp_pc, f"{v(G['pac_permanentes'])!r} != {esp_pc!r}")
+    checa(f"{nome}: os pactos que ocupam vaga (permanente e de restrição) contra metade da Essência", v(G["pac_permanentes"]) == esp_pc, f"{v(G['pac_permanentes'])!r} != {esp_pc!r}")
 
 # ---------------------------------------------------------------------------------------------
 print("\nAS QUATRO ROTAS")
@@ -1178,15 +1185,20 @@ for l in _lido:
     if len(partes) < 2:
         continue
     ext = _xe["caminhos" if l["fonte"] == _hb.FONTE_CAMINHO else "trilhas"][l["dono"]][str(l["nivel"])]
-    for linha in _secao(l["dono"]):
-        m = re.match(rf"^Nível {l['nivel']}: ([^.]{{1,80}})\. (.+)", linha)
+    # 11/10/2026 (edição R43 do livro): a habilidade deixou de abrir por "Nível N: Nome." dentro do texto e ganhou o
+    # próprio título ("#### Nome", com a linha "Nível N." embaixo quando o título não é da tabela). A checagem lê o
+    # título e o primeiro parágrafo de regra que vem depois dele
+    sec = _secao(l["dono"])
+    for i, linha in enumerate(sec):
+        m = re.match(r"^#### (.{1,80})$", linha)
         if not (m and m.group(1) in partes):
             continue
+        corpo = next((x for x in sec[i + 1:] if x.strip() and not re.fullmatch(r"Nível \d+\.", x.strip())), "")
         _com_nome.append((l["dono"], l["nivel"], m.group(1)))
         for onde, h in (("Habilidades.gs", l), ("extrator", ext)):
-            if m.group(1) not in h["titulos"] or f"{m.group(1)}\n\n{m.group(2)}" not in h["texto"]:
+            if m.group(1) not in h["titulos"] or f"{m.group(1)}\n\n{corpo}" not in h["texto"]:
                 _sem_nome.append(f"{l['dono']} {l['nivel']}, {m.group(1)} ({onde})")
-checa("a carta que junta duas habilidades mostra o nome de cada uma que o livro abre por \"Nível N: Nome.\", em subtítulo",
+checa("a carta que junta duas habilidades mostra o nome de cada uma, em subtítulo, com o texto que o livro põe embaixo do título dela",
       ("Vanguarda", 7, "Execução Preparada") in _com_nome and not _sem_nome, f"{_sem_nome[:3]} · achadas {len(_com_nome)}")
 # 05/10/2026, pedido do Mizuki: "Nome da técnica aparecer na ficha amaldiçoada". Ele escolheu "Espelha a CARTEIRA": a caixa
 # NOME DA TÉCNICA é referência pura para uma conta da DADOS_AM (quem escreve por cima recebe a conta de volta, pelo onEdit),
@@ -1241,8 +1253,8 @@ checa("o estado da carta fica fora da cor de título, para a cor de aviso se ler
 larguras = [int(round(8 * ws0.column_dimensions[ix._letras(c)].width - 1)) for c in range(1, fa.COLS + 1)]
 larguras = [28 if abs(ws0.column_dimensions[ix._letras(c)].width - 4.0) < 1e-6 else p for c, p in zip(range(1, fa.COLS + 1), larguras)]
 checa(f"as três cartas têm {sum(fa.PX_CARTA)} px cada, e a página {sum(fa.PX_COLUNAS)} px", larguras == fa.PX_COLUNAS, str(larguras))
-checa("os lugares cobrem o teto do livro: 24 espaços no nível 30, sete feitiços do Leque e três de pacto",
-      fa.N_FEITICOS >= 2 + 30 // 2 + 2 * len(PROG["marcos"]) + 3 and fa.PAGAS + fa.DO_LEQUE == 12 and len(PASSIVAS) == 12 and len(APTIDOES) >= 11)
+checa("os lugares cobrem o teto do livro: 24 espaços no nível 30 e sete feitiços do Leque (o pacto não concede mais espaço)",
+      fa.N_FEITICOS >= 2 + 30 // 2 + 2 * len(PROG["marcos"]) and fa.PAGAS + fa.DO_LEQUE == 12 and len(PASSIVAS) == 12 and len(APTIDOES) >= 11)
 import conferir_feitico as _cf
 checa("as quatro Restrições de frequência são as do conferir_feitico.py", set(fa.FREQUENCIA) == set(_cf.FREQUENCIA) == set(FREQUENCIA))
 formulas_am = [c for linha in ws0.iter_rows() for c in linha if isinstance(c.value, str) and c.value.startswith("=")]

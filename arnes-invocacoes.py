@@ -43,8 +43,9 @@ PERTURBACOES = [
     # --- a entrada, o retorno e o talismã
     ("o talismã carregado não barateia a entrada", GER,
      '''MAX(1,CEILING({cl}/2,1)),{cl})\'''', '''{cl},{cl})\'''', "com o talismã carregado entra por 2 PE"),
-    ("o retorno cobra os 2 × Classe cheios mesmo com o talismã carregado", GER,
-     '''o["ret"] = f'={cl}+{P("ent")}\'''', '''o["ret"] = f'=2*{cl}\'''', "volta por mais 6 PE"),
+    # 11/10/2026 (edição R43 do livro): o retorno é 2 × Classe, e a carga do talismã deixou de abater
+    ("o retorno volta a abater a carga do talismã", GER,
+     '''o["ret"] = f'=2*{cl}\'''', '''o["ret"] = f'={cl}+{P("ent")}\'''', "o retorno custa 8 PE"),
     # --- o conjunto
     ("Múltiplas Invocações não dobra o limite de ativas", GER,
      '''"teto de ativas": f'=IF({H["trilha"]}="{MULTIPLAS}",4,2)\',''', '''"teto de ativas": f'=IF({H["trilha"]}="{MULTIPLAS}",2,2)\',''',
@@ -71,9 +72,15 @@ PERTURBACOES = [
     ("a devolução da Restrição deixa de parar em 2 × Classe", GER,
      '''o["dv"] = f"=MIN(2*{Cc},{P('dv0')})"''', '''o["dv"] = f"={P('dv0')}"''', "a devolução para em 2 × Classe"),
     ("a Restrição vira dado: o que ela devolve além do gasto não some", GER,
-     '''o["usa"] = f"=MIN({P('dv')},{P('g')})"''', '''o["usa"] = f"={P('dv')}"''', "fichas sorteadas"),
+     '''o["usa"] = f"=MIN({P('dv')},{P('gm')})"''', '''o["usa"] = f"={P('dv')}"''', "fichas sorteadas"),
+    # 11/10/2026 (edição R43 do livro, item 143): a devolução paga só as Melhorias, e a Forma fica de fora
+    ("a devolução da Restrição volta a pagar a Forma", GER,
+     '''o["usa"] = f"=MIN({P('dv')},{P('gm')})"''', '''o["usa"] = f"=MIN({P('dv')},{P('g')})"''', "fichas sorteadas"),
     ("a básica com Melhoria não perde o dado", GER,
-     '''MAX(0,{P('db')}-IF({P('nm')}>0,1,0))''', '''MAX(0,{P('db')})''', "fichas sorteadas"),
+     '''MAX(0,{P("db")}-IF(AND({P("nm")}>0,COUNTIF({RR},"?*")=0),1,0))''', '''MAX(0,{P("db")})''', "fichas sorteadas"),
+    # 11/10/2026 (edição R43 do livro, item 63): na básica a Restrição Leve devolve o dado que a Melhoria tirou
+    ("na básica a Restrição Leve deixa de devolver o dado da Melhoria", GER,
+     '''MAX(0,{P("db")}-IF(AND({P("nm")}>0,COUNTIF({RR},"?*")=0),1,0))''', '''MAX(0,{P("db")}-IF({P("nm")}>0,1,0))''', "fichas sorteadas"),
     ("o ataque com Condição ou Prende deixa de mostrar o TR (a D43 do livro)", GER,
      '''&IF({P("ptr")}>0," · TR"&IF({P("cdf")}="",""," CD "&{P("cdf")}),""),\'''', ''',\'''', "mostra também o TR e a CD"),
     # --- 08/10/2026 (B41): a Integridade da entidade com alma

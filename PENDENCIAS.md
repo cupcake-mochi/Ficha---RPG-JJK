@@ -3228,3 +3228,79 @@ aviso. O Sheets de mentira aprendeu `Range.setWrap` e `Sheet.setRowHeight`, que 
 verde). A bateria inteira e o `arnes-pessoal.py` não rodaram (os trechos dele existem todos no código de hoje). Eu não
 revisei a otimização linha a linha: li as mudanças, e a garantia de que ela pinta igual vem dos testes daqui e dos que
 o agente fez no Sheets.*
+
+### B45 · A ficha posta em dia com o livro da edição R43 (v0.358) — **FEITA em 11/10/2026; NÃO RODOU NO SHEETS: muda fórmula, nota e o bloco dos pactos, e por isso é preciso colar os quatro `.gs` e montar de novo**
+
+*O Mizuki pediu: "analise a nova documentação, o livro foi atualizado e juntamente a isso algumas informações ficaram salvas nas
+pastas locais, revisione a ficha se as informações estão todas corretas". O livro do `JJK---Project` foi da v0.340 para a
+**v0.358, edição R43** (`sistema/05-material/livro/ciclo-maldito-r41/LIVRO-COMPLETO.md`, 14.346 linhas), e traz junto a
+lista numerada do que mudou (`revisao-de-regras/MUDANCAS-DE-REGRA.md`) e as decisões dele (`DECISOES-MIZUKI.md`). Das "pastas
+locais" eu só achei o livro novo no GitHub: na pasta do projeto os únicos arquivos fora do git são dois de setembro
+(`RESULTADO-v0258.md` e a pasta das paletas da ficha antiga). Se ele falava de outra pasta, falta ele dizer qual.*
+
+**O livro mudou de formato, e a leitura dele precisou acompanhar.** *O subtítulo de grupo virou parágrafo todo em negrito; a
+habilidade passou de `#### Nível 7 — Nome` para `#### Nome` com a linha `Nível 7.`; Condições, Bênçãos, Talentos marciais,
+Sementes e Tipos de dano desceram um nível de título; a Categoria de Efeito virou uma linha própria; o preço "Concentrada /
+Duradoura" foi para a linha `Preço:`; "Proteção e presença" foi fundida nos Talentos de Categoria 2; o Batedor ganhou a
+tabela "Rotas do Batedor" antes das rotas; e o quadro da Kaori está em "Exemplo: Kaori". O `extrair-manual.py` e os quatro
+extratores leem o formato novo, e os quatro `--confere` passam. Sem isso as cartas de Habilidades saíam com o texto cortado.*
+
+**O que estava desatualizado na ficha, e foi corrigido.** *O número entre colchetes é o item da lista de mudanças do livro.*
+
+| onde | como estava (v0.340) | como ficou (R43) |
+|---|---|---|
+| `FICHA AMALDIÇOADA` e `INVOCAÇÕES`, a conta de cada carta [143] | a devolução das Restrições pagava qualquer peça, a Forma também | paga só as Melhorias: o que passar do gasto com elas se perde ("sem Melhoria para pagar"). A conta do Ampliar, Classe por Classe, segue a mesma regra |
+| Classe 0 e a básica da invocação [63] | a Restrição Leve não devolvia o dado que a Melhoria tirou | devolve o dado, sem criar pontos |
+| `FICHA AMALDIÇOADA`, os pactos [34 a 37, 186] | cada pacto tinha o menu "o que concede" (uma aptidão, um espaço conhecido, energia), e o permanente que dava espaço somava nos espaços de feitiço; só o permanente contava no teto | o menu saiu: "o pacto concede uma mecânica única, decidida com o mestre", e fica só a caixa de texto O QUE EU RECEBO, com a regra na nota. Pacto não soma mais espaço. A caixa passou a se chamar VAGAS DE PACTO e conta o permanente **e o pacto de restrição** contra metade da Essência; Promessa e temporário não ocupam |
+| `INVOCAÇÕES`, o Acerto da Expansão da domada [16] | Classe em d8 (Classe 4: 4d8) | os pontos de especial da maior Classe, menos o preço Médio do Inescapável, com o desconto se a Mira é Família Livre da ficha: o exemplo do livro, Classe 4, dá 9 − 4 = 5d8 (7d8 com a Mira livre) |
+| `FICHA PESSOAL`, a carga [158] | acima do limite o personagem não andava (deslocamento 0 m) | acima do limite e até o dobro: metade do deslocamento e desvantagem em TR Físico; acima do dobro: 0 m. A caixa mostra "· acima" ou "· acima do dobro", e as duas ficam em vermelho |
+| `FICHA PESSOAL`, Traje, Revestimento e escudo sem a Força [157] | a peça não dava a proteção, e a Defesa descontava | dá a proteção inteira; o deslocamento cai pela metade e a nota avisa da desvantagem em TR Físico |
+| `FICHA PESSOAL`, as penalidades juntas [158] | cada uma na sua conta | arma sem a Força, proteção sem a Força e carga acima do limite cortam o deslocamento pela metade **uma vez só** |
+| `FICHA PESSOAL`, as Cicatrizes [94] | "não dá modificador" | o jogador escolhe: vantagem em Intimidação e desvantagem em Persuasão, ou nenhum dos dois, e escreve a escolha |
+| `INVOCAÇÕES`, o retorno com o talismã carregado [23] | a carga abatia o que adiantou (Classe 4: 6 PE no retorno) | o livro tirou essa regra e o exemplo dela: o retorno mostra 2 × Classe (8 PE), com ou sem carga. A carga só vale na entrada comum |
+| `FICHA AMALDIÇOADA`, a nota da Reação de Cobrir-se de Energia [160] | "você fica sem proteção até o fim do seu próximo turno", sem os 2 PE | "como Reação e 2 PE"; perde só a proteção passiva da aptidão, e Traje, Revestimento e escudo continuam valendo |
+| `FICHA AMALDIÇOADA`, a nota das Restrições [143] | "Restrição paga peças, incluindo a Forma" | "Restrição paga Melhorias, e não a Forma" (a conta já estava certa; a nota tinha ficado para trás, e quem achou foi a releitura das 148 notas da ficha) |
+| o arquivo de dados, as Formas de área [14] | "TR; metade dos dados no sucesso" | "TR; metade do resultado do dano no sucesso", como o livro. A carta da ficha mostra só "TR, metade" |
+| o arquivo de dados, as Melhorias [57, 70] | 69 Melhorias, com a Troca; De Novo era Média | 68: a Troca saiu do livro; De Novo é Pesada. Texto novo em Perseguir, Empurrão, Fica, Certeiro, De Novo, Desarma o Feitiço, Armado, Segura e Sugar, e na Restrição Assinatura |
+| as cartas de Habilidades, as Bênçãos, as aptidões | o texto da v0.340 | o texto da R43 (entre outras: as Bênçãos Represália e Sangue Frio entraram; Projetar Energia vai até metade do refino; Bloquear é escolhido antes da rolagem) |
+| o carimbo do arquivo de dados | o livro reconstruído, revisado em 04/10 | a edição R43, lida em 11/10/2026. O número que a `CARTEIRA` mostra continua **1.0** (o `_meta.versao`, que é decisão dele: ver abaixo) |
+
+**O que saiu do `fora_do_livro` do arquivo de dados**, *porque o livro passou a dizer:* a arma empunhada sem a Força
+(desvantagem no ataque e metade do deslocamento [156], que a ficha já aplicava desde o B40) e a vida inicial da Vanguarda
+(8 + Constituição, agora na tabela da Especialização, com o dado de vida de cada Caminho).
+
+**O que eu conferi e não precisou mudar:** *a progressão (vida, energia, maestria, marcos), os preços por peso e Classe, o
+teto de dados, as Formas, as Condições, os Graus, o equipamento e o Volume, o descanso (B43), a ficha da Kaori do exemplo e
+o Cão de sombra do capítulo 17: os conferidores de regra leem o livro novo e passam.*
+
+**O `conferir_feitico.py` também tinha a regra antiga** *("a Restrição paga peças, a Forma incluída"): passa a limitar a devolução ao gasto com Melhorias. Os dez exemplos de montagem que o livro imprime continuam batendo com a regra nova, o que confirma que o livro refez os exemplos.*
+
+**Como eu revisei.** *Li a lista de mudanças do livro inteira, item por item, e para cada um procurei onde a ficha toca na regra. Depois tirei da planilha gerada as 148 notas distintas e li todas contra o livro novo: foi assim que apareceram a nota das Restrições, a da Reação e o retorno com o talismã, que a primeira passada não tinha pego. O que a ficha não mostra (Ritual, economia de ações da invocação, disputa de três barreiras, Rescaldo, recarga da Técnica Máxima, Insistir, XP guardado) não pediu mudança.*
+
+**Fica com o Mizuki.** *(1) O número da `CARTEIRA` continua 1.0: o livro mudou de regra, e se ele quiser marcar isso na ficha é só dizer o número. (2) O retorno com o talismã carregado: eu li o item [23] como "a carga não abate o retorno", porque o livro tirou a frase e o exemplo; se a intenção for outra, é uma linha. (3) O bloco dos pactos perdeu o menu "o que concede"; quem tinha um pacto com "Um espaço conhecido" numa ficha antiga perde esse espaço ao montar de novo, que é o que o livro manda. (4) A variante de rolar a vida [147] e o dado de cada Caminho estão no arquivo de dados, e a ficha continua no valor fixo.*
+
+**Os testes, postos em dia.** *O modelo da `regressao-ficha-pessoal.py` (carga acima do limite e acima do dobro, uniforme sem a
+Força: três casos novos), o da `regressao-amaldicoada.py` (a devolução sem a Forma, a Classe 0, os pactos sem "o que
+concede", um caso com pacto de restrição e Promessa) e o da `regressao-invocacoes.py` (o mesmo, e os dois casos do Acerto:
+o exemplo do livro e a Mira como Família Livre). Nos arneses, cinco defeitos plantados citavam fórmulas que mudaram e
+foram reescritos, com três novos (a devolução voltando a pagar a Forma, nas duas abas e no Ampliar; o pacto de restrição
+sem ocupar vaga).*
+
+**Um defeito antigo dos testes, achado no caminho.** *O `arnes-delta.py` deixava um defeito plantado "sem veredito" (a carta apagada
+que não volta a encher), e já deixava no commit anterior: a `regressao-delta.js` terminava com `process.exit(1)`, que corta a
+saída quando ela vai para um cano e passa de 64 KB, e as cartas de Habilidades imprimem o texto inteiro do livro na falha.
+Passa a usar `process.exitCode`, e os 40 defeitos do arnês acendem a checagem certa.*
+
+**Conferido.** *Dos dezenove da bateria rodaram dezoito, um por vez, e passaram: `conferir-catalogo.py` (TUDO VERDE),
+`conferir-kaori.py`, `conferir-progressao.py`, `regressao-exemplos.py` (os 10 exemplos do livro), `arnes.py`,
+`revisao-cetica.py`, `conferir-decisoes.py`, `arnes-decisoes.py`, `conferir-ficha-xlsx.py` (com dez checagens novas, as do
+B45), `regressao-kaori-na-ficha.py`, `regressao-delta.js`, `arnes-delta.py`, `regressao-ficha-pessoal.py`,
+`regressao-pessoal.js`, `regressao-construir.js`, `regressao-amaldicoada.py` (354 checagens), `regressao-invocacoes.py` (54)
+e `comparar-ficha-01.py` (IGUAIS). Fora da bateria: `regressao-paleta.js`, `regressao-arte.js` e os quatro `--confere` dos
+extratores. A `regressao-ficha-pessoal.py` e a `regressao-kaori-na-ficha.py` rodaram antes da última geração, que só mudou
+duas notas da `FICHA AMALDIÇOADA` e a conta do retorno da `INVOCAÇÕES`. **Não rodaram:** o `arnes-pessoal.py` (o décimo
+nono da bateria), o `rodar-tudo.sh` de uma vez, e os arneses manuais inteiros; dos defeitos novos e reescritos do
+`arnes-amaldicoada.py` e do `arnes-invocacoes.py` só foi conferido que o trecho de cada um existe no gerador de hoje (a
+rodada deles estava em andamento quando este registro foi escrito: o resultado vai no commit seguinte, se mudar algo).
+Tamanhos: `Codigo.gs` 248 KB, `Ficha.gs` 833 KB (o teto é 900), `Habilidades.gs` 216 KB, `Invocacoes.gs` 461 KB. **Nada
+disto rodou no Sheets.***

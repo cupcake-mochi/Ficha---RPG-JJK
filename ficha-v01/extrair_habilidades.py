@@ -70,13 +70,17 @@ def extrai():
     if faltam:
         raise SystemExit(f"sem título no capítulo 6: {faltam}")
     inicio = {d: titulos[h] for d, (_, h) in donos.items()}
-    marcos = sorted(inicio.values()) + [fim_cap]
+    # 11/10/2026 (edição R43): a Trilha com rotas ganhou uma seção só dela antes da primeira rota ("### Batedor", com a
+    # tabela "Rotas do Batedor"). Ela fecha a Trilha de antes (sem isso a apresentação do Batedor ia parar na carta do
+    # nível 27 da Estocada), e é nela que a tabela das rotas mora.
+    da_trilha = {t: titulos[t] for t in rotas if t in titulos}
+    marcos = sorted(list(inicio.values()) + list(da_trilha.values())) + [fim_cap]
     fim = {d: next(x for x in marcos if x > i) for d, i in inicio.items()}
 
     def tabela(d):
         """[(nível, nome)] da tabela de progressão; as rotas leem a coluna delas na tabela da primeira rota"""
         t, r = (d.split(SEP_ROTA) + [None])[:2]
-        a, b = (inicio[t + SEP_ROTA + rotas[t][0]], fim[t + SEP_ROTA + rotas[t][0]]) if r else (inicio[d], fim[d])
+        a, b = (da_trilha.get(t, inicio[t + SEP_ROTA + rotas[t][0]]), fim[t + SEP_ROTA + rotas[t][0]]) if r else (inicio[d], fim[d])
         for i in range(a, b):
             if L[i].startswith("Nível | "):
                 cab = L[i].split(" | ")
@@ -183,8 +187,11 @@ def extrai():
                 if dona[a] != k:
                     continue
                 trecho = [x for l in L[a:b] for x in bloco(l, n, nome)]
-                while trecho and trecho[-1][0] == "titulo":
-                    trecho.pop()                      # o título que fecha o trecho é da seção seguinte
+                # o título que fecha o trecho é da seção seguinte. 11/10/2026 (edição R43): menos quando o trecho
+                # seguinte é da mesma habilidade. O livro passou a escrever "#### Ataque Extra" e, embaixo, "Nível 7.":
+                # o título e a linha do nível são duas marcas seguidas da mesma carta, e o título é o subtítulo dela
+                while trecho and trecho[-1][0] == "titulo" and dona.get(b) != k:
+                    trecho.pop()
                 blocos += trecho
             h = {"nome": nome, "texto": junta(blocos), "titulos": [t for tipo, t in blocos if tipo == "titulo"]}
             if n in niveis:
