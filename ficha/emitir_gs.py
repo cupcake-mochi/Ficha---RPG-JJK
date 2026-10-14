@@ -408,7 +408,9 @@ def compactar(aba):
 # declara a lista; quem junta é o juntarAbas_ do Ficha.gs (modelo.gs.js), no arquivo que carregar por último, porque o
 # Apps Script não promete a ordem em que carrega os arquivos. Cada aba de fora diz depois de qual ela entra (`depois`).
 # ---------------------------------------------------------------------------------------------
-SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVOC"))}
+# 14/10/2026 (B47): a ANALISE, oculta, para o bot, também vai à parte: o Ficha.gs está perto do teto
+SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVOC")),
+             "Analise.gs": ("ABAS_DA_ANALISE", ("ANALISE",))}
 COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_"}
 
 

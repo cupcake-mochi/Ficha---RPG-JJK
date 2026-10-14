@@ -3503,3 +3503,31 @@ Na cópia nova, sem ativação ou gatilho instalável, passaram: Morrendo 93/Cla
 **Pedido adicional: descrições retráteis.** As linhas 45–50 da FICHA PESSOAL formam um grupo aberto de fábrica, com +/− antes das descrições. Menus na linha 44 e frequências na 51 ficam visíveis. A linha 42 explica o controle. Ataque sem Prenúncio, a maior marcante do livro (4.706 caracteres), expandiu a caixa para 2.004 px no Sheets; o final do texto ficou visível, com espaço de sobra. Recolher e reabrir foi testado na cópia e o grupo foi aplicado à oficial. O gerador também incorpora o grupo e o aviso, sem deslocar os campos. Dos arneses manuais, rodaram os três casos de nível da `arnes-invocacoes.py` (9, 10 e 11): base limpa e os três defeitos acenderam suas checagens. Não rodaram os arneses manuais completos de INVOCAÇÕES, FICHA AMALDIÇOADA, `arnes-ficha-pessoal.py` e `arnes-paleta.py`; os 38 trechos do primeiro e os 77 do segundo foram conferidos antes de gerar.
 
 **Arquivos no Google.** [Ficha oficial](https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit); [backup anterior](https://docs.google.com/spreadsheets/d/1mGW7bPsBenSQpSS7TGis6_JJswl2a5tVxcYpq3mHusQ/edit); [cópia de verificação](https://docs.google.com/spreadsheets/d/16kySXV3sJ0wdU2Eq15yqB2jic3-s0wBcu1jCxSrIkPE/edit).
+
+#### B47, andamento de 14/10/2026: a aba ANALISE para o bot (fase 1, NÃO FECHADO)
+
+*O plano inteiro (ANALISE e CONFIGURAÇÃO, estudos aprovados, o esquema de chaves) mora fora do repositório, em
+`/media/mizuki/HD Externo II/Claude/Planejamento-ficha/B47-analise-e-configuracao/` (PLANO.md, ESQUEMA-ANALISE.md e os dois
+estudos em HTML). Decisões do Mizuki: a CONFIGURAÇÃO na forma B, fixa em Mizuki Escuro, para mestre e jogador, com conteúdo
+custom de "tudo"; o bot só responde no chat; títulos sem artigo; a aba se chama ANALISE, sem acento.*
+
+**Feito (fase 1):** `ficha-v01/analise.py` monta a aba ANALISE, oculta, fora da troca de paleta, com quatro colunas
+(chave, valor, célula, parte) e 2.650 linhas: cabeçalho, entradas da FICHA (atributos, marcos, perícias, ofícios, TRs,
+Sequelas, Buff/Debuff), da FICHA PESSOAL (Origem, equipamento, itens, missões, treino de armas), da FICHA AMALDIÇOADA
+(cada lugar de feitiço com as peças juntas, passivas, aptidões, pactos) e da INVOCAÇÕES (cada ficha e cada carta),
+resultados e avisos. Vai num arquivo à parte, `apps-script/Analise.gs` (482 KB), juntado pelo `juntarAbas_`; o
+`Codigo.gs` devolve a conta a quem escrever nela.
+O leitor de teste `ler-analise.py` (raiz) lê a aba pelo link aberto (CSV do gviz) ou da ficha gerada recalculada no
+LibreOffice, normaliza os valores (vírgula decimal, VERDADEIRO/FALSO) e responde como o bot: aprovada ou reprovada, com
+os avisos. `python3 ler-analise.py --teste` passa (2.650 chaves; a ficha em branco sai reprovada pelas perícias que
+faltam escolher, o que está certo). A ANALISE entrou na lista de abas do `decisoes-ficha.json` e no `comparar-ficha-01.py`,
+e o `conferir-ficha-xlsx.py` ganhou quatro checagens dela.
+**Conferido:** conferir-ficha-xlsx (A FICHA CONFERE), comparar-ficha-01 (IGUAIS), conferir-decisoes, regressao-construir.js,
+regressao-paleta.js, regressao-pessoal.js e o `ler-analise.py --teste`. Não rodou: o `rodar-tudo.sh` inteiro.
+**Teste no Sheets (roteiro):**
+1. Colar os seis `.gs` (`Codigo`, `Ficha`, `Habilidades`, `Invocacoes`, `Origens` e o novo `Analise`) e montar.
+2. A aba ANALISE existe e está oculta (Exibir › Abas ocultas), com 2.650 linhas.
+3. Escrever qualquer coisa numa célula da coluna B dela: a fórmula volta.
+4. Com a ficha aberta por link, rodar `python3 ler-analise.py <link da ficha>`: tem de listar as chaves e o veredito.
+5. A troca de paleta não pinta a ANALISE.
+**Próximo:** fase 2, a CONFIGURAÇÃO (bônus e mudanças primeiro).

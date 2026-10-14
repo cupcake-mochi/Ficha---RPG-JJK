@@ -777,7 +777,9 @@ if _o.path.exists(GS):
     # 06/10/2026: a INVOCAÇÕES e a DADOS_INVOC moram no Invocacoes.gs, que se junta ao ABAS quando o script carrega
     GS_INV = "apps-script/Invocacoes.gs"
     g_inv = open(GS_INV, encoding="utf-8").read() if _o.path.exists(GS_INV) else ""
-    checa(f"ele e o Invocacoes.gs trazem as {len(DEC['C6_documento']['abas'])} abas decididas", all(f'"{a}"' in g + g_inv for a in DEC["C6_documento"]["abas"]))
+    # 14/10/2026 (B47): e a ANALISE mora no Analise.gs
+    g_an = open("apps-script/Analise.gs", encoding="utf-8").read() if _o.path.exists("apps-script/Analise.gs") else ""
+    checa(f"ele, o Invocacoes.gs e o Analise.gs trazem as {len(DEC['C6_documento']['abas'])} abas decididas", all(f'"{a}"' in g + g_inv + g_an for a in DEC["C6_documento"]["abas"]))
     checa("o Invocacoes.gs só declara as abas dele e chama a junção: quem carregar por último junta",
           "var ABAS_DA_INVOCACAO = " in g_inv and "if (typeof juntarAbas_ === 'function') juntarAbas_(ABAS_DA_INVOCACAO);" in g_inv
           and "if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);" in g and "function " not in g_inv)
@@ -1737,6 +1739,24 @@ checa("a Levanta, no arquivo de dados, encerra Morrendo abaixo do tratamento nec
 checa("o menu de Origem tem o Híbrido e os dois ramos da Restrição Celestial com o nome do livro, e nenhum Feto",
       "Híbrido" in _lista_o and "Restrição Celestial · Sem Energia" in _lista_o and "Restrição Celestial · Restrição corporal" in _lista_o
       and not any("Feto" in str(x_) for x_ in _lista_o), str(_lista_o))
+
+# 14/10/2026 (B47, fase 1): a ANALISE, oculta, para o bot. Cada chave é única e fixa, cada valor é fórmula que lê a ficha,
+# e a aba vai num arquivo de script à parte, juntado pelo juntarAbas_
+_an = wb["ANALISE"] if "ANALISE" in wb.sheetnames else None
+_an_l = [[c_.value for c_ in l_] for l_ in _an.iter_rows(min_row=2, max_col=4)] if _an else []
+_an_k = [l_[0] for l_ in _an_l]
+checa("a aba ANALISE existe, oculta, com o cabeçalho chave · valor · célula · parte e mais de 2.000 chaves únicas",
+      bool(_an) and _an.sheet_state == "hidden" and [c_.value for c_ in _an[1][:4]] == ["chave", "valor", "célula", "parte"]
+      and len(_an_k) > 2000 and len(set(_an_k)) == len(_an_k) and all(re.fullmatch(r"[a-z0-9_.]+", str(k_)) for k_ in _an_k),
+      f"{len(_an_k)} chaves")
+checa("toda chave da ANALISE tem uma parte conhecida, e todo valor de entrada, resultado ou aviso é fórmula",
+      all(l_[3] in ("cabeçalho", "entrada", "resultado", "aviso") for l_ in _an_l)
+      and all(str(l_[1]).startswith("=") for l_ in _an_l if l_[3] != "cabeçalho"))
+_ang = open("apps-script/Analise.gs", encoding="utf-8").read() if os.path.exists("apps-script/Analise.gs") else ""
+checa(f"a ANALISE mora no Analise.gs ({len(_ang) / 1024:.0f} KB, o teto é de 900), que o Ficha.gs junta",
+      0 < len(_ang) / 1024 < 900 and "var ABAS_DA_ANALISE" in _ang and "juntarAbas_(ABAS_DA_ANALISE)" in open("apps-script/Ficha.gs", encoding="utf-8").read()
+      and '"nome":"ANALISE"' not in open("apps-script/Ficha.gs", encoding="utf-8").read())
+checa("o Codigo.gs devolve a conta a quem escrever na ANALISE", "devolverConta_(e, 'ANALISE')" in _CODA)
 
 print(f"\n{'A FICHA CONFERE' if not FALHAS else f'{len(FALHAS)} PROBLEMA(S)'}")
 sys.exit(1 if FALHAS else 0)

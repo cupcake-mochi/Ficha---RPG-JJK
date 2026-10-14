@@ -75,6 +75,7 @@ function juntarAbas_(extras) {
   });
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
+if (typeof ABAS_DA_ANALISE !== 'undefined' && ABAS_DA_ANALISE) juntarAbas_(ABAS_DA_ANALISE);
 
 /** Junta a tabela das Origens à DADOS, mesmo se Origens.gs carregar antes deste arquivo. */
 function juntarValores_(extras) {

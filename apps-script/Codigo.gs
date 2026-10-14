@@ -400,6 +400,11 @@ function onEdit(e) {
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
+  // 14/10/2026 (B47): a ANALISE é toda conta, para o bot: quem escrever nela recebe a conta de volta
+  if (aba === 'ANALISE') {
+    try { devolverConta_(e, 'ANALISE'); } catch (err) { console.log('analise: ' + err.message); }
+    return;
+  }
   // Qualquer outra edição também continua uma troca que ficou pela metade (a arte, quase sempre): é o
   // "caso alguém mexa na ficha" do Mizuki. Barato quando não há nada pendente.
   if (aba === 'CARTEIRA') {

@@ -239,7 +239,9 @@ print(f"  gerada:   {wb_.sheetnames}")
 import ficha_amaldicoada
 # 06/10/2026: a INVOCAÇÕES e a DADOS_INVOC, a invocacao refeita depois do livro reconstruido (ficha_invocacoes.py)
 import ficha_invocacoes
-_abas_novas = ["GLOSSÁRIO", ficha_pessoal.NOME, ficha_amaldicoada.NOME, ficha_amaldicoada.DADOS_AM, ficha_invocacoes.NOME, ficha_invocacoes.DADOS_IV]
+# 14/10/2026 (B47): a ANALISE, oculta, para o bot
+import analise as _analise
+_abas_novas = ["GLOSSÁRIO", ficha_pessoal.NOME, ficha_amaldicoada.NOME, ficha_amaldicoada.DADOS_AM, ficha_invocacoes.NOME, ficha_invocacoes.DADOS_IV, _analise.NOME]
 _gerada_sem_novas = [n for n in wb_.sheetnames if n not in _abas_novas]
 # O original que o Mizuki exporta já traz o GLOSSARIO -- ele monta o construir() e exporta a planilha
 # pronta --, mas o desenho dela nao vem dali: vem do glossario.py. Comparar a aba dele com a gerada

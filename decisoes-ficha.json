@@ -356,7 +356,8 @@
    "DADOS",
    "DADOS_AM",
    "DADOS_INVOC",
-   "GLOSSÁRIO"
+   "GLOSSÁRIO",
+   "ANALISE"
   ],
   "abas_acrescentadas_em_01_10": {
    "quais": [
@@ -436,7 +437,8 @@
    "a_aba_oculta": "a DADOS_INVOC guarda as tabelas do livro, uma linha de conta por ficha e uma por carta de habilidade; fica oculta, e a troca de paleta nao passa por ela",
    "em_etapas": "a primeira etapa monta UMA ficha (ficha_invocacoes.N_COLUNAS e N_FILEIRAS), para ele medir o construir() no Sheets; a grade de 2 x 6 entra depois da medida",
    "arquivo_de_script": "as duas abas moram no apps-script/Invocacoes.gs, e nao no Ficha.gs: com uma ficha o Ficha.gs ja passava do teto de 900 KB por arquivo"
-  }
+  },
+  "notas_b47": "14/10/2026 (B47): a ANALISE, oculta, para o bot do Discord ler e dizer se a ficha está aprovada"
  },
  "C7_paleta_v01": {
   "escolha": "os dois roxos de painel da v0.1 viram a paleta oficial, e nao excecao",

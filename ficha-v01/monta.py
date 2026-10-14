@@ -210,6 +210,14 @@ print(f"a aba de invocações: {_ABA_IV['linhas']} linha(s), {_ABA_IV['colunas']
       f"{len(_FIV['cartas'])} carta(s) em {len(_FIV['LUG'])} ficha(s); a DADOS_INVOC: {_FIV['aba_dados']['linhas']} linha(s), "
       f"{_FIV['aba_dados']['colunas']} coluna(s)")
 
+# 14/10/2026 (B47, fase 1): a ANALISE, oculta, no fim: tudo o que o bot precisa para dizer se a ficha está aprovada. Lê
+# os endereços que as outras limpezas publicaram (a ficha automática, a FICHA PESSOAL, a FICHA AMALDIÇOADA e a
+# INVOCAÇÕES), e por isso vem depois de todas. Mora num arquivo de script à parte, o Analise.gs. Ver analise.py.
+import analise
+_AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
+LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
+print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
+
 # 01/10/2026: a INVOCACAO, o CATALOGO e a DADOS_INV saem da ficha, decisao do Mizuki quando o construir() estourou
 # os seis minutos do Apps Script. Saem por ultimo: o GLOSSARIO nasce na posicao da INVOCACAO e usa os estilos do
 # CATALOGO. A montagem para se alguma aba que fica ainda citar uma delas. Ver sem_invocacao.py.
