@@ -409,6 +409,7 @@ def compactar(aba):
 # Apps Script não promete a ordem em que carrega os arquivos. Cada aba de fora diz depois de qual ela entra (`depois`).
 # ---------------------------------------------------------------------------------------------
 SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVOC"))}
+COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_"}
 
 
 def abas_cruas(caminho=None):
@@ -422,6 +423,13 @@ def abas_cruas(caminho=None):
         for e in json.loads(re.search(r"var %s = ([\s\S]*?);\n\nif \(typeof juntarAbas_" % var, open(p, encoding="utf-8").read()).group(1)):
             i = next((k for k, a in enumerate(abas) if a["nome"] == e.get("depois")), len(abas) - 1)
             abas.insert(i + 1, e)
+    for arq, var in COMPLEMENTOS.items():
+        p = os.path.join(os.path.dirname(caminho), arq)
+        for extra in json.loads(re.search(r"var %s = ([\s\S]*?);\n\nif \(typeof juntarValores_" % var,
+                                          open(p, encoding="utf-8").read()).group(1)):
+            aba = next(a for a in abas if a["nome"] == extra["nome"])
+            aba["vals"].extend(extra["vals"])
+            aba["vals"].sort(key=lambda v: (v[0], v[1]))
     return abas
 
 
@@ -638,7 +646,7 @@ def _sem_linha_gigante(obj, nivel=0):
     return compacto  # string/número atômico que já é maior que o piso sozinho: fica como está
 
 
-def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extras=None):
+def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extras=None, suplementos=None):
     abas, arte = emitir(wb, ordem, imgs, arte_dir, limpa, extras)
     for a in abas:
         medidas = a.pop("caixas_medidas")
@@ -648,6 +656,14 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
             a["caixas"] = caixas if a["nome"] == "FICHA" else []
     abas = [compactar(a) for a in abas]
     celulas = sum(len(a["vals"]) for a in abas)
+    # B46: só os valores da tabela origem_cap saem do arquivo principal. A geometria,
+    # as fórmulas e o formato da DADOS continuam nele; a junção independe da ordem dos .gs.
+    complementos = {}
+    for arq, (nome, c1, c2) in (suplementos or {}).items():
+        aba = next(a for a in abas if a["nome"] == nome)
+        vals = [v for v in aba["vals"] if c1 <= v[1] <= c2]
+        aba["vals"] = [v for v in aba["vals"] if not c1 <= v[1] <= c2]
+        complementos[arq] = [{"nome": nome, "vals": vals}]
     # as abas que moram em outro arquivo saem do ABAS, cada uma dizendo depois de qual ela entra
     fora = {}
     for arq, (var, nomes) in SEPARADAS.items():
@@ -674,4 +690,11 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
             fp.write("// do Apps Script, ao lado do Ficha.gs e do Codigo.gs: sem ele a ficha é montada sem essas abas.\n\n")
             fp.write(f"var {var} = " + _sem_linha_gigante(saem) + ";\n\n")
             fp.write(f"if (typeof juntarAbas_ === 'function') juntarAbas_({var});\n")
+    for arq, valores in complementos.items():
+        var = COMPLEMENTOS[arq]
+        with open(os.path.join(os.path.dirname(SAIDA), arq), "w", encoding="utf-8") as fp:
+            fp.write("// GERADO POR ficha-v01/monta.py — não edite este arquivo na mão.\n")
+            fp.write("// A tabela origem_cap da DADOS. Cole no mesmo projeto dos demais .gs.\n\n")
+            fp.write(f"var {var} = " + _sem_linha_gigante(valores) + ";\n\n")
+            fp.write(f"if (typeof juntarValores_ === 'function') juntarValores_({var});\n")
     return SAIDA, celulas, len(arte)

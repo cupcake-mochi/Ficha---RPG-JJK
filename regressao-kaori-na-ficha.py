@@ -112,11 +112,10 @@ wb.move_sheet("FICHA", -wb.sheetnames.index("FICHA"))
 # O IFS fica cru na ficha, porque ela vive no Sheets. O LibreOffice só reconhece o IFS
 # com o prefixo do Excel, então a CÓPIA ganha o prefixo; o arquivo real não muda.
 for _ws in wb:
-    for _l in _ws.iter_rows():
-        for _c in _l:
-            if isinstance(_c.value, str) and _c.value.startswith("=") and "IFS(" in _c.value \
-                    and "_xlfn.IFS(" not in _c.value:
-                _c.value = _re.sub(r"(?<![A-Z_.])IFS\(", "_xlfn.IFS(", _c.value)
+    for _c in tuple(_ws._cells.values()):
+        if isinstance(_c.value, str) and _c.value.startswith("=") and "IFS(" in _c.value \
+                and "_xlfn.IFS(" not in _c.value:
+            _c.value = _re.sub(r"(?<![A-Z_.])IFS\(", "_xlfn.IFS(", _c.value)
 wb.save(copia)
 
 subprocess.run(["libreoffice", "--headless", "--convert-to",
@@ -232,11 +231,10 @@ for i, (rot, nv, des, eq, esc) in enumerate(CASOS):
     wsc[IDX["refino escolhido"]] = esc
     wbc.move_sheet("FICHA", -wbc.sheetnames.index("FICHA"))
     for _ws in wbc:
-        for _l in _ws.iter_rows():
-            for _c in _l:
-                if isinstance(_c.value, str) and _c.value.startswith("=") and "IFS(" in _c.value \
-                        and "_xlfn.IFS(" not in _c.value:
-                    _c.value = _re.sub(r"(?<![A-Z_.])IFS\(", "_xlfn.IFS(", _c.value)
+        for _c in tuple(_ws._cells.values()):
+            if isinstance(_c.value, str) and _c.value.startswith("=") and "IFS(" in _c.value \
+                    and "_xlfn.IFS(" not in _c.value:
+                _c.value = _re.sub(r"(?<![A-Z_.])IFS\(", "_xlfn.IFS(", _c.value)
     arqs.append(os.path.join(d2, f"caso{i:02d}.xlsx"))
     wbc.save(arqs[-1])
 subprocess.run(["libreoffice", "--headless", "--convert-to",
@@ -477,11 +475,10 @@ for i, (rot, mud) in enumerate(CASOS2):
         wsc[cx] = nome in c["tr"]
     wbc.move_sheet("FICHA", -wbc.sheetnames.index("FICHA"))
     for _ws in wbc:
-        for _l in _ws.iter_rows():
-            for _c in _l:
-                if isinstance(_c.value, str) and _c.value.startswith("=") and "IFS(" in _c.value \
-                        and "_xlfn.IFS(" not in _c.value:
-                    _c.value = _re.sub(r"(?<![A-Z_.])IFS\(", "_xlfn.IFS(", _c.value)
+        for _c in tuple(_ws._cells.values()):
+            if isinstance(_c.value, str) and _c.value.startswith("=") and "IFS(" in _c.value \
+                    and "_xlfn.IFS(" not in _c.value:
+                _c.value = _re.sub(r"(?<![A-Z_.])IFS\(", "_xlfn.IFS(", _c.value)
     arqs3.append(os.path.join(d3, f"auto{i:02d}.xlsx"))
     wbc.save(arqs3[-1])
 subprocess.run(["libreoffice", "--headless", "--convert-to",

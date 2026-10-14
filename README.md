@@ -21,15 +21,14 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 ## Rodar os validadores
 
 ```bash
-./rodar-tudo.sh
+systemd-run --user --scope -q -p MemoryMax=5G -p MemorySwapMax=0 nice -n 15 ./rodar-tudo.sh
 ```
 
 São dezenove (desde 08/10/2026, quando a ficha de invocação solta e os três validadores dela foram apagados). Quinze passam em qualquer máquina; o
 `regressao-kaori-na-ficha.py`, o `regressao-ficha-pessoal.py`, o `regressao-amaldicoada.py` e o `regressao-invocacoes.py` precisam de um LibreOffice **com o filtro do
 Calc** para recalcular a ficha, e onde ele não existe essa checagem falha alto
 em vez de passar em branco — é de propósito. O `regressao-delta.js` roda no
-node, porque o Apps Script não pode ser testado de fora; sem node ele é pulado
-com aviso, também não em silêncio.
+node, porque o Apps Script não pode ser testado de fora; sem node a bateria registra que ele não rodou e termina com falha.
 
 > *Esta linha dizia **oito** enquanto o `rodar-tudo.sh` rodava dez, e o `LEIA-ME` dizia dez ao lado. Duas cópias do mesmo número, duas respostas — e nenhum validador cruzava as duas.*
 

@@ -244,6 +244,15 @@ def aplica(pasta, arquivo, certo, errado):
     return s
 
 
+# Liste todos os trechos envelhecidos antes de gastar memória com a geração e o LibreOffice.
+velhos = []
+for desc, arq, certo, _, _ in PERTURBACOES + [CONTRA + (None,)]:
+    n = open(os.path.join(AQUI, arq), encoding="utf-8").read().count(certo)
+    if n != 1:
+        velhos.append(f"{desc}: o trecho aparece {n} vez(es) em {arq}")
+if velhos:
+    raise SystemExit("O arnes esta velho:\n" + "\n".join(velhos))
+
 quais = [int(x) for x in sys.argv[1:]]
 print("=" * 70)
 print("PASSO 1 - a base passa NA COPIA?  (sem isso toda perturbacao e falso positivo)")

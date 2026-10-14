@@ -377,10 +377,9 @@ def prepara(nome, ficha):
         wb["CARTEIRA"][CAMPO_TEC] = ficha["tecnica_declarada"]
     # o IFS e o TEXTJOIN ficam crus na ficha, porque ela vive no Sheets; o LibreOffice só os reconhece com o prefixo do Excel
     for ws in wb:
-        for linha in ws.iter_rows():
-            for c in linha:
-                if isinstance(c.value, str) and c.value.startswith("="):
-                    c.value = re.sub(r"(?<![A-Z_.])(IFS|TEXTJOIN)\(", r"_xlfn.\1(", c.value)
+        for c in tuple(ws._cells.values()):
+            if isinstance(c.value, str) and c.value.startswith("="):
+                c.value = re.sub(r"(?<![A-Z_.])(IFS|TEXTJOIN)\(", r"_xlfn.\1(", c.value)
     wb.save(copia)
     FILA.append(copia)
 
@@ -542,14 +541,14 @@ BORDAS = {"nivel": 30, "feiticos": [
 # do Fundamento não pode gastar espaço; a Restrição Celestial sem energia, uma ferramenta que só se carrega e o Estímulo;
 # a segunda Restrição, os três grupos da Fisga do livro, todos de Força.
 GM = G["grupos_menu"]
-ROTA_SEM = {"nivel": 10, "origem": "Feto · Sem Técnica",
+ROTA_SEM = {"nivel": 10, "origem": "Híbrido · Sem Técnica",
             "celulas": {G["rota_menu"]: "Energia Reversa", PASSIVAS[0]["nome"]: "Contragolpe"}}
 ROTA_CORPO = {"nivel": 12, "origem": "Corpo Amaldiçoado", "atributos": {"Força": 2, "Destreza": 3},
               "celulas": {G["rota_menu"]: "Três grupos de arma", GM[0]: "Lâmina Longa", GM[1]: "Arremesso", GM[2]: "Massa",
                           G["degrau"]: "Incompleta"}}
-ROTA_CELESTE = {"nivel": 8, "origem": "Restrição Celestial · sem energia",
+ROTA_CELESTE = {"nivel": 8, "origem": "Restrição Celestial · Sem Energia",
                 "celulas": {G["rota_menu"]: "Ferramenta de carregar", G["estimulo_pericia"]: "Atletismo", G["estimulo_teste"]: "Físico"}}
-ROTA_FISGA = {"nivel": 5, "origem": "Restrição Celestial · sem energia", "atributos": {"Força": 3},
+ROTA_FISGA = {"nivel": 5, "origem": "Restrição Celestial · Sem Energia", "atributos": {"Força": 3},
               "celulas": {G["rota_menu"]: "Três grupos de arma", GM[0]: "Armas Longas", GM[1]: "Ceifa", GM[2]: "Flexível"}}
 
 # O menu rápido da FICHA (02/10/2026): a Kaori com o que só o jogador escreve (o "Como é" de feitiço, da Técnica Máxima e
@@ -843,7 +842,7 @@ print("\nAS QUATRO ROTAS")
 ROT_L = TEC["rotas"]
 NOMES_R = {1: {"feitico": "Feitiço", "liberacao": "Liberação Máxima", "tecnica_maxima": "Técnica Máxima"},
            2: ROT_L["nomes"]["Sem Técnica"], 3: ROT_L["nomes"]["Técnica Marcial"], 4: ROT_L["nomes"]["Técnica Marcial"]}
-rota_de = lambda origem: 4 if origem == "Restrição Celestial · sem energia" else 3 if origem == "Corpo Amaldiçoado" else 2 if "Sem Técnica" in origem else 1
+rota_de = lambda origem: 4 if origem == "Restrição Celestial · Sem Energia" else 3 if origem == "Corpo Amaldiçoado" else 2 if "Sem Técnica" in origem else 1
 _propria = lambda nome, cps: [f"{nome} (CE {k})" for k in cps]
 PAS_FUND = [p["nome"] for p in TEC["passivas"] if p["classe_passiva"].isdigit()] + _propria("Talento Próprio", (1, 2, 3))
 PAS_MARC = [p["nome"] for p in ROT_L["passivas_marciais"] if p["classe_passiva"].isdigit()] + _propria("Talento Próprio", (1, 2, 3))
@@ -1275,7 +1274,7 @@ checa("nenhuma fórmula usa LET, LAMBDA, IFS ou SWITCH (o LibreOffice da regress
 print("\nO FICHA.GS: A ABA MONTADA NO SHEETS DE MENTIRA")
 PROG_JS = r"""
 const fs = require('fs'), { criaSheets, CHAMADAS } = require('./medidas/sheets-de-mentira.js');
-const S = criaSheets(fs.readFileSync('apps-script/Ficha.gs', 'utf8') + '\n' + fs.readFileSync('apps-script/Invocacoes.gs', 'utf8'), fs.readFileSync('apps-script/Codigo.gs', 'utf8'), JSON.parse(process.argv[2] || '{}'));
+const S = criaSheets(fs.readFileSync('apps-script/Ficha.gs', 'utf8') + '\n' + fs.readFileSync('apps-script/Invocacoes.gs', 'utf8')+'\n'+fs.readFileSync('apps-script/Origens.gs','utf8'), fs.readFileSync('apps-script/Codigo.gs', 'utf8'), JSON.parse(process.argv[2] || '{}'));
 if (process.argv[3] === 'sem-mesclagem') S.P.copiaTrazMesclagem = false;
 S.ctx.construir();
 const out = { registro: S.P.registros[S.P.registros.length - 1], orfas: S.P.orfas, chamadas: CHAMADAS, abas: {} };
@@ -1340,7 +1339,7 @@ if M:
     # o ABAS que o script expande quando carrega é o mesmo que o gerador expande
     sys.path.insert(0, "ficha")
     import emitir_gs as _eg
-    _js = subprocess.run(["node", "-e", "const fs=require('fs'),vm=require('vm'),c={};vm.createContext(c);vm.runInContext(fs.readFileSync('apps-script/Ficha.gs','utf8')+'\\n'+fs.readFileSync('apps-script/Invocacoes.gs','utf8'),c);"
+    _js = subprocess.run(["node", "-e", "const fs=require('fs'),vm=require('vm'),c={};vm.createContext(c);vm.runInContext(fs.readFileSync('apps-script/Ficha.gs','utf8')+'\\n'+fs.readFileSync('apps-script/Invocacoes.gs','utf8')+'\\n'+fs.readFileSync('apps-script/Origens.gs','utf8'),c);"
                           "console.log(JSON.stringify(vm.runInContext('ABAS',c)))"], capture_output=True, text=True, timeout=120)
 
     def _norm(x):

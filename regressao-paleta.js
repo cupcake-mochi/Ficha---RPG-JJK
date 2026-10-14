@@ -16,7 +16,7 @@
 const fs=require('fs'), vm=require('vm'), path=require('path');
 const RAIZ=__dirname;
 const NOVO=path.join(RAIZ,'apps-script/Codigo.gs'), FICHA=path.join(RAIZ,'apps-script/Ficha.gs');
-const FICHA_SRC=fs.readFileSync(FICHA,'utf8')+'\n'+fs.readFileSync(path.join(RAIZ,'apps-script/Invocacoes.gs'),'utf8');   // 06/10/2026: as abas da invocação
+const FICHA_SRC=fs.readFileSync(FICHA,'utf8')+'\n'+fs.readFileSync(path.join(RAIZ,'apps-script/Invocacoes.gs'),'utf8')+'\n'+fs.readFileSync(path.join(RAIZ,'apps-script/Origens.gs'),'utf8');
 let falhas=0; const ok=(n,c,d='')=>{console.log((c?'  ok   ':'  FALHA ')+n+(c?'':'  '+d)); if(!c) falhas++;};
 
 // custo das chamadas ao Sheets (ms), calibrado pelos tempos do Mizuki (25/09/2026): um passo de cor, que lia e
@@ -151,6 +151,24 @@ console.log('1. cópia nova, primeira troca (nenhum passo medido ainda)');
 let P=criaPlanilha(ABAS); let r=emPassos(P,[E]);
 console.log('       '+resumo(r));
 ok('terminou', !P.props.paleta_pendente);
+// B46: a pintura também alcança o painel fechado, as três Sequelas e as três cartas de Origem.
+{
+  const fabrica = criaPlanilha(ABAS), ficha = ABAS.find((a) => a.nome === 'FICHA');
+  const pessoal = ABAS.find((a) => a.nome === 'FICHA PESSOAL');
+  const c = pessoal.esticam.find((x) => x.textos.length === 3);
+  const coord = (t) => { const m = /^([A-Z]+)(\d+)$/.exec(t); let col = 0; for (const ch of m[1]) col = col * 26 + ch.charCodeAt(0) - 64; return [Number(m[2]), col]; };
+  const alvos = [['FICHA', 9, 49], ['FICHA', 10, 49]];
+  ficha.caixas.filter((x) => [6, 8, 10].includes(x[0]) && x[1] > 38 && x[1] < 55).forEach((x) => alvos.push(['FICHA', x[1], x[0]]));
+  c.textos.forEach((x) => alvos.push(['FICHA PESSOAL', ...coord(x[1][0])]));
+  const cores = r.ctx.coresDoNome_(E), hex = (t) => '#' + String(t).replace(/^#/, '').toUpperCase();
+  const papeis = Object.fromEntries(Object.entries(r.ctx.PALETA_DE_FABRICA_).map(([k, v]) => [hex(v), k]));
+  const ruins = alvos.filter(([aba, lin, col]) => {
+    const papel = papeis[fabrica.abas[aba].bg[lin - 1][col - 1]];
+    return !papel || P.abas[aba].bg[lin - 1][col - 1] !== hex(cores[papel]);
+  });
+  ok('o painel fechado, as três Sequelas e as três cartas usam cores de fábrica e recebem a paleta escolhida', alvos.length === 8 && !ruins.length, JSON.stringify(ruins));
+}
+
 ok(`nenhuma execução passou de 30 s (maior: ${(r.maior/1000).toFixed(1)} s)`, r.maior<=30000);
 // 09/10/2026, a otimização feita no Sheets pelo agente que monta e testa a ficha ("CARTEIRA completa primeiro: fundos,
 // textos, bordas e todas as imagens"): a troca termina a CARTEIRA inteira, com a arte, antes de qualquer outra aba, e a

@@ -19,7 +19,7 @@ const fs = require('fs'), path = require('path');
 const RAIZ = __dirname;
 const GS = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Codigo.gs'), 'utf8');
 // 06/10/2026: a INVOCAÇÕES e a DADOS_INVOC moram no Invocacoes.gs, que se junta ao ABAS quando carrega
-const FICHA_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Ficha.gs'), 'utf8') + '\n' + fs.readFileSync(path.join(RAIZ, 'apps-script', 'Invocacoes.gs'), 'utf8');
+const FICHA_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Ficha.gs'), 'utf8') + '\n' + fs.readFileSync(path.join(RAIZ, 'apps-script', 'Invocacoes.gs'), 'utf8')+'\n'+fs.readFileSync(path.join(RAIZ,'apps-script/Origens.gs'),'utf8');
 // 05/10/2026: o texto das habilidades mora num terceiro arquivo do projeto, e o Apps Script junta os .gs num escopo só
 const HAB_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Habilidades.gs'), 'utf8');
 // O ABAS como o script o usa: o Ficha.gs escreve por extenso, quando carrega, as fileiras de cartas que são cópia
@@ -30,6 +30,24 @@ let falhas = 0;
 const ok = (nome, cond, det = '') => { console.log((cond ? '  ok    ' : '  FALHA ') + nome + (cond ? '' : '  <- ' + det)); if (!cond) falhas++; };
 
 const { criaSheets, retrato, partes, letras, numero, CHAMADAS, zeraChamadas } = require('./medidas/sheets-de-mentira.js');
+
+// Os valores das Origens têm de chegar iguais em qualquer ordem, sem duplicar na segunda junção.
+{
+  const arquivos = ['Ficha.gs', 'Invocacoes.gs', 'Origens.gs'];
+  const ordens = [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]];
+  const esperada = JSON.stringify(ABAS);
+  for (const ordem of ordens) {
+    const c = {}; require('vm').createContext(c);
+    for (const i of ordem.concat([2])) require('vm').runInContext(fs.readFileSync(path.join(RAIZ, 'apps-script', arquivos[i]), 'utf8'), c);
+    ok(`a tabela das Origens se junta uma vez na ordem ${ordem.map((i) => arquivos[i]).join(', ')}`, JSON.stringify(c.ABAS) === esperada);
+  }
+  const fichaSemOrigens = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Ficha.gs'), 'utf8') + '\n' + fs.readFileSync(path.join(RAIZ, 'apps-script', 'Invocacoes.gs'), 'utf8');
+  const incompleta = criaSheets(fichaSemOrigens, HAB_SRC + '\n' + GS);
+  const abasAntesFalta = incompleta.P.abas.map((a) => a.nome).join('|');
+  let erroArquivo = null;
+  try { incompleta.ctx.construir(); } catch (e) { erroArquivo = e; }
+  ok('sem o Origens.gs a montagem avisa antes de criar ou apagar abas', !!erroArquivo && /Falta o Origens.gs/.test(erroArquivo.message) && incompleta.P.abas.map((a) => a.nome).join('|') === abasAntesFalta);
+}
 
 // ---------------------------------------------------------------------------------------------
 console.log('O construir() DO COMEÇO AO FIM');
@@ -126,6 +144,10 @@ const [gl] = spec.grupos.lin, [painel, ext] = spec.grupos.col;
 const prof = (m, a, b) => { const s = new Set(); for (let i = a; i <= b; i++) s.add(m.get(i) || 0); return [...s].join(','); };
 ok('o treino é um grupo de linhas aberto, com o botão em cima', prof(A.profL, gl[0], gl[1]) === '1' && !(A.profL.get(gl[0] - 1) || 0) && !(A.profL.get(gl[1] + 1) || 0)
    && A.fechL.length === 0 && A.posL === 'BEFORE', `profundidade ${prof(A.profL, gl[0], gl[1])}, fechados ${JSON.stringify(A.fechL)}`);
+ok('as descrições da Origem recolhem sem esconder os menus e as frequências',
+   prof(A.profL, 45, 50) === '1' && !(A.profL.get(44) || 0) && !(A.profL.get(51) || 0)
+   && !A.fechL.some((g) => g[0] === 45) && A.posL === 'BEFORE'
+   && String(A.le(42, 4)).includes('DESCRIÇÕES RETRÁTEIS'));
 ok('o painel de XP é um grupo de colunas fechado, com o botão antes dele', prof(A.profC, painel[0], ext[0] - 1) === '1' && !(A.profC.get(painel[0] - 1) || 0)
    && A.fechC.some((g) => g[0] === painel[0] && g[1] === painel[1] && g[2] === 1) && A.posC === 'BEFORE', JSON.stringify(A.fechC));
 ok('a extensão é um grupo dentro do painel, e também nasce fechada', prof(A.profC, ext[0], ext[1]) === '2' && A.fechC.some((g) => g[0] === ext[0] && g[1] === ext[1] && g[2] === 2), JSON.stringify(A.fechC));
@@ -380,6 +402,33 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   ok(`as ${livres.length} caixas livres (Anotações e Escolhas da Trilha) também esticam quando o jogador escreve`,
      !erroH && livres.length === 3 && alturas(livres[0]).every((x) => x > MED.minima), erroH ? erroH.message : JSON.stringify(alturas(livres[0])));
 }
+// B46: editar as três capacidades personalizadas e voltar ao texto do livro pelo onEdit.
+{
+  const ip = S.ctx.indicePessoal_(), FP = S.ss.getSheetByName('FICHA PESSOAL');
+  const spec = ABAS.find((a) => a.nome === 'FICHA PESSOAL');
+  const campos = [['marcante', 'texto da marcante', 'Zenin'],
+                  ['menor 1', 'texto do menor 1', 'Cofre da Família'], ['menor 2', 'texto do menor 2', 'Notas de Família']];
+  let erroO = null;
+  for (const [menu, texto, livro] of campos) {
+    const livre = 'Minha capacidade: frequência e limites combinados com o mestre.';
+    try {
+      FP.getRange(ip[menu]).setValue('✎ Criada com o mestre');
+      S.ctx.onEdit(ed('FICHA PESSOAL', ip[menu], '✎ Criada com o mestre'));
+      FP.getRange(ip[texto]).setValue(livre);
+      S.ctx.onEdit(ed('FICHA PESSOAL', ip[texto], livre));
+    } catch (e) { erroO = e; }
+    ok(`${menu}: a capacidade criada aceita e conserva o texto do jogador`, !erroO && FP.getRange(ip[texto]).getValue() === livre && FP.getRange(ip[texto]).getFormula() === '', erroO ? erroO.message : FP.getRange(ip[texto]).getFormula());
+    try { FP.getRange(ip[menu]).setValue(livro); S.ctx.onEdit(ed('FICHA PESSOAL', ip[menu], livro)); } catch (e) { erroO = e; }
+    const lc = partes(ip[texto]), molde = spec.vals.find((v) => v[0] === lc.r && v[1] === lc.c);
+    ok(`${menu}: voltar a uma capacidade do livro restaura a fórmula do texto`, !erroO && FP.getRange(ip[texto]).getFormula() === S.ctx.formulaNoIdioma_(molde[2], S.P.locale), erroO ? erroO.message : FP.getRange(ip[texto]).getFormula());
+    FP.getRange(ip[menu]).setValue(''); FP.getRange(ip[texto]).setValue('');
+  }
+  const spF = ABAS.find((a) => a.nome === 'FICHA');
+  ok('o painel da Origem nasce fechado depois da margem AU e mostra só as escolhas e os Legados de história',
+     spF.grupos.col.some((g) => g[0] === 48 && g[1] === 50 && g[2] === true)
+     && spF.vals.some((v) => v[1] === 49 && typeof v[2] === 'string' && v[2].startsWith('=') && v[2].includes('LEGADOS DE HISTÓRIA') && !v[2].includes('DADOS!')));
+}
+
 // 08/10/2026, do teste no Sheets: as caixas de texto fora das Habilidades também esticam. Nas de resistências e de
 // imunidades "textos de aproximadamente 170 caracteres ficam cortados pela altura das caixas", o Legado do livro passa
 // de 500 letras, e no pente-fino as cicatrizes cortaram com 189. O esperado é contado aqui, palavra por palavra, com a
@@ -422,23 +471,32 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   try { escreve(FI, 'FICHA', cRes, ''); escreve(FI, 'FICHA', cImu, ''); } catch (e) { erroE = e; }
   ok('com as duas caixas vazias a linha volta à altura comum', !erroE && comum(FA, eF), erroE ? erroE.message : mostra(FA, eF));
 
-  // os Legados: um texto do tamanho do mais comprido do livro (o de exceção "Inédito", 546 letras) e um curto
-  const LONGO = 'Sua técnica não consta dos registros conhecidos. '.repeat(11).trim(), CURTO = 'Uma vez por dia, refaça um teste de perícia em que falhou.';
-  const eEsp = eP.find((x) => x.aba === 'FICHA'), eTxt = eP.find((x) => x.aba === 'FICHA PESSOAL' && x.textos.length === 2), eDos = eP.find((x) => x.aba === 'FICHA PESSOAL' && x.textos.length > 2);
-  ok('a FICHA PESSOAL declara as caixas dos Legados (a do texto, nela, e o espelho, na FICHA) e as seis do dossiê',
-     eP.length === 3 && !!eEsp && !!eTxt && !!eDos && eEsp.textos.every((c) => c[1].length === 3 && c[3] === 2) && eTxt.textos.every((c) => c[1].length === 1)
-     && eEsp.textos.every((c, i) => c[1][2] === eTxt.textos[i][1][0]) && eDos.textos.length === 6 && eDos.gatilhos.length === 6, JSON.stringify(eP).slice(0, 300));
-  const [nm1, tp1, tx1] = eEsp.textos[0][1], tx2 = eEsp.textos[1][1][2];
-  try { FP.getRange(nm1).setValue('Inédito'); FP.getRange(tp1).setValue('De exceção'); escreve(FP, 'FICHA PESSOAL', tx1, LONGO); } catch (e) { erroE = e; }
-  const esp = ['Inédito · De exceção · ' + LONGO, ''];
-  ok(`escrever um Legado de ${LONGO.length} letras estica a caixa dele na FICHA PESSOAL e o espelho da FICHA, e o texto inteiro cabe nos dois`,
-     !erroE && LONGO.length >= 500 && bate(PE, eTxt, [LONGO, '']) && cabe(PE, eTxt, [LONGO, '']) && bate(FA, eEsp, esp) && cabe(FA, eEsp, esp) && !comum(PE, eTxt) && !comum(FA, eEsp),
-     erroE ? erroE.message : `pessoal ${mostra(PE, eTxt)} · ficha ${mostra(FA, eEsp)}`);
-  try { escreve(FP, 'FICHA PESSOAL', tx2, CURTO); } catch (e) { erroE = e; }
-  ok('o segundo Legado, curto, não encolhe as caixas do primeiro', !erroE && bate(FA, eEsp, esp.slice(0, 1).concat(CURTO)) && cabe(FA, eEsp, [esp[0], CURTO]) && cabe(PE, eTxt, [LONGO, CURTO]),
-     erroE ? erroE.message : `${mostra(FA, eEsp)} · ${mostra(PE, eTxt)}`);
-  try { escreve(FP, 'FICHA PESSOAL', tx1, ''); FP.getRange(tp1).setValue(''); escreve(FP, 'FICHA PESSOAL', nm1, ''); escreve(FP, 'FICHA PESSOAL', tx2, ''); } catch (e) { erroE = e; }
-  ok('apagar os Legados devolve as caixas à altura comum, nas duas abas', !erroE && comum(FA, eEsp) && comum(PE, eTxt), erroE ? erroE.message : `${mostra(FA, eEsp)} · ${mostra(PE, eTxt)}`);
+  // B46: três cartas de Origem, Legados de história e CE4 substituem os dois Legados antigos.
+  const LONGO = 'Sua capacidade criada com o mestre tem limites e frequência registrados na ficha. '.repeat(60).trim();
+  const CURTO = 'Uma vez por cena, refaça um teste, como combinado com o mestre.';
+  const eCap = eP.find((x) => x.textos.length === 3), eDos = eP.find((x) => x.textos.length === 6);
+  const soUma = eP.filter((x) => x.textos.length === 1);
+  ok('a FICHA PESSOAL declara as três cartas da Origem, os Legados de história, o CE4 e as seis caixas do dossiê',
+     eP.length === 4 && !!eCap && !!eDos && soUma.length === 2 && eP.every((x) => x.aba === 'FICHA PESSOAL')
+     && eCap.textos.every((c) => c[1].length === 1) && eCap.gatilhos.length === 6 && eDos.gatilhos.length === 6, JSON.stringify(eP).slice(0, 300));
+  if (eCap && eDos) {
+    const tx1 = eCap.textos[0][1][0], tx2 = eCap.textos[1][1][0];
+    try { escreve(FP, 'FICHA PESSOAL', tx1, LONGO); } catch (e) { erroE = e; }
+    ok(`escrever uma capacidade de ${LONGO.length} letras estica a caixa dela na FICHA PESSOAL, e o texto inteiro cabe`,
+       !erroE && bate(PE, eCap, [LONGO, '', '']) && cabe(PE, eCap, [LONGO, '', '']) && !comum(PE, eCap), erroE ? erroE.message : mostra(PE, eCap));
+    try { escreve(FP, 'FICHA PESSOAL', tx2, CURTO); } catch (e) { erroE = e; }
+    ok('a segunda capacidade, curta, não encolhe a primeira, que divide as linhas com ela',
+       !erroE && bate(PE, eCap, [LONGO, CURTO, '']) && cabe(PE, eCap, [LONGO, CURTO, '']), erroE ? erroE.message : mostra(PE, eCap));
+    try { escreve(FP, 'FICHA PESSOAL', tx1, ''); escreve(FP, 'FICHA PESSOAL', tx2, ''); } catch (e) { erroE = e; }
+    ok('apagar as capacidades devolve as caixas à altura comum', !erroE && comum(PE, eCap), erroE ? erroE.message : mostra(PE, eCap));
+    for (const caixa of soUma) {
+      const a1 = caixa.textos[0][1][0];
+      try { escreve(FP, 'FICHA PESSOAL', a1, LONGO); } catch (e) { erroE = e; }
+      ok(`o texto livre em ${a1} (Legados de história ou CE4) estica e cabe inteiro`, !erroE && bate(PE, caixa, [LONGO]) && cabe(PE, caixa, [LONGO]), erroE ? erroE.message : mostra(PE, caixa));
+      try { escreve(FP, 'FICHA PESSOAL', a1, ''); } catch (e) { erroE = e; }
+      ok(`apagar ${a1} devolve a caixa à altura comum`, !erroE && comum(PE, caixa), erroE ? erroE.message : mostra(PE, caixa));
+    }
+  }
 
   // o dossiê: as seis caixas num grupo só, porque dividem linhas (a personalidade com a história e os laços)
   const CIC = 'Uma cicatriz irregular atravessa o ombro esquerdo, resultado de um confronto antigo. Há pequenas marcas nas mãos e no rosto, que o personagem costuma esconder com luvas e com a gola do casaco.';
@@ -541,9 +599,9 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
   const FI = S.ss.getSheetByName('FICHA'), spF = ABAS.find((a) => a.nome === 'FICHA');
   const deFabrica = (a1) => { const x = partes(a1); const t = spF.vals.find((v) => v[0] === x.r && v[1] === x.c); return t ? t[2] : ''; };
   const repoe = (a1) => { const v = deFabrica(a1); if (typeof v === 'string' && v[0] === '=') FI.getRange(a1).setFormula(v); else FI.getRange(a1).setValue(v); };
-  const K = { vida: 'vida', vidaMax: 'vida_max', pe: 'energia', peMax: 'energia_max', integ: 'integridade', integMax: 'integridade_max', sequelas: 'sequelas', exaustao: 'exaustão' };
-  const poe = (o) => Object.keys(o).forEach((k) => FI.getRange(idx[K[k]]).setValue(o[k]));
-  const le = () => Object.fromEntries(['vida', 'pe', 'integ', 'sequelas', 'exaustao'].map((k) => [k, FI.getRange(idx[K[k]]).getValue()]));
+  const K = { vida: 'vida', vidaMax: 'vida_max', pe: 'energia', peMax: 'energia_max', integ: 'integridade', integMax: 'integridade_max', exaustao: 'exaustão' };
+  const poe = (o) => Object.keys(o).forEach((k) => { if (k === 'sequelas') { for (let i = 1; i <= 3; i++) FI.getRange(idx['sequela ' + i]).setValue(i <= o[k]); } else FI.getRange(idx[K[k]]).setValue(o[k]); });
+  const le = () => Object.fromEntries(['vida', 'pe', 'integ', 'sequelas', 'exaustao'].map((k) => [k, k === 'sequelas' ? [1, 2, 3].filter((i) => FI.getRange(idx['sequela ' + i]).getValue() === true).length : FI.getRange(idx[K[k]]).getValue()]));
   const escolhe = (tipo) => { FI.getRange(idx['descanso']).setValue(tipo); S.ctx.onEdit(ed('FICHA', idx['descanso'], tipo)); };
   let erroD = null, r1 = null, r2 = null, r3 = null; const nD = S.P.avisos.length;
   ok('a FICHA nasce com o menu do descanso no convite, e o índice publica o menu e o registro do último descanso',
@@ -565,9 +623,9 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
      && r1[2] === 'Longo, fora de lugar propício · vida 3 → 11 · PE 8 → 30 · Integridade 18 → 25 · Sequelas 2 → 0 · Exaustão fica em 1', erroD ? erroD.message : JSON.stringify(r1));
   ok('em seguida "Curto · fora", com a Exaustão em 1, devolve 15% do PE máximo (30 → 39), e o registro passa a ser o do curto',
      !erroD && r2[0] === 39 && r2[1] === S.ctx.SEM_DESCANSO_ && r2[2] === 'Curto, fora de lugar propício · PE 30 → 39', erroD ? erroD.message : JSON.stringify(r2));
-  ok('e "Longo · lugar propício" leva tudo ao máximo e tira a Exaustão; com o Buff/Debuff da vida negativo, o aviso lembra do máximo perdido por Insistir',
-     !erroD && r3[0] === JSON.stringify({ vida: 23, pe: 60, integ: 25, sequelas: 0, exaustao: 0 }) && /Insistir/.test(r3[1]) && /Longo, em lugar propício · vida 11 → 23/.test(r3[1]), erroD ? erroD.message : JSON.stringify(r3));
-  try { Object.values(K).concat(['último descanso']).forEach((k) => repoe(idx[k])); } catch (e) { erroD = e; }
+  ok('e "Longo · lugar propício" leva tudo ao máximo e tira a Exaustão; o Buff/Debuff negativo não gera o lembrete antigo de perda de máximo por Insistir',
+     !erroD && r3[0] === JSON.stringify({ vida: 23, pe: 60, integ: 25, sequelas: 0, exaustao: 0 }) && !/máximo perdido|Insistir/.test(r3[1]) && /Longo, em lugar propício · vida 11 → 23/.test(r3[1]), erroD ? erroD.message : JSON.stringify(r3));
+  try { Object.values(K).concat(['sequela 1', 'sequela 2', 'sequela 3', 'último descanso']).forEach((k) => repoe(idx[k])); } catch (e) { erroD = e; }
 }
 // 08/10/2026: os saltos são conferidos depois que a planilha volta ao português, e uma montagem não começa com outra
 // rodando. Num teste no Sheets a ficha terminou em FICHA PRONTA com os 22 saltos em #ERROR!, depois de duas execuções juntas.
@@ -666,7 +724,7 @@ const L = criaSheets(FICHA_SRC, GS, { Date: RelogioQueCorre });
 L.ctx.LIMITE_DA_EXECUCAO_ = Infinity;
 let erroL = null;
 try { L.ctx.construir(); } catch (e) { erroL = e; }
-const semAcabamento = !L.acha('FICHA').prot.length && !L.acha('FICHA').notas.size && !L.P.nomeados['PALETA_ESCOLHIDA'];
+const semAcabamento = !L.acha('FICHA').prot.length && L.acha('FICHA').notas.size === (ABAS.find((a) => a.nome === 'FICHA').notas || []).length && !L.P.nomeados['PALETA_ESCOLHIDA'];
 ok('a montagem que passa do teto de tempo deixa as abas de pé, em português, e avisa que falta o acabar()',
    !erroL && semAcabamento && L.P.locale === 'pt_BR' && L.P.abas.map((a) => a.nome).join('|') === ABAS.map((a) => a.nome).join('|') && /FALTA O ACABAMENTO: rode a função acabar\(\)/.test(L.P.registro),
    erroL ? erroL.message : `${L.acha('FICHA').prot.length} travas · ${L.P.registro.slice(0, 120)}`);
@@ -752,5 +810,5 @@ const peso = ['Range.merge', 'Range.mergeAcross', 'Range.protect', 'Range.setVal
 console.log('       ' + peso);
 
 console.log('');
-if (falhas) { console.log(`>>> ${falhas} FALHA(S) NO construir()`); process.exit(1); }
-console.log('>>> O construir() MONTA A PLANILHA INTEIRA, E A PLANILHA MONTADA FUNCIONA');
+if (falhas) { console.log(`>>> ${falhas} FALHA(S) NO construir()`); process.exitCode = 1; }
+else console.log('>>> O construir() MONTA A PLANILHA INTEIRA, E A PLANILHA MONTADA FUNCIONA');

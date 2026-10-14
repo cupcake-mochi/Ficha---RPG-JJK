@@ -76,6 +76,23 @@ function juntarAbas_(extras) {
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
 
+/** Junta a tabela das Origens à DADOS, mesmo se Origens.gs carregar antes deste arquivo. */
+function juntarValores_(extras) {
+  if (typeof ABAS === 'undefined' || !ABAS || !extras) return;
+  extras.forEach(function (extra) {
+    var aba = ABAS.filter(function (s) { return s.nome === extra.nome; })[0];
+    if (!aba) return;
+    var presentes = {};
+    aba.vals.forEach(function (v) { presentes[v[0] + ',' + v[1]] = true; });
+    extra.vals.forEach(function (v) {
+      var chave = v[0] + ',' + v[1];
+      if (!presentes[chave]) { aba.vals.push(v); presentes[chave] = true; }
+    });
+    aba.vals.sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; });
+  });
+}
+if (typeof VALORES_DAS_ORIGENS_ !== 'undefined' && VALORES_DAS_ORIGENS_) juntarValores_(VALORES_DAS_ORIGENS_);
+
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
 
 /**
@@ -174,6 +191,9 @@ function construir() {
 }
 
 function montar_() {
+  if (typeof VALORES_DAS_ORIGENS_ === 'undefined' || !VALORES_DAS_ORIGENS_) {
+    throw new Error('Falta o Origens.gs: cole os cinco arquivos de apps-script no mesmo projeto antes de construir.');
+  }
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();
   var props = PropertiesService.getDocumentProperties();

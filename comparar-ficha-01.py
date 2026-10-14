@@ -123,6 +123,9 @@ import correcoes_borda
 LAY_FA2 = copy.deepcopy(LAY_MR)     # 02/10/2026: depois das Habilidades e do menu rapido, que levam a FICHA ate a linha nova
 habilidades.aplica(LAY_FA2, HB)
 menu_rapido.aplica(LAY_FA2, MR)
+import painel_origem
+PO = painel_origem.trocas(LAY_FA2, FP)
+painel_origem.aplica(LAY_FA2, PO)
 DIVISORIA = correcoes_borda.celulas_da_divisoria(LAY_FA2)
 # 03/10/2026, limpeza 28: a moldura da foto da CARTEIRA sai de dentro da caixa (moldura_foto.py). O anel em volta ganha a
 # regua, a caixa ganha o convite, e a imagem da moldura da lugar aos dois cantos chanfrados. Le o layout depois das limpezas
@@ -255,6 +258,28 @@ if _original_sem_novas != _gerada_sem_novas:
 for nova in _abas_novas:
     if nova not in wb_.sheetnames:
         difs.append(f"a aba nova {nova!r} sumiu da geracao")
+# O painel é novo: cada valor, estilo, mesclagem e largura precisa bater com a declaração.
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
+_pwb = Workbook()
+_pwb._fonts[0] = Font(name="Roboto", size=12, color="F4F1F7")
+_pws = _pwb.active
+_pfinal = copy.deepcopy(LAY_FA2)
+correcoes_borda.aplica(_pfinal)
+for coord, valor, ie, *_ in indice_ficha._aba(_pfinal, "FICHA")["celulas"]:
+    if indice_ficha._lc(coord)[1] not in PO["colunas"]:
+        continue
+    cel = _pws[coord]
+    cel.value = valor
+    if ie is not None:
+        fonte, fundo, bordas, alinha, fmt = _pfinal["estilos"][ie]
+        if fonte: cel.font = Font(name=fonte[0], size=fonte[1], color=fonte[2], bold=fonte[3], italic=fonte[4])
+        if fundo: cel.fill = PatternFill("solid", start_color=fundo, end_color=fundo)
+        if bordas: cel.border = Border(**{l: Side(style=v[0], color=v[1]) for l, v in bordas.items()})
+        if alinha: cel.alignment = Alignment(horizontal=alinha[0], vertical=alinha[1], wrap_text=alinha[2], text_rotation=alinha[3])
+        if fmt: cel.number_format = fmt
+_pws.merge_cells(PO["mescla"])
+
 for n in wa.sheetnames:
     if n in wb_.sheetnames and wa[n].sheet_state != wb_[n].sheet_state:
         difs.append(f"{n}: estado {wa[n].sheet_state} != {wb_[n].sheet_state}")
@@ -287,6 +312,13 @@ for n in wa.sheetnames:
                 if isinstance(pa["valor"], str):
                     pa["valor"] = linhas_novas.desloca_formula(pa["valor"], n == linhas_novas.ABA, LN["depois"], LN["n"])
             pb = perfil(sb.cell(row=r, column=c))
+            if n == "FICHA" and c in PO["colunas"]:
+                esperado_painel = perfil(_pws.cell(row=r, column=c))
+                for k in pb:
+                    if pb[k] != esperado_painel[k]:
+                        difs.append(f"{n}!{sb.cell(row=r, column=c).coordinate}: painel {k}: {pb[k]!r} != {esperado_painel[k]!r}")
+                esperadas["célula do painel da Origem, conferida contra a declaração"] += 1
+                continue
             # limpeza 21: a divisoria entre a moldura (cabecalho e lombada, em tinta) e o miolo, na cor da regua
             # (correcoes_borda.py). Tira do gerado o lado que so ele tem, e o resto da celula segue as outras
             # regras — uma celula da lombada estendida e uma da divisoria ao mesmo tempo, por exemplo.
@@ -314,8 +346,8 @@ for n in wa.sheetnames:
                     continue
             elif _ep is not None and _ra is None:
                 _est = _perfil_do_estilo(LAY["estilos"][_ep[1]])
-                _espelho = coord in EP["G"]["legado"] and isinstance(pb["valor"], str) and "'FICHA PESSOAL'!" in pb["valor"]
-                if all(pb[k] == _est[k] for k in _est) and (pb["valor"] == _ep[0] or _espelho):
+                _valor = FP["celulas"].get(n, {}).get(coord, (_ep[0],))[0]
+                if all(pb[k] == _est[k] for k in _est) and pb["valor"] == _valor:
                     esperadas["caixa do estado do personagem, nas linhas novas embaixo das barras"] += 1
                     continue
             # limpeza 4: a barra "agora" do original vem com o numero do
@@ -434,7 +466,7 @@ for n in wa.sheetnames:
             _fpc = FP["celulas"].get(n, {}).get(coord)
             if _fpc is not None:
                 _molde = perfil(sb[_fpc[1]])
-                if pb["valor"] == _fpc[0] and all(pb[k] == _molde[k] for k in pb if k != "valor"):
+                if (pb["valor"] == _fpc[0] or (_fpc[0] == "" and pb["valor"] is None)) and all(pb[k] == _molde[k] for k in pb if k != "valor"):
                     esperadas["célula da FICHA PESSOAL: o espelho na FICHA e as tabelas na DADOS"] += 1
                     continue
             # limpeza 26: o menu rapido (02/10/2026). Vem antes da 10 e da 11: as caixas da secao 8 que o indice
@@ -576,7 +608,9 @@ for n in wa.sheetnames:
         else:
             difs.append(f"{n}: mesclagem {x} faltou")
     for x in sorted(mb - ma):
-        if x in EP["mescladas"].get(n, []):          # 08/10/2026 (B41): as caixas do estado do personagem
+        if n == "FICHA" and x == PO["mescla"]:
+            esperadas["mesclagem do painel da Origem"] += 1
+        elif x in EP["mescladas"].get(n, []):          # 08/10/2026 (B41): as caixas do estado do personagem
             esperadas["mesclagem do estado do personagem"] += 1
         elif x in FL["mescladas"].get(n, []):        # limpeza 13: as caixas refeitas e a foto
             esperadas["mesclagem do desenho da mesa"] += 1
@@ -606,6 +640,11 @@ for n in wa.sheetnames:
         va, vb = la.get(c), lb.get(c)
         if va == vb:
             continue
+        if n == "FICHA" and c in PO["colunas"]:
+            larg = next(v for c1, c2, v in indice_ficha._aba(LAY_FA2, n)["colunas_larg"] if c1 <= c <= c2)
+            if va is None and vb == round(larg, 2):
+                esperadas["coluna do painel da Origem"] += 1
+                continue
         if n in FL["larguras"] and ((va is None and c == FL["larguras"][n]) or (vb is None and c > FL["larguras"][n])):
             esperadas["coluna da margem da direita"] += 1
             continue
@@ -662,7 +701,7 @@ for n in wa.sheetnames:
         if x[0] in _troca_fa.values() and any(k for k, v in _troca_fa.items() if v == x[0]):
             continue
         if x in {(m["onde"], m["tipo"], m["formula"]) for m in EP["menus"].get(n, [])}:   # 08/10/2026 (B41)
-            esperadas["menu de 0 a 3 das Sequelas e da Exaustão"] += 1
+            esperadas["menu da Exaustão e do Descanso"] += 1
             continue
         if x[0] in _form_fa and x[2] == _form_fa[x[0]]:
             continue
@@ -737,10 +776,8 @@ print()
 print("=" * 74)
 if difs:
     print(f">>> {len(difs)} DIFERENÇA(S) NÃO EXPLICADA(S):")
-    for d in difs[:40]:
+    for d in difs:
         print(f"    · {d}")
-    if len(difs) > 40:
-        print(f"    ... e mais {len(difs) - 40}")
     sys.exit(1)
 print(f">>> IGUAIS — fora as {len(LAY['_meta']['limpezas'])} limpezas declaradas, o gerador reproduz o")
 print("    arquivo do Mizuki célula por célula.")

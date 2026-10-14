@@ -37,7 +37,11 @@ PERTURBACOES = [
      '''o["esp"] = f"=INT((2+{nn}/2)/2)"''', '''o["esp"] = f"=INT((3+{nn}/2)/2)"''', "um espaço de especial, um talento"),
     ("o talento do marco não entra", GER, '''o["ntal"] = f'=1+{P("marc")}\'''', '''o["ntal"] = f'=1\'''', "e o segundo talento"),
     ("a domada de nível fixo passa a acompanhar o invocador", GER,
-     '''MAX(1,MIN({NIV},IF({P("nfixo")}=0,{NIV},{P("nfixo")}))))\'''', '''{NIV})\'''', "a domada de nível 5 de um invocador de nível 10"),
+     "{fim_da_classe}),{fixo}))", "{fim_da_classe}),{NIV}))", "a domada de nível 5 de um invocador de nível 10"),
+    ("a criada deixa de acompanhar o invocador até o fim da Classe", GER,
+     "MIN({NIV},{fim_da_classe}),{fixo}))", "{fixo},{fixo}))", "a criada de nível fixo 6 acompanha até 8"),
+    ("a criada ultrapassa a Classe em que foi criada", GER,
+     "MIN({NIV},{fim_da_classe}),{fixo}))", "{NIV},{fixo}))", "a criada de nível fixo 6 acompanha até 8"),
     ("a reserva da domada esquece a Essência", GER,
      '''o["resmax"] = f'={nn}*(1+INT({P("p4")}/3))\'''', '''o["resmax"] = f'={nn}\'''', "20 PE de reserva"),
     # --- a entrada, o retorno e o talismã
@@ -148,10 +152,13 @@ def aplica(pasta, arquivo, certo, errado):
 if __name__ == "__main__":
     quais = [int(x) for x in sys.argv[1:]]
     # antes de gastar LibreOffice: todo trecho tem de existir uma vez só no arquivo de hoje
+    velhos = []
     for desc, arq, certo, _, _ in PERTURBACOES + [CONTRA + (None,)]:
         n = open(os.path.join(AQUI, arq), encoding="utf-8").read().count(certo)
         if n != 1:
-            raise SystemExit(f"o arnes esta velho ({desc}): o trecho devia aparecer uma vez em {arq}, e aparece {n}:\n  {certo}")
+            velhos.append(f"{desc}: o trecho aparece {n} vez(es) em {arq}")
+    if velhos:
+        raise SystemExit("O arnes esta velho:\n" + "\n".join(velhos))
     print("=" * 70)
     print("PASSO 1 - a base passa NA COPIA?  (sem isso toda perturbacao e falso positivo)")
     base = copia()

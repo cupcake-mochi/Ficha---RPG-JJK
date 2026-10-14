@@ -16,7 +16,7 @@ for v in conferir-catalogo.py conferir-kaori.py conferir-progressao.py \
     *.js)
       # o Apps Script nao roda fora do Google: o node testa a conta sozinha
       if command -v node > /dev/null; then node "$v" || FALHOU=1
-      else echo "node nao existe nesta maquina: $v foi pulado."; fi ;;
+      else echo "node nao existe nesta maquina: $v NAO RODOU."; FALHOU=1; fi ;;
     *) python3 "$v" || FALHOU=1 ;;
   esac
   echo

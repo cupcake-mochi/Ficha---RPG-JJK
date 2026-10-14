@@ -15,7 +15,7 @@
 const fs = require('fs'), vm = require('vm'), path = require('path');
 const RAIZ = __dirname;
 const GS = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Codigo.gs'), 'utf8');
-const FICHA_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Ficha.gs'), 'utf8') + '\n' + fs.readFileSync(path.join(RAIZ, 'apps-script', 'Invocacoes.gs'), 'utf8');
+const FICHA_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Ficha.gs'), 'utf8') + '\n' + fs.readFileSync(path.join(RAIZ, 'apps-script', 'Invocacoes.gs'), 'utf8')+'\n'+fs.readFileSync(path.join(RAIZ,'apps-script/Origens.gs'),'utf8');
 const CAT = JSON.parse(fs.readFileSync(path.join(RAIZ, 'catalogo-projeto-m.json'), 'utf8'));
 
 let falhas = 0;
@@ -349,9 +349,11 @@ console.log('\nAS CAIXAS LIVRES E A COR DE AVISO, NO ABAS');
   // 07/10/2026: as travas de aviso saíram, e toda conta em que alguém escreve por cima volta pelo onEdit, em grupo ou não.
   // Ficam de fora só as caixas que nascem com conta e são do jogador, que a aba declara em `livres`
   const declaradas = spec.livres || [];
-  ok(`a aba declara livres só o Volume de cada item e a foto que vem da CARTEIRA (${declaradas.length} caixas), e não declara mais faixa travada`,
-     declaradas.length > 2 && declaradas.every((a1) => ehLivre(a1) || ehFoto(a1)) && formulas.filter((f) => ehLivre(f) || ehFoto(f)).every((f) => declaradas.includes(f))
-     && declaradas.filter(ehFoto).length === 1 && !('protegidas' in spec), declaradas.filter((a1) => !ehLivre(a1) && !ehFoto(a1)).join(', '));
+  const capacidades = ["texto da marcante", "texto do menor 1", "texto do menor 2"].map((k) => ip[k]);
+  const ehCapacidade = (a1) => capacidades.includes(a1);
+  ok(`a aba declara livres só o Volume de cada item, a foto da CARTEIRA e os três textos das capacidades (${declaradas.length} caixas), e não declara mais faixa travada`,
+     declaradas.length > 2 && declaradas.every((a1) => ehLivre(a1) || ehFoto(a1) || ehCapacidade(a1)) && formulas.filter((f) => ehLivre(f) || ehFoto(f) || ehCapacidade(f)).every((f) => declaradas.includes(f))
+     && declaradas.filter(ehFoto).length === 1 && declaradas.filter(ehCapacidade).length === 3 && !('protegidas' in spec), declaradas.filter((a1) => !ehLivre(a1) && !ehFoto(a1) && !ehCapacidade(a1)).join(', '));
   const valorDe = (a1) => { const [l, c] = lc(a1); const t = spec.vals.find((x) => x[0] === l && x[1] === c); return t ? String(t[2]) : ''; };
   ok('cada regra de cor de aviso procura um texto que a fórmula da própria caixa escreve',
      spec.condicional.length >= 5 && spec.condicional.every((r) => r.faixas.every((a1) => valorDe(a1).includes(r.contem))),
@@ -361,7 +363,8 @@ console.log('\nAS CAIXAS LIVRES E A COR DE AVISO, NO ABAS');
   const altas = Object.keys(spec.alturas).map(Number).filter((l) => l > 7);
   ok('do cabeçalho para baixo toda linha da aba tem a mesma altura (nenhuma linha gorda no meio de uma lista)', altas.length === 0, 'linhas ' + altas.join(', '));
   ok('a aba fecha o treino em grupo de linhas aberto e o painel em grupo de colunas fechado',
-     spec.grupos && spec.grupos.lin.length === 1 && spec.grupos.lin[0][2] === false && spec.grupos.col[0][2] === true
+     spec.grupos && spec.grupos.lin.length === 2 && spec.grupos.lin[0][2] === false
+     && JSON.stringify(spec.grupos.lin[1]) === JSON.stringify([45, 50, false, 1]) && spec.grupos.col[0][2] === true
      && spec.grupos.col[0][1] === spec.cols && spec.grupos.col[0][3] === 1);
   const [painel, ext] = spec.grupos.col;
   ok('a extensão é um segundo grupo de colunas, dentro do painel, fechado, e guarda as duas tabelas a mais',

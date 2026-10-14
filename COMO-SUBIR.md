@@ -16,11 +16,11 @@ A ficha é desenhada **no Sheets**, e a pasta `ficha-v01/` é a cópia dela. Exp
 
 ```bash
 python3 ficha-v01/extrair.py
-python3 ficha-v01/monta.py
-./rodar-tudo.sh
+systemd-run --user --scope -q -p MemoryMax=5G -p MemorySwapMax=0 nice -n 15 python3 ficha-v01/monta.py
+systemd-run --user --scope -q -p MemoryMax=5G -p MemorySwapMax=0 nice -n 15 ./rodar-tudo.sh
 ```
 
-Saem o `apps-script/Ficha.gs` e o `apps-script/Habilidades.gs`. Se os dezenove validadores não passarem, não sobe.
+Saem `apps-script/Ficha.gs`, `apps-script/Habilidades.gs`, `apps-script/Invocacoes.gs` e `apps-script/Origens.gs`; `apps-script/Codigo.gs` é escrito à mão. Se os dezenove validadores não passarem, não sobe.
 
 > **O `ficha/monta.py` foi aposentado em 14/09/2026, no B18.** *Ele ficou dez versões atrás da planilha viva, e o `Ficha.gs` que ele gerava montava uma ficha antiga.*
 
@@ -34,7 +34,7 @@ Saem o `apps-script/Ficha.gs` e o `apps-script/Habilidades.gs`. Se os dezenove v
 Oswald  ·  Castoro  ·  Yuji Syuku
 ```
 
-### 3 · Colar os quatro arquivos
+### 3 · Colar os cinco arquivos
 
 **Extensões → Apps Script.**
 
@@ -46,7 +46,9 @@ De novo no `+`, **Script**, nome `Habilidades`, e cola o conteúdo de **`apps-sc
 
 E mais uma vez no `+`, **Script**, nome `Invocacoes`, e cola o conteúdo de **`apps-script/Invocacoes.gs`**. *Desde 06/10/2026: são as abas `INVOCAÇÕES` e `DADOS_INVOC`, que não cabem no `Ficha.gs`. Sem ele a ficha monta igual, mas sem essas duas abas. A ordem em que os arquivos aparecem no projeto não importa.*
 
-> O `Ficha.gs` tem uns 790 KB, o `Habilidades.gs` uns 210 KB, o `Codigo.gs` uns 220 KB e o `Invocacoes.gs` uns 440 KB. É normal eles demorarem a colar.
+Mais uma vez no `+`, **Script**, nome `Origens`, e cole o conteúdo de **`apps-script/Origens.gs`**. Desde 14/10/2026 (B46): é a tabela das capacidades da Origem, com os textos integrais do R51. A junção funciona em qualquer ordem de carga e não duplica células. Sem esse arquivo, `construir()` avisa antes de alterar a planilha.
+
+> Todos os arquivos ficam abaixo do teto de 900 KB por arquivo usado pelos testes. O `Ficha.gs` tem cerca de 865 KB; o `Origens.gs`, 74 KB. É normal demorarem a colar.
 
 Salva com `Ctrl+S`.
 
@@ -103,7 +105,7 @@ Enquanto estiver ajustando o desenho, isso é o que você quer. Depois que tiver
 
 Compartilha como **somente leitura** e manda cada um fazer **Arquivo → Fazer uma cópia**.
 
-A cópia leva os dois arquivos de script junto. O `onEdit` é gatilho simples: funciona na cópia **sem ninguém autorizar nada**, e é ele que faz a caixinha de `±` aplicar dano.
+A cópia leva os cinco arquivos de script junto. O `onEdit` é gatilho simples: funciona na cópia **sem ninguém autorizar nada**, e é ele que faz a caixinha de `±` aplicar dano.
 
 ### A planilha central do carimbo
 
@@ -132,7 +134,7 @@ Quando o manual mudar, você muda **uma célula** na central e toda ficha em cir
 
 ## Quando a ficha mudar
 
-A mudança acontece no Sheets. Exporta de novo, refaz o passo 1, cola o `Ficha.gs` novo por cima do antigo e roda `construir` numa planilha nova. Ficha de jogador não se migra: ele copia o modelo novo e transcreve.
+Para esta atualização, preserve o `layout.json` existente, rode o gerador e cole os cinco arquivos atualizados. Rode `construir` numa planilha nova. Ficha de jogador não se migra: ele copia o modelo novo e transcreve.
 
 ---
 

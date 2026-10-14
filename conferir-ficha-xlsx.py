@@ -627,7 +627,9 @@ _sz_o = _lay_o["estilos"][_cel_o[0][2]][0][1] if _cel_o and _cel_o[0][2] is not 
 checa("a caixa das escolhas de perícia fica em letra menor que a do desenho, para a frase caber",
       _sz_o is not None and _esc.font.sz == _flm.FONTE_DAS_ESCOLHAS < _sz_o and bool(_esc.alignment.wrap_text),
       f"desenho {_sz_o} · ficha {_esc.font.sz} · quebra {_esc.alignment.wrap_text}")
-_margem = {a: wb[a].max_column for a in ("FICHA", "CARTEIRA")}
+_margem = {a: max(c for c in range(1, wb[a].max_column + 1)
+                   if not any(d.hidden and d.min <= c <= d.max for d in wb[a].column_dimensions.values()))
+           for a in ("FICHA", "CARTEIRA")}
 checa("a CARTEIRA acaba na mesma coluna da FICHA, com a margem da direita",
       len(set(_margem.values())) == 1, str(_margem))
 
@@ -811,7 +813,16 @@ if _o.path.exists(GS):
     checa("o pt_BR final não é o idioma capturado no começo — senão uma planilha que nasceu em "
           "inglês ficaria em inglês", "setSpreadsheetLocale(idioma)" not in _corpo)
     tam = len(g) / 1024
-    checa(f"o arquivo cabe no Apps Script ({tam:.0f} KB, o limite é ~1 MB)", tam < 900)
+    checa(f"o arquivo cabe no teto de 900 KB usado pelo teste ({_o.path.getsize(GS) / 1024:.0f} KB)",
+          _o.path.getsize(GS) < 900 * 1024)
+    _origens_gs = "apps-script/Origens.gs"
+    _origens_src = open(_origens_gs, encoding="utf-8").read() if _o.path.exists(_origens_gs) else ""
+    checa("a tabela origem_cap vem no Origens.gs gerado e se junta em qualquer ordem de carga",
+          "var VALORES_DAS_ORIGENS_ = " in _origens_src
+          and "if (typeof juntarValores_ === 'function') juntarValores_(VALORES_DAS_ORIGENS_);" in _origens_src
+          and "if (typeof VALORES_DAS_ORIGENS_ !== 'undefined' && VALORES_DAS_ORIGENS_) juntarValores_(VALORES_DAS_ORIGENS_);" in g)
+    checa("todos os arquivos .gs ficam abaixo do teto de 900 KB por arquivo",
+          all(_o.path.getsize("apps-script/" + p) < 900 * 1024 for p in _o.listdir("apps-script") if p.endswith(".gs")))
     # A caixa desmarcada vale FALSO, e FALSO nao e "". A formula antiga somava
     # maestria em TODA pericia com a caixa vazia. A checagem precisa ser
     # exata: so as celulas que REALMENTE tem caixa, lidas do proprio script.
@@ -1156,7 +1167,7 @@ catch (e) { console.log(JSON.stringify({ erro: e.message })); }
     # a régua da aba grande vai em partes, e a da aba que cabe continua num passo só, com o nome de sempre
     _gsb = _sp.run(["node", "-e", """
 const fs=require('fs'),vm=require('vm'),c={};vm.createContext(c);
-vm.runInContext(fs.readFileSync('apps-script/Ficha.gs','utf8')+'\\n'+fs.readFileSync('apps-script/Invocacoes.gs','utf8'),c);
+vm.runInContext(fs.readFileSync('apps-script/Ficha.gs','utf8')+'\\n'+fs.readFileSync('apps-script/Invocacoes.gs','utf8')+'\\n'+fs.readFileSync('apps-script/Origens.gs','utf8'),c);
 vm.runInContext(fs.readFileSync('apps-script/Codigo.gs','utf8'),c);
 console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oculta}).map(function(s){return [s.nome, chamadasDeBorda_(s).length, partesDaBorda_(s), CHAMADAS_DE_BORDA_POR_PASSO_]})',c)));
 """], capture_output=True, text=True) if _sh.which("node") else None

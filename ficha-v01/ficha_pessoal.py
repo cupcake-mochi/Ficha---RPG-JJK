@@ -977,6 +977,8 @@ def aba(layout, tr):
     assert f.add("cel", "R", L + 32, "AF", L + 32, f'=IFERROR(VLOOKUP({BASE},{TAB_B},2,FALSE),"—")') == G["pericia_origem"]
     assert f.add("cel", "AH", L + 32, "AT", L + 32,
                  f'=IF({H["sem técnica"]}=1,"Manejos (Sem Técnica)",IFERROR(VLOOKUP({BASE},{TAB_B},3,FALSE),"—"))') == G["rota_origem"]
+    f.add("peq", "D", L + 33, "AT", L + 33,
+          "DESCRIÇÕES RETRÁTEIS · use − para recolher e + para abrir")
     criada = OL["criada"]
     for k, (campo, rot, (c1, c2)) in enumerate(CAPS):
         f.add("rot", c1, L + 34, c2, L + 34, rot, NOTAS[campo.split()[0]])
@@ -1205,7 +1207,8 @@ def aba(layout, tr):
         "mescladas": f.mesclas, "menus": f.menus, "condicional": [], "imagens": imagens,
         "notas": f.notas,
         # o painel é um grupo de colunas fechado, e a extensão é outro, dentro dele, também fechado
-        "grupos": {"linhas": [[G["treino_ini"], G["treino_fim"], False]],
+        "grupos": {"linhas": [[G["treino_ini"], G["treino_fim"], False],
+                              [ix._lc(G["cap_texto"][0])[0], ix._lc(G["cap_texto"][0])[0] + CAP_LINHAS - 1, False]],
                    "colunas": [[PAINEL_INI, PAINEL_FIM, True], [EXT_INI, PAINEL_FIM, True]]},
         "condicional_gs": condicional,
         # 07/10/2026: as caixas que nascem com conta e o jogador escreve por cima (a foto e o Volume de cada item). O

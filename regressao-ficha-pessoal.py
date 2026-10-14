@@ -50,10 +50,9 @@ def prepara(preenche, nome):
     preenche(wb)
     # o IFS fica cru na ficha, porque ela vive no Sheets; o LibreOffice so o reconhece com o prefixo do Excel
     for ws in wb:
-        for linha in ws.iter_rows():
-            for c in linha:
-                if isinstance(c.value, str) and c.value.startswith("=") and "IFS(" in c.value and "_xlfn.IFS(" not in c.value:
-                    c.value = re.sub(r"(?<![A-Z_.])IFS\(", "_xlfn.IFS(", c.value)
+        for c in tuple(ws._cells.values()):
+            if isinstance(c.value, str) and c.value.startswith("=") and "IFS(" in c.value and "_xlfn.IFS(" not in c.value:
+                c.value = re.sub(r"(?<![A-Z_.])IFS\(", "_xlfn.IFS(", c.value)
     wb.save(copia)
     FILA.append(copia)
 
@@ -97,7 +96,7 @@ E_INI = G["equip_ini"]
 
 def monta(forca=0, destreza=0, principal=fp.SOCO, secundaria=fp.MAO_LIVRE, vestindo="Traje 1", grau="Grau 4",
           equip=(), itens=(), livres=(), treinos=(), grupos=(), caminho=None, nivel=2, missoes=(),
-          exaustao=None, sequelas=None, legados=(), carga_buff=None):
+          exaustao=None, sequelas=None, legados="", capacidades=(), origem=None, vida_max=None, classe_max=None, carga_buff=None):
     def preenche(wb):
         f, p = wb["FICHA"], wb[ABA]
         # 08/10/2026 (B42): o Buff/Debuff do limite de carga
@@ -107,9 +106,19 @@ def monta(forca=0, destreza=0, principal=fp.SOCO, secundaria=fp.MAO_LIVRE, vesti
         if exaustao is not None:
             f[IDX["exaustão"]] = exaustao
         if sequelas is not None:
-            f[IDX["sequelas"]] = sequelas
-        for k, (nome_l, tipo_l, texto_l) in enumerate(legados):
-            p[G["legado_nome"][k]], p[G["legado_tipo"][k]], p[G["legado_texto"][k]] = nome_l, tipo_l, texto_l
+            for k in range(3):
+                f[IDX[f"sequela {k + 1}"]] = k < sequelas
+        if origem is not None:
+            f[IDX["origem"]] = origem
+        if vida_max is not None:
+            f[IDX["vida_max"]] = vida_max
+        if classe_max is not None:
+            f[IDX["classe máxima"]] = classe_max
+        p[G["legados"]] = legados
+        for k, (nome_c, texto_c) in enumerate(capacidades):
+            p[G["cap_menu"][k]] = nome_c
+            if texto_c is not None:
+                p[G["cap_texto"][k]] = texto_c
         f[ATR["Força"]], f[ATR["Destreza"]] = forca, destreza
         f[IDX["nivel"]] = nivel
         if caminho:
@@ -223,8 +232,9 @@ CASOS = {
     # 08/10/2026 (B41): a Exaustão e as Sequelas da FICHA, e os dois Legados do dossiê
     "exaustão 1": dict(forca=3, principal="Faca", equip=KIT, exaustao=1, sequelas=1),
     "exaustão 2": dict(forca=3, principal="Faca", equip=KIT, exaustao=2, sequelas=2,
-                       legados=[("O Jeito Errado", "Narrativo", "Uma vez por dia, pergunte ao mestre o que o erro está custando."),
-                                ("Casca Grossa", "De exceção", None)]),
+                       origem="Descendente", legados="O tio Kenji e a ferramenta que sumiu do cofre.",
+                       capacidades=[("Zenin", None), ("Cofre da Família", None),
+                                    ("Lição do Tio Kenji", "Uma vez por cena, refaça o ataque, como combinado com o mestre.")]),
     "exaustão 3, sem a Força": dict(forca=2, destreza=2, principal="Kanabō", secundaria="Broquel", vestindo="Revestimento 1",
                                     equip=KIT, itens=ITENS, grupos=["Massa"], exaustao=3, sequelas=3),
     "exausta e carregada": dict(forca=3, principal="Faca", secundaria="Broquel", equip=KIT, itens=ITENS, exaustao=2,
@@ -246,6 +256,9 @@ for _i, _n in enumerate(COBRE):
     _s = _uma[_i % len(_uma)] if ARMAS[_n]["mao"] == 1 else fp.MAO_LIVRE
     CASOS[f"nota · {_n}"] = dict(forca=6, principal=_n, secundaria=_s, equip=[(x, 1) for x in dict.fromkeys([_n, _s]) if x in ARMAS])
 # a arma digitada na mão sem estar guardada: a linha de baixo avisa, e a nota fica vazia
+CASOS["origem criada"] = dict(capacidades=[(R["origens_do_livro"]["criada"], None)] * 3)
+CASOS["morrendo 93"] = dict(vida_max=93, classe_max=3, sequelas=0)
+CASOS["morrendo 395"] = dict(vida_max=395, classe_max=7, sequelas=0)
 CASOS["não guardada"] = dict(forca=3, principal="Katana", secundaria="Faca")
 # o aviso de cada mão conta só o que serve a ela: o escudo não entra na principal, e a arma de duas mãos não entra na secundária
 CASOS["só o escudo guardado"] = dict(forca=3, secundaria="Broquel", equip=[("Broquel", 1)])
@@ -455,12 +468,30 @@ _efe = {0: "Sem penalidade", 1: "Desvantagem em perícias e ofícios", 2: "Desv.
 _casos_e = {"de fábrica": (0, 0), "exaustão 1": (1, 1), "exaustão 2": (2, 2), "exaustão 3, sem a Força": (3, 3)}
 checa("as Sequelas dizem a janela da próxima queda (3, 2 e 1 rodada, e Derrotado na hora com 3), e a Exaustão o efeito de cada degrau, que somam",
       all((_le(n, _EG["janela"]), _le(n, _EG["efeito"])) == (_jan[s], _efe[e]) for n, (e, s) in _casos_e.items())
-      and (IDX["sequelas"], IDX["exaustão"]) == (_EG["sequelas"], _EG["exaustao"]),
+      and ([IDX[f"sequela {k}"] for k in range(1, 4)], IDX["exaustão"]) == (_EG["sequelas"], _EG["exaustao"]),
       str({n: (_le(n, _EG["janela"]), _le(n, _EG["efeito"])) for n in _casos_e}))
-checa("a FICHA espelha os dois Legados do dossiê: o nome, o tipo e o que faz; o Legado sem texto mostra o nome e o tipo, e a ficha sem Legado fica em branco",
-      _le("exaustão 2", IDX["legado 1"]) == "O Jeito Errado · Narrativo: Uma vez por dia, pergunte ao mestre o que o erro está custando."
-      and _le("exaustão 2", IDX["legado 2"]) == "Casca Grossa · De exceção" and _le("de fábrica", IDX["legado 1"]) == "" == _le("de fábrica", IDX["legado 2"]),
-      f'{_le("exaustão 2", IDX["legado 1"])!r} | {_le("exaustão 2", IDX["legado 2"])!r} | {_le("de fábrica", IDX["legado 1"])!r}')
+checa("a FICHA espelha a marcante e as duas menores, com frequência do livro ou criada; sem escolha mostra o convite",
+      [_le("exaustão 2", IDX[k]) for k in ("marcante", "menor 1", "menor 2")]
+      == ["Zenin", "Cofre da Família", "Lição do Tio Kenji"]
+      and _le("exaustão 2", _EG["origem_freq"]["menor 2"]) == "criada com o mestre"
+      and all(_le("de fábrica", IDX[k]) == "—" for k in ("marcante", "menor 1", "menor 2")))
+checa("escolher Criada com o mestre nas três cartas deixa as caixas de texto vazias",
+      all(LIDO["caso-origem criada"][ABA][c].value in (None, "") for c in G["cap_texto"]))
+_porig = LIDO["caso-exaustão 2"][ABA]
+_caps = {c["nome"]: c for o in R["origens_do_livro"]["origens"] for c in o["marcantes"] + o["menores"]}
+checa("as cartas mostram o texto e a frequência integrais do livro, e a criada conserva o texto do jogador",
+      all(_porig[G["cap_texto"][k]].value == _caps[n]["texto"]
+          and _le("exaustão 2", _EG["origem_freq"][campo]) == _caps[n]["freq"]
+          for k, (campo, n) in enumerate((("marcante", "Zenin"), ("menor 1", "Cofre da Família"))))
+      and _porig[G["cap_texto"][2]].value == CASOS["exaustão 2"]["capacidades"][2][1]
+      and _porig[G["legados"]].value == CASOS["exaustão 2"]["legados"])
+checa("o prazo do Morrendo acompanha as três caixinhas: 3, 2, 1 rodada e Derrotado na hora",
+      all(_le(n, IDX["morrendo prazo"]) == ["3 rodadas", "2 rodadas", "1 rodada", "Derrotado na hora"][sq]
+          for n, (_, sq) in _casos_e.items()))
+for nome, esperados in (("morrendo 93", [24, 31, 45]), ("morrendo 395", [99, 105, 105])):
+    checa(nome + ": Aguentar arredonda para cima sem teto; Insistir usa 1/3 e 1/2 com teto de 15 × Classe",
+          [_le(nome, IDX[k]) for k in ("morrendo aguentar", "morrendo insistir 1", "morrendo insistir 2")]
+          == list(map(str, esperados)))
 _cx = notas_vivas(LIDO["caso-de fábrica"]["DADOS"])
 checa("a nota da arma mora na linha embaixo de cada mão",
       (_cx.get("arma da principal", (0, 0))[1], _cx.get("arma da secundária", (0, 0))[1]) == (G["det_principal"], G["det_secundaria"]), str(_cx))

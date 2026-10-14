@@ -41,17 +41,20 @@ def arte_do_script():
 
 
 def estado_de_exemplo(wb, idx, G):
-    """08/10/2026 (B41): o estado do personagem embaixo das barras da FICHA, e o traço, as cicatrizes e os dois Legados
+    """08/10/2026 (B41): o estado do personagem embaixo das barras da FICHA, e o traço, as cicatrizes e as capacidades da Origem
     do dossiê da FICHA PESSOAL, que a FICHA espelha"""
     f, p = wb["FICHA"], wb[fp.NOME]
-    f[idx["sequelas"]], f[idx["exaustão"]] = 1, 2
+    for k in range(1, 4):
+        f[idx[f"sequela {k}"]] = k == 1
+    f[idx["exaustão"]] = 2
     f[idx["resistências"]], f[idx["imunidades"]] = "Fogo · Cortante (Alicerce)", "Envenenado"
+    f[idx["origem"]] = "Descendente"
     p[G["traco"]] = "Meu irmão entrou para a escola antes de mim e desapareceu numa missão."
     p[G["cicatrizes"]] = "Queimadura no antebraço esquerdo (missão do metrô)."
-    for k, (nome, tipo, texto) in enumerate((
-            ("O Jeito Errado", "Narrativo", "Uma vez por dia, ao ver alguém cometer o mesmo erro, pergunte ao mestre o que aquilo está custando à pessoa."),
-            ("Casca Grossa", "De exceção", "Uma vez por descanso longo, ignore uma condição Leve quando ela seria aplicada."))):
-        p[G["legado_nome"][k]], p[G["legado_tipo"][k]], p[G["legado_texto"][k]] = nome, tipo, texto
+    for k, nome in enumerate(("Zenin", "Notas de Família", "✎ Criada com o mestre")):
+        p[G["cap_menu"][k]] = nome
+    p[G["cap_texto"][2]] = "Treino de lâmina com o tio: uma vez por cena, depois de errar um ataque com Lâmina Longa, rerrole o d20 e aceite o segundo resultado."
+    p[G["legados"]] = "O tio Kenji, que me ensinou a lâmina escondido do resto da casa. Ele ainda me deve uma explicação sobre a ferramenta que sumiu do cofre."
 
 
 def exemplo(wb, R, G):
@@ -233,10 +236,9 @@ def recalculada(preenche):
     wb = load_workbook(copia)
     preenche(wb)
     for ws in wb:
-        for linha in ws.iter_rows():
-            for c in linha:
-                if isinstance(c.value, str) and c.value.startswith("="):
-                    c.value = re.sub(r"(?<![A-Z_.])(IFS|TEXTJOIN)\(", r"_xlfn.\1(", c.value)
+        for c in tuple(ws._cells.values()):
+            if isinstance(c.value, str) and c.value.startswith("="):
+                c.value = re.sub(r"(?<![A-Z_.])(IFS|TEXTJOIN)\(", r"_xlfn.\1(", c.value)
     wb.save(copia)
     subprocess.run(["libreoffice", "--headless", "--convert-to", "xlsx", "--outdir", os.path.join(d, "s"), copia],
                    capture_output=True, timeout=300)
@@ -252,6 +254,39 @@ def numero(v):
     if isinstance(v, float) and v.is_integer():
         v = int(v)
     return str(v).replace(".", ",") if isinstance(v, float) else v
+
+
+def exemplo_origens(wb):
+    """A comparação B46: Descendente, Vanguarda 10, Constituição 4 → vida 93 e Classe 3."""
+    exemplo_amaldicoada(wb)
+    f, dd = wb["FICHA"], wb["DADOS"]
+    idx = {dd.cell(row=r, column=53).value: ix.endereco(dd.cell(row=r, column=54).value)
+           for r in range(5, 200) if dd.cell(row=r, column=53).value}
+    f[idx["caminho"]], f[idx["atr_base_Constituição"]] = "Vanguarda", 3
+    f[idx["corpo_Constituição"]], f[idx["marco corpo"]] = 1, 1
+    f[idx["refino escolhido"]], f[idx["marco leque"]] = 0, 0
+    f[idx["trilha"]] = "Escolha sua Trilha"
+    _escrever_habilidades(f, "Vanguarda", "")
+
+
+def estica_textos(spec, valores):
+    """A altura que o onEdit aplica às caixas de texto do exemplo, pela mesma medida das cartas."""
+    import habilidades as hb
+    M = hb.medida()
+    for grupo in spec.get("esticam", []):
+        if grupo["aba"] != spec["nome"]:
+            continue
+        h = {r: M["minima"] for c in grupo["textos"] for r in range(c[2], c[2] + c[3])}
+        for largura, cels, primeira, n, fixo in grupo["textos"]:
+            texto = " · ".join(str(valores.get(ix._lc(c), "") or "") for c in cels).strip(" ·")
+            if not texto:
+                continue
+            pede = hb.linhas_na_carta(texto, dict(M, largura=largura)) * M["linha"] + M["respiro"] - fixo
+            tem = sum(h[r] for r in range(primeira, primeira + n))
+            if pede > tem:
+                for r in range(primeira, primeira + n):
+                    h[r] += -(-(pede - tem) // n)
+        spec["alturas"].update({str(r): int(px) for r, px in h.items()})
 
 
 def desenha(spec, valores, crus, aberto=True, barras=None, titulo="", pintura=None, linhas=None, arte=None, linhas_abertas=None):
@@ -453,20 +488,21 @@ def main():
     ap.add_argument("--aba", default=fp.NOME)
     ap.add_argument("--saida", default="/tmp/ver-aba.html")
     ap.add_argument("--fechado", action="store_true", help="o painel de XP fechado, como a aba nasce")
+    ap.add_argument("--linhas", type=int, help="desenha só as primeiras N linhas, para conferir um bloco")
     ap.add_argument("--vazia", action="store_true", help="a ficha de fábrica, sem o exemplo")
     ap.add_argument("--tudo", action="store_true", help="a extensão do painel aberta também")
     ap.add_argument("--nasce", action="store_true", help="os grupos de linhas como a aba nasce (os fechados, fechados)")
     a = ap.parse_args()
     # 02/10/2026: a FICHA vai com a Kaori da Ficha Amaldiçoada, para o menu rápido da seção 8 ter o que mostrar
     if a.aba in (fa.NOME, "FICHA"):
-        lido, cru = recalculada((lambda wb: None) if a.vazia else exemplo_amaldicoada)
+        lido, cru = recalculada((lambda wb: None) if a.vazia else exemplo_origens if a.aba == "FICHA" else exemplo_amaldicoada)
         ws, wc = lido[a.aba], cru[a.aba]
         valores = {(c.row, c.column): c.value for linha in ws.iter_rows() for c in linha if c.value is not None}
         crus = {(c.row, c.column): c.value for linha in wc.iter_rows() for c in linha if c.value is not None}
         spec = next(s for s in abas_do_script() if s["nome"] == a.aba)
         if a.aba == "FICHA":       # a caixa das Habilidades como o script a estica, e não como a aba nasce
             spec["alturas"].update({str(r): px for r, px in ALTURAS_DO_SCRIPT.items()})
-        open(a.saida, "w", encoding="utf-8").write(desenha(spec, valores, crus, 2, None, a.aba, arte=arte_do_script(),
+        open(a.saida, "w", encoding="utf-8").write(desenha(spec, valores, crus, 0 if a.fechado else 2, None, a.aba, linhas=a.linhas, arte=arte_do_script(),
                                                            linhas_abertas="nasce" if a.nasce else None))
         print(f"{a.aba}: {spec['rows']} linhas, {spec['cols']} colunas -> {a.saida}")
         return
@@ -487,7 +523,7 @@ def main():
             if tem and vida:
                 barras[ix._lc(fi.celulas_da_ficha(fi.linha_da_fileira(j), k)["barra"])] = (round(100 * atual / vida), "#E8DCD4")
         spec = next(s for s in abas_do_script() if s["nome"] == a.aba)
-        open(a.saida, "w", encoding="utf-8").write(desenha(spec, valores, crus, 2, barras, a.aba, arte=arte_do_script(),
+        open(a.saida, "w", encoding="utf-8").write(desenha(spec, valores, crus, 2, barras, a.aba, linhas=a.linhas, arte=arte_do_script(),
                                                            linhas_abertas="nasce" if a.nasce else None))
         print(f"{a.aba}: {spec['rows']} linhas, {spec['cols']} colunas -> {a.saida}")
         return
@@ -509,7 +545,8 @@ def main():
         if isinstance(total, (int, float)) and isinstance(falta, (int, float)) and total + falta:
             barras[ix._lc(G["falta_barra"])] = (round(100 * total / (total + falta)), "#E8DCD4")
     spec = next(s for s in abas_do_script() if s["nome"] == a.aba)
-    open(a.saida, "w", encoding="utf-8").write(desenha(spec, valores, crus, 0 if a.fechado else 2 if a.tudo else 1, barras, a.aba,
+    estica_textos(spec, valores)
+    open(a.saida, "w", encoding="utf-8").write(desenha(spec, valores, crus, 0 if a.fechado else 2 if a.tudo else 1, barras, a.aba, linhas=a.linhas,
                                                        arte=arte_do_script()))
     print(f"{a.aba}: {spec['rows']} linhas, {spec['cols']} colunas -> {a.saida}")
 

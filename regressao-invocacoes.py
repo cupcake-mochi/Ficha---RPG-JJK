@@ -89,7 +89,9 @@ sinal = lambda x: ("+" if x >= 0 else "−") + str(abs(x))
 def regra_da_ficha(nivel, usa, ess, inte, trilha, f):
     """os numeros de uma ficha: `f` traz o que o jogador escreveu"""
     acompanha = f.get("aquis", "Espaço conhecido") in ("Espaço conhecido", "Lista de ritual")
-    n = nivel if acompanha else max(1, min(nivel, f.get("nivel_fixo") or nivel))
+    fixo = max(1, f.get("nivel_fixo") or nivel)
+    fim_classe = next(fim for fim in (4, 8, 12, 16, 20, 25, 30) if fixo <= fim)
+    n = nivel if acompanha else min(nivel, fim_classe) if f.get("aquis") == "Criação" else max(1, min(nivel, fixo))
     M, cl = maestria(nivel), classe_maxima(n)
     pts, buf = f.get("pts", [0] * 5), f.get("buff", [0] * 5)
     T = [p + b for p, b in zip(pts, buf)]
@@ -110,7 +112,7 @@ def regra_da_ficha(nivel, usa, ess, inte, trilha, f):
             "nper": 4 + pts[3] // 2, "esp": (2 + n / 2) // 2, "ntal": 1 + marc, "db": dados_da_basica(n),
             "entrada": max(1, math.ceil(cl / 2)) if carregado else cl,
             # o retorno da caida: 2 x Classe, e a carga do talisma abate so o que adiantou (Classe - a entrada carregada)
-            "retorno": 2 * cl - ((cl - max(1, math.ceil(cl / 2))) if carregado else 0), "reserva": n * (1 + pts[4] // 3),
+            "retorno": 2 * cl, "reserva": n * (1 + pts[4] // 3),
             "carga": 5 + T[0], "fam_erro": len(set(fam)) < len(fam) or len(fam) > maxfam, "fam": f.get("fam", [])}
 
 
@@ -252,10 +254,9 @@ def escreve_tudo():
         ws._images = []
     # o IFS e o TEXTJOIN ficam crus na ficha, porque ela vive no Sheets; o LibreOffice so os reconhece com o prefixo do Excel
     for ws in wb:
-        for linha in ws.iter_rows():
-            for c in linha:
-                if isinstance(c.value, str) and c.value.startswith("="):
-                    c.value = re.sub(r"(?<![A-Z_.])(IFS|TEXTJOIN)\(", r"_xlfn.\1(", c.value)
+        for c in tuple(ws._cells.values()):
+            if isinstance(c.value, str) and c.value.startswith("="):
+                c.value = re.sub(r"(?<![A-Z_.])(IFS|TEXTJOIN)\(", r"_xlfn.\1(", c.value)
     for pl in PLANILHAS:
         antes = []
 
@@ -349,6 +350,9 @@ monta("fura", 5, com(CAO, cartas={("esp", 0): {"nome": "Espinho", "classe": 2, "
 monta("fura sem livre", 5, com(CAO, fam=["Alcance", None, "Mira", "Controle", None],
                                cartas={("esp", 0): {"nome": "Espinho", "classe": 2, "forma": "Projétil", "mel": ["Fura"]}}))
 monta("onda", 2, com(VIGIA, cartas={("esp", 0): {"nome": "Roda de papel", "classe": 1, "forma": "Onda", "mel": ["Impulso"], "res": ["Gesto"]}}))
+monta("criada no teto", 11, com(CAO, tipo=fi.SH_CRIACAO, aquis="Criação", nivel_fixo=6))
+monta("criada acompanha", 7, com(CAO, tipo=fi.SH_CRIACAO, aquis="Criação", nivel_fixo=6))
+monta("domada fixa", 11, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=6))
 monta("domada", 10, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=10, pts=[2, 2, 2, 2, 3]))
 monta("domada menor", 10, com(CAO, tipo=fi.DOMADA, aquis="Maldição domada", nivel_fixo=5))
 monta("talismã", 13, com(CAO, tipo=fi.SH_CRIACAO, aquis="Criação", nivel_fixo=13, talisma=fi.COM_CARGA))
@@ -404,7 +408,9 @@ def sorteia(k, nivel):
          "bstat": [random.choice([0, 0, 1, -2]) for _ in range(5)], "btr": [random.choice([0, 0, 1]) for _ in range(4)],
          "talisma": random.choice([fi.SEM_CARGA, fi.COM_CARGA]), "fam": fam, "cartas": {}}
     abertas = [x for x in fam if x]
-    n_ficha = nivel if aquis in ("Espaço conhecido", "Lista de ritual") else max(1, min(nivel, f["nivel_fixo"] or nivel))
+    fixo = f["nivel_fixo"] or nivel
+    fim_classe = next(fim for fim in (4, 8, 12, 16, 20, 25, 30) if fixo <= fim)
+    n_ficha = nivel if aquis in ("Espaço conhecido", "Lista de ritual") else min(nivel, fim_classe) if aquis == "Criação" else max(1, min(nivel, fixo))
     cl = classe_maxima(n_ficha)
     for tipo_c, n in [("bas", 0), ("bas", 1)] + [("esp", i) for i in range(8)] + [("ext", i) for i in range(3)]:
         # quase sempre dentro da regra, e de vez em quando fora, de proposito: lugar que nao abriu, Classe alta demais,
@@ -504,6 +510,8 @@ checa("Onda de Classe 1 com Impulso e Gesto cabe nos 2 pontos, com saldo zero", 
 v = le("domada")
 checa("a domada de nível 10 e Essência 3 tem 20 PE de reserva, entra por 3 PE e retorna por 6",
       v(G["reserva_rot"]) == "RESERVA · MÁX. 20" and v(G["status"][3]) == "3 PE" and v(G["status"][4]) == "6 PE", f'{v(G["reserva_rot"])} {v(G["status"][3])} {v(G["status"][4])}')
+checa("a criada de nível fixo 6 acompanha até 8 com invocador no 11, acompanha até 7 no 7, e a domada conserva 6",
+      [le(n)(G["status"][0]) for n in ("criada no teto", "criada acompanha", "domada fixa")] == [8, 7, 6])
 v = le("domada menor")
 checa("a domada de nível 5 de um invocador de nível 10: o nível é o dela, a maestria é a dele (ataque 3 + 2)",
       v(G["status"][0]) == 5 and v(G["status"][2]) == "+2" and v(G["stat"][0]) == "+5" and v(G["stat"][3]) == 27, f'{[v(c) for c in G["status"]]} {v(G["stat"][0])}')

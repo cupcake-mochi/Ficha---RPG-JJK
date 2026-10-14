@@ -375,7 +375,9 @@ gs, celulas, pecas = emitir_gs.escrever(
     extras={a["nome"]: _extras(a) for a in LAYOUT["abas"]},
     imgs={a["nome"]: a["imagens"] for a in LAYOUT["abas"]},
     arte_dir=os.path.join(AQUI, "arte"),
-    limpa=LAYOUT["_meta"].get("largura_limpa"))
+    limpa=LAYOUT["_meta"].get("largura_limpa"),
+    suplementos={"Origens.gs": ("DADOS", _FP["T"]["origem_cap"][0],
+                                _FP["T"]["origem_cap"][0] + _FP["T"]["origem_cap"][3] - 1)})
 print(f"script escrito: {gs}")
 print(f"  {celulas} células, {pecas} peças de arte embutidas")
 # 05/10/2026: o texto das habilidades de Caminho e de Trilha, num script à parte (ver habilidades.py)
