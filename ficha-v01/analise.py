@@ -48,11 +48,13 @@ def trocas(layout, fa, fp_tr, fam, fiv):
     linhas = []                                         # [chave, fórmula, célula, parte]
 
     def lê(k, ref, parte="entrada", caixa=False):
-        v = f"=N({ref})" if caixa else f'=IF(ISBLANK({ref}),"",{ref})'
+        # O CSV do gviz escolhe um único tipo para cada coluna. Misturar números e texto
+        # fazia os textos da coluna B saírem vazios; o contrato publica todos como texto.
+        v = f'=N({ref})&""' if caixa else f'=IF(ISBLANK({ref}),"",{ref}&"")'
         linhas.append([k, v, ref.replace("$", ""), parte])
 
     def fixo(k, v, parte="cabeçalho"):
-        linhas.append([k, v, "", parte])
+        linhas.append([k, str(v), "", parte])
 
     def junta(k, refs, parte="entrada"):
         """várias caixas numa linha só, separadas por ' · ' (as peças de um feitiço)"""
@@ -62,8 +64,8 @@ def trocas(layout, fa, fp_tr, fam, fiv):
     # --- cabeçalho
     fonte = json.load(open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "manual-fonte.json"), encoding="utf-8"))
     fixo("formato.versao", FORMATO)
-    linhas.append(["ficha.versao", "=DADOS!$B$1", "DADOS!B1", "cabeçalho"])
-    linhas.append(["ficha.sistema", "=DADOS!$F$1", "DADOS!F1", "cabeçalho"])
+    linhas.append(["ficha.versao", '=DADOS!$B$1&""', "DADOS!B1", "cabeçalho"])
+    linhas.append(["ficha.sistema", '=DADOS!$F$1&""', "DADOS!F1", "cabeçalho"])
     fixo("ficha.livro", re.match(r"(Ciclo Maldito R\d+)", fonte["livro"]).group(1))
 
     # --- entradas da FICHA
@@ -194,11 +196,19 @@ def trocas(layout, fa, fp_tr, fam, fiv):
 
 def aba(layout, tr):
     """a aba inteira: oculta, sem cor própria (a da folha), quatro colunas e uma linha por informação"""
-    cel = [["A1", "chave", None], ["B1", "valor", None], ["C1", "célula", None], ["D1", "parte", None]]
+    neutro = [["Roboto", 12, "000000", False, False], "FFFFFF", None, None, None]
+    if neutro not in layout["estilos"]:
+        layout["estilos"].append(neutro)
+    estilo = layout["estilos"].index(neutro)
+    cel = [["A1", "chave", estilo], ["B1", "valor", estilo], ["C1", "célula", estilo], ["D1", "parte", estilo]]
     for i, (k, v, c, p) in enumerate(tr["linhas"], start=2):
-        cel += [[f"A{i}", k, None], [f"B{i}", v, None], [f"C{i}", c, None], [f"D{i}", p, None]]
+        # Um literal começando por aspa simples é tratado pelo Sheets como escape.
+        # A fórmula de texto conserva o endereço completo das abas com espaços.
+        endereco = '="' + c.replace('"', '""') + '"' if c.startswith("'") else c
+        cel += [[f"A{i}", k, estilo], [f"B{i}", v, estilo], [f"C{i}", endereco, estilo], [f"D{i}", p, estilo]]
     n = len(tr["linhas"]) + 1
     return {"nome": NOME, "estado": "hidden", "linhas": n, "colunas": 4,
+            "padrao": ["Roboto", 12, "#000000"], "fundo_base": "#FFFFFF",
             "colunas_larg": [[1, 1, 34.0], [2, 2, 60.0], [3, 3, 34.0], [4, 4, 12.0]],
             "linhas_alt": [], "altura_padrao": 15.75, "grade": True, "celulas": cel, "mescladas": [], "menus": [],
             "condicional": [], "imagens": []}

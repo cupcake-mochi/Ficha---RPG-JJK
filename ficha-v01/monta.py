@@ -375,7 +375,9 @@ def _extras(a):
            # 08/10/2026: as caixas de texto que esticam com o que o jogador escreve (o esticarCaixas_ do Codigo.gs)
            "esticam": a.get("esticam", []),
            # 08/10/2026, a INVOCAÇÕES: o que abrir quando o link da lista chega numa ficha recolhida
-           "abrir": a.get("abrir", [])}
+           "abrir": a.get("abrir", []),
+           # A ANALISE é neutra: não herda o fundo e a fonte do tema das fichas.
+           "padrao": a.get("padrao"), "fundo_base": a.get("fundo_base")}
     return {k: v for k, v in out.items() if v}
 
 gs, celulas, pecas = emitir_gs.escrever(

@@ -3504,7 +3504,7 @@ Na cópia nova, sem ativação ou gatilho instalável, passaram: Morrendo 93/Cla
 
 **Arquivos no Google.** [Ficha oficial](https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit); [backup anterior](https://docs.google.com/spreadsheets/d/1mGW7bPsBenSQpSS7TGis6_JJswl2a5tVxcYpq3mHusQ/edit); [cópia de verificação](https://docs.google.com/spreadsheets/d/16kySXV3sJ0wdU2Eq15yqB2jic3-s0wBcu1jCxSrIkPE/edit).
 
-#### B47, andamento de 14/10/2026: a aba ANALISE para o bot (fase 1, NÃO FECHADO)
+#### B47, andamento de 14/10/2026: a aba ANALISE para o bot (fase 1 testada no Sheets; 1 falha no validador local)
 
 *O plano inteiro (ANALISE e CONFIGURAÇÃO, estudos aprovados, o esquema de chaves) mora fora do repositório, em
 `/media/mizuki/HD Externo II/Claude/Planejamento-ficha/B47-analise-e-configuracao/` (PLANO.md, ESQUEMA-ANALISE.md e os dois
@@ -3512,7 +3512,7 @@ estudos em HTML). Decisões do Mizuki: a CONFIGURAÇÃO na forma B, fixa em Mizu
 custom de "tudo"; o bot só responde no chat; títulos sem artigo; a aba se chama ANALISE, sem acento.*
 
 **Feito (fase 1):** `ficha-v01/analise.py` monta a aba ANALISE, oculta, fora da troca de paleta, com quatro colunas
-(chave, valor, célula, parte) e 2.650 linhas: cabeçalho, entradas da FICHA (atributos, marcos, perícias, ofícios, TRs,
+(chave, valor, célula, parte) e 2.650 chaves além do cabeçalho: entradas da FICHA (atributos, marcos, perícias, ofícios, TRs,
 Sequelas, Buff/Debuff), da FICHA PESSOAL (Origem, equipamento, itens, missões, treino de armas), da FICHA AMALDIÇOADA
 (cada lugar de feitiço com as peças juntas, passivas, aptidões, pactos) e da INVOCAÇÕES (cada ficha e cada carta),
 resultados e avisos. Vai num arquivo à parte, `apps-script/Analise.gs` (482 KB), juntado pelo `juntarAbas_`; o
@@ -3522,12 +3522,62 @@ LibreOffice, normaliza os valores (vírgula decimal, VERDADEIRO/FALSO) e respond
 os avisos. `python3 ler-analise.py --teste` passa (2.650 chaves; a ficha em branco sai reprovada pelas perícias que
 faltam escolher, o que está certo). A ANALISE entrou na lista de abas do `decisoes-ficha.json` e no `comparar-ficha-01.py`,
 e o `conferir-ficha-xlsx.py` ganhou quatro checagens dela.
-**Conferido:** conferir-ficha-xlsx (A FICHA CONFERE), comparar-ficha-01 (IGUAIS), conferir-decisoes, regressao-construir.js,
-regressao-paleta.js, regressao-pessoal.js e o `ler-analise.py --teste`. Não rodou: o `rodar-tudo.sh` inteiro.
+**Conferido na implementação original:** conferir-ficha-xlsx (A FICHA CONFERE), comparar-ficha-01 (IGUAIS), conferir-decisoes, regressao-construir.js,
+regressao-paleta.js, regressao-pessoal.js e o `ler-analise.py --teste`. Na implementação original, o `rodar-tudo.sh` inteiro ainda não havia rodado; a rodada final está registrada abaixo.
 **Teste no Sheets (roteiro):**
 1. Colar os seis `.gs` (`Codigo`, `Ficha`, `Habilidades`, `Invocacoes`, `Origens` e o novo `Analise`) e montar.
-2. A aba ANALISE existe e está oculta (Exibir › Abas ocultas), com 2.650 linhas.
+2. A aba ANALISE existe e está oculta (Exibir › Abas ocultas), com 2.650 chaves e última linha com dado em 2.651.
 3. Escrever qualquer coisa numa célula da coluna B dela: a fórmula volta.
 4. Com a ficha aberta por link, rodar `python3 ler-analise.py <link da ficha>`: tem de listar as chaves e o veredito.
 5. A troca de paleta não pinta a ANALISE.
-**Próximo:** fase 2, a CONFIGURAÇÃO (bônus e mudanças primeiro).
+**Teste nativo iniciado em 14/10/2026.** O B47 já estava no commit `220d76d` ao abrir esta rodada; só o prompt de teste estava no `git add`. Nenhum commit ou push foi feito nesta rodada. Backup antes de montar: [cópia de segurança](https://docs.google.com/spreadsheets/d/1m401H6QPAsxCbvGypwW1P7mWkmwgoxXphgAChR01r5E/edit). O backup não recebeu execução nem ativação; o teste usa o projeto já ligado à oficial.
+
+A primeira montagem terminou às 15:50:21, após início às 15:36:04 (14 min 17 s, incluindo a tentativa que falhou no serviço do Google e os intervalos de continuação). A soma das etapas concluídas foi de 626 s; a ANALISE levou 31,6 s. A primeira tentativa parou às 15:36:57 em `criarAba_`, com erro do serviço Spreadsheets, não com a exclusão da última guia. As tentativas seguintes terminaram com `FICHA PRONTA`, 1.375 menus e nenhum salto em erro.
+
+| defeito encontrado | esperado | observado antes da correção |
+|---|---|---|
+| ANALISE!B5, B9 e B2643, pelo CSV | `Ciclo Maldito R51`, `Latente` e `Falta: 9 perícias e 2 ofícios, ou 10 perícias sem ofício` | os textos vinham vazios; os mesmos valores estavam certos na leitura nativa. O leitor dizia `APROVADA` para a ficha em branco. O gviz escolhia tipo numérico para a coluna B mista e descartava os textos. |
+| ANALISE!A1:D2651 | folha neutra, sem tema | fundo `#120F1D` e texto `#F4F1F7`, herdados do padrão do gerador. |
+| ANALISE!C2651 | `'FICHA PESSOAL'!AN86` | `FICHA PESSOAL'!AN86`: o Sheets tratava a primeira aspa do literal como escape. |
+
+Correções feitas somente no gerador: todos os valores da coluna B saem como texto, inclusive números e caixas 0/1; os endereços começando por aspa saem como fórmula de texto; a aba declara fundo branco e texto preto próprios. `ficha-v01/monta.py` transmite esse padrão ao emissor. Os `.gs` foram regenerados, sem edição manual. `ler-analise.py` não mudou. Antes da correção, o teste de edição de ANALISE!B26 já passou: ao escrever `teste B47`, voltou `=N(FICHA!$D$80)`, valor 0, com o aviso no canto.
+
+A primeira bateria identificou apenas uma diferença de fundo entre o arquivo local (sem preenchimento) e o script (branco); foi interrompida antes dos testes longos. O gerador passou a gravar fundo branco também no arquivo local e foi regenerado novamente. O script da ANALISE permaneceu idêntico ao já enviado.
+
+**Roteiro nativo concluído, itens 1–7.**
+
+| item | resultado na ficha oficial |
+|---|---|
+| 1 — seis scripts e montagem | Os seis arquivos foram substituídos e conferidos por leitura integral; o Analise.gs corrigido também foi conferido contra a regeneração final. A montagem corrigida terminou em `FICHA PRONTA` às 16:13:01: **15 min 22 s** desde 15:57:39, incluindo a tentativa com erro e as pausas de continuação; **662 s de etapas concluídas**. ANALISE: **10,8 s**. `verificar()` terminou em `TUDO DE PÉ`. |
+| 2 — existência, ocultação e limites | ANALISE não aparece na barra de guias e aparece no menu de todas as páginas. Cabeçalhos `chave · valor · célula · parte`; **2.650 chaves**, última linha com dado **2.651**. As linhas 2.652–2.653 e as colunas E:L são margem vazia do transporte, sem chaves extras. Ao finalizar o teste, foi ocultada novamente. |
+| 3 — referências e caixas | Formato **1**, ficha **1.0**, livro **Ciclo Maldito R51**, Origem **Latente** = FICHA!X11. ANALISE!B26 e B98: **0→1→0** ao marcar/desmarcar FICHA!D80 e F48; o leitor por link também leu **1** nas duas. Defesa **11** em ANALISE!B2617 = FICHA!D59. Aviso de ANALISE!B2643 = FICHA!AK92, texto integral da falta de escolhas de perícia. As marcações foram restauradas. |
+| 4 — fórmula devolvida | Escrita de `teste B47 final` em ANALISE!B26: voltou `=N(FICHA!$D$80)&""`, valor **0**, e apareceu o aviso de caixa calculada. Aba ocultada depois. |
+| 5 — paleta | Troca para Mizuki Claro e retorno a **Mizuki · Escuro · ameixa e rosa**, a paleta anterior. As **10.604 células usadas** da ANALISE conservaram fundo branco e texto preto nos dois temas. O relatório de paleta confirmou os **37 passos concluídos**, sem ANALISE na lista. |
+| 6 — leitor por link | O comando solicitado terminou com saída **0**, **2.650 chaves**, cabeçalho e textos completos, **REPROVADA: 1 aviso(s)** pela falta de perícias da ficha em branco. Nenhum formato cru inesperado; caixas saem como texto 0/1 e são normalizadas para inteiros. Saída inteira em `leitor-final.txt` na pasta de evidências abaixo. |
+| 7 — B46 preservado | FICHA, FICHA PESSOAL, FICHA AMALDIÇOADA e INVOCAÇÕES foram abertas e inspecionadas nos temas claro e escuro. Cartas, agrupamento retrátil, Morrendo, Sequelas, técnica e lista de invocações montaram como no B46. A leitura de **dez abas** em **12 faixas limitadas** encontrou **zero erros de fórmula**. |
+
+**Evidências nativas:** `/home/mizuki/.codex/visualizations/2026/10/14/01a13a4e-5b5b-7582-b8d5-590fcd4ead0a/b47/`: montagens inicial e corrigida, `verificar-final.txt`, `paleta-final.txt`, `registro-nativo-final.json`, saída do leitor antes/depois e capturas das abas. A oficial termina em branco, com as duas marcações de teste desfeitas, paleta original e ANALISE oculta. Nenhuma execução ou autorização foi feita no backup.
+
+**Bateria final concluída: 18 dos 19 validadores passaram.** A rodada inteira após a regeneração final terminou em `ALGUM VALIDADOR FALHOU`, saída 1, com teto de 5 GiB, sem swap e limite de duas CPUs. A única falha foi na comparação integral do ABAS em `regressao-amaldicoada.py`, linha 1342: o JavaScript do teste carrega `Ficha.gs`, `Invocacoes.gs` e `Origens.gs`, mas não carrega o `Analise.gs` novo. Compara **9 abas com 10**, e acusa a checagem das fileiras copiadas. Não há célula divergente: as **772 fórmulas**, os **479 rótulos/valores** e as **1.368 mesclagens** da FICHA AMALDIÇOADA passaram. Uma leitura isolada de diagnóstico confirmou que as nove abas comuns são iguais; incluindo `Analise.gs` somente nessa leitura, as dez abas também são iguais, na ordem original. Nenhum arquivo de teste ou script gerado foi editado para contornar a falha. O validador ficou sem correção porque o pedido restringe os consertos ao gerador.
+
+Os **114 defeitos simulados** do arnês pessoal foram detectados e o contra-teste ficou verde. A regressão de INVOCAÇÕES passou e o comparador final terminou em `IGUAIS`. Depois, passaram `regressao-paleta.js` (`TODOS PASSARAM`, saída 0) e `ler-analise.py --teste` (`TESTE: OK`, saída 0), um por vez sob o mesmo teto de memória. Não rodaram os arneses manuais fora da bateria. Registros preservados na pasta de evidências: `b47-final-corrigido.log`, `b47-paleta.log`, `b47-leitor-teste.log` e `b47-diagnostico-comparador.log`.
+
+**Saída inteira do leitor pelo link, com a ficha oficial em branco e a ANALISE oculta:**
+
+```text
+2650 chaves · {'cabeçalho': 4, 'entrada': 1629, 'resultado': 601, 'aviso': 416}
+  formato.versao = 1
+  ficha.versao = '1.0'
+  ficha.livro = 'Ciclo Maldito R51'
+  nome = ''
+  caminho = 'Escolha seu Caminho'
+  origem = 'Latente'
+  nivel = 2
+  vida_max = 0
+  defesa = 11
+
+REPROVADA: 1 aviso(s)
+  - aviso.escolhas_de_pericia (FICHA!AK92): Falta: 9 perícias e 2 ofícios, ou 10 perícias sem ofício
+```
+
+**Pendência fora do gerador:** incluir o novo arquivo no carregamento do comparador de `regressao-amaldicoada.py`; ele permanece sem alteração nesta rodada. Os sete itens do teste nativo da fase 1 foram concluídos. Nenhuma regra ou desenho das fichas foi alterado. A fase 2, CONFIGURAÇÃO, fica para outra rodada.
