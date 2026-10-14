@@ -152,25 +152,44 @@ function notasDeRegra_(ss, idx) {
                     'FICHA PESSOAL diz qual.',
     // 09/10/2026 (B43): o descanso
     'descanso': 'Escolha o tipo e a ficha aplica: o curto devolve PE (25% do máximo em lugar propício; fora dele, 25%, ' +
-                '15%, 5% ou nada, pelo degrau de Exaustão); o longo devolve vida, PE e Integridade e tira as Sequelas ' +
+                '15%, 5% ou nada, pelo degrau de Exaustão); o longo devolve vida, PE e Integridade e desmarca as Sequelas ' +
                 '(em lugar propício, tudo ao máximo e a Exaustão sai; fora, vida e PE vão à metade, se estiverem ' +
                 'abaixo, e a Exaustão fica). O mestre diz se o lugar é propício. O menu volta sozinho ao convite.',
-    'último descanso': 'O que o último descanso mudou, para conferir ou desfazer à mão. A ficha não devolve o máximo ' +
-                       'perdido por Insistir (zere o Buff/Debuff da vida), nem mexe na vida temporária, nos usos por ' +
-                       'dia e nas condições.',
+    // 14/10/2026 (B46): no livro R50, Insistir deixou de custar vida máxima, e a ressalva do máximo perdido saiu
+    'último descanso': 'O que o último descanso mudou, para conferir ou desfazer à mão. A ficha não mexe na vida ' +
+                       'temporária, nos usos por dia e nas condições.',
     // 08/10/2026 (B41): o estado do personagem, embaixo das barras
-    'sequelas': 'Sair de uma queda por chegar a zero de vida deixa uma Sequela. Ela não penaliza testes: encurta a ' +
-                'janela da próxima queda (3, 2 e 1 rodada; com 3 Sequelas, Derrotado na hora). Sai no descanso longo; ' +
-                'cura comum não a remove.',
+    // 14/10/2026 (B46): as Sequelas viraram três caixinhas de marcar ("tipo dnd ... mas so pras sequelas"); a nota
+    // vai em cada uma
+    'sequela 1': 'Marque uma caixinha por queda: sair do Morrendo deixa uma Sequela. Ela não penaliza testes: encurta ' +
+                 'o prazo da próxima queda (3, 2 e 1 rodada; com as três marcadas, Derrotado na hora). O descanso longo ' +
+                 'desmarca todas, depois da recuperação; cura comum não as remove.',
+    'sequela 2': 'A segunda Sequela: a próxima queda tem 1 rodada de prazo.',
+    'sequela 3': 'A terceira Sequela: cair de novo derrota na hora. O descanso longo desmarca as três.',
+    // 14/10/2026 (B46): o Morrendo, do livro R50 e R51 (Dano e recuperação, Vida a zero)
+    'morrendo aguentar': 'Se a vida chegar a 0, você entra em Morrendo e escolhe. Aguentar: fica Inconsciente e espera ' +
+                         'socorro. A vida fica em 0 enquanto a cura recebida se acumula; ao chegar a este número, toda a ' +
+                         'cura recebida vira vida e você sai com uma Sequela. É 1/4 da vida máxima, para cima, sem teto.',
+    'morrendo insistir 1': 'Insistir: você continua consciente e age, com a vida em 0, e não perde vida máxima nem ação. ' +
+                           'Na primeira vez da cena, a cura que você precisa receber é 1/3 da vida máxima, para cima, até ' +
+                           '15 × a sua maior Classe. Pode passar a Aguentar sem ação, e não volta a Insistir na mesma queda.',
+    'morrendo insistir 2': 'Da segunda vez que Insistir na mesma cena em diante: 1/2 da vida máxima, para cima, até 15 × a ' +
+                           'sua maior Classe. Na cena seguinte a contagem volta à primeira vez.',
+    'morrendo prazo': 'As rodadas que você tem para receber essa cura antes de ficar Derrotado: 3, menos 1 por Sequela ' +
+                      'marcada. Cada dano sofrido no chão tira mais 1 rodada, sem apagar a cura já recebida. Estabilizar ' +
+                      '(Medicina CD 14, Ação Padrão, a até 1,5 m) para o tempo, sem curar.',
+    // 14/10/2026 (B46): o espelho da Origem, no lugar dos dois Legados
+    'marcante': 'Vem da FICHA PESSOAL: a marcante da Origem é escolhida no dossiê de lá, e o texto dela fica lá e no ' +
+                'painel à direita desta aba (abra pelo + em cima da coluna da margem).',
+    'menor 1': 'Vem da FICHA PESSOAL: as duas menores são escolhidas no dossiê de lá. O texto está lá e no painel à direita.',
+    'menor 2': 'Vem da FICHA PESSOAL: as duas menores são escolhidas no dossiê de lá. O texto está lá e no painel à direita.',
     'exaustão': 'Da quarta luta do dia em diante, cada luta acrescenta um degrau, até 3. Os efeitos somam. O descanso ' +
                 'longo em ambiente propício remove tudo; fora dele, ela fica. No descanso curto fora de ambiente ' +
                 'propício o PE volta menos: 25%, 15%, 5% e nada, do degrau 0 ao 3.',
-    'resistências': 'Os tipos de dano de que você recebe metade, e de onde vêm (o Alicerce do Bastião, um Legado, ' +
+    'resistências': 'Os tipos de dano de que você recebe metade, e de onde vêm (o Alicerce do Bastião, uma capacidade da Origem, ' +
                     'uma capacidade). Metades de fontes equivalentes não se multiplicam.',
     'imunidades': 'As condições e os tipos de dano que não o afetam, e de onde vêm (o Corpo Amaldiçoado é imune a ' +
                   'Envenenado, por exemplo).',
-    'legado 1': 'Vem da FICHA PESSOAL: o nome, o tipo e o que o Legado faz são escritos no dossiê de lá.',
-    'legado 2': 'Vem da FICHA PESSOAL: o nome, o tipo e o que o Legado faz são escritos no dossiê de lá.',
     'vida_temp': 'Vida temporária não acumula: fica a maior, com teto de metade ' +
                  'da vida máxima, para baixo e no mínimo 1. Some no fim da cena, e é gasta antes da vida ' +
                  'normal — a caixinha de ± desconta daqui primeiro e só o que ' +
@@ -247,7 +266,7 @@ function notasDeRegra_(ss, idx) {
                               'Número negativo reduz.';
   ['vida', 'energia', 'integridade'].forEach(function (k) {
     notas['buff de ' + k] = 'Soma no máximo o que a conta do livro não cobre: a Lapidação, uma habilidade de técnica, um ' +
-                            'efeito que dura. Número negativo reduz (o custo de Insistir numa queda, na vida). Se várias ' +
+                            'efeito que dura. Número negativo reduz. Se várias ' +
                             'coisas somam, escreva a conta, como =5+10-3. O atual não muda sozinho: se ficar acima do ' +
                             'máximo, a caixa dele fica vermelha.';
   });
@@ -353,6 +372,7 @@ function onEdit(e) {
   // 01/10/2026: a FICHA PESSOAL tem as caixas de treino, as missões que sobem o nível e as notas que mudam.
   if (aba === ABA_PESSOAL_) {
     try { devolverConta_(e, ABA_PESSOAL_); } catch (err) { console.log('ficha pessoal, a conta: ' + err.message); }
+    try { textoDaCapacidade_(e); } catch (err) { console.log('ficha pessoal, a Origem: ' + err.message); }
     try { esticarCaixas_(e, ABA_PESSOAL_); } catch (err) { console.log('ficha pessoal, a caixa que estica: ' + err.message); }
     try { pessoalEditada_(e); } catch (err) { console.log('ficha pessoal: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
@@ -661,6 +681,40 @@ function pessoalEditada_(e) {
   if (treino) treinoMarcado_(e, aba, dados, ip);
   if (missao) nivelPelaMissao_(ss, dados, ip);
   if (notas) notasVivas_(ss, dados);
+}
+
+/**
+ * 14/10/2026 (B46): a Origem do livro R45, no dossiê. Cada capacidade (a marcante e as duas menores) tem o menu e, embaixo,
+ * a caixa de texto. A caixa nasce com a conta que traz o texto do livro da capacidade escolhida; com a capacidade criada
+ * com o mestre (a primeira opção do menu, ou um nome escrito), a conta mostra vazio e o jogador escreve por cima, e a
+ * caixa é dele (por isso ela está nas `livres` e o devolverConta_ não a devolve). Quando o menu volta a uma capacidade do
+ * livro, a conta volta à caixa, e o texto do livro com ela. O Mizuki: "tem q ter a opção da pessoa colocar a versão
+ * 'criavel' dele".
+ */
+var CAPACIDADES_DA_ORIGEM_ = [['marcante', 'texto da marcante'], ['menor 1', 'texto do menor 1'], ['menor 2', 'texto do menor 2']];
+function textoDaCapacidade_(e) {
+  var ip = indicePessoal_();
+  var par = CAPACIDADES_DA_ORIGEM_.filter(function (p) { return ip[p[0]] && tocaFaixa_(e.range, ip[p[0]]); })[0];
+  if (!par || !ip[par[1]]) return false;
+  var nome = String(e.range.getValue() || '');
+  var dados = SpreadsheetApp.getActive().getSheetByName('DADOS').getDataRange().getValues();
+  var doLivro = tabelaDaDados_(dados, 'capacidade da origem').some(function (l) { return l['capacidade da origem'] === nome; });
+  if (!doLivro) return false;
+  var spec = ABAS.filter(function (s) { return s.nome === ABA_PESSOAL_; })[0];
+  var lc = limitesA1_(ip[par[1]]);
+  var molde = spec.vals.filter(function (t) { return t[0] === lc.l1 && t[1] === lc.c1; })[0];
+  if (!molde || typeof molde[2] !== 'string' || molde[2].charAt(0) !== '=') return false;
+  var caixa = e.range.getSheet().getRange(lc.l1, lc.c1);
+  if (caixa.getFormula()) return false;
+  var ss = SpreadsheetApp.getActive(), idioma = ss.getSpreadsheetLocale();
+  caixa.setFormula(formulaNoIdioma_(molde[2], idioma));
+  SpreadsheetApp.flush();
+  // a que o Sheets não entendeu na pontuação do idioma vai como o construir() escreve (como no devolverConta_)
+  if (String(caixa.getDisplayValue()) === '#ERROR!') {
+    ss.setSpreadsheetLocale('en_US');
+    try { caixa.setFormula(molde[2]); SpreadsheetApp.flush(); } finally { ss.setSpreadsheetLocale(idioma); }
+  }
+  return true;
 }
 
 /** O que a FICHA muda na FICHA PESSOAL: o Caminho marca o treino, e a Força e o Caminho mexem nas notas. */
@@ -1407,16 +1461,19 @@ function aplicarDelta_(e, idx) {
  *
  *   curto, em lugar propício   +25% do PE máximo
  *   curto, fora                +25%, +15%, +5% ou nada, pelo degrau de Exaustão (0, 1, 2, 3)
- *   longo, em lugar propício   vida, PE e Integridade voltam ao máximo; as Sequelas e a Exaustão saem
+ *   longo, em lugar propício   vida, PE e Integridade voltam ao máximo; as Sequelas são desmarcadas e a Exaustão sai
  *   longo, fora                vida e PE vão à metade do máximo, se estiverem abaixo; a Integridade volta ao máximo;
- *                              as Sequelas saem, e a Exaustão fica
+ *                              as Sequelas são desmarcadas, e a Exaustão fica
  *
  * A recuperação do curto arredonda para baixo, com mínimo 1 quando a fração é positiva, e não passa do máximo. A metade
  * do longo arredonda para baixo, com mínimo 1, e "não se soma ao saldo nem reduz uma reserva que já esteja acima".
  *
- * O que a ficha não faz: devolver o máximo perdido por Insistir. Essa redução mora no Buff/Debuff da vida, junto com
- * os outros bônus, e a ficha não sabe que parte dela é de Insistir; se a caixa estiver negativa, o aviso lembra.
- * A vida temporária, os usos por dia e as condições também ficam com o jogador.
+ * A vida temporária, os usos por dia e as condições ficam com o jogador. Até o livro R50 Insistir custava vida máxima,
+ * e o aviso lembrava de zerar o Buff/Debuff da vida; no R50 o custo saiu, e o aviso também (B46, 14/10/2026).
+ *
+ * 14/10/2026 (B46): as Sequelas viraram três caixinhas de marcar ('sequela 1' a 'sequela 3' no índice). A conta continua
+ * a mesma, num número: o descanso lê quantas estão marcadas e, no longo, desmarca as três (o livro: "resolva primeiro a
+ * recuperação ... depois, remova todas as Sequelas").
  *
  * A conta mora no contaDoDescanso_ e o texto no textoDoDescanso_, sem planilha em volta: a regressao-construir.js roda
  * os dois com os exemplos do livro.
@@ -1474,22 +1531,26 @@ function descansar_(e, idx) {
   if (!DESCANSOS_[tipo]) return false;
   var ficha = e.range.getSheet();
   var le = function (k) { var c = cel_(idx, k); return c ? Number(ficha.getRange(c).getValue()) || 0 : 0; };
-  var onde = { vida: 'vida', pe: 'energia', integ: 'integridade', sequelas: 'sequelas', exaustao: 'exaustão' };
+  var onde = { vida: 'vida', pe: 'energia', integ: 'integridade', exaustao: 'exaustão' };
+  var caixinhas = ['sequela 1', 'sequela 2', 'sequela 3'].map(function (k) { return cel_(idx, k); })
+                                                       .filter(function (c) { return c; });
   var antes = { vidaMax: le('vida_max'), peMax: le('energia_max'), integMax: le('integridade_max') };
   Object.keys(onde).forEach(function (k) { antes[k] = le(onde[k]); });
+  antes.sequelas = caixinhas.filter(function (c) { return ficha.getRange(c).getValue() === true; }).length;
   var fim = contaDoDescanso_(tipo, antes);
   // só o que mudou é escrito: a caixa que nasceu como conta (o atual de uma ficha intocada) fica como está
   Object.keys(onde).forEach(function (k) {
     var c = cel_(idx, onde[k]);
     if (c && fim[k] !== antes[k]) ficha.getRange(c).setValue(fim[k]);
   });
+  if (fim.sequelas !== antes.sequelas) {
+    caixinhas.forEach(function (c, i) { ficha.getRange(c).setValue(i < fim.sequelas); });
+  }
   var texto = textoDoDescanso_(tipo, antes, fim);
   var cu = cel_(idx, 'último descanso');
   if (cu) ficha.getRange(cu).setValue(texto);
   e.range.setValue(SEM_DESCANSO_);
-  var lembra = (DESCANSOS_[tipo].longo && le('buff de vida') < 0)
-    ? ' O Buff/Debuff da vida está negativo: se for o máximo perdido por Insistir, zere a caixa.' : '';
-  SpreadsheetApp.getActive().toast(texto + lembra, 'Descanso', 8);
+  SpreadsheetApp.getActive().toast(texto, 'Descanso', 8);
   return true;
 }
 

@@ -1,8 +1,8 @@
 {
  "_meta": {
   "o_que_e": "o que a FICHA AMALDIÇOADA calcula e o catalogo-projeto-m.json não tem, lido do manual.txt",
-  "versao_do_livro": "Ciclo Maldito R43, o livro final, como está na v0.357 do JJK---Project (lido em 10/10/2026)",
-  "sha256_do_livro": "5fc5849193aab8a6815a15ca5474d99d30e5c87d40ce2c3fbafb4d3842ee2133",
+  "versao_do_livro": "Ciclo Maldito R51, o livro final, como está na v0.364 do JJK---Project (lido em 14/10/2026)",
+  "sha256_do_livro": "282f9bf75adac7961234f8a2754dea08c63def2aacef6c5ac7000c1031d9000e",
   "extraido_por": "ficha-v01/extrair_tecnica.py",
   "capitulos": [
    "9. Progressão",
@@ -54,7 +54,7 @@
   {
    "nome": "Recomposição",
    "classe_passiva": "2",
-   "faz": "Uma vez por descanso curto, use Ação Padrão para recuperar 5 × sua maior Classe em pontos de vida, até sua vida máxima. Não gasta PE. Recuperar vida não remove condições por conta própria."
+   "faz": "Uma vez por descanso curto, use Ação Padrão para recuperar 4 × sua maior Classe em pontos de vida, até sua vida máxima. Não gasta PE. Recuperar vida não remove condições por conta própria."
   },
   {
    "nome": "Segunda Natureza",
@@ -168,7 +168,7 @@
    "requisito": "Refino 7 e nível 14",
    "classe_passiva": "3",
    "escala": "—",
-   "faz": "Você usa energia reversa para restaurar seu próprio corpo. Ação Padrão. Gaste de 1 PE até sua maior Classe e recupere 1d8 de vida por PE gasto. Escolha e pague antes de rolar. A cura não ultrapassa sua vida máxima e não gera vida temporária. As primeiras faixas atendem às concessões específicas que permitem aprender a aptidão antes dos requisitos comuns. A aptidão cura você. Para aplicá-la diretamente a outra criatura, você precisa de uma permissão que altere esse alvo. Aprendê-la não aumenta o alcance de um feitiço de Cura nem substitui sua montagem. O Corpo Amaldiçoado não recupera vida com Energia Reversa nem com cura construída a partir dela. Suas formas de reparo estão na Origem. Outras incompatibilidades de alvo também continuam valendo. Energia Reversa é requisito para usar um feitiço da Forma Cura ofensivamente contra uma maldição. A exceção está em Ferir maldições. A aptidão de autocura, sozinha, não concede um ataque. Requisito: Energia Reversa. Você pode usar um feitiço da Forma Cura contra uma maldição hostil. Essa aplicação usa energia positiva para feri-la, em vez de recuperar vida. Pague a ação e os PE normais do feitiço. Confira seu alcance, seu Selo e seus demais requisitos. Faça um ataque de conjuração contra a Defesa, em vez de aplicar a cura automaticamente."
+   "faz": "Você usa energia reversa para restaurar seu próprio corpo. Ação Padrão. Gaste de 1 PE até sua maior Classe e recupere 1d8 de vida por PE gasto. Escolha e pague antes de rolar. A cura não ultrapassa sua vida máxima e não gera vida temporária. As primeiras faixas atendem às concessões específicas que permitem aprender a aptidão antes dos requisitos comuns. A aptidão cura você. Para aplicá-la diretamente a outra criatura, você precisa de uma permissão que altere esse alvo. Aprendê-la não aumenta o alcance de um feitiço de Cura nem substitui sua montagem. O Corpo Amaldiçoado não recupera vida com Energia Reversa nem com cura construída a partir dela. Suas formas de recuperação estão na Origem, com o procedimento compartilhado em Cura e reparo. Outras incompatibilidades de alvo também continuam valendo. Energia Reversa é requisito para usar um feitiço da Forma Cura ofensivamente contra uma maldição. A exceção está em Ferir maldições. A aptidão de autocura, sozinha, não concede um ataque. Requisito: Energia Reversa. Você pode usar um feitiço da Forma Cura contra uma maldição hostil. Essa aplicação usa energia positiva para feri-la, em vez de recuperar vida."
   },
   {
    "nome": "Circulação",
@@ -237,8 +237,8 @@
    "nome": "Cortina",
    "requisito": "Barreira Simples",
    "classe_passiva": "—",
-   "escala": "—",
-   "faz": "Você delimita uma área para esconder seu interior de pessoas que não são feiticeiras e controlar a passagem por suas bordas. A preparação segue Barreira Simples: 1 minuto, sem custo em PE. Antes de começar, registre o lugar e suas bordas: um prédio, uma escola, uma quadra ou outro local contínuo. O ponto mais distante da borda deve estar a até 90 m de você ao concluir. Essa medida limita a Cortina inteira, não cada trecho isolado. A Cortina tem 40 × Refino pontos de vida, compartilhados por toda a superfície. Sofre ataques e TRs pelo procedimento de Barreira Simples. Fica ancorada no lugar e termina com vida zero, se você ficar Inconsciente ou se decidir encerrá-la. Ela compartilha o limite de uma barreira mantida com Barreira Simples: concluir uma substitui a outra. Ao preparar, escreva uma condição verificável sobre quem pode atravessar e em qual sentido. Ela vale até a Cortina terminar. As bordas escolhidas não se movem. A condição regula a travessia das criaturas que ela identifica. Não cria a vedação completa da Barreira Simples: ataques e efeitos ainda seguem seu alcance, sua trajetória e a visibilidade disponível. Uma criatura impedida de atravessar pode tentar destruir a Cortina."
+   "escala": "teto de 150 m no 1 a 3 · 300 m no 4 a 6 · 400 m no 7 ou mais",
+   "faz": "Você delimita uma área para esconder seu interior de pessoas que não são feiticeiras e controlar a passagem por suas bordas. A preparação segue Barreira Simples: 1 minuto, sem custo em PE. Antes de começar, registre o lugar e suas bordas: um prédio, uma escola, uma quadra ou outro local contínuo. Ao concluir, a distância de você até o ponto mais distante da borda não pode ultrapassar o teto do seu Refino. O lugar e as bordas continuam definidos pela descrição; a medida limita a Cortina inteira, não cada trecho isolado. A Cortina tem 40 × Refino pontos de vida, compartilhados por toda a superfície. Sofre ataques e TRs pelo procedimento de Barreira Simples. Fica ancorada no lugar e termina com vida zero, se você ficar Inconsciente ou se decidir encerrá-la. Ela compartilha o limite de uma barreira mantida com Barreira Simples: concluir uma substitui a outra. Ao preparar, escreva uma condição verificável sobre quem pode atravessar e em qual sentido. Ela vale até a Cortina terminar. As bordas escolhidas não se movem. A condição regula a travessia das criaturas que ela identifica. Não cria a vedação completa da Barreira Simples: ataques e efeitos ainda seguem seu alcance, sua trajetória e a visibilidade disponível. Uma criatura impedida de atravessar pode tentar destruir a Cortina."
   },
   {
    "nome": "Ritual",
@@ -514,7 +514,7 @@
    },
    {
     "forma": "Temporário",
-    "quando": "No seu turno, como Ação Bônus ou Reação",
+    "quando": "No seu turno, com Ação Bônus; fora dele, com Reação a um gatilho percebido",
     "teto": "Benefício até o fim da cena. A perda segue o acordo"
    },
    {
@@ -564,6 +564,25 @@
     3
    ]
   ],
+  "regua": [
+   {
+    "tamanho": "Pequeno",
+    "entrega": "Muda uma conjuração, ou vale uma cena"
+   },
+   {
+    "tamanho": "Médio",
+    "entrega": "Muda de forma permanente como um feitiço ou uma ação sua funciona"
+   },
+   {
+    "tamanho": "Grande",
+    "entrega": "Muda de forma permanente como a sua energia ou um Estilo inteiro funciona"
+   },
+   {
+    "tamanho": "Enorme",
+    "entrega": "Quebra um limite do sistema, uma vez"
+   }
+  ],
+  "regua_frase": "Promessa pequena, ganho pequeno; quem arrisca a vida pode pedir um ganho enorme.",
   "frase": "O pacto concede uma mecânica única, decidida com o mestre. Pode modificar o funcionamento de um feitiço, da energia, de uma aptidão ou de um Estilo.",
   "quantos": "Você pode manter metade da Essência em pactos, arredondada para baixo, contando permanentes e pactos de restrição.",
   "fora_do_limite": "Promessas e pactos temporários não entram nesse limite.",
@@ -922,7 +941,7 @@
    {
     "nome": "Segundo Fôlego",
     "classe_passiva": "2",
-    "faz": "Uma vez por descanso longo, ao escolher Insistir, você pode dispensar o primeiro custo de vida máxima, correspondente a 1/8 do máximo de referência daquela queda."
+    "faz": "Uma vez por descanso longo, ao escolher Insistir, você pode usar 1/4 do máximo de referência, arredondado para cima, como tratamento necessário naquela queda, em vez do requisito normal de Insistir. Anuncie nessa escolha. O uso continua contando como uma escolha de Insistir na cena. O requisito de 1/4 permanece até a queda terminar, mesmo que depois passe a Aguentar."
    },
    {
     "nome": "Contragolpe",

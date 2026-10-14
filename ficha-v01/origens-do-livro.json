@@ -1,0 +1,727 @@
+{
+ "_meta": {
+  "versao_do_livro": "Ciclo Maldito R51, o livro final, como está na v0.364 do JJK---Project (lido em 14/10/2026)",
+  "sha256_do_livro": "282f9bf75adac7961234f8a2754dea08c63def2aacef6c5ac7000c1031d9000e",
+  "capitulo": "5. Origens",
+  "o_que_e": "as Origens do livro: a base, as marcantes e o catálogo de menores de cada uma, com o texto inteiro",
+  "extraido_por": "ficha-v01/extrair_origens.py"
+ },
+ "criada": "✎ Criada com o mestre",
+ "origens": [
+  {
+   "menu": "Latente",
+   "livro": "Latente",
+   "personagem": "Descobriu o próprio poder fora da tradição de um clã.",
+   "criacao": "Fundamento ou Sem Técnica.",
+   "pericias": [
+    "Sentir Energia",
+    "Sobrevivência",
+    "Furtividade",
+    "Intuição"
+   ],
+   "rota": "Fundamento, ou Manejos se escolher Sem Técnica",
+   "legados": "talvez você ainda procure o professor que nunca conseguiu encontrar, confie seu segredo a alguém de fora do jujutsu ou tenha deixado um erro do aprendizado sem reparação. Registre quem participou disso e por que essa relação ainda importa. Seus ofícios podem vir do trabalho, da família ou dos recursos que usou para se virar.",
+   "marcantes": [
+    {
+     "nome": "Tentativa e Erro",
+     "texto": "Você arrisca a dosagem de energia para executar um feitiço ou Manejo de Classe 1 ou maior. Uma vez entre o começo de um turno seu e o começo do próximo, antes de pagar a aplicação, pode usar Tentativa e Erro, sem outra ação. Se não tentar, paga o custo normal.\n\nCalcule o custo normal completo, com descontos e acréscimos. A variação é metade da Classe utilizada, arredondada para cima. Você só pode tentar se tiver PE suficientes para pagar o pior resultado possível: o custo completo mais essa variação, respeitado o mínimo de 1 PE. Depois, role 1d20 + Maestria.\n\nTotal | Custo\n9 ou menos | Desperdício: acrescente a variação.\n10 a 13 | Estável: conserve o custo completo.\n14 ou mais | Controle: desconte a variação.\n\nO custo final mínimo é 1 PE. Classes 1 e 2 variam 1 PE; 3 e 4, 2 PE; 5 e 6, 3 PE; Classe 7, 4 PE. Pague apenas o resultado obtido. Dano, acerto, CD, alcance, duração e efeitos permanecem iguais.\n\nEsta é uma rolagem própria da capacidade, não um teste. Não recebe vantagem, desvantagem, especialização ou modificadores de testes, salvo regra específica para ela. Também não usa crítico ou sucesso e falha automáticos de outros procedimentos.\n\nExemplo: um feitiço de Classe 3 custa 6 PE depois dos ajustes. A variação é 2: você precisa ter 8 PE para tentar. Desperdício custa 8, Estável custa 6 e Controle custa 4. Já um feitiço de Classe 1 com custo completo de 1 PE custa 2, 1 ou 1 PE; o desconto nunca o torna gratuito.",
+     "freq": "Uma vez entre um turno seu e o próximo"
+    }
+   ],
+   "menores": [
+    {
+     "nome": "Manifestação Instintiva",
+     "texto": "Uma função da sua técnica se manifesta antes de você aprender a desenvolvê-la pelo método comum. Escolha um Talento de Categoria de Efeito 1 do catálogo, compatível com sua técnica ou semente de Sem Técnica, que ainda não possua.\n\nEle não ocupa espaço conhecido nem conta entre os cinco Talentos pagos. Mantenha seus requisitos, custos e limites. A escolha fica fixa, sem duplicação, evolução gratuita de Categoria ou troca livre. Categoria de Efeito não é Classe de conjuração.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Prontidão Instintiva",
+     "texto": "Você reage ao perigo antes de organizar uma resposta. Role Iniciativa com vantagem, conservando Destreza e os demais modificadores normais.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Foco Visceral",
+     "texto": "Você se apega ao que está fazendo, mesmo sob pressão. Maestria vezes por cena, antes de um TR para manter Concentração após sofrer dano, pode obter vantagem nessa rolagem. Cada uso beneficia um TR e é gasto mesmo na falha.",
+     "freq": "Maestria vezes por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Aptidão Intuitiva",
+     "texto": "Você encontra caminhos que ainda não aprendeu a explicar. Uma vez por cena, antes de um teste de perícia em que não tenha treino, acrescente sua Maestria ao resultado. Vale apenas para a tentativa; não concede treino nem dispensa requisitos. Não se aplica a Ofícios, ataques ou TRs.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Presença Bruta",
+     "texto": "Sua energia manifesta uma intensidade difícil de ignorar. Uma vez por cena, ao manifestá-la de forma perceptível pelo alvo, declare o uso antes de um teste de Intimidação ou Provocar e acrescente sua Maestria, além do bônus normal. As duas opções compartilham o uso e conservam suas ações e efeitos.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Retomar o Controle",
+     "texto": "Você força seu corpo e sua energia a responder novamente. Uma vez por cena, use uma Ação Bônus para fazer imediatamente, com vantagem, um TR para encerrar uma condição que já permita essa tentativa no fim do seu turno. Escolha uma condição e mantenha CD e modificadores.\n\nSe falhar, conserva a tentativa normal no fim do turno. O benefício não devolve ações já perdidas.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Certeza Momentânea",
+     "texto": "Por um instante, a hesitação desaparece. Uma vez por dia, antes de rolar um teste de perícia treinada, declare o uso. Se o resultado usado do d20 for menor que 10, trate-o como 10 e some os modificadores normais. O uso é gasto mesmo se o dado já mostrar 10 ou mais. Não se aplica a Ofícios, ataques ou TRs.",
+     "freq": "Uma vez por dia",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Gambiarra",
+     "texto": "Você aprendeu a resolver problemas com o que tinha à mão. Uma vez por dia, antes de um teste de Ofício em que não tenha treino, pode realizar a tentativa como treinado, somando sua Maestria, e usar objetos disponíveis como ferramentas improvisadas adequadas à tarefa.\n\nMantenha tempo, materiais e demais requisitos. O uso vale para uma tentativa e é gasto mesmo na falha. Não pode criar itens, realizar invocações ou obter aquisições permanentes por este benefício.",
+     "freq": "Uma vez por dia",
+     "exige": null,
+     "historia": null
+    }
+   ],
+   "sem_tecnica": true,
+   "oficio": false,
+   "ce4": false
+  },
+  {
+   "menu": "Receptáculo",
+   "livro": "Receptáculo",
+   "personagem": "É o hospedeiro que divide o corpo com outra presença.",
+   "criacao": "Fundamento ou Sem Técnica.",
+   "pericias": [
+    "Sentir Energia",
+    "Ocultismo",
+    "Intuição",
+    "Religião"
+   ],
+   "rota": "Fundamento, ou Manejos se escolher Sem Técnica",
+   "legados": "o nome antigo do passageiro pode levar até alguém que o conheceu antes de você. Um desejo dele pode contrariar o seu, enquanto uma instituição acompanha o que acontece com vocês. Escolha o que faz parte dessa convivência e registre como se relacionam e o que sabem um do outro.",
+   "marcantes": [
+    {
+     "nome": "Coexistência",
+     "texto": "A presença aceita conscientemente você à frente do corpo. As identidades permanecem distintas e ainda podem discordar. Sua marcante reúne Repertório Compartilhado e Amparo Interior.\n\nRepertório Compartilhado.\n\nAo receber a marcante, aprenda dois feitiços adicionais, fora dos espaços comuns de repertório. Se for Sem Técnica, receba dois Manejos em seu lugar. Eles seguem a Regra, as Famílias, os requisitos e o limite de Classe da sua rota, com ações e custos normais.\n\nO ganho acontece uma vez. As aplicações permanecem conhecidas e seguem as revisões normais da ficha. Não são espaços livres para Talentos, Domínio ou invocações, não concedem outra Regra e não aumentam a quantidade de Classe 0.\n\nAmparo Interior.\n\nUma vez por cena, no começo do seu turno, se estiver Atordoado, pode gastar 6 PE para encerrar essa condição em você, sem ação ou teste, antes de perder a Padrão daquele turno. Precisa ter vida e Integridade positivas e PE suficientes.\n\nAmparo não encerra Inconsciente, não recupera reservas nem devolve ações gastas ou perdidas em turnos anteriores. Uma Concentração já interrompida continua encerrada.",
+     "freq": "Uma vez por cena"
+    },
+    {
+     "nome": "Conflito",
+     "texto": "A presença pretende tomar o corpo, e você a mantém contida. Sua marcante reúne a defesa da alma, Reserva Impregnada e Resposta à Invasão.\n\nVocê tem vantagem nos TRs que um efeito permitir para evitar dano de Alma. Isso não cria um teste contra ataques que não o concedam, não amplia o benefício a todo efeito mental ou manipulação da alma e não muda a redução desse dano.\n\nReserva Impregnada.\n\nUma vez por dia, use uma Ação Bônus para recuperar PE iguais à metade do seu nível + metade de Essência ou Constituição, escolhida no uso. Arredonde cada metade para baixo, mínimo 1 em cada parcela, sem ultrapassar seus PE máximos.\n\nÉ recuperação da reserva comum, sem custo de PE ou exigência de vida baixa. Não concede energia temporária.\n\nResposta à Invasão.\n\nUma vez entre o começo de um turno seu e o começo do próximo, depois de uma criatura tentar causar dano de Alma ou manipular diretamente sua alma de forma hostil, você pode fazê-la enfrentar a presença que guarda. Resolva a tentativa original normalmente, mesmo que você evite o efeito. Depois, o agressor faz TR de Espírito com desvantagem, CD 8 + sua Maestria + Constituição ou Essência, escolhida no uso.\n\nNa falha, ele fica Amedrontado por você até o fim do próximo turno dele, com o TR normal de saída no fim de cada turno. No sucesso, seja no TR inicial ou numa saída, fica imune à resposta deste Receptáculo até o fim do próximo turno dele. Mantenha a CD da aplicação nas saídas; a desvantagem especial vale para o teste inicial, sem afastar outras fontes que alterem os testes posteriores.\n\nA resposta não gasta ação, Reação ou PE. O limite é total, não um uso por agressor, e é consumido ao exigir o teste inicial. A tentativa original não é desfeita. Dano Psíquico comum, contato físico comum e cura consentida não satisfazem o gatilho por si sós.\n\nSe o efeito começar durante o turno do agressor, “próximo turno” é o seguinte, não o atual. Fora do turno dele, é o primeiro que vier depois. A duração terminar sem sucesso num TR não concede a imunidade; a imunidade recebida não vale contra outras fontes de medo.",
+     "freq": "Uma vez por dia · Uma vez entre um turno seu e o próximo"
+    }
+   ],
+   "menores": [
+    {
+     "nome": "Memória Corporal",
+     "texto": "Uma vez por dia, use uma Ação Bônus para receber treino em uma perícia até o fim da cena. Não concede especialização, treino permanente ou bônus adicional numa perícia já treinada. Ofícios, TRs e Aptidões ficam fora.",
+     "freq": "Uma vez por dia",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Traço Incorporado",
+     "texto": "Receba um Talento passivo de Categoria de Efeito 1, fixo e compatível com sua ficha. Cumpra seus requisitos e limites. Ele fica fora dos espaços conhecidos e dos cinco Talentos pagos, como Manifestação Instintiva, sem duplicação ou evolução gratuita. Não concede uma Aptidão ou outra Regra.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Voz Intrusa",
+     "texto": "A outra voz atravessa sua fala e provoca o adversário. Uma vez por cena, durante seu turno, pode usar uma Ação de Movimento para Provocar. Mantenha rolagem, TR do alvo, requisitos, efeitos e riscos da ação. Não recebe deslocamento junto dessa ação; o uso normal de Provocar continua disponível.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Foco Inscrito",
+     "texto": "Uma vez por cena, após falhar em um TR para manter Concentração por ter sofrido dano, repita o teste e aceite o segundo resultado. Conserve a CD e os modificadores. Não permite duas Concentrações nem restaura um efeito encerrado por outro motivo.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Reserva Residual",
+     "texto": "Uma vez por dia, depois de resolver o uso que gastou seus últimos PE comuns e temporários, receba Constituição ou Essência + Maestria em PE temporários, sem ação. Escolha o atributo no uso e use seu valor inteiro. A reserva dura até o fim da cena e respeita o teto de metade dos PE máximos.",
+     "freq": "Uma vez por dia",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Orientação Instintiva",
+     "texto": "Uma vez por dia, após falhar em um teste de perícia seu, repita a rolagem com os mesmos modificadores e aceite o segundo resultado. Não exige outra ação e não inclui ataques, TRs ou Ofícios.",
+     "freq": "Uma vez por dia",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Conselho Interior",
+     "texto": "Requisito: Coexistência. Uma vez por cena, após falhar em Intuição ou Ocultismo, repita o teste e aceite o segundo resultado. As duas perícias compartilham o uso. A presença interpreta os indícios disponíveis; não lê pensamentos nem oferece conhecimento infalível.",
+     "freq": "Uma vez por cena",
+     "exige": "Coexistência",
+     "historia": null
+    },
+    {
+     "nome": "Vontade de Cárcere",
+     "texto": "Requisito: Conflito. Uma vez por cena, após falhar em um TR que o efeito já permita para evitar ou encerrar Enfeitiçado ou Amedrontado, repita o teste e aceite o segundo resultado. As condições compartilham o uso.\n\nNão cria um TR novo, antecipa uma tentativa de saída ou devolve ações consumidas.",
+     "freq": "Uma vez por cena",
+     "exige": "Conflito",
+     "historia": null
+    }
+   ],
+   "sem_tecnica": true,
+   "oficio": false,
+   "ce4": false
+  },
+  {
+   "menu": "Descendente",
+   "livro": "Descendente",
+   "personagem": "Pertence a uma família do meio jujutsu.",
+   "criacao": "Fundamento ou Sem Técnica.",
+   "pericias": [
+    "Hierarquia",
+    "História",
+    "Ocultismo",
+    "Persuasão"
+   ],
+   "rota": "Fundamento, ou Manejos se escolher Sem Técnica",
+   "legados": "você pode rejeitar uma expectativa da família, querer impressionar um parente ou cultivar a reputação de cumprir a palavra. Talvez sua casa preserve um conhecimento importante ou ainda não tenha entregue uma ferramenta à qual você reivindica direito. Defina quem representa essa ligação. Ela pode abrir conversas e problemas; obediência e equipamento gratuito não são garantidos.",
+   "marcantes": [
+    {
+     "nome": "Zenin",
+     "texto": "Sua formação prepara postura, movimentos e resistência para enfrentar a pressão de uma luta. Kukuru é a formação Sem Técnica; Akashi integra esse preparo ao uso de uma técnica. Ambas concedem os três componentes abaixo; Disciplina Treinada muda o TR conforme a formação.\n\nRecuperação do Fôlego.\n\nUma vez por dia, ao concluir um descanso curto válido, pode remover um degrau de Exaustão. Calcule a recuperação normal da pausa antes dessa remoção. A contagem de lutas do dia permanece, assim como as exigências de descanso e ambiente.\n\nNão guarda retiradas futuras, reduz Exaustão abaixo de zero ou recupera Integridade e condições de outras fontes.\n\nExecução Treinada.\n\nMaestria vezes por dia, antes de um teste de Atletismo ou Acrobacia, pode fazê-lo com vantagem, sem ação ou PE adicionais. As duas perícias compartilham os usos. Mantenha modificadores e requisitos; não concede treino nem afeta ataques ou TRs.\n\nDisciplina Treinada.\n\nUma vez por dia, quando falhar no TR da sua formação, pode repeti-lo antes das consequências e deve aceitar o segundo resultado: Vigor para Kukuru; Espírito para Akashi.\n\nNão exige ação ou PE adicionais. Mantenha modificadores, vantagem e desvantagem aplicáveis. O uso é gasto mesmo na nova falha. Não concede treino, troca o atributo do TR ou permite substituir o teste pedido. Uma interrupção direta sem teste continua acontecendo.\n\nOs três componentes têm estoques independentes. Descanso curto não renova usos por dia.",
+     "freq": "Uma vez por dia · Maestria vezes por dia"
+    },
+    {
+     "nome": "Kamo",
+     "texto": "Você aprendeu a ensaiar procedimentos e corrigir a execução quando algo sai errado. Sua marcante reúne Execução Ensaiada e Contingência Estudada. A formação não concede Manipulação de Sangue.\n\nExecução Ensaiada.\n\nAo concluir um descanso longo, escolha duas opções distintas entre perícias, Ofícios e TRs em que seja treinado. Depois role 3d20 e anote os dois maiores resultados. Essa reserva permanece até concluir o próximo descanso longo.\n\nAntes de rolar um teste de uma das opções, pode gastar um resultado anotado para substituir um dos d20 por aquele valor, somando os modificadores normais. No máximo um resultado por teste; cada um só pode ser usado uma vez. Os dois resultados são compartilhados entre as duas competências.\n\nCom vantagem ou desvantagem, role o outro d20 e escolha normalmente o maior ou menor. Se ambas se anularem, substitua o único d20. Declare antes de rolar qualquer dado do teste, sem ação ou PE adicionais. Pode gastar os dois resultados em testes diferentes da mesma competência.\n\nAs opções precisam estar treinadas no preparo e no uso. Escolha TRs pelo nome, como Vigor, não por atributo. Ataques, dano e testes de outra criatura ficam fora. A tarefa conserva ferramentas, materiais, ações e demais requisitos; um resultado reservado não garante sucesso.\n\nOs 3d20 do preparo são uma rolagem própria, sem modificadores, vantagem ou repetições de testes. Não produzem crítico ou sucesso ao serem anotados. No próximo descanso longo, resultados não usados expiram e o novo ensaio substitui escolhas e reserva. Descanso curto não renova os dados. Se outra regra permitir repetir o teste posteriormente, o valor reservado já foi consumido e a nova tentativa usa os dados normais.\n\nExemplo: você escolhe Acrobacia e Vigor, ambos treinados. Rola 5, 12 e 17, guardando 12 e 17. Antes de um teste de Acrobacia, usa o 17 e soma seus bônus. O 12 continua disponível. Com desvantagem, ainda rolaria o outro d20 e ficaria com o menor.\n\nContingência Estudada.\n\nMaestria vezes por dia, quando errar uma rolagem de acerto que você faça, inclusive a de um feitiço de Acerto, pode repeti-la antes das consequências. Aceite o segundo resultado. Não exige outra ação ou PE e pode ser usada uma vez por tentativa.\n\nRepita o procedimento completo, com os modificadores e vantagem ou desvantagem aplicáveis, sem misturar dados das duas rolagens. Conserve alvo, capacidade, custos pagos e defesa já resolvida. Não repita os outros ataques ou alvos da aplicação.\n\nNão rerrola dano, faz o alvo repetir TR ou modifica feitiço Automático. Não devolve PE nem permite trocar de feitiço. Os usos são independentes dos resultados de Execução Ensaiada e renovam por dia, não por descanso longo.",
+     "freq": "Maestria vezes por dia"
+    },
+    {
+     "nome": "Gojo",
+     "texto": "O estudo da sua técnica inclui execuções reservadas e respostas a capacidades que já conhece. Sua marcante reúne Execução Reservada e Antecipação Estudada. Ela não concede Seis Olhos ou Ilimitado.\n\nExecução Reservada.\n\nEscolha feitiços ou Manejos conhecidos em quantidade total igual à Maestria e registre a lista. Maestria vezes por dia, ao usar uma dessas capacidades, antes dos dados, escolha um benefício:\n\n- Vantagem em uma rolagem de acerto da aplicação.\n\n- Desvantagem no primeiro TR de um único alvo contra a aplicação.\n\nIndique a rolagem ou o alvo antes dos dados. Cada aplicação recebe no máximo um uso, escolhendo apenas um benefício. Não custa ação ou PE adicionais; a capacidade conserva seus custos e requisitos. O uso é gasto ao declarar, mesmo sem resultado favorável.\n\nOs usos formam um estoque compartilhado entre as capacidades. A lista é fixa: se conhecer menos opções que sua Maestria, preencha as vagas restantes quando aprender uma elegível; quando Maestria aumentar, acrescente uma opção conhecida. Se a progressão permitir substituir uma capacidade registrada, a vaga pode acompanhar sua substituta, sem conceder troca extra.\n\nUma área não impõe desvantagem a todos os alvos. TRs posteriores e os outros ataques da aplicação conservam suas rolagens. Automáticos sem acerto ou TR não oferecem rolagem elegível, e ataques comuns não se tornam elegíveis pela sua Origem. Bloquear continua disponível normalmente, sem desvantagem concedida por esta capacidade.\n\nAntecipação Estudada.\n\nMaestria vezes por dia, depois de falhar em um TR contra feitiço ou Manejo e antes das consequências, pode gastar sua Reação para repetir esse teste, se a capacidade cumprir pelo menos uma condição:\n\n- Pertencer a uma técnica que você tenha estudado; para Manejos, vale o estudo da própria capacidade.\n\n- Você já ter presenciado uma aplicação anterior dela nesta cena.\n\n- Ela já ter sido usada contra você anteriormente.\n\nAceite o segundo resultado, mantendo modificadores, vantagem e desvantagem, sem misturar dados. Não custa PE e só pode ser usada uma vez por teste. Não cria um TR inexistente, deslocamento ou resistência.\n\nO estudo precisa ser conhecimento estabelecido; ver um feitiço não ensina automaticamente toda a técnica. Execução Reservada e Antecipação Estudada têm reservas diárias independentes, ambas de Maestria usos.",
+     "freq": "Maestria vezes por dia"
+    },
+    {
+     "nome": "Inumaki",
+     "texto": "Sua família cultiva uma comunicação atenta, feita de poucas palavras e sinais discretos. A imagem da serpente aparece nesse repertório e nos símbolos usados pela casa. Sua marcante reúne Entendimento Tácito e Linguagem da Serpente, com Leitura a Dois.\n\nEssa formação funciona com ou sem Fala Amaldiçoada. Não concede a técnica, obriga você a portar suas marcas ou impede o uso de linguagem comum.\n\nEntendimento Tácito.\n\nDurante um descanso longo, escolha um companheiro. Uma vez por cena, quando ambos fizerem o mesmo tipo de TR Físico ou de Espírito contra a mesma aplicação, podem usar o melhor resultado natural entre os dois, mantendo seus próprios bônus. Precisam estar a até 9 m e perceber um sinal um do outro.\n\nFaçam as rolagens normalmente, inclusive vantagem ou desvantagem. Depois de conhecer os resultados, antes das consequências, decida pelo uso. Comparem os d20 efetivamente escolhidos, sem recuperar dados descartados. O benefício não garante sucesso.\n\nExemplo: vocês obtêm 6 e 15 nos dados. Ambos podem usar 15; com bônus de +2 e +7, os totais ficam 17 e 22.\n\nLinguagem da Serpente.\n\nDurante um descanso longo, ensine aos companheiros que participarem um repertório de palavras comuns e gestos. Quem aprendeu consegue trocar mensagens com os demais participantes sem testes para transmitir ou compreender o sentido pretendido, inclusive mensagens não combinadas individualmente antes.\n\nQuem desconhece o código não compreende o sentido só por ouvir palavras ou ver gestos. A comunicação ainda pode ser percebida, e o código pode ser descoberto. Palavras precisam ser ouvidas; gestos, percebidos. As mensagens levam o tempo normal de comunicação e não substituem exigências verbais de capacidades ou concedem ações.\n\nAprender o código não torna todos os participantes companheiros de Entendimento Tácito. Escolher outro companheiro também não apaga o código aprendido pelos anteriores.\n\nLeitura a Dois.\n\nDuas vezes por cena, no total, antes de você ou o companheiro escolhido fazer um teste de Investigação, Intuição, Percepção, Persuasão, Enganação ou Intimidação, o executor pode usar o bônus da mesma perícia do outro no lugar do próprio.\n\nQuem oferece o bônus precisa ser treinado na perícia, acompanhar a situação e transmitir suas observações. Vocês devem estar conscientes, a até 9 m, acompanhando a situação e percebendo a comunicação necessária.\n\nO executor conserva seu d20 e as circunstâncias da tarefa. Os bônus não se somam, e o empréstimo não concede treino, especialização, requisitos ou outras capacidades do companheiro. Os dois usos são compartilhados pela dupla, em qualquer direção, e são independentes do uso de Entendimento Tácito.\n\nExemplo: você acompanha uma negociação e sinaliza quais argumentos usar. Se for treinado em Persuasão, seu companheiro pode trocar o bônus de +2 pelo seu +7. Com 9 no d20 dele, o total é 16, sem somar os dois bônus.\n\nNenhum componente concede outra ação ou tentativa, cobra PE adicionais ou oferece telepatia e sentidos compartilhados. Mantenha o tempo e os requisitos da tarefa; a orientação não revela pistas que nenhum dos dois percebeu.",
+     "freq": "Uma vez por cena · Duas vezes por cena"
+    }
+   ],
+   "menores": [
+    {
+     "nome": "Cofre da Família",
+     "texto": "Exclusiva Zenin. Receba uma ferramenta amaldiçoada emprestada por vez, de grau igual ou inferior à sua patente reconhecida, até grau 1. Para trocar, volte ao cofre e devolva a anterior.\n\nArmas de grau 1 exigem feitos que justifiquem o acesso e autorização do mestre. Ferramentas especiais ficam fora da concessão. Mantenha os requisitos próprios da ferramenta; nível não substitui patente.",
+     "freq": "Passiva",
+     "exige": "Zenin",
+     "historia": null
+    },
+    {
+     "nome": "Ensaio Partilhado",
+     "texto": "Exclusiva Kamo. Durante um descanso curto, pode rerrolar uma vez cada resultado de Execução Ensaiada ainda disponível, com um d20 por resultado, aceitando os novos valores. Não recupera resultados gastos, repete o ensaio de três dados ou muda as competências escolhidas.\n\nAo concluir um descanso longo e realizar o ensaio normal, pode entregar um dos resultados a um aliado treinado na perícia ou Ofício ensaiado, que tenha praticado com você. Retire o resultado da sua reserva. O aliado o usa antes da rolagem, substituindo um d20 pelo procedimento do ensaio. Não transmite TR, treino ou a capacidade de rerrolar durante descanso curto.\n\nO resultado é consumido no uso e expira ao fim do dia em jogo ou no próximo descanso longo do Kamo, o que vier primeiro.",
+     "freq": "No descanso curto",
+     "exige": "Kamo",
+     "historia": null
+    },
+    {
+     "nome": "Método Reescrito",
+     "texto": "Exclusiva Gojo. Ao concluir um descanso longo, pode substituir uma capacidade da lista de Execução Reservada por outro feitiço ou Manejo já conhecido. Não aprende nova capacidade, amplia a lista ou renova os usos diários por esta menor.",
+     "freq": "No descanso longo",
+     "exige": "Gojo",
+     "historia": null
+    },
+    {
+     "nome": "Círculo Íntimo",
+     "texto": "Exclusiva Inumaki. No descanso longo, escolha dois companheiros, em vez de um. A cada aplicação da marcante, decida com qual deles cooperar.\n\nOs limites continuam compartilhados: um Entendimento Tácito e duas Leituras a Dois por cena. Você participa de cada dupla; os efeitos não alcançam os três ao mesmo tempo nem os dois companheiros sem você. Mantenha os demais requisitos.",
+     "freq": "No descanso longo",
+     "exige": "Inumaki",
+     "historia": null
+    },
+    {
+     "nome": "Notas de Família",
+     "texto": "Uma vez por cena, depois de falhar em História ou Ocultismo, consulte anotações familiares para obter uma informação verdadeira, mas parcial, pertinente à pergunta e ao conhecimento registrado. A falha no objetivo completo permanece. Não fornece algo que não possa constar das anotações.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Autoridade de Berço",
+     "texto": "Uma vez por cena, antes de rolar, pode usar Hierarquia no lugar de Persuasão ou Intimidação numa interação do meio jujutsu apoiada em obrigações, precedentes ou relações institucionais. Precisa ser treinado em Hierarquia. Não força obediência.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Bagagem Prevenida",
+     "texto": "Ao preparar uma missão, reserve dinheiro próprio e 0,5 de Volume. Uma vez na missão, revele um item comum comprado no preparo, de até 0,5 de Volume e preço dentro da reserva, descontando-o dela. Não permite armas, proteções, itens amaldiçoados ou restritos.\n\nGrau reconhecido no preparo | Máximo de dinheiro próprio reservado\nGrau 4 | ¥10.000\nGrau 3 | ¥20.000\nGrau 2 | ¥30.000\nGrau 1 | ¥40.000\nEspecial | ¥50.000\n\nO limite acompanha grau ou patente, não nível ou Maestria. Use as equivalências de patentes intermediárias já estabelecidas na campanha. A menor não fornece dinheiro, mais Volume ou usos extras.",
+     "freq": "Uma vez na missão",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Palavra Empenhada",
+     "texto": "Uma vez por descanso longo, após falhar em Persuasão numa negociação viável, ofereça sua palavra e reputação como garantia. O mestre apresenta uma condição adicional concreta: pagamento, serviço ou concessão. Você pode aceitar ou recusar; cumprir a condição conclui o acordo sem repetir aquele teste.\n\nNão torna um pedido inviável aceitável nem fornece dinheiro para pagar a condição.",
+     "freq": "Uma vez por descanso longo",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Fundamento Incorporado",
+     "texto": "Uma vez por dia, antes da rolagem, pode usar 10 no lugar de um d20 num teste da perícia recebida pela base da Origem, somando seus bônus. Com vantagem ou desvantagem, role o outro d20 e resolva normalmente.\n\nNão é um piso aplicado depois do resultado. O benefício alcança a perícia escolhida, não todas as opções da base, ataques ou TRs.",
+     "freq": "Uma vez por dia",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Treino de Armas da Casa",
+     "texto": "Receba treino permanente em duas categorias de arma à escolha, como Yumi e Lâmina Longa. Não recebe duas listas inteiras de armas simples ou marciais. A menor não fornece equipamento, troca de atributo ou dispensa de requisitos de aquisição.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    }
+   ],
+   "sem_tecnica": true,
+   "oficio": false,
+   "ce4": false
+  },
+  {
+   "menu": "Encarnado",
+   "livro": "Encarnado",
+   "personagem": "É a consciência que voltou a viver no corpo de outra pessoa.",
+   "criacao": "Fundamento ou Sem Técnica.",
+   "pericias": [
+    "História",
+    "Ocultismo",
+    "Investigação",
+    "Intimidação"
+   ],
+   "rota": "Fundamento, ou Manejos se escolher Sem Técnica",
+   "legados": "o motivo que levou você a aceitar o retorno pode continuar pendente. Quem pagou ou trabalhou para trazê-lo de volta, alguém que o reconheceu e a família de quem vivia nesse corpo oferecem relações para desenvolver. Sua aparência também pode lembrar a vida anterior; esse detalhe, por si só, não concede cura ou capacidades.",
+   "marcantes": [
+    {
+     "nome": "Duas Vidas",
+     "texto": "Sua experiência reaparece em gestos, conhecimentos e maneiras de resolver problemas. Receba um treinamento adicional em perícia ou Ofício, novo e permanente, por Conhecimento Reavivado.\n\nPara a Reserva de Experiência, escolha duas perícias ou Ofícios treinados, distintos e fixos. O treino de Conhecimento Reavivado pode ser um deles. Maestria vezes por descanso longo, compartilhadas entre as duas escolhas, depois de rolar um teste de uma delas e antes das consequências, pode rolar 1d4 e somar ao total.\n\nNão custa ação ou PE adicionais. Só pode acrescentar um d4 por teste; o uso é gasto mesmo se o total continuar falhando. Resolva primeiro vantagem ou desvantagem e use o d20 escolhido. O d4 não muda seu resultado natural nem reabre consequências já aplicadas.\n\nA tarefa conserva ações, tempo, materiais e requisitos. A Reserva não vale para ataques, TRs, Iniciativa, Bloquear ou dados de dano e cura. Seu d4 é fixo; Maestria determina os usos, renovados ao concluir um descanso longo. Descanso curto, início de sessão ou dormir durante uma missão não renovam esse estoque.",
+     "freq": "Maestria vezes por descanso longo"
+    }
+   ],
+   "menores": [
+    {
+     "nome": "Especialidade Antiga",
+     "texto": "Ao alcançar o nível 10, torne-se especialista na perícia ou Ofício escolhido na criação e recebido por Conhecimento Reavivado, sem precisar escolher Corpo no Marco. Use o bônus normal de especialização: metade da Maestria, arredondada para baixo. Não acumula outra especialização na mesma competência.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Guarda Reaprendida",
+     "texto": "Uma vez por cena, depois de rolar Bloquear e antes das consequências, pode rerrolar um dos d10, aceitando o novo resultado. Conserve o outro dado e os modificadores; resolva Aparar e Brecha pelos dados finais. Não exige ação, Reação ou PE adicionais.\n\nCom desvantagem, role os dois conjuntos e rerrole um único d10 de um deles antes de selecionar o conjunto final. Depois aplique normalmente desvantagem, Aparar e Brecha.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Percepção de Contorno",
+     "texto": "Você tem visão às cegas a 3 m × Maestria, passivamente: 3, 6, 9 ou 12 m. Use esse sentido para perceber e atacar conforme suas regras, sem depender de Sentir Energia.\n\nObstáculos sólidos continuam bloqueando. Não oferece leitura fina, percepção da alma, ficha de técnica ou dispensa de exigências que peçam especificamente seus olhos. Furtividade continua possível quando os sinais alcançados puderem ser ocultados.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Experiência Transmitida",
+     "texto": "Depois de um aliado a até 9 m rolar um teste de qualquer perícia em que você seja treinado, antes das consequências, pode gastar um uso da sua Reserva de Experiência para acrescentar 1d4 ao resultado dele. Ele precisa ouvir e compreender sua orientação. Não exige outra ação ou PE, com no máximo um d4 de Reserva por teste.\n\nA perícia não precisa ser uma das duas escolhidas para seus usos pessoais. O aliado não precisa ter treino, mas continua sujeito aos requisitos da tarefa; a orientação não supre treino obrigatório ausente. Não alcança Ofícios, ataques ou TRs.\n\nVocê e os aliados gastam o mesmo estoque de Maestria usos por descanso longo. Seus usos pessoais continuam limitados às duas competências fixas.",
+     "freq": "Gasta a Reserva de Experiência",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Memória Testemunha",
+     "texto": "Uma vez por dia, dedique 1 minuto a revisitar uma cena que você ou seu hospedeiro realmente presenciou. Faça ao mestre até três perguntas sobre detalhes que poderiam ter sido percebidos naquela ocasião, sem teste de lembrança.\n\nAs respostas recuperam o que a lembrança permite. Não criam acontecimentos, não revelam algo imperceptível na ocasião nem transformam uma impressão equivocada em conhecimento do que estava oculto. O uso é gasto ao iniciar a consulta; as perguntas pertencem à mesma cena.",
+     "freq": "Uma vez por dia",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Vivência de Outra Era",
+     "texto": "Uma vez por cena, antes de um teste da perícia escolhida na base do Encarnado — História, Ocultismo, Investigação ou Intimidação —, pode fazê-lo com vantagem, sem ação ou PE adicionais. A escolha é a registrada na criação e não muda entre usos.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Experiência Preservada",
+     "texto": "Uma vez por cena, se usar a Reserva de Experiência num teste próprio e ele continuar falhando depois do d4, esse uso da Reserva não é consumido. A falha e suas consequências acontecem normalmente, sem nova rolagem ou tentativa.\n\nVocê precisa ter um uso disponível para empregar a Reserva. A preservação não aumenta o saldo acima do máximo e não vale para o d4 concedido a um aliado.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    }
+   ],
+   "sem_tecnica": true,
+   "oficio": false,
+   "ce4": false
+  },
+  {
+   "menu": "Híbrido",
+   "livro": "Híbrido",
+   "personagem": "Reúne natureza humana e amaldiçoada.",
+   "criacao": "Fundamento ou Sem Técnica.",
+   "pericias": [
+    "Ocultismo",
+    "Medicina",
+    "Sentir Energia",
+    "Natureza"
+   ],
+   "rota": "Fundamento, ou Manejos se escolher Sem Técnica",
+   "legados": "talvez você procure irmãos que compartilham sua formação ou a pessoa que o guardou antes do despertar. Uma numeração pode ser a pista de onde veio; a diferença entre sua aparência e os anos vividos pode marcar como se relaciona com os outros. Esses vínculos fazem parte da história, sem conceder sentidos ou ligações sobrenaturais adicionais.",
+   "marcantes": [
+    {
+     "nome": "Regeneração Orgânica",
+     "texto": "Quando seus ferimentos se tornam graves, você concentra energia para recompor o próprio corpo. Pode usar esta capacidade metade da Constituição, arredondada para baixo, +1 vezes por cena, no máximo uma vez em cada turno seu.\n\nEnquanto tiver pelo menos 1 PV e até 30% da vida máxima atual, arredondados para baixo, use uma Ação Bônus e gaste de 1 PE até sua maior Classe disponível pelo nível. Escolha e pague antes de rolar: recupere 1d6 PV por PE gasto, até o máximo atual.\n\nConfira a vida ao ativar, sem contar vida temporária. A cura pode ultrapassar os 30%. Cada ativação consome um uso, qualquer que seja o gasto ou o resultado dos dados.\n\nA regeneração cura apenas você. Não recupera Integridade, não remove condições ou Sequelas nem recompõe partes perdidas. Não é Energia Reversa, feitiço ou Manejo, e funciona com Sem Técnica. Impedimentos e modificadores de cura aplicáveis continuam valendo.\n\nExemplo: com Constituição 3, você tem dois usos por cena. Se a vida máxima atual é 41, o limite para ativar é 12 PV. Com 12 PV e Classe 2 disponível, pode gastar 2 PE e rolar 2d6. Resultados 3 e 5 recuperam 8 PV, levando você a 20. Com 13 PV ou zero, não poderia iniciar essa regeneração.",
+     "freq": "Constituição ÷ 2 + 1 vezes por cena"
+    }
+   ],
+   "menores": [
+    {
+     "nome": "Anatomia Suplementar",
+     "texto": "Escolha uma alteração:\n\n- Apêndice preênsil: braço auxiliar, cauda ou tentáculo que segura um objeto de até 1 Volume e faz manipulações simples com as ações normais. Deixa as mãos livres, sem conceder ataques, escudo ou gestos adicionais.\n\n- Olho adicional: escolha sua posição. Enquanto estiver exposto, você pode enxergar por ele. A até 9 m, enxerga na penumbra e na escuridão comum sem a penalidade por falta de luz, mas não distingue cores no escuro. Os demais impedimentos de visão continuam valendo.\n\nUma boca extra usada em combate é representada por Presas ou boca predatória, abaixo.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Armamento Orgânico",
+     "texto": "Seu corpo oferece uma forma própria de atacar. Cada aquisição dá um perfil, usando seu dado desarmado atual, que acompanha sua evolução, sem acrescentar outro dado.\n\nPerfil | Dano | Benefício\nGarras ou lâminas ósseas | Cortante | Fineza: pode usar Destreza no acerto e no dano.\nPresas ou boca predatória | Perfurante | Pode Agarrar com a boca, mantendo as mãos livres. Usa a manobra normal, substituindo um ataque e sem causar dano nessa tentativa.\nPunhos nodosos ou chifre rombudo | Concussão | Rompe: vantagem contra objetos e estruturas que consiga danificar.\nMembro extensível | Concussão | Ataques feitos com esse membro têm alcance permanente de 3 m.\n\nDois perfis oferecem alternativas; suas propriedades não se somam no mesmo golpe. Membro Extensível vale também para ataques de oportunidade e Reações que já permitam atacar. Não exige outra ação, não concede ataques extras nem exige manter o membro esticado o tempo todo.\n\nO alcance adicional não amplia armas empunhadas ou manobras: Agarrar, Derrubar e Empurrar conservam suas distâncias normais.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Locomoção Adaptada",
+     "texto": "Escolha uma adaptação:\n\n- Aderência: deslocamento de escalada igual ao normal, inclusive em paredes lisas e tetos, com uma mão livre e apoio dos pés.\n\n- Anfíbio: respiração aquática e deslocamento de natação igual ao normal.\n\n- Planagem: use sua Reação ao começar uma queda, com os braços livres, para descer sem dano de altura. Pode avançar horizontalmente até a altura perdida, limitado ao deslocamento normal por queda. Não permite subir ou pairar.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Bolsa Orgânica",
+     "texto": "Sua capacidade de carga aumenta em Maestria Volume; os valores que usam o dobro do limite acompanham esse aumento. Você também pode guardar corporalmente um objeto de até 1 Volume, que continua contando na carga. Guardar e retirar seguem as manipulações normais.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Memória da Dor",
+     "texto": "Uma vez por cena, depois de falhar em um TR contra um feitiço, pode marcar aquela ameaça. Receba vantagem no próximo TR contra uma nova conjuração do mesmo feitiço pelo mesmo inimigo, ainda nesta cena.\n\nO benefício acaba nessa rolagem. Não refaz a falha anterior nem melhora saídas de uma condição já aplicada.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Recomposição Precisa",
+     "texto": "Por aplicação de cura recebida, pode repetir até metade da Constituição, arredondada para baixo, mínimo 1, dos dados que deram 1. Aceite os novos resultados.\n\nA repetição não cria outra aplicação de cura nem reaplica seus bônus. Uma cura sem dados não ganha dados para repetir.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Reserva Orgânica",
+     "texto": "Transforme a cura que excederia sua vida máxima em vida temporária, até Constituição, mínimo 1, respeitando o teto geral e sem somar reservas. Isso não altera a exigência de vida para iniciar Regeneração Orgânica.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Metabolismo Flexível",
+     "texto": "No descanso curto, pode ceder até sua maior Classe dos PE que efetivamente recuperaria para receber 3 PV por PE cedido. Não gasta PE que já possuía nem recebe os pontos cedidos junto da cura.",
+     "freq": "No descanso curto",
+     "exige": null,
+     "historia": null
+    }
+   ],
+   "sem_tecnica": true,
+   "oficio": false,
+   "ce4": false
+  },
+  {
+   "menu": "Corpo Amaldiçoado",
+   "livro": "Corpo Amaldiçoado",
+   "personagem": "É um corpo construído, com consciência própria.",
+   "criacao": "Técnica Marcial, com energia.",
+   "pericias": [
+    "Atletismo",
+    "Percepção",
+    "Ocultismo",
+    "Intimidação"
+   ],
+   "rota": "Técnica Marcial, com energia amaldiçoada, PE, Refino e Aptidões",
+   "legados": null,
+   "marcantes": [
+    {
+     "nome": "Existência Artificial",
+     "texto": "Energia amaldiçoada sustenta a consciência no seu corpo construído. Você não precisa comer, beber, respirar ou dormir, embora possa comer e beber por vontade própria. Não adquire estágios de Exaustão e é imune a Envenenado.\n\nIsso não concede resistência ao dano Veneno ou imunidade a outras condições. Dispensar respiração evita a falta de ar; calor, pressão e substâncias que danifiquem a estrutura continuam funcionando. Uma capacidade ainda pode impor Inconsciente. Dano, Integridade, Sequelas, derrota e morte seguem suas regras.\n\nRepouso.\n\nQualquer local conta como ambiente propício para seus descansos curtos e longos. Os demais requisitos permanecem: poder parar em segurança no curto e encerrar a missão com oportunidade de repousar no longo. O benefício vale só para você.\n\nPode permanecer consciente e em vigília passiva durante o repouso, usando seus sentidos normalmente. Isso não oferece detecção automática nem permite trabalhar, combater ou manter tarefas incompatíveis com o descanso. Interrupções seguem as regras gerais.\n\nPara renovar usos por dia, um repouso equivalente ao sono exigido pela regra geral substitui dormir. A mesma pausa não renova habilidades várias vezes nem se torna descanso longo por essa permissão.\n\nRecuperação da estrutura.\n\nEnergia Reversa e curas derivadas dela não recuperam sua vida. Efeitos destinados apenas a restaurar tecido vivo também não reparam sua estrutura. Técnicas e capacidades cuja regra alcance explicitamente corpos construídos funcionam dentro de seus limites.\n\nSeu reparo segue Reparo do corpo. Qualquer pessoa treinada no ofício compatível pode fazê-lo, inclusive você, se estiver capaz e tiver ferramentas e materiais adequados. Não precisa ser seu criador ou possuir um vínculo especial. Reparar não restaura um núcleo destruído, não devolve a vida nem fabrica poderes.\n\nManutenção Precisa.\n\nUma vez por dia, quando um teste para reparar você durante um descanso curto falhar, quem faz o reparo pode repetir a rolagem e deve aceitar o novo resultado.\n\nÉ a mesma tentativa. No sucesso, recupere apenas a quantidade prevista pelo reparo, uma única vez. O uso diário pertence a você; trocar de reparador não o renova. Também pode usar o benefício ao reparar a si mesmo, se for qualificado e capaz.",
+     "freq": "Uma vez por dia"
+    }
+   ],
+   "menores": [
+    {
+     "nome": "Ferramentas Integradas",
+     "texto": "Incorpore à estrutura um conjunto de ferramentas de um Ofício em que seja treinado. O conjunto não ocupa Volume e fica disponível sem sacar ou guardar. Uma vez por cena, antes de um teste desse Ofício que use as ferramentas integradas, receba vantagem.\n\nA isenção não inclui materiais, peças transportadas ou produtos. Você ainda precisa obter o conjunto; a menor não concede ferramentas gratuitas ou o treino. Instalação e troca acompanham a manutenção, sem exigir oficina fixa ou vínculo com o criador. Restrições próprias de um teste continuam valendo, como as fontes de vantagem permitidas em Criação de entidades.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Acabamento Trocável",
+     "texto": "Depois de mudar seu acabamento, escolha duas perícias entre Persuasão, Enganação, Intimidação e Atuação. Uma vez por cena, antes de um teste social de uma delas, receba vantagem. As duas compartilham o uso.\n\nDurante um descanso curto ou longo, pode fazer uma mudança visível com materiais adequados disponíveis, como roupas, tintas ou revestimentos. Ao concluir o descanso, entram em vigor a aparência e a nova escolha de perícias, sem PE ou teste. Isso não renova o uso por cena.\n\nA seleção acompanha a mudança de acabamento, não cada teste. A alteração não modifica automaticamente voz, tamanho, capacidades ou assinatura de energia, nem oferece treino ou sucesso social impossível.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Amortecimento de Queda",
+     "texto": "Uma vez por cena, estando consciente, use sua Reação para reduzir à metade o dano que sofreria de uma queda, arredondando para baixo depois das defesas aplicáveis.\n\nNão permite voo, planagem ou mudança do local de chegada. Um ataque que cause a queda e a queda em si são eventos distintos.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Reparo Autônomo",
+     "texto": "Uma vez por dia, gaste uma Ação Padrão para reparar a si mesmo, inclusive em combate. No sucesso, recupere 30% da vida máxima, arredondados para baixo. Precisa estar consciente e capaz, treinado no ofício compatível, com ferramentas e materiais acessíveis.\n\nUse o teste de Reparar, comparando sua Classe consigo mesma. Esta menor tem sua própria ação, frequência e taxa; não consome uma tentativa de um descanso curto futuro. Manutenção Precisa continua exigindo reparo durante descanso curto.",
+     "freq": "Uma vez por dia",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Redundância",
+     "texto": "Escolha Físico, Vigor, Intelecto ou Espírito. Uma vez por cena, quando falhar no TR escolhido, pode repetir a rolagem e deve aceitar o segundo resultado. A escolha é fixa; não exige treino nem o concede. Mantenha os modificadores e requisitos do teste.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Carcaça Grande",
+     "texto": "Você é da categoria de tamanho Grande, de forma passiva e permanente. Aplique as regras gerais de tamanho. Não há ativação, custo ou transformação temporária, nem bônus próprio de vida, dano, Força, carga ou alcance concedido por esta menor.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Construção Especializada",
+     "texto": "Receba um Talento passivo de Categoria de Efeito 1, compatível com sua rota e respeitando os requisitos. Ele representa uma função incorporada ao projeto e fica fora dos espaços conhecidos e dos cinco Talentos pagos.\n\nEscolha na criação, sem duplicação, evolução gratuita ou troca livre durante manutenção. O benefício não concede técnica inata.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Arquivo de Procedimentos",
+     "texto": "Registre três perícias ou Ofícios. Você mantém treino em um deles por vez. Durante um descanso curto ou longo, pode trocar uma vez o procedimento ativo; a mudança entra em vigor ao concluir o descanso, sem PE, teste ou material adicional apenas para selecioná-lo.\n\nA lista dos três permanece fixa. Pode trocar o procedimento no mesmo descanso em que muda o acabamento. Mantenha os requisitos de ferramentas, materiais, receitas e conhecimentos da tarefa.\n\nO treino do Arquivo não pode ser aprimorado para especialização nem servir de requisito para adquiri-la. Não soma bônus a um treino já possuído nem concede os três ao mesmo tempo. Treinos e especializações obtidos por fontes independentes conservam suas regras.",
+     "freq": "No descanso curto",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Núcleo Dependente",
+     "texto": "Sua estrutura depende diretamente da reserva de energia. Aumente seus PE máximos em Essência + quantidade de marcos alcançados × metade da Essência, arredondada para baixo. Conte os marcos dos níveis 6, 10, 14, 18, 22, 26 e 30.\n\nQuando Essência aumentar, recalcule todo o benefício, inclusive as parcelas anteriores. Não use Maestria nessa conta. Alterar o máximo não recupera toda a reserva; o saldo segue a regra geral aplicável à mudança.\n\nExemplo: com Essência 3 no nível 10, há dois marcos: 3 + 2 × 1 = 5 PE adicionais. Se Essência subir para 4, recalcule: 4 + 2 × 2 = 8 PE adicionais.\n\nAlma e Integridade.\n\nVocê não possui barra de Integridade. Dano de Alma que também atinja vida continua causando sua perda de vida. Você é imune ao dano exclusivo à Integridade, que não atinge vida; nenhum desses danos se converte em perda de PE. Os estágios de Integridade não se aplicam, e recuperar Integridade não recupera energia.\n\nIsso não significa ausência de alma ou imunidade a todos os efeitos que a atinjam. Em um efeito misto, resolva os demais componentes aplicáveis. Exigências de recuperar Integridade após derrota só se aplicam a quem possui essa reserva; outras causas de queda ou inconsciência continuam valendo.\n\nFalta de energia.\n\nVocê fica inativo quando não resta nenhum PE comum ou temporário. Se gastar os últimos PE numa capacidade, resolva primeiro o efeito pago e fique inativo depois.\n\nEnquanto inativo, permanece consciente, pode falar, perceber o entorno e fazer gestos simples. Seu deslocamento cai à metade. Falha automaticamente em quaisquer testes e não pode realizar outras ações, usar Reações ou Bloquear. Sua Defesa continua normal. Isso não impede inconsciência ou derrota por outros motivos.\n\nReceber pelo menos 1 PE comum ou temporário por uma fonte válida encerra imediatamente a inatividade, sem ação adicional. Não renova ações ou Reações gastas nem remove outros impedimentos. Se a energia temporária acabar ou expirar e não houver PE comuns, você fica inativo novamente.\n\nRecuperação de energia.\n\nConserve a recuperação normal por descanso, inclusive enquanto inativo: 25% dos PE máximos no curto e até o máximo no longo, com os arredondamentos e requisitos normais. Existência Artificial torna o ambiente propício, mas ainda é preciso uma pausa real e encerrar a missão para o descanso longo.\n\nO fornecedor de energia e o que cobra fazem parte da história. Esta menor não cria consumo automático, doação obrigatória por descanso ou transferência livre de PE entre personagens. Recuperar durante uma cena exige uma fonte que permita fazê-lo. Abastecimento de energia e reparo de vida são procedimentos distintos.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": "Manutenção"
+    },
+    {
+     "nome": "Mente Resguardada",
+     "texto": "Você é imune a Enfeitiçado e Amedrontado. Ao escolher esta menor, escolha permanentemente uma contrapartida:\n\n- Vulnerabilidade a um tipo de dano Físico; ou\n\n- Vulnerabilidade a um tipo de dano Elemental e um tipo de dano Especial.\n\nEscolha tipos individuais dos grupos apresentados em Dano, não grupos inteiros. Use as regras normais de vulnerabilidade. A imunidade não se estende a dano Psíquico, todo TR Mental, ilusões ou outras condições. Você continua tendo emoções, vontade e alma.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": "Manutenção"
+    }
+   ],
+   "sem_tecnica": false,
+   "oficio": true,
+   "ce4": false,
+   "reparo": "Durante um descanso curto, uma pessoa treinada no ofício compatível anotado na sua ficha, com ferramentas e materiais adequados, pode reparar você. Pode ser outro personagem ou você mesmo, se estiver capaz de trabalhar. Há uma tentativa por corpo a cada descanso curto, mesmo com vários reparadores disponíveis.\n\nUse o procedimento e a tabela de Reparar, em Cura e reparo. Para um personagem desta Origem, compare as Classes máximas permitidas pelo nível de quem repara e de quem é reparado, sem depender das capacidades conhecidas.\n\nA CD é 8 + atributo usado no ofício + Maestria do reparador + ajuste da comparação. No sucesso, um corpo da mesma Classe ou de Classe inferior recupera metade da vida máxima; uma Classe acima, um terço; duas ou mais acima, um quarto. Arredonde para baixo e não ultrapasse o máximo. A falha consome a tentativa. Especialização altera a rolagem, sem aumentar a base da CD.\n\nManutenção Precisa permite a repetição descrita na marcante. Reparo Autônomo conserva sua própria ação, frequência e recuperação de 30%. Descanso longo e vida a zero seguem suas regras, sem exceção concedida por este reparo.\n\nExemplo: Rui tem 31 PV máximos e está com 8. Um aliado da mesma Classe repara seu corpo com atributo 3 e Maestria 2. A CD é 13 e o bônus treinado é +5. Com 8 no d20, alcança 13 e recupera 15 PV. Rui termina com 23.",
+   "historias": "As histórias abaixo são Legados de história sobre sua existência. Escolha uma ou escreva outra com o mestre. Ela não consome uma menor nem altera a marcante comum. Consciências e personalidades compartilham ficha, recursos, ações e condições.\n\nNinhada. Três seres compartilham o corpo e se reconhecem como partes dele. Escreva quem são e como se relacionam. Uma conversa entre eles não fornece três tentativas para a mesma tarefa.\n\nGêmeos. Duas consciências se alternam num corpo cuja organização ainda não se estabilizou. Combinem os sinais da troca e o que muda na interpretação. As regras da ficha permanecem as mesmas.\n\nInteiro. Você despertou com um único núcleo. Registre o que sabe sobre a criação e o que ainda deseja descobrir.\n\nManutenção. Sua consciência é própria, mas sua história inclui alguém que fornece energia ao corpo. Escreva quem é e o que cobra. Isso não drena PE automaticamente nem obriga uma doação em cada descanso. Esta história permite escolher Núcleo Dependente e Mente Resguardada, cada uma numa vaga normal de menor."
+  },
+  {
+   "menu": "Restrição Celestial · Sem Energia",
+   "livro": "Restrição Celestial",
+   "personagem": "Nasceu com uma troca entre corpo e energia. Escolhe um de dois ramos.",
+   "criacao": "Fundamento no ramo corporal; Técnica Marcial sem energia no outro.",
+   "pericias": [
+    "Atletismo",
+    "Acrobacia",
+    "Furtividade",
+    "Pontaria"
+   ],
+   "rota": "Técnica Marcial, sem energia",
+   "legados": "alguém pode ter tratado você como uma pessoa sem valor, enquanto outra pessoa compartilha desde o nascimento a história dessa troca. Uma ferramenta herdada e a maneira como aprendeu a perceber maldições por equipamento ou observação também podem ligar seu passado às missões. A função desses recursos precisa existir na ficha; a história não concede uma Bênção ou percepção irrestrita.",
+   "marcantes": [
+    {
+     "nome": "Ataque sem Prenúncio",
+     "texto": "Seu adversário percebe o golpe, mas não recebe o sinal energético que esperava para antecipá-lo. Uma vez por turno seu, depois de declarar um ataque que já possa realizar e de o defensor escolher entre Defesa e Bloquear, quando essa escolha couber, anuncie Ataque sem Prenúncio e gaste 2 PE adicionais, antes do d20 do ataque, do TR ou da aplicação Automática. Não exige outra ação. Pague também o custo do ataque ou da Kata; errar não devolve os custos.\n\nA marcante abrange ataques comuns corpo a corpo, com arma ou desarmados, e Katas ofensivas por acerto, TR ou resultado Automático, inclusive Katas à distância ou transportadas por um golpe. Escolha um defensor. O benefício direto alcança apenas a primeira resolução ofensiva contra ele naquela execução, sem aplicações automáticas nos outros ataques, alvos ou pulsações. Não concede um ataque novo nem modifica a montagem.\n\nAntecipação e bloqueio.\n\nSe o defensor puder perceber energia amaldiçoada e ainda não reconhecer por estudo essa execução sua:\n\n- O anúncio impede uma Reação do defensor provocada pela declaração dessa execução que seria resolvida antes da rolagem de acerto, do TR escolhido ou da aplicação Automática inicial, conforme o procedimento usado. Se ele já tiver declarado uma Reação dessas contra aquela execução, o anúncio a cancela, sem gastar a Reação dele.\n\n- Se a resolução admitir Bloquear e ele tiver escolhido essa defesa, faz a rolagem com desvantagem, seguindo os dois conjuntos completos e os extremos de Aparar e Brecha.\n\nO TR mantém dado, CD e modificadores. Automáticos não ganham teste nem ignoram imunidades, resistências ou requisitos. Benefícios sem gasto de Reação continuam disponíveis. Numa resolução com acerto seguido de TR, a marcante não acrescenta penalidade ao TR.\n\nDefesa fixa, proteção, efeitos já ativos e respostas posteriores ao erro, acerto ou dano conservam suas regras. Uma ativação impedida não consome a reserva de Reação. A escolha de Defesa ou Bloquear permanece antes do d20 do ataque; o anúncio vem entre essa escolha e o d20. Depois do anúncio, o defensor não pode trocar a escolha.\n\nIntervenções de terceiros continuam disponíveis. Se outra criatura assumir o ataque, confira a suscetibilidade dela, sem desfazer a intervenção já resolvida ou transferir o reconhecimento do alvo anterior.\n\nEstudar a execução.\n\nDepois de ser alvo efetivo de uma execução sua e percebê-la por visão ou sentido equivalente, o adversário pode usar Estudar enquanto consegue observar você. Gasta a ação de Estudar — normalmente Padrão, salvo permissão válida — e faz seu teste inicial, com a perícia e a CD do procedimento. Precisa passar para iniciar o reconhecimento. Não há segunda rolagem para habilitá-lo nem outra informação livre pelo mesmo gasto.\n\nNa falha, a ação foi gasta e o reconhecimento não começa; novas tentativas seguem Estudar. Seus outros usos, inclusive informações evidentes sem teste, permanecem iguais.\n\nA execução pode ter acertado, errado, sido bloqueada ou resistida. Não exige dano nem pagamento de Ataque sem Prenúncio naquela execução. Apenas observar outra pessoa ou receber dano transferido sem ser alvo não equivale a enfrentá-la.\n\nDepois do primeiro Estudar bem-sucedido, o defensor neutraliza a marcante contra as execuções suas que já enfrentou. Cada execução inédita ainda pode receber o benefício na primeira tentativa; depois de enfrentá-la e percebê-la, ele passa a reconhecê-la, sem novo estudo, teste ou limite de Katas por estudo.\n\nMemória entre encontros.\n\nRegistre ataques comuns por tipo ou perfil de arma, não por exemplar. Outra cópia equivalente não renova a novidade. Ataques comuns desarmados formam um único perfil: trocar soco por chute não o torna inédito.\n\nKatas são reconhecidas separadamente. Conhecer uma arma não revela as Katas ainda desconhecidas feitas com ela. Mudar apenas números, Classe, custo ou arma compatível não torna a mesma Kata inédita. Uma mudança real de funcionamento pode definir outra aplicação, previamente identificada no repertório e adquirida normalmente.\n\nCada defensor conserva o estudo e as execuções reconhecidas daquele Restringido entre encontros. Combate, missão ou descanso não apagam o aprendizado, que não se transfere automaticamente a aliados ou a outro Restringido. Reconhecimento protege contra esta marcante, não contra o dano e os demais efeitos da execução.\n\nExemplo: uma Kata de 3 PE com Ataque sem Prenúncio custa 5 PE. Resolva a Kata normalmente, sem acrescentar dano de arma ou de Estímulo Muscular quando suas fontes não permitirem. Se o adversário já estudou você, mas nunca enfrentou essa Kata, a primeira execução ainda pode receber o benefício; depois de percebê-la, ele a reconhece nos reencontros.",
+     "freq": "Uma vez por turno seu"
+    }
+   ],
+   "menores": [
+    {
+     "nome": "Porte Incomum",
+     "texto": "Seu limite normal de carga aumenta em Volume igual à Maestria. Calcule o dobro a partir do novo limite. Não aumenta Força, tamanho ou dano, nem dispensa requisitos de empunhadura e proteção. Você ainda precisa conseguir segurar e transportar o que carrega.\n\nExemplo: Força 3 e Maestria 1 dão limite de 5 + 3 + 1 = 9 Volume, com teto de 18 para o excesso permitido. As penalidades de carga continuam valendo.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Corpo Flexível",
+     "texto": "Ao se espremer, ignore apenas o custo adicional de movimento da passagem estreita. A abertura ainda precisa comportar corpo e equipamento; penalidades de combate, terreno difícil e rastejar permanecem. Atravessar 3 m de passagem regular custa 3 m em vez de 6 m.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Mapa Mental",
+     "texto": "Recorde sem teste o percurso que atravessou conscientemente: curvas, bifurcações e a ordem dos marcos percebidos. Não revela atalhos, caminhos desconhecidos, mudanças posteriores ou deslocamentos que não pôde acompanhar. A capacidade preserva trajetos difíceis sem retirar dos outros a memória cotidiana de caminhos simples.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Aprendizado Complementar",
+     "texto": "Receba treino em uma perícia ou dois Ofícios que ainda não possua e possa aprender pela sua rota. Escolha ao adquirir a menor. Não fornece ferramentas, materiais, idiomas, treino em armas, TR ou especialização. Não libera Sentir Energia.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Assistência Técnica",
+     "texto": "Escolha uma perícia ou Ofício em que seja treinado. Quando usar Ajudar no teste correspondente de um aliado, ele recebe bônus igual à sua Maestria, além da vantagem normal da ajuda. O aliado mantém seus próprios modificadores.\n\nAplique o bônus uma vez no total, não por dado. Uma desvantagem que cancele a vantagem de Ajudar não cancela esse bônus. Mantenha contribuição possível, ação, prazo e limite normal de um ajudante; não supre treino obrigatório, ferramenta ou sentido ausente. Não vale para seu próprio teste, ataques ou TRs.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Ferramentas Improvisadas",
+     "texto": "Escolha um Ofício treinado. Nas tarefas que exigem apenas ferramentas manuais portáteis desse Ofício, pode substituir o conjunto por objetos que tenha em mãos e consiga usar fisicamente nas funções necessárias. Trate-os como ferramentas adequadas, sem penalidade apenas por serem improvisados.\n\nNão substitui ingredientes, consumíveis, instalações, fonte de calor, diagnóstico eletrônico, proteção necessária ou processos especiais. Também não fornece poderes de ferramenta amaldiçoada ou um Selo. Os objetos precisam existir e cumprir a função.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Fôlego Recuperado",
+     "texto": "Ao concluir um descanso curto que permita recuperar PE, recupere PE adicionais iguais à sua maior Classe disponível, sem ultrapassar o máximo. Calcule a recuperação normal primeiro e acrescente o bônus.\n\nRecuperação expressamente proibida continua zero. A menor não cura vida, recupera Integridade ou retira Exaustão. Uma pausa contínua é um descanso, não várias recuperações. Use a Classe disponível pela progressão, não a maior Kata conhecida ou a última utilizada.",
+     "freq": "No descanso curto",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Contribuição Decisiva",
+     "texto": "Uma vez por cena, depois das rolagens e antes da consequência de um teste de grupo de uma perícia em que seja treinado, se você passou, pode fazer seu sucesso contar como dois para o resultado coletivo. Não exige ação ou PE além da participação na tarefa.\n\nCada teste coletivo recebe no máximo uma aplicação, mesmo com vários portadores. Quem não a aplicou conserva seu uso. O grupo mantém o número de participantes e o limiar normal; a contagem ganha uma contribuição de sucesso. Isso não torna outro personagem bem-sucedido para consequências individuais ou transforma uma tarefa individual em teste de grupo.\n\nExemplo: cinco personagens precisam de três sucessos. Você e um aliado passam, totalizando dois. Sua contribuição passa a valer dois; com a do aliado, o grupo chega a três. Ninguém refaz a rolagem.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    }
+   ],
+   "sem_tecnica": false,
+   "oficio": false,
+   "ce4": false
+  },
+  {
+   "menu": "Restrição Celestial · Restrição corporal",
+   "livro": "Restrição Celestial",
+   "personagem": "Nasceu com uma troca entre corpo e energia. Escolhe um de dois ramos.",
+   "criacao": "Fundamento no ramo corporal; Técnica Marcial sem energia no outro.",
+   "pericias": [
+    "Sentir Energia",
+    "Tecnologia",
+    "Ocultismo",
+    "Percepção"
+   ],
+   "rota": "Fundamento",
+   "legados": "talvez o meio jujutsu conheça você por uma representação e poucas pessoas saibam quem está por trás dela. Quem cuida do seu corpo, o que você daria para resolver sua limitação e alguém que afirma poder fazê-lo podem orientar suas relações e decisões. Marionetes, transporte e outros meios de ação precisam estar sustentados pela ficha e pelos recursos da campanha.",
+   "marcantes": [
+    {
+     "nome": "Corpo Debilitado",
+     "texto": "Sua Restrição comprometeu seu corpo desde o nascimento: o braço direito e as partes das pernas abaixo dos joelhos não se desenvolveram, você não possui sensibilidade abaixo da cintura e convive com dor constante. Sua pele é tão frágil que até o luar pode queimá-la. Este exemplo tem Mechamaru como referência; proteção, cuidados e meios de agir além do corpo fazem parte do cotidiano.\n\nSua Defesa fica fixada em 0, sem alteração por bônus ou penalidades numéricos, e você não pode Bloquear. Cobertura total, impedimentos de alvo, resistências, imunidades, redução de dano e vida temporária seguem suas regras. A limitação não concede acerto ou crítico automático nem passa a um intermediário com Defesa própria.\n\nSeu deslocamento próprio é 0 m, e você tem somente uma mão funcional. Depende de transporte, assistência ou recursos adequados para se locomover e realizar tarefas que exijam os membros ausentes. Falha automaticamente nos TRs de Vigor e Físico exigidos do corpo real, inclusive no TR de Concentração após dano: quando ele for exigido, o efeito termina.\n\nPele e repouso.\n\nAo final de cada turno seu, se alguma pele estiver exposta à luz do sol ou da lua, sofra 1d4 de dano Radiante, sem TR. Fora de combate, aplique a cada rodada de exposição contínua. Uma cobertura opaca que impeça a luz de alcançar toda a pele exposta evita o dano. Iluminação artificial não aciona essa regra por si só.\n\nPara descansar em ambiente propício, precisa de estrutura protegida, materiais e cuidados adequados, registrados na ficha. Sem eles, use o descanso fora de ambiente propício. Pessoas ou recursos compatíveis da técnica podem prestar a assistência.\n\nCura e descanso recuperam recursos normalmente, mas não removem as limitações congênitas. As consequências pertencem ao corpo real; não passam automaticamente a marionetes ou intermediários. Um teste exigido de você continua sujeito à penalidade, e os meios de compensá-la seguem suas próprias regras.\n\nSaída Elevada.\n\nSeus feitiços comuns da técnica de Classe 1 ou maior recebem pontos adicionais de montagem iguais à metade da Classe utilizada, arredondada para baixo, mínimo 1. Esses pontos servem somente para Melhorias, considerando os descontos normais.\n\nClasse utilizada | 1 | 2 | 3 | 4 | 5 | 6 | 7\nPontos adicionais | 1 | 1 | 1 | 2 | 2 | 3 | 3\n\nClasse, custo-base em PE, quantidade permitida de Melhorias, acessos às Famílias e demais tetos permanecem. Pontos adicionais não usados se perdem; não viram diretamente dano, cura ou vida temporária. Podem preservar pontos normais que seriam gastos em Melhorias, dentro dos limites existentes.\n\nSaída Elevada não vale para Máximas ou Manejos. Receber os pontos não acrescenta custo em PE; os custos específicos do feitiço continuam normais.",
+     "freq": "Passiva"
+    },
+    {
+     "nome": "Corpo Quebradiço",
+     "texto": "Sua Restrição preservou seus membros, mas deixou a estrutura incapaz de sustentar o próprio peso e o esforço de uma luta. Mesmo saudável, você depende de apoio para acomodar o corpo e de transporte para se deslocar. Ferimentos que outra pessoa suportaria podem colocar sua vida em risco.\n\nSua Defesa fica fixada em 0, sem alteração por bônus ou penalidades numéricos, e você não pode Bloquear. Cobertura total, impedimentos de alvo, resistências, imunidades, redução de dano e vida temporária seguem suas regras. A limitação não concede acerto ou crítico automático nem passa a um intermediário com Defesa própria.\n\nSeu deslocamento próprio é 0 m, e sua vida máxima é metade da normal, arredondada para baixo, mínimo 1. A redução também se aplica aos aumentos futuros. Você não consegue caminhar, correr, saltar, escalar ou nadar por esforço próprio.\n\nFalha automaticamente em testes de Força e TRs Físicos exigidos do corpo real. Ataques que dependam do esforço físico desse corpo também falham, mesmo usando Destreza. Seus membros não sustentam seu peso, não empurram nem arrastam cargas pesadas e não carregam outra criatura, mesmo sem rolagem.\n\nAs mãos permitem manipulação leve, como escrever, segurar pequenos objetos e fazer gestos de uma técnica compatível. Uma conjuração não falha apenas por usar Força ou Destreza no cálculo. TRs de Vigor seguem normalmente, inclusive os de Concentração.\n\nCuidados.\n\nPara descansar em ambiente propício, precisa de apoio corporal, materiais e cuidados adequados, registrados na ficha. O atendimento pode ser feito por alguém treinado em Medicina, inclusive você, se estiver treinado, capaz e com os meios necessários. Sem isso, use o descanso fora de ambiente propício.\n\nCura e descanso recuperam vida normalmente dentro do máximo reduzido, sem remover as limitações congênitas. As consequências pertencem ao corpo real, sem passar automaticamente a marionetes ou intermediários. Transporte e recursos compatíveis seguem suas regras. A fragilidade não acrescenta vulnerabilidade a dano ou queimaduras por luz.\n\nSaída Elevada.\n\nSeus feitiços comuns da técnica de Classe 1 ou maior recebem pontos adicionais de montagem iguais à metade da Classe utilizada, arredondada para baixo, mínimo 1. Esses pontos servem somente para Melhorias, considerando os descontos normais.\n\nClasse utilizada | 1 | 2 | 3 | 4 | 5 | 6 | 7\nPontos adicionais | 1 | 1 | 1 | 2 | 2 | 3 | 3\n\nClasse, custo-base em PE, quantidade permitida de Melhorias, acessos às Famílias e demais tetos permanecem. Pontos adicionais não usados se perdem; não viram diretamente dano, cura ou vida temporária. Podem preservar pontos normais que seriam gastos em Melhorias, dentro dos limites existentes.\n\nSaída Elevada não vale para Máximas ou Manejos. Receber os pontos não acrescenta custo em PE; os custos específicos do feitiço continuam normais.",
+     "freq": "Passiva"
+    },
+    {
+     "nome": "Corpo Exaurido",
+     "texto": "Seu organismo permanece debilitado. Você conserva a capacidade de falar, fazer tarefas leves e caminhar devagar, mas não sustenta o esforço de uma luta. Ferimentos consomem a pouca autonomia física que possui, e recuperar-se exige cuidados prolongados.\n\nSua Defesa fica fixada em 0, sem alteração por bônus ou penalidades numéricos, e você não pode Bloquear. Cobertura total, impedimentos de alvo, resistências, imunidades, redução de dano e vida temporária seguem suas regras. A limitação não concede acerto ou crítico automático nem passa a um intermediário com Defesa própria.\n\nFalha automaticamente nos TRs de Vigor e Físico exigidos do corpo real, inclusive Concentração quando Vigor for exigido. Testes e ataques que dependam do esforço físico desse corpo também falham automaticamente.\n\nSeu deslocamento próprio é limitado a 4,5 m, em movimento leve no chão. Não consegue correr, saltar, escalar, nadar, sustentar o peso pelos braços, empurrar ou arrastar cargas pesadas, nem carregar outra criatura por esforço próprio, mesmo sem rolagem. Ainda pode escrever, manipular objetos leves e fazer gestos de uma técnica compatível; usar um atributo físico na conjuração não a faz falhar por si só.\n\nCom metade da vida máxima ou menos, arredondada para baixo, seu deslocamento próprio passa a 0 m. Recuperar vida acima do limite devolve o deslocamento permitido. Isso não aplica Atordoado, retira ações ou consciência, nem impede transporte.\n\nCura e repouso.\n\nEfeitos de cura recuperam metade da vida normal, arredondada para baixo, mínimo 1 quando positiva. Um descanso longo em ambiente propício recupera 25% da vida máxima, arredondados para baixo, mínimo 1, somados à vida atual até o máximo. Fora de ambiente propício, o descanso longo não recupera vida. Os demais recursos e efeitos, inclusive PE, seguem normalmente.\n\nO ambiente propício exige cuidados e meios adequados à sua condição, registrados na ficha. Os 25% do descanso não são divididos novamente; efeitos de cura usados durante ele continuam pela metade. Descanso curto não recupera vida por si só, e uma mesma pausa não pode ser repetida para multiplicar a recuperação.\n\nCura comum não remove a condição congênita. Exaustão adquirida segue suas regras, sem degrau permanente adicional. As consequências pertencem ao corpo real, sem passar automaticamente a marionetes ou intermediários; testes exigidos de você continuam sujeitos às limitações.\n\nSaída Elevada.\n\nSeus feitiços comuns da técnica de Classe 1 ou maior recebem pontos adicionais de montagem iguais à metade da Classe utilizada, arredondada para baixo, mínimo 1. Esses pontos servem somente para Melhorias, considerando os descontos normais.\n\nClasse utilizada | 1 | 2 | 3 | 4 | 5 | 6 | 7\nPontos adicionais | 1 | 1 | 1 | 2 | 2 | 3 | 3\n\nClasse, custo-base em PE, quantidade permitida de Melhorias, acessos às Famílias e demais tetos permanecem. Pontos adicionais não usados se perdem; não viram diretamente dano, cura ou vida temporária. Podem preservar pontos normais que seriam gastos em Melhorias, dentro dos limites existentes.\n\nSaída Elevada não vale para Máximas ou Manejos. Receber os pontos não acrescenta custo em PE; os custos específicos do feitiço continuam normais.",
+     "freq": "Passiva"
+    }
+   ],
+   "menores": [
+    {
+     "nome": "Reserva Condensada",
+     "texto": "Você aprendeu a preservar uma parcela de sua energia, reunindo aos poucos uma reserva para necessidades futuras. Ela permanece guardada até você decidir recorrer ao que acumulou.\n\nJogador e mestre definem quanto pode ser guardado em cada ocasião, quando e em quais condições o armazenamento pode ocorrer e o máximo acumulável. Registre esses limites e condições na ficha.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Reserva Excedente",
+     "texto": "Seus PE máximos aumentam em 2 × Essência. Atualize o acréscimo quando o atributo mudar. A recuperação desses pontos segue normalmente.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Recuperação Abundante",
+     "texto": "Num descanso curto em ambiente propício para sua Restrição, recupere 40% dos PE máximos, arredondados para baixo, mínimo 1, sem ultrapassar o máximo.\n\nOs cuidados continuam obrigatórios: estrutura protegida e assistência no Debilitado; apoio e atendimento no Quebradiço; os cuidados registrados no Exaurido. Reduções ou impedimentos específicos à recuperação de PE continuam valendo. Fora de ambiente propício, use a recuperação normal. A redução de cura do Exaurido afeta vida, não esses PE.",
+     "freq": "No descanso curto",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Sobrecarga Deliberada",
+     "texto": "Uma vez por cena, antes das rolagens de um feitiço comum de Classe 1 ou maior, pague PE adicionais iguais à metade do custo-base, arredondada para cima, e escolha vantagem em uma rolagem de ataque ou desvantagem para um alvo em um TR da aplicação inicial.\n\nEscolha antes do dado. O custo-base é o da Classe utilizada, antes de descontos e acréscimos: base 9 PE cobra 5 PE adicionais, além do custo normal do feitiço. Só aquela rolagem recebe o benefício; não alcança outros ataques, alvos ou TRs posteriores para sair de uma condição. Não vale para Manejos ou Máximas.",
+     "freq": "Uma vez por cena",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Leitura de Reservas",
+     "texto": "Ao passar num exame de fluxo com Sentir Energia, descubra também os PE atuais e máximos do alvo naquele momento. Mantenha o procedimento normal; esta é uma informação adicional do exame.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Último Fôlego de Energia",
+     "texto": "Uma vez por descanso longo, após pagar um feitiço que deixe sua energia em zero, receba PE temporários iguais a 2 × sua maior Classe, respeitando o teto normal. Duram até o fim do próximo turno e não podem ser armazenados na Reserva Condensada.",
+     "freq": "Uma vez por descanso longo",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Percepção Estendida",
+     "texto": "O alcance de Vasculhar com Sentir Energia aumenta de 18 m para 36 m, permanentemente. Mantenha ação, testes e obstáculos normais. Isso não aumenta outros sentidos, procedimentos ou alcances de feitiços.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    },
+    {
+     "nome": "Prática Cotidiana",
+     "texto": "Aprenda dois feitiços adicionais de Classe 0, compatíveis com sua técnica, em quaisquer Formas normalmente permitidas nessa Classe. Eles ficam além da quantidade normal conhecida e seguem as demais regras dessas aplicações.\n\nA escolha não se limita a Apoio ou Efeito. Esses feitiços não viram espaços comuns para Talentos ou invocações.",
+     "freq": "Passiva",
+     "exige": null,
+     "historia": null
+    }
+   ],
+   "sem_tecnica": false,
+   "oficio": false,
+   "ce4": true,
+   "saida_elevada": "Seus feitiços comuns da técnica de Classe 1 ou maior recebem pontos adicionais de montagem iguais à metade da Classe utilizada, arredondada para baixo, mínimo 1. Esses pontos servem somente para Melhorias, considerando os descontos normais.\n\nClasse utilizada | 1 | 2 | 3 | 4 | 5 | 6 | 7\nPontos adicionais | 1 | 1 | 1 | 2 | 2 | 3 | 3\n\nClasse, custo-base em PE, quantidade permitida de Melhorias, acessos às Famílias e demais tetos permanecem. Pontos adicionais não usados se perdem; não viram diretamente dano, cura ou vida temporária. Podem preservar pontos normais que seriam gastos em Melhorias, dentro dos limites existentes.\n\nSaída Elevada não vale para Máximas ou Manejos. Receber os pontos não acrescenta custo em PE; os custos específicos do feitiço continuam normais.",
+   "ce4_texto": "Um CE4 permite que sua técnica ultrapasse os limites habituais em um aspecto específico, tornando possível um feito extraordinário. Seu benefício está numa forma única de funcionamento, sem se resumir a aumentar números ou acrescentar efeitos convencionais de combate.\n\nAo criá-lo, jogador e mestre definem o que a exceção permite, seus limites e suas consequências, usando os exemplos como referência de alcance e impacto. Categoria de Efeito não é Classe de conjuração. Este ramo concede um único CE4, não o conjunto de exemplos.\n\nRede Remota.\n\nSua energia mantém uma ligação extraordinária com os intermediários da técnica. O vínculo alcança até 3.000 km a partir do seu corpo. Você comanda os intermediários e usa os sentidos e a comunicação que a técnica já oferece, sem precisar enxergá-los diretamente.\n\nCapacidades que o intermediário já podia executar continuam disponíveis. Meça da posição dele os alcances, áreas e requisitos de alvo. O benefício é passivo, sem PE adicionais apenas pela distância; preserve custos, duração, quantidade de intermediários e ações da técnica.\n\nO intermediário precisa chegar ao local e pode ser enfrentado ou destruído. O talento não fornece marionetes gratuitas, ações extras ou sentidos ausentes. Bloqueios específicos do vínculo continuam valendo.\n\nExemplo: seu corpo está a 800 km da missão. Uma marionete acompanha o grupo, usando a visão, audição e conversa fornecidas pela técnica. Um disparo de alcance 18 m parte da marionete: o vínculo atravessa os 800 km, mas o disparo conserva seus 18 m a partir dela.\n\nOutras referências de criação.\n\nAs três ideias abaixo servem para criar o CE4 com o mestre. Registrem a operação e os limites antes de usá-lo; o conceito sozinho não fornece uma capacidade completa.\n\nArquitetura Microscópica. Uma técnica compatível coordena trabalhos materiais de precisão microscópica e grande complexidade. A exceção reúne precisão e execução simultânea de um procedimento conhecido. Conhecimento, materiais e testes pertinentes continuam necessários.\n\nManifestação Colossal. Uma técnica compatível leva uma manifestação controlável a uma escala material extraordinária. Definam a dimensão, o uso do espaço e como a manifestação funciona. O tamanho não concede por si só bônus de combate.\n\nGeografia Interior. Uma técnica espacial compatível sustenta um espaço interno materialmente acessível, de escala e estabilidade extraordinárias. Definam acesso, ocupação, permanência e consequências para pessoas e objetos. Esse espaço não concede uma Expansão de Domínio por si só."
+  }
+ ],
+ "sem_tecnica": "Você tem energia amaldiçoada, mas não possui técnica inata. Desenvolveu seu estilo a partir de uma aptidão que pode ser aprendida. Sua criação usa Manejos, na rota Sem Técnica de Rotas de criação.\n\nEssa opção acompanha Latente, Receptáculo, Descendente, Encarnado ou Híbrido, sem ocupar escolha de marcante ou menor. Conserve a base, a marcante e suas duas menores elegíveis. Escolha uma semente pelo procedimento da rota; seus Manejos seguem os requisitos e permissões dela, sem conceder uma segunda Regra.\n\nCorpo Amaldiçoado e Restrição Celestial não aceitam Sem Técnica. Já possuem suas rotas de criação. Uma história que reúna características parecidas continua usando uma única combinação de regras.\n\nExemplo: Aya é Descendente Zenin e escolhe Sem Técnica. Recebe a formação Kukuru, depois escolhe duas menores: Notas de Família e Treino de Armas da Casa. A rota não consome nenhuma dessas escolhas. Em Rotas de criação, escolherá sua semente e construirá os Manejos.",
+ "personalizar": "Você pode criar com o mestre uma marcante e menores compatíveis com sua Origem, usando as entradas publicadas como referência. Registrem o pacote antes da primeira sessão: base, uma marcante e duas menores. A personalização pode alcançar ambas as menores; não exige escolher uma opção pronta primeiro.\n\nDefinam o que cada capacidade faz, quando funciona, ação, custo, frequência, limites e escolhas fixas. Comparem seu alcance com uma capacidade de função semelhante, incluindo as condições necessárias para usá-la. A história pode variar sem modificar a regra: outra aparência, material ou personalidade não concede benefícios extras.\n\nFamílias próprias.\n\nPara um Descendente de uma família criada para a campanha, descrevam sua formação, relações e obrigações. Construam com o mestre uma versão coerente da base e um pacote próprio, usando os quatro clãs apresentados como referência. A família define as opções disponíveis; seu nome não custa uma escolha adicional de marcante. Mantenham uma única base, uma marcante e duas menores elegíveis, sem reunir automaticamente os benefícios de vários clãs.\n\nRever a Origem.\n\nUma perda duradoura pode tornar uma escolha incompatível com a história ou impedir seu funcionamento. Entre missões, jogador e mestre podem rever a escolha afetada para manter um pacote coerente. Isso não concede vagas extras nem permite trocar livremente toda a Origem a cada situação.\n\nA revisão não altera por si só sua técnica, Aptidões, Lapidação ou rota. Capacidades dessas partes da ficha seguem suas próprias permissões de mudança, em Progressão.",
+ "legados_de_historia": "Uma pessoa que guardou seu segredo, uma promessa antiga ou uma oficina para onde você sempre volta: um Legado de história liga sua vida anterior às aventuras do grupo. Ele pode desenvolver seu traço ou registrar outra relação, lembrança, instituição ou particularidade da sua existência. Use as sugestões da Origem ou escreva as suas com o mestre; elas são pontos de partida, sem uma compra obrigatória.\n\nDê a essa ligação um lugar na campanha: quem está envolvido, o que aconteceu entre vocês e que assunto continua aberto. Isso oferece alguém para procurar, um motivo para aceitar uma missão ou uma conversa que você vem adiando. Os Legados de história não ocupam suas escolhas de marcante ou menores e não concedem benefícios mecânicos por si só.\n\nConhecer quem guarda um arquivo dá ao grupo alguém para procurar, mas o guardião conserva seus interesses e pode negar os documentos. Uma ferramenta herdada ainda precisa ser obtida pelos recursos e requisitos de Equipamento antes de entrar no inventário.\n\nAlgumas histórias permitem escolher capacidades específicas. Manutenção, por exemplo, dá acesso a duas menores do Corpo Amaldiçoado: registre a história e a capacidade que escolher. A história não gasta vaga; cada menor escolhida ocupa uma das duas vagas normais.\n\nUsar as capacidades da Origem.\n\nCada entrada informa seu momento e sua frequência: por cena, por dia, por descanso curto ou por descanso longo. Use os períodos definidos em Testes e Descansos. Uma nova luta não renova automaticamente um uso por descanso longo. Quem dispensa sono ainda passa pelo repouso que renova usos por dia.\n\nDeclare vantagem antes de rolar. Quando uma capacidade permitir repetir uma falha, use-a depois de conhecer o resultado e antes das consequências, salvo momento próprio da entrada. Repita o procedimento com os mesmos modificadores e vantagem ou desvantagem aplicáveis, aceitando o novo resultado. Uma entrada que mande repetir apenas um dado conserva essa exceção.\n\nA progressão não fornece novas escolhas de Origem. Capacidades que dependam de nível, Maestria ou outro valor acompanham a fórmula que apresentam. Para mudanças duradouras na história, consulte Rever a Origem.",
+ "escolhas": "Toda Origem concede a base abaixo. Sua entrada indica a lista de perícias, a rota e as capacidades disponíveis.\n\nEscolha | O que registrar\nUma perícia da Origem | Escolha entre as quatro indicadas na entrada.\nUma perícia livre | Escolha uma que sua história justifique.\nDois ofícios | Escolha no catálogo de Ofícios. Pode trocar os dois por mais uma perícia livre.\nUm Teste de Resistência | Escolha Físico, Vigor, Intelecto ou Espírito para treinar.\nUm traço | Escreva um detalhe importante da sua história.\nUma marcante | Receba a capacidade central da Origem ou escolha a modalidade indicada.\nDuas menores | Escolha duas opções elegíveis do catálogo da Origem.\nRota de criação | Anote Fundamento, Manejos ou Técnica Marcial, conforme a Origem.\n\nOs treinos devem ser novos e distintos. Confira o que já recebeu do Caminho; o TR da Origem também precisa ser diferente do TR concedido por ele. A escolha livre deve fazer sentido para a história apresentada ao mestre. Receba a base uma única vez, mesmo quando a Origem tiver modalidades ou ramos.\n\nAs duas menores são diferentes, salvo quando uma entrada permitir repeti-la. Você não recebe o catálogo inteiro. Uma modalidade pode exigir ou excluir determinadas opções; isso não concede vagas adicionais. Não troque a marcante por menores, menores por outra marcante ou escolhas da Origem por benefícios de outra parte da ficha.\n\nTraço e história.\n\nUm traço pode ser uma relação, uma lembrança, uma ambição ou um problema ainda aberto: “Meu irmão entrou para a escola antes de mim e desapareceu durante uma missão”. As sugestões de cada Origem ajudam a começar. Você pode criar outra.\n\nVocê pode desenvolver esse traço em Legados de história: pessoas, compromissos e acontecimentos que ainda fazem parte da sua vida. Esses detalhes não consomem escolhas de marcante ou menores. Uma relação importante pode explicar uma capacidade; treinos, poderes e recursos dependem das regras que os concedem.\n\nNa criação padrão, todos começam no Grau 4. Exceções de campanha e promoções seguem Patentes, em Progressão. Um sobrenome famoso, um passageiro poderoso ou uma vida anterior não antecipa esse avanço. Ganhos de Origem valem no alcance escrito em cada capacidade."
+}

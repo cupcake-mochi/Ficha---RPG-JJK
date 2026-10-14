@@ -121,6 +121,7 @@ VERMELHO, BRANCO, AMBAR = fp.VERMELHO, fp.BRANCO, fp.AMBAR
 NA_REGRA = "Na regra"
 DENTRO = "Dentro das regras que a ficha confere"
 SEM_NOME = "Dê um nome"
+SEM_TAMANHO = "Sem tamanho (Promessa)"     # 14/10/2026 (B46): a Promessa não tem tamanho na régua do câmbio
 FORMA_INICIAL = "Projétil"
 NEUTRA, LIVRE, FECHADA = "Neutra", "Livre", "Fechada"
 # 10/10/2026 (B45): as formas de pacto que ocupam vaga saem do tecnica-do-livro.json (o permanente e o de restrição);
@@ -567,7 +568,9 @@ def celulas_da_aptidao(r0, c0):
 
 
 def celulas_do_pacto(r):
-    return {"nome": f"E{r}", "forma": f"L{r}", "modifica": f"P{r}", "dou": f"D{r + 2}", "recebo": f"L{r + 2}", "clausula": f"D{r + 7}"}
+    # 14/10/2026 (B46): o tamanho do ganho, pela régua do câmbio (livro R44, item 151), embaixo do que eu recebo
+    return {"nome": f"E{r}", "forma": f"L{r}", "modifica": f"P{r}", "dou": f"D{r + 2}", "recebo": f"L{r + 2}", "tamanho": f"P{r + 5}",
+            "clausula": f"D{r + 7}"}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -744,6 +747,7 @@ def trocas(layout, CAT=None, TEC=None):
              [[d["degrau"], d["espacos"], d["nivel"] or 0, d["refino"], _ini(d["abre_em"])] for d in R["dominio"]["degraus"]])
     D.tabela("pacto_forma", ["forma do pacto", "quando se fecha"], [[_ini(f["forma"]), f["quando"]] for f in R["pactos"]["formas"]])
     D.tabela("pacto_modifica", ["o pacto modifica"], [[_ini(c["modifica"])] for c in R["pactos"]["modifica"]])
+    D.tabela("pacto_tamanho", ["tamanho do ganho"], [[t_["tamanho"]] for t_ in R["pactos"]["regua"]] + [[SEM_TAMANHO]])
     formas_de_pacto = [_ini(f["forma"]) for f in R["pactos"]["formas"]]
     if PERMANENTE not in R["pactos"]["ocupa_vaga"] or any(o not in formas_de_pacto for o in R["pactos"]["ocupa_vaga"]):
         raise SystemExit("ficha_amaldicoada: as formas de pacto que ocupam vaga nao sao as do menu, ou o permanente saiu delas")
@@ -1110,9 +1114,9 @@ NOTAS = {
                     "muda nada: a caixa volta a mostrar o da CARTEIRA.",
     "atributo": "Escolhido na criação, e não muda. É o menu ATRIBUTO DE CONJURAÇÃO da FICHA: aqui ele aparece espelhado. Na "
                 "Técnica Marcial de arma, é o atributo da arma usada na Kata: a linha da rota mostra o de cada grupo.",
-    "rota_nome": "Vem da Origem escolhida na FICHA. O Fundamento é a rota das cinco Origens principais e da Restrição Celestial "
-                 "pelo corpo; o Sem Técnica, a da sub-origem; a Técnica Marcial, a do Corpo Amaldiçoado (com energia) e a da "
-                 "Restrição Celestial sem energia.",
+    "rota_nome": "Vem da Origem escolhida na FICHA. O Fundamento é a rota das cinco primeiras Origens e da Restrição Celestial "
+                 "no ramo Restrição corporal; o Sem Técnica, a opção separada das cinco primeiras; a Técnica Marcial, a do Corpo "
+                 "Amaldiçoado (com energia) e a da Restrição Celestial no ramo Sem Energia.",
     "rota_menu": "No Sem Técnica, a semente: a aptidão que vem aberta, sem os gates de nível e de refino, e é o assunto do "
                  "Fundamento. Ela conta como uma aptidão a mais. Na Técnica Marcial, o equipamento: três grupos de arma, ou uma "
                  "ferramenta, que declara se o golpe simples usa ela. No Fundamento, nada.",
@@ -1179,10 +1183,17 @@ NOTAS = {
     # proteção", que era a regra antiga (incluía o Traje, o Revestimento e o escudo)
     "apt_reacao": "Como Reação e 2 PE, reduz o dano de um golpe em 1,5 × refino, para baixo. Você perde só a proteção passiva "
                   "desta aptidão até o fim do seu próximo turno: Traje, Revestimento e escudo continuam dando a deles.",
+    # 14/10/2026 (B46, livro R44, itens 191 e 192): o temporário tem ganho temporário, a perda pode ser permanente, e
+    # nunca ocupa vaga; fora do próprio turno ele se fecha com a Reação, a um gatilho que o personagem perceba
     "vagas": "Metade da Essência, para baixo. Ocupam vaga o pacto permanente e o de restrição; Promessa e temporário não. "
+             "O temporário dá um ganho temporário, e a perda dele pode ser permanente: os dois prazos são combinados à parte. "
              "O de restrição pode existir sem vaga, com permissão do mestre: o aviso só aparece quando um permanente fica sem vaga.",
     "modifica": "O que o pacto muda: como um feitiço, a energia, uma aptidão ou um Estilo funciona. É uma mecânica única, "
                 "escrita com o mestre em O QUE EU RECEBO. Pacto não soma número nem dano.",
+    "tamanho": "A régua do câmbio mede o ganho; o preço acompanha. Pequeno: muda uma conjuração, ou vale uma cena. Médio: muda "
+               "de forma permanente como um feitiço ou uma ação sua funciona. Grande: muda de forma permanente como a sua "
+               "energia ou um Estilo inteiro funciona. Enorme: quebra um limite do sistema, uma vez. A Promessa não tem "
+               "tamanho. É referência para o mestre aprovar ou negar, e não uma tabela de conversão.",
 }
 
 
@@ -1646,7 +1657,10 @@ def aba(layout, tr):
         f.add("rot", "D", r + 1, "K", r + 1, "O QUE EU DOU")
         f.add("rot", "L", r + 1, "T", r + 1, "O QUE EU RECEBO")
         assert f.add("txt", "D", r + 2, "K", r + 5) == cel["dou"]
-        assert f.add("txt", "L", r + 2, "T", r + 5) == cel["recebo"]
+        assert f.add("txt", "L", r + 2, "T", r + 4) == cel["recebo"]
+        f.add("rot", "L", r + 5, "O", r + 5, "TAMANHO DO GANHO", NOTAS["tamanho"] if i == 0 else None)
+        assert f.add("cel", "P", r + 5, "T", r + 5) == cel["tamanho"]
+        f.menu(cel["tamanho"], D.faixa("pacto_tamanho", so=0, aba=DA))
         f.add("rot", "D", r + 6, "T", r + 6, "CLÁUSULA, COM QUEM FOI FECHADO E O QUE ACONTECE SE QUEBRAR")
         assert f.add("txt", "D", r + 7, "T", r + 8) == cel["clausula"]
 

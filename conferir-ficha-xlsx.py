@@ -405,34 +405,25 @@ _okF = (len(_cxF) == 2 and _eF[0]["aba"] == "FICHA"
         and [c_[1][0] for c_ in _cxF] == [IDX["resistências"], IDX["imunidades"]])
 checa("as caixas de resistências e de imunidades que o script estica são as da planilha: a mesclagem, a largura e a linha de baixo",
       _okF, json.dumps(_eF, ensure_ascii=False)[:300])
-_esp = next((x_ for x_ in _eP if x_["aba"] == "FICHA"), None)
 _dosP = [x_ for x_ in _eP if x_["aba"] == "FICHA PESSOAL"]
-_txt = next((x_ for x_ in _dosP if len(x_["textos"]) == 2), None)
-_dos = next((x_ for x_ in _dosP if len(x_["textos"]) > 2), None)
-_mesp = [_mescla_de(_wsF, IDX[k_]) for k_ in ("legado 1", "legado 2")]
+_dos = next((x_ for x_ in _dosP if len(x_["textos"]) > 3), None)
 def _caixas_batem(ws_, x_):
     """cada caixa do grupo é uma mesclagem da aba, com a largura e as linhas dela, e nenhuma linha tem altura própria"""
     ms_ = [_mescla_de(ws_, c_[1][-1] if len(c_[1]) > 1 else c_[1][0]) for c_ in x_["textos"]]
     return (all(ms_) and all(_px(m_) == c_[0] and _linhas_de(m_) == (c_[2], c_[2] + c_[3] - 1) and c_[4] == 0 for m_, c_ in zip(ms_, x_["textos"]))
             and all(ws_.row_dimensions[l_].height in (None, 15.75) for c_ in x_["textos"] for l_ in range(c_[2], c_[2] + c_[3])))
-_okP = bool(_esp and _txt and all(_mesp) and len(_eP) == 3
-            and all(_linhas_de(m_) == (c_[2], c_[2] + c_[3] - 1) and _px(m_) == c_[0] and c_[4] == 0 for m_, c_ in zip(_mesp, _esp["textos"]))
-            and _caixas_batem(_wsP, _txt) and [_mescla_de(_wsP, c_[1][0]) for c_ in _txt["textos"]] == _txt["gatilhos"]
-            and all(set(c_[1]) <= set(_esp["gatilhos"]) | {g_.split(":")[0] for g_ in _esp["gatilhos"]} for c_ in _esp["textos"])
-            # o espelho da FICHA lê as mesmas três caixas que o script mede
-            and all(all(a_ in str(_wsF[IDX[k_]].value).replace("$", "") for a_ in c_[1]) for k_, c_ in zip(("legado 1", "legado 2"), _esp["textos"])))
-checa("as caixas dos Legados que o script estica são as da planilha, na FICHA PESSOAL e no espelho da FICHA, e o espelho lê as três caixas que o script mede",
-      _okP, json.dumps(_eP, ensure_ascii=False)[:400])
-# 08/10/2026, do pente-fino: as caixas de texto do dossiê também (as cicatrizes cortavam com 189 letras). São as seis
-# caixas de texto livre do dossiê, num grupo só, porque dividem linhas
-_rot_dos = {"APARÊNCIA", "CICATRIZES", "TRAÇO · UMA FRASE DA SUA HISTÓRIA", "HISTÓRIA", "LAÇOS E ANOTAÇÕES", "PERSONALIDADE"}
-_acima = {str(_wsP[re.sub(r"\d+$", lambda m_: str(int(m_.group(0)) - 1), c_[1][0])].value) for c_ in (_dos["textos"] if _dos else [])}
-checa("as seis caixas de texto do dossiê esticam (aparência, cicatrizes, traço, história, laços e personalidade), cada uma com a mesclagem, a largura e as linhas dela",
-      bool(_dos) and _acima == _rot_dos and _caixas_batem(_wsP, _dos) and [_mescla_de(_wsP, c_[1][0]) for c_ in _dos["textos"]] == _dos["gatilhos"],
-      f"{sorted(_acima)} · {json.dumps(_dos, ensure_ascii=False)[:300]}")
-_cat_l = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))["legados"]
-_nomes_l = {n_ for o_ in _cat_l.values() for l_ in o_.values() for n_ in l_}
-_textos_l = {n_: l_[len(n_) + 2:] for l_ in open("manual.txt", encoding="utf-8").read().split("\n") for n_ in _nomes_l if l_.startswith(n_ + ". ")}
+# 14/10/2026 (B46): os Legados com tipo saíram do livro (R45), e a Origem tomou o lugar deles no dossiê: as três caixas de
+# texto das capacidades esticam juntas (o menu e a caixa disparam), e os Legados de história e o Talento de CE4, cada um
+# no seu grupo. Nenhuma caixa da FICHA estica mais pela FICHA PESSOAL
+import ficha_pessoal as _fp46
+_G46 = _fp46.geometria(_fp46.regras(CAT))
+_cap46 = next((x_ for x_ in _dosP if [c_[1][0] for c_ in x_["textos"]] == _G46["cap_texto"]), None)
+_leg46 = next((x_ for x_ in _dosP if [c_[1][0] for c_ in x_["textos"]] == [_G46["legados"]]), None)
+_ce446 = next((x_ for x_ in _dosP if [c_[1][0] for c_ in x_["textos"]] == [_G46["ce4"]]), None)
+checa("as três caixas de texto da Origem, a dos Legados de história e a do Talento de CE4 esticam, cada uma com a mesclagem, a largura e as linhas dela",
+      bool(_cap46 and _leg46 and _ce446) and all(_caixas_batem(_wsP, x_) for x_ in (_cap46, _leg46, _ce446))
+      and set(_G46["cap_menu"]) <= set(_cap46["gatilhos"]) and len(_eP) == 4 and not any(x_["aba"] == "FICHA" for x_ in _eP),
+      json.dumps(_eP, ensure_ascii=False)[:400])
 import habilidades as _hb_e
 def _cabe(texto, x_, k_):
     larg_, _, _, n_, fixo_ = x_["textos"][k_]
@@ -440,10 +431,39 @@ def _cabe(texto, x_, k_):
     pede_ = _hb_e.linhas_na_carta(texto, M_) * M_["linha"] + M_["respiro"]
     alt_ = max(M_["minima"], -(-(pede_ - fixo_) // n_))
     return alt_ * n_ + fixo_ >= pede_ and alt_ <= 400
-_nao_cabem = [n_ for n_, t_ in _textos_l.items()
-              if not (_esp and _txt and all(_cabe(f"{n_} · De exceção · {t_}", _esp, k_) and _cabe(t_, _txt, k_) for k_ in range(2)))]
-checa(f"os {len(_nomes_l)} Legados do livro cabem inteiros, esticados, na caixa da FICHA PESSOAL e no espelho da FICHA (o mais comprido tem {max(map(len, _textos_l.values()), default=0)} letras)",
-      len(_textos_l) == len(_nomes_l) == 85 and not _nao_cabem, f"{len(_textos_l)} textos achados · não cabem: {_nao_cabem[:5]}")
+_OL46 = json.load(open("ficha-v01/origens-do-livro.json", encoding="utf-8"))
+_marc46 = [c_["texto"] for o_ in _OL46["origens"] for c_ in o_["marcantes"]]
+_men46 = [c_["texto"] for o_ in _OL46["origens"] for c_ in o_["menores"]]
+_nao46 = [t_[:40] for t_ in _marc46 if not (_cap46 and _cabe(t_, _cap46, 0))] + \
+         [t_[:40] for t_ in _men46 if not (_cap46 and _cabe(t_, _cap46, 1) and _cabe(t_, _cap46, 2))]
+checa(f"as {len(_marc46)} marcantes e as {len(_men46)} menores do livro cabem inteiras, esticadas, na carta delas no dossiê (a mais comprida tem {max(map(len, _marc46 + _men46))} letras)",
+      len(_marc46) == 14 and len(_men46) == 67 and not _nao46, str(_nao46[:3]))
+# o menu de cada carta: a primeira opção é a criada com o mestre, e a lista do livro vem filtrada pela Origem da FICHA
+_dvP = {str(v_.sqref): str(v_.formula1) for v_ in _wsP.data_validations.dataValidation}
+def _lista_do_menu(a1):
+    f_ = next((v_ for k_, v_ in _dvP.items() if a1 in k_.split()), "")
+    m_ = re.search(r"DADOS!\$([A-Z]+)\$(\d+):\$([A-Z]+)\$(\d+)", f_)
+    return [dd[f"{m_.group(1)}{r_}"].value for r_ in range(int(m_.group(2)), int(m_.group(4)) + 1)] if m_ else []
+_lm, _ln = _lista_do_menu(_G46["cap_menu"][0]), _lista_do_menu(_G46["cap_menu"][1])
+checa("o menu da marcante e o das menores começam pela capacidade criada com o mestre e filtram o livro pela Origem da FICHA (e as menores pela marcante)",
+      bool(_lm and _ln) and _lm[0] == _ln[0] == _OL46["criada"] and "FILTER(" in str(_lm[1]) and '"marcante"' in str(_lm[1])
+      and "FILTER(" in str(_ln[1]) and '"menor"' in str(_ln[1]) and _G46["cap_menu"][0].replace("$", "") in str(_ln[1]).replace("$", "")
+      and _lista_do_menu(_G46["cap_menu"][2]) == _ln, f"{_lm[:2]} · {_ln[:2]}")
+_tx46 = [str(_wsP[c_].value) for c_ in _G46["cap_texto"]]
+checa("a caixa de texto de cada capacidade traz o texto do livro e fica vazia com a criada, e é do jogador (está nas livres)",
+      all(f'="{_OL46["criada"]}"' in t_ and ",6,FALSE)" in t_ for t_ in _tx46)
+      and all(c_ in json.loads(re.search(r'"nome":"FICHA PESSOAL".*?"livres":(\[[^\]]*\])', open("apps-script/Ficha.gs", encoding="utf-8").read(), re.S).group(1))
+              for c_ in _G46["cap_texto"]), str(_tx46[0])[:120])
+checa("o Codigo.gs devolve o texto do livro à caixa quando o menu volta a uma capacidade do livro",
+      "function textoDaCapacidade_(e)" in _CODA and "try { textoDaCapacidade_(e); }" in _CODA
+      and all(f"'{k_}'" in _CODA for k_ in ("texto da marcante", "texto do menor 1", "texto do menor 2")))
+# 08/10/2026, do pente-fino: as caixas de texto do dossiê também (as cicatrizes cortavam com 189 letras). São as seis
+# caixas de texto livre do dossiê, num grupo só, porque dividem linhas
+_rot_dos = {"APARÊNCIA", "CICATRIZES", "TRAÇO · UMA FRASE DA SUA HISTÓRIA", "HISTÓRIA", "LAÇOS E ANOTAÇÕES", "PERSONALIDADE"}
+_acima = {str(_wsP[re.sub(r"\d+$", lambda m_: str(int(m_.group(0)) - 1), c_[1][0])].value) for c_ in (_dos["textos"] if _dos else [])}
+checa("as seis caixas de texto do dossiê esticam (aparência, cicatrizes, traço, história, laços e personalidade), cada uma com a mesclagem, a largura e as linhas dela",
+      bool(_dos) and _acima == _rot_dos and _caixas_batem(_wsP, _dos) and [_mescla_de(_wsP, c_[1][0]) for c_ in _dos["textos"]] == _dos["gatilhos"],
+      f"{sorted(_acima)} · {json.dumps(_dos, ensure_ascii=False)[:300]}")
 # 09/10/2026 (B43): o descanso. O menu que o gerador escreve na FICHA tem de ser o que o Codigo.gs sabe aplicar (os
 # quatro tipos e o convite), a linha fica entre as barras e o estado, e o registro do último descanso nasce vazio.
 import estado_do_personagem as _ep43
@@ -458,7 +478,7 @@ checa("o menu do descanso da FICHA traz o convite e os quatro tipos que o Codigo
 _l43 = wb["FICHA"][_cd43].row if _cd43 else 0
 checa("a linha do descanso fica entre as barras e o estado, com o registro do último descanso ao lado, vazio",
       bool(_cd43 and _cu43) and wb["FICHA"][_cu43].value in (None, "") and wb["FICHA"][_cu43].row == _l43
-      and wb["FICHA"][IDX["integridade"]].row < _l43 < wb["FICHA"][IDX["sequelas"]].row
+      and wb["FICHA"][IDX["integridade"]].row < _l43 < wb["FICHA"][IDX["sequela 1"]].row
       and wb["FICHA"].cell(row=_l43 - 1, column=wb["FICHA"][_cd43].column).value == "DESCANSO"
       and wb["FICHA"].cell(row=_l43 - 1, column=wb["FICHA"][_cu43].column).value == "O ÚLTIMO DESCANSO", f"{_cd43} {_cu43}")
 checa("o Codigo.gs faz a conta do descanso pela tabela do livro (25, 15, 5 e nada), e o onEdit da FICHA o chama",
@@ -1644,8 +1664,68 @@ checa("a nota do retorno da invocação diz que a carga do talismã não abate o
       any("A carga do talismã não abate este preço" in t for t in _notas45["INVOCAÇÕES"]))
 checa("as Formas de área dizem, no arquivo de dados, metade do resultado do dano no sucesso do TR (R43, item 14)",
       all(CAT["formas"][f]["resolve"] == "TR; metade do resultado do dano no sucesso" for f in ("Explosão", "Aura", "Cone", "Linha")))
-checa("o arquivo de dados e o manual dizem de que livro saíram: o Ciclo Maldito R43",
-      "R43" in CAT["_meta"]["versao_dona"] and "R43" in json.load(open("manual-fonte.json", encoding="utf-8"))["livro"])
+
+# 14/10/2026 (B46): o livro R51. As Origens refeitas (R45), o Morrendo (R50 e R51), o ofício compatível e a criação de
+# entidades (R44), a régua do pacto e a Cortina (R44). O que o livro tirou não pode voltar por uma geração de arquivo velho.
+checa("o arquivo de dados e o manual dizem de que livro saíram: o Ciclo Maldito R51",
+      "R51" in CAT["_meta"]["versao_dona"] and "R51" in json.load(open("manual-fonte.json", encoding="utf-8"))["livro"])
+import estado_do_personagem as _ep46
+_A = lambda a1: re.sub(r"^([A-Z]+)(\d+)$", r"$\1$\2", a1)
+_F46 = wb["FICHA"]
+_cx46 = [IDX.get(k_) for k_ in _ep46.SEQUELAS]
+checa("as Sequelas são três caixinhas de marcar na FICHA, que nascem desmarcadas, e a janela conta as marcadas",
+      all(_cx46) and all(_F46[c_].value is False for c_ in _cx46) and "sequelas" not in IDX
+      and all(c_ in str(_F46.cell(row=_F46[_cx46[0]].row + 1, column=4).value).replace("$", "") for c_ in _cx46),
+      str(_cx46))
+_m46 = {k_: IDX.get(k_) for k_, _ in _ep46.MORRENDO}
+_sub46 = lambda a1: _F46.cell(row=_F46[a1].row + 1, column=_F46[a1].column).value
+_vm46, _cl46 = IDX["vida_max"], IDX["classe máxima"]
+checa("o Morrendo da FICHA: Aguentar 1/4 da vida máxima, Insistir 1/3 e 1/2 até 15 × a Classe, e o prazo de 3 rodadas menos as Sequelas",
+      all(_m46.values()) and f"ROUNDUP(N(FICHA!{_A(_vm46)})/4,0)" in str(_F46[_m46["morrendo aguentar"]].value)
+      and f"MIN(ROUNDUP(N(FICHA!{_A(_vm46)})/3,0),15*N(FICHA!{_A(_cl46)}))" in str(_F46[_m46["morrendo insistir 1"]].value)
+      and f"MIN(ROUNDUP(N(FICHA!{_A(_vm46)})/2,0),15*N(FICHA!{_A(_cl46)}))" in str(_F46[_m46["morrendo insistir 2"]].value)
+      and all(_A(c_) in str(_F46[_m46["morrendo prazo"]].value) for c_ in _cx46) and '"Derrotado na hora"' in str(_F46[_m46["morrendo prazo"]].value)
+      and "menos 1 por Sequela" in str(_sub46(_m46["morrendo prazo"])),
+      str({k_: str(_F46[v_].value)[:60] for k_, v_ in _m46.items() if v_}))
+checa("a linha do Morrendo fica entre as barras e o descanso",
+      all(_m46.values()) and _F46[IDX["integridade"]].row < _F46[_m46["morrendo aguentar"]].row < _F46[IDX["descanso"]].row)
+_o46 = {k_: IDX.get(k_) for k_, _ in _ep46.ORIGEM}
+checa("o espelho da FICHA mostra a marcante e as duas menores do dossiê, no lugar dos dois Legados",
+      all(_o46.values()) and "legado 1" not in IDX and "legado 2" not in IDX
+      and all(_G46["cap_menu"][k_].replace("$", "") in str(_F46[_o46[c_]].value).replace("$", "") for k_, (c_, _) in enumerate(_ep46.ORIGEM)))
+import painel_origem as _po46
+_pa46 = [c_ for l_ in _F46.iter_rows(min_col=48) for c_ in l_ if isinstance(c_.value, str) and c_.value.startswith("=") and "LEGADOS DE HISTÓRIA" in c_.value]
+_grp46 = re.search(r'"nome":"FICHA",.*?"grupos":(\{.*?\}),\s*"', open("apps-script/Ficha.gs", encoding="utf-8").read(), re.S)
+checa("o painel retrátil da FICHA fica à direita da AU, num grupo de colunas fechado, e lê as três cartas, o CE4 e os Legados do dossiê",
+      len(_pa46) == 1 and all(c_.replace("$", "") in _pa46[0].value.replace("$", "") for c_ in _G46["cap_texto"] + [_G46["legados"], _G46["ce4"]])
+      and bool(_grp46) and '"col":[[48,50,true,1]]' in _grp46.group(1).replace(" ", ""),
+      (_grp46.group(1)[:120] if _grp46 else "sem grupos"))
+_FG = open("apps-script/Ficha.gs", encoding="utf-8").read()
+checa("o Codigo.gs não fala mais do custo de Insistir em vida máxima, nem dos dois Legados",
+      "perdido por Insistir" not in _CODA and "custo de Insistir" not in _CODA and "'legado 1'" not in _CODA
+      and "1/8 do máximo" not in _FG and "Legado" not in re.sub(r"Legados? de história", "", _FG.split('"nome":"DADOS"')[0]))
+_ap46 = {a_["nome"]: a_ for a_ in _tec45["aptidoes"]}
+_pa46b = {p_["nome"]: p_ for p_ in _tec45["passivas"]} if isinstance(_tec45.get("passivas"), list) else {}
+checa("a Recomposição recupera 4 × a maior Classe e o Segundo Fôlego troca o tratamento por 1/4 (R50 e R51)",
+      "4 × sua maior Classe" in json.dumps(_tec45, ensure_ascii=False) and "1/4 do máximo de referência" in json.dumps(_tec45, ensure_ascii=False)
+      and "5 × sua maior Classe em pontos de vida" not in json.dumps(_tec45, ensure_ascii=False))
+checa("a Cortina tem o teto pelo Refino, 150, 300 e 400 m (R44, item 101)",
+      _ap46["Cortina"]["escala"] == "teto de 150 m no 1 a 3 · 300 m no 4 a 6 · 400 m no 7 ou mais" and "90 m" not in _ap46["Cortina"]["faz"])
+checa("o pacto temporário se fecha com a Ação Bônus no turno e com a Reação a um gatilho fora dele (R44, item 192)",
+      any(f_["forma"] == "Temporário" and "fora dele, com Reação a um gatilho percebido" in f_["quando"] for f_ in _tec45["pactos"]["formas"]))
+checa("cada pacto tem o menu do tamanho do ganho, com os quatro da régua e a Promessa sem tamanho (R44, item 151)",
+      [r_["tamanho"] for r_ in _tec45["pactos"]["regua"]] + ["Sem tamanho (Promessa)"] in _menus45 and _rot45.count("TAMANHO DO GANHO") == 3)
+_iv46 = wb["INVOCAÇÕES"]
+_ofi46 = [c_ for l_ in _iv46.iter_rows() for c_ in l_ if c_.value == "OFÍCIO COMPATÍVEL"]
+_liv46 = json.load(open("ficha-v01/invocacao-do-livro.json", encoding="utf-8"))
+checa("as 12 fichas da INVOCAÇÕES têm o ofício compatível, e a Criação acompanha o nível até o fim da Classe (R44, itens 188 e 189)",
+      len(_ofi46) == 12 and any(a_["nome"] == "Criação" and a_["ate_o_fim_da_classe"] for a_ in _liv46["aquisicoes"])
+      and any("acompanha o seu nível até o último nível da Classe" in t for t in _notas45["INVOCAÇÕES"]), f"{len(_ofi46)} caixas")
+checa("a Levanta, no arquivo de dados, encerra Morrendo abaixo do tratamento necessário (R50)",
+      "encerra Morrendo mesmo abaixo do tratamento necessário" in CAT["melhorias"]["Levanta"]["efeito"])
+checa("o menu de Origem tem o Híbrido e os dois ramos da Restrição Celestial com o nome do livro, e nenhum Feto",
+      "Híbrido" in _lista_o and "Restrição Celestial · Sem Energia" in _lista_o and "Restrição Celestial · Restrição corporal" in _lista_o
+      and not any("Feto" in str(x_) for x_ in _lista_o), str(_lista_o))
 
 print(f"\n{'A FICHA CONFERE' if not FALHAS else f'{len(FALHAS)} PROBLEMA(S)'}")
 sys.exit(1 if FALHAS else 0)

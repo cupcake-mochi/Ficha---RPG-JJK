@@ -145,6 +145,10 @@ def escala_de(S, valor):
     """o que o Refino (ou a Lapidação) escala: as colunas da tabela que começa por ele, ou as linhas quando ela está deitada"""
     for cab, fil in Lv.tabelas(S or []):
         if cab[0] == valor:
+            # 14/10/2026 (B46, livro R44, item 101): a tabela da Cortina tem faixas de Refino nas linhas ("1 a 3", "7 ou
+            # mais") e o teto na última coluna: o que escala é o teto, faixa por faixa
+            if fil and re.fullmatch(r"\d+ (?:a \d+|ou mais)", fil[0][0]):
+                return "teto de " + " · ".join(f"{_sem_ponto(f[-1]).replace('Até ', '')} no {f[0]}" for f in fil)
             e = " e ".join(f[0] for f in fil) if cab[1][:1].isdigit() else " e ".join(cab[1:])
             return e[:1].lower() + e[1:]
     return "—"
@@ -275,7 +279,12 @@ def pactos(cap15):
     vagas = [[e, int(v)] for e, v in tab(S, "Essência")]
     sem_numero = re_frase(r"Pactos não concedem bônus numérico a ataques, Defesa ou perícias\. Não existe pacto por dano\.", cap15)
     sem_vaga = re_frase(r"Com permissão do mestre, ele pode existir mesmo sem vaga\.", cap15)
-    return {"formas": formas_, "modifica": modifica, "ocupa_vaga": ocupa, "vagas": vagas,
+    # 14/10/2026 (B46, livro R44, item 151): a régua do câmbio mede o ganho em quatro tamanhos
+    regua = [{"tamanho": t_, "entrega": _sem_ponto(e_)} for t_, e_ in tab(sec("Régua do câmbio", cap15), "Tamanho")]
+    if [r_["tamanho"] for r_ in regua] != ["Pequeno", "Médio", "Grande", "Enorme"]:
+        raise SystemExit(f"extrair_tecnica: a régua do câmbio devia ter os quatro tamanhos, e tem {regua}")
+    return {"formas": formas_, "modifica": modifica, "ocupa_vaga": ocupa, "vagas": vagas, "regua": regua,
+            "regua_frase": Lv.frase("Promessa pequena, ganho pequeno; quem arrisca a vida pode pedir um ganho enorme."),
             "frase": Lv.frase(b.group(0)), "quantos": Lv.frase(q.group(0)), "fora_do_limite": Lv.frase(fora.group(0)),
             "sem_numero": Lv.frase(sem_numero.group(0)), "restricao_sem_vaga": Lv.frase(sem_vaga.group(0))}
 

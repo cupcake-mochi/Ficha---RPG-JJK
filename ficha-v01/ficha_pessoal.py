@@ -31,9 +31,15 @@ import indice_ficha as ix
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NOME = "FICHA PESSOAL"
-TIPOS_DE_LEGADO = ("Narrativo", "De rolagem", "De exceção")
-# a caixa do texto de cada Legado, no dossiê: de que coluna a que coluna, e quantas linhas (elas esticam com o texto)
-LEGADO_COLUNAS, LEGADO_LINHAS = (("D", "W"), ("Y", "AT")), 3
+# 14/10/2026 (B46): a Origem no dossiê, no lugar dos dois Legados (o livro R45 refez as Origens). A marcante e as duas
+# menores, cada uma com o menu, o texto do livro embaixo e a frequência, em três cartas lado a lado (a forma A do estudo
+# mockup/origens-estudo.html). O texto estica com o tamanho; o mais comprido do livro passa de 4.700 letras
+CAPS = (("marcante", "MARCANTE", ("D", "P")), ("menor 1", "MENOR 1", ("R", "AF")), ("menor 2", "MENOR 2", ("AH", "AT")))
+# as linhas de partida das caixas de texto que esticam. As das capacidades são seis porque o texto mais comprido do livro
+# (o Ataque sem Prenúncio, na carta da marcante) pede uns 2.000 px, e o esticarCaixas_ divide a altura pelas linhas
+CAP_LINHAS, LEG_LINHAS, CE4_LINHAS = 6, 2, 2
+L_LEG = 38 + CAP_LINHAS                        # o rótulo dos Legados de história, contado da última linha do título
+L_CE4 = L_LEG + LEG_LINHAS + 2                 # o rótulo do Talento de CE4
 FP = f"'{NOME}'!"
 
 # ---------------------------------------------------------------------------------------------
@@ -65,7 +71,7 @@ ULT = len(PX_BLOCO) - 1              # a última coluna de um bloco
 FX = 2
 EQUIP_MENU, EQUIP_LIVRE, ITENS_LINHAS = 6, 2, 6
 L_DOSSIE = 8
-DOSSIE_LINHAS = 35                   # 08/10/2026 (B41): eram 27; entraram o traço, as cicatrizes e os dois Legados
+DOSSIE_LINHAS = L_CE4 + CE4_LINHAS   # 27 até o B41; 35 com o traço, as cicatrizes e os dois Legados; 50 com a Origem (B46)
 L_USO = L_DOSSIE + FX + DOSSIE_LINHAS + 1
 L_TREINO = L_USO + FX + 5 + 1        # em uso: rótulo, valor em duas linhas, detalhe e marcas
 L_FILEIRA = L_TREINO + FX + 13 + 1   # a lista de treino tem 13 linhas
@@ -239,6 +245,9 @@ def regras(CAT=None):
         "leve": leve, "limite_base": int(re.match(r"(\d+) \+ Força", eq["volume"]["limite"]).group(1)),
         "tipos": tipos, "multiplicadores": list(fora["xp_adicional"].items()), "descontos": descontos(CAT["missoes"]),
         "niveis": CAT["progressao"]["tabela_impressa"], "limiar": CAT["progressao"]["limiar_do_feito"]["nivel"],
+        # 14/10/2026 (B46): as Origens do livro R45, que o extrair_origens.py lê do capítulo 5
+        "origens_do_livro": json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "origens-do-livro.json"),
+                                           encoding="utf-8")),
     }
 
 
@@ -249,10 +258,15 @@ def geometria(R):
     d, u = L_DOSSIE + FX - 1, L_USO + FX - 1          # a última linha do título: o que vem embaixo conta dela
     g = {
         "grau": f"AB{d + 2}", "nome": f"Q{d + 2}", "historia": f"Q{d + 18}",
-        # 08/10/2026 (B41): o traço, as cicatrizes e os dois Legados (o nome, o tipo e o que faz)
+        # 08/10/2026 (B41): o traço e as cicatrizes
         "traco": f"Q{d + 14}", "cicatrizes": f"AI{d + 10}",
-        "legado_nome": [f"D{d + 32}", f"Y{d + 32}"], "legado_tipo": [f"Q{d + 32}", f"AM{d + 32}"],
-        "legado_texto": [f"D{d + 33}", f"Y{d + 33}"],
+        # 14/10/2026 (B46): a Origem, no lugar dos dois Legados: a linha de cima (a Origem, as perícias e a rota), as três
+        # cartas (o menu, o texto e a frequência), os Legados de história com o ofício compatível, e o Talento de CE4
+        "origem_fp": f"D{d + 32}", "pericia_origem": f"R{d + 32}", "rota_origem": f"AH{d + 32}",
+        "cap_menu": [f"{c1}{d + 35}" for _, _, (c1, _) in CAPS],
+        "cap_texto": [f"{c1}{d + 36}" for _, _, (c1, _) in CAPS],
+        "cap_freq": [f"{c1}{d + 36 + CAP_LINHAS}" for _, _, (c1, _) in CAPS],
+        "legados": f"D{d + L_LEG + 1}", "oficio": f"AH{d + L_LEG + 1}", "oficio_sub": f"AH{d + L_LEG + 2}", "ce4": f"D{d + L_CE4 + 1}",
         "principal": f"D{u + 2}", "secundaria": f"S{u + 2}", "vestindo": f"AH{u + 2}",
         "det_principal": f"D{u + 4}", "det_secundaria": f"S{u + 4}", "det_vestindo": f"AH{u + 4}",
         "marca_treino": f"D{u + 5}", "marca_forca_p": f"K{u + 5}",
@@ -463,6 +477,10 @@ def trocas(layout, CAT=None):
     # paleta do Codigo.gs grava aqui a cor do tema. As barras leem esta célula, e por isso mudam sem ninguém
     # reescrever fórmula. O âmbar e o vermelho de vida baixa continuam fixos (decisão A5).
     conta(COR_DA_BARRA, f"#{OSSO[2:]}")
+    # 14/10/2026 (B46): a Origem escolhida na FICHA, sem a opção Sem Técnica, que é como o origens-do-livro.json a chama
+    import ficha_automatica as _fa_o
+    conta("origem da ficha", f'=SUBSTITUTE({_A(idx["origem"], "FICHA!")},"{_fa_o.SEM_TECNICA}","")')
+    conta("sem técnica", f'=IF(ISNUMBER(SEARCH("{_fa_o.SEM_TECNICA}",{_A(idx["origem"], "FICHA!")})),1,0)')
     for i, (nome, form) in enumerate(contas, start=1):
         cel["DADOS"][f"{ix._letras(c_contas)}{lin_cab + i}"] = (nome, ref_txt)
         cel["DADOS"][f"{ix._letras(c_contas + 1)}{lin_cab + i}"] = (form, ref_num)
@@ -562,11 +580,37 @@ def trocas(layout, CAT=None):
         ("em uso", faixas_(_a1(C("D"), L_USO), _a1(C("AT"), L_USO + FX + 4))),
         ("fileira", faixas_(_a1(C("D"), L_FILEIRA), _a1(C("AT"), L_FILEIRA + 2))),
         (COR_DA_BARRA, _endereco(H[COR_DA_BARRA].replace("DADOS!", "").replace("$", ""), "DADOS!")),
+        # 14/10/2026 (B46): a Origem do dossiê. O Codigo.gs devolve o texto do livro à caixa da capacidade quando o menu
+        # volta a uma do livro, e a caixa é do jogador quando a capacidade é criada com o mestre
+        *[(campo, _endereco(G["cap_menu"][k_], FP)) for k_, (campo, _, _) in enumerate(CAPS)],
+        *[(f"texto da {campo}" if campo == "marcante" else f"texto do {campo}", _endereco(G["cap_texto"][k_], FP))
+          for k_, (campo, _, _) in enumerate(CAPS)],
+        ("legados de história", _endereco(G["legados"], FP)), ("ofício compatível", _endereco(G["oficio"], FP)),
+        ("talento de categoria de efeito 4", _endereco(G["ce4"], FP)),
     ]
     col_i = tabela("indice", ["campo pessoal", "célula pessoal"], [[k, v] for k, v in indice])
-    # 08/10/2026 (B41): os três tipos de Legado do livro (Origens e Legados). A tabela vai por último, depois do índice,
-    # para as colunas de antes não mudarem de lugar: o Codigo.gs acha o índice desta aba numa coluna fixa
-    tabela("legado_tipo", ["tipo de legado"], [[t_] for t_ in TIPOS_DE_LEGADO])
+    # 14/10/2026 (B46): as Origens do livro R45, do origens-do-livro.json (extrair_origens.py). As tabelas vão por último,
+    # depois do índice, para as colunas de antes não mudarem de lugar: o Codigo.gs acha o índice desta aba numa coluna
+    # fixa. A das capacidades: toda marcante e toda menor, com a Origem dela, o que ela exige (o clã ou a modalidade da
+    # marcante), a frequência e o texto inteiro. Os menus filtram pela Origem da FICHA e pela marcante escolhida; o
+    # primeiro item de cada um é a capacidade criada com o mestre
+    OL = R["origens_do_livro"]
+    caps = ([[c_["nome"], o_["menu"], "marcante", "", c_["freq"], c_["texto"]] for o_ in OL["origens"] for c_ in o_["marcantes"]] +
+            [[c_["nome"], o_["menu"], "menor", c_["exige"] or "", c_["freq"], c_["texto"]] for o_ in OL["origens"] for c_ in o_["menores"]])
+    tabela("origem_cap", ["capacidade da origem", "origem da capacidade", "tipo da capacidade", "exige", "frequência da capacidade",
+                          "texto da capacidade"], caps)
+    tabela("origem_base", ["origem do dossiê", "perícias da origem", "rota da origem"],
+           [[o_["menu"], ", ".join(o_["pericias"][:-1]) + " ou " + o_["pericias"][-1], o_["rota"]] for o_ in OL["origens"]])
+    NOMES_C, ORIS_C, TIPOS_C, EXIGE_C = (faixa_t("origem_cap", so=k_) for k_ in range(4))
+    BASE, MARC = H["origem da ficha"], _A(G["cap_menu"][0], FP)
+    n_marc = max(len(o_["marcantes"]) for o_ in OL["origens"])
+    n_men = max(len(o_["menores"]) for o_ in OL["origens"])
+    tabela("menu_marcante", ["menu da marcante"],
+           [[OL["criada"]], [f'=IFERROR(FILTER({NOMES_C},{ORIS_C}={BASE},{TIPOS_C}="marcante"),"")']] + [[None]] * (n_marc - 1))
+    tabela("menu_menor", ["menu das menores"],
+           [[OL["criada"]], [f'=IFERROR(FILTER({NOMES_C},{ORIS_C}={BASE},{TIPOS_C}="menor",({EXIGE_C}="")+({EXIGE_C}={MARC})),"")']]
+           + [[None]] * (n_men - 1))
+    tabela("oficio_compat", ["ofício compatível"], [[o_] for o_ in CAT["oficios"]])
 
     # as colunas depois do índice são desta limpeza: o que uma exportação trouxer de uma rodada anterior é
     # reescrito, e a célula que sobrar fica vazia. Antes delas, nada pode ser tocado.
@@ -602,32 +646,56 @@ def trocas(layout, CAT=None):
     if idx.get("exaustão"):
         metros = f'MIN(IF(N({_A(idx["exaustão"])})>=2,{_ep.LIMITE_DA_EXAUSTAO},9999),{metros})'
     cel["FICHA"][des_c] = (f'=IF({H["parado pela carga"]}=1,0,{metros})&" m"', des_c)
-    # e o espelho dos dois Legados: o nome, o tipo e o que faz, como estão escritos no dossiê
-    for k_, campo in enumerate(("legado 1", "legado 2")):
+    # 14/10/2026 (B46): o espelho da Origem, embaixo das barras (estado_do_personagem.py): o nome de cada capacidade e a
+    # frequência dela, do livro, ou "Criada com o mestre"
+    CAP_TAB = faixa_t("origem_cap")
+    for k_, (campo, _, _) in enumerate(CAPS):
         if idx.get(campo):
-            nm, tp, tx = (_A(G[q][k_], FP) for q in ("legado_nome", "legado_tipo", "legado_texto"))
-            cel["FICHA"][idx[campo]] = (f'=IF({nm}="","",{nm}&IF({tp}="",""," · "&{tp})&IF({tx}="","",": "&{tx}))', idx[campo])
+            mn = _A(G["cap_menu"][k_], FP)
+            l_, c_ = ix._lc(idx[campo])
+            freq_c = f"{ix._letras(c_)}{l_ + 1}"
+            cel["FICHA"][idx[campo]] = (f'=IF({mn}="","—",IF({mn}="{R["origens_do_livro"]["criada"]}","Criada com o mestre",{mn}))', idx[campo])
+            cel["FICHA"][freq_c] = (f'=IF({mn}="","escolha na FICHA PESSOAL",IFERROR(VLOOKUP({mn},{CAP_TAB},5,FALSE),'
+                                    f'"criada com o mestre"))', freq_c)
+    # 14/10/2026 (B46): o Morrendo (livro R50 e R51). Ao cair, Aguentar pede 1/4 da vida máxima, para cima, sem teto;
+    # Insistir, 1/3 na primeira vez da cena e 1/2 nas seguintes, para cima, até 15 × a maior Classe; o prazo é de 3 rodadas
+    # menos 1 por Sequela, e com três o personagem fica Derrotado na hora. A conta lê a vida máxima e a CLASSE MÁXIMA
+    if idx.get("morrendo aguentar"):
+        VM, CL = f'N({_A(idx["vida_max"], "FICHA!")})', f'N({_A(idx["classe máxima"], "FICHA!")})'
+        SEQ = "+".join(f'N({_A(idx[k_], "FICHA!")})' for k_ in _ep.SEQUELAS if idx.get(k_))
+        sub = lambda campo: (lambda l_, c_: f"{ix._letras(c_)}{l_ + 1}")(*ix._lc(idx[campo]))
+        teto = f"15*{CL}"
+        frac = lambda d_: f"ROUNDUP({VM}/{d_},0)"
+        morrendo = {
+            "morrendo aguentar": (f"={frac(4)}", '="¼ da vida máxima, para cima"'),
+            "morrendo insistir 1": (f"=MIN({frac(3)},{teto})",
+                                    f'=IF({frac(3)}>{teto},"⅓ da vida máxima, no teto de 15 × Classe","⅓ da vida máxima, para cima")'),
+            "morrendo insistir 2": (f"=MIN({frac(2)},{teto})",
+                                    f'=IF({frac(2)}>{teto},"½ da vida máxima, no teto de 15 × Classe","½ da vida máxima, para cima")'),
+            "morrendo prazo": (f'=IF({SEQ}>=3,"Derrotado na hora",(3-({SEQ}))&IF(3-({SEQ})=1," rodada"," rodadas"))',
+                               '="3 rodadas, menos 1 por Sequela marcada"'),
+        }
+        for campo, (num, txt) in morrendo.items():
+            cel["FICHA"][idx[campo]] = (num, idx[campo])
+            cel["FICHA"][sub(campo)] = (txt, sub(campo))
     # 10/10/2026 (B45): a Defesa (defesa_equipamento.py) fica como o defesa_equipamento a escreve. Até aqui esta aba
     # tirava dela a proteção da peça usada sem a Força; no livro final a peça protege normalmente
     menus_sai = [m_["onde"] for m_ in ficha["menus"] if eq_c in m_["onde"].split()]
-    # 08/10/2026: as caixas dos Legados esticam com o texto. O Legado do livro vai de 58 a 546 letras, e a caixa de
-    # três linhas daqui e o espelho de duas linhas da FICHA cortavam a maior parte deles. Escrever o nome, o tipo ou o
-    # texto de um Legado acerta a altura da caixa de texto desta aba e a do espelho da FICHA (o esticarCaixas_ do
-    # Codigo.gs; a medida é a da carta de Habilidades). O espelho junta o nome, o tipo e o texto, e é isso que se mede
-    estica = []
-    if idx.get("legado 1") and idx.get("legado 2"):
-        lin_esp = ix._lc(idx["legado 1"])[0]
-        cx = [[G[q][k_] for q in ("legado_nome", "legado_tipo", "legado_texto")] for k_ in range(2)]
-        caixas_tx = [f"{c1_}{ix._lc(G['legado_texto'][k_])[0]}:{c2_}{ix._lc(G['legado_texto'][k_])[0] + LEGADO_LINHAS - 1}"
-                     for k_, (c1_, c2_) in enumerate(LEGADO_COLUNAS)]
-        gatilhos = [G[q][k_] for k_ in range(2) for q in ("legado_nome", "legado_tipo")] + caixas_tx
-        lin_tx = ix._lc(G["legado_texto"][0])[0]
-        estica = [
-            {"gatilhos": gatilhos, "aba": "FICHA",
-             "textos": [[_ep.largura_px(*_ep.METADES[k_]), cx[k_], lin_esp, _ep.LEGADO_LINHAS, 0] for k_ in range(2)]},
-            {"gatilhos": caixas_tx, "aba": NOME,
-             "textos": [[_ep.largura_px(*LEGADO_COLUNAS[k_]), [G["legado_texto"][k_]], lin_tx, LEGADO_LINHAS, 0] for k_ in range(2)]},
-        ]
+    # 14/10/2026 (B46): as caixas de texto da Origem esticam com o texto, como os Legados esticavam: o texto do livro (que
+    # muda quando o menu muda) ou o da capacidade criada, que o jogador escreve. Escrever no menu ou na caixa acerta a
+    # altura das linhas dela (o esticarCaixas_ do Codigo.gs; a medida é a da carta de Habilidades). As três cartas dividem
+    # as linhas, e por isso vão num grupo só
+    linhas_cap = ix._lc(G["cap_texto"][0])[0]
+    caixas_cap = [f"{c1_}{linhas_cap}:{c2_}{linhas_cap + CAP_LINHAS - 1}" for _, _, (c1_, c2_) in CAPS]
+    l_leg, l_ce4 = ix._lc(G["legados"])[0], ix._lc(G["ce4"])[0]
+    estica = [
+        {"gatilhos": list(G["cap_menu"]) + caixas_cap, "aba": NOME,
+         "textos": [[_ep.largura_px(c1_, c2_), [G["cap_texto"][k_]], linhas_cap, CAP_LINHAS, 0] for k_, (_, _, (c1_, c2_)) in enumerate(CAPS)]},
+        {"gatilhos": [f"D{l_leg}:AF{l_leg + LEG_LINHAS - 1}"], "aba": NOME,
+         "textos": [[_ep.largura_px("D", "AF"), [G["legados"]], l_leg, LEG_LINHAS, 0]]},
+        {"gatilhos": [f"D{l_ce4}:AT{l_ce4 + CE4_LINHAS - 1}"], "aba": NOME,
+         "textos": [[_ep.largura_px("D", "AT"), [G["ce4"]], l_ce4, CE4_LINHAS, 0]]},
+    ]
     return {"celulas": cel, "menus_sai": {"FICHA": menus_sai}, "dados_colunas": (c0, prox[0] - 2),
             "H": H, "T": T, "faixa_t": faixa_t, "R": R, "G": G, "indice_coluna": col_i, "lin_cab": lin_cab,
             "notas_coluna": col_n, "esticam": estica}
@@ -701,10 +769,27 @@ NOTAS = {
     "cicatrizes": "Depois da segunda queda na mesma missão, registre com o mestre se ficou uma cicatriz e como ela é. Você "
                   "escolhe se ela dá vantagem em Intimidação e desvantagem em Persuasão, ou nenhum dos dois: escreva a escolha "
                   "aqui. A cura não a apaga.",
-    "legado": "Você escolhe dois na criação, da lista da sua Origem ou escritos com o mestre; pelo menos um é narrativo. "
-              "Escreva o nome aqui e o que ele faz na caixa de baixo, com a frequência de uso. A FICHA mostra os dois.",
-    "legado_tipo": "Narrativo: uma pessoa, informação, relação ou acesso. De rolagem: vantagem, repetição ou mudança de um "
-                   "teste. De exceção: dispensa uma exigência ou impede um efeito, com uma contrapartida.",
+    # 14/10/2026 (B46): a Origem do livro R45, no lugar dos dois Legados
+    "origem": "Vem da FICHA: a Origem é escolhida no menu ORIGEM de lá. Ela dá a base de treinos (uma perícia da lista, uma "
+              "livre, dois ofícios, um TR e o traço), uma capacidade marcante e duas menores. Sem Técnica não ocupa nenhuma "
+              "delas.",
+    "pericia_origem": "Escolha uma destas e marque o treino na FICHA. As outras escolhas da base (a perícia livre, os dois "
+                      "ofícios ou mais uma perícia livre, e um TR diferente do que o Caminho dá) também se marcam lá.",
+    "rota_origem": "Como você cria as capacidades: Fundamento, Manejos (com Sem Técnica) ou Técnica Marcial. Vem da Origem.",
+    "marcante": "A capacidade central da Origem, ou a modalidade dela (o clã do Descendente, a Coexistência ou o Conflito do "
+                "Receptáculo, o corpo da Restrição corporal). O menu mostra as da sua Origem. Para uma marcante criada com o "
+                "mestre, escolha a primeira opção ou escreva o nome, e escreva o que ela faz na caixa de baixo.",
+    "menor": "Duas menores diferentes do catálogo da sua Origem; as exclusivas de um clã ou de uma modalidade só aparecem com "
+             "ela. Para uma menor criada com o mestre, escolha a primeira opção ou escreva o nome, e escreva o que ela faz "
+             "na caixa de baixo: ação, custo, frequência e limites. A FICHA mostra o nome e a frequência embaixo das barras.",
+    "legados": "Pessoas, compromissos e acontecimentos da sua história: quem está envolvido, o que aconteceu e o que continua "
+               "aberto. Não dão benefício na ficha e não gastam a marcante nem as menores.",
+    "oficio": "Só no Corpo Amaldiçoado: o ofício que repara o seu corpo (Entalhador para madeira, pedra ou osso; Forja para "
+              "metal; Alfaiate para pano). A lista não é fechada: escreva outro, se for o caso. O reparo, num descanso curto, "
+              "recupera metade da vida máxima, um terço com o reparador uma Classe abaixo e um quarto com duas ou mais.",
+    "ce4": "Só na Restrição corporal: o Talento de Categoria de Efeito 4 ligado à técnica, recebido na criação, fora dos "
+           "espaços conhecidos e dos cinco Talentos pagos. Escreva o que a exceção permite, os limites e as consequências, "
+           "como combinado com o mestre.",
     "principal": "Para uma arma aparecer neste menu, escolha ela antes nos EQUIPÁVEIS GUARDADOS, mais abaixo nesta aba. "
                  "O menu lista o Soco e o que estiver guardado lá. Com arma de duas mãos aqui, a mão secundária fica "
                  "ocupada. A linha de baixo mostra o dado e as propriedades, e a nota dela diz o que cada uma faz.",
@@ -840,6 +925,9 @@ def aba(layout, tr):
     if not foto:
         raise SystemExit("ficha_pessoal: a CARTEIRA não declara a caixa da foto (moldura_foto.py)")
     foto_fp = f.add("foto", "D", L + 1, "O", L + 19, f"={_abs(foto[1], foto[0], 'CARTEIRA!')}", NOTAS["foto"])
+    # as caixas que nascem com conta e o jogador escreve por cima: a foto, a caixa de texto de cada capacidade da Origem
+    # (B46) e, lá embaixo, o Volume de cada item
+    livres = [foto_fp]
     # 08/10/2026, do pente-fino no Sheets: "Cicatrizes: um texto de 189 caracteres ... ficou cortado". As caixas de
     # texto do dossiê esticam com o que for escrito, todas (a história e os laços cortariam do mesmo jeito). Elas
     # dividem linhas entre si (a personalidade, à esquerda, com a história e os laços, à direita), e por isso vão num
@@ -861,7 +949,8 @@ def aba(layout, tr):
     f.caixa("AO", "AT", L + 5, "GÊNERO")
     # 08/10/2026 (B41), a forma B do estudo da revisão: as cicatrizes dividem a linha da aparência, o traço entra em
     # cima da história, e os dois Legados fecham o dossiê, de ponta a ponta. Os Legados são texto livre ("da pra criar
-    # legado, ent n precisa fazer lista"), com o tipo num menu, e a FICHA os espelha embaixo das barras.
+    # legado, ent n precisa fazer lista"), com o tipo num menu, e a FICHA os espelha embaixo das barras. No B46 (14/10/2026)
+    # o livro R45 tirou os Legados com tipo, e a Origem tomou o lugar deles.
     f.add("rot", "Q", L + 9, "AG", L + 9, "APARÊNCIA")
     texto_do_dossie("Q", L + 10, "AG", L + 11)
     f.add("rot", "AI", L + 9, "AT", L + 9, "CICATRIZES", NOTAS["cicatrizes"])
@@ -873,14 +962,45 @@ def aba(layout, tr):
     f.add("rot", "Q", L + 25, "AT", L + 25, "LAÇOS E ANOTAÇÕES")
     texto_do_dossie("Q", L + 26, "AT", L + 29)
     estica_do_dossie = {"gatilhos": [c_[5] for c_ in do_dossie], "aba": NOME, "textos": [c_[:5] for c_ in do_dossie]}
-    for k, ((n1, n2), (t1, t2)) in enumerate(((("D", "P"), ("Q", "W")), (("Y", "AL"), ("AM", "AT")))):
-        assert (n1, t2) == LEGADO_COLUNAS[k]
-        f.add("rot", n1, L + 31, n2, L + 31, f"LEGADO {k + 1}", NOTAS["legado"])
-        f.add("rot", t1, L + 31, t2, L + 31, "TIPO", NOTAS["legado_tipo"])
-        assert f.add("cel_esq", n1, L + 32, n2, L + 32) == G["legado_nome"][k]
-        assert f.add("cel", t1, L + 32, t2, L + 32) == G["legado_tipo"][k]
-        assert f.add("txt", n1, L + 33, t2, L + 33 + LEGADO_LINHAS - 1) == G["legado_texto"][k]
-    f.menu(" ".join(G["legado_tipo"]), tr["faixa_t"]("legado_tipo"))
+    # 14/10/2026 (B46): a Origem fecha o dossiê, no lugar dos dois Legados. O Mizuki, do estudo: "A, mas tem q ter a
+    # opção da pessoa colocar a versão 'criavel' dele". A linha de cima diz a Origem da FICHA, as perícias e a rota; as três
+    # cartas têm o menu (o primeiro item é a capacidade criada com o mestre, e o menu também aceita um nome escrito), o
+    # texto do livro e a frequência. Com a criada, a caixa de texto é do jogador
+    OL, TAB_C = R["origens_do_livro"], tr["faixa_t"]("origem_cap")
+    TAB_B = tr["faixa_t"]("origem_base")
+    f.add("rot", "D", L + 31, "P", L + 31, "ORIGEM", NOTAS["origem"])
+    f.add("rot", "R", L + 31, "AF", L + 31, "PERÍCIA DA ORIGEM · UMA DESTAS", NOTAS["pericia_origem"])
+    f.add("rot", "AH", L + 31, "AT", L + 31, "ROTA DE CRIAÇÃO", NOTAS["rota_origem"])
+    BASE = H["origem da ficha"]
+    assert f.add("cel", "D", L + 32, "P", L + 32, f'=IF(FICHA!{_A(ix.indice(layout)["origem"])}="","escolha na FICHA",'
+                                                  f'FICHA!{_A(ix.indice(layout)["origem"])})') == G["origem_fp"]
+    assert f.add("cel", "R", L + 32, "AF", L + 32, f'=IFERROR(VLOOKUP({BASE},{TAB_B},2,FALSE),"—")') == G["pericia_origem"]
+    assert f.add("cel", "AH", L + 32, "AT", L + 32,
+                 f'=IF({H["sem técnica"]}=1,"Manejos (Sem Técnica)",IFERROR(VLOOKUP({BASE},{TAB_B},3,FALSE),"—"))') == G["rota_origem"]
+    criada = OL["criada"]
+    for k, (campo, rot, (c1, c2)) in enumerate(CAPS):
+        f.add("rot", c1, L + 34, c2, L + 34, rot, NOTAS[campo.split()[0]])
+        mn = f.add("cel_esq", c1, L + 35, c2, L + 35)
+        assert mn == G["cap_menu"][k]
+        M_ = _A(mn)
+        tx = f.add("txt", c1, L + 36, c2, L + 35 + CAP_LINHAS,
+                   f'=IF(OR({M_}="",{M_}="{criada}"),"",IFERROR(VLOOKUP({M_},{TAB_C},6,FALSE),""))')
+        assert tx == G["cap_texto"][k]
+        livres.append(tx)
+        assert f.add("peq", c1, L + 36 + CAP_LINHAS, c2, L + 36 + CAP_LINHAS,
+                     f'=IF({M_}="","escolha no menu acima",IFERROR(VLOOKUP({M_},{TAB_C},5,FALSE)&" · do livro",'
+                     f'"criada com o mestre · escreva o texto acima"))') == G["cap_freq"][k]
+        f.menu(mn, tr["faixa_t"]("menu_marcante" if campo == "marcante" else "menu_menor", so=0))
+    f.add("rot", "D", L + L_LEG, "AF", L + L_LEG, "LEGADOS DE HISTÓRIA · SEM EFEITO NA FICHA", NOTAS["legados"])
+    assert f.add("txt", "D", L + L_LEG + 1, "AF", L + L_LEG + LEG_LINHAS) == G["legados"]
+    f.add("rot", "AH", L + L_LEG, "AT", L + L_LEG, "OFÍCIO COMPATÍVEL", NOTAS["oficio"])
+    assert f.add("cel", "AH", L + L_LEG + 1, "AT", L + L_LEG + 1) == G["oficio"]
+    assert f.add("peq", "AH", L + L_LEG + 2, "AT", L + L_LEG + 2,
+                 f'=IF({BASE}="Corpo Amaldiçoado",IF({_A(G["oficio"])}="","escolha o ofício que repara o seu corpo","o que repara o seu corpo"),'
+                 f'"só no Corpo Amaldiçoado")') == G["oficio_sub"]
+    f.menu(G["oficio"], tr["faixa_t"]("oficio_compat"))
+    f.add("rot", "D", L + L_CE4, "AT", L + L_CE4, "TALENTO DE CATEGORIA DE EFEITO 4 · SÓ NA RESTRIÇÃO CORPORAL", NOTAS["ce4"])
+    assert f.add("txt", "D", L + L_CE4 + 1, "AT", L + L_CE4 + CE4_LINHAS) == G["ce4"]
     f.menu(G["grau"], tr["faixa_t"]("grau", so=0))
 
     # --- em uso: as duas mãos e o que está vestido
@@ -990,7 +1110,6 @@ def aba(layout, tr):
 
     # --- os itens guardados
     L = _titulo(f, L_ITENS, "D", "AT", "ITENS GUARDADOS")
-    livres = [foto_fp]
     for cols in COLS_ITENS:
         (_, i1, i2), (_, q1, q2), (_, v1, v2) = cols
         f.add("rot", i1, L + 1, i2, L + 1, "ITEM")

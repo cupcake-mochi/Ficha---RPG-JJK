@@ -3,7 +3,7 @@
 
 Uso: python3 extrair-manual.py <clone do JJK---Project>
 
-Desde 10/10/2026 (B45) o livro do sistema é o livro final, o Ciclo Maldito R42, em
+Desde 10/10/2026 (B45) o livro do sistema é o livro final, o Ciclo Maldito (R43; desde 14/10/2026, B46, o R51), em
 sistema/05-material/livro/ciclo-maldito-r41/LIVRO-COMPLETO.md (a pasta guarda o nome da edição R41).
 De 04/10 a 09/10/2026 a fonte foi a candidata editorial reconstruída, em
 planejamento-editorial/consolidacao/lote-01/LIVRO-COMPLETO.md, que não recebeu a revisão de regras
@@ -18,7 +18,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent
 REL = "sistema/05-material/livro/ciclo-maldito-r41/LIVRO-COMPLETO.md"
-LIVRO = "Ciclo Maldito R43, o livro final, como está na v0.357 do JJK---Project (lido em 10/10/2026)"
+LIVRO = "Ciclo Maldito R51, o livro final, como está na v0.364 do JJK---Project (lido em 14/10/2026)"
 
 def texto(md):
     out = []

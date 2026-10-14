@@ -118,6 +118,13 @@ _MR = menu_rapido.trocas(LAYOUT, _FAM, r0=_HB["fim"], guarda=frozenset(_HB["_est
 print(f"as habilidades na secao 7 da FICHA: {habilidades.aplica(LAYOUT, _HB)} mudanca(s), da linha {_HB['r7']} a {_HB['fim'] - 1}")
 print(f"o menu rapido na secao 8 da FICHA: {menu_rapido.aplica(LAYOUT, _MR)} mudanca(s), da linha {_MR['r0']} a {_MR['fim']}, "
       f"{len(_MR['grupos'])} grupo(s)")
+# 14/10/2026 (B46): o painel retrátil da Origem, à direita da FICHA: o que o jogador escolheu no dossiê da FICHA PESSOAL.
+# Vem depois das Habilidades e do menu rápido, porque a caixa dele desce até a linha antes do primeiro grupo de linhas da
+# FICHA. Ver painel_origem.py.
+import painel_origem
+_PO = painel_origem.trocas(LAYOUT, _FP)
+print(f"o painel da Origem à direita da FICHA: {painel_origem.aplica(LAYOUT, _PO)} celula(s), a caixa {_PO['mescla']} "
+      f"({_PO['tem']:.0f} px para o pior caso do livro, que pede {_PO['pede']})")
 import correcoes_borda
 print(f"as bordas corrigidas: {correcoes_borda.aplica(LAYOUT)} celula(s) diferentes da exportacao")
 

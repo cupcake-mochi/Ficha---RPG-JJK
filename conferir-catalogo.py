@@ -53,7 +53,7 @@ def titulos_de(S, nivel):
     return [l.lstrip("#").strip() for l in S if Lv.nivel(l) == nivel]
 
 
-C2, C3, C4, C5 = cap("2. Regras gerais"), cap("3. Dano e recuperação"), cap("4. Criar um personagem"), cap("5. Origens e Legados")
+C2, C3, C4, C5 = cap("2. Regras gerais"), cap("3. Dano e recuperação"), cap("4. Criar um personagem"), cap("5. Origens")
 C6, C7, C8, C9 = cap("6. Caminhos e Trilhas"), cap("7. Perícias e Ofícios"), cap("8. Equipamento"), cap("9. Progressão")
 C10, C11 = cap("10. Fundamento"), cap("11. Catálogo de criação")
 _EXT = {"um": 1, "uma": 1, "dois": 2, "duas": 2, "três": 3, "quatro": 4, "cinco": 5, "seis": 6, "sete": 7, "oito": 8,
@@ -230,35 +230,51 @@ _ok("no nível 2: Classe 1, três espaços conhecidos e dois feitiços de Classe
 _ok("as Melhorias que acrescentam ou dividem dados existem no catálogo",
     all(x in CAT["melhorias"] for x in F["acrescentam_dano_e_contam_no_teto"] + F["dividem_os_dados"]))
 
-print("\nORIGENS, SEM TÉCNICA, ROTAS E LEGADOS")
+print("\nORIGENS, SEM TÉCNICA E ROTAS")
+# 14/10/2026 (B46): o livro R45 refez as Origens (item 193). São sete, a Restrição Celestial em dois ramos; cada uma dá a
+# base, uma marcante e duas menores; os Legados com tipo saíram (o Legado de história não tem efeito na ficha). O texto de
+# cada capacidade mora no origens-do-livro.json (extrair_origens.py); aqui confere-se o que o arquivo de dados diz.
 _or = {f[0]: f for f in tab(C5, "Origem")}
-_ok("as Origens, a frase de cada uma e a criação de capacidades são as da tabela",
-    list(_or) == list(CAT["origens"]) and all(_or[o][1] == v["em_uma_linha"] and _or[o][2].rstrip(".") == v["criacao"] for o, v in CAT["origens"].items()))
-_ok("Corpo Amaldiçoado e Restrição Celestial são as de seleção própria",
-    tem("O Corpo Amaldiçoado e os ramos da Restrição Celestial têm condições próprias de seleção.")
+_ok("as sete Origens, a frase de cada uma e a criação de capacidades são as da tabela",
+    list(_or) == list(CAT["origens"]) and len(_or) == 7
+    and all(_or[o][1] == v["em_uma_linha"] and _or[o][2].rstrip(".") == v["criacao"] for o, v in CAT["origens"].items()))
+_ok("Corpo Amaldiçoado e Restrição Celestial são as de seleção própria (não aceitam Sem Técnica)",
+    tem("Corpo Amaldiçoado e Restrição Celestial não aceitam Sem Técnica.")
     and {o for o, v in CAT["origens"].items() if v.get("especial")} == {"Corpo Amaldiçoado", "Restrição Celestial"})
+def _pericias_da(L):
+    m = re.search(r"Perícia da Origem: escolha (.+?)\.", " ".join(Lv.paragrafos(L)))
+    return [p.strip() for p in re.split(r", | ou ", m.group(1))] if m else None
 for o, v in CAT["origens"].items():
-    m = re.search(r"Perícia da Origem: escolha (.+?)\.", " ".join(Lv.paragrafos(Lv.secao(o, dentro=C5))))
-    _ok(f"{o}: as perícias da Origem são as da entrada", bool(m) and [p.strip() for p in re.split(r", | ou ", m.group(1))] == v.get("pericias"))
-_ok("Sem Técnica vale nas cinco primeiras Origens e ocupa um Legado",
-    tem("Sem Técnica é uma opção para as cinco primeiras Origens. Ela ocupa um Legado") and CAT["sub_origem"]["Sem Técnica"]["origens"] == list(CAT["origens"])[:5])
+    if "pericias_por_ramo" in v:
+        for ramo, pers in v["pericias_por_ramo"].items():
+            _ok(f"{o} · {ramo}: as perícias da Origem são as do ramo", _pericias_da(Lv.secao(ramo, dentro=Lv.secao(o, dentro=C5))) == pers)
+    else:
+        _ok(f"{o}: as perícias da Origem são as da entrada", _pericias_da(Lv.secao(o, dentro=C5)) == v.get("pericias"))
+_ok("Sem Técnica vale nas cinco primeiras Origens e não ocupa a marcante nem uma menor",
+    tem("Sem Técnica é uma opção separada para as cinco primeiras Origens.") and tem("não ocupa uma escolha de marcante ou menor")
+    and CAT["sub_origem"]["Sem Técnica"]["origens"] == list(CAT["origens"])[:5] and tem(CAT["sub_origem"]["Sem Técnica"]["em_uma_linha"]))
 _rot = {r["origem"]: r["rota"] for r in CAT["rotas_de_criacao"]}
 _ramos = titulos_de(Lv.secao("Restrição Celestial", dentro=C5), 4)
-_ok("as rotas: Fundamento nas cinco e no ramo Corpo pela Técnica; Técnica Marcial no Corpo Amaldiçoado e no ramo Sem Energia",
-    all(_rot.get(o) == "Fundamento" for o in list(CAT["origens"])[:5]) and _ramos[:2] == ["Corpo pela Técnica", "Sem Energia"]
-    and _rot.get("Restrição Celestial · corpo pela técnica") == "Fundamento" and _rot.get("Restrição Celestial · sem energia") == "Técnica Marcial"
+_ok("as rotas: Fundamento nas cinco e no ramo Restrição corporal; Técnica Marcial no Corpo Amaldiçoado e no ramo Sem Energia",
+    all(_rot.get(o) == "Fundamento" for o in list(CAT["origens"])[:5]) and _ramos[0] == "Sem Energia" and "Restrição corporal" in _ramos
+    and _rot.get("Restrição Celestial · Restrição corporal") == "Fundamento" and _rot.get("Restrição Celestial · Sem Energia") == "Técnica Marcial"
     and _rot.get("Corpo Amaldiçoado") == "Técnica Marcial" and _or["Corpo Amaldiçoado"][2].startswith("Técnica Marcial"))
 _ok("as rotas pela Técnica Marcial são as da tabela de Rotas de criação",
-    tem("Técnica Marcial | Corpo Amaldiçoado. | Katas.") and tem("Técnica Marcial | Restrição Celestial sem energia. | Katas.") and tem("Sem Técnica | Personagem com essa sub-origem. | Manejos."))
-_ok("os três tipos de Legado e a frase de cada um são os da tabela",
-    {f[0].replace("Legado ", "").replace("de ", ""): [f[1]] for f in tab(sec("Legados", C5), "Tipo")} == CAT["legados_formatos"])
-# o trecho de cada Origem: do título dela até o título da próxima Origem (ou de Criar um Legado)
-_i_or = [(o, next(i for i in Lv.titulos(o) if Lv.linhas()[i].startswith("### "))) for o in CAT["origens"]] + [("fim", Lv.titulos("Criar um Legado")[0])]
-_trecho_or = {o: "\n".join(Lv.linhas()[i:_i_or[k + 1][1]]) for k, (o, i) in enumerate(_i_or[:-1])}
-_leg_mal = [(o, t, n) for o, ts in CAT["legados"].items() for t, ns in ts.items() for n in ns
-            if not re.search(r"(?:^|\n)" + re.escape(n) + r"\. ", _trecho_or[o])]
-_ok(f"os {sum(len(ns) for ts in CAT['legados'].values() for ns in ts.values())} Legados abrem um parágrafo da Origem deles", not _leg_mal, str(_leg_mal[:5]))
-_ok("toda Origem tem Legado narrativo e de rolagem", all({"narrativo", "rolagem"} <= set(ts) for ts in CAT["legados"].values()))
+    tem("Técnica Marcial | Corpo Amaldiçoado. | Katas.") and tem("Técnica Marcial | Restrição Celestial sem energia. | Katas.")
+    and tem("Sem Técnica | Latente, Receptáculo, Descendente, Encarnado ou Híbrido que escolha essa opção separada"))
+_ok("os Legados com tipo saíram do arquivo de dados (o Legado de história não tem efeito na ficha)",
+    "legados" not in CAT and "legados_formatos" not in CAT and tem("Os Legados de história não ocupam suas escolhas de marcante ou menores e não concedem benefícios mecânicos por si só."))
+_OL = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "ficha-v01", "origens-do-livro.json"), encoding="utf-8"))
+_n_men = {o["menu"]: len(o["menores"]) for o in _OL["origens"]}
+_ok("o catálogo de menores de cada Origem tem o tamanho do livro (8, 8, 10, 7, 8, 8 + 2, 8 e 8: 67)",
+    list(_n_men.values()) == [8, 8, 10, 7, 8, 10, 8, 8] and sum(_n_men.values()) == 67, str(_n_men))
+_ok("o menu de Origem e o origens-do-livro.json falam das mesmas entradas",
+    {o["menu"] for o in _OL["origens"]} == set(list(CAT["origens"])[:6]) | {r for r in _rot if r.startswith("Restrição Celestial · ")})
+# os parágrafos de texto (as fileiras de tabela e os subtítulos, que o extrator escreve como "Título.", ficam de fora)
+_tits = {l_.lstrip("#").strip() + "." for l_ in Lv.linhas() if Lv.nivel(l_)}
+_mal = [(o["menu"], c["nome"]) for o in _OL["origens"] for c in o["marcantes"] + o["menores"]
+        if not all(tem(p_) for p_ in c["texto"].split("\n\n") if " | " not in p_ and p_ not in _tits)]
+_ok("o texto de cada marcante e de cada menor está no livro, parágrafo por parágrafo", not _mal, str(_mal[:5]))
 
 print("\nPROGRESSÃO")
 PR = CAT["progressao"]

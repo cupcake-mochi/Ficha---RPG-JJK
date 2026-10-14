@@ -3437,3 +3437,13 @@ voltar a abater a carga) acende. **Não rodaram** sobre a versão juntada: `regr
 na FICHA, e ela passou na bateria de 10/10), `arnes-pessoal.py`, o `rodar-tudo.sh` de uma vez e os arneses manuais
 inteiros. Pico de memória medido: 1,7 GB na `regressao-ficha-pessoal.py`, 1,2 GB na `regressao-amaldicoada.py`. **Nada disto
 rodou no Sheets.***
+
+#### B46, andamento de 14/10/2026: a ficha passa do livro R43 ao R51 (NÃO FECHADO)
+
+*Salvo no meio da rodada, a pedido do Mizuki ("recomendo salvar oq foi feito, pq o uso está proximo do fim"). Está no `git add`, sem commit.*
+
+**Decisões dele (estudo `mockup/origens-estudo.html`):** Origens na forma A do dossiê, com a opção da capacidade criada com o mestre; painel retrátil à direita da FICHA só com as escolhas (marcante, menores, Legados de história); Morrendo na forma A, com o prazo explicado, e as Sequelas em três caixinhas de marcar; ofício compatível como menu que aceita outro valor; a criada acompanha o nível até o último nível da Classe dela; menu TAMANHO DO GANHO no pacto.
+
+**Feito:** fonte no R51 (`extrair-manual.py`); extrator novo `ficha-v01/extrair_origens.py` (8 entradas, 14 marcantes, 67 menores); arquivo de dados com as sete Origens, Híbrido, os dois ramos da Restrição Celestial com o nome do livro, sem os Legados com tipo, a Levanta nova; `conferir-catalogo.py` reescrito nas Origens (TUDO VERDE); FICHA PESSOAL com o bloco ORIGEM (menus filtrados pela Origem, texto do livro, frequência, Legados de história, ofício compatível, CE4); FICHA com a linha do Morrendo, as caixinhas das Sequelas e o espelho da Origem (16 linhas novas, eram 11); `painel_origem.py` (AW10:AW105, grupo de colunas fechado); INVOCAÇÕES com o ofício compatível e o nível da criada; pacto com o tamanho do ganho; Cortina com o teto pelo Refino; `Codigo.gs` sem o custo de Insistir, com as notas novas, o descanso desmarcando as caixinhas e o `textoDaCapacidade_`.
+
+**Testes até aqui:** passaram conferir-catalogo, conferir-kaori, conferir-progressao, regressao-exemplos, arnes, revisao-cetica, conferir-decisoes, arnes-decisoes e os cinco `--confere`. O `conferir-ficha-xlsx.py` ganhou as checagens do B46 e estava rodando na hora do salvamento. **Falta:** terminar o conferir-ficha-xlsx, pôr em dia as regressões que ainda cobram Legado, Sequela em número e Feto (regressao-ficha-pessoal, regressao-construir.js, regressao-amaldicoada, regressao-kaori-na-ficha, comparar-ficha-01, arnes-pessoal), rodar o `rodar-tudo.sh` inteiro com o teto de memória, conferir a pintura das partes novas (regressao-paleta.js), desenhar a aba e comparar com o estudo, e escrever o roteiro de teste no Sheets.

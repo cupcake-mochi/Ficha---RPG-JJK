@@ -147,7 +147,11 @@ def ler():
         talentos.append({"nome": n, "ce": int(ce) if ce.isdigit() else [int(x) for x in re.findall(r"\d", ce)], "funcao": f.split(". ")[0] + "."})
     teto_ce = [{"niveis": [int(x) for x in re.findall(r"\d+", n)], "ce": int(c)} for n, c in tabela("Nível do ganho | CE máxima da escolha", CONSTRUIR)]
     tipos = [{"nome": n, "corpo": c, "ficha": f} for n, c, f in tabela("Tipo | Origem e corpo | Característica da ficha", CONSTRUIR)]
-    aquisicoes = [{"nome": n, "custa": c, "evolui": e, "acompanha": "companha" in e} for n, c, e in tabela("Aquisição | Investimento | Evolução", CONSTRUIR)]
+    # 14/10/2026 (B46, livro R44, item 189): a entidade de Criação acompanha o nível do invocador "até o último nível da
+    # Classe dela"; passar disso pede reconstruir. A domada continua conservando o nível em que foi domada
+    aquisicoes = [{"nome": n, "custa": c, "evolui": e, "acompanha": "companha" in e,
+                   "ate_o_fim_da_classe": "até o último nível da Classe" in e}
+                  for n, c, e in tabela("Aquisição | Investimento | Evolução", CONSTRUIR)]
     familias = [l[0] for l in tabela("Família | Aplicações comuns", CONSTRUIR)]
 
     # --- os trunfos da domada

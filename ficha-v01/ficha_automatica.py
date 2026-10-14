@@ -78,7 +78,7 @@ def regras(CAT=None):
         raise SystemExit("nao achei no manual.txt as aptidoes de graca, as Bencaos de graca ou a semente")
     rotas = CAT["rotas_de_criacao"]
     marcial = [r["origem"] for r in rotas if r["rota"] == "Técnica Marcial"]
-    sem_energia = [o for o in marcial if "sem energia" in o]
+    sem_energia = [o for o in marcial if "sem energia" in o.lower()]
     # 04/10/2026: o livro deixou de ter a frase que juntava os Caminhos por treino de arma. Cada
     # Caminho diz o treino na própria tabela de Características; a ficha lê de lá.
     import sys

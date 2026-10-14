@@ -205,10 +205,19 @@ def enderecos(layout):
             out["aptidão de graça 2"] = f"{_letras(ca)}{abaixo[1]}"
     # 08/10/2026 (B41): o estado do personagem, embaixo das barras (estado_do_personagem.py). Entram no fim, para o
     # índice de antes não mudar de linha
-    for campo, rot in (("sequelas", "SEQUELAS"), ("exaustão", "EXAUSTÃO"), ("resistências", "RESISTÊNCIAS"),
-                       ("imunidades", "IMUNIDADES"), ("legado 1", "LEGADO 1"), ("legado 2", "LEGADO 2"),
+    # 14/10/2026 (B46): as Sequelas viraram três caixinhas de marcar (as células com FALSO na linha de baixo do rótulo), e
+    # o espelho dos dois Legados virou o da marcante e das duas menores da Origem; e entrou a linha do Morrendo
+    import estado_do_personagem as ep
+    if f.rotulos("SEQUELAS"):
+        ls, cs = _lc(f.unico("SEQUELAS"))
+        fim = _lc(f.merges.get(f.unico("SEQUELAS")))[1] if f.merges.get(f.unico("SEQUELAS")) else cs
+        caixinhas = sorted((c for c, v in f.val.items() if v is False and _lc(c)[0] == ls + 1 and cs <= _lc(c)[1] <= fim), key=_lc)
+        for campo, c in zip(ep.SEQUELAS, caixinhas):
+            out[campo] = c
+    for campo, rot in (("exaustão", "EXAUSTÃO"), ("resistências", "RESISTÊNCIAS"), ("imunidades", "IMUNIDADES"),
                        # 09/10/2026 (B43): o menu do descanso e o registro do último
-                       ("descanso", "DESCANSO"), ("último descanso", "O ÚLTIMO DESCANSO")):
+                       ("descanso", "DESCANSO"), ("último descanso", "O ÚLTIMO DESCANSO"),
+                       *ep.MORRENDO, *ep.ORIGEM):
         if f.rotulos(rot):
             out[campo] = f.abaixo(f.unico(rot))
     return out

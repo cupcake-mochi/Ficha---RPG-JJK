@@ -22,7 +22,7 @@ gerada: a linha 39 da exportação é a 50 da gerada.
 import re
 
 ABA = "FICHA"
-N_LINHAS = 11                # as linhas que abrem: ver estado_do_personagem.py (eram 8 até o descanso, B43)
+N_LINHAS = 16                # as linhas que abrem: ver estado_do_personagem.py (8 no B41, 11 com o descanso no B43, 16 com o Morrendo e a Origem no B46)
 MARCA_DO_ESTAGIO = "Estágio 4"
 
 _REF = re.compile(r"(?P<aba>(?:'[^']+'|[A-Za-zÀ-ÿ_][\wÀ-ÿ.]*)!)?(?<![A-Za-zÀ-ÿ_\d.$])(?P<c1>\$?[A-Z]{1,3})(?P<l1>\$?)(?P<r1>\d+)"

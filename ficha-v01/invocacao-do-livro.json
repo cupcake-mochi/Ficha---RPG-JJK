@@ -1,8 +1,8 @@
 {
  "_meta": {
   "o_que_e": "o que a aba INVOCAÇÕES lê do livro e o catálogo não tem",
-  "livro": "Ciclo Maldito R43, o livro final, como está na v0.357 do JJK---Project (lido em 10/10/2026)",
-  "sha256_do_livro": "5fc5849193aab8a6815a15ca5474d99d30e5c87d40ce2c3fbafb4d3842ee2133",
+  "livro": "Ciclo Maldito R51, o livro final, como está na v0.364 do JJK---Project (lido em 14/10/2026)",
+  "sha256_do_livro": "282f9bf75adac7961234f8a2754dea08c63def2aacef6c5ac7000c1031d9000e",
   "gerado_por": "ficha-v01/extrair_invocacao.py"
  },
  "frases": {
@@ -618,25 +618,29 @@
    "nome": "Espaço conhecido",
    "custa": "Uma vaga de feitiço, Manejo ou Kata.",
    "evolui": "Acompanha seu nível.",
-   "acompanha": true
+   "acompanha": true,
+   "ate_o_fim_da_classe": false
   },
   {
    "nome": "Lista de ritual",
    "custa": "Um feitiço com uma lista própria e desafios individuais de submissão.",
    "evolui": "As entidades conquistadas acompanham seu nível.",
-   "acompanha": true
+   "acompanha": true,
+   "ate_o_fim_da_classe": false
   },
   {
    "nome": "Maldição domada",
    "custa": "Encontrar, derrotar e submeter uma maldição.",
    "evolui": "Conserva o nível em que foi domada.",
-   "acompanha": false
+   "acompanha": false,
+   "ate_o_fim_da_classe": false
   },
   {
    "nome": "Criação",
-   "custa": "Tempo, testes e materiais de fabricação.",
-   "evolui": "Conserva o nível em que foi criada.",
-   "acompanha": false
+   "custa": "Teste de criação, quando o mestre permitir.",
+   "evolui": "Acompanha seu nível até o último nível da Classe dela; passar disso pede reconstruir.",
+   "acompanha": true,
+   "ate_o_fim_da_classe": true
   }
  ],
  "tecnica_maxima": [

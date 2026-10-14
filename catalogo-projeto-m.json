@@ -2,8 +2,8 @@
  "_meta": {
   "sistema": "Ciclo Maldito",
   "versao": "1.0",
-  "versao_data": "10/10/2026",
-  "versao_dona": "o livro final do JJK---Project, Ciclo Maldito R43 (LIVRO-COMPLETO.md de ciclo-maldito-r41/), com a revisão de regras do Mizuki de 07 a 10/10/2026",
+  "versao_data": "14/10/2026",
+  "versao_dona": "o livro final do JJK---Project, Ciclo Maldito R51 (LIVRO-COMPLETO.md de ciclo-maldito-r41/), com a revisão de regras do Mizuki de 07 a 14/10/2026",
   "fonte": "manual.txt, gerado do LIVRO-COMPLETO.md pelo extrair-manual.py; o arquivo e o hash estão no manual-fonte.json",
   "regra": "onde a ficha e o manual discordarem, o manual vence",
   "nivel_inicial": 2,
@@ -701,7 +701,7 @@
   "Levanta": {
    "familia": "Amparo",
    "peso": "Pesada",
-   "efeito": "Um aliado a 0 de vida, ainda Morrendo, recupera 5 × Classe de vida, limitado à vida máxima, e pode voltar a agir mesmo abaixo do limiar normal de recuperação. Ele fica de pé se tiver apoio e não houver outro efeito que o mantenha Derrubado. A peça não encerra esse impedimento."
+   "efeito": "Um aliado a 0 de vida, ainda Morrendo, recupera 5 × Classe de vida, limitado à vida máxima, e encerra Morrendo mesmo abaixo do tratamento necessário. Ele fica de pé se tiver apoio e não houver outro efeito que o mantenha Derrubado. A peça não encerra esse impedimento."
   },
   "Remenda": {
    "familia": "Amparo",
@@ -866,7 +866,7 @@
  "origens": {
   "Latente": {
    "em_uma_linha": "Descobriu o próprio poder fora da tradição de um clã.",
-   "criacao": "Fundamento",
+   "criacao": "Fundamento ou Sem Técnica",
    "pericias": [
     "Sentir Energia",
     "Sobrevivência",
@@ -875,8 +875,8 @@
    ]
   },
   "Receptáculo": {
-   "em_uma_linha": "Divide o corpo com outra presença.",
-   "criacao": "Fundamento",
+   "em_uma_linha": "É o hospedeiro que divide o corpo com outra presença.",
+   "criacao": "Fundamento ou Sem Técnica",
    "pericias": [
     "Sentir Energia",
     "Ocultismo",
@@ -886,7 +886,7 @@
   },
   "Descendente": {
    "em_uma_linha": "Pertence a uma família do meio jujutsu.",
-   "criacao": "Fundamento",
+   "criacao": "Fundamento ou Sem Técnica",
    "pericias": [
     "Hierarquia",
     "História",
@@ -895,8 +895,8 @@
    ]
   },
   "Encarnado": {
-   "em_uma_linha": "Voltou a viver no corpo de outra pessoa.",
-   "criacao": "Fundamento",
+   "em_uma_linha": "É a consciência que voltou a viver no corpo de outra pessoa.",
+   "criacao": "Fundamento ou Sem Técnica",
    "pericias": [
     "História",
     "Ocultismo",
@@ -904,9 +904,9 @@
     "Intimidação"
    ]
   },
-  "Feto": {
-   "em_uma_linha": "É uma criação que reúne natureza humana e amaldiçoada.",
-   "criacao": "Fundamento",
+  "Híbrido": {
+   "em_uma_linha": "Reúne natureza humana e amaldiçoada.",
+   "criacao": "Fundamento ou Sem Técnica",
    "pericias": [
     "Ocultismo",
     "Medicina",
@@ -916,7 +916,7 @@
   },
   "Corpo Amaldiçoado": {
    "em_uma_linha": "É um corpo construído, com consciência própria.",
-   "criacao": "Técnica Marcial",
+   "criacao": "Técnica Marcial, com energia",
    "especial": true,
    "pericias": [
     "Atletismo",
@@ -926,15 +926,23 @@
    ]
   },
   "Restrição Celestial": {
-   "em_uma_linha": "Nasceu com uma troca entre corpo e energia.",
-   "criacao": "Depende do ramo escolhido",
+   "em_uma_linha": "Nasceu com uma troca entre corpo e energia. Escolhe um de dois ramos.",
+   "criacao": "Fundamento no ramo corporal; Técnica Marcial sem energia no outro",
    "especial": true,
-   "pericias": [
-    "Sentir Energia",
-    "Tecnologia",
-    "Ocultismo",
-    "Percepção"
-   ]
+   "pericias_por_ramo": {
+    "Sem Energia": [
+     "Atletismo",
+     "Acrobacia",
+     "Furtividade",
+     "Pontaria"
+    ],
+    "Restrição corporal": [
+     "Sentir Energia",
+     "Tecnologia",
+     "Ocultismo",
+     "Percepção"
+    ]
+   }
   }
  },
  "sub_origem": {
@@ -944,10 +952,10 @@
     "Receptáculo",
     "Descendente",
     "Encarnado",
-    "Feto"
+    "Híbrido"
    ],
-   "legados": "ocupa um dos dois Legados (é o Legado narrativo Sem Técnica)",
-   "em_uma_linha": "Você não possui técnica inata. Escolha uma semente pelo procedimento de Rotas de criação — Sem Técnica."
+   "ocupa": "não ocupa a marcante nem uma das duas menores",
+   "em_uma_linha": "Você tem energia amaldiçoada, mas não possui técnica inata. Desenvolveu seu estilo a partir de uma aptidão que pode ser aprendida."
   }
  },
  "rotas_de_criacao": [
@@ -968,11 +976,11 @@
    "rota": "Fundamento"
   },
   {
-   "origem": "Feto",
+   "origem": "Híbrido",
    "rota": "Fundamento"
   },
   {
-   "origem": "Restrição Celestial · corpo pela técnica",
+   "origem": "Restrição Celestial · Restrição corporal",
    "rota": "Fundamento"
   },
   {
@@ -984,164 +992,10 @@
    "rota": "Técnica Marcial"
   },
   {
-   "origem": "Restrição Celestial · sem energia",
+   "origem": "Restrição Celestial · Sem Energia",
    "rota": "Técnica Marcial"
   }
  ],
- "legados": {
-  "Latente": {
-   "narrativo": [
-    "O Jeito Errado",
-    "O Professor Que Você Não Teve",
-    "A Testemunha"
-   ],
-   "rolagem": [
-    "Aprendi Apanhando",
-    "Instinto Bruto",
-    "Gambiarra",
-    "Desconfiado"
-   ],
-   "exceção": [
-    "Inédito",
-    "Chão Duro"
-   ]
-  },
-  "Receptáculo": {
-   "narrativo": [
-    "A Voz de Dentro",
-    "De Antes de Você",
-    "Alcunha",
-    "O Que Ele Quer"
-   ],
-   "rolagem": [
-    "Não Sou Só Eu",
-    "Costume Antigo",
-    "Tranco",
-    "Passagem"
-   ],
-   "exceção": [
-    "Máscara",
-    "Revezamento"
-   ]
-  },
-  "Descendente": {
-   "narrativo": [
-    "O Sobrenome",
-    "Armaria",
-    "Arquivo",
-    "Palavra Dada",
-    "Treino de Berço"
-   ],
-   "rolagem": [
-    "Conversa de Jantar",
-    "Etiqueta",
-    "Repetição",
-    "Biblioteca"
-   ],
-   "exceção": [
-    "Coleira",
-    "Cabo"
-   ]
-  },
-  "Encarnado": {
-   "narrativo": [
-    "O Que Ninguém Lembra",
-    "Encomenda",
-    "Quem Morava Aqui",
-    "Enterrado"
-   ],
-   "rolagem": [
-    "Corpo Emprestado",
-    "Espasmo",
-    "Já Morri",
-    "Método Velho"
-   ],
-   "exceção": [
-    "Conhecimento Antigo",
-    "Usado"
-   ]
-  },
-  "Feto": {
-   "narrativo": [
-    "Irmãos",
-    "Numeração",
-    "Guardado",
-    "Devagar",
-    "Sem Técnica"
-   ],
-   "rolagem": [
-    "Meio e Meio",
-    "Como Se Monta",
-    "Faro",
-    "Paciência"
-   ],
-   "exceção": [
-    "Sangue que Não é Sangue",
-    "Talhe"
-   ]
-  },
-  "Corpo Amaldiçoado": {
-   "narrativo": [
-    "Ninhada",
-    "Gêmeos",
-    "Inteiro",
-    "Manutenção"
-   ],
-   "rolagem": [
-    "Rodízio",
-    "Vigília",
-    "Desempate",
-    "Cabeça Trocada",
-    "Nunca os Dois",
-    "Palpite",
-    "Feito de Uma Peça",
-    "Teimosia",
-    "Peça Única",
-    "Ajuste Fino",
-    "Recarga",
-    "Fiado"
-   ],
-   "exceção": [
-    "Ferro Velho"
-   ]
-  },
-  "Restrição Celestial": {
-   "narrativo": [
-    "Nasci Assim",
-    "O Substituto",
-    "A Oferta",
-    "Descartado",
-    "Dividido",
-    "Desde Criança",
-    "Aprendi a Ver"
-   ],
-   "rolagem": [
-    "Antena",
-    "Do Meu Canto",
-    "Insônia",
-    "Li Tudo",
-    "Sentido Treinado",
-    "Couro",
-    "Ninguém Viu",
-    "No Braço"
-   ],
-   "exceção": [
-    "Peso Real",
-    "Assinado"
-   ]
-  }
- },
- "legados_formatos": {
-  "narrativo": [
-   "Uma pessoa, informação, relação, acesso ou característica da sua história."
-  ],
-  "rolagem": [
-   "Vantagem, repetição ou mudança específica de um teste."
-  ],
-  "exceção": [
-   "Dispensa uma exigência ou impede um efeito nomeado, com uma contrapartida."
-  ]
- },
  "progressao": {
   "faixa_jogavel": [
    2,
