@@ -60,8 +60,9 @@ def anterior(formula):
     Não aceita uma fórmula adulterada só porque ela contém o marcador.
     O comportamento com efeitos é recalculado na regressão de configuração.
     """
+    import campanha
     if not isinstance(formula, str) or not formula.startswith("=IF(DADOS_CONFIG!"):
-        return formula
+        return campanha.anterior(formula)
     itens = Tokenizer(formula).items
     for i, t in enumerate(itens[:-4]):
         m = re.fullmatch(r"DADOS_CONFIG!\$B\$(\d+)", t.value)
@@ -77,7 +78,7 @@ def anterior(formula):
         original = "=" + "".join(corpo)
         if envolve(original, int(m.group(1))) != formula:
             raise ValueError("envoltório dos bônus e mudanças adulterado")
-        return original
+        return campanha.anterior(original)
     raise ValueError("fórmula da configuração sem conta-base válida")
 
 
@@ -170,7 +171,7 @@ def abas(layout, tr):
     larguras = (24, 60, 186, 95, 60, 115, 155, 24, 180, 80, 80, 205, 24)
     a["colunas_larg"] = [[c, c, (px + 1) / 8] for c, px in enumerate(larguras, 1)]
     a["linhas_alt"] = [[r, 31.5] for r in range(INICIO, n + 1)] + [[1, 12], [2, 24], [3, 12], [4, 9], [5, 18], [6, 12], [7, 15.75], [8, 15.75], [9, 18], [10, 24]]
-    a["congeladas"] = 10
+    a["congeladas"] = 0  # pedido do usuário: retirar a faixa cinza do congelamento
     poe("B2", "CONFIGURAÇÃO", "titulo", "L3")
     poe("B5", "Somar acumula com a conta e o Buff/Debuff. Trocar por fixa o resultado final, inclusive zero.", "nota", "G6")
     poe("I5", "Mizuki Escuro · paleta fixa", "nota", "L5")

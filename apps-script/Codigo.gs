@@ -162,10 +162,10 @@ function notasDeRegra_(ss, idx) {
     // 14/10/2026 (B46): as Sequelas viraram três caixinhas de marcar ("tipo dnd ... mas so pras sequelas"); a nota
     // vai em cada uma
     'sequela 1': 'Marque uma caixinha por queda: sair do Morrendo deixa uma Sequela. Ela não penaliza testes: encurta ' +
-                 'o prazo da próxima queda (3, 2 e 1 rodada; com as três marcadas, Derrotado na hora). O descanso longo ' +
+                 'o prazo da próxima queda, conforme CONFIGURAÇÃO (no livro: 3, 2 e 1 rodada). O descanso longo ' +
                  'desmarca todas, depois da recuperação; cura comum não as remove.',
-    'sequela 2': 'A segunda Sequela: a próxima queda tem 1 rodada de prazo.',
-    'sequela 3': 'A terceira Sequela: cair de novo derrota na hora. O descanso longo desmarca as três.',
+    'sequela 2': 'A segunda Sequela reduz em mais uma rodada o prazo definido na CONFIGURAÇÃO.',
+    'sequela 3': 'A terceira Sequela também reduz o prazo da próxima queda. O descanso longo remove as caixas e as Sequelas extras.',
     // 14/10/2026 (B46): o Morrendo, do livro R50 e R51 (Dano e recuperação, Vida a zero)
     'morrendo aguentar': 'Se a vida chegar a 0, você entra em Morrendo e escolhe. Aguentar: fica Inconsciente e espera ' +
                          'socorro. A vida fica em 0 enquanto a cura recebida se acumula; ao chegar a este número, toda a ' +
@@ -318,7 +318,7 @@ function notasDeRegra_(ss, idx) {
  * a trava virou um segundo aviso para a mesma coisa. Era também a etapa mais lenta da montagem: 81, 83 e 148 s nas
  * três medidas dele.
  */
-var LIVRES_DA_TRAVA = ['vida', 'energia', 'integridade'];
+var LIVRES_DA_TRAVA = ['vida', 'energia', 'integridade', 'nivel'];
 
 /**
  * O Spreadsheet Service falha de vez em quando no meio de um construir() longo -- "Service
@@ -1547,7 +1547,9 @@ function descansar_(e, idx) {
                                                        .filter(function (c) { return c; });
   var antes = { vidaMax: le('vida_max'), peMax: le('energia_max'), integMax: le('integridade_max') };
   Object.keys(onde).forEach(function (k) { antes[k] = le(onde[k]); });
-  antes.sequelas = caixinhas.filter(function (c) { return ficha.getRange(c).getValue() === true; }).length;
+  var cExtras = cel_(idx, 'sequela extras');
+  var extras = cExtras ? Math.max(0, Number(ficha.getRange(cExtras).getValue()) || 0) : 0;
+  antes.sequelas = caixinhas.filter(function (c) { return ficha.getRange(c).getValue() === true; }).length + extras;
   var fim = contaDoDescanso_(tipo, antes);
   // só o que mudou é escrito: a caixa que nasceu como conta (o atual de uma ficha intocada) fica como está
   Object.keys(onde).forEach(function (k) {
@@ -1556,6 +1558,7 @@ function descansar_(e, idx) {
   });
   if (fim.sequelas !== antes.sequelas) {
     caixinhas.forEach(function (c, i) { ficha.getRange(c).setValue(i < fim.sequelas); });
+    if (cExtras) ficha.getRange(cExtras).setValue(Math.max(0, fim.sequelas - caixinhas.length));
   }
   var texto = textoDoDescanso_(tipo, antes, fim);
   var cu = cel_(idx, 'último descanso');

@@ -507,10 +507,10 @@ _livres = re.search(r"var LIVRES_DA_TRAVA = \[(.*?)\];", _CODA)
 # script não cria mais trava (só tira as de uma ficha de antes), as livres da FICHA são as três barras de agora, e o
 # onEdit chama a devolução na FICHA, na CARTEIRA e na FICHA PESSOAL
 _tira = re.search(r"function tirarTravasDeFormula_\(ss\)\s*\{(.*?)\n\}", _CODA, re.S)
-checa("o Codigo.gs não trava mais fórmula (só tira as travas de antes), devolve a conta nas três abas, e deixa livres só as três barras de agora",
+checa("o Codigo.gs não trava mais fórmula (só tira as travas de antes), devolve a conta nas três abas, e deixa livres as três barras de agora e o nível editável",
       bool(_tira and _livres) and ".protect()" not in _CODA and "p.remove()" in _tira.group(1) and "'fórmula · '" in _tira.group(1)
       and all(x in _CODA for x in ("devolverConta_(e, 'FICHA')", "devolverConta_(e, 'CARTEIRA')", "devolverConta_(e, ABA_PESSOAL_)"))
-      and sorted(re.findall(r"'([^']+)'", _livres.group(1))) == ["energia", "integridade", "vida"]
+      and sorted(re.findall(r"'([^']+)'", _livres.group(1))) == ["energia", "integridade", "nivel", "vida"]
       and all(k in IDX for k in ["vida", "energia", "integridade"]),
       _livres.group(1) if _livres else "sem LIVRES_DA_TRAVA")
 _sem_resultado = []
@@ -1701,9 +1701,9 @@ _m46 = {k_: IDX.get(k_) for k_, _ in _ep46.MORRENDO}
 _sub46 = lambda a1: _F46.cell(row=_F46[a1].row + 1, column=_F46[a1].column).value
 _vm46, _cl46 = IDX["vida_max"], IDX["classe máxima"]
 checa("o Morrendo da FICHA: Aguentar 1/4 da vida máxima, Insistir 1/3 e 1/2 até 15 × a Classe, e o prazo de 3 rodadas menos as Sequelas",
-      all(_m46.values()) and f"ROUNDUP(N(FICHA!{_A(_vm46)})/4,0)" in str(_F46[_m46["morrendo aguentar"]].value)
-      and f"MIN(ROUNDUP(N(FICHA!{_A(_vm46)})/3,0),15*N(FICHA!{_A(_cl46)}))" in str(_F46[_m46["morrendo insistir 1"]].value)
-      and f"MIN(ROUNDUP(N(FICHA!{_A(_vm46)})/2,0),15*N(FICHA!{_A(_cl46)}))" in str(_F46[_m46["morrendo insistir 2"]].value)
+      all(_m46.values()) and f"ROUNDUP(N(FICHA!{_A(_vm46)})/4,0)" in str(_base_formula(_F46[_m46["morrendo aguentar"]].value))
+      and f"MIN(ROUNDUP(N(FICHA!{_A(_vm46)})/3,0),15*N(FICHA!{_A(_cl46)}))" in str(_base_formula(_F46[_m46["morrendo insistir 1"]].value))
+      and f"MIN(ROUNDUP(N(FICHA!{_A(_vm46)})/2,0),15*N(FICHA!{_A(_cl46)}))" in str(_base_formula(_F46[_m46["morrendo insistir 2"]].value))
       and all(_A(c_) in str(_F46[_m46["morrendo prazo"]].value) for c_ in _cx46) and '"Derrotado na hora"' in str(_F46[_m46["morrendo prazo"]].value)
       and "menos 1 por Sequela" in str(_sub46(_m46["morrendo prazo"])),
       str({k_: str(_F46[v_].value)[:60] for k_, v_ in _m46.items() if v_}))

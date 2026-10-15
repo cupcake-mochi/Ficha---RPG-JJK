@@ -215,13 +215,20 @@ print(f"a aba de invocações: {_ABA_IV['linhas']} linha(s), {_ABA_IV['colunas']
 # 14/10/2026 (B47, fase 1): a ANALISE, oculta, no fim: tudo o que o bot precisa para dizer se a ficha está aprovada. Lê
 # os endereços que as outras limpezas publicaram (a ficha automática, a FICHA PESSOAL, a FICHA AMALDIÇOADA e a
 # INVOCAÇÕES), e por isso vem depois de todas. Mora num arquivo de script à parte, o Analise.gs. Ver analise.py.
+import campanha
+_EXTRAS = campanha.extras(LAYOUT)
+_CAMP = campanha.trocas(LAYOUT, _EXTRAS)
+campanha.aplica(LAYOUT, _CAMP)
+campanha.guarda(_CAMP)
 import configuracao
 _CFG = configuracao.trocas(LAYOUT, _FP)
 configuracao.aplica(LAYOUT, _CFG)
+campanha.desenha(LAYOUT, _CAMP)
 print(f"a CONFIGURAÇÃO: {configuracao.QUANTIDADE} efeitos, {len(_CFG['alvos'])} caixas, paleta fixa")
 import analise
 _AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
 _AN["linhas"].extend(configuracao.exporta(_CFG))
+_AN["linhas"].extend(campanha.exporta(_CAMP))
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
 

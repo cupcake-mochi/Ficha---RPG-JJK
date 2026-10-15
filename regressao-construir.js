@@ -74,7 +74,7 @@ ok('cada aba fica do tamanho que o gerador mediu', ABAS.every((s) => { const A =
 ok('as ocultas ficam ocultas, e só elas', ABAS.every((s) => S.acha(s.nome).oculta === !!s.oculta));
 {
   const C = S.acha('CONFIGURAÇÃO');
-  ok('o cabeçalho da CONFIGURAÇÃO mantém dez linhas congeladas', C.congeladas === 10);
+  ok('a CONFIGURAÇÃO não tem a faixa cinza de linhas congeladas', !C.congeladas);
   ok('a CONFIGURAÇÃO tem 30 caixas de ligar e menus de caixa, modo e fonte',
      [...C.caixas].length === 30 && ['11,3', '11,4', '11,6'].every(k => C.dv.has(k)));
 
@@ -176,7 +176,7 @@ const F = S.acha('FICHA'), idx = S.ctx.indice();
 ok('na FICHA, o XP e o EQUIPAMENTO são conta, e o EQUIPAMENTO não tem mais menu',
    [idx['xp'], idx['equipamento']].every((a1) => { const p = partes(a1); return F.f.has(p.r + ',' + p.c); })
    && !F.dv.has(partes(idx['equipamento']).r + ',' + partes(idx['equipamento']).c), `xp ${idx['xp']}, equipamento ${idx['equipamento']}`);
-ok('o nível da FICHA continua digitável: valor solto', (() => { const p = partes(idx['nivel']); return !F.f.has(p.r + ',' + p.c); })());
+ok('o nível nasce lendo a campanha e continua livre para edição manual', (() => { const p = partes(idx['nivel']); return F.f.get(p.r + ',' + p.c) === '=DADOS_CONFIG!$S$2' && S.ctx.livresDaAba_(ABAS.find(a => a.nome === 'FICHA'))[idx['nivel']]; })());
 const idxLivres = ['vida', 'energia', 'integridade'].map((k) => idx[k]);
 // a nota de cada caixa da FICHA mora no título quando a célula de cima é texto digitado, e na própria caixa quando não é
 const cabecaDe = (X, r, c) => { const m = X.merges.find((x) => r >= x[0] && r <= x[2] && c >= x[1] && c <= x[3]); return m ? [m[0], m[1]] : [r, c]; };
@@ -193,10 +193,11 @@ console.log('\nA PLANILHA MONTADA, EM USO (pelo onEdit de verdade)');
 const ed = (aba, a1, value, oldValue) => ({ range: S.ss.getSheetByName(aba).getRange(a1), value, oldValue });
 {
   const C = S.acha('CONFIGURAÇÃO');
-  const cel = S.ss.getSheetByName('CONFIGURAÇÃO').getRange('J14');
+  const cel = S.ss.getSheetByName('CONFIGURAÇÃO').getRange('F46');
   cel.setValue(999);
   S.ctx.onEdit({ range: cel, value: '999' });
-  ok('escrever por cima do resumo da CONFIGURAÇÃO devolve a conta', C.f.get('14,10') === '=DADOS_CONFIG!B5');
+  const esperada = ABAS.find(a => a.nome === 'CONFIGURAÇÃO').vals.find(v => v[0] === 46 && v[1] === 6)[2];
+  ok('escrever por cima de EM USO devolve a conta', C.f.get('46,6') === S.ctx.formulaNoIdioma_(esperada, S.P.locale));
   const entrada = S.ss.getSheetByName('CONFIGURAÇÃO').getRange('E11');
   entrada.setValue(3);
   S.ctx.onEdit({ range: entrada, value: '3' });
@@ -221,12 +222,29 @@ const g = t.grupos.find((x) => x.categoria === 'Massa');
 try { S.ss.getSheetByName(NOME).getRange(g.caixa).setValue(true); S.ctx.pessoalEditada_(ed(NOME, g.caixa, 'TRUE')); } catch (e) { erroUso = e; }
 ok('marcar o grupo Massa na aba montada marca as cinco armas dele', !erroUso && marcadas() === 11 + 1 + t.armas.filter((x) => x.categoria === 'Massa').length, erroUso ? erroUso.message : marcadas() + ' marcadas');
 const ip = S.ctx.indicePessoal_();
+// O simulador não avalia IF/SUM: recebe resultados de cálculo como já recebe o XP total abaixo.
+// As fórmulas da curva são verificadas por regressao-campanha.py (LibreOffice) e no Sheets nativo.
+const dadosXP = S.acha('DADOS');
+const fonteXP = ABAS.find(a => a.nome === 'DADOS').vals;
+const cabXP = fonteXP.find(v => v[2] === 'xp acumulado');
+const tabXP = JSON.parse(fs.readFileSync(path.join(RAIZ,'catalogo-projeto-m.json'),'utf8')).progressao.tabela_impressa;
+const cacheXP = []; let acumuladoXP = 0;
+for (let n=2;n<=30;n++) {
+  const rr=cabXP[0]+n-1, cc=cabXP[1], k=rr+','+cc;
+  cacheXP.push([k,dadosXP.f.get(k)]); dadosXP.f.delete(k); dadosXP.v.set(k,acumuladoXP);
+  const custo=tabXP[String(n)].xp;
+  if(custo!=='—')acumuladoXP+=Number(String(custo).replace(/\./g,''));
+}
 try {
+  S.ss.getSheetByName('FICHA').getRange(idx['nivel']).setValue(2);
+  S.ctx.onEdit(ed('FICHA',idx['nivel'],2));
+  ok('o onEdit preserva um nível digitado manualmente', F.le(partes(idx['nivel']).r,partes(idx['nivel']).c)===2);
   const px = partes(ip['xp total']); A.f.delete(px.r + ',' + px.c); A.v.set(px.r + ',' + px.c, 500);       // o LibreOffice é quem faz a soma; aqui o total é posto à mão
   const m3 = S.ctx.limitesA1_(ip['missões 3']);
   S.ctx.pessoalEditada_(ed(NOME, letras(m3.c1 + 1) + m3.l1, 'Longa'));
 } catch (e) { erroUso = e; }
 ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4', !erroUso && F.le(partes(idx['nivel']).r, partes(idx['nivel']).c) === 4, erroUso ? erroUso.message : String(F.le(partes(idx['nivel']).r, partes(idx['nivel']).c)));
+cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
 // 01/10/2026: o Mizuki digitou um número por cima do NO DOMÍNIO da FICHA AMALDIÇOADA, e a conta sumiu sem aviso.
 {
   const AM = 'FICHA AMALDIÇOADA', X = S.acha(AM), spec = ABAS.find((s) => s.nome === AM);
@@ -312,7 +330,7 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
     todas[nomeAba] = { contas: contas.length, livres: Object.keys(livres).length, naoVoltou };
   }
   ok(`toda conta que não é livre volta: as ${todas['FICHA'].contas} da FICHA, as ${todas['CARTEIRA'].contas} da CARTEIRA e as ${todas['FICHA PESSOAL'].contas} da FICHA PESSOAL, uma a uma`,
-     !erroD && Object.values(todas).every((x) => x.contas > 5 && !x.naoVoltou.length) && todas['FICHA'].livres === 3 && !S.P.orfas.length,
+     !erroD && Object.values(todas).every((x) => x.contas > 5 && !x.naoVoltou.length) && todas['FICHA'].livres === 4 && !S.P.orfas.length,
      erroD ? erroD.message : Object.entries(todas).map(([k, x]) => `${k}: ${x.naoVoltou.slice(0, 5).join(',')}`).join(' · ') + ' · ' + S.P.orfas.slice(0, 2).join(' · '));
   // as caixas livres nascem com conta e são do jogador: a vida da FICHA, o Volume de um item, a vida atual da invocação
   const livre = (nomeAba, a1) => { const n0 = S.P.avisos.length; try { S.ss.getSheetByName(nomeAba).getRange(a1).setValue(7); S.ctx.onEdit(ed(nomeAba, a1, 7)); } catch (e) { erroD = e; }
@@ -655,6 +673,14 @@ ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4'
      !erroD && r2[0] === 39 && r2[1] === S.ctx.SEM_DESCANSO_ && r2[2] === 'Curto, fora de lugar propício · PE 30 → 39', erroD ? erroD.message : JSON.stringify(r2));
   ok('e "Longo · lugar propício" leva tudo ao máximo e tira a Exaustão; o Buff/Debuff negativo não gera o lembrete antigo de perda de máximo por Insistir',
      !erroD && r3[0] === JSON.stringify({ vida: 23, pe: 60, integ: 25, sequelas: 0, exaustao: 0 }) && !/máximo perdido|Insistir/.test(r3[1]) && /Longo, em lugar propício · vida 11 → 23/.test(r3[1]), erroD ? erroD.message : JSON.stringify(r3));
+  if (idx['sequela extras']) {
+    FI.getRange(idx['sequela extras']).setValue(2);
+    FI.getRange(idx['sequela 1']).setValue(true);
+    escolhe(CP);
+    ok('descanso curto conserva as Sequelas extras', FI.getRange(idx['sequela extras']).getValue() === 2 && FI.getRange(idx['sequela 1']).getValue() === true);
+    escolhe(LF);
+    ok('descanso longo remove caixas e Sequelas extras', FI.getRange(idx['sequela extras']).getValue() === 0 && FI.getRange(idx['sequela 1']).getValue() === false && /Sequelas 3 → 0/.test(FI.getRange(idx['último descanso']).getValue()));
+  }
   try { Object.values(K).concat(['sequela 1', 'sequela 2', 'sequela 3', 'último descanso']).forEach((k) => repoe(idx[k])); } catch (e) { erroD = e; }
 }
 // 08/10/2026: os saltos são conferidos depois que a planilha volta ao português, e uma montagem não começa com outra

@@ -1,3 +1,27 @@
+## Estado atual · parte 2 concluída para revisão (15/10/2026)
+
+Regras de campanha construídas após aprovação do levantamento e protótipo. CAMPANHA vazia conserva o livro; zero é explícito. XP começa em zero no nível inicial, vida inicial é fixa e os dados seguintes ficam registrados. Morte permanente foi retirada da interface/contrato a pedido do usuário. Sequelas extras em FICHA!J50:M50 somam às três caixas; descanso curto conserva, longo limpa todas.
+
+CONFIGURAÇÃO sem linhas congeladas (faixa cinza removida a pedido do usuário); mantém bônus B:G/10:40, regras B43:G59, XP B62:G94 e vida B97:G129, em Mizuki Escuro fixo. RESULTADOS removido; J:O reservado ao custom. ANALISE 4 tem 5.274 chaves únicas, preservando as 5.156 anteriores. O bot precisa reconhecer o formato 4 antes da publicação; não foi alterado nesta etapa.
+
+Validação desta etapa: regressão de campanha (13 cenários), comparador IGUAIS com CAMPANHA vazia, conferência da ficha, montagem completa, bônus, paleta (122 combinações) e leitor passaram, um por vez sob teto de 3G/duas CPUs. Logs finais em ../evidencias-campanha/resultados-validacao.json. Falhas intermediárias foram corrigidas e seus logs mantidos. A bateria integral agora com 21 validadores e o arnês de 114 mutações NÃO foram repetidos nesta etapa; a validação anterior continua registrada no histórico.
+
+Cópia nativa atualizada pontualmente, sem XLSX e sem executar construir() sobre ela. Cinco scripts alterados salvos e comparados integralmente. Testes nativos: início 5/custo 700; vida rolada 40; prazo 5 menos três Sequelas = 2; entradas inválidas com erro visível; descanso longo registrou “Sequelas 3 → 0”. Todos os dados de teste restaurados, exemplos de bônus preservados, avisos novos vazios e 5.274 chaves sem erros de fórmula. Grades de regras, XP e vida inspecionadas. Oficial e compartilhamento intactos.
+
+Evidências duráveis: ../evidencias-campanha/testes-nativos-parte2.json, fechamento-parte2.json e imagens *implementad*.jpg. Roteiro atualizado em TESTE-CONFIGURACAO.md. Próxima etapa: inventário completo dos menus para dimensionar os cartões custom, medir custo e apresentar protótipo antes de construir a parte 3a. Nenhum cartão custom construído.
+
+Não executar commit/push. Arquivos preparados no índice e mensagem em mensagem-de-commit.txt, ignorada pelo Git. Antes de integração futura, atualizar e conferir origin/main; não houve integração nesta etapa.
+
+---
+
+## B47 — protótipo de campanha pronto (15/10/2026)
+
+Levantamento aprovado. Decisões: XP zero no nível inicial; vida inicial fixa do Caminho e dados nos níveis seguintes; morte permanente Livro Não, com opção Sim na campanha.
+
+Protótipo somente na aba ESTUDO CAMPANHA da cópia nativa de revisão (sheetId 47003): regras B43:G60; tabela de XP B62:G94; registro de vida B97:G129. 75 fórmulas sem erros; nível inicial 5, custo alternativo, zero, seletor Sim/Não e restauração aprovados. Evidências e imagens em `../evidencias-campanha/`. A ficha e o gerador não recebem novas regras nesta etapa.
+
+Aguardar aprovação do desenho antes da construção, conforme o prompt do usuário. A seguir: regras/cópia EM USO/DADOS_CONFIG, testes de equivalência com CAMPANHA vazia, ANALISE 4. Custo do nível 1 para 2 e ampliação do registro de Sequelas acima de três continuam condicionados a decisão se essas opções forem usadas. Não executar commit/push.
+
 ## B47 — parte 2: levantamento pronto para aprovação (15/10/2026)
 
 A parte 1 já está registrada em `f2ea62c` (encontrada assim ao retomar). Nesta etapa foi acrescentado apenas `levantar-regras-campanha.py`: varredura de leitura das fórmulas do artefato interno do gerador, sem importação para Sheets, sem alterar fórmulas ou o contrato ANALISE 3.

@@ -1,6 +1,8 @@
+**15/10/2026: regras de campanha implementadas para revisão.** CAMPANHA vazia usa o livro; XP começa em zero no nível inicial; vida rolada conserva a vida inicial fixa e guarda os dados dos níveis seguintes. Sequelas extras somam às três caixas. Morte permanente foi retirada da interface a pedido do usuário. O conteúdo custom continua para a próxima etapa.
+
 # Ficha digital do Projeto M · leia isto primeiro
 
-**B47: bônus e mudanças implementados na CONFIGURAÇÃO.** 30 efeitos, 50 caixas, paleta fixa Mizuki Escuro. Somar acumula com o Buff/Debuff; trocar por fixa o resultado final, inclusive zero. Duas trocas da mesma caixa são conflito. A ANALISE formato 3 tem 5.156 chaves e conserva as 4.896 anteriores; o bot precisa reconhecer as configurações antes de aceitar esta versão. São oito arquivos de Apps Script: Codigo, Ficha, Habilidades, Invocacoes, Origens, Analise, AnaliseFontes e Configuracao. A oficial não foi modificada.
+**B47: bônus e mudanças implementados na CONFIGURAÇÃO.** 30 efeitos, 50 caixas, paleta fixa Mizuki Escuro. Somar acumula com o Buff/Debuff; trocar por fixa o resultado final, inclusive zero. Duas trocas da mesma caixa são conflito. A ANALISE formato 4 tem 5.274 chaves e conserva as 5.156 anteriores; o bot precisa reconhecer as configurações antes de aceitar esta versão. São oito arquivos de Apps Script: Codigo, Ficha, Habilidades, Invocacoes, Origens, Analise, AnaliseFontes e Configuracao. A oficial não foi modificada.
 
 **14/10/2026: ANALISE formato 2 preparada para revisão.** Passa de 2.650 para 4.896 chaves,
 preservando as antigas. Exporta escolhas de Famílias, Classe 0, Máxima, textos e ajustes individuais

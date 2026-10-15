@@ -10,7 +10,7 @@ Agora nada é traduzido, então nada se perde na tradução.
 
 Para testar o B47 sobre a ficha do servidor, faça uma cópia **dentro do Google Sheets**. Não importe o XLSX: a conversão altera larguras, imagens e controles. O XLSX local continua servindo aos validadores, não à publicação no Sheets.
 
-A cópia de revisão é [Ciclo Maldito — B47 — cópia nativa para revisão](https://docs.google.com/spreadsheets/d/1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0/edit). Foram preservadas as abas da base, com atualização somente das 50 fórmulas afetadas, da ANALISE e das novas CONFIGURAÇÃO/DADOS_CONFIG. Os oito scripts foram atualizados na cópia. Não execute `construir()` sobre uma ficha preenchida: essa função é uma montagem completa. O roteiro desta etapa está em `TESTE-CONFIGURACAO.md`.
+A cópia de revisão é [Ciclo Maldito — B47 — cópia nativa para revisão](https://docs.google.com/spreadsheets/d/1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0/edit). Foram preservadas as abas da base, com atualização das fórmulas afetadas pelos bônus e pelas regras de campanha, da ANALISE e das novas CONFIGURAÇÃO/DADOS_CONFIG. Os oito scripts foram atualizados na cópia. Não execute `construir()` sobre uma ficha preenchida: essa função é uma montagem completa. O roteiro desta etapa está em `TESTE-CONFIGURACAO.md`.
 
 Os passos abaixo são para uma **montagem nova e vazia**. A ficha oficial do servidor não foi alterada nesta rodada.
 
@@ -24,11 +24,11 @@ A ficha é desenhada **no Sheets**, e a pasta `ficha-v01/` é a cópia dela. Exp
 
 ```bash
 python3 ficha-v01/extrair.py
-systemd-run --user --scope -q -p MemoryMax=5G -p MemorySwapMax=0 nice -n 15 python3 ficha-v01/monta.py
-systemd-run --user --scope -q -p MemoryMax=5G -p MemorySwapMax=0 nice -n 15 ./rodar-tudo.sh
+systemd-run --user --scope -q -p MemoryMax=3G -p MemorySwapMax=0 -p CPUQuota=200% nice -n 15 env NODE_OPTIONS=--max-old-space-size=1500 python3 ficha-v01/monta.py
+systemd-run --user --scope -q -p MemoryMax=3G -p MemorySwapMax=0 -p CPUQuota=200% nice -n 15 env NODE_OPTIONS=--max-old-space-size=1500 ./rodar-tudo.sh
 ```
 
-Saem sete arquivos gerados: `Ficha.gs`, `Habilidades.gs`, `Invocacoes.gs`, `Origens.gs`, `Analise.gs`, `AnaliseFontes.gs` e `Configuracao.gs`; `Codigo.gs` é escrito à mão. Cole os oito arquivos no mesmo projeto. A montagem avisa sobre arquivo obrigatório ausente antes de alterar abas. Se os vinte validadores não passarem, não sobe. A ANALISE desta etapa usa formato 3: atualizar o leitor do bot antes de publicar para jogadores.
+Saem sete arquivos gerados: `Ficha.gs`, `Habilidades.gs`, `Invocacoes.gs`, `Origens.gs`, `Analise.gs`, `AnaliseFontes.gs` e `Configuracao.gs`; `Codigo.gs` é escrito à mão. Cole os oito arquivos no mesmo projeto. A montagem avisa sobre arquivo obrigatório ausente antes de alterar abas. Se os vinte e um validadores não passarem, não sobe. A ANALISE desta etapa usa formato 4 (5.274 chaves): atualizar o leitor do bot antes de publicar para jogadores.
 
 > **O `ficha/monta.py` foi aposentado em 14/09/2026, no B18.** *Ele ficou dez versões atrás da planilha viva, e o `Ficha.gs` que ele gerava montava uma ficha antiga.*
 

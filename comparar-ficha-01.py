@@ -242,7 +242,37 @@ import ficha_invocacoes
 # 14/10/2026 (B47): a ANALISE, oculta, para o bot
 import analise as _analise
 import configuracao as _configuracao
+import campanha as _campanha
+_EXTRAS = _campanha.extras(LAY_FA2)
+_CAMP = _campanha.trocas(LAY_FA2, _EXTRAS)
+_campanha.aplica(LAY_FA2, _CAMP)
 _CFG = _configuracao.trocas(LAY_FA2, FP)
+# Caixa extra aprovada: comparar valores E estilos, incluindo as bordas das mesclagens.
+from openpyxl import Workbook as _Workbook
+from openpyxl.styles import Font as _Font, PatternFill as _Fill, Border as _Border, Side as _Side, Alignment as _Alignment
+sys.path.insert(0, os.path.join(AQUI, "ficha"))
+from estilo import CORPO as _CORPO, PT_VALOR as _PT, TEXTO as _TEXTO
+_exwb = _Workbook(); _exwb._fonts[0] = _Font(name=_CORPO, size=_PT, color=_TEXTO)
+_exf = _exwb.active; _exrow = indice_ficha._lc(_EXTRAS)[0]
+_exrecords = {r[0]: r for r in indice_ficha._aba(LAY_FA2, "FICHA")["celulas"]}
+for _c in (f"D{_exrow}", _EXTRAS):
+    _reg = _exrecords[_c]; _e = LAY_FA2["estilos"][_reg[2]]
+    _fo, _bg, _bo, _al, _fmt = _e
+    _x = _exf[_c]; _x.value = _reg[1]
+    _x.font = _Font(name=_fo[0], size=_fo[1], color=_fo[2], bold=_fo[3], italic=_fo[4])
+    _x.fill = _Fill('solid', start_color=_bg)
+    _x.border = _Border(**{k:_Side(style=v[0],color=v[1]) for k,v in _bo.items()})
+    _x.alignment = _Alignment(horizontal=_al[0], vertical=_al[1], wrap_text=_al[2],textRotation=_al[3])
+    if _fmt: _x.number_format = _fmt
+_EXTRAS_MERGES = [f"D{_exrow}:I{_exrow}", f"J{_exrow}:M{_exrow}"]
+for _m in _EXTRAS_MERGES: _exf.merge_cells(_m)
+_EXTRAS_PERFIS = {("FICHA",f"{indice_ficha._letras(c)}{_exrow}"):perfil(_exf.cell(_exrow,c)) for c in range(4,14)}
+_exd = _exwb.create_sheet('DADOS')
+for _r in indice_ficha._aba(LAY_FA2,'DADOS')['celulas']:
+    if _r[1] == 'sequela extras':
+        _ln = indice_ficha._lc(_r[0])[0]
+        for _co,_v in [(f'BA{_ln}','sequela extras'),(f'BB{_ln}',indice_ficha.FORMULA.format(c=_EXTRAS))]:
+            _exd[_co] = _v; _EXTRAS_PERFIS[('DADOS',_co)] = perfil(_exd[_co])
 _abas_novas = ["GLOSSÁRIO", ficha_pessoal.NOME, ficha_amaldicoada.NOME, ficha_amaldicoada.DADOS_AM, ficha_invocacoes.NOME, ficha_invocacoes.DADOS_IV, _analise.NOME, _configuracao.NOME, _configuracao.DADOS]
 _gerada_sem_novas = [n for n in wb_.sheetnames if n not in _abas_novas]
 # O original que o Mizuki exporta já traz o GLOSSARIO -- ele monta o construir() e exporta a planilha
@@ -316,6 +346,9 @@ for n in wa.sheetnames:
                 if isinstance(pa["valor"], str):
                     pa["valor"] = linhas_novas.desloca_formula(pa["valor"], n == linhas_novas.ABA, LN["depois"], LN["n"])
             pb = perfil(sb.cell(row=r, column=c))
+            if (n, sb.cell(row=r,column=c).coordinate) in _EXTRAS_PERFIS and pb == _EXTRAS_PERFIS[(n,sb.cell(row=r,column=c).coordinate)]:
+                esperadas["Sequelas extras, valor e apresentação conferidos"] += 1
+                continue
             # Só a fórmula declarada da configuração pode substituir a antiga.
             # Após conferir o envoltório, a conta anterior segue todas as limpezas abaixo.
             _coord_cfg = sb.cell(row=r, column=c).coordinate
@@ -323,6 +356,10 @@ for n in wa.sheetnames:
             if _f_cfg is not None and pb["valor"] == _f_cfg:
                 pb = {**pb, "valor": _CFG["antes"][n][_coord_cfg]}
                 esperadas["fórmula com bônus e mudanças, preservando a conta anterior"] += 1
+            _f_camp = _CAMP["celulas"].get(n, {}).get(_coord_cfg)
+            if _f_camp is not None and pb["valor"] == _f_camp:
+                pb = {**pb, "valor": _CAMP["antes"][n][_coord_cfg]}
+                esperadas["regra de campanha, transformação exata"] += 1
             if n == "FICHA" and c in PO["colunas"]:
                 esperado_painel = perfil(_pws.cell(row=r, column=c))
                 for k in pb:
@@ -621,6 +658,8 @@ for n in wa.sheetnames:
     for x in sorted(mb - ma):
         if n == "FICHA" and x == PO["mescla"]:
             esperadas["mesclagem do painel da Origem"] += 1
+        elif n == "FICHA" and x in _EXTRAS_MERGES:
+            esperadas["mesclagem de Sequelas extras"] += 1
         elif x in EP["mescladas"].get(n, []):          # 08/10/2026 (B41): as caixas do estado do personagem
             esperadas["mesclagem do estado do personagem"] += 1
         elif x in FL["mescladas"].get(n, []):        # limpeza 13: as caixas refeitas e a foto
