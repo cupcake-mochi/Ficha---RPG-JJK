@@ -64,3 +64,10 @@ Fechamento para teste do usuário (15/10): montagem nativa autorizada concluída
 Na montagem final: 13 abas/17 faixas sem erros de fórmula, 204 menus/55 checkboxes/175 seletores estritos de CONFIGURAÇÃO conferidos. Defesa 20, Proteção 7, deslocamento 4,5 m, volumes 3 e 2,1; troca por zero, restrição da marcante herdada e 50 Pontos de Esforço passaram. As 121 entradas temporárias foram restauradas e relidas, sem diferenças. DADOS_CUSTOM tem 4.904 entradas iguais ao gerador; ANALISE mantém 6.174 chaves únicas. Revisão visual das áreas registradas em ../evidencias-custom/montagem-*.png, incluindo carteira/foto/paleta, recursos/sequelas, inventário, regras/XP/vida e cartões, sem bordas quebradas nas vistas inspecionadas.
 
 Helper removido e Código.gs relido após recarregar editor independente, igual ao local. Maior .gs: 806.439 bytes (teto 900 KiB). Evidência consolidada: ../evidencias-custom/fechamento-montagem-base-r52.json. O descartável é evidência de construção e conserva o script antigo copiado da oficial; a execução usou o gerador atual do projeto da revisão. Testar manualmente na cópia de revisão vinculada no início, que tem os dez scripts atuais. Não executar construir nela. Partes 3b/3c aguardam teste de 3a pelo usuário.
+
+
+## Teste delegado pelo usuário · 15/10/2026
+
+Usuário pediu que o agente fizesse o teste e seguisse. Roteiro focal repetido na revisão: arma/escudo/uniforme/item, Defesa 20, Proteção 7, deslocamento 4,5 m, volumes 3/2,1, troca por 0, Latente invalidando marcante própria, Origem sem base permitindo, rota sem energia com 50 PE, ferramenta herdando arma com volume 0 explícito, menor com texto e nome duplicado invalidado. As 156 entradas foram restauradas e relidas: nenhuma diferença. Auditoria posterior de 13 abas/17 faixas: zero erros de fórmula. Sem nova montagem ou bateria integral desnecessária. Evidência: ../evidencias-custom/teste-delegado-3a.json.
+
+Próximo: aprovação do desenho da aba ESTUDO 3B e integração por etapas; ver ESTUDO-CUSTOM-3B.md.

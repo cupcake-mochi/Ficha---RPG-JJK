@@ -1,3 +1,15 @@
+## Continuação · teste delegado da 3a e protótipo 3b (15/10/2026)
+
+Usuário autorizou o agente a fazer o teste e seguir a fila. Teste focal na revisão concluído: equipamentos/volumes/Defesa/Proteção/deslocamento, troca por zero, marcante herdada, rota sem energia, ferramenta com volume zero, menor e duplicatas passaram. As 156 entradas temporárias foram restauradas e relidas; 13 abas/17 faixas sem erros de fórmula. Evidência: evidencias-custom/teste-delegado-3a.json. Não repetir montagem nativa nem bateria pesada sem mudança que justifique.
+
+Criada somente a aba ESTUDO 3B (47005), com Caminho/Trilha, textos por nível e molde curto Perícia/Ofício. 29 controles e dois grupos nativos conferidos; troca de tipo por fórmula passou. Fonte do estudo em mockup/prototipo_custom_3b.py. Não há integração 3b/novo formato ANALISE. Detalhes em ESTUDO-CUSTOM-3B.md.
+
+Conta inicial de 36 substituída por 133: Caminho 1 + Trilha 1 + perícias (23 + 12×7 + 1 =108) + ofícios (11+12=23). Total proposto com 3a:158. Inclui as 12 entidades; seletores de Classe não são registros. Capacidade final ainda exige tamanho real dos scripts e tempo nativo, após integrar. Não afirmar que 36 cobrem toda a ficha.
+
+Aguardar resposta à pergunta atual do protótipo antes de código de produção, por exigência explícita do prompt do usuário. Pergunta anterior com 36 está superada. Trabalho autorizado independente: mapear campos particulares das Trilhas e dependências da progressão; não decidir novas regras sem perguntar. Oficial e bot intactos. HEAD encontrado4099df2 (commit anterior feito pelo usuário), sem commit/push pelo agente.
+
+---
+
 ## Estado atual · montagem nativa concluída e 3a pronta para teste (15/10/2026)
 
 Após autorização do usuário, construir() terminou na cópia nativa descartável 12iTELP65DYjBjAY-PiAZ-JvVIyrK7ragsYKRX-vXYsc com “FICHA PRONTA”. Duas execuções iniciais concluídas montaram as primeiras sete abas em 141.988 e 235.950 ms. A instalação individual dos menus estourou seis minutos numa tentativa intermediária. Corrigido CONFIGURAÇÃO para usar validacao_em_matriz, mecanismo já existente: geração09 e regressao-construir04 aprovadas. A retomada final terminou em 289.568 ms; menus em cerca de 67,5 s. Soma do caminho concluído: 667.506 ms (11min7,5s), excluindo o erro transitório inicial e a tentativa com timeout. Não é tempo de uma única execução nem nova montagem integral após a correção; as primeiras sete abas foram reaproveitadas.
