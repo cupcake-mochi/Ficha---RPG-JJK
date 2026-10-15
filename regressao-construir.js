@@ -49,7 +49,7 @@ const { criaSheets, retrato, partes, letras, numero, CHAMADAS, zeraChamadas } = 
   let erroArquivo = null;
   try { incompleta.ctx.construir(); } catch (e) { erroArquivo = e; }
   ok('sem o Origens.gs a montagem avisa antes de criar ou apagar abas', !!erroArquivo && /Falta o Origens.gs/.test(erroArquivo.message) && incompleta.P.abas.map((a) => a.nome).join('|') === abasAntesFalta);
-  for (const falta of ['Analise.gs', 'AnaliseFontes.gs', 'Configuracao.gs', 'Custom.gs', 'Pessoal.gs']) {
+  for (const falta of ['Analise.gs', 'AnaliseFontes.gs', 'Configuracao.gs', 'Custom.gs', 'Pessoal.gs', 'Progressao.gs', 'ProgressaoPainel.gs', 'ProgressaoAnalise.gs']) {
     const C = criaSheets(require('./medidas/carregar-ficha.js').fontes(arquivos.filter(n => n !== falta)), HAB_SRC + '\n' + GS);
     const antes = C.P.abas.map(a => a.nome).join('|');
     let erro = null;
@@ -78,7 +78,10 @@ ok('as ocultas ficam ocultas, e só elas', ABAS.every((s) => S.acha(s.nome).ocul
   ok('a CONFIGURAÇÃO tem 30 caixas de ligar e menus de caixa, modo e fonte',
      [...C.caixas].filter(k => k.endsWith(',2')).length === 30 && Array.from({length:30},(_,i)=>(11+i)+',2').every(k=>C.caixas.has(k)) && ['11,3', '11,4', '11,6'].every(k => C.dv.has(k)));
   ok('25 lembretes MESTRE VIU e 175 seletores estritos independentes dos bônus',
-     [...C.caixas].filter(k=>k.endsWith(',14')).length===25 && Array.from({length:25},(_,n)=>n).every(n=>{const r=9+n*29;return C.caixas.has((r+2)+',14') && Array.from({length:7},(_,i)=>(r+5+i)+',12').every(k=>C.dv.has(k)&&C.dv.get(k).invalido===false);}));
+     [...C.caixas].filter(k=>k.endsWith(',14')&&Number(k.split(',')[0])<=732).length===25 && Array.from({length:25},(_,n)=>n).every(n=>{const r=9+n*29;return C.caixas.has((r+2)+',14') && Array.from({length:7},(_,i)=>(r+5+i)+',12').every(k=>C.dv.has(k)&&C.dv.get(k).invalido===false);}));
+  ok('133 lembretes e 131 tipos de registro da parte 3b',
+     [...C.caixas].filter(k=>Number(k.split(',')[0])>=733).length===133 &&
+     Array.from({length:131},(_,i)=>({r:877+Math.floor(i/2)*14+2,c:i%2===0?2:10})).every(x=>C.dv.has(x.r+','+x.c)));
   ok('as linhas livres de equipamento aceitam menu e digitação avulsa', ['98,4','99,4','104,4','104,26'].every(k=>S.acha('FICHA PESSOAL').dv.get(k).invalido===true));
 
 }
@@ -333,7 +336,7 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
     todas[nomeAba] = { contas: contas.length, livres: Object.keys(livres).length, naoVoltou };
   }
   ok(`toda conta que não é livre volta: as ${todas['FICHA'].contas} da FICHA, as ${todas['CARTEIRA'].contas} da CARTEIRA e as ${todas['FICHA PESSOAL'].contas} da FICHA PESSOAL, uma a uma`,
-     !erroD && Object.values(todas).every((x) => x.contas > 5 && !x.naoVoltou.length) && todas['FICHA'].livres === 4 && !S.P.orfas.length,
+     !erroD && Object.values(todas).every((x) => x.contas > 5 && !x.naoVoltou.length) && todas['FICHA'].livres === 15 && !S.P.orfas.length,
      erroD ? erroD.message : Object.entries(todas).map(([k, x]) => `${k}: ${x.naoVoltou.slice(0, 5).join(',')}`).join(' · ') + ' · ' + S.P.orfas.slice(0, 2).join(' · '));
   // as caixas livres nascem com conta e são do jogador: a vida da FICHA, o Volume de um item, a vida atual da invocação
   const livre = (nomeAba, a1) => { const n0 = S.P.avisos.length; try { S.ss.getSheetByName(nomeAba).getRange(a1).setValue(7); S.ctx.onEdit(ed(nomeAba, a1, 7)); } catch (e) { erroD = e; }
@@ -570,6 +573,19 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
      !erroE && bate(PE, eDos, tD) && cabe(PE, eDos, tD), erroE ? erroE.message : mostra(PE, eDos));
   try { [iCic, iHist, iPers].forEach((k) => escreve(FP, 'FICHA PESSOAL', eDos.textos[k][1][0], '')); } catch (e) { erroE = e; }
   ok('apagar os textos devolve o dossiê à altura comum', !erroE && comum(PE, eDos), erroE ? erroE.message : mostra(PE, eDos));
+  const cfgSpec = ABAS.find(a => a.nome === 'CONFIGURAÇÃO');
+  const cfgStretch = cfgSpec.esticam || [], CFG = S.acha('CONFIGURAÇÃO');
+  const CC = S.ss.getSheetByName('CONFIGURAÇÃO');
+  const paired = cfgStretch.filter(x => x.gatilhos.includes('B782'));
+  ok('texto custom por nível declara expansão na configuração e no espelho',
+     paired.length === 2 && paired.some(x => x.aba === 'CONFIGURAÇÃO') && paired.some(x => x.aba === 'FICHA'));
+  try { escreve(CC, 'CONFIGURAÇÃO', 'B782', LONGO.repeat(3)); } catch(e) { erroE=e; }
+  ok('descrição custom longa cabe nos dois painéis sem cortar a carta vizinha',
+     !erroE && paired.every(x => cabe(x.aba === 'FICHA' ? FA : CFG, x, [LONGO.repeat(3), ''])),
+     erroE ? erroE.message : paired.map(x => mostra(x.aba === 'FICHA' ? FA : CFG,x)).join(' / '));
+  try { escreve(CC, 'CONFIGURAÇÃO', 'B782', ''); } catch(e) { erroE=e; }
+  ok('apagar descrição custom devolve as alturas comuns dos dois painéis',
+     !erroE && paired.every(x => comum(x.aba === 'FICHA' ? FA : CFG,x)));
 }
 // 08/10/2026, do pente-fino no Sheets: "O link da segunda invocação chega ao cabeçalho, mas a ficha continua recolhida".
 // A seleção que chega no número da ficha (onde o link cai) abre o grupo da fileira e o da coluna de fichas dela.

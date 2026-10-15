@@ -101,7 +101,7 @@ def build():
         field(r, 2, label, val, opts, note)
     categories = sorted({a['categoria'] for a in CAT['equipamento']['armas'].values()})
     for i in range(len(categories)):
-        field(24+i, 2, 'CATEGORIA '+str(i+1), '—', ['—']+categories,
+        field(24+i, 2, 'CATEGORIA DE ARMA '+str(i+1), '—', ['—']+categories,
               'Preencha categorias distintas quando TREINO DE ARMA usar a seleção. Todas já inclui o catálogo inteiro.')
     cell(39, 2, 'OBSERVAÇÕES', ec=7, heading=True)
     cell(40, 2, 'Treinos, números e textos próprios do Caminho. Alterações numéricas específicas continuam em BÔNUS E MUDANÇAS.', er=43, ec=7)

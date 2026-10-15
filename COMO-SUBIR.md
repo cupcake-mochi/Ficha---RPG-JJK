@@ -10,7 +10,7 @@ Agora nada é traduzido, então nada se perde na tradução.
 
 Para testar o B47 sobre a ficha do servidor, faça uma cópia **dentro do Google Sheets**. Não importe o XLSX: a conversão altera larguras, imagens e controles. O XLSX local continua servindo aos validadores, não à publicação no Sheets.
 
-A cópia de revisão é [Ciclo Maldito — B47 — cópia nativa para revisão](https://docs.google.com/spreadsheets/d/1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0/edit). Foram preservadas as abas da base, com atualização das fórmulas afetadas pelos bônus e pelas regras de campanha, da ANALISE e das novas CONFIGURAÇÃO/DADOS_CONFIG. Os oito scripts foram atualizados na cópia. Não execute `construir()` sobre uma ficha preenchida: essa função é uma montagem completa. O roteiro desta etapa está em `TESTE-CONFIGURACAO.md`.
+A cópia de revisão é [Ciclo Maldito — B47 — cópia nativa para revisão](https://docs.google.com/spreadsheets/d/1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0/edit). Foram preservadas as abas da base, com atualização das fórmulas afetadas pelos bônus e pelas regras de campanha, da ANALISE e das novas CONFIGURAÇÃO/DADOS_CONFIG. Os treze scripts da etapa 3b foram atualizados na cópia. Não execute `construir()` sobre uma ficha preenchida: essa função é uma montagem completa. O roteiro desta etapa está em `TESTE-CONFIGURACAO.md`.
 
 Os passos abaixo são para uma **montagem nova e vazia**. A ficha oficial do servidor não foi alterada nesta rodada.
 
@@ -28,7 +28,7 @@ systemd-run --user --scope -q -p MemoryMax=3G -p MemorySwapMax=0 -p CPUQuota=200
 systemd-run --user --scope -q -p MemoryMax=3G -p MemorySwapMax=0 -p CPUQuota=200% nice -n 15 env NODE_OPTIONS=--max-old-space-size=1500 ./rodar-tudo.sh
 ```
 
-Saem sete arquivos gerados: `Ficha.gs`, `Habilidades.gs`, `Invocacoes.gs`, `Origens.gs`, `Analise.gs`, `AnaliseFontes.gs` e `Configuracao.gs`; `Codigo.gs` é escrito à mão. Cole os oito arquivos no mesmo projeto. A montagem avisa sobre arquivo obrigatório ausente antes de alterar abas. Se os vinte e um validadores não passarem, não sobe. A ANALISE desta etapa usa formato 4 (5.274 chaves): atualizar o leitor do bot antes de publicar para jogadores.
+Saem doze arquivos gerados: `Ficha.gs`, `Habilidades.gs`, `Invocacoes.gs`, `Origens.gs`, `Analise.gs`, `AnaliseFontes.gs`, `Configuracao.gs`, `Custom.gs`, `Pessoal.gs`, `Progressao.gs`, `ProgressaoPainel.gs` e `ProgressaoAnalise.gs`; `Codigo.gs` é escrito à mão. Cole os treze no mesmo projeto. A montagem avisa sobre arquivo obrigatório ausente antes de alterar abas. Se os vinte e três validadores não passarem, não sobe. A ANALISE desta etapa usa formato 6 (7.387 chaves): atualizar o leitor do bot antes de publicar para jogadores.
 
 > **O `ficha/monta.py` foi aposentado em 14/09/2026, no B18.** *Ele ficou dez versões atrás da planilha viva, e o `Ficha.gs` que ele gerava montava uma ficha antiga.*
 
@@ -42,7 +42,7 @@ Saem sete arquivos gerados: `Ficha.gs`, `Habilidades.gs`, `Invocacoes.gs`, `Orig
 Oswald  ·  Castoro  ·  Yuji Syuku
 ```
 
-### 3 · Colar os oito arquivos
+### 3 · Colar os treze arquivos
 
 **Extensões → Apps Script.**
 
@@ -58,7 +58,9 @@ Mais uma vez no `+`, **Script**, nome `Origens`, e cole o conteúdo de **`apps-s
 
 Crie também os scripts `Analise`, `AnaliseFontes` e `Configuracao`, com os arquivos de mesmo nome da pasta `apps-script`. `AnaliseFontes.gs` transporta a coluna dos endereços da ANALISE; `Configuracao.gs` transporta a CONFIGURAÇÃO e a DADOS_CONFIG. Os três são obrigatórios nesta versão; a montagem para antes de alterar abas se algum estiver faltando. A ordem de carga não importa.
 
-> Todos os arquivos ficam abaixo do teto de 900 KB por arquivo usado pelos testes. O `Ficha.gs` tem cerca de 865 KB; o `Origens.gs`, 74 KB. É normal demorarem a colar.
+Crie ainda `Custom`, `Pessoal`, `Progressao`, `ProgressaoPainel` e `ProgressaoAnalise`, usando os arquivos gerados de mesmo nome. São complementos obrigatórios: a montagem para antes de mexer na planilha se faltar algum. Todos ficam abaixo de 900 KiB; o maior nesta geração é Configuracao.gs, com 837.710 bytes.
+
+Depois de salvar, recarregue o editor e confira a existência dos treze arquivos. A indicação de texto colado não confirma persistência. Se o editor ficar em Salvando, executar `indice()` faz apenas uma leitura e permite conferir a gravação antes de construir. Nunca execute construir na cópia preenchida para testar o salvamento.
 
 Salva com `Ctrl+S`.
 
@@ -144,7 +146,7 @@ Quando o manual mudar, você muda **uma célula** na central e toda ficha em cir
 
 ## Quando a ficha mudar
 
-Para esta atualização, preserve o `layout.json` existente, rode o gerador e cole os oito arquivos atualizados. Rode `construir` numa planilha nova. Ficha de jogador não se migra: ele copia o modelo novo e transcreve.
+Para esta atualização, preserve o `layout.json` existente, rode o gerador e cole os treze arquivos atualizados. Rode `construir` numa planilha nova. Ficha de jogador não se migra: ele copia o modelo novo e transcreve.
 
 ---
 

@@ -3764,3 +3764,75 @@ Geração 04 completou. Corrigidos sobreposição J6:O7 com reserva J7:O8 e pres
 Cópia nativa ainda SEM cartões de produção; oficial e scripts vinculados intactos nesta rodada. Preparador pontual em evidencias-custom/preparar-custom-nativo.js lê os .gs gerados, compara com HEAD, prepara 122 mudanças de conta e oito menus; não importa XLSX e não grava no Google. Guardas pendem de leitura nativa fresca. Pedidos de painel precisam manter lotes curtos (os blocos de 40 linhas ficaram com 69KB; reduzir para 10 antes de aplicar). Depois da regressão: validações, migração, testes/inspeção visual de todas as abas afetadas, atualização e conferência dos dez scripts vinculados. Ainda medir construir() nativo numa cópia descartável antes de fixar capacidade final. 3b/3c só após usuário testar 3a.
 
 ---
+
+
+### 15/10/2026 · parte 3b aprovada e em implementação
+
+Usuário aprovou o desenho/capacidade de 133 registros (1 Caminho, 1 Trilha, 131 curtos) e BASE DO LIVRO opcional da Trilha. Categorias são categorias de arma; rótulo esclarecido. Código em custom_progressao.py acrescenta os cartões sem mover os anteriores, listas livro + custom, contas de vida/PE/dado, treinos, especializações, textos por nível e BÔNUS E MUDANÇAS para linhas novas. ANALISE 6 é aditiva; 6.174 chaves anteriores preservadas. Nova geração: 7.385 chaves, três arquivos Progressao*.gs; maior arquivo 821.457 bytes.
+
+Primeira calculadora local conferiu Caminho 49 vida/35 PE, atributo e especialização, troca por zero, custo de troca por arma, Trilha Múltiplas Invocações (4 ativas/4 famílias), texto por nível, duplicatas e números/atributos inválidos. A checagem estrutural teve falso desvio de representação (antes do transporte SPARKLINE / escape de texto); corrigida para comparar o mesmo estágio emitido e passou. Repetição completa incluindo vida rolada pendente.
+
+ATENÇÃO: ainda não instalado na revisão nem scripts vinculados. Falta montagem simulada/nativa e inspeção visual. Não publicar oficial, não fazer commit/push. Continuar com testes locais, guardas da migração pontual em medidas/preparar-progressao-nativa.js, instalação nativa e rollback dos dados de teste. Não registrar tarefa completa antes desses passos. Evidências em ../evidencias-3b/.
+
+
+### Retomada após interrupção · 15/10/2026
+
+Parte 3b instalada PARCIALMENTE na cópia de revisão 1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0: estrutura, DADOS_PROGRESSAO, painéis, menus, reparo dos fundos e 568 mudanças de contas aplicados. 280 células anteriores conferidas por guarda: zero divergências antes da escrita. ANALISE ainda formato 5; faltam 82 pedidos do grupo contrato do manifesto. Nenhum dado temporário de jogador foi inserido. Oficial intacta. Não reaplicar mesclagens/grupos do painel.
+
+Scripts vinculados: somente Código.gs e Ficha.gs enviados e conferidos integralmente; Analise.gs e demais existentes precisam conferência/envio, mais três Progressao*.gs novos. Navegador desconectou em colagem grande; retomar com lotes menores. Não há montagem nativa 3b medida.
+
+Testes locais: regressão de progressão, construção simulada, 122 verificações de paleta e leitor passaram. ANALISE 6 gerada tem 7.387 chaves, preservando as quatro colunas das 6.174 anteriores (exceto versão). Regressão 3a completa teve UMA falha ligada ao FILTER de CP3 no LibreOffice 24.2; fórmula CP3 idêntica à base. Necessário contraprovar no Sheets, sem enfraquecer teste. Evidências em ../evidencias-3b/. Próximos: concluir scripts/contrato, testes mecânicos nativos com restauração, inspeção visual de todas as abas afetadas e montagem na descartável. Sem commit/push.
+
+
+### 15/10/2026 · migração 3b e testes nativos concluídos; medição em andamento
+
+ANALISE 6 instalada: 7.387 chaves únicas, zero erros de fórmula. Testes nativos passaram: Caminho 49 vida/35 PE; vida rolada 45, dado acima de d8 rejeitado; perícia 5/ofício especializado 3, troca por zero; Trilha herdada Múltiplas 4/4 e sem base com efeitos 5/5; duplicata e número/atributo inválidos diagnosticados. Caso Latente + Tentativa e Erro passou no Sheets (CP3 retorna a marcante, D51 sem aviso), contraprova da limitação FILTER do LibreOffice. Seleção real de Caminho preencheu perícia custom fixa, marcou Acrobacia e apenas categoria Yumi. Entradas e seis mudanças auxiliares do onEdit restauradas; 76 entradas relidas sem diferenças. Auditoria de 13 abas de produção, em faixas limitadas, zero erros. Evidências testes-nativos-3b.json e auditoria-nativa-restaurada.json.
+
+Texto longo revelou corte: corrigido em custom_progressao.py + Codigo.gs com expansão dos pares de cartões na CONFIGURAÇÃO e espelho da FICHA. Nativo mostrou descrição integral e final nos dois locais. Novas regressões de expansão + construção completa simulada passaram (regressao-construir-texto-longo-final.log). Reaplicadas 307 bordas da nova área da FICHA após verificar ausência na coluna direita. Dados do segundo ensaio restaurados; falta última leitura de conferência.
+
+Os 13 scripts foram enviados, GRAVADOS e conferidos novamente após recarga. Ctrl+S/Salvar deixou a interface em espera; executar indice(), função só de leitura, concluiu a gravação. Manter um único editor; abas paralelas podem devolver estados antigos. Editor atual no Brave, projeto de revisão.
+
+Medição NATIVA 3b começou às 16:05:18 de 15/10. Arquivo temporário MedicaoProgressao.gs no projeto da revisão, função medirProgressaoB47; destino fixo descartável 12iTELP65DYjBjAY-PiAZ-JvVIyrK7ragsYKRX-vXYsc, título TESTE DESCARTÁVEL — base B47 — construção custom R52. Guardas impedem revisão/oficial como destino. Chave ScriptProperties B47_MEDICAO_PROGRESSAO_R52_BASE; continuar rodando a mesma função até complete=true. Fonte temporária salva em evidencias-3b/MedicaoProgressao.gs. Remover arquivo remoto após terminar. Não executar construir() diretamente na revisão! Ainda faltam terminar medição, inspeção visual final das demais abas, documentação e git add/mensagem. Sem commit/push.
+
+
+### Fechamento da parte 3b · 15/10/2026
+
+Parte 3b concluída na cópia de revisão: 1 Caminho, 1 Trilha e 131 registros de perícia/ofício; 158 registros com a 3a. Treze scripts persistidos e conferidos após recarga. ANALISE 6: 7.387 chaves únicas e quatro colunas anteriores preservadas. Menus/cálculos/treinos/vida rolada/Trilha opcional/entidades testados nativamente. Textos longos expandem configuração e espelho; bordas reparadas; nova área FICHA alinhada à paleta atual sem tocar na CONFIGURAÇÃO fixa. Dados de teste restaurados e relidos, sem diferenças; todas as entradas/fórmulas das novas áreas conferidas. Não há ensaio ativo.
+
+Montagem NATIVA na descartável concluída: 188.812 + 188.009 = 376.821 ms, duas execuções concluídas; falha inicial do serviço Planilhas registrada fora dessa soma. CONFIGURAÇÃO 29,1 s, menus 58,9 s, ANALISE 24 s. Revisão e descartável sem erros de fórmula nas faixas auditadas. 14 abas construídas; CONFIGURAÇÃO com 188 checkboxes e 488 seletores/575 células validadas. Instrumentação MedicaoProgressao.gs removida e ausência confirmada após recarga.
+
+Regressão autônoma de progressão passou, incluindo vida rolada, contrato e valores inválidos; construção simulada e expansão de texto passaram, paleta 122 e leitor passaram. Snapshot 3a gzip versionado e conferido contra 03a459e; validador novo integrado ao rodar-tudo (23). Limitação registrada: uma falha local de FILTER na regressão antiga 3a, contraprova nativa aprovada; teste não enfraquecido. Bateria integral e arnês pessoal longo não repetidos. Maior script 837.710 bytes <900 KiB.
+
+Próxima etapa funcional: 3c, mediante inventário e novo protótipo aprovado, conforme prompt. Não há decisão de regra pendente da 3b. Oficial, bot, compartilhamento e main intactos. Preparar git add e mensagem-de-commit.txt; NÃO commit/push. Roteiro/limitações em TESTE-CONFIGURACAO.md e ESTUDO-CUSTOM-3B.md; contrato em ../ESQUEMA-ANALISE.md. Evidências ../evidencias-3b/.
+
+
+### Checagem adicional do gatilho (15/10, após fechamento provisório)
+
+ATENÇÃO: uma checagem final encontrou timeout real de onEdit ao escolher Caminho (30,973 s), embora os treinos já fossem gravados. Não considerar encerrada antes de corrigir e retestar. Codigo.gs foi otimizado: habilidadesDaFicha_ lê valores/notas em duas matrizes e não regrava notas idênticas. Mantém textos, notas e alturas. Regressão completa de construção em evidencias-3b/regressao-construir-desempenho-final.log. Ainda em teste nativo; editor precisa perder foco do arquivo antes de salvar para garantir persistência. Arquivo de medição permanece removido.
+
+Há novamente um cenário temporário na revisão (Caminho Teste, atributos nível5 etc.) para medir o gatilho. Backup antes do ensaio: evidencias-3b/qa-antes-tempo-onedit.json. Restaurar diferenças de FICHA e FICHA PESSOAL contra esse backup (userEnteredValue e note) e as 76 entradas contra qa-backup-nativo.json; o último contém faixas vazias sem rowData, portanto restaurar também vazios! Definição de alvos está no roteiro/regressao-progressao. Não finalizar sem restauração/readback.
+
+
+### 15/10 · diagnóstico do limite na troca de Caminho
+
+Última medição nativa: 30,980 s, limite. Perfil: índice 1,805 s; perícias 3,483 s; Trilha 4,875 s; cartas 5,840 s; troca por arma 5,871 s. Interrupção dentro de fichaMexeNaPessoal_, após isso. O Código agora reutiliza a leitura DADOS para índice/perícias/Trilha, lê notas em matriz e não regrava altura de cartas cujo texto se manteve. Mantém releitura das notas vivas depois das mudanças, para não usar cálculo antigo. Código salvo foi conferido igual ao local.
+
+Novo ajuste em teste: gravarCaixas_ usa RangeList.setValue(true/false), evitando a leitura da validação de cada checkbox por check/uncheck. Só duas linhas funcionais e o comentário mudaram; preparado no editor Brave. Salvamento automático fica preso; aguardando confirmação manual da versão e reteste nativo de ida/volta livro/custom. Regressão completa de construção passou com o ajuste (regressao-construir-treinos-final.log); simulador passou a implementar o método real RangeList.setValue. Logs B47 tempo registram etapas, sem conteúdo de jogador. Não declarar a 3b encerrada antes do reteste e da restauração. O cenário e os backups são os mesmos do item acima (qa-antes-tempo-onedit.json + 76 alvos de qa-backup-nativo.json). Ainda sem commit/push.
+
+
+### Editor íntegro reposto · último estado
+
+Após a tentativa de salvar, apareceram caracteres acidentais e uma seleção incompleta no editor; o usuário confirmou ter digitado por cima sem querer. Reposto o Código.gs inteiro com colagem única, focando explicitamente o editor. Leitura posterior por locator do textbox + Control+A/Control+C, seguida de AX, conferiu 256.072 caracteres exatamente iguais ao arquivo local. A versão inclui RangeList.setValue para os treinos e logs B47 tempo. Salvamento automático ainda em espera: pedido manual enviado. Não recolocar caracteres nem executar antes de confirmar persistência. Para copiar, focar o textbox “Editor content;Press Alt+F1 for Accessibility Options.” via locator.press; atalhos sem foco podem selecionar a página inteira. Evitar colagens sucessivas sem checar foco/estado.
+
+O restante permanece: cenário QA ativo, restaurar após os dois testes de Caminho (livro/custom), sem commit/push. Arquivos da 3b já adicionados de forma delimitada ao índice; git diff --cached --check passou. Não considerar a parte finalizada só por estarem adicionados.
+
+
+### Encerramento confirmado da 3b · 15/10/2026, 17h
+
+A pendência do gatilho foi resolvida e substitui os avisos de encerramento provisório acima. Caminho do livro Vanguarda: onEdit concluído em 13,690 s, 65/65 caixas de treino marcadas. Volta real para Caminho Teste: concluído em 15,051 s, somente AM81:AM83 (Yumi), perícia custom Rituais Urbanos preenchida e treinada. Todas as etapas chegaram ao fim, sem erro nos registros. O gargalo era check/uncheck sobre a lista de treinos: a gravação booleana em lote com RangeList.setValue resolveu, mantendo as caixas e as regras. Leituras e notas também foram agrupadas; alturas de textos mantidos não são regravadas.
+
+Código.gs completo restaurado após digitação acidental, salvo pelo usuário e relido após recarga: 256.072 caracteres idênticos ao arquivo local. Regressão completa de construção com o novo método passou (regressao-construir-treinos-final.log). Permanecem logs de duração das etapas no Codigo.gs para diagnóstico; o helper de montagem MedicaoProgressao.gs continua removido.
+
+Cenário temporário retirado. Conferência integral de userEnteredValue/notas da FICHA e FICHA PESSOAL contra o backup: zero diferenças. Os 76 alvos também voltaram ao original, incluindo vazios; três entradas das entidades/técnica vazias; CONFIGURAÇÃO B781 = 2. Auditoria final das áreas novas: zero erros. Capturas finais visual-configuracao-3b-entrega.png e visual-ficha-3b-entrega.png mostram cartões/grades/paleta sem dados de teste. Demais abas e carteira já foram inspecionadas na rodada.
+
+Parte 3b concluída: 133 novos cadastros, 158 com a 3a, ANALISE 6 com 7.387 chaves. A montagem nativa e as demais validações/limitação FILTER constam do fechamento anterior e dos roteiros; bateria integral de 23 e arnês pessoal longo não repetidos. Oficial e bot intactos; sem Excel importado. Próximo bloco: 3c, com inventário e protótipo aprovado antes de construir. Arquivos adicionados ao índice de forma delimitada, mensagem-de-commit.txt preparada, sem commit/push. Não há cenário ativo nem decisão de regra pendente nesta parte.

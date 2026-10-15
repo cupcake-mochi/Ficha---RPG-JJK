@@ -21,7 +21,7 @@ w=load_workbook(novo)
 rows=[list(x) for x in w['ANALISE'].iter_rows(min_row=2,max_col=4,values_only=True) if x[0]]
 old=json.loads((ROOT/'ficha-v01/analise-v4-preservada.json').read_text())
 mapa={r[0]:r for r in rows}
-check('5274 chaves anteriores preservadas integralmente',all((mapa[r[0]]==r if r[0]!='formato.versao' else mapa[r[0]][1]=='5') for r in old) and len(old)==5274)
+check('5274 chaves anteriores preservadas integralmente',all((mapa[r[0]]==r if r[0]!='formato.versao' else mapa[r[0]][1]=='6') for r in old) and len(old)==5274)
 check('contrato sem chaves repetidas',len(rows)==len(mapa))
 check('25 registros completos inclusive vazios',all(f'custom.{n}.campo.base_do_livro' in mapa and f'aviso.custom.{n}' in mapa for n in range(1,26)))
 cfg=w['CONFIGURAÇÃO'];merges=list(cfg.merged_cells.ranges)
@@ -32,7 +32,7 @@ check('sem faixa cinza de congelamento',cfg.freeze_panes is None)
 check('aviso global preserva bônus, campanha e vida rolada',all(x in cfg['J6'].value for x in ['DADOS_CONFIG!$P$2','DADOS_CONFIG!$T$17','DADOS_CONFIG!$AF$32']))
 dvs=list(cfg.data_validations.dataValidation)
 check('175 seletores de campos fechados estritos',sum(v.showErrorMessage is True and v.type=='list' and str(v.sqref).startswith('L') for v in dvs)==175)
-check('25 seletores de tipo estritos',sum(v.showErrorMessage is True and v.type=='list' and str(v.sqref).startswith('J') for v in dvs)==25)
+check('25 seletores de tipo estritos da parte 3a',sum(v.showErrorMessage is True and v.type=='list' and str(v.sqref).startswith('J') and int(re.search(r'\d+',str(v.sqref)).group())<=732 for v in dvs)==25)
 check('itens R51 têm volume real',next(i for i in custom.itens_livro() if i['nome']=='Corda')['volume']==.5)
 check('rotas próprias incluem Marcial com e sem energia',len(custom.ROTAS)==4 and custom.SEM_BASE=='Nenhuma')
 idx={w['DADOS'].cell(r,53).value:ix.endereco(w['DADOS'].cell(r,54).value) for r in range(5,w['DADOS'].max_row+1) if w['DADOS'].cell(r,53).value}

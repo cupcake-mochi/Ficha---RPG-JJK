@@ -15,7 +15,7 @@ sendo os mesmos que os dez validadores conferem.
 """
 import base64, json, os, re
 from openpyxl.worksheet.formula import ArrayFormula
-from openpyxl.utils import get_column_letter as L
+from openpyxl.utils import get_column_letter as L, column_index_from_string
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(AQUI)
@@ -412,10 +412,13 @@ def compactar(aba):
 SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVOC")),
              "Analise.gs": ("ABAS_DA_ANALISE", ("ANALISE",)),
              "Configuracao.gs": ("ABAS_DA_CONFIGURACAO", ("CONFIGURAÇÃO", "DADOS_CONFIG")),
-             "Custom.gs": ("ABAS_DO_CUSTOM", ("DADOS_CUSTOM",))}
+             "Custom.gs": ("ABAS_DO_CUSTOM", ("DADOS_CUSTOM",)),
+             "Progressao.gs": ("ABAS_DA_PROGRESSAO", ("DADOS_PROGRESSAO",))}
 COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
                 "AnaliseFontes.gs": "FONTES_DA_ANALISE_",
-                "Pessoal.gs": "VALORES_CUSTOM_"}
+                "Pessoal.gs": "VALORES_CUSTOM_",
+                "ProgressaoPainel.gs": "VALORES_PROGRESSAO_",
+                "ProgressaoAnalise.gs": "CONTRATO_PROGRESSAO_"}
 
 
 def abas_cruas(caminho=None):
@@ -431,11 +434,16 @@ def abas_cruas(caminho=None):
             abas.insert(i + 1, e)
     for arq, var in COMPLEMENTOS.items():
         p = os.path.join(os.path.dirname(caminho), arq)
+        if not os.path.exists(p):
+            continue
         for extra in json.loads(re.search(r"var %s = ([\s\S]*?);\n\nif \(typeof juntarValores_" % var,
                                           open(p, encoding="utf-8").read()).group(1)):
             aba = next(a for a in abas if a["nome"] == extra["nome"])
             aba["vals"].extend(extra["vals"])
             aba["vals"].sort(key=lambda v: (v[0], v[1]))
+            if extra.get('notas'):
+                aba.setdefault('notas', []).extend(extra['notas'])
+                aba['notas'].sort(key=lambda v: v[0])
     return abas
 
 
@@ -669,11 +677,22 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
         if isinstance(faixas, tuple):
             faixas = [faixas]
         complementos[arq] = []
-        for nome, c1, c2 in faixas:
+        for faixa in faixas:
+            nome, c1, c2 = faixa[:3]
+            r1, r2 = faixa[3:] if len(faixa) == 5 else (1, float('inf'))
             aba = next(a for a in abas if a["nome"] == nome)
-            vals = [v for v in aba["vals"] if c1 <= v[1] <= c2]
-            aba["vals"] = [v for v in aba["vals"] if not c1 <= v[1] <= c2]
-            complementos[arq].append({"nome": nome, "vals": vals})
+            seleciona = lambda v: c1 <= v[1] <= c2 and r1 <= v[0] <= r2
+            vals = [v for v in aba["vals"] if seleciona(v)]
+            aba["vals"] = [v for v in aba["vals"] if not seleciona(v)]
+            extra = {"nome": nome, "vals": vals}
+            if len(faixa) == 5:
+                def nota_dentro(nota):
+                    m = re.fullmatch(r'([A-Z]+)(\d+)',nota[0])
+                    return bool(m and r1 <= int(m.group(2)) <= r2 and c1 <= column_index_from_string(m.group(1)) <= c2)
+                notas = aba.get('notas', [])
+                extra['notas'] = [n for n in notas if nota_dentro(n)]
+                aba['notas'] = [n for n in notas if not nota_dentro(n)]
+            complementos[arq].append(extra)
     # as abas que moram em outro arquivo saem do ABAS, cada uma dizendo depois de qual ela entra
     fora = {}
     for arq, (var, nomes) in SEPARADAS.items():

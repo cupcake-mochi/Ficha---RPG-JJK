@@ -71,3 +71,25 @@ Helper removido e Código.gs relido após recarregar editor independente, igual 
 Usuário pediu que o agente fizesse o teste e seguisse. Roteiro focal repetido na revisão: arma/escudo/uniforme/item, Defesa 20, Proteção 7, deslocamento 4,5 m, volumes 3/2,1, troca por 0, Latente invalidando marcante própria, Origem sem base permitindo, rota sem energia com 50 PE, ferramenta herdando arma com volume 0 explícito, menor com texto e nome duplicado invalidado. As 156 entradas foram restauradas e relidas: nenhuma diferença. Auditoria posterior de 13 abas/17 faixas: zero erros de fórmula. Sem nova montagem ou bateria integral desnecessária. Evidência: ../evidencias-custom/teste-delegado-3a.json.
 
 Próximo: aprovação do desenho da aba ESTUDO 3B e integração por etapas; ver ESTUDO-CUSTOM-3B.md.
+
+
+## Parte 3b · roteiro e fechamento em 15/10/2026
+
+Testar somente em cópia nativa; nunca importar XLSX ou rodar construir sobre ficha preenchida. Contrato atual: ANALISE 6, 7.387 chaves. A oficial permanece intacta.
+
+1. CONFIGURAÇÃO a partir da linha 737: cadastre Caminho e Trilha, com BASE DO LIVRO opcional. Nos registros curtos a partir de 877, crie Perícia Rituais Urbanos (Essência) e Ofício Cartógrafo do Véu (Inteligência). Todas as opções fechadas usam lista.
+2. Caminho: vida inicial 10, por nível 6, dado d8, PE por nível 7, Força/Constituição, Rituais Urbanos/Acrobacia, troca por arma Sim, categoria selecionada Yumi. Nível 5, Constituição 3: vida 49 e PE 35. Selecionar pelo menu marca as duas perícias e treina somente a categoria permitida.
+3. Essência 4, Inteligência 2, Maestria 1: perícia treinada 5 e ofício especializado 3. Contam nos orçamentos existentes. Efeito trocar por 0 fixa o total em 0.
+4. Vida rolada Sim, resultados 8/4/6/2: vida 45; resultado 9 é rejeitado porque excede d8. Restaurar campanha vazia.
+5. Trilha baseada em Múltiplas Invocações: 4 ativas e 4 famílias. Nenhuma permite alterar limites em BÔNUS E MUDANÇAS; troca de teto por 5 e +2 famílias produzem 5/5 neste cenário.
+6. Duplicar o nome da perícia invalida os dois registros. Número em texto ou atributo inexistente gera diagnóstico e impede entrada no catálogo válido. Marcante publicada Tentativa e Erro continua disponível para Origem baseada em Latente.
+7. A mesma perícia entra nos menus das entidades e da Ficha Amaldiçoada; o ofício aparece na entidade. Entidade com Essência 0 e Maestria 1 usa +1 para essa perícia.
+8. Habilidade de nível 2 aparece integralmente no nível 5; nível 6 fica vazio. Texto longo expande o cartão da CONFIGURAÇÃO e o espelho da FICHA, preservando o cartão vizinho. Apagar volta à altura comum.
+9. Inspecione foto/paleta da carteira, abas principais, cartões longos/curtos e novos treinos. CONFIGURAÇÃO fixa; novas áreas da FICHA na paleta escolhida. Restaurar todas as entradas e reler sem diferenças.
+
+Executado: testes nativos acima, regressao-progressao.py, regressao-construir.js com casos de texto longo, 122 verificações de paleta e leitor. A regressão 3a completa teve uma falha de FILTER da calculadora local; cenário equivalente passou no Sheets, sem alterar o teste para esconder a falha. A bateria integral de 23 validadores não foi repetida.
+
+Montagem nativa: 14 abas e zero erros nas faixas auditadas; 188 checkboxes e 488 seletores da CONFIGURAÇÃO (575 células validadas). Duas execuções concluídas em 376.821 ms; uma falha inicial do serviço Google ficou registrada separadamente. Treze scripts de produção gravados/conferidos e helper removido. Capacidade final: 133 registros 3b, 158 com a 3a. Maior .gs: 837.710 bytes. Evidências em ../evidencias-3b/, especialmente montagem-nativa-3b-auditoria.json, testes-nativos-3b.json, teste-menus-entidades-3b.json, conferencia-area-nova.json e capturas visuais.
+
+
+Gatilho final testado por edição real, depois de conferir o código salvo: Vanguarda 13,690 s (65 treinos), retorno ao custom 15,051 s (só Yumi e perícia fixa custom treinada). Ambos concluídos, sem limite de tempo. RangeList grava os booleans em lote; a regressão completa de construção passou novamente. Após o teste, entradas/notas das duas fichas e os 76 alvos originais foram relidos sem diferenças; áreas novas sem erros e três entradas das entidades/técnica vazias. Sem cenário ativo. Ver fechamento-3b-gatilho.json e tempos-onedit-final-completo.txt.

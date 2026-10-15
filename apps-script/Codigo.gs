@@ -363,6 +363,7 @@ function onEdit(e) {
   var inicio = Date.now();
   if (!e || !e.range) return;
   var aba = e.range.getSheet().getName();
+  console.log('B47 tempo: inicio ' + aba + ' ' + e.range.getA1Notation());
   // A troca de paleta voltou pra cá em 25/09/2026, em passos que cabem nos 30 segundos, pra
   // funcionar em toda cópia sem ninguém autorizar nada. Ver convergirPaleta_.
   if (aba === 'CARTEIRA' && ehCelulaDaPaleta_(e.range)) {
@@ -406,8 +407,11 @@ function onEdit(e) {
     return;
   }
   // B47: somente as contas voltam; os campos dos efeitos continuam editáveis.
-  if (aba === 'CONFIGURAÇÃO' || aba === 'DADOS_CONFIG' || aba === 'DADOS_CUSTOM') {
+  if (aba === 'CONFIGURAÇÃO' || aba === 'DADOS_CONFIG' || aba === 'DADOS_CUSTOM' || aba === 'DADOS_PROGRESSAO') {
     try { devolverConta_(e, aba); } catch (err) { console.log('configuração: ' + err.message); }
+    if (aba === 'CONFIGURAÇÃO') {
+      try { esticarCaixas_(e, aba); } catch (err) { console.log('texto custom: ' + err.message); }
+    }
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
@@ -426,19 +430,29 @@ function onEdit(e) {
     return;
   }
   // 07/10/2026: e toda caixa calculada da FICHA, fora a vida, a energia e a integridade, que o jogador escreve
+  console.log('B47 tempo: entrada ficha ' + (Date.now() - inicio));
   try { devolverConta_(e, 'FICHA'); } catch (err) { console.log('ficha, a conta: ' + err.message); }
   try { esticarCaixas_(e, 'FICHA'); } catch (err) { console.log('ficha, a caixa que estica: ' + err.message); }
-  var idx = indice();
+  // Uma leitura da DADOS serve ao índice, às perícias e à Trilha.
+  var dados = SpreadsheetApp.getActive().getSheetByName('DADOS').getDataRange().getValues();
+  var idx = indiceDosDados_(dados);
+  var medir = function (fase) { console.log('B47 tempo: ' + fase + ' ' + (Date.now() - inicio)); };
+  medir('indice');
   try { descansar_(e, idx); } catch (err) { console.log('ficha, o descanso: ' + err.message); }
   aplicarDelta_(e, idx);
   prenderTemp_(e, idx);
-  marcarPericiasDoCaminho_(e, idx);
-  trilhaDoCaminho_(e, idx);
+  marcarPericiasDoCaminho_(e, idx, dados);
+  medir('marcarPericiasDoCaminho_');
+  trilhaDoCaminho_(e, idx, dados);
+  medir('trilhaDoCaminho_');
   try { habilidadesDaFicha_(e, idx); } catch (err) { console.log('habilidades: ' + err.message); }
+  medir('habilidades');
   nivelPelaXP_(e, idx);
   grupoDeArmaDaTrilha_(e, idx);
   trocaArmaDoCaminho_(e, idx);
+  medir('trocaArmaDoCaminho_');
   try { fichaMexeNaPessoal_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }
+  medir('pessoal');
   continuarPaleta_(inicio, null, false, e.range);
 }
 
@@ -586,12 +600,12 @@ function caixasDeTreino_(dados) {
   return { armas: armas, grupos: grupos, conjurador: conjurador };
 }
 
-/** Grava as caixas de treino que mudaram, em duas chamadas: as que marcam e as que desmarcam. */
+/** Grava as caixas booleanas em dois lotes, sem reler a validação de cada checkbox. */
 function gravarCaixas_(aba, muda) {
   var liga = [], desliga = [];
   Object.keys(muda).forEach(function (c) { (muda[c] ? liga : desliga).push(c); });
-  if (liga.length) aba.getRangeList(liga).check();
-  if (desliga.length) aba.getRangeList(desliga).uncheck();
+  if (liga.length) aba.getRangeList(liga).setValue(true);
+  if (desliga.length) aba.getRangeList(desliga).setValue(false);
   return liga.length + desliga.length;
 }
 
@@ -622,6 +636,15 @@ function treinoPeloCaminho_(ss, dados, caminho) {
   var caminhos = tabelaDaDados_(dados, 'Caminho').map(function (l) { return String(l['Caminho']); });
   var todas = tabelaDaDados_(dados, 'Caminho que treina todas as armas')
     .map(function (l) { return String(l['Caminho que treina todas as armas']); });
+  var progressao = ss.getSheetByName('DADOS_PROGRESSAO');
+  if (progressao) {
+    var custom = progressao.getRange('M8:V8').getValues()[0];
+    if (custom[0] && custom[0] === caminho) {
+      caminhos.push(caminho);
+      if (custom[9] === 'Todas') todas.push(caminho);
+      t.conjurador = progressao.getRange('BO8:CA8').getValues()[0].filter(function (v) { return v !== ''; });
+    }
+  }
   gravarCaixas_(aba, treinoDoCaminho_(t.armas, t.grupos, caminho, caminhos, todas, t.conjurador));
 }
 
@@ -671,10 +694,15 @@ function notasVivas_(ss, dados) {
   var aba = ss.getSheetByName(ABA_PESSOAL_);
   if (!aba) return 0;
   var n = 0;
-  tabelaDaDados_(dados, 'nota viva', ['texto da nota', 'caixa da nota']).forEach(function (l) {
-    if (!l['caixa da nota']) return;
-    var caixa = aba.getRange(String(l['caixa da nota'])), texto = String(l['texto da nota'] || '');
-    if (caixa.getNote() !== texto) { caixa.setNote(texto); n++; }
+  var linhas = tabelaDaDados_(dados, 'nota viva', ['texto da nota', 'caixa da nota'])
+    .filter(function (l) { return l['caixa da nota']; });
+  if (!linhas.length) return 0;
+  // As notas são lidas antes de qualquer escrita: alternar ler/gravar força
+  // uma ida ao servidor por caixa e não cabe no gatilho simples de Caminho.
+  var notas = aba.getDataRange().getNotes();
+  linhas.forEach(function (l) {
+    var a1 = String(l['caixa da nota']), f = limitesA1_(a1), texto = String(l['texto da nota'] || '');
+    if ((notas[f.l1 - 1][f.c1 - 1] || '') !== texto) { aba.getRange(a1).setNote(texto); n++; }
   });
   return n;
 }
@@ -740,6 +768,8 @@ function fichaMexeNaPessoal_(e, idx) {
   if (!caminho && !forca) return;
   var ss = SpreadsheetApp.getActive();
   if (!ss.getSheetByName(ABA_PESSOAL_)) return;
+  // As notas dependem das mudanças anteriores (Trilha e troca por arma):
+  // reler depois delas preserva o recálculo das notas vivas.
   var dados = ss.getSheetByName('DADOS').getDataRange().getValues();
   if (caminho) treinoPeloCaminho_(ss, dados, String(e.value || ''));
   notasVivas_(ss, dados);
@@ -1029,10 +1059,14 @@ var TRILHAS_COM_CATEGORIA_ = {'Condutor Armado': ['Emanador', 'Arma Condutora'],
 function grupoDeArmaDaTrilha_(e, idx) {
   var ct = cel_(idx, 'trilha'), cg = cel_(idx, 'grupo de arma da trilha');
   if (!ct || !cg || ct !== e.range.getA1Notation()) return;
-  var t = TRILHAS_COM_CATEGORIA_[String(e.value || '')];
+  var identidade = String(e.value || '');
+  var p = SpreadsheetApp.getActive().getSheetByName('DADOS_PROGRESSAO');
+  var herdada = p && p.getRange('K8').getValue() === 1;
+  if (herdada) identidade = String(p.getRange('K4').getValue());
+  var t = TRILHAS_COM_CATEGORIA_[identidade];
   if (!t) return;
   var cc = cel_(idx, 'caminho');
-  if (!cc || String(e.range.getSheet().getRange(cc).getValue()) !== t[0]) return;
+  if (!cc || (!herdada && String(e.range.getSheet().getRange(cc).getValue()) !== t[0])) return;
   var alvo = e.range.getSheet().getRange(cg);
   if (String(alvo.getValue() || '') === '') alvo.setValue('Escolha a categoria de arma (' + t[1] + ')');
 }
@@ -1078,13 +1112,13 @@ function trilhaQueFica_(tabela, caminho, trilha, vazio) {
   return dele ? trilha : vazio;
 }
 
-function trilhaDoCaminho_(e, idx) {
+function trilhaDoCaminho_(e, idx, dados) {
   var cc = cel_(idx, 'caminho'), ct = cel_(idx, 'trilha');
   if (!cc || !ct || cc !== e.range.getA1Notation()) return;
   var ss = SpreadsheetApp.getActive();
   // a tabela de menus da DADOS: o cabeçalho tem "Trilha", "Caminho da Trilha" e "menu de Trilha", e a
   // primeira linha do menu é o texto de escolha
-  var dados = ss.getSheetByName('DADOS').getDataRange().getValues();
+  dados = dados || ss.getSheetByName('DADOS').getDataRange().getValues();
   for (var r = 0; r + 1 < dados.length; r++) {
     var cT = dados[r].indexOf('Trilha'), cC = dados[r].indexOf('Caminho da Trilha');
     var cM = dados[r].indexOf('menu de Trilha');
@@ -1093,6 +1127,10 @@ function trilhaDoCaminho_(e, idx) {
     for (var l = r + 1; l < dados.length && dados[l][cT]; l++) {
       tabela.push({ trilha: String(dados[l][cT]), caminho: String(dados[l][cC]) });
     }
+    var progressao = ss.getSheetByName('DADOS_PROGRESSAO');
+    if (progressao) progressao.getRange('AA2:AB22').getValues().forEach(function (l) {
+      if (l[0]) tabela.push({trilha: String(l[0]), caminho: String(l[1])});
+    });
     var caixa = ss.getSheetByName('FICHA').getRange(ct);
     var antes = String(caixa.getValue());
     var fica = trilhaQueFica_(tabela, String(e.value || ''), antes, String(dados[r + 1][cM]));
@@ -1282,9 +1320,16 @@ function habilidadesDaFicha_(e, idx) {
   }
   var ss = SpreadsheetApp.getActive(), ficha = ss.getSheetByName('FICHA'), D = cartasDaDadosAm_(ss);
   if (!D) return;
-  var caminho = String(ficha.getRange(cc).getValue()), trilha = String(ficha.getRange(ct).getValue());
+  // Ler as nove cartas célula por célula, e regravar toda nota vazia, fazia
+  // a escolha de Caminho ultrapassar os 30 s do gatilho simples no Sheets.
+  var grade = ficha.getDataRange(), valores = grade.getValues(), notas = grade.getNotes();
+  var le = function (matriz, a1) {
+    var f = limitesA1_(a1), v = matriz[f.l1 - 1][f.c1 - 1];
+    return v === undefined || v === null ? '' : String(v);
+  };
+  var caminho = le(valores, cc), trilha = le(valores, ct);
   var atuais = D.cartas.map(function (c) {
-    return { nome: String(ficha.getRange(c.nome).getValue()), texto: String(ficha.getRange(c.texto).getValue()) };
+    return { nome: le(valores, c.nome), texto: le(valores, c.texto) };
   });
   cartasDaFicha_(HABILIDADES_DO_LIVRO_, D.cartas, caminho, trilha, atuais).forEach(function (n, i) {
     var c = D.cartas[i];
@@ -1293,8 +1338,11 @@ function habilidadesDaFicha_(e, idx) {
       if (n.texto !== '' && n.texto === n.livro) escreverTextoDoLivro_(ficha.getRange(c.texto), n.texto, n.titulos);
       else ficha.getRange(c.texto).setValue(n.texto);
     }
-    ficha.getRange(c.texto).setNote(n.nota);
-    ficha.setRowHeights(c.linha, MEDIDA_DAS_CARTAS_.caixa, alturaDaCaixa_(n.texto, MEDIDA_DAS_CARTAS_));
+    if (le(notas, c.texto) !== n.nota) ficha.getRange(c.texto).setNote(n.nota);
+    // Texto mantido já tem a altura ajustada pela edição anterior. Evita
+    // regravar nove alturas ao escolher uma opção custom sem cartas do livro.
+    if (n.texto !== atuais[i].texto)
+      ficha.setRowHeights(c.linha, MEDIDA_DAS_CARTAS_.caixa, alturaDaCaixa_(n.texto, MEDIDA_DAS_CARTAS_));
   });
 }
 
@@ -1334,12 +1382,12 @@ function periciasDoCaminho_(tabela, novo, velho) {
   return { marcar: marcar, desmarcar: desmarcar };
 }
 
-function marcarPericiasDoCaminho_(e, idx) {
+function marcarPericiasDoCaminho_(e, idx, dados) {
   var cc = cel_(idx, 'caminho');
   if (!cc || cc !== e.range.getA1Notation()) return;
   var ss = SpreadsheetApp.getActive();
   // a tabela dos Caminhos da DADOS: a linha do cabeçalho tem "Caminho" e as colunas "perícia fixa"
-  var dados = ss.getSheetByName('DADOS').getDataRange().getValues();
+  dados = dados || ss.getSheetByName('DADOS').getDataRange().getValues();
   var tabela = [];
   for (var r = 0; r < dados.length && !tabela.length; r++) {
     var c0 = dados[r].indexOf('Caminho');
@@ -1351,6 +1399,9 @@ function marcarPericiasDoCaminho_(e, idx) {
       tabela.push({ caminho: dados[l][c0], pericias: cols.map(function (c) { return dados[l][c]; }) });
     }
   }
+  var progressao = ss.getSheetByName('DADOS_PROGRESSAO');
+  if (progressao) tabela = progressao.getRange('M2:S8').getValues().filter(function (l) { return l[0] !== ''; })
+    .map(function (l) { return {caminho: l[0], pericias: [l[5],l[6]]}; });
   var plano = periciasDoCaminho_(tabela, e.value, e.oldValue);
   var ficha = ss.getSheetByName('FICHA');
   var vals = ficha.getDataRange().getValues();
@@ -1365,6 +1416,20 @@ function marcarPericiasDoCaminho_(e, idx) {
         cel.setNote(marcado ? 'Treinado pelo Caminho ' + e.value : '');
         return;
       }
+    }
+    // Uma perícia custom fixa precisa primeiro ocupar uma linha própria da FICHA.
+    if (!marcado || !progressao) return;
+    var definidas = progressao.getRange('AV2:AV132').getValues().map(function (l) { return l[0]; });
+    if (definidas.indexOf(nome) < 0) return;
+    var lugares = progressao.getRange('BD2:BD24').getValues().map(function (l) { return l[0]; });
+    for (var n = 0; n < lugares.length; n++) {
+      if (!lugares[n]) continue;
+      var escolha = ficha.getRange(String(lugares[n]));
+      if (escolha.getValue() !== '') continue;
+      escolha.setValue(nome);
+      var treino = ficha.getRange(escolha.getRow(), escolha.getColumn()-2);
+      treino.setValue(true).setNote('Treinado pelo Caminho ' + e.value);
+      return;
     }
   };
   plano.desmarcar.forEach(function (p) { poe(p, false); });

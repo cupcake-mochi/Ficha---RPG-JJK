@@ -231,14 +231,24 @@ _CFG = configuracao.trocas(LAYOUT, _FP)
 configuracao.aplica(LAYOUT, _CFG)
 campanha.desenha(LAYOUT, _CAMP)
 custom.desenha(LAYOUT, _CUSTOM)
+import custom_progressao
+_PROG = custom_progressao.aplica(LAYOUT, _FP, _FIV)
 print(f"a CONFIGURAÇÃO: {configuracao.QUANTIDADE} efeitos, {len(_CFG['alvos'])} caixas, paleta fixa")
 import analise
 _AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
 _AN["linhas"].extend(configuracao.exporta(_CFG))
 _AN["linhas"].extend(campanha.exporta(_CAMP))
 _AN["linhas"].extend(custom.exporta(_CUSTOM))
+_AN["linhas"].extend(custom_progressao.exporta(_PROG))
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
+
+if "--exportar-progressao" in sys.argv:
+    destino = sys.argv[sys.argv.index("--exportar-progressao") + 1]
+    with open(destino,"w",encoding="utf-8") as arquivo:
+        json.dump({"layout":LAYOUT,"antes":_PROG['antes'],"depois":_PROG['depois'],
+                   "entradas":_PROG['entradas'],"linhas_ficha":_PROG['linhas_ficha']},arquivo,ensure_ascii=False)
+    sys.exit(0)
 
 # Migração nativa pontual, independente da exportação Excel.
 if "--exportar-custom" in sys.argv:
@@ -446,6 +456,9 @@ gs, celulas, pecas = emitir_gs.escrever(
     suplementos={"Origens.gs": [("DADOS", _FP["T"]["origem_cap"][0],
                                 _FP["T"]["origem_cap"][0] + _FP["T"]["origem_cap"][3] - 1),
                                   ("DADOS_CUSTOM", 19, 24)],
+                "ProgressaoAnalise.gs": ("ANALISE", 1, 4, len(_AN['linhas'])-len(custom_progressao.exporta(_PROG))+2, len(_AN['linhas'])+1),
+                "ProgressaoPainel.gs": [("CONFIGURAÇÃO",1,16,733,indice_ficha._aba(LAYOUT,'CONFIGURAÇÃO')['linhas']),
+                                        ("FICHA",1,50,410,indice_ficha._aba(LAYOUT,'FICHA')['linhas'])],
                 "AnaliseFontes.gs": ("ANALISE", 3, 4),
                 "Pessoal.gs": ("FICHA PESSOAL", 1, 72)})
 print(f"script escrito: {gs}")

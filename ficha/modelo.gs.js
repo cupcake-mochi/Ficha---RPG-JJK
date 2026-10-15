@@ -76,11 +76,14 @@ function juntarAbas_(extras) {
   if (typeof FONTES_DA_ANALISE_ !== 'undefined' && FONTES_DA_ANALISE_) juntarValores_(FONTES_DA_ANALISE_);
   if (typeof VALORES_CUSTOM_ !== 'undefined' && VALORES_CUSTOM_) juntarValores_(VALORES_CUSTOM_);
   if (typeof VALORES_DAS_ORIGENS_ !== 'undefined' && VALORES_DAS_ORIGENS_) juntarValores_(VALORES_DAS_ORIGENS_);
+  if (typeof VALORES_PROGRESSAO_ !== 'undefined' && VALORES_PROGRESSAO_) juntarValores_(VALORES_PROGRESSAO_);
+  if (typeof CONTRATO_PROGRESSAO_ !== 'undefined' && CONTRATO_PROGRESSAO_) juntarValores_(CONTRATO_PROGRESSAO_);
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
 if (typeof ABAS_DA_ANALISE !== 'undefined' && ABAS_DA_ANALISE) juntarAbas_(ABAS_DA_ANALISE);
 if (typeof ABAS_DA_CONFIGURACAO !== 'undefined' && ABAS_DA_CONFIGURACAO) juntarAbas_(ABAS_DA_CONFIGURACAO);
 if (typeof ABAS_DO_CUSTOM !== 'undefined' && ABAS_DO_CUSTOM) juntarAbas_(ABAS_DO_CUSTOM);
+if (typeof ABAS_DA_PROGRESSAO !== 'undefined' && ABAS_DA_PROGRESSAO) juntarAbas_(ABAS_DA_PROGRESSAO);
 
 /** Junta a tabela das Origens à DADOS, mesmo se Origens.gs carregar antes deste arquivo. */
 function juntarValores_(extras) {
@@ -95,11 +98,20 @@ function juntarValores_(extras) {
       if (!presentes[chave]) { aba.vals.push(v); presentes[chave] = true; }
     });
     aba.vals.sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; });
+    if (extra.notas && extra.notas.length) {
+      if (!aba.notas) aba.notas = [];
+      var notas = {};
+      aba.notas.forEach(function (n) { notas[n[0]] = true; });
+      extra.notas.forEach(function (n) { if (!notas[n[0]]) { aba.notas.push(n); notas[n[0]] = true; } });
+      aba.notas.sort(function (a,b) { return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
+    }
   });
 }
 if (typeof VALORES_DAS_ORIGENS_ !== 'undefined' && VALORES_DAS_ORIGENS_) juntarValores_(VALORES_DAS_ORIGENS_);
 if (typeof FONTES_DA_ANALISE_ !== 'undefined' && FONTES_DA_ANALISE_) juntarValores_(FONTES_DA_ANALISE_);
 if (typeof VALORES_CUSTOM_ !== 'undefined' && VALORES_CUSTOM_) juntarValores_(VALORES_CUSTOM_);
+if (typeof VALORES_PROGRESSAO_ !== 'undefined' && VALORES_PROGRESSAO_) juntarValores_(VALORES_PROGRESSAO_);
+if (typeof CONTRATO_PROGRESSAO_ !== 'undefined' && CONTRATO_PROGRESSAO_) juntarValores_(CONTRATO_PROGRESSAO_);
 
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
 
@@ -216,6 +228,15 @@ function montar_() {
   }
   if (typeof VALORES_CUSTOM_ === 'undefined' || !VALORES_CUSTOM_) {
     throw new Error('Falta o Pessoal.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof ABAS_DA_PROGRESSAO === 'undefined' || !ABAS_DA_PROGRESSAO) {
+    throw new Error('Falta o Progressao.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof VALORES_PROGRESSAO_ === 'undefined' || !VALORES_PROGRESSAO_) {
+    throw new Error('Falta o ProgressaoPainel.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof CONTRATO_PROGRESSAO_ === 'undefined' || !CONTRATO_PROGRESSAO_) {
+    throw new Error('Falta o ProgressaoAnalise.gs: cole todos os arquivos antes de construir.');
   }
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();

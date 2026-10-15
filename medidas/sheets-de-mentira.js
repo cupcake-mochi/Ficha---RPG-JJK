@@ -245,6 +245,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
       getRangeList: (lista) => { const rs = lista.map(porA1); return rigoroso('RangeList', {
         setBorder: (...a) => { rs.forEach((x) => borda(x.getRow(), x.getColumn(), x.getNumRows(), x.getNumColumns(), a)); },
         setNumberFormat: (f) => { rs.forEach((x) => { x.setNumberFormat(f); CHAMADAS['Range.setNumberFormat']--; }); },
+        setValue: (v) => { rs.forEach((x) => x.setValue(v)); },
         check: () => rs.forEach((x) => { if (!A.caixas.has(x.getRow() + ',' + x.getColumn())) throw new Error('check numa célula que não é caixa de seleção: ' + x.getA1Notation()); x.setValue(true); }),
         uncheck: () => rs.forEach((x) => { if (!A.caixas.has(x.getRow() + ',' + x.getColumn())) throw new Error('uncheck numa célula que não é caixa de seleção: ' + x.getA1Notation()); x.setValue(false); }),
       }); },
