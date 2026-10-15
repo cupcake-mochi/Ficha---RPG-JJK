@@ -1,0 +1,33 @@
+Validação da ampliação ANALISE 4 — 15/10/2026
+
+Escopo: exportar TR/perícias/carga, preservando as nove abas anteriores. CONFIGURAÇÃO está em
+outro trabalho e não foi integrada. Formato 3 reservado àquele trabalho; esta branch usa 4 e
+conserva o prefixo de 4.896 campos do formato 2. Ao juntar, unir os contratos e escolher uma
+versão final única, sem sobrescrever os gerados de uma implementação pela outra.
+
+Concluído
+- regressao-analise-tr.py: cinco testes aprovados. Contrato antigo, campos novos, XLSX/Apps Script,
+  nove abas/estilos/imagens idênticos em bytes, seis ordens de carga, idempotência e complemento
+  obrigatório ausente detectado antes de editar a planilha.
+- conferir-ficha-xlsx.py terminou com A FICHA CONFERE na rodada geral após os ajustes.
+- Três casos nativos recalculados no LibreOffice e conferidos pelo bot. Uma divergência antiga
+  da Corda gera pendência, sem mudar fórmulas visíveis. No bot, 502 testes: 501 aprovados e um
+  online opcional não executado. Sem chamadas reais a modelos, edição no Google ou deploy.
+
+Pendente para a integração
+- A bateria geral rodar-tudo.sh foi encerrada deliberadamente durante regressao-ficha-pessoal.py,
+  após o conjunto anterior de verificações. Não foi conclusão nem aprovação dos dezenove.
+- A rodada completa deve ser feita na versão consolidada com CONFIGURAÇÃO, que ainda alterará
+  o gerador. Não publicar a ficha oficial nem anunciar os dezenove aprovados antes disso.
+- Por esse motivo este PR permanece em rascunho. Nenhum resultado dos testes não concluídos
+  deve ser reutilizado como aprovação da integração.
+
+Para reproduzir as verificações específicas:
+  python3 regressao-analise-tr.py
+Para a bateria completa após integrar:
+  systemd-run --user --scope -q -p MemoryMax=5G -p MemorySwapMax=0 nice -n 15 bash rodar-tudo.sh
+
+O manifesto regressao-analise-tr-base.json representa a base anterior à ampliação. Mudanças
+intencionais de CONFIGURAÇÃO podem exigir uma nova base: revisar conscientemente, sem apenas
+regenerar hashes para tornar o teste verde. A integração também exige atualizar as contagens e
+versões dos testes, contrato do bot e os dois arquivos gerados da ANALISE.

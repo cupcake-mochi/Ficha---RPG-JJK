@@ -1,5 +1,15 @@
 # Ficha digital do Projeto M · leia isto primeiro
 
+**15/10/2026: leitura de TR/perícias/carga, formato 4.** Acrescenta 485 campos ao formato 2,
+sem mudar suas 4.896 chaves ou as outras nove abas. O formato 3 está reservado à implementação
+paralela de CONFIGURAÇÃO/Bônus: esta revisão não contém esse trabalho. Antes de integrar, unir
+as duas exportações/regras e escolher uma versão final única; não substituir uma pela outra.
+O transporte adicional vai em `apps-script/AnaliseTestes.gs`, para conservar o teto de 900 KB
+por arquivo. Cole esse arquivo junto dos demais. A junção funciona em qualquer ordem e é
+idempotente; ausência do complemento interrompe a construção antes de editar a planilha.
+`python3 regressao-analise-tr.py` confere o contrato, as nove abas preservadas e o transporte.
+A ficha oficial do Google não foi alterada nesta rodada.
+
 **14/10/2026: ANALISE formato 2 preparada para revisão.** Passa de 2.650 para 4.896 chaves,
 preservando as antigas. Exporta escolhas de Famílias, Classe 0, Máxima, textos e ajustes individuais
 das entidades para o corretor do bot. `python3 ficha-v01/monta.py --exportar-analise SAIDA.json`

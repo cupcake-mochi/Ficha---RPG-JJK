@@ -20,7 +20,7 @@ systemd-run --user --scope -q -p MemoryMax=5G -p MemorySwapMax=0 nice -n 15 pyth
 systemd-run --user --scope -q -p MemoryMax=5G -p MemorySwapMax=0 nice -n 15 ./rodar-tudo.sh
 ```
 
-Saem `apps-script/Ficha.gs`, `apps-script/Habilidades.gs`, `apps-script/Invocacoes.gs` e `apps-script/Origens.gs`; `apps-script/Codigo.gs` é escrito à mão. Se os dezenove validadores não passarem, não sobe.
+Saem `apps-script/Ficha.gs`, `apps-script/Habilidades.gs`, `apps-script/Invocacoes.gs` e `apps-script/Origens.gs`, além de `apps-script/Analise.gs` e `apps-script/AnaliseTestes.gs`; `apps-script/Codigo.gs` é escrito à mão. Se os dezenove validadores não passarem, não sobe.
 
 > **O `ficha/monta.py` foi aposentado em 14/09/2026, no B18.** *Ele ficou dez versões atrás da planilha viva, e o `Ficha.gs` que ele gerava montava uma ficha antiga.*
 
@@ -47,6 +47,11 @@ De novo no `+`, **Script**, nome `Habilidades`, e cola o conteúdo de **`apps-sc
 E mais uma vez no `+`, **Script**, nome `Invocacoes`, e cola o conteúdo de **`apps-script/Invocacoes.gs`**. *Desde 06/10/2026: são as abas `INVOCAÇÕES` e `DADOS_INVOC`, que não cabem no `Ficha.gs`. Sem ele a ficha monta igual, mas sem essas duas abas. A ordem em que os arquivos aparecem no projeto não importa.*
 
 Mais uma vez no `+`, **Script**, nome `Origens`, e cole o conteúdo de **`apps-script/Origens.gs`**. Desde 14/10/2026 (B46): é a tabela das capacidades da Origem, com os textos integrais do R51. A junção funciona em qualquer ordem de carga e não duplica células. Sem esse arquivo, `construir()` avisa antes de alterar a planilha.
+
+Desde 15/10/2026, adicione também **Analise** (`apps-script/Analise.gs`) e
+**AnaliseTestes** (`apps-script/AnaliseTestes.gs`). Os dois formam a exportação oculta completa
+para o bot; o segundo contém TR/perícias/carga. A ordem de carga não importa. Sem AnaliseTestes,
+a construção para antes de editar a planilha quando a ANALISE declara esse complemento.
 
 > Todos os arquivos ficam abaixo do teto de 900 KB por arquivo usado pelos testes. O `Ficha.gs` tem cerca de 865 KB; o `Origens.gs`, 74 KB. É normal demorarem a colar.
 

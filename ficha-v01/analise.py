@@ -24,7 +24,9 @@ import json, os, re, unicodedata
 import indice_ficha as ix
 
 NOME = "ANALISE"
-FORMATO = 2
+# O formato 3 pertence à implementação paralela de CONFIGURAÇÃO. Esta revisão
+# independente acrescenta somente TR/perícias/carga e não interpreta aquela aba.
+FORMATO = 4
 PARTES = ("cabeçalho", "entrada", "resultado", "aviso")
 
 
@@ -267,6 +269,59 @@ def trocas(layout, fa, fp_tr, fam, fiv):
         for campo, origem in (("texto", "como"), ("tipo_dano", "tdano"), ("resolucao_escolha", "rmenu"),
                                ("acao", "acao"), ("resolve", "resolve"), ("alcance", "alcance")):
             lê(base + "." + campo, I(c[origem]), "resultado" if campo in ("acao", "resolve", "alcance") else "entrada")
+
+    # Revisão 4: resultados e entradas de TR/perícias e carga. As chaves antigas,
+    # inclusive buff.pericia.N (que aponta para um resultado), não mudam de sentido.
+    # Os endereços pessoais saem do rótulo e da fórmula, sem copiar coordenadas.
+    ficha = ix._Ficha(layout)
+    nomes_atr = {chave(n) for n, _, _ in ix.ATRS} | {"for", "des", "con", "int", "ess"}
+    for tipo, nomes, caixas in (("pericia", CAT["pericias"], cx["pericias"]),
+                                ("oficio", CAT["oficios"], cx["oficios"]),
+                                ("tr", trs, cx["testes"])):
+        for nome, caixa in zip(nomes, caixas):
+            lin, col = ix._lc(caixa)
+            c_caixa = ix._letras(col)
+            rx = re.compile(rf"(?<![A-Z0-9_])\$?{c_caixa}\$?{lin}(?![0-9])")
+            candidatas = [c for c, v in ficha.val.items() if ix._lc(c)[0] == lin
+                          and ix._lc(c)[1] > col and isinstance(v, str) and v.startswith("=") and rx.search(v)]
+            if len(candidatas) != 1:
+                raise ValueError(f"ANALISE: resultado de {nome} não é único: {candidatas}")
+            bonus = candidatas[0]
+            atributos = [c for c, v in ficha.val.items() if ix._lc(c)[0] == lin
+                         and col < ix._lc(c)[1] < ix._lc(bonus)[1]
+                         and isinstance(v, str) and chave(v.strip()) in nomes_atr]
+            extra = re.search(r"\+\s*(\$?[A-Z]+\$?[0-9]+)\s*$", ficha.val[bonus])
+            if len(atributos) != 1 or not extra or ix._lc(extra[1].replace("$", ""))[0] != lin:
+                raise ValueError(f"ANALISE: atributo/ajuste de {nome} mudou no desenho")
+            base = chave(tipo, nome)
+            lê(base + ".atributo", _ref("FICHA", atributos[0]))
+            lê(base + ".ajuste", _ref("FICHA", extra[1].replace("$", "")))
+            lê(base + ".bonus", _ref("FICHA", bonus), "resultado")
+
+    for n, lin in enumerate(range(G["equip_ini"], G["equip_fim"] + 1), 1):
+        for campo, coluna in (("nome", "D"), ("quantidade", "K"), ("grau", "AI")):
+            lê(f"equipavel.{n}.{campo}", P(f"{coluna}{lin}"))
+        lê(f"equipavel.{n}.volume", P(f"AG{lin}"), "resultado" if n <= fp.EQUIP_MENU else "entrada")
+    for n, lin in enumerate(range(G["itens_ini"], G["itens_fim"] + 1), 1):
+        for j, cols in enumerate(fp.COLS_ITENS):
+            (_, i1, _), (_, q1, _), (_, v1, _) = cols
+            base = f"item.{j * (G['itens_fim'] - G['itens_ini'] + 1) + n}"
+            for campo, coluna in (("nome", i1), ("quantidade", q1), ("volume", v1)):
+                lê(base + "." + campo, P(f"{coluna}{lin}"))
+    lê("carga.ajuste_limite", P(G["carga_buff"]))
+    lê("carga.total", fp_tr["H"]["carga"], "resultado")
+    lê("carga.limite", fp_tr["H"]["limite de carga"], "resultado")
+    for n, g in enumerate(fiv["fichas_c"], 1):
+        base = f"invocacao.{n}"
+        for campo, c in zip(("fisico", "vigor", "intelecto", "espirito"), g["tr"]):
+            lê(base + f".tr.{campo}.bonus", I(c), "resultado")
+        for j, c in enumerate(g["perb"], 1):
+            lê(base + f".pericia.{j}.bonus", I(c), "resultado")
+        for j, (nome, volume) in enumerate(zip(g["guarda"], g["guarda_vol"]), 1):
+            lê(base + f".carga.item.{j}.nome", I(nome))
+            lê(base + f".carga.item.{j}.volume", I(volume))
+        lê(base + ".carga.total", FI("evol", n - 1), "resultado")
+        lê(base + ".carga.limite", FI("carga", n - 1), "resultado")
 
     vistas = [l[0] for l in linhas]
     repetidas = sorted({k for k in vistas if vistas.count(k) > 1})

@@ -1749,9 +1749,12 @@ checa("a aba ANALISE existe, oculta, com o cabeçalho chave · valor · célula 
       bool(_an) and _an.sheet_state == "hidden" and [c_.value for c_ in _an[1][:4]] == ["chave", "valor", "célula", "parte"]
       and len(_an_k) > 2000 and len(set(_an_k)) == len(_an_k) and all(re.fullmatch(r"[a-z0-9_.]+", str(k_)) for k_ in _an_k),
       f"{len(_an_k)} chaves")
-checa("toda chave da ANALISE tem uma parte conhecida, e todo valor de entrada, resultado ou aviso é fórmula",
+checa("toda chave da ANALISE tem uma parte conhecida e lê fórmula, exceto Classe/PE zero constantes das cartas Classe 0",
       all(l_[3] in ("cabeçalho", "entrada", "resultado", "aviso") for l_ in _an_l)
-      and all(str(l_[1]).startswith("=") for l_ in _an_l if l_[3] != "cabeçalho"))
+      and all(str(l_[1]).startswith("=") or (re.fullmatch(r"zero\.[1-5]\.(classe|pe)", l_[0])
+                  and str(l_[1]) == "0" and l_[2] is None
+                  and l_[3] == ("entrada" if l_[0].endswith(".classe") else "resultado"))
+              for l_ in _an_l if l_[3] != "cabeçalho"))
 _ang = open("apps-script/Analise.gs", encoding="utf-8").read() if os.path.exists("apps-script/Analise.gs") else ""
 checa(f"a ANALISE mora no Analise.gs ({len(_ang) / 1024:.0f} KB, o teto é de 900), que o Ficha.gs junta",
       0 < len(_ang) / 1024 < 900 and "var ABAS_DA_ANALISE" in _ang and "juntarAbas_(ABAS_DA_ANALISE)" in open("apps-script/Ficha.gs", encoding="utf-8").read()

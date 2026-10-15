@@ -765,6 +765,7 @@ function juntarAbas_(extras) {
     ABAS.forEach(function (s, k) { if (s.nome === spec.depois) i = k; });
     if (i < 0) ABAS.push(spec); else ABAS.splice(i + 1, 0, spec);
   });
+  if (typeof VALORES_DOS_TESTES_ !== 'undefined' && VALORES_DOS_TESTES_) juntarValores_(VALORES_DOS_TESTES_);
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
 if (typeof ABAS_DA_ANALISE !== 'undefined' && ABAS_DA_ANALISE) juntarAbas_(ABAS_DA_ANALISE);
@@ -782,9 +783,14 @@ function juntarValores_(extras) {
       if (!presentes[chave]) { aba.vals.push(v); presentes[chave] = true; }
     });
     aba.vals.sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; });
+    if (extra.arquivo) {
+      aba.suplementos_recebidos = aba.suplementos_recebidos || [];
+      if (aba.suplementos_recebidos.indexOf(extra.arquivo) < 0) aba.suplementos_recebidos.push(extra.arquivo);
+    }
   });
 }
 if (typeof VALORES_DAS_ORIGENS_ !== 'undefined' && VALORES_DAS_ORIGENS_) juntarValores_(VALORES_DAS_ORIGENS_);
+if (typeof VALORES_DOS_TESTES_ !== 'undefined' && VALORES_DOS_TESTES_) juntarValores_(VALORES_DOS_TESTES_);
 
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
 
@@ -887,6 +893,13 @@ function montar_() {
   if (typeof VALORES_DAS_ORIGENS_ === 'undefined' || !VALORES_DAS_ORIGENS_) {
     throw new Error('Falta o Origens.gs: cole os cinco arquivos de apps-script no mesmo projeto antes de construir.');
   }
+  ABAS.forEach(function (spec) {
+    (spec.suplementos_obrigatorios || []).forEach(function (arquivo) {
+      if ((spec.suplementos_recebidos || []).indexOf(arquivo) < 0) {
+        throw new Error('Falta o ' + arquivo + ': cole todos os arquivos de apps-script antes de construir.');
+      }
+    });
+  });
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();
   var props = PropertiesService.getDocumentProperties();
