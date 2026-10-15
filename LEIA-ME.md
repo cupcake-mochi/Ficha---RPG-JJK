@@ -1,5 +1,11 @@
 # Ficha digital do Projeto M · leia isto primeiro
 
+**14/10/2026: ANALISE formato 2 preparada para revisão.** Passa de 2.650 para 4.896 chaves,
+preservando as antigas. Exporta escolhas de Famílias, Classe 0, Máxima, textos e ajustes individuais
+das entidades para o corretor do bot. `python3 ficha-v01/monta.py --exportar-analise SAIDA.json`
+exporta o mesmo contrato e as geometrias sem gerar imagens, XLSX ou Apps Script; a montagem normal
+continua gerando o XLSX e `apps-script/Analise.gs`. Não cria CONFIGURAÇÃO nem muda a ficha publicada.
+
 Este pacote continua o trabalho da conversa anterior. **Nada foi recomeçado do zero, e nenhum arquivo dos seus repositórios foi editado.**
 
 **14/10/2026: B46 usa o livro R51.** A FICHA PESSOAL ganhou as três capacidades da Origem e os Legados de história; a FICHA ganhou o Morrendo, três caixinhas de Sequelas e um painel fechado à direita. A criação de entidades acompanha o nível até o fim da Classe; os pactos têm o menu TAMANHO DO GANHO. São **cinco arquivos** para colar, incluindo o novo `apps-script/Origens.gs`, gerado pelo `ficha-v01/monta.py`. Os resultados e o roteiro do Sheets estão no fechamento B46 do `PENDENCIAS.md`.
