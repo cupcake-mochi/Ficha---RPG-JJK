@@ -1,3 +1,13 @@
+## B47 — parte 2: levantamento pronto para aprovação (15/10/2026)
+
+A parte 1 já está registrada em `f2ea62c` (encontrada assim ao retomar). Nesta etapa foi acrescentado apenas `levantar-regras-campanha.py`: varredura de leitura das fórmulas do artefato interno do gerador, sem importação para Sheets, sem alterar fórmulas ou o contrato ANALISE 3.
+
+Resultado: 38.939 fórmulas lidas; 21.404 contêm literais numéricos; zero falhas de tokenização; 16 parâmetros propostos, associados a 61 células (19 fórmulas e 42 valores/textos). A associação semântica cobre a lista B47; a varredura bruta não declara que todo número é uma regra. O teste distingue número de referência, texto, nome de função e notação científica.
+
+Relatório e evidência completos: `../evidencias-campanha/REGRAS-CAMPANHA.md` e `regras-campanha.json`. Fonte: `manual.txt` e `manual-fonte.json` do R51. Conflito que exige decisão: o plano diz morte permanente Sim; o R51 usa derrota sem morte automática por padrão. Confirmar também a separação dos tetos/treinos e, antes do protótipo, a forma de configurar XP, registrar vida rolada e Sequelas acima de três.
+
+Aguardando aprovação da lista conforme o passo 2 do prompt do usuário. Depois: protótipo em grade → aprovação → construção e testes de equivalência. Nenhum bloco novo foi construído. Nenhum commit/push executado nesta etapa.
+
 # Pendências · o que precisa de decisão antes de construir
 
 ## B47 · bônus e mudanças · fechamento de 15/10/2026
