@@ -411,7 +411,7 @@ def compactar(aba):
 # 14/10/2026 (B47): a ANALISE, oculta, para o bot, também vai à parte: o Ficha.gs está perto do teto
 SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVOC")),
              "Analise.gs": ("ABAS_DA_ANALISE", ("ANALISE",))}
-COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_"}
+COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_", "AnaliseTestes.gs": "VALORES_DOS_TESTES_"}
 
 
 def abas_cruas(caminho=None):
@@ -427,6 +427,8 @@ def abas_cruas(caminho=None):
             abas.insert(i + 1, e)
     for arq, var in COMPLEMENTOS.items():
         p = os.path.join(os.path.dirname(caminho), arq)
+        if not os.path.exists(p):
+            continue
         for extra in json.loads(re.search(r"var %s = ([\s\S]*?);\n\nif \(typeof juntarValores_" % var,
                                           open(p, encoding="utf-8").read()).group(1)):
             aba = next(a for a in abas if a["nome"] == extra["nome"])
@@ -648,7 +650,7 @@ def _sem_linha_gigante(obj, nivel=0):
     return compacto  # string/número atômico que já é maior que o piso sozinho: fica como está
 
 
-def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extras=None, suplementos=None):
+def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extras=None, suplementos=None, suplementos_linhas=None):
     abas, arte = emitir(wb, ordem, imgs, arte_dir, limpa, extras)
     for a in abas:
         medidas = a.pop("caixas_medidas")
@@ -666,6 +668,14 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
         vals = [v for v in aba["vals"] if c1 <= v[1] <= c2]
         aba["vals"] = [v for v in aba["vals"] if not c1 <= v[1] <= c2]
         complementos[arq] = [{"nome": nome, "vals": vals}]
+    # A ANALISE cresceu além do teto por arquivo. Separar apenas o transporte
+    # das linhas adicionais conserva todas as fórmulas e o desenho do XLSX.
+    for arq, (nome, primeira) in (suplementos_linhas or {}).items():
+        aba = next(a for a in abas if a["nome"] == nome)
+        vals = [v for v in aba["vals"] if v[0] >= primeira]
+        aba["vals"] = [v for v in aba["vals"] if v[0] < primeira]
+        aba.setdefault("suplementos_obrigatorios", []).append(arq)
+        complementos[arq] = [{"nome": nome, "arquivo": arq, "vals": vals}]
     # as abas que moram em outro arquivo saem do ABAS, cada uma dizendo depois de qual ela entra
     fora = {}
     for arq, (var, nomes) in SEPARADAS.items():
@@ -696,7 +706,8 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
         var = COMPLEMENTOS[arq]
         with open(os.path.join(os.path.dirname(SAIDA), arq), "w", encoding="utf-8") as fp:
             fp.write("// GERADO POR ficha-v01/monta.py — não edite este arquivo na mão.\n")
-            fp.write("// A tabela origem_cap da DADOS. Cole no mesmo projeto dos demais .gs.\n\n")
+            descricao = "A tabela origem_cap da DADOS." if arq == "Origens.gs" else "As linhas adicionais da ANALISE (TR/perícias/carga)."
+            fp.write("// " + descricao + " Cole no mesmo projeto dos demais .gs.\n\n")
             fp.write(f"var {var} = " + _sem_linha_gigante(valores) + ";\n\n")
             fp.write(f"if (typeof juntarValores_ === 'function') juntarValores_({var});\n")
     return SAIDA, celulas, len(arte)
