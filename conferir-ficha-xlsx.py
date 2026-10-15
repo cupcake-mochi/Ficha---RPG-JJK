@@ -7,6 +7,7 @@ celula pintada sem estilo explicito. Um erro que so aparece abrindo o arquivo.
 """
 import json, os, sys
 from openpyxl import load_workbook
+from openpyxl.cell.cell import MergedCell
 from openpyxl.utils import get_column_letter as L
 
 FALHAS = []
@@ -21,6 +22,8 @@ if not os.path.exists(ARQ):
 CAT = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))
 DEC = json.load(open("decisoes-ficha.json", encoding="utf-8"))
 wb  = load_workbook(ARQ)
+sys.path.insert(0, "ficha-v01")
+from configuracao import anterior as _base_formula
 
 _F = DEC["C4_fontes"]
 CORPO = _F["corpo"]["fonte"]
@@ -130,6 +133,8 @@ for aba in [a for a in DEC["C6_documento"]["abas"]
     # 01/10/2026: a coluna de um grupo fechado (o painel de XP da FICHA PESSOAL) não ocupa tela
     n = sum(1 for c in range(1, 60) if L(c) in wb[aba].column_dimensions and not wb[aba].column_dimensions[L(c)].hidden)
     px = n * _px_col(larg)
+    if aba == "CONFIGURAÇÃO":
+        px = sum(_px_col(wb[aba].column_dimensions[L(c)].width) for c in range(1, wb[aba].max_column + 1))
     # 01/10/2026: a FICHA AMALDIÇOADA é mais larga que o notebook, por decisão do Mizuki ("dar mais colunas a pagina"), e
     # as colunas dela não têm todas a mesma largura. A largura dela é a soma de cada coluna, e tem de ser a decidida.
     _fora = DEC["C6_documento"].get("largura_fora_do_notebook", {}).get(aba)
@@ -149,7 +154,8 @@ for ws in wb:
             for cor in (cel.font.color if cel.font else None,):
                 if cor is not None and cor.rgb and isinstance(cor.rgb, str):
                     h = cor.rgb[-6:].upper()
-                    if h not in PALETA and h != "000000":
+                    # A CONFIGURAÇÃO tem a paleta Mizuki fixa, validada abaixo.
+                    if h not in PALETA and h != "000000" and ws.title != "CONFIGURAÇÃO":
                         fora_c.setdefault(h, []).append(f"{ws.title}!{cel.coordinate}")
 checa("nenhuma cor de texto fora da paleta", not fora_c,
       str({k: len(v) for k, v in fora_c.items()}))
@@ -198,7 +204,7 @@ checa("o carimbo de versão está na DADOS",
       str(ws["B1"].value) == CAT["_meta"]["versao"], str(ws["B1"].value))
 
 f = wb["FICHA"]
-formulas = [c.value for l in f.iter_rows() for c in l
+formulas = [_base_formula(c.value) for l in f.iter_rows() for c in l
             if isinstance(c.value, str) and c.value.startswith("=")]
 checa("a FICHA tem fórmula, e não número digitado", len(formulas) >= 20, str(len(formulas)))
 # 04/10/2026: a troca da faixa dos Caminhos passou o escape do re.sub para dentro da fórmula (DADOS!\$N\$5), e a vida e o
@@ -298,7 +304,7 @@ checa("o refino escolhido está no índice, com o rótulo em cima e menu de 0 at
       bool(_camp) and f.cell(row=f[_camp].row - 1, column=f[_camp].column).value in ("REFINO ESCOLHIDO", "Refino")
       and bool(_menu_r) and _menu_r[0].formula1 == '"' + ",".join(map(str, range(_nmarcos + 1))) + '"',
       f"{_camp} · {[v.formula1 for v in _menu_r]}")
-_fd, _fp = str(f[IDX.get("defesa", "A1")].value), str(f[IDX.get("proteção", "A1")].value)
+_fd, _fp = _base_formula(str(f[IDX.get("defesa", "A1")].value)), _base_formula(str(f[IDX.get("proteção", "A1")].value))
 checa("a Defesa corta a Destreza pelo teto da tabela (coluna 3), e soma a proteção",
       "MIN(" in _fd and ",3,FALSE)" in _fd and ("+" + IDX.get("proteção", "?")) in _fd.replace("$", ""), _fd[:90])
 checa("a Defesa soma o Buff/Debuff (17/09/2026)",
@@ -314,7 +320,7 @@ for _r_ in ("vida", "energia", "integridade"):
     _b, _mx = IDX.get("buff de " + _r_), IDX.get(_r_ + "_max")
     if not _b or not _mx:
         _ruins_b.append(f"{_r_}: o índice não tem a caixa ou o máximo"); continue
-    _fm = str(f[_mx].value)
+    _fm = _base_formula(str(f[_mx].value))
     _mm, _mb = _mescla_em(f, _mx), _mescla_em(f, _b)
     _c_max_fim = _rb(_mm)[2] if _mm else 0
     _cb1, _lb1, _cb2, _lb2 = _rb(_mb) if _mb else (0, 0, 0, 0)
@@ -335,8 +341,8 @@ checa("a Proteção soma o Buff/Debuff dela, e a Defesa, que soma a Proteção, 
 import ficha_pessoal as _fp42
 _G42 = _fp42.geometria(_fp42.regras(CAT))
 _wsP42, _cb42 = wb["FICHA PESSOAL"], _G42["carga_buff"]
-_lim42 = [str(c_.value) for l_ in wb["DADOS"].iter_rows() for c_ in l_
-          if isinstance(c_.value, str) and c_.value.replace("$", "").endswith(f"+N('FICHA PESSOAL'!{_cb42})")]
+_lim42 = [_base_formula(str(c_.value)) for l_ in wb["DADOS"].iter_rows() for c_ in l_
+          if isinstance(c_.value, str) and _base_formula(c_.value).replace("$", "").endswith(f"+N('FICHA PESSOAL'!{_cb42})")]
 checa("o limite de carga da FICHA PESSOAL soma a caixa de Buff/Debuff, que nasce em 0 ao lado da barra (B42)",
       len(_lim42) == 1 and _wsP42[_cb42].value == 0 and _wsP42.cell(row=_wsP42[_cb42].row - 1, column=_wsP42[_cb42].column).value == "Buff/Debuff"
       and _mescla_em(_wsP42, _G42["carga_barra"]) is not None
@@ -779,7 +785,8 @@ if _o.path.exists(GS):
     g_inv = open(GS_INV, encoding="utf-8").read() if _o.path.exists(GS_INV) else ""
     # 14/10/2026 (B47): e a ANALISE mora no Analise.gs
     g_an = open("apps-script/Analise.gs", encoding="utf-8").read() if _o.path.exists("apps-script/Analise.gs") else ""
-    checa(f"ele, o Invocacoes.gs e o Analise.gs trazem as {len(DEC['C6_documento']['abas'])} abas decididas", all(f'"{a}"' in g + g_inv + g_an for a in DEC["C6_documento"]["abas"]))
+    _g_cfg = open("apps-script/Configuracao.gs", encoding="utf-8").read()
+    checa(f"os scripts gerados trazem as {len(DEC['C6_documento']['abas'])} abas decididas", all(f'"{a}"' in g + g_inv + g_an + _g_cfg for a in DEC["C6_documento"]["abas"]))
     checa("o Invocacoes.gs só declara as abas dele e chama a junção: quem carregar por último junta",
           "var ABAS_DA_INVOCACAO = " in g_inv and "if (typeof juntarAbas_ === 'function') juntarAbas_(ABAS_DA_INVOCACAO);" in g_inv
           and "if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);" in g and "function " not in g_inv)
@@ -1183,7 +1190,7 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
         print("  [--] node nao existe nesta maquina (ou o script nao carregou): as partes da regua nao foram conferidas")
     _pp = re.search(r"function passosDaPaleta_\(primeira\)\s*\{(.*?)\n\}", _CODA, re.S)
     checa("as abas ocultas ficam fora dos passos de cor da troca",
-          bool(_pp) and "return !spec.oculta;" in _pp.group(1))
+          bool(_pp) and "return !spec.oculta && !spec.paleta_fixa;" in _pp.group(1))
     # Com os tempos do Mizuki (25/09/2026) ainda não cabia. Partir da ficha de fábrica sem ler a planilha foi
     # medido e ficou mais lento (o custo é gravar, não ler): a troca voltou a ler, e a cor pintada à mão fica.
     # O pedido dele: cor e régua na troca, a arte quando alguém mexer na ficha, sem aviso. Aba por aba,
@@ -1750,13 +1757,24 @@ checa("a aba ANALISE existe, oculta, com o cabeçalho chave · valor · célula 
       and len(_an_k) > 2000 and len(set(_an_k)) == len(_an_k) and all(re.fullmatch(r"[a-z0-9_.]+", str(k_)) for k_ in _an_k),
       f"{len(_an_k)} chaves")
 checa("toda chave da ANALISE tem uma parte conhecida, e todo valor de entrada, resultado ou aviso é fórmula",
-      all(l_[3] in ("cabeçalho", "entrada", "resultado", "aviso") for l_ in _an_l)
-      and all(str(l_[1]).startswith("=") for l_ in _an_l if l_[3] != "cabeçalho"))
+      all(l_[3] in ("cabeçalho", "entrada", "resultado", "aviso", "configuração") for l_ in _an_l)
+      and all(str(l_[1]).startswith("=") or (re.fullmatch(r"zero\.\d+\.(classe|pe)", l_[0]) and l_[1] == "0")
+              for l_ in _an_l if l_[3] != "cabeçalho"))
 _ang = open("apps-script/Analise.gs", encoding="utf-8").read() if os.path.exists("apps-script/Analise.gs") else ""
 checa(f"a ANALISE mora no Analise.gs ({len(_ang) / 1024:.0f} KB, o teto é de 900), que o Ficha.gs junta",
       0 < len(_ang) / 1024 < 900 and "var ABAS_DA_ANALISE" in _ang and "juntarAbas_(ABAS_DA_ANALISE)" in open("apps-script/Ficha.gs", encoding="utf-8").read()
       and '"nome":"ANALISE"' not in open("apps-script/Ficha.gs", encoding="utf-8").read())
 checa("o Codigo.gs devolve a conta a quem escrever na ANALISE", "devolverConta_(e, 'ANALISE')" in _CODA)
 
+# A folha de configuração é visível, mas não participa da troca de tema.
+_cfg = wb["CONFIGURAÇÃO"] if "CONFIGURAÇÃO" in wb.sheetnames else None
+_pal_cfg = json.loads(re.search(r"var PALETAS = (\{.*?\n\});\n", _CODA, re.S).group(1))["Mizuki"]["escuro"]
+_cores_cfg = {v.lstrip("#").upper() for v in _pal_cfg.values() if isinstance(v, str) and re.fullmatch(r"#?[A-Fa-f0-9]{6}", v)} | {"FFFFFF", "C2334D"}
+checa("a CONFIGURAÇÃO nasce visível, em Mizuki Escuro, com caixas desligadas e fora da troca de paleta",
+      bool(_cfg) and _cfg.sheet_state == "visible" and _cfg["B2"].value == "CONFIGURAÇÃO"
+      and all(_cfg[f"B{r}"].value is False for r in range(11, 41))
+      and all(c.font.color.rgb[-6:].upper() in _cores_cfg for c in _cfg._cells.values()
+              if not isinstance(c, MergedCell) and c.font.color and c.font.color.type == "rgb")
+      and "!spec.oculta && !spec.paleta_fixa" in _CODA)
 print(f"\n{'A FICHA CONFERE' if not FALHAS else f'{len(FALHAS)} PROBLEMA(S)'}")
 sys.exit(1 if FALHAS else 0)

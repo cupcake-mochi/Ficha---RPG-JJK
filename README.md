@@ -15,17 +15,18 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 | [`LEIA-ME.md`](LEIA-ME.md) | o guia da pasta: o que mudou, como rodar, o que ficou pendente |
 | [`DECISOES-bloco-A.md`](DECISOES-bloco-A.md) | as cinco decisões que travavam a construção, com o porquê e o que foi medido |
 | [`PENDENCIAS.md`](PENDENCIAS.md) | o que ainda espera decisão |
+| [`TESTE-CONFIGURACAO.md`](TESTE-CONFIGURACAO.md) | cópia nativa e roteiro de bônus e mudanças |
 | [`DESIGN-ficha-digital.md`](DESIGN-ficha-digital.md) | paleta, tipografia, abas, automação |
 | [`ESPECIFICACAO-ficha-digital.md`](ESPECIFICACAO-ficha-digital.md) | toda fórmula, todo catálogo, todas as travas |
 
 ## Rodar os validadores
 
 ```bash
-systemd-run --user --scope -q -p MemoryMax=5G -p MemorySwapMax=0 nice -n 15 ./rodar-tudo.sh
+systemd-run --user --scope -q -p MemoryMax=3G -p MemorySwapMax=0 -p CPUQuota=200% nice -n15 env NODE_OPTIONS=--max-old-space-size=1500 ./rodar-tudo.sh
 ```
 
-São dezenove (desde 08/10/2026, quando a ficha de invocação solta e os três validadores dela foram apagados). Quinze passam em qualquer máquina; o
-`regressao-kaori-na-ficha.py`, o `regressao-ficha-pessoal.py`, o `regressao-amaldicoada.py` e o `regressao-invocacoes.py` precisam de um LibreOffice **com o filtro do
+São vinte (B47: entrou a regressão da CONFIGURAÇÃO). Quinze passam em qualquer máquina; o
+`regressao-kaori-na-ficha.py`, o `regressao-ficha-pessoal.py`, o `regressao-amaldicoada.py`, o `regressao-invocacoes.py` e o `regressao-configuracao.py` precisam de um LibreOffice **com o filtro do
 Calc** para recalcular a ficha, e onde ele não existe essa checagem falha alto
 em vez de passar em branco — é de propósito. O `regressao-delta.js` roda no
 node, porque o Apps Script não pode ser testado de fora; sem node a bateria registra que ele não rodou e termina com falha.

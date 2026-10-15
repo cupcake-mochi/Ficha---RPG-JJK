@@ -8,8 +8,12 @@ As tres regras do projeto, e nenhuma pode ser pulada:
 
 Cada perturbacao e um defeito que o script poderia ter, e a agulha e a frase da checagem que tem de acender.
 """
-import os, shutil, subprocess, sys, tempfile
+import argparse, os, shutil, subprocess, sys, tempfile
 from concurrent.futures import ThreadPoolExecutor
+
+argumentos = argparse.ArgumentParser(description=__doc__)
+argumentos.add_argument("--caso", help="repete um cenário pelo nome exato, mantendo base limpa e contra-teste")
+CASO = argumentos.parse_args().caso
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 PRECISA = ["regressao-pessoal.js", "regressao-construir.js", "medidas/sheets-de-mentira.js", "catalogo-projeto-m.json", "manual.txt", "apps-script/Codigo.gs",
@@ -17,6 +21,9 @@ PRECISA = ["regressao-pessoal.js", "regressao-construir.js", "medidas/sheets-de-
            "apps-script/Invocacoes.gs", "apps-script/Origens.gs",                            # 06/10/2026: as abas da invocação, que se juntam ao ABAS
            "regressao-paleta.js"]                                  # 08/10/2026: o clique comum, que não lê a aba
 NODE = shutil.which("node") or shutil.which("nodejs")
+PRECISA += ["medidas/carregar-ficha.js"]
+PRECISA += ["apps-script/" + n for n in os.listdir(os.path.join(AQUI, "apps-script"))
+            if n.endswith(".gs") and "apps-script/" + n not in PRECISA]
 
 
 def roda(pasta, teste="regressao-pessoal.js"):
@@ -50,17 +57,19 @@ CONTA = {"acendeu": 0, "verde": 0, "erros": []}
 PENDENTES = []
 
 
-def edita(nome, arquivo, antes_txt, depois_txt, agulha, espera_verde=False, teste="regressao-pessoal.js"):
-    PENDENTES.append((nome, arquivo, antes_txt, depois_txt, agulha, espera_verde, teste))
+def edita(nome, arquivo, antes_txt, depois_txt, agulha, espera_verde=False, teste="regressao-pessoal.js", ocorrencias=1):
+    if CASO and nome != CASO and not espera_verde:
+        return
+    PENDENTES.append((nome, arquivo, antes_txt, depois_txt, agulha, espera_verde, teste, ocorrencias))
 
 
 def executa_edicao(tarefa):
-    nome, arquivo, antes_txt, depois_txt, agulha, espera_verde, teste = tarefa
+    nome, arquivo, antes_txt, depois_txt, agulha, espera_verde, teste, ocorrencias = tarefa
     d = copia()
     try:
         alvo = os.path.join(d, arquivo)
         antes = open(alvo, encoding="utf-8").read()
-        if antes.count(antes_txt) != 1:
+        if antes.count(antes_txt) != ocorrencias:
             return nome, False, espera_verde, f"  [INUTIL        ] {nome:62} -> o trecho aparece {antes.count(antes_txt)} vez(es) no arquivo"
         open(alvo, "w", encoding="utf-8").write(antes.replace(antes_txt, depois_txt))
         cod, saida = roda(d, teste)
@@ -79,7 +88,7 @@ def executa_edicao(tarefa):
 
 def executa_pendentes():
     # Só estes testes Node são concorrentes, cada um em sua cópia. O LibreOffice continua serial.
-    # A bateria inteira permanece no mesmo escopo de 5 GiB; dois processos usam os núcleos sem
+    # A bateria inteira permanece no mesmo escopo de 3 GiB; dois processos usam os núcleos sem
     # acumular todas as cópias em memória. O relatório e a contagem ficam na ordem declarada.
     with ThreadPoolExecutor(max_workers=2) as executor:
         for nome, bom, espera_verde, linha in executor.map(executa_edicao, PENDENTES):
@@ -349,7 +358,8 @@ edita("a montagem termina sem soltar a trava", F,
 # 08/10/2026 (B42): o Buff/Debuff dos máximos e da Proteção
 edita("a vida máxima esquece o Buff/Debuff", F,
       '+IFERROR(VALUE($P$26&\\"\\"),0),\\"\\")', ',\\"\\")',
-      "somam a caixa de Buff/Debuff delas", teste=K)
+      # A conta-base aparece nas três ramificações do envoltório da CONFIGURAÇÃO.
+      "somam a caixa de Buff/Debuff delas", teste=K, ocorrencias=3)
 edita("a caixa de Buff/Debuff da vida nasce como conta, e o que o jogador digita é devolvido", F,
       '[26,16,0,', '[26,16,"=0",',
       "o que o jogador digita na caixa de Buff/Debuff da vida fica", teste=K)
@@ -416,4 +426,6 @@ print("=" * 70)
 if CONTA["erros"]:
     print(f">>> {len(CONTA['erros'])} PERTURBACAO(OES) NAO FIZERAM O QUE DEVIAM: {CONTA['erros']}")
     sys.exit(1)
+if CASO and CONTA["acendeu"] != 1:
+    sys.exit("O cenário solicitado não foi encontrado; nenhuma validação parcial foi aprovada.")
 print(f">>> TUDO OK — {CONTA['acendeu']} perturbacoes acendem a checagem certa, e o contra-teste fica verde.")

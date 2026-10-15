@@ -8,7 +8,7 @@ for v in conferir-catalogo.py conferir-kaori.py conferir-progressao.py \
          regressao-delta.js arnes-delta.py \
          regressao-ficha-pessoal.py regressao-pessoal.js regressao-construir.js arnes-pessoal.py \
          regressao-amaldicoada.py regressao-invocacoes.py \
-         comparar-ficha-01.py; do
+         comparar-ficha-01.py regressao-configuracao.py; do
   echo "================================================================"
   echo "== $v"
   echo "================================================================"
@@ -22,5 +22,5 @@ for v in conferir-catalogo.py conferir-kaori.py conferir-progressao.py \
   echo
 done
 echo "================================================================"
-if [ $FALHOU -eq 0 ]; then echo "OS DEZENOVE PASSARAM"; else echo "ALGUM VALIDADOR FALHOU"; fi
+if [ $FALHOU -eq 0 ]; then echo "OS VINTE PASSARAM"; else echo "ALGUM VALIDADOR FALHOU"; fi
 exit $FALHOU

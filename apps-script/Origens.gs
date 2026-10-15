@@ -1,5 +1,5 @@
 // GERADO POR ficha-v01/monta.py — não edite este arquivo na mão.
-// A tabela origem_cap da DADOS. Cole no mesmo projeto dos demais .gs.
+// Valores complementares da DADOS. Cole no mesmo projeto dos demais .gs.
 
 var VALORES_DAS_ORIGENS_ = [
   {

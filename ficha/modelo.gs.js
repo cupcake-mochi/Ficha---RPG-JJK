@@ -73,9 +73,11 @@ function juntarAbas_(extras) {
     ABAS.forEach(function (s, k) { if (s.nome === spec.depois) i = k; });
     if (i < 0) ABAS.push(spec); else ABAS.splice(i + 1, 0, spec);
   });
+  if (typeof FONTES_DA_ANALISE_ !== 'undefined' && FONTES_DA_ANALISE_) juntarValores_(FONTES_DA_ANALISE_);
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
 if (typeof ABAS_DA_ANALISE !== 'undefined' && ABAS_DA_ANALISE) juntarAbas_(ABAS_DA_ANALISE);
+if (typeof ABAS_DA_CONFIGURACAO !== 'undefined' && ABAS_DA_CONFIGURACAO) juntarAbas_(ABAS_DA_CONFIGURACAO);
 
 /** Junta a tabela das Origens à DADOS, mesmo se Origens.gs carregar antes deste arquivo. */
 function juntarValores_(extras) {
@@ -93,6 +95,7 @@ function juntarValores_(extras) {
   });
 }
 if (typeof VALORES_DAS_ORIGENS_ !== 'undefined' && VALORES_DAS_ORIGENS_) juntarValores_(VALORES_DAS_ORIGENS_);
+if (typeof FONTES_DA_ANALISE_ !== 'undefined' && FONTES_DA_ANALISE_) juntarValores_(FONTES_DA_ANALISE_);
 
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
 
@@ -193,7 +196,16 @@ function construir() {
 
 function montar_() {
   if (typeof VALORES_DAS_ORIGENS_ === 'undefined' || !VALORES_DAS_ORIGENS_) {
-    throw new Error('Falta o Origens.gs: cole os cinco arquivos de apps-script no mesmo projeto antes de construir.');
+    throw new Error('Falta o Origens.gs: cole todos os arquivos de apps-script no mesmo projeto antes de construir.');
+  }
+  if (typeof ABAS_DA_ANALISE === 'undefined' || !ABAS_DA_ANALISE) {
+    throw new Error('Falta o Analise.gs: cole todos os arquivos de apps-script antes de construir.');
+  }
+  if (typeof ABAS_DA_CONFIGURACAO === 'undefined' || !ABAS_DA_CONFIGURACAO) {
+    throw new Error('Falta o Configuracao.gs: cole todos os arquivos de apps-script antes de construir.');
+  }
+  if (typeof FONTES_DA_ANALISE_ === 'undefined' || !FONTES_DA_ANALISE_) {
+    throw new Error('Falta o AnaliseFontes.gs: cole todos os arquivos de apps-script antes de construir.');
   }
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();
@@ -427,6 +439,7 @@ function regraDeCor_(aba, c) {
 }
 
 function montarAba_(aba, spec) {
+  if (spec.congeladas) aba.setFrozenRows(spec.congeladas);
   var nc = spec.cols, nr = spec.rows;
   aba.setHiddenGridlines(true);
   aba.setColumnWidths(1, nc, spec.larg);

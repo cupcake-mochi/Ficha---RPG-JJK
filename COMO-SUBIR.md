@@ -6,6 +6,14 @@ O caminho antigo, pelo `.xlsx`, morreu numa prova. O registro do script devolveu
 
 Agora nada é traduzido, então nada se perde na tradução.
 
+## Atualizar uma ficha existente: usar cópia nativa
+
+Para testar o B47 sobre a ficha do servidor, faça uma cópia **dentro do Google Sheets**. Não importe o XLSX: a conversão altera larguras, imagens e controles. O XLSX local continua servindo aos validadores, não à publicação no Sheets.
+
+A cópia de revisão é [Ciclo Maldito — B47 — cópia nativa para revisão](https://docs.google.com/spreadsheets/d/1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0/edit). Foram preservadas as abas da base, com atualização somente das 50 fórmulas afetadas, da ANALISE e das novas CONFIGURAÇÃO/DADOS_CONFIG. Os oito scripts foram atualizados na cópia. Não execute `construir()` sobre uma ficha preenchida: essa função é uma montagem completa. O roteiro desta etapa está em `TESTE-CONFIGURACAO.md`.
+
+Os passos abaixo são para uma **montagem nova e vazia**. A ficha oficial do servidor não foi alterada nesta rodada.
+
 ---
 
 ## Os quatro passos
@@ -20,7 +28,7 @@ systemd-run --user --scope -q -p MemoryMax=5G -p MemorySwapMax=0 nice -n 15 pyth
 systemd-run --user --scope -q -p MemoryMax=5G -p MemorySwapMax=0 nice -n 15 ./rodar-tudo.sh
 ```
 
-Saem `apps-script/Ficha.gs`, `apps-script/Habilidades.gs`, `apps-script/Invocacoes.gs` e `apps-script/Origens.gs`; `apps-script/Codigo.gs` é escrito à mão. Se os dezenove validadores não passarem, não sobe.
+Saem sete arquivos gerados: `Ficha.gs`, `Habilidades.gs`, `Invocacoes.gs`, `Origens.gs`, `Analise.gs`, `AnaliseFontes.gs` e `Configuracao.gs`; `Codigo.gs` é escrito à mão. Cole os oito arquivos no mesmo projeto. A montagem avisa sobre arquivo obrigatório ausente antes de alterar abas. Se os vinte validadores não passarem, não sobe. A ANALISE desta etapa usa formato 3: atualizar o leitor do bot antes de publicar para jogadores.
 
 > **O `ficha/monta.py` foi aposentado em 14/09/2026, no B18.** *Ele ficou dez versões atrás da planilha viva, e o `Ficha.gs` que ele gerava montava uma ficha antiga.*
 
@@ -34,7 +42,7 @@ Saem `apps-script/Ficha.gs`, `apps-script/Habilidades.gs`, `apps-script/Invocaco
 Oswald  ·  Castoro  ·  Yuji Syuku
 ```
 
-### 3 · Colar os cinco arquivos
+### 3 · Colar os oito arquivos
 
 **Extensões → Apps Script.**
 
@@ -47,6 +55,8 @@ De novo no `+`, **Script**, nome `Habilidades`, e cola o conteúdo de **`apps-sc
 E mais uma vez no `+`, **Script**, nome `Invocacoes`, e cola o conteúdo de **`apps-script/Invocacoes.gs`**. *Desde 06/10/2026: são as abas `INVOCAÇÕES` e `DADOS_INVOC`, que não cabem no `Ficha.gs`. Sem ele a ficha monta igual, mas sem essas duas abas. A ordem em que os arquivos aparecem no projeto não importa.*
 
 Mais uma vez no `+`, **Script**, nome `Origens`, e cole o conteúdo de **`apps-script/Origens.gs`**. Desde 14/10/2026 (B46): é a tabela das capacidades da Origem, com os textos integrais do R51. A junção funciona em qualquer ordem de carga e não duplica células. Sem esse arquivo, `construir()` avisa antes de alterar a planilha.
+
+Crie também os scripts `Analise`, `AnaliseFontes` e `Configuracao`, com os arquivos de mesmo nome da pasta `apps-script`. `AnaliseFontes.gs` transporta a coluna dos endereços da ANALISE; `Configuracao.gs` transporta a CONFIGURAÇÃO e a DADOS_CONFIG. Os três são obrigatórios nesta versão; a montagem para antes de alterar abas se algum estiver faltando. A ordem de carga não importa.
 
 > Todos os arquivos ficam abaixo do teto de 900 KB por arquivo usado pelos testes. O `Ficha.gs` tem cerca de 865 KB; o `Origens.gs`, 74 KB. É normal demorarem a colar.
 
@@ -105,7 +115,7 @@ Enquanto estiver ajustando o desenho, isso é o que você quer. Depois que tiver
 
 Compartilha como **somente leitura** e manda cada um fazer **Arquivo → Fazer uma cópia**.
 
-A cópia leva os cinco arquivos de script junto. O `onEdit` é gatilho simples: funciona na cópia **sem ninguém autorizar nada**, e é ele que faz a caixinha de `±` aplicar dano.
+A cópia de uma ficha montada pelo Apps Script leva os oito arquivos de script junto. O `onEdit` é gatilho simples: funciona na cópia **sem ninguém autorizar nada**, e é ele que faz a caixinha de `±` aplicar dano. Uma importação direta de XLSX usada para testar cálculos não leva esses scripts.
 
 ### A planilha central do carimbo
 
@@ -134,7 +144,7 @@ Quando o manual mudar, você muda **uma célula** na central e toda ficha em cir
 
 ## Quando a ficha mudar
 
-Para esta atualização, preserve o `layout.json` existente, rode o gerador e cole os cinco arquivos atualizados. Rode `construir` numa planilha nova. Ficha de jogador não se migra: ele copia o modelo novo e transcreve.
+Para esta atualização, preserve o `layout.json` existente, rode o gerador e cole os oito arquivos atualizados. Rode `construir` numa planilha nova. Ficha de jogador não se migra: ele copia o modelo novo e transcreve.
 
 ---
 

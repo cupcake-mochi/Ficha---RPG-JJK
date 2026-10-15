@@ -16,7 +16,7 @@
 const fs=require('fs'), vm=require('vm'), path=require('path');
 const RAIZ=__dirname;
 const NOVO=path.join(RAIZ,'apps-script/Codigo.gs'), FICHA=path.join(RAIZ,'apps-script/Ficha.gs');
-const FICHA_SRC=fs.readFileSync(FICHA,'utf8')+'\n'+fs.readFileSync(path.join(RAIZ,'apps-script/Invocacoes.gs'),'utf8')+'\n'+fs.readFileSync(path.join(RAIZ,'apps-script/Origens.gs'),'utf8');
+const FICHA_SRC = require('./medidas/carregar-ficha.js').fontes();
 let falhas=0; const ok=(n,c,d='')=>{console.log((c?'  ok   ':'  FALHA ')+n+(c?'':'  '+d)); if(!c) falhas++;};
 
 // custo das chamadas ao Sheets (ms), calibrado pelos tempos do Mizuki (25/09/2026): um passo de cor, que lia e
@@ -140,7 +140,7 @@ const semArte=(ps)=>ps.filter(p=>!p.startsWith('arte:'));
 const resumo=(r)=>r.execs.map(e=>`${e.tipo} ${(e.ms/1000).toFixed(1)} s (${e.passos.length} passos)`).join(' → ');
 
 const E='Eucalipto · Escuro', M='Mizuki · Claro', B='Brasa · Claro';
-const visiveis=ABAS.filter(s=>!s.oculta).map(s=>s.nome);
+const visiveis=ABAS.filter(s=>!s.oculta&&!s.paleta_fixa).map(s=>s.nome);
 const daAba=(ps,aba)=>ps.filter(p=>p.split(':')[1]===aba && !p.startsWith('arte:'));
 const regua=(P,n)=>{ const rg='#'+String(r.ctx.coresDoNome_(n).regua).toUpperCase(); const falta=[];
   for(const s of ABAS) for(const b of (s.bordas||[])){ if(String(b[2]).toUpperCase()!=='#8A7EC4') continue;
@@ -149,6 +149,17 @@ const regua=(P,n)=>{ const rg='#'+String(r.ctx.coresDoNome_(n).regua).toUpperCas
 
 console.log('1. cópia nova, primeira troca (nenhum passo medido ainda)');
 let P=criaPlanilha(ABAS); let r=emPassos(P,[E]);
+{
+  const fabrica = criaPlanilha(ABAS);
+  for (const nome of ['CONFIGURAÇÃO', 'DADOS_CONFIG', 'ANALISE']) {
+    ok(nome + ': cores fixas preservadas depois da troca',
+       JSON.stringify(P.abas[nome].bg) === JSON.stringify(fabrica.abas[nome].bg) &&
+       JSON.stringify(P.abas[nome].fc) === JSON.stringify(fabrica.abas[nome].fc));
+  }
+  ok('a CONFIGURAÇÃO está visível, mas fora de todos os passos de paleta',
+     ABAS.some(s => s.nome === 'CONFIGURAÇÃO' && !s.oculta && s.paleta_fixa) &&
+     !r.ctx.passosDaPaleta_('CONFIGURAÇÃO').some(p => p.includes('CONFIGURAÇÃO')));
+}
 console.log('       '+resumo(r));
 ok('terminou', !P.props.paleta_pendente);
 // B46: a pintura também alcança o painel fechado, as três Sequelas e as três cartas de Origem.

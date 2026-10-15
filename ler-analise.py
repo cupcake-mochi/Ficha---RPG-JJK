@@ -15,7 +15,7 @@ Os valores saem como a planilha os mostra. Numa planilha em português o decimal
 import csv, io, os, re, shutil, subprocess, sys, tempfile, urllib.request
 
 ABA = "ANALISE"
-FORMATOS_CONHECIDOS = {1}
+FORMATOS_CONHECIDOS = {1, 2, 3}
 
 
 def normaliza(v):
@@ -33,7 +33,7 @@ def normaliza(v):
         return 0
     if re.fullmatch(r"-?\d+", s):
         return int(s)
-    if re.fullmatch(r"-?\d+,\d+", s):
+    if re.fullmatch(r"-?\d+[.,]\d+", s):
         return float(s.replace(",", "."))
     return s
 
@@ -45,7 +45,8 @@ def de_linhas(linhas):
         l = (list(l) + ["", "", "", ""])[:4]
         if not l[0] or l[0] == "chave":
             continue
-        out[str(l[0])] = {"valor": normaliza(l[1]), "celula": l[2] or "", "parte": l[3] or ""}
+        valor = str(l[1]).strip() if l[0] == "ficha.versao" and l[1] is not None else normaliza(l[1])
+        out[str(l[0])] = {"valor": valor, "celula": l[2] or "", "parte": l[3] or ""}
     return out
 
 
@@ -96,6 +97,9 @@ def relatorio(ficha):
         if v["parte"] != "aviso" or v["valor"] in ("", 0):
             continue
         t = str(v["valor"])
+        if k.startswith(("aviso.efeito.", "aviso.efeito_caixa.")):
+            avisos.append(f"{k} ({v['celula']}): {t}")
+            continue
         # os X de Y que estão certos dizem "Tudo escolhido" ou não têm o sinal de erro: só o ⚠ e o "acima" acendem
         if k.startswith("aviso.") and "⚠" not in t and "acima" not in t.lower() and "falta" not in t.lower() \
                 and "sem treino" not in t.lower() and "não cumprido" not in t.lower() and "pede " not in t.lower():
@@ -133,8 +137,8 @@ if __name__ == "__main__":
         falhas = []
         if len(ficha) < 2000:
             falhas.append(f"a aba devia ter mais de 2.000 chaves, e tem {len(ficha)}")
-        if ficha.get("formato.versao", {}).get("valor") != 1:
-            falhas.append("formato.versao não é 1")
+        if ficha.get("formato.versao", {}).get("valor") not in FORMATOS_CONHECIDOS:
+            falhas.append("formato.versao desconhecido")
         if not str(ficha.get("ficha.livro", {}).get("valor", "")).startswith("Ciclo Maldito R"):
             falhas.append("ficha.livro não diz o livro")
         for k in ("sequela.1", "pericia.atletismo.treino", "tr.fisico.treino"):

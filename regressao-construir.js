@@ -19,7 +19,7 @@ const fs = require('fs'), path = require('path');
 const RAIZ = __dirname;
 const GS = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Codigo.gs'), 'utf8');
 // 06/10/2026: a INVOCAÇÕES e a DADOS_INVOC moram no Invocacoes.gs, que se junta ao ABAS quando carrega
-const FICHA_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Ficha.gs'), 'utf8') + '\n' + fs.readFileSync(path.join(RAIZ, 'apps-script', 'Invocacoes.gs'), 'utf8')+'\n'+fs.readFileSync(path.join(RAIZ,'apps-script/Origens.gs'),'utf8');
+const FICHA_SRC = require('./medidas/carregar-ficha.js').fontes();
 // 05/10/2026: o texto das habilidades mora num terceiro arquivo do projeto, e o Apps Script junta os .gs num escopo só
 const HAB_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Habilidades.gs'), 'utf8');
 // O ABAS como o script o usa: o Ficha.gs escreve por extenso, quando carrega, as fileiras de cartas que são cópia
@@ -33,13 +33,15 @@ const { criaSheets, retrato, partes, letras, numero, CHAMADAS, zeraChamadas } = 
 
 // Os valores das Origens têm de chegar iguais em qualquer ordem, sem duplicar na segunda junção.
 {
-  const arquivos = ['Ficha.gs', 'Invocacoes.gs', 'Origens.gs'];
-  const ordens = [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]];
+  const arquivos = require('./medidas/carregar-ficha.js').arquivos();
+  const natural = arquivos.map((_, i) => i);
+  const ordens = natural.map((_, i) => natural.slice(i).concat(natural.slice(0, i)));
+  ordens.push(natural.slice().reverse());
   const esperada = JSON.stringify(ABAS);
   for (const ordem of ordens) {
     const c = {}; require('vm').createContext(c);
-    for (const i of ordem.concat([2])) require('vm').runInContext(fs.readFileSync(path.join(RAIZ, 'apps-script', arquivos[i]), 'utf8'), c);
-    ok(`a tabela das Origens se junta uma vez na ordem ${ordem.map((i) => arquivos[i]).join(', ')}`, JSON.stringify(c.ABAS) === esperada);
+    for (const i of ordem.concat(natural)) require('vm').runInContext(fs.readFileSync(path.join(RAIZ, 'apps-script', arquivos[i]), 'utf8'), c);
+    ok(`todas as abas e complementos se juntam uma vez na ordem ${ordem.map((i) => arquivos[i]).join(', ')}`, JSON.stringify(c.ABAS) === esperada);
   }
   const fichaSemOrigens = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Ficha.gs'), 'utf8') + '\n' + fs.readFileSync(path.join(RAIZ, 'apps-script', 'Invocacoes.gs'), 'utf8');
   const incompleta = criaSheets(fichaSemOrigens, HAB_SRC + '\n' + GS);
@@ -47,6 +49,14 @@ const { criaSheets, retrato, partes, letras, numero, CHAMADAS, zeraChamadas } = 
   let erroArquivo = null;
   try { incompleta.ctx.construir(); } catch (e) { erroArquivo = e; }
   ok('sem o Origens.gs a montagem avisa antes de criar ou apagar abas', !!erroArquivo && /Falta o Origens.gs/.test(erroArquivo.message) && incompleta.P.abas.map((a) => a.nome).join('|') === abasAntesFalta);
+  for (const falta of ['Analise.gs', 'AnaliseFontes.gs', 'Configuracao.gs']) {
+    const C = criaSheets(require('./medidas/carregar-ficha.js').fontes(arquivos.filter(n => n !== falta)), HAB_SRC + '\n' + GS);
+    const antes = C.P.abas.map(a => a.nome).join('|');
+    let erro = null;
+    try { C.ctx.construir(); } catch (e) { erro = e; }
+    ok('sem o ' + falta + ' a montagem para antes de alterar abas',
+       !!erro && erro.message.includes('Falta o ' + falta) && C.P.abas.map(a => a.nome).join('|') === antes);
+  }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -62,6 +72,13 @@ ok('as abas nascem na ordem do ABAS, e a planilha termina em português', P.abas
 ok('cada aba fica do tamanho que o gerador mediu', ABAS.every((s) => { const A = S.acha(s.nome); return A.maxR === s.rows && A.maxC === s.cols; }),
    ABAS.map((s) => { const A = S.acha(s.nome); return `${s.nome} ${A.maxR}x${A.maxC} (${s.rows}x${s.cols})`; }).join(' · '));
 ok('as ocultas ficam ocultas, e só elas', ABAS.every((s) => S.acha(s.nome).oculta === !!s.oculta));
+{
+  const C = S.acha('CONFIGURAÇÃO');
+  ok('o cabeçalho da CONFIGURAÇÃO mantém dez linhas congeladas', C.congeladas === 10);
+  ok('a CONFIGURAÇÃO tem 30 caixas de ligar e menus de caixa, modo e fonte',
+     [...C.caixas].length === 30 && ['11,3', '11,4', '11,6'].every(k => C.dv.has(k)));
+
+}
 const formulasDoAbas = (s) => s.vals.filter((t) => typeof t[2] === 'string' && t[2][0] === '=');
 // 07/10/2026: as linhas da lista do conjunto da INVOCAÇÕES saem do ABAS como referência à célula do texto, e o acabamento
 // as troca pela ligação até a ficha, que cita a mesma célula. Só elas chegam diferentes, e só desse jeito.
@@ -174,6 +191,19 @@ ok('as cinco notas que mudam com a ficha nascem escritas', vivas.length === 5 &&
 
 console.log('\nA PLANILHA MONTADA, EM USO (pelo onEdit de verdade)');
 const ed = (aba, a1, value, oldValue) => ({ range: S.ss.getSheetByName(aba).getRange(a1), value, oldValue });
+{
+  const C = S.acha('CONFIGURAÇÃO');
+  const cel = S.ss.getSheetByName('CONFIGURAÇÃO').getRange('J14');
+  cel.setValue(999);
+  S.ctx.onEdit({ range: cel, value: '999' });
+  ok('escrever por cima do resumo da CONFIGURAÇÃO devolve a conta', C.f.get('14,10') === '=DADOS_CONFIG!B5');
+  const entrada = S.ss.getSheetByName('CONFIGURAÇÃO').getRange('E11');
+  entrada.setValue(3);
+  S.ctx.onEdit({ range: entrada, value: '3' });
+  ok('o onEdit conserva o valor digitado do efeito', C.v.get('11,5') === 3);
+  entrada.clearContent();
+}
+
 const t = S.ctx.caixasDeTreino_(S.ss.getSheetByName('DADOS').getDataRange().getValues());
 const marcadas = () => t.armas.concat(t.grupos).filter((x) => { const p = partes(x.caixa); return A.le(p.r, p.c) === true; }).length;
 let erroUso = null;

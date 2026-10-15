@@ -357,7 +357,9 @@
    "DADOS_AM",
    "DADOS_INVOC",
    "GLOSSÁRIO",
-   "ANALISE"
+   "ANALISE",
+   "CONFIGURAÇÃO",
+   "DADOS_CONFIG"
   ],
   "abas_acrescentadas_em_01_10": {
    "quais": [
@@ -438,7 +440,14 @@
    "em_etapas": "a primeira etapa monta UMA ficha (ficha_invocacoes.N_COLUNAS e N_FILEIRAS), para ele medir o construir() no Sheets; a grade de 2 x 6 entra depois da medida",
    "arquivo_de_script": "as duas abas moram no apps-script/Invocacoes.gs, e nao no Ficha.gs: com uma ficha o Ficha.gs ja passava do teto de 900 KB por arquivo"
   },
-  "notas_b47": "14/10/2026 (B47): a ANALISE, oculta, para o bot do Discord ler e dizer se a ficha está aprovada"
+  "notas_b47": "14/10/2026 (B47): a ANALISE, oculta, para o bot do Discord ler e dizer se a ficha está aprovada",
+  "configuracao_b47": {
+   "fase": "bônus e mudanças",
+   "paleta": "Mizuki Escuro, fixa",
+   "trocar_por": "fixa o resultado final, inclusive zero; duas trocas na mesma caixa são conflito",
+   "arquivo": "Configuracao.gs",
+   "apoio": "DADOS_CONFIG"
+  }
  },
  "C7_paleta_v01": {
   "escolha": "os dois roxos de painel da v0.1 viram a paleta oficial, e nao excecao",

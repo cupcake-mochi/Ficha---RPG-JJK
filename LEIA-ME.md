@@ -1,5 +1,7 @@
 # Ficha digital do Projeto M · leia isto primeiro
 
+**B47: bônus e mudanças implementados na CONFIGURAÇÃO.** 30 efeitos, 50 caixas, paleta fixa Mizuki Escuro. Somar acumula com o Buff/Debuff; trocar por fixa o resultado final, inclusive zero. Duas trocas da mesma caixa são conflito. A ANALISE formato 3 tem 5.156 chaves e conserva as 4.896 anteriores; o bot precisa reconhecer as configurações antes de aceitar esta versão. São oito arquivos de Apps Script: Codigo, Ficha, Habilidades, Invocacoes, Origens, Analise, AnaliseFontes e Configuracao. A oficial não foi modificada.
+
 **14/10/2026: ANALISE formato 2 preparada para revisão.** Passa de 2.650 para 4.896 chaves,
 preservando as antigas. Exporta escolhas de Famílias, Classe 0, Máxima, textos e ajustes individuais
 das entidades para o corretor do bot. `python3 ficha-v01/monta.py --exportar-analise SAIDA.json`
@@ -49,8 +51,8 @@ O `DESIGN-ficha-digital.md` e o `ESPECIFICACAO-ficha-digital.md` continuam valen
 ./rodar-tudo.sh
 ```
 
-São dezenove (desde 08/10/2026, quando a ficha de invocação solta e os três validadores dela foram apagados). Quinze passam em qualquer máquina; o
-`regressao-kaori-na-ficha.py`, o `regressao-ficha-pessoal.py`, o `regressao-amaldicoada.py` e o `regressao-invocacoes.py` precisam de um LibreOffice **com o filtro do
+São vinte (B47: entrou a regressão da CONFIGURAÇÃO). Quinze passam em qualquer máquina; o
+`regressao-kaori-na-ficha.py`, o `regressao-ficha-pessoal.py`, o `regressao-amaldicoada.py`, o `regressao-invocacoes.py` e o `regressao-configuracao.py` precisam de um LibreOffice **com o filtro do
 Calc** para recalcular a ficha, e onde ele não existe essa checagem falha alto
 em vez de passar em branco — é de propósito. O `regressao-delta.js` roda no
 node, porque o Apps Script não pode ser testado de fora; sem node ele é pulado
@@ -74,6 +76,7 @@ python3 ficha-v01/monta.py
 | **`conferir-decisoes.py`** | **novo.** As cinco decisões contra o manual, o catálogo e os outros documentos |
 | `arnes-decisoes.py` | perturba as decisões numa cópia isolada e prova que o validador acende |
 | **`conferir-ficha-xlsx.py`** | **novo.** Lê o `.xlsx` gerado: fonte, cor, largura, e se cada fórmula puxa o atributo certo |
+| `regressao-configuracao.py` | Recalcula a ficha real: desligado, duas baterias de somas nas 50 caixas, 15 substituições que prevalecem sobre +99, zero, decimais, campos inválidos e conflito. Confere também o contrato anterior por um registro da versão aprovada. |
 | `regressao-ficha-pessoal.py` | **01/10/2026.** Preenche vinte casos na `FICHA PESSOAL`, recalcula no LibreOffice e compara com a regra do catálogo; a nota da arma em uso é comparada com o texto lido do livro |
 | `regressao-pessoal.js` | **01/10/2026.** O que o `Codigo.gs` faz pela `FICHA PESSOAL`, num Sheets de mentira |
 | `regressao-construir.js` | **01/10/2026.** Roda o `construir()` inteiro num Sheets de mentira rigoroso, e depois usa a planilha montada pelo `onEdit`. Desde o B32, o menu rápido da `FICHA`: as fileiras copiadas chegam mescladas, e escrever por cima devolve a conta |

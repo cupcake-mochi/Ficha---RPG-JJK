@@ -215,8 +215,13 @@ print(f"a aba de invocações: {_ABA_IV['linhas']} linha(s), {_ABA_IV['colunas']
 # 14/10/2026 (B47, fase 1): a ANALISE, oculta, no fim: tudo o que o bot precisa para dizer se a ficha está aprovada. Lê
 # os endereços que as outras limpezas publicaram (a ficha automática, a FICHA PESSOAL, a FICHA AMALDIÇOADA e a
 # INVOCAÇÕES), e por isso vem depois de todas. Mora num arquivo de script à parte, o Analise.gs. Ver analise.py.
+import configuracao
+_CFG = configuracao.trocas(LAYOUT, _FP)
+configuracao.aplica(LAYOUT, _CFG)
+print(f"a CONFIGURAÇÃO: {configuracao.QUANTIDADE} efeitos, {len(_CFG['alvos'])} caixas, paleta fixa")
 import analise
 _AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
+_AN["linhas"].extend(configuracao.exporta(_CFG))
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
 
@@ -283,6 +288,8 @@ for a in LAYOUT["abas"]:
     ws = wb.create_sheet(a["nome"])
     ws.sheet_state = a["estado"]
     ws.sheet_view.showGridLines = a["grade"]
+    if a.get("congeladas"):
+        ws.freeze_panes = f"A{a['congeladas'] + 1}"
     if a.get("altura_padrao"):
         ws.sheet_format.defaultRowHeight = a["altura_padrao"]
         ws.sheet_format.customHeight = True
@@ -395,7 +402,10 @@ def _extras(a):
            # 08/10/2026, a INVOCAÇÕES: o que abrir quando o link da lista chega numa ficha recolhida
            "abrir": a.get("abrir", []),
            # A ANALISE é neutra: não herda o fundo e a fonte do tema das fichas.
-           "padrao": a.get("padrao"), "fundo_base": a.get("fundo_base")}
+           "padrao": a.get("padrao"), "fundo_base": a.get("fundo_base"),
+           "paleta_fixa": a.get("paleta_fixa")}
+    if a.get("congeladas"):
+        out["congeladas"] = a["congeladas"]
     return {k: v for k, v in out.items() if v}
 
 gs, celulas, pecas = emitir_gs.escrever(
@@ -405,7 +415,8 @@ gs, celulas, pecas = emitir_gs.escrever(
     arte_dir=os.path.join(AQUI, "arte"),
     limpa=LAYOUT["_meta"].get("largura_limpa"),
     suplementos={"Origens.gs": ("DADOS", _FP["T"]["origem_cap"][0],
-                                _FP["T"]["origem_cap"][0] + _FP["T"]["origem_cap"][3] - 1)})
+                                _FP["T"]["origem_cap"][0] + _FP["T"]["origem_cap"][3] - 1),
+                "AnaliseFontes.gs": ("ANALISE", 3, 3)})
 print(f"script escrito: {gs}")
 print(f"  {celulas} células, {pecas} peças de arte embutidas")
 # 05/10/2026: o texto das habilidades de Caminho e de Trilha, num script à parte (ver habilidades.py)

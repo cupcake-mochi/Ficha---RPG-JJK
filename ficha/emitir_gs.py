@@ -410,8 +410,10 @@ def compactar(aba):
 # ---------------------------------------------------------------------------------------------
 # 14/10/2026 (B47): a ANALISE, oculta, para o bot, também vai à parte: o Ficha.gs está perto do teto
 SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVOC")),
-             "Analise.gs": ("ABAS_DA_ANALISE", ("ANALISE",))}
-COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_"}
+             "Analise.gs": ("ABAS_DA_ANALISE", ("ANALISE",)),
+             "Configuracao.gs": ("ABAS_DA_CONFIGURACAO", ("CONFIGURAÇÃO", "DADOS_CONFIG"))}
+COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
+                "AnaliseFontes.gs": "FONTES_DA_ANALISE_"}
 
 
 def abas_cruas(caminho=None):
@@ -696,7 +698,7 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
         var = COMPLEMENTOS[arq]
         with open(os.path.join(os.path.dirname(SAIDA), arq), "w", encoding="utf-8") as fp:
             fp.write("// GERADO POR ficha-v01/monta.py — não edite este arquivo na mão.\n")
-            fp.write("// A tabela origem_cap da DADOS. Cole no mesmo projeto dos demais .gs.\n\n")
+            fp.write("// Valores complementares da " + valores[0]["nome"] + ". Cole no mesmo projeto dos demais .gs.\n\n")
             fp.write(f"var {var} = " + _sem_linha_gigante(valores) + ";\n\n")
             fp.write(f"if (typeof juntarValores_ === 'function') juntarValores_({var});\n")
     return SAIDA, celulas, len(arte)

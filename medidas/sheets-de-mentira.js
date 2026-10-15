@@ -77,7 +77,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
 
   function criaAba(nome) {
     const A = { nome, maxR: 1000, maxC: 26, v: new Map(), f: new Map(), notas: new Map(), merges: [], dv: new Map(), cf: [], caixas: new Set(),
-                fmt: new Map(), prot: [], oculta: false, grade: true, profL: new Map(), profC: new Map(), fechL: [], fechC: [], posL: 'AFTER', posC: 'AFTER',
+                fmt: new Map(), prot: [], oculta: false, grade: true, congeladas: 0, profL: new Map(), profC: new Map(), fechL: [], fechC: [], posL: 'AFTER', posC: 'AFTER',
                 bordas: 0, larg: new Map(), alt: new Map(), est: new Map(), lados: new Map(), ricos: new Map() };
     const poe = (i, j, que, val) => { const k = i + ',' + j; if (!A.est.has(k)) A.est.set(k, {}); A.est.get(k)[que] = val; };
     const borda = (r, c, nl, nc, a) => { if (a.length !== 8) throw new Error('setBorder quer oito argumentos'); A.bordas++;
@@ -232,6 +232,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
       return out; };
     A.api = rigoroso('Sheet', {
       getName: () => A.nome, setHiddenGridlines: (b) => { A.grade = !b; }, getMaxColumns: () => A.maxC, getMaxRows: () => A.maxR,
+      setFrozenRows: (n) => { if (!Number.isInteger(n) || n < 0 || n > A.maxR) throw new Error('quantidade de linhas congeladas inválida'); A.congeladas = n; return A.api; },
       deleteColumns: (ini, n) => { if (ini + n - 1 !== A.maxC) throw new Error('o teste só apaga colunas do fim'); A.maxC -= n; },
       deleteRows: (ini, n) => { if (ini + n - 1 !== A.maxR) throw new Error('o teste só apaga linhas do fim'); A.maxR -= n; },
       insertColumnsAfter: (depois, n) => { if (depois !== A.maxC) throw new Error('o teste só insere colunas no fim'); A.maxC += n; },

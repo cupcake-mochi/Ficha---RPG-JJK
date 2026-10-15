@@ -405,6 +405,12 @@ function onEdit(e) {
     try { devolverConta_(e, 'ANALISE'); } catch (err) { console.log('analise: ' + err.message); }
     return;
   }
+  // B47: somente as contas voltam; os campos dos efeitos continuam editáveis.
+  if (aba === 'CONFIGURAÇÃO' || aba === 'DADOS_CONFIG') {
+    try { devolverConta_(e, aba); } catch (err) { console.log('configuração: ' + err.message); }
+    continuarPaleta_(inicio, null, false, e.range);
+    return;
+  }
   // Qualquer outra edição também continua uma troca que ficou pela metade (a arte, quase sempre): é o
   // "caso alguém mexa na ficha" do Mizuki. Barato quando não há nada pendente.
   if (aba === 'CARTEIRA') {
@@ -2065,7 +2071,7 @@ function trechosDaAba_(spec) {
 function passosDaPaleta_(primeira) {
   // As abas ocultas (DADOS, DADOS_INV) ficam de fora desde 25/09/2026: ninguém as vê, e cada aba lida e
   // reescrita é tempo que falta pra troca caber nos 30 segundos do gatilho simples.
-  var abas = ABAS.filter(function (spec) { return !spec.oculta; });
+  var abas = ABAS.filter(function (spec) { return !spec.oculta && !spec.paleta_fixa; });
   // Aba por aba, cor e régua juntas, começando pela que o jogador está olhando (a CARTEIRA, na troca,
   // porque a caixa mora lá; a aba em que ele clicou, na continuação). Com os tempos do Mizuki, cor e régua
   // de todas somam 22 a 25 s, colado no orçamento: o que sobrar é de uma aba que ele não está vendo, e ela

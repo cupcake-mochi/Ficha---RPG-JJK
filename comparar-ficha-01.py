@@ -241,7 +241,9 @@ import ficha_amaldicoada
 import ficha_invocacoes
 # 14/10/2026 (B47): a ANALISE, oculta, para o bot
 import analise as _analise
-_abas_novas = ["GLOSSÁRIO", ficha_pessoal.NOME, ficha_amaldicoada.NOME, ficha_amaldicoada.DADOS_AM, ficha_invocacoes.NOME, ficha_invocacoes.DADOS_IV, _analise.NOME]
+import configuracao as _configuracao
+_CFG = _configuracao.trocas(LAY_FA2, FP)
+_abas_novas = ["GLOSSÁRIO", ficha_pessoal.NOME, ficha_amaldicoada.NOME, ficha_amaldicoada.DADOS_AM, ficha_invocacoes.NOME, ficha_invocacoes.DADOS_IV, _analise.NOME, _configuracao.NOME, _configuracao.DADOS]
 _gerada_sem_novas = [n for n in wb_.sheetnames if n not in _abas_novas]
 # O original que o Mizuki exporta já traz o GLOSSARIO -- ele monta o construir() e exporta a planilha
 # pronta --, mas o desenho dela nao vem dali: vem do glossario.py. Comparar a aba dele com a gerada
@@ -314,6 +316,13 @@ for n in wa.sheetnames:
                 if isinstance(pa["valor"], str):
                     pa["valor"] = linhas_novas.desloca_formula(pa["valor"], n == linhas_novas.ABA, LN["depois"], LN["n"])
             pb = perfil(sb.cell(row=r, column=c))
+            # Só a fórmula declarada da configuração pode substituir a antiga.
+            # Após conferir o envoltório, a conta anterior segue todas as limpezas abaixo.
+            _coord_cfg = sb.cell(row=r, column=c).coordinate
+            _f_cfg = _CFG["celulas"].get(n, {}).get(_coord_cfg)
+            if _f_cfg is not None and pb["valor"] == _f_cfg:
+                pb = {**pb, "valor": _CFG["antes"][n][_coord_cfg]}
+                esperadas["fórmula com bônus e mudanças, preservando a conta anterior"] += 1
             if n == "FICHA" and c in PO["colunas"]:
                 esperado_painel = perfil(_pws.cell(row=r, column=c))
                 for k in pb:

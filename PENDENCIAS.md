@@ -1,5 +1,26 @@
 # Pendências · o que precisa de decisão antes de construir
 
+## B47 · bônus e mudanças · fechamento de 15/10/2026
+
+A CONFIGURAÇÃO oferece 30 efeitos para 50 caixas da ficha e mantém a paleta fixa Mizuki Escuro. Somar acumula com a conta e o Buff/Debuff existente; trocar por fixa o resultado final, inclusive zero. Duas trocas ligadas da mesma caixa geram conflito. Entradas ligadas inválidas mostram aviso; uma caixa de seleção apagada conta como desligada.
+
+A ANALISE usa o formato 3, com 5.156 chaves: preserva as 4.896 anteriores e acrescenta 180 campos e 80 avisos de efeitos. O transporte usa oito arquivos de Apps Script, incluindo AnaliseFontes.gs e Configuracao.gs. Os comparadores carregam todas as abas e complementos.
+
+A [cópia nativa de revisão](https://docs.google.com/spreadsheets/d/1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0/edit) foi feita diretamente da base do servidor. Preserva imagens, moldura da foto, seletor de paleta e proporções. As grades da CONFIGURAÇÃO têm separação vertical. A ficha oficial não foi alterada. O roteiro nativo está em [TESTE-CONFIGURACAO.md](TESTE-CONFIGURACAO.md).
+
+**Validação:** os 20 validadores foram cobertos pela bateria inicial e pelas repetições corrigidas. A rodada inicial aprovou 18; montagem e arnês foram revalidados após implementar cabeçalho congelado no simulador. O arnês detectou 113 defeitos na rodada completa e o defeito restante do Buff/Debuff da vida numa repetição isolada, com base limpa e contra-teste verdes. Esse cenário passou a exigir as três ocorrências da conta-base no envoltório dos efeitos. Os logs conservam as falhas das rodadas anteriores; não houve uma única execução integral verde dos 20 validadores.
+
+Também passaram a regressão de paleta (122 combinações, incluindo a cor fixa da CONFIGURAÇÃO) e o leitor (`TESTE: OK`, formato 3, versão textual `1.0`). No Sheets foram conferidos soma com Buff/Debuff, troca por zero, conflito, entrada inválida, caixa apagada e restauração de fórmulas. As 5.156 chaves são únicas e não apresentaram erros de fórmula.
+
+**Pendências para as próximas partes:**
+
+- Adequar o desenho ao plano aprovado: BÔNUS E MUDANÇAS em B:G, linhas 10–40; REGRAS DE CAMPANHA abaixo, a partir da linha 43; CONTEÚDO CUSTOM em J:O. O painel RESULTADOS atual em I:L ocupa o espaço reservado ao custom e deverá ceder lugar aos cartões no protótipo aprovado.
+- Levantar as regras fixas nas fórmulas, conferir os valores no R51 e apresentar a lista antes de construir o bloco de campanha. O teste com CAMPANHA vazia deve preservar as contas atuais.
+- Inventariar os menus antes de definir a quantidade de cartões custom e medir tamanho e tempo de montagem. Caminho usa grupo de níveis 6–20. Cada bloco novo exige protótipo na grade e aprovação.
+- Integrar o formato 3 ao bot antes de publicar esta versão para os jogadores. Regras e custom serão formatos posteriores; o bot é tratado em outro projeto.
+
+---
+
 Cada item traz **o que está em aberto**, **por que importa**, as **opções com o preço de cada uma**, e **o que acontece se ninguém decidir**.
 
 ---

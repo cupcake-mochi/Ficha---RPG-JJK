@@ -1274,7 +1274,7 @@ checa("nenhuma fórmula usa LET, LAMBDA, IFS ou SWITCH (o LibreOffice da regress
 print("\nO FICHA.GS: A ABA MONTADA NO SHEETS DE MENTIRA")
 PROG_JS = r"""
 const fs = require('fs'), { criaSheets, CHAMADAS } = require('./medidas/sheets-de-mentira.js');
-const S = criaSheets(fs.readFileSync('apps-script/Ficha.gs', 'utf8') + '\n' + fs.readFileSync('apps-script/Invocacoes.gs', 'utf8')+'\n'+fs.readFileSync('apps-script/Origens.gs','utf8'), fs.readFileSync('apps-script/Codigo.gs', 'utf8'), JSON.parse(process.argv[2] || '{}'));
+const S = criaSheets(require('./medidas/carregar-ficha.js').fontes(), fs.readFileSync('apps-script/Codigo.gs', 'utf8'), JSON.parse(process.argv[2] || '{}'));
 if (process.argv[3] === 'sem-mesclagem') S.P.copiaTrazMesclagem = false;
 S.ctx.construir();
 const out = { registro: S.P.registros[S.P.registros.length - 1], orfas: S.P.orfas, chamadas: CHAMADAS, abas: {} };
@@ -1339,7 +1339,7 @@ if M:
     # o ABAS que o script expande quando carrega é o mesmo que o gerador expande
     sys.path.insert(0, "ficha")
     import emitir_gs as _eg
-    _js = subprocess.run(["node", "-e", "const fs=require('fs'),vm=require('vm'),c={};vm.createContext(c);vm.runInContext(fs.readFileSync('apps-script/Ficha.gs','utf8')+'\\n'+fs.readFileSync('apps-script/Invocacoes.gs','utf8')+'\\n'+fs.readFileSync('apps-script/Origens.gs','utf8'),c);"
+    _js = subprocess.run(["node", "-e", "const fs=require('fs'),vm=require('vm'),c={};vm.createContext(c);vm.runInContext(require('./medidas/carregar-ficha.js').fontes(),c);"
                           "console.log(JSON.stringify(vm.runInContext('ABAS',c)))"], capture_output=True, text=True, timeout=120)
 
     def _norm(x):
