@@ -1,3 +1,41 @@
+## Estado atual · montagem nativa concluída e 3a pronta para teste (15/10/2026)
+
+Após autorização do usuário, construir() terminou na cópia nativa descartável 12iTELP65DYjBjAY-PiAZ-JvVIyrK7ragsYKRX-vXYsc com “FICHA PRONTA”. Duas execuções iniciais concluídas montaram as primeiras sete abas em 141.988 e 235.950 ms. A instalação individual dos menus estourou seis minutos numa tentativa intermediária. Corrigido CONFIGURAÇÃO para usar validacao_em_matriz, mecanismo já existente: geração09 e regressao-construir04 aprovadas. A retomada final terminou em 289.568 ms; menus em cerca de 67,5 s. Soma do caminho concluído: 667.506 ms (11min7,5s), excluindo o erro transitório inicial e a tentativa com timeout. Não é tempo de uma única execução nem nova montagem integral após a correção; as primeiras sete abas foram reaproveitadas.
+
+Conferência final: 13 abas/17 faixas, nenhum erro de fórmula. CONFIGURAÇÃO tem os 204 menus esperados, 55 checkboxes e 175 seletores estritos, sem divergências de fonte/tipo. DADOS_CUSTOM: 4.904 entradas não vazias iguais ao gerador, hash normalizado a622495473116fb3. ANALISE: 6.174 chaves únicas, hash 31674ef52774dd62. Localidade final pt_BR. Teste preenchido confirmou Defesa 20, Proteção 7, deslocamento 4,5 m, volumes 3 e 2,1; trocar por 0 fixa Defesa em 0. Base Latente invalida marcante própria; Origem do zero permite; rota marcial sem energia mantém 50 Pontos de Esforço. As 121 entradas usadas foram restauradas e relidas: zero diferenças.
+
+Revisão visual: carteira/foto/paleta, cabeçalhos das abas visíveis, recursos/sequelas/defesas, inventário e foto da FICHA PESSOAL, glossário e grades de CONFIGURAÇÃO (bônus, regras, XP, vida e cartões). Sem bordas quebradas nas vistas inspecionadas. CONFIGURAÇÃO permanece Mizuki Escuro fixo, sem congelamento. Capturas e consolidação em evidencias-custom/fechamento-montagem-base-r52.json. Nenhum XLSX foi importado no Google; oficial e revisão preenchida não foram reconstruídas.
+
+Helper temporário removido do projeto da revisão. Código.gs relido após recarregar editor independente: igualdade integral com o local, 252.444 caracteres, sem medirCustomB47. Configuracao.gs atualizado também foi relido integralmente. Nenhuma execução em andamento. A cópia descartável conserva o script antigo copiado da oficial: recebeu a montagem atual por execução do projeto da revisão, servindo como evidência de construção, fórmulas e visual; não como entrega de script vinculado aos jogadores. A revisão preenchida 1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0 tem os dez scripts atuais e é o destino do teste manual. Nunca executar construir() nela.
+
+Capacidade 3a: 25 cartões (1 Origem + 1 Marcante + 2 Menores + 8 equipáveis + 1 uniforme + 12 itens). Dez scripts somam 4.762.350 bytes; maior 806.439 bytes, abaixo de 900 KiB. Demais regressões focais anteriores continuam válidas; a bateria integral de 22 validadores e o arnês de 114 mutações não foram repetidos nesta correção de metadado.
+
+Próximo passo: usuário testar 3a pelo TESTE-CONFIGURACAO.md; partes 3b/3c aguardam esse teste conforme prompt. Nenhuma decisão de regra pendente. HEAD encontrado 10ee014, feito anteriormente pelo usuário. Cinco arquivos da correção de menus e documentação preparados no índice, com mensagem-de-commit.txt; nenhum commit/push pelo agente. Antes de integração futura, atualizar referências remotas e comparar origin/main.
+
+---
+
+## Histórico de checkpoints (superado pelo estado acima)
+
+## Teste nativo · correção de tempo em validação (15/10/2026)
+
+Autorização concluída. Teste somente na cópia nativa descartável 12iTELP65DYjBjAY-PiAZ-JvVIyrK7ragsYKRX-vXYsc. Oficial e revisão preenchida não são destino de construir(). Primeira tentativa teve erro transitório insertSheet; as duas seguintes montaram as sete primeiras abas em 141.988ms e aproximadamente235s, com pausas normais. Quarta montou as seis restantes em221s, mas excedeu seis minutos durante a instalação dos menus. Log construir-nativo-tentativa-04-estouro-menus.log preservado. Auditoria intermediária das13abas/17faixas: zero erros de fórmula; DADOS_CUSTOM4904 entradas e ANALISE6174 chaves coincidiram com o gerador.
+
+Correção pequena: CONFIGURAÇÃO passa a validacao_em_matriz=True; mesmo mecanismo existente das abas maiores, preserva menus estritos e checkboxes. Geração09 e regressao-construir04 aprovadas (tetos3G/duasCPUs, serial). Configuracao.gs salvo e relido de editor independente:560664 caracteres, igualdade integral. Quinta execução iniciada13:50:48, helper medirCustomB47, retomada índice7. Editor CUA17, cópia CUA16. Não remover helper enquanto executa. Faltam término real, conferência dos menus/cálculos e acabamento visual, restauração das entradas temporárias, limpeza do helper e documentação final.
+
+HEAD encontrado10ee014 (commit custom3a já feito pelo usuário; não pelo agente). Alteração nova limitada a custom.py, Configuracao.gs e artefato local regenerado, mais documentação. Nenhum commit/push pelo agente. 3b/3c continuam aguardando teste do usuário.
+
+---
+
+## Teste nativo · aguardando autorização manual no navegador do usuário (15/10/2026)
+
+Cópia nativa da oficial criada: 12iTELP65DYjBjAY-PiAZ-JvVIyrK7ragsYKRX-vXYsc, “TESTE DESCARTÁVEL — base B47 — construção custom R52”. Construir recria abas; somente essa cópia é destino. Helper temporário medir-construir-base-nativo.gs anexado ao Código.gs do projeto da revisão, salvo e relido integralmente em editor independente CUA15 (254.392 caracteres, igualdade exata local+helper). Chave de estado B47_MEDICAO_CUSTOM_R52_BASE. Guardas impedem revisão/oficial como destino.
+
+Revisar permissões aberto, mas o usuário relatou popup inacessível no app e pediu link para autorizar manualmente no navegador dele. Tentativa cancelada pela interface, confirmado “Execução cancelada”, sem log TESTE e sem início do corpo confirmado. Nenhuma permissão concedida pelo agente. Projeto pronto: https://script.google.com/u/0/home/projects/1wdZc903PPK6EoGxFG4KcuPNx_plElCBsWxa4lEBgLUlFBD4OrbZPHYnf/edit . Usuário deve selecionar medirCustomB47 e Executar; nunca construir diretamente na revisão. CUA15 e cópia CUA16 mantidas para retomada. Base antes da montagem registrada em evidencias-custom/base-antes-construir-r52.png.
+
+Após autorização, ler logs e medir montagem real; se pausa automática, repetir medirCustomB47 para retomar. Depois conferir mecanicamente e visualmente o resultado em todas as abas, remover helper e reler Código.gs em editor independente. Atualizar tempo/resultado/documentação; nenhum commit/push. O teste completo ainda não aconteceu.
+
+---
+
 ## Estado atual · parte 3a pronta para teste do usuário (15/10/2026)
 
 Implementados 25 cartões em CONFIGURAÇÃO J:O para Origem, Marcante, Menor, Arma, Escudo, Uniforme, Item comum e Ferramenta amaldiçoada. Menus fechados para opções fixas; equipamento/item conservam digitação livre. Custom válido alimenta menus e contas. BASE DO LIVRO opcional, quatro rotas e quatro perícias distintas conforme decisões do usuário. MESTRE VIU é registro do jogador; aprovação continua no bot.

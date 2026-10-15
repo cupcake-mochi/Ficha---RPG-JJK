@@ -100,6 +100,9 @@ def aba_dados():
 def desenha(layout, tr=None):
  """Só o painel direito. Preserva alturas e mesclagens do painel de campanha."""
  a = ix._aba(layout,'CONFIGURAÇÃO')
+ # Os 204 menus dos cartões e da campanha devem caber na montagem nativa.
+ # A gravação individual estourou seis minutos no teste autorizado de 15/10.
+ a['validacao_em_matriz'] = True
  aviso_global=next((x[1] for x in a['celulas'] if x[0]=='J7'),None)
  if not isinstance(aviso_global,str) or not aviso_global.startswith('='):
   raise ValueError('o aviso global da configuração não foi encontrado')
