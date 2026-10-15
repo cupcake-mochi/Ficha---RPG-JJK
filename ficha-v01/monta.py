@@ -48,7 +48,8 @@ print(f"o estado do personagem embaixo das barras: {estado_do_personagem.aplica(
 import ficha_layout
 _FL = ficha_layout.trocas(LAYOUT)
 print(f"o desenho da mesa: {ficha_layout.aplica(LAYOUT, _FL)} mudanca(s) na exportacao")
-ficha_layout.desenha_arte(_FL)
+if "--exportar-analise" not in sys.argv:
+    ficha_layout.desenha_arte(_FL)
 
 # 01/10/2026: o cabecalho da FICHA no molde do estudo da Ficha Pessoal -- a marca, o titulo e a linha de apoio a
 # esquerda, o nome e o Caminho a direita. Vem antes do indice porque o nome muda de celula. Ver cabecalho.py.
@@ -134,7 +135,8 @@ print(f"as bordas corrigidas: {correcoes_borda.aplica(LAYOUT)} celula(s) diferen
 import moldura_foto
 _MF = moldura_foto.trocas(LAYOUT)
 print(f"a moldura da foto em volta da caixa: {moldura_foto.aplica(LAYOUT, _MF)} mudanca(s), a caixa {_MF['caixa']} livre")
-moldura_foto.desenha(_MF)
+if "--exportar-analise" not in sys.argv:
+    moldura_foto.desenha(_MF)
 
 # 19/09/2026: o texto curto que abre frase ou titulo com a inicial minuscula, na INVOCACAO e no CATALOGO.
 # Ver correcoes_texto.py.
@@ -217,6 +219,22 @@ import analise
 _AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
+
+# Exportação pequena para o bot preparar cópias de teste, sem montar XLSX/Apps Script.
+# Usa exatamente as mesmas transformações e geometrias da geração normal.
+if "--exportar-analise" in sys.argv:
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--exportar-analise", required=True)
+    args = parser.parse_args()
+    conteudo = json.dumps({**_AN, "geometrias": {
+            "feiticos": [{"base": analise.chave(l[0], l[2]), **l[3]} for l in _FAM["lugares"]],
+            "entidades": [{k: v for k, v in g.items() if k != "cartas"} for g in _FIV["fichas_c"]],
+            "cartas": [{"base": f"invocacao.{f + 1}.{tipo}.{n + 1}", **c} for f, tipo, n, c, *_ in _FIV["cartas"]]
+        }}, ensure_ascii=False, indent=2)
+    with open(args.exportar_analise, "w", encoding="utf-8") as destino:
+        destino.write(conteudo + "\n")
+    sys.exit(0)
 
 # 01/10/2026: a INVOCACAO, o CATALOGO e a DADOS_INV saem da ficha, decisao do Mizuki quando o construir() estourou
 # os seis minutos do Apps Script. Saem por ultimo: o GLOSSARIO nasce na posicao da INVOCACAO e usa os estilos do

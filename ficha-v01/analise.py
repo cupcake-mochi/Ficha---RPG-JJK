@@ -24,7 +24,7 @@ import json, os, re, unicodedata
 import indice_ficha as ix
 
 NOME = "ANALISE"
-FORMATO = 1
+FORMATO = 2
 PARTES = ("cabeçalho", "entrada", "resultado", "aviso")
 
 
@@ -186,6 +186,87 @@ def trocas(layout, fa, fp_tr, fam, fiv):
             lê(chave("aviso", k), F(k), "aviso")
     for k in ("marca_treino", "marca_forca_p", "marca_forca_s", "marca_selo", "marca_grau", "marca_forca_v", "requisito", "situacao"):
         lê(chave("aviso", k.replace("marca_", "")), P(G[k]), "aviso")
+
+    # Revisão 2: mantém as chaves antigas e acrescenta as entradas que faltavam.
+    # Os endereços vêm das mesmas geometrias usadas para desenhar as abas.
+    import ficha_amaldicoada as am
+    import ficha_invocacoes as iv
+    A = lambda a1: _ref(AM, a1)
+    I = lambda a1: _ref("INVOCAÇÕES", a1)
+    indice_principal = ix._Ficha(layout)
+    lê("tecnica.atributo_escolhido", _ref("FICHA", indice_principal.abaixo(indice_principal.unico("ATRIBUTO DE CONJURAÇÃO"))))
+    g = fam["G"]
+    for k, c, parte in (
+        ("nome", "nome_tecnica", "entrada"), ("tipo_dano", "tipo_dano", "entrada"),
+        ("atributo", "atributo", "resultado"), ("rota.escolha", "rota_menu", "entrada"),
+        ("rota.nome", "rota_nome", "resultado"), ("regra_propria.categoria", "cp_regra", "entrada"),
+        ("regra_propria.espacos", "espacos_regra", "resultado")):
+        lê("tecnica." + k, A(g[c]), parte)
+    for k, c in (("regra", f"D{g['regra'] + 1}"), ("descricao", f"D{g['descricao'] + 1}"),
+                 ("selo", f"L{g['descricao'] + 1}"), ("expressao", f"L{g['descricao'] + 4}"),
+                 ("regra_propria.texto", f"D{g['regra_propria'] + 1}")):
+        lê("tecnica." + k, A(c))
+    for nome, (coluna, _) in zip(fam["R"]["familias"], g["cols_fam"]):
+        lê(chave("tecnica", "familia", nome), A(f"{coluna}{g['familias'] + 1}"))
+    for n, c in enumerate(g["grupos_menu"], 1):
+        lê(f"tecnica.grupo.{n}", A(c))
+    for lugar in fam["lugares"]:
+        base = chave(lugar[0], lugar[2])
+        c = lugar[3]
+        lê(base + ".texto", A(c["como"]))
+        lê(base + ".acao", A(c["acao"]), "resultado")
+    for n, c in enumerate(fam["zero_c"], 1):
+        base = f"zero.{n}"
+        fixo(base + ".classe", 0, "entrada")
+        fixo(base + ".pe", 0, "resultado")
+        for k in ("nome", "forma", "dano", "alcance"):
+            lê(base + "." + k, A(c[k]), "resultado" if k in ("dano", "alcance") else "entrada")
+        lê(base + ".pecas", A(c["mel"]))
+        lê(base + ".restricoes", A(c["res"]))
+    for k in ("nome", "forma", "dano", "pe", "montagem"):
+        lê("maxima." + k, A(g["tm_" + k]), "entrada" if k in ("nome", "forma") else "resultado")
+    junta("maxima.pecas", [A(c) for c in fam["tm_mel"]])
+    lê("maxima.texto", A(f"D{g['tm_como'] + 1}"))
+    for k, c, parte in (("degrau", "degrau", "entrada"), ("nome", "dom_nome", "entrada"),
+                         ("custo", "dom_custa", "resultado"), ("requisito", "dom_requisito", "resultado"),
+                         ("refino", "dom_refino", "resultado"), ("corrida", "dom_corrida", "resultado")):
+        lê("dominio." + k, A(g[c]), parte)
+    lê("dominio.texto", A(f"D{g['dom_como'] + 1}"))
+    for tipo, cartas in (("passiva", fam["passivas_c"]), ("aptidao", fam["aptidoes_c"])):
+        for n, c in enumerate(cartas, 1):
+            lê(f"{tipo}.{n}.categoria", A(c["cp"]))
+            lê(f"{tipo}.{n}.texto", A(c["texto"]))
+
+    lê("invocacoes.defesa_atributo", I(fiv["CJ"]["usa"]))
+    for n, g in enumerate(fiv["fichas_c"], 1):
+        base = f"invocacao.{n}"
+        for j, (atributo, _) in enumerate(iv.ATRS):
+            for k, lista_ in (("base", "pts"), ("buff", "buff"), ("total", "total")):
+                lê(base + "." + chave("atributo", atributo, k), I(g[lista_][j]), "resultado" if k == "total" else "entrada")
+        for campo, c in zip(("acerto", "cd", "defesa", "vida", "deslocamento"), g["bstat"]):
+            lê(base + ".buff." + campo, I(c))
+        for campo, c in zip(("fisico", "vigor", "intelecto", "espirito"), g["btr"]):
+            lê(base + ".buff.tr." + campo, I(c))
+        for campo, c in (("atributo_acerto", "acerto"), ("atributo_fisico", "fis"), ("tr_treinado", "trT"),
+                         ("alma", "alma"), ("notas", "notas"), ("definicao", "def")):
+            lê(base + "." + campo, I(g[c]))
+        for lista_, campo in (("fam", "familia"), ("per", "pericia"), ("perb", "buff.pericia"),
+                               ("tal", "talento"), ("talx", "talento_extra"), ("eq", "equipamento")):
+            for j, c in enumerate(g[lista_], 1):
+                lê(f"{base}.{campo}.{j}", I(c))
+        for j, c in enumerate(g["lib"], 1):
+            for campo in ("classe", "nome", "pe", "como", "pontos", "acao"):
+                lê(f"{base}.liberacao.{j}.{campo}", I(c[campo]), "resultado" if campo in ("pe", "pontos", "acao") else "entrada")
+        for tipo in ("tm", "exp"):
+            for campo, c in g[tipo].items():
+                if campo not in ("r0", "c0"):
+                    lê(f"{base}.{tipo}.{campo}", I(c), "resultado" if campo in ("pe", "dados", "acao", "pede") else "entrada")
+    for carta in fiv["cartas"]:
+        f_, tipo, num, c = carta[:4]
+        base = f"invocacao.{f_ + 1}.{tipo}.{num + 1}"
+        for campo, origem in (("texto", "como"), ("tipo_dano", "tdano"), ("resolucao_escolha", "rmenu"),
+                               ("acao", "acao"), ("resolve", "resolve"), ("alcance", "alcance")):
+            lê(base + "." + campo, I(c[origem]), "resultado" if campo in ("acao", "resolve", "alcance") else "entrada")
 
     vistas = [l[0] for l in linhas]
     repetidas = sorted({k for k in vistas if vistas.count(k) > 1})
