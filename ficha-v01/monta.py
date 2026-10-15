@@ -220,17 +220,37 @@ _EXTRAS = campanha.extras(LAYOUT)
 _CAMP = campanha.trocas(LAYOUT, _EXTRAS)
 campanha.aplica(LAYOUT, _CAMP)
 campanha.guarda(_CAMP)
+import custom
+_CUSTOM = custom.prepara(LAYOUT)
+custom.valida(_CUSTOM, _FP)
+custom.tabelas(LAYOUT, _CUSTOM, _FP)
+custom.integra(LAYOUT, _CUSTOM, _FP)
+custom.guarda(_CUSTOM)
 import configuracao
 _CFG = configuracao.trocas(LAYOUT, _FP)
 configuracao.aplica(LAYOUT, _CFG)
 campanha.desenha(LAYOUT, _CAMP)
+custom.desenha(LAYOUT, _CUSTOM)
 print(f"a CONFIGURAÇÃO: {configuracao.QUANTIDADE} efeitos, {len(_CFG['alvos'])} caixas, paleta fixa")
 import analise
 _AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
 _AN["linhas"].extend(configuracao.exporta(_CFG))
 _AN["linhas"].extend(campanha.exporta(_CAMP))
+_AN["linhas"].extend(custom.exporta(_CUSTOM))
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
+
+# Migração nativa pontual, independente da exportação Excel.
+if "--exportar-custom" in sys.argv:
+    destino = sys.argv[sys.argv.index("--exportar-custom") + 1]
+    pacote = {"estilos": LAYOUT["estilos"],
+              "abas": [a for a in LAYOUT["abas"] if a["nome"] in ("CONFIGURAÇÃO", custom.NOME, "ANALISE")],
+              "antes": _CUSTOM["antes"], "depois": _CUSTOM["depois"],
+              "menus": {a["nome"]: a["menus"] for a in LAYOUT["abas"] if a["nome"] in ("FICHA", "FICHA PESSOAL")}}
+    with open(destino,"w",encoding="utf-8") as arquivo:
+        json.dump(pacote,arquivo,ensure_ascii=False)
+    if "--montar" not in sys.argv:
+        sys.exit(0)
 
 # Exportação pequena para o bot preparar cópias de teste, sem montar XLSX/Apps Script.
 # Usa exatamente as mesmas transformações e geometrias da geração normal.
@@ -331,7 +351,8 @@ for a in LAYOUT["abas"]:
     for m in a["menus"]:
         v = DataValidation(type=m["tipo"], formula1=m["formula"],
                            allow_blank=m["vazio_ok"],
-                           showDropDown=not m["mostra_seta"])
+                           showDropDown=not m["mostra_seta"],
+                           showErrorMessage=m.get("estrito",False), errorStyle="stop")
         ws.add_data_validation(v)
         for parte in m["onde"].split():
             v.add(parte)
@@ -391,6 +412,7 @@ def _extras(a):
            "formatos": fmt if a.get("grupos") else [], "condicional": a.get("condicional_gs", []),
            # 01/10/2026, a FICHA AMALDICOADA: as fileiras de cartas que sao copia da primeira, a validacao numa matriz so,
            # e, na DADOS_AM, as colunas que o script preenche para baixo a partir da primeira linha
+           "menus_estritos": a.get("menus_estritos", []),
            "copias": a.get("copias", []), "validacao_em_matriz": a.get("validacao_em_matriz", False),
            "abaixo": a.get("abaixo", []),
            # 02/10/2026, o menu rapido da FICHA: as linhas que a trava de formula do script deixa de fora
@@ -421,9 +443,11 @@ gs, celulas, pecas = emitir_gs.escrever(
     imgs={a["nome"]: a["imagens"] for a in LAYOUT["abas"]},
     arte_dir=os.path.join(AQUI, "arte"),
     limpa=LAYOUT["_meta"].get("largura_limpa"),
-    suplementos={"Origens.gs": ("DADOS", _FP["T"]["origem_cap"][0],
+    suplementos={"Origens.gs": [("DADOS", _FP["T"]["origem_cap"][0],
                                 _FP["T"]["origem_cap"][0] + _FP["T"]["origem_cap"][3] - 1),
-                "AnaliseFontes.gs": ("ANALISE", 3, 3)})
+                                  ("DADOS_CUSTOM", 19, 24)],
+                "AnaliseFontes.gs": ("ANALISE", 3, 4),
+                "Pessoal.gs": ("FICHA PESSOAL", 1, 72)})
 print(f"script escrito: {gs}")
 print(f"  {celulas} células, {pecas} peças de arte embutidas")
 # 05/10/2026: o texto das habilidades de Caminho e de Trilha, num script à parte (ver habilidades.py)

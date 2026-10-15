@@ -411,9 +411,11 @@ def compactar(aba):
 # 14/10/2026 (B47): a ANALISE, oculta, para o bot, também vai à parte: o Ficha.gs está perto do teto
 SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVOC")),
              "Analise.gs": ("ABAS_DA_ANALISE", ("ANALISE",)),
-             "Configuracao.gs": ("ABAS_DA_CONFIGURACAO", ("CONFIGURAÇÃO", "DADOS_CONFIG"))}
+             "Configuracao.gs": ("ABAS_DA_CONFIGURACAO", ("CONFIGURAÇÃO", "DADOS_CONFIG")),
+             "Custom.gs": ("ABAS_DO_CUSTOM", ("DADOS_CUSTOM",))}
 COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
-                "AnaliseFontes.gs": "FONTES_DA_ANALISE_"}
+                "AnaliseFontes.gs": "FONTES_DA_ANALISE_",
+                "Pessoal.gs": "VALORES_CUSTOM_"}
 
 
 def abas_cruas(caminho=None):
@@ -663,11 +665,15 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
     # B46: só os valores da tabela origem_cap saem do arquivo principal. A geometria,
     # as fórmulas e o formato da DADOS continuam nele; a junção independe da ordem dos .gs.
     complementos = {}
-    for arq, (nome, c1, c2) in (suplementos or {}).items():
-        aba = next(a for a in abas if a["nome"] == nome)
-        vals = [v for v in aba["vals"] if c1 <= v[1] <= c2]
-        aba["vals"] = [v for v in aba["vals"] if not c1 <= v[1] <= c2]
-        complementos[arq] = [{"nome": nome, "vals": vals}]
+    for arq, faixas in (suplementos or {}).items():
+        if isinstance(faixas, tuple):
+            faixas = [faixas]
+        complementos[arq] = []
+        for nome, c1, c2 in faixas:
+            aba = next(a for a in abas if a["nome"] == nome)
+            vals = [v for v in aba["vals"] if c1 <= v[1] <= c2]
+            aba["vals"] = [v for v in aba["vals"] if not c1 <= v[1] <= c2]
+            complementos[arq].append({"nome": nome, "vals": vals})
     # as abas que moram em outro arquivo saem do ABAS, cada uma dizendo depois de qual ela entra
     fora = {}
     for arq, (var, nomes) in SEPARADAS.items():
@@ -696,7 +702,7 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
             fp.write(f"if (typeof juntarAbas_ === 'function') juntarAbas_({var});\n")
     for arq, valores in complementos.items():
         var = COMPLEMENTOS[arq]
-        with open(os.path.join(os.path.dirname(SAIDA), arq), "w", encoding="utf-8") as fp:
+        with open(os.path.join(os.path.dirname(SAIDA), arq), "a" if arq in fora else "w", encoding="utf-8") as fp:
             fp.write("// GERADO POR ficha-v01/monta.py — não edite este arquivo na mão.\n")
             fp.write("// Valores complementares da " + valores[0]["nome"] + ". Cole no mesmo projeto dos demais .gs.\n\n")
             fp.write(f"var {var} = " + _sem_linha_gigante(valores) + ";\n\n")

@@ -246,6 +246,16 @@ import campanha as _campanha
 _EXTRAS = _campanha.extras(LAY_FA2)
 _CAMP = _campanha.trocas(LAY_FA2, _EXTRAS)
 _campanha.aplica(LAY_FA2, _CAMP)
+import custom as _custom
+indice_ficha._aba(LAY_FA2,'CARTEIRA')['foto'] = MF['foto']
+if not any(a['nome']==ficha_pessoal.NOME for a in LAY_FA2['abas']):
+    LAY_FA2['abas'].append(ficha_pessoal.aba(LAY_FA2, FP))
+_CUSTOM = _custom.prepara(LAY_FA2)
+_custom.valida(_CUSTOM, FP)
+_custom.tabelas(LAY_FA2, _CUSTOM, FP)
+_menus_antes_custom = {a['nome']: copy.deepcopy(a['menus']) for a in LAY_FA2['abas']}
+_custom.integra(LAY_FA2, _CUSTOM, FP)
+_menus_depois_custom = {a['nome']: a['menus'] for a in LAY_FA2['abas']}
 _CFG = _configuracao.trocas(LAY_FA2, FP)
 # Caixa extra aprovada: comparar valores E estilos, incluindo as bordas das mesclagens.
 from openpyxl import Workbook as _Workbook
@@ -273,7 +283,7 @@ for _r in indice_ficha._aba(LAY_FA2,'DADOS')['celulas']:
         _ln = indice_ficha._lc(_r[0])[0]
         for _co,_v in [(f'BA{_ln}','sequela extras'),(f'BB{_ln}',indice_ficha.FORMULA.format(c=_EXTRAS))]:
             _exd[_co] = _v; _EXTRAS_PERFIS[('DADOS',_co)] = perfil(_exd[_co])
-_abas_novas = ["GLOSSÁRIO", ficha_pessoal.NOME, ficha_amaldicoada.NOME, ficha_amaldicoada.DADOS_AM, ficha_invocacoes.NOME, ficha_invocacoes.DADOS_IV, _analise.NOME, _configuracao.NOME, _configuracao.DADOS]
+_abas_novas = ["GLOSSÁRIO", ficha_pessoal.NOME, ficha_amaldicoada.NOME, ficha_amaldicoada.DADOS_AM, ficha_invocacoes.NOME, ficha_invocacoes.DADOS_IV, _analise.NOME, _configuracao.NOME, _configuracao.DADOS, _custom.NOME]
 _gerada_sem_novas = [n for n in wb_.sheetnames if n not in _abas_novas]
 # O original que o Mizuki exporta já traz o GLOSSARIO -- ele monta o construir() e exporta a planilha
 # pronta --, mas o desenho dela nao vem dali: vem do glossario.py. Comparar a aba dele com a gerada
@@ -356,6 +366,10 @@ for n in wa.sheetnames:
             if _f_cfg is not None and pb["valor"] == _f_cfg:
                 pb = {**pb, "valor": _CFG["antes"][n][_coord_cfg]}
                 esperadas["fórmula com bônus e mudanças, preservando a conta anterior"] += 1
+            _f_custom = _CUSTOM["depois"].get(n, {}).get(_coord_cfg)
+            if _f_custom is not None and pb["valor"] == _f_custom:
+                pb = {**pb, "valor": _CUSTOM["antes"][n][_coord_cfg]}
+                esperadas["custom, transformação exata da fonte ou conta"] += 1
             _f_camp = _CAMP["celulas"].get(n, {}).get(_coord_cfg)
             if _f_camp is not None and pb["valor"] == _f_camp:
                 pb = {**pb, "valor": _CAMP["antes"][n][_coord_cfg]}
@@ -726,6 +740,13 @@ for n in wa.sheetnames:
 
     va = {(_faixas_na_gerada(n, v.sqref), v.type, v.formula1) for v in sa.data_validations.dataValidation}
     vbs = {(str(v.sqref), v.type, v.formula1) for v in sb.data_validations.dataValidation}
+    _menu_anterior = {m['onde']:m for m in _menus_antes_custom.get(n,[])}
+    for _m in _menus_depois_custom.get(n,[]):
+        _velho = _menu_anterior.get(_m['onde'])
+        _novo = (_m['onde'],_m['tipo'],_m['formula'])
+        if _velho and _novo in vbs:
+            vbs.remove(_novo)
+            vbs.add((_velho['onde'],_velho['tipo'],_velho['formula']))
     print(f"  menus suspensos: {len(va)} original · {len(vbs)} gerada")
     for x in sorted(va - vbs):
         if x[0] in FP["menus_sai"].get(n, []):          # limpeza 22: o EQUIPAMENTO deixou de ser menu

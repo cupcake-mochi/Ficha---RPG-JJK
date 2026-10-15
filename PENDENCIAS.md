@@ -1,3 +1,63 @@
+## Estado atual · parte 3a pronta para teste do usuário (15/10/2026)
+
+Implementados 25 cartões em CONFIGURAÇÃO J:O para Origem, Marcante, Menor, Arma, Escudo, Uniforme, Item comum e Ferramenta amaldiçoada. Menus fechados para opções fixas; equipamento/item conservam digitação livre. Custom válido alimenta menus e contas. BASE DO LIVRO opcional, quatro rotas e quatro perícias distintas conforme decisões do usuário. MESTRE VIU é registro do jogador; aprovação continua no bot.
+
+Correção R52 aplicada: Origens do livro e bases herdadas mantêm marcantes publicadas, exceto Restrição corporal. Menores e Legados continuam personalizáveis. Origem totalmente homebrew aceita marcante própria, confirmado pelo usuário. Cinco cenários nativos passaram; 34 entradas restauradas e comparadas novamente por leitura independente. Os 224 campos da rodada anterior também foram relidos nesta finalização: todos coincidem com o backup.
+
+Validação: regressão custom03 (custom vazio = IGUAIS; equipamento, volumes, Defesa/Proteção, rotas, entradas inválidas e R52), conferir-ficha02, construir03 em simulador, comparador03, pessoal02, paleta (122 combinações) e leitor aprovados. Auditoria de 13 abas nativas: zero erros de fórmula. ANALISE5 com 6.174 chaves únicas, preservando as 5.274 anteriores. DADOS_CUSTOM: 4.904 valores/fórmulas não vazios idênticos ao gerador (normalizados apenas separadores/aspas), digest eb15a4d5eb678e6e. Bateria integral de 22 validadores e arnês de 114 mutações NÃO repetidos nesta etapa.
+
+Revisão visual nativa: carteira/foto/seletor de paleta, cabeçalhos das abas, capacidades e inventário da FICHA PESSOAL, grades de regras/XP/vida, primeiro cartão e cartões24/25. Sem bordas quebradas nas vistas inspecionadas. CONFIGURAÇÃO mantém Mizuki Escuro fixo e zero linhas congeladas. Evidências em ../evidencias-custom/*r52.png. Não houve importação de XLSX para o Google. Oficial, bot e compartilhamento não foram alterados.
+
+Os dez scripts vinculados foram salvos e comparados integralmente em editor independente. A tentativa de medir construir() NÃO iniciou o corpo da função: Google exigiu autorização, execução cancelada. Nenhuma permissão concedida. O helper temporário foi removido e Código.gs foi relido de uma aba nova: igualdade integral com o arquivo local (252.444 caracteres), evidência limpeza-teste-nativo.json. Editor fechado; não há execução em andamento. Usuário resolveu a janela OAuth. Não repetir a tentativa nem executar construir/continuar sobre a revisão preenchida.
+
+Capacidade: 1 Origem + 1 Marcante + 2 Menores + 8 equipáveis + 1 uniforme + 12 itens = 25. Dez .gs somam 4.762.318 bytes; maior Analise.gs = 806.439 bytes, abaixo de 900 KiB. O tempo REAL de construir() permanece pendente de execução autorizada pelo usuário em planilha descartável. Não confundir o simulador com medição nativa e não fechar capacidade definitiva sem esse dado.
+
+Próximos passos: usuário testar 3a pelo TESTE-CONFIGURACAO.md; resolver a medição nativa antes do fechamento definitivo. 3b/3c aguardam esse teste conforme prompt. Nenhuma decisão de regra pendente. 30 arquivos preparados no índice Git; mensagem-de-commit.txt pronta e ignorada pelo Git. Nenhum commit/push. Evidência consolidada: evidencias-custom/fechamento-para-teste-r52.json. Antes de futura integração, fazer fetch e comparar origin/main. Worktree codex/configuracao-b47, HEAD d0427b6.
+
+---
+
+## Histórico de checkpoints (superado pelo estado acima)
+
+## Estado atual · 3a / correção R52 em andamento
+
+Usuário confirmou: Origens do livro usam marcantes publicadas; exceção Restrição corporal. Origem inteiramente homebrew sem base pode ter marcante própria. Menores e Legados de história continuam personalizáveis. PDF R52 fornecido pelo usuário conferido nas páginas 95 e 99–100; texto extraído em evidencias-custom/r52-texto.txt. Ainda ajustar código/menus/diagnósticos e repetir testes focais.
+
+Migração nativa dos cartões, contas e ANALISE5 aplicada à cópia de revisão. 25 cartões, 6174 chaves. Detectado e corrigido deslocamento de referências futuras: apoio foi reaplicado depois de expandir CONFIGURAÇÃO, preparador corrigido. Testes nativos de equipamento/volume/Defesa/Proteção/rotas passaram. Sem Energia mantém PE como Pontos de Esforço (50 no cenário), não zero. TODOS os 224 campos temporários restaurados nesta retomada; backup em evidencias-custom/restaurar-entradas-nativas.json. Nenhum teste temporário deve ficar na cópia.
+
+Scripts vinculados estão PARCIALMENTE atualizados e exigem conclusão: dez arquivos existem; Pessoal.gs foi encontrado com apenas a função padrão myFunction() numa leitura independente. Não confiar só no clipboard logo após colar; confirmar salvamento em outra aba após recarregar. Custom.gs também precisa auditoria. Codigo/Ficha/Origens foram editados, Analise/AnaliseFontes/Configuracao ainda pendentes. Não executar construir na cópia preenchida. Fontes completas estão no disco e recuperáveis. Abas CUA 9 e 10 são editores criados pelo agente; 3 é Sheets.
+
+Geração07 local e regressao-custom-02, comparador-02, regressao-construir-02 aprovados antes da R52. Correções do conferir-ficha-xlsx ainda aguardam nova rodada. Falta revisão visual de todas as abas, terminar testes novos, medir construir nativo em cópia descartável, atualizar contrato/roteiro/checkpoint e preparar índice/mensagem sem commit/push. 3b/3c aguardam teste do usuário.
+
+---
+
+## Custom · protótipo revisado com listas e bordas (15/10/2026)
+
+Feedback do usuário aplicado na aba ESTUDO CUSTOM, sheetId 2139799909: bordas limpas e refeitas por caixa mesclada, opções fechadas com menus. R51 confirmado em manual.txt:2039 e origens-do-livro.json: quatro opções de perícia para escolher uma; todas as oito entradas do livro têm quatro. Origem agora tem quatro seletores separados.
+
+Opções fechadas: rota (Fundamento/Manejos/Técnica Marcial), base de referência, perícias, ofício, categoria de arma, mãos, dano, propriedades, grau e vínculo a Origem/marcante. Propriedades de arma usam quatro posições separadas, suficientes para todas as armas do catálogo atual (máximo observado: quatro). Rota e base continuam campos de estudo; a associação completa aos efeitos de criação precisa ser tratada na integração, sem inferir tudo pelo nome. O rótulo anterior LIMIAR DE FEITO não representava o campo do dossiê: foi corrigido para TALENTO CE 4, registro textual que o R51 já usa na Restrição corporal.
+
+As sete primeiras posições de cada cartão são opções fechadas e as seis seguintes são valores/texto. Isso permite validação estrita e troca das listas por fórmula, sem script ao escolher o tipo. Campos não usados permanecem vazios. Três cartões agora nas linhas 9, 38 e 67; até a linha 92. Listas auxiliares em colunas ocultas I:CB, na própria aba de estudo.
+
+Conferência nativa: 69 fórmulas sem erros, 21 menus estritos por intervalo; 16 campos fechados preenchidos pertencem às listas permitidas. Troca Arma→Origem mostrou quatro listas de perícias e as três rotas; tipo Arma restaurado. Bordas e três cartões inspecionados; fontes e dados das outras abas não foram alterados. Evidência: verificacao-prototipo-v2.json, pedidos-prototipo-v2.json, moldes-propostos-v2.json e prototipo-v2-*.jpg.
+
+Capacidade mínima continua 25 registros para a 3a. Estimativa sintética atualizada para 26 linhas + 3 de respiro por cartão: 725 linhas e 115382 bytes de envelope. Não é tamanho final do .gs nem tempo real do construir(); a medição completa segue pendente da implementação. O estudo não alimenta contas nem altera ANALISE 4. Integração da parte 3a ainda não iniciada. Sem novo commit/push.
+
+---
+
+## B47 · parte 3a: inventário e protótipo para aprovação (15/10/2026)
+
+A campanha já está registrada no commit d0427b6, encontrado ao retomar; não fui eu que fiz esse commit. Criado inventariar-custom.py, de leitura, sem executar o gerador ou mudar fórmulas. Varredura das 12 abas: 126 validações, 116 fontes distintas e 3.419 caixas com menu. As 12 listas originais da DADOS também foram registradas, inclusive as sem menu direto.
+
+Usuário aprovou Origem-base, marcantes e menores em registros separados e menus nos campos hoje livres conservando digitação avulsa. Capacidade mínima para a parte 3a: 1 Origem + 1 marcante + 2 menores + 8 equipáveis + 1 uniforme + 12 itens = 25 registros. Mãos reutilizam equipáveis; ferramenta ocupa o mesmo inventário. Isso não dimensiona 3b/3c nem alternativas ilimitadas.
+
+Protótipo nativo na aba ESTUDO CUSTOM, sheetId 2139799909, na cópia de revisão. Três cartões (Arma, Menor e Origem), menu de oito tipos, checkbox MESTRE VIU, notas e trinta rótulos por fórmula. Mudança Arma→Escudo→Arma conferida; zero erros após corrigir o separador da localidade. Três visões inspecionadas. Não alimenta a ficha e não altera ANALISE 4. Exemplos são apenas de desenho.
+
+Aguardar aprovação do desenho/campos, conforme o prompt do usuário, antes de implementar a parte 3a. Ainda verificar a política de nomes duplicados e detalhar a base da rota/da ferramenta sem inventar novas regras. Medida sintética: 25 registros/16 campos/20 linhas por registro = 99.084 bytes de envelope, não tamanho final. Tempo real do construir() e custo completo da ANALISE 5 não medidos; medir na implementação antes de fechar a capacidade definitiva. Grupos de linhas não podem esconder bônus/regras do lado esquerdo.
+
+Evidências em ../evidencias-custom/: INVENTARIO-CUSTOM.md, inventario-custom.json, DECISOES-E-INTEGRACAO.md, prototipo-custom.py, pedidos-prototipo.json, verificacao-prototipo.json e imagens prototipo-*.jpg. Oficial, gerador de produção e scripts vinculados não foram alterados nesta rodada. Nenhum novo commit/push.
+
+---
+
 ## Estado atual · parte 2 concluída para revisão (15/10/2026)
 
 Regras de campanha construídas após aprovação do levantamento e protótipo. CAMPANHA vazia conserva o livro; zero é explícito. XP começa em zero no nível inicial, vida inicial é fixa e os dados seguintes ficam registrados. Morte permanente foi retirada da interface/contrato a pedido do usuário. Sequelas extras em FICHA!J50:M50 somam às três caixas; descanso curto conserva, longo limpa todas.
@@ -3636,3 +3696,21 @@ REPROVADA: 1 aviso(s)
 ```
 
 **Pendência fora do gerador:** incluir o novo arquivo no carregamento do comparador de `regressao-amaldicoada.py`; ele permanece sem alteração nesta rodada. Os sete itens do teste nativo da fase 1 foram concluídos. Nenhuma regra ou desenho das fichas foi alterado. A fase 2, CONFIGURAÇÃO, fica para outra rodada.
+
+
+## Parte 3a · implementação autorizada (15/10/2026)
+
+Usuário aprovou prosseguir após as correções de borda e listas do ESTUDO CUSTOM. Testes visuais e mecânicos devem acompanhar a implementação. Origem aceita BASE DO LIVRO opcional: uma base existente herda seu funcionamento; “Nenhuma” permite Origem inteiramente nova, escolhendo Fundamento, Manejos, Técnica Marcial com energia ou sem energia. Sem base, não herdar capacidades/benefícios exclusivos de uma Origem existente; cadastrar capacidades e alterações numéricas em BÔNUS E MUDANÇAS. Essas decisões foram confirmadas explicitamente pelo usuário. Não reabrir aprovação global do protótipo.
+
+Ainda não há alteração de produção custom na planilha. Base local da parte 2 preservada em evidencias-custom/base-parte2-local.xlsx. Implementação em andamento; manter oficial e bot intactos. Sem commit/push.
+
+
+## Parte 3a · integração local em teste (15/10/2026)
+
+Código novo em ficha-v01/custom.py: 25 cartões J:O, oito tipos, sete campos fechados + seis livres, listas dinâmicas estritas, diagnósticos por registro, catálogos combinados, menus e contas de equipamento/Origem. Origem sem base e quatro rotas aprovada; não reabrir. ANALISE 5 tem 6.174 chaves e preservou integralmente as 5.274 anteriores no teste estrutural. Novos arquivos Custom.gs (apoio) e Pessoal.gs (valores da FICHA PESSOAL); Origens.gs também transporta diagnósticos custom e AnaliseFontes.gs inclui C:D. Todos abaixo de 900 KiB na geração 04 (maior 806.439 bytes). Nenhum commit/push.
+
+Geração 04 completou. Corrigidos sobreposição J6:O7 com reserva J7:O8 e preservação do Buff de Proteção. Primeira regressão mecânica: custom vazio IGUAIS em todos os valores preexistentes; cenários preenchidos tiveram #NAME? porque LibreOffice exige prefixo OOXML _xlfn para SWITCH/TEXTJOIN. Mini teste isolado comprovou a diferença; adaptação apenas no calculador de teste, preservando fórmulas nativas. Segunda rodada em execução sob 3G/duas CPUs, log evidencias-custom/regressao-custom-02.log. Não declarar mecânica aprovada antes de ler o fim.
+
+Cópia nativa ainda SEM cartões de produção; oficial e scripts vinculados intactos nesta rodada. Preparador pontual em evidencias-custom/preparar-custom-nativo.js lê os .gs gerados, compara com HEAD, prepara 122 mudanças de conta e oito menus; não importa XLSX e não grava no Google. Guardas pendem de leitura nativa fresca. Pedidos de painel precisam manter lotes curtos (os blocos de 40 linhas ficaram com 69KB; reduzir para 10 antes de aplicar). Depois da regressão: validações, migração, testes/inspeção visual de todas as abas afetadas, atualização e conferência dos dez scripts vinculados. Ainda medir construir() nativo numa cópia descartável antes de fixar capacidade final. 3b/3c só após usuário testar 3a.
+
+---

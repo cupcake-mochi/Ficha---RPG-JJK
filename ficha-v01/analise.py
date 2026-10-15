@@ -24,7 +24,7 @@ import json, os, re, unicodedata
 import indice_ficha as ix
 
 NOME = "ANALISE"
-FORMATO = 4
+FORMATO = 5
 PARTES = ("cabeçalho", "entrada", "resultado", "aviso", "configuração")
 
 

@@ -448,11 +448,16 @@ checa(f"as {len(_marc46)} marcantes e as {len(_men46)} menores do livro cabem in
 _dvP = {str(v_.sqref): str(v_.formula1) for v_ in _wsP.data_validations.dataValidation}
 def _lista_do_menu(a1):
     f_ = next((v_ for k_, v_ in _dvP.items() if a1 in k_.split()), "")
-    m_ = re.search(r"DADOS!\$([A-Z]+)\$(\d+):\$([A-Z]+)\$(\d+)", f_)
-    return [dd[f"{m_.group(1)}{r_}"].value for r_ in range(int(m_.group(2)), int(m_.group(4)) + 1)] if m_ else []
+    return _valores_intervalo_menu(f_)
+def _valores_intervalo_menu(formula):
+    m_ = re.fullmatch(r"(?:'([^']+)'|([A-Z_]+))!\$([A-Z]+)\$(\d+):\$([A-Z]+)\$(\d+)", formula)
+    if not m_ or m_.group(3) != m_.group(5):return []
+    sheet = m_.group(1) or m_.group(2)
+    if sheet not in wb.sheetnames:return []
+    return [wb[sheet][f"{m_.group(3)}{r_}"].value for r_ in range(int(m_.group(4)),int(m_.group(6))+1)]
 _lm, _ln = _lista_do_menu(_G46["cap_menu"][0]), _lista_do_menu(_G46["cap_menu"][1])
-checa("o menu da marcante e o das menores começam pela capacidade criada com o mestre e filtram o livro pela Origem da FICHA (e as menores pela marcante)",
-      bool(_lm and _ln) and _lm[0] == _ln[0] == _OL46["criada"] and "FILTER(" in str(_lm[1]) and '"marcante"' in str(_lm[1])
+checa("R52: marcante criada é condicional à permissão, menores livres; listas filtram Origem/base e exigências",
+      bool(_lm and _ln) and _ln[0] == _OL46["criada"] and str(_lm[0]).startswith("=IF(") and _OL46["criada"] in str(_lm[0]) and "Restrição corporal" in str(_lm[0]) and "Nenhuma" in str(_lm[0]) and "FILTER(" in str(_lm[1]) and '"marcante"' in str(_lm[1])
       and "FILTER(" in str(_ln[1]) and '"menor"' in str(_ln[1]) and _G46["cap_menu"][0].replace("$", "") in str(_ln[1]).replace("$", "")
       and _lista_do_menu(_G46["cap_menu"][2]) == _ln, f"{_lm[:2]} · {_ln[:2]}")
 _tx46 = [str(_wsP[c_].value) for c_ in _G46["cap_texto"]]
@@ -617,11 +622,12 @@ checa("o rótulo da técnica declarada muda com a rota: amaldiçoada, marcial ou
       len(_tec) == 1 and all(x in _tec[0] for x in ("TÉCNICA AMALDIÇOADA DECLARADA", "TÉCNICA MARCIAL DECLARADA",
                                                    "ESTILO DECLARADO")), str(_tec)[:100])
 _vo = [v for v in f.data_validations.dataValidation if IDX["origem"].replace("$", "") in str(v.sqref).split()]
-_mo2 = re.search(r"DADOS!\$([A-Z]+)\$(\d+):\$([A-Z]+)\$(\d+)", _vo[0].formula1) if _vo else None
-_lista_o = [dd[f"{_mo2.group(1)}{r}"].value for r in range(int(_mo2.group(2)), int(_mo2.group(4)) + 1)] if _mo2 else []
+_lista_o = _valores_intervalo_menu(_vo[0].formula1) if _vo else []
 _rc = [r["origem"] for r in CAT["rotas_de_criacao"] if r["origem"].startswith("Restrição Celestial")]
 checa("o menu de Origem é a lista das rotas de criação, com as duas Restrições Celestiais",
-      _lista_o == _fa_mod.origens_do_menu(CAT) and len(_rc) == 2 and all(x in _lista_o for x in _rc),
+      _lista_o[:len(_fa_mod.origens_do_menu(CAT))] == _fa_mod.origens_do_menu(CAT)
+      and _lista_o[len(_fa_mod.origens_do_menu(CAT)):] == [f'=IF(AND($B{r}="Origem",$T{r}=TRUE),$C{r},"")' for r in range(2,27)]
+      and len(_rc) == 2 and all(x in _lista_o for x in _rc),
       f"{len(_lista_o)} origens · {_rc}")
 _esc = f[IDX.get("escolhas de perícia", "A1")]
 # a letra do desenho sai da exportação do Mizuki, e não da constante: comparar com a constante deixava a
@@ -884,7 +890,7 @@ if _o.path.exists(GS):
     ruins = []
     for a in dados:
         for alvo, fonte in a["dv"]:
-            aba_fonte = fonte.split("!")[0].strip("=") if "!" in fonte else a["nome"]
+            aba_fonte = fonte.split("!")[0].lstrip("=").strip("\'") if "!" in fonte else a["nome"]
             if aba_fonte not in nomes:
                 ruins.append((a["nome"], fonte))
     checa("todo menu suspenso puxa de uma aba que existe", not ruins, str(ruins[:3]))

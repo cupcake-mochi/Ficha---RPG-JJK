@@ -74,10 +74,13 @@ function juntarAbas_(extras) {
     if (i < 0) ABAS.push(spec); else ABAS.splice(i + 1, 0, spec);
   });
   if (typeof FONTES_DA_ANALISE_ !== 'undefined' && FONTES_DA_ANALISE_) juntarValores_(FONTES_DA_ANALISE_);
+  if (typeof VALORES_CUSTOM_ !== 'undefined' && VALORES_CUSTOM_) juntarValores_(VALORES_CUSTOM_);
+  if (typeof VALORES_DAS_ORIGENS_ !== 'undefined' && VALORES_DAS_ORIGENS_) juntarValores_(VALORES_DAS_ORIGENS_);
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
 if (typeof ABAS_DA_ANALISE !== 'undefined' && ABAS_DA_ANALISE) juntarAbas_(ABAS_DA_ANALISE);
 if (typeof ABAS_DA_CONFIGURACAO !== 'undefined' && ABAS_DA_CONFIGURACAO) juntarAbas_(ABAS_DA_CONFIGURACAO);
+if (typeof ABAS_DO_CUSTOM !== 'undefined' && ABAS_DO_CUSTOM) juntarAbas_(ABAS_DO_CUSTOM);
 
 /** Junta a tabela das Origens à DADOS, mesmo se Origens.gs carregar antes deste arquivo. */
 function juntarValores_(extras) {
@@ -96,6 +99,7 @@ function juntarValores_(extras) {
 }
 if (typeof VALORES_DAS_ORIGENS_ !== 'undefined' && VALORES_DAS_ORIGENS_) juntarValores_(VALORES_DAS_ORIGENS_);
 if (typeof FONTES_DA_ANALISE_ !== 'undefined' && FONTES_DA_ANALISE_) juntarValores_(FONTES_DA_ANALISE_);
+if (typeof VALORES_CUSTOM_ !== 'undefined' && VALORES_CUSTOM_) juntarValores_(VALORES_CUSTOM_);
 
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
 
@@ -206,6 +210,12 @@ function montar_() {
   }
   if (typeof FONTES_DA_ANALISE_ === 'undefined' || !FONTES_DA_ANALISE_) {
     throw new Error('Falta o AnaliseFontes.gs: cole todos os arquivos de apps-script antes de construir.');
+  }
+  if (typeof ABAS_DO_CUSTOM === 'undefined' || !ABAS_DO_CUSTOM) {
+    throw new Error('Falta o Custom.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof VALORES_CUSTOM_ === 'undefined' || !VALORES_CUSTOM_) {
+    throw new Error('Falta o Pessoal.gs: cole todos os arquivos antes de construir.');
   }
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();
@@ -674,10 +684,10 @@ function menusSuspensos_(ss) {
   var n = 0;
   ABAS.forEach(function (spec) {
     var aba = ss.getSheetByName(spec.nome);
-    var regraDe = function (de) {
+    var regraDe = function (de, estrita) {
       // O Sheets exporta menu de itens como lista escrita, "a,b,c", e ela nao e intervalo:
       // passar ela ao getRange parou a montagem em 'Range not found' (teste de 15/09/2026).
-      var regra = SpreadsheetApp.newDataValidation().setAllowInvalid(true);
+      var regra = SpreadsheetApp.newDataValidation().setAllowInvalid(!estrita);
       var lista = /^"(.*)"$/.exec(de);
       if (lista) {
         regra.requireValueInList(lista[1].split(','), true);
@@ -695,7 +705,9 @@ function menusSuspensos_(ss) {
       };
       (spec.dv || []).forEach(function (d) {
         var f = limitesA1_(d[0]);
-        poe(f.l1, f.c1, f.l2, f.c2, porLista[d[1]] || (porLista[d[1]] = regraDe(d[1])));
+        var estrita = (spec.menus_estritos || []).indexOf(d[0]) >= 0;
+        var chave = d[1] + ":" + estrita;
+        poe(f.l1, f.c1, f.l2, f.c2, porLista[chave] || (porLista[chave] = regraDe(d[1], estrita)));
         n++;
       });
       if ((spec.caixas || []).length) {
@@ -706,7 +718,7 @@ function menusSuspensos_(ss) {
       return;
     }
     (spec.dv || []).forEach(function (d) {
-      aba.getRange(d[0].replace(/\$/g, '')).setDataValidation(regraDe(d[1]));
+      aba.getRange(d[0].replace(/\$/g, '')).setDataValidation(regraDe(d[1], (spec.menus_estritos || []).indexOf(d[0]) >= 0));
       n++;
     });
   });

@@ -40,3 +40,23 @@ Testar apenas na cópia; guardar e restaurar todos os valores originais.
 7. Restaurar entradas, efeitos de exemplo e resultados temporários. Inspecionar as grades de regras, XP, vida e o campo de extras. CONFIGURAÇÃO permanece Mizuki Escuro e o lado J:O fica reservado ao custom.
 
 Validação local: regressao-campanha.py (13 cenários), comparar-ficha-01.py, conferir-ficha-xlsx.py, regressao-construir.js, regressao-configuracao.py, regressao-paleta.js e ler-analise.py --teste. O rodar-tudo.sh agora inclui a regressão de campanha; sua bateria integral de 21 não foi repetida nesta etapa.
+
+
+## Parte 3a · custom e correção R52
+
+Contrato atual: formato 5, 6.174 chaves; 25 cartões em J:O, oito tipos. Os trechos acima descrevem as etapas anteriores.
+
+1. Custom vazio: todos os valores preexistentes devem continuar IGUAIS à parte 2. Confira carteira, foto, paleta e grades em todas as abas visíveis. CONFIGURAÇÃO não acompanha troca de paleta e não congela linhas.
+2. Cadastre Arma (Porrete, 1 mão, Concussão, Versátil, 1d6, Força 4, Volume 1,5), Escudo (Proteção 4, teto 1, Força 4, Volume 2), Uniforme (Grau 4, Proteção 3, teto 2, Força 4, Volume 2) e Item (Volume 0,7). Duas armas somam Volume 3; três itens somam 2,1.
+3. Vanguarda nível 10, Força/Destreza/Constituição 3, Buff de Defesa 2, arma + escudo + uniforme acima: Proteção 7, Defesa 20, deslocamento 4,5 m por falta de Força. Trocar Defesa por 0 prevalece sobre tudo.
+4. Ferramenta baseada na arma conserva dano/treino. Volume 0 explícito vale zero; volume vazio herda a base. Grau/estigma/desgaste aparecem no inventário e podem ser ajustados na instância. Ferramentas de uniforme e de item também conservam os cálculos da base.
+5. Origem sem base: quatro perícias distintas e quatro rotas disponíveis. Marcial sem energia altera os três indicadores e conserva os PE como Esforço (50 nesse cenário). Ofício/CE4 podem nascer do cartão e continuar editáveis na ficha.
+6. R52: marcante própria vinculada a Latente é inválida e não entra no menu. Vinculada a Restrição corporal é válida. Origem do zero aceita marcante própria; trocar sua base para Latente invalida essa marcante e passa a oferecer Tentativa e Erro. Menor própria vinculada a Latente continua válida. Menores com exigência respeitam a marcante da Origem/base.
+7. MESTRE VIU desligado não bloqueia o cadastro. Nome repetido com livro/custom, campo fechado desconhecido, número em texto, base/rota incompatíveis e vínculo inexistente geram aviso e deixam o cadastro inválido. Trocar tipo exige revisar/apagar campos não utilizados.
+8. Selecionar capacidade válida devolve a fórmula do texto quando havia texto manual. Capacidade inválida ou nome avulso conserva o texto manual. Menus de equipamentos/itens permitem digitação livre; marcante usa lista estrita com as permissões da R52.
+9. Restaure todas as entradas de teste. Confirme 6.174 chaves únicas, nenhum erro de fórmula e os 4.904 valores/fórmulas não vazios do DADOS_CUSTOM iguais ao gerador nativo. Não importar XLSX, não executar construir na cópia preenchida, não publicar na oficial.
+
+Evidências da correção: ../evidencias-custom/testes-nativos-r52.json, regressao-custom-03-r52.log, conferir-ficha-02-r52.log, regressao-construir-03-r52.log, regressao-pessoal-02-r52.log e scripts-salvos-r52.json. Os dados temporários foram restaurados após cada cenário nativo. A bateria integral e o arnês de 114 mutações da parte 1 não foram repetidos.
+
+
+Fechamento para teste do usuário (15/10): grades de regras, XP e vida, capacidades/inventário e cartões inicial/24/25 conferidos visualmente no Sheets. Os 34 campos da R52 foram relidos e coincidem com o backup. Helper de medição removido; Código.gs nativo coincide integralmente com o local. Maior .gs: 806.439 bytes (teto 900 KiB). Tempo real de construir() ainda não medido: tentativa cancelada na autorização antes de iniciar. Essa medição é pendência do fechamento definitivo, em planilha descartável e com o usuário conduzindo a autorização. Não executar construir na revisão preenchida. Partes 3b/3c aguardam teste de 3a pelo usuário.

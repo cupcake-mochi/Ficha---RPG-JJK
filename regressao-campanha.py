@@ -19,12 +19,12 @@ idx={wb['DADOS'].cell(r,53).value:ix.endereco(wb['DADOS'].cell(r,54).value) for 
 linhas=[[c.value for c in row] for row in wb['ANALISE'].iter_rows(min_row=2,max_col=4) if row[0].value]
 oldkeys=[]
 for r in linhas:
- if r[0].startswith(('regra.','vida.rolagem.','aviso.regras_campanha','aviso.vida_rolada','sequela.extras')):continue
+ if r[0].startswith(('regra.','vida.rolagem.','aviso.regras_campanha','aviso.vida_rolada','sequela.extras','custom.','aviso.custom.')):continue
  if r[0]=='formato.versao':r=list(r);r[1]='3'
  oldkeys.append(r)
 snap=json.loads((ROOT/'ficha-v01/analise-v3-preservada.json').read_text())
 check('5.156 chaves anteriores e suas fórmulas/endereço/parte preservados',len(oldkeys)==snap['linhas'] and hashlib.sha256(json.dumps(oldkeys,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()==snap['sha256'])
-check('ANALISE formato 4',linhas[0][1]=='4')
+check('ANALISE formato 5',linhas[0][1]=='5')
 check('morte permanente não é exportada',not any('morte_permanente' in r[0] for r in linhas))
 check('chaves únicas',len(linhas)==len({r[0] for r in linhas}))
 wb.close()

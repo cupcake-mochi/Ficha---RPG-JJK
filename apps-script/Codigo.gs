@@ -406,7 +406,7 @@ function onEdit(e) {
     return;
   }
   // B47: somente as contas voltam; os campos dos efeitos continuam editáveis.
-  if (aba === 'CONFIGURAÇÃO' || aba === 'DADOS_CONFIG') {
+  if (aba === 'CONFIGURAÇÃO' || aba === 'DADOS_CONFIG' || aba === 'DADOS_CUSTOM') {
     try { devolverConta_(e, aba); } catch (err) { console.log('configuração: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
     return;
@@ -710,7 +710,11 @@ function textoDaCapacidade_(e) {
   var nome = String(e.range.getValue() || '');
   var dados = SpreadsheetApp.getActive().getSheetByName('DADOS').getDataRange().getValues();
   var doLivro = tabelaDaDados_(dados, 'capacidade da origem').some(function (l) { return l['capacidade da origem'] === nome; });
-  if (!doLivro) return false;
+  var custom = SpreadsheetApp.getActive().getSheetByName('DADOS_CUSTOM');
+  var doCustom = custom && custom.getRange(2, 2, 25, 19).getValues().some(function (l) {
+    return (l[0] === 'Marcante' || l[0] === 'Menor') && l[1] === nome && l[18] === true;
+  });
+  if (!doLivro && !doCustom) return false;
   var spec = ABAS.filter(function (s) { return s.nome === ABA_PESSOAL_; })[0];
   var lc = limitesA1_(ip[par[1]]);
   var molde = spec.vals.filter(function (t) { return t[0] === lc.l1 && t[1] === lc.c1; })[0];

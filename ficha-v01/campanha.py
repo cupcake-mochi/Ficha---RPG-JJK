@@ -127,6 +127,8 @@ def anterior(formula):
  if not FORMULAS.exists():return formula
  # A correspondência cobre a fórmula inteira: uma mutação não é normalizada.
  if not hasattr(anterior,'mapa'):anterior.mapa=json.loads(FORMULAS.read_text())
+ import custom
+ formula=custom.anterior(formula)
  old=anterior.mapa.get(formula,formula)
  return old if isinstance(old,str) else formula
 

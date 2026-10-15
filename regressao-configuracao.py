@@ -45,7 +45,7 @@ checa("o leitor normaliza decimais de Excel e Sheets e preserva a versão textua
       and leitor["de_linhas"]([["ficha.versao", "1.0", "", "cabeçalho"]])["ficha.versao"]["valor"] == "1.0")
 wb = load_workbook(ARQ)
 an = [[c.value for c in r] for r in wb["ANALISE"].iter_rows(min_row=2, max_col=4)]
-antigas = [list(r) for r in an if r[0] and not r[0].startswith(("efeito.", "aviso.efeito.", "aviso.efeito_caixa.", "regra.", "vida.rolagem.", "aviso.regras_campanha", "aviso.vida_rolada", "sequela.extras"))]
+antigas = [list(r) for r in an if r[0] and not r[0].startswith(("efeito.", "aviso.efeito.", "aviso.efeito_caixa.", "regra.", "vida.rolagem.", "aviso.regras_campanha", "aviso.vida_rolada", "sequela.extras", "custom.", "aviso.custom."))]
 for r in antigas:
     if r[0] == "formato.versao": r[1] = "2"
 canon = json.dumps(antigas, ensure_ascii=False, separators=(",", ":"))
@@ -54,7 +54,7 @@ checa("as 4.896 chaves, fórmulas, partes e endereços anteriores foram preserva
       len(antigas) == snapshot["linhas"] and hashlib.sha256(canon.encode()).hexdigest() == snapshot["sha256"])
 checa("nenhuma chave foi repetida", len(an) == len({r[0] for r in an}))
 checa("os seis campos de cada efeito são exportados separadamente", sum(str(r[0]).startswith("efeito.") for r in an) == 180)
-checa("o formato 4 declara regras de campanha para o bot", an[0][0:2] == ["formato.versao", "4"])
+checa("o formato 5 declara regras de campanha para o bot", an[0][0:2] == ["formato.versao", "5"])
 
 alvos = []
 for r in wb["DADOS_CONFIG"].iter_rows(min_row=2, max_col=8):

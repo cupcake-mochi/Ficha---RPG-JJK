@@ -49,7 +49,7 @@ const { criaSheets, retrato, partes, letras, numero, CHAMADAS, zeraChamadas } = 
   let erroArquivo = null;
   try { incompleta.ctx.construir(); } catch (e) { erroArquivo = e; }
   ok('sem o Origens.gs a montagem avisa antes de criar ou apagar abas', !!erroArquivo && /Falta o Origens.gs/.test(erroArquivo.message) && incompleta.P.abas.map((a) => a.nome).join('|') === abasAntesFalta);
-  for (const falta of ['Analise.gs', 'AnaliseFontes.gs', 'Configuracao.gs']) {
+  for (const falta of ['Analise.gs', 'AnaliseFontes.gs', 'Configuracao.gs', 'Custom.gs', 'Pessoal.gs']) {
     const C = criaSheets(require('./medidas/carregar-ficha.js').fontes(arquivos.filter(n => n !== falta)), HAB_SRC + '\n' + GS);
     const antes = C.P.abas.map(a => a.nome).join('|');
     let erro = null;
@@ -76,7 +76,10 @@ ok('as ocultas ficam ocultas, e só elas', ABAS.every((s) => S.acha(s.nome).ocul
   const C = S.acha('CONFIGURAÇÃO');
   ok('a CONFIGURAÇÃO não tem a faixa cinza de linhas congeladas', !C.congeladas);
   ok('a CONFIGURAÇÃO tem 30 caixas de ligar e menus de caixa, modo e fonte',
-     [...C.caixas].length === 30 && ['11,3', '11,4', '11,6'].every(k => C.dv.has(k)));
+     [...C.caixas].filter(k => k.endsWith(',2')).length === 30 && Array.from({length:30},(_,i)=>(11+i)+',2').every(k=>C.caixas.has(k)) && ['11,3', '11,4', '11,6'].every(k => C.dv.has(k)));
+  ok('25 lembretes MESTRE VIU e 175 seletores estritos independentes dos bônus',
+     [...C.caixas].filter(k=>k.endsWith(',14')).length===25 && Array.from({length:25},(_,n)=>n).every(n=>{const r=9+n*29;return C.caixas.has((r+2)+',14') && Array.from({length:7},(_,i)=>(r+5+i)+',12').every(k=>C.dv.has(k)&&C.dv.get(k).invalido===false);}));
+  ok('as linhas livres de equipamento aceitam menu e digitação avulsa', ['98,4','99,4','104,4','104,26'].every(k=>S.acha('FICHA PESSOAL').dv.get(k).invalido===true));
 
 }
 const formulasDoAbas = (s) => s.vals.filter((t) => typeof t[2] === 'string' && t[2][0] === '=');

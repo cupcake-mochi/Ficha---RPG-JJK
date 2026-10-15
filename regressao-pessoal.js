@@ -45,7 +45,17 @@ function criaPlanilha() {
     abas[s.nome] = { v, formulas, notas: {}, spec: s };
   }
   // a fórmula que o teste precisa ver calculada: o endereço em ADDRESS, e a referência direta a uma célula
+  // Este simulador testa onEdit, não recalcula a planilha. Os resultados escalares
+  // da campanha vazia são a fixture do livro; suas fórmulas têm testes LO/nativos.
+  const xpLivro={};let acumulado=0;
+  for(const n of Object.keys(CAT.progressao.tabela_impressa).map(Number).filter(n=>n>=2).sort((a,b)=>a-b)){
+    xpLivro[n]=acumulado;const custo=String(CAT.progressao.tabela_impressa[n].xp);
+    if(custo!=='—')acumulado+=Number(custo.replace('.',''));
+  }
   const resolve = (nomeAba, f) => {
+    const cfg=/^=IF\(E(\d+)="",D\1,/.exec(f);
+    if(nomeAba==='CONFIGURAÇÃO' && cfg && valor(nomeAba,+cfg[1],5)==='') return valor(nomeAba,+cfg[1],4);
+
     const end = [...f.matchAll(/ADDRESS\(ROW\((?:'[^']+'|[A-ZÇÃ_]+)!([A-Z]+\d+)\),COLUMN\([^)]*\),4\)/g)].map((m) => m[1]);
     if (end.length && f.replace(/\s/g, '').startsWith('=ADDRESS(')) return end.join(':');
     const ref = /^=(?:'([^']+)'|([A-ZÇÃ_]+))!\$?([A-Z]+)\$?(\d+)$/.exec(f);
@@ -54,6 +64,7 @@ function criaPlanilha() {
     return f;
   };
   const valor = (nomeAba, r, c) => {
+    if(nomeAba==='DADOS_CONFIG' && c===26 && r>=3 && r<=31)return xpLivro[r-1];
     const A = abas[nomeAba], f = A.formulas[r + ',' + c];
     return f === undefined ? A.v[r - 1][c - 1] : resolve(nomeAba, f);
   };
@@ -65,6 +76,9 @@ function criaPlanilha() {
       getA1Notation: () => letras(c) + r + (nl > 1 || nc > 1 ? ':' + letras(c + nc - 1) + (r + nl - 1) : ''),
       getSheet: () => sheet(nome),
       getValue: () => valor(nome, r, c),
+      getFormula: () => A.formulas[r + ',' + c] || '',
+      getDisplayValue: () => String(valor(nome,r,c) || ''),
+      setFormula: (f) => { A.formulas[r + ',' + c] = f; },
       getValues: () => { if (nome === 'DADOS' && nl > 20 && nc > 20) log.leiturasDaDados++;
         return [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => valor(nome, r + i, c + j))); },
       setValue: (x) => { delete A.formulas[r + ',' + c]; A.v[r - 1][c - 1] = x; log.chamadas.push(['setValue', nome, letras(c) + r, x]); },
@@ -84,7 +98,7 @@ function criaPlanilha() {
       }),
     };
   };
-  const ss = { getSheetByName: sheet };
+  const ss = { getSheetByName: sheet, getSpreadsheetLocale: () => 'en_US', setSpreadsheetLocale: () => {} };
   const ctx = {
     console: { log: () => {} }, Logger: { log: () => {} }, Date,
     SpreadsheetApp: { getActive: () => ss, flush: () => {} },
@@ -351,9 +365,14 @@ console.log('\nAS CAIXAS LIVRES E A COR DE AVISO, NO ABAS');
   const declaradas = spec.livres || [];
   const capacidades = ["texto da marcante", "texto do menor 1", "texto do menor 2"].map((k) => ip[k]);
   const ehCapacidade = (a1) => capacidades.includes(a1);
-  ok(`a aba declara livres só o Volume de cada item, a foto da CARTEIRA e os três textos das capacidades (${declaradas.length} caixas), e não declara mais faixa travada`,
-     declaradas.length > 2 && declaradas.every((a1) => ehLivre(a1) || ehFoto(a1) || ehCapacidade(a1)) && formulas.filter((f) => ehLivre(f) || ehFoto(f) || ehCapacidade(f)).every((f) => declaradas.includes(f))
-     && declaradas.filter(ehFoto).length === 1 && declaradas.filter(ehCapacidade).length === 3 && !('protegidas' in spec), declaradas.filter((a1) => !ehLivre(a1) && !ehFoto(a1) && !ehCapacidade(a1)).join(', '));
+  const customLivres=['AH54','D58'];
+  for(let row=92;row<=99;row++)for(const c of ['AI','AK','AQ'])customLivres.push(c+row);
+  for(let row=98;row<=99;row++)for(const c of ['M','S','U','W','AE','AG'])customLivres.push(c+row);
+  const permitido=a1=>ehLivre(a1)||ehFoto(a1)||ehCapacidade(a1)||customLivres.includes(a1);
+
+  ok(`a aba declara livres os volumes, foto, capacidades e os campos custom aprovados (${declaradas.length} caixas), e não declara mais faixa travada`,
+     declaradas.length > 2 && declaradas.every(permitido) && formulas.filter(permitido).every((f) => declaradas.includes(f)) && customLivres.every(c=>declaradas.includes(c))
+     && declaradas.filter(ehFoto).length === 1 && declaradas.filter(ehCapacidade).length === 3 && !('protegidas' in spec), declaradas.filter(a1=>!permitido(a1)).join(', '));
   const valorDe = (a1) => { const [l, c] = lc(a1); const t = spec.vals.find((x) => x[0] === l && x[1] === c); return t ? String(t[2]) : ''; };
   ok('cada regra de cor de aviso procura um texto que a fórmula da própria caixa escreve',
      spec.condicional.length >= 5 && spec.condicional.every((r) => r.faixas.every((a1) => valorDe(a1).includes(r.contem))),
@@ -375,6 +394,23 @@ console.log('\nAS CAIXAS LIVRES E A COR DE AVISO, NO ABAS');
   ok('as quatro tabelas de missão têm o mesmo tamanho', new Set(tam).size === 1, tam.join(', '));
   const titulos = spec.merges.filter((m) => spec.vals.some((t) => t[0] === m[0] && t[1] === m[1] && t.length > 3 && spec.estilos[t[3]][0] === 'Oswald' && spec.estilos[t[3]][1] >= 12 && m[0] > 7));
   ok('todo título de seção ocupa duas linhas mescladas', titulos.length >= 8 && titulos.every((m) => m[2] - m[0] === 1), JSON.stringify(titulos.filter((m) => m[2] - m[0] !== 1)));
+}
+
+console.log('\nRESTAURAÇÃO DO TEXTO DAS CAPACIDADES CUSTOM');
+{
+ const p=criaPlanilha(), sheet=p.sheet('FICHA PESSOAL');
+ const seed=(s,r,c,v)=>{ delete p.abas[s].formulas[r+','+c];p.abas[s].v[r-1][c-1]=v; };
+ const pick=sheet.getRange('D44'), text=sheet.getRange('D45');
+ seed('DADOS_CUSTOM',2,2,'Marcante');seed('DADOS_CUSTOM',2,3,'Marcante de teste');
+ seed('DADOS_CUSTOM',2,4,false);seed('DADOS_CUSTOM',2,20,true);
+ pick.setValue('Marcante de teste');text.setValue('Texto manual antigo');
+ ok('capacidade custom válida devolve fórmula mesmo sem MESTRE VIU',p.ctx.textoDaCapacidade_({range:pick})===true && text.getFormula().startsWith('='));
+ text.setValue('Texto manual preservado');seed('DADOS_CUSTOM',2,20,false);
+ ok('capacidade inválida conserva texto manual',p.ctx.textoDaCapacidade_({range:pick})===false && text.getValue()==='Texto manual preservado');
+ pick.setValue('Capacidade avulsa');
+ ok('nome avulso conserva texto manual',p.ctx.textoDaCapacidade_({range:pick})===false && text.getValue()==='Texto manual preservado');
+ pick.setValue('Tentativa e Erro');
+ ok('voltar ao livro restaura fórmula',p.ctx.textoDaCapacidade_({range:pick})===true && text.getFormula().startsWith('='));
 }
 
 console.log('');
