@@ -16,6 +16,16 @@
 // node regressao-construir.js
 'use strict';
 const fs = require('fs'), path = require('path');
+const FASE = process.env.REG_CONSTRUIR_FASE;
+if (!FASE) {
+  // Cada fase recebe uma VM nova, mantendo o teto de 1,5 GiB por processo.
+  for (const fase of ['principal', 'acabamento', 'continua']) {
+    const r = require('child_process').spawnSync(process.execPath,
+      ['--expose-gc', __filename], {stdio:'inherit', env:{...process.env,REG_CONSTRUIR_FASE:fase}});
+    if (r.status !== 0) process.exit(r.status || 1);
+  }
+  process.exit(0);
+}
 const RAIZ = __dirname;
 const GS = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Codigo.gs'), 'utf8');
 // 06/10/2026: a INVOCAÇÕES e a DADOS_INVOC moram no Invocacoes.gs, que se junta ao ABAS quando carrega
@@ -27,9 +37,28 @@ const HAB_SRC = fs.readFileSync(path.join(RAIZ, 'apps-script', 'Habilidades.gs')
 const ABAS = (() => { const c = {}; require('vm').createContext(c); require('vm').runInContext(FICHA_SRC, c); return JSON.parse(JSON.stringify(require('vm').runInContext('ABAS', c))); })();
 
 let falhas = 0;
-const ok = (nome, cond, det = '') => { console.log((cond ? '  ok    ' : '  FALHA ') + nome + (cond ? '' : '  <- ' + det)); if (!cond) falhas++; };
+const ok = (nome, cond, det = '') => {
+  // Os cenários usam planilhas independentes. Soltar as já encerradas evita
+  // acumular contextos de VM durante a bateria, dentro do teto de memória.
+  if (global.gc && process.memoryUsage().heapUsed > 700 * 1024 * 1024) global.gc();
+  console.log((cond ? '  ok    ' : '  FALHA ') + nome + (cond ? '' : '  <- ' + det)); if (!cond) falhas++;
+};
 
 const { criaSheets, retrato, partes, letras, numero, CHAMADAS, zeraChamadas } = require('./medidas/sheets-de-mentira.js');
+let PESO_DA_MONTAGEM;
+// O mesmo retrato completo, comparado por assinatura, uma aba por vez. Não
+// manter duas serializações de centenas de milhares de estilos na memória.
+function assinatura(P) {
+  const h = require('crypto').createHash('sha256');
+  h.update(JSON.stringify(retrato({...P,abas:[]})));
+  for (const A of P.abas) {
+    h.update(JSON.stringify(retrato({...P,abas:[A],nomeados:{}}).abas[A.nome]));
+    if(global.gc && process.memoryUsage().heapUsed>700*1024*1024)global.gc();
+  }
+  return h.digest('hex');
+}
+
+if (FASE === 'principal') {
 
 // Os valores das Origens têm de chegar iguais em qualquer ordem, sem duplicar na segunda junção.
 {
@@ -49,7 +78,7 @@ const { criaSheets, retrato, partes, letras, numero, CHAMADAS, zeraChamadas } = 
   let erroArquivo = null;
   try { incompleta.ctx.construir(); } catch (e) { erroArquivo = e; }
   ok('sem o Origens.gs a montagem avisa antes de criar ou apagar abas', !!erroArquivo && /Falta o Origens.gs/.test(erroArquivo.message) && incompleta.P.abas.map((a) => a.nome).join('|') === abasAntesFalta);
-  for (const falta of ['Analise.gs', 'AnaliseFontes.gs', 'Configuracao.gs', 'Custom.gs', 'Pessoal.gs', 'Progressao.gs', 'ProgressaoPainel.gs', 'ProgressaoAnalise.gs']) {
+  for (const falta of ['Analise.gs', 'AnaliseFontes.gs', 'Configuracao.gs', 'Custom.gs', 'Pessoal.gs', 'Progressao.gs', 'ProgressaoPainel.gs', 'ProgressaoAnalise.gs', 'Criacao.gs', 'CriacaoPainel.gs', 'CriacaoAnalise.gs']) {
     const C = criaSheets(require('./medidas/carregar-ficha.js').fontes(arquivos.filter(n => n !== falta)), HAB_SRC + '\n' + GS);
     const antes = C.P.abas.map(a => a.nome).join('|');
     let erro = null;
@@ -80,8 +109,11 @@ ok('as ocultas ficam ocultas, e só elas', ABAS.every((s) => S.acha(s.nome).ocul
   ok('25 lembretes MESTRE VIU e 175 seletores estritos independentes dos bônus',
      [...C.caixas].filter(k=>k.endsWith(',14')&&Number(k.split(',')[0])<=732).length===25 && Array.from({length:25},(_,n)=>n).every(n=>{const r=9+n*29;return C.caixas.has((r+2)+',14') && Array.from({length:7},(_,i)=>(r+5+i)+',12').every(k=>C.dv.has(k)&&C.dv.get(k).invalido===false);}));
   ok('133 lembretes e 131 tipos de registro da parte 3b',
-     [...C.caixas].filter(k=>Number(k.split(',')[0])>=733).length===133 &&
+     [...C.caixas].filter(k=>Number(k.split(',')[0])>=733 && Number(k.split(',')[0])<1805).length===133 &&
      Array.from({length:131},(_,i)=>({r:877+Math.floor(i/2)*14+2,c:i%2===0?2:10})).every(x=>C.dv.has(x.r+','+x.c)));
+  ok('318 Famílias têm MESTRE VIU e menu de estado até o último cartão',
+     Array.from({length:318},(_,i)=>({r:1805+Math.floor(i/2)*14,c:i%2===0?2:10})).every(x=>
+       C.caixas.has((x.r+2)+','+(x.c+4)) && C.dv.has((x.r+5)+','+(x.c+3))));
   ok('as linhas livres de equipamento aceitam menu e digitação avulsa', ['98,4','99,4','104,4','104,26'].every(k=>S.acha('FICHA PESSOAL').dv.get(k).invalido===true));
 
 }
@@ -124,7 +156,7 @@ ok(`as ${totalM} mesclagens vão em lotes: menos de um terço em chamadas`, chM 
 ok('nenhuma etapa lê a planilha célula a célula: a mesclagem, a fórmula e o valor de uma célula são lidos de matriz',
    !CHAMADAS['Range.getFormula'] && (CHAMADAS['Range.isPartOfMerge'] || 0) <= ABAS.reduce((n, s) => n + (s.copias || []).reduce((m, k) => m + (k[5] ? k[5].length : 1), 0), 0) && (CHAMADAS['Range.getMergedRanges'] || 0) <= 5 && (CHAMADAS['Range.getValue'] || 0) <= 5 && !CHAMADAS['Spreadsheet.moveActiveSheet'],
    `getFormula ${CHAMADAS['Range.getFormula'] || 0}, isPartOfMerge ${CHAMADAS['Range.isPartOfMerge'] || 0}, getMergedRanges ${CHAMADAS['Range.getMergedRanges'] || 0}, getValue ${CHAMADAS['Range.getValue'] || 0}, moveActiveSheet ${CHAMADAS['Spreadsheet.moveActiveSheet'] || 0}`);
-const PESO_DA_MONTAGEM = Object.assign({}, CHAMADAS);
+PESO_DA_MONTAGEM = Object.assign({}, CHAMADAS);
 // 01/10/2026: a DADOS_AM tem uma linha de conta por feitiço, com 75 fórmulas iguais a menos da linha. Só a primeira
 // linha de cada retângulo vem no ABAS; o resto é a cópia dela para baixo, com as referências andando.
 const { deslocaFormula } = require('./medidas/sheets-de-mentira.js');
@@ -604,6 +636,31 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   ok('o cenário custom não grava fórmula em lugar de texto',P.orfas.length===orfasAntesCustom,P.orfas.slice(orfasAntesCustom).join(' · '));
   saved.forEach(x=>{PGA.v.delete(x.k);PGA.f.delete(x.k);if(x.v!==undefined)PGA.v.set(x.k,x.v);if(x.f!==undefined)PGA.f.set(x.k,x.f);});
 
+  const families = cfgStretch.filter(x => x.gatilhos.includes('B1812') || x.gatilhos.includes('J4024'));
+  ok('as descrições da primeira e da última Família usam a altura compartilhada do par',
+     families.length===2 && families.every(x=>x.aba==='CONFIGURAÇÃO' && x.textos.length===2));
+  if(families.length===2){
+    const originais = new Map(families.flatMap(x=>x.textos.flatMap(c=>Array.from({length:c[3]},(_,k)=>[c[2]+k,CFG.alt.get(c[2]+k)]))));
+    const restaurada = x=>x.textos.every(c=>Array.from({length:c[3]},(_,k)=>c[2]+k).every(r=>CFG.alt.get(r)===originais.get(r)));
+    const pair=families.find(x=>x.gatilhos.includes('B1812'));
+    try { escreve(CC,'CONFIGURAÇÃO','B1812',LONGO.repeat(2)); escreve(CC,'CONFIGURAÇÃO','J1812',LONGO.repeat(3)); }
+    catch(e){erroE=e;}
+    ok('duas descrições longas de Família cabem lado a lado',
+       !erroE && cabe(CFG,pair,[LONGO.repeat(2),LONGO.repeat(3)]),erroE?erroE.message:mostra(CFG,pair));
+    try { escreve(CC,'CONFIGURAÇÃO','J1812',''); } catch(e){erroE=e;}
+    ok('apagar uma descrição conserva o espaço necessário para a Família vizinha',
+       !erroE && cabe(CFG,pair,[LONGO.repeat(2),'']) && !restaurada(pair));
+    try { escreve(CC,'CONFIGURAÇÃO','B1812',''); } catch(e){erroE=e;}
+    ok('limpar as duas Famílias devolve o par à altura original de 25 pixels',!erroE && restaurada(pair)
+       && pair.textos.every(c=>Array.from({length:c[3]},(_,k)=>originais.get(c[2]+k)).every(h=>h===25)));
+    const last=families.find(x=>x.gatilhos.includes('J4024'));
+    try { escreve(CC,'CONFIGURAÇÃO','J4024',LONGO.repeat(3)); } catch(e){erroE=e;}
+    ok('o texto da Família 318 também cresce até caber inteiro',
+       !erroE && cabe(CFG,last,['',LONGO.repeat(3)]) && !restaurada(last));
+    try { escreve(CC,'CONFIGURAÇÃO','J4024',''); } catch(e){erroE=e;}
+    ok('limpar a última Família restaura a altura original de 25 pixels',!erroE && restaurada(last));
+  }
+
 }
 // 08/10/2026, do pente-fino no Sheets: "O link da segunda invocação chega ao cabeçalho, mas a ficha continua recolhida".
 // A seleção que chega no número da ficha (onde o link cai) abre o grupo da fileira e o da coluna de fichas dela.
@@ -745,20 +802,26 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   S.P.montagemOcupada = false;
   ok('com outra montagem rodando o acabar() para na hora, com o recado, e não mexe no idioma', !!erroL && /já tem uma montagem rodando/.test(erroL.message) && /acabar\(\)/.test(erroL.message) && S.P.locale === 'pt_BR',
      erroL ? erroL.message : 'rodou');
+  {
   const T = criaSheets(FICHA_SRC, HAB_SRC + '\n' + GS), abasAntes = T.P.abas.length;
   let erroK = null;
   T.P.montagemOcupada = true;
   try { T.ctx.construir(); } catch (e) { erroK = e; }
   ok('e o construir() também: não cria aba nenhuma nem troca o idioma', !!erroK && /já tem uma montagem rodando/.test(erroK.message) && /construir\(\)/.test(erroK.message)
      && T.P.abas.length === abasAntes && T.P.locale === 'en_US', erroK ? erroK.message : 'rodou');
+  }
   ok('a montagem que termina solta a trava', soltas >= 1, String(soltas));
+  if (global.gc) global.gc();
   // 09/10/2026: a execução anterior parou depois de apagar as abas antigas, e sobrou só a __montando__. O Sheets não
   // deixa apagar a última aba: o construir() tem de aproveitar a que ficou, e não parar pedindo uma aba em branco
+  {
   const U = criaSheets(FICHA_SRC, HAB_SRC + '\n' + GS);
   let erroU = null;
   try { const so = U.ss.getSheets()[0]; U.ss.insertSheet('__montando__', 0); U.ss.deleteSheet(so); U.ctx.construir(); while (/rode a função continuar\(\)/.test(U.P.registro)) U.ctx.continuar(); } catch (e) { erroU = e; }
   ok('o construir() numa planilha em que só sobrou a __montando__ aproveita a aba e monta a ficha inteira, sem deixar a de rascunho',
      !erroU && U.P.abas.map((a) => a.nome).join('|') === ABAS.map((a) => a.nome).join('|') && U.P.locale === 'pt_BR', erroU ? erroU.message : U.P.abas.map((a) => a.nome).join(', '));
+  }
+  if (global.gc) global.gc();
   // e o erro do serviço na volta ao português não esconde o erro da montagem
   const W = criaSheets(FICHA_SRC, HAB_SRC + '\n' + GS);
   let erroW = null; const idiomaDeVerdade = W.ss.setSpreadsheetLocale, criar = W.ss.insertSheet;
@@ -801,13 +864,15 @@ let erroSel = null;
 try { S.ctx.onSelectionChange({ range: S.ss.getSheetByName(NOME).getRange('D10') }); S.ctx.onOpen({}); } catch (e) { erroSel = e; }
 ok('clicar numa célula e abrir a planilha não estouram', !erroSel, erroSel ? erroSel.message : '');
 
-console.log('\nO ACABAMENTO, SOZINHO');
+} else {
+console.log('\nO ACABAMENTO, SOZINHO · ' + FASE);
 // uma montagem limpa serve de referência; nela o acabar() roda de novo, e numa terceira o relógio corre
-const R = criaSheets(FICHA_SRC, GS); R.ctx.construir();
-const antes = JSON.stringify(retrato(R.P));
+let R = criaSheets(FICHA_SRC, GS); R.ctx.construir();
+const antes = assinatura(R.P);
+if (FASE === 'acabamento') {
 let erroAc = null;
 try { R.ctx.acabar(); } catch (e) { erroAc = e; }
-ok('rodar o acabar() numa ficha pronta não muda nada: mesmas notas, sem duplicar, e nenhuma trava', !erroAc && JSON.stringify(retrato(R.P)) === antes && R.P.locale === 'pt_BR'
+ok('rodar o acabar() numa ficha pronta não muda nada: mesmas notas, sem duplicar, e nenhuma trava', !erroAc && assinatura(R.P) === antes && R.P.locale === 'pt_BR'
    && /^ACABAMENTO PRONTO em /.test(R.P.registro), erroAc ? erroAc.message : R.P.registro.slice(0, 120));
 // o relógio que corre: cada olhada no relógio adianta um minuto, e a montagem das abas passa do teto
 let agora = 0;
@@ -822,12 +887,17 @@ ok('a montagem que passa do teto de tempo deixa as abas de pé, em português, e
    !erroL && semAcabamento && L.P.locale === 'pt_BR' && L.P.abas.map((a) => a.nome).join('|') === ABAS.map((a) => a.nome).join('|') && /FALTA O ACABAMENTO: rode a função acabar\(\)/.test(L.P.registro),
    erroL ? erroL.message : `${L.acha('FICHA').prot.length} travas · ${L.P.registro.slice(0, 120)}`);
 try { L.ctx.acabar(); } catch (e) { erroL = e; }
-ok('e o acabar() depois dela deixa a planilha igual à de uma montagem que não parou', !erroL && JSON.stringify(retrato(L.P)) === antes, erroL ? erroL.message : 'a planilha ficou diferente');
+ok('e o acabar() depois dela deixa a planilha igual à de uma montagem que não parou', !erroL && assinatura(L.P) === antes, erroL ? erroL.message : 'a planilha ficou diferente');
 ok('o acabar() escreve a regra de cor com a planilha em inglês, como o construir()', !R.P.orfas.length && !L.P.orfas.length, R.P.orfas.concat(L.P.orfas).slice(0, 3).join(' · '));
+}
 
+if (FASE === 'continua') {
+R = null;
+if(global.gc)global.gc();
 console.log('\nA MONTAGEM QUE NÃO CABE NUMA EXECUÇÃO (07/10/2026, a INVOCAÇÕES com doze fichas)');
 // o mesmo relógio que corre, agora com o limite de verdade: a montagem para antes de começar a aba que não cabe
-agora = 0;
+let agora = 0;
+class RelogioQueCorre { getTime() { agora += 60000; return agora; } }
 const C = criaSheets(FICHA_SRC, GS, { Date: RelogioQueCorre });
 let erroC = null;
 try { C.ctx.construir(); } catch (e) { erroC = e; }
@@ -854,10 +924,10 @@ ok(`cada continuar() segue de onde o anterior parou e monta pelo menos uma aba: 
    !erroC && voltas >= 1 && paradas.every((p, i) => !i || p > paradas[i - 1]) && parada() === null && !vazias().length && C.P.locale === 'pt_BR',
    erroC ? erroC.message : `paradas em ${paradas.join(', ')} · vazias: ${vazias().join(', ')}`);
 if (!erroC && /(FALTA O ACABAMENTO|FALTAM AS TRAVAS DO ACABAMENTO): rode a função acabar\(\)/.test(C.P.registro)) { try { C.ctx.acabar(); } catch (e) { erroC = e; } }
-ok('e a planilha montada em várias execuções fica igual à de uma montagem que não parou', !erroC && JSON.stringify(retrato(C.P)) === antes, erroC ? erroC.message : 'a planilha ficou diferente');
+ok('e a planilha montada em várias execuções fica igual à de uma montagem que não parou', !erroC && assinatura(C.P) === antes, erroC ? erroC.message : 'a planilha ficou diferente');
 let erroN = null;
 try { C.ctx.continuar(); } catch (e) { erroN = e; }
-ok('o continuar() sem montagem parada para com um recado, e não mexe em nada', !!erroN && /não há montagem parada/.test(erroN.message) && JSON.stringify(retrato(C.P)) === antes, erroN ? erroN.message : 'não parou');
+ok('o continuar() sem montagem parada para com um recado, e não mexe em nada', !!erroN && /não há montagem parada/.test(erroN.message) && assinatura(C.P) === antes, erroN ? erroN.message : 'não parou');
 // uma montagem do zero esquece a parada que houver, e esquece LOGO: se o Apps Script a cortar no meio, o continuar() não
 // pode seguir de uma parada velha numa planilha que acabou de ser apagada
 C.P.props.montagem_parada = '3';
@@ -871,9 +941,11 @@ try { C.ctx.continuar(); } catch (e) { erroV = e; }
 ok('a montagem cortada no meio não deixa valendo a parada de antes: o continuar() manda montar do começo',
    !!cortada && parada() === null && C.P.locale === 'pt_BR' && !!erroV && /não há montagem parada/.test(erroV.message), cortada ? `parada ${parada()} · ${erroV && erroV.message}` : 'a montagem não foi cortada');
 try { C.ctx.LIMITE_DA_EXECUCAO_ = Infinity; C.ctx.TETO_DA_MONTAGEM_ = Infinity; C.ctx.TETO_DAS_TRAVAS_ = Infinity; C.ctx.construir(); } catch (e) { erroC = e; }
-ok('o construir() começa do zero e esquece a montagem parada que houver', !erroC && parada() === null && JSON.stringify(retrato(C.P)) === antes && /^FICHA PRONTA em /.test(C.P.registro),
+ok('o construir() começa do zero e esquece a montagem parada que houver', !erroC && parada() === null && assinatura(C.P) === antes && /^FICHA PRONTA em /.test(C.P.registro),
    erroC ? erroC.message : C.P.registro.slice(0, 100));
+}
 
+if (FASE === 'acabamento') {
 // 07/10/2026: a ficha montada antes disto tem as travas de aviso. O acabar() as tira, pela descrição que este script
 // punha, e deixa a que o jogador ou o mestre criou por conta própria
 let erroT = null, ficaram = null, registroT = '';
@@ -889,19 +961,24 @@ try {
   R.acha('FICHA').prot.length = 0;
 } catch (e) { erroT = e; }
 ok('o acabar() tira as travas de fórmula de uma ficha montada antes (3) e deixa a que o mestre criou; a ficha fica igual à de uma montagem nova',
-   !erroT && JSON.stringify(ficaram) === JSON.stringify(['do mestre: não mexer']) && /3 trava\(s\) de antes retirada\(s\)/.test(registroT) && JSON.stringify(retrato(R.P)) === antes,
+   !erroT && JSON.stringify(ficaram) === JSON.stringify(['do mestre: não mexer']) && /3 trava\(s\) de antes retirada\(s\)/.test(registroT) && assinatura(R.P) === antes,
    erroT ? erroT.message : `${JSON.stringify(ficaram)} · ${registroT.slice(0, 160)}`);
 
 const semAba = criaSheets(FICHA_SRC, GS);
 let erroS = null;
 try { semAba.ctx.acabar(); } catch (e) { erroS = e; }
 ok('o acabar() numa planilha sem a ficha para com um recado, e não mexe no idioma', !!erroS && /rode construir\(\) antes/.test(erroS.message) && semAba.P.locale === 'en_US', erroS ? erroS.message : 'não parou');
+}
+}
 
+if (PESO_DA_MONTAGEM) {
 console.log('\nO PESO DO construir(), EM CHAMADAS');
 const peso = ['Range.merge', 'Range.mergeAcross', 'Range.protect', 'Range.setValues', 'RangeList.setBorder', 'Range.setDataValidation', 'Range.setNote', 'Range.setNotes', 'Range.insertCheckboxes', 'Range.setTextRotation']
   .map((k) => k.split('.')[1] + ' ' + (PESO_DA_MONTAGEM[k] || 0)).join(' · ');
 console.log('       ' + peso);
+}
 
 console.log('');
 if (falhas) { console.log(`>>> ${falhas} FALHA(S) NO construir()`); process.exitCode = 1; }
 else console.log('>>> O construir() MONTA A PLANILHA INTEIRA, E A PLANILHA MONTADA FUNCIONA');
+process.exit(falhas ? 1 : 0);

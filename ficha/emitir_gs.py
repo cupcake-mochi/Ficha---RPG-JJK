@@ -413,12 +413,15 @@ SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVO
              "Analise.gs": ("ABAS_DA_ANALISE", ("ANALISE",)),
              "Configuracao.gs": ("ABAS_DA_CONFIGURACAO", ("CONFIGURAÇÃO", "DADOS_CONFIG")),
              "Custom.gs": ("ABAS_DO_CUSTOM", ("DADOS_CUSTOM",)),
-             "Progressao.gs": ("ABAS_DA_PROGRESSAO", ("DADOS_PROGRESSAO",))}
+             "Progressao.gs": ("ABAS_DA_PROGRESSAO", ("DADOS_PROGRESSAO",)),
+             "Criacao.gs": ("ABAS_DA_CRIACAO", ("DADOS_CRIACAO",))}
 COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
                 "AnaliseFontes.gs": "FONTES_DA_ANALISE_",
                 "Pessoal.gs": "VALORES_CUSTOM_",
                 "ProgressaoPainel.gs": "VALORES_PROGRESSAO_",
-                "ProgressaoAnalise.gs": "CONTRATO_PROGRESSAO_"}
+                "ProgressaoAnalise.gs": "CONTRATO_PROGRESSAO_",
+                "CriacaoPainel.gs": "VALORES_CRIACAO_",
+                "CriacaoAnalise.gs": "CONTRATO_CRIACAO_"}
 
 
 def abas_cruas(caminho=None):

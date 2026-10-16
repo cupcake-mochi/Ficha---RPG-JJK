@@ -73,17 +73,30 @@ function juntarAbas_(extras) {
     ABAS.forEach(function (s, k) { if (s.nome === spec.depois) i = k; });
     if (i < 0) ABAS.push(spec); else ABAS.splice(i + 1, 0, spec);
   });
+  // Várias tabelas ocultas se ancoram no GLOSSÁRIO. A inserção relativa sozinha
+  // depende de qual .gs carregou primeiro; estabilizar também as abas irmãs.
+  var ordem = ['CARTEIRA', 'FICHA', 'FICHA AMALDIÇOADA', 'INVOCAÇÕES',
+    'FICHA PESSOAL', 'DADOS', 'DADOS_AM', 'DADOS_INVOC', 'GLOSSÁRIO',
+    'DADOS_PROGRESSAO', 'DADOS_CUSTOM', 'DADOS_CRIACAO', 'ANALISE',
+    'CONFIGURAÇÃO', 'DADOS_CONFIG'];
+  ABAS.sort(function (a, b) {
+    var ia = ordem.indexOf(a.nome), ib = ordem.indexOf(b.nome);
+    return (ia < 0 ? ordem.length : ia) - (ib < 0 ? ordem.length : ib);
+  });
   if (typeof FONTES_DA_ANALISE_ !== 'undefined' && FONTES_DA_ANALISE_) juntarValores_(FONTES_DA_ANALISE_);
   if (typeof VALORES_CUSTOM_ !== 'undefined' && VALORES_CUSTOM_) juntarValores_(VALORES_CUSTOM_);
   if (typeof VALORES_DAS_ORIGENS_ !== 'undefined' && VALORES_DAS_ORIGENS_) juntarValores_(VALORES_DAS_ORIGENS_);
   if (typeof VALORES_PROGRESSAO_ !== 'undefined' && VALORES_PROGRESSAO_) juntarValores_(VALORES_PROGRESSAO_);
   if (typeof CONTRATO_PROGRESSAO_ !== 'undefined' && CONTRATO_PROGRESSAO_) juntarValores_(CONTRATO_PROGRESSAO_);
+  if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(VALORES_CRIACAO_);
+  if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
 if (typeof ABAS_DA_ANALISE !== 'undefined' && ABAS_DA_ANALISE) juntarAbas_(ABAS_DA_ANALISE);
 if (typeof ABAS_DA_CONFIGURACAO !== 'undefined' && ABAS_DA_CONFIGURACAO) juntarAbas_(ABAS_DA_CONFIGURACAO);
 if (typeof ABAS_DO_CUSTOM !== 'undefined' && ABAS_DO_CUSTOM) juntarAbas_(ABAS_DO_CUSTOM);
 if (typeof ABAS_DA_PROGRESSAO !== 'undefined' && ABAS_DA_PROGRESSAO) juntarAbas_(ABAS_DA_PROGRESSAO);
+if (typeof ABAS_DA_CRIACAO !== 'undefined' && ABAS_DA_CRIACAO) juntarAbas_(ABAS_DA_CRIACAO);
 
 /** Junta a tabela das Origens à DADOS, mesmo se Origens.gs carregar antes deste arquivo. */
 function juntarValores_(extras) {
@@ -112,6 +125,8 @@ if (typeof FONTES_DA_ANALISE_ !== 'undefined' && FONTES_DA_ANALISE_) juntarValor
 if (typeof VALORES_CUSTOM_ !== 'undefined' && VALORES_CUSTOM_) juntarValores_(VALORES_CUSTOM_);
 if (typeof VALORES_PROGRESSAO_ !== 'undefined' && VALORES_PROGRESSAO_) juntarValores_(VALORES_PROGRESSAO_);
 if (typeof CONTRATO_PROGRESSAO_ !== 'undefined' && CONTRATO_PROGRESSAO_) juntarValores_(CONTRATO_PROGRESSAO_);
+if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(VALORES_CRIACAO_);
+if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
 
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
 
@@ -237,6 +252,15 @@ function montar_() {
   }
   if (typeof CONTRATO_PROGRESSAO_ === 'undefined' || !CONTRATO_PROGRESSAO_) {
     throw new Error('Falta o ProgressaoAnalise.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof ABAS_DA_CRIACAO === 'undefined' || !ABAS_DA_CRIACAO) {
+    throw new Error('Falta o Criacao.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof VALORES_CRIACAO_ === 'undefined' || !VALORES_CRIACAO_) {
+    throw new Error('Falta o CriacaoPainel.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof CONTRATO_CRIACAO_ === 'undefined' || !CONTRATO_CRIACAO_) {
+    throw new Error('Falta o CriacaoAnalise.gs: cole todos os arquivos antes de construir.');
   }
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();

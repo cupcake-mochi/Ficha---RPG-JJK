@@ -235,11 +235,18 @@ import custom_progressao
 _PROG = custom_progressao.aplica(LAYOUT, _FP, _FIV)
 import familias_invocacao
 _FAMILIAS = familias_invocacao.aplica(LAYOUT, _FIV)
+import custom_criacao
+_CRIACAO = custom_criacao.aplica(LAYOUT, _FAM, _FIV)
 # A ampliação declara suas alterações exatas junto da integração de progressão.
 for _name, _values in _FAMILIAS['antes'].items():
     for _coord, _value in _values.items():
         _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
 for _name, _values in _FAMILIAS['depois'].items():
+    _PROG['depois'].setdefault(_name, {}).update(_values)
+for _name, _values in _CRIACAO['antes'].items():
+    for _coord, _value in _values.items():
+        _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
+for _name, _values in _CRIACAO['depois'].items():
     _PROG['depois'].setdefault(_name, {}).update(_values)
 print(f"a CONFIGURAÇÃO: {configuracao.QUANTIDADE} efeitos, {len(_CFG['alvos'])} caixas, paleta fixa")
 import analise
@@ -249,6 +256,8 @@ _AN["linhas"].extend(campanha.exporta(_CAMP))
 _AN["linhas"].extend(custom.exporta(_CUSTOM))
 _AN["linhas"].extend(custom_progressao.exporta(_PROG))
 _AN["linhas"].extend(familias_invocacao.exporta(_FAMILIAS))
+_AN_FIM_ANTES_CRIACAO = len(_AN['linhas'])+1
+_AN['linhas'].extend(custom_criacao.exporta(_CRIACAO))
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
 
@@ -257,6 +266,15 @@ if "--exportar-progressao" in sys.argv:
     with open(destino,"w",encoding="utf-8") as arquivo:
         json.dump({"layout":LAYOUT,"antes":_PROG['antes'],"depois":_PROG['depois'],
                    "entradas":_PROG['entradas'],"linhas_ficha":_PROG['linhas_ficha']},arquivo,ensure_ascii=False)
+    sys.exit(0)
+
+if "--exportar-criacao" in sys.argv:
+    destino = sys.argv[sys.argv.index("--exportar-criacao") + 1]
+    with open(destino, 'w', encoding='utf-8') as arquivo:
+        json.dump({'layout': LAYOUT, 'antes': _CRIACAO['antes'], 'depois': _CRIACAO['depois'],
+                   'familias': _CRIACAO['familias'], 'catalogo_familias': _CRIACAO['catalogo_familias'],
+                   'substituicoes': _CRIACAO['substituicoes'], 'inicio': _CRIACAO['inicio'],
+                   'fim': _CRIACAO['fim']}, arquivo, ensure_ascii=False)
     sys.exit(0)
 
 # Migração nativa pontual, independente da exportação Excel.
@@ -465,8 +483,11 @@ gs, celulas, pecas = emitir_gs.escrever(
     suplementos={"Origens.gs": [("DADOS", _FP["T"]["origem_cap"][0],
                                 _FP["T"]["origem_cap"][0] + _FP["T"]["origem_cap"][3] - 1),
                                   ("DADOS_CUSTOM", 19, 24)],
-                "ProgressaoAnalise.gs": ("ANALISE", 1, 4, len(_AN['linhas'])-len(custom_progressao.exporta(_PROG))+2, len(_AN['linhas'])+1),
-                "ProgressaoPainel.gs": [("CONFIGURAÇÃO",1,16,733,indice_ficha._aba(LAYOUT,'CONFIGURAÇÃO')['linhas']),
+                "CriacaoAnalise.gs": ("ANALISE", 1, 4, _AN_FIM_ANTES_CRIACAO+1, len(_AN['linhas'])+1),
+                "ProgressaoAnalise.gs": ("ANALISE", 1, 4, _AN_FIM_ANTES_CRIACAO-len(custom_progressao.exporta(_PROG))+1, _AN_FIM_ANTES_CRIACAO),
+                "CriacaoPainel.gs": [("CONFIGURAÇÃO", 1, 7, 133, 164),
+                                      ("CONFIGURAÇÃO", 1, 16, _CRIACAO['fim_progressao']+1, _CRIACAO['fim'])],
+                "ProgressaoPainel.gs": [("CONFIGURAÇÃO",1,16,733,_CRIACAO['fim_progressao']),
                                         ("FICHA",1,50,410,indice_ficha._aba(LAYOUT,'FICHA')['linhas'])],
                 "AnaliseFontes.gs": ("ANALISE", 3, 4),
                 "Pessoal.gs": ("FICHA PESSOAL", 1, 72)})

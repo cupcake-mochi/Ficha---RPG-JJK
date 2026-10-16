@@ -1,4 +1,42 @@
+## Encerramento antes de desligar — Famílias 3c (15/10/2026)
+
+Etapa de Famílias implementada na cópia nativa de revisão e nos geradores. Não declarar a parte3c inteira concluída. Usuário avisou às23:54 que desligará à meia-noite; nenhum novo bloco foi iniciado após esse aviso.
+
+**Aprovações recebidas:** todos os moldes restantes do ESTUDO3C estão aprovados; aptidão/Bênção pode consumir escolha ou ser explicitamente gratuita; tipo de entidade do zero pode combinar vida, talismã e reserva dePE separadamente. Autonomia e alma continuam por invocação. Não perguntar novamente.
+
+**Entregue nesta etapa:**318registros de Família em CONFIGURAÇÃO, linhas1805–4029; limites da técnica emB153:G164, Livres/Fechadas editáveis e Neutras por saldo. DADOS_CRIACAO oculta;108menus de entidade unidos ao catálogo. Estados da técnica não concedem Livre à entidade. ANALISE formato8:9082chaves (7485anteriores +1597), leitor atualizado e esquema documentado em ../ESQUEMA-ANALISE.md. Bot e oficial intactos.
+
+**Testes:**31checagens focais passaram;8cenários mecânicos nativos,18entradas restauradas e relidas;318checkboxes +318menus de estado +108menus de Família auditados;3843mesclagens verificadas. A bateria simulada conserva175checagens em3fases: principal162, acabamento6, continuação7. A principal foi repetida após a correção de altura, com retorno0 do subprocesso registrado em criacao-familias-principal-exit.json. O invólucro da sessão chegou a informar143 mesmo após esse retorno0; não apresentar o comando agregado interrompido como execução0. Logs e resultado consolidado estão em ../evidencias-3b/criacao-familias-construir-*.
+
+**Correção visual confirmada no Sheets:** textos de2303/3423caracteres crescem; limpar primeiro/último cartão devolve exatamente25px por linha, preservando o desenho. Grupo de autoaltura declara minima=25; demais grupos mantêm o comportamento anterior. Três descrições de teste vazias e dimensões restauradas. ANALISE inteira relida após o teste:9082chaves, zero diferenças nas quatro colunas, zero erros. Corrigidas24notas nativas antigas de sete para nove vagas (fonte já dizia nove). Carteira/foto/seletor de paleta, grupo7, nove vagas de invocação e respiro da Definição conferidos visualmente.
+
+**Código salvo no Google:** oito arquivos da integração foram relidos integralmente após recarregar, iguais aos locais, inclusive a última correção de altura. Prova criacao-familias-scripts-salvos.json. Projeto tem16arquivos,7243296bytes ao todo, maior Configuracao.gs888244bytes. Esses números NÃO fecham custo/capacidade gerais da3c. Leitor --teste terminou0; aviso de escolhas de perícia da ficha vazia é esperado. Nenhuma construção nativa integral foi executada nesta etapa. Não executar construir() na revisão nem na oficial; a descartável autorizada é12iTELP65DYjBjAY-PiAZ-JvVIyrK7ragsYKRX-vXYsc.
+
+**Retomada exata:** começar integração dos catálogos aprovados de Forma/Melhoria/Restrição; depois aptidão/Bênção, Talentos, tipo de entidade, condição e dano. Ver inventário em ../evidencias-3b/inventario-3c-atual/ e roteiro TESTE-CUSTOM-3C.md. Preservar bases opcionais e automações publicadas. Depois medir capacidade/tamanho/tempo na descartável e só então reunir/limpar a interface. As abas ESTUDO são temporárias; não removê-las enquanto houver dependências ou integração pendente.
+
+**Navegadores:** IAB4 contém a revisão; IAB7 foi usado para salvar o código, que já está persistido. Brave caiu duas vezes durante colagem grande, inclusive após reconectar; não pedir nova autorização Google nem reconexões repetidas sem necessidade concreta. Usar o código local como referência e conferir antes de sobrescrever alterações externas.
+
+Nenhum commit/push pelo agente. Alterações desta etapa preparadas com git add e mensagem em mensagem-de-commit.txt; usuário decide quando executar o commit. Não iniciar Formas hoje por causa do desligamento.
+
+---
+
+## Parte 3c em implementação · decisões recebidas (15/10/2026)
+
+Usuário aprovou os moldes restantes do ESTUDO 3C (linhas178–258), aptidão/Bênção com escolha consumida ou gratuidade explícita, e combinação independente de vida/talismã/reserva de PE para tipos de entidade do zero. Autonomia e alma continuam na própria invocação. Não reabrir essas aprovações. Estudo ampliado para268linhas,391pedidos,24controles e91notas;19preenchimentos testados e restaurados;530células anteriores comparadas sem diferenças. Capturas prototipo-3c-restante-*.png e prova JSON em ../evidencias-3b/.
+
+Código de integração começou por Famílias em ficha-v01/custom_criacao.py:318registros como limite superior de cobertura (210referências de peças da técnica +108aberturas de entidades), estados independentes e limites em CONFIGURAÇÃO B153:G164. Fonte local e leitor passam a formato8, preservando as7485chaves anteriores e acrescentando1597. Nova DADOS_CRIACAO oculta; três .gs Criacao/CriacaoPainel/CriacaoAnalise. Geração inicial completou, maior arquivo893044bytes e soma7221288bytes; NÃO é custo final da3c nem tempo de construir() nativo. Regressão focal em andamento. Encontrada e corrigida qualificação ausente no resumo Q37 antes de aplicar ao Google; a geração integral ainda precisa ser repetida após essa correção.
+
+ATENÇÃO: a revisão nativa ainda só recebeu o protótipo nesta rodada. Catálogo/limites de Famílias, ANALISE8 e scripts novos NÃO foram aplicados nem salvos no projeto do Google. Oficial e bot intactos. Não marcar a3c concluída. Seguir por testes das Famílias, demais catálogos, migração pontual nativa, visual/mecânica e medição final na descartável. Inventário atualizado JSON:1817escolhasdiretas; limite conservador de2036registros em uso ao considerar Famílias318 e danos165 (inclui J12livre e8equipamentos). Esse número não aprova nem obriga criar2036cartões; armazenamento/custo gerais continuam abertos.
+
+---
+
 # Parte 3c · desenho inicial aprovado
+
+## Orientação de entrega recebida após o estudo
+
+Concluir as funções restantes antes da limpeza visual/editorial. Na entrega, reunir a edição de regras, bônus e cadastros custom em CONFIGURAÇÃO; os estudos são protótipos temporários, não telas definitivas de configuração. Remover as abas ESTUDO somente ao encerrar a validação e conferir que nenhuma fórmula ou validação de produção depende delas. As fichas existentes continuam sendo o lugar de escolher conteúdos e mostrar os resultados. Dados auxiliares técnicos permanecem ocultos.
+
+O usuário considera excessivas as explicações e demonstrações na interface de edição e se sente perdido. No acabamento final, priorizar campos editáveis, rótulos claros e organização das seções; explicações contextuais úteis ficam em notas. Não levar inventário, orçamento, histórico de aprovação, exemplos e relatório de testes para CONFIGURAÇÃO. Esta orientação não pede limpar ou remover os estudos agora e não altera regras mecânicas nem as aprovações de desenho já recebidas.
 
 Aba nativa ESTUDO 3C, sheetId 47007, na cópia de revisão. Fonte: mockup/prototipo_custom_3c.py. É somente estudo: não alimenta CONFIGURAÇÃO, menus da ficha, contas nem ANALISE. O usuário aprovou o desenho inicial e autorizou o complemento de autonomia/limites com ajustes. Capacidade e custo gerais ainda não estão fechados.
 

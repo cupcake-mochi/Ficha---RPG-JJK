@@ -407,7 +407,7 @@ function onEdit(e) {
     return;
   }
   // B47: somente as contas voltam; os campos dos efeitos continuam editáveis.
-  if (aba === 'CONFIGURAÇÃO' || aba === 'DADOS_CONFIG' || aba === 'DADOS_CUSTOM' || aba === 'DADOS_PROGRESSAO') {
+  if (aba === 'CONFIGURAÇÃO' || aba === 'DADOS_CONFIG' || aba === 'DADOS_CUSTOM' || aba === 'DADOS_PROGRESSAO' || aba === 'DADOS_CRIACAO') {
     try { devolverConta_(e, aba); } catch (err) { console.log('configuração: ' + err.message); }
     if (aba === 'CONFIGURAÇÃO') {
       try { esticarCaixas_(e, aba); } catch (err) { console.log('texto custom: ' + err.message); }
@@ -1241,9 +1241,10 @@ function alturaDaCaixa_(texto, M) {
  *
  * A conta das linhas é a das cartas (linhasDoTexto_), com a medida da Roboto 10 que mora no Habilidades.gs.
  */
-function alturasQueEsticam_(caixas, textos, M) {
+function alturasQueEsticam_(caixas, textos, M, minima) {
+  minima = minima === undefined ? M.minima : Math.max(M.minima, minima);
   var h = {};
-  caixas.forEach(function (c) { for (var k = 0; k < c[3]; k++) h[c[2] + k] = M.minima; });
+  caixas.forEach(function (c) { for (var k = 0; k < c[3]; k++) h[c[2] + k] = minima; });
   caixas.forEach(function (c, i) {
     if (String(textos[i]) === '') return;
     var pede = linhasDoTexto_(textos[i], { largura: c[0], larguras: M.larguras, media: M.media }) * M.linha + M.respiro - (c[4] || 0);
@@ -1269,7 +1270,7 @@ function esticarCaixas_(e, nomeDaAba) {
       return c[1].map(function (a1) { return String(origem.getRange(a1).getDisplayValue()); })
                  .filter(function (t) { return t !== ''; }).join(' · ');
     });
-    var h = alturasQueEsticam_(x.textos, textos, MEDIDA_DAS_CARTAS_);
+    var h = alturasQueEsticam_(x.textos, textos, MEDIDA_DAS_CARTAS_, x.minima);
     // as linhas seguidas de mesma altura vão numa chamada só
     var linhas = Object.keys(h).map(Number).sort(function (a, b) { return a - b; });
     for (var i = 0; i < linhas.length;) {

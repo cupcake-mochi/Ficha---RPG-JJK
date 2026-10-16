@@ -75,6 +75,63 @@ def budget(n):
             'nao_inclui':'listas unificadas, fórmulas específicas dos moldes, ANALISE 5, texto escrito pelos jogadores e ajustes de layout'}
 
 
+def inventory_3c(menus, capacity_3a):
+    """Separa escolhas físicas de dependências de catálogo; não define capacidade.
+
+    Uma condição usa um lugar de Melhoria. As Famílias de peças da entidade
+    precisam estar entre as nove escolhas dela, portanto não se somam de novo
+    à capacidade de um catálogo que cubra uma ficha válida inteira.
+    """
+    names = {'menu de aptidão': 'Aptidão / Bênção', 'menu de passiva': 'Talento do personagem',
+             'família': 'Família', 'menu de talento da trilha': 'Talento de entidade',
+             'talento': 'Talento de entidade', 'tipo de dano': 'Tipo de dano',
+             'tipo de entidade': 'Tipo de entidade'}
+    slots, unmatched = {}, []
+    for m in menus:
+        if m['etapa'] != '3c':
+            continue
+        h = m['grupo']
+        typ = names.get(h)
+        for prefix, label in [('menu de forma', 'Forma'), ('menu de melhoria', 'Melhoria'),
+                              ('menu de restrição', 'Restrição')]:
+            if h.startswith(prefix):
+                typ = label
+        if typ is None:
+            unmatched.append({'aba': m['aba'], 'grupo': h, 'caixas': m['caixas']})
+            continue
+        slots.setdefault(typ, {}).setdefault(m['aba'], set()).update(m['caixas'])
+    counts = {typ: {sheet: len(cells) for sheet, cells in sheets.items()} for typ, sheets in slots.items()}
+    totals = {typ: sum(sheets.values()) for typ, sheets in counts.items()}
+    # Referências de Forma e Melhoria por personagem; cada uma pode apontar
+    # para uma Família própria. Restrições não referenciam Famílias.
+    character = sum(counts.get(t, {}).get('FICHA AMALDIÇOADA', 0) for t in ('Forma', 'Melhoria'))
+    entity = totals.get('Família', 0)
+    all_parts = totals.get('Forma', 0) + totals.get('Melhoria', 0)
+    family_bound = character + entity
+    # Dano da técnica é livre hoje; as oito armas guardadas podem usar tipos
+    # diferentes, e as mãos apenas referenciam esses mesmos equipamentos.
+    import ficha_amaldicoada
+    free_damage = ficha_amaldicoada.geometria()['tipo_dano']
+    damage_bound = totals.get('Tipo de dano', 0) + 1 + capacity_3a['equipaveis_guardados']
+    candidate = dict(totals)
+    candidate['Família'], candidate['Tipo de dano'] = family_bound, damage_bound
+    return {'escolhas_com_menu_por_aba': counts, 'totais_escolhas_com_menu': totals,
+            'total_escolhas_com_menu': sum(totals.values()), 'nao_classificados': unmatched,
+            'familias': {'referencias_personagem': character, 'escolhas_entidades': entity,
+                         'limite_superior_ficha_valida': family_bound,
+                         'limite_sem_exigir_familias_abertas_nas_entidades': all_parts+entity,
+                         'premissa': 'Cada peça da entidade usa uma de suas nove Famílias abertas; os catálogos podem reutilizar uma Família.'},
+            'danos': {'campo_livre_tecnica': 'FICHA AMALDIÇOADA!'+free_damage,
+                      'equipamentos_distintos_guardados': capacity_3a['equipaveis_guardados'],
+                      'limite_superior_em_uso': damage_bound},
+            'limites_superiores_registros_em_uso': candidate,
+            'soma_limites_superiores_em_uso': sum(candidate.values()),
+            'estado': 'dimensionamento conservador, sem aprovação de capacidade ou custo; não gerar cartões automaticamente',
+            'pendente': ['revisar herança de bases e dependências mecânicas',
+                         'desenhar armazenamento e medir .gs reais',
+                         'medir construir() nativo na descartável antes do fechamento']}
+
+
 def inventory(path):
     sheets={}
     with ZipFile(path) as z:
@@ -119,6 +176,7 @@ def inventory(path):
                       'fontes_distintas':len({m['formula'] for m in menus}),'formulas_no_artefato':formula_cells,
                       'caixas_por_etapa':dict(Counter({k:sum(m['quantidade_de_caixas'] for m in menus if m['etapa']==k) for k in {m['etapa'] for m in menus}}))},
             'menus':menus,'listas_originais_DADOS':lists,'capacidade_3a':capacity,
+            'inventario_3c': inventory_3c(menus, capacity),
             'total_3a_proposto':sum(capacity.values()),
             'geometria':{k:g[k] for k in ['equip_ini','equip_fim','itens_ini','itens_fim']},
             'medidas_sinteticas':[budget(n) for n in [12,sum(capacity.values()),32]],
