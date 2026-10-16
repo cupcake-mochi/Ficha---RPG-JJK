@@ -287,9 +287,14 @@ def _desce_a1(a1, dl):
     return f"{m.group(1)}{int(m.group(2)) + dl}" + (f":{m.group(3)}{int(m.group(4)) + dl}" if m.group(3) else "")
 
 
-def _pares_de_copia(aba):
-    """[(primeira linha do molde, última, quantas linhas a cópia desce)]"""
-    return [(k[0], k[1], d - k[0]) for k in aba.get("copias") or [] for d in k[2]]
+def _pares_de_copia(aba, notas=False):
+    """[(primeira linha do molde, última, quantas linhas a cópia desce)].
+
+    Notas só herdam quando o sétimo campo é True. Moldes antigos podem ter
+    ajuda deliberadamente só na primeira carta, sem notas nas demais.
+    """
+    return [(k[0], k[1], d - k[0]) for k in aba.get("copias") or [] for d in k[2]
+            if not notas or len(k)>6 and k[6] is True]
 
 
 def expandir(aba):
@@ -297,12 +302,16 @@ def expandir(aba):
     pares = _pares_de_copia(aba)
     if not pares:
         return aba
+
     out = dict(aba)
     vals = list(aba["vals"])
     escritas = {(t[0], t[1]) for t in vals}
     fundos, merges = list(aba["fundos"]), list(aba["merges"])
     bordas = [[b[0], b[1], b[2], list(b[3])] for b in aba.get("bordas") or []]
     dv, caixas, formatos = list(aba.get("dv") or []), list(aba.get("caixas") or []), list(aba.get("formatos") or [])
+    notas = list(aba.get("notas") or [])
+    notas_escritas = {n[0] for n in notas}
+    pares_notas = set(_pares_de_copia(aba, notas=True))
     for r1, r2, dl in pares:
         dentro = lambda lin: r1 <= lin <= r2
         vals += [[t[0] + dl, t[1]] + list(t[2:]) for t in aba["vals"] if dentro(t[0]) and (t[0] + dl, t[1]) not in escritas]
@@ -317,8 +326,11 @@ def expandir(aba):
         ja = {f[0] for f in aba.get("formatos") or []}
         formatos += [[_desce_a1(f[0], dl), f[1]] for f in aba.get("formatos") or []
                      if all(dentro(l) for l in _linhas_do_a1(f[0])) and _desce_a1(f[0], dl) not in ja]
+        if (r1,r2,dl) in pares_notas:
+            notas += [[_desce_a1(n[0], dl), n[1]] for n in aba.get("notas") or []
+                      if all(dentro(l) for l in _linhas_do_a1(n[0])) and _desce_a1(n[0], dl) not in notas_escritas]
     out.update(vals=vals, fundos=fundos, merges=merges, bordas=bordas)
-    for k, v in (("dv", dv), ("caixas", caixas), ("formatos", formatos)):
+    for k, v in (("dv", dv), ("caixas", caixas), ("formatos", formatos), ("notas", notas)):
         if k in aba:
             out[k] = v
     return out
@@ -327,8 +339,8 @@ def expandir(aba):
 def _forma_canonica(aba):
     """a aba numa forma que não depende da ordem das listas, para comparar duas"""
     lista = lambda xs: sorted(json.dumps(x, ensure_ascii=False, sort_keys=True) for x in xs)
-    out = {k: v for k, v in aba.items() if k not in ("vals", "fundos", "merges", "bordas", "dv", "caixas", "formatos")}
-    for k in ("vals", "fundos", "merges", "dv", "caixas", "formatos"):
+    out = {k: v for k, v in aba.items() if k not in ("vals", "fundos", "merges", "bordas", "dv", "caixas", "formatos", "notas")}
+    for k in ("vals", "fundos", "merges", "dv", "caixas", "formatos", "notas"):
         out[k] = lista(aba.get(k) or [])
     out["bordas"] = [[b[0], b[1], b[2], sorted(b[3])] for b in aba.get("bordas") or []]
     return json.dumps(out, ensure_ascii=False, sort_keys=True)
@@ -340,12 +352,14 @@ def compactar(aba):
     if not pares:
         return aba
 
+    por_linha = {}
+    for par in pares:
+        for lin in range(par[0] + par[2], par[1] + par[2] + 1):
+            por_linha.setdefault(lin, par)
+
     def copia_de(lin):
         """a cópia em que esta linha está: (primeira linha do molde, última, quantas linhas ela desce), ou None"""
-        for par in pares:
-            if par[0] + par[2] <= lin <= par[1] + par[2]:
-                return par
-        return None
+        return por_linha.get(lin)
 
     def de_onde(lin):
         """quantas linhas acima está a linha do molde de que esta é cópia, ou None"""
@@ -371,7 +385,12 @@ def compactar(aba):
         l1, l2 = _linhas_do_a1(a1)
         dl = de_onde(l1)
         return mesma(l1, l2) and _desce_a1(a1.replace("$", ""), -dl) in tem
-    out["bordas"] = [[b[0], b[1], b[2], [x for x in b[3] if not sai_a1(x, set(b[3]))]] for b in aba.get("bordas") or []]
+    out["bordas"] = []
+    for b in aba.get("bordas") or []:
+        # O catálogo grande tem milhares de bordas. O conjunto é o mesmo
+        # para todos os trechos deste grupo; não o reconstruir por trecho.
+        trechos = set(b[3])
+        out["bordas"].append([b[0], b[1], b[2], [x for x in b[3] if not sai_a1(x, trechos)]])
     if aba.get("dv"):
         tem_dv = {(d[0], d[1]) for d in aba["dv"]}
         fora = lambda d: (mesma(*_linhas_do_a1(d[0]))
@@ -384,11 +403,19 @@ def compactar(aba):
         tem_fmt = {(f[0], f[1]) for f in aba["formatos"]}
         out["formatos"] = [f for f in aba["formatos"]
                            if not mesma(*_linhas_do_a1(f[0])) or (_desce_a1(f[0], -de_onde(_linhas_do_a1(f[0])[0])), f[1]) not in tem_fmt]
+    if aba.get("notas"):
+        tem_notas = {tuple(n) for n in aba["notas"]}
+        pares_notas = _pares_de_copia(aba, notas=True)
+        def nota_repetida(n):
+            l1,l2=_linhas_do_a1(n[0])
+            return any(r1+dl<=l1<=l2<=r2+dl and (_desce_a1(n[0],-dl),n[1]) in tem_notas
+                       for r1,r2,dl in pares_notas)
+        out["notas"] = [n for n in aba["notas"] if not nota_repetida(n)]
     if _forma_canonica(expandir(out)) != _forma_canonica(aba):
         # o que não voltou, para quem for consertar o desenho: os primeiros de cada lista, a mais e a menos
         volta, onde = expandir(out), []
         lista = lambda xs: {json.dumps(x, ensure_ascii=False, sort_keys=True) for x in xs}
-        for k in ("vals", "fundos", "merges", "dv", "caixas", "formatos"):
+        for k in ("vals", "fundos", "merges", "dv", "caixas", "formatos", "notas"):
             a_, b_ = lista(volta.get(k) or []), lista(aba.get(k) or [])
             if a_ != b_:
                 onde.append(f"{k}: {len(a_ - b_)} a mais {sorted(a_ - b_)[:4]}, {len(b_ - a_)} a menos {sorted(b_ - a_)[:4]}")
@@ -414,14 +441,23 @@ SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVO
              "Configuracao.gs": ("ABAS_DA_CONFIGURACAO", ("CONFIGURAÇÃO", "DADOS_CONFIG")),
              "Custom.gs": ("ABAS_DO_CUSTOM", ("DADOS_CUSTOM",)),
              "Progressao.gs": ("ABAS_DA_PROGRESSAO", ("DADOS_PROGRESSAO",)),
-             "Criacao.gs": ("ABAS_DA_CRIACAO", ("DADOS_CRIACAO",))}
+             "Criacao.gs": ("ABAS_DA_CRIACAO", ("DADOS_CRIACAO",)),
+             "Melhorias.gs": ("ABAS_DAS_MELHORIAS", ("DADOS_MELHORIAS",)),
+             "Restricoes.gs": ("ABAS_DAS_RESTRICOES", ("DADOS_RESTRICOES",))}
 COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
                 "AnaliseFontes.gs": "FONTES_DA_ANALISE_",
                 "Pessoal.gs": "VALORES_CUSTOM_",
                 "ProgressaoPainel.gs": "VALORES_PROGRESSAO_",
                 "ProgressaoAnalise.gs": "CONTRATO_PROGRESSAO_",
                 "CriacaoPainel.gs": "VALORES_CRIACAO_",
-                "CriacaoAnalise.gs": "CONTRATO_CRIACAO_"}
+                "CriacaoAnalise.gs": "CONTRATO_CRIACAO_",
+                "PecasPainel.gs": "VALORES_PECAS_",
+                **{f"PecasAnalise{i}.gs":f"CONTRATO_PECAS_{i}_" for i in range(1,5)}}
+
+# Alturas e caixas que esticam pertencem ao mesmo painel, mas ocupam mais
+# espaço que seus valores. O carregador recompõe a aba independentemente da
+# ordem dos arquivos; cada arquivo continua abaixo do teto de 900 KB.
+METADADOS_COMPLEMENTARES = {"PecasPainel.gs": {"CONFIGURAÇÃO": ("alturas", "esticam")}}
 
 
 def abas_cruas(caminho=None):
@@ -447,6 +483,10 @@ def abas_cruas(caminho=None):
             if extra.get('notas'):
                 aba.setdefault('notas', []).extend(extra['notas'])
                 aba['notas'].sort(key=lambda v: v[0])
+            if extra.get('alturas'):
+                aba.setdefault('alturas', {}).update(extra['alturas'])
+            if extra.get('esticam'):
+                aba.setdefault('esticam', []).extend(extra['esticam'])
     return abas
 
 
@@ -688,6 +728,9 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
             vals = [v for v in aba["vals"] if seleciona(v)]
             aba["vals"] = [v for v in aba["vals"] if not seleciona(v)]
             extra = {"nome": nome, "vals": vals}
+            for chave in METADADOS_COMPLEMENTARES.get(arq, {}).get(nome, ()):
+                extra[chave] = aba.get(chave, {} if chave == 'alturas' else [])
+                aba[chave] = {} if chave == 'alturas' else []
             if len(faixa) == 5:
                 def nota_dentro(nota):
                     m = re.fullmatch(r'([A-Z]+)(\d+)',nota[0])

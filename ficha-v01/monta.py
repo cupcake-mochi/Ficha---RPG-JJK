@@ -25,6 +25,7 @@ from openpyxl.formatting.rule import Rule
 from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.drawing.image import Image as Img
 from openpyxl.comments import Comment
+import mesclagens
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 LAYOUT = json.load(open(os.path.join(AQUI, "layout.json"), encoding="utf-8"))
@@ -237,6 +238,8 @@ import familias_invocacao
 _FAMILIAS = familias_invocacao.aplica(LAYOUT, _FIV)
 import custom_criacao
 _CRIACAO = custom_criacao.aplica(LAYOUT, _FAM, _FIV)
+import custom_pecas
+_PECAS = custom_pecas.aplica(LAYOUT, _FAM, _FIV, _CRIACAO)
 # A ampliação declara suas alterações exatas junto da integração de progressão.
 for _name, _values in _FAMILIAS['antes'].items():
     for _coord, _value in _values.items():
@@ -248,6 +251,11 @@ for _name, _values in _CRIACAO['antes'].items():
         _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
 for _name, _values in _CRIACAO['depois'].items():
     _PROG['depois'].setdefault(_name, {}).update(_values)
+for _name, _values in _PECAS['antes'].items():
+    for _coord, _value in _values.items():
+        _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
+for _name, _values in _PECAS['depois'].items():
+    _PROG['depois'].setdefault(_name, {}).update(_values)
 print(f"a CONFIGURAÇÃO: {configuracao.QUANTIDADE} efeitos, {len(_CFG['alvos'])} caixas, paleta fixa")
 import analise
 _AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
@@ -258,8 +266,17 @@ _AN["linhas"].extend(custom_progressao.exporta(_PROG))
 _AN["linhas"].extend(familias_invocacao.exporta(_FAMILIAS))
 _AN_FIM_ANTES_CRIACAO = len(_AN['linhas'])+1
 _AN['linhas'].extend(custom_criacao.exporta(_CRIACAO))
+_AN_FIM_CRIACAO = len(_AN['linhas'])+1
+_AN['linhas'].extend(custom_pecas.exporta(_PECAS))
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
+
+if '--exportar-pecas' in sys.argv:
+    destino = sys.argv[sys.argv.index('--exportar-pecas')+1]
+    with open(destino+'.tmp','w',encoding='utf-8') as arquivo:
+        json.dump({'layout':LAYOUT,**{k:v for k,v in _PECAS.items()}},arquivo,ensure_ascii=False)
+    os.replace(destino+'.tmp',destino)
+    sys.exit(0)
 
 if "--exportar-progressao" in sys.argv:
     destino = sys.argv[sys.argv.index("--exportar-progressao") + 1]
@@ -382,8 +399,7 @@ for a in LAYOUT["abas"]:
             if st["alignment"]:     cel.alignment = st["alignment"]
             if st["number_format"]: cel.number_format = st["number_format"]
 
-    for faixa in a["mescladas"]:
-        ws.merge_cells(faixa)
+    mesclagens.aplica(ws, a["mescladas"])
 
     for m in a["menus"]:
         v = DataValidation(type=m["tipo"], formula1=m["formula"],
@@ -483,7 +499,10 @@ gs, celulas, pecas = emitir_gs.escrever(
     suplementos={"Origens.gs": [("DADOS", _FP["T"]["origem_cap"][0],
                                 _FP["T"]["origem_cap"][0] + _FP["T"]["origem_cap"][3] - 1),
                                   ("DADOS_CUSTOM", 19, 24)],
-                "CriacaoAnalise.gs": ("ANALISE", 1, 4, _AN_FIM_ANTES_CRIACAO+1, len(_AN['linhas'])+1),
+                "CriacaoAnalise.gs": ("ANALISE", 1, 4, _AN_FIM_ANTES_CRIACAO+1, _AN_FIM_CRIACAO),
+                **{f"PecasAnalise{i+1}.gs": ("ANALISE",1,4,first,min(first+2999,len(_AN['linhas'])+1))
+                   for i,first in enumerate(range(_AN_FIM_CRIACAO+1,len(_AN['linhas'])+2,3000))},
+                "PecasPainel.gs": ("CONFIGURAÇÃO",1,16,_PECAS['fim_familias']+1,_PECAS['fim']),
                 "ProgressaoAnalise.gs": ("ANALISE", 1, 4, _AN_FIM_ANTES_CRIACAO-len(custom_progressao.exporta(_PROG))+1, _AN_FIM_ANTES_CRIACAO),
                 "CriacaoPainel.gs": [("CONFIGURAÇÃO", 1, 7, 133, 164),
                                       ("CONFIGURAÇÃO", 1, 16, _CRIACAO['fim_progressao']+1, _CRIACAO['fim'])],

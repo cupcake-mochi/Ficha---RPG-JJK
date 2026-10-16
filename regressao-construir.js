@@ -58,10 +58,21 @@ function assinatura(P) {
   return h.digest('hex');
 }
 
+// Uma aba grande pode reservar uma execução própria mesmo no simulador.
+// Completar o fluxo público antes de verificar seus campos; os testes de
+// parada/relógio abaixo continuam exercitando cada execução separadamente.
+function montaCompleta(S) {
+  S.ctx.construir();
+  let vezes = 0;
+  while (S.P.props.montagem_parada !== undefined && vezes++ < ABAS.length) S.ctx.continuar();
+  if (S.P.props.montagem_parada !== undefined) throw Error('A montagem não avançou até o fim');
+  if (/(FALTA O ACABAMENTO|FALTAM AS TRAVAS DO ACABAMENTO): rode a função acabar\(\)/.test(S.P.registro)) S.ctx.acabar();
+}
+
 if (FASE === 'principal') {
 
 // Os valores das Origens têm de chegar iguais em qualquer ordem, sem duplicar na segunda junção.
-{
+if (!process.env.REG_CONSTRUIR_CARREGAMENTO_JA_CONFERIDO) {
   const arquivos = require('./medidas/carregar-ficha.js').arquivos();
   const natural = arquivos.map((_, i) => i);
   const ordens = natural.map((_, i) => natural.slice(i).concat(natural.slice(0, i)));
@@ -78,7 +89,7 @@ if (FASE === 'principal') {
   let erroArquivo = null;
   try { incompleta.ctx.construir(); } catch (e) { erroArquivo = e; }
   ok('sem o Origens.gs a montagem avisa antes de criar ou apagar abas', !!erroArquivo && /Falta o Origens.gs/.test(erroArquivo.message) && incompleta.P.abas.map((a) => a.nome).join('|') === abasAntesFalta);
-  for (const falta of ['Analise.gs', 'AnaliseFontes.gs', 'Configuracao.gs', 'Custom.gs', 'Pessoal.gs', 'Progressao.gs', 'ProgressaoPainel.gs', 'ProgressaoAnalise.gs', 'Criacao.gs', 'CriacaoPainel.gs', 'CriacaoAnalise.gs']) {
+  for (const falta of ['Analise.gs', 'AnaliseFontes.gs', 'Configuracao.gs', 'Custom.gs', 'Pessoal.gs', 'Progressao.gs', 'ProgressaoPainel.gs', 'ProgressaoAnalise.gs', 'Criacao.gs', 'CriacaoPainel.gs', 'CriacaoAnalise.gs', 'Melhorias.gs', 'Restricoes.gs', 'PecasPainel.gs', 'PecasAnalise1.gs', 'PecasAnalise2.gs', 'PecasAnalise3.gs', 'PecasAnalise4.gs']) {
     const C = criaSheets(require('./medidas/carregar-ficha.js').fontes(arquivos.filter(n => n !== falta)), HAB_SRC + '\n' + GS);
     const antes = C.P.abas.map(a => a.nome).join('|');
     let erro = null;
@@ -92,7 +103,7 @@ if (FASE === 'principal') {
 console.log('O construir() DO COMEÇO AO FIM');
 const S = criaSheets(FICHA_SRC, HAB_SRC + '\n' + GS);
 let erro = null;
-try { S.ctx.construir(); } catch (e) { erro = e; }
+try { montaCompleta(S); } catch (e) { erro = e; }
 ok('o construir() roda inteiro, sem chamar nada que o Apps Script não tem e sem sair de nenhuma aba', !erro, erro ? erro.message : '');
 if (erro) { console.log('\n>>> O construir() PAROU: ' + erro.message); process.exit(1); }
 const { P } = S;
@@ -114,6 +125,11 @@ ok('as ocultas ficam ocultas, e só elas', ABAS.every((s) => S.acha(s.nome).ocul
   ok('318 Famílias têm MESTRE VIU e menu de estado até o último cartão',
      Array.from({length:318},(_,i)=>({r:1805+Math.floor(i/2)*14,c:i%2===0?2:10})).every(x=>
        C.caixas.has((x.r+2)+','+(x.c+4)) && C.dv.has((x.r+5)+','+(x.c+3))));
+  for (const [tipo,n,inicio,passo,campos] of [['Melhoria',789,4033,26,[5,6,7,8]],['Restrição',395,14306,22,[5,6,7]]]) {
+    ok(n+' cadastros de '+tipo+' conservam caixas e menus estritos até o último cartão',
+       Array.from({length:n},(_,i)=>({r:inicio+Math.floor(i/2)*passo,c:i%2===0?2:10})).every(x=>
+         C.caixas.has((x.r+2)+','+(x.c+4)) && campos.every(d=>C.dv.has((x.r+d)+','+(x.c+3)) && C.dv.get((x.r+d)+','+(x.c+3)).invalido===false)));
+  }
   ok('as linhas livres de equipamento aceitam menu e digitação avulsa', ['98,4','99,4','104,4','104,26'].every(k=>S.acha('FICHA PESSOAL').dv.get(k).invalido===true));
 
 }
@@ -145,10 +161,14 @@ const ligacoes = [...INV_.f.entries()].filter(([, f]) => f.startsWith('=HYPERLIN
 }
 ok(`as ${totalF} fórmulas vão junto com os valores, numa gravação por aba: setFormula só nos ${nSaltos} saltos da FICHA AMALDIÇOADA e nas ${ligacoes.length} linhas da lista de invocações`, !CHAMADAS['Range.setFormulas'] && (CHAMADAS['Range.setFormula'] || 0) === nSaltos + ligacoes.length && nSaltos === 10 && ligacoes.length === 12,
    `${CHAMADAS['Range.setFormulas'] || 0} chamadas de setFormulas, ${CHAMADAS['Range.setFormula'] || 0} de setFormula`);
-const reg = S.P.registros, ondeNo = (t) => reg.findIndex((l) => l.indexOf(t) >= 0);
+const reg = S.P.registros;
+// Resumos de parada entram entre as etapas quando há continuar(). Conferir
+// a ordem das etapas sem exigir que o resumo final repita a primeira execução.
+const etapas = reg.filter(l => /^\d+s · .* \([\d.]+s\)$/.test(l));
+const ondeNo = (t) => etapas.findIndex((l) => l.indexOf(t) >= 0);
 ok('todas as abas nascem antes de a primeira ser preenchida, e cada etapa vai para o registro na hora, com o tempo dela',
    ondeNo('abas criadas') === 0 && ABAS.every((s, i) => ondeNo('· ' + s.nome + ' (') === i + 1) && ['menus', 'cor de estado', 'notas', 'caixa da paleta', 'travas de antes'].every((t) => ondeNo('· ' + t + ' (') > ABAS.length)
-   && /^FICHA PRONTA em \d+s · .* · tempos: abas criadas /.test(reg[reg.length - 1]), reg.map((l) => l.slice(0, 40)).join(' | ').slice(0, 400));
+   && /^FICHA PRONTA em \d+s · .* · tempos: /.test(reg[reg.length - 1]), reg.map((l) => l.slice(0, 40)).join(' | ').slice(0, 400));
 ok('nenhuma fórmula é gravada antes de a aba que ela cita existir e ter o tamanho dela, nem com a planilha fora do inglês', !S.P.orfas.length,
    `${S.P.orfas.length}: ${S.P.orfas.slice(0, 3).join(' · ')}`);
 const totalM = ABAS.reduce((n, s) => n + s.merges.length, 0), chM = (CHAMADAS['Range.merge'] || 0) + (CHAMADAS['Range.mergeAcross'] || 0) + (CHAMADAS['Range.mergeVertically'] || 0);
@@ -165,8 +185,11 @@ ok(`os ${blocos.length} retângulos preenchidos para baixo chegam até a última
    blocos.length > 0 && blocos.every(([nome, b]) => { const A = S.acha(nome); for (let c = b[1]; c <= b[3]; c++) { const base = A.f.get(b[0] + ',' + c);
      if (!base) return false; for (let r = b[0] + 1; r <= b[2]; r++) if (A.f.get(r + ',' + c) !== deslocaFormula(base, r - b[0], 0)) return false; } return true; })
    && blocos.some(([nome, b]) => { const A = S.acha(nome); return A.f.get(b[2] + ',' + b[1]) !== A.f.get(b[0] + ',' + b[1]); }));
-ok('as fileiras de cartas da FICHA AMALDIÇOADA vêm por cópia de formato, e a montagem diz isso no registro', /FICHA AMALDIÇOADA: [^·]*fileiras copiadas/.test(P.registro || ''));
-ok('toda mesclagem do ABAS existe na aba', ABAS.every((s) => s.merges.every((m) => S.acha(s.nome).merges.some((x) => x.join() === m.join()))));
+ok('as fileiras de cartas da FICHA AMALDIÇOADA vêm por cópia de formato, e a montagem diz isso no registro', /FICHA AMALDIÇOADA: [^·]*fileiras copiadas/.test(P.registros.join(' ')));
+ok('toda mesclagem do ABAS existe na aba', ABAS.every((s) => {
+  const existentes = new Set(S.acha(s.nome).merges.map(x=>x.join()));
+  return s.merges.every(m=>existentes.has(m.join()));
+}));
 // as mesclagens em lote não podem mesclar nada a mais: fora o que o ABAS pede, só a caixa de cada imagem e a da paleta
 const aMais = ABAS.map((s) => { const pedidas = new Set(s.merges.map((m) => m.join()).concat(s.imgs.map((im) => [im[0], im[1], im[2], im[3]].join())));
   const daPaleta = Object.values(P.nomeados).filter((r) => r.getSheet().getName() === s.nome).map((r) => [r.getRow(), r.getColumn(), r.getLastRow(), r.getLastColumn()].join());
@@ -867,7 +890,7 @@ ok('clicar numa célula e abrir a planilha não estouram', !erroSel, erroSel ? e
 } else {
 console.log('\nO ACABAMENTO, SOZINHO · ' + FASE);
 // uma montagem limpa serve de referência; nela o acabar() roda de novo, e numa terceira o relógio corre
-let R = criaSheets(FICHA_SRC, GS); R.ctx.construir();
+let R = criaSheets(FICHA_SRC, GS); montaCompleta(R);
 const antes = assinatura(R.P);
 if (FASE === 'acabamento') {
 let erroAc = null;

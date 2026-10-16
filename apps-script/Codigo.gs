@@ -407,7 +407,7 @@ function onEdit(e) {
     return;
   }
   // B47: somente as contas voltam; os campos dos efeitos continuam editáveis.
-  if (aba === 'CONFIGURAÇÃO' || aba === 'DADOS_CONFIG' || aba === 'DADOS_CUSTOM' || aba === 'DADOS_PROGRESSAO' || aba === 'DADOS_CRIACAO') {
+  if (aba === 'CONFIGURAÇÃO' || aba === 'DADOS_CONFIG' || aba === 'DADOS_CUSTOM' || aba === 'DADOS_PROGRESSAO' || aba === 'DADOS_CRIACAO' || aba === 'DADOS_MELHORIAS' || aba === 'DADOS_RESTRICOES') {
     try { devolverConta_(e, aba); } catch (err) { console.log('configuração: ' + err.message); }
     if (aba === 'CONFIGURAÇÃO') {
       try { esticarCaixas_(e, aba); } catch (err) { console.log('texto custom: ' + err.message); }
@@ -1261,9 +1261,17 @@ function esticarCaixas_(e, nomeDaAba) {
   if (typeof MEDIDA_DAS_CARTAS_ === 'undefined') return 0;
   var spec = ABAS.filter(function (s) { return s.nome === nomeDaAba; })[0];
   if (!spec || !spec.esticam) return 0;
+  // A CONFIGURAÇÃO pode ter milhares de caixas. Ler os limites da edição
+  // uma vez evita chamar o serviço de planilhas para cada campo do catálogo.
+  var l1 = e.range.getRow(), c1 = e.range.getColumn();
+  var l2 = l1 + e.range.getNumRows() - 1, c2 = c1 + e.range.getNumColumns() - 1;
+  var toca = function (a1) {
+    var f = limitesA1_(a1);
+    return f && l1 <= f.l2 && l2 >= f.l1 && c1 <= f.c2 && c2 >= f.c1;
+  };
   var origem = e.range.getSheet(), ss = SpreadsheetApp.getActive(), n = 0;
   spec.esticam.forEach(function (x) {
-    if (!x.gatilhos.some(function (g) { return tocaFaixa_(e.range, g); })) return;
+    if (!x.gatilhos.some(toca)) return;
     var alvo = x.aba === nomeDaAba ? origem : ss.getSheetByName(x.aba);
     if (!alvo) return;
     var textos = x.textos.map(function (c) {

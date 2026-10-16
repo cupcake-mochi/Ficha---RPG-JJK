@@ -17,6 +17,35 @@
  * Cada entrada de `copias` é [primeira linha, última linha, [a linha onde cada cópia começa]]. A mesma conta mora no
  * ficha/emitir_gs.py (`expandir`), e o gerador para se a cópia expandida não devolver a aba inteira.
  */
+function expandirNotasCopiadas_(spec, novas) {
+  if (!spec.notas && !(novas || []).length) return spec;
+  // Complementos podem chegar depois do molde ou de suas exceções. Refazer
+  // somente as notas herdadas deixa toda nota escrita explicitamente ganhar.
+  var herdadas = spec.notas_copiadas_ || {}, escritas = {}, feitas = {};
+  spec.notas = (spec.notas || []).filter(function (n) { return !herdadas[n[0]]; });
+  spec.notas.forEach(function (n) { escritas[n[0]] = true; });
+  (novas || []).forEach(function (n) {
+    if (!escritas[n[0]]) { spec.notas.push(n); escritas[n[0]] = true; }
+  });
+  var molde = spec.notas.slice();
+  (spec.copias || []).forEach(function (k) {
+    if (k[6] !== true) return;  // Moldes antigos podem ter ajuda só no primeiro cartão.
+    k[2].forEach(function (d) {
+      molde.forEach(function (n) {
+        var m = /^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(n[0]);
+        var r1 = Number(m[2]), r2 = Number(m[4] || m[2]), dl = d - k[0];
+        var destino = m[1] + (r1 + dl) + (m[3] ? ':' + m[3] + (r2 + dl) : '');
+        if (r1 >= k[0] && r2 <= k[1] && !escritas[destino]) {
+          spec.notas.push([destino, n[1]]); escritas[destino] = true; feitas[destino] = true;
+        }
+      });
+    });
+  });
+  spec.notas.sort(function (a,b) { return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
+  spec.notas_copiadas_ = {};
+  Object.keys(feitas).sort().forEach(function (a1) { spec.notas_copiadas_[a1] = true; });
+  return spec;
+}
 function expandirCopias_(spec) {
   if (!(spec.copias || []).length || spec.copias_feitas) return spec;
   var A1 = /^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/;
@@ -53,9 +82,15 @@ function expandirCopias_(spec) {
     });
   });
   spec.copias_feitas = true;
+  expandirNotasCopiadas_(spec);
   return spec;
 }
 ABAS.forEach(expandirCopias_);
+
+// Um complemento pode ser tentado a cada chegada de uma aba. Depois de
+// aplicado àquela aba, repetir a junção não exige reordenar todo o catálogo.
+// O cache fica fora de ABAS, preservando o desenho e sua serialização.
+var COMPLEMENTOS_FEITOS_ = new WeakMap();
 
 /**
  * AS ABAS QUE MORAM EM OUTRO ARQUIVO (06/10/2026). A INVOCAÇÕES e a DADOS_INVOC não cabem neste arquivo, e vêm no
@@ -77,7 +112,7 @@ function juntarAbas_(extras) {
   // depende de qual .gs carregou primeiro; estabilizar também as abas irmãs.
   var ordem = ['CARTEIRA', 'FICHA', 'FICHA AMALDIÇOADA', 'INVOCAÇÕES',
     'FICHA PESSOAL', 'DADOS', 'DADOS_AM', 'DADOS_INVOC', 'GLOSSÁRIO',
-    'DADOS_PROGRESSAO', 'DADOS_CUSTOM', 'DADOS_CRIACAO', 'ANALISE',
+    'DADOS_PROGRESSAO', 'DADOS_CUSTOM', 'DADOS_CRIACAO', 'DADOS_MELHORIAS', 'DADOS_RESTRICOES', 'ANALISE',
     'CONFIGURAÇÃO', 'DADOS_CONFIG'];
   ABAS.sort(function (a, b) {
     var ia = ordem.indexOf(a.nome), ib = ordem.indexOf(b.nome);
@@ -90,6 +125,11 @@ function juntarAbas_(extras) {
   if (typeof CONTRATO_PROGRESSAO_ !== 'undefined' && CONTRATO_PROGRESSAO_) juntarValores_(CONTRATO_PROGRESSAO_);
   if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(VALORES_CRIACAO_);
   if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
+  if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
+  if (typeof CONTRATO_PECAS_1_ !== 'undefined' && CONTRATO_PECAS_1_) juntarValores_(CONTRATO_PECAS_1_);
+  if (typeof CONTRATO_PECAS_2_ !== 'undefined' && CONTRATO_PECAS_2_) juntarValores_(CONTRATO_PECAS_2_);
+  if (typeof CONTRATO_PECAS_3_ !== 'undefined' && CONTRATO_PECAS_3_) juntarValores_(CONTRATO_PECAS_3_);
+  if (typeof CONTRATO_PECAS_4_ !== 'undefined' && CONTRATO_PECAS_4_) juntarValores_(CONTRATO_PECAS_4_);
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
 if (typeof ABAS_DA_ANALISE !== 'undefined' && ABAS_DA_ANALISE) juntarAbas_(ABAS_DA_ANALISE);
@@ -97,6 +137,8 @@ if (typeof ABAS_DA_CONFIGURACAO !== 'undefined' && ABAS_DA_CONFIGURACAO) juntarA
 if (typeof ABAS_DO_CUSTOM !== 'undefined' && ABAS_DO_CUSTOM) juntarAbas_(ABAS_DO_CUSTOM);
 if (typeof ABAS_DA_PROGRESSAO !== 'undefined' && ABAS_DA_PROGRESSAO) juntarAbas_(ABAS_DA_PROGRESSAO);
 if (typeof ABAS_DA_CRIACAO !== 'undefined' && ABAS_DA_CRIACAO) juntarAbas_(ABAS_DA_CRIACAO);
+if (typeof ABAS_DAS_MELHORIAS !== 'undefined' && ABAS_DAS_MELHORIAS) juntarAbas_(ABAS_DAS_MELHORIAS);
+if (typeof ABAS_DAS_RESTRICOES !== 'undefined' && ABAS_DAS_RESTRICOES) juntarAbas_(ABAS_DAS_RESTRICOES);
 
 /** Junta a tabela das Origens à DADOS, mesmo se Origens.gs carregar antes deste arquivo. */
 function juntarValores_(extras) {
@@ -104,6 +146,8 @@ function juntarValores_(extras) {
   extras.forEach(function (extra) {
     var aba = ABAS.filter(function (s) { return s.nome === extra.nome; })[0];
     if (!aba) return;
+    var feitos = COMPLEMENTOS_FEITOS_.get(aba);
+    if (feitos && feitos.has(extra)) return;
     var presentes = {};
     aba.vals.forEach(function (v) { presentes[v[0] + ',' + v[1]] = true; });
     extra.vals.forEach(function (v) {
@@ -112,12 +156,23 @@ function juntarValores_(extras) {
     });
     aba.vals.sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; });
     if (extra.notas && extra.notas.length) {
-      if (!aba.notas) aba.notas = [];
-      var notas = {};
-      aba.notas.forEach(function (n) { notas[n[0]] = true; });
-      extra.notas.forEach(function (n) { if (!notas[n[0]]) { aba.notas.push(n); notas[n[0]] = true; } });
-      aba.notas.sort(function (a,b) { return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
+      expandirNotasCopiadas_(aba, extra.notas);
     }
+    if (extra.alturas) {
+      aba.alturas = aba.alturas || {};
+      Object.keys(extra.alturas).forEach(function (r) { aba.alturas[r] = extra.alturas[r]; });
+    }
+    if (extra.esticam) {
+      var caixas = {};
+      aba.esticam = aba.esticam || [];
+      aba.esticam.forEach(function (c) { caixas[JSON.stringify(c)] = true; });
+      extra.esticam.forEach(function (c) {
+        var chave = JSON.stringify(c);
+        if (!caixas[chave]) { aba.esticam.push(c); caixas[chave] = true; }
+      });
+    }
+    if (!feitos) { feitos = new WeakSet(); COMPLEMENTOS_FEITOS_.set(aba, feitos); }
+    feitos.add(extra);
   });
 }
 if (typeof VALORES_DAS_ORIGENS_ !== 'undefined' && VALORES_DAS_ORIGENS_) juntarValores_(VALORES_DAS_ORIGENS_);
@@ -127,6 +182,11 @@ if (typeof VALORES_PROGRESSAO_ !== 'undefined' && VALORES_PROGRESSAO_) juntarVal
 if (typeof CONTRATO_PROGRESSAO_ !== 'undefined' && CONTRATO_PROGRESSAO_) juntarValores_(CONTRATO_PROGRESSAO_);
 if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(VALORES_CRIACAO_);
 if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
+if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
+if (typeof CONTRATO_PECAS_1_ !== 'undefined' && CONTRATO_PECAS_1_) juntarValores_(CONTRATO_PECAS_1_);
+if (typeof CONTRATO_PECAS_2_ !== 'undefined' && CONTRATO_PECAS_2_) juntarValores_(CONTRATO_PECAS_2_);
+if (typeof CONTRATO_PECAS_3_ !== 'undefined' && CONTRATO_PECAS_3_) juntarValores_(CONTRATO_PECAS_3_);
+if (typeof CONTRATO_PECAS_4_ !== 'undefined' && CONTRATO_PECAS_4_) juntarValores_(CONTRATO_PECAS_4_);
 
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
 
@@ -261,6 +321,27 @@ function montar_() {
   }
   if (typeof CONTRATO_CRIACAO_ === 'undefined' || !CONTRATO_CRIACAO_) {
     throw new Error('Falta o CriacaoAnalise.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof ABAS_DAS_MELHORIAS === 'undefined' || !ABAS_DAS_MELHORIAS) {
+    throw new Error('Falta o Melhorias.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof ABAS_DAS_RESTRICOES === 'undefined' || !ABAS_DAS_RESTRICOES) {
+    throw new Error('Falta o Restricoes.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof VALORES_PECAS_ === 'undefined' || !VALORES_PECAS_) {
+    throw new Error('Falta o PecasPainel.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof CONTRATO_PECAS_1_ === 'undefined' || !CONTRATO_PECAS_1_) {
+    throw new Error('Falta o PecasAnalise1.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof CONTRATO_PECAS_2_ === 'undefined' || !CONTRATO_PECAS_2_) {
+    throw new Error('Falta o PecasAnalise2.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof CONTRATO_PECAS_3_ === 'undefined' || !CONTRATO_PECAS_3_) {
+    throw new Error('Falta o PecasAnalise3.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof CONTRATO_PECAS_4_ === 'undefined' || !CONTRATO_PECAS_4_) {
+    throw new Error('Falta o PecasAnalise4.gs: cole todos os arquivos antes de construir.');
   }
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();

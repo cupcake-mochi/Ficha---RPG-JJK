@@ -1,3 +1,53 @@
+## Estado vigente · 16/10/2026 · Melhorias/Restrições encerradas; PAUSA SOLICITADA
+
+Etapa de Melhorias e Restrições integrada e validada na cópia nativa de revisão 1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0. Usuário pediu pausar ao terminar esta etapa. NÃO iniciar Formas ou outro catálogo até uma nova retomada. Não criar automação. Ficha oficial e bot intactos.
+
+Migração pontual: 66 lotes, sem construir() e sem importar Excel. Guarda de 4.270 fórmulas passou; 13.808 valores/fórmulas anteriores preservados; 1.184 menus atualizados; somente B4031, antes vazia, recebeu o cabeçalho. ANALISE 9 da revisão: 75.796 células comparadas, 18.948 chaves únicas, zero diferenças; 13 abas sem erros. As 9.082 chaves anteriores foram preservadas. Provas pecas-revisao-guarda.json, pecas-revisao-preservacao.json e pecas-revisao-analise-conferida.json em ../evidencias-3b/.
+
+Código: os 13 arquivos alterados/novos foram salvos e relidos integralmente após recarga de outra sessão. A correção final de Codigo.gs também foi salva pelo usuário, recarregada e comparada integralmente. Projeto com 23 .gs, soma 9.543.357 bytes e máximo 843.661 bytes por arquivo. Evidências pecas-scripts-nuvem-conferidos.json e pecas-scripts-manifesto-correcao-texto.json. Nenhum helper temporário no projeto.
+
+Testes locais: 54 verificações focais; 22 ordens de carregamento e 19 ausências; 150 verificações do fluxo de construção em três fases. conferir-copias.py passou em 20 abas/fixtures. O leitor completo python3 ler-analise.py --teste também terminou com código0 e TESTE:OK:18.948chaves, formato9; somente o aviso esperado da ficha vazia, faltando escolhas de perícia/ofício. Prova pecas-leitor-final.json. No Google: 15 pares base/custom iguais em 17 campos; todas as 395 entradas do cenário restauradas exatamente. Dos 566 valores consultados, 16 diferenças contra o workbook focal eram simétricas nos pares de invocação, pelas Famílias Livres já presentes na cópia; não eram divergências entre livro e custom. Detalhes em pecas-cenario-nativo/.
+
+Visual e texto: primeiros/últimos cartões, carteira/foto/paleta, FICHA e nove Famílias de invocação conferidos nas capturas pecas-*.jpg. Textos vizinhos de 2.401/3.545 caracteres esticaram as linhas a 110/186 px; apagar um lado preservou o outro; limpar ambos devolveu 25 px. O último cartão mostrou 2.755 caracteres inteiros e bordas contínuas. A primeira limpeza atingiu o limite de 30 s: corrigido esticarCaixas_ para ler os limites da edição somente quatro vezes, sem repetir chamadas de Range em 1.219 grupos. Sete cenários focais passaram. Reteste nativo completo curto/longo/limpeza: 25/68/25 px nas sete linhas; execuções concluídas em 18,769/12,998/11,862 s. Todos os três campos e notas restaurados exatamente. Evidências pecas-textos-correcao-final.json, pecas-textos-restauracao-conferida.json e pecas-gatilhos-nativos-final.json. Captura final limpa: pecas-revisao-ultima-restricao-restaurada.jpg.
+
+Capacidades desta implementação: 789 Melhorias e 395 Restrições, como limites superiores para cobrir os espaços existentes. NÃO é fechamento de capacidade/custo geral da 3c. Ainda faltam Formas, aptidões/Bênçãos, Talentos, tipos/Talentos de entidade, condições e danos; depois medição nativa de construir() na descartável e reunião/limpeza da interface. Todos os protótipos e as escolhas mecânicas restantes já aprovados continuam válidos; não reabrir sem motivo.
+
+Nenhum commit ou push pelo agente. Ao encerrar, índice preparado apenas com arquivos desta etapa; mensagem em mensagem-de-commit.txt. Comando, a partir desta pasta: git commit -F mensagem-de-commit.txt. Retomada principal: ../RETOMAR-B47.md. A implementação nativa está salva; nenhuma autorização Google nem reconexão é necessária para encerrar.
+
+---
+
+## Histórico anterior · peças na cópia nativa
+
+Melhorias/Restrições implementadas localmente: 789/395 registros, cobrindo as vagas atuais; capacidade global/custo ainda não fechados. Geração03 concluiu, 23 .gs, 9.542.502 bytes totais; maior Configuracao.gs843.661. Alturas/caixas expansíveis foram transportadas para PecasPainel.gs, sem alterar a grade. Notas só se propagam nas cópias com sétimo campo true; legado preserva ajuda só no primeiro cartão. Otimizadas inserção de mesclagens e conferência de bordas, com comparação de valores/estilos/bordas contra openpyxl.
+
+Cópia NATIVA1D215acC6Dxhu8i7x0aF7pmiNbJ95_U1CiH4980QozLk agora migrada pontualmente, ANALISE9/18.948 chaves. 66 lotes agrupados aplicados, manifesto e progresso em evidencias-3b/pecas-lotes-nativos/agrupados e pecas-progresso-nativo.json. NUNCA reutilizar esses lotes diretamente na revisão sem nova leitura/guarda. Review1EdEX... e oficial sem alterações nesta retomada; nenhum .gs desta etapa salvo no editor ainda.
+
+Regressão focal54checagens passou. Nativo: 15 pares base/custom iguais em17 campos;566 consultas,550 valores coincidentes com calculadora local.16 diferenças de contexto em ambos os membros dos pares de invocação vieram das Famílias Livres presentes na cópia, ausentes no workbook focal. Índice de preços0 do cenário provocou spill na exibição; cenário corrigido para1, sem alteração de produção. Todas395células restauradas e relidas com igualdade integral. Varredura de erros após restauração: zero em FICHA, CARTEIRA, FICHA AMALDIÇOADA (separada), INVOCAÇÕES, FICHA PESSOAL, DADOS_AM, DADOS_INVOC, DADOS_MELHORIAS, DADOS_RESTRICOES, DADOS_CRIACAO, DADOS_CUSTOM, DADOS_PROGRESSAO, ANALISE. Evidências em pecas-cenario-nativo/. Menus/checkboxes/notas de primeiro e último cartões relidos nativamente. Imagens pecas-nativo-*.jpg são capturas reais; as pecas-previa-*.png continuam prévias locais.
+
+Usuário reconectou Brave. CUA editor2140372548 (Código.gs salvo antigo), teste2140372597; browser3. Sessão de testes serial61481 está rodando conferir-copias.py final, depois regressao-construir.js3fases, tetos3G/1,5G/duasCPUs. Não iniciar outro trabalho pesado simultâneo. Próximo: fechar testes, salvar os arquivos alterados/novos com leitura integral antes/depois no Apps Script, terminar visual nativo, migrar revisão com guarda, atualizar contrato/roteiros e preparar índice/mensagem sem commit. Formas e demais tipos3c continuam pendentes; não declarar3c concluída.
+
+## Histórico anterior · atualização da retomada · 16/10/2026
+
+A regressão focal de Melhorias/Restrições passou54checagens; prova evidencias-3b/pecas-regressao.json e log correspondente. Inclui herança em ambas as fichas e Classe0, nome literal com curingas, nona Família, TR/Controle, última vaga, inválidos e limites da devolução. Corrigidas duas falhas encontradas: referências de linha impediam a herança; campos numéricos de linhas excluídas precisavam ser0 para não cobrar caixas vazias. conferir-copias.py também passou com testes de complementos em duas ordens e idempotência, nas15abas antigas mais2fixtures. Geração integral em execução serial no momento deste registro (sessão92187, PID8956, memória~300MB; não iniciar outro teste pesado antes de terminar). Ainda não há .gs novos entregues.
+
+Nova cópia NATIVA de teste, feita integralmente da revisão pelo Drive, sem Excel:1D215acC6Dxhu8i7x0aF7pmiNbJ95_U1CiH4980QozLk, “TESTE DESCARTÁVEL — B47 — Melhorias e Restrições3c”, pasta ChatGPT. Metadados em evidencias-3b/pecas-teste-metadata.json; mesmos19sheetIds da revisão. Até este registro a cópia está SEM MIGRAÇÃO, idêntica à revisão/ANALISE8. Revisão e oficial sem alterações. Usar essa nova cópia para a migração pontual de peças antes de mexer na revisão; não confundir com a antiga descartável reservada ao construir() integral.
+
+CUA nesta retomada retorna zero navegadores; tentativa explícita de abrir IAB devolveu “Browser is not available:iab”. Pedido assíncrono para reconectar Brave está pendente; não repetir autorizações Google nem pedir permissões já dadas. open_in_codex da revisão ficou queued. As quatro prévias pecas-previa-*.png foram renderizadas LOCALMENTE da grade/estilos e inspecionadas: primeiros/últimos cartões sem bordas faltando. Não são capturas do Google e não substituem a conferência visual nativa. Próximo trabalho independente: concluir geração e testes do carregador/custos, preparar migração pontual na nova cópia nativa e testar as contas pelo MCP. Salvamento dos scripts e visual Google dependem da conexão do navegador.
+
+---
+
+## Retomada em andamento · Melhorias e Restrições (16/10/2026)
+
+Usuário retomou a tarefa. HEAD confirmado3f17952, feito pelo usuário; árvore estava limpa. As aprovações anteriores continuam válidas, sem perguntas novas. Implementação LOCAL em ficha-v01/custom_pecas.py:789Melhorias +395Restrições, bases opcionais, catálogos unidos, identidade herdada nas contas de feitiços/invocações e Classe0. ANALISE9 local proposta,18948chaves; contratos anteriores devem ficar nos mesmos endereços. Gerador exporta --exportar-pecas. Arquivos .gs desta etapa AINDA NÃO regenerados nem enviados ao Google.
+
+Nativo continua integralmente na etapa Famílias/ANALISE8: apenas metadados e sentinelas foram lidos nesta retomada. Oficial intacta. Não executar construir() na revisão. Copia descartável autorizada permanece a mesma.
+
+Infraestrutura: compactação de notas repetidas em emitir_gs.py/modelo.gs.js; preserva exceções, inclusive nota vazia, e precisa suportar complementos em qualquer ordem. conferir-copias.py passou nas15abas atuais mais2fixtures antes de acrescentar o último teste explícito de ordem dos complementos; repetir esse teste com a versão final. Novo regressao-pecas.py em execução focal local, sem resultado concluído ainda. Fonte/exportação principal em ../evidencias-3b/pecas-modelo.json; baseline anterior em pecas-modelo-anterior.json. Não declarar Melhoria/Restrição prontas antes de testar, regenerar, medir arquivos e conferir visual/mecânica no Sheets. Formas e demais moldes da3c ainda pendentes.
+
+Próximo: concluir regressão focal e corrigir falhas; geração integral serial sob os limites já determinados; ajustar divisão de arquivos para<=900000bytes, conferir carregamento/roundtrip/construção simulada; migração nativa pontual com backup e restauração dos testes; salvar fontes no projeto e reler. Capacidade/custo gerais da3c só fecham após os demais catálogos e medição nativa na descartável. Nenhum commit/push pelo agente. Não preparar um commit misturando fonte nova e .gs antigos.
+
+---
+
 ## Encerramento antes de desligar — Famílias 3c (15/10/2026)
 
 Etapa de Famílias implementada na cópia nativa de revisão e nos geradores. Não declarar a parte3c inteira concluída. Usuário avisou às23:54 que desligará à meia-noite; nenhum novo bloco foi iniciado após esse aviso.

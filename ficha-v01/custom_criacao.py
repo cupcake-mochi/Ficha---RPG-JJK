@@ -236,7 +236,7 @@ def aplica(layout, fam, inv):
         box(r+12, c, f'=IF({ref("F"+str(g["n"]+1))}="","","⚠ "&{ref("F"+str(g["n"]+1))})', ec=c+5, kind='nota')
     config['linhas_alt'] += [[r, 18.75] for r in range(prior_end+1, tr['fim']+1)]
     config.setdefault('copias', []).append([INICIO, INICIO+12,
-        list(range(INICIO+PASSO, tr['fim'], PASSO)), 2, 15, [[2, 7], [10, 15]]])
+        list(range(INICIO+PASSO, tr['fim'], PASSO)), 2, 15, [[2, 7], [10, 15]], True])
     # Mesmas linhas para os dois cartões: cresce pelo texto mais comprido.
     def width(col):
         return sum(next((w for lo,hi,w in config['colunas_larg'] if lo<=c<=hi),4)*8-1
