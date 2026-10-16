@@ -27,6 +27,7 @@ bash revisao-b47/rodar.sh simulado-alvo    # SIMULAÇÃO 10/30/30/20 trocando s�
 | `test_carregador.py` | `.gs` montados num VM: guarda de `montar_()` e ANALISE montada = contrato; no modo simulado, gera numa worktree temporária e testa projeto com/sem arquivos antigos | base ~2 s; simulado ~40 s |
 | `test_migracao.py` + `migracao_guarda.py` | guarda de migração proposta: molde vazio derivado do gerador, primeira/última vaga, corte, compactação, separação Perícia/Ofício, tipo ausente, curingas, nomes repetidos, separador ` · `, reutilização por nome | ~15 s |
 | `test_patch_carregador.py` | aplica `patches/carregador-selo-de-geracao.diff` numa worktree e repete os cenários do carregador | ~40 s por perfil |
+| `test_infra_envio.py` | ferramenta de envio do chat 3 (lida do ramo `codex/b47-infra`) com sobras locais e remotos obsoletos; `--com-patch-infra` valida o patch proposto | ~80 s |
 | `sonda_libreoffice_name.py` | B3: quais avisos 3a viram `#NAME?` no LibreOffice (rodar da raiz, sozinho) | ~2,5 min |
 
 Perfis em [casos/perfis.json](casos/perfis.json). Para revisar o commit A: fazer checkout do SHA, escolher/ajustar
@@ -40,6 +41,7 @@ Código de saída 1 = falha bloqueante; `RISCO` só é relatado.
 
 - `patches/carregador-selo-de-geracao.diff` — `ficha/emitir_gs.py` e `ficha/modelo.gs.js`.
 - `patches/ler-analise-avisos-custom.diff` — `ler-analise.py`.
+- `patches/infra-remover-explicito.diff` — `infra-b47/apps_script.py` (aplicar sobre `codex/b47-infra`).
 
 `git apply --check revisao-b47/patches/<arquivo>` a partir da raiz. Depois de aplicar, o integrador regenera os `.gs`
 pelo fluxo normal e atualiza `regressao-construir.js` (lista fixa de arquivos ausentes).

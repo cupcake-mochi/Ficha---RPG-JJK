@@ -98,6 +98,31 @@
 - **B5** — `migracao-criacao.py` (raiz) tem o ID da revisão e as linhas 1805+ fixos (`:109-112, 139`), e não consta da lista de receitas históricas do `NUVEM.md:73`. Risco de ser reaproveitado na migração da redução.
 - **B6** — `custom_pecas.py:386-387` usa `range(1, len(regs)//2)`. Com capacidade ímpar, o último cartão fica fora das cópias (é emitido explicitamente). Para 30 não há efeito.
 
+## Revisão da frente de infraestrutura (`origin/codex/b47-infra` = `b8ab7b5`)
+
+Revisado por ter interação direta com A1; o resto da frente (executor, recibos) só foi lido. Fora do meu escopo de edição: correções vão como patch para o chat 3/integrador.
+
+**I1 — ALTA em conjunto com A1: o pacote de envio leva as sobras locais ao projeto.**
+- Onde: `infra-b47/apps_script.py`, `locais()`, que empacota todo `*.gs` da pasta, e `preparar()`, cuja guarda só olha remotos ausentes localmente.
+- Reproduz: `test_infra_envio.py` (E1). Gerando a redução simulada sem o patch de A1, a pasta tem `PecasAnalise1` novo e `PecasAnalise2–4` velhos. O `preparar` aceita e o pacote leva os quatro.
+  - O `conferir` posterior daria "igual", porque compara o pacote com a releitura, não com a geração.
+  - O projeto resultante é o cenário de A1: 6.626 chaves obsoletas.
+- Correção: o patch `carregador-selo-de-geracao.diff` resolve na origem, porque o emissor apaga sobras e declara `COMPLEMENTOS_ESPERADOS_`. O patch abaixo faz a ferramenta conferir essa declaração.
+
+**I2 — MÉDIA: depois da redução, a remoção legítima dos remotos obsoletos fica sem caminho.**
+- Com a pasta certa, `preparar` bloqueia "Revisar .gs remotos ausentes localmente" para `PecasAnalise2–4`. A guarda está correta, mas não há opção para autorizar a remoção. O integrador teria de editar o pacote à mão, justamente onde a ferramenta deveria proteger.
+- Patch proposto: `patches/infra-remover-explicito.diff`.
+  - Cria `--remover NOME`, repetível, aceito só para remotos ausentes localmente e registrado na saída.
+  - Recusa `PecasAnalise*` local que o `Ficha.gs` não declara.
+- Validação, `test_infra_envio.py --com-patch-infra`, junto do patch de A1: 10 ok.
+  - O pacote fica igual aos arquivos gerados + `appsscript`.
+  - O projeto resultante constrói e monta a ANALISE = contrato.
+  - `--remover Codigo` é recusado; remover uma sobra só ainda bloqueia as outras; sobra recolocada é recusada.
+  - O E1 continua falhando de propósito: sem o patch de A1, a ferramenta não tem como distinguir sobra.
+- Os 15 testes próprios do chat 3 passam com e sem o patch.
+
+Sem achado: `exportar-baseline.py --destino` existe na base. A guarda de `scriptId`, a preservação de manifesto/HTML, o limite de 900.000 bytes e a proteção de entrada/saída estão coerentes com o plano.
+
 ## O que a auditoria confirmou sem achado
 
 Simulação 10/30/30/20, comparada à base pelo `test_contrato.py`:
@@ -123,6 +148,9 @@ Simulação 10/30/30/20, comparada à base pelo `test_contrato.py`:
 | `test_carregador.py --perfil simulado-alvo` | **simulação** em worktree | 4 falhas — A1 |
 | `test_patch_carregador.py` (simulado / base) | patch proposto em worktree | 7/7 e 5/5 |
 | `test_migracao.py` | guarda proposta | 22/22 |
+| `test_infra_envio.py` (ferramenta do chat 3 em `b8ab7b5`) | **simulação** + snapshot remoto falso | 3 ok, 1 falha (I1), 1 risco (I2) |
+| `test_infra_envio.py --com-patch-infra` | patches propostos de A1 + I2 | 10 ok, 1 falha (E1 sem o patch de A1, esperada) |
+| `unittest` de `infra-b47` em worktree de `b8ab7b5`, sem e com o patch | testes do chat 3 | 15/15 e 15/15 |
 | leitor com patch sobre `ficha-projeto-m-0.1.xlsx` recalculado no LibreOffice (2 min 30 s) | calculadora local | REPROVADA com 26 avisos: o esperado da ficha vazia (faltam perícias) + 25 `#NAME?` de B3, que o leitor atual esconde |
 | `bash revisao-b47/rodar.sh base-v9` / `simulado-alvo` | bateria em série | exit 1 / exit 1 (falhas acima; logs `bateria-*.log`) |
 
@@ -141,7 +169,7 @@ Os resultados JSON de cada teste estão em `nuvem-b47/saidas/revisao-b47/` (não
 ## Critérios para integrar A (proposta)
 
 1. `test_contrato.py --perfil <alvo-real-…>`, com o perfil ajustado ao contrato publicado: sem falhas. Formato novo e registrado no ESQUEMA; nenhuma chave acima da capacidade; fontes na CONFIGURAÇÃO sem compartilhamento; 6.706 chaves preservadas com ordem.
-2. `test_carregador.py --perfil <alvo-real-…>` sobre os `.gs` regenerados: guarda passa e ANALISE montada = contrato. A1 corrigido, por este patch ou equivalente, e o checklist de envio manda apagar os `PecasAnalise*` antigos do projeto.
+2. `test_carregador.py --perfil <alvo-real-…>` sobre os `.gs` regenerados: guarda passa e ANALISE montada = contrato. A1 corrigido, por este patch ou equivalente. Envio pela ferramenta do chat 3 com remoção explícita dos `PecasAnalise*` obsoletos (I2) e conferência contra o que a geração declarou (I1).
 3. Leitor corrigido (A2), conhecendo o formato novo; bot atualizado ou explicitamente pendente.
 4. `test_enderecos.py`: nenhuma faixa além dos dados; endereços de `INDIRECT` derivados; nenhuma faixa morta acima de 100 linhas.
 5. Migração: snapshot atual da revisão e plano sem bloqueios (`migracao_guarda.py` ou equivalente) antes da descartável; descartável antes da revisão.
