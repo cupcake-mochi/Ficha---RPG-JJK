@@ -69,6 +69,14 @@ nenhum vem das entidades (0 células da DADOS_AM alteradas por elas). Erros: 13 
 Lista completa (76) em `nuvem-b47/saidas/` não versionado; reproduzir com modelos `--exportar-pecas` e
 `comum_cd.recalcular`. Recomendo a frente de personagem rodar o mesmo cenário vazio antes da incorporação.
 
+**P7b. Média: `LET` expandido, Formas calculam; mesmo defeito latente nas vagas custom vazias.** Com
+`expandir_let.py` (substituição dos nomes; LibreOffice 24.2 não tem `LET`), as 4432 fórmulas da
+`DADOS_FORMAS` recalculam. Consumidores: as mesmas 76 diferenças do P7, nenhuma lendo `DADOS_FORMAS`.
+Restam 20 `#VALUE!` em `DADOS_FORMAS!FM12:FM21` (`formas_personagem.3`) e `GE12:GE21`
+(`formas_entidade.5`), exatamente as 10 vagas custom vazias: `FM` faz `$AN+3*...` e `GE` faz
+`IF($AQ,...)` com `AN`/`AQ` valendo `""`. Hoje não chega aos 195 leitores (cenário vazio igual à base),
+mas é a mesma causa do P7: linha custom vazia deve ter número/booleano neutro (0/FALSE), não `""`.
+
 **P8. Regras numéricas conferidas no livro** (`referencias-b47/Ciclo-Maldito-R52.txt`): Bênção exige
 Lapidação mínima 1/4/7 para CE 1/2/3 (l. 18676–18679); Talento de CE 1/2/3 ocupa 1/2/3 espaços e exige nível
 1/7/13, no máximo cinco Talentos pagos (l. 18127–18132, 4152, 5207); ganho de Leque abre vaga própria sem
@@ -82,8 +90,8 @@ foram localizados no texto: parecem vir das posições já existentes na ficha; 
 
 ## Não feito (impedido pelo limite de uso desta sessão)
 
-- Recálculo com cadastros preenchidos e das 560 fórmulas com `LET` da `DADOS_FORMAS`: o LibreOffice 24.2
-  daqui não tem `LET` (exige 24.8+). Só o cenário vazio foi feito (P7).
+- Recálculo com cadastros preenchidos (Formas/Aptidões/Talentos custom escolhidos nas fichas): só o
+  cenário vazio foi feito (P7, P7b).
 - Leitura linha a linha de `motor.py`/`consumidores.py`/`planilha.py` (só as regras numéricas do
   contrato foram conferidas, P8); alcance/área das Formas nas Classes 0–7 não conferidos.
 
