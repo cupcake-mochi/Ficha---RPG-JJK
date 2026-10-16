@@ -5,7 +5,14 @@ Implementação de A e otimização local de B, partindo de
 `codex/b47-capacidade`. Integração autorizada em `codex/configuracao-b47`.
 O SHA publicado fica no [registro de publicação](PUBLICACAO.md); os hashes das
 fontes testadas estão em [VALIDACAO.json](VALIDACAO.json).
-**A+B ainda não estão concluídas nativamente.** Não houve escrita Google.
+**A+B ainda não estão concluídas nativamente.** Depois do fechamento local,
+a retomada criou backup e aplicou a redução somente numa cópia descartável:
+102 lotes confirmados, ANALISE 10 e zero erros nos intervalos afetados de 11
+abas. Código vinculado, visual e medidas Apps Script seguem pendentes;
+a revisão original continua em formato 9. O estado vigente está no
+[relatório nativo parcial](NATIVO-PARCIAL.md) e na
+[prova parcial](VALIDACAO-NATIVA-PARCIAL.json). As medidas locais abaixo
+permanecem as do fechamento em f3a3fbd; os `.gs` não mudaram nesta retomada.
 
 ## Resultado
 
@@ -136,10 +143,12 @@ nem do Google. `previas.py --png` as reproduz. O Chromium da nuvem recusou
 navegação `file://` com `ERR_BLOCKED_BY_ADMINISTRATOR`; não se contornou a política.
 A conferência visual nativa e textos preenchidos no Sheets permanecem pendentes.
 
-O conector confirmou conta Google e leitura real da revisão
+No fechamento local f3a3fbd, o conector confirmou conta Google e leitura real da revisão
 `1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0`. Metadados e campos crus dos
 quatro catálogos foram lidos: nenhum dado fora dos padrões vazios. Isso não é
 snapshot integral nem deve ser reutilizado para uma aplicação posterior.
+A retomada posterior obteve leituras integrais novas das faixas alteradas e
+validou a migração Sheets na descartável; ver NATIVO-PARCIAL.md.
 
 Esta sessão não oferece ferramenta de leitura/atualização/execução Apps Script
 ou navegador conectado, nem configuração de CLI Apps Script observável.

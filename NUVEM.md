@@ -66,6 +66,11 @@ Para prévia local, há `medidas/ver-aba.py`, por exemplo `python medidas/ver-ab
 
 ## Google sem acesso remoto
 
+Checkpoint de 16/10: Drive/Sheets permitiram backup, snapshot e migração da
+descartável, com prova **PARCIAL**. A revisão original continua em formato 9;
+Apps Script e validação conjunta permanecem pendentes. IDs, resultados e
+limites em [capacidade-b47/NATIVO-PARCIAL.md](capacidade-b47/NATIVO-PARCIAL.md).
+
 Somente o integrador realiza alterações nativas. Os links e destinos estão no plano principal. Acesso ao Git não cria conexão ao Drive, não autentica Apps Script e não concede consentimento à conta. Utilizar conector/API oficial disponível no ambiente, com autorização do usuário; a frente de infraestrutura prepara um envio reprodutível quando houver acesso compatível. Não depender do Brave, extensão ou janela do PC.
 
 Antes de migrar: leitura atual da cópia, snapshot integral, guardas e teste em descartável. Construção integral apenas em descartável. Se o chat não tiver acesso direto aos serviços, entregar código, arquivos de envio, migração reprodutível e checklist de aplicação pendente; não declarar aplicação/validação nativa concluída. Não copiar tokens de máquina ou registrar credenciais no Git.

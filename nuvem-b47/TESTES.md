@@ -62,3 +62,27 @@ divididas em auxiliares (máximo 5.031 caracteres); `testar-validacao3a.py` cobr
 oito tipos válidos e negativos. `testar-geracao.js` e `testar-envio.py` verificam
 arquivos de gerações diferentes e retirada explícita. O roteiro central aceita
 `--b47-infra` para seleções do executor da outra frente.
+
+## Retomada nativa parcial
+
+`capacidade-b47/snapshot.py` e seus nove testes normalizam leituras CellData
+nativas, sem rede/credenciais. `testar-formulas-nativas.py` tem seis casos de
+normalização estrita das fórmulas do Sheets. `testar-equivalencia-lotes.py`
+compara efeitos dos lotes offline, incluindo uma contraprova de alteração
+retida; não envia nada ao Google. Essas três etapas foram incluídas no roteiro
+focal, agora com 26 etapas; o agregado inteiro de 26 não foi executado nesta
+retomada. Migração sintética foi repetida: 19/19.
+
+`conferir-nativo.py --leituras <diretorio> --modelo <json> --saida <json>`
+audita as leituras privadas da descartável coletadas pelo roteiro. Não acessa
+Google nem libera revisão: nível superior sempre PARCIAL quando as checagens
+passam. `testar-conferencia-nativa.py --leituras <diretorio> --modelo <json>`
+injeta corrupção em memória nessas leituras para conferir a recusa. Sem os
+artefatos privados, são testes impedidos, não aprovados por uma fixture vazia.
+Eles ficam fora do agregado portátil/CI. Rodada de 16/10: 22 checagens e nove
+contraprovas; teste de envio da nova revisão efd8dd8: 10/10; smoke final passou.
+
+[NATIVO-PARCIAL.md](../capacidade-b47/NATIVO-PARCIAL.md) registra os 102 lotes
+reais confirmados, cálculos e restauração na descartável. Não houve upload de
+Apps Script ou execução de construir/continuar; testes de gatilhos, alturas,
+visual Google, latência e migração da revisão continuam pendentes.

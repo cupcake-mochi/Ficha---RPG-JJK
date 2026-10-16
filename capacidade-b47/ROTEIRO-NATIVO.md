@@ -1,9 +1,13 @@
-# Aplicação pendente da capacidade B47
+# Aplicação e validação pendentes da capacidade B47
 
-Esta rodada confirmou leitura real do Sheets pelo conector em 16/10/2026.
-Leu os quatro catálogos crus da revisão: nenhum campo diferente dos padrões
-vazios. Não é snapshot integral nem autorização para reutilizar essa leitura
-numa sessão futura. Nenhuma escrita nativa foi realizada.
+Estado vigente em 16/10/2026: backup integral nativo e migração **Sheets** da
+descartável `1hBogVNW0vqeLYwa0PNl04Y2Nel9-7nrCoODWq1FKsb4` realizados.
+102 lotes confirmados, 22 checagens nativas, entradas temporárias restauradas.
+Ver [NATIVO-PARCIAL.md](NATIVO-PARCIAL.md) e a prova `PARCIAL`.
+Código vinculado não foi atualizado; visual e testes de gatilhos continuam
+pendentes. Revisão original ainda em formato 9, sem escrita. Não reutilizar
+o snapshot de hoje numa aplicação futura nem considerar esta prova como OK
+para a guarda da revisão.
 
 A sessão não expõe ferramenta Apps Script (leitura, atualização ou execução),
 credenciais OAuth de CLI nem navegador conectado. O inventário do Codex
@@ -11,9 +15,12 @@ Document Control retornou zero sessões Sheets conectadas. Acesso ao Drive/Sheet
 acesso ao projeto Apps Script. Sem salvar/reler código, não atualizar a revisão:
 o gatilho antigo conservaria as geometrias e o contrato anteriores.
 
-1. Confirmar destino **1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0**,
-   projeto **1wdZc903PPK6EoGxFG4KcuPNx_plElCBsWxa4lEBgLUlFBD4OrbZPHYnf** e
-   ferramentas oficiais disponíveis; não copiar tokens do PC.
+1. Confirmar destino e projeto vinculado a **cada** planilha com ferramentas
+   oficiais. A revisão é **1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0**,
+   projeto **1wdZc903PPK6EoGxFG4KcuPNx_plElCBsWxa4lEBgLUlFBD4OrbZPHYnf**.
+   A nova descartável tem outro projeto vinculado, ainda não localizado.
+   **Não usar o ID de projeto da revisão ao validar a descartável.**
+   Não copiar tokens do PC.
 2. Estabelecer janela sem edições, do snapshot final até a releitura conjunta
    de código e planilha. Código salvo e migração não formam uma transação; só
    reabrir a edição depois da validação combinada. Criar backup nativo integral
@@ -28,6 +35,8 @@ o gatilho antigo conservaria as geometrias e o contrato anteriores.
    backup nativo integral distinto e `captured_at` UTC. Não versionar entradas
    pessoais. Planejar com `--snapshot <snapshot.json>`; o planejador aceita
    descartável por padrão e bloqueia revisão/oficial indevidas.
+   `snapshot.py` fatia leituras limitadas à grade existente e normaliza respostas
+   CellData tipadas, notas e vazios cobertos, verificando identidade e cobertura.
 5. Revisar o manifesto de fontes/chaves e resolver qualquer bloqueio de
    conteúdo preenchido. Não mudar expectativas/guardas para obter aprovação.
    Reler o snapshot imediatamente antes de aplicar; qualquer mudança invalida
@@ -49,7 +58,10 @@ o gatilho antigo conservaria as geometrias e o contrato anteriores.
    O mecanismo integrado `infra-b47/apps_script.py` exige ID explícito,
    snapshot remoto e retirada nominal com `--remover PecasAnalise2 --remover
    PecasAnalise3 --remover PecasAnalise4`. Usar autenticação oficial e releitura
-   posterior; não editar o pacote à mão para contornar a guarda.
+   posterior; não editar o pacote à mão para contornar a guarda. Na retomada,
+   começar pelo projeto da descartável já migrada e confirmar novamente o
+   estado da planilha/código antes de escrever. Não há necessidade de repetir
+   os lotes de planilha já confirmados; sua repetição não é idempotente.
 8. Testar nativamente: primeira/última vaga dos cinco grupos; livro/base e
    criação do zero; duplicatas/nomes `* ? ~`; categoria incorreta colada;
    reutilização do mesmo cadastro nas 12 entidades; nove Famílias/autonomia;
@@ -66,7 +78,13 @@ o gatilho antigo conservaria as geometrias e o contrato anteriores.
     registrar diferenças zero e restauração dos cenários. Oficial e bot ficam
     fora desta rodada.
 
-As provas locais de migração são sintéticas; não comprovam os passos 2–10.
+As provas locais de migração em VALIDACAO.json são sintéticas. A nova prova
+VALIDACAO-NATIVA-PARCIAL.json cobre backup/snapshot e a parte Sheets dos
+passos 2–8, com os limites de NATIVO-PARCIAL.md; não comprova código, visual,
+gatilhos, construção ou aplicação na revisão. O auditor offline
+`conferir-nativo.py` aceita apenas descartável e nunca emite resultado OK no
+nível superior, mesmo com todos os cálculos conferidos. Suas contraprovas
+estão em `testar-conferencia-nativa.py`.
 Recomendação para a aplicação: GPT-6.1 Sol, High, por envolver identidade de
 campos, preservação da revisão e conferência nativa.
 
@@ -88,5 +106,5 @@ com guarda e releitura de **todas** as entradas/notas antes de planejar outra
 tentativa; nunca sobrescrever alterações concorrentes silenciosamente. Se houver
 edição concorrente, reconciliar primeiro. A cópia parcialmente migrada não é
 evidência de migração aprovada. O manifesto registra expressamente a ausência de
-atomicidade entre lotes. Nenhuma falha parcial ocorreu nesta rodada, que não
-executou escritas nativas.
+atomicidade entre lotes. Nenhuma falha parcial ocorreu nos 102 lotes desta
+retomada, enviados apenas à descartável.

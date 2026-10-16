@@ -8,18 +8,23 @@ A execução em três chats e os limites de edição/publicação estão em [PLA
 
 - Repositório: https://github.com/cupcake-mochi/Ficha---RPG-JJK
 - Ramo de trabalho: `codex/configuracao-b47`. O `main` ainda não contém esta sequência de trabalho; continuar a partir deste ramo.
-- Última implementação antes desta documentação: `84d8f8c`, Melhorias e Restrições custom.
+- Base anterior à redução: `84d8f8c`, Melhorias e Restrições custom. Fechamento local da redução em `f3a3fbd`; retomada e prova nativa parcial em `186e844`/`6a226c3`, com revisão adicional integrada em `3323803`.
 - [Cópia nativa de revisão](https://docs.google.com/spreadsheets/d/1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0/edit#gid=47001).
 - [Apps Script da revisão](https://script.google.com/u/0/home/projects/1wdZc903PPK6EoGxFG4KcuPNx_plElCBsWxa4lEBgLUlFBD4OrbZPHYnf/edit).
 - [Ficha oficial — somente leitura](https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit).
 - [Descartável reservada à construção integral](https://docs.google.com/spreadsheets/d/12iTELP65DYjBjAY-PiAZ-JvVIyrK7ragsYKRX-vXYsc/edit).
 - [Descartável dos testes de Melhorias/Restrições](https://docs.google.com/spreadsheets/d/1D215acC6Dxhu8i7x0aF7pmiNbJ95_U1CiH4980QozLk/edit).
 
-**Redução implementada localmente nesta rodada; aplicação nativa pendente.**
+**Redução local e Sheets descartável validados; aplicação na revisão pendente.**
 O gerador usa 10 Famílias, 30 Melhorias, 30 Restrições, 10 Perícias e 10 Ofícios,
 com ANALISE 10/7.356 chaves. A revisão Google continua na capacidade anterior e
-no formato 9: houve somente leitura. Evidências e limites em
-[capacidade-b47/RELATORIO.md](capacidade-b47/RELATORIO.md). O bot pertence a outro trabalho.
+no formato 9: nela houve somente leitura. A retomada criou backup nativo e
+migrou a descartável `1hBogVNW0vqeLYwa0PNl04Y2Nel9-7nrCoODWq1FKsb4`:
+102 lotes confirmados, 22 checagens, zero erros nas faixas afetadas lidas.
+Código Apps Script vinculado ainda não foi salvo/relido; a prova permanece
+PARCIAL e não libera a revisão. Estado, IDs e próximos passos em
+[capacidade-b47/NATIVO-PARCIAL.md](capacidade-b47/NATIVO-PARCIAL.md);
+medidas locais em [RELATORIO.md](capacidade-b47/RELATORIO.md). O bot pertence a outro trabalho.
 
 ## O que já está implementado e validado na revisão
 
@@ -59,25 +64,25 @@ Essas definições são compartilhadas pelo personagem e por todas as invocaçõ
 Os 25 cartões compartilhados da 3a e os cadastros de um Caminho/uma Trilha ficam fora desta redução inicial. Capacidades de tipos futuros serão pequenas, normalmente 10/20/30; não construir outra reserva de centenas de cadastros sem uma nova decisão explícita.
 
 - [x] Confirmar ramo, estado do Git e disponibilidade de ferramentas no novo ambiente. (Local; ver relatório.)
-- [ ] Guardar cópia nativa e snapshot integral das entradas antes de qualquer migração. Em 16/10 não havia nomes preenchidos nos quatro catálogos envolvidos; isso não substitui uma nova leitura.
+- [x] Guardar backup nativo integral e snapshot das faixas alteradas antes da migração descartável. Feito na retomada de 16/10; snapshot relido antes do envio. Renovar backup/snapshot para a revisão ou outra tentativa futura.
 - [x] Centralizar capacidades e derivar faixas/posições delas; remover dependências de endereços fixados para as quantidades antigas. (Local; ver relatório.)
 - [x] Implementar os alvos da tabela, distinguindo 10 Perícias de 10 Ofícios. (Local; ver relatório.)
 - [x] Retirar também fórmulas, menus, notas, alturas e grupos excedentes. Apenas esconder cartões não resolve o peso. (Local; ver relatório.)
 - [x] Auditar painéis de treino e tabelas de apoio afetados, preservando escolhas, regras e resultados. (Local; ver relatório.)
-- [ ] Mapear as entradas e referências existentes. Não cortar campos preenchidos nem associar silenciosamente um identificador a outro cadastro.
+- [x] Mapear entradas/referências por identidade; 509 entradas/notas restauradas na descartável. Não cortar campos preenchidos nem associar silenciosamente um identificador a outro cadastro. Revisão futura exige nova guarda.
 - [x] Resolver e documentar a versão do contrato ANALISE: chaves mantidas/descontinuadas, fontes e leitor. Não reaproveitar uma chave com outro sentido. A retirada de vagas afeta o contrato; não manter milhares de exportações vazias por inércia nem removê-las silenciosamente. (Local; ver relatório.)
 - [x] Ajustar testes à capacidade nova, preservando casos negativos, herança, nomes literais, primeira/última vaga, reutilização e integridade da migração. (Local; ver relatório.)
 - [ ] Aplicar migração pontual na cópia de revisão somente depois de validar em descartável e confirmar acesso.
 - [ ] Medir antes/depois: linhas, fórmulas, tamanho dos arquivos e tempos de carregamento/edição e de construção disponíveis. Separar medida nativa de simulação.
-- [ ] Registrar resultados e reestimar B e o restante do projeto.
+- [x] Registrar resultados parciais e delimitar B restante: código vinculado, testes visuais/gatilhos e medidas nativas. Pacote REST reduzido de 260/116.025 para 102/20.058 lotes/pedidos, com equivalência provada; ver NATIVO-PARCIAL.md. Não estimar tempo Apps Script por resultados VM/API.
 
 ## B — gargalos restantes e fluxo de trabalho
 
 - [ ] Perfilar o que resta lento após A: inicialização, edição, seleção, expansão de texto, montagem e persistência.
 - [ ] Evitar preparar estruturas de construção em operações pequenas quando isso não for necessário; conservar as funções da ficha e a cópia sem ativação.
-- [ ] Avaliar um método oficial de envio automatizado ao Apps Script, com manifesto/hashes, salvamento e conferência posterior.
-- [ ] Verificar ferramentas, escopos e autenticação disponíveis. A conta Google ou as abas do computador anterior não são fornecidas pelo Git. Não presumir autorização no novo ambiente.
-- [ ] Manter essa investigação delimitada: se o envio automatizado depender de acesso indisponível, documentar a dependência e o caminho funcional, sem criar um projeto paralelo indefinido.
+- [x] Avaliar método oficial de envio: infra integrada com manifesto/hashes, snapshot remoto, retirada explícita e conferência posterior. Fluxo offline testado; envio Apps Script real ainda pendente por falta de ferramenta/autenticação compatível.
+- [x] Verificar ferramentas, escopos e autenticação disponíveis separadamente. Drive/Sheets funcionaram; Apps Script/navegador não estão expostos neste ambiente. Não presumir que a conexão Drive fornece esse acesso.
+- [x] Delimitar a investigação e registrar dependência/caminho funcional em NATIVO-PARCIAL.md e ROTEIRO-NATIVO.md, sem contornar rede/credenciais nem depender do PC.
 - [ ] Consolidar os testes novos no roteiro geral. `rodar-tudo.sh` ainda não inclui todas as regressões adicionadas nas últimas etapas.
 - [ ] Usar testes focais durante o desenvolvimento; repetir bateria mais ampla quando uma mudança, falha ou interação justificar.
 - [ ] Confirmar edição, salvamento, primeira/última vaga, cópia funcional e equivalência mecânica das funções alteradas.

@@ -1,4 +1,4 @@
-## Checkpoint vigente · A+B local · 16/10/2026
+## Checkpoint vigente · A+B local e Sheets descartável · 16/10/2026
 
 Redução local implementada: 10 Famílias, 30 Melhorias, 30 Restrições,
 10 Perícias e 10 Ofícios compartilhados. ANALISE 10/7.356 chaves, sem reutilizar
@@ -7,25 +7,30 @@ Famílias por entidade preservados. Medidas, comandos, resultados e SHAs em
 [capacidade-b47/RELATORIO.md](capacidade-b47/RELATORIO.md).
 
 A revisão Google permanece no formato 9 e não recebeu escrita nesta rodada.
-Leitura pelo conector confirmou catálogos sem dados fora dos padrões vazios;
-Apps Script/navegador não estão disponíveis para salvamento/execução. Não há
-snapshot integral atual, migração nativa, construção descartável ou aprovação
-visual Google desta redução. A migração offline tem guardas e lotes reproduzíveis;
-seguir [ROTEIRO-NATIVO](capacidade-b47/ROTEIRO-NATIVO.md), com nova leitura.
+A retomada criou backup nativo, snapshot integral das faixas alteradas e uma
+descartável: 102 lotes confirmados, ANALISE 10/7.356 chaves, 22 checagens,
+zero erros em 118.493 células de 11 abas; 48 entradas temporárias restauradas.
+Detalhes e IDs em [NATIVO-PARCIAL](capacidade-b47/NATIVO-PARCIAL.md).
+Apps Script/navegador não estão disponíveis para salvamento/execução. A prova
+é PARCIAL e não libera a revisão: falta código vinculado, visual, gatilhos,
+construção/medidas nativas e testes combinados. Seguir
+[ROTEIRO-NATIVO](capacidade-b47/ROTEIRO-NATIVO.md), com snapshot renovado
+antes de uma aplicação futura.
 
 Recebidas e integradas infra `b8ab7b5` e revisão `287b2c1` no ramo alternativo
 `claude/kind-feynman-sewhec`. A listagem inicial era incompleta porque o fetch
 buscava só main. A combinação recebeu testes e correções de carregamento misto,
 remoção explícita, avisos/erros do leitor e validações 3a longas. As origens estão
-no relatório. A revisão externa reproduziu A em `4610c88`; o SHA integrado
-posterior recebeu testes do integrador, sem nova auditoria externa. Oficial,
+no relatório. A revisão externa reproduziu A em `4610c88`; o novo `efd8dd8`
+auditou o núcleo em `8276ca6`, integrado em `3323803`, com teste de envio 10/10.
+Ferramentas posteriores em `186e844`/`6a226c3` receberam testes do integrador. Oficial,
 main, bot e acessos não foram alterados. C/D seguem
 na fila. O roteiro focal concluiu 23 etapas após reexecução de Progressão;
 a evidência conserva o resultado bruto e a correção histórica exata.
 Este checkpoint prevalece sobre as contagens históricas abaixo.
 
-Próxima ação/modelo: **GPT-6.1 Sol, High**, para aplicar/testar
-nativamente a combinação preservando todas as entradas.
+Próxima ação/modelo: **GPT-6.1 Sol, High**, para salvar/reler o código da
+descartável, validar o conjunto nativo e só depois migrar a revisão preservando entradas.
 
 ---
 
