@@ -39,8 +39,12 @@ if args.com_patch_infra:
     subprocess.run(['patch', '-s', '-p1', '-i', str(comum.AQUI / 'patches' / 'infra-remover-explicito.diff')], cwd=tmp, check=True)
 SCRIPT_ID = 'PROJETO_DE_TESTE_REVISAO'
 remoto = tmp / 'remoto-antes.json'
-arquivos = [{'name': f.stem, 'type': 'SERVER_JS', 'source': f.read_text(encoding='utf-8')}
-            for f in sorted((comum.RAIZ / 'apps-script').glob('*.gs'))]
+# O projeto Apps Script hoje guarda a geração v9 publicada (23 .gs), não a pasta do SHA em teste.
+base_v9 = comum.carregar_v9()['sha']
+nomes_v9 = subprocess.check_output(['git', 'ls-tree', '--name-only', base_v9, 'apps-script/'], cwd=comum.RAIZ, text=True).split()
+arquivos = [{'name': Path(n).stem, 'type': 'SERVER_JS',
+             'source': subprocess.check_output(['git', 'show', f'{base_v9}:{n}'], cwd=comum.RAIZ).decode('utf-8')}
+            for n in nomes_v9 if n.endswith('.gs')]
 arquivos.append({'name': 'appsscript', 'type': 'JSON', 'source': '{"timeZone": "America/Sao_Paulo"}'})
 remoto.write_text(json.dumps({'scriptId': SCRIPT_ID, 'files': arquivos}, ensure_ascii=False), encoding='utf-8')
 
@@ -67,7 +71,11 @@ try:
     # E1: sem patch
     produzidos = gerar(wt)
     r = preparar(wt / 'apps-script', tmp / 'pacote-e1.json')
-    P.check('E1: preparar aceita a pasta gerada', r.returncode == 0, r.stderr)
+    sobras_locais = sorted(f.stem for f in (wt / 'apps-script').glob('PecasAnalise*.gs') if f.stem not in produzidos)
+    if r.returncode != 0 and not sobras_locais and 'ausentes localmente' in r.stderr:
+        P.check('E1: pasta gerada sem sobras locais (a guarda bloqueia só os remotos, ver E2)', True)
+    else:
+        P.check('E1: preparar aceita a pasta gerada', r.returncode == 0, r.stderr)
     if r.returncode == 0:
         nomes = {f['name'] for f in json.loads((tmp / 'pacote-e1.json').read_text())['files']}
         velhos = sorted(n for n in nomes if n.startswith('PecasAnalise') and n not in produzidos)
@@ -75,7 +83,13 @@ try:
                 f'gerados {produzidos}; pacote leva também {velhos} (sobras da pasta, ver A1)')
     # E2: com patch do carregador
     subprocess.run(['git', 'checkout', '-q', '--', '.'], cwd=wt, check=True)
-    subprocess.run(['git', 'apply', str(comum.AQUI / 'patches' / 'carregador-selo-de-geracao.diff')], cwd=wt, check=True)
+    for nome in ('carregador-selo-de-geracao.diff', 'carregador-selo-de-geracao-v10.diff'):
+        patch_selo = comum.AQUI / 'patches' / nome
+        if subprocess.run(['git', 'apply', '--check', str(patch_selo)], cwd=wt, capture_output=True).returncode == 0:
+            break
+    else:
+        raise SystemExit('nenhuma variante do patch do selo aplica neste SHA')
+    subprocess.run(['git', 'apply', str(patch_selo)], cwd=wt, check=True)
     produzidos = gerar(wt)
     locais = sorted(f.stem for f in (wt / 'apps-script').glob('*.gs'))
     r = preparar(wt / 'apps-script', tmp / 'pacote-e2.json')
@@ -111,7 +125,8 @@ try:
         P.check('E3: --remover recusa arquivo que existe localmente', r.returncode != 0 and 'só aceita' in r.stderr, r.stderr)
         r = preparar(wt / 'apps-script', tmp / 'pacote-e5.json', rem[:2])
         P.check('E3: remover só uma sobra ainda bloqueia as outras', r.returncode != 0 and 'PecasAnalise3' in r.stderr, r.stderr)
-        shutil.copy(comum.RAIZ / 'apps-script' / 'PecasAnalise3.gs', wt / 'apps-script' / 'PecasAnalise3.gs')
+        (wt / 'apps-script' / 'PecasAnalise3.gs').write_bytes(
+            subprocess.check_output(['git', 'show', f'{base_v9}:apps-script/PecasAnalise3.gs'], cwd=comum.RAIZ))
         r = preparar(wt / 'apps-script', tmp / 'pacote-e6.json', rem)
         P.check('E3: sobra local recolocada é recusada pelo selo do Ficha.gs', r.returncode != 0 and 'Sobras locais' in r.stderr,
                 r.stderr)
