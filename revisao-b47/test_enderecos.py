@@ -10,6 +10,7 @@
     python revisao-b47/test_enderecos.py --perfil simulado-alvo
 """
 import json
+from pathlib import Path
 import re
 from collections import Counter, defaultdict
 
@@ -23,7 +24,7 @@ ap.add_argument('--folga', type=int, default=1)
 ap.add_argument('--buraco', type=int, default=10, help='linhas vazias toleradas dentro de uma faixa')
 ap.add_argument('--faixa-morta', type=int, default=100, help='linhas vazias seguidas toleradas na CONFIGURAÇÃO')
 args = ap.parse_args()
-modelo = json.loads(comum.exportar(args.perfil, 'pecas').read_text(encoding='utf-8'))
+modelo = json.loads((Path(args.analise) if args.analise else comum.exportar(args.perfil, 'pecas')).read_text(encoding='utf-8'))
 abas = {a['nome']: a for a in modelo['layout']['abas']}
 P = comum.Placar('enderecos ' + args.perfil)
 ALVOS = [n for n in ('DADOS_PROGRESSAO', 'DADOS_CRIACAO', 'DADOS_MELHORIAS', 'DADOS_RESTRICOES') if n in abas]

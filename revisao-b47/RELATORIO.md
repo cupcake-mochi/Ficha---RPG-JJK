@@ -5,6 +5,39 @@
 
 **Commit da redução (A): revisado** — ver a seção "Revisão do commit A" logo abaixo. As seções seguintes são a auditoria da base 4187df3, feita antes de A existir.
 
+## Revisão da resposta do integrador — topo `8276ca6` de `codex/b47-capacidade`
+
+O integrador incorporou a infra (`b8ab7b5`) e esta revisão (até `38ef85b`) e publicou três commits próprios: `e5871e3`, `f1ff7a6` e `8276ca6`. Revisei o diff do núcleo desde `4610c88` e rodei tudo numa worktree temporária do `8276ca6`. `codex/configuracao-b47` continuava em 4187df3.
+
+| Achado | Estado em `8276ca6` | Como foi conferido |
+|---|---|---|
+| R1 / A1 sobras de `.gs` | **Resolvido.** Selo de geração no emissor e no carregador, estendido também às abas separadas (`juntarAbas_`), `COMPLEMENTOS_ESPERADOS_`, recusa no `montar_()`, limpeza de sobras na pasta, `abas_cruas` conferindo o selo | `test_carregador.py`: 4/4, incluindo o projeto com sobras da v9 recusado |
+| R2 / A2 leitor | **Resolvido.** `aviso.custom.*` não vazio reprova; qualquer valor de erro reprova; `--teste` falha com erro exportado | `test_leitor.py`: 34 ok, 0 falhas |
+| B1 nomes no `normaliza` | **Resolvido.** Campos `.nome/.descricao/.efeito/.requisitos/.texto` são lidos como texto | `test_leitor.py`, checagem de leitura do campo de nome |
+| R3 colisão do formato 4 | **Registrado** no ESQUEMA (linhas ~249+), com a orientação de confirmar a variante do bot | leitura |
+| R4 lotes não atômicos | **Documentado** no manifesto dos lotes (`atomico_entre_lotes: false` e procedimento de falha parcial). `lotes.py` também amplia a grade antes de escrever colunas auxiliares | leitura |
+| R5 TIPO apagado | **Resolvido.** Cartão vazio com TIPO em branco não acende aviso; "repetido" só com NOME preenchido | `test_fronteiras.py`: 15/15 |
+| R6 `COMPLEMENTOS` fixo | **Resolvido** (1..9) | leitura |
+| B3 fórmulas > 8.192 | **Resolvido.** As validações da 3a foram fatiadas em colunas auxiliares (`DADOS_CUSTOM` 285+, partes ≤ 5.000), mantendo mensagens e fontes publicadas; `testar-validacao3a.py` | `test_enderecos.py`: o risco sumiu |
+| I2 envio sem remoção | **Resolvido.** `--remover` explícito em `infra-b47/apps_script.py` | `test_infra_envio.py --perfil b47-v10 --ref HEAD`: 4/4 sem patch; 10/10 com os cenários E3 |
+| M2–M5, B4 | resolvidos em `2f3c62f` | bateria abaixo |
+
+Resultados em `8276ca6`:
+- `bash rodar-tudo.sh --b47-focal`: **23/23 etapas exit 0** em 6 min 33 s, agora incluindo testes da infra, do selo, da validação 3a e as contraprovas desta revisão.
+- `bash revisao-b47/rodar.sh b47-v10`: **exit 0**. Contrato 38, leitor 34, endereços 5, carregador 4, peças 55, fronteiras 15, migração 22.
+- A regeneração reproduz os `.gs` versionados; só o XLSX muda, por data.
+
+Ajustes que o integrador fez nesta pasta e que adotei: o perfil `b47-v10`; o `--analise` como caminho; a leitura recursiva das mensagens no `test_leitor.py`, necessária com a 3a fatiada; e a checagem de B1 pela leitura real. Eu ajustei o `test_infra_envio.py`: remoto montado da v9, pasta limpa, selo já presente no núcleo e mensagem de recusa sem depender do texto exato.
+
+**Riscos restantes, não bloqueantes:**
+- os endereços de catálogo em texto de `INDIRECT` (DADOS_CUSTOM) já são derivados, mas não seriam alcançados por `troca_refs`;
+- o "⚠" segue inconsistente entre catálogos, o que é cosmético agora que o leitor reprova qualquer aviso custom;
+- B5: `migracao-criacao.py` fora da lista histórica do `NUVEM.md`.
+
+**Parecer:** nada bloqueante da revisão local ficou aberto em `8276ca6`. Integração em `codex/configuracao-b47` liberada do ponto de vista desta revisão. Seguem pendentes, sem que eu possa verificar daqui:
+- a aplicação e validação nativas (roteiro: descartável antes da revisão);
+- a atualização do bot para o formato 10 e a confirmação da variante do formato 4.
+
 ## Revisão do commit A — `2f3c62f` (código) e `4610c88` (registro), ramo `codex/b47-capacidade`
 
 Revisei o diff de `ficha-v01/` (capacidades, custom_*, analise), `ficha/` (emissor e carregador), `ler-analise.py`, `capacidade-b47/migracao.py` e `lotes.py`, além de `ROTEIRO-NATIVO`, `ESQUEMA` e relatório. A bateria rodou numa worktree temporária do `4610c88`. `codex/configuracao-b47` ainda estava em 4187df3, então **não revisei a integração**.

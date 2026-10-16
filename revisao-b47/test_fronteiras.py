@@ -24,7 +24,7 @@ ap = comum.argumentos(__doc__)
 args = ap.parse_args()
 p = comum.perfil(args.perfil)
 P = comum.Placar('fronteiras ' + args.perfil)
-modelo = json.loads(comum.exportar(args.perfil, 'pecas').read_text(encoding='utf-8'))
+modelo = json.loads((Path(args.analise) if args.analise else comum.exportar(args.perfil, 'pecas')).read_text(encoding='utf-8'))
 abas = {a['nome']: a for a in modelo['layout']['abas']}
 A = {l[0]: l for l in comum._linhas_da_aba(abas['ANALISE'])}
 print(f'SHA {comum.sha()} · perfil {args.perfil}\n')

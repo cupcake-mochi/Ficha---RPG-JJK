@@ -214,5 +214,65 @@
         ]
       }
     }
+  },
+  "b47-v10": {
+    "descricao": "Implementação real ANALISE 10, 10/30/30/10/10, com TIPO fixo exportado.",
+    "trocas": {},
+    "formato_minimo": 10,
+    "catalogos": {
+      "familia": {
+        "capacidade": 10,
+        "campos": [
+          "nome",
+          "estado",
+          "mestre_viu",
+          "descricao"
+        ]
+      },
+      "melhoria": {
+        "capacidade": 30,
+        "campos": [
+          "nome",
+          "base",
+          "familia",
+          "peso",
+          "exige_tr",
+          "requisitos",
+          "efeito",
+          "mestre_viu"
+        ]
+      },
+      "restricao": {
+        "capacidade": 30,
+        "campos": [
+          "nome",
+          "base",
+          "devolucao",
+          "frequencia",
+          "efeito",
+          "mestre_viu"
+        ]
+      },
+      "pericia": {
+        "capacidade": 10,
+        "campos": [
+          "tipo",
+          "nome",
+          "mestre_viu",
+          "atributo",
+          "efeito"
+        ]
+      },
+      "oficio": {
+        "capacidade": 10,
+        "campos": [
+          "tipo",
+          "nome",
+          "mestre_viu",
+          "atributo",
+          "efeito"
+        ]
+      }
+    }
   }
 }
