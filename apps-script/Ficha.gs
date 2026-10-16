@@ -2,8 +2,8 @@
 // O layout e as fórmulas moram no gerador Python, que os dez
 // validadores conferem. Aqui é só o transporte.
 
-var GERACAO_ = "f85ffda549994a3f";
-var COMPLEMENTOS_ESPERADOS_ = {"AnaliseFontes.gs": "FONTES_DA_ANALISE_", "CriacaoAnalise.gs": "CONTRATO_CRIACAO_", "CriacaoPainel.gs": "VALORES_CRIACAO_", "Origens.gs": "VALORES_DAS_ORIGENS_", "PecasAnalise1.gs": "CONTRATO_PECAS_1_", "PecasPainel.gs": "VALORES_PECAS_", "Pessoal.gs": "VALORES_CUSTOM_", "ProgressaoAnalise.gs": "CONTRATO_PROGRESSAO_", "ProgressaoPainel.gs": "VALORES_PROGRESSAO_"};
+var GERACAO_ = "7adee586c04accf6";
+var COMPLEMENTOS_ESPERADOS_ = {"AnaliseFontes.gs": "FONTES_DA_ANALISE_", "CriacaoAnalise.gs": "CONTRATO_CRIACAO_", "CriacaoPainel.gs": "VALORES_CRIACAO_", "DanosPainel.gs": "VALORES_DANOS_", "Origens.gs": "VALORES_DAS_ORIGENS_", "PecasAnalise1.gs": "CONTRATO_PECAS_1_", "PecasPainel.gs": "VALORES_PECAS_", "Pessoal.gs": "VALORES_CUSTOM_", "ProgressaoAnalise.gs": "CONTRATO_PROGRESSAO_", "ProgressaoPainel.gs": "VALORES_PROGRESSAO_"};
 
 var ABAS = [
   {
@@ -792,7 +792,7 @@ function juntarAbas_(extras) {
   // depende de qual .gs carregou primeiro; estabilizar também as abas irmãs.
   var ordem = ['CARTEIRA', 'FICHA', 'FICHA AMALDIÇOADA', 'INVOCAÇÕES',
     'FICHA PESSOAL', 'DADOS', 'DADOS_AM', 'DADOS_INVOC', 'GLOSSÁRIO',
-    'DADOS_PROGRESSAO', 'DADOS_CUSTOM', 'DADOS_CRIACAO', 'DADOS_MELHORIAS', 'DADOS_RESTRICOES', 'ANALISE',
+    'DADOS_PROGRESSAO', 'DADOS_CUSTOM', 'DADOS_CRIACAO', 'DADOS_MELHORIAS', 'DADOS_RESTRICOES', 'DADOS_DANOS', 'ANALISE',
     'CONFIGURAÇÃO', 'DADOS_CONFIG'];
   ABAS.sort(function (a, b) {
     var ia = ordem.indexOf(a.nome), ib = ordem.indexOf(b.nome);
@@ -806,6 +806,7 @@ function juntarAbas_(extras) {
   if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(VALORES_CRIACAO_);
   if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
   if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
+  if (typeof VALORES_DANOS_ !== 'undefined' && VALORES_DANOS_) juntarValores_(VALORES_DANOS_);
   juntarContratosPecas_();
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
@@ -816,6 +817,7 @@ if (typeof ABAS_DA_PROGRESSAO !== 'undefined' && ABAS_DA_PROGRESSAO) juntarAbas_
 if (typeof ABAS_DA_CRIACAO !== 'undefined' && ABAS_DA_CRIACAO) juntarAbas_(ABAS_DA_CRIACAO);
 if (typeof ABAS_DAS_MELHORIAS !== 'undefined' && ABAS_DAS_MELHORIAS) juntarAbas_(ABAS_DAS_MELHORIAS);
 if (typeof ABAS_DAS_RESTRICOES !== 'undefined' && ABAS_DAS_RESTRICOES) juntarAbas_(ABAS_DAS_RESTRICOES);
+if (typeof ABAS_DOS_DANOS !== 'undefined' && ABAS_DOS_DANOS) juntarAbas_(ABAS_DOS_DANOS);
 
 /** Junta a tabela das Origens à DADOS, mesmo se Origens.gs carregar antes deste arquivo. */
 function juntarValores_(extras) {
@@ -861,6 +863,7 @@ if (typeof CONTRATO_PROGRESSAO_ !== 'undefined' && CONTRATO_PROGRESSAO_) juntarV
 if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(VALORES_CRIACAO_);
 if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
 if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
+if (typeof VALORES_DANOS_ !== 'undefined' && VALORES_DANOS_) juntarValores_(VALORES_DANOS_);
 juntarContratosPecas_();
 
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
@@ -1005,6 +1008,9 @@ function montar_() {
   }
   if (typeof VALORES_PECAS_ === 'undefined' || !VALORES_PECAS_) {
     throw new Error('Falta o PecasPainel.gs: cole todos os arquivos antes de construir.');
+  }
+  if (typeof ABAS_DOS_DANOS === 'undefined' || !ABAS_DOS_DANOS) {
+    throw new Error('Falta o Danos.gs: cole todos os arquivos antes de construir.');
   }
   Object.keys(COMPLEMENTOS_ESPERADOS_).forEach(function (arq) {
     if (!globais_()[COMPLEMENTOS_ESPERADOS_[arq]]) throw new Error('Falta o ' + arq + ': cole todos os arquivos antes de construir.');

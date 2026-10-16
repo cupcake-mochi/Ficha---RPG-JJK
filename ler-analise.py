@@ -16,7 +16,7 @@ import csv, io, os, re, shutil, subprocess, sys, tempfile, urllib.request
 from pathlib import Path
 
 ABA = "ANALISE"
-FORMATOS_CONHECIDOS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+FORMATOS_CONHECIDOS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
 ERROS = {"#REF!", "#N/A", "#NAME?", "#VALUE!", "#DIV/0!", "#NUM!", "#NULL!", "#ERROR!", "#SPILL!", "#CALC!"}
 
 
@@ -47,7 +47,7 @@ def de_linhas(linhas):
         l = (list(l) + ["", "", "", ""])[:4]
         if not l[0] or l[0] == "chave":
             continue
-        texto = l[0] in {'nome','caminho','trilha','origem','ficha.versao'} or str(l[0]).endswith(('.nome','.descricao','.efeito','.requisitos','.texto'))
+        texto = l[0] in {'nome','caminho','trilha','origem','ficha.versao'} or str(l[0]).endswith(('.nome','.descricao','.definicao','.efeito','.requisitos','.texto'))
         valor = (str(l[1]) if l[1] is not None else '') if texto else normaliza(l[1])
         out[str(l[0])] = {"valor": valor, "celula": l[2] or "", "parte": l[3] or ""}
     return out

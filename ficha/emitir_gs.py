@@ -443,7 +443,8 @@ SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVO
              "Progressao.gs": ("ABAS_DA_PROGRESSAO", ("DADOS_PROGRESSAO",)),
              "Criacao.gs": ("ABAS_DA_CRIACAO", ("DADOS_CRIACAO",)),
              "Melhorias.gs": ("ABAS_DAS_MELHORIAS", ("DADOS_MELHORIAS",)),
-             "Restricoes.gs": ("ABAS_DAS_RESTRICOES", ("DADOS_RESTRICOES",))}
+             "Restricoes.gs": ("ABAS_DAS_RESTRICOES", ("DADOS_RESTRICOES",)),
+             "Danos.gs": ("ABAS_DOS_DANOS", ("DADOS_DANOS",))}
 COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
                 "AnaliseFontes.gs": "FONTES_DA_ANALISE_",
                 "Pessoal.gs": "VALORES_CUSTOM_",
@@ -452,12 +453,14 @@ COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
                 "CriacaoPainel.gs": "VALORES_CRIACAO_",
                 "CriacaoAnalise.gs": "CONTRATO_CRIACAO_",
                 "PecasPainel.gs": "VALORES_PECAS_",
+                "DanosPainel.gs": "VALORES_DANOS_",
                 **{f"PecasAnalise{i}.gs":f"CONTRATO_PECAS_{i}_" for i in range(1,10)}}
 
 # Alturas e caixas que esticam pertencem ao mesmo painel, mas ocupam mais
 # espaço que seus valores. O carregador recompõe a aba independentemente da
 # ordem dos arquivos; cada arquivo continua abaixo do teto de 900 KB.
-METADADOS_COMPLEMENTARES = {"PecasPainel.gs": {"CONFIGURAÇÃO": ("alturas", "esticam")}}
+METADADOS_COMPLEMENTARES = {"PecasPainel.gs": {"CONFIGURAÇÃO": ("alturas", "esticam")},
+                           "DanosPainel.gs": {"CONFIGURAÇÃO": ("alturas", "esticam")}}
 
 
 def abas_cruas(caminho=None):
@@ -770,7 +773,7 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
             abas = [a for a in abas if a["nome"] not in nomes]
     os.makedirs(os.path.dirname(SAIDA), exist_ok=True)
     corpo = open(os.path.join(AQUI, "modelo.gs.js"), encoding="utf-8").read()
-    with open(SAIDA, "w", encoding="utf-8") as fp:
+    with open(SAIDA, "w", encoding="utf-8", newline='\n') as fp:
         fp.write("// GERADO POR ficha/emitir_gs.py — não edite este arquivo na mão.\n")
         fp.write("// O layout e as fórmulas moram no gerador Python, que os dez\n")
         fp.write("// validadores conferem. Aqui é só o transporte.\n\n")
@@ -780,7 +783,7 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
         fp.write("var ARTE = " + _sem_linha_gigante(arte) + ";\n\n")
         fp.write(corpo)
     for arq, (var, saem) in fora.items():
-        with open(os.path.join(os.path.dirname(SAIDA), arq), "w", encoding="utf-8") as fp:
+        with open(os.path.join(os.path.dirname(SAIDA), arq), "w", encoding="utf-8", newline='\n') as fp:
             fp.write("// GERADO POR ficha/emitir_gs.py — não edite este arquivo na mão.\n")
             fp.write("// As abas " + " e ".join(a["nome"] for a in saem) + ", que não cabem no Ficha.gs. Cole este arquivo no mesmo projeto\n")
             fp.write("// do Apps Script, ao lado do Ficha.gs e do Codigo.gs: sem ele a ficha é montada sem essas abas.\n\n")
@@ -788,7 +791,7 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
             fp.write(f"if (typeof juntarAbas_ === 'function') juntarAbas_({var});\n")
     for arq, valores in complementos.items():
         var = COMPLEMENTOS[arq]
-        with open(os.path.join(os.path.dirname(SAIDA), arq), "a" if arq in fora else "w", encoding="utf-8") as fp:
+        with open(os.path.join(os.path.dirname(SAIDA), arq), "a" if arq in fora else "w", encoding="utf-8", newline='\n') as fp:
             fp.write("// GERADO POR ficha-v01/monta.py — não edite este arquivo na mão.\n")
             fp.write("// Valores complementares da " + valores[0]["nome"] + ". Cole no mesmo projeto dos demais .gs.\n\n")
             fp.write(f"var {var} = " + _sem_linha_gigante(valores) + ";\n\n")

@@ -240,6 +240,9 @@ import custom_criacao
 _CRIACAO = custom_criacao.aplica(LAYOUT, _FAM, _FIV)
 import custom_pecas
 _PECAS = custom_pecas.aplica(LAYOUT, _FAM, _FIV, _CRIACAO)
+import custom_condicoes, custom_danos
+_CONDICOES = custom_condicoes.aplica(LAYOUT, _PECAS)
+_DANOS = custom_danos.aplica(LAYOUT, {'inv': _FIV, 'custom': _CUSTOM})
 # A ampliação declara suas alterações exatas junto da integração de progressão.
 for _name, _values in _FAMILIAS['antes'].items():
     for _coord, _value in _values.items():
@@ -256,6 +259,12 @@ for _name, _values in _PECAS['antes'].items():
         _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
 for _name, _values in _PECAS['depois'].items():
     _PROG['depois'].setdefault(_name, {}).update(_values)
+for _new in (_CONDICOES, _DANOS):
+    for _name, _values in _new['antes'].items():
+        for _coord, _value in _values.items():
+            _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
+    for _name, _values in _new['depois'].items():
+        _PROG['depois'].setdefault(_name, {}).update(_values)
 print(f"a CONFIGURAÇÃO: {configuracao.QUANTIDADE} efeitos, {len(_CFG['alvos'])} caixas, paleta fixa")
 import analise
 _AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
@@ -268,13 +277,16 @@ _AN_FIM_ANTES_CRIACAO = len(_AN['linhas'])+1
 _AN['linhas'].extend(custom_criacao.exporta(_CRIACAO))
 _AN_FIM_CRIACAO = len(_AN['linhas'])+1
 _AN['linhas'].extend(custom_pecas.exporta(_PECAS))
+_AN['linhas'].extend(custom_condicoes.exporta(_CONDICOES))
+_AN['linhas'].extend(custom_danos.exporta(_DANOS))
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
 
 if '--exportar-pecas' in sys.argv:
     destino = sys.argv[sys.argv.index('--exportar-pecas')+1]
     with open(destino+'.tmp','w',encoding='utf-8') as arquivo:
-        json.dump({'layout':LAYOUT,**{k:v for k,v in _PECAS.items()}},arquivo,ensure_ascii=False)
+        json.dump({'layout':LAYOUT,**{k:v for k,v in _PECAS.items()},
+                   'condicoes': _CONDICOES, 'danos': _DANOS},arquivo,ensure_ascii=False)
     os.replace(destino+'.tmp',destino)
     sys.exit(0)
 
@@ -504,6 +516,7 @@ gs, celulas, pecas = emitir_gs.escrever(
                 **{f"PecasAnalise{i+1}.gs": ("ANALISE",1,4,first,min(first+2999,len(_AN['linhas'])+1))
                    for i,first in enumerate(range(_AN_FIM_CRIACAO+1,len(_AN['linhas'])+2,3000))},
                 "PecasPainel.gs": ("CONFIGURAÇÃO",1,16,_PECAS['fim_familias']+1,_PECAS['fim']),
+                "DanosPainel.gs": ("CONFIGURAÇÃO",1,16,_DANOS['inicio']-2,_DANOS['fim']),
                 "ProgressaoAnalise.gs": ("ANALISE", 1, 4, _AN_FIM_ANTES_CRIACAO-len(custom_progressao.exporta(_PROG))+1, _AN_FIM_ANTES_CRIACAO),
                 "CriacaoPainel.gs": [("CONFIGURAÇÃO", 1, 7, 133, 164),
                                       ("CONFIGURAÇÃO", 1, 16, _CRIACAO['fim_progressao']+1, _CRIACAO['fim'])],

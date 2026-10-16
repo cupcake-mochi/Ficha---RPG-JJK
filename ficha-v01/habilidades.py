@@ -160,7 +160,7 @@ def escreve_gs(destino, linhas=None):
            " * que o script conta igual.\n */\n"
            f"var HABILIDADES_DO_LIVRO_ = [\n{corpo}\n];\n\n"
            f"var MEDIDA_DAS_CARTAS_ = {json.dumps(medida(), ensure_ascii=False)};\n")
-    open(destino, "w", encoding="utf-8").write(txt)
+    open(destino, "w", encoding="utf-8", newline='\n').write(txt)
     return len(linhas), len(txt)
 
 

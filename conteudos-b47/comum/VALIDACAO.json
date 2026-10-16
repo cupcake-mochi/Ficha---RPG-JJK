@@ -1,0 +1,231 @@
+{
+  "estado": "COMUNS_LOCAL_E_FORMULAS_NATIVAS; C+D INCOMPLETOS",
+  "base_comum": "0d4d64e2847dfea29b0e3804ab6f0853c52ea6fd",
+  "contrato_base": "ae16895",
+  "modelo": {
+    "arquivo": "nuvem-b47/saidas/cd/comuns-modelo.json",
+    "bytes": 16808756,
+    "sha256": "65ab1693e27f4f43b9d7f0e4f30634e8f481b0e876100aed1ad623955377e9e5"
+  },
+  "fontes": [
+    {
+      "arquivo": "ficha-v01/custom_danos.py",
+      "bytes": 9323,
+      "sha256": "3ad38b9fe429517fcf5fb683e431ebe272b57a31d9fd188ffea7ad2d83bd76ac"
+    },
+    {
+      "arquivo": "ficha-v01/custom_condicoes.py",
+      "bytes": 4227,
+      "sha256": "e80d6f24ebd3dab0625b4845e2bb882f871042a9e95f3a024722aaad2c015fc2"
+    },
+    {
+      "arquivo": "ficha-v01/capacidades.py",
+      "bytes": 468,
+      "sha256": "83592f9b1c95abb8a108ab1c31cf0262993388edf24921ca367dccc456392e80"
+    },
+    {
+      "arquivo": "ficha-v01/monta.py",
+      "bytes": 30979,
+      "sha256": "2335f16d1824c6359ebcb0979f501ff053700a6fe8c61d891c5b5d9888026c0e"
+    },
+    {
+      "arquivo": "ficha-v01/analise.py",
+      "bytes": 17822,
+      "sha256": "5209469394c141095f3152a827498c512fe2f5fdce785c2eda4cd8b47f1faac3"
+    },
+    {
+      "arquivo": "ficha-v01/habilidades.py",
+      "bytes": 17803,
+      "sha256": "069d89603ad932017b02f58698213afec023c2f714abc097aa1cdd00b77ffc7d"
+    },
+    {
+      "arquivo": "ficha/emitir_gs.py",
+      "bytes": 44382,
+      "sha256": "d37c3852b04bccf5c34349ca5ec75eeebacaf87f9a076148268161bb0db82801"
+    },
+    {
+      "arquivo": "ficha/modelo.gs.js",
+      "bytes": 50663,
+      "sha256": "5139d062be5958bd7fff0dbe0e17045d2180ba63d5a5c16011fb3da0fd95e2c8"
+    },
+    {
+      "arquivo": "ler-analise.py",
+      "bytes": 7719,
+      "sha256": "5223634ec977eaceba1b01e059db90d2ae5e5e66b04de907a6d86b75ed224049"
+    },
+    {
+      "arquivo": "conteudos-b47/comum/testar-comuns.py",
+      "bytes": 5853,
+      "sha256": "7f192e9c079feb653256178b6caaa67c508d8705bba43225a5bef4cba3c9b591"
+    },
+    {
+      "arquivo": "conteudos-b47/comum/testar-carregamento.js",
+      "bytes": 3439,
+      "sha256": "1760ac43c1b85dc97567dcee9846d86bbfbf785f86643123b10f23923a184ba6"
+    },
+    {
+      "arquivo": "conteudos-b47/comum/preparar-teste-nativo.py",
+      "bytes": 5914,
+      "sha256": "6f891425306a54ed44bdb019fa863ecadb6e19ec2d33685a5d21c79017898fd0"
+    }
+  ],
+  "geracao": "7adee586c04accf6",
+  "gs": [
+    {
+      "arquivo": "apps-script/Analise.gs",
+      "bytes": 816375,
+      "sha256": "229ab6ec86a0220b0d61f8ae04cdf6561f6c9a16bce4995b005bbaa0b0b3c277"
+    },
+    {
+      "arquivo": "apps-script/AnaliseFontes.gs",
+      "bytes": 413469,
+      "sha256": "2998ee7a0178877615ee4f6375739dd77ad92571705559fabea0fe025307b726"
+    },
+    {
+      "arquivo": "apps-script/Codigo.gs",
+      "bytes": 260138,
+      "sha256": "5ff83291af772326057c1a83eb8f25528c3856e8111cae06b4deea27d0831bfa"
+    },
+    {
+      "arquivo": "apps-script/Configuracao.gs",
+      "bytes": 696788,
+      "sha256": "9fba5f02b16a6bc6a3f49c750f03ca7f6bcc9aa84419086fa4076ab28f33662b"
+    },
+    {
+      "arquivo": "apps-script/Criacao.gs",
+      "bytes": 14519,
+      "sha256": "30ee8e617cbdaba80001200b36e519fc054ba1dcca9bdf05c4289f86dfa9a5c2"
+    },
+    {
+      "arquivo": "apps-script/CriacaoAnalise.gs",
+      "bytes": 10128,
+      "sha256": "54930a40dcbcf6e7dd3784a4fd0cf022fc492a63a2c2b3859fe6d2c656727ff8"
+    },
+    {
+      "arquivo": "apps-script/CriacaoPainel.gs",
+      "bytes": 32159,
+      "sha256": "546cbcbb4210223244048beb7e144dc95691bee0a842397caf29ef90dc3059f8"
+    },
+    {
+      "arquivo": "apps-script/Custom.gs",
+      "bytes": 610791,
+      "sha256": "64d8f23bba475fcc77ebd9c9a4b84a17324211d51674c828ed3264cb125fa77a"
+    },
+    {
+      "arquivo": "apps-script/Danos.gs",
+      "bytes": 11363,
+      "sha256": "0a51aaa2d9ea00e4563f3b76c606babc20dfd10e38691d4d7052475ee9935cbf"
+    },
+    {
+      "arquivo": "apps-script/DanosPainel.gs",
+      "bytes": 2545,
+      "sha256": "545cb1f23ecb84b34ee443acf789e2ffc699976c0148adcc43fffa8f27b0c26e"
+    },
+    {
+      "arquivo": "apps-script/Ficha.gs",
+      "bytes": 790936,
+      "sha256": "88b5ef43b5f226e588069224191036c1e75228c660cd5ed797bbae556822d598"
+    },
+    {
+      "arquivo": "apps-script/Habilidades.gs",
+      "bytes": 215389,
+      "sha256": "478f255b306af36c19f1bfdfba0e337ffc6fb7cf49ab2b5b5f4f95f665b0b00e"
+    },
+    {
+      "arquivo": "apps-script/Invocacoes.gs",
+      "bytes": 577067,
+      "sha256": "03e28604ba401608efd995e88c2319372008355ee492dee90f0468d025d645d6"
+    },
+    {
+      "arquivo": "apps-script/Melhorias.gs",
+      "bytes": 70185,
+      "sha256": "4db717b590e25ca226d695dc4857d7c0c9544564f16f1112fec504ecbca8be1d"
+    },
+    {
+      "arquivo": "apps-script/Origens.gs",
+      "bytes": 519699,
+      "sha256": "fad8366b9a3ce8b101d6fdb4d41a29fc1d4f93c80d7d8673d64829536d56d4bd"
+    },
+    {
+      "arquivo": "apps-script/PecasAnalise1.gs",
+      "bytes": 103567,
+      "sha256": "49aeac494b9eb8343d1b9297e7cf3c395ea752490949f7e0a63021922679d814"
+    },
+    {
+      "arquivo": "apps-script/PecasPainel.gs",
+      "bytes": 57458,
+      "sha256": "9bb92f797286d96839b7f6c2d4f0715c2d8ce893914b6731efa5465fe1420838"
+    },
+    {
+      "arquivo": "apps-script/Pessoal.gs",
+      "bytes": 163251,
+      "sha256": "cc92cd6e7292bcd55ea307041d3c05a03f767197dec2501963feea4e9a843632"
+    },
+    {
+      "arquivo": "apps-script/Progressao.gs",
+      "bytes": 79652,
+      "sha256": "2541545debf7157db955d4e714eaa8ff894e042c6a9747eab8f40fd9e4f87dfd"
+    },
+    {
+      "arquivo": "apps-script/ProgressaoAnalise.gs",
+      "bytes": 105981,
+      "sha256": "869f7f41e5eaabac930452a440df54a4f80512e544e57b42ae0784de93eb79cd"
+    },
+    {
+      "arquivo": "apps-script/ProgressaoPainel.gs",
+      "bytes": 164855,
+      "sha256": "f344d0e74169b5b8266d95b7b2f234204d3cbc0da899f1ee83e5643f29e48699"
+    },
+    {
+      "arquivo": "apps-script/Restricoes.gs",
+      "bytes": 12361,
+      "sha256": "1d8ba00ead5844d1443cef7dfbb4a39e91bf364bc250d1f25367d2f2a37d0eb0"
+    }
+  ],
+  "gs_max_bytes": 816375,
+  "gs_total_bytes": 5728676,
+  "local": {
+    "testes_comuns": 10,
+    "carregamento": {
+      "checagens": 12,
+      "ordens": 8,
+      "abas": 18,
+      "chaves": 7436
+    },
+    "calc": "indisponivel",
+    "compactacao": {
+      "resultado": "OK",
+      "abas_producao": 18,
+      "fixtures_notas": 3
+    },
+    "textos": {
+      "resultado": "OK",
+      "cenarios": 7,
+      "grupos": 76,
+      "leituras_por_edicao": 4
+    }
+  },
+  "nativo": {
+    "destino": "1BzVzrqjKsarh6DCAu6FGZ_yOxy0aBzttfX4n1JH2QFI",
+    "lotes_confirmados": 31,
+    "pedidos": 899,
+    "assercoes": 48,
+    "selecoes_reuso": 12,
+    "campos_restaurados": 29,
+    "celulas_releitura_final": 968,
+    "erros_formula": 0,
+    "avisos_vazios": 40,
+    "exportacao": "80 campos em CD_TESTE_ANALISE; ANALISE principal inalterada v10",
+    "gs_vinculados": "v10, sem envio de codigo novo",
+    "revisao_preenchida": "sem escrita C",
+    "oficial": "sem escrita",
+    "pool_dano_3a": "CH17 calculado com nome literal; campo e pool restaurados e relidos"
+  },
+  "pendencias": [
+    "revisar/integrar personagem e entidades",
+    "validar pacote integrado no Apps Script e construir descartavel",
+    "snapshot/backup novos e migracao guardada da revisao",
+    "D e auditoria final",
+    "bot fora do escopo"
+  ]
+}

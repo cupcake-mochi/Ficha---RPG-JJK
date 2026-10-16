@@ -63,7 +63,7 @@ var CONTRATO_PROGRESSAO_ = [
       [6815,1,"regra.invocacao_familias_abertas_principal",0],[6815,2,"=IF(ISBLANK('CONFIGURAÇÃO'!$G$143),\"\",'CONFIGURAÇÃO'!$G$143)",0],[6815,3,"=\"'CONFIGURAÇÃO'!G143\"",0],[6815,4,"configuração",0],[6816,1,"regra.invocacao_familias_abertas_principal.campanha",0],[6816,2,"=IF(ISBLANK('CONFIGURAÇÃO'!$F$143),\"\",'CONFIGURAÇÃO'!$F$143)",0],[6816,3,"=\"'CONFIGURAÇÃO'!F143\"",0],[6816,4,"configuração",0],[6817,1,"regra.invocacao_familias_livres_principal",0],[6817,2,"=IF(ISBLANK('CONFIGURAÇÃO'!$G$144),\"\",'CONFIGURAÇÃO'!$G$144)",0],[6817,3,"=\"'CONFIGURAÇÃO'!G144\"",0],[6817,4,"configuração",0],[6818,1,"regra.invocacao_familias_livres_principal.campanha",0],[6818,2,"=IF(ISBLANK('CONFIGURAÇÃO'!$F$144),\"\",'CONFIGURAÇÃO'!$F$144)",0],[6818,3,"=\"'CONFIGURAÇÃO'!F144\"",0],[6818,4,"configuração",0],[6819,1,"regra.invocacao_familias_livres_nao_autonoma",0],[6819,2,"=IF(ISBLANK('CONFIGURAÇÃO'!$G$145),\"\",'CONFIGURAÇÃO'!$G$145)",0],[6819,3,"=\"'CONFIGURAÇÃO'!G145\"",0],[6819,4,"configuração",0],[6820,1,"regra.invocacao_familias_livres_nao_autonoma.campanha",0],[6820,2,"=IF(ISBLANK('CONFIGURAÇÃO'!$F$145),\"\",'CONFIGURAÇÃO'!$F$145)",0],[6820,3,"=\"'CONFIGURAÇÃO'!F145\"",0],[6820,4,"configuração",0]
     ],
     "notas":[],
-    "geracao":"f85ffda549994a3f",
+    "geracao":"7adee586c04accf6",
     "arquivo":"ProgressaoAnalise.gs"
   }
 ];
