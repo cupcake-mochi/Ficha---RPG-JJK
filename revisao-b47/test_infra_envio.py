@@ -35,7 +35,7 @@ tmp = Path(tempfile.mkdtemp(prefix='revisao-b47-infra-'))
 ferramenta = tmp / 'infra-b47' / 'apps_script.py'
 ferramenta.parent.mkdir(parents=True)
 ferramenta.write_bytes(subprocess.check_output(['git', 'show', f'{ref_sha}:infra-b47/apps_script.py'], cwd=comum.RAIZ))
-if args.com_patch_infra:
+if args.com_patch_infra and '--remover' not in ferramenta.read_text(encoding='utf-8'):
     subprocess.run(['patch', '-s', '-p1', '-i', str(comum.AQUI / 'patches' / 'infra-remover-explicito.diff')], cwd=tmp, check=True)
 SCRIPT_ID = 'PROJETO_DE_TESTE_REVISAO'
 remoto = tmp / 'remoto-antes.json'
@@ -83,13 +83,16 @@ try:
                 f'gerados {produzidos}; pacote leva também {velhos} (sobras da pasta, ver A1)')
     # E2: com patch do carregador
     subprocess.run(['git', 'checkout', '-q', '--', '.'], cwd=wt, check=True)
-    for nome in ('carregador-selo-de-geracao.diff', 'carregador-selo-de-geracao-v10.diff'):
+    ja_tem_selo = 'GERACAO_' in (wt / 'ficha' / 'emitir_gs.py').read_text(encoding='utf-8')
+    for nome in ([] if ja_tem_selo else ['carregador-selo-de-geracao.diff', 'carregador-selo-de-geracao-v10.diff']):
         patch_selo = comum.AQUI / 'patches' / nome
         if subprocess.run(['git', 'apply', '--check', str(patch_selo)], cwd=wt, capture_output=True).returncode == 0:
             break
     else:
-        raise SystemExit('nenhuma variante do patch do selo aplica neste SHA')
-    subprocess.run(['git', 'apply', str(patch_selo)], cwd=wt, check=True)
+        if not ja_tem_selo:
+            raise SystemExit('nenhuma variante do patch do selo aplica neste SHA')
+    if not ja_tem_selo:
+        subprocess.run(['git', 'apply', str(patch_selo)], cwd=wt, check=True)
     produzidos = gerar(wt)
     locais = sorted(f.stem for f in (wt / 'apps-script').glob('*.gs'))
     r = preparar(wt / 'apps-script', tmp / 'pacote-e2.json')
@@ -128,7 +131,7 @@ try:
         (wt / 'apps-script' / 'PecasAnalise3.gs').write_bytes(
             subprocess.check_output(['git', 'show', f'{base_v9}:apps-script/PecasAnalise3.gs'], cwd=comum.RAIZ))
         r = preparar(wt / 'apps-script', tmp / 'pacote-e6.json', rem)
-        P.check('E3: sobra local recolocada é recusada pelo selo do Ficha.gs', r.returncode != 0 and 'Sobras locais' in r.stderr,
+        P.check('E3: sobra local recolocada é recusada pelo selo do Ficha.gs', r.returncode != 0 and 'PecasAnalise3' in r.stderr,
                 r.stderr)
 finally:
     subprocess.run(['git', 'worktree', 'remove', '--force', str(wt)], cwd=comum.RAIZ)
