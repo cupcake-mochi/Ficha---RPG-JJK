@@ -73,8 +73,11 @@ python infra-b47/apps_script.py manifesto --saida infra-b47/saidas/manifesto.jso
 
 Lista nomes de arquivo/API, bytes UTF-8 e SHA-256, além do total. Rejeita conjunto
 vazio, symlinks e arquivos com **900.000 bytes ou mais**, seguindo a guarda
-estrita do bootstrap. `MANIFESTO-BASE.json` é a conferência desta base, não da
-redução futura. Regenerar o manifesto após A; só o integrador regenera os `.gs`.
+estrita do bootstrap. `MANIFESTO-BASE.json` é o registro histórico da v9 (23 arquivos), preservado
+para comparação. O manifesto atual da integração é
+[`capacidade-b47/manifesto-gs.json`](../capacidade-b47/manifesto-gs.json), com
+20 arquivos v10; foi regenerado e comparado pelo comando acima, com nomes,
+tamanhos e hashes idênticos. Só o integrador regenera os `.gs`.
 Os comandos rejeitam uma saída que coincida com snapshot, pacote ou `.gs` de
 entrada, inclusive por link simbólico/hard link. Isso preserva os arquivos
 necessários à comparação e à reversão. O erro retorna exit 2 sem gravar a saída.

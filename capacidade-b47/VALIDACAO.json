@@ -5,13 +5,21 @@
   "tipo": "validação local, sem escrita Google",
   "fontes_sha256": {
     "ficha-v01/capacidades.py": "ae56ba8310e9780ab64114cc60770ca396ca8bb8bc32673e0075770bf91f9862",
-    "ficha-v01/custom_progressao.py": "6c6ecef200e96af8338de7ee9bcdf7104d8ed664fb38911c0c6c9b570489a8c5",
+    "ficha-v01/custom_progressao.py": "3be660693d812efb9897919e600799485f4e7d03007d3d7ae02103632dd5c029",
     "ficha-v01/custom_criacao.py": "ab95e75f8779db2376712ef249cf8c0594b588abd7d7de16949867ee651da5b4",
     "ficha-v01/custom_pecas.py": "57cfdb1f66c66482bc91e987a518052dc4eb39e2c23253a6ea3c1b9fbfbcafca",
     "ficha-v01/analise.py": "a05471b8bc470a87132338aa02345cb7987bbbdcdcc607a9288c0c3d7e82072e",
-    "ficha/modelo.gs.js": "650ec0c2a84ba338e5b26463d18dbd5318299e6e4f78d7c7af0a7b72db29cd2a",
-    "ficha/emitir_gs.py": "9bf052cf21a8128ad782ccbbe691cdece93e22b27e8408271d8559dd98e5c4b8",
-    "ler-analise.py": "75ffa4d0b19ae7f3255e134b48380728880c80aa52b1a6c389f59292ee77f99b"
+    "ficha/modelo.gs.js": "4425d0bb19041667f2ace201ad9f682cc02242cb4b992252ba8733f14c23fe61",
+    "ficha/emitir_gs.py": "7ba5f21015d757dda24825bf9ddd5fcaf41ad7b3b5fb5f85d9e09ecf3db9e345",
+    "ler-analise.py": "b978dade52ad7ec68b18f39d5507c69b2a9efc8ffca480136accde6264d60509",
+    "ficha-v01/custom.py": "eca8539973b00481c9051f96b20ceb13b7a1e44fbf93c982254d9b0164884e3f",
+    "ficha-v01/monta.py": "3c34b5a9b84d2e3c5b10d4b7d21d963ecacaa06d0dd9192691fa0b90e25446e6",
+    "capacidade-b47/migracao.py": "437aec511728da66690c07956b802b3598b10cbd72bca9175fb1ca1bb45e11ff",
+    "capacidade-b47/lotes.py": "f0dc955c147bf099f7dd6580eea45851c337f6eaaa3494ebd62e75c1e9c6bf05",
+    "capacidade-b47/validar.py": "8965ecb95e35c6462c9f38a72d0970127e4394de7340fd02b9b776fd28216102",
+    "infra-b47/apps_script.py": "1ce84cb7b69d7102bae636600074275d445ba4b24306fedf1b9f5cb47724cd65",
+    "infra-b47/executar.py": "5c8170804ecca5f871ce6ddef675f6e685b7ac3ccdeb56f8bddbe00d0c94fe2a",
+    "regressao-progressao.py": "d326d562ae0ad625cebec55e7305fa37c649a31b9ecc71ae5ff9ccb0b51f1d88"
   },
   "testes": {
     "capacidade": {
@@ -28,7 +36,8 @@
     },
     "progressao": {
       "resultado": "OK",
-      "checagens": 47
+      "checagens": 51,
+      "reexecucao": "Integral em 8276ca6; fórmulas históricas recompostas exatamente e contraprovas; nenhum código de produção mudou desde f1ff7a6."
     },
     "familias": {
       "resultado": "OK",
@@ -36,15 +45,17 @@
     },
     "treinos": {
       "resultado": "OK",
-      "checagens": 6
+      "checagens": 7
     },
     "campanha_estrutura": {
       "resultado": "OK",
-      "checagens": 4
+      "checagens": 4,
+      "fase": "inicial; comparação de capacidade final também confirma as chaves retidas"
     },
     "custom_estrutura": {
       "resultado": "OK",
-      "checagens": 12
+      "checagens": 12,
+      "fase": "inicial; comparação de capacidade final também confirma as chaves retidas"
     },
     "construir_simulado": {
       "resultado": "OK",
@@ -69,6 +80,53 @@
     "smoke": {
       "resultado": "OK",
       "checagens": 64
+    },
+    "infra_unit": {
+      "resultado": "OK",
+      "checagens": 15,
+      "tipo": "local; sem Google"
+    },
+    "selo_geracao": {
+      "resultado": "OK",
+      "checagens": 5,
+      "tipo": "local; sem Google"
+    },
+    "envio_sintetico": {
+      "resultado": "OK",
+      "checagens": 8,
+      "tipo": "local; sem Google"
+    },
+    "validacao3a": {
+      "resultado": "OK",
+      "checagens": 5,
+      "tipo": "local; sem Google"
+    },
+    "revisao_contrato": {
+      "resultado": "OK",
+      "checagens": 38,
+      "tipo": "local; sem Google"
+    },
+    "revisao_leitor": {
+      "resultado": "OK",
+      "checagens": 34,
+      "tipo": "local; sem Google",
+      "risco_informativo": "prefixos de aviso distintos; leitor atual classifica pela chave"
+    },
+    "revisao_enderecos": {
+      "resultado": "OK",
+      "checagens": 5,
+      "tipo": "local; sem Google",
+      "risco_informativo": "375 endereços derivados em texto de INDIRECT; faixas corretas"
+    },
+    "revisao_carregador": {
+      "resultado": "OK",
+      "checagens": 4,
+      "tipo": "local; sem Google"
+    },
+    "revisao_fronteiras": {
+      "resultado": "OK",
+      "checagens": 15,
+      "tipo": "local; sem Google"
     }
   },
   "carregamento_vm_node24": {
@@ -96,7 +154,7 @@
       "bytes": 5669457,
       "arquivos": 20
     },
-    "otimizado": {
+    "otimizado_antes_das_guardas": {
       "mediana_ms": 233.09519,
       "amostras_ms": [
         368.126015,
@@ -107,6 +165,22 @@
       ],
       "bytes": 5670234,
       "arquivos": 20
+    },
+    "final": {
+      "mediana_ms": 327.19094599999994,
+      "amostras_ms": [
+        413.562626,
+        294.49715899999995,
+        327.19094599999994,
+        239.26040599999988,
+        438.11308299999996
+      ],
+      "bytes": 5682399,
+      "arquivos": 20,
+      "node": "v24.19.0",
+      "tipo": "simulação VM Node; não é Apps Script",
+      "checkpoint_producao": "f1ff7a6785f179df78a91a619bbd60388acd4bc1",
+      "condicao": "cinco contextos novos, sem geração/Calc concorrente; variação do host continua possível"
     }
   },
   "edicao_vm": {
@@ -130,10 +204,13 @@
   "geracao": {
     "base_segundos": 101.65109533100008,
     "base_rss_max_kib": 592936,
-    "nova_segundos": 38.06645292799999,
     "xlsx_antes_bytes": 3763979,
-    "xlsx_depois_bytes": 1681232,
-    "rss_amostra_anterior_geracao_v10_kib": 244996
+    "xlsx_depois_bytes": 1681795,
+    "rss_amostra_anterior_geracao_v10_kib": 244996,
+    "nova_inicial_segundos": 38.06645292799999,
+    "nova_final_segundos": 37.23450376799974,
+    "gs_depois_bytes": 5682399,
+    "maior_gs_depois_bytes": 816380
   },
   "google": {
     "leitura_sheets": "confirmada",
@@ -141,7 +218,9 @@
     "escrita_realizada": false,
     "snapshot_integral_atual_obtido": false,
     "apps_script": "sem ferramenta/credencial de CLI disponível",
-    "aplicacao_e_testes_nativos": "pendentes"
+    "aplicacao_e_testes_nativos": "pendentes",
+    "document_control": "zero sessões Sheets conectadas",
+    "leitura_catalogos": "estado observado em 16/10; não é snapshot reutilizável"
   },
   "visual": {
     "tipo": "rasterização local dos metadados; não captura Google/navegador; Roboto substituído por DejaVu Sans",
@@ -173,11 +252,175 @@
     ],
     "limite": "campos calculados vazios; file:// recusado pelo Chromium com ERR_BLOCKED_BY_ADMINISTRATOR"
   },
-  "frentes_externas": "nenhum ramo/commit de revisão ou infra encontrado; revisão independente pendente",
+  "frentes_externas": [
+    {
+      "ramo": "codex/b47-infra",
+      "sha": "b8ab7b56aac71ad0c85d0a3cff0c94d026062189",
+      "merge": "73bd04e8f5c5f7c4bfb94fa3c5314831a4d07fea"
+    },
+    {
+      "ramo": "claude/kind-feynman-sewhec",
+      "sha": "287b2c1408c893c20a003cd6caa6241504336f02",
+      "merges": [
+        "77d0d1d3b6d1752efa8cf767664bc0502a07a4bf",
+        "4ea06708572b94a90fd309f461d416b9cd35edd8",
+        "4bb684097d81589353b37b054585f58552e72fc8"
+      ],
+      "parecer": "A 4610c88 reproduzido independentemente; combinação posterior testada pelo integrador"
+    }
+  ],
   "nao_executado": [
     "bateria integral de rodar-tudo.sh",
     "testes mecânicos completos históricos de campanha/custom",
     "migração/construção/edição nativas",
     "salvamento e releitura Apps Script"
+  ],
+  "head_fontes_testadas": "8276ca6fbdc11ff0f35547c7935a09441b0a6e4a",
+  "checkpoint_revisao_final": "4bb684097d81589353b37b054585f58552e72fc8",
+  "checkpoint_producao": "f1ff7a6785f179df78a91a619bbd60388acd4bc1",
+  "historico_leitor": "O TESTE OK inicial checava a forma do contrato; a revisão detectou erros/avisos ignorados. O leitor estrito e as validações 3a foram corrigidos e recalculados nesta integração.",
+  "roteiro_focal_final": {
+    "comando": "bash rodar-tudo.sh --b47-focal",
+    "head_inicial": "f1ff7a6785f179df78a91a619bbd60388acd4bc1",
+    "resultado_bruto": "FALHA",
+    "testes": [
+      {
+        "teste": "smoke",
+        "exit": 0,
+        "segundos": 3.3843239479992917
+      },
+      {
+        "teste": "base",
+        "exit": 0,
+        "segundos": 16.70206496799983
+      },
+      {
+        "teste": "modelo",
+        "exit": 0,
+        "segundos": 13.912234127999909
+      },
+      {
+        "teste": "geracao",
+        "exit": 0,
+        "segundos": 37.23450376799974
+      },
+      {
+        "teste": "infra-unit",
+        "exit": 0,
+        "segundos": 0.6504509310007052
+      },
+      {
+        "teste": "selo",
+        "exit": 0,
+        "segundos": 1.5826004029995602
+      },
+      {
+        "teste": "envio",
+        "exit": 0,
+        "segundos": 1.1510775809992992
+      },
+      {
+        "teste": "revisao-contrato",
+        "exit": 0,
+        "segundos": 0.5578307489995495
+      },
+      {
+        "teste": "revisao-leitor",
+        "exit": 0,
+        "segundos": 0.5920293069993932
+      },
+      {
+        "teste": "revisao-enderecos",
+        "exit": 0,
+        "segundos": 8.09505926499969
+      },
+      {
+        "teste": "revisao-carregador",
+        "exit": 0,
+        "segundos": 1.5770266879999326
+      },
+      {
+        "teste": "revisao-fronteiras",
+        "exit": 0,
+        "segundos": 262.0677292199998
+      },
+      {
+        "teste": "capacidade",
+        "exit": 0,
+        "segundos": 5.393866440999773
+      },
+      {
+        "teste": "migracao",
+        "exit": 0,
+        "segundos": 161.82090807199984
+      },
+      {
+        "teste": "pecas",
+        "exit": 0,
+        "segundos": 21.20034149700041
+      },
+      {
+        "teste": "progressao",
+        "exit": 1,
+        "segundos": 197.13444499800062
+      },
+      {
+        "teste": "treinos",
+        "exit": 0,
+        "segundos": 61.4904615939995
+      },
+      {
+        "teste": "validacao3a",
+        "exit": 0,
+        "segundos": 45.80421247199956
+      },
+      {
+        "teste": "familias",
+        "exit": 0,
+        "segundos": 193.8577562270002
+      },
+      {
+        "teste": "copias",
+        "exit": 0,
+        "segundos": 7.537722646000475
+      },
+      {
+        "teste": "construir",
+        "exit": 0,
+        "segundos": 69.54008601399983
+      },
+      {
+        "teste": "textos",
+        "exit": 0,
+        "segundos": 0.44358993400055624
+      },
+      {
+        "teste": "leitor",
+        "exit": 0,
+        "segundos": 54.29737816600027
+      }
+    ],
+    "reexecucoes": [
+      {
+        "teste": "progressao",
+        "head": "8276ca6fbdc11ff0f35547c7935a09441b0a6e4a",
+        "comando": ".venv/bin/python regressao-progressao.py",
+        "exit": 0,
+        "segundos": 204.46800029400038,
+        "checagens": 51
+      }
+    ],
+    "resultado_apos_reexecucao": "OK",
+    "nota": "22/23 etapas passaram na execução agregada; Progressão falhou na representação histórica U -> JY:KA e passou integralmente após verificação exata e contraprovas. O único diff de código entre os checkpoints é esse teste."
+  },
+  "reprodutibilidade": {
+    "gs_iguais_byte_a_byte": 20,
+    "xlsx_unica_diferenca_interna_apos_regenerar": "docProps/core.xml (data); conteúdo equivalente ao artefato versionado",
+    "previas_iguais": 6
+  },
+  "residuos": [
+    "B2: nomes contendo o separador de lista ·; regra/contrato preservados, sem nova proibição nesta rodada",
+    "Reconhecimento do formato 10 e variante histórica 4 no bot pendentes antes de jogadores; bot fora desta entrega",
+    "Aplicação, persistência e medições nativas pendentes; sem escrita Google"
   ]
 }

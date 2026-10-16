@@ -181,16 +181,19 @@ validação descartável, código salvo/relido, aplicação na revisão e tempos
 continuam pendentes. Os testes locais/sintéticos não substituem essas etapas.
 
 A listagem completa do remoto corrigiu a consulta inicial, restrita a `main`:
-infra `b8ab7b5` e revisão `b50a716` (ramo alternativo
+infra `b8ab7b5` e revisão `287b2c1` (ramo alternativo
 `claude/kind-feynman-sewhec`) foram recebidas, revisadas e integradas separadamente.
-Seus testes foram executados no alvo real; selos de geração, guardas de envio,
+Seus testes focais aplicáveis foram executados no alvo real; selos de geração, guardas de envio,
 leitor e validações longas foram corrigidos antes da publicação. O relatório
-registra limites e resultados. Revisão independente do último SHA permanece
-pendente; a auditoria recebida examinava a base/simulação.
+registra limites e resultados. A revisão independente reproduziu A em
+`4610c88` (14/14 etapas); as correções e a combinação posterior foram testadas
+pelo integrador, sem nova auditoria externa do SHA final.
+O roteiro focal concluiu 23 etapas após a reexecução integral de Progressão;
+a evidência mantém a falha histórica inicial e a prova exata da fatoração.
 C e D não foram iniciadas. A estrutura menor já está pronta para essas etapas,
 mas a estimativa restante depende primeiro da aplicação e medida nativas de A+B.
 
-Próxima ação: receber/revisar as frentes e habilitar um caminho oficial para
+Próxima ação: disponibilizar um caminho oficial para
 salvar/reler Apps Script; executar o roteiro nativo sem PC anterior.
 Recomendação: **GPT-6.1 Sol, High**, por envolver preservação de entradas e
 integração de contrato/código na mesma cópia.

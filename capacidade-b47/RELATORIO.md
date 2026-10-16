@@ -45,18 +45,17 @@ nenhum arquivo/sessão do PC anterior.
 | Notas de CONFIGURAÇÃO | 28.538 | 2.490 |
 | Grupos de expansão de texto em CONFIGURAÇÃO | 1.219 | 66 |
 | Chaves de ANALISE | 18.948 | 7.356 |
-| `.gs` / soma de bytes | 23 / 9.543.357 | 20 / 5.681.848 |
+| `.gs` / soma de bytes | 23 / 9.543.357 | 20 / 5.682.399 |
 | Maior `.gs` | 843.661 bytes | 816.380 bytes |
-| XLSX da calculadora local | 3.763.979 bytes | 1.681.655 bytes |
-| Geração integral local | 101,7 s | 38,1 s |
-| Carregamento em VM Node, mediana de 5 contextos novos | 9.663,7 ms | ver medição final em VALIDACAO.json |
+| XLSX da calculadora local | 3.763.979 bytes | 1.681.795 bytes |
+| Geração integral local | 101,7 s | 37,2 s |
+| Carregamento em VM Node, mediana de 5 contextos novos | 9.663,7 ms | 327,2 ms |
 | CPU do gatilho de texto em VM, mediana de 100 amostras | 4,07 ms | 0,28 ms |
 
 Depois apenas de A, a mediana de carregamento era 735,3 ms; antes das guardas
 de geração, B media 233,1 ms. As amostras da combinação final ficam em
-VALIDACAO.json. A geração de 38,1 s foi medida antes da integração dos selos e
-da divisão das validações; essa geração posterior foi conferida, sem nova
-cronometração específica. B passou a selecionar
+VALIDACAO.json. A geração final foi cronometrada no roteiro focal (37,2 s),
+com selos e auxiliares incluídos; a medição intermediária era 38,1 s. B passou a selecionar
 a origem de cada molde antes de percorrer seus destinos e a analisar as notas
 uma vez, preservando valores, bordas, menus e exceções. Compactação Python/JS,
 idempotência e carregamento em várias ordens passaram depois da mudança.
@@ -79,13 +78,14 @@ logs volumosos, venv e snapshots sintéticos ficam na saída ignorada.
   notas preenchidos, slots 130/131, perda/excesso, cauda nativa, destinos e lotes.
 - Peças: 54 verificações mecânicas, com herança, nomes literais, inválidos,
   Classe 0, última vaga e independência/desconto de Família.
-- Progressão: 47 verificações, incluindo dez cenários calculados de Caminho/
+- Progressão: 51 verificações, incluindo dez cenários calculados de Caminho/
   Trilha, vida, PE, treinos, duplicatas, negativos e trocar por zero.
 - Famílias/autonomia: 20 verificações, incluindo 13 cenários calculados e
   independência entre entidades; Calc agora recebe as tabelas compartilhadas
   atuais e abre até três cenários por processo.
-- Perícias/Ofícios: seis verificações em três cenários, primeira/décima vaga,
-  atributos, pools, tipo incorreto colado, duplicata e curingas literais.
+- Perícias/Ofícios: sete verificações em quatro cenários, primeira/décima vaga,
+  atributos, pools, tipo incorreto colado, duplicata, curingas literais e tipo
+  apagado em cartão vazio.
 - Compactação: 20 abas/fixtures; construção simulada completa em três fases:
   185 verificações, com ordens de carga e arquivos ausentes.
 - Texto: sete cenários de altura compartilhada e limpeza, quatro leituras dos
@@ -113,8 +113,13 @@ cobrem os 25 vazios, oito moldes válidos, colisão com livro e número inválid
 Não foram executados a bateria integral de `rodar-tudo.sh`, os cenários mecânicos
 completos históricos de campanha/custom nem a auditoria integral de D. A
 limitação histórica de FILTER no Calc não foi convertida em teste aprovado.
-O roteiro agregado novo está disponível; esta rodada executou e conferiu seus
-componentes, com logs separados, em vez de repetir toda a bateria após os verdes.
+O roteiro focal ampliado executou suas 23 etapas. Passaram 22 na execução
+agregada; a comparação histórica de Progressão exigiu reconhecer a fatoração
+U2:U26 → JY:KA. Ela agora recompõe cada fórmula congelada inteira, exigindo
+guarda, condições, mensagens e ordem idênticas, com contraprovas de alterações.
+Progressão foi reexecutada integralmente e passou. Nenhum código de produção
+mudou entre esses dois checkpoints. O JSON preserva o resultado bruto e a
+reexecução, em vez de apagar a falha inicial.
 
 Reprodução do roteiro focal: `bash rodar-tudo.sh --b47-focal`. A exportação v9
 usa `4187df3` em worktree temporário e o mesmo Python instalado; o temporário é
@@ -137,7 +142,9 @@ quatro catálogos foram lidos: nenhum dado fora dos padrões vazios. Isso não �
 snapshot integral nem deve ser reutilizado para uma aplicação posterior.
 
 Esta sessão não oferece ferramenta de leitura/atualização/execução Apps Script
-ou navegador conectado, nem configuração de CLI Apps Script observável. Isso
+ou navegador conectado, nem configuração de CLI Apps Script observável.
+A consulta separada ao Codex Document Control também retornou zero sessões
+Sheets conectadas. Isso
 não é uma negativa de autorização da conta. Sem salvar/reler o código, a revisão
 não foi migrada: o gatilho antigo usaria a geometria anterior. Seguir o
 [roteiro nativo](ROTEIRO-NATIVO.md) com nova leitura integral e descartável.
@@ -152,8 +159,8 @@ Foram revisados e incorporados por merges separados:
 
 - infraestrutura `b8ab7b56aac71ad0c85d0a3cff0c94d026062189` (cinco commits desde a
   base; só `infra-b47/`), com 15 testes próprios reproduzidos;
-- revisão `b50a716f08ea0aabebad431c9ef40b35e1c852ab`, publicada no ramo alternativo
-  `claude/kind-feynman-sewhec` (dois commits; só `revisao-b47/`). O ramo lógico
+- revisão `287b2c1408c893c20a003cd6caa6241504336f02`, publicada no ramo alternativo
+  `claude/kind-feynman-sewhec` (cinco commits; só `revisao-b47/`). O ramo lógico
   `claude/b47-revisao` ainda estava na base. Os ramos históricos de outros temas
   não foram integrados.
 
@@ -171,8 +178,30 @@ de avisos percorre as novas auxiliares. Contrato, leitor e endereços externos
 passaram no alvo real. Restam dois avisos informativos: os endereços de INDIRECT
 continuam em texto, mas derivados e dentro da faixa, e avisos históricos usam
 prefixos diferentes de ⚠, agora tratados pela chave. Não são validação nativa.
-A auditoria entregue cobria a base/simulação; o integrador testou as correções no
-alvo real. Uma nova revisão independente do último SHA continua desejável.
+A atualização externa revisou A (`2f3c62f`/`4610c88`) e reproduziu
+independentemente suas 14 etapas focais, além de confirmar os 20 `.gs` byte a
+byte. O integrador testou as correções no alvo real e a combinação posterior.
+Não houve nova auditoria independente dessa combinação final. A atualização
+`287b2c1` acrescentou uma combinação simulada de A + infra + patches (anterior
+a esta integração), sem alterar produção. Seu teste histórico compila; o
+pacote atual foi validado pelos oito casos de `testar-envio.py`. O manifesto
+da infra foi regenerado e comparado ao atual: mesmos 20 nomes, tamanhos e
+hashes. `MANIFESTO-BASE.json` permanece v9 histórico, explicitado no README
+com link ao manifesto atual; não é o pacote de envio.
+
+Achados posteriores R1/R2 correspondem às correções de geração/leitor descritas
+acima. R3 ganhou tabela histórica de formatos e registro da variante paralela;
+o reconhecimento do formato 10 no bot fica explicitamente pendente, fora desta
+rodada. R4 ganhou procedimento de interrupção/recuperação e aviso de lotes não
+atômicos. R5 foi corrigido: cartão vazio aceita tipo vazio e repetição não é
+avaliada com nome vazio; a contraprova encontrou um parêntese incorreto na
+primeira tentativa, corrigido antes da publicação. R6 passou a conhecer até
+nove fragmentos. A receita antiga `migracao-criacao.py` está sinalizada em NUVEM.
+
+B2 permanece como limitação histórica: nomes contendo o separador ` · ` podem
+ser ambíguos nas listas exportadas. Esta rodada preserva o texto cru e não muda
+a regra de nomes nem o formato das listas; qualquer mudança exige decisão de
+contrato e teste dos consumidores. Não é perda silenciosa por renumeração.
 
 A combinação é publicada somente após seus testes. As origens e SHAs finais
 ficam em [PUBLICACAO.md](PUBLICACAO.md). Não houve mensagens automáticas aos chats.
@@ -184,5 +213,4 @@ relatórios disponíveis, mais 8–14 h para C/D; cerca de 9–17 h restantes, c
 13 h, sem contar espera por acesso/revisão externa. Rever após medir o Sheets.
 C/D não foram iniciadas nesta entrega.
 
-Recomendação para a próxima ação: **GPT-6.1 Sol, High**, para revisar as frentes
-e executar a migração/testes nativos preservando entradas e contrato.
+Recomendação para a próxima ação: **GPT-6.1 Sol, High**, para executar a migração/testes nativos preservando entradas e contrato.

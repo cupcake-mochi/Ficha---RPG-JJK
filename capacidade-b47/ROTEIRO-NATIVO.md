@@ -6,14 +6,18 @@ vazios. Não é snapshot integral nem autorização para reutilizar essa leitura
 numa sessão futura. Nenhuma escrita nativa foi realizada.
 
 A sessão não expõe ferramenta Apps Script (leitura, atualização ou execução),
-credenciais OAuth de CLI nem navegador. Acesso ao Drive/Sheets não garante
+credenciais OAuth de CLI nem navegador conectado. O inventário do Codex
+Document Control retornou zero sessões Sheets conectadas. Acesso ao Drive/Sheets não garante
 acesso ao projeto Apps Script. Sem salvar/reler código, não atualizar a revisão:
 o gatilho antigo conservaria as geometrias e o contrato anteriores.
 
 1. Confirmar destino **1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0**,
    projeto **1wdZc903PPK6EoGxFG4KcuPNx_plElCBsWxa4lEBgLUlFBD4OrbZPHYnf** e
    ferramentas oficiais disponíveis; não copiar tokens do PC.
-2. Criar backup nativo integral da revisão e uma cópia nativa descartável do
+2. Estabelecer janela sem edições, do snapshot final até a releitura conjunta
+   de código e planilha. Código salvo e migração não formam uma transação; só
+   reabrir a edição depois da validação combinada. Criar backup nativo integral
+   da revisão e uma cópia nativa descartável do
    mesmo estado. Guardar IDs, data e metadados. Nunca importar XLSX.
 3. Exportar o modelo v9 do commit 4187df3 em checkout isolado e o modelo v10
    do SHA a aplicar. Obter faixas necessárias com:
@@ -42,8 +46,10 @@ o gatilho antigo conservaria as geometrias e o contrato anteriores.
 7. Enviar os **20 .gs** do manifesto correspondente ao SHA testado e remover
    `PecasAnalise2`, `PecasAnalise3`, `PecasAnalise4` do projeto. Conferir hashes
    por releitura integral posterior. Cada .gs deve ter menos de 900.000 bytes.
-   O mecanismo de envio preparado por `infra-b47/`, quando recebido/revisado,
-   deve exigir ID explícito, autenticação oficial e verificação posterior.
+   O mecanismo integrado `infra-b47/apps_script.py` exige ID explícito,
+   snapshot remoto e retirada nominal com `--remover PecasAnalise2 --remover
+   PecasAnalise3 --remover PecasAnalise4`. Usar autenticação oficial e releitura
+   posterior; não editar o pacote à mão para contornar a guarda.
 8. Testar nativamente: primeira/última vaga dos cinco grupos; livro/base e
    criação do zero; duplicatas/nomes `* ? ~`; categoria incorreta colada;
    reutilização do mesmo cadastro nas 12 entidades; nove Famílias/autonomia;
@@ -80,7 +86,7 @@ a edição, obter snapshot do estado parcial e verificar ausência de edições
 posteriores desconhecidas. Restaurar a região afetada a partir do backup integral
 com guarda e releitura de **todas** as entradas/notas antes de planejar outra
 tentativa; nunca sobrescrever alterações concorrentes silenciosamente. Se houver
-editação concorrente, reconciliar primeiro. A cópia parcialmente migrada não é
+edição concorrente, reconciliar primeiro. A cópia parcialmente migrada não é
 evidência de migração aprovada. O manifesto registra expressamente a ausência de
 atomicidade entre lotes. Nenhuma falha parcial ocorreu nesta rodada, que não
 executou escritas nativas.
