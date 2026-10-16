@@ -11,12 +11,13 @@ from openpyxl import load_workbook
 ROOT=Path(__file__).resolve().parent
 sys.path[:0]=[str(ROOT/'ficha-v01'),str(ROOT)]
 import custom,indice_ficha as ix
+(ROOT/'nuvem-b47/saidas').mkdir(parents=True,exist_ok=True)
 falhas=[]
 def check(nome,ok,det=''):
  print(('OK ' if ok else 'FALHA ')+nome+((' '+str(det)) if not ok else ''),flush=True)
  if not ok:falhas.append(nome)
 novo=ROOT/'ficha-v01/ficha-projeto-m-0.1.xlsx'
-base=ROOT.parent/'evidencias-custom/base-parte2-local.xlsx'
+base=ROOT/'nuvem-b47/fixtures/base-parte2-local.xlsx'
 w=load_workbook(novo)
 rows=[list(x) for x in w['ANALISE'].iter_rows(min_row=2,max_col=4,values_only=True) if x[0]]
 old=json.loads((ROOT/'ficha-v01/analise-v4-preservada.json').read_text())
@@ -131,6 +132,6 @@ with tempfile.TemporaryDirectory(prefix='b47-custom-') as tmp:
  check('capacidades custom trazem texto',get('completo','FICHA PESSOAL','D45')=='Texto marcante' and get('completo','FICHA PESSOAL','R45')=='Texto menor')
  check('colisão com livro tem diagnóstico',bool(get('duplicado',custom.NOME,'S2')) and get('duplicado',custom.NOME,'T2') is False)
  check('número inválido não vira cadastro válido',bool(get('invalido',custom.NOME,'S4')) and get('invalido',custom.NOME,'T4') is False)
- (ROOT.parent/'evidencias-custom/resultados-mecanicos-locais.json').write_text(json.dumps({'falhas':falhas,'diferencas_vazio':dif[:50], 'resultados':results},ensure_ascii=False,default=str)+'\n')
+ (ROOT/'nuvem-b47/saidas/resultados-mecanicos-locais.json').write_text(json.dumps({'falhas':falhas,'diferencas_vazio':dif[:50], 'resultados':results},ensure_ascii=False,default=str)+'\n')
 print('CUSTOM CONFERE' if not falhas else f'{len(falhas)} FALHAS',flush=True)
 sys.exit(bool(falhas))

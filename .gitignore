@@ -6,3 +6,11 @@ mensagem-de-commit.txt
 # do extrair.py, nao material do repositorio -- e a fonte dele e a planilha no
 # Sheets. Regere com: python3 ficha-v01/extrair.py <caminho do .xlsx>
 ficha-v01/original.xlsx
+
+# Ambiente de nuvem, evidências reproduzíveis e autenticação local
+.venv/
+nuvem-b47/saidas/
+.clasprc.json
+.clasp.json
+.env
+.env.*

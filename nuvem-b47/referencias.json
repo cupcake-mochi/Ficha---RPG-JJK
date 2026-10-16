@@ -1,0 +1,108 @@
+{
+  "base_codigo": "2d06cbdbcb99315c1c602d2ac4c2ac9a13ea7081",
+  "aviso": "Referências históricas, não snapshots atuais do Google nem resultados da capacidade reduzida.",
+  "arquivos": [
+    {
+      "arquivo": "nuvem-b47/fixtures/original.xlsx",
+      "bytes": 211248,
+      "sha256": "a697995dbd5b57f1ba3b7ca680c6233d59efe63e5d32565b690a74d8b0f9fd29",
+      "conteudo_sha256": "a697995dbd5b57f1ba3b7ca680c6233d59efe63e5d32565b690a74d8b0f9fd29",
+      "origem": "Exportação histórica usada pelo comparador; entrada já existente no PC, não é importada no Google."
+    },
+    {
+      "arquivo": "nuvem-b47/fixtures/base-parte1.xlsx",
+      "bytes": 1222035,
+      "sha256": "f4fbe92a3d090fa93055dd2b5cae1e66a8fb5dd855629cfed864d15e493a6984",
+      "conteudo_sha256": "f4fbe92a3d090fa93055dd2b5cae1e66a8fb5dd855629cfed864d15e493a6984",
+      "origem": "Base histórica anterior às regras de campanha."
+    },
+    {
+      "arquivo": "nuvem-b47/fixtures/base-parte2-local.xlsx",
+      "bytes": 1236023,
+      "sha256": "574c973c31e6077f076800fa997d4a0325d27f3063047b9f58909487a9a3a449",
+      "conteudo_sha256": "574c973c31e6077f076800fa997d4a0325d27f3063047b9f58909487a9a3a449",
+      "origem": "Base histórica anterior ao custom 3a."
+    },
+    {
+      "arquivo": "nuvem-b47/fixtures/pecas-modelo-anterior.json.gz",
+      "bytes": 1516031,
+      "sha256": "d0eef534abf580f694f176246156555615f3a0d6b679adda6dc075fa19bf6170",
+      "conteudo_sha256": "2ed44ee078b2caa76f30ff4594558dbbad84efa57c92dbf7d41ccdb95a905890",
+      "origem": "Modelo histórico anterior à implantação de Melhorias/Restrições; contrato formato 8."
+    },
+    {
+      "arquivo": "arte/fontes/Oswald.ttf",
+      "bytes": 172088,
+      "sha256": "5b38c246e255a12f5712d640d56bcced0472466fc68983d2d0410ec0457c2817",
+      "origem": "Fonte não modificada já usada pelo gerador; família Google Fonts."
+    },
+    {
+      "arquivo": "arte/fontes/oswald/OFL.txt",
+      "bytes": 4389,
+      "sha256": "0b2472b17e950b9967818f169f2618b091c0c259d250d2dd8208961c7f5700e1",
+      "origem": "https://raw.githubusercontent.com/google/fonts/main/ofl/oswald/OFL.txt",
+      "fonte_antes_normalizacao_sha256": "0fd731a904b729a4e02eaf5e8ebd06783edd9abe400e8882760160230675b652",
+      "normalizacao": "Finais de linha LF e espaços finais; conteúdo textual preservado."
+    },
+    {
+      "arquivo": "arte/fontes/YujiSyuku.ttf",
+      "bytes": 8430348,
+      "sha256": "82728ebafc8c97391e2dab633414a806f344b8e4e2227d307179f07b548fca61",
+      "origem": "Fonte não modificada já usada pelo gerador; família Google Fonts."
+    },
+    {
+      "arquivo": "arte/fontes/yujisyuku/OFL.txt",
+      "bytes": 4386,
+      "sha256": "9391614f28bbbbf8a89b8acba2091e0a249a25d78240e93f39c05f0e9036208f",
+      "origem": "https://raw.githubusercontent.com/google/fonts/main/ofl/yujisyuku/OFL.txt",
+      "fonte_antes_normalizacao_sha256": "ef7c85c72ae94381c8bc4832ae4e6fbabdeafa2bb8a31313cd75dce95a690256",
+      "normalizacao": "Finais de linha LF e espaços finais; conteúdo textual preservado."
+    },
+    {
+      "arquivo": "referencias-b47/Ciclo-Maldito-R52.txt",
+      "bytes": 1648688,
+      "sha256": "b23fa1bcc724c38693aa0a78c6c690993d621684c4aaf208a2adbaf47a264dd9",
+      "origem": "PDF R52 fornecido pelo usuário; pdftotext -layout, Poppler local. Texto de consulta, não substitui o manual do gerador.",
+      "pdf_fonte_sha256": "c04d86e11ac867d9dc60b398528cd0eac8626455ab5c125e6191a26b1e03e026",
+      "paginas": 397
+    },
+    {
+      "arquivo": "referencias-b47/manual-historico/35-caminhos-e-trilhas.md",
+      "bytes": 213295,
+      "sha256": "948dc94babd1d17022e5a3b5b817e160d2cf1e92c61d37d02462f412ff4e1e44",
+      "origem": "Capítulo histórico requerido pelos estudos mockup/estudo_*.py, anterior ao manual R51; não prevalece sobre regras vigentes."
+    },
+    {
+      "arquivo": "referencias-b47/manual-historico/40-fundamento.md",
+      "bytes": 87100,
+      "sha256": "8ec6cd54f8fbb0cc7e98874a5242890a3b3392a792ec1cdef959abcec4b70d96",
+      "origem": "Capítulo histórico requerido pelos estudos mockup/estudo_*.py, anterior ao manual R51; não prevalece sobre regras vigentes."
+    },
+    {
+      "arquivo": "referencias-b47/manual-historico/42-tecnica-marcial.md",
+      "bytes": 11558,
+      "sha256": "d3dcdd307d4542219d8f279a6f7f32da04ae4edc953872e312a4e410911042e5",
+      "origem": "Capítulo histórico requerido pelos estudos mockup/estudo_*.py, anterior ao manual R51; não prevalece sobre regras vigentes."
+    },
+    {
+      "arquivo": "referencias-b47/manual-historico/43-sem-tecnica.md",
+      "bytes": 8623,
+      "sha256": "bf4296c61b167717bffc98459ba26bce8c1b0a46fc8de1230df833486b8c70b7",
+      "origem": "Capítulo histórico requerido pelos estudos mockup/estudo_*.py, anterior ao manual R51; não prevalece sobre regras vigentes."
+    },
+    {
+      "arquivo": "referencias-b47/manual-historico/45-aptidoes-e-refino.md",
+      "bytes": 27459,
+      "sha256": "8cde6375fbe213fb3ee23cd62ff3fb94660fa90b9c4bec5013dd2d4ef66e6be2",
+      "origem": "Capítulo histórico requerido pelos estudos mockup/estudo_*.py, anterior ao manual R51; não prevalece sobre regras vigentes."
+    },
+    {
+      "arquivo": "referencias-b47/manual-historico/47-bencaos-e-lapidacao.md",
+      "bytes": 12142,
+      "sha256": "eab1e335598a1ec69bc51c23e339f8aa83b750f8cdf54cd586c042c329c23239",
+      "origem": "Capítulo histórico requerido pelos estudos mockup/estudo_*.py, anterior ao manual R51; não prevalece sobre regras vigentes.",
+      "fonte_antes_normalizacao_sha256": "c400089ab383f8368f66801f4a6004092929a26c3dba2f76ea9af90c8bce446d",
+      "normalizacao": "Finais de linha LF e espaços finais; conteúdo textual preservado."
+    }
+  ]
+}

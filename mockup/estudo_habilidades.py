@@ -18,7 +18,7 @@ texto do livro, como alguém anotaria. Nada aqui é regra nova, e o livro não �
 import json, os, re
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
-LIVRO = "/media/mizuki/HD Externo II/Claude/Claude 2/sistema/05-material/livro/manual"
+LIVRO = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "referencias-b47", "manual-historico")
 CAP = open(os.path.join(LIVRO, "35-caminhos-e-trilhas.md"), encoding="utf-8").read()
 CAMINHOS = ["Bastião", "Vanguarda", "Guia", "Emanador", "Evocador", "Incursor"]
 NIV_CAM, NIV_TRI = [2, 7, 15, 23, 30], [2, 11, 19, 27]

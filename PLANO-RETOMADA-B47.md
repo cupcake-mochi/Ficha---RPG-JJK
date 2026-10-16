@@ -139,11 +139,13 @@ systemd-run --user --scope -q -p MemoryMax=3G -p MemorySwapMax=0 -p CPUQuota=200
 
 Em ambiente diferente, verificar os limites disponíveis e usar um equivalente adequado antes de trabalhos pesados. O PC original tem 15 GB e já reiniciou por RAM. Não elevar tetos nem matar processos por padrão amplo.
 
-`ficha-v01/original.xlsx` é uma entrada histórica ignorada pelo Git. Alguns comparadores dependem dela; verificar a disponibilidade e registrar testes impedidos por sua ausência. O gerador usa o `ficha-v01/layout.json` versionado. **Nunca importar Excel no Google Sheets.** Um workbook local usado como artefato/calculadora de teste não autoriza importação na ficha nativa.
+`ficha-v01/original.xlsx` continua ignorado no diretório de entrada, mas uma cópia histórica independente agora está versionada em `nuvem-b47/fixtures/original.xlsx`; o comparador a utiliza quando a entrada local falta. As bases das regressões de campanha/custom e o modelo anterior à 3c também estão no Git, com hashes e origem. O gerador usa o `ficha-v01/layout.json` versionado. **Nunca importar Excel no Google Sheets.** Um workbook local usado como artefato/calculadora de teste não autoriza importação na ficha nativa.
 
 Não executar `construir()`/`continuar()` sobre a revisão preenchida ou a oficial. Conferir em código o destino de qualquer helper antes de executá-lo; a montagem integral usa exclusivamente a descartável.
 
 ## Retomada em outro ambiente
+
+A preparação executável está em [NUVEM.md](NUVEM.md), com dependências fixadas, fontes e bases de teste versionadas e diagnóstico/smoke. Leia também [nuvem-b47/TESTES.md](nuvem-b47/TESTES.md): expectativas históricas de formatos 5/6/7 não viraram automaticamente testes aprovados da versão 9. A consulta R52 textual está no Git, separada do manual R51 do gerador.
 
 Leia este documento e o contrato no próprio repositório. Não depender de `../PLANO.md`, `../RETOMAR-B47.md`, caminhos de disco ou abas do Brave do computador anterior. As informações essenciais estão versionadas aqui.
 

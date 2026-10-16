@@ -2,6 +2,10 @@
 
 Plano aprovado para preparação em **16/10/2026**. Complementa [PLANO-RETOMADA-B47.md](PLANO-RETOMADA-B47.md): a rota continua A → B → C → D. Esta divisão organiza A+B; não inicia três frentes novas de conteúdo nem substitui os testes finais. A redução de capacidade ainda não foi aplicada.
 
+## Preparação comum já disponível
+
+Leia [NUVEM.md](NUVEM.md) e `AGENTS.md`. Execute `bash nuvem-b47/preparar.sh` e `.venv/bin/python nuvem-b47/conferir.py --smoke` antes de editar. Dependências, fontes, referências históricas e texto de consulta da R52 estão no Git. O bootstrap desta preparação é comum aos três ramos; não é tarefa pendente do chat 3. Os ramos recebem também este commit de preparação, por avanço sem reescrever história; registrar o SHA inicial real.
+
 ## Chats, modelos e ramos
 
 | Chat | Ambiente e recomendação inicial | Ramo próprio | Entrega |
@@ -66,7 +70,7 @@ Todas as decisões mecânicas do plano principal permanecem. Não alterar regra 
 
 Nunca importar Excel no Google Sheets. Snapshot atual e validação em descartável precedem migração na revisão. `construir()`/`continuar()` somente em descartável, nunca revisão preenchida/oficial. Manter cada `.gs` abaixo de 900.000 bytes. Acesso ao Git não garante acesso ao Google; verificar conta, ferramentas e permissões no novo ambiente. Se faltar acesso, avançar nas partes locais e discriminar o que não foi aplicado/testado nativamente.
 
-Conferir recursos da nuvem antes de geração pesada. Executar trabalhos pesados em série dentro de cada ambiente; a execução simultânea em ambientes separados não é o compartilhamento dos 15 GB do PC. `ficha-v01/original.xlsx` é ignorado e pode faltar; não declarar comparadores dependentes dele como aprovados. Não converter nem importar a ficha por Excel como contorno.
+Conferir recursos da nuvem antes de geração pesada. Executar trabalhos pesados em série dentro de cada ambiente; a execução simultânea em ambientes separados não é o compartilhamento dos 15 GB do PC. `ficha-v01/original.xlsx` é ignorado, mas o comparador agora dispõe da referência versionada em `nuvem-b47/fixtures/`; verificar os hashes e não confundir a referência histórica com snapshot atual. Não converter nem importar a ficha por Excel como contorno.
 
 ## Prompts para colar
 

@@ -13,7 +13,8 @@ from pathlib import Path
 from openpyxl import Workbook, load_workbook
 
 ROOT = Path(__file__).resolve().parent
-EVID = ROOT.parent/'evidencias-3b'
+EVID = ROOT/'nuvem-b47/saidas'
+EVID.mkdir(parents=True, exist_ok=True)
 pack = EVID/'layout-autonomia9-pacote.json'
 subprocess.run(['python3', str(ROOT/'ficha-v01/monta.py'), '--exportar-progressao', str(pack)],
                check=True, stdout=subprocess.DEVNULL)

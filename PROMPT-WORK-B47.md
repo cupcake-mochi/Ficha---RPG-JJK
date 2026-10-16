@@ -8,6 +8,8 @@ O antigo prompt único foi substituído pela divisão em três chats. Leia o [pl
 | 2 — Claude Code na nuvem: revisor independente | [02-revisor-claude](prompts-b47/02-revisor-claude.md) | Opus 5.5 · High, se disponível |
 | 3 — outro Codex/Work: infraestrutura | [03-infraestrutura](prompts-b47/03-infraestrutura.md) | GPT-6.1 Sol · Medium |
 
+Preparação comum: [NUVEM.md](NUVEM.md), `bash nuvem-b47/preparar.sh` e `.venv/bin/python nuvem-b47/conferir.py --smoke`. Os prompts completos já exigem essa verificação.
+
 Pode iniciar os três simultaneamente com acesso ao repositório e ramos próprios da mesma base. Só o chat 1 integra no ramo `codex/configuracao-b47` e escreve na cópia nativa de revisão. `main` e ficha oficial continuam fora da autorização. Se a plataforma criar outro nome de ramo, informar esse nome ao integrador.
 
 Os prompts autorizam publicação nos ramos de tarefa e integração delimitada, pedem evidências e exigem recomendação de modelo/esforço em cada checkpoint. Cole o bloco integral de cada arquivo no chat correspondente. A configuração do modelo é escolhida pelo usuário no seletor da plataforma; o prompt não a altera.

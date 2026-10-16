@@ -10,7 +10,7 @@ def check(nome,cond,det=''):
  if not cond:FALHAS.append(nome)
 def vals(w,s):return {c.coordinate:c.value for row in w[s].iter_rows() for c in row if c.value is not None}
 def formula(v):return re.sub(r'(?<![A-Z_.])IFS\(','_xlfn.IFS(',v) if isinstance(v,str) and v.startswith('=') else v
-base=ROOT.parent/'evidencias-campanha/base-parte1.xlsx'
+base=ROOT/'nuvem-b47/fixtures/base-parte1.xlsx'
 novo=ROOT/'ficha-v01/ficha-projeto-m-0.1.xlsx'
 if not base.exists() or not shutil.which('libreoffice'):sys.exit('Falta base parte 1 ou LibreOffice; teste não rodou')
 wb=load_workbook(novo)

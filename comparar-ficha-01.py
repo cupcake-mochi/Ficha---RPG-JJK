@@ -15,6 +15,8 @@ from openpyxl.worksheet.formula import ArrayFormula
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 A = os.path.join(AQUI, "ficha-v01", "original.xlsx")
+if not os.path.isfile(A):
+    A = os.path.join(AQUI, "nuvem-b47", "fixtures", "original.xlsx")
 B = os.path.join(AQUI, "ficha-v01", "ficha-projeto-m-0.1.xlsx")
 LAY = json.load(open(os.path.join(AQUI, "ficha-v01", "layout.json"), encoding="utf-8"))
 sys.path.insert(0, os.path.join(AQUI, "ficha-v01"))

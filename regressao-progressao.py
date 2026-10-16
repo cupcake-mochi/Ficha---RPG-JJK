@@ -11,8 +11,8 @@ from openpyxl import Workbook, load_workbook
 ROOT=Path(__file__).resolve().parent
 sys.path[:0]=[str(ROOT/'ficha-v01'),str(ROOT/'ficha')]
 import custom_progressao as p, indice_ficha as ix, emitir_gs
-EVID=ROOT.parent/'evidencias-3b'
-EVID.mkdir(exist_ok=True)
+EVID=ROOT/'nuvem-b47/saidas'
+EVID.mkdir(parents=True,exist_ok=True)
 # A fresh package prevents a stale evidence directory from validating old code.
 # The 03a459e snapshot is a versioned fixture, so a clean checkout can run this.
 subprocess.run([sys.executable,str(ROOT/'ficha-v01/monta.py'),'--exportar-progressao',

@@ -1,0 +1,7 @@
+# Ambiente validado: Python 3.12. Inclui dependências transitivas para repetibilidade.
+openpyxl==3.1.5
+Pillow==10.2.0
+python-docx==1.1.0
+et-xmlfile==2.0.0
+lxml==5.2.1
+typing-extensions==4.10.0

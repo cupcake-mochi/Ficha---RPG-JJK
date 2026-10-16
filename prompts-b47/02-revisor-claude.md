@@ -5,7 +5,7 @@ Cole em **Claude Code com acesso ao GitHub**, em uma sessão de nuvem; uma conve
 ```text
 Você é o revisor independente do Ciclo Maldito B47. Repositório: https://github.com/cupcake-mochi/Ficha---RPG-JJK. Trabalhe em claude/b47-revisao, da base comum do planejamento. Se Claude Code exigir outro nome/prefixo, crie o ramo permitido a partir dessa base e informe-o. Não use o main antigo e não sobrescreva ramo existente.
 
-Leia PLANO-RETOMADA-B47.md, PLANO-PARALELO-B47.md, ESQUEMA-ANALISE.md e o topo vigente de PENDENCIAS.md. Registre SHA da base, ramo e ferramentas realmente disponíveis. Você trabalha na nuvem, sem acesso ao PC anterior.
+Leia PLANO-RETOMADA-B47.md, PLANO-PARALELO-B47.md, ESQUEMA-ANALISE.md e o topo vigente de PENDENCIAS.md. Registre SHA da base, ramo e ferramentas realmente disponíveis. Leia também AGENTS.md, NUVEM.md e nuvem-b47/TESTES.md. Execute bash nuvem-b47/preparar.sh e .venv/bin/python nuvem-b47/conferir.py --smoke; ative .venv para os testes antigos. As entradas/fontes/bases de teste e a consulta textual R52 estão no Git. Não dependa de arquivos fora do checkout. Registre impedimentos reais de instalação/conexão, sem pedir acesso remoto ao PC. Você trabalha na nuvem, sem acesso ao PC anterior.
 
 O chat integrador reduzirá catálogos compartilhados para 10 Famílias extras, 30 Melhorias, 30 Restrições, 10 Perícias e 10 Ofícios. Livro, entradas, regras e nove posições de Família em cada invocação permanecem; um cadastro pode ser reutilizado. Os 25 cartões 3a e um Caminho/uma Trilha ficam fora dessa redução. A migração e o contrato ANALISE precisam ser coerentes com o leitor e consumidores; você audita e recomenda, sem decidir sozinho novo contrato ou regra.
 

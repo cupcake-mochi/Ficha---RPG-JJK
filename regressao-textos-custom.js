@@ -1,6 +1,6 @@
 // Regressão focal do catálogo real: altura compartilhada e custo do gatilho.
-const fs = require('fs'), vm = require('vm'), assert = require('assert');
-const model = JSON.parse(fs.readFileSync(process.argv[2] || '../evidencias-3b/pecas-modelo.json', 'utf8'));
+const fs = require('fs'), vm = require('vm'), assert = require('assert'), path = require('path');
+const model = JSON.parse(fs.readFileSync(process.argv[2] || path.join(__dirname, 'nuvem-b47/saidas/pecas-modelo.json'), 'utf8'));
 const spec = model.layout.abas.find(a => a.nome === 'CONFIGURAÇÃO');
 const values = {}, heights = {}, calls = {};
 const sheet = {getRange(a1) { return {getDisplayValue() { return values[a1] || ''; }}; },

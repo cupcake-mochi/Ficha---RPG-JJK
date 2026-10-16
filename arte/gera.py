@@ -17,7 +17,7 @@ AQUI   = os.path.dirname(os.path.abspath(__file__))
 # 17/09/2026: o caminho escrito aqui era uma pasta temporaria de outra conversa, e sumiu. A arte procura as
 # fontes na primeira pasta que tiver as duas.
 _CANDIDATAS = [
-    "/tmp/claude-1000/-media-mizuki-HD-Externo-II-Claude-Ficha/1ff06321-19ca-4c78-a1e7-69f0754d387b/scratchpad/fontes",
+    os.path.join(AQUI, "fontes"),
     os.path.expanduser("~/.fonts"),
     os.path.expanduser("~/.local/share/fonts"),
 ]

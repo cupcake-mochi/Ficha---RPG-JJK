@@ -12,7 +12,7 @@ import json, os, re
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.dirname(AQUI)
-LIVRO = "/media/mizuki/HD Externo II/Claude/Claude 2/sistema/05-material/livro/manual"
+LIVRO = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "referencias-b47", "manual-historico")
 CAT = json.load(open(os.path.join(RAIZ, "catalogo-projeto-m.json"), encoding="utf-8"))
 DEC = json.load(open(os.path.join(RAIZ, "decisoes-ficha.json"), encoding="utf-8"))
 

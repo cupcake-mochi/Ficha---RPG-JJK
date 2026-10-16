@@ -1,0 +1,671 @@
+{
+  "data": "2026-10-16",
+  "base_codigo": "2d06cbdbcb99315c1c602d2ac4c2ac9a13ea7081",
+  "metodo": "Cópia isolada criada só do índice Git; sem original.xlsx ignorado, sem pastas irmãs e instalação venv nova. Setup com HOME de teste vazio.",
+  "instalacao": "OK",
+  "smoke": {
+    "resultado": "OK",
+    "verificacoes": 67,
+    "detalhes": [
+      {
+        "teste": "Python 3.10–3.12 (referência: 3.12)",
+        "ok": true,
+        "detalhe": "3.12.3"
+      },
+      {
+        "teste": "openpyxl",
+        "ok": true,
+        "detalhe": "3.1.5 (esperado 3.1.5)"
+      },
+      {
+        "teste": "Pillow",
+        "ok": true,
+        "detalhe": "10.2.0 (esperado 10.2.0)"
+      },
+      {
+        "teste": "python-docx",
+        "ok": true,
+        "detalhe": "1.1.0 (esperado 1.1.0)"
+      },
+      {
+        "teste": "et-xmlfile",
+        "ok": true,
+        "detalhe": "2.0.0 (esperado 2.0.0)"
+      },
+      {
+        "teste": "lxml",
+        "ok": true,
+        "detalhe": "5.2.1 (esperado 5.2.1)"
+      },
+      {
+        "teste": "typing-extensions",
+        "ok": true,
+        "detalhe": "4.10.0 (esperado 4.10.0)"
+      },
+      {
+        "teste": "Node >= 18 (ambiente de referência: 20)",
+        "ok": true,
+        "detalhe": "v20.20.2"
+      },
+      {
+        "teste": "entrada ficha-v01/layout.json",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada manual.txt",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada manual-fonte.json",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada catalogo-projeto-m.json",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada decisoes-ficha.json",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada ficha-v01/progressao-base3a.json.gz",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada ESQUEMA-ANALISE.md",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada repos/JJK---PDF---RPG-main/ficha/ficha-exemplo-kaori.docx",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada ficha-v01/equipamento-do-livro.json",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada ficha-v01/habilidades-do-livro.json",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada ficha-v01/invocacao-do-livro.json",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada ficha-v01/origens-do-livro.json",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "entrada ficha-v01/tecnica-do-livro.json",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência nuvem-b47/fixtures/original.xlsx",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência nuvem-b47/fixtures/base-parte1.xlsx",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência nuvem-b47/fixtures/base-parte2-local.xlsx",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência nuvem-b47/fixtures/pecas-modelo-anterior.json.gz",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência arte/fontes/Oswald.ttf",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência arte/fontes/oswald/OFL.txt",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência arte/fontes/YujiSyuku.ttf",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência arte/fontes/yujisyuku/OFL.txt",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência referencias-b47/Ciclo-Maldito-R52.txt",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência referencias-b47/manual-historico/35-caminhos-e-trilhas.md",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência referencias-b47/manual-historico/40-fundamento.md",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência referencias-b47/manual-historico/42-tecnica-marcial.md",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência referencias-b47/manual-historico/43-sem-tecnica.md",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência referencias-b47/manual-historico/45-aptidoes-e-refino.md",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "referência referencias-b47/manual-historico/47-bencaos-e-lapidacao.md",
+        "ok": true,
+        "detalhe": ""
+      },
+      {
+        "teste": "arquivos Apps Script presentes",
+        "ok": true,
+        "detalhe": "23"
+      },
+      {
+        "teste": "teto Analise.gs",
+        "ok": true,
+        "detalhe": "816318 bytes"
+      },
+      {
+        "teste": "teto AnaliseFontes.gs",
+        "ok": true,
+        "detalhe": "413401 bytes"
+      },
+      {
+        "teste": "teto Codigo.gs",
+        "ok": true,
+        "detalhe": "260138 bytes"
+      },
+      {
+        "teste": "teto Configuracao.gs",
+        "ok": true,
+        "detalhe": "843661 bytes"
+      },
+      {
+        "teste": "teto Criacao.gs",
+        "ok": true,
+        "detalhe": "409134 bytes"
+      },
+      {
+        "teste": "teto CriacaoAnalise.gs",
+        "ok": true,
+        "detalhe": "282438 bytes"
+      },
+      {
+        "teste": "teto CriacaoPainel.gs",
+        "ok": true,
+        "detalhe": "103070 bytes"
+      },
+      {
+        "teste": "teto Custom.gs",
+        "ok": true,
+        "detalhe": "609566 bytes"
+      },
+      {
+        "teste": "teto Ficha.gs",
+        "ok": true,
+        "detalhe": "789241 bytes"
+      },
+      {
+        "teste": "teto Habilidades.gs",
+        "ok": true,
+        "detalhe": "215389 bytes"
+      },
+      {
+        "teste": "teto Invocacoes.gs",
+        "ok": true,
+        "detalhe": "575964 bytes"
+      },
+      {
+        "teste": "teto Melhorias.gs",
+        "ok": true,
+        "detalhe": "118215 bytes"
+      },
+      {
+        "teste": "teto Origens.gs",
+        "ok": true,
+        "detalhe": "511148 bytes"
+      },
+      {
+        "teste": "teto PecasAnalise1.gs",
+        "ok": true,
+        "detalhe": "584653 bytes"
+      },
+      {
+        "teste": "teto PecasAnalise2.gs",
+        "ok": true,
+        "detalhe": "595906 bytes"
+      },
+      {
+        "teste": "teto PecasAnalise3.gs",
+        "ok": true,
+        "detalhe": "580066 bytes"
+      },
+      {
+        "teste": "teto PecasAnalise4.gs",
+        "ok": true,
+        "detalhe": "128940 bytes"
+      },
+      {
+        "teste": "teto PecasPainel.gs",
+        "ok": true,
+        "detalhe": "643407 bytes"
+      },
+      {
+        "teste": "teto Pessoal.gs",
+        "ok": true,
+        "detalhe": "163189 bytes"
+      },
+      {
+        "teste": "teto Progressao.gs",
+        "ok": true,
+        "detalhe": "193556 bytes"
+      },
+      {
+        "teste": "teto ProgressaoAnalise.gs",
+        "ok": true,
+        "detalhe": "221417 bytes"
+      },
+      {
+        "teste": "teto ProgressaoPainel.gs",
+        "ok": true,
+        "detalhe": "457092 bytes"
+      },
+      {
+        "teste": "teto Restricoes.gs",
+        "ok": true,
+        "detalhe": "27448 bytes"
+      },
+      {
+        "teste": "fonte Oswald.ttf",
+        "ok": true,
+        "detalhe": "Oswald"
+      },
+      {
+        "teste": "fonte YujiSyuku.ttf",
+        "ok": true,
+        "detalhe": "Yuji Syuku"
+      },
+      {
+        "teste": "fontes Python analisadas",
+        "ok": true,
+        "detalhe": "115"
+      },
+      {
+        "teste": "sintaxe JS/GS sem executar serviços",
+        "ok": true,
+        "detalhe": "38 arquivos"
+      },
+      {
+        "teste": "conferir-catalogo.py",
+        "ok": true,
+        "detalhe": "exit=0"
+      },
+      {
+        "teste": "conferir-progressao.py",
+        "ok": true,
+        "detalhe": "exit=0"
+      },
+      {
+        "teste": "conferir-kaori.py",
+        "ok": true,
+        "detalhe": "exit=0"
+      }
+    ]
+  },
+  "exportacao_modelo_atual": "OK",
+  "regressao_pecas": {
+    "resultado": "OK",
+    "checagens": [
+      {
+        "teste": "capacidade cobre todas as escolhas atuais",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "9082 chaves anteriores com fontes e posições preservadas",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "9866 chaves novas, sem duplicatas",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "mesclagens de todos os blocos sem sobreposição",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "cadastros ocultos e fora da paleta",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "texto literal e contagem de vagas não são canonizados",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "identidade da base conserva a regra nomeada",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "consultas exatas escapam curingas do nome",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "últimos cartões são editáveis e exportados",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Melhoria válida 1",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Melhoria válida 2",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Melhoria válida 3",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Melhoria válida 4",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Melhoria válida 5",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Melhoria válida 6",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Melhoria válida 7",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Melhoria válida 8",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Melhoria válida 9",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Melhoria válida 17",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Melhoria válida 789",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "cadastro inválido excluído 10",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "cadastro inválido excluído 11",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "cadastro inválido excluído 12",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "cadastro inválido excluído 13",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "cadastro inválido excluído 14",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "cadastro inválido excluído 15",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "cadastro inválido excluído 16",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "cadastro inválido excluído 18",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "criação do zero tem peso, desconto, TR e identidade própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "base Controle conserva controle e TR",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Rajada herda classe reduzida da entidade",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "última Restrição herda a identidade",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "frequência inválida fica fora do catálogo",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "nona Família abre o menu só das entidades que a escolheram",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "caixas vazias não cobram cadastros excluídos do catálogo",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "duas Restrições de frequência são sinalizadas",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "devolução paga só Melhorias e conserva o custo da Forma",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "carta sinaliza peça ausente ou cadastro inválido",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_AM herda Pressa própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_AM herda Distância própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_AM herda Distância ampla",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_AM herda Resposta própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_AM herda Alma própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_AM herda Acerto próprio",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_AM herda Prisão própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_AM herda Demora própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_INVOC herda Pressa própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_INVOC herda Distância própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_INVOC herda Distância ampla",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_INVOC herda Resposta própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_INVOC herda Alma própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_INVOC herda Acerto próprio",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "DADOS_INVOC herda Prisão própria",
+        "ok": true,
+        "detalhe": null
+      },
+      {
+        "teste": "Classe 0 herda alcance da Melhoria",
+        "ok": true,
+        "detalhe": null
+      }
+    ]
+  },
+  "regressao_textos": {
+    "resultado": "OK",
+    "grupos": 1219,
+    "cenarios": 7,
+    "leituras_limites_por_edicao": 4
+  },
+  "compactacao": {
+    "resultado": "OK",
+    "abas": 20
+  },
+  "geracao_completa": {
+    "resultado": "OK",
+    "arquivos_gs": 23,
+    "bytes": 9543357,
+    "maior_bytes": 843661,
+    "comparacao_gs": "23 de 23 idênticos byte a byte aos arquivos versionados",
+    "sha256": {
+      "Analise.gs": "be2ea8620482bfc9338ae8930c4ef7d55f7d1ca1db0a6da40a61e6889e902ccc",
+      "AnaliseFontes.gs": "c0d9e5e20d588ac079eb9e6daffbf5ec86f30a4ad52e394d4c98c8941e929418",
+      "Codigo.gs": "5ff83291af772326057c1a83eb8f25528c3856e8111cae06b4deea27d0831bfa",
+      "Configuracao.gs": "f3f766d42c16cceb007ca7b40d1e625e8a956cf01b7de4a1a57bf5ddd06b9e1d",
+      "Criacao.gs": "8eacf3d1fbebdc53b0417e7e0ffc174f5fb8f80d517e4261d59a2f6a5c78dc99",
+      "CriacaoAnalise.gs": "92ebd0d4fd776263a24b7d39a252efa253be6822fce9651deb39f997f7f52a21",
+      "CriacaoPainel.gs": "d20c6c8614fbc2460298a65b2a1008e18abce2112f949599a974ea242daae8b9",
+      "Custom.gs": "ffd6bf162ded829d25ff67c66dc7f45bb70d79c4569d49e37e00e875f71eb2c4",
+      "Ficha.gs": "acb5308143f7328d1075d1a6a9162f8fa74e88d929583332d8de398d15e70402",
+      "Habilidades.gs": "478f255b306af36c19f1bfdfba0e337ffc6fb7cf49ab2b5b5f4f95f665b0b00e",
+      "Invocacoes.gs": "77398cdb9ae7620b4a62eefe83619f8e8354c8ae5c297e399743dff144c174d1",
+      "Melhorias.gs": "2943f918fd4cee2317a16444acfa9ca6a3350000bdea3d54fa40565f17df5bb7",
+      "Origens.gs": "42b25ac930cf47fe40ed9699367830e9d3999f8189abf14ee2e749a7c5f1d6d1",
+      "PecasAnalise1.gs": "4a1879d3974e08ca38a7121f43c291da47b5e468975e7bda085bb74b76bda286",
+      "PecasAnalise2.gs": "4768c8d04b98e5f1e66f399de91eed8ff2ee7909b5eed6bf4802abc626d87a32",
+      "PecasAnalise3.gs": "831e5de3c3424df025ff1b88a91b6b50c89996b298c5b7a2d38e5ceabd5d3878",
+      "PecasAnalise4.gs": "7a28b8ca394e494fdafc3dfff06269c53247cea1466fc1069027228137aa7a3a",
+      "PecasPainel.gs": "197b419ebb3e37d22678f96289d5052ed297016a2d1a3cbad53540b2aa093ef4",
+      "Pessoal.gs": "0aaef1ecdd2474a0daa7cb65404c50ce9a9bb9fa97042d751331071443333822",
+      "Progressao.gs": "e623a00cf3d6495a5c0129975eb7310529f86ecce34d414ed3c989ec40852021",
+      "ProgressaoAnalise.gs": "96d3ae0e41e569e2551329f94460385a24118584ebbd6a73892a5f476165e334",
+      "ProgressaoPainel.gs": "69d63063a9751528a9587011bf72de043337500fe14f6e9eeb4e1cb585f822fb",
+      "Restricoes.gs": "c17a05945d935302a2298a8aa0a02e022d7368ac6721a1e155632c653ff7de58"
+    }
+  },
+  "limites": [
+    "Nenhuma escrita ou validação nativa no Google nesta preparação.",
+    "Bateria histórica completa não executada; formatos 5/6/7 requerem manutenção explícita em A/B.",
+    "GitHub Actions configurado; não se declara execução remota antes da confirmação.",
+    "Esta evidência valida preparação, estado atual e geração; não valida redução futura."
+  ]
+}

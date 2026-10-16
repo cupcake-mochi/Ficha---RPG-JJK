@@ -1,3 +1,5 @@
+> **Preparação sem PC remoto:** [NUVEM.md](NUVEM.md), dependências e referências versionadas; instalação e smoke em `nuvem-b47/`.
+
 > **Três chats de nuvem:** [divisão, branches e integração](PLANO-PARALELO-B47.md) e [prompts por responsável](PROMPT-WORK-B47.md). Nenhuma redução foi aplicada pela publicação do plano.
 
 > **Retomada vigente da B47 (16/10/2026):** leia [PLANO-RETOMADA-B47.md](PLANO-RETOMADA-B47.md) e [PROMPT-WORK-B47.md](PROMPT-WORK-B47.md), no ramo `codex/configuracao-b47`. Capacidades menores estão planejadas, ainda não implementadas. As seções antigas abaixo não substituem a rota nova.
