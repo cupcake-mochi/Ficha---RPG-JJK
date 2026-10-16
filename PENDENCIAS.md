@@ -1,4 +1,22 @@
-## Checkpoint vigente · A+B nativos concluídos · 16/10/2026
+## Planejamento preparado · divisão C+D · 16/10/2026
+
+Usuário aprovou publicar a divisão em três chats no total: integrador atual
+(Tipos de dano, Condições, núcleo, integração, Google e D), outro Codex
+(Formas para personagem/entidades, Aptidões/Bênçãos e Talentos do personagem)
+e Claude (Tipos/Talentos de entidade e revisão cruzada de personagem).
+
+[Plano C+D](PLANO-PARALELO-CD-B47.md) e [três prompts](PROMPT-WORK-B47.md)
+publicados como preparação. O uso de cada prompt inicia/autoriza sua frente;
+esta publicação não implementa C/D nem abre chats. A+B permanecem concluídos
+em `dce00ab`. Núcleo/Google só com integrador; auxiliares entregam módulos,
+patches e testes isolados. Estimativa provisória conjunta: 8–14h de trabalho
+ativo, revista no primeiro checkpoint. Bot, oficial, main e acessos fora.
+
+Próxima ação: usar os três prompts, mantendo a mesma base de preparação e
+registrando o SHA real. Codex: recomendação de planejamento GPT-6.1 Sol, High;
+Claude: confirmar opções reais da conta e recomendar modelo/esforço disponíveis.
+
+## Checkpoint vigente de implementação · A+B nativos concluídos · 16/10/2026
 
 10 Famílias extras, 30 Melhorias, 30 Restrições, 10 Perícias e 10 Ofícios
 compartilhados; livro, 25 cartões 3a, Caminho/Trilha e nove Famílias por

@@ -1,5 +1,7 @@
 # Ciclo Maldito B47 — plano e retomada
 
+**Entrada vigente após A+B, 16/10/2026:** A+B estão concluídos nativamente e publicados em `dce00ab8a244f53218c978293d10c5c1894b1ef8`. O [checkpoint atual](PENDENCIAS.md) e [checkpoint PC](capacidade-b47/RETOMADA-PC.md) prevalecem sobre os estados históricos de A/B abaixo. C/D ainda não começaram. A divisão preparada para essa continuação está em [PLANO-PARALELO-CD-B47.md](PLANO-PARALELO-CD-B47.md), com [três prompts novos](PROMPT-WORK-B47.md). Publicar o plano não inicia as frentes; usar cada prompt autoriza seu papel. As seções C/D e decisões mecânicas deste documento continuam válidas.
+
 Estado consolidado em **16/10/2026**. Este é o ponto de entrada vigente para continuar o projeto, inclusive em outro computador ou pelo Work. Em caso de conflito com checkpoints antigos de `PENDENCIAS.md`, a rota deste documento prevalece.
 
 A execução em três chats e os limites de edição/publicação estão em [PLANO-PARALELO-B47.md](PLANO-PARALELO-B47.md). Esse suplemento substitui o antigo prompt único para esta rodada.

@@ -4,7 +4,7 @@ O repositório contém gerador, layout, catálogos, código Apps Script, arte/fo
 
 ## Início em um checkout novo
 
-Selecione o repositório `cupcake-mochi/Ficha---RPG-JJK` e o ramo do seu papel, conforme [PLANO-PARALELO-B47.md](PLANO-PARALELO-B47.md). Não use `main` como base. Caso o serviço gere outro nome de branch, preserve a base e informe o nome ao integrador.
+Selecione o repositório `cupcake-mochi/Ficha---RPG-JJK` e o ramo do seu papel, conforme [PLANO-PARALELO-CD-B47.md](PLANO-PARALELO-CD-B47.md). A+B estão concluídos; a divisão anterior em `PLANO-PARALELO-B47.md` é histórica. Não use `main` como base. Caso o serviço gere outro nome de branch, preserve a base e informe o nome ao integrador.
 
 Ambiente de referência: Linux, Python **3.12**, Node **20**, Git. O diagnóstico aceita Python 3.10–3.12 e Node >= 18, mas isso não equivale a testar todas as combinações. Nenhum pacote npm é necessário para as regressões Node existentes. Dependências Python e transitivas estão fixadas em [requirements.txt](requirements.txt).
 
@@ -76,10 +76,11 @@ Para prévia local, há `medidas/ver-aba.py`, por exemplo `python medidas/ver-ab
 
 ## Google sem acesso remoto
 
-Checkpoint de 16/10: Drive/Sheets permitiram backup, snapshot e migração da
-descartável, com prova **PARCIAL**. A revisão original continua em formato 9;
-Apps Script e validação conjunta permanecem pendentes. IDs, resultados e
-limites em [capacidade-b47/NATIVO-PARCIAL.md](capacidade-b47/NATIVO-PARCIAL.md).
+Checkpoint vigente de 16/10: A+B nativos concluídos, revisão em ANALISE 10,
+20 GS e manifesto salvos/relidos iguais, construção e cópia funcional testadas.
+Provas e estado atual em [capacidade-b47/RETOMADA-PC.md](capacidade-b47/RETOMADA-PC.md).
+[NATIVO-PARCIAL.md](capacidade-b47/NATIVO-PARCIAL.md) é histórico; não retomar
+seus lotes como pendência. C+D exigem nova prova para o modelo/código novos.
 
 Somente o integrador realiza alterações nativas. Os links e destinos estão no plano principal. Acesso ao Git não cria conexão ao Drive, não autentica Apps Script e não concede consentimento à conta. Utilizar conector/API oficial disponível no ambiente, com autorização do usuário; a frente de infraestrutura prepara um envio reprodutível quando houver acesso compatível. Não depender do Brave, extensão ou janela do PC.
 
@@ -97,7 +98,7 @@ linhas antigas fixas. Não usar para a redução; o fluxo atual está em
 
 ## Três chats e continuidade
 
-Use os [prompts atualizados](PROMPT-WORK-B47.md). Todos leem `AGENTS.md` e este guia, conferem a preparação e trabalham em ramos próprios. O chat 3 continua responsável pelo envio/testes de B; não deve reconstruir este bootstrap. Chat 1 continua dono do núcleo e do Google.
+Use os [prompts C+D](PROMPT-WORK-B47.md) e o [plano vigente](PLANO-PARALELO-CD-B47.md). Todos leem `AGENTS.md` e este guia, conferem a preparação e trabalham em ramos próprios. Chat 2 implementa personagem/Formas; chat 3 (Claude) implementa entidades e faz revisão cruzada. Ambos entregam módulos/patches/testes nas pastas delimitadas; chat 1 continua dono do núcleo e do Google. A antiga frente de infraestrutura de B já foi integrada; não reconstruir o bootstrap.
 
 A CI em `.github/workflows/nuvem.yml` executa só preparação e smoke, sem segredos ou conta Google. Disponibilidade/execução do GitHub Actions depende do repositório. Uma CI verde não substitui a bateria completa nem a auditoria nativa final.
 

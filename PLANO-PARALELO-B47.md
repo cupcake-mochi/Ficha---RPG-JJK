@@ -1,5 +1,7 @@
 # B47 — três chats em paralelo
 
+**Histórico de A+B, já concluídos em `dce00ab`.** Para a próxima rodada, usar [PLANO-PARALELO-CD-B47.md](PLANO-PARALELO-CD-B47.md) e os [prompts C+D](PROMPT-WORK-B47.md). O estado e os papéis abaixo retratam a preparação anterior; não reiniciar A/B nem usar seus prompts para executar C/D.
+
 Plano aprovado para preparação em **16/10/2026**. Complementa [PLANO-RETOMADA-B47.md](PLANO-RETOMADA-B47.md): a rota continua A → B → C → D. Esta divisão organiza A+B; não inicia três frentes novas de conteúdo nem substitui os testes finais. A redução de capacidade ainda não foi aplicada.
 
 ## Preparação comum já disponível
