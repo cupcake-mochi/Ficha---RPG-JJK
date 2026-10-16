@@ -69,6 +69,12 @@ nenhum vem das entidades (0 células da DADOS_AM alteradas por elas). Erros: 13 
 Lista completa (76) em `nuvem-b47/saidas/` não versionado; reproduzir com modelos `--exportar-pecas` e
 `comum_cd.recalcular`. Recomendo a frente de personagem rodar o mesmo cenário vazio antes da incorporação.
 
+**P8. Regras numéricas conferidas no livro** (`referencias-b47/Ciclo-Maldito-R52.txt`): Bênção exige
+Lapidação mínima 1/4/7 para CE 1/2/3 (l. 18676–18679); Talento de CE 1/2/3 ocupa 1/2/3 espaços e exige nível
+1/7/13, no máximo cinco Talentos pagos (l. 18127–18132, 4152, 5207); ganho de Leque abre vaga própria sem
+ocupar espaço (l. 14046–14053). Batem com o CONTRATO-PROPOSTO deles. Os "sete lugares do Leque" não
+foram localizados no texto: parecem vir das posições já existentes na ficha; não conferido.
+
 ## Da base do integrador (não é da frente de personagem)
 
 - `regressao-progressao.py`: "formato 10 explícito" falha já em `7752c91` (ANALISE foi para 11).
@@ -78,6 +84,7 @@ Lista completa (76) em `nuvem-b47/saidas/` não versionado; reproduzir com model
 
 - Recálculo com cadastros preenchidos e das 560 fórmulas com `LET` da `DADOS_FORMAS`: o LibreOffice 24.2
   daqui não tem `LET` (exige 24.8+). Só o cenário vazio foi feito (P7).
-- Leitura linha a linha de `motor.py`/`consumidores.py`/`planilha.py` contra o livro.
+- Leitura linha a linha de `motor.py`/`consumidores.py`/`planilha.py` (só as regras numéricas do
+  contrato foram conferidas, P8); alcance/área das Formas nas Classes 0–7 não conferidos.
 
 Próxima ação: frente de personagem corrige P7; integrador concilia P1–P3 antes de juntar as séries. Recomendação: modelo do integrador, High.
