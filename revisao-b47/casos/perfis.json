@@ -156,7 +156,7 @@
     }
   },
   "alvo-real-separado": {
-    "descricao": "Para revisar o commit A se ele separar Perícias e Ofícios em chaves próprias. Ajuste os campos ao contrato publicado.",
+    "descricao": "Commit A (2f3c62f): custom.pericia.N / custom.oficio.N com os campos do treino antigo, formato 10.",
     "trocas": {},
     "formato_minimo": 10,
     "catalogos": {
@@ -196,6 +196,7 @@
       "pericia": {
         "capacidade": 10,
         "campos": [
+          "tipo",
           "nome",
           "mestre_viu",
           "atributo",
@@ -205,6 +206,7 @@
       "oficio": {
         "capacidade": 10,
         "campos": [
+          "tipo",
           "nome",
           "mestre_viu",
           "atributo",

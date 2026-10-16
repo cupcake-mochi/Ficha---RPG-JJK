@@ -50,6 +50,24 @@ if not p['trocas']:
     s = sonda(comum.RAIZ / 'apps-script')
     extra['real'] = s
     avalia('versionados', s)
+    # Projeto Apps Script que ainda guarda complementos da geração v9 (o envio não apaga arquivos).
+    base_v9 = comum.carregar_v9()['sha']
+    v9 = subprocess.check_output(['git', 'ls-tree', '--name-only', base_v9, 'apps-script/'], cwd=comum.RAIZ, text=True).split()
+    sobras = [Path(n).name for n in v9 if not (comum.RAIZ / n).exists()]
+    if sobras:
+        tmp = Path(tempfile.mkdtemp(prefix='revisao-b47-sobras-'))
+        try:
+            for f in (comum.RAIZ / 'apps-script').glob('*.gs'):
+                shutil.copy(f, tmp / f.name)
+            for n in sobras:
+                (tmp / n).write_bytes(subprocess.check_output(['git', 'show', f'{base_v9}:apps-script/{n}'], cwd=comum.RAIZ))
+            s3 = sonda(tmp)
+            extra['com_sobras_v9'] = dict(sobras=sobras, **{k: s3[k] for k in ('guarda', 'chaves', 'nRepetidas', 'nObsoletas')})
+            P.check(f'projeto com sobras da v9 {sobras}: construir recusa ou ignora as sobras',
+                    not s3['guarda'] == 'passa' or (s3['mesmaOrdem'] and not s3['alemDaGrade']),
+                    f"guarda {s3['guarda']!r}; {s3['nObsoletas']} obsoletas, {s3['nRepetidas']} repetidas")
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
 else:
     tmp = Path(tempfile.mkdtemp(prefix='revisao-b47-'))
     wt = tmp / 'wt'

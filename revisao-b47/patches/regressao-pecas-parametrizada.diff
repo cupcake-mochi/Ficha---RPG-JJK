@@ -1,0 +1,44 @@
+--- a/regressao-pecas.py
++++ b/regressao-pecas.py
+@@ -65,7 +65,7 @@
+     transformed=cp.buscas_literais(lookup,'DADOS_AM',{(cp.MEL,'O2:W830')})
+     check('consultas exatas escapam curingas do nome',transformed=='=VLOOKUP('+cc.criterio('A2')+',\'DADOS_MELHORIAS\'!$O$2:$W$830,3,FALSE)')
+     regs={(g['tipo'],g['n']):g for g in model['registros']}
+-    check('últimos cartões são editáveis e exportados',all(f'custom.{kind}.{n}.nome' in keys for kind,n in [('melhoria',789),('restricao',395)]))
++    check('últimos cartões são editáveis e exportados',all(f'custom.{kind}.{n}.nome' in keys for kind,n in [('melhoria',cp.MELHORIAS),('restricao',cp.RESTRICOES)]))
+     if a.estrutura:
+         sys.exit(not all(x['ok'] for x in checks))
+ 
+@@ -125,12 +125,12 @@
+     reg('melhoria',17,nome='Controle herdado',base='Prende',familia='Nenhuma')
+     reg('melhoria',18,nome='Sem peso')
+     reg('melhoria',19,nome='Rajada própria',base='Rajada')
+-    reg('melhoria',789,nome='Última Melhoria',base='Reação')
++    reg('melhoria',cp.MELHORIAS,nome='Última Melhoria',base='Reação')
+     reg('restricao',1,nome='Demora própria',base='Atrasar')
+     reg('restricao',2,nome='Frequência própria',devolucao='Leve',frequencia='Sim')
+     reg('restricao',3,nome='Segunda frequência',devolucao='Média',frequencia='Sim')
+     reg('restricao',4,nome='Frequência inválida',devolucao='Leve',frequencia='Talvez')
+-    reg('restricao',395,nome='Última Restrição',base='Tudo ou Nada')
++    reg('restricao',cp.RESTRICOES,nome='Última Restrição',base='Tudo ou Nada')
+     # Compare the actual card calculations, with and without renamed bases.
+     pairs=[]
+     for i,(alias,base) in enumerate(aliases):
+@@ -208,7 +208,7 @@
+         return v
+     nbook=model['limites'][cp.MEL]['livro']
+     def mel(n,c):return value(cp.MEL,c+str(nbook+n+1))
+-    for n in [1,2,3,4,5,6,7,8,9,17,789]:check('Melhoria válida '+str(n),value(cp.MEL,'M'+str(n+1))=='',value(cp.MEL,'M'+str(n+1)))
++    for n in [1,2,3,4,5,6,7,8,9,17,cp.MELHORIAS]:check('Melhoria válida '+str(n),value(cp.MEL,'M'+str(n+1))=='',value(cp.MEL,'M'+str(n+1)))
+     for n in [10,11,12,13,14,15,16,18]:check('cadastro inválido excluído '+str(n),value(cp.MEL,'M'+str(n+1))!='' and mel(n,'O')=='')
+     check('criação do zero tem peso, desconto, TR e identidade própria',
+         [mel(9,c) for c in ['O','P','Q','R','W','X']]==['Lua*','Família própria',3,6,1,'Lua*'],[mel(9,c) for c in ['O','P','Q','R','W','X']])
+@@ -216,7 +216,7 @@
+         [mel(17,c) for c in ['P','T','W']]==['',1,1],[mel(17,c) for c in ['P','T','W']])
+     check('Rajada herda classe reduzida da entidade',mel(19,'Y')==1,mel(19,'Y'))
+     mr=model['limites'][cp.RES]['livro']
+-    check('última Restrição herda a identidade',value(cp.RES,'N'+str(mr+396))=='Tudo ou Nada')
++    check('última Restrição herda a identidade',value(cp.RES,'N'+str(mr+cp.RESTRICOES+1))=='Tudo ou Nada')
+     check('frequência inválida fica fora do catálogo',value(cp.RES,'K5')!='' and value(cp.RES,'M'+str(mr+5))=='')
+     check('nona Família abre o menu só das entidades que a escolheram',value(cp.MEL,'AN'+str(nbook+10))=='Lua*' and value(cp.MEL,'AR'+str(nbook+10))=='')
+     fc=meta['col']

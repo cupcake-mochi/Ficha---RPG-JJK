@@ -1,0 +1,27 @@
+--- a/ler-analise.py
++++ b/ler-analise.py
+@@ -17,6 +17,8 @@
+ 
+ ABA = "ANALISE"
+ FORMATOS_CONHECIDOS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
++# Valores de erro do Sheets/LibreOffice: uma linha apagada na migração vira #REF! em qualquer parte.
++ERROS = {"#REF!", "#N/A", "#NAME?", "#VALUE!", "#DIV/0!", "#NUM!", "#NULL!", "#ERROR!", "#SPILL!", "#CALC!"}
+ 
+ 
+ def normaliza(v):
+@@ -99,10 +101,14 @@
+         return ["reprovada", [f"formato da aba ANALISE desconhecido: {fmt!r}"]]
+     avisos = []
+     for k, v in ficha.items():
++        if str(v["valor"]).strip().upper() in ERROS:
++            avisos.append(f"{k} ({v['celula']}): erro de fórmula {v['valor']}")
++            continue
+         if v["parte"] != "aviso" or v["valor"] in ("", 0):
+             continue
+         t = str(v["valor"])
+-        if k.startswith(("aviso.efeito.", "aviso.efeito_caixa.")):
++        # vazio = cadastro certo; qualquer texto é problema (formatos 5, 8, 9 e 10 publicam sem o ⚠)
++        if k.startswith(("aviso.efeito.", "aviso.efeito_caixa.", "aviso.custom.")):
+             avisos.append(f"{k} ({v['celula']}): {t}")
+             continue
+         # os X de Y que estão certos dizem "Tudo escolhido" ou não têm o sinal de erro: só o ⚠ e o "acima" acendem

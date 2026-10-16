@@ -19,13 +19,16 @@ from pathlib import Path
 import comum
 
 ap = comum.argumentos(__doc__)
+ap.add_argument('--patch', default='carregador-selo-de-geracao.diff',
+                help='arquivo em patches/ (use carregador-selo-de-geracao-v10.diff sobre o commit A)')
 args = ap.parse_args()
 p = comum.perfil(args.perfil)
 P = comum.Placar('patch carregador ' + args.perfil)
 L = comum.linhas_analise(args.analise or comum.exportar(args.perfil, 'analise'))
 chaves = comum.SAIDAS / f'chaves-{args.perfil}.json'
 chaves.write_text(json.dumps([l[0] for l in L], ensure_ascii=False), encoding='utf-8')
-patch = comum.AQUI / 'patches' / 'carregador-selo-de-geracao.diff'
+patch = comum.AQUI / 'patches' / args.patch
+base_v9 = comum.carregar_v9()['sha']   # sobras vêm da geração v9 publicada, não da pasta atual
 
 
 def sonda(pasta):
@@ -54,7 +57,7 @@ try:
     antigos = [n for n in ('PecasAnalise2.gs', 'PecasAnalise3.gs', 'PecasAnalise4.gs') if n not in pecas]
     if antigos:
         for n in antigos:
-            shutil.copy(comum.RAIZ / 'apps-script' / n, pasta / n)
+            (pasta / n).write_bytes(subprocess.check_output(['git', 'show', f'{base_v9}:apps-script/{n}'], cwd=comum.RAIZ))
         s2 = sonda(pasta)
         P.check('com sobras antigas: guarda recusa e cita os arquivos',
                 s2['guarda'].startswith('Apague do projeto') and all(n in s2['guarda'] for n in antigos), s2['guarda'])
