@@ -1,0 +1,2 @@
+# Unified diff exige um espaço nas linhas de contexto vazias.
+*.patch -whitespace

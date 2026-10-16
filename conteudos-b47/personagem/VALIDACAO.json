@@ -1,0 +1,95 @@
+{
+  "data_utc": "2026-10-16T22:04:01.237245+00:00",
+  "ramo": "codex/b47-cd-personagem",
+  "sha_testado": "ffaca820b3be591d4985ae00067d22615c516236",
+  "base_comum": "0d4d64e2847dfea29b0e3804ab6f0853c52ea6fd",
+  "contrato_lido": "ae16895967d23044f558f31638df23c0fbdd7598",
+  "python": "3.12.14",
+  "node": "v24.19.0",
+  "segundos": 47.0,
+  "testes": 73,
+  "falhas": 0,
+  "erros": 0,
+  "pulados": 0,
+  "resultado": "OK",
+  "medidas": {
+    "ENSAIO_FORMAS": {
+      "celulas": 5944,
+      "bytes_json": 1094125,
+      "maior_formula": 774,
+      "celula": "DF11"
+    },
+    "ENSAIO_APTIDOES": {
+      "celulas": 1566,
+      "bytes_json": 105985,
+      "maior_formula": 256,
+      "celula": "AT11"
+    },
+    "ENSAIO_TALENTOS": {
+      "celulas": 876,
+      "bytes_json": 64969,
+      "maior_formula": 256,
+      "celula": "AH11"
+    }
+  },
+  "novas_entradas": 470,
+  "editor": {
+    "inicio": 1735,
+    "fim": 2242
+  },
+  "arquivos_sha256": {
+    "b47_personagem/__init__.py": "d1729e03e5507a55acbee39da3759ddefc502ee4c56ed22ab1552510ef63ae91",
+    "b47_personagem/consumidores.py": "c369204224d5f23bb323dbbbbc73f5a7ee4171d81453137da83d99fe8f9ddb3a",
+    "b47_personagem/fontes_livro.py": "ba2877adb888fe79f47b76235be09ae1d7859df836d8dfe22f4f6f9ccf2eacb4",
+    "b47_personagem/interface.py": "f16ae0a7b755929fb42ce29fbd8894c0f0e3bde958620605deccc86cf548245d",
+    "b47_personagem/motor.py": "0cce9b248ffdfaef64d54520d4a53f0e0f69d39d1243b2a86fe2ec3da1a80143",
+    "b47_personagem/planilha.py": "96046019d3831b334987ffa9c9173df0c190e4933d01af3fdac5c9de1e9118e1",
+    "b47_personagem/transporte.py": "5108de53e971f0d660d493c1a7e498e39dd90c5f22af1a0788481d7cae04a951",
+    "b47_personagem/usos.py": "dd1e88a46768991dca6d635339c31bc0ed72dc3cc9509e8237a24887647d68e6",
+    "fixture_base.py": "05f65311b7fc5494116a3affab71d6c9c60c83bc0f4eb88594c8f2cb7794d6bc",
+    "patches/01-incorporacao.patch": "102833dfb07b146cf2d545678035e5fbfa694101e0ee7ea40fc8943e4af8553a",
+    "patches/02-transporte.patch": "203a8aca899454c97a3746bc0dda25b2fdf79cbd9b78c3fdde56d5489adc0ba5",
+    "patches/03-leitor.patch": "df01131dde34f0ace8a4a7060bfd81473e1360f71531a6773d7a59b240da2d48",
+    "patches/base-7752c91/01-incorporacao.patch": "043873c5f34944c556a7c02c520b5984f7b438c99544d4391cd20194265b6629",
+    "patches/base-7752c91/02-transporte.patch": "fe7567e355a8b7e7b3e63afe3861ff4756fd3c791254f80822eaa6ef6f4feb78",
+    "patches/base-7752c91/03-leitor.patch": "0268371797ecb6a0b1a86d4fca209bb943573979c0a3578db01ecfae99ec4112",
+    "preparar_patches.py": "074b0ba68cba949bcd9ca1e8a5cd845e042da375239fdd16571840119f399ea4",
+    "test_motor.py": "26acebe7b88e2743ac17c5ee0000d9e9b10557dc482cacdcf7d668131a66e4ea",
+    "test_patches.py": "3c6ce0df05e889bc8c1de192c258b0d671d1376606690d499258f41fc7e5a6ec",
+    "test_planilha.py": "3586c17951716bce8361a67f9837c7eb2a400cc5370bdab0bceac997d7f872a8",
+    "teste-carregamento.js": "2dff8ec500c122627f8cdaba7e11c206347a3fe85ade7581fe8e0466365c43ac",
+    "validar.py": "329baedb9bc1a35064e41214a8cb193715a6df6e1609eb1832e28d3ba7343f3f"
+  },
+  "google": "nenhuma escrita; nenhuma leitura de dados nativos nesta frente",
+  "integracao_producao": false,
+  "geracao_gs": false,
+  "impedidos": [
+    {
+      "teste": "recálculo das fórmulas no Calc",
+      "motivo": "LibreOffice Calc ausente"
+    },
+    {
+      "teste": "bateria POSIX agregada da infra",
+      "motivo": "fcntl indisponível no Python Windows"
+    },
+    {
+      "teste": "validação, aplicação e inspeção Google",
+      "motivo": "responsabilidade exclusiva do integrador; não executadas"
+    }
+  ],
+  "smoke_final": {
+    "comando": "python nuvem-b47/conferir.py --smoke",
+    "exit_code": 0,
+    "python_fontes": 166,
+    "js_gs": 41,
+    "verificadores": [
+      "catalogo",
+      "progressao",
+      "Kaori"
+    ]
+  },
+  "bases_patches_testadas": [
+    "ae16895967d23044f558f31638df23c0fbdd7598",
+    "7752c9115f168effe74092d125dfdd5352bd44a3"
+  ]
+}
