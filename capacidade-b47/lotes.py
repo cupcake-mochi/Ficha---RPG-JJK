@@ -80,7 +80,10 @@ def gerar(base,target,snapshot,plan):
         if rg['startIndex']>=732:requests.append({'deleteDimensionGroup':{'range':rg}})
     requests.append({'unmergeCells':{'range':grid('CONFIGURAÇÃO',f'A733:P{oldend}')}})
     requests.append({'repeatCell':{'range':grid('CONFIGURAÇÃO',f'A733:P{oldend}'),'cell':{},'fields':'userEnteredValue,userEnteredFormat,note,dataValidation'}})
-    requests.append({'updateDimensionProperties':{'range':{'sheetId':sheets['CONFIGURAÇÃO']['properties']['sheetId'],'dimension':'ROWS','startIndex':732,'endIndex':end},'properties':{'pixelSize':25},'fields':'pixelSize'}})
+    # Removing an old group does not clear hiddenByUser on its former rows.
+    # The native v9 copy retained rows 793–874 hidden after the group was
+    # shortened to the two introduction rows, concealing Perícias and Ofícios.
+    requests.append({'updateDimensionProperties':{'range':{'sheetId':sheets['CONFIGURAÇÃO']['properties']['sheetId'],'dimension':'ROWS','startIndex':732,'endIndex':end},'properties':{'pixelSize':25,'hiddenByUser':False},'fields':'pixelSize,hiddenByUser'}})
     # Paint the approved cards on their compacted geometry. No study tabs or
     # upper 3a/campaign controls are rebuilt.
     base_style=next(v[2] for v in cfg['celulas'] if v[0]=='A1')
@@ -109,6 +112,7 @@ def gerar(base,target,snapshot,plan):
         rg={'sheetId':sheets['CONFIGURAÇÃO']['properties']['sheetId'],'dimension':'ROWS','startIndex':r-1,'endIndex':rr}
         requests.append({'addDimensionGroup':{'range':rg}})
         requests.append({'updateDimensionGroup':{'dimensionGroup':{'range':rg,'depth':1,'collapsed':bool(collapsed)},'fields':'collapsed'}})
+        requests.append({'updateDimensionProperties':{'range':rg,'properties':{'hiddenByUser':bool(collapsed)},'fields':'hiddenByUser'}})
     for sheet,changes in plan['valores_alterados'].items():
         if sheet=='CONFIGURAÇÃO':continue
         for coord,value in changes.items():

@@ -4,6 +4,7 @@ import argparse
 from copy import deepcopy
 from datetime import datetime, timezone, timedelta
 import json
+import re
 from pathlib import Path
 import migracao as m
 
@@ -87,6 +88,20 @@ def lots_ok(plan):
     ids={a['properties']['title']:a['properties']['sheetId'] for a in s['metadata']['sheets']}
     deleted=[r['deleteDimension']['range'] for r in requests if 'deleteDimension' in r]
     if len(deleted)!=6 or not all(r['dimension']=='ROWS' for r in deleted):return False
+    # Native counterexample: deleting the v9 group left its old dimensions
+    # hidden. Model those dimensions independently of the group metadata.
+    cfgid=ids['CONFIGURAÇÃO'];hidden={r:True for r in range(792,874)}
+    hidden[731]=True  # controls above the migration boundary must stay intact
+    for request in requests:
+        update=request.get('updateDimensionProperties',{})
+        rg=update.get('range',{})
+        if rg.get('sheetId')!=cfgid or 'hiddenByUser' not in update.get('fields','').split(','):continue
+        for r in range(rg['startIndex'],rg['endIndex']):hidden[r]=update['properties']['hiddenByUser']
+    # Both ends of Perícias and the first Ofício used to be inside that group.
+    for key in ('custom.pericia.1.nome','custom.pericia.10.nome','custom.oficio.1.nome','custom.oficio.10.nome'):
+        row=int(re.search(r'\d+',m.source(new[key][1])[1]).group())-1
+        if hidden.get(row,False):return False
+    if not hidden[731] or not hidden[792] or not hidden[793] or hidden[794]:return False
     # Original 3a inputs, player choices and the group-7 cache are not cleared.
     for r in requests:
         if 'repeatCell' in r and r['repeatCell']['range']['sheetId']==ids['CONFIGURAÇÃO']:
