@@ -4,7 +4,8 @@
     python revisao-b47/cd-entidades/conferir_patches.py [--base REV] [--so 01|02|ambos] [--regressao] [--manter]
 
 1. `git worktree add --detach` da base (padrão: HEAD) numa pasta temporária;
-2. `git apply --check` e `git apply` dos patches, na ordem 02 → 01 (02 é independente);
+2. `git apply --check` e `git apply` dos patches, na ordem 02 → 01 → 03 (02 é independente; 03 ajusta os
+   testes de dano/Condições do integrador para conviverem com as chaves de entidade);
 3. a cópia ficha-v01/entidades_custom.py tem de ser idêntica ao módulo desta pasta;
 4. ANALISE exportada antes e depois do 01: linhas da base idênticas e na mesma ordem, só as chaves novas no fim;
 5. geração completa (monta.py) só na worktree: abas e .gs abaixo de 900.000 bytes;
@@ -31,7 +32,8 @@ sys.path.insert(0, str(AQUI))
 from comum_cd import Placar, python  # noqa: E402
 
 PATCHES = {'02': AQUI / 'patches' / '02-copias-de-complemento.patch',
-           '01': AQUI / 'patches' / '01-entidades-no-gerador.patch'}
+           '01': AQUI / 'patches' / '01-entidades-no-gerador.patch',
+           '03': AQUI / 'patches' / '03-testes-comuns-com-entidades.patch'}
 TETO = 900_000
 
 ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -55,7 +57,7 @@ try:
     if r.returncode:
         raise SystemExit(r.stderr)
     print(f'base {base} · worktree {wt}\n')
-    ordem = ['02', '01'] if args.so == 'ambos' else [args.so]
+    ordem = {'ambos': ['02', '01', '03'], '01': ['01', '03'], '02': ['02']}[args.so]
     env = dict(os.environ, PYTHONUTF8='1')
 
     def analise():
@@ -99,6 +101,14 @@ try:
             all(v < TETO for v in gs.values()), {k: v for k, v in gs.items() if v >= TETO})
     if '01' in ordem:
         P.check('Entidades.gs e EntidadesPainel.gs gerados', {'Entidades.gs', 'EntidadesPainel.gs'} <= set(gs), sorted(gs))
+    teste_integrador = wt / 'conteudos-b47' / 'comum' / 'testar-carregamento.js'
+    if '03' in ordem and teste_integrador.exists() and shutil.which('node'):
+        modelo = tmp / 'modelo.json'
+        roda([python(), 'ficha-v01/monta.py', '--exportar-pecas', str(modelo)], cwd=wt, env=env, timeout=1800)
+        tc = roda(['node', '--expose-gc', str(teste_integrador), str(modelo)], cwd=wt, timeout=1800)
+        P.check('conteudos-b47/comum/testar-carregamento.js com entidades', not tc.returncode,
+                (tc.stdout + tc.stderr).strip()[-400:])
+        print(tc.stdout.strip())
     ref = tmp / 'ref.json'
     rr = roda([python(), str(AQUI / 'referencia_carregador.py'), str(wt), str(wt / 'apps-script'), str(ref)], cwd=wt, env=env)
     if rr.returncode:
