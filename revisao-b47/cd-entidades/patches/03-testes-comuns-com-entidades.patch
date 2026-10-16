@@ -1,0 +1,64 @@
+diff --git a/conteudos-b47/comum/testar-carregamento.js b/conteudos-b47/comum/testar-carregamento.js
+index 552a86f..d9e8293 100644
+--- a/conteudos-b47/comum/testar-carregamento.js
++++ b/conteudos-b47/comum/testar-carregamento.js
+@@ -26,12 +26,12 @@ function load(order,omit,stale){
+ function check(order){
+  const c=load(order);
+  const abas=JSON.parse(JSON.stringify(c.ABAS));
+- assert.equal(abas.length,18);
++ assert.equal(abas.length,Object.keys(modelTabs).length);
+  assert.deepEqual(abas.map(a=>a.nome).sort(),Object.keys(modelTabs).sort());
+  const analise=abas.find(a=>a.nome==='ANALISE');
+  const keys=analise.vals.filter(v=>v[1]===1&&v[0]>1).map(v=>v[2]).sort();
+  assert.deepEqual(keys,expectedKeys);
+- assert.equal(new Set(keys).size,7436);
++ assert.equal(new Set(keys).size,expectedKeys.length);
+  const danos=abas.find(a=>a.nome==='DADOS_DANOS');
+  assert.equal(danos.rows,modelTabs.DADOS_DANOS.linhas+2); // margem nativa do emissor
+  const cfg=abas.find(a=>a.nome==='CONFIGURAÇÃO');
+@@ -64,4 +64,4 @@ for(const order of [files,files.slice().reverse()]){
+  assert.throws(()=>c.montar_(),/geração anterior/);
+  count++;if(global.gc)global.gc();
+ }
+-console.log(JSON.stringify({resultado:'OK',checagens:count,ordens:orders.length,abas:18,chaves:7436,tipo:'VM; sem Google'}));
++console.log(JSON.stringify({resultado:'OK',checagens:count,ordens:orders.length,abas:Object.keys(modelTabs).length,chaves:expectedKeys.length,tipo:'VM; sem Google'}));
+diff --git a/conteudos-b47/comum/testar-comuns.py b/conteudos-b47/comum/testar-comuns.py
+index b37210e..a6e1f74 100644
+--- a/conteudos-b47/comum/testar-comuns.py
++++ b/conteudos-b47/comum/testar-comuns.py
+@@ -3,6 +3,7 @@ import argparse
+ import importlib.util
+ import json
+ from pathlib import Path
++import re
+ import sys
+ import unittest
+ 
+@@ -28,11 +29,16 @@ def analysis(model):
+             for address, value in cells.items() if address.startswith('A') and address != 'A1'}
+ 
+ 
++def outras_frentes(keys):
++    """Chaves de frentes integradas depois de dano/Condições (Tipos/Talentos de entidade)."""
++    return {k for k in keys if re.match(r'^(aviso\.)?custom\.(tipo|talento)_entidade\.', k)}
++
++
+ class Comuns(unittest.TestCase):
+     def test_01_contrato_retido(self):
+         before, after = analysis(BASE), analysis(MODEL)
+         self.assertEqual(len(before), 7356)
+-        self.assertEqual(len(after), 7436)
++        self.assertEqual(len(after)-len(outras_frentes(after)), 7436)
+         self.assertFalse(set(before)-set(after))
+         for key in before:
+             if key != 'formato.versao':
+@@ -41,7 +47,7 @@ class Comuns(unittest.TestCase):
+     def test_02_novos_campos_sem_colisao(self):
+         before, after = analysis(BASE), analysis(MODEL)
+         expected = {row[0] for row in custom_danos.exporta(MODEL['danos'])+custom_condicoes.exporta(MODEL['condicoes'])}
+-        self.assertEqual(set(after)-set(before), expected)
++        self.assertEqual(set(after)-set(before)-outras_frentes(after), expected)
+         self.assertEqual(len(expected), 80)
+         self.assertEqual(after['formato.versao'][0], '11')
+ 

@@ -1,0 +1,24 @@
+diff --git a/ficha/modelo.gs.js b/ficha/modelo.gs.js
+index b4b17da..9a523f8 100644
+--- a/ficha/modelo.gs.js
++++ b/ficha/modelo.gs.js
+@@ -184,6 +184,19 @@ function juntarValores_(extras) {
+       var chave = v[0] + ',' + v[1];
+       if (!presentes[chave]) { aba.vals.push(v); presentes[chave] = true; }
+     });
++    // As cópias da aba já foram expandidas quando ela entrou; o molde que chega
++    // só agora, num complemento, também desce para cada cópia (como no Python).
++    if (aba.copias_feitas) {
++      (aba.copias || []).forEach(function (k) {
++        extra.vals.forEach(function (v) {
++          if (v[0] < k[0] || v[0] > k[1]) return;
++          k[2].forEach(function (d) {
++            var linha = v[0] + d - k[0], chave = linha + ',' + v[1];
++            if (!presentes[chave]) { aba.vals.push([linha, v[1]].concat(v.slice(2))); presentes[chave] = true; }
++          });
++        });
++      });
++    }
+     aba.vals.sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; });
+     if (extra.notas && extra.notas.length) {
+       expandirNotasCopiadas_(aba, extra.notas);
