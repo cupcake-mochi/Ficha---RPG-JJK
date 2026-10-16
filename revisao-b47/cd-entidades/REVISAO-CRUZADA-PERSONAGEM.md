@@ -50,6 +50,25 @@ JS não perde nenhuma célula em relação à referência Python, na combinaçã
 
 Nenhuma célula ou menu é alterado pelas duas frentes; endereços derivados funcionam na combinação.
 
+**P7. Alta: regressão na FICHA AMALDIÇOADA sem nenhum cadastro (LibreOffice 24.2).** Recálculo da base
+`7752c91` e da combinação, catálogos vazios, 31.134 fórmulas de FICHA/INVOCAÇÕES/FICHA AMALDIÇOADA/
+DADOS_INVOC/DADOS_AM/DADOS: 76 valores mudam, **nenhum** lê `DADOS_FORMAS` (único lugar com `LET`) e
+nenhum vem das entidades (0 células da DADOS_AM alteradas por elas). Erros: 13 na base → 25.
+
+- `FICHA AMALDIÇOADA!P42:S42` (0/0/0/3 → `#VALUE!`), via `DADOS_AM!KV21:KV24` ← `HM17/HM20/HM21/HM22`.
+  `HM17` soma `IFERROR(VLOOKUP(...,'DADOS_TALENTOS'!$AQ$2:$AW$34,2,FALSE),0)+...`. Provável causa: vaga em
+  branco busca `""` e casa com linha custom vazia do catálogo unido, que devolve texto `""`; o `+` fica fora
+  do `IFERROR`. Correção sugerida: linha custom inválida/vazia com categoria numérica 0 (como em
+  `DADOS_ENTIDADES`) ou não buscar quando a vaga está vazia.
+- `FICHA AMALDIÇOADA!F379,G379,L379,...` (vazio → `CE ` / ` esp.`), via `DADOS_AM!HT/HU`: mesma causa
+  (`HQ` vira `""`, não 0).
+- `FICHA!D368`, `S368` (cartas de Aptidão): o texto "Do livro" passou de resumo a descrição completa
+  (`VLOOKUP(...,'DADOS_APTIDOES'!$BF$2:$BO$45,10,...)` em vez de `$CD$2:$CM$35`). Mudança de
+  comportamento sem cadastro, a confirmar com o usuário/molde.
+
+Lista completa (76) em `nuvem-b47/saidas/` não versionado; reproduzir com modelos `--exportar-pecas` e
+`comum_cd.recalcular`. Recomendo a frente de personagem rodar o mesmo cenário vazio antes da incorporação.
+
 ## Da base do integrador (não é da frente de personagem)
 
 - `regressao-progressao.py`: "formato 10 explícito" falha já em `7752c91` (ANALISE foi para 11).
@@ -57,8 +76,8 @@ Nenhuma célula ou menu é alterado pelas duas frentes; endereços derivados fun
 
 ## Não feito (impedido pelo limite de uso desta sessão)
 
-- Recálculo das fórmulas deles no Calc: o LibreOffice 24.2 daqui não tem `LET` (exige 24.8+); fórmulas
-  com `LET` dariam `#NAME?` por versão, não por erro deles.
+- Recálculo com cadastros preenchidos e das 560 fórmulas com `LET` da `DADOS_FORMAS`: o LibreOffice 24.2
+  daqui não tem `LET` (exige 24.8+). Só o cenário vazio foi feito (P7).
 - Leitura linha a linha de `motor.py`/`consumidores.py`/`planilha.py` contra o livro.
 
-Próxima ação: integrador concilia P1–P3 antes de juntar as séries. Recomendação: modelo do integrador, High.
+Próxima ação: frente de personagem corrige P7; integrador concilia P1–P3 antes de juntar as séries. Recomendação: modelo do integrador, High.
