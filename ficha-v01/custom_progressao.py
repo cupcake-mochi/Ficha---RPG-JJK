@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """B47/3b: Caminho, Trilha e registros curtos aprovados em 15/10/2026.
 
-Acrescenta geometria, sem mover os endereços publicados. Catálogos válidos
+Reutiliza o grupo 7 e distribui treinos custom em duas colunas.
+Mantém os níveis do livro e as chaves de exportação publicadas. Catálogos válidos
 alimentam menus e cálculos; ANALISE conserva também entradas inválidas.
 Nenhuma descrição é interpretada como fórmula ou concessão de benefício.
 """
@@ -19,6 +20,7 @@ CURTOS = 131
 INI_CURTOS = INICIO + 140
 PASSO = 14
 ATRIBUTOS = [x[0] for x in ix.ATRS]
+NIVEIS = {'Caminho': (2, 7, 15, 23, 30), 'Trilha': (2, 11, 19, 27)}
 CAM_FIELDS = ['VIDA INICIAL', 'VIDA POR NÍVEL', 'DADO DE VIDA', 'PE POR NÍVEL',
               'ATRIBUTO NATURAL 1', 'ATRIBUTO NATURAL 2', 'PERÍCIA FIXA 1', 'PERÍCIA FIXA 2',
               'TROCA PERÍCIAS POR ARMA', 'TREINO DE ARMA'] + ['CATEGORIA DE ARMA '+str(i) for i in range(1,14)]
@@ -55,12 +57,14 @@ def longo(tipo):
                 mestre_viu=f'{L(c+4)}{INICIO+2}',
                 campos={k:f'{L(c+3)}{INICIO+5+i}' for i,k in enumerate(CAM_FIELDS if c==2 else ['CAMINHO','BASE DO LIVRO'])},
                 efeito=f'{L(c)}{INICIO+32}', aviso=f'{L(c)}{INICIO+36}',
-                niveis=[dict(nivel=n, nome=f'{L(c+1)}{INICIO+41+3*(n-1)}',
-                             texto=f'{L(c)}{INICIO+42+3*(n-1)}') for n in range(1,31)])
+                niveis=[dict(nivel=n,
+                             nome=f'{L(c+1)}{INICIO+41+3*NIVEIS[tipo].index(n)}' if n in NIVEIS[tipo] else None,
+                             texto=f'{L(c)}{INICIO+42+3*NIVEIS[tipo].index(n)}' if n in NIVEIS[tipo] else None)
+                        for n in range(1,31)])
 
 
 def aba_dados():
-    return dict(nome=NOME, estado='hidden', linhas=180, colunas=79,
+    return dict(nome=NOME, estado='hidden', linhas=180, colunas=81,
                 padrao=['Roboto',10,'#000000'], fundo_base='#FFFFFF', paleta_fixa=True,
                 colunas_larg=[], linhas_alt=[], altura_padrao=15.75, grade=False,
                 celulas=[], mescladas=[], menus=[], condicional=[], imagens=[])
@@ -214,8 +218,10 @@ def aplica(layout, fp, fiv):
         for lv in g['niveis']:
             r=lv['nivel']+(1 if typ=='Caminho' else 31)
             for col,v in enumerate([typ,lv['nivel']],57):d(f'{ix._letras(col)}{r}',v)
-            d(f'BG{r}',f'=IF(AND(${flag[0]}${flag[1:]}=1,{ref(idx["nivel"],"FICHA")}>=BF{r}),{ref(lv["nome"],"CONFIGURAÇÃO")},"")')
-            d(f'BH{r}',f'=IF(BG{r}="","",{ref(lv["texto"],"CONFIGURAÇÃO")})')
+            d(f'BG{r}',f'=IF(AND(${flag[0]}${flag[1:]}=1,{ref(lv["nome"],"CONFIGURAÇÃO")}<>""),{ref(lv["nome"],"CONFIGURAÇÃO")},"")' if lv['nome'] else '=""')
+            d(f'BH{r}',f'=IF(OR(BG{r}="",{ref(lv["texto"],"CONFIGURAÇÃO")}=""),"",{ref(lv["texto"],"CONFIGURAÇÃO")})' if lv['texto'] else '=""')
+    d('CB1','último nome automático · grupo 7')
+    d('CC1','último texto automático · grupo 7')
     # Geometry and formulas both consume the same field map.
     desenha(layout,tr,put)
     ficha(layout,tr,put,idx)
@@ -298,13 +304,14 @@ def desenha(layout,tr,put):
         box(r+32,c,er=r+34,ec=c+5,kind='efeito')
         box(r+36,c,'=IF('+ref('K2' if c==2 else 'K3')+'="","Livro + custom nos menus.","⚠ "&'+ref('K2' if c==2 else 'K3')+')',er=r+37,ec=c+5,kind='nota')
         box(r+39,c,'HABILIDADES POR NÍVEL · '+g['tipo'].upper(),ec=c+5,kind='secao')
-        box(r+40,c,'Níveis 6–20 e 21–30: abrir pelos grupos +/−.',ec=c+5,kind='nota')
+        box(r+40,c,'Mesmos níveis do livro · preenche o grupo 7 da FICHA.',ec=c+5,kind='nota')
         for lv in g['niveis']:
+            if not lv['nome']:continue
             rr=ix._lc(lv['nome'])[0]
             box(rr,c,lv['nivel'],kind='rotulo');box(rr,c+1,ec=c+5)
             box(rr+1,c,er=rr+2,ec=c+5,kind='efeito',note='Texto integral da habilidade. Campo vazio não concede habilidade; nenhum texto é interpretado como cálculo.')
-    # Groups span both long cards and leave an anchor for level 21.
-    a.setdefault('grupos',{}).setdefault('linhas',[]).extend([[INICIO+56,INICIO+100,True],[INICIO+102,INICIO+130,True]])
+    # Keep existing short-record addresses; collapse the now unused spacer.
+    a.setdefault('grupos',{}).setdefault('linhas',[]).append([INICIO+56,INICIO+137,True])
     for g in tr['curtos']:
         c=g['col'];r=g['inicio'];n=g['n']
         box(r,c,f'REGISTRO {n} · PERÍCIA / OFÍCIO',ec=c+5,kind='secao')
@@ -318,7 +325,7 @@ def desenha(layout,tr,put):
         box(r+11,c,f'=IF({ref("G"+str(n+1))}="","Usa os treinos e especializações existentes.","⚠ "&{ref("G"+str(n+1))})',er=r+12,ec=c+5,kind='nota')
     a['linhas_alt'] += [[r,18.75] for r in range(INICIO,a['linhas']+1)]
     a.setdefault('sem_trava',[])
-    a['sem_trava'] += [c for _,c in tr['entradas']]
+    a['sem_trava'] += [c for _,c in tr['entradas'] if c]
     # Long descriptions share rows across the two cards. Resize the pair as a
     # unit so editing one side cannot clip the other; use the existing mechanism.
     def width(c):
@@ -329,14 +336,15 @@ def desenha(layout,tr,put):
         a.setdefault('esticam',[]).append(dict(gatilhos=sources,aba=a['nome'],
             textos=[[width(g['col']),[g[key]],ix._lc(g[key])[0],rows,0] for g in cards]))
     stretch([tr['caminho'],tr['trilha']],'efeito',3)
-    for n in range(30):
-        cards=[dict(col=g['col'],texto=g['niveis'][n]['texto']) for g in [tr['caminho'],tr['trilha']]]
+    for i in range(5):
+        cards=[dict(col=g['col'],texto=lv['texto']) for g in [tr['caminho'],tr['trilha']]
+               for lv in g['niveis'] if lv['nome'] and ix._lc(lv['nome'])[0]==INICIO+41+i*3]
         stretch(cards,'texto',2)
     for n in range(0,CURTOS,2):stretch(tr['curtos'][n:n+2],'efeito',3)
 
 
 def ficha(layout,tr,put,idx):
-    """New custom rows at the end: preserves all old coordinates and budgets."""
+    """Two columns of skills/offices; abilities reuse section 7. Budgets unchanged."""
     a=ix._aba(layout,'FICHA')
     styles={x[0]:x[2] for x in a['celulas']}
     st=dict(secao=styles['G76'],rotulo=styles['D79'],entrada=styles['F80'],caixa=styles['D80'],nota=styles['F80'])
@@ -350,19 +358,25 @@ def ficha(layout,tr,put,idx):
     e=deepcopy(layout['estilos'][st['entrada']]);e[3]=['left','top',True,0]
     if e not in layout['estilos']:layout['estilos'].append(e)
     st['efeito']=layout['estilos'].index(e)
-    start=a['linhas']+4; a['linhas']=start+35+30*5
-    # Keep the left spine and reserve the declared height, including empty tail
-    # rows. Native construction applies row heights/groups beyond the last text.
-    for r in range(start,a['linhas']+1):
-        for c in ['A','B']:put('FICHA',c+str(r),None,styles['A1'])
+    anterior=a['linhas']; start=anterior+4; a['linhas']=start+25
+    # Continue both the spine fill and B's right border, including the gap.
+    # A1 is only the fill: copying it into B used to erase the divider.
+    for r in range(anterior+1,a['linhas']+1):
+        for c in ['A','B']:put('FICHA',c+str(r),None,styles[c+str(anterior)])
     def box(c,v=None,end=None,kind='entrada'):
         put('FICHA',c,v,st[kind])
         if end:a['mescladas'].append(c+':'+end)
     def menu(c,source):a['menus'].append(dict(tipo='list',formula=source,onde=c,vazio_ok=True,mostra_seta=True,estrito=True))
     attrs={n:ref(idx['atr_'+n],'FICHA') for n in ATRIBUTOS}
-    for col,typ,total,pool in [(4,'Perícia',23,48),(24,'Ofício',11,49)]:
-        L=ix._letras;r=start
-        box(f'{L(col)}{r}',typ.upper()+' CUSTOM',f'{L(col+17)}{r}',kind='secao')
+    paineis=[(4,'Perícia',12,48,0,start),(24,'Perícia',11,48,12,start),
+             (4,'Ofício',6,49,0,start+16),(24,'Ofício',5,49,6,start+16)]
+    nomes={typ:[ref(f'{ix._letras(col+2)}{r+2}', 'FICHA')+':'+ref(f'{ix._letras(col+2)}{r+1+total}', 'FICHA').split('!')[1]
+                for col,t,total,pool,offset,r in paineis if t==typ]
+           for typ in ['Perícia','Ofício']}
+    for col,typ,total,pool,offset,r in paineis:
+        L=ix._letras
+        titulo=typ.upper()+' CUSTOM · '+str(offset+1)+'–'+str(offset+total)
+        box(f'{L(col)}{r}',titulo,f'{L(col+17)}{r}',kind='secao')
         for c,label,width in [(col,'T',1),(col+1,'E',1),(col+2,'NOME',8),(col+10,'ATRIBUTO',4),(col+14,'TOTAL',2),(col+16,'BÔNUS',2)]:
             box(f'{L(c)}{r+1}',label,f'{L(c+width-1)}{r+1}' if width>1 else None,'rotulo')
         for i in range(total):
@@ -376,37 +390,23 @@ def ficha(layout,tr,put,idx):
             if typ=='Ofício':menu(at,rg(40,6));a.setdefault('livres',[]).append(at)
             value='SWITCH('+at+','+','.join(q(n)+','+v for n,v in attrs.items())+',NA())'
             rn=ref(name,'FICHA')
-            unique=f'COUNTIF(\'FICHA\'!${L(col+2)}${r+2}:${L(col+2)}${r+1+total},{rn})=1'
+            # Count across both columns, not only the current half.
+            unique='('+ '+'.join(f'COUNTIF({area},{rn})' for area in nomes[typ])+')=1'
             valid=f'AND({rn}<>"",COUNTIF({rg(pool,CURTOS+1)},{rn})=1,{unique})'
             box(res,f'=IF({name}="","",IF({valid},{value}+IF({spec},{ref(idx["maestria"],"FICHA")}+INT({ref(idx["maestria"],"FICHA")}/2),IF({train},{ref(idx["maestria"],"FICHA")},0))+IFERROR(VALUE({bonus}&""),0),NA()))',f'{L(col+15)}{rr}')
             box(bonus,end=f'{L(col+17)}{rr}')
-            tr['linhas_ficha'].append(dict(tipo=typ,n=i+1,treino=train,especializacao=spec,nome=name,atributo=at,resultado=res,bonus=bonus,valido=valid))
-            if typ=='Perícia':put(NOME,f'BD{i+2}',f'=ADDRESS(ROW({ref(name,"FICHA")}),COLUMN({ref(name,"FICHA")}),4)')
+            tr['linhas_ficha'].append(dict(tipo=typ,n=offset+i+1,treino=train,especializacao=spec,nome=name,atributo=at,resultado=res,bonus=bonus,valido=valid))
+            if typ=='Perícia':put(NOME,f'BD{offset+i+2}',f'=ADDRESS(ROW({ref(name,"FICHA")}),COLUMN({ref(name,"FICHA")}),4)')
             # Hidden counters count only one occurrence of a valid definition.
-            dr=2+i+(0 if typ=='Perícia' else 23)
+            dr=2+offset+i+(0 if typ=='Perícia' else 23)
             for dc,expr in [('BK',train),('BL',spec)]:
                 put(NOME,f'{dc}{dr}',f'=IF({valid},N({ref(expr,"FICHA")}),0)')
     # Append to existing totals; no additional granted choices.
     for c,area in [('AK13','BK2:BK24'),('AK14','BK25:BK35'),('AK15','BL2:BL35')]:
         old=next(v[1] for v in ix._aba(layout,'DADOS')['celulas'] if v[0]==c)
         put('DADOS',c,old+'+SUM(\''+NOME+'\'!'+area+')')
-    # Two text cards per level; names and descriptions update directly from configuration.
-    base=start+30
-    box(f'D{base}','HABILIDADES CUSTOM · CAMINHO E TRILHA',f'AO{base}',kind='secao')
-    for n in range(1,31):
-        r=base+2+(n-1)*5
-        for c,dr in [(4,n+1),(24,n+31)]:
-            L=ix._letras
-            box(f'{L(c)}{r}',f'=IF({ref("BG"+str(dr))}="","",{q(str(n)+" · ")}&{ref("BG"+str(dr))})',f'{L(c+17)}{r}',kind='rotulo')
-            box(f'{L(c)}{r+1}','='+ref('BH'+str(dr)),f'{L(c+17)}{r+3}',kind='efeito')
-    a.setdefault('grupos',{}).setdefault('linhas',[]).append([base+27,base+151,True])
+    # All abilities use the original section 7 cards, populated by Codigo.gs.
     a['linhas_alt'] += [[r,18.75] for r in range(start,a['linhas']+1)]
-    import estado_do_personagem as ep
-    cfg=ix._aba(layout,'CONFIGURAÇÃO')
-    for n in range(30):
-        sources=[g['niveis'][n]['texto'] for g in [tr['caminho'],tr['trilha']]]
-        cfg.setdefault('esticam',[]).append(dict(gatilhos=sources,aba='FICHA',
-            textos=[[ep.largura_px('D','U'),[c],base+3+n*5,3,0] for c in sources]))
 
 
 def efeitos(layout,tr,put,fiv):
@@ -453,6 +453,10 @@ def efeitos(layout,tr,put,fiv):
 def exporta(tr):
     out=[]
     for key,c in tr['entradas']:
+        if not c:
+            # Keep the v6 keys; unsupported book milestones have no input.
+            out.append([key,'=""','','configuração'])
+            continue
         r=ref(c,'CONFIGURAÇÃO')
         formula=f'=N({r})&""' if key.endswith('.mestre_viu') else f'=IF(ISBLANK({r}),"",{r}&"")'
         out.append([key,formula,r.replace('$',''),'configuração'])

@@ -233,6 +233,14 @@ campanha.desenha(LAYOUT, _CAMP)
 custom.desenha(LAYOUT, _CUSTOM)
 import custom_progressao
 _PROG = custom_progressao.aplica(LAYOUT, _FP, _FIV)
+import familias_invocacao
+_FAMILIAS = familias_invocacao.aplica(LAYOUT, _FIV)
+# A ampliação declara suas alterações exatas junto da integração de progressão.
+for _name, _values in _FAMILIAS['antes'].items():
+    for _coord, _value in _values.items():
+        _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
+for _name, _values in _FAMILIAS['depois'].items():
+    _PROG['depois'].setdefault(_name, {}).update(_values)
 print(f"a CONFIGURAÇÃO: {configuracao.QUANTIDADE} efeitos, {len(_CFG['alvos'])} caixas, paleta fixa")
 import analise
 _AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
@@ -240,6 +248,7 @@ _AN["linhas"].extend(configuracao.exporta(_CFG))
 _AN["linhas"].extend(campanha.exporta(_CAMP))
 _AN["linhas"].extend(custom.exporta(_CUSTOM))
 _AN["linhas"].extend(custom_progressao.exporta(_PROG))
+_AN["linhas"].extend(familias_invocacao.exporta(_FAMILIAS))
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
 

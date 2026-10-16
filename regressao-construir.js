@@ -576,16 +576,34 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   const cfgSpec = ABAS.find(a => a.nome === 'CONFIGURAÇÃO');
   const cfgStretch = cfgSpec.esticam || [], CFG = S.acha('CONFIGURAÇÃO');
   const CC = S.ss.getSheetByName('CONFIGURAÇÃO');
-  const paired = cfgStretch.filter(x => x.gatilhos.includes('B782'));
-  ok('texto custom por nível declara expansão na configuração e no espelho',
-     paired.length === 2 && paired.some(x => x.aba === 'CONFIGURAÇÃO') && paired.some(x => x.aba === 'FICHA'));
-  try { escreve(CC, 'CONFIGURAÇÃO', 'B782', LONGO.repeat(3)); } catch(e) { erroE=e; }
-  ok('descrição custom longa cabe nos dois painéis sem cortar a carta vizinha',
-     !erroE && paired.every(x => cabe(x.aba === 'FICHA' ? FA : CFG, x, [LONGO.repeat(3), ''])),
-     erroE ? erroE.message : paired.map(x => mostra(x.aba === 'FICHA' ? FA : CFG,x)).join(' / '));
-  try { escreve(CC, 'CONFIGURAÇÃO', 'B782', ''); } catch(e) { erroE=e; }
-  ok('apagar descrição custom devolve as alturas comuns dos dois painéis',
-     !erroE && paired.every(x => comum(x.aba === 'FICHA' ? FA : CFG,x)));
+  const paired = cfgStretch.filter(x => x.gatilhos.includes('B779'));
+  ok('nível 2 custom expande seu cadastro e reutiliza as nove cartas do grupo 7',
+     paired.length === 1 && paired[0].aba === 'CONFIGURAÇÃO' && S.ctx.cartasDaDadosAm_(S.ss).cartas.length===9);
+  // O simulador não recalcula IF/VLOOKUP. Estes são os resultados escalares
+  // do cenário custom; a fórmula em si é testada na regressão e no Sheets.
+  const PG=S.ss.getSheetByName('DADOS_PROGRESSAO'),PGA=S.acha('DADOS_PROGRESSAO');
+  const fixed=['K7','K8',...Array.from({length:60},(_,i)=>['BG'+(i+2),'BH'+(i+2)]).flat()];
+  const orfasAntesCustom=P.orfas.length;
+  const saved=fixed.map(c=>{const x=partes(c),k=x.r+','+x.c;return {k,v:PGA.v.get(k),f:PGA.f.get(k)};});
+  try {
+    PG.getRange('K7').setValue(1);PG.getRange('K8').setValue(0);
+    PG.getRange('BG2:BH61').setValues(Array.from({length:60},()=>['','']));
+    PG.getRange('BG3').setValue('Habilidade própria');PG.getRange('BH3').setValue(LONGO.repeat(3));
+    S.ss.getSheetByName('FICHA').getRange(idx.caminho).setValue('Caminho próprio');
+    escreve(CC,'CONFIGURAÇÃO','B779',LONGO.repeat(3));
+  } catch(e){erroE=e;}
+  const first=S.ctx.cartasDaDadosAm_(S.ss).cartas[0];
+  ok('editar descrição custom preenche o cartão original inteiro e aumenta sua altura',
+     !erroE && S.ss.getSheetByName('FICHA').getRange(first.texto).getValue()===LONGO.repeat(3)
+     && FA.alt.get(first.linha)>MED.minima && paired.every(x=>cabe(CFG,x,[LONGO.repeat(3),''])),
+     erroE?erroE.message:'');
+  try{PG.getRange('BH3').setValue('');escreve(CC,'CONFIGURAÇÃO','B779','');}catch(e){erroE=e;}
+  ok('apagar descrição custom encolhe o cadastro e a mesma carta original',
+     !erroE && paired.every(x=>comum(CFG,x)) && FA.alt.get(first.linha)===MED.minima
+     && S.ss.getSheetByName('FICHA').getRange(first.texto).getValue()==='');
+  ok('o cenário custom não grava fórmula em lugar de texto',P.orfas.length===orfasAntesCustom,P.orfas.slice(orfasAntesCustom).join(' · '));
+  saved.forEach(x=>{PGA.v.delete(x.k);PGA.f.delete(x.k);if(x.v!==undefined)PGA.v.set(x.k,x.v);if(x.f!==undefined)PGA.f.set(x.k,x.f);});
+
 }
 // 08/10/2026, do pente-fino no Sheets: "O link da segunda invocação chega ao cabeçalho, mas a ficha continua recolhida".
 // A seleção que chega no número da ficha (onde o link cai) abre o grupo da fileira e o da coluna de fichas dela.

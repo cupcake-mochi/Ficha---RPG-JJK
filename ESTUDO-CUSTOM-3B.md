@@ -1,5 +1,16 @@
 # Parte 3b · integrada e validada na cópia de revisão
 
+## Revisão solicitada depois da integração
+
+O usuário substituiu a proposta de 30 níveis por **Caminho 2/7/15/23/30 e Trilha 2/11/19/27**, usando os nove cartões já existentes do **grupo 7**. Este é o desenho atual; as referências abaixo a um espelho separado e a habilidades em qualquer nível descrevem a proposta anterior.
+
+Perícias e Ofícios foram distribuídos em duas colunas: 12+11 vagas de Perícia e 6+5 de Ofício. Nomes repetidos são conferidos entre as duas colunas. A divisória B da FICHA continua até a última linha; o painel redundante foi removido, reduzindo FICHA de 596 para 436 linhas. Cadastro longo mostra apenas os níveis publicados; os endereços dos 131 registros curtos foram preservados. Origens continuam no dossiê e painel que já existiam.
+
+Os cartões usam o mesmo preenchimento automático do livro, preservando textos que o jogador escreveu por cima e deixando o texto de referência na nota. A memória do último preenchimento automático está em DADOS_PROGRESSAO CB2:CC10. Ela não concede benefícios e não entra no contrato do bot. As 7.387 chaves do formato 6 continuam presentes; níveis não aplicáveis exportam vazio.
+
+Validação desta revisão: regressão escalar de progressão, construção simulada, 74 checagens de delta/cartas, 122 paletas e leitor aprovados. No Sheets, duas colunas/orçamentos/duplicatas cruzadas/troca por 0 passaram; os nove cartões, texto longo integral e riscado de níveis futuros foram conferidos. Os seis scripts alterados foram salvos e relidos integralmente, iguais aos locais. As 74 entradas/notas do último cenário e as alturas foram restauradas; releitura integral das faixas sem diferenças. Seis onEdit concluíram entre 9,443 e 15,733 s; logs das trocas livro/custom chegaram à última etapa sem erros. Evidências em correcao-grupo7-qa-final.json e correcao-grupo7-fontes-salvos.json. Capturas finais correcao-duas-colunas-entrega.png e correcao-niveis-grupo7-entrega.png. As medições nativas abaixo são da integração anterior, não de uma nova montagem desta correção.
+
+
 A parte 3a foi testada pelo agente a pedido do usuário. Teste focal nativo na cópia de revisão: Defesa 20, Proteção 7, deslocamento 4,5 m, volumes 3 e 2,1, troca por zero, rota sem energia com 50 PE, restrição da marcante herdada, ferramenta com volume zero e menor com texto próprio. Nome duplicado invalida os dois cadastros. As 156 entradas temporárias foram restauradas e relidas, sem diferenças; 13 abas/17 faixas ficaram sem erros de fórmula.
 
 Protótipo: [ESTUDO 3B](https://docs.google.com/spreadsheets/d/1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0/edit?gid=47005). É uma aba de estudo; não alimenta a ficha ou ANALISE. Não altera as abas de produção.

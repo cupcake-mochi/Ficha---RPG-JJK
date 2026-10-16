@@ -15,7 +15,7 @@ Os valores saem como a planilha os mostra. Numa planilha em português o decimal
 import csv, io, os, re, shutil, subprocess, sys, tempfile, urllib.request
 
 ABA = "ANALISE"
-FORMATOS_CONHECIDOS = {1, 2, 3, 4, 5, 6}
+FORMATOS_CONHECIDOS = {1, 2, 3, 4, 5, 6, 7}
 
 
 def normaliza(v):

@@ -1,3 +1,47 @@
+## Estado vigente · nove Famílias e autonomia concluídas na revisão (15/10/2026)
+
+Este registro substitui o andamento anterior. A revisão nativa 1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0 tem nove espaços de Família em cada uma das 12 entidades, AUTONOMIA individual abaixo da aquisição (padrão Autônoma) e uma linha vazia antes de DEFINIÇÃO. A Definição desceu uma linha usando a folga existente; habilidades e as cinco primeiras escolhas não mudaram de endereço. A antiga escolha 7 foi preservada na nova posição; texto, nota e formatação de texto da Definição preservados nas 12 entidades.
+
+CONFIGURAÇÃO B133:G149 contém apenas limites/ganhos: abertas/Livres para padrão, Parceria/Múltiplas e Principal, mais o ganho da Não autônoma. Em branco usa o sistema. Autônoma: 3/1, 4/1 ou 5/2; Não autônoma soma UMA Livre nova ao total aberto e às Livres. Não existe seletor global de autonomia. Exige ordem prévia para ações, exceto Reação. Notas identificam regra do sistema prevista para o Guia de Criação, ainda não abordada no livro de regras atual; não chamar de regra da mesa. ALMA/Integridade não foram alteradas por essa escolha.
+
+Aplicados 44 lotes de migração delimitada, sem reconstrução nem importação de Excel. Backup antes e pré-leitura recente preservados. Auditoria de 4.222 células alteradas (4.024 fórmulas) sem divergências/erros; 7.485 chaves únicas, 108 menus de Família e 108 rótulos conferidos. Cinco cenários nativos passaram: nona Família abre menus; Não autônoma dá o bônus correto e desconto sem mudar a segunda entidade; duplicata; campanha nove com nona Livre; limite incompatível avisa. Rótulos Livre/aberta tinham uma referência sem aba: o visual encontrou e a correção foi testada em modo Não autônoma/restaurada. Entradas anteriores e cenário de teste restaurados, zero diferenças, nenhum teste ativo. Grupos abertos para ver a entidade 12 foram recolhidos novamente.
+
+Código de cinco fontes salvo no projeto vinculado e relido integralmente após recarga: Invocacoes, Configuracao, Analise, AnaliseFontes e ProgressaoAnalise iguais aos locais. Maior .gs 845.461 bytes <900 KiB; soma 6.050.642 bytes. ANALISE agora formato 7; contrato em ../ESQUEMA-ANALISE.md e leitor local atualizado. Bot não alterado.
+
+Testes locais: cenários escalares de perfis, nove vagas, descontos, independência, ganho configurável, vazio=Autônoma e rótulos emitidos passaram; estrutura final passou após a correção; construção simulada completa e 122 paletas passaram; leitor passou. Construção/paleta antecederam só a correção de qualificação dos rótulos, que recebeu teste nativo, teste local e nova estrutura. A última geração de rótulos escreveu os artefatos até Habilidades.gs mas a sessão retornou143; exportação nova independente conferiu os 108 rótulos gerados e a estrutura inteira, e o ZIP local está íntegro. Não foi repetido construir() nativo integral, arnês longo ou bateria de 24 validadores. Não usar a medição antiga 376.821 ms como tempo desta etapa.
+
+Evidências: ../evidencias-3b/autonomia9-*.json/log/png. Capturas autonomia9-entrega.png, autonomia9-nota-guia.png, autonomia9-configuracao.png e autonomia9-invocacao12-100.png. A aba INVOCAÇÕES fica aberta para revisão. Oficial e compartilhamento intactos.
+
+Próximo: continuar a parte 3c. O desenho inicial de Família/Forma/Melhoria/Restrição foi aprovado, assim como o complemento de autonomia com os ajustes do usuário. Capacidade e custo gerais da 3c ainda NÃO foram fechados; inventário agora soma1.817 seleções (Famílias108). Rever dependências do catálogo e apresentar os demais moldes antes da integração. Não reabrir a aprovação já dada. Índice preparado de forma delimitada; git diff --cached --check passou. mensagem-de-commit.txt pronta. Nenhum commit/push pelo agente.
+
+---
+
+## Próxima decisão · ESTUDO 3C apresentado (15/10/2026)
+
+A correção do grupo 7 abaixo está concluída, testes e restauração encerrados. Criada somente ESTUDO 3C (47007), com proposta de limites de Famílias e moldes de Família/Forma/Melhoria/Restrição. Fonte mockup/prototipo_custom_3c.py; descrição e inventário em ESTUDO-CUSTOM-3C.md. Sem integração com contas/ANALISE ou construção de novos blocos de produção.
+
+Proposta pendente: Livres/Fechadas editáveis; Neutras calculadas pelo total livro + custom. Testes do estudo (4/1, excesso, sem família custom) passaram e entradas restauradas; 24 controles, 129 notas, cinco fórmulas sem erro. Visual conferido em 100% e conjunto em 75%; imagens prototipo-3c-familias.png, prototipo-3c-forma-melhoria.png e prototipo-3c-restricao-alcance.png em ../evidencias-3b/.
+
+Capacidade 3c e custo final NÃO fechados: o inventário conta 1.769 seleções, não cartões aprovados. Famílias têm referências pelas peças além dos 60 menus de entidades. Antes de fechar a capacidade, revisar esse vínculo, propor armazenamento e medir tamanho de .gs/tempo nativo na descartável. Outros moldes (aptidões/Bênçãos, Talentos, entidades, condições/danos) ainda precisam ser apresentados. Não implementar regras novas ou integrar a 3c antes do ok exigido pelo prompt.
+
+---
+
+## Estado vigente · correção do grupo 7 concluída (15/10/2026)
+
+Este registro substitui as pendências históricas de conexão, salvamento e cenário ativo abaixo. A cópia de revisão recebeu a correção nativa sem reconstrução e sem importação de Excel. FICHA agora tem 436 linhas: Perícias em 12+11 vagas e Ofícios em 6+5, com a divisória contínua até o fim. Removido o painel duplicado de habilidades. Caminho/Trilha custom preenchem as nove cartas existentes do grupo 7, nos níveis publicados (2/7/15/23/30 e 2/11/19/27). Textos manuais são preservados e a referência fica na nota. CONFIGURAÇÃO permanece Mizuki Escuro fixo. Origens continuam usando seu painel existente.
+
+Seis fontes alteradas foram salvas no projeto vinculado e relidas integralmente, iguais aos arquivos locais: Codigo, Ficha, Configuracao e três Progressao. Maior .gs: 824.900 bytes, abaixo de 900 KiB. ANALISE continua no formato 6, com 7.387 chaves; níveis não aplicáveis exportam vazio e o cache interno CB2:CC10 não é exportado.
+
+Testes nativos: cinco verificações das duas colunas (totais, escolhas, especialização, duplicata cruzada, trocar por zero) e oito verificações das cartas (preenchimento, texto longo completo, riscado de nível futuro, vida/PE, anotação manual e trocas livro/custom) passaram. Seis gatilhos onEdit concluíram entre 9,443 e 15,733 s. Logs das duas trocas chegaram à etapa final sem erros. Restauração de 74 entradas/notas, alturas e releitura integral das faixas: zero diferenças. Nenhum cenário de teste permanece ativo; auditoria final sem erros de fórmula nas áreas alteradas. Capturas finais das tabelas e nove níveis aprovados mostram bordas completas.
+
+Regressão de progressão completa, 74 verificações de delta/cartas, 122 paletas e leitor aprovados. Construção simulada completa passou com código de saída 0, confirmado em correcao-grupo7-construir-exit.json. Não foi repetida a montagem nativa inteira nesta correção: os 376.821 ms registrados abaixo pertencem à integração anterior. Bateria integral de 23 validadores e arnês pessoal longo não repetidos. Limitação FILTER da regressão antiga 3a continua documentada, com contraprova no Sheets.
+
+Evidências em ../evidencias-3b/correcao-grupo7-*.json e logs; capturas correcao-duas-colunas-entrega.png e correcao-niveis-grupo7-entrega.png. Oficial, bot e compartilhamento intactos. HEAD 4e0f6c7, feito pelo usuário. Arquivos desta correção e do estudo adicionados de forma delimitada ao índice; git diff --cached --check passou. mensagem-de-commit.txt preparada. Nenhum commit/push pelo agente.
+
+Próximo: inventário e protótipo da 3c antes de construir. BASE DO LIVRO opcional já aprovada; Famílias novas acrescentadas às nove, com limites preservados. O usuário pediu limites configuráveis; apresentar Livres/Fechadas editáveis e Neutras como saldo para aprovação do desenho. Não há aprovação de um protótipo 3c nem capacidade final medida ainda.
+
+---
+
 ## Continuação · teste delegado da 3a e protótipo 3b (15/10/2026)
 
 Usuário autorizou o agente a fazer o teste e seguir a fila. Teste focal na revisão concluído: equipamentos/volumes/Defesa/Proteção/deslocamento, troca por zero, marcante herdada, rota sem energia, ferramenta com volume zero, menor e duplicatas passaram. As 156 entradas temporárias foram restauradas e relidas; 13 abas/17 faixas sem erros de fórmula. Evidência: evidencias-custom/teste-delegado-3a.json. Não repetir montagem nativa nem bateria pesada sem mudança que justifique.
@@ -3836,3 +3880,30 @@ Código.gs completo restaurado após digitação acidental, salvo pelo usuário 
 Cenário temporário retirado. Conferência integral de userEnteredValue/notas da FICHA e FICHA PESSOAL contra o backup: zero diferenças. Os 76 alvos também voltaram ao original, incluindo vazios; três entradas das entidades/técnica vazias; CONFIGURAÇÃO B781 = 2. Auditoria final das áreas novas: zero erros. Capturas finais visual-configuracao-3b-entrega.png e visual-ficha-3b-entrega.png mostram cartões/grades/paleta sem dados de teste. Demais abas e carteira já foram inspecionadas na rodada.
 
 Parte 3b concluída: 133 novos cadastros, 158 com a 3a, ANALISE 6 com 7.387 chaves. A montagem nativa e as demais validações/limitação FILTER constam do fechamento anterior e dos roteiros; bateria integral de 23 e arnês pessoal longo não repetidos. Oficial e bot intactos; sem Excel importado. Próximo bloco: 3c, com inventário e protótipo aprovado antes de construir. Arquivos adicionados ao índice de forma delimitada, mensagem-de-commit.txt preparada, sem commit/push. Não há cenário ativo nem decisão de regra pendente nesta parte.
+
+
+## Correção solicitada após a 3b · 15/10/2026 (em andamento)
+
+Prioridade atual: corrigir borda/lombada e reorganizar Perícias/Ofícios em duas colunas; Caminho e Trilha custom devem preencher as nove cartas EXISTENTES do grupo 7. O usuário escolheu seguir exatamente os níveis do livro: Caminho 2/7/15/23/30 e Trilha 2/11/19/27. Origens continuam nas caixas/painel já existentes. Não criar espelho paralelo.
+
+Código local implementado em custom_progressao.py e Codigo.gs. Cadastro longo mostra apenas os nove níveis; antigos campos de níveis não aplicáveis continuam como chaves vazias no contrato v6 (7.387 chaves). Nomes/textos de habilidades preenchem cartas existentes; memória do último automático em DADOS_PROGRESSAO CB2:CC10 permite trocar custom/livro sem perder anotações manuais. Perícias 23 e Ofícios 11 mantidos em duas colunas; duplicatas entre colunas contam como inválidas. Removidos 160 finais da FICHA (596→436 linhas); lombada/borda continuadas até o fim. CONFIGURAÇÃO permanece fixa.
+
+Migração nativa JÁ APLICADA na revisão, sem construir() e sem Excel: 37 lotes, guardas de fórmula conferidas, entradas remapeadas. Antes da operação, releitura das entradas não tinha diferenças. Dados anteriores de habilidades custom estavam vazios, nenhum texto manual no bloco removido. Backup: evidencias-3b/correcao-grupo7-antes.json; manifesto e pedidos correcao-grupo7-*. FICHA 436x50; DADOS_PROGRESSAO 157x81; demais tamanhos iguais. Leitura após migração: zero erros de fórmula nas áreas alteradas. Primeiro visual nativo mostrou a borda até a linha436 e tabela de Ofício; captura correcao-pericias-nativa-esquerda.png. Ainda faltam visual amplo, textos/risco de nível e testes mecânicos nativos da correção.
+
+Testes locais: 74 checagens de delta/cartas passaram; regressao-progressao (estrutura e cálculos independentes) passou; construção completa simulada corrigida e aprovada em correcao-grupo7-construir-final.log. A primeira execução detectou que o simulador retorna IF como texto: produção agora só consulta catálogo custom se os flags K7/K8 forem 1, e o teste fornece explicitamente os resultados de fórmula para o cenário de altura. O teste de altura foi atualizado para o cartão EXISTENTE, em vez do espelho removido. Não foi enfraquecida uma falha real. Não repetir tudo sem necessidade.
+
+PENDÊNCIA CRÍTICA: entrega dos seis scripts alterados ao editor vinculado. Código.gs (versão anterior ao pequeno filtro de flags; 257.342 caracteres) e Ficha.gs foram colados e conferidos. Não se confirmou persistência após recarga: Código talvez salvo, Ficha ainda indicava alteração pendente. Configuracao.gs NÃO foi colado; tentativa de copiar seu conteúdo grande derrubou duas vezes a conexão nativa do Brave (hipótese de limite de mensagem, não confirmada). Progressao.gs, ProgressaoPainel.gs e ProgressaoAnalise.gs ainda não enviados. A última versão de Codigo.gs local inclui também filtro K7/K8 e precisa ser reinstalada. Snapshot da versão colada antes do filtro em evidencias-3b/Codigo-grupo7-colado-antes-filtro.gs; HEAD dos seis arquivos em evidencias-3b/codigo-antes-correcao-grupo7/. Não declarar entrega concluída nem testar presumindo persistência.
+
+Navegador: sessão Brave passou de3→4→5 durante reconexões; aba Apps Script2140372220 foi criada pelo agente. Último estado: Debugger unattached. Pedi ao usuário reconectar extensão e manter aba aberta. Não usar handles velhos capturados em closures; função deve receber o tab atual como parâmetro. Não abrir editor concorrente enquanto houver gravações pendentes. Para Configuracao grande, evitar repetir cópia integral que derruba a conexão; considerar colagem/conferência por trechos COM verificações de foco. Não usar modelo interno do Monaco nem APIs ocultas. Todos os arquivos atuais locais estão íntegros.
+
+NENHUM CENÁRIO DE TESTE NOVO FOI ATIVADO. Backup já pronto para teste futuro: evidencias-3b/correcao-grupo7-antes-teste.json (FICHA/FP valores e notas, CONFIG737–792, cache CB2:CC10). Acrescentar backups de outros alvos que usar, como CONFIG879+ e B11:G12. Depois restaurar inclusive vazios e reler sem diferenças. Antes de testar de verdade, concluir instalação/persistência dos seis scripts. IAB aba2 da revisão continua acessível. Brave demais abas são do usuário, não inspecionar.
+
+Decisões da 3c já respondidas: BASE DO LIVRO opcional aprovada para Formas/Melhorias/Restrições/aptidões/Talentos/tipos de entidade; Famílias custom ACRESCENTADAS às nove do livro, mantendo limites. Usuário lembrou que CONFIGURAÇÃO deve permitir alterar quantidades de Livres/Fechadas/Neutras. Inventário do código: Livres e Fechadas são limites fixos do catálogo; Neutras são as restantes. Anunciei protótipo com dois limites editáveis e saldo Neutras calculado, ainda sujeito à aprovação do desenho. Sem implementação nem protótipo3c nesta correção. Retomar3c depois de fechar estes ajustes.
+
+HEAD atual 4e0f6c7 (commit da3b feito pelo usuário). Mudanças desta correção AINDA NÃO adicionadas ao índice. Sem commit/push. Antes de fechar: revisar diff, atualizar roteiros/contrato, git add delimitado e mensagem-de-commit.txt.
+
+---
+
+
+
+Teste nativo das duas colunas concluído, 5 verificações passaram; 21 entradas restauradas com zero diferenças, nenhum cenário ativo. Evidência correcao-grupo7-mecanica-nativa.json. Instalação de scripts e cartões nativos ainda pendentes por conexão do editor.

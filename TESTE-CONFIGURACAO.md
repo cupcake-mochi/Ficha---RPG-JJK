@@ -84,7 +84,7 @@ Testar somente em cópia nativa; nunca importar XLSX ou rodar construir sobre fi
 5. Trilha baseada em Múltiplas Invocações: 4 ativas e 4 famílias. Nenhuma permite alterar limites em BÔNUS E MUDANÇAS; troca de teto por 5 e +2 famílias produzem 5/5 neste cenário.
 6. Duplicar o nome da perícia invalida os dois registros. Número em texto ou atributo inexistente gera diagnóstico e impede entrada no catálogo válido. Marcante publicada Tentativa e Erro continua disponível para Origem baseada em Latente.
 7. A mesma perícia entra nos menus das entidades e da Ficha Amaldiçoada; o ofício aparece na entidade. Entidade com Essência 0 e Maestria 1 usa +1 para essa perícia.
-8. Habilidade de nível 2 aparece integralmente no nível 5; nível 6 fica vazio. Texto longo expande o cartão da CONFIGURAÇÃO e o espelho da FICHA, preservando o cartão vizinho. Apagar volta à altura comum.
+8. Caminho usa2/7/15/23/30; Trilha2/11/19/27. Selecionar custom preenche os nove cartões existentes do grupo7. No nível5, a entrega2 aparece normal e a7 riscada, com “Abre no7”. Texto longo cabe inteiro no cadastro e no mesmo cartão da ficha. Editar o cadastro atualiza o automático; texto manual permanece com a referência atualizada na nota. Trocar livro↔custom não deixa o automático anterior preso nem apaga anotações. Não existe bloco duplicado no fim da ficha. Perícias23/Ofícios11 aparecem em duas colunas e duplicata cruzada invalida ambas.
 9. Inspecione foto/paleta da carteira, abas principais, cartões longos/curtos e novos treinos. CONFIGURAÇÃO fixa; novas áreas da FICHA na paleta escolhida. Restaurar todas as entradas e reler sem diferenças.
 
 Executado: testes nativos acima, regressao-progressao.py, regressao-construir.js com casos de texto longo, 122 verificações de paleta e leitor. A regressão 3a completa teve uma falha de FILTER da calculadora local; cenário equivalente passou no Sheets, sem alterar o teste para esconder a falha. A bateria integral de 23 validadores não foi repetida.
@@ -93,3 +93,14 @@ Montagem nativa: 14 abas e zero erros nas faixas auditadas; 188 checkboxes e 488
 
 
 Gatilho final testado por edição real, depois de conferir o código salvo: Vanguarda 13,690 s (65 treinos), retorno ao custom 15,051 s (só Yumi e perícia fixa custom treinada). Ambos concluídos, sem limite de tempo. RangeList grava os booleans em lote; a regressão completa de construção passou novamente. Após o teste, entradas/notas das duas fichas e os 76 alvos originais foram relidos sem diferenças; áreas novas sem erros e três entradas das entidades/técnica vazias. Sem cenário ativo. Ver fechamento-3b-gatilho.json e tempos-onedit-final-completo.txt.
+
+
+## Invocações · nove Famílias e autonomia individual
+
+- Em cada entidade, abaixo de Aquisição, AUTONOMIA começa Autônoma. Mudar a primeira para Não autônoma deve somar uma Livre nova ao total aberto e manter a segunda Autônoma. Não deve alterar ALMA nem Integridade.
+- Padrão: Autônoma 3 abertas/1 Livre; Não autônoma 4/2. Parceria ou Múltiplas: 4/1 → 5/2. Principal: 5/2 → 6/3.
+- CONFIGURAÇÃO B133:G149 ajusta os ganhos, sem selecionar autonomia. CAMPANHA em branco usa o sistema. Livres fazem parte das abertas; ultrapassar nove ou ter mais Livres que abertas deve avisar.
+- Selecionar Amparo na nona caixa deve liberar suas Formas/Melhorias. Repetir na oitava deve acusar duplicata. A categoria Livre indicada no rótulo deve aplicar o desconto correspondente.
+- Preservar escolhas antigas 1–7 e texto/nota da Definição. Verificar nove menus em cada uma das 12 entidades e uma linha vazia acima da Definição.
+- Nota deve dizer regra do sistema prevista para o Guia de Criação, padrão Autônoma, ganho e necessidade de ordem prévia (exceto Reação).
+- Regressão focal: python3 regressao-familias-invocacao.py. Artefatos de cálculo são locais e jamais importados no Google.

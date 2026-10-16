@@ -411,6 +411,9 @@ function onEdit(e) {
     try { devolverConta_(e, aba); } catch (err) { console.log('configuração: ' + err.message); }
     if (aba === 'CONFIGURAÇÃO') {
       try { esticarCaixas_(e, aba); } catch (err) { console.log('texto custom: ' + err.message); }
+      if (tocaFaixa_(e.range, 'B737:O792')) {
+        try { habilidadesDaFicha_(e, indice(), true); } catch (err) { console.log('cartas custom: ' + err.message); }
+      }
     }
     continuarPaleta_(inicio, null, false, e.range);
     return;
@@ -1172,7 +1175,7 @@ function notaDaCarta_(texto, doLivro) {
   return (doLivro && texto !== doLivro) ? doLivro : '';
 }
 
-function cartasDaFicha_(livro, cartas, caminho, trilha, atuais) {
+function cartasDaFicha_(livro, cartas, caminho, trilha, atuais, anteriores) {
   var acha = function (fonte, dono, nivel) {
     return livro.filter(function (l) { return l.fonte === fonte && l.dono === dono && l.nivel === nivel; })[0];
   };
@@ -1183,10 +1186,14 @@ function cartasDaFicha_(livro, cartas, caminho, trilha, atuais) {
       : acha('Trilha', trilha, c.nivel);
     var daCarta = livro.filter(function (l) { return fontes.indexOf(l.fonte) >= 0 && l.nivel === c.nivel; });
     var nomes = daCarta.map(function (l) { return l.nome; }), textos = daCarta.map(function (l) { return l.texto; });
+    if (anteriores && anteriores[i]) {
+      nomes.push(anteriores[i][0]); textos.push(anteriores[i][1]);
+    }
     var texto = habilidadeQueFica_(atuais[i].texto, textos, linha ? linha.texto : '');
     return {
       nome: habilidadeQueFica_(atuais[i].nome, nomes, linha ? linha.nome : ''),
       texto: texto,
+      automatico: linha ? linha.nome : '',
       livro: linha ? linha.texto : '',
       titulos: linha ? linha.titulos : [],
       nota: notaDaCarta_(texto, linha ? linha.texto : '')
@@ -1310,9 +1317,21 @@ function cartasDaDadosAm_(ss) {
   return { cartas: cartas, livres: livres };
 }
 
-function habilidadesDaFicha_(e, idx) {
+// Textos custom entram nas mesmas nove cartas e conservam a edição manual.
+function livroDasCartas_(ss, caminho, trilha) {
+  var livro = HABILIDADES_DO_LIVRO_.slice(), p = ss.getSheetByName('DADOS_PROGRESSAO');
+  var flags = p ? p.getRange('K7:K8').getValues().map(function (l) { return Number(l[0]); }) : [0, 0];
+  if (p && flags.indexOf(1) >= 0) p.getRange('BE2:BH61').getValues().forEach(function (l) {
+    if (flags[l[0] === 'Caminho' ? 0 : 1] === 1 && l[2] !== '') livro.push({fonte: l[0], nivel: Number(l[1]),
+      dono: l[0] === 'Caminho' ? caminho : trilha, nome: String(l[2]),
+      texto: String(l[3]), titulos: []});
+  });
+  return livro;
+}
+
+function habilidadesDaFicha_(e, idx, forcar) {
   var cc = cel_(idx, 'caminho'), ct = cel_(idx, 'trilha'), a1 = e.range.getA1Notation();
-  if (!cc || !ct || (a1 !== cc && a1 !== ct)) return;
+  if (!cc || !ct || (!forcar && a1 !== cc && a1 !== ct)) return;
   if (typeof HABILIDADES_DO_LIVRO_ === 'undefined') {
     SpreadsheetApp.getActive().toast('Falta o arquivo Habilidades no Apps Script: as cartas da seção 7 não foram ' +
                                      'escritas. Veja o COMO-SUBIR.', 'Habilidades', 8);
@@ -1331,7 +1350,10 @@ function habilidadesDaFicha_(e, idx) {
   var atuais = D.cartas.map(function (c) {
     return { nome: le(valores, c.nome), texto: le(valores, c.texto) };
   });
-  cartasDaFicha_(HABILIDADES_DO_LIVRO_, D.cartas, caminho, trilha, atuais).forEach(function (n, i) {
+  var progressao = ss.getSheetByName('DADOS_PROGRESSAO');
+  var anteriores = progressao ? progressao.getRange('CB2:CC10').getValues() : null;
+  var cartas = cartasDaFicha_(livroDasCartas_(ss, caminho, trilha), D.cartas, caminho, trilha, atuais, anteriores);
+  cartas.forEach(function (n, i) {
     var c = D.cartas[i];
     if (n.nome !== atuais[i].nome) ficha.getRange(c.nome).setValue(n.nome);
     if (n.texto !== atuais[i].texto) {
@@ -1344,6 +1366,9 @@ function habilidadesDaFicha_(e, idx) {
     if (n.texto !== atuais[i].texto)
       ficha.setRowHeights(c.linha, MEDIDA_DAS_CARTAS_.caixa, alturaDaCaixa_(n.texto, MEDIDA_DAS_CARTAS_));
   });
+  var autos = cartas.map(function (n) { return [n.automatico, n.livro]; });
+  if (progressao && JSON.stringify(autos) !== JSON.stringify(anteriores))
+    progressao.getRange('CB2:CC10').setValues(autos);
 }
 
 // o jogador escreveu numa caixa de texto das Habilidades: a caixa estica, e a nota mostra o livro se o texto mudou
@@ -1360,8 +1385,8 @@ function caixaDeHabilidadeEditada_(e) {
   if (!carta) return;
   var idx = indice(), cc = cel_(idx, 'caminho'), ct = cel_(idx, 'trilha');
   var i = D.cartas.indexOf(carta), atuais = D.cartas.map(function (c) { return { nome: '', texto: '' }; });
-  var n = cartasDaFicha_(HABILIDADES_DO_LIVRO_, D.cartas, String(ficha.getRange(cc).getValue()),
-                         String(ficha.getRange(ct).getValue()), atuais)[i];
+  var caminho = String(ficha.getRange(cc).getValue()), trilha = String(ficha.getRange(ct).getValue());
+  var n = cartasDaFicha_(livroDasCartas_(ss, caminho, trilha), D.cartas, caminho, trilha, atuais)[i];
   ficha.getRange(carta.texto).setNote(notaDaCarta_(texto, n.livro));
 }
 

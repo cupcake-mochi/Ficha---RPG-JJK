@@ -24,7 +24,7 @@ import json, os, re, unicodedata
 import indice_ficha as ix
 
 NOME = "ANALISE"
-FORMATO = 6
+FORMATO = 7
 PARTES = ("cabeçalho", "entrada", "resultado", "aviso", "configuração")
 
 
@@ -252,7 +252,9 @@ def trocas(layout, fa, fp_tr, fam, fiv):
             lê(base + "." + campo, I(g[c]))
         for lista_, campo in (("fam", "familia"), ("per", "pericia"), ("perb", "buff.pericia"),
                                ("tal", "talento"), ("talx", "talento_extra"), ("eq", "equipamento")):
-            for j, c in enumerate(g[lista_], 1):
+            # As Famílias 6/7 são acrescentadas no fim do contrato pelo módulo
+            # de capacidade, preservando as posições das chaves anteriores.
+            for j, c in enumerate(g[lista_][:5] if lista_ == 'fam' else g[lista_], 1):
                 lê(f"{base}.{campo}.{j}", I(c))
         for j, c in enumerate(g["lib"], 1):
             for campo in ("classe", "nome", "pe", "como", "pontos", "acao"):

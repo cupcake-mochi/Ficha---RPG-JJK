@@ -200,7 +200,7 @@ const VAZIAS = CARTAS.map(() => ({ nome: '', texto: '' }));
 const linhaDe = (fonte, dono, nivel) => LIVRO.filter(l => l.fonte === fonte && l.dono === dono && l.nivel === nivel)[0];
 const doLivro = (cam, tri) => CARTAS.map(c => c.fonte === 'Caminho'
   ? (linhaDe('Caminho com a Trilha', tri, c.nivel) || linhaDe('Caminho', cam, c.nivel)) : linhaDe('Trilha', tri, c.nivel));
-const esperado = (cam, tri) => doLivro(cam, tri).map(l => ({ nome: l ? l.nome : '', texto: l ? l.texto : '', livro: l ? l.texto : '',
+const esperado = (cam, tri) => doLivro(cam, tri).map(l => ({ nome: l ? l.nome : '', texto: l ? l.texto : '', automatico: l ? l.nome : '', livro: l ? l.texto : '',
                                                                 titulos: l ? l.titulos : [], nota: '' }));
 const lerDe = r => r.map(x => ({ nome: x.nome, texto: x.texto }));
 const trilhasDe = c => Object.keys(HJ.trilhas).filter(t => CATA.trilhas[t.split(' · ')[0]] === c);
@@ -241,6 +241,22 @@ if (junto.length) {
         cartasDaFicha_(LIVRO, CARTAS, camJ, outra, lerDe(comJ))[c7], esperado(camJ, outra)[c7]);
 }
 checa('o livro tem a carta junta do Pugilista', junto.map(l => [l.dono, l.nivel]), [['Pugilista', 7]]);
+// Custom usa as mesmas cartas e a memória do último preenchimento, sem confundir anotações com texto automático.
+const customH = {fonte:'Caminho', dono:'Caminho próprio', nivel:2, nome:'Passo próprio', texto:'Texto integral próprio.', titulos:[]};
+const comCustom = LIVRO.concat([customH]);
+const customPreenchido = cartasDaFicha_(comCustom, CARTAS, customH.dono, '', VAZIAS);
+checa('custom preenche o cartão existente do nível 2', [customPreenchido[0].nome,customPreenchido[0].texto], [customH.nome,customH.texto]);
+const cacheCustom = customPreenchido.map(x=>[x.automatico,x.livro]);
+checa('voltar ao livro substitui o último texto automático custom',
+      cartasDaFicha_(LIVRO,CARTAS,ca,ta,lerDe(customPreenchido),cacheCustom),esperado(ca,ta));
+const customManual = lerDe(customPreenchido); customManual[0].texto='Minha anotação preservada.';
+const customMudou = {...customH,nome:'Passo revisado',texto:'Texto revisado no cadastro.'};
+const customAtualizado = cartasDaFicha_(LIVRO.concat([customMudou]),CARTAS,customH.dono,'',customManual,cacheCustom);
+checa('editar cadastro atualiza nome e preserva anotação, com referência na nota',
+      [customAtualizado[0].nome,customAtualizado[0].texto,customAtualizado[0].nota],
+      [customMudou.nome,'Minha anotação preservada.',customMudou.texto]);
+checa('apagar cadastro retira o automático anterior',
+      cartasDaFicha_(LIVRO,CARTAS,customH.dono,'',lerDe(customPreenchido),cacheCustom)[0].texto,'');
 // a caixa que estica: o script conta as linhas igual ao gerador, e a altura comporta o texto sem sobrar
 const difere = LIVRO.filter(l => linhasDoTexto_(l.texto, MED) !== l.linhas).map(l => `${l.dono} ${l.nivel}: ${linhasDoTexto_(l.texto, MED)} != ${l.linhas}`);
 checa(`o script conta as linhas dos ${LIVRO.length} textos igual ao gerador (as duas contas, Python e JS, batem)`, difere, []);
