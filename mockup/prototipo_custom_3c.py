@@ -176,7 +176,7 @@ def build():
     req += [{'mergeCells': {'range': x, 'mergeType': 'MERGE_ALL'}} for x in merges]
     edge = {'style': 'SOLID', 'color': rgb(LINE)}
     req += [{'updateBorders': {'range': x, 'top': edge, 'bottom': edge, 'left': edge, 'right': edge}} for x in boxes]
-    widths = [22, 70, 55, 70, 80, 70, 75, 18, 18, 70, 55, 70, 80, 70, 75, 22]
+    widths = [22, 130, 55, 70, 80, 70, 75, 18, 18, 70, 55, 70, 80, 70, 75, 22]
     for i, width in enumerate(widths):
         req.append({'updateDimensionProperties': {'range': dict(sheetId=SID, dimension='COLUMNS', startIndex=i, endIndex=i+1),
                                                   'properties': {'pixelSize': width}, 'fields': 'pixelSize'}})

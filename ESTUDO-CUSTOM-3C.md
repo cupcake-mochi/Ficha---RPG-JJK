@@ -2,6 +2,8 @@
 
 Aba nativa ESTUDO 3C, sheetId 47007, na cópia de revisão. Fonte: mockup/prototipo_custom_3c.py. É somente estudo: não alimenta CONFIGURAÇÃO, menus da ficha, contas nem ANALISE. O usuário aprovou o desenho inicial e autorizou o complemento de autonomia/limites com ajustes. Capacidade e custo gerais ainda não estão fechados.
 
+Acabamento de 15/10: coluna B com 130 px (REGRA mesclada com 255 px), corrigindo texto cortado no limite da Não autônoma. O seletor agora diz AUTONOMIA · EXEMPLO e a nota visível explica que a escolha real está em cada ficha de INVOCAÇÕES. Notas antigas de sete caixas corrigidas para nove. Dez fórmulas e validações preservadas; leitura sem erros e visual em 100% conferidos. Evidência: ../evidencias-3b/estudo3c-largura-corrigida.png. Fontes dos dois protótipos reproduzem a largura.
+
 ## Decisões recebidas
 
 - BASE DO LIVRO opcional para Formas, Melhorias, Restrições, aptidões, Talentos e tipos de entidade. Uma base herda as automações existentes; Nenhuma permite criar do zero com campos próprios.

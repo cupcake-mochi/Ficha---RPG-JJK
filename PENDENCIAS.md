@@ -1,3 +1,11 @@
+## Acabamento do ESTUDO 3C (15/10/2026)
+
+Coluna B ampliada de 70 para 130 px somente no estudo; REGRA passa a 255 px e “Não autônoma · Livres adicionais” cabe em uma linha. AUTONOMIA · EXEMPLO e a nota visível esclarecem que o menu só muda a demonstração; a escolha real continua individual em INVOCAÇÕES. Corrigidas 28 notas antigas de sete para nove caixas. Fontes dos dois protótipos atualizadas. Migração nativa delimitada de 32 pedidos, sem reconstrução: somente dois textos mudaram, dez fórmulas e todas as validações preservadas, zero erros nas faixas lidas. Visual conferido em 100%, texto e bordas completos; captura ../evidencias-3b/estudo3c-largura-corrigida.png. Nenhuma alteração mecânica; não repetir bateria pesada por este acabamento.
+
+Fila vigente: fechar capacidade/armazenamento/custo geral da 3c; integrar Família/Forma/Melhoria/Restrição com desenho já aprovado; apresentar os demais moldes antes de construí-los; depois concluir integração ANALISE e bateria final mecânica/visual, incluindo construção nativa medida na descartável. Bônus, regras de campanha, 3a, 3b e autonomia/nove espaços já implementados na revisão. Bot permanece em outro trabalho. Não reabrir aprovações já recebidas.
+
+---
+
 ## Estado vigente · nove Famílias e autonomia concluídas na revisão (15/10/2026)
 
 Este registro substitui o andamento anterior. A revisão nativa 1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0 tem nove espaços de Família em cada uma das 12 entidades, AUTONOMIA individual abaixo da aquisição (padrão Autônoma) e uma linha vazia antes de DEFINIÇÃO. A Definição desceu uma linha usando a folga existente; habilidades e as cinco primeiras escolhas não mudaram de endereço. A antiga escolha 7 foi preservada na nova posição; texto, nota e formatação de texto da Definição preservados nas 12 entidades.

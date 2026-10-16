@@ -14,6 +14,10 @@ NOTA_AUTONOMIA = (
     'e precisa de ordem prévia para qualquer ação, exceto a Reação. '
     'A ficha calcula a Família adicional; as ordens são controladas durante o jogo.'
 )
+NOTA_EXEMPLO = (
+    'Demonstração: mudar este menu só altera este exemplo. '
+    'A escolha real está em cada ficha da aba INVOCAÇÕES. '
+)
 
 
 def build():
@@ -25,6 +29,8 @@ def build():
 
     req.append({'updateSheetProperties': {'properties': {'sheetId': SID,
                 'gridProperties': {'rowCount': 172}}, 'fields': 'gridProperties.rowCount'}})
+    req.append({'updateDimensionProperties': {'range': {'sheetId': SID, 'dimension': 'COLUMNS',
+        'startIndex': 1, 'endIndex': 2}, 'properties': {'pixelSize': 130}, 'fields': 'pixelSize'}})
     req.append({'repeatCell': {'range': area(125, 1, 172, 16), 'cell': {'userEnteredFormat': {
         'backgroundColor': rgb(BG), 'textFormat': {'fontFamily': 'Roboto', 'fontSize': 10,
         'foregroundColor': rgb(INK)}}}, 'fields': 'userEnteredFormat'}})
@@ -51,14 +57,14 @@ def build():
         req.append({'updateBorders': {'range': rg, 'top': edge, 'bottom': edge, 'left': edge, 'right': edge}})
 
     cell(127, 2, 'EXEMPLO DA ENTIDADE · AUTONOMIA', er=128, ec=15, head=True)
-    cell(130, 2, 'AUTONOMIA', ec=4, head=True, note=NOTA_AUTONOMIA)
-    cell(130, 5, 'Autônoma', ec=7, note=NOTA_AUTONOMIA)
+    cell(130, 2, 'AUTONOMIA · EXEMPLO', ec=4, head=True, note=NOTA_EXEMPLO+NOTA_AUTONOMIA)
+    cell(130, 5, 'Autônoma', ec=7, note=NOTA_EXEMPLO+NOTA_AUTONOMIA)
     options = {'type': 'ONE_OF_LIST', 'values': [{'userEnteredValue': v} for v in ('Autônoma', 'Não autônoma')]}
     req.append({'setDataValidation': {'range': area(130, 5), 'rule': {
         'condition': options, 'strict': True, 'showCustomUi': True}}})
     controls.append([130, 5, options])
     cell(132, 2, 'NOTA DO CAMPO', ec=7, head=True)
-    cell(133, 2, NOTA_AUTONOMIA, er=139, ec=7, note=NOTA_AUTONOMIA)
+    cell(133, 2, NOTA_EXEMPLO+NOTA_AUTONOMIA, er=139, ec=7, note=NOTA_EXEMPLO+NOTA_AUTONOMIA)
     cell(130, 10, 'PADRÃO · AUTÔNOMA', ec=15, head=True)
     cell(132, 10, 'EXEMPLO · INVOCAÇÃO PRINCIPAL', ec=15, head=True)
     for r, label, formula in (
