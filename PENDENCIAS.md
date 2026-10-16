@@ -4,7 +4,7 @@ O plano consolidado, as tarefas restantes e as decisões estão em [PLANO-RETOMA
 
 Rota: A)capacidade → B)carregamento/envio e roteiro de testes → C)conteúdos restantes3c → D)interface e auditoria final. Alvos:10Famílias extras,30Melhorias,30Restrições,10Perícias e10Ofícios compartilhados. Não houve redução aplicada nesta publicação. Manter checagens focais durante o trabalho e a revisão abrangente ao final. Não rodar montagem na revisão preenchida ou na oficial.
 
-Usuário autorizou salvar/publicar esta rodada de planejamento no Git para continuar pelo telefone; isso supera a preferência anterior de não fazer commit/push exclusivamente para esta publicação. Não autoriza merge no main nem alteração na ficha oficial. A próxima tarefa deve seguir a autorização de Git que receber nela. Os registros abaixo descrevem a implementação anterior à limpeza, já salva no Google.
+Execução paralela vigente: [PLANO-PARALELO-B47.md](PLANO-PARALELO-B47.md), com três [prompts](PROMPT-WORK-B47.md). Ramos de tarefa: `codex/b47-capacidade`, `claude/b47-revisao` e `codex/b47-infra`; partem da mesma publicação deste plano. Chat 1 integra as frentes em `codex/configuracao-b47`; chat 2/3 escrevem só em `revisao-b47/` e `infra-b47/`. Ao usar os prompts, estão autorizados commits/push nos ramos próprios e integração revisada pelo chat 1. Sem merge no main, force push ou alteração na ficha oficial. Todos devem sempre recomendar modelo/esforço para a próxima ação. Esta publicação é documentação, não aplica redução ou migração. Os registros abaixo descrevem a implementação anterior à limpeza, já salva no Google.
 
 ---
 

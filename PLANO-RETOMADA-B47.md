@@ -2,6 +2,8 @@
 
 Estado consolidado em **16/10/2026**. Este é o ponto de entrada vigente para continuar o projeto, inclusive em outro computador ou pelo Work. Em caso de conflito com checkpoints antigos de `PENDENCIAS.md`, a rota deste documento prevalece.
 
+A execução em três chats e os limites de edição/publicação estão em [PLANO-PARALELO-B47.md](PLANO-PARALELO-B47.md). Esse suplemento substitui o antigo prompt único para esta rodada.
+
 ## Projeto e estado real
 
 - Repositório: https://github.com/cupcake-mochi/Ficha---RPG-JJK
@@ -153,6 +155,6 @@ Manter checkpoints neste documento e em `PENDENCIAS.md`: feito, testes, alteraç
 
 O restante completo da ficha foi estimado em aproximadamente **10–18 horas, centro de 14 horas**, com capacidade reduzida primeiro. O cenário 1+2 foi estimado em 9–17 horas, centro de 13 horas; a diferença de uma hora é menor que a incerteza e não deve orientar decisões como se fosse medida. São hipóteses de planejamento, incluem limpeza e conteúdos restantes e serão revistas após A. O bot não entra nessa conta.
 
-A autorização de publicação desta rodada refere-se a salvar o planejamento e a base atual neste ramo. Ela não autoriza merge em `main`, publicação na ficha oficial ou mudanças de acesso. Na próxima tarefa, respeitar a autorização de Git dada nela; a preferência anterior era preparar índice e mensagem para revisão humana.
+A publicação deste planejamento foi autorizada. Os três prompts agora incluem autorização delimitada para commits/push nos respectivos ramos de tarefa e para o chat 1 integrar as frentes em `codex/configuracao-b47`, após revisão e testes. Essa autorização vale quando o usuário iniciar as tarefas com esses prompts. Não autoriza merge em `main`, publicação na ficha oficial, force push ou mudanças de acesso. As restrições históricas de Git abaixo de checkpoints antigos não substituem essa divisão vigente.
 
-Use [PROMPT-WORK-B47.md](PROMPT-WORK-B47.md) para abrir a próxima tarefa. A primeira entrega é A + B; C + D ficam organizadas para a continuação.
+Use [PROMPT-WORK-B47.md](PROMPT-WORK-B47.md) para escolher os três prompts de nuvem. A primeira entrega integrada é A + B; C + D ficam organizadas para a continuação. Cada chat deve sempre recomendar modelo e esforço para a próxima ação.

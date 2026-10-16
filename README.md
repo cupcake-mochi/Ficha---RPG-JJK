@@ -10,13 +10,14 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 
 ## Comece por aqui
 
-**Retomada atual da CONFIGURAÇÃO B47:** [plano completo e fila organizada](PLANO-RETOMADA-B47.md). Trabalhe no ramo `codex/configuracao-b47`; o `main` ainda contém a base anterior. [Prompt para continuar em outra tarefa](PROMPT-WORK-B47.md).
+**Retomada atual da CONFIGURAÇÃO B47:** [plano completo e fila organizada](PLANO-RETOMADA-B47.md). Trabalhe no ramo `codex/configuracao-b47`; o `main` ainda contém a base anterior. [Três prompts para chats de nuvem](PROMPT-WORK-B47.md). [Divisão de ramos e integração](PLANO-PARALELO-B47.md).
 
 | arquivo | o que é |
 |---|---|
 | [`PLANO-RETOMADA-B47.md`](PLANO-RETOMADA-B47.md) | estado vigente, capacidades novas, rota1+2 e todas as entregas restantes |
 | [`ESQUEMA-ANALISE.md`](ESQUEMA-ANALISE.md) | contrato exportado, histórico até o formato9 e cuidados da migração |
-| [`PROMPT-WORK-B47.md`](PROMPT-WORK-B47.md) | texto para retomar a primeira entrega pelo Work |
+| [`PROMPT-WORK-B47.md`](PROMPT-WORK-B47.md) | três prompts: implementação/integração, revisão Claude e infraestrutura |
+| [`PLANO-PARALELO-B47.md`](PLANO-PARALELO-B47.md) | ramos, responsáveis, limites e fluxo de integração em nuvem |
 | [`LEIA-ME.md`](LEIA-ME.md) | o guia da pasta: o que mudou, como rodar, o que ficou pendente |
 | [`DECISOES-bloco-A.md`](DECISOES-bloco-A.md) | as cinco decisões que travavam a construção, com o porquê e o que foi medido |
 | [`PENDENCIAS.md`](PENDENCIAS.md) | o que ainda espera decisão |
