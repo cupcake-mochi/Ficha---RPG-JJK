@@ -10,12 +10,12 @@
     {
       "arquivo": "Analise.gs",
       "bytes": 816380,
-      "sha256": "82e9b56f851ca517f82e3c285c78e238650817e36a8d5afcc40be3ebc51cd9d3"
+      "sha256": "d4eaf548a097de9e345097d9832d170e1eb5f6ede9a4ac2dbe75ac37b84dfaa0"
     },
     {
       "arquivo": "AnaliseFontes.gs",
       "bytes": 413469,
-      "sha256": "e4bd3006f1e742d09a1e99b475fa1d42ad5117cff332199cd750692101547edb"
+      "sha256": "44e6ee42442d86b05f00232883f02466fcf2fe6651b115bad8cce0d5cd124189"
     },
     {
       "arquivo": "Codigo.gs",
@@ -25,32 +25,32 @@
     {
       "arquivo": "Configuracao.gs",
       "bytes": 690681,
-      "sha256": "3c06f0d0a022bd73c739722c4e729198b58b5340392c139528595aac5a646aa6"
+      "sha256": "d498499913698cd8b84350cda811e65a398153b2a10c65486de7d9895d6694e1"
     },
     {
       "arquivo": "Criacao.gs",
       "bytes": 14519,
-      "sha256": "51f9505e72724bab33c59605d3fbb46e5549d164ff40c760dd12819793b1d44f"
+      "sha256": "48abf2812da401a2046aa322e16b9b4a04dbc3288ee99a775f19248a7ebc58f5"
     },
     {
       "arquivo": "CriacaoAnalise.gs",
       "bytes": 10128,
-      "sha256": "922ed7f404069d5fda1718be66e67ff8454e75e78a63262abc68d0c234635440"
+      "sha256": "3949199339db428f7dc016f6e171a3410feebea3b446f2fe618d60a5d9150c59"
     },
     {
       "arquivo": "CriacaoPainel.gs",
       "bytes": 32159,
-      "sha256": "674a1cbbd0514e556732ac0ae87aad187ff01b4f84625b935e40169004b68647"
+      "sha256": "a163555d456e7e2ca49f88edbe99dc6e39885ca938270606bbcedb3817f5f5a3"
     },
     {
       "arquivo": "Custom.gs",
       "bytes": 609377,
-      "sha256": "e512b60ecc2ded11c84846d4827948c61593d022c22aa7f01091ec4098d5fe23"
+      "sha256": "3bff37667bc691e798bd2f6bc7c9eb8f7da1bdb4c4b6dd256d633be80b3d7952"
     },
     {
       "arquivo": "Ficha.gs",
       "bytes": 790452,
-      "sha256": "dd1b8bfa2341e2d42f16a99f3a9e1c1433c1dcb939bce2f6c56448722d612064"
+      "sha256": "8a3e0df7f908ef8aa330a3c89afb2f747d958e0d70fab5f1b92725c9ffe3c28c"
     },
     {
       "arquivo": "Habilidades.gs",
@@ -60,53 +60,53 @@
     {
       "arquivo": "Invocacoes.gs",
       "bytes": 577067,
-      "sha256": "69ac7b9a94403b696fb6ef11a9b6a6648b5fd545f56cc0ca70671c3b411a1bb9"
+      "sha256": "8d76d139d4c2f4a6df87ac503d8a9f169c9102dd2c28cd1c6801dc1f5fb3659a"
     },
     {
       "arquivo": "Melhorias.gs",
       "bytes": 64338,
-      "sha256": "69761b3c280f61cc484478f290e36ba78b838db58089ff87eff9498a10ab662c"
+      "sha256": "53c9c1d09c41b5499f59d1b7d368995b8502baf3bf43ef91715910f50d31cfd1"
     },
     {
       "arquivo": "Origens.gs",
       "bytes": 519699,
-      "sha256": "e066d6c6135857e4e410ee876b050b10eac076ecf5a5e95787aeb4e61e288a18"
+      "sha256": "6f5c62e6d0225f1e03c51bb78803df49b013ebec95a24f5f4cbafd6b84eeb4ca"
     },
     {
       "arquivo": "PecasAnalise1.gs",
       "bytes": 89048,
-      "sha256": "b5ac7dd805a0ccdd00f541f8b808f6e37193aa66c08df613d63c6d61230c5914"
+      "sha256": "38df872d316624494821c4faba13d809a0e0504326ed95fe7e00b197b53389df"
     },
     {
       "arquivo": "PecasPainel.gs",
       "bytes": 53455,
-      "sha256": "69f1ff8c9ddf670fc5a07987cdce30722bf5120b55a3ec5fdb78f74858594540"
+      "sha256": "1a9e814df8bed1ac9934ced10d8b863f4a531d849eb4281091559dfc53f39402"
     },
     {
       "arquivo": "Pessoal.gs",
       "bytes": 163251,
-      "sha256": "954bc97d8779beb361036cd023f4ec91fec542b596c6680e2ade8f135f85edb0"
+      "sha256": "a3fba6de170df3590f6bb6d0085740154fde3222951356cb1b0ae2668ea1a2bc"
     },
     {
       "arquivo": "Progressao.gs",
-      "bytes": 79632,
-      "sha256": "a94f7491e4ba612a9bc929f3d2b1335159b0d3f61e0d055dde025ac57dff803d"
+      "bytes": 79652,
+      "sha256": "c352e9005f748a4f62feec7363f7e40882a7aaa412c1dc2bfc14e042ba577499"
     },
     {
       "arquivo": "ProgressaoAnalise.gs",
       "bytes": 105981,
-      "sha256": "629797811d59be0ca1f7129d70ce6787c642eba92f57a318ee7fabe03ec264a7"
+      "sha256": "fce4542be22825d4d37a43baf0aa7f6280aa1d715eebbe4089a64c30ac5c89e9"
     },
     {
       "arquivo": "ProgressaoPainel.gs",
       "bytes": 164855,
-      "sha256": "ace39016c1c46175b2485c9b3f9e76f87da8ad3134e4beac7cf7594e131a8fb1"
+      "sha256": "06c9d9ea3b15f7f8fcf2e593561f5691a7bd55e7ca1729b2510350bb907dd6a1"
     },
     {
       "arquivo": "Restricoes.gs",
       "bytes": 12361,
-      "sha256": "940d21fcd220a5df493ef882a83ef549fe07fd52f7aaecdcd7477a21c59e793f"
+      "sha256": "384a161a3795ade7248f7fea4a98ccbf0220cb0f5e1d6af1f7eb5bb76f1a38df"
     }
   ],
-  "geracao": "3d988885c5fa0466"
+  "geracao": "f85ffda549994a3f"
 }

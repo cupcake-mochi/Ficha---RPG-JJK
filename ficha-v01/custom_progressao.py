@@ -133,7 +133,7 @@ def aplica(layout, fp, fiv):
         d(f'G{r}',f'=IF(AND(C{r}="",D{r}="",F{r}="",E{r}=FALSE,OR(B{r}="",B{r}={q(g["categoria"])})),"",TEXTJOIN(" · ",TRUE,'
           f'IF(B{r}<>{q(g["categoria"])},"Tipo incompatível com o cadastro",""),'
           f'IF(OR(C{r}="",TRIM(C{r})<>C{r}),"Preencha NOME sem espaços nas pontas",""),'
-          f'IF(AND(C{r}<>"",OR(COUNTIF({short_names},{criterio("C"+str(r))})>1,COUNTIF($AY$2:$AY$24,{criterio("C"+str(r))})>0,COUNTIF($AZ$2:$AZ$12,{criterio("C"+str(r))})>0),"Nome repetido no livro ou custom",""),'
+          f'IF(AND(C{r}<>"",OR(COUNTIF({short_names},{criterio("C"+str(r))})>1,COUNTIF($AY$2:$AY$24,{criterio("C"+str(r))})>0,COUNTIF($AZ$2:$AZ$12,{criterio("C"+str(r))})>0)),"Nome repetido no livro ou custom",""),'
           f'IF(COUNTIF($AN$2:$AN$6,D{r})=0,"Escolha um atributo válido",""),'
           f'IF(ISLOGICAL(E{r}),"","MESTRE VIU deve ser caixa de seleção")))')
     # Book + valid custom skills and offices, same row count for lookup columns.
