@@ -100,6 +100,12 @@ for par in args.pares:
                 ocup.add((rr, cc))
     P.check(f'{tag} mesclagens da CONFIGURAÇÃO sem sobreposição', not sob, sob[:3])
     P.check(f'{tag} CONFIGURAÇÃO termina no fim do bloco ({tr["fim"]})', cfg['linhas'] == tr['fim'], cfg['linhas'])
+    novas_est = [x for x in cfg.get('esticam', []) if all(int(re.sub(r'\D', '', a)) >= tr['inicio'] for a in x['gatilhos'])]
+    pares = (nt + 1) // 2 + (nl + 1) // 2
+    alvos_txt = {g[k] for kind, campos in (('tipo_entidade', ('definicao', 'efeito')), ('talento_entidade', ('requisitos', 'efeito')))
+                 for g in tr['registros'][kind] for k in campos}
+    P.check(f'{tag} áreas de texto esticam: 2 por par de cartões ({2 * pares}), cobrindo todos os textos',
+            len(novas_est) == 2 * pares and {a for x in novas_est for a in x['gatilhos']} == alvos_txt, len(novas_est))
     nova = next(a for a in mod['layout']['abas'] if a['nome'] == ec.NOME)
     P.check(f'{tag} {ec.NOME} oculta, paleta fixa, {nova["linhas"]} linhas × {nova["colunas"]} colunas',
             nova['estado'] == 'hidden' and nova['paleta_fixa'] and nova['linhas'] <= max(nt, nl) + 20)

@@ -3,8 +3,8 @@
 
     python rodar_com_entidades.py <raiz> <tr.json> <tipos> <talentos> <argumentos do monta.py...>
 
-O módulo entra logo depois de custom_pecas.aplica (mesma ordem proposta no patch de integração) e
-suas linhas ANALISE são acrescentadas depois das de custom_pecas, no fim do contrato. O registro
+O módulo entra logo depois do último módulo custom do monta.py (custom_danos quando existe; senão
+custom_pecas), a mesma ordem do patch 01, e suas linhas ANALISE vêm depois das dele, no fim do contrato. O registro
 da transformação (endereços dos cartões, capacidades) vai para <tr.json>.
 
 Guarda: sem --exportar-* o gerador grava .gs/XLSX; isso só é aceito fora do checkout de trabalho.
@@ -26,20 +26,34 @@ sys.path[:0] = [os.path.join(raiz, 'ficha-v01'), os.path.join(raiz, 'ficha'), ra
 os.chdir(raiz)
 import custom_pecas
 import entidades_custom
+try:
+    import custom_danos as anterior
+except ImportError:
+    anterior = custom_pecas
 
 estado = {}
-aplica_original, exporta_original = custom_pecas.aplica, custom_pecas.exporta
+pecas_original = custom_pecas.aplica
 
 
-def aplica(layout, fam, inv, criacao):
-    tr = aplica_original(layout, fam, inv, criacao)
-    estado['tr'] = entidades_custom.aplica(layout, dict(fam=fam, inv=inv, criacao=criacao, capacidades=dict(
-        tipo_entidade=tipos, talento_entidade=talentos)))
+def pecas(layout, fam, inv, criacao):
+    estado['ctx'] = dict(fam=fam, inv=inv, criacao=criacao)
+    return pecas_original(layout, fam, inv, criacao)
+
+
+custom_pecas.aplica = pecas
+aplica_original, exporta_original = anterior.aplica, anterior.exporta
+
+
+def aplica(layout, *args):
+    tr = aplica_original(layout, *args)
+    ctx = estado['ctx']
+    estado['tr'] = entidades_custom.aplica(layout, dict(ctx, capacidades=dict(tipo_entidade=tipos, talento_entidade=talentos)))
     import indice_ficha
+    inv = ctx['inv']
     chaves = ('nome', 'tipo', 'talisma', 'tal', 'talx', 'aquis', 'nivel_fixo', 'alma', 'autonomia')
     estado['geo'] = dict(colf=inv['colf'], nivel_ficha=indice_ficha.indice(layout).get('nivel'),
                          fichas=[{k: g[k] for k in chaves if k in g} for g in inv['fichas_c']],
-                         abre_tal=inv['R']['abre_tal'], teto_tal=inv['R']['teto_tal'])
+                         abre_tal=inv['R']['abre_tal'], teto_tal=inv['R']['teto_tal'], anterior=anterior.__name__)
     return tr
 
 
@@ -47,7 +61,7 @@ def exporta(tr):
     return exporta_original(tr) + entidades_custom.exporta(estado['tr'])
 
 
-custom_pecas.aplica, custom_pecas.exporta = aplica, exporta
+anterior.aplica, anterior.exporta = aplica, exporta
 
 
 def salvar_tr():

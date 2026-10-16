@@ -110,7 +110,7 @@ def aplica(layout, contexto):
     cells = {a['nome']: {v[0]: v for v in a['celulas']} for a in layout['abas']}
     tr = dict(antes={}, depois={}, entradas=[], registros={CHAVE['tipo']: regs_t, CHAVE['talento']: regs_l},
               catalogos={}, inicio=inicio, fim=fim, capacidades={CHAVE['tipo']: tipos, CHAVE['talento']: talentos},
-              substituicoes=0, consumidores={})
+              substituicoes=0, consumidores={}, esticam=0)
 
     def put(sheet, a1, value, style=None):
         old = cells[sheet].get(a1)
@@ -361,6 +361,20 @@ def aplica(layout, contexto):
         area(g, 11, 'REQUISITOS', 14, 'Exigências completas do Talento de entidade. Texto livre não cria automações.')
         area(g, 16, 'EFEITO', 24, 'Descrição completa, exibida na carta existente. Em branco com base, usa o texto do livro.')
         rodape(g, LR['erro'], g['n'])
+    # Áreas de texto esticam com o conteúdo (esticarCaixas_), por par de cartões vizinhos, como no custom_pecas.
+    for regs, areas in [(regs_t, [('definicao', 12, 3), ('efeito', 17, 8)]),
+                        (regs_l, [('requisitos', 12, 3), ('efeito', 17, 8)])]:
+        for i in range(0, len(regs), 2):
+            pair = regs[i:i + 2]
+            for key, offset, height in areas:
+                texts = []
+                for g in pair:
+                    width = sum(next((w for lo, hi, w in config['colunas_larg'] if lo <= c <= hi), 4) * 8 - 1
+                                for c in range(g['c'], g['c'] + 6)) - 12
+                    texts.append([width, [g[key]], g['r'] + offset, height, 0])
+                config.setdefault('esticam', []).append(dict(gatilhos=[g[key] for g in pair], aba='CONFIGURAÇÃO',
+                                                             minima=25, textos=texts))
+                tr['esticam'] += 1
     box(inicio - 2, 2, 'ENTIDADES CUSTOM · TIPOS', ec=15, kind='secao')
     box(meio - 2, 2, 'ENTIDADES CUSTOM · TALENTOS', ec=15, kind='secao')
     config['linhas'] = fim
