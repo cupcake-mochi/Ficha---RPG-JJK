@@ -34,15 +34,15 @@ bash revisao-b47/rodar.sh simulado-alvo    # SIMULAÇÃO 10/30/30/20 trocando s�
 
 Perfis em [casos/perfis.json](casos/perfis.json). Para revisar o commit A: fazer checkout do SHA, escolher/ajustar
 `alvo-real-treino-unico` ou `alvo-real-separado` conforme o contrato publicado (nomes de chave, campos, capacidades)
-e rodar `bash revisao-b47/rodar.sh <perfil>`. Perfis com `trocas` vazias rodam o gerador real; não fingem redução.
+e rodar `bash revisao-b47/rodar.sh <perfil>`. O commit A (`2f3c62f`) usa o perfil `alvo-real-separado`. Perfis com `trocas` vazias rodam o gerador real; não fingem redução.
 
 Saídas JSON: `nuvem-b47/saidas/revisao-b47/` (ignorada pelo Git), cacheadas por SHA/perfil quando o núcleo está limpo.
 Código de saída 1 = falha bloqueante; `RISCO` só é relatado.
 
 ## Patches propostos (não aplicados)
 
-- `patches/carregador-selo-de-geracao.diff` — `ficha/emitir_gs.py` e `ficha/modelo.gs.js`.
-- `patches/ler-analise-avisos-custom.diff` — `ler-analise.py`.
+- `patches/carregador-selo-de-geracao.diff` — `ficha/emitir_gs.py` e `ficha/modelo.gs.js` sobre 4187df3; **`-v10.diff`** sobre o commit A (`4610c88`).
+- `patches/ler-analise-avisos-custom.diff` — `ler-analise.py` sobre 4187df3; **`-v10.diff`** sobre o commit A.
 - `patches/regressao-pecas-parametrizada.diff` — `regressao-pecas.py`: cenários pela capacidade em vez de 789/395 (B4).
 - `patches/infra-remover-explicito.diff` — `infra-b47/apps_script.py` (aplicar sobre `codex/b47-infra`).
 

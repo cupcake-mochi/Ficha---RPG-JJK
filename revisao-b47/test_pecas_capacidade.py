@@ -41,11 +41,14 @@ trocas = [("ROOT=Path(__file__).resolve().parent", f"ROOT=Path({str(comum.RAIZ)!
           ("'N'+str(mr+396)", "'N'+str(mr+cp.RESTRICOES+1)"),
           ("[('melhoria',789),('restricao',395)]", "[('melhoria',cp.MELHORIAS),('restricao',cp.RESTRICOES)]")]
 faltam = [a for a, _ in trocas if a not in origem]
-P.check('literais conhecidos encontrados no regressao-pecas.py deste SHA', not faltam, faltam)
+if len(faltam) == len(trocas) - 1:   # a troca de ROOT sempre existe
+    print('INFO  regressao-pecas.py deste SHA já é parametrizado: executado sem trocas')
+else:
+    P.check('literais conhecidos encontrados no regressao-pecas.py deste SHA', not faltam, faltam)
 for a, b in trocas:
     origem = origem.replace(a, b)
 restantes = sorted(set(re.findall(r'\b(789|395|396|1184)\b', origem)))
-P.check('nenhum outro literal da capacidade antiga no teste', restantes == ['1184', '395', '789'] or not restantes,
+P.check('nenhum literal da capacidade antiga nos cenários', set(restantes) <= {'1184', '395', '789'},
         restantes, nivel='risco')
 
 tmp = Path(tempfile.mkdtemp(prefix='revisao-b47-pecas-'))

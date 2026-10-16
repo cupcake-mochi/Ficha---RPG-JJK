@@ -3,7 +3,74 @@
 **Data:** 16/10/2026 · **SHA auditado:** `4187df37640b5e0966cdb342f56f9ee0a0daf16a` (preparação de nuvem, mesma base de `claude/b47-revisao`, `codex/b47-capacidade`, `codex/b47-infra` e `codex/configuracao-b47` no momento da auditoria).
 **Ramo desta entrega:** `claude/kind-feynman-sewhec`. É o nome exigido pela plataforma; foi criado a partir de `origin/claude/b47-revisao` (4187df3), sem reescrever ramo existente. Equivale ao ramo lógico `claude/b47-revisao`.
 
-**Commit da redução (A): ainda não recebido.** `codex/b47-capacidade` estava igual a 4187df3. A revisão do diff de A fica **pendente**; nada abaixo é revisão desse diff.
+**Commit da redução (A): revisado** — ver a seção "Revisão do commit A" logo abaixo. As seções seguintes são a auditoria da base 4187df3, feita antes de A existir.
+
+## Revisão do commit A — `2f3c62f` (código) e `4610c88` (registro), ramo `codex/b47-capacidade`
+
+Revisei o diff de `ficha-v01/` (capacidades, custom_*, analise), `ficha/` (emissor e carregador), `ler-analise.py`, `capacidade-b47/migracao.py` e `lotes.py`, além de `ROTEIRO-NATIVO`, `ESQUEMA` e relatório. A bateria rodou numa worktree temporária do `4610c88`. `codex/configuracao-b47` ainda estava em 4187df3, então **não revisei a integração**.
+
+### Reprodução independente das provas do integrador
+
+| Comando no SHA `4610c88` | Resultado |
+|---|---|
+| `bash rodar-tudo.sh --b47-focal` (14 etapas, 6 min) | **14/14 exit 0**: capacidade 13, migração 19 (sintética), peças 54, progressão 47, treinos 6, Famílias 20, cópias, construção simulada, textos (66 grupos, 7 cenários), leitor `TESTE: OK`. As contagens batem com o relatório deles |
+| `monta.py` na worktree | os **20 `.gs` regenerados são iguais byte a byte** aos versionados; no XLSX só muda `docProps/core.xml` (data) |
+| `test_contrato.py --perfil alvo-real-separado` | **38/38**: formato 10, 7.356 chaves, 10/30/30/10/10 sem chave acima da capacidade, fontes na CONFIGURAÇÃO sem compartilhamento, **6.706 chaves fora dos catálogos preservadas** com parte, aba e ordem |
+| `test_enderecos.py --perfil alvo-real-separado` | 0 falhas. Faixas derivadas (`AG2:AG34`, `AJ2:AJ23`), sem faixa morta, sem nome cru em COUNTIF/MATCH/VLOOKUP. Riscos: endereços derivados ainda em texto de INDIRECT; B3 (25 fórmulas de 11.395 caracteres) |
+| `test_pecas_capacidade.py` / `test_fronteiras.py` | 55/55 (o `regressao-pecas.py` deles já é parametrizado) / 13 ok + 2 riscos (R5) |
+| `test_carregador.py` | 3/3 com os `.gs` versionados; **falha** com as sobras da v9 no projeto (R1) |
+| `test_leitor.py` | 15 falhas bloqueantes (R2 = A2 sem mudança) |
+
+### Achados anteriores resolvidos por A
+
+- **M2:** faixas de Perícia/Ofício e o "—" derivados de `len(livro) + capacidade` (`custom_progressao.py`).
+- **M3:** `capacidades.py` deriva `INICIO_FAMILIAS` do fim da progressão; CONFIGURAÇÃO com 1.731 linhas, sem faixa morta.
+- **M5:** `criterio()` no cadastro de treino e nas posições da FICHA. `test_fronteiras.py` confirma "Lua*" literal em Perícia e Ofício.
+- **M4:** `migracao.py` compara com o molde do gerador, então "Neutra"/"Nenhuma"/falso não contam como dado. Também:
+  - bloqueia vaga retirada preenchida, registro parcial, treino sem tipo, excesso por tipo, nota fora de campo e fórmula de entrada movida;
+  - exige snapshot de até 15 min, cobertura da cauda da grade e prova descartável;
+  - recusa a oficial.
+  
+  A ordem dos lotes escreve as entradas do jogador por último.
+- **B4:** regressões parametrizadas pelas constantes.
+- **A1:** em parte. O `construir()` não trava mais: há um só `PecasAnalise`, e os três antigos saíram do Git e do manifesto.
+
+### Achados no commit A
+
+**R1 — ALTA (condicional à aplicação): sobra de `PecasAnalise2–4.gs` no projeto Apps Script corrompe a ANALISE sem aviso.**
+- Onde: `ficha/modelo.gs.js`. A redução tirou as guardas 2–4, mas cada complemento antigo termina chamando `juntarValores_` sozinho, e nada recusa um complemento de outra geração. `ROTEIRO-NATIVO.md` passo 7 manda removê-los **à mão**. O relatório deles registra que a sessão não tem ferramenta de Apps Script, então a aplicação tende a ser manual no editor.
+- Reproduz: `test_carregador.py --perfil alvo-real-separado` com as sobras da v9. A guarda **passa** e a ANALISE monta 14.222 chaves (240 repetidas, 6.626 obsoletas) numa grade de 7.359.
+- Correção validada: `patches/carregador-selo-de-geracao-v10.diff`, rebaseado em `4610c88`. `test_patch_carregador.py --patch carregador-selo-de-geracao-v10.diff`: **7/7**. A pasta gerada constrói com ANALISE = contrato; com sobras, recusa citando os arquivos, e nada delas entra. O patch também amplia `COMPLEMENTOS` de 1 para até 9 (R6).
+- Combina com I2: a ferramenta de envio do chat 3 bloqueia os remotos obsoletos sem opção de removê-los (`patches/infra-remover-explicito.diff`).
+
+**R2 — ALTA: A2 continua.** `ler-analise.py` aceita o formato 10, mas segue aprovando avisos de cadastro de Família/Melhoria/Restrição/3a e valores de erro.
+- `test_leitor.py --perfil alvo-real-separado`: 15 falhas bloqueantes.
+- Correção validada: `patches/ler-analise-avisos-custom-v10.diff`, **31/31** bloqueantes.
+- O bot segue sem atualização para o formato 10 (registrado por eles).
+
+**R3 — MÉDIA: M1 parcial.** O ESQUEMA documenta o formato 10 (retiradas, novas chaves, migração), mas não registra que `codex/analise-tr-pericias-carga` usa "formato 4" com outro conteúdo e já foi conferido no bot. Falta a tabela formato → conteúdo e a confirmação do que o bot reconhece.
+
+**R4 — MÉDIA: os lotes de migração não são atômicos entre si.** `lotes.py` limpa `A733:P<fim>` no início e escreve as entradas no fim, em vários `batchUpdate` de até 100 KB.
+- Se a aplicação parar no meio (erro, cota, sessão), a cópia fica com os cadastros apagados até reaplicar a partir do snapshot/backup. O `backup_id` torna isso recuperável, mas o roteiro não diz o que fazer em falha parcial.
+- Proposta: aplicar limpeza, repintura e entradas da CONFIGURAÇÃO no mesmo `batchUpdate` quando couber, ou registrar no roteiro a retomada obrigatória a partir do backup e o critério de "lote parcial".
+
+**R5 — BAIXA: apagar o TIPO de um cartão vazio de Perícia/Ofício acende quatro avisos.**
+- Os avisos são "Tipo incompatível…", "Preencha NOME…", "Nome repetido no livro ou custom" e "Escolha um atributo válido". O "repetido" aparece porque `COUNTIF` com critério vazio conta células em branco. Com "⚠", o leitor e o bot reprovam a ficha.
+- Onde: `custom_progressao.py`, fórmula `G{r}`.
+- `test_fronteiras.py` reproduz nos dois catálogos. A migração não causa isso, porque os cartões novos vêm do molde com o TIPO preenchido; só a edição manual causa.
+- Correção: na condição de "cartão vazio", tratar `B=""` como a categoria e não avaliar repetição com NOME vazio.
+
+**R6 — BAIXA: `ficha/emitir_gs.py` fixa `range(1,2)`.** Se a parte de peças da ANALISE passar de 3.000 linhas (C, com Formas etc.), a geração cai com `KeyError`. A falha é ruidosa, não silenciosa. O patch v10 de R1 amplia.
+
+**Permanecem:** B1 (`normaliza` de nomes), B2 (" · " em nomes), B3 (fórmulas > 8.192 na 3a), B5 (`migracao-criacao.py` fora da lista de receitas históricas do `NUVEM.md`) e o risco de endereços em texto de `INDIRECT`, agora derivados mas ainda imunes a `troca_refs`.
+
+### Parecer sobre A
+
+Mecanicamente, A está consistente com o plano: capacidades centralizadas, contrato 10 coerente e completo, consumidores derivados, migração com guardas fortes e provas reproduzidas aqui. **Integração recomendada**, com duas condições antes da aplicação nativa:
+1. R1: o patch do selo (ou equivalente) ou, no mínimo, envio pela ferramenta do chat 3 com remoção explícita e conferência.
+2. R2: o patch do leitor e a atualização do bot antes de publicar o formato 10 para jogadores.
+
+R3/R4 pedem decisão ou registro no roteiro; R5/R6 podem ir junto ou depois. Este parecer não cobre validação nativa, que ninguém executou, nem a integração em `codex/configuracao-b47`, que não existia.
 
 ## Ambiente e ferramentas realmente usados
 
@@ -170,7 +237,7 @@ Os resultados JSON de cada teste estão em `nuvem-b47/saidas/revisao-b47/` (não
 
 ## Impedimentos
 
-- Commit A indisponível: a revisão do diff está pendente.
+- Commit A revisado (`2f3c62f`/`4610c88`); a integração em `codex/configuracao-b47` ainda não existia.
 - Sem Google: migração, envio, construção e leitura nativa não testados.
 - Bot fora do repositório: a compatibilidade dele com A2/M1 não foi verificada.
 - `regressao-construir.js` e a bateria antiga não foram rodados, por estarem fora do escopo deste papel e serem pesados. A preparação já registrou a execução deles na base.

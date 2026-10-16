@@ -45,11 +45,14 @@ def aviso(cat, n):
     return celula(A[f'aviso.custom.{cat}.{n}'][1])              # (DADOS_*, célula do problema)
 
 
-TABELA = {'familia': 'DADOS_CRIACAO', 'treino': 'DADOS_PROGRESSAO'}
+TABELA = {'familia': 'DADOS_CRIACAO', 'treino': 'DADOS_PROGRESSAO', 'pericia': 'DADOS_PROGRESSAO',
+          'oficio': 'DADOS_PROGRESSAO'}
+PADRAO = {'familia': {'estado': 'Neutra'}, 'treino': {'tipo': 'Perícia', 'atributo': 'Força'},
+          'pericia': {'tipo': 'Perícia', 'atributo': 'Força'}, 'oficio': {'tipo': 'Ofício', 'atributo': 'Inteligência'}}
 ult = {c: p['catalogos'][c]['capacidade'] for c in TABELA if c in p['catalogos']}
 casos = []   # (nome, cat, {(n, campo): valor}, verificação)
 for cat, N in ult.items():
-    extra = {'familia': {'estado': 'Neutra'}, 'treino': {'tipo': 'Perícia', 'atributo': 'Força'}}[cat]
+    extra = PADRAO[cat]
     def reg(n, nome, **mais):
         return {**{(n, k): v for k, v in extra.items()}, (n, 'nome'): nome, **{(n, k): v for k, v in mais.items()}}
     casos += [
@@ -60,6 +63,12 @@ for cat, N in ult.items():
         (f'{cat}: curinga na última é literal (Lua* não colide com Lua X)', cat, {**reg(1, 'Lua X'), **reg(N, 'Lua*')},
          dict(validos=[1, N], no_catalogo=['Lua X', 'Lua*'])),
     ]
+    if cat in ('pericia', 'oficio'):
+        outro = 'Ofício' if cat == 'pericia' else 'Perícia'
+        casos.append((f'{cat}: TIPO apagado num cartão vazio não acende aviso', cat, {(N, 'tipo'): None},
+                      dict(validos=[N])))
+        casos.append((f'{cat}: TIPO de outro catálogo colado na última vaga é recusado', cat,
+                      {**reg(N, 'Tipo trocado'), (N, 'tipo'): outro}, dict(invalidos=[N])))
     if cat == 'treino':
         casos.append((f'{cat}: última vaga com nome e sem TIPO é inválida', cat,
                       {(N, 'nome'): 'Sem tipo', (N, 'atributo'): 'Força'}, dict(invalidos=[N])))
@@ -67,13 +76,17 @@ for cat, N in ult.items():
                       {(N, 'tipo'): 'Ofício', (N, 'nome'): 'Ofício próprio', (N, 'atributo'): 'Inteligência'},
                       dict(validos=[N], no_catalogo=['Ofício próprio'])))
 
+if 'pericia' in ult and 'oficio' in ult:
+    casos.append(('pericia+oficio: mesmo nome nos dois tipos continua inválido (como no catálogo único)', 'pericia',
+                  {(1, 'nome'): 'Ofuscar', (1, 'tipo'): 'Perícia', (1, 'atributo'): 'Força'},
+                  dict(invalidos=[1], extra_oficio={(1, 'nome'): 'Ofuscar', (1, 'tipo'): 'Ofício', (1, 'atributo'): 'Força'})))
 vazias = {s: {} for s in abas}
 tmp = Path(tempfile.mkdtemp(prefix='revisao-b47-fronteiras-'))
 try:
     out = tmp / 'out'
     out.mkdir()
     caminhos = []
-    for i, (nome, cat, entradas, _) in enumerate(casos):
+    for i, (nome, cat, entradas, verif) in enumerate(casos):
         wb = Workbook()
         wb.remove(wb.active)
         for s in abas:
@@ -90,6 +103,8 @@ try:
                 wb[s][c] = v
         for (n, k), v in entradas.items():
             wb['CONFIGURAÇÃO'][campo(cat, n, k)] = v
+        for (n, k), v in verif.get('extra_oficio', {}).items():
+            wb['CONFIGURAÇÃO'][campo('oficio', n, k)] = v
         caminho = tmp / f'caso{i:02d}.xlsx'
         wb.save(caminho)
         caminhos.append(caminho)
@@ -106,7 +121,7 @@ try:
         ok = all(prob[n] == '' for n in esperado.get('validos', [])) and all(prob[n] != '' for n in esperado.get('invalidos', []))
         contagem = {x: sum(1 for v in valores.values() if v == x) for x in esperado.get('no_catalogo', [])}
         ok_cat = all(q >= 2 for q in contagem.values())        # cadastro cru + catálogo
-        nivel = 'risco' if 'curinga' in nome and cat == 'treino' else 'bloqueante'
+        nivel = 'risco' if ('curinga' in nome and cat == 'treino') or 'TIPO apagado' in nome else 'bloqueante'
         P.check(nome, ok and ok_cat, f'avisos {prob}; ocorrências {contagem}', nivel=nivel)
 finally:
     shutil.rmtree(tmp, ignore_errors=True)

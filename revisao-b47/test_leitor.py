@@ -15,7 +15,8 @@ from openpyxl.formula import Tokenizer
 import comum
 
 ap = comum.argumentos(__doc__)
-ap.add_argument('--com-patch', action='store_true', help='testa cópia temporária com patches/ler-analise-avisos-custom.diff')
+ap.add_argument('--com-patch', nargs='?', const='ler-analise-avisos-custom.diff', default=None,
+                help='testa cópia temporária com o patch indicado em patches/ (v10: ler-analise-avisos-custom-v10.diff)')
 args = ap.parse_args()
 p = comum.perfil(args.perfil)
 modelo = json.loads(comum.exportar(args.perfil, 'pecas').read_text(encoding='utf-8'))
@@ -28,7 +29,7 @@ if args.com_patch:
     tmp = tempfile.mkdtemp(prefix='revisao-b47-leitor-')
     shutil.copy(comum.RAIZ / 'ler-analise.py', tmp)
     subprocess.run(['git', 'apply', '--unsafe-paths', '--directory=' + tmp.lstrip('/'),
-                    str(comum.AQUI / 'patches' / 'ler-analise-avisos-custom.diff')], cwd='/', check=True)
+                    str(comum.AQUI / 'patches' / args.com_patch)], cwd='/', check=True)
     leitor = comum.ler_analise_modulo(tmp + '/ler-analise.py')
     shutil.rmtree(tmp, ignore_errors=True)
 else:
