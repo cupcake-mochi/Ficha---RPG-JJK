@@ -1,0 +1,228 @@
+{
+  "resultado": "PARCIAL",
+  "destino": "1hBogVNW0vqeLYwa0PNl04Y2Nel9-7nrCoODWq1FKsb4",
+  "backup_id": "1Qf5O2BbE5FZDYz2o-F7Xt0YOyb9S1s7bB82MLbabVVU",
+  "alvo_sha256": "1964dc4c9a89427c5a516ec887290b59458435ad85662c193ad5f973cd5b4875",
+  "snapshot_sha256": "5e43b81b7e94fe9ebac13def5403cafa059f359d487b70e4c56c405ba8934c87",
+  "revisao_liberada": false,
+  "codigo_vinculado": "PENDENTE: não salvo/relido/executado",
+  "escopo": "Leituras e cálculos Sheets; não cobre Apps Script, visual ou latência nativos",
+  "planilha": {
+    "resultado": "OK",
+    "checagens": [
+      {
+        "teste": "entradas/notas preservadas; mudanças de fórmula iguais ao modelo",
+        "ok": true
+      },
+      {
+        "teste": "valores/fórmulas planejados coincidem após a remoção da cauda",
+        "ok": true
+      },
+      {
+        "teste": "entradas e notas mapeadas restauradas",
+        "ok": true
+      },
+      {
+        "teste": "sem erros de fórmula nos intervalos afetados lidos",
+        "ok": true
+      },
+      {
+        "teste": "menus de CONFIGURAÇÃO correspondem ao modelo",
+        "ok": true
+      },
+      {
+        "teste": "7356 chaves únicas e ordenadas",
+        "ok": true
+      },
+      {
+        "teste": "fórmulas, fontes e partes da ANALISE correspondem ao modelo",
+        "ok": true
+      },
+      {
+        "teste": "formato 10; somente aviso esperado de escolhas incompletas",
+        "ok": true
+      },
+      {
+        "teste": "48 entradas temporárias restauradas por releitura",
+        "ok": true
+      },
+      {
+        "teste": "nomes com curinga são literais",
+        "ok": true
+      },
+      {
+        "teste": "primeira Perícia/Ofício após livro",
+        "ok": true
+      },
+      {
+        "teste": "décimas vagas e atributos",
+        "ok": true
+      },
+      {
+        "teste": "pools das décimas vagas",
+        "ok": true
+      },
+      {
+        "teste": "primeira/décima Família compartilhadas",
+        "ok": true
+      },
+      {
+        "teste": "primeira/última Melhoria herdadas",
+        "ok": true
+      },
+      {
+        "teste": "Melhoria do zero: Família, peso e TR",
+        "ok": true
+      },
+      {
+        "teste": "primeira/última Restrição herdadas",
+        "ok": true
+      },
+      {
+        "teste": "Restrição do zero: devolução/frequência",
+        "ok": true
+      },
+      {
+        "teste": "mesmo cadastro nas 12 nonas posições",
+        "ok": true
+      },
+      {
+        "teste": "tipo incorreto invalida somente a Perícia",
+        "ok": true
+      },
+      {
+        "teste": "duplicata literal invalida ambos",
+        "ok": true
+      },
+      {
+        "teste": "tipo vazio sem cadastro não acusa problema",
+        "ok": true
+      }
+    ],
+    "abas_auditadas": 11,
+    "celulas_lidas": 118493,
+    "valores_alvo": 12876,
+    "entradas_notas_mapeadas": 509,
+    "celulas_preservacao": 54600,
+    "formulas_atualizadas_preservacao": 69,
+    "entradas_cenarios_restauradas": 48,
+    "menus_conferidos": 582,
+    "erros_formula": [],
+    "divergencias": [],
+    "menus_divergentes": [],
+    "contrato_divergente": []
+  },
+  "arquivos_de_evidencia": {
+    "auditoria-final/0000.json": "1eac4ba7d9e129887144644e4edf4ac2db26a3a4f2737a3480cce27b7cfba4be",
+    "auditoria-final/0001.json": "a965d65ab009cc17f6a7d467dda960ea9ca325cd5ef880e86d936970eb43d88c",
+    "auditoria-final/0002.json": "5257366d8fb3c3b45d7598442a752a64277393e1b1c7bbb698b4b688f97e6eb3",
+    "auditoria-final/0003.json": "5916f7db5ab8c5f400655dd5b15ec5402468bf67d86d7f492911aeb5ac175996",
+    "auditoria-final/0004.json": "975c2db460d21e6bee6f5d0758099038fe5013006023ccb15d9f614fc243d56f",
+    "auditoria-final/0005.json": "f97107fa51371e17d44ea9c5658e5d0b91f6d92e624b4c1013546207d31fa8ed",
+    "auditoria-final/0006.json": "5d3f7cbd5896ced06e8d088ba1f2a2118501f2349151b65d8610b9d34b04aecc",
+    "auditoria-final/0007.json": "593cd6a9eade68074bbf8b26a48c8329a5319858a6d3be51a09f41a2757c9375",
+    "auditoria-final/0008.json": "d73b3ba4f46a9a48b774d88f1be25e14dc8fef8e4e850af69ed1069f445db0ec",
+    "auditoria-final/0009.json": "01f04f04845baf3577d7b381f76fb840ad67927b5c434c65ad55c2f4ba3ec9c4",
+    "auditoria-final/0010.json": "f18855e0b31a16494bc9c9b9cc354f3a8d113fbcffc1f2986dda53a1d2b9ce92",
+    "auditoria-final/0011.json": "9214c890a198ba72429b27ca0ae2d5cfb86cfa5833a23976a5a82e0ea281a360",
+    "auditoria-final/0012.json": "f1a5f4c2680b5ce9a32ca0771fbfeed2620e80ac5b0ba4dc19fb6c00e36fb538",
+    "auditoria-final/0013.json": "b089940082a5c421f441205d7c7ef6c500ed7dc961fc8ece182040fd77d1a349",
+    "auditoria-final/0014.json": "7db74ed809390fed048dc86523ce9d4b5c540f4753e6319167fdcd967d54f447",
+    "auditoria-final/0015.json": "06706cedaf3d77a6302b6a99315c0ca59070556cf25587e88f194b66906ecfd3",
+    "auditoria-final/0016.json": "691e73d236227cab050e5fdcdbbb310b611cf428bb044165e44323b8b3e5b364",
+    "auditoria-final/0017.json": "a97b7d95d18b16b08f8b8d1a38ba15ebfa230a941895c4c63e25a2b218b9a0a6",
+    "auditoria-final/0018.json": "20a06a4d1b72cea782c19bd2ee41fde9b8894cd28dc55ea8e5cd36182cb02a0e",
+    "auditoria-final/0019.json": "3443de9494d4faff2e983c3b85055d8c24132a7f90c7fa0803ddfd2385c1ca42",
+    "auditoria-final/0020.json": "4cef1e38889dbccc6129b150301bca3a9bf9ac31a8c3d90eccafa5ebf2ab9db8",
+    "auditoria-final/0021.json": "e6d741fa842013aab8cd25b7c8474aefe232543e235f4549ec75e4821962c820",
+    "auditoria-final/0022.json": "8259262e581217ca9b37a527ca4112b62144af0589e3d0f61733d02514292ff5",
+    "cenarios/duplicado-confirmado.json": "703a950bf0d6d23a7abfda5e6abbf933e0ff00cb719e849df54d6094c7b3d0a3",
+    "cenarios/duplicado-intencao.json": "46c832cbd592ab7ca1b3e1bd28ec99276c6ee644eefef473e4f62a949064b392",
+    "cenarios/duplicado.json": "85e6af5d64f7a7449d706f359ce73c20978ccfafa5eb0bb026ada26da3088c96",
+    "cenarios/restauracao-confirmado.json": "2b3dba9632d1296e30010622e74b8fcbf80fb916709f3cba97fa4b64089708dd",
+    "cenarios/restauracao-intencao.json": "a1e1435a0740b90255527f391f187022ab9d776b443e27f7eab5db137f7d4980",
+    "cenarios/tipo_apagado_vazio-confirmado.json": "a04d08ebf7cc3901a6c2cf931638a25d46b6531de0d8d05b7558db1495211a6d",
+    "cenarios/tipo_apagado_vazio-intencao.json": "87489384900d66d7f839256b8b7b89671fc2b2d6b63a316bf217676051be799f",
+    "cenarios/tipo_apagado_vazio.json": "a96d902781cb4e86804502636fc37eb1d491162ecba39d263b1b894d1382de5c",
+    "cenarios/tipo_incorreto-confirmado.json": "12e24702cc91a62f399ef9064f5b72895f9e342f26c9f5e02c0039f287a7974a",
+    "cenarios/tipo_incorreto-intencao.json": "10abf8db8f8b0be2e97b5fe2b577a6910aeaccaf7a1dd85eb1d62f79282eda8e",
+    "cenarios/tipo_incorreto.json": "329da85dd1fb0b1d1dffb59e0c666905c8800731f4110d3b53f5e630b84bf83f",
+    "cenarios/validos-confirmado.json": "1bdcf4471614cf3541fc90cf03999aa9b5be40d39df4adb61772540e76d74518",
+    "cenarios/validos-intencao.json": "857f0222300ec25950ef0795b3e645be67b795d6bf53e7c950cc58525bd145b2",
+    "cenarios/validos.json": "72a1f1c4d8e0578ccf028c7770495fd85e5ea1f4a03519e51c0b0b99cb9ba63e",
+    "preservacao-antes/0000.json": "eeda06cf0bd53ed87d48b0e22ccad7fb0621558212fc1e309e455bfc7778067d",
+    "preservacao-antes/0001.json": "e93c00fdfb894d895045742dff30684d606ed13c1428ae602cfd0c1887db2672",
+    "preservacao-antes/0002.json": "01b60c015613facd62fe5d3847ae530c2711d993a9a50351b0527aa6404ad9d8",
+    "preservacao-antes/0003.json": "868eb79f6820d2afcede896601fde2538cc405462902c31a445266b7ce0e52c5",
+    "preservacao-antes/0004.json": "a956b8f7c53c1cbf10c1c42dc997a5533b5af6f99cc8d59b96e27e20cd00834e",
+    "preservacao-antes/0005.json": "ce285e990b35141b81bfb2f570113d389f495130f459e7c8ea52ce29bcb0c7ab",
+    "preservacao-antes/0006.json": "8432916b7b9b6eb2cb000e93b19d30b4fe153d88051cde8f911ab085ae5f300c",
+    "preservacao-antes/0007.json": "0efe175c836dd56cc4f9b9a1d608f0977880add9b9f67cd59bc48e2eadd9d4c8",
+    "preservacao-antes/0008.json": "e09f5238a8a49989727846302795fe6dac3458305416bc1b34d7a8b4e7780f89",
+    "preservacao-antes/0009.json": "fda65850e351f4fb5db12cb36323cf7f4546a365fa1b87891120f3f82b9a6917",
+    "preservacao-antes/0010.json": "610aa26a68e14d45a4768246fca99b92d4a6d77b29ab214152d67f49b620f23c",
+    "preservacao-antes/0011.json": "acc7287fc9c6fc18ff0fe427382f3bb9705d0d0c67ba74d494ed46a19cb3d560",
+    "preservacao-antes/0012.json": "43fe5b873c4b3e3a86e5a8900006528494c1aaf4621be20583338866d8bdaa66",
+    "preservacao-antes/0013.json": "188b725e466ff82612e0bb27c765cdc2f40af646a8ab9f10f5961c2b6e1c3dd8",
+    "preservacao-antes/0014.json": "a61e12725659629c9b389f9f27c15e394b4e33aa51631d1704833428d1a06bce",
+    "preservacao-antes/0015.json": "a598a84dcec8ae55d0b486b7b0de3a5019ffb56c545503d3c9a2ea1f91a6698f",
+    "preservacao-final/0000.json": "eeda06cf0bd53ed87d48b0e22ccad7fb0621558212fc1e309e455bfc7778067d",
+    "preservacao-final/0001.json": "e93c00fdfb894d895045742dff30684d606ed13c1428ae602cfd0c1887db2672",
+    "preservacao-final/0002.json": "d4d10e7ea5179ffc04f509eedc98ec8ee2e781fa1f839c374e953d74376ba311",
+    "preservacao-final/0003.json": "ea3314166eef23132ef84e378219c5338e2cf386ee68fd6cfa2f2a3ff180bbce",
+    "preservacao-final/0004.json": "39a9df57cd66be0d2040b4b994fc408957c8b18229cd4e4bd0052f0401a6f47d",
+    "preservacao-final/0005.json": "73bb0cfe6d026833e1bd9845136d108dda6921e222c7350c7c90e25d6d7f566c",
+    "preservacao-final/0006.json": "c6ddaefeb9c2d2d99df514c811c32e2fedd40d081fc4804c2d7f327389a2f2d2",
+    "preservacao-final/0007.json": "304d1d5ddeff8923e89440dfe69efa3ac2b200258f6735a425dcbd0e42ff39c1",
+    "preservacao-final/0008.json": "feebdaaeab485ce68939e2cb6792b790511c48d73aa52fd9b5e71ebf11d6156d",
+    "preservacao-final/0009.json": "e5dec827cfd445c5c3886f5a0d21b3d7e5abb0467b8b737eb68661dbfa4af52a",
+    "preservacao-final/0010.json": "621fa17b331c523cc4a8921e1b93b987c9c02d3bb4ff19c607f23ad4650dd5ce",
+    "preservacao-final/0011.json": "29a20be217e13485fb72c0e1157b03aefa2a96aaa4841c565fcb1cc33b3c39e4",
+    "preservacao-final/0012.json": "43fe5b873c4b3e3a86e5a8900006528494c1aaf4621be20583338866d8bdaa66",
+    "preservacao-final/0013.json": "8791ab993fa592a0dfee9e4ec5de6650c675871bf0bc1ebadfb052207243c6c0",
+    "preservacao-final/0014.json": "e18a626f57a50d359ca7bbf61df8463ef23797ceb7d2b48e9f28eee560b8e4c2",
+    "preservacao-final/0015.json": "e8bc31ef39b5d2c0ce14e6edc99b9af07ee75f4d717dcd9bee70ff6cb107777f"
+  },
+  "execucao": {
+    "data_utc": "2026-10-16",
+    "ferramentas_migracao_sha": "186e84460b43fe211f39d9106965d8871c1b4622",
+    "producao_sha": "f1ff7a6785f179df78a91a619bbd60388acd4bc1",
+    "snapshot_confirmado_utc": "2026-10-16T16:56:08Z",
+    "inicio_envios_utc": "2026-10-16T16:57:14.972Z",
+    "fim_envios_utc": "2026-10-16T17:08:20.949Z",
+    "duracao_sequencia_api_s": 665.977,
+    "lotes_confirmados": 102,
+    "pedidos": 20058,
+    "manifesto_lotes_sha256": "92160cd496c506e4cd2ce9fbebbc69ba57956c288e0e876a537d792b6859736d",
+    "recibos_sha256": "301024b69d73feaf61082c5d866411770902b76d38f39ffccf33fe4395b048d6",
+    "backup_nativo": true,
+    "importacao_excel": false,
+    "construir_continuar": false,
+    "revisao_formato_final": 9,
+    "revisao_alterada": false,
+    "script_enviado": false,
+    "nome_descartavel": "TESTE DESCARTÁVEL B47 — PLANILHA v10 — SCRIPT PENDENTE — 2026-10-16"
+  },
+  "testes_complementares": {
+    "contraprovas_auditor": {
+      "ok": 9
+    },
+    "envio_revisao_integrado": {
+      "ok": 10,
+      "origem": "efd8dd8459f4aa42c85bd0ac71c01323149ceaee",
+      "merge": "3323803"
+    },
+    "snapshot_unit": {
+      "ok": 9
+    },
+    "formulas_nativas_unit": {
+      "ok": 6
+    },
+    "equivalencia_lotes_unit": {
+      "ok": 1
+    },
+    "migracao_sintetica_reexecutada": {
+      "ok": 19
+    }
+  }
+}
