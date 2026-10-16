@@ -103,8 +103,10 @@ def gerar(base,target,snapshot,plan):
         if style is not None:cell['userEnteredFormat']=format_(target['layout']['estilos'][style])
         if isinstance(value,bool):cell['dataValidation']={'condition':{'type':'BOOLEAN'},'strict':True}
         write('CONFIGURAÇÃO',coord,cell,'userEnteredValue,userEnteredFormat,note,dataValidation')
-        if coord in merged and style is not None:
-            requests.append({'repeatCell':{'range':grid('CONFIGURAÇÃO',merged[coord]),'cell':{'userEnteredFormat':format_(target['layout']['estilos'][style])},'fields':'userEnteredFormat'}})
+        # Sheets propagates the anchor's format across its merged rectangle.
+        # Repeating the same format over the rectangle adds costly native work.
+        # Native single-row and multiline controls matched all entered/effective
+        # formats with and without that duplicate repeatCell (PC validation).
     for r,height in cfg.get('linhas_alt',[]):
         if r>=733:requests.append({'updateDimensionProperties':{'range':{'sheetId':sheets['CONFIGURAÇÃO']['properties']['sheetId'],'dimension':'ROWS','startIndex':r-1,'endIndex':r},'properties':{'pixelSize':round(height*4/3)},'fields':'pixelSize'}})
     for r,rr,collapsed in cfg.get('grupos',{}).get('linhas',[]):
