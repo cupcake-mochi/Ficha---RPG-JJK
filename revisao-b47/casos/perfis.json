@@ -1,0 +1,48 @@
+{
+  "_leia": "Perfis de capacidade. 'trocas' vazio = gerador real do SHA. 'catalogos' descreve as chaves esperadas na ANALISE; quando o integrador decidir o contrato (ex.: separar custom.treino em custom.pericia/custom.oficio), copie um perfil e ajuste 'chave'/'aviso'/'campos'/'capacidade' sem mudar os testes.",
+  "base-v9": {
+    "descricao": "Estado publicado em 4187df3: formato 9, 18.948 chaves.",
+    "trocas": {},
+    "formato_minimo": 9,
+    "catalogos": {
+      "familia":   {"capacidade": 318,"campos": ["nome", "estado", "mestre_viu", "descricao"]},
+      "melhoria":  {"capacidade": 789, "campos": ["nome", "base", "familia", "peso", "exige_tr", "requisitos", "efeito", "mestre_viu"]},
+      "restricao": {"capacidade": 395, "campos": ["nome", "base", "devolucao", "frequencia", "efeito", "mestre_viu"]},
+      "treino":    {"capacidade": 131, "campos": ["tipo", "nome", "mestre_viu", "atributo", "efeito"]}
+    }
+  },
+  "simulado-alvo": {
+    "descricao": "SIMULAÇÃO: só as constantes trocadas para 10/30/30 e 20 registros curtos (10+10 sem separar tipos). Não é a implementação do integrador.",
+    "trocas": {"custom_criacao.FAMILIAS": 10, "custom_pecas.MELHORIAS": 30, "custom_pecas.RESTRICOES": 30, "custom_progressao.CURTOS": 20},
+    "formato_minimo": 10,
+    "catalogos": {
+      "familia":   {"capacidade": 10, "campos": ["nome", "estado", "mestre_viu", "descricao"]},
+      "melhoria":  {"capacidade": 30, "campos": ["nome", "base", "familia", "peso", "exige_tr", "requisitos", "efeito", "mestre_viu"]},
+      "restricao": {"capacidade": 30, "campos": ["nome", "base", "devolucao", "frequencia", "efeito", "mestre_viu"]},
+      "treino":    {"capacidade": 20, "campos": ["tipo", "nome", "mestre_viu", "atributo", "efeito"]}
+    }
+  },
+  "alvo-real-treino-unico": {
+    "descricao": "Para revisar o commit A se ele mantiver custom.treino.N com 20 registros (10 Perícia + 10 Ofício por tipo).",
+    "trocas": {},
+    "formato_minimo": 10,
+    "catalogos": {
+      "familia":   {"capacidade": 10, "campos": ["nome", "estado", "mestre_viu", "descricao"]},
+      "melhoria":  {"capacidade": 30, "campos": ["nome", "base", "familia", "peso", "exige_tr", "requisitos", "efeito", "mestre_viu"]},
+      "restricao": {"capacidade": 30, "campos": ["nome", "base", "devolucao", "frequencia", "efeito", "mestre_viu"]},
+      "treino":    {"capacidade": 20, "campos": ["tipo", "nome", "mestre_viu", "atributo", "efeito"]}
+    }
+  },
+  "alvo-real-separado": {
+    "descricao": "Para revisar o commit A se ele separar Perícias e Ofícios em chaves próprias. Ajuste os campos ao contrato publicado.",
+    "trocas": {},
+    "formato_minimo": 10,
+    "catalogos": {
+      "familia":   {"capacidade": 10, "campos": ["nome", "estado", "mestre_viu", "descricao"]},
+      "melhoria":  {"capacidade": 30, "campos": ["nome", "base", "familia", "peso", "exige_tr", "requisitos", "efeito", "mestre_viu"]},
+      "restricao": {"capacidade": 30, "campos": ["nome", "base", "devolucao", "frequencia", "efeito", "mestre_viu"]},
+      "pericia":   {"capacidade": 10, "campos": ["nome", "mestre_viu", "atributo", "efeito"]},
+      "oficio":    {"capacidade": 10, "campos": ["nome", "mestre_viu", "atributo", "efeito"]}
+    }
+  }
+}

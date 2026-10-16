@@ -1,0 +1,134 @@
+diff --git a/ficha/emitir_gs.py b/ficha/emitir_gs.py
+index 3df1319..6a5fd31 100644
+--- a/ficha/emitir_gs.py
++++ b/ficha/emitir_gs.py
+@@ -452,7 +452,7 @@ COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
+                 "CriacaoPainel.gs": "VALORES_CRIACAO_",
+                 "CriacaoAnalise.gs": "CONTRATO_CRIACAO_",
+                 "PecasPainel.gs": "VALORES_PECAS_",
+-                **{f"PecasAnalise{i}.gs":f"CONTRATO_PECAS_{i}_" for i in range(1,5)}}
++                **{f"PecasAnalise{i}.gs":f"CONTRATO_PECAS_{i}_" for i in range(1,10)}}
+ 
+ # Alturas e caixas que esticam pertencem ao mesmo painel, mas ocupam mais
+ # espaço que seus valores. O carregador recompõe a aba independentemente da
+@@ -739,6 +739,14 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
+                 extra['notas'] = [n for n in notas if nota_dentro(n)]
+                 aba['notas'] = [n for n in notas if not nota_dentro(n)]
+             complementos[arq].append(extra)
++    # Selo desta geração: o carregador recusa complementos de gerações anteriores
++    # (um PecasAnalise3.gs que ficou no projeto depois de a ANALISE encolher).
++    import hashlib
++    selo = hashlib.sha256(json.dumps([[a, [e["vals"] for e in v]] for a, v in sorted(complementos.items())],
++                                     ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16]
++    for arq, valores in complementos.items():
++        for extra in valores:
++            extra["geracao"], extra["arquivo"] = selo, arq
+     # as abas que moram em outro arquivo saem do ABAS, cada uma dizendo depois de qual ela entra
+     fora = {}
+     for arq, (var, nomes) in SEPARADAS.items():
+@@ -755,6 +763,8 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
+         fp.write("// GERADO POR ficha/emitir_gs.py — não edite este arquivo na mão.\n")
+         fp.write("// O layout e as fórmulas moram no gerador Python, que os dez\n")
+         fp.write("// validadores conferem. Aqui é só o transporte.\n\n")
++        fp.write("var GERACAO_ = " + json.dumps(selo) + ";\n")
++        fp.write("var COMPLEMENTOS_ESPERADOS_ = " + json.dumps({a: COMPLEMENTOS[a] for a in sorted(complementos)}) + ";\n\n")
+         fp.write("var ABAS = " + _sem_linha_gigante(abas) + ";\n\n")
+         fp.write("var ARTE = " + _sem_linha_gigante(arte) + ";\n\n")
+         fp.write(corpo)
+@@ -772,4 +782,9 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
+             fp.write("// Valores complementares da " + valores[0]["nome"] + ". Cole no mesmo projeto dos demais .gs.\n\n")
+             fp.write(f"var {var} = " + _sem_linha_gigante(valores) + ";\n\n")
+             fp.write(f"if (typeof juntarValores_ === 'function') juntarValores_({var});\n")
++    # Sobras da própria pasta: complementos que esta geração não produziu.
++    pasta = os.path.dirname(SAIDA)
++    for arq in COMPLEMENTOS:
++        if arq not in complementos and arq not in fora and os.path.exists(os.path.join(pasta, arq)):
++            os.remove(os.path.join(pasta, arq))
+     return SAIDA, celulas, len(arte)
+diff --git a/ficha/modelo.gs.js b/ficha/modelo.gs.js
+index 498cf3c..dd63f8c 100644
+--- a/ficha/modelo.gs.js
++++ b/ficha/modelo.gs.js
+@@ -91,6 +91,17 @@ ABAS.forEach(expandirCopias_);
+ // aplicado àquela aba, repetir a junção não exige reordenar todo o catálogo.
+ // O cache fica fora de ABAS, preservando o desenho e sua serialização.
+ var COMPLEMENTOS_FEITOS_ = new WeakMap();
++// Complementos de outra geração (arquivo antigo esquecido no projeto) não entram nas abas.
++var SOBRAS_ = [];
++function globais_() { return typeof globalThis !== 'undefined' ? globalThis : this; }
++function juntarContratosPecas_() {
++  if (typeof COMPLEMENTOS_ESPERADOS_ === 'undefined') return;
++  Object.keys(COMPLEMENTOS_ESPERADOS_).forEach(function (arq) {
++    if (!/^PecasAnalise\d+\.gs$/.test(arq)) return;
++    var v = globais_()[COMPLEMENTOS_ESPERADOS_[arq]];
++    if (v) juntarValores_(v);
++  });
++}
+ 
+ /**
+  * AS ABAS QUE MORAM EM OUTRO ARQUIVO (06/10/2026). A INVOCAÇÕES e a DADOS_INVOC não cabem neste arquivo, e vêm no
+@@ -126,10 +137,7 @@ function juntarAbas_(extras) {
+   if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(VALORES_CRIACAO_);
+   if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
+   if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
+-  if (typeof CONTRATO_PECAS_1_ !== 'undefined' && CONTRATO_PECAS_1_) juntarValores_(CONTRATO_PECAS_1_);
+-  if (typeof CONTRATO_PECAS_2_ !== 'undefined' && CONTRATO_PECAS_2_) juntarValores_(CONTRATO_PECAS_2_);
+-  if (typeof CONTRATO_PECAS_3_ !== 'undefined' && CONTRATO_PECAS_3_) juntarValores_(CONTRATO_PECAS_3_);
+-  if (typeof CONTRATO_PECAS_4_ !== 'undefined' && CONTRATO_PECAS_4_) juntarValores_(CONTRATO_PECAS_4_);
++  juntarContratosPecas_();
+ }
+ if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
+ if (typeof ABAS_DA_ANALISE !== 'undefined' && ABAS_DA_ANALISE) juntarAbas_(ABAS_DA_ANALISE);
+@@ -146,6 +154,12 @@ function juntarValores_(extras) {
+   extras.forEach(function (extra) {
+     var aba = ABAS.filter(function (s) { return s.nome === extra.nome; })[0];
+     if (!aba) return;
++    if (typeof GERACAO_ !== 'undefined' && extra.geracao !== GERACAO_) {
++      var linhas = extra.vals.map(function (v) { return v[0]; });
++      var quem = extra.arquivo || (extra.nome + ' linhas ' + Math.min.apply(null, linhas) + '–' + Math.max.apply(null, linhas));
++      if (SOBRAS_.indexOf(quem) < 0) SOBRAS_.push(quem);
++      return;
++    }
+     var feitos = COMPLEMENTOS_FEITOS_.get(aba);
+     if (feitos && feitos.has(extra)) return;
+     var presentes = {};
+@@ -183,10 +197,7 @@ if (typeof CONTRATO_PROGRESSAO_ !== 'undefined' && CONTRATO_PROGRESSAO_) juntarV
+ if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(VALORES_CRIACAO_);
+ if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
+ if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
+-if (typeof CONTRATO_PECAS_1_ !== 'undefined' && CONTRATO_PECAS_1_) juntarValores_(CONTRATO_PECAS_1_);
+-if (typeof CONTRATO_PECAS_2_ !== 'undefined' && CONTRATO_PECAS_2_) juntarValores_(CONTRATO_PECAS_2_);
+-if (typeof CONTRATO_PECAS_3_ !== 'undefined' && CONTRATO_PECAS_3_) juntarValores_(CONTRATO_PECAS_3_);
+-if (typeof CONTRATO_PECAS_4_ !== 'undefined' && CONTRATO_PECAS_4_) juntarValores_(CONTRATO_PECAS_4_);
++juntarContratosPecas_();
+ 
+ var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
+ 
+@@ -331,17 +342,17 @@ function montar_() {
+   if (typeof VALORES_PECAS_ === 'undefined' || !VALORES_PECAS_) {
+     throw new Error('Falta o PecasPainel.gs: cole todos os arquivos antes de construir.');
+   }
+-  if (typeof CONTRATO_PECAS_1_ === 'undefined' || !CONTRATO_PECAS_1_) {
+-    throw new Error('Falta o PecasAnalise1.gs: cole todos os arquivos antes de construir.');
+-  }
+-  if (typeof CONTRATO_PECAS_2_ === 'undefined' || !CONTRATO_PECAS_2_) {
+-    throw new Error('Falta o PecasAnalise2.gs: cole todos os arquivos antes de construir.');
+-  }
+-  if (typeof CONTRATO_PECAS_3_ === 'undefined' || !CONTRATO_PECAS_3_) {
+-    throw new Error('Falta o PecasAnalise3.gs: cole todos os arquivos antes de construir.');
++  Object.keys(typeof COMPLEMENTOS_ESPERADOS_ === 'undefined' ? {} : COMPLEMENTOS_ESPERADOS_).forEach(function (arq) {
++    var v = globais_()[COMPLEMENTOS_ESPERADOS_[arq]];
++    if (!v) throw new Error('Falta o ' + arq + ': cole todos os arquivos antes de construir.');
++  });
++  for (var i = 1; i < 10; i++) {
++    var nome = 'CONTRATO_PECAS_' + i + '_';
++    var esperado = Object.keys(COMPLEMENTOS_ESPERADOS_).some(function (a) { return COMPLEMENTOS_ESPERADOS_[a] === nome; });
++    if (!esperado && globais_()[nome] && SOBRAS_.indexOf('PecasAnalise' + i + '.gs') < 0) SOBRAS_.push('PecasAnalise' + i + '.gs');
+   }
+-  if (typeof CONTRATO_PECAS_4_ === 'undefined' || !CONTRATO_PECAS_4_) {
+-    throw new Error('Falta o PecasAnalise4.gs: cole todos os arquivos antes de construir.');
++  if (SOBRAS_.length) {
++    throw new Error('Apague do projeto os arquivos de geração anterior: ' + SOBRAS_.join(', ') + '. Nada foi alterado.');
+   }
+   var ss = SpreadsheetApp.getActive();
+   var feito = [], rel = relogio_();
