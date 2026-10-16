@@ -45,14 +45,18 @@ nenhum arquivo/sessão do PC anterior.
 | Notas de CONFIGURAÇÃO | 28.538 | 2.490 |
 | Grupos de expansão de texto em CONFIGURAÇÃO | 1.219 | 66 |
 | Chaves de ANALISE | 18.948 | 7.356 |
-| `.gs` / soma de bytes | 23 / 9.543.357 | 20 / 5.670.234 |
-| Maior `.gs` | 843.661 bytes | 816.318 bytes |
-| XLSX da calculadora local | 3.763.979 bytes | 1.681.232 bytes |
+| `.gs` / soma de bytes | 23 / 9.543.357 | 20 / 5.681.848 |
+| Maior `.gs` | 843.661 bytes | 816.380 bytes |
+| XLSX da calculadora local | 3.763.979 bytes | 1.681.655 bytes |
 | Geração integral local | 101,7 s | 38,1 s |
-| Carregamento em VM Node, mediana de 5 contextos novos | 9.663,7 ms | 233,1 ms |
+| Carregamento em VM Node, mediana de 5 contextos novos | 9.663,7 ms | ver medição final em VALIDACAO.json |
 | CPU do gatilho de texto em VM, mediana de 100 amostras | 4,07 ms | 0,28 ms |
 
-Depois apenas de A, a mediana de carregamento era 735,3 ms. B passou a selecionar
+Depois apenas de A, a mediana de carregamento era 735,3 ms; antes das guardas
+de geração, B media 233,1 ms. As amostras da combinação final ficam em
+VALIDACAO.json. A geração de 38,1 s foi medida antes da integração dos selos e
+da divisão das validações; essa geração posterior foi conferida, sem nova
+cronometração específica. B passou a selecionar
 a origem de cada molde antes de percorrer seus destinos e a analisar as notas
 uma vez, preservando valores, bordas, menus e exceções. Compactação Python/JS,
 idempotência e carregamento em várias ordens passaram depois da mudança.
@@ -93,6 +97,19 @@ logs volumosos, venv e snapshots sintéticos ficam na saída ignorada.
   congelados v3/v4 continuam sendo exigidos, reconhecendo somente as alterações
   exatas já aprovadas no formato 7 (nove Famílias e respiro da Definição).
 
+A revisão posterior mostrou que o `TESTE: OK` antigo do leitor verificava a
+forma do contrato, mas ignorava erros de fórmula e certos avisos custom. Isso
+limitava a declaração inicial. O leitor agora reprova qualquer erro exportado e
+qualquer aviso custom; preserva nomes textuais como `007` e `VERDADEIRO`. O
+recálculo local também qualifica IFS/SWITCH/TEXTJOIN no namespace XLSX. A execução
+final voltou a mostrar só o aviso esperado, com checagem explícita de erros.
+
+Para eliminar os 25 `#NAME?` das validações básicas 3a, o gerador divide cada
+expressão em três auxiliares ocultas, sem alterar ordem/mensagens/regras. Maior
+expressão: 5.031 caracteres (antes 11.211), colunas DADOS_CUSTOM 284 → 287. A
+migração cresce essa grade antes de escrever. Cinco verificações em Calc
+cobrem os 25 vazios, oito moldes válidos, colisão com livro e número inválido.
+
 Não foram executados a bateria integral de `rodar-tudo.sh`, os cenários mecânicos
 completos históricos de campanha/custom nem a auditoria integral de D. A
 limitação histórica de FILTER no Calc não foi convertida em teste aprovado.
@@ -129,12 +146,36 @@ retirados do projeto. Nunca importar o XLSX. Oficial, bot e acessos intactos.
 
 ## Integração e próxima ação
 
-As consultas ao remoto mostraram somente `main` e `codex/configuracao-b47`, ainda
-na base, sem commits/relatórios de `claude/b47-revisao` ou `codex/b47-infra`.
-Não houve revisão independente ou integração fictícia dessas frentes. Receber
-os SHAs, examinar diffs e guardas, integrar uma frente por vez e testar a
-combinação antes de republicar. A integração desta implementação própria fica
-registrada em [PUBLICACAO.md](PUBLICACAO.md).
+A listagem inicial de referências locais era incompleta: o clone só buscava
+`main`. A consulta completa `git ls-remote --heads origin` encontrou as frentes.
+Foram revisados e incorporados por merges separados:
+
+- infraestrutura `b8ab7b56aac71ad0c85d0a3cff0c94d026062189` (cinco commits desde a
+  base; só `infra-b47/`), com 15 testes próprios reproduzidos;
+- revisão `b50a716f08ea0aabebad431c9ef40b35e1c852ab`, publicada no ramo alternativo
+  `claude/kind-feynman-sewhec` (dois commits; só `revisao-b47/`). O ramo lógico
+  `claude/b47-revisao` ainda estava na base. Os ramos históricos de outros temas
+  não foram integrados.
+
+A1 foi resolvido com selos em abas/complementos, lista de complementos esperados,
+remoção das sobras pelo emissor e recusa de projetos mistos antes de tocar Sheets.
+A1/I1/I2 também têm validação no empacotador e `--remover` explícito: oito casos
+com snapshot remoto sintético, manifesto/HTML preservados. Cinco contraprovas de
+carregamento usam arquivos v9 antigos antes/depois dos novos, sem contaminar as
+7.356 chaves. A2/B1 foram resolvidos no leitor; B3, nas validações auxiliares.
+M2/M3/M4/M5 já estavam tratados na redução/guarda e receberam os testes externos.
+
+O perfil `b47-v10` descreve o contrato real (cinco campos por Perícia/Ofício).
+As sondas de leitor e endereços aceitam o modelo atual sem gerar outra cópia; a
+de avisos percorre as novas auxiliares. Contrato, leitor e endereços externos
+passaram no alvo real. Restam dois avisos informativos: os endereços de INDIRECT
+continuam em texto, mas derivados e dentro da faixa, e avisos históricos usam
+prefixos diferentes de ⚠, agora tratados pela chave. Não são validação nativa.
+A auditoria entregue cobria a base/simulação; o integrador testou as correções no
+alvo real. Uma nova revisão independente do último SHA continua desejável.
+
+A combinação é publicada somente após seus testes. As origens e SHAs finais
+ficam em [PUBLICACAO.md](PUBLICACAO.md). Não houve mensagens automáticas aos chats.
 
 B local tem o gargalo de recomposição reduzido. Envio oficial, persistência,
 validação e medição nativas ainda dependem das ferramentas apropriadas. Como

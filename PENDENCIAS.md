@@ -13,9 +13,11 @@ snapshot integral atual, migração nativa, construção descartável ou aprova�
 visual Google desta redução. A migração offline tem guardas e lotes reproduzíveis;
 seguir [ROTEIRO-NATIVO](capacidade-b47/ROTEIRO-NATIVO.md), com nova leitura.
 
-Revisão independente/infraestrutura externas ainda sem commits disponíveis no
-remoto ao conferir esta rodada. Integração dessas frentes fica pendente de
-SHAs e revisão real. Oficial, main, bot e acessos não foram alterados. C/D seguem
+Recebidas e integradas infra `b8ab7b5` e revisão `b50a716` no ramo alternativo
+`claude/kind-feynman-sewhec`. A listagem inicial era incompleta porque o fetch
+buscava só main. A combinação recebeu testes e correções de carregamento misto,
+remoção explícita, avisos/erros do leitor e validações 3a longas. As origens estão
+no relatório; revisão independente do SHA final ainda pode ser recebida. Oficial, main, bot e acessos não foram alterados. C/D seguem
 na fila. Este checkpoint prevalece sobre as contagens históricas abaixo.
 
 Próxima ação/modelo: **GPT-6.1 Sol, High**, para revisar as frentes e aplicar/testar

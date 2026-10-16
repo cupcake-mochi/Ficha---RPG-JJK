@@ -31,7 +31,8 @@ o gatilho antigo conservaria as geometrias e o contrato anteriores.
 6. Gerar lotes sem rede em diretório novo:
    `.venv/bin/python capacidade-b47/lotes.py --base <modelo9> --alvo <modelo10> --snapshot <snapshot.json> --saida <diretorio-novo>`.
    O snapshot deve incluir `metadata.spreadsheetId` e `metadata.sheets` com
-   `properties`, `rowGroups` e `merges` explícitos; também cobrir a cauda nativa
+   `properties`, `rowGroups` e `merges` explícitos; também ler apenas a interseção com a grade nativa existente (colunas auxiliares novas
+   são comprovadamente vazias pelos metadados) e cobrir a cauda nativa
    além da última linha do gerador. Conferir os hashes do manifesto antes de
    cada envio. Aplicar primeiro na descartável os lotes pontuais: recolocar cartões na
    geometria reduzida, fórmulas, menus, notas, alturas, grupos e tabelas ocultas;
@@ -62,3 +63,24 @@ o gatilho antigo conservaria as geometrias e o contrato anteriores.
 As provas locais de migração são sintéticas; não comprovam os passos 2–10.
 Recomendação para a aplicação: GPT-6.1 Sol, High, por envolver identidade de
 campos, preservação da revisão e conferência nativa.
+
+## Interrupção ou falha parcial
+
+Cada batchUpdate é atômico isoladamente; a sequência de lotes não é. A limpeza
+de CONFIGURAÇÃO acontece antes da restauração das entradas mapeadas. Portanto,
+qualquer falha/timeout deixa a cópia marcada como **migração parcial**, nunca
+pronta para uso. Registrar destino, manifesto/hashes, índice do último lote com
+resposta confirmada, pedidos enviados e erro sem credenciais. Em timeout, ler
+o estado atual para descobrir se o lote foi aplicado antes de repetir algo.
+
+Não pular para o próximo lote nem reaplicar cegamente os anteriores: remoção de
+linhas e grupos não é idempotente. Na descartável, recomeçar de uma nova cópia
+nativa do backup integral e gerar outro snapshot/plano/lotes. Na revisão, parar
+a edição, obter snapshot do estado parcial e verificar ausência de edições
+posteriores desconhecidas. Restaurar a região afetada a partir do backup integral
+com guarda e releitura de **todas** as entradas/notas antes de planejar outra
+tentativa; nunca sobrescrever alterações concorrentes silenciosamente. Se houver
+editação concorrente, reconciliar primeiro. A cópia parcialmente migrada não é
+evidência de migração aprovada. O manifesto registra expressamente a ausência de
+atomicidade entre lotes. Nenhuma falha parcial ocorreu nesta rodada, que não
+executou escritas nativas.

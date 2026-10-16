@@ -5,7 +5,7 @@
 var ABAS_DO_CUSTOM = [
   {
     "nome":"DADOS_CUSTOM",
-    "cols":284,
+    "cols":287,
     "rows":173,
     "larg":103,
     "padrao":["Roboto",10,"#000000"],
@@ -383,7 +383,9 @@ var ABAS_DO_CUSTOM = [
     "oculta":true,
     "paleta_fixa":true,
     "caixas":[],
-    "depois":"GLOSSÁRIO"
+    "depois":"GLOSSÁRIO",
+    "geracao":"3d988885c5fa0466",
+    "arquivo":"Custom.gs"
   }
 ];
 

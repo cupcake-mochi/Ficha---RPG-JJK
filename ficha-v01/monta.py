@@ -498,7 +498,8 @@ gs, celulas, pecas = emitir_gs.escrever(
     limpa=LAYOUT["_meta"].get("largura_limpa"),
     suplementos={"Origens.gs": [("DADOS", _FP["T"]["origem_cap"][0],
                                 _FP["T"]["origem_cap"][0] + _FP["T"]["origem_cap"][3] - 1),
-                                  ("DADOS_CUSTOM", 19, 24)],
+                                  ("DADOS_CUSTOM", 19, 24),
+                                  ("DADOS_CUSTOM", 285, indice_ficha._aba(LAYOUT,"DADOS_CUSTOM")["colunas"])],
                 "CriacaoAnalise.gs": ("ANALISE", 1, 4, _AN_FIM_ANTES_CRIACAO+1, _AN_FIM_CRIACAO),
                 **{f"PecasAnalise{i+1}.gs": ("ANALISE",1,4,first,min(first+2999,len(_AN['linhas'])+1))
                    for i,first in enumerate(range(_AN_FIM_CRIACAO+1,len(_AN['linhas'])+2,3000))},

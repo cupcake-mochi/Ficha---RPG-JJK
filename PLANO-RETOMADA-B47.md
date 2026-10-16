@@ -180,9 +180,13 @@ nenhuma escrita/migração ou montagem Google realizada. Snapshot integral atual
 validação descartável, código salvo/relido, aplicação na revisão e tempos nativos
 continuam pendentes. Os testes locais/sintéticos não substituem essas etapas.
 
-As frentes `claude/b47-revisao` e `codex/b47-infra` ainda não estavam publicadas
-no remoto ao conferir a rodada. Revisão independente e integração dessas duas
-frentes permanecem pendentes de SHAs/relatórios; não foram presumidas aprovadas.
+A listagem completa do remoto corrigiu a consulta inicial, restrita a `main`:
+infra `b8ab7b5` e revisão `b50a716` (ramo alternativo
+`claude/kind-feynman-sewhec`) foram recebidas, revisadas e integradas separadamente.
+Seus testes foram executados no alvo real; selos de geração, guardas de envio,
+leitor e validações longas foram corrigidos antes da publicação. O relatório
+registra limites e resultados. Revisão independente do último SHA permanece
+pendente; a auditoria recebida examinava a base/simulação.
 C e D não foram iniciadas. A estrutura menor já está pronta para essas etapas,
 mas a estimativa restante depende primeiro da aplicação e medida nativas de A+B.
 

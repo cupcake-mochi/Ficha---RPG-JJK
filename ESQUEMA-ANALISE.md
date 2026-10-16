@@ -237,3 +237,32 @@ bloqueiam. Fixtures antigas e snapshots sintéticos servem só aos testes locais
 Não manter as chaves retiradas como milhares de exportações vazias. Os três
 fragmentos de transporte `PecasAnalise2.gs` a `PecasAnalise4.gs` foram retirados;
 o envio ao projeto Google deve retirar esses arquivos antigos também.
+
+### Leitura e variantes históricas
+
+O leitor local rejeita valores de erro e todo `aviso.custom.*` não vazio, mesmo
+sem ⚠. Campos de nome/descrição/efeito/requisitos/texto preservam texto literal
+(`007`, `1,5`, `VERDADEIRO` não viram números ou booleanos nesses campos). Os
+selos dos arquivos Apps Script protegem a geração, sem acrescentar chaves da
+ANALISE nem alterar os 7.356 registros.
+
+A auditoria `b50a716` registrou uma colisão histórica: o rascunho
+`0fa4aad` em `codex/analise-tr-pericias-carga` chamava de formato 4 um conjunto
+de TR/perícias/carga diferente do formato 4 de campanha desta sequência. Esse
+rascunho e o bot não foram integrados/alterados. O formato 10 deriva da v9
+`4187df3` e não resolve retroativamente essa colisão; confirmar a variante do
+bot antes de publicar para jogadores. Nenhuma chave foi reciclada aqui.
+
+| Formato / origem | Conteúdo nesta sequência | Estado do consumidor bot |
+|---|---|---|
+| 1 · contrato inicial | identidade, escolhas, resultados e avisos | legado, fora da validação atual |
+| 2 · main 15e0af9 | amplia entradas de magia e entidades; 4.896 chaves | legado, fora da validação atual |
+| 3 · B47 | bônus e mudanças; 5.156 chaves | integração histórica do bot não revalidada |
+| 4 · campanha B47 | regras, XP e vida rolada; 5.274 chaves | confirmar variante consumida |
+| 4 · rascunho paralelo 0fa4aad | TR/perícias/carga; outro conteúdo | auditoria relata teste no bot; não integrado aqui |
+| 5 · B47 | 25 cartões 3a; 6.174 chaves | não revalidado nesta entrega |
+| 6 · B47 | Caminho/Trilha e treinos; 7.387 chaves | não revalidado nesta entrega |
+| 7 · B47 | autonomia e nove Famílias; 7.485 chaves | não revalidado nesta entrega |
+| 8 · B47 | Famílias custom; 9.082 chaves | não revalidado nesta entrega |
+| 9 · B47 | Melhorias/Restrições; 18.948 chaves | não revalidado nesta entrega |
+| 10 · esta entrega | capacidade compartilhada reduzida; 7.356 chaves | reconhecimento/compatibilidade pendentes antes de jogadores |

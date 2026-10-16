@@ -452,7 +452,7 @@ COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
                 "CriacaoPainel.gs": "VALORES_CRIACAO_",
                 "CriacaoAnalise.gs": "CONTRATO_CRIACAO_",
                 "PecasPainel.gs": "VALORES_PECAS_",
-                **{f"PecasAnalise{i}.gs":f"CONTRATO_PECAS_{i}_" for i in range(1,2)}}
+                **{f"PecasAnalise{i}.gs":f"CONTRATO_PECAS_{i}_" for i in range(1,10)}}
 
 # Alturas e caixas que esticam pertencem ao mesmo painel, mas ocupam mais
 # espaço que seus valores. O carregador recompõe a aba independentemente da
@@ -463,20 +463,31 @@ METADADOS_COMPLEMENTARES = {"PecasPainel.gs": {"CONFIGURAÇÃO": ("alturas", "es
 def abas_cruas(caminho=None):
     """o ABAS como está escrito no Ficha.gs e nos arquivos à parte, na ordem em que o script o junta"""
     caminho = caminho or SAIDA
-    abas = json.loads(re.search(r"var ABAS = ([\s\S]*?);\n\nvar ARTE = ", open(caminho, encoding="utf-8").read()).group(1))
+    fonte = open(caminho, encoding="utf-8").read()
+    abas = json.loads(re.search(r"var ABAS = ([\s\S]*?);\n\nvar ARTE = ", fonte).group(1))
+    selo = re.search(r'^var GERACAO_ = "([0-9a-f]+)";', fonte, re.M)
+    expected = re.search(r'^var COMPLEMENTOS_ESPERADOS_ = (\{.*\});$', fonte, re.M)
+    esperados = json.loads(expected[1]) if expected else None
     for arq, (var, _) in SEPARADAS.items():
         p = os.path.join(os.path.dirname(caminho), arq)
         if not os.path.exists(p):
             continue
         for e in json.loads(re.search(r"var %s = ([\s\S]*?);\n\nif \(typeof juntarAbas_" % var, open(p, encoding="utf-8").read()).group(1)):
             i = next((k for k, a in enumerate(abas) if a["nome"] == e.get("depois")), len(abas) - 1)
+            if selo and e.get('geracao') != selo[1]:
+                raise ValueError('Aba de geração divergente: '+arq)
             abas.insert(i + 1, e)
     for arq, var in COMPLEMENTOS.items():
         p = os.path.join(os.path.dirname(caminho), arq)
         if not os.path.exists(p):
+            if esperados and arq in esperados:raise ValueError('Complemento ausente: '+arq)
             continue
+        if esperados is not None and arq not in esperados:
+            raise ValueError('Complemento de geração anterior: '+arq)
         for extra in json.loads(re.search(r"var %s = ([\s\S]*?);\n\nif \(typeof juntarValores_" % var,
                                           open(p, encoding="utf-8").read()).group(1)):
+            if selo and extra.get('geracao') != selo[1]:
+                raise ValueError('Complemento de geração divergente: '+arq)
             aba = next(a for a in abas if a["nome"] == extra["nome"])
             aba["vals"].extend(extra["vals"])
             aba["vals"].sort(key=lambda v: (v[0], v[1]))
@@ -739,6 +750,12 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
                 extra['notas'] = [n for n in notas if nota_dentro(n)]
                 aba['notas'] = [n for n in notas if not nota_dentro(n)]
             complementos[arq].append(extra)
+    import hashlib
+    selo = hashlib.sha256(json.dumps({'abas': abas, 'complementos': complementos, 'arte': arte},
+                                     ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16]
+    for arq, valores in complementos.items():
+        for extra in valores:
+            extra['geracao'], extra['arquivo'] = selo, arq
     # as abas que moram em outro arquivo saem do ABAS, cada uma dizendo depois de qual ela entra
     fora = {}
     for arq, (var, nomes) in SEPARADAS.items():
@@ -747,6 +764,8 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
             antes = [b["nome"] for b in abas[:abas.index(a)] if b["nome"] not in nomes]
             a["depois"] = antes[-1] if antes else None
         if saem:
+            for a in saem:
+                a['geracao'], a['arquivo'] = selo, arq
             fora[arq] = (var, saem)
             abas = [a for a in abas if a["nome"] not in nomes]
     os.makedirs(os.path.dirname(SAIDA), exist_ok=True)
@@ -755,6 +774,8 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
         fp.write("// GERADO POR ficha/emitir_gs.py — não edite este arquivo na mão.\n")
         fp.write("// O layout e as fórmulas moram no gerador Python, que os dez\n")
         fp.write("// validadores conferem. Aqui é só o transporte.\n\n")
+        fp.write('var GERACAO_ = ' + json.dumps(selo) + ';\n')
+        fp.write('var COMPLEMENTOS_ESPERADOS_ = ' + json.dumps({a: COMPLEMENTOS[a] for a in sorted(complementos)}) + ';\n\n')
         fp.write("var ABAS = " + _sem_linha_gigante(abas) + ";\n\n")
         fp.write("var ARTE = " + _sem_linha_gigante(arte) + ";\n\n")
         fp.write(corpo)
@@ -772,4 +793,9 @@ def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extra
             fp.write("// Valores complementares da " + valores[0]["nome"] + ". Cole no mesmo projeto dos demais .gs.\n\n")
             fp.write(f"var {var} = " + _sem_linha_gigante(valores) + ";\n\n")
             fp.write(f"if (typeof juntarValores_ === 'function') juntarValores_({var});\n")
+    # Only known generated supplements can be retired; never delete user files.
+    for arq in COMPLEMENTOS:
+        path = os.path.join(os.path.dirname(SAIDA), arq)
+        if arq not in complementos and arq not in fora and os.path.exists(path):
+            os.remove(path)
     return SAIDA, celulas, len(arte)

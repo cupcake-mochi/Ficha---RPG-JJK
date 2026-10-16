@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sys
 
 ROOT = Path(__file__).resolve().parent.parent
 LIMITE = 900_000
@@ -64,13 +65,45 @@ def remoto(path, script_id):
     return content['files']
 
 
-def preparar(directory, snapshot, script_id):
+def esperados(directory):
+    """Complementos que a geração atual declarou no Ficha.gs (selo de geração), se houver."""
+    ficha = directory/'Ficha.gs'
+    if not ficha.is_file():
+        return None
+    m = re.search(r'^var COMPLEMENTOS_ESPERADOS_ = (\{.*\});$', ficha.read_text(encoding='utf-8'), re.M)
+    return {k[:-3] for k in json.loads(m.group(1))} if m else None
+
+
+def preparar(directory, snapshot, script_id, remover=()):
     local = locais(directory)
     old = remoto(snapshot, script_id)
     names = {f['name'] for f in local}
+    declarados = esperados(directory)
+    if declarados is not None:
+        faltam=sorted(declarados-names)
+        if faltam:raise ValueError('Complementos declarados ausentes localmente: '+', '.join(faltam))
+        ficha=(directory/'Ficha.gs').read_text(encoding='utf-8')
+        selo=re.search(r'^var GERACAO_ = "([0-9a-f]{16})";',ficha,re.M)
+        if not selo:raise ValueError('Ficha.gs declara complementos sem selo de geração')
+        for file in local:
+            if file['name'] in ('Codigo','Habilidades','Ficha') or not file['source'].startswith('// GERADO POR'):continue
+            stamps=re.findall(r'"geracao"\s*:\s*"([0-9a-f]{16})"',file['source'])
+            if not stamps or any(stamp!=selo[1] for stamp in stamps):
+                raise ValueError('Arquivo local de geração divergente: '+file['name'])
+        # Complemento particionado que a geração atual não produziu é sobra da pasta.
+        sobras = sorted(n for n in names if re.fullmatch(r'PecasAnalise\d+', n) and n not in declarados)
+        if sobras:
+            raise ValueError('Sobras locais de geração anterior: ' + ', '.join(sobras))
     extras = [f['name'] for f in old if f['type'] == 'SERVER_JS' and f['name'] not in names]
-    if extras:
-        raise ValueError('Revisar .gs remotos ausentes localmente antes de substituir: ' + ', '.join(extras))
+    pedidos = set(remover)
+    if pedidos - set(extras):
+        raise ValueError('--remover só aceita .gs remotos ausentes localmente: ' + ', '.join(sorted(pedidos - set(extras))))
+    restantes = [n for n in extras if n not in pedidos]
+    if restantes:
+        raise ValueError('Revisar .gs remotos ausentes localmente antes de substituir: ' + ', '.join(restantes))
+    if pedidos:
+        # updateContent substitui o conjunto: omitir aqui é apagar no projeto. Fica registrado na saída.
+        sys.stderr.write('Removidos do projeto por pedido explícito: ' + ', '.join(sorted(pedidos)) + '\n')
     # updateContent substitui o conjunto inteiro: preservar HTML e manifesto atual.
     files = local + [f for f in old if f['type'] != 'SERVER_JS']
     indice(files)
@@ -97,6 +130,9 @@ def main():
         p.add_argument('--saida', type=Path, required=True)
         if action != 'conferir':
             p.add_argument('--fontes', type=Path, default=ROOT/'apps-script')
+        if action == 'preparar':
+            p.add_argument('--remover', action='append', default=[], metavar='NOME',
+                           help='.gs remoto ausente localmente a apagar no envio (repetir por arquivo)')
         if action != 'manifesto':
             p.add_argument('--snapshot', type=Path, required=True)
             p.add_argument('--script-id', required=True)
@@ -113,7 +149,7 @@ def main():
             value = {'limite_exclusivo_bytes': LIMITE, 'total_bytes': sum(r['bytes'] for r in rows),
                      'arquivos': [dict(r, arquivo=r['nome']+'.gs') for r in rows]}
         elif a.acao == 'preparar':
-            value = preparar(a.fontes, a.snapshot, a.script_id)
+            value = preparar(a.fontes, a.snapshot, a.script_id, a.remover)
         else:
             value = conferir(a.pacote, a.snapshot, a.script_id)
         gravar(a.saida, value)

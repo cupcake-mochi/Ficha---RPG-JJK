@@ -32,7 +32,9 @@ var ABAS_DAS_RESTRICOES = [
     "abaixo":[[2,4,31,11],[25,13,54,17]],
     "paleta_fixa":true,
     "caixas":[],
-    "depois":"GLOSSÁRIO"
+    "depois":"GLOSSÁRIO",
+    "geracao":"3d988885c5fa0466",
+    "arquivo":"Restricoes.gs"
   }
 ];
 

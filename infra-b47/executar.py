@@ -28,17 +28,17 @@ def inventario():
     return {
         'smoke': task([p, 'nuvem-b47/conferir.py', '--smoke'], 'Sintaxe, referências, catálogo/progressão/Kaori', deps=('node',)),
         'baseline': task([p, 'nuvem-b47/exportar-baseline.py', '--destino', str(OUT/'baseline')], 'Exportação única do modelo; não gera .gs', heavy=True),
-        'pecas-estrutura': task([p, 'regressao-pecas.py', '--modelo', model, '--anterior', old, '--estrutura'], 'Estrutura e contrato de peças', baseline=True, note='Expectativas 789/395: integrador revisa após A.'),
+        'pecas-estrutura': task([p, 'regressao-pecas.py', '--modelo', model, '--anterior', old, '--estrutura'], 'Estrutura e contrato de peças', baseline=True, note='Contrato 10, catálogos 30/30; modelo precisa ser atual.'),
         'pecas-calculo': task([p, 'regressao-pecas.py', '--modelo', model, '--anterior', old], 'Cálculo local das peças', deps=('calc',), heavy=True, baseline=True),
         'textos': task(['node', 'regressao-textos-custom.js', model], 'Sete cenários em VM', deps=('node',), baseline=True),
         'copias': task([p, 'conferir-copias.py'], 'Compactação/reexpansão dos .gs versionados', deps=('node',), heavy=True),
         'construcao': task(['node', '--max-old-space-size=1500', 'regressao-construir.js'], 'Construção simulada, não nativa', deps=('node',), heavy=True),
         'familias': task([p, 'regressao-familias-invocacao.py'], 'Nove posições, autonomia e orçamento local', deps=('calc',), heavy=True),
         'configuracao': task([p, 'regressao-configuracao.py'], 'Bônus, trocas e conflitos no workbook local', deps=('libreoffice',), heavy=True, files=('ficha-v01/ficha-projeto-m-0.1.xlsx',)),
-        'campanha': task([p, 'regressao-campanha.py'], 'Regressão histórica de campanha', deps=('libreoffice',), heavy=True, files=('nuvem-b47/fixtures/base-parte1.xlsx',), note='Expectativa histórica de formato 5; não ajustar só para verde.'),
-        'custom': task([p, 'regressao-custom.py'], 'Regressão histórica 3a', deps=('libreoffice',), heavy=True, files=('nuvem-b47/fixtures/base-parte2-local.xlsx',), note='Expectativa histórica de formato 6 e limitação FILTER.'),
-        'progressao': task([p, 'regressao-progressao.py'], 'Regressão histórica 3b', deps=('libreoffice',), heavy=True, note='Expectativa histórica de formato 7.'),
-        'leitor': task([p, 'ler-analise.py', '--teste'], 'Leitor do workbook local', deps=('libreoffice',), heavy=True, files=('ficha-v01/ficha-projeto-m-0.1.xlsx',), note='Exige workbook recém-gerado pelo integrador; não prova migração.'),
+        'campanha': task([p, 'regressao-campanha.py'], 'Regressão histórica de campanha', deps=('calc',), heavy=True, files=('nuvem-b47/fixtures/base-parte1.xlsx',), note='Expectativa histórica de formato 5; não ajustar só para verde.'),
+        'custom': task([p, 'regressao-custom.py'], 'Regressão histórica 3a', deps=('calc',), heavy=True, files=('nuvem-b47/fixtures/base-parte2-local.xlsx',), note='Expectativa histórica de formato 6 e limitação FILTER.'),
+        'progressao': task([p, 'regressao-progressao.py'], 'Regressão histórica 3b', deps=('calc',), heavy=True, note='Contrato 10; níveis do livro preservados.'),
+        'leitor': task([p, 'ler-analise.py', '--teste'], 'Leitor do workbook local', deps=('calc',), heavy=True, files=('ficha-v01/ficha-projeto-m-0.1.xlsx',), note='Exige workbook recém-gerado pelo integrador; não prova migração.'),
         'comparador': task([p, 'comparar-ficha-01.py'], 'Comparação histórica com original.xlsx', heavy=True, files=('nuvem-b47/fixtures/original.xlsx', 'ficha-v01/ficha-projeto-m-0.1.xlsx'), note='Original histórico disponível no Git; workbook atual não é gerado por este executor.'),
     }
 

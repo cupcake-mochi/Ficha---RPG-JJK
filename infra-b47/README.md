@@ -200,3 +200,18 @@ ordem inversa; nenhuma alteração Google é revertida por Git. Não houve merge
 ramo compartilhado. Recomenda-se GPT-6.1 Sol, Medium para revisar e integrar esta
 infraestrutura; subir para High apenas diante de conflito concreto de contrato
 ou migração.
+
+## Integração com a capacidade 10
+
+O integrador incorporou a frente até `b8ab7b5` e o patch de remoção explícita
+proposto na revisão `b50a716`. O pacote atual confere os complementos declarados
+e seus selos: recusa ausência, sobra local e arquivos gerados de outra geração.
+Para uma leitura remota v9, depois de conferir o destino, a preparação offline
+exige `--remover PecasAnalise2 --remover PecasAnalise3 --remover PecasAnalise4`.
+Não autoriza apagar helpers desconhecidos. Nenhum envio foi feito nesta sessão.
+
+O inventário aceita `soffice` nos quatro testes cujo código foi adaptado para
+essa calculadora e descreve contrato 10. O histórico de validação desta frente
+permanece no relatório original; a combinação é registrada pelo integrador em
+`capacidade-b47/RELATORIO.md`. O roteiro central oferece
+`bash rodar-tudo.sh --b47-infra <seleções>`.

@@ -41,7 +41,6 @@ check('rotas próprias incluem Marcial com e sem energia',len(custom.ROTAS)==4 a
 idx={w['DADOS'].cell(r,53).value:ix.endereco(w['DADOS'].cell(r,54).value) for r in range(5,w['DADOS'].max_row+1) if w['DADOS'].cell(r,53).value}
 w.close()
 if '--estrutura' in sys.argv:sys.exit(bool(falhas))
-if '--estrutura' in sys.argv:sys.exit(bool(falhas))
 if not (shutil.which('libreoffice') or shutil.which('soffice')):sys.exit('LibreOffice indisponível: cálculo não executado')
 with tempfile.TemporaryDirectory(prefix='b47-custom-') as tmp:
  tmp=Path(tmp);inp=tmp/'in';out=tmp/'out';inp.mkdir();out.mkdir()

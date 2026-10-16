@@ -72,6 +72,10 @@ Antes de migrar: leitura atual da cópia, snapshot integral, guardas e teste em 
 
 Os helpers antigos `medidas/preparar-*-nativa.*`, `preparar-familias7.py`, `preparar-autonomia9.py`, `conferir-pecas-revisao.py` e `preparar-revisao-grupo7.js` conservam caminhos para snapshots e IDs da sessão passada. São receitas históricas, não comandos de retomada. Não executá-los contra o Google nem copiar seus lotes sem adaptar à leitura atual. Relatórios/snapshots da sessão antiga não precisam ser incluídos para continuar; novos snapshots devem ser obtidos da planilha atual.
 
+`migracao-criacao.py` (raiz) também é receita histórica: mantém ID da revisão e
+linhas antigas fixas. Não usar para a redução; o fluxo atual está em
+`capacidade-b47/ROTEIRO-NATIVO.md`.
+
 `medidas/daltonismo.py` é uma ferramenta opcional de análise de cores e requer NumPy, fora do conjunto necessário à geração/regressões da ficha. Não é parte do smoke.
 
 `repo-conserto/` e `medidas/arnes-regua-da-morte.py` são ferramentas históricas de outro repositório do sistema; não integram o fluxo de geração/teste da ficha. Não é necessário clonar outro projeto para trabalhar na B47 com as referências fornecidas.

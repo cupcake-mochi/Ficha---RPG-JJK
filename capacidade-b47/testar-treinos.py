@@ -14,7 +14,7 @@ checks=[]
 def check(name,ok):checks.append(bool(ok));print(('OK ' if ok else 'FALHA ')+name,flush=True)
 with tempfile.TemporaryDirectory(prefix='b47-treinos-') as temp:
     temp=Path(temp);out=temp/'out';out.mkdir();results={}
-    for case in ('validos','tipo_incorreto','duplicado'):
+    for case in ('validos','tipo_incorreto','duplicado','tipo_apagado_vazio'):
         wb=Workbook();cfg=wb.active;cfg.title='CONFIGURAÇÃO';d=wb.create_sheet(p.NOME)
         for c,v in raw['CONFIGURAÇÃO'].items():
             if v is not None and not(isinstance(v,str) and v.startswith('=')):cfg[c]=v
@@ -27,16 +27,19 @@ with tempfile.TemporaryDirectory(prefix='b47-treinos-') as temp:
             for k,v in [('tipo',typ),('nome',name),('atributo',attr)]:cfg[g[k]]=v
         if case=='tipo_incorreto':cfg[p.curto(10)['tipo']]='Ofício'
         if case=='duplicado':cfg[p.curto(2)['nome']]='Rito*'
+        if case=='tipo_apagado_vazio':
+            cfg[p.curto(3)['tipo']]=None;cfg[p.curto(12)['tipo']]=None
         file=temp/(case+'.xlsx');wb.save(file);wb.close()
         run=subprocess.run([calc,'-env:UserInstallation='+(temp/'perfil').as_uri(),'--headless','--convert-to','xlsx','--outdir',str(out),str(file)],capture_output=True,text=True,timeout=120)
         if run.returncode or not(out/file.name).exists():raise RuntimeError('Calc não converteu '+case+' '+run.stderr)
         wb=load_workbook(out/file.name,data_only=True);d=wb[p.NOME]
-        results[case]={c:d[c].value for c in ['G2','G3','G11','G12','G21','AG25','AG34','AH34','AJ13','AJ22','AK22','AV11','AW11']};wb.close()
+        results[case]={c:d[c].value for c in ['G4','G13','G2','G3','G11','G12','G21','AG25','AG34','AH34','AJ13','AJ22','AK22','AV11','AW11']};wb.close()
     r=results['validos'];check('curinga em nome é literal; Ritox não duplica Rito*',not r['G2'] and not r['G3'])
     check('primeira Perícia/Ofício entram depois do livro',r['AG25']=='Rito*' and r['AJ13']=='Primeiro ofício')
     check('última Perícia/Ofício entram com atributos corretos',r['AG34']=='Última perícia ? ~' and r['AH34']=='Destreza' and r['AJ22']=='Último ofício *' and r['AK22']=='Constituição')
     check('pools dos consumidores alcançam a décima vaga',r['AV11']=='Última perícia ? ~' and r['AW11']=='Último ofício *')
     r=results['tipo_incorreto'];check('colar Ofício em Perícia invalida somente esse cadastro',bool(r['G11']) and not r['AG34'] and r['AJ22']=='Último ofício *')
+    check('apagar TIPO num cartão vazio não cria avisos',not results['tipo_apagado_vazio']['G4'] and not results['tipo_apagado_vazio']['G13'])
     r=results['duplicado'];check('duplicata literal exata invalida ambos os registros',bool(r['G2']) and bool(r['G3']) and not r['AG25'])
 print(json.dumps({'resultado':'OK' if all(checks) else 'FALHA','cenarios':results},ensure_ascii=False))
 raise SystemExit(not all(checks))

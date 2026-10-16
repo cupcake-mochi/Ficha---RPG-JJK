@@ -6,6 +6,10 @@ if [ "${1:-}" = "--b47-focal" ]; then
   shift
   exec .venv/bin/python capacidade-b47/validar.py "$@"
 fi
+if [ "${1:-}" = "--b47-infra" ]; then
+  shift
+  exec .venv/bin/python infra-b47/executar.py "$@"
+fi
 FALHOU=0
 for v in conferir-catalogo.py conferir-kaori.py conferir-progressao.py \
          regressao-exemplos.py arnes.py revisao-cetica.py conferir-decisoes.py arnes-decisoes.py conferir-ficha-xlsx.py regressao-kaori-na-ficha.py \

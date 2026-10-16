@@ -107,6 +107,21 @@ ABAS.forEach(expandirCopias_);
 // aplicado àquela aba, repetir a junção não exige reordenar todo o catálogo.
 // O cache fica fora de ABAS, preservando o desenho e sua serialização.
 var COMPLEMENTOS_FEITOS_ = new WeakMap();
+var SOBRAS_ = [];
+function globais_() { return typeof globalThis !== 'undefined' ? globalThis : this; }
+function registrarSobra_(extra) {
+  var quem = extra.arquivo || (extra.nome + ' sem selo da geração atual');
+  if (SOBRAS_.indexOf(quem) < 0) SOBRAS_.push(quem);
+}
+function juntarContratosPecas_() {
+  if (typeof COMPLEMENTOS_ESPERADOS_ === 'undefined') return;
+  Object.keys(COMPLEMENTOS_ESPERADOS_).forEach(function (arq) {
+    if (/^PecasAnalise\d+\.gs$/.test(arq)) {
+      var valor = globais_()[COMPLEMENTOS_ESPERADOS_[arq]];
+      if (valor) juntarValores_(valor);
+    }
+  });
+}
 
 /**
  * AS ABAS QUE MORAM EM OUTRO ARQUIVO (06/10/2026). A INVOCAÇÕES e a DADOS_INVOC não cabem neste arquivo, e vêm no
@@ -118,6 +133,7 @@ var COMPLEMENTOS_FEITOS_ = new WeakMap();
 function juntarAbas_(extras) {
   if (typeof ABAS === 'undefined' || !ABAS || !extras) return;
   extras.forEach(function (spec) {
+    if (typeof GERACAO_ !== 'undefined' && spec.geracao !== GERACAO_) { registrarSobra_(spec); return; }
     if (ABAS.some(function (s) { return s.nome === spec.nome; })) return;
     expandirCopias_(spec);
     var i = -1;
@@ -142,7 +158,7 @@ function juntarAbas_(extras) {
   if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(VALORES_CRIACAO_);
   if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
   if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
-  if (typeof CONTRATO_PECAS_1_ !== 'undefined' && CONTRATO_PECAS_1_) juntarValores_(CONTRATO_PECAS_1_);
+  juntarContratosPecas_();
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
 if (typeof ABAS_DA_ANALISE !== 'undefined' && ABAS_DA_ANALISE) juntarAbas_(ABAS_DA_ANALISE);
@@ -159,6 +175,7 @@ function juntarValores_(extras) {
   extras.forEach(function (extra) {
     var aba = ABAS.filter(function (s) { return s.nome === extra.nome; })[0];
     if (!aba) return;
+    if (typeof GERACAO_ !== 'undefined' && extra.geracao !== GERACAO_) { registrarSobra_(extra); return; }
     var feitos = COMPLEMENTOS_FEITOS_.get(aba);
     if (feitos && feitos.has(extra)) return;
     var presentes = {};
@@ -196,7 +213,7 @@ if (typeof CONTRATO_PROGRESSAO_ !== 'undefined' && CONTRATO_PROGRESSAO_) juntarV
 if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(VALORES_CRIACAO_);
 if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
 if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
-if (typeof CONTRATO_PECAS_1_ !== 'undefined' && CONTRATO_PECAS_1_) juntarValores_(CONTRATO_PECAS_1_);
+juntarContratosPecas_();
 
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
 
@@ -341,9 +358,15 @@ function montar_() {
   if (typeof VALORES_PECAS_ === 'undefined' || !VALORES_PECAS_) {
     throw new Error('Falta o PecasPainel.gs: cole todos os arquivos antes de construir.');
   }
-  if (typeof CONTRATO_PECAS_1_ === 'undefined' || !CONTRATO_PECAS_1_) {
-    throw new Error('Falta o PecasAnalise1.gs: cole todos os arquivos antes de construir.');
-  }
+  Object.keys(COMPLEMENTOS_ESPERADOS_).forEach(function (arq) {
+    if (!globais_()[COMPLEMENTOS_ESPERADOS_[arq]]) throw new Error('Falta o ' + arq + ': cole todos os arquivos antes de construir.');
+  });
+  Object.keys(globais_()).forEach(function (nome) {
+    if (!/^CONTRATO_PECAS_\d+_$/.test(nome)) return;
+    var esperado = Object.keys(COMPLEMENTOS_ESPERADOS_).some(function (arq) { return COMPLEMENTOS_ESPERADOS_[arq] === nome; });
+    if (!esperado && globais_()[nome]) registrarSobra_({arquivo:'PecasAnalise' + nome.match(/\d+/)[0] + '.gs'});
+  });
+  if (SOBRAS_.length) throw new Error('Apague do projeto os arquivos de geração anterior: ' + SOBRAS_.join(', ') + '. Nada foi alterado.');
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();
   var props = PropertiesService.getDocumentProperties();

@@ -258,8 +258,21 @@ def valida(tr, fp):
    base=o['menu'];routes=ROTAS[:2] if base in [x['menu'] for x in O[:5]] else [ROTAS[3] if 'Sem Energia' in base else ROTAS[2] if base=='Corpo Amaldiçoado' else ROTAS[0]]
    good='OR('+','.join(f'I{row}={texto(r)}' for r in routes)+')'
    checks.append(f'IF(AND({t}="Origem",J{row}={texto(base)},NOT({good})),"ROTA não combina com BASE DO LIVRO","")')
-  expr='TEXTJOIN(" · ",TRUE,'+','.join(checks)+')'
-  put(f'U{row}',f'=IF(AND({t}="",{name}="",LEN(TEXTJOIN("",TRUE,E{row}:R{row}))=0),"",{expr})')
+  # Keep each expression below the XLSX limit without changing diagnostics,
+  # their order, or the published U/S sources. These columns are internal only.
+  chunks=[];chunk=[];size=0
+  for check in checks:
+   if chunk and size+len(check)>5000:chunks.append(chunk);chunk=[];size=0
+   if len(check)>8000:raise ValueError('Validação básica excede limite por expressão')
+   chunk.append(check);size+=len(check)
+  if chunk:chunks.append(chunk)
+  guard=f'AND({t}="",{name}="",LEN(TEXTJOIN("",TRUE,E{row}:R{row}))=0)'
+  for i,part in enumerate(chunks):
+   col=285+i;expr='TEXTJOIN(" · ",TRUE,'+','.join(part)+')'
+   put(f'{ix._letras(col)}{row}',f'=IF({guard},"",{expr})')
+   if n==1:put(f'{ix._letras(col)}1','erro básico · parte '+str(i+1))
+  h['colunas']=max(h['colunas'],284+len(chunks))
+  put(f'U{row}',f'=TEXTJOIN(" · ",TRUE,{ix._letras(285)}{row}:{ix._letras(284+len(chunks))}{row})')
   # Capacidade aponta para Origem existente e válida; não consulta a validação dos filhos.
   parent=f'E{row}'
   good_parent=f'OR(COUNTIF({pools["bases"]},{parent})>0,COUNTIFS({nomes_custom},{parent},{tipos},"Origem",{basicos},"")=1)'

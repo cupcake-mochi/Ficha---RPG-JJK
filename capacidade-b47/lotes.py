@@ -58,6 +58,13 @@ def gerar(base,target,snapshot,plan):
         return {'sheetId':sheets[sheet]['properties']['sheetId'],'startRowIndex':r-1,'endRowIndex':rr,'startColumnIndex':c-1,'endColumnIndex':cc}
     def write(sheet,coord,cell,fields):
         requests.append({'updateCells':{'start':{'sheetId':sheets[sheet]['properties']['sheetId'],'rowIndex':range_boundaries(coord)[1]-1,'columnIndex':range_boundaries(coord)[0]-1},'rows':[{'values':[cell]}],'fields':fields}})
+    # Grow technical grids before writing new validation helper columns.
+    for name in plan['valores_alterados']:
+        if name not in sheets or name not in tabs:continue
+        current=sheets[name]['properties']['gridProperties'];tab=tabs[name];grow={}
+        if tab['colunas']>current['columnCount']:grow['columnCount']=tab['colunas']
+        if tab['linhas']>current['rowCount']:grow['rowCount']=tab['linhas']
+        if grow:requests.append({'updateSheetProperties':{'properties':{'sheetId':sheets[name]['properties']['sheetId'],'gridProperties':grow},'fields':','.join('gridProperties.'+k for k in grow)}})
     cfg=tabs['CONFIGURAÇÃO'];end=cfg['linhas'];oldend=sheets['CONFIGURAÇÃO']['properties']['gridProperties']['rowCount']
     # Metadata must explicitly include these arrays, even when empty. A tool
     # which omits them has not provided enough evidence for this edit pass.
@@ -142,7 +149,7 @@ def main():
         if batch and size+n>100000:save();batch=[];size=0
         batch.append(request);size+=n
     if batch:save()
-    (a.saida/'manifesto.json').write_text(json.dumps({**{k:v for k,v in plan.items() if k not in ('entradas','valores_alterados')},'lotes':parts,'pedidos':len(requests)},ensure_ascii=False,indent=2))
+    (a.saida/'manifesto.json').write_text(json.dumps({**{k:v for k,v in plan.items() if k not in ('entradas','valores_alterados')},'lotes':parts,'pedidos':len(requests),'atomico_entre_lotes':False,'falha_parcial':'Interromper; registrar último lote confirmado e estado. Não repetir cegamente; restaurar backup com guarda ou recomeçar em nova descartável, com snapshot renovado.'},ensure_ascii=False,indent=2))
     print(json.dumps({'destino':plan['destino'],'lotes':len(parts),'pedidos':len(requests)}))
 
 if __name__=='__main__':main()

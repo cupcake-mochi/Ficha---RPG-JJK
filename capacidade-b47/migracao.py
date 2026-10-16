@@ -79,6 +79,11 @@ def equivalent(a,b):
 
 def covered(snapshot,sheet,coord):
     c,r,_,_=range_boundaries(coord)
+    for sheet_meta in snapshot.get('metadata',{}).get('sheets',[]):
+        props=sheet_meta['properties']
+        if props['title']==sheet:
+            grid=props['gridProperties']
+            if r>grid['rowCount'] or c>grid['columnCount']:return True  # provably outside native grid
     return any(c1<=c<=c2 and r1<=r<=r2 for c1,r1,c2,r2 in
                (range_boundaries(x) for x in snapshot.get('ranges',{}).get(sheet,[])))
 

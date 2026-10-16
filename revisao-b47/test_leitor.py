@@ -8,9 +8,11 @@ um cadastro com problema; o leitor tem de reprovar a ficha.
     python revisao-b47/test_leitor.py [--perfil base-v9]
 """
 import json
+from pathlib import Path
 import re
 
 from openpyxl.formula import Tokenizer
+from openpyxl.utils.cell import range_boundaries,get_column_letter
 
 import comum
 
@@ -18,7 +20,7 @@ ap = comum.argumentos(__doc__)
 ap.add_argument('--com-patch', action='store_true', help='testa cópia temporária com patches/ler-analise-avisos-custom.diff')
 args = ap.parse_args()
 p = comum.perfil(args.perfil)
-modelo = json.loads(comum.exportar(args.perfil, 'pecas').read_text(encoding='utf-8'))
+modelo = json.loads((Path(args.analise) if args.analise else comum.exportar(args.perfil, 'pecas')).read_text(encoding='utf-8'))
 cel = {a['nome']: {v[0]: v[1] for v in a['celulas']} for a in modelo['layout']['abas']}
 an = next(a for a in modelo['layout']['abas'] if a['nome'] == 'ANALISE')
 L = comum._linhas_da_aba(an)
@@ -62,6 +64,25 @@ def mensagens(formula):
     return sorted(out)
 
 
+def mensagens_cadeia(aba, formula, vistos=None):
+    """Follow short same-row diagnostic helper ranges, not catalog lookups."""
+    vistos=set() if vistos is None else vistos
+    out=set(mensagens(formula))
+    for token in Tokenizer(formula).items:
+        if token.type!='OPERAND' or token.subtype!='RANGE' or '!' in token.value:continue
+        address=token.value.replace('$','')
+        if not re.fullmatch(r'[A-Z]+\d+(?::[A-Z]+\d+)?',address):continue
+        c,r,cc,rr=range_boundaries(address)
+        if r!=rr or cc-c>32:continue
+        for col in range(c,cc+1):
+            coord=get_column_letter(col)+str(r);key=(aba,coord)
+            if key in vistos:continue
+            vistos.add(key);value=cel.get(aba,{}).get(coord)
+            if isinstance(value,str) and value.startswith('='):
+                out |= mensagens_cadeia(aba,value,vistos)
+    return out
+
+
 def avalia(chave, valor):
     ficha = {'formato.versao': {'valor': fmt, 'celula': '', 'parte': 'cabeçalho'},
              chave: {'valor': leitor.normaliza(valor), 'celula': A[chave][2], 'parte': A[chave][3]}}
@@ -94,15 +115,11 @@ for chave in ['aviso.custom.1', 'aviso.custom.caminho', 'aviso.custom.trilha']:
         continue
     origem = fonte(A[chave][1])
     formula = cel.get(origem[0], {}).get(origem[1], '') if origem else ''
-    msgs = set(mensagens(formula))
-    linha = re.sub(r'\D', '', origem[1]) if origem else ''
-    for t in Tokenizer(formula).items:   # um nível: TEXTJOIN(U2,V2,...) na mesma linha
-        if t.type == 'OPERAND' and t.subtype == 'RANGE' and '!' not in t.value and re.sub(r'\D', '', t.value) == linha:
-            msgs |= set(mensagens(cel[origem[0]].get(t.value.replace('$', ''), '') or ''))
+    msgs = mensagens_cadeia(origem[0],formula) if origem else set()
     prefixo = '⚠ ' if '"⚠ "&' in A[chave][1] else ''
     soltas = sorted(m for m in msgs if avalia(chave, prefixo + m) != 'reprovada')
     resumo[chave] = dict(origem=origem, prefixo=bool(prefixo), mensagens=sorted(msgs), aceitas=soltas)
-    P.check(f'{chave} (fora da redução): leitor reprova os {len(msgs)} avisos', not soltas,
+    P.check(f'{chave} (fora da redução): leitor reprova os {len(msgs)} avisos', bool(msgs) and not soltas,
             f'{len(soltas)} aceitos, ex.: {soltas[:3]}')
 
 # Valores de erro do Sheets: uma migração que apaga linhas produz #REF!; nenhum deve passar calado.
@@ -125,7 +142,7 @@ P.check('mesmo padrão de aviso (com ou sem ⚠) em todos os catálogos', len(se
 
 # Nomes custom chegam ao bot como texto literal (impressão digital do cadastro)
 for nome in ['007', '1,5', 'VERDADEIRO']:
-    v = leitor.normaliza(nome)
-    P.check(f'nome custom {nome!r} preservado pelo normaliza', v == nome.strip() and isinstance(v, str), repr(v),
+    v = leitor.de_linhas([['custom.melhoria.1.nome',nome,'CONFIGURAÇÃO!B1','configuração']])['custom.melhoria.1.nome']['valor']
+    P.check(f'nome custom {nome!r} preservado na leitura do campo de nome', v == nome.strip() and isinstance(v, str), repr(v),
             nivel='risco')
 P.fim(dict(perfil=args.perfil, catalogos=resumo))

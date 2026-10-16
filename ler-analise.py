@@ -17,6 +17,7 @@ from pathlib import Path
 
 ABA = "ANALISE"
 FORMATOS_CONHECIDOS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+ERROS = {"#REF!", "#N/A", "#NAME?", "#VALUE!", "#DIV/0!", "#NUM!", "#NULL!", "#ERROR!", "#SPILL!", "#CALC!"}
 
 
 def normaliza(v):
@@ -46,7 +47,8 @@ def de_linhas(linhas):
         l = (list(l) + ["", "", "", ""])[:4]
         if not l[0] or l[0] == "chave":
             continue
-        valor = str(l[1]).strip() if l[0] == "ficha.versao" and l[1] is not None else normaliza(l[1])
+        texto = l[0] in {'nome','caminho','trilha','origem','ficha.versao'} or str(l[0]).endswith(('.nome','.descricao','.efeito','.requisitos','.texto'))
+        valor = (str(l[1]) if l[1] is not None else '') if texto else normaliza(l[1])
         out[str(l[0])] = {"valor": valor, "celula": l[2] or "", "parte": l[3] or ""}
     return out
 
@@ -69,10 +71,10 @@ def ler_xlsx(caminho, recalcula=True):
         copia = os.path.join(pasta, "ficha.xlsx")
         shutil.copy(caminho, copia)
         wb = load_workbook(copia)
-        for ws in wb:                       # o IFS só é reconhecido pelo LibreOffice com o prefixo do Excel
+        for ws in wb:                       # funções recentes exigem o namespace do XLSX no Calc local
             for c in tuple(ws._cells.values()):
-                if isinstance(c.value, str) and c.value.startswith("=") and "IFS(" in c.value and "_xlfn.IFS(" not in c.value:
-                    c.value = re.sub(r"(?<![A-Z_.])IFS\(", "_xlfn.IFS(", c.value)
+                if isinstance(c.value, str) and c.value.startswith("="):
+                    c.value = re.sub(r"(?<![A-Z_.])(IFS|SWITCH|TEXTJOIN)\(", r"_xlfn.\1(", c.value)
         wb.save(copia)
         saida = os.path.join(pasta, "saida")
         calc = shutil.which('libreoffice') or shutil.which('soffice')
@@ -99,10 +101,13 @@ def relatorio(ficha):
         return ["reprovada", [f"formato da aba ANALISE desconhecido: {fmt!r}"]]
     avisos = []
     for k, v in ficha.items():
+        if str(v["valor"]).strip().upper() in ERROS:
+            avisos.append(f"{k} ({v['celula']}): erro de fórmula {v['valor']}")
+            continue
         if v["parte"] != "aviso" or v["valor"] in ("", 0):
             continue
         t = str(v["valor"])
-        if k.startswith(("aviso.efeito.", "aviso.efeito_caixa.")):
+        if k.startswith(("aviso.efeito.", "aviso.efeito_caixa.", "aviso.custom.")):
             avisos.append(f"{k} ({v['celula']}): {t}")
             continue
         # os X de Y que estão certos dizem "Tudo escolhido" ou não têm o sinal de erro: só o ⚠ e o "acima" acendem
@@ -140,6 +145,8 @@ if __name__ == "__main__":
         print("  - " + a)
     if args[0] == "--teste":
         falhas = []
+        if any(str(v["valor"]).strip().upper() in ERROS for v in ficha.values()):
+            falhas.append("erro de fórmula exportado na ANALISE")
         if len(ficha) < 2000:
             falhas.append(f"a aba devia ter mais de 2.000 chaves, e tem {len(ficha)}")
         if ficha.get("formato.versao", {}).get("valor") not in FORMATOS_CONHECIDOS:

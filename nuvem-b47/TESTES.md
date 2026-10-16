@@ -54,3 +54,11 @@ base histórica. A regressão de peças agora exige 30/30 e formato 10; a v9
 completa para comparar a redução pode ser exportada por
 `python capacidade-b47/exportar-base.py`. Os três fragmentos PecasAnalise2–4
 saíram da entrega local e devem sair também do projeto Apps Script no envio.
+
+A integração inclui os testes próprios de `infra-b47/` e as sondas externas com
+perfil `b47-v10`. O leitor agora falha se exportar erro de fórmula; namespaces
+IFS/SWITCH/TEXTJOIN são qualificados na calculadora local. As validações 3a foram
+divididas em auxiliares (máximo 5.031 caracteres); `testar-validacao3a.py` cobre
+oito tipos válidos e negativos. `testar-geracao.js` e `testar-envio.py` verificam
+arquivos de gerações diferentes e retirada explícita. O roteiro central aceita
+`--b47-infra` para seleções do executor da outra frente.
