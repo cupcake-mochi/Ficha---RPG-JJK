@@ -1,4 +1,12 @@
-# Contrato inicial C+D B47
+# Contrato C+D B47
+
+**Revisão 3:** as três frentes estão ligadas nas fontes canônicas, ANALISE 11
+com 8.190 chaves. [Integração e limites da prova](INTEGRACAO-CD.md).
+Ordem: comuns → personagem → entidades, sem deslocar entradas antigas.
+Tipos de entidade expõem definição/efeito como nota no seletor existente;
+a definição livre da invocação e suas notas manuais são preservadas.
+Aplicação na revisão preenchida depende da prova nativa conjunta e migração
+guardada; os registros iniciais abaixo ficam como histórico de decisões.
 
 Base comum: `0d4d64e2847dfea29b0e3804ab6f0853c52ea6fd`. Contrato estruturado em [contrato.json](contrato.json). Esta publicação inicia a preparação do integrador, não comprova conteúdo integrado nem aplicação no Google.
 

@@ -140,6 +140,8 @@ function criaSheets(FICHA_SRC, GS, extras) {
         setRichTextValue: (v) => { if (!v || !v.__rico) throw new Error('setRichTextValue sem texto rico'); grava(r, c, v.texto);
           A.ricos.set(r + ',' + c, v.negritos); return R; },
         getDisplayValue: () => String(A.le(r, c)),
+        // Mesmo contrato textual da leitura de uma célula; esta VM não recalcula fórmulas.
+        getDisplayValues: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => String(A.le(r + i, c + j)))),
         getValue: () => A.le(r, c), getValues: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.le(r + i, c + j))),
         setFormula: (f) => { if (typeof f !== 'string' || f[0] !== '=') throw new Error('setFormula sem fórmula em ' + nome); confereFormula(nome + '!' + letras(c) + r, f); A.v.delete(r + ',' + c); A.f.set(r + ',' + c, f); return R; },
         setFormulas: (m) => { matriz(m, nl, nc, 'setFormulas'); cada((i, j, a, b) => { if (typeof m[a][b] !== 'string' || m[a][b][0] !== '=') throw new Error('setFormulas com célula sem fórmula em ' + nome); confereFormula(nome + '!' + letras(j) + i, m[a][b]); A.f.set(i + ',' + j, m[a][b]); }); return R; },
@@ -283,7 +285,9 @@ function criaSheets(FICHA_SRC, GS, extras) {
   });
   const ctx = {
     console: { log: () => {} }, Logger: { log: (m) => { P.registro = String(m); P.registros.push(String(m)); } }, Date, Math, JSON,
-    Utilities: { sleep: () => {}, base64Decode: (s) => Array.from(Buffer.from(s, 'base64')), base64Encode: (a) => Buffer.from(a).toString('base64') },
+    Utilities: { sleep: () => {}, base64Decode: (s) => Array.from(Buffer.from(s, 'base64')), base64Encode: (a) => Buffer.from(a).toString('base64'),
+      DigestAlgorithm:{SHA_256:'SHA_256'}, Charset:{UTF_8:'UTF_8'},
+      computeDigest:(alg,text,charset)=>{if(alg!=='SHA_256'||charset!=='UTF_8')throw Error('Digest não suportado pelo ensaio');return Array.from(require('crypto').createHash('sha256').update(text,'utf8').digest());} },
     SpreadsheetApp: rigoroso('SpreadsheetApp', {
       getActive: () => ss, flush: () => {},
       newCellImage: () => { const b = {}; const api = rigoroso('CellImageBuilder', {
@@ -312,7 +316,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
         setRanges: (rs) => { if (!Array.isArray(rs) || !rs.length || !rs.every((x) => x && typeof x.getA1Notation === 'function')) throw new Error('setRanges sem faixa'); o.faixas = rs.map((x) => x.getA1Notation()); return api; },
         build: () => { if (!o.faixas) throw new Error('regra de cor sem faixa'); return o; } }); return api; },
     }),
-    PropertiesService: { getDocumentProperties: () => ({ getProperty: (k) => (k in P.props ? P.props[k] : null), setProperty: (k, v) => { P.props[k] = String(v); },
+    PropertiesService: { getDocumentProperties: () => ({ getProperties:()=>({...P.props}), getProperty: (k) => (k in P.props ? P.props[k] : null), setProperty: (k, v) => { P.props[k] = String(v); },
       setProperties: (o) => Object.assign(P.props, o), deleteProperty: (k) => { delete P.props[k]; } }) },
     // 08/10/2026: a trava do script é a da montagem (umaDeCadaVez_). P.montagemOcupada faz de conta que outra execução a tem
     LockService: { getDocumentLock: () => ({ tryLock: () => true, releaseLock: () => {} }),

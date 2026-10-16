@@ -52,6 +52,34 @@ function expandirNotasCopiadas_(spec, novas) {
   Object.keys(feitas).sort().forEach(function (a1) { spec.notas_copiadas_[a1] = true; });
   return spec;
 }
+function expandirValoresCopiados_(spec, novos) {
+  // Recompõe somente valores herdados. Uma exceção explícita deve ganhar
+  // mesmo quando seu complemento carrega depois do molde.
+  var cache = expandirValoresCopiados_.cache || (expandirValoresCopiados_.cache = new WeakMap());
+  var herdados = cache.get(spec) || {}, escritos = {}, feitos = {};
+  var originais = spec.vals.filter(function (v) { return !herdados[v[0] + ',' + v[1]]; });
+  originais.forEach(function (v) { escritos[v[0] + ',' + v[1]] = true; });
+  (novos || []).forEach(function (v) {
+    var chave = v[0] + ',' + v[1];
+    if (!escritos[chave]) { originais.push(v); escritos[chave] = true; }
+  });
+  spec.vals = originais.slice();
+  (spec.copias || []).forEach(function (k) {
+    var molde = originais.filter(function (v) { return v[0] >= k[0] && v[0] <= k[1]; });
+    k[2].forEach(function (d) {
+      molde.forEach(function (v) {
+        var linha = v[0] + d - k[0], chave = linha + ',' + v[1];
+        if (!escritos[chave]) {
+          spec.vals.push([linha, v[1]].concat(v.slice(2)));
+          escritos[chave] = true; feitos[chave] = true;
+        }
+      });
+    });
+  });
+  spec.vals.sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; });
+  cache.set(spec, feitos);
+  return spec;
+}
 function expandirCopias_(spec) {
   if (!(spec.copias || []).length || spec.copias_feitas) return spec;
   var A1 = /^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/;
@@ -60,9 +88,7 @@ function expandirCopias_(spec) {
     var m = A1.exec(a1);
     return m[1] + (Number(m[2]) + dl) + (m[3] ? ':' + m[3] + (Number(m[4]) + dl) : '');
   };
-  var escritas = {};
-  spec.vals.forEach(function (t) { escritas[t[0] + ',' + t[1]] = true; });
-  var molde = { vals: spec.vals.slice(), fundos: spec.fundos.slice(), merges: spec.merges.slice(),
+  var molde = { fundos: spec.fundos.slice(), merges: spec.merges.slice(),
                 bordas: (spec.bordas || []).map(function (b) { return b[3].slice(); }),
                 dv: (spec.dv || []).slice(), caixas: (spec.caixas || []).slice(), formatos: (spec.formatos || []).slice() };
   var temDv = {}, temFmt = {};
@@ -74,7 +100,6 @@ function expandirCopias_(spec) {
     var noMolde = function (a1) { var l = linhas(a1); return dentro(l[0]) && dentro(l[1]); };
     // Select the source block once per template, before its many destinations.
     var bloco = {
-      vals: molde.vals.filter(function (t) { return dentro(t[0]); }),
       fundos: molde.fundos.filter(function (f) { return dentro(f[0]); }),
       merges: molde.merges.filter(function (m) { return dentro(m[0]) && dentro(m[2]); }),
       bordas: molde.bordas.map(function (lista) { return lista.filter(noMolde); }),
@@ -84,9 +109,6 @@ function expandirCopias_(spec) {
     };
     k[2].forEach(function (d) {
       var dl = d - r1;
-      bloco.vals.forEach(function (t) {
-        if (!escritas[(t[0] + dl) + ',' + t[1]]) spec.vals.push([t[0] + dl, t[1]].concat(t.slice(2)));
-      });
       bloco.fundos.forEach(function (f) { spec.fundos.push([f[0] + dl].concat(f.slice(1))); });
       bloco.merges.forEach(function (m) { spec.merges.push([m[0] + dl, m[1], m[2] + dl, m[3]]); });
       bloco.bordas.forEach(function (lista, i) {
@@ -97,6 +119,7 @@ function expandirCopias_(spec) {
       bloco.formatos.forEach(function (f) { var a1=desce(f[0], dl); if (!temFmt[a1]) spec.formatos.push([a1, f[1]]); });
     });
   });
+  expandirValoresCopiados_(spec);
   spec.copias_feitas = true;
   expandirNotasCopiadas_(spec);
   return spec;
@@ -116,7 +139,7 @@ function registrarSobra_(extra) {
 function juntarContratosPecas_() {
   if (typeof COMPLEMENTOS_ESPERADOS_ === 'undefined') return;
   Object.keys(COMPLEMENTOS_ESPERADOS_).forEach(function (arq) {
-    if (/^PecasAnalise\d+\.gs$/.test(arq)) {
+    if (/^(?:PecasAnalise\d+|PersonagemFormas\d+|PersonagemPainel|PersonagemAnalise|EntidadesAnalise)\.gs$/.test(arq)) {
       var valor = globais_()[COMPLEMENTOS_ESPERADOS_[arq]];
       if (valor) juntarValores_(valor);
     }
@@ -144,7 +167,7 @@ function juntarAbas_(extras) {
   // depende de qual .gs carregou primeiro; estabilizar também as abas irmãs.
   var ordem = ['CARTEIRA', 'FICHA', 'FICHA AMALDIÇOADA', 'INVOCAÇÕES',
     'FICHA PESSOAL', 'DADOS', 'DADOS_AM', 'DADOS_INVOC', 'GLOSSÁRIO',
-    'DADOS_PROGRESSAO', 'DADOS_CUSTOM', 'DADOS_CRIACAO', 'DADOS_MELHORIAS', 'DADOS_RESTRICOES', 'DADOS_DANOS', 'ANALISE',
+    'DADOS_PROGRESSAO', 'DADOS_CUSTOM', 'DADOS_CRIACAO', 'DADOS_MELHORIAS', 'DADOS_RESTRICOES', 'DADOS_DANOS', 'DADOS_FORMAS', 'DADOS_APTIDOES', 'DADOS_TALENTOS', 'DADOS_ENTIDADES', 'ANALISE',
     'CONFIGURAÇÃO', 'DADOS_CONFIG'];
   ABAS.sort(function (a, b) {
     var ia = ordem.indexOf(a.nome), ib = ordem.indexOf(b.nome);
@@ -159,6 +182,7 @@ function juntarAbas_(extras) {
   if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
   if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
   if (typeof VALORES_DANOS_ !== 'undefined' && VALORES_DANOS_) juntarValores_(VALORES_DANOS_);
+  if (typeof VALORES_ENTIDADES_ !== 'undefined' && VALORES_ENTIDADES_) juntarValores_(VALORES_ENTIDADES_);
   juntarContratosPecas_();
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
@@ -169,7 +193,11 @@ if (typeof ABAS_DA_PROGRESSAO !== 'undefined' && ABAS_DA_PROGRESSAO) juntarAbas_
 if (typeof ABAS_DA_CRIACAO !== 'undefined' && ABAS_DA_CRIACAO) juntarAbas_(ABAS_DA_CRIACAO);
 if (typeof ABAS_DAS_MELHORIAS !== 'undefined' && ABAS_DAS_MELHORIAS) juntarAbas_(ABAS_DAS_MELHORIAS);
 if (typeof ABAS_DAS_RESTRICOES !== 'undefined' && ABAS_DAS_RESTRICOES) juntarAbas_(ABAS_DAS_RESTRICOES);
+if (typeof ABAS_PERSONAGEM_FORMAS !== 'undefined' && ABAS_PERSONAGEM_FORMAS) juntarAbas_(ABAS_PERSONAGEM_FORMAS);
+if (typeof ABAS_PERSONAGEM_APTIDOES !== 'undefined' && ABAS_PERSONAGEM_APTIDOES) juntarAbas_(ABAS_PERSONAGEM_APTIDOES);
+if (typeof ABAS_PERSONAGEM_TALENTOS !== 'undefined' && ABAS_PERSONAGEM_TALENTOS) juntarAbas_(ABAS_PERSONAGEM_TALENTOS);
 if (typeof ABAS_DOS_DANOS !== 'undefined' && ABAS_DOS_DANOS) juntarAbas_(ABAS_DOS_DANOS);
+if (typeof ABAS_DAS_ENTIDADES !== 'undefined' && ABAS_DAS_ENTIDADES) juntarAbas_(ABAS_DAS_ENTIDADES);
 
 /** Junta a tabela das Origens à DADOS, mesmo se Origens.gs carregar antes deste arquivo. */
 function juntarValores_(extras) {
@@ -180,13 +208,7 @@ function juntarValores_(extras) {
     if (typeof GERACAO_ !== 'undefined' && extra.geracao !== GERACAO_) { registrarSobra_(extra); return; }
     var feitos = COMPLEMENTOS_FEITOS_.get(aba);
     if (feitos && feitos.has(extra)) return;
-    var presentes = {};
-    aba.vals.forEach(function (v) { presentes[v[0] + ',' + v[1]] = true; });
-    extra.vals.forEach(function (v) {
-      var chave = v[0] + ',' + v[1];
-      if (!presentes[chave]) { aba.vals.push(v); presentes[chave] = true; }
-    });
-    aba.vals.sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; });
+    expandirValoresCopiados_(aba, extra.vals);
     if (extra.notas && extra.notas.length) {
       expandirNotasCopiadas_(aba, extra.notas);
     }
@@ -216,6 +238,7 @@ if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(
 if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
 if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
 if (typeof VALORES_DANOS_ !== 'undefined' && VALORES_DANOS_) juntarValores_(VALORES_DANOS_);
+if (typeof VALORES_ENTIDADES_ !== 'undefined' && VALORES_ENTIDADES_) juntarValores_(VALORES_ENTIDADES_);
 juntarContratosPecas_();
 
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
@@ -364,6 +387,16 @@ function montar_() {
   if (typeof ABAS_DOS_DANOS === 'undefined' || !ABAS_DOS_DANOS) {
     throw new Error('Falta o Danos.gs: cole todos os arquivos antes de construir.');
   }
+  if (typeof ABAS_DAS_ENTIDADES === 'undefined' || !ABAS_DAS_ENTIDADES) {
+    throw new Error('Falta o Entidades.gs: cole todos os arquivos antes de construir.');
+  }
+  [
+    ['ABAS_PERSONAGEM_FORMAS', 'FormasPersonagem.gs'],
+    ['ABAS_PERSONAGEM_APTIDOES', 'AptidoesPersonagem.gs'],
+    ['ABAS_PERSONAGEM_TALENTOS', 'TalentosPersonagem.gs']
+  ].forEach(function (item) {
+    if (!globais_()[item[0]]) throw new Error('Falta o ' + item[1] + ': cole todos os arquivos antes de construir.');
+  });
   Object.keys(COMPLEMENTOS_ESPERADOS_).forEach(function (arq) {
     if (!globais_()[COMPLEMENTOS_ESPERADOS_[arq]]) throw new Error('Falta o ' + arq + ': cole todos os arquivos antes de construir.');
   });
@@ -371,6 +404,11 @@ function montar_() {
     if (!/^CONTRATO_PECAS_\d+_$/.test(nome)) return;
     var esperado = Object.keys(COMPLEMENTOS_ESPERADOS_).some(function (arq) { return COMPLEMENTOS_ESPERADOS_[arq] === nome; });
     if (!esperado && globais_()[nome]) registrarSobra_({arquivo:'PecasAnalise' + nome.match(/\d+/)[0] + '.gs'});
+  });
+  Object.keys(globais_()).forEach(function (nome) {
+    if (!/^VALORES_PERSONAGEM_FORMAS_\d+_$/.test(nome)) return;
+    var esperado = Object.keys(COMPLEMENTOS_ESPERADOS_).some(function (arq) { return COMPLEMENTOS_ESPERADOS_[arq] === nome; });
+    if (!esperado && globais_()[nome]) registrarSobra_({arquivo:'PersonagemFormas' + nome.match(/\d+/)[0] + '.gs'});
   });
   if (SOBRAS_.length) throw new Error('Apague do projeto os arquivos de geração anterior: ' + SOBRAS_.join(', ') + '. Nada foi alterado.');
   var ss = SpreadsheetApp.getActive();
@@ -510,6 +548,8 @@ function acabamento_(ss, feito, rel) {
   rel.etapa('notas');
   feito.push('ficha pessoal: ' + configurarPessoal_(ss));
   rel.etapa('notas da ficha pessoal');
+  feito.push('notas dos tipos: ' + notasDosTipos_());
+  rel.etapa('notas dos tipos de entidade');
   feito.push('saltos: ' + ligarSaltos_(ss));
   rel.etapa('saltos da ficha amaldiçoada');
   feito.push('paleta: ' + configurarPaleta_(ss, true));

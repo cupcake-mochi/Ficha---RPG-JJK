@@ -32,7 +32,7 @@ def preparar(model,destino):
         {'updateSheetProperties':{'properties':{'sheetId':IDS['CONFIGURAÇÃO'],
         'gridProperties':{'rowCount':cfg['linhas']+2}},'fields':'gridProperties.rowCount'}},
         {'updateSheetProperties':{'properties':{'sheetId':IDS['DADOS_MELHORIAS'],
-        'gridProperties':{'columnCount':73}},'fields':'gridProperties.columnCount'}}]
+        'gridProperties':{'columnCount':tabs['DADOS_MELHORIAS']['colunas']}},'fields':'gridProperties.columnCount'}}]
     requests=[]
     def grid(name,a1):
         c,r,cc,rr=range_boundaries(a1)

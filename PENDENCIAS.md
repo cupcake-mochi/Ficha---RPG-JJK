@@ -1,4 +1,37 @@
-## C em andamento · comuns locais e fórmulas nativas · 16/10/2026
+## C integrada localmente · prova nativa conjunta em andamento · 16/10/2026
+
+Recebidas personagem `e9af8d3` e entrega parcial Claude `045f699`; o usuário
+transferiu para este integrador o restante após o limite de créditos. Nenhuma
+entrega futura de Claude é bloqueadora. [Conciliação, testes, cópias e próximos
+passos](conteudos-b47/comum/INTEGRACAO-CD.md).
+
+Núcleo local: ANALISE 11, **8.190 chaves**, três frentes, **35 GS** da geração
+`9273911dd8b6f47a`, maior 840.243 bytes. Passaram 75 testes de personagem,
+7 da combinação, 37 checagens do carregador/20 ordens, compactação de 22 abas
++ três fixtures, 150 checagens da construção simulada em três fases, nove
+casos de notas e smoke. Achados de vazios numéricos/lógicos e resumos da
+revisão cruzada corrigidos; recálculo nativo completo ainda pendente.
+
+Ensaio focal de personagem/comuns: 291 asserções de herança, 91 em dez
+cenários negativos/literais/sem base, 94 entradas restauradas exatamente,
+31.580 células finais sem erro. Essa cópia ainda tem GS/ANALISE principal v10;
+não é prova da combinação final. Nova descartável de construção integrada
+`14Ad8e5hUECLimCFuilEGSIxrhv0IWpDUEjEBR4N8N-Q` criada; envio/releitura e
+testes Apps Script em andamento. **35 GS e manifesto salvos/relidos iguais**
+([prova](conteudos-b47/comum/NATIVO-CODIGO-INTEGRADO.json)); ao iniciar construir
+nessa nova descartável, o Google pediu autorização do novo projeto, concluída
+pelo usuário. Execução reiniciada às 20:41:27 locais; construção ainda em
+andamento, sem conclusão declarada. Três testes
+adicionais do módulo canônico de entidades passaram, incluindo três pares de
+capacidades e guardas. Preservar as cópias e recibos anteriores.
+
+Revisão preenchida permanece no fechamento A+B/formato 10. Não executar
+construir/continuar nela nem repetir lotes antigos. Faltam prova conjunta,
+D, migração v10→v11 em descartável e aplicação guardada da revisão.
+Oficial, bot, main e acessos intactos. Calc ausente neste Windows.
+Recomendação: GPT-6.1 Sol, High, para testes nativos e preservação na migração.
+
+## Histórico · comuns locais e fórmulas nativas · 16/10/2026
 
 Primeira entrega do integrador: dez Tipos de dano compartilhados e Condições
 como modalidade dos mesmos 30 cadastros de Melhoria. Fontes e leitor no

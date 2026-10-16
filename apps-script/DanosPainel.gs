@@ -8,7 +8,7 @@ var VALORES_DANOS_ = [
     "alturas":{},
     "esticam":[],
     "notas":[["B1737","Nome único. Livro e cadastros válidos aparecem juntos nos menus."],["B1741","Natureza do dano criada com o mestre. Não altera números automaticamente."],["B1748","Interações e requisitos. Resistência, vulnerabilidade e dano aplicado não são deduzidos deste texto."],["F1737","Lembrete; aprovação ocorre pelo bot no chat."],["J1737","Nome único. Livro e cadastros válidos aparecem juntos nos menus."],["J1741","Natureza do dano criada com o mestre. Não altera números automaticamente."],["J1748","Interações e requisitos. Resistência, vulnerabilidade e dano aplicado não são deduzidos deste texto."],["N1737","Lembrete; aprovação ocorre pelo bot no chat."]],
-    "geracao":"7adee586c04accf6",
+    "geracao":"9273911dd8b6f47a",
     "arquivo":"DanosPainel.gs"
   }
 ];

@@ -1,31 +1,219 @@
 {
   "contrato": "b47-cd",
-  "revisao": 1,
+  "revisao": 3,
   "base_comum": "0d4d64e2847dfea29b0e3804ab6f0853c52ea6fd",
-  "estado": "interface inicial do integrador; enderecos e formato final dependem da integracao",
-  "capacidades": {"forma": 10, "aptidao": 10, "talento": 10, "tipo_entidade": 10, "talento_entidade": 20, "dano": 10},
-  "condicao": {"catalogo": "melhoria", "capacidade_compartilhada": 30, "familia_padrao": "Controle", "exige_tr": true, "campo_discriminador": "modalidade", "opcoes": ["Melhoria", "Condição"]},
-  "campos_comuns": {"nome": "texto unico literal sem espacos nas pontas", "mestre_viu": "booleano; lembrete, nao aprovacao", "base": "texto opcional; vazio ou Nenhuma cria sem base; exceto dano, sem base no molde aprovado", "aviso": "texto calculado; nao e entrada"},
+  "estado": "três frentes ligadas no núcleo local; fechamento de C e validação/migração conjunta em andamento",
+  "capacidades": {
+    "forma": 10,
+    "aptidao": 10,
+    "talento": 10,
+    "tipo_entidade": 10,
+    "talento_entidade": 20,
+    "dano": 10
+  },
+  "condicao": {
+    "catalogo": "melhoria",
+    "capacidade_compartilhada": 30,
+    "familia_padrao": "Controle",
+    "exige_tr": true,
+    "campo_discriminador": "modalidade",
+    "opcoes": [
+      "Melhoria",
+      "Condição"
+    ]
+  },
+  "campos_comuns": {
+    "nome": "texto unico literal sem espacos nas pontas",
+    "mestre_viu": "booleano; lembrete, nao aprovacao",
+    "base": "texto opcional; vazio ou Nenhuma cria sem base; exceto dano, sem base no molde aprovado",
+    "aviso": "texto calculado; nao e entrada"
+  },
   "campos": {
-    "forma": ["nome", "mestre_viu", "base", "familia", "peso", "resolucao", "resultado", "exige_tr", "classe_zero", "restricao_embutida", "alcance", "area", "requisitos", "efeito"],
-    "aptidao": ["nome", "mestre_viu", "base", "tipo", "categoria", "nivel_minimo", "refino_minimo", "escolha", "requisitos", "efeito"],
-    "talento": ["nome", "mestre_viu", "base", "categoria", "rota", "requisitos", "efeito"],
-    "tipo_entidade": ["nome", "mestre_viu", "base", "vida", "talisma", "reserva_pe", "definicao", "efeito"],
-    "talento_entidade": ["nome", "mestre_viu", "base", "categoria", "requisitos", "efeito"],
-    "dano": ["nome", "mestre_viu", "definicao", "efeito"]
+    "forma": [
+      "tipo",
+      "nome",
+      "base",
+      "mestre_viu",
+      "requisitos",
+      "efeito",
+      "familia",
+      "peso",
+      "resolucao",
+      "resultado",
+      "exige_tr",
+      "classe_zero",
+      "restricao_embutida",
+      "alcance_escada",
+      "area_escada",
+      "alcance_personagem_classe_0",
+      "alcance_personagem_classes_1_a_5",
+      "alcance_personagem_classes_6_e_7",
+      "alcance_entidade_classe_0",
+      "alcance_entidade_classes_1_a_5",
+      "alcance_entidade_classe_6",
+      "alcance_entidade_classe_7",
+      "area_personagem_classe_0",
+      "area_personagem_classes_1_a_5",
+      "area_personagem_classes_6_e_7",
+      "area_entidade_classe_0",
+      "area_entidade_classes_1_a_5",
+      "area_entidade_classe_6",
+      "area_entidade_classe_7"
+    ],
+    "aptidao": [
+      "tipo",
+      "nome",
+      "base",
+      "mestre_viu",
+      "requisitos",
+      "efeito",
+      "categoria",
+      "nivel_minimo",
+      "refino_minimo",
+      "escolha"
+    ],
+    "talento": [
+      "tipo",
+      "nome",
+      "base",
+      "mestre_viu",
+      "requisitos",
+      "efeito",
+      "categoria",
+      "rota"
+    ],
+    "tipo_entidade": [
+      "nome",
+      "mestre_viu",
+      "base",
+      "vida",
+      "talisma",
+      "reserva_pe",
+      "definicao",
+      "efeito"
+    ],
+    "talento_entidade": [
+      "nome",
+      "mestre_viu",
+      "base",
+      "categoria",
+      "requisitos",
+      "efeito"
+    ],
+    "dano": [
+      "nome",
+      "mestre_viu",
+      "definicao",
+      "efeito"
+    ]
   },
   "opcoes": {
-    "aptidao.tipo": ["Aptidão", "Bênção"],
-    "aptidao.escolha": ["Consome uma escolha", "Gratuita"],
-    "aptidao.categoria": ["—", 1, 2, 3],
-    "talento.categoria": [1, 2, 3],
-    "talento.rota": ["Todas", "Fundamento / Manejos", "Técnica Marcial"],
-    "tipo_entidade.vida": ["Normal da entidade", "Corpo de criação"],
-    "tipo_entidade.talisma": ["Não usa", "Usa"],
-    "tipo_entidade.reserva_pe": ["Normal da entidade", "Maldição domada"],
-    "talento_entidade.categoria": [1, 2, 3]
+    "aptidao.tipo": [
+      "Aptidão",
+      "Bênção"
+    ],
+    "aptidao.escolha": [
+      "Consome uma escolha",
+      "Gratuita"
+    ],
+    "aptidao.categoria": [
+      "—",
+      1,
+      2,
+      3
+    ],
+    "talento.categoria": [
+      1,
+      2,
+      3
+    ],
+    "talento.rota": [
+      "Todas",
+      "Fundamento / Manejos",
+      "Técnica Marcial"
+    ],
+    "tipo_entidade.vida": [
+      "Normal da entidade",
+      "Corpo de criação"
+    ],
+    "tipo_entidade.talisma": [
+      "Não usa",
+      "Usa"
+    ],
+    "tipo_entidade.reserva_pe": [
+      "Normal da entidade",
+      "Maldição domada"
+    ],
+    "talento_entidade.categoria": [
+      1,
+      2,
+      3
+    ]
   },
-  "exportacao": {"formato_recebido": 10, "formato_proposto": 11, "chave_entrada": "custom.{tipo}.{indice}.{campo}", "chave_aviso": "aviso.custom.{tipo}.{indice}", "indices": "1-based; fixos por cadastro; sem compactar preenchidos", "condicao": "custom.melhoria.{indice}.modalidade; manter campos existentes", "status": "proposta reservada; nao declarar implementado ate ligar produtor e leitor"},
-  "interface_modulo": {"aplica": "aplica(layout, contexto) -> transformacao", "contexto": ["fam", "inv", "criacao", "pecas", "capacidades", "inicio"], "transformacao": ["antes", "depois", "entradas", "registros", "catalogos", "inicio", "fim"], "entrada": "[chave, endereco_CONFIGURACAO, booleano]", "exporta": "exporta(transformacao) -> linhas ANALISE [chave, formula_texto, origem, parte]", "compatibilidade": "adaptador do integrador para modulo com interface diferente; nao reescrever a entrega sem avaliar"},
-  "validacao": {"cadastro_vazio": "sem aviso quando apenas defaults e mestre_viu false", "parcial": "preservar e avisar nome ausente; nao esconder dados", "duplicata": "excluir todos os nomes duplicados do pool, inclusive colisao com livro", "busca": "literal; escapar ~ * ? em COUNTIF MATCH VLOOKUP", "livro": "manter posicoes e identidades; custom valido acrescenta", "textos": "descricao nao executa regra; nao interpretar como formula", "heranca": "vazio herda somente com base valida; zero e Nao explicitos sobrescrevem"}
+  "exportacao": {
+    "formato_recebido": 10,
+    "formato_proposto": 11,
+    "chave_entrada": "custom.{tipo}.{indice}.{campo}",
+    "chave_aviso": "aviso.custom.{tipo}.{indice}",
+    "indices": "1-based; fixos por cadastro; sem compactar preenchidos",
+    "condicao": "custom.melhoria.{indice}.modalidade; manter campos existentes",
+    "status": "11 nos produtores/leitor locais; 8190 chaves previstas: 7436 comuns + 524 personagem + 230 entidades; revisão nativa ainda v10",
+    "chave_aviso_uso_personagem": "aviso.personagem.{aptidao|talento}.{1..12}"
+  },
+  "interface_modulo": {
+    "aplica": "aplica(layout, contexto) -> transformacao",
+    "contexto": [
+      "fam",
+      "inv",
+      "criacao",
+      "pecas",
+      "capacidades",
+      "inicio"
+    ],
+    "transformacao": [
+      "antes",
+      "depois",
+      "entradas",
+      "registros",
+      "catalogos",
+      "inicio",
+      "fim"
+    ],
+    "entrada": "[chave, endereco_CONFIGURACAO, booleano]",
+    "exporta": "exporta(transformacao) -> linhas ANALISE [chave, formula_texto, origem, parte]",
+    "compatibilidade": "adaptador do integrador para modulo com interface diferente; nao reescrever a entrega sem avaliar"
+  },
+  "validacao": {
+    "cadastro_vazio": "sem aviso quando apenas defaults e mestre_viu false",
+    "parcial": "preservar e avisar nome ausente; nao esconder dados",
+    "duplicata": "excluir todos os nomes duplicados do pool, inclusive colisao com livro",
+    "busca": "literal; escapar ~ * ? em COUNTIF MATCH VLOOKUP",
+    "livro": "manter posicoes e identidades; custom valido acrescenta",
+    "textos": "descricao nao executa regra; nao interpretar como formula",
+    "heranca": "vazio herda somente com base valida; zero e Nao explicitos sobrescrevem"
+  },
+  "integracao_personagem": {
+    "origem": "e9af8d336716385488b442e31a6f1a596ed19068",
+    "patches": "base-7752c91/01 -> 02 -> 03",
+    "campos_cadastro_aviso": 500,
+    "avisos_uso": 24,
+    "alcance_area": "escadas independentes e bases textuais por contexto/faixa; sem números demonstrativos como regra",
+    "tipo_forma_talento": "entrada crua de diagnóstico; não reutiliza chave anterior",
+    "alinhamento": "ce -> categoria; classe_0 -> classe_zero",
+    "abas": {
+      "forma": "DADOS_FORMAS",
+      "aptidao": "DADOS_APTIDOES",
+      "talento": "DADOS_TALENTOS"
+    }
+  },
+  "integracao_entidades": {
+    "origem": "045f6991f387787454c24f764a0b9d0b040574d0",
+    "modulo_canonico": "ficha-v01/entidades_custom.py",
+    "ordem": "depois de personagem; preserva endereços de personagem e acrescenta 230 chaves no fim",
+    "campos_cadastro_aviso": 230,
+    "aba": "DADOS_ENTIDADES",
+    "texto_tipo": "definição/efeito efetivos aparecem como nota contextual no seletor de TIPO; notas manuais preservadas; dados crus exportados",
+    "requisitos_talento": "exibidos como texto na carta, sem execução por prosa",
+    "carregamento": "Entidades.gs, EntidadesPainel.gs e EntidadesAnalise.gs; fragmento ANALISE próprio"
+  }
 }

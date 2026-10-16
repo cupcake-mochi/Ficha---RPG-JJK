@@ -33,7 +33,7 @@ var ABAS_DAS_RESTRICOES = [
     "paleta_fixa":true,
     "caixas":[],
     "depois":"GLOSSÁRIO",
-    "geracao":"7adee586c04accf6",
+    "geracao":"9273911dd8b6f47a",
     "arquivo":"Restricoes.gs"
   }
 ];

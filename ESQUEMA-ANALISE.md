@@ -1,4 +1,4 @@
-> **Retomada B47 — 16/10/2026:** A+B concluídos, inclusive revisão nativa no formato **10**, com **7.356 chaves**. C+D iniciados: o gerador local acrescenta dano/Condições em **11**, inicialmente **7.436 chaves**; isso ainda não é C completa nem aplicação na revisão. Consulte a seção “Formato 11” ao final e o [checkpoint vigente](PENDENCIAS.md). As seções anteriores registram versões históricas.
+> **Retomada B47 — 16/10/2026:** A+B concluídos, inclusive revisão nativa no formato **10**, com **7.356 chaves**. As três frentes de C estão ligadas localmente em **11**, com **8.190 chaves**; prova nativa conjunta e migração da revisão ainda em andamento. Consulte a seção “Formato 11” e o [checkpoint vigente](PENDENCIAS.md). As seções anteriores registram versões históricas.
 
 # O esquema da aba ANALISE (o "contrato" com o bot)
 
@@ -295,4 +295,27 @@ bot antes de publicar para jogadores. Nenhuma chave foi reciclada aqui.
 | 8 · B47 | Famílias custom; 9.082 chaves | não revalidado nesta entrega |
 | 9 · B47 | Melhorias/Restrições; 18.948 chaves | não revalidado nesta entrega |
 | 10 · fechamento A+B | capacidade compartilhada reduzida; 7.356 chaves | reconhecimento/compatibilidade pendentes antes de jogadores |
-| 11 · C em andamento | dano/Condições locais; inicialmente 7.436 chaves | externo; combinação completa e aplicação na revisão pendentes |
+| 11 · C integrada localmente | dano/Condições, Formas, Aptidões/Talentos e Tipos/Talentos de entidade; 8.190 chaves | externo; prova nativa conjunta e aplicação na revisão pendentes |
+
+### Combinação local das três frentes — formato 11
+
+A combinação preserva as 7.356 linhas v10 em identidade, ordem, fonte e escopo,
+exceto `formato.versao`, cujo valor passa explicitamente a 11. Acrescenta no fim,
+nesta ordem: 80 linhas de comuns (30 modalidades de Melhoria, 40 campos e dez
+avisos de Dano), 524 de personagem (500 campos/avisos de cadastro e 24 avisos
+de uso) e 230 de entidades (200 campos e trinta avisos de cadastro).
+
+Namespaces adicionais: `custom.forma.N.*`, `custom.aptidao.N.*`,
+`custom.talento.N.*`, `custom.tipo_entidade.N.*`, `custom.talento_entidade.N.*`,
+`aviso.custom.<tipo>.N` e os avisos de uso definidos pela frente personagem.
+Capacidades e campos exatos estão em
+[contrato.json](conteudos-b47/comum/contrato.json). As entradas cruas continuam
+exportadas quando inválidas; o catálogo unido só aceita cadastros válidos.
+MESTRE VIU é booleano de lembrete. Descrições e requisitos são texto literal;
+autonomia e alma continuam entradas individuais de cada invocação.
+
+O leitor local reconhece as chaves e tipos novos, preserva nomes/textos
+literais e rejeita erros de fórmula ou avisos de custom não vazios. Isso não
+atualiza o bot. Os ensaios nativos focais usaram exportação técnica auxiliar,
+mantendo GS/ANALISE principal v10 nessas cópias. Somente a futura prova conjunta
+e migração guardada permitem declarar a revisão preenchida no formato 11.

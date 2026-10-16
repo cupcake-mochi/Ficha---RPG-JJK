@@ -23,7 +23,8 @@ class TestPlanilha(unittest.TestCase):
         cls.antes={a['nome']:{c[0]:c[1] for c in a['celulas']} for a in cls.layout['abas']}
         cls.menus_antes={a['nome']:deepcopy(a.get('menus',[])) for a in cls.layout['abas']}
         cls.contexto=dict(fam=cls.base['_FAM'],inv=cls.base['_FIV'],criacao=cls.base['_CRIACAO'],pecas=cls.base['_PECAS'],
-            capacidades={'forma':10,'aptidao':10,'talento':10},inicio=cls.base['_PECAS']['fim']+4,
+            capacidades={'forma':10,'aptidao':10,'talento':10},
+            inicio=next(a['linhas'] for a in cls.layout['abas'] if a['nome']=='CONFIGURAÇÃO')+4,
             abas={'forma':'ENSAIO_FORMAS','aptidao':'ENSAIO_APTIDOES','talento':'ENSAIO_TALENTOS'})
         cls.tr=aplica(cls.layout,cls.contexto)
         cls.tabs={a['nome']:a for a in cls.layout['abas']}
@@ -105,6 +106,23 @@ class TestPlanilha(unittest.TestCase):
         for grupo,t in p.tabelas.items():
             self.assertEqual(t['total'],t['livro']+10)
             self.assertEqual(t['primeiro_custom'],t['livro']+2)
+
+    def test_resumos_do_livro_no_menu_rapido_preservados(self):
+        for original,bridge in [('aptidoes','aptidoes'),('passivas','passivas')]:
+            meta=self.tr['catalogos'][bridge]
+            for row,item in enumerate(self.base['_FAM']['R'][original],2):
+                self.assertEqual(self.cells[meta['aba']][L(meta['coluna']+meta['largura']-1)+str(row)],item['resumo'])
+
+    def test_vazios_herdados_nao_viram_zero(self):
+        # BASE do registro publicado é vazia. Uma fórmula de texto vazio
+        # conserva seu tipo ao ser buscada por INDEX no Sheets.
+        for t in self.tr['plano'].tabelas.values():
+            for row in range(2,t['livro']+2):
+                self.assertEqual(self.cells[t['aba']][L(t['colunas']['base'])+str(row)],'=""')
+        for group,field,neutral in [('forma','peso','0'),('forma','exige_tr','FALSE'),('talento','ce','0')]:
+            t=self.tr['plano'].tabelas[group]
+            for row in range(t['primeiro_custom'],t['total']+2):
+                self.assertTrue(self.cells[t['aba']][L(t['colunas'][field])+str(row)].endswith(','+neutral+')'))
 
     def test_tabelas_distintas_3_e_4_faixas(self):
         names=self.tr['catalogos'];total=self.tr['plano'].tabelas['forma']['total']

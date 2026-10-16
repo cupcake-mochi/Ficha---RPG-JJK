@@ -60,6 +60,23 @@ juntarValores_(complemento);
 if (uma!==JSON.stringify(ABAS) || ABAS[0].alturas['2']!==30 || ABAS[0].esticam.length!==1) {
   throw Error('Alturas ou caixas expansíveis perdidas/repetidas');
 }
+// Molde e exceção de valor em complementos distintos, nas duas ordens.
+[[0,1], [1,0]].forEach(function (ordem) {
+  var s={nome:'valores',vals:[],fundos:[],merges:[],copias:[[2,4,[8,14]]]};
+  ABAS=[s]; COMPLEMENTOS_FEITOS_=new WeakMap();
+  expandirCopias_(s);
+  var extras=[{nome:'valores',vals:[[2,2,'molde',0],[4,3,'outro',1]]},
+              {nome:'valores',vals:[[8,2,'exceção',2],[10,3,'',3]]}];
+  ordem.forEach(function(i){juntarValores_([extras[i]]);});
+  var values=Object.fromEntries(s.vals.map(function(v){return [v[0]+','+v[1],v.slice(2)];}));
+  if(JSON.stringify(values['8,2'])!==JSON.stringify(['exceção',2]) ||
+     JSON.stringify(values['10,3'])!==JSON.stringify(['',3]) ||
+     JSON.stringify(values['14,2'])!==JSON.stringify(['molde',0]) ||
+     JSON.stringify(values['16,3'])!==JSON.stringify(['outro',1]))throw Error('Exceção de valor perdida');
+  var antes=JSON.stringify(s);
+  ordem.forEach(function(i){juntarValores_([extras[i]]);});
+  if(antes!==JSON.stringify(s))throw Error('Complemento de valor repetido mudou a aba');
+});
 // O molde e uma exceção podem morar em complementos que carregam depois.
 [[0,1], [1,0]].forEach(function (ordem) {
   var s = { vals: [], fundos: [], merges: [], copias: [[2,4,[8,14],null,null,null,true]] };

@@ -117,6 +117,21 @@ class Comuns(unittest.TestCase):
                 self.assertEqual(module.de_linhas([[key,literal,'','configuração']])[key]['valor'],literal)
         self.assertIn(11,module.FORMATOS_CONHECIDOS)
 
+    def test_11_bases_compativeis_com_construtor(self):
+        menus = {m['onde']:m for m in tab(MODEL,'CONFIGURAÇÃO')['menus']}
+        cells = values(MODEL,'DADOS_MELHORIAS')
+        used = set()
+        for g in MODEL['registros']:
+            if g['tipo'] != 'melhoria': continue
+            source = menus[g['base']]['formula']
+            self.assertRegex(source, r"^'DADOS_MELHORIAS'!\$[A-Z]+\$2:\$[A-Z]+\$84$")
+            self.assertNotIn(source, used)
+            used.add(source)
+            first = source.split('!')[1].split(':')[0].replace('$','')
+            self.assertTrue(cells[first].startswith('=FILTER('))
+        self.assertEqual(len(used),30)
+        self.assertEqual(tab(MODEL,'DADOS_MELHORIAS')['colunas'],103)
+
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description=__doc__)

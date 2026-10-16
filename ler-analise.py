@@ -47,7 +47,8 @@ def de_linhas(linhas):
         l = (list(l) + ["", "", "", ""])[:4]
         if not l[0] or l[0] == "chave":
             continue
-        texto = l[0] in {'nome','caminho','trilha','origem','ficha.versao'} or str(l[0]).endswith(('.nome','.descricao','.definicao','.efeito','.requisitos','.texto'))
+        literal_cd = bool(re.fullmatch(r"custom\.(?:forma|aptidao|talento|tipo_entidade|talento_entidade)\.\d+\.(?:tipo|base|familia|resolucao|restricao_embutida|alcance_.*|area_.*|escolha|rota|vida|talisma|reserva_pe)", str(l[0])))
+        texto = literal_cd or l[0] in {'nome','caminho','trilha','origem','ficha.versao'} or str(l[0]).endswith(('.nome','.descricao','.definicao','.efeito','.requisitos','.texto'))
         valor = (str(l[1]) if l[1] is not None else '') if texto else normaliza(l[1])
         out[str(l[0])] = {"valor": valor, "celula": l[2] or "", "parte": l[3] or ""}
     return out
@@ -74,7 +75,7 @@ def ler_xlsx(caminho, recalcula=True):
         for ws in wb:                       # funções recentes exigem o namespace do XLSX no Calc local
             for c in tuple(ws._cells.values()):
                 if isinstance(c.value, str) and c.value.startswith("="):
-                    c.value = re.sub(r"(?<![A-Z_.])(IFS|SWITCH|TEXTJOIN)\(", r"_xlfn.\1(", c.value)
+                    c.value = re.sub(r"(?<![A-Z_.])(IFS|SWITCH|TEXTJOIN|LET)\(", r"_xlfn.\1(", c.value)
         wb.save(copia)
         saida = os.path.join(pasta, "saida")
         calc = shutil.which('libreoffice') or shutil.which('soffice')
@@ -107,7 +108,7 @@ def relatorio(ficha):
         if v["parte"] != "aviso" or v["valor"] in ("", 0):
             continue
         t = str(v["valor"])
-        if k.startswith(("aviso.efeito.", "aviso.efeito_caixa.", "aviso.custom.")):
+        if k.startswith(("aviso.efeito.", "aviso.efeito_caixa.", "aviso.custom.", "aviso.personagem.aptidao.", "aviso.personagem.talento.")):
             avisos.append(f"{k} ({v['celula']}): {t}")
             continue
         # os X de Y que estão certos dizem "Tudo escolhido" ou não têm o sinal de erro: só o ⚠ e o "acima" acendem

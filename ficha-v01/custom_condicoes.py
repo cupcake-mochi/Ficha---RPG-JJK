@@ -38,13 +38,12 @@ def aplica(layout, pecas):
         put(MEL, 'BU'+str(r), name)
     modes = faixa(MEL, 72, 2, 72, 3)
     bases = faixa(MEL, 73, 2, 73, len(conditions)+2)
-    data['colunas'] = max(data['colunas'], 73)
+    melhorias = [g for g in pecas['registros'] if g['tipo'] == 'melhoria']
+    data['colunas'] = max(data['colunas'], 73+len(melhorias))
     if data['colunas_larg']:
         data['colunas_larg'][0][1] = data['colunas']
     nbook = pecas['limites'][MEL]['livro']
-    for g in pecas['registros']:
-        if g['tipo'] != 'melhoria':
-            continue
+    for i, g in enumerate(melhorias):
         n, r = g['n'], g['n']+1
         dst = nbook+n+1
         a1 = coord(g['r']+2, g['c'])
@@ -60,8 +59,16 @@ def aplica(layout, pecas):
             'Peso e efeito seguem os campos deste cartão. Texto não executa regras.')
         for menu in config['menus']:
             if menu['onde'] == g['base']:
-                original = menu['formula']
-                menu['formula'] = f'INDIRECT(IF({source}="Condição","{bases}","{original}"))'
+                # Apps Script requireValueInRange exige referência estática.
+                # Cada cartão filtra o catálogo em uma coluna técnica própria;
+                # trocar a modalidade recompõe a lista sem trocar a validação.
+                col = 74+i
+                put(MEL, coord(1, col), f'bases do cadastro {n}')
+                pool = f'$BP$2:$BP${nbook+2}'
+                put(MEL, coord(2, col),
+                    f'=FILTER({pool},ARRAYFORMULA(IF($BR${r}="Condição",'
+                    f'COUNTIF({bases},{pool})>0,ROW({pool})>0)))')
+                menu['formula'] = faixa(MEL, col, 2, col, nbook+2)
                 break
         else:
             raise ValueError('Menu da base da Melhoria não encontrado')

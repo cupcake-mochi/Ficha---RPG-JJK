@@ -359,6 +359,61 @@ function tirarTravasDeFormula_(ss) {
 // GATILHO SIMPLES · roda sozinho, inclusive na cópia de cada jogador,
 // e não pede autorização de ninguém.
 // =====================================================================
+// B47 C+D: notas contextuais de tipo, preservando a nota manual.
+function hashNotaContextual_(texto) {
+  return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(texto), Utilities.Charset.UTF_8)
+    .map(function (b) { return ('0' + (b & 255).toString(16)).slice(-2); }).join('');
+}
+function comporNotaContextual_(atual, estado, texto) {
+  atual = String(atual || ''); texto = String(texto || '');
+  var base = atual;
+  if (estado && typeof estado.tamanhoBase === 'number' && estado.tamanhoBase >= 0 &&
+      estado.tamanhoBase <= atual.length && estado.hash === hashNotaContextual_(atual)) {
+    base = atual.slice(0, estado.tamanhoBase);
+  }
+  // A ajuda é uma prévia; o cadastro conserva o texto completo. Nunca cortar
+  // a nota manual para acomodar o complemento calculado.
+  var disponivel = Math.max(0, Math.min(12000, 45000 - base.length - 2));
+  if (texto.length > disponivel) texto = disponivel > 80 ?
+    texto.slice(0, disponivel - 40) + '\n\nTexto completo em CONFIGURAÇÃO.' : '';
+  var nota = base + (texto ? (base ? '\n\n' : '') + texto : '');
+  return {nota:nota, estado:texto ? {hash:hashNotaContextual_(nota), tamanhoBase:base.length} : null};
+}
+function notasDosTipos_(e) {
+  var spec = ABAS.filter(function (a) { return a.nome === ABA_INVOCACOES_; })[0];
+  var plano = spec && spec.notas_contextuais;
+  if (!plano) return 0;
+  var todos = !e || (e.range.getSheet().getName() === 'CONFIGURAÇÃO' &&
+    plano.gatilhos.some(function (a1) { return tocaFaixa_(e.range, a1); }));
+  var alvos = plano.destinos.map(function (a1, i) { return {a1:a1, i:i}; }).filter(function (g) {
+    return todos || (e.range.getSheet().getName() === ABA_INVOCACOES_ && tocaFaixa_(e.range, g.a1));
+  });
+  if (!alvos.length) return 0;
+  var ss = SpreadsheetApp.getActive(), origem = ss.getSheetByName(plano.fonte), aba = ss.getSheetByName(ABA_INVOCACOES_);
+  if (!origem || !aba) return 0;
+  SpreadsheetApp.flush();
+  var textos = origem.getRange(plano.primeira, plano.coluna, plano.destinos.length, 1).getDisplayValues();
+  var props = PropertiesService.getDocumentProperties(), estados = props.getProperties();
+  // Ler antes de escrever permite ao serviço agrupar as operações.
+  var mudancas = alvos.map(function (g) {
+    var range = aba.getRange(g.a1), chave = 'b47_tipo_nota_' + aba.getSheetId() + '_' + g.a1;
+    var estado = null; try { estado = JSON.parse(estados[chave] || 'null'); } catch (err) {}
+    var atual = range.getNote() || '', novo = comporNotaContextual_(atual, estado, textos[g.i][0]);
+    return {range:range, chave:chave, atual:atual, novo:novo};
+  });
+  var n = 0, guardar = {}, retirar = [];
+  mudancas.forEach(function (g) {
+    if (g.atual !== g.novo.nota) { g.range.setNote(g.novo.nota); n++; }
+    if (g.novo.estado) {
+      var value = JSON.stringify(g.novo.estado);
+      if (estados[g.chave] !== value) guardar[g.chave] = value;
+    } else if (estados[g.chave]) retirar.push(g.chave);
+  });
+  if (Object.keys(guardar).length) props.setProperties(guardar);
+  retirar.forEach(function (key) { props.deleteProperty(key); });
+  return n;
+}
+// FIM DAS NOTAS CONTEXTUAIS B47
 function onEdit(e) {
   var inicio = Date.now();
   if (!e || !e.range) return;
@@ -391,6 +446,7 @@ function onEdit(e) {
   }
   // 06/10/2026: a INVOCAÇÕES é como a FICHA AMALDIÇOADA: a conta mora na aba oculta dela, e a caixa calculada volta.
   if (aba === ABA_INVOCACOES_) {
+    try { notasDosTipos_(e); } catch (err) { console.log('tipo de entidade: ' + err.message); }
     try { redutorDaInvocacao_(e); } catch (err) { console.log('invocações, a caixa de ±: ' + err.message); }
     try {
       // a linha da lista do conjunto volta como referência, sem a ligação até a ficha: a ligação é refeita na hora
@@ -407,9 +463,10 @@ function onEdit(e) {
     return;
   }
   // B47: somente as contas voltam; os campos dos efeitos continuam editáveis.
-  if (aba === 'CONFIGURAÇÃO' || aba === 'DADOS_CONFIG' || aba === 'DADOS_CUSTOM' || aba === 'DADOS_PROGRESSAO' || aba === 'DADOS_CRIACAO' || aba === 'DADOS_MELHORIAS' || aba === 'DADOS_RESTRICOES') {
+  if (aba === 'CONFIGURAÇÃO' || aba === 'DADOS_CONFIG' || aba === 'DADOS_CUSTOM' || aba === 'DADOS_PROGRESSAO' || aba === 'DADOS_CRIACAO' || aba === 'DADOS_MELHORIAS' || aba === 'DADOS_RESTRICOES' || aba === 'DADOS_DANOS' || aba === 'DADOS_FORMAS' || aba === 'DADOS_APTIDOES' || aba === 'DADOS_TALENTOS' || aba === 'DADOS_ENTIDADES') {
     try { devolverConta_(e, aba); } catch (err) { console.log('configuração: ' + err.message); }
     if (aba === 'CONFIGURAÇÃO') {
+      try { notasDosTipos_(e); } catch (err) { console.log('tipo custom: ' + err.message); }
       try { esticarCaixas_(e, aba); } catch (err) { console.log('texto custom: ' + err.message); }
       if (tocaFaixa_(e.range, 'B737:O792')) {
         try { habilidadesDaFicha_(e, indice(), true); } catch (err) { console.log('cartas custom: ' + err.message); }
@@ -2581,6 +2638,7 @@ function configurarPaleta_(ss, force) {
  */
 function onOpen(e) {
   var inicio = Date.now();
+  try { notasDosTipos_(); } catch (err) { /* a ajuda não bloqueia a abertura */ }
   try { configurarPaleta_(SpreadsheetApp.getActive()); } catch (err) { /* silencioso: não trava a abertura */ }
   continuarPaleta_(inicio);
 }

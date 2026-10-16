@@ -243,6 +243,20 @@ _PECAS = custom_pecas.aplica(LAYOUT, _FAM, _FIV, _CRIACAO)
 import custom_condicoes, custom_danos
 _CONDICOES = custom_condicoes.aplica(LAYOUT, _PECAS)
 _DANOS = custom_danos.aplica(LAYOUT, {'inv': _FIV, 'custom': _CUSTOM})
+# Frente de personagem C+D: módulos isolados e contexto fornecido pelo integrador.
+sys.path.insert(0, os.path.join(os.path.dirname(AQUI), 'conteudos-b47', 'personagem'))
+import b47_personagem
+_PCD_CONTRATO = json.load(open(os.path.join(os.path.dirname(AQUI), 'conteudos-b47', 'comum', 'contrato.json'), encoding='utf-8'))
+_PERSONAGEM = b47_personagem.aplica(LAYOUT, dict(
+    fam=_FAM, inv=_FIV, criacao=_CRIACAO, pecas=_PECAS,
+    capacidades=_PCD_CONTRATO['capacidades'],
+    inicio=indice_ficha._aba(LAYOUT, 'CONFIGURAÇÃO')['linhas']+4,
+    abas={'forma':'DADOS_FORMAS','aptidao':'DADOS_APTIDOES','talento':'DADOS_TALENTOS'},
+    chave_aviso_uso=lambda grupo,n: f'aviso.personagem.{grupo}.{n}'))
+import entidades_custom
+_ENTIDADES = entidades_custom.aplica(LAYOUT, dict(
+    inv=_FIV, capacidades=_PCD_CONTRATO['capacidades'],
+    inicio=indice_ficha._aba(LAYOUT, 'CONFIGURAÇÃO')['linhas']+4))
 # A ampliação declara suas alterações exatas junto da integração de progressão.
 for _name, _values in _FAMILIAS['antes'].items():
     for _coord, _value in _values.items():
@@ -265,6 +279,16 @@ for _new in (_CONDICOES, _DANOS):
             _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
     for _name, _values in _new['depois'].items():
         _PROG['depois'].setdefault(_name, {}).update(_values)
+for _name, _values in _PERSONAGEM['antes'].items():
+    for _coord, _value in _values.items():
+        _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
+for _name, _values in _PERSONAGEM['depois'].items():
+    _PROG['depois'].setdefault(_name, {}).update(_values)
+for _name, _values in _ENTIDADES['antes'].items():
+    for _coord, _value in _values.items():
+        _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
+for _name, _values in _ENTIDADES['depois'].items():
+    _PROG['depois'].setdefault(_name, {}).update(_values)
 print(f"a CONFIGURAÇÃO: {configuracao.QUANTIDADE} efeitos, {len(_CFG['alvos'])} caixas, paleta fixa")
 import analise
 _AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
@@ -279,6 +303,13 @@ _AN_FIM_CRIACAO = len(_AN['linhas'])+1
 _AN['linhas'].extend(custom_pecas.exporta(_PECAS))
 _AN['linhas'].extend(custom_condicoes.exporta(_CONDICOES))
 _AN['linhas'].extend(custom_danos.exporta(_DANOS))
+_AN_FIM_PECAS = len(_AN['linhas'])+1
+_AN['linhas'].extend(b47_personagem.exporta(_PERSONAGEM))
+_PERSONAGEM['analise_inicio'] = _AN_FIM_PECAS+1
+_PERSONAGEM['analise_fim'] = len(_AN['linhas'])+1
+_ENTIDADES['analise_inicio'] = len(_AN['linhas'])+2
+_AN['linhas'].extend(entidades_custom.exporta(_ENTIDADES))
+_ENTIDADES['analise_fim'] = len(_AN['linhas'])+1
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
 
@@ -286,7 +317,17 @@ if '--exportar-pecas' in sys.argv:
     destino = sys.argv[sys.argv.index('--exportar-pecas')+1]
     with open(destino+'.tmp','w',encoding='utf-8') as arquivo:
         json.dump({'layout':LAYOUT,**{k:v for k,v in _PECAS.items()},
-                   'condicoes': _CONDICOES, 'danos': _DANOS},arquivo,ensure_ascii=False)
+                   'condicoes': _CONDICOES, 'danos': _DANOS,
+                   'personagem': {**{k:_PERSONAGEM[k] for k in (
+                       'inicio','fim','antes','depois','entradas','registros',
+                       'catalogos','avisos_uso','analise_inicio','analise_fim')},
+                       'tabelas': _PERSONAGEM['plano'].tabelas},
+                   'entidades': _ENTIDADES,
+                   'geo': {'nivel_ficha': indice_ficha.indice(LAYOUT).get('nivel'),
+                       'invocacoes': {'fichas': [{k:v for k,v in g.items() if k!='cartas'} for g in _FIV['fichas_c']],
+                           'cartas': _FIV['cartas'], 'colf': _FIV['colf'], 'col': _FIV['col']},
+                       'personagem': {k:_FAM[k] for k in ('G','col','H','aptidoes_c','passivas_c','lugares','zero_c')}}},
+                  arquivo,ensure_ascii=False)
     os.replace(destino+'.tmp',destino)
     sys.exit(0)
 
@@ -493,6 +534,7 @@ def _extras(a):
            "livres": a.get("livres", []),
            # 08/10/2026: as caixas de texto que esticam com o que o jogador escreve (o esticarCaixas_ do Codigo.gs)
            "esticam": a.get("esticam", []),
+           "notas_contextuais": a.get("notas_contextuais"),
            # 08/10/2026, a INVOCAÇÕES: o que abrir quando o link da lista chega numa ficha recolhida
            "abrir": a.get("abrir", []),
            # A ANALISE é neutra: não herda o fundo e a fonte do tema das fichas.
@@ -502,21 +544,27 @@ def _extras(a):
         out["congeladas"] = a["congeladas"]
     return {k: v for k, v in out.items() if v}
 
+from b47_personagem import transporte as _PCD_TRANSPORTE
+_PCD_SUPLEMENTOS = _PCD_TRANSPORTE.suplementos(LAYOUT, _PERSONAGEM)
+emitir_gs.SEPARADAS.update(_PCD_TRANSPORTE.separadas(_PERSONAGEM))
+emitir_gs.COMPLEMENTOS.update(_PCD_TRANSPORTE.complementos(_PCD_SUPLEMENTOS))
 gs, celulas, pecas = emitir_gs.escrever(
     wb, [a["nome"] for a in LAYOUT["abas"]],
     extras={a["nome"]: _extras(a) for a in LAYOUT["abas"]},
     imgs={a["nome"]: a["imagens"] for a in LAYOUT["abas"]},
     arte_dir=os.path.join(AQUI, "arte"),
     limpa=LAYOUT["_meta"].get("largura_limpa"),
-    suplementos={"Origens.gs": [("DADOS", _FP["T"]["origem_cap"][0],
+    suplementos={**_PCD_SUPLEMENTOS, "Origens.gs": [("DADOS", _FP["T"]["origem_cap"][0],
                                 _FP["T"]["origem_cap"][0] + _FP["T"]["origem_cap"][3] - 1),
                                   ("DADOS_CUSTOM", 19, 24),
                                   ("DADOS_CUSTOM", 285, indice_ficha._aba(LAYOUT,"DADOS_CUSTOM")["colunas"])],
                 "CriacaoAnalise.gs": ("ANALISE", 1, 4, _AN_FIM_ANTES_CRIACAO+1, _AN_FIM_CRIACAO),
-                **{f"PecasAnalise{i+1}.gs": ("ANALISE",1,4,first,min(first+2999,len(_AN['linhas'])+1))
-                   for i,first in enumerate(range(_AN_FIM_CRIACAO+1,len(_AN['linhas'])+2,3000))},
+                **{f"PecasAnalise{i+1}.gs": ("ANALISE",1,4,first,min(first+2999,_AN_FIM_PECAS))
+                   for i,first in enumerate(range(_AN_FIM_CRIACAO+1,_AN_FIM_PECAS+1,3000))},
                 "PecasPainel.gs": ("CONFIGURAÇÃO",1,16,_PECAS['fim_familias']+1,_PECAS['fim']),
                 "DanosPainel.gs": ("CONFIGURAÇÃO",1,16,_DANOS['inicio']-2,_DANOS['fim']),
+                "EntidadesPainel.gs": ("CONFIGURAÇÃO",1,16,_ENTIDADES['inicio']-2,_ENTIDADES['fim']),
+                "EntidadesAnalise.gs": ("ANALISE",1,4,_ENTIDADES['analise_inicio'],_ENTIDADES['analise_fim']),
                 "ProgressaoAnalise.gs": ("ANALISE", 1, 4, _AN_FIM_ANTES_CRIACAO-len(custom_progressao.exporta(_PROG))+1, _AN_FIM_ANTES_CRIACAO),
                 "CriacaoPainel.gs": [("CONFIGURAÇÃO", 1, 7, 133, 164),
                                       ("CONFIGURAÇÃO", 1, 16, _CRIACAO['fim_progressao']+1, _CRIACAO['fim'])],

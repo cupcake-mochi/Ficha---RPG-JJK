@@ -6,7 +6,7 @@ var ABAS_DA_ANALISE = [
   {
     "nome":"ANALISE",
     "cols":12,
-    "rows":7439,
+    "rows":8193,
     "larg":271,
     "padrao":["Roboto",12,"#000000"],
     "fundo_base":"#FFFFFF",
@@ -431,8 +431,8 @@ var ABAS_DA_ANALISE = [
     "oculta":true,
     "caixas":[],
     "notas":[],
-    "depois":"DADOS_DANOS",
-    "geracao":"7adee586c04accf6",
+    "depois":"DADOS_ENTIDADES",
+    "geracao":"9273911dd8b6f47a",
     "arquivo":"Analise.gs"
   }
 ];

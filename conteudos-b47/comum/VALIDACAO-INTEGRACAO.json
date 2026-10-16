@@ -1,0 +1,222 @@
+{
+  "data_utc": "2026-10-16T23:30:16.068824+00:00",
+  "base_head": "3fda15ea61763022ceec4d041aa5733c64984169",
+  "arvore_alterada": true,
+  "geracao": "9273911dd8b6f47a",
+  "formato_analise": 11,
+  "chaves": 8190,
+  "abas": 22,
+  "gs": [
+    {
+      "arquivo": "Analise.gs",
+      "bytes": 816379,
+      "sha256": "aa8bb8b9a35a9f33ee38da65055c39159ab2ec1293a7331307b1bdd9e4ae62f8"
+    },
+    {
+      "arquivo": "AnaliseFontes.gs",
+      "bytes": 413469,
+      "sha256": "bab8fbcdcf5cc38327f5f8d99f15e1d60ff17cf7cd78cd82693c4b1a335da901"
+    },
+    {
+      "arquivo": "AptidoesPersonagem.gs",
+      "bytes": 58182,
+      "sha256": "f817148cbaa5410fc7fed4fa849a8e9f7e12ddc1936259608ff6339c9dbd1cd3"
+    },
+    {
+      "arquivo": "Codigo.gs",
+      "bytes": 263672,
+      "sha256": "06f14ddffdb7e9a773cd411d87ff176cefe138c1354114ac3fd2c79b31ca8b09"
+    },
+    {
+      "arquivo": "Configuracao.gs",
+      "bytes": 840243,
+      "sha256": "8929b87d8c0f59d605b2c2f3aaef4ec43c9b9856a69b8e11be097b686bd21457"
+    },
+    {
+      "arquivo": "Criacao.gs",
+      "bytes": 14519,
+      "sha256": "59263150a9babcc4cf0a8906690b0e6dae46874a8b42dd06cc0255705288bf4e"
+    },
+    {
+      "arquivo": "CriacaoAnalise.gs",
+      "bytes": 10128,
+      "sha256": "067e0a2fa2b31184ef84d48855e7b9773dc50aff5b29f3aa3fededff42348a61"
+    },
+    {
+      "arquivo": "CriacaoPainel.gs",
+      "bytes": 32159,
+      "sha256": "da54909680da146f669b892b12bc665a69a90f6f293fdb651e61b8c0bb44def2"
+    },
+    {
+      "arquivo": "Custom.gs",
+      "bytes": 610791,
+      "sha256": "7c52d24e94b64504bb92e1357a4829aa2492fc7f0758b21fcad16bf4d0cd235b"
+    },
+    {
+      "arquivo": "Danos.gs",
+      "bytes": 11363,
+      "sha256": "3b9b652878e2846c4cd95214e2634ec388574ddfad2f2806475d02c1df67c2f6"
+    },
+    {
+      "arquivo": "DanosPainel.gs",
+      "bytes": 2545,
+      "sha256": "e710fc625590c2ad80378ad37253d32d32527859e61bd528d9b2a807783f1a39"
+    },
+    {
+      "arquivo": "Entidades.gs",
+      "bytes": 75878,
+      "sha256": "4c5317bc03deb0b1c89f77c247a66ec8dde705cea448413e71bcbb9e29b1bba7"
+    },
+    {
+      "arquivo": "EntidadesAnalise.gs",
+      "bytes": 44181,
+      "sha256": "ba5a4d60959ac0144076501d394b9a3beacae2b70ecf1d77c8c583a83c5117ef"
+    },
+    {
+      "arquivo": "EntidadesPainel.gs",
+      "bytes": 108935,
+      "sha256": "d319d42da5f9f9a6ee4fd5bbb81d96032346d9c86ee290b03ca0d68e1bf571a8"
+    },
+    {
+      "arquivo": "Ficha.gs",
+      "bytes": 824509,
+      "sha256": "ad5c25feae9f0526f4a7e4b2288384f5a91e1480d7a82bacaa762997c98b2730"
+    },
+    {
+      "arquivo": "FormasPersonagem.gs",
+      "bytes": 1195,
+      "sha256": "e3da6d915063acd0dc4cd444bcbab7767c21e8451184ee0cb7a6caf1dc91b895"
+    },
+    {
+      "arquivo": "Habilidades.gs",
+      "bytes": 215389,
+      "sha256": "478f255b306af36c19f1bfdfba0e337ffc6fb7cf49ab2b5b5f4f95f665b0b00e"
+    },
+    {
+      "arquivo": "Invocacoes.gs",
+      "bytes": 585271,
+      "sha256": "2da9e32083f17e741d33015298e905915025ec913e47b87707984ebecc49ca14"
+    },
+    {
+      "arquivo": "Melhorias.gs",
+      "bytes": 75605,
+      "sha256": "d00d0c68c59c9e20b77dd83d4649901889ea8795cd24021bd64bc6b72368c5a6"
+    },
+    {
+      "arquivo": "Origens.gs",
+      "bytes": 519699,
+      "sha256": "072769240d813be75fe1e48356292d8ae45f043587a226336aa231d174f270e5"
+    },
+    {
+      "arquivo": "PecasAnalise1.gs",
+      "bytes": 103567,
+      "sha256": "d02e3160f01cb0282bdc88c7b2082f539e20e5a9abbf225a78fab69fb6d76e7a"
+    },
+    {
+      "arquivo": "PecasPainel.gs",
+      "bytes": 17271,
+      "sha256": "47afb7105bb9ae3e03572a8e175721c95a5cb7da87ed3ab84b47a5f7f76bb0b2"
+    },
+    {
+      "arquivo": "PersonagemAnalise.gs",
+      "bytes": 100231,
+      "sha256": "1b2fbe9cd0bd35990c55a55315fb10e6bed5d18cc147feb055dc22a0ada9eca0"
+    },
+    {
+      "arquivo": "PersonagemFormas1.gs",
+      "bytes": 51296,
+      "sha256": "4b1828dea188d3bd82f070ec23fb0fc657fbff7d15642c22b0c74d5865cc9694"
+    },
+    {
+      "arquivo": "PersonagemFormas2.gs",
+      "bytes": 147205,
+      "sha256": "4b1d0c734b5ad14d704d186a510af1359f518cacb331d24fccdf6a427fe71a2e"
+    },
+    {
+      "arquivo": "PersonagemFormas3.gs",
+      "bytes": 181090,
+      "sha256": "d556558f491a501eb87d400b2df9d2977f092836896c3c9c7553033d73e95630"
+    },
+    {
+      "arquivo": "PersonagemFormas4.gs",
+      "bytes": 177743,
+      "sha256": "8df9dc623de5e5358fa50188a9422b998292edf2e5bc8648475cecb956f71380"
+    },
+    {
+      "arquivo": "PersonagemFormas5.gs",
+      "bytes": 15481,
+      "sha256": "3f3ce2542da85758ed8927385f1aad222aa36d66e4ae1aadc4bf004da7c5a80f"
+    },
+    {
+      "arquivo": "PersonagemPainel.gs",
+      "bytes": 198389,
+      "sha256": "1901718cc4029a019608b1627c3eabf9bb9dc09f25a351b8cd8613e4377d05c6"
+    },
+    {
+      "arquivo": "Pessoal.gs",
+      "bytes": 163251,
+      "sha256": "40be1ef36847a8a23942b8c9bc369490315ff39223fc9f529b379f603c0b15ed"
+    },
+    {
+      "arquivo": "Progressao.gs",
+      "bytes": 79652,
+      "sha256": "999d37a9b07baf01181b7b835faa5336f02b90218f91543b5128b5a568377823"
+    },
+    {
+      "arquivo": "ProgressaoAnalise.gs",
+      "bytes": 105981,
+      "sha256": "b8d7c0b13009c3b757f609197a8675f48ebe0e2437f6b8a5d50c8ad4c790e6bf"
+    },
+    {
+      "arquivo": "ProgressaoPainel.gs",
+      "bytes": 164855,
+      "sha256": "0205c380d8a5a95e092e4ef3409a752fba1f764c96445fc61b3bda1873d49cbf"
+    },
+    {
+      "arquivo": "Restricoes.gs",
+      "bytes": 12361,
+      "sha256": "30b8fa613a0d1639a96b6b2cd6f95bcf5880768ffd9d26a51c95751de27e1f99"
+    },
+    {
+      "arquivo": "TalentosPersonagem.gs",
+      "bytes": 25361,
+      "sha256": "cd577b318c958befe16e089324c9c8661f18d41c71e4cb1964c2324677a885ae"
+    }
+  ],
+  "fontes_sha256": {
+    "ficha-v01/monta.py": "796c13be5d7534dcd34e3318ae3f2e9f50e7f566dff9150aa0c7483af86d46c6",
+    "ficha-v01/capacidades.py": "819a8f400de989799bace2a75418a9bd60c2d426b5396630ea596622fc0cc8eb",
+    "ficha-v01/custom_condicoes.py": "cc26ee0b9b550ef694f4912956c37518170033232e8674621aa10196ab1dc27e",
+    "ficha-v01/custom_danos.py": "3ad38b9fe429517fcf5fb683e431ebe272b57a31d9fd188ffea7ad2d83bd76ac",
+    "ficha-v01/entidades_custom.py": "63bc9c211cc19add062da134e9bfe2de985f64c4c0121217f031fad8a98428af",
+    "ficha/emitir_gs.py": "5859eceb37b68a40d616f3d4518ef53e508fcad94d62bf4aa09fc788d1d24975",
+    "ficha/modelo.gs.js": "bdc60da40c71546866b9d92504bb0b852ce982778fd35e1c2aa50a85c36b8b6a",
+    "ler-analise.py": "2a279e7dfe9d61d8a5ccb2b29288ab1306774512985841b8288bde7debdd96f9",
+    "conferir-copias.py": "d59e88aa51a615659debfbee8f178a56b0cd799fa490739ba0217932d819c0d1",
+    "conteudos-b47/personagem/b47_personagem/__init__.py": "d1729e03e5507a55acbee39da3759ddefc502ee4c56ed22ab1552510ef63ae91",
+    "conteudos-b47/personagem/b47_personagem/consumidores.py": "8c3df700c859bded1d4bfdb19b8a2d8654b4051ce71da8b7772a0262d8531a96",
+    "conteudos-b47/personagem/b47_personagem/fontes_livro.py": "7ec61150580e81f5ebb75af4e9fe302f65818a446760a62462645c44ede4278e",
+    "conteudos-b47/personagem/b47_personagem/interface.py": "f16ae0a7b755929fb42ce29fbd8894c0f0e3bde958620605deccc86cf548245d",
+    "conteudos-b47/personagem/b47_personagem/motor.py": "0cce9b248ffdfaef64d54520d4a53f0e0f69d39d1243b2a86fe2ec3da1a80143",
+    "conteudos-b47/personagem/b47_personagem/planilha.py": "fc2288d9f6ed4eb8ab041031cb4ab2d6abf3cec122ae5098ffc907e65d047e74",
+    "conteudos-b47/personagem/b47_personagem/transporte.py": "5108de53e971f0d660d493c1a7e498e39dd90c5f22af1a0788481d7cae04a951",
+    "conteudos-b47/personagem/b47_personagem/usos.py": "dd1e88a46768991dca6d635339c31bc0ed72dc3cc9509e8237a24887647d68e6"
+  },
+  "modelo_sha256": "939bb2afb657a74d222d800e30e1c2e6bd2413a18b03755d688045d5b03ddf39",
+  "referencia_sha256": "e6f4f340037082fc5577034044193396a547f44468b6758d0ced4a7b961c1455",
+  "verificacoes": {
+    "personagem": 75,
+    "combinacao": 7,
+    "carregador_checagens": 37,
+    "carregador_ordens": 20,
+    "compactacao_abas": 25,
+    "construcao_simulada": 150,
+    "notas_contextuais": 9,
+    "smoke": true,
+    "entidades_integradas": 3
+  },
+  "google": "35 GS + manifesto salvos/relidos iguais no projeto novo; autorização concluída pelo usuário; construir iniciado 20:41:27 local, ainda em andamento",
+  "calc_local": false,
+  "producao_revisao_formato": 10,
+  "codigo_nativo_prova": "NATIVO-CODIGO-INTEGRADO.json"
+}

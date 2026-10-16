@@ -81,11 +81,11 @@ def carregar():
             escolha='Gratuita' if a['gratis'] else 'Consome uma escolha',
             requisitos=a['requisito'], efeito=a['faz'], mestre_viu=False,
             identidade=n, predecessoras=anteriores, atributo=atributos.get(n),
-            extensao=bool(a['extensao']), escala=a['escala'], origem='livro',
+            extensao=bool(a['extensao']), escala=fa._ini(a['escala']), resumo=a['resumo'], origem='livro',
             automatica=bool(a['gratis'])))
     talentos = [dict(tipo='Talento', nome=p['nome'], base='', ce=p['cp'],
         rota='Todas' if p['fund'] and p['marc'] else 'Fundamento / Manejos' if p['fund'] else 'Técnica Marcial',
-        requisitos='', efeito=p['faz'], mestre_viu=False, identidade=p['nome'], origem='livro')
+        requisitos='', efeito=p['faz'], resumo=p['resumo'], mestre_viu=False, identidade=p['nome'], origem='livro')
         for p in r['passivas']]
     restricoes = {x['rotulo']: dict(x) for x in r['restricoes']}
     return deepcopy(dict(forma=formas, aptidao=aptidoes, talento=talentos,

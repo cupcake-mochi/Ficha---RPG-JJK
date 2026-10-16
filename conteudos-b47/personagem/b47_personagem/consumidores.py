@@ -116,8 +116,9 @@ def pontes(plano, livro, contrato, ambiente):
         marc=f'OR({rota}="Todas",{rota}="Técnica Marcial")'
         disponivel=f'OR(AND({ambiente.rota}<=2,{fund}),AND({ambiente.rota}>=2,{marc}))'
         efeito=x('efeito',r)+'&IF('+x('requisitos',r)+'="","",CHAR(10)&"Requisitos: "&'+x('requisitos',r)+')'
+        resumo=livro['talento'][r-2]['resumo'] if r<t['livro']+2 else '='+efeito
         rows.append(['='+nome,'='+x('ce',r),'='+efeito,'=N('+fund+')','=N('+marc+')',
-                     f'=IF({disponivel},{nome},"")','='+efeito])
+                     f'=IF({disponivel},{nome},"")',resumo])
     tabela('talento','passivas',7,rows)
     t=plano.tabelas['aptidao']
     x=lambda k,r: ref(t['aba'],'$'+L(t['colunas'][k])+str(r))
@@ -126,9 +127,10 @@ def pontes(plano, livro, contrato, ambiente):
         nome,tipo=x('nome',r),x('tipo',r)
         benc=f'{tipo}="Bênção"'
         permitido=f'AND(NOT({x("automatica",r)}),IF({ambiente.rota}=4,{benc},AND(NOT({benc}),NOT(AND({ambiente.bloqueia_extensao},{x("extensao",r)})))))'
+        resumo=livro['aptidao'][r-2]['resumo'] if r<t['livro']+2 else '='+x('efeito',r)
         rows.append(['='+nome,'='+x('requisitos',r),'='+x('ce',r),'='+x('escala',r),'='+x('efeito',r),
                      f'=IF({permitido},{nome},"")','=N('+benc+')','=N('+x('extensao',r)+')',
-                     f'=IF({x("escolha",r)}="Gratuita",1,0)','='+x('efeito',r)])
+                     f'=IF({x("escolha",r)}="Gratuita",1,0)',resumo])
     tabela('aptidao','aptidoes',10,rows)
     return tabelas
 

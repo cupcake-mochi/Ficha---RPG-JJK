@@ -444,7 +444,11 @@ SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVO
              "Criacao.gs": ("ABAS_DA_CRIACAO", ("DADOS_CRIACAO",)),
              "Melhorias.gs": ("ABAS_DAS_MELHORIAS", ("DADOS_MELHORIAS",)),
              "Restricoes.gs": ("ABAS_DAS_RESTRICOES", ("DADOS_RESTRICOES",)),
-             "Danos.gs": ("ABAS_DOS_DANOS", ("DADOS_DANOS",))}
+             "Danos.gs": ("ABAS_DOS_DANOS", ("DADOS_DANOS",)),
+             "FormasPersonagem.gs": ("ABAS_PERSONAGEM_FORMAS", ("DADOS_FORMAS",)),
+             "AptidoesPersonagem.gs": ("ABAS_PERSONAGEM_APTIDOES", ("DADOS_APTIDOES",)),
+             "TalentosPersonagem.gs": ("ABAS_PERSONAGEM_TALENTOS", ("DADOS_TALENTOS",))}
+SEPARADAS['Entidades.gs'] = ('ABAS_DAS_ENTIDADES', ('DADOS_ENTIDADES',))
 COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
                 "AnaliseFontes.gs": "FONTES_DA_ANALISE_",
                 "Pessoal.gs": "VALORES_CUSTOM_",
@@ -454,12 +458,18 @@ COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
                 "CriacaoAnalise.gs": "CONTRATO_CRIACAO_",
                 "PecasPainel.gs": "VALORES_PECAS_",
                 "DanosPainel.gs": "VALORES_DANOS_",
+                "PersonagemPainel.gs": "VALORES_PERSONAGEM_PAINEL_",
+                "PersonagemAnalise.gs": "CONTRATO_PERSONAGEM_",
+                "EntidadesPainel.gs": "VALORES_ENTIDADES_",
+                "EntidadesAnalise.gs": "CONTRATO_ENTIDADES_",
                 **{f"PecasAnalise{i}.gs":f"CONTRATO_PECAS_{i}_" for i in range(1,10)}}
 
 # Alturas e caixas que esticam pertencem ao mesmo painel, mas ocupam mais
 # espaço que seus valores. O carregador recompõe a aba independentemente da
 # ordem dos arquivos; cada arquivo continua abaixo do teto de 900 KB.
 METADADOS_COMPLEMENTARES = {"PecasPainel.gs": {"CONFIGURAÇÃO": ("alturas", "esticam")},
+                           "EntidadesPainel.gs": {"CONFIGURAÇÃO": ("alturas", "esticam")},
+                           "PersonagemPainel.gs": {"CONFIGURAÇÃO": ("alturas", "esticam")},
                            "DanosPainel.gs": {"CONFIGURAÇÃO": ("alturas", "esticam")}}
 
 
@@ -480,7 +490,16 @@ def abas_cruas(caminho=None):
             if selo and e.get('geracao') != selo[1]:
                 raise ValueError('Aba de geração divergente: '+arq)
             abas.insert(i + 1, e)
-    for arq, var in COMPLEMENTOS.items():
+    complementos = dict(COMPLEMENTOS)
+    # Os fragmentos de Formas derivam do tamanho real, inclusive em leituras
+    # feitas por outro processo que não executou monta.py.
+    for arq, var in (esperados or {}).items():
+        m = re.fullmatch(r'PersonagemFormas([1-9][0-9]*)\.gs', arq)
+        if m:
+            if var != 'VALORES_PERSONAGEM_FORMAS_'+m[1]+'_':
+                raise ValueError('Variável de fragmento divergente: '+arq)
+            complementos[arq] = var
+    for arq, var in complementos.items():
         p = os.path.join(os.path.dirname(caminho), arq)
         if not os.path.exists(p):
             if esperados and arq in esperados:raise ValueError('Complemento ausente: '+arq)
@@ -602,6 +621,9 @@ def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None, extras=None):
                     dv.append([rg, v.formula1.replace("DADOS!", "DADOS!")])
         larg_px = _px_largura(ws.column_dimensions["A"].width or 4.0, limpa)
         largs_px, alt_px = _larguras(ws, limpa), _alturas(ws, alturas, so_declaradas=imgs is not None)
+        # Linhas de respiro podem ter somente altura declarada. O construtor
+        # aplica essa altura e precisa de uma grade que inclua seu endereço.
+        max_r = max(max_r, max((int(r) for r in alt_px), default=0))
         # Duas linhas de folga embaixo do que tem conteúdo, menos nas abas com lombada: ali a faixa de
         # tinta (colunas A:B) tem de ir até a última linha, e uma folga que nenhuma célula pinta ficaria
         # com o fundo comum — a lombada aparecia cortada nas paletas claras (19/09/2026). Essas duas

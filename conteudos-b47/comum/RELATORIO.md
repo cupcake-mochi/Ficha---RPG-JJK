@@ -1,5 +1,9 @@
 # C+D B47 — primeira entrega de conteúdos comuns
 
+> Relatório histórico da primeira entrega. O estado atual das três frentes,
+> correções e distinção entre prova local/nativa estão em
+> [INTEGRACAO-CD.md](INTEGRACAO-CD.md). A combinação local tem 8.190 chaves.
+
 Base comum `0d4d64e2847dfea29b0e3804ab6f0853c52ea6fd`; contrato publicado em
 `ae16895`. Integrador em `codex/b47-capacidade`, integração em
 `codex/configuracao-b47`. Personagem e entidades ainda não integrados neste

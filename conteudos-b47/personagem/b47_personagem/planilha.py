@@ -128,7 +128,11 @@ def emitir(livro, contrato):
         for row, item in enumerate(book, 2):
             g = _registro_livro(grupo,item)
             for k in efetivos:
-                p.por(aba,L(col[k])+str(row),g.get(k,''))
+                value = g.get(k,'')
+                # INDEX de célula nativamente vazia vira zero no Sheets.
+                # Uma base sem texto deve herdar texto vazio, inclusive nas
+                # dimensões que aquela Forma não usa.
+                p.por(aba,L(col[k])+str(row),'=""' if value in (None,'') else value)
         for slot, fonte in enumerate(fontes, 1):
             r, dst = slot+1, len(book)+slot+1
             for k in campos:
@@ -183,7 +187,7 @@ def emitir(livro, contrato):
                         novo=f'IF(AND({p1}="alcance",{tests["area"]}),"area",IF(AND({p1}="area",{tests["alcance"]}),"alcance",""))'
                         campo=k[3:]
                         valor={'dimensao':novo,'antes':f'IF({novo}="alcance"," · alcance ",IF({novo}="area"," · área ",""))',
-                               'depois':'""','grau':f'IF({novo}="alcance",1,IF({raw("area_escada",r)}="comprimento",3,2))'}[campo]
+                               'depois':'""','grau':f'IF({novo}="",0,IF({novo}="alcance",1,IF({raw("area_escada",r)}="comprimento",3,2)))'}[campo]
                         expr=f'IF(AND({b}>0,{p2}=""),{valor},{expr})'
                 p.por(aba,L(aux_ini+i)+str(r),'='+expr)
             erros = _erros(grupo, raw, r, resolved, b, nome, nomes_raw, nomes_livro, contrato, livro)
@@ -195,7 +199,9 @@ def emitir(livro, contrato):
             p.por(aba,L(errocol)+str(r),f'=IF({ativo},TEXTJOIN(" · ",TRUE,{checks}),"")')
             p.avisos.append(dict(grupo=grupo,vaga=slot,fonte=ref(aba,err)))
             for k in efetivos:
-                p.por(aba,L(col[k])+str(dst),f'=IF(AND({ativo},{err}=""),{resolved[k]},"")')
+                vazio = 'FALSE' if k in ('mestre_viu','exige_tr','classe_0','automatica','extensao') else (
+                    '0' if k in ('peso','resultado','ce','nivel_minimo','refino_minimo','alvos','p1_grau','p2_grau') else '""')
+                p.por(aba,L(col[k])+str(dst),f'=IF(AND({ativo},{err}=""),{resolved[k]},{vazio})')
             for k, opcoes in opcoes_campos(grupo,livro).items():
                 p.validacoes.append(dict(fonte=fonte[k],opcoes=opcoes))
     return p

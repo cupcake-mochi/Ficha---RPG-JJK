@@ -39,7 +39,7 @@ def montar():
         if isinstance(node,ast.Assign) and any(isinstance(x,ast.Name) and x.id=='_AN' for x in node.targets): break
         # Continua utilizável depois da incorporação: a fixture reconstrói o
         # prefixo anterior à própria frente, para aplicar o módulo uma vez.
-        if any(isinstance(x,ast.Name) and x.id=='_PERSONAGEM' for x in ast.walk(node)):continue
+        if any(isinstance(x,ast.Name) and x.id in ('_PERSONAGEM','_ENTIDADES') for x in ast.walk(node)):continue
         if isinstance(node,ast.Expr) and isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Attribute) and node.value.func.attr=='guarda': continue
         prefixo.append(node)
     if not any(isinstance(x,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='_PECAS' for t in x.targets) for x in prefixo):
