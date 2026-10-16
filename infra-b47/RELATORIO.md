@@ -70,14 +70,18 @@ em ordem inversa; não desfaz operações nativas futuras. Google: restauração
 integral do snapshot de código, com nova guarda e releitura pelo integrador;
 não desfaz migração ou efeitos de gatilhos já executados. C/D seguem na fila.
 
-## Publicação impedida
+## Publicação: bloqueio inicial resolvido
 
 O push normal para `codex/b47-infra` foi tentado após conferir a base remota,
 mas o GitHub retornou **HTTP 403, permissão de escrita negada à identidade
-disponível no ambiente**. Nenhum commit desta frente foi publicado. Não foram
-alteradas credenciais ou permissões nem tentado outro destino.
+disponível no ambiente**. Naquela tentativa nenhum commit foi publicado. Não
+foram alteradas credenciais ou permissões pelo agente nem tentado outro destino.
 
-Os commits permanecem locais. A entrega inclui um bundle ignorado em
+Após o usuário ajustar o acesso e solicitar nova tentativa, o push foi concluído:
+`4187df3..cb8b80b` em `codex/b47-infra`. Os commits de implementação e evidências
+estão publicados; este registro posterior documenta a resolução do bloqueio.
+
+A entrega alternativa preparada durante o bloqueio inclui um bundle ignorado em
 `infra-b47/saidas/b47-infra.bundle`, criado após este registro, com a sequência
 desde `4187df3`. Em um clone que já tenha essa base, o integrador pode executar:
 
@@ -91,8 +95,8 @@ git cherry-pick 4187df3..refs/remotes/entrega/b47-infra
 ```
 
 O bundle contém só os commits desta frente e exige a base indicada; não inclui
-venv, saídas temporárias ou credenciais. Publicar no GitHub exige uma identidade
-com permissão de escrita, pelo integrador ou usuário.
+venv, saídas temporárias ou credenciais. O bundle representa a entrega até `cb8b80b`; o ramo remoto inclui também o
+registro posterior da publicação bem-sucedida.
 
 Próxima ação recomendada: revisão e integração desta infraestrutura após A com
 **GPT-6.1 Sol, Medium**, pois as ferramentas são delimitadas e têm fixtures.

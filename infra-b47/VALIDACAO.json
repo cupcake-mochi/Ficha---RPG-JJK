@@ -142,11 +142,19 @@
     "motivo": "Infraestrutura delimitada revisável; High apenas se conflito concreto de contrato/migração."
   },
   "publicacao": {
-    "estado": "impedida",
+    "estado": "publicada",
     "comando": "git push origin HEAD:refs/heads/codex/b47-infra",
-    "exit_code": 128,
-    "http": 403,
-    "motivo": "Identidade Git disponível sem permissão de escrita no repositório. Nenhum commit publicado.",
-    "entrega_alternativa": "infra-b47/saidas/b47-infra.bundle; base pré-requisito 4187df3; verificar com git bundle verify."
+    "entrega_alternativa": "infra-b47/saidas/b47-infra.bundle; base pré-requisito 4187df3; verificar com git bundle verify.",
+    "tentativa_inicial": {
+      "exit_code": 128,
+      "http": 403,
+      "motivo": "Identidade Git disponível sem permissão de escrita no repositório. Nenhum commit publicado."
+    },
+    "nova_tentativa": {
+      "exit_code": 0,
+      "destino": "origin refs/heads/codex/b47-infra",
+      "faixa_publicada": "4187df3..cb8b80b",
+      "motivo": "Nova tentativa solicitada pelo usuário após ajuste de acesso."
+    }
   }
 }
