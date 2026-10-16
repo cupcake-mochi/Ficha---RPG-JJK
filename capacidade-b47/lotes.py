@@ -10,6 +10,7 @@ from pathlib import Path
 from openpyxl.utils.cell import range_boundaries,get_column_letter as L
 from migracao import planejar,sha,raw,uv
 
+ENXUGAR_LINHAS = ('CONFIGURAÇÃO','DADOS_PROGRESSAO','DADOS_CRIACAO','DADOS_MELHORIAS','DADOS_RESTRICOES','ANALISE')
 
 def pt(formula):
     quoted=False;out=[]
@@ -110,7 +111,12 @@ def gerar(base,target,snapshot,plan):
         requests.append({'updateDimensionGroup':{'dimensionGroup':{'range':rg,'depth':1,'collapsed':bool(collapsed)},'fields':'collapsed'}})
     for sheet,changes in plan['valores_alterados'].items():
         if sheet=='CONFIGURAÇÃO':continue
-        for coord,value in changes.items():write(sheet,coord,{'userEnteredValue':native_value(value)},'userEnteredValue')
+        for coord,value in changes.items():
+            # The guarded tail is deleted after all consumers are updated.
+            # Clearing each retired cell first adds thousands of REST requests
+            # without changing the final state. Retained rows still get clears.
+            if sheet in ENXUGAR_LINHAS and range_boundaries(coord)[1]>tabs[sheet]['linhas']:continue
+            write(sheet,coord,{'userEnteredValue':native_value(value)},'userEnteredValue')
     # Only changed validation sources outside CONFIGURAÇÃO need replacement.
     before={a['nome']:{m['onde']:m for m in a.get('menus',[])} for a in base['layout']['abas']}
     for sheet,tab in tabs.items():
@@ -126,7 +132,7 @@ def gerar(base,target,snapshot,plan):
         for coord,cell in cells.items():write(sheet,coord,{'userEnteredValue':cell.get('userEnteredValue',{}),'note':cell.get('note','')},'userEnteredValue,note')
     # Delete surplus rows only after every consumer is updated. Do not shrink
     # columns or the 3b CB2:CC10 cache; do not remove studies or player choices.
-    for sheet in ('CONFIGURAÇÃO','DADOS_PROGRESSAO','DADOS_CRIACAO','DADOS_MELHORIAS','DADOS_RESTRICOES','ANALISE'):
+    for sheet in ENXUGAR_LINHAS:
         count=sheets[sheet]['properties']['gridProperties']['rowCount'];needed=tabs[sheet]['linhas']
         if count>needed:requests.append({'deleteDimension':{'range':{'sheetId':sheets[sheet]['properties']['sheetId'],'dimension':'ROWS','startIndex':needed,'endIndex':count}}})
     return requests

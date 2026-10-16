@@ -10,6 +10,9 @@ python=str(ROOT/'.venv/bin/python')
 if not Path(python).exists():raise SystemExit('Execute bash nuvem-b47/preparar.sh antes do roteiro focal')
 base=str(out/'baseline-v9.json');model=str(out/'pecas-modelo.json');prior=str(out/'pecas-modelo-anterior.json')
 commands=[('smoke',[python,'nuvem-b47/conferir.py','--smoke']),
+          ('snapshot-unit',[python,'capacidade-b47/testar-snapshot.py']),
+          ('formulas-nativas-unit',[python,'capacidade-b47/testar-formulas-nativas.py']),
+          ('equivalencia-lotes-unit',[python,'capacidade-b47/testar-equivalencia-lotes.py']),
           ('base',[python,'capacidade-b47/exportar-base.py','--saida',base]),
           ('modelo',[python,'nuvem-b47/exportar-baseline.py','--destino',str(out)]),
           ('geracao',[python,'ficha-v01/monta.py']),

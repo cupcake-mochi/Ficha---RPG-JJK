@@ -55,19 +55,31 @@ def value(cell):
 
 
 def canonical(v):
-    """Normalize formula punctuation only outside strings, preserving decimal commas."""
+    """Normaliza pontuação e aspas opcionais de aba, preservando textos literais."""
     if v in (None,''): return None
     if not isinstance(v,str) or not v.startswith('='):return v
     out=[];quoted=False
     # An English baseline has argument commas. A native pt_BR formula with
     # multiple arguments has semicolons; only that form has decimal commas.
     native=';' in re.sub(r'"(?:[^"]|"")*"','',v)
-    for i,ch in enumerate(v):
+    i=0
+    while i<len(v):
+        ch=v[i]
+        if not quoted and ch=="'":
+            # Sheets removes quotes around simple ASCII sheet identifiers.
+            # Consume the WHOLE single-quoted name, including escaped quotes,
+            # so a substring inside an unusual name can never be rewritten.
+            match=re.match(r"'((?:[^']|'')*)'!",v[i:])
+            if match:
+                name=match[1]
+                out.append(name+'!' if re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*',name) else match[0])
+                i+=len(match[0]);continue
         if ch=='"':quoted=not quoted
         if not quoted:
             if ch==';':ch=','
             elif native and ch==',' and v[i-1:i].isdigit() and v[i+1:i+2].isdigit():ch='.'
         out.append(ch)
+        i+=1
     return ''.join(out)
 
 
