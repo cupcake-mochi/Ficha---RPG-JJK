@@ -3,6 +3,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -123,6 +124,55 @@ class InfraTest(unittest.TestCase):
             self.assertFalse(runner.baseline_valida('outra'))
             (base/names[0]).write_text('{"alterado":true}')
             self.assertFalse(runner.baseline_valida('atual'))
+
+    def test_recibo_json_com_estrutura_invalida_nao_interrompe_executor(self):
+        base = self.root/'baseline'
+        base.mkdir()
+        invalidos = [None, [], 'texto', {'fingerprint': 'atual', 'arquivos': []},
+                     {'fingerprint': 'atual', 'arquivos': None},
+                     {'fingerprint': 'atual', 'arquivos': {'../fora.json': 'hash'}}]
+        with patch.object(runner, 'OUT', self.root):
+            for data in invalidos:
+                with self.subTest(recibo=data):
+                    runner.gravar(base/'recibo.json', data)
+                    self.assertFalse(runner.baseline_valida('atual'))
+
+    def test_cli_nao_sobrescreve_snapshot_com_pacote(self):
+        anterior = self.snapshot.read_bytes()
+        symbolic = self.root/'link-snapshot.json'
+        symbolic.symlink_to(self.snapshot)
+        hard = self.root/'hardlink-snapshot.json'
+        hard.hardlink_to(self.snapshot)
+        for saida in (self.snapshot, symbolic, hard):
+            with self.subTest(saida=saida):
+                run = subprocess.run([sys.executable, str(Path(apps.__file__)), 'preparar',
+                                      '--fontes', str(self.src), '--snapshot', str(self.snapshot),
+                                      '--script-id', 'fixture', '--saida', str(saida)],
+                                     capture_output=True, text=True, timeout=5)
+                self.assertEqual(run.returncode, 2)
+                self.assertEqual(self.snapshot.read_bytes(), anterior)
+
+    def test_cli_nao_sobrescreve_fonte_com_manifesto(self):
+        fonte = self.src/'Codigo.gs'
+        anterior = fonte.read_bytes()
+        run = subprocess.run([sys.executable, str(Path(apps.__file__)), 'manifesto',
+                              '--fontes', str(self.src), '--saida', str(fonte)],
+                             capture_output=True, text=True, timeout=5)
+        self.assertEqual(run.returncode, 2)
+        self.assertEqual(fonte.read_bytes(), anterior)
+
+    def test_cli_nao_sobrescreve_pacote_com_conferencia(self):
+        package = self.root/'pacote.json'
+        apps.gravar(package, apps.preparar(self.src, self.snapshot, 'fixture'))
+        self.files = json.loads(package.read_text())['files']
+        self.save_remote()
+        anterior = package.read_bytes()
+        run = subprocess.run([sys.executable, str(Path(apps.__file__)), 'conferir',
+                              '--pacote', str(package), '--snapshot', str(self.snapshot),
+                              '--script-id', 'fixture', '--saida', str(package)],
+                             capture_output=True, text=True, timeout=5)
+        self.assertEqual(run.returncode, 2)
+        self.assertEqual(package.read_bytes(), anterior)
 
     def test_relatorio_separa_execucao_falha_impedimento(self):
         def task(code, deps=()):

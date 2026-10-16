@@ -15,6 +15,13 @@ def gravar(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
 
+def proteger_entradas(saida, entradas):
+    for path in entradas:
+        mesmo_arquivo = saida.exists() and path.exists() and saida.samefile(path)
+        if saida.resolve() == path.resolve() or mesmo_arquivo:
+            raise ValueError('A saída não pode sobrescrever uma entrada: ' + str(path))
+
+
 def indice(files):
     result = {}
     for f in files:
@@ -97,6 +104,10 @@ def main():
             p.add_argument('--pacote', type=Path, required=True)
     a = ap.parse_args()
     try:
+        entradas = [p for p in (getattr(a, 'snapshot', None), getattr(a, 'pacote', None)) if p is not None]
+        if hasattr(a, 'fontes'):
+            entradas.extend(a.fontes.glob('*.gs'))
+        proteger_entradas(a.saida, entradas)
         if a.acao == 'manifesto':
             rows = list(indice(locais(a.fontes)).values())
             value = {'limite_exclusivo_bytes': LIMITE, 'total_bytes': sum(r['bytes'] for r in rows),

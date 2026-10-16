@@ -41,6 +41,8 @@ permite repetir estrutura/textos sem `--permitir-pesados` e sem gerar de novo.
 O estado `reutilizado` não é execução nova. Para forçar geração, remover apenas
 `infra-b47/saidas/baseline/recibo.json`. Arquivos externos não rastreados, salvo os
 Python citados, não compõem a impressão; manter as entradas do núcleo no Git.
+Recibos com JSON de estrutura inválida ou nomes de saída inesperados invalidam
+o cache e não interrompem o executor.
 
 Cada execução cria pasta única ignorada, logs e `relatorio.json`, com SHA,
 estado inicial do Git, comandos, tempo, exit codes reais e motivos. Estados:
@@ -73,6 +75,9 @@ Lista nomes de arquivo/API, bytes UTF-8 e SHA-256, além do total. Rejeita conju
 vazio, symlinks e arquivos com **900.000 bytes ou mais**, seguindo a guarda
 estrita do bootstrap. `MANIFESTO-BASE.json` é a conferência desta base, não da
 redução futura. Regenerar o manifesto após A; só o integrador regenera os `.gs`.
+Os comandos rejeitam uma saída que coincida com snapshot, pacote ou `.gs` de
+entrada, inclusive por link simbólico/hard link. Isso preserva os arquivos
+necessários à comparação e à reversão. O erro retorna exit 2 sem gravar a saída.
 
 ## Envio oficial: procedimento exclusivo do integrador
 

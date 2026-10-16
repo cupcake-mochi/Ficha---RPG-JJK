@@ -101,3 +101,31 @@ registro posterior da publicação bem-sucedida.
 Próxima ação recomendada: revisão e integração desta infraestrutura após A com
 **GPT-6.1 Sol, Medium**, pois as ferramentas são delimitadas e têm fixtures.
 Subir para High apenas se houver conflito concreto de contrato ou migração.
+
+## Revisão posterior à publicação
+
+Revisada a entrega publicada em `92c9237`. Na consulta remota desta revisão,
+`codex/b47-capacidade` e `codex/configuracao-b47` ainda apontavam para
+`4187df37640b5e0966cdb342f56f9ee0a0daf16a`; não havia redução publicada para
+validar a compatibilidade. Nenhuma alteração ou integração nesses ramos.
+
+Foram reproduzidos e corrigidos dois casos em `infra-b47/`:
+
+- Recibo com JSON válido, mas estrutura inválida, causava exceção antes de o
+  executor registrar resultados. Agora a estrutura e os nomes permitidos são
+  verificados antes de ler os modelos; cache inválido não é reutilizado.
+- Informar o mesmo arquivo como entrada e `--saida` permitia substituir o
+  snapshot de reversão, o pacote ou um `.gs` de origem. Agora o comando retorna
+  exit 2 antes de gravar, inclusive com links simbólicos/hard links.
+
+As novas fixtures falharam antes das correções. Depois, os **15 testes próprios**
+passaram. Smoke e a execução focal de estrutura/textos foram repetidos para
+conferir o fluxo com recibo válido, sem repetir a geração pesada. O manifesto
+atual continuou idêntico ao manifesto da base. Evidência da revisão em
+`VALIDACAO.json`, incluindo hashes dos arquivos testados e dos logs locais.
+
+Aplicar também o commit desta revisão ao integrar a frente. Reversão por
+`git revert` desse commit, sem qualquer efeito no Google. Próxima ação continua
+sendo a combinação pelo integrador após A. Recomenda-se **GPT-6.1 Sol, Medium**
+para essa revisão de ferramentas; High somente diante de conflito concreto de
+contrato ou migração.

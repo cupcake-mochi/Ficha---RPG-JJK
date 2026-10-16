@@ -76,10 +76,15 @@ def baseline_valida(stamp):
     receipt = OUT/'baseline/recibo.json'
     try:
         data = json.loads(receipt.read_text())
-        return data['fingerprint'] == stamp and all(
-            hash_file(OUT/'baseline'/n) == sha for n, sha in data['arquivos'].items()
-        ) and set(data['arquivos']) == {'pecas-modelo.json', 'pecas-modelo-anterior.json'}
-    except (OSError, ValueError, KeyError):
+        if not isinstance(data, dict):
+            return False
+        files = data.get('arquivos')
+        if not isinstance(files, dict) or set(files) != {'pecas-modelo.json', 'pecas-modelo-anterior.json'}:
+            return False
+        return data.get('fingerprint') == stamp and all(
+            isinstance(sha, str) and hash_file(OUT/'baseline'/n) == sha for n, sha in files.items()
+        )
+    except (OSError, ValueError):
         return False
 
 

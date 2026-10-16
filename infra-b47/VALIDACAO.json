@@ -156,5 +156,121 @@
       "faixa_publicada": "4187df3..cb8b80b",
       "motivo": "Nova tentativa solicitada pelo usuário após ajuste de acesso."
     }
+  },
+  "revisao_posterior": {
+    "base_revisada": "92c92376a3d8f5fe4b987b1b5ccf7e861756b3b1",
+    "ramos_remotos_observados": {
+      "codex/b47-capacidade": "4187df37640b5e0966cdb342f56f9ee0a0daf16a",
+      "codex/configuracao-b47": "4187df37640b5e0966cdb342f56f9ee0a0daf16a"
+    },
+    "compatibilidade_reducao": "Pendente: não havia redução publicada nos ramos consultados.",
+    "problemas_reproduzidos": [
+      "Recibo JSON com estrutura inválida causava exceção.",
+      "Saída sobre arquivo de entrada apagava snapshot, pacote ou fonte."
+    ],
+    "reproducao_antes_correcao": {
+      "testes": 14,
+      "exit_code": 1,
+      "falhas": 2,
+      "erros_subtestes": 5,
+      "log_sha256": "8800646b48561803ddaf558174c434060357b9a866f6a318c12c1d7d858ade12"
+    },
+    "testes_apos_correcao": {
+      "comando": ".venv/bin/python -m unittest discover -s infra-b47 -p 'test_*.py' -v",
+      "testes": 15,
+      "exit_code": 0,
+      "log_sha256": "7a7233cdc4fbc02fe004ba2ffbf36a66c403bcc23002d185b885b348ce5d215a"
+    },
+    "fontes_testadas_sha256": {
+      "infra-b47/apps_script.py": "62293851dbec9c2d4dca0fa3c1317836d02cab0bc6fa7b6169a94af65a109961",
+      "infra-b47/executar.py": "eb8442ae4f0802adfcfc4101e9d96e46f6dc73b6ac25443d0604592f1e748915",
+      "infra-b47/test_infra.py": "a1b7b1afd00ba716a308fcaeaade2056ec226875544c61ecba32d9f1cea194d2"
+    },
+    "execucao_focal_apos_correcao": {
+      "sha": "92c92376a3d8f5fe4b987b1b5ccf7e861756b3b1",
+      "diff_inicial": " M infra-b47/README.md\n M infra-b47/RELATORIO.md\n M infra-b47/apps_script.py\n M infra-b47/executar.py\n M infra-b47/test_infra.py\n",
+      "fingerprint": "c3aa779f262bfae3261538ab164dfed4f6314ee2a03a371a39c009bdc1e181d2",
+      "resultados": [
+        {
+          "teste": "baseline",
+          "comando": [
+            "/workspace/Ficha---RPG-JJK/.venv/bin/python",
+            "nuvem-b47/exportar-baseline.py",
+            "--destino",
+            "/workspace/Ficha---RPG-JJK/infra-b47/saidas/baseline"
+          ],
+          "escopo": "Exportação única do modelo; não gera .gs",
+          "limite": "",
+          "estado": "reutilizado",
+          "exit_code": null,
+          "motivo": "Recibo e hashes válidos; exportação não repetida."
+        },
+        {
+          "teste": "smoke",
+          "comando": [
+            "/workspace/Ficha---RPG-JJK/.venv/bin/python",
+            "nuvem-b47/conferir.py",
+            "--smoke"
+          ],
+          "escopo": "Sintaxe, referências, catálogo/progressão/Kaori",
+          "limite": "",
+          "estado": "executado",
+          "exit_code": 0,
+          "segundos": 6.652,
+          "motivo": "",
+          "log": "infra-b47/saidas/20261016T145621Z-0d60a016/smoke.log",
+          "log_sha256": "73fe8774c1a0aa7f447f03516c19e1cd6b273b78c598f7b3c98de61d2e14a88c"
+        },
+        {
+          "teste": "pecas-estrutura",
+          "comando": [
+            "/workspace/Ficha---RPG-JJK/.venv/bin/python",
+            "regressao-pecas.py",
+            "--modelo",
+            "/workspace/Ficha---RPG-JJK/infra-b47/saidas/baseline/pecas-modelo.json",
+            "--anterior",
+            "/workspace/Ficha---RPG-JJK/infra-b47/saidas/baseline/pecas-modelo-anterior.json",
+            "--estrutura"
+          ],
+          "escopo": "Estrutura e contrato de peças",
+          "limite": "Expectativas 789/395: integrador revisa após A.",
+          "estado": "executado",
+          "exit_code": 0,
+          "segundos": 1.87,
+          "motivo": "",
+          "log": "infra-b47/saidas/20261016T145621Z-0d60a016/pecas-estrutura.log",
+          "log_sha256": "b0c69cf21f05aeaea07d487fc581df0056eaf0acf97a4765e6bbed3188afade5"
+        },
+        {
+          "teste": "textos",
+          "comando": [
+            "node",
+            "regressao-textos-custom.js",
+            "/workspace/Ficha---RPG-JJK/infra-b47/saidas/baseline/pecas-modelo.json"
+          ],
+          "escopo": "Sete cenários em VM",
+          "limite": "",
+          "estado": "executado",
+          "exit_code": 0,
+          "segundos": 0.968,
+          "motivo": "",
+          "log": "infra-b47/saidas/20261016T145621Z-0d60a016/textos.log",
+          "log_sha256": "9dfb6b1f7dd9ab49b5f5c78a94b7f217e4dc0ba64ffdf63d37d3b17fea4de115"
+        }
+      ],
+      "aviso": "Testes locais; sem Google. Smoke não é bateria integral."
+    },
+    "manifesto": {
+      "comando": ".venv/bin/python infra-b47/apps_script.py manifesto --saida infra-b47/saidas/manifesto-revisao.json",
+      "exit_code": 0,
+      "comparacao": "cmp infra-b47/MANIFESTO-BASE.json infra-b47/saidas/manifesto-revisao.json",
+      "comparacao_exit_code": 0
+    },
+    "google_alterado": false,
+    "recomendacao": {
+      "modelo": "GPT-6.1 Sol",
+      "esforco": "Medium",
+      "motivo": "Revisão focal da infraestrutura; combinação pelo integrador após A."
+    }
   }
 }
