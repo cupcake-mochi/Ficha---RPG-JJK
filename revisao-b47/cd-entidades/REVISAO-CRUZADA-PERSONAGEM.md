@@ -37,6 +37,19 @@ acrescentadas depois das de personagem não caem em complemento nenhum e voltam 
 **P5. Positivo.** Os cartões deles também dependem de `copias`; com o patch 02 desta pasta, o carregador
 JS não perde nenhuma célula em relação à referência Python, na combinação.
 
+**P6. Positivo: convivência célula a célula sem colisão.** `comparar_frentes.py` sobre modelos
+`--exportar-pecas` de base, só entidades, só personagem e combinado:
+
+| Aba | entidades | personagem | as duas | combinado reproduz cada uma |
+|---|---:|---:|---:|---|
+| DADOS_INVOC | 264 | 3120 | 0 | sim |
+| DADOS_AM | 0 | 1199 | 0 | sim |
+| DADOS_ENTIDADES | 550 | 0 | 0 | sim |
+| DADOS_FORMAS / APTIDOES / TALENTOS | 0 | 5944 / 1566 / 876 | 0 | sim, a menos de 290/100/80 referências à CONFIGURAÇÃO deslocadas +426 linhas (bloco de entidades antes); 0 diferenças depois de normalizar a linha |
+| Menus INVOCAÇÕES / FICHA AMALDIÇOADA | 3 / 0 | 24 / 4 | 0 | sim |
+
+Nenhuma célula ou menu é alterado pelas duas frentes; endereços derivados funcionam na combinação.
+
 ## Da base do integrador (não é da frente de personagem)
 
 - `regressao-progressao.py`: "formato 10 explícito" falha já em `7752c91` (ANALISE foi para 11).
@@ -44,8 +57,6 @@ JS não perde nenhuma célula em relação à referência Python, na combinaçã
 
 ## Não feito (impedido pelo limite de uso desta sessão)
 
-- Comparação célula a célula base × entidades × personagem × combinado em DADOS_INVOC/menus (coleta de
-  modelos preparada, não executada).
 - Recálculo das fórmulas deles no Calc: o LibreOffice 24.2 daqui não tem `LET` (exige 24.8+); fórmulas
   com `LET` dariam `#NAME?` por versão, não por erro deles.
 - Leitura linha a linha de `motor.py`/`consumidores.py`/`planilha.py` contra o livro.
