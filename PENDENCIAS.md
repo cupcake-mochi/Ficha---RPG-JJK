@@ -1,3 +1,26 @@
+## C em andamento · comuns locais e fórmulas nativas · 16/10/2026
+
+Primeira entrega do integrador: dez Tipos de dano compartilhados e Condições
+como modalidade dos mesmos 30 cadastros de Melhoria. Fontes e leitor no
+formato 11 inicial, 7.436 chaves (80 novas, 7.356 anteriores preservadas salvo
+versão). Geração `7adee586c04accf6`, 22 GS, maior 816.375 bytes. A revisão
+preenchida continua no fechamento A+B/formato 10; não houve migração C nela.
+
+[Relatório](conteudos-b47/comum/RELATORIO.md) e
+[provas/hashes](conteudos-b47/comum/VALIDACAO.json): dez testes locais,
+12 checagens do carregador/oito ordens, compactação de 18 abas + três fixtures,
+sete cenários de texto. Na nova descartável
+`1BzVzrqjKsarh6DCAu6FGZ_yOxy0aBzttfX4n1JH2QFI`, 48 asserções de fórmulas,
+12 seleções de reuso, 29 campos restaurados e 968 células sem erro. Os 80
+campos foram testados em CD_TESTE_ANALISE; ANALISE principal e GS vinculados
+permaneceram v10 nesse ensaio. Isso não encerra C nem valida o código nativo novo.
+
+Claude `50bcc00` disponível no Git, ainda em revisão e sem relatório recebido;
+personagem não recebido. Continuar revisão/integração das frentes, validar o
+pacote combinado no Apps Script e executar D antes de migrar a revisão.
+Calc ausente. Oficial, bot, main e acessos intactos. Próximo modelo/esforço
+recomendado: GPT-6.1 Sol, High, para preservar contratos durante integração.
+
 ## C+D iniciados · contrato comum inicial · 16/10/2026
 
 Usuário usou o prompt 1 e iniciou o integrador. Base comum confirmada:

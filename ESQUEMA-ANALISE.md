@@ -1,4 +1,4 @@
-> **Retomada B47 — 16/10/2026:** gerador local no formato **10**, com **7.356 chaves**; revisão nativa ainda no **9**, com **18.948**. Consulte “Formato 10” ao final para a retirada explícita de chaves, fontes e migração. As seções anteriores registram versões históricas. Rota vigente: [PLANO-RETOMADA-B47.md](PLANO-RETOMADA-B47.md).
+> **Retomada B47 — 16/10/2026:** A+B concluídos, inclusive revisão nativa no formato **10**, com **7.356 chaves**. C+D iniciados: o gerador local acrescenta dano/Condições em **11**, inicialmente **7.436 chaves**; isso ainda não é C completa nem aplicação na revisão. Consulte a seção “Formato 11” ao final e o [checkpoint vigente](PENDENCIAS.md). As seções anteriores registram versões históricas.
 
 # O esquema da aba ANALISE (o "contrato" com o bot)
 
@@ -238,7 +238,36 @@ Não manter as chaves retiradas como milhares de exportações vazias. Os três
 fragmentos de transporte `PecasAnalise2.gs` a `PecasAnalise4.gs` foram retirados;
 o envio ao projeto Google deve retirar esses arquivos antigos também.
 
-### Leitura e variantes históricas
+## Formato 11 · início de C, dano e Condições
+
+Primeira entrega local: **7.436 chaves**, sendo as 7.356 de v10 preservadas
+com as quatro colunas iguais, exceto `formato.versao`, agora texto `11`.
+As 80 novas chaves são:
+
+- `custom.melhoria.N.modalidade`, N de 1 a 30: entrada Melhoria/Condição do
+  mesmo cartão. Condição usa as vagas/orçamento de Melhoria, Controle como
+  padrão sem base e Família em branco, e exige TR. Base opcional deve ser
+  condição do livro. Nome/peso/efeito/requisitos existentes conservam sentido.
+- `custom.dano.N.nome/.mestre_viu/.definicao/.efeito`, N de 1 a 10, e
+  `aviso.custom.dano.N`. Definição/efeito são texto literal, incluindo espaços,
+  números aparentes e `=` inicial. O leitor preserva `.definicao` como texto.
+  Não existe campo mecânico que interprete resistência/vulnerabilidade/dano
+  a partir dessa descrição. Cadastros inválidos são exportados e avisados,
+  mas excluídos dos menus; o livro permanece disponível.
+
+O leitor local aceita 1–11 e conserva rejeição dos avisos custom. Campos das
+outras frentes serão documentados ao integrar suas entregas; namespaces estão
+reservados em `conteudos-b47/comum/contrato.json`. Não declarar os demais
+conteúdos implementados pela simples existência do contrato ou versão 11.
+
+Prova focal em cópia nativa: fórmulas de dano/Condições, catálogos e menus,
+com exportação dos 80 campos em `CD_TESTE_ANALISE`. A ANALISE principal dessa
+cópia e os GS vinculados permaneceram v10 durante esse ensaio. Revisão
+preenchida e oficial não foram alteradas nesta etapa. Aplicação da versão
+integrada exige código salvo/relido, nova prova conjunta e migração guardada.
+Bot/formato 11 permanece externo, sem mudança no bot.
+
+## Histórico de leitura e variantes até o formato 10
 
 O leitor local rejeita valores de erro e todo `aviso.custom.*` não vazio, mesmo
 sem ⚠. Campos de nome/descrição/efeito/requisitos/texto preservam texto literal
@@ -265,4 +294,5 @@ bot antes de publicar para jogadores. Nenhuma chave foi reciclada aqui.
 | 7 · B47 | autonomia e nove Famílias; 7.485 chaves | não revalidado nesta entrega |
 | 8 · B47 | Famílias custom; 9.082 chaves | não revalidado nesta entrega |
 | 9 · B47 | Melhorias/Restrições; 18.948 chaves | não revalidado nesta entrega |
-| 10 · esta entrega | capacidade compartilhada reduzida; 7.356 chaves | reconhecimento/compatibilidade pendentes antes de jogadores |
+| 10 · fechamento A+B | capacidade compartilhada reduzida; 7.356 chaves | reconhecimento/compatibilidade pendentes antes de jogadores |
+| 11 · C em andamento | dano/Condições locais; inicialmente 7.436 chaves | externo; combinação completa e aplicação na revisão pendentes |
