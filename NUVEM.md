@@ -13,6 +13,16 @@ bash nuvem-b47/preparar.sh
 .venv/bin/python nuvem-b47/conferir.py --smoke
 ```
 
+No Windows, use Git Bash e Python 3.12 nativo. O bootstrap reconhece
+`.venv/Scripts/python.exe`; o smoke equivalente é
+`.venv/Scripts/python.exe nuvem-b47/conferir.py --smoke`. Se necessário,
+informe `PYTHON` com o caminho do executável e `PYTHONUTF8=1`.
+O `.gitattributes` mantém LF no checkout, preservando os hashes das referências
+e dos `.gs` mesmo quando o Git global usa `core.autocrlf=true`.
+O executor `infra-b47/executar.py` depende de `fcntl` (POSIX); sua bateria
+agregada fica impedida no Python nativo do Windows. Isso não impede o smoke
+ou o manifesto/preparo/conferência offline de `infra-b47/apps_script.py`.
+
 Se o Python estiver em outro nome: `PYTHON=python3.12 bash nuvem-b47/preparar.sh`. Ative o ambiente antes de executar os testes antigos que chamam `python3` como subprocesso:
 
 ```bash

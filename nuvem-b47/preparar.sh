@@ -8,6 +8,11 @@ if [[ $# -ne 0 ]]; then
 fi
 "${PYTHON:-python3}" -c 'import sys; sys.exit(0 if (3,10) <= sys.version_info[:2] <= (3,12) else "Use Python 3.12 (dependências fixadas para 3.10–3.12).")'
 "${PYTHON:-python3}" -m venv .venv
-.venv/bin/python -m pip install --disable-pip-version-check -r requirements.txt
+venv_python=.venv/bin/python
+# CPython nativo no Windows cria Scripts/, inclusive sob o Git Bash.
+if [[ ! -x "$venv_python" && -f .venv/Scripts/python.exe ]]; then
+  venv_python=.venv/Scripts/python.exe
+fi
+"$venv_python" -m pip install --disable-pip-version-check -r requirements.txt
 mkdir -p nuvem-b47/saidas
-.venv/bin/python nuvem-b47/conferir.py
+"$venv_python" nuvem-b47/conferir.py
