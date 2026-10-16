@@ -5,13 +5,22 @@ import subprocess
 import tempfile
 import unittest
 import runpy
-from preparar_patches import AREA,fonte,preparar
+from preparar_patches import AREA,fonte,preparar,BASE
 from b47_personagem.transporte import fatiar_colunas
 
 
 class TestPatches(unittest.TestCase):
     def test_patches_em_copias_dentro_da_area(self):
-        python,js=preparar()
+        self.conferir_serie(BASE,AREA/'patches')
+
+    def test_patches_sobre_integracao_7752c91(self):
+        base='7752c9115f168effe74092d125dfdd5352bd44a3'
+        r=subprocess.run(['git','cat-file','-e',base+'^{commit}'],cwd=AREA,capture_output=True)
+        if r.returncode:self.skipTest('Commit de integração 7752c91 ausente; fazer fetch explícito dessa referência')
+        self.conferir_serie(base,AREA/'patches'/'base-7752c91')
+
+    def conferir_serie(self,base,pasta_patches):
+        python,js=preparar(base)
         ast.parse(python)
         local=AREA/'_local';local.mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(prefix='patch-check-',dir=local) as temp:
@@ -19,9 +28,9 @@ class TestPatches(unittest.TestCase):
             subprocess.run(['git','init','--quiet',str(temp)],check=True,capture_output=True)
             for path in ('ficha-v01/monta.py','ficha/modelo.gs.js','ler-analise.py'):
                 destino=temp/path;destino.parent.mkdir(parents=True,exist_ok=True)
-                destino.write_text(fonte(path),encoding='utf8',newline='\n')
+                destino.write_text(fonte(path,base),encoding='utf8',newline='\n')
             for nome in ('01-incorporacao.patch','02-transporte.patch','03-leitor.patch'):
-                patch=AREA/'patches'/nome
+                patch=pasta_patches/nome
                 r=subprocess.run(['git','apply','--check',str(patch)],cwd=temp,capture_output=True,text=True)
                 self.assertEqual(r.returncode,0,nome+' '+r.stderr)
                 subprocess.run(['git','apply',str(patch)],cwd=temp,check=True,capture_output=True)
