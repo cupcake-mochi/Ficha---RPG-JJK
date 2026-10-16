@@ -72,6 +72,26 @@ Mecanicamente, A está consistente com o plano: capacidades centralizadas, contr
 
 R3/R4 pedem decisão ou registro no roteiro; R5/R6 podem ir junto ou depois. Este parecer não cobre validação nativa, que ninguém executou, nem a integração em `codex/configuracao-b47`, que não existia.
 
+## Combinação simulada A + infra + revisão (antes da integração oficial)
+
+`codex/configuracao-b47` continuava em 4187df3. Para antecipar a integração, montei numa worktree temporária: `origin/codex/b47-capacidade` (4610c88) + merge de `origin/codex/b47-infra` (b8ab7b5) + este ramo. Nada foi publicado dessa combinação.
+
+| Verificação | Sem patches | Com os 3 patches propostos* |
+|---|---|---|
+| Merges | **sem conflito** (as frentes tocam pastas distintas) | — |
+| `unittest` de `infra-b47` | OK | 15/15 |
+| `infra-b47/executar.py smoke pecas-estrutura textos --permitir-pesados` | 4 etapas executadas | — |
+| Manifesto `.gs` da infra × `capacidade-b47/manifesto-gs.json` | **idênticos** (20 arquivos, mesmos hashes, 5.670.234 bytes) | — |
+| `test_infra_envio.py --perfil alvo-real-separado --ref HEAD`, com o remoto = projeto v9 atual (23 `.gs`) | a ferramenta **bloqueia** `PecasAnalise2–4` sem opção de removê-los: **o passo 7 do ROTEIRO-NATIVO não tem caminho seguro** (I2 vira impedimento) | 10/10: pacote = gerados + `appsscript`; o projeto resultante constrói com ANALISE = contrato |
+| `bash rodar-tudo.sh --b47-focal` (integrador) | 14/14 | **14/14** (6 min 12 s) |
+| `bash revisao-b47/rodar.sh alvo-real-separado` | falhas R1, R2 | **exit 0**: contrato 38, leitor 31, endereços 4, carregador 4 (incluindo sobras v9 recusadas), peças 55, fronteiras 13, migração 22; só riscos (R5, B1, B3, INDIRECT) |
+
+\* `carregador-selo-de-geracao-v10.diff`, `ler-analise-avisos-custom-v10.diff` e `infra-remover-explicito.diff`, todos aplicados com `git apply`, seguidos de `python ficha-v01/monta.py`. Os patches mudam 10 `.gs` gerados: selo e lista de complementos esperados.
+
+Pendências para o integrador, além dos patches:
+- `infra-b47/MANIFESTO-BASE.json` descreve a v9 (23 arquivos) e deve ser regenerado depois de A.
+- O README da infra ainda chama o envio de "regenerar o manifesto após A".
+
 ## Ambiente e ferramentas realmente usados
 
 | Item | Estado |
