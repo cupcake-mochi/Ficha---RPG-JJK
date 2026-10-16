@@ -1,0 +1,122 @@
+{
+  "arquivos": [
+    {
+      "arquivo": "Analise.gs",
+      "bytes": 816318,
+      "sha256": "be2ea8620482bfc9338ae8930c4ef7d55f7d1ca1db0a6da40a61e6889e902ccc"
+    },
+    {
+      "arquivo": "AnaliseFontes.gs",
+      "bytes": 413401,
+      "sha256": "c0d9e5e20d588ac079eb9e6daffbf5ec86f30a4ad52e394d4c98c8941e929418"
+    },
+    {
+      "arquivo": "Codigo.gs",
+      "bytes": 260138,
+      "sha256": "5ff83291af772326057c1a83eb8f25528c3856e8111cae06b4deea27d0831bfa"
+    },
+    {
+      "arquivo": "Configuracao.gs",
+      "bytes": 843661,
+      "sha256": "f3f766d42c16cceb007ca7b40d1e625e8a956cf01b7de4a1a57bf5ddd06b9e1d"
+    },
+    {
+      "arquivo": "Criacao.gs",
+      "bytes": 409134,
+      "sha256": "8eacf3d1fbebdc53b0417e7e0ffc174f5fb8f80d517e4261d59a2f6a5c78dc99"
+    },
+    {
+      "arquivo": "CriacaoAnalise.gs",
+      "bytes": 282438,
+      "sha256": "92ebd0d4fd776263a24b7d39a252efa253be6822fce9651deb39f997f7f52a21"
+    },
+    {
+      "arquivo": "CriacaoPainel.gs",
+      "bytes": 103070,
+      "sha256": "d20c6c8614fbc2460298a65b2a1008e18abce2112f949599a974ea242daae8b9"
+    },
+    {
+      "arquivo": "Custom.gs",
+      "bytes": 609566,
+      "sha256": "ffd6bf162ded829d25ff67c66dc7f45bb70d79c4569d49e37e00e875f71eb2c4"
+    },
+    {
+      "arquivo": "Ficha.gs",
+      "bytes": 789241,
+      "sha256": "acb5308143f7328d1075d1a6a9162f8fa74e88d929583332d8de398d15e70402"
+    },
+    {
+      "arquivo": "Habilidades.gs",
+      "bytes": 215389,
+      "sha256": "478f255b306af36c19f1bfdfba0e337ffc6fb7cf49ab2b5b5f4f95f665b0b00e"
+    },
+    {
+      "arquivo": "Invocacoes.gs",
+      "bytes": 575964,
+      "sha256": "77398cdb9ae7620b4a62eefe83619f8e8354c8ae5c297e399743dff144c174d1"
+    },
+    {
+      "arquivo": "Melhorias.gs",
+      "bytes": 118215,
+      "sha256": "2943f918fd4cee2317a16444acfa9ca6a3350000bdea3d54fa40565f17df5bb7"
+    },
+    {
+      "arquivo": "Origens.gs",
+      "bytes": 511148,
+      "sha256": "42b25ac930cf47fe40ed9699367830e9d3999f8189abf14ee2e749a7c5f1d6d1"
+    },
+    {
+      "arquivo": "PecasAnalise1.gs",
+      "bytes": 584653,
+      "sha256": "4a1879d3974e08ca38a7121f43c291da47b5e468975e7bda085bb74b76bda286"
+    },
+    {
+      "arquivo": "PecasAnalise2.gs",
+      "bytes": 595906,
+      "sha256": "4768c8d04b98e5f1e66f399de91eed8ff2ee7909b5eed6bf4802abc626d87a32"
+    },
+    {
+      "arquivo": "PecasAnalise3.gs",
+      "bytes": 580066,
+      "sha256": "831e5de3c3424df025ff1b88a91b6b50c89996b298c5b7a2d38e5ceabd5d3878"
+    },
+    {
+      "arquivo": "PecasAnalise4.gs",
+      "bytes": 128940,
+      "sha256": "7a28b8ca394e494fdafc3dfff06269c53247cea1466fc1069027228137aa7a3a"
+    },
+    {
+      "arquivo": "PecasPainel.gs",
+      "bytes": 643407,
+      "sha256": "197b419ebb3e37d22678f96289d5052ed297016a2d1a3cbad53540b2aa093ef4"
+    },
+    {
+      "arquivo": "Pessoal.gs",
+      "bytes": 163189,
+      "sha256": "0aaef1ecdd2474a0daa7cb65404c50ce9a9bb9fa97042d751331071443333822"
+    },
+    {
+      "arquivo": "Progressao.gs",
+      "bytes": 193556,
+      "sha256": "e623a00cf3d6495a5c0129975eb7310529f86ecce34d414ed3c989ec40852021"
+    },
+    {
+      "arquivo": "ProgressaoAnalise.gs",
+      "bytes": 221417,
+      "sha256": "96d3ae0e41e569e2551329f94460385a24118584ebbd6a73892a5f476165e334"
+    },
+    {
+      "arquivo": "ProgressaoPainel.gs",
+      "bytes": 457092,
+      "sha256": "69d63063a9751528a9587011bf72de043337500fe14f6e9eeb4e1cb585f822fb"
+    },
+    {
+      "arquivo": "Restricoes.gs",
+      "bytes": 27448,
+      "sha256": "c17a05945d935302a2298a8aa0a02e022d7368ac6721a1e155632c653ff7de58"
+    }
+  ],
+  "total": 9543357,
+  "maior": 843661,
+  "estado": "Todos os13arquivos alterados/novos conferidos; Codigo.gs conferido novamente após salvar a correção focal."
+}

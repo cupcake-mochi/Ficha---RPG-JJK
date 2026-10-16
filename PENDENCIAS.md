@@ -1,3 +1,13 @@
+## Retomada portátil vigente · 16/10/2026
+
+O plano consolidado, as tarefas restantes e as decisões estão em [PLANO-RETOMADA-B47.md](PLANO-RETOMADA-B47.md). Este documento passa a ser o ponto de entrada para outra máquina/Work e prevalece sobre os checkpoints históricos abaixo. Prompt: [PROMPT-WORK-B47.md](PROMPT-WORK-B47.md). Contrato: [ESQUEMA-ANALISE.md](ESQUEMA-ANALISE.md). Ramo: `codex/configuracao-b47`; implementação atual84d8f8c.
+
+Rota: A)capacidade → B)carregamento/envio e roteiro de testes → C)conteúdos restantes3c → D)interface e auditoria final. Alvos:10Famílias extras,30Melhorias,30Restrições,10Perícias e10Ofícios compartilhados. Não houve redução aplicada nesta publicação. Manter checagens focais durante o trabalho e a revisão abrangente ao final. Não rodar montagem na revisão preenchida ou na oficial.
+
+Usuário autorizou salvar/publicar esta rodada de planejamento no Git para continuar pelo telefone; isso supera a preferência anterior de não fazer commit/push exclusivamente para esta publicação. Não autoriza merge no main nem alteração na ficha oficial. A próxima tarefa deve seguir a autorização de Git que receber nela. Os registros abaixo descrevem a implementação anterior à limpeza, já salva no Google.
+
+---
+
 ## Estado vigente · 16/10/2026 · Melhorias/Restrições encerradas; PAUSA SOLICITADA
 
 Etapa de Melhorias e Restrições integrada e validada na cópia nativa de revisão 1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0. Usuário pediu pausar ao terminar esta etapa. NÃO iniciar Formas ou outro catálogo até uma nova retomada. Não criar automação. Ficha oficial e bot intactos.

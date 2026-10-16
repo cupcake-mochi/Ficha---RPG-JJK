@@ -1,0 +1,275 @@
+{
+  "resultado": "OK",
+  "checagens": [
+    {
+      "teste": "capacidade cobre todas as escolhas atuais",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "9082 chaves anteriores com fontes e posições preservadas",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "9866 chaves novas, sem duplicatas",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "mesclagens de todos os blocos sem sobreposição",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "cadastros ocultos e fora da paleta",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "texto literal e contagem de vagas não são canonizados",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "identidade da base conserva a regra nomeada",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "consultas exatas escapam curingas do nome",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "últimos cartões são editáveis e exportados",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Melhoria válida 1",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Melhoria válida 2",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Melhoria válida 3",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Melhoria válida 4",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Melhoria válida 5",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Melhoria válida 6",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Melhoria válida 7",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Melhoria válida 8",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Melhoria válida 9",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Melhoria válida 17",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Melhoria válida 789",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "cadastro inválido excluído 10",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "cadastro inválido excluído 11",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "cadastro inválido excluído 12",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "cadastro inválido excluído 13",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "cadastro inválido excluído 14",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "cadastro inválido excluído 15",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "cadastro inválido excluído 16",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "cadastro inválido excluído 18",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "criação do zero tem peso, desconto, TR e identidade própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "base Controle conserva controle e TR",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Rajada herda classe reduzida da entidade",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "última Restrição herda a identidade",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "frequência inválida fica fora do catálogo",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "nona Família abre o menu só das entidades que a escolheram",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "caixas vazias não cobram cadastros excluídos do catálogo",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "duas Restrições de frequência são sinalizadas",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "devolução paga só Melhorias e conserva o custo da Forma",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "carta sinaliza peça ausente ou cadastro inválido",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_AM herda Pressa própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_AM herda Distância própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_AM herda Distância ampla",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_AM herda Resposta própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_AM herda Alma própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_AM herda Acerto próprio",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_AM herda Prisão própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_AM herda Demora própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_INVOC herda Pressa própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_INVOC herda Distância própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_INVOC herda Distância ampla",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_INVOC herda Resposta própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_INVOC herda Alma própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_INVOC herda Acerto próprio",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "DADOS_INVOC herda Prisão própria",
+      "ok": true,
+      "detalhe": null
+    },
+    {
+      "teste": "Classe 0 herda alcance da Melhoria",
+      "ok": true,
+      "detalhe": null
+    }
+  ]
+}

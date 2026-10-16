@@ -1,3 +1,5 @@
+> **Retomada vigente da B47 (16/10/2026):** leia [PLANO-RETOMADA-B47.md](PLANO-RETOMADA-B47.md) e [PROMPT-WORK-B47.md](PROMPT-WORK-B47.md), no ramo `codex/configuracao-b47`. Capacidades menores estão planejadas, ainda não implementadas. As seções antigas abaixo não substituem a rota nova.
+
 **15/10/2026: regras de campanha implementadas para revisão.** CAMPANHA vazia usa o livro; XP começa em zero no nível inicial; vida rolada conserva a vida inicial fixa e guarda os dados dos níveis seguintes. Sequelas extras somam às três caixas. Morte permanente foi retirada da interface a pedido do usuário. O conteúdo custom continua para a próxima etapa.
 
 # Ficha digital do Projeto M · leia isto primeiro

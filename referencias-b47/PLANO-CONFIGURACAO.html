@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plano da Configuração</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--pag:#0c0a10;--fundo:#1B111D;--painel:#311E33;--alto:#492D4D;--regua:#B377BB;--texto:#FBE4EF;--fraco:#F1BFD6;
+--acento:#F8C7DC;--bloco:#D44085;--papel:#251727;--menu:#46244B;--ok:#7fd49b;--falta:#f0b45a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pag);color:#ece6f0;font-family:Roboto,sans-serif;padding:20px 16px 60px;line-height:1.5}
+.doc{max-width:1100px;margin:0 auto}
+h1{font-family:Oswald,sans-serif;font-weight:500;font-size:26px;margin:0 0 4px;color:var(--acento)}
+h2{font-family:Oswald,sans-serif;font-weight:500;font-size:19px;margin:34px 0 8px;color:var(--acento);border-bottom:1px solid #3a2340;padding-bottom:4px}
+h3{font-family:Oswald,sans-serif;font-weight:400;font-size:15px;margin:18px 0 4px;color:var(--texto)}
+p,li{font-size:14.5px;color:#d9d0e2} b{color:#fff;font-weight:500}
+.lede{color:#b9b0c6}
+.st{display:inline-block;font-family:Oswald,sans-serif;font-size:11px;padding:1px 7px;border-radius:3px;margin-right:6px}
+.st.ok{background:#1f4a2c;color:var(--ok)} .st.meio{background:#4a3a1a;color:var(--falta)} .st.nao{background:#3a2340;color:var(--fraco)}
+table.q{border-collapse:collapse;width:100%;font-size:13.5px;margin:6px 0}
+table.q th,table.q td{border:1px solid #3a2a48;padding:6px 9px;text-align:left;vertical-align:top}
+table.q th{font-family:Oswald,sans-serif;font-weight:400;background:#1b1426;color:var(--acento)}
+.dec{background:#1d1424;border-left:3px solid var(--bloco);padding:8px 12px;margin:8px 0}
+.dec p{margin:4px 0}
+code{background:#221a2c;padding:0 4px;border-radius:3px;font-size:12.5px}
+
+/* a grade da planilha */
+.rolagem{overflow-x:auto;border:1px solid #3a2340;margin-top:10px;background:#2b2b2b}
+.planilha{display:grid;grid-template-columns:30px 18px 70px 150px 86px 64px 110px 150px 18px 110px 150px 72px 72px 72px 72px 18px;font-size:11.5px;min-width:1255px}
+.planilha>div{min-height:24px;border-right:1px solid #2a1c2c;border-bottom:1px solid #2a1c2c;background:var(--fundo);color:var(--texto);padding:3px 5px;position:relative;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.planilha .cl{background:#2b2b2b;color:#9a9a9a;font-size:9.5px;text-align:center;min-height:16px;padding:1px;border-color:#3a3a3a}
+.planilha .ln{background:#2b2b2b;color:#9a9a9a;font-size:9.5px;text-align:center;border-color:#3a3a3a}
+.tit{font-family:Oswald,sans-serif;font-size:20px;color:var(--acento) !important;background:var(--papel) !important}
+.sub{color:var(--fraco) !important;font-size:11px;background:var(--papel) !important}
+.fx{background:var(--alto) !important;border:1px solid var(--regua) !important;font-family:Oswald,sans-serif;font-size:12.5px;letter-spacing:.5px}
+.th{background:var(--alto) !important;border:1px solid var(--regua) !important;font-family:Oswald,sans-serif;font-size:10px;text-align:center;color:var(--texto)}
+.c{background:var(--painel) !important;border:1px solid var(--regua) !important}
+.k{background:var(--papel) !important;border:1px solid var(--regua) !important;color:var(--fraco) !important}
+.k:before{content:"ƒ ";font-size:8.5px;color:#a98aae}
+.m:after{content:"▾";position:absolute;right:4px;top:4px;color:var(--fraco);font-size:9px}
+.r{text-align:right}
+.ck{display:inline-block;width:13px;height:13px;border:2px solid var(--texto);vertical-align:middle}
+.ck.on{background:var(--bloco);border-color:var(--acento)}
+.av{color:#ffb4c4 !important}
+.vz{color:#80667f !important;font-style:italic}
+.nota:after{content:"";position:absolute;top:0;right:0;border-top:6px solid #E8A23A;border-left:6px solid transparent}
+.grupo{color:var(--fraco) !important;font-size:10.5px}
+.novo{box-shadow:inset 0 0 0 2px #E8A23A}
+.legenda{font-size:12.5px;color:var(--fraco);margin:6px 0}
+.legenda span{display:inline-block;margin-right:14px}
+.sw{display:inline-block;width:12px;height:12px;vertical-align:-2px;margin-right:4px;border:1px solid var(--regua)}
+</style></head><body><div class="doc">
+
+<h1>Configuração · plano e desenho</h1>
+<p class="lede">B47, partes 2 a 4. Escrito em 15/10/2026, a partir do estudo aprovado (forma B, rodada 2) e do que já foi construído na parte 1.</p>
+
+<h2>Onde está cada parte</h2>
+<table class="q">
+<tr><th>Parte</th><th>Estado</th><th>Onde</th></tr>
+<tr><td><b>1 · Bônus e mudanças</b></td><td><span class="st meio">quase pronta</span>Construída por outra sessão (Codex) e testada no Sheets: soma, troca por zero, conflito, valor inválido, paleta. A bateria rodou 18 de 20 validadores; falta repetir o <code>arnes-pessoal.py</code> (foi interrompido quando você desligou o PC), a <code>regressao-paleta.js</code> e o <code>ler-analise.py --teste</code>.</td><td>Numa cópia de revisão do Sheets e no ramo <code>codex/configuracao-b47</code> (pasta <code>implementacao-bonus</code>). <b>Não está no GitHub nem na ficha oficial.</b></td></tr>
+<tr><td><b>2 · Regras de campanha</b></td><td><span class="st nao">não começada</span></td><td>Este plano</td></tr>
+<tr><td><b>3 · Conteúdo custom</b></td><td><span class="st nao">não começada</span></td><td>Este plano</td></tr>
+<tr><td><b>4 · ANALISE lê a CONFIGURAÇÃO</b></td><td><span class="st meio">em parte</span>Os efeitos já saem na ANALISE (formato 3, 5.156 chaves). Faltam <code>regra.*</code> e <code>custom.*</code>.</td><td>Junto das partes 2 e 3</td></tr>
+</table>
+<p>Tem um ponto que trava a publicação: o bot hoje só aceita os formatos 1 e 2 da ANALISE. Antes de a CONFIGURAÇÃO chegar aos jogadores, ele precisa ler o formato 3, e depois os seguintes.</p>
+
+<h2>Como a página fica</h2>
+<p>A forma B do estudo: <b>à esquerda o que muda número</b> (bônus e regras de campanha) e <b>à direita o conteúdo custom</b>. A página fica sempre em Mizuki Escuro. O contorno laranja marca o que ainda não existe; o resto já está construído.</p>
+<p class="legenda"><span><i class="sw" style="background:var(--painel)"></i>você escreve</span><span><i class="sw" style="background:var(--papel)"></i>ƒ conta da ficha (volta se apagar)</span><span><i class="sw" style="background:var(--fundo);box-shadow:inset 0 0 0 2px #E8A23A"></i>parte nova</span><span>▾ menu · <span style="color:#E8A23A">◥</span> nota</span></p>
+
+<div class="rolagem"><div class="planilha" id="grade"></div></div>
+<p class="legenda">Role para o lado no celular. As linhas 14 a 40 e 50 a 60 estão encurtadas no desenho.</p>
+
+<h3>Lado esquerdo · colunas B a G</h3>
+<ul>
+<li><b>BÔNUS E MUDANÇAS</b> (linhas 10 a 40) fica como foi construído e testado: 30 linhas, LIGADO · CAIXA · COMO · VALOR · TIPO DE FONTE · FONTE.</li>
+<li><b>REGRAS DE CAMPANHA</b> entra embaixo, na linha 43, com REGRA · LIVRO · CAMPANHA · EM USO · MOTIVO. Se CAMPANHA ficar em branco, vale o número do livro. EM USO é conta e é dela que a ficha inteira passa a ler.</li>
+</ul>
+<h3>Lado direito · colunas J a O</h3>
+<ul>
+<li><b>CONTEÚDO CUSTOM</b> vem em cartões, um por item criado. Cada cartão tem TIPO ▾, NOME e MESTRE VIU ☐. Embaixo ficam os campos do molde daquele tipo, e <b>os rótulos mudam conforme o tipo escolhido</b>: arma mostra DADO, MÃO, FORÇA, VOLUME; Origem mostra MARCANTE e MENORES, e assim por diante.</li>
+<li>Tem um motivo para usar cartões: no Sheets, uma "lista com um molde que edita o item selecionado" só funcionaria com script rodando a cada clique, e a cópia tem de funcionar só de copiar. Com cartão fixo, cada item tem as próprias caixas e tudo funciona com fórmula.</li>
+<li>O Caminho custom tem um texto por nível. Os níveis 6 a 20 ficam num grupo que fecha com +/−, como as descrições das Origens.</li>
+</ul>
+
+<h2>Parte 2 · Regras de campanha</h2>
+<h3>O que entra (primeira lista, a confirmar com você)</h3>
+<table class="q">
+<tr><th>Regra</th><th>Livro</th><th>Onde a ficha usa hoje</th></tr>
+<tr><td>Nível inicial</td><td>conforme o livro</td><td>FICHA, nível e XP</td></tr>
+<tr><td>Pontos de atributo iniciais</td><td>conforme o livro</td><td>aviso dos pontos de atributo</td></tr>
+<tr><td>Teto de atributo</td><td>conforme o livro</td><td>aviso de "acima"</td></tr>
+<tr><td>Curva de XP</td><td>a tabela do livro</td><td>XP total e nível</td></tr>
+<tr><td>Escolhas de perícia</td><td>10 (ou 9 e 2 ofícios)</td><td>aviso das escolhas de perícia</td></tr>
+<tr><td>Deslocamento base</td><td>9 m</td><td>FICHA, deslocamento</td></tr>
+<tr><td>Morrendo · Aguentar</td><td>1/4 da vida máxima</td><td>linha do Morrendo</td></tr>
+<tr><td>Morrendo · Insistir</td><td>1/3, depois 1/2, teto 15 × Classe</td><td>linha do Morrendo</td></tr>
+<tr><td>Morrendo · prazo</td><td>3 rodadas menos as Sequelas</td><td>PRAZO ATÉ SER DERROTADO</td></tr>
+<tr><td>Rolar a vida (item 147)</td><td>não (opcional do livro)</td><td>vida máxima</td></tr>
+<tr><td>Morte permanente</td><td>sim</td><td>só registro, para o bot ler</td></tr>
+</table>
+<p>Os valores da coluna "Livro" que estão como "conforme o livro" eu confiro no livro R51 na hora de construir. Não vou chutar número aqui.</p>
+<h3>Como constrói</h3>
+<ol>
+<li><b>Levantamento:</b> um script varre as fórmulas do gerador atrás dos números do livro escritos à mão (o <code>9</code>, o <code>15*</code>, o <code>/4</code>...) e lista cada um com aba e célula. A lista final de regras sai daí e passa por você.</li>
+<li><b>Coluna EM USO</b> na CONFIGURAÇÃO e uma cópia dela na <code>DADOS_CONFIG</code> (oculta).</li>
+<li><b>Troca nas fórmulas:</b> cada número fixo passa a ler a EM USO. É a parte arriscada, porque mexe em muitas contas.</li>
+<li><b>Teste principal:</b> com a CAMPANHA em branco, a ficha tem de sair <b>idêntica</b> à de hoje (comparador IGUAIS). Depois, mudar cada regra tem de mudar a conta certa e nenhuma outra.</li>
+<li><b>ANALISE formato 4:</b> entram <code>regra.&lt;nome&gt;</code> (em uso) e <code>regra.&lt;nome&gt;.campanha</code>. O bot compara com a campanha cadastrada nele.</li>
+</ol>
+
+<h2>Parte 3 · Conteúdo custom</h2>
+<p>O princípio aprovado: <b>todo menu da ficha que lê uma lista do livro passa a ler o livro mais o custom</b>. A ficha faz as contas com a arma custom do mesmo jeito que faz com uma arma do livro.</p>
+<h3>Em três levas (do mais pedido ao mais trabalhoso)</h3>
+<table class="q">
+<tr><th>Leva</th><th>Tipos</th><th>Por quê nessa ordem</th></tr>
+<tr><td><b>3a</b></td><td>Origem (marcante e menores), arma, escudo, uniforme, item comum, ferramenta amaldiçoada</td><td>Foi o que você citou primeiro, e os moldes são tabelas curtas</td></tr>
+<tr><td><b>3b</b></td><td>Caminho (números e um texto por nível), Trilha, perícia, ofício</td><td>Mexe na vida, no PE e nas cartas de habilidade da FICHA</td></tr>
+<tr><td><b>3c</b></td><td>Forma, Melhoria, Restrição, Família, aptidão, Talento, tipo de entidade, Talento de entidade, condição, tipo de dano</td><td>Mexe nas contas de feitiço (DADOS_AM) e de invocação (DADOS_INVOC), que são as mais pesadas</td></tr>
+</table>
+<h3>Como constrói</h3>
+<ol>
+<li><b>Levantamento dos menus reais:</b> listar todo menu da ficha e a lista da DADOS que ele lê. Os tipos saem daí, não de memória.</li>
+<li><b>Moldes:</b> para cada tipo, os mesmos campos da tabela do livro, com nota em cada rótulo. Os rótulos de cada tipo ficam na <code>DADOS_CONFIG</code>, e o cartão mostra os rótulos pelo TIPO escolhido.</li>
+<li><b>Listas juntas:</b> na DADOS, cada lista vira "livro + custom daquele tipo". Os menus apontam para a lista junta.</li>
+<li><b>Contas:</b> onde a ficha procura um item do livro (o dado da arma, a vida do Caminho), procura também nos cartões.</li>
+<li><b>ANALISE formato 5:</b> entram <code>custom.N.tipo</code>, <code>.nome</code>, <code>.mestre_viu</code> e <code>custom.N.campo.&lt;nome&gt;</code>. O bot tira a impressão digital do texto e confere com os aprovados.</li>
+</ol>
+
+<h2>Ordem de trabalho</h2>
+<table class="q">
+<tr><th>#</th><th>Etapa</th><th>Quem</th></tr>
+<tr><td>0</td><td>Fechar a parte 1: repetir o arnês e as duas checagens, trazer o ramo do Codex para o <code>main</code>, montar na oficial</td><td>eu ou o ChatGPT, com o seu ok para o commit</td></tr>
+<tr><td>0b</td><td>O bot passa a ler o formato 3 (os efeitos)</td><td>o outro chat, pelo bot</td></tr>
+<tr><td>1</td><td>Parte 2: levantamento, você aprova a lista, construção, comparador IGUAIS com a campanha vazia</td><td>eu; teste no Sheets com o ChatGPT</td></tr>
+<tr><td>2</td><td>Parte 3a, depois 3b, depois 3c, cada uma com protótipo na grade antes</td><td>eu; teste no Sheets com o ChatGPT</td></tr>
+<tr><td>3</td><td>No bot: cadastro da campanha, registro dos aprovados, formatos 4 e 5</td><td>o outro chat</td></tr>
+</table>
+
+<h3>Riscos que já conheço</h3>
+<ul>
+<li><b>Tamanho dos scripts:</b> cada <code>.gs</code> tem teto de 900 KB. A CONFIGURAÇÃO já tem arquivo próprio (<code>Configuracao.gs</code>), e o custom provavelmente vai precisar de outro.</li>
+<li><b>Tempo do construir():</b> cada leva soma alguns segundos na montagem. Vou medir a cada uma.</li>
+<li><b>"Só copiar":</b> nada pode depender de script rodando. Por isso o desenho usa cartões e fórmulas.</li>
+</ul>
+
+<h2>O que preciso que você decida</h2>
+<div class="dec"><p><b>1 · Onde ficam as regras:</b> embaixo dos bônus (minha recomendação, porque não mexe no que já foi testado) ou em cima, como estava no estudo?</p></div>
+<div class="dec"><p><b>2 · Cartões custom:</b> quantos por ficha? Sugiro 12, com os níveis 6 a 20 do Caminho num grupo que fecha.</p></div>
+<div class="dec"><p><b>3 · Lista das regras:</b> a tabela da parte 2 está boa para começar? Falta alguma, ou alguma sai?</p></div>
+<div class="dec"><p><b>4 · Ordem do custom:</b> 3a, 3b, 3c como está, ou outra?</p></div>
+<div class="dec"><p><b>5 · Fechar a parte 1 primeiro:</b> posso fechar a parte 1 (arnês, checagens e preparar o commit) antes de começar a 2?</p></div>
+</div>
+
+<script>
+// desenha a grade: [linha, [[conteúdo, classes, span], ...]] a partir da coluna A
+const L = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"];
+const g = document.getElementById("grade");
+const add = (t, cls="", span=1, extra="") => { const d=document.createElement("div"); d.innerHTML=t; d.className=cls; if(span>1) d.style.gridColumn="span "+span; g.appendChild(d); };
+add("", "cl"); L.forEach(c=>add(c,"cl"));
+const vazio = n => { for(let i=0;i<n;i++) add(""); };
+const ck = on => `<span class="ck${on?" on":""}"></span>`;
+function linha(n, celulas){ add(n,"ln"); let usadas=0; celulas.forEach(([t,c,s])=>{ add(t||"",c||"",s||1); usadas+=(s||1); }); vazio(15-usadas); }
+
+linha(1, []);
+linha(2, [["",""],["CONFIGURAÇÃO","tit",14]]);
+linha(3, [["",""],["Somar acumula com a conta e o Buff/Debuff. Trocar por fixa o resultado final, inclusive zero.","sub",14]]);
+linha(4, [["",""],["1 ligado de 30 · 2 regras mudadas · 3 itens custom (1 sem o mestre ver)","sub",14]]);
+linha(9, [["",""],["BÔNUS E MUDANÇAS","fx",6],["",""],["",""],["CONTEÚDO CUSTOM","fx novo",6]]);
+linha(10, [["",""],["LIGADO","th nota"],["CAIXA","th nota"],["COMO","th nota"],["VALOR","th nota"],["TIPO DE FONTE","th nota"],["FONTE","th nota"],["",""],["",""],
+  ["TIPO","th nota novo"],["NOME","th nota novo"],["MESTRE VIU","th nota novo",2],["","",2]]);
+linha(11, [["",""],[ck(1),"c"],["Defesa","c m"],["somar","c m"],["2","c r"],["Decisão do mestre","c m"],["Exemplo · Defesa","c"],["",""],["",""],
+  ["Arma","c m novo"],["Lâmina de Kaori","c novo"],[ck(1),"c novo",2],["","",2]]);
+linha(12, [["",""],[ck(0),"c"],["Defesa","c m"],["trocar por","c m"],["0","c r"],["Decisão do mestre","c m"],["Exemplo · em zero","c"],["",""],["",""],
+  ["DADO","th novo"],["MÃO","th novo"],["FORÇA","th novo"],["VOLUME","th novo"],["CATEGORIA","th novo",2]]);
+linha(13, [["",""],[ck(0),"c"],["Deslocamento","c m"],["somar","c m"],["-1,5","c r"],["Item","c m"],["Exemplo · pesado","c"],["",""],["",""],
+  ["1d8","c novo"],["uma","c m novo"],["2","c r novo"],["1","c r novo"],["corpo a corpo","c m novo",2]]);
+linha("⋮", [["",""],["… linhas 14 a 40, vazias","grupo",6],["",""],["",""],["PROPRIEDADES","th novo"],["afiada · leve","c m novo",5]]);
+linha(41, [["",""],["",""],["",""],["",""],["",""],["",""],["",""],["",""],["",""],["EFEITO","th novo"],["Texto livre do mestre, como na menor criada do B46","c novo",5]]);
+linha(42, []);
+linha(43, [["",""],["REGRAS DE CAMPANHA","fx novo",6],["",""],["",""],["Caminho","c m novo"],["Lâmina Ritual","c novo"],[ck(0),"c novo",2],["⚠ mestre não viu","av novo",2]]);
+linha(44, [["",""],["REGRA","th nota novo",2],["LIVRO","th nota novo"],["CAMPANHA","th nota novo"],["EM USO","th nota novo"],["MOTIVO","th nota novo"],["",""],["",""],
+  ["VIDA INICIAL","th novo"],["VIDA / NÍVEL","th novo"],["PE / NÍVEL","th novo"],["PERÍCIAS","th novo"],["TREINO DE ARMA","th novo",2]]);
+linha(45, [["",""],["Nível inicial","c novo",2],["livro","k novo"],["","c vz novo"],["livro","k novo"],["","c novo"],["",""],["",""],
+  ["12","c r novo"],["4","c r novo"],["3","c r novo"],["Atletismo · Luta","c novo"],["simples · marciais","c novo",2]]);
+linha(46, [["",""],["Deslocamento base","c novo",2],["9 m","k novo"],["12 m","c novo"],["12 m","k novo"],["Mesa de ação rápida","c novo"],["",""],["",""],
+  ["NÍVEL","th novo"],["HABILIDADE","th novo",5]]);
+linha(47, [["",""],["Morrendo · prazo","c novo",2],["3 rodadas","k novo"],["4 rodadas","c novo"],["4 rodadas","k novo"],["Campanha mais letal","c novo"],["",""],["",""],
+  ["1","c novo"],["Texto do nível 1","c novo",5]]);
+linha(48, [["",""],["Rolar a vida","c novo",2],["não","k novo"],["","c vz novo"],["não","k novo"],["","c novo"],["",""],["",""],
+  ["2 a 5","c novo"],["…","c grupo novo",5]]);
+linha(49, [["",""],["Morte permanente","c novo",2],["sim","k novo"],["","c vz novo"],["sim","k novo"],["","c novo"],["",""],["",""],
+  ["+ 6 a 20","grupo novo"],["grupo fechado com +/−","grupo novo",5]]);
+linha("⋮", [["",""],["… as outras regras da lista","grupo",6],["",""],["",""],["Origem","c m novo"],["Herdeira do Selo","c novo"],[ck(1),"c novo",2],["","",2]]);
+linha(61, [["",""],["",""],["",""],["",""],["",""],["",""],["",""],["",""],["",""],["… cartões 4 a 12","grupo novo",6]]);
+</script>
+</body></html>

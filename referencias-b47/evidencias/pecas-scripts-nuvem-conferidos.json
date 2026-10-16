@@ -1,0 +1,85 @@
+{
+  "resultado": "OK",
+  "metodo": "Leitura integral dos 13 arquivos após recarregar outra sessão do editor; cada texto coincidiu exatamente com a fonte local. Resultados individuais registrados nas chamadas CUA.",
+  "arquivos": [
+    {
+      "arquivo": "Analise.gs",
+      "bytes": 816318,
+      "sha256": "be2ea8620482bfc9338ae8930c4ef7d55f7d1ca1db0a6da40a61e6889e902ccc",
+      "igual": true
+    },
+    {
+      "arquivo": "Codigo.gs",
+      "bytes": 260138,
+      "sha256": "5ff83291af772326057c1a83eb8f25528c3856e8111cae06b4deea27d0831bfa",
+      "igual": true,
+      "observacao": "Correção focal de leitura dos limites salva pelo usuário e relida integralmente em outra sessão após recarga."
+    },
+    {
+      "arquivo": "Configuracao.gs",
+      "bytes": 843661,
+      "sha256": "f3f766d42c16cceb007ca7b40d1e625e8a956cf01b7de4a1a57bf5ddd06b9e1d",
+      "igual": true
+    },
+    {
+      "arquivo": "CriacaoPainel.gs",
+      "bytes": 103070,
+      "sha256": "d20c6c8614fbc2460298a65b2a1008e18abce2112f949599a974ea242daae8b9",
+      "igual": true
+    },
+    {
+      "arquivo": "Ficha.gs",
+      "bytes": 789241,
+      "sha256": "acb5308143f7328d1075d1a6a9162f8fa74e88d929583332d8de398d15e70402",
+      "igual": true
+    },
+    {
+      "arquivo": "Invocacoes.gs",
+      "bytes": 575964,
+      "sha256": "77398cdb9ae7620b4a62eefe83619f8e8354c8ae5c297e399743dff144c174d1",
+      "igual": true
+    },
+    {
+      "arquivo": "Melhorias.gs",
+      "bytes": 118215,
+      "sha256": "2943f918fd4cee2317a16444acfa9ca6a3350000bdea3d54fa40565f17df5bb7",
+      "igual": true
+    },
+    {
+      "arquivo": "PecasAnalise1.gs",
+      "bytes": 584653,
+      "sha256": "4a1879d3974e08ca38a7121f43c291da47b5e468975e7bda085bb74b76bda286",
+      "igual": true
+    },
+    {
+      "arquivo": "PecasAnalise2.gs",
+      "bytes": 595906,
+      "sha256": "4768c8d04b98e5f1e66f399de91eed8ff2ee7909b5eed6bf4802abc626d87a32",
+      "igual": true
+    },
+    {
+      "arquivo": "PecasAnalise3.gs",
+      "bytes": 580066,
+      "sha256": "831e5de3c3424df025ff1b88a91b6b50c89996b298c5b7a2d38e5ceabd5d3878",
+      "igual": true
+    },
+    {
+      "arquivo": "PecasAnalise4.gs",
+      "bytes": 128940,
+      "sha256": "7a28b8ca394e494fdafc3dfff06269c53247cea1466fc1069027228137aa7a3a",
+      "igual": true
+    },
+    {
+      "arquivo": "PecasPainel.gs",
+      "bytes": 643407,
+      "sha256": "197b419ebb3e37d22678f96289d5052ed297016a2d1a3cbad53540b2aa093ef4",
+      "igual": true
+    },
+    {
+      "arquivo": "Restricoes.gs",
+      "bytes": 27448,
+      "sha256": "c17a05945d935302a2298a8aa0a02e022d7368ac6721a1e155632c653ff7de58",
+      "igual": true
+    }
+  ]
+}

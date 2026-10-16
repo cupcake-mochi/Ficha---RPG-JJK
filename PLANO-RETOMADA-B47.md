@@ -1,0 +1,158 @@
+# Ciclo Maldito B47 — plano e retomada
+
+Estado consolidado em **16/10/2026**. Este é o ponto de entrada vigente para continuar o projeto, inclusive em outro computador ou pelo Work. Em caso de conflito com checkpoints antigos de `PENDENCIAS.md`, a rota deste documento prevalece.
+
+## Projeto e estado real
+
+- Repositório: https://github.com/cupcake-mochi/Ficha---RPG-JJK
+- Ramo de trabalho: `codex/configuracao-b47`. O `main` ainda não contém esta sequência de trabalho; continuar a partir deste ramo.
+- Última implementação antes desta documentação: `84d8f8c`, Melhorias e Restrições custom.
+- [Cópia nativa de revisão](https://docs.google.com/spreadsheets/d/1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0/edit#gid=47001).
+- [Apps Script da revisão](https://script.google.com/u/0/home/projects/1wdZc903PPK6EoGxFG4KcuPNx_plElCBsWxa4lEBgLUlFBD4OrbZPHYnf/edit).
+- [Ficha oficial — somente leitura](https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit).
+- [Descartável reservada à construção integral](https://docs.google.com/spreadsheets/d/12iTELP65DYjBjAY-PiAZ-JvVIyrK7ragsYKRX-vXYsc/edit).
+- [Descartável dos testes de Melhorias/Restrições](https://docs.google.com/spreadsheets/d/1D215acC6Dxhu8i7x0aF7pmiNbJ95_U1CiH4980QozLk/edit).
+
+**A redução ainda não foi implementada.** O gerador e a revisão conservam as capacidades grandes descritas abaixo. Esta publicação salva o plano e a base de código; não equivale a aplicar a limpeza. O bot pertence a outro trabalho.
+
+## O que já está implementado e validado na revisão
+
+- ANALISE e leitor, atualmente no formato 9, com 18.948 chaves únicas.
+- BÔNUS E MUDANÇAS; regras de campanha; tabela de XP; vida rolada; Morrendo e Sequelas extras.
+- Custom 3a: Origem, Marcante, Menor, Arma, Escudo, Uniforme, Item comum e Ferramenta amaldiçoada.
+- Custom 3b: Caminho, Trilha, Perícia e Ofício. Habilidades preenchem os cartões originais do grupo 7.
+- Famílias custom e limites de Famílias da técnica.
+- Autonomia individual e nove posições de Família em cada uma das 12 invocações.
+- Melhorias e Restrições custom, bases opcionais e herança das verificações do livro, nos cartões existentes.
+
+O fechamento anterior passou 54 verificações focais, 22 ordens de carregamento, 19 ausências de arquivos e 150 verificações de construção simulada em três fases. Houve testes mecânicos e visuais no Sheets, restauração das 395 entradas do cenário e comparação integral das 75.796 células da ANALISE. A correção final de texto passou sete cenários locais e o ciclo nativo curto/longo/limpeza. Os 13 arquivos alterados/novos foram salvos e relidos integralmente no Google. São resultados históricos da versão anterior à limpeza, não testes já realizados no próximo ambiente.
+
+## Rota fechada para a próxima retomada: 1 + 2 primeiro
+
+1. **A — reduzir capacidade e medir.**
+2. **B — tratar carregamento, envio e organização dos testes, usando a medição de A.**
+3. **C — concluir os conteúdos restantes da 3c sobre a estrutura menor.**
+4. **D — polir a interface e fazer a auditoria completa de entrega.**
+
+As etapas 1/2/3 comparadas nas estimativas da conversa significam capacidade, carregamento/envio e acabamento/testes finais. A lista A–D acima inclui também os conteúdos que ainda precisam ser construídos.
+
+Checagens **focais, mecânicas e visuais** acompanham cada mudança. A bateria completa e a revisão de todas as telas ficam para o fechamento. Corrigir problemas encontrados na entrega que os introduziu; não acumular defeitos conhecidos para o final.
+
+## A — capacidade, migração e medida
+
+| Definições custom adicionais ao livro | Capacidade atual | Alvo |
+|---|---:|---:|
+| Famílias | 318 | **10** |
+| Melhorias | 789 | **30** |
+| Restrições | 395 | **30** |
+| Perícias/Ofícios | 131 vagas intercambiáveis | **10 Perícias + 10 Ofícios** |
+| Total desses grupos | 1.633 | **90** |
+
+Essas definições são compartilhadas pelo personagem e por todas as invocações. Uma definição pode ser escolhida em vários lugares. A capacidade do catálogo não deve ser multiplicada pelo número de posições de uso. Os conteúdos do livro continuam disponíveis. As nove posições físicas de Família por invocação e os limites mecânicos permanecem.
+
+Os 25 cartões compartilhados da 3a e os cadastros de um Caminho/uma Trilha ficam fora desta redução inicial. Capacidades de tipos futuros serão pequenas, normalmente 10/20/30; não construir outra reserva de centenas de cadastros sem uma nova decisão explícita.
+
+- [ ] Confirmar ramo, estado do Git e disponibilidade de ferramentas no novo ambiente.
+- [ ] Guardar cópia nativa e snapshot integral das entradas antes de qualquer migração. Em 16/10 não havia nomes preenchidos nos quatro catálogos envolvidos; isso não substitui uma nova leitura.
+- [ ] Centralizar capacidades e derivar faixas/posições delas; remover dependências de endereços fixados para as quantidades antigas.
+- [ ] Implementar os alvos da tabela, distinguindo 10 Perícias de 10 Ofícios.
+- [ ] Retirar também fórmulas, menus, notas, alturas e grupos excedentes. Apenas esconder cartões não resolve o peso.
+- [ ] Auditar painéis de treino e tabelas de apoio afetados, preservando escolhas, regras e resultados.
+- [ ] Mapear as entradas e referências existentes. Não cortar campos preenchidos nem associar silenciosamente um identificador a outro cadastro.
+- [ ] Resolver e documentar a versão do contrato ANALISE: chaves mantidas/descontinuadas, fontes e leitor. Não reaproveitar uma chave com outro sentido. A retirada de vagas afeta o contrato; não manter milhares de exportações vazias por inércia nem removê-las silenciosamente.
+- [ ] Ajustar testes à capacidade nova, preservando casos negativos, herança, nomes literais, primeira/última vaga, reutilização e integridade da migração.
+- [ ] Aplicar migração pontual na cópia de revisão somente depois de validar em descartável e confirmar acesso.
+- [ ] Medir antes/depois: linhas, fórmulas, tamanho dos arquivos e tempos de carregamento/edição e de construção disponíveis. Separar medida nativa de simulação.
+- [ ] Registrar resultados e reestimar B e o restante do projeto.
+
+## B — gargalos restantes e fluxo de trabalho
+
+- [ ] Perfilar o que resta lento após A: inicialização, edição, seleção, expansão de texto, montagem e persistência.
+- [ ] Evitar preparar estruturas de construção em operações pequenas quando isso não for necessário; conservar as funções da ficha e a cópia sem ativação.
+- [ ] Avaliar um método oficial de envio automatizado ao Apps Script, com manifesto/hashes, salvamento e conferência posterior.
+- [ ] Verificar ferramentas, escopos e autenticação disponíveis. A conta Google ou as abas do computador anterior não são fornecidas pelo Git. Não presumir autorização no novo ambiente.
+- [ ] Manter essa investigação delimitada: se o envio automatizado depender de acesso indisponível, documentar a dependência e o caminho funcional, sem criar um projeto paralelo indefinido.
+- [ ] Consolidar os testes novos no roteiro geral. `rodar-tudo.sh` ainda não inclui todas as regressões adicionadas nas últimas etapas.
+- [ ] Usar testes focais durante o desenvolvimento; repetir bateria mais ampla quando uma mudança, falha ou interação justificar.
+- [ ] Confirmar edição, salvamento, primeira/última vaga, cópia funcional e equivalência mecânica das funções alteradas.
+
+## C — conteúdos restantes da 3c
+
+Os desenhos e campos dos estudos já foram aprovados. Não reabrir a aprovação geral sem uma mudança concreta. Capacidade/custo dos tipos ainda não construídos precisam ser fechados segundo a estratégia pequena acima.
+
+- [ ] **Formas:** base opcional, Família, Peso, resolução, resultado, TR, Classe 0, restrição embutida, efeito/requisitos e alcance/área. Separar alcance e tamanho da área e conservar faixas distintas de personagem/entidade. Os valores demonstrativos do estudo não são regras novas.
+- [ ] **Aptidões/Bênçãos:** base opcional; escolha consumida ou gratuidade explícita. Categoria de Efeito vazia não torna a capacidade gratuita.
+- [ ] **Talentos do personagem:** cadastro, base opcional, requisitos/custos/efeitos e integração com os lugares existentes.
+- [ ] **Tipos de entidade:** base opcional; do zero, combinar separadamente funcionamentos existentes de vida, talismã e reserva de PE. Autonomia e alma são escolhidas na própria invocação.
+- [ ] **Talentos de entidade:** cadastro e integração com orçamento, requisitos e cartões atuais.
+- [ ] **Tipos de dano:** catálogo custom unido ao livro e menus consumidores.
+- [ ] **Condições:** o estudo aprovado as trata como opções de Melhoria; integrar suas informações e requisitos sem inventar um segundo mecanismo ou executar prosa como regra.
+- [ ] Em cada grupo, completar menus, cálculos, avisos, exportação ANALISE, roteiro de teste no Sheets e testes focais, incluindo base herdada e criação sem base.
+- [ ] Cruzar o inventário de menus ao fechar: propriedades/aprimoramentos, Kata/Manejo ou missão citados em históricos devem ser verificados contra consumidores reais. Não presumir automaticamente um novo escopo nem deixar uma opção existente de fora; registrar a conclusão e pedir decisão quando houver regra/escopo novo.
+
+## D — interface e fechamento completo
+
+- [ ] Apresentar estudo enxuto na grade antes de construir o novo desenho.
+- [ ] Reunir a edição em CONFIGURAÇÃO, com seções claras, tabelas para registros simples e cartões para tipos complexos.
+- [ ] Conservar a referência Forma B: regras/efeitos à esquerda e edição custom organizada; mudanças de desenho devem ser apresentadas ao usuário.
+- [ ] Levar explicações úteis para notas. Inventário, orçamento, histórico de aprovação e relatórios técnicos ficam na documentação, não no fluxo do jogador.
+- [ ] Retirar estudos/exemplos depois de auditar dependências de fórmulas, menus e scripts.
+- [ ] Preservar escolhas e resultados nos lugares originais da FICHA, FICHA PESSOAL, FICHA AMALDIÇOADA e INVOCAÇÕES.
+- [ ] Executar bateria completa da versão final e casos de interação entre conteúdos/regras.
+- [ ] Revisar carteira/foto/paleta, bordas, dimensões, textos, menus, inventário, grupo 7, áreas recolhidas e todas as invocações.
+- [ ] Auditar ANALISE inteira, leitor, erros de fórmula, cópia funcional e persistência do código.
+- [ ] Construir do zero somente em descartável; medir tempo e custo reais. Restaurar entradas temporárias.
+- [ ] Entregar versão revisável e pendências explícitas. Alterar a ficha oficial ou integrar no `main` somente mediante autorização específica.
+
+## Decisões que devem ser preservadas
+
+- CONFIGURAÇÃO fixa em Mizuki Escuro, fora da troca de paleta. Rótulos claros; ajuda contextual em notas.
+- “Trocar por” fixa o resultado final da caixa, inclusive zero, substituindo os bônus dela.
+- XP começa em zero no nível inicial da campanha. Vida rolada mantém vida inicial fixa do Caminho, com dados nos níveis seguintes e Constituição conforme a regra existente.
+- Menores e Legados são personalizáveis. Marcantes de Origens do livro seguem opções publicadas, inclusive famílias próprias do Descendente; exceção da criação da Restrição corporal. Origem totalmente homebrew, sem base do livro, pode ter marcante própria.
+- Origem do zero permite Fundamento, Manejos e Técnica Marcial com ou sem energia; não herda benefícios exclusivos sem base.
+- Caminho usa níveis 2/7/15/23/30 e Trilha 2/11/19/27 nos cartões originais do grupo 7.
+- Menus em opções fechadas; equipamentos/itens mantêm os campos de digitação livre autorizados.
+- Famílias novas somam às nove do livro. Estados da técnica não concedem automaticamente Livre à entidade. Livres/Fechadas da técnica são configuráveis; Neutras é saldo do total.
+- Autonomia individual, padrão Autônoma. Não autônoma recebe uma Família Livre nova, que aumenta também o total aberto em uma; precisa de ordem prévia para ações, exceto Reação. É regra prevista para o Guia de Criação. CONFIGURAÇÃO ajusta ganhos/limites, não escolhe autonomia globalmente.
+- MESTRE VIU é lembrete; aprovação de custom pertence ao bot, no chat. Não transformar descrição livre em automação numérica implícita.
+- Toda opção do livro continua disponível junto do custom válido; preservar herança e exceções nomeadas.
+
+## Arquivos e validação
+
+- Gerador: `ficha-v01/monta.py`; fontes de capacidades em `custom_progressao.py`, `custom_criacao.py` e `custom_pecas.py` na mesma pasta.
+- `.gs` são gerados; `apps-script/Codigo.gs` é a exceção editada diretamente. Teto de **900.000 bytes por .gs**.
+- Contrato: [ESQUEMA-ANALISE.md](ESQUEMA-ANALISE.md). O início contém histórico; a seção de formato 9 descreve a implementação atual.
+- Estudos: [ESTUDO-CUSTOM-3B.md](ESTUDO-CUSTOM-3B.md), [ESTUDO-CUSTOM-3C.md](ESTUDO-CUSTOM-3C.md), fontes em `mockup/prototipo_custom_3b.py`, `prototipo_custom_3c.py` e `prototipo_custom_3c_restante.py`.
+- Desenhos originais: [plano](referencias-b47/PLANO-CONFIGURACAO.html) e [rodada 2](referencias-b47/estudo-configuracao-rodada-2.html). As decisões novas deste documento prevalecem sobre capacidade/histórico antigos.
+- Roteiros: [TESTE-CONFIGURACAO.md](TESTE-CONFIGURACAO.md), [TESTE-CUSTOM-3C.md](TESTE-CUSTOM-3C.md) e arquivos `TESTE-*` aplicáveis.
+- Regressões relevantes: `regressao-configuracao.py`, `regressao-campanha.py`, `regressao-custom.py`, `regressao-progressao.py`, `regressao-familias-invocacao.py`, `regressao-criacao.py`, `regressao-pecas.py`, `regressao-textos-custom.js`, `regressao-construir.js`, `conferir-copias.py`, `comparar-ficha-01.py` e `ler-analise.py`.
+- Evidências mínimas do fechamento anterior: [referencias-b47/evidencias](referencias-b47/evidencias). Relatórios antigos não provam uma migração futura.
+
+No computador original, trabalho pesado é serial e limitado:
+
+```bash
+systemd-run --user --scope -q -p MemoryMax=3G -p MemorySwapMax=0 -p CPUQuota=200% nice -n15 env NODE_OPTIONS=--max-old-space-size=1500 <comando>
+```
+
+Em ambiente diferente, verificar os limites disponíveis e usar um equivalente adequado antes de trabalhos pesados. O PC original tem 15 GB e já reiniciou por RAM. Não elevar tetos nem matar processos por padrão amplo.
+
+`ficha-v01/original.xlsx` é uma entrada histórica ignorada pelo Git. Alguns comparadores dependem dela; verificar a disponibilidade e registrar testes impedidos por sua ausência. O gerador usa o `ficha-v01/layout.json` versionado. **Nunca importar Excel no Google Sheets.** Um workbook local usado como artefato/calculadora de teste não autoriza importação na ficha nativa.
+
+Não executar `construir()`/`continuar()` sobre a revisão preenchida ou a oficial. Conferir em código o destino de qualquer helper antes de executá-lo; a montagem integral usa exclusivamente a descartável.
+
+## Retomada em outro ambiente
+
+Leia este documento e o contrato no próprio repositório. Não depender de `../PLANO.md`, `../RETOMAR-B47.md`, caminhos de disco ou abas do Brave do computador anterior. As informações essenciais estão versionadas aqui.
+
+Antes de afirmar aplicação no Google, confirmar ferramentas, conta, acesso, salvamento e leitura posterior. Se o ambiente não acessar Sheets/Apps Script, avançar no código, testes e migração reprodutível que forem independentes; informar precisamente o que não foi aplicado/testado nativamente. Autorizações de conta são realizadas pelo usuário. Não declarar execução ou validação que não aconteceu.
+
+Manter checkpoints neste documento e em `PENDENCIAS.md`: feito, testes, alterações nativas confirmadas, próximo passo e dependências. Não alterar regras sem perguntar; desenhos novos precisam de estudo e aprovação. Sem mensagens ao outro chat, mudanças de compartilhamento ou trabalho no bot.
+
+## Tempo e escopo
+
+O restante completo da ficha foi estimado em aproximadamente **10–18 horas, centro de 14 horas**, com capacidade reduzida primeiro. O cenário 1+2 foi estimado em 9–17 horas, centro de 13 horas; a diferença de uma hora é menor que a incerteza e não deve orientar decisões como se fosse medida. São hipóteses de planejamento, incluem limpeza e conteúdos restantes e serão revistas após A. O bot não entra nessa conta.
+
+A autorização de publicação desta rodada refere-se a salvar o planejamento e a base atual neste ramo. Ela não autoriza merge em `main`, publicação na ficha oficial ou mudanças de acesso. Na próxima tarefa, respeitar a autorização de Git dada nela; a preferência anterior era preparar índice e mensagem para revisão humana.
+
+Use [PROMPT-WORK-B47.md](PROMPT-WORK-B47.md) para abrir a próxima tarefa. A primeira entrega é A + B; C + D ficam organizadas para a continuação.

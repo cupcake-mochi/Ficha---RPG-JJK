@@ -1,0 +1,145 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Configuração · rodada 2</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&family=Roboto:wght@400;500&display=swap">
+<style>
+/* paleta Mizuki Escuro (Codigo.gs): fundo 1B111D, painel 311E33, painel alto 492D4D, régua B377BB, texto FBE4EF,
+   texto fraco F1BFD6, acento F8C7DC, bloco D44085, papel 251727, menu grande 46244B */
+:root{--pag:#0c0a10;--fundo:#1B111D;--painel:#311E33;--alto:#492D4D;--regua:#B377BB;--texto:#FBE4EF;--fraco:#F1BFD6;
+--acento:#F8C7DC;--bloco:#D44085;--papel:#251727;--menu:#46244B}
+*{box-sizing:border-box} body{margin:0;background:var(--pag);color:#ece6f0;font-family:Roboto,sans-serif;padding:24px 28px 60px;min-width:1400px}
+h1{font-family:Oswald,sans-serif;font-weight:500;font-size:26px;margin:0 0 4px} .lede{color:#b9b0c6;font-size:15px;max-width:1240px;line-height:1.5;margin:0 0 6px}
+.lede b{color:#ece6f0;font-weight:500}
+.folha{background:var(--fundo);border:1px solid #3a2340;margin-top:14px}
+.cols{display:flex;background:#2b2b2b;color:#9a9a9a;font-size:9px;height:16px;align-items:center;padding-left:26px}
+.cols span{flex:1;text-align:center;border-left:1px solid #3a3a3a}
+.cab{background:var(--papel);border-bottom:2px solid var(--regua);padding:10px 18px;display:flex;justify-content:space-between;align-items:flex-end}
+.cab b{font-family:Oswald,sans-serif;font-weight:500;font-size:20px;color:var(--acento)} .cab span{font-size:11px;color:var(--fraco)}
+.corpo{padding:10px 18px 16px;display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.faixa{background:var(--alto);border:2px solid var(--regua);font-family:Oswald,sans-serif;font-size:13px;letter-spacing:.6px;color:var(--texto);padding:4px 10px;margin:4px 0 8px;display:flex;justify-content:space-between;align-items:center}
+.faixa em{font-style:normal;font-family:Roboto,sans-serif;font-size:11px;color:var(--fraco);letter-spacing:0}
+.ajuda{font-size:11.5px;color:var(--fraco);line-height:1.45;margin:-3px 2px 8px}
+table.t{border-collapse:collapse;width:100%;font-size:12px;margin-bottom:14px}
+table.t th{background:var(--alto);border:2px solid var(--regua);font-family:Oswald,sans-serif;font-weight:400;font-size:10.5px;color:var(--texto);padding:3px 6px;text-align:center;letter-spacing:.3px;position:relative;cursor:help}
+table.t td{background:var(--painel);border:2px solid var(--regua);border-top-width:1px;padding:4px 7px;color:var(--texto);vertical-align:middle}
+table.t td.f{color:var(--fraco);font-size:11px} table.t td.calc{background:var(--papel)} table.t td.calc:before{content:"ƒ ";color:var(--fraco);font-size:9px}
+table.t td.menu{position:relative;padding-right:16px} table.t td.menu:after{content:"▾";position:absolute;right:5px;color:var(--fraco);font-size:9px}
+table.t td.vazio{color:#8a7090;font-style:italic}
+/* a nota do Sheets: o triângulo no canto, e o texto ao passar o mouse */
+.nota{position:relative} .nota:after{content:"";position:absolute;top:0;right:0;border-top:7px solid #E8A23A;border-left:7px solid transparent}
+.nota:hover .bal{display:block}
+.bal{display:none;position:absolute;z-index:9;left:30%;top:100%;width:300px;background:#fff8d6;color:#222;font-family:Roboto,sans-serif;font-size:11.5px;font-weight:400;letter-spacing:0;text-align:left;line-height:1.4;padding:7px 9px;border:1px solid #c9b46a;box-shadow:0 3px 10px #0008}
+.ck{display:inline-block;width:14px;height:14px;border:2px solid var(--texto);vertical-align:middle;text-align:center;font-size:10px;line-height:10px;cursor:pointer}
+.ck.on{background:var(--bloco);border-color:var(--acento)}
+.tag{display:inline-block;font-family:Oswald,sans-serif;font-size:9.5px;padding:0 5px;border-radius:2px;margin-left:4px;background:#7a1f33;color:#ffd6de}
+/* o painel do custom */
+.lista{width:100%}
+.molde{border:2px solid var(--regua);background:var(--painel);margin-top:4px}
+.molde .h{background:var(--alto);font-family:Oswald,sans-serif;font-size:12px;padding:4px 8px;display:flex;justify-content:space-between;align-items:center}
+.molde .h select{background:var(--menu);color:var(--texto);border:1px solid var(--regua);font-family:Oswald,sans-serif;font-size:12px;padding:1px 4px}
+.campos{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:8px}
+.cx{display:flex;flex-direction:column;min-width:0} .cx .r{background:var(--alto);border:2px solid var(--regua);font-family:Oswald,sans-serif;font-size:9.5px;text-align:center;padding:1px 3px;white-space:nowrap;overflow:hidden}
+.cx .v{background:var(--fundo);border:2px solid var(--regua);border-top:0;font-size:11.5px;padding:3px 6px;min-height:24px;color:var(--texto);position:relative}
+.cx .v.m:after{content:"▾";position:absolute;right:5px;top:4px;color:var(--fraco);font-size:9px}
+.cx .v.txt{min-height:48px;line-height:1.35;font-size:11px}
+.niveis{grid-column:1/-1} .niveis table{width:100%;border-collapse:collapse;font-size:11px}
+.niveis td{border:1px solid var(--regua);padding:3px 6px;background:var(--fundo);vertical-align:top}
+.niveis td.n{width:52px;background:var(--alto);font-family:Oswald,sans-serif;text-align:center}
+.mais{font-family:Oswald,sans-serif;font-size:11px;color:var(--acento);cursor:pointer;padding:4px 8px;display:inline-block}
+.pe{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-top:1px solid var(--regua);font-size:11px;color:var(--fraco)}
+table.comp{border-collapse:collapse;font-size:13px;margin-top:18px;max-width:1300px} table.comp th,table.comp td{border:1px solid #2f2950;padding:6px 9px;text-align:left;vertical-align:top}
+table.comp th{font-family:Oswald,sans-serif;font-weight:400;background:#1b1736}
+</style></head><body>
+<h1>Configuração · rodada 2 (forma B, aprovada)</h1><p class="lede"><b>Aprovada em 14/10/2026</b>, com a limpeza dos títulos: sem artigo nem preposição, como no livro.</p>
+<p class="lede">O que mudou da rodada 1: os <b>títulos ficaram diretos</b> (o "De onde veio" virou <b>NOME DA FONTE</b>, por exemplo), e todo rótulo tem <b>nota</b>: passe o mouse no triângulo laranja do canto. O "aprovada / pendente" saiu da ficha, porque quem aprova é o bot, no chat; no lugar ficou a caixinha <b>MOSTREI AO MESTRE</b>, que o próprio jogador marca. À direita, o painel do custom: troque o tipo no menu do molde (<b>arma</b>, <b>Caminho</b> ou <b>Melhoria</b>) para ver os campos de cada um. Os menus e as caixinhas funcionam.</p>
+<div class="folha"><div class="cols" id="cols"></div>
+<div class="cab"><b>CONFIGURAÇÃO</b><span>Ciclo Maldito · regras da campanha, efeitos e conteúdo custom · paleta fixa Mizuki Escuro</span></div>
+<div class="corpo"><div id="esq"></div><div id="dir"></div></div></div>
+
+<table class="comp">
+<tr><th>Antes (rodada 1)</th><th>Agora</th><th>Por quê</th></tr>
+<tr><td>DO LIVRO · DA CAMPANHA · VALE · POR QUÊ</td><td>NO LIVRO · NA SUA CAMPANHA · A FICHA USA · MOTIVO DA MUDANÇA</td><td>"Vale" não dizia de quem; agora diz que é o número que a ficha calcula</td></tr>
+<tr><td>ATIVO · ALVO · MODO · VALOR · ORIGEM · DE ONDE VEIO</td><td>LIGADO · O QUE MUDA · COMO · QUANTO · TIPO DA FONTE · NOME DA FONTE</td><td>"Origem" confundia com a Origem do personagem; "de onde veio" não dizia que é o nome da coisa</td></tr>
+<tr><td>APROVADA / PENDENTE DO MESTRE (na ficha)</td><td>MOSTREI AO MESTRE ☐ (o jogador marca) · a aprovação de verdade é do bot</td><td>O bot só responde no chat</td></tr>
+</table>
+
+<script>
+const N = (t) => `<span class="bal">${t}</span>`;
+const th = (rot, nota, w) => `<th class="nota" ${w ? `style="width:${w}"` : ""}>${rot}${N(nota)}</th>`;
+const REGRAS = [
+  ["Nível inicial", "2", "3", "o mestre começou a campanha no 3"],
+  ["Pontos de atributo na criação", "9", "", ""],
+  ["Teto de atributo na criação", "3", "", ""],
+  ["Vida a cada nível", "o valor fixo do Caminho", "Rolar o dado", "regra opcional do livro (item 147)"],
+  ["Curva de XP", "a do livro", "", ""],
+  ["Morte permanente", "Não", "", ""],
+  ["Deslocamento base", "9 m", "", ""],
+];
+const EFEITOS = [
+  [true, "Defesa", "somar", "+1", "Pacto", "Pacto 1 · Overtime"],
+  [true, "Vida máxima", "somar", "+5", "Decisão do mestre", "recompensa da missão 4"],
+  [false, "Perícia · Furtividade", "somar", "+2", "Item", "Capa de sombra (só à noite)"],
+  [true, "Deslocamento", "trocar por", "6 m", "Origem custom", "Raízes de Pedra"],
+];
+const CUSTOM = [[true, "Origem", "Herdeira do Santuário"], [false, "Arma", "Leque de Ferro"], [false, "Caminho", "Guardião de Portal"], [true, "Melhoria", "Eco Duplo"]];
+let tipo = "Caminho", abertos = false;
+
+function esquerda() {
+  const r = `<div class="faixa"><span>1 · REGRAS DE CAMPANHA</span><em>${REGRAS.filter(x => x[2]).length} diferentes do livro</em></div>
+  <div class="ajuda">O que o mestre decidiu para a campanha inteira. Em branco, a ficha usa o livro. O bot confere com as regras que ele tem cadastradas.</div>
+  <table class="t"><tr>${th("REGRA", "O que pode mudar de uma campanha para outra.", "30%")}${th("LIVRO", "O valor do livro R51. Não se edita.")}${th("CAMPANHA", "Escreva ou escolha só se o mestre mudou. Em branco, vale o do livro.")}${th("EM USO", "O número com que a ficha faz as contas: o da campanha, se houver, ou o do livro.")}${th("MOTIVO", "Uma frase: quem decidiu e por quê. Ajuda o mestre a lembrar.")}</tr>` +
+    REGRAS.map(x => `<tr><td>${x[0]}${x[2] ? '<span class="tag">MUDOU</span>' : ""}</td><td class="calc">${x[1]}</td><td class="${x[2] ? "menu" : "menu vazio"}">${x[2] || "em branco = livro"}</td><td class="calc">${x[2] || x[1]}</td><td class="f">${x[3]}</td></tr>`).join("") + "</table>";
+  const e = `<div class="faixa"><span>2 · BÔNUS E MUDANÇAS</span><em>${EFEITOS.filter(x => x[0]).length} ligados de ${EFEITOS.length}</em></div>
+  <div class="ajuda">Tudo o que soma ou troca um número da ficha e não tem caixa própria: pacto, item, capacidade custom, recompensa. Desligue para guardar sem valer. A ficha soma junto com o Buff/Debuff, que continua onde está.</div>
+  <table class="t"><tr>${th("LIGADO", "Marcado, vale. Desmarcado, fica guardado e não muda nada (o item que só vale à noite, por exemplo).", "50px")}${th("CAIXA", "A caixa da ficha que este bônus muda: Defesa, vida máxima, PE, uma perícia, o deslocamento...")}${th("COMO", "Somar: entra junto com o resto (use número negativo para tirar). Trocar por: a ficha passa a usar este valor no lugar da conta.")}${th("VALOR", "O número. Com 'somar', +2 ou -1. Com 'trocar por', o valor inteiro.", "62px")}${th("TIPO DE FONTE", "De que tipo é a coisa que dá o bônus: pacto, item, Origem custom, decisão do mestre...")}${th("FONTE", "Qual é ela, com o nome que está na ficha: 'Pacto 1 · Overtime', 'Capa de sombra'. É o que o mestre vai procurar.")}</tr>` +
+    EFEITOS.map((x, i) => `<tr><td style="text-align:center"><span class="ck ${x[0] ? "on" : ""}" data-i="${i}">${x[0] ? "✓" : ""}</span></td><td class="menu">${x[1]}</td><td class="menu">${x[2]}</td><td>${x[3]}</td><td class="menu">${x[4]}</td><td class="f">${x[5]}</td></tr>`).join("") +
+    `<tr><td></td><td class="menu vazio">escolha a caixa</td><td class="menu vazio"></td><td></td><td class="menu vazio"></td><td></td></tr></table>`;
+  return r + e;
+}
+
+const cx = (rot, val, nota, op = {}) => `<div class="cx" style="grid-column:span ${op.s || 1}"><div class="r nota">${rot}${N(nota)}</div><div class="v ${op.m ? "m" : ""} ${op.t ? "txt" : ""}">${val}</div></div>`;
+const MOLDES = {
+  Arma: () => cx("NOME", "Leque de Ferro", "O nome que vai aparecer no menu de armas da FICHA PESSOAL.", {s: 2}) +
+    cx("CATEGORIA", "Lâmina Curta", "Uma das treze do livro. Decide o treino: quem treina Lâmina Curta já usa esta arma sem penalidade.", {m: 1, s: 2}) +
+    cx("MÃOS", "1", "1 ou 2. Com 2, a mão secundária fica ocupada.", {m: 1}) + cx("DADO", "d6", "O dado de dano da arma.", {m: 1}) +
+    cx("TIPO DE DANO", "Cortante", "Um dos tipos do livro.", {m: 1, s: 2}) + cx("PROPRIEDADES", "Leve · Fineza", "As do livro, separadas por ponto. A nota da arma na FICHA PESSOAL mostra o que cada uma faz.", {s: 2}) +
+    cx("FORÇA", "1", "A Força que ela pede. Sem ela, desvantagem no ataque e metade do deslocamento.") + cx("VOLUME", "1", "Quanto ocupa na carga.") +
+    cx("ALCANCE", "—", "Só para arma à distância ou de Longo Alcance.", {s: 2}) + cx("RECARGA", "—", "Só com Munição: ataques por carga.", {s: 2}) +
+    cx("REGRA EXTRA", "Fechada, conta como escudo de proteção +0 para Bloquear.", "Regra que não cabe nos campos acima. Texto livre: a ficha só mostra, não calcula.", {s: 6, t: 1}),
+  Caminho: () => cx("NOME", "Guardião de Portal", "O nome que vai aparecer no menu de Caminho da FICHA.", {s: 2}) +
+    cx("VIDA INICIAL", "10", "A vida inicial, sem a Constituição.") + cx("VIDA POR NÍVEL", "6", "Quanto sobe a cada nível, sem a Constituição. Com a regra de rolar, é o dado.") +
+    cx("PE POR NÍVEL", "5", "Os pontos de energia a cada nível.") + cx("TREINO DE ARMA", "Todas", "Todas, ou a lista de categorias.", {m: 1}) +
+    cx("PERÍCIAS FIXAS", "Atletismo · Percepção", "As que o Caminho sempre dá. A FICHA marca sozinha ao escolher o Caminho.", {s: 3}) +
+    cx("ATRIBUTOS NATURAIS", "Força · Constituição", "Os que o Caminho favorece, como na tabela do livro.", {s: 3}) +
+    `<div class="niveis"><div class="r nota" style="background:var(--alto);border:2px solid var(--regua);font-family:Oswald,sans-serif;font-size:9.5px;text-align:center;padding:1px">HABILIDADES POR NÍVEL${N("Uma linha por nível em que o Caminho dá algo. O texto vai para as cartas da seção 7 da FICHA, como as do livro. Nível sem habilidade fica em branco.")}</div><table>` +
+    [["2", "Porta Firme", "Como Reação, quando um aliado a até 3 m for atacado, ..."], ["3", "", ""], ["6", "Marco", "(o marco do livro: Corpo, Refino ou Leque)"], ["7", "Passagem Guardada", "Uma vez por cena, ..."]]
+      .concat(abertos ? [["10", "Marco", "(o marco do livro)"], ["11", "", ""], ["14", "Marco", "(o marco do livro)"], ["15", "Selo do Portal", "..."]] : [])
+      .map(l => `<tr><td class="n">${l[0]}</td><td style="width:30%">${l[1] || '<i style="color:#8a7090">sem habilidade</i>'}</td><td style="color:var(--fraco)">${l[2]}</td></tr>`).join("") +
+    `</table><span class="mais" id="mais">${abertos ? "− fechar os níveis 8 a 30" : "+ abrir os níveis 8 a 30 (grupo de linhas)"}</span></div>`,
+  Melhoria: () => cx("NOME", "Eco Duplo", "O nome que vai aparecer no menu de peças dos feitiços.", {s: 2}) +
+    cx("FAMÍLIA", "Projeção", "A Família dela: decide quem pode comprar e o desconto da Família Livre.", {m: 1, s: 2}) +
+    cx("PREÇO", "Média", "Leve, Média ou Pesada: o preço sai da tabela de pontos da Classe do feitiço.", {m: 1}) + cx("REPETE", "Não", "Se pode ser comprada mais de uma vez no mesmo feitiço.", {m: 1}) +
+    cx("SOMA DADOS", "Não", "Se acrescenta dados de dano e conta no teto de dados.", {m: 1}) + cx("INCOMPATÍVEL", "Rápido", "As peças que não entram junto com ela.", {s: 2}) +
+    cx("CLASSE MÍNIMA", "2", "A partir de que Classe ela pode entrar.") +
+    cx("EFEITO", "O feitiço se repete no começo do seu próximo turno, com metade dos dados, no mesmo alvo.", "O efeito, em texto. A FICHA AMALDIÇOADA mostra na carta do feitiço e conta o preço.", {s: 6, t: 1}),
+};
+function direita() {
+  const lista = `<div class="faixa"><span>3 · CONTEÚDO CUSTOM</span><em>${CUSTOM.length} criados · ${CUSTOM.filter(c => !c[0]).length} ainda não mostrados ao mestre</em></div>
+  <div class="ajuda">Tudo o que você criar aqui aparece nos menus da ficha, junto com o do livro. O bot só aprova o que o mestre aprovou no Discord: marque a caixinha quando mostrar.</div>
+  <table class="t lista"><tr>${th("TIPO", "Qualquer coisa que a ficha escolhe num menu do livro: Origem, Caminho, Trilha, arma, escudo, uniforme, item, Forma, Melhoria, Restrição, aptidão, Bênção, Talento, condição...")}${th("NOME", "O nome que vai aparecer nos menus.")}${th("MESTRE VIU", "Marque quando o mestre tiver visto. É só um lembrete seu: quem aprova de verdade é o bot, no Discord, com o que o mestre aprovou.", "120px")}</tr>` +
+    CUSTOM.map((c, i) => `<tr><td class="menu">${c[1]}</td><td>${c[2]}</td><td style="text-align:center"><span class="ck ${c[0] ? "on" : ""}" data-c="${i}">${c[0] ? "✓" : ""}</span></td></tr>`).join("") +
+    `<tr><td class="menu vazio">escolha o tipo</td><td></td><td></td></tr></table>`;
+  const molde = `<div class="molde"><div class="h"><span>MOLDE · ${tipo.toUpperCase()}</span><select id="tipo">${Object.keys(MOLDES).map(t => `<option ${t === tipo ? "selected" : ""}>${t}</option>`).join("")}</select></div>
+    <div class="campos">${MOLDES[tipo]()}</div>
+    <div class="pe"><span>Os campos são os da tabela do livro para este tipo: a ficha calcula o custom do mesmo jeito que o do livro.</span><span>passe o mouse nos rótulos ▸</span></div></div>`;
+  return lista + molde;
+}
+function desenha() {
+  document.getElementById("cols").innerHTML = Array.from({length: 26}, (_, i) => `<span>${String.fromCharCode(65 + i)}</span>`).join("");
+  document.getElementById("esq").innerHTML = esquerda();
+  document.getElementById("dir").innerHTML = direita();
+  document.querySelectorAll("[data-i]").forEach(c => c.onclick = () => { EFEITOS[+c.dataset.i][0] = !EFEITOS[+c.dataset.i][0]; desenha(); });
+  document.querySelectorAll("[data-c]").forEach(c => c.onclick = () => { CUSTOM[+c.dataset.c][0] = !CUSTOM[+c.dataset.c][0]; desenha(); });
+  document.getElementById("tipo").onchange = e => { tipo = e.target.value; desenha(); };
+  const m = document.getElementById("mais"); if (m) m.onclick = () => { abertos = !abertos; desenha(); };
+}
+desenha();
+</script></body></html>

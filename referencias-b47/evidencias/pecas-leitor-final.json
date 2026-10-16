@@ -1,0 +1,14 @@
+{
+  "resultado": "OK",
+  "exit_code": 0,
+  "chaves": 18948,
+  "formato": 9,
+  "partes": {
+    "cabeçalho": 4,
+    "entrada": 3347,
+    "resultado": 1419,
+    "aviso": 2227,
+    "configuração": 11951
+  },
+  "aviso_esperado_da_ficha_vazia": "Falta: 9 perícias e 2 ofícios, ou 10 perícias sem ofício"
+}
