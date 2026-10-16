@@ -1,4 +1,39 @@
-## Checkpoint vigente · A+B local e Sheets descartável · 16/10/2026
+## Checkpoint vigente · A+B nativos concluídos · 16/10/2026
+
+10 Famílias extras, 30 Melhorias, 30 Restrições, 10 Perícias e 10 Ofícios
+compartilhados; livro, 25 cartões 3a, Caminho/Trilha e nove Famílias por
+invocação preservados. C/D não iniciadas; esta entrega encerra somente A+B.
+
+A revisão Google está em ANALISE 10: 7.356 chaves únicas nas quatro colunas,
+509 entradas/notas exatas, zero erros de fórmula e zero divergências em
+400.917 células de 17 abas. Mais 22.094 células superiores/carteira/ficha
+pessoal/cache conferidas contra o backup; única mudança esperada G160 ao
+remover a cauda. Os 20 GS e manifesto foram relidos integralmente iguais.
+Quatro estudos e três grupos superiores preservados; só 793–794 ocultas.
+
+Construção integral, visual, menus, casos negativos, textos e gatilhos da
+cópia funcional sem ativação manual concluídos. B inclui visibilidade herdada,
+bootstrap Windows/LF e remoção de formatação redundante comprovada nativamente.
+19/19 guardas/migração e sete contraprovas da coalescência passaram.
+
+Base `ad1b55d`; correções PC `1448436`, `50ba7c7`, `1341d48`; produção GS
+continua f1ff7a6/geração f85ffda549994a3f. Publicação em `codex/b47-capacidade`
+e integração por avanço normal em `codex/configuracao-b47`. Oficial, main,
+bot e acessos intactos. Bot/formato 10 e variante histórica 4 são pendências
+externas; Calc/fcntl indisponíveis no Windows estão documentados.
+
+[Checkpoint e caminhos privados](capacidade-b47/RETOMADA-PC.md) ·
+[Prova da descartável](capacidade-b47/VALIDACAO-NATIVA-PC.json) ·
+[Prova final da revisão](capacidade-b47/REVISAO-NATIVA-PC.json) ·
+[Publicação e SHAs](capacidade-b47/PUBLICACAO.md).
+Este checkpoint prevalece sobre os registros históricos abaixo.
+
+Próxima ação/modelo: **GPT-6.1 Sol, High**, para revisar o fechamento e o uso de
+A+B. C/D dependem de nova autorização; não há início automático da próxima etapa.
+
+---
+
+## Checkpoint anterior · A+B local e Sheets descartável · 16/10/2026
 
 Redução local implementada: 10 Famílias, 30 Melhorias, 30 Restrições,
 10 Perícias e 10 Ofícios compartilhados. ANALISE 10/7.356 chaves, sem reutilizar

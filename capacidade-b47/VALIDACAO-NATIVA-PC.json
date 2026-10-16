@@ -1,0 +1,141 @@
+{
+  "resultado": "OK",
+  "destino": "1hBogVNW0vqeLYwa0PNl04Y2Nel9-7nrCoODWq1FKsb4",
+  "data": "2026-10-16",
+  "alvo_sha256": "1964dc4c9a89427c5a516ec887290b59458435ad85662c193ad5f973cd5b4875",
+  "codigo_producao": "f1ff7a6785f179df78a91a619bbd60388acd4bc1",
+  "geracao": "f85ffda549994a3f",
+  "codigo": {
+    "gs": 20,
+    "max_bytes": 816380,
+    "bytes_totais": 5682399,
+    "releitura_integral_igual": true,
+    "manifesto_preservado": true,
+    "html_ausente": true,
+    "sobras_removidas": [
+      "PecasAnalise2",
+      "PecasAnalise3",
+      "PecasAnalise4"
+    ],
+    "helper_temporario_removido": true
+  },
+  "analise": {
+    "chaves": 7356,
+    "unicas": 7356,
+    "colunas_conferidas": 4,
+    "divergencias": 0,
+    "erros": 0
+  },
+  "auditoria": {
+    "abas": 11,
+    "celulas": 277971,
+    "erros": 0,
+    "segundos_nativos": 8.343
+  },
+  "cenarios": {
+    "fronteiras_cinco_catalogos": true,
+    "livro_base_e_do_zero": true,
+    "nomes_literais": true,
+    "reuso_cinco_catalogos_12_invocacoes": true,
+    "nove_familias_distintas": true,
+    "autonomia_individual": true,
+    "personagem_escolhas": {
+      "pericias": 23,
+      "oficios": 11
+    },
+    "negativos_api": [
+      "tipo incorreto exclui só a Perícia",
+      "duplicata literal invalida ambos",
+      "TIPO vazio em cartão vazio não avisa"
+    ],
+    "heranca": "Identidade canônica e campos mecânicos iguais; nomes de menu custom diferem deliberadamente.",
+    "observacoes_ensaios": [
+      "Ensaio de cenários parou na validação estrita de setValue após 57 verificações aprovadas; negativos comprovados separadamente pela API.",
+      "Duas asserções iniciais de herança comparavam nomes de menu; contraprova nativa conferiu apenas identidade/campos mecânicos. Logs originais preservados."
+    ]
+  },
+  "textos": {
+    "onEdit_invocado": {
+      "segundos_etapas": [
+        2.751,
+        2.385,
+        2.301,
+        2.2,
+        2.109,
+        2.751
+      ],
+      "alturas_px": [
+        88,
+        153,
+        153,
+        25,
+        104,
+        25
+      ],
+      "restauracao_divergencias": 0
+    },
+    "gatilho_espontaneo_copia": {
+      "destino": "162TNmcd53kEfCnwDV48UAfsteiwd44gBXocVJu_Bvqo",
+      "ativacao_manual": false,
+      "funcoes_manuais_executadas": 0,
+      "onOpen_segundos": 18.835,
+      "onEdit_segundos": [
+        9.216,
+        6.181
+      ],
+      "texto_caracteres": 3520,
+      "altura_longo_px": 104,
+      "altura_limpo_px": 25,
+      "codigo_20_gs_relido_igual": true,
+      "notas_entradas_alturas_restauradas": true
+    }
+  },
+  "medidas": {
+    "interface_recarregar_ate_navegacao_segundos": 4.965,
+    "interface_edicao_ate_status_salvo_segundos": 2.812,
+    "api_reler_persistencia_segundos": 1.187,
+    "escopo": "Medições de cliente com automação; transporte do conector incluído na releitura. Separadas da duração dos acionadores e de VM/Calc."
+  },
+  "construcao": {
+    "destino": "12iTELP65DYjBjAY-PiAZ-JvVIyrK7ragsYKRX-vXYsc",
+    "execucoes_nativas_segundos": [
+      169,
+      208,
+      295
+    ],
+    "total_aproximado_segundos": 672,
+    "abas": 17,
+    "menus": 1968,
+    "resultado": "FICHA PRONTA; verificar: TUDO DE PÉ",
+    "idioma": "pt_BR",
+    "analise_chaves": 7356,
+    "analise_divergencias": 0,
+    "abas_auditadas": 11,
+    "erros": 0,
+    "codigo_20_gs_relido_igual": true,
+    "intercorrencias": "Primeira tentativa cancelada em 5,06s; outra falhou no serviço Sheets ao criar abas. Retomada do zero na reservada após confirmar estado parcial; três execuções seguintes concluíram."
+  },
+  "correcao_migracao": {
+    "defeito": "Linhas 793–874 permaneciam hiddenByUser após retirar o grupo v9, ocultando Perícias e primeiros Ofícios.",
+    "solucao": "Limpar hiddenByUser só na área reconstruída e aplicar visibilidade dos grupos do modelo; produção GS inalterada.",
+    "nativo": "Correção pontual em descartável e cópia, sem repetir os 102 lotes. Só linhas 793–794 ocultas; 96 entradas/notas/validações iguais.",
+    "regressao_local": "19/19 casos de testar-migracao.py, incluindo contraprova de dimensões ocultas e preservação acima da linha 733."
+  },
+  "restauracoes": {
+    "cenarios_campos": 96,
+    "reuso_campos": 96,
+    "negativos_campos": 30,
+    "heranca_campos": 14,
+    "menus_copia_campos": 22,
+    "menus_copia_releitura_campos": 96,
+    "divergencias": 0
+  },
+  "evidencias": "D:/JJK - Project/B47/evidencias/2026-10-16",
+  "limites": [
+    "Não substitui o backup/snapshot fresco e a releitura idêntica da revisão.",
+    "Calc indisponível; teste POSIX de infra impedido por fcntl no Windows.",
+    "Bot/formato 10 e variante histórica formato 4 continuam externos."
+  ],
+  "proxima_acao_modelo": "GPT-6.1 Sol, High: migrar revisão com backup/snapshot e guardas.",
+  "nome_atual": "TESTE DESCARTÁVEL B47 — PLANILHA E SCRIPT v10 VALIDADOS — 2026-10-16"
+}

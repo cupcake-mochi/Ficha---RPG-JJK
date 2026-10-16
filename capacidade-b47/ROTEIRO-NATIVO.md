@@ -1,24 +1,24 @@
-# Aplicação e validação pendentes da capacidade B47
+# Roteiro nativo e recuperação B47
 
-Estado vigente em 16/10/2026: backup integral nativo e migração **Sheets** da
-descartável `1hBogVNW0vqeLYwa0PNl04Y2Nel9-7nrCoODWq1FKsb4` realizados.
-102 lotes confirmados, 22 checagens nativas, entradas temporárias restauradas.
-Ver [NATIVO-PARCIAL.md](NATIVO-PARCIAL.md) e a prova `PARCIAL`.
-Código vinculado não foi atualizado; visual e testes de gatilhos continuam
-pendentes. Revisão original ainda em formato 9, sem escrita. Não reutilizar
-o snapshot de hoje numa aplicação futura nem considerar esta prova como OK
-para a guarda da revisão.
+A+B foram concluídos no PC em 16/10/2026. Estado e incidentes em
+[RETOMADA-PC.md](RETOMADA-PC.md), prova conjunta da descartável em
+[VALIDACAO-NATIVA-PC.json](VALIDACAO-NATIVA-PC.json) e revisão migrada em
+[REVISAO-NATIVA-PC.json](REVISAO-NATIVA-PC.json). A revisão já está em
+ANALISE 10, com 20 GS/manifesto relidos iguais. Não reaplicar os planos
+concluídos da descartável ou da revisão; as sequências não são idempotentes.
 
-A sessão não expõe ferramenta Apps Script (leitura, atualização ou execução),
-credenciais OAuth de CLI nem navegador conectado. O inventário do Codex
-Document Control retornou zero sessões Sheets conectadas. Acesso ao Drive/Sheets não garante
-acesso ao projeto Apps Script. Sem salvar/reler código, não atualizar a revisão:
-o gatilho antigo conservaria as geometrias e o contrato anteriores.
+O procedimento abaixo registra as condições para uma aplicação v9→v10 em
+outro estado autorizado, não uma ordem de executar novamente. Confirmar
+versão/destino antes de tudo e obter backup/snapshot novos. Nesta retomada,
+Drive/Sheets e editor Apps Script no navegador integrado foram usados com
+autenticação oficial; os tokens não foram copiados. Os 20 GS seguem f1ff7a6.
+C/D, oficial, bot, main e acessos ficaram fora desta entrega.
 
 1. Confirmar destino e projeto vinculado a **cada** planilha com ferramentas
    oficiais. A revisão é **1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0**,
    projeto **1wdZc903PPK6EoGxFG4KcuPNx_plElCBsWxa4lEBgLUlFBD4OrbZPHYnf**.
-   A nova descartável tem outro projeto vinculado, ainda não localizado.
+   A descartável migrada usa o projeto
+   `1_SBUy-sPZ7oH4DtmHuV6JqNediJYeE4xxVIiCb0iAxNs0K6wjsoJX6Ks`.
    **Não usar o ID de projeto da revisão ao validar a descartável.**
    Não copiar tokens do PC.
 2. Estabelecer janela sem edições, do snapshot final até a releitura conjunta
@@ -78,33 +78,53 @@ o gatilho antigo conservaria as geometrias e o contrato anteriores.
     registrar diferenças zero e restauração dos cenários. Oficial e bot ficam
     fora desta rodada.
 
-As provas locais de migração em VALIDACAO.json são sintéticas. A nova prova
-VALIDACAO-NATIVA-PARCIAL.json cobre backup/snapshot e a parte Sheets dos
-passos 2–8, com os limites de NATIVO-PARCIAL.md; não comprova código, visual,
-gatilhos, construção ou aplicação na revisão. O auditor offline
-`conferir-nativo.py` aceita apenas descartável e nunca emite resultado OK no
-nível superior, mesmo com todos os cálculos conferidos. Suas contraprovas
-estão em `testar-conferencia-nativa.py`.
-Recomendação para a aplicação: GPT-6.1 Sol, High, por envolver identidade de
-campos, preservação da revisão e conferência nativa.
+As provas locais em VALIDACAO.json são sintéticas. A antiga
+VALIDACAO-NATIVA-PARCIAL.json conserva seu resultado parcial histórico;
+a prova conjunta e a aplicação da revisão estão nos arquivos novos acima.
+O auditor `conferir-nativo.py` é específico da descartável e nunca promove
+seu resultado superior para OK nem valida sozinho código/gatilhos/visual.
+
+O gerador atual evita repetir a formatação da âncora sobre toda a mescla:
+controles nativos simples e multilinha mostraram valores, formatos de entrada
+e efetivos iguais, também visualmente. Para um primeiro lote com centenas de
+merges, `fracionar-inicio.py --origem <lotes> --saida <novo> --limite 50`
+isola o cabeçalho e fraciona as mesclagens, verificando todos os hashes e a
+sequência integral. Só usar sobre plano novo e guardado do estado intacto.
+`coalescer-formatos.py` serve à continuação comprovada de planos antigos:
+exige `--a-partir`, não reautoriza o prefixo e só omite repeatCell idêntico ao
+updateCells imediatamente anterior, na âncora de uma mescla já declarada.
+Os demais pedidos e a ordem são conservados. Não otimizar estado desconhecido.
+
+Recomendação: **GPT-6.1 Sol, High**, para revisão cuidadosa de identidade,
+preservação e leitura nativa; nenhuma próxima etapa é iniciada automaticamente.
 
 ## Interrupção ou falha parcial
 
-Cada batchUpdate é atômico isoladamente; a sequência de lotes não é. A limpeza
-de CONFIGURAÇÃO acontece antes da restauração das entradas mapeadas. Portanto,
-qualquer falha/timeout deixa a cópia marcada como **migração parcial**, nunca
-pronta para uso. Registrar destino, manifesto/hashes, índice do último lote com
-resposta confirmada, pedidos enviados e erro sem credenciais. Em timeout, ler
-o estado atual para descobrir se o lote foi aplicado antes de repetir algo.
+Cada batchUpdate é atômico isoladamente; a sequência não é. A limpeza de
+CONFIGURAÇÃO precede a restauração das entradas mapeadas. Uma migração
+interrompida permanece parcial até a conferência final; não liberar edição.
+Registrar destino, manifesto/hashes, prefixo confirmado, pedidos enviados,
+timestamps e erro sem credenciais. Timeout não informa se houve aplicação.
 
-Não pular para o próximo lote nem reaplicar cegamente os anteriores: remoção de
-linhas e grupos não é idempotente. Na descartável, recomeçar de uma nova cópia
-nativa do backup integral e gerar outro snapshot/plano/lotes. Na revisão, parar
-a edição, obter snapshot do estado parcial e verificar ausência de edições
-posteriores desconhecidas. Restaurar a região afetada a partir do backup integral
-com guarda e releitura de **todas** as entradas/notas antes de planejar outra
-tentativa; nunca sobrescrever alterações concorrentes silenciosamente. Se houver
-edição concorrente, reconciliar primeiro. A cópia parcialmente migrada não é
-evidência de migração aprovada. O manifesto registra expressamente a ausência de
-atomicidade entre lotes. Nenhuma falha parcial ocorreu nos 102 lotes desta
-retomada, enviados apenas à descartável.
+A primeira ação é reler o estado, sem repetir o lote. Se a leitura comprovar
+inequivocamente todo o estado pós-lote, registrar confirmação por releitura,
+com suas normalizações explícitas, e continuar do seguinte. Se comprovar o
+estado anterior, reconstruído do snapshot + prefixo confirmado, registrar a
+não aplicação e resolver o gargalo com fracionamento/equivalência previamente
+testada. Não inferir sucesso/falha só do retorno ausente nem misturar uma nova
+migração desde zero ao prefixo existente. Valores/notas/validações e formatos
+das âncoras devem coincidir; interiores de mesclas omitidos pelo Sheets não
+são formatos independentes. Registrar a evidência bruta e seu escopo.
+
+Se o estado continuar inconclusivo, houver edição concorrente ou divergência,
+parar. Na descartável, usar uma nova cópia nativa do backup e novo snapshot.
+Na revisão, guardar o estado parcial e reconciliar alterações antes de
+restaurar a região afetada a partir do backup, com guarda e releitura de todas
+as entradas/notas. Não sobrescrever trabalho posterior silenciosamente.
+Remoções de linhas/grupos nunca devem ser repetidas cegamente.
+
+Na retomada PC, o lote inicial sem efeito foi substituído por plano guardado
+fracionado; o 0046 foi confirmado por releitura sem repetição. O 0047, ainda
+no estado anterior, teve só formatos redundantes coalescidos após contraprova
+nativa; a continuação terminou e recebeu auditoria integral. Ver diário e
+limites no checkpoint. Os antigos 102 lotes da descartável não foram reaplicados.

@@ -215,11 +215,21 @@ contrato e teste dos consumidores. Não é perda silenciosa por renumeração.
 A combinação é publicada somente após seus testes. As origens e SHAs finais
 ficam em [PUBLICACAO.md](PUBLICACAO.md). Não houve mensagens automáticas aos chats.
 
-B local tem o gargalo de recomposição reduzido. Envio oficial, persistência,
-validação e medição nativas ainda dependem das ferramentas apropriadas. Como
-hipótese de planejamento: 1–3 h para essa parte de A+B com acesso funcional e
-relatórios disponíveis, mais 8–14 h para C/D; cerca de 9–17 h restantes, centro
-13 h, sem contar espera por acesso/revisão externa. Rever após medir o Sheets.
-C/D não foram iniciadas nesta entrega.
+A retomada PC concluiu A+B nativamente: código salvo/relido, construção,
+cópia funcional, medidas e migração guardada da revisão. Zero erros/diferenças
+em 400.917 células de 17 abas, 509 entradas/notas exatas e 22.094 células
+superiores preservadas. Controles nativos demonstraram equivalência da formatação
+pela âncora, eliminando repeatCell redundante; 19 testes de migração e sete
+contraprovas da otimização passaram. Detalhes e incidentes no
+[checkpoint PC](RETOMADA-PC.md), provas conjunta/final e
+[PUBLICACAO.md](PUBLICACAO.md). Produção GS f1ff7a6 permanece inalterada.
 
-Recomendação para a próxima ação: **GPT-6.1 Sol, High**, para executar a migração/testes nativos preservando entradas e contrato.
+A antiga hipótese de planejamento (1–3h para o trecho nativo de A+B e 8–14h
+para C/D) era uma estimativa de trabalho, sem espera por acesso ou recuperação
+de envios. Não é prazo de entrega nem autorização para C/D. C/D não foram
+iniciadas e ficam fora deste fechamento. Bot/formato 10 e variante histórica
+4 continuam externos; limitações de Calc/fcntl e ausência de baseline nativo
+equivalente para percentual de latência estão registradas no checkpoint.
+
+Recomendação para a próxima ação: **GPT-6.1 Sol, High**, para revisar A+B e
+seu uso; novo conteúdo/etapa exige nova autorização.

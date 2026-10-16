@@ -38,18 +38,30 @@ Progressão; ver resultado bruto e reexecução nas [evidências](VALIDACAO.json
 20 `.gs` reproduzidos byte a byte, todos abaixo de 900.000 bytes. Detalhes,
 medidas e limitações no [relatório](RELATORIO.md) e [manifesto](manifesto-gs.json).
 
-Google: backup nativo e migração da **descartável** concluídos na retomada,
-com 102 lotes confirmados, 22 checagens e nove contraprovas do auditor.
-Revisão original confirmada em ANALISE 9, sem escrita. A prova é
-**PARCIAL**, não autoriza migrar a revisão; código vinculado não foi atualizado.
-Sem ferramenta Apps Script, credencial CLI ou sessão Sheets conectada; acesso
-a Drive/Sheets não comprova acesso de execução ao projeto. Seguir o
-[roteiro nativo](ROTEIRO-NATIVO.md). Estado, IDs e medidas em
-[NATIVO-PARCIAL.md](NATIVO-PARCIAL.md).
-Nunca importar XLSX nem reconstruir a revisão preenchida. Oficial, bot e
-acessos permanecem fora da publicação. C/D não foram iniciadas.
+Retomada PC partiu de `ad1b55de210e534b950a3e66ecb2f91f2f2b8d27`.
+Correções: `1448436` (visibilidade herdada), `50ba7c7` (Windows/LF) e
+`1341d48` (envio sem formatos redundantes, fracionamento e testes).
+O fechamento é publicado nos dois ramos autorizados por avanço normal.
 
-Próxima ação: salvar/reler o código da descartável e testar/medir nativamente
-com ferramenta oficial funcional; depois renovar snapshot antes da revisão.
-Recomendação: **GPT-6.1 Sol, High**, para preservar entradas e conferir o
-contrato junto do código salvo e relido.
+**A+B concluídos nativamente.** Código, menus, casos positivos/negativos,
+textos, gatilhos espontâneos na cópia e construção integral foram conferidos.
+Prova conjunta da descartável: [VALIDACAO-NATIVA-PC.json](VALIDACAO-NATIVA-PC.json).
+Construção reservada: 17 abas/1.968 menus; 672s aproximados nas três execuções.
+Medidas de interface/releitura em separado das durações dos acionadores.
+
+Revisão original migrada com backup/snapshot fresco, guardas e releitura igual:
+ANALISE 10, 7.356 chaves, 509 entradas/notas exatas, zero erros e divergências
+em 400.917 células de 17 abas. Mais 22.094 células superiores/carteira/ficha
+pessoal/cache comparadas ao backup, sem divergências inesperadas. Os 20 GS e
+manifesto foram relidos integralmente iguais após a aplicação. Prova final:
+[REVISAO-NATIVA-PC.json](REVISAO-NATIVA-PC.json). Incidentes de timeout,
+confirmação por releitura e otimização validada estão no
+[checkpoint PC](RETOMADA-PC.md); nunca reaplicar o diário concluído.
+
+Oficial, main, bot e acessos intactos. C/D não iniciadas. Bot/formato 10 e
+variante histórica formato 4 continuam externos. Calc indisponível e bateria
+POSIX impedida por fcntl no Windows; não foram contabilizados como aprovação.
+Os GS continuam exatamente os de f1ff7a6; sem nova geração pesada.
+
+Próxima ação/modelo: **GPT-6.1 Sol, High**, para conferir o fechamento e o uso
+de A+B. Nova etapa C/D somente mediante nova autorização.

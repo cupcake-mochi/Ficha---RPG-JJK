@@ -1,3 +1,8 @@
+> Registro histórico parcial, preservado. A retomada PC concluiu a prova
+> conjunta e a revisão; ver [RETOMADA-PC.md](RETOMADA-PC.md),
+> [VALIDACAO-NATIVA-PC.json](VALIDACAO-NATIVA-PC.json) e
+> [REVISAO-NATIVA-PC.json](REVISAO-NATIVA-PC.json).
+
 # B47 — migração Sheets na descartável · 16/10/2026
 
 **Resultado parcial.** A planilha da descartável passou nas conferências abaixo;

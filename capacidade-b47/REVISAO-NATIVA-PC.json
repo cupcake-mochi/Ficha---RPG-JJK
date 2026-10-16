@@ -1,0 +1,119 @@
+{
+  "resultado": "OK",
+  "escopo": "A+B: revisão nativa migrada e código salvo/relido; C/D não iniciadas",
+  "data": "2026-10-16",
+  "destino": "1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0",
+  "backup_id": "1fb3rdEteWSNL1tMEukRTkMirEffFkhPJiCOvewvs-Ug",
+  "snapshot_sha256": "afcfdc865261868e059749b2b5d51efcd49e893bb7b786343d7447d350ad7e93",
+  "alvo_sha256": "1964dc4c9a89427c5a516ec887290b59458435ad85662c193ad5f973cd5b4875",
+  "codigo_producao": "f1ff7a6785f179df78a91a619bbd60388acd4bc1",
+  "geracao": "f85ffda549994a3f",
+  "codigo": {
+    "gs": 20,
+    "releitura_integral_pos_migracao_igual": true,
+    "manifesto_preservado": true,
+    "html_ausente": true,
+    "helper_temporario_ausente": true,
+    "max_bytes": 816380,
+    "bytes_totais": 5682399
+  },
+  "planilha": {
+    "resultado": "OK",
+    "destino": "1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0",
+    "entradas_notas_exatas": 509,
+    "valores_planejados_conferidos": 14676,
+    "notas_planejadas_conferidas": 3302,
+    "validacoes_planejadas_conferidas": 4725,
+    "analise_chaves": 7356,
+    "analise_unicas": 7356,
+    "colunas_analise": 4,
+    "abas_auditadas": 17,
+    "celulas_cobertas": 400917,
+    "erros": [],
+    "divergencias": []
+  },
+  "preservacao_superior": {
+    "resultado": "OK",
+    "backup": "1fb3rdEteWSNL1tMEukRTkMirEffFkhPJiCOvewvs-Ug",
+    "celulas_conferidas": 22094,
+    "areas": {
+      "CONFIGURAÇÃO": [
+        "A1:P732"
+      ],
+      "DADOS_CUSTOM": [
+        "CB2:CC10"
+      ],
+      "CARTEIRA": [
+        "A1:AU52"
+      ],
+      "FICHA PESSOAL": [
+        "A1:BT110"
+      ]
+    },
+    "mudancas_formula_esperadas": [
+      [
+        "CONFIGURAÇÃO",
+        "G160",
+        "limite de COUNTIF ajustado automaticamente pela remoção de linhas"
+      ]
+    ],
+    "divergencias": []
+  },
+  "estrutura": {
+    "resultado": "OK",
+    "mesclagens": 2544,
+    "grupos_superiores_preservados": 3,
+    "linhas_ocultas": [
+      793,
+      794
+    ],
+    "estudos_preservados": 4,
+    "abas_totais": 21
+  },
+  "envio": {
+    "blocos_logicos": 120,
+    "confirmados_resposta_api": 119,
+    "confirmado_releitura_nativa": 1,
+    "pedidos_efetivos": 19222,
+    "formatos_redundantes_coalescidos": 837,
+    "nao_reaplicar": true,
+    "incidentes": [
+      "Lote inicial de 629 pedidos: timeout, estado integral anterior confirmado; novo plano guardado e fracionado após ensaio em descartável.",
+      "Bloco 0046: timeout, 45 valores/notas/formatos de âncoras confirmados por releitura; sem repetição.",
+      "Bloco 0047 e primeira fração: estado anterior confirmado; omitida só formatação redundante, comprovada equivalente em controle nativo; 44 escritas confirmadas."
+    ],
+    "fracionamento_integridade_testes": 5,
+    "coalescencia_testes_portateis": 7,
+    "controles_nativos_formatacao": {
+      "mescla_simples": [
+        1,
+        6
+      ],
+      "mescla_multilinha": [
+        4,
+        6
+      ],
+      "valores_formatos_entrada_e_efetivos_iguais": true,
+      "44_escritas_sem_repeticao_segundos_descartavel": 3.041
+    }
+  },
+  "testes_locais_migracao": {
+    "casos": 19,
+    "resultado": "OK",
+    "inclui_guardas_e_linhas_ocultas": true
+  },
+  "evidencias_privadas": "D:\\JJK - Project\\B47\\evidencias\\2026-10-16",
+  "limites": [
+    "Prova conjunta da descartável e construção/gatilhos/medidas em VALIDACAO-NATIVA-PC.json.",
+    "Calc indisponível e teste POSIX de infra bloqueado por fcntl no Windows.",
+    "Bot/formato 10 e variante histórica do formato 4 são pendências externas.",
+    "Não há baseline nativo equivalente nesta retomada para afirmar redução percentual de latência."
+  ],
+  "proxima_acao_modelo": "GPT-6.1 Sol, High: revisão do checkpoint/uso de A+B; C/D dependem de nova autorização.",
+  "commits_retomada": [
+    "14484368662d37e85e3dddff589cfe120a88775d",
+    "50ba7c7e196b05f912c00803a683b36e27801bb9",
+    "1341d48b7a7801037baab9da3972b6495f7461d2"
+  ],
+  "visual": "D:/JJK - Project/B47/evidencias/2026-10-16/revisao-final-restricoes29-30.png"
+}
