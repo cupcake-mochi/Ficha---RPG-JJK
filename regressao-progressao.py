@@ -86,18 +86,53 @@ contract_diff=[(r,c,contrato_esperado(r,c,v),generated['ANALISE'].get(ix._letras
                for c,v in cs.items() if c<=4 and not (r==2 and c==2)
                and contrato_esperado(r,c,v)!=generated['ANALISE'].get(ix._letras(c)+str(r))]
 check('contrato anterior preservado, com quatro extras nos agregados e Definição uma linha abaixo',not contract_diff,contract_diff[:3])
+def fatoracao_basica_exata(original, atual, row, valores, antes, depois):
+    """Recognize only the approved U2:U26 -> JY:KA factorization.
+
+    Rebuild the complete frozen formula from PRE-progression helpers, requiring
+    identical guards, diagnostics and order. Modified helpers must also match
+    the recorded post-progression formula. No arbitrary old-cell changes pass.
+    """
+    if not 2<=row<=26 or atual!=f'=TEXTJOIN(" · ",TRUE,JY{row}:KA{row})':return False
+    pat=r'=IF\((.+),"",TEXTJOIN\(" · ",TRUE,(.*)\)\)'
+    old_formula=re.fullmatch(pat,original) if isinstance(original,str) else None
+    if not old_formula:return False
+    parts=[]
+    for col in ('JY','JZ','KA'):
+        coord=col+str(row);value=valores.get(coord)
+        if coord in antes and (coord not in depois or depois[coord]!=value):return False
+        pre=antes.get(coord,value)
+        m=re.fullmatch(pat,pre) if isinstance(pre,str) else None
+        if not m or m[1]!=old_formula[1]:return False
+        parts.append(m[2])
+    rebuilt='=IF('+old_formula[1]+',"",TEXTJOIN(" · ",TRUE,'+','.join(parts)+'))'
+    return rebuilt==original
+
+basic_old={r:v for a in old if a['nome']=='DADOS_CUSTOM' for r,c,v,*_ in a['vals'] if c==21 and 2<=r<=26}
+basic_now=generated['DADOS_CUSTOM'];basic_before=pack['antes'].get('DADOS_CUSTOM',{});basic_after=pack['depois'].get('DADOS_CUSTOM',{})
+def factor(row=2,original=None,current=None,values=None,before=None,after=None):
+    return fatoracao_basica_exata(basic_old[row] if original is None else original,
+           basic_now['U'+str(row)] if current is None else current,row,
+           basic_now if values is None else values,basic_before if before is None else before,basic_after if after is None else after)
+check('25 validações 3a recompõem a fórmula histórica inteira, sem mudar ordem ou mensagens',len(basic_old)==25 and all(factor(row=r) for r in basic_old))
+check('contraprova: mudar condição, guarda ou mensagem histórica é recusado',all(not factor(original=basic_old[2].replace(a,b,1)) for a,b in [('COUNTIF','COUNTIFS'),('LEN(TEXTJOIN','N(TEXTJOIN'),('Preencha NOME','Nome opcional')]))
+check('contraprova: auxiliar omitida ou linha trocada é recusada',not factor(current='=TEXTJOIN(" · ",TRUE,JY2:JZ2)') and not factor(current='=TEXTJOIN(" · ",TRUE,JY3:KA3)'))
+broken=dict(basic_after);broken['JY2']=basic_now['JY2']+' '
+check('contraprova: auxiliar divergente do depois registrado é recusada',not factor(after=broken))
+
 for a in old:
     if a['nome']=='ANALISE':continue
     for r,c,v,*_ in a['vals']:
         coord=ix._letras(c)+str(r);nv=generated[a['nome']].get(coord)
         norm=lambda value:None if value is None or value=='' else value
         if norm(v)==norm(nv):continue
+        if a['nome']=='DADOS_CUSTOM' and c==21 and fatoracao_basica_exata(v,nv,r,basic_now,basic_before,basic_after):continue
         expected=pack['antes'].get(a['nome'],{}).get(coord,'__não declarado__')
         after=pack['depois'].get(a['nome'],{}).get(coord,'__não declarado__')
         # O emissor GS serializa None como string vazia. Normalizar somente essa
         # representação; fórmulas e textos continuam exigindo igualdade inteira.
         if norm(expected)!=norm(v) or norm(after)!=norm(nv):changed.append((a['nome'],coord,v,nv))
-check('toda alteração preexistente tem antes/depois exatos',not changed,changed[:5])
+check('toda alteração preexistente tem antes/depois exatos',not changed,[(sheet,cell,len(str(before)),len(str(after))) for sheet,cell,before,after in changed[:5]])
 if '--estrutura' in sys.argv:sys.exit(bool(fails))
 
 def short(n,typ,name,attr):
