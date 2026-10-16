@@ -12,13 +12,15 @@ from pathlib import Path
 import indice_ficha as ix
 import custom
 import ficha_automatica as fa
+import capacidades as cap
+from custom_criacao import criterio
 
 ROOT = Path(__file__).resolve().parent.parent
 NOME = 'DADOS_PROGRESSAO'
-INICIO = 737
-CURTOS = 131
-INI_CURTOS = INICIO + 140
-PASSO = 14
+INICIO = cap.INICIO_PROGRESSAO
+CURTOS = cap.CURTOS
+INI_CURTOS = cap.INICIO_CURTOS
+PASSO = cap.PASSO_CURTOS
 ATRIBUTOS = [x[0] for x in ix.ATRS]
 NIVEIS = {'Caminho': (2, 7, 15, 23, 30), 'Trilha': (2, 11, 19, 27)}
 CAM_FIELDS = ['VIDA INICIAL', 'VIDA POR NÍVEL', 'DADO DE VIDA', 'PE POR NÍVEL',
@@ -45,7 +47,9 @@ def curto(n):
     r = INI_CURTOS + ((n-1)//2)*PASSO
     c = 2 if n % 2 else 10
     L = ix._letras
-    return dict(n=n, inicio=r, col=c, tipo=f'{L(c)}{r+2}', nome=f'{L(c)}{r+4}',
+    return dict(n=n, categoria='Perícia' if n <= cap.PERICIAS else 'Ofício',
+                indice=n if n <= cap.PERICIAS else n-cap.PERICIAS,
+                inicio=r, col=c, tipo=f'{L(c)}{r+2}', nome=f'{L(c)}{r+4}',
                 mestre_viu=f'{L(c+4)}{r+2}', atributo=f'{L(c+3)}{r+5}',
                 efeito=f'{L(c)}{r+7}', aviso=f'{L(c)}{r+11}')
 
@@ -64,7 +68,7 @@ def longo(tipo):
 
 
 def aba_dados():
-    return dict(nome=NOME, estado='hidden', linhas=180, colunas=81,
+    return dict(nome=NOME, estado='hidden', linhas=1, colunas=81,
                 padrao=['Roboto',10,'#000000'], fundo_base='#FFFFFF', paleta_fixa=True,
                 colunas_larg=[], linhas_alt=[], altura_padrao=15.75, grade=False,
                 celulas=[], mescladas=[], menus=[], condicional=[], imagens=[])
@@ -106,7 +110,7 @@ def aplica(layout, fp, fiv):
             for k in ['nome','texto']: input_(key+f'.nivel.{lv["nivel"]}.'+k,lv[k])
     for g in tr['curtos']:
         for k in ['tipo','nome','mestre_viu','atributo','efeito']:
-            input_(f'custom.treino.{g["n"]}.{k}',g[k])
+            input_(f'custom.{"pericia" if g["categoria"] == "Perícia" else "oficio"}.{g["indice"]}.{k}',g[k])
     # Raw short records. A name is accepted only once and with a real attribute.
     for c,v in enumerate(['registro','tipo','nome','atributo','mestre viu','descrição','problema'],1): d(f'{ix._letras(c)}1',v)
     for g in tr['curtos']:
@@ -126,10 +130,10 @@ def aplica(layout, fp, fiv):
     short_names=rg(3,CURTOS+1)
     for g in tr['curtos']:
         r=g['n']+1
-        d(f'G{r}',f'=IF(AND(C{r}="",D{r}="",F{r}=""),"",TEXTJOIN(" · ",TRUE,'
-          f'IF(COUNTIF($AM$2:$AM$3,B{r})=0,"Escolha Perícia ou Ofício",""),'
+        d(f'G{r}',f'=IF(AND(C{r}="",D{r}="",F{r}="",E{r}=FALSE,B{r}={q(g["categoria"])}),"",TEXTJOIN(" · ",TRUE,'
+          f'IF(B{r}<>{q(g["categoria"])},"Tipo incompatível com o cadastro",""),'
           f'IF(OR(C{r}="",TRIM(C{r})<>C{r}),"Preencha NOME sem espaços nas pontas",""),'
-          f'IF(OR(COUNTIF({short_names},C{r})>1,COUNTIF($AY$2:$AY$24,C{r})>0,COUNTIF($AZ$2:$AZ$12,C{r})>0),"Nome repetido no livro ou custom",""),'
+          f'IF(OR(COUNTIF({short_names},{criterio("C"+str(r))})>1,COUNTIF($AY$2:$AY$24,{criterio("C"+str(r))})>0,COUNTIF($AZ$2:$AZ$12,{criterio("C"+str(r))})>0),"Nome repetido no livro ou custom",""),'
           f'IF(COUNTIF($AN$2:$AN$6,D{r})=0,"Escolha um atributo válido",""),'
           f'IF(ISLOGICAL(E{r}),"","MESTRE VIU deve ser caixa de seleção")))')
     # Book + valid custom skills and offices, same row count for lookup columns.
@@ -141,16 +145,18 @@ def aplica(layout, fp, fiv):
             # Ofício's default attribute is in its catalog entry; never infer from the name.
             if isinstance(attr,dict): raise ValueError('atributo inesperado no catálogo')
             d(f'{ix._letras(col+1)}{i}',attr)
-        for n in range(1,CURTOS+1):
-            r=n+1; dest=len(vals)+n+1;typ='Perícia' if key=='pericias' else 'Ofício'
+        typ='Perícia' if key=='pericias' else 'Ofício'
+        for g in (g for g in tr['curtos'] if g['categoria']==typ):
+            r=g['n']+1; dest=len(vals)+g['indice']+1
             d(f'{ix._letras(col)}{dest}',f'=IF(AND($B{r}={q(typ)},$C{r}<>"",$G{r}=""),$C{r},"")')
             d(f'{ix._letras(col+1)}{dest}',f'=IF({ix._letras(col)}{dest}="","",$D{r})')
-            d(f'{ix._letras(48 if key=="pericias" else 49)}{r}',f'={ix._letras(col)}{dest}')
-    skills=rg(33,len(cat['pericias'])+CURTOS+1, width=2)
-    offices=rg(36,len(cat['oficios'])+CURTOS+1, width=2)
+            d(f'{ix._letras(48 if key=="pericias" else 49)}{g["indice"]+1}',f'={ix._letras(col)}{dest}')
+    skills=rg(33,len(cat['pericias'])+cap.PERICIAS+1, width=2)
+    offices=rg(36,len(cat['oficios'])+cap.OFICIOS+1, width=2)
     # Origem 3a already offers an explicit “—” for no office. Preserve that
     # option without turning it into an office definition or a trained choice.
-    d('AJ144','—')
+    office_none = len(cat['oficios'])+cap.OFICIOS+2
+    d('AJ'+str(office_none),'—')
     tr['pericias']=skills;tr['oficios']=offices
     # Book paths retain original values and column order N:U used by all life/PE lookups.
     for j,v in enumerate(['Caminho','atributos naturais','vida inicial','vida por nível','PE por nível','perícia fixa 1','perícia fixa 2','dado de vida','troca perícias por arma','treino de arma'],13): d(f'{ix._letras(j)}1',v)
@@ -178,7 +184,7 @@ def aplica(layout, fp, fiv):
         if optional:pred=f'AND({C(k)}<>"",{pred})'
         checks.append(f'IF({pred},{q("Opção inválida: "+k)},"")')
     for k in ['PERÍCIA FIXA 1','PERÍCIA FIXA 2']:
-        checks.append(f'IF(COUNTIF({rg(33,155)},{C(k)})=0,{q("Escolha "+k)},"")')
+        checks.append(f'IF(COUNTIF({rg(33,len(cat["pericias"])+cap.PERICIAS+1)},{C(k)})=0,{q("Escolha "+k)},"")')
     for a,b in [('ATRIBUTO NATURAL 1','ATRIBUTO NATURAL 2'),('PERÍCIA FIXA 1','PERÍCIA FIXA 2')]:
         checks.append(f'IF(AND({C(a)}<>"",{C(a)}={C(b)}),{q(a+" e 2 devem ser distintos")},"")')
     cats=f"'CONFIGURAÇÃO'!$E${INICIO+15}:$E${INICIO+27}"
@@ -228,18 +234,18 @@ def aplica(layout, fp, fiv):
     replacements={'DADOS!$N$5:$U$10':path_table,
                   'DADOS!$AM$5:$AM$11':rg(45,8),
                   'DADOS!$AP$5:$AP$25':rg(46,trow+2),
-                  'DADOS_INVOC!$CC$2:$CC$24':rg(33,155),
+                  'DADOS_INVOC!$CC$2:$CC$24':rg(33,len(cat['pericias'])+cap.PERICIAS+1),
                   'DADOS_INVOC!$CC$2:$CD$24':skills,
-                  'DADOS_INVOC!$CH$2:$CH$12':rg(36,143),
-                  'DADOS!$B$4:$B$26':rg(33,155)}
+                  'DADOS_INVOC!$CH$2:$CH$12':rg(36,len(cat['oficios'])+cap.OFICIOS+1),
+                  'DADOS!$B$4:$B$26':rg(33,len(cat['pericias'])+cap.PERICIAS+1)}
     # Extend the existing 3a pools (Origem skills / office) without changing cards.
     pools=custom.listas(); cols={k:78+i for i,k in enumerate(pools)}
-    replacements[custom.faixa(cols['pericias'],160)]=rg(33,155)
-    replacements[custom.faixa(cols['oficios'],160)]=rg(36,144)
+    replacements[custom.faixa(cols['pericias'],160)]=rg(33,len(cat['pericias'])+cap.PERICIAS+1)
+    replacements[custom.faixa(cols['oficios'],160)]=rg(36,office_none)
     for a in layout['abas']:
         if a['nome']==NOME: continue
         local=dict(replacements)
-        if a['nome']=='DADOS_INVOC':local.update({'$CC$2:$CD$24':skills,'$CC$2:$CC$24':rg(33,155),'$CH$2:$CH$12':rg(36,143)})
+        if a['nome']=='DADOS_INVOC':local.update({'$CC$2:$CD$24':skills,'$CC$2:$CC$24':rg(33,len(cat['pericias'])+cap.PERICIAS+1),'$CH$2:$CH$12':rg(36,len(cat['oficios'])+cap.OFICIOS+1)})
         for x in list(a['celulas']):
             if not isinstance(x[1],str) or not x[1].startswith('='):continue
             v=x[1]
@@ -261,6 +267,17 @@ def aplica(layout, fp, fiv):
     for c,x in cells['FICHA'].items():
         if isinstance(x[1],str) and 'Treinado em Todas as Armas' in x[1]:
             put('FICHA',c,f'=IF({ref("K7")}=1,IF({ref("K6")}="Todas","Treinado em Todas as Armas","Treinado em "&TEXTJOIN(", ",TRUE,{cats})),{x[1][1:]})')
+    # Custom names are literal in exact lookups throughout all consumers.
+    from custom_pecas import buscas_literais
+    targets=set()
+    for table in (skills, offices):
+        owner,address=table.rsplit('!',1)
+        targets.add((owner.strip("'"),address.replace('$','')))
+    for a in layout['abas']:
+        for item in list(a['celulas']):
+            changed=buscas_literais(item[1],a['nome'],targets)
+            if changed!=item[1]: put(a['nome'],item[0],changed)
+    data['linhas']=max(ix._lc(c[0])[0] for c in data['celulas'])
     tr['put']=put
     return tr
 
@@ -294,7 +311,7 @@ def desenha(layout,tr,put):
         for i,(label,addr) in enumerate(g['campos'].items()):
             rr=r+5+i
             box(rr,c,label,ec=c+2,kind='rotulo');box(rr,c+3,ec=c+5)
-            source=(rg(41,7) if label=='DADO DE VIDA' else rg(40,6) if label.startswith('ATRIBUTO') else rg(33,155) if label.startswith('PERÍCIA') else rg(42,3) if label.startswith('TROCA') else rg(43,3) if label=='TREINO DE ARMA' else rg(44,14) if label.startswith('CATEGORIA') else rg(45,8) if label=='CAMINHO' else rg(47,22) if label=='BASE DO LIVRO' else None)
+            source=(rg(41,7) if label=='DADO DE VIDA' else rg(40,6) if label.startswith('ATRIBUTO') else tr['pericias'].split(':')[0]+':$AG$'+tr['pericias'].rsplit('$',1)[1] if label.startswith('PERÍCIA') else rg(42,3) if label.startswith('TROCA') else rg(43,3) if label=='TREINO DE ARMA' else rg(44,14) if label.startswith('CATEGORIA') else rg(45,8) if label=='CAMINHO' else rg(47,22) if label=='BASE DO LIVRO' else None)
             if source:menu(addr,source)
             if label in ['TREINO DE ARMA','TROCA PERÍCIAS POR ARMA']:put(a['nome'],addr,'Todas' if label=='TREINO DE ARMA' else 'Não')
             if label=='BASE DO LIVRO':
@@ -310,13 +327,13 @@ def desenha(layout,tr,put):
             rr=ix._lc(lv['nome'])[0]
             box(rr,c,lv['nivel'],kind='rotulo');box(rr,c+1,ec=c+5)
             box(rr+1,c,er=rr+2,ec=c+5,kind='efeito',note='Texto integral da habilidade. Campo vazio não concede habilidade; nenhum texto é interpretado como cálculo.')
-    # Keep existing short-record addresses; collapse the now unused spacer.
-    a.setdefault('grupos',{}).setdefault('linhas',[]).append([INICIO+56,INICIO+137,True])
+    # Keep the approved cards; compact the unused spacer before the catalog.
+    a.setdefault('grupos',{}).setdefault('linhas',[]).append([INICIO+56,INI_CURTOS-3,True])
     for g in tr['curtos']:
         c=g['col'];r=g['inicio'];n=g['n']
-        box(r,c,f'REGISTRO {n} · PERÍCIA / OFÍCIO',ec=c+5,kind='secao')
-        box(r+1,c,'TIPO',ec=c+3,kind='rotulo');box(r+2,c,ec=c+3)
-        menu(g['tipo'],rg(39,3))
+        box(r,c,f'{g["categoria"].upper()} {g["indice"]} · CUSTOM',ec=c+5,kind='secao')
+        box(r+1,c,'TIPO',ec=c+3,kind='rotulo');box(r+2,c,g['categoria'],ec=c+3)
+        menu(g['tipo'],rg(39,2 if g['categoria']=='Perícia' else 3, start=2 if g['categoria']=='Perícia' else 3))
         box(r+1,c+4,'MESTRE VIU',ec=c+5,kind='rotulo');box(r+2,c+4,False,ec=c+5,kind='caixa')
         box(r+3,c,'NOME',ec=c+5,kind='rotulo');box(r+4,c,ec=c+5)
         box(r+5,c,f'=IF({g["tipo"]}="Ofício","ATRIBUTO PADRÃO","ATRIBUTO FIXO")',ec=c+2,kind='rotulo')
@@ -382,7 +399,7 @@ def ficha(layout,tr,put,idx):
         for i in range(total):
             rr=r+2+i;train=f'{L(col)}{rr}';spec=f'{L(col+1)}{rr}';name=f'{L(col+2)}{rr}';at=f'{L(col+10)}{rr}';res=f'{L(col+14)}{rr}';bonus=f'{L(col+16)}{rr}'
             box(train,False,kind='caixa');box(spec,False,kind='caixa');box(name,end=f'{L(col+9)}{rr}')
-            menu(name,rg(pool,CURTOS+1))
+            menu(name,rg(pool,(cap.PERICIAS if typ=='Perícia' else cap.OFICIOS)+1))
             source=tr['pericias'] if typ=='Perícia' else tr['oficios']
             attr=f'IFERROR(VLOOKUP({name},{source},2,FALSE),"")'
             box(at,'='+attr,f'{L(col+13)}{rr}')
@@ -391,8 +408,8 @@ def ficha(layout,tr,put,idx):
             value='SWITCH('+at+','+','.join(q(n)+','+v for n,v in attrs.items())+',NA())'
             rn=ref(name,'FICHA')
             # Count across both columns, not only the current half.
-            unique='('+ '+'.join(f'COUNTIF({area},{rn})' for area in nomes[typ])+')=1'
-            valid=f'AND({rn}<>"",COUNTIF({rg(pool,CURTOS+1)},{rn})=1,{unique})'
+            unique='('+ '+'.join(f'COUNTIF({area},{criterio(rn)})' for area in nomes[typ])+')=1'
+            valid=f'AND({rn}<>"",COUNTIF({rg(pool,(cap.PERICIAS if typ=='Perícia' else cap.OFICIOS)+1)},{criterio(rn)})=1,{unique})'
             box(res,f'=IF({name}="","",IF({valid},{value}+IF({spec},{ref(idx["maestria"],"FICHA")}+INT({ref(idx["maestria"],"FICHA")}/2),IF({train},{ref(idx["maestria"],"FICHA")},0))+IFERROR(VALUE({bonus}&""),0),NA()))',f'{L(col+15)}{rr}')
             box(bonus,end=f'{L(col+17)}{rr}')
             tr['linhas_ficha'].append(dict(tipo=typ,n=offset+i+1,treino=train,especializacao=spec,nome=name,atributo=at,resultado=res,bonus=bonus,valido=valid))
@@ -462,7 +479,7 @@ def exporta(tr):
         out.append([key,formula,r.replace('$',''),'configuração'])
     for g in tr['curtos']:
         rr=ref('G'+str(g['n']+1))
-        out.append([f'aviso.custom.treino.{g["n"]}',f'=IF({rr}="","","⚠ "&{rr})',NOME+'!G'+str(g['n']+1),'aviso'])
+        out.append([f'aviso.custom.{"pericia" if g["categoria"] == "Perícia" else "oficio"}.{g["indice"]}',f'=IF({rr}="","","⚠ "&{rr})',NOME+'!G'+str(g['n']+1),'aviso'])
     for key,cell in [('caminho','K2'),('trilha','K3')]:
         rr=ref(cell)
         out.append(['aviso.custom.'+key,f'=IF({rr}="","","⚠ "&{rr})',NOME+'!'+cell,'aviso'])

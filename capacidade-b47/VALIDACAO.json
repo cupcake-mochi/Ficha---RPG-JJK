@@ -1,0 +1,183 @@
+{
+  "data": "2026-10-16",
+  "base": "4187df37640b5e0966cdb342f56f9ee0a0daf16a",
+  "ramo": "codex/b47-capacidade",
+  "tipo": "validação local, sem escrita Google",
+  "fontes_sha256": {
+    "ficha-v01/capacidades.py": "ae56ba8310e9780ab64114cc60770ca396ca8bb8bc32673e0075770bf91f9862",
+    "ficha-v01/custom_progressao.py": "6c6ecef200e96af8338de7ee9bcdf7104d8ed664fb38911c0c6c9b570489a8c5",
+    "ficha-v01/custom_criacao.py": "ab95e75f8779db2376712ef249cf8c0594b588abd7d7de16949867ee651da5b4",
+    "ficha-v01/custom_pecas.py": "57cfdb1f66c66482bc91e987a518052dc4eb39e2c23253a6ea3c1b9fbfbcafca",
+    "ficha-v01/analise.py": "a05471b8bc470a87132338aa02345cb7987bbbdcdcc607a9288c0c3d7e82072e",
+    "ficha/modelo.gs.js": "650ec0c2a84ba338e5b26463d18dbd5318299e6e4f78d7c7af0a7b72db29cd2a",
+    "ficha/emitir_gs.py": "9bf052cf21a8128ad782ccbbe691cdece93e22b27e8408271d8559dd98e5c4b8",
+    "ler-analise.py": "75ffa4d0b19ae7f3255e134b48380728880c80aa52b1a6c389f59292ee77f99b"
+  },
+  "testes": {
+    "capacidade": {
+      "resultado": "OK",
+      "checagens": 13
+    },
+    "migracao": {
+      "resultado": "OK",
+      "checagens": 19
+    },
+    "pecas": {
+      "resultado": "OK",
+      "checagens": 54
+    },
+    "progressao": {
+      "resultado": "OK",
+      "checagens": 47
+    },
+    "familias": {
+      "resultado": "OK",
+      "checagens": 20
+    },
+    "treinos": {
+      "resultado": "OK",
+      "checagens": 6
+    },
+    "campanha_estrutura": {
+      "resultado": "OK",
+      "checagens": 4
+    },
+    "custom_estrutura": {
+      "resultado": "OK",
+      "checagens": 12
+    },
+    "construir_simulado": {
+      "resultado": "OK",
+      "checagens": 185,
+      "fases": 3
+    },
+    "copias": {
+      "resultado": "OK",
+      "abas_e_fixtures": 20
+    },
+    "textos": {
+      "resultado": "OK",
+      "cenarios": 7,
+      "leituras_range_por_edicao": 4
+    },
+    "leitor": {
+      "resultado": "OK",
+      "chaves": 7356,
+      "formato": 10,
+      "limite": "Calc local; aviso esperado de escolhas vazias"
+    },
+    "smoke": {
+      "resultado": "OK",
+      "checagens": 64
+    }
+  },
+  "carregamento_vm_node24": {
+    "base": {
+      "mediana_ms": 9663.740429000001,
+      "amostras_ms": [
+        9683.22462,
+        9382.278377,
+        12286.872318000002,
+        9663.740429000001,
+        9497.831693
+      ],
+      "bytes": 9543357,
+      "arquivos": 23
+    },
+    "reduzido": {
+      "mediana_ms": 735.3472539999998,
+      "amostras_ms": [
+        869.920439,
+        706.614198,
+        691.9832140000001,
+        929.7776530000001,
+        735.3472539999998
+      ],
+      "bytes": 5669457,
+      "arquivos": 20
+    },
+    "otimizado": {
+      "mediana_ms": 233.09519,
+      "amostras_ms": [
+        368.126015,
+        220.39992799999993,
+        233.09519,
+        217.12242199999991,
+        275.3424090000001
+      ],
+      "bytes": 5670234,
+      "arquivos": 20
+    }
+  },
+  "edicao_vm": {
+    "antes": {
+      "tipo": "simulação VM; CPU, sem latência de serviços",
+      "grupos": 1219,
+      "amostras": 100,
+      "mediana_ms": 4.067351500000029,
+      "p95_ms": 10.047441999999933,
+      "leituras_range": 4
+    },
+    "depois": {
+      "tipo": "simulação VM; CPU, sem latência de serviços",
+      "grupos": 66,
+      "amostras": 100,
+      "mediana_ms": 0.27839950000000613,
+      "p95_ms": 0.8119340000000079,
+      "leituras_range": 4
+    }
+  },
+  "geracao": {
+    "base_segundos": 101.65109533100008,
+    "base_rss_max_kib": 592936,
+    "nova_segundos": 38.06645292799999,
+    "xlsx_antes_bytes": 3763979,
+    "xlsx_depois_bytes": 1681232,
+    "rss_amostra_anterior_geracao_v10_kib": 244996
+  },
+  "google": {
+    "leitura_sheets": "confirmada",
+    "catalogos_sem_dados_fora_dos_padroes": true,
+    "escrita_realizada": false,
+    "snapshot_integral_atual_obtido": false,
+    "apps_script": "sem ferramenta/credencial de CLI disponível",
+    "aplicacao_e_testes_nativos": "pendentes"
+  },
+  "visual": {
+    "tipo": "rasterização local dos metadados; não captura Google/navegador; Roboto substituído por DejaVu Sans",
+    "arquivos": [
+      {
+        "arquivo": "capacidade-b47/previas/familias-ultimas-melhorias-primeiras.png",
+        "sha256": "e9c553eab4b16a9184a23a695dd59791a6729b8057b6f798461747ef2487e84c"
+      },
+      {
+        "arquivo": "capacidade-b47/previas/melhorias-ultimas.png",
+        "sha256": "d1cfd1e72f48974fe8bf1c6d1007034847cc4f65013882d3c485dcee0173e608"
+      },
+      {
+        "arquivo": "capacidade-b47/previas/oficios-ultimos-familias-primeiras.png",
+        "sha256": "fc41c0ea3beba855f6cf5d3b58f1887544bbaac11af5414ff8a535d657c10fa1"
+      },
+      {
+        "arquivo": "capacidade-b47/previas/pericias-primeiras.png",
+        "sha256": "d3a37474b23b553ad4d2fb8ce71e9ffc84dc83d1b5d067bb3021f2e847c37acf"
+      },
+      {
+        "arquivo": "capacidade-b47/previas/pericias-ultimas-oficios-primeiros.png",
+        "sha256": "aa3e47f467997e033bd2728c15487694bbadcb683a17f55a97e71b62998ba72f"
+      },
+      {
+        "arquivo": "capacidade-b47/previas/restricoes-ultimas.png",
+        "sha256": "308bf9258669106f94d8c73d8f8bf054fc5bb4d1d0b05b63637ac31c40b41d05"
+      }
+    ],
+    "limite": "campos calculados vazios; file:// recusado pelo Chromium com ERR_BLOCKED_BY_ADMINISTRATOR"
+  },
+  "frentes_externas": "nenhum ramo/commit de revisão ou infra encontrado; revisão independente pendente",
+  "nao_executado": [
+    "bateria integral de rodar-tudo.sh",
+    "testes mecânicos completos históricos de campanha/custom",
+    "migração/construção/edição nativas",
+    "salvamento e releitura Apps Script"
+  ]
+}

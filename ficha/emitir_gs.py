@@ -452,7 +452,7 @@ COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
                 "CriacaoPainel.gs": "VALORES_CRIACAO_",
                 "CriacaoAnalise.gs": "CONTRATO_CRIACAO_",
                 "PecasPainel.gs": "VALORES_PECAS_",
-                **{f"PecasAnalise{i}.gs":f"CONTRATO_PECAS_{i}_" for i in range(1,5)}}
+                **{f"PecasAnalise{i}.gs":f"CONTRATO_PECAS_{i}_" for i in range(1,2)}}
 
 # Alturas e caixas que esticam pertencem ao mesmo painel, mas ocupam mais
 # espaço que seus valores. O carregador recompõe a aba independentemente da

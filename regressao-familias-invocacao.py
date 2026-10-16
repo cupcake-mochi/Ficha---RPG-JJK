@@ -71,7 +71,7 @@ check('108 vagas, sem deslocar as cinco primeiras de cada entidade', all(
     all(col(c)+str(50+198*j) in raw['INVOCAÇÕES'] for c in range(15+19*k,19+19*k))
     for k in range(2) for j in range(6)))
 keys = [v for c, v in raw['ANALISE'].items() if c.startswith('A') and c[1:].isdigit() and c != 'A1']
-check('7485 chaves únicas, incluindo autonomia, limites e 48 Famílias extras', len(keys) == 7485 and len(set(keys)) == 7485 and
+check('7356 chaves únicas, incluindo autonomia, limites e 48 Famílias extras', len(keys) == 7356 and len(set(keys)) == 7356 and
       all(f'invocacao.{i}.familia.{j}' in keys for i in range(1, 13) for j in (6, 7, 8, 9)) and
       all(f'invocacao.{i}.autonomia' in keys for i in range(1,13)))
 check('autonomia individual padrão Autônoma, sem seletor global',
@@ -124,6 +124,18 @@ with tempfile.TemporaryDirectory(prefix='b47-fam7-') as tmp:
         ws = wb.create_sheet('DADOS_INVOC')
         inv = wb.create_sheet('INVOCAÇÕES')
         cfg = wb.create_sheet('CONFIGURAÇÃO')
+        # The current menus use the shared catalogs introduced after v7.
+        # Supply their real formulas/book sources, rather than testing broken
+        # references to omitted sheets.
+        for name in ['DADOS_AM','DADOS_CRIACAO','DADOS_MELHORIAS','DADOS_RESTRICOES','FICHA AMALDIÇOADA']:
+            support=wb.create_sheet(name)
+            for coord,value in raw[name].items():
+                if value is None:continue
+                if name in ['DADOS_AM','FICHA AMALDIÇOADA'] and isinstance(value,str) and value.startswith('='):continue
+                support[coord]=value
+        for coord,value in raw['CONFIGURAÇÃO'].items():
+            if value is not None and not (isinstance(value,str) and value.startswith('=')):
+                cfg[coord]=value
         for coord, value in raw['DADOS_INVOC'].items():
             if value is not None and not (isinstance(value, str) and value.startswith('=')):
                 ws[coord] = value
@@ -149,9 +161,13 @@ with tempfile.TemporaryDirectory(prefix='b47-fam7-') as tmp:
         path = tmp/f'caso-{i}.xlsx'
         wb.save(path)
         inputs.append(path)
-    subprocess.run([shutil.which('libreoffice') or 'soffice', '-env:UserInstallation='+ (tmp/'profile').as_uri(),
-                    '--headless', '--convert-to', 'xlsx', '--outdir', str(out), *map(str, inputs)],
-                   check=True, capture_output=True, timeout=120)
+    # Keep Calc memory bounded: open at most three scenarios per process.
+    # The historical one-process/13-workbook batch exceeded its 120 s limit
+    # in the cloud. Each scenario and its assertions remain unchanged.
+    for start in range(0,len(inputs),3):
+        subprocess.run([shutil.which('libreoffice') or 'soffice', '-env:UserInstallation='+ (tmp/('profile'+str(start))).as_uri(),
+                        '--headless', '--convert-to', 'xlsx', '--outdir', str(out), *map(str, inputs[start:start+3])],
+                       check=True, capture_output=True, timeout=120)
     for i, (name, _, mode, trail, maximum, livres, count, duplicates, opened, price, overrides) in enumerate(scenarios):
         ws = load_workbook(out/f'caso-{i}.xlsx', data_only=True)['DADOS_INVOC']
         values = [ws[c].value for c in targets]

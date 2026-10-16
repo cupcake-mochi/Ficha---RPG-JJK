@@ -1,3 +1,28 @@
+## Checkpoint vigente · A+B local · 16/10/2026
+
+Redução local implementada: 10 Famílias, 30 Melhorias, 30 Restrições,
+10 Perícias e 10 Ofícios compartilhados. ANALISE 10/7.356 chaves, sem reutilizar
+namespaces dos treinos retirados; livro, 25 cartões 3a, Caminho/Trilha e nove
+Famílias por entidade preservados. Medidas, comandos, resultados e SHAs em
+[capacidade-b47/RELATORIO.md](capacidade-b47/RELATORIO.md).
+
+A revisão Google permanece no formato 9 e não recebeu escrita nesta rodada.
+Leitura pelo conector confirmou catálogos sem dados fora dos padrões vazios;
+Apps Script/navegador não estão disponíveis para salvamento/execução. Não há
+snapshot integral atual, migração nativa, construção descartável ou aprovação
+visual Google desta redução. A migração offline tem guardas e lotes reproduzíveis;
+seguir [ROTEIRO-NATIVO](capacidade-b47/ROTEIRO-NATIVO.md), com nova leitura.
+
+Revisão independente/infraestrutura externas ainda sem commits disponíveis no
+remoto ao conferir esta rodada. Integração dessas frentes fica pendente de
+SHAs e revisão real. Oficial, main, bot e acessos não foram alterados. C/D seguem
+na fila. Este checkpoint prevalece sobre as contagens históricas abaixo.
+
+Próxima ação/modelo: **GPT-6.1 Sol, High**, para revisar as frentes e aplicar/testar
+nativamente a combinação preservando todas as entradas.
+
+---
+
 ## Preparação para nuvem · 16/10/2026
 
 [NUVEM.md](NUVEM.md) e [AGENTS.md](AGENTS.md) são a entrada de execução. Dependências Python fixadas, fontes/licenças, quatro fixtures históricas com hashes e texto de consulta da R52 estão no Git. Gerador, contratos, arte e exemplo DOCX já eram versionados. Regressões não devem procurar referências nas pastas do PC; os caminhos ativos de campanha/custom/progressão/Famílias foram ajustados. O comparador dispõe de original.xlsx histórico em fixtures. Há setup, diagnóstico/smoke e CI sem Google. Expectativas antigas de formatos 5/6/7 continuam uma pendência de manutenção em A/B, não uma aprovação da versão 9. Helpers de migração da sessão antiga dependem de snapshots/IDs daquela sessão e não são o fluxo de retomada. Somente o integrador obtém nova leitura/snapshot e aplica mudanças nativas quando a nuvem dispuser de acesso direto autorizado. Esta preparação não aplica redução ou migração. Validação em cópia isolada: instalação e 67 checks de smoke; exportação atual; 54 checks mecânicos; sete cenários de texto; compactação de 20 abas/fixtures; geração completa com os 23 .gs idênticos byte a byte aos versionados. Detalhes em nuvem-b47/VALIDACAO.json. Nenhuma aplicação no Google nesta preparação.

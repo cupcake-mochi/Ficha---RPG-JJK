@@ -89,7 +89,7 @@ if (!process.env.REG_CONSTRUIR_CARREGAMENTO_JA_CONFERIDO) {
   let erroArquivo = null;
   try { incompleta.ctx.construir(); } catch (e) { erroArquivo = e; }
   ok('sem o Origens.gs a montagem avisa antes de criar ou apagar abas', !!erroArquivo && /Falta o Origens.gs/.test(erroArquivo.message) && incompleta.P.abas.map((a) => a.nome).join('|') === abasAntesFalta);
-  for (const falta of ['Analise.gs', 'AnaliseFontes.gs', 'Configuracao.gs', 'Custom.gs', 'Pessoal.gs', 'Progressao.gs', 'ProgressaoPainel.gs', 'ProgressaoAnalise.gs', 'Criacao.gs', 'CriacaoPainel.gs', 'CriacaoAnalise.gs', 'Melhorias.gs', 'Restricoes.gs', 'PecasPainel.gs', 'PecasAnalise1.gs', 'PecasAnalise2.gs', 'PecasAnalise3.gs', 'PecasAnalise4.gs']) {
+  for (const falta of ['Analise.gs', 'AnaliseFontes.gs', 'Configuracao.gs', 'Custom.gs', 'Pessoal.gs', 'Progressao.gs', 'ProgressaoPainel.gs', 'ProgressaoAnalise.gs', 'Criacao.gs', 'CriacaoPainel.gs', 'CriacaoAnalise.gs', 'Melhorias.gs', 'Restricoes.gs', 'PecasPainel.gs', 'PecasAnalise1.gs']) {
     const C = criaSheets(require('./medidas/carregar-ficha.js').fontes(arquivos.filter(n => n !== falta)), HAB_SRC + '\n' + GS);
     const antes = C.P.abas.map(a => a.nome).join('|');
     let erro = null;
@@ -119,13 +119,13 @@ ok('as ocultas ficam ocultas, e só elas', ABAS.every((s) => S.acha(s.nome).ocul
      [...C.caixas].filter(k => k.endsWith(',2')).length === 30 && Array.from({length:30},(_,i)=>(11+i)+',2').every(k=>C.caixas.has(k)) && ['11,3', '11,4', '11,6'].every(k => C.dv.has(k)));
   ok('25 lembretes MESTRE VIU e 175 seletores estritos independentes dos bônus',
      [...C.caixas].filter(k=>k.endsWith(',14')&&Number(k.split(',')[0])<=732).length===25 && Array.from({length:25},(_,n)=>n).every(n=>{const r=9+n*29;return C.caixas.has((r+2)+',14') && Array.from({length:7},(_,i)=>(r+5+i)+',12').every(k=>C.dv.has(k)&&C.dv.get(k).invalido===false);}));
-  ok('133 lembretes e 131 tipos de registro da parte 3b',
-     [...C.caixas].filter(k=>Number(k.split(',')[0])>=733 && Number(k.split(',')[0])<1805).length===133 &&
-     Array.from({length:131},(_,i)=>({r:877+Math.floor(i/2)*14+2,c:i%2===0?2:10})).every(x=>C.dv.has(x.r+','+x.c)));
-  ok('318 Famílias têm MESTRE VIU e menu de estado até o último cartão',
-     Array.from({length:318},(_,i)=>({r:1805+Math.floor(i/2)*14,c:i%2===0?2:10})).every(x=>
+  ok('22 lembretes e 20 tipos fixos da parte 3b',
+     [...C.caixas].filter(k=>Number(k.split(',')[0])>=733 && Number(k.split(',')[0])<939).length===22 &&
+     Array.from({length:20},(_,i)=>({r:797+Math.floor(i/2)*14+2,c:i%2===0?2:10})).every(x=>C.dv.has(x.r+','+x.c)));
+  ok('10 Famílias têm MESTRE VIU e menu de estado até o último cartão',
+     Array.from({length:10},(_,i)=>({r:939+Math.floor(i/2)*14,c:i%2===0?2:10})).every(x=>
        C.caixas.has((x.r+2)+','+(x.c+4)) && C.dv.has((x.r+5)+','+(x.c+3))));
-  for (const [tipo,n,inicio,passo,campos] of [['Melhoria',789,4033,26,[5,6,7,8]],['Restrição',395,14306,22,[5,6,7]]]) {
+  for (const [tipo,n,inicio,passo,campos] of [['Melhoria',30,1011,26,[5,6,7,8]],['Restrição',30,1404,22,[5,6,7]]]) {
     ok(n+' cadastros de '+tipo+' conservam caixas e menus estritos até o último cartão',
        Array.from({length:n},(_,i)=>({r:inicio+Math.floor(i/2)*passo,c:i%2===0?2:10})).every(x=>
          C.caixas.has((x.r+2)+','+(x.c+4)) && campos.every(d=>C.dv.has((x.r+d)+','+(x.c+3)) && C.dv.get((x.r+d)+','+(x.c+3)).invalido===false)));
@@ -659,28 +659,28 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   ok('o cenário custom não grava fórmula em lugar de texto',P.orfas.length===orfasAntesCustom,P.orfas.slice(orfasAntesCustom).join(' · '));
   saved.forEach(x=>{PGA.v.delete(x.k);PGA.f.delete(x.k);if(x.v!==undefined)PGA.v.set(x.k,x.v);if(x.f!==undefined)PGA.f.set(x.k,x.f);});
 
-  const families = cfgStretch.filter(x => x.gatilhos.includes('B1812') || x.gatilhos.includes('J4024'));
+  const families = cfgStretch.filter(x => x.gatilhos.includes('B946') || x.gatilhos.includes('J1002'));
   ok('as descrições da primeira e da última Família usam a altura compartilhada do par',
      families.length===2 && families.every(x=>x.aba==='CONFIGURAÇÃO' && x.textos.length===2));
   if(families.length===2){
     const originais = new Map(families.flatMap(x=>x.textos.flatMap(c=>Array.from({length:c[3]},(_,k)=>[c[2]+k,CFG.alt.get(c[2]+k)]))));
     const restaurada = x=>x.textos.every(c=>Array.from({length:c[3]},(_,k)=>c[2]+k).every(r=>CFG.alt.get(r)===originais.get(r)));
-    const pair=families.find(x=>x.gatilhos.includes('B1812'));
-    try { escreve(CC,'CONFIGURAÇÃO','B1812',LONGO.repeat(2)); escreve(CC,'CONFIGURAÇÃO','J1812',LONGO.repeat(3)); }
+    const pair=families.find(x=>x.gatilhos.includes('B946'));
+    try { escreve(CC,'CONFIGURAÇÃO','B946',LONGO.repeat(2)); escreve(CC,'CONFIGURAÇÃO','J946',LONGO.repeat(3)); }
     catch(e){erroE=e;}
     ok('duas descrições longas de Família cabem lado a lado',
        !erroE && cabe(CFG,pair,[LONGO.repeat(2),LONGO.repeat(3)]),erroE?erroE.message:mostra(CFG,pair));
-    try { escreve(CC,'CONFIGURAÇÃO','J1812',''); } catch(e){erroE=e;}
+    try { escreve(CC,'CONFIGURAÇÃO','J946',''); } catch(e){erroE=e;}
     ok('apagar uma descrição conserva o espaço necessário para a Família vizinha',
        !erroE && cabe(CFG,pair,[LONGO.repeat(2),'']) && !restaurada(pair));
-    try { escreve(CC,'CONFIGURAÇÃO','B1812',''); } catch(e){erroE=e;}
+    try { escreve(CC,'CONFIGURAÇÃO','B946',''); } catch(e){erroE=e;}
     ok('limpar as duas Famílias devolve o par à altura original de 25 pixels',!erroE && restaurada(pair)
        && pair.textos.every(c=>Array.from({length:c[3]},(_,k)=>originais.get(c[2]+k)).every(h=>h===25)));
-    const last=families.find(x=>x.gatilhos.includes('J4024'));
-    try { escreve(CC,'CONFIGURAÇÃO','J4024',LONGO.repeat(3)); } catch(e){erroE=e;}
-    ok('o texto da Família 318 também cresce até caber inteiro',
+    const last=families.find(x=>x.gatilhos.includes('J1002'));
+    try { escreve(CC,'CONFIGURAÇÃO','J1002',LONGO.repeat(3)); } catch(e){erroE=e;}
+    ok('o texto da Família 10 também cresce até caber inteiro',
        !erroE && cabe(CFG,last,['',LONGO.repeat(3)]) && !restaurada(last));
-    try { escreve(CC,'CONFIGURAÇÃO','J4024',''); } catch(e){erroE=e;}
+    try { escreve(CC,'CONFIGURAÇÃO','J1002',''); } catch(e){erroE=e;}
     ok('limpar a última Família restaura a altura original de 25 pixels',!erroE && restaurada(last));
   }
 

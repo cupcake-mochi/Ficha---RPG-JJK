@@ -23,12 +23,19 @@ const edit = (a1, value) => {
 };
 const left='Teste visual temporário. '+('Requisitos e incompatibilidades precisam continuar legíveis, sem cortar o texto nem abrir a borda. '.repeat(24));
 const right='Teste visual do cartão vizinho. '+('O campo maior precisa preservar o espaço de ambos os cartões e continuar inteiro depois que o texto da esquerda for apagado. '.repeat(28))+'Fim do teste.';
-assert.strictEqual(edit('B4044',left),1);assert.strictEqual(heights[4044],110);
-assert.strictEqual(edit('J4044',right),1);assert.strictEqual(heights[4044],186);
-edit('B4044','');assert.strictEqual(heights[4044],186);
-edit('J4044','');for(let r=4044;r<=4047;r++)assert.strictEqual(heights[r],25);
+const first=model.registros.find(g=>g.tipo==='melhoria'&&g.n===1);
+const neighbor=model.registros.find(g=>g.tipo==='melhoria'&&g.n===2);
+const lastRecord=model.registros.filter(g=>g.tipo==='restricao').at(-1);
+const a=first.requisitos,b=neighbor.requisitos,r=Number(a.match(/\d+/)[0]);
+assert.strictEqual(edit(a,left),1);assert.strictEqual(heights[r],110);
+assert.strictEqual(edit(b,right),1);assert.strictEqual(heights[r],186);
+edit(a,'');assert.strictEqual(heights[r],186);
+edit(b,'');for(let i=r;i<=r+3;i++)assert.strictEqual(heights[i],25);
 const last='Teste temporário da última Restrição. '+('O efeito precisa aparecer por inteiro, com bordas contínuas, e voltar ao tamanho normal quando for apagado. '.repeat(25))+'Fim da Restrição.';
-assert.strictEqual(edit('B18650',last),1);for(let r=18650;r<=18656;r++)assert.strictEqual(heights[r],68);
-edit('B18650','');for(let r=18650;r<=18656;r++)assert.strictEqual(heights[r],25);
+const z=lastRecord.efeito,lr=Number(z.match(/\d+/)[0]);
+// Slot 30 is on the narrower right card (558 px; the old final slot was
+// on the 669 px left card). The same text needs 81 px per row here.
+assert.strictEqual(edit(z,last),1);for(let i=lr;i<=lr+6;i++)assert.strictEqual(heights[i],81);
+edit(z,'');for(let i=lr;i<=lr+6;i++)assert.strictEqual(heights[i],25);
 assert.strictEqual(edit('A1',''),0);
 console.log(JSON.stringify({resultado:'OK',grupos:spec.esticam.length,cenarios:7,leituras_limites_por_edicao:4}));

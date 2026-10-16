@@ -12,6 +12,8 @@ ROOT=Path(__file__).resolve().parent
 sys.path[:0]=[str(ROOT/'ficha-v01'),str(ROOT)]
 import custom,indice_ficha as ix
 (ROOT/'nuvem-b47/saidas').mkdir(parents=True,exist_ok=True)
+sys.path.insert(0,str(ROOT/'capacidade-b47'))
+from contratos_historicos import transformar
 falhas=[]
 def check(nome,ok,det=''):
  print(('OK ' if ok else 'FALHA ')+nome+((' '+str(det)) if not ok else ''),flush=True)
@@ -22,7 +24,7 @@ w=load_workbook(novo)
 rows=[list(x) for x in w['ANALISE'].iter_rows(min_row=2,max_col=4,values_only=True) if x[0]]
 old=json.loads((ROOT/'ficha-v01/analise-v4-preservada.json').read_text())
 mapa={r[0]:r for r in rows}
-check('5274 chaves anteriores preservadas integralmente',all((mapa[r[0]]==r if r[0]!='formato.versao' else mapa[r[0]][1]=='6') for r in old) and len(old)==5274)
+check('5274 chaves preservadas, com as mudanças exatas aprovadas no formato 7',all(mapa[r[0]]==transformar(r) for r in old) and len(old)==5274)
 check('contrato sem chaves repetidas',len(rows)==len(mapa))
 check('25 registros completos inclusive vazios',all(f'custom.{n}.campo.base_do_livro' in mapa and f'aviso.custom.{n}' in mapa for n in range(1,26)))
 cfg=w['CONFIGURAÇÃO'];merges=list(cfg.merged_cells.ranges)
@@ -39,7 +41,8 @@ check('rotas próprias incluem Marcial com e sem energia',len(custom.ROTAS)==4 a
 idx={w['DADOS'].cell(r,53).value:ix.endereco(w['DADOS'].cell(r,54).value) for r in range(5,w['DADOS'].max_row+1) if w['DADOS'].cell(r,53).value}
 w.close()
 if '--estrutura' in sys.argv:sys.exit(bool(falhas))
-if not shutil.which('libreoffice'):sys.exit('LibreOffice indisponível: cálculo não executado')
+if '--estrutura' in sys.argv:sys.exit(bool(falhas))
+if not (shutil.which('libreoffice') or shutil.which('soffice')):sys.exit('LibreOffice indisponível: cálculo não executado')
 with tempfile.TemporaryDirectory(prefix='b47-custom-') as tmp:
  tmp=Path(tmp);inp=tmp/'in';out=tmp/'out';inp.mkdir();out.mkdir()
  def record(edits,n,t,name,closed,free,effect='Efeito de teste'):
@@ -92,7 +95,7 @@ with tempfile.TemporaryDirectory(prefix='b47-custom-') as tmp:
   for (s,c),v in changed.items():wb[s][c]=v
   path=inp/(name+'.xlsx');wb.save(path)
   for s,c,v in restore:wb[s][c]=v
-  r=subprocess.run(['libreoffice',f'-env:UserInstallation={(tmp/"perfil").as_uri()}','--headless','--convert-to','xlsx','--outdir',str(out),str(path)],capture_output=True,text=True,timeout=600)
+  r=subprocess.run([shutil.which('libreoffice') or 'soffice',f'-env:UserInstallation={(tmp/"perfil").as_uri()}','--headless','--convert-to','xlsx','--outdir',str(out),str(path)],capture_output=True,text=True,timeout=600)
   check('recalcular '+name,r.returncode==0 and (out/path.name).exists(),r.stderr[-150:])
  for wb in cached.values():wb.close()
  cached.clear()

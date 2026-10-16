@@ -4,7 +4,7 @@
 O artefato local é só uma calculadora de apoio. Nunca é importado no Google.
 FILTER/UNIQUE, menus, aparência e montagem são verificados no Sheets nativo.
 """
-import gzip, json, re, subprocess, sys, tempfile
+import gzip, json, re, shutil, subprocess, sys, tempfile
 from pathlib import Path
 from openpyxl import Workbook, load_workbook
 
@@ -32,10 +32,10 @@ for r,c,v,*_ in prior['vals']:prior_rows[r][c]=v
 keys={v[0]:v[1] for v in [[raw['ANALISE'].get(f'A{r}'),raw['ANALISE'].get(f'B{r}')] for r in range(2,abas['ANALISE']['linhas']+1)]}
 check('6174 chaves anteriores presentes',sum(bool(v.get(1)) for r,v in prior_rows.items() if r>1)==6174 and all(v[1] in keys for r,v in prior_rows.items() if r>1 and v.get(1)))
 check('sem chaves repetidas',len(keys)==abas['ANALISE']['linhas']-1)
-check('formato 7 explícito',str(keys.get('formato.versao'))=='7')
-check('133 cadastros completos, incluindo 131 curtos',len([k for k in keys if re.fullmatch(r'custom.treino.\d+.tipo',str(k))])==131 and 'custom.caminho.nivel.30.texto' in keys and 'custom.trilha.campo.base_do_livro' in keys)
-check('nenhum arquivo ultrapassa 900 KiB',all(x.stat().st_size<900*1024 for x in (ROOT/'apps-script').glob('*.gs')))
-check('todos os fragmentos recompõem as 14 abas',len(emitir_gs.abas_do_script(str(ROOT/'apps-script/Ficha.gs')))==14)
+check('formato 10 explícito',str(keys.get('formato.versao'))=='10')
+check('um Caminho/uma Trilha e 10 Perícias + 10 Ofícios',len([k for k in keys if re.fullmatch(r'custom.pericia.\d+.tipo',str(k))])==10 and len([k for k in keys if re.fullmatch(r'custom.oficio.\d+.tipo',str(k))])==10 and 'custom.caminho.nivel.30.texto' in keys and 'custom.trilha.campo.base_do_livro' in keys)
+check('nenhum arquivo atinge 900000 bytes',all(x.stat().st_size<900000 for x in (ROOT/'apps-script').glob('*.gs')))
+check('fragmentos recompõem todas as abas do modelo',set(a['nome'] for a in emitir_gs.abas_do_script(str(ROOT/'apps-script/Ficha.gs')))==set(abas)-{'INVOCAÇÃO','CATÁLOGO','DADOS_INV'})
 for name in ['CONFIGURAÇÃO','FICHA']:
     ms=[(*ix._lc(x.split(':')[0]),*ix._lc(x.split(':')[-1])) for x in abas[name]['mescladas']]
     overlap=[]
@@ -49,7 +49,7 @@ for name in ['CONFIGURAÇÃO','FICHA']:
     check(name+': todas as mesclagens anteriores preservadas',expected<=current)
     # A tabela de limites de entidade ocupa uma folga aprovada B133:G149.
     # Não aceitar qualquer outra nova mesclagem dentro da parte anterior.
-    allowed={(133,2,134,7),(135,2,136,7),(138,2,138,4),(147,2,149,7)}|{(r,2,r,4) for r in range(139,146)} if name=='CONFIGURAÇÃO' else set()
+    allowed={(153,2,154,7),(156,2,156,4),(162,2,164,7)}|{(r,2,r,4) for r in range(157,161)}|{(133,2,134,7),(135,2,136,7),(138,2,138,4),(147,2,149,7)}|{(r,2,r,4) for r in range(139,146)} if name=='CONFIGURAÇÃO' else set()
     check(name+': nenhuma mesclagem nova invade a área anterior',all(m in expected or m in allowed or m[0]>prior_sheet['rows'] for m in current))
 # Correção pedida pelo usuário: mesmas cartas/níveis do livro, sem espelho paralelo.
 check('Caminho tem cinco níveis e Trilha quatro, todos do livro',
@@ -105,7 +105,7 @@ def short(n,typ,name,attr):
     return {('CONFIGURAÇÃO',g[k]):v for k,v in [('tipo',typ),('nome',name),('atributo',attr)]}
 path=p.longo('Caminho');trail=p.longo('Trilha')
 def path_fields(values):return {('CONFIGURAÇÃO',path['campos'][k]):v for k,v in values.items()}
-fixture={**short(1,'Perícia','Rituais Urbanos','Essência'),**short(2,'Ofício','Cartógrafo do Véu','Inteligência'),
+fixture={**short(1,'Perícia','Rituais Urbanos','Essência'),**short(11,'Ofício','Cartógrafo do Véu','Inteligência'),
          ('CONFIGURAÇÃO',path['nome']):'Caminho Teste',('CONFIGURAÇÃO',trail['nome']):'Trilha Teste',
          ('CONFIGURAÇÃO',trail['campos']['CAMINHO']):'Caminho Teste',('CONFIGURAÇÃO',trail['campos']['BASE DO LIVRO']):'Múltiplas Invocações',
          **path_fields({'VIDA INICIAL':10,'VIDA POR NÍVEL':6,'DADO DE VIDA':'d8','PE POR NÍVEL':7,'ATRIBUTO NATURAL 1':'Força','ATRIBUTO NATURAL 2':'Constituição',
@@ -144,7 +144,7 @@ with tempfile.TemporaryDirectory(prefix='b47-3b-') as tmp:
                 if isinstance(v,str) and v.startswith('='):v=re.sub(r'(?<![A-Z_.])(IFS|SWITCH|TEXTJOIN)\(',r'_xlfn.\1(',v)
                 ws[c]=v
         file=tmp/(name+'.xlsx');wb.save(file);wb.close()
-        run=subprocess.run(['libreoffice',f'-env:UserInstallation={(tmp/"profile").as_uri()}','--headless','--convert-to','xlsx','--outdir',str(out),str(file)],capture_output=True,text=True,timeout=300)
+        run=subprocess.run([shutil.which('libreoffice') or 'soffice',f'-env:UserInstallation={(tmp/"profile").as_uri()}','--headless','--convert-to','xlsx','--outdir',str(out),str(file)],capture_output=True,text=True,timeout=300)
         check('recalcular '+name,run.returncode==0 and (out/file.name).exists(),run.stderr[-200:])
         if not (out/file.name).exists():continue
         wb=load_workbook(out/file.name,data_only=True,read_only=True)

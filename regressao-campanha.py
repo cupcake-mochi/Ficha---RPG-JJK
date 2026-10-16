@@ -4,6 +4,8 @@ import hashlib,json,math,re,shutil,subprocess,sys,tempfile
 from pathlib import Path
 from openpyxl import load_workbook
 ROOT=Path(__file__).resolve().parent
+sys.path.insert(0,str(ROOT/'capacidade-b47'))
+from contratos_historicos import transformar
 FALHAS=[]
 def check(nome,cond,det=''):
  print(('OK ' if cond else 'FALHA ')+nome+(' '+str(det) if not cond else ''),flush=True)
@@ -12,22 +14,22 @@ def vals(w,s):return {c.coordinate:c.value for row in w[s].iter_rows() for c in 
 def formula(v):return re.sub(r'(?<![A-Z_.])IFS\(','_xlfn.IFS(',v) if isinstance(v,str) and v.startswith('=') else v
 base=ROOT/'nuvem-b47/fixtures/base-parte1.xlsx'
 novo=ROOT/'ficha-v01/ficha-projeto-m-0.1.xlsx'
-if not base.exists() or not shutil.which('libreoffice'):sys.exit('Falta base parte 1 ou LibreOffice; teste não rodou')
+if not base.exists() or not (shutil.which('libreoffice') or shutil.which('soffice')):sys.exit('Falta base parte 1 ou LibreOffice; teste não rodou')
 wb=load_workbook(novo)
 sys.path.insert(0,str(ROOT/'ficha-v01'));import indice_ficha as ix
 idx={wb['DADOS'].cell(r,53).value:ix.endereco(wb['DADOS'].cell(r,54).value) for r in range(5,wb['DADOS'].max_row+1) if wb['DADOS'].cell(r,53).value}
 linhas=[[c.value for c in row] for row in wb['ANALISE'].iter_rows(min_row=2,max_col=4) if row[0].value]
 oldkeys=[]
-for r in linhas:
+for r in linhas[:5156]:
  if r[0].startswith(('regra.','vida.rolagem.','aviso.regras_campanha','aviso.vida_rolada','sequela.extras','custom.','aviso.custom.')):continue
- if r[0]=='formato.versao':r=list(r);r[1]='3'
- oldkeys.append(r)
+ oldkeys.append(transformar(r,versao=3,reverter=True))
 snap=json.loads((ROOT/'ficha-v01/analise-v3-preservada.json').read_text())
-check('5.156 chaves anteriores e suas fórmulas/endereço/parte preservados',len(oldkeys)==snap['linhas'] and hashlib.sha256(json.dumps(oldkeys,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()==snap['sha256'])
-check('ANALISE formato 5',linhas[0][1]=='5')
+check('5.156 chaves preservadas, com as mudanças exatas aprovadas no formato 7',len(oldkeys)==snap['linhas'] and hashlib.sha256(json.dumps(oldkeys,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()==snap['sha256'])
+check('ANALISE formato 10',linhas[0][1]=='10')
 check('morte permanente não é exportada',not any('morte_permanente' in r[0] for r in linhas))
 check('chaves únicas',len(linhas)==len({r[0] for r in linhas}))
 wb.close()
+if '--estrutura' in sys.argv:sys.exit(bool(FALHAS))
 with tempfile.TemporaryDirectory(prefix='b47-campanha-') as tmp:
  tmp=Path(tmp);inputdir=tmp/'in';out=tmp/'out';inputdir.mkdir();out.mkdir()
  cache={}
@@ -71,7 +73,7 @@ with tempfile.TemporaryDirectory(prefix='b47-campanha-') as tmp:
  cache.clear()
  perfil=tmp/'perfil'
  for p in paths:
-  r=subprocess.run(['libreoffice',f'-env:UserInstallation={perfil.as_uri()}','--headless','--convert-to','xlsx','--outdir',str(out),str(p)],capture_output=True,text=True,timeout=600)
+  r=subprocess.run([shutil.which('libreoffice') or 'soffice',f'-env:UserInstallation={perfil.as_uri()}','--headless','--convert-to','xlsx','--outdir',str(out),str(p)],capture_output=True,text=True,timeout=600)
   check('recalcular '+p.stem,r.returncode==0 and (out/p.name).exists(),r.stderr[-200:])
  if any(not (out/p.name).exists() for p in paths):sys.exit(1)
  dados={}

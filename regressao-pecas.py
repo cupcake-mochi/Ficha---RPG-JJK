@@ -39,14 +39,35 @@ def main():
     def check(name,ok,detail=None):
         print(('OK ' if ok else 'FALHA ')+name+(' '+str(detail) if not ok else ''),flush=True)
         checks.append(dict(teste=name,ok=bool(ok),detalhe=detail if not ok else None))
-    check('capacidade cobre todas as escolhas atuais',cp.MELHORIAS==789 and cp.RESTRICOES==395 and len(model['registros'])==1184)
+    check('catálogos compartilhados aprovados: 30 Melhorias + 30 Restrições',cp.MELHORIAS==30 and cp.RESTRICOES==30 and len(model['registros'])==60)
+    def contract(cells):
+        return {v:[cells.get(col+c[1:],'') for col in 'BCD']
+                for c,v in cells.items() if re.fullmatch(r'A\d+',c) and c!='A1'}
+    prior, current=contract(before['ANALISE']), contract(raw['ANALISE'])
     dif=[]
-    for cell,value in before['ANALISE'].items():
-        if cell=='B2': value='9'
-        if raw['ANALISE'].get(cell)!=value: dif.append(cell)
-    check('9082 chaves anteriores com fontes e posições preservadas',not dif,dif[:5])
-    keys=[v for c,v in raw['ANALISE'].items() if re.fullmatch(r'A\d+',c) and c!='A1']
-    check('9866 chaves novas, sem duplicatas',len(keys)==18948 and len(keys)==len(set(keys)))
+    for key, record in prior.items():
+        if key.startswith(('custom.treino.','aviso.custom.treino.')): continue
+        retired=re.fullmatch(r'(?:custom|aviso.custom).familia.(\d+)(?:\..*)?',key)
+        if retired and int(retired[1])>10: continue
+        expected=list(record)
+        if key=='formato.versao': expected[0]='10'
+        # These advisories keep their meaning and source; only the custom
+        # selection pool shrinks from 131 to 10.
+        if re.fullmatch(r'aviso.personagem.(pericia|oficio)_custom.\d+',key):
+            expected[0]=expected[0].replace('$AV$132','$AV$11').replace('$AW$132','$AW$11')
+            expected[0]=re.sub(r"COUNTIF\(([^,]+),('FICHA'!\$[A-Z]+\$\d+)\)",lambda m:'COUNTIF('+m[1]+','+(cc.criterio(m[2]) if m[2]==re.search(r"'FICHA'!\$[A-Z]+\$\d+",expected[0]).group() else m[2])+')',expected[0])
+        # Family slot identities survive; their cards move after the smaller
+        # training section. Derive the exact relocation, never ignore a field.
+        fm=re.fullmatch(r'custom.familia.(\d+).(nome|estado|mestre_viu|descricao)',key)
+        if fm:
+            g=cc.familia(int(fm[1]));new_ref=cc.ref(g[fm[2]],'CONFIGURAÇÃO')
+            old_ref=re.search(r"'CONFIGURAÇÃO'!\$[A-Z]+\$\d+",expected[0]).group()
+            expected[0]=expected[0].replace(old_ref,new_ref)
+            expected[1]=expected[1].replace(old_ref.replace('$',''),new_ref.replace('$',''))
+        if current.get(key)!=expected: dif.append(key)
+    check('contrato anterior retido preserva sentido, fontes e partes por chave',not dif,dif[:5])
+    keys=list(current)
+    check('7356 chaves únicas; 131 treinos substituídos por tipos explícitos',len(keys)==7356 and not any('custom.treino.' in k for k in keys))
     cfg=tabs['CONFIGURAÇÃO']; occupied=set(); overlaps=[]
     for region in cfg['mescladas']:
         c1,r1,c2,r2=range_boundaries(region)
@@ -65,7 +86,7 @@ def main():
     transformed=cp.buscas_literais(lookup,'DADOS_AM',{(cp.MEL,'O2:W830')})
     check('consultas exatas escapam curingas do nome',transformed=='=VLOOKUP('+cc.criterio('A2')+',\'DADOS_MELHORIAS\'!$O$2:$W$830,3,FALSE)')
     regs={(g['tipo'],g['n']):g for g in model['registros']}
-    check('últimos cartões são editáveis e exportados',all(f'custom.{kind}.{n}.nome' in keys for kind,n in [('melhoria',789),('restricao',395)]))
+    check('últimos cartões são editáveis e exportados',all(f'custom.{kind}.{n}.nome' in keys for kind,n in [('melhoria',30),('restricao',30)]))
     if a.estrutura:
         sys.exit(not all(x['ok'] for x in checks))
 
@@ -125,12 +146,12 @@ def main():
     reg('melhoria',17,nome='Controle herdado',base='Prende',familia='Nenhuma')
     reg('melhoria',18,nome='Sem peso')
     reg('melhoria',19,nome='Rajada própria',base='Rajada')
-    reg('melhoria',789,nome='Última Melhoria',base='Reação')
+    reg('melhoria',30,nome='Última Melhoria',base='Reação')
     reg('restricao',1,nome='Demora própria',base='Atrasar')
     reg('restricao',2,nome='Frequência própria',devolucao='Leve',frequencia='Sim')
     reg('restricao',3,nome='Segunda frequência',devolucao='Média',frequencia='Sim')
     reg('restricao',4,nome='Frequência inválida',devolucao='Leve',frequencia='Talvez')
-    reg('restricao',395,nome='Última Restrição',base='Tudo ou Nada')
+    reg('restricao',30,nome='Última Restrição',base='Tudo ou Nada')
     # Compare the actual card calculations, with and without renamed bases.
     pairs=[]
     for i,(alias,base) in enumerate(aliases):
@@ -208,7 +229,7 @@ def main():
         return v
     nbook=model['limites'][cp.MEL]['livro']
     def mel(n,c):return value(cp.MEL,c+str(nbook+n+1))
-    for n in [1,2,3,4,5,6,7,8,9,17,789]:check('Melhoria válida '+str(n),value(cp.MEL,'M'+str(n+1))=='',value(cp.MEL,'M'+str(n+1)))
+    for n in [1,2,3,4,5,6,7,8,9,17,30]:check('Melhoria válida '+str(n),value(cp.MEL,'M'+str(n+1))=='',value(cp.MEL,'M'+str(n+1)))
     for n in [10,11,12,13,14,15,16,18]:check('cadastro inválido excluído '+str(n),value(cp.MEL,'M'+str(n+1))!='' and mel(n,'O')=='')
     check('criação do zero tem peso, desconto, TR e identidade própria',
         [mel(9,c) for c in ['O','P','Q','R','W','X']]==['Lua*','Família própria',3,6,1,'Lua*'],[mel(9,c) for c in ['O','P','Q','R','W','X']])
@@ -216,7 +237,7 @@ def main():
         [mel(17,c) for c in ['P','T','W']]==['',1,1],[mel(17,c) for c in ['P','T','W']])
     check('Rajada herda classe reduzida da entidade',mel(19,'Y')==1,mel(19,'Y'))
     mr=model['limites'][cp.RES]['livro']
-    check('última Restrição herda a identidade',value(cp.RES,'N'+str(mr+396))=='Tudo ou Nada')
+    check('última Restrição herda a identidade',value(cp.RES,'N'+str(mr+31))=='Tudo ou Nada')
     check('frequência inválida fica fora do catálogo',value(cp.RES,'K5')!='' and value(cp.RES,'M'+str(mr+5))=='')
     check('nona Família abre o menu só das entidades que a escolheram',value(cp.MEL,'AN'+str(nbook+10))=='Lua*' and value(cp.MEL,'AR'+str(nbook+10))=='')
     fc=meta['col']

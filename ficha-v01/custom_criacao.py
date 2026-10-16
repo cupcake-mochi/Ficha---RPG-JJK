@@ -14,11 +14,8 @@ import ficha_amaldicoada as fa
 
 ROOT = Path(__file__).resolve().parent.parent
 NOME = 'DADOS_CRIACAO'
-# Limite superior para substituir as Famílias de uma ficha válida inteira:
-# 45 Formas + 165 Melhorias do personagem; 12 entidades × 9 Famílias abertas.
-# Capacidade/custo gerais da 3c ainda serão apresentados antes do fechamento.
-FAMILIAS = 45 + 165 + 12 * 9
-INICIO, PASSO = 1805, 14
+from capacidades import FAMILIAS, INICIO_FAMILIAS
+INICIO, PASSO = INICIO_FAMILIAS, 14
 REGRAS = {'livres': 157, 'fechadas': 158, 'neutras': 159, 'total': 160}
 
 
@@ -33,7 +30,7 @@ def ref(coord, sheet=NOME):
 
 def familia(n):
     if not 1 <= n <= FAMILIAS:
-        raise ValueError('Família fora da capacidade de substituição')
+        raise ValueError('Família fora da capacidade aprovada')
     r, c = INICIO + ((n-1)//2)*PASSO, 2 if n % 2 else 10
     L = ix._letras
     return dict(n=n, r=r, c=c, nome=f'{L(c)}{r+4}', mestre_viu=f'{L(c+4)}{r+2}',

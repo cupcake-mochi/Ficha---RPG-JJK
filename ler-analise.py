@@ -13,9 +13,10 @@ Os valores saem como a planilha os mostra. Numa planilha em português o decimal
 1 ou 0 (a aba já a converte). O `normaliza` deixa tudo num formato só.
 """
 import csv, io, os, re, shutil, subprocess, sys, tempfile, urllib.request
+from pathlib import Path
 
 ABA = "ANALISE"
-FORMATOS_CONHECIDOS = {1, 2, 3, 4, 5, 6, 7, 8, 9}
+FORMATOS_CONHECIDOS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
 
 def normaliza(v):
@@ -74,7 +75,11 @@ def ler_xlsx(caminho, recalcula=True):
                     c.value = re.sub(r"(?<![A-Z_.])IFS\(", "_xlfn.IFS(", c.value)
         wb.save(copia)
         saida = os.path.join(pasta, "saida")
-        subprocess.run(["libreoffice", "--headless", "--convert-to", "xlsx", "--outdir", saida, copia],
+        calc = shutil.which('libreoffice') or shutil.which('soffice')
+        if not calc:
+            shutil.rmtree(pasta, ignore_errors=True)
+            sys.exit('LibreOffice Calc indisponível: leitor não recalculado')
+        subprocess.run([calc, '-env:UserInstallation='+(Path(pasta)/'perfil').as_uri(), "--headless", "--convert-to", "xlsx", "--outdir", saida, copia],
                        capture_output=True, timeout=900)
         feito = os.path.join(saida, "ficha.xlsx")
         if not os.path.exists(feito):

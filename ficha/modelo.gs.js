@@ -27,16 +27,22 @@ function expandirNotasCopiadas_(spec, novas) {
   (novas || []).forEach(function (n) {
     if (!escritas[n[0]]) { spec.notas.push(n); escritas[n[0]] = true; }
   });
-  var molde = spec.notas.slice();
+  // Parse each template note once. Most notes lie outside any given copy;
+  // filtering before the destination loop avoids re-parsing the whole sheet
+  // for every card during the initialization of a small edit.
+  var molde = spec.notas.map(function (n) {
+    var m = /^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(n[0]);
+    return {nota:n, col:m[1], col2:m[3], r1:Number(m[2]), r2:Number(m[4] || m[2])};
+  });
   (spec.copias || []).forEach(function (k) {
-    if (k[6] !== true) return;  // Moldes antigos podem ter ajuda só no primeiro cartão.
+    if (k[6] !== true) return;
+    var dentro = molde.filter(function (n) { return n.r1 >= k[0] && n.r2 <= k[1]; });
     k[2].forEach(function (d) {
-      molde.forEach(function (n) {
-        var m = /^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(n[0]);
-        var r1 = Number(m[2]), r2 = Number(m[4] || m[2]), dl = d - k[0];
-        var destino = m[1] + (r1 + dl) + (m[3] ? ':' + m[3] + (r2 + dl) : '');
-        if (r1 >= k[0] && r2 <= k[1] && !escritas[destino]) {
-          spec.notas.push([destino, n[1]]); escritas[destino] = true; feitas[destino] = true;
+      var dl = d - k[0];
+      dentro.forEach(function (n) {
+        var destino = n.col + (n.r1 + dl) + (n.col2 ? ':' + n.col2 + (n.r2 + dl) : '');
+        if (!escritas[destino]) {
+          spec.notas.push([destino, n.nota[1]]); escritas[destino] = true; feitas[destino] = true;
         }
       });
     });
@@ -66,19 +72,29 @@ function expandirCopias_(spec) {
     var r1 = k[0], r2 = k[1];
     var dentro = function (l) { return l >= r1 && l <= r2; };
     var noMolde = function (a1) { var l = linhas(a1); return dentro(l[0]) && dentro(l[1]); };
+    // Select the source block once per template, before its many destinations.
+    var bloco = {
+      vals: molde.vals.filter(function (t) { return dentro(t[0]); }),
+      fundos: molde.fundos.filter(function (f) { return dentro(f[0]); }),
+      merges: molde.merges.filter(function (m) { return dentro(m[0]) && dentro(m[2]); }),
+      bordas: molde.bordas.map(function (lista) { return lista.filter(noMolde); }),
+      dv: molde.dv.filter(function (x) { return noMolde(x[0]); }),
+      caixas: molde.caixas.filter(function (c) { return dentro(c[1]) && dentro(c[1] + c[2] - 1); }),
+      formatos: molde.formatos.filter(function (f) { return noMolde(f[0]); })
+    };
     k[2].forEach(function (d) {
       var dl = d - r1;
-      molde.vals.forEach(function (t) {
-        if (dentro(t[0]) && !escritas[(t[0] + dl) + ',' + t[1]]) spec.vals.push([t[0] + dl, t[1]].concat(t.slice(2)));
+      bloco.vals.forEach(function (t) {
+        if (!escritas[(t[0] + dl) + ',' + t[1]]) spec.vals.push([t[0] + dl, t[1]].concat(t.slice(2)));
       });
-      molde.fundos.forEach(function (f) { if (dentro(f[0])) spec.fundos.push([f[0] + dl].concat(f.slice(1))); });
-      molde.merges.forEach(function (m) { if (dentro(m[0]) && dentro(m[2])) spec.merges.push([m[0] + dl, m[1], m[2] + dl, m[3]]); });
-      molde.bordas.forEach(function (lista, i) {
-        lista.forEach(function (a1) { if (noMolde(a1)) spec.bordas[i][3].push(desce(a1, dl)); });
+      bloco.fundos.forEach(function (f) { spec.fundos.push([f[0] + dl].concat(f.slice(1))); });
+      bloco.merges.forEach(function (m) { spec.merges.push([m[0] + dl, m[1], m[2] + dl, m[3]]); });
+      bloco.bordas.forEach(function (lista, i) {
+        lista.forEach(function (a1) { spec.bordas[i][3].push(desce(a1, dl)); });
       });
-      molde.dv.forEach(function (x) { if (noMolde(x[0]) && !temDv[desce(x[0], dl)]) spec.dv.push([desce(x[0], dl), x[1]]); });
-      molde.caixas.forEach(function (c) { if (dentro(c[1]) && dentro(c[1] + c[2] - 1)) spec.caixas.push([c[0], c[1] + dl, c[2]]); });
-      molde.formatos.forEach(function (f) { if (noMolde(f[0]) && !temFmt[desce(f[0], dl)]) spec.formatos.push([desce(f[0], dl), f[1]]); });
+      bloco.dv.forEach(function (x) { var a1=desce(x[0], dl); if (!temDv[a1]) spec.dv.push([a1, x[1]]); });
+      bloco.caixas.forEach(function (c) { spec.caixas.push([c[0], c[1] + dl, c[2]]); });
+      bloco.formatos.forEach(function (f) { var a1=desce(f[0], dl); if (!temFmt[a1]) spec.formatos.push([a1, f[1]]); });
     });
   });
   spec.copias_feitas = true;
@@ -127,9 +143,6 @@ function juntarAbas_(extras) {
   if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
   if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
   if (typeof CONTRATO_PECAS_1_ !== 'undefined' && CONTRATO_PECAS_1_) juntarValores_(CONTRATO_PECAS_1_);
-  if (typeof CONTRATO_PECAS_2_ !== 'undefined' && CONTRATO_PECAS_2_) juntarValores_(CONTRATO_PECAS_2_);
-  if (typeof CONTRATO_PECAS_3_ !== 'undefined' && CONTRATO_PECAS_3_) juntarValores_(CONTRATO_PECAS_3_);
-  if (typeof CONTRATO_PECAS_4_ !== 'undefined' && CONTRATO_PECAS_4_) juntarValores_(CONTRATO_PECAS_4_);
 }
 if (typeof ABAS_DA_INVOCACAO !== 'undefined' && ABAS_DA_INVOCACAO) juntarAbas_(ABAS_DA_INVOCACAO);
 if (typeof ABAS_DA_ANALISE !== 'undefined' && ABAS_DA_ANALISE) juntarAbas_(ABAS_DA_ANALISE);
@@ -184,9 +197,6 @@ if (typeof VALORES_CRIACAO_ !== 'undefined' && VALORES_CRIACAO_) juntarValores_(
 if (typeof CONTRATO_CRIACAO_ !== 'undefined' && CONTRATO_CRIACAO_) juntarValores_(CONTRATO_CRIACAO_);
 if (typeof VALORES_PECAS_ !== 'undefined' && VALORES_PECAS_) juntarValores_(VALORES_PECAS_);
 if (typeof CONTRATO_PECAS_1_ !== 'undefined' && CONTRATO_PECAS_1_) juntarValores_(CONTRATO_PECAS_1_);
-if (typeof CONTRATO_PECAS_2_ !== 'undefined' && CONTRATO_PECAS_2_) juntarValores_(CONTRATO_PECAS_2_);
-if (typeof CONTRATO_PECAS_3_ !== 'undefined' && CONTRATO_PECAS_3_) juntarValores_(CONTRATO_PECAS_3_);
-if (typeof CONTRATO_PECAS_4_ !== 'undefined' && CONTRATO_PECAS_4_) juntarValores_(CONTRATO_PECAS_4_);
 
 var ETAPAS_ = [];      // o tempo de cada etapa da última montagem, para o registro
 
@@ -333,15 +343,6 @@ function montar_() {
   }
   if (typeof CONTRATO_PECAS_1_ === 'undefined' || !CONTRATO_PECAS_1_) {
     throw new Error('Falta o PecasAnalise1.gs: cole todos os arquivos antes de construir.');
-  }
-  if (typeof CONTRATO_PECAS_2_ === 'undefined' || !CONTRATO_PECAS_2_) {
-    throw new Error('Falta o PecasAnalise2.gs: cole todos os arquivos antes de construir.');
-  }
-  if (typeof CONTRATO_PECAS_3_ === 'undefined' || !CONTRATO_PECAS_3_) {
-    throw new Error('Falta o PecasAnalise3.gs: cole todos os arquivos antes de construir.');
-  }
-  if (typeof CONTRATO_PECAS_4_ === 'undefined' || !CONTRATO_PECAS_4_) {
-    throw new Error('Falta o PecasAnalise4.gs: cole todos os arquivos antes de construir.');
   }
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();

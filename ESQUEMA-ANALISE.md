@@ -1,4 +1,4 @@
-> **Retomada B47 — 16/10/2026:** a implementação atual usa formato **9**, com **18.948 chaves**. Consulte a seção “Formato 9” ao final; as seções anteriores são histórico. A redução de capacidade planejada ainda não foi aplicada e exigirá tratar explicitamente as chaves afetadas. Rota vigente: [PLANO-RETOMADA-B47.md](PLANO-RETOMADA-B47.md).
+> **Retomada B47 — 16/10/2026:** gerador local no formato **10**, com **7.356 chaves**; revisão nativa ainda no **9**, com **18.948**. Consulte “Formato 10” ao final para a retirada explícita de chaves, fontes e migração. As seções anteriores registram versões históricas. Rota vigente: [PLANO-RETOMADA-B47.md](PLANO-RETOMADA-B47.md).
 
 # O esquema da aba ANALISE (o "contrato" com o bot)
 
@@ -194,3 +194,46 @@ BASE DO LIVRO é opcional. Campos em branco herdam a base, incluindo a identidad
 Nomes com `*`, `?` e `~` são literais. Uma Família Livre na técnica não concede automaticamente desconto de Livre à entidade: vale a posição escolhida na ficha da invocação. Restrições continuam pagando somente Melhorias, com os tetos e incompatibilidades existentes.
 
 As quantidades cobrem os espaços atuais: 165 + 624 Melhorias e 83 + 312 Restrições entre personagem e entidades. São limites de cobertura desta implementação, ainda sujeitos à apresentação conjunta de capacidade e custo da 3c antes do fechamento.
+
+## Formato 10 · capacidade compartilhada reduzida (16/10/2026)
+
+**Implementado no gerador local; aplicação e validação nativa pendentes.** São
+**7.356 chaves**. A revisão Google permanece no formato 9 até uma migração
+pontual com snapshot novo, teste descartável e salvamento/conferência do código.
+O leitor local aceita 1–10; o bot não foi alterado.
+
+Capacidades adicionais ao livro: **10 Famílias, 30 Melhorias, 30 Restrições,
+10 Perícias e 10 Ofícios**. Cada definição serve ao personagem e às 12 entidades;
+não se multiplicam catálogos pelas posições de uso. Mantidos 25 cartões 3a,
+um Caminho, uma Trilha e as nove posições de Família em cada invocação.
+
+- Permanecem `custom.familia.1..10.*`, `custom.melhoria.1..30.*`,
+  `custom.restricao.1..30.*` e seus avisos, com a mesma semântica de cadastro cru.
+  Seus cartões/fontes mudam de endereço; a coluna C acompanha a nova origem.
+- Descontinuadas Famílias 11–318 (1.540 chaves), Melhorias 31–789 (6.831),
+  Restrições 31–395 (2.555) e os 131 registros intercambiáveis
+  `custom.treino.N.*`/`aviso.custom.treino.N` (786). Total: **11.712 chaves**.
+- Entram **120 chaves**: `custom.pericia.N.tipo/.nome/.mestre_viu/.atributo/.efeito`
+  e `custom.oficio.N.tipo/.nome/.mestre_viu/.atributo/.efeito`, N de 1 a 10,
+  mais `aviso.custom.pericia.N` e `aviso.custom.oficio.N`. TIPO é fixo e validado
+  conforme o catálogo; colar outro tipo gera erro e exclui o registro do menu.
+- As **7.236 chaves retidas** preservam significado e parte. A posição física
+  da linha da ANALISE deixa de ser critério de compatibilidade: leitores devem
+  buscar a coluna A. Os avisos de treino do personagem passam a consultar os
+  pools de dez definições; continuam existindo 23 escolhas de Perícia e 11 de
+  Ofício no personagem. Livro, orçamentos, herança e regras não mudam.
+- Ausente não significa cadastro apagável: a migração verifica os campos crus,
+  inclusive registros parciais, notas e MESTRE VIU isolado. Slots retirados
+  preenchidos bloqueiam a operação. Não se compactam Famílias/peças em outros
+  índices silenciosamente. Os treinos recebem namespaces novos: um manifesto
+  explícito mapeia cada registro antigo, em ordem, para Perícia ou Ofício,
+  preservando os cinco campos e notas; exceder dez de um tipo bloqueia.
+
+`capacidade-b47/migracao.py` planeja a transição a partir de modelos reais e
+snapshot nativo recente. Nunca acessa a rede. Snapshot incompleto, divergência
+em célula fora de entrada, nota manual fora de campo, fórmula de entrada movida,
+excesso de capacidade, oficial como destino ou revisão sem prova descartável
+bloqueiam. Fixtures antigas e snapshots sintéticos servem só aos testes locais.
+Não manter as chaves retiradas como milhares de exportações vazias. Os três
+fragmentos de transporte `PecasAnalise2.gs` a `PecasAnalise4.gs` foram retirados;
+o envio ao projeto Google deve retirar esses arquivos antigos também.

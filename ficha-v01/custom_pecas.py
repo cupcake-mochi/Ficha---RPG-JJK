@@ -11,8 +11,7 @@ import ficha_amaldicoada as fa
 import ficha_invocacoes as iv
 from custom_criacao import criterio, ref, q, troca_refs
 
-MELHORIAS = 165 + 12*52
-RESTRICOES = 83 + 12*26
+from capacidades import MELHORIAS, RESTRICOES
 MEL = 'DADOS_MELHORIAS'
 RES = 'DADOS_RESTRICOES'
 PASSO_MEL, PASSO_RES = 26, 22

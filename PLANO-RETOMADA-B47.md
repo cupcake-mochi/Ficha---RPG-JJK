@@ -15,7 +15,11 @@ A execução em três chats e os limites de edição/publicação estão em [PLA
 - [Descartável reservada à construção integral](https://docs.google.com/spreadsheets/d/12iTELP65DYjBjAY-PiAZ-JvVIyrK7ragsYKRX-vXYsc/edit).
 - [Descartável dos testes de Melhorias/Restrições](https://docs.google.com/spreadsheets/d/1D215acC6Dxhu8i7x0aF7pmiNbJ95_U1CiH4980QozLk/edit).
 
-**A redução ainda não foi implementada.** O gerador e a revisão conservam as capacidades grandes descritas abaixo. Esta publicação salva o plano e a base de código; não equivale a aplicar a limpeza. O bot pertence a outro trabalho.
+**Redução implementada localmente nesta rodada; aplicação nativa pendente.**
+O gerador usa 10 Famílias, 30 Melhorias, 30 Restrições, 10 Perícias e 10 Ofícios,
+com ANALISE 10/7.356 chaves. A revisão Google continua na capacidade anterior e
+no formato 9: houve somente leitura. Evidências e limites em
+[capacidade-b47/RELATORIO.md](capacidade-b47/RELATORIO.md). O bot pertence a outro trabalho.
 
 ## O que já está implementado e validado na revisão
 
@@ -42,7 +46,7 @@ Checagens **focais, mecânicas e visuais** acompanham cada mudança. A bateria c
 
 ## A — capacidade, migração e medida
 
-| Definições custom adicionais ao livro | Capacidade atual | Alvo |
+| Definições custom adicionais ao livro | Capacidade v9 (ainda na revisão) | Alvo / gerador v10 |
 |---|---:|---:|
 | Famílias | 318 | **10** |
 | Melhorias | 789 | **30** |
@@ -54,15 +58,15 @@ Essas definições são compartilhadas pelo personagem e por todas as invocaçõ
 
 Os 25 cartões compartilhados da 3a e os cadastros de um Caminho/uma Trilha ficam fora desta redução inicial. Capacidades de tipos futuros serão pequenas, normalmente 10/20/30; não construir outra reserva de centenas de cadastros sem uma nova decisão explícita.
 
-- [ ] Confirmar ramo, estado do Git e disponibilidade de ferramentas no novo ambiente.
+- [x] Confirmar ramo, estado do Git e disponibilidade de ferramentas no novo ambiente. (Local; ver relatório.)
 - [ ] Guardar cópia nativa e snapshot integral das entradas antes de qualquer migração. Em 16/10 não havia nomes preenchidos nos quatro catálogos envolvidos; isso não substitui uma nova leitura.
-- [ ] Centralizar capacidades e derivar faixas/posições delas; remover dependências de endereços fixados para as quantidades antigas.
-- [ ] Implementar os alvos da tabela, distinguindo 10 Perícias de 10 Ofícios.
-- [ ] Retirar também fórmulas, menus, notas, alturas e grupos excedentes. Apenas esconder cartões não resolve o peso.
-- [ ] Auditar painéis de treino e tabelas de apoio afetados, preservando escolhas, regras e resultados.
+- [x] Centralizar capacidades e derivar faixas/posições delas; remover dependências de endereços fixados para as quantidades antigas. (Local; ver relatório.)
+- [x] Implementar os alvos da tabela, distinguindo 10 Perícias de 10 Ofícios. (Local; ver relatório.)
+- [x] Retirar também fórmulas, menus, notas, alturas e grupos excedentes. Apenas esconder cartões não resolve o peso. (Local; ver relatório.)
+- [x] Auditar painéis de treino e tabelas de apoio afetados, preservando escolhas, regras e resultados. (Local; ver relatório.)
 - [ ] Mapear as entradas e referências existentes. Não cortar campos preenchidos nem associar silenciosamente um identificador a outro cadastro.
-- [ ] Resolver e documentar a versão do contrato ANALISE: chaves mantidas/descontinuadas, fontes e leitor. Não reaproveitar uma chave com outro sentido. A retirada de vagas afeta o contrato; não manter milhares de exportações vazias por inércia nem removê-las silenciosamente.
-- [ ] Ajustar testes à capacidade nova, preservando casos negativos, herança, nomes literais, primeira/última vaga, reutilização e integridade da migração.
+- [x] Resolver e documentar a versão do contrato ANALISE: chaves mantidas/descontinuadas, fontes e leitor. Não reaproveitar uma chave com outro sentido. A retirada de vagas afeta o contrato; não manter milhares de exportações vazias por inércia nem removê-las silenciosamente. (Local; ver relatório.)
+- [x] Ajustar testes à capacidade nova, preservando casos negativos, herança, nomes literais, primeira/última vaga, reutilização e integridade da migração. (Local; ver relatório.)
 - [ ] Aplicar migração pontual na cópia de revisão somente depois de validar em descartável e confirmar acesso.
 - [ ] Medir antes/depois: linhas, fórmulas, tamanho dos arquivos e tempos de carregamento/edição e de construção disponíveis. Separar medida nativa de simulação.
 - [ ] Registrar resultados e reestimar B e o restante do projeto.
@@ -160,3 +164,29 @@ O restante completo da ficha foi estimado em aproximadamente **10–18 horas, ce
 A publicação deste planejamento foi autorizada. Os três prompts agora incluem autorização delimitada para commits/push nos respectivos ramos de tarefa e para o chat 1 integrar as frentes em `codex/configuracao-b47`, após revisão e testes. Essa autorização vale quando o usuário iniciar as tarefas com esses prompts. Não autoriza merge em `main`, publicação na ficha oficial, force push ou mudanças de acesso. As restrições históricas de Git abaixo de checkpoints antigos não substituem essa divisão vigente.
 
 Use [PROMPT-WORK-B47.md](PROMPT-WORK-B47.md) para escolher os três prompts de nuvem. A primeira entrega integrada é A + B; C + D ficam organizadas para a continuação. Cada chat deve sempre recomendar modelo e esforço para a próxima ação.
+
+
+## Checkpoint · capacidade e desempenho local · 16/10/2026
+
+Base confirmada: `4187df37640b5e0966cdb342f56f9ee0a0daf16a`.
+Ramo de implementação: `codex/b47-capacidade`; destino de integração autorizado:
+`codex/configuracao-b47`. Nenhum trabalho em main. O
+[relatório da rodada](capacidade-b47/RELATORIO.md) reúne medidas, comandos,
+contrato, validação e limitações. [Roteiro nativo](capacidade-b47/ROTEIRO-NATIVO.md).
+
+Acesso Drive/Sheets comprovado por conector, com leitura atual dos catálogos
+vazios. Não há ferramenta Apps Script ou navegador conectado nesta sessão;
+nenhuma escrita/migração ou montagem Google realizada. Snapshot integral atual,
+validação descartável, código salvo/relido, aplicação na revisão e tempos nativos
+continuam pendentes. Os testes locais/sintéticos não substituem essas etapas.
+
+As frentes `claude/b47-revisao` e `codex/b47-infra` ainda não estavam publicadas
+no remoto ao conferir a rodada. Revisão independente e integração dessas duas
+frentes permanecem pendentes de SHAs/relatórios; não foram presumidas aprovadas.
+C e D não foram iniciadas. A estrutura menor já está pronta para essas etapas,
+mas a estimativa restante depende primeiro da aplicação e medida nativas de A+B.
+
+Próxima ação: receber/revisar as frentes e habilitar um caminho oficial para
+salvar/reler Apps Script; executar o roteiro nativo sem PC anterior.
+Recomendação: **GPT-6.1 Sol, High**, por envolver preservação de entradas e
+integração de contrato/código na mesma cópia.
