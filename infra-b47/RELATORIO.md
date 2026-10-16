@@ -56,8 +56,8 @@ ficam impedidos. Não foi feito recálculo nesta frente. A fixture histórica
 impedimento nesta base. Não houve geração integral, comparador, construção
 simulada/nativa ou bateria final. Testes focais desta base não validam A futura.
 
-O integrador revisará o diff e aplicará o commit de implementação e o commit
-documental por cherry-pick em `codex/configuracao-b47`. Após A, deve conferir
+O integrador revisará o diff e aplicará o commit de implementação e os commits
+documentais por cherry-pick em `codex/configuracao-b47`. Após A, deve conferir
 expectativas/endereço dos testes, regenerar `.gs`/manifesto e validar a
 combinação. A receita de envio requer conta com edição, OAuth/consentimento,
 API habilitada, acesso à rede e ID explícito confirmado. Primeiro testar em
@@ -69,6 +69,30 @@ Aplicação/reversão detalhadas no [README](README.md). Git: reverter os commit
 em ordem inversa; não desfaz operações nativas futuras. Google: restauração
 integral do snapshot de código, com nova guarda e releitura pelo integrador;
 não desfaz migração ou efeitos de gatilhos já executados. C/D seguem na fila.
+
+## Publicação impedida
+
+O push normal para `codex/b47-infra` foi tentado após conferir a base remota,
+mas o GitHub retornou **HTTP 403, permissão de escrita negada à identidade
+disponível no ambiente**. Nenhum commit desta frente foi publicado. Não foram
+alteradas credenciais ou permissões nem tentado outro destino.
+
+Os commits permanecem locais. A entrega inclui um bundle ignorado em
+`infra-b47/saidas/b47-infra.bundle`, criado após este registro, com a sequência
+desde `4187df3`. Em um clone que já tenha essa base, o integrador pode executar:
+
+```bash
+git bundle verify /caminho/b47-infra.bundle
+git fetch /caminho/b47-infra.bundle codex/b47-infra:refs/remotes/entrega/b47-infra
+git log --oneline 4187df3..refs/remotes/entrega/b47-infra
+git diff 4187df3..refs/remotes/entrega/b47-infra -- infra-b47/
+# Após revisar e estando no ramo de integração:
+git cherry-pick 4187df3..refs/remotes/entrega/b47-infra
+```
+
+O bundle contém só os commits desta frente e exige a base indicada; não inclui
+venv, saídas temporárias ou credenciais. Publicar no GitHub exige uma identidade
+com permissão de escrita, pelo integrador ou usuário.
 
 Próxima ação recomendada: revisão e integração desta infraestrutura após A com
 **GPT-6.1 Sol, Medium**, pois as ferramentas são delimitadas e têm fixtures.

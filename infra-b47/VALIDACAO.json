@@ -140,5 +140,13 @@
     "modelo": "GPT-6.1 Sol",
     "esforco": "Medium",
     "motivo": "Infraestrutura delimitada revisável; High apenas se conflito concreto de contrato/migração."
+  },
+  "publicacao": {
+    "estado": "impedida",
+    "comando": "git push origin HEAD:refs/heads/codex/b47-infra",
+    "exit_code": 128,
+    "http": 403,
+    "motivo": "Identidade Git disponível sem permissão de escrita no repositório. Nenhum commit publicado.",
+    "entrega_alternativa": "infra-b47/saidas/b47-infra.bundle; base pré-requisito 4187df3; verificar com git bundle verify."
   }
 }
