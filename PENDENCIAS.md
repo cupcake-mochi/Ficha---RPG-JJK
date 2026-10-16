@@ -1,3 +1,18 @@
+## C+D iniciados · contrato comum inicial · 16/10/2026
+
+Usuário usou o prompt 1 e iniciou o integrador. Base comum confirmada:
+`0d4d64e2847dfea29b0e3804ab6f0853c52ea6fd`, checkout inicial limpo e os dois
+ramos remotos iguais. [Contrato inicial](conteudos-b47/comum/CONTRATO.md) e
+[campos/capacidades estruturados](conteudos-b47/comum/contrato.json) disponíveis
+para conciliar as frentes: dez cadastros de cada tipo novo, vinte Talentos de
+entidade, Condições dentro das 30 Melhorias. Endereços derivados e formato 11
+ainda proposto; não declarar conteúdo integrado nem prova nativa nova.
+
+Smoke com PYTHONUTF8=1 passou; Calc permanece ausente. Nenhuma geração integral
+ou escrita Google nesta preparação. Personagem/entidades ainda não recebidos.
+Próximo trabalho independente: Tipos de dano e Condições, com testes focais.
+Recomendação: GPT-6.1 Sol, High, para integração e preservação do contrato.
+
 ## Planejamento preparado · divisão C+D · 16/10/2026
 
 Usuário aprovou publicar a divisão em três chats no total: integrador atual
