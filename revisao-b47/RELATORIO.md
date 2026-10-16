@@ -76,6 +76,7 @@
 - Famílias, Melhorias e Restrições escapam com `criterio()`, conforme a decisão dos formatos 8/9. O treino (`custom_progressao.py:132`) e as posições da FICHA (`:387, 394-395`) usam COUNTIF/VLOOKUP crus.
 - `test_enderecos.py` acha centenas de usos crus nas posições `personagem.pericia_custom` e `personagem.oficio_custom` (FICHA, DADOS_CONFIG, DADOS_PROGRESSAO) e 393 no próprio cadastro de treino.
 - Um nome como `Luta*` passa a casar outros nomes e invalida a vaga. Corrigir junto com a separação.
+- **Prova mecânica** (`test_fronteiras.py`, LibreOffice): com "Lua X" na vaga 1 e "Lua*" na última, a Perícia "Lua*" recebe "Nome repetido no livro ou custom" e sai do catálogo. Isso vale na base (vaga 131) e na simulação (vaga 20). A Família, no mesmo caso, trata o nome como literal.
 
 ### BAIXA / informativo
 
@@ -125,6 +126,12 @@ Sem achado: `exportar-baseline.py --destino` existe na base. A guarda de `script
 
 ## O que a auditoria confirmou sem achado
 
+Mecânica na capacidade reduzida (simulação, cálculo local no LibreOffice):
+- `test_pecas_capacidade.py`: o `regressao-pecas.py` do integrador, só com os literais 789/395 trocados pelas constantes, passa **53/53** checagens mecânicas com 30/30. Isso inclui Melhoria 30 válida, herança da última Restrição (30), sete pares base/custom no personagem e nas entidades, curingas, repetidos, Classe 0 e nona Família da entidade. As 3 checagens que contam o contrato v9 não se aplicam.
+  - Calibração na base: 56/56, igual ao original.
+  - A troca está em `patches/regressao-pecas-parametrizada.diff` (B4).
+- `test_fronteiras.py`: primeira e última vaga de Família (10) e treino (20) válidas e no catálogo; repetido sem diferenciar maiúsculas recusado; treino sem TIPO recusado; Ofício na última vaga entra no catálogo de ofícios. A exceção é o curinga do treino (M5).
+
 Simulação 10/30/30/20, comparada à base pelo `test_contrato.py`:
 - As **6.706 chaves fora dos catálogos** se mantêm com a mesma parte, aba de origem e ordem. Isso inclui as nove posições de Família × 12 invocações (`invocacao.N.familia.1–9`), as 23+11 posições custom do personagem, regras, efeitos e 3a.
 - Só os 34 `aviso.personagem.*_custom.N` mudam de fonte, pela faixa derivada.
@@ -148,6 +155,8 @@ Simulação 10/30/30/20, comparada à base pelo `test_contrato.py`:
 | `test_carregador.py --perfil simulado-alvo` | **simulação** em worktree | 4 falhas — A1 |
 | `test_patch_carregador.py` (simulado / base) | patch proposto em worktree | 7/7 e 5/5 |
 | `test_migracao.py` | guarda proposta | 22/22 |
+| `test_pecas_capacidade.py --perfil base-v9` / `simulado-alvo` | regressão do integrador parametrizada, LibreOffice | 56/56 / 53 ok (3 do contrato v9 não se aplicam) |
+| `test_fronteiras.py --perfil base-v9` / `simulado-alvo` | teste novo, LibreOffice | 8 ok + 1 risco (M5) / 8 ok + 1 risco (M5) |
 | `test_infra_envio.py` (ferramenta do chat 3 em `b8ab7b5`) | **simulação** + snapshot remoto falso | 3 ok, 1 falha (I1), 1 risco (I2) |
 | `test_infra_envio.py --com-patch-infra` | patches propostos de A1 + I2 | 10 ok, 1 falha (E1 sem o patch de A1, esperada) |
 | `unittest` de `infra-b47` em worktree de `b8ab7b5`, sem e com o patch | testes do chat 3 | 15/15 e 15/15 |

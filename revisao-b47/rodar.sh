@@ -7,7 +7,7 @@ PY=.venv/bin/python
 [ -x "$PY" ] || PY=python3
 perfil=${1:-base-v9}
 status=0
-for t in test_contrato test_leitor test_enderecos test_carregador; do
+for t in test_contrato test_leitor test_enderecos test_carregador test_pecas_capacidade test_fronteiras; do
   echo; echo "== $t --perfil $perfil"
   "$PY" "revisao-b47/$t.py" --perfil "$perfil" || status=1
 done
