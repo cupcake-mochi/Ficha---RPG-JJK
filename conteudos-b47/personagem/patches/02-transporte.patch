@@ -1,0 +1,85 @@
+--- a/ficha-v01/monta.py
++++ b/ficha-v01/monta.py
+@@ -509,19 +509,23 @@
+         out["congeladas"] = a["congeladas"]
+     return {k: v for k, v in out.items() if v}
+ 
++from b47_personagem import transporte as _PCD_TRANSPORTE
++_PCD_SUPLEMENTOS = _PCD_TRANSPORTE.suplementos(LAYOUT, _PERSONAGEM)
++emitir_gs.SEPARADAS.update(_PCD_TRANSPORTE.separadas(_PERSONAGEM))
++emitir_gs.COMPLEMENTOS.update(_PCD_TRANSPORTE.complementos(_PCD_SUPLEMENTOS))
+ gs, celulas, pecas = emitir_gs.escrever(
+     wb, [a["nome"] for a in LAYOUT["abas"]],
+     extras={a["nome"]: _extras(a) for a in LAYOUT["abas"]},
+     imgs={a["nome"]: a["imagens"] for a in LAYOUT["abas"]},
+     arte_dir=os.path.join(AQUI, "arte"),
+     limpa=LAYOUT["_meta"].get("largura_limpa"),
+-    suplementos={"Origens.gs": [("DADOS", _FP["T"]["origem_cap"][0],
++    suplementos={**_PCD_SUPLEMENTOS, "Origens.gs": [("DADOS", _FP["T"]["origem_cap"][0],
+                                 _FP["T"]["origem_cap"][0] + _FP["T"]["origem_cap"][3] - 1),
+                                   ("DADOS_CUSTOM", 19, 24),
+                                   ("DADOS_CUSTOM", 285, indice_ficha._aba(LAYOUT,"DADOS_CUSTOM")["colunas"])],
+                 "CriacaoAnalise.gs": ("ANALISE", 1, 4, _AN_FIM_ANTES_CRIACAO+1, _AN_FIM_CRIACAO),
+-                **{f"PecasAnalise{i+1}.gs": ("ANALISE",1,4,first,min(first+2999,len(_AN['linhas'])+1))
+-                   for i,first in enumerate(range(_AN_FIM_CRIACAO+1,len(_AN['linhas'])+2,3000))},
++                **{f"PecasAnalise{i+1}.gs": ("ANALISE",1,4,first,min(first+2999,_AN_FIM_PECAS))
++                   for i,first in enumerate(range(_AN_FIM_CRIACAO+1,_AN_FIM_PECAS+1,3000))},
+                 "PecasPainel.gs": ("CONFIGURAÇÃO",1,16,_PECAS['fim_familias']+1,_PECAS['fim']),
+                 "ProgressaoAnalise.gs": ("ANALISE", 1, 4, _AN_FIM_ANTES_CRIACAO-len(custom_progressao.exporta(_PROG))+1, _AN_FIM_ANTES_CRIACAO),
+                 "CriacaoPainel.gs": [("CONFIGURAÇÃO", 1, 7, 133, 164),
+--- a/ficha/modelo.gs.js
++++ b/ficha/modelo.gs.js
+@@ -116,7 +116,7 @@
+ function juntarContratosPecas_() {
+   if (typeof COMPLEMENTOS_ESPERADOS_ === 'undefined') return;
+   Object.keys(COMPLEMENTOS_ESPERADOS_).forEach(function (arq) {
+-    if (/^PecasAnalise\d+\.gs$/.test(arq)) {
++    if (/^(?:PecasAnalise\d+|PersonagemFormas\d+|PersonagemPainel|PersonagemAnalise)\.gs$/.test(arq)) {
+       var valor = globais_()[COMPLEMENTOS_ESPERADOS_[arq]];
+       if (valor) juntarValores_(valor);
+     }
+@@ -144,7 +144,7 @@
+   // depende de qual .gs carregou primeiro; estabilizar também as abas irmãs.
+   var ordem = ['CARTEIRA', 'FICHA', 'FICHA AMALDIÇOADA', 'INVOCAÇÕES',
+     'FICHA PESSOAL', 'DADOS', 'DADOS_AM', 'DADOS_INVOC', 'GLOSSÁRIO',
+-    'DADOS_PROGRESSAO', 'DADOS_CUSTOM', 'DADOS_CRIACAO', 'DADOS_MELHORIAS', 'DADOS_RESTRICOES', 'ANALISE',
++    'DADOS_PROGRESSAO', 'DADOS_CUSTOM', 'DADOS_CRIACAO', 'DADOS_MELHORIAS', 'DADOS_RESTRICOES', 'DADOS_FORMAS', 'DADOS_APTIDOES', 'DADOS_TALENTOS', 'ANALISE',
+     'CONFIGURAÇÃO', 'DADOS_CONFIG'];
+   ABAS.sort(function (a, b) {
+     var ia = ordem.indexOf(a.nome), ib = ordem.indexOf(b.nome);
+@@ -168,6 +168,9 @@
+ if (typeof ABAS_DA_CRIACAO !== 'undefined' && ABAS_DA_CRIACAO) juntarAbas_(ABAS_DA_CRIACAO);
+ if (typeof ABAS_DAS_MELHORIAS !== 'undefined' && ABAS_DAS_MELHORIAS) juntarAbas_(ABAS_DAS_MELHORIAS);
+ if (typeof ABAS_DAS_RESTRICOES !== 'undefined' && ABAS_DAS_RESTRICOES) juntarAbas_(ABAS_DAS_RESTRICOES);
++if (typeof ABAS_PERSONAGEM_FORMAS !== 'undefined' && ABAS_PERSONAGEM_FORMAS) juntarAbas_(ABAS_PERSONAGEM_FORMAS);
++if (typeof ABAS_PERSONAGEM_APTIDOES !== 'undefined' && ABAS_PERSONAGEM_APTIDOES) juntarAbas_(ABAS_PERSONAGEM_APTIDOES);
++if (typeof ABAS_PERSONAGEM_TALENTOS !== 'undefined' && ABAS_PERSONAGEM_TALENTOS) juntarAbas_(ABAS_PERSONAGEM_TALENTOS);
+ 
+ /** Junta a tabela das Origens à DADOS, mesmo se Origens.gs carregar antes deste arquivo. */
+ function juntarValores_(extras) {
+@@ -358,6 +361,13 @@
+   if (typeof VALORES_PECAS_ === 'undefined' || !VALORES_PECAS_) {
+     throw new Error('Falta o PecasPainel.gs: cole todos os arquivos antes de construir.');
+   }
++  [
++    ['ABAS_PERSONAGEM_FORMAS', 'FormasPersonagem.gs'],
++    ['ABAS_PERSONAGEM_APTIDOES', 'AptidoesPersonagem.gs'],
++    ['ABAS_PERSONAGEM_TALENTOS', 'TalentosPersonagem.gs']
++  ].forEach(function (item) {
++    if (!globais_()[item[0]]) throw new Error('Falta o ' + item[1] + ': cole todos os arquivos antes de construir.');
++  });
+   Object.keys(COMPLEMENTOS_ESPERADOS_).forEach(function (arq) {
+     if (!globais_()[COMPLEMENTOS_ESPERADOS_[arq]]) throw new Error('Falta o ' + arq + ': cole todos os arquivos antes de construir.');
+   });
+@@ -365,6 +375,11 @@
+     if (!/^CONTRATO_PECAS_\d+_$/.test(nome)) return;
+     var esperado = Object.keys(COMPLEMENTOS_ESPERADOS_).some(function (arq) { return COMPLEMENTOS_ESPERADOS_[arq] === nome; });
+     if (!esperado && globais_()[nome]) registrarSobra_({arquivo:'PecasAnalise' + nome.match(/\d+/)[0] + '.gs'});
++  });
++  Object.keys(globais_()).forEach(function (nome) {
++    if (!/^VALORES_PERSONAGEM_FORMAS_\d+_$/.test(nome)) return;
++    var esperado = Object.keys(COMPLEMENTOS_ESPERADOS_).some(function (arq) { return COMPLEMENTOS_ESPERADOS_[arq] === nome; });
++    if (!esperado && globais_()[nome]) registrarSobra_({arquivo:'PersonagemFormas' + nome.match(/\d+/)[0] + '.gs'});
+   });
+   if (SOBRAS_.length) throw new Error('Apague do projeto os arquivos de geração anterior: ' + SOBRAS_.join(', ') + '. Nada foi alterado.');
+   var ss = SpreadsheetApp.getActive();

@@ -1,0 +1,42 @@
+--- a/ficha-v01/monta.py
++++ b/ficha-v01/monta.py
+@@ -240,6 +240,16 @@
+ _CRIACAO = custom_criacao.aplica(LAYOUT, _FAM, _FIV)
+ import custom_pecas
+ _PECAS = custom_pecas.aplica(LAYOUT, _FAM, _FIV, _CRIACAO)
++# Frente de personagem C+D: módulos isolados e contexto fornecido pelo integrador.
++sys.path.insert(0, os.path.join(os.path.dirname(AQUI), 'conteudos-b47', 'personagem'))
++import b47_personagem
++_PCD_CONTRATO = json.load(open(os.path.join(os.path.dirname(AQUI), 'conteudos-b47', 'comum', 'contrato.json'), encoding='utf-8'))
++_PERSONAGEM = b47_personagem.aplica(LAYOUT, dict(
++    fam=_FAM, inv=_FIV, criacao=_CRIACAO, pecas=_PECAS,
++    capacidades=_PCD_CONTRATO['capacidades'],
++    inicio=indice_ficha._aba(LAYOUT, 'CONFIGURAÇÃO')['linhas']+4,
++    abas={'forma':'DADOS_FORMAS','aptidao':'DADOS_APTIDOES','talento':'DADOS_TALENTOS'},
++    chave_aviso_uso=lambda grupo,n: f'aviso.personagem.{grupo}.{n}'))
+ # A ampliação declara suas alterações exatas junto da integração de progressão.
+ for _name, _values in _FAMILIAS['antes'].items():
+     for _coord, _value in _values.items():
+@@ -256,6 +266,11 @@
+         _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
+ for _name, _values in _PECAS['depois'].items():
+     _PROG['depois'].setdefault(_name, {}).update(_values)
++for _name, _values in _PERSONAGEM['antes'].items():
++    for _coord, _value in _values.items():
++        _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
++for _name, _values in _PERSONAGEM['depois'].items():
++    _PROG['depois'].setdefault(_name, {}).update(_values)
+ print(f"a CONFIGURAÇÃO: {configuracao.QUANTIDADE} efeitos, {len(_CFG['alvos'])} caixas, paleta fixa")
+ import analise
+ _AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
+@@ -268,6 +283,10 @@
+ _AN['linhas'].extend(custom_criacao.exporta(_CRIACAO))
+ _AN_FIM_CRIACAO = len(_AN['linhas'])+1
+ _AN['linhas'].extend(custom_pecas.exporta(_PECAS))
++_AN_FIM_PECAS = len(_AN['linhas'])+1
++_AN['linhas'].extend(b47_personagem.exporta(_PERSONAGEM))
++_PERSONAGEM['analise_inicio'] = _AN_FIM_PECAS+1
++_PERSONAGEM['analise_fim'] = len(_AN['linhas'])+1
+ LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
+ print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
+ 
