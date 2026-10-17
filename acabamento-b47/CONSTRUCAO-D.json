@@ -1,0 +1,46 @@
+{
+ "resultado": "FICHA PRONTA",
+ "data": "2026-10-17",
+ "descartavel": "14Ad8e5hUECLimCFuilEGSIxrhv0IWpDUEjEBR4N8N-Q (TESTE DESCARTÁVEL B47 C+D — construção integrada), projeto 1YUnYSyI…; 36/36 arquivos iguais ao final depois do patch.",
+ "execucoes": [
+  {
+   "funcao": "construir",
+   "resultado": "falha do serviço Planilhas em criarAba_ aos 44 s (transitória); refeita"
+  },
+  {
+   "funcao": "construir",
+   "s": 177,
+   "abas": "CARTEIRA 6,5 · FICHA 60,9 · FICHA AMALDIÇOADA 35,3 (abas criadas 74,8)"
+  },
+  {
+   "funcao": "continuar",
+   "s": 190,
+   "abas": "INVOCAÇÕES 111,7 · FICHA PESSOAL 22,4 · DADOS 20,3 · DADOS_AM 35,5"
+  },
+  {
+   "funcao": "continuar",
+   "s": 141,
+   "abas": "DADOS_INVOC 85,9 e mais 11 abas"
+  },
+  {
+   "funcao": "continuar",
+   "s": 313,
+   "abas": "ANALISE 48,2 · CONFIGURAÇÃO 88,2 · DADOS_CONFIG 7,7 · menus 143,6 · acabamento ~25"
+  }
+ ],
+ "total_s": 821,
+ "menus": 2288,
+ "regras_cor_estado": 22,
+ "idioma": "pt_BR antes e depois; saltos sem erro",
+ "comparacao_com_revisao": {
+  "formulas": "66.242 nas duas, idênticas célula a célula",
+  "erros_formula": 0,
+  "analise_chaves": 8190,
+  "notas": 4470,
+  "mesclagens_e_grupos": "iguais",
+  "diferencas": [
+   "Ordem das abas ocultas (vem da migração C; abas visíveis na mesma ordem).",
+   "A revisão tem duas validações antigas em CONFIGURAÇÃO (F139:F145 inteiro 0-9; F157:F158 inteiro ≥0, coluna CAMPANHA) que o código atual não cria; já estavam no backup de antes de D; a fórmula de EM USO trata entrada inválida com NA(). Mantidas."
+  ]
+ }
+}

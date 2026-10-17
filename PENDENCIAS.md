@@ -1,3 +1,7 @@
+## B47 · fechamento, revisão e merge · 17/10/2026
+
+Cópia funcional com troca de paleta interrompida: sem deriva. S58 corrigida. Construção do zero com o código final: FICHA PRONTA, fórmulas idênticas à revisão. Bateria executada e classificada; falhas são anteriores à sessão e precisam de manutenção de teste ou decisão de regra (carga da ficha pessoal +0,8). Revisão sem bloqueio para `main`. [Detalhes](acabamento-b47/RETOMADA-D.md).
+
 ## D · CONCLUÍDA na revisão · 17/10/2026
 
 Fundo de CONFIGURAÇÃO aplicado e provado nativamente; 12 ajudas mantidas; deriva de paleta corrigida (`paleta_base` em `Codigo.gs`, bateria pertinente aprovada, publicado e relido 36/36 no projeto da revisão); auditoria final da planilha inteira sem diferenças. Fora de D: `INVOCAÇÕES!S58` sem causa conhecida, dois testes com falha antiga, promoção da revisão a decidir. [Fechamento](acabamento-b47/RETOMADA-D.md).

@@ -74,7 +74,7 @@ Os 25 cartões compartilhados da 3a e os cadastros de um Caminho/uma Trilha fica
 - [x] Mapear entradas/referências por identidade; 509 entradas/notas restauradas na descartável. Não cortar campos preenchidos nem associar silenciosamente um identificador a outro cadastro. Revisão futura exige nova guarda.
 - [x] Resolver e documentar a versão do contrato ANALISE: chaves mantidas/descontinuadas, fontes e leitor. Não reaproveitar uma chave com outro sentido. A retirada de vagas afeta o contrato; não manter milhares de exportações vazias por inércia nem removê-las silenciosamente. (Local; ver relatório.)
 - [x] Ajustar testes à capacidade nova, preservando casos negativos, herança, nomes literais, primeira/última vaga, reutilização e integridade da migração. (Local; ver relatório.)
-- [ ] Aplicar migração pontual na cópia de revisão somente depois de validar em descartável e confirmar acesso.
+- [x] Aplicar migração pontual na cópia de revisão somente depois de validar em descartável e confirmar acesso. (16/10: migração C na revisão, ver `conteudos-b47/comum/MIGRACAO-C-REVISAO.json`.)
 - [ ] Medir antes/depois: linhas, fórmulas, tamanho dos arquivos e tempos de carregamento/edição e de construção disponíveis. Separar medida nativa de simulação.
 - [x] Registrar resultados parciais e delimitar B restante: código vinculado, testes visuais/gatilhos e medidas nativas. Pacote REST reduzido de 260/116.025 para 102/20.058 lotes/pedidos, com equivalência provada; ver NATIVO-PARCIAL.md. Não estimar tempo Apps Script por resultados VM/API.
 
@@ -85,36 +85,40 @@ Os 25 cartões compartilhados da 3a e os cadastros de um Caminho/uma Trilha fica
 - [x] Avaliar método oficial de envio: infra integrada com manifesto/hashes, snapshot remoto, retirada explícita e conferência posterior. Fluxo offline testado; envio Apps Script real ainda pendente por falta de ferramenta/autenticação compatível.
 - [x] Verificar ferramentas, escopos e autenticação disponíveis separadamente. Drive/Sheets funcionaram; Apps Script/navegador não estão expostos neste ambiente. Não presumir que a conexão Drive fornece esse acesso.
 - [x] Delimitar a investigação e registrar dependência/caminho funcional em NATIVO-PARCIAL.md e ROTEIRO-NATIVO.md, sem contornar rede/credenciais nem depender do PC.
-- [ ] Consolidar os testes novos no roteiro geral. `rodar-tudo.sh` ainda não inclui todas as regressões adicionadas nas últimas etapas.
+- [x] Consolidar os testes novos no roteiro geral. (17/10: `rodar-tudo.sh` inclui os testes novos que rodam sem dados privados; os que pedem leituras nativas e os de expectativa histórica estão listados em `acabamento-b47/BATERIA-D.json`.)
 - [ ] Usar testes focais durante o desenvolvimento; repetir bateria mais ampla quando uma mudança, falha ou interação justificar.
-- [ ] Confirmar edição, salvamento, primeira/última vaga, cópia funcional e equivalência mecânica das funções alteradas.
+- [x] Confirmar edição, salvamento, primeira/última vaga, cópia funcional e equivalência mecânica das funções alteradas. (C: cenários nativos; 17/10: cópia funcional com troca de paleta interrompida igual à revisão, ver `acabamento-b47/COPIA-FUNCIONAL-D.json`.)
 
 ## C — conteúdos restantes da 3c
 
+> Concluída em 16/10/2026 (`21f1620`): ver `conteudos-b47/comum/FECHAMENTO-C.md` e as provas citadas lá.
+
 Os desenhos e campos dos estudos já foram aprovados. Não reabrir a aprovação geral sem uma mudança concreta. Capacidade/custo dos tipos ainda não construídos precisam ser fechados segundo a estratégia pequena acima.
 
-- [ ] **Formas:** base opcional, Família, Peso, resolução, resultado, TR, Classe 0, restrição embutida, efeito/requisitos e alcance/área. Separar alcance e tamanho da área e conservar faixas distintas de personagem/entidade. Os valores demonstrativos do estudo não são regras novas.
-- [ ] **Aptidões/Bênçãos:** base opcional; escolha consumida ou gratuidade explícita. Categoria de Efeito vazia não torna a capacidade gratuita.
-- [ ] **Talentos do personagem:** cadastro, base opcional, requisitos/custos/efeitos e integração com os lugares existentes.
-- [ ] **Tipos de entidade:** base opcional; do zero, combinar separadamente funcionamentos existentes de vida, talismã e reserva de PE. Autonomia e alma são escolhidas na própria invocação.
-- [ ] **Talentos de entidade:** cadastro e integração com orçamento, requisitos e cartões atuais.
-- [ ] **Tipos de dano:** catálogo custom unido ao livro e menus consumidores.
-- [ ] **Condições:** o estudo aprovado as trata como opções de Melhoria; integrar suas informações e requisitos sem inventar um segundo mecanismo ou executar prosa como regra.
-- [ ] Em cada grupo, completar menus, cálculos, avisos, exportação ANALISE, roteiro de teste no Sheets e testes focais, incluindo base herdada e criação sem base.
-- [ ] Cruzar o inventário de menus ao fechar: propriedades/aprimoramentos, Kata/Manejo ou missão citados em históricos devem ser verificados contra consumidores reais. Não presumir automaticamente um novo escopo nem deixar uma opção existente de fora; registrar a conclusão e pedir decisão quando houver regra/escopo novo.
+- [x] **Formas:** base opcional, Família, Peso, resolução, resultado, TR, Classe 0, restrição embutida, efeito/requisitos e alcance/área. Separar alcance e tamanho da área e conservar faixas distintas de personagem/entidade. Os valores demonstrativos do estudo não são regras novas.
+- [x] **Aptidões/Bênçãos:** base opcional; escolha consumida ou gratuidade explícita. Categoria de Efeito vazia não torna a capacidade gratuita.
+- [x] **Talentos do personagem:** cadastro, base opcional, requisitos/custos/efeitos e integração com os lugares existentes.
+- [x] **Tipos de entidade:** base opcional; do zero, combinar separadamente funcionamentos existentes de vida, talismã e reserva de PE. Autonomia e alma são escolhidas na própria invocação.
+- [x] **Talentos de entidade:** cadastro e integração com orçamento, requisitos e cartões atuais.
+- [x] **Tipos de dano:** catálogo custom unido ao livro e menus consumidores.
+- [x] **Condições:** o estudo aprovado as trata como opções de Melhoria; integrar suas informações e requisitos sem inventar um segundo mecanismo ou executar prosa como regra.
+- [x] Em cada grupo, completar menus, cálculos, avisos, exportação ANALISE, roteiro de teste no Sheets e testes focais, incluindo base herdada e criação sem base.
+- [x] Cruzar o inventário de menus ao fechar: propriedades/aprimoramentos, Kata/Manejo ou missão citados em históricos devem ser verificados contra consumidores reais. Não presumir automaticamente um novo escopo nem deixar uma opção existente de fora; registrar a conclusão e pedir decisão quando houver regra/escopo novo.
 
 ## D — interface e fechamento completo
 
-- [ ] Apresentar estudo enxuto na grade antes de construir o novo desenho.
-- [ ] Reunir a edição em CONFIGURAÇÃO, com seções claras, tabelas para registros simples e cartões para tipos complexos.
-- [ ] Conservar a referência Forma B: regras/efeitos à esquerda e edição custom organizada; mudanças de desenho devem ser apresentadas ao usuário.
-- [ ] Levar explicações úteis para notas. Inventário, orçamento, histórico de aprovação e relatórios técnicos ficam na documentação, não no fluxo do jogador.
-- [ ] Retirar estudos/exemplos depois de auditar dependências de fórmulas, menus e scripts.
-- [ ] Preservar escolhas e resultados nos lugares originais da FICHA, FICHA PESSOAL, FICHA AMALDIÇOADA e INVOCAÇÕES.
-- [ ] Executar bateria completa da versão final e casos de interação entre conteúdos/regras.
-- [ ] Revisar carteira/foto/paleta, bordas, dimensões, textos, menus, inventário, grupo 7, áreas recolhidas e todas as invocações.
-- [ ] Auditar ANALISE inteira, leitor, erros de fórmula, cópia funcional e persistência do código.
-- [ ] Construir do zero somente em descartável; medir tempo e custo reais. Restaurar entradas temporárias.
+> Concluída em 17/10/2026: ver o topo de `acabamento-b47/RETOMADA-D.md`.
+
+- [x] Apresentar estudo enxuto na grade antes de construir o novo desenho. (estudos aprovados antes de C.)
+- [x] Reunir a edição em CONFIGURAÇÃO, com seções claras, tabelas para registros simples e cartões para tipos complexos. (C; fundo padrão dos espaços novos aplicado em D.)
+- [x] Conservar a referência Forma B: regras/efeitos à esquerda e edição custom organizada; mudanças de desenho devem ser apresentadas ao usuário.
+- [x] Levar explicações úteis para notas. Inventário, orçamento, histórico de aprovação e relatórios técnicos ficam na documentação, não no fluxo do jogador. (inclui as 12 ajudas de tipo de entidade, mantidas em D.)
+- [x] Retirar estudos/exemplos depois de auditar dependências de fórmulas, menus e scripts. (`acabamento-b47/AUDITORIA-ESTUDOS.json`; revisão com 22 abas.)
+- [x] Preservar escolhas e resultados nos lugares originais da FICHA, FICHA PESSOAL, FICHA AMALDIÇOADA e INVOCAÇÕES. (comparações integrais de C e D.)
+- [x] Executar bateria completa da versão final e casos de interação entre conteúdos/regras. (17/10: executada; aprovados e falhas anteriores a D, todas com causa registrada, em `acabamento-b47/BATERIA-D.json`. As expectativas históricas não foram alteradas.)
+- [x] Revisar carteira/foto/paleta, bordas, dimensões, textos, menus, inventário, grupo 7, áreas recolhidas e todas as invocações. (descartável D: interações; revisão: leitura visual.)
+- [x] Auditar ANALISE inteira, leitor, erros de fórmula, cópia funcional e persistência do código. (`acabamento-b47/FOTO-REVISAO-POS-FUNDO.json`, `NATIVO-CODIGO-REVISAO-D.json`, `COPIA-FUNCIONAL-D.json`.)
+- [x] Construir do zero somente em descartável; medir tempo e custo reais. Restaurar entradas temporárias. (17/10: 4 execuções, 821 s; ver `acabamento-b47/CONSTRUCAO-D.json`.)
 - [ ] Entregar versão revisável e pendências explícitas. Alterar a ficha oficial ou integrar no `main` somente mediante autorização específica.
 
 ## Decisões que devem ser preservadas

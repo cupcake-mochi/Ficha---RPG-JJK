@@ -1,0 +1,59 @@
+{
+ "data": "2026-10-17",
+ "codigo": "Codigo.gs 6aa4e2ba (paleta_base); gerador ficha/ficha-v01 inalterado desde d11429e",
+ "ambiente": "PC do usuário, Linux, node 20.20.2, python 3.12.3, LibreOffice headless; sem .venv; sem Google",
+ "aprovados": [
+  "conferir-catalogo.py",
+  "conferir-kaori.py",
+  "conferir-progressao.py",
+  "regressao-exemplos.py",
+  "arnes.py",
+  "revisao-cetica.py",
+  "conferir-decisoes.py",
+  "arnes-decisoes.py",
+  "regressao-kaori-na-ficha.py",
+  "regressao-delta.js",
+  "arnes-delta.py",
+  "regressao-pessoal.js (58 ok, depois de completar o simulador)",
+  "regressao-construir.js",
+  "regressao-invocacoes.py",
+  "conferir-copias.py",
+  "nuvem-b47/exportar-baseline.py",
+  "regressao-textos-custom.js (7 cenários)",
+  "testar-carregamento.js (37 checagens, 22 abas, 8.190 chaves; precisa do modelo gerado)",
+  "regressao-paleta.js (51)",
+  "regressao-arte.js (74)",
+  "testar-notas-contextuais.js",
+  "testar-entidades-integradas.py",
+  "testar-limites-emissor.py",
+  "testar-normalizacao-nativa-cd.py",
+  "testar-coalescencia.py",
+  "testar-equivalencia-lotes.py",
+  "testar-formulas-nativas.py",
+  "testar-snapshot.py",
+  "testar-auditoria-estudos.py"
+ ],
+ "interrompido": {
+  "arnes-pessoal.py": "cortado pelo limite de 120 min da sessão; até o corte, 155+ defeitos plantados acenderam e nenhum escapou"
+ },
+ "falhas_preexistentes": {
+  "conferir-ficha-xlsx.py": "8 problemas, idênticos em d11429e (antes desta sessão)",
+  "regressao-ficha-pessoal.py": "7 falhas: carga da ficha 0,8 acima do modelo de regra do teste em todos os cenários (5,5 × 4,7 de 8). Precisa decidir se é item novo não modelado no teste ou contagem dupla no gerador.",
+  "regressao-amaldicoada.py": "343 ok, 11 falhas: avisos novos de C (\"Duas Restrições de frequência, contando a embutida\", \"Restrição repetida…\", \"⚠ Nível\") ausentes do modelo de regra do teste; contagens de mesclagem/cópia/gravações de menu que cresceram com as 12 entidades",
+  "comparar-ficha-01.py": "difere da referência histórica (DADOS!AK18 e outras)",
+  "regressao-configuracao.py": "ValueError ao ler 9,5 (vírgula decimal do Calc)",
+  "regressao-campanha.py": "3 falhas (expectativa formato 5, ver TESTES.md)",
+  "regressao-custom.py": "4 falhas (formato 6)",
+  "regressao-progressao.py": "1 falha (formato 7)",
+  "regressao-familias-invocacao.py": "#NAME? no Calc onde se espera 0 (função que o Calc não tem)",
+  "regressao-pecas.py (sem --estrutura)": "FALHA Classe 0 herda alcance da Melhoria",
+  "capacidade-b47/testar-geracao.js": "espera 7.356 chaves (fase A); hoje 8.190 — igual em d11429e",
+  "capacidade-b47/testar-envio.py": "FALHA também em d11429e",
+  "capacidade-b47/testar-validacao3a.py": "depende de arquivo fora do repositório; falha também em d11429e"
+ },
+ "nao_executaveis_aqui": "testar-capacidade, testar-conferencia-nativa, testar-migracao, testar-treinos, testar-combinacao-personagem, testar-comuns, testar-heranca-nativa-personagem, testar-lotes-cd, testar-migracao-cd, regressao-criacao: pedem --base/--alvo/--leituras/--metadata (leituras nativas privadas, fora do Git)",
+ "consertos_de_teste": [
+  "regressao-pessoal.js: simulador ganhou Range.getNotes e RangeList.setValue (o código passou a usá-los); nenhuma expectativa mudou"
+ ],
+ "rodar_tudo": "rodar-tudo.sh passa a incluir testar-carregamento.js e onze testes novos que rodam sem dados privados"
+}

@@ -83,6 +83,8 @@ function criaPlanilha() {
         return [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => valor(nome, r + i, c + j))); },
       setValue: (x) => { delete A.formulas[r + ',' + c]; A.v[r - 1][c - 1] = x; log.chamadas.push(['setValue', nome, letras(c) + r, x]); },
       getNote: () => A.notas[r + ',' + c] || '',
+      // 17/10/2026: notasVivas_ passou a ler as notas em lote (Range.getNotes), antes de qualquer escrita
+      getNotes: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.notas[(r + i) + ',' + (c + j)] || '')),
       setNote: (t) => { A.notas[r + ',' + c] = t; log.chamadas.push(['setNote', nome, letras(c) + r]); },
       getFormulasR1C1: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => A.formulas[(r + i) + ',' + (c + j)] ? 'R1C1 da conta' : '')),
       setFormulaR1C1: (f) => { A.formulas[r + ',' + c] = '=a conta de volta'; log.chamadas.push(['setFormulaR1C1', nome, letras(c) + r, f]); },
@@ -95,6 +97,8 @@ function criaPlanilha() {
       getRangeList: (lista) => ({
         check: () => { lista.forEach((a1) => { const [r, c] = lc(a1); A.v[r - 1][c - 1] = true; }); log.chamadas.push(['check', nome, lista.length]); },
         uncheck: () => { lista.forEach((a1) => { const [r, c] = lc(a1); A.v[r - 1][c - 1] = false; }); log.chamadas.push(['uncheck', nome, lista.length]); },
+        // 17/10/2026: gravarCaixas_ grava as caixas com setValue(true/false), que numa caixa de seleção é marcar/desmarcar
+        setValue: (x) => { lista.forEach((a1) => { const [r, c] = lc(a1); A.v[r - 1][c - 1] = x; }); log.chamadas.push([x === true ? 'check' : 'uncheck', nome, lista.length]); },
       }),
     };
   };

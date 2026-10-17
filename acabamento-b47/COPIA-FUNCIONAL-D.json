@@ -1,0 +1,13 @@
+{
+ "resultado": "OK",
+ "data": "2026-10-17",
+ "copia": "1_1oBYdoci0j-B5LSfYp6UPLpnQB5vNxEOJafx-FRHqw (TESTE DESCARTÁVEL B47 — cópia funcional paleta_base), cópia Drive da revisão com o script vinculado e sem propriedades do documento.",
+ "roteiro": [
+  "Caixa da paleta Mizuki Escuro → Mizuki Claro pela lista da CARTEIRA (CARTEIRA ficou rosa: gatilho simples rodou na cópia sem autorização).",
+  "Após ~30 s, ainda no meio da troca, volta para Mizuki Escuro.",
+  "Duas rodadas de cliques nas abas (onSelectionChange) com pausas de ~28 s até convergir."
+ ],
+ "comparacao": "Exportação da cópia × revisão: fundo e fonte idênticos em todas as abas; única diferença INVOCAÇÕES!S58 (cópia FBE4EF, revisão então F1BFD6). Sem nenhum F1BFD6 de deriva.",
+ "S58": "Desenho de fábrica: osso E8DCD4 sobre painel_alto; no Mizuki Escuro, osso_por_papel.painel_alto = FBE4EF. A revisão guardava cor velha; corrigida só a cor da fonte (repeatCell textFormat.foregroundColorStyle, com requiredRevisionId) e conferida igual à descartável D, fórmula preservada.",
+ "conclusao": "A correção paleta_base funciona nativamente no cenário que causava a deriva (cópia + troca interrompida)."
+}

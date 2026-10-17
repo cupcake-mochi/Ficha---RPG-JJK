@@ -1,3 +1,16 @@
+# B47 — fechamento pós-D · 17/10/2026, noite (Claude Opus, integrador)
+
+Este bloco prevalece sobre os abaixo. Pedido do usuário: fechamento, revisão e merge em `main` por conta própria; ficha oficial opcional.
+
+- **Cópia funcional** ([`COPIA-FUNCIONAL-D.json`](COPIA-FUNCIONAL-D.json)): cópia Drive da revisão, troca Escuro→Claro interrompida e volta ao Escuro; fundo e fonte iguais à revisão em todas as abas. A correção `paleta_base` funciona nativamente.
+- **`INVOCAÇÕES!S58`**: osso sobre `painel_alto` no desenho de fábrica, logo `FBE4EF` no Escuro; a revisão guardava cor velha (`F1BFD6`). Corrigida só a cor da fonte, igual à descartável D.
+- **Construção do zero** ([`CONSTRUCAO-D.json`](CONSTRUCAO-D.json)): descartável `14Ad8e5…` com o código final; FICHA PRONTA em 4 execuções (821 s), uma falha transitória do serviço refeita. 66.242 fórmulas idênticas às da revisão, 0 erros, 8.190 chaves. Diferenças: ordem das abas ocultas e duas validações antigas de CAMPANHA só na revisão (mantidas).
+- **Bateria** ([`BATERIA-D.json`](BATERIA-D.json)): aprovados os testes ligados a C/D e ao `Codigo.gs`; falhas anteriores a esta sessão listadas com causa (expectativas históricas, diferenças do Calc, entradas privadas). `regressao-pessoal.js` consertado no simulador; `rodar-tudo.sh` passa a incluir os testes novos que rodam sem dados privados.
+- **Revisão para o merge** ([`REVISAO-MERGE-B47.md`](REVISAO-MERGE-B47.md)): sem segredos nem dados de personagem; três observações não bloqueantes no `Codigo.gs`.
+- **Plano**: checklist do `PLANO-RETOMADA-B47.md` marcado com as provas; ficam abertos medidas/perfis de A/B e a entrega final.
+
+Pendências que precisam de decisão do usuário: carga da ficha pessoal 0,8 acima do modelo do teste; atualizar as regressões históricas (campanha, custom, progressão, configuração, Famílias, amaldiçoada, peças, ficha-xlsx); tirar o diagnóstico `B47 tempo` do `onEdit` numa próxima versão.
+
 # D — CONCLUÍDA · 17/10/2026 (Claude Opus, integrador)
 
 ## Fechamento
