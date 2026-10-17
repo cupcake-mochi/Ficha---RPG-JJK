@@ -371,6 +371,14 @@ function comporNotaContextual_(atual, estado, texto) {
       estado.tamanhoBase <= atual.length && estado.hash === hashNotaContextual_(atual)) {
     base = atual.slice(0, estado.tamanhoBase);
   }
+  if (texto) {
+    // 17/10/2026: numa cópia as propriedades não vêm, e a primeira abertura somava a ajuda de novo à que já estava
+    // na nota (as doze ajudas saíam dobradas, e o estado gravado depois disso tomava a primeira por nota do jogador).
+    // A ajuda atual no fim da base é repetição, não texto do jogador: tirar conserta também a cópia que já dobrou.
+    while (base === texto || base.slice(-(texto.length + 2)) === '\n\n' + texto) {
+      base = base === texto ? '' : base.slice(0, base.length - texto.length - 2);
+    }
+  }
   // A ajuda é uma prévia; o cadastro conserva o texto completo. Nunca cortar
   // a nota manual para acomodar o complemento calculado.
   var disponivel = Math.max(0, Math.min(12000, 45000 - base.length - 2));
@@ -418,7 +426,6 @@ function onEdit(e) {
   var inicio = Date.now();
   if (!e || !e.range) return;
   var aba = e.range.getSheet().getName();
-  console.log('B47 tempo: inicio ' + aba + ' ' + e.range.getA1Notation());
   // A troca de paleta voltou pra cá em 25/09/2026, em passos que cabem nos 30 segundos, pra
   // funcionar em toda cópia sem ninguém autorizar nada. Ver convergirPaleta_.
   if (aba === 'CARTEIRA' && ehCelulaDaPaleta_(e.range)) {
@@ -490,29 +497,21 @@ function onEdit(e) {
     return;
   }
   // 07/10/2026: e toda caixa calculada da FICHA, fora a vida, a energia e a integridade, que o jogador escreve
-  console.log('B47 tempo: entrada ficha ' + (Date.now() - inicio));
   try { devolverConta_(e, 'FICHA'); } catch (err) { console.log('ficha, a conta: ' + err.message); }
   try { esticarCaixas_(e, 'FICHA'); } catch (err) { console.log('ficha, a caixa que estica: ' + err.message); }
   // Uma leitura da DADOS serve ao índice, às perícias e à Trilha.
   var dados = SpreadsheetApp.getActive().getSheetByName('DADOS').getDataRange().getValues();
   var idx = indiceDosDados_(dados);
-  var medir = function (fase) { console.log('B47 tempo: ' + fase + ' ' + (Date.now() - inicio)); };
-  medir('indice');
   try { descansar_(e, idx); } catch (err) { console.log('ficha, o descanso: ' + err.message); }
   aplicarDelta_(e, idx);
   prenderTemp_(e, idx);
   marcarPericiasDoCaminho_(e, idx, dados);
-  medir('marcarPericiasDoCaminho_');
   trilhaDoCaminho_(e, idx, dados);
-  medir('trilhaDoCaminho_');
   try { habilidadesDaFicha_(e, idx); } catch (err) { console.log('habilidades: ' + err.message); }
-  medir('habilidades');
   nivelPelaXP_(e, idx);
   grupoDeArmaDaTrilha_(e, idx);
   trocaArmaDoCaminho_(e, idx);
-  medir('trocaArmaDoCaminho_');
   try { fichaMexeNaPessoal_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }
-  medir('pessoal');
   continuarPaleta_(inicio, null, false, e.range);
 }
 

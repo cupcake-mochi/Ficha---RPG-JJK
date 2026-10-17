@@ -88,5 +88,19 @@
   },
   "smoke": "Abertura da revisão no navegador: onOpen 11:31:18 Concluído em 10,7 s, sem pedido de autorização.",
   "permissoes_novas_concedidas": false
+ },
+ "publicacao_notas_copia": {
+  "data": "2026-10-17",
+  "arquivo": "Codigo.gs",
+  "sha256_antes": "6aa4e2ba8a236c70065e49a6b637ece084062d69da82e2bdde57a81fa70d22b5",
+  "sha256_depois": "f77b39db507c705b5d48ebe8103656f440967336b659b17df0927d6b5aa256de",
+  "mudancas": [
+   "comporNotaContextual_: tira repetições da ajuda atual no fim da nota (com ou sem estado). Cópias da planilha não levam as propriedades e a primeira abertura dobrava as 12 ajudas; o estado gravado depois tomava a primeira por nota do jogador.",
+   "onEdit: retiradas as nove linhas de diagnóstico \"B47 tempo\"."
+  ],
+  "achado": "Cópia funcional 1_1oBY… com as 12 ajudas dobradas (I43, AB43, I1033… com DEFINIÇÃO/EFEITO duas vezes); revisão sem o problema.",
+  "prova": "Publicado na cópia; reaberta, as notas voltaram a ter uma ajuda só. testar-notas-contextuais.js 13/13 (os casos novos falham com o código antigo); paleta, construir, pessoal, arte, delta e carregamento passam.",
+  "revisao": "Publicado e relido: 36 arquivos, Codigo.gs f77b39db.",
+  "construcao_14Ad8e5": "mantida em 6aa4e2ba (referência de estrutura; a mudança não altera o que construir() monta)."
  }
 }
