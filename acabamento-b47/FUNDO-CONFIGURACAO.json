@@ -1,0 +1,15 @@
+{
+  "resultado": "OK",
+  "destino": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE",
+  "faixa": "CONFIGURAÇÃO!A1733:P2812",
+  "celulas_corrigidas": 3988,
+  "pedidos": 313,
+  "diferencas_inesperadas": [],
+  "campos_preservados": [
+    "userEnteredValue",
+    "effectiveValue",
+    "note",
+    "dataValidation"
+  ],
+  "metodo": "Formato-base da construção canônica somente em células vazias sem formatação explícita; comparação exata do trecho inteiro."
+}

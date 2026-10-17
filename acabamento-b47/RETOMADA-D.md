@@ -29,6 +29,14 @@ Dados/recibos privados: pasta `d/antes`, `d/releitura`, `d/depois`, planos e `re
 
 Próxima ação vigente: revisão visual da descartável e auditoria do fundo/fonte dos espaços novos de CONFIGURAÇÃO contra a construção canônica C; depois demais testes D. A aplicação final na revisão continua exigindo backup/snapshot/releitura novos. Sol/Médio para a conferência visual e correções delimitadas.
 
+## Checkpoint: fundo padrão de CONFIGURAÇÃO corrigido na descartável
+
+Bloco visual inicial concluído. Comparação nativa com a construção C (`14Ad8e5hUECLimCFuilEGSIxrhv0IWpDUEjEBR4N8N-Q`) identificou 3.988 células vazias sem qualquer formatação explícita no acréscimo `CONFIGURAÇÃO!A1733:P2812`. Receberam exclusivamente o formato-base da construção canônica (Mizuki Escuro, Roboto 10). Nenhum cartão foi redesenhado, nenhum endereço movido. Foram 313 pedidos `repeatCell` em quatro lotes, todos confirmados. **Não repetir os lotes nesta cópia.**
+
+`FUNDO-CONFIGURACAO.json`: comparação exata do trecho inteiro antes/depois, com zero diferenças inesperadas em formatos e com valores/fórmulas efetivos, entradas, notas e validações preservados. `preparar-fundo-config.py` gera o plano offline a partir das leituras canônicas e exige candidatos vazios/sem estilo, formato-base único e cobertura exata. Os formatos anteriores, guardas, pedidos e recibos estão na pasta privada `d/formatos/` e `d/pedido-fundo.json`. Capturas `d/visual/configuracao-antes.png` e `configuracao-depois.png` conferidas a 100%.
+
+Próximo passo vigente: demais verificações visuais/interações D na cópia `1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE` (carteira/foto/paleta, menus, textos longos e limpeza, grupos, inventário e 12 entidades), bateria final pertinente e cópia/gatilhos/código persistido. Só depois aplicar o conjunto aprovado na revisão com backup/snapshot/releitura novos. A revisão continua sem alterações de D. Canônicos GS/modelo não foram alterados, pois já produzem o fundo correto. Sol/Médio para seguir; registrar impedimentos sem declarar D concluída.
+
 ## Próximos blocos
 
 1. Auditar dependências das quatro abas temporárias: `ESTUDO CAMPANHA`, `ESTUDO CUSTOM`, `ESTUDO 3B`, `ESTUDO 3C`. Confirmar nomes/IDs nativamente; procurar fórmulas, validações, intervalos nomeados, gráficos, regras e scripts. A geração canônica de C já produz 22 abas sem estudos; isso sozinho não prova a ausência de dependências na revisão preenchida.
