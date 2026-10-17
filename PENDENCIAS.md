@@ -1,4 +1,26 @@
-## C integrada localmente · prova nativa conjunta em andamento · 16/10/2026
+## C nativa testada · ensaio de migração aprovado · revisão ainda em A+B
+
+Limite confirmado: concluir somente C e parar antes de D. Construção conjunta
+concluída (22 abas, 35 GS e manifesto relidos iguais); 467.365 células sem erro
+na leitura vazia. [Cenários preenchidos](conteudos-b47/comum/CENARIOS-C-NATIVOS.json):
+1.216 verificações, incluindo os 201 seletores de Forma, 24 cartas de
+Aptidões/Talentos, Tipos/Talentos nas 12 entidades e interações com Condições
+e dano custom. Restauração confirmada em 18 blocos: valores, notas e validações.
+
+[Migração 10→11 ensaiada](conteudos-b47/comum/MIGRACAO-C-DESCARTAVEL.json) na cópia
+preenchida: 26 abas, zero erros de fórmula/diferenças inesperadas, 8.190 chaves
+únicas, 3.837 notas antigas preservadas. Das 7.356 chaves antigas, somente a
+versão mudou; o leitor mantém o mesmo aviso anterior. Código vinculado:
+35 GS e manifesto persistidos e relidos iguais. Lotes próprios preservam as
+entradas e não removem abas/linhas; não reutilizar lotes A+B.
+
+Próximo: backup/snapshot novos e releitura idêntica da revisão autorizada,
+aplicação pontual, persistência do código vinculado e conferência de C.
+**A revisão ainda está em formato 10 e não recebeu C. D não foi iniciada.**
+Oficial, bot, main e acessos permanecem fora do escopo.
+Recomendação: GPT-6.1 Sol, Médio, para o procedimento já definido.
+
+## Histórico · C integrada localmente · prova conjunta então em andamento
 
 Recebidas personagem `e9af8d3` e entrega parcial Claude `045f699`; o usuário
 transferiu para este integrador o restante após o limite de créditos. Nenhuma

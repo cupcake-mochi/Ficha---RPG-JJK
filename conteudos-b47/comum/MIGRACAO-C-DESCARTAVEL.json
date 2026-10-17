@@ -1,0 +1,20 @@
+{
+  "tipo": "migracao-cd-nativa",
+  "resultado": "OK",
+  "destino": "1z6G5Q2odTqPctNHIZ-rGlRhgAB84xv-xtoyFFuVqtjw",
+  "scriptId": "1RsopTj2M5n-WZeE588sPbiGNfjfGaE_kgZXAiKCW5tQPWt0mnsH9nbn-",
+  "alvo_sha256": "3e960e4cf97ad1695033c0d20be7eaad8576adc5ca9e68ee7af39792d18b786d",
+  "entradas_notas_preservadas": true,
+  "codigo_relido_igual": true,
+  "erros_formula": 0,
+  "chaves": 8190,
+  "notas_conferidas": 3837,
+  "celulas_antigas_sem_escrita_conferidas": 83677,
+  "lotes_confirmados": 154,
+  "pedidos": 6882,
+  "comparacao": {
+    "diferencas": 0,
+    "contrato_diferencas": 0
+  },
+  "escopo": "Somente C. D não iniciada."
+}

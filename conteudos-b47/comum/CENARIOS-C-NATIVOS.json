@@ -1,0 +1,15 @@
+{
+  "resultado": "OK",
+  "destino": "14Ad8e5hUECLimCFuilEGSIxrhv0IWpDUEjEBR4N8N-Q",
+  "geracao": "9273911dd8b6f47a",
+  "checagens": 1216,
+  "seletores_forma": 201,
+  "saidas_comparadas_livro_alias": 985,
+  "cartas_aptidao_talento": 24,
+  "restauracao": {
+    "blocos": 18,
+    "diferencas": 0
+  },
+  "falhas": [],
+  "escopo": "C: conteúdos preenchidos na combinação integral; não é auditoria geral D."
+}
