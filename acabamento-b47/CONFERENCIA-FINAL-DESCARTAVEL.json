@@ -1,0 +1,102 @@
+{
+  "resultado": "OK",
+  "destino": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE",
+  "fase": "final",
+  "abas": 22,
+  "estudos_retirados": [
+    "ESTUDO 3B",
+    "ESTUDO 3C",
+    "ESTUDO CAMPANHA",
+    "ESTUDO CUSTOM"
+  ],
+  "campos_conferidos": [
+    "userEnteredValue",
+    "effectiveValue",
+    "note",
+    "dataValidation",
+    "hyperlink",
+    "textFormatRuns"
+  ],
+  "celulas_preservadas": 107367,
+  "notas_preservadas": 4458,
+  "validacoes_preservadas": 4930,
+  "ajudas_contextuais_acrescentadas_conferidas": [
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "AB637",
+      "campo": "note"
+    },
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "AB241",
+      "campo": "note"
+    },
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "AB835",
+      "campo": "note"
+    },
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "I835",
+      "campo": "note"
+    },
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "I1033",
+      "campo": "note"
+    },
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "I439",
+      "campo": "note"
+    },
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "I241",
+      "campo": "note"
+    },
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "AB439",
+      "campo": "note"
+    },
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "AB1033",
+      "campo": "note"
+    },
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "I637",
+      "campo": "note"
+    },
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "AB43",
+      "campo": "note"
+    },
+    {
+      "aba": "INVOCAÇÕES",
+      "celula": "I43",
+      "campo": "note"
+    }
+  ],
+  "ajuste_temporal_conferido": [
+    {
+      "aba": "CARTEIRA",
+      "celula": "AH3",
+      "campo": "effectiveValue",
+      "motivo": "Fuso nativo alinhado ao manifesto, com fórmula temporal preservada"
+    }
+  ],
+  "diferencas": [],
+  "erros_formula": [],
+  "analise": {
+    "versao": "11",
+    "chaves": 8190,
+    "unicas": 8190,
+    "contrato_ok": true
+  },
+  "snapshot_depois_sha256": "490f1eada0cd34bb90d3ac7c32687e836fbb9267b4cc858742c07decb25eea9e"
+}

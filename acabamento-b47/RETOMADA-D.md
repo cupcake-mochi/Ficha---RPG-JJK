@@ -2,6 +2,8 @@
 
 ## Estado vigente — salvamento pedido por saldo quase esgotado
 
+**Atualização posterior:** leitura final concluída, 72/72 blocos. `CONFERENCIA-FINAL-DESCARTAVEL.json` passou: zero diferenças inesperadas/erros, 8.190 chaves únicas, 4.458 notas e 4.930 validações preservadas. Somente 12 ajudas em notas vazias e a data AH3, ambas estritamente conferidas, diferem do snapshot inicial. Próxima etapa: conferir acionadores e preparar backup/snapshot/releitura atuais da revisão para aplicação D. Os marcadores de leitura parcial abaixo são históricos.
+
 Este bloco prevalece sobre os próximos passos dos checkpoints históricos abaixo. **D continua em andamento e não foi aplicada na revisão.** A descartável D tem 22 abas, fundo canônico corrigido, textos temporários limpos, grupos restaurados exatamente, fuso São Paulo e 35 GS + manifesto relidos iguais. O diagnóstico existente `verTemposDaPaleta` executou com sucesso, sem nova concessão de permissões nem edição de código. `PALETA-NATIVA.json` confirma restauração completa ao Mizuki Escuro: 37/37 passos, quatro execuções da troca, soma de 67.473 ms de passos, 116.604 ms decorridos e carteira completa em 12.561 ms. A dúvida anterior sobre conclusão interna da paleta está resolvida.
 
 `PONTO-EXECUCAO.json` registra a interrupção segura da leitura final: **34 de 72 blocos concluídos**, na pasta privada `d/final/`, seguindo a ordem de `d/plano-depois.json` (os nomes dos arquivos mantêm os índices do plano original e podem ter lacunas). A função de diagnóstico terminou; não há pedido de autorização pendente. Código, dados e grupos estão restaurados; não repetir lotes destrutivos/formatadores na descartável.
