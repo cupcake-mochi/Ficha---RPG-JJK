@@ -1,0 +1,41 @@
+{
+  "data": "2026-10-17",
+  "base_git": "3253f80",
+  "resultado": "APROVADO_NATIVO_E_VM",
+  "regressao": "regressao-amaldicoada.py",
+  "sha256_teste": "b3291be51250118405dd578e5583e5132bf9c5d592c062917395e5e4cb0356b9",
+  "adaptador": "acabamento-b47/regressao-amaldicoada-nativa.py",
+  "planilha": "13qBo5g09Qg9CLGsgwVtCjFYzdiwsNKQkAiVEmcIOm7w",
+  "cenarios_nativos": 20,
+  "respostas_nativas": 80,
+  "verificacoes_totais": 354,
+  "escopo_das_verificacoes": "Inclui cálculos nativos, leitura independente do livro, estrutura local e transporte em VM. Não apresentar as 354 como medições nativas de latência.",
+  "manutencao": {
+    "falhas_anteriores_reproduzidas": 11,
+    "alteracoes": [
+      "Diagnósticos de frequência e duplicata incluem restrição embutida (manual.txt, Toque e Aura; C consumidores.py). Não muda preços/dados/PE.",
+      "Requisitos de aptidão exibem nível/refino, predecessoras, duplicatas e conferências de história previstas no livro/contrato C; requisitos originais preservados.",
+      "Abas comparadas integralmente por nome, preservando a ordem das visíveis; ordem oculta fora do contrato e auxiliar notas_copiadas_ não é conteúdo.",
+      "Menus usam equivalência lexical estrita já testada em migracao.py (318 diferenças eram aspas opcionais).",
+      "Custo global considera somente os novos cartões C além do teto anterior; plano de 297 cópias exigido integralmente."
+    ]
+  },
+  "restauracao": {
+    "entradas": 442,
+    "diferencas": 0,
+    "campos": [
+      "userEnteredValue",
+      "effectiveValue",
+      "note",
+      "dataValidation",
+      "userEnteredFormat"
+    ]
+  },
+  "reuso": "Casos, entradas e faixas comparados exatamente antes de reutilizar as leituras; cache VM exige hash de PROG_JS, GS, simulador e loader iguais.",
+  "evidencias_privadas": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/",
+  "producao_alterada": false,
+  "limites": [
+    "Não é execução do Calc.",
+    "Comparação livro_base de Progressão, medidas/perfil e oficial acompanhada ainda pendentes."
+  ]
+}

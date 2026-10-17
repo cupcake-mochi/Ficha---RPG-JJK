@@ -270,6 +270,15 @@ def monta(f, c, fam, nivel, lib=False, vaga=1):
                "Acerto" if f["forma"] in ("Projétil", "Toque") else "TR, metade" if f["forma"] in POR_TR else "Automático")
     conta_txt = (f"{3 * c} − {gasto} + {usa}" + (f" + {c}" if lib else "") + f" = {dados}d8 · teto {4 * c}" +
                  (f" · a Forma devolve {c}" if emb else "") + (f" · perde {perde}" if perde else ""))
+    # C ampliou os diagnósticos apresentados, sem mudar o orçamento. O livro,
+    # Formas de ataque → Toque e Aura, proíbe repetir Corpo a Corpo embutido;
+    # a contagem de frequência inclui todas as restrições da montagem.
+    # São mensagens adicionais aprovadas em C (consumidores.py), além das
+    # mensagens específicas antigas; o estado conta os diagnósticos exibidos.
+    if emb and 'Corpo a Corpo' in bases:
+        erros.append('Restrição repetida, contando a embutida')
+    if sum(b in FREQUENCIA for b in bases)>1:
+        erros.append('Duas Restrições de frequência, contando a embutida')
     return {"dados": dados, "depois": depois, "gasto": gasto, "usa": usa, "perde": perde, "erros": erros, "avisos": avisos, "pe": pe,
             "acao": acao, "resolve": resolve, "dano": texto_do_dano(f["forma"], dados, depois), "alcance": alcance(f, c),
             "conta": conta_txt, "precos": precos, "devs": devs, "curto": texto_do_dano(f["forma"], dados, curto=True)}
@@ -294,6 +303,39 @@ def carta(f, fam, nivel, lib=False, vaga=1):
             "avisos": " · ".join(x["erros"] + x["avisos"]) or "Dentro das regras que a ficha confere",
             "p1": x["precos"][0], "p2": x["precos"][1], "p3": x["precos"][2], "p4": x["precos"][3], "d1": x["devs"][0], "d2": x["devs"][1],
             "_dados": x["dados"], "_pe": x["pe"], "_erros": ne}
+
+
+def avisos_aptidao_do_livro(nome, requisito, anteriores, nivel, refino, atributos):
+    """Aquisição da fonte impressa; não lê as fórmulas/tabelas do gerador.
+
+    C passou a exibir estes avisos junto do requisito original. Como não há
+    controle de aprendizado/história no cenário, essas condições pedem
+    conferência manual (contrato C; usos.py), sem presumir a concessão.
+    """
+    avisos=[]
+    minimo_n=re.search(r'\bnível (\d+)',requisito,re.I)
+    minimo_r=re.search(r'\b(?:Refino|Lapidação) (\d+)',requisito,re.I)
+    if nivel<(int(minimo_n[1]) if minimo_n else 1):avisos.append('Nível mínimo não atendido')
+    if refino<(int(minimo_r[1]) if minimo_r else 1):avisos.append('Refino/Lapidação mínimo não atendido')
+    grupo=nome.split(' (CE')[0]
+    identidades=[a.split(' (CE')[0] for a in anteriores if a]
+    if grupo in identidades:avisos.append('Aptidão/Bênção repetida')
+    # Requisitos nominais do livro; a aquisição precisa estar acima na lista.
+    predecessoras={'Circulação':'Energia Reversa','Regravação':'Circulação','Cortina':'Barreira Simples'}
+    if grupo in predecessoras and predecessoras[grupo] not in identidades:
+        avisos.append('Exige aquisição anterior: '+predecessoras[grupo])
+    if grupo!='Represália':
+        for atributo,valor in re.findall(r'(Força|Destreza|Constituição|Inteligência|Essência) (\d+)',requisito):
+            if atributos[atributo]<int(valor):avisos.append('Exige '+atributo+' '+valor)
+    historia={'Cesta Oca de Vime':'Conferir Encarnado ou treino em História',
+              'Pétala':'Conferir Descendente ou aprendizado de clã',
+              'Domínio Simples':'Conferir aprendizado de Domínio Simples',
+              'Extensão de Domínio':'Conferir aprendizado de Extensão de Domínio',
+              'Ritual':'Conferir Técnica Inata'}
+    if grupo in historia:avisos.append(historia[grupo])
+    if grupo=='Represália' and max(atributos['Força'],atributos['Destreza'])<4:
+        avisos.append('Exige Força ou Destreza 4')
+    return avisos
 
 
 # ---------------------------------------------------------------------------------------------
@@ -817,6 +859,9 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
             cp = a[-2] if "(CE" in a else base["classe_passiva"]
             esp_a = (f"CE {cp}" if cp.isdigit() else ini(cp), f"Requisito: {base['requisito']}", ini(base["escala"]),
                      base["faz"] + (" Escreva a sua na caixa de baixo." if "(CE" in a else ""))
+            attrs={k:int(float(txt(f[IDX['atr_'+k]].value) or 0)) for k in ('Força','Destreza','Constituição','Inteligência','Essência')}
+            diagnosticos=avisos_aptidao_do_livro(a,base['requisito'],aptidoes[:i],n,ref,attrs)
+            if diagnosticos:esp_a=(esp_a[0],esp_a[1]+' · ⚠ '+' · '.join(diagnosticos),*esp_a[2:])
         lido_a = (v(c["cp"]), v(c["requisito"]), v(c["escala"]), v(c["faz"]))
         if lido_a != esp_a:
             ruins.append(f"aptidão {i + 1} ({a}): {[x[:40] for x in lido_a]} != {[x[:40] for x in esp_a]}")
@@ -1348,15 +1393,22 @@ if M:
         if isinstance(x, list):
             return [_norm(y) for y in x]
         if isinstance(x, dict):
-            return {k: _norm(v) for k, v in x.items() if k != "copias_feitas"}
+            return {k: _norm(v) for k, v in x.items() if k not in ("copias_feitas", "notas_copiadas_")}
         return x
     _do_script = _norm(json.loads(_js.stdout)) if _js.returncode == 0 else []
     _do_gerador = _norm(_eg.abas_do_script("apps-script/Ficha.gs"))
     _cru = _eg.abas_cruas("apps-script/Ficha.gs")
     _n_cru = next(len(a["vals"]) for a in _cru if a["nome"] == ABA)
     _n_cheio = next((len(a["vals"]) for a in _do_script if a["nome"] == ABA), 0)
+    # Complementos podem carregar em ordens distintas (contrato C). Conferir
+    # cada aba inteira por identidade e conservar a ordem das abas visíveis.
+    # A ordem oculta já foi classificada na construção nativa de D.
+    _js_aba={a['nome']:a for a in _do_script};_py_aba={a['nome']:a for a in _do_gerador}
     checa(f"as fileiras copiadas voltam inteiras quando o script carrega ({_n_cru} células escritas viram {_n_cheio}), iguais às que o gerador expande",
-          len(_do_script) == len(_do_gerador) and all(_eg._forma_canonica(a) == _eg._forma_canonica(b) for a, b in zip(_do_script, _do_gerador))
+          len(_do_script)==len(_do_gerador)==len(_js_aba)==len(_py_aba)
+          and set(_js_aba)==set(_py_aba)
+          and all(_eg._forma_canonica(_js_aba[n])==_eg._forma_canonica(_py_aba[n]) for n in _js_aba)
+          and [a['nome'] for a in _do_script if not a.get('oculta')]==[a['nome'] for a in _do_gerador if not a.get('oculta')]
           and _n_cheio > _n_cru)
     mescladas = sorted(f"{m.min_row},{m.min_col},{m.max_row},{m.max_col}" for m in WB0[ABA].merged_cells.ranges)
     checa(f"as {len(mescladas)} mesclagens da aba chegam iguais, com as fileiras de cartas vindo por cópia de formato", am["mesclagens"] == mescladas
@@ -1374,9 +1426,15 @@ if M:
     _mescla_inv = len(_inv.get("merges") or [])
     _copias_inv = (sum(len(k[2]) * len((k[5] if len(k) > 5 else None) or [0]) for k in _inv.get("copias") or [])
                    + sum(len(a.get("abaixo") or []) for a in _cru if a["nome"] == "DADOS_INVOC"))
-    checa(f"a aba nova não triplica a montagem: {n_mescla} chamadas de mesclagem na planilha inteira (eram 310 sem ela; até {_mescla_inv} são da INVOCAÇÕES), "
-          f"{ch.get('Range.copyTo', 0)} cópias ({_copias_ficha} do menu rápido, {_copias_inv} da INVOCAÇÕES)",
-          n_mescla < 700 + _mescla_inv and 0 < _copias_ficha and ch.get("Range.copyTo", 0) < 40 + _copias_ficha + _copias_inv,
+    # O teto antigo considerava só a ficha anterior a C. CONFIGURAÇÃO ganhou
+    # os cartões de C a partir de 1733 (FECHAMENTO-C, FUNDO-CONFIGURACAO).
+    # Acrescentar apenas suas mesclagens declaradas, mantendo o teto anterior
+    # para a Amaldiçoada e o restante. Cópias têm plano exato, incluindo todos
+    # os apoios: 297 nesta versão, e não o antigo subtotal de duas abas.
+    _mescla_c=sum(1 for a in _cru if a['nome']=='CONFIGURAÇÃO' for m in a.get('merges',[]) if m[0]>=1733)
+    _copias_plano=sum(len(a.get('abaixo') or [])+sum(len(k[2])*len((k[5] if len(k)>5 else None) or [0]) for k in a.get('copias') or []) for a in _cru)
+    checa(f"montagem conserva o teto anterior mais {_mescla_c} mesclagens dos novos cartões C, e {_copias_plano} cópias previstas",
+          n_mescla < 700 + _mescla_inv + _mescla_c and 0 < _copias_ficha and ch.get("Range.copyTo", 0)==_copias_plano,
           f"{n_mescla} · {ch.get('Range.copyTo', 0)}")
     menus = {}
     for dv in WB0[ABA].data_validations.dataValidation:
@@ -1385,8 +1443,13 @@ if M:
             for l in range(l1, l2 + 1):
                 for c in range(c1, c2 + 1):
                     menus[f"{l},{c}"] = dv.formula1.replace("$", "")
-    checa(f"os {len(menus)} menus chegam à célula certa com a lista certa, numa gravação só",
-          {k: v.replace("$", "") for k, v in am["menus"].items()} == menus
+    # Sheets omite aspas opcionais em nomes ASCII de abas. Usar a mesma
+    # equivalência lexical estrita já testada na migração, preservando textos.
+    sys.path.insert(0,'capacidade-b47')
+    from migracao import canonical as _canon
+    _menu_canon=lambda v:_canon(v if v.startswith('=') else '='+v.replace('$',''))
+    checa(f"os {len(menus)} menus chegam à célula certa com a lista certa, numa gravação por aba",
+          {k:_menu_canon(v.replace('$','')) for k,v in am['menus'].items()} == {k:_menu_canon(v) for k,v in menus.items()}
           and ch.get("Range.setDataValidations", 0) == sum(1 for a in _cru if a.get("validacao_em_matriz")),      # uma por aba que pede
           f"{len(am['menus'])} montados, {ch.get('Range.setDataValidations', 0)} gravações")
     caixas = sorted(f"{c.row},{c.column}" for linha in WB0[ABA].iter_rows() for c in linha if isinstance(c.value, bool))

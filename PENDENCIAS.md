@@ -1,8 +1,9 @@
 ## Pós-D · regressões no Google · 17/10/2026
 
-Ponto em execução: 20 fichas/80 blocos nativos da Amaldiçoada coletados;
-442 entradas restauradas sem diferenças. Conferência do livro/VM em andamento,
-sem aprovação declarada ainda. Pasta e comando no topo de RETOMADA-D.md.
+Amaldiçoada concluída: 20 fichas/80 blocos nativos, 354 verificações totais
+(dados/livro, estrutura e VM), 442 entradas restauradas sem diferenças.
+As 11 falhas antigas foram reproduzidas e explicadas sem relaxar números.
+Prova `acabamento-b47/REGRESSAO-AMALDICOADA-NATIVA.json`.
 
 Usuário pediu priorizar o cálculo nativo. Ficha Pessoal: 33 cenários e 118
 asserções originais aprovados, entradas restauradas e 39 blocos sem diferenças
@@ -20,7 +21,7 @@ Prova `acabamento-b47/REGRESSAO-CAMPANHA-NATIVA.json`. Custom concluído:
 dez cenários/31 asserções e 27.318 valores anteriores conferidos, zero erros
 ou diferenças inesperadas; Latente permite a marcante publicada e rejeita a
 própria. 185 entradas restauradas exatamente (`REGRESSAO-CUSTOM-NATIVA.json`).
-Restam Amaldiçoada, referência `livro_base` de Progressão, medidas/perfil e
+Restam referência `livro_base` de Progressão, medidas/perfil e
 oficial acompanhada. O risco Latente deixou de estar pendente nativamente.
 
 D permanece concluída; dados do personagem fora do Git.
