@@ -1,0 +1,43 @@
+{
+  "resultado": "OK",
+  "destino": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE",
+  "campos": [
+    "CONFIGURAÇÃO!B1911",
+    "CONFIGURAÇÃO!J1911"
+  ],
+  "alturas": {
+    "antes": [
+      25,
+      25,
+      25,
+      25
+    ],
+    "esquerda": [
+      150,
+      150,
+      150,
+      150
+    ],
+    "ambos": [
+      258,
+      258,
+      258,
+      258
+    ],
+    "so-direita": [
+      258,
+      258,
+      258,
+      258
+    ],
+    "limpos": [
+      25,
+      25,
+      25,
+      25
+    ]
+  },
+  "restauracao_exata": true,
+  "gatilho": "Edições reais pela interface da cópia; sem execução manual/autorização adicional",
+  "limite": "Ensaio nativo dos primeiros cartões de Forma; não equivale a todos os grupos de texto."
+}

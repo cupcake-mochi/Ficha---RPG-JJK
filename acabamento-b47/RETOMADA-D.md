@@ -37,6 +37,16 @@ Bloco visual inicial concluído. Comparação nativa com a construção C (`14Ad
 
 Próximo passo vigente: demais verificações visuais/interações D na cópia `1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE` (carteira/foto/paleta, menus, textos longos e limpeza, grupos, inventário e 12 entidades), bateria final pertinente e cópia/gatilhos/código persistido. Só depois aplicar o conjunto aprovado na revisão com backup/snapshot/releitura novos. A revisão continua sem alterações de D. Canônicos GS/modelo não foram alterados, pois já produzem o fundo correto. Sol/Médio para seguir; registrar impedimentos sem declarar D concluída.
 
+## Checkpoint: textos nativos e regressão de paletas
+
+`TEXTOS-NATIVOS.json`: edições reais na cópia, nos requisitos dos dois primeiros cartões de Forma (`B1911`, `J1911`). Quatro linhas cresceram de 25 para 150 px com 3.368 caracteres à esquerda; para 258 px com 5.081 caracteres à direita; continuaram em 258 px ao limpar a esquerda e voltaram a 25 px ao limpar a direita. Restauração exata de valores/valores efetivos, formatos, notas e validações no bloco `B1911:O1914`. Não há texto temporário nesses campos. Capturas e leituras de todas as fases na pasta privada `d/`. A regressão `node regressao-textos-custom.js nuvem-b47/saidas/cd/combinado-modelo.json` também passou seus sete cenários, com 136 grupos de altura.
+
+`PALETAS-VM.json`: `node regressao-paleta.js` terminou com TODOS PASSARAM, incluindo cores/arte nas 122 paletas, cenários de cópia, troca interrompida e cliques que retomam a troca. É VM com custos históricos simulados, não latência atual nativa.
+
+Teste nativo de paleta na cópia D: seleção real de `Mizuki · Claro · rosa e magenta` alterou a carteira sem autorização/ativação manual; CONFIGURAÇÃO continuou em Mizuki Escuro. O valor original `Mizuki · Escuro · ameixa e rosa` já foi reposto e confirmado por leitura nativa. **Ainda conferir a convergência completa das cores/arte nas outras abas antes de declarar restauração integral da paleta.** Cliques/seleções e edições normais continuam os passos; não é necessário instalar gatilhos. As capturas `carteira-claro.png`, `carteira-escuro.png`, `configuracao-fixa-durante-claro.png`, `ficha-topo.png` e `amaldicoada-topo.png` registram estados intermediários; não usar a captura intermediária clara da FICHA como prova do estado final escuro.
+
+Próxima ação exata: concluir a conferência da restauração da paleta enquanto revisa as abas visíveis, grupo 7, inventário e as 12 entidades/abertura de grupos; falta a aplicação D na revisão. Última aba visualizada: FICHA AMALDIÇOADA, célula A1, zoom 75%, tab IAB 32 (pode não sobreviver ao turno; localizar pelo ID da cópia). Recomendação Sol/Médio para continuar os testes delimitados.
+
 ## Próximos blocos
 
 1. Auditar dependências das quatro abas temporárias: `ESTUDO CAMPANHA`, `ESTUDO CUSTOM`, `ESTUDO 3B`, `ESTUDO 3C`. Confirmar nomes/IDs nativamente; procurar fórmulas, validações, intervalos nomeados, gráficos, regras e scripts. A geração canônica de C já produz 22 abas sem estudos; isso sozinho não prova a ausência de dependências na revisão preenchida.

@@ -1,0 +1,9 @@
+{
+  "resultado": "OK",
+  "comando": "node regressao-paleta.js",
+  "tipo": "VM local, não 122 testes nativos",
+  "assercoes_ok": 51,
+  "paletas": 122,
+  "log_sha256": "a9c02b80c975e0c35b3c40213c2ae63f92784973a670cf989c1378f3c001cb1c",
+  "limites": "Tempos simulados com custos calibrados históricos; não são medida da latência nativa atual. Teste nativo de ida/volta ainda em conferência."
+}
