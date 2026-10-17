@@ -1,4 +1,8 @@
-## C concluída na revisão nativa · parada antes de D · 16/10/2026
+## D autorizada · checkpoint de abertura · 16/10/2026
+
+C está concluída e publicada em `21f1620`. Após esse fechamento, o usuário autorizou D e pediu checkpoints frequentes devido ao saldo de 2% semanal. [Retomada vigente de D](acabamento-b47/RETOMADA-D.md) e [prompt portátil](acabamento-b47/PROMPT-RETOMADA.md). A cópia nativa de D foi criada; o próximo bloco é a auditoria das dependências dos estudos antes de qualquer remoção. A revisão permanece no estado validado de C.
+
+## Histórico: C concluída na revisão nativa · parada antes de D · 16/10/2026
 
 Limite confirmado: concluir somente C e parar antes de D. Construção conjunta
 concluída (22 abas, 35 GS e manifesto relidos iguais); 467.365 células sem erro

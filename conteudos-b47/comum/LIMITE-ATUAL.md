@@ -1,4 +1,8 @@
-# Limite confirmado pelo usuário — somente C
+# Limite vigente — D autorizada após o fechamento de C
+
+Em 16/10/2026, após confirmar o salvamento de C, o usuário autorizou: “vamos para o D”. Pediu checkpoints frequentes por restarem 2% de uso semanal. O limite anterior abaixo fica preservado como histórico de C, superado somente quanto à parada antes de D. Estado e próximos passos em [RETOMADA-D.md](../../acabamento-b47/RETOMADA-D.md). Oficial, bot, main e acessos continuam fora da autorização.
+
+## Histórico do fechamento de C
 
 Em 16/10/2026 o usuário confirmou: concluir somente C e parar antes de D.
 Esta instrução prevalece sobre a sequência C+D dos planos anteriores.
