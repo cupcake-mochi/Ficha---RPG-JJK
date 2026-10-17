@@ -11,8 +11,9 @@ asserções originais aprovados, entradas restauradas e 39 blocos sem diferença
 Windows. Configuração também aprovada nativamente: sete cenários, 529
 asserções mecânicas, somas cobrindo todas as 86 caixas de C e 191 entradas
 restauradas sem diferenças (`REGRESSAO-CONFIGURACAO-NATIVA.json`).
-Progressão: nove cenários/14 asserções e 26 checagens estruturais aprovados,
-comparação calculada `livro_base` histórico ainda pendente. Famílias: todos
+Progressão: nove cenários/15 asserções e 26 checagens estruturais aprovados,
+incluindo `livro_base` histórico nativo dos GS 03a459e, verificado contra a
+fixture compactada, com expansão estrita dos moldes. Famílias: todos
 os 13 cenários/130 resultados e sete checagens estruturais aprovados.
 Entradas restauradas exatamente nas duas frentes. Campanha também concluída:
 12 cenários, 18 asserções e 26.689 valores históricos conferidos; 36 diferenças
@@ -21,8 +22,8 @@ Prova `acabamento-b47/REGRESSAO-CAMPANHA-NATIVA.json`. Custom concluído:
 dez cenários/31 asserções e 27.318 valores anteriores conferidos, zero erros
 ou diferenças inesperadas; Latente permite a marcante publicada e rejeita a
 própria. 185 entradas restauradas exatamente (`REGRESSAO-CUSTOM-NATIVA.json`).
-Restam referência `livro_base` de Progressão, medidas/perfil e
-oficial acompanhada. O risco Latente deixou de estar pendente nativamente.
+Item 3 concluído pelo backend Google. Restam medidas/perfil e oficial
+acompanhada. O risco Latente deixou de estar pendente nativamente.
 
 D permanece concluída; dados do personagem fora do Git.
 Estado vigente no topo de `acabamento-b47/RETOMADA-D.md`.

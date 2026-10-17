@@ -54,8 +54,10 @@ def conferir(folder):
     plan=json.loads((folder/'plano-progressao.json').read_text(encoding='utf-8'))
     assert hashlib.sha256(source.encode()).hexdigest()==plan['sha256_teste']
     results={}
-    for i,case in enumerate(plan['cenarios']):
-        data=json.loads((folder/f'progressao-{i:02}.json').read_text(encoding='utf-8'))
+    files=[(case['nome'],folder/f'progressao-{i:02}.json') for i,case in enumerate(plan['cenarios'])]
+    if (folder/'progressao-historico.json').exists():files.append(('livro_base',folder/'progressao-historico.json'))
+    for name,path in files:
+        data=json.loads(path.read_text(encoding='utf-8'))
         assert not data.get('isError');values={}
         for s in data['structuredContent']['sheets']:
             cells=values.setdefault(s['properties']['title'],{})
@@ -65,7 +67,7 @@ def conferir(folder):
                         v=c.get('effectiveValue',{}); value=v.get('numberValue',v.get('boolValue',v.get('stringValue')))
                         if 'errorValue' in v:value='#'+v['errorValue']['type']
                         cells[helpers['get_column_letter'](col)+str(row)]=value
-        results[case['nome']]=values
+        results[name]=values
     e={'results':results,'fails':[],'per':plan['per'],'off':plan['off']}
     class P: NOME=plan['dados']
     e['p']=P
@@ -74,10 +76,11 @@ def conferir(folder):
     first=next(i for i,n in enumerate(tree.body) if isinstance(n,ast.FunctionDef) and n.name=='get')+1
     last=next(i for i,n in enumerate(tree.body[first:],first) if isinstance(n,ast.Expr)
               and isinstance(n.value,ast.Call) and ast.unparse(n.value.func).endswith('write_text'))
-    # Primeira asserção exige resultados da geração histórica. Mantê-la
-    # pendente separadamente, em vez de inventar valores para esse cenário.
-    exec(compile(ast.Module(body=tree.body[first+1:last],type_ignores=[]),str(SOURCE),'exec'),e)
-    print('PROGRESSÃO NATIVA: '+str(len(e['fails']))+' falhas mecânicas; preservação histórica separada')
+    # A geração histórica é uma referência nativa construída dos GS 03a459e,
+    # verificados contra progressao-base3a.json.gz (moldes expandidos).
+    start=first if 'livro_base' in results else first+1
+    exec(compile(ast.Module(body=tree.body[start:last],type_ignores=[]),str(SOURCE),'exec'),e)
+    print('PROGRESSÃO NATIVA: '+str(len(e['fails']))+' falhas mecânicas; livro_base '+('conferido' if 'livro_base' in results else 'pendente'))
     sys.exit(bool(e['fails']))
 
 

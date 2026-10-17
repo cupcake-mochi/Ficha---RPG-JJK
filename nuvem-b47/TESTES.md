@@ -14,7 +14,12 @@ Ficha Pessoal: 33 cenários/118 verificações. Configuração: sete cenários/5
 verificações mecânicas, incluindo as 86 caixas de C (o laço antigo de somas
 cobria só 50). Entradas restauradas e comparadas também em notas, formatos e
 validações. Provas `REGRESSAO-*-NATIVA.json` em `acabamento-b47/`.
-Demais regressões continuam pendentes no topo de `RETOMADA-D.md`.
+Item 3 concluído pelo backend Google: também Progressão (15 asserções e 26
+estruturais, com referência histórica), Famílias (13 cenários), Campanha e
+Custom (comparações históricas completas; diferenças exatas classificadas),
+Amaldiçoada (20 fichas, 354 verificações de dados/livro, estrutura e VM).
+As receitas e limites estão no topo de `RETOMADA-D.md` e nas respectivas
+provas. Nenhuma aprovação do Google é apresentada como execução do Calc.
 
 | Comando | Escopo e entradas | Limite |
 |---|---|---|

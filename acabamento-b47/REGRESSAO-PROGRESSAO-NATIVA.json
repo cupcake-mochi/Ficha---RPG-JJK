@@ -1,16 +1,16 @@
 {
   "data": "2026-10-17",
   "base_git": "977bd8c",
-  "resultado": "MECANICA_E_ESTRUTURA_APROVADAS_COM_LIMITE_HISTORICO",
+  "resultado": "APROVADO_NATIVO_E_ESTRUTURAL",
   "regressao": "regressao-progressao.py",
   "sha256_teste": "7135e9061f111058e84a8e8e07ba7ad102c09a8f65c7a13084cff085c8f70e87",
   "sha256_pacote": "7df90c2992dadfee29770425d0ce78ed223f04dbb895e7cfa22fb05675a898e4",
   "backend": "Google Sheets",
   "planilha": "13qBo5g09Qg9CLGsgwVtCjFYzdiwsNKQkAiVEmcIOm7w",
   "cenarios": 9,
-  "assercoes_mecanicas": 14,
+  "assercoes_mecanicas": 15,
   "checagens_estruturais": 26,
-  "comparacao_calculada_historica": "Pendente: cenário livro_base não foi substituído por uma cópia da geração atual.",
+  "comparacao_calculada_historica": "Conferida por referência nativa 03a459e; os sete escalares antigos de FICHA/DADOS preservados.",
   "entradas_distintas": 58,
   "restauracao": {
     "diferencas": 0,
@@ -25,6 +25,15 @@
   "evidencias_privadas": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/",
   "limites": [
     "Não é aprovação do Calc.",
-    "Regressões históricas restantes e oficial pendentes."
-  ]
+    "Medidas/perfil e oficial acompanhada pendentes."
+  ],
+  "cenarios_historicos": 1,
+  "origem_historica": {
+    "planilha": "1O3Wn7LNh7H_zjDGOUvUtgW_US-O1YkesrmGTKUJlsJQ",
+    "git_sha": "03a459e272378b3a4674b53ef6d1bd96cabe1d92",
+    "fixture": "ficha-v01/progressao-base3a.json.gz",
+    "diferencas_nao_classificadas": 0,
+    "moldes_compactados_expandidos": 21471,
+    "guarda": "Cada expansão extra exige molde presente na fixture e tradução relativa exata segundo abaixo dos GS dessa mesma revisão."
+  }
 }

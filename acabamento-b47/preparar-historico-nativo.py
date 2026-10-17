@@ -6,6 +6,7 @@ descartável nativa. Não acessa Google nem escreve no checkout histórico.
 """
 import hashlib
 import io
+import gzip
 import json
 from pathlib import Path
 import subprocess
@@ -23,7 +24,8 @@ from migracao import equivalent
 
 def preparar(kind,folder):
     refs={'campanha':('d5a1c38','base-parte1.xlsx'),
-          'custom':('d0427b6','base-parte2-local.xlsx')}
+          'custom':('d0427b6','base-parte2-local.xlsx'),
+          'progressao':('03a459e','progressao-base3a.json.gz')}
     revision,fixture=refs[kind]
     sha=subprocess.check_output(['git','rev-parse',revision],cwd=ROOT,text=True).strip()
     target=(folder/'historicos'/sha).resolve();target.mkdir(parents=True,exist_ok=True)
@@ -53,22 +55,50 @@ def preparar(kind,folder):
                     values[(r,c)]=[r,c,v,*seed[3:]]
         sheet['vals']=list(values.values())
     generated={s['nome']:{L(c)+str(r):v for r,c,v,*_ in s['vals'] if v not in (None,'')} for s in sheets}
-    file=ROOT/'nuvem-b47/fixtures'/fixture
-    wb=load_workbook(file,read_only=False)
-    dif=[]
-    for ws in wb:
-        a={c.coordinate:c.value for c in ws._cells.values() if c.value not in (None,'')}
-        b=generated.get(ws.title,{})
+    file=(ROOT/'ficha-v01'/fixture) if kind=='progressao' else ROOT/'nuvem-b47/fixtures'/fixture
+    if kind=='progressao':
+        frozen=json.loads(gzip.decompress(file.read_bytes()))
+        reference=[]
+        for sheet in frozen:
+            sheet=emitir_gs.expandir(sheet)
+            values={(r,c):v for r,c,v,*_ in sheet['vals']}
+            for r1,c1,r2,c2 in sheet.get('abaixo',[]):
+                for r in range(r1+1,r2+1):
+                    for c in range(c1,c2+1):
+                        v=values.get((r1,c))
+                        if isinstance(v,str) and v.startswith('='):v=Translator(v,origin=L(c)+str(r1)).translate_formula(L(c)+str(r))
+                        values[r,c]=v
+            reference.append((sheet['nome'],{L(c)+str(r):v for (r,c),v in values.items() if v not in (None,'')}))
+    else:
+        wb=load_workbook(file,read_only=False)
+        reference=[(ws.title,{c.coordinate:c.value for c in ws._cells.values() if c.value not in (None,'')}) for ws in wb]
+    dif=[];expansoes=[]
+    native_sheets={s['nome']:s for s in sheets}
+    for name,a in reference:
+        b=generated.get(name,{})
         for c in sorted(set(a)|set(b)):
             x,y=a.get(c),b.get(c)
+            if kind=='progressao' and x is None and y is not None:
+                # A fixture JSON preserva os valores compactados sem `abaixo`.
+                # Aceitar somente a expansão exata de um molde presente na
+                # própria fixture, pelo plano de cópia dos GS da mesma revisão.
+                from openpyxl.utils.cell import coordinate_to_tuple
+                row,column=coordinate_to_tuple(c);expected=None
+                for r1,c1,r2,c2 in native_sheets[name].get('abaixo',[]):
+                    if r1<row<=r2 and c1<=column<=c2:
+                        seed=a.get(L(column)+str(r1))
+                        expected=Translator(seed,origin=L(column)+str(r1)).translate_formula(c) if isinstance(seed,str) and seed.startswith('=') else seed
+                        break
+                if expected is not None and equivalent(emitir_gs._valor(expected),y):
+                    expansoes.append([name,c]);continue
             # Mesma regra de transporte versionada: ArrayFormula, SPARKLINE
             # embrulhada pela exportação Excel e texto numérico com apóstrofo.
-            if not equivalent(emitir_gs._valor(x),y):dif.append([ws.title,c,x,y])
+            if not equivalent(emitir_gs._valor(x),y):dif.append([name,c,x,y])
     model={'referencia':kind,'git_sha':sha,'fixture_sha256':hashlib.sha256(file.read_bytes()).hexdigest(),
-           'diferencas':dif,'abas':sheets}
+           'diferencas':dif,'expansoes_compactadas':expansoes,'abas':sheets}
     (folder/f'historico-{kind}.json').write_text(json.dumps(model,ensure_ascii=False),encoding='utf-8')
     print(json.dumps({'referencia':kind,'git_sha':sha,'abas':len(sheets),'diferencas':len(dif),
-                      'primeiras':dif[:5]},ensure_ascii=False))
+                      'expansoes_de_moldes_da_fixture':len(expansoes),'primeiras':dif[:5]},ensure_ascii=False))
     if dif:sys.exit(1)
 
 
@@ -134,9 +164,10 @@ def restaurar(kind,folder):
 
 
 def delta(kind,folder):
-    assert kind=='custom'
+    assert kind in ('custom','progressao')
     model=json.loads((folder/f'historico-{kind}.json').read_text(encoding='utf-8'))
-    before=json.loads((folder/'historico-campanha.json').read_text(encoding='utf-8'))
+    base='campanha' if kind=='custom' else 'custom'
+    before=json.loads((folder/f'historico-{base}.json').read_text(encoding='utf-8'))
     meta=json.loads((folder/f'historico-{kind}-metadata.json').read_text(encoding='utf-8'))
     assert not model['diferencas'] and not before['diferencas']
     assert meta['properties']['title'].startswith('TESTE DESCARTÁVEL B47 — referência histórica')
@@ -146,7 +177,9 @@ def delta(kind,folder):
     changed=[]
     for s in model['abas']:
         if s['nome']=='ANALISE':continue
-        new={(r,c):v for r,c,v,*_ in s['vals'] if v not in (None,'')};prior=old[s['nome']]
+        new={(r,c):v for r,c,v,*_ in s['vals'] if v not in (None,'')};prior=old.get(s['nome'],{})
+        if s['nome'] not in old:
+            requests.append({'repeatCell':{'range':{'sheetId':ids[s['nome']]},'cell':{},'fields':'userEnteredValue'}})
         for r,c in sorted(set(new)|set(prior)):
             v=new.get((r,c))
             if equivalent(v,prior.get((r,c))):continue
@@ -166,7 +199,7 @@ def delta(kind,folder):
     destination=folder/f'historico-{kind}-lotes';destination.mkdir(exist_ok=True)
     for i,batch in enumerate(batches):
         (destination/f'{i:03}.json').write_text(json.dumps({'spreadsheet_id':meta['spreadsheetId'],'requests':batch},ensure_ascii=False),encoding='utf-8')
-    summary={'origem':'delta GS versionado, aplicado em cópia da referência campanha restaurada',
+    summary={'origem':f'delta GS versionado, aplicado em cópia da referência {base} restaurada',
              'referencia':model['git_sha'],'base':before['git_sha'],'planilha':meta['spreadsheetId'],
              'diferencas_fixture':0,'lotes':len(batches),'celulas_alteradas':changed}
     (folder/f'historico-{kind}-plano.json').write_text(json.dumps(summary,ensure_ascii=False),encoding='utf-8')

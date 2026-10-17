@@ -1,4 +1,4 @@
-# B47 — ponto vigente, Amaldiçoada concluída · 17/10/2026
+# B47 — ponto vigente, item 3 concluído · 17/10/2026
 
 Este bloco prevalece sobre o histórico. Base recebida `66012e0`; D concluída.
 Git, Sheets leitura/escrita e editor Apps Script disponíveis; LibreOffice não
@@ -34,9 +34,17 @@ XLSX: Campanha `1nuBAQIUCFvuzIb7cMc0RXiBd5wUT4AjB93eTkL2q9GA`; Custom
 `1ujvsFJTqCAYkMkdyZtU2N6t0jiXg_gcA3Y_ae2zMS4k`. A Custom histórica está com as
 entradas do cenário base; restaurar pelo modelo correspondente antes de copiar.
 
-Depois: fechar a comparação `livro_base` de Progressão (9
-cenários/14 asserções e 26 checagens estruturais já passaram), medidas/perfil
-do item 2 e oficial somente em janela sem cópias combinada com usuário presente,
+**Progressão inteiramente fechada:** referência `livro_base` nativa dos GS
+`03a459e`, conferida contra `progressao-base3a.json.gz`. A fixture guarda os
+valores compactados; 21.471 células extras foram aceitas SOMENTE como tradução
+relativa exata de moldes presentes nela, pelo plano `abaixo` da mesma revisão.
+Zero diferenças sem explicação. Referência nativa
+`1O3Wn7LNh7H_zjDGOUvUtgW_US-O1YkesrmGTKUJlsJQ`. Os sete valores escalares
+anteriores ficaram iguais; total 15 asserções mecânicas/26 estruturais.
+Não confundir essa referência antiga com a geração atual vazia.
+
+**Próxima etapa:** medidas/perfil do item 2. Depois, oficial somente em
+janela sem cópias combinada com usuário presente,
 pelo ROTEIRO-OFICIAL-B47.md. Não construir/continuar na revisão preenchida.
 Próxima ação recomendada: Sol/Médio para conferir diferenças delimitadas.
 
