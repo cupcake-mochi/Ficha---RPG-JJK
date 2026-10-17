@@ -19,6 +19,16 @@ As leituras completas, com dados privados, estão em `D:/JJK - Project/B47/evide
 
 Próxima ação exata: backup nativo da cópia D, releitura para confirmar o snapshot, remoção apenas dos quatro estudos na cópia D, comparação integral de fórmulas/entradas/notas/validações e resultados preservados, ANALISE com 8.190 chaves. Não remover estudos da revisão antes desse ensaio. Sol/Médio é suficiente para esse procedimento delimitado.
 
+## Checkpoint: retirada ensaiada na descartável
+
+Bloco acima concluído. Backup nativo da descartável antes da retirada: `1BbJDVUD3TV4o-YU1gH_E3R8wGCZcPMZwIw49wxljXLg`. A releitura integral dos 76 blocos não apresentou diferenças (`RELEITURA-ESTUDOS.json`). Foram retiradas somente as quatro abas de estudo na cópia D, que agora tem 22 abas; não repetir os pedidos `deleteSheet` nessa cópia.
+
+Comparação pós-retirada: 72 blocos, 107.367 células com conteúdo/metadados preservados, 4.458 notas anteriores e 4.930 validações preservadas; valores efetivos e fórmulas iguais, zero erros, ANALISE 11 com 8.190 chaves únicas. A comparação estrita (`ENSAIO-RETIRADA-ESTUDOS.json`) detectou 12 notas novas nos seletores de tipo das entidades, antes vazios. Cada uma foi conferida como idêntica à ajuda calculada em `DADOS_ENTIDADES`, na coluna/linha de `notas_contextuais` do spec canônico. Não foi comprovado qual evento acionou a atualização. A prova classificada (`ENSAIO-RETIRADA-ESTUDOS-CLASSIFICADO.json`) aceita somente esses acréscimos em notas vazias; nenhuma nota manual foi ignorada ou perdida. Os seis testes de classificação de referências indiretas passaram.
+
+Dados/recibos privados: pasta `d/antes`, `d/releitura`, `d/depois`, planos e `recibo-retirada.json` sob o diretório de evidências de abertura. Não publicar dados do personagem. **A revisão continua com 26 abas no fechamento C; ainda não recebeu a retirada.**
+
+Próxima ação vigente: revisão visual da descartável e auditoria do fundo/fonte dos espaços novos de CONFIGURAÇÃO contra a construção canônica C; depois demais testes D. A aplicação final na revisão continua exigindo backup/snapshot/releitura novos. Sol/Médio para a conferência visual e correções delimitadas.
+
 ## Próximos blocos
 
 1. Auditar dependências das quatro abas temporárias: `ESTUDO CAMPANHA`, `ESTUDO CUSTOM`, `ESTUDO 3B`, `ESTUDO 3C`. Confirmar nomes/IDs nativamente; procurar fórmulas, validações, intervalos nomeados, gráficos, regras e scripts. A geração canônica de C já produz 22 abas sem estudos; isso sozinho não prova a ausência de dependências na revisão preenchida.

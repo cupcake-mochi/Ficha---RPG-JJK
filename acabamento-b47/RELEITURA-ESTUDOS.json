@@ -1,0 +1,27 @@
+{
+  "resultado": "OK",
+  "destino": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE",
+  "fase": "releitura",
+  "abas": 26,
+  "estudos_retirados": [],
+  "campos_conferidos": [
+    "userEnteredValue",
+    "effectiveValue",
+    "note",
+    "dataValidation",
+    "hyperlink",
+    "textFormatRuns"
+  ],
+  "celulas_preservadas": 109008,
+  "notas_preservadas": 5342,
+  "validacoes_preservadas": 5192,
+  "diferencas": [],
+  "erros_formula": [],
+  "analise": {
+    "versao": "11",
+    "chaves": 8190,
+    "unicas": 8190,
+    "contrato_ok": true
+  },
+  "snapshot_depois_sha256": "07d7e6f04142e06609c2a786035db6afab203c953682137eaf4990f5f77c93d7"
+}
