@@ -1,4 +1,14 @@
-## Pós-D · regressões no Google · 17/10/2026
+## Pós-D · itens 3 e 2 concluídos · 17/10/2026
+
+Testes antigos concluídos no Google (detalhes abaixo). Medidas/perfil fechados
+em `acabamento-b47/MEDIDAS-POS-D.md`/`.json`: onOpen 7,767 s, edição de texto
+10,124 s, expansão 10,011 s; cópia restaurada inclusive alturas/grupos. VM e
+histórico separados. Produção GS intacta. B84 é otimização futura delimitada;
+carregamento sob demanda não foi implementado nesta retomada.
+Resta a oficial pelo roteiro com usuário presente e janela sem cópias combinada.
+Sol/Médio para publicação; esforço maior se aparecer divergência.
+
+## Histórico desta retomada · regressões no Google · 17/10/2026
 
 Amaldiçoada concluída: 20 fichas/80 blocos nativos, 354 verificações totais
 (dados/livro, estrutura e VM), 442 entradas restauradas sem diferenças.

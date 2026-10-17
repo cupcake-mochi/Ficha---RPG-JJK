@@ -75,13 +75,13 @@ Os 25 cartões compartilhados da 3a e os cadastros de um Caminho/uma Trilha fica
 - [x] Resolver e documentar a versão do contrato ANALISE: chaves mantidas/descontinuadas, fontes e leitor. Não reaproveitar uma chave com outro sentido. A retirada de vagas afeta o contrato; não manter milhares de exportações vazias por inércia nem removê-las silenciosamente. (Local; ver relatório.)
 - [x] Ajustar testes à capacidade nova, preservando casos negativos, herança, nomes literais, primeira/última vaga, reutilização e integridade da migração. (Local; ver relatório.)
 - [x] Aplicar migração pontual na cópia de revisão somente depois de validar em descartável e confirmar acesso. (16/10: migração C na revisão, ver `conteudos-b47/comum/MIGRACAO-C-REVISAO.json`.)
-- [ ] Medir antes/depois: linhas, fórmulas, tamanho dos arquivos e tempos de carregamento/edição e de construção disponíveis. Separar medida nativa de simulação.
+- [x] Medir antes/depois: linhas, fórmulas, tamanho dos arquivos e tempos disponíveis. Pós-D: `acabamento-b47/MEDIDAS-POS-D.md`; contagens atuais/históricas, gatilhos Google e VM separados; construção nativa de 821 s reutilizada. Sem baseline nativa v9 ou latência isolada de persistência inventadas.
 - [x] Registrar resultados parciais e delimitar B restante: código vinculado, testes visuais/gatilhos e medidas nativas. Pacote REST reduzido de 260/116.025 para 102/20.058 lotes/pedidos, com equivalência provada; ver NATIVO-PARCIAL.md. Não estimar tempo Apps Script por resultados VM/API.
 
 ## B — gargalos restantes e fluxo de trabalho
 
-- [ ] Perfilar o que resta lento após A: inicialização, edição, seleção, expansão de texto, montagem e persistência.
-- [ ] Evitar preparar estruturas de construção em operações pequenas quando isso não for necessário; conservar as funções da ficha e a cópia sem ativação.
+- [x] Perfilar o que resta lento após A: abertura, edição, seleção/expansão medidas na cópia funcional; montagem nativa D reutilizada, persistência confirmada sem tempo isolado. `acabamento-b47/MEDIDAS-POS-D.md`.
+- [ ] Otimização futura B84: evitar integralmente preparar estruturas de construção em operações pequenas. Perfil concluído; inicialização global ainda expande ABAS. Guardas/idempotência/quatro leituras de Range já existem. Carregamento sob demanda não implementado nem demonstrado necessário à entrega atual; fica fora do item 2 de medidas desta retomada.
 - [x] Avaliar método oficial de envio: infra integrada com manifesto/hashes, snapshot remoto, retirada explícita e conferência posterior. Fluxo offline testado; envio Apps Script real ainda pendente por falta de ferramenta/autenticação compatível.
 - [x] Verificar ferramentas, escopos e autenticação disponíveis separadamente. Drive/Sheets funcionaram; Apps Script/navegador não estão expostos neste ambiente. Não presumir que a conexão Drive fornece esse acesso.
 - [x] Delimitar a investigação e registrar dependência/caminho funcional em NATIVO-PARCIAL.md e ROTEIRO-NATIVO.md, sem contornar rede/credenciais nem depender do PC.

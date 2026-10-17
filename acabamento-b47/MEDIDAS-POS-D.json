@@ -1,0 +1,131 @@
+{
+  "resultado": "MEDIDAS_E_PERFIL_CONCLUIDOS",
+  "data": "2026-10-17",
+  "base_codigo": "c3104a17824781faf0964d8cb0359573439ba94f",
+  "modelo_sha256": "7df90c2992dadfee29770425d0ce78ed223f04dbb895e7cfa22fb05675a898e4",
+  "alteracao_producao": false,
+  "oficial_alterada": false,
+  "medidas_locais": {
+    "gs_arquivos": 35,
+    "gs_bytes": 7068792,
+    "maior_gs": {
+      "nome": "Configuracao.gs",
+      "bytes": 840243,
+      "sha256": "8929b87d8c0f59d605b2c2f3aaef4ec43c9b9856a69b8e11be097b686bd21457"
+    },
+    "xlsx_bytes": 1995733,
+    "configuracao": {
+      "linhas_declaradas": 2810,
+      "alturas_declaradas": 2812,
+      "formulas_modelo": 680,
+      "menus_modelo": 815,
+      "notas_modelo": 3995,
+      "grupos_texto": 136
+    },
+    "vm_carregamento_mediana_ms": 460.7962,
+    "vm_carregamento_amostras_ms": [
+      576.877,
+      420.63829999999996,
+      375.72659999999996,
+      460.7962,
+      637.0148999999999
+    ],
+    "vm_texto": {
+      "tipo": "simulação VM; CPU, sem latência de serviços",
+      "grupos": 136,
+      "amostras": 100,
+      "mediana_ms": 0.6620500000000078,
+      "p95_ms": 0.8053999999999917,
+      "leituras_range": 4
+    },
+    "node": "v24.19.0",
+    "python": "3.12.14"
+  },
+  "medidas_nativas": {
+    "copia": "1_1oBYdoci0j-B5LSfYp6UPLpnQB5vNxEOJafx-FRHqw",
+    "script": "11TDlkSZJd7yCn7Iqm1e6EJEXt-BvBcXpJ160R4l9qhoDHLjhqhxckitL",
+    "code_sha256": "f77b39db507c705b5d48ebe8103656f440967336b659b17df0927d6b5aa256de",
+    "fonte_codigo": "NATIVO-CODIGO-REVISAO-D.json, publicacao_notas_copia; nenhum código modificado nesta retomada",
+    "abas": 22,
+    "linhas_grade": 14505,
+    "celulas_grade": 467511,
+    "configuracao_linhas_grade": 2812,
+    "drive_size_bytes": {
+      "revisao": 1299538,
+      "construcao": 1111362,
+      "copia_antes": 1297576
+    },
+    "drive_size_limite": "Campo size devolvido pelo Drive; não equivale ao XLSX local nem ao custo de memória.",
+    "onOpen_s": 7.767,
+    "onEdit_texto_2464_caracteres_s": 10.124,
+    "onEdit_limpeza_s": 7.908,
+    "onSelectionChange_comum_s": [
+      4.434,
+      6.109,
+      3.913,
+      4.548,
+      4.696
+    ],
+    "onSelectionChange_expandir_linha_e_coluna_s": 10.011,
+    "interface_abertura_chamada_ms": 2959,
+    "interface_commit_chamada_ms": 317,
+    "persistencia": "Status salvo observado depois; releitura confirmou entrada. Sem estimativa isolada de latência de persistência.",
+    "expansao_texto": {
+      "antes_px": [
+        25,
+        25,
+        25
+      ],
+      "longo_px": [
+        140,
+        140,
+        140
+      ],
+      "limpeza_px": [
+        21,
+        21,
+        21
+      ],
+      "restaurado_px": [
+        25,
+        25,
+        25
+      ]
+    },
+    "restauracao": {
+      "valores_efetivos_notas_formatos_validacoes": "iguais em B769:O771",
+      "alturas": "iguais às três alturas capturadas",
+      "grupos_invocacoes": "todos iguais ao snapshot anterior"
+    },
+    "horas_inicio_interface": {
+      "onOpen": "20:22:11",
+      "texto": "20:22:55",
+      "limpeza": "20:24:02",
+      "expansao": "20:24:52"
+    },
+    "limite_amostras": "Uma abertura, duas edições e uma expansão dirigida. Observação, não benchmark estatístico."
+  },
+  "medidas_nativas_reutilizadas": {
+    "fonte": "CONSTRUCAO-D.json; FOTO-REVISAO-POS-FUNDO.json",
+    "construcao_s": [
+      177,
+      190,
+      141,
+      313
+    ],
+    "total_s": 821,
+    "falha_transitoria_excluida_s": 44,
+    "formulas_exportacao_xlsx_nativa": 66242,
+    "analise_chaves": 8190,
+    "notas": 4470,
+    "nota": "Contagens da exportação nativa auditada em D; não reexecutadas nem chamadas contagens CellData atuais."
+  },
+  "perfil": {
+    "observado": "CPU VM subsegundo de carga e submilissegundo de texto; gatilhos nativos levam segundos.",
+    "inferencia": "Latência Google, serviços e execução global continuam candidatos; não atribuir percentuais sem instrumentação nativa por trecho.",
+    "B84": "A inicialização global ainda materializa/expande ABAS. Guardas de geração, cópias idempotentes, limite de quatro leituras de Range e retorno de paleta sem pendência já existem. Lazy loading integral é melhoria futura, não implementação realizada nesta rodada."
+  },
+  "evidencias_privadas": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/perfil-*; entradas com personagem fora do Git",
+  "reproducao": "python acabamento-b47/medir-pos-d.py --modelo nuvem-b47/saidas/progressao-em-integracao.json --saida <pasta-privada>",
+  "proxima_etapa": "Oficial pelo roteiro, somente com usuário presente e janela sem cópias combinada. Sol/Médio para publicação mecânica; aumentar esforço se surgir divergência."
+}

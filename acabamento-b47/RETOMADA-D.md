@@ -1,4 +1,4 @@
-# B47 — ponto vigente, item 3 concluído · 17/10/2026
+# B47 — ponto vigente, itens 3 e 2 concluídos · 17/10/2026
 
 Este bloco prevalece sobre o histórico. Base recebida `66012e0`; D concluída.
 Git, Sheets leitura/escrita e editor Apps Script disponíveis; LibreOffice não
@@ -43,7 +43,16 @@ Zero diferenças sem explicação. Referência nativa
 anteriores ficaram iguais; total 15 asserções mecânicas/26 estruturais.
 Não confundir essa referência antiga com a geração atual vazia.
 
-**Próxima etapa:** medidas/perfil do item 2. Depois, oficial somente em
+**Item 2 concluído:** `MEDIDAS-POS-D.md`/`.json`. Nativo na cópia funcional:
+onOpen 7,767 s; texto 10,124 s; limpeza 7,908 s; expansão de invocação 10,011 s.
+Entradas/notas/validações/formatos, alturas e grupos restaurados e relidos.
+35 GS/7.068.792 bytes, maior 840.243; XLSX local 1.995.733 bytes. VM Windows
+460,796 ms de carga, 0,662 ms texto; separado do Google e histórico Linux.
+Construção de 821 s reutilizada, sem refazer. B84 (carregamento sob demanda
+integral) fica como otimização futura delimitada, não implementada nem
+necessária demonstrada para a entrega atual. Nenhuma mudança de produção.
+
+**Próxima etapa:** oficial somente em
 janela sem cópias combinada com usuário presente,
 pelo ROTEIRO-OFICIAL-B47.md. Não construir/continuar na revisão preenchida.
 Próxima ação recomendada: Sol/Médio para conferir diferenças delimitadas.
