@@ -1,4 +1,42 @@
-# B47 — retomada com cálculo Google · 17/10/2026
+# B47 — ponto vigente, Amaldiçoada em conferência · 17/10/2026
+
+Este bloco prevalece sobre o histórico. Base recebida `66012e0`; D concluída.
+Git, Sheets leitura/escrita e editor Apps Script disponíveis; LibreOffice não
+localizado neste Windows. Usuário pediu priorizar os cenários no Google.
+Nenhuma produção GS, revisão preenchida ou oficial foi alterada nesta retomada.
+
+Item 3 concluído nativamente: Ficha Pessoal (33 cenários/118 asserções),
+Configuração (7/529, todas as 86 caixas), Famílias (13 cenários/130 resultados),
+Campanha (12 atuais + referência antiga, 18 asserções/26.689 valores) e Custom
+(10 atuais + referência antiga, 31 asserções/27.318 valores). Respectivas
+provas `REGRESSAO-*-NATIVA.json`. Todas as entradas restauradas sem diferenças.
+Campanha/Custom: lista inteira das 36 diferenças impressa antes de aceitar
+24 rótulos exatos de C e conferir 12 cabeçalhos no novo endereço aprovado;
+zero números dispensados, zero erros. Latente passou: própria rejeitada,
+publicada aceita; nenhum defeito de produção foi reproduzido nesse caso.
+
+**Em andamento:** `regressao-amaldicoada-nativa.py conferir` na pasta privada
+`D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/`. As 20 fichas já têm 80
+respostas nativas (`amaldicoada-00-00.json`…`amaldicoada-19-03.json`). 442
+entradas restauradas; `amaldicoada-antes.json`/`depois.json` idênticos em
+valores, efetivos, notas, validações e formatos. O teste original ainda não
+foi declarado aprovado. Conferência e VM escrevem `amaldicoada-resultado.txt`.
+O adaptador libera as cópias calculadas antes de iniciar o Node e só reutiliza
+cache VM se PROG_JS, GS e simulador/loader tiverem hashes iguais.
+
+Descartável atual: `13qBo5g09Qg9CLGsgwVtCjFYzdiwsNKQkAiVEmcIOm7w` (da construção
+final, sem personagem da revisão). Referências históricas por GS, sem importar
+XLSX: Campanha `1nuBAQIUCFvuzIb7cMc0RXiBd5wUT4AjB93eTkL2q9GA`; Custom
+`1ujvsFJTqCAYkMkdyZtU2N6t0jiXg_gcA3Y_ae2zMS4k`. A Custom histórica está com as
+entradas do cenário base; restaurar pelo modelo correspondente antes de copiar.
+
+Depois: fechar a Amaldiçoada, a comparação `livro_base` de Progressão (9
+cenários/14 asserções e 26 checagens estruturais já passaram), medidas/perfil
+do item 2 e oficial somente em janela sem cópias combinada com usuário presente,
+pelo ROTEIRO-OFICIAL-B47.md. Não construir/continuar na revisão preenchida.
+Próxima ação recomendada: Sol/Médio para conferir diferenças delimitadas.
+
+# Histórico — retomada com cálculo Google · 17/10/2026
 
 Este bloco prevalece sobre o histórico. Base recebida `66012e0`, D concluída.
 O usuário pediu priorizar Google Sheets pelo custo do LibreOffice.

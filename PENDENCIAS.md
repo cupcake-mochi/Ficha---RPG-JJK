@@ -1,5 +1,9 @@
 ## Pós-D · regressões no Google · 17/10/2026
 
+Ponto em execução: 20 fichas/80 blocos nativos da Amaldiçoada coletados;
+442 entradas restauradas sem diferenças. Conferência do livro/VM em andamento,
+sem aprovação declarada ainda. Pasta e comando no topo de RETOMADA-D.md.
+
 Usuário pediu priorizar o cálculo nativo. Ficha Pessoal: 33 cenários e 118
 asserções originais aprovados, entradas restauradas e 39 blocos sem diferenças
 (`acabamento-b47/REGRESSAO-PESSOAL-NATIVA.json`). Calc não executado neste
@@ -19,9 +23,7 @@ própria. 185 entradas restauradas exatamente (`REGRESSAO-CUSTOM-NATIVA.json`).
 Restam Amaldiçoada, referência `livro_base` de Progressão, medidas/perfil e
 oficial acompanhada. O risco Latente deixou de estar pendente nativamente.
 
-Histórico desta retomada: Custom
-(Latente ainda a investigar) e amaldiçoada pendentes, seguidas de medidas e
-oficial acompanhada. D permanece concluída; dados do personagem fora do Git.
+D permanece concluída; dados do personagem fora do Git.
 Estado vigente no topo de `acabamento-b47/RETOMADA-D.md`.
 
 ## B47 · parada para troca de chat · 17/10/2026, noite
