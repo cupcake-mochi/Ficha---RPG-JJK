@@ -4,7 +4,32 @@
   "janela_confirmada_usuario": "Estou no PC; podemos atualizar agora, sem cópias nesse intervalo.",
   "inicio_preparacao_utc": "2026-10-17 23:31:25 UTC",
   "inicio_construcao_utc": "2026-10-17 23:43:35 UTC",
-  "execucoes": [{"funcao":"construir","inicio":"23:43:35Z","fim":"23:43:54Z","resultado":"Tempo limite serviço Planilhas em montar_ linha 1109; abas antigas preservadas na releitura."},{"funcao":"construir","inicio":"23:44:38Z","fim":"23:44:49Z","resultado":"Falha serviço em criarAba_ linha 1260; releitura confirmou apenas __montando__."},{"funcao":"construir","inicio":"23:45:24Z","resultado":"EM_EXECUCAO"}],
+  "execucoes": [
+    {
+      "funcao": "construir",
+      "inicio": "23:43:35Z",
+      "fim": "23:43:54Z",
+      "resultado": "Tempo limite serviço Planilhas em montar_ linha 1109; abas antigas preservadas na releitura."
+    },
+    {
+      "funcao": "construir",
+      "inicio": "23:44:38Z",
+      "fim": "23:44:49Z",
+      "resultado": "Falha serviço em criarAba_ linha 1260; releitura confirmou apenas __montando__."
+    },
+    {
+      "funcao": "construir",
+      "inicio": "23:45:24Z",
+      "resultado": "TEMPO_LIMITE_6_MINUTOS_DURANTE_CRIACAO_ABAS",
+      "duracao_servidor_s": 360.921
+    },
+    {
+      "funcao": "construir",
+      "inicio_log": "23:53:27Z",
+      "resultado": "EM_EXECUCAO",
+      "condicao": "Visualização da planilha fechada; somente editor aberto."
+    }
+  ],
   "oficial": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
   "script": "1sZTcHm1yNz8x7sVs5WaRj1pX8qbac-kglUDIdDTFLh_iqvHwzF6sqXff",
   "backup": {
@@ -257,5 +282,6 @@
     "sha256": "e9a32bf3debba84518c83480a5251be10108cf31fe133fb3e3c0ee21a75bd8d4"
   },
   "pasta_privada": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/",
-  "modelo_recomendado": "Sol/Médio para acompanhar execuções; aumentar se houver divergência."
+  "modelo_recomendado": "Sol/Médio para acompanhar execuções; aumentar se houver divergência.",
+  "limitacao_identificada": "Criação de todas as abas precede as guardas de tempo do preenchimento. Não há retomada dessa criação no transporte vigente."
 }
