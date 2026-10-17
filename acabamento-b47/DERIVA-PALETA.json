@@ -1,5 +1,5 @@
 {
- "resultado": "CAUSA_REPRODUZIDA_CORRECAO_PROPOSTA_NAO_APLICADA",
+ "resultado": "CAUSA_REPRODUZIDA_CORRECAO_APLICADA",
  "data": "2026-10-17",
  "observado_nativo": {
   "descartavel": "FICHA!A147:AX436, 4.878 células com fonte #F1BFD6 (texto_fraco Escuro) onde a revisão tem #FBE4EF; releitura nativa de A147 confirma (revisão FBE4EF, descartável F1BFD6).",
@@ -19,9 +19,19 @@
   "ideia": "propriedade paleta_base gravada uma vez, na primeira troca, com a paleta pintada (paleta_atual || dica || PALETA_INICIAL_); passo sem registro usa a base como antes.",
   "regressao_paleta_js": "51 ok, TODOS PASSARAM (original: 51 ok). Uma primeira versão que preenchia paleta_feito quebrava a medição do teste 6 e foi descartada sem mudar o teste.",
   "reproducao_com_correcao": "sem F1BFD6 nos seis cenários.",
-  "aplicada": false,
-  "motivo": "mudar Codigo.gs muda os 35 GS canônicos e exige republicar no projeto da revisão; decisão do usuário."
+  "aplicada": true,
+  "motivo": "Aplicada a pedido do usuário em apps-script/Codigo.gs e publicada no projeto da revisão (ver NATIVO-CODIGO-REVISAO-D.json)."
  },
  "revisao_afetada": false,
- "acao_na_descartavel": "nenhuma; descartável não foi repintada nem corrigida."
+ "acao_na_descartavel": "nenhuma; descartável não foi repintada nem corrigida.",
+ "bateria_pos_aplicacao": {
+  "regressao-paleta.js": "51 ok, TODOS PASSARAM",
+  "regressao-arte.js": "74 checagens, 9 imagens",
+  "regressao-construir.js": "construir() monta a planilha inteira e ela funciona",
+  "regressao-delta.js": "saída 0",
+  "testar-notas-contextuais.js": "OK, 9 checagens",
+  "regressao-pessoal.js": "falha idêntica com o código original (simulador sem getNotes): pré-existente",
+  "testar-carregamento.js": "falha idêntica com o código original (exige caminho como argumento): pré-existente"
+ },
+ "descartavel": "Não repintada: guarda o estado da deriva como evidência. A correção está só na revisão e no repositório; a ficha oficial não foi tocada."
 }

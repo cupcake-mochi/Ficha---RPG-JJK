@@ -11,7 +11,7 @@
    "Analise": "aa8bb8b9a35a9f33ee38da65055c39159ab2ec1293a7331307b1bdd9e4ae62f8",
    "AnaliseFontes": "bab8fbcdcf5cc38327f5f8d99f15e1d60ff17cf7cd78cd82693c4b1a335da901",
    "AptidoesPersonagem": "f817148cbaa5410fc7fed4fa849a8e9f7e12ddc1936259608ff6339c9dbd1cd3",
-   "Codigo": "06f14ddffdb7e9a773cd411d87ff176cefe138c1354114ac3fd2c79b31ca8b09",
+   "Codigo": "6aa4e2ba8a236c70065e49a6b637ece084062d69da82e2bdde57a81fa70d22b5",
    "Configuracao": "8929b87d8c0f59d605b2c2f3aaef4ec43c9b9856a69b8e11be097b686bd21457",
    "Criacao": "59263150a9babcc4cf0a8906690b0e6dae46874a8b42dd06cc0255705288bf4e",
    "CriacaoAnalise": "067e0a2fa2b31184ef84d48855e7b9773dc50aff5b29f3aa3fededff42348a61",
@@ -73,5 +73,20 @@
   "hoje": "0%",
   "ultima": "10:57"
  },
- "permissoes_novas_concedidas": false
+ "permissoes_novas_concedidas": false,
+ "publicacao_paleta_base": {
+  "data": "2026-10-17",
+  "arquivo": "Codigo.gs",
+  "sha256_antes": "06f14ddffdb7e9a773cd411d87ff176cefe138c1354114ac3fd2c79b31ca8b09",
+  "sha256_depois": "6aa4e2ba8a236c70065e49a6b637ece084062d69da82e2bdde57a81fa70d22b5",
+  "metodo": "Quatro edições pontuais do PATCH-PALETA-BASE.diff (mais VERSAO_PALETA_ = 17/10/2026-paleta-base) no editor do projeto vinculado, hash conferido igual ao arquivo local antes de salvar; salvamento confirmado (RPC 200, botão desabilitado). A primeira tentativa foi interrompida por navegação antes da resposta e não gravou: releitura mostrou o hash antigo, e a edição foi refeita.",
+  "releitura_apos_recarregar": {
+   "arquivos": 36,
+   "iguais": 36,
+   "gs_iguais_ao_repositorio": 35,
+   "manifesto_igual_prova_C": true
+  },
+  "smoke": "Abertura da revisão no navegador: onOpen 11:31:18 Concluído em 10,7 s, sem pedido de autorização.",
+  "permissoes_novas_concedidas": false
+ }
 }

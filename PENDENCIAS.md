@@ -1,3 +1,7 @@
+## D · CONCLUÍDA na revisão · 17/10/2026
+
+Fundo de CONFIGURAÇÃO aplicado e provado nativamente; 12 ajudas mantidas; deriva de paleta corrigida (`paleta_base` em `Codigo.gs`, bateria pertinente aprovada, publicado e relido 36/36 no projeto da revisão); auditoria final da planilha inteira sem diferenças. Fora de D: `INVOCAÇÕES!S58` sem causa conhecida, dois testes com falha antiga, promoção da revisão a decidir. [Fechamento](acabamento-b47/RETOMADA-D.md).
+
 ## D · aplicada na revisão e auditada · 17/10/2026, noite
 
 Fundo de CONFIGURAÇÃO aplicado na revisão por `repeatCell` com guarda e releitura nativas (conector Sheets): faixa idêntica à descartável, zero mudança fora das 3.988 células. Apps Script auditado: 35 GS + manifesto iguais, contêiner = revisão, 0 acionadores instaláveis. 12 ajudas de INVOCAÇÕES mantidas (`onOpen` canônico). Deriva de paleta da descartável: causa reproduzida (cópia sem `paleta_feito` + troca interrompida), correção `paleta_base` proposta com bateria 51/51, **não aplicada, aguarda decisão**. Detalhes no topo de [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md). D não declarada concluída.

@@ -1,3 +1,22 @@
+# D — CONCLUÍDA · 17/10/2026 (Claude Opus, integrador)
+
+## Fechamento
+
+Este bloco prevalece sobre todos os abaixo. **D está concluída na revisão** `1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0`, com auditoria integral.
+
+- **Fundo de CONFIGURAÇÃO**: 3.988 células por `repeatCell` com guarda e releitura nativas; faixa idêntica à descartável; fora dela nada mudou ([`APLICACAO-FUNDO-REVISAO.json`](APLICACAO-FUNDO-REVISAO.json), [`FOTO-REVISAO-POS-FUNDO.json`](FOTO-REVISAO-POS-FUNDO.json)).
+- **12 ajudas de INVOCAÇÕES**: mantidas por decisão do usuário (`onOpen` canônico).
+- **Deriva de paleta**: causa reproduzida e corrigida. `apps-script/Codigo.gs` recebeu `paleta_base` ([`PATCH-PALETA-BASE.diff`](PATCH-PALETA-BASE.diff)) e `VERSAO_PALETA_ = '17/10/2026-paleta-base'`; hash `6aa4e2ba…`. Bateria: paleta 51/51, arte, construir, delta e notas contextuais OK; `regressao-pessoal.js` e `testar-carregamento.js` falham igual com o código original (problemas antigos dos próprios testes). Publicado no projeto da revisão, recarregado e relido: **36/36 iguais** (35 GS do repositório + manifesto). `onOpen` com o código novo Concluído, sem autorização nova ([`NATIVO-CODIGO-REVISAO-D.json`](NATIVO-CODIGO-REVISAO-D.json), [`DERIVA-PALETA.json`](DERIVA-PALETA.json)).
+- **Auditoria final**: exportação depois da publicação idêntica à da prova do fundo em todas as 22 abas (estilo e conteúdo); 66.242 fórmulas, 0 erros, 8.190 chaves únicas.
+- **Acionadores**: 0 instaláveis; simples `onOpen`/`onEdit`/`onSelectionChange`.
+
+### Pendências que ficam fora de D
+1. `INVOCAÇÕES!S58` da revisão em `#F1BFD6` (já no backup de antes de D): legível, causa não identificada, não alterada.
+2. A descartável D guarda a deriva da FICHA (A147:AX436) como evidência; não foi repintada.
+3. Regressão interativa na revisão (abrir/fechar grupos, textos longos, troca de paleta) não foi repetida: ensaiada na descartável; aqui só leitura visual.
+4. Testes com falha pré-existente: `regressao-pessoal.js` (simulador sem `getNotes`) e `testar-carregamento.js` (exige argumento).
+5. Oficial, bot e `main` intocados; promover a revisão é decisão do usuário.
+
 # D — checkpoint de continuação · 17/10/2026, noite (Claude Opus, integrador)
 
 ## Estado vigente — revisão com D aplicada e auditada; falta só decidir a correção de paleta
