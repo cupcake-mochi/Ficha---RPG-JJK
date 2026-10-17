@@ -1,0 +1,123 @@
+{
+ "resultado": "FOTOGRAFIA_SOMENTE_LEITURA",
+ "data": "2026-10-17",
+ "metodo": "Exportação XLSX pelo conector Google Drive (somente leitura); análise local por acabamento-b47/conferir-exportacoes.py. Exportações com dados do personagem ficaram fora do Git.",
+ "arquivos": {
+  "revisao": "1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0",
+  "backup_antes": "1rEyN4OS_dF5oYO91gaT4PnIHsqnZ8sA0ujZd7xuNRdE",
+  "snapshot_depois": "1gSlTC2X_aGXzMSOVeG-y6eJ61ruEnHO9jFRU9oMzAMY",
+  "descartavel_d": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE"
+ },
+ "drive_modifiedTime": {
+  "revisao": "2026-10-17T03:30:01.615Z",
+  "snapshot_criado": "2026-10-17T03:30:45.977Z"
+ },
+ "limites": [
+  "XLSX não traz sheetId, formatação condicional, proteções, fuso nem acionadores.",
+  "Validações contadas por intervalo (sqref), não por célula; não comparar com 4.930 células históricas.",
+  "Valores efetivos são os gravados na exportação, não recálculo novo.",
+  "Apps Script vinculado não é arquivo do Drive: não foi alcançado."
+ ],
+ "exportacoes_sha256": {
+  "revisao": "574df974a49cfd199477ce62e63efe7340db8b8e0818328be8049371b454ea9c",
+  "backup": "a666eb6eb901cd74aa062b2e555355426c2ba281a78fe2ba650bf745406a37fc",
+  "snapshot": "3964e1919ba282c2b07219e86c90609335eff0b806604cc334a91f2686b4ccba",
+  "descartavel": "fb9bf08c841450b7764decf9b08e8d8a2ef9edc910cc16ad2c5d792f0501b873"
+ },
+ "resumo": {
+  "revisao": {
+   "abas": 22,
+   "formulas": 66242,
+   "celulas": 104764,
+   "notas": 4458,
+   "validacoes": 2196,
+   "intervalos_nomeados": 3,
+   "erros_formula": 0,
+   "analise_chaves": 8190,
+   "analise_unicas": 8190
+  },
+  "backup": {
+   "abas": 26,
+   "formulas": 66627,
+   "celulas": 106222,
+   "notas": 5342,
+   "validacoes": 2274,
+   "intervalos_nomeados": 3,
+   "erros_formula": 0,
+   "analise_chaves": 8190,
+   "analise_unicas": 8190
+  },
+  "snapshot": {
+   "abas": 22,
+   "formulas": 66242,
+   "celulas": 104764,
+   "notas": 4458,
+   "validacoes": 2196,
+   "intervalos_nomeados": 3,
+   "erros_formula": 0,
+   "analise_chaves": 8190,
+   "analise_unicas": 8190
+  },
+  "descartavel": {
+   "abas": 22,
+   "formulas": 66242,
+   "celulas": 104764,
+   "notas": 4470,
+   "validacoes": 2196,
+   "intervalos_nomeados": 3,
+   "erros_formula": 0,
+   "analise_chaves": 8190,
+   "analise_unicas": 8190
+  }
+ },
+ "backup_menos_revisao_abas": [
+  "ESTUDO 3B",
+  "ESTUDO 3C",
+  "ESTUDO CAMPANHA",
+  "ESTUDO CUSTOM"
+ ],
+ "snapshot_x_revisao": {},
+ "backup_x_revisao_abas_comuns": {},
+ "revisao_x_descartavel_conteudo": {
+  "INVOCAÇÕES": {
+   "N": [
+    "AB1033",
+    "AB241",
+    "AB43",
+    "AB439",
+    "AB637",
+    "AB835",
+    "I1033",
+    "I241",
+    "I43",
+    "I439",
+    "I637",
+    "I835"
+   ]
+  }
+ },
+ "estilo_snapshot_x_revisao": {},
+ "estilo_revisao_x_descartavel": {
+  "FICHA": {
+   "celulas": 4878,
+   "primeira": "A147",
+   "ultima": "AX436"
+  },
+  "INVOCAÇÕES": {
+   "celulas": 1,
+   "primeira": "S58",
+   "ultima": "S58"
+  },
+  "CONFIGURAÇÃO": {
+   "celulas": 3988,
+   "primeira": "A1733",
+   "ultima": "P2812"
+  }
+ },
+ "plano_fundo": {
+  "celulas": 3988,
+  "sha256_intervalos": "0b9ba19a51747fd8604db935ad9ac5edd278cd3f9bffb93164d767a3d2807bfc",
+  "outras_diferencas_de_estilo": [],
+  "intervalos": 313
+ }
+}

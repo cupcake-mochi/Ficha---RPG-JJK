@@ -1,3 +1,7 @@
+## D · fotografia da revisão por exportação · 17/10/2026
+
+Revisão após fuso + retirada dos estudos (feitos por outra sessão, com backup e snapshot) conferida por exportação somente leitura: igual ao snapshot e ao backup nas 22 abas, zero erros, 8.190 chaves. Plano do fundo de CONFIGURAÇÃO pronto (3.988 células, 313 intervalos), **não aplicado**: esta sessão não tem escrita Sheets nem Apps Script. Achado: deriva de cor de fonte na FICHA da descartável após o ensaio de paleta; a revisão está correta. Detalhes, itens confirmados/pendentes em [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md). D não concluída.
+
 ## D autorizada · checkpoint de abertura · 16/10/2026
 
 Atualização D: retirada dos estudos ensaiada, fundo canônico corrigido na descartável, textos longos restaurados exatamente, seis grupos de entidades restaurados e 35 GS + manifesto da cópia relidos iguais. Retenção A+B no modelo integrado: 83 verificações, zero falhas bloqueantes, dois riscos de manutenção documentados. Detalhes e **próxima ação vigente na última seção** de [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md). A revisão ainda não recebeu D; não declarar fechamento.

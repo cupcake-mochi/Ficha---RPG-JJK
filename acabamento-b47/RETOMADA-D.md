@@ -1,3 +1,42 @@
+# D — checkpoint de continuação · 17/10/2026 (Claude, integrador)
+
+## Estado vigente — fotografia da revisão por exportação, sem escrita no Google
+
+Este bloco prevalece sobre todos os abaixo. Base: `873d043e9a2922b7802e2c3ed605163a102b2fbe`. **D não está concluída.**
+
+Depois de `873d043`, outra sessão (ChatGPT, relatório de passagem do usuário) fez na **revisão** `1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0`: backup nativo `1rEyN4OS_dF5oYO91gaT4PnIHsqnZ8sA0ujZd7xuNRdE`; fuso `Etc/GMT → America/Sao_Paulo`; exclusão só dos quatro estudos (47003, 2139799909, 47005, 47007); snapshot nativo `1gSlTC2X_aGXzMSOVeG-y6eJ61ruEnHO9jFRU9oMzAMY`. **Não repetir as exclusões, o fuso nem a migração C.** Os checkpoints abaixo que dizem "revisão com 26 abas/GMT" ficaram desatualizados por isso.
+
+Acesso desta sessão: o conector Drive lê metadados e exporta as planilhas; **não há escrita Sheets (batchUpdate) nem acesso ao Apps Script** (o ID do projeto não é arquivo do Drive). Nada foi alterado no Google nesta sessão.
+
+### (a) Concluído na descartável (histórico, não reverificado nativamente)
+72/72 blocos, 8.190 chaves, fundo de CONFIGURAÇÃO, fuso, grupos, textos, 35 GS + manifesto da cópia. Ver checkpoints abaixo.
+
+### (b) Efetivamente aplicado na revisão
+Somente o que o relatório de passagem lista (fuso + quatro exclusões, com backup antes e snapshot depois). Fundo de CONFIGURAÇÃO **não** aplicado.
+
+### (c) Verificado nesta sessão, por exportação XLSX somente leitura
+[`FOTO-REVISAO-EXPORTACAO.json`](FOTO-REVISAO-EXPORTACAO.json), gerado por `conferir-exportacoes.py` (exportações privadas fora do Git):
+
+- Drive: revisão modificada pela última vez às 03:30:01Z; snapshot criado às 03:30:45Z. Nada mudou na revisão depois do snapshot.
+- Revisão = snapshot em 22 abas: fórmulas, valores gravados, notas, validações, mesclagens, grupos e estilos de célula, zero diferenças.
+- Backup sem os quatro estudos = revisão nas 22 abas comuns, zero diferenças. A exclusão não mexeu em nada além das abas.
+- Revisão: 66.242 fórmulas, 4.458 notas, 3 intervalos nomeados, zero erros de fórmula, ANALISE com 8.190 chaves únicas.
+- Revisão x descartável: fórmulas e entradas idênticas. Diferenças só em: (1) as 12 ajudas contextuais em INVOCAÇÕES, presentes só na descartável; (2) as 3.988 células do fundo; (3) cor de fonte, ver achado abaixo.
+- Plano do fundo: [`PLANO-FUNDO-REVISAO.json`](PLANO-FUNDO-REVISAO.json), **3.988 células vazias em 313 intervalos**, mesmos números da descartável, zero outras diferenças de estilo na faixa. Guarda de aplicação no próprio arquivo. **Não aplicado.**
+- Local: `testar-auditoria-estudos.py`, 6 testes OK.
+
+**Achado — deriva de paleta na descartável.** Em `FICHA!A147:AX436`, 4.878 células estão com fonte `#F1BFD6` (texto_fraco do Mizuki Escuro) na descartável e `#FBE4EF` (texto) na revisão e no backup. Na construção canônica essas células são `F4F1F7` (texto de fábrica) e `E8DCD4` (osso, que no Mizuki Escuro vira `FBE4EF` em todo papel de fundo). Logo a **revisão está correta** e a descartável mudou durante o ensaio de paleta Claro→Escuro. O ensaio afirmou "restauração completa"; isso vale para os passos medidos, não para as cores finais dessas células. Inverso pontual: `INVOCAÇÕES!S58` está `#F1BFD6` na revisão (já no backup) e `#FBE4EF` na descartável e no esperado pelo osso. Nada corrigido: investigar `repintarCoresDaAba_`/rede de legibilidade antes de recomendar troca de paleta a jogadores.
+
+### (d) Pendente/bloqueado
+1. Aplicar o fundo na revisão: precisa de sessão com escrita Sheets; seguir a guarda do plano.
+2. Apps Script da revisão: vínculo, 35 GS + manifesto, acionadores instaláveis. Bloqueado aqui.
+3. As 12 ajudas contextuais: decidir se a revisão deve recebê-las (na descartável apareceram por evento não identificado). Não escrever à mão sem decisão.
+4. Deriva de paleta acima: reproduzir em descartável e corrigir o código antes de fechar D.
+5. Regressão visual/funcional nativa da revisão (carteira/foto, menus, grupos, inventário, textos longos, 12 entidades) e comparação pré/pós da aplicação do fundo.
+6. XLSX não prova fuso, formatação condicional, proteções nem acionadores: conferir nativamente.
+
+Próxima ação recomendada: sessão com acesso Sheets/Apps Script (navegador ou API) para a guarda e aplicação do fundo, depois Apps Script. Esforço médio basta para isso; a deriva de paleta pede investigação em descartável.
+
 # D — checkpoint de continuação · 16/10/2026
 
 ## Estado vigente — salvamento pedido por saldo quase esgotado
