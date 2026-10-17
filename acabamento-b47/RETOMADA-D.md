@@ -9,7 +9,9 @@ Este bloco prevalece sobre os abaixo. Pedido do usuário: fechamento, revisão e
 - **Revisão para o merge** ([`REVISAO-MERGE-B47.md`](REVISAO-MERGE-B47.md)): sem segredos nem dados de personagem; três observações não bloqueantes no `Codigo.gs`.
 - **Plano**: checklist do `PLANO-RETOMADA-B47.md` marcado com as provas; ficam abertos medidas/perfis de A/B e a entrega final.
 
-Pendências que precisam de decisão do usuário: carga da ficha pessoal 0,8 acima do modelo do teste; atualizar as regressões históricas (campanha, custom, progressão, configuração, Famílias, amaldiçoada, peças, ficha-xlsx); tirar o diagnóstico `B47 tempo` do `onEdit` numa próxima versão.
+**Merge**: `main` avançou por fast-forward até `ea6d2a5` (sem force-push). **Ficha oficial**: não atualizada; backup nativo `117rWwlU…` feito e roteiro em [`ROTEIRO-OFICIAL-B47.md`](ROTEIRO-OFICIAL-B47.md).
+
+Pendências que precisam de decisão do usuário: liberar (ou não) a atualização da oficial pelo roteiro; carga da ficha pessoal 0,8 acima do modelo do teste; atualizar as regressões históricas (campanha, custom, progressão, configuração, Famílias, amaldiçoada, peças, ficha-xlsx); tirar o diagnóstico `B47 tempo` do `onEdit` numa próxima versão.
 
 # D — CONCLUÍDA · 17/10/2026 (Claude Opus, integrador)
 
