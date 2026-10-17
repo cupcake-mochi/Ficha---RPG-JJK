@@ -1,3 +1,29 @@
+# D — checkpoint de continuação · 17/10/2026, tarde (Claude Opus, integrador)
+
+## Estado vigente — fundo parcialmente aplicado pela interface; conector Sheets disponível
+
+Este bloco prevalece sobre todos os abaixo. Base: `d11429e`. **D não está concluída.**
+
+### Acesso nesta sessão
+- Claude in Chrome logado: revisão abre em edição; editor do Apps Script `1wdZc903…` e página de acionadores abrem. Acionadores instaláveis listados para a conta: **0** (falta separar dos simples e conferir 35 GS + manifesto).
+- **Conector Google Sheets** (spreadsheets.get/batchUpdate) conectado pelo usuário no fim da sessão e testado só em leitura: `userEnteredFormat` nativo lido; CONFIGURAÇÃO = sheetId `47001`; fuso `America/Sao_Paulo`. Formato-base canônico confirmado nativamente em `A733`: fundo `#1B111D`, Roboto 10, fonte `#FBE4EF`, `LEFT`/`MIDDLE`, `wrapStrategy CLIP`, bold/italic false. **Usar este conector para o restante do fundo (repeatCell + guarda nativa), não a interface.**
+- Drive: exportação XLSX funciona (prova local com `conferir-exportacoes.py`).
+
+### Achado — as 12 ajudas de INVOCAÇÕES (item 4 resolvido)
+Abrir a revisão no navegador (12:44:25Z) gravou as 12 notas contextuais: é o `onOpen` canônico (`Codigo.gs` → `notasDosTipos_()`), que só acrescenta depois de nota manual. Era o "evento não identificado" da descartável. Exportação logo depois: revisão = snapshot em tudo, exceto essas 12 notas; revisão = descartável em conteúdo. **Usuário decidiu manter.** Abrir a planilha não alterou estilos.
+
+### Fundo de CONFIGURAÇÃO — aplicação pela interface interrompida
+Guarda por exportação XLSX (sem API na hora, autorizada pelo usuário): plano regenerado idêntico (313 intervalos, sha256 `0b9ba19a…`), alvos vazios, sem mesclagem nem formatação condicional. Método: copiar `A733`/`A733:P733` e colar só formatação faixa a faixa pela caixa de nome.
+
+- Aplicado e conferido por exportação: `A1733`, `A1734` (iguais à descartável). Aplicado e visto na tela: linhas A:P 1734, 1738–1739, 1746, 1762, 1766–1767, 1774, 1790, 1794–1795, 1802, 1818, 1822–1823, 1830, 1846.
+- **Incidente no lote seguinte** (A1850:P1851 … A2017:P2017): seleções falharam e colagens A:P caíram em cartões. Exportação do estado danificado: valores/fórmulas/notas intactos; 381 células de formato fora do plano (a partir de B1852, até ~1933); **29 mesclagens desfeitas** (B1852:G1852, B1853:G1857, J1852:O1852, B1877:O1877, B1880:G1880, B1911:G1914 …); validações B1882→B1882:E1882 e B1928→B1928:E1928; 647 alvos com fundo, 48 deles diferentes da descartável. Colar formatação desfaz mesclagens.
+- **O usuário corrigiu manualmente. A correção ainda NÃO foi conferida.** Antes de qualquer escrita: releitura nativa (conector) de CONFIGURAÇÃO!A1733:P2812 com `userEnteredFormat`, mesclagens e validações, comparada à descartável `1j16g_…` e ao snapshot `1gSlTC2X_…`; se algo não voltou, restaurar com `copyPaste`/`mergeCells`/`setDataValidation` guiados pela descartável (layout idêntico).
+
+### Próximo passo exato
+1. Conferir a correção do usuário (acima). 2. Guarda nativa: alvos restantes sem valor e sem `userEnteredFormat`; já aplicados iguais ao formato de `A733`. 3. `repeatCell` com o formato completo de `A733` e `fields=userEnteredFormat` só nos intervalos restantes do plano. 4. Releitura nativa da faixa e exportação: só as 3.988 células diferem do snapshot, iguais à descartável. 5. Depois: auditoria Apps Script (35 GS + manifesto, instaláveis vs simples), deriva de paleta na descartável, regressão visual.
+
+Evidências privadas (exportações com dados do personagem) ficaram fora do Git, no scratchpad da sessão. Recomendação: Opus/Sonnet, esforço médio; a escrita por conector é delimitada, mas a conferência da correção manual pede atenção.
+
 # D — checkpoint de continuação · 17/10/2026 (Claude, integrador)
 
 ## Estado vigente — fotografia da revisão por exportação, sem escrita no Google

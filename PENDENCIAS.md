@@ -1,3 +1,7 @@
+## D · fundo pela interface interrompido · conector Sheets disponível · 17/10/2026
+
+12 ajudas de INVOCAÇÕES entraram na revisão pelo `onOpen` canônico ao abrir a planilha; usuário decidiu manter. Fundo de CONFIGURAÇÃO começou pela interface (colar formatação) e um lote danificou cartões (29 mesclagens, 381 formatos, 2 validações; valores intactos); o usuário corrigiu à mão, **correção ainda não conferida**. Conector Google Sheets agora disponível e testado em leitura: retomar o fundo por `repeatCell` com guarda nativa. Detalhes no topo de [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md). D não concluída.
+
 ## D · fotografia da revisão por exportação · 17/10/2026
 
 Revisão após fuso + retirada dos estudos (feitos por outra sessão, com backup e snapshot) conferida por exportação somente leitura: igual ao snapshot e ao backup nas 22 abas, zero erros, 8.190 chaves. Plano do fundo de CONFIGURAÇÃO pronto (3.988 células, 313 intervalos), **não aplicado**: esta sessão não tem escrita Sheets nem Apps Script. Achado: deriva de cor de fonte na FICHA da descartável após o ensaio de paleta; a revisão está correta. Detalhes, itens confirmados/pendentes em [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md). D não concluída.
