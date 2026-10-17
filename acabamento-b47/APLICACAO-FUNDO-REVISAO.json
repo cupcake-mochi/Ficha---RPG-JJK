@@ -1,0 +1,66 @@
+{
+ "resultado": "OK",
+ "data": "2026-10-17",
+ "destino": "1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0",
+ "aba": "CONFIGURAÇÃO",
+ "sheetId": 47001,
+ "metodo": "Conector Google Sheets (spreadsheets.get/batchUpdate). Guarda nativa: alvos sem valor/nota/validação; 3.731 sem formato e 257 com a colagem anterior (CLIP); fora dos alvos igual ao snapshot e à descartável. 313 repeatCell, fields=userEnteredFormat, formato idêntico ao da descartável (wrapStrategy OVERFLOW_CELL), cinco lotes com requiredRevisionId.",
+ "formato": {
+  "backgroundColor": "#1B111D",
+  "fontFamily": "Roboto",
+  "fontSize": 10,
+  "foregroundColor": "#FBE4EF",
+  "horizontalAlignment": "LEFT",
+  "verticalAlignment": "MIDDLE",
+  "wrapStrategy": "OVERFLOW_CELL",
+  "bold": false,
+  "italic": false
+ },
+ "pedidos": 313,
+ "celulas": 3988,
+ "sha256_intervalos": "0b9ba19a51747fd8604db935ad9ac5edd278cd3f9bffb93164d767a3d2807bfc",
+ "releitura_nativa": {
+  "faixa": "A1733:P2812",
+  "alvos_no_formato": 3988,
+  "alvos_com_valor": 0,
+  "fora_dos_alvos_dif_snapshot": 0,
+  "fora_dos_alvos_dif_descartavel": 0,
+  "mesclagens_iguais_snapshot": true,
+  "faixa_identica_descartavel": true
+ },
+ "exportacao_snapshot_x_revisao": {
+  "alvos_mudados": 3988,
+  "iguais_descartavel": 3988,
+  "estilo_fora_do_plano": {},
+  "conteudo": {
+   "INVOCAÇÕES": {
+    "N": [
+     "AB1033",
+     "AB241",
+     "AB43",
+     "AB439",
+     "AB637",
+     "AB835",
+     "I1033",
+     "I241",
+     "I43",
+     "I439",
+     "I637",
+     "I835"
+    ]
+   }
+  },
+  "resumo": {
+   "abas": 22,
+   "formulas": 66242,
+   "celulas": 104764,
+   "notas": 4470,
+   "validacoes": 2196,
+   "intervalos_nomeados": 3,
+   "erros_formula": 0,
+   "analise_chaves": 8190,
+   "analise_unicas": 8190
+  }
+ },
+ "incidente_anterior": "Colagem pela interface danificou cartões (29 mesclagens, 381 formatos, 2 validações, valores intactos); usuário corrigiu à mão; correção conferida nativamente como idêntica ao snapshot antes desta aplicação."
+}
