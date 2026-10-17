@@ -1,3 +1,27 @@
+# B47 — retomada com cálculo Google · 17/10/2026
+
+Este bloco prevalece sobre o histórico. Base recebida `66012e0`, D concluída.
+O usuário pediu priorizar Google Sheets pelo custo do LibreOffice.
+Git e leitura/escrita Sheets funcionam; editor da revisão abriu autenticado.
+LibreOffice não localizado no PATH nem no diretório padrão deste Windows;
+nenhum `soffice.bin` em execução. Não repetir a bateria Calc por rotina.
+
+**Item 3:** Ficha Pessoal aprovada nativamente: os mesmos 33 cenários e as
+118 asserções originais de `regressao-ficha-pessoal.py`, sem mudar expectativas.
+O adaptador só substitui preparação/recálculo por entradas e respostas CellData.
+Prova: `REGRESSAO-PESSOAL-NATIVA.json`. Nova descartável de regressão:
+`13qBo5g09Qg9CLGsgwVtCjFYzdiwsNKQkAiVEmcIOm7w`, copiada da construção
+final; sem dados do personagem da revisão. As 1.197 entradas distintas foram
+restauradas; 39 blocos relidos sem diferenças de entradas, valores efetivos,
+notas, validações e formatos. Não é aprovação do Calc.
+
+Configuração em preparação. Próximos: progressão, Famílias, campanha/custom
+(imprimir diferenças completas, investigar Latente), amaldiçoada; depois
+medidas/perfil e janela da oficial pelo roteiro. Não houve escrita na
+revisão/oficial, mudança de GS ou autorização nova. Recibos privados em
+`D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/`.
+Próxima ação recomendada: Sol/Médio para as regressões delimitadas.
+
 # B47 — pós-fechamento, parada para troca de chat · 17/10/2026, noite (Claude Opus, integrador)
 
 Este bloco prevalece sobre os abaixo. `main` = `codex/configuracao-b47` (fast-forward, sem force-push). D está concluída; esta parte é a fila pedida depois dela, **antes** de atualizar a ficha oficial.

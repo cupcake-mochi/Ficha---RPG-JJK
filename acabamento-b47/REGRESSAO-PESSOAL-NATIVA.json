@@ -1,0 +1,33 @@
+{
+  "data": "2026-10-17",
+  "base_git": "66012e0",
+  "resultado": "APROVADO_NATIVO",
+  "regressao": "regressao-ficha-pessoal.py",
+  "sha256_teste": "cb4ceac56626d01ae9ae17b84d39562e31f56fceb458610a2255a7111060a6f0",
+  "adaptador": "acabamento-b47/regressao-pessoal-nativa.py",
+  "backend": "Google Sheets; sem importar XLSX ou executar LibreOffice",
+  "planilha": "13qBo5g09Qg9CLGsgwVtCjFYzdiwsNKQkAiVEmcIOm7w",
+  "origem": "14Ad8e5hUECLimCFuilEGSIxrhv0IWpDUEjEBR4N8N-Q",
+  "cenarios": 33,
+  "assercoes_originais_aprovadas": 118,
+  "entradas_distintas": 1197,
+  "restauracao": {
+    "blocos_nativos": 39,
+    "diferencas": 0,
+    "campos": [
+      "userEnteredValue",
+      "effectiveValue",
+      "note",
+      "dataValidation",
+      "userEnteredFormat"
+    ]
+  },
+  "limites": [
+    "Não é uma execução do Calc.",
+    "Usa fórmulas da construção final já comparadas com a revisão em CONSTRUCAO-D.json.",
+    "Não testa onEdit por API; o gatilho tem provas próprias em D.",
+    "Demais regressões e oficial permanecem pendentes."
+  ],
+  "evidencias_privadas": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/",
+  "proxima_acao": "Configuração nativa; depois progressão e Famílias, campanha, custom, amaldiçoada."
+}

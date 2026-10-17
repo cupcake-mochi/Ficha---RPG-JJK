@@ -1,3 +1,13 @@
+## Pós-D · regressões no Google · 17/10/2026
+
+Usuário pediu priorizar o cálculo nativo. Ficha Pessoal: 33 cenários e 118
+asserções originais aprovados, entradas restauradas e 39 blocos sem diferenças
+(`acabamento-b47/REGRESSAO-PESSOAL-NATIVA.json`). Calc não executado neste
+Windows. Configuração em preparação; progressão, Famílias, campanha/custom
+(Latente ainda a investigar) e amaldiçoada pendentes, seguidas de medidas e
+oficial acompanhada. D permanece concluída; dados do personagem fora do Git.
+Estado vigente no topo de `acabamento-b47/RETOMADA-D.md`.
+
 ## B47 · parada para troca de chat · 17/10/2026, noite
 
 D concluída e em `main`. Corrigido bug das ajudas de tipo dobradas em cópias (publicado na revisão). Carga da ficha pessoal: a ficha segue o livro; teste corrigido. Manutenção de testes antigos pela metade e roteiro da oficial aguardando o usuário. Ponto exato em [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md); prompt em [PROMPT-CONTINUAR-POS-B47.md](prompts-b47/PROMPT-CONTINUAR-POS-B47.md).
