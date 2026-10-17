@@ -111,7 +111,8 @@ with tempfile.TemporaryDirectory(prefix="b47-config-") as pasta:
         casos[nome] = mudancas
     limpar()
     salvar("desligado", {})
-    for lote in range(2):
+    # C ampliou de 50 para 86 caixas. Exercitar todas, em lotes de 25 efeitos.
+    for lote in range((len(alvos) + 24) // 25):
         limpar()
         mudancas = {}
         for n, alvo in enumerate(alvos[lote * 25:(lote + 1) * 25], 1):

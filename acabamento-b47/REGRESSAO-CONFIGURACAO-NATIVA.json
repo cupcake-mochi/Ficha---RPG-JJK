@@ -1,0 +1,65 @@
+{
+  "data": "2026-10-17",
+  "base_git": "94a1862",
+  "resultado": "APROVADO_NATIVO",
+  "regressao": "regressao-configuracao.py",
+  "sha256_teste": "2bdeffdc3c492c7abfd407352eb9f4b4fb39c20e91e97db0e3f325c188c4fd21",
+  "adaptador": "acabamento-b47/regressao-configuracao-nativa.py",
+  "backend": "Google Sheets",
+  "planilha": "13qBo5g09Qg9CLGsgwVtCjFYzdiwsNKQkAiVEmcIOm7w",
+  "cenarios": 7,
+  "assercoes_mecanicas_originais": 529,
+  "checagens_locais_de_preparacao": 6,
+  "alvos": 86,
+  "alteracao_do_teste": "Somas em quatro lotes de até 25; o laço anterior cobria só as primeiras 50 das 86 caixas de C. Expectativas aritméticas preservadas.",
+  "entradas_distintas": 191,
+  "restauracao": {
+    "diferencas": 0,
+    "campos": [
+      "userEnteredValue",
+      "effectiveValue",
+      "note",
+      "dataValidation",
+      "userEnteredFormat"
+    ]
+  },
+  "medidas": {
+    "tipo": "Nativo API, inclui transporte e conector; não é onEdit/interface",
+    "cenarios_ms": [
+      {
+        "nome": "desligado",
+        "ms": 4307
+      },
+      {
+        "nome": "somas1",
+        "ms": 3937
+      },
+      {
+        "nome": "somas2",
+        "ms": 6621
+      },
+      {
+        "nome": "somas3",
+        "ms": 4348
+      },
+      {
+        "nome": "somas4",
+        "ms": 4355
+      },
+      {
+        "nome": "trocas",
+        "ms": 4311
+      },
+      {
+        "nome": "invalidos",
+        "ms": 3767
+      }
+    ],
+    "total_ms": 31646
+  },
+  "evidencias_privadas": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/",
+  "limites": [
+    "Não é uma execução do Calc.",
+    "Demais regressões e oficial pendentes."
+  ]
+}

@@ -3,7 +3,10 @@
 Usuário pediu priorizar o cálculo nativo. Ficha Pessoal: 33 cenários e 118
 asserções originais aprovados, entradas restauradas e 39 blocos sem diferenças
 (`acabamento-b47/REGRESSAO-PESSOAL-NATIVA.json`). Calc não executado neste
-Windows. Configuração em preparação; progressão, Famílias, campanha/custom
+Windows. Configuração também aprovada nativamente: sete cenários, 529
+asserções mecânicas, somas cobrindo todas as 86 caixas de C e 191 entradas
+restauradas sem diferenças (`REGRESSAO-CONFIGURACAO-NATIVA.json`).
+Progressão, Famílias, campanha/custom
 (Latente ainda a investigar) e amaldiçoada pendentes, seguidas de medidas e
 oficial acompanhada. D permanece concluída; dados do personagem fora do Git.
 Estado vigente no topo de `acabamento-b47/RETOMADA-D.md`.

@@ -1,5 +1,21 @@
 # Selecionar testes em um clone de nuvem
 
+## Alternativa nativa pós-D · 17/10/2026
+
+Por pedido do usuário, as regressões mecânicas estão sendo executadas em uma
+descartável Google copiada da construção final, sem importar XLSX. Os
+adaptadores `acabamento-b47/regressao-pessoal-nativa.py` e
+`regressao-configuracao-nativa.py` emitem planos offline e conferem respostas
+CellData pelas asserções dos testes originais. O envio/leitura ocorre pelo
+conector autorizado; os recibos ficam fora do Git. Não executam LibreOffice
+e não devem ser apresentados como aprovação desse backend.
+
+Ficha Pessoal: 33 cenários/118 verificações. Configuração: sete cenários/529
+verificações mecânicas, incluindo as 86 caixas de C (o laço antigo de somas
+cobria só 50). Entradas restauradas e comparadas também em notas, formatos e
+validações. Provas `REGRESSAO-*-NATIVA.json` em `acabamento-b47/`.
+Demais regressões continuam pendentes no topo de `RETOMADA-D.md`.
+
 | Comando | Escopo e entradas | Limite |
 |---|---|---|
 | `python nuvem-b47/conferir.py --smoke` | Dependências fixadas, referências/hashes, fontes, sintaxe e verificadores catálogo/progressão/Kaori | Leve; não executa montagem nem Google |

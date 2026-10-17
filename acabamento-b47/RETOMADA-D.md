@@ -15,7 +15,15 @@ final; sem dados do personagem da revisão. As 1.197 entradas distintas foram
 restauradas; 39 blocos relidos sem diferenças de entradas, valores efetivos,
 notas, validações e formatos. Não é aprovação do Calc.
 
-Configuração em preparação. Próximos: progressão, Famílias, campanha/custom
+**Configuração também aprovada:** sete cenários, 529 asserções mecânicas
+originais e seis checagens locais de preparação. O teste só cobria somas nas
+primeiras 50 caixas; o laço agora percorre as 86 de C, em quatro lotes de até
+25, sem alterar a conta esperada. Prova `REGRESSAO-CONFIGURACAO-NATIVA.json`.
+As 191 entradas foram restauradas, sem diferenças nos cinco campos auditados.
+Escrita + leitura nativas pela API: 31.646 ms no conjunto de sete cenários,
+incluindo conector/rede; isso não mede onEdit nem velocidade da interface.
+
+Próximos: progressão, Famílias, campanha/custom
 (imprimir diferenças completas, investigar Latente), amaldiçoada; depois
 medidas/perfil e janela da oficial pelo roteiro. Não houve escrita na
 revisão/oficial, mudança de GS ou autorização nova. Recibos privados em
