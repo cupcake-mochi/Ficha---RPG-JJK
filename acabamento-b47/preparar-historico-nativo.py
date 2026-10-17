@@ -142,7 +142,7 @@ def delta(kind,folder):
     assert meta['properties']['title'].startswith('TESTE DESCARTÁVEL B47 — referência histórica')
     ids={s['properties']['title']:s['properties']['sheetId'] for s in meta['sheets']}
     old={s['nome']:{(r,c):v for r,c,v,*_ in s['vals'] if v not in (None,'')} for s in before['abas']}
-    requests=[{'updateSpreadsheetProperties':{'properties':{'locale':'en_US'},'fields':'locale'}}]
+    requests=[]
     changed=[]
     for s in model['abas']:
         if s['nome']=='ANALISE':continue
@@ -154,7 +154,9 @@ def delta(kind,folder):
             if isinstance(v,str) and v.startswith("'"):v=v[1:]
             key='boolValue' if isinstance(v,bool) else 'numberValue' if isinstance(v,(int,float)) else 'formulaValue' if isinstance(v,str) and v.startswith('=') else 'stringValue'
             requests.append({'updateCells':{'start':{'sheetId':ids[s['nome']],'rowIndex':r-1,'columnIndex':c-1},'rows':[{'values':[{} if v is None else {'userEnteredValue':{key:v}}]}],'fields':'userEnteredValue'}})
-    batches=[];batch=[];size=0
+    # O parser da chamada usa o idioma vigente ANTES do batch. A troca de
+    # idioma precisa terminar numa chamada própria antes de enviar fórmulas.
+    batches=[[{'updateSpreadsheetProperties':{'properties':{'locale':'en_US'},'fields':'locale'}}]];batch=[];size=0
     for req in requests:
         length=len(json.dumps(req,ensure_ascii=False))
         if batch and (size+length>120000 or len(batch)>=180):batches.append(batch);batch=[];size=0

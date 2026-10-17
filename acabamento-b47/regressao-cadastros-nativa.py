@@ -49,6 +49,7 @@ def preparar(kind,folder):
     else:
         outputs.update((e['custom'].NOME,c+str(r)) for c in 'STV' for r in range(2,12))
         outputs.update((e['custom'].NOME,'CP'+str(r)) for r in range(2,26))
+        outputs.update((e['custom'].NOME,c) for c in ('B122','B123'))
     inputs={(s,c) for case in cases for s,c,v in case['entradas']}
     plan={'fonte':file.name,'sha256_teste':hashlib.sha256(source.encode()).hexdigest(),
           'cenarios':cases,'entradas':[[s,c] for s,c in sorted(inputs)],

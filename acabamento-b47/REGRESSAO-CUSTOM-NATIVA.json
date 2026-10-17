@@ -1,0 +1,594 @@
+{
+  "data": "2026-10-17",
+  "base_git": "e2b27fe",
+  "resultado": "APROVADO_NATIVO",
+  "regressao": "regressao-custom.py",
+  "sha256_teste": "cec9f229d41d36717c3111e330208bf678f38e21ed4f166c00fb72d4d7ef3e53",
+  "planilha_atual": "13qBo5g09Qg9CLGsgwVtCjFYzdiwsNKQkAiVEmcIOm7w",
+  "planilha_historica": "1ujvsFJTqCAYkMkdyZtU2N6t0jiXg_gcA3Y_ae2zMS4k",
+  "origem_historica": {
+    "git_sha": "d0427b6174b49100091c68b3411fdd925199b952",
+    "fixture": "nuvem-b47/fixtures/base-parte2-local.xlsx",
+    "diferencas_entre_GS_e_fixture": 0,
+    "metodo": "Delta de 782 células dos GS sobre cópia restaurada da referência campanha. Locale alterado em chamada própria antes das fórmulas; pt_BR restaurado. XLSX apenas conferido offline."
+  },
+  "cenarios_atuais": 10,
+  "cenarios_historicos": 1,
+  "assercoes_mecanicas": 31,
+  "comparacao_integral": {
+    "referencia": "custom",
+    "celulas_anteriores": 27318,
+    "erros_base": [],
+    "erros_atual": [],
+    "diferencas_completas": [
+      [
+        "INVOCAÇÕES",
+        "P47",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "S47",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AI47",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AL47",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "I51",
+        "DEFINIÇÃO",
+        null
+      ],
+      [
+        "INVOCAÇÕES",
+        "AB51",
+        "DEFINIÇÃO",
+        null
+      ],
+      [
+        "INVOCAÇÕES",
+        "P245",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "S245",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AI245",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AL245",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "I249",
+        "DEFINIÇÃO",
+        null
+      ],
+      [
+        "INVOCAÇÕES",
+        "AB249",
+        "DEFINIÇÃO",
+        null
+      ],
+      [
+        "INVOCAÇÕES",
+        "P443",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "S443",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AI443",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AL443",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "I447",
+        "DEFINIÇÃO",
+        null
+      ],
+      [
+        "INVOCAÇÕES",
+        "AB447",
+        "DEFINIÇÃO",
+        null
+      ],
+      [
+        "INVOCAÇÕES",
+        "P641",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "S641",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AI641",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AL641",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "I645",
+        "DEFINIÇÃO",
+        null
+      ],
+      [
+        "INVOCAÇÕES",
+        "AB645",
+        "DEFINIÇÃO",
+        null
+      ],
+      [
+        "INVOCAÇÕES",
+        "P839",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "S839",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AI839",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AL839",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "I843",
+        "DEFINIÇÃO",
+        null
+      ],
+      [
+        "INVOCAÇÕES",
+        "AB843",
+        "DEFINIÇÃO",
+        null
+      ],
+      [
+        "INVOCAÇÕES",
+        "P1037",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "S1037",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AI1037",
+        "LIVRE · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "AL1037",
+        "ABERTA · TRILHA",
+        "ABERTA"
+      ],
+      [
+        "INVOCAÇÕES",
+        "I1041",
+        "DEFINIÇÃO",
+        null
+      ],
+      [
+        "INVOCAÇÕES",
+        "AB1041",
+        "DEFINIÇÃO",
+        null
+      ]
+    ],
+    "classificadas": [
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "P47",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "S47",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AI47",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AL47",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "I51",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AB51",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "P245",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "S245",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AI245",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AL245",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "I249",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AB249",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "P443",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "S443",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AI443",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AL443",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "I447",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AB447",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "P641",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "S641",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AI641",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AL641",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "I645",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AB645",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "P839",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "S839",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AI839",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AL839",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "I843",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AB843",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "P1037",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "S1037",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AI1037",
+          "LIVRE · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AL1037",
+          "ABERTA · TRILHA",
+          "ABERTA"
+        ],
+        "causa": "C: rótulo lê o limite individual de Famílias; prova nativa separada."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "I1041",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      },
+      {
+        "diferenca": [
+          "INVOCAÇÕES",
+          "AB1041",
+          "DEFINIÇÃO",
+          null
+        ],
+        "causa": "Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7."
+      }
+    ],
+    "pendentes": [],
+    "classificado": true
+  },
+  "contrato": "A única diferença era formato.versao 10→11; agora explícita na transformação aprovada, demais 5.273 linhas preservadas.",
+  "latente": {
+    "origem_valida": true,
+    "marcante_propria_rejeitada": true,
+    "marcante_publicada_aceita": true,
+    "alteracao_de_producao": false,
+    "limite": "A falha anterior não se reproduziu no Google. Não atribuir causa específica ao Calc sem executá-lo."
+  },
+  "entradas_distintas": 185,
+  "restauracao": {
+    "diferencas": 0,
+    "campos": [
+      "userEnteredValue",
+      "effectiveValue",
+      "note",
+      "dataValidation",
+      "userEnteredFormat"
+    ]
+  },
+  "evidencias_privadas": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/",
+  "limites": [
+    "Não é aprovação do Calc.",
+    "Amaldiçoada, comparação livro_base de Progressão e medidas pendentes."
+  ]
+}

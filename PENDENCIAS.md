@@ -12,7 +12,14 @@ os 13 cenários/130 resultados e sete checagens estruturais aprovados.
 Entradas restauradas exatamente nas duas frentes. Campanha também concluída:
 12 cenários, 18 asserções e 26.689 valores históricos conferidos; 36 diferenças
 classificadas com endereço/valor exatos e cinco contraprovas, nenhuma restante.
-Prova `acabamento-b47/REGRESSAO-CAMPANHA-NATIVA.json`. Custom
+Prova `acabamento-b47/REGRESSAO-CAMPANHA-NATIVA.json`. Custom concluído:
+dez cenários/31 asserções e 27.318 valores anteriores conferidos, zero erros
+ou diferenças inesperadas; Latente permite a marcante publicada e rejeita a
+própria. 185 entradas restauradas exatamente (`REGRESSAO-CUSTOM-NATIVA.json`).
+Restam Amaldiçoada, referência `livro_base` de Progressão, medidas/perfil e
+oficial acompanhada. O risco Latente deixou de estar pendente nativamente.
+
+Histórico desta retomada: Custom
 (Latente ainda a investigar) e amaldiçoada pendentes, seguidas de medidas e
 oficial acompanhada. D permanece concluída; dados do personagem fora do Git.
 Estado vigente no topo de `acabamento-b47/RETOMADA-D.md`.

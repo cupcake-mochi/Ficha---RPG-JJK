@@ -49,7 +49,22 @@ copiada da referência Campanha restaurada e recebendo somente o delta dos GS
 cenários Custom nem da base Latente. Nenhuma importação XLSX, OAuth ou edição
 da revisão/oficial. Leituras e recibos continuam na pasta privada.
 
-Próximos: Custom e a comparação histórica de Progressão acima
+**Custom também fechado:** dez cenários atuais/31 asserções mecânicas e
+comparação integral de 27.318 valores anteriores, zero erros e nenhuma
+diferença inesperada. As 36 diferenças completas foram impressas antes da
+classificação estrita (24 rótulos, 12 cabeçalhos reencontrados); não foram
+dispensados valores numéricos. Base Latente: Origem válida, marcante própria
+rejeitada e publicada aceita. A falha anterior não se reproduziu no Google;
+nenhuma alteração de produção. 185 entradas restauradas sem diferenças nos
+cinco campos. Prova `REGRESSAO-CUSTOM-NATIVA.json`.
+
+Nota técnica do ensaio histórico: a alteração de locale tem de terminar em
+chamada própria antes das fórmulas. Um primeiro snapshot da referência Custom
+detectou erros de parsing e foi recusado; após separar as chamadas, reaplicar
+as entradas do caso e reler os 36 blocos, zero erros. Não usar snapshots
+intermediários como prova. A referência final voltou a pt_BR.
+
+Próximos: Amaldiçoada e a comparação histórica de Progressão acima
 (imprimir diferenças completas, investigar Latente), amaldiçoada; depois
 medidas/perfil e janela da oficial pelo roteiro. Não houve escrita na
 revisão/oficial, mudança de GS ou autorização nova. Recibos privados em
