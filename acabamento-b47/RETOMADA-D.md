@@ -1,3 +1,34 @@
+# D — checkpoint de continuação · 17/10/2026, noite (Claude Opus, integrador)
+
+## Estado vigente — revisão com D aplicada e auditada; falta só decidir a correção de paleta
+
+Este bloco prevalece sobre todos os abaixo. Base: `ddf6ff1`. **D não está declarada concluída**: falta a decisão do item 3.
+
+### Acesso desta sessão
+Conector **Google Sheets** (leitura/escrita nativa, `spreadsheets.get`/`batchUpdate`), conector Drive (exportação XLSX) e **navegador do app logado** na conta do usuário (editor do Apps Script, acionadores, visão geral). Nenhuma permissão nova concedida; `construir()`/`continuar()` não rodaram.
+
+### 1. Fundo de CONFIGURAÇÃO — aplicado e provado
+- Correção manual do usuário (incidente da colagem pela interface, bloco abaixo) conferida nativamente: fora dos alvos, formato/valor/nota/validação e mesclagens idênticos ao snapshot e à descartável.
+- Guarda nativa: alvos sem valor/nota/validação; 3.731 sem formato, 257 com a colagem anterior (`CLIP`).
+- 313 `repeatCell`, `fields=userEnteredFormat`, formato idêntico ao da descartável (`#1B111D`, Roboto 10, `#FBE4EF`, `LEFT`/`MIDDLE`, **`OVERFLOW_CELL`**), cinco lotes com `requiredRevisionId`.
+- Releitura nativa de A1733:P2812: **idêntica à descartável** (dados e mesclagens); 3.988 alvos no formato.
+- Exportação da planilha inteira: snapshot × revisão difere só nas 3.988 células e nas 12 ajudas; zero estilo fora do plano; 66.242 fórmulas, 0 erros, 8.190 chaves únicas. Provas: [`APLICACAO-FUNDO-REVISAO.json`](APLICACAO-FUNDO-REVISAO.json), [`FOTO-REVISAO-POS-FUNDO.json`](FOTO-REVISAO-POS-FUNDO.json).
+
+### 2. Apps Script da revisão — auditado
+[`NATIVO-CODIGO-REVISAO-D.json`](NATIVO-CODIGO-REVISAO-D.json): projeto `1wdZc903…` com contêiner = revisão; **35 GS iguais a `apps-script/`** e manifesto igual ao da prova C (São Paulo, V8, sem dependências); escopos `spreadsheets` e `script.scriptapp`; **0 acionadores instaláveis**; simples: `onOpen`, `onEdit`, `onSelectionChange`; nenhum código cria instalável. Execuções 7 dias: 546, 2,56% de erro (15–16/10), 0% hoje.
+
+### 3. Deriva de paleta — causa reproduzida, correção proposta, **não aplicada** (decisão do usuário)
+[`DERIVA-PALETA.json`](DERIVA-PALETA.json). Em cópia (propriedades não viajam), passo sem registro em `paleta_feito` usa a `dica` da edição atual como "antes". Escuro→Claro e volta antes de terminar: os trechos ainda no Escuro são lidos como Claro; `FBE4EF` coincide com a tinta do Mizuki Claro e a rede de legibilidade o leva a `F1BFD6`. A deriva da descartável cobre exatamente os trechos 2 e 3 da FICHA (147-292, 293-436). Reprodução sem Google: [`reproduzir-deriva-paleta.js`](reproduzir-deriva-paleta.js). Correção mínima ([`PATCH-PALETA-BASE.diff`](PATCH-PALETA-BASE.diff)): propriedade `paleta_base` gravada uma vez na primeira troca; `regressao-paleta.js` 51/51 com ela e a deriva some nos seis cenários. **A revisão não foi afetada.** `INVOCAÇÕES!S58` (revisão `F1BFD6`, já no backup) segue sem explicação; legível, não alterado. Efeito `1E1320→2D0A1A` aparece só na VM (nativamente igual), não é achado.
+
+### 4. Ajudas de INVOCAÇÕES — decidido: manter
+Vêm do `onOpen` canônico (`notasDosTipos_`); usuário decidiu manter.
+
+### 5. Regressão visual nativa — somente leitura
+CARTEIRA (moldura da foto, carimbo, caixa de paleta), FICHA, FICHA AMALDIÇOADA, INVOCAÇÕES (12 lugares, grupos recolhidos), FICHA PESSOAL, GLOSSÁRIO e CONFIGURAÇÃO (A1733–2384, inclusive o trecho do incidente) coerentes no Mizuki Escuro. **Não** foram feitos nesta sessão, por ser a revisão preenchida: abrir/fechar grupos, edição de textos longos e troca de paleta (já ensaiados na descartável, blocos abaixo).
+
+### Próximo passo
+Decidir a correção de paleta: (a) aplicar o patch em `apps-script/Codigo.gs`, rodar a bateria, publicar o `Codigo.gs` no projeto da revisão e reler os 35 GS; ou (b) registrar como pendência de B48 e fechar D. Depois, declarar D concluída.
+
 # D — checkpoint de continuação · 17/10/2026, tarde (Claude Opus, integrador)
 
 ## Estado vigente — fundo parcialmente aplicado pela interface; conector Sheets disponível

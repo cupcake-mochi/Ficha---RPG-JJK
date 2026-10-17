@@ -1,3 +1,7 @@
+## D · aplicada na revisão e auditada · 17/10/2026, noite
+
+Fundo de CONFIGURAÇÃO aplicado na revisão por `repeatCell` com guarda e releitura nativas (conector Sheets): faixa idêntica à descartável, zero mudança fora das 3.988 células. Apps Script auditado: 35 GS + manifesto iguais, contêiner = revisão, 0 acionadores instaláveis. 12 ajudas de INVOCAÇÕES mantidas (`onOpen` canônico). Deriva de paleta da descartável: causa reproduzida (cópia sem `paleta_feito` + troca interrompida), correção `paleta_base` proposta com bateria 51/51, **não aplicada, aguarda decisão**. Detalhes no topo de [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md). D não declarada concluída.
+
 ## D · fundo pela interface interrompido · conector Sheets disponível · 17/10/2026
 
 12 ajudas de INVOCAÇÕES entraram na revisão pelo `onOpen` canônico ao abrir a planilha; usuário decidiu manter. Fundo de CONFIGURAÇÃO começou pela interface (colar formatação) e um lote danificou cartões (29 mesclagens, 381 formatos, 2 validações; valores intactos); o usuário corrigiu à mão, **correção ainda não conferida**. Conector Google Sheets agora disponível e testado em leitura: retomar o fundo por `repeatCell` com guarda nativa. Detalhes no topo de [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md). D não concluída.

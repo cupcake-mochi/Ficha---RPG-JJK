@@ -1,0 +1,36 @@
+--- a/apps-script/Codigo.gs
++++ b/apps-script/Codigo.gs
+@@ -2213,6 +2213,7 @@
+ var ESTIMATIVA_PASSO_ = 6000;     // passo desconhecido (ver estimativaDoPasso_)
+ var PROP_FEITO_ = 'paleta_feito', PROP_TEMPOS_ = 'paleta_tempos', PROP_PENDENTE_ = 'paleta_pendente';
+ var PROP_ULTIMA_ = 'paleta_ultima_troca', PROP_DETALHE_ = 'paleta_detalhe';
++var PROP_BASE_ = 'paleta_base';
+ // Sai no verTemposDaPaleta, pra saber qual Codigo.gs está colado na planilha que mediu.
+ var VERSAO_PALETA_ = '09/10/2026-carteira-primeiro';
+ 
+@@ -2374,6 +2375,16 @@
+   var velho = nomeCanonicoDaPaleta_(dica);
+   if (!coresDoNome_(velho)) velho = '';
+   var passos = passosDaPaleta_(primeira || 'CARTEIRA'), andou = 0;
++  // 17/10/2026, a deriva da descartável D: numa cópia as propriedades não vêm, e o passo ainda sem registro tomava
++  // como "antes" a `dica` de CADA edição. Trocando A→B e voltando a A antes de B terminar, o passo que ainda estava
++  // em A era lido como B: o FBE4EF do Mizuki Escuro (texto) virava a tinta do Claro, e a rede de legibilidade o
++  // levava ao texto fraco (F1BFD6). A base é a paleta pintada quando a primeira troca começou, gravada uma vez só:
++  // passo sem registro nunca foi repintado desde então, então é nela que ele está.
++  var base = props.getProperty(PROP_BASE_);
++  if (!base && passos.some(function (p) { return !feito[p]; })) {
++    base = geral || velho || PALETA_INICIAL_;
++    props.setProperty(PROP_BASE_, base);
++  }
+   // O relatório da troca: quando começou, em quantas execuções, e quando acabou (ver verTemposDaPaleta).
+   var ultima = lerJson_(props.getProperty(PROP_ULTIMA_));
+   if (nomeCanonicoDaPaleta_(ultima.alvo) !== novo || ultima.fim) ultima = { alvo: novo, inicio: inicio, execucoes: 0, passos: {} };
+@@ -2395,7 +2406,7 @@
+     } else if (tipo === 'cor') {
+       var spec = ABAS.filter(function (a) { return a.nome === nome; })[0];
+       var trecho = partes[2] ? partes[2].split('-').map(Number) : null;
+-      repintarCoresDaAba_(ss, spec, feito[passo] || geral || velho || PALETA_INICIAL_, novo, trecho);
++      repintarCoresDaAba_(ss, spec, feito[passo] || base || geral || velho || PALETA_INICIAL_, novo, trecho);
+     } else if (tipo === 'arte') {
+       repintarArte_(ss, agora, candidatosDeFonte_(agora, coresOpostas_(novo)), nome, Number(partes[2]));
+     } else {

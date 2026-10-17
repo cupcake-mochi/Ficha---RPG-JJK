@@ -1,0 +1,27 @@
+{
+ "resultado": "CAUSA_REPRODUZIDA_CORRECAO_PROPOSTA_NAO_APLICADA",
+ "data": "2026-10-17",
+ "observado_nativo": {
+  "descartavel": "FICHA!A147:AX436, 4.878 células com fonte #F1BFD6 (texto_fraco Escuro) onde a revisão tem #FBE4EF; releitura nativa de A147 confirma (revisão FBE4EF, descartável F1BFD6).",
+  "trechos_da_FICHA": "A FICHA é pintada em três trechos de linhas (1-146, 147-292, 293-436): a deriva cobre exatamente os dois trechos depois do primeiro.",
+  "INVOCAÇÕES!S58": "revisão #F1BFD6 (já no backup de antes de D) e descartável #FBE4EF, fundo #492D4D. Célula isolada, não explicada por este mecanismo; legível; não alterada."
+ },
+ "causa": "convergirPaleta_ usa como \"antes\" de cada passo feito[passo] || paleta_atual || dica || PALETA_INICIAL_. Propriedades do documento não viajam na cópia; num passo sem registro, a dica é o valor que a caixa tinha antes da edição ATUAL. Trocando Escuro→Claro e voltando ao Escuro antes de a troca terminar, os trechos que ainda estavam no Escuro são lidos como Claro: FBE4EF (texto do Escuro) coincide com a tinta do Mizuki Claro, vira a tinta do Escuro (150817), e fonteLegivel_ escolhe o candidato de contraste mais perto de 8:1, o texto_fraco F1BFD6.",
+ "reproducao": {
+  "arquivo": "acabamento-b47/reproduzir-deriva-paleta.js",
+  "metodo": "Sheets de mentira do regressao-paleta.js com o Codigo.gs real; nada no Google.",
+  "copia_sem_propriedades": "FBE4EF→F1BFD6 em FICHA (7.124), FICHA AMALDIÇOADA, INVOCAÇÕES, FICHA PESSOAL e GLOSSÁRIO, para 0, 1 ou 3 cliques no Claro.",
+  "controle_com_propriedades": "sem F1BFD6.",
+  "efeito_so_da_VM": "1E1320→2D0A1A em 94 a 738 células de osso sobre acento, também numa ida e volta completa e no controle; nativamente FICHA!D8/AW9/D15 são iguais na revisão e na descartável, então não é achado nativo."
+ },
+ "correcao_proposta": {
+  "arquivo": "acabamento-b47/PATCH-PALETA-BASE.diff",
+  "ideia": "propriedade paleta_base gravada uma vez, na primeira troca, com a paleta pintada (paleta_atual || dica || PALETA_INICIAL_); passo sem registro usa a base como antes.",
+  "regressao_paleta_js": "51 ok, TODOS PASSARAM (original: 51 ok). Uma primeira versão que preenchia paleta_feito quebrava a medição do teste 6 e foi descartada sem mudar o teste.",
+  "reproducao_com_correcao": "sem F1BFD6 nos seis cenários.",
+  "aplicada": false,
+  "motivo": "mudar Codigo.gs muda os 35 GS canônicos e exige republicar no projeto da revisão; decisão do usuário."
+ },
+ "revisao_afetada": false,
+ "acao_na_descartavel": "nenhuma; descartável não foi repintada nem corrigida."
+}
