@@ -1,0 +1,30 @@
+{
+  "data": "2026-10-17",
+  "base_git": "977bd8c",
+  "resultado": "APROVADO_NATIVO",
+  "regressao": "regressao-familias-invocacao.py",
+  "sha256_teste": "0bf2baa2047a5a6f324ad531e7498c79b26e60b9fccb990693b8acc0f1f8501b",
+  "sha256_pacote": "7df90c2992dadfee29770425d0ce78ed223f04dbb895e7cfa22fb05675a898e4",
+  "backend": "Google Sheets",
+  "planilha": "13qBo5g09Qg9CLGsgwVtCjFYzdiwsNKQkAiVEmcIOm7w",
+  "cenarios": 13,
+  "assercoes_mecanicas": 13,
+  "checagens_estruturais": 7,
+  "comparacoes_por_cenario": 10,
+  "entradas_distintas": 24,
+  "restauracao": {
+    "diferencas": 0,
+    "campos": [
+      "userEnteredValue",
+      "effectiveValue",
+      "note",
+      "dataValidation",
+      "userEnteredFormat"
+    ]
+  },
+  "evidencias_privadas": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/",
+  "limites": [
+    "Não é aprovação do Calc.",
+    "Regressões históricas restantes e oficial pendentes."
+  ]
+}

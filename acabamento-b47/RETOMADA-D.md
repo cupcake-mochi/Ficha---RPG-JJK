@@ -23,7 +23,15 @@ As 191 entradas foram restauradas, sem diferenças nos cinco campos auditados.
 Escrita + leitura nativas pela API: 31.646 ms no conjunto de sete cenários,
 incluindo conector/rede; isso não mede onEdit nem velocidade da interface.
 
-Próximos: progressão, Famílias, campanha/custom
+**Progressão/Famílias:** nove cenários/14 asserções mecânicas de Progressão,
+26 verificações estruturais (zero diferenças), e os 13 cenários/130 resultados
+de Famílias mais sete verificações estruturais passaram. Restauração exata de
+58 e 24 entradas, respectivamente. Provas `REGRESSAO-PROGRESSAO-NATIVA.json`
+e `REGRESSAO-FAMILIAS-NATIVA.json`. Limite explícito: a comparação calculada
+`livro_base` histórico de Progressão não foi executada nem substituída por
+duplicata da geração atual; fechar junto das bases históricas seguintes.
+
+Próximos: campanha/custom e a comparação histórica acima
 (imprimir diferenças completas, investigar Latente), amaldiçoada; depois
 medidas/perfil e janela da oficial pelo roteiro. Não houve escrita na
 revisão/oficial, mudança de GS ou autorização nova. Recibos privados em
