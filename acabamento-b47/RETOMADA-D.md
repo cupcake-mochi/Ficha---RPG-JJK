@@ -59,6 +59,14 @@ Capturas adicionais privadas: carteira, topo da FICHA/AMALDIÇOADA, inventário/
 
 Próxima ação vigente: conferir execuções/gatilhos da cópia e encerramento da paleta; terminar o checklist visual/interações; auditar o estado final da cópia contra o snapshot; preparar aplicação D na revisão com backup/snapshot/releitura novos. Investigar a data de emissão da carteira: a captura mostra 17/10 enquanto o cliente está em 16/10 à noite; metadata Sheets está em Etc/GMT e manifesto Apps Script em America/Sao_Paulo. **Nenhuma alteração de fuso foi feita.** Determinar a fórmula/origem e o efeito antes de corrigir, sem alterar datas/contas do jogador por inferência. Sol/Médio para as próximas verificações.
 
+## Checkpoint: data de emissão corrigida na cópia D
+
+A investigação acima foi concluída: a única fórmula temporal em todas as leituras nativas é `CARTEIRA!AH3`, a emissão calculada por TODAY. O fuso Sheets foi alinhado ao manifesto Apps Script já existente e ao projeto: `Etc/GMT → America/Sao_Paulo`. A fórmula permaneceu idêntica e o texto mudou de `Emitida 17.10.2026` para `Emitida 16.10.2026`, conferido com relógio UTC convertido para São Paulo. Prova: `FUSO-NATIVO.json`. Código GS não foi alterado; a configuração do arquivo nativo viaja com suas cópias. A revisão ainda está em GMT; incluir esta alteração na aplicação D somente após a comparação integral.
+
+Na comparação final da cópia contra `d/antes`, esta é uma alteração efetiva intencional somente em `CARTEIRA!AH3`; as 12 notas de ajuda já estão classificadas na prova anterior. O comparador estrito atual não admite essa diferença automaticamente: conferir e registrar explicitamente a prova temporal, sem ignorar genericamente alterações de valores efetivos.
+
+Histórico de execução inspecionado no projeto D: 50 execuções recentes, todas Concluídas (46 onSelectionChange, quatro onEdit, duração máxima observada 25,703 s). Não é auditoria de todo o histórico; o seletor de tamanho de página não foi alterado com sucesso. Ainda falta conferir acionadores instaláveis e a conclusão interna da paleta. A leitura de registros de Cloud da execução 23:11:33 retornou “Nenhum registro está disponível”, portanto não prova estado interno da troca. Próximo passo: tentar a função existente de leitura `verTemposDaPaleta` no editor; se o Google exigir consentimento, não conceder novos acessos por conta própria. Continuar o restante independente se houver espera. Sol/Médio.
+
 ## Próximos blocos
 
 1. Auditar dependências das quatro abas temporárias: `ESTUDO CAMPANHA`, `ESTUDO CUSTOM`, `ESTUDO 3B`, `ESTUDO 3C`. Confirmar nomes/IDs nativamente; procurar fórmulas, validações, intervalos nomeados, gráficos, regras e scripts. A geração canônica de C já produz 22 abas sem estudos; isso sozinho não prova a ausência de dependências na revisão preenchida.

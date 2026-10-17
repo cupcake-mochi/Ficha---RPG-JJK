@@ -1,0 +1,17 @@
+{
+  "resultado": "OK",
+  "destino": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE",
+  "fuso_anterior": "Etc/GMT",
+  "fuso_final": "America/Sao_Paulo",
+  "manifesto": "America/Sao_Paulo",
+  "celula": "CARTEIRA!AH3",
+  "formula": "=\"Emitida \"&TEXT(TODAY();\"dd.mm.yyyy\")",
+  "formula_preservada": true,
+  "valor_anterior": "Emitida 17.10.2026",
+  "valor_final": "Emitida 16.10.2026",
+  "relogio_utc": "2026-10-17 02:21:39 UTC",
+  "esperado": "Emitida 16.10.2026",
+  "formulas_temporais_nativas_encontradas": 1,
+  "efeito_esperado": "Somente data de emissão exibida; confirmar a comparação integral final antes de aplicar na revisão.",
+  "codigo_gs_alterado": false
+}
