@@ -5,7 +5,7 @@ from pathlib import Path
 from openpyxl import load_workbook
 ROOT=Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT/'capacidade-b47'))
-from contratos_historicos import transformar
+from contratos_historicos import transformar,classificar_vazio
 FALHAS=[]
 def check(nome,cond,det=''):
  print(('OK ' if cond else 'FALHA ')+nome+(' '+str(det) if not cond else ''),flush=True)
@@ -91,7 +91,10 @@ with tempfile.TemporaryDirectory(prefix='b47-campanha-') as tmp:
    atual=get('vazia',s,c)
    bate=math.isclose(v,atual,rel_tol=1e-10,abs_tol=1e-9) if isinstance(v,(int,float)) and isinstance(atual,(int,float)) else v==atual
    if not bate:dif.append((s,c,v,atual))
- check('CAMPANHA vazia: IGUAIS a todos os valores pré-existentes',not dif,dif[:12])
+ print('DIFERENÇAS COMPLETAS CAMPANHA VAZIA: '+json.dumps(dif,ensure_ascii=False,default=str),flush=True)
+ aprovadas,pendentes=classificar_vazio(dif,lambda s,c:get('vazia',s,c))
+ print('CLASSIFICAÇÃO CAMPANHA VAZIA: '+json.dumps({'aprovadas':aprovadas,'pendentes':pendentes},ensure_ascii=False,default=str),flush=True)
+ check('CAMPANHA vazia: valores preservados, com rótulos de C e cabeçalhos conferidos no novo endereço',not pendentes,pendentes)
  v=lambda caso,k:get(caso,'FICHA',idx[k])
  check('pontos iniciais somam sem apagar marcos',get('atributos','DADOS','AK6')==get('vazia','DADOS','AK6')+3)
  check('treinos com ofícios e alternativa mudam só seus totais',get('treinos','DADOS','AK19')==11 and get('treinos','DADOS','AK20')==3 and get('treinos','DADOS','AK27')==13)

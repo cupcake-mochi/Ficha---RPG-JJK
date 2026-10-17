@@ -9,7 +9,10 @@ restauradas sem diferenças (`REGRESSAO-CONFIGURACAO-NATIVA.json`).
 Progressão: nove cenários/14 asserções e 26 checagens estruturais aprovados,
 comparação calculada `livro_base` histórico ainda pendente. Famílias: todos
 os 13 cenários/130 resultados e sete checagens estruturais aprovados.
-Entradas restauradas exatamente nas duas frentes. Campanha/custom
+Entradas restauradas exatamente nas duas frentes. Campanha também concluída:
+12 cenários, 18 asserções e 26.689 valores históricos conferidos; 36 diferenças
+classificadas com endereço/valor exatos e cinco contraprovas, nenhuma restante.
+Prova `acabamento-b47/REGRESSAO-CAMPANHA-NATIVA.json`. Custom
 (Latente ainda a investigar) e amaldiçoada pendentes, seguidas de medidas e
 oficial acompanhada. D permanece concluída; dados do personagem fora do Git.
 Estado vigente no topo de `acabamento-b47/RETOMADA-D.md`.

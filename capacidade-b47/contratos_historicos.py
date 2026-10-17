@@ -6,6 +6,26 @@ aceita diferenças genéricas de fórmula/endereço nem lê expectativas do alvo
 import re
 
 
+def classificar_vazio(diferencas,ler_atual):
+    """Exceções exatas da referência antiga, sem descartar valores numéricos.
+
+    Os rótulos foram substituídos pelo limite real de Famílias (C, prova dos
+    13 cenários em REGRESSAO-FAMILIAS-NATIVA.json). DEFINIÇÃO não é excluída:
+    exige o texto no novo endereço, pelo respiro aprovado no formato 7.
+    """
+    aceitas=[];pendentes=[]
+    for diferenca in diferencas:
+        sheet,coord,before,after=diferenca
+        m=re.fullmatch(r'(P|S|AI|AL)([0-9]+)',coord)
+        header=re.fullmatch(r'(I|AB)([0-9]+)',coord)
+        if sheet=='INVOCAÇÕES' and m and int(m[2]) in [47+198*i for i in range(6)] and after=='ABERTA' and before==('LIVRE · TRILHA' if m[1] in ('P','AI') else 'ABERTA · TRILHA'):
+            aceitas.append({'diferenca':list(diferenca),'causa':'C: rótulo lê o limite individual de Famílias; prova nativa separada.'})
+        elif sheet=='INVOCAÇÕES' and header and int(header[2]) in [51+198*i for i in range(6)] and before=='DEFINIÇÃO' and after in (None,'') and ler_atual(sheet,header[1]+str(int(header[2])+1))=='DEFINIÇÃO':
+            aceitas.append({'diferenca':list(diferenca),'causa':'Cabeçalho preservado uma linha abaixo, no respiro aprovado do formato 7.'})
+        else:pendentes.append(diferenca)
+    return aceitas,pendentes
+
+
 def transformar(row,*,versao=10,reverter=False):
     row=list(row);key=row[0]
     if key=='formato.versao':row[1]=str(versao);return row

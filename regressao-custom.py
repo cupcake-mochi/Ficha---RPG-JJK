@@ -13,7 +13,7 @@ sys.path[:0]=[str(ROOT/'ficha-v01'),str(ROOT)]
 import custom,indice_ficha as ix
 (ROOT/'nuvem-b47/saidas').mkdir(parents=True,exist_ok=True)
 sys.path.insert(0,str(ROOT/'capacidade-b47'))
-from contratos_historicos import transformar
+from contratos_historicos import transformar,classificar_vazio
 falhas=[]
 def check(nome,ok,det=''):
  print(('OK ' if ok else 'FALHA ')+nome+((' '+str(det)) if not ok else ''),flush=True)
@@ -24,7 +24,11 @@ w=load_workbook(novo)
 rows=[list(x) for x in w['ANALISE'].iter_rows(min_row=2,max_col=4,values_only=True) if x[0]]
 old=json.loads((ROOT/'ficha-v01/analise-v4-preservada.json').read_text())
 mapa={r[0]:r for r in rows}
-check('5274 chaves preservadas, com as mudanças exatas aprovadas no formato 7',all(mapa[r[0]]==transformar(r) for r in old) and len(old)==5274)
+# Conferência de 17/10: a única diferença completa era formato.versao 10→11.
+# É a migração C aprovada (MIGRACAO-C-REVISAO.json), sem alterar outra chave.
+contrato_dif=[{'chave':r[0],'esperado':transformar(r,versao=11),'atual':mapa.get(r[0])} for r in old if mapa.get(r[0])!=transformar(r,versao=11)]
+print('DIFERENÇAS COMPLETAS DO CONTRATO CUSTOM: '+json.dumps(contrato_dif,ensure_ascii=False),flush=True)
+check('5274 chaves preservadas, mudanças exatas de Famílias/Definição e formato 11 de C',not contrato_dif and len(old)==5274)
 check('contrato sem chaves repetidas',len(rows)==len(mapa))
 check('25 registros completos inclusive vazios',all(f'custom.{n}.campo.base_do_livro' in mapa and f'aviso.custom.{n}' in mapa for n in range(1,26)))
 cfg=w['CONFIGURAÇÃO'];merges=list(cfg.merged_cells.ranges)
@@ -111,7 +115,10 @@ with tempfile.TemporaryDirectory(prefix='b47-custom-') as tmp:
    nv=get('vazia',s,c)
    equal=math.isclose(v,nv,rel_tol=1e-10,abs_tol=1e-9) if isinstance(v,(int,float)) and isinstance(nv,(int,float)) else v==nv
    if not equal:dif.append((s,c,v,nv))
- check('custom vazio: IGUAIS a todos os valores preexistentes',not dif,dif[:12])
+ print('DIFERENÇAS COMPLETAS CUSTOM VAZIO: '+json.dumps(dif,ensure_ascii=False,default=str),flush=True)
+ aprovadas,pendentes=classificar_vazio(dif,lambda s,c:get('vazia',s,c))
+ print('CLASSIFICAÇÃO CUSTOM VAZIO: '+json.dumps({'aprovadas':aprovadas,'pendentes':pendentes},ensure_ascii=False,default=str),flush=True)
+ check('custom vazio: valores preservados, com rótulos de C e cabeçalhos conferidos no novo endereço',not pendentes,pendentes)
  for n in range(1,11):check(f'cadastro {n} válido',get('completo',custom.NOME,f'S{n+1}') in ['',None],get('completo',custom.NOME,f'S{n+1}'))
  check('arma calcula volume × quantidade',get('completo','FICHA PESSOAL','AG92')==3)
  check('escudo conserva proteção e teto',get('completo','FICHA PESSOAL','W93')=='Proteção +4 · teto de Destreza 1')
@@ -134,6 +141,6 @@ with tempfile.TemporaryDirectory(prefix='b47-custom-') as tmp:
  check('capacidades custom trazem texto',get('completo','FICHA PESSOAL','D45')=='Texto marcante' and get('completo','FICHA PESSOAL','R45')=='Texto menor')
  check('colisão com livro tem diagnóstico',bool(get('duplicado',custom.NOME,'S2')) and get('duplicado',custom.NOME,'T2') is False)
  check('número inválido não vira cadastro válido',bool(get('invalido',custom.NOME,'S4')) and get('invalido',custom.NOME,'T4') is False)
- (ROOT/'nuvem-b47/saidas/resultados-mecanicos-locais.json').write_text(json.dumps({'falhas':falhas,'diferencas_vazio':dif[:50], 'resultados':results},ensure_ascii=False,default=str)+'\n')
+ (ROOT/'nuvem-b47/saidas/resultados-mecanicos-locais.json').write_text(json.dumps({'falhas':falhas,'diferencas_vazio':dif, 'resultados':results},ensure_ascii=False,default=str)+'\n')
 print('CUSTOM CONFERE' if not falhas else f'{len(falhas)} FALHAS',flush=True)
 sys.exit(bool(falhas))

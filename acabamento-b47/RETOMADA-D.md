@@ -31,7 +31,25 @@ e `REGRESSAO-FAMILIAS-NATIVA.json`. Limite explícito: a comparação calculada
 `livro_base` histórico de Progressão não foi executada nem substituída por
 duplicata da geração atual; fechar junto das bases históricas seguintes.
 
-Próximos: campanha/custom e a comparação histórica acima
+**Campanha fechada nativamente:** 12 cenários atuais/18 asserções mecânicas,
+quatro checagens locais e referência antiga construída dos GS `d5a1c38`
+(zero diferenças contra a fixture, inclusive fórmulas de preenchimento).
+Comparação completa de 26.689 valores anteriores: zero erros; lista completa
+de 36 diferenças impressa e registrada ANTES de classificar. São 24 rótulos
+exatos de Famílias de C e 12 cabeçalhos DEFINIÇÃO conferidos uma linha abaixo
+no deslocamento já aprovado no formato 7. Zero diferenças sem explicação;
+cinco contraprovas recusam número alterado, endereço errado e cabeçalho perdido.
+Restauração atual sem diferenças. Prova `REGRESSAO-CAMPANHA-NATIVA.json`.
+
+**Em andamento:** Custom. A única divergência do contrato era formato 10→11,
+impressa integralmente e ajustada para a migração C documentada; nenhuma outra
+chave foi dispensada. Referência nativa Custom `1ujvsFJTqCAYkMkdyZtU2N6t0jiXg_gcA3Y_ae2zMS4k`,
+copiada da referência Campanha restaurada e recebendo somente o delta dos GS
+`d0427b6` (também zero diferenças contra a fixture). Ainda não é prova dos
+cenários Custom nem da base Latente. Nenhuma importação XLSX, OAuth ou edição
+da revisão/oficial. Leituras e recibos continuam na pasta privada.
+
+Próximos: Custom e a comparação histórica de Progressão acima
 (imprimir diferenças completas, investigar Latente), amaldiçoada; depois
 medidas/perfil e janela da oficial pelo roteiro. Não houve escrita na
 revisão/oficial, mudança de GS ou autorização nova. Recibos privados em
