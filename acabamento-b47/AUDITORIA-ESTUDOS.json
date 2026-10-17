@@ -1,0 +1,2252 @@
+{
+  "resultado": "SEM_REFERENCIAS_ESTATICAS",
+  "destino": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE",
+  "abas": 26,
+  "estudos": [
+    {
+      "nome": "ESTUDO 3B",
+      "sheetId": 47005,
+      "formulas": 4,
+      "literals": 172,
+      "notes": 252,
+      "validations": 29
+    },
+    {
+      "nome": "ESTUDO 3C",
+      "sheetId": 47007,
+      "formulas": 16,
+      "literals": 220,
+      "notes": 271,
+      "validations": 56
+    },
+    {
+      "nome": "ESTUDO CAMPANHA",
+      "sheetId": 47003,
+      "formulas": 75,
+      "literals": 254,
+      "notes": 271,
+      "validations": 150
+    },
+    {
+      "nome": "ESTUDO CUSTOM",
+      "sheetId": 2139799909,
+      "formulas": 69,
+      "literals": 274,
+      "notes": 90,
+      "validations": 27
+    }
+  ],
+  "contagens": {
+    "cells": 287435,
+    "formulas": 63954,
+    "validations": 5192,
+    "notes": 5342
+  },
+  "referencias_entrantes": [],
+  "referencias_indiretas_a_revisar": [],
+  "referencias_scripts": [],
+  "referencias_indiretas_resolvidas": [
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DF2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DG2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DH2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DI2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DJ2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DK2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DL2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DM2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DN2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DO2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DP2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DQ2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DR2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DS2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DT2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DU2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DV2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DW2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DX2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DY2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "DZ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EA2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EB2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EC2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "ED2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EE2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EF2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EG2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EH2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EI2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EJ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EK2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EL2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EM2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EN2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EO2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EP2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EQ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "ER2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "ES2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "ET2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EU2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EV2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EW2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EX2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EY2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "EZ2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FA2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FB2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FC2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FD2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FE2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FF2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FG2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FH2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FI2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FJ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FK2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FL2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FM2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FN2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FO2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FP2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FQ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FR2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FS2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FT2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FU2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FV2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FW2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FX2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FY2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "FZ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GA2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GB2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GC2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GD2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GE2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GF2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GG2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GH2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GI2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GJ2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GK2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GL2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GM2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GN2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GO2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GP2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GQ2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GR2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GS2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GT2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GU2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GV2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GW2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GX2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GY2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "GZ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HA2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HB2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HC2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HD2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HE2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HF2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HG2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HH2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HI2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HJ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HK2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HL2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HM2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HN2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HO2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HP2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HQ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HR2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HS2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HT2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HU2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HV2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HW2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HX2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HY2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "HZ2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IA2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IB2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IC2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "ID2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IE2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IF2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IG2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IH2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "II2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IJ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IK2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IL2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IM2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IN2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IO2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IP2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IQ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IR2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IS2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IT2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IU2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IV2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IW2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IX2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IY2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "IZ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JA2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JB2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JC2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JD2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JE2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JF2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JG2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JH2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JI2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JJ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JK2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JL2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JM2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JN2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JO2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JP2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JQ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JR2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JS2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JT2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JU2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JV2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JW2",
+      "destinos": [
+        "DADOS_CUSTOM"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JX2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ2",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY3",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ3",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY4",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ4",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY5",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ5",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY6",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ6",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY7",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ7",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY8",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ8",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY9",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ9",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY10",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ10",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY11",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ11",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY12",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ12",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY13",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ13",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY14",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ14",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY15",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ15",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY16",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ16",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY17",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ17",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY18",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ18",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY19",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ19",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY20",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ20",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY21",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ21",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY22",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ22",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY23",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ23",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY24",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ24",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY25",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ25",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JY26",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    },
+    {
+      "aba": "DADOS_CUSTOM",
+      "celula": "JZ26",
+      "destinos": [
+        "DADOS_CUSTOM",
+        "DADOS_PROGRESSAO"
+      ]
+    }
+  ],
+  "erros_formula": [],
+  "intervalos_nomeados": 3,
+  "abas_canonicas": 22,
+  "blocos": [
+    {
+      "arquivo": "0000.json",
+      "sha256": "0d3d392211f663e40ea2cdd78674676a182ce963b5d441ecd45c2f82f2867a70"
+    },
+    {
+      "arquivo": "0001.json",
+      "sha256": "4288b072f72b1e33c2045872953cad55cd1f2277cbb9953807b2f11452755db1"
+    },
+    {
+      "arquivo": "0002.json",
+      "sha256": "c2555a46a2b9b573ae90001b57b2b7caa1dcf4f53a46967e94a8c18ca98b9cea"
+    },
+    {
+      "arquivo": "0003.json",
+      "sha256": "387e48f224c3cbda58e5583bf3778d92d29dc48e76191eb4a41f57813ec0b5fa"
+    },
+    {
+      "arquivo": "0004.json",
+      "sha256": "466cead730d79e1d31c559dbdb13b22b1d13ec83a8080287659decafa2675315"
+    },
+    {
+      "arquivo": "0005.json",
+      "sha256": "ee40cf34be60d9ce0f46ec68f7aabb612b42348caf6e6665954762341b92d41c"
+    },
+    {
+      "arquivo": "0006.json",
+      "sha256": "b3853132b0b5b04e371ab8181bc9de870ae01279c2caff45a8b1d600cc904021"
+    },
+    {
+      "arquivo": "0007.json",
+      "sha256": "5eceb350090fc465f113ffb7cbe1725640b2c8418eafc8e75cbe911767951a70"
+    },
+    {
+      "arquivo": "0008.json",
+      "sha256": "e0f7f6a05d4b4b98b414fb305a3c0d0d57a66c75bfe537e703d7d28997d75985"
+    },
+    {
+      "arquivo": "0009.json",
+      "sha256": "7f7889e01a48ad21c19cdf0ac67d306b371300af3860e012f1109b25d424e64d"
+    },
+    {
+      "arquivo": "0010.json",
+      "sha256": "f095ebbd76606da5a57465ee8dfc7e6a668ba0dc081b45dbb1c4c28722e8c77e"
+    },
+    {
+      "arquivo": "0011.json",
+      "sha256": "5bc876ddc422e2bbea2709a5473afb0c7c63b34b60708ccd4ed65a600eb78a12"
+    },
+    {
+      "arquivo": "0012.json",
+      "sha256": "cddbf078cca0b8627fbc03e7e6cc79a92ea77270a092f803ab050fd1d7a3d1a7"
+    },
+    {
+      "arquivo": "0013.json",
+      "sha256": "5a70f791d1fb33639df5c73479b3f591381e74fff81bdbb2857d2f172e595f63"
+    },
+    {
+      "arquivo": "0014.json",
+      "sha256": "57efba0ff2ae3d4e4c55c5b5d2a29f6590b4f21607d6499d072283124b4393dc"
+    },
+    {
+      "arquivo": "0015.json",
+      "sha256": "7060229168f951a6b3355f7f9b76ee2e0c23b332b5742513eb926985e0fcd483"
+    },
+    {
+      "arquivo": "0016.json",
+      "sha256": "10e5b43f0b93fc7f983900155a22c53d6b35df163a4ab7797a122b04aa07412f"
+    },
+    {
+      "arquivo": "0017.json",
+      "sha256": "338056d3fc44e52b9fb47d9894b93c3ebc608b946df315e780c0c62de3a84935"
+    },
+    {
+      "arquivo": "0018.json",
+      "sha256": "95579c3996a0ff0bc584a285b53f5f3d8d992638a211813d8d7066b7ed420a3b"
+    },
+    {
+      "arquivo": "0019.json",
+      "sha256": "abaef11ac42046bbaba6f0fe207252fab01ce4c6a97cdd6870bc97a9ab209d5f"
+    },
+    {
+      "arquivo": "0020.json",
+      "sha256": "ffa5f405a4218e16df8042963504844b5e2455a9b0354c0fb8d07769c409fbb3"
+    },
+    {
+      "arquivo": "0021.json",
+      "sha256": "8b4e3f28b70afe0279aa981adc8d29ef75094deda4787d435bff72bdd32d2eaf"
+    },
+    {
+      "arquivo": "0022.json",
+      "sha256": "7f9de00d2b595ea0593a2efee1d4bf839b26655538182d9ff5c7019695c121e5"
+    },
+    {
+      "arquivo": "0023.json",
+      "sha256": "cfa653afa55e243916c31c02bbd5714152259a26344e0df3204df45e9d78d58a"
+    },
+    {
+      "arquivo": "0024.json",
+      "sha256": "3a7bd2aa358ca1facb91a39d6da23c688e8c8238b9113c03a45d899bf08d1377"
+    },
+    {
+      "arquivo": "0025.json",
+      "sha256": "3d3c9be2d274a3330a96adfe072ba42d72a04464f6b1ce57188a24992501a308"
+    },
+    {
+      "arquivo": "0026.json",
+      "sha256": "112e5ccbbe99926ab17eb574323a21c5b1d87e5f839e0ea9a5f3c45f4ee707f0"
+    },
+    {
+      "arquivo": "0027.json",
+      "sha256": "1d929e9950ad3aefc42b970a245c81c913ee36cd5badefb10be34fb246ab9bb4"
+    },
+    {
+      "arquivo": "0028.json",
+      "sha256": "bd219f838bce5a22c1556efd82d4edd1baffd804f65ef1117155feac28d17f17"
+    },
+    {
+      "arquivo": "0029.json",
+      "sha256": "542a2827f39eacfe3f12adfe7f3c2153e6ab62a3162f9fe184097eac03858a69"
+    },
+    {
+      "arquivo": "0030.json",
+      "sha256": "4bda518eb2bc6e32e990e97a1e84f90c2e29c587400b1fa4691e24c02768c6bc"
+    },
+    {
+      "arquivo": "0031.json",
+      "sha256": "757bc98320be01df1b53c2bc70ddad40e0af2772fd4d39159ee4c9c334ef3093"
+    },
+    {
+      "arquivo": "0032.json",
+      "sha256": "7291101b75178a9ed45dd0a62326979ef21bd2b00668e76623705f5538c5faa6"
+    },
+    {
+      "arquivo": "0033.json",
+      "sha256": "403cab0df96a9b1221d3493ff1aa7896e9b34890716b8a263b385d66b414f710"
+    },
+    {
+      "arquivo": "0034.json",
+      "sha256": "8ed038793ab36410d6b2c919b745b0349bcdebde4e9a5875cc72a0438f761351"
+    },
+    {
+      "arquivo": "0035.json",
+      "sha256": "b1ae971ccd042aa3e0ccae8cea42b3696f28c72b0ae551af77aa2946ff5f9798"
+    },
+    {
+      "arquivo": "0036.json",
+      "sha256": "384555776308f4f28c03269d38686dd976567a86012b8de24bf6ae0e855b5bb7"
+    },
+    {
+      "arquivo": "0037.json",
+      "sha256": "b0faaff0d55209474cce9f462f0c30c3c412006b3c3f30644ecb44d1b0101635"
+    },
+    {
+      "arquivo": "0038.json",
+      "sha256": "65c25b49958872d9920d7dc5aaa426db57d576c0b64358be755a7633514b4f65"
+    },
+    {
+      "arquivo": "0039.json",
+      "sha256": "e10231656c3aab33bcac0bb6ba86236cc81dce27fc55f298e183a88cadaf608a"
+    },
+    {
+      "arquivo": "0040.json",
+      "sha256": "0a0d24c3a53116bae0c6dbb807b395344b86a134d7cb4c9e092caf802671b39a"
+    },
+    {
+      "arquivo": "0041.json",
+      "sha256": "3ac43f0eece8b4a1d8a7967cef39d922ff21304f79f8332e2dad71a793def1b7"
+    },
+    {
+      "arquivo": "0042.json",
+      "sha256": "18ba60ae0087074b168e100a8772419616658d00dc5fd4bcd5e166b0d0b8f9b9"
+    },
+    {
+      "arquivo": "0043.json",
+      "sha256": "2b7541adb8e2a5f09c0f0516958057c8d72985ab1458f9bc8e147c7f9268e429"
+    },
+    {
+      "arquivo": "0044.json",
+      "sha256": "2b7a59d173a7b6d2561e32742f893509e629a0fd26112ea7183c358f02eaf0ba"
+    },
+    {
+      "arquivo": "0045.json",
+      "sha256": "ff050eecd1852ae4fb719e76d148594d93801ac38a42f7893852a38fa8836b34"
+    },
+    {
+      "arquivo": "0046.json",
+      "sha256": "e58d7adf6367409c2320063678399cbe5283ddfafd6d38642674c4028d9a9d9e"
+    },
+    {
+      "arquivo": "0047.json",
+      "sha256": "5d926abab665351dabcf006f0e920ea8258c7304b1bc2733981603567d907a35"
+    },
+    {
+      "arquivo": "0048.json",
+      "sha256": "d6972a791929ee690ed41cd1ae2cd71bcd9f1884194770240b647f96ec33b0c1"
+    },
+    {
+      "arquivo": "0049.json",
+      "sha256": "36750a6329a144139403b4321dd72dd518302d567dff6d3e4666fedf98e4c2fd"
+    },
+    {
+      "arquivo": "0050.json",
+      "sha256": "e637d48e9bfe88a1a217111acd45a6bbc0090fc294e40773c263aace95fa9072"
+    },
+    {
+      "arquivo": "0051.json",
+      "sha256": "38aae8040926e5f4aba758288b59a184f5791d40c9fb0e28996fedd08263c0a2"
+    },
+    {
+      "arquivo": "0052.json",
+      "sha256": "f471efc0a0e9d50eb513578f71007c2d091d322a71ac6c80430d1806568febc4"
+    },
+    {
+      "arquivo": "0053.json",
+      "sha256": "01b33d9517c3a6c2a51e91bb1288eba944f456713747dfed6c0c93ce63d8c97a"
+    },
+    {
+      "arquivo": "0054.json",
+      "sha256": "6784db5790e4501d4051394561369e7d930ece1ab88f23e415a1a7821d6bd46a"
+    },
+    {
+      "arquivo": "0055.json",
+      "sha256": "3b2e56735ed85143e0ba42128fe560fbf9dcac91dbc2b8a50abf73cc7dd0d55f"
+    },
+    {
+      "arquivo": "0056.json",
+      "sha256": "49b121547d6518b3340125b91190d74ef84f22074c365fb0a2ae2daf80ed9fa1"
+    },
+    {
+      "arquivo": "0057.json",
+      "sha256": "5c3e6defe52bbd6dc44091da19bdcf3bd204cc1752c4fc48b12c539c16cd3693"
+    },
+    {
+      "arquivo": "0058.json",
+      "sha256": "22c0bdedeaebd2a3f29a3fa7ee27a521fca07e29cb96b35e11ef9b027411e546"
+    },
+    {
+      "arquivo": "0059.json",
+      "sha256": "ba0f81a57125e254279f98574441b693c392929f17e67351d39d30fdf368f6ad"
+    },
+    {
+      "arquivo": "0060.json",
+      "sha256": "861443aeb972614efb8ac56a101df52cb831a272930947e19e7e788b7ba296ad"
+    },
+    {
+      "arquivo": "0061.json",
+      "sha256": "5c62c25fa8275faf09465c6063060c14452b27a146ab14e4a3949a4101d6458c"
+    },
+    {
+      "arquivo": "0062.json",
+      "sha256": "5922c5028fdec9013035757aced323d0adfcf2b8f8a4e73edfcccd2c085979c5"
+    },
+    {
+      "arquivo": "0063.json",
+      "sha256": "d7b4d9842bb98cb5219dcc9c7adb8d1ee439a2a6d3b4150c9382d7f071713696"
+    },
+    {
+      "arquivo": "0064.json",
+      "sha256": "57cfd0b59c5646c7afc42d4c8f1d5451903aae7c0d0b6b681c2f46f4d6db6d3d"
+    },
+    {
+      "arquivo": "0065.json",
+      "sha256": "6e137221f9018c29723cf20bee850ce2a6dbf6ad43462c1763a4850e269f73a6"
+    },
+    {
+      "arquivo": "0066.json",
+      "sha256": "dfb8338d1ed62eee04fd6e8b75a0bc4b4331fe00fe9fa2e59ecde667d364732c"
+    },
+    {
+      "arquivo": "0067.json",
+      "sha256": "ad25ca9da58f6ae5ba3fa99e0af25b9979ed1d34897b1315b747f78c509cf2a3"
+    },
+    {
+      "arquivo": "0068.json",
+      "sha256": "28d83a6d292539760d12735972f01c7d34d4b28c69573a078ad0c8cb11231a6f"
+    },
+    {
+      "arquivo": "0069.json",
+      "sha256": "3d6a84a925e20798ed08202963dc311485e524299acacdd60d4dae57226ad436"
+    },
+    {
+      "arquivo": "0070.json",
+      "sha256": "b2194dd6d6c9af55615bb1839f434c9cad5208a04c6a3cb0313bb2591b9a869a"
+    },
+    {
+      "arquivo": "0071.json",
+      "sha256": "07c65ba2ca778b18c56c841146d5f8be69c565a6d79dacb51982d92bbdba6a86"
+    },
+    {
+      "arquivo": "0072.json",
+      "sha256": "4204d0f74b2f477dcf60f556c99b7474b346a1bbfadb0e966c7fa862b09e394a"
+    },
+    {
+      "arquivo": "0073.json",
+      "sha256": "11cb997ef257f0ee104c687d1254b6abc35c6be53cf20eb2844ed64a40e0c681"
+    },
+    {
+      "arquivo": "0074.json",
+      "sha256": "9ca5bf88002b409e0fe002880e80ffa801fab2e0d7f93be1b6a04b298634ee9c"
+    },
+    {
+      "arquivo": "0075.json",
+      "sha256": "49d205b69d230beda1ee9220d3bf445a75a7f1f880d6170d5dd0411b8100d26f"
+    }
+  ],
+  "scripts": [
+    {
+      "arquivo": "Analise.gs",
+      "sha256": "aa8bb8b9a35a9f33ee38da65055c39159ab2ec1293a7331307b1bdd9e4ae62f8"
+    },
+    {
+      "arquivo": "AnaliseFontes.gs",
+      "sha256": "bab8fbcdcf5cc38327f5f8d99f15e1d60ff17cf7cd78cd82693c4b1a335da901"
+    },
+    {
+      "arquivo": "AptidoesPersonagem.gs",
+      "sha256": "f817148cbaa5410fc7fed4fa849a8e9f7e12ddc1936259608ff6339c9dbd1cd3"
+    },
+    {
+      "arquivo": "Codigo.gs",
+      "sha256": "06f14ddffdb7e9a773cd411d87ff176cefe138c1354114ac3fd2c79b31ca8b09"
+    },
+    {
+      "arquivo": "Configuracao.gs",
+      "sha256": "8929b87d8c0f59d605b2c2f3aaef4ec43c9b9856a69b8e11be097b686bd21457"
+    },
+    {
+      "arquivo": "Criacao.gs",
+      "sha256": "59263150a9babcc4cf0a8906690b0e6dae46874a8b42dd06cc0255705288bf4e"
+    },
+    {
+      "arquivo": "CriacaoAnalise.gs",
+      "sha256": "067e0a2fa2b31184ef84d48855e7b9773dc50aff5b29f3aa3fededff42348a61"
+    },
+    {
+      "arquivo": "CriacaoPainel.gs",
+      "sha256": "da54909680da146f669b892b12bc665a69a90f6f293fdb651e61b8c0bb44def2"
+    },
+    {
+      "arquivo": "Custom.gs",
+      "sha256": "7c52d24e94b64504bb92e1357a4829aa2492fc7f0758b21fcad16bf4d0cd235b"
+    },
+    {
+      "arquivo": "Danos.gs",
+      "sha256": "3b9b652878e2846c4cd95214e2634ec388574ddfad2f2806475d02c1df67c2f6"
+    },
+    {
+      "arquivo": "DanosPainel.gs",
+      "sha256": "e710fc625590c2ad80378ad37253d32d32527859e61bd528d9b2a807783f1a39"
+    },
+    {
+      "arquivo": "Entidades.gs",
+      "sha256": "4c5317bc03deb0b1c89f77c247a66ec8dde705cea448413e71bcbb9e29b1bba7"
+    },
+    {
+      "arquivo": "EntidadesAnalise.gs",
+      "sha256": "ba5a4d60959ac0144076501d394b9a3beacae2b70ecf1d77c8c583a83c5117ef"
+    },
+    {
+      "arquivo": "EntidadesPainel.gs",
+      "sha256": "d319d42da5f9f9a6ee4fd5bbb81d96032346d9c86ee290b03ca0d68e1bf571a8"
+    },
+    {
+      "arquivo": "Ficha.gs",
+      "sha256": "ad5c25feae9f0526f4a7e4b2288384f5a91e1480d7a82bacaa762997c98b2730"
+    },
+    {
+      "arquivo": "FormasPersonagem.gs",
+      "sha256": "e3da6d915063acd0dc4cd444bcbab7767c21e8451184ee0cb7a6caf1dc91b895"
+    },
+    {
+      "arquivo": "Habilidades.gs",
+      "sha256": "478f255b306af36c19f1bfdfba0e337ffc6fb7cf49ab2b5b5f4f95f665b0b00e"
+    },
+    {
+      "arquivo": "Invocacoes.gs",
+      "sha256": "2da9e32083f17e741d33015298e905915025ec913e47b87707984ebecc49ca14"
+    },
+    {
+      "arquivo": "Melhorias.gs",
+      "sha256": "d00d0c68c59c9e20b77dd83d4649901889ea8795cd24021bd64bc6b72368c5a6"
+    },
+    {
+      "arquivo": "Origens.gs",
+      "sha256": "072769240d813be75fe1e48356292d8ae45f043587a226336aa231d174f270e5"
+    },
+    {
+      "arquivo": "PecasAnalise1.gs",
+      "sha256": "d02e3160f01cb0282bdc88c7b2082f539e20e5a9abbf225a78fab69fb6d76e7a"
+    },
+    {
+      "arquivo": "PecasPainel.gs",
+      "sha256": "47afb7105bb9ae3e03572a8e175721c95a5cb7da87ed3ab84b47a5f7f76bb0b2"
+    },
+    {
+      "arquivo": "PersonagemAnalise.gs",
+      "sha256": "1b2fbe9cd0bd35990c55a55315fb10e6bed5d18cc147feb055dc22a0ada9eca0"
+    },
+    {
+      "arquivo": "PersonagemFormas1.gs",
+      "sha256": "4b1828dea188d3bd82f070ec23fb0fc657fbff7d15642c22b0c74d5865cc9694"
+    },
+    {
+      "arquivo": "PersonagemFormas2.gs",
+      "sha256": "4b1d0c734b5ad14d704d186a510af1359f518cacb331d24fccdf6a427fe71a2e"
+    },
+    {
+      "arquivo": "PersonagemFormas3.gs",
+      "sha256": "d556558f491a501eb87d400b2df9d2977f092836896c3c9c7553033d73e95630"
+    },
+    {
+      "arquivo": "PersonagemFormas4.gs",
+      "sha256": "8df9dc623de5e5358fa50188a9422b998292edf2e5bc8648475cecb956f71380"
+    },
+    {
+      "arquivo": "PersonagemFormas5.gs",
+      "sha256": "3f3ce2542da85758ed8927385f1aad222aa36d66e4ae1aadc4bf004da7c5a80f"
+    },
+    {
+      "arquivo": "PersonagemPainel.gs",
+      "sha256": "1901718cc4029a019608b1627c3eabf9bb9dc09f25a351b8cd8613e4377d05c6"
+    },
+    {
+      "arquivo": "Pessoal.gs",
+      "sha256": "40be1ef36847a8a23942b8c9bc369490315ff39223fc9f529b379f603c0b15ed"
+    },
+    {
+      "arquivo": "Progressao.gs",
+      "sha256": "999d37a9b07baf01181b7b835faa5336f02b90218f91543b5128b5a568377823"
+    },
+    {
+      "arquivo": "ProgressaoAnalise.gs",
+      "sha256": "b8d7c0b13009c3b757f609197a8675f48ebe0e2437f6b8a5d50c8ad4c790e6bf"
+    },
+    {
+      "arquivo": "ProgressaoPainel.gs",
+      "sha256": "0205c380d8a5a95e092e4ef3409a752fba1f764c96445fc61b3bda1873d49cbf"
+    },
+    {
+      "arquivo": "Restricoes.gs",
+      "sha256": "30b8fa613a0d1639a96b6b2cd6f95bcf5880768ffd9d26a51c95751de27e1f99"
+    },
+    {
+      "arquivo": "TalentosPersonagem.gs",
+      "sha256": "cd577b318c958befe16e089324c9c8661f18d41c71e4cb1964c2324677a885ae"
+    }
+  ],
+  "limite": "Ausência estática não substitui o ensaio nativo de remoção e comparação integral; conteúdo dos estudos permanece preservado na cópia/backup."
+}

@@ -11,6 +11,14 @@ O usuário autorizou iniciar D após o fechamento de C e pediu checkpoints frequ
 - Nova cópia descartável para D: `1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE`, criada da revisão após C; 26 abas esperadas. Não foi modificada após a cópia neste checkpoint.
 - Evidência privada de abertura: `D:/JJK - Project/B47/evidencias/2026-10-16/d/abertura.json`. Dados do personagem e credenciais não entram no Git.
 
+## Checkpoint: auditoria dos estudos concluída
+
+`AUDITORIA-ESTUDOS.json` e `auditar-estudos.py` registram a auditoria da cópia D: 76 blocos nativos, 26 abas, 63.954 fórmulas, 5.192 validações e 5.342 notas, sem referências entrantes aos quatro estudos e sem erros de fórmula. Referências indiretas foram resolvidas conservadoramente: somente `INDIRECT(SWITCH(...))` cujos resultados/default são faixas literais em abas preservadas. Os 35 scripts canônicos não mencionam os estudos. Os três intervalos nomeados pertencem à carteira. O único `getSheets()` genérico de Codigo.gs percorre proteções, sem depender de uma posição ou estudo.
+
+As leituras completas, com dados privados, estão em `D:/JJK - Project/B47/evidencias/2026-10-16/d/antes/`; plano e metadados na pasta pai. Foram lidas fórmulas, valores efetivos, notas, validações, hyperlinks e textFormatRuns, além dos metadados integrais. Não houve remoção nem alteração de conteúdo. A obtenção dos metadados integrais usou uma atualização idempotente do título existente na cópia.
+
+Próxima ação exata: backup nativo da cópia D, releitura para confirmar o snapshot, remoção apenas dos quatro estudos na cópia D, comparação integral de fórmulas/entradas/notas/validações e resultados preservados, ANALISE com 8.190 chaves. Não remover estudos da revisão antes desse ensaio. Sol/Médio é suficiente para esse procedimento delimitado.
+
 ## Próximos blocos
 
 1. Auditar dependências das quatro abas temporárias: `ESTUDO CAMPANHA`, `ESTUDO CUSTOM`, `ESTUDO 3B`, `ESTUDO 3C`. Confirmar nomes/IDs nativamente; procurar fórmulas, validações, intervalos nomeados, gráficos, regras e scripts. A geração canônica de C já produz 22 abas sem estudos; isso sozinho não prova a ausência de dependências na revisão preenchida.

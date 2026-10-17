@@ -1,6 +1,6 @@
 ## D autorizada · checkpoint de abertura · 16/10/2026
 
-C está concluída e publicada em `21f1620`. Após esse fechamento, o usuário autorizou D e pediu checkpoints frequentes devido ao saldo de 2% semanal. [Retomada vigente de D](acabamento-b47/RETOMADA-D.md) e [prompt portátil](acabamento-b47/PROMPT-RETOMADA.md). A cópia nativa de D foi criada; o próximo bloco é a auditoria das dependências dos estudos antes de qualquer remoção. A revisão permanece no estado validado de C.
+C está concluída e publicada em `21f1620`. Após esse fechamento, o usuário autorizou D e pediu checkpoints frequentes devido ao saldo de 2% semanal. [Retomada vigente de D](acabamento-b47/RETOMADA-D.md) e [prompt portátil](acabamento-b47/PROMPT-RETOMADA.md). A [auditoria estática dos estudos](acabamento-b47/AUDITORIA-ESTUDOS.json) passou em 76 blocos das 26 abas, sem referências entrantes nem erros de fórmula. O próximo bloco é ensaiar a retirada dos estudos na cópia D, com backup/releitura/comparação. A revisão permanece no estado validado de C.
 
 ## Histórico: C concluída na revisão nativa · parada antes de D · 16/10/2026
 
