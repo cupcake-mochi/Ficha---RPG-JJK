@@ -1,5 +1,15 @@
 # B47 — ponto vigente, itens 3 e 2 concluídos · 17/10/2026
 
+**OFICIAL EM CONSTRUÇÃO, NÃO LIBERADA:** usuário confirmou presença/janela
+sem cópias em 17/10, 23:31Z. Backup NOVO `1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI`
+conferido igual em dez abas, conteúdo/notas/validações/mesclas/grupos/estilos.
+Projeto oficial `1sZTcHm1yNz8x7sVs5WaRj1pX8qbac-kglUDIdDTFLh_iqvHwzF6sqXff`:
+35 GS e manifesto relidos iguais em nova abertura após publicação; fuso da
+planilha corrigido. `construir()` iniciado ~23:43Z; acompanhar no editor.
+Prova incremental `OFICIAL-B47.json`. Ainda faltam montagem completa,
+comparação com referência nativa e cópia funcional. Não liberar cópias antes.
+Revisão preenchida permanece fora da montagem. Sol/Médio para acompanhamento.
+
 Este bloco prevalece sobre o histórico. Base recebida `66012e0`; D concluída.
 Git, Sheets leitura/escrita e editor Apps Script disponíveis; LibreOffice não
 localizado neste Windows. Usuário pediu priorizar os cenários no Google.

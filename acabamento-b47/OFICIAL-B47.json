@@ -1,0 +1,260 @@
+{
+  "status": "CONSTRUCAO_INICIADA_AINDA_NAO_LIBERADA",
+  "data": "2026-10-17",
+  "janela_confirmada_usuario": "Estou no PC; podemos atualizar agora, sem cópias nesse intervalo.",
+  "inicio_preparacao_utc": "2026-10-17 23:31:25 UTC",
+  "inicio_construcao_utc": "2026-10-17 ~23:43 UTC",
+  "oficial": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
+  "script": "1sZTcHm1yNz8x7sVs5WaRj1pX8qbac-kglUDIdDTFLh_iqvHwzF6sqXff",
+  "backup": {
+    "backup": "1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI",
+    "origem": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
+    "data": "2026-10-17",
+    "resultado": "BACKUP_NATIVO_CONFERIDO",
+    "abas": [
+      "CARTEIRA",
+      "FICHA",
+      "FICHA AMALDIÇOADA",
+      "INVOCAÇÕES",
+      "FICHA PESSOAL",
+      "DADOS",
+      "DADOS_AM",
+      "DADOS_INVOC",
+      "GLOSSÁRIO",
+      "ANALISE"
+    ],
+    "conteudo_notas_validacoes_merges_grupos_estilos_iguais": true,
+    "hash_exportacoes": [
+      "cc01417d9722e6a7dfa6c2ddb026cb39f4d3c20782f62fb12144e1faf255e28c",
+      "51163147ad614d38844a20152a6266db4f9128d72e031fef9920421682ad1f3b"
+    ]
+  },
+  "codigo": {
+    "metodo": "Clipboard da UI; hash antes de Salvar, espera do botão desabilitado. Editor recarregado e aberto em aba nova para reler do servidor.",
+    "arquivos_antes": {
+      "Código.gs": {
+        "chars": 254949,
+        "sha256": "b4297bcfaab6ccb650669eb8d2e570986ec0cefdc59f29256b995a6e84815804"
+      },
+      "Ficha.gs": {
+        "chars": 882028,
+        "sha256": "562c7fe96c4798d7b8395e3c5fb44c670616df6daeef6f20376fe135d13779a0"
+      },
+      "Habilidades.gs": {
+        "chars": 209064,
+        "sha256": "478f255b306af36c19f1bfdfba0e337ffc6fb7cf49ab2b5b5f4f95f665b0b00e"
+      },
+      "Invocações.gs": {
+        "chars": 462820,
+        "sha256": "38b15864c307fde5867ea632828e2e5251785c894fb68050fc829f8ee1bbc36b"
+      },
+      "Origens.gs": {
+        "chars": 72950,
+        "sha256": "834174f9f2513a2bd52c54ecc80b2addd0c6e0dcec59287cb66eda2c18b1f704"
+      },
+      "Analise.gs": {
+        "chars": 493543,
+        "sha256": "ac2ddbfa2f47292572d065873e9ecac8bda37fbda315e7bf20dd58918f80f5ea"
+      },
+      "appsscript.json": {
+        "sha256": "3482b8bf420d1dfc21603c14345342df8a609f089b0493c5fd4f4636accb0dd6",
+        "chars": 131
+      }
+    },
+    "hashes_relidos": {
+      "Analise.gs": {
+        "sha256": "aa8bb8b9a35a9f33ee38da65055c39159ab2ec1293a7331307b1bdd9e4ae62f8",
+        "chars": 799586,
+        "recarregado": true
+      },
+      "AnaliseFontes.gs": {
+        "sha256": "bab8fbcdcf5cc38327f5f8d99f15e1d60ff17cf7cd78cd82693c4b1a335da901",
+        "chars": 403688,
+        "recarregado": true
+      },
+      "AptidoesPersonagem.gs": {
+        "sha256": "f817148cbaa5410fc7fed4fa849a8e9f7e12ddc1936259608ff6339c9dbd1cd3",
+        "chars": 56327,
+        "recarregado": true
+      },
+      "Codigo.gs": {
+        "sha256": "f77b39db507c705b5d48ebe8103656f440967336b659b17df0927d6b5aa256de",
+        "chars": 266103,
+        "recarregado": true
+      },
+      "Configuracao.gs": {
+        "sha256": "8929b87d8c0f59d605b2c2f3aaef4ec43c9b9856a69b8e11be097b686bd21457",
+        "chars": 829076,
+        "recarregado": true
+      },
+      "Criacao.gs": {
+        "sha256": "59263150a9babcc4cf0a8906690b0e6dae46874a8b42dd06cc0255705288bf4e",
+        "chars": 14329,
+        "recarregado": true
+      },
+      "CriacaoAnalise.gs": {
+        "sha256": "067e0a2fa2b31184ef84d48855e7b9773dc50aff5b29f3aa3fededff42348a61",
+        "chars": 9804,
+        "recarregado": true
+      },
+      "CriacaoPainel.gs": {
+        "sha256": "da54909680da146f669b892b12bc665a69a90f6f293fdb651e61b8c0bb44def2",
+        "chars": 31094,
+        "recarregado": true
+      },
+      "Custom.gs": {
+        "sha256": "7c52d24e94b64504bb92e1357a4829aa2492fc7f0758b21fcad16bf4d0cd235b",
+        "chars": 602869,
+        "recarregado": true
+      },
+      "Danos.gs": {
+        "sha256": "3b9b652878e2846c4cd95214e2634ec388574ddfad2f2806475d02c1df67c2f6",
+        "chars": 11185,
+        "recarregado": true
+      },
+      "DanosPainel.gs": {
+        "sha256": "e710fc625590c2ad80378ad37253d32d32527859e61bd528d9b2a807783f1a39",
+        "chars": 2497,
+        "recarregado": true
+      },
+      "Entidades.gs": {
+        "sha256": "4c5317bc03deb0b1c89f77c247a66ec8dde705cea448413e71bcbb9e29b1bba7",
+        "chars": 74754,
+        "recarregado": true
+      },
+      "EntidadesAnalise.gs": {
+        "sha256": "ba5a4d60959ac0144076501d394b9a3beacae2b70ecf1d77c8c583a83c5117ef",
+        "chars": 42674,
+        "recarregado": true
+      },
+      "EntidadesPainel.gs": {
+        "sha256": "d319d42da5f9f9a6ee4fd5bbb81d96032346d9c86ee290b03ca0d68e1bf571a8",
+        "chars": 107418,
+        "recarregado": true
+      },
+      "Ficha.gs": {
+        "sha256": "ad5c25feae9f0526f4a7e4b2288384f5a91e1480d7a82bacaa762997c98b2730",
+        "chars": 819580,
+        "recarregado": true
+      },
+      "FormasPersonagem.gs": {
+        "sha256": "e3da6d915063acd0dc4cd444bcbab7767c21e8451184ee0cb7a6caf1dc91b895",
+        "chars": 1195,
+        "recarregado": true
+      },
+      "Habilidades.gs": {
+        "sha256": "478f255b306af36c19f1bfdfba0e337ffc6fb7cf49ab2b5b5f4f95f665b0b00e",
+        "chars": 209064,
+        "recarregado": true
+      },
+      "Invocacoes.gs": {
+        "sha256": "2da9e32083f17e741d33015298e905915025ec913e47b87707984ebecc49ca14",
+        "chars": 575752,
+        "recarregado": true
+      },
+      "Melhorias.gs": {
+        "sha256": "d00d0c68c59c9e20b77dd83d4649901889ea8795cd24021bd64bc6b72368c5a6",
+        "chars": 75309,
+        "recarregado": true
+      },
+      "Origens.gs": {
+        "sha256": "072769240d813be75fe1e48356292d8ae45f043587a226336aa231d174f270e5",
+        "chars": 512217,
+        "recarregado": true
+      },
+      "PecasAnalise1.gs": {
+        "sha256": "d02e3160f01cb0282bdc88c7b2082f539e20e5a9abbf225a78fab69fb6d76e7a",
+        "chars": 99849,
+        "recarregado": true
+      },
+      "PecasPainel.gs": {
+        "sha256": "47afb7105bb9ae3e03572a8e175721c95a5cb7da87ed3ab84b47a5f7f76bb0b2",
+        "chars": 16873,
+        "recarregado": true
+      },
+      "PersonagemAnalise.gs": {
+        "sha256": "1b2fbe9cd0bd35990c55a55315fb10e6bed5d18cc147feb055dc22a0ada9eca0",
+        "chars": 96591,
+        "recarregado": true
+      },
+      "PersonagemFormas1.gs": {
+        "sha256": "4b1828dea188d3bd82f070ec23fb0fc657fbff7d15642c22b0c74d5865cc9694",
+        "chars": 50068,
+        "recarregado": true
+      },
+      "PersonagemFormas2.gs": {
+        "sha256": "4b1d0c734b5ad14d704d186a510af1359f518cacb331d24fccdf6a427fe71a2e",
+        "chars": 146187,
+        "recarregado": true
+      },
+      "PersonagemFormas3.gs": {
+        "sha256": "d556558f491a501eb87d400b2df9d2977f092836896c3c9c7553033d73e95630",
+        "chars": 179796,
+        "recarregado": true
+      },
+      "PersonagemFormas4.gs": {
+        "sha256": "8df9dc623de5e5358fa50188a9422b998292edf2e5bc8648475cecb956f71380",
+        "chars": 176101,
+        "recarregado": true
+      },
+      "PersonagemFormas5.gs": {
+        "sha256": "3f3ce2542da85758ed8927385f1aad222aa36d66e4ae1aadc4bf004da7c5a80f",
+        "chars": 15168,
+        "recarregado": true
+      },
+      "PersonagemPainel.gs": {
+        "sha256": "1901718cc4029a019608b1627c3eabf9bb9dc09f25a351b8cd8613e4377d05c6",
+        "chars": 195609,
+        "recarregado": true
+      },
+      "Pessoal.gs": {
+        "sha256": "40be1ef36847a8a23942b8c9bc369490315ff39223fc9f529b379f603c0b15ed",
+        "chars": 163115,
+        "recarregado": true
+      },
+      "Progressao.gs": {
+        "sha256": "999d37a9b07baf01181b7b835faa5336f02b90218f91543b5128b5a568377823",
+        "chars": 78568,
+        "recarregado": true
+      },
+      "ProgressaoAnalise.gs": {
+        "sha256": "b8d7c0b13009c3b757f609197a8675f48ebe0e2437f6b8a5d50c8ad4c790e6bf",
+        "chars": 104516,
+        "recarregado": true
+      },
+      "ProgressaoPainel.gs": {
+        "sha256": "0205c380d8a5a95e092e4ef3409a752fba1f764c96445fc61b3bda1873d49cbf",
+        "chars": 163323,
+        "recarregado": true
+      },
+      "Restricoes.gs": {
+        "sha256": "30b8fa613a0d1639a96b6b2cd6f95bcf5880768ffd9d26a51c95751de27e1f99",
+        "chars": 12338,
+        "recarregado": true
+      },
+      "TalentosPersonagem.gs": {
+        "sha256": "cd577b318c958befe16e089324c9c8661f18d41c71e4cb1964c2324677a885ae",
+        "chars": 24704,
+        "recarregado": true
+      },
+      "appsscript.json": {
+        "sha256": "3482b8bf420d1dfc21603c14345342df8a609f089b0493c5fd4f4636accb0dd6",
+        "chars": 131,
+        "recarregado": true
+      }
+    },
+    "gs": 35,
+    "manifesto": 1,
+    "iguais": 36,
+    "manifesto_preservado": true,
+    "escopos_novos_concedidos": false
+  },
+  "fuso_planilha": "America/Sao_Paulo",
+  "pendente": "Terminar construir/continuar, conferir contra referência nativa, cópia funcional e liberação.",
+  "referencia_exportada": {
+    "id": "14Ad8e5hUECLimCFuilEGSIxrhv0IWpDUEjEBR4N8N-Q",
+    "sha256": "e9a32bf3debba84518c83480a5251be10108cf31fe133fb3e3c0ee21a75bd8d4"
+  },
+  "pasta_privada": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/",
+  "modelo_recomendado": "Sol/Médio para acompanhar execuções; aumentar se houver divergência."
+}

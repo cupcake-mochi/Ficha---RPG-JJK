@@ -1,5 +1,11 @@
 ## Pós-D · itens 3 e 2 concluídos · 17/10/2026
 
+**Oficial em atualização acompanhada, ainda não liberada.** Janela confirmada
+pelo usuário; backup nativo novo conferido `1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI`.
+Código 36/36 relido igual, fuso corrigido, construir iniciado ~23:43Z.
+Estado incremental em `acabamento-b47/OFICIAL-B47.json`; concluir montagem,
+comparação e cópia funcional antes de liberar.
+
 Testes antigos concluídos no Google (detalhes abaixo). Medidas/perfil fechados
 em `acabamento-b47/MEDIDAS-POS-D.md`/`.json`: onOpen 7,767 s, edição de texto
 10,124 s, expansão 10,011 s; cópia restaurada inclusive alturas/grupos. VM e
