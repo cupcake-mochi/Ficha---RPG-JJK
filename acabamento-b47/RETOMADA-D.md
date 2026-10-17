@@ -47,6 +47,18 @@ Teste nativo de paleta na cópia D: seleção real de `Mizuki · Claro · rosa e
 
 Próxima ação exata: concluir a conferência da restauração da paleta enquanto revisa as abas visíveis, grupo 7, inventário e as 12 entidades/abertura de grupos; falta a aplicação D na revisão. Última aba visualizada: FICHA AMALDIÇOADA, célula A1, zoom 75%, tab IAB 32 (pode não sobreviver ao turno; localizar pelo ID da cópia). Recomendação Sol/Médio para continuar os testes delimitados.
 
+## Checkpoint: grupos, retenção A+B e código copiado
+
+`GRUPOS-NATIVOS.json`: cabeçalhos/numeração abriram as fileiras recolhidas e a coluna da direita, incluindo a última entidade. Os metadados confirmaram as seis fileiras e ambas as colunas de entidades abertas (12 fichas acessíveis). A abertura é assíncrona: algumas leituras imediatas antecederam o gatilho; a leitura posterior da fileira 4 comprovou a abertura sem novo clique. Foram restaurados seis grupos modificados, com comparação exata de todos os rowGroups/columnGroups de INVOCAÇÕES contra o estado inicial. Nenhum dado foi editado nesse ensaio. A mecânica das 12 fichas permanece coberta pela prova integrada C, sem alteração das fontes.
+
+`RETENCAO-AB.json`: contrato, leitor, endereços e carregador passaram no modelo C de hash bruto `939bb2afb657a74d222d800e30e1c2e6bd2413a18b03755d688045d5b03ddf39`, usando o perfil histórico `b47-v10` para a **retenção A+B**, sem trocar expectativas. São 83 verificações, zero falhas bloqueantes e dois riscos de manutenção: prefixos de aviso diferentes (o leitor reprova todas as mensagens testadas) e endereços literais em INDIRECT (destinos nativos finitos já auditados). Não apresentar esse perfil como cobertura isolada dos novos catálogos C ou como recálculo Calc.
+
+`NATIVO-CODIGO-COPIA-D.json`: projeto vinculado da cópia D localizado por Extensões → Apps Script: `1WXWUmNRmfrS5zKKOK9HrlCrJTEEUbtCgin0SdeMFMd8fKP0SVQznPPuS`. **35 GS e manifesto relidos integralmente e hashes iguais** aos canônicos do fechamento C. Nenhum código foi editado; apenas foi habilitada a exibição do manifesto no editor. Os gatilhos simples de altura e paleta funcionaram na cópia sem autorização/ativação manual. Não confundir com auditoria de gatilhos instaláveis (não foi executada ainda).
+
+Capturas adicionais privadas: carteira, topo da FICHA/AMALDIÇOADA, inventário/treino de armas de FICHA PESSOAL, cartões originais do grupo 7, glossário, abertura de entidades e largura inteira da ficha 12. Os cabeçalhos de cor das seis abas dinâmicas voltaram ao escuro; ainda falta fechar a conferência de todas as etapas de cor/arte antes de declarar convergência integral. A revisão permanece sem qualquer aplicação de D.
+
+Próxima ação vigente: conferir execuções/gatilhos da cópia e encerramento da paleta; terminar o checklist visual/interações; auditar o estado final da cópia contra o snapshot; preparar aplicação D na revisão com backup/snapshot/releitura novos. Investigar a data de emissão da carteira: a captura mostra 17/10 enquanto o cliente está em 16/10 à noite; metadata Sheets está em Etc/GMT e manifesto Apps Script em America/Sao_Paulo. **Nenhuma alteração de fuso foi feita.** Determinar a fórmula/origem e o efeito antes de corrigir, sem alterar datas/contas do jogador por inferência. Sol/Médio para as próximas verificações.
+
 ## Próximos blocos
 
 1. Auditar dependências das quatro abas temporárias: `ESTUDO CAMPANHA`, `ESTUDO CUSTOM`, `ESTUDO 3B`, `ESTUDO 3C`. Confirmar nomes/IDs nativamente; procurar fórmulas, validações, intervalos nomeados, gráficos, regras e scripts. A geração canônica de C já produz 22 abas sem estudos; isso sozinho não prova a ausência de dependências na revisão preenchida.

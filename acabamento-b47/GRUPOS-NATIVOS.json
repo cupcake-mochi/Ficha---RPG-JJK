@@ -1,0 +1,17 @@
+{
+  "resultado": "OK",
+  "destino": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE",
+  "aberturaPeloCabecalho": {
+    "segundaEntidade": true,
+    "terceiraEntidade": true,
+    "quartaEntidade": true,
+    "quintaEntidade": true,
+    "ultimaEntidade": true
+  },
+  "fileirasVisiveisAposTeste": 6,
+  "colunasDeEntidadesVisiveis": 2,
+  "entidadesAcessiveis": 12,
+  "restauracaoExataDeGrupos": true,
+  "pedidosDeRestauracao": 6,
+  "limites": "Abertura é assíncrona; a primeira leitura de metadados pode anteceder o gatilho. Metadados posteriores confirmaram os grupos abertos; o ensaio não mediu prazo máximo garantido. Mecânica de todas as 12 entidades já coberta pelos 1.216 casos integrados de C; revisão visual D ainda em andamento."
+}

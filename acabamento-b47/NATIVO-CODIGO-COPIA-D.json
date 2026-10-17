@@ -1,0 +1,227 @@
+{
+  "resultado": "OK",
+  "spreadsheet_id": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE",
+  "script_id": "1WXWUmNRmfrS5zKKOK9HrlCrJTEEUbtCgin0SdeMFMd8fKP0SVQznPPuS",
+  "origem": "Projeto vinculado localizado por Extensões → Apps Script na cópia D",
+  "metodo": "35 GS e manifesto relidos pela interface; CRLF normalizado para LF, hashes SHA-256 idênticos às fontes canônicas verificadas no fechamento C.",
+  "gs": 35,
+  "manifesto": 1,
+  "arquivos": [
+    {
+      "nome": "Analise",
+      "tipo": "SERVER_JS",
+      "bytes": 816379,
+      "sha256": "aa8bb8b9a35a9f33ee38da65055c39159ab2ec1293a7331307b1bdd9e4ae62f8"
+    },
+    {
+      "nome": "AnaliseFontes",
+      "tipo": "SERVER_JS",
+      "bytes": 413469,
+      "sha256": "bab8fbcdcf5cc38327f5f8d99f15e1d60ff17cf7cd78cd82693c4b1a335da901"
+    },
+    {
+      "nome": "AptidoesPersonagem",
+      "tipo": "SERVER_JS",
+      "bytes": 58182,
+      "sha256": "f817148cbaa5410fc7fed4fa849a8e9f7e12ddc1936259608ff6339c9dbd1cd3"
+    },
+    {
+      "nome": "Codigo",
+      "tipo": "SERVER_JS",
+      "bytes": 263672,
+      "sha256": "06f14ddffdb7e9a773cd411d87ff176cefe138c1354114ac3fd2c79b31ca8b09"
+    },
+    {
+      "nome": "Configuracao",
+      "tipo": "SERVER_JS",
+      "bytes": 840243,
+      "sha256": "8929b87d8c0f59d605b2c2f3aaef4ec43c9b9856a69b8e11be097b686bd21457"
+    },
+    {
+      "nome": "Criacao",
+      "tipo": "SERVER_JS",
+      "bytes": 14519,
+      "sha256": "59263150a9babcc4cf0a8906690b0e6dae46874a8b42dd06cc0255705288bf4e"
+    },
+    {
+      "nome": "CriacaoAnalise",
+      "tipo": "SERVER_JS",
+      "bytes": 10128,
+      "sha256": "067e0a2fa2b31184ef84d48855e7b9773dc50aff5b29f3aa3fededff42348a61"
+    },
+    {
+      "nome": "CriacaoPainel",
+      "tipo": "SERVER_JS",
+      "bytes": 32159,
+      "sha256": "da54909680da146f669b892b12bc665a69a90f6f293fdb651e61b8c0bb44def2"
+    },
+    {
+      "nome": "Custom",
+      "tipo": "SERVER_JS",
+      "bytes": 610791,
+      "sha256": "7c52d24e94b64504bb92e1357a4829aa2492fc7f0758b21fcad16bf4d0cd235b"
+    },
+    {
+      "nome": "Danos",
+      "tipo": "SERVER_JS",
+      "bytes": 11363,
+      "sha256": "3b9b652878e2846c4cd95214e2634ec388574ddfad2f2806475d02c1df67c2f6"
+    },
+    {
+      "nome": "DanosPainel",
+      "tipo": "SERVER_JS",
+      "bytes": 2545,
+      "sha256": "e710fc625590c2ad80378ad37253d32d32527859e61bd528d9b2a807783f1a39"
+    },
+    {
+      "nome": "Entidades",
+      "tipo": "SERVER_JS",
+      "bytes": 75878,
+      "sha256": "4c5317bc03deb0b1c89f77c247a66ec8dde705cea448413e71bcbb9e29b1bba7"
+    },
+    {
+      "nome": "EntidadesAnalise",
+      "tipo": "SERVER_JS",
+      "bytes": 44181,
+      "sha256": "ba5a4d60959ac0144076501d394b9a3beacae2b70ecf1d77c8c583a83c5117ef"
+    },
+    {
+      "nome": "EntidadesPainel",
+      "tipo": "SERVER_JS",
+      "bytes": 108935,
+      "sha256": "d319d42da5f9f9a6ee4fd5bbb81d96032346d9c86ee290b03ca0d68e1bf571a8"
+    },
+    {
+      "nome": "Ficha",
+      "tipo": "SERVER_JS",
+      "bytes": 824509,
+      "sha256": "ad5c25feae9f0526f4a7e4b2288384f5a91e1480d7a82bacaa762997c98b2730"
+    },
+    {
+      "nome": "FormasPersonagem",
+      "tipo": "SERVER_JS",
+      "bytes": 1195,
+      "sha256": "e3da6d915063acd0dc4cd444bcbab7767c21e8451184ee0cb7a6caf1dc91b895"
+    },
+    {
+      "nome": "Habilidades",
+      "tipo": "SERVER_JS",
+      "bytes": 215389,
+      "sha256": "478f255b306af36c19f1bfdfba0e337ffc6fb7cf49ab2b5b5f4f95f665b0b00e"
+    },
+    {
+      "nome": "Invocacoes",
+      "tipo": "SERVER_JS",
+      "bytes": 585271,
+      "sha256": "2da9e32083f17e741d33015298e905915025ec913e47b87707984ebecc49ca14"
+    },
+    {
+      "nome": "Melhorias",
+      "tipo": "SERVER_JS",
+      "bytes": 75605,
+      "sha256": "d00d0c68c59c9e20b77dd83d4649901889ea8795cd24021bd64bc6b72368c5a6"
+    },
+    {
+      "nome": "Origens",
+      "tipo": "SERVER_JS",
+      "bytes": 519699,
+      "sha256": "072769240d813be75fe1e48356292d8ae45f043587a226336aa231d174f270e5"
+    },
+    {
+      "nome": "PecasAnalise1",
+      "tipo": "SERVER_JS",
+      "bytes": 103567,
+      "sha256": "d02e3160f01cb0282bdc88c7b2082f539e20e5a9abbf225a78fab69fb6d76e7a"
+    },
+    {
+      "nome": "PecasPainel",
+      "tipo": "SERVER_JS",
+      "bytes": 17271,
+      "sha256": "47afb7105bb9ae3e03572a8e175721c95a5cb7da87ed3ab84b47a5f7f76bb0b2"
+    },
+    {
+      "nome": "PersonagemAnalise",
+      "tipo": "SERVER_JS",
+      "bytes": 100231,
+      "sha256": "1b2fbe9cd0bd35990c55a55315fb10e6bed5d18cc147feb055dc22a0ada9eca0"
+    },
+    {
+      "nome": "PersonagemFormas1",
+      "tipo": "SERVER_JS",
+      "bytes": 51296,
+      "sha256": "4b1828dea188d3bd82f070ec23fb0fc657fbff7d15642c22b0c74d5865cc9694"
+    },
+    {
+      "nome": "PersonagemFormas2",
+      "tipo": "SERVER_JS",
+      "bytes": 147205,
+      "sha256": "4b1d0c734b5ad14d704d186a510af1359f518cacb331d24fccdf6a427fe71a2e"
+    },
+    {
+      "nome": "PersonagemFormas3",
+      "tipo": "SERVER_JS",
+      "bytes": 181090,
+      "sha256": "d556558f491a501eb87d400b2df9d2977f092836896c3c9c7553033d73e95630"
+    },
+    {
+      "nome": "PersonagemFormas4",
+      "tipo": "SERVER_JS",
+      "bytes": 177743,
+      "sha256": "8df9dc623de5e5358fa50188a9422b998292edf2e5bc8648475cecb956f71380"
+    },
+    {
+      "nome": "PersonagemFormas5",
+      "tipo": "SERVER_JS",
+      "bytes": 15481,
+      "sha256": "3f3ce2542da85758ed8927385f1aad222aa36d66e4ae1aadc4bf004da7c5a80f"
+    },
+    {
+      "nome": "PersonagemPainel",
+      "tipo": "SERVER_JS",
+      "bytes": 198389,
+      "sha256": "1901718cc4029a019608b1627c3eabf9bb9dc09f25a351b8cd8613e4377d05c6"
+    },
+    {
+      "nome": "Pessoal",
+      "tipo": "SERVER_JS",
+      "bytes": 163251,
+      "sha256": "40be1ef36847a8a23942b8c9bc369490315ff39223fc9f529b379f603c0b15ed"
+    },
+    {
+      "nome": "Progressao",
+      "tipo": "SERVER_JS",
+      "bytes": 79652,
+      "sha256": "999d37a9b07baf01181b7b835faa5336f02b90218f91543b5128b5a568377823"
+    },
+    {
+      "nome": "ProgressaoAnalise",
+      "tipo": "SERVER_JS",
+      "bytes": 105981,
+      "sha256": "b8d7c0b13009c3b757f609197a8675f48ebe0e2437f6b8a5d50c8ad4c790e6bf"
+    },
+    {
+      "nome": "ProgressaoPainel",
+      "tipo": "SERVER_JS",
+      "bytes": 164855,
+      "sha256": "0205c380d8a5a95e092e4ef3409a752fba1f764c96445fc61b3bda1873d49cbf"
+    },
+    {
+      "nome": "Restricoes",
+      "tipo": "SERVER_JS",
+      "bytes": 12361,
+      "sha256": "30b8fa613a0d1639a96b6b2cd6f95bcf5880768ffd9d26a51c95751de27e1f99"
+    },
+    {
+      "nome": "TalentosPersonagem",
+      "tipo": "SERVER_JS",
+      "bytes": 25361,
+      "sha256": "cd577b318c958befe16e089324c9c8661f18d41c71e4cb1964c2324677a885ae"
+    },
+    {
+      "nome": "appsscript",
+      "tipo": "JSON",
+      "bytes": 125,
+      "sha256": "3482b8bf420d1dfc21603c14345342df8a609f089b0493c5fd4f4636accb0dd6"
+    }
+  ]
+}

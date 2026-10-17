@@ -1,5 +1,7 @@
 ## D autorizada · checkpoint de abertura · 16/10/2026
 
+Atualização D: retirada dos estudos ensaiada, fundo canônico corrigido na descartável, textos longos restaurados exatamente, seis grupos de entidades restaurados e 35 GS + manifesto da cópia relidos iguais. Retenção A+B no modelo integrado: 83 verificações, zero falhas bloqueantes, dois riscos de manutenção documentados. Detalhes e **próxima ação vigente na última seção** de [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md). A revisão ainda não recebeu D; não declarar fechamento.
+
 C está concluída e publicada em `21f1620`. Após esse fechamento, o usuário autorizou D e pediu checkpoints frequentes devido ao saldo de 2% semanal. [Retomada vigente de D](acabamento-b47/RETOMADA-D.md) e [prompt portátil](acabamento-b47/PROMPT-RETOMADA.md). A auditoria dos estudos e o [ensaio de retirada](acabamento-b47/ENSAIO-RETIRADA-ESTUDOS-CLASSIFICADO.json) passaram: cópia D com 22 abas, zero diferenças inesperadas/erros e 8.190 chaves. Doze ajudas novas em notas vazias foram conferidas individualmente contra a fonte canônica. Próximo bloco: acabamento visual e demais testes D. A revisão permanece no estado validado de C, com os estudos ainda presentes.
 
 ## Histórico: C concluída na revisão nativa · parada antes de D · 16/10/2026

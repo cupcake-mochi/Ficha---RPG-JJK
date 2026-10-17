@@ -1,0 +1,54 @@
+{
+  "resultado": "SEM_FALHAS_BLOQUEANTES",
+  "escopo": "Retenção de A+B no modelo integrado C, usando perfil histórico b47-v10 sem enfraquecer expectativas. Não substitui os testes próprios de C nem é bateria Calc.",
+  "modelo_sha256": "939bb2afb657a74d222d800e30e1c2e6bd2413a18b03755d688045d5b03ddf39",
+  "testes": [
+    {
+      "teste": "contrato",
+      "total": 38,
+      "falhas": 0,
+      "riscos": 0,
+      "sha_testado": "9f37258fff009ae12d91b9e212977aa7c8f2cbc0",
+      "riscos_detalhes": []
+    },
+    {
+      "teste": "leitor",
+      "total": 35,
+      "falhas": 0,
+      "riscos": 1,
+      "sha_testado": "9f37258fff009ae12d91b9e212977aa7c8f2cbc0",
+      "riscos_detalhes": [
+        {
+          "nome": "mesmo padrão de aviso (com ou sem ⚠) em todos os catálogos",
+          "detalhe": "{'familia': False, 'melhoria': False, 'restricao': False, 'pericia': True, 'oficio': True, 'aviso.custom.1': False, 'aviso.custom.caminho': True, 'aviso.custom.trilha': True}"
+        }
+      ]
+    },
+    {
+      "teste": "enderecos",
+      "total": 6,
+      "falhas": 0,
+      "riscos": 1,
+      "sha_testado": "9f37258fff009ae12d91b9e212977aa7c8f2cbc0",
+      "riscos_detalhes": [
+        {
+          "nome": "nenhum endereço de catálogo escrito como texto (INDIRECT)",
+          "detalhe": "DADOS_CUSTOM -> DADOS_PROGRESSAO!AG2:AG34 ×300; DADOS_CUSTOM -> DADOS_PROGRESSAO!AJ2:AJ23 ×75"
+        }
+      ]
+    },
+    {
+      "teste": "carregador",
+      "total": 4,
+      "falhas": 0,
+      "riscos": 0,
+      "sha_testado": "9f37258fff009ae12d91b9e212977aa7c8f2cbc0",
+      "riscos_detalhes": []
+    }
+  ],
+  "interpretacao_riscos": [
+    "Prefixos de aviso diferentes entre catálogos; todas as mensagens testadas continuam reprovadas pelo leitor.",
+    "Endereços literais em INDIRECT: risco de manutenção detectado pela sonda histórica. Auditoria nativa D resolve os destinos finitos e não encontra dependência dos estudos."
+  ],
+  "proxima_etapa": "Conferências finais D e aplicação guardada na revisão."
+}
