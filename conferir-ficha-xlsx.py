@@ -195,11 +195,17 @@ _cam_cat = [[n, " · ".join(CAT["caminhos"][n]["atributos_naturais"]), CAT["cami
 checa(f"a tabela dos Caminhos da DADOS traz os {len(_cam_cat)} do menu, na ordem, com a vida, o PE e as perícias fixas do catálogo",
       _tab_cam == _cam_cat, str([l for l in _tab_cam if l not in _cam_cat] or [l[0] for l in _tab_cam]))
 import re as _re_cam
+# B47 (C): a vida e o PE leem a tabela da DADOS_PROGRESSAO, que traz os Caminhos do livro e, na última linha, o custom
 _faixas_cam = [(c.coordinate, int(m.group(1)), int(m.group(2))) for l in wb["FICHA"].iter_rows() for c in l
-               if isinstance(c.value, str) for m in _re_cam.finditer(r"DADOS!\$N\$(\d+):\$U\$(\d+)", c.value)]
+               if isinstance(c.value, str) for m in _re_cam.finditer(r"'DADOS_PROGRESSAO'!\$M\$(\d+):\$T\$(\d+)", c.value)]
+_dp = wb["DADOS_PROGRESSAO"]
+_dp_cam = [[_dp.cell(row=r, column=c).value for c in (13, 15, 16, 17)] for r in range(2, 2 + len(_cam_cat))]
+_dp_ok = [[l[0], l[2], l[3], l[4]] for l in _cam_cat] == [[a, int(b), int(c), int(d)] for a, b, c, d in _dp_cam]
+_custom_cam = str(_dp.cell(row=2 + len(_cam_cat), column=13).value or "")
 checa("a vida e o PE da FICHA leem a tabela dos Caminhos da primeira linha à última (o Incursor entra na conta)",
-      bool(_lin_cam) and len(_faixas_cam) >= 3 and all((a, b) == (_lin_cam[0], _lin_cam[-1]) for _, a, b in _faixas_cam),
-      f"a tabela vai da linha {_lin_cam[:1]} à {_lin_cam[-1:]}; as faixas: {_faixas_cam}")
+      len(_faixas_cam) >= 2 and all((a, b) == (2, 2 + len(_cam_cat)) for _, a, b in _faixas_cam) and _dp_ok
+      and _custom_cam.startswith("=") and "CONFIGURAÇÃO" in _custom_cam,
+      f"as faixas: {_faixas_cam}; livro igual ao catálogo: {_dp_ok}; última linha custom: {_custom_cam[:40]}")
 checa("o carimbo de versão está na DADOS",
       str(ws["B1"].value) == CAT["_meta"]["versao"], str(ws["B1"].value))
 
@@ -325,7 +331,8 @@ for _r_ in ("vida", "energia", "integridade"):
     _c_max_fim = _rb(_mm)[2] if _mm else 0
     _cb1, _lb1, _cb2, _lb2 = _rb(_mb) if _mb else (0, 0, 0, 0)
     _barra = _mescla_em(f, f"{_gl(_cb2 + 2)}{_lb1}")
-    if not (_fm.startswith("=IFERROR((") and _fm.endswith(f'+IFERROR(VALUE(${_gl(_cb1)}${_lb1}&""),0),"")')):
+    _caixa_b = (f'IFERROR(VALUE(${_gl(_cb1)}${_lb1}&""),0)', f"IFERROR(VALUE('FICHA'!${_gl(_cb1)}${_lb1}&\"\"),0)")
+    if not any(("+" + x) in _fm for x in _caixa_b):
         _ruins_b.append(f"{_r_}: o máximo não soma a caixa por fora da conta ({_fm[-50:]})")
     if f[_b].value != 0 or f.cell(row=_lb1 - 1, column=_cb1).value != "Buff/Debuff":
         _ruins_b.append(f"{_r_}: a caixa {_b} devia nascer em 0, com o rótulo em cima")
@@ -582,19 +589,20 @@ checa("as duas cartas de graça do menu rápido vêm com as de graça, trocando 
 checa("as notas de graça da seção 8 saíram do Codigo.gs com ela", "notasDeGraca_" not in _CODA and "NOTAS_DE_GRACA" not in _CODA)
 _oned = re.search(r"function onEdit\(e\)\s*\{(.*?)\n\}", _CODA, re.S)
 checa("o onEdit devolve a Trilha de outro Caminho para o texto de escolha",
-      bool(_oned) and "trilhaDoCaminho_(e, idx)" in _oned.group(1))
+      bool(_oned) and re.search(r"trilhaDoCaminho_\(e, idx(, dados)?\)", _oned.group(1)) is not None)
 _vt = [v for v in f.data_validations.dataValidation if IDX.get("trilha") and IDX["trilha"].replace("$", "") in str(v.sqref).split()]
-_mt = re.search(r"DADOS!\$([A-Z]+)\$(\d+)", _vt[0].formula1) if _vt else None
-_filtro = dd[f"{_mt.group(1)}{int(_mt.group(2)) + 1}"].value if _mt else ""
+_mt = re.search(r"(?:'DADOS_PROGRESSAO'|DADOS)!\$([A-Z]+)\$(\d+)", _vt[0].formula1) if _vt else None
+_dt = wb["DADOS_PROGRESSAO"] if _vt and "DADOS_PROGRESSAO" in _vt[0].formula1 else dd
+_filtro = _dt[f"{_mt.group(1)}{int(_mt.group(2)) + 1}"].value if _mt else ""
 checa("o menu da Trilha começa no texto de escolha e filtra as Trilhas pelo Caminho da ficha",
-      bool(_mt) and dd[f"{_mt.group(1)}{_mt.group(2)}"].value == _fa_mod.ESCOLHA_TRILHA
+      bool(_mt) and _dt[f"{_mt.group(1)}{_mt.group(2)}"].value == _fa_mod.ESCOLHA_TRILHA
       and isinstance(_filtro, str) and "FILTER(" in _filtro and IDX["caminho"].replace("$", "") in _filtro.replace("$", ""),
       f"{_vt[0].formula1 if _vt else '?'} · {str(_filtro)[:70]}")
 checa("a ficha nasce com Escolha seu Caminho e Escolha sua Trilha",
       f[IDX["caminho"]].value == _fa_mod.ESCOLHA_CAMINHO and f[IDX["trilha"]].value == _fa_mod.ESCOLHA_TRILHA,
       f"{f[IDX['caminho']].value} · {f[IDX['trilha']].value}")
 checa("o onEdit marca as perícias fixas quando o Caminho muda",
-      bool(_oned) and "marcarPericiasDoCaminho_(e, idx)" in _oned.group(1))
+      bool(_oned) and re.search(r"marcarPericiasDoCaminho_\(e, idx(, dados)?\)", _oned.group(1)) is not None)
 checa("a tabela dos Caminhos da DADOS não tem mais ofício fixo, que o livro não tem",
       not any(c.value == "ofício fixo" for l in dd.iter_rows() for c in l))
 
@@ -866,8 +874,10 @@ if _o.path.exists(GS):
     import emitir_gs as _eg
     dados = _eg.abas_do_script(GS)
     nomes = {a["nome"] for a in dados}
-    checa("as abas do script são as decididas", nomes == set(DEC["C6_documento"]["abas"]),
-          str(nomes ^ set(DEC["C6_documento"]["abas"])))
+    _abas_c = {"DADOS_PROGRESSAO", "DADOS_CRIACAO", "DADOS_MELHORIAS", "DADOS_RESTRICOES", "DADOS_DANOS",
+               "DADOS_FORMAS", "DADOS_APTIDOES", "DADOS_TALENTOS", "DADOS_ENTIDADES"}   # B47 C, FECHAMENTO-C.md
+    checa("as abas do script são as decididas", nomes == set(DEC["C6_documento"]["abas"]) | _abas_c,
+          str(nomes ^ (set(DEC["C6_documento"]["abas"]) | _abas_c)))
     fora, artefalta, estilo_ruim = [], [], []
     for a in dados:
         nc, nr = a["cols"], a["rows"]
@@ -1572,6 +1582,8 @@ console.log(JSON.stringify(vm.runInContext('ABAS.filter(function(s){return !s.oc
         # tinha o mesmo problema, oculta, e nunca apareceu.
         _cnt_pintado = _Ct({k: v for k, v in _cnt.items() if k is not None})
         _base_certa = _cnt_pintado.most_common(1)[0][0] if _cnt_pintado else "#120F1D"
+        if not _cnt_pintado and a.get("oculta") and a.get("fundo_base"):
+            continue                      # B47: aba oculta sem pintura; a base só não pode ser vazia (null)
         if a.get("fundo_base", "?") != _base_certa:
             _fundo_r.append((a["nome"], a.get("fundo_base", "?"), _cnt.most_common(2)))
     checa("cada coluna sai com a largura da planilha, pela conta do Sheets", not _larg_r, str(_larg_r[:3]))
@@ -1773,7 +1785,7 @@ checa(f"a ANALISE mora no Analise.gs ({len(_ang) / 1024:.0f} KB, o teto é de 90
 checa("o Codigo.gs devolve a conta a quem escrever na ANALISE", "devolverConta_(e, 'ANALISE')" in _CODA)
 
 # A folha de configuração é visível, mas não participa da troca de tema.
-_cfg = wb["CONFIGURAÇÃO"] if "CONFIGURAÇÃO" in wb.sheetnames else None
+_cfg = load_workbook(ARQ)["CONFIGURAÇÃO"] if "CONFIGURAÇÃO" in wb.sheetnames else None   # wb em memória já foi mexido
 _pal_cfg = json.loads(re.search(r"var PALETAS = (\{.*?\n\});\n", _CODA, re.S).group(1))["Mizuki"]["escuro"]
 _cores_cfg = {v.lstrip("#").upper() for v in _pal_cfg.values() if isinstance(v, str) and re.fullmatch(r"#?[A-Fa-f0-9]{6}", v)} | {"FFFFFF", "C2334D"}
 checa("a CONFIGURAÇÃO nasce visível, em Mizuki Escuro, com caixas desligadas e fora da troca de paleta",

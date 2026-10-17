@@ -1,3 +1,7 @@
+## B47 · parada para troca de chat · 17/10/2026, noite
+
+D concluída e em `main`. Corrigido bug das ajudas de tipo dobradas em cópias (publicado na revisão). Carga da ficha pessoal: a ficha segue o livro; teste corrigido. Manutenção de testes antigos pela metade e roteiro da oficial aguardando o usuário. Ponto exato em [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md); prompt em [PROMPT-CONTINUAR-POS-B47.md](prompts-b47/PROMPT-CONTINUAR-POS-B47.md).
+
 ## B47 · fechamento, revisão e merge · 17/10/2026
 
 Cópia funcional com troca de paleta interrompida: sem deriva. S58 corrigida. Construção do zero com o código final: FICHA PRONTA, fórmulas idênticas à revisão. Bateria executada e classificada; falhas são anteriores à sessão e precisam de manutenção de teste ou decisão de regra (carga da ficha pessoal +0,8). Revisão sem bloqueio para `main`. [Detalhes](acabamento-b47/RETOMADA-D.md).

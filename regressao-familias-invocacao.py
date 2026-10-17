@@ -71,7 +71,7 @@ check('108 vagas, sem deslocar as cinco primeiras de cada entidade', all(
     all(col(c)+str(50+198*j) in raw['INVOCAÇÕES'] for c in range(15+19*k,19+19*k))
     for k in range(2) for j in range(6)))
 keys = [v for c, v in raw['ANALISE'].items() if c.startswith('A') and c[1:].isdigit() and c != 'A1']
-check('7356 chaves únicas, incluindo autonomia, limites e 48 Famílias extras', len(keys) == 7356 and len(set(keys)) == 7356 and
+check('8190 chaves únicas (formato 11, C), incluindo autonomia, limites e 48 Famílias extras', len(keys) == 8190 and len(set(keys)) == 8190 and
       all(f'invocacao.{i}.familia.{j}' in keys for i in range(1, 13) for j in (6, 7, 8, 9)) and
       all(f'invocacao.{i}.autonomia' in keys for i in range(1,13)))
 check('autonomia individual padrão Autônoma, sem seletor global',

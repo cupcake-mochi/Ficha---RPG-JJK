@@ -32,7 +32,7 @@ for r,c,v,*_ in prior['vals']:prior_rows[r][c]=v
 keys={v[0]:v[1] for v in [[raw['ANALISE'].get(f'A{r}'),raw['ANALISE'].get(f'B{r}')] for r in range(2,abas['ANALISE']['linhas']+1)]}
 check('6174 chaves anteriores presentes',sum(bool(v.get(1)) for r,v in prior_rows.items() if r>1)==6174 and all(v[1] in keys for r,v in prior_rows.items() if r>1 and v.get(1)))
 check('sem chaves repetidas',len(keys)==abas['ANALISE']['linhas']-1)
-check('formato 10 explícito',str(keys.get('formato.versao'))=='10')
+check('formato 11 explícito (C)',str(keys.get('formato.versao'))=='11')
 check('um Caminho/uma Trilha e 10 Perícias + 10 Ofícios',len([k for k in keys if re.fullmatch(r'custom.pericia.\d+.tipo',str(k))])==10 and len([k for k in keys if re.fullmatch(r'custom.oficio.\d+.tipo',str(k))])==10 and 'custom.caminho.nivel.30.texto' in keys and 'custom.trilha.campo.base_do_livro' in keys)
 check('nenhum arquivo atinge 900000 bytes',all(x.stat().st_size<900000 for x in (ROOT/'apps-script').glob('*.gs')))
 check('fragmentos recompõem todas as abas do modelo',set(a['nome'] for a in emitir_gs.abas_do_script(str(ROOT/'apps-script/Ficha.gs')))==set(abas)-{'INVOCAÇÃO','CATÁLOGO','DADOS_INV'})

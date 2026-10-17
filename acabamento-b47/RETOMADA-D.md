@@ -1,3 +1,36 @@
+# B47 — pós-fechamento, parada para troca de chat · 17/10/2026, noite (Claude Opus, integrador)
+
+Este bloco prevalece sobre os abaixo. `main` = `codex/configuracao-b47` (fast-forward, sem force-push). D está concluída; esta parte é a fila pedida depois dela, **antes** de atualizar a ficha oficial.
+
+## Feito nesta etapa
+
+- **Testes de interface numa cópia** (`1_1oBYdoci0j-B5LSfYp6UPLpnQB5vNxEOJafx-FRHqw`, descartável): tipo de entidade custom "Golem de Teste" cadastrado na CONFIGURAÇÃO aparece no menu TIPO da entidade 1; a definição vira a nota do seletor; mudar a definição atualiza a nota. Paleta já testada (`COPIA-FUNCIONAL-D.json`).
+- **Bug real achado e corrigido**: em cópia da planilha as 12 ajudas de tipo saíam **dobradas** na primeira abertura (propriedades do documento não viajam). `comporNotaContextual_` agora tira repetições da ajuda no fim da nota, com ou sem estado; cópia que já dobrou se conserta ao abrir. Provado na cópia; `testar-notas-contextuais.js` 13/13 (os casos novos falham no código antigo).
+- **Item 4**: retiradas as 9 linhas de diagnóstico `B47 tempo` do `onEdit`.
+- **`Codigo.gs` = `f77b39db…`** publicado e relido na **revisão** (36/36) e na cópia de teste. A descartável de construção `14Ad8e5…` ficou em `6aa4e2ba` (só referência de estrutura). Ver `NATIVO-CODIGO-REVISAO-D.json` (`publicacao_notas_copia`).
+- **Carga da FICHA PESSOAL**: a ficha está certa. O livro (tabela "Itens comuns") dá Corda 0,5 e Kit de escalada 0,5; a ficha B47 lê essa tabela (`DADOS_CUSTOM!AU:AX`); o modelo do teste contava todo item como leve (0,1). Teste corrigido para ler a mesma tabela do livro. Conferido no caso Kaori isolado (5,5 = livro).
+
+## Item 3 (manutenção de testes) — onde parou
+
+| Teste | Situação |
+|---|---|
+| `conferir-ficha-xlsx.py` | **corrigido e verde** ("A FICHA CONFERE"): checagens apontadas para os lugares da B47 (Caminhos e Trilha na `DADOS_PROGRESSAO`, Buff/Debuff dentro da conta da CONFIGURAÇÃO, `onEdit` com `dados`, 9 abas de C, base de aba oculta sem pintura) e a da CONFIGURAÇÃO relendo o arquivo (o wb em memória era alterado por checagens anteriores). |
+| `regressao-ficha-pessoal.py` | **corrigido, falta rodar verde**: as duas últimas execuções estouraram o `timeout=600` do LibreOffice (33 casos). Na bateria completa coube. Antes de rodar: nenhum `soffice.bin` vivo (`ps -eo pid,args \| grep "[s]office.bin"`); se repetir, subir o timeout da linha 64 para 1200. |
+| `regressao-configuracao.py` | corrigido, **não rodado**: leitura de `9,5 m` (vírgula do Calc) e três checagens de contrato antigo trocadas pelas invariantes atuais (formato 11, 8.190 chaves, cada caixa com destino próprio; preservação histórica provada em `MIGRACAO-C-*.json`). |
+| `regressao-campanha.py` | parcial, **não rodado**: formato 11 e deslocamento com vírgula. Falta: "CAMPANHA vazia: IGUAIS a todos os valores pré-existentes" — diferenças nos rótulos das Famílias (`INVOCAÇÕES!P47` 'LIVRE · TRILHA' → 'ABERTA'), mudança aprovada em C; rodar imprimindo a lista inteira de `dif` e excluir só o que for de C. |
+| `regressao-custom.py` | parcial, **não rodado**: deslocamento com vírgula. Falta: "5274 chaves preservadas… formato 7" (ver qual chave mudou), "custom vazio: IGUAIS…" (mesmas Famílias) e "base Latente permite marcante publicada" (`FICHA PESSOAL!D51` começa com ⚠ — **pode ser defeito real ou endereço que mudou; investigar antes de mexer**). |
+| `regressao-progressao.py` | formato 11; **não rodado**. |
+| `regressao-familias-invocacao.py` | contagem 8.190; **não rodado**. Resto: `#NAME?` é função que o Calc não tem (não é Sheets). |
+| `regressao-amaldicoada.py` | **não mexido**: 343 ok, 11 falhas — modelo de regra do teste sem os avisos novos de C ("contando a embutida", "⚠ Nível") e contagens de mesclagem/cópia/gravação de menu que cresceram com as 12 entidades. |
+| `comparar-ficha-01.py`, `regressao-pecas.py` (sem `--estrutura`), `capacidade-b47/testar-geracao.js` (espera 7.356 chaves), `testar-envio.py`, `testar-validacao3a.py` | **não mexidos**; todas já falhavam antes desta sessão (`BATERIA-D.json`). |
+
+Regra seguida: não trocar expectativa só para ficar verde. Cada mudança acima tem a causa escrita no próprio teste. Trabalho pesado (LibreOffice) **sempre em série**.
+
+## Depois do item 3
+
+1. **Item 2** — medidas e perfil de lentidão (`PLANO-RETOMADA-B47.md`, A78, B83, B84): linhas/fórmulas/tamanho dos arquivos, tempo de abrir, editar e construir (construção: 821 s em `CONSTRUCAO-D.json`), separando medida nativa de VM.
+2. **Ficha oficial** com o usuário presente, pelo `ROTEIRO-OFICIAL-B47.md` (autorizado; backup `117rWwlU…`).
+
 # B47 — fechamento pós-D · 17/10/2026, noite (Claude Opus, integrador)
 
 Este bloco prevalece sobre os abaixo. Pedido do usuário: fechamento, revisão e merge em `main` por conta própria; ficha oficial opcional.

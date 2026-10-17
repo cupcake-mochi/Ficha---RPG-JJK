@@ -33,9 +33,9 @@ def numero(v):
     if isinstance(v, (int, float)) and not isinstance(v, bool):
         return v
     if isinstance(v, str) and v.startswith("d20 + "):
-        return float(v[6:])
+        return float(v[6:].replace(",", "."))
     if isinstance(v, str) and v.endswith(" m"):
-        return float(v[:-2])
+        return float(v[:-2].replace(",", "."))      # o Calc em pt-BR escreve 9,5 m
     return v
 
 
@@ -50,11 +50,15 @@ for r in antigas:
     if r[0] == "formato.versao": r[1] = "2"
 canon = json.dumps(antigas, ensure_ascii=False, separators=(",", ":"))
 snapshot = json.loads((RAIZ / "ficha-v01/analise-v2-preservada.json").read_text())
-checa("as 4.896 chaves, fórmulas, partes e endereços anteriores foram preservados",
-      len(antigas) == snapshot["linhas"] and hashlib.sha256(canon.encode()).hexdigest() == snapshot["sha256"])
+# 17/10/2026: a fotografia do formato 2 deixou de valer quando a fase A retirou chaves de propósito (capacidade
+# reduzida) e C levou ao formato 11. A preservação entre versões está provada nas migrações de C
+# (conteudos-b47/comum/MIGRACAO-C-DESCARTAVEL.json e MIGRACAO-C-REVISAO.json); aqui fica o contrato atual.
+checa("a ANALISE está no formato 11, com as 8.190 chaves do contrato B47",
+      an[0][0:2] == ["formato.versao", "11"] and len(an) == 8190, f"{an[0][0:2]} · {len(an)} linhas")
 checa("nenhuma chave foi repetida", len(an) == len({r[0] for r in an}))
 checa("os seis campos de cada efeito são exportados separadamente", sum(str(r[0]).startswith("efeito.") for r in an) == 180)
-checa("o formato 5 declara regras de campanha para o bot", an[0][0:2] == ["formato.versao", "5"])
+checa("o formato atual declara regras de campanha para o bot",
+      an[0][0:2] == ["formato.versao", "11"] and any(str(r[0]).startswith("regra.") for r in an))
 
 alvos = []
 for r in wb["DADOS_CONFIG"].iter_rows(min_row=2, max_col=8):
@@ -63,7 +67,8 @@ for r in wb["DADOS_CONFIG"].iter_rows(min_row=2, max_col=8):
     m = re.fullmatch(r"='([^']+)'!\$([A-Z]+)\$(\d+)", origem or "")
     assert m, (nome, origem)
     alvos.append((nome, m[1], m[2] + m[3], r[0].row))
-checa("cada uma das 50 caixas tem destino próprio", len(alvos) == 50 and len({a[1:3] for a in alvos}) == 50)
+checa(f"cada uma das {len(alvos)} caixas tem destino próprio (eram 50 antes de C)",
+      len(alvos) >= 50 and len({a[1:3] for a in alvos}) == len(alvos), str(len(alvos)))
 
 # A geometria da FICHA é lida do índice, como nos outros testes.
 sys.path.insert(0, str(RAIZ / "ficha-v01"))

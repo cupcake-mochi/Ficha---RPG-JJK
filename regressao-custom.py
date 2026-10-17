@@ -117,7 +117,7 @@ with tempfile.TemporaryDirectory(prefix='b47-custom-') as tmp:
  check('escudo conserva proteção e teto',get('completo','FICHA PESSOAL','W93')=='Proteção +4 · teto de Destreza 1')
  check('uniforme + escudo somam Proteção',f('completo','proteção')==7,f('completo','proteção'))
  check('Defesa usa menor teto e Buff',f('completo','defesa')==20,f('completo','defesa'))
- check('sem Força corta deslocamento uma vez',f('completo','deslocamento')=='4.5 m',f('completo','deslocamento'))
+ check('sem Força corta deslocamento uma vez',str(f('completo','deslocamento')).replace(',','.')=='4.5 m',f('completo','deslocamento'))  # Calc em pt-BR escreve 4,5
  check('item multiplica volume real',math.isclose(get('completo','FICHA PESSOAL','V104'),2.1))
  check('trocar por zero domina equipamento custom e Buff',f('troca_zero','defesa')==0)
  check('ferramenta herda arma e volume zero explícito',get('ferramenta','FICHA PESSOAL','U92')=='1d6' and get('ferramenta','FICHA PESSOAL','AG92')==0)

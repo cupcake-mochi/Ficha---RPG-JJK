@@ -25,7 +25,7 @@ for r in linhas[:5156]:
  oldkeys.append(transformar(r,versao=3,reverter=True))
 snap=json.loads((ROOT/'ficha-v01/analise-v3-preservada.json').read_text())
 check('5.156 chaves preservadas, com as mudanças exatas aprovadas no formato 7',len(oldkeys)==snap['linhas'] and hashlib.sha256(json.dumps(oldkeys,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()==snap['sha256'])
-check('ANALISE formato 10',linhas[0][1]=='10')
+check('ANALISE formato 11 (C)',linhas[0][1]=='11')
 check('morte permanente não é exportada',not any('morte_permanente' in r[0] for r in linhas))
 check('chaves únicas',len(linhas)==len({r[0] for r in linhas}))
 wb.close()
@@ -95,7 +95,7 @@ with tempfile.TemporaryDirectory(prefix='b47-campanha-') as tmp:
  v=lambda caso,k:get(caso,'FICHA',idx[k])
  check('pontos iniciais somam sem apagar marcos',get('atributos','DADOS','AK6')==get('vazia','DADOS','AK6')+3)
  check('treinos com ofícios e alternativa mudam só seus totais',get('treinos','DADOS','AK19')==11 and get('treinos','DADOS','AK20')==3 and get('treinos','DADOS','AK27')==13)
- check('deslocamento base mantém Buff',v('deslocamento','deslocamento')=='6.5 m',v('deslocamento','deslocamento'))
+ check('deslocamento base mantém Buff',str(v('deslocamento','deslocamento')).replace(',','.')=='6.5 m',v('deslocamento','deslocamento'))  # Calc em pt-BR escreve 6,5
  vida=v('morrendo','vida_max');cl=v('morrendo','classe máxima')
  check('Aguentar usa fração e arredonda para cima',v('morrendo','morrendo aguentar')==math.ceil(vida*.5))
  check('Insistir mantém teto configurado',v('morrendo','morrendo insistir 1')==min(math.ceil(vida*.25),2*cl) and v('morrendo','morrendo insistir 2')==min(math.ceil(vida*.75),2*cl))

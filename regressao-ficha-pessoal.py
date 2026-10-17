@@ -160,10 +160,15 @@ def monta(forca=0, destreza=0, principal=fp.SOCO, secundaria=fp.MAO_LIVRE, vesti
 KIT = [("Kanabō", 1), ("Faca", None), ("Kunai", 2), ("Broquel", 1)]
 ITENS = [("Corda", 1), ("Lanterna", None), ("Kit de escalada", 1)]
 LEVE = R["leve"]
+# B47: o item que está na tabela "Itens comuns" do livro tem o Volume dela; os outros valem o item leve.
+import livro as _livro
+_cab_itens, _linhas_itens = _livro.tabela(_livro.secao("Itens comuns"), "Item")
+assert _cab_itens == ["Item", "Conteúdo", "Preço (¥)", "Volume"], _cab_itens
+VOL_ITEM = {n: float(v.replace(",", ".")) for n, _, _, v in _linhas_itens}
 
 
 def carga_do(equip, itens, vestindo, extra=0):
-    v = sum(ARMAS[n]["volume"] * (q or 1) for n, q in equip) + sum(LEVE * (q or 1) for _, q in itens) + extra
+    v = sum(ARMAS[n]["volume"] * (q or 1) for n, q in equip) + sum(VOL_ITEM.get(n, LEVE) * (q or 1) for n, q in itens) + extra
     return round(v + (UNIF[vestindo]["volume"] if vestindo in UNIF else 0), 2)
 
 
