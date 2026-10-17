@@ -1,4 +1,4 @@
-## C nativa testada · ensaio de migração aprovado · revisão ainda em A+B
+## C concluída na revisão nativa · parada antes de D · 16/10/2026
 
 Limite confirmado: concluir somente C e parar antes de D. Construção conjunta
 concluída (22 abas, 35 GS e manifesto relidos iguais); 467.365 células sem erro
@@ -14,11 +14,21 @@ versão mudou; o leitor mantém o mesmo aviso anterior. Código vinculado:
 35 GS e manifesto persistidos e relidos iguais. Lotes próprios preservam as
 entradas e não removem abas/linhas; não reutilizar lotes A+B.
 
-Próximo: backup/snapshot novos e releitura idêntica da revisão autorizada,
-aplicação pontual, persistência do código vinculado e conferência de C.
-**A revisão ainda está em formato 10 e não recebeu C. D não foi iniciada.**
+**A revisão autorizada recebeu C e está no formato 11. D não foi iniciada.**
+[Prova da revisão](conteudos-b47/comum/MIGRACAO-C-REVISAO.json): backup novo,
+63 blocos de snapshot + 63 de releitura idêntica, 133 lotes confirmados e
+76 blocos finais. Zero erros de fórmula/diferenças inesperadas; 8.190 chaves
+únicas; entradas nos mesmos endereços e 3.837 notas antigas preservadas.
+[35 GS e manifesto relidos iguais](conteudos-b47/comum/NATIVO-CODIGO-REVISAO-C.json).
+As 7.356 chaves anteriores mantêm os valores, salvo `formato.versao: 10→11`.
+O leitor mantém o único aviso anterior, de escolhas de perícia incompletas;
+isso é preenchimento da ficha, não erro novo de conteúdo ou fórmula.
+
+[Fechamento e limite](conteudos-b47/comum/FECHAMENTO-C.md). Não iniciar D,
+remover estudos, reorganizar o desenho ou ampliar a bateria sem nova instrução.
 Oficial, bot, main e acessos permanecem fora do escopo.
-Recomendação: GPT-6.1 Sol, Médio, para o procedimento já definido.
+Recomendação para eventual retomada: GPT-6.1 Sol, Médio, começando pela
+leitura deste fechamento. Nenhuma execução adicional ficou agendada.
 
 ## Histórico · C integrada localmente · prova conjunta então em andamento
 

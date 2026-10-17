@@ -11,10 +11,11 @@
   "notas_conferidas": 3837,
   "celulas_antigas_sem_escrita_conferidas": 83677,
   "lotes_confirmados": 154,
-  "pedidos": 6882,
   "comparacao": {
     "diferencas": 0,
     "contrato_diferencas": 0
   },
-  "escopo": "Somente C. D não iniciada."
+  "escopo": "Somente C. D não iniciada.",
+  "pedidos_gerados_antes_do_fracionamento": 6882,
+  "pedidos_enviados": 7025
 }

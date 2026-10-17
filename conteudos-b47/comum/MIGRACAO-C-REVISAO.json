@@ -1,0 +1,37 @@
+{
+  "tipo": "migracao-cd-nativa",
+  "resultado": "OK",
+  "destino": "1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0",
+  "backup_id": "1pQ9a1HPT0vQ_AK5ovLNBALYOp7J_EzAB7bxuEi93MXk",
+  "scriptId": "1wdZc903PPK6EoGxFG4KcuPNx_plElCBsWxa4lEBgLUlFBD4OrbZPHYnf",
+  "alvo_sha256": "3e960e4cf97ad1695033c0d20be7eaad8576adc5ca9e68ee7af39792d18b786d",
+  "entradas_notas_preservadas": true,
+  "codigo_relido_igual": true,
+  "erros_formula": 0,
+  "chaves": 8190,
+  "notas_antigas_conferidas": 3837,
+  "celulas_antigas_sem_escrita_conferidas": 83677,
+  "abas": 26,
+  "lotes_confirmados": 133,
+  "pedidos_enviados": 7025,
+  "contrato_anterior": {
+    "chaves": 7356,
+    "diferencas": [
+      "formato.versao: 10 → 11"
+    ]
+  },
+  "leitor": {
+    "versao": 11,
+    "avisos_antes": 1,
+    "avisos_depois": 1,
+    "mesmos_avisos": true
+  },
+  "auditoria": {
+    "blocos_antes": 63,
+    "blocos_releitura": 63,
+    "blocos_depois": 76,
+    "diferencas": 0,
+    "analise_sha256": "5b0d67d937b96a91595a8ea421c718a6b51c4be94f2587564de0510ace83dbb0"
+  },
+  "escopo": "C concluída. Parada antes de D. Sem construir/continuar na revisão."
+}

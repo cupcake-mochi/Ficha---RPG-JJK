@@ -1,7 +1,12 @@
 # B47 C+D — integração das três frentes
 
-Checkpoint de 16/10/2026. C está ligada no núcleo local; a prova nativa conjunta,
-a migração pontual da revisão preenchida e o fechamento de D continuam em andamento.
+**Estado final de 16/10/2026: C concluída na revisão nativa; parada antes de D.**
+Construção, conteúdos preenchidos, migração ensaiada e aplicação guardada
+concluídos. [Fechamento vigente](FECHAMENTO-C.md),
+[prova da revisão](MIGRACAO-C-REVISAO.json) e
+[persistência de código](NATIVO-CODIGO-REVISAO-C.json).
+As seções abaixo documentam a integração e seus checkpoints históricos;
+menções a execução pendente não substituem o estado final acima.
 O usuário transferiu para este integrador o trabalho que faltou quando os créditos
 da frente Claude acabaram. Não há mais dependência de uma entrega futura dela.
 
