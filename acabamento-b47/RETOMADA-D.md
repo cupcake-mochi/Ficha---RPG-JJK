@@ -13,7 +13,8 @@ Revisão preenchida permanece fora da montagem. Sol/Médio para acompanhamento.
 Este bloco prevalece sobre o histórico. Base recebida `66012e0`; D concluída.
 Git, Sheets leitura/escrita e editor Apps Script disponíveis; LibreOffice não
 localizado neste Windows. Usuário pediu priorizar os cenários no Google.
-Nenhuma produção GS, revisão preenchida ou oficial foi alterada nesta retomada.
+Produção GS no Git e revisão preenchida intactas nesta retomada; a oficial
+está agora em atualização acompanhada, conforme o bloco vigente acima.
 
 Item 3 concluído nativamente: Ficha Pessoal (33 cenários/118 asserções),
 Configuração (7/529, todas as 86 caixas), Famílias (13 cenários/130 resultados),

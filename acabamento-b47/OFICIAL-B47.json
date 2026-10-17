@@ -3,7 +3,8 @@
   "data": "2026-10-17",
   "janela_confirmada_usuario": "Estou no PC; podemos atualizar agora, sem cópias nesse intervalo.",
   "inicio_preparacao_utc": "2026-10-17 23:31:25 UTC",
-  "inicio_construcao_utc": "2026-10-17 ~23:43 UTC",
+  "inicio_construcao_utc": "2026-10-17 23:43:35 UTC",
+  "execucoes": [{"funcao":"construir","inicio":"23:43:35Z","fim":"23:43:54Z","resultado":"Tempo limite serviço Planilhas em montar_ linha 1109; abas antigas preservadas na releitura."},{"funcao":"construir","inicio":"23:44:38Z","fim":"23:44:49Z","resultado":"Falha serviço em criarAba_ linha 1260; releitura confirmou apenas __montando__."},{"funcao":"construir","inicio":"23:45:24Z","resultado":"EM_EXECUCAO"}],
   "oficial": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
   "script": "1sZTcHm1yNz8x7sVs5WaRj1pX8qbac-kglUDIdDTFLh_iqvHwzF6sqXff",
   "backup": {
