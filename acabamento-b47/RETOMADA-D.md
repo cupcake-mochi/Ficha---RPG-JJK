@@ -1,5 +1,15 @@
 # D — checkpoint de continuação · 16/10/2026
 
+## Estado vigente — salvamento pedido por saldo quase esgotado
+
+Este bloco prevalece sobre os próximos passos dos checkpoints históricos abaixo. **D continua em andamento e não foi aplicada na revisão.** A descartável D tem 22 abas, fundo canônico corrigido, textos temporários limpos, grupos restaurados exatamente, fuso São Paulo e 35 GS + manifesto relidos iguais. O diagnóstico existente `verTemposDaPaleta` executou com sucesso, sem nova concessão de permissões nem edição de código. `PALETA-NATIVA.json` confirma restauração completa ao Mizuki Escuro: 37/37 passos, quatro execuções da troca, soma de 67.473 ms de passos, 116.604 ms decorridos e carteira completa em 12.561 ms. A dúvida anterior sobre conclusão interna da paleta está resolvida.
+
+`PONTO-EXECUCAO.json` registra a interrupção segura da leitura final: **34 de 72 blocos concluídos**, na pasta privada `d/final/`, seguindo a ordem de `d/plano-depois.json` (os nomes dos arquivos mantêm os índices do plano original e podem ter lacunas). A função de diagnóstico terminou; não há pedido de autorização pendente. Código, dados e grupos estão restaurados; não repetir lotes destrutivos/formatadores na descartável.
+
+Próximo passo: completar a leitura final e executar `comparar-estudos.py` com a prova estrita de 12 notas e do fuso (`--retirados --notas-contextuais nuvem-b47/saidas/cd/referencia-combinada.json --prova-fuso acabamento-b47/FUSO-NATIVO.json --metadata <metadata-final.json>`). A extensão temporal do comparador está preparada, mas a conferência final ainda não foi executada. Depois, conferir acionadores instaláveis/checklist visual restante e preparar a aplicação D na revisão com backup, snapshot e releitura novos. A revisão segue com 26 abas e GMT no fechamento C.
+
+Para retomar em ambiente sem os arquivos privados deste PC: os dados preenchidos deliberadamente não estão no Git. Recriar leituras nativas atuais usando a cópia D, seu backup `1BbJDVUD3TV4o-YU1gH_E3R8wGCZcPMZwIw49wxljXLg` e a revisão C, sem depender de upload de snapshots do personagem. As provas resumidas e IDs estão versionados. Confirmar ferramentas/conta Google; Git não fornece esse acesso. Se retomar em outro dia, fazer uma leitura final nova completa, sem misturar blocos de dias diferentes, e conferir novamente a data dinâmica AH3. Fontes/modelo canônico são os mesmos da geração C; não regenerar/escrever por rotina. Próxima ação recomendada: Sol/Médio ou modelo de programação disponível no Claude, esforço médio, para a conferência delimitada; não presumir equivalência ou configurar o seletor automaticamente.
+
 O usuário autorizou iniciar D após o fechamento de C e pediu checkpoints frequentes porque restam 2% de uso semanal. Se necessário, continuará no Claude amanhã às 9h. Não há agendamento nem autorização para novos chats/agentes.
 
 ## Base preservada

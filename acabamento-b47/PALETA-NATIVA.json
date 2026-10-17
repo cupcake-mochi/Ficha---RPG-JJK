@@ -1,0 +1,17 @@
+{
+  "resultado": "OK",
+  "destino": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE",
+  "script_id": "1WXWUmNRmfrS5zKKOK9HrlCrJTEEUbtCgin0SdeMFMd8fKP0SVQznPPuS",
+  "funcao_leitura": "verTemposDaPaleta",
+  "ultima_troca": "Mizuki · Escuro",
+  "passos_medidos": 37,
+  "passos_totais": 37,
+  "passos_desta_troca": 37,
+  "execucoes_da_troca": 4,
+  "soma_dos_passos_ms": 67473,
+  "tempo_decorrido_troca_ms": 116604,
+  "carteira_completa_ms": 12561,
+  "restauracao_completa_confirmada": true,
+  "fonte": "Registro nativo de execução concluída da função existente; não houve nova concessão de permissões nem edição de código.",
+  "limite": "Medida desta troca nesta cópia; não garante prazo idêntico em outras contas ou momentos."
+}

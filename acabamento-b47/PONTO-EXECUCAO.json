@@ -1,0 +1,17 @@
+{
+  "fase": "D em andamento",
+  "data_cliente": "2026-10-16",
+  "revisao_sem_D": "1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0",
+  "descartavel_D": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE",
+  "script_D": "1WXWUmNRmfrS5zKKOK9HrlCrJTEEUbtCgin0SdeMFMd8fKP0SVQznPPuS",
+  "backup_descartavel": "1BbJDVUD3TV4o-YU1gH_E3R8wGCZcPMZwIw49wxljXLg",
+  "leitura_final": {
+    "concluidos": 34,
+    "total": 72,
+    "pasta_privada": "D:/JJK - Project/B47/evidencias/2026-10-16/d/final",
+    "plano_privado": "D:/JJK - Project/B47/evidencias/2026-10-16/d/plano-depois.json",
+    "metadados_privados": "D:/JJK - Project/B47/evidencias/2026-10-16/d/metadata-final.json"
+  },
+  "proximo_passo": "Completar os blocos finais, conferir o comparador com --retirados --notas-contextuais --prova-fuso --metadata, inspecionar acionadores e preparar aplicação D na revisão com backup/snapshot/releitura novos.",
+  "limites": "Não reaplicar pedidos já confirmados na descartável. Não construir na revisão/oficial. Sem main/bot/acessos. Se faltar evidência privada no próximo ambiente, reidratar snapshots atuais pela API nativa usando cópia D, seu backup e revisão; os dados privados não estão no Git."
+}

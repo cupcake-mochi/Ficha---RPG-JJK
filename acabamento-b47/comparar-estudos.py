@@ -41,13 +41,26 @@ def load(folder, phase, plan):
     return result, errors
 
 
-def compare(folder, phase, plan_after, removed, contextual_specs=None):
+def compare(folder, phase, plan_after, removed, contextual_specs=None, timezone_proof=None, metadata=None):
     before, _ = load(folder, 'antes', read(folder / 'plano-antes.json'))
     after, errors = load(folder, phase, plan_after)
     expected = {n: v for n, v in before.items() if n not in (STUDIES if removed else set())}
     differences = []
     contextual = {}
     accepted = []
+    temporal = None
+    if timezone_proof:
+        proof = read(timezone_proof)
+        meta = read(metadata) if metadata else {}
+        assert proof['resultado'] == 'OK' and proof['destino'] == plan_after['spreadsheetId']
+        assert meta.get('spreadsheetId') == plan_after['spreadsheetId']
+        assert meta['properties']['timeZone'] == proof['fuso_final'] == 'America/Sao_Paulo'
+        assert proof['celula'] == 'CARTEIRA!AH3' and proof['formula_preservada']
+        formula = '=\"Emitida \"&TEXT(TODAY();\"dd.mm.yyyy\")'
+        assert proof['formula'] == formula and proof['valor_final'] == proof['esperado']
+        assert before['CARTEIRA']['AH3']['userEnteredValue']['formulaValue'] == formula
+        assert after['CARTEIRA']['AH3']['userEnteredValue']['formulaValue'] == formula
+        temporal = proof
     if contextual_specs:
         specs = read(contextual_specs)
         spec = next(s for s in specs if s['nome'] == 'INVOCAÇÕES')['notas_contextuais']
@@ -68,6 +81,11 @@ def compare(folder, phase, plan_after, removed, contextual_specs=None):
                             and b.get(coord, {}).get('note') == contextual.get((name, coord))
                             and (name, coord) in contextual):
                         accepted.append(delta)
+                    elif (temporal and name == 'CARTEIRA' and coord == 'AH3' and field == 'effectiveValue'
+                            and a.get(coord, {}).get(field) == {'stringValue': temporal['valor_anterior']}
+                            and b.get(coord, {}).get(field) == {'stringValue': temporal['esperado']}):
+                        delta['motivo'] = 'Fuso nativo alinhado ao manifesto, com fórmula temporal preservada'
+                        accepted.append(delta)
                     else:
                         differences.append(delta)
     analysis = after.get('ANALISE', {})
@@ -83,7 +101,8 @@ def compare(folder, phase, plan_after, removed, contextual_specs=None):
             'campos_conferidos': FIELDS, 'celulas_preservadas': sum(map(len, expected.values())),
             'notas_preservadas': sum(bool(c.get('note')) for s in expected.values() for c in s.values()),
             'validacoes_preservadas': sum(bool(c.get('dataValidation')) for s in expected.values() for c in s.values()),
-            'ajudas_contextuais_acrescentadas_conferidas': accepted,
+            'ajudas_contextuais_acrescentadas_conferidas': [d for d in accepted if d['campo'] == 'note'],
+            'ajuste_temporal_conferido': [d for d in accepted if d['campo'] == 'effectiveValue'],
             'diferencas': differences, 'erros_formula': errors,
             'analise': {'versao': version, 'chaves': len(keys), 'unicas': len(set(keys)), 'contrato_ok': contract_ok},
             'snapshot_depois_sha256': hashlib.sha256(compact.encode()).hexdigest()}
@@ -96,9 +115,11 @@ if __name__ == '__main__':
     p.add_argument('--plano', required=True, type=Path)
     p.add_argument('--retirados', action='store_true')
     p.add_argument('--notas-contextuais', type=Path, help='Aceita somente acréscimo em nota vazia, idêntico à fonte canônica efetiva')
+    p.add_argument('--prova-fuso', type=Path, help='Exceção estrita somente para a emissão TODAY da carteira')
+    p.add_argument('--metadata', type=Path, help='Metadados finais atuais, obrigatórios com --prova-fuso')
     p.add_argument('--saida', required=True, type=Path)
     a = p.parse_args()
-    r = compare(a.evidencias, a.fase, read(a.plano), a.retirados, a.notas_contextuais)
+    r = compare(a.evidencias, a.fase, read(a.plano), a.retirados, a.notas_contextuais, a.prova_fuso, a.metadata)
     a.saida.write_text(json.dumps(r, ensure_ascii=False, indent=2) + '\n', encoding='utf8')
     print(json.dumps(r, ensure_ascii=False))
     sys.exit(0 if r['resultado'] == 'OK' else 1)
