@@ -33,8 +33,24 @@
     {
       "funcao": "continuar",
       "inicio_log": "2026-10-18 00:07:33Z",
-      "resultado": "EM_EXECUCAO",
-      "transporte": "348ec3c66d23229af267887a9e8ea3517445520ac8d1482f9f6267b28ed0ea2e"
+      "resultado": "CONCLUIDA_COM_PARADA_SEGURA_ANTES_DADOS_INVOC",
+      "transporte": "348ec3c66d23229af267887a9e8ea3517445520ac8d1482f9f6267b28ed0ea2e",
+      "relogio_interno_s": 187,
+      "etapas_s": {
+        "preparacao": 3.6,
+        "CARTEIRA": 4.3,
+        "FICHA": 38.4,
+        "FICHA AMALDIÇOADA": 20.3,
+        "INVOCAÇÕES": 72.1,
+        "FICHA PESSOAL": 11.9,
+        "DADOS": 9.9,
+        "DADOS_AM": 26.3
+      }
+    },
+    {
+      "funcao": "continuar",
+      "inicio_log": "2026-10-18 00:11:13Z",
+      "resultado": "EM_EXECUCAO"
     }
   ],
   "oficial": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
@@ -295,5 +311,6 @@
   "modelo_recomendado": "Sol/Médio para acompanhar execuções; aumentar se houver divergência.",
   "limitacao_identificada": "Criação de todas as abas precede as guardas de tempo do preenchimento. Não há retomada dessa criação no transporte vigente.",
   "correcao_preparacao": "Publicada e relida 36/36; 22 verificações locais passaram. Payload ABAS/ARTE idêntico.",
-  "preparacao_API": "12 abas vazias adicionadas nas dimensões dos GS, sem importar XLSX nem escrever campos de personagem."
+  "preparacao_API": "12 abas vazias adicionadas nas dimensões dos GS, sem importar XLSX nem escrever campos de personagem.",
+  "estado": "Primeiro preenchimento concluído, parada segura com 15 abas faltando; segunda continuação em execução."
 }

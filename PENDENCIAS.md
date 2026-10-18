@@ -1,18 +1,18 @@
 ## Pós-D · itens 3 e 2 concluídos · 17/10/2026
 
 **Oficial em atualização acompanhada, ainda não liberada.** Janela confirmada
+pelo usuário; backup novo conferido `1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI`.
 Correção de retomada da criação passou 22 verificações, publicada/relida 36/36;
 12 abas vazias completadas via API, continuar iniciado 00:07:33Z (18/10 UTC).
 Não executar construir novamente: seguir preenchimento por continuar.
-pelo usuário; backup nativo novo conferido `1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI`.
-Código 36/36 relido igual, fuso corrigido, construir iniciado ~23:43Z.
+Transporte Ficha.gs `348ec3c6…`; payload de regras/desenho idêntico. Fuso corrigido.
 Estado incremental em `acabamento-b47/OFICIAL-B47.json`; concluir montagem,
 comparação e cópia funcional antes de liberar.
 
 Testes antigos concluídos no Google (detalhes abaixo). Medidas/perfil fechados
 em `acabamento-b47/MEDIDAS-POS-D.md`/`.json`: onOpen 7,767 s, edição de texto
 10,124 s, expansão 10,011 s; cópia restaurada inclusive alturas/grupos. VM e
-histórico separados. Produção GS intacta. B84 é otimização futura delimitada;
+histórico separados; medidos antes da correção posterior do transporte. B84 é otimização futura delimitada;
 carregamento sob demanda não foi implementado nesta retomada.
 Resta a oficial pelo roteiro com usuário presente e janela sem cópias combinada.
 Sol/Médio para publicação; esforço maior se aparecer divergência.
