@@ -50,6 +50,12 @@
     {
       "funcao": "continuar",
       "inicio_log": "2026-10-18 00:11:13Z",
+      "resultado": "CONCLUIDA_COM_PARADA_SEGURA_ANTES_CONFIGURACAO",
+      "relogio_interno_s": 169
+    },
+    {
+      "funcao": "continuar",
+      "inicio_log": "2026-10-18 00:15:07Z",
       "resultado": "EM_EXECUCAO"
     }
   ],
@@ -312,5 +318,5 @@
   "limitacao_identificada": "Criação de todas as abas precede as guardas de tempo do preenchimento. Não há retomada dessa criação no transporte vigente.",
   "correcao_preparacao": "Publicada e relida 36/36; 22 verificações locais passaram. Payload ABAS/ARTE idêntico.",
   "preparacao_API": "12 abas vazias adicionadas nas dimensões dos GS, sem importar XLSX nem escrever campos de personagem.",
-  "estado": "Primeiro preenchimento concluído, parada segura com 15 abas faltando; segunda continuação em execução."
+  "estado": "Duas continuações concluídas (187/169 s); faltam CONFIGURAÇÃO, DADOS_CONFIG, menus e acabamento, em execução."
 }
