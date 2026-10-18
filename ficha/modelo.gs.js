@@ -285,6 +285,7 @@ var TETO_DA_MONTAGEM_ = 300000;
 // por célula, e o limite desce de 300 para 270 s, para os menus caberem depois da última aba.
 var MS_POR_CELULA_ = 2.4, MS_POR_CELULA_OCULTA_ = 1.4;
 var LIMITE_DA_EXECUCAO_ = 270000;
+var LIMITE_DA_CRIACAO_ = 180000;
 var CHAVE_DA_MONTAGEM_ = 'montagem_parada';
 var RETOMADA_ = null;       // o continuar() põe aqui a aba em que a montagem parou; o construir() começa do zero
 
@@ -297,8 +298,19 @@ function custoDaAba_(spec) {
  * vezes ele pedir: cada vez monta as abas que couberem, e a última faz os menus e o acabamento.
  */
 function continuar() {
-  var parada = PropertiesService.getDocumentProperties().getProperty(CHAVE_DA_MONTAGEM_);
-  if (parada === null || !(Number(parada) > 0) || !(Number(parada) <= ABAS.length)) {
+  var props = PropertiesService.getDocumentProperties();
+  var parada = props.getProperty(CHAVE_DA_MONTAGEM_);
+  // Uma versão anterior podia expirar criando abas, antes de guardar a parada.
+  // Adotar somente o rascunho reconhecível e inteiramente vazio; nunca uma ficha preenchida.
+  if (parada === null) {
+    var ss = SpreadsheetApp.getActive();
+    if (ss.getSheetByName('__montando__')) {
+      conferirAbasVazias_(ss);
+      parada = '-1';
+      props.setProperty(CHAVE_DA_MONTAGEM_, parada);
+    }
+  }
+  if (parada === null || parada === '' || !Number.isInteger(Number(parada)) || Number(parada) < -1 || Number(parada) > ABAS.length) {
     throw new Error('não há montagem parada para continuar: rode construir() (ou acabar(), se só faltar o acabamento).');
   }
   RETOMADA_ = Number(parada);
@@ -307,6 +319,34 @@ function continuar() {
   } finally {
     RETOMADA_ = null;
   }
+}
+
+/** A preparação também pode precisar de várias execuções quando o serviço está lento. */
+function conferirAbasVazias_(ss) {
+  ss.getSheets().forEach(function (a) {
+    if (a.getName() === '__montando__') return;
+    if (!ABAS.some(function (s) { return s.nome === a.getName(); }) || a.getLastRow() || a.getLastColumn()) {
+      throw new Error('a preparação tem conteúdo ou aba desconhecida: não é seguro retomá-la; use o backup ou construir() do começo.');
+    }
+  });
+}
+
+function prepararAbas_(ss, rel) {
+  conferirAbasVazias_(ss);
+  var temp = ss.getSheetByName('__montando__') || ss.insertSheet('__montando__', 0);
+  var abas = [], feitas = 0;
+  for (var i = 0; i < ABAS.length; i++) {
+    var spec = ABAS[i], existente = ss.getSheetByName(spec.nome);
+    // O relógio limita trabalho NOVO. Abas já prontas só são lidas, não refeitas.
+    if (!existente && feitas && rel.passou() > LIMITE_DA_CRIACAO_) {
+      Logger.log('A CRIAÇÃO DAS ABAS PAROU ANTES DE ' + spec.nome + ': rode a função continuar(). As abas vazias já criadas foram preservadas.');
+      return null;
+    }
+    abas.push(criarAba_(ss, spec, i + 1));
+    if (!existente) feitas++;
+  }
+  ss.deleteSheet(temp);
+  return abas;
 }
 
 /**
@@ -414,7 +454,8 @@ function montar_() {
   var ss = SpreadsheetApp.getActive();
   var feito = [], rel = relogio_();
   var props = PropertiesService.getDocumentProperties();
-  var de = RETOMADA_ === null ? 0 : RETOMADA_, parou = -1;
+  var de = RETOMADA_ === null || RETOMADA_ === -1 ? 0 : RETOMADA_, parou = -1;
+  var preparou = RETOMADA_ === null || RETOMADA_ === -1;
 
   // O idioma da planilha manda na pontuação de TODA fórmula que o script escreve, o setValues e
   // a regra de cor inclusive: numa planilha em português COUNTIF(a,b) vira #ERROR! e 0.25 não é
@@ -429,7 +470,7 @@ function montar_() {
   ss.setSpreadsheetLocale('en_US');
   try {
     var abas;
-    if (de === 0) {
+    if (RETOMADA_ === null) {
       // do zero: a montagem parada que houver deixa de valer
       props.deleteProperty(CHAVE_DA_MONTAGEM_);
       // uma aba de rascunho segura o lugar enquanto as antigas somem.
@@ -444,12 +485,16 @@ function montar_() {
         _comRetentativa_(function () { var a = ss.getSheetByName(nome); if (a) ss.deleteSheet(a); });
       });
 
+      props.setProperty(CHAVE_DA_MONTAGEM_, '-1');
+    }
+    if (preparou) {
       // TODAS as abas nascem primeiro, vazias e já do tamanho certo, na ordem do ABAS. Só depois cada uma é
       // preenchida: a CARTEIRA cita a FICHA e a FICHA cita a DADOS, e fórmula gravada antes de a aba citada existir
       // (ou antes de ela ter a coluna citada) fica em #REF!. Até 01/10/2026 as fórmulas esperavam numa fila e eram
       // gravadas depois, em 144 chamadas; agora vão junto com os valores, numa gravação por aba.
-      abas = ABAS.map(function (spec, i) { return criarAba_(ss, spec, i + 1); });
-      ss.deleteSheet(temp);
+      abas = prepararAbas_(ss, rel);
+      if (!abas) return;
+      props.setProperty(CHAVE_DA_MONTAGEM_, '0');
       rel.etapa('abas criadas');
     } else {
       // seguindo de onde parou: as abas já nasceram todas, e as primeiras já estão preenchidas
@@ -462,7 +507,7 @@ function montar_() {
     ABAS.forEach(function (spec, i) {
       if (i < de || parou >= 0) return;
       // a aba que pode não acabar nesta execução fica para a próxima; a primeira da vez sempre é montada
-      if (i > de && rel.passou() + custoDaAba_(spec) > LIMITE_DA_EXECUCAO_) {
+      if ((i > de || preparou) && rel.passou() + custoDaAba_(spec) > LIMITE_DA_EXECUCAO_) {
         parou = i;
         return;
       }
@@ -590,7 +635,7 @@ function soOAcabamento_() {
 
 /** A aba vazia, na posição dela e já com o número de linhas e de colunas que vai ter. */
 function criarAba_(ss, spec, posicao) {
-  var aba = ss.insertSheet(spec.nome, posicao);
+  var aba = ss.getSheetByName(spec.nome) || ss.insertSheet(spec.nome, posicao);
   var nc = spec.cols, nr = spec.rows, temC = aba.getMaxColumns(), temR = aba.getMaxRows();
   if (temC > nc) aba.deleteColumns(nc + 1, temC - nc);
   if (temR > nr) aba.deleteRows(nr + 1, temR - nr);

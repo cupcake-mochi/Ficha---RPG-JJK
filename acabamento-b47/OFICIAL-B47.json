@@ -26,8 +26,9 @@
     {
       "funcao": "construir",
       "inicio_log": "23:53:27Z",
-      "resultado": "EM_EXECUCAO",
-      "condicao": "Visualização da planilha fechada; somente editor aberto."
+      "resultado": "CANCELADA_APOS_DIAGNOSTICO_PREPARACAO_SEM_RETOMADA",
+      "condicao": "Visualização da planilha fechada; somente editor aberto.",
+      "fim_log": "23:57:30Z"
     }
   ],
   "oficial": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
@@ -283,5 +284,7 @@
   },
   "pasta_privada": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/",
   "modelo_recomendado": "Sol/Médio para acompanhar execuções; aumentar se houver divergência.",
-  "limitacao_identificada": "Criação de todas as abas precede as guardas de tempo do preenchimento. Não há retomada dessa criação no transporte vigente."
+  "limitacao_identificada": "Criação de todas as abas precede as guardas de tempo do preenchimento. Não há retomada dessa criação no transporte vigente.",
+  "correcao_preparacao": "RETOMADA-CRIACAO.json: 22 verificações locais, payload idêntico. Nova versão de Ficha.gs ainda pendente de publicação/releitura.",
+  "preparacao_API": "12 abas vazias adicionadas nas dimensões dos GS, sem importar XLSX nem escrever campos de personagem."
 }

@@ -1,0 +1,18 @@
+{
+  "resultado": "QA_LOCAL_APROVADA; AINDA_NAO_PUBLICADO",
+  "causa": "Criação inicial ultrapassou 360,921 s no serviço Google; guardas só cobriam preenchimento.",
+  "payload_ABAS_ARTE_sha256_antes_depois": "4a00cff8aeb8b44cdcee48966fd2298b5925f373e95d97ff77a006d5acc3a977",
+  "payload_identico": true,
+  "arquivos_gs_alterados": [
+    "Ficha.gs"
+  ],
+  "hash_Ficha_gs": "348ec3c66d23229af267887a9e8ea3517445520ac8d1482f9f6267b28ed0ea2e",
+  "cenarios_focais": 8,
+  "regressao_construir_fase_continua": 8,
+  "fase_acabamento": 6,
+  "guarda": "Sem propriedade de montagem, somente __montando__ com abas conhecidas e vazias permite adoção. Qualquer conteúdo/aba desconhecida bloqueia antes de apagar ou criar.",
+  "comportamento": "Preparação pausa após 180 s de criação; continuar reutiliza dimensões/identidades, guarda -1 criando, 0 antes do primeiro preenchimento. construir explícito continua limpando do zero.",
+  "escopos_novos": false,
+  "recalculo_mecanico_repetido": false,
+  "verificacoes_totais": 22
+}

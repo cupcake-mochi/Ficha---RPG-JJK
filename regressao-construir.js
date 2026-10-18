@@ -903,6 +903,7 @@ class RelogioQueCorre { getTime() { agora += 60000; return agora; } }
 const L = criaSheets(FICHA_SRC, GS, { Date: RelogioQueCorre });
 // aqui a montagem das abas não para no meio (isso é o teste de baixo): o que se cobra é a vez passada ao acabar()
 L.ctx.LIMITE_DA_EXECUCAO_ = Infinity;
+L.ctx.LIMITE_DA_CRIACAO_ = Infinity; // este caso isola o acabamento, não a preparação
 let erroL = null;
 try { L.ctx.construir(); } catch (e) { erroL = e; }
 const semAcabamento = !L.acha('FICHA').prot.length && L.acha('FICHA').notas.size === (ABAS.find((a) => a.nome === 'FICHA').notas || []).length && !L.P.nomeados['PALETA_ESCOLHIDA'];
@@ -926,6 +927,17 @@ let erroC = null;
 try { C.ctx.construir(); } catch (e) { erroC = e; }
 const parada = () => (C.P.props.montagem_parada === undefined ? null : Number(C.P.props.montagem_parada));
 const vazias = () => C.P.abas.filter((a) => !a.v.size).map((a) => a.nome);
+// 17/10: a criação também tem orçamento. Antes de cobrar o preenchimento,
+// provar que cada retomada preserva as abas já criadas e completa a preparação.
+let preparos = 0, erroPreparo = null, anteriores = C.P.abas.slice();
+while (!erroC && parada() !== null && parada() <= 0 && preparos++ < ABAS.length) {
+  try { C.ctx.continuar(); } catch (e) { erroC = erroPreparo = e; }
+  if (!anteriores.filter(a=>a.nome!=='__montando__').every(a=>C.P.abas.includes(a))) erroPreparo = Error('substituiu aba durante a preparação');
+  anteriores = C.P.abas.slice();
+}
+ok('preparação lenta termina em várias execuções, preservando identidade e idioma',
+   !erroPreparo && !erroC && preparos > 0 && parada() > 0 && C.P.locale === 'pt_BR',
+   erroPreparo ? erroPreparo.message : 'parada '+parada());
 const primeira = parada();
 ok('a montagem que não cabe nos seis minutos para ANTES de começar uma aba, em português, guarda em que aba parou e pede o continuar()',
    !erroC && primeira > 0 && primeira < ABAS.length && C.P.locale === 'pt_BR' && /^A MONTAGEM PAROU ANTES DA ABA .* rode a função continuar\(\)/.test(C.P.registro)
@@ -959,11 +971,19 @@ let cortada = null;
 C.ctx.montarAba_ = () => { throw new Error('cortada no meio'); };
 try { C.ctx.construir(); } catch (e) { cortada = e; }
 C.ctx.montarAba_ = montarDeVerdade;
+// A criação pode ter parado antes de alcançar o corte artificial do preenchimento.
+while (!cortada && parada() !== null && parada() < 0) {
+  C.ctx.montarAba_ = () => { throw new Error('cortada no meio'); };
+  try { C.ctx.continuar(); } catch (e) { cortada = e; }
+  C.ctx.montarAba_ = montarDeVerdade;
+}
+const paradaDoCorte = parada();
 let erroV = null;
 try { C.ctx.continuar(); } catch (e) { erroV = e; }
-ok('a montagem cortada no meio não deixa valendo a parada de antes: o continuar() manda montar do começo',
-   !!cortada && parada() === null && C.P.locale === 'pt_BR' && !!erroV && /não há montagem parada/.test(erroV.message), cortada ? `parada ${parada()} · ${erroV && erroV.message}` : 'a montagem não foi cortada');
-try { C.ctx.LIMITE_DA_EXECUCAO_ = Infinity; C.ctx.TETO_DA_MONTAGEM_ = Infinity; C.ctx.TETO_DAS_TRAVAS_ = Infinity; C.ctx.construir(); } catch (e) { erroC = e; }
+ok('o corte esquece a parada antiga e permite retomar o primeiro preenchimento',
+   !!cortada && paradaDoCorte === 0 && parada() > 0 && C.P.locale === 'pt_BR' && !erroV,
+   cortada ? `parada ${paradaDoCorte} → ${parada()} · ${erroV && erroV.message}` : 'a montagem não foi cortada');
+try { C.ctx.LIMITE_DA_CRIACAO_ = Infinity; C.ctx.LIMITE_DA_EXECUCAO_ = Infinity; C.ctx.TETO_DA_MONTAGEM_ = Infinity; C.ctx.TETO_DAS_TRAVAS_ = Infinity; C.ctx.construir(); } catch (e) { erroC = e; }
 ok('o construir() começa do zero e esquece a montagem parada que houver', !erroC && parada() === null && assinatura(C.P) === antes && /^FICHA PRONTA em /.test(C.P.registro),
    erroC ? erroC.message : C.P.registro.slice(0, 100));
 }

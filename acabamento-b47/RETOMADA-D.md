@@ -1,6 +1,11 @@
 # B47 — ponto vigente, itens 3 e 2 concluídos · 17/10/2026
 
 **OFICIAL EM CONSTRUÇÃO, NÃO LIBERADA:** usuário confirmou presença/janela
+Correção em andamento: a criação inicial atingiu 360,921 s antes das guardas
+de preenchimento. Nova retomada da criação passou 22 verificações em VM;
+ABAS/ARTE idênticos, só transporte de Ficha.gs mudou. `RETOMADA-CRIACAO.json`.
+12 abas vazias faltantes adicionadas em lote Sheets, nas dimensões do GS;
+sem campos escritos/importação. Publicar Ficha.gs novo, reler 36, continuar.
 sem cópias em 17/10, 23:31Z. Backup NOVO `1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI`
 conferido igual em dez abas, conteúdo/notas/validações/mesclas/grupos/estilos.
 Projeto oficial `1sZTcHm1yNz8x7sVs5WaRj1pX8qbac-kglUDIdDTFLh_iqvHwzF6sqXff`:
