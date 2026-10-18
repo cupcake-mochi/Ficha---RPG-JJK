@@ -1,5 +1,7 @@
 ## B47 · entrega concluída na oficial · 17/10/2026
 
+**Limpeza posterior solicitada pelo usuário:** 31 planilhas temporárias B47, incluindo backups e revisão de exemplos, movidas para a lixeira. Oficial preservada e relida com 22 abas. Links de cópias/backups abaixo são históricos; não recriar. Código e provas necessários permanecem no Git, dados pessoais não. [Inventário](acabamento-b47/LIMPEZA-B47.json).
+
 **Oficial B47 validada e liberada para cópias.** Estado vigente em
 [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md) e
 [fechamento](acabamento-b47/OFICIAL-FECHAMENTO.md). Este bloco prevalece sobre

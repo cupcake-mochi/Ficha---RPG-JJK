@@ -1,0 +1,142 @@
+{
+  "resultado": "LIMPEZA_B47_CONCLUIDA",
+  "pedido_usuario": "Após concluir, apagar as outras fichas usadas no processo; preservar no Git somente o necessário.",
+  "metodo": "Google Drive UI, Mover para a lixeira; sem exclusão permanente nem esvaziamento da lixeira.",
+  "quantidade": 31,
+  "lotes": [
+    19,
+    11,
+    1
+  ],
+  "oficial_preservada": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
+  "oficial_abas_apos_limpeza": 22,
+  "busca_final_nome_B47_nao_trashed": 0,
+  "arquivos": [
+    {
+      "id": "1mSVpDt8L8OI4S9ouASYOAXQiPklKJ_aKxiQwAGDVfVc",
+      "titulo": "TESTE DESCARTÁVEL B47 — cópia da oficial atualizada — 2026-10-17"
+    },
+    {
+      "id": "1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI",
+      "titulo": "BACKUP OFICIAL B46 — janela atualização B47 — 2026-10-17"
+    },
+    {
+      "id": "1_1oBYdoci0j-B5LSfYp6UPLpnQB5vNxEOJafx-FRHqw",
+      "titulo": "TESTE DESCARTÁVEL B47 — cópia funcional paleta_base — 2026-10-17"
+    },
+    {
+      "id": "1O3Wn7LNh7H_zjDGOUvUtgW_US-O1YkesrmGTKUJlsJQ",
+      "titulo": "TESTE DESCARTÁVEL B47 — referência histórica progressão 03a459e — 2026-10-17"
+    },
+    {
+      "id": "1ujvsFJTqCAYkMkdyZtU2N6t0jiXg_gcA3Y_ae2zMS4k",
+      "titulo": "TESTE DESCARTÁVEL B47 — referência histórica custom d0427b6 — 2026-10-17"
+    },
+    {
+      "id": "13qBo5g09Qg9CLGsgwVtCjFYzdiwsNKQkAiVEmcIOm7w",
+      "titulo": "TESTE DESCARTÁVEL B47 — regressões nativas pós-D — 2026-10-17"
+    },
+    {
+      "id": "1nuBAQIUCFvuzIb7cMc0RXiBd5wUT4AjB93eTkL2q9GA",
+      "titulo": "TESTE DESCARTÁVEL B47 — referência histórica campanha d5a1c38 — 2026-10-17"
+    },
+    {
+      "id": "1EdEXzFRL8n21dLb60lxE2wbP4PFxFUiBdw7BiTTkNg0",
+      "titulo": "Ciclo Maldito — B47 — cópia nativa para revisão"
+    },
+    {
+      "id": "117rWwlUgRHTthjPpTqS37TV_SVgpFu_-hjtQyqXPpJw",
+      "titulo": "BACKUP OFICIAL B46 — antes da atualização B47 — 2026-10-17"
+    },
+    {
+      "id": "14Ad8e5hUECLimCFuilEGSIxrhv0IWpDUEjEBR4N8N-Q",
+      "titulo": "TESTE DESCARTÁVEL B47 C+D — construção integrada — 2026-10-16"
+    },
+    {
+      "id": "1gSlTC2X_aGXzMSOVeG-y6eJ61ruEnHO9jFRU9oMzAMY",
+      "titulo": "SNAPSHOT B47 — revisão após limpeza de abas e fuso — 2026-10-17"
+    },
+    {
+      "id": "1rEyN4OS_dF5oYO91gaT4PnIHsqnZ8sA0ujZd7xuNRdE",
+      "titulo": "BACKUP B47 — revisão antes da Fila D — 2026-10-17"
+    },
+    {
+      "id": "1j16g_UYCO-SURTioAxZJ0H65SxP1NhMMKjnJdfPlgxE",
+      "titulo": "TESTE DESCARTÁVEL B47 D — acabamento e cópia funcional — 2026-10-16"
+    },
+    {
+      "id": "1hAO_Q_r8BSRadW342oGxl5htrc1DlYk1RHdC4p9ZMf4",
+      "titulo": "BACKUP NATIVO B47 — revisão antes do acabamento D — 2026-10-16"
+    },
+    {
+      "id": "1BbJDVUD3TV4o-YU1gH_E3R8wGCZcPMZwIw49wxljXLg",
+      "titulo": "BACKUP NATIVO B47 D — antes de retirar estudos da descartável — 2026-10-16"
+    },
+    {
+      "id": "1pQ9a1HPT0vQ_AK5ovLNBALYOp7J_EzAB7bxuEi93MXk",
+      "titulo": "BACKUP NATIVO B47 — revisão v10 imediatamente antes de C — 2026-10-16"
+    },
+    {
+      "id": "1z6G5Q2odTqPctNHIZ-rGlRhgAB84xv-xtoyFFuVqtjw",
+      "titulo": "TESTE DESCARTÁVEL B47 C — ensaio de migração preenchida — 2026-10-16"
+    },
+    {
+      "id": "16lqTTdX1h4e8qA2nC2Jj2LQViHTZvrNQFBH5_LmaSH8",
+      "titulo": "BACKUP NATIVO B47 C — antes do ensaio de migração preenchida — 2026-10-16"
+    },
+    {
+      "id": "1mZaDlSvdYsAcsD-2dJmX5GG0Geo2ObJBJFhA0sFwTok",
+      "titulo": "TESTE DESCARTÁVEL B47 C+D — personagem e comuns — 2026-10-16"
+    },
+    {
+      "id": "1BzVzrqjKsarh6DCAu6FGZ_yOxy0aBzttfX4n1JH2QFI",
+      "titulo": "TESTE DESCARTÁVEL B47 C+D — conteúdos comuns — 2026-10-16"
+    },
+    {
+      "id": "1hBogVNW0vqeLYwa0PNl04Y2Nel9-7nrCoODWq1FKsb4",
+      "titulo": "TESTE DESCARTÁVEL B47 — PLANILHA E SCRIPT v10 VALIDADOS — 2026-10-16"
+    },
+    {
+      "id": "1ZCqyuhel-NMlpXb522nj-tIgs75_-f8V9Wi7LRejAgk",
+      "titulo": "TESTE DESCARTÁVEL B47 — diagnóstico do lote inicial v9 — 2026-10-16"
+    },
+    {
+      "id": "1fb3rdEteWSNL1tMEukRTkMirEffFkhPJiCOvewvs-Ug",
+      "titulo": "BACKUP NATIVO B47 — REVISÃO v9 — imediatamente antes da migração — 2026-10-16"
+    },
+    {
+      "id": "1sK1Xg6_HgDBYVkFHwyv0lUbUhgKM4m212z1CmltfzIM",
+      "titulo": "EVIDÊNCIA PRIVADA B47 — estrutura da revisão — 2026-10-16"
+    },
+    {
+      "id": "1_8p7Py7R6edi3IDyhoUuuyLgRPBt2q2DawfJw2yK4oM",
+      "titulo": "BACKUP NATIVO B47 — REVISÃO v9 antes da migração PC — 2026-10-16"
+    },
+    {
+      "id": "162TNmcd53kEfCnwDV48UAfsteiwd44gBXocVJu_Bvqo",
+      "titulo": "TESTE DESCARTÁVEL B47 — CÓPIA FUNCIONAL v10 — 2026-10-16"
+    },
+    {
+      "id": "12iTELP65DYjBjAY-PiAZ-JvVIyrK7ragsYKRX-vXYsc",
+      "titulo": "TESTE DESCARTÁVEL — base B47 — construção custom R52"
+    },
+    {
+      "id": "1Qf5O2BbE5FZDYz2o-F7Xt0YOyb9S1s7bB82MLbabVVU",
+      "titulo": "BACKUP B47 — antes da capacidade v10 — 2026-10-16 f3a3fbd"
+    },
+    {
+      "id": "1D215acC6Dxhu8i7x0aF7pmiNbJ95_U1CiH4980QozLk",
+      "titulo": "TESTE DESCARTÁVEL — B47 — Melhorias e Restrições 3c"
+    },
+    {
+      "id": "1s2cPLbo0yazFXwTEzAE-fpi96WzjjLLsZrBqK5NhCU0",
+      "titulo": "DESCARTADO — importação Excel — B47 (usar cópia nativa)"
+    },
+    {
+      "id": "1m401H6QPAsxCbvGypwW1P7mWkmwgoxXphgAChR01r5E",
+      "titulo": "Ficha — backup antes do teste B47 (14-10-2026)"
+    }
+  ],
+  "limite": "Inventário B47: descartáveis, backups, snapshot, evidência estrutural e revisão de exemplos do processo. Fichas de outros trabalhos e testes do bot não foram incluídos. Dados de personagem não foram enviados ao Git.",
+  "revisao": "Nome/jogador nos campos padrão; exemplos nativos de bônus de Defesa e equipamento conferidos. Revisão incluída no último lote conforme pedido de limpar as outras fichas."
+}

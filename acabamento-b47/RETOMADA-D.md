@@ -1,5 +1,7 @@
 # B47 — concluída e liberada na oficial · 17/10/2026
 
+**Limpeza posterior solicitada pelo usuário:** 31 planilhas temporárias B47, incluindo backups e revisão de exemplos, movidas para a lixeira. Oficial preservada e relida com 22 abas. Links de cópias/backups abaixo são históricos; não recriar. Código e provas necessários permanecem no Git, dados pessoais não. [Inventário](LIMPEZA-B47.json).
+
 **OFICIAL PRONTA, LIBERADA PARA CÓPIAS.** Este bloco prevalece sobre o histórico.
 Itens 3 (testes antigos), 2 (medidas/perfil), C, D e atualização oficial concluídos.
 A queda do PC ocorreu depois da validação; releitura somente de leitura confirmou

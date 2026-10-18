@@ -11,6 +11,10 @@ uma tarefa a repetir. A revisão preenchida continua proibida para montagem.
 
 > **Autorização do usuário (17/10/2026):** "Pode atualizar a ficha oficial seguindo o ROTEIRO-OFICIAL-B47.md numa sessão em que eu esteja no PC; fica liberado rodar construir() na oficial depois do backup." Vale **só** com o usuário presente na sessão e **depois** de backup nativo conferido; é a exceção à regra geral de não rodar `construir()`/`continuar()` na oficial. Continua proibido na revisão preenchida.
 
+**Limpeza posterior:** a pedido do usuário, os 31 arquivos temporários B47,
+incluindo os backups, foram enviados à lixeira após a validação. Oficial
+preservada. Links abaixo são históricos; ver [inventário](LIMPEZA-B47.json).
+
 ## Estado lido (somente leitura)
 
 - Oficial `1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro` ("Ficha - Era da Revolução"), em drive compartilhado, aberta hoje às 13:08Z.

@@ -78,3 +78,13 @@ final ficam na pasta privada de evidências indicada na prova.
 Sem pendência obrigatória desta entrega. B84, carregamento integral sob
 demanda, permanece otimização futura delimitada e não foi implementada.
 Próxima ação eventual: Sol/Médio para manutenção focal.
+
+## Limpeza posterior autorizada pelo usuário
+
+Depois do fechamento, o usuário pediu remover as outras fichas do processo.
+31 planilhas B47, incluindo os backups e a revisão de exemplos, foram movidas
+para a lixeira. Oficial preservada e relida com 22 abas. Inventário em
+[LIMPEZA-B47.json](LIMPEZA-B47.json). Os links de backups/cópias acima documentam
+as provas históricas; esses arquivos agora estão na lixeira. Não recriar
+planilhas descartáveis nem restaurar cópias por rotina. Fontes e provas
+necessárias continuam no Git, sem dados de personagem.

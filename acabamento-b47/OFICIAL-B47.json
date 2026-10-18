@@ -387,5 +387,13 @@
     "controles_copia_restaurados": 99,
     "ultima_modificacao_oficial": "2026-10-18T00:19:36.115Z",
     "somente_leitura": true
+  },
+  "limpeza_posterior": {
+    "pedido_usuario": true,
+    "prova": "LIMPEZA-B47.json",
+    "temporarias_na_lixeira": 31,
+    "backup_e_revisao_incluidos": true,
+    "oficial_preservada_22_abas": true,
+    "reconstruir": false
   }
 }
