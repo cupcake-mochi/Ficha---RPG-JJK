@@ -1,21 +1,84 @@
 {
-  "estado": "Cópia validada; oficial pendente",
-  "copia": {
-    "celulas_preservadas_conferidas": 58506,
+  "estado": "OFICIAL VALIDADA E LIBERADA",
+  "data": "2026-10-18",
+  "oficial": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
+  "paineis_retrateis": 15,
+  "familias_entidades_independentes": 12,
+  "listas_configuracao_numeradas": 13,
+  "auditoria_nativa": {
+    "celulas_preservadas_conferidas": 58511,
     "diferencas": [],
     "erros_22_abas": [],
     "textos_indevidos_em_paineis_vazios": [],
     "resultado": "OK"
   },
+  "estrutura": {
+    "grupos": 202,
+    "mesclas": 7976,
+    "paineis_fechados": 15,
+    "mescla_nativa_anterior_preservada": 1,
+    "resultado": "OK"
+  },
+  "analise": {
+    "chaves": 8190,
+    "diferencas_chaves_valores": 0
+  },
+  "erros_finais_22_abas": 0,
   "testes_locais": {
     "planejador_familias": 13,
-    "paineis": 15,
-    "entidades": 12,
     "sintaxe_gs": 35,
-    "teto_bytes": 900000
+    "teto_bytes": 900000,
+    "maior_arquivo_bytes": 844044
+  },
+  "codigo_oficial": {
+    "arquivos": 36,
+    "divergencias": 0,
+    "sha256": {
+      "Analise.gs": "bf22295b36de31404d36e6d830977184734caf92aa74f35f5f727dbff199de20",
+      "AnaliseFontes.gs": "c3a44dc5514f8f20488e04ae44639b95be632cf5a18cd3a6ebe1da12a082fe6e",
+      "AptidoesPersonagem.gs": "156f8122af4f8a982c1b8ba37808cc703c75ca5194edda876dfeb763f3570a24",
+      "Codigo.gs": "2fea96765004c0d8c730ba60caf397204fac7c1b55aa83e1fae8d1a110884e74",
+      "Configuracao.gs": "46a2097a9be498f49f15ff8ca44b956c957aebf2acd9cd8907e0f61c5cda27d5",
+      "Criacao.gs": "d08eaf441a5248f4f4afda6630c87f149f135c8ce1d218fd22b5713b39440f41",
+      "CriacaoAnalise.gs": "ffd9e3f115287100f2bb494de58fabc190f5be0152da8d1554011233a3cff8ff",
+      "CriacaoPainel.gs": "24500221f65f52e60c9c6a5fb9511c964a91c37b3c878ad239f7770427d6e3a2",
+      "Custom.gs": "d88fb269f736de263f58a77cc08992ebf7068c54a1c6069fb370f91fa5b77a2f",
+      "Danos.gs": "7595d2484ec457303a53a1a9dc34037f342653659797e3a83e5f8c3ccfee4015",
+      "DanosPainel.gs": "974a4a3da1f1013d19e519d9e197f29af6b107017ef653575fbfe324d0ffe937",
+      "Entidades.gs": "a25eceab888a957e10da4cba7dc9a324fec61fbf67fd9afc1ea610a189254763",
+      "EntidadesAnalise.gs": "129d4dee6aab7c2464f76d2de77a2ec4f35f57a82353794bc0e5a5466107c285",
+      "EntidadesPainel.gs": "9bab180304d62912580fcfce48a01f7d1d7f2d6bf4686a8610545d4e3fb00a24",
+      "Ficha.gs": "c017f4813c141fb9734eeaad8347c68bf46ea45c330b7597adad970629ccb7da",
+      "FormasPersonagem.gs": "3141b6c806a8e2713f9c53ceba6d5019e8fd58c630b4a137014e6bf550f4e1dc",
+      "Habilidades.gs": "478f255b306af36c19f1bfdfba0e337ffc6fb7cf49ab2b5b5f4f95f665b0b00e",
+      "Invocacoes.gs": "6658f567b536de0144f5e965c9d0d3c720c3afb92afba181fc4f9ccf78b18dc2",
+      "Melhorias.gs": "47378bb25955b4a75c4bc47cbbdf544b2dfcac4854e7321f16c288ed7a4a1187",
+      "Origens.gs": "0736c9a9f7412655be61e63afba101781bd5ad1da174f845f741a82f3386497a",
+      "PecasAnalise1.gs": "612aaa54b67a40a08a3a9121653d22a8c543138ddbb7a56488f0bce136bdb3c8",
+      "PecasPainel.gs": "b8a4ce01db9e555b1f4825a4a29af8595d570ec9f2309f9a08dc4f3a82433e1a",
+      "PersonagemAnalise.gs": "6038835e621987f74c0a1cceaea4b41baeda1972b4b602702201d03968a657e6",
+      "PersonagemFormas1.gs": "c019b671226337dce80c708146fb3ae0de07b9f414f523e108f86e79b8babf2c",
+      "PersonagemFormas2.gs": "6398cc6501ef759fce8fca4aa0ed01f580420c510c6242d7b74285f7ff6608af",
+      "PersonagemFormas3.gs": "071ba2abe6504cab6d8187e9df77393fdad430a666c82e7e08e1ca4192ba9104",
+      "PersonagemFormas4.gs": "6cff0c517a106db78708d112871eb0052852e8e7e54fc5068b4198312ef7c8d8",
+      "PersonagemFormas5.gs": "1ffee34ebaf4606a6d4fd109c9517555ee03d04935d40c826ac926a23bece8ab",
+      "PersonagemPainel.gs": "3a81d4ca6b5d52346efd6c419f20ee9b2eae8c6ca6933bb0827495d411891ff5",
+      "Pessoal.gs": "b15e8d12d8722289aebbcae2fe82c18c51dcb1e230c3e40bc3e1368d3ef1b30a",
+      "Progressao.gs": "26bc468467026f3f8fc7e0a911bb5900e5934ae4cbb25734e7a5b7dcecbcc24f",
+      "ProgressaoAnalise.gs": "7eb5ea9108bad477e2d1979189a1c2240814e81a1a2d5b1afd0f66fb1d3e8526",
+      "ProgressaoPainel.gs": "2c52589fef203f8d0df5aefe55124d400453512153e22107f42cf578482d4796",
+      "Restricoes.gs": "84799ba6fce42f1b34f15c9d03f301a19bea27c7caa42e2e7811db8d0130354b",
+      "TalentosPersonagem.gs": "13911b2ad27e0b144e680a660d3e099ef417c2c96685c73599ef73e3577c0a99",
+      "appsscript.json": "3482b8bf420d1dfc21603c14345342df8a609f089b0493c5fd4f4636accb0dd6"
+    }
   },
   "codigo_copia": {
     "arquivos": 36,
     "divergencias": 0
-  }
+  },
+  "links_internos_atualizados": 19,
+  "indices_caixas_calculadas_transladados": 69,
+  "temporarios_movidos_lixeira": 2,
+  "sem_reconstrucao": true,
+  "sem_importacao_xlsx": true
 }

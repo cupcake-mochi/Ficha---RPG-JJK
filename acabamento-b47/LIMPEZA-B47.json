@@ -2,11 +2,12 @@
   "resultado": "LIMPEZA_B47_CONCLUIDA",
   "pedido_usuario": "Após concluir, apagar as outras fichas usadas no processo; preservar no Git somente o necessário.",
   "metodo": "Google Drive UI, Mover para a lixeira; sem exclusão permanente nem esvaziamento da lixeira.",
-  "quantidade": 33,
+  "quantidade": 35,
   "lotes": [
     19,
     11,
     1,
+    2,
     2
   ],
   "oficial_preservada": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
@@ -144,6 +145,14 @@
     {
       "id": "1x9mDkyxAR48Yxn92_erBRTf90b5KioGo4C-0o623wQk",
       "titulo": "TEMPORÁRIO B47 — backup antes da CONFIGURAÇÃO horizontal — apagar após validação"
+    },
+    {
+      "id": "1hvlG5T8zaYxRVubgJlMRM6VeP7abhDhVWh14JRygacM",
+      "titulo": "TESTE DESCARTÁVEL B47 — extensões de Famílias, Perícias e Ofícios — 17-10"
+    },
+    {
+      "id": "1nL9GoCJHUNr4inVAkLbVFAu4pGo-n5CV5c1TYbo7WWA",
+      "titulo": "BACKUP B47 — antes das extensões custom e numeração — 18-10"
     }
   ],
   "limite": "Inventário B47: descartáveis, backups, snapshot, evidência estrutural e revisão de exemplos do processo. Fichas de outros trabalhos e testes do bot não foram incluídos. Dados de personagem não foram enviados ao Git.",

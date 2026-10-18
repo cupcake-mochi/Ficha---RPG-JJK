@@ -1,11 +1,15 @@
-# Extensões custom · ensaio validado · 18/10/2026
+# Extensões custom e numeração concluídas · 18/10/2026
 
-Pedido posterior em aplicação: quinze listas retráteis junto de Famílias,
-Perícias e Ofícios; treze listas de CONFIGURAÇÃO numeradas 01–13. Cópia
-validada, 58.506 células preservadas, 8.190 chaves/valores iguais, zero erros
-nas 22 abas e código 36/36 após recarregar. Oficial ainda NÃO atualizada
-neste checkpoint. [Estado e próximos passos](EXTENSOES-CUSTOM.md).
-Não repetir a construção. Sol/Médio para aplicar a migração ensaiada.
+Oficial atualizada: quinze painéis retráteis junto de Famílias, Perícias e
+Ofícios; treze listas da CONFIGURAÇÃO numeradas 01–13 no índice e nos títulos.
+Todos os painéis novos começam fechados; sem cadastro válido, corpo sem texto.
+58.511 células existentes conferidas, 8.190 chaves/valores preservados, zero
+erros nas 22 abas. Código 36/36 da cópia e oficial relido depois de recarregar,
+igual ao Git. Cópia e backup deste ajuste movidos para a lixeira (35 no total).
+Não repetir a migração nem construir/continuar.
+[Fechamento](EXTENSOES-CUSTOM.md) · [Provas](EXTENSOES-CUSTOM-VALIDACAO.json).
+
+Próxima ação: aguardar os demais problemas do usuário. Sol/Médio para ajustes.
 
 # Ajuste visual concluído · CONFIGURAÇÃO horizontal · 17/10/2026
 

@@ -884,8 +884,10 @@ function montarAba_(aba, spec) {
     aba.setConditionalFormatRules(spec.condicional.map(function (c) { return regraDeCor_(aba, c); }));
   }
   (spec.links_paineis || []).forEach(function (link) {
-    aba.getRange(link.celula).setRichTextValue(SpreadsheetApp.newRichTextValue()
-      .setText(link.texto).setLinkUrl('#gid=' + aba.getSheetId() + '&range=' + link.alvo).build());
+    var caixa = aba.getRange(link.celula);
+    var estilo = caixa.getTextStyle().copy().setUnderline(false).build();
+    caixa.setRichTextValue(SpreadsheetApp.newRichTextValue()
+      .setText(link.texto).setTextStyle(estilo).setLinkUrl('#gid=' + aba.getSheetId() + '&range=' + link.alvo).build());
   });
   if (spec.grupos) {
     // O botão de fechar fica ANTES do grupo: na linha do título da lista, e na coluna antes do painel.

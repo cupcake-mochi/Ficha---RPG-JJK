@@ -128,6 +128,13 @@ def aplica(layout, prog, criacao, inv):
             x[1] = v
             if style is not None:
                 x[2] = style
+    # Native row insertion inherits the spine's ink/divider. A fresh build
+    # must paint the same empty cells explicitly as well.
+    for at,n in INSERCOES['FICHA']:
+        first=linha('FICHA',at)-n
+        for r in range(first,first+n):
+            for col in ('A','B'):
+                put('FICHA',col+str(r),None,cells['FICHA'][col+str(first-1)][2])
     st = {'secao': cells['FICHA']['G76'][2], 'rotulo': cells['FICHA']['D79'][2],
           'entrada': cells['FICHA'][coord('FICHA', 'F413')][2],
           'caixa': cells['FICHA']['D80'][2]}

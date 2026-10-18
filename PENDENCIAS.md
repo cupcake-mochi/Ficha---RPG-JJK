@@ -1,8 +1,9 @@
-## Extensões custom · ensaio validado, aplicação oficial pendente
+## Extensões custom e numeração · concluídas na oficial
 
-Quinze painéis retráteis e numeração 01–13 implementados e conferidos em
-cópia. Aplicação nativa, código 36/36, comparação e limpeza da oficial são
-a próxima etapa. [Checkpoint](acabamento-b47/EXTENSOES-CUSTOM.md).
+Quinze áreas retráteis aplicadas e treze listas de CONFIGURAÇÃO numeradas
+01–13. Valores, escolhas e limites preservados; zero erros nas 22 abas;
+código 36/36 relido igual após recarregar. Cópia e backup retirados para a
+lixeira. Sem pendência deste pedido. [Fechamento](acabamento-b47/EXTENSOES-CUSTOM.md).
 
 ## Ajuste visual posterior concluído · CONFIGURAÇÃO horizontal
 

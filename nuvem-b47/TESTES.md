@@ -1,3 +1,27 @@
+# Extensões custom e numeração · 18/10/2026
+
+Oficial validada em `acabamento-b47/EXTENSOES-CUSTOM-VALIDACAO.json`.
+Os exportadores de domínio seguem antes da apresentação. Após
+`configuracao_horizontal.aplica`, `extensoes_custom.aplica` insere linhas em
+FICHA, FICHA AMALDIÇOADA e INVOCAÇÕES. Use `extensoes_custom.coord/linha`
+para traduzir roteiros antigos; não executar endereços antigos na oficial.
+
+- `node acabamento-b47/testar-familias-custom.js`: treze cenários do controle
+  das vagas existentes, sem chamar Google ou conceder benefícios.
+- `acabamento-b47/testar-extensoes-custom.py`: exportações sem dados privados
+  conferem referências, índices literais, identidade ANALISE, mesclas e grupos.
+- `acabamento-b47/aplicar-extensoes-custom.py`: planejador offline de migração;
+  exige snapshots atuais. Recusa seletores antigos preenchidos sem migração
+  explícita por nome. Não executar na oficial que já foi migrada.
+- `acabamento-b47/conferir-extensoes-custom.py`: comparação de snapshots,
+  inclusive `--oficial`; 58.511 células e 8.190 chaves/valores preservados,
+  corpos vazios sem cadastros válidos e zero erros nas 22 abas.
+
+Testes preenchidos no Google cobriram treino/bônus, atributo de Ofício,
+estado da técnica, independência por entidade, troca de vaga e limite Livre.
+Os 36 arquivos dos dois projetos foram relidos iguais após recarregar.
+Nenhum XLSX foi importado; snapshots/recibos permanecem fora do Git.
+
 # Selecionar testes em um clone de nuvem
 
 ## Apresentação horizontal de CONFIGURAÇÃO · 17/10/2026

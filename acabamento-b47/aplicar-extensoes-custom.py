@@ -6,6 +6,7 @@ Entradas preenchidas dos antigos seletores exigem migração explícita por nome
 """
 import copy
 import json
+import re
 import sys
 from pathlib import Path
 from openpyxl.utils.cell import coordinate_to_tuple, range_boundaries, get_column_letter as L
@@ -63,7 +64,8 @@ def plan(base,target,metadata,structure,snapshot,config):
             cell={'userEnteredValue':native_value(v)};fields='userEnteredValue'
             link=next((x for x in a.get('links_paineis',[]) if x['celula']==c),None)
             if link:
-                cell['textFormatRuns']=[{'startIndex':0,'format':{'link':{'uri':f'#gid={sheets[name]["properties"]["sheetId"]}&range={link["alvo"]}'}}}]
+                textstyle=format_(target['layout']['estilos'][style])['textFormat']
+                cell['textFormatRuns']=[{'startIndex':0,'format':{'link':{'uri':f'#gid={sheets[name]["properties"]["sheetId"]}&range={link["alvo"]}'},'foregroundColor':textstyle['foregroundColor'],'underline':False}}]
                 fields+=',textFormatRuns'
             if style is not None and (prior is None or prior[2]!=style):
                 cell['userEnteredFormat']=format_(target['layout']['estilos'][style]);fields+=',userEnteredFormat,dataValidation'
@@ -75,6 +77,17 @@ def plan(base,target,metadata,structure,snapshot,config):
             for c,v,*_ in a['celulas']:
                 if isinstance(v,str) and not v.startswith('=') and src.get(c)!=v:
                     write(name,c,{'userEnteredValue':native_value(v)})
+    # Sheets moves reference tokens but leaves an internal hyperlink's range
+    # fragment as text. Rebuild only that documented fragment, preserving all
+    # other URL/text content and translating reference tokens separately.
+    owners={str(s['properties']['sheetId']):n for n,s in sheets.items() if n in e.INSERCOES}
+    for (name,c),cell in actual.items():
+        f=cell.get('userEnteredValue',{}).get('formulaValue','')
+        def jump(m):
+            return m[1]+e.coord(owners[m[2]],m[3]) if m[2] in owners else m[0]
+        changed=re.sub(r'(#gid=(\d+)&range=)([A-Z]+\d+)',jump,f)
+        if changed!=f:
+            write(name,e.coord(name,c),{'userEnteredValue':{'formulaValue':e.formula(changed,name)}})
     # Refuse to silently discard a legacy manual selection. A populated sheet
     # must be migrated by identity, not by its old arbitrary selector position.
     for a in base['layout']['abas']:
