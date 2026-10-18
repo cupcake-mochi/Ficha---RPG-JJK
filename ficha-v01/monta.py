@@ -394,6 +394,12 @@ if '--exportar-horizontal' in sys.argv:
 
 # a paleta e a fonte de corpo saem do estilo.py, que e o dono delas -- e ele
 # ganhou as quatro cores desta versao na v0.1 (decisao do Mizuki: uma paleta so)
+import extensoes_custom
+_EXTENSOES_CUSTOM = extensoes_custom.aplica(LAYOUT, _PROG, _CRIACAO, _FIV)
+if '--exportar-extensoes' in sys.argv:
+    with open(sys.argv[sys.argv.index('--exportar-extensoes')+1], 'w', encoding='utf-8') as _f:
+        json.dump({'layout': LAYOUT, 'auditoria': _EXTENSOES_CUSTOM}, _f, ensure_ascii=False)
+    sys.exit(0)
 sys.path.insert(0, os.path.join(os.path.dirname(AQUI), "ficha"))
 from estilo import CORPO, PT_VALOR, TEXTO
 
@@ -493,6 +499,9 @@ for a in LAYOUT["abas"]:
         for c in range(c1, c2 + 1):
             ws.column_dimensions[L(c)].outlineLevel = (ws.column_dimensions[L(c)].outlineLevel or 0) + 1
             ws.column_dimensions[L(c)].hidden = bool(ws.column_dimensions[L(c)].hidden) or fechado
+    for l1, l2 in a.get('linhas_ocultas', []):
+        for r in range(l1, l2+1):
+            ws.row_dimensions[r].hidden = True
     if a.get("grupos"):
         # o botao de fechar fica antes do grupo: em cima da lista de treino, e na coluna antes do painel
         ws.sheet_properties.outlinePr.summaryBelow = False
@@ -543,6 +552,8 @@ def _extras(a):
            "redutores": a.get("redutores", []),
            # 07/10/2026: as caixas que nascem com conta e sao do jogador (o devolverConta_ nao as devolve)
            "livres": a.get("livres", []),
+           "familias_custom": a.get("familias_custom", []),
+           "linhas_ocultas": a.get("linhas_ocultas", []),
            # 08/10/2026: as caixas de texto que esticam com o que o jogador escreve (o esticarCaixas_ do Codigo.gs)
            "esticam": a.get("esticam", []),
            "notas_contextuais": a.get("notas_contextuais"),

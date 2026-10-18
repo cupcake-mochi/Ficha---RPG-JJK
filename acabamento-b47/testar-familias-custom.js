@@ -1,0 +1,20 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const src=fs.readFileSync(require('path').join(__dirname,'../apps-script/Codigo.gs'),'utf8');
+const fn=src.slice(src.indexOf('function planejarFamiliaCustom_'),src.indexOf('/** O menu retrátil'));
+const c={};vm.createContext(c);vm.runInContext(fn,c);
+const order=[0,1,5,6,7,8,2,3,4],empty=()=>Array(9).fill('');let count=0;
+function plan(v,n,s,l=1,m=3){return JSON.parse(JSON.stringify(c.planejarFamiliaCustom_(v,n,s,l,m,order)));}
+let x=plan(empty(),'Nome *?~','Livre');assert.equal(x.vagas[0],'Nome *?~');count++;
+let y=plan(x.vagas,'Nome *?~','Aberta');assert.equal(y.vagas[0],'');assert.equal(y.vagas[1],'Nome *?~');count++;
+assert(plan(x.vagas,'Outra','Livre').erro);count++;
+assert(plan(x.vagas,'Nome *?~','Não escolhida').vagas.every(x=>x===''));count++;
+let full=empty();full[0]='A';full[1]='B';full[5]='C';assert(plan(full,'D','Aberta').erro);count++;
+assert.deepEqual(plan(full,'A','Livre').vagas,full);count++;
+let dup=empty();dup[0]='A';dup[1]='a';assert(plan(dup,'a','Aberta').erro);count++;
+assert(plan(empty(),'A','Livre',4,3).erro);count++;
+assert(plan(empty(),'A','Livre',0,0).erro);count++;
+assert(plan(empty(),'A','Fechada').erro);count++;
+assert(plan(empty(),'','Livre').erro);count++;
+let upper=plan(full,'D','Aberta',1,9);assert.equal(upper.vagas[6],'D');count++;
+assert(empty().every(x=>x===''));count++;
+console.log(`${count} cenários: escolha, troca, remoção, limite total/Livre, repetição, nome literal e entrada inválida.`);

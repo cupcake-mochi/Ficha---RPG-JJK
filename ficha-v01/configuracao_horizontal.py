@@ -267,7 +267,8 @@ def aplica(layout):
         a['apresentacao'] = []
         for i,(name,_,_) in enumerate(SECOES):
             col=L(i*PASSO+1)
-            a['celulas'].append([col+'2',name.upper(),idx]);a['mescladas'].append(col+'2:'+col+'9')
+            titulo = (f'{i:02d} · ' if i else '') + name.upper()
+            a['celulas'].append([col+'2',titulo,idx]);a['mescladas'].append(col+'2:'+col+'9')
             a['apresentacao'].append(col+'2:'+col+'9')
         # O antigo vão à direita do painel Geral vira um índice útil.
         field_styles={x[0]:x[2] for x in a['celulas']}
@@ -285,15 +286,16 @@ def aplica(layout):
             lo=i*PASSO+3;hi=(i+1)*PASSO-1
             title_row_end=2 if i==1 else 3
             body_start,body_end=(3,4) if i==1 else (4,7)
-            index(L(lo)+'2',L(hi)+str(title_row_end),name.upper(),section_style)
+            index(L(lo)+'2',L(hi)+str(title_row_end),f'{i:02d} · '+name.upper(),section_style)
             index(L(lo)+str(body_start),L(hi)+str(body_end),ABERTURAS[name],note_style)
         index('K5','Q6','LISTAS DE CONFIGURAÇÃO',section_style)
-        index('K7','Q9','Escolha uma lista abaixo e use o + acima para abrir os cartões à direita.',note_style)
+        index('K7','Q9','Escolha uma lista abaixo e abra o + acima do título com o mesmo número, à direita.',note_style)
         for i,(name,_,_) in enumerate(SECOES[1:]):
             row=11+(i//2)*3;col=11+(i%2)*4
             addr=L(col)+str(row);end=L(min(col+3,17))+str(row+1)
-            index(addr,end,name,entry_style)
-            a['links_paineis'].append({'celula':addr,'alvo':L((i+1)*PASSO+1)+'2','texto':name})
+            titulo=f'{i+1:02d} · '+name
+            index(addr,end,titulo,entry_style)
+            a['links_paineis'].append({'celula':addr,'alvo':L((i+1)*PASSO+1)+'2','texto':titulo})
         # O retângulo autorado também inclui o espaço abaixo das listas curtas.
         # Células novas não podem herdar o branco padrão do documento.
         occupied = {x[0] for x in a['celulas']}

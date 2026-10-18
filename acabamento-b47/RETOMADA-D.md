@@ -1,3 +1,12 @@
+# Extensões custom · ensaio validado · 18/10/2026
+
+Pedido posterior em aplicação: quinze listas retráteis junto de Famílias,
+Perícias e Ofícios; treze listas de CONFIGURAÇÃO numeradas 01–13. Cópia
+validada, 58.506 células preservadas, 8.190 chaves/valores iguais, zero erros
+nas 22 abas e código 36/36 após recarregar. Oficial ainda NÃO atualizada
+neste checkpoint. [Estado e próximos passos](EXTENSOES-CUSTOM.md).
+Não repetir a construção. Sol/Médio para aplicar a migração ensaiada.
+
 # Ajuste visual concluído · CONFIGURAÇÃO horizontal · 17/10/2026
 
 Pedido posterior ao fechamento concluído na oficial: 14 listas recolhíveis

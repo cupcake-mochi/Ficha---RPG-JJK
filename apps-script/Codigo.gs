@@ -453,6 +453,7 @@ function onEdit(e) {
   }
   // 06/10/2026: a INVOCAÇÕES é como a FICHA AMALDIÇOADA: a conta mora na aba oculta dela, e a caixa calculada volta.
   if (aba === ABA_INVOCACOES_) {
+    try { familiasCustomDaInvocacao_(e); } catch (err) { console.log('famílias custom: ' + err.message); }
     try { notasDosTipos_(e); } catch (err) { console.log('tipo de entidade: ' + err.message); }
     try { redutorDaInvocacao_(e); } catch (err) { console.log('invocações, a caixa de ±: ' + err.message); }
     try {
@@ -514,6 +515,74 @@ function onEdit(e) {
   trocaArmaDoCaminho_(e, idx);
   try { fichaMexeNaPessoal_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }
   continuarPaleta_(inicio, null, false, e.range);
+}
+
+/** Planeja uma escolha custom nas vagas já existentes. Função pura. */
+function planejarFamiliaCustom_(vagas, nome, estado, livres, limite, ordem) {
+  var out = vagas.slice(), igual = function (a, b) { return String(a).toLowerCase() === String(b).toLowerCase(); };
+  if (!nome || ['Livre', 'Aberta', 'Não escolhida', ''].indexOf(estado) < 0) return { erro: 'Escolha uma Família cadastrada e um estado do menu.' };
+  var indices = [];
+  out.forEach(function (v, i) { if (v !== '' && igual(v, nome)) indices.push(i); });
+  if (estado === '' || estado === 'Não escolhida') {
+    indices.forEach(function (i) { out[i] = ''; });
+    return { vagas: out };
+  }
+  if (!Number.isInteger(livres) || !Number.isInteger(limite) || livres < 0 || livres > limite || limite > 9) return { erro: 'Confira os limites de Famílias em CONFIGURAÇÃO.' };
+  if (indices.length > 1) return { erro: 'Esta Família está repetida nas vagas da entidade. Corrija as escolhas existentes.' };
+  if (indices.length && (ordem.indexOf(indices[0]) < livres) === (estado === 'Livre')) return { vagas: out };
+  indices.forEach(function (i) { out[i] = ''; });
+  if (out.filter(function (v) { return v !== ''; }).length >= limite) return { erro: 'A entidade já atingiu o limite de Famílias abertas.' };
+  var destino = -1;
+  ordem.some(function (i, rank) {
+    if (out[i] === '' && (rank < livres) === (estado === 'Livre')) { destino = i; return true; }
+    return false;
+  });
+  if (destino < 0) return { erro: estado === 'Livre' ? 'Todas as vagas de Família Livre estão ocupadas.' : 'Não há vaga Aberta disponível. Confira as Famílias Livres.' };
+  out[destino] = nome;
+  return { vagas: out };
+}
+
+/** O menu retrátil é um controle das nove vagas da própria entidade. */
+function familiasCustomDaInvocacao_(e) {
+  var spec = ABAS.filter(function (a) { return a.nome === ABA_INVOCACOES_; })[0];
+  var controles = (spec && spec.familias_custom || []), tocados = [];
+  controles.forEach(function (g) { g.linhas.forEach(function (l) {
+    if (tocaFaixa_(e.range, l.estado)) tocados.push({ grupo: g, linha: l });
+  }); });
+  if (!tocados.length) return false;
+  var sheet = e.range.getSheet(), ss = sheet.getParent(), pedidos = tocados.map(function (t) {
+    return { item: t, estado: sheet.getRange(t.linha.estado).getValue(), nome: sheet.getRange(t.linha.nome).getValue() };
+  });
+  var lock = LockService.getDocumentLock();
+  try {
+    if (!lock.tryLock(1000)) throw new Error('Outra edição está em andamento. Tente novamente.');
+    var grupos = {}, avisos = [];
+    pedidos.forEach(function (p) {
+      var g = p.item.grupo, key = String(g.entidade), atual = grupos[key];
+      if (!atual) {
+        var helper = ss.getSheetByName('DADOS_INVOC');
+        atual = grupos[key] = { grupo: g, antes: g.vagas.map(function (c) { return sheet.getRange(c).getValue(); }),
+          livres: helper.getRange(g.livres.split('!')[1]).getValue(), limite: helper.getRange(g.limite.split('!')[1]).getValue() };
+        atual.valores = atual.antes.slice();
+      }
+      var plano = planejarFamiliaCustom_(atual.valores, p.nome, p.estado, atual.livres, atual.limite, g.ordem);
+      if (plano.erro) avisos.push('Entidade '+g.entidade+': '+plano.erro);
+      else atual.valores = plano.vagas;
+    });
+    // Uma colagem é indivisível: se algum pedido falhar, nenhuma vaga muda.
+    if (!avisos.length) Object.keys(grupos).forEach(function (key) {
+      var t = grupos[key]; t.valores.forEach(function (v, i) {
+        if (v !== t.antes[i]) sheet.getRange(t.grupo.vagas[i]).setValue(v);
+      });
+    });
+    if (avisos.length) ss.toast(avisos.join('\n'), 'Famílias', 7);
+  } catch (err) {
+    ss.toast(err.message, 'Famílias', 7);
+  } finally {
+    tocados.forEach(function (t) { sheet.getRange(t.linha.estado).setFormula(t.linha.formula); });
+    if (lock.hasLock()) lock.releaseLock();
+  }
+  return true;
 }
 
 // =====================================================================

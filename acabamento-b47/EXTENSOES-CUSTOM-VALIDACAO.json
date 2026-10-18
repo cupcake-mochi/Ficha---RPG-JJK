@@ -1,0 +1,21 @@
+{
+  "estado": "Cópia validada; oficial pendente",
+  "copia": {
+    "celulas_preservadas_conferidas": 58506,
+    "diferencas": [],
+    "erros_22_abas": [],
+    "textos_indevidos_em_paineis_vazios": [],
+    "resultado": "OK"
+  },
+  "testes_locais": {
+    "planejador_familias": 13,
+    "paineis": 15,
+    "entidades": 12,
+    "sintaxe_gs": 35,
+    "teto_bytes": 900000
+  },
+  "codigo_copia": {
+    "arquivos": 36,
+    "divergencias": 0
+  }
+}

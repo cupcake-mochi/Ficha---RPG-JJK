@@ -909,6 +909,7 @@ function montarAba_(aba, spec) {
     (spec.grupos.col || []).slice().sort(deDentro).forEach(function (g) { if (g[2]) aba.getColumnGroup(g[0], g[3]).collapse(); });
   }
 
+  (spec.linhas_ocultas || []).forEach(function (g) { aba.hideRows(g[0], g[1] - g[0] + 1); });
   if (spec.oculta) aba.hideSheet();
   return spec.nome + ': ' + spec.vals.length + ' células, ' + formulas +
        ' fórmulas, ' + spec.imgs.length + ' imagens' + copiadas;

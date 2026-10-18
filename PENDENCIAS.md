@@ -1,3 +1,9 @@
+## Extensões custom · ensaio validado, aplicação oficial pendente
+
+Quinze painéis retráteis e numeração 01–13 implementados e conferidos em
+cópia. Aplicação nativa, código 36/36, comparação e limpeza da oficial são
+a próxima etapa. [Checkpoint](acabamento-b47/EXTENSOES-CUSTOM.md).
+
 ## Ajuste visual posterior concluído · CONFIGURAÇÃO horizontal
 
 Oficial atualizada e validada: 14 listas recolhíveis à direita, cartões em
