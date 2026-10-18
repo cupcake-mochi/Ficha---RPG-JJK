@@ -2,7 +2,7 @@
 // O layout e as fórmulas moram no gerador Python, que os dez
 // validadores conferem. Aqui é só o transporte.
 
-var GERACAO_ = "916d99689d0b1d8d";
+var GERACAO_ = "aee4cc73e4aade73";
 var COMPLEMENTOS_ESPERADOS_ = {"AnaliseFontes.gs": "FONTES_DA_ANALISE_", "CriacaoAnalise.gs": "CONTRATO_CRIACAO_", "CriacaoPainel.gs": "VALORES_CRIACAO_", "DanosPainel.gs": "VALORES_DANOS_", "EntidadesAnalise.gs": "CONTRATO_ENTIDADES_", "EntidadesPainel.gs": "VALORES_ENTIDADES_", "Origens.gs": "VALORES_DAS_ORIGENS_", "PecasAnalise1.gs": "CONTRATO_PECAS_1_", "PecasPainel.gs": "VALORES_PECAS_", "PersonagemAnalise.gs": "CONTRATO_PERSONAGEM_", "PersonagemFormas1.gs": "VALORES_PERSONAGEM_FORMAS_1_", "PersonagemFormas2.gs": "VALORES_PERSONAGEM_FORMAS_2_", "PersonagemFormas3.gs": "VALORES_PERSONAGEM_FORMAS_3_", "PersonagemFormas4.gs": "VALORES_PERSONAGEM_FORMAS_4_", "PersonagemFormas5.gs": "VALORES_PERSONAGEM_FORMAS_5_", "PersonagemPainel.gs": "VALORES_PERSONAGEM_PAINEL_", "Pessoal.gs": "VALORES_CUSTOM_", "ProgressaoAnalise.gs": "CONTRATO_PROGRESSAO_", "ProgressaoPainel.gs": "VALORES_PROGRESSAO_"};
 
 var ABAS = [

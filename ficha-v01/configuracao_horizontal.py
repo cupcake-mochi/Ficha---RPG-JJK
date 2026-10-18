@@ -175,6 +175,7 @@ def aplica(layout):
     config = next(a for a in layout['abas'] if a['nome'] == NOME)
     if config.get('horizontal'):
         raise ValueError('Layout horizontal aplicado duas vezes')
+    notes_before = len(config.get('notas',{}))
     removed = limpar_notas(config)
     fundo_style = next(x[2] for x in config['celulas'] if x[0]=='A1')
     # O antigo título geral atravessava os dois painéis independentes.
@@ -268,7 +269,6 @@ def aplica(layout):
             col=L(i*PASSO+1)
             a['celulas'].append([col+'2',name.upper(),idx]);a['mescladas'].append(col+'2:'+col+'9')
             a['apresentacao'].append(col+'2:'+col+'9')
-            a['notas'][col+'2']='Use o + acima para abrir esta lista à direita; o − recolhe apenas este painel. Em branco herda a base escolhida; textos próprios não viram regras automaticamente.'
         # O antigo vão à direita do painel Geral vira um índice útil.
         field_styles={x[0]:x[2] for x in a['celulas']}
         section_style=field_styles[coord('B9')]
@@ -300,4 +300,4 @@ def aplica(layout):
         a['celulas'].extend([L(c)+str(r),None,fundo_style]
                             for r in range(1,a['linhas']+1) for c in range(1,a['colunas']+1)
                             if L(c)+str(r) not in occupied)
-    return {'notas_removidas':removed,'notas_antes':len(removed)+len(config['notas'])-len(SECOES),'notas_depois':len(config['notas']),'secoes':config['horizontal']['secoes'],'linhas':config['linhas'],'colunas':config['colunas']}
+    return {'notas_removidas':removed,'notas_antes':notes_before,'notas_depois':len(config['notas']),'secoes':config['horizontal']['secoes'],'linhas':config['linhas'],'colunas':config['colunas']}

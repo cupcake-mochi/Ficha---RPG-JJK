@@ -8,8 +8,8 @@ construir/continuar. Não mexer no bot ou em permissões, nem importar XLSX.
 Estado atual: **somente cópia de ensaio alterada; oficial ainda vertical**.
 Cópia `1tVDYqhLpBc2ag174OON5qnmiqeZJrM3rQlATagcKt_8`.
 Painel reorganizado: 14 listas, grade de 400 × 238; 25 cartões gerais em
-pares. 2.575 notas genéricas/duplicadas removidas, 1.434 ajudas preservadas
-(incluindo 14 orientações de lista). Geral ganha índice no vão à direita.
+pares. 2.575 notas genéricas/duplicadas removidas, 1.420 ajudas preservadas
+(orientações de lista agora são visíveis na abertura). Geral ganha índice no vão à direita.
 
 Primeira comparação nativa: 8.190 chaves e valores de ANALISE iguais,
 zero diferenças em A:B. Ainda faltam a auditoria dos endereços publicados,
@@ -36,7 +36,7 @@ largura igual; a introdução fica acima deles.
 
 Checkpoint de código: geração completa pelo gerador canônico, incluindo
 XLSX de fábrica (sem dados de personagem). Ensaio nativo: 2.960 campos e
-1.110 validações preservados; 1.434 notas idênticas ao alvo; ANALISE sem
+1.110 validações preservados; 1.420 notas idênticas ao alvo; ANALISE sem
 diferenças em chaves/valores e origens remapeadas corretamente; zero erros
 na CONFIGURAÇÃO. O comparador aceita só normalizações sintáticas do Sheets
 (aspas opcionais de nomes simples). Validações são comparadas ao snapshot
@@ -60,3 +60,12 @@ teste nativo de edição, backup novo, migração oficial e limpeza dos temporá
 Próxima ação: Sol/Médio para continuar a auditoria e publicação; aumentar
 esforço se surgir diferença mecânica. Não declarar a oficial horizontal antes
 de concluir as provas e a publicação nela.
+
+Ensaio final restaurado: 36/36 arquivos iguais após recarregar. Teste nativo
+de altura: 42 → 356 pixels; limpar a outra lista mantém 356; limpar o
+último texto retorna a 42. Releitura integral de CONFIGURAÇÃO e ANALISE
+confirmou novamente zero diferenças e 1.420 notas específicas. As 14 notas
+repetidas dos títulos foram retiradas: a instrução é visível no índice.
+Backup novo da oficial criado e conferido com 22 abas; plano final de 33
+lotes pronto. Próxima ação: aplicar o plano, publicar/reler os 36 arquivos
+na oficial e retirar os temporários. Sol/Médio.

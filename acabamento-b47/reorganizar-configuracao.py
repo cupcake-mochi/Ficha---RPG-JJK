@@ -77,6 +77,10 @@ def planejar(base, target, metadata, native):
     original=next(a for a in base['layout']['abas'] if a['nome']=='CONFIGURAÇÃO')
     source_notes=original['notas']
     assert {a:c['note'] for a,c in actual.items() if c.get('note')}==source_notes, 'Notas mudaram desde a auditoria; reler antes de planejar'
+    for addr,cell in actual.items():
+        r,c=coordinate_to_tuple(addr)
+        if 170<r<737 and c<=8 and cell.get('userEnteredValue'):
+            raise ValueError('Entrada fora da área prevista para Geral; preservar antes de migrar: '+addr)
 
     def grid(sid, ra,ca,rb,cb):
         return dict(sheetId=sid,startRowIndex=ra-1,endRowIndex=rb,startColumnIndex=ca-1,endColumnIndex=cb)
@@ -135,8 +139,6 @@ def planejar(base, target, metadata, native):
     for addr,cell in actual.items():
         note=cell.get('note')
         if note and removed.get(addr)!=note:keep[horizontal.coord(addr)]=note
-    for s in new['horizontal']['secoes']:
-        addr=L(s['coluna'])+'2';keep[addr]=new['notas'][addr]
     notes=[]
     for s in new['horizontal']['secoes']:
         lo=s['coluna'];hi=s['fim'];rows=[]
