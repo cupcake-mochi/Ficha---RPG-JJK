@@ -1,6 +1,9 @@
 ## Pós-D · itens 3 e 2 concluídos · 17/10/2026
 
 **Oficial em atualização acompanhada, ainda não liberada.** Janela confirmada
+Correção de retomada da criação passou 22 verificações, publicada/relida 36/36;
+12 abas vazias completadas via API, continuar iniciado 00:07:33Z (18/10 UTC).
+Não executar construir novamente: seguir preenchimento por continuar.
 pelo usuário; backup nativo novo conferido `1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI`.
 Código 36/36 relido igual, fuso corrigido, construir iniciado ~23:43Z.
 Estado incremental em `acabamento-b47/OFICIAL-B47.json`; concluir montagem,

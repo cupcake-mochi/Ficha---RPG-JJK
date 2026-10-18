@@ -1,5 +1,5 @@
 {
-  "resultado": "QA_LOCAL_APROVADA; AINDA_NAO_PUBLICADO",
+  "resultado": "PUBLICADA_OFICIAL_36_36; PREENCHIMENTO_EM_EXECUCAO",
   "causa": "Criação inicial ultrapassou 360,921 s no serviço Google; guardas só cobriam preenchimento.",
   "payload_ABAS_ARTE_sha256_antes_depois": "4a00cff8aeb8b44cdcee48966fd2298b5925f373e95d97ff77a006d5acc3a977",
   "payload_identico": true,
@@ -14,5 +14,6 @@
   "comportamento": "Preparação pausa após 180 s de criação; continuar reutiliza dimensões/identidades, guarda -1 criando, 0 antes do primeiro preenchimento. construir explícito continua limpando do zero.",
   "escopos_novos": false,
   "recalculo_mecanico_repetido": false,
-  "verificacoes_totais": 22
+  "verificacoes_totais": 22,
+  "oficial_inicio_continuar": "2026-10-18 00:07:33Z"
 }
