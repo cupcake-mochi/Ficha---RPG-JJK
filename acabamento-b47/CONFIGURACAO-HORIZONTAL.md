@@ -1,71 +1,66 @@
-# CONFIGURAÇÃO horizontal — trabalho em andamento
+# CONFIGURAÇÃO horizontal — concluída na oficial
 
-Pedido posterior à entrega B47: limpar notas inúteis, organizar listas
-recolhíveis para a direita como as invocações e ocupar o vão ao lado dos
-cartões custom. Autorizado editar a oficial para esse redesenho; não usar
-construir/continuar. Não mexer no bot ou em permissões, nem importar XLSX.
+Pedido posterior à entrega B47, aplicado em 17/10/2026: limpar notas
+inúteis e organizar a CONFIGURAÇÃO como as invocações, com listas que
+abrem para a direita. Uma introdução por lista explica o conteúdo e as
+siglas; nenhuma explicação nova repetida por cartão ou célula.
 
-Estado atual: **somente cópia de ensaio alterada; oficial ainda vertical**.
-Cópia `1tVDYqhLpBc2ag174OON5qnmiqeZJrM3rQlATagcKt_8`.
-Painel reorganizado: 14 listas, grade de 400 × 238; 25 cartões gerais em
-pares. 2.575 notas genéricas/duplicadas removidas, 1.420 ajudas preservadas
-(orientações de lista agora são visíveis na abertura). Geral ganha índice no vão à direita.
+Oficial: https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit#gid=1364162823
 
-Primeira comparação nativa: 8.190 chaves e valores de ANALISE iguais,
-zero diferenças em A:B. Ainda faltam a auditoria dos endereços publicados,
-menus/notas/cartões, prova dos textos longos e visual final; depois código,
-backup novo, migração da oficial, releitura final e remoção da cópia temporária.
+São 14 listas recolhíveis, identificadas mesmo quando fechadas. Geral
+ganhou um índice no espaço livre; os 25 cartões gerais agora ficam em
+pares, com larguras iguais. A grade caiu de 2.812 para 400 linhas,
+distribuídas em 238 colunas agrupadas. A abertura de Formas explica
+ALC (alcance), P (personagem), E (entidade), Classes e TR.
 
-Fontes novas: `ficha-v01/configuracao_horizontal.py` faz a transformação
-final; os testes mecânicos de domínio continuam exportando antes dessa etapa.
-`acabamento-b47/reorganizar-configuracao.py` emite pedidos REST offline,
-preservando entradas por cópia nativa e atualizando referências, sem rede.
-O leitor INDEX antigo de Melhorias/Restrições virou referência direta à mesma
-célula, necessária quando os cadastros deixam de compartilhar uma matriz vertical.
+Das 3.995 notas anteriores, foram removidas 2.575 orientações genéricas
+repetidas ou duplicatas entre rótulo e entrada. As 1.420 ajudas específicas
+foram preservadas. As orientações de uso ficam visíveis nas aberturas e
+no índice, sem novas notas repetidas nos títulos.
 
-Recibos e modelos na pasta privada
+## Validação e publicação
+
+[Prova resumida](CONFIGURACAO-HORIZONTAL-VALIDACAO.json):
+
+- Geração integral pelo gerador canônico; código e XLSX de fábrica sem
+  dados do personagem. Os valores do modelo de transformação coincidem
+  com a geração integral, inclusive as referências diretas que substituem
+  os 840 INDEX dependentes da posição vertical.
+- Ensaio e oficial: 2.960 campos e 1.110 validações preservados, incluindo
+  caixas de seleção; 8.190 chaves/valores iguais e origens remapeadas.
+- Oficial: 22 abas, zero erros no recálculo nativo; 4.165 mesclas e 27
+  regras condicionais iguais ao alvo, 14 grupos de colunas e nenhum
+  grupo de linhas na CONFIGURAÇÃO.
+- Texto longo testado no Google: altura de 42 para 356 pixels; apagar a
+  outra lista mantém 356; apagar o último texto retorna a 42. Campos
+  temporários restaurados e comparação completa novamente sem diferenças.
+- Cópia e oficial: 35 GS e manifesto relidos iguais após recarregar
+  (36/36 em cada projeto). Hashes conferidos antes de salvar; manifesto
+  preservado, nenhuma autorização ou mudança de acesso.
+- Expansão e recolhimento testados pelos botões da oficial. Zoom de
+  inspeção restaurado a 100%; Geral aberto e demais listas recolhidas.
+
+A migração da oficial usou snapshot atual, backup novo e 33 lotes nativos,
+preservando entradas por cópia de células. Não executou construir/continuar
+nem importou XLSX. A cópia de ensaio e o backup foram movidos para a
+lixeira após a validação; oficial preservada. São 33 temporários removidos
+no processo completo, conforme [inventário](LIMPEZA-B47.json).
+
+## Manutenção
+
+`ficha-v01/configuracao_horizontal.py` transforma a apresentação depois
+das regras. Exportações de testes de domínio permanecem anteriores à
+transformação; um roteiro nativo deve traduzir endereços pelo mapa.
+`reorganizar-configuracao.py` planeja a migração sem rede e bloqueia notas
+alteradas ou entradas fora da área prevista para Geral. Remove regras
+condicionais antes da cópia e reinstala as 27 regras remapeadas.
+
+`conferir-configuracao-horizontal.py` compara snapshots nativos sem escrita.
+`testar-configuracao-horizontal.js` cobre quatro cenários de altura entre
+categorias e exige uma leitura em lote por edição. Sintaxe dos 35 GS válida;
+maior arquivo com 826.532 bytes, abaixo do teto de 900.000.
+
+Snapshots, recibos e capturas ficam fora do Git em
 `D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/`, prefixo `horizontal-`
-ou `configuracao-horizontal-`. Ensaio foi aplicado em 44 lotes, com recibos
-00–43. O lote 42 foi rejeitado antes de aplicar por nomes de propriedades;
-corrigido para gridProperties, aplicado com sucesso. Fundo novo reparado em
-30 retângulos e índice aplicado. Não repetir os 44 lotes no ensaio atual.
-Títulos verticais e links ajustados para o topo. Há uma abertura visível por
-lista, sem repetir explicações em cada cartão/célula, conforme esclarecimento
-do usuário. Formas explica ALC, P, E, Classes e TR. Os pares de cartões têm
-largura igual; a introdução fica acima deles.
-
-Checkpoint de código: geração completa pelo gerador canônico, incluindo
-XLSX de fábrica (sem dados de personagem). Ensaio nativo: 2.960 campos e
-1.110 validações preservados; 1.420 notas idênticas ao alvo; ANALISE sem
-diferenças em chaves/valores e origens remapeadas corretamente; zero erros
-na CONFIGURAÇÃO. O comparador aceita só normalizações sintáticas do Sheets
-(aspas opcionais de nomes simples). Validações são comparadas ao snapshot
-nativo, incluindo caixas de seleção, não a regras exclusivas do XLSX.
-
-O transporte copyPaste também copia regras condicionais e deixou restos da
-geometria anterior. Corrigido no ensaio: 27 regras canônicas, sem duplicação;
-o planejador agora remove as regras da origem temporária e do destino antes
-de copiar, depois instala as 27 já remapeadas.
-
-`testar-configuracao-horizontal.js`: quatro cenários de altura compartilhada
-passaram, inclusive limpar o texto de outra categoria mantendo a categoria
-longa, e restaurar o piso ao limpar todos. Uma leitura em lote por edição.
-`conferir-configuracao-horizontal.py`: prova de preservação por snapshots;
-saída com contagens/coordenadas, sem dados do personagem.
-
-Publicação do ensaio em andamento, com hash antes de salvar e espera do
-salvamento de cada arquivo. Ainda falta releitura 36/36 após recarregar,
-teste nativo de edição, backup novo, migração oficial e limpeza dos temporários.
-
-Próxima ação: Sol/Médio para continuar a auditoria e publicação; aumentar
-esforço se surgir diferença mecânica. Não declarar a oficial horizontal antes
-de concluir as provas e a publicação nela.
-
-Ensaio final restaurado: 36/36 arquivos iguais após recarregar. Teste nativo
-de altura: 42 → 356 pixels; limpar a outra lista mantém 356; limpar o
-último texto retorna a 42. Releitura integral de CONFIGURAÇÃO e ANALISE
-confirmou novamente zero diferenças e 1.420 notas específicas. As 14 notas
-repetidas dos títulos foram retiradas: a instrução é visível no índice.
-Backup novo da oficial criado e conferido com 22 abas; plano final de 33
-lotes pronto. Próxima ação: aplicar o plano, publicar/reler os 36 arquivos
-na oficial e retirar os temporários. Sol/Médio.
+ou `configuracao-horizontal-`. Não restaurar temporários nem repetir a
+migração. Próximos ajustes: Sol/Médio; aguardar os novos problemas do usuário.

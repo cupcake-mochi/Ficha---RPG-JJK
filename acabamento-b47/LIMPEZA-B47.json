@@ -2,11 +2,12 @@
   "resultado": "LIMPEZA_B47_CONCLUIDA",
   "pedido_usuario": "Após concluir, apagar as outras fichas usadas no processo; preservar no Git somente o necessário.",
   "metodo": "Google Drive UI, Mover para a lixeira; sem exclusão permanente nem esvaziamento da lixeira.",
-  "quantidade": 31,
+  "quantidade": 33,
   "lotes": [
     19,
     11,
-    1
+    1,
+    2
   ],
   "oficial_preservada": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
   "oficial_abas_apos_limpeza": 22,
@@ -135,8 +136,20 @@
     {
       "id": "1m401H6QPAsxCbvGypwW1P7mWkmwgoxXphgAChR01r5E",
       "titulo": "Ficha — backup antes do teste B47 (14-10-2026)"
+    },
+    {
+      "id": "1tVDYqhLpBc2ag174OON5qnmiqeZJrM3rQlATagcKt_8",
+      "titulo": "TEMPORÁRIO B47 — ensaio CONFIGURAÇÃO horizontal — apagar após validação"
+    },
+    {
+      "id": "1x9mDkyxAR48Yxn92_erBRTf90b5KioGo4C-0o623wQk",
+      "titulo": "TEMPORÁRIO B47 — backup antes da CONFIGURAÇÃO horizontal — apagar após validação"
     }
   ],
   "limite": "Inventário B47: descartáveis, backups, snapshot, evidência estrutural e revisão de exemplos do processo. Fichas de outros trabalhos e testes do bot não foram incluídos. Dados de personagem não foram enviados ao Git.",
-  "revisao": "Nome/jogador nos campos padrão; exemplos nativos de bônus de Defesa e equipamento conferidos. Revisão incluída no último lote conforme pedido de limpar as outras fichas."
+  "revisao": "Nome/jogador nos campos padrão; exemplos nativos de bônus de Defesa e equipamento conferidos. Revisão incluída no último lote conforme pedido de limpar as outras fichas.",
+  "limpeza_ajuste_horizontal": {
+    "quantidade": 2,
+    "confirmacao": "Ambos confirmados pela tela Arquivo movido para a lixeira do Google Planilhas; busca por CONFIGURAÇÃO horizontal e trashed=false vazia."
+  }
 }

@@ -1,5 +1,19 @@
 # Selecionar testes em um clone de nuvem
 
+## Apresentação horizontal de CONFIGURAÇÃO · 17/10/2026
+
+Oficial reorganizada em 14 listas (400 × 238), sem mudança de regras. Os
+exportadores de domínio continuam anteriores à transformação física; use
+`configuracao_horizontal.coord/faixa` para traduzir um roteiro de teste nativo.
+Não aplicar endereços verticais antigos diretamente à oficial.
+
+`node acabamento-b47/testar-configuracao-horizontal.js` cobre quatro cenários
+de altura compartilhada entre categorias, com leitura em lote. O comparador
+offline `acabamento-b47/conferir-configuracao-horizontal.py` recebe snapshots
+nativos antes/depois e o alvo, sem escrever no Google. Validação nativa final:
+2.960 campos, 1.110 validações e 8.190 chaves/valores preservados; zero erros
+nas 22 abas; 36/36 arquivos relidos iguais. [Prova](../acabamento-b47/CONFIGURACAO-HORIZONTAL-VALIDACAO.json).
+
 ## Fechamento da oficial · 17/10/2026
 
 Oficial B47 concluída e validada; não repetir construir/continuar como teste.

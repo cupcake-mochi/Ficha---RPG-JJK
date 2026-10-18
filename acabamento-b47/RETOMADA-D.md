@@ -1,16 +1,19 @@
-# Continuação visual autorizada · CONFIGURAÇÃO horizontal · 17/10/2026
+# Ajuste visual concluído · CONFIGURAÇÃO horizontal · 17/10/2026
 
-Pedido posterior ao fechamento: listas recolhíveis à direita, índice, cartões
-em pares e remoção de notas inúteis. Uma abertura por lista explica conteúdo
-e siglas; não repetir em cada cartão/célula. Código e ensaio preparados,
-oficial ainda vertical. Provas, limites e próximo passo em
-[CONFIGURACAO-HORIZONTAL.md](CONFIGURACAO-HORIZONTAL.md). Não construir/continuar.
+Pedido posterior ao fechamento concluído na oficial: 14 listas recolhíveis
+à direita, índice, cartões em pares e abertura por lista com legenda. Das
+3.995 notas, 2.575 repetidas/genéricas removidas e 1.420 específicas mantidas.
+Campos e validações preservados, 8.190 chaves/valores iguais, zero erros nas
+22 abas e 36/36 arquivos relidos iguais depois de recarregar. Cópia de ensaio
+e backup novo movidos para a lixeira; oficial preservada. Não repetir a migração.
+[Fechamento e provas](CONFIGURACAO-HORIZONTAL.md). Não construir/continuar.
 
-Próxima ação: Sol/Médio para publicação/conferência e migração nativa.
+Próxima ação: aguardar os outros problemas do usuário. Sol/Médio para ajustes;
+aumentar esforço somente se aparecer diferença mecânica.
 
 # B47 — concluída e liberada na oficial · 17/10/2026
 
-**Limpeza posterior solicitada pelo usuário:** 31 planilhas temporárias B47, incluindo backups e revisão de exemplos, movidas para a lixeira. Oficial preservada e relida com 22 abas. Links de cópias/backups abaixo são históricos; não recriar. Código e provas necessários permanecem no Git, dados pessoais não. [Inventário](LIMPEZA-B47.json).
+**Limpeza posterior solicitada pelo usuário:** 33 planilhas temporárias B47, incluindo backups e revisão de exemplos, movidas para a lixeira. Oficial preservada e relida com 22 abas. Links de cópias/backups abaixo são históricos; não recriar. Código e provas necessários permanecem no Git, dados pessoais não. [Inventário](LIMPEZA-B47.json).
 
 **OFICIAL PRONTA, LIBERADA PARA CÓPIAS.** Este bloco prevalece sobre o histórico.
 Itens 3 (testes antigos), 2 (medidas/perfil), C, D e atualização oficial concluídos.

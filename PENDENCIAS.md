@@ -1,13 +1,15 @@
-## Ajuste visual posterior · CONFIGURAÇÃO horizontal
+## Ajuste visual posterior concluído · CONFIGURAÇÃO horizontal
 
-Em andamento a pedido do usuário: listas recolhíveis à direita, cartões em
-pares, índice e uma abertura com legenda por lista. Código preparado e ensaio
-nativo validado; publicação/conferência em andamento. Oficial ainda vertical.
-[Checkpoint e provas](acabamento-b47/CONFIGURACAO-HORIZONTAL.md).
+Oficial atualizada e validada: 14 listas recolhíveis à direita, cartões em
+pares, índice e uma abertura com legenda por lista. 2.575 notas inúteis ou
+repetidas removidas; 1.420 específicas preservadas. Código 36/36 relido igual,
+campos/validações/8.190 chaves preservados e zero erros nas 22 abas. Dois
+temporários deste ajuste movidos para a lixeira. Sem pendências deste pedido.
+[Fechamento e provas](acabamento-b47/CONFIGURACAO-HORIZONTAL.md).
 
 ## B47 · entrega concluída na oficial · 17/10/2026
 
-**Limpeza posterior solicitada pelo usuário:** 31 planilhas temporárias B47, incluindo backups e revisão de exemplos, movidas para a lixeira. Oficial preservada e relida com 22 abas. Links de cópias/backups abaixo são históricos; não recriar. Código e provas necessários permanecem no Git, dados pessoais não. [Inventário](acabamento-b47/LIMPEZA-B47.json).
+**Limpeza posterior solicitada pelo usuário:** 33 planilhas temporárias B47, incluindo backups e revisão de exemplos, movidas para a lixeira. Oficial preservada e relida com 22 abas. Links de cópias/backups abaixo são históricos; não recriar. Código e provas necessários permanecem no Git, dados pessoais não. [Inventário](acabamento-b47/LIMPEZA-B47.json).
 
 **Oficial B47 validada e liberada para cópias.** Estado vigente em
 [RETOMADA-D.md](acabamento-b47/RETOMADA-D.md) e
