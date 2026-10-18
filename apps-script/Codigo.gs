@@ -475,7 +475,8 @@ function onEdit(e) {
     if (aba === 'CONFIGURAÇÃO') {
       try { notasDosTipos_(e); } catch (err) { console.log('tipo custom: ' + err.message); }
       try { esticarCaixas_(e, aba); } catch (err) { console.log('texto custom: ' + err.message); }
-      if (tocaFaixa_(e.range, 'B737:O792')) {
+      var specConfig = ABAS.filter(function (s) { return s.nome === 'CONFIGURAÇÃO'; })[0];
+      if ((specConfig && specConfig.gatilhos_habilidades || ['B737:O792']).some(function (a1) { return tocaFaixa_(e.range, a1); })) {
         try { habilidadesDaFicha_(e, indice(), true); } catch (err) { console.log('cartas custom: ' + err.message); }
       }
     }
@@ -1297,10 +1298,10 @@ function alturaDaCaixa_(texto, M) {
  *
  * A conta das linhas é a das cartas (linhasDoTexto_), com a medida da Roboto 10 que mora no Habilidades.gs.
  */
-function alturasQueEsticam_(caixas, textos, M, minima) {
+function alturasQueEsticam_(caixas, textos, M, minima, pisos) {
   minima = minima === undefined ? M.minima : Math.max(M.minima, minima);
   var h = {};
-  caixas.forEach(function (c) { for (var k = 0; k < c[3]; k++) h[c[2] + k] = minima; });
+  caixas.forEach(function (c) { for (var k = 0; k < c[3]; k++) h[c[2] + k] = Math.max(minima, pisos && pisos[c[2]+k] || 0); });
   caixas.forEach(function (c, i) {
     if (String(textos[i]) === '') return;
     var pede = linhasDoTexto_(textos[i], { largura: c[0], larguras: M.larguras, media: M.media }) * M.linha + M.respiro - (c[4] || 0);
@@ -1326,15 +1327,24 @@ function esticarCaixas_(e, nomeDaAba) {
     return f && l1 <= f.l2 && l2 >= f.l1 && c1 <= f.c2 && c2 >= f.c1;
   };
   var origem = e.range.getSheet(), ss = SpreadsheetApp.getActive(), n = 0;
+  // Nas listas horizontais, linhas são compartilhadas por categorias.
+  // Um único lote lê os textos de todos os painéis; a maior altura vence,
+  // inclusive quando se limpa o texto da categoria que estava aberta.
+  var valoresHorizontal = null;
   spec.esticam.forEach(function (x) {
     if (!x.gatilhos.some(toca)) return;
+    if (spec.horizontal && !valoresHorizontal) valoresHorizontal = origem.getRange(1, 1, spec.rows, spec.cols).getDisplayValues();
     var alvo = x.aba === nomeDaAba ? origem : ss.getSheetByName(x.aba);
     if (!alvo) return;
     var textos = x.textos.map(function (c) {
-      return c[1].map(function (a1) { return String(origem.getRange(a1).getDisplayValue()); })
+      return c[1].map(function (a1) {
+        if (!valoresHorizontal) return String(origem.getRange(a1).getDisplayValue());
+        var f = limitesA1_(a1);
+        return String(valoresHorizontal[f.l1-1][f.c1-1]);
+      })
                  .filter(function (t) { return t !== ''; }).join(' · ');
     });
-    var h = alturasQueEsticam_(x.textos, textos, MEDIDA_DAS_CARTAS_, x.minima);
+    var h = alturasQueEsticam_(x.textos, textos, MEDIDA_DAS_CARTAS_, x.minima, spec.horizontal ? spec.alturas : null);
     // as linhas seguidas de mesma altura vão numa chamada só
     var linhas = Object.keys(h).map(Number).sort(function (a, b) { return a - b; });
     for (var i = 0; i < linhas.length;) {

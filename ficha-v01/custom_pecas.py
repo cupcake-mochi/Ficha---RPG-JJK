@@ -158,9 +158,11 @@ def aplica(layout, fam, inv, criacao):
         config['menus'].append(dict(onde=a1,tipo='list',formula=source,vazio_ok=True,mostra_seta=True,estrito=True))
         config.setdefault('menus_estritos',[]).append(a1)
 
-    def read_config(sheet,r,c,offset,delta):
-        rg=faixa('CONFIGURAÇÃO',2,1,15,fim_r)
-        expr=f'INDEX({rg},$A{r}+{offset},$B{r}+{delta+1})'
+    def read_config(sheet,r,c,offset,delta,g):
+        # Referência direta acompanha o cartão ao reorganizar os painéis.
+        # O INDEX antigo dependia de uma matriz vertical única e de números
+        # de linha/coluna guardados separadamente no catálogo.
+        expr=ref(f'{ix._letras(g["c"]+delta)}{g["r"]+offset}', 'CONFIGURAÇÃO')
         d(sheet,r,c,f'=IF(ISBLANK({expr}),"",{expr})')
 
     family_source=criacao['catalogo_familias']
@@ -207,7 +209,7 @@ def aplica(layout, fam, inv, criacao):
                      ('requisitos',11,0),('efeito',17,0),('mestre_viu',2,4)] if sheet==MEL else
                     [('nome',4,0),('base',5,3),('devolucao',6,3),('frequencia',7,3),('efeito',10,0),('mestre_viu',2,4)])
             for c,(key,offset,delta) in enumerate(fields,4):
-                read_config(sheet,r,c,offset,delta)
+                read_config(sheet,r,c,offset,delta,g)
                 tr['entradas'].append((f'custom.{kind}.{g["n"]}.{key}',g[key],key=='mestre_viu'))
             idx,err,master=('L','M','K') if sheet==MEL else ('J','K','I')
             d(sheet,r,ix._lc(idx+'1')[1],f'=IF(OR(E{r}="",E{r}="Nenhuma"),0,IFERROR(MATCH({criterio("E"+str(r))},{book_names},0),-1))')

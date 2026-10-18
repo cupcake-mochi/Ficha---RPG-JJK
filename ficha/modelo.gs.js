@@ -883,6 +883,10 @@ function montarAba_(aba, spec) {
   if ((spec.condicional || []).length) {
     aba.setConditionalFormatRules(spec.condicional.map(function (c) { return regraDeCor_(aba, c); }));
   }
+  (spec.links_paineis || []).forEach(function (link) {
+    aba.getRange(link.celula).setRichTextValue(SpreadsheetApp.newRichTextValue()
+      .setText(link.texto).setLinkUrl('#gid=' + aba.getSheetId() + '&range=' + link.alvo).build());
+  });
   if (spec.grupos) {
     // O botão de fechar fica ANTES do grupo: na linha do título da lista, e na coluna antes do painel.
     var ANTES = SpreadsheetApp.GroupControlTogglePosition.BEFORE;

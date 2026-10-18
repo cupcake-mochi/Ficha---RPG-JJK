@@ -1,3 +1,10 @@
+## Ajuste visual posterior · CONFIGURAÇÃO horizontal
+
+Em andamento a pedido do usuário: listas recolhíveis à direita, cartões em
+pares, índice e uma abertura com legenda por lista. Código preparado e ensaio
+nativo validado; publicação/conferência em andamento. Oficial ainda vertical.
+[Checkpoint e provas](acabamento-b47/CONFIGURACAO-HORIZONTAL.md).
+
 ## B47 · entrega concluída na oficial · 17/10/2026
 
 **Limpeza posterior solicitada pelo usuário:** 31 planilhas temporárias B47, incluindo backups e revisão de exemplos, movidas para a lixeira. Oficial preservada e relida com 22 abas. Links de cópias/backups abaixo são históricos; não recriar. Código e provas necessários permanecem no Git, dados pessoais não. [Inventário](acabamento-b47/LIMPEZA-B47.json).

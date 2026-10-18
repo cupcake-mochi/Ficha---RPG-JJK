@@ -381,6 +381,17 @@ if "--exportar-analise" in sys.argv:
 import sem_invocacao
 print(f"as abas que sairam da ficha: {', '.join(sem_invocacao.aplica(LAYOUT))}")
 
+# Apresentação final, depois dos contratos e das regras. Exportadores dos
+# testes mecânicos acima conservam a geometria de domínio; a permutação
+# física tem auditoria própria de fórmulas, notas, menus e cartões.
+import configuracao_horizontal
+_CONFIG_HORIZONTAL = configuracao_horizontal.aplica(LAYOUT)
+if '--exportar-horizontal' in sys.argv:
+    _destino = sys.argv[sys.argv.index('--exportar-horizontal')+1]
+    with open(_destino,'w',encoding='utf-8') as _f:
+        json.dump({'layout':LAYOUT,'auditoria':_CONFIG_HORIZONTAL},_f,ensure_ascii=False)
+    sys.exit(0)
+
 # a paleta e a fonte de corpo saem do estilo.py, que e o dono delas -- e ele
 # ganhou as quatro cores desta versao na v0.1 (decisao do Mizuki: uma paleta so)
 sys.path.insert(0, os.path.join(os.path.dirname(AQUI), "ficha"))
@@ -540,6 +551,10 @@ def _extras(a):
            # A ANALISE é neutra: não herda o fundo e a fonte do tema das fichas.
            "padrao": a.get("padrao"), "fundo_base": a.get("fundo_base"),
            "paleta_fixa": a.get("paleta_fixa")}
+    if a.get('horizontal'):
+        out['horizontal'] = a['horizontal']
+        out['gatilhos_habilidades'] = a['gatilhos_habilidades']
+        out['links_paineis'] = a['links_paineis']
     if a.get("congeladas"):
         out["congeladas"] = a["congeladas"]
     return {k: v for k, v in out.items() if v}

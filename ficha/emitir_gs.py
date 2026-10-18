@@ -532,10 +532,14 @@ def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None, extras=None):
     from collections import Counter
     import estilo as _est
     # o formato de fabrica da celula no script: a vazia com este formato nao precisa ser escrita
-    padrao = (_est.CORPO, _est.PT_VALOR, "#" + _est.TEXTO.upper())
+    padrao_global = (_est.CORPO, _est.PT_VALOR, "#" + _est.TEXTO.upper())
     abas, redimensionar = [], {}
     for nome in ordem:
         ws = wb[nome]
+        # O painel horizontal preenche a reserva com o padrão da própria
+        # aba. Nas demais abas, manter o padrão histórico do documento.
+        extra = (extras or {}).get(nome, {})
+        padrao = tuple(extra.get('padrao') or padrao_global) if nome == 'CONFIGURAÇÃO' and extra.get('horizontal') else padrao_global
         vals, estilos, chaves, fundos, bordas, merges = [], [], {}, [], [], []
         alturas, max_c, max_r = {}, 0, 0
         dono = {}
@@ -628,7 +632,9 @@ def emitir(wb, ordem, imgs=None, arte_dir=None, limpa=None, extras=None):
         # tinta (colunas A:B) tem de ir até a última linha, e uma folga que nenhuma célula pinta ficaria
         # com o fundo comum — a lombada aparecia cortada nas paletas claras (19/09/2026). Essas duas
         # abas terminam no fim da lombada, ver ficha-v01/correcoes_borda.py.
-        ncols, nrows = max(max_c, 12), max_r + (0 if nome in ("FICHA", "FICHA PESSOAL", "FICHA AMALDIÇOADA", "INVOCAÇÕES", "INVOCAÇÃO") else 2)
+        # O painel horizontal declara o retângulo completo, já com respiro.
+        sem_cauda = nome in ("FICHA", "FICHA PESSOAL", "FICHA AMALDIÇOADA", "INVOCAÇÕES", "INVOCAÇÃO") or bool((extras or {}).get(nome,{}).get('horizontal'))
+        ncols, nrows = max(max_c, 12), max_r + (0 if sem_cauda else 2)
         if imgs is not None:
             # a ficha-v01: a imagem entra DENTRO da celula, numa caixa medida no pixel do script, e a
             # arte vai no formato da caixa. [lin1, col1, lin2, col2, arte]
@@ -740,6 +746,12 @@ def _sem_linha_gigante(obj, nivel=0):
 
 
 def escrever(wb, ordem, caixas=None, imgs=None, arte_dir=None, limpa=None, extras=None, suplementos=None):
+    # Os fragmentos continuam pertencendo aos mesmos grupos de conteúdo,
+    # mas suas áreas físicas agora ficam em listas lado a lado.
+    cfg_extra = (extras or {}).get('CONFIGURAÇÃO', {})
+    if cfg_extra.get('horizontal'):
+        from configuracao_horizontal import suplementos as mover_suplementos
+        suplementos = mover_suplementos(suplementos or {})
     abas, arte = emitir(wb, ordem, imgs, arte_dir, limpa, extras)
     for a in abas:
         medidas = a.pop("caixas_medidas")
