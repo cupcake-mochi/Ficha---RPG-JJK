@@ -127,5 +127,19 @@
   },
   "evidencias_privadas": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/perfil-*; entradas com personagem fora do Git",
   "reproducao": "python acabamento-b47/medir-pos-d.py --modelo nuvem-b47/saidas/progressao-em-integracao.json --saida <pasta-privada>",
-  "proxima_etapa": "Oficial pelo roteiro, somente com usuário presente e janela sem cópias combinada. Sol/Médio para publicação mecânica; aumentar esforço se surgir divergência."
+  "proxima_etapa": "Oficial pelo roteiro, somente com usuário presente e janela sem cópias combinada. Sol/Médio para publicação mecânica; aumentar esforço se surgir divergência.",
+  "atualizacao_posterior_oficial": {
+    "resultado": "CONCLUIDA_VALIDADA",
+    "prova": "OFICIAL-B47.json",
+    "continuacoes_relogio_interno_s": [
+      187,
+      169,
+      254
+    ],
+    "total_sucesso_interno_s": 610,
+    "exportacao_bytes": 2590926,
+    "formulas": 66242,
+    "comparacao_controlada_com_historico": false,
+    "perfil_original_base_codigo_preservado": true
+  }
 }

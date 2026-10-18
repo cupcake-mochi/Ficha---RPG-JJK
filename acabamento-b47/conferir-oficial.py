@@ -19,10 +19,13 @@ def main():
     spec = importlib.util.spec_from_file_location('fotos', Path(__file__).with_name('conferir-exportacoes.py'))
     fotos = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(fotos)
+    print('Lendo referência nativa', flush=True)
     wr, r = fotos.foto(a.referencia)
+    print('Lendo alvo nativo', flush=True)
     wo, o = fotos.foto(a.oficial)
     assert set(r['abas']) == set(o['abas']), 'Conjunto de abas diferente'
     diff = fotos.diff(r, o)
+    print('Comparando todos os estilos', flush=True)
     styles = fotos.diff_estilo(wr, wo)
     details = []
     for name in r['abas']:

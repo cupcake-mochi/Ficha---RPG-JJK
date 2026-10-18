@@ -90,11 +90,26 @@ def diff(a, b, campos=('F', 'V', 'N', 'dv', 'merged', 'rowgroups', 'colgroups'))
 
 def diff_estilo(wa, wb):
     out = {}
+    # style_id só tem sentido dentro do próprio workbook. Resolver a tupla
+    # semântica uma vez por estilo mantém o mesmo oráculo e evita milhões de
+    # acessos a fontes/bordas em exportações com quase meio milhão de células.
+    def resolve():
+        memo = {}
+        def get(cell):
+            key = cell.style_id
+            if key not in memo:
+                memo[key] = estilo(cell)
+            return memo[key]
+        return get
+    estilo_a, estilo_b = resolve(), resolve()
     for nome in wa.sheetnames:
         a, b = wa[nome], wb[nome]
-        cells = [L(x) + str(y) for y in range(1, max(a.max_row, b.max_row) + 1)
-                 for x in range(1, max(a.max_column, b.max_column) + 1)
-                 if estilo(a.cell(y, x)) != estilo(b.cell(y, x))]
+        # max_column percorre todas as células do openpyxl. Dentro do laço
+        # de linhas isso era quadrático, sobretudo nas 8.193 linhas de ANALISE.
+        max_row, max_col = max(a.max_row, b.max_row), max(a.max_column, b.max_column)
+        cells = [L(x) + str(y) for y in range(1, max_row + 1)
+                 for x in range(1, max_col + 1)
+                 if estilo_a(a.cell(y, x)) != estilo_b(b.cell(y, x))]
         if cells:
             out[nome] = {'celulas': len(cells), 'primeira': cells[0], 'ultima': cells[-1]}
     return out

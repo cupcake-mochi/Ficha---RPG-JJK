@@ -2,7 +2,13 @@
 
 Item 2 concluído como medição/perfil. Base `c3104a1`, produção GS intacta.
 Detalhes e amostras em [MEDIDAS-POS-D.json](MEDIDAS-POS-D.json).
-Oficial continua B46, aguardando janela acompanhada pelo usuário.
+Perfil acima é anterior à publicação oficial e à correção posterior do transporte.
+Oficial B47 concluída na janela acompanhada. As três continuações de sucesso
+registraram 187 + 169 + 254 = 610 s no relógio interno; falhas iniciais,
+correção/publicação e preparação via API ficam separadas em OFICIAL-B47.json.
+Não é comparação controlada com os 821 s históricos nem tempo total da janela.
+Exportação final oficial: 2.590.926 bytes, 66.242 fórmulas, 22 abas, zero erros.
+Comparação integral aprovada contra referência nativa; nada foi importado.
 
 ## Tamanho e capacidade
 

@@ -1,6 +1,13 @@
 # Ficha oficial — roteiro para levar ao B47 · 17/10/2026
 
-**Não executado.** O usuário autorizou o merge e deixou a atualização da oficial opcional; ela não foi feita sem acompanhamento.
+**Executado e validado na janela acompanhada de 17/10/2026. Oficial B47
+liberada para cópias.** Backup novo `1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI`
+conferido antes da montagem. 36 arquivos relidos iguais; criação retomável
+corrigida após timeout, 12 abas vazias preparadas por API nas dimensões do
+GS, sem importar XLSX. Três continuações concluídas, comparação completa e
+cópia funcional aprovadas. [Prova final](OFICIAL-B47.json).
+Os estados B46 e passos abaixo documentam a preparação histórica; não são
+uma tarefa a repetir. A revisão preenchida continua proibida para montagem.
 
 > **Autorização do usuário (17/10/2026):** "Pode atualizar a ficha oficial seguindo o ROTEIRO-OFICIAL-B47.md numa sessão em que eu esteja no PC; fica liberado rodar construir() na oficial depois do backup." Vale **só** com o usuário presente na sessão e **depois** de backup nativo conferido; é a exceção à regra geral de não rodar `construir()`/`continuar()` na oficial. Continua proibido na revisão preenchida.
 

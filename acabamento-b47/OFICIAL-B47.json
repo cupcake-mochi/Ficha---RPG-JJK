@@ -1,5 +1,5 @@
 {
-  "status": "CONSTRUCAO_INICIADA_AINDA_NAO_LIBERADA",
+  "status": "CONCLUIDA_VALIDADA_LIBERADA",
   "data": "2026-10-17",
   "janela_confirmada_usuario": "Estou no PC; podemos atualizar agora, sem cópias nesse intervalo.",
   "inicio_preparacao_utc": "2026-10-17 23:31:25 UTC",
@@ -56,7 +56,11 @@
     {
       "funcao": "continuar",
       "inicio_log": "2026-10-18 00:15:07Z",
-      "resultado": "EM_EXECUCAO"
+      "resultado": "FICHA_PRONTA",
+      "relogio_interno_s": 254,
+      "fim_notificacao_log": "2026-10-18 00:19:23Z",
+      "fim_logger": "2026-10-18 00:19:41Z",
+      "limite_relogios": "Notificação e Logger divergem em 18 s; durações são do relógio interno, não medição de latência controlada."
     }
   ],
   "oficial": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
@@ -308,15 +312,80 @@
     "iguais_pos_correcao": 36
   },
   "fuso_planilha": "America/Sao_Paulo",
-  "pendente": "Terminar construir/continuar, conferir contra referência nativa, cópia funcional e liberação.",
+  "pendente": [],
   "referencia_exportada": {
     "id": "14Ad8e5hUECLimCFuilEGSIxrhv0IWpDUEjEBR4N8N-Q",
     "sha256": "e9a32bf3debba84518c83480a5251be10108cf31fe133fb3e3c0ee21a75bd8d4"
   },
   "pasta_privada": "D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/",
-  "modelo_recomendado": "Sol/Médio para acompanhar execuções; aumentar se houver divergência.",
-  "limitacao_identificada": "Criação de todas as abas precede as guardas de tempo do preenchimento. Não há retomada dessa criação no transporte vigente.",
+  "modelo_recomendado": "Sol/Médio para manutenção focal; entrega atual concluída.",
+  "limitacao_identificada": "Defeito histórico da preparação sem guarda/retomada corrigido no transporte; 22 verificações locais e três continuações nativas concluídas.",
   "correcao_preparacao": "Publicada e relida 36/36; 22 verificações locais passaram. Payload ABAS/ARTE idêntico.",
   "preparacao_API": "12 abas vazias adicionadas nas dimensões dos GS, sem importar XLSX nem escrever campos de personagem.",
-  "estado": "Duas continuações concluídas (187/169 s); faltam CONFIGURAÇÃO, DADOS_CONFIG, menus e acabamento, em execução."
+  "estado": "FICHA PRONTA; comparação completa e cópia funcional aprovadas. Liberada para cópias.",
+  "construcao_sucesso_relogio_interno_s": 610,
+  "limite_medicao": "610 = 187 + 169 + 254 s. Não inclui tentativas iniciais, correção/publicação ou preparação de abas vazias por API; não é comparação controlada de velocidade.",
+  "comparacao_final": {
+    "sha256": {
+      "referencia": "e9a32bf3debba84518c83480a5251be10108cf31fe133fb3e3c0ee21a75bd8d4",
+      "oficial": "c80f3c1b13853e00f3dee327a72219bcd6837dcc11b41a03c2184669e9e1c255"
+    },
+    "resumo_referencia": {
+      "abas": 22,
+      "formulas": 66242,
+      "celulas": 102973,
+      "notas": 4470,
+      "validacoes": 2194,
+      "intervalos_nomeados": 3,
+      "erros_formula": 0,
+      "analise_chaves": 8190,
+      "analise_unicas": 8190
+    },
+    "resumo_oficial": {
+      "abas": 22,
+      "formulas": 66242,
+      "celulas": 102973,
+      "notas": 4470,
+      "validacoes": 2194,
+      "intervalos_nomeados": 3,
+      "erros_formula": 0,
+      "analise_chaves": 8190,
+      "analise_unicas": 8190
+    },
+    "ordem_abas_igual": true,
+    "diferencas": {},
+    "estilos": {},
+    "detalhes": [],
+    "aprovado": true,
+    "limites": "XLSX exportado não contém IDs de abas, proteções, gatilhos nem todas as regras condicionais."
+  },
+  "regras_condicionais": {
+    "comparacao_nativa_22_abas": "IGUAIS",
+    "normalizacao": "Apenas IDs de abas substituídos pelos respectivos nomes para comparar referências independentes."
+  },
+  "copia_funcional": {
+    "id": "1mSVpDt8L8OI4S9ouASYOAXQiPklKJ_aKxiQwAGDVfVc",
+    "troca": "Mizuki Claro seguida de Mizuki Escuro antes da conclusão da primeira troca; convergência conferida.",
+    "autorizacao_nova": false,
+    "celulas_cores_conferidas": 14517,
+    "ficha_A147_AX436": {
+      "celulas": 14500,
+      "diferencas": 0
+    },
+    "diferencas_restantes": "Somente CARTEIRA!A1:C1: tema explícito Mizuki Escuro usa fundo 251727/texto FBE4EF; padrão natural usa 17131F/F4F1F7. Valores previstos em Codigo.gs, não deriva.",
+    "formato_condicional": "Igual à oficial nas 22 abas após normalizar IDs.",
+    "controles_C27_M35_restaurados": 99,
+    "releitura_pos_queda_restauracao": true,
+    "escopo": "Cores comparadas nas faixas indicadas, não em toda a cópia; a comparação integral de conteúdo/estilo é da oficial contra a referência."
+  },
+  "pos_queda": {
+    "resultado": "PERSISTENCIA_POS_QUEDA_CONFIRMADA",
+    "oficial_metadata_igual_final": true,
+    "abas": 22,
+    "locale": "pt_BR",
+    "fuso": "America/Sao_Paulo",
+    "controles_copia_restaurados": 99,
+    "ultima_modificacao_oficial": "2026-10-18T00:19:36.115Z",
+    "somente_leitura": true
+  }
 }

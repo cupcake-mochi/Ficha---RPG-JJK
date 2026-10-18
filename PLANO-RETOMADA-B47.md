@@ -1,6 +1,8 @@
 # Ciclo Maldito B47 — plano e retomada
 
-**Entrada vigente após A+B, 16/10/2026:** A+B estão concluídos nativamente e publicados em `dce00ab8a244f53218c978293d10c5c1894b1ef8`. O [checkpoint atual](PENDENCIAS.md) e [checkpoint PC](capacidade-b47/RETOMADA-PC.md) prevalecem sobre os estados históricos de A/B abaixo. C/D ainda não começaram. A divisão preparada para essa continuação está em [PLANO-PARALELO-CD-B47.md](PLANO-PARALELO-CD-B47.md), com [três prompts novos](PROMPT-WORK-B47.md). Publicar o plano não inicia as frentes; usar cada prompt autoriza seu papel. As seções C/D e decisões mecânicas deste documento continuam válidas.
+**Estado vigente · 17/10/2026:** A+B+C+D, regressões antigas, medidas e oficial concluídos. Oficial liberada para cópias; [fechamento](acabamento-b47/OFICIAL-FECHAMENTO.md). Estados e restrições históricas abaixo cedem à autorização delimitada do roteiro oficial. Não repetir montagem. B84 permanece otimização futura.
+
+**Histórico após A+B, 16/10/2026:** A+B estão concluídos nativamente e publicados em `dce00ab8a244f53218c978293d10c5c1894b1ef8`. O [checkpoint atual](PENDENCIAS.md) e [checkpoint PC](capacidade-b47/RETOMADA-PC.md) prevalecem sobre os estados históricos de A/B abaixo. C/D ainda não começaram. A divisão preparada para essa continuação está em [PLANO-PARALELO-CD-B47.md](PLANO-PARALELO-CD-B47.md), com [três prompts novos](PROMPT-WORK-B47.md). Publicar o plano não inicia as frentes; usar cada prompt autoriza seu papel. As seções C/D e decisões mecânicas deste documento continuam válidas.
 
 Estado consolidado em **16/10/2026**. Este é o ponto de entrada vigente para continuar o projeto, inclusive em outro computador ou pelo Work. Em caso de conflito com checkpoints antigos de `PENDENCIAS.md`, a rota deste documento prevalece.
 
@@ -119,7 +121,7 @@ Os desenhos e campos dos estudos já foram aprovados. Não reabrir a aprovação
 - [x] Revisar carteira/foto/paleta, bordas, dimensões, textos, menus, inventário, grupo 7, áreas recolhidas e todas as invocações. (descartável D: interações; revisão: leitura visual.)
 - [x] Auditar ANALISE inteira, leitor, erros de fórmula, cópia funcional e persistência do código. (`acabamento-b47/FOTO-REVISAO-POS-FUNDO.json`, `NATIVO-CODIGO-REVISAO-D.json`, `COPIA-FUNCIONAL-D.json`.)
 - [x] Construir do zero somente em descartável; medir tempo e custo reais. Restaurar entradas temporárias. (17/10: 4 execuções, 821 s; ver `acabamento-b47/CONSTRUCAO-D.json`.)
-- [ ] Entregar versão revisável e pendências explícitas. Alterar a ficha oficial ou integrar no `main` somente mediante autorização específica.
+- [x] Entregar versão revisável e pendências explícitas. Oficial B47 publicada na janela acompanhada autorizada de 17/10; comparação completa e cópia funcional aprovadas. Integração em `main` autorizada; prova em acabamento-b47/OFICIAL-B47.json.
 
 ## Decisões que devem ser preservadas
 

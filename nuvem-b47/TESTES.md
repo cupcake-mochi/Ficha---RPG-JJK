@@ -1,5 +1,18 @@
 # Selecionar testes em um clone de nuvem
 
+## Fechamento da oficial · 17/10/2026
+
+Oficial B47 concluída e validada; não repetir construir/continuar como teste.
+Transporte de criação retomável: `node acabamento-b47/testar-retomada-criacao.js`
+(8 cenários), fases continua/acabamento de regressao-construir.js (8/6), total
+22 verificações. Fonte e prova em RETOMADA-CRIACAO.json. Payload ABAS/ARTE
+inalterado. Comparação integral de exportações nativas aprovada pelo
+conferir-oficial.py: zero erros/diferenças, 22 abas e 66.242 fórmulas.
+O comparador de estilos resolve estilos por workbook e calcula limites de
+grade uma vez; mantém o oráculo semântico, sem ignorar células/estilos.
+Regras condicionais conferidas separadamente pela API. A comparação de
+exportações é somente leitura local, sem importação no Google.
+
 ## Alternativa nativa pós-D · 17/10/2026
 
 Por pedido do usuário, as regressões mecânicas estão sendo executadas em uma

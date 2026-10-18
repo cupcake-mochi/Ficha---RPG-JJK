@@ -1,0 +1,34 @@
+{
+  "sha256": {
+    "referencia": "e9a32bf3debba84518c83480a5251be10108cf31fe133fb3e3c0ee21a75bd8d4",
+    "oficial": "c80f3c1b13853e00f3dee327a72219bcd6837dcc11b41a03c2184669e9e1c255"
+  },
+  "resumo_referencia": {
+    "abas": 22,
+    "formulas": 66242,
+    "celulas": 102973,
+    "notas": 4470,
+    "validacoes": 2194,
+    "intervalos_nomeados": 3,
+    "erros_formula": 0,
+    "analise_chaves": 8190,
+    "analise_unicas": 8190
+  },
+  "resumo_oficial": {
+    "abas": 22,
+    "formulas": 66242,
+    "celulas": 102973,
+    "notas": 4470,
+    "validacoes": 2194,
+    "intervalos_nomeados": 3,
+    "erros_formula": 0,
+    "analise_chaves": 8190,
+    "analise_unicas": 8190
+  },
+  "ordem_abas_igual": true,
+  "diferencas": {},
+  "estilos": {},
+  "detalhes": [],
+  "aprovado": true,
+  "limites": "XLSX exportado não contém IDs de abas, proteções, gatilhos nem todas as regras condicionais."
+}

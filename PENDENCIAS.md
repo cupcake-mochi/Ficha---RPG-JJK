@@ -1,21 +1,20 @@
-## Pós-D · itens 3 e 2 concluídos · 17/10/2026
+## B47 · entrega concluída na oficial · 17/10/2026
 
-**Oficial em atualização acompanhada, ainda não liberada.** Janela confirmada
-pelo usuário; backup novo conferido `1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI`.
-Correção de retomada da criação passou 22 verificações, publicada/relida 36/36;
-12 abas vazias completadas via API, continuar iniciado 00:07:33Z (18/10 UTC).
-Não executar construir novamente: seguir preenchimento por continuar.
-Transporte Ficha.gs `348ec3c6…`; payload de regras/desenho idêntico. Fuso corrigido.
-Estado incremental em `acabamento-b47/OFICIAL-B47.json`; concluir montagem,
-comparação e cópia funcional antes de liberar.
+**Oficial B47 validada e liberada para cópias.** Estado vigente em
+[RETOMADA-D.md](acabamento-b47/RETOMADA-D.md) e
+[fechamento](acabamento-b47/OFICIAL-FECHAMENTO.md). Este bloco prevalece sobre
+os registros históricos abaixo. C, D, testes antigos e medidas concluídos.
 
-Testes antigos concluídos no Google (detalhes abaixo). Medidas/perfil fechados
-em `acabamento-b47/MEDIDAS-POS-D.md`/`.json`: onOpen 7,767 s, edição de texto
-10,124 s, expansão 10,011 s; cópia restaurada inclusive alturas/grupos. VM e
-histórico separados; medidos antes da correção posterior do transporte. B84 é otimização futura delimitada;
-carregamento sob demanda não foi implementado nesta retomada.
-Resta a oficial pelo roteiro com usuário presente e janela sem cópias combinada.
-Sol/Médio para publicação; esforço maior se aparecer divergência.
+Janela acompanhada autorizada; backup novo conferido. 35 GS + manifesto
+relidos iguais (36/36); construção final FICHA PRONTA. Comparação completa:
+22 abas, 66.242 fórmulas, 8.190 chaves únicas, zero erros e diferenças
+inesperadas. Regras condicionais iguais por API. Cópia com troca de paleta
+interrompida validada e controles restaurados; persistência confirmada depois
+da queda do PC. Dados do personagem fora do Git; revisão preenchida intacta.
+
+Nenhuma pendência obrigatória desta entrega. B84 é otimização futura de
+carregamento sob demanda, não implementada nem necessária demonstrada ao
+fechamento atual. Sol/Médio para manutenção focal, se houver novo pedido.
 
 ## Histórico desta retomada · regressões no Google · 17/10/2026
 

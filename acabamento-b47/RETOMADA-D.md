@@ -1,79 +1,45 @@
-# B47 — ponto vigente, itens 3 e 2 concluídos · 17/10/2026
+# B47 — concluída e liberada na oficial · 17/10/2026
 
-**OFICIAL EM CONSTRUÇÃO, NÃO LIBERADA:** usuário confirmou presença/janela
-sem cópias em 17/10, 23:31Z. Correção: criação inicial atingiu 360,921 s antes das guardas
-de preenchimento. Nova retomada da criação passou 22 verificações em VM;
-ABAS/ARTE idênticos, só transporte de Ficha.gs mudou. `RETOMADA-CRIACAO.json`.
-12 abas vazias faltantes adicionadas em lote Sheets, nas dimensões do GS;
-sem campos escritos/importação. Ficha.gs novo `348ec3c6…` publicado, 36/36
-relidos iguais em nova abertura. `continuar()` iniciado 00:07:33Z de 18/10
-(21:07 de 17/10 local). Não chamar construir de novo: preparação preservada.
-Backup NOVO `1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI`
-conferido igual em dez abas, conteúdo/notas/validações/mesclas/grupos/estilos.
-Projeto oficial `1sZTcHm1yNz8x7sVs5WaRj1pX8qbac-kglUDIdDTFLh_iqvHwzF6sqXff`:
-35 GS e manifesto relidos iguais em nova abertura após publicação; fuso da
-planilha corrigido. `construir()` iniciado ~23:43Z; acompanhar no editor.
-Prova incremental `OFICIAL-B47.json`. Ainda faltam montagem completa,
-comparação com referência nativa e cópia funcional. Não liberar cópias antes.
-Revisão preenchida permanece fora da montagem. Sol/Médio para acompanhamento.
+**OFICIAL PRONTA, LIBERADA PARA CÓPIAS.** Este bloco prevalece sobre o histórico.
+Itens 3 (testes antigos), 2 (medidas/perfil), C, D e atualização oficial concluídos.
+A queda do PC ocorreu depois da validação; releitura somente de leitura confirmou
+as 22 abas, metadados/regras condicionais iguais ao snapshot final e os 99
+controles da cópia restaurados. Não repetir construir()/continuar().
 
-Este bloco prevalece sobre o histórico. Base recebida `66012e0`; D concluída.
-Git, Sheets leitura/escrita e editor Apps Script disponíveis; LibreOffice não
-localizado neste Windows. Usuário pediu priorizar os cenários no Google.
-Revisão preenchida intacta nesta retomada. Transporte Ficha.gs corrigido após
-o perfil de medidas, sem mudar ABAS/ARTE; oficial em atualização acompanhada.
+Oficial: https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit
+Backup novo conferido: `1mp62IhotoQERYaIiGEGcn0AsssUJHE9vO1xI_srXCrI`.
+Projeto vinculado: `1sZTcHm1yNz8x7sVs5WaRj1pX8qbac-kglUDIdDTFLh_iqvHwzF6sqXff`.
+Janela com usuário presente e sem cópias confirmada às 23:31Z de 17/10.
+Construção finalizada em 17/10 à noite local (18/10 UTC).
 
-Item 3 concluído nativamente: Ficha Pessoal (33 cenários/118 asserções),
-Configuração (7/529, todas as 86 caixas), Famílias (13 cenários/130 resultados),
-Campanha (12 atuais + referência antiga, 18 asserções/26.689 valores) e Custom
-(10 atuais + referência antiga, 31 asserções/27.318 valores). Respectivas
-provas `REGRESSAO-*-NATIVA.json`. Todas as entradas restauradas sem diferenças.
-Campanha/Custom: lista inteira das 36 diferenças impressa antes de aceitar
-24 rótulos exatos de C e conferir 12 cabeçalhos no novo endereço aprovado;
-zero números dispensados, zero erros. Latente passou: própria rejeitada,
-publicada aceita; nenhum defeito de produção foi reproduzido nesse caso.
+Provas: [OFICIAL-B47.json](OFICIAL-B47.json),
+[OFICIAL-COMPARACAO-FINAL.json](OFICIAL-COMPARACAO-FINAL.json) e
+[OFICIAL-FECHAMENTO.md](OFICIAL-FECHAMENTO.md). Comparação integral das
+exportações nativas: 22 abas, 66.242 fórmulas, 8.190 chaves únicas, zero erros,
+zero diferenças em conteúdo/notas/validações/mesclas/grupos/estilos.
+As regras condicionais foram comparadas separadamente pela API, iguais.
 
-**Amaldiçoada concluída:** `regressao-amaldicoada-nativa.py conferir` na pasta privada
-`D:/JJK - Project/B47/evidencias/2026-10-17/pos-d/`. As 20 fichas já têm 80
-respostas nativas (`amaldicoada-00-00.json`…`amaldicoada-19-03.json`). 442
-entradas restauradas; `amaldicoada-antes.json`/`depois.json` idênticos em
-valores, efetivos, notas, validações e formatos. As 354 verificações passaram
-(dados/livro, estrutura e VM; não são 354 medições nativas de latência).
-As 11 falhas anteriores foram reproduzidas e explicadas: avisos já aprovados
-em C, aspas opcionais nas faixas, ordem oculta e custo dos cartões novos.
-Nenhuma expectativa numérica relaxada. `REGRESSAO-AMALDICOADA-NATIVA.json`.
-Conferência e VM escrevem `amaldicoada-resultado.txt`.
-O adaptador libera as cópias calculadas antes de iniciar o Node e só reutiliza
-cache VM se PROG_JS, GS e simulador/loader tiverem hashes iguais.
+35 GS + manifesto salvos e relidos iguais após reabrir o editor (36/36).
+Ficha.gs `348ec3c6…` corrige a retomada da criação; ABAS/ARTE idênticos,
+22 verificações locais aprovadas. Três continuações nativas: 187/169/254 s
+internos, FICHA PRONTA, sem acabamento pendente. As falhas iniciais ficam
+registradas na prova; não são omitidas nem somadas como execução de sucesso.
 
-Descartável atual: `13qBo5g09Qg9CLGsgwVtCjFYzdiwsNKQkAiVEmcIOm7w` (da construção
-final, sem personagem da revisão). Referências históricas por GS, sem importar
-XLSX: Campanha `1nuBAQIUCFvuzIb7cMc0RXiBd5wUT4AjB93eTkL2q9GA`; Custom
-`1ujvsFJTqCAYkMkdyZtU2N6t0jiXg_gcA3Y_ae2zMS4k`. A Custom histórica está com as
-entradas do cenário base; restaurar pelo modelo correspondente antes de copiar.
+Cópia funcional: troca claro → escuro interrompida, sem nova autorização.
+14.500 células de FICHA!A147:AX436 sem deriva; cores restantes delimitadas
+na prova. 99 controles temporários restaurados e relidos após a queda.
+Revisão preenchida intacta; nenhum dado de personagem no Git, nenhuma
+importação XLSX, alteração de bot ou de acesso.
 
-**Progressão inteiramente fechada:** referência `livro_base` nativa dos GS
-`03a459e`, conferida contra `progressao-base3a.json.gz`. A fixture guarda os
-valores compactados; 21.471 células extras foram aceitas SOMENTE como tradução
-relativa exata de moldes presentes nela, pelo plano `abaixo` da mesma revisão.
-Zero diferenças sem explicação. Referência nativa
-`1O3Wn7LNh7H_zjDGOUvUtgW_US-O1YkesrmGTKUJlsJQ`. Os sete valores escalares
-anteriores ficaram iguais; total 15 asserções mecânicas/26 estruturais.
-Não confundir essa referência antiga com a geração atual vazia.
+Git e Sheets leitura/escrita disponíveis, editor Apps Script utilizado antes
+da queda e navegador reconectado. LibreOffice não localizado neste Windows;
+os testes preservaram as asserções originais usando cálculo nativo Google.
+Não afirmar aprovação do Calc. Relatórios das sete regressões e perfil em
+REGRESSAO-*-NATIVA.json e MEDIDAS-POS-D.md/.json.
 
-**Item 2 concluído:** `MEDIDAS-POS-D.md`/`.json`. Nativo na cópia funcional:
-onOpen 7,767 s; texto 10,124 s; limpeza 7,908 s; expansão de invocação 10,011 s.
-Entradas/notas/validações/formatos, alturas e grupos restaurados e relidos.
-35 GS/7.068.792 bytes, maior 840.243; XLSX local 1.995.733 bytes. VM Windows
-460,796 ms de carga, 0,662 ms texto; separado do Google e histórico Linux.
-Construção de 821 s reutilizada, sem refazer. B84 (carregamento sob demanda
-integral) fica como otimização futura delimitada, não implementada nem
-necessária demonstrada para a entrega atual. Nenhuma mudança de produção.
-
-**Próxima etapa:** oficial somente em
-janela sem cópias combinada com usuário presente,
-pelo ROTEIRO-OFICIAL-B47.md. Não construir/continuar na revisão preenchida.
-Próxima ação recomendada: Sol/Médio para conferir diferenças delimitadas.
+Sem tarefa obrigatória restante nesta entrega. B84 (carregamento integral sob
+demanda) permanece otimização futura, fora do fechamento e não implementada.
+Próxima ação eventual: Sol/Médio para manutenção focal.
 
 # Histórico — retomada com cálculo Google · 17/10/2026
 
