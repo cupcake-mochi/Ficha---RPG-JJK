@@ -34,7 +34,7 @@ def registro(tipo, n, inicio):
              mestre_viu=coord(r+2,c+4))
     if tipo == 'melhoria':
         g.update(familia=coord(r+6,c+3), peso=coord(r+7,c+3), exige_tr=coord(r+8,c+3),
-                 requisitos=coord(r+11,c), efeito=coord(r+17,c), aviso=coord(r+23,c))
+                 requisitos=coord(r+11,c), efeito=coord(r+17,c), aviso=coord(r+23,c),controle_compat=coord(r+15,c+4))
     else:
         g.update(devolucao=coord(r+6,c+3), frequencia=coord(r+7,c+3),
                  efeito=coord(r+10,c), aviso=coord(r+18,c))
@@ -192,7 +192,7 @@ def aplica(layout, fam, inv, criacao):
             d(sheet,r+1,68 if sheet==MEL else 22,base_name)
             if sheet==MEL:
                 d(sheet,r,24,item['nome'])
-                d(sheet,r,25,int(item['nome'] in inv['R']['reduzidas']))
+                d(sheet,r,25,int(item.get('base',item['nome']) in inv['R']['reduzidas']))
         book_names=faixa(sheet,start,2,start,nbook+1)
         base_list=faixa(sheet,68 if sheet==MEL else 22,2,68 if sheet==MEL else 22,nbook+2)
         tr['catalogos'][kind]=faixa(sheet,start,2,start+width-1,total+1)
@@ -232,6 +232,9 @@ def aplica(layout, fam, inv, criacao):
             d(sheet,dst,start,f'=IF({valid},D{r},"")')
             base=lambda c: f'IF({idx}{r}>0,INDEX({faixa(sheet,c,2,c,nbook+1)},{idx}{r}),0)'
             if sheet==MEL:
+                d(sheet,1,14,'Reforço de Controle compatível')
+                read_config(sheet,r,14,15,4,g)
+                tr['entradas'].append((f'custom.melhoria.{g["n"]}.controle_compat',g['controle_compat'],True))
                 d(sheet,dst,16,f'=IF(F{r}<>"",IF(F{r}="Nenhuma","",F{r}),IF({idx}{r}>0,INDEX($P$2:$P${nbook+1},{idx}{r}),""))')
                 d(sheet,dst,17,f'=IF(G{r}<>"",IFERROR(MATCH(G{r},{wrange},0),0),{base(17)})')
                 fc=criterio('P'+str(dst))
@@ -276,6 +279,8 @@ def aplica(layout, fam, inv, criacao):
                 field(8,'EXIGE TR','exige_tr',faixa(sheet,67,2,67,3),'Em branco herda a base. Sim indica que o efeito exige TR, inclusive em Forma de ataque.')
                 box(rr+10,c,'REQUISITOS E REPETIÇÃO',ec=c+5,kind='rotulo')
                 box(rr+11,c,er=rr+14,ec=c+5,kind='texto',note='Descreva requisitos, incompatibilidades e limite de compras. Verificações da base continuam; texto livre é conferido pelo mestre e pelo bot.')
+                box(rr+15,c,'REFORÇO DE CONTROLE',ec=c+3,kind='rotulo')
+                box(rr+15,c+4,False,ec=c+5,kind='caixa',note='Marque somente se os estados, duração, TRs e saídas registrados permitem o reforço comum de Controle. Não cria TR ou duração: a proposta precisa descrevê-los. Aprovação continua pelo mestre/bot.')
                 box(rr+16,c,'EFEITO',ec=c+5,kind='rotulo')
                 box(rr+17,c,er=rr+21,ec=c+5,kind='texto',note='Efeito completo da Melhoria. Números do personagem sem campo próprio são registrados em BÔNUS E MUDANÇAS.')
                 box(rr+23,c,f'=IF({ref(err+str(r),sheet)}="","","⚠ "&{ref(err+str(r),sheet)})',er=rr+24,ec=c+5,kind='nota')

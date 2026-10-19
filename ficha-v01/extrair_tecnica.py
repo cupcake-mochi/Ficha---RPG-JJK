@@ -123,15 +123,18 @@ def texto_curto(L, teto=1300):
 
 # ---------------------------------------------------------------------------------------------
 def talentos(cap11):
-    out = []
-    for titulo in ("Talentos de Categoria 1", "Talentos de Categoria 2", "Proteção e presença", "Talentos de Categoria 3"):
-        if titulo == "Proteção e presença" and not Lv.secao(titulo, 0, dentro=cap11):
-            continue        # B45: no livro final esses Talentos estão dentro de "Talentos de Categoria 2", sem título próprio
-        S = sec(titulo, cap11)
-        intro = " ".join(Lv.paragrafos(S, ate_subtitulo=True))
-        ce = re.search(r"Categoria (\d)$", titulo) or re.search(r"Categoria de Efeito (\d)", intro)
-        for nome, L in subsecoes(S):
-            out.append({"nome": nome, "classe_passiva": ce.group(1), "faz": re.sub(r"^Talento\. ", "", primeiro(L))})
+    out=[]
+    # Na R53 as entradas e o cabeçalho da Categoria compartilham nível no
+    # Markdown completo. Os IDs preservam o grupo; não perder silenciosamente
+    # todos os Talentos ao encerrar uma seção no primeiro título vizinho.
+    blocos=json.load(open(os.path.join(RAIZ,'referencias-r53','BLOCOS-R53.json'),encoding='utf-8'))
+    for ce,id_ in [(1,'catalogo--cat-passivas-1'),(2,'catalogo--cat-passivas-2-recursos'),(3,'catalogo--cat-passivas-3')]:
+        text=blocos[id_].replace('**','').splitlines()
+        text[0]='# '+text[0].lstrip('#').strip()
+        itens=subsecoes(text)
+        if not itens:raise SystemExit('Grupo de Talentos vazio: '+id_)
+        for nome,L in itens:
+            out.append(dict(nome=nome,classe_passiva=str(ce),faz=re.sub(r'^Talento\. ','',primeiro(L))))
     # 10/10/2026 (B45): o livro final abre as duas seções com a mesma frase de convite ("Você continua livre para criar
     # com o mestre..."), que não diz o que a entrada é. A caixa da aba mostra o primeiro parágrafo que é só de uma delas
     abre = {nome: Lv.paragrafos(sec(nome, cap11), ate_subtitulo=True) for nome in ("Regra Própria", "Talento Próprio")}
@@ -169,45 +172,32 @@ def aptidoes(cap12):
 
 
 def base_por_classe(cap10):
-    """a tabela Alcance e área, no formato que a aba lê: "raio 3 m, a 18 m", "raio 3 m, em você", "—" """
-    S = sec("Alcance e área", cap10)
-    out = {}
-
-    def norm(c):
-        c = _sem_ponto(c)
-        if c.startswith("Indisponível"):
-            return "—"
-        m = re.match(r"Alcance (\S+ m); raio (\S+ m)", c)
-        if m:
-            return f"raio {m.group(2)}, a {m.group(1)}"
-        m = re.match(r"Em você; raio (\S+ m)", c)
-        if m:
-            return f"raio {m.group(1)}, em você"
-        return c
-    for forma, c0, c15, c67 in tab(S, "Forma"):
-        if forma == "Cura e Apoio":
-            m = re.match(r"Apoio: (\S+ m)", _sem_ponto(c0))
-            out["Cura"] = {"classe_0": "—", "classes_1_a_5": norm(c15), "classes_6_e_7": norm(c67)}
-            out["Apoio"] = {"classe_0": m.group(1), "classes_1_a_5": norm(c15), "classes_6_e_7": norm(c67)}
-        else:
-            out[forma] = {"classe_0": norm(c0), "classes_1_a_5": norm(c15), "classes_6_e_7": norm(c67)}
-    return out
+    tabela={f[0]:f[1:] for f in tab(sec("Alcance e área",cap10),"Medida básica")}
+    chaves=["classe_0","classes_1_a_5","classes_6_e_7"]
+    origem=tabela["Projétil ofensivo e origem de Explosão, Cone e Linha"]
+    raw={"Projétil":origem,"Toque":tabela["Toque"],
+         "Explosão":["raio "+r+", a "+a for r,a in zip(tabela["Explosão: raio"],origem)],
+         "Aura":["raio "+r+", em você" for r in tabela["Aura: raio a partir de você"]],
+         "Cone":tabela["Cone: comprimento"],"Linha":tabela["Linha: comprimento × largura"],
+         "beneficio_individual":tabela["Benefício individual à distância"]}
+    return {n:dict(zip(chaves,values)) for n,values in raw.items()}
 
 
 def formas(cap10):
-    out = []
-    for nome, custo, alc, res in tab(sec("Formas de ataque", cap10), "Forma"):
-        out.append({"nome": nome, "custa": "—" if custo == "0" else custo, "o_que_e": alc, "resolve": res})
-    auto = re_frase(r"(Cura e Apoio são automáticos em alvos dispostos)\.").group(1)
-    for nome, custo, alvo in tab(sec("Formas de amparo e Efeito", cap10), "Forma"):
-        out.append({"nome": nome, "custa": "—" if custo == "0" else custo, "o_que_e": alvo,
-                    "resolve": "Sem dano" if nome == "Efeito" else auto})
+    out=[]
+    for nome,custo,entrega in tab(sec("Formas",cap10),"Forma"):
+        out.append(dict(nome=nome,custa="—" if custo in ["0","Devolve Leve"] else custo,
+                        devolve="Leve" if custo=="Devolve Leve" else None,
+                        o_que_e=entrega,resolve="Ataque ou TR registrado; benefício disposto automático"))
+    if [p["nome"] for p in out]!=["Projétil","Toque","Explosão","Aura","Cone","Linha"]:
+        raise SystemExit("Formas R53: tabela incompleta ou alterada")
     return out
 
 
 def escadas(cap10):
-    t = {m: [d.strip() for d in _sem_ponto(g).split(";")] for m, g in tab(sec("Aumentos", cap10), "Medida")}
-    return {"alcance": t["Distância ao alvo ou ponto"], "raio": t["Raio de esfera"], "comprimento": t["Comprimento de Cone ou Linha"]}
+    t={m:[d.strip() for d in _sem_ponto(g).split(";")] for m,g in tab(sec("Aumentos",cap10),"Medida")}
+    return {"alcance":t["Distância ao alvo ou ponto"],"raio":t["Raio de esfera"],
+            "comprimento":t["Comprimento de Cone"],"linha":t["Linha: comprimento × largura"]}
 
 
 def classe_0(cap10):
@@ -217,7 +207,7 @@ def classe_0(cap10):
     return {"niveis": [int(c.split(" a ")[0]) for c in cab[1:]], "quantos": [int(x) for x in lin["Quantidade conhecida"]],
             "dados": [int(x.split("d")[0]) for x in lin["Dano-base"]],
             "frase": Lv.frase("Você pode acrescentar uma Melhoria Leve, retirando um dado do dano-base."),
-            "nao_cura": Lv.frase("Cura e Onda não estão disponíveis.")}
+            "nao_cura": Lv.frase("Cura e aplicação coletiva de benefícios não estão disponíveis.")}
 
 
 def liberacao(cap10):
@@ -235,7 +225,7 @@ def tecnica_maxima(cap10):
               for n, d, p, pe in tab(S, "Nível")]
     pe = re_frase(r"A Máxima custa Ação Completa e (\d) × sua maior Classe em PE\.", S)
     return {"faixas": faixas, "pe_por_classe": int(pe.group(1)),
-            "frases": [Lv.frase(pe.group(0)), Lv.frase("A Máxima não aceita Restrições que devolvam pontos.")]}
+            "frases": [Lv.frase(pe.group(0)), Lv.frase("A Máxima não aceita Restrições que devolvam pontos, incluindo Queima-Roupa.")]}
 
 
 def dominio(cap14):
@@ -314,7 +304,7 @@ def melhorias_por_classe(cap10):
 # usa e a frase do livro com o resultado; o número de dados tem de estar na frase.
 EXEMPLOS = [
     {"nome": "Fio de Arrasto", "classe": 1, "lib": False, "forma": "Projétil", "mel": ["Empurrão"], "res": [], "livres": ["Alcance"],
-     "dados": 2, "pe": 3, "frase": "Sobram 3 − 0 − 1 = 2 pontos, que viram 2d8 de dano."},
+     "dados": 2, "pe": 3, "frase": "Após as compras, restam 3 − 0 − 1 = 2 pontos, usados para causar 2d8 de dano."},
     {"nome": "Peso nas Mãos", "classe": 1, "lib": False, "forma": "Toque", "mel": ["Derrubado"], "res": [], "livres": ["Controle", "Castigo"],
      "dados": 3, "pe": 3, "frase": "No acerto, causa 3d8 de Concussão, e o alvo faz TR Físico contra CD 12."},
     {"nome": "Corte Medido 2", "classe": 2, "lib": False, "forma": "Projétil", "mel": ["Fura", "Precisão"], "res": ["Parado"], "livres": ["Mira"],
@@ -325,21 +315,21 @@ EXEMPLOS = [
      "dados": 15, "pe": 15, "frase": "Parado paga esses 3 pontos: 15 − 3 + 3 = 15d8"},
     {"nome": "Salto de exemplo", "classe": 2, "lib": False, "forma": "Projétil", "mel": ["Salto"], "res": ["Gesto"], "livres": [],
      "dados": 5, "pe": 6, "frase": "Projétil + Salto, de preço normal, gasta 2; Gesto devolve 1. São 5d8 no primeiro alvo."},
-    {"nome": "Rede de contenção", "classe": 3, "lib": False, "forma": "Explosão", "mel": ["Atordoado", "Terreno"], "res": [],
-     "livres": ["Amparo", "Tempo"], "dados": 0, "pe": 9, "frase": "Gasta os 9 pontos, usa duas Melhorias e não compra Restrição. O saldo é zero: não causa dano."},
+    {"nome": "Rede de contenção", "classe": 4, "lib": False, "forma": "Explosão", "mel": ["Atordoado", "Terreno"], "res": [],
+     "livres": ["Amparo", "Tempo"], "dados": 0, "pe": 12, "frase": "Gasta os 12 pontos, usa duas Melhorias e não compra Restrição. Registra a opção sem dano."},
     {"nome": "Fura sem desconto", "classe": 3, "lib": False, "forma": "Projétil", "mel": ["Fura"], "res": [], "livres": [],
      "dados": 6, "pe": 9, "frase": "Um Projétil de Classe 3 tem Fura por 3 pontos, sem desconto, e causa 6d8."},
     {"nome": "Aura com Fura", "classe": 3, "lib": False, "forma": "Aura", "mel": ["Fura"], "res": [], "livres": [],
-     "dados": 7, "pe": 9, "frase": "Uma Aura de Classe 3, sem desconto, tem Fura: custo 2 + 3, com devolução 3 de Corpo a Corpo. Causa 7d8."},
+     "dados": 4, "pe": 9, "frase": "Uma Aura de Classe 3 com Fura, sem descontos ou Restrições, custa 2 + 3 pontos e causa 4d8."},
     {"nome": "Corte de ruptura", "classe": 3, "lib": True, "forma": "Linha", "mel": [], "res": [], "livres": [],
-     "dados": 10, "pe": 14, "frase": "A Liberação acrescenta 3d8: 10d8 numa linha de 18 m por 1,5 m."},
+     "dados": 10, "pe": 14, "frase": "A Liberação acrescenta 3d8: 10d8 numa linha de 18 m por 1,5 m, com origem escolhida a até 18 m."},
 ]
 
 
 def exemplos():
     for e in EXEMPLOS:
         Lv.frase(e["frase"])
-        if f"{e['dados']}d8" not in e["frase"] and not (e["dados"] == 0 and "não causa dano" in e["frase"]):
+        if f"{e['dados']}d8" not in e["frase"] and not (e["dados"] == 0 and "sem dano" in e["frase"]):
             raise SystemExit(f"o exemplo {e['nome']} diz {e['dados']} dados e a frase do livro nao")
     return EXEMPLOS
 
@@ -390,7 +380,7 @@ def rotas(cap13, cap12, catalogo_armas):
     return {
         "nomes": {"Sem Técnica": {"feitico": "Manejo", "liberacao": "Liberação Máxima", "tecnica_maxima": au},
                   "Técnica Marcial": {"feitico": "Kata", "liberacao": ru, "tecnica_maxima": og}},
-        "frases": [Lv.frase("Kata é uma aplicação de Técnica Marcial. Manejo é uma aplicação da rota Sem Técnica."),
+        "frases": [Lv.frase("Na rota Sem Técnica, os feitiços recebem o nome de Manejos e seguem os requisitos da semente escolhida."),
                    Lv.frase("Esta rota não concede Expansão de Domínio, incompleta ou completa, nem Extensão de Domínio."),
                    Lv.frase("O equipamento em uso é seu Selo."),
                    Lv.frase("PE significa Pontos de Energia para quem possui energia amaldiçoada e Pontos de Esforço para quem não possui.")],
@@ -440,7 +430,7 @@ def extrai():
         "escadas": escadas(cap10),
         "base_por_classe": base_por_classe(cap10),
         "formas": formas(cap10),
-        "toque": Lv.frase("Toque permanece a 1,5 m."),
+        "toque": Lv.frase("Toque conserva 1,5 m, e uma Melhoria com alcance próprio usa o valor de sua entrada."),
         "classe_0": classe_0(cap10),
         "liberacao": liberacao(cap10),
         "tecnica_maxima": tecnica_maxima(cap10),
@@ -448,7 +438,7 @@ def extrai():
         "pactos": pactos(cap15),
         "leque": {"frases": [Lv.frase("Leque | Um feitiço adicional e um Talento, sem pagar espaços por eles."),
                              Lv.frase("Cada Leque abre uma vaga própria para ele além do limite de cinco Talentos pagos.")]},
-        "controle": {"frases": [Lv.frase("Com saldo de dano até a Classe, seus efeitos de Controle duram uma rodada a mais. Com saldo zero, eles também recebem +2 na CD.")]},
+        "controle": {"frases": [Lv.frase("A opção fica definida na criação do feitiço; você não a troca a cada conjuração.")]},
         "numeros_da_montagem": numeros(cap10),
         "melhorias_por_classe": melhorias_por_classe(cap10),
         "feiticos_prontos": exemplos(),

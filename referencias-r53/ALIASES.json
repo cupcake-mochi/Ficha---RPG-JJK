@@ -1,0 +1,126 @@
+{
+  "fundamento--amparoformas": {
+    "bloco": "fundamento--funcoes",
+    "titulo": "Cura e vida temporária"
+  },
+  "fundamento--maximadano": {
+    "bloco": "fundamento--maxima",
+    "titulo": "Ataque, cura e utilidade"
+  },
+  "fundamento--limitesmaxima": {
+    "bloco": "fundamento--maxima",
+    "titulo": "Melhorias da Técnica Máxima"
+  },
+  "catalogo--cat-alcance": {
+    "bloco": "catalogo--melhoria-longe",
+    "titulo": "Longe"
+  },
+  "catalogo--cat-movimento": {
+    "bloco": "catalogo--melhoria-passo",
+    "titulo": "Passo"
+  },
+  "catalogo--cat-area": {
+    "bloco": "catalogo--melhoria-maior",
+    "titulo": "Maior"
+  },
+  "catalogo--cat-area-continua": {
+    "bloco": "catalogo--melhoria-fica",
+    "titulo": "Fica"
+  },
+  "catalogo--cat-mira": {
+    "bloco": "catalogo--melhoria-precisao",
+    "titulo": "Precisão"
+  },
+  "catalogo--cat-defesas": {
+    "bloco": "catalogo--melhoria-fura",
+    "titulo": "Fura"
+  },
+  "catalogo--cat-controle": {
+    "bloco": "catalogo--melhoria-condicao",
+    "titulo": "Condição"
+  },
+  "catalogo--cat-obstaculos": {
+    "bloco": "catalogo--melhoria-anteparo",
+    "titulo": "Anteparo"
+  },
+  "catalogo--cat-auxiliares": {
+    "bloco": "catalogo--melhoria-impulso",
+    "titulo": "Impulso"
+  },
+  "catalogo--cat-auxiliares-apoio": {
+    "bloco": "catalogo--melhoria-guarda",
+    "titulo": "Guarda"
+  },
+  "catalogo--cat-castigo": {
+    "bloco": "catalogo--melhoria-queima",
+    "titulo": "Queima"
+  },
+  "catalogo--cat-castigo-dano": {
+    "bloco": "catalogo--melhoria-remate",
+    "titulo": "Remate"
+  },
+  "catalogo--cat-tempo": {
+    "bloco": "catalogo--melhoria-rapido",
+    "titulo": "Rápido"
+  },
+  "catalogo--cat-tempo-duracao": {
+    "bloco": "catalogo--melhoria-silencioso",
+    "titulo": "Silencioso"
+  },
+  "catalogo--cat-marca": {
+    "bloco": "catalogo--melhoria-marca",
+    "titulo": "Marca"
+  },
+  "catalogo--cat-marca-recursos": {
+    "bloco": "catalogo--melhoria-sugar",
+    "titulo": "Sugar"
+  },
+  "catalogo--cat-amparo": {
+    "bloco": "catalogo--melhoria-limpa",
+    "titulo": "Limpa"
+  },
+  "catalogo--cat-amparo-protecao": {
+    "bloco": "catalogo--melhoria-divide",
+    "titulo": "Divide"
+  },
+  "catalogo--cat-restricoes-conjuracao": {
+    "bloco": "catalogo--restricao-queima-roupa",
+    "titulo": "Queima-Roupa"
+  },
+  "catalogo--cat-restricoes-consequencias": {
+    "bloco": "catalogo--restricao-sangra",
+    "titulo": "Sangra"
+  },
+  "catalogo--cat-restricoes-uso": {
+    "bloco": "catalogo--restricao-uma-vez",
+    "titulo": "Uma Vez"
+  },
+  "catalogo--cat-restricoes-proprias": {
+    "bloco": "catalogo--restricao-barulho",
+    "titulo": "Barulho"
+  },
+  "catalogo--cat-passivas-2-protecao": {
+    "bloco": "catalogo--cat-passivas-2-recursos",
+    "titulo": "Costura"
+  },
+  "fundamento-link-conceitos": {
+    "bloco": "fundamento--fundamento",
+    "titulo": "As palavras da montagem"
+  },
+  "fundamento-link-guia-familias": {
+    "bloco": "fundamento--fundamento",
+    "titulo": "Conheça as Famílias"
+  },
+  "fundamento-link-fios-de-tensao": {
+    "bloco": "fundamento--tecnica",
+    "titulo": "Fios de Tensão"
+  },
+  "fundamento-link-saldo": {
+    "bloco": "fundamento--pontos",
+    "titulo": "Cálculo dos pontos"
+  },
+  "rotas-link-montagem": {
+    "bloco": "rotas--rotas",
+    "titulo": "Como montar Manejos e Katas"
+  }
+}

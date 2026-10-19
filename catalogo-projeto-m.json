@@ -1,10 +1,10 @@
 {
  "_meta": {
   "sistema": "Ciclo Maldito",
-  "versao": "1.0",
-  "versao_data": "14/10/2026",
-  "versao_dona": "o livro final do JJK---Project, Ciclo Maldito R51 (LIVRO-COMPLETO.md de ciclo-maldito-r41/), com a revisão de regras do Mizuki de 07 a 14/10/2026",
-  "fonte": "manual.txt, gerado do LIVRO-COMPLETO.md pelo extrair-manual.py; o arquivo e o hash estão no manual-fonte.json",
+  "versao": "R53",
+  "versao_data": "19/10/2026",
+  "versao_dona": "Ciclo Maldito R53, 411 páginas; publicação 3a810995e5211e2c21c90b02c8a5f43f67fa9d8a",
+  "fonte": "referencias-r53/LIVRO-COMPLETO.md e BLOCOS-R53.json; manual-fonte.json e r53/catalogo.json registram hashes",
   "regra": "onde a ficha e o manual discordarem, o manual vence",
   "nivel_inicial": 2,
   "nivel_maximo": 30,
@@ -315,419 +315,636 @@
   "bonus_se_treinado": "maestria"
  },
  "familias": {
-  "Alcance": "Aumentar distância; mover você ou um alvo",
-  "Área": "Aumentar uma área; dividir um ataque; alcançar mais alvos",
-  "Mira": "Melhorar o acerto; atravessar proteção",
-  "Controle": "Aplicar condições; criar obstáculos; limitar movimento",
-  "Auxiliares": "Dar vantagens e bônus; prejudicar rolagens",
-  "Castigo": "Acrescentar dano em situações determinadas",
-  "Tempo": "Mudar a ação, o momento ou a duração",
-  "Marca": "Preparar ataques; rastrear; recuperar recursos",
-  "Amparo": "Curar, proteger e remover condições"
+  "Alcance": "Aumentos de alcance e deslocamentos seus ou de outras criaturas",
+  "Área": "Formas de área, aumentos de tamanho e distribuição entre alvos ou tiros",
+  "Mira": "Melhor acerto ou CD e efeitos que atravessam proteções",
+  "Controle": "Condições, obstáculos e limitações de movimento",
+  "Auxiliares": "Vantagens, bônus de Defesa e penalidades nas rolagens",
+  "Castigo": "Dano adicional com condições ou gatilhos próprios",
+  "Tempo": "Mudanças na ação, preparação do disparo e duração dos efeitos",
+  "Marca": "Efeitos ligados a um alvo, rastreamento e recuperação de recursos",
+  "Amparo": "Cura, vida temporária e remoção de condições"
  },
  "formas": {
   "Projétil": {
    "custa": null,
    "familia": null,
-   "alcance": "Um alvo a até 18 m",
-   "resolve": "Ataque"
+   "alcance": "Um alvo a até 18 m; benefícios diretos usam a distância indicada abaixo.",
+   "resolve": "Ataque ou TR registrado; benefício disposto automático",
+   "devolucao_toque": null
   },
   "Toque": {
    "custa": null,
    "familia": null,
-   "alcance": "Um alvo a até 1,5 m",
-   "resolve": "Ataque",
-   "embutido": "Restrição Corpo a Corpo embutida, devolve Media"
+   "alcance": "Um alvo a até 1,5 m.",
+   "resolve": "Ataque ou TR registrado; benefício disposto automático",
+   "devolucao_toque": "Leve"
   },
   "Explosão": {
-   "custa": "Leve",
+   "custa": "Media",
    "familia": "Área",
-   "alcance": "Esfera de raio 3 m, num ponto a até 18 m",
-   "resolve": "TR; metade do resultado do dano no sucesso"
+   "alcance": "Esfera de raio 3 m, com centro escolhido a até 18 m.",
+   "resolve": "Ataque ou TR registrado; benefício disposto automático",
+   "devolucao_toque": null
   },
   "Aura": {
    "custa": "Leve",
    "familia": "Área",
-   "alcance": "Esfera de raio 3 m, centrada em você",
-   "resolve": "TR; metade do resultado do dano no sucesso",
-   "embutido": "Restrição Corpo a Corpo embutida, devolve Media"
+   "alcance": "Esfera de raio 3 m, centrada em você.",
+   "resolve": "Ataque ou TR registrado; benefício disposto automático",
+   "devolucao_toque": null
   },
   "Cone": {
    "custa": "Leve",
    "familia": "Área",
-   "alcance": "Cone de 4,5 m, partindo de você",
-   "resolve": "TR; metade do resultado do dano no sucesso"
+   "alcance": "Cone de 4,5 m, com origem escolhida a até 18 m.",
+   "resolve": "Ataque ou TR registrado; benefício disposto automático",
+   "devolucao_toque": null
   },
   "Linha": {
    "custa": "Leve",
    "familia": "Área",
-   "alcance": "Linha de 18 m por 1,5 m, partindo de você",
-   "resolve": "TR; metade do resultado do dano no sucesso"
-  },
-  "Cura": {
-   "custa": "Media",
-   "familia": "Amparo",
-   "nota": "Um aliado a até 9 m. O saldo vira dados de cura, até 2 × Classe em d8"
-  },
-  "Apoio": {
-   "custa": null,
-   "familia": "Amparo",
-   "nota": "Um aliado a até 9 m. Cada ponto do saldo concede 3 pontos de vida temporária"
-  },
-  "Onda": {
-   "custa": "Pesada",
-   "familia": "Amparo",
-   "nota": "Aliados numa esfera de raio 3 m centrada em você. Escolha cura ou apoio ao montar"
-  },
-  "Efeito": {
-   "custa": null,
-   "familia": null,
-   "nota": "Uma aplicação fora de combate. Usa a escala de Efeitos fora de combate, sem dano ou vida temporária"
+   "alcance": "Linha de 18 m por 1,5 m, com origem escolhida a até 18 m.",
+   "resolve": "Ataque ou TR registrado; benefício disposto automático",
+   "devolucao_toque": null
   }
  },
  "_pendente": [],
  "melhorias": {
-  "Longe": {
-   "familia": "Alcance",
-   "peso": "Leve",
-   "efeito": "Aumenta o alcance em um degrau. Pode comprar duas vezes. Use a escada de distância da Forma. Em Cone e Linha, aumente o comprimento pela escada própria. Não aumenta o raio nem muda a origem de uma área centrada em você. Não combina com Toque, Aura ou Onda."
-  },
-  "Muito Longe": {
-   "familia": "Alcance",
-   "peso": "Media",
-   "efeito": "Aumenta o alcance em três degraus, pelas mesmas escadas e limites de Longe. Não ultrapassa o último degrau. Não combina com Toque, Aura ou Onda."
-  },
-  "Sem Ver": {
-   "familia": "Alcance",
-   "peso": "Pesada",
-   "efeito": "Permite escolher um alvo ou ponto de origem que você não enxerga, desde que saiba sua posição atual. Mantém alcance e trajetória da Forma. Não localiza criaturas nem atravessa um obstáculo sólido. Uma parede ainda pode impedir a aplicação. Não dispensa um Selo que exija usar os próprios olhos."
-  },
-  "Perseguir": {
-   "familia": "Alcance",
-   "peso": "Media",
-   "efeito": "Só se aplica a um feitiço dirigido a um alvo individual. Se um deslocamento ocorrido entre a escolha válida desse alvo e a resolução o levar para fora do alcance, a aplicação acompanha esse deslocamento e resolve em seguida. Segue também um teleporte dentro da cena, desde que o alvo não termine atrás de cobertura. Não adia a resolução nem procura um alvo perdido. Só acompanha o alvo: não contorna obstáculos nem ignora cobertura; isso depende de Contorno. Visão exigida e trajeto aberto continuam necessários. Não amplia Toque. Em Armado, a escolha do alvo só ocorre quando o gatilho dispara."
-  },
   "Passo": {
+   "fonte_id": "catalogo--melhoria-passo",
+   "opcoes": [
+    "Passo"
+   ],
    "familia": "Alcance",
    "peso": "Leve",
    "efeito": "Antes ou depois de resolver o feitiço, você pode se deslocar até 6 m, sem ataques de oportunidade e sem gastar outra Ação de Movimento. Escolha o momento ao usar. Terreno, limites e condições do seu movimento continuam valendo. Não concede voo, escalada nem teleporte. Ação Completa, sozinha, não impede esse deslocamento. Atrasar e Parado impedem usar Passo no turno."
   },
   "Empurrão": {
+   "fonte_id": "catalogo--melhoria-empurrao",
+   "opcoes": [
+    "Empurrão"
+   ],
    "familia": "Alcance",
    "peso": "Leve",
-   "efeito": "Depois da resolução, mova os alvos que tenham sido acertados ou falhado no TR até 6 m, na direção escolhida por você. Em benefício aplicado a um aliado disposto, ele aceita o movimento. O percurso precisa estar livre. Pare diante de uma parede ou de um espaço que não comporte o alvo. Não concede dano de colisão nem permite escolher um destino suspenso no ar. Quedas de uma beirada seguem as regras comuns. Se houver Puxa na mesma ficha, escolha para esse alvo qual dos dois movimentos aplicar. Eles não se somam."
-  },
-  "Maior": {
-   "familia": "Área",
-   "peso": "Leve",
-   "efeito": "Aumenta o tamanho de uma área em um degrau. Pode comprar duas vezes. Use a escada de raio ou de comprimento da Forma. Na Linha, aumente primeiro o comprimento até 60 m. Depois a largura para 3 m e então 4,5 m. Não cria área numa Forma de alvo individual nem aumenta a distância até seu ponto de origem."
-  },
-  "Muito Maior": {
-   "familia": "Área",
-   "peso": "Pesada",
-   "efeito": "Aumenta o tamanho da área em três degraus, seguindo a mesma ordem e os mesmos limites de Maior. Não ultrapassa o último degrau nem cria área onde não existe."
-  },
-  "Escolher": {
-   "familia": "Área",
-   "peso": "Media",
-   "efeito": "Ao criar a área, escolha quais criaturas presentes ela pode atingir. As demais ficam excluídas daquela aplicação. Não muda o formato, não cria alvos adicionais nem seleciona quem você não consegue distinguir por percepção válida. Com Fica, registre as criaturas excluídas no disparo: novas criaturas não ficam protegidas automaticamente, e a lista não muda a cada entrada."
-  },
-  "Mais Um": {
-   "familia": "Área",
-   "peso": "Leve",
-   "efeito": "Acrescenta um alvo individual ao feitiço. Pode comprar duas vezes. Divida os dados disponíveis em parcelas inteiras antes de rolar, com pelo menos um dado para cada alvo que receber o efeito. Confira alcance, visão e resolução para cada um. Não duplica uma área nem substitui Junto nas Formas Cura e Apoio. Toque exige todos os alvos a até 1,5 m de você."
-  },
-  "Rajada": {
-   "familia": "Área",
-   "peso": "Leve",
-   "efeito": "Divide o feitiço em Classe + 1 tiros, cada um com ataque próprio. Só em Forma de alvo individual com ataque. Distribua os dados e indique os alvos antes de rolar. Cada tiro precisa de pelo menos um dado. Se faltarem dados, reduza o número de tiros. Você pode dirigir vários ao mesmo alvo. Todos cumprem alcance e requisitos da Forma. Não combina com resolução só por TR nem transforma uma área em várias áreas."
-  },
-  "Fica": {
-   "familia": "Área",
-   "peso": "Media",
-   "efeito": "A área continua no lugar por 1 minuto, com concentração. Quem entrar nela ou começar o turno nela leva metade dos dados de dano, arredondada para baixo. Cada criatura recebe no máximo uma aplicação por rodada, incluindo a inicial."
-  },
-  "Salto": {
-   "familia": "Área",
-   "peso": "Media",
-   "efeito": "Uma vez por conjuração, após a resolução inicial, escolha um alvo que tenha sido acertado ou falhado no TR. Metade dos dados iniciais destinados a esse alvo, antes do crítico e arredondada para baixo, salta para outro inimigo: o mais próximo dele a até 9 m, por trajeto aberto. Escolha em caso de empate."
-  },
-  "Contorno": {
-   "familia": "Área",
-   "peso": "Leve",
-   "efeito": "Permite à área seguir um percurso aberto, dobrando esquinas e passando ao redor de cobertura. Meça alcance e extensão pelo percurso real, respeitando comprimento, largura ou raio da Forma. Ignore a proteção de uma cobertura somente quando o efeito conseguir contorná-la. Não atravessa sólido nem enche outro cômodo além dessas medidas."
-  },
-  "Precisão": {
-   "familia": "Mira",
-   "peso": "Leve",
-   "efeito": "Concede +2 no ataque ou +2 na CD do TR que resolve o feitiço, conforme a resolução da ficha. Não concede bônus a efeito inteiramente automático. Um TR de saída que use a mesma CD conserva esse valor. Não aumenta cura, dano ou testes de perícia."
-  },
-  "Certeiro": {
-   "familia": "Mira",
-   "peso": "Media",
-   "efeito": "Dispensa a rolagem de acerto. O alvo faz o TR registrado na ficha: na falha, recebe o dano e os efeitos; no sucesso, recebe metade do resultado do dano, sem os efeitos que o teste evitou. Alvo, alcance, visão e os demais requisitos continuam valendo."
-  },
-  "Inescapável": {
-   "familia": "Mira",
-   "peso": "Media",
-   "efeito": "Só em Projétil de dano. O dano é automático, sem ataque nem TR, e não pode ser crítico. Esta é a única Melhoria da ficha. Não aceita Restrição, incluindo uma embutida na Forma. Você ainda precisa escolher alvo válido, dentro do alcance e com visão e trajeto exigidos. Não se combina com área, Controle, outras Formas, Liberação Máxima ou Técnica Máxima."
-  },
-  "De Novo": {
-   "familia": "Mira",
-   "peso": "Pesada",
-   "efeito": "Depois de um ataque deste feitiço errar, você pode repetir essa rolagem, com os mesmos modificadores e o mesmo alvo, uma vez a cada uso do feitiço. É obrigado a ficar com o novo resultado. Em Rajada, repete somente um tiro. Não obriga alguém a repetir TR nem repete o feitiço inteiro. Alvo e requisitos precisam continuar válidos."
-  },
-  "Fura": {
-   "familia": "Mira",
-   "peso": "Media",
-   "efeito": "Ao causar dano, ignore até 2 × Classe de Redução de Dano do alvo para este feitiço. Não elimina resistência, imunidade, cobertura ou pontos de vida de uma barreira. Um valor ignorado não se transforma em dano adicional."
-  },
-  "Corrói": {
-   "familia": "Mira",
-   "peso": "Pesada",
-   "efeito": "Só pode ser comprada se Mira for uma Família Livre. A resistência ao tipo de dano deste feitiço não reduz seu dano nesta aplicação. Não remove a resistência do alvo contra outras fontes e não ignora imunidade ou Redução de Dano."
-  },
-  "Sem Cobertura": {
-   "familia": "Mira",
-   "peso": "Leve",
-   "efeito": "Ignore os bônus de Cobertura Parcial contra este feitiço. Cobertura Boa mantém seus bônus; Cobertura Total continua impedindo escolher diretamente o alvo. Esta peça não concede visão nem muda a trajetória."
-  },
-  "Toca a Alma": {
-   "familia": "Mira",
-   "peso": "Leve",
-   "efeito": "Requer Classe 3 ou superior e Fundamento cuja Regra trate diretamente da alma. Troque os dados de dano do feitiço por dano de Alma e reduza sua quantidade à metade, para baixo. Aplique depois Dano na alma, inclusive suas defesas e Integridade. Não combina com Liberação Máxima. Na Técnica Máxima, conserva a redução e os requisitos."
+   "efeito": "Depois da resolução, mova os alvos que tenham sido acertados ou falhado no TR até 6 m, na direção escolhida por você. Em benefício aplicado a um aliado disposto, ele aceita o movimento. O percurso precisa estar livre. Pare diante de uma parede ou de um espaço que não comporte o alvo. Não concede dano de colisão nem permite escolher um destino suspenso no ar. Quedas de uma beirada seguem as regras comuns.\n\nVocê pode mover os alvos em direção a um mesmo ponto válido, inclusive o centro de uma área. Se os deslocamentos convergirem para esse ponto, resolva do alvo mais próximo ao mais distante dele; em empate, escolha a ordem. Pare antes de sobrepor criaturas e não mova alguém além do destino. Isso usa os mesmos 6 m de Empurrão, não acrescenta outro movimento. A Forma ainda precisa alcançar cada alvo e o trajeto continuar livre."
   },
   "Condição": {
+   "fonte_id": "catalogo--melhoria-condicao",
+   "opcoes": [
+    "Condição · Lento",
+    "Condição · Guarda Aberta",
+    "Condição · Derrubado",
+    "Condição · Agarrado",
+    "Condição · Desarmado",
+    "Condição · Surdo",
+    "Condição · Calado",
+    "Condição · Enfeitiçado",
+    "Condição · Impedido",
+    "Condição · Cego",
+    "Condição · Amedrontado",
+    "Condição · Envenenado",
+    "Condição · Atordoado"
+   ],
    "familia": "Controle",
-   "peso": "VARIAVEL",
-   "efeito": "Escolha na montagem uma das treze condições compráveis de Condições. Pague seu nível: Leve, Média ou Pesada. Ela se aplica na falha do TR, mesmo numa ficha de ataque, dura uma rodada e termina no começo do seu próximo turno, salvo duração diferente da ficha. Só pode haver uma Pesada por feitiço.",
-   "excecao": "unica Melhoria cujo peso nao e fixo: le o nivel da condicao escolhida"
+   "peso": "Leve ou Media ou Pesada",
+   "efeito": "Escolha na montagem uma das treze condições da seção Condições compráveis. Pague seu nível: Leve, Média ou Pesada. Ela se aplica na falha do TR, mesmo numa ficha de ataque, dura uma rodada e termina no começo do seu próximo turno, salvo duração diferente da ficha. Só pode haver uma Pesada por feitiço.\n\nUma Pesada permite ao alvo repetir o TR registrado no fim de cada turno dele, sem ação, encerrando aquela aplicação no sucesso. Leves e Médias não ganham essa saída por padrão. Concentrada, Duradoura e o bônus de Controle mudam os prazos nos limites próprios. Não retiram as saídas da condição."
   },
   "Terreno": {
+   "fonte_id": "catalogo--melhoria-terreno",
+   "opcoes": [
+    "Terreno · terreno difícil",
+    "Terreno · obscurecimento denso"
+   ],
    "familia": "Controle",
    "peso": "Leve",
    "efeito": "Requer Forma de área. Escolha ao montar: a área vira terreno difícil ou recebe obscurecimento denso, bloqueando a visão através dela, por uma rodada. O local fica fixo. Afeta quem passar por ele enquanto durar, sem TR por entrada. Não causa dano nem aplica condição. Obscurecimento não cria cobertura física nem deixa alguém Oculto automaticamente."
   },
   "Cerca": {
+   "fonte_id": "catalogo--melhoria-cerca",
+   "opcoes": [
+    "Cerca"
+   ],
    "familia": "Controle",
    "peso": "Leve",
    "efeito": "Na falha do TR, mesmo numa ficha de ataque, o alvo não pode se aproximar voluntariamente de você até o fim do próximo turno dele. Você se mover até ele não o afasta. Movimento imposto continua possível. A aplicação termina assim que você lhe causar dano, inclusive o dano do feitiço que a aplicou."
   },
   "Desarma o Feitiço": {
+   "fonte_id": "catalogo--melhoria-desarma-o-feitico",
+   "opcoes": [
+    "Desarma o Feitiço · efeito contínuo",
+    "Desarma o Feitiço · barreira",
+    "Desarma o Feitiço · item",
+    "Desarma o Feitiço · Selo"
+   ],
    "familia": "Controle",
    "peso": "Media",
-   "efeito": "Na criação, registre o que o feitiço cancela: efeito contínuo, barreira, item ou Selo. Escolha uma aplicação desse tipo ao alcance da Forma, percebida e com acesso válido. Se a Classe do alvo for igual ou menor que a do seu feitiço, ele cancela direto. Se for maior, role d20 + atributo da técnica, sem maestria, contra a CD de quem criou."
+   "efeito": "Na criação, escolha o tipo de aplicação que o feitiço pode cancelar: efeito contínuo, barreira, item ou Selo. Ao conjurar, escolha uma aplicação desse tipo que você perceba e que tenha acesso válido ao alcance da Forma. Cancele-a automaticamente se a Classe dela for igual ou menor que a do feitiço. Se a Classe dela for maior, role d20 + atributo da técnica, sem maestria, contra a CD de quem criou.\n\nPara outros tipos de aplicação, o mestre atribui uma Classe de 1 a 7 ou determina que o cancelamento é impossível. Domínios ficam fora dos alvos permitidos. O cancelamento afeta somente a aplicação escolhida e preserva os resultados já concluídos e as demais capacidades do criador. Você pode resolver o cancelamento sem atingir esse criador; ele não recebe dano nem as outras Melhorias do feitiço por isso."
   },
   "Anteparo": {
+   "fonte_id": "catalogo--melhoria-anteparo",
+   "opcoes": [
+    "Anteparo"
+   ],
    "familia": "Controle",
    "peso": "Media",
-   "efeito": "Cria uma barreira fixa, num ponto válido ao alcance do feitiço, com 10 × Classe PV e duração de 1 minuto. Seus painéis de 1,5 m usam a quantidade de quadrados da Linha básica da Classe, distribuídos numa superfície vertical contínua. Cada painel compartilha um lado com outro e a altura mínima é 3 m. Registre o formato."
+   "efeito": "Cria uma barreira fixa, num ponto válido ao alcance do feitiço, com 10 × Classe PV e duração de 1 minuto. Seus painéis de 1,5 m usam a quantidade de quadrados da Linha básica da Classe, distribuídos numa superfície vertical contínua. Cada painel compartilha um lado com outro e a altura mínima é 3 m. Registre o formato.\n\nColoque-a em espaços livres, sem atravessar criaturas nem empurrá-las. Ela impede passagem e oferece cobertura conforme a posição. Bloqueia visão se seu material for opaco. Todos os painéis partilham a mesma vida: ao chegar a zero, a barreira inteira termina. Use as regras de objetos para atacá-la. Não concede bônus de escudo equipado nem exige atacar uma criatura para surgir. Concentrada e Duradoura não prolongam sua duração."
   },
   "Prende": {
+   "fonte_id": "catalogo--melhoria-prende",
+   "opcoes": [
+    "Prende"
+   ],
    "familia": "Controle",
    "peso": "Media",
-   "efeito": "Na falha do TR, mesmo numa ficha de ataque, o alvo não pode se deslocar voluntariamente até o fim do próximo turno dele. Ainda pode atacar, conjurar e usar outras ações. No próprio turno, pode gastar Ação Padrão, Ação Bônus ou Ação de Movimento para fazer o TR de saída registrado na ficha contra sua CD. No sucesso, a aplicação termina. Cada tentativa paga uma dessas ações."
-  },
-  "Puxa": {
-   "familia": "Controle",
-   "peso": "Media",
-   "efeito": "Requer uma área com centro definido. No disparo, cada alvo atingido ou que falhe no TR é movido até 6 m em direção ao centro. O trajeto precisa estar livre e a chegada deve comportá-lo. Pare antes de um obstáculo ou de sobrepor criaturas. Quem já chegou ao centro não é arrastado além dele."
+   "efeito": "Na falha do TR, mesmo numa ficha de ataque, o alvo não pode se deslocar voluntariamente até o fim do próximo turno dele. Ainda pode atacar, conjurar e usar outras ações. No próprio turno, pode gastar Ação Padrão, Ação Bônus ou Ação de Movimento para fazer o TR de saída registrado na ficha contra sua CD. No sucesso, a aplicação termina. Cada tentativa paga uma dessas ações.\n\nO alvo tenta escapar pagando uma das ações indicadas, sem TR gratuito no fim do turno. Movimento imposto pode deslocá-lo e conserva a aplicação de Prende. Se o mesmo feitiço também mover o alvo, resolva esse movimento antes de aplicar Prende."
   },
   "Impulso": {
+   "fonte_id": "catalogo--melhoria-impulso",
+   "opcoes": [
+    "Impulso"
+   ],
    "familia": "Auxiliares",
    "peso": "Leve",
-   "efeito": "O alvo tem vantagem no próximo teste que fizer até o fim do próximo turno dele. O benefício termina depois desse teste, mesmo se ele falhar. Não modifica rolagens de dano."
+   "efeito": "O alvo tem vantagem na próxima rolagem de ataque que fizer até o fim do próximo turno dele. O benefício termina depois dessa tentativa, mesmo se errar. Testes de perícia, ofício e TR não recebem nem consomem Impulso. Não modifica rolagens de dano nem Bloquear."
   },
   "Trava": {
+   "fonte_id": "catalogo--melhoria-trava",
+   "opcoes": [
+    "Trava"
+   ],
    "familia": "Auxiliares",
    "peso": "Leve",
    "efeito": "O alvo tem desvantagem no próximo ataque que fizer. A peça termina depois dessa tentativa ou no começo do seu próximo turno, o que acontecer primeiro."
   },
   "Abre Ferida": {
+   "fonte_id": "catalogo--melhoria-abre-ferida",
+   "opcoes": [
+    "Abre Ferida · TR Físico",
+    "Abre Ferida · TR Vigor",
+    "Abre Ferida · TR Intelecto",
+    "Abre Ferida · TR Espírito"
+   ],
    "familia": "Auxiliares",
    "peso": "Leve",
-   "efeito": "Escolha um dos quatro TRs na criação. Até o fim do próximo turno do alvo, ele sofre -2 nesse tipo de TR. A penalidade só entra depois da resolução que aplicou a peça: não reduz o próprio TR usado para resistir a este feitiço."
+   "efeito": "Escolha um dos quatro TRs na criação. Até o fim do próximo turno do alvo, ele sofre -2 nesse tipo de TR. A penalidade só entra depois da resolução que aplicou a peça: não reduz o próprio TR usado para resistir a este feitiço.\n\nExemplo: uma criatura falha no TR de um feitiço com Abre Ferida, escolhido para afetar TR Físico. A penalidade não muda aquela falha. Um novo TR Físico feito dentro do prazo recebe -2. Seu TR de Vigor continua igual."
   },
   "Sobrecarga": {
+   "fonte_id": "catalogo--melhoria-sobrecarga",
+   "opcoes": [
+    "Sobrecarga"
+   ],
    "familia": "Auxiliares",
    "peso": "Leve",
    "efeito": "Até o fim do próximo turno dele, o alvo não pode usar Reação e a CD dos feitiços que conjurar diminui em 2. Não altera o bônus de ataque nem a CD de efeitos que ele já havia aplicado."
   },
   "Firmeza": {
+   "fonte_id": "catalogo--melhoria-firmeza",
+   "opcoes": [
+    "Firmeza · perícia",
+    "Firmeza · ofício",
+    "Firmeza · TR"
+   ],
    "familia": "Auxiliares",
-   "peso": "Media",
-   "efeito": "O alvo tem vantagem no próximo TR que fizer. O benefício termina depois desse teste ou no começo do seu próximo turno, o que acontecer primeiro. Ele não substitui o TR por sucesso automático."
+   "peso": "Leve",
+   "efeito": "Na criação do feitiço, escolha uma categoria: testes de perícia, testes de ofício ou Testes de Resistência (TR). O alvo tem vantagem no próximo teste dessa categoria que fizer até o começo do seu próximo turno. O benefício termina depois desse teste, mesmo se houver falha. Testes de outras categorias não o recebem nem o consomem. A categoria fica registrada na ficha e não muda ao conjurar.\n\nEscolher TR inclui os quatro tipos de TR; escolher perícia ou ofício inclui os testes dessa categoria. Não concede treino, ferramentas, uma tentativa de teste ou outro requisito que o alvo não possua. Não modifica ataques, dano ou Bloquear.\n\nPara abranger categorias diferentes, compre Firmeza uma vez para cada categoria desejada. Cada compra paga seu preço e ocupa uma vaga de Melhoria. Não compre a mesma categoria duas vezes. Cada benefício termina no primeiro teste da respectiva categoria ou no prazo acima.\n\nCada Melhoria informa de quem é o turno usado em seu prazo. Trava e Firmeza terminam no começo do seu próximo turno, caso não tenham sido consumidas antes."
   },
   "Guarda": {
+   "fonte_id": "catalogo--melhoria-guarda",
+   "opcoes": [
+    "Guarda"
+   ],
    "familia": "Auxiliares",
    "peso": "Media",
    "efeito": "O alvo recebe +2 na Defesa até o fim do próximo turno dele. O bônus não altera seus TRs. A relação entre Defesa e Bloquear segue o procedimento de combate."
   },
   "Pressa": {
+   "fonte_id": "catalogo--melhoria-pressa",
+   "opcoes": [
+    "Pressa"
+   ],
    "familia": "Auxiliares",
    "peso": "Media",
    "efeito": "O alvo recebe +6 m de deslocamento e seus movimentos não provocam ataques de oportunidade até o fim do próximo turno dele. A peça não concede um movimento imediato nem ações adicionais. Terreno e condições continuam afetando o movimento disponível."
   },
   "Enfraquece": {
+   "fonte_id": "catalogo--melhoria-enfraquece",
+   "opcoes": [
+    "Enfraquece"
+   ],
    "familia": "Auxiliares",
    "peso": "Media",
-   "efeito": "Até o fim do próximo turno do alvo, reduza o dano que ele causar em Xd4, sendo X metade do seu atributo da técnica, arredondada para baixo, mínimo zero."
+   "efeito": "Até o fim do próximo turno do alvo, reduza o dano que ele causar em Xd4, sendo X metade do seu atributo da técnica, arredondada para baixo, mínimo zero.\n\nRole a redução ao resolver cada ataque ou aplicação de dano dele, antes das defesas de quem recebe. Numa mesma área, use uma única rolagem da redução para todas as criaturas. O resultado não pode reduzir o dano abaixo de zero. A peça não modifica custos que o alvo paga em vida nem dano de outras criaturas que ele comande."
   },
   "Ecoa": {
+   "fonte_id": "catalogo--melhoria-ecoa",
+   "opcoes": [
+    "Ecoa"
+   ],
    "familia": "Auxiliares",
    "peso": "Media",
-   "efeito": "O próximo ataque de um aliado seu, diferente de você, contra o alvo tem vantagem. A peça termina depois dessa tentativa, mesmo se errar, ou no começo do seu próximo turno. Não beneficia TRs nem rolagens feitas apenas para resolver um dano secundário."
-  },
-  "Queima": {
-   "familia": "Castigo",
-   "peso": "Media",
-   "efeito": "Se o alvo for acertado ou falhar no TR inicial, recebe novamente metade dos dados daquela parcela inicial, arredondada para baixo, no começo do próximo turno dele. Em Rajada ou Mais Um, use somente os dados destinados àquela aplicação no alvo, nunca os dados de todos os tiros ou alvos. Use a quantidade anterior ao crítico. O dano conserva seu tipo, não exige outro ataque ou TR e não aplica as outras peças da ficha."
-  },
-  "Acúmulo": {
-   "familia": "Castigo",
-   "peso": "Media",
-   "efeito": "Mantenha uma sequência deste feitiço contra um alvo escolhido. Usá-lo em rodadas seguidas contra esse alvo dá +1d8 no segundo uso, +2d8 no terceiro e +3d8 no quarto e nos seguintes. O primeiro começa sem bônus. Um ataque que erre ainda conta como uso. Uma tentativa sem alvo válido não conta."
-  },
-  "Remate": {
-   "familia": "Castigo",
-   "peso": "Media",
-   "efeito": "Aumente em 25% o dano inicial deste uso contra uma criatura que esteja abaixo da metade da vida, conferida antes da parcela de dano. O multiplicador entra antes das defesas. Um tiro de Rajada que leve o alvo abaixo da metade pode habilitar os tiros seguintes. Queima, Fica, Salto e Estilhaço não reaplicam este multiplicador."
-  },
-  "Estilhaço": {
-   "familia": "Castigo",
-   "peso": "Leve",
-   "efeito": "Uma vez por conjuração, depois da resolução inicial, escolha um alvo que sofreu crítico ou falhou no TR por 5 ou mais. Metade dos dados iniciais destinados àquela origem, arredondada para baixo e sem os dados adicionais do crítico, atinge as outras criaturas a até 1,5 m dele, respeitando obstáculos."
-  },
-  "Quebra Coisa": {
-   "familia": "Castigo",
-   "peso": "Leve",
-   "efeito": "Dobre o dano inicial contra barreiras, objetos e estruturas que possam ser afetados pela ficha. Queima, Fica, Salto e Estilhaço não reaplicam o multiplicador. Isso não permite atingir algo sem alcance ou passagem, nem tratar uma criatura como objeto. Conte o multiplicador na montagem e mantenha as defesas do objeto que a peça não ignora."
-  },
-  "Rasga Escudo": {
-   "familia": "Castigo",
-   "peso": "Media",
-   "efeito": "O dano ignora a vida temporária e uma barreira que esteja absorvendo dano no lugar do alvo: desconte diretamente da vida. Não ignora RD, resistência, imunidade, cobertura ou uma parede que impeça o feitiço de alcançar o alvo."
+   "efeito": "O próximo ataque de um aliado seu, diferente de você, contra o alvo tem vantagem. A peça termina depois dessa tentativa, mesmo se errar, ou no começo do seu próximo turno. Não beneficia TRs nem rolagens feitas apenas para resolver um dano secundário.\n\nDuração e usos\n\nConcentrada ou Duradoura podem ampliar o prazo de uma peça compatível. Isso não renova benefícios consumidos: Impulso, Trava, Firmeza e Ecoa continuam valendo para apenas o próximo teste ou ataque. Uma duração maior não oferece uma nova vantagem em cada turno."
   },
   "Sem Cura": {
+   "fonte_id": "catalogo--melhoria-sem-cura",
+   "opcoes": [
+    "Sem Cura"
+   ],
    "familia": "Castigo",
    "peso": "Media",
-   "efeito": "O alvo não pode recuperar vida até o fim do próximo turno dele. Isso não remove vida temporária já recebida, não impede uma concessão de vida temporária e não retira condições por si só. Integridade usa seu procedimento próprio."
-  },
-  "Rápido": {
-   "familia": "Tempo",
-   "peso": "Pesada",
-   "efeito": "Use Ação Bônus no lugar da Padrão. Não combina com Reação ou Atrasar, e não substitui a Ação Completa de uma Liberação Máxima ou Técnica Máxima. O limite de conjuração no turno permanece."
-  },
-  "Reação": {
-   "familia": "Tempo",
-   "peso": "Pesada",
-   "efeito": "Conjure com sua Reação quando ocorrer um gatilho perceptível, definido na criação. Resolva depois de o gatilho terminar, salvo regra expressa que permita intervir antes. Um gatilho de sofrer dano não evita o dano que já aconteceu."
-  },
-  "Armado": {
-   "familia": "Tempo",
-   "peso": "Leve",
-   "efeito": "Gaste a ação e o PE do feitiço e escolha um gatilho que a mesa consiga ver acontecer, fora do seu próprio turno. Ele fica armado até o fim da cena. Quando o gatilho acontecer, o feitiço sai sem gastar Reação, com alcance e alvo conferidos naquele momento. Você só mantém um Armado por vez. Se ele não sair porque a cena acabou ou você armou outro, recupere metade do PE. Não combina com Reação ou Carregar. Não pode preparar uma Técnica Máxima."
-  },
-  "Silencioso": {
-   "familia": "Tempo",
-   "peso": "Leve",
-   "efeito": "A conjuração dispensa gesto e palavra. O uso não revela automaticamente sua posição, e perceber o efeito não localiza sua origem. Isso não torna invisível um corpo exposto nem impede uma busca independente."
-  },
-  "Adianta": {
-   "familia": "Tempo",
-   "peso": "Media",
-   "efeito": "Se conjurar antes de qualquer inimigo ter agido na rodada, a CD deste uso aumenta em 2. Uma ação ou Reação inimiga já conta como ter agido. Apenas receber um ataque ou fazer o TR exigido por ele não conta. O benefício não modifica ataques. Com Armado ou Segura, confira a exigência também ao disparar. O bônus não fica guardado para uma rodada posterior."
-  },
-  "Segura": {
-   "familia": "Tempo",
-   "peso": "Leve",
-   "efeito": "Você pode adiar o efeito por até uma rodada e disparar no seu próximo turno, sem gastar outra ação. Não pode adiar uma Técnica Máxima."
-  },
-  "Concentrada": {
-   "familia": "Tempo",
-   "peso": "Leve",
-   "efeito": "Amplie efeitos de estado que normalmente durariam uma rodada ou até o fim do próximo turno. Concentrada exige concentração; Duradoura usa a coluna sem concentração. Se a ficha reunir estados de categorias diferentes, todos usam o menor prazo aplicável. Escolha Concentrada ou Duradoura para a ficha, nunca as duas."
-  },
-  "Duradoura": {
-   "familia": "Tempo",
-   "peso": "Media",
-   "efeito": "Amplie efeitos de estado que normalmente durariam uma rodada ou até o fim do próximo turno. Concentrada exige concentração; Duradoura usa a coluna sem concentração. Se a ficha reunir estados de categorias diferentes, todos usam o menor prazo aplicável. Escolha Concentrada ou Duradoura para a ficha, nunca as duas."
+   "efeito": "O alvo fica impedido de recuperar vida até o fim do próximo turno dele. As reservas de vida temporária permanecem, e ele pode receber uma nova concessão desse recurso. Suas condições continuam ativas, e a recuperação de Integridade segue o procedimento próprio."
   },
   "Marca": {
+   "fonte_id": "catalogo--melhoria-marca",
+   "opcoes": [
+    "Marca"
+   ],
    "familia": "Marca",
    "peso": "Leve",
    "efeito": "Até o fim do seu próximo turno, você tem vantagem no próximo ataque contra o alvo. A vantagem se encerra depois dessa tentativa, mesmo se errar. Só você a recebe. A conjuração que aplicou Marca não se beneficia dela."
   },
   "Alvo de Caça": {
+   "fonte_id": "catalogo--melhoria-alvo-de-caca",
+   "opcoes": [
+    "Alvo de Caça"
+   ],
    "familia": "Marca",
    "peso": "Leve",
-   "efeito": "Até o fim do seu próximo turno, cada ataque seu que acertar o alvo causa +1d4. Se a ficha que aplica a marca tiver Rápido, o dado é 1d8. O feitiço que marcou não recebe esse adicional, incluindo seus demais tiros."
+   "efeito": "Até o fim do seu próximo turno, cada ataque seu que acertar o alvo causa +1d4. Se a ficha que aplica a marca tiver Rápido, o dado é 1d8. O feitiço que marcou não recebe esse adicional, incluindo seus demais tiros.\n\nO bônus vale para arma, desarmado e feitiço com ataque. Cada tiro elegível de Rajada conta. Não vale para TR, Queima, Fica, Salto, Estilhaço ou ataques de criaturas que você comande. Mantenha um alvo de caça por vez: aplicar a marca em outro encerra a anterior. Se a ficha alcançar várias criaturas, escolha uma que tenha recebido a peça."
   },
   "Rastro": {
+   "fonte_id": "catalogo--melhoria-rastro",
+   "opcoes": [
+    "Rastro"
+   ],
    "familia": "Marca",
    "peso": "Leve",
-   "efeito": "Por 1 hora, você sabe a posição atual do alvo enquanto ele permanecer no mesmo plano. Se sair, a informação para. Volta se ele retornar dentro do prazo. Saber a posição não concede visão, passagem por obstáculos ou conhecimento do caminho até ela."
+   "efeito": "Por 1 hora, você sabe a posição atual do alvo enquanto ele estiver no mesmo plano. A informação é interrompida se ele sair e volta a ser fornecida se retornar antes do fim do prazo. Para enxergá-lo, encontrar um caminho ou atravessar obstáculos até ele, use seus sentidos e capacidades disponíveis."
   },
   "Isca": {
+   "fonte_id": "catalogo--melhoria-isca",
+   "opcoes": [
+    "Isca"
+   ],
    "familia": "Marca",
    "peso": "Leve",
-   "efeito": "Até o fim do próximo turno do alvo, ele tem desvantagem em ataques que não incluam você como alvo. Num ataque dirigido a várias criaturas, confira cada rolagem: apenas a dirigida a você fica sem essa penalidade. A peça não modifica um efeito resolvido só por TR."
+   "efeito": "Até o fim do próximo turno do alvo, ele tem desvantagem em ataques que não incluam você como alvo. Num ataque dirigido a várias criaturas, confira cada rolagem: apenas a dirigida a você fica sem essa penalidade. A peça não modifica um efeito resolvido só por TR.\n\nAtaques seguintes\n\nUma rolagem feita apenas para resolver Salto conserva os usos de Marca e Ecoa e usa somente o dano do efeito secundário, sem Alvo de Caça. Concentrada e Duradoura podem prolongar marcas compatíveis. Marca permanece limitada a uma tentativa com vantagem."
   },
   "Sugar": {
+   "fonte_id": "catalogo--melhoria-sugar",
+   "opcoes": [
+    "Sugar"
+   ],
    "familia": "Marca",
    "peso": "Media",
-   "efeito": "Depois da resolução inicial, recupere vida igual a um quarto do dano causado a criaturas, arredondado para baixo, até 5 × Classe. Some apenas as parcelas iniciais em que Sugar foi aplicado por acerto ou falha no TR. Dano de um TR bem-sucedido não entra nessa soma. Depois, reúna o dano elegível de todos os alvos e tiros antes de calcular a cura. O limite pertence à conjuração inteira."
+   "efeito": "Depois da resolução inicial, recupere vida igual a um quarto do dano causado a criaturas, arredondado para baixo, até 5 × Classe. Some apenas as parcelas iniciais em que Sugar foi aplicado por acerto ou falha no TR. Dano de um TR bem-sucedido não entra nessa soma. Depois, reúna o dano elegível de todos os alvos e tiros antes de calcular a cura. O limite pertence à conjuração inteira.\n\nConte o que saiu da vida ou da vida temporária depois das defesas. Não conte dano impedido, nem dano em objetos ou barreiras. Queima, Fica, Salto e Estilhaço não reaplicam Sugar. A cura respeita sua vida máxima e impedimentos de receber cura.\n\nExemplo: Classe 3 causa 16 de dano em um alvo e 28 em outro. Sugar recupera um quarto de 44: 11 de vida, abaixo do limite 15. Se causasse 80 no total, recuperaria 15, e não 15 por alvo."
   },
   "Cobrança": {
+   "fonte_id": "catalogo--melhoria-cobranca",
+   "opcoes": [
+    "Cobrança"
+   ],
    "familia": "Marca",
    "peso": "Media",
-   "efeito": "Escolha uma criatura que recebeu a peça. Se ela passar de vida positiva para zero ainda nesta cena, seu próximo feitiço custa metade do PE, arredondada para cima. A queda provocada pelo dano inicial que aplica Cobrança também conta. A queda consome esta marca. Recuperar vida e cair novamente não dá outro desconto."
+   "efeito": "Escolha uma criatura que recebeu a peça. Se ela passar de vida positiva para zero ainda nesta cena, seu próximo feitiço custa metade do PE, arredondada para cima. A queda provocada pelo dano inicial que aplica Cobrança também conta. A queda consome esta marca. Recuperar vida e cair novamente não dá outro desconto.\n\nVocê mantém uma Cobrança por vez. Marcar outra criatura encerra a marca anterior. Não acumule descontos de Cobrança: receber outro enquanto houver um disponível não reduz o custo novamente. O benefício se perde no fim da cena ou após a próxima conjuração, mesmo que ela custe 0 PE.\n\nCobrança e o Talento Eco não se multiplicam: quando ambos estiverem disponíveis, aplique uma única redução à metade e consuma os dois na próxima conjuração, inclusive se ela custar 0 PE. O desconto modifica apenas PE. Não reduz ação, outros custos ou recarga. Um efeito de dano que começou depois pode derrubar a criatura e cumprir a marca já aplicada, mas não cria uma nova Cobrança."
   },
   "Identificar Feitiço": {
+   "fonte_id": "catalogo--melhoria-identificar-feitico",
+   "opcoes": [
+    "Identificar Feitiço"
+   ],
    "familia": "Marca",
    "peso": "Leve",
-   "efeito": "Você descobre qual foi o último feitiço conjurado pelo alvo e sua Classe. Se ele ainda não conjurou nenhum, recebe essa informação. O resultado identifica aquela aplicação. Não entrega a lista inteira de feitiços, as Famílias ou a ficha de criação."
+   "efeito": "Você descobre qual foi o último feitiço conjurado pelo alvo e sua Classe. Se ele ainda não conjurou nenhum, recebe essa informação. O resultado identifica aquela aplicação. Não entrega a lista inteira de feitiços, as Famílias ou a ficha de criação.\n\nIdentificar Feitiço fornece uma informação obtida naquele instante. Concentrada e Duradoura não o transformam em acompanhamento automático das conjurações seguintes."
   },
   "Limpa": {
+   "fonte_id": "catalogo--melhoria-limpa",
+   "opcoes": [
+    "Limpa"
+   ],
    "familia": "Amparo",
    "peso": "Media",
    "efeito": "Remova do aliado uma condição Leve ou Média. Escolha a condição ao resolver a ficha. Isso encerra aquela aplicação, sem impedir que uma fonte ainda ativa a aplique novamente por seu próprio procedimento."
   },
   "Limpa Fundo": {
+   "fonte_id": "catalogo--melhoria-limpa-fundo",
+   "opcoes": [
+    "Limpa Fundo"
+   ],
    "familia": "Amparo",
    "peso": "Pesada",
-   "efeito": "Remova uma condição de qualquer nível. O efeito não é uma imunidade nem remove todas as condições do aliado de uma vez."
+   "efeito": "Remova uma condição de qualquer nível do aliado. Cada uso encerra uma condição, e uma fonte ativa pode aplicá-la novamente conforme suas regras. Morrendo exige o procedimento de recuperação ou uma capacidade que permita encerrá-lo expressamente; Limpa Fundo não concede essa permissão."
   },
   "Levanta": {
+   "fonte_id": "catalogo--melhoria-levanta",
+   "opcoes": [
+    "Levanta"
+   ],
    "familia": "Amparo",
    "peso": "Pesada",
-   "efeito": "Um aliado a 0 de vida, ainda Morrendo, recupera 5 × Classe de vida, limitado à vida máxima, e encerra Morrendo mesmo abaixo do tratamento necessário. Ele fica de pé se tiver apoio e não houver outro efeito que o mantenha Derrubado. A peça não encerra esse impedimento."
+   "efeito": "Um aliado a 0 de vida, ainda Morrendo, recupera 5 × Classe de vida, limitado à vida máxima, e encerra Morrendo mesmo abaixo do tratamento necessário. Ele fica de pé se tiver apoio e não houver outro efeito que o mantenha Derrubado. A peça não encerra esse impedimento.\n\nVocê pode usar Levanta uma vez por cena, contando todos os seus feitiços. Escolha um único aliado que cumpra os requisitos, mesmo quando a aplicação for coletiva. O efeito conserva a Integridade e as demais condições do alvo. Criaturas mortas ficam fora dos alvos permitidos. Consulte Socorro para as consequências da queda."
   },
   "Remenda": {
+   "fonte_id": "catalogo--melhoria-remenda",
+   "opcoes": [
+    "Remenda"
+   ],
    "familia": "Amparo",
    "peso": "Pesada",
    "efeito": "Recupere 5 × Classe de Integridade de um aliado, sem ultrapassar seu máximo. O mesmo alvo só pode receber Remenda uma vez por cena, independentemente de quem a use. A peça não recupera vida nem permite voltar a agir a zero de vida por si só. Consulte Estágios de Integridade para a redução das penalidades e Derrota e morte para a recuperação após chegar a zero de Integridade."
   },
   "Divide": {
+   "fonte_id": "catalogo--melhoria-divide",
+   "opcoes": [
+    "Divide"
+   ],
    "familia": "Amparo",
    "peso": "Media",
-   "efeito": "Escolha um aliado disposto a até 9 m ao conjurar. Até o fim do próximo turno dele, ele recebe metade do dano que você receberia. Depois das suas defesas e antes de gastar suas reservas, envie metade do valor restante, arredondada para cima, ao aliado. Desconte de você somente o restante."
+   "efeito": "Escolha um aliado disposto a até 9 m ao conjurar. Até o fim do próximo turno dele, ele recebe metade do dano que você receberia. Depois das suas defesas e antes de gastar suas reservas, envie metade do valor restante, arredondada para cima, ao aliado. Desconte de você somente o restante.\n\nO dano enviado conserva o tipo e recebe as defesas do aliado. Ele não pode ser transferido ou dividido de novo. Se mais de um vínculo puder dividir o mesmo dano, use apenas um. O vínculo não exige que vocês permaneçam a 9 m. Essa distância é conferida na aplicação. Mais Um não cria outro parceiro para a mesma divisão."
   },
-  "Junto": {
-   "familia": "Amparo",
+  "Longe": {
+   "fonte_id": "catalogo--melhoria-longe",
+   "opcoes": [
+    "Longe · um degrau",
+    "Longe · três degraus"
+   ],
+   "familia": "Alcance",
+   "peso": "Leve ou Media",
+   "efeito": "Escolha a modalidade na criação. Cada compra ocupa uma vaga de Melhoria e recebe seu próprio desconto, quando houver.\n\nModalidade | Preço | Aumento | Compras permitidas\nUm degrau | Leve | Um degrau de distância. | Até duas.\nTrês degraus | Média | Três degraus de distância. | Uma.\n\nUse a escada de distância até o alvo individual ou o ponto de origem escolhido para a área. As duas modalidades podem coexistir, dentro do limite geral de Melhorias; some os degraus comprados e nunca ultrapasse o fim da escada. Recalcule preços e descontos pela Classe usada, conservando as modalidades da ficha.\n\nLonge modifica a distância até um alvo individual ou até a origem de Explosão, Cone e Linha. A Melhoria fica indisponível em Toque, Aura e montagens com Queima-Roupa. Para ampliar as dimensões de uma área, use Maior. Os requisitos de visão e de trajeto continuam valendo, assim como a quantidade de alvos."
+  },
+  "Sem Ver": {
+   "fonte_id": "catalogo--melhoria-sem-ver",
+   "opcoes": [
+    "Sem Ver"
+   ],
+   "familia": "Alcance",
+   "peso": "Pesada",
+   "efeito": "Permite escolher um alvo ou ponto de origem que você não enxerga, desde que saiba sua posição atual. Mantém alcance e trajetória da Forma. Não localiza criaturas nem atravessa um obstáculo sólido. Uma parede ainda pode impedir a aplicação. Não dispensa um Selo que exija usar os próprios olhos."
+  },
+  "Perseguir": {
+   "fonte_id": "catalogo--melhoria-perseguir",
+   "opcoes": [
+    "Perseguir"
+   ],
+   "familia": "Alcance",
+   "peso": "Media",
+   "efeito": "Só se aplica a um feitiço dirigido a um alvo individual. Se um deslocamento ocorrido entre a escolha válida desse alvo e a resolução o levar para fora do alcance, a aplicação acompanha esse deslocamento e resolve em seguida. Segue também um teleporte dentro da cena, desde que o alvo não termine atrás de cobertura. Não adia a resolução nem procura um alvo perdido. Só acompanha o alvo: não contorna obstáculos nem ignora cobertura. Contorno permite a áreas seguir percursos abertos; para uma aplicação individual com essa capacidade, proponha uma Melhoria própria com o mestre. Visão exigida e trajeto aberto continuam necessários. Não amplia Toque. Em Armado, a escolha do alvo só ocorre quando o gatilho dispara."
+  },
+  "Maior": {
+   "fonte_id": "catalogo--melhoria-maior",
+   "opcoes": [
+    "Maior · um degrau",
+    "Maior · três degraus"
+   ],
+   "familia": "Área",
+   "peso": "Leve ou Pesada",
+   "efeito": "Escolha a modalidade na criação. Cada compra ocupa uma vaga de Melhoria e recebe seu próprio desconto, quando houver.\n\nModalidade | Preço | Aumento | Compras permitidas\nUm degrau | Leve | Um degrau de tamanho. | Até duas.\nTrês degraus | Pesada | Três degraus de tamanho. | Uma.\n\nUse a escada de raio ou comprimento da Forma. Na Linha, aumente primeiro o comprimento até 60 m; depois, a largura para 3 m e então 4,5 m. As modalidades podem coexistir, dentro do limite geral de Melhorias. Some os aumentos e pare no último degrau.\n\nMaior exige uma aplicação que já tenha área. Aumente suas dimensões e conserve a distância até a origem. Os limites de beneficiários de Guarda, Impulso e Firmeza permanecem, assim como a quantidade de usos de Levanta. Quem entrar na região depois só recebe um efeito quando sua regra permitir. A quantidade de criaturas que cabe na área depende do espaço disponível."
+  },
+  "Escolher": {
+   "fonte_id": "catalogo--melhoria-escolher",
+   "opcoes": [
+    "Escolher"
+   ],
+   "familia": "Área",
+   "peso": "Media",
+   "efeito": "Ao criar a área, escolha as criaturas presentes que podem receber seus efeitos nocivos. Use uma única seleção para todas as partes nocivas iniciais. As demais criaturas ficam protegidas dessas partes e ainda podem receber os benefícios permitidos na ficha. Você precisa distinguir cada criatura selecionada por uma percepção válida. A Forma mantém seu formato e seus limites, sem acrescentar alvos ou benefícios. Com Fica, registre a lista de criaturas excluídas no disparo e mantenha-a durante a aplicação; outras criaturas que entrarem permanecem sujeitas ao efeito. A exclusão de Escolher não se aplica a Estilhaço."
+  },
+  "Mais Um": {
+   "fonte_id": "catalogo--melhoria-mais-um",
+   "opcoes": [
+    "Mais Um"
+   ],
+   "familia": "Área",
    "peso": "Leve",
-   "efeito": "Cura ou Apoio alcança mais um aliado dentro do alcance da Forma. Pode comprar esta peça duas vezes, para acrescentar até dois aliados. Antes de resolver, distribua os dados de cura ou os pontos de vida temporária entre todos os beneficiários, em quantidades inteiras, sem ultrapassar o total da ficha."
+   "efeito": "Acrescente um destinatário individual diferente ao feitiço. Pode comprar duas vezes; cada compra conta como uma Melhoria. A peça não cria nem duplica áreas.\n\nAntes de resolver, escolha os destinatários e distribua as quantidades de cada função entre eles, em parcelas inteiras: dados de dano, dados de cura ou pontos de vida temporária. Não copie os totais nem converta uma função em outra. A divisão do saldo entre funções fica registrada na criação; a distribuição entre seus destinatários é feita antes das rolagens.\n\nVocê pode destinar uma das funções da ficha a uma criatura, sem obrigá-la a receber as demais. Para causar dano a esse destinatário, reserve pelo menos um dado para ele. Uma aplicação sem dano pode alcançar outro destinatário para aplicar um efeito válido, conforme as permissões da Melhoria escolhida.\n\nConfira alcance, visão e requisitos para cada um. Cada parte respeita o ataque, TR ou gatilho registrado; Mais Um não torna uma cura dependente do ataque nem elimina uma dependência já escrita. Toque exige todos os destinatários a até 1,5 m.\n\nGuarda, Impulso e cada categoria comprada de Firmeza podem beneficiar integralmente os destinatários individuais escolhidos. Os demais benefícios indivisíveis, como Pressa ou a remoção de uma condição, mantêm a quantidade de beneficiários indicada em suas entradas. Um bônus de +2 deve ser aplicado inteiro; dividi-lo em bônus de +1 é vedado. Efeitos nocivos permitidos em cada alvo usam as resoluções correspondentes. Conserve também os limites de marcas, parceiros e usos, incluindo os limites dos Efeitos Próprios.\n\nCada vaga de Mais Um deve ter um destinatário diferente. Para atingir a mesma criatura com vários tiros, use Rajada.\n\nExemplo de repartição: uma ficha com 9 de vida temporária disponíveis e Guarda pode distribuir 6 de vida temporária para uma aliada e 3 para outra. Ambas podem receber Guarda, se assim estiver registrado na ficha. A distribuição 9 para cada uma não cabe."
+  },
+  "Rajada": {
+   "fonte_id": "catalogo--melhoria-rajada",
+   "opcoes": [
+    "Rajada"
+   ],
+   "familia": "Área",
+   "peso": "Leve",
+   "efeito": "Divide o feitiço em Classe + 1 tiros, cada um com ataque próprio. Só em Forma de alvo individual com ataque. Distribua os dados e indique os alvos antes de rolar. Cada tiro precisa de pelo menos um dado. Se faltarem dados, reduza o número de tiros. Você pode dirigir vários ao mesmo alvo. Todos cumprem alcance e requisitos da Forma. Não combina com resolução só por TR nem transforma uma área em várias áreas.\n\nCada alvo ou tiro com dados pode aplicar suas Melhorias quando sua resolução permitir. Os demais tiros desta conjuração não acumulam nem renovam a mesma condição no mesmo alvo. Os limites próprios das peças permanecem."
+  },
+  "Fica": {
+   "fonte_id": "catalogo--melhoria-fica",
+   "opcoes": [
+    "Fica"
+   ],
+   "familia": "Área",
+   "peso": "Media",
+   "efeito": "A área continua no lugar por 1 minuto, com concentração. Quem entrar nela ou começar o turno nela leva metade dos dados de dano, arredondada para baixo. Cada criatura recebe no máximo uma aplicação por rodada, incluindo a inicial."
+  },
+  "Salto": {
+   "fonte_id": "catalogo--melhoria-salto",
+   "opcoes": [
+    "Salto"
+   ],
+   "familia": "Área",
+   "peso": "Media",
+   "efeito": "Uma vez por conjuração, após a resolução inicial, escolha um alvo que tenha sido acertado ou falhado no TR. Metade dos dados iniciais destinados a esse alvo, antes do crítico e arredondada para baixo, salta para outro inimigo: o mais próximo dele a até 9 m, por trajeto aberto. Escolha em caso de empate.\n\nFaça o ataque contra o segundo alvo com o mesmo bônus. Se a ficha usar TR, o segundo alvo faz o teste indicado e aplica a redução ou prevenção de dano correspondente. Em Rajada, escolha como origem um tiro que acertou e use seus dados. O segundo alvo precisa cumprir os requisitos de visão e de seleção da ficha. Resolva apenas o dano de Salto, sem crítico, reaplicação de Melhorias ou ativação de benefícios por ataque. O efeito termina nesse segundo alvo. Com Toque, ambos devem estar a até 1,5 m de você."
+  },
+  "Contorno": {
+   "fonte_id": "catalogo--melhoria-contorno",
+   "opcoes": [
+    "Contorno"
+   ],
+   "familia": "Área",
+   "peso": "Leve",
+   "efeito": "Permite à área seguir um percurso aberto, dobrando esquinas e passando ao redor de cobertura. Meça alcance e extensão pelo percurso real, respeitando comprimento, largura ou raio da Forma. Ignore a proteção de uma cobertura somente quando o efeito conseguir contorná-la. Não atravessa sólido nem enche outro cômodo além dessas medidas.\n\nPara escolher o alvo ou ponto de origem, cumpra os requisitos de visão ou use Sem Ver. Depois dessa escolha válida, a área pode alcançar criaturas que você não enxergue ao longo do percurso permitido."
+  },
+  "Precisão": {
+   "fonte_id": "catalogo--melhoria-precisao",
+   "opcoes": [
+    "Precisão"
+   ],
+   "familia": "Mira",
+   "peso": "Leve",
+   "efeito": "Concede +2 no ataque ou +2 na CD do TR que resolve o feitiço, conforme a resolução da ficha. Não concede bônus a efeito inteiramente automático. Um TR de saída que use a mesma CD conserva esse valor. Não aumenta cura, dano ou testes de perícia."
+  },
+  "Inescapável": {
+   "fonte_id": "catalogo--melhoria-inescapavel",
+   "opcoes": [
+    "Inescapável"
+   ],
+   "familia": "Mira",
+   "peso": "Media",
+   "efeito": "Só em Projétil de dano. O dano é automático, sem ataque nem TR, e não pode ser crítico. Esta é a única Melhoria da ficha. Não aceita Restrição, incluindo Queima-Roupa. Você ainda precisa escolher alvo válido, dentro do alcance e com visão e trajeto exigidos. Não se combina com área, Controle, outras Formas, Liberação Máxima ou Técnica Máxima."
+  },
+  "De Novo": {
+   "fonte_id": "catalogo--melhoria-de-novo",
+   "opcoes": [
+    "De Novo"
+   ],
+   "familia": "Mira",
+   "peso": "Pesada",
+   "efeito": "Depois de um ataque deste feitiço errar, você pode repetir essa rolagem, com os mesmos modificadores e o mesmo alvo, uma vez a cada uso do feitiço. É obrigado a ficar com o novo resultado. Em Rajada, repete somente um tiro. Não obriga alguém a repetir TR nem repete o feitiço inteiro. Alvo e requisitos precisam continuar válidos."
+  },
+  "Fura": {
+   "fonte_id": "catalogo--melhoria-fura",
+   "opcoes": [
+    "Fura"
+   ],
+   "familia": "Mira",
+   "peso": "Media",
+   "efeito": "Ao causar dano, ignore até 2 × Classe de Redução de Dano do alvo para este feitiço. Não elimina resistência, imunidade, cobertura ou pontos de vida de uma barreira. Um valor ignorado não se transforma em dano adicional."
+  },
+  "Corrói": {
+   "fonte_id": "catalogo--melhoria-corroi",
+   "opcoes": [
+    "Corrói"
+   ],
+   "familia": "Mira",
+   "peso": "Pesada",
+   "efeito": "Só pode ser comprada se Mira for uma Família Livre. A resistência ao tipo de dano deste feitiço não reduz seu dano nesta aplicação. Não remove a resistência do alvo contra outras fontes e não ignora imunidade ou Redução de Dano."
+  },
+  "Sem Cobertura": {
+   "fonte_id": "catalogo--melhoria-sem-cobertura",
+   "opcoes": [
+    "Sem Cobertura"
+   ],
+   "familia": "Mira",
+   "peso": "Leve",
+   "efeito": "Ignore os bônus de Cobertura Parcial contra este feitiço. Cobertura Boa mantém seus bônus; Cobertura Total continua impedindo escolher diretamente o alvo. Esta peça não concede visão nem muda a trajetória."
+  },
+  "Toca a Alma": {
+   "fonte_id": "catalogo--melhoria-toca-a-alma",
+   "opcoes": [
+    "Toca a Alma"
+   ],
+   "familia": "Mira",
+   "peso": "Leve",
+   "efeito": "Requer Classe 3 ou superior e Fundamento cuja Regra trate diretamente da alma. Troque os dados de dano do feitiço por dano de Alma e reduza sua quantidade à metade, para baixo. Aplique depois Dano na alma, inclusive suas defesas e Integridade. Não combina com Liberação Máxima. Na Técnica Máxima, conserva a redução e os requisitos."
+  },
+  "Queima": {
+   "fonte_id": "catalogo--melhoria-queima",
+   "opcoes": [
+    "Queima"
+   ],
+   "familia": "Castigo",
+   "peso": "Media",
+   "efeito": "Se o alvo for acertado ou falhar no TR inicial, recebe novamente metade dos dados daquela parcela inicial, arredondada para baixo, no começo do próximo turno dele. Em Rajada ou Mais Um, use somente os dados destinados àquela aplicação no alvo, nunca os dados de todos os tiros ou alvos. Use a quantidade anterior ao crítico. O dano conserva seu tipo, não exige outro ataque ou TR e não aplica as outras peças da ficha.\n\nA Queima acontece uma vez por aplicação inicial no alvo. Não gera outra Queima nem pode ser prolongada por Concentrada ou Duradoura. Dano parcial num erro ou num TR bem-sucedido não aplica a peça."
+  },
+  "Acúmulo": {
+   "fonte_id": "catalogo--melhoria-acumulo",
+   "opcoes": [
+    "Acúmulo"
+   ],
+   "familia": "Castigo",
+   "peso": "Media",
+   "efeito": "Mantenha uma sequência deste feitiço contra um alvo escolhido. Usá-lo em rodadas seguidas contra esse alvo dá +1d8 no segundo uso, +2d8 no terceiro e +3d8 no quarto e nos seguintes. O primeiro começa sem bônus. Um ataque que erre ainda conta como uso. Uma tentativa sem alvo válido não conta.\n\nA sequência aumenta no máximo uma vez por rodada. Repetir o feitiço na mesma rodada usa o bônus já alcançado. Se passar uma rodada inteira sem usá-lo contra o alvo, ou se você escolher outro alvo para a sequência, o próximo uso começa sem bônus. Mantenha uma sequência por ficha de feitiço.\n\nNuma área ou em ataques divididos, indique qual alvo acompanha a sequência. O bônus pertence apenas ao dano inicial destinado a ele. Em vários tiros, distribua os dados adicionais entre os tiros dirigidos a esse alvo. Não some o bônus inteiro em cada tiro.\n\nOs dados deste uso entram na base de seus próprios efeitos derivados, mas não alteram Queima, Fica, Salto ou Estilhaço de usos anteriores. Em Fica, o bônus pertence apenas ao alvo acompanhado: as outras criaturas na área usam a base sem esse acréscimo. Remate pode aumentar esse dano normalmente. O crescimento de Acúmulo, inclusive seus efeitos derivados, pode ultrapassar o teto conferido na montagem. Não exige reduzir retroativamente o feitiço.\n\nNo dano secundário das peças de Castigo, não há uma nova conjuração nem crítico; ele não aplica novamente as outras Melhorias."
+  },
+  "Remate": {
+   "fonte_id": "catalogo--melhoria-remate",
+   "opcoes": [
+    "Remate"
+   ],
+   "familia": "Castigo",
+   "peso": "Media",
+   "efeito": "Aumente em 25% o dano inicial deste uso contra uma criatura que esteja abaixo da metade da vida, conferida antes da parcela de dano. O multiplicador entra antes das defesas. Um tiro de Rajada que leve o alvo abaixo da metade pode habilitar os tiros seguintes. Queima, Fica, Salto e Estilhaço não reaplicam este multiplicador.\n\nNão combina com Condicional ligada à vida do alvo ou à duração, nem com Aquecer. Na montagem, conte também o aumento de 25% ao conferir o teto de Dano e repetições, no Fundamento. Crítico e Acúmulo conservam suas regras próprias."
+  },
+  "Estilhaço": {
+   "fonte_id": "catalogo--melhoria-estilhaco",
+   "opcoes": [
+    "Estilhaço"
+   ],
+   "familia": "Castigo",
+   "peso": "Leve",
+   "efeito": "Uma vez por conjuração, depois da resolução inicial, escolha um alvo que sofreu crítico ou falhou no TR por 5 ou mais. Metade dos dados iniciais destinados àquela origem, arredondada para baixo e sem os dados adicionais do crítico, atinge as outras criaturas a até 1,5 m dele, respeitando obstáculos.\n\nEm Rajada, escolha um tiro que cumpriu o gatilho e use apenas os dados dele. Aplique o dano de Estilhaço automaticamente às criaturas alcançadas, incluindo aliados e o conjurador. Escolher fica sem efeito sobre esse dano. Resolva somente o dano secundário, sem aplicar outras Melhorias ou ativar benefícios por ataque. A conjuração produz um único Estilhaço, mesmo se vários alvos cumprirem o gatilho, e ele termina após essa resolução."
+  },
+  "Quebra Coisa": {
+   "fonte_id": "catalogo--melhoria-quebra-coisa",
+   "opcoes": [
+    "Quebra Coisa"
+   ],
+   "familia": "Castigo",
+   "peso": "Leve",
+   "efeito": "Dobre o dano inicial contra barreiras, objetos e estruturas que possam ser afetados pela ficha. Queima, Fica, Salto e Estilhaço não reaplicam o multiplicador. Isso não permite atingir algo sem alcance ou passagem, nem tratar uma criatura como objeto. Conte o multiplicador na montagem e mantenha as defesas do objeto que a peça não ignora."
+  },
+  "Rasga Escudo": {
+   "fonte_id": "catalogo--melhoria-rasga-escudo",
+   "opcoes": [
+    "Rasga Escudo"
+   ],
+   "familia": "Castigo",
+   "peso": "Media",
+   "efeito": "O dano ignora a vida temporária e uma barreira que esteja absorvendo dano no lugar do alvo: desconte diretamente da vida. Não ignora RD, resistência, imunidade, cobertura ou uma parede que impeça o feitiço de alcançar o alvo."
+  },
+  "Rápido": {
+   "fonte_id": "catalogo--melhoria-rapido",
+   "opcoes": [
+    "Rápido"
+   ],
+   "familia": "Tempo",
+   "peso": "Pesada",
+   "efeito": "Use Ação Bônus no lugar da Padrão. Não combina com Reação ou Atrasar, e não substitui a Ação Completa de uma Liberação Máxima ou Técnica Máxima. O limite de conjuração no turno permanece."
+  },
+  "Reação": {
+   "fonte_id": "catalogo--melhoria-reacao",
+   "opcoes": [
+    "Reação"
+   ],
+   "familia": "Tempo",
+   "peso": "Pesada",
+   "efeito": "Conjure com sua Reação quando ocorrer um gatilho perceptível, definido na criação. Resolva depois de o gatilho terminar, salvo regra expressa que permita intervir antes. Um gatilho de sofrer dano não evita o dano que já aconteceu.\n\nCumpra alvo, alcance, visão, Selo e os outros requisitos nesse momento. Não combina com Rápido, Armado, Atrasar ou Parado, nem substitui a Ação Completa das aplicações máximas."
+  },
+  "Armado": {
+   "fonte_id": "catalogo--melhoria-armado",
+   "opcoes": [
+    "Armado"
+   ],
+   "familia": "Tempo",
+   "peso": "Leve",
+   "efeito": "Gaste a ação e o PE do feitiço e escolha um gatilho que a mesa consiga ver acontecer, fora do seu próprio turno. Ele fica armado até o fim da cena. Quando o gatilho acontecer, o feitiço sai sem gastar Reação, com alcance e alvo conferidos naquele momento. Você só mantém um Armado por vez. Se ele não sair porque a cena acabou ou você armou outro, recupere metade do PE. Não combina com Reação ou Carregar. Não pode preparar uma Técnica Máxima."
+  },
+  "Silencioso": {
+   "fonte_id": "catalogo--melhoria-silencioso",
+   "opcoes": [
+    "Silencioso"
+   ],
+   "familia": "Tempo",
+   "peso": "Leve",
+   "efeito": "Você pode conjurar sem gesto ou palavra. Para localizar o conjurador, uma criatura precisa percebê-lo por outro meio: observar o efeito, por si só, mantém a origem oculta. Um corpo exposto continua visível, e buscas independentes seguem seus procedimentos normais.\n\nDispensa o Selo de gesto ou som. Requisitos de condição, como enxergar o alvo, continuam. Não cancela uma Restrição mantendo sua devolução: Gesto e Barulho conservam suas exigências quando presentes na ficha."
+  },
+  "Segura": {
+   "fonte_id": "catalogo--melhoria-segura",
+   "opcoes": [
+    "Segura"
+   ],
+   "familia": "Tempo",
+   "peso": "Leve",
+   "efeito": "Você pode adiar o efeito por até uma rodada e disparar no seu próximo turno, sem gastar outra ação. Não pode adiar uma Técnica Máxima."
+  },
+  "Concentrada / Duradoura": {
+   "fonte_id": "catalogo--melhoria-concentrada-duradoura",
+   "opcoes": [
+    "Concentrada",
+    "Duradoura"
+   ],
+   "familia": "Tempo",
+   "peso": "Leve ou Media",
+   "efeito": "Amplie efeitos de estado que normalmente durariam uma rodada ou até o começo ou fim de um próximo turno. Concentrada exige concentração; Duradoura usa a coluna sem concentração. Se a ficha reunir estados de categorias diferentes, todos usam o menor prazo aplicável. Escolha Concentrada ou Duradoura para a ficha, nunca as duas.\n\nEfeito prolongado | Concentrada | Duradoura\nVantagem ou desvantagem de uso único em ataque ou teste. | 1 minuto. | 1 minuto.\nCondição, benefício ofensivo ou penalidade. | 1 minuto. | 1 minuto.\nBônus numérico de Defesa ou TR. | 10 minutos. | 1 minuto.\nProteção mecânica: resistência, imunidade, vida temporária ou Divide. | 10 minutos. | Classes 1-2: 1 hora; Classe 3: 8 horas; Classes 4-7: 24 horas.\n\nUm minuto equivale a dez rodadas de 6 segundos. Marque o ponto da iniciativa em que o efeito começou. Termine após dez voltas completas, antes de resolver algo naquele mesmo ponto. Fora do combate, use o tempo transcorrido.\n\nConcentrada e Duradoura ampliam a duração dos estados compatíveis registrados na ficha. Dano já resolvido e usos consumidos permanecem encerrados. Fica conserva seu minuto, e Anteparo, Rastro e reservas de cura mantêm seus prazos próprios. A duração de um artefato ou de outra regra específica também permanece inalterada.\n\nImpulso, cada categoria de Firmeza, Trava, Marca e Ecoa continuam valendo para um único teste ou ataque. Use o prazo ampliado para realizar essa tentativa; o benefício termina quando for consumido. Firmeza usa a primeira linha da tabela, referente à vantagem em um teste.\n\nSe a ficha combinar Guarda com Firmeza e prolongar ambos, a regra do menor prazo deixa os dois com no máximo 1 minuto, mesmo usando Concentrada. Consumir Firmeza antes não aumenta depois o prazo de Guarda. Cada destinatário consome seu próprio benefício; o término por prazo ou perda de concentração segue a aplicação.\n\nEscolha os destinatários ao aplicar o feitiço e mantenha esse grupo durante o prazo ampliado, inclusive depois de alguém consumir um benefício. A cura e os deslocamentos ocorrem na resolução prevista pela ficha. Uma condição encerrada exige uma nova aplicação para voltar a afetar o alvo."
   },
   "Reserva": {
+   "fonte_id": "catalogo--melhoria-reserva",
+   "opcoes": [
+    "Reserva"
+   ],
    "familia": "Amparo",
    "peso": "Media",
-   "efeito": "Adie a cura da ficha: role os dados agora e anote o valor no aliado, em vez de recuperar vida. Na próxima vez, ainda nesta cena, em que ele passar de pelo menos metade da vida para abaixo dela, aplique a cura guardada depois de resolver o dano que provocou a queda, sem gastar ação."
+   "efeito": "Role os dados de cura ao conjurar e registre o resultado como uma reserva no aliado. Ele recuperará essa vida na próxima vez, ainda nesta cena, em que passar de pelo menos metade da vida para abaixo dela. Aplique a cura guardada depois do dano que provocou essa queda, sem gastar ação. A criação da reserva mantém a vida atual do aliado.\n\nA reserva é consumida nesse disparo, mesmo se a cura for impedida. O valor não volta ao conjurador. Se a cena terminar antes, ela se perde. Cada aliado mantém uma reserva: receber outra substitui a anterior, sem somar valores. Estar abaixo da metade ao recebê-la não a dispara imediatamente.\n\nA peça não adia as outras Melhorias. Mais Um divide a cura antes de guardá-la; uma cura coletiva pode guardar sua parcela em cada aliado alcançado. A zero de vida, a cura segue Socorro, em Dano e recuperação; Reserva não concede o efeito de Levanta por conta própria."
   },
   "Efeito Próprio": {
+   "fonte_id": "catalogo--melhoria-efeito-proprio",
+   "opcoes": [
+    "Efeito Próprio · Leve",
+    "Efeito Próprio · Média",
+    "Efeito Próprio · Pesada"
+   ],
    "familia": null,
-   "peso": "MESTRE",
-   "efeito": "Preço: definido com o mestre, antes da sessão. Esta Melhoria cria uma capacidade que não existe no catálogo. Você pode ter um Efeito Próprio por ficha, contando no limite de Melhorias da Classe.",
-   "excecao": "fora de família: o mestre decide quanto ela custa"
+   "peso": "Leve ou Media ou Pesada",
+   "efeito": "Esta Melhoria cria uma capacidade que não existe no catálogo. Cada compra conta no limite normal de Melhorias da Classe, sem um limite adicional só para peças próprias.\n\nConfira se uma entrada existente atende à proposta. Passo, por exemplo, permite um deslocamento durante a conjuração. Você pode adaptar a aparência desse movimento à técnica usando a mesma compra.\n\nUma capacidade nova\n\nEscreva o resultado, os alvos, a distância, a ação, a oposição e a duração. Indique também o que encerra o efeito e uma situação em que ele não funciona. Compare esses campos com as peças de função mais próxima; o mestre define o preço em pontos e registra o motivo na ficha.\n\nMestre e jogador escolhem a Família que melhor representa a função mecânica da proposta. Essa escolha determina o acesso e o desconto de Livre da rota. Se nenhuma Família for adequada, registrem o preço integral, sem desconto de Família. A criação deve respeitar as proibições das Famílias Fechadas. Quando houver benefícios independentes, pague e conte cada um. O mestre pode autorizar uma redução específica de pontos ou de espaço após avaliar a proposta.\n\nRepetir uma Melhoria própria depende de acordo com o mestre antes do uso. Registrem quantas compras são permitidas, o preço de cada uma e o que cada repetição acrescenta. Aprovar a peça uma vez não aprova sua repetição. Cada compra paga e conta no limite normal, salvo exceção expressamente acordada.\n\nCompras com o mesmo benefício precisam de autorização para repetição, inclusive quando recebem nomes ou aparências diferentes. Compare o funcionamento das propostas: uma parede e um bônus de Defesa oferecem proteções distintas e podem ser avaliados separadamente. Aplique as permissões de cada entrada e as regras de acúmulo. Cada impedimento só pode devolver pontos de Restrição uma vez.\n\nLimites da técnica\n\nA capacidade deve respeitar as funções permitidas pela Descrição e pela Regra do Fundamento. Qualquer recurso ou ação concedida precisa estar expressamente definido e pago. A aquisição de entidades e os espaços de repertório continuam seguindo suas próprias regras.\n\nExemplo: para transportar uma aliada sobre uma plataforma de papel, registre a distância percorrida e a quantidade de pessoas que ela suporta. Defina se o movimento depende do chão e como a plataforma interage com obstáculos. Use essas informações para resolver o deslocamento em jogo.\n\nOs procedimentos e os exemplos completos estão em Efeitos próprios, no Fundamento. A versão de Técnica Máxima usa seu orçamento e seus requisitos próprios; caber nos pontos de uma Classe comum não remove o requisito de Máxima."
   }
  },
  "condicoes": {
@@ -746,87 +963,175 @@
   "Atordoado": "Pesada"
  },
  "restricoes": {
-  "Corpo a Corpo": {
-   "devolve": "Media",
-   "o_que_muda": "Projétil se torna Toque, com alcance de 1,5 m. Explosão se torna Aura, centrada em você. A Restrição já faz parte dessas duas Formas e ocupa uma das duas escolhas disponíveis."
+  "Queima-Roupa": {
+   "fonte_id": "catalogo--restricao-queima-roupa",
+   "opcoes": [
+    "Queima-Roupa"
+   ],
+   "devolve": "Leve",
+   "o_que_muda": "Escolha esta Restrição durante a montagem. Ela ocupa uma das duas vagas, e sua exigência vale em cada uso.\n\nEm Projétil, todos os alvos precisam estar a até 1,5 m de você, inclusive os de Mais Um, Rajada e Salto. Em Explosão, o centro fica em você; em Cone e Linha, a área parte de você, na direção escolhida ao conjurar. A área conserva suas dimensões e pode receber Maior normalmente.\n\nToque e Aura não podem escolher Queima-Roupa. Uma aplicação exclusivamente pessoal também fica sem essa opção. Longe não amplia o alcance de uma montagem com Queima-Roupa, e outra peça não pode retirar a exigência mantendo sua devolução. Visão, passagem e os demais requisitos continuam valendo.\n\nA devolução compensa apenas pontos pagos em Melhorias, dentro dos limites gerais. O preço da Forma é pago integralmente. Uma Explosão de Classe 3 custa 3 pontos; Queima-Roupa pode devolver até 2 pontos gastos em Melhorias. Sem Melhorias pagas, essa Restrição não devolve pontos.\n\nNa Classe 0, Queima-Roupa pode ocupar a opção de Restrição Leve das áreas elegíveis, recuperando no máximo o dado retirado pela Melhoria. Sua modalidade Média de Projétil fica indisponível. A Técnica Máxima não aceita esta Restrição.\n\nExemplo. Na Classe 3, uma Linha com Fica, ambas de preço normal, gasta 2 + 3 = 5 pontos. Queima-Roupa devolve Leve, que vale 2: o saldo é 9 − 2 − 3 + 2 = 6d8. A Linha parte de você e conserva 18 m por 1,5 m. A montagem usa uma Melhoria e uma Restrição. Depois de criada, a área de Fica permanece no lugar conforme a sua entrada."
   },
   "Atrasar": {
+   "fonte_id": "catalogo--restricao-atrasar",
+   "opcoes": [
+    "Atrasar"
+   ],
    "devolve": "Media",
-   "o_que_muda": "A conjuração exige Ação Completa: compromete sua Ação Padrão, sua Ação Bônus e sua Ação de Movimento daquele turno. Você precisa ter esses recursos disponíveis e não pode se deslocar voluntariamente nesse turno, antes ou depois da conjuração. Sua Reação permanece disponível."
+   "o_que_muda": "A conjuração exige Ação Completa: compromete sua Ação Padrão, sua Ação Bônus e sua Ação de Movimento daquele turno. Você precisa ter esses recursos disponíveis e não pode se deslocar voluntariamente nesse turno, antes ou depois da conjuração. Sua Reação permanece disponível.\n\nNão combina com Parado, Rápido ou Reação. Uma Liberação Máxima já exige Ação Completa. Atrasar não lhe concede devolução adicional."
   },
   "Parado": {
+   "fonte_id": "catalogo--restricao-parado",
+   "opcoes": [
+    "Parado"
+   ],
    "devolve": "Leve",
-   "o_que_muda": "Você não pode ter se deslocado voluntariamente no turno da conjuração, nem fazê-lo depois dela nesse turno. Conserva sua Ação Bônus. Movimento imposto por outra criatura não impede o uso nem desfaz um feitiço já resolvido."
+   "o_que_muda": "Você não pode ter se deslocado voluntariamente no turno da conjuração, nem fazê-lo depois dela nesse turno. Conserva sua Ação Bônus. Movimento imposto por outra criatura não impede o uso nem desfaz um feitiço já resolvido.\n\nNão combina com Atrasar ou com a Melhoria Reação. Também não devolve pontos quando outra exigência da própria aplicação já impede seu movimento durante todo o turno. Em conjurações adiadas, confira a exigência no turno do pagamento e no do disparo, conforme as Melhorias de Tempo."
   },
   "Gesto": {
+   "fonte_id": "catalogo--restricao-gesto",
+   "opcoes": [
+    "Gesto"
+   ],
    "devolve": "Leve",
-   "o_que_muda": "A conjuração exige as duas mãos livres e fala audível. Se não puder cumprir as duas partes, não pode usar o feitiço."
+   "o_que_muda": "A conjuração exige as duas mãos livres e fala audível. Se não puder cumprir as duas partes, não pode usar o feitiço.\n\nUm Selo que exige um gesto simples com uma mão ainda pode receber essa exigência adicional. Se o Selo já exige as duas mãos livres e a fala, não há devolução. Silencioso não pode retirar essas exigências mantendo os pontos de Gesto."
   },
   "Carregar": {
+   "fonte_id": "catalogo--restricao-carregar",
+   "opcoes": [
+    "Carregar"
+   ],
    "devolve": "Media",
-   "o_que_muda": "No primeiro turno, gaste Ação Padrão para iniciar a carga e pague o PE do feitiço. Você conserva Movimento e Bônus. No seu turno seguinte, use a ação de conjuração indicada na ficha para liberar o feitiço. Se não o liberar até o fim desse turno, perde a carga e o que pagou por ela."
+   "o_que_muda": "No primeiro turno, gaste Ação Padrão para iniciar a carga e pague o PE do feitiço. Você conserva Movimento e Bônus. No seu turno seguinte, use a ação de conjuração indicada na ficha para liberar o feitiço. Se não o liberar até o fim desse turno, perde a carga e o que pagou por ela.\n\nEnquanto carrega, cada ocorrência de dano exige um TR Espírito contra a CD de quem o feriu. Uma falha perde a carga e os recursos já pagos. Mão Firme dispensa esse teste para dano de até 10, por ocorrência.\n\nCarregar não ocupa sua Concentração. Depois da liberação, um efeito que exija Concentração segue seu procedimento normal, com TR Vigor ao sofrer dano. Carregar não combina com Armado."
   },
   "Sangra": {
+   "fonte_id": "catalogo--restricao-sangra",
+   "opcoes": [
+    "Sangra"
+   ],
    "devolve": "Media",
    "o_que_muda": "Ao usar o feitiço, você sofre 2 × Classe de dano que não pode ser reduzido, mesmo se errar ou os alvos resistirem. Esse custo faz parte de cada conjuração."
   },
+  "Sobrecusto": {
+   "fonte_id": "catalogo--restricao-sobrecusto",
+   "opcoes": [
+    "Sobrecusto"
+   ],
+   "devolve": "Media",
+   "o_que_muda": "Este feitiço custa 2 × a Classe usada em PE adicionais, pagos na própria conjuração, junto do custo normal. Você precisa poder pagar o total para iniciar o uso. O adicional é devido mesmo se errar ou os alvos resistirem.\n\nPague esse adicional integralmente na própria conjuração, mesmo quando houver redução ou dispensa do custo normal. Sobrecusto concede a devolução Média dentro dos limites gerais de Restrições. A Classe, os pontos iniciais e o limite de Melhorias permanecem os mesmos.\n\nRegistre o custo total na ficha. Num feitiço comum de Classe 3, são 9 PE normais + 6 adicionais = 15 PE. Outras modalidades conservam seu próprio custo normal e somam o mesmo adicional pela Classe usada. Não concede devolução quando o adicional seria zero, nem permite Restrições em modalidades que as proíbem."
+  },
   "Recuo": {
+   "fonte_id": "catalogo--restricao-recuo",
+   "opcoes": [
+    "Recuo · Lento",
+    "Recuo · Guarda Aberta",
+    "Recuo · Derrubado",
+    "Recuo · Agarrado",
+    "Recuo · Desarmado",
+    "Recuo · Surdo",
+    "Recuo · Calado",
+    "Recuo · Enfeitiçado"
+   ],
    "devolve": "Leve ou Media",
-   "o_que_muda": "Escolha uma condição na montagem. Ao conjurar, você recebe essa condição até o fim do seu próximo turno, mesmo se o feitiço não afetar ninguém. A devolução tem a gravidade da condição escolhida. Condições Pesadas não entram."
+   "o_que_muda": "Escolha uma condição na montagem. Ao conjurar, você recebe essa condição até o fim do seu próximo turno, mesmo se o feitiço não afetar ninguém. A devolução tem a gravidade da condição escolhida. Condições Pesadas não entram.\n\nUse as condições da seção Condições, em Dano e recuperação. A escolha precisa prejudicar o personagem: uma imunidade que impeça a condição elimina a possibilidade de receber pontos por ela. Não some outra Restrição que cobre a mesma consequência."
   },
   "Fraqueza": {
-   "devolve": "Leve ou Media",
-   "o_que_muda": "Escolha um dos quatro TR na montagem. Depois de conjurar, você faz esse TR com desvantagem até o fim da cena. Vigor ou Intelecto devolvem Leve. Físico ou Espírito devolvem Média."
+   "fonte_id": "catalogo--restricao-fraqueza",
+   "opcoes": [
+    "Fraqueza · TR Físico",
+    "Fraqueza · TR Vigor",
+    "Fraqueza · TR Intelecto",
+    "Fraqueza · TR Espírito"
+   ],
+   "devolve": "Media ou Leve",
+   "o_que_muda": "Escolha um dos quatro tipos de TR na montagem. Depois de conjurar, seus testes desse tipo têm desvantagem até o fim da cena. Vigor ou Intelecto devolvem Leve. Físico ou Espírito devolvem Média.\n\nNovos usos mantêm a desvantagem. Não criam outra penalidade. Se outro benefício cancelar sempre a desvantagem, reveja a Restrição: ela precisa continuar cobrando uma dificuldade real."
   },
   "Peso Morto": {
+   "fonte_id": "catalogo--restricao-peso-morto",
+   "opcoes": [
+    "Peso Morto"
+   ],
    "devolve": "Leve",
    "o_que_muda": "Depois de conjurar, seu deslocamento cai à metade e você sofre -1 nos TR Físicos, até o fim do seu próximo turno. Os dois efeitos pertencem à mesma Restrição. Um novo uso renova o prazo, sem acumular reduções ou penalidades iguais."
   },
   "Frágil": {
+   "fonte_id": "catalogo--restricao-fragil",
+   "opcoes": [
+    "Frágil"
+   ],
    "devolve": "Leve",
-   "o_que_muda": "Se você sofrer dano antes do começo do seu próximo turno, o efeito que este feitiço mantém termina imediatamente. Só cabe em uma aplicação que deixe um efeito em andamento."
+   "o_que_muda": "Se você sofrer dano antes do começo do seu próximo turno, terminam imediatamente os efeitos em andamento que este feitiço mantém. O encerramento é automático, sem teste para evitá-lo, e independe de Concentração. Mão Firme não protege esses efeitos.\n\nAo montar a ficha, marque quais Melhorias deixam efeitos que podem ser encerrados dessa forma. Some o preço que você efetivamente pagou por elas, depois dos descontos. A devolução de Frágil é o menor valor entre essa soma e o preço Leve. A base e a Forma não entram nessa soma. O teto geral de devolução continua valendo.\n\nEncerrar o efeito não desfaz dano, cura ou deslocamento já resolvidos. Melhorias cujo resultado já terminou não financiam Frágil. Se a aplicação só produzir resultados instantâneos, ou não houver pontos pagos por uma Melhoria interrompível, não há devolução. Uma consequência irrelevante acrescentada apenas para receber pontos não torna a Restrição válida.\n\nExemplo. Na Classe 3, Guarda com desconto custou 1 ponto. Mesmo que a ficha também tenha Precisão, Frágil devolve no máximo 1: Precisão não deixa um benefício em andamento que possa ser perdido. Sem desconto, Guarda custa 3 e Frágil pode devolver o preço Leve de 2."
   },
   "Sem Volta": {
+   "fonte_id": "catalogo--restricao-sem-volta",
+   "opcoes": [
+    "Sem Volta"
+   ],
    "devolve": "Media",
-   "o_que_muda": "Se a resolução do feitiço terminar sem acertar nem afetar nenhum alvo, você não pode conjurar no seu próximo turno, nem mesmo Classe 0. Basta um ataque acertar. Numa aplicação por TR, basta um alvo sofrer um dos efeitos."
+   "o_que_muda": "Se a resolução do feitiço terminar sem acertar nem afetar nenhum alvo, você não pode conjurar no seu próximo turno, nem mesmo Classe 0. Basta um ataque acertar. Numa aplicação por TR, basta um alvo sofrer um dos efeitos.\n\nNão cabe numa aplicação automática nem quando um efeito garantido no erro ou no sucesso do TR impede a falha completa. Por exemplo, causar metade do dano a todos que resistem elimina esse risco. Tudo ou Nada pode restaurá-lo. A restrição não cancela efeitos anteriores que você ainda mantenha. Numa Liberação Máxima, escolha Sangue ou Peso como preço de uso: Vazio repetiria a proibição de conjurar."
   },
   "Uma Vez": {
+   "fonte_id": "catalogo--restricao-uma-vez",
+   "opcoes": [
+    "Uma Vez"
+   ],
    "devolve": "Leve",
    "o_que_muda": "Você pode conjurar este feitiço uma vez por cena. A tentativa consome o uso, mesmo se errar, for interrompida ou não afetar ninguém. Ampliar a Classe não cria outro uso."
   },
   "Condicional": {
+   "fonte_id": "catalogo--restricao-condicional",
+   "opcoes": [
+    "Condicional · Leve",
+    "Condicional · Média"
+   ],
    "devolve": "Leve ou Media",
-   "o_que_muda": "Escreva uma condição de cena ou de alvo que precisa existir para conjurar: estar no escuro, atacar alguém marcado por você ou estar perto de água corrente, por exemplo. Registre também seus limites; “perto de água” precisa dizer qual distância e o que conta como água corrente."
+   "o_que_muda": "Escreva uma condição de cena ou de alvo que precisa existir para conjurar: estar no escuro, atacar alguém marcado por você ou estar perto de água corrente, por exemplo. Registre também seus limites; “perto de água” precisa dizer qual distância e o que conta como água corrente.\n\nA devolução depende da frequência com que a exigência impede o uso nas cenas da campanha. Se impedir em pelo menos metade delas, devolve Média. Nos demais casos em que houver dificuldade real, devolve Leve. Se a condição estiver sempre garantida, não devolve pontos. Confiram essa estimativa nas sessões seguintes.\n\nExemplo: agir antes dos inimigos. Registre que o feitiço só pode ser usado antes de qualquer inimigo agir na rodada. Ação ou Reação inimiga conta; apenas receber ataque ou fazer um TR não conta. Para uma aplicação adiada, a exigência precisa valer no pagamento e no disparo. Essa limitação não aumenta a CD por si só: use Precisão, se Mira estiver disponível, para comprar esse bônus. Avaliem a devolução pela dificuldade real na campanha; não a concedam apenas por dar um nome à exigência."
   },
   "Aquecer": {
+   "fonte_id": "catalogo--restricao-aquecer",
+   "opcoes": [
+    "Aquecer"
+   ],
    "devolve": "Leve",
-   "o_que_muda": "Você não pode usar este feitiço na primeira rodada do combate. A restrição considera a rodada do combate, não a primeira rodada em que você resolveu participar. Fora de combate, ela não impõe um atraso novo."
-  },
-  "Dívida": {
-   "devolve": "Media",
-   "o_que_muda": "Depois de conjurar, anote uma dívida de 2 × a Classe usada neste feitiço. Seu próximo feitiço nesta cena custa essa quantidade de PE a mais, mesmo que seja Classe 0. Pague a dívida junto com a conjuração seguinte e apague a anotação."
+   "o_que_muda": "Este feitiço fica disponível a partir da segunda rodada do combate, inclusive para quem entrar na luta depois de seu início. Fora de combate, Aquecer permite o uso sem atraso adicional.\n\nEla não paga pontos de uma aplicação feita exclusivamente fora de combate, pois nunca a impediria."
   },
   "Tudo ou Nada": {
+   "fonte_id": "catalogo--restricao-tudo-ou-nada",
+   "opcoes": [
+    "Tudo ou Nada"
+   ],
    "devolve": "Leve",
-   "o_que_muda": "Num feitiço que causa dano por TR, um alvo que passe no teste não sofre dano, em vez de sofrer metade. Os demais efeitos seguem sua própria resolução."
+   "o_que_muda": "Num feitiço que causa dano por TR, um alvo que passe no teste não sofre dano, em vez de sofrer metade. Os demais efeitos seguem sua própria resolução.\n\nNão cabe em ataques contra Defesa, em aplicações sem dano ou quando um sucesso no TR já evitava todo o dano: nesses casos, não acrescentaria uma dificuldade."
   },
   "Barulho": {
+   "fonte_id": "catalogo--restricao-barulho",
+   "opcoes": [
+    "Barulho"
+   ],
    "devolve": "Leve",
-   "o_que_muda": "Ao conjurar, você produz um som que pode ser ouvido a até 90 m e denuncia de onde veio. Quem puder ouvi-lo identifica a origem. A Restrição não concede audição a uma criatura surda nem faz o som atravessar um bloqueio que o impeça por completo."
+   "o_que_muda": "Ao conjurar, você produz um som que pode ser ouvido a até 90 m e denuncia de onde veio. Quem puder ouvi-lo identifica a origem. A Restrição não concede audição a uma criatura surda nem faz o som atravessar um bloqueio que o impeça por completo.\n\nUma fala audível nas proximidades, como a de Gesto, não equivale automaticamente a esse alcance. Se seu Selo ou o próprio efeito já produz esse mesmo aviso a 90 m, Barulho não devolve pontos. Se a ficha tiver Silencioso, o ruído exigido por Barulho continua existindo."
   },
   "Assinatura": {
+   "fonte_id": "catalogo--restricao-assinatura",
+   "opcoes": [
+    "Assinatura"
+   ],
    "devolve": "Leve",
-   "o_que_muda": "O feitiço deixa uma marca visível por 1 hora, que mostra quem fez o feitiço e onde você está. Registre na ficha onde a marca aparece e como ela o identifica. A marca não pode ficar deliberadamente escondida na montagem."
+   "o_que_muda": "O feitiço deixa uma marca visível por 1 hora, que mostra quem fez o feitiço e onde você está. Registre na ficha onde a marca aparece e como ela o identifica. A marca não pode ficar deliberadamente escondida na montagem.\n\nEla denuncia a autoria e a sua posição atual. Um efeito que apague ou disfarce sempre essa identificação elimina a dificuldade e sua devolução."
   },
   "Restrição Própria": {
+   "fonte_id": "catalogo--restricao-restricao-propria",
+   "opcoes": [
+    "Restrição Própria · Leve",
+    "Restrição Própria · Média"
+   ],
    "devolve": "Leve ou Media",
-   "o_que_muda": "Escreva com o mestre uma dificuldade que as outras entradas não representem. Ela vale para o feitiço em que foi criada, ocupa uma das duas Restrições e precisa estar definida antes da sessão."
+   "o_que_muda": "Escreva com o mestre uma dificuldade que as outras entradas não representem. Ela vale para o feitiço em que foi criada, ocupa uma das duas Restrições e precisa estar definida antes da sessão.\n\nCampo | O que definir\nExigência ou consequência | O que a criatura precisa fazer ou sofrer.\nMomento | Quando conferir a exigência ou aplicar o custo.\nDuração | Até quando a consequência permanece.\nDevolução | Leve ou Média, conforme a dificuldade real.\nCompatibilidade | Se repete Selo, Forma, outra Restrição ou algo já obrigatório.\n\nUse Média quando a dificuldade atrapalhar em pelo menos metade das cenas previstas. Nas demais situações com prejuízo real, use Leve. Sem uma situação plausível em que atrapalhe, não há devolução. Na dúvida, escolha Leve ou não conceda pontos. Nenhuma Restrição Própria devolve Pesada.\n\nUma limitação equivalente a Uma Vez, Condicional ou Aquecer entra no grupo de frequência. Uma exigência de preparo ou um custo de vida não entra nesse grupo só por acontecer antes de conjurar.\n\nBarulho e Assinatura são duas formas de exposição: escolha no máximo uma delas. Recuo, Fraqueza e Peso Morto também não se combinam entre si, pois cobram penalidades do próprio conjurador.\n\nSe a proposta reunir duas dificuldades independentes, registre duas Restrições e respeite o limite. Se repetir o mesmo impedimento, conte a devolução uma vez. Ter duas consequências no mesmo instante não basta para torná-las iguais: Sangra e Barulho, por exemplo, cobram vida e exposição.\n\nDepois de três sessões em que o feitiço tenha sido usado, comparem a dificuldade prevista com o que aconteceu. Troquem uma Restrição que nunca tenha atrapalhado, mantendo uma ficha válida antes do próximo uso."
   }
  },
  "fundamento": {
   "pontos_por_feitico": "3 x Classe",
   "custo_em_pe": "3 x Classe",
-  "ponto_nao_gasto": "vira 1d8 de dano",
+  "ponto_nao_gasto": "Distribuído na criação entre as funções escolhidas; sobra pode ficar sem uso",
   "preco_melhoria": {
    "Leve": "Classe / 2",
    "Media": "Classe",
@@ -839,7 +1144,7 @@
   "formas_sem_desconto": true,
   "restricao_teto_devolucao": "2 x Classe",
   "restricao_nunca_devolve": "Pesada",
-  "restricao_paga": "Melhorias, nunca a Forma; a devolução aproveitada nunca passa do gasto em Melhorias",
+  "restricao_paga": "Toque e Restrições pagam Melhorias, sem pagar base ou Forma, limitados ao gasto e a 2 × Classe",
   "restricoes_por_feitico": 2,
   "melhorias_por_classe": {
    "1 e 2": 2,
@@ -861,7 +1166,12 @@
    "Mais Um"
   ],
   "teto_de_dados": "4 x Classe em d8, somando Salto, Queima, Estilhaço e o multiplicador de Remate",
-  "liberacao": "+Classe em d8; custa 3 x Classe de PE mais 50%, para cima, e Ação Completa"
+  "liberacao": "+Classe em d8; custa 3 x Classe de PE mais 50%, para cima, e Ação Completa",
+  "ponto_por_funcao": {
+   "dano": "1d8",
+   "cura": "1d8",
+   "vida_temporaria": 3
+  }
  },
  "origens": {
   "Latente": {

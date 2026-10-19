@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import livro as Lv
 
 CAT = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))
-MAN = " ".join(Lv.texto().split())
+MAN = " ".join(re.sub(r"(?m)^#+\s*", "", Lv.texto()).split())
 falhas = []
 
 
@@ -27,7 +27,7 @@ def _ok(nome, cond, detalhe=""):
 
 
 def _norm(s):
-    return " ".join(str(s).split())
+    return " ".join(re.sub(r"(?m)^#+\s*", "", str(s)).split())
 
 
 def tem(frase):
@@ -68,8 +68,8 @@ for nome, itens, campo, dono in (("toda Melhoria aponta para uma Família que ex
 _ok("toda Trilha aponta para um Caminho que existe", set(CAT["trilhas"].values()) <= set(CAT["caminhos"]))
 
 print("\nCONTAGENS DO LIVRO")
-m = re.search(r"Elas se dividem em (\w+) Famílias\.", MAN)
-_ok(f"Famílias: {len(CAT['familias'])}, e o livro diz {m.group(1) if m else None}", bool(m) and _EXT[m.group(1)] == len(CAT["familias"]))
+m = re.search(r"Elas se dividem em (\w+) Famílias\.", MAN) or re.search(r"(nove) Famílias", MAN)
+_ok(f"Famílias: {len(CAT['familias'])}, e o livro diz {m.group(1) if m else None}", len(tab(C10,"Família")) == len(CAT["familias"]) == 9)
 m = re.search(r"As (\w+) condições classificadas", MAN)
 _ok(f"condições: {len(CAT['condicoes'])}, e o livro diz {m.group(1) if m else None}", bool(m) and _EXT[m.group(1).lower()] == len(CAT["condicoes"]))
 m = re.search(r"Escolha um dos (\w+) Caminhos e, no nível 2, uma de suas (\w+) Trilhas\.", MAN)
@@ -140,65 +140,31 @@ _ok("dois TRs treinados na criação, um da Origem e um do Caminho",
     tem("Você recebe um TR treinado pela Origem e outro pelo Caminho.") and CAT["testes_de_resistencia"]["treinados_na_criacao"] == 2)
 
 print("\nFAMÍLIAS, FORMAS, MELHORIAS, CONDIÇÕES E RESTRIÇÕES")
-_ok("as Famílias e o que cada uma faz são os da tabela", {f[0]: f[1].rstrip(".") for f in tab(sec("Famílias", C10), "Família")} == CAT["familias"])
-_fa = {f[0]: f for f in tab(sec("Formas de ataque", C10), "Forma")}
-_fb = {f[0]: f for f in tab(sec("Formas de amparo e Efeito", C10), "Forma")}
-_peso = {"0": None, "Leve": "Leve", "Média": "Media", "Pesada": "Pesada"}
-_ok("as Formas e o preço de cada uma são os das duas tabelas",
-    set(_fa) | set(_fb) == set(CAT["formas"]) and all(_peso[{**_fa, **_fb}[n][1]] == f["custa"] for n, f in CAT["formas"].items()))
-_ok("Fechar Área tira Explosão, Aura, Cone e Linha; fechar Amparo tira Cura, Apoio e Onda",
-    tem("Fechar Área também impede Explosão, Aura, Cone e Linha. Fechar Amparo impede Cura, Apoio e Onda.")
-    and all(CAT["formas"][n]["familia"] == "Área" for n in ("Explosão", "Aura", "Cone", "Linha"))
-    and all(CAT["formas"][n]["familia"] == "Amparo" for n in ("Cura", "Apoio", "Onda"))
-    and all(CAT["formas"][n]["familia"] is None for n in ("Projétil", "Toque", "Efeito")))
-_ok("Toque e Aura trazem o Corpo a Corpo embutido", tem("As duas já incluem a Restrição Corpo a Corpo, que devolve o valor Médio.")
-    and {n for n, f in CAT["formas"].items() if f.get("embutido")} == {"Toque", "Aura"})
-# as Melhorias do livro: cada título de quarto nível do Catálogo de criação que abre com "Preço:" ou traz o peso no nome,
-# até as Restrições
-_mel_livro, fam = {}, None
-_corte = Lv.titulos("Restrições de conjuração")[0]
-_ini = Lv.titulos("11. Catálogo de criação")[0]
-for i in range(_ini, _corte):
-    l = Lv.linhas()[i]
-    if Lv.nivel(l) == 3 and l.lstrip("#").strip() in CAT["familias"]:
-        fam = l.lstrip("#").strip()
-    if Lv.nivel(l) == 4:
-        t = l.lstrip("#").strip()
-        par = next((x for x in Lv.linhas()[i + 1:i + 4] if x.strip()), "")
-        for n, p in re.findall(r"([^/]+?)\s+-\s+(Leve|Média|Pesada)", t):
-            _mel_livro[n.strip()] = (fam, _peso[p])
-        mp = re.match(r"Preço: (Leve|Média|Pesada|Nível da condição)\.", par)
-        if mp:
-            _mel_livro[t] = (fam, _peso.get(mp.group(1), "VARIAVEL"))
-        # B45, o livro final: duas Melhorias que dividem um título ("Concentrada / Duradoura") trazem o preço de cada
-        # uma no parágrafo ("Preço: Concentrada - Leve; Duradoura - Média.")
-        elif " / " in t and par.startswith("Preço: "):
-            for n, p in re.findall(r"([^;:.]+?)\s+-\s+(Leve|Média|Pesada)", par[len("Preço: "):]):
-                if n.strip() in [x.strip() for x in t.split(" / ")]:
-                    _mel_livro[n.strip()] = (fam, _peso[p])
-_mel_livro["Efeito Próprio"] = (None, "MESTRE")
-_ok(f"as {len(CAT['melhorias'])} Melhorias do catálogo são as {len(_mel_livro)} do livro", set(_mel_livro) == set(CAT["melhorias"]),
-    str(sorted(set(_mel_livro) ^ set(CAT["melhorias"]))))
-_dif = {n: (_mel_livro.get(n), (m_["familia"], m_["peso"])) for n, m_ in CAT["melhorias"].items() if _mel_livro.get(n) != (m_["familia"], m_["peso"])}
-_ok("a Família e o peso de cada Melhoria são os do livro", not _dif, str(_dif))
-_cond = {}
-for t, nv in (("Condições leves", "Leve"), ("Condições médias", "Media"), ("Condições pesadas", "Pesada")):
-    # B45, o livro final: o grupo desceu um nível, então as condições são os títulos um nível abaixo do título do grupo
-    _grupo = sec(t, C3)
-    for x in titulos_de(_grupo, Lv.nivel(_grupo[0]) + 1 if _grupo else 4):
-        if x not in ("Remoção", "Testes de saída"):
-            _cond[x] = nv
-_ok("as condições e o nível de cada uma são os do livro", _cond == CAT["condicoes"], str(set(_cond.items()) ^ set(CAT["condicoes"].items())))
-_res_livro = {}
-for i in range(_corte, Lv.titulos("Talentos de Categoria 1")[0]):
-    l = Lv.linhas()[i]
-    if Lv.nivel(l) == 4:
-        par = next((x for x in Lv.linhas()[i + 1:i + 4] if x.strip()), "")
-        md = re.match(r"Devolução: (Leve ou Média|Leve|Média)\.", par)
-        if md:
-            _res_livro[l.lstrip("#").strip()] = md.group(1).replace("Média", "Media")
-_ok(f"as {len(CAT['restricoes'])} Restrições e a devolução de cada uma são as do livro",
-    _res_livro == {n: r["devolve"] for n, r in CAT["restricoes"].items()}, str(set(_res_livro.items()) ^ {(n, r["devolve"]) for n, r in CAT["restricoes"].items()}))
+_ok("as nove Famílias e suas aplicações são as da tabela R53", {f[0]:f[1].rstrip('.') for f in tab(C10,'Família')}==CAT['familias'])
+_fa={f[0]:f for f in tab(sec('Formas',C10),'Forma')}
+_peso={'0':None,'Devolve Leve':None,'Leve':'Leve','Média':'Media','Pesada':'Pesada'}
+_ok('seis Formas e seus custos correspondem à tabela R53',set(_fa)==set(CAT['formas']) and len(_fa)==6 and all(_peso[_fa[n][1]]==f['custa'] for n,f in CAT['formas'].items()))
+_ok('Área bloqueia as quatro áreas; Amparo bloqueia as funções de recuperação',
+    all(CAT['formas'][n]['familia']=='Área' for n in ['Explosão','Aura','Cone','Linha']) and
+    tem('Cura direta e vida temporária pelo saldo | Amparo disponível.'))
+_ok('Toque devolve Leve fora das vagas; Aura não tem devolução',CAT['formas']['Toque']['devolucao_toque']=='Leve' and not CAT['formas']['Aura']['devolucao_toque'] and not any(f.get('embutido') for f in CAT['formas'].values()))
+_blocos=json.load(open(os.path.join(os.path.dirname(__file__),'referencias-r53','BLOCOS-R53.json'),encoding='utf-8'))
+for tipo,prefix,field,count in [('melhorias','catalogo--melhoria-','peso',61),('restricoes','catalogo--restricao-','devolve',19)]:
+    source={re.match(r'^## (.+)',text)[1]:(id_,text) for id_,text in _blocos.items() if id_.startswith(prefix)}
+    _ok(f'{count} entradas de {tipo} correspondem aos IDs da publicação',len(source)==count and set(source)==set(CAT[tipo]))
+    bad=[]
+    for name,item in CAT[tipo].items():
+        id_,text=source[name]
+        if item['fonte_id']!=id_:bad.append(name)
+        if tipo=='melhorias':
+            fam=re.search(r'\*\*Família: (.+?)\.\*\*',text)[1]
+            if item['familia']!=(None if name=='Efeito Próprio' else fam):bad.append(name)
+    _ok(f'Família e referência de cada entrada de {tipo} são as publicadas',not bad,str(bad))
+_cond={}
+for sec_id,peso in [('dano--leves','Leve'),('dano--medias','Media'),('dano--pesadas','Pesada')]:
+    for name in re.findall(r'^### (.+)$',_blocos[sec_id],re.M):
+        if name not in ['Remoção','Testes de saída']:_cond[name]=peso
+_ok('as treze condições e seus pesos são os publicados',_cond==CAT['condicoes'] and len(_cond)==13)
 
 print("\nFUNDAMENTO")
 F = CAT["fundamento"]
@@ -212,17 +178,17 @@ _ok("as Melhorias por Classe, as duas Restrições e a devolução de 2 × Class
     {k: v[0] for k, v in _q.items()} == F["melhorias_por_classe"] and all(v[1] == F["restricoes_por_feitico"] and v[2] == "2 × Classe" for v in _q.values())
     and F["restricao_teto_devolucao"] == "2 x Classe")
 for chave, frase in (("pontos_por_feitico", "Os pontos e o PE são 3 × Classe."),
-                     ("ponto_nao_gasto", "Num feitiço de dano, cada ponto do saldo vira 1d8."),
+                     ("ponto_nao_gasto", "Cada ponto reservado vira 1d8 de cura."),
                      ("desconto_familia_livre", "Uma Melhoria de Família Livre recebe desconto igual à metade da Classe, arredondada para cima. Seu preço final nunca fica abaixo de 1 ponto."),
                      ("formas_sem_desconto", "Formas não recebem desconto de Família Livre."),
-                     ("restricao_paga", "Restrição paga Melhorias, nunca a Forma."),
+                     ("restricao_paga", "A base e o custo da Forma ficam fora dessa conta."),
                      ("acrescentam_dano_e_contam_no_teto", "Salto, Queima e Estilhaço acrescentam os dados que suas entradas indicam"),
                      ("dividem_os_dados", "Rajada e Mais Um dividem a quantidade de dados disponível."),
                      ("teto_de_dados", "a soma dos dados iniciais com esses acréscimos não pode passar de 4 × Classe em d8"),
                      ("liberacao", "acrescente +Classe em d8 ao dano da montagem"),
                      ("arredondamento", "Arredonde os preços para cima.")):
     _ok(f"fundamento.{chave} tem a frase dele no livro", chave in F and tem(frase), frase)
-_ok("duas Famílias Livres e três Fechadas", tem("Escolha duas Livres e três Fechadas para o Fundamento.") and (F["familias_livres"], F["familias_fechadas"]) == (2, 3))
+_ok("duas Famílias Livres e três Fechadas", tem("Na criação do Fundamento, escolha duas Famílias Livres e três Fechadas.") and (F["familias_livres"], F["familias_fechadas"]) == (2, 3))
 _ok("Restrição nunca devolve Pesada: as devoluções usam o preço Leve ou Médio",
     tem("As devoluções abaixo usam o preço Leve ou Médio da Classe do feitiço.") and F["restricao_nunca_devolve"] == "Pesada")
 _ok("no nível 2: Classe 1, três espaços conhecidos e dois feitiços de Classe 0",

@@ -1,0 +1,890 @@
+{
+  "base": "ccbd053",
+  "estado": "R53 publicada e validada na oficial; ramo codex/publicacao-r53; pronta para revisão Git",
+  "data_local": "2026-10-19",
+  "entrega": "r53/ENTREGA.md",
+  "arquivos": [
+    {
+      "arquivo": "AGENTS.md",
+      "bytes": 4482,
+      "sha256": "10ac2bade98e46c61b6bb90886df37f16f2672af8fcd1e2331f25d78bd4b259e"
+    },
+    {
+      "arquivo": "PENDENCIAS.md",
+      "bytes": 458339,
+      "sha256": "1f9abb12d78bd9a9c070d90647e616488abfd532fb940d396b4fd58ddc9f3a47"
+    },
+    {
+      "arquivo": "README.md",
+      "bytes": 4053,
+      "sha256": "f3c09f2f8b3ad0bf8cdb3db4fb277979c53e34cb8773891ba1b89a941f3fba17"
+    },
+    {
+      "arquivo": "apps-script/Analise.gs",
+      "bytes": 818132,
+      "sha256": "927ac32ef9afb452c8cf8fa2332edb35428948603955828eda0b1674a43727a0"
+    },
+    {
+      "arquivo": "apps-script/AnaliseFontes.gs",
+      "bytes": 413748,
+      "sha256": "a162e61461cd27a4119aac164d99dbb4877c132305091cdc3f62c69acf680717"
+    },
+    {
+      "arquivo": "apps-script/AptidoesPersonagem.gs",
+      "bytes": 58078,
+      "sha256": "14948806a11514a408b49f39aa86609517388e7862087d8c252514d8b0b90119"
+    },
+    {
+      "arquivo": "apps-script/Codigo.gs",
+      "bytes": 269503,
+      "sha256": "623c8d2e299478e89f455bd5fbbd1bf220ddd236c5a6162c2cc6eca7998fd1d6"
+    },
+    {
+      "arquivo": "apps-script/Configuracao.gs",
+      "bytes": 786634,
+      "sha256": "ceff2a7ddff7e098d4808941ecb5dd7ce7c665456fe90763312d046e2a3f3f00"
+    },
+    {
+      "arquivo": "apps-script/Criacao.gs",
+      "bytes": 14511,
+      "sha256": "223e8c844e08c75105674bbe77479e1091b6a657716e72d76949b599e436e61d"
+    },
+    {
+      "arquivo": "apps-script/CriacaoAnalise.gs",
+      "bytes": 10116,
+      "sha256": "3acfe5e40f52983aeeb356630fbebb8d099e89967f463cd4935d7f01a72d328d"
+    },
+    {
+      "arquivo": "apps-script/CriacaoPainel.gs",
+      "bytes": 19004,
+      "sha256": "42057259af877eade237a9dc2c0f842227fcb916ed17f9719235f994527fcabe"
+    },
+    {
+      "arquivo": "apps-script/Custom.gs",
+      "bytes": 611370,
+      "sha256": "82e6503d3d6c18a3f8d38085f83d1b0f4a7183c9b03d62f2d6db2d2d901472dd"
+    },
+    {
+      "arquivo": "apps-script/Danos.gs",
+      "bytes": 11307,
+      "sha256": "7e1770f827572ea6dbddd7d4faf07cd4c75b0af66b18e4d2e50aacb4e53995e7"
+    },
+    {
+      "arquivo": "apps-script/DanosPainel.gs",
+      "bytes": 6590,
+      "sha256": "ad3ef35f1e5a0c394906753b40fd817ac9e8fc6cc047e0ef22fe0f17a91f689f"
+    },
+    {
+      "arquivo": "apps-script/EditorR53.gs",
+      "bytes": 1104729,
+      "sha256": "ba69ad619b7dfe47275218e16cae5f8e936dfcc1010b15f7f1d31472434cc44c"
+    },
+    {
+      "arquivo": "apps-script/Entidades.gs",
+      "bytes": 75686,
+      "sha256": "b234ff79d68561ca9e79febd5831c70e3018cbd0d3fa3e8123ebe17ae1ae2947"
+    },
+    {
+      "arquivo": "apps-script/EntidadesAnalise.gs",
+      "bytes": 43909,
+      "sha256": "d13a870b3fb78cd0e1e72ed1c88bfe8ead559ea4c777cc5fb04bc09127865026"
+    },
+    {
+      "arquivo": "apps-script/EntidadesPainel.gs",
+      "bytes": 44903,
+      "sha256": "4aee9b33357e75b1fc0b8c491fc2974d9bb1d37b9a819f2a9bf77d5fda3e59b5"
+    },
+    {
+      "arquivo": "apps-script/Ficha.gs",
+      "bytes": 792611,
+      "sha256": "11b11fb009343467a6e9d728bf1a36c752bc7041900e39fb1a84eecf0c6cccac"
+    },
+    {
+      "arquivo": "apps-script/FormasPersonagem.gs",
+      "bytes": 1127,
+      "sha256": "d9a858b4767aff858fcca0aa5a971af61daf57ce54c4ae21900f7e7093ab85eb"
+    },
+    {
+      "arquivo": "apps-script/Habilidades.gs",
+      "bytes": 215701,
+      "sha256": "970a3fb0351e9df2bbfa07b1480efe2fc5b9503deec9e4a92c5fa65d40cdd788"
+    },
+    {
+      "arquivo": "apps-script/Invocacoes.gs",
+      "bytes": 1440929,
+      "sha256": "cb677884281bc0d78d49d7d3053a3fe5c0ffaaf101de3176f823703b966885c2"
+    },
+    {
+      "arquivo": "apps-script/Melhorias.gs",
+      "bytes": 100184,
+      "sha256": "8502d25cc13b2bf513202280c51adb53f3243bf75bdc705fc608d446a8489aa5"
+    },
+    {
+      "arquivo": "apps-script/Origens.gs",
+      "bytes": 519741,
+      "sha256": "388d2215567d3794dadf378f34848e4914eb5df3eab1e75ba187db842a98f974"
+    },
+    {
+      "arquivo": "apps-script/PecasAnalise1.gs",
+      "bytes": 108072,
+      "sha256": "81efde16a3cd0cc186f3642a6c3bedf7fa88cfde32a4075d14fe4eba8214e695"
+    },
+    {
+      "arquivo": "apps-script/PecasPainel.gs",
+      "bytes": 83972,
+      "sha256": "75b0d82481d1345441178140e18b9862ecfaf1595cc25f62c86ba984bd7098ad"
+    },
+    {
+      "arquivo": "apps-script/PersonagemAnalise.gs",
+      "bytes": 99099,
+      "sha256": "43b22f4b83559532196c1b37d19e7b1c0ad33b24d05b73eab3b8cff1725fa0c0"
+    },
+    {
+      "arquivo": "apps-script/PersonagemFormas1.gs",
+      "bytes": 49873,
+      "sha256": "3965e964c0d5056d243f9c7c0ae23df54d783347865d51071569c99dd10cdaca"
+    },
+    {
+      "arquivo": "apps-script/PersonagemFormas2.gs",
+      "bytes": 98314,
+      "sha256": "a8dbae8c5d0a98ced3c6ec5fd1bb092020185727115327286db4a54b7ff2882a"
+    },
+    {
+      "arquivo": "apps-script/PersonagemFormas3.gs",
+      "bytes": 165392,
+      "sha256": "0b04467c27b076432d60873736025b8172020bc7f1a7dd9ee667c648ae5a5dd8"
+    },
+    {
+      "arquivo": "apps-script/PersonagemFormas4.gs",
+      "bytes": 133369,
+      "sha256": "0dab260f818115a14887495f99a716492c47963dbd8cc9533086c38d9b2d5a6f"
+    },
+    {
+      "arquivo": "apps-script/PersonagemFormas5.gs",
+      "bytes": 176166,
+      "sha256": "5e55a379ecfcdbc28d94073905edee03fe3c8747116ee6a4dde9fcdd191460aa"
+    },
+    {
+      "arquivo": "apps-script/PersonagemFormas6.gs",
+      "bytes": 9694,
+      "sha256": "3ab257d76fe820fcc06c9de9dbf69f19e686d61239b91a1673fe5f89be2efcc6"
+    },
+    {
+      "arquivo": "apps-script/PersonagemPainel.gs",
+      "bytes": 41455,
+      "sha256": "71e0e1a13d41f018f855b0aa11626de67df154cac5deb19d6a72f9ef7773bd8e"
+    },
+    {
+      "arquivo": "apps-script/Pessoal.gs",
+      "bytes": 163251,
+      "sha256": "7cc856c2a8af78cd300d8a026eeeee5f53ad66821cac2095c66e9952baebe7f3"
+    },
+    {
+      "arquivo": "apps-script/Progressao.gs",
+      "bytes": 79652,
+      "sha256": "b4c271b8f6b5315af8f468b6f28a31ff7962ae17ff4ac87bda148fe9a4d2d4b4"
+    },
+    {
+      "arquivo": "apps-script/ProgressaoAnalise.gs",
+      "bytes": 105981,
+      "sha256": "6b849f392dd077d691fac35f269b0831ac855359eccf279d8bde40d3e3d6ee5f"
+    },
+    {
+      "arquivo": "apps-script/ProgressaoPainel.gs",
+      "bytes": 109297,
+      "sha256": "b090df3e319483634f4afe721e1fd265bd218311379396fc6e1cfc2198c8a486"
+    },
+    {
+      "arquivo": "apps-script/R53Analise1.gs",
+      "bytes": 443431,
+      "sha256": "f07882c87382895b35a74dcad1cdb28fee121f46b7b318b6eb29960eba0df2e8"
+    },
+    {
+      "arquivo": "apps-script/R53Analise2.gs",
+      "bytes": 447749,
+      "sha256": "890989a6384e7a5a4bf1c88be7541ac228d3e1d2bda02dbd2a1cdae79b136c37"
+    },
+    {
+      "arquivo": "apps-script/R53Analise3.gs",
+      "bytes": 450497,
+      "sha256": "a65377094a99b8c31a6c699e6856b83fea09d8abc5b22a2a0b5405814e5fc5c4"
+    },
+    {
+      "arquivo": "apps-script/R53Analise4.gs",
+      "bytes": 527049,
+      "sha256": "e7801cdf3d23ec915c5fb14ea4d855cecd2caae6cdc9c69e740924170584361a"
+    },
+    {
+      "arquivo": "apps-script/R53Analise5.gs",
+      "bytes": 527025,
+      "sha256": "81c20303aec46858e4febfa5efe7dd81ac166b978cf0b42e942083c10257652a"
+    },
+    {
+      "arquivo": "apps-script/R53Analise6.gs",
+      "bytes": 30620,
+      "sha256": "1290f691d612c22064a910b2de3c8c0bf18d2dc2f624636c17b035ac505512d2"
+    },
+    {
+      "arquivo": "apps-script/R53Cartoes1.gs",
+      "bytes": 158821,
+      "sha256": "99ec58ae53b7c4e3cec34a3537ab8f063f3d4cf5bf181eeb97a0e904649c9e89"
+    },
+    {
+      "arquivo": "apps-script/R53CartoesEntidade1.gs",
+      "bytes": 428146,
+      "sha256": "a400d29d1e57608283827000f4d981c293c55ad32a56187e59d6d0935d1f9cd8"
+    },
+    {
+      "arquivo": "apps-script/R53CartoesEntidade2.gs",
+      "bytes": 410703,
+      "sha256": "f672b8cbab1f4f19a27d6c05544f04325fa65106c0966dde79e467f478535de6"
+    },
+    {
+      "arquivo": "apps-script/R53CartoesEntidade3.gs",
+      "bytes": 193185,
+      "sha256": "e8e6c4de90de0a632e8633b428392026a1bd1532b63c07346e51b496e6cf2d96"
+    },
+    {
+      "arquivo": "apps-script/R53Catalogo.gs",
+      "bytes": 834,
+      "sha256": "e1c7979304f992a88eb7896699e16a05b7a45310b60386a56c870f90a4515bac"
+    },
+    {
+      "arquivo": "apps-script/R53Catalogo1.gs",
+      "bytes": 487738,
+      "sha256": "5b118e91c79219da132bc641fee474b3f4e98f40b257467bb40706d28f707b22"
+    },
+    {
+      "arquivo": "apps-script/R53Dados.gs",
+      "bytes": 1013,
+      "sha256": "c2059f9822b9abad90c1532f20ece0d9821f253bb9105b2056989c513c331192"
+    },
+    {
+      "arquivo": "apps-script/R53Dados1.gs",
+      "bytes": 803062,
+      "sha256": "f61e7e11aa24629bcca2f918598bb41682b57c8b60cf5d6a51243068bf9104ed"
+    },
+    {
+      "arquivo": "apps-script/R53Dados10.gs",
+      "bytes": 543504,
+      "sha256": "db4ba3bd6bead9cf57568107b03492e385e320d653e933e7d1d85ea933aa67d9"
+    },
+    {
+      "arquivo": "apps-script/R53Dados11.gs",
+      "bytes": 540483,
+      "sha256": "e0db348042f4bef601a6f2738b74b488053fcae41685e194a4789826948dc5a6"
+    },
+    {
+      "arquivo": "apps-script/R53Dados12.gs",
+      "bytes": 534971,
+      "sha256": "348b53817aae3e5f347b0f5474eb828c15c7679d0623ba5b8ca9dcc5860c60d3"
+    },
+    {
+      "arquivo": "apps-script/R53Dados13.gs",
+      "bytes": 535496,
+      "sha256": "d1362acbeb379f902754bfba0de6411ea29305697703f016ba50e453c905fb52"
+    },
+    {
+      "arquivo": "apps-script/R53Dados14.gs",
+      "bytes": 113407,
+      "sha256": "d73c96232915ad8841cb2f0ce635cd09bbbb13ffac3d00c9e27dacd432cbee5f"
+    },
+    {
+      "arquivo": "apps-script/R53Dados2.gs",
+      "bytes": 540965,
+      "sha256": "7648dfc45beaa76a6b9e78f104e14c9087e9f2be6241e5d32372e08b0ced464d"
+    },
+    {
+      "arquivo": "apps-script/R53Dados3.gs",
+      "bytes": 537959,
+      "sha256": "0d3ca2083d0b27e7b7d0a6dc99d0f415fac5d2e64da985baf274da35e731e4b6"
+    },
+    {
+      "arquivo": "apps-script/R53Dados4.gs",
+      "bytes": 529512,
+      "sha256": "bef7a8513f72d14666647432ebe1631fa1cf0d8aa16920c0811f4172d6f3be54"
+    },
+    {
+      "arquivo": "apps-script/R53Dados5.gs",
+      "bytes": 529071,
+      "sha256": "f99ceb37a749fbd0e378b0b135a7da3d6e79c9ae69ce1b7a2ee87f99ffd87ab7"
+    },
+    {
+      "arquivo": "apps-script/R53Dados6.gs",
+      "bytes": 571541,
+      "sha256": "cff2fb3dc04206eff6079e8b9f9d835065555a0a854068cf6d3cb9ede660cda7"
+    },
+    {
+      "arquivo": "apps-script/R53Dados7.gs",
+      "bytes": 538588,
+      "sha256": "9bb6384b22a6b95fba8c83186eabb0c3f61d8db81eacbb369743b8b3585425df"
+    },
+    {
+      "arquivo": "apps-script/R53Dados8.gs",
+      "bytes": 539147,
+      "sha256": "3d244d7775292c6d4b73121dbe3aeee6657500be299f1d4086596338d3ec541d"
+    },
+    {
+      "arquivo": "apps-script/R53Dados9.gs",
+      "bytes": 538763,
+      "sha256": "44b528b29f5befb33a38e8b1dc311f6dcd1d66196e7aaad2dcfd5b9e3f7865ea"
+    },
+    {
+      "arquivo": "apps-script/R53Montagens.gs",
+      "bytes": 575025,
+      "sha256": "824458499803a4fef5a81b57ff6afd4d71732f2a2f5333ec3dc1acdad622ecab"
+    },
+    {
+      "arquivo": "apps-script/R53Montagens1.gs",
+      "bytes": 447949,
+      "sha256": "d0d84c345ab5433c998532528daee9b627ba173d7ec0c8843b4828d5bd8435cc"
+    },
+    {
+      "arquivo": "apps-script/R53Montagens2.gs",
+      "bytes": 449152,
+      "sha256": "9d6752bcee3090527111b4e0a0e0b84e7046b6fd20d38bb3a5917af0989bafe0"
+    },
+    {
+      "arquivo": "apps-script/R53Montagens3.gs",
+      "bytes": 449080,
+      "sha256": "eec7046a29b45670da34f7d8a871b144ee550ba62257b7ca0a5d5ffba3cb385c"
+    },
+    {
+      "arquivo": "apps-script/R53Montagens4.gs",
+      "bytes": 459466,
+      "sha256": "24e250a1d104d1121330b87110044390a73dc7557d901fa2a64381b50f17eda4"
+    },
+    {
+      "arquivo": "apps-script/R53Montagens5.gs",
+      "bytes": 19407,
+      "sha256": "f6baeb0e35865a4c3b907a9ded80c1094024212fb06ad068d68d46aa24a1d8a0"
+    },
+    {
+      "arquivo": "apps-script/Restricoes.gs",
+      "bytes": 28704,
+      "sha256": "51b1c13aa35475c087bd84022af7a4fd8e240d7b3be29c2db439360786afc0a5"
+    },
+    {
+      "arquivo": "apps-script/TalentosPersonagem.gs",
+      "bytes": 25251,
+      "sha256": "25bd392fc45d7c359edc92155536f725959d363c5d84f8d545001ee2e02a4f04"
+    },
+    {
+      "arquivo": "catalogo-projeto-m.json",
+      "bytes": 108216,
+      "sha256": "bb4742045218234af94b7b4d94cfc2ba2ba63eac0bfdbd287649bf86098f1937"
+    },
+    {
+      "arquivo": "conferir-catalogo.py",
+      "bytes": 33070,
+      "sha256": "5c92306e1a252edaacc7e7b41fb1c3b273eedea44d92925734962350c00e6ed8"
+    },
+    {
+      "arquivo": "conteudos-b47/personagem/b47_personagem/consumidores.py",
+      "bytes": 18816,
+      "sha256": "ff7822b7eebfdac725850fd052ce6d99abb85be54b0cf09c133c2dcfc97f081a"
+    },
+    {
+      "arquivo": "conteudos-b47/personagem/b47_personagem/fontes_livro.py",
+      "bytes": 5343,
+      "sha256": "2284de044d752fd0eb0655b37b76f28a22c59a0778fe731c799c9598fb15237d"
+    },
+    {
+      "arquivo": "conteudos-b47/personagem/b47_personagem/interface.py",
+      "bytes": 13230,
+      "sha256": "f6697fcadc9a926c92854afcadc6cf4bba993e39d135a94f0824e33e9df6f509"
+    },
+    {
+      "arquivo": "conteudos-b47/personagem/b47_personagem/medidas_r53.py",
+      "bytes": 600,
+      "sha256": "e1a22b011759207aca6b3ac4f553b3e8dd0b1aadb0e33eb5f18f806dd5f74bb1"
+    },
+    {
+      "arquivo": "conteudos-b47/personagem/b47_personagem/motor.py",
+      "bytes": 20188,
+      "sha256": "55d9600f2609a3f67afb415539d204eff8158b68b180e3934ed5e3091b3e72eb"
+    },
+    {
+      "arquivo": "conteudos-b47/personagem/b47_personagem/planilha.py",
+      "bytes": 17248,
+      "sha256": "435426f6ed297ee759bb4d56349b5f16e24be27b0026f35c50e8fbba9eb04fd9"
+    },
+    {
+      "arquivo": "conteudos-b47/personagem/test_motor.py",
+      "bytes": 17533,
+      "sha256": "4681afd113c41ac3ca6793067abb9072d6014d64c56741d398bfb93eb7d62fd3"
+    },
+    {
+      "arquivo": "extrair-manual.py",
+      "bytes": 3736,
+      "sha256": "1d03b4c343a723a8fda52adb6d35fecfa44b93ae7e9853ffa045eb904aaf4c58"
+    },
+    {
+      "arquivo": "ficha-v01/analise.py",
+      "bytes": 17822,
+      "sha256": "8a0d4f67322a951df619f794632724f7cc16e204f62057eb617f70278c5466ab"
+    },
+    {
+      "arquivo": "ficha-v01/cartoes_diretos.py",
+      "bytes": 24644,
+      "sha256": "2cb8ccafbbab1dc8d0d7c03f5edd4e81c3ff090524a8812fba1f0dfa3f08de53"
+    },
+    {
+      "arquivo": "ficha-v01/configuracao_horizontal.py",
+      "bytes": 16853,
+      "sha256": "2361fac0e8038da29f200ac91f2799138c1a480bf4d740c87b0c7bd476e5f5f9"
+    },
+    {
+      "arquivo": "ficha-v01/custom_pecas.py",
+      "bytes": 25103,
+      "sha256": "086e7285e859e068fba2bc52e01d8266567b7f3a179754262ca3f37f5f3af537"
+    },
+    {
+      "arquivo": "ficha-v01/editor_r53.py",
+      "bytes": 421,
+      "sha256": "37c288b14340487d11a2d86044e756c5b97255c6ddd74a769660379008724f2a"
+    },
+    {
+      "arquivo": "ficha-v01/equipamento-do-livro.json",
+      "bytes": 3850,
+      "sha256": "43226b84e195107431c5f566f4bd9a32a4a0dfe824a77e0ab362ed7af05215c1"
+    },
+    {
+      "arquivo": "ficha-v01/extensoes_custom.py",
+      "bytes": 14655,
+      "sha256": "7cf4ce71b8e6b5180c68a62d5c62e23794000958a43c38848ac46300574eefac"
+    },
+    {
+      "arquivo": "ficha-v01/extrair_invocacao.py",
+      "bytes": 20473,
+      "sha256": "f080b4c06ac3e90e924e61a3d25cd417e3cc8b88b06c5980932cde60cc5e2b0b"
+    },
+    {
+      "arquivo": "ficha-v01/extrair_tecnica.py",
+      "bytes": 28323,
+      "sha256": "ed7adcf9e56d60894e113e0eed824a5d8277225a54bf3386487f934d29fb775e"
+    },
+    {
+      "arquivo": "ficha-v01/ficha_amaldicoada.py",
+      "bytes": 121984,
+      "sha256": "2eacda07195c2a504b32456412ed419a34d0e7d43044187e8ddc16f224e5defc"
+    },
+    {
+      "arquivo": "ficha-v01/ficha_invocacoes.py",
+      "bytes": 101902,
+      "sha256": "6308527fd85f1ccba82bd40c1fdd32fd0f81723d56be18b8fdd8a9a13cbe274b"
+    },
+    {
+      "arquivo": "ficha-v01/habilidades-do-livro.json",
+      "bytes": 210149,
+      "sha256": "5b447a1d6843375f55415e55f5af9bc2320e53fece326c09e06ae2627f71267b"
+    },
+    {
+      "arquivo": "ficha-v01/invocacao-do-livro.json",
+      "bytes": 16981,
+      "sha256": "2ecba72ae149480233ce2f6c8f2f296d39d1679312e1408a9d99c1337f7173c1"
+    },
+    {
+      "arquivo": "ficha-v01/monta.py",
+      "bytes": 36992,
+      "sha256": "f13cbcaae6df189ba0d2e65cd18c65ed5288a33342cb3c117bb4f6fa63a2f72d"
+    },
+    {
+      "arquivo": "ficha-v01/montagens_r53.py",
+      "bytes": 29525,
+      "sha256": "7400d5ebb2e3895b75813708ff261fd98e00a2c750f5d5bb9b77c4e3f2256752"
+    },
+    {
+      "arquivo": "ficha-v01/origens-do-livro.json",
+      "bytes": 93494,
+      "sha256": "3639985bb27556a09574a3c9c84fcb2ac7f1d91ae9c25adef93ee0599312fd1d"
+    },
+    {
+      "arquivo": "ficha-v01/tecnica-do-livro.json",
+      "bytes": 53679,
+      "sha256": "1b05d4ea1cd19de4597bbc5efbde7e9bb1a702dc2d0b64c3bf502ce02cd8f82c"
+    },
+    {
+      "arquivo": "ficha/emitir_gs.py",
+      "bytes": 47493,
+      "sha256": "431d82ea6e17419baf9ba1cef09a440519394d2638ab8c4ad087727338534abe"
+    },
+    {
+      "arquivo": "ficha/modelo.gs.js",
+      "bytes": 55857,
+      "sha256": "9654ade8d667e1d7a398276265eb2d8f2b1166796ca47bea0cd8309dd22554ef"
+    },
+    {
+      "arquivo": "ler-analise.py",
+      "bytes": 8195,
+      "sha256": "dd228e0d36441c65d08774154a775eb20007c888895e17924654141de4130ef2"
+    },
+    {
+      "arquivo": "manual-fonte.json",
+      "bytes": 271,
+      "sha256": "271b79ba879d10ed0d506474d163689e5cc26272f8b36fb049f76d2bfb163be5"
+    },
+    {
+      "arquivo": "manual.txt",
+      "bytes": 1063052,
+      "sha256": "eaf3b7f35f41aed0028262ecbeaf91b48e31a7f0be50daff68a3bb2614c13f6d"
+    },
+    {
+      "arquivo": "r53/EDITOR-NATIVO-PARCIAL.md",
+      "bytes": 3202,
+      "sha256": "b5295123d025dd2b59a985b2b3c85dd6374f1496828ecfc23b7b903844e879a5"
+    },
+    {
+      "arquivo": "r53/ENTREGA.md",
+      "bytes": 4510,
+      "sha256": "788adc63a7d5b8b2dc4b561d49be9aab1e55fb5063fc895f5d79edfdeb276ae6"
+    },
+    {
+      "arquivo": "r53/PADROES-PENDENTES.json",
+      "bytes": 159,
+      "sha256": "3a48ecc1dc9dbf339adb557159c72b77d1b7f0358b95abd622505355cf93f684"
+    },
+    {
+      "arquivo": "r53/RETOMADA.md",
+      "bytes": 44259,
+      "sha256": "2fdc56620354cf15cd6ebe7a3d9fcfc4ce30f6e5692150fe41874284fcfb5b73"
+    },
+    {
+      "arquivo": "r53/aplicacao_tecnica.gs",
+      "bytes": 5731,
+      "sha256": "345c7c32b510ddd5860962d1d963db42f529af901f0cecc5cc0c6873f9783ebe"
+    },
+    {
+      "arquivo": "r53/atualizar_catalogo_raiz.py",
+      "bytes": 2725,
+      "sha256": "5fc915ac2e32046c5a55422a1481c0aff83f6d7ba9cd9624923931896db255d1"
+    },
+    {
+      "arquivo": "r53/catalogo.json",
+      "bytes": 256599,
+      "sha256": "2f33003493824ed767427791368275b7b059f397f201ae9cc73fcb1b44b6442b"
+    },
+    {
+      "arquivo": "r53/conferir_exportacao.py",
+      "bytes": 1386,
+      "sha256": "36ee28179e31b109ad357d43ce7ca5f5448fe326059c97a693d314072c1c4577"
+    },
+    {
+      "arquivo": "r53/contrato.py",
+      "bytes": 3317,
+      "sha256": "91c8820c33aa263d35a784381401b5b6f55ce029c809e29a22e6da3168b19718"
+    },
+    {
+      "arquivo": "r53/corrigir_prototipo_tipos.py",
+      "bytes": 1133,
+      "sha256": "28d2a646febcbe8e4859397179ba06e0a6988644462337e2956e3238278c5bd9"
+    },
+    {
+      "arquivo": "r53/diagnosticar_delta.py",
+      "bytes": 1110,
+      "sha256": "559fd8b934249a5acf8673705e590f3b9327f64da4e2f882c01b1024fc50c346"
+    },
+    {
+      "arquivo": "r53/empacotar_script.py",
+      "bytes": 5620,
+      "sha256": "e3b4c5195fc3d73df262ab42b1378d02f600bdb5c6038e4601491330fbd00ccc"
+    },
+    {
+      "arquivo": "r53/extrair_catalogo.py",
+      "bytes": 6245,
+      "sha256": "6a5fa0c2609054e6d9ce4073b204d21facb73a1055bbfa3bf1aedc97af029bad"
+    },
+    {
+      "arquivo": "r53/formas_custom.py",
+      "bytes": 1928,
+      "sha256": "4282531f7eb1b8a57ec1756f2868cf6674b7d04f1d3c8ab67a5feef5fb817cec"
+    },
+    {
+      "arquivo": "r53/formulas.py",
+      "bytes": 6044,
+      "sha256": "f6e8dbdbb3db49fd4eb12394902872827c236cee73300b6a9fd76c2b6981a096"
+    },
+    {
+      "arquivo": "r53/limpar_validacao.py",
+      "bytes": 2967,
+      "sha256": "313cf4634f63766afe344f26aad8deaf23b8a49af2fe8dc58e55649700be411a"
+    },
+    {
+      "arquivo": "r53/migracao.py",
+      "bytes": 4789,
+      "sha256": "8d00f10c1bc47531e0d7805a783c2d76494641feb4aa55c5a04240e60c83190f"
+    },
+    {
+      "arquivo": "r53/migrar_cartoes_diretos.py",
+      "bytes": 12177,
+      "sha256": "ed153440f340ce02f262aebe6d2adf7e3f9fd5927170cf3eb80a7f8d11ddc64a"
+    },
+    {
+      "arquivo": "r53/modelo.py",
+      "bytes": 27903,
+      "sha256": "d48c12b3f22fb2e013103da731d64cc0d2edf889bc71a13c2fdf1abf0cb0af76"
+    },
+    {
+      "arquivo": "r53/planejar_aparencia.py",
+      "bytes": 2941,
+      "sha256": "601cc08da51fb4276d99ad9dbbcd6dde7434da286f4a13f650e1045f5cb1549f"
+    },
+    {
+      "arquivo": "r53/planejar_cartoes.py",
+      "bytes": 10705,
+      "sha256": "ba95676a3f81454705382308f7a80e87bd021bfc01ed91d1df8160f067c63fa4"
+    },
+    {
+      "arquivo": "r53/planejar_compactos.py",
+      "bytes": 4568,
+      "sha256": "614eccd2324ae301f82594aa6fb503d993ac748c88180fa9256259ed43ce8ba5"
+    },
+    {
+      "arquivo": "r53/planejar_fechamento.py",
+      "bytes": 8094,
+      "sha256": "177a67f3bc080b34a104bed23fe2c6601ff1acb6101f2f8bbedfc348ad9245ba"
+    },
+    {
+      "arquivo": "r53/planejar_tabelas.py",
+      "bytes": 8930,
+      "sha256": "7c824f823b6c9c1f8c8ebe770782c78c9fe713c78e7a21b836e37f62ec46f0d2"
+    },
+    {
+      "arquivo": "r53/preflight_fontes.py",
+      "bytes": 2836,
+      "sha256": "2b68b92d1ffc17b8a5631f250669bfe4a7ceada3a0e3d52a7784f9b10765a34c"
+    },
+    {
+      "arquivo": "r53/preparar_nativo.py",
+      "bytes": 5924,
+      "sha256": "c07271971624894e8fa69922b83651eaf5473e974df02024ffd4f1a7cab60ab7"
+    },
+    {
+      "arquivo": "r53/prototipo_editor_nativo.py",
+      "bytes": 7371,
+      "sha256": "2a849be78e9042501848e4e1426a10f0e87829e9180aebc709e9317d56a33a66"
+    },
+    {
+      "arquivo": "r53/prototipo_primeiro_cartao.py",
+      "bytes": 3347,
+      "sha256": "ec58ceb83ec1c651390c04e3b044d646c7763c5b0a7a4bb6485eee5e3429298f"
+    },
+    {
+      "arquivo": "r53/publicar_oficial.py",
+      "bytes": 16035,
+      "sha256": "19482bd67ea5142d352828319c2a7580af8049c8e7f24e6b4f78e7a124c71b43"
+    },
+    {
+      "arquivo": "r53/runtime.gs",
+      "bytes": 10373,
+      "sha256": "031c48441ff78acae16dda728747594ddd1dc74be62de3d11c195b2c9df632f3"
+    },
+    {
+      "arquivo": "r53/runtime_direto.gs",
+      "bytes": 14441,
+      "sha256": "36f562b2de3b71ddd8f286fc8ef8bc93175d84fff9263dd083f5b8704b99da4f"
+    },
+    {
+      "arquivo": "r53/saidas/.gitignore",
+      "bytes": 14,
+      "sha256": "240a3e0d37d2e86b614063f5347eb02d4f99ca6c254de6b82871ff8d95532a7d"
+    },
+    {
+      "arquivo": "r53/testes/basicas_nativo.py",
+      "bytes": 1816,
+      "sha256": "b4511dd145e56f6f4aac5154f415766b0f2f715e8b9f83b72e004e6268c13b5f"
+    },
+    {
+      "arquivo": "r53/testes/cartoes_diretos_runtime.js",
+      "bytes": 7821,
+      "sha256": "e251b48210fa9cebb6f6015ab0b8da02c07755471cda2746f7144a215b13a64c"
+    },
+    {
+      "arquivo": "r53/testes/casos.json",
+      "bytes": 38349,
+      "sha256": "80c72fbb59a534769e3fda6d0a76dc6845aa741d2b3be0bfc289fa3ebe70680b"
+    },
+    {
+      "arquivo": "r53/testes/compactar_nativo.py",
+      "bytes": 2600,
+      "sha256": "526d0b6c3abb91b1fc57d559d8f464159969c0c8f6deb5f240e8bf31a12c59dc"
+    },
+    {
+      "arquivo": "r53/testes/conferir_cartoes_diretos.py",
+      "bytes": 3594,
+      "sha256": "e95fa642361400f4f633914b1c27fdc2b43be38f59875c7cd007d744799ff947"
+    },
+    {
+      "arquivo": "r53/testes/editor_runtime.js",
+      "bytes": 7032,
+      "sha256": "e0e1e1f82da28c3e860467be0a6f31f086aa7b9d41a074feab09405c9cdac7c2"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/CARTOES-DIRETOS-FINAL.json",
+      "bytes": 1848,
+      "sha256": "feba4359342ad4df1cf10e0f6e7e7001965f2b7d009b169c355eeabfb1959df8"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/FECHAMENTO-CONFIG-R53.json",
+      "bytes": 1980,
+      "sha256": "e3aad9ec014ea4333dafd9235e08196909a587135fb49c07d61ede1bb0e78797"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/GOOGLE-37-INICIAL.json",
+      "bytes": 3778,
+      "sha256": "2bd009133bc42cf1f20af9ccbcd9cdb3f3a6179164fe09344964a4ec2fdd94fd"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/GOOGLE-4-BASICAS.json",
+      "bytes": 588,
+      "sha256": "d26cb6ac4ace549fae419eca5096cfe597230d51c55b72a8aa025a14ca5cfe1a"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/GOOGLE-60-ESCOLHAS.json",
+      "bytes": 11663,
+      "sha256": "be8e9fabc02dc24f77086c9de4bd4aec1907dba291f2677170b74b9bf54c1881"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/GOOGLE-68-CUSTOM.json",
+      "bytes": 13075,
+      "sha256": "7e60a68311b08fcfa0a3632f4f57ff11945bdf9bb03ded570ca9c32f9d72cb4b"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/GOOGLE-89-FINAL.json",
+      "bytes": 18005,
+      "sha256": "99fea668350d4587145123ea71bb771c6b991793dfc1eb67e1a7313afc5958e0"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/PUBLICACAO-OFICIAL-R53.json",
+      "bytes": 5065,
+      "sha256": "9284202c34380276b344bde354a01f0f211a69fbbf5641f779600f01c8b28329"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/VALIDACAO-FINAL.json",
+      "bytes": 3300,
+      "sha256": "1a8965ebe77027fbf2f30a261fa066437f4e90893180488d22e088a80db29600"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/requests-37-inicial.json.gz",
+      "bytes": 188155,
+      "sha256": "ee88b17ff044d620f093f7d13b956090f6dc92aaefb390ecc56cac3d569a18dc"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/requests-4-basicas.json.gz",
+      "bytes": 7863,
+      "sha256": "4224e5ad09b6678319abffaa9f3de52733a3ba8c0eda1f646b2c052f9c7b6f49"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/requests-60-escolhas.json.gz",
+      "bytes": 430289,
+      "sha256": "684b74abc0805572c2a6e4c735b572a68faeae5a03b868629bb7ff868915e2a6"
+    },
+    {
+      "arquivo": "r53/testes/evidencias/requests-68-custom.json.gz",
+      "bytes": 514119,
+      "sha256": "514f2158b9b927d33d4a78a7e0bb447048c007c045cceb393bc2da36ea2e5317"
+    },
+    {
+      "arquivo": "r53/testes/gerar_nativo.py",
+      "bytes": 4483,
+      "sha256": "952a0ee1df4604ab409befb50da0cbf176f3a3294fe28acb5420f2c668552e44"
+    },
+    {
+      "arquivo": "r53/testes/migracao_armazenamento.js",
+      "bytes": 2679,
+      "sha256": "375ad569bd2244cc4a873675c41f19260c5d652a495b3d8ab7be6af868a25850"
+    },
+    {
+      "arquivo": "r53/testes/pacote_runtime.js",
+      "bytes": 3985,
+      "sha256": "898e8d9fa2a284c7c580a8d5a19acf7758ca05950d4d463621bb1fd035f9175e"
+    },
+    {
+      "arquivo": "r53/testes/test_cartoes_diretos.py",
+      "bytes": 1620,
+      "sha256": "f0c6e7f1443feb9350410bc729f29a8b466e2bc9883328d91e7527345d2b3c0f"
+    },
+    {
+      "arquivo": "r53/testes/test_contrato.py",
+      "bytes": 3091,
+      "sha256": "26717b00c40e3ce2b9c0984b149ec12ea92438e80802222c885451dfc60d39e7"
+    },
+    {
+      "arquivo": "r53/testes/test_integridade_tipos.py",
+      "bytes": 869,
+      "sha256": "6569811862fe2a7765fe15d6afd88b383d4ec2422b69b2d80df303519e6978e6"
+    },
+    {
+      "arquivo": "r53/testes/test_migracao.py",
+      "bytes": 2336,
+      "sha256": "8a3d31dba8aacbe1370777048cacb2e01082c44f17765323329cc8358b60ba5a"
+    },
+    {
+      "arquivo": "r53/testes/verificar.py",
+      "bytes": 1440,
+      "sha256": "099b5e2750efb7d6c7f2279dc585260068ed901c5ba620ed34eacfa676e81c08"
+    },
+    {
+      "arquivo": "r53/transporte.py",
+      "bytes": 3079,
+      "sha256": "f24cb345be2478c06e2f537c59321b3b0fbb96a04c784d861af67b929b20f917"
+    },
+    {
+      "arquivo": "referencias-r53/ALIASES.json",
+      "bytes": 3316,
+      "sha256": "c77cc1c2771cfe8d53d7c72db7cd374ad33b5c6ea44b8c75e2c3f8aaa23f5bc6"
+    },
+    {
+      "arquivo": "referencias-r53/ALTERACOES-R51-para-R52.json",
+      "bytes": 4114,
+      "sha256": "17d209e801a692c2d4865f808a9dbb221d9c890c8bd1d93e4525df2d4ad83e93"
+    },
+    {
+      "arquivo": "referencias-r53/ALTERACOES-R52-para-R53.json",
+      "bytes": 554671,
+      "sha256": "42067cd6d5126500fc37293611c307d85b1f91a3c32b337eea982eecd62908c1"
+    },
+    {
+      "arquivo": "referencias-r53/BLOCOS-R53.json",
+      "bytes": 1129262,
+      "sha256": "0bad21b6ca1eab1e9c233945d5dfab964619ad36e6ffd93f9e69423b8b16a94b"
+    },
+    {
+      "arquivo": "referencias-r53/CATALOGO-E-INTERFACES-R53.json",
+      "bytes": 378299,
+      "sha256": "a5b8c8901738296fe4290fb27f33da237d0f268f75232427f4a3e8efa30f59c2"
+    },
+    {
+      "arquivo": "referencias-r53/CORRECAO-RECONFERENCIA-R53.json",
+      "bytes": 4933,
+      "sha256": "5192dddfdc80893e6f37d87fea3d0f71fcb89651718625faade8e2213ff4aa29"
+    },
+    {
+      "arquivo": "referencias-r53/EDICAO-ATUAL.json",
+      "bytes": 831,
+      "sha256": "4819e23178acaeb73cacc39b55a96c4edccb7382aebccd6681a0a88e834a08d0"
+    },
+    {
+      "arquivo": "referencias-r53/LEIA-ME-R53.md",
+      "bytes": 2772,
+      "sha256": "53e80f47a267f2c26054fc0d48b5434d8b84ee58970d594f4e67502d979e5827"
+    },
+    {
+      "arquivo": "referencias-r53/LIVRO-COMPLETO.md",
+      "bytes": 1161535,
+      "sha256": "7311979bdfc61bda1d2fd5113106f072edc7dd5b8a801a02779ada53fd13a81d"
+    },
+    {
+      "arquivo": "referencias-r53/MANIFESTO.json",
+      "bytes": 2075,
+      "sha256": "75f60b224e457a0140e67d0e4785db2c2334d11332aeb3942c23241e4570ae29"
+    },
+    {
+      "arquivo": "referencias-r53/PROMPT-FICHA-R53.md",
+      "bytes": 28196,
+      "sha256": "7b38b37a4821a4776ee4f0f4667c51b6c170a207e59845acbe34ff7b4c757540"
+    }
+  ],
+  "ramo": "codex/publicacao-r53",
+  "oficial": "https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit"
+}

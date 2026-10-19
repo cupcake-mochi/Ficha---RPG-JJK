@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from copy import deepcopy
 from openpyxl.utils import get_column_letter as L
 
-from .motor import CAMPOS, TIPOS
+from .motor import CAMPOS, TIPOS, LEGADO_FORMA
 from .fontes_livro import FAIXAS
 
 
@@ -161,6 +161,7 @@ def emitir(livro, contrato):
                     expr = f'IF({v}="",{herdada},{_normalizar(k,v)})'
                 elif k in ('familia','restricao_embutida'):
                     expr = f'IF({v}="Nenhuma","",{expr})'
+                if grupo=='forma' and k in LEGADO_FORMA:expr=herdada
                 exprs[k] = expr
             # Validação lê valores resolvidos auxiliares, inclusive quando o
             # registro é inválido. O catálogo público só lê uma linha sem erro.
@@ -175,7 +176,7 @@ def emitir(livro, contrato):
                 else:
                     default = _interno_padrao(grupo,k)
                     if grupo=='forma' and k=='p2_grau':
-                        default=f'IF({raw("area_escada",r)}="comprimento",3,2)'
+                        default='2'
                     expr = f'IF({b}>0,INDEX({intervalo(aba,col[k],len(book))},MAX(1,{b})),{default})'
                     if grupo=='forma' and k.startswith('p2_'):
                         # Campos de uma dimensão nova também funcionam sobre
@@ -187,7 +188,7 @@ def emitir(livro, contrato):
                         novo=f'IF(AND({p1}="alcance",{tests["area"]}),"area",IF(AND({p1}="area",{tests["alcance"]}),"alcance",""))'
                         campo=k[3:]
                         valor={'dimensao':novo,'antes':f'IF({novo}="alcance"," · alcance ",IF({novo}="area"," · área ",""))',
-                               'depois':'""','grau':f'IF({novo}="",0,IF({novo}="alcance",1,IF({raw("area_escada",r)}="comprimento",3,2)))'}[campo]
+                               'depois':'""','grau':f'IF({novo}="",0,IF({novo}="alcance",1,2))'}[campo]
                         expr=f'IF(AND({b}>0,{p2}=""),{valor},{expr})'
                 p.por(aba,L(aux_ini+i)+str(r),'='+expr)
             erros = _erros(grupo, raw, r, resolved, b, nome, nomes_raw, nomes_livro, contrato, livro)
@@ -214,6 +215,8 @@ def _padrao(grupo,k):
     if k in ('nivel_minimo','refino_minimo'): return '1'
     if k=='escolha': return q('Consome uma escolha')
     if k=='rota': return q('Todas')
+    if grupo=='forma' and k in ('resultado','exige_tr','resolucao'):
+        return {'resultado':'0','exige_tr':'FALSE','resolucao':q('Automático')}[k]
     if k.endswith('_escada'): return q('Fixo')
     return '""'
 
@@ -230,9 +233,8 @@ def _interno_padrao(grupo,k):
 def opcoes_campos(grupo,livro):
     out = dict(tipo=list(TIPOS[grupo]), base=['Nenhuma']+[x['nome'] for x in livro[grupo]])
     if grupo=='forma':
-        out.update(peso=['Sem custo','Leve','Média','Pesada'],resolucao=['Acerto','TR, metade','Automático'],
-                   resultado=['Dano','Cura','Vida temporária','Efeito'],exige_tr=['Sim','Não'],classe_0=['Sim','Não'],
-                   alcance_escada=['Fixo','alcance'],area_escada=['Fixo','raio','comprimento'])
+        out.update(peso=['Sem custo','Leve','Média','Pesada'],classe_0=['Sim','Não'],
+                   alcance_escada=['Fixo','alcance'],area_escada=['Fixo','raio','comprimento','linha'])
     elif grupo=='aptidao':
         out.update(ce=['—',1,2,3],nivel_minimo=list(range(1,31)),refino_minimo=list(range(1,11)),
                    escolha=['Consome uma escolha','Gratuita'])
@@ -251,17 +253,15 @@ def _erros(grupo,raw,r,x,b,nome,nomes_raw,nomes_livro,contrato,livro):
     for k in ('efeito','requisitos'):
         erros.append(falha(f'ISTEXT({x[k]})',k.upper()+' precisa ser texto'))
     if grupo=='forma':
-        for k in ('peso','resultado'): erros.append(falha(numero(x[k],0,3),k.upper()+' exige 0/1/2/3'))
-        for k in ('exige_tr','classe_0'): erros.append(falha(f'ISLOGICAL({x[k]})',k.upper()+' exige Sim/Não'))
-        erros.append(falha('OR('+','.join(f'{x["resolucao"]}={q(t)}' for t in ('Acerto','TR, metade','Automático'))+')','RESOLUÇÃO inválida'))
+        for k in ('peso',): erros.append(falha(numero(x[k],0,3),k.upper()+' exige 0/1/2/3'))
+        for k in ('classe_0',): erros.append(falha(f'ISLOGICAL({x[k]})',k.upper()+' exige Sim/Não'))
         erros.append(falha(f'OR({x["familia"]}="",COUNTIF({contrato.familias},{criterio(x["familia"])})>0)','FAMÍLIA não cadastrada ou inválida'))
         if isinstance(contrato.restricoes,str):
             valido=f'IFERROR(MATCH({criterio(x["restricao_embutida"])},INDEX({contrato.restricoes},0,1),0),0)>0'
         else:
             restr = ','.join(f'{x["restricao_embutida"]}={q(t)}' for t in contrato.restricoes)
             valido=f'OR(FALSE{","+restr if restr else ""})'
-        erros.append(falha(f'OR({x["restricao_embutida"]}="",{valido})','RESTRIÇÃO EMBUTIDA inválida'))
-        for d, escadas in [('alcance',('Fixo','alcance')),('area',('Fixo','raio','comprimento'))]:
+        for d, escadas in [('alcance',('Fixo','alcance')),('area',('Fixo','raio','comprimento','linha'))]:
             esc = x[d+'_escada']
             erros.append(falha('OR('+','.join(f'{esc}={q(t)}' for t in escadas)+')','ESCADA inválida para '+d))
             for c,faixas in FAIXAS.items():
@@ -277,9 +277,12 @@ def _erros(grupo,raw,r,x,b,nome,nomes_raw,nomes_livro,contrato,livro):
                     valid=f'AND(RIGHT({valor},2)=" m",{num}>0)'
                     for ladder in escadas[1:]:
                         last=livro['escadas'][ladder][-1]
+                        if ladder=='linha':continue
                         if last.endswith(' m'):
                             teto=float(last[:-2].replace(',','.'))
                             valid=f'AND({valid},OR({esc}<>{q(ladder)},{num}<={teto}))'
+                    linha_valida=f'IFERROR(AND(REGEXMATCH({valor},"^[0-9]+(?:,[0-9]+)? × [0-9]+(?:,[0-9]+)? m$"),VALUE(REGEXEXTRACT({valor},"^[0-9]+(?:,[0-9]+)?"))>0,VALUE(REGEXEXTRACT({valor},"^[0-9]+(?:,[0-9]+)?"))<=60,VALUE(REGEXEXTRACT({valor},"× ([0-9]+(?:,[0-9]+)?) m$"))>0,VALUE(REGEXEXTRACT({valor},"× ([0-9]+(?:,[0-9]+)?) m$"))<=4.5),FALSE)'
+                    valid=f'IF({esc}="linha",{linha_valida},{valid})'
                     erros.append(falha(f'OR(NOT({exigivel}),{esc}="Fixo",{valor}="",{valor}="—",{valid})','Base incompatível com escada: '+d+'/'+c+'/'+f))
     else:
         ce=x['ce']

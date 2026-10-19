@@ -1,0 +1,55 @@
+{
+  "data": "2026-10-19",
+  "escopo": "249 cartões diretos R53 na revisão nativa; oficial preservada",
+  "fonte_sha256": "6b9d4e0e630627a02d4b8e37798bfe9212330ff018d0d582d833d42adce0d44b",
+  "interface": {
+    "contextos": 249,
+    "editor_separado": false,
+    "montagens_oculta": true,
+    "dano_cura_pvt": "colunas fixas",
+    "bloqueio_amparo": "cabeçalhos, entrada e resultado em —; restaura valores ao reabrir"
+  },
+  "local": {
+    "estrutura": 11028,
+    "runtime": 537,
+    "unitarios": 20,
+    "diagnosticos_numericos": 89,
+    "pacote": "comparação integral de ABAS e controlador, fonte íntegra"
+  },
+  "nativo": {
+    "qa": {
+      "classes3_4": "escolhas recuperadas",
+      "amparo": "fechamento, rejeição e restauração",
+      "classe0": "6d8 no nível de teste",
+      "maxima_personagem": "32d8; exclusividade Dano/Cura; PV temporários bloqueados",
+      "maxima_entidade": "26d8",
+      "redutor_segunda_invocacao": "10 → 7; ajuste limpo",
+      "exportacao": "quatro aplicações e múltiplas Classes decodificadas; atributo de acerto selecionado"
+    },
+    "revisao": {
+      "lotes": 98,
+      "linhas_invocacoes": 1394,
+      "arquivos_relidos_iguais": 7,
+      "campos_preservados": 232,
+      "divergencias": 0,
+      "abas_lidas": 26,
+      "faixas_auditoria": 38,
+      "erros_formula": 0,
+      "exportacao_valida": true,
+      "abas_visiveis_inspecionadas": [
+        "CARTEIRA",
+        "FICHA",
+        "FICHA AMALDIÇOADA",
+        "INVOCAÇÕES",
+        "FICHA PESSOAL",
+        "GLOSSÁRIO",
+        "CONFIGURAÇÃO"
+      ]
+    }
+  },
+  "limites": [
+    "Aguardar a atualização dos campos ao trocar a Classe: salvamento assíncrono.",
+    "Cenários simulados e estruturais não equivalem a testar manualmente toda combinação.",
+    "Publicação oficial e commit/push não realizados."
+  ]
+}

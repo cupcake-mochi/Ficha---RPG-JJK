@@ -1,0 +1,824 @@
+{
+  "data": "2026-10-19",
+  "ambiente": "Google Sheets nativo",
+  "casos": 89,
+  "aprovados": 89,
+  "itens": [
+    {
+      "caso": "01 • VT pessoal Classe 1",
+      "esperado": {
+        "orcamento": 3,
+        "base_funcoes": 1,
+        "saldo": 2,
+        "vida_temporaria": 6,
+        "pe": 3,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "01b • Toque não recupera base",
+      "esperado": {
+        "base_funcoes": 1,
+        "devolucao": 0,
+        "saldo": 2,
+        "vida_temporaria": 6,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "02 • Toque Classe 3 / Precisão",
+      "esperado": {
+        "pago_m1": 2,
+        "retorno_toque": 2,
+        "devolucao": 2,
+        "saldo": 9,
+        "dano_d8": 9,
+        "quantidade_restricoes": 0,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "03 • Mescla preparada Classe 3",
+      "esperado": {
+        "base_funcoes": 3,
+        "pago_m1": 2,
+        "saldo": 4,
+        "dano_d8": 2,
+        "cura_d8": 2,
+        "pe": 9,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "04 • Mescla preparada Classe 4",
+      "esperado": {
+        "base_funcoes": 4,
+        "pago_m1": 2,
+        "saldo": 6,
+        "dano_d8": 4,
+        "cura_d8": 2,
+        "pe": 12,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "05 • Amparo Fechada",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "05b • Área Fechada impede Mais Um",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "05c • Guarda individual independe de Amparo",
+      "esperado": {
+        "base_funcoes": 0,
+        "saldo": 6,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "06 • Controle Livre sem dano",
+      "esperado": {
+        "saldo": 6,
+        "dano_d8": 0,
+        "sem_uso": 6,
+        "cd_normal": 14,
+        "cd_controle": 16,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "06b • Desconto não concede reforço sozinho",
+      "esperado": {
+        "bonus_controle": 0,
+        "cd_normal": 14,
+        "cd_controle": 14,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "07 • Aura custa Leve",
+      "esperado": {
+        "custo_forma": 2,
+        "retorno_toque": 0,
+        "devolucao": 0,
+        "saldo": 7,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "07b • Explosão custa Média",
+      "esperado": {
+        "custo_forma": 3,
+        "saldo": 6,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "07c • Cone / Queima-Roupa",
+      "esperado": {
+        "custo_forma": 2,
+        "retorno_r1": 2,
+        "devolucao": 2,
+        "saldo": 6,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "07d • Aura rejeita Longe",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "07e • Toque rejeita Queima-Roupa",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "08 • Entidade Classe 3 / Livre",
+      "esperado": {
+        "orcamento": 6,
+        "pago_m1": 2,
+        "saldo": 4,
+        "classe_efeito": 2,
+        "fura_rd": 4,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "08b • Pessoa Classe 3 / Livre",
+      "esperado": {
+        "orcamento": 9,
+        "pago_m1": 1,
+        "saldo": 8,
+        "fura_rd": 6,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "09 • Entidade Classe 1 / VT",
+      "esperado": {
+        "orcamento": 2,
+        "base_funcoes": 1,
+        "saldo": 1,
+        "vida_temporaria": 3,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "09b • Entidade C1 / coletivo sem pontos",
+      "esperado": {
+        "cura_d8": 0,
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "10 • Firmeza categorias diferentes",
+      "esperado": {
+        "quantidade_melhorias": 2,
+        "saldo": 5,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "10b • Firmeza categoria duplicada",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "11 • Forma Fluida / Aura",
+      "esperado": {
+        "custo_forma": 2,
+        "saldo": 4,
+        "dano_d8": 4,
+        "pe": 9,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "11b • Remodelar / Explosão reduzida",
+      "esperado": {
+        "custo_forma": 3,
+        "saldo": 3,
+        "dano_d8": 3,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "12 • Classe 0 rejeita cura",
+      "esperado": {
+        "cura_d8": 0,
+        "pe": 0,
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "12b • Classe 0 / Melhoria e Restrição",
+      "esperado": {
+        "dano_d8": 2,
+        "devolucao": 1,
+        "pe": 0,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "12c • Máxima dano fixo / sobra",
+      "esperado": {
+        "orcamento": 8,
+        "dano_d8": 24,
+        "sem_uso": 6,
+        "pe": 25,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "12d • Máxima rejeita Salto",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "12e • Liberação Classe 3 / Linha",
+      "esperado": {
+        "saldo": 7,
+        "dano_d8": 10,
+        "pe": 14,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "13 • Distribuição não pode criar pontos",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "13b • Parcela fracionária rejeitada",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "14 • Antigo ambíguo preservado",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Sobrecusto é adicional independente",
+      "esperado": {
+        "saldo": 9,
+        "pe": 15,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Entidade: condição Média exige comando",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Entidade: Aura comandada permite condição",
+      "esperado": {
+        "saldo": 1,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Cura e VT coletivas compartilham teto",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Teto de cura conserva sobra sem uso",
+      "esperado": {
+        "cura_d8": 6,
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Dano adicional: Salto só uma vez",
+      "esperado": {
+        "saldo": 5,
+        "dano_d8": 5,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • Explosão / alcance e área distintos",
+      "esperado": {
+        "saldo": 2,
+        "alcance_ofensivo": "36 m",
+        "area": "Raio 4,5 m",
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • Cone com Queima-Roupa conserva tamanho",
+      "esperado": {
+        "alcance_ofensivo": "Em quem executa",
+        "area": "Cone 4,5 m",
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • Entidade C6 alcance real e área reduzida",
+      "esperado": {
+        "alcance_ofensivo": "36 m",
+        "area": "Raio 3 m",
+        "classe_efeito": 5,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • Entidade C7 área maior",
+      "esperado": {
+        "alcance_ofensivo": "36 m",
+        "area": "Raio 4,5 m",
+        "classe_efeito": 6,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • benefício individual Classe 6",
+      "esperado": {
+        "alcance_beneficio": "18 m",
+        "vida_temporaria": 3,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • Cone Classe 0 primeiro aumento",
+      "esperado": {
+        "area": "Cone 4,5 m",
+        "dano_d8": 1,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Concentrada e Duradoura são alternativas",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Função • mescla aparece no cartão",
+      "esperado": {
+        "funcao": "Dano 2d8; Cura 2d8",
+        "resolucao_cura": "Automática em aliado disposto; independente do ataque, salvo dependência registrada",
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Firmeza • categoria no resultado",
+      "esperado": {
+        "funcao": "Firmeza · perícia; Firmeza · TR; Saldo sem uso 5 pontos",
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "TR de dano exige escolha registrada",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "TR Físico e CD ficam apresentados",
+      "esperado": {
+        "resolucao_dano": "TR Físico · CD 14 · sucesso: metade do dano",
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Controle exige tipo de TR",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Controle e dano compartilham tipo do TR",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Fraqueza de Vigor devolve Leve",
+      "esperado": {
+        "retorno_r1": 2,
+        "devolucao": 2,
+        "saldo": 8,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Fraqueza de Espírito devolve Média",
+      "esperado": {
+        "retorno_r1": 3,
+        "devolucao": 3,
+        "saldo": 9,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Recuo fixa condição Leve",
+      "esperado": {
+        "retorno_r1": 2,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Recuo não admite condição Pesada",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Terreno precisa de área",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Terreno de área não inventa TR",
+      "esperado": {
+        "valida": true,
+        "bonus_controle": 0
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Opções de Terreno não concedem repetição",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Exposições não se acumulam",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Penalidades próprias não se acumulam",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Mais Um não duplica uma área",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Família própria desconhecida fica Fechada",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Família própria Normal paga preço integral",
+      "esperado": {
+        "pago_m1": 3,
+        "saldo": 6,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Família própria Livre recebe desconto pessoal",
+      "esperado": {
+        "pago_m1": 1,
+        "saldo": 8,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Família própria Livre de entidade arredonda para baixo",
+      "esperado": {
+        "pago_m1": 2,
+        "saldo": 4,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Cadastro incompleto não libera efeito próprio",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Controle próprio exige compatibilidade registrada",
+      "esperado": {
+        "bonus_controle": 0,
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Controle próprio compatível recebe CD própria",
+      "esperado": {
+        "cd_controle": 16,
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Aliases não duplicam a mesma categoria de Firmeza",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Básica da entidade preserva d6 e atuação própria",
+      "esperado": {
+        "orcamento": 2,
+        "pe": 0,
+        "dano_resultado": "2d6",
+        "funcao": "Dano 2d6",
+        "acao": "Atuação básica da entidade",
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Básica adicional de Repertório usa Classe 0 e d6",
+      "esperado": {
+        "orcamento": 2,
+        "pe": 0,
+        "saldo": 1,
+        "dano_resultado": "1d6",
+        "funcao": "Dano 1d6",
+        "acao": "Atuação básica da entidade",
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Classe 0 do personagem conserva d8",
+      "esperado": {
+        "pe": 0,
+        "dano_resultado": "2d8",
+        "funcao": "Dano 2d8",
+        "acao": "Ação Padrão",
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Especial da entidade conserva d8",
+      "esperado": {
+        "pe": 6,
+        "dano_resultado": "4d8",
+        "funcao": "Dano 4d8",
+        "valida": true
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível17 dano",
+      "esperado": {
+        "valida": true,
+        "dano_d8": 19,
+        "cura_d8": 0,
+        "pe": 25,
+        "orcamento": 8,
+        "entidade": true,
+        "desconto_livre": 2
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível17 cura",
+      "esperado": {
+        "valida": true,
+        "dano_d8": 0,
+        "cura_d8": 19,
+        "pe": 25,
+        "orcamento": 8,
+        "entidade": true,
+        "desconto_livre": 2
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível21 dano",
+      "esperado": {
+        "valida": true,
+        "dano_d8": 22,
+        "cura_d8": 0,
+        "pe": 30,
+        "orcamento": 12,
+        "entidade": true,
+        "desconto_livre": 3
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível21 cura",
+      "esperado": {
+        "valida": true,
+        "dano_d8": 0,
+        "cura_d8": 22,
+        "pe": 30,
+        "orcamento": 12,
+        "entidade": true,
+        "desconto_livre": 3
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível26 dano",
+      "esperado": {
+        "valida": true,
+        "dano_d8": 26,
+        "cura_d8": 0,
+        "pe": 35,
+        "orcamento": 16,
+        "entidade": true,
+        "desconto_livre": 3
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível26 cura",
+      "esperado": {
+        "valida": true,
+        "dano_d8": 0,
+        "cura_d8": 26,
+        "pe": 35,
+        "orcamento": 16,
+        "entidade": true,
+        "desconto_livre": 3
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Liberação da domada C3 soma próprios6pontos e3d8",
+      "esperado": {
+        "valida": true,
+        "orcamento": 6,
+        "dano_d8": 9,
+        "pe": 14,
+        "desconto_livre": 1
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Entidade Reação usa coletiva e dispensa básica",
+      "esperado": {
+        "valida": true,
+        "acao": "Comunique o comando no gatilho + Reação coletiva; sem básica ou sua Reação"
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Forma própria paga preço integral e conserva alcance",
+      "esperado": {
+        "valida": true,
+        "custo_forma": 2,
+        "dano_d8": 7,
+        "alcance_ofensivo": "18 m"
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Longe da Forma própria muda somente alcance estruturado",
+      "esperado": {
+        "valida": true,
+        "dano_d8": 5,
+        "alcance_ofensivo": "36 m"
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Forma própria respeita Família Fechada",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Forma própria conserva permissão de Classe0",
+      "esperado": {
+        "valida": false
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Quebra Coisa participa do teto de4C",
+      "esperado": {
+        "valida": true,
+        "dano_d8": 4,
+        "sem_uso": 1
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima TR conserva três quartos do dano",
+      "esperado": {
+        "valida": true,
+        "resolucao_dano": "TR Físico · CD 14 · sucesso: 3/4 do dano"
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Controle curto recebe uma rodada e CD própria",
+      "esperado": {
+        "valida": true,
+        "cd_controle": 16
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Terreno reforçado não ganha TR inventado",
+      "esperado": {
+        "valida": true,
+        "cd_controle": 14
+      },
+      "aprovado": true
+    },
+    {
+      "caso": "Concentrada substitui rodada adicional mas conserva CD",
+      "esperado": {
+        "valida": true,
+        "cd_controle": 16
+      },
+      "aprovado": true
+    }
+  ]
+}

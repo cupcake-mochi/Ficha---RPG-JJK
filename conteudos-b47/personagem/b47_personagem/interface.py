@@ -12,7 +12,7 @@ import indice_ficha as ix
 import ficha_amaldicoada as fa
 import ficha_invocacoes as iv
 from .fontes_livro import carregar, ROOT, FAIXAS
-from .motor import CAMPOS
+from .motor import CAMPOS, LEGADO_FORMA
 from .planilha import Contrato, emitir, exportar, ref, intervalo, opcoes_campos
 from .consumidores import Ambiente, pontes, aplicar
 
@@ -84,8 +84,7 @@ def aplica(layout,contexto):
     # Família e Restrição são catálogos vivos; não congelar nomes custom.
     for g in desenho['registros']:
         if g['grupo']=='forma':
-            for campo,source in [('familia',criacao['catalogo_familias']),('restricao_embutida',
-                'INDEX('+pecas['catalogos']['restricao']+',0,1)')]:
+            for campo,source in [('familia',criacao['catalogo_familias'])]:
                 # A opção Nenhuma é acrescentada em auxiliar, junto da lista
                 # fornecida; nunca altera o catálogo do livro.
                 fim=range_boundaries(source.rsplit('!',1)[-1])[3] if campo=='familia' else pecas['limites']['DADOS_RESTRICOES']['total']+1
@@ -93,7 +92,24 @@ def aplica(layout,contexto):
                 menu_source=auxiliar(c.abas['forma'],campo,rows)
                 cfg['menus'].append(dict(onde=g['campos'][campo],tipo='list',formula=menu_source,
                                         vazio_ok=True,mostra_seta=True,estrito=True))
-    tr['entradas']=[(x[0],x[2].rsplit('!',1)[1],x[0].endswith('.mestre_viu')) for x in exportar(p,chave_contrato) if x[3]=='configuração']
+    # Former shape/function fields are kept in hidden storage for migration and
+    # old exports. They are no longer editable gates of a R53 shape.
+    sheet=ix._aba(layout,c.abas['forma']);first=sheet['colunas']+1
+    tr['legados_forma']=[]
+    for j,k in enumerate(LEGADO_FORMA):
+        head=L(first+j)+'1';sheet['celulas'].append([head,'legado.'+k,None])
+        for g in desenho['registros']:
+            if g['grupo']!='forma':continue
+            row=g['n']+1;dest=L(first+j)+str(row);old=c.fontes['forma'][g['n']-1][k];new=ref(c.abas['forma'],'$'+L(first+j)+'$'+str(row))
+            sheet['celulas'].append([dest,None,None]);raw=L(list(CAMPOS['forma']).index(k)+1)+str(row)
+            value=f'=IF(ISBLANK({new}),"",{new})'
+            next(x for x in sheet['celulas'] if x[0]==raw)[1]=value;p.celulas[c.abas['forma']][raw]=value
+            tr['depois'].setdefault(c.abas['forma'],{})[raw]=value
+            c.fontes['forma'][g['n']-1][k]=new
+            next(x for x in p.entradas if x['grupo']=='forma' and x['vaga']==g['n'] and x['campo']==k)['fonte']=new
+            tr['legados_forma'].append(dict(vaga=g['n'],campo=k,antes=old,depois=new))
+    sheet['colunas']=first+len(LEGADO_FORMA)-1
+    tr['entradas']=[(x[0],x[2].rsplit('!',1)[1],x[0].endswith('.mestre_viu')) for x in exportar(p,chave_contrato) if x[3]=='configuração' and not any(x[0].startswith('custom.forma.') and x[0].endswith('.'+k) for k in LEGADO_FORMA)]
     return tr
 
 
@@ -147,8 +163,9 @@ def desenhar(layout,inicio,capacidades):
         cap=capacidades[grupo]
         if type(cap) is not int or not 1<=cap<=30: raise ValueError('Capacidade inválida: '+grupo)
         box(row,2,titulos[grupo],ec=15,kind='secao'); row+=3
-        escalares=[k for k in campos if k not in ('tipo','nome','mestre_viu','requisitos','efeito')]
-        altura=8+len(escalares)+14
+        anteriores=[k for k in campos if k not in ('tipo','nome','mestre_viu','requisitos','efeito')]
+        escalares=[k for k in anteriores if not(grupo=='forma' and k in LEGADO_FORMA)]
+        altura=8+len(anteriores)+14
         tr['fontes'][grupo]=[]
         for n in range(1,cap+1):
             r=row+(n-1)//2*altura;c=2 if n%2 else 10
@@ -166,10 +183,14 @@ def desenhar(layout,inicio,capacidades):
                     label=('ALC' if d=='alcance' else 'ÁREA')+' · '+('P' if contexto=='personagem' else 'E')+' · '+faixa.replace('classes_','').replace('classe_','').replace('_',' ')
                 box(r+offset,c,label,ec=c+2,kind='rotulo')
                 coords[k]=box(r+offset,c+3,ec=c+5)
+            # Keep former sources in metadata until aplica() redirects them to
+            # technical storage. No obsolete input or label is drawn.
+            if grupo=='forma':
+                for k in LEGADO_FORMA:coords[k]=L(c+3)+str(r+5+anteriores.index(k))
             texts=[]
             for offset,k in [(6+len(escalares),'requisitos'),(12+len(escalares),'efeito')]:
                 box(r+offset,c,k.upper(),ec=c+5,kind='rotulo')
-                coords[k]=box(r+offset+1,c,er=r+offset+4,ec=c+5,kind='texto')
+                coords[k]=box(r+offset+1,c,er=r+offset+4+(4 if grupo=='forma' and k=='efeito' else 0),ec=c+5,kind='texto')
                 texts.append([k,r+offset+1])
             aviso=L(c)+str(r+altura-3)
             # Reservar a mescla e a nota; a fórmula é inserida após emitir.
@@ -184,7 +205,7 @@ def desenhar(layout,inicio,capacidades):
                 for g in pair:
                     largura=sum(next((w for lo,hi,w in config['colunas_larg'] if lo<=c<=hi),4)*8-1 for c in range(g['c'],g['c']+6))-12
                     rr=next(r for key,r in g['textos'] if key==k)
-                    textos.append([largura,[g['campos'][k]],rr,4,0])
+                    textos.append([largura,[g['campos'][k]],rr,8 if grupo=='forma' and k=='efeito' else 4,0])
                 config.setdefault('esticam',[]).append(dict(gatilhos=[g['campos'][k] for g in pair],aba='CONFIGURAÇÃO',minima=25,textos=textos))
         row+=((cap+1)//2)*altura+3
     tr['fim']=row-1

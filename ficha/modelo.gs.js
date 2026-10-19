@@ -139,7 +139,7 @@ function registrarSobra_(extra) {
 function juntarContratosPecas_() {
   if (typeof COMPLEMENTOS_ESPERADOS_ === 'undefined') return;
   Object.keys(COMPLEMENTOS_ESPERADOS_).forEach(function (arq) {
-    if (/^(?:PecasAnalise\d+|PersonagemFormas\d+|PersonagemPainel|PersonagemAnalise|EntidadesAnalise)\.gs$/.test(arq)) {
+    if (/^(?:R53(?:Dados|Catalogo|Montagens|Analise|Cartoes|CartoesEntidade)\d+|PecasAnalise\d+|PersonagemFormas\d+|PersonagemPainel|PersonagemAnalise|EntidadesAnalise)\.gs$/.test(arq)) {
       var valor = globais_()[COMPLEMENTOS_ESPERADOS_[arq]];
       if (valor) juntarValores_(valor);
     }
@@ -168,7 +168,7 @@ function juntarAbas_(extras) {
   var ordem = ['CARTEIRA', 'FICHA', 'FICHA AMALDIÇOADA', 'INVOCAÇÕES',
     'FICHA PESSOAL', 'DADOS', 'DADOS_AM', 'DADOS_INVOC', 'GLOSSÁRIO',
     'DADOS_PROGRESSAO', 'DADOS_CUSTOM', 'DADOS_CRIACAO', 'DADOS_MELHORIAS', 'DADOS_RESTRICOES', 'DADOS_DANOS', 'DADOS_FORMAS', 'DADOS_APTIDOES', 'DADOS_TALENTOS', 'DADOS_ENTIDADES', 'ANALISE',
-    'CONFIGURAÇÃO', 'DADOS_CONFIG'];
+    'CONFIGURAÇÃO', 'DADOS_CONFIG', 'MONTAGENS', 'DADOS_R53', 'DADOS_R53_CATALOGO'];
   ABAS.sort(function (a, b) {
     var ia = ordem.indexOf(a.nome), ib = ordem.indexOf(b.nome);
     return (ia < 0 ? ordem.length : ia) - (ib < 0 ? ordem.length : ib);
@@ -198,6 +198,9 @@ if (typeof ABAS_PERSONAGEM_APTIDOES !== 'undefined' && ABAS_PERSONAGEM_APTIDOES)
 if (typeof ABAS_PERSONAGEM_TALENTOS !== 'undefined' && ABAS_PERSONAGEM_TALENTOS) juntarAbas_(ABAS_PERSONAGEM_TALENTOS);
 if (typeof ABAS_DOS_DANOS !== 'undefined' && ABAS_DOS_DANOS) juntarAbas_(ABAS_DOS_DANOS);
 if (typeof ABAS_DAS_ENTIDADES !== 'undefined' && ABAS_DAS_ENTIDADES) juntarAbas_(ABAS_DAS_ENTIDADES);
+if (typeof ABAS_R53_MONTAGENS_ !== 'undefined') juntarAbas_(ABAS_R53_MONTAGENS_);
+if (typeof ABAS_R53_DADOS_ !== 'undefined') juntarAbas_(ABAS_R53_DADOS_);
+if (typeof ABAS_R53_CATALOGO_ !== 'undefined') juntarAbas_(ABAS_R53_CATALOGO_);
 
 /** Junta a tabela das Origens à DADOS, mesmo se Origens.gs carregar antes deste arquivo. */
 function juntarValores_(extras) {

@@ -212,7 +212,11 @@ def _larguras(ws, limpa=None):
     out = []
     for k, dim in ws.column_dimensions.items():
         if dim.width and abs(dim.width - base) > 1e-6:
-            out.append([dim.min, dim.max, _px_largura(dim.width, limpa)])
+            # O save() do openpyxl normalmente preenche esses limites.
+            # A geração nativa pode usar a pasta em memória sem salvar XLSX.
+            primeira = dim.min or column_index_from_string(k)
+            ultima = dim.max or primeira
+            out.append([primeira, ultima, _px_largura(dim.width, limpa)])
     return sorted(out)
 
 _TEXTO_DE_FORMULA = re.compile(r'("(?:[^"]|"")*")')
@@ -449,6 +453,9 @@ SEPARADAS = {"Invocacoes.gs": ("ABAS_DA_INVOCACAO", ("INVOCAÇÕES", "DADOS_INVO
              "AptidoesPersonagem.gs": ("ABAS_PERSONAGEM_APTIDOES", ("DADOS_APTIDOES",)),
              "TalentosPersonagem.gs": ("ABAS_PERSONAGEM_TALENTOS", ("DADOS_TALENTOS",))}
 SEPARADAS['Entidades.gs'] = ('ABAS_DAS_ENTIDADES', ('DADOS_ENTIDADES',))
+SEPARADAS.update({'R53Dados.gs':('ABAS_R53_DADOS_',('DADOS_R53',)),
+                  'R53Catalogo.gs':('ABAS_R53_CATALOGO_',('DADOS_R53_CATALOGO',)),
+                  'R53Montagens.gs':('ABAS_R53_MONTAGENS_',('MONTAGENS',))})
 COMPLEMENTOS = {"Origens.gs": "VALORES_DAS_ORIGENS_",
                 "AnaliseFontes.gs": "FONTES_DA_ANALISE_",
                 "Pessoal.gs": "VALORES_CUSTOM_",
@@ -499,6 +506,10 @@ def abas_cruas(caminho=None):
             if var != 'VALORES_PERSONAGEM_FORMAS_'+m[1]+'_':
                 raise ValueError('Variável de fragmento divergente: '+arq)
             complementos[arq] = var
+        m=re.fullmatch(r'R53(Dados|Catalogo|Montagens|Analise|Cartoes|CartoesEntidade)([1-9][0-9]*)\.gs',arq)
+        if m:
+            if var!='VALORES_R53_'+m[1].upper()+'_'+m[2]+'_':raise ValueError('Variável de fragmento R53 divergente: '+arq)
+            complementos[arq]=var
     for arq, var in complementos.items():
         p = os.path.join(os.path.dirname(caminho), arq)
         if not os.path.exists(p):

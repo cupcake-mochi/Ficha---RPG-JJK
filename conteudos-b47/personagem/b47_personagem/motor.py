@@ -6,6 +6,7 @@ os consumidores. Vazio herda; zero/False são escolhas explícitas.
 """
 from collections import Counter
 from copy import deepcopy
+from .medidas_r53 import linha,ordem_linha
 from dataclasses import dataclass, field
 import math
 import re
@@ -20,6 +21,7 @@ CAMPOS = {'forma': COMUNS + FORMAS,
           'aptidao': COMUNS + ('ce', 'nivel_minimo', 'refino_minimo', 'escolha'),
           'talento': COMUNS + ('ce', 'rota')}
 TIPOS = {'forma': ('Forma',), 'aptidao': ('Aptidão', 'Bênção'), 'talento': ('Talento',)}
+LEGADO_FORMA = ('resolucao', 'resultado', 'exige_tr', 'restricao_embutida')
 
 
 def vazio(x):
@@ -49,8 +51,9 @@ def subir(escada, base, graus):
     elif graus == 0:
         return base
     else:
-        b = metros(base)
-        candidatos = [k for k, x in enumerate(escada) if metros(x) is None or metros(x) >= b]
+        num=ordem_linha if any(linha(x) for x in escada) else metros
+        b=num(base)
+        candidatos=[k for k,x in enumerate(escada) if num(x) is None or (b is not None and num(x)>=b)]
         if b is None or not candidatos:
             raise ValueError('Base incompatível com a escada: ' + str(base))
         i = candidatos[0] - 1
@@ -149,14 +152,16 @@ def compilar(livro, registros, capacidades, familias=(), restricoes=None):
 
 
 def _forma(out, base, livro, familias, erros):
-    for k, lo, hi in [('peso', 0, 3), ('resultado', 0, 3)]:
+    # R53: function and resolution belong to each application, not its shape.
+    # Retain legacy fields only for old exports and recovery, never as gates.
+    for k,default in [('resultado',0),('resolucao','Automático'),('exige_tr',False),('restricao_embutida','')]:
+        out[k]=base.get(k,default) if base else default
+    for k, lo, hi in [('peso', 0, 3)]:
         if not inteiro(out.get(k), lo, hi):
             erros.append(k.upper() + ' exige código explícito 0/1/2/3')
-    for k in ('exige_tr', 'classe_0'):
+    for k in ('classe_0',):
         if type(out.get(k)) is not bool:
             erros.append(k.upper() + ' exige Sim/Não explícito')
-    if out.get('resolucao') not in ('Acerto', 'TR, metade', 'Automático'):
-        erros.append('RESOLUÇÃO inválida')
     out.setdefault('familia', '')
     if out['familia'] == 'Nenhuma':
         out['familia'] = ''
@@ -165,14 +170,12 @@ def _forma(out, base, livro, familias, erros):
     out.setdefault('restricao_embutida', '')
     if out['restricao_embutida'] == 'Nenhuma':
         out['restricao_embutida'] = ''
-    if out['restricao_embutida'] and out['restricao_embutida'] not in livro['restricoes']:
-        erros.append('RESTRIÇÃO EMBUTIDA deve apontar uma definição válida')
     # Sem base: alcance e área são componentes independentes. Formatação livre
     # permanece no efeito, sem virar instrução executável.
     if not base:
         out['partes'] = [dict(dimensao='alcance', antes='', depois='', grau=1, fixo=None),
                          dict(dimensao='area', antes=' · área ', depois='',
-                              grau=3 if out.get('area_escada')=='comprimento' else 2, fixo=None)]
+                              grau=2, fixo=None)]
         out['alvos'] = 0
     else:
         for d in ('alcance','area'):
@@ -180,11 +183,11 @@ def _forma(out, base, livro, familias, erros):
             valores=[out.get(f'{d}_{c}_{f}') for c,fs in FAIXAS.items() for f in fs]
             if not usa and any(not vazio(v) for v in valores):
                 out['partes'].append(dict(dimensao=d,antes=' · '+('alcance' if d=='alcance' else 'área')+' ',
-                    depois='',grau=1 if d=='alcance' else 3 if out.get('area_escada')=='comprimento' else 2,fixo=None))
+                    depois='',grau=1 if d=='alcance' else 2,fixo=None))
     for d in ('alcance', 'area'):
         out.setdefault(d + '_escada', 'Fixo')
         escada = out[d + '_escada']
-        permitidas = ('Fixo', 'alcance') if d == 'alcance' else ('Fixo', 'raio', 'comprimento')
+        permitidas = ('Fixo', 'alcance') if d == 'alcance' else ('Fixo', 'raio', 'comprimento', 'linha')
         if escada not in permitidas:
             erros.append('ESCADA inválida para ' + d)
             continue
@@ -202,6 +205,10 @@ def _forma(out, base, livro, familias, erros):
                 if d == 'alcance' and usa_dimensao and not valor:
                     erros.append('Base de alcance ausente: ' + contexto + '/' + faixa)
                 if escada != 'Fixo' and valor not in ('', '—'):
+                    if escada=='linha':
+                        v=linha(valor);lim=linha(livro['escadas'][escada][-1])
+                        if not v or min(v)<=0 or any(a>b for a,b in zip(v,lim)):erros.append('Base incompatível com escada: '+k)
+                        continue
                     num = metros(valor)
                     if num is None or num <= 0 or (metros(livro['escadas'][escada][-1]) is not None
                                                   and num > metros(livro['escadas'][escada][-1])):
@@ -248,7 +255,7 @@ def menu(cat, grupo, contexto=None, familias_abertas=None, classe=None):
 
 
 def forma(cat, nome, contexto, classe, *, longe=0, maior=0, livre=False,
-          familias_abertas=None, melhorias=0, restricoes=()):
+          familias_abertas=None, melhorias=0, restricoes=(), pessoal=False, maxima=False):
     if contexto not in FAIXAS or not inteiro(classe, 0, 7):
         raise ValueError('Contexto/Classe inválido')
     f = cat.obter('forma', nome)
@@ -282,15 +289,18 @@ def forma(cat, nome, contexto, classe, *, longe=0, maior=0, livre=False,
     ids = [x['nome'] for x in todas]
     if len(ids) != len(set(ids)):
         avisos.append('Restrição repetida, contando a embutida')
-    if 'Corpo a Corpo' in ids and f['identidade'] in ('Cone', 'Linha'):
-        avisos.append('Corpo a Corpo não entra em Cone/Linha')
+    if 'Queima-Roupa' in ids and (f['identidade'] in ('Toque','Aura') or pessoal):
+        avisos.append('Queima-Roupa incompatível com Toque/Aura ou aplicação pessoal')
+    if longe and (f['identidade'] in ('Toque','Aura') or 'Queima-Roupa' in ids):
+        avisos.append('Longe incompatível com proximidade')
     exige_tr=f['exige_tr'] or f['resolucao']=='TR, metade'
     if 'Tudo ou Nada' in ids and not exige_tr:
         avisos.append('Tudo ou Nada exige TR')
     custo = 0 if classe == 0 or f['peso'] == 0 else math.ceil(classe * f['peso'] / 2)
-    if livre and contexto == 'personagem' and custo:
-        custo = max(1, custo - math.ceil(classe / 2))
-    devolucao = min(2 * classe, sum(math.ceil(classe * x['devolve'] / 2) for x in todas))
+    # R53: nem a Forma publicada nem a custom recebe desconto de Família Livre.
+    toque=math.ceil(classe/2) if classe>0 and f['identidade']=='Toque' and not pessoal and not maxima else 0
+    devs=[math.ceil(classe*(2 if x['nome']=='Queima-Roupa' and f['identidade']=='Projétil' else x['devolve'])/2) for x in todas]
+    devolucao=0 if maxima else min(2*classe,sum(devs)+toque)
     utilizada = min(devolucao, melhorias)  # nunca paga a Forma
     return dict(nome=f['nome'], identidade=f['identidade'], custo=custo,
                 resolucao=f['resolucao'], resultado=f['resultado'], exige_tr=exige_tr,

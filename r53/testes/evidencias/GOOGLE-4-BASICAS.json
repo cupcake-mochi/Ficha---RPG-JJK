@@ -1,0 +1,14 @@
+{
+  "edicao": "R53",
+  "casos": 4,
+  "passaram": 4,
+  "escopo": "Somente dados, modalidade Classe0 adicional, PE, resumo e atuação; não inclui a validação integral das 14 categorias. Complementa os68 casos nativos anteriores.",
+  "range": "'TESTES R53'!DQ70:DR73",
+  "pedidos_sha256": "94e49587613c0b02b60a155b3c4ab9806d1bc7df0ec65c90b02834ee3dbbd374",
+  "casos_verificados": [
+    "Básica da entidade preserva d6 e atuação própria",
+    "Básica adicional de Repertório usa Classe 0 e d6",
+    "Classe 0 do personagem conserva d8",
+    "Especial da entidade conserva d8"
+  ]
+}

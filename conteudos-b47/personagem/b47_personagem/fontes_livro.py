@@ -34,7 +34,7 @@ def carregar():
             if p is None:
                 continue
             antes, escada, grau, depois = p
-            dimensao = 'area' if escada in ('raio', 'comprimento') else 'alcance'
+            dimensao = 'area' if escada in ('raio', 'comprimento', 'linha') else 'alcance'
             # Componentes fixos (Toque/Efeito) também são alcance explícito.
             g[dimensao + '_escada'] = escada or 'Fixo'
             g['partes'].append(dict(dimensao=dimensao, antes=antes if escada else '',
@@ -54,7 +54,7 @@ def carregar():
                             valor = p['fixo'].replace('em você', 'nela') if contexto == 'entidade' else p['fixo']
                         else:
                             texto = originais[k][1 + parte * fa.GRAUS_NA_TABELA]
-                            m = re.search(r'\d+(?:,\d+)? m', texto)
+                            m = re.search(r'\d+(?:,\d+)? × \d+(?:,\d+)? m' if g[dimensao+'_escada']=='linha' else r'\d+(?:,\d+)? m', texto)
                             valor = m.group() if m else '—'
                     g[f'{dimensao}_{contexto}_{faixa}'] = valor
         formas.append(g)

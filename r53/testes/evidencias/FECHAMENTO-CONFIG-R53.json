@@ -1,0 +1,55 @@
+{
+  "data": "2026-10-19",
+  "escopo": "Fechamento da revisão nativa R53: configuração de Formas, notas e Classes",
+  "geracao": "92b9134697809e1e",
+  "fonte_sha256": "c58eb76c5f81d5c83c50351eba46f8aabe186c503801a1efb5f7ab4b656e4205",
+  "revisao": "1SHJ4Ms6f8ZmiLzBsvEFfq6iQrcp1zHKXq5sunZfbqJo",
+  "backup": "1bt_oVOW0VD6riBZp0l9XyHVNicYEiFivEjUu71HkjhE",
+  "aplicacao": {
+    "lotes": 15,
+    "pedidos": 3337,
+    "insercoes": 0,
+    "exclusoes": 0
+  },
+  "preservacao": {
+    "campos_formas": 290,
+    "iguais": 290
+  },
+  "testes": {
+    "estrutura": 16917,
+    "controlador_simulado": 547,
+    "catalogo": 50,
+    "unitarios": 20,
+    "numericos_diagnostico": 89,
+    "arquivos_relidos_por_projeto": 7,
+    "abas_sem_erros": 26
+  },
+  "nativos": [
+    "Forma sem base e com base, menus e custo",
+    "Melhoria/Restrição custom, custo e devolução",
+    "Classes independentes e recuperação de escolhas",
+    "Edição durante troca preservada na Classe anterior no ensaio estável",
+    "Amparo fecha com traços e conserva valores; reabertura após troca aceita novos pontos",
+    "Exportação formato12/esquema2",
+    "Entidade: Forma sem base bloqueada corretamente com Área Fechada; Forma custom herdada válida, 2d8 e exportação",
+    "Exportação final QA: cinco aplicações, incluindo feitiço custom de entidade"
+  ],
+  "limites": [
+    "Eventos do Google são assíncronos; aguardar atualização da Classe",
+    "Primeiro ensaio concorrente precisou de edição posterior para reconciliar; não é garantia de fila ilimitada",
+    "Recuperação após timeout do bloqueio é técnica",
+    "Cobertura representativa nativa complementada por testes locais; não todas as combinações possíveis"
+  ],
+  "oficial_alterada": false,
+  "commit_push": false,
+  "exportacao_revisao": {
+    "formato": 12,
+    "esquema": 2,
+    "chaves_preenchidas": 5161,
+    "aplicacoes": 1
+  },
+  "exportacao_qa": {
+    "chaves_preenchidas": 5285,
+    "aplicacoes": 5
+  }
+}

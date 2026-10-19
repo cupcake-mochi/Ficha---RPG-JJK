@@ -60,16 +60,16 @@ def ler():
         "pe": ("A especial custa 3 × sua Classe real em PE a cada uso.", "3 × Classe"),
         "livre": ("Ao comprar uma Melhoria dessa Família, desconte metade da Classe real, arredondada para baixo, com desconto mínimo de 1. O preço final também tem mínimo de 1.", "MAX(1, preço − MAX(1, INT(Classe/2)))"),
         "forma_sem_livre": ("Formas não recebem desconto de Família Livre.", ""),
-        "formas_exigem": ("Explosão, Aura, Cone e Linha exigem Área aberta. Cura, Apoio e Onda exigem Amparo aberto.", ""),
-        "embutida": ("Toque e Aura incluem Corpo a Corpo, com devolução Média nas especiais.", ""),
-        "devolucao": ("As Restrições devolvem pontos para pagar Melhorias, até 2 × a Classe real e até o total gasto nelas. A Forma fica fora dessa conta.", "MIN(devolução, 2 × Classe, gasto em Melhorias)"),
+        "formas_exigem": ("Cura direta exige Amparo; área exige Área; a combinação exige ambas.", ""),
+        "embutida": ("Nas especiais, Toque concede devolução Leve sem ocupar vaga de Restrição.", ""),
+        "devolucao": ("Some-as e aproveite até 2 × a Classe real, sem superar o total gasto nessas compras. A base e o custo da Forma ficam fora dessa conta.", "MIN(devolução, 2 × Classe, gasto em Melhorias)"),
         "teto": ("O total não passa de 4 × Classe.", "4 × Classe"),
-        "apoio": ("Em Apoio, cada ponto útil vira 3 pontos de vida temporária.", "3 por ponto"),
+        "apoio": ("Vida temporária individual paga base Leve e converte cada ponto reservado em 3,", "3 por ponto"),
         "basica_leve": ("A básica pode ter uma Melhoria Leve. Retire um dado de seu dano-base para pagá-la.", "−1 dado"),
         "basica_restricao": ("Pode haver uma Restrição Leve, que precisa ser cumprida e devolve o dado que a Melhoria tirou, sem criar pontos de montagem.", "devolve o dado da Melhoria"),
-        "basica_sem": ("Cura e Onda não estão disponíveis na Classe 0.", ""),
-        "controle": ("Uma especial com Melhoria de Controle e dano final de até a Classe real em dados recebe uma rodada adicional nos efeitos de Controle. Sem dano, recebe também +2 na CD desses efeitos.", ""),
-        "resolucao": ("Na montagem, trocar ataque por TR, ou o contrário, não custa pontos. Registre o TR, a resolução e o resultado no sucesso.", ""),
+        "basica_sem": ("Cura e apoio coletivo não estão disponíveis na Classe 0.", ""),
+        "controle": ("Uma especial comum usa o procedimento de Controle, em Montar sua aplicação: registre na criação a opção de dano limitado à Classe real em dados ou sem dano.", ""),
+        "resolucao": ("Benefícios a aliados dispostos são automáticos; as partes ofensivas mantêm ataque ou TR registrado.", ""),
         "tipo_de_dano": ("Escolha também um tipo de dano permitido pelo catálogo geral para cada ataque.", ""),
         "equipamento": ("Registre o equipamento usado, a proteção, os requisitos e a carga.", ""),
         "ativas": ("Você pode manter duas entidades ativas ao mesmo tempo", "2"),
@@ -127,17 +127,19 @@ def ler():
         raise SystemExit("extrair_invocacao: a Classe do efeito reduzido não é mais uma a menos, mínimo 1")
     reduzidas = [l[0] for l in tabela("Peça | Valor que usa a Classe reduzida", CONSTRUIR) if l[0] != "Formas de área"]
     reduzidas = [n.strip() for x in reduzidas for n in re.split(r" e ", x)]
-    peso = {"0": None, "Leve": "Leve", "Média": "Media", "Pesada": "Pesada"}
-    exige = {"Explosão": "Área", "Aura": "Área", "Cone": "Área", "Linha": "Área", "Cura": "Amparo", "Apoio": "Amparo", "Onda": "Amparo"}
-    formas = [{"nome": n, "custa": peso[c], "exige": exige.get(n), "embutida": n in ("Toque", "Aura"), "aplicacao": a}
-              for n, c, a in tabela("Forma | Preço | Aplicação", CONSTRUIR)]
+    # R53 compartilha funções/Formas; não há mais uma tabela de Formas própria.
+    import extrair_tecnica as ET
+    formas=[dict(nome=v['nome'],custa=None if v['custa']=='—' else v['custa'].replace('Média','Media'),
+                 exige='Área' if v['nome'] in ['Explosão','Aura','Cone','Linha'] else None,
+                 embutida=False,devolucao_toque=v.get('devolve'),aplicacao=v['o_que_e'])
+            for v in ET.formas(ET.capitulo('10. Fundamento'))]
     # o alcance e a área das entidades: a base de cada Forma, na Classe 0, nas Classes 1 a 5, na 6 e na 7 (o alcance
     # sobe na 6, a área só na 7)
     alc, area = {}, {}
-    for linha in tabela("Forma | Classe 0 | Classes 1–5 | Classes 6–7", CONSTRUIR):
-        for n in re.split(r" e ponto de | e ", linha[0]):
+    for linha in tabela("Medida | Classe 0 | Classes 1 a 5 | Classes 6 e 7", CONSTRUIR):
+        for n in (["Projétil","Explosão","Cone","Linha"] if linha[0].startswith("Projétil ofensivo") else [linha[0]]):
             alc[n.strip()] = [linha[1], linha[2], linha[3], linha[3]]
-    for linha in tabela("Área básica | Classe 0 | Especiais 1–6 | Especial 7", CONSTRUIR):
+    for linha in tabela("Área básica | Classe 0 | Especiais 1 a 6 | Especial 7", CONSTRUIR):
         for n in re.split(r" e ", linha[0].split(":")[0]):
             area[n.strip()] = [linha[1], linha[2], linha[2], linha[3]]
 
@@ -208,9 +210,9 @@ def ler():
             "No nível 5, terá 27 de vida, básica de 2d6 e acesso à Classe 2. Sua Mordida precisa poderá ser ampliada para 4d8 por 6 PE.",
             "A vida inteira é recalculada: 8 + 6 × 5 = 38.",
             "0 | 2 | 2 | 3 | 2", "Defesa sem equipamento | 10 + 2 + 2 = 14.", "Vida máxima | 7 + 5 × 4 = 27.", "TR treinado | Intelecto: +4.",
-            "As Famílias abertas são Amparo Livre, Auxiliares e Alcance.", "Sobram 4 − 2 − 1 = 1 ponto, convertido em 3 de vida temporária.",
+            "As Famílias abertas são Amparo Livre, Auxiliares e Alcance.", "Sobram 4 − 1 − 2 − 1 + 1 = 1 ponto, convertido em 3 de vida temporária.",
             "Sobram 2 − 1 = 1d8 de cura", "Fura custa 2, ou 1 se Mira for Livre.", "a versão com Mira Livre fica com 3d8",
-            "Onda (2) + Impulso (1) + Gesto (devolve 1) cabe nos 2 pontos")
+            "Base Média 1 + Aura 1 + Impulso 1 − Gesto 1 = 2 pontos gastos.")
 
     return {
         "_meta": {"o_que_e": "o que a aba INVOCAÇÕES lê do livro e o catálogo não tem", "livro": FONTE["livro"],

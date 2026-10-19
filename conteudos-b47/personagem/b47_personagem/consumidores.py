@@ -14,6 +14,7 @@ import custom_pecas as cp
 import ficha_amaldicoada as fa
 import ficha_invocacoes as iv
 from .fontes_livro import FAIXAS
+from .medidas_r53 import ordem_linha,numero_linha
 from .planilha import intervalo, ref, criterio, q, literal
 
 
@@ -50,7 +51,7 @@ def pontes(plano, livro, contrato, ambiente):
         fech=f'IFERROR(VLOOKUP({criterio(fam)},{ambiente.familias_tabela},4,FALSE),0)'
         emb=f'IF({f("restricao_embutida",r)}="",0,1)'
         linhas_p.append(['='+nome,'='+fam,'='+peso,
-            f'=IF({peso}=0,0,{peso}+3*{livre})','='+fech,'='+emb,
+            '='+peso,'='+fech,'='+emb,
             '='+f('resultado',r),f'=IF(AND({f("resolucao",r)}="Acerto",{f("exige_tr",r)}),"Acerto + TR",{f("resolucao",r)})',
             '=N(OR('+f('exige_tr',r)+','+f('resolucao',r)+'="TR, metade"))',
             '='+f('p1_grau',r),'='+f('p2_grau',r),'='+f('alvos',r),'=N('+f('classe_0',r)+')',
@@ -140,12 +141,13 @@ def _indice(escadas,esc,b):
     out='0'
     for nome,lista in reversed(list(escadas.items())):
         texto='{'+ ';'.join(q(v) for v in lista) +'}'
-        numeros='{'+ ';'.join(str(float(v[:-2].replace(',','.'))) if v.endswith(' m') else '1E99' for v in lista) +'}'
+        numeros='{'+ ';'.join(str(ordem_linha(v)) if nome=='linha' else str(float(v[:-2].replace(',','.'))) if v.endswith(' m') else '1E99' for v in lista) +'}'
         base_idx=f'IFERROR(MATCH(base,{texto},0),IFERROR(MATCH(valor,{numeros},1),0))'
         out=f'IF(escada={q(nome)},{base_idx},{out})'
     # Variáveis LET locais evitam repetir grandes expressões de busca em cada
     # degrau. Nenhum nome global/named range é criado.
     numero='IFERROR(VALUE(SUBSTITUTE(medida,",",""))/10^IFERROR(LEN(medida)-FIND(",",medida),0),1E99)'
+    numero=f'IF(escada="linha",{numero_linha("base")},{numero})'
     return f'LET(base,{b},escada,{esc},medida,LEFT(base,MAX(0,LEN(base)-2)),valor,{numero},IF(OR(escada="Fixo",base="—"),base,{out}))'
 
 

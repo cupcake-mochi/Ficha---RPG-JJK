@@ -1,0 +1,6 @@
+{
+  "edicao": "R53",
+  "ausentes": 0,
+  "padroes": [],
+  "escopo": "Literais apenas; variáveis e frases em listas são revalidadas pelo extrator completo."
+}

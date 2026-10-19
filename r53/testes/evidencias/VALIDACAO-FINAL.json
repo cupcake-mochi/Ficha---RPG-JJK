@@ -1,0 +1,125 @@
+{
+  "data": "2026-10-19",
+  "edicao": "R53",
+  "revisao": {
+    "url": "https://docs.google.com/spreadsheets/d/1SHJ4Ms6f8ZmiLzBsvEFfq6iQrcp1zHKXq5sunZfbqJo/edit",
+    "abas": 26,
+    "abas_visiveis": 7,
+    "erros_formula": 0,
+    "controles_editar": 249,
+    "controles_booleanos_validos": 249,
+    "exemplos_sinteticos_na_entrega": 0,
+    "abas_de_teste_na_entrega": 0,
+    "montagens_oculta": true
+  },
+  "testes": {
+    "google": 89,
+    "diagnostico_python": 89,
+    "unitarios_contrato_migracao_tipos": 14,
+    "simulacao_editor": 54,
+    "simulacao_armazenamento": 12,
+    "pacote_autonomo_abas": 25,
+    "exportacao_chaves_r53": 10173,
+    "exportacao_final_valida": true
+  },
+  "copia": {
+    "url": "https://docs.google.com/spreadsheets/d/1MyaiJHLJlmAnqQ8-beITwSq1vZO9hUkuXKzd7O_Q6AY/edit",
+    "modalidades": [
+      {
+        "id": "entidade.1.bas.1",
+        "modalidade": "Básica",
+        "nivel": 26,
+        "classe": 0,
+        "dano_resultado": "3d6",
+        "pe": 0,
+        "valida": true,
+        "avisos": "",
+        "resumo": "Dano 3d6"
+      },
+      {
+        "id": "classe0.1",
+        "modalidade": "Classe 0",
+        "nivel": 26,
+        "classe": 0,
+        "dano_resultado": "6d8",
+        "pe": 0,
+        "valida": true,
+        "avisos": "",
+        "resumo": "Dano 6d8"
+      },
+      {
+        "id": "entidade.1.esp.1",
+        "modalidade": "Entidade",
+        "nivel": 26,
+        "classe": 1,
+        "dano_resultado": "2d8",
+        "pe": 3,
+        "valida": true,
+        "avisos": "",
+        "resumo": "Dano 2d8"
+      },
+      {
+        "id": "liberacao.1",
+        "modalidade": "Liberação Máxima",
+        "nivel": 26,
+        "classe": 3,
+        "dano_resultado": "5d8",
+        "pe": 14,
+        "valida": true,
+        "avisos": "",
+        "resumo": "Dano 5d8; Saldo sem uso 7 pontos"
+      },
+      {
+        "id": "entidade.1.liberacao.1",
+        "modalidade": "Liberação de entidade",
+        "nivel": 26,
+        "classe": 3,
+        "dano_resultado": "7d8",
+        "pe": 14,
+        "valida": true,
+        "avisos": "",
+        "resumo": "Dano 7d8; Saldo sem uso 2 pontos"
+      },
+      {
+        "id": "entidade.1.maxima.1",
+        "modalidade": "Máxima de entidade",
+        "nivel": 26,
+        "classe": 7,
+        "dano_resultado": "26d8",
+        "pe": 35,
+        "valida": true,
+        "avisos": "",
+        "resumo": "Dano 26d8; Saldo sem uso 16 pontos"
+      },
+      {
+        "id": "maxima.1",
+        "modalidade": "Técnica Máxima",
+        "nivel": 26,
+        "classe": 7,
+        "dano_resultado": "32d8",
+        "pe": 35,
+        "valida": true,
+        "avisos": "",
+        "resumo": "Dano 32d8; Saldo sem uso 16 pontos"
+      }
+    ],
+    "editor_abriu_liberacao_entidade": true,
+    "editor_abriu_maxima_entidade": true,
+    "persistencia": {
+      "id": "entidade.1.liberacao.1",
+      "classe": 3,
+      "pontos_dano": 4,
+      "dados_apos_edicao": "7d8",
+      "retorno_e_reabertura": true
+    }
+  },
+  "limites": {
+    "oficial_modificada": false,
+    "excel_importado": false,
+    "office_executado": false,
+    "commit": false,
+    "push": false,
+    "publicacao": false
+  },
+  "escopo": "Validação de regras e fluxo em cópia nativa; não simula o uso de toda capacidade narrativa do livro."
+}

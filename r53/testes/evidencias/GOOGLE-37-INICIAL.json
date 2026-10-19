@@ -1,0 +1,163 @@
+{
+  "data_utc": "2026-10-19T03:01:14Z",
+  "copia_nativa": "https://docs.google.com/spreadsheets/d/1SHJ4Ms6f8ZmiLzBsvEFfq6iQrcp1zHKXq5sunZfbqJo/edit",
+  "aba": "TESTES R53",
+  "intervalo": "DT2:DV38",
+  "entradas": 48,
+  "resultados": 75,
+  "casos": [
+    {
+      "caso": "01 • VT pessoal Classe 1",
+      "confere": true
+    },
+    {
+      "caso": "01b • Toque não recupera base",
+      "confere": true
+    },
+    {
+      "caso": "02 • Toque Classe 3 / Precisão",
+      "confere": true
+    },
+    {
+      "caso": "03 • Mescla preparada Classe 3",
+      "confere": true
+    },
+    {
+      "caso": "04 • Mescla preparada Classe 4",
+      "confere": true
+    },
+    {
+      "caso": "05 • Amparo Fechada",
+      "confere": true
+    },
+    {
+      "caso": "05b • Área Fechada impede Mais Um",
+      "confere": true
+    },
+    {
+      "caso": "05c • Guarda individual independe de Amparo",
+      "confere": true
+    },
+    {
+      "caso": "06 • Controle Livre sem dano",
+      "confere": true
+    },
+    {
+      "caso": "06b • Desconto não concede reforço sozinho",
+      "confere": true
+    },
+    {
+      "caso": "07 • Aura custa Leve",
+      "confere": true
+    },
+    {
+      "caso": "07b • Explosão custa Média",
+      "confere": true
+    },
+    {
+      "caso": "07c • Cone / Queima-Roupa",
+      "confere": true
+    },
+    {
+      "caso": "07d • Aura rejeita Longe",
+      "confere": true
+    },
+    {
+      "caso": "07e • Toque rejeita Queima-Roupa",
+      "confere": true
+    },
+    {
+      "caso": "08 • Entidade Classe 3 / Livre",
+      "confere": true
+    },
+    {
+      "caso": "08b • Pessoa Classe 3 / Livre",
+      "confere": true
+    },
+    {
+      "caso": "09 • Entidade Classe 1 / VT",
+      "confere": true
+    },
+    {
+      "caso": "09b • Entidade C1 / coletivo sem pontos",
+      "confere": true
+    },
+    {
+      "caso": "10 • Firmeza categorias diferentes",
+      "confere": true
+    },
+    {
+      "caso": "10b • Firmeza categoria duplicada",
+      "confere": true
+    },
+    {
+      "caso": "11 • Forma Fluida / Aura",
+      "confere": true
+    },
+    {
+      "caso": "11b • Remodelar / Explosão reduzida",
+      "confere": true
+    },
+    {
+      "caso": "12 • Classe 0 rejeita cura",
+      "confere": true
+    },
+    {
+      "caso": "12b • Classe 0 / Melhoria e Restrição",
+      "confere": true
+    },
+    {
+      "caso": "12c • Máxima dano fixo / sobra",
+      "confere": true
+    },
+    {
+      "caso": "12d • Máxima rejeita Salto",
+      "confere": true
+    },
+    {
+      "caso": "12e • Liberação Classe 3 / Linha",
+      "confere": true
+    },
+    {
+      "caso": "13 • Distribuição não pode criar pontos",
+      "confere": true
+    },
+    {
+      "caso": "13b • Parcela fracionária rejeitada",
+      "confere": true
+    },
+    {
+      "caso": "14 • Antigo ambíguo preservado",
+      "confere": true
+    },
+    {
+      "caso": "Sobrecusto é adicional independente",
+      "confere": true
+    },
+    {
+      "caso": "Entidade: condição Média exige comando",
+      "confere": true
+    },
+    {
+      "caso": "Entidade: Aura comandada permite condição",
+      "confere": true
+    },
+    {
+      "caso": "Cura e VT coletivas compartilham teto",
+      "confere": true
+    },
+    {
+      "caso": "Teto de cura conserva sobra sem uso",
+      "confere": true
+    },
+    {
+      "caso": "Dano adicional: Salto só uma vez",
+      "confere": true
+    }
+  ],
+  "limites": [
+    "Teste do núcleo inicial, anterior à adição de medidas/resoluções/efeitos e escape de curingas.",
+    "Não prova integração nos cartões, migração, reabertura, cópia, exportações, dependências ou visual.",
+    "Versão corrente do código precisa de nova execução nativa."
+  ]
+}
