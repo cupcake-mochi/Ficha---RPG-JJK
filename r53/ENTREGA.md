@@ -44,3 +44,16 @@ As provas da revisão e dos testes custom/Amparo permanecem em `r53/testes/evide
 Geração publicada: `e142593fdc5be157`. Fonte do pacote SHA-256: `2f153f659f714a7e5d16e483832f0bd4914bb93175f0527d97c7d20a03c2b110`.
 
 O ramo de entrega é `codex/publicacao-r53`. Não executar `construir()`/`continuar()` na oficial nem na revisão preenchida. Snapshots e backups de código locais são privados/ignorados. Para manutenção integrada, Sol/High; para conferência focal, Medium.
+
+## Reproduzir o pacote na nuvem
+
+Execute `python3 r53/empacotar_script.py` e `node r53/testes/pacote_runtime.js`.
+O empacotador usa as fontes legíveis versionadas em `apps-script/`, inclusive
+as âncoras de navegação; não exige modelo intermediário, snapshot ou PC remoto.
+Isso não escreve no Google. O teste compara todas as abas e a geração do pacote
+com as fontes, verifica suas entradas e rejeita partes adulteradas.
+
+O diagnóstico de nuvem mede os sete arquivos realmente publicados: partes de
+dados abaixo de 900 KB e controlador direto abaixo do orçamento de 1,2 MB.
+O limite B47 de 900 KB para cada fonte legível não descreve o transporte R53.
+Essa correção de empacotamento preserva os bytes do pacote instalado.

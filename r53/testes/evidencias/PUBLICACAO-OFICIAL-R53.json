@@ -206,5 +206,12 @@
     "Sete abas visíveis inspecionadas; paleta, carteira/foto, nove famílias e Formas custom registradas"
   ],
   "rotulo_jogador": "VÁLIDO",
-  "latencia": "Aguardar os campos ao trocar Classe; salvamento Google assíncrono. Inicialização da oficial executada e concluída, sem criar gatilhos instaláveis nem ampliar escopos."
+  "latencia": "Aguardar os campos ao trocar Classe; salvamento Google assíncrono. Inicialização da oficial executada e concluída, sem criar gatilhos instaláveis nem ampliar escopos.",
+  "smoke_nuvem": {
+    "resultado": "OK",
+    "verificacoes": 54,
+    "falhas": 0,
+    "pacote_sem_modelo_intermediario": true,
+    "bootstrap_sha256_preservado": "79a577b840bc5806673e7719d170ea363853a4d0c8a507e7c239fa8a0200df5f"
+  }
 }

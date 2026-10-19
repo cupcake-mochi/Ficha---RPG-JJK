@@ -530,14 +530,24 @@
       "sha256": "eaf3b7f35f41aed0028262ecbeaf91b48e31a7f0be50daff68a3bb2614c13f6d"
     },
     {
+      "arquivo": "nuvem-b47/TESTES.md",
+      "bytes": 12986,
+      "sha256": "c019197539cbc1ee9aed5b8b1b39e9d77bc480b3f95894771235f8502f0870ae"
+    },
+    {
+      "arquivo": "nuvem-b47/conferir.py",
+      "bytes": 7105,
+      "sha256": "c7955342d5021f93d999011b2b2587a53e0acd4e6ae64d7a0c0367cbdfebfab5"
+    },
+    {
       "arquivo": "r53/EDITOR-NATIVO-PARCIAL.md",
       "bytes": 3202,
       "sha256": "b5295123d025dd2b59a985b2b3c85dd6374f1496828ecfc23b7b903844e879a5"
     },
     {
       "arquivo": "r53/ENTREGA.md",
-      "bytes": 4510,
-      "sha256": "788adc63a7d5b8b2dc4b561d49be9aab1e55fb5063fc895f5d79edfdeb276ae6"
+      "bytes": 5247,
+      "sha256": "8b18ea6d6bf829d1d3b7832b5e5ac45c9d53ee2e83e633fc5b589e48f60d98c3"
     },
     {
       "arquivo": "r53/PADROES-PENDENTES.json",
@@ -586,8 +596,8 @@
     },
     {
       "arquivo": "r53/empacotar_script.py",
-      "bytes": 5620,
-      "sha256": "e3b4c5195fc3d73df262ab42b1378d02f600bdb5c6038e4601491330fbd00ccc"
+      "bytes": 5955,
+      "sha256": "4f588960d804e60b366d98acaa12a7c4f2cd0252c179c1c82edc479e1e9cd9b6"
     },
     {
       "arquivo": "r53/extrair_catalogo.py",
@@ -756,8 +766,8 @@
     },
     {
       "arquivo": "r53/testes/evidencias/PUBLICACAO-OFICIAL-R53.json",
-      "bytes": 5065,
-      "sha256": "9284202c34380276b344bde354a01f0f211a69fbbf5641f779600f01c8b28329"
+      "bytes": 5300,
+      "sha256": "7f347b3615dcb37505e567bbcaf270368c4fed6e3836f23ed056792b3e995590"
     },
     {
       "arquivo": "r53/testes/evidencias/VALIDACAO-FINAL.json",

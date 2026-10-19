@@ -1,4 +1,18 @@
-# Extensões custom e numeração · 18/10/2026
+# R53 publicada · 19/10/2026
+
+O diagnóstico detecta a R53, reconstrói seu pacote a partir das fontes GS
+versionadas e verifica os arquivos publicados. Não depende do modelo ignorado
+em `r53/saidas/`, de Office, de conta Google ou do PC anterior. Partes comprimidas
+continuam abaixo de 900 KB; o controlador direto tem orçamento explícito de
+1,2 MB, validado pela instalação nativa. Não aplicar o teto antigo de transporte
+a fontes legíveis que são incorporadas ao pacote.
+
+O smoke inclui `r53/testes/pacote_runtime.js`: equivalência integral de abas e
+geração, autonomia sem módulos antigos, entradas públicas, caminho rápido de
+edição e rejeição de parte adulterada. Isso não substitui os testes nativos,
+registrados em `r53/ENTREGA.md` e `PUBLICACAO-OFICIAL-R53.json`.
+
+# Histórico: extensões custom e numeração · 18/10/2026
 
 Oficial validada em `acabamento-b47/EXTENSOES-CUSTOM-VALIDACAO.json`.
 Os exportadores de domínio seguem antes da apresentação. Após

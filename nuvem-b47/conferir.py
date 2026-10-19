@@ -50,8 +50,26 @@ def main():
         check('referência ' + item['arquivo'], path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == item['sha256'])
     gs_files = sorted((ROOT/'apps-script').glob('*.gs'))
     check('arquivos Apps Script presentes', len(gs_files) >= 1, str(len(gs_files)))
-    for path in gs_files:
-        check('teto ' + path.name, path.stat().st_size < 900000, str(path.stat().st_size) + ' bytes')
+    r53 = (ROOT/'apps-script/EditorR53.gs').is_file()
+    if r53:
+        # A R53 instala o pacote comprimido, não os 70 arquivos legíveis.
+        # O controlador direto é o único módulo maior: orçamento explícito de
+        # 1,2 MB, conferido na instalação nativa; partes de dados seguem <900 KB.
+        packed = subprocess.run([sys.executable, str(ROOT/'r53/empacotar_script.py')],
+                                cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('empacotamento R53 a partir das fontes versionadas', packed.returncode == 0,
+              packed.stderr.strip() or 'exit='+str(packed.returncode))
+        if packed.returncode == 0:
+            bundle = ROOT/'r53/saidas/pacote-script'
+            published = json.loads((bundle/'manifesto.json').read_text())['arquivos']
+            check('pacote R53 com sete módulos', len(published) == 7, str(len(published)))
+            for name in published:
+                size = (bundle/name).stat().st_size
+                limit = 1200000 if name == 'EditorR53.gs' else 900000
+                check('teto publicado ' + name, size < limit, str(size)+' bytes; limite '+str(limit))
+    else:
+        for path in gs_files:
+            check('teto ' + path.name, path.stat().st_size < 900000, str(path.stat().st_size) + ' bytes')
 
     # Fontes do repositório precisam funcionar com HOME vazio, sem fontes do PC.
     try:
@@ -66,6 +84,11 @@ def main():
     print('DEPENDÊNCIAS COMPLEMENTARES ' + json.dumps(optional, ensure_ascii=False), flush=True)
 
     if args.smoke and all(c['ok'] for c in checks):
+        if r53:
+            run = subprocess.run([node, str(ROOT/'r53/testes/pacote_runtime.js')],
+                                 cwd=ROOT, capture_output=True, text=True, timeout=60)
+            check('pacote R53 autossuficiente e íntegro', run.returncode == 0,
+                  run.stderr.strip() or run.stdout.strip())
         # Git identifica as fontes, evitando percorrer dependências em .venv.
         files = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode().split('\0')
         py_count = 0

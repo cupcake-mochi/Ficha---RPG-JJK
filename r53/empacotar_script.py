@@ -47,8 +47,13 @@ function verificarPacoteR53() {
 '''.replace('PARTES',','.join('R53_CODIGO_'+str(i)+'_' for i in range(len(parts)))).replace('HASH',digest)
  # Cliques comuns não precisam carregar as tabelas inteiras. O comportamento
  # original só abre fichas de invocação ou continua uma troca de paleta pendente.
- model=json.loads((ROOT/'r53/saidas/modelo-r53.json').read_text())
- inv=next(a for a in model['layout']['abas'] if a['nome']=='INVOCAÇÕES')
+ # O pacote deve ser reproduzível em um clone limpo, sem o modelo intermediário
+ # ignorado. As mesmas âncoras já fazem parte da fonte GS versionada.
+ inv_source=(folder/'Invocacoes.gs').read_text()
+ start=re.search(r'^var\s+ABAS_DA_INVOCACAO\s*=\s*',inv_source,re.M)
+ if not start:raise ValueError('Fonte de INVOCAÇÕES ausente ou inválida')
+ inv_tabs,_=json.JSONDecoder().raw_decode(inv_source[start.end():])
+ inv=next(a for a in inv_tabs if a['nome']=='INVOCAÇÕES')
  bootstrap+='var R53_NAVEGACAO_ = '+json.dumps({'aba':inv['nome'],'alvos':[v[0] for v in inv.get('abrir',[])]},ensure_ascii=False)+';\n'
  bootstrap+='''function onSelectionChange(e) {
  if(!e || !e.range)return;
