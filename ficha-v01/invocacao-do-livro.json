@@ -1,8 +1,8 @@
 {
  "_meta": {
   "o_que_e": "o que a aba INVOCAÇÕES lê do livro e o catálogo não tem",
-  "livro": "Ciclo Maldito R51, o livro final, como está na v0.364 do JJK---Project (lido em 14/10/2026)",
-  "sha256_do_livro": "282f9bf75adac7961234f8a2754dea08c63def2aacef6c5ac7000c1031d9000e",
+  "livro": "Ciclo Maldito R53, 411 páginas; publicação 3a810995e5211e2c21c90b02c8a5f43f67fa9d8a",
+  "sha256_do_livro": "7311979bdfc61bda1d2fd5113106f072edc7dd5b8a801a02779ada53fd13a81d",
   "gerado_por": "ficha-v01/extrair_invocacao.py"
  },
  "frases": {
@@ -79,15 +79,15 @@
    "conta": ""
   },
   "formas_exigem": {
-   "livro": "Explosão, Aura, Cone e Linha exigem Área aberta. Cura, Apoio e Onda exigem Amparo aberto.",
+   "livro": "Cura direta exige Amparo; área exige Área; a combinação exige ambas.",
    "conta": ""
   },
   "embutida": {
-   "livro": "Toque e Aura incluem Corpo a Corpo, com devolução Média nas especiais.",
+   "livro": "Nas especiais, Toque concede devolução Leve sem ocupar vaga de Restrição.",
    "conta": ""
   },
   "devolucao": {
-   "livro": "As Restrições devolvem pontos para pagar Melhorias, até 2 × a Classe real e até o total gasto nelas. A Forma fica fora dessa conta.",
+   "livro": "Some-as e aproveite até 2 × a Classe real, sem superar o total gasto nessas compras. A base e o custo da Forma ficam fora dessa conta.",
    "conta": "MIN(devolução, 2 × Classe, gasto em Melhorias)"
   },
   "teto": {
@@ -95,7 +95,7 @@
    "conta": "4 × Classe"
   },
   "apoio": {
-   "livro": "Em Apoio, cada ponto útil vira 3 pontos de vida temporária.",
+   "livro": "Vida temporária individual paga base Leve e converte cada ponto reservado em 3,",
    "conta": "3 por ponto"
   },
   "basica_leve": {
@@ -107,15 +107,15 @@
    "conta": "devolve o dado da Melhoria"
   },
   "basica_sem": {
-   "livro": "Cura e Onda não estão disponíveis na Classe 0.",
+   "livro": "Cura e apoio coletivo não estão disponíveis na Classe 0.",
    "conta": ""
   },
   "controle": {
-   "livro": "Uma especial com Melhoria de Controle e dano final de até a Classe real em dados recebe uma rodada adicional nos efeitos de Controle. Sem dano, recebe também +2 na CD desses efeitos.",
+   "livro": "Uma especial comum usa o procedimento de Controle, em Montar sua aplicação: registre na criação a opção de dano limitado à Classe real em dados ou sem dano.",
    "conta": ""
   },
   "resolucao": {
-   "livro": "Na montagem, trocar ataque por TR, ou o contrário, não custa pontos. Registre o TR, a resolução e o resultado no sucesso.",
+   "livro": "Benefícios a aliados dispostos são automáticos; as partes ofensivas mantêm ataque ou TR registrado.",
    "conta": ""
   },
   "tipo_de_dano": {
@@ -340,70 +340,48 @@
    "custa": null,
    "exige": null,
    "embutida": false,
-   "aplicacao": "Um alvo distante, por ataque."
+   "devolucao_toque": null,
+   "aplicacao": "Um alvo a até 18 m; benefícios diretos usam a distância indicada abaixo."
   },
   {
    "nome": "Toque",
    "custa": null,
    "exige": null,
-   "embutida": true,
-   "aplicacao": "Um alvo a 1,5 m, por ataque. Inclui Corpo a Corpo."
+   "embutida": false,
+   "devolucao_toque": "Leve",
+   "aplicacao": "Um alvo a até 1,5 m."
   },
   {
    "nome": "Explosão",
-   "custa": "Leve",
+   "custa": "Media",
    "exige": "Área",
    "embutida": false,
-   "aplicacao": "Área esférica em um ponto escolhido."
+   "devolucao_toque": null,
+   "aplicacao": "Esfera de raio 3 m, com centro escolhido a até 18 m."
   },
   {
    "nome": "Aura",
    "custa": "Leve",
    "exige": "Área",
-   "embutida": true,
-   "aplicacao": "Área esférica centrada na entidade. Inclui Corpo a Corpo."
+   "embutida": false,
+   "devolucao_toque": null,
+   "aplicacao": "Esfera de raio 3 m, centrada em você."
   },
   {
    "nome": "Cone",
    "custa": "Leve",
    "exige": "Área",
    "embutida": false,
-   "aplicacao": "Área em cone partindo da entidade."
+   "devolucao_toque": null,
+   "aplicacao": "Cone de 4,5 m, com origem escolhida a até 18 m."
   },
   {
    "nome": "Linha",
    "custa": "Leve",
    "exige": "Área",
    "embutida": false,
-   "aplicacao": "Área em linha partindo da entidade."
-  },
-  {
-   "nome": "Cura",
-   "custa": "Media",
-   "exige": "Amparo",
-   "embutida": false,
-   "aplicacao": "Cura de um aliado."
-  },
-  {
-   "nome": "Apoio",
-   "custa": null,
-   "exige": "Amparo",
-   "embutida": false,
-   "aplicacao": "Vida temporária para um aliado."
-  },
-  {
-   "nome": "Onda",
-   "custa": "Pesada",
-   "exige": "Amparo",
-   "embutida": false,
-   "aplicacao": "Cura ou apoio para aliados na área."
-  },
-  {
-   "nome": "Efeito",
-   "custa": null,
-   "exige": null,
-   "embutida": false,
-   "aplicacao": "Aplicação registrada fora de combate."
+   "devolucao_toque": null,
+   "aplicacao": "Linha de 18 m por 1,5 m, com origem escolhida a até 18 m."
   }
  ],
  "alcance": {
@@ -419,35 +397,35 @@
    "36 m",
    "36 m"
   ],
+  "Cone": [
+   "9 m",
+   "18 m",
+   "36 m",
+   "36 m"
+  ],
+  "Linha": [
+   "9 m",
+   "18 m",
+   "36 m",
+   "36 m"
+  ],
   "Toque": [
    "1,5 m",
    "1,5 m",
    "1,5 m",
    "1,5 m"
   ],
-  "Apoio": [
+  "Benefício individual à distância": [
    "4,5 m",
    "9 m",
    "18 m",
    "18 m"
   ],
-  "Cura": [
-   "Indisponível",
-   "9 m",
-   "18 m",
-   "18 m"
-  ],
-  "Aura": [
-   "Centradas na entidade",
-   "Centradas na entidade",
-   "Centradas na entidade",
-   "Centradas na entidade"
-  ],
-  "Onda": [
-   "Centradas na entidade",
-   "Centradas na entidade",
-   "Centradas na entidade",
-   "Centradas na entidade"
+  "Origem de Aura ou de área com Queima-Roupa": [
+   "Na entidade",
+   "Na entidade",
+   "Na entidade",
+   "Na entidade"
   ]
  },
  "area": {
@@ -474,12 +452,6 @@
    "18 × 1,5 m",
    "18 × 1,5 m",
    "30 × 1,5 m"
-  ],
-  "Onda": [
-   "Indisponível",
-   "3 m",
-   "3 m",
-   "4,5 m"
   ]
  },
  "reduzidas": [

@@ -27,7 +27,7 @@ class TestMotor(unittest.TestCase):
     def test_vazios_e_defaults_nao_cobram(self):
         c=self.cat(forma=[dict(tipo='Forma',mestre_viu=False)],talento=[dict(tipo='Talento')])
         self.assertTrue(all(not any(v) for v in c.avisos.values()))
-        self.assertEqual(len(c.pools['forma']),10)
+        self.assertEqual(len(c.pools['forma']),6)
 
     def test_parcial_preservado_e_exportavel(self):
         c=self.cat(forma=[dict(efeito='Texto sem nome')])
@@ -65,7 +65,7 @@ class TestMotor(unittest.TestCase):
 
     def test_comprimento_sem_base_usa_alcance_e_area(self):
         c=self.cat(forma=[nova_forma(area_escada='comprimento',area_entidade_classes_1_a_5='4,5 m')])
-        self.assertEqual(forma(c,'Nova *?~','entidade',3,longe=1)['componentes'][1],' · área 9 m')
+        self.assertEqual(forma(c,'Nova *?~','entidade',3,maior=1)['componentes'][1],' · área 9 m')
 
     def test_restricao_custom_embutida_reutilizavel(self):
         rs={'Assinatura?':dict(nome='Assinatura',rotulo='Assinatura?',devolve=1,frequencia=0)}
@@ -129,7 +129,7 @@ class TestMotor(unittest.TestCase):
     def test_zero_nao_false_sao_explicitos(self):
         c=self.cat(forma=[dict(nome='Nova',base='Explosão',peso=0,resultado=0,exige_tr=False,classe_0=False)])
         f=c.obter('forma','Nova')
-        self.assertFalse(f['exige_tr']);self.assertFalse(f['classe_0']);self.assertEqual(f['peso'],0)
+        self.assertFalse(f['classe_0']);self.assertEqual(f['peso'],0)
 
     def test_familia_nenhuma_remove_heranca(self):
         c=self.cat(forma=[dict(nome='Área sem família',base='Explosão',familia='Nenhuma')])
@@ -140,26 +140,46 @@ class TestMotor(unittest.TestCase):
         self.assertIn('Nova *?~',menu(c,'forma',familias_abertas=['Eco?*~']))
         self.assertNotIn('Nova *?~',menu(c,'forma',familias_abertas=['Outra']))
 
-    def test_forma_livre_desconto_so_personagem(self):
-        c=self.cat(forma=[dict(nome='Nova',base='Cura')])
-        self.assertEqual(forma(c,'Nova','personagem',3,livre=True)['custo'],1)
+    def test_r53_forma_nao_recebe_desconto(self):
+        c=self.cat(forma=[dict(nome='Nova',base='Explosão')])
+        self.assertEqual(forma(c,'Nova','personagem',3,livre=True)['custo'],3)
         self.assertEqual(forma(c,'Nova','entidade',3,livre=True)['custo'],3)
 
     def test_embutida_nao_paga_forma(self):
         c=self.cat(forma=[dict(nome='Contato',base='Toque')])
         r=forma(c,'Contato','personagem',3,melhorias=0)
-        self.assertEqual((r['devolucao'],r['utilizada'],r['perdida']),(3,0,3))
+        self.assertEqual((r['devolucao'],r['utilizada'],r['perdida']),(2,0,2))
 
-    def test_embutida_leve_limites_frequencia(self):
+    def test_r53_legado_embutido_nao_consume_vaga_nem_frequencia(self):
         c=self.cat(forma=[dict(nome='Contato',base='Toque',restricao_embutida='Uma Vez')])
-        r=forma(c,'Contato','entidade',3,melhorias=1,restricoes=['Condicional (Leve)','Gesto'])
+        r=forma(c,'Contato','entidade',3,melhorias=1,restricoes=['Condicional · Leve','Gesto'])
+        self.assertFalse(r['avisos'],r['avisos'])
+        self.assertIsNone(r['restricao_embutida'])
+        self.assertEqual(r['utilizada'],1)
+        r=forma(c,'Contato','entidade',3,melhorias=1,restricoes=['Uma Vez','Condicional · Leve','Gesto'])
         self.assertTrue(any('frequência' in x for x in r['avisos']))
         self.assertTrue(any('duas Restrições' in x for x in r['avisos']))
-        self.assertEqual(r['utilizada'],1)
 
-    def test_cone_renomeado_preserva_incompatibilidade(self):
+    def test_r53_forma_do_zero_sem_funcao_ou_resolucao(self):
+        raw=nova_forma()
+        for k in ['resultado','resolucao','exige_tr','restricao_embutida']:raw.pop(k,None)
+        c=self.cat(forma=[raw]);self.assertFalse(c.avisos['forma'][0]);self.assertIn(raw['nome'],menu(c,'forma'))
+
+    def test_r53_legados_invalidos_nao_bloqueiam_forma(self):
+        raw=nova_forma(resultado='texto antigo',resolucao='texto antigo',exige_tr='texto antigo',restricao_embutida='Corpo a Corpo')
+        c=self.cat(forma=[raw]);self.assertFalse(c.avisos['forma'][0]);self.assertEqual(c.obter('forma',raw['nome'])['restricao_embutida'],'')
+
+    def test_r53_cone_aceita_queima_roupa_e_proibe_longe(self):
         c=self.cat(forma=[dict(nome='Cone?*~',base='Cone')])
-        self.assertTrue(any('Cone/Linha' in x for x in forma(c,'Cone?*~','entidade',3,restricoes=['Corpo a Corpo'])['avisos']))
+        self.assertFalse(forma(c,'Cone?*~','entidade',3,restricoes=['Queima-Roupa'])['avisos'])
+        self.assertTrue(any('proximidade' in x for x in forma(c,'Cone?*~','entidade',3,longe=1,restricoes=['Queima-Roupa'])['avisos']))
+
+    def test_r53_linha_conserva_largura_e_degraus(self):
+        c=self.cat(forma=[dict(nome='Faixa',base='Linha')])
+        self.assertFalse(c.avisos['forma'][0])
+        self.assertIn('30 × 1,5 m',forma(c,'Faixa','personagem',6)['alcance'])
+        self.assertIn('60 × 4,5 m',forma(c,'Faixa','personagem',6,maior=3)['alcance'])
+        self.assertIn('18 × 1,5 m',forma(c,'Faixa','entidade',6)['alcance'])
 
     def test_curingas_literais_e_duplicatas(self):
         c=self.cat(forma=[dict(nome='X*?~',base='Toque'),dict(nome='Xabc',base='Toque')])
@@ -169,7 +189,7 @@ class TestMotor(unittest.TestCase):
 
     def test_colisao_livro(self):
         c=self.cat(forma=[dict(nome='toque',base='Toque')])
-        self.assertTrue(c.avisos['forma'][0]);self.assertEqual(len(c.pools['forma']),10)
+        self.assertTrue(c.avisos['forma'][0]);self.assertEqual(len(c.pools['forma']),6)
 
     def test_tipo_incorreto_exclui(self):
         for grupo,base in [('forma','Toque'),('aptidao','Projetar Energia'),('talento','Leitura')]:

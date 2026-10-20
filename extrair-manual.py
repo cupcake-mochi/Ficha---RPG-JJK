@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """Gera o manual.txt a partir do livro reconstruído do sistema (LIVRO-COMPLETO.md).
 
-Uso: python3 extrair-manual.py <clone do JJK---Project>
+Uso: python3 extrair-manual.py [LIVRO-COMPLETO.md] [--confere]
+
+R53: a fonte portátil padrão está em referencias-r53/. O fluxo histórico
+abaixo descreve versões anteriores; não é a fonte ativa.
 
 Desde 10/10/2026 (B45) o livro do sistema é o livro final, o Ciclo Maldito (R43; desde 14/10/2026, B46, o R51), em
 sistema/05-material/livro/ciclo-maldito-r41/LIVRO-COMPLETO.md (a pasta guarda o nome da edição R41).
@@ -17,8 +20,8 @@ import hashlib, json, re, sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent
-REL = "sistema/05-material/livro/ciclo-maldito-r41/LIVRO-COMPLETO.md"
-LIVRO = "Ciclo Maldito R51, o livro final, como está na v0.364 do JJK---Project (lido em 14/10/2026)"
+REL = "referencias-r53/LIVRO-COMPLETO.md"
+LIVRO = "Ciclo Maldito R53, 411 páginas; publicação 3a810995e5211e2c21c90b02c8a5f43f67fa9d8a"
 
 def texto(md):
     out = []
@@ -47,14 +50,22 @@ def texto(md):
         out.append(s)
     return "\n".join(out).strip() + "\n"
 
+def extrair(fonte=None,confere=False):
+    fonte=Path(fonte) if fonte else RAIZ/REL
+    if fonte.is_dir():fonte=fonte/REL
+    md=fonte.read_text(encoding="utf-8")
+    meta={"arquivo":REL,"sha256":hashlib.sha256(md.encode()).hexdigest(),
+          "livro":LIVRO,"gerado_por":"extrair-manual.py"}
+    manual=texto(md);metadata=json.dumps(meta,ensure_ascii=False,indent=2)+"\n"
+    if confere:
+        if (RAIZ/'manual.txt').read_text()!=manual or (RAIZ/'manual-fonte.json').read_text()!=metadata:
+            raise SystemExit('Manual ou metadados desatualizados: execute extrair-manual.py')
+    else:
+        (RAIZ/'manual.txt').write_text(manual)
+        (RAIZ/'manual-fonte.json').write_text(metadata)
+    return meta
+
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        sys.exit(__doc__)
-    fonte = Path(sys.argv[1]) / REL
-    md = fonte.read_text(encoding="utf-8")
-    (RAIZ / "manual.txt").write_text(texto(md), encoding="utf-8")
-    (RAIZ / "manual-fonte.json").write_text(json.dumps({
-        "arquivo": REL, "sha256": hashlib.sha256(md.encode()).hexdigest(),
-        "livro": LIVRO,
-        "gerado_por": "extrair-manual.py"}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print("manual.txt gerado de", REL)
+    import argparse
+    p=argparse.ArgumentParser();p.add_argument('fonte',nargs='?');p.add_argument('--confere',action='store_true');a=p.parse_args()
+    m=extrair(a.fonte,a.confere);print('manual.txt conferido' if a.confere else 'manual.txt gerado',m['livro'])

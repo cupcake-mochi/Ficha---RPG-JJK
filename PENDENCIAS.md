@@ -1,3 +1,48 @@
+## R53 publicada na oficial · 19/10/2026
+
+A ficha oficial foi atualizada, limpa e validada no mesmo endereço. Cartões diretos,
+Formas custom, notas e ajustes da ficha estão integrados. Zero erros de fórmula nas
+25 abas; sete visíveis; exportação final com 18.394 chaves e nenhum teste ativo.
+Código confirmado em sete módulos, 29 legados incorporados e manifesto preservado.
+Backup e provas em [ENTREGA](r53/ENTREGA.md). Este estado prevalece sobre o histórico abaixo.
+Ramo de entrega: `codex/publicacao-r53`. Não repetir migração/inserções nem executar
+construir()/continuar(). Aguardar os campos na troca de Classe. Sol/High para
+manutenção integrada; Medium para conferência focal.
+
+## Histórico anterior (não é fila ativa)
+
+## Fechamento global R53 concluído na revisão · 19/10/2026
+
+Cartões diretos, Formas custom, notas e proteção de troca de Classe foram
+aplicados e conferidos. [Entrega e limites](r53/ENTREGA.md) prevalecem sobre os
+checkpoints antigos abaixo. Foram preservados 290 campos de configuração;
+sete arquivos relidos iguais; zero erros nas 26 abas; exportação real válida.
+O fluxo custom e Amparo foram testados nativamente, com os limites assíncronos
+documentados. A ficha oficial não foi alterada; sem commit/push/publicação.
+Não reaplicar inserções, migrações anteriores nem construir()/continuar().
+Sol/High para manutenção integrada, Medium para conferência focal.
+
+## Cartões diretos R53 · aplicados na revisão · 19/10/2026
+
+Este bloco substitui os estados antigos de painel/checkbox Editar abaixo.
+Os 249 cartões estão editáveis no próprio local; aplicação incremental concluída
+na revisão, com backup, 232 campos preservados e sete arquivos de código relidos.
+Zero erros nas 26 abas; sete visíveis inspecionadas. Classes, pontos, Amparo,
+dados fixos e redutor deslocado conferidos no Google. Exportações reais da revisão
+e da QA válidas. Detalhes e limites em [ENTREGA](r53/ENTREGA.md).
+
+Sem pendências desta implementação na revisão. Oficial intacta; sem commit/push
+ou publicação oficial. Não repetir inserção de linhas, lotes ou limpeza antiga.
+Manutenção integrada: Sol/High; conferência focal: Medium.
+
+## B85 · R53 implementada e validada na cópia · 19/10/2026
+
+[Entrega, ficha de revisão e roteiro](r53/ENTREGA.md). Este bloco substitui os checkpoints parciais anteriores. Os 249 cartões estão integrados, incluindo as 36 Liberações e 12 máximas de entidades. MONTAGENS permanece oculta; as duas abas de testes e os exemplos sintéticos foram retirados da entrega.
+
+89 casos aprovados no Google Sheets; 14 testes unitários, 54 verificações do editor e 12 de migração do armazenamento. Cópia nativa com sete modalidades válidas, edição/reabertura preservando pontos e máximas de entidade conferidas. Contrato ANALISE12 real validado com 10.173 chaves R53. Zero erros de fórmula nas 26 abas, inspeção das sete visíveis e 249 caixas Editar válidas.
+
+Nenhuma pendência obrigatória de implementação desta entrega. Oficial preservada; sem commit, push ou publicação. Registros de recuperação ocultos e snapshots locais mantidos. B84 continua sendo otimização futura de carregamento sob demanda. Para manutenção de integração, Sol/High; conferência focal, Medium.
+
 ## Extensões custom e numeração · concluídas na oficial
 
 Quinze áreas retráteis aplicadas e treze listas de CONFIGURAÇÃO numeradas

@@ -1,8 +1,8 @@
 {
  "_meta": {
   "o_que_e": "o que a FICHA AMALDIÇOADA calcula e o catalogo-projeto-m.json não tem, lido do manual.txt",
-  "versao_do_livro": "Ciclo Maldito R51, o livro final, como está na v0.364 do JJK---Project (lido em 14/10/2026)",
-  "sha256_do_livro": "282f9bf75adac7961234f8a2754dea08c63def2aacef6c5ac7000c1031d9000e",
+  "versao_do_livro": "Ciclo Maldito R53, 411 páginas; publicação 3a810995e5211e2c21c90b02c8a5f43f67fa9d8a",
+  "sha256_do_livro": "7311979bdfc61bda1d2fd5113106f072edc7dd5b8a801a02779ada53fd13a81d",
   "extraido_por": "ficha-v01/extrair_tecnica.py",
   "capitulos": [
    "9. Progressão",
@@ -24,7 +24,7 @@
   {
    "nome": "Instinto",
    "classe_passiva": "1",
-   "faz": "Você não é pego de surpresa enquanto estiver acordado. Isso não revela criaturas escondidas, não muda sua posição na iniciativa e não concede uma ação adicional."
+   "faz": "Enquanto estiver acordado, você fica protegido contra surpresa. Criaturas escondidas continuam exigindo os meios normais de percepção. Sua posição na iniciativa e suas ações disponíveis permanecem as mesmas."
   },
   {
    "nome": "Raiz",
@@ -44,7 +44,7 @@
   {
    "nome": "Leitura de Feitiços",
    "classe_passiva": "1",
-   "faz": "Ao ter um inimigo à vista, você sabe qual foi o último feitiço que ele usou, mesmo que não tenha presenciado aquela conjuração. Recebe o nome ou uma descrição suficiente para reconhecer a aplicação, não sua ficha completa."
+   "faz": "Ao ter um inimigo à vista, você sabe qual foi o último feitiço que ele usou, mesmo que não tenha presenciado aquela conjuração. Recebe o nome ou uma descrição suficiente para reconhecer a aplicação. Os demais dados da ficha permanecem desconhecidos."
   },
   {
    "nome": "Fluxo",
@@ -74,7 +74,7 @@
   {
    "nome": "Contramedida",
    "classe_passiva": "2",
-   "faz": "Quando outra criatura a até 9 m conjurar um feitiço, você pode gastar sua Reação e 2 PE para aumentar a CD desse feitiço em 2. Declare depois que a conjuração for anunciada e antes dos TR. O aumento vale para os TR contra aquela aplicação enquanto ela durar."
+   "faz": "Quando outra criatura a até 9 m conjurar um feitiço, você pode gastar sua Reação e 2 PE para aumentar a CD desse feitiço em 2. Declare depois que a conjuração for anunciada e antes de rolar os TRs. O aumento vale para os TRs contra aquela aplicação enquanto ela durar."
   },
   {
    "nome": "Peso da Presença",
@@ -168,7 +168,7 @@
    "requisito": "Refino 7 e nível 14",
    "classe_passiva": "3",
    "escala": "—",
-   "faz": "Você usa energia reversa para restaurar seu próprio corpo. Ação Padrão. Gaste de 1 PE até sua maior Classe e recupere 1d8 de vida por PE gasto. Escolha e pague antes de rolar. A cura não ultrapassa sua vida máxima e não gera vida temporária. As primeiras faixas atendem às concessões específicas que permitem aprender a aptidão antes dos requisitos comuns. A aptidão cura você. Para aplicá-la diretamente a outra criatura, você precisa de uma permissão que altere esse alvo. Aprendê-la não aumenta o alcance de um feitiço de Cura nem substitui sua montagem. O Corpo Amaldiçoado não recupera vida com Energia Reversa nem com cura construída a partir dela. Suas formas de recuperação estão na Origem, com o procedimento compartilhado em Cura e reparo. Outras incompatibilidades de alvo também continuam valendo. Energia Reversa é requisito para usar um feitiço da Forma Cura ofensivamente contra uma maldição. A exceção está em Ferir maldições. A aptidão de autocura, sozinha, não concede um ataque. Requisito: Energia Reversa. Você pode usar um feitiço da Forma Cura contra uma maldição hostil. Essa aplicação usa energia positiva para feri-la, em vez de recuperar vida."
+   "faz": "Você usa energia reversa para restaurar seu próprio corpo. Ação Padrão. Gaste de 1 PE até sua maior Classe e recupere 1d8 de vida por PE gasto. Escolha e pague antes de rolar. A cura não ultrapassa sua vida máxima e não gera vida temporária. As primeiras faixas atendem às concessões específicas que permitem aprender a aptidão antes dos requisitos comuns. A aptidão cura você. Para aplicá-la diretamente a outra criatura, você precisa de uma permissão que altere esse alvo. Aprendê-la não aumenta o alcance de um feitiço de Cura nem substitui sua montagem. O Corpo Amaldiçoado não recupera vida com Energia Reversa nem com cura construída a partir dela. Suas formas de recuperação estão na Origem, com o procedimento compartilhado em Cura e reparo. Outras incompatibilidades de alvo também continuam valendo. Energia Reversa é requisito para usar um feitiço com função de cura individual ofensivamente contra uma maldição. A exceção está em Ferir maldições. A aptidão de autocura, sozinha, não concede um ataque. Requisito: Energia Reversa. Você pode usar um feitiço com função de cura individual contra uma maldição hostil. Essa aplicação usa energia positiva para feri-la, em vez de recuperar vida."
   },
   {
    "nome": "Circulação",
@@ -286,6 +286,14 @@
    "18 m",
    "30 m",
    "60 m"
+  ],
+  "linha": [
+   "9 × 1,5 m",
+   "18 × 1,5 m",
+   "30 × 1,5 m",
+   "60 × 1,5 m",
+   "60 × 3 m",
+   "60 × 4,5 m"
   ]
  },
  "base_por_classe": {
@@ -319,85 +327,57 @@
    "classes_1_a_5": "18 × 1,5 m",
    "classes_6_e_7": "30 × 1,5 m"
   },
-  "Cura": {
-   "classe_0": "—",
-   "classes_1_a_5": "9 m",
-   "classes_6_e_7": "18 m"
-  },
-  "Apoio": {
+  "beneficio_individual": {
    "classe_0": "4,5 m",
    "classes_1_a_5": "9 m",
    "classes_6_e_7": "18 m"
-  },
-  "Onda": {
-   "classe_0": "—",
-   "classes_1_a_5": "raio 3 m, em você",
-   "classes_6_e_7": "raio 4,5 m, em você"
   }
  },
  "formas": [
   {
    "nome": "Projétil",
    "custa": "—",
-   "o_que_e": "Um alvo a até 18 m.",
-   "resolve": "Ataque."
+   "devolve": null,
+   "o_que_e": "Um alvo a até 18 m; benefícios diretos usam a distância indicada abaixo.",
+   "resolve": "Ataque ou TR registrado; benefício disposto automático"
   },
   {
    "nome": "Toque",
    "custa": "—",
+   "devolve": "Leve",
    "o_que_e": "Um alvo a até 1,5 m.",
-   "resolve": "Ataque."
+   "resolve": "Ataque ou TR registrado; benefício disposto automático"
   },
   {
    "nome": "Explosão",
-   "custa": "Leve",
-   "o_que_e": "Esfera de raio 3 m, num ponto a até 18 m.",
-   "resolve": "TR; metade do resultado do dano no sucesso."
+   "custa": "Média",
+   "devolve": null,
+   "o_que_e": "Esfera de raio 3 m, com centro escolhido a até 18 m.",
+   "resolve": "Ataque ou TR registrado; benefício disposto automático"
   },
   {
    "nome": "Aura",
    "custa": "Leve",
+   "devolve": null,
    "o_que_e": "Esfera de raio 3 m, centrada em você.",
-   "resolve": "TR; metade do resultado do dano no sucesso."
+   "resolve": "Ataque ou TR registrado; benefício disposto automático"
   },
   {
    "nome": "Cone",
    "custa": "Leve",
-   "o_que_e": "Cone de 4,5 m, partindo de você.",
-   "resolve": "TR; metade do resultado do dano no sucesso."
+   "devolve": null,
+   "o_que_e": "Cone de 4,5 m, com origem escolhida a até 18 m.",
+   "resolve": "Ataque ou TR registrado; benefício disposto automático"
   },
   {
    "nome": "Linha",
    "custa": "Leve",
-   "o_que_e": "Linha de 18 m por 1,5 m, partindo de você.",
-   "resolve": "TR; metade do resultado do dano no sucesso."
-  },
-  {
-   "nome": "Cura",
-   "custa": "Média",
-   "o_que_e": "Um aliado a até 9 m. O saldo vira dados de cura, até 2 × Classe em d8.",
-   "resolve": "Cura e Apoio são automáticos em alvos dispostos"
-  },
-  {
-   "nome": "Apoio",
-   "custa": "—",
-   "o_que_e": "Um aliado a até 9 m. Cada ponto do saldo concede 3 pontos de vida temporária.",
-   "resolve": "Cura e Apoio são automáticos em alvos dispostos"
-  },
-  {
-   "nome": "Onda",
-   "custa": "Pesada",
-   "o_que_e": "Aliados numa esfera de raio 3 m centrada em você. Escolha cura ou apoio ao montar.",
-   "resolve": "Cura e Apoio são automáticos em alvos dispostos"
-  },
-  {
-   "nome": "Efeito",
-   "custa": "—",
-   "o_que_e": "Uma aplicação fora de combate. Usa a escala de Efeitos fora de combate, sem dano ou vida temporária.",
-   "resolve": "Sem dano"
+   "devolve": null,
+   "o_que_e": "Linha de 18 m por 1,5 m, com origem escolhida a até 18 m.",
+   "resolve": "Ataque ou TR registrado; benefício disposto automático"
   }
  ],
- "toque": "Toque permanece a 1,5 m.",
+ "toque": "Toque conserva 1,5 m, e uma Melhoria com alcance próprio usa o valor de sua entrada.",
  "classe_0": {
   "niveis": [
    1,
@@ -421,7 +401,7 @@
    6
   ],
   "frase": "Você pode acrescentar uma Melhoria Leve, retirando um dado do dano-base.",
-  "nao_cura": "Cura e Onda não estão disponíveis."
+  "nao_cura": "Cura e aplicação coletiva de benefícios não estão disponíveis."
  },
  "liberacao": {
   "niveis": [
@@ -463,7 +443,7 @@
   "pe_por_classe": 5,
   "frases": [
    "A Máxima custa Ação Completa e 5 × sua maior Classe em PE.",
-   "A Máxima não aceita Restrições que devolvam pontos."
+   "A Máxima não aceita Restrições que devolvam pontos, incluindo Queima-Roupa."
   ]
  },
  "dominio": {
@@ -597,7 +577,7 @@
  },
  "controle": {
   "frases": [
-   "Com saldo de dano até a Classe, seus efeitos de Controle duram uma rodada a mais. Com saldo zero, eles também recebem +2 na CD."
+   "A opção fica definida na criação do feitiço; você não a troca a cada conjuração."
   ]
  },
  "numeros_da_montagem": [
@@ -697,7 +677,7 @@
    ],
    "dados": 2,
    "pe": 3,
-   "frase": "Sobram 3 − 0 − 1 = 2 pontos, que viram 2d8 de dano."
+   "frase": "Após as compras, restam 3 − 0 − 1 = 2 pontos, usados para causar 2d8 de dano."
   },
   {
    "nome": "Peso nas Mãos",
@@ -791,7 +771,7 @@
   },
   {
    "nome": "Rede de contenção",
-   "classe": 3,
+   "classe": 4,
    "lib": false,
    "forma": "Explosão",
    "mel": [
@@ -804,8 +784,8 @@
     "Tempo"
    ],
    "dados": 0,
-   "pe": 9,
-   "frase": "Gasta os 9 pontos, usa duas Melhorias e não compra Restrição. O saldo é zero: não causa dano."
+   "pe": 12,
+   "frase": "Gasta os 12 pontos, usa duas Melhorias e não compra Restrição. Registra a opção sem dano."
   },
   {
    "nome": "Fura sem desconto",
@@ -831,9 +811,9 @@
    ],
    "res": [],
    "livres": [],
-   "dados": 7,
+   "dados": 4,
    "pe": 9,
-   "frase": "Uma Aura de Classe 3, sem desconto, tem Fura: custo 2 + 3, com devolução 3 de Corpo a Corpo. Causa 7d8."
+   "frase": "Uma Aura de Classe 3 com Fura, sem descontos ou Restrições, custa 2 + 3 pontos e causa 4d8."
   },
   {
    "nome": "Corte de ruptura",
@@ -845,7 +825,7 @@
    "livres": [],
    "dados": 10,
    "pe": 14,
-   "frase": "A Liberação acrescenta 3d8: 10d8 numa linha de 18 m por 1,5 m."
+   "frase": "A Liberação acrescenta 3d8: 10d8 numa linha de 18 m por 1,5 m, com origem escolhida a até 18 m."
   }
  ],
  "rotas": {
@@ -862,17 +842,12 @@
    }
   },
   "frases": [
-   "Kata é uma aplicação de Técnica Marcial. Manejo é uma aplicação da rota Sem Técnica.",
+   "Na rota Sem Técnica, os feitiços recebem o nome de Manejos e seguem os requisitos da semente escolhida.",
    "Esta rota não concede Expansão de Domínio, incompleta ou completa, nem Extensão de Domínio.",
    "O equipamento em uso é seu Selo.",
    "PE significa Pontos de Energia para quem possui energia amaldiçoada e Pontos de Esforço para quem não possui."
   ],
-  "sementes": [
-   "Domínio Simples",
-   "Energia Reversa",
-   "Pétala",
-   "Aptidão Própria"
-  ],
+  "sementes": [],
   "semente_frase": "Ela conta como uma aptidão adicional.",
   "grupos_de_arma": {
    "Porrete": [

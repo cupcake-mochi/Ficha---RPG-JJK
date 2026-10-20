@@ -1,3 +1,11 @@
+# Estado vigente R53 · publicação de 19/10/2026
+
+A autorização mais recente do usuário incluiu publicar a R53 na ficha oficial e salvar o projeto no Git. Essa aplicação está concluída; leia `r53/ENTREGA.md` e `r53/testes/evidencias/PUBLICACAO-OFICIAL-R53.json`. O ramo de entrega é `codex/publicacao-r53`, derivado de `ccbd053`. Os planos paralelos B47 abaixo são históricos e não reabrem trabalho.
+
+Não repetir os 45 blocos de promoção nem as inserções: INVOCAÇÕES já tem 1394 linhas. Nunca executar construir()/continuar() na oficial/revisão preenchida, nem importar Excel/Office. Fazer snapshot e validar em cópia para nova migração. Não abrir agentes/chats extras. Sem ampliar acesso ou versionar snapshots/credenciais. Não mesclar em main sem autorização específica. Modelo recomendado para manutenção integrada: Sol/High; conferência focal: Medium.
+
+## Histórico B47
+
 # Trabalho em nuvem — Ciclo Maldito B47
 
 ## Divisão vigente de C+D

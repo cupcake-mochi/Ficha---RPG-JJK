@@ -30,7 +30,7 @@ def coord(sheet, text):
     return ':'.join(one(x) for x in text.split(':'))
 
 
-@lru_cache(maxsize=40000)
+@lru_cache(maxsize=40000, typed=True)
 def formula(text, owner):
     if not isinstance(text, str):
         return text

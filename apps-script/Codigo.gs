@@ -426,6 +426,7 @@ function onEdit(e) {
   var inicio = Date.now();
   if (!e || !e.range) return;
   var aba = e.range.getSheet().getName();
+  if (typeof r53Editar_ === 'function' && r53Editar_(e)) return;
   // A troca de paleta voltou pra cá em 25/09/2026, em passos que cabem nos 30 segundos, pra
   // funcionar em toda cópia sem ninguém autorizar nada. Ver convergirPaleta_.
   if (aba === 'CARTEIRA' && ehCelulaDaPaleta_(e.range)) {
@@ -2727,6 +2728,7 @@ function configurarPaleta_(ss, force) {
  */
 function onOpen(e) {
   var inicio = Date.now();
+  if (typeof r53Menu_ === 'function') r53Menu_();
   try { notasDosTipos_(); } catch (err) { /* a ajuda não bloqueia a abertura */ }
   try { configurarPaleta_(SpreadsheetApp.getActive()); } catch (err) { /* silencioso: não trava a abertura */ }
   continuarPaleta_(inicio);

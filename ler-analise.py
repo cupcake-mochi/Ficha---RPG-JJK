@@ -16,7 +16,7 @@ import csv, io, os, re, shutil, subprocess, sys, tempfile, urllib.request
 from pathlib import Path
 
 ABA = "ANALISE"
-FORMATOS_CONHECIDOS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+FORMATOS_CONHECIDOS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 ERROS = {"#REF!", "#N/A", "#NAME?", "#VALUE!", "#DIV/0!", "#NUM!", "#NULL!", "#ERROR!", "#SPILL!", "#CALC!"}
 
 
@@ -100,7 +100,11 @@ def relatorio(ficha):
     fmt = ficha.get("formato.versao", {}).get("valor")
     if fmt not in FORMATOS_CONHECIDOS:
         return ["reprovada", [f"formato da aba ANALISE desconhecido: {fmt!r}"]]
-    avisos = []
+    avisos=[]
+    if fmt==12:
+        from r53.contrato import decodificar,ErroContrato
+        try:decodificar(ficha)
+        except ErroContrato as err:avisos.extend(err.erros)
     for k, v in ficha.items():
         if str(v["valor"]).strip().upper() in ERROS:
             avisos.append(f"{k} ({v['celula']}): erro de fórmula {v['valor']}")

@@ -1,0 +1,35 @@
+{
+  "data": "2026-10-20",
+  "autorizacao": "Autorizar oficial e fonte",
+  "oficial": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
+  "projeto_apps_script": "1sZTcHm1yNz8x7sVs5WaRj1pX8qbac-kglUDIdDTFLh_iqvHwzF6sqXff",
+  "arquivo_alterado": "EditorR53.gs",
+  "uma_alteracao_igual_ao_ensaio": true,
+  "sha256_texto_lf_antes": "ba69ad619b7dfe47275218e16cae5f8e936dfcc1010b15f7f1d31472434cc44c",
+  "sha256_texto_lf_depois": "c0e10c50ca33f551819f3e3004726cba98bd633d23f359c368099480e06f403f",
+  "valores_analise_antes_depois": {
+    "chaves": 18393,
+    "divergencias": 0
+  },
+  "rodadas_sinteticas": 3,
+  "trocas_por_rodada": 12,
+  "pontos_classes_preservados": {
+    "1": 3,
+    "2": 6
+  },
+  "leitor_bot_http_real": {
+    "leituras": 2,
+    "terminou_estavel": true
+  },
+  "testes_runtime": {
+    "verificacoes": 550,
+    "resultado": "OK"
+  },
+  "testes_pacote": {
+    "arquivos": 7,
+    "abas": 25,
+    "cartoes": 249,
+    "resultado": "OK"
+  },
+  "limites": "Nenhuma reconstrução/migração, nenhum teste de preenchimento na oficial. Pacote comprimido não substituído; alteração exclusiva no controlador direto."
+}

@@ -10,6 +10,8 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 
 ## Comece por aqui
 
+**R53 publicada na oficial:** [ficha no Google Sheets, instruções, backup e provas](r53/ENTREGA.md). São 249 cartões editáveis no próprio local, configurações atualizadas, armazenamento técnico oculto e contrato ANALISE12. Entrega no ramo `codex/publicacao-r53`; os planos B47 abaixo são históricos.
+
 **Sem acesso remoto:** [preparação de nuvem, entradas e limites](NUVEM.md). Comandos: `bash nuvem-b47/preparar.sh` e `.venv/bin/python nuvem-b47/conferir.py --smoke`. Referências antes externas agora estão versionadas.
 
 **Retomada atual da CONFIGURAÇÃO B47:** [plano completo e fila organizada](PLANO-RETOMADA-B47.md). Trabalhe no ramo `codex/configuracao-b47`; o `main` ainda contém a base anterior. [Três prompts para chats de nuvem](PROMPT-WORK-B47.md). [Divisão de ramos e integração](PLANO-PARALELO-B47.md).

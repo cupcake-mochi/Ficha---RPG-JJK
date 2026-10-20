@@ -49,7 +49,7 @@ print(f"o estado do personagem embaixo das barras: {estado_do_personagem.aplica(
 import ficha_layout
 _FL = ficha_layout.trocas(LAYOUT)
 print(f"o desenho da mesa: {ficha_layout.aplica(LAYOUT, _FL)} mudanca(s) na exportacao")
-if "--exportar-analise" not in sys.argv:
+if "--exportar-analise" not in sys.argv and "--exportar-r53" not in sys.argv:
     ficha_layout.desenha_arte(_FL)
 
 # 01/10/2026: o cabecalho da FICHA no molde do estudo da Ficha Pessoal -- a marca, o titulo e a linha de apoio a
@@ -136,7 +136,7 @@ print(f"as bordas corrigidas: {correcoes_borda.aplica(LAYOUT)} celula(s) diferen
 import moldura_foto
 _MF = moldura_foto.trocas(LAYOUT)
 print(f"a moldura da foto em volta da caixa: {moldura_foto.aplica(LAYOUT, _MF)} mudanca(s), a caixa {_MF['caixa']} livre")
-if "--exportar-analise" not in sys.argv:
+if "--exportar-analise" not in sys.argv and "--exportar-r53" not in sys.argv:
     moldura_foto.desenha(_MF)
 
 # 19/09/2026: o texto curto que abre frase ou titulo com a inicial minuscula, na INVOCACAO e no CATALOGO.
@@ -289,6 +289,9 @@ for _name, _values in _ENTIDADES['antes'].items():
         _PROG['antes'].setdefault(_name, {}).setdefault(_coord, _value)
 for _name, _values in _ENTIDADES['depois'].items():
     _PROG['depois'].setdefault(_name, {}).update(_values)
+# R53: versões preparadas e contas nativas antes do contrato ANALISE.
+import montagens_r53
+_R53 = montagens_r53.aplica(LAYOUT, _FAM, _FIV, _PERSONAGEM)
 print(f"a CONFIGURAÇÃO: {configuracao.QUANTIDADE} efeitos, {len(_CFG['alvos'])} caixas, paleta fixa")
 import analise
 _AN = analise.trocas(LAYOUT, _FA, _FP, _FAM, _FIV)
@@ -310,6 +313,8 @@ _PERSONAGEM['analise_fim'] = len(_AN['linhas'])+1
 _ENTIDADES['analise_inicio'] = len(_AN['linhas'])+2
 _AN['linhas'].extend(entidades_custom.exporta(_ENTIDADES))
 _ENTIDADES['analise_fim'] = len(_AN['linhas'])+1
+_AN['linhas'].extend(montagens_r53.exporta(_R53))
+_AN['linhas'].extend(montagens_r53.exporta_versoes(_R53))
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
 
@@ -396,6 +401,23 @@ if '--exportar-horizontal' in sys.argv:
 # ganhou as quatro cores desta versao na v0.1 (decisao do Mizuki: uma paleta so)
 import extensoes_custom
 _EXTENSOES_CUSTOM = extensoes_custom.aplica(LAYOUT, _PROG, _CRIACAO, _FIV)
+montagens_r53.finaliza(_R53)
+import editor_r53
+editor_r53.aplica(LAYOUT, _R53)
+if '--exportar-r53' in sys.argv:
+    editor_r53.escrever(_R53, os.path.join(AQUI, '..', 'r53', 'saidas', 'EditorR53.gs'))
+    _r53_destino=sys.argv[sys.argv.index('--exportar-r53')+1]
+    with open(_r53_destino+'.tmp', 'w', encoding='utf-8') as _f:
+        json.dump({'layout':LAYOUT,'r53':_R53,'analise':_AN},_f,ensure_ascii=False)
+    os.replace(_r53_destino+'.tmp',_r53_destino)
+    sys.exit(0)
+
+if '--modelo-r53' in sys.argv:
+    _r53_destino=sys.argv[sys.argv.index('--modelo-r53')+1]
+    with open(_r53_destino+'.tmp','w',encoding='utf-8') as _f:
+        json.dump({'layout':LAYOUT,'r53':_R53,'analise':_AN},_f,ensure_ascii=False)
+    os.replace(_r53_destino+'.tmp',_r53_destino)
+
 if '--exportar-extensoes' in sys.argv:
     with open(sys.argv[sys.argv.index('--exportar-extensoes')+1], 'w', encoding='utf-8') as _f:
         json.dump({'layout': LAYOUT, 'auditoria': _EXTENSOES_CUSTOM}, _f, ensure_ascii=False)
@@ -472,6 +494,7 @@ for a in LAYOUT["abas"]:
     mesclagens.aplica(ws, a["mescladas"])
 
     for m in a["menus"]:
+        if m["tipo"] == "bool":continue  # As caixas nativas saem dos valores booleanos no emissor GS.
         v = DataValidation(type=m["tipo"], formula1=m["formula"],
                            allow_blank=m["vazio_ok"],
                            showDropDown=not m["mostra_seta"],
@@ -518,8 +541,9 @@ for a in LAYOUT["abas"]:
         ws.add_image(img)
 
 saida = os.path.join(AQUI, "ficha-projeto-m-0.1.xlsx")
-wb.save(saida)
-print(f"ficha escrita: {saida}")
+if "--somente-gs" not in sys.argv:
+    wb.save(saida)
+    print(f"ficha escrita: {saida}")
 print(f"abas: {wb.sheetnames}")
 
 # E o mesmo desenho como o script que constroi a planilha dentro do Sheets. Desde
@@ -572,6 +596,9 @@ def _extras(a):
 
 from b47_personagem import transporte as _PCD_TRANSPORTE
 _PCD_SUPLEMENTOS = _PCD_TRANSPORTE.suplementos(LAYOUT, _PERSONAGEM)
+import transporte as _R53_TRANSPORTE
+_R53_SUPLEMENTOS = _R53_TRANSPORTE.suplementos(LAYOUT)
+emitir_gs.COMPLEMENTOS.update(_R53_TRANSPORTE.complementos(_R53_SUPLEMENTOS))
 emitir_gs.SEPARADAS.update(_PCD_TRANSPORTE.separadas(_PERSONAGEM))
 emitir_gs.COMPLEMENTOS.update(_PCD_TRANSPORTE.complementos(_PCD_SUPLEMENTOS))
 gs, celulas, pecas = emitir_gs.escrever(
@@ -580,7 +607,7 @@ gs, celulas, pecas = emitir_gs.escrever(
     imgs={a["nome"]: a["imagens"] for a in LAYOUT["abas"]},
     arte_dir=os.path.join(AQUI, "arte"),
     limpa=LAYOUT["_meta"].get("largura_limpa"),
-    suplementos={**_PCD_SUPLEMENTOS, "Origens.gs": [("DADOS", _FP["T"]["origem_cap"][0],
+    suplementos={**_PCD_SUPLEMENTOS, **_R53_SUPLEMENTOS, "Origens.gs": [("DADOS", _FP["T"]["origem_cap"][0],
                                 _FP["T"]["origem_cap"][0] + _FP["T"]["origem_cap"][3] - 1),
                                   ("DADOS_CUSTOM", 19, 24),
                                   ("DADOS_CUSTOM", 285, indice_ficha._aba(LAYOUT,"DADOS_CUSTOM")["colunas"])],
@@ -598,6 +625,7 @@ gs, celulas, pecas = emitir_gs.escrever(
                                         ("FICHA",1,50,410,indice_ficha._aba(LAYOUT,'FICHA')['linhas'])],
                 "AnaliseFontes.gs": ("ANALISE", 3, 4),
                 "Pessoal.gs": ("FICHA PESSOAL", 1, 72)})
+editor_r53.escrever(_R53, os.path.join(AQUI, "..", "apps-script", "EditorR53.gs"))
 print(f"script escrito: {gs}")
 print(f"  {celulas} células, {pecas} peças de arte embutidas")
 # 05/10/2026: o texto das habilidades de Caminho e de Trilha, num script à parte (ver habilidades.py)

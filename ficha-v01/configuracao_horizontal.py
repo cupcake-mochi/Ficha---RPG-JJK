@@ -31,7 +31,7 @@ ABERTURAS = {
     'Melhorias': 'Cadastre Melhorias próprias e seus valores. A base do livro fornece os campos deixados em branco; sem base, preencha os campos necessários. Confira os avisos antes de escolher na ficha.',
     'Restrições': 'Cadastre Restrições próprias e suas condições de uso. Deixe em branco os campos que devem herdar a base do livro. A descrição registra a regra; texto livre não cria automação.',
     'Tipos de dano': 'Crie Tipos de dano para os menus da ficha. Escolha uma base do livro para herdar seus campos ou preencha os dados próprios. Confira as condições, os avisos e o efeito descrito.',
-    'Formas': 'Cadastre Formas para personagens e entidades. Campos em branco herdam a base do livro. ALC = alcance; P = personagem; E = entidade; os números indicam a Classe ou faixa de Classes. TR = Teste de Resistência. As escadas definem a progressão de alcance e área.',
+    'Formas': 'A Forma define custo, Família de acesso e medidas. Funções e pontos são escolhidos no cartão; alvos, resolução e duração ficam em COMO É. Campos em branco herdam a base. ALC = alcance; P = personagem; E = entidade. As escadas definem a progressão de alcance e área.',
     'Aptidões e Bênçãos': 'Crie Aptidões e Bênçãos do personagem escolhendo o tipo e, se desejar, uma base do livro. Campos em branco herdam essa base. Confira os requisitos, o efeito e os avisos do cadastro.',
     'Talentos': 'Cadastre Talentos do personagem. Use uma base do livro para herdar os campos em branco ou descreva um Talento próprio; confira os requisitos e avisos. Texto livre não cria automação.',
     'Tipos de entidade': 'Defina Tipos de entidade para as invocações e demais entidades. Escolha uma base para herdar os campos em branco. PE = pontos de energia; confira os valores, requisitos e avisos.',
@@ -88,7 +88,7 @@ def faixa(a1):
     return ':'.join(coord(x) for x in parts)
 
 
-@lru_cache(maxsize=25000)
+@lru_cache(maxsize=25000, typed=True)
 def formula(text, owner):
     if isinstance(text,str):
         address = re.fullmatch(r"('CONFIGURAÇÃO'|CONFIGURAÇÃO)!(\$?[A-Z]+\$?\d+(?::\$?[A-Z]+\$?\d+)?)",text)

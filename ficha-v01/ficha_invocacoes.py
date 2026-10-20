@@ -146,7 +146,7 @@ def regras():
     CAT = json.load(open(os.path.join(RAIZ, "catalogo-projeto-m.json"), encoding="utf-8"))
     TEC = json.load(open(os.path.join(RAIZ, "ficha-v01", "tecnica-do-livro.json"), encoding="utf-8"))
     RA = fa.regras(CAT, TEC)
-    nomes_pecas = [p["nome"] for p in RA["pecas"]]
+    nomes_pecas = list({p["nome"] for p in RA["pecas"]}|{p.get("base",p["nome"]) for p in RA["pecas"]})
     falta = [n for n in PECAS_CITADAS + tuple(LIV["reduzidas"]) if n not in nomes_pecas]
     falta += [f["nome"] for f in LIV["formas"] if f["nome"] not in CAT["formas"]] + [n for n in CAT["formas"] if n not in [f["nome"] for f in LIV["formas"]]]
     falta += [t for t in (DOMADA, SH_CRIACAO, CORPO_CRIACAO) if t not in [x["nome"] for x in LIV["tipos"]]]
@@ -180,9 +180,10 @@ def regras():
     # Fundamento, partindo das bases do capítulo 17
     esc = TEC["escadas"]
     def a_base(forma, escada, faixa):
-        t = LIV["area"].get(forma) if escada in ("raio", "comprimento") else LIV["alcance"].get(forma)
+        t = LIV["area"].get(forma) if escada in ("raio", "comprimento", "linha") else LIV["alcance"].get(forma)
         if t is None or t[faixa].startswith("Indispon"):
             return None
+        if escada=="linha":return t[faixa]
         m = re.match(r"(\d+(?:,\d+)?)", t[faixa])
         return m.group(1) + " m" if m else None
     alcance = []
@@ -356,7 +357,7 @@ def trocas(layout, cor_da_barra=None):
     ALC2 = _faixa(D.T["alcance"][0] + 1 + G_, 2, D.T["alcance"][0] + 2 * G_, D.T["alcance"][2])
     # 07/10/2026 (D43 do livro): Condição, Prende e Cerca só entram na falha de um TR, mesmo numa habilidade de ataque
     D.tabela("pecas", ["peça", "família da peça", "peso da peça", "peça de controle", "efeito pela classe reduzida", "peça que pede TR"],
-             [[p["nome"], p["familia"] or "", p["peso"], int(p["familia"] == "Controle"), int(p["nome"] in R["reduzidas"]),
+             [[p["nome"], p["familia"] or "", p["peso"], int(p["familia"] == "Controle"), int(p.get("base",p["nome"]) in R["reduzidas"]),
                p.get("pede_tr", 0)] for p in R["pecas"]])
     PECAS = D.faixa("pecas")
     if [p["peso"] for p in R["pecas"] if p["nome"] == INESCAPAVEL] != [2]:
@@ -904,15 +905,14 @@ NOTAS = {
     "classe_carta": "A Classe da especial. Ela define os pontos, o PE (3 × Classe) e quantas Melhorias cabem. A básica é sempre "
                     "Classe 0 e não custa PE.",
     "tdano": "Cada ataque tem o seu tipo de dano. A aparência de energia pura usa Força.",
-    "rmenu": "Trocar ataque por Teste de Resistência, ou o contrário, não custa pontos. Em branco, vale o que a Forma traz.",
+    "rmenu": "Registre em COMO É a resolução por ataque ou Teste de Resistência, o TR e os detalhes de cada efeito. A Forma define a entrega; a função é escolhida separadamente.",
     "melhorias": "As Classes 1 e 2 aceitam 2 Melhorias, a 3 e a 4 aceitam 3, e da 5 em diante 4. A Forma não conta. O menu só traz "
                  "as Famílias abertas, e a da Família Livre sai mais barata. A básica aceita uma Melhoria Leve, que custa um dado.",
-    "restricoes": "Até duas, contando o Corpo a Corpo que Toque e Aura já trazem. Restrição paga Melhorias, nunca a Forma: o que passar do "
-                  "gasto em Melhorias some. Na básica cabe uma Restrição Leve, que devolve o dado que a Melhoria tirou.",
+    "restricoes": "Até duas Restrições. Toque e Aura não trazem Corpo a Corpo embutido. Toque tem devolução própria nas Classes 1 a 7, fora das vagas, quando não é exclusivamente pessoal; Aura paga Leve. Toque e Aura não aceitam Queima-Roupa. As devoluções só recuperam gasto real nas Melhorias, nunca a base ou a Forma. Na básica, uma Restrição Leve válida recupera no máximo o dado retirado pela Melhoria.",
     "ampliar": "A mesma especial usada numa Classe maior, até a maior que o nível dela liberou. A conta inteira é refeita.",
     "trilha": "Só o Evocador: as escolhas a mais da Invocação Principal (níveis 8, 16 e 24 da invocação) e do Repertório do Conjunto "
               "(nível 27). Cada escolha é uma básica (Classe 0), uma especial ou um talento de Categoria 1.",
-    "trunfos": "O livro dá os três só à maldição domada com técnica própria. A ficha não confere isso.",
+    "trunfos": "Trunfos exigem maldição domada com técnica própria e os níveis de aquisição do livro. Confira os avisos dos cartões; a descrição registra as permissões específicas.",
     "lib": "A domada conhece uma no nível 10, duas no 20 e três no 30. Classe 3 ou maior, e não ocupa espaço de especial. "
            "Custa 3 × Classe × 1,5 PE, para cima.",
     "tm": "A faixa usa o nível dela, que não sobe com o seu. Os pontos pagam Forma e Melhorias, sem comprar dados.",

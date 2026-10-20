@@ -1,0 +1,1897 @@
+[
+  {
+    "nome": "01 • VT pessoal Classe 1",
+    "entrada": {
+      "classe": 1,
+      "vt": true,
+      "p_vt": 2
+    },
+    "esperado": {
+      "orcamento": 3,
+      "base_funcoes": 1,
+      "saldo": 2,
+      "vida_temporaria": 6,
+      "pe": 3,
+      "valida": true
+    }
+  },
+  {
+    "nome": "01b • Toque não recupera base",
+    "entrada": {
+      "classe": 1,
+      "vt": true,
+      "p_vt": 2,
+      "forma": "Toque"
+    },
+    "esperado": {
+      "base_funcoes": 1,
+      "devolucao": 0,
+      "saldo": 2,
+      "vida_temporaria": 6,
+      "valida": true
+    }
+  },
+  {
+    "nome": "02 • Toque Classe 3 / Precisão",
+    "entrada": {
+      "classe": 3,
+      "dano": true,
+      "p_dano": 9,
+      "forma": "Toque",
+      "m1": "Precisão"
+    },
+    "esperado": {
+      "pago_m1": 2,
+      "retorno_toque": 2,
+      "devolucao": 2,
+      "saldo": 9,
+      "dano_d8": 9,
+      "quantidade_restricoes": 0,
+      "valida": true
+    }
+  },
+  {
+    "nome": "03 • Mescla preparada Classe 3",
+    "entrada": {
+      "classe": 3,
+      "dano": true,
+      "cura": true,
+      "p_dano": 2,
+      "p_cura": 2,
+      "m1": "Mais Um",
+      "dependencias": "Cura independente do ataque"
+    },
+    "esperado": {
+      "base_funcoes": 3,
+      "pago_m1": 2,
+      "saldo": 4,
+      "dano_d8": 2,
+      "cura_d8": 2,
+      "pe": 9,
+      "valida": true
+    }
+  },
+  {
+    "nome": "04 • Mescla preparada Classe 4",
+    "entrada": {
+      "classe": 4,
+      "dano": true,
+      "cura": true,
+      "p_dano": 4,
+      "p_cura": 2,
+      "m1": "Mais Um",
+      "dependencias": "Cura independente do ataque"
+    },
+    "esperado": {
+      "base_funcoes": 4,
+      "pago_m1": 2,
+      "saldo": 6,
+      "dano_d8": 4,
+      "cura_d8": 2,
+      "pe": 12,
+      "valida": true
+    }
+  },
+  {
+    "nome": "05 • Amparo Fechada",
+    "entrada": {
+      "classe": 3,
+      "cura": true,
+      "p_cura": 6,
+      "fam_Amparo": "Fechada"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "05b • Área Fechada impede Mais Um",
+    "entrada": {
+      "classe": 3,
+      "m1": "Mais Um",
+      "fam_Área": "Fechada"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "05c • Guarda individual independe de Amparo",
+    "entrada": {
+      "classe": 3,
+      "m1": "Guarda",
+      "fam_Amparo": "Fechada"
+    },
+    "esperado": {
+      "base_funcoes": 0,
+      "saldo": 6,
+      "valida": true
+    }
+  },
+  {
+    "nome": "06 • Controle Livre sem dano",
+    "entrada": {
+      "classe": 3,
+      "m1": "Prende",
+      "m2": "Trava",
+      "fam_Controle": "Livre",
+      "controle": "Sem dano",
+      "cd": 14
+    },
+    "esperado": {
+      "saldo": 6,
+      "dano_d8": 0,
+      "sem_uso": 6,
+      "cd_normal": 14,
+      "cd_controle": 16,
+      "valida": true
+    }
+  },
+  {
+    "nome": "06b • Desconto não concede reforço sozinho",
+    "entrada": {
+      "classe": 3,
+      "m1": "Prende",
+      "fam_Controle": "Livre",
+      "cd": 14
+    },
+    "esperado": {
+      "bonus_controle": 0,
+      "cd_normal": 14,
+      "cd_controle": 14,
+      "valida": true
+    }
+  },
+  {
+    "nome": "07 • Aura custa Leve",
+    "entrada": {
+      "classe": 3,
+      "forma": "Aura"
+    },
+    "esperado": {
+      "custo_forma": 2,
+      "retorno_toque": 0,
+      "devolucao": 0,
+      "saldo": 7,
+      "valida": true
+    }
+  },
+  {
+    "nome": "07b • Explosão custa Média",
+    "entrada": {
+      "classe": 3,
+      "forma": "Explosão"
+    },
+    "esperado": {
+      "custo_forma": 3,
+      "saldo": 6,
+      "valida": true
+    }
+  },
+  {
+    "nome": "07c • Cone / Queima-Roupa",
+    "entrada": {
+      "classe": 3,
+      "forma": "Cone",
+      "m1": "Fura",
+      "r1": "Queima-Roupa",
+      "r1_valida": true
+    },
+    "esperado": {
+      "custo_forma": 2,
+      "retorno_r1": 2,
+      "devolucao": 2,
+      "saldo": 6,
+      "valida": true
+    }
+  },
+  {
+    "nome": "07d • Aura rejeita Longe",
+    "entrada": {
+      "classe": 3,
+      "forma": "Aura",
+      "m1": "Longe · um degrau"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "07e • Toque rejeita Queima-Roupa",
+    "entrada": {
+      "classe": 3,
+      "forma": "Toque",
+      "r1": "Queima-Roupa",
+      "r1_valida": true
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "08 • Entidade Classe 3 / Livre",
+    "entrada": {
+      "classe": 3,
+      "modalidade": "Entidade",
+      "m1": "Fura",
+      "fam_Mira": "Livre"
+    },
+    "esperado": {
+      "orcamento": 6,
+      "pago_m1": 2,
+      "saldo": 4,
+      "classe_efeito": 2,
+      "fura_rd": 4,
+      "valida": true
+    }
+  },
+  {
+    "nome": "08b • Pessoa Classe 3 / Livre",
+    "entrada": {
+      "classe": 3,
+      "m1": "Fura",
+      "fam_Mira": "Livre"
+    },
+    "esperado": {
+      "orcamento": 9,
+      "pago_m1": 1,
+      "saldo": 8,
+      "fura_rd": 6,
+      "valida": true
+    }
+  },
+  {
+    "nome": "09 • Entidade Classe 1 / VT",
+    "entrada": {
+      "classe": 1,
+      "modalidade": "Entidade",
+      "vt": true,
+      "p_vt": 1
+    },
+    "esperado": {
+      "orcamento": 2,
+      "base_funcoes": 1,
+      "saldo": 1,
+      "vida_temporaria": 3,
+      "valida": true
+    }
+  },
+  {
+    "nome": "09b • Entidade C1 / coletivo sem pontos",
+    "entrada": {
+      "classe": 1,
+      "modalidade": "Entidade",
+      "forma": "Aura",
+      "cura": true,
+      "p_cura": 1
+    },
+    "esperado": {
+      "cura_d8": 0,
+      "valida": false
+    }
+  },
+  {
+    "nome": "10 • Firmeza categorias diferentes",
+    "entrada": {
+      "classe": 3,
+      "m1": "Firmeza · perícia",
+      "m2": "Firmeza · TR"
+    },
+    "esperado": {
+      "quantidade_melhorias": 2,
+      "saldo": 5,
+      "valida": true
+    }
+  },
+  {
+    "nome": "10b • Firmeza categoria duplicada",
+    "entrada": {
+      "classe": 3,
+      "m1": "Firmeza · perícia",
+      "m2": "Firmeza · perícia"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "11 • Forma Fluida / Aura",
+    "entrada": {
+      "classe": 3,
+      "forma": "Aura",
+      "m1": "Fura",
+      "dano": true,
+      "p_dano": 4
+    },
+    "esperado": {
+      "custo_forma": 2,
+      "saldo": 4,
+      "dano_d8": 4,
+      "pe": 9,
+      "valida": true
+    }
+  },
+  {
+    "nome": "11b • Remodelar / Explosão reduzida",
+    "entrada": {
+      "classe": 3,
+      "forma": "Explosão",
+      "m1": "Fura",
+      "dano": true,
+      "p_dano": 3
+    },
+    "esperado": {
+      "custo_forma": 3,
+      "saldo": 3,
+      "dano_d8": 3,
+      "valida": true
+    }
+  },
+  {
+    "nome": "12 • Classe 0 rejeita cura",
+    "entrada": {
+      "classe": 0,
+      "modalidade": "Classe 0",
+      "cura": true,
+      "p_cura": 1
+    },
+    "esperado": {
+      "cura_d8": 0,
+      "pe": 0,
+      "valida": false
+    }
+  },
+  {
+    "nome": "12b • Classe 0 / Melhoria e Restrição",
+    "entrada": {
+      "classe": 0,
+      "modalidade": "Classe 0",
+      "dano": true,
+      "m1": "Empurrão",
+      "r1": "Gesto",
+      "r1_valida": true
+    },
+    "esperado": {
+      "dano_d8": 2,
+      "devolucao": 1,
+      "pe": 0,
+      "valida": true
+    }
+  },
+  {
+    "nome": "12c • Máxima dano fixo / sobra",
+    "entrada": {
+      "classe": 5,
+      "nivel": 17,
+      "modalidade": "Técnica Máxima",
+      "dano": true,
+      "m1": "Passo",
+      "m2": "Empurrão",
+      "fam_Alcance": "Livre"
+    },
+    "esperado": {
+      "orcamento": 8,
+      "dano_d8": 24,
+      "sem_uso": 6,
+      "pe": 25,
+      "valida": true
+    }
+  },
+  {
+    "nome": "12d • Máxima rejeita Salto",
+    "entrada": {
+      "classe": 5,
+      "nivel": 17,
+      "modalidade": "Técnica Máxima",
+      "dano": true,
+      "m1": "Salto"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "12e • Liberação Classe 3 / Linha",
+    "entrada": {
+      "classe": 3,
+      "modalidade": "Liberação Máxima",
+      "forma": "Linha",
+      "dano": true,
+      "p_dano": 7
+    },
+    "esperado": {
+      "saldo": 7,
+      "dano_d8": 10,
+      "pe": 14,
+      "valida": true
+    }
+  },
+  {
+    "nome": "13 • Distribuição não pode criar pontos",
+    "entrada": {
+      "classe": 3,
+      "dano": true,
+      "cura": true,
+      "p_dano": 4,
+      "p_cura": 4,
+      "m1": "Mais Um"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "13b • Parcela fracionária rejeitada",
+    "entrada": {
+      "classe": 3,
+      "dano": true,
+      "p_dano": 1.5
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "14 • Antigo ambíguo preservado",
+    "entrada": {
+      "classe": 3,
+      "migracao": "Revisão necessária"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Sobrecusto é adicional independente",
+    "entrada": {
+      "classe": 3,
+      "m1": "Fura",
+      "r1": "Sobrecusto",
+      "r1_valida": true
+    },
+    "esperado": {
+      "saldo": 9,
+      "pe": 15,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Entidade: condição Média exige comando",
+    "entrada": {
+      "classe": 3,
+      "modalidade": "Entidade",
+      "execucao": "Resposta autônoma",
+      "m1": "Condição · Calado"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Entidade: Aura comandada permite condição",
+    "entrada": {
+      "classe": 3,
+      "modalidade": "Entidade",
+      "execucao": "Comandada",
+      "forma": "Aura",
+      "m1": "Condição · Calado",
+      "res_dano": "TR"
+    },
+    "esperado": {
+      "saldo": 1,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Cura e VT coletivas compartilham teto",
+    "entrada": {
+      "classe": 5,
+      "forma": "Aura",
+      "cura": true,
+      "vt": true,
+      "p_cura": 5,
+      "p_vt": 4
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Teto de cura conserva sobra sem uso",
+    "entrada": {
+      "classe": 3,
+      "cura": true,
+      "p_cura": 7,
+      "m1": "Impulso",
+      "fam_Auxiliares": "Livre",
+      "r1": "Gesto",
+      "r1_valida": true
+    },
+    "esperado": {
+      "cura_d8": 6,
+      "valida": false
+    }
+  },
+  {
+    "nome": "Dano adicional: Salto só uma vez",
+    "entrada": {
+      "classe": 2,
+      "dano": true,
+      "p_dano": 5,
+      "m1": "Salto",
+      "r1": "Gesto",
+      "r1_valida": true
+    },
+    "esperado": {
+      "saldo": 5,
+      "dano_d8": 5,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Medidas • Explosão / alcance e área distintos",
+    "entrada": {
+      "classe": 2,
+      "forma": "Explosão",
+      "m1": "Longe · um degrau",
+      "m2": "Maior · um degrau"
+    },
+    "esperado": {
+      "saldo": 2,
+      "alcance_ofensivo": "36 m",
+      "area": "Raio 4,5 m",
+      "valida": true
+    }
+  },
+  {
+    "nome": "Medidas • Cone com Queima-Roupa conserva tamanho",
+    "entrada": {
+      "classe": 3,
+      "forma": "Cone",
+      "r1": "Queima-Roupa",
+      "r1_valida": true
+    },
+    "esperado": {
+      "alcance_ofensivo": "Em quem executa",
+      "area": "Cone 4,5 m",
+      "valida": true
+    }
+  },
+  {
+    "nome": "Medidas • Entidade C6 alcance real e área reduzida",
+    "entrada": {
+      "classe": 6,
+      "modalidade": "Entidade",
+      "forma": "Explosão"
+    },
+    "esperado": {
+      "alcance_ofensivo": "36 m",
+      "area": "Raio 3 m",
+      "classe_efeito": 5,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Medidas • Entidade C7 área maior",
+    "entrada": {
+      "classe": 7,
+      "modalidade": "Entidade",
+      "forma": "Explosão"
+    },
+    "esperado": {
+      "alcance_ofensivo": "36 m",
+      "area": "Raio 4,5 m",
+      "classe_efeito": 6,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Medidas • benefício individual Classe 6",
+    "entrada": {
+      "classe": 6,
+      "vt": true,
+      "p_vt": 1
+    },
+    "esperado": {
+      "alcance_beneficio": "18 m",
+      "vida_temporaria": 3,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Medidas • Cone Classe 0 primeiro aumento",
+    "entrada": {
+      "classe": 0,
+      "modalidade": "Classe 0",
+      "forma": "Cone",
+      "dano": true,
+      "m1": "Maior · um degrau"
+    },
+    "esperado": {
+      "area": "Cone 4,5 m",
+      "dano_d8": 1,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Concentrada e Duradoura são alternativas",
+    "entrada": {
+      "classe": 3,
+      "m1": "Concentrada",
+      "m2": "Duradoura"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Função • mescla aparece no cartão",
+    "entrada": {
+      "classe": 3,
+      "dano": true,
+      "cura": true,
+      "p_dano": 2,
+      "p_cura": 2,
+      "m1": "Mais Um",
+      "dependencias": "Cura independente do ataque"
+    },
+    "esperado": {
+      "funcao": "Dano 2d8; Cura 2d8",
+      "resolucao_cura": "Automática em aliado disposto; independente do ataque, salvo dependência registrada",
+      "valida": true
+    }
+  },
+  {
+    "nome": "Firmeza • categoria no resultado",
+    "entrada": {
+      "classe": 3,
+      "m1": "Firmeza · perícia",
+      "m2": "Firmeza · TR"
+    },
+    "esperado": {
+      "funcao": "Firmeza · perícia; Firmeza · TR; Saldo sem uso 5 pontos",
+      "valida": true
+    }
+  },
+  {
+    "nome": "TR de dano exige escolha registrada",
+    "entrada": {
+      "classe": 3,
+      "dano": true,
+      "p_dano": 9,
+      "res_dano": "TR",
+      "tr_dano": ""
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "TR Físico e CD ficam apresentados",
+    "entrada": {
+      "classe": 3,
+      "dano": true,
+      "p_dano": 9,
+      "res_dano": "TR",
+      "tr_dano": "Físico",
+      "cd": 14
+    },
+    "esperado": {
+      "resolucao_dano": "TR Físico · CD 14 · sucesso: metade do dano",
+      "valida": true
+    }
+  },
+  {
+    "nome": "Controle exige tipo de TR",
+    "entrada": {
+      "classe": 3,
+      "m1": "Prende",
+      "tr_controle": ""
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Controle e dano compartilham tipo do TR",
+    "entrada": {
+      "classe": 3,
+      "m1": "Prende",
+      "dano": true,
+      "p_dano": 3,
+      "res_dano": "TR",
+      "tr_dano": "Vigor",
+      "tr_controle": "Físico"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Fraqueza de Vigor devolve Leve",
+    "entrada": {
+      "classe": 3,
+      "m1": "Guarda",
+      "r1": "Fraqueza · TR Vigor",
+      "r1_valida": true
+    },
+    "esperado": {
+      "retorno_r1": 2,
+      "devolucao": 2,
+      "saldo": 8,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Fraqueza de Espírito devolve Média",
+    "entrada": {
+      "classe": 3,
+      "m1": "Guarda",
+      "r1": "Fraqueza · TR Espírito",
+      "r1_valida": true
+    },
+    "esperado": {
+      "retorno_r1": 3,
+      "devolucao": 3,
+      "saldo": 9,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Recuo fixa condição Leve",
+    "entrada": {
+      "classe": 3,
+      "m1": "Guarda",
+      "r1": "Recuo · Lento",
+      "r1_valida": true
+    },
+    "esperado": {
+      "retorno_r1": 2,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Recuo não admite condição Pesada",
+    "entrada": {
+      "classe": 3,
+      "m1": "Guarda",
+      "r1": "Recuo · Atordoado",
+      "r1_valida": true
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Terreno precisa de área",
+    "entrada": {
+      "classe": 3,
+      "m1": "Terreno · terreno difícil"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Terreno de área não inventa TR",
+    "entrada": {
+      "classe": 3,
+      "forma": "Cone",
+      "m1": "Terreno · terreno difícil",
+      "tr_controle": ""
+    },
+    "esperado": {
+      "valida": true,
+      "bonus_controle": 0
+    }
+  },
+  {
+    "nome": "Opções de Terreno não concedem repetição",
+    "entrada": {
+      "classe": 3,
+      "forma": "Cone",
+      "m1": "Terreno · terreno difícil",
+      "m2": "Terreno · obscurecimento denso"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Exposições não se acumulam",
+    "entrada": {
+      "classe": 3,
+      "m1": "Guarda",
+      "r1": "Barulho",
+      "r2": "Assinatura",
+      "r1_valida": true,
+      "r2_valida": true
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Penalidades próprias não se acumulam",
+    "entrada": {
+      "classe": 3,
+      "m1": "Guarda",
+      "r1": "Peso Morto",
+      "r2": "Fraqueza · TR Vigor",
+      "r1_valida": true,
+      "r2_valida": true
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Mais Um não duplica uma área",
+    "entrada": {
+      "classe": 3,
+      "forma": "Cone",
+      "m1": "Mais Um"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Família própria desconhecida fica Fechada",
+    "entrada": {
+      "classe": 3,
+      "m1": "Eco protetor 1"
+    },
+    "catalogo": {
+      "Eco protetor 1": {
+        "rotulo": "Eco protetor 1",
+        "nome": "Efeito Próprio",
+        "tipo": "melhorias",
+        "familia": "Eco?*~",
+        "peso": 2,
+        "degraus": 0,
+        "repeticoes": 1,
+        "classe_minima": 0,
+        "tr": 0,
+        "frequencia": 0,
+        "id": "custom.teste.1",
+        "proprio": 1,
+        "cadastro_valido": 1,
+        "controle_compat": 0,
+        "rotulo_base": "custom.teste.1"
+      }
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Família própria Normal paga preço integral",
+    "entrada": {
+      "classe": 3,
+      "m1": "Eco protetor 2"
+    },
+    "catalogo": {
+      "Eco protetor 2": {
+        "rotulo": "Eco protetor 2",
+        "nome": "Efeito Próprio",
+        "tipo": "melhorias",
+        "familia": "Eco?*~",
+        "peso": 2,
+        "degraus": 0,
+        "repeticoes": 1,
+        "classe_minima": 0,
+        "tr": 0,
+        "frequencia": 0,
+        "id": "custom.teste.2",
+        "proprio": 1,
+        "cadastro_valido": 1,
+        "controle_compat": 0,
+        "rotulo_base": "custom.teste.2"
+      }
+    },
+    "familias_custom": {
+      "Eco?*~": "Normal"
+    },
+    "esperado": {
+      "pago_m1": 3,
+      "saldo": 6,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Família própria Livre recebe desconto pessoal",
+    "entrada": {
+      "classe": 3,
+      "m1": "Eco protetor 3"
+    },
+    "catalogo": {
+      "Eco protetor 3": {
+        "rotulo": "Eco protetor 3",
+        "nome": "Efeito Próprio",
+        "tipo": "melhorias",
+        "familia": "Eco?*~",
+        "peso": 2,
+        "degraus": 0,
+        "repeticoes": 1,
+        "classe_minima": 0,
+        "tr": 0,
+        "frequencia": 0,
+        "id": "custom.teste.3",
+        "proprio": 1,
+        "cadastro_valido": 1,
+        "controle_compat": 0,
+        "rotulo_base": "custom.teste.3"
+      }
+    },
+    "familias_custom": {
+      "Eco?*~": "Livre"
+    },
+    "esperado": {
+      "pago_m1": 1,
+      "saldo": 8,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Família própria Livre de entidade arredonda para baixo",
+    "entrada": {
+      "classe": 3,
+      "modalidade": "Entidade",
+      "m1": "Eco protetor 4"
+    },
+    "catalogo": {
+      "Eco protetor 4": {
+        "rotulo": "Eco protetor 4",
+        "nome": "Efeito Próprio",
+        "tipo": "melhorias",
+        "familia": "Eco?*~",
+        "peso": 2,
+        "degraus": 0,
+        "repeticoes": 1,
+        "classe_minima": 0,
+        "tr": 0,
+        "frequencia": 0,
+        "id": "custom.teste.4",
+        "proprio": 1,
+        "cadastro_valido": 1,
+        "controle_compat": 0,
+        "rotulo_base": "custom.teste.4"
+      }
+    },
+    "familias_custom": {
+      "Eco?*~": "Livre"
+    },
+    "esperado": {
+      "pago_m1": 2,
+      "saldo": 4,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Cadastro incompleto não libera efeito próprio",
+    "entrada": {
+      "classe": 3,
+      "m1": "Eco protetor 5"
+    },
+    "catalogo": {
+      "Eco protetor 5": {
+        "rotulo": "Eco protetor 5",
+        "nome": "Efeito Próprio",
+        "tipo": "melhorias",
+        "familia": "Eco?*~",
+        "peso": 2,
+        "degraus": 0,
+        "repeticoes": 1,
+        "classe_minima": 0,
+        "tr": 0,
+        "frequencia": 0,
+        "id": "custom.teste.5",
+        "proprio": 1,
+        "cadastro_valido": 0,
+        "controle_compat": 0,
+        "rotulo_base": "custom.teste.5"
+      }
+    },
+    "familias_custom": {
+      "Eco?*~": "Normal"
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Controle próprio exige compatibilidade registrada",
+    "entrada": {
+      "classe": 3,
+      "m1": "Eco protetor 6",
+      "controle": "Sem dano"
+    },
+    "catalogo": {
+      "Eco protetor 6": {
+        "rotulo": "Eco protetor 6",
+        "nome": "Efeito Próprio",
+        "tipo": "melhorias",
+        "familia": "Controle",
+        "peso": 2,
+        "degraus": 0,
+        "repeticoes": 1,
+        "classe_minima": 0,
+        "tr": 1,
+        "frequencia": 0,
+        "id": "custom.teste.6",
+        "proprio": 1,
+        "cadastro_valido": 1,
+        "controle_compat": 0,
+        "rotulo_base": "custom.teste.6"
+      }
+    },
+    "esperado": {
+      "bonus_controle": 0,
+      "valida": false
+    }
+  },
+  {
+    "nome": "Controle próprio compatível recebe CD própria",
+    "entrada": {
+      "classe": 3,
+      "m1": "Eco protetor 7",
+      "controle": "Sem dano",
+      "cd": 14
+    },
+    "catalogo": {
+      "Eco protetor 7": {
+        "rotulo": "Eco protetor 7",
+        "nome": "Efeito Próprio",
+        "tipo": "melhorias",
+        "familia": "Controle",
+        "peso": 2,
+        "degraus": 0,
+        "repeticoes": 1,
+        "classe_minima": 0,
+        "tr": 1,
+        "frequencia": 0,
+        "id": "custom.teste.7",
+        "proprio": 1,
+        "cadastro_valido": 1,
+        "controle_compat": 1,
+        "rotulo_base": "custom.teste.7"
+      }
+    },
+    "esperado": {
+      "cd_controle": 16,
+      "valida": true
+    }
+  },
+  {
+    "nome": "Aliases não duplicam a mesma categoria de Firmeza",
+    "entrada": {
+      "classe": 3,
+      "m1": "Alias A",
+      "m2": "Alias B"
+    },
+    "catalogo": {
+      "Alias A": {
+        "rotulo": "Alias A",
+        "nome": "Firmeza",
+        "tipo": "melhorias",
+        "familia": "Auxiliares",
+        "peso": 1,
+        "degraus": 0,
+        "repeticoes": 1,
+        "classe_minima": 0,
+        "tr": 0,
+        "frequencia": 0,
+        "id": "catalogo--melhoria-firmeza",
+        "rotulo_base": "Firmeza · TR",
+        "proprio": 1,
+        "cadastro_valido": 1,
+        "controle_compat": 0
+      },
+      "Alias B": {
+        "rotulo": "Alias B",
+        "nome": "Firmeza",
+        "tipo": "melhorias",
+        "familia": "Auxiliares",
+        "peso": 1,
+        "degraus": 0,
+        "repeticoes": 1,
+        "classe_minima": 0,
+        "tr": 0,
+        "frequencia": 0,
+        "id": "catalogo--melhoria-firmeza",
+        "rotulo_base": "Firmeza · TR",
+        "proprio": 1,
+        "cadastro_valido": 1,
+        "controle_compat": 0
+      }
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Básica da entidade preserva d6 e atuação própria",
+    "entrada": {
+      "classe": 0,
+      "modalidade": "Básica",
+      "dano": true,
+      "dados_zero": 2
+    },
+    "esperado": {
+      "orcamento": 2,
+      "pe": 0,
+      "dano_resultado": "2d6",
+      "funcao": "Dano 2d6",
+      "acao": "Atuação básica da entidade",
+      "valida": true
+    }
+  },
+  {
+    "nome": "Básica adicional de Repertório usa Classe 0 e d6",
+    "entrada": {
+      "classe": 0,
+      "modalidade": "Entidade",
+      "dano": true,
+      "dados_zero": 2,
+      "m1": "Precisão"
+    },
+    "esperado": {
+      "orcamento": 2,
+      "pe": 0,
+      "saldo": 1,
+      "dano_resultado": "1d6",
+      "funcao": "Dano 1d6",
+      "acao": "Atuação básica da entidade",
+      "valida": true
+    }
+  },
+  {
+    "nome": "Classe 0 do personagem conserva d8",
+    "entrada": {
+      "classe": 0,
+      "modalidade": "Classe 0",
+      "dano": true,
+      "dados_zero": 2
+    },
+    "esperado": {
+      "pe": 0,
+      "dano_resultado": "2d8",
+      "funcao": "Dano 2d8",
+      "acao": "Ação Padrão",
+      "valida": true
+    }
+  },
+  {
+    "nome": "Especial da entidade conserva d8",
+    "entrada": {
+      "classe": 2,
+      "modalidade": "Entidade",
+      "dano": true,
+      "p_dano": 4
+    },
+    "esperado": {
+      "pe": 6,
+      "dano_resultado": "4d8",
+      "funcao": "Dano 4d8",
+      "valida": true
+    }
+  },
+  {
+    "nome": "Máxima de domada nível17 dano",
+    "entrada": {
+      "modalidade": "Máxima de entidade",
+      "nivel": 17,
+      "classe": 5,
+      "dano": true,
+      "cura": false,
+      "p_dano": 0,
+      "p_cura": 0
+    },
+    "esperado": {
+      "valida": true,
+      "dano_d8": 19,
+      "cura_d8": 0,
+      "pe": 25,
+      "orcamento": 8,
+      "entidade": true,
+      "desconto_livre": 2
+    }
+  },
+  {
+    "nome": "Máxima de domada nível17 cura",
+    "entrada": {
+      "modalidade": "Máxima de entidade",
+      "nivel": 17,
+      "classe": 5,
+      "dano": false,
+      "cura": true,
+      "p_dano": 0,
+      "p_cura": 0
+    },
+    "esperado": {
+      "valida": true,
+      "dano_d8": 0,
+      "cura_d8": 19,
+      "pe": 25,
+      "orcamento": 8,
+      "entidade": true,
+      "desconto_livre": 2
+    }
+  },
+  {
+    "nome": "Máxima de domada nível21 dano",
+    "entrada": {
+      "modalidade": "Máxima de entidade",
+      "nivel": 21,
+      "classe": 6,
+      "dano": true,
+      "cura": false,
+      "p_dano": 0,
+      "p_cura": 0
+    },
+    "esperado": {
+      "valida": true,
+      "dano_d8": 22,
+      "cura_d8": 0,
+      "pe": 30,
+      "orcamento": 12,
+      "entidade": true,
+      "desconto_livre": 3
+    }
+  },
+  {
+    "nome": "Máxima de domada nível21 cura",
+    "entrada": {
+      "modalidade": "Máxima de entidade",
+      "nivel": 21,
+      "classe": 6,
+      "dano": false,
+      "cura": true,
+      "p_dano": 0,
+      "p_cura": 0
+    },
+    "esperado": {
+      "valida": true,
+      "dano_d8": 0,
+      "cura_d8": 22,
+      "pe": 30,
+      "orcamento": 12,
+      "entidade": true,
+      "desconto_livre": 3
+    }
+  },
+  {
+    "nome": "Máxima de domada nível26 dano",
+    "entrada": {
+      "modalidade": "Máxima de entidade",
+      "nivel": 26,
+      "classe": 7,
+      "dano": true,
+      "cura": false,
+      "p_dano": 0,
+      "p_cura": 0
+    },
+    "esperado": {
+      "valida": true,
+      "dano_d8": 26,
+      "cura_d8": 0,
+      "pe": 35,
+      "orcamento": 16,
+      "entidade": true,
+      "desconto_livre": 3
+    }
+  },
+  {
+    "nome": "Máxima de domada nível26 cura",
+    "entrada": {
+      "modalidade": "Máxima de entidade",
+      "nivel": 26,
+      "classe": 7,
+      "dano": false,
+      "cura": true,
+      "p_dano": 0,
+      "p_cura": 0
+    },
+    "esperado": {
+      "valida": true,
+      "dano_d8": 0,
+      "cura_d8": 26,
+      "pe": 35,
+      "orcamento": 16,
+      "entidade": true,
+      "desconto_livre": 3
+    }
+  },
+  {
+    "nome": "Liberação da domada C3 soma próprios6pontos e3d8",
+    "entrada": {
+      "modalidade": "Liberação de entidade",
+      "nivel": 10,
+      "classe": 3,
+      "dano": true,
+      "p_dano": 6
+    },
+    "esperado": {
+      "valida": true,
+      "orcamento": 6,
+      "dano_d8": 9,
+      "pe": 14,
+      "desconto_livre": 1
+    }
+  },
+  {
+    "nome": "Entidade Reação usa coletiva e dispensa básica",
+    "entrada": {
+      "modalidade": "Entidade",
+      "classe": 3,
+      "nivel": 9,
+      "dano": true,
+      "p_dano": 1,
+      "m1": "Reação"
+    },
+    "esperado": {
+      "valida": true,
+      "acao": "Comunique o comando no gatilho + Reação coletiva; sem básica ou sua Reação"
+    }
+  },
+  {
+    "nome": "Forma própria paga preço integral e conserva alcance",
+    "entrada": {
+      "classe": 3,
+      "nivel": 9,
+      "forma": "Agulha própria",
+      "dano": true,
+      "p_dano": 7
+    },
+    "formas": {
+      "Agulha própria": {
+        "rotulo": "Agulha própria",
+        "base": "Projétil",
+        "familia": "Alcance",
+        "peso": 1,
+        "classe_0": true,
+        "coletiva": false,
+        "restricao_embutida": "",
+        "p1_dimensao": "alcance",
+        "p2_dimensao": "",
+        "medidas": [
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      }
+    },
+    "esperado": {
+      "valida": true,
+      "custo_forma": 2,
+      "dano_d8": 7,
+      "alcance_ofensivo": "18 m"
+    }
+  },
+  {
+    "nome": "Longe da Forma própria muda somente alcance estruturado",
+    "entrada": {
+      "classe": 3,
+      "nivel": 9,
+      "forma": "Agulha própria",
+      "dano": true,
+      "p_dano": 5,
+      "m1": "Longe · um degrau"
+    },
+    "formas": {
+      "Agulha própria": {
+        "rotulo": "Agulha própria",
+        "base": "Projétil",
+        "familia": "Alcance",
+        "peso": 1,
+        "classe_0": true,
+        "coletiva": false,
+        "restricao_embutida": "",
+        "p1_dimensao": "alcance",
+        "p2_dimensao": "",
+        "medidas": [
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      }
+    },
+    "esperado": {
+      "valida": true,
+      "dano_d8": 5,
+      "alcance_ofensivo": "36 m"
+    }
+  },
+  {
+    "nome": "Forma própria respeita Família Fechada",
+    "entrada": {
+      "classe": 3,
+      "nivel": 9,
+      "forma": "Agulha própria",
+      "dano": true,
+      "p_dano": 7,
+      "fam_Alcance": "Fechada"
+    },
+    "formas": {
+      "Agulha própria": {
+        "rotulo": "Agulha própria",
+        "base": "Projétil",
+        "familia": "Alcance",
+        "peso": 1,
+        "classe_0": true,
+        "coletiva": false,
+        "restricao_embutida": "",
+        "p1_dimensao": "alcance",
+        "p2_dimensao": "",
+        "medidas": [
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      }
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Forma própria conserva permissão de Classe0",
+    "entrada": {
+      "classe": 0,
+      "modalidade": "Classe 0",
+      "forma": "Agulha sem básica",
+      "dano": true
+    },
+    "formas": {
+      "Agulha sem básica": {
+        "rotulo": "Agulha sem básica",
+        "base": "Projétil",
+        "familia": "Alcance",
+        "peso": 1,
+        "classe_0": false,
+        "coletiva": false,
+        "restricao_embutida": "",
+        "p1_dimensao": "alcance",
+        "p2_dimensao": "",
+        "medidas": [
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "18 m",
+          "36 m",
+          "90 m",
+          "visão a olho nu",
+          "visão a olho nu",
+          "visão a olho nu",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      }
+    },
+    "esperado": {
+      "valida": false
+    }
+  },
+  {
+    "nome": "Quebra Coisa participa do teto de4C",
+    "entrada": {
+      "classe": 2,
+      "nivel": 5,
+      "dano": true,
+      "p_dano": 5,
+      "m1": "Quebra Coisa"
+    },
+    "esperado": {
+      "valida": true,
+      "dano_d8": 4,
+      "sem_uso": 1
+    }
+  },
+  {
+    "nome": "Máxima TR conserva três quartos do dano",
+    "entrada": {
+      "classe": 5,
+      "nivel": 17,
+      "modalidade": "Técnica Máxima",
+      "dano": true,
+      "res_dano": "TR",
+      "cd": 14
+    },
+    "esperado": {
+      "valida": true,
+      "resolucao_dano": "TR Físico · CD 14 · sucesso: 3/4 do dano"
+    }
+  },
+  {
+    "nome": "Controle curto recebe uma rodada e CD própria",
+    "entrada": {
+      "classe": 3,
+      "nivel": 9,
+      "controle": "Sem dano",
+      "m1": "Prende",
+      "cd": 14
+    },
+    "esperado": {
+      "valida": true,
+      "cd_controle": 16
+    },
+    "contem": {
+      "efeitos": "+1 rodada"
+    }
+  },
+  {
+    "nome": "Terreno reforçado não ganha TR inventado",
+    "entrada": {
+      "classe": 3,
+      "nivel": 9,
+      "forma": "Cone",
+      "dano": true,
+      "p_dano": 3,
+      "controle": "Dano limitado à Classe",
+      "m1": "Terreno · terreno difícil",
+      "cd": 14
+    },
+    "esperado": {
+      "valida": true,
+      "cd_controle": 14
+    },
+    "contem": {
+      "efeitos": "+1 rodada"
+    }
+  },
+  {
+    "nome": "Concentrada substitui rodada adicional mas conserva CD",
+    "entrada": {
+      "classe": 3,
+      "nivel": 9,
+      "controle": "Sem dano",
+      "m1": "Prende",
+      "m2": "Concentrada",
+      "cd": 14
+    },
+    "esperado": {
+      "valida": true,
+      "cd_controle": 16
+    },
+    "nao_contem": {
+      "efeitos": "+1 rodada"
+    }
+  }
+]

@@ -143,18 +143,18 @@ N_GRUPOS = 3
 
 # As peças que mudam a conta, pelo nome que têm no catálogo. Cada uma é conferida contra ele em regras(): peça que
 # mudar de nome no livro para a montagem, em vez de deixar uma fórmula procurando um nome que não existe mais.
-PECAS_CITADAS = ("Longe", "Muito Longe", "Maior", "Muito Maior", "Mais Um", "Rajada", "Salto", "Queima", "Estilhaço", "Remate",
-                 "Rápido", "Reação", "Certeiro", "Inescapável", "Toca a Alma")
-RESTRICOES_CITADAS = ("Corpo a Corpo", "Atrasar", "Carregar", "Tudo ou Nada")
+PECAS_CITADAS = ("Longe", "Maior", "Mais Um", "Rajada", "Salto", "Queima", "Estilhaço", "Remate",
+                 "Rápido", "Reação", "Precisão", "Inescapável", "Toca a Alma")
+RESTRICOES_CITADAS = ("Queima-Roupa", "Atrasar", "Carregar", "Tudo ou Nada")
 # as quatro Restrições de frequência (manual p.124; a mesma lista do conferir_feitico.py, que o validador compara)
-FREQUENCIA = ("Uma Vez", "Condicional", "Aquecer", "Dívida")
+FREQUENCIA = ("Uma Vez", "Condicional", "Aquecer")
 # as peças que SOMAM metade dos dados ao total (o Mais Um e a Rajada dividem, e a soma das partes não cresce). O livro
 # reconstruído (Fundamento, Dano e repetições): "Salto, Queima e Estilhaço acrescentam os dados que suas entradas
 # indicam", e o Remate conta como multiplicador de 25% no mesmo teto de 4 × Classe
 SOMAM_METADE = ("Salto", "Queima", "Estilhaço")
 MULTIPLICA = ("Remate", 1.25)
 # como os dados de cada Forma aparecem: 0 dano, 1 cura, 2 vida temporária (3 por ponto), 3 sem dano
-TIPO_DE_DANO = {"Cura": 1, "Onda": 1, "Apoio": 2, "Efeito": 3}
+TIPO_DE_DANO = {}  # R53: a função é independente da Forma.
 PESO = {"Leve": 1, "Media": 2, "Média": 2, "Pesada": 3}
 NOME_DO_PESO = ("Leve", "Média", "Pesada")
 # as peças de Controle que só entram na falha de um TR, mesmo num feitiço de ataque (Controle, no Catálogo do
@@ -169,12 +169,8 @@ ALCANCE = {
     "Toque":    (("1,5 m, um alvo", None, None, ""), None),
     "Explosão": (("raio ", "raio", "maior", ""), (", a ", "alcance", "longe", "")),
     "Aura":     (("raio ", "raio", "maior", ", em você"), None),
-    "Cone":     (("cone de ", "comprimento", "ambos", ""), None),
-    "Linha":    (("linha de ", "comprimento", "ambos", " por 1,5 m"), None),
-    "Cura":     (("um aliado a ", "alcance", "longe", ""), None),
-    "Apoio":    (("um aliado a ", "alcance", "longe", ""), None),
-    "Onda":     (("raio ", "raio", "maior", ", em você"), None),
-    "Efeito":   (("fora de combate", None, None, ""), None),
+    "Cone":     (("cone de ", "comprimento", "maior", ""), (", a ", "alcance", "longe", "")),
+    "Linha":    (("linha de ", "linha", "maior", ""), (", a ", "alcance", "longe", "")),
 }
 GRAU = {None: 0, "longe": 1, "maior": 2, "ambos": 3}
 MAIS_ALVOS = ("Projétil", "Toque")           # as Formas de um alvo, onde o Mais Um e a Rajada aparecem no alcance
@@ -277,29 +273,15 @@ def regras(CAT=None, TEC=None):
     familias = list(CAT["familias"])
     # as peças do menu de Melhoria: as do catálogo, com cada condição no lugar da Melhoria `Condição` (ela custa o
     # nível da condição) e o Efeito Próprio nos três pesos (quem decide o peso é o mestre)
-    pecas = []
-    for n, m in CAT["melhorias"].items():
-        if n == "Condição":
-            pecas += [{"nome": c, "familia": m["familia"], "peso": PESO[p], "pede_tr": 1} for c, p in CAT["condicoes"].items()]
-        elif n == "Efeito Próprio":
-            pecas += [{"nome": f"{n} ({p})", "familia": None, "peso": i + 1} for i, p in enumerate(NOME_DO_PESO)]
-        else:
-            # 07/10/2026, o livro com a D43: Condição, Prende e Cerca sempre pedem TR, mesmo num feitiço de ataque
-            pecas.append({"nome": n, "familia": m["familia"], "peso": PESO[m["peso"]], "pede_tr": int(n in PEDEM_TR)})
-    nomes = [p["nome"] for p in pecas]
-    if len(set(nomes)) != len(nomes):
-        raise SystemExit("ficha_amaldicoada: duas pecas com o mesmo nome no menu de Melhoria")
-    # as Restrições do menu: a que devolve "Leve ou Média" entra duas vezes, uma em cada nível
-    restricoes = []
-    for n, r in CAT["restricoes"].items():
-        niveis = r["devolve"].split(" ou ")
-        for nv in niveis:
-            restricoes.append({"rotulo": n if len(niveis) == 1 else f"{n} ({NOME_DO_PESO[PESO[nv] - 1]})", "nome": n,
-                               "devolve": PESO[nv], "frequencia": int(n in FREQUENCIA)})
+    normalizado=json.load(open(os.path.join(RAIZ,'r53','catalogo.json'),encoding='utf-8'))
+    pecas=[dict(nome=p['rotulo'],base=p['nome'],familia=p['familia'] or None,peso=p['peso'],pede_tr=p['tr'])
+           for p in normalizado['opcoes'] if p['tipo']=='melhorias']
+    restricoes=[dict(rotulo=p['rotulo'],nome=p['nome'],devolve=p['peso'],frequencia=p['frequencia'])
+                for p in normalizado['opcoes'] if p['tipo']=='restricoes']
     do_livro = {f["nome"]: f for f in TEC["formas"]}
     formas = []
     for n, f in CAT["formas"].items():
-        res = do_livro[n]["resolve"]
+        res = "TR" if n in ["Explosão","Aura","Cone","Linha"] else "Ataque"
         formas.append({"nome": n, "familia": f["familia"], "peso": PESO[f["custa"]] if f["custa"] else 0,
                        "embutida": int("embutido" in f), "tipo": TIPO_DE_DANO.get(n, 0),
                        "resolve": "Acerto" if res.startswith("Ataque") else "TR, metade" if res.startswith("TR") else "Automático",
@@ -308,15 +290,17 @@ def regras(CAT=None, TEC=None):
                        "alvos": int(n in MAIS_ALVOS), "na_zero": int(TEC["base_por_classe"].get(n, {"classe_0": ""})["classe_0"] != "—")})
     # o alcance de cada Forma em cada faixa de Classe (0, 1 a 5, 6 e 7), degrau a degrau
     esc, base = TEC["escadas"], TEC["base_por_classe"]
-    if "raio 3 m" not in do_livro["Onda"]["o_que_e"] or esc["raio"][0] != "3 m":
-        raise SystemExit("ficha_amaldicoada: a Onda do livro nao e mais uma esfera de raio 3 m")
+    if esc["raio"][0] != "3 m":
+        raise SystemExit("ficha_amaldicoada: a escada de raio não começa em 3 m")
 
     def a_base(forma, escada, faixa):
         t = base[forma][faixa]
         if t == "—":
             return None
+        if escada == "linha":return t
         if escada == "raio":
             return re.search(r"raio (\d+(?:,\d+)? m)", t).group(1)
+        if forma in ["Cone","Linha"] and escada=="alcance":return base["Projétil"][faixa]
         if "raio" in t:                      # "raio 3 m, a 18 m": o alcance é o que vem depois da vírgula
             return re.search(r", a (\d+(?:,\d+)? m)", t).group(1)
         return re.match(r"(\d+(?:,\d+)?)", t).group(1) + " m"       # "18 m" e "18 × 1,5 m"
@@ -1149,8 +1133,8 @@ NOTAS = {
     "indice": "Escolha a Classe e a fileira mostra os números dela. Em branco, mostra os da sua maior Classe.",
     "zero_indice": "Não muda com o menu: quantos feitiços de Classe 0 o nível dá, e os dados deles.",
     "zero_mel": "Cabe uma Melhoria Leve, e ela tira um dado.",
-    "zero_res": "Cabe uma Restrição Leve: ela devolve o dado que a Melhoria tirou, sem criar pontos. Toque e Aura não "
-                "dão a devolução de Corpo a Corpo na Classe 0.",
+    "zero_res": "Cabe uma Restrição Leve: ela devolve o dado que a Melhoria tirou, sem criar pontos. Toque não "
+                "concede devolução automática na Classe 0; Aura conserva seu procedimento.",
     "tm_dano": "Fixo pela faixa de nível. Nenhum ponto compra mais dados.",
     "tm_pe": "{pe} × a sua maior Classe.",
     "tm_montagem": "Os pontos de montagem compram só a Forma e as Melhorias, nos preços da sua maior Classe. O que sobrar se perde.",

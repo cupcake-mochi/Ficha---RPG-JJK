@@ -1,0 +1,58 @@
+{
+  "pacote": "Atualização da ficha para R53",
+  "criado_em": "2026-10-19T02:33:26.686007+00:00",
+  "pedido_novo": "Linha Função nos cartões, com funções permitidas e distribuição salva por Classe.",
+  "fontes": {
+    "revisao": "R53",
+    "paginas": 411,
+    "blocos": 576,
+    "blocos_alterados_R52_R53": 202,
+    "melhorias": 61,
+    "restricoes": 19
+  },
+  "livro_publicado": "https://ciclo-maldito.vercel.app/livro/Ciclo-Maldito-Livro-de-Regras.pdf",
+  "iniciar_por": "PROMPT-FICHA-R53.md",
+  "escopo": "Prompt e fontes para implementar na ficha. Código da ficha e livro não alterados nesta preparação.",
+  "arquivos": {
+    "ALIASES.json": {
+      "bytes": 3316,
+      "sha256": "c77cc1c2771cfe8d53d7c72db7cd374ad33b5c6ea44b8c75e2c3f8aaa23f5bc6"
+    },
+    "ALTERACOES-R51-para-R52.json": {
+      "bytes": 4114,
+      "sha256": "17d209e801a692c2d4865f808a9dbb221d9c890c8bd1d93e4525df2d4ad83e93"
+    },
+    "ALTERACOES-R52-para-R53.json": {
+      "bytes": 554671,
+      "sha256": "42067cd6d5126500fc37293611c307d85b1f91a3c32b337eea982eecd62908c1"
+    },
+    "BLOCOS-R53.json": {
+      "bytes": 1129262,
+      "sha256": "0bad21b6ca1eab1e9c233945d5dfab964619ad36e6ffd93f9e69423b8b16a94b"
+    },
+    "CATALOGO-E-INTERFACES-R53.json": {
+      "bytes": 378299,
+      "sha256": "a5b8c8901738296fe4290fb27f33da237d0f268f75232427f4a3e8efa30f59c2"
+    },
+    "CORRECAO-RECONFERENCIA-R53.json": {
+      "bytes": 4933,
+      "sha256": "5192dddfdc80893e6f37d87fea3d0f71fcb89651718625faade8e2213ff4aa29"
+    },
+    "EDICAO-ATUAL.json": {
+      "bytes": 831,
+      "sha256": "4819e23178acaeb73cacc39b55a96c4edccb7382aebccd6681a0a88e834a08d0"
+    },
+    "LEIA-ME-R53.md": {
+      "bytes": 2772,
+      "sha256": "53e80f47a267f2c26054fc0d48b5434d8b84ee58970d594f4e67502d979e5827"
+    },
+    "LIVRO-COMPLETO.md": {
+      "bytes": 1161535,
+      "sha256": "7311979bdfc61bda1d2fd5113106f072edc7dd5b8a801a02779ada53fd13a81d"
+    },
+    "PROMPT-FICHA-R53.md": {
+      "bytes": 28196,
+      "sha256": "7b38b37a4821a4776ee4f0f4667c51b6c170a207e59845acbe34ff7b4c757540"
+    }
+  }
+}

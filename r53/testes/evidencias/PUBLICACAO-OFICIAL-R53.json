@@ -1,0 +1,217 @@
+{
+  "data": "2026-10-19",
+  "estado": "publicada na ficha oficial, limpa e validada",
+  "oficial": "https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit",
+  "revisao": "https://docs.google.com/spreadsheets/d/1SHJ4Ms6f8ZmiLzBsvEFfq6iQrcp1zHKXq5sunZfbqJo/edit",
+  "backup": "https://docs.google.com/spreadsheets/d/1lmZ3gF2OGsHe0fa9750vJ6Ym2lHaCJDSmN-EtcULkjQ/edit",
+  "qa_migracao": "https://docs.google.com/spreadsheets/d/177N23M9E1G8knvnQMexSgr01K5BByH0qbeJibZQDaqs/edit",
+  "geracao": "e142593fdc5be157",
+  "fonte_sha256": "2f153f659f714a7e5d16e483832f0bd4914bb93175f0527d97c7d20a03c2b110",
+  "modelo_sha256": "a056ba2510a57e5afbc1af8bb42e9f996aa0f1fd633a492c04630b27892a1821",
+  "abas": 25,
+  "abas_visiveis": [
+    "CARTEIRA",
+    "FICHA",
+    "FICHA AMALDIÇOADA",
+    "INVOCAÇÕES",
+    "FICHA PESSOAL",
+    "GLOSSÁRIO",
+    "CONFIGURAÇÃO"
+  ],
+  "erros_formulas": 0,
+  "contrato_limpo": {
+    "resultado": "OK",
+    "destino": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
+    "chaves": 18394,
+    "chaves_preenchidas": 5140,
+    "aplicacoes": 0,
+    "versoes": {}
+  },
+  "codigo_7_arquivos_relidos": [
+    {
+      "arquivo": "Ficha.gs",
+      "igual": true,
+      "caracteres": 850082
+    },
+    {
+      "arquivo": "Invocacoes.gs",
+      "igual": true,
+      "caracteres": 850082
+    },
+    {
+      "arquivo": "Analise.gs",
+      "igual": true,
+      "caracteres": 850082
+    },
+    {
+      "arquivo": "Configuracao.gs",
+      "igual": true,
+      "caracteres": 850082
+    },
+    {
+      "arquivo": "Origens.gs",
+      "igual": true,
+      "caracteres": 216638
+    },
+    {
+      "arquivo": "EditorR53.gs",
+      "igual": true,
+      "caracteres": 1098099
+    },
+    {
+      "arquivo": "Codigo.gs",
+      "igual": true,
+      "caracteres": 2677
+    }
+  ],
+  "legados_e_manifesto": [
+    {
+      "arquivo": "AnaliseFontes.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "AptidoesPersonagem.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "Criacao.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "CriacaoAnalise.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "CriacaoPainel.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "Custom.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "Danos.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "DanosPainel.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "Entidades.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "EntidadesAnalise.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "EntidadesPainel.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "FormasPersonagem.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "Melhorias.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "PecasAnalise1.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "PecasPainel.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "PersonagemAnalise.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "PersonagemFormas1.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "PersonagemFormas2.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "PersonagemFormas3.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "PersonagemFormas4.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "PersonagemFormas5.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "PersonagemPainel.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "Pessoal.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "Progressao.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "ProgressaoAnalise.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "ProgressaoPainel.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "Restricoes.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "TalentosPersonagem.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "Habilidades.gs",
+      "igual": true
+    },
+    {
+      "arquivo": "appsscript.json",
+      "igual": true
+    }
+  ],
+  "migracao": {
+    "lotes_qa": 119,
+    "lotes_oficial": 45,
+    "pedidos": 31255,
+    "linhas_inseridas": 120,
+    "formulas_copiadas": 59342,
+    "grupos_ficha_amaldicoada": 53,
+    "grupos_invocacoes": 90,
+    "mesclas_ficha_amaldicoada": 1464,
+    "mesclas_invocacoes": 6304,
+    "entradas_visiveis_antes": "snapshot completo relido imediatamente antes da aplicação: zero mudanças"
+  },
+  "testes_nativos": [
+    "Pacote executado: 25 abas, 249 cartões, nenhuma sobra de módulos",
+    "Nome e 1 ponto de Dano no cartão: VÁLIDO, 1d8 e versão preparada salva em MONTAGENS",
+    "Classe acima da disponível rejeitada; Classe 0 não oferecida no cartão regular",
+    "Teste removido; primeiro cartão e sete versões restaurados; exportação final sem aplicações sintéticas",
+    "Sete abas visíveis inspecionadas; paleta, carteira/foto, nove famílias e Formas custom registradas"
+  ],
+  "rotulo_jogador": "VÁLIDO",
+  "latencia": "Aguardar os campos ao trocar Classe; salvamento Google assíncrono. Inicialização da oficial executada e concluída, sem criar gatilhos instaláveis nem ampliar escopos.",
+  "smoke_nuvem": {
+    "resultado": "OK",
+    "verificacoes": 54,
+    "falhas": 0,
+    "pacote_sem_modelo_intermediario": true,
+    "bootstrap_sha256_preservado": "79a577b840bc5806673e7719d170ea363853a4d0c8a507e7c239fa8a0200df5f"
+  }
+}
