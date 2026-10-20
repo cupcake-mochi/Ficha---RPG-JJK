@@ -275,7 +275,6 @@ function salarioCriarPainel_(cfg,carteira) {
     cfg.getRange('K'+row).setNumberFormat('dd/mm/yyyy');cfg.getRange('P'+row).setNumberFormat('"¥ "#,##0');
   }
   cfg.getRange('K93:Q95').merge().setValue('Os créditos são somados ao ajuste manual em FICHA PESSOAL. Continue lançando seus gastos nesse ajuste. O registro integral é guardado automaticamente em uma aba técnica oculta.');
-  cfg.getRange('O32:Q33').setFormula('=HYPERLINK("#gid='+cfg.getSheetId()+'&range=K35";"14 · Emissão e salários")');
   carteira.getRange('AH3:AT3').breakApart();carteira.getRange('AH3:AS3').merge().setFormula('="Emitida "&TEXT(\'CONFIGURAÇÃO\'!O38;"dd.mm.yyyy")');
   carteira.getRange('AT3').insertCheckboxes().setValue(false).setNote('Emitir hoje: grava a data atual do Brasil e desmarca após salvar.');
 }

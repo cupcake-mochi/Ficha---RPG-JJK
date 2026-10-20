@@ -26,7 +26,7 @@ const ctx={Date,SpreadsheetApp:{newDataValidation:validation}};vm.createContext(
 const requests=[];
 function rect(id,r,c,h,w){return {sheetId:id,startRowIndex:r-1,endRowIndex:r+h-1,startColumnIndex:c-1,endColumnIndex:c+w-1};}
 requests.push({unmergeCells:{range:rect(carteira,3,34,1,13)}});
-for(const [id,r,c,h,w] of [[config,35,11,61,7],[config,32,15,2,3],[carteira,3,34,1,13]]){
+for(const [id,r,c,h,w] of [[config,35,11,61,7],[carteira,3,34,1,13]]){
  const rows=Array.from({length:h},(_,i)=>({values:Array.from({length:w},(_,j)=>cells.get([id,r+i,c+j].join(':'))||{})}));
  requests.push({updateCells:{range:rect(id,r,c,h,w),rows,fields:'userEnteredValue,userEnteredFormat,dataValidation,note'}});
 }

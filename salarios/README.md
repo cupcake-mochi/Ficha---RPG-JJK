@@ -4,7 +4,7 @@ Extensão incremental da R53, baseada no `main` d56623a. A fonte é `apps-script
 
 ## Uso
 
-Em CONFIGURAÇÃO, abra **14 · Emissão e salários** pelo atalho no painel inicial. A seção fica em K35:Q95.
+Em CONFIGURAÇÃO, a seção **14 · Emissão e salários** fica em K35:Q95, junto ao painel inicial.
 
 Na CARTEIRA, **AT3**, à direita de “Emitida”, é um checkbox nativo inicialmente desmarcado. Marcar grava o dia atual em America/Sao_Paulo na emissão e desmarca ao salvar. O39 oferece a mesma ação nas configurações. A data fica fixa até nova alteração.
 

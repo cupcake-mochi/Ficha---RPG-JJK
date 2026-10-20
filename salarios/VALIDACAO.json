@@ -221,5 +221,15 @@
     },
     "integridade": "Fonte instalada relida exata; cinco arquivos de dados R53 inalterados. Substituições exatas aplicadas somente depois do hash original. Geração integral inclui as mesmas fontes corrigidas.",
     "sem_pendencias_desta_correcao": true
+  },
+  "atalho_redundante_removido": {
+    "data": "2026-10-20",
+    "alvo": "CONFIGURAÇÃO!O32:Q33",
+    "resultado": "Link removido e fundo restaurado a partir da célula vizinha N32; cabeçalho e painel K35:Q95 preservados.",
+    "ensaio": "Aplicado e relido na cópia QA antes da oficial; snapshot privado dos seis alvos em salarios/saidas/.",
+    "codigo": "Gerador deixa de criar o atalho e a migração deixa de limpar a formatação desse bloco. A rotina salarial instalada permanece igual; foi retirada apenas a geração de um atalho já apagado na planilha.",
+    "fonte_gerador_salarios_sha256": "c77308eebdfcb80d0a1f41871bb244efbba637cc25091d1b546a4658e22fdb2f",
+    "verificacoes_salariais": 112,
+    "saldo_e_regras_alterados": false
   }
 }
