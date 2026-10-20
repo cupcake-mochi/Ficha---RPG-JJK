@@ -1,0 +1,21 @@
+'use strict';
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const {preparar,funcao}=require('./corrigir_abertura');
+const original=Object.values(require('./abertura_r53_original.json').funcoes).join('\n');
+const atual=fs.readFileSync('apps-script/Codigo.gs','utf8').replace(/\r\n/g,'\n');
+const fake="if(hash!=='2f153f659f714a7e5d16e483832f0bd4914bb93175f0527d97c7d20a03c2b110')throw Error();\nR53_MODULO_=(new Function(code))();";
+const out=preparar(fake),ctx=vm.createContext({});vm.runInContext(out.slice(out.indexOf('function r53CorrecaoAbertura_'),out.indexOf('/** Emissão e salários.')),ctx);
+const modified=ctx.r53CorrecaoAbertura_(original+"\nvar VERSAO_MENU_PALETA_ = '09/10/2026-descricoes-2-aviso';\nreturn {\"onOpen\":onOpen,};");
+for(const n of ['notasDosTipos_','configurarPaleta_','atualizarMenuDaPaleta_','onOpen'])assert.equal(funcao(modified,n),funcao(atual,n));
+assert.throws(()=>ctx.r53CorrecaoAbertura_(modified),/âncora divergente/);
+assert.throws(()=>preparar('pacote errado'),/divergente/);
+assert.throws(()=>preparar(out),/já presente/);
+assert.ok(out.indexOf("hash!=='2f153")<out.indexOf('new Function(r53CorrecaoAbertura_'));
+// O caminho já preparado não consulta planilha; forçar reconstrução continua funcionando.
+let acessos=0;const c=vm.createContext({VERSAO_MENU_PALETA_:'nova',PropertiesService:{getDocumentProperties:()=>({getProperty:()=> 'nova',deleteProperty(){}})},paletaJaMontada_:()=>{acessos++;return true;},atualizarMenuDaPaleta_(){},removerNomesDaPaleta_(){},PROP_FEITO_:'feito',PROP_PENDENTE_:'pendente'});
+vm.runInContext(funcao(atual,'configurarPaleta_'),c);assert.equal(c.configurarPaleta_({}), 'já existia');assert.equal(acessos,0);
+assert.equal(c.configurarPaleta_({getSheetByName:()=>null},true),'sem CARTEIRA');
+const menu=funcao(atual,'atualizarMenuDaPaleta_');assert.ok(!/getValue\(|flush\(/.test(menu));
+const opening=vm.createContext({Date,salarioAbrir_:()=>{},r53Menu_:()=>{},continuarPaleta_:()=>{},notasDosTipos_:()=>{throw Error('Não ler notas no evento simples');},configurarPaleta_:()=>{throw Error('Não configurar paleta no evento simples');}});
+vm.runInContext(funcao(atual,'onOpen'),opening);opening.onOpen();
+console.log(JSON.stringify({resultado:'OK',escopo:'patch exato após hash, recusa de pacote divergente/duplicado, paleta sem leitura de valores, reconstrução explícita'}));

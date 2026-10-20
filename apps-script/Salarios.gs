@@ -133,22 +133,9 @@ function salarioMenu_() {
     .addItem('Ativar conferência diária','ativarSalarioDiario').addItem('Desativar conferência diária','desativarSalarioDiario').addToUi();
 }
 function salarioAbrir_() {
-  // Propriedade do próprio projeto: cópias têm outro ID e não entram neste atalho.
-  // A oficial não precisa consultar células para montar o menu de abertura.
-  if(PropertiesService.getScriptProperties().getProperty('salario_edicao')===ScriptApp.getScriptId()){salarioMenu_();return;}
-  var ss=SpreadsheetApp.getActive();if(!salarioPronto_(ss))return;
-  var estado=salarioEstado_(ss);
-  if(estado.agenda&&estado.agenda!==ScriptApp.getScriptId()){
-    salarioBloqueado_(ss,function(){var atual=salarioEstado_(ss);delete atual.agenda;salarioSalvarEstado_(ss,atual);ss.getSheetByName(SALARIO_.config).getRange('O74').setValue('Ao abrir ou editar · ative a conferência diária nesta cópia');});
-  }
   salarioMenu_();
-  // A rotina instalada já mantém o saldo e apura o vencimento. Evite ler fórmulas
-  // enquanto uma edição está recalculando: isso pode consumir os 30 s da abertura.
-  if(estado.agenda===ScriptApp.getScriptId())return;
-  salarioLigacoes_(ss);
-  var vencimento=salarioDia_(ss.getSheetByName(SALARIO_.config).getRange('O48').getValue());
-  // O acionador diário tem seis minutos; o evento simples de abertura tem somente trinta segundos.
-  if(!estado.agenda&&(!isFinite(vencimento)||vencimento<=salarioHoje_()))salarioSeguro_(ss);
+  // Abrir nunca fecha períodos: cópias também têm apenas 30 s. O diário,
+  // a edição e Conferir salários fazem a apuração com bloqueio do documento.
 }
 function salarioEditar_(e) {
   if(!e||!e.range||e.salarioProcessado_)return false;e.salarioProcessado_=true;
@@ -158,18 +145,32 @@ function salarioEditar_(e) {
   var emitir=n==='CARTEIRA'&&salarioToca_(r,3,3,46,46);
   var nome=n==='CARTEIRA'&&salarioToca_(r,9,15,15,45);
   var total=n==='FICHA PESSOAL'&&salarioToca_(r,86,86,23,30);
-  if(!config&&!missao&&!nome&&!total&&!emitir)return false;if(!salarioPronto_(ss))return false;
+  if(!config&&!missao&&!nome&&!total&&!emitir)return false;
   // Com a rotina ativada, a edição instalável registra missões sem disputar o orçamento dos cartões/XP.
   if(!e.salarioInstalavel_&&PropertiesService.getScriptProperties().getProperty('salario_edicao')===ScriptApp.getScriptId()){
     if(total)salarioLigacoes_(ss);
     return config||emitir||total&&!missao;
   }
+  // O estado é lido já sob bloqueio abaixo. Não repetir a leitura de L2
+  // antes dele: cada consulta pode aguardar o recálculo da ficha.
+  if(!ss.getSheetByName(SALARIO_.dados))return false;
   salarioBloqueado_(ss,function(){
     try {
       var cfg=ss.getSheetByName(SALARIO_.config),st=salarioEstado_(ss);
       if(total)salarioLigacoes_(ss);
-      if((config&&salarioToca_(r,39,39,15,17)&&cfg.getRange('O39').getValue()===true)||(emitir&&r.getSheet().getRange('AT3').getValue()===true)){
-        cfg.getRange('O38').setValue(salarioData_(salarioHoje_()));cfg.getRange('O39').setValue(false);ss.getSheetByName('CARTEIRA').getRange('AT3').setValue(false);
+      var controle=(config&&salarioToca_(r,39,39,15,17))||emitir;
+      var reemitido=controle&&(e.value!==undefined?String(e.value).toUpperCase()==='TRUE':(emitir?r.getSheet().getRange('AT3'):cfg.getRange('O39')).getValue()===true);
+      if(reemitido){
+        // Não há fechamento vencido depois de emitir hoje. Só altere o ciclo
+        // aberto; o livro de pagamentos e os gastos nunca participam desta ação.
+        var dia=salarioHoje_(),dias=salarioInt_(cfg.getRange('O41').getValue(),1,3650,'o intervalo em dias');
+        st.inicio=dia;st.ultimaEmissao=dia;salarioSalvarEstado_(ss,st);
+        cfg.getRange('O38').setValue(salarioData_(dia));cfg.getRange('O39').setValue(false);ss.getSheetByName('CARTEIRA').getRange('AT3').setValue(false);
+        cfg.getRange('O48').setValue(salarioData_(dia+dias));cfg.getRange('O69').setValue(salarioData_(dia));
+        cfg.getRange('O70').setFormula('=SUMPRODUCT(N(\'DADOS_SALARIOS\'!E2:E=TRUE);N(ISNUMBER(\'DADOS_SALARIOS\'!D2:D));N(\'DADOS_SALARIOS\'!D2:D>=INT(O69));N(\'DADOS_SALARIOS\'!D2:D<INT(O48));IFERROR(VLOOKUP(\'DADOS_SALARIOS\'!C2:C;K62:O67;5;FALSE);0))');
+        cfg.getRange('O71').setFormula('=ROUNDDOWN(O50*IF(O44;O43+(1-O43)*MIN(O42;MAX(0;O70))/O42;1);0)');
+        salarioStatus_(ss,'Emissão atualizada · próximo fechamento '+salarioTextoDia_(dia+dias));
+        return;
       }
       var hoje=salarioHoje_();
       if(missao&&!config){
@@ -184,6 +185,7 @@ function salarioEditar_(e) {
 }
 function conferirSalarios() {var ss=SpreadsheetApp.getActive();if(!salarioPronto_(ss))throw Error('Instale o módulo de salários primeiro.');return salarioSeguro_(ss,120000);}
 function salarioDiario() {conferirSalarios();}
+function salarioAposAbrir() {if(typeof revisarAbertura==='function')return revisarAbertura();}
 function salarioRegistrarEdicao(e) {if(e){e.salarioInstalavel_=true;return salarioEditar_(e);}}
 function ativarSalarioDiario() {
   var ss=SpreadsheetApp.getActive();if(!salarioPronto_(ss))throw Error('Instale salários primeiro.');
@@ -191,6 +193,7 @@ function ativarSalarioDiario() {
   var ja=triggers.some(function(t){return t.getHandlerFunction()==='salarioDiario';});
   if(!ja)ScriptApp.newTrigger('salarioDiario').timeBased().everyDays(1).atHour(3).inTimezone('America/Sao_Paulo').create();
   if(!triggers.some(function(t){return t.getHandlerFunction()==='salarioRegistrarEdicao';}))ScriptApp.newTrigger('salarioRegistrarEdicao').forSpreadsheet(ss).onEdit().create();
+  if(!triggers.some(function(t){return t.getHandlerFunction()==='salarioAposAbrir';}))ScriptApp.newTrigger('salarioAposAbrir').forSpreadsheet(ss).onOpen().create();
   PropertiesService.getScriptProperties().setProperty('salario_edicao',ScriptApp.getScriptId());
   salarioBloqueado_(ss,function(){var estado=salarioEstado_(ss);estado.agenda=ScriptApp.getScriptId();salarioSalvarEstado_(ss,estado);ss.getSheetByName(SALARIO_.config).getRange('O74').setValue('Diária · 03h–04h · Brasília');});
   return {diario:true,edicoes:true};

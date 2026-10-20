@@ -73,11 +73,11 @@ f=fixture();f.put('CONFIGURAÇÃO','O41',7);f.apurar();f.day(46006);f.apurar();e
 // A ativação é idempotente e desloca a parte salarial para a edição instalável.
 f=fixture();let triggers=[],props=new Map();
 f.ctx.PropertiesService={getScriptProperties:()=>({getProperty:k=>props.get(k)||null,setProperty:(k,v)=>props.set(k,v)})};
-f.ctx.ScriptApp={getScriptId:()=>'qa',getProjectTriggers:()=>triggers,deleteTrigger:t=>{triggers=triggers.filter(v=>v!==t)},newTrigger:name=>{let t={getHandlerFunction:()=>name};let b={timeBased:()=>b,everyDays:()=>b,atHour:()=>b,inTimezone:()=>b,forSpreadsheet:()=>b,onEdit:()=>b,create:()=>{triggers.push(t);return t}};return b}};
-f.ctx.ativarSalarioDiario();f.ctx.ativarSalarioDiario();eq(triggers.map(t=>t.getHandlerFunction()),['salarioDiario','salarioRegistrarEdicao']);
+f.ctx.ScriptApp={getScriptId:()=>'qa',getProjectTriggers:()=>triggers,deleteTrigger:t=>{triggers=triggers.filter(v=>v!==t)},newTrigger:name=>{let t={getHandlerFunction:()=>name};let b={timeBased:()=>b,everyDays:()=>b,atHour:()=>b,inTimezone:()=>b,forSpreadsheet:()=>b,onEdit:()=>b,onOpen:()=>b,create:()=>{triggers.push(t);return t}};return b}};
+f.ctx.ativarSalarioDiario();f.ctx.ativarSalarioDiario();eq(triggers.map(t=>t.getHandlerFunction()),['salarioDiario','salarioRegistrarEdicao','salarioAposAbrir']);
 f.put('CONFIGURAÇÃO','O39',true);eq(f.ctx.salarioEditar_({source:f.ss,range:f.sheets['CONFIGURAÇÃO'].getRange('O39')}),true);eq(f.get('CONFIGURAÇÃO','O39'),true);
 f.ctx.salarioRegistrarEdicao({source:f.ss,range:f.sheets['CONFIGURAÇÃO'].getRange('O39')});eq(f.get('CONFIGURAÇÃO','O39'),false);
-f.ctx.desativarSalarioDiario();eq(triggers.map(t=>t.getHandlerFunction()),['salarioRegistrarEdicao']);eq(props.get('salario_edicao'),'qa');
+f.ctx.desativarSalarioDiario();eq(triggers.map(t=>t.getHandlerFunction()),['salarioRegistrarEdicao','salarioAposAbrir']);eq(props.get('salario_edicao'),'qa');
 f=fixture();f.put('FICHA PESSOAL','AW18','Missão com caixa textual');f.put('FICHA PESSOAL','AX18','Curta');f.apurar();eq(f.get('DADOS_SALARIOS','F2'),'49:18');eq(typeof f.get('DADOS_SALARIOS','F2'),'string');
 // O controle da carteira usa o mesmo caminho de emissão, fica desmarcado e não duplica créditos.
 f=fixture();f.put('CARTEIRA','AT3',true);f.day(46100);f.ctx.salarioEditar_({source:f.ss,range:f.sheets['CARTEIRA'].getRange('AT3')});eq(f.get('CARTEIRA','AT3'),false);eq(f.ctx.salarioDia_(f.get('CONFIGURAÇÃO','O38')),46100);eq(f.rows().length,0);
@@ -85,4 +85,11 @@ f=fixture();f.put('CARTEIRA','AT3',false);f.day(46010);f.ctx.salarioEditar_({sou
 // Uma abertura com rotina instalada não disputa o recálculo dos saldos com a edição.
 f=fixture();f.put('DADOS_SALARIOS','L2',JSON.stringify({versao:1,inicio:f.now(),graus:[],agenda:'qa'}));let leituraNaAbertura=false;f.ctx.salarioLigacoes_=()=>{leituraNaAbertura=true;};f.ctx.salarioAbrir_();eq(leituraNaAbertura,false);
 f=fixture();f.ctx.PropertiesService={getScriptProperties:()=>({getProperty:()=>'qa'})};f.ss.getSheetByName=()=>{throw Error('Abertura não deve acessar células com edição instalável.');};f.ctx.salarioAbrir_();eq(f.logs.at(-1),'write:DADOS_SALARIOS');
+// A cópia sem acionadores também abre sem consultar células ou fechar períodos.
+f=fixture();f.ss.getSheetByName=()=>{throw Error('Abertura da cópia não pode apurar salários.');};f.ctx.salarioAbrir_();eq(f.logs.at(-1),'write:DADOS_SALARIOS');
+// Reemitir hoje usa as missões já registradas, conserva pagamentos e a fórmula manual.
+f=fixture();f.apurar();f.day(46030);f.apurar();f.day(46040);
+f.ctx.salarioMissoesAtuais_=()=>{throw Error('Reemissão não deve varrer missões.');};
+f.put('CARTEIRA','AT3',true);f.ctx.salarioEditar_({source:f.ss,range:f.sheets.CARTEIRA.getRange('AT3')});
+eq(f.get('CARTEIRA','AT3'),false);eq(f.ctx.salarioDia_(f.get('CONFIGURAÇÃO','O48')),46070);eq(f.rows().length,1);eq(f.get('FICHA PESSOAL','O86'),'=150000-500');
 console.log(JSON.stringify({resultado:'OK',verificacoes:checks,escopo:'Regras, períodos, data brasileira, registro de missões, Grau, idempotência e falhas de escrita'}));

@@ -95,6 +95,9 @@ def main():
                                  cwd=ROOT, capture_output=True, text=True, timeout=60)
             check('salários: períodos, participação e idempotência', run.returncode == 0,
                   run.stderr.strip() or run.stdout.strip())
+            for name in ['salarios/testar_abertura.js', 'conteudos-b47/comum/testar-notas-contextuais.js']:
+                run = subprocess.run([node, str(ROOT/name)], cwd=ROOT, capture_output=True, text=True, timeout=60)
+                check(name, run.returncode == 0, run.stderr.strip() or run.stdout.strip())
         # Git identifica as fontes, evitando percorrer dependências em .venv.
         files = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode().split('\0')
         py_count = 0
