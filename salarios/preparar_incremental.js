@@ -1,0 +1,12 @@
+'use strict';
+const fs=require('fs'),path=require('path'),crypto=require('crypto'),vm=require('vm');
+const root=path.resolve(__dirname,'..'),input=process.argv[2]||path.join(__dirname,'saidas/Codigo-antes.gs'),output=process.argv[3]||path.join(__dirname,'saidas/Codigo-final.gs');
+let before=fs.readFileSync(input,'utf8').replace(/\r\n/g,'\n');
+if(!before.includes("hash!=='2f153f659f714a7e5d16e483832f0bd4914bb93175f0527d97c7d20a03c2b110'"))throw Error('Bootstrap não corresponde ao pacote oficial R53 observado.');
+if(before.includes('SALARIO_')||before.includes('salarioEditar_'))throw Error('O módulo já está presente. Não anexar duas vezes.');
+for(const anchor of ['function onEdit(e){','function onOpen(){'])if(before.split(anchor).length!==2)throw Error('Âncora ausente/duplicada: '+anchor);
+const source=fs.readFileSync(path.join(root,'apps-script/Salarios.gs'),'utf8');
+let code=before.replace('function onEdit(e){','function onEdit(e){if(typeof salarioEditar_==="function" && salarioEditar_(e))return;').replace('function onOpen(){','function onOpen(){if(typeof salarioAbrir_==="function")salarioAbrir_();')+'\n'+source;
+new vm.Script(code);fs.mkdirSync(path.dirname(output),{recursive:true});fs.writeFileSync(output,code);
+const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
+console.log(JSON.stringify({resultado:'OK',antes_sha256:sha(before),modulo_sha256:sha(source),codigo_sha256:sha(code),bytes:Buffer.byteLength(code),saida:output}));

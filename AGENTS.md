@@ -1,3 +1,11 @@
+# Extensão vigente · emissão e salários · 20/10/2026
+
+Terceira rodada: a abertura simples não revisa notas/paleta nem apura salários. O novo `salarioAposAbrir` chama `revisarAbertura` com orçamento instalável; o diário e a edição são mantidos. A reemissão só muda o ciclo aberto, sem varrer missões ou tocar nos créditos. A previsão por fórmula compara `INT` das datas para incluir missões do próprio dia. `salarios/corrigir_abertura.js` atualiza o carregador antigo por âncoras estritas após validar o hash original; os cinco catálogos não são regravados. A fonte integral já contém as mesmas correções. Leia os tempos e a evidência vigente em `salarios/VALIDACAO.json`; as falhas de abertura da rodada anterior são históricas.
+
+Leia `salarios/README.md` e `salarios/VALIDACAO.json`. A extensão salarial usa CONFIGURAÇÃO K35:Q95, com histórico recente em K78:Q95 e checkbox de emissão em CARTEIRA!AT3. SALÁRIOS e DADOS_SALARIOS ficam ocultas. O86 continua livre para gastos/fórmulas; W86 soma os créditos do histórico. A publicação incremental anexa Salarios.gs ao Codigo.gs antigo, preservando o pacote R53; a geração integral publica Salarios.gs separado. Nunca instalar nas duas posições ao mesmo tempo.
+
+O instalador no Google deu timeout após criar as duas abas ainda vazias. A retomada de 132 pedidos foi validada em segunda cópia e aplicada na oficial, reutilizando as abas. Não repetir o lote `salarios/saidas/retomada-pedidos.json`. Mudanças futuras exigem snapshot novo e ensaio em cópia. Acionadores diário e de edição estão vinculados à oficial; cópias precisam de ativação própria. Não abrir agentes extras nem mesclar em main sem autorização específica. Para manutenção, Sol/High; conferência focal, Medium.
+
 # Estado vigente R53 · publicação de 19/10/2026
 
 A autorização mais recente do usuário incluiu publicar a R53 na ficha oficial e salvar o projeto no Git. Essa aplicação está concluída; leia `r53/ENTREGA.md` e `r53/testes/evidencias/PUBLICACAO-OFICIAL-R53.json`. O ramo de entrega é `codex/publicacao-r53`, derivado de `ccbd053`. Os planos paralelos B47 abaixo são históricos e não reabrem trabalho.

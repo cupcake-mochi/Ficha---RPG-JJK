@@ -8,7 +8,11 @@ const notes={I43:'Nota manual · preservar 007',AB43:'Outra nota'},props={},text
 const ranges={};for(const a1 of Object.keys(notes))ranges[a1]={getNote:()=>notes[a1],setNote:t=>{writes++;notes[a1]=t;}};
 const ss={getSheetByName:name=>name==='DADOS_ENTIDADES'?{getRange:(row,col,count,width)=>{
  assert.deepEqual([row,col,count,width],[2,42,2,1]);return{getDisplayValues:()=>{reads++;return texts.map(t=>[t]);}};
-}}:name==='INVOCAÇÕES'?{getSheetId:()=>4,getRange:a1=>ranges[a1]}:null};
+}}:name==='INVOCAÇÕES'?{getSheetId:()=>4,getRange:a1=>{
+ if(ranges[a1])return ranges[a1];
+ const m=/^([A-Z]+)(\d+):[A-Z]+(\d+)$/.exec(a1);assert.ok(m,a1);
+ return {getNotes:()=>Array.from({length:+m[3]-m[2]+1},(_,i)=>[notes[m[1]+(+m[2]+i)]||''])};
+}}:null};
 const ctx=vm.createContext({
  ABAS:[{nome:'INVOCAÇÕES',notas_contextuais:{fonte:'DADOS_ENTIDADES',coluna:42,primeira:2,destinos:['I43','AB43'],gatilhos:['B2390']}}],
  ABA_INVOCACOES_:'INVOCAÇÕES',SpreadsheetApp:{getActive:()=>ss,flush:()=>{flushes++;}},

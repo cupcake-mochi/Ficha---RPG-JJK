@@ -399,14 +399,28 @@ function notasDosTipos_(e) {
   if (!alvos.length) return 0;
   var ss = SpreadsheetApp.getActive(), origem = ss.getSheetByName(plano.fonte), aba = ss.getSheetByName(ABA_INVOCACOES_);
   if (!origem || !aba) return 0;
-  SpreadsheetApp.flush();
+  // Na abertura não há edição pendente. Forçar o recálculo aqui fazia o
+  // evento esperar a ficha inteira antes de consultar as doze ajudas.
+  if (e) SpreadsheetApp.flush();
   var textos = origem.getRange(plano.primeira, plano.coluna, plano.destinos.length, 1).getDisplayValues();
   var props = PropertiesService.getDocumentProperties(), estados = props.getProperties();
+  var colunas = {};
+  alvos.forEach(function (g) {
+    var m = /^([A-Z]+)(\d+)$/.exec(g.a1), c = m[1], l = +m[2];
+    if (!colunas[c]) colunas[c] = {primeira:l, ultima:l};
+    colunas[c].primeira = Math.min(colunas[c].primeira, l);
+    colunas[c].ultima = Math.max(colunas[c].ultima, l);
+  });
+  Object.keys(colunas).forEach(function (c) {
+    var grupo = colunas[c];
+    grupo.notas = aba.getRange(c + grupo.primeira + ':' + c + grupo.ultima).getNotes();
+  });
   // Ler antes de escrever permite ao serviço agrupar as operações.
   var mudancas = alvos.map(function (g) {
     var range = aba.getRange(g.a1), chave = 'b47_tipo_nota_' + aba.getSheetId() + '_' + g.a1;
     var estado = null; try { estado = JSON.parse(estados[chave] || 'null'); } catch (err) {}
-    var atual = range.getNote() || '', novo = comporNotaContextual_(atual, estado, textos[g.i][0]);
+    var m = /^([A-Z]+)(\d+)$/.exec(g.a1), grupo = colunas[m[1]];
+    var atual = grupo.notas[+m[2] - grupo.primeira][0] || '', novo = comporNotaContextual_(atual, estado, textos[g.i][0]);
     return {range:range, chave:chave, atual:atual, novo:novo};
   });
   var n = 0, guardar = {}, retirar = [];
@@ -425,6 +439,7 @@ function notasDosTipos_(e) {
 function onEdit(e) {
   var inicio = Date.now();
   if (!e || !e.range) return;
+  if (typeof salarioEditar_ === 'function' && salarioEditar_(e)) return;
   var aba = e.range.getSheet().getName();
   if (typeof r53Editar_ === 'function' && r53Editar_(e)) return;
   // A troca de paleta voltou pra cá em 25/09/2026, em passos que cabem nos 30 segundos, pra
@@ -2637,6 +2652,8 @@ function abrirFichaDaInvocacao_(e) {
  * já escolheu.
  */
 function configurarPaleta_(ss, force) {
+  var preparada = PropertiesService.getDocumentProperties();
+  if (!force && preparada.getProperty('paleta_menu_versao') === VERSAO_MENU_PALETA_) return 'já existia';
   if (force) {
     removerNomesDaPaleta_(ss);
     // A ficha acabou de nascer nas cores de fábrica: o registro de passos da troca não vale mais.
@@ -2644,10 +2661,6 @@ function configurarPaleta_(ss, force) {
     [PROP_FEITO_, PROP_PENDENTE_, 'paleta_menu_versao'].forEach(function (k) { props.deleteProperty(k); });
   } else if (paletaJaMontada_(ss)) {
     // Ficha montada antes de o texto do aviso mudar: troca só o texto, no onOpen, sem remontar a caixa.
-    try {
-      var aviso = ss.getRangeByName(NOME_CEL_PALETA_AVISO_);
-      if (aviso && aviso.getCell(1, 1).getValue() !== TEXTO_AVISO_PALETA_) aviso.getCell(1, 1).setValue(TEXTO_AVISO_PALETA_);
-    } catch (err) { /* silencioso: é só o texto */ }
     atualizarMenuDaPaleta_(ss);
     return 'já existia';
   }
@@ -2716,22 +2729,28 @@ function configurarPaleta_(ss, force) {
   ss.setNamedRange(NOME_CEL_PALETA_ROTULO_, rotulo);
   ss.setNamedRange(NOME_CEL_PALETA_AVISO_, aviso);
   PropertiesService.getDocumentProperties().setProperty('paleta_atual', PALETA_INICIAL_);
+  preparada.setProperty('paleta_menu_versao', VERSAO_MENU_PALETA_);
   return 'criada em CARTEIRA!' + valor.getA1Notation();
 }
 
 /**
- * Roda no onOpen: garante que a caixa da paleta existe mesmo numa planilha
- * que já foi montada antes desta rodada, sem precisar rodar o construir()
- * de novo. Silencioso se já existir.
- *
- * Desde 25/09/2026 também continua uma troca de paleta que tenha ficado pela metade.
+ * Abertura simples: monta os controles e retoma uma troca pendente.
+ * A revisão de ajudas e da caixa da paleta roda em revisarAbertura(), pelo
+ * acionador instalável, sem disputar o limite de trinta segundos.
  */
 function onOpen(e) {
   var inicio = Date.now();
+  if (typeof salarioAbrir_ === 'function') salarioAbrir_();
   if (typeof r53Menu_ === 'function') r53Menu_();
-  try { notasDosTipos_(); } catch (err) { /* a ajuda não bloqueia a abertura */ }
-  try { configurarPaleta_(SpreadsheetApp.getActive()); } catch (err) { /* silencioso: não trava a abertura */ }
   continuarPaleta_(inicio);
+}
+
+/** Revisão instalável: leituras calculadas podem exceder os 30 s do evento simples. */
+function revisarAbertura() {
+  var n = notasDosTipos_();
+  var paleta = configurarPaleta_(SpreadsheetApp.getActive());
+  console.log(JSON.stringify({revisaoAbertura:'OK',notasAtualizadas:n,paleta:paleta}));
+  return {notas:n,paleta:paleta};
 }
 
 /**
@@ -3001,7 +3020,7 @@ var DESCRICOES_PALETAS_ = {
     "roxo e lilás"
   ]
 };
-var VERSAO_MENU_PALETA_ = '09/10/2026-descricoes-2-aviso';
+var VERSAO_MENU_PALETA_ = '20/10/2026-abertura-sem-recalculo';
 function nomeCanonicoDaPaleta_(nome) {
   var p = String(nome || '').trim().split(' · ');
   return PALETAS[p[0]] && (p[1] === 'Claro' || p[1] === 'Escuro') ? p[0] + ' · ' + p[1] : '';
@@ -3024,18 +3043,16 @@ function atualizarMenuDaPaleta_(ss) {
   if (props.getProperty('paleta_menu_versao') === VERSAO_MENU_PALETA_) return;
   var alvo = ss.getRangeByName(NOME_CEL_PALETA_);
   if (!alvo) return;
-  var anterior = alvo.getCell(1, 1).getValue();
+  // A validação aceita os nomes antigos. Atualizar opções/aviso não exige
+  // ler nem regravar a escolha, que pode esperar um recálculo demorado.
   alvo.setDataValidation(SpreadsheetApp.newDataValidation()
     .requireValueInList(opcoesDaPaleta_(), true).setAllowInvalid(true).build())
     .setFontSize(11).setWrap(true);
-  var nome = nomeExibidoDaPaleta_(anterior);
-  if (nome !== anterior) alvo.getCell(1, 1).setValue(nome);
   var aviso = ss.getRangeByName(NOME_CEL_PALETA_AVISO_);
   if (aviso) {
     aviso.setValue(TEXTO_AVISO_PALETA_).setFontSize(8).setWrap(true);
     aviso.getSheet().setRowHeight(aviso.getRow(), 32);
   }
-  SpreadsheetApp.flush();
   props.setProperty('paleta_menu_versao', VERSAO_MENU_PALETA_);
 }
 

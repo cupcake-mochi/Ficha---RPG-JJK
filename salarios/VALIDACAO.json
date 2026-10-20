@@ -1,0 +1,225 @@
+{
+  "data": "2026-10-20",
+  "estado": "Correção publicada e verificada na oficial: abertura, revisão instalável e checkbox concluídos sem timeout",
+  "base_git": "d56623a7d49d87ad522eaed8ab675e473c1ae34e",
+  "oficial": "https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit",
+  "backup_nativo": "https://docs.google.com/spreadsheets/d/1bRCKWPkjVSQDqxG81xah0VKIKsQQXsgkkorNrTBRGWY/edit",
+  "qa_mecanica": "https://docs.google.com/spreadsheets/d/19zzS-vbwOK63FQOCKnCKzc_PMaHdWU-9Ud_YmScde_s/edit",
+  "qa_retomada": "https://docs.google.com/spreadsheets/d/1rtFLjvhAJfC3LkLDRNFpKpZ-MDEybShL5nVGeiDjnX4/edit",
+  "codigo": {
+    "bootstrap_anterior_sha256": "79a577b840bc5806673e7719d170ea363853a4d0c8a507e7c239fa8a0200df5f",
+    "modulo_salarios_sha256": "ff52b048c327c70b2786ef4a597c93bc87bd354a87fa0ee8e2f34c482f3bd8f6",
+    "codigo_oficial_sha256": "a15cf71f23cc0c95a16973900171ae2f5aa6d25b1575d29b7cc5c515943212a1",
+    "codigo_relido_exato": true,
+    "escopo": "Codigo.gs recebe a extensão; catálogos, controlador EditorR53 e manifesto preservados. Não instalar Salarios.gs também como arquivo separado nesta publicação incremental."
+  },
+  "validacao_local": {
+    "verificacoes": 112,
+    "resultado": "OK",
+    "smoke_repositorio": {
+      "resultado": "OK",
+      "verificacoes": 58,
+      "falhas": 0,
+      "python": "3.12.14",
+      "node": "24.19.0",
+      "observacao": "CI atualizado para conferir os oito módulos publicados e executar também os testes de salários."
+    },
+    "pacote_reproduzivel": {
+      "resultado": "OK",
+      "arquivos": 8,
+      "abas_base": 25,
+      "cartoes": 249,
+      "geracao": "e142593fdc5be157"
+    },
+    "casos": [
+      "dias brasileiros e data fixa",
+      "metas e pesos configuráveis",
+      "arredondamento",
+      "limites de período",
+      "Grau no fechamento",
+      "pagamentos atrasados",
+      "nomes repetidos com identidades distintas",
+      "cópia/movimentação de missão",
+      "falha após gravar crédito sem duplicação",
+      "ativação idempotente de acionadores",
+      "endereços de missão como texto",
+      "checkbox da carteira desmarca após emitir hoje",
+      "abertura com diário ativo evita leitura de saldos em recálculo",
+      "abertura de cópia sem leituras salariais",
+      "reemissão sem varredura de missões ou alteração dos pagamentos",
+      "revisão de abertura com prazo instalável",
+      "previsão inclui missões do próprio dia da emissão"
+    ]
+  },
+  "validacao_google": {
+    "pagamentos_qa": [
+      {
+        "participacoes": 1,
+        "parcela": 0.5,
+        "ienes": 75000
+      },
+      {
+        "participacoes": 2,
+        "parcela": 0.75,
+        "ienes": 112500
+      },
+      {
+        "participacoes": 3,
+        "parcela": 1,
+        "ienes": 150000
+      }
+    ],
+    "formula_manual_qa": "=150000-500",
+    "total_qa": 487000,
+    "conferencia_sem_duplicar": {
+      "resultado": "OK",
+      "novos_creditos": 0,
+      "duracao_ms": 80507
+    },
+    "edicao_real_qa": "Uma missão digitada na interface recebeu UUID e 20/10/2026. Trocar Curta por Longa preservou UUID/data, elevando a previsão de 75000 para 112500.",
+    "enderecos_qa": "F2:F5 relidos como stringValue, incluindo 49:18; não como duração.",
+    "qa_encerrada": "Salário pausado e handlers de agendamento/edição neutralizados reversivelmente na cópia mecânica. Os acionadores foram preservados, sem processamento posterior. A segunda cópia nunca recebeu acionadores instaláveis."
+  },
+  "migracao": {
+    "tipo": "incremental nativa, sem reconstrução ou importação Office",
+    "incidente": "Serviço Planilhas interrompeu instalarSalarios após criar DADOS_SALARIOS e SALÁRIOS. Ambas foram relidas vazias, sem alteração da configuração ou O86.",
+    "retomada": "132 pedidos atômicos, ensaiados na segunda cópia antes da oficial. Reutilizadas as duas abas; nenhum crédito/missão de QA transportado.",
+    "retomada_sha256": "033119fe41391959f96577fe26f159cbd1f70cd082215e98b5fec697e8d72c14",
+    "pedidos": 132,
+    "saldo_manual_preservado": true,
+    "aba_dados_salarios": 119828827,
+    "aba_salarios": 1985872561
+  },
+  "oficial_final": {
+    "emissao": "20/10/2026",
+    "checkbox_usar_hoje": false,
+    "checkbox_testado_por_espaco_na_interface": true,
+    "proximo_fechamento": "19/11/2026",
+    "creditos": 0,
+    "saldo_manual": 150000,
+    "total_disponivel": 150000,
+    "erros_nas_formulas_da_extensao": 0,
+    "estado": "Emissão atualizada · próximo fechamento 19/11/2026",
+    "acionadores": [
+      "salarioDiario · 03h–04h America/Sao_Paulo",
+      "salarioRegistrarEdicao · Ao editar",
+      "salarioAposAbrir · Ao abrir · revisão de notas e paleta"
+    ],
+    "edicao_instalavel_apos_checkbox": "Concluído · 20/10/2026 17:34:17 · 24.851 s",
+    "abas": 27,
+    "abas_visiveis": 7,
+    "inspecao_visual": "Painel em CONFIGURAÇÃO K35:Q95, histórico recente na mesma página e checkbox nativo AT3 na carteira. SALÁRIOS oculta."
+  },
+  "limites": [
+    "Acionadores instaláveis não acompanham cópias: ativar no menu Salários de cada ficha copiada.",
+    "Missões anteriores não recebem datas presumidas. A data pode ser informada pelo menu antes de fechar o período.",
+    "Apuração completa é assíncrona e pode levar mais de um minuto nesta ficha; os acionadores instaláveis têm orçamento de seis minutos.",
+    "ANALISE12 preserva o campo anterior de ienes como ajuste manual; total e histórico novos estão em W86 e SALÁRIOS."
+  ],
+  "proxima_revisao_recomendada": "Sol/Medium para conferência focal; Sol/High para alteração integrada.",
+  "ajustes_navegacao": {
+    "backup_nativo": "https://docs.google.com/spreadsheets/d/1OZRw9lBzx8ztrdiim9mmllHefc9rPMC6cQXzxHSKtG8/edit",
+    "qa": "https://docs.google.com/spreadsheets/d/1lsb_bCr4Ev3U4aN1OcLshn16sdhgsPNjCZQ2NxoIueY/edit",
+    "painel": "CONFIGURAÇÃO!K35:Q95",
+    "historico_recente": "CONFIGURAÇÃO!K78:Q95",
+    "emissao": "CONFIGURAÇÃO!O38",
+    "checkbox_carteira": "CARTEIRA!AT3",
+    "padrao_checkbox": false,
+    "migracao": {
+      "pedidos": 178,
+      "lote_igual_ao_ensaiado": true,
+      "sem_inserir_linhas": true,
+      "saldo_manual_preservado": true,
+      "historico_preservado": true,
+      "guia_salarios_oculta": true
+    },
+    "google": {
+      "teste_carteira_r2": "Concluído",
+      "duracao_segundos": 114.407,
+      "integral": 150000,
+      "reduzido": 37500,
+      "creditos": 2,
+      "ajuste_manual": 149500,
+      "total": 337000,
+      "duplicacao": false,
+      "checkbox_qa_emissao_hoje": true,
+      "checkbox_qa_retorno_false": true,
+      "edicao_instalavel_oficial": "Concluído · 20/10/2026 16:53:17 · 55.38 s",
+      "limite_copia": "Falha histórica corrigida: checkbox simples concluiu em 24.149 s na terceira rodada.",
+      "qa_encerrada": "Salário pausado, sem acionadores instalados nesta cópia."
+    },
+    "discord": {
+      "canal": "https://discord.com/channels/1357866906341736488/1561410667108368575",
+      "comando": "GC:ficha",
+      "copia_atualizada": "Lida; ficha vazia com 5 erros e 9 pendências de criação esperados. Seletor abriu a página Limites da análise.",
+      "regressao_r53_04": {
+        "erros": 0,
+        "pendencias": 0,
+        "ajustes_mestre": 0,
+        "veredito": "parcial"
+      },
+      "limite": "O bot não certifica datas de missão nem salários; os testes salariais são nativos."
+    },
+    "correcao_abertura": "Evento simples só monta controles e retoma troca pendente; revisarAbertura roda no acionador salarioAposAbrir, com prazo de seis minutos.",
+    "abertura_corrigida_verificada": true,
+    "abertura_anterior": {
+      "horario": "20/10/2026 17:00:28",
+      "duracao_segundos": 30.603,
+      "resultado": "Tempo limite atingido",
+      "resolvido": true,
+      "observacao": "Falha histórica corrigida na terceira rodada. Veja correcao_abertura_publicada."
+    }
+  },
+  "correcao_abertura_publicada": {
+    "backup_nativo": "https://docs.google.com/spreadsheets/d/1un-TDtuyAEPwH1xzeHh6sYrfROL0RmDDN2hoGjJxZx8/edit",
+    "perfil_original_ms": {
+      "pacote": 3528,
+      "notas": 42374,
+      "paleta": 35300,
+      "total": 81244
+    },
+    "qa": {
+      "abertura_segundos": 5.421,
+      "checkbox_simples_segundos": 24.149,
+      "revisao_completa_segundos": 54.544,
+      "conferencia_apos_reemissao": "Concluída; 2 créditos inalterados, ajuste manual 149500 e total 337000",
+      "previsao_dia_emissao": {
+        "participacoes": 3,
+        "ienes": 150000
+      },
+      "sem_acionadores_instalados": true,
+      "pagamentos_pausados": true
+    },
+    "oficial": {
+      "abertura": {
+        "inicio": "20/10/2026 17:33:20",
+        "segundos": 10.009,
+        "resultado": "Concluído"
+      },
+      "revisao_instalavel": {
+        "inicio": "20/10/2026 17:33:20",
+        "segundos": 65.545,
+        "resultado": "Concluído"
+      },
+      "checkbox_edicao_simples": {
+        "inicio": "20/10/2026 17:34:17",
+        "segundos": 8.812,
+        "resultado": "Concluído"
+      },
+      "checkbox_edicao_instalavel": {
+        "inicio": "20/10/2026 17:34:17",
+        "segundos": 24.851,
+        "resultado": "Concluído"
+      },
+      "acionadores": 3,
+      "checkbox_final": false,
+      "saldo_manual": 150000,
+      "total": 150000,
+      "creditos": 0,
+      "notas_manuais_conferidas_preservadas": true,
+      "paleta_preservada": "Mizuki · Escuro · ameixa e rosa"
+    },
+    "integridade": "Fonte instalada relida exata; cinco arquivos de dados R53 inalterados. Substituições exatas aplicadas somente depois do hash original. Geração integral inclui as mesmas fontes corrigidas.",
+    "sem_pendencias_desta_correcao": true
+  }
+}

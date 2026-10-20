@@ -10,6 +10,8 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 
 ## Comece por aqui
 
+**Emissão e salários:** [controles, ciclos, missões e rotina diária](salarios/README.md). Extensão incremental da R53, preservando a fórmula de gastos do jogador e registrando salários em histórico próprio.
+
 **R53 publicada na oficial:** [ficha no Google Sheets, instruções, backup e provas](r53/ENTREGA.md). São 249 cartões editáveis no próprio local, configurações atualizadas, armazenamento técnico oculto e contrato ANALISE12. Entrega no ramo `codex/publicacao-r53`; os planos B47 abaixo são históricos.
 
 **Sem acesso remoto:** [preparação de nuvem, entradas e limites](NUVEM.md). Comandos: `bash nuvem-b47/preparar.sh` e `.venv/bin/python nuvem-b47/conferir.py --smoke`. Referências antes externas agora estão versionadas.
