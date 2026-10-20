@@ -11,7 +11,7 @@ OUT=ROOT/'r53/saidas/pacote-script'
 
 def gerar():
  OUT.mkdir(exist_ok=True,parents=True)
- folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs'])+['Habilidades.gs','Codigo.gs']
+ folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs'])+['Habilidades.gs','Codigo.gs']
  sources=[(folder/n).read_text() for n in names];source='\n'.join(sources)
  variables=sorted(set(re.findall(r'^var\s+([A-Za-z_$][\w$]*)\s*=',source,re.M)))
  functions=sorted(set(re.findall(r'^function\s+([A-Za-z_$][\w$]*)\s*\(',source,re.M)))
@@ -28,6 +28,8 @@ def gerar():
  # Todos os três arquivos substituídos precisam deixar de declarar as abas antigas.
  for name in slots[len(parts):]:(OUT/name).write_text('// Parte de dados anterior incorporada ao pacote R53.\n')
  (OUT/'EditorR53.gs').write_text((folder/'EditorR53.gs').read_text())
+ # Módulo leve: edições de missão/data não precisam descompactar os catálogos.
+ if (folder/'Salarios.gs').exists():(OUT/'Salarios.gs').write_text((folder/'Salarios.gs').read_text())
  bootstrap='''/** @OnlyCurrentDoc */
 // PACOTE R53 · entradas públicas; sem rede, sem gatilhos instaláveis novos.
 var R53_MODULO_;
@@ -66,7 +68,7 @@ function verificarPacoteR53() {
 '''
  for n in public:
   if n=='onEdit':
-   bootstrap+='function onEdit(e){if(typeof r53Editar_==="function" && r53Editar_(e))return;return r53Modulo_().onEdit(e); }\n'
+   bootstrap+='function onEdit(e){if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(typeof r53Editar_==="function" && r53Editar_(e))return;return r53Modulo_().onEdit(e); }\n'
   elif n!='onSelectionChange':bootstrap+='function '+n+'(){return r53Modulo_()['+json.dumps(n)+'].apply(this,arguments);}\n'
  (OUT/'Codigo.gs').write_text(bootstrap)
  (OUT/'fonte-modulo.js').write_text(source)

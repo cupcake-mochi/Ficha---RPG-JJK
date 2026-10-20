@@ -1,0 +1,68 @@
+{
+  "data": "2026-10-20",
+  "estado": "publicado na ficha oficial, com dois acionadores ativos",
+  "base_git": "d56623a7d49d87ad522eaed8ab675e473c1ae34e",
+  "oficial": "https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit",
+  "backup_nativo": "https://docs.google.com/spreadsheets/d/1bRCKWPkjVSQDqxG81xah0VKIKsQQXsgkkorNrTBRGWY/edit",
+  "qa_mecanica": "https://docs.google.com/spreadsheets/d/19zzS-vbwOK63FQOCKnCKzc_PMaHdWU-9Ud_YmScde_s/edit",
+  "qa_retomada": "https://docs.google.com/spreadsheets/d/1rtFLjvhAJfC3LkLDRNFpKpZ-MDEybShL5nVGeiDjnX4/edit",
+  "codigo": {
+    "bootstrap_anterior_sha256": "79a577b840bc5806673e7719d170ea363853a4d0c8a507e7c239fa8a0200df5f",
+    "modulo_salarios_sha256": "57e8390f0c92e9b70f3420c15db5b4cc135ba467c76252dbd4d9355b287b3359",
+    "codigo_oficial_sha256": "010dcd488762f2fc53c808b2dc00649fb099bc7ee148219703308bb68e8b3cb4",
+    "codigo_relido_exato": true,
+    "escopo": "Codigo.gs recebe a extensão; catálogos, controlador EditorR53 e manifesto preservados. Não instalar Salarios.gs também como arquivo separado nesta publicação incremental."
+  },
+  "validacao_local": {
+    "verificacoes": 101,
+    "resultado": "OK",
+    "pacote_reproduzivel": {"resultado": "OK", "arquivos": 8, "abas_base": 25, "cartoes": 249, "geracao": "e142593fdc5be157"},
+    "casos": ["dias brasileiros e data fixa", "metas e pesos configuráveis", "arredondamento", "limites de período", "Grau no fechamento", "pagamentos atrasados", "nomes repetidos com identidades distintas", "cópia/movimentação de missão", "falha após gravar crédito sem duplicação", "ativação idempotente de acionadores", "endereços de missão como texto"]
+  },
+  "validacao_google": {
+    "pagamentos_qa": [
+      {"participacoes": 1, "parcela": 0.5, "ienes": 75000},
+      {"participacoes": 2, "parcela": 0.75, "ienes": 112500},
+      {"participacoes": 3, "parcela": 1, "ienes": 150000}
+    ],
+    "formula_manual_qa": "=150000-500",
+    "total_qa": 487000,
+    "conferencia_sem_duplicar": {"resultado": "OK", "novos_creditos": 0, "duracao_ms": 80507},
+    "edicao_real_qa": "Uma missão digitada na interface recebeu UUID e 20/10/2026. Trocar Curta por Longa preservou UUID/data, elevando a previsão de 75000 para 112500.",
+    "enderecos_qa": "F2:F5 relidos como stringValue, incluindo 49:18; não como duração.",
+    "qa_encerrada": "Salário pausado e handlers de agendamento/edição neutralizados reversivelmente na cópia mecânica. Os acionadores foram preservados, sem processamento posterior. A segunda cópia nunca recebeu acionadores instaláveis."
+  },
+  "migracao": {
+    "tipo": "incremental nativa, sem reconstrução ou importação Office",
+    "incidente": "Serviço Planilhas interrompeu instalarSalarios após criar DADOS_SALARIOS e SALÁRIOS. Ambas foram relidas vazias, sem alteração da configuração ou O86.",
+    "retomada": "132 pedidos atômicos, ensaiados na segunda cópia antes da oficial. Reutilizadas as duas abas; nenhum crédito/missão de QA transportado.",
+    "retomada_sha256": "033119fe41391959f96577fe26f159cbd1f70cd082215e98b5fec697e8d72c14",
+    "pedidos": 132,
+    "saldo_manual_preservado": true,
+    "aba_dados_salarios": 119828827,
+    "aba_salarios": 1985872561
+  },
+  "oficial_final": {
+    "emissao": "20/10/2026",
+    "checkbox_usar_hoje": false,
+    "checkbox_testado_por_espaco_na_interface": true,
+    "proximo_fechamento": "19/11/2026",
+    "creditos": 0,
+    "saldo_manual": 150000,
+    "total_disponivel": 150000,
+    "erros_nas_formulas_da_extensao": 0,
+    "estado": "Aguardando o nome do personagem na CARTEIRA.",
+    "acionadores": ["salarioDiario · 03h–04h America/Sao_Paulo", "salarioRegistrarEdicao · Ao editar"],
+    "edicao_instalavel_apos_checkbox": "Executada em 20/10/2026 15:45:35, taxa de erros 0% no painel de acionadores.",
+    "abas": 27,
+    "abas_visiveis": 8,
+    "inspecao_visual": "CONFIGURAÇÃO: seção 14, data, checkboxes, valores, intervalo e pesos legíveis. Captura privada em salarios/saidas/oficial-configuracao.png."
+  },
+  "limites": [
+    "Acionadores instaláveis não acompanham cópias: ativar no menu Salários de cada ficha copiada.",
+    "Missões anteriores não recebem datas presumidas. A data pode ser informada pelo menu antes de fechar o período.",
+    "Apuração completa é assíncrona e pode levar mais de um minuto nesta ficha; os acionadores instaláveis têm orçamento de seis minutos.",
+    "ANALISE12 preserva o campo anterior de ienes como ajuste manual; total e histórico novos estão em W86 e SALÁRIOS."
+  ],
+  "proxima_revisao_recomendada": "Sol/Medium para conferência focal; Sol/High para alteração integrada."
+}

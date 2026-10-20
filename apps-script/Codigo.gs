@@ -425,6 +425,7 @@ function notasDosTipos_(e) {
 function onEdit(e) {
   var inicio = Date.now();
   if (!e || !e.range) return;
+  if (typeof salarioEditar_ === 'function' && salarioEditar_(e)) return;
   var aba = e.range.getSheet().getName();
   if (typeof r53Editar_ === 'function' && r53Editar_(e)) return;
   // A troca de paleta voltou pra cá em 25/09/2026, em passos que cabem nos 30 segundos, pra
@@ -2728,6 +2729,7 @@ function configurarPaleta_(ss, force) {
  */
 function onOpen(e) {
   var inicio = Date.now();
+  if (typeof salarioAbrir_ === 'function') salarioAbrir_();
   if (typeof r53Menu_ === 'function') r53Menu_();
   try { notasDosTipos_(); } catch (err) { /* a ajuda não bloqueia a abertura */ }
   try { configurarPaleta_(SpreadsheetApp.getActive()); } catch (err) { /* silencioso: não trava a abertura */ }
