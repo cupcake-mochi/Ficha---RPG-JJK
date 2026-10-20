@@ -1,5 +1,31 @@
 # R53 · entrega na ficha oficial · 19/10/2026
 
+## Manutenção de salvamento · 20/10/2026
+
+Autorização explícita posterior do usuário para aplicar somente a correção de
+salvamento na oficial e registrá-la no branch `codex/publicacao-r53`.
+O controlador direto agora confirma as escritas com `SpreadsheetApp.flush()`
+antes de liberar o document lock; um `finally` interno garante a liberação
+mesmo se a confirmação falhar. Fonte e controlador gerado receberam o mesmo
+ajuste; não se alteraram regras, células, fórmulas, abas ou migração.
+
+O defeito foi reproduzido na cópia sintética 05 da bateria do bot: uma troca
+rápida gravou os 6 pontos da Classe 2 sobre os 3 da Classe 1. Após o ajuste,
+três rodadas de 12 trocas preservaram as duas versões; os estados transitórios
+foram capturados e o leitor do bot fez uma releitura HTTP real até estabilizar.
+550 verificações do runtime direto passaram, incluindo liberação do lock após
+falha do flush. Pacote de sete arquivos regenerado e conferido localmente.
+
+Na oficial, foi alterado somente o arquivo independente `EditorR53.gs` pelo
+editor vinculado; o pacote comprimido de dados não foi substituído. Não se
+executaram construir/continuar nem testes de preenchimento na oficial.
+As evidências sem conteúdo real ficam em
+`r53/testes/evidencias/CORRECAO-SALVAMENTO-20-10.json`; fontes integrais/snapshots
+ficam em diretório local ignorado da bateria do bot.
+
+Recomendação de manutenção: GPT-6.1 Sol/High; revisão focal pode usar Medium.
+As seções abaixo descrevem a entrega original de 19/10.
+
 A R53 está aplicada na [ficha oficial — Ficha - Era da Revolução](https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit). O endereço foi preservado. Este documento substitui os estados históricos de “oficial intacta” e de editor separado.
 
 Os 249 cartões são editáveis no próprio local. MONTAGENS é armazenamento técnico oculto; não existe uma segunda página de edição para o jogador. São 25 abas, sete visíveis. Formas custom e as notas do restante da ficha foram atualizadas. O estado do cartão usa **VÁLIDO**, sem o rótulo técnico “R53 · válida”. Nomes, exemplos e preparações de teste foram retirados.

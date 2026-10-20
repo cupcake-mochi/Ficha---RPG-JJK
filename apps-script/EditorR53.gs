@@ -149,5 +149,5 @@ function r53Editar_(e) {
  } catch(err) {
   gs.forEach(function(g){try{if(e.oldValue!==undefined&&range.getNumRows()===1&&range.getNumColumns()===1&&g.cel.classe&&r53Atinge_(range,g.cel.classe))range.setValue(Number(e.oldValue));r53Mostrar_(ss,g,r53Ativa_(ss,g));}catch(ignored){}});
   ss.toast(err.message);console.log('R53 direto: '+err.message);return true;
- } finally {lock.releaseLock();}
+ } finally {try {SpreadsheetApp.flush();} finally {lock.releaseLock();}}
 }

@@ -15,7 +15,8 @@ class Sheet{
 }
 const sheets=new Map,props=new Map,toasts=[];
 const ss={getSheetByName(n){if(!sheets.has(n))sheets.set(n,new Sheet(n));return sheets.get(n);},toast(t){toasts.push(t);},getSpreadsheetLocale(){return'en_US';}};
-const box={console,PropertiesService:{getDocumentProperties:()=>({getProperty:k=>props.get(k)||null,setProperty:(k,v)=>props.set(k,v)})},LockService:{getDocumentLock:()=>({tryLock:()=>true,releaseLock(){}})},SpreadsheetApp:{getActive:()=>ss,newDataValidation(){let o={};for(const k of ['requireCheckbox','requireValueInList','requireFormulaSatisfied','setAllowInvalid'])o[k]=function(...v){this[k+'_args']=v;return this;};o.build=function(){return {...this};};return o;}}};
+const lockTrace=[];let locked=false;
+const box={console,PropertiesService:{getDocumentProperties:()=>({getProperty:k=>props.get(k)||null,setProperty:(k,v)=>props.set(k,v)})},LockService:{getDocumentLock:()=>({tryLock(){locked=true;lockTrace.push('acquire');return true;},releaseLock(){assert(locked);assert.strictEqual(lockTrace.at(-1),'flush');locked=false;lockTrace.push('release');}})},SpreadsheetApp:{getActive:()=>ss,flush(){assert(locked);lockTrace.push('flush');},newDataValidation(){let o={};for(const k of ['requireCheckbox','requireValueInList','requireFormulaSatisfied','setAllowInvalid'])o[k]=function(...v){this[k+'_args']=v;return this;};o.build=function(){return {...this};};return o;}}};
 vm.createContext(box);vm.runInContext(fs.readFileSync(process.argv[2]||'apps-script/EditorR53.gs','utf8'),box);
 const cfg=box.R53_EDITOR_,fields=cfg.campos.map(f=>f[0]);eq(cfg.esquema,3);eq(cfg.contextos.length,249);eq(!!cfg.paineis,false);
 ss.getSheetByName(cfg.amparo.aba).getRange(cfg.amparo.faixa).setValues([Array(13).fill('Normal')]);
@@ -54,4 +55,10 @@ let late=sh.getRange(first.funcoes_diretas.dano);late.setValue(0);
 box.r53Editar_({range:late,source:ss,value:'6',oldValue:'4'});eq(read(first,4,'pontos1'),6);eq(late.getValue(),6);
 // An obsolete Class event must not roll back a later user selection.
 sh.getRange(first.cel.classe).setValue(5);box.r53Editar_({range:sh.getRange(first.cel.classe),source:ss,value:'3',oldValue:'4'});eq(sh.getRange(first.cel.classe).getValue(),5);
+// A failed flush still releases the document lock, without hiding the failure.
+const flush=box.SpreadsheetApp.flush;
+box.SpreadsheetApp.flush=()=>{flush();throw Error('flush indisponível no ensaio');};
+assert.throws(()=>edit(first,first.funcoes_diretas.dano,6),/flush indisponível no ensaio/);checks++;
+eq(locked,false);eq(lockTrace.slice(-3),['acquire','flush','release']);
+box.SpreadsheetApp.flush=flush;
 console.log(JSON.stringify({checks,resultado:'OK',escopo:'Persistência, Classes, edição direta, proteção de edições concorrentes, bloqueio por Família e modalidades; fórmulas e visual exigem prova Google.'}));
