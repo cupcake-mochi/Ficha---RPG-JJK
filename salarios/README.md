@@ -4,13 +4,17 @@ Extensão incremental da R53, baseada no `main` d56623a. A fonte é `apps-script
 
 ## Uso
 
-Em CONFIGURAÇÃO, abra **14 · Emissão e salários** pelo atalho no painel inicial. A seção fica em C320:Q355.
+Em CONFIGURAÇÃO, abra **14 · Emissão e salários** pelo atalho no painel inicial. A seção fica em K35:Q95.
 
-- G323: data de emissão fixa, editável. G324 grava o dia atual em Brasília e desmarca depois de salvar. Uma reemissão posterior ao último salário reinicia o próximo ciclo sem retirar créditos; uma data anterior não repete períodos pagos.
-- G325: ativa o salário. Desligar pausa a apuração; religar apura períodos pendentes.
-- G326: intervalo em dias corridos, padrão 30. G327: participações para salário completo, padrão 3. G328: parcela mínima, padrão 25%. G329: exige participação; desmarcar concede a referência integral.
-- G339:G343: salário por Grau. P339:P344: pesos das missões. Os valores do livro são ¥150.000, ¥300.000, ¥600.000, ¥1.200.000 e ¥2.400.000; curta/padrão 1, longa 2, final de arco 3. Solos começam em 0 porque o livro não define seu peso salarial; a campanha pode alterá-lo.
-- G333, G348:G351: vencimento, início, participações, previsão e último fechamento. G334 mostra os créditos acumulados; G335 mantém visível a referência integral do Grau atual.
+Na CARTEIRA, **AT3**, à direita de “Emitida”, é um checkbox nativo inicialmente desmarcado. Marcar grava o dia atual em America/Sao_Paulo na emissão e desmarca ao salvar. O39 oferece a mesma ação nas configurações. A data fica fixa até nova alteração.
+
+Os últimos dez créditos aparecem em **CONFIGURAÇÃO!K78:Q95**, do mais recente para o mais antigo. SALÁRIOS é somente a escrituração técnica oculta, assim como DADOS_SALARIOS; nenhuma guia salarial extra aparece na navegação do jogador. Os lançamentos integrais permanecem preservados.
+
+- O38: data de emissão fixa, editável. O39 grava o dia atual em Brasília e desmarca depois de salvar. Uma reemissão posterior ao último salário reinicia o próximo ciclo sem retirar créditos; uma data anterior não repete períodos pagos.
+- O40: ativa o salário. Desligar pausa a apuração; religar apura períodos pendentes.
+- O41: intervalo em dias corridos, padrão 30. O42: participações para salário completo, padrão 3. O43: parcela mínima, padrão 25%. O44: exige participação; desmarcar concede a referência integral.
+- O54:O58: salário por Grau. O62:O67: pesos das missões. Os valores do livro são ¥150.000, ¥300.000, ¥600.000, ¥1.200.000 e ¥2.400.000; curta/padrão 1, longa 2, final de arco 3. Solos começam em 0 porque o livro não define seu peso salarial; a campanha pode alterá-lo.
+- O48, O69:O72: vencimento, início, participações, previsão e último fechamento. O49 mostra os créditos acumulados; O50 mantém visível a referência integral do Grau atual.
 
 O saldo manual continua em **FICHA PESSOAL!O86**, inclusive fórmulas como `=150000-500`. **W86 — TOTAL DISPONÍVEL** soma esse resultado aos créditos do histórico **SALÁRIOS**. Não copie os créditos para O86: isso somaria a mesma renda duas vezes. Para gastar, continue descontando do campo manual; ele pode ficar negativo enquanto o total disponível permanece positivo.
 
@@ -24,7 +28,7 @@ O ciclo inclui sua data inicial e exclui o dia do próximo fechamento: emissão 
 
 Pagamento: `floor(referência × [mínimo + (1 − mínimo) × min(participações, meta) / meta])`. Sem verificação de missões, paga-se a referência. Períodos fechados guardam Grau, referência, meta, pesos, parcela e valor; mudanças posteriores não reescrevem esses registros. As regras configuradas valem para os períodos ainda não fechados, inclusive pendentes.
 
-Há apuração ao editar emissão/regras, preencher missões ou alterar Grau. O menu **Ativar conferência diária** instala dois acionadores: um diário entre 03h e 04h em America/Sao_Paulo e outro para registrar edições. A edição instalável tem orçamento de seis minutos e não disputa os trinta segundos dos cartões/XP. Os acionadores usam a conta que os instala e somente o documento vinculado. Acionadores instaláveis não acompanham uma cópia: ative o diário em cada ficha copiada; existe uma alternativa pelos eventos simples de abertura/edição, sujeita ao limite de trinta segundos do Google. Com o diário ativo, a abertura só mostra os controles, e o vencimento é processado pela rotina diária ou pelo menu Conferir salários agora. G325 permite pausar pagamentos sem apagar o histórico.
+Há apuração ao editar emissão/regras, preencher missões ou alterar Grau. O menu **Ativar conferência diária** instala dois acionadores: um diário entre 03h e 04h em America/Sao_Paulo e outro para registrar edições. A edição instalável tem orçamento de seis minutos e não disputa os trinta segundos dos cartões/XP. Os acionadores usam a conta que os instala e somente o documento vinculado. Acionadores instaláveis não acompanham uma cópia: ative o diário em cada ficha copiada; existe uma alternativa pelos eventos simples de abertura/edição, sujeita ao limite de trinta segundos do Google. Com o diário ativo, a abertura só mostra os controles, e o vencimento é processado pela rotina diária ou pelo menu Conferir salários agora. O40 permite pausar pagamentos sem apagar o histórico.
 
 ## Integridade e instalação
 
@@ -39,6 +43,16 @@ Para preparar essa atualização, guarde uma leitura atual do Codigo.gs em `sala
 A publicação de 20/10 precisou de retomada pela API: o serviço Planilhas interrompeu o instalador após criar as duas abas, ambas ainda vazias. `retomar_api.js` prepara os 132 pedidos a partir dos snapshots nativos privados dessa situação e da cópia ensaiada. O lote reutiliza as abas, preserva O86 e não transporta missões ou salários de QA. Foi ensaiado em uma segunda cópia antes da oficial. **Não reenviar esse lote em uma ficha já migrada.** O preparador recusa abas preenchidas, missões anteriores não tratadas e datas diferentes da rodada registrada.
 
 O contrato ANALISE12 conserva suas chaves existentes; o campo de ienes anterior continua representando o ajuste manual de O86. O total e o histórico de salários estão nos campos novos descritos acima. Nenhuma aprovação do bot é concedida pelo módulo.
+
+## Ajuste de navegação · segunda rodada de 20/10
+
+O painel saiu de C320:Q355 para o espaço livre K35:Q95. A migração nativa preservou a data, os valores e os pesos já configurados, ocultou a escrituração e dividiu a antiga mesclagem AH3:AT3 da carteira em AH3:AS3 + AT3. Não foram inseridas linhas nem deslocadas as regras de campanha.
+
+`node salarios/painel_api.js <snapshot-nativo.json>` prepara os 178 pedidos locais a partir de `updatedSpreadsheet`, incluindo os dados dos dois alvos, suas mesclagens e as propriedades de SALÁRIOS. Não acessa o Google. Exige o painel antigo e destino vazio, conserva as configurações e o estilo da carteira, e recusa repetição. Sem argumento, gera somente o modelo do painel, que não deve ser aplicado diretamente a uma ficha preenchida. O snapshot e o lote ficam em `saidas/`, fora do Git.
+
+O teste nativo `teste-carteira-nativo.gs` é bloqueado fora da nova cópia QA. Validou dois ciclos (150000 integral e 37500 reduzido), total 337000 com gastos manuais, e nova conferência sem crédito duplicado. No evento simples da cópia, a data do checkbox foi salva, mas a apuração excedeu trinta segundos. Para automação confiável, ative o diário de cada cópia: isso instala também a edição com orçamento de seis minutos. A oficial já tem esses dois acionadores. A abertura com rotina ativa agora evita ler saldos em recálculo, deixando a apuração ao acionador.
+
+No Discord, `GC:ficha` leu a cópia atualizada e o seletor abriu Limites da análise. A ficha vazia recebeu as falhas de criação esperadas; a referência R53-04 manteve zero erros/pendências/ajustes, com conferência parcial. Esse bot não certifica datas de missão nem o histórico salarial; os testes de salários foram feitos na planilha.
 
 ## Verificar
 

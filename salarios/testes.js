@@ -27,8 +27,8 @@ function fixture(){
  let ctx={console,Date,PropertiesService:{getScriptProperties:()=>({getProperty:()=>null})},ScriptApp:{getScriptId:()=>'qa'},SpreadsheetApp:{getActive:()=>ss,flush(){logs.push('flush')},getUi:()=>ui},LockService:{getDocumentLock:()=>({tryLock(){logs.push('lock');return true},releaseLock(){logs.push('release')}})},Utilities:{getUuid:()=>String(++uuid),formatDate(date,tz,format){let p=new Intl.DateTimeFormat('en-CA',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit'}).format(date);if(format==='yyyy-MM-dd')return p;return p.split('-').reverse().join('/');}}};
  vm.createContext(ctx);vm.runInContext(code,ctx);ctx.salarioHoje_=()=>today;
  const put=(name,a,v)=>sheets[name].getRange(a).setValue(v),get=(name,a)=>sheets[name].getRange(a).getValue();
- put('CONFIGURAÇÃO','G323',today);put('CONFIGURAÇÃO','G324',false);put('CONFIGURAÇÃO','G325',true);put('CONFIGURAÇÃO','G326',30);put('CONFIGURAÇÃO','G327',3);put('CONFIGURAÇÃO','G328',.25);put('CONFIGURAÇÃO','G329',true);
- [150000,300000,600000,1200000,2400000].forEach((n,i)=>put('CONFIGURAÇÃO','G'+(339+i),n));[1,1,2,3,0,0].forEach((n,i)=>put('CONFIGURAÇÃO','P'+(339+i),n));
+ put('CONFIGURAÇÃO','O38',today);put('CONFIGURAÇÃO','O39',false);put('CONFIGURAÇÃO','O40',true);put('CONFIGURAÇÃO','O41',30);put('CONFIGURAÇÃO','O42',3);put('CONFIGURAÇÃO','O43',.25);put('CONFIGURAÇÃO','O44',true);
+ [150000,300000,600000,1200000,2400000].forEach((n,i)=>put('CONFIGURAÇÃO','O'+(54+i),n));[1,1,2,3,0,0].forEach((n,i)=>put('CONFIGURAÇÃO','O'+(62+i),n));
  put('FICHA PESSOAL','AB11','Grau 4');put('FICHA PESSOAL','O86','=150000-500');put('CARTEIRA','O9','Teste');put('DADOS_SALARIOS','L2',JSON.stringify({versao:1,inicio:today,graus:[]}));
  return {ctx,ss,sheets,put,get,logs,day:n=>today=n,now:()=>today,rows:()=>Array.from(ctx.salarioFechamentos_(ss),r=>Array.from(r)),apurar:()=>ctx.salarioSeguro_(ss),failState:v=>failState=v,failLedger:v=>failLedger=v};
 }
@@ -40,43 +40,49 @@ eq(c.salarioDia_(c.salarioData_(46315)),46315);
 eq(c.salarioPontos_([['a','','Curta',46000,true],['b','','Longa',46029,true],['c','','Final de arco',46030,true],['d','','Curta',46010,false]],46000,46030,{Curta:1,Longa:2,'Final de arco':3}),3);
 eq(c.salarioGrauNoFim_([[46000,'Grau 4'],[46030,'Grau 3']],46030),'Grau 4');eq(c.salarioGrauNoFim_([[46000,'Grau 4'],[46030,'Grau 3']],46060),'Grau 3');
 f.apurar();f.day(46029);f.apurar();eq(f.rows().length,0);f.day(46030);f.apurar();eq(f.rows().length,1);eq(f.rows()[0][9],37500);eq(f.rows()[0][6],0);f.apurar();eq(f.rows().length,1);eq(f.get('FICHA PESSOAL','O86'),'=150000-500');
-f.put('CONFIGURAÇÃO','G323',45000);f.apurar();eq(f.rows().length,1);eq(JSON.parse(f.get('DADOS_SALARIOS','L2')).inicio,46030);
+f.put('CONFIGURAÇÃO','O38',45000);f.apurar();eq(f.rows().length,1);eq(JSON.parse(f.get('DADOS_SALARIOS','L2')).inicio,46030);
 f.day(46090);f.apurar();eq(f.rows().length,3);eq(f.rows()[2][0],'SAL1:46060:46090');
 f=fixture();f.apurar();f.day(46010);f.put('FICHA PESSOAL','AW15','Missão A');f.put('FICHA PESSOAL','AX15','Longa');f.apurar();eq(f.get('DADOS_SALARIOS','D2'),46010);f.day(46012);f.put('FICHA PESSOAL','AW15','Missão A corrigida');f.apurar();eq(f.get('DADOS_SALARIOS','D2'),46010);
-f.put('FICHA PESSOAL','BC15','Missão A corrigida');f.put('FICHA PESSOAL','BD15','Longa');f.sheets['FICHA PESSOAL'].getRange('BC15').setNotes(f.sheets['FICHA PESSOAL'].getRange('AW15').getNotes());f.apurar();eq(f.get('CONFIGURAÇÃO','G349'),2);
-f.day(46030);f.apurar();eq(f.rows()[0][9],112500);eq(f.get('CONFIGURAÇÃO','G349'),0);f.put('FICHA PESSOAL','AX15','Final de arco');f.apurar();eq(f.rows()[0][9],112500);
+f.put('FICHA PESSOAL','BC15','Missão A corrigida');f.put('FICHA PESSOAL','BD15','Longa');f.sheets['FICHA PESSOAL'].getRange('BC15').setNotes(f.sheets['FICHA PESSOAL'].getRange('AW15').getNotes());f.apurar();eq(f.get('CONFIGURAÇÃO','O70'),2);
+f.day(46030);f.apurar();eq(f.rows()[0][9],112500);eq(f.get('CONFIGURAÇÃO','O70'),0);f.put('FICHA PESSOAL','AX15','Final de arco');f.apurar();eq(f.rows()[0][9],112500);
 // A nova missão no dia de fechamento não aumenta o período anterior.
-f=fixture();f.apurar();f.day(46030);f.put('FICHA PESSOAL','AW15','Dia de corte');f.put('FICHA PESSOAL','AX15','Final de arco');f.apurar();eq(f.rows()[0][9],37500);eq(f.get('CONFIGURAÇÃO','G349'),3);f.day(46060);f.apurar();eq(f.rows()[1][9],150000);
+f=fixture();f.apurar();f.day(46030);f.put('FICHA PESSOAL','AW15','Dia de corte');f.put('FICHA PESSOAL','AX15','Final de arco');f.apurar();eq(f.rows()[0][9],37500);eq(f.get('CONFIGURAÇÃO','O70'),3);f.day(46060);f.apurar();eq(f.rows()[1][9],150000);
 // Grau é o vigente no final do período, sem promover retroativamente.
 f=fixture();f.apurar();f.day(46020);f.put('FICHA PESSOAL','AB11','Grau 3');f.apurar();f.day(46030);f.apurar();eq(f.rows()[0][4],'Grau 3');eq(f.rows()[0][9],75000);
 f=fixture();f.apurar();f.day(46030);f.put('FICHA PESSOAL','AB11','Grau 3');f.apurar();eq(f.rows()[0][4],'Grau 4');f.day(46060);f.apurar();eq(f.rows()[1][4],'Grau 3');
 // Missões antigas importadas não ganham datas presumidas.
 f=fixture();f.put('FICHA PESSOAL','AW15','Anterior à instalação');f.put('FICHA PESSOAL','AX15','Final de arco');f.ctx.salarioSincronizar_(f.ss,{},46000,true);eq(f.get('DADOS_SALARIOS','D2'),'');f.day(46030);f.apurar();eq(f.rows()[0][9],37500);
-f=fixture();f.put('CARTEIRA','O9','');f.day(46100);f.apurar();eq(f.rows().length,0);f.put('CARTEIRA','O9','Teste');f.put('CONFIGURAÇÃO','G325',false);f.apurar();eq(f.rows().length,0);f.put('CONFIGURAÇÃO','G325',true);f.apurar();eq(f.rows().length,3);
-f=fixture();f.apurar();f.put('CONFIGURAÇÃO','G327',0);f.day(46030);eq(f.apurar(),false);eq(f.rows().length,0);assert.match(f.get('CONFIGURAÇÃO','G331'),/meta/);checks++;
+f=fixture();f.put('CARTEIRA','O9','');f.day(46100);f.apurar();eq(f.rows().length,0);f.put('CARTEIRA','O9','Teste');f.put('CONFIGURAÇÃO','O40',false);f.apurar();eq(f.rows().length,0);f.put('CONFIGURAÇÃO','O40',true);f.apurar();eq(f.rows().length,3);
+f=fixture();f.apurar();f.put('CONFIGURAÇÃO','O42',0);f.day(46030);eq(f.apurar(),false);eq(f.rows().length,0);assert.match(f.get('CONFIGURAÇÃO','O46'),/meta/);checks++;
 // Uma queda após gravar o livro não duplica o crédito na próxima execução.
 f=fixture();f.apurar();f.day(46030);f.failState(true);f.apurar();eq(f.rows().length,1);f.failState(false);f.apurar();eq(f.rows().length,1);
 f=fixture();f.apurar();f.day(46030);f.failLedger(true);f.apurar();eq(f.rows().length,0);f.failLedger(false);f.apurar();eq(f.rows().length,1);
-f=fixture();f.put('CONFIGURAÇÃO','G324',true);f.day(46100);f.ctx.salarioEditar_({source:f.ss,range:f.sheets['CONFIGURAÇÃO'].getRange('G324')});eq(f.get('CONFIGURAÇÃO','G324'),false);eq(f.ctx.salarioDia_(f.get('CONFIGURAÇÃO','G323')),46100);eq(f.rows().length,0);
+f=fixture();f.put('CONFIGURAÇÃO','O39',true);f.day(46100);f.ctx.salarioEditar_({source:f.ss,range:f.sheets['CONFIGURAÇÃO'].getRange('O39')});eq(f.get('CONFIGURAÇÃO','O39'),false);eq(f.ctx.salarioDia_(f.get('CONFIGURAÇÃO','O38')),46100);eq(f.rows().length,0);
 eq(f.logs.slice(-2),['flush','release']);
 // Duas mesas com o mesmo nome, digitadas em linhas distintas, são participações distintas.
-f=fixture();f.put('FICHA PESSOAL','AW15','Treino');f.put('FICHA PESSOAL','AX15','Curta');f.put('FICHA PESSOAL','AW16','Treino');f.put('FICHA PESSOAL','AX16','Longa');f.apurar();eq(f.get('CONFIGURAÇÃO','G349'),3);
-f.day(46030);f.apurar();eq(f.rows()[0][9],150000);f.day(46040);f.put('CONFIGURAÇÃO','G323',46040);f.apurar();eq(f.get('CONFIGURAÇÃO','G333').toISOString(),f.ctx.salarioData_(46070).toISOString());eq(f.ctx.salarioDia_(f.get('CONFIGURAÇÃO','G351')),46030);eq(f.rows().length,1);
+f=fixture();f.put('FICHA PESSOAL','AW15','Treino');f.put('FICHA PESSOAL','AX15','Curta');f.put('FICHA PESSOAL','AW16','Treino');f.put('FICHA PESSOAL','AX16','Longa');f.apurar();eq(f.get('CONFIGURAÇÃO','O70'),3);
+f.day(46030);f.apurar();eq(f.rows()[0][9],150000);f.day(46040);f.put('CONFIGURAÇÃO','O38',46040);f.apurar();eq(f.get('CONFIGURAÇÃO','O48').toISOString(),f.ctx.salarioData_(46070).toISOString());eq(f.ctx.salarioDia_(f.get('CONFIGURAÇÃO','O72')),46030);eq(f.rows().length,1);
 // Última linha dos quatro blocos e alterações em lote entram na mesma apuração.
-f=fixture();for(const [name,type]of [['AW87','AX87'],['BC87','BD87'],['BI87','BJ87'],['BO87','BP87']]){f.put('FICHA PESSOAL',name,'Mesa '+name);f.put('FICHA PESSOAL',type,'Curta');}f.apurar();eq(f.get('CONFIGURAÇÃO','G349'),4);
+f=fixture();for(const [name,type]of [['AW87','AX87'],['BC87','BD87'],['BI87','BJ87'],['BO87','BP87']]){f.put('FICHA PESSOAL',name,'Mesa '+name);f.put('FICHA PESSOAL',type,'Curta');}f.apurar();eq(f.get('CONFIGURAÇÃO','O70'),4);
 // Limpar uma linha retira a participação aberta; reutilizar a linha cria nova identidade.
-f=fixture();f.put('FICHA PESSOAL','AW15','Uma mesa');f.put('FICHA PESSOAL','AX15','Curta');f.apurar();const firstId=f.get('DADOS_SALARIOS','A2');f.put('FICHA PESSOAL','AW15','');f.apurar();eq(f.get('CONFIGURAÇÃO','G349'),0);f.day(46010);f.put('FICHA PESSOAL','AW15','Outra mesa');f.apurar();eq(f.get('CONFIGURAÇÃO','G349'),1);assert.notStrictEqual(f.get('DADOS_SALARIOS','A3'),firstId);checks++;
+f=fixture();f.put('FICHA PESSOAL','AW15','Uma mesa');f.put('FICHA PESSOAL','AX15','Curta');f.apurar();const firstId=f.get('DADOS_SALARIOS','A2');f.put('FICHA PESSOAL','AW15','');f.apurar();eq(f.get('CONFIGURAÇÃO','O70'),0);f.day(46010);f.put('FICHA PESSOAL','AW15','Outra mesa');f.apurar();eq(f.get('CONFIGURAÇÃO','O70'),1);assert.notStrictEqual(f.get('DADOS_SALARIOS','A3'),firstId);checks++;
 // Solos só entram quando a campanha informa o peso; meta e salário são configuráveis.
-f=fixture();f.put('FICHA PESSOAL','AW15','Solo');f.put('FICHA PESSOAL','AX15','Solo simples');f.apurar();eq(f.get('CONFIGURAÇÃO','G349'),0);f.put('CONFIGURAÇÃO','P343',2);f.put('CONFIGURAÇÃO','G327',4);f.put('CONFIGURAÇÃO','G339',100001);f.apurar();eq(f.get('CONFIGURAÇÃO','G349'),2);eq(f.get('CONFIGURAÇÃO','G350'),62500);
+f=fixture();f.put('FICHA PESSOAL','AW15','Solo');f.put('FICHA PESSOAL','AX15','Solo simples');f.apurar();eq(f.get('CONFIGURAÇÃO','O70'),0);f.put('CONFIGURAÇÃO','O66',2);f.put('CONFIGURAÇÃO','O42',4);f.put('CONFIGURAÇÃO','O54',100001);f.apurar();eq(f.get('CONFIGURAÇÃO','O70'),2);eq(f.get('CONFIGURAÇÃO','O71'),62500);
 // Um intervalo customizado respeita a data exata do primeiro vencimento.
-f=fixture();f.put('CONFIGURAÇÃO','G326',7);f.apurar();f.day(46006);f.apurar();eq(f.rows().length,0);f.day(46007);f.apurar();eq(f.rows().length,1);
+f=fixture();f.put('CONFIGURAÇÃO','O41',7);f.apurar();f.day(46006);f.apurar();eq(f.rows().length,0);f.day(46007);f.apurar();eq(f.rows().length,1);
 // A ativação é idempotente e desloca a parte salarial para a edição instalável.
 f=fixture();let triggers=[],props=new Map();
 f.ctx.PropertiesService={getScriptProperties:()=>({getProperty:k=>props.get(k)||null,setProperty:(k,v)=>props.set(k,v)})};
 f.ctx.ScriptApp={getScriptId:()=>'qa',getProjectTriggers:()=>triggers,deleteTrigger:t=>{triggers=triggers.filter(v=>v!==t)},newTrigger:name=>{let t={getHandlerFunction:()=>name};let b={timeBased:()=>b,everyDays:()=>b,atHour:()=>b,inTimezone:()=>b,forSpreadsheet:()=>b,onEdit:()=>b,create:()=>{triggers.push(t);return t}};return b}};
 f.ctx.ativarSalarioDiario();f.ctx.ativarSalarioDiario();eq(triggers.map(t=>t.getHandlerFunction()),['salarioDiario','salarioRegistrarEdicao']);
-f.put('CONFIGURAÇÃO','G324',true);eq(f.ctx.salarioEditar_({source:f.ss,range:f.sheets['CONFIGURAÇÃO'].getRange('G324')}),true);eq(f.get('CONFIGURAÇÃO','G324'),true);
-f.ctx.salarioRegistrarEdicao({source:f.ss,range:f.sheets['CONFIGURAÇÃO'].getRange('G324')});eq(f.get('CONFIGURAÇÃO','G324'),false);
+f.put('CONFIGURAÇÃO','O39',true);eq(f.ctx.salarioEditar_({source:f.ss,range:f.sheets['CONFIGURAÇÃO'].getRange('O39')}),true);eq(f.get('CONFIGURAÇÃO','O39'),true);
+f.ctx.salarioRegistrarEdicao({source:f.ss,range:f.sheets['CONFIGURAÇÃO'].getRange('O39')});eq(f.get('CONFIGURAÇÃO','O39'),false);
 f.ctx.desativarSalarioDiario();eq(triggers.map(t=>t.getHandlerFunction()),['salarioRegistrarEdicao']);eq(props.get('salario_edicao'),'qa');
 f=fixture();f.put('FICHA PESSOAL','AW18','Missão com caixa textual');f.put('FICHA PESSOAL','AX18','Curta');f.apurar();eq(f.get('DADOS_SALARIOS','F2'),'49:18');eq(typeof f.get('DADOS_SALARIOS','F2'),'string');
+// O controle da carteira usa o mesmo caminho de emissão, fica desmarcado e não duplica créditos.
+f=fixture();f.put('CARTEIRA','AT3',true);f.day(46100);f.ctx.salarioEditar_({source:f.ss,range:f.sheets['CARTEIRA'].getRange('AT3')});eq(f.get('CARTEIRA','AT3'),false);eq(f.ctx.salarioDia_(f.get('CONFIGURAÇÃO','O38')),46100);eq(f.rows().length,0);
+f=fixture();f.put('CARTEIRA','AT3',false);f.day(46010);f.ctx.salarioEditar_({source:f.ss,range:f.sheets['CARTEIRA'].getRange('AT3')});eq(f.get('CONFIGURAÇÃO','O38'),46000);
+// Uma abertura com rotina instalada não disputa o recálculo dos saldos com a edição.
+f=fixture();f.put('DADOS_SALARIOS','L2',JSON.stringify({versao:1,inicio:f.now(),graus:[],agenda:'qa'}));let leituraNaAbertura=false;f.ctx.salarioLigacoes_=()=>{leituraNaAbertura=true;};f.ctx.salarioAbrir_();eq(leituraNaAbertura,false);
+f=fixture();f.ctx.PropertiesService={getScriptProperties:()=>({getProperty:()=>'qa'})};f.ss.getSheetByName=()=>{throw Error('Abertura não deve acessar células com edição instalável.');};f.ctx.salarioAbrir_();eq(f.logs.at(-1),'write:DADOS_SALARIOS');
 console.log(JSON.stringify({resultado:'OK',verificacoes:checks,escopo:'Regras, períodos, data brasileira, registro de missões, Grau, idempotência e falhas de escrita'}));

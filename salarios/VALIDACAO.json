@@ -1,6 +1,6 @@
 {
   "data": "2026-10-20",
-  "estado": "publicado na ficha oficial, com dois acionadores ativos",
+  "estado": "Ajustes publicados na oficial; salários e checkbox verificados; pendência de tempo no onOpen completo",
   "base_git": "d56623a7d49d87ad522eaed8ab675e473c1ae34e",
   "oficial": "https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit",
   "backup_nativo": "https://docs.google.com/spreadsheets/d/1bRCKWPkjVSQDqxG81xah0VKIKsQQXsgkkorNrTBRGWY/edit",
@@ -8,27 +8,70 @@
   "qa_retomada": "https://docs.google.com/spreadsheets/d/1rtFLjvhAJfC3LkLDRNFpKpZ-MDEybShL5nVGeiDjnX4/edit",
   "codigo": {
     "bootstrap_anterior_sha256": "79a577b840bc5806673e7719d170ea363853a4d0c8a507e7c239fa8a0200df5f",
-    "modulo_salarios_sha256": "57e8390f0c92e9b70f3420c15db5b4cc135ba467c76252dbd4d9355b287b3359",
-    "codigo_oficial_sha256": "010dcd488762f2fc53c808b2dc00649fb099bc7ee148219703308bb68e8b3cb4",
+    "modulo_salarios_sha256": "1cfaba167cafaee59b8c274115d09d365df6c088263a8ad14e121f086a825d24",
+    "codigo_oficial_sha256": "9d8d9f14b70101a535cb2576e312a1bd5ed5699fb6f24b6bd8606536cee16ff4",
     "codigo_relido_exato": true,
     "escopo": "Codigo.gs recebe a extensão; catálogos, controlador EditorR53 e manifesto preservados. Não instalar Salarios.gs também como arquivo separado nesta publicação incremental."
   },
   "validacao_local": {
-    "verificacoes": 101,
+    "verificacoes": 107,
     "resultado": "OK",
-    "smoke_repositorio": {"resultado": "OK", "verificacoes": 56, "falhas": 0, "python": "3.12.14", "node": "24.19.0", "observacao": "CI atualizado para conferir os oito módulos publicados e executar também os testes de salários."},
-    "pacote_reproduzivel": {"resultado": "OK", "arquivos": 8, "abas_base": 25, "cartoes": 249, "geracao": "e142593fdc5be157"},
-    "casos": ["dias brasileiros e data fixa", "metas e pesos configuráveis", "arredondamento", "limites de período", "Grau no fechamento", "pagamentos atrasados", "nomes repetidos com identidades distintas", "cópia/movimentação de missão", "falha após gravar crédito sem duplicação", "ativação idempotente de acionadores", "endereços de missão como texto"]
+    "smoke_repositorio": {
+      "resultado": "OK",
+      "verificacoes": 56,
+      "falhas": 0,
+      "python": "3.12.14",
+      "node": "24.19.0",
+      "observacao": "CI atualizado para conferir os oito módulos publicados e executar também os testes de salários."
+    },
+    "pacote_reproduzivel": {
+      "resultado": "OK",
+      "arquivos": 8,
+      "abas_base": 25,
+      "cartoes": 249,
+      "geracao": "e142593fdc5be157"
+    },
+    "casos": [
+      "dias brasileiros e data fixa",
+      "metas e pesos configuráveis",
+      "arredondamento",
+      "limites de período",
+      "Grau no fechamento",
+      "pagamentos atrasados",
+      "nomes repetidos com identidades distintas",
+      "cópia/movimentação de missão",
+      "falha após gravar crédito sem duplicação",
+      "ativação idempotente de acionadores",
+      "endereços de missão como texto",
+      "checkbox da carteira desmarca após emitir hoje",
+      "abertura com diário ativo evita leitura de saldos em recálculo"
+    ]
   },
   "validacao_google": {
     "pagamentos_qa": [
-      {"participacoes": 1, "parcela": 0.5, "ienes": 75000},
-      {"participacoes": 2, "parcela": 0.75, "ienes": 112500},
-      {"participacoes": 3, "parcela": 1, "ienes": 150000}
+      {
+        "participacoes": 1,
+        "parcela": 0.5,
+        "ienes": 75000
+      },
+      {
+        "participacoes": 2,
+        "parcela": 0.75,
+        "ienes": 112500
+      },
+      {
+        "participacoes": 3,
+        "parcela": 1,
+        "ienes": 150000
+      }
     ],
     "formula_manual_qa": "=150000-500",
     "total_qa": 487000,
-    "conferencia_sem_duplicar": {"resultado": "OK", "novos_creditos": 0, "duracao_ms": 80507},
+    "conferencia_sem_duplicar": {
+      "resultado": "OK",
+      "novos_creditos": 0,
+      "duracao_ms": 80507
+    },
     "edicao_real_qa": "Uma missão digitada na interface recebeu UUID e 20/10/2026. Trocar Curta por Longa preservou UUID/data, elevando a previsão de 75000 para 112500.",
     "enderecos_qa": "F2:F5 relidos como stringValue, incluindo 49:18; não como duração.",
     "qa_encerrada": "Salário pausado e handlers de agendamento/edição neutralizados reversivelmente na cópia mecânica. Os acionadores foram preservados, sem processamento posterior. A segunda cópia nunca recebeu acionadores instaláveis."
@@ -53,11 +96,14 @@
     "total_disponivel": 150000,
     "erros_nas_formulas_da_extensao": 0,
     "estado": "Aguardando o nome do personagem na CARTEIRA.",
-    "acionadores": ["salarioDiario · 03h–04h America/Sao_Paulo", "salarioRegistrarEdicao · Ao editar"],
+    "acionadores": [
+      "salarioDiario · 03h–04h America/Sao_Paulo",
+      "salarioRegistrarEdicao · Ao editar"
+    ],
     "edicao_instalavel_apos_checkbox": "Executada em 20/10/2026 15:45:35, taxa de erros 0% no painel de acionadores.",
     "abas": 27,
-    "abas_visiveis": 8,
-    "inspecao_visual": "CONFIGURAÇÃO: seção 14, data, checkboxes, valores, intervalo e pesos legíveis. Captura privada em salarios/saidas/oficial-configuracao.png."
+    "abas_visiveis": 7,
+    "inspecao_visual": "Painel em CONFIGURAÇÃO K35:Q95, histórico recente na mesma página e checkbox nativo AT3 na carteira. SALÁRIOS oculta."
   },
   "limites": [
     "Acionadores instaláveis não acompanham cópias: ativar no menu Salários de cada ficha copiada.",
@@ -65,5 +111,58 @@
     "Apuração completa é assíncrona e pode levar mais de um minuto nesta ficha; os acionadores instaláveis têm orçamento de seis minutos.",
     "ANALISE12 preserva o campo anterior de ienes como ajuste manual; total e histórico novos estão em W86 e SALÁRIOS."
   ],
-  "proxima_revisao_recomendada": "Sol/Medium para conferência focal; Sol/High para alteração integrada."
+  "proxima_revisao_recomendada": "Sol/Medium para conferência focal; Sol/High para alteração integrada.",
+  "ajustes_navegacao": {
+    "backup_nativo": "https://docs.google.com/spreadsheets/d/1OZRw9lBzx8ztrdiim9mmllHefc9rPMC6cQXzxHSKtG8/edit",
+    "qa": "https://docs.google.com/spreadsheets/d/1lsb_bCr4Ev3U4aN1OcLshn16sdhgsPNjCZQ2NxoIueY/edit",
+    "painel": "CONFIGURAÇÃO!K35:Q95",
+    "historico_recente": "CONFIGURAÇÃO!K78:Q95",
+    "emissao": "CONFIGURAÇÃO!O38",
+    "checkbox_carteira": "CARTEIRA!AT3",
+    "padrao_checkbox": false,
+    "migracao": {
+      "pedidos": 178,
+      "lote_igual_ao_ensaiado": true,
+      "sem_inserir_linhas": true,
+      "saldo_manual_preservado": true,
+      "historico_preservado": true,
+      "guia_salarios_oculta": true
+    },
+    "google": {
+      "teste_carteira_r2": "Concluído",
+      "duracao_segundos": 114.407,
+      "integral": 150000,
+      "reduzido": 37500,
+      "creditos": 2,
+      "ajuste_manual": 149500,
+      "total": 337000,
+      "duplicacao": false,
+      "checkbox_qa_emissao_hoje": true,
+      "checkbox_qa_retorno_false": true,
+      "edicao_instalavel_oficial": "Concluído · 20/10/2026 16:53:17 · 55.38 s",
+      "limite_copia": "onEdit simples: data salva, apuração interrompida aos 30.878 s. Ativar diário na cópia instala edição de seis minutos.",
+      "qa_encerrada": "Salário pausado, sem acionadores instalados nesta cópia."
+    },
+    "discord": {
+      "canal": "https://discord.com/channels/1357866906341736488/1561410667108368575",
+      "comando": "GC:ficha",
+      "copia_atualizada": "Lida; ficha vazia com 5 erros e 9 pendências de criação esperados. Seletor abriu a página Limites da análise.",
+      "regressao_r53_04": {
+        "erros": 0,
+        "pendencias": 0,
+        "ajustes_mestre": 0,
+        "veredito": "parcial"
+      },
+      "limite": "O bot não certifica datas de missão nem salários; os testes salariais são nativos."
+    },
+    "correcao_abertura": "Propriedade do próprio projeto identifica a edição instalada e monta o menu sem consultar células; cópias com outro Script ID não herdam essa ativação.",
+    "abertura_corrigida_verificada": false,
+    "abertura_final": {
+      "horario": "20/10/2026 17:00:28",
+      "duracao_segundos": 30.603,
+      "resultado": "Tempo limite atingido",
+      "resolvido": false,
+      "observacao": "Mesmo sem leituras de células pelo módulo salarial, o onOpen completo atingiu 30 s. Cálculos e edição instalável salarial concluíram. Não equivale a validação integral sem falhas."
+    }
+  }
 }

@@ -20,14 +20,14 @@ function salarioValor_(base,p,meta,minimo,verifica) {return Math.floor(base*sala
 function salarioEstado_(ss) {var sh=ss.getSheetByName(SALARIO_.dados),v=sh.getRange('L2').getValue();return v?JSON.parse(v):{};}
 function salarioSalvarEstado_(ss,s) {ss.getSheetByName(SALARIO_.dados).getRange('L2').setValue(JSON.stringify(s));}
 function salarioConfig_(ss) {
-  var sh=ss.getSheetByName(SALARIO_.config),v=sh.getRange('G323:G329').getValues().map(function(r){return r[0];});
+  var sh=ss.getSheetByName(SALARIO_.config),v=sh.getRange('O38:O44').getValues().map(function(r){return r[0];});
   var c={emissao:salarioDia_(v[0]),ligado:v[2]===true,dias:salarioInt_(v[3],1,3650,'o intervalo em dias'),
     meta:salarioInt_(v[4],1,1000,'a meta de participações'),minimo:v[5],verifica:v[6]===true,bases:{},pesos:{}};
-  if(!isFinite(c.emissao))throw Error('Informe uma data de emissão válida em G323.');
+  if(!isFinite(c.emissao))throw Error('Informe uma data de emissão válida em O38.');
   if(typeof c.minimo!=='number'||!isFinite(c.minimo)||c.minimo<0||c.minimo>1)throw Error('A parcela mínima deve estar entre 0% e 100%.');
-  sh.getRange('G339:G343').getValues().forEach(function(r,i){c.bases[SALARIO_.graus[i]]=salarioInt_(r[0],0,1e12,'o salário de '+SALARIO_.graus[i]);});
-  sh.getRange('P339:P344').getValues().forEach(function(r,i){c.pesos[SALARIO_.tipos[i]]=salarioInt_(r[0],0,1000,'o peso de '+SALARIO_.tipos[i]);});
-  c.proximo=salarioDia_(sh.getRange('G333').getValue());
+  sh.getRange('O54:O58').getValues().forEach(function(r,i){c.bases[SALARIO_.graus[i]]=salarioInt_(r[0],0,1e12,'o salário de '+SALARIO_.graus[i]);});
+  sh.getRange('O62:O67').getValues().forEach(function(r,i){c.pesos[SALARIO_.tipos[i]]=salarioInt_(r[0],0,1000,'o peso de '+SALARIO_.tipos[i]);});
+  c.proximo=salarioDia_(sh.getRange('O48').getValue());
   return c;
 }
 function salarioMissoesAtuais_(ss) {
@@ -80,7 +80,7 @@ function salarioHistoricoGrau_(ss,estado,hoje,grau) {
   estado.graus=hist;return hist;
 }
 function salarioFechamentos_(ss) {var sh=ss.getSheetByName(SALARIO_.livro),n=sh.getLastRow()-1,rows=n>0?sh.getRange(2,1,n,12).getValues().filter(function(r){return r[0];}):[];rows.proximaLinha=n+2;rows.maxLinhas=sh.getMaxRows();return rows;}
-function salarioStatus_(ss,texto) {ss.getSheetByName(SALARIO_.config).getRange('G331').setValue(texto);}
+function salarioStatus_(ss,texto) {ss.getSheetByName(SALARIO_.config).getRange('O46').setValue(texto);}
 function salarioLigacoes_(ss) {
   var p=ss.getSheetByName('FICHA PESSOAL');
   var formula='=O86+SUM(\'SALÁRIOS\'!J2:J)';
@@ -120,55 +120,67 @@ function salarioApurar_(ss,hoje,cache) {
   if(missoes.gravar)missoes.gravar();
   estado.inicio=inicio;estado.ultimaEmissao=c.emissao;salarioSalvarEstado_(ss,estado);
   var config=ss.getSheetByName(SALARIO_.config),p=salarioPontos_(missoes,inicio,inicio+c.dias,c.pesos);
-  config.getRange('G333').setValue(salarioData_(inicio+c.dias));
-  config.getRange('G348:G351').setValues([[salarioData_(inicio)],[p],[Object.prototype.hasOwnProperty.call(c.bases,grau)?salarioValor_(c.bases[grau],p,c.meta,c.minimo,c.verifica):'Grau inválido'],[novos.length?salarioData_(inicio):ultimo?ultimo[2]:'Nenhum']]);
+  config.getRange('O48').setValue(salarioData_(inicio+c.dias));
+  config.getRange('O69:O72').setValues([[salarioData_(inicio)],[p],[Object.prototype.hasOwnProperty.call(c.bases,grau)?salarioValor_(c.bases[grau],p,c.meta,c.minimo,c.verifica):'Grau inválido'],[novos.length?salarioData_(inicio):ultimo?ultimo[2]:'Nenhum']]);
   salarioStatus_(ss,!c.ligado?'Salário pausado; períodos pendentes serão apurados ao religar.':!personagem?'Aguardando o nome do personagem na CARTEIRA.':inicio+c.dias<=hoje?'Há períodos pendentes; execute Conferir salários novamente.':'Em dia · próximo fechamento '+salarioTextoDia_(inicio+c.dias));
   return {novos:novos.length,inicio:inicio,proximo:inicio+c.dias,pontos:p};
 }
 function salarioSeguro_(ss,espera) {return salarioBloqueado_(ss,function(){try{return salarioApurar_(ss,salarioHoje_());}catch(err){salarioStatus_(ss,'⚠ '+err.message);console.log('Salários: '+err.message);return false;}},espera);}
 function salarioPronto_(ss) {var sh=ss.getSheetByName(SALARIO_.dados);return !!sh&&!!sh.getRange('L2').getValue();}
-function salarioAbrir_() {
-  var ss=SpreadsheetApp.getActive();if(!salarioPronto_(ss))return;
-  var estado=salarioEstado_(ss);
-  if(estado.agenda&&estado.agenda!==ScriptApp.getScriptId()){
-    salarioBloqueado_(ss,function(){var atual=salarioEstado_(ss);delete atual.agenda;salarioSalvarEstado_(ss,atual);ss.getSheetByName(SALARIO_.config).getRange('G353').setValue('Ao abrir ou editar · ative a conferência diária nesta cópia');});
-  }
+function salarioMenu_() {
   SpreadsheetApp.getUi().createMenu('Salários').addItem('Conferir salários agora','conferirSalarios')
     .addItem('Data da missão selecionada…','definirDataMissaoSalario').addSeparator()
     .addItem('Ativar conferência diária','ativarSalarioDiario').addItem('Desativar conferência diária','desativarSalarioDiario').addToUi();
+}
+function salarioAbrir_() {
+  // Propriedade do próprio projeto: cópias têm outro ID e não entram neste atalho.
+  // A oficial não precisa consultar células para montar o menu de abertura.
+  if(PropertiesService.getScriptProperties().getProperty('salario_edicao')===ScriptApp.getScriptId()){salarioMenu_();return;}
+  var ss=SpreadsheetApp.getActive();if(!salarioPronto_(ss))return;
+  var estado=salarioEstado_(ss);
+  if(estado.agenda&&estado.agenda!==ScriptApp.getScriptId()){
+    salarioBloqueado_(ss,function(){var atual=salarioEstado_(ss);delete atual.agenda;salarioSalvarEstado_(ss,atual);ss.getSheetByName(SALARIO_.config).getRange('O74').setValue('Ao abrir ou editar · ative a conferência diária nesta cópia');});
+  }
+  salarioMenu_();
+  // A rotina instalada já mantém o saldo e apura o vencimento. Evite ler fórmulas
+  // enquanto uma edição está recalculando: isso pode consumir os 30 s da abertura.
+  if(estado.agenda===ScriptApp.getScriptId())return;
   salarioLigacoes_(ss);
-  var vencimento=salarioDia_(ss.getSheetByName(SALARIO_.config).getRange('G333').getValue());
+  var vencimento=salarioDia_(ss.getSheetByName(SALARIO_.config).getRange('O48').getValue());
   // O acionador diário tem seis minutos; o evento simples de abertura tem somente trinta segundos.
   if(!estado.agenda&&(!isFinite(vencimento)||vencimento<=salarioHoje_()))salarioSeguro_(ss);
 }
 function salarioEditar_(e) {
   if(!e||!e.range||e.salarioProcessado_)return false;e.salarioProcessado_=true;
   var r=e.range,n=r.getSheet().getName(),ss=e.source||SpreadsheetApp.getActive();
-  var config=n===SALARIO_.config&&salarioToca_(r,320,355,3,17);
+  var config=n===SALARIO_.config&&salarioToca_(r,35,76,11,17);
   var missao=n==='FICHA PESSOAL'&&(salarioToca_(r,15,87,49,72)||salarioToca_(r,11,11,28,30));
+  var emitir=n==='CARTEIRA'&&salarioToca_(r,3,3,46,46);
   var nome=n==='CARTEIRA'&&salarioToca_(r,9,15,15,45);
   var total=n==='FICHA PESSOAL'&&salarioToca_(r,86,86,23,30);
-  if(!config&&!missao&&!nome&&!total)return false;if(!salarioPronto_(ss))return false;
+  if(!config&&!missao&&!nome&&!total&&!emitir)return false;if(!salarioPronto_(ss))return false;
   // Com a rotina ativada, a edição instalável registra missões sem disputar o orçamento dos cartões/XP.
   if(!e.salarioInstalavel_&&PropertiesService.getScriptProperties().getProperty('salario_edicao')===ScriptApp.getScriptId()){
     if(total)salarioLigacoes_(ss);
-    return config||total&&!missao;
+    return config||emitir||total&&!missao;
   }
   salarioBloqueado_(ss,function(){
     try {
       var cfg=ss.getSheetByName(SALARIO_.config),st=salarioEstado_(ss);
       if(total)salarioLigacoes_(ss);
-      if(config&&salarioToca_(r,324,324,7,10)&&cfg.getRange('G324').getValue()===true){cfg.getRange('G323').setValue(salarioData_(salarioHoje_()));cfg.getRange('G324').setValue(false);}
+      if((config&&salarioToca_(r,39,39,15,17)&&cfg.getRange('O39').getValue()===true)||(emitir&&r.getSheet().getRange('AT3').getValue()===true)){
+        cfg.getRange('O38').setValue(salarioData_(salarioHoje_()));cfg.getRange('O39').setValue(false);ss.getSheetByName('CARTEIRA').getRange('AT3').setValue(false);
+      }
       var hoje=salarioHoje_();
       if(missao&&!config){
         var c=salarioConfig_(ss),g=String(ss.getSheetByName('FICHA PESSOAL').getRange('AB11').getValue()),ms=salarioSincronizar_(ss,st,hoje,false,true);
         salarioHistoricoGrau_(ss,st,hoje,g);
         if(!isFinite(c.proximo)||c.proximo<=hoje)salarioApurar_(ss,hoje,{config:c,estado:st,missoes:ms});
-        else {var p=salarioPontos_(ms,st.inicio,c.proximo,c.pesos);ms.gravar();salarioSalvarEstado_(ss,st);cfg.getRange('G349:G350').setValues([[p],[salarioValor_(c.bases[g],p,c.meta,c.minimo,c.verifica)]]);}
+        else {var p=salarioPontos_(ms,st.inicio,c.proximo,c.pesos);ms.gravar();salarioSalvarEstado_(ss,st);cfg.getRange('O70:O71').setValues([[p],[salarioValor_(c.bases[g],p,c.meta,c.minimo,c.verifica)]]);}
       } else salarioApurar_(ss,hoje,{estado:st});
     }catch(err){salarioStatus_(ss,'⚠ '+err.message);console.log('Salários: '+err.message);}
   },e.salarioInstalavel_?120000:1500);
-  return config||total&&!missao;
+  return config||emitir||total&&!missao;
 }
 function conferirSalarios() {var ss=SpreadsheetApp.getActive();if(!salarioPronto_(ss))throw Error('Instale o módulo de salários primeiro.');return salarioSeguro_(ss,120000);}
 function salarioDiario() {conferirSalarios();}
@@ -180,12 +192,12 @@ function ativarSalarioDiario() {
   if(!ja)ScriptApp.newTrigger('salarioDiario').timeBased().everyDays(1).atHour(3).inTimezone('America/Sao_Paulo').create();
   if(!triggers.some(function(t){return t.getHandlerFunction()==='salarioRegistrarEdicao';}))ScriptApp.newTrigger('salarioRegistrarEdicao').forSpreadsheet(ss).onEdit().create();
   PropertiesService.getScriptProperties().setProperty('salario_edicao',ScriptApp.getScriptId());
-  salarioBloqueado_(ss,function(){var estado=salarioEstado_(ss);estado.agenda=ScriptApp.getScriptId();salarioSalvarEstado_(ss,estado);ss.getSheetByName(SALARIO_.config).getRange('G353').setValue('Diária · 03h–04h · Brasília');});
+  salarioBloqueado_(ss,function(){var estado=salarioEstado_(ss);estado.agenda=ScriptApp.getScriptId();salarioSalvarEstado_(ss,estado);ss.getSheetByName(SALARIO_.config).getRange('O74').setValue('Diária · 03h–04h · Brasília');});
   return {diario:true,edicoes:true};
 }
 function desativarSalarioDiario() {
   ScriptApp.getProjectTriggers().forEach(function(t){if(t.getHandlerFunction()==='salarioDiario')ScriptApp.deleteTrigger(t);});
-  var ss=SpreadsheetApp.getActive();salarioBloqueado_(ss,function(){var estado=salarioEstado_(ss);delete estado.agenda;salarioSalvarEstado_(ss,estado);ss.getSheetByName(SALARIO_.config).getRange('G353').setValue('Ao abrir ou editar a ficha');});
+  var ss=SpreadsheetApp.getActive();salarioBloqueado_(ss,function(){var estado=salarioEstado_(ss);delete estado.agenda;salarioSalvarEstado_(ss,estado);ss.getSheetByName(SALARIO_.config).getRange('O74').setValue('Ao abrir ou editar a ficha');});
 }
 function definirDataMissaoSalario() {
   var ss=SpreadsheetApp.getActive(),r=ss.getActiveRange(),ui=SpreadsheetApp.getUi();
@@ -209,7 +221,7 @@ function instalarSalarios() {
     if(salarioPronto_(ss))return salarioApurar_(ss,salarioHoje_());
     if(ss.getSheetByName(SALARIO_.dados)||ss.getSheetByName(SALARIO_.livro))throw Error('Instalação parcial: preserve os dados e revise antes de continuar.');
     var cfg=ss.getSheetByName(SALARIO_.config),pp=ss.getSheetByName('FICHA PESSOAL'),carteira=ss.getSheetByName('CARTEIRA');
-    if(!cfg||!pp||!carteira||cfg.getRange('C320:Q355').getValues().some(function(r){return r.some(function(v){return v!=='';});}))throw Error('Área de configuração ocupada; migração interrompida.');
+    if(!cfg||!pp||!carteira||cfg.getRange('K35:Q95').getValues().some(function(r){return r.some(function(v){return v!=='';});}))throw Error('Área de configuração ocupada; migração interrompida.');
     var ds=ss.insertSheet(SALARIO_.dados),livro=ss.insertSheet(SALARIO_.livro);
     ds.getRange('A1:C1000').setNumberFormat('@');ds.getRange('F1:F1000').setNumberFormat('@');
     ds.getRange('A1:G1').setValues([['Identidade','Missão','Tipo','Data de conclusão (serial)','Presente','Caixa','Primeiro registro']]);ds.getRange('L1').setValue('Estado do módulo');
@@ -218,35 +230,49 @@ function instalarSalarios() {
     livro.setColumnWidths(1,12,135);livro.setColumnWidth(1,210);livro.setColumnWidth(11,260);livro.hideColumns(12);
     livro.getRange('B2:D1000').setNumberFormat('dd/mm/yyyy');livro.getRange('F2:F1000').setNumberFormat('"¥ "#,##0');livro.getRange('I2:I1000').setNumberFormat('0%');livro.getRange('J2:J1000').setNumberFormat('"¥ "#,##0');
     livro.getRange('A1:K1000').protect().setDescription('Histórico fechado de salários; evite alterar pagamentos manualmente.').setWarningOnly(true);
-    cfg.getRange('C320:Q355').breakApart().setBackground('#FFF8F3').setFontFamily('Roboto').setFontSize(10).setFontColor('#382B35').setVerticalAlignment('middle');
-    cfg.getRange('C320:Q320').merge().setValue('14 · EMISSÃO E SALÁRIOS').setBackground('#4B273F').setFontColor('#FFFFFF').setFontWeight('bold');
-    cfg.getRange('C321:Q321').merge().setValue('Data fixa e ciclos em dias corridos de Brasília. O histórico SALÁRIOS guarda cada crédito.').setWrap(true);cfg.setRowHeight(321,36);
-    var labels={323:'Data de emissão',324:'Usar a data de hoje · Brasília',325:'Salário automático',326:'Intervalo entre salários · dias',327:'Participações para 100%',328:'Parcela mínima',329:'Verificar missões',331:'Situação',333:'Próximo fechamento',334:'Salários já creditados',335:'Referência do Grau atual',348:'Início do ciclo aberto',349:'Participações no ciclo',350:'Salário previsto',351:'Último fechamento',353:'Conferência automática'};
-    Object.keys(labels).forEach(function(k){var row=+k;cfg.getRange(row,3,1,4).merge().setValue(labels[k]).setFontWeight('bold').setWrap(true);cfg.getRange(row,7,1,row===331||row===353?11:4).merge();cfg.setRowHeight(row,row===331||row===353?42:30);});
-    cfg.getRange('G331:Q331').setWrap(true);cfg.getRange('G353:Q353').setWrap(true);
-    [[323,salarioData_(salarioHoje_())],[324,false],[325,true],[326,30],[327,3],[328,0.25],[329,true],[353,'Ao abrir ou editar a ficha']].forEach(function(v){cfg.getRange(v[0],7).setValue(v[1]);});
-    [324,325,329].forEach(function(r){cfg.getRange(r,7).insertCheckboxes().setValue(r!==324);});
-    [323,333,348,351].forEach(function(r){cfg.getRange(r,7).setNumberFormat('dd/mm/yyyy');});
-    [334,335,350].forEach(function(r){cfg.getRange(r,7).setNumberFormat('"¥ "#,##0');});cfg.getRange('G328').setNumberFormat('0%');
-    cfg.getRange('G323').setDataValidation(SpreadsheetApp.newDataValidation().requireDate().setAllowInvalid(false).build()).setNote('Esta data inicia o ciclo. Uma reemissão posterior ao último pagamento reinicia a contagem, preservando créditos anteriores. Uma data anterior nunca repete períodos pagos.');
-    cfg.getRange('G324').setNote('Marque para gravar a data atual de Brasília. A caixa desmarca depois de salvar; a data permanece fixa.');
-    cfg.getRange('G326:G327').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberBetween(1,3650).setAllowInvalid(false).build());
-    cfg.getRange('G328').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberBetween(0,1).setAllowInvalid(false).build());
-    cfg.getRange('C337:J337').merge().setValue('SALÁRIO POR GRAU').setFontWeight('bold');cfg.getRange('K337:Q337').merge().setValue('PESO DAS MISSÕES').setFontWeight('bold');
-    SALARIO_.graus.forEach(function(g,i){cfg.getRange(339+i,3,1,4).merge().setValue(g);cfg.getRange(339+i,7,1,4).merge().setValue(150000*Math.pow(2,i)).setNumberFormat('"¥ "#,##0');});
-    SALARIO_.tipos.forEach(function(t,i){cfg.getRange(339+i,11,1,5).merge().setValue(t);cfg.getRange(339+i,16,1,2).merge().setValue([1,1,2,3,0,0][i]);cfg.setRowHeight(339+i,30);});
-    cfg.getRange('P343').setNote('O livro não define participação salarial de solo. Padrão 0; a campanha pode configurar.');cfg.getRange('P344').setNote(cfg.getRange('P343').getNote());
-    cfg.getRange('G339:G343').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberGreaterThanOrEqualTo(0).setAllowInvalid(false).build());
-    cfg.getRange('P339:P344').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberGreaterThanOrEqualTo(0).setAllowInvalid(false).build());
-    cfg.getRange('C355:Q355').merge().setValue('Missões novas recebem a data ao preencher NOME + TIPO. Para corrigir: menu Salários → Data da missão selecionada. Solos só contam se configurados.').setWrap(true);cfg.setRowHeight(355,54);
-    cfg.getRange('G334').setFormula('=SUM(\'SALÁRIOS\'!J2:J)');
-    cfg.getRange('G335').setFormula('=IFERROR(VLOOKUP(\'FICHA PESSOAL\'!AB11;C339:G343;5;FALSE);0)');
-    if(cfg.getRange('O32').getValue()==='')cfg.getRange('O32:Q33').merge().setFormula('=HYPERLINK("#gid='+cfg.getSheetId()+'&range=C320";"14 · Emissão e salários")').setFontWeight('bold');
-    carteira.getRange('AH3').setFormula('="Emitida "&TEXT(\'CONFIGURAÇÃO\'!G323;"dd.mm.yyyy")');
+    salarioCriarPainel_(cfg,carteira);
     pp.getRange('O85').setValue('IENES · AJUSTE MANUAL');pp.getRange('O86').setNote('Saldo e gastos manuais. Fórmulas continuam livres. Os salários ficam separados e somam no TOTAL DISPONÍVEL à direita.');
     pp.getRange('W85').setValue('TOTAL DISPONÍVEL');pp.getRange('W86').setFormula('=O86+SUM(\'SALÁRIOS\'!J2:J)').setNumberFormat('"¥ "#,##0').setNote('Saldo manual de O86 + salários fechados. Consulte valores, prazos e participação em CONFIGURAÇÃO → Emissão e salários.');
     var estado={versao:1,inicio:salarioHoje_(),graus:[],ultimaEmissao:salarioHoje_()};
-    salarioSincronizar_(ss,estado,salarioHoje_(),true);salarioSalvarEstado_(ss,estado);ds.hideSheet();
+    salarioSincronizar_(ss,estado,salarioHoje_(),true);salarioSalvarEstado_(ss,estado);ds.hideSheet();livro.hideSheet();
     return salarioApurar_(ss,salarioHoje_());
   });
+}
+
+/** Painel visível junto aos atalhos; livros de escrituração são abas técnicas ocultas. */
+function salarioCriarPainel_(cfg,carteira) {
+  cfg.getRange('K35:Q95').breakApart().setBackground('#FFF8F3').setFontFamily('Roboto').setFontSize(10).setFontColor('#382B35').setVerticalAlignment('middle').setWrap(true);
+  function titulo(a,t){cfg.getRange(a).merge().setValue(t).setBackground('#4B273F').setFontColor('#FFFFFF').setFontWeight('bold');}
+  titulo('K35:Q35','14 · EMISSÃO E SALÁRIOS');
+  cfg.getRange('K36:Q36').merge().setValue('Data fixa em Brasília. Marque na carteira ou abaixo para emitir hoje.');cfg.setRowHeight(36,38);
+  var labels={38:'Data de emissão',39:'Usar a data de hoje · Brasília',40:'Salário automático',41:'Intervalo entre salários · dias',42:'Participações para 100%',43:'Parcela mínima',44:'Verificar missões',46:'Situação',48:'Próximo fechamento',49:'Salários já creditados',50:'Referência do Grau atual',69:'Início do ciclo aberto',70:'Participações no ciclo',71:'Salário previsto',72:'Último fechamento',74:'Conferência automática'};
+  Object.keys(labels).forEach(function(k){var row=+k;cfg.getRange(row,11,1,4).merge().setValue(labels[k]).setFontWeight('bold');cfg.getRange(row,15,1,3).merge();cfg.setRowHeight(row,row===46||row===74?54:30);});
+  [[38,salarioData_(salarioHoje_())],[39,false],[40,true],[41,30],[42,3],[43,0.25],[44,true],[74,'Ao abrir ou editar a ficha']].forEach(function(v){cfg.getRange(v[0],15).setValue(v[1]);});
+  [39,40,44].forEach(function(r){cfg.getRange(r,15).insertCheckboxes().setValue(r!==39);});
+  [38,48,69,72].forEach(function(r){cfg.getRange(r,15).setNumberFormat('dd/mm/yyyy');});
+  [49,50,71].forEach(function(r){cfg.getRange(r,15).setNumberFormat('"¥ "#,##0');});cfg.getRange('O43').setNumberFormat('0%');
+  cfg.getRange('O38').setDataValidation(SpreadsheetApp.newDataValidation().requireDate().setAllowInvalid(false).build()).setNote('Data fixa. Reemitir após o último fechamento reinicia o ciclo sem apagar créditos; antecipar não repete pagamentos.');
+  cfg.getRange('O39').setNote('Grava a data atual em America/Sao_Paulo e desmarca ao salvar.');
+  cfg.getRange('O41:O42').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberBetween(1,3650).setAllowInvalid(false).build());
+  cfg.getRange('O43').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberBetween(0,1).setAllowInvalid(false).build());
+  titulo('K52:Q52','SALÁRIO POR GRAU');titulo('K60:Q60','PESO DAS MISSÕES');
+  SALARIO_.graus.forEach(function(g,i){cfg.getRange(54+i,11,1,4).merge().setValue(g);cfg.getRange(54+i,15,1,3).merge().setValue(150000*Math.pow(2,i)).setNumberFormat('"¥ "#,##0');});
+  SALARIO_.tipos.forEach(function(t,i){cfg.getRange(62+i,11,1,4).merge().setValue(t);cfg.getRange(62+i,15,1,3).merge().setValue([1,1,2,3,0,0][i]);});
+  cfg.getRange('O54:O58').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberGreaterThanOrEqualTo(0).setAllowInvalid(false).build());
+  cfg.getRange('O62:O67').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberGreaterThanOrEqualTo(0).setAllowInvalid(false).build());
+  cfg.getRange('O66:O67').setNote('O livro não define participação salarial de solo. Padrão 0; a campanha pode configurar.');
+  cfg.getRange('K76:Q76').merge().setValue('Missão conta ao preencher nome + tipo. Corrigir data: menu Salários → Data da missão selecionada.');cfg.setRowHeight(76,48);
+  cfg.getRange('O49').setFormula('=SUM(\'SALÁRIOS\'!J2:J)');
+  cfg.getRange('O50').setFormula('=IFERROR(VLOOKUP(\'FICHA PESSOAL\'!AB11;K54:O58;5;FALSE);0)');
+  titulo('K78:Q78','ÚLTIMOS 10 CRÉDITOS · MAIS RECENTE PRIMEIRO');
+  [['K80','Fechamento'],['L80:M80','Grau'],['N80:O80','Partic. / meta'],['P80:Q80','Creditado']].forEach(function(v){cfg.getRange(v[0]).merge().setValue(v[1]).setFontWeight('bold');});
+  for(var i=1;i<=10;i++){
+    var row=80+i;
+    [['K',1],['L',3],['N',5],['P',8]].forEach(function(v){var col=v[0],expr='INDEX(SORT(FILTER(\'SALÁRIOS\'!C$2:J;\'SALÁRIOS\'!A$2:A<>" ");1;FALSE);'+i+';'+v[1]+')';expr=expr.replace('<>" "','<>""');if(col==='N')expr+='&" / "&INDEX(SORT(FILTER(\'SALÁRIOS\'!C$2:J;\'SALÁRIOS\'!A$2:A<>"");1;FALSE);'+i+';6)';var a=col+row+(col==='K'?'':':'+({L:'M',N:'O',P:'Q'}[col])+row);cfg.getRange(a).merge().setFormula('=IFERROR('+expr+';"")');});
+    cfg.getRange('K'+row).setNumberFormat('dd/mm/yyyy');cfg.getRange('P'+row).setNumberFormat('"¥ "#,##0');
+  }
+  cfg.getRange('K93:Q95').merge().setValue('Os créditos são somados ao ajuste manual em FICHA PESSOAL. Continue lançando seus gastos nesse ajuste. O registro integral é guardado automaticamente em uma aba técnica oculta.');
+  cfg.getRange('O32:Q33').setFormula('=HYPERLINK("#gid='+cfg.getSheetId()+'&range=K35";"14 · Emissão e salários")');
+  carteira.getRange('AH3:AT3').breakApart();carteira.getRange('AH3:AS3').merge().setFormula('="Emitida "&TEXT(\'CONFIGURAÇÃO\'!O38;"dd.mm.yyyy")');
+  carteira.getRange('AT3').insertCheckboxes().setValue(false).setNote('Emitir hoje: grava a data atual do Brasil e desmarca após salvar.');
 }
