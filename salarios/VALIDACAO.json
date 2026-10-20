@@ -16,6 +16,7 @@
   "validacao_local": {
     "verificacoes": 101,
     "resultado": "OK",
+    "smoke_repositorio": {"resultado": "OK", "verificacoes": 56, "falhas": 0, "python": "3.12.14", "node": "24.19.0", "observacao": "CI atualizado para conferir os oito módulos publicados e executar também os testes de salários."},
     "pacote_reproduzivel": {"resultado": "OK", "arquivos": 8, "abas_base": 25, "cartoes": 249, "geracao": "e142593fdc5be157"},
     "casos": ["dias brasileiros e data fixa", "metas e pesos configuráveis", "arredondamento", "limites de período", "Grau no fechamento", "pagamentos atrasados", "nomes repetidos com identidades distintas", "cópia/movimentação de missão", "falha após gravar crédito sem duplicação", "ativação idempotente de acionadores", "endereços de missão como texto"]
   },
