@@ -76,5 +76,11 @@
   "reserva": "B 1E9V_bvYXUsaCEmHr7dHa79REnRan9mopZ7JX7jkasMY: salarioDiario, salarioAposAbrir e salarioRegistrarEdicao viraram no-op no código (sha 72f59060…); acionadores continuam cadastrados mas não fazem nada. Restaurar trocando os corpos de volta.",
   "original": "Intacta, com seus 3 acionadores ainda ativos; não alterada.",
   "copias_de_jogadores": "Cópia leva o código, mas não os acionadores instaláveis: o dono da cópia precisa rodar Salários → Ativar conferência diária (web) ou prepararCopiaAndroid uma vez para salários automáticos e cores em segundo plano."
+ },
+ "terceira_rodada": {
+  "alvo": "A",
+  "codigo_sha256_Codigo": "96930e917c227a0b3d5282eaf844525c0ec474ab642db5755a2cdd2c3a996bb5",
+  "mudanca": "onEdit: edições de cartões (r53Editar_) e de salário também avançam a paleta pendente via r53ContinuarPaletaPendente_; antes retornavam sem continuar. Relido igual.",
+  "motivo": "Cópias sem acionadores só continuam a pintura por edições."
  }
 }

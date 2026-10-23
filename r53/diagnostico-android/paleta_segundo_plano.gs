@@ -29,3 +29,10 @@ function paletaEmSegundoPlano() {
   if (props.getProperty('paleta_pendente')) r53GarantirPaletaAgendada_(30000);
   console.log('paleta em segundo plano: ' + voltas + ' voltas, ' + (Date.now() - inicio) + ' ms');
 }
+/** Cartões e salários encerram a edição antes do módulo: com troca pendente,
+ * avança um trecho da paleta também nessas edições (cópias sem acionadores). */
+function r53ContinuarPaletaPendente_(e) {
+  try {
+    if (PropertiesService.getDocumentProperties().getProperty('paleta_pendente')) r53PaletaLeve_().continuar(e);
+  } catch (err) { console.log('paleta pendente: ' + err.message); }
+}
