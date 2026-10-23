@@ -1,3 +1,17 @@
+# Aplicação da fila nas candidatas Android · 23/10/2026 (noite)
+
+Leia primeiro `r53/diagnostico-android/APLICACAO-FILA-2026-10-23.json`.
+Acesso ao Apps Script obtido pela API com `clasp login --no-localhost` na nuvem.
+Original e seu código (6112c6cf…) NÃO alterados. Candidatas: A = 1427V3IO…
+(projeto 1TdTW8VJ…) e B = 1E9V_bvY… (projeto 1D0_H75n…), renomeadas no Drive.
+Nas duas: código 10b814cb… instalado e relido igual (gerador
+`preparar_fila_loader.js`, teste `r53/testes/fila_loader.js`); células de
+Sementes corrigidas e relidas; acionadores próprios criados pelo proprietário
+via `prepararCopiaAndroid` (0 antes, 3 depois; agenda em L2 aponta cada cópia).
+Pendente: teste Android do usuário (abertura e cores) e escolha da definitiva.
+Não reaplicar o delta (o gerador recusa base diferente de 6112c6cf…).
+Modelo: Opus/High para nova aplicação; Medium para registrar o aceite.
+
 # Correções da fila e validação local/nativa parcial · 23/10/2026
 
 O usuário pediu prosseguir até concluir a fila. Leia primeiro

@@ -1,0 +1,26 @@
+{
+ "data": "2026-10-23",
+ "resultado": "APLICADA_NAS_DUAS_CANDIDATAS_ANDROID_PENDENTE",
+ "acesso": "Apps Script API autenticada na nuvem por clasp login --no-localhost (autorização feita pelo usuário no celular). Sem credenciais no Git.",
+ "original": {"planilha": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro", "projeto": "1sZTcHm1yNz8x7sVs5WaRj1pX8qbac-kglUDIdDTFLh_iqvHwzF6sqXff", "alterada": false, "codigo_sha256": "6112c6cf4ff34c88cea6c944b55aaf62a878e2310bb502b2ac5d2131f2d57e80", "modifiedTime": "2026-10-23T16:38:21.310Z"},
+ "candidatas": {
+  "A": {"planilha": "1427V3IO_RSToQcsO1ZgAeArXoT_PdoHukN9jAVkBfy8", "projeto": "1TdTW8VJWDNE4bcRzji3T4LhIPd1mthEKnkJTODUu_9cW6FyymCKatYOx", "titulo": "Ficha R53 Android — candidata A (cópia 1427)"},
+  "B": {"planilha": "1E9V_bvYXUsaCEmHr7dHa79REnRan9mopZ7JX7jkasMY", "projeto": "1D0_H75nQin8nHE2qkgoX3WL_KF89ZhfF-_CKO4QTjRj74VqEmr5wVxUO", "titulo": "Ficha R53 Android — candidata B (cópia 1E9V)"},
+  "diferenca_experimental": "Nenhuma. As duas são cópias da original criadas antes da última modificação dela; código, células alteradas e acionadores iguais."
+ },
+ "codigo": {
+  "antes_nas_duas": "39-2 arquivos idênticos à original; Codigo 6112c6cf…",
+  "instalado_sha256_Codigo": "10b814cbaacc3f4f241e1622cfc7875a37a4178f4f2086a1e32deadae29ed4f8",
+  "relido_igual_apos_instalar": true,
+  "gerador": "r53/diagnostico-android/preparar_fila_loader.js",
+  "teste_local": "r53/testes/fila_loader.js (VM: abertura leve, módulo sem sobras, alvos previstos, paleta leve 5eb2be7e…)",
+  "correcoes": ["r53CorrecaoFila_: 12 âncoras únicas no módulo 2f153f65…: barras S26/S30/S34 com guarda de zero, CS2:CS4 -> CO2:CO5, CO2:CO5 com as quatro Sementes, CS5, validação J16 até CS5, continuarPaleta_ relendo progresso sob lock", "Paleta leve substituída pela fonte 8523e57 (diferença única: guarda pós-lock)"],
+  "arquivos_novos": ["AuditarAndroid (auditar_contexto_android.gs, somente leitura)", "ConfigurarCopiaAndroid (prepararCopiaAndroid)"],
+  "pacote_integral_instalado": false
+ },
+ "celulas": {"DADOS_AM!CS2:CS4": "INDEX($CO$1:$CO$2;k) -> INDEX($CO$2:$CO$5;k)", "FICHA AMALDIÇOADA!J16": "lista estrita DADOS_AM!$CS$2:$CS$5 (ARROW preservado)", "CO2:CO5_e_CS5": "já corretos, preservados", "J16_valor": "vazio, preservado", "relidas": true, "rotas": "não repetidas nas candidatas; aprovadas na QA SEMENTES-QA-2026-10-23.json"},
+ "barras_nas_celulas": "não reaplicadas (já tinham guarda). O restaurador agora usa a fórmula da geração 7477944d, funcionalmente equivalente.",
+ "automacoes": {"executado_por": "proprietário, manualmente no editor: prepararCopiaAndroid", "acionadores_antes": [], "acionadores_depois": ["salarioDiario:CLOCK", "salarioRegistrarEdicao:ON_EDIT", "salarioAposAbrir:ON_OPEN"], "agenda_L2_aponta_proprio_projeto": true, "salario_edicao_marcado": true, "creditos_reemitidos": false, "historico_apagado": false},
+ "android": "Pendente: o usuário testa abertura e troca de cores nas duas no app Android.",
+ "limites": "Sem construir/continuar, importação Office, mudança de acesso ou merge em main. Menu Salários não apareceu na web do celular (modo computador); não investigado. Tempo de troca de cores não medido."
+}
