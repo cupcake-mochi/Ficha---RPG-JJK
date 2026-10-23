@@ -5,9 +5,10 @@ const src=fs.readFileSync(path.join(__dirname,'../diagnostico-android/paleta_seg
 function cenario(passosRestantes,duracao){
  let pend=passosRestantes>0?'tema':null,triggers=[],agora=0,chamadas=0;
  const ctx={console:{log(){}},Date:{now:()=>agora},Utilities:{sleep:ms=>{agora+=ms;}},
-  PropertiesService:{getDocumentProperties:()=>({getProperty:k=>k==='paleta_pendente'?pend:null})},
+  PropertiesService:{getDocumentProperties:()=>({getProperty:k=>k==='paleta_pendente'?pend:null,setProperty(){},getProperties:()=>({})})},
   ScriptApp:{getProjectTriggers:()=>triggers.slice(),deleteTrigger:t=>{triggers=triggers.filter(x=>x!==t);},
    newTrigger:h=>({timeBased:()=>({after:ms=>({create:()=>{const t={getHandlerFunction:()=>h,ms};triggers.push(t);return t;}})})})},
+  SpreadsheetApp:{getActive:()=>({getDeveloperMetadata:()=>[],addDeveloperMetadata:()=>{}})},
   r53PaletaLeve_:()=>({continuar:()=>{chamadas++;agora+=duracao;if(--passosRestantes<=0)pend=null;}})};
  vm.createContext(ctx);vm.runInContext(src,ctx);
  return {ctx,get triggers(){return triggers;},get chamadas(){return chamadas;},setPend:v=>{pend=v;}};
