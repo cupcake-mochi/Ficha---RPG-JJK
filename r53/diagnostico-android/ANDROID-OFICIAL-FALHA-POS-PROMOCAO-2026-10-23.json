@@ -5,9 +5,14 @@
   "relatos_usuario": {
     "oficial_pos_promocao": "Ainda não abre; carrega indefinidamente no telefone e segue pesada.",
     "candidata_C_mesmo_telefone": "Abriu normalmente.",
-    "snapshot_R52": "Abre normalmente, um pouco lenta; link ainda não identificado."
+    "snapshot_R52": "Abre normalmente, um pouco lenta; link ainda não identificado.",
+    "copia_nativa_pos_promocao": {
+      "usuario": "Abre e consigo usar normalmente.",
+      "amigo": "Usuário relata que um amigo também testou e abriu normalmente.",
+      "limite": "Relatos funcionais, sem medição de tempo ou RAM; não constituem aceite da oficial original."
+    }
   },
-  "interpretacao": "A preservação nativa da migração foi conferida, mas o objetivo de abertura da oficial falhou no aparelho. O relato atualizado da C exige comparar documento, estado de acesso, conteúdo/apresentação e execução; ainda não isola a causa.",
+  "interpretacao": "A cópia nativa do conteúdo atual da oficial abre e permite uso nos testes relatados. A falha da oficial não foi resolvida. A investigação passa a diferenças ligadas ao documento e ao contexto de abertura; conteúdo e código por si só não bastam para explicar a diferença observada, e a causa ainda não está isolada.",
   "comparacao_focal": {
     "abas": 27,
     "grade": 710587,
@@ -17,11 +22,21 @@
     "diferencas": "Paleta selecionada e formatos em sentinelas visuais; nenhuma diferença focal nos recursos/saldo/contrato lidos fora da seleção de paleta.",
     "celulas_sentinelas_lidas": 86
   },
-  "proximo_ensaio": "Cópia nativa pós-promoção da oficial preparada; testar no mesmo telefone. Cópias não herdam acionadores instaláveis; não criar/ativar outros para este ensaio.",
+  "proximo_ensaio": "Testar a oficial original por link direto à aba CARTEIRA, sem mudar células. Resultado pendente. Conferir diferenças de contexto sem alterar acionadores ou substituir a oficial.",
   "pendencias": [
-    "Resultado Android da cópia nova da oficial",
-    "Link exato do snapshot R52"
+    "Resultado da oficial por link direto à CARTEIRA",
+    "Isolar causa da diferença entre a oficial e a cópia funcional"
   ],
   "limites": "Não atribuir a falha a acionadores, cache, paleta, memória, histórico ou R53 sem contraprova. Nenhuma nova alteração aplicada à oficial nesta investigação. Cores e Sementes permanecem adiadas.",
-  "modelo_recomendado": "Sol/High para investigação integrada, sem alterar configurações automaticamente."
+  "modelo_recomendado": "Sol/High para investigação integrada, sem alterar configurações automaticamente.",
+  "comparacao_codigo": {
+    "caracteres": 659964,
+    "sha256_copia": "6112c6cf4ff34c88cea6c944b55aaf62a878e2310bb502b2ac5d2131f2d57e80",
+    "igual_ao_codigo_oficial_relido_na_promocao": true,
+    "verificacao": "Captura integral do editor da cópia; somente leitura.",
+    "acionadores_instalaveis_copia": 0,
+    "acionadores_instalaveis_oficial_ultima_conferencia": 3,
+    "limite": "Diferença inspecionada sem criar, remover ou ativar acionadores. Não demonstra causalidade. Abertura/uso relatados da cópia não validam automação salarial instalável."
+  },
+  "snapshot_R52": "Link ainda não identificado; referência secundária após controle com a cópia do conteúdo atual."
 }

@@ -11,7 +11,11 @@ proteção preservados. Abertura web e barras conferidas; `onOpen` (2,714 s) e
 não medidas Android. O teste da oficial no Android FALHOU no telefone do usuário:
 carregamento infinito. A C abre normalmente nesse mesmo aparelho e o snapshot R52
 abre um pouco lento. Leia `ANDROID-OFICIAL-FALHA-POS-PROMOCAO-2026-10-23.json`.
-Cópia nativa pós-promoção preparada para contraprova; resultado e link R52 pendentes.
+Cópia nativa pós-promoção ABRE e permite uso no telefone do usuário; amigo também
+testou e abriu, conforme relato. Código da cópia relido integralmente igual ao
+instalado na oficial. A original continua sem aceite: próximo teste é link
+direto à CARTEIRA. Causa ainda não isolada; não cortar recursos nem substituir
+a oficial automaticamente. R52 passa a comparação secundária.
 A abertura continua sendo a prioridade; cores e quatro Sementes ficam adiadas.
 Não reaplicar as etapas; a oficial já contém a promoção. Novas intervenções
 exigem snapshot e escopo próprios. Capturas privadas em

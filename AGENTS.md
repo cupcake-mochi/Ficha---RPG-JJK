@@ -12,7 +12,11 @@ Abertura web e três barras conferidas; onOpen e salarioAposAbrir concluíram.
 Teste Android oficial FALHOU: carregamento infinito no telefone do usuário.
 A C abre normalmente no mesmo aparelho; snapshot R52 abre um pouco lento.
 Leia `r53/diagnostico-android/ANDROID-OFICIAL-FALHA-POS-PROMOCAO-2026-10-23.json`.
-Cópia nativa pós-promoção preparada para contraprova; resultado e link R52 pendentes.
+Cópia nativa pós-promoção ABRE e permite uso no telefone do usuário; amigo também
+testou e abriu, conforme relato. Código da cópia relido integralmente igual ao
+instalado na oficial. A original continua sem aceite: próximo teste é link
+direto à CARTEIRA. Causa ainda não isolada; não cortar recursos nem substituir
+a oficial automaticamente. R52 passa a comparação secundária.
 Só depois do aceite Android, investigar lentidão das cores; Sementes separadas.
 Capturas e registros privados: `nuvem-b47/saidas/diagnostico-mobile-20261023/promocao-aplicada/`.
 Sem agentes extras, novos acionadores, acesso novo ou merge em main.
