@@ -1,3 +1,17 @@
+# Prioridade vigente · Android · 23/10/2026
+
+Leia `r53/diagnostico-android/RETOMADA-2026-10-23.md` e
+`r53/diagnostico-android/CANDIDATA-C-FINAL-2026-10-23.json`.
+O usuário confirmou: A não abre nos celulares fracos; B e C abrem, C está utilizável.
+A pedido dele, terminar otimização/abertura antes de retomar desempenho das cores.
+C recebeu 498 fórmulas compactadas, menos grade vazia e 15.869 constantes literais;
+releitura das 27 abas sem erros. Fontes GS regeneradas e pacote local conferido.
+Não reconstruir C/oficial nem promover automaticamente o pacote integral.
+C ainda contém helper temporário de QA de paleta: limpar antes da promoção.
+Sem agentes extras, acesso novo ou merge em main. Evidências privadas em
+`nuvem-b47/saidas/diagnostico-mobile-20261023/`, ignoradas. Conferência focal:
+Sol/Medium; implementação integrada: Sol/High.
+
 # Extensão vigente · emissão e salários · 20/10/2026
 
 Terceira rodada: a abertura simples não revisa notas/paleta nem apura salários. O novo `salarioAposAbrir` chama `revisarAbertura` com orçamento instalável; o diário e a edição são mantidos. A reemissão só muda o ciclo aberto, sem varrer missões ou tocar nos créditos. A previsão por fórmula compara `INT` das datas para incluir missões do próprio dia. `salarios/corrigir_abertura.js` atualiza o carregador antigo por âncoras estritas após validar o hash original; os cinco catálogos não são regravados. A fonte integral já contém as mesmas correções. Leia os tempos e a evidência vigente em `salarios/VALIDACAO.json`; as falhas de abertura da rodada anterior são históricas.

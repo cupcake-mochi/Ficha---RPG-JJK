@@ -1,0 +1,49 @@
+{
+  "escopo": "Experimento em memória para planejar; nenhuma alteração de produção ou Google",
+  "fonte_sha256": "d48c12b3f22fb2e013103da731d64cc0d2edf889bc71a13c2fdf1abf0cb0af76",
+  "casos": 89,
+  "campos_comparados": 16287,
+  "resultados_iguais": true,
+  "intervalos": "Referências sintéticas fixas, iguais antes/depois; não são benchmark nativo",
+  "medidas": [
+    {
+      "linha": 2,
+      "antes_caracteres": 33653,
+      "depois_caracteres": 10797,
+      "antes_bytes_utf8": 34308,
+      "depois_bytes_utf8": 11000
+    },
+    {
+      "linha": 10,
+      "antes_caracteres": 34517,
+      "depois_caracteres": 11053,
+      "antes_bytes_utf8": 35172,
+      "depois_bytes_utf8": 11256
+    },
+    {
+      "linha": 100,
+      "antes_caracteres": 35381,
+      "depois_caracteres": 11309,
+      "antes_bytes_utf8": 36036,
+      "depois_bytes_utf8": 11512
+    },
+    {
+      "linha": 250,
+      "antes_caracteres": 35381,
+      "depois_caracteres": 11309,
+      "antes_bytes_utf8": 36036,
+      "depois_bytes_utf8": 11512
+    }
+  ],
+  "limites": [
+    "Avaliador Python não reproduz todas as coerções/erros do Sheets",
+    "Não mede RAM, tempo de abertura ou recálculo Android",
+    "Validar fórmulas nativas e todas as variantes antes de aceitar"
+  ],
+  "cobertura_sufixos_por_cenario": {
+    "nenhum": 84,
+    "so_prazo": 1,
+    "so_tr": 1,
+    "ambos": 3
+  }
+}

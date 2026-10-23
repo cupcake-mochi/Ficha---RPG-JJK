@@ -1,0 +1,38 @@
+{
+  "data": "2026-10-23",
+  "base": "fbd6d156602958dc0f9da467a4a80100ad7b913f",
+  "qa_url": "https://docs.google.com/spreadsheets/d/1mxyAuekbltMsPd1RcvJ7wv6WMollcZFoecWR2mcwBEc/edit",
+  "escopo": "Planilha separada, dados sintéticos; nenhum teste de preenchimento na oficial",
+  "nativo": {
+    "criterios_mecanicos": 89,
+    "efeitos_identicos": 89,
+    "erros_efetivos_em_CASOS": 0,
+    "equivalencia_texto_bruto": 5,
+    "contraprovas_menu_sementes": 4,
+    "contraprova_funcao_ficticia": 1
+  },
+  "local": {
+    "cenarios": 1113,
+    "campos_iguais": 203679,
+    "unittests": 20,
+    "runtime_cartoes": 550,
+    "salarios": 112
+  },
+  "bordas_limite": "Três testes reproduzem divergência do menu; não significam que o menu publicado foi corrigido.",
+  "fonte_producao_alterada": false,
+  "oficial_alterada": false,
+  "android_testado": false,
+  "codigo_remoto_relido": false,
+  "evidencias_sha256": {
+    "resultado-casos.json": "f654e064019bcf45e12cbc06cf243348f0bcdb4ec49ed0e8fed595c43e2510a9",
+    "erros-casos.json": "d5033fcd2aa055edf07f258f14aabf6dff06c7d085635525b895326f937a0c24",
+    "bordas-resumo.json": "0a110637a83f6a89f3bb92cf8a3897b7f1e9c638398bbb12bd3bd9275eb4be55"
+  },
+  "validacao_visual": "Metadados/formatação e valores relidos; sem navegador para inspeção renderizada",
+  "pendencias": [
+    "Medir abertura, edição e persistência no Android afetado",
+    "Ler Apps Script instalado antes de qualquer migração",
+    "Conferir nomes/proteções não expostos pelo conector antes de remover grade/cálculos",
+    "Provar CSV/consumidor e restauração automática antes de converter ANALISE!C"
+  ]
+}

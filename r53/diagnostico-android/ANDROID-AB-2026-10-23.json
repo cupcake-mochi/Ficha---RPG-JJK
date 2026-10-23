@@ -1,0 +1,23 @@
+{
+  "controle": "1mhrotVJIwblthbTT_lCoau8OmKYDezA0TphTSusUZqc",
+  "otimizada": "1rH1csUCpUWBoYRmyw4FdQahzdRqgcP9wk3Jer0rRUBE",
+  "intervalo": "DADOS_R53!FD2:FD250",
+  "formulas_conferidas": 249,
+  "resultados_atuais_iguais": true,
+  "erros_novos_no_intervalo": 0,
+  "formatos_e_validacoes_do_intervalo_preservados": true,
+  "estrutura_27_abas_e_condicionais_preservadas": true,
+  "sentinelas_financeiras_e_recursos_iguais": true,
+  "bytes_fd_antes": 8877041,
+  "bytes_fd_depois": 2837005,
+  "bytes_reduzidos": 6040036,
+  "reducao_fd_percentual": 68.04,
+  "texto_formulas_ficha_antes": 34725005,
+  "texto_formulas_ficha_estimado_depois": 28684969,
+  "reducao_texto_formulas_ficha_percentual": 17.39,
+  "formulas_nativas_depois_sha256": "66c5629d7a16330fa536d1826896cbaf4a87011f0a1a50c715cdeccc44652ba4",
+  "teste_android": "pendente no aparelho afetado",
+  "limite": "Percentual de texto UTF-8 de fórmulas, não memória/arquivo/velocidade. Total usa inventário anterior e delta exato desta única alteração.",
+  "acionadores": "Cópias sem instalação de acionadores instaláveis; estado do script vinculado não relido nesta sessão.",
+  "fonte_producao": "Sem alteração; experimento nativo em cópia. Gerador e correções independentes continuam pendentes."
+}

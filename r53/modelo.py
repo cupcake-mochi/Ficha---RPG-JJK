@@ -288,9 +288,12 @@ def calcular(entradas,catalogo_extra=None,familias_custom=None,formas_custom=Non
 
 
 def formulas(linha, colunas, lookup_range, separator=',',familias_range=None,familias_coluna=2,formas_range=None,registro_livre=False,saidas=None):
+    from compactar import native_compact
     refs={k:colunas[k]+str(linha) for k in INPUTS+list(ARVORE)}
     if formas_range:
         from formas_custom import CAMPOS as FC
         refs.update(__formas_range__=formas_range,__formas_campos__=FC)
     if familias_range:refs.update(__familias_range__=familias_range,__familias_col__=str(familias_coluna))
-    return {k:'='+native(expr,refs,lookup_range,LOOKUP_FIELDS,separator) for k,expr in (arvore(True) if registro_livre else ARVORE).items() if saidas is None or k in saidas}
+    return {k:'='+(native_compact(expr,refs,lookup_range,LOOKUP_FIELDS,separator,suffixes=(k=='efeitos'))
+                   if k in ('efeitos','avisos') else native(expr,refs,lookup_range,LOOKUP_FIELDS,separator))
+            for k,expr in (arvore(True) if registro_livre else ARVORE).items() if saidas is None or k in saidas}

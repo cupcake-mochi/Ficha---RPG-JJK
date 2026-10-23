@@ -1,0 +1,771 @@
+{
+  "data": "2026-10-23",
+  "fonte": "81 leituras delimitadas, todas as 27 abas",
+  "abas": 27,
+  "grade_total": 857739,
+  "formulas": 137180,
+  "bytes_formulas_utf8": 34725005,
+  "erros": [],
+  "tamanho_drive_bytes": 1919122,
+  "alteracoes_formulas_desde_pacote": [],
+  "constantes_textuais": 16458,
+  "abas_detalhes": {
+    "CARTEIRA": {
+      "formulas": 9,
+      "bytes_utf8": 585,
+      "maiores_colunas": [
+        [
+          "AH",
+          242
+        ],
+        [
+          "O",
+          224
+        ],
+        [
+          "Z",
+          68
+        ],
+        [
+          "AK",
+          33
+        ],
+        [
+          "L",
+          18
+        ]
+      ],
+      "maior_formula": 117
+    },
+    "DADOS_SALARIOS": {
+      "formulas": 0,
+      "bytes_utf8": 0,
+      "maiores_colunas": [],
+      "maior_formula": 0
+    },
+    "SALÁRIOS": {
+      "formulas": 0,
+      "bytes_utf8": 0,
+      "maiores_colunas": [],
+      "maior_formula": 0
+    },
+    "FICHA": {
+      "formulas": 675,
+      "bytes_utf8": 115644,
+      "maiores_colunas": [
+        [
+          "R",
+          35820
+        ],
+        [
+          "AL",
+          32090
+        ],
+        [
+          "D",
+          6029
+        ],
+        [
+          "N",
+          5940
+        ],
+        [
+          "AF",
+          4236
+        ],
+        [
+          "AK",
+          3923
+        ]
+      ],
+      "maior_formula": 2049
+    },
+    "FICHA AMALDIÇOADA": {
+      "formulas": 837,
+      "bytes_utf8": 52317,
+      "maiores_colunas": [
+        [
+          "M",
+          8156
+        ],
+        [
+          "G",
+          8133
+        ],
+        [
+          "S",
+          8079
+        ],
+        [
+          "E",
+          3723
+        ],
+        [
+          "K",
+          3722
+        ],
+        [
+          "Q",
+          3701
+        ]
+      ],
+      "maior_formula": 357
+    },
+    "INVOCAÇÕES": {
+      "formulas": 4833,
+      "bytes_utf8": 343530,
+      "maiores_colunas": [
+        [
+          "AK",
+          40414
+        ],
+        [
+          "R",
+          38790
+        ],
+        [
+          "AF",
+          16904
+        ],
+        [
+          "M",
+          16440
+        ],
+        [
+          "AH",
+          13504
+        ],
+        [
+          "O",
+          13283
+        ]
+      ],
+      "maior_formula": 556
+    },
+    "FICHA PESSOAL": {
+      "formulas": 440,
+      "bytes_utf8": 123485,
+      "maiores_colunas": [
+        [
+          "BA",
+          27740
+        ],
+        [
+          "BG",
+          27740
+        ],
+        [
+          "BM",
+          27740
+        ],
+        [
+          "BS",
+          27740
+        ],
+        [
+          "D",
+          1402
+        ],
+        [
+          "S",
+          1353
+        ]
+      ],
+      "maior_formula": 545
+    },
+    "DADOS": {
+      "formulas": 422,
+      "bytes_utf8": 29044,
+      "maiores_colunas": [
+        [
+          "DL",
+          6267
+        ],
+        [
+          "CZ",
+          4203
+        ],
+        [
+          "BB",
+          3954
+        ],
+        [
+          "BN",
+          3368
+        ],
+        [
+          "AK",
+          2832
+        ],
+        [
+          "DP",
+          2514
+        ]
+      ],
+      "maior_formula": 2135
+    },
+    "DADOS_AM": {
+      "formulas": 5368,
+      "bytes_utf8": 861837,
+      "maiores_colunas": [
+        [
+          "GL",
+          266446
+        ],
+        [
+          "HB",
+          20822
+        ],
+        [
+          "EW",
+          19468
+        ],
+        [
+          "EX",
+          19468
+        ],
+        [
+          "FL",
+          17674
+        ],
+        [
+          "FM",
+          17674
+        ]
+      ],
+      "maior_formula": 6764
+    },
+    "DADOS_INVOC": {
+      "formulas": 22107,
+      "bytes_utf8": 3816073,
+      "maiores_colunas": [
+        [
+          "PT",
+          1113062
+        ],
+        [
+          "OD",
+          106536
+        ],
+        [
+          "OE",
+          92128
+        ],
+        [
+          "QJ",
+          81802
+        ],
+        [
+          "OC",
+          79448
+        ],
+        [
+          "QL",
+          78320
+        ]
+      ],
+      "maior_formula": 7165
+    },
+    "GLOSSÁRIO": {
+      "formulas": 0,
+      "bytes_utf8": 0,
+      "maiores_colunas": [],
+      "maior_formula": 0
+    },
+    "DADOS_PROGRESSAO": {
+      "formulas": 433,
+      "bytes_utf8": 57277,
+      "maiores_colunas": [
+        [
+          "G",
+          13792
+        ],
+        [
+          "BK",
+          12750
+        ],
+        [
+          "BL",
+          12750
+        ],
+        [
+          "K",
+          5811
+        ],
+        [
+          "B",
+          1280
+        ],
+        [
+          "C",
+          1280
+        ]
+      ],
+      "maior_formula": 4766
+    },
+    "DADOS_CUSTOM": {
+      "formulas": 2872,
+      "bytes_utf8": 814929,
+      "maiores_colunas": [
+        [
+          "JZ",
+          127398
+        ],
+        [
+          "JY",
+          113021
+        ],
+        [
+          "W",
+          62137
+        ],
+        [
+          "KA",
+          51005
+        ],
+        [
+          "V",
+          20896
+        ],
+        [
+          "X",
+          13602
+        ]
+      ],
+      "maior_formula": 5031
+    },
+    "DADOS_CRIACAO": {
+      "formulas": 117,
+      "bytes_utf8": 10730,
+      "maiores_colunas": [
+        [
+          "F",
+          6400
+        ],
+        [
+          "B",
+          640
+        ],
+        [
+          "C",
+          640
+        ],
+        [
+          "D",
+          640
+        ],
+        [
+          "E",
+          640
+        ],
+        [
+          "K",
+          540
+        ]
+      ],
+      "maior_formula": 651
+    },
+    "DADOS_MELHORIAS": {
+      "formulas": 5032,
+      "bytes_utf8": 818060,
+      "maiores_colunas": [
+        [
+          "M",
+          72052
+        ],
+        [
+          "BE",
+          28212
+        ],
+        [
+          "BG",
+          28212
+        ],
+        [
+          "BI",
+          28212
+        ],
+        [
+          "BK",
+          28212
+        ],
+        [
+          "AO",
+          27159
+        ]
+      ],
+      "maior_formula": 2381
+    },
+    "DADOS_RESTRICOES": {
+      "formulas": 545,
+      "bytes_utf8": 58140,
+      "maiores_colunas": [
+        [
+          "K",
+          24762
+        ],
+        [
+          "O",
+          5250
+        ],
+        [
+          "J",
+          4386
+        ],
+        [
+          "P",
+          4230
+        ],
+        [
+          "N",
+          2948
+        ],
+        [
+          "Q",
+          2402
+        ]
+      ],
+      "maior_formula": 819
+    },
+    "DADOS_DANOS": {
+      "formulas": 95,
+      "bytes_utf8": 7886,
+      "maiores_colunas": [
+        [
+          "H",
+          4620
+        ],
+        [
+          "F",
+          648
+        ],
+        [
+          "G",
+          648
+        ],
+        [
+          "D",
+          644
+        ],
+        [
+          "E",
+          644
+        ],
+        [
+          "J",
+          338
+        ]
+      ],
+      "maior_formula": 466
+    },
+    "DADOS_FORMAS": {
+      "formulas": 5491,
+      "bytes_utf8": 1355673,
+      "maiores_colunas": [
+        [
+          "HP",
+          76784
+        ],
+        [
+          "GU",
+          57584
+        ],
+        [
+          "HV",
+          33760
+        ],
+        [
+          "HW",
+          33760
+        ],
+        [
+          "HX",
+          33760
+        ],
+        [
+          "HZ",
+          31360
+        ]
+      ],
+      "maior_formula": 1046
+    },
+    "DADOS_APTIDOES": {
+      "formulas": 970,
+      "bytes_utf8": 52634,
+      "maiores_colunas": [
+        [
+          "BK",
+          8672
+        ],
+        [
+          "AT",
+          2484
+        ],
+        [
+          "BN",
+          1708
+        ],
+        [
+          "BL",
+          1532
+        ],
+        [
+          "L",
+          1456
+        ],
+        [
+          "M",
+          1406
+        ]
+      ],
+      "maior_formula": 250
+    },
+    "DADOS_TALENTOS": {
+      "formulas": 634,
+      "bytes_utf8": 43117,
+      "maiores_colunas": [
+        [
+          "AV",
+          7253
+        ],
+        [
+          "AS",
+          3078
+        ],
+        [
+          "AT",
+          2558
+        ],
+        [
+          "AH",
+          2484
+        ],
+        [
+          "AU",
+          2426
+        ],
+        [
+          "J",
+          1456
+        ]
+      ],
+      "maior_formula": 250
+    },
+    "DADOS_ENTIDADES": {
+      "formulas": 528,
+      "bytes_utf8": 60508,
+      "maiores_colunas": [
+        [
+          "AG",
+          15756
+        ],
+        [
+          "K",
+          8450
+        ],
+        [
+          "AK",
+          3312
+        ],
+        [
+          "AF",
+          2996
+        ],
+        [
+          "AJ",
+          2608
+        ],
+        [
+          "AM",
+          1968
+        ]
+      ],
+      "maior_formula": 851
+    },
+    "ANALISE": {
+      "formulas": 34247,
+      "bytes_utf8": 2057983,
+      "maiores_colunas": [
+        [
+          "B",
+          1695111
+        ],
+        [
+          "C",
+          362872
+        ]
+      ],
+      "maior_formula": 577
+    },
+    "CONFIGURAÇÃO": {
+      "formulas": 732,
+      "bytes_utf8": 87793,
+      "maiores_colunas": [
+        [
+          "T",
+          32225
+        ],
+        [
+          "AB",
+          29665
+        ],
+        [
+          "G",
+          6064
+        ],
+        [
+          "N",
+          1642
+        ],
+        [
+          "E",
+          1566
+        ],
+        [
+          "H",
+          1467
+        ]
+      ],
+      "maior_formula": 248
+    },
+    "DADOS_CONFIG": {
+      "formulas": 848,
+      "bytes_utf8": 148795,
+      "maiores_colunas": [
+        [
+          "F",
+          31079
+        ],
+        [
+          "G",
+          31038
+        ],
+        [
+          "E",
+          14088
+        ],
+        [
+          "A",
+          13181
+        ],
+        [
+          "D",
+          12548
+        ],
+        [
+          "B",
+          12118
+        ]
+      ],
+      "maior_formula": 724
+    },
+    "MONTAGENS": {
+      "formulas": 3172,
+      "bytes_utf8": 516059,
+      "maiores_colunas": [
+        [
+          "B",
+          85594
+        ],
+        [
+          "C",
+          71986
+        ],
+        [
+          "D",
+          71986
+        ],
+        [
+          "E",
+          71986
+        ],
+        [
+          "F",
+          71986
+        ],
+        [
+          "G",
+          59446
+        ]
+      ],
+      "maior_formula": 271
+    },
+    "DADOS_R53": {
+      "formulas": 44607,
+      "bytes_utf8": 22919293,
+      "maiores_colunas": [
+        [
+          "FD",
+          8877041
+        ],
+        [
+          "FX",
+          5240399
+        ],
+        [
+          "DO",
+          793035
+        ],
+        [
+          "ES",
+          493334
+        ],
+        [
+          "FH",
+          444742
+        ],
+        [
+          "FZ",
+          415163
+        ]
+      ],
+      "maior_formula": 35364
+    },
+    "DADOS_R53_CATALOGO": {
+      "formulas": 2166,
+      "bytes_utf8": 373613,
+      "maiores_colunas": [
+        [
+          "AG",
+          13300
+        ],
+        [
+          "AH",
+          13300
+        ],
+        [
+          "AI",
+          13300
+        ],
+        [
+          "AJ",
+          13300
+        ],
+        [
+          "Y",
+          12958
+        ],
+        [
+          "Z",
+          12958
+        ]
+      ],
+      "maior_formula": 708
+    }
+  },
+  "relato_android": {
+    "A": "abriu, mas demorou bons segundos",
+    "B": "abriu relativamente rápido, sem maiores problemas",
+    "limite": "relato único, sem cronometragem/repetição; A também abriu; não isola cópia/cache/estado do documento"
+  },
+  "limites": [
+    "Tamanho Drive não é RAM nem soma de fórmulas",
+    "Máscara não inclui conteúdo manual, imagens ou código remoto"
+  ],
+  "relato_android_atualizado": {
+    "A": "Não abre nos celulares fracos; abre lentamente em aparelho mais forte.",
+    "B": "Abre nos aparelhos fracos.",
+    "C": "Abre e está utilizável nos aparelhos fracos.",
+    "limite": "Relatos sem cronômetro ou medição de RAM; o relato anterior era preliminar."
+  }
+}

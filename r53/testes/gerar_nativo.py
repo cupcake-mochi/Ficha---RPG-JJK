@@ -27,7 +27,7 @@ def gerar():
         for nome,v in caso.get('catalogo',{}).items():
             if nome in extras and extras[nome]!=v:raise ValueError('Catálogo de teste conflitante: '+nome)
             extras[nome]=v
-    catrows=[LOOKUP_FIELDS]+[[v[k] for k in LOOKUP_FIELDS] for v in CAT['opcoes']+list(extras.values())]
+    catrows=[list(LOOKUP_FIELDS)]+[[v[k] for k in LOOKUP_FIELDS] for v in CAT['opcoes']+list(extras.values())]
     catalog_end=len(catrows)
     familias=sorted({f for caso in CASOS for f in caso.get('familias_custom',{})})
     family_start=20

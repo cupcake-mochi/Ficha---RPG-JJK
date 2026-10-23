@@ -606,6 +606,10 @@ function acabamento_(ss, feito, rel) {
   // só saem as de uma ficha montada antes, quando o acabar() roda nela.
   feito.push('travas: ' + tirarTravasDeFormula_(ss));
   rel.etapa('travas de antes');
+  if (typeof otimizarAnaliseAndroid === 'function') {
+    feito.push('constantes Android: ' + otimizarAnaliseAndroid().convertidas);
+    rel.etapa('constantes da ANALISE');
+  }
 }
 
 /**

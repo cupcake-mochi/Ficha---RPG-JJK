@@ -437,17 +437,17 @@ function notasDosTipos_(e) {
 }
 // FIM DAS NOTAS CONTEXTUAIS B47
 function onEdit(e) {
-  var inicio = Date.now();
+  var inicio = e && typeof e.r53Inicio_ === 'number' ? e.r53Inicio_ : Date.now();
   if (!e || !e.range) return;
   if (typeof salarioEditar_ === 'function' && salarioEditar_(e)) return;
   var aba = e.range.getSheet().getName();
-  if (typeof r53Editar_ === 'function' && r53Editar_(e)) return;
   // A troca de paleta voltou pra cá em 25/09/2026, em passos que cabem nos 30 segundos, pra
   // funcionar em toda cópia sem ninguém autorizar nada. Ver convergirPaleta_.
   if (aba === 'CARTEIRA' && ehCelulaDaPaleta_(e.range)) {
-    continuarPaleta_(inicio, e.oldValue, true);
+    continuarPaleta_(inicio, e.oldValue, true, null, e.value);
     return;
   }
+  if (typeof r53Editar_ === 'function' && r53Editar_(e)) return;
   // 01/10/2026: a FICHA PESSOAL tem as caixas de treino, as missões que sobem o nível e as notas que mudam.
   if (aba === ABA_PESSOAL_) {
     try { devolverConta_(e, ABA_PESSOAL_); } catch (err) { console.log('ficha pessoal, a conta: ' + err.message); }
@@ -1040,6 +1040,20 @@ function devolverConta_(e, nome) {
     livres = livres || livresDaAba_(spec);
     if (livres[a1_(t[0], t[1])]) return;
     var cel = aba.getRange(t[0], t[1]);
+    // Endereços fixos da exportação continuam restauráveis como texto bruto.
+    // RichText mantém texto que parece fórmula/booleano. O Google consome um
+    // apóstrofo inicial; duplique esse prefixo para preservar o endereço.
+    if (nome === 'ANALISE' && t[1] === 3) {
+      var literalAnalise = /^="((?:[^"]|"")*)"$/.exec(t[2]);
+      if (literalAnalise) {
+        var textoAnalise = literalAnalise[1].replace(/""/g, '"');
+        if (!cel.getFormula() && cel.getValue() === textoAnalise) return;
+        var escapadoAnalise = textoAnalise.charAt(0) === "'" ? "'" + textoAnalise : textoAnalise;
+        cel.setRichTextValue(SpreadsheetApp.newRichTextValue().setText(escapadoAnalise).build());
+        n++;
+        return;
+      }
+    }
     if (REFERENCIA_PURA_.test(t[2])) {
       if (cel.getFormula() === t[2]) return;
       cel.setFormula(t[2]);
@@ -2317,11 +2331,14 @@ var VERSAO_PALETA_ = '17/10/2026-paleta-base';
  * aba grande vira passos de linhas, de até CELULAS_POR_PASSO_ células cada: o tamanho que a FICHA tinha antes, e que
  * cabia. A conta de cada célula não muda; só o trecho lido e gravado de cada vez.
  */
-var CELULAS_POR_PASSO_ = 7500;
+// A R53 tem recálculos mais caros: o bloco de 7.500 ainda excedeu 30 s no
+// Sheets nativo. Blocos menores permitem gravar progresso antes do limite.
+var CELULAS_POR_PASSO_ = 3500;
 function trechosDaAba_(spec) {
+  var limite = CELULAS_POR_PASSO_;
   var n = spec.rows * spec.cols;
-  if (n <= CELULAS_POR_PASSO_) return null;
-  var k = Math.ceil(n / CELULAS_POR_PASSO_), por = Math.ceil(spec.rows / k), out = [];
+  if (n <= limite) return null;
+  var k = Math.ceil(n / limite), por = Math.ceil(spec.rows / k), out = [];
   for (var r = 1; r <= spec.rows; r += por) out.push([r, Math.min(spec.rows, r + por - 1)]);
   return out;
 }
@@ -2337,7 +2354,8 @@ function passosDaPaleta_(primeira) {
   // 07/10/2026: a aba muito grande (a INVOCAÇÕES com doze fichas: 53 mil células, oito passos de cor e quatro de régua)
   // vai para o fim da fila, para a FICHA PESSOAL e o GLOSSÁRIO não esperarem por ela. Se é nela que o jogador está, ela
   // passa na frente como qualquer outra, na linha de baixo.
-  var muitoGrande = function (spec) { return spec.rows * spec.cols > 4 * CELULAS_POR_PASSO_ ? 1 : 0; };
+  // Prioridade da aba independe do tamanho escolhido para cada bloco.
+  var muitoGrande = function (spec) { return spec.rows * spec.cols > 30000 ? 1 : 0; };
   abas.sort(function (a, b) { return muitoGrande(a) - muitoGrande(b); });
   abas.sort(function (a, b) { return (b.nome === primeira) - (a.nome === primeira); });
   // A barra cheia é uma célula na DADOS, lida pelas barras de todas as abas.
@@ -2387,12 +2405,12 @@ function estimativaDoPasso_(passo, tempos) {
     // 02/10/2026: num Sheets mais lento que o de fábrica, o passo de cor ainda não medido custava o triplo da conta e
     // estourava os 30 s (o teste 8). Com algum passo de cor já medido nesta planilha, a estimativa usa o mais lento
     // deles por célula, se ele passar da conta de fábrica.
-    var porCelula = 0.75;
+    var porCelula = 0.75, fixo = 6000;
     Object.keys(tempos || {}).forEach(function (k) {
       var nk = k.indexOf('cor:') === 0 ? celulasDoPassoDeCor_(k) : 0;
-      if (nk >= 1000) porCelula = Math.max(porCelula, (tempos[k] - 600) / nk);
+      if (nk >= 1000) porCelula = Math.max(porCelula, (tempos[k] - fixo) / nk);
     });
-    return Math.round(n * porCelula) + 600;
+    return Math.round(n * porCelula) + fixo;
   }
   // 01/10/2026: a régua custa por chamada, e a FICHA PESSOAL tem 550 faixas, mais que as 522 da FICHA. As caixas de
   // quatro lados vão em lotes de 400, e os lados soltos em até quatro chamadas a mais (ver repintarBordas_).
@@ -2401,11 +2419,11 @@ function estimativaDoPasso_(passo, tempos) {
     // a régua em partes: cada parte tem até CHAMADAS_DE_BORDA_POR_PASSO_ chamadas
     if (aba && partes[2] !== undefined) {
       var resto = chamadasDeBorda_(aba).length - Number(partes[2]) * CHAMADAS_DE_BORDA_POR_PASSO_;
-      return Math.max(1, Math.min(CHAMADAS_DE_BORDA_POR_PASSO_, resto)) * 350;
+      return Math.max(12000, Math.max(1, Math.min(CHAMADAS_DE_BORDA_POR_PASSO_, resto)) * 3500);
     }
     var faixas = {};
     ((aba && aba.bordas) || []).forEach(function (b) { b[3].forEach(function (f) { faixas[f] = true; }); });
-    return (Math.ceil(Object.keys(faixas).length / 400) + 4) * 350;
+    return Math.max(12000, (Math.ceil(Object.keys(faixas).length / 400) + 4) * 3500);
   }
   if (partes[0] === 'barra') return 600;   // lê duas colunas da DADOS e grava uma célula
   return 1500;
@@ -2453,19 +2471,26 @@ function lerJson_(txt) {
  * valor que a caixa tinha antes da edição, e vale só pra passo nunca gravado sem `paleta_atual` — a cópia
  * cujas propriedades não vieram junto.
  */
-function convergirPaleta_(inicio, orcamento, dica, primeira) {
+function convergirPaleta_(inicio, orcamento, dica, primeira, estado) {
   var ss = SpreadsheetApp.getActive();
   var props = PropertiesService.getDocumentProperties();
-  var alvo = ss.getRangeByName(NOME_CEL_PALETA_);
-  var novo = alvo ? nomeCanonicoDaPaleta_(alvo.getCell(1, 1).getValue()) : '';
+  var estados = estado || props.getProperties();
+  // A edição já traz o texto escolhido. Ler a célula novamente pode esperar
+  // o recálculo da ficha inteira e consumir o gatilho antes da primeira cor.
+  var novo = nomeCanonicoDaPaleta_(estados[PROP_PENDENTE_]);
+  if (!coresDoNome_(novo)) {
+    var alvo = ss.getRangeByName(NOME_CEL_PALETA_);
+    novo = alvo ? nomeCanonicoDaPaleta_(alvo.getCell(1, 1).getValue()) : '';
+  }
   var agora = coresDoNome_(novo);
   if (!agora) { props.deleteProperty(PROP_PENDENTE_); return null; }
+  if (estados[PROP_PENDENTE_] !== novo) props.setProperty(PROP_PENDENTE_, novo);
 
-  var feito = lerJson_(props.getProperty(PROP_FEITO_));
+  var feito = lerJson_(estados[PROP_FEITO_]);
   Object.keys(feito).forEach(function (k) { feito[k] = nomeCanonicoDaPaleta_(feito[k]); });
-  var tempos = lerJson_(props.getProperty(PROP_TEMPOS_));
-  var detalhe = lerJson_(props.getProperty(PROP_DETALHE_));
-  var geral = nomeCanonicoDaPaleta_(props.getProperty('paleta_atual'));   // o que o esquema de antes pintou na ficha inteira
+  var tempos = lerJson_(estados[PROP_TEMPOS_]);
+  var detalhe = lerJson_(estados[PROP_DETALHE_]);
+  var geral = nomeCanonicoDaPaleta_(estados.paleta_atual);   // o que o esquema de antes pintou na ficha inteira
   var velho = nomeCanonicoDaPaleta_(dica);
   if (!coresDoNome_(velho)) velho = '';
   var passos = passosDaPaleta_(primeira || 'CARTEIRA'), andou = 0;
@@ -2474,13 +2499,13 @@ function convergirPaleta_(inicio, orcamento, dica, primeira) {
   // em A era lido como B: o FBE4EF do Mizuki Escuro (texto) virava a tinta do Claro, e a rede de legibilidade o
   // levava ao texto fraco (F1BFD6). A base é a paleta pintada quando a primeira troca começou, gravada uma vez só:
   // passo sem registro nunca foi repintado desde então, então é nela que ele está.
-  var base = props.getProperty(PROP_BASE_);
+  var base = estados[PROP_BASE_];
   if (!base && passos.some(function (p) { return !feito[p]; })) {
     base = geral || velho || PALETA_INICIAL_;
     props.setProperty(PROP_BASE_, base);
   }
   // O relatório da troca: quando começou, em quantas execuções, e quando acabou (ver verTemposDaPaleta).
-  var ultima = lerJson_(props.getProperty(PROP_ULTIMA_));
+  var ultima = lerJson_(estados[PROP_ULTIMA_]);
   if (nomeCanonicoDaPaleta_(ultima.alvo) !== novo || ultima.fim) ultima = { alvo: novo, inicio: inicio, execucoes: 0, passos: {} };
   ultima.execucoes++;
 
@@ -2490,7 +2515,6 @@ function convergirPaleta_(inicio, orcamento, dica, primeira) {
     var gasto = Date.now() - inicio;
     var fresca = andou === 0 && gasto < 3000;
     if (!fresca && gasto + (tempos[passo] || estimativaDoPasso_(passo, tempos)) > orcamento) {
-      props.setProperty(PROP_PENDENTE_, novo);
       return passo;
     }
     var t0 = Date.now();
@@ -2531,8 +2555,12 @@ function convergirPaleta_(inicio, orcamento, dica, primeira) {
   props.setProperty('paleta_atual', novo);
   if (andou) { ultima.fim = Date.now(); props.setProperty(PROP_ULTIMA_, JSON.stringify(ultima)); }
   // Se o jogador escolheu outro tema enquanto este rodava, ainda tem trabalho: não desmarca.
-  if (nomeCanonicoDaPaleta_(alvo.getCell(1, 1).getValue()) !== novo) {
-    props.setProperty(PROP_PENDENTE_, '1');
+  // Confira a escolha real ao concluir: eventos de edição podem chegar fora
+  // de ordem. Essa leitura acontece uma vez no fim, não a cada continuação.
+  var escolhaFinal = ss.getRangeByName(NOME_CEL_PALETA_);
+  var pedidoFinal = escolhaFinal ? nomeCanonicoDaPaleta_(escolhaFinal.getCell(1, 1).getValue()) : '';
+  if (pedidoFinal !== novo) {
+    props.setProperty(PROP_PENDENTE_, pedidoFinal || '1');
     return passos[0];
   }
   props.deleteProperty(PROP_PENDENTE_);
@@ -2567,22 +2595,28 @@ function pintarBarra_(ss, agora) {
  * exemplo), e é tryLock(0): quem não pega volta na hora, e o pendente fica pra próxima. Se o
  * LockService não estiver disponível, segue sem ele — a busca de resgate conserta uma mistura.
  */
-function continuarPaleta_(inicio, dica, marcar, onde) {
+function continuarPaleta_(inicio, dica, marcar, onde, escolha) {
   try {
     var props = PropertiesService.getDocumentProperties();
-    if (marcar) props.setProperty(PROP_PENDENTE_, '1');
-    else if (!props.getProperty(PROP_PENDENTE_)) return;
+    if (marcar) {
+      props.setProperty(PROP_PENDENTE_, coresDoNome_(escolha) ? nomeCanonicoDaPaleta_(escolha) : '1');
+    } else if (!props.getProperty(PROP_PENDENTE_)) return;
     var lock = null;
     try {
-      lock = LockService.getDocumentLock();
+      // Só serializa as trocas deste projeto. As edições de cartões usam o
+      // DocumentLock e não precisam esperar pela pintura de cores/arte.
+      lock = LockService.getScriptLock();
       if (!lock.tryLock(0)) return;
     } catch (err) { lock = null; }
     try {
+      // Capture o progresso sob bloqueio: um callback anterior pode ter
+      // terminado entre a consulta do marcador e a aquisição do lock.
+      var estados = props.getProperties();
       // Sem aviso nenhum desde 25/09/2026 ("exigir isso do usuario é meio chato"): o que sobra é de aba
       // que o jogador não está vendo, ou arte, e termina na próxima vez que ele mexer na ficha.
       // `onde` é a célula que o jogador tocou: a aba dela passa na frente. Lida só aqui, depois de saber que
       // há trabalho, porque o onSelectionChange roda a cada clique.
-      convergirPaleta_(inicio, ORCAMENTO_SIMPLES_, dica, onde ? onde.getSheet().getName() : null);
+      convergirPaleta_(inicio, ORCAMENTO_SIMPLES_, dica, onde ? onde.getSheet().getName() : null, estados);
     } finally {
       if (lock) lock.releaseLock();
     }
@@ -2600,7 +2634,7 @@ function ehCelulaDaPaleta_(range) {
 /** Gatilho simples: cada clique continua uma troca de paleta que parou por tempo. */
 function onSelectionChange(e) {
   try { abrirFichaDaInvocacao_(e); } catch (err) { console.log('invocações, abrir a ficha: ' + err.message); }
-  continuarPaleta_(Date.now(), null, false, e && e.range);
+  continuarPaleta_(e && typeof e.r53Inicio_ === 'number' ? e.r53Inicio_ : Date.now(), null, false, e && e.range);
 }
 
 /**
@@ -2739,7 +2773,7 @@ function configurarPaleta_(ss, force) {
  * acionador instalável, sem disputar o limite de trinta segundos.
  */
 function onOpen(e) {
-  var inicio = Date.now();
+  var inicio = e && typeof e.r53Inicio_ === 'number' ? e.r53Inicio_ : Date.now();
   if (typeof salarioAbrir_ === 'function') salarioAbrir_();
   if (typeof r53Menu_ === 'function') r53Menu_();
   continuarPaleta_(inicio);

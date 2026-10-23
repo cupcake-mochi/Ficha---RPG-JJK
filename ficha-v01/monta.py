@@ -26,6 +26,7 @@ from openpyxl.styles.differential import DifferentialStyle
 from openpyxl.drawing.image import Image as Img
 from openpyxl.comments import Comment
 import mesclagens
+from integridade_celula import atribuir
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 LAYOUT = json.load(open(os.path.join(AQUI, "layout.json"), encoding="utf-8"))
@@ -482,7 +483,7 @@ for a in LAYOUT["abas"]:
             # o quarto campo, quando existe, e a faixa de uma formula MATRICIAL:
             # sem ele ela volta como formula comum e o Sheets recalcula outra
             # coisa. Registro de tres campos continua valendo -- e a maioria.
-            cel.value = ArrayFormula(reg[3], valor) if len(reg) > 3 else valor
+            atribuir(cel, valor, reg[3] if len(reg) > 3 else None)
         if ie is not None:
             st = ESTILOS[ie]
             if st["font"]:          cel.font = st["font"]

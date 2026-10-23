@@ -242,7 +242,7 @@ var VALORES_R53_ANALISE_3_ = [
       [16943,2,"=IF('MONTAGENS'!E7,\"[\"&IF('MONTAGENS'!E6=INT('MONTAGENS'!E6),TEXT('MONTAGENS'!E6,\"0\"),SUBSTITUTE(TEXT('MONTAGENS'!E6,\"0.###############\"),\",\",\".\"))&\",\"&TEXTJOIN(\",\",FALSE,MAP('MONTAGENS'!E7:E39,LAMBDA(item,IF(ISLOGICAL(item),IF(item,\"true\",\"false\"),IF(ISNUMBER(item),IF(item=INT(item),TEXT(item,\"0\"),SUBSTITUTE(TEXT(item,\"0.###############\"),\",\",\".\")),CHAR(34)&SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(item&\"\",CHAR(92),CHAR(92)&CHAR(92)),CHAR(34),CHAR(92)&CHAR(34)),CHAR(10),CHAR(92)&\"n\"),CHAR(13),CHAR(92)&\"r\"),CHAR(9),CHAR(92)&\"t\")&CHAR(34))))))&\"]\",\"\")",0],[16943,3,"=\"'MONTAGENS'!E6\"",0],[16943,4,"entrada",0],[16944,1,"r53.feitico.1.versao.5",0],[16944,2,"=IF('MONTAGENS'!F7,\"[\"&IF('MONTAGENS'!F6=INT('MONTAGENS'!F6),TEXT('MONTAGENS'!F6,\"0\"),SUBSTITUTE(TEXT('MONTAGENS'!F6,\"0.###############\"),\",\",\".\"))&\",\"&TEXTJOIN(\",\",FALSE,MAP('MONTAGENS'!F7:F39,LAMBDA(item,IF(ISLOGICAL(item),IF(item,\"true\",\"false\"),IF(ISNUMBER(item),IF(item=INT(item),TEXT(item,\"0\"),SUBSTITUTE(TEXT(item,\"0.###############\"),\",\",\".\")),CHAR(34)&SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(item&\"\",CHAR(92),CHAR(92)&CHAR(92)),CHAR(34),CHAR(92)&CHAR(34)),CHAR(10),CHAR(92)&\"n\"),CHAR(13),CHAR(92)&\"r\"),CHAR(9),CHAR(92)&\"t\")&CHAR(34))))))&\"]\",\"\")",0],[16944,3,"=\"'MONTAGENS'!F6\"",0],[16944,4,"entrada",0]
     ],
     "notas":[],
-    "geracao":"e142593fdc5be157",
+    "geracao":"0c4547e1ace6efd9",
     "arquivo":"R53Analise3.gs"
   }
 ];

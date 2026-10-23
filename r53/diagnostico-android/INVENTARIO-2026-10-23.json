@@ -1,0 +1,477 @@
+{
+  "git": "fbd6d156602958dc0f9da467a4a80100ad7b913f",
+  "relato_usuario": "Falha confirmada no app Android, inclusive no próprio celular do usuário",
+  "fonte_inventario": "Leitura nativa, máscara fórmula/erro; sem edições",
+  "blocos": 72,
+  "posicoes_lidas": 710587,
+  "posicoes_analise_excedentes_lidas_separadamente": 147152,
+  "formulas_nativas": 137180,
+  "bytes_formulas_nativas_utf8": 34725005,
+  "abas": {
+    "CARTEIRA": {
+      "formulas": 9,
+      "bytes_utf8": 585,
+      "maior_chars": 117
+    },
+    "DADOS_SALARIOS": {
+      "formulas": 0,
+      "bytes_utf8": 0,
+      "maior_chars": 0
+    },
+    "SALÁRIOS": {
+      "formulas": 0,
+      "bytes_utf8": 0,
+      "maior_chars": 0
+    },
+    "FICHA": {
+      "formulas": 675,
+      "bytes_utf8": 115644,
+      "maior_chars": 2049
+    },
+    "FICHA AMALDIÇOADA": {
+      "formulas": 837,
+      "bytes_utf8": 52317,
+      "maior_chars": 357
+    },
+    "INVOCAÇÕES": {
+      "formulas": 4833,
+      "bytes_utf8": 343530,
+      "maior_chars": 556
+    },
+    "FICHA PESSOAL": {
+      "formulas": 440,
+      "bytes_utf8": 123485,
+      "maior_chars": 545
+    },
+    "DADOS": {
+      "formulas": 422,
+      "bytes_utf8": 29044,
+      "maior_chars": 2135
+    },
+    "DADOS_AM": {
+      "formulas": 5368,
+      "bytes_utf8": 861837,
+      "maior_chars": 6764
+    },
+    "DADOS_INVOC": {
+      "formulas": 22107,
+      "bytes_utf8": 3816073,
+      "maior_chars": 7165
+    },
+    "GLOSSÁRIO": {
+      "formulas": 0,
+      "bytes_utf8": 0,
+      "maior_chars": 0
+    },
+    "DADOS_PROGRESSAO": {
+      "formulas": 433,
+      "bytes_utf8": 57277,
+      "maior_chars": 4766
+    },
+    "DADOS_CUSTOM": {
+      "formulas": 2872,
+      "bytes_utf8": 814929,
+      "maior_chars": 5031
+    },
+    "DADOS_CRIACAO": {
+      "formulas": 117,
+      "bytes_utf8": 10730,
+      "maior_chars": 651
+    },
+    "DADOS_MELHORIAS": {
+      "formulas": 5032,
+      "bytes_utf8": 818060,
+      "maior_chars": 2381
+    },
+    "DADOS_RESTRICOES": {
+      "formulas": 545,
+      "bytes_utf8": 58140,
+      "maior_chars": 819
+    },
+    "DADOS_DANOS": {
+      "formulas": 95,
+      "bytes_utf8": 7886,
+      "maior_chars": 466
+    },
+    "DADOS_FORMAS": {
+      "formulas": 5491,
+      "bytes_utf8": 1355673,
+      "maior_chars": 1046
+    },
+    "DADOS_APTIDOES": {
+      "formulas": 970,
+      "bytes_utf8": 52634,
+      "maior_chars": 250
+    },
+    "DADOS_TALENTOS": {
+      "formulas": 634,
+      "bytes_utf8": 43117,
+      "maior_chars": 250
+    },
+    "DADOS_ENTIDADES": {
+      "formulas": 528,
+      "bytes_utf8": 60508,
+      "maior_chars": 851
+    },
+    "ANALISE": {
+      "formulas": 34247,
+      "bytes_utf8": 2057983,
+      "maior_chars": 577
+    },
+    "CONFIGURAÇÃO": {
+      "formulas": 732,
+      "bytes_utf8": 87793,
+      "maior_chars": 248
+    },
+    "DADOS_CONFIG": {
+      "formulas": 848,
+      "bytes_utf8": 148795,
+      "maior_chars": 724
+    },
+    "MONTAGENS": {
+      "formulas": 3172,
+      "bytes_utf8": 516059,
+      "maior_chars": 271
+    },
+    "DADOS_R53": {
+      "formulas": 44607,
+      "bytes_utf8": 22919293,
+      "maior_chars": 35364
+    },
+    "DADOS_R53_CATALOGO": {
+      "formulas": 2166,
+      "bytes_utf8": 373613,
+      "maior_chars": 708
+    }
+  },
+  "erros_nativos": [],
+  "constantes_texto_C_ANALISE": 15869,
+  "modified_time_antes": "2026-10-22T06:31:37.695Z",
+  "modified_time_depois": "2026-10-22T06:31:37.695Z",
+  "modified_time_estavel": true,
+  "formulas_nativas_sha256": "cfd47ccddfbf9cad3ec95c4421a7b115effbea8f04071105208c02998801c5c4",
+  "data": "2026-10-23",
+  "spreadsheet_id": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
+  "nativo_alterado": false,
+  "escopo": "Auditoria e planejamento; fórmulas/erros e metadados. Não é snapshot completo de entradas/notas nem teste no Android.",
+  "fonte_antes_compactacao": {
+    "moldes_com_formulas": 70098,
+    "bytes_moldes": 12527048
+  },
+  "fonte_materializada": {
+    "abas-fonte.json": {
+      "formulas": 135735,
+      "bytes_formulas": 34183989,
+      "parenteses_incompletos": 249
+    },
+    "abas-base-pre-r53.json": {
+      "formulas": 64243,
+      "bytes_formulas": 9041150,
+      "parenteses_incompletos": 0
+    }
+  },
+  "comparacao_fonte_materializada_nativo": {
+    "CARTEIRA": {
+      "iguais": 8,
+      "diferentes": 1,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [
+        "AH3"
+      ],
+      "amostra_extras": []
+    },
+    "FICHA": {
+      "iguais": 672,
+      "diferentes": 3,
+      "ausentes": 1,
+      "extras": 0,
+      "amostra_diferentes": [
+        "S26",
+        "S30",
+        "S34"
+      ],
+      "amostra_extras": []
+    },
+    "FICHA AMALDIÇOADA": {
+      "iguais": 837,
+      "diferentes": 0,
+      "ausentes": 2,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "INVOCAÇÕES": {
+      "iguais": 4821,
+      "diferentes": 12,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [
+        "U15",
+        "AN15",
+        "U246",
+        "AN246",
+        "U477"
+      ],
+      "amostra_extras": []
+    },
+    "FICHA PESSOAL": {
+      "iguais": 437,
+      "diferentes": 3,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [
+        "BE11",
+        "I86",
+        "W86"
+      ],
+      "amostra_extras": []
+    },
+    "DADOS": {
+      "iguais": 422,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "DADOS_AM": {
+      "iguais": 5348,
+      "diferentes": 3,
+      "ausentes": 0,
+      "extras": 17,
+      "amostra_diferentes": [
+        "CS2",
+        "CS3",
+        "CS4"
+      ],
+      "amostra_extras": [
+        "CS5",
+        "AB8",
+        "AC8",
+        "AL8",
+        "AM8"
+      ]
+    },
+    "DADOS_INVOC": {
+      "iguais": 22011,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 96,
+      "amostra_diferentes": [],
+      "amostra_extras": [
+        "JW8",
+        "JX8",
+        "KC8",
+        "KD8",
+        "KI8"
+      ]
+    },
+    "GLOSSÁRIO": {
+      "iguais": 0,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "DADOS_PROGRESSAO": {
+      "iguais": 433,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "DADOS_CUSTOM": {
+      "iguais": 2872,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "DADOS_CRIACAO": {
+      "iguais": 117,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "DADOS_MELHORIAS": {
+      "iguais": 5032,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "DADOS_RESTRICOES": {
+      "iguais": 545,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "DADOS_DANOS": {
+      "iguais": 95,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "DADOS_FORMAS": {
+      "iguais": 3988,
+      "diferentes": 210,
+      "ausentes": 0,
+      "extras": 1293,
+      "amostra_diferentes": [
+        "ER2",
+        "ET2",
+        "EV2",
+        "EX2",
+        "EZ2"
+      ],
+      "amostra_extras": [
+        "FE2",
+        "FU2",
+        "GG2",
+        "GI2",
+        "GV2"
+      ]
+    },
+    "DADOS_APTIDOES": {
+      "iguais": 970,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "DADOS_TALENTOS": {
+      "iguais": 634,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "DADOS_ENTIDADES": {
+      "iguais": 528,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "ANALISE": {
+      "iguais": 34247,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "CONFIGURAÇÃO": {
+      "iguais": 690,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 42,
+      "amostra_diferentes": [],
+      "amostra_extras": [
+        "O49",
+        "O50",
+        "K81",
+        "L81",
+        "N81"
+      ]
+    },
+    "DADOS_CONFIG": {
+      "iguais": 848,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "MONTAGENS": {
+      "iguais": 3172,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    },
+    "DADOS_R53": {
+      "iguais": 43676,
+      "diferentes": 931,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [
+        "FD2",
+        "FD3",
+        "FD4",
+        "FD5",
+        "FD6"
+      ],
+      "amostra_extras": []
+    },
+    "DADOS_R53_CATALOGO": {
+      "iguais": 2166,
+      "diferentes": 0,
+      "ausentes": 0,
+      "extras": 0,
+      "amostra_diferentes": [],
+      "amostra_extras": []
+    }
+  },
+  "totais_comparacao": {
+    "iguais": 134569,
+    "diferentes": 1163,
+    "ausentes": 3,
+    "extras": 1448
+  },
+  "comparacao_nao_e_erro_semantico": "As diferenças precisam de classificação. A expansão abaixo é esperada; não há licença para apagar fórmulas por estarem ausentes dos moldes compactados.",
+  "analise": {
+    "chaves": 18393,
+    "chaves_unicas": 18393,
+    "versoes_possiveis": 1455,
+    "sha256_chaves": "db19af475f8e1f404d6e11697efae1862e31b08fc80c35da8acd61c1f16742c9",
+    "grade_vazia_E_L": 147152
+  },
+  "r53": {
+    "contextos": 249,
+    "campos_por_versao": 33,
+    "bytes_FD_efeitos": 8877041,
+    "bytes_FX_avisos": 5240399,
+    "bytes_efeitos_avisos": 14117440,
+    "porcentagem_efeitos_avisos_texto_nativo": 40.7,
+    "maior_formula_nativa_chars": 35364
+  },
+  "defeito_geracao": {
+    "moldes_truncados": 10,
+    "formulas_materializadas_incompletas": 249,
+    "contraprova_workbook": {
+      "entrada_chars": 33634,
+      "depois_de_atribuir_ao_workbook": 32767,
+      "data_type": "f",
+      "houve_corte": true
+    },
+    "nao_estabelece_causa_no_android": true
+  },
+  "limites": [
+    "Falha no app Android confirmada pelo usuário; ainda sem ensaio físico controlado nesta sessão.",
+    "Código Apps Script instalado e logs não foram relidos; acesso disponível é Drive/Sheets.",
+    "Bytes de fórmulas não medem RAM nem preveem tempo linear.",
+    "Falta classificar diferenças remanescentes antes de regenerar/publicar.",
+    "Valores, notas completas, imagens e acionadores exigem inventário/snapshot próprios antes de migração."
+  ],
+  "funcoes_selecionadas_nativas": {
+    "INDIRECT": 525
+  },
+  "nativas_parenteses_incompletos": [],
+  "nativas_faixas_coluna_inteira": []
+}
