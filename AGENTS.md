@@ -1,3 +1,26 @@
+# Correções da fila e validação local/nativa parcial · 23/10/2026
+
+O usuário pediu prosseguir até concluir a fila. Leia primeiro
+`r53/diagnostico-android/FILA-VALIDADA-2026-10-23.md` e a prova SEMENTES-QA
+na mesma pasta. A fonte agora extrai as quatro Sementes; geração/lista/dropdown
+corrigidos. Quatro rotas aprovadas no Google somente em QA descartável.
+Paleta: acrescentada saída sob lock quando a pendência já terminou, com oito
+cenários locais; módulo leve regenerado. Latência Android não medida.
+Smoke dos nove módulos corrigido e aprovado. GS regenerados com barras zero:
+geração 7477944d1a09c3ed; delta integral de 12 campos previsto, demais campos
+das 25 abas-fonte iguais. 27 testes Python, pacote, cartões, constantes e
+regressão de paletas aprovados. Sem perda de mecânicas/capacidade identificada.
+NÃO declarar fila operacional encerrada: nenhuma correção desta etapa foi
+instalada na oficial/cópia funcional. Apps Script inacessível nesta sessão.
+Adoção da cópia, suas automações, recuperação de Sementes/validação no código,
+publicação da paleta e aceite Android continuam pendentes. ID da cópia testada
+ainda aguarda confirmação. Não repetir a promoção Android anterior.
+Original e candidata preservadas. Não executar construir/continuar em preenchida,
+importar Office, mesclar main ou abrir agentes extras. Sem alterações de acesso.
+Sol/High para delta nativo e automações; Medium para conferência focal.
+Os estados abaixo descrevem etapas anteriores; a pendência de GS/barras e smoke
+foi resolvida localmente nesta etapa.
+
 # Investigação de documento e alternativa por cópia · 23/10/2026
 
 O usuário autorizou continuar a investigação e usar a nova ficha como alternativa

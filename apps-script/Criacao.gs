@@ -33,7 +33,7 @@ var ABAS_DA_CRIACAO = [
     "paleta_fixa":true,
     "caixas":[],
     "depois":"GLOSSÁRIO",
-    "geracao":"0c4547e1ace6efd9",
+    "geracao":"7477944d1a09c3ed",
     "arquivo":"Criacao.gs"
   }
 ];

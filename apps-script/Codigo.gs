@@ -2612,6 +2612,7 @@ function continuarPaleta_(inicio, dica, marcar, onde, escolha) {
       // Capture o progresso sob bloqueio: um callback anterior pode ter
       // terminado entre a consulta do marcador e a aquisição do lock.
       var estados = props.getProperties();
+      if (!estados[PROP_PENDENTE_]) return;
       // Sem aviso nenhum desde 25/09/2026 ("exigir isso do usuario é meio chato"): o que sobra é de aba
       // que o jogador não está vendo, ou arte, e termina na próxima vez que ele mexer na ficha.
       // `onde` é a célula que o jogador tocou: a aba dela passa na frente. Lida só aqui, depois de saber que

@@ -38,7 +38,7 @@ var ABAS_PERSONAGEM_TALENTOS = [
     "paleta_fixa":true,
     "caixas":[[15,2,23]],
     "depois":"GLOSSÁRIO",
-    "geracao":"0c4547e1ace6efd9",
+    "geracao":"7477944d1a09c3ed",
     "arquivo":"TalentosPersonagem.gs"
   }
 ];

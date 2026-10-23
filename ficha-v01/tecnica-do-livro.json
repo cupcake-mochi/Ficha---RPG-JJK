@@ -847,7 +847,12 @@
    "O equipamento em uso é seu Selo.",
    "PE significa Pontos de Energia para quem possui energia amaldiçoada e Pontos de Esforço para quem não possui."
   ],
-  "sementes": [],
+  "sementes": [
+   "Domínio Simples",
+   "Energia Reversa",
+   "Pétala",
+   "Aptidão Própria"
+  ],
   "semente_frase": "Ela conta como uma aptidão adicional.",
   "grupos_de_arma": {
    "Porrete": [

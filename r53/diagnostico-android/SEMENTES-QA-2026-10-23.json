@@ -1,0 +1,59 @@
+{
+  "data": "2026-10-23",
+  "resultado": "OK",
+  "escopo": "Google Sheets: fórmulas e validação em cópia descartável; não é teste de interação Android",
+  "copia_qa": "1qE13EJn5Iid_El3u3xuxtOx2sZnNpei4cG0RR9c4Aq8",
+  "casos": [
+    {
+      "rota": 2,
+      "valores": [
+        "Domínio Simples",
+        "Energia Reversa",
+        "Pétala",
+        "Aptidão Própria"
+      ],
+      "ok": true
+    },
+    {
+      "rota": 3,
+      "valores": [
+        "Três grupos de arma",
+        "Ferramenta de atacar",
+        "Ferramenta de carregar",
+        ""
+      ],
+      "ok": true
+    },
+    {
+      "rota": 4,
+      "valores": [
+        "Três grupos de arma",
+        "Ferramenta de atacar",
+        "Ferramenta de carregar",
+        ""
+      ],
+      "ok": true
+    },
+    {
+      "rota": 1,
+      "valores": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "ok": true
+    }
+  ],
+  "rota_original_restaurada": true,
+  "dropdown": "DADOS_AM!$CS$2:$CS$5",
+  "dropdown_estrito": true,
+  "oficial_e_copia_funcional_alteradas": false,
+  "incidente_corrigido": "Primeiro envio à QA usou vírgulas; a localidade pt_BR exigiu ponto e vírgula. As quatro rotas foram repetidas e aprovadas após correção.",
+  "limites": [
+    "Apps Script instalado não atualizado",
+    "Nenhum acionador alterado",
+    "Nenhum teste Android novo",
+    "Ensaio isolou rota via DADOS_AM!A2 e restaurou a fórmula original; não alterou origem/personagem"
+  ]
+}

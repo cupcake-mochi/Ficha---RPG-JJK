@@ -1,3 +1,13 @@
+# Manutenção Android e Sementes · 23/10/2026
+
+O smoke exige os nove módulos atuais, incluindo `PaletaAndroid.gs`.
+`r53/testes/test_sementes.py` cobre a extração delimitada do livro e a faixa;
+`r53/testes/paleta_concorrente.js` cobre progresso e término entre callbacks;
+`r53/testes/delta_fila.js` exige somente as 12 diferenças esperadas da geração
+em relação ao commit fa54ab6, que precisa estar disponível no histórico Git.
+Esse comparador é focal, não parte do smoke de clones rasos. Validação nativa
+de Sementes e limites da aplicação em `r53/diagnostico-android/FILA-VALIDADA-2026-10-23.md`.
+
 # R53 publicada · 19/10/2026
 
 O diagnóstico detecta a R53, reconstrói seu pacote a partir das fontes GS
