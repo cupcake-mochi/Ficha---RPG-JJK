@@ -9,11 +9,14 @@ Código salvo relido integralmente: SHA-256
 Contrato ANALISE A:D: 73.576 células iguais, 18.393 chaves e zero erros;
 entradas, salários, nomes e proteção preservados. 27 abas; grade 710.587.
 Abertura web e três barras conferidas; onOpen e salarioAposAbrir concluíram.
-Abertura/uso da oficial no Android: teste solicitado ao usuário, aguardando relato.
+Teste Android oficial FALHOU: carregamento infinito no telefone do usuário.
+A C abre normalmente no mesmo aparelho; snapshot R52 abre um pouco lento.
+Leia `r53/diagnostico-android/ANDROID-OFICIAL-FALHA-POS-PROMOCAO-2026-10-23.json`.
+Cópia nativa pós-promoção preparada para contraprova; resultado e link R52 pendentes.
 Só depois do aceite Android, investigar lentidão das cores; Sementes separadas.
 Capturas e registros privados: `nuvem-b47/saidas/diagnostico-mobile-20261023/promocao-aplicada/`.
 Sem agentes extras, novos acionadores, acesso novo ou merge em main.
-Sol/Medium para aceite focal; Sol/High para implementação integrada de cores.
+Sol/High para investigação integrada da abertura; Medium para conferências focais.
 Não alterar configurações automaticamente. Os estados anteriores abaixo são históricos.
 
 # Preparação anterior · Android · 23/10/2026

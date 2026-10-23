@@ -1,6 +1,6 @@
 {
   "data": "2026-10-23",
-  "resultado": "APLICADA_E_CONFERIDA_NATIVAMENTE_ANDROID_PENDENTE",
+  "resultado": "APLICADA_E_CONFERIDA_NATIVAMENTE_ANDROID_NAO_RESOLVIDO",
   "base_git": "9e692e66956a93e7a1c098366564b0e9631e7dbd",
   "branch": "codex/otimizacao-android-r53",
   "autorizacao_especifica_usuario": true,
@@ -77,8 +77,13 @@
     "bytes_depois": 1790412,
     "modifiedTime_checkpoint_depois": "2026-10-23T16:38:21.310Z"
   },
-  "android_oficial": "Teste de abertura e uso solicitado ao usuário, ainda sem resultado nesta evidência.",
-  "cores": "Lentidão não resolvida; próxima investigação após aceite Android.",
+  "android_oficial": {
+    "resultado": "Falhou no telefone do usuário: carregamento infinito.",
+    "candidata_C": "Usuário confirmou novamente que a C abre normalmente no mesmo telefone.",
+    "R52": "Snapshot R52 abre, um pouco lento; identificação pendente.",
+    "diagnostico": "ANDROID-OFICIAL-FALHA-POS-PROMOCAO-2026-10-23.json"
+  },
+  "cores": "Adiada: a abertura da oficial ainda não foi resolvida.",
   "sementes": "Quatro Sementes de Sem Técnica permanecem intervenção independente.",
   "limites": "Sem reconstrução, importação Office, acionadores novos, alteração de acesso ou merge em main. Sem nova varredura integral das 27 abas; conferência completa dos alvos alterados, contrato e sentinelas. Dados privados e capturas ficam em pasta ignorada."
 }

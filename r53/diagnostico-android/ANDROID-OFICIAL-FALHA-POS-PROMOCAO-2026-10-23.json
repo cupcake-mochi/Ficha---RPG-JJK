@@ -1,0 +1,27 @@
+{
+  "data": "2026-10-23",
+  "estado": "ABERTURA_ANDROID_OFICIAL_NAO_RESOLVIDA",
+  "base_git": "a06225a",
+  "relatos_usuario": {
+    "oficial_pos_promocao": "Ainda não abre; carrega indefinidamente no telefone e segue pesada.",
+    "candidata_C_mesmo_telefone": "Abriu normalmente.",
+    "snapshot_R52": "Abre normalmente, um pouco lenta; link ainda não identificado."
+  },
+  "interpretacao": "A preservação nativa da migração foi conferida, mas o objetivo de abertura da oficial falhou no aparelho. O relato atualizado da C exige comparar documento, estado de acesso, conteúdo/apresentação e execução; ainda não isola a causa.",
+  "comparacao_focal": {
+    "abas": 27,
+    "grade": 710587,
+    "regras_condicionais": 60,
+    "metadata_abas_regras_igual_C_oficial": true,
+    "metadata_copia_nova_igual_oficial": true,
+    "diferencas": "Paleta selecionada e formatos em sentinelas visuais; nenhuma diferença focal nos recursos/saldo/contrato lidos fora da seleção de paleta.",
+    "celulas_sentinelas_lidas": 86
+  },
+  "proximo_ensaio": "Cópia nativa pós-promoção da oficial preparada; testar no mesmo telefone. Cópias não herdam acionadores instaláveis; não criar/ativar outros para este ensaio.",
+  "pendencias": [
+    "Resultado Android da cópia nova da oficial",
+    "Link exato do snapshot R52"
+  ],
+  "limites": "Não atribuir a falha a acionadores, cache, paleta, memória, histórico ou R53 sem contraprova. Nenhuma nova alteração aplicada à oficial nesta investigação. Cores e Sementes permanecem adiadas.",
+  "modelo_recomendado": "Sol/High para investigação integrada, sem alterar configurações automaticamente."
+}

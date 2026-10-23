@@ -8,8 +8,11 @@ contrato integral de 73.576 células preservado, com 18.393 chaves e zero erros.
 Código instalado e relido integralmente igual à C; salários, entradas, nomes e
 proteção preservados. Abertura web e barras conferidas; `onOpen` (2,714 s) e
 `salarioAposAbrir` (17,307 s) concluíram. Estes são tempos Apps Script no servidor,
-não medidas Android. O teste de abertura/uso da oficial no Android foi solicitado
-ao usuário e está pendente. Cores e quatro Sementes continuam separadas.
+não medidas Android. O teste da oficial no Android FALHOU no telefone do usuário:
+carregamento infinito. A C abre normalmente nesse mesmo aparelho e o snapshot R52
+abre um pouco lento. Leia `ANDROID-OFICIAL-FALHA-POS-PROMOCAO-2026-10-23.json`.
+Cópia nativa pós-promoção preparada para contraprova; resultado e link R52 pendentes.
+A abertura continua sendo a prioridade; cores e quatro Sementes ficam adiadas.
 Não reaplicar as etapas; a oficial já contém a promoção. Novas intervenções
 exigem snapshot e escopo próprios. Capturas privadas em
 `nuvem-b47/saidas/diagnostico-mobile-20261023/promocao-aplicada/`, ignorada.
