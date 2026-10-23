@@ -67,7 +67,7 @@
   "mudanca": "salarioRegistrarEdicao chama r53AgendarPaleta_; novo arquivo PaletaSegundoPlano (r53/diagnostico-android/paleta_segundo_plano.gs) agenda paletaEmSegundoPlano (acionador de tempo único, autorremovido, reagendado só enquanto houver paleta pendente)",
   "teste_local": "r53/testes/paleta_segundo_plano.js (4 cenários)",
   "relido_igual": true,
-  "android": "pendente novo teste",
+  "android": "Usuário (21:50Z): na B a troca de cores funcionou no app Android sem mexer em células; confirmado pela API (FICHA #180712 = tinta Crepúsculo Escuro, ~5 min para as 5 abas verificáveis). Troca entre abas continua pesada; não medida nem alterada.",
   "tentativa_execucoes": "Permissão script.processes/spreadsheets bloqueada pelo Google para o cliente clasp; histórico de execuções não consultado."
  }
 }
