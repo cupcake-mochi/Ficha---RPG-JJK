@@ -7,7 +7,10 @@ A pedido dele, terminar otimização/abertura antes de retomar desempenho das co
 C recebeu 498 fórmulas compactadas, menos grade vazia e 15.869 constantes literais;
 releitura das 27 abas sem erros. Fontes GS regeneradas e pacote local conferido.
 Não reconstruir C/oficial nem promover automaticamente o pacote integral.
-C ainda contém helper temporário de QA de paleta: limpar antes da promoção.
+Helper temporário removido e código salvo relido integralmente. Barras conferidas
+em QA nativa; guarda de zero aplicada na C e na fonte. Leia também
+`r53/diagnostico-android/ENTREGA-INCREMENTAL-2026-10-23.md`.
+A geração GS anterior ainda antecede esta guarda; não promover pacote integral.
 Sem agentes extras, acesso novo ou merge em main. Evidências privadas em
 `nuvem-b47/saidas/diagnostico-mobile-20261023/`, ignoradas. Conferência focal:
 Sol/Medium; implementação integrada: Sol/High.
