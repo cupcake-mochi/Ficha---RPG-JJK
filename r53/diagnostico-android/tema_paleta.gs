@@ -13,7 +13,7 @@
 var R53_TEMA_ABA_ = 'R53_TEMA';
 var R53_TEMA_ABAS_ = ['CARTEIRA', 'FICHA', 'FICHA AMALDIÇOADA', 'INVOCAÇÕES', 'FICHA PESSOAL', 'GLOSSÁRIO'];
 var R53_TEMA_FUNDO_ = {fundo: 'BACKGROUND', tinta: 'ACCENT1', painel: 'ACCENT2', painel_alto: 'ACCENT3',
-                       papel: 'ACCENT4', menu_grande: 'LINK'};
+                       papel: 'ACCENT4', menu_grande: 'HYPERLINK'};
 var R53_TEMA_BORDA_ = 'ACCENT5';
 // Ordem de desempate quando duas funções têm o mesmo hex: as que vão pro tema primeiro.
 var R53_TEMA_PAPEIS_ = ['fundo', 'tinta', 'painel', 'painel_alto', 'papel', 'menu_grande', 'texto', 'texto_fraco',

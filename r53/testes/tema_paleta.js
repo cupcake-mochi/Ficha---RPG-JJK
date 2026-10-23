@@ -36,7 +36,7 @@ const ss = {getId: () => 'X', getSheetByName: n => n === 'CARTEIRA' ? Object.ass
   createDeveloperMetadataFinder: () => ({withKey: () => ({find: () => []})}), addDeveloperMetadata: (k, v) => { log.meta = JSON.parse(v); }};
 ctx.SpreadsheetApp = {getActive: () => ss, flush() {}, newColor: () => Object.create(cor),
   ThemeColorType: {TEXT: 'TEXT', BACKGROUND: 'BACKGROUND', ACCENT1: 'ACCENT1', ACCENT2: 'ACCENT2', ACCENT3: 'ACCENT3',
-    ACCENT4: 'ACCENT4', ACCENT5: 'ACCENT5', ACCENT6: 'ACCENT6', LINK: 'LINK'}};
+    ACCENT4: 'ACCENT4', ACCENT5: 'ACCENT5', ACCENT6: 'ACCENT6', HYPERLINK: 'HYPERLINK'}};
 ctx.PropertiesService = {getDocumentProperties: () => ({getProperty: k => log.props[k] || null, setProperty: (k, v) => { log.props[k] = v; }, deleteProperty: k => { delete log.props[k]; }})};
 const regua = {red: parseInt(t.regua.slice(0, 2), 16) / 255, green: parseInt(t.regua.slice(2, 4), 16) / 255, blue: parseInt(t.regua.slice(4), 16) / 255};
 ctx.Sheets = {Spreadsheets: {get: () => ({sheets: [{data: [{rowData: [{values: [{userEnteredFormat: {borders: {top: {style: 'SOLID', color: regua}, left: {style: 'SOLID', colorStyle: {rgbColor: {red: 1}}}}}}]}]}]}]}),
@@ -46,7 +46,7 @@ vm.runInContext('R53_TEMA_ABAS_ = ["CARTEIRA"]', ctx);
 const res = vm.runInContext('migrarParaTema()', ctx);
 assert.strictEqual(linhasTema.A1, 'ativo');
 // fundos: fundo, painel, menu_grande, tinta pelo tema; acento e bloco ficam em hex e entram no resto
-assert.deepStrictEqual(JSON.parse(JSON.stringify(log.fundo.map(l => l.map(x => x.tema || x.rgb)))), [['BACKGROUND', h(t.acento), 'ACCENT2'], ['LINK', h(t.bloco), 'ACCENT1']]);
+assert.deepStrictEqual(JSON.parse(JSON.stringify(log.fundo.map(l => l.map(x => x.tema || x.rgb)))), [['BACKGROUND', h(t.acento), 'ACCENT2'], ['HYPERLINK', h(t.bloco), 'ACCENT1']]);
 assert.deepStrictEqual(JSON.parse(JSON.stringify(log.letra.map(l => l.map(x => x.tema || x.rgb)))), [['TEXT', h(t.osso_por_papel.acento), '#123456'], ['TEXT', h(t.texto_fraco), 'TEXT']]);
 const resto = JSON.parse(linhasTema[2].slice(1).join(''));
 assert.deepStrictEqual(resto, {'f:acento': ['B1'], 'o:acento': ['B1'], 'f:bloco': ['B2'], 't:texto_fraco': ['B2']});
@@ -58,7 +58,7 @@ assert.strictEqual(log.vagas.ACCENT5, '#' + t.regua); assert.strictEqual(log.vag
 log.rl = []; log.vagas = {};
 vm.runInContext('r53TemaTrocar_({value: "Noite · Escuro"})', ctx);
 const n = vm.runInContext('r53TemaCores_("Noite · Escuro")', ctx);
-assert.strictEqual(log.vagas.BACKGROUND, '#' + n.fundo); assert.strictEqual(log.vagas.LINK, '#' + n.menu_grande);
+assert.strictEqual(log.vagas.BACKGROUND, '#' + n.fundo); assert.strictEqual(log.vagas.HYPERLINK, '#' + n.menu_grande);
 assert(log.rl.some(x => x[0] === 'f' && x[1] === '#' + n.acento && x[2][0] === 'B1'));
 assert(log.rl.some(x => x[0] === 'l' && x[1] === '#' + n.osso_por_papel.acento));
 assert.strictEqual(log.valores.CZ51, '#' + n.barra);
