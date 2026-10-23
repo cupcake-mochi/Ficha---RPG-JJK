@@ -1,8 +1,21 @@
 # Consolidação da candidata C e promoção ensaiada — 23/10/2026
 
-**Estado vigente:** lote executável preparado em 37 etapas e ensaiado integralmente
-em cópia nativa atual da oficial. Veja `PROMOCAO-ENSAIADA-2026-10-23.json`.
-A oficial permanece intacta; os registros abaixo da consolidação da C são históricos.
+**Atualização vigente — promoção aplicada com autorização específica:** as 37 etapas
+foram aplicadas na oficial após snapshot nativo atualizado e preflight completo.
+Veja [PROMOCAO-APLICADA-2026-10-23.json](PROMOCAO-APLICADA-2026-10-23.json).
+As 498 fórmulas, os 15.869 literais, as três barras e a grade foram relidos;
+contrato integral de 73.576 células preservado, com 18.393 chaves e zero erros.
+Código instalado e relido integralmente igual à C; salários, entradas, nomes e
+proteção preservados. Abertura web e barras conferidas; `onOpen` (2,714 s) e
+`salarioAposAbrir` (17,307 s) concluíram. Estes são tempos Apps Script no servidor,
+não medidas Android. O teste de abertura/uso da oficial no Android foi solicitado
+ao usuário e está pendente. Cores e quatro Sementes continuam separadas.
+Não reaplicar as etapas; a oficial já contém a promoção. Novas intervenções
+exigem snapshot e escopo próprios. Capturas privadas em
+`nuvem-b47/saidas/diagnostico-mobile-20261023/promocao-aplicada/`, ignorada.
+Próxima conferência: Sol/Medium; futura implementação de cores: Sol/High.
+
+**Registro anterior de preparação e ensaio (histórico):**
 
 
 Base conferida: `86f9bac`, branch `codex/otimizacao-android-r53`, checkout inicialmente limpo.

@@ -1,0 +1,84 @@
+{
+  "data": "2026-10-23",
+  "resultado": "APLICADA_E_CONFERIDA_NATIVAMENTE_ANDROID_PENDENTE",
+  "base_git": "9e692e66956a93e7a1c098366564b0e9631e7dbd",
+  "branch": "codex/otimizacao-android-r53",
+  "autorizacao_especifica_usuario": true,
+  "snapshot_nativo_atualizado": true,
+  "codigo": {
+    "sha256_antes": "a15cf71f23cc0c95a16973900171ae2f5aa6d25b1575d29b7cc5c515943212a1",
+    "sha256_instalado": "6112c6cf4ff34c88cea6c944b55aaf62a878e2310bb502b2ac5d2131f2d57e80",
+    "caracteres": 659964,
+    "igualdade_integral_apos_recarregar": true,
+    "pacote_integral_instalado": false,
+    "paleta_pos_lock_incorporada": false
+  },
+  "etapas": {
+    "total": 37,
+    "formulas": 25,
+    "literais": 10,
+    "barras": 1,
+    "grade": 1,
+    "confirmadas": 37,
+    "alvo_relido_antes_de_cada_escrita": true,
+    "releitura_apos_cada_escrita": true
+  },
+  "formulas_compactadas": 498,
+  "constantes_convertidas": 15869,
+  "barras_corrigidas": 3,
+  "contrato": {
+    "celulas_conferidas": 73576,
+    "chaves_unicas": 18393,
+    "erros": 0,
+    "valores_tipos_notas_validacoes_formatos_iguais": true,
+    "alteracoes_userEnteredValue_somente_as_previstas": true
+  },
+  "estrutura": {
+    "abas": 27,
+    "grade_antes": 857739,
+    "grade_depois": 710587,
+    "posicoes_removidas": 147152,
+    "formatos_excedentes_conferidos_contra_recuperacao": 147152,
+    "excedente_relido_vazio_imediatamente_antes": true,
+    "intervalos_nomeados_preservados": 3,
+    "protecao_salarial_preservada": true,
+    "mesclas_e_regras_condicionais_preservadas": true
+  },
+  "sentinelas": {
+    "recursos_preservados": true,
+    "salarios_configuracao_saldo_preservados": true,
+    "iguais_tambem_apos_abertura_web": true
+  },
+  "acionadores": {
+    "existentes": 3,
+    "criados": 0,
+    "alterados": 0,
+    "funcoes": [
+      "salarioRegistrarEdicao",
+      "salarioAposAbrir",
+      "salarioDiario"
+    ]
+  },
+  "abertura_web": {
+    "data_hora_local": "2026-10-23 13:41:12 America/Sao_Paulo",
+    "onOpen": {
+      "status": "Concluído",
+      "duracao_apps_script_segundos": 2.714
+    },
+    "salarioAposAbrir": {
+      "status": "Concluído",
+      "duracao_apps_script_segundos": 17.307
+    },
+    "barras_conferidas_visualmente": true,
+    "limite": "Tempos de execução no servidor; não medem abertura, memória ou interação no Android."
+  },
+  "drive": {
+    "bytes_antes": 1919122,
+    "bytes_depois": 1790412,
+    "modifiedTime_checkpoint_depois": "2026-10-23T16:38:21.310Z"
+  },
+  "android_oficial": "Teste de abertura e uso solicitado ao usuário, ainda sem resultado nesta evidência.",
+  "cores": "Lentidão não resolvida; próxima investigação após aceite Android.",
+  "sementes": "Quatro Sementes de Sem Técnica permanecem intervenção independente.",
+  "limites": "Sem reconstrução, importação Office, acionadores novos, alteração de acesso ou merge em main. Sem nova varredura integral das 27 abas; conferência completa dos alvos alterados, contrato e sentinelas. Dados privados e capturas ficam em pasta ignorada."
+}

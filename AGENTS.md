@@ -1,4 +1,22 @@
-# Prioridade vigente · Android · 23/10/2026
+# Promoção Android aplicada · 23/10/2026
+
+O usuário autorizou especificamente a promoção incremental nesta continuação.
+As 37 etapas foram aplicadas na oficial após snapshot nativo novo e preflight;
+não reaplicar o lote. Leia primeiro
+`r53/diagnostico-android/PROMOCAO-APLICADA-2026-10-23.json` e a entrega incremental.
+Código salvo relido integralmente: SHA-256
+`6112c6cf4ff34c88cea6c944b55aaf62a878e2310bb502b2ac5d2131f2d57e80`.
+Contrato ANALISE A:D: 73.576 células iguais, 18.393 chaves e zero erros;
+entradas, salários, nomes e proteção preservados. 27 abas; grade 710.587.
+Abertura web e três barras conferidas; onOpen e salarioAposAbrir concluíram.
+Abertura/uso da oficial no Android: teste solicitado ao usuário, aguardando relato.
+Só depois do aceite Android, investigar lentidão das cores; Sementes separadas.
+Capturas e registros privados: `nuvem-b47/saidas/diagnostico-mobile-20261023/promocao-aplicada/`.
+Sem agentes extras, novos acionadores, acesso novo ou merge em main.
+Sol/Medium para aceite focal; Sol/High para implementação integrada de cores.
+Não alterar configurações automaticamente. Os estados anteriores abaixo são históricos.
+
+# Preparação anterior · Android · 23/10/2026
 
 Leia `r53/diagnostico-android/RETOMADA-2026-10-23.md` e
 `r53/diagnostico-android/CANDIDATA-C-FINAL-2026-10-23.json`.
