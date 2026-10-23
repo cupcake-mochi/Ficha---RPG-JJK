@@ -1,0 +1,327 @@
+{
+  "oficial": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
+  "copia": "1427V3IO_RSToQcsO1ZgAeArXoT_PdoHukN9jAVkBfy8",
+  "blocos_por_documento": 77,
+  "abas": 27,
+  "posicoes_por_documento": 710587,
+  "metadados_e_condicionais_iguais": true,
+  "modifiedTime_estavel": {
+    "oficial": true,
+    "copia": true
+  },
+  "leitura_estavel": true,
+  "campos_lidos": [
+    "userEnteredValue",
+    "effectiveValue",
+    "note",
+    "dataValidation",
+    "textFormatRuns",
+    "chipRuns"
+  ],
+  "diferencas_por_campo": {},
+  "diferencas": [],
+  "diferencas_em_salarios_analise_montagens": [],
+  "oficial_totais": {
+    "celulas_representadas": 241346,
+    "formulas": 121311,
+    "bytes_formula_utf8": 27383151,
+    "validacoes": 6440
+  },
+  "copia_totais": {
+    "celulas_representadas": 241346,
+    "formulas": 121311,
+    "bytes_formula_utf8": 27383151,
+    "validacoes": 6440
+  },
+  "oficial_abas": {
+    "CARTEIRA": {
+      "celulas_representadas": 26,
+      "formulas": 9,
+      "bytes_formula_utf8": 585,
+      "validacoes": 2
+    },
+    "DADOS_SALARIOS": {
+      "celulas_representadas": 9
+    },
+    "SALÁRIOS": {
+      "celulas_representadas": 12
+    },
+    "FICHA": {
+      "celulas_representadas": 1082,
+      "formulas": 675,
+      "bytes_formula_utf8": 115596,
+      "validacoes": 222
+    },
+    "FICHA AMALDIÇOADA": {
+      "celulas_representadas": 2137,
+      "formulas": 837,
+      "bytes_formula_utf8": 52317,
+      "validacoes": 635
+    },
+    "INVOCAÇÕES": {
+      "celulas_representadas": 11673,
+      "formulas": 4833,
+      "bytes_formula_utf8": 343530,
+      "validacoes": 3361
+    },
+    "FICHA PESSOAL": {
+      "celulas_representadas": 1622,
+      "formulas": 440,
+      "bytes_formula_utf8": 123485,
+      "validacoes": 978
+    },
+    "DADOS": {
+      "celulas_representadas": 2249,
+      "formulas": 422,
+      "bytes_formula_utf8": 29044
+    },
+    "DADOS_AM": {
+      "celulas_representadas": 7720,
+      "formulas": 5368,
+      "bytes_formula_utf8": 861837
+    },
+    "DADOS_INVOC": {
+      "celulas_representadas": 24817,
+      "formulas": 22107,
+      "bytes_formula_utf8": 3816073
+    },
+    "GLOSSÁRIO": {
+      "celulas_representadas": 125
+    },
+    "DADOS_PROGRESSAO": {
+      "celulas_representadas": 893,
+      "formulas": 433,
+      "bytes_formula_utf8": 57277
+    },
+    "DADOS_CUSTOM": {
+      "celulas_representadas": 4999,
+      "formulas": 2872,
+      "bytes_formula_utf8": 814929
+    },
+    "DADOS_CRIACAO": {
+      "celulas_representadas": 150,
+      "formulas": 117,
+      "bytes_formula_utf8": 10730
+    },
+    "DADOS_MELHORIAS": {
+      "celulas_representadas": 8064,
+      "formulas": 5032,
+      "bytes_formula_utf8": 818060
+    },
+    "DADOS_RESTRICOES": {
+      "celulas_representadas": 682,
+      "formulas": 545,
+      "bytes_formula_utf8": 58140
+    },
+    "DADOS_DANOS": {
+      "celulas_representadas": 130,
+      "formulas": 95,
+      "bytes_formula_utf8": 7886
+    },
+    "DADOS_FORMAS": {
+      "celulas_representadas": 6337,
+      "formulas": 5491,
+      "bytes_formula_utf8": 1355673,
+      "validacoes": 30
+    },
+    "DADOS_APTIDOES": {
+      "celulas_representadas": 1566,
+      "formulas": 970,
+      "bytes_formula_utf8": 52634,
+      "validacoes": 102
+    },
+    "DADOS_TALENTOS": {
+      "celulas_representadas": 876,
+      "formulas": 634,
+      "bytes_formula_utf8": 43117,
+      "validacoes": 23
+    },
+    "DADOS_ENTIDADES": {
+      "celulas_representadas": 634,
+      "formulas": 528,
+      "bytes_formula_utf8": 60508
+    },
+    "ANALISE": {
+      "celulas_representadas": 73459,
+      "formulas": 18378,
+      "bytes_formula_utf8": 1695111
+    },
+    "CONFIGURAÇÃO": {
+      "celulas_representadas": 4280,
+      "formulas": 732,
+      "bytes_formula_utf8": 87793,
+      "validacoes": 1087
+    },
+    "DADOS_CONFIG": {
+      "celulas_representadas": 1041,
+      "formulas": 848,
+      "bytes_formula_utf8": 148795
+    },
+    "MONTAGENS": {
+      "celulas_representadas": 36860,
+      "formulas": 3172,
+      "bytes_formula_utf8": 516059
+    },
+    "DADOS_R53": {
+      "celulas_representadas": 45752,
+      "formulas": 44607,
+      "bytes_formula_utf8": 15940359
+    },
+    "DADOS_R53_CATALOGO": {
+      "celulas_representadas": 4151,
+      "formulas": 2166,
+      "bytes_formula_utf8": 373613
+    }
+  },
+  "copia_abas": {
+    "CARTEIRA": {
+      "celulas_representadas": 26,
+      "formulas": 9,
+      "bytes_formula_utf8": 585,
+      "validacoes": 2
+    },
+    "DADOS_SALARIOS": {
+      "celulas_representadas": 9
+    },
+    "SALÁRIOS": {
+      "celulas_representadas": 12
+    },
+    "FICHA": {
+      "celulas_representadas": 1082,
+      "formulas": 675,
+      "bytes_formula_utf8": 115596,
+      "validacoes": 222
+    },
+    "FICHA AMALDIÇOADA": {
+      "celulas_representadas": 2137,
+      "formulas": 837,
+      "bytes_formula_utf8": 52317,
+      "validacoes": 635
+    },
+    "INVOCAÇÕES": {
+      "celulas_representadas": 11673,
+      "formulas": 4833,
+      "bytes_formula_utf8": 343530,
+      "validacoes": 3361
+    },
+    "FICHA PESSOAL": {
+      "celulas_representadas": 1622,
+      "formulas": 440,
+      "bytes_formula_utf8": 123485,
+      "validacoes": 978
+    },
+    "DADOS": {
+      "celulas_representadas": 2249,
+      "formulas": 422,
+      "bytes_formula_utf8": 29044
+    },
+    "DADOS_AM": {
+      "celulas_representadas": 7720,
+      "formulas": 5368,
+      "bytes_formula_utf8": 861837
+    },
+    "DADOS_INVOC": {
+      "celulas_representadas": 24817,
+      "formulas": 22107,
+      "bytes_formula_utf8": 3816073
+    },
+    "GLOSSÁRIO": {
+      "celulas_representadas": 125
+    },
+    "DADOS_PROGRESSAO": {
+      "celulas_representadas": 893,
+      "formulas": 433,
+      "bytes_formula_utf8": 57277
+    },
+    "DADOS_CUSTOM": {
+      "celulas_representadas": 4999,
+      "formulas": 2872,
+      "bytes_formula_utf8": 814929
+    },
+    "DADOS_CRIACAO": {
+      "celulas_representadas": 150,
+      "formulas": 117,
+      "bytes_formula_utf8": 10730
+    },
+    "DADOS_MELHORIAS": {
+      "celulas_representadas": 8064,
+      "formulas": 5032,
+      "bytes_formula_utf8": 818060
+    },
+    "DADOS_RESTRICOES": {
+      "celulas_representadas": 682,
+      "formulas": 545,
+      "bytes_formula_utf8": 58140
+    },
+    "DADOS_DANOS": {
+      "celulas_representadas": 130,
+      "formulas": 95,
+      "bytes_formula_utf8": 7886
+    },
+    "DADOS_FORMAS": {
+      "celulas_representadas": 6337,
+      "formulas": 5491,
+      "bytes_formula_utf8": 1355673,
+      "validacoes": 30
+    },
+    "DADOS_APTIDOES": {
+      "celulas_representadas": 1566,
+      "formulas": 970,
+      "bytes_formula_utf8": 52634,
+      "validacoes": 102
+    },
+    "DADOS_TALENTOS": {
+      "celulas_representadas": 876,
+      "formulas": 634,
+      "bytes_formula_utf8": 43117,
+      "validacoes": 23
+    },
+    "DADOS_ENTIDADES": {
+      "celulas_representadas": 634,
+      "formulas": 528,
+      "bytes_formula_utf8": 60508
+    },
+    "ANALISE": {
+      "celulas_representadas": 73459,
+      "formulas": 18378,
+      "bytes_formula_utf8": 1695111
+    },
+    "CONFIGURAÇÃO": {
+      "celulas_representadas": 4280,
+      "formulas": 732,
+      "bytes_formula_utf8": 87793,
+      "validacoes": 1087
+    },
+    "DADOS_CONFIG": {
+      "celulas_representadas": 1041,
+      "formulas": 848,
+      "bytes_formula_utf8": 148795
+    },
+    "MONTAGENS": {
+      "celulas_representadas": 36860,
+      "formulas": 3172,
+      "bytes_formula_utf8": 516059
+    },
+    "DADOS_R53": {
+      "celulas_representadas": 45752,
+      "formulas": 44607,
+      "bytes_formula_utf8": 15940359
+    },
+    "DADOS_R53_CATALOGO": {
+      "celulas_representadas": 4151,
+      "formulas": 2166,
+      "bytes_formula_utf8": 373613
+    }
+  },
+  "erros_oficial": [],
+  "erros_copia": [],
+  "conteudo_oficial_sha256": "7799a8109be930d30ddf23736759ffbeb80345da64b7cc1f54aea14d12c1c127",
+  "conteudo_copia_sha256": "7799a8109be930d30ddf23736759ffbeb80345da64b7cc1f54aea14d12c1c127",
+  "limites": [
+    "Não lê Apps Script, propriedades, acionadores ou execuções.",
+    "Não lê formatos completos, mesclas, proteções, imagens ou histórico; regras condicionais e propriedades das abas foram lidas.",
+    "Ausência de erro efetivo não detecta erro interno mascarado por IFERROR.",
+    "Estabilidade de modifiedTime é sentinela; leituras não são um snapshot transacional.",
+    "Diferença de conteúdo não prova causa de abertura; ainda exige ensaio no cliente."
+  ]
+}

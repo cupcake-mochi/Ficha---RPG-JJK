@@ -1,3 +1,28 @@
+# Investigação de documento e alternativa por cópia · 23/10/2026
+
+O usuário autorizou continuar a investigação e usar a nova ficha como alternativa
+caso a causa não seja encontrada. Leia primeiro
+`r53/diagnostico-android/CONTINUIDADE-DOCUMENTO-ANDROID.md` e
+`COMPARACAO-DOCUMENTOS-2026-10-23.json` na mesma pasta.
+A oficial e a cópia compartilhada 1427V3IO_RSToQcsO1ZgAeArXoT_PdoHukN9jAVkBfy8
+foram relidas em 77 blocos cada, 710.587 posições: conteúdo, resultados, notas,
+validações e conteúdo de texto idênticos, mesmo hash; nenhuma diferença ou erro
+efetivo retornado. 121.311 fórmulas e 27.383.151 bytes de texto por documento.
+Propriedades das abas, 60 regras condicionais e permissões retornadas iguais.
+Causa específica ainda não isolada; não atribuir a cache, histórico ou acionadores.
+A cópia conserva em L2 o ID de agenda da original. Antes de concluir sua adoção,
+confirmar o ID que abriu no Android, conferir o projeto/acionadores da cópia,
+configurar suas rotinas e retestar a abertura. Não confundir dado copiado com
+acionador instalado. O usuário foi consultado sobre qual cópia foi testada;
+a confirmação específica ainda não foi recebida nesta etapa.
+Google Drive/Sheets acessível; Apps Script/navegador não expostos nesta sessão.
+Diagnóstico somente de leitura preparado em auditar_contexto_android.gs, testado
+localmente e NÃO instalado. Nenhuma planilha/acionador foi alterado nesta etapa.
+Dados completos privados em nuvem-b47/saidas/diagnostico-documentos-20261023/.
+Adoção operacional ainda pendente: não declarar troca ou automação concluída.
+Não repetir promoção/reconstruir. Original preservada; cores e Sementes adiadas.
+Sol/High para conferência de automações e preparação da cópia; Medium para aceite.
+
 # Promoção Android aplicada · 23/10/2026
 
 O usuário autorizou especificamente a promoção incremental nesta continuação.
