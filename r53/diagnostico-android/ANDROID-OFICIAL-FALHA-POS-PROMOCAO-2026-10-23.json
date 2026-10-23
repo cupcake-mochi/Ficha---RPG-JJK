@@ -10,6 +10,11 @@
       "usuario": "Abre e consigo usar normalmente.",
       "amigo": "Usuário relata que um amigo também testou e abriu normalmente.",
       "limite": "Relatos funcionais, sem medição de tempo ou RAM; não constituem aceite da oficial original."
+    },
+    "oficial_por_link_direto_CARTEIRA": {
+      "resultado": "Também não abre; continua carregando indefinidamente.",
+      "percepcao": "Parece mais pesada, segundo o usuário; sem medição de tempo/RAM.",
+      "teste_concluido": true
     }
   },
   "interpretacao": "A cópia nativa do conteúdo atual da oficial abre e permite uso nos testes relatados. A falha da oficial não foi resolvida. A investigação passa a diferenças ligadas ao documento e ao contexto de abertura; conteúdo e código por si só não bastam para explicar a diferença observada, e a causa ainda não está isolada.",
@@ -22,10 +27,10 @@
     "diferencas": "Paleta selecionada e formatos em sentinelas visuais; nenhuma diferença focal nos recursos/saldo/contrato lidos fora da seleção de paleta.",
     "celulas_sentinelas_lidas": 86
   },
-  "proximo_ensaio": "Testar a oficial original por link direto à aba CARTEIRA, sem mudar células. Resultado pendente. Conferir diferenças de contexto sem alterar acionadores ou substituir a oficial.",
+  "proximo_ensaio": "O link direto à CARTEIRA já falhou. Retomar investigação das diferenças de documento/contexto entre a oficial e a cópia funcional, com uma hipótese por ensaio e sem alterar acionadores ou substituir a oficial automaticamente. Não repetir a promoção ou apresentar o teste da CARTEIRA como pendente.",
   "pendencias": [
-    "Resultado da oficial por link direto à CARTEIRA",
-    "Isolar causa da diferença entre a oficial e a cópia funcional"
+    "Isolar causa da diferença entre a oficial e a cópia funcional",
+    "Definir próxima intervenção controlada preservando mecânicas, contrato e salários"
   ],
   "limites": "Não atribuir a falha a acionadores, cache, paleta, memória, histórico ou R53 sem contraprova. Nenhuma nova alteração aplicada à oficial nesta investigação. Cores e Sementes permanecem adiadas.",
   "modelo_recomendado": "Sol/High para investigação integrada, sem alterar configurações automaticamente.",
@@ -38,5 +43,6 @@
     "acionadores_instalaveis_oficial_ultima_conferencia": 3,
     "limite": "Diferença inspecionada sem criar, remover ou ativar acionadores. Não demonstra causalidade. Abertura/uso relatados da cópia não validam automação salarial instalável."
   },
-  "snapshot_R52": "Link ainda não identificado; referência secundária após controle com a cópia do conteúdo atual."
+  "snapshot_R52": "Link ainda não identificado; referência secundária após controle com a cópia do conteúdo atual.",
+  "encerramento_desta_conversa": "A pedido do usuário, processo salvo para transferência ao próximo Codex; não houve nova intervenção na oficial após os testes de diagnóstico."
 }

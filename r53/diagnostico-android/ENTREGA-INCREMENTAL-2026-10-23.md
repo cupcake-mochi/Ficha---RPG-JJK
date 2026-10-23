@@ -13,9 +13,12 @@ carregamento infinito. A C abre normalmente nesse mesmo aparelho e o snapshot R5
 abre um pouco lento. Leia `ANDROID-OFICIAL-FALHA-POS-PROMOCAO-2026-10-23.json`.
 Cópia nativa pós-promoção ABRE e permite uso no telefone do usuário; amigo também
 testou e abriu, conforme relato. Código da cópia relido integralmente igual ao
-instalado na oficial. A original continua sem aceite: próximo teste é link
-direto à CARTEIRA. Causa ainda não isolada; não cortar recursos nem substituir
-a oficial automaticamente. R52 passa a comparação secundária.
+instalado na oficial. O link direto da oficial à CARTEIRA também FALHOU:
+continua carregando sem abrir. Esse teste está concluído; não repetir como pendência.
+Causa ainda não isolada; não cortar recursos nem substituir a oficial automaticamente.
+Prompt portátil salvo em `nuvem-b47/saidas/diagnostico-mobile-20261023/diagnostico-pos-promocao/`
+como `PROMPT-RETOMADA-CODEX-ANDROID-2026-10-23.txt`, ignorado pelo Git.
+Se ausente em outro computador, retomar pelo registro JSON sanitizado. R52 é secundária.
 A abertura continua sendo a prioridade; cores e quatro Sementes ficam adiadas.
 Não reaplicar as etapas; a oficial já contém a promoção. Novas intervenções
 exigem snapshot e escopo próprios. Capturas privadas em

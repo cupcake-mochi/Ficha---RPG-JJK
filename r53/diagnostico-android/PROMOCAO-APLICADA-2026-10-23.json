@@ -83,7 +83,8 @@
     "R52": "Snapshot R52 abre, um pouco lento; identificação pendente.",
     "diagnostico": "ANDROID-OFICIAL-FALHA-POS-PROMOCAO-2026-10-23.json",
     "copia_pos_promocao": "Usuário confirmou abertura e uso normal; amigo também testou e abriu, conforme relato.",
-    "conclusao": "Oficial original continua sem aceite; cópia funcional não encerra a falha da original."
+    "conclusao": "Oficial original continua sem aceite; cópia funcional não encerra a falha da original.",
+    "link_direto_CARTEIRA": "Também falhou: continua carregando sem abrir, conforme relato do usuário."
   },
   "cores": "Adiada: a abertura da oficial ainda não foi resolvida.",
   "sementes": "Quatro Sementes de Sem Técnica permanecem intervenção independente.",

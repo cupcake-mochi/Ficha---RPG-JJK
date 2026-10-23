@@ -14,9 +14,12 @@ A C abre normalmente no mesmo aparelho; snapshot R52 abre um pouco lento.
 Leia `r53/diagnostico-android/ANDROID-OFICIAL-FALHA-POS-PROMOCAO-2026-10-23.json`.
 Cópia nativa pós-promoção ABRE e permite uso no telefone do usuário; amigo também
 testou e abriu, conforme relato. Código da cópia relido integralmente igual ao
-instalado na oficial. A original continua sem aceite: próximo teste é link
-direto à CARTEIRA. Causa ainda não isolada; não cortar recursos nem substituir
-a oficial automaticamente. R52 passa a comparação secundária.
+instalado na oficial. O link direto da oficial à CARTEIRA também FALHOU:
+continua carregando sem abrir. Esse teste está concluído; não repetir como pendência.
+Causa ainda não isolada; não cortar recursos nem substituir a oficial automaticamente.
+Prompt portátil salvo em `nuvem-b47/saidas/diagnostico-mobile-20261023/diagnostico-pos-promocao/`
+como `PROMPT-RETOMADA-CODEX-ANDROID-2026-10-23.txt`, ignorado pelo Git.
+Se ausente em outro computador, retomar pelo registro JSON sanitizado. R52 é secundária.
 Só depois do aceite Android, investigar lentidão das cores; Sementes separadas.
 Capturas e registros privados: `nuvem-b47/saidas/diagnostico-mobile-20261023/promocao-aplicada/`.
 Sem agentes extras, novos acionadores, acesso novo ou merge em main.
