@@ -1,0 +1,23 @@
+{
+  "resultado": "OK",
+  "formulas_conferidas": 498,
+  "constantes_convertidas": 15869,
+  "celulas_contrato_conferidas": 73576,
+  "chaves_unicas": 18393,
+  "erros_contrato": 0,
+  "grade_final": 710587,
+  "abas": 27,
+  "nomes_preservados": 3,
+  "protecao_salarial_preservada": true,
+  "sentinelas_salariais_iguais": true,
+  "recuperacao_literal_nativa": true,
+  "formatos_restaurados_conferidos": 147152,
+  "carregador_sha256": "6112c6cf4ff34c88cea6c944b55aaf62a878e2310bb502b2ac5d2131f2d57e80",
+  "limite": "Ensaio incremental nativo em cópia, sem novos acionadores. Abertura Android comprovada antes na C por relato; sem novas medições de tempo/RAM.",
+  "reversao_reaplicacao_20_formulas": true,
+  "etapas_incrementais": 37,
+  "oficial_modificacao_estavel": true,
+  "oficial_alterada": false,
+  "acionadores_existentes_oficial": 3,
+  "acionadores_criados": 0
+}

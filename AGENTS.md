@@ -11,6 +11,10 @@ Helper temporário removido e código salvo relido integralmente. Barras conferi
 em QA nativa; guarda de zero aplicada na C e na fonte. Leia também
 `r53/diagnostico-android/ENTREGA-INCREMENTAL-2026-10-23.md`.
 A geração GS anterior ainda antecede esta guarda; não promover pacote integral.
+Promoção incremental preparada e ensaiada em 37 etapas sobre cópia atual; leia
+`r53/diagnostico-android/PROMOCAO-ENSAIADA-2026-10-23.json` e a entrega incremental.
+Oficial intacta. Aplicação nela exige autorização específica e novo preflight.
+Capturas/lotes privados desta continuação ficam em `diagnostico-mobile-20261023/promocao/`.
 Sem agentes extras, acesso novo ou merge em main. Evidências privadas em
 `nuvem-b47/saidas/diagnostico-mobile-20261023/`, ignoradas. Conferência focal:
 Sol/Medium; implementação integrada: Sol/High.
