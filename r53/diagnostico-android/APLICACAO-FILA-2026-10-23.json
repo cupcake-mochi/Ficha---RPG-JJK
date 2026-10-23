@@ -1,6 +1,6 @@
 {
  "data": "2026-10-23",
- "resultado": "APLICADA_NAS_DUAS_CANDIDATAS_ANDROID_PENDENTE",
+ "resultado": "ADOTADA_CANDIDATA_A",
  "acesso": "Apps Script API autenticada na nuvem por clasp login --no-localhost (autorização feita pelo usuário no celular). Sem credenciais no Git.",
  "original": {
   "planilha": "1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro",
@@ -69,5 +69,12 @@
   "relido_igual": true,
   "android": "Usuário (21:50Z): na B a troca de cores funcionou no app Android sem mexer em células; confirmado pela API (FICHA #180712 = tinta Crepúsculo Escuro, ~5 min para as 5 abas verificáveis). Troca entre abas continua pesada; não medida nem alterada.",
   "tentativa_execucoes": "Permissão script.processes/spreadsheets bloqueada pelo Google para o cliente clasp; histórico de execuções não consultado."
+ },
+ "decisao": {
+  "data": "2026-10-23T22:00Z",
+  "definitiva": "A 1427V3IO_RSToQcsO1ZgAeArXoT_PdoHukN9jAVkBfy8 (escolha do usuário)",
+  "reserva": "B 1E9V_bvYXUsaCEmHr7dHa79REnRan9mopZ7JX7jkasMY: salarioDiario, salarioAposAbrir e salarioRegistrarEdicao viraram no-op no código (sha 72f59060…); acionadores continuam cadastrados mas não fazem nada. Restaurar trocando os corpos de volta.",
+  "original": "Intacta, com seus 3 acionadores ainda ativos; não alterada.",
+  "copias_de_jogadores": "Cópia leva o código, mas não os acionadores instaláveis: o dono da cópia precisa rodar Salários → Ativar conferência diária (web) ou prepararCopiaAndroid uma vez para salários automáticos e cores em segundo plano."
  }
 }

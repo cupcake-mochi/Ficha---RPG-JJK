@@ -8,7 +8,7 @@ Nas duas: código 10b814cb… instalado e relido igual (gerador
 `preparar_fila_loader.js`, teste `r53/testes/fila_loader.js`); células de
 Sementes corrigidas e relidas; acionadores próprios criados pelo proprietário
 via `prepararCopiaAndroid` (0 antes, 3 depois; agenda em L2 aponta cada cópia).
-Pendente: teste Android do usuário (abertura e cores) e escolha da definitiva.
+ACEITE: A e B abrem no Android; cores completam em segundo plano (paleta_segundo_plano.gs). DEFINITIVA: A (1427…), escolha do usuário em 23/10 22:00Z. B em reserva com rotinas salariais em no-op. Original intacta como contingência (seus acionadores seguem ativos). Troca entre abas segue pesada, sem medição.
 Não reaplicar o delta (o gerador recusa base diferente de 6112c6cf…).
 Modelo: Opus/High para nova aplicação; Medium para registrar o aceite.
 
