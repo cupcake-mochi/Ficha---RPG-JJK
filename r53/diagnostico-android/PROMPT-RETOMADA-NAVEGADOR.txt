@@ -1,0 +1,116 @@
+Continue Ciclo Maldito R53 — finalizar aplicação e testes Android.
+
+Repositório: https://github.com/cupcake-mochi/Ficha---RPG-JJK
+Ramo vigente: codex/otimizacao-android-r53. Não partir de main.
+Correções implementadas e validadas no commit 8523e57c9477f8b70eb43146a7c7f6cb484fbaf6;
+use o HEAD atualizado do ramo, que também contém esta entrega de retomada.
+
+Responda em português. Ao iniciar, nos checkpoints e ao encerrar, recomende
+modelo/esforço com motivo curto. Recomendação inicial: GPT-6.1 Sol, High.
+Não abra agentes extras ou outros chats. Não mescle main nem force push.
+
+O usuário autorizou continuar a fila e preparar fichas atualizadas para testar
+abertura e troca de cores no Android. Quer DOIS LINKS, ambos com todas as
+correções aplicadas. Não chamar uma ficha de atualizada só porque suas células
+foram corrigidas: o Apps Script/recuperação e as automações precisam ser conferidos.
+O usuário aceita usar uma cópia funcional se a causa da original não for encontrada.
+A escolha da ficha definitiva ainda depende dos testes; preserve a original.
+
+LEITURA INICIAL
+1. AGENTS.md e NUVEM.md.
+2. r53/diagnostico-android/FILA-VALIDADA-2026-10-23.md.
+3. CONTINUIDADE-DOCUMENTO-ANDROID.md e COMPARACAO-DOCUMENTOS-2026-10-23.json.
+4. SEMENTES-QA-2026-10-23.json e salarios/README.md.
+Os planos B47 são históricos, não reiniciar integrações já encerradas.
+
+ESTADO REAL
+- Original Android fica carregando indefinidamente, inclusive por link direto
+  à CARTEIRA. O defeito é confirmado pelo usuário; não repetir esse teste.
+- Candidata C e cópia nativa pós-promoção abriram, conforme relatos anteriores.
+- Oficial e cópia 1427... foram lidas em 77 blocos por documento, 710.587 posições:
+  fórmulas/resultados/notas/validações/textos iguais; 27 abas, 121.311 fórmulas.
+  Isso não prova igualdade de propriedades do Apps Script, acionadores ou histórico.
+- Não há causa específica demonstrada. Não atribuir a cache/histórico/acionadores
+  sem ensaio. Não retirar mecânicas ou capacidade por hipótese de peso.
+- Fontes corrigidas: quatro Sementes, menu/lista, guarda de zero nas barras,
+  paleta com progresso relido sob lock e saída quando outro callback já concluiu.
+- Geração GS 7477944d1a09c3ed, nove módulos; pacote integral NÃO instalado.
+- No Google, apenas a QA descartável recebeu as correções desta rodada em células.
+  Apps Script da oficial/cópias NÃO recebeu as correções novas de paleta/Sementes.
+- A correção de Sementes deve atualizar também a recuperação de fórmulas e da
+  validação no código, para não ser desfeita pelo restaurador antigo.
+- As barras já estão corrigidas na oficial e cópia: não reaplicar sem necessidade.
+
+LINKS CONHECIDOS
+Original (preservar):
+https://docs.google.com/spreadsheets/d/1u0zWQFVaRTTc_VlrAJsabgAiJ1D4rTYhzG7QQWof1ro/edit
+Cópia pós-promoção comparada integralmente:
+https://docs.google.com/spreadsheets/d/1427V3IO_RSToQcsO1ZgAeArXoT_PdoHukN9jAVkBfy8/edit
+Outra cópia de mesmo título (não comparada integralmente):
+https://docs.google.com/spreadsheets/d/1E9V_bvYXUsaCEmHr7dHa79REnRan9mopZ7JX7jkasMY/edit
+Candidata C anterior:
+https://docs.google.com/spreadsheets/d/1VO61vXu8FjsDvc27c5c_ke93be-4Ta2rGaToDCv0Wgc/edit
+QA de Sementes, células corrigidas e rota A2 restaurada:
+https://docs.google.com/spreadsheets/d/1qE13EJn5Iid_El3u3xuxtOx2sZnNpei4cG0RR9c4Aq8/edit
+Ainda não sabemos qual das duas pós-promoção corresponde ao relato do usuário.
+Não tratar C antiga ou QA como cópia definitiva com dados recentes sem comparar.
+
+PRÓXIMAS AÇÕES
+1. Confirme acesso REAL ao editor Apps Script ou API autenticada. O chat anterior
+   tinha Drive/Sheets, mas nenhuma ferramenta Browser/Apps Script; terminal sem
+   identidade Google/clasp e rede restrita. Não repita promessa de aplicação sem
+   conferir as capacidades. Ter skill de navegador listada não prova conexão.
+2. Instale dependências conforme NUVEM.md se necessário; rode o smoke. Os testes
+   anteriores passaram; não repetir geração/bateria pesada sem razão nova.
+3. Capture o código instalado inteiro, manifesto, propriedades e acionadores
+   visíveis pelo proprietário. Preserve tudo em saída privada. O script da original
+   era 1sZTcHm1yNz8x7sVs5WaRj1pX8qbac-kglUDIdDTFLh_iqvHwzF6sqXff.
+   Os IDs das cópias precisam de descoberta própria. Drive files.get(scriptId)
+   retornar 404 não demonstra que o projeto Apps Script inexiste.
+4. Use auditar_contexto_android.gs como diagnóstico manual de leitura, em arquivo
+   separado, sem sobrescrever Codigo.gs. Respeite sua lista de IDs e adapte-a
+   somente aos alvos explicitamente identificados da nova etapa.
+5. Prepare delta ESTRITO a partir do código atualmente capturado e ensaie numa
+   descartável nativa. Não reaplicar preparar_loader.js/preparar_promocao_loader.js
+   antigos cegamente; seus alvos são versões anteriores. O hash histórico do
+   carregador instalado é 6112c6cf4ff34c88cea6c944b55aaf62a878e2310bb502b2ac5d2131f2d57e80,
+   mas exige releitura atual. Não substituir por pacote integral indiscriminadamente.
+6. Preparar duas candidatas comparáveis, derivadas de dados atuais verificados.
+   Preferir cópias nativas novas preservando as evidências antigas. Ambas devem
+   receber as correções e ter código salvo/reaberto/relido igual. Se houver uma
+   diferença experimental entre elas, explicá-la e mantê-la isolada.
+7. Sementes: CO2:CO5 contém Domínio Simples, Energia Reversa, Pétala, Aptidão Própria;
+   CS2:CS5 usa CO2:CO5; J16 da FICHA AMALDIÇOADA aponta CS2:CS5 estritamente.
+   Ler antes; preservar valores existentes. Na QA, usar ponto e vírgula em fórmulas
+   nativas pt_BR. Validar rotas 1,2,3,4, restaurando entradas de teste.
+8. Salários: cópias precisam de rotinas próprias; L2 pode herdar agenda da original
+   sem nenhum acionador instalado. Inspecionar, configurar uma vez e verificar.
+   Não reinstalar salários já inicializados, reemitir créditos ou apagar históricos.
+   Ativar conferência diária cria diário/edição/abertura quando ausentes;
+   desativarSalarioDiario remove apenas o diário, não os três eventos.
+9. Preservar abertura leve, dados de personagem, salários, ANALISE, notas,
+   validações, nomes e proteções. Snapshots novos e rollback condicionado ao estado
+   aplicado. Após timeout, reler antes de retomar. Nada de importar XLSX/Office ou
+   executar construir()/continuar() em ficha preenchida. Não modificar bot/acessos.
+10. Só então entregar dois links verificados ao usuário para ele testar abertura
+    e cores no app Android. Registrar resultados separadamente de testes web/VM.
+    Não afirmar melhora de tempo sem medir. Não declarar adoção antes do aceite.
+
+VALIDAÇÃO JÁ FEITA
+27 testes Python; smoke completo; 550 verificações de cartões; 603 conversões
+e sete restaurações de constantes; pacote com nove módulos; oito cenários de
+concorrência de paleta; regressão de paletas com verificações nas 122 variantes;
+QA Google das quatro rotas de Sementes. O comparador delta_fila.js exige somente
+12 diferenças nas 25 abas geradas contra fa54ab6 (barras/Sementes/menu); resto igual.
+Não confundir essa prova de fonte gerada com validação de uma migração nativa.
+
+ARQUIVOS LOCAIS OPCIONAIS
+O usuário tem o HD anterior E:, com pastas Closure Lab e Claude/claude2;
+verifique os caminhos efetivos antes de atualizar algo. Não depender desse HD.
+Pode guardar arquivos externos ou separados do projeto em D:\JJK - Project.
+Não copiar tokens/cookies nem versionar snapshots ou dados privados.
+
+Ao terminar, salvar no ramo vigente, atualizar AGENTS.md/fila com o estado real,
+links, código efetivamente aplicado, provas e pendências. Não abrir PR/mesclar
+main apenas para marcar conclusão. O ZIP de transferência contém fonte pública,
+prompt e pacote derivado para revisão; não é um instalador da ficha preenchida.
