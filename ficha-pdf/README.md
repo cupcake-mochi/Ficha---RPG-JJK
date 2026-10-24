@@ -20,12 +20,16 @@ Recomendação para o jogador: **Acrobat Reader no computador**. No Firefox tamb
 ## As seis páginas
 
 1. **Personagem** · identidade, atributos em hexágono, progressão do nível, recursos com barra que acompanha o atual, Sequelas, combate (Defesa, Bloquear, ataques, carga e a cura do Morrendo), 23 perícias, 4 TRs, 11 ofícios.
-2. **A técnica** · Fundamento, régua de espaços do repertório, 5 Talentos pagos + o CE 4 da Restrição corporal, 12 Aptidões (só o nome), 5 vagas de Classe 0.
+2. **Técnica** · Fundamento, régua de espaços do repertório, 5 Talentos pagos + o CE 4 da Restrição corporal, 12 Aptidões (só o nome), 5 vagas de Classe 0.
 3. e 4. **Repertório** · 12 fichas de feitiço, Manejo ou Kata.
 5. **Poderes avançados** · Expansão de Domínio, três Liberações Máximas e a Técnica Máxima.
-6. **Quem é** · foto, aparência, história, Origem, equipamento, traje, dinheiro, laços e anotações.
+6. **Perfil** · foto, aparência, história, Origem, equipamento, traje, dinheiro, laços e anotações.
 
-## Regra: todo automático tem ±
+## Regras da casa
+
+**Textos:** títulos sem artigo e rótulos com só o nome do campo. Explicação vai na dica que aparece ao passar o mouse; nota pequena na página só quando é regra usada na mesa.
+
+## Todo automático tem ±
 
 **Todo número que a ficha calcula tem ao lado uma caixinha ±** para bônus, penalidade, item ou exceção, e ela soma ao resultado. Se um valor não comporta ajuste, ele não é automático: fica como campo que o jogador escreve. Campos calculados são as etiquetas inclinadas com o número em negrito.
 
@@ -33,7 +37,7 @@ A soma da carga usada é a única exceção: ela só soma o Volume que o própri
 
 ## Selos 封
 
-O que ainda não abriu pelo nível fica coberto pelo carimbo **SELADO**, e os campos embaixo ficam travados. O selo some sozinho quando a condição vale:
+O que ainda não abriu pelo nível fica coberto pelo carimbo **SELADO** (com o nível que abre), e os campos embaixo ficam travados. O selo some sozinho quando a condição vale:
 
 | seção | abre |
 |---|---|
@@ -42,7 +46,7 @@ O que ainda não abriu pelo nível fica coberto pelo carimbo **SELADO**, e os ca
 | Liberações Máximas | níveis 10, 20 e 30 |
 | Técnica Máxima | nível 17 |
 
-O Refino usado é o da página 1, com o ±, então um marco de Refino já conta. Para exceções da campanha, a caixa **ignorar selos** (página 5) abre todos.
+O Refino usado é o da página 1, com o ±, então um marco de Refino já conta. Para exceções da campanha, a caixa **IGNORAR SELOS** (página 5) abre todos.
 
 ## O que é automático
 

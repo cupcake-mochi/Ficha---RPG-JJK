@@ -306,11 +306,9 @@ class Ficha:
         self.poly([(0, 72), (W, 60), (W, 64), (0, 76)], fill=k['texto'])
         self.txt(M, 22, titulo, 29, k['osso_bloco'])
         self.txt(M + 2, 58, sub, 7.5, k['osso_bloco'])
-        self.txt(W - M, 18, '%s · %s' % (self.nome_paleta, self.modo), 7, k['osso_bloco'], al='d')
-        self.txt(W - M, 28, 'pág. %d/%d' % (self.pg + 1, PAGINAS), 7, k['osso_bloco'], al='d')
 
     def rodape(self):
-        self.txt(W / 2, 832, 'Ciclo Maldito · ficha em PDF · livro R53 · pág. %d/%d' % (self.pg + 1, PAGINAS), 6,
+        self.txt(W / 2, 832, 'CICLO MALDITO  ·  R53  ·  %d/%d' % (self.pg + 1, PAGINAS), 6,
                  self.k['texto_fraco'], al='c')
 
     def proxima(self):
@@ -427,8 +425,8 @@ class Ficha:
         self.rot(x, y + 38, 'TRILHA')
         self.entrada('trilha', x, y + 46, 110, 16)
         x += 118
-        self.rot(x, y + 38, 'ROTA (INATA, SEM TÉCNICA, MARCIAL)')
-        self.entrada('rota', x, y + 46, 150, 16)
+        self.rot(x, y + 38, 'ROTA')
+        self.entrada('rota', x, y + 46, 150, 16, dica='Técnica inata, Sem Técnica ou Técnica Marcial')
         x += 158
         self.rot(x, y + 38, 'TR FÍSICO')
         self.menu('tr_fis_atr', x, y + 46, 60, 16, ['-', 'FOR', 'DES'], '-', dica='escolhido na criação e fixo')
@@ -451,7 +449,7 @@ class Ficha:
 
         # --- progressão do nível
         y = 268
-        self.painel(M, y, CW, 34, 'PROGRESSÃO DO NÍVEL', 'automático pelo nível · ± para marcos e exceções')
+        self.painel(M, y, CW, 34, 'PROGRESSÃO')
         itens = [('maestria', 'MAESTRIA', tabela('T', MAESTRIA) + "event.value=s(T[niv()-1]+n('maestria_aj'));"),
                  ('espacos', 'ESPAÇOS', tabela('T', ESPACOS) + "event.value=T[niv()-1]+n('espacos_aj');"),
                  ('classe0', 'CLASSE 0', tabela('T', CLASSE_0) + "event.value=T[niv()-1]+n('classe0_aj');"),
@@ -499,7 +497,7 @@ class Ficha:
 
         # --- combate
         y = 418
-        self.painel(M, y, CW, 112, 'COMBATE', 'automático pelos atributos e pela maestria · ± para itens, condições e efeitos')
+        self.painel(M, y, CW, 112, 'COMBATE')
         cx, cy = 70, y + 50
         self.losango(cx + 4, cy + 4, 38, fill=k['carimbo'])
         self.losango(cx, cy, 38, fill=k['tinta'], stroke=k['texto'], lw=1.8)
@@ -510,7 +508,7 @@ class Ficha:
         self.aj('defesa_aj', cx + 24, cy + 30)
         # linha A: proteção e defesa
         x0, ya = 128, y + 12
-        self.rot(x0, ya, 'PROTEÇÃO DO TRAJE')
+        self.rot(x0, ya, 'PROT. TRAJE')
         self.entrada('prot_equip', x0, ya + 9, 52, 15, alinh=1,
                      dica='vazio = sem Traje/Revestimento: usa Cobrir-se de Energia (1 + Refino/3)')
         self.rot(x0 + 60, ya, 'ESCUDO')
@@ -545,7 +543,7 @@ class Ficha:
                                               "event.value=s(n('atr_'+a.toLowerCase())+n('maestria')+n('atq_tec_aj'));}"),
             ('atq_cac', 'CORPO A CORPO', "event.value=s(n('atr_for')+n('maestria')+n('atq_cac_aj'));"),
             ('atq_dist', 'À DISTÂNCIA', "event.value=s(n('atr_des')+n('maestria')+n('atq_dist_aj'));"),
-            ('carga', 'CARGA (5 + FOR)', "event.value=5+n('atr_for')+n('carga_aj');"),
+            ('carga', 'CARGA', "event.value=5+n('atr_for')+n('carga_aj');"),
         ]
         for i, (nome, rot, js) in enumerate(ataques):
             x = x0 + i * 89
@@ -561,11 +559,11 @@ class Ficha:
                                                "+n('morr_ins2_aj');")]
         for i, (nome, rot, js) in enumerate(morre):
             x = x0 + i * 89
-            self.rot(x, yc, ('VIDA 0 · ' if i == 0 else '') + rot + ' (CURA)')
+            self.rot(x, yc, ('MORRENDO · ' if i == 0 else '') + rot)
             self.auto(nome, x, yc + 9, 40, 16, js, 9.5)
             self.aj(nome + '_aj', x + 48, yc + 11)
         x = x0 + 3 * 89
-        self.rot(x, yc, 'JANELA DE SOCORRO')
+        self.rot(x, yc, 'JANELA')
         self.auto('morr_janela', x, yc + 9, 76, 16,
                   "var q=(c('sequela_1')?1:0)+(c('sequela_2')?1:0)+(c('sequela_3')?1:0);"
                   "var r=3-q+n('morr_janela_aj');"
@@ -579,7 +577,7 @@ class Ficha:
         rh = 14.1
         for c in range(2):
             x = M + 12 + c * (col + 16)
-            for xx, r in [(x, 'T = treinada'), (x + col - 96, 'ESP.'), (x + col - 70, '±'), (x + col - 34, 'TOTAL')]:
+            for xx, r in [(x, 'T'), (x + col - 96, 'ESP.'), (x + col - 70, '±'), (x + col - 34, 'TOTAL')]:
                 self.rot(xx, y + 9, r)
         for i, (nome, atr) in enumerate(PERICIAS):
             s_ = slug(nome)
@@ -614,7 +612,7 @@ class Ficha:
         self.entrada('resistencias', x + 96, yr + 12 + 4 * rh - 2, col - 96, 13, tam=7)
         # ofícios
         x = M + 12 + col + 16
-        self.txt(x, yr, 'OFÍCIOS  ·  só com treino', 7.5, k['acento'])
+        self.txt(x, yr, 'OFÍCIOS', 7.5, k['acento'])
         sub = (col - 8) / 2
         for i, (nome, atr) in enumerate(OFICIOS):
             s_ = slug(nome)
@@ -632,7 +630,7 @@ class Ficha:
     # ================================================== página 2 · técnica
     def pagina2(self):
         k = self.k
-        self.cabecalho('A TÉCNICA', 'FUNDAMENTO  ·  TALENTOS  ·  APTIDÕES  ·  術式', '術式')
+        self.cabecalho('TÉCNICA', 'FUNDAMENTO  ·  TALENTOS  ·  APTIDÕES  ·  術式', '術式')
         y = 94
         self.painel(M, y, CW, 146, 'FUNDAMENTO')
         x = M + 12
@@ -643,9 +641,9 @@ class Ficha:
         self.rot(x + 326, y + 9, 'SELO')
         self.entrada('tec_selo', x + 326, y + 17, CW - 24 - 326, 18, tam=7.5)
         meia = (CW - 24 - 12) / 2
-        self.rot(x, y + 42, 'REGRA · a frase que explica como a técnica funciona')
+        self.rot(x, y + 42, 'REGRA')
         self.entrada('tec_regra', x, y + 50, meia, 36, tam=7.8, multi=True)
-        self.rot(x + meia + 12, y + 42, 'DESCRIÇÃO E EXPRESSÃO DA TÉCNICA')
+        self.rot(x + meia + 12, y + 42, 'DESCRIÇÃO E EXPRESSÃO')
         self.entrada('tec_descricao', x + meia + 12, y + 50, meia, 36, tam=7.8, multi=True)
         self.rot(x, y + 94, 'FAMÍLIAS LIVRES')
         for i in range(2):
@@ -658,11 +656,10 @@ class Ficha:
             self.poly(self.inclinado(xx, y + 103, 102, 17, 5), fill=k['painel_alto'], stroke=k['linha'], lw=0.5)
             self.linha(xx + 2, y + 118, xx + 12, y + 105, k['carimbo'], 1.2)
             self._campo('fam_fechada_%d' % (i + 1), xx + 14, y + 103.5, 84, 16, 8.5, k['texto'], negrito=True, alinh=1)
-        self.rot(x, y + 128, 'As outras quatro Famílias ficam abertas, sem desconto.', 5.8)
 
         # --- espaços do repertório
         y = 258
-        self.painel(M, y, CW, 60, 'ESPAÇOS DO REPERTÓRIO', 'conta sozinho: fichas preenchidas, talentos, expansão e entidades')
+        self.painel(M, y, CW, 60, 'ESPAÇOS')
         self.barra('seg_esp_', M + 12, y + 12, 360, 16, 24, 'carimbo')
         js_usados = ("var f=0;for(var i=1;i<=%d;i++){if(!vazio('r'+i+'_nome'))f++;}"
                      "var tl=0;for(var j=1;j<=5;j++)tl+=n('tal_'+j+'_ce');"
@@ -686,7 +683,7 @@ class Ficha:
 
         # --- talentos pagos
         y = 336
-        self.painel(M, y, CW, 186, 'TALENTOS PAGOS', 'até 5 · CE 1/2/3 custam 1/2/3 espaços · a 6ª linha é o CE 4 da Restrição corporal')
+        self.painel(M, y, CW, 186, 'TALENTOS PAGOS', 'MÁX. 5  ·  CE = ESPAÇOS')
         for i in range(N_TALENTOS):
             yy = y + 12 + i * 28.5
             cx = M + 24
@@ -701,12 +698,12 @@ class Ficha:
             self.entrada(nome + '_efeito', M + 44, yy + 15, CW - 56, 11, tam=7, caixa=False)
             self.linha(M + 44, yy + 26, W - M - 12, yy + 26, k['linha'], 0.4, [0.5, 1.5])
             if i == 5:
-                self.rot(M + 252, yy + 4, 'CE 4 · benefício da Restrição corporal · fora dos espaços e do limite')
+                self.rot(M + 252, yy + 4, 'CE 4  ·  RESTRIÇÃO CORPORAL')
 
         # --- aptidões e classe 0
         y = 540
         hw = (CW - 14) / 2
-        self.painel(M, y, hw, 286, 'APTIDÕES', 'só o nome · a regra fica no livro')
+        self.painel(M, y, hw, 286, 'APTIDÕES')
         for i in range(N_APTIDOES):
             yy = y + 13 + i * 22.5
             self.txt(M + 12, yy + 3, '%02d' % (i + 1), 7.5, k['bloco'])
@@ -718,17 +715,16 @@ class Ficha:
                 self.poly(self.inclinado(M + hw - 52, yy + 2, 40, 11, 3), fill=k['painel_alto'])
                 self.txt(M + hw - 32, yy + 4, 'grátis', 6, k['texto'], al='c')
         x2 = M + hw + 14
-        self.painel(x2, y, hw, 286, 'CLASSE 0', 'grátis em PE · fora dos espaços')
+        self.painel(x2, y, hw, 286, 'CLASSE 0')
         for i in range(5):
             yy = y + 12 + i * 54
             def vaga():
-                self.rot(x2 + 12, yy + 2, 'CLASSE 0 · %d' % (i + 1))
                 self.entrada('c0_%d_nome' % (i + 1), x2 + 12, yy + 10, hw - 24, 15, tam=9)
                 self.entrada('c0_%d_efeito' % (i + 1), x2 + 12, yy + 27, hw - 24, 22, tam=7, multi=True)
             if CLASSE0_ABRE[i]:
                 lv = CLASSE0_ABRE[i]
                 with self.selado('selo_c0_%d' % (i + 1), x2 + 6, yy - 2, hw - 12, 54,
-                                 'ig||L>=%d' % lv, 'abre no nível %d' % lv):
+                                 'ig||L>=%d' % lv, 'NÍVEL %d' % lv):
                     vaga()
             else:
                 vaga()
@@ -765,13 +761,13 @@ class Ficha:
             self._campo(p + ch, x + 60, yy - 1, w - 68, 12.5, 7.6, k['texto'])
             self.linha(x + 60, yy + 11, x + w - 8, yy + 11, k['linha'], 0.4, [0.5, 1.5])
         yy = y + 33 + 7 * 14 + 3
-        self.rot(x + 8, yy, 'COMO É · alvos, resolução, duração e detalhes', 5.8)
+        self.rot(x + 8, yy, 'COMO É', 5.8)
         for j in range(5):
             self.linha(x + 8, yy + 18 + j * 11, x + w - 8, yy + 18 + j * 11, k['linha'], 0.3, [0.5, 1.5])
         self._campo(p + 'como', x + 6, yy + 8, w - 12, h - (yy - y) - 20, 7.3, k['texto'], flags='multiline')
 
     def pagina_repertorio(self, inicio):
-        self.cabecalho('REPERTÓRIO', 'FICHAS DE FEITIÇO, MANEJO E KATA  ·  UMA POR ESPAÇO  ·  術式', '術式')
+        self.cabecalho('REPERTÓRIO', 'FEITIÇOS  ·  MANEJOS  ·  KATAS  ·  術式', '術式')
         gw, gh = (CW - 14) / 2, 226
         for i in range(6):
             x = M + (i % 2) * (gw + 14)
@@ -784,34 +780,33 @@ class Ficha:
         k = self.k
         self.cabecalho('PODERES AVANÇADOS', 'EXPANSÃO DE DOMÍNIO  ·  LIBERAÇÃO MÁXIMA  ·  TÉCNICA MÁXIMA  ·  領域展開', '領域展開')
         self.marca('ignorar_selos', W - M - 170, 80, 8, 'quadrado', 'abre todos os selos, para exceções da campanha')
-        self.rot(W - M - 158, 81, 'ignorar selos (exceção da campanha)')
+        self.rot(W - M - 158, 81, 'IGNORAR SELOS')
 
         # --- expansão de domínio
         y = 96
         self.painel(M, y, CW, 314, 'EXPANSÃO DE DOMÍNIO')
         cw = CW - 24 - 166
         x = M + 12
-        with self.selado('selo_exp', M + 3, y + 3, CW - 6, 308, 'ig||(L>=10&&R>=4)', 'abre no nível 10 com refino 4'):
+        with self.selado('selo_exp', M + 3, y + 3, CW - 6, 308, 'ig||(L>=10&&R>=4)', 'NÍVEL 10  ·  REFINO 4'):
             self.rot(x, y + 9, 'DEGRAU')
             self.menu('exp_degrau', x, y + 17, 130, 17, ['-'] + list(DEGRAUS), '-')
-            for j, linha_ in enumerate(['Incompleta · 2 espaços · nível 10 e refino 4 · Acerto rola como feitiço',
-                                        'Completa · 3 espaços · nível 14 e refino 5 · Acerto garantido, fecha barreira',
-                                        'Sem Barreiras · 5 espaços · refino 10 e especialista em Ocultismo']):
+            for j, linha_ in enumerate(['INCOMPLETA  ·  2 espaços  ·  nível 10, refino 4',
+                                        'COMPLETA  ·  3 espaços  ·  nível 14, refino 5',
+                                        'SEM BARREIRAS  ·  5 espaços  ·  refino 10, Ocultismo especialista']):
                 self.rot(x + 140, y + 12 + j * 9, linha_, 5.8)
             self.rot(x, y + 44, 'NOME DO DOMÍNIO')
             self.entrada('exp_nome', x, y + 52, cw, 19, tam=12)
-            self.rot(x, y + 78, 'ACERTO · o que acontece ao abrir e no começo de cada turno (na Incompleta: ataque ou TR)')
+            self.rot(x, y + 78, 'ACERTO')
             self.entrada('exp_acerto', x, y + 86, cw, 46, tam=7.6, multi=True)
             self.rot(x, y + 140, 'TIPO DE DANO')
             self.entrada('exp_tipo', x, y + 148, cw / 2 - 4, 15, tam=8)
             self.rot(x + cw / 2 + 4, y + 140, 'ALVOS')
             self.entrada('exp_alvos', x + cw / 2 + 4, y + 148, cw / 2 - 4, 15, tam=8)
-            self.rot(x, y + 172, 'EFEITO · a capacidade que você usa enquanto ele dura')
+            self.rot(x, y + 172, 'EFEITO')
             self.entrada('exp_efeito', x, y + 180, cw, 46, tam=7.6, multi=True)
             self.rot(x, y + 234, 'APARÊNCIA')
             self.entrada('exp_aparencia', x, y + 242, cw, 30, tam=7.6, multi=True)
-            self.rot(x, y + 280, 'Abrir: Ação Completa e o Selo. Ao terminar, Rescaldo pelo resto da cena '
-                     '(só Classe 0). Modo aberto: 7 × C de PE, 199,5 m, desconto de 2 × Maestria.', 5.6)
+            self.rot(x, y + 280, 'ABRIR: AÇÃO COMPLETA E SELO  ·  AO TERMINAR: RESCALDO (SÓ CLASSE 0 ATÉ O FIM DA CENA)', 5.6)
             xs = W - M - 12 - 150
             base = "var g=t('exp_degrau');var C=n('classe_max'),R=n('refino');if(g==='-'||g===''){event.value='-';}else{"
             stats = [
@@ -820,7 +815,7 @@ class Ficha:
                  "var r=1.5*R;if(g==='Incompleta')r=Math.min(r,7.5);event.value=br(r+n('exp_raio_aj'))+' m';}"),
                 ('exp_duracao', 'DURAÇÃO', 'metade do refino, no mínimo 1',
                  "var q=Math.max(1,Math.floor(R/2))+n('exp_duracao_aj');event.value=q+(q==1?' turno':' turnos');}"),
-                ('exp_desconto', 'DESCONTO NOS FEITIÇOS', 'refino ÷ 3 (Incompleta) ou ÷ 2',
+                ('exp_desconto', 'DESCONTO', 'refino ÷ 3 (Incompleta) ou ÷ 2',
                  "var q=(g==='Incompleta'?Math.floor(R/3):Math.floor(R/2))+n('exp_desconto_aj');event.value='-'+q+' PE';}"),
                 ('exp_barreira', 'BARREIRA', '50 × metade do refino',
                  "if(g==='Incompleta'){event.value='sem barreira';}else{"
@@ -831,26 +826,25 @@ class Ficha:
             for i, (nome, rot, nota, js) in enumerate(stats):
                 yy = y + 10 + i * 49
                 self.rot(xs, yy, rot)
-                self.auto(nome, xs, yy + 8, 112, 19, base + js, 11)
+                self.auto(nome, xs, yy + 8, 112, 19, base + js, 11, dica=nota)
                 self.aj(nome + '_aj', xs + 124, yy + 11, w=26)
-                self.rot(xs + 2, yy + 31, nota, 5.4, k['acento'])
 
         # --- liberações máximas
         y = 428
-        self.painel(M, y, CW, 166, 'LIBERAÇÕES MÁXIMAS', 'Classe 3 ou maior · Ação Completa · não serve para cura')
+        self.painel(M, y, CW, 166, 'LIBERAÇÕES MÁXIMAS', 'CLASSE 3+  ·  AÇÃO COMPLETA')
         cw3 = (CW - 24 - 20) / 3
         for i, nv in enumerate(LIBERACOES):
             x = M + 12 + i * (cw3 + 10)
             p = 'lib%d_' % (i + 1)
             self.poly(self.chanfro(x, y + 12, cw3, 146, 8), fill=k['tinta'], stroke=k['linha'], lw=0.6)
             with self.selado('selo_lib%d' % (i + 1), x + 1, y + 13, cw3 - 2, 144, 'ig||L>=%d' % nv,
-                             'abre no nível %d' % nv):
+                             'NÍVEL %d' % nv):
                 self.txt(x + 8, y + 18, 'NÍVEL %d' % nv, 7, k['acento'])
                 self._campo(p + 'nome', x + 6, y + 27, cw3 - 12, 15, 10, k['texto'], negrito=True, dica='nome da Liberação')
                 self.linha(x + 8, y + 42, x + cw3 - 8, y + 42, k['linha'], 0.5)
                 self.rot(x + 8, y + 48, 'CLASSE')
                 self.entrada(p + 'classe', x + 8, y + 56, 24, 14, alinh=1)
-                self.rot(x + 40, y + 48, 'PE (+50%)')
+                self.rot(x + 40, y + 48, 'PE')
                 self.auto(p + 'pe', x + 40, y + 56, 34, 14,
                           "if(vazio('%sclasse')){event.value='';}else{"
                           "event.value=Math.ceil(4.5*n('%sclasse'))+n('%spe_aj');}" % (p, p, p), 9)
@@ -860,29 +854,29 @@ class Ficha:
                           "if(vazio('%sclasse')){event.value='';}else{"
                           "event.value='+'+(n('%sclasse')+n('%sdano_aj'))+'d8';}" % (p, p, p), 8.5)
                 self.aj(p + 'dano_aj', x + 144, y + 57, w=16)
-                self.rot(x + 8, y + 78, 'PREÇO DE CADA USO')
+                self.rot(x + 8, y + 78, 'PREÇO')
                 for j, pr in enumerate(['Vazio', 'Sangue', 'Peso']):
                     self.marca(p + slug(pr), x + 8 + j * 50, y + 87, 8)
                     self.txt(x + 19 + j * 50, y + 87, pr, 7, k['texto'], 'Helvetica')
-                self.rot(x + 8, y + 101, 'FORMA, MONTAGEM E EFEITO')
+                self.rot(x + 8, y + 101, 'MONTAGEM E EFEITO')
                 self.entrada(p + 'efeito', x + 8, y + 109, cw3 - 16, 44, tam=7, multi=True)
 
         # --- técnica máxima
         y = 612
-        self.painel(M, y, CW, 214, 'TÉCNICA MÁXIMA', 'Ação Completa · uma vez por cena · sem Restrições que devolvam pontos')
+        self.painel(M, y, CW, 214, 'TÉCNICA MÁXIMA', 'AÇÃO COMPLETA  ·  1 POR CENA')
         x = M + 12
-        with self.selado('selo_tm', M + 3, y + 3, CW - 6, 208, 'ig||L>=17', 'abre no nível 17'):
+        with self.selado('selo_tm', M + 3, y + 3, CW - 6, 208, 'ig||L>=17', 'NÍVEL 17'):
             faixa = "var l=niv();var f=l>=26?2:(l>=21?1:(l>=17?0:-1));if(f<0){event.value='-';}else{"
             for j, (nome, rot, js) in enumerate([
                     ('tm_dados', 'DADOS', "event.value=([24,28,32][f]+n('tm_dados_aj'))+'d8';}"),
-                    ('tm_pontos', 'PONTOS DE MONTAGEM', "event.value=[8,12,16][f]+n('tm_pontos_aj');}"),
-                    ('tm_pe', 'PE (5 × maior Classe)', "event.value=5*n('classe_max')+n('tm_pe_aj');}")]):
+                    ('tm_pontos', 'PONTOS', "event.value=[8,12,16][f]+n('tm_pontos_aj');}"),
+                    ('tm_pe', 'PE', "event.value=5*n('classe_max')+n('tm_pe_aj');}")]):
                 xx = x + j * 116
                 self.rot(xx, y + 10, rot)
                 self.auto(nome, xx, y + 18, 70, 19, faixa + js, 11)
                 self.aj(nome + '_aj', xx + 80, y + 21, w=24)
             xx = x + 3 * 116
-            self.rot(xx, y + 10, 'FUNÇÃO (fixa desde a criação)')
+            self.rot(xx, y + 10, 'FUNÇÃO')
             for j, f in enumerate(['dano', 'cura', 'utilidade']):
                 self.marca('tm_' + f, xx + j * 50, y + 23, 9)
                 self.txt(xx + 12 + j * 50, y + 23.5, f, 7.5, k['texto'], 'Helvetica')
@@ -890,11 +884,11 @@ class Ficha:
             self.entrada('tm_nome', x, y + 54, 200, 17, tam=10)
             self.rot(x + 210, y + 46, 'FORMA')
             self.entrada('tm_forma', x + 210, y + 54, CW - 24 - 210, 17, tam=8)
-            self.rot(x, y + 78, 'MELHORIAS (ATÉ 4, PELOS PREÇOS DA MAIOR CLASSE)')
+            self.rot(x, y + 78, 'MELHORIAS (ATÉ 4)')
             mw = (CW - 24 - 18) / 4
             for j in range(4):
                 self.entrada('tm_melhoria_%d' % (j + 1), x + j * (mw + 6), y + 86, mw, 15, tam=7.5)
-            self.rot(x, y + 108, 'COMO É · alvos, resultado, requisito necessário à ideia')
+            self.rot(x, y + 108, 'COMO É')
             self.entrada('tm_como', x, y + 116, CW - 24, 88, tam=7.6, multi=True)
         self.proxima()
 
@@ -907,18 +901,16 @@ class Ficha:
         self.poly(pts, fill=k['tinta'], stroke=k['texto'], lw=1.2)
         self.txt(x + w / 2, y + h / 2 - 16, 'FOTO', 9, k['texto_fraco'], al='c')
         self.txt(x + w / 2, y + h / 2 - 3, '顔', 16, k['texto_fraco'], 'Yuji', 'c')
-        self.txt(x + w / 2, y + h / 2 + 18, 'clique para pôr a imagem', 5.5, k['texto_fraco'], al='c')
-        self.txt(x + w / 2, y + h / 2 + 25, '(Acrobat Reader)', 5.5, k['texto_fraco'], al='c')
         self.botoes.append(dict(nome='foto', pg=self.pg, x=x + 3, y=y + 3, w=w - 6, h=h - 6, foto=True))
 
     # ================================================== página 6 · quem é
     def pagina6(self):
         k = self.k
-        self.cabecalho('QUEM É', 'HISTÓRIA  ·  ORIGEM  ·  EQUIPAMENTO  ·  人物', '人物')
+        self.cabecalho('PERFIL', 'APARÊNCIA  ·  HISTÓRIA  ·  ORIGEM  ·  EQUIPAMENTO  ·  人物', '人物')
         hw = (CW - 14) / 2
         y = 94
         for i, (nome, titulo) in enumerate([('aparencia', 'APARÊNCIA E PERSONALIDADE'),
-                                            ('historia', 'HISTÓRIA E MOTIVO PARA ESTAR NO GRUPO')]):
+                                            ('historia', 'HISTÓRIA E MOTIVAÇÃO')]):
             x = M + i * (hw + 14)
             self.painel(x, y, hw, 178, titulo)
             if i == 0:
@@ -928,7 +920,7 @@ class Ficha:
                 self.entrada(nome, x + 10, y + 12, hw - 20, 158, tam=8, multi=True)
 
         y = 290
-        self.painel(M, y, CW, 150, 'ORIGEM', 'traço, capacidade marcante e duas menores')
+        self.painel(M, y, CW, 150, 'ORIGEM')
         x = M + 12
         self.rot(x, y + 9, 'TRAÇO')
         self.entrada('origem_traco', x, y + 17, CW - 24, 15, tam=8)
@@ -938,13 +930,13 @@ class Ficha:
             self.rot(xx, y + 40, rot)
             self.entrada('origem_%s' % slug(rot), xx, y + 48, tw, 15, tam=8.5)
             self.entrada('origem_%s_texto' % slug(rot), xx, y + 65, tw, 42, tam=7, multi=True)
-        self.rot(x, y + 115, 'LEGADOS DE HISTÓRIA · vínculos e acontecimentos, sem efeito mecânico')
+        self.rot(x, y + 115, 'LEGADOS DE HISTÓRIA')
         self.entrada('legados', x, y + 123, CW - 24, 18, tam=7.5)
 
         y = 458
         eh = 258
         self.painel(M, y, hw, eh, 'EQUIPAMENTO')
-        self.rot(M + 12, y + 7, 'ITEM · o Volume conta para a carga')
+        self.rot(M + 12, y + 7, 'ITEM')
         self.rot(M + hw - 50, y + 7, 'VOLUME')
         for i in range(N_ITENS):
             yy = y + 16 + i * 14.6
@@ -952,20 +944,20 @@ class Ficha:
             self.linha(M + 12, yy + 12.5, M + hw - 60, yy + 12.5, k['linha'], 0.4, [0.5, 1.5])
             self.entrada('item_%d_vol' % (i + 1), M + hw - 52, yy, 40, 12.5, tam=8, alinh=1)
         yy = y + 16 + N_ITENS * 14.6 + 6
-        self.rot(M + 12, yy + 3, 'CARGA USADA / LIMITE')
+        self.rot(M + 12, yy + 3, 'CARGA')
         self.auto('carga_usada', M + 100, yy, hw - 112, 15,
                   "var u=0;for(var i=1;i<=%d;i++)u+=n('item_'+i+'_vol');var l=n('carga');"
                   "event.value=u+' / '+l+(u>l?'  ACIMA DO LIMITE':'');" % N_ITENS, 8.5,
                   dica='soma do Volume digitado nos itens; ajuste pelos itens')
         x2 = M + hw + 14
-        self.painel(x2, y, hw, 124, 'TRAJE, ARMAS E DINHEIRO')
-        self.rot(x2 + 10, y + 9, 'TRAJE · situação, TR e perícias do Traje')
-        self.entrada('traje', x2 + 10, y + 17, hw - 20, 28, tam=7, multi=True)
+        self.painel(x2, y, hw, 124, 'TRAJE  ·  ARMAS  ·  DINHEIRO')
+        self.rot(x2 + 10, y + 9, 'TRAJE')
+        self.entrada('traje', x2 + 10, y + 17, hw - 20, 28, tam=7, multi=True, dica='situação, TR e perícias do Traje')
         self.rot(x2 + 10, y + 52, 'TREINO COM ARMAS')
         self.entrada('treino_armas', x2 + 10, y + 60, hw - 20, 15, tam=7.5)
-        self.rot(x2 + 10, y + 82, 'IENES (¥)')
+        self.rot(x2 + 10, y + 82, 'IENES')
         self.entrada('ienes', x2 + 10, y + 90, 110, 18, tam=10, alinh=1)
-        self.rot(x2 + 128, y + 82, 'ONDE GUARDA O RESTO')
+        self.rot(x2 + 128, y + 82, 'GUARDADO EM')
         self.entrada('guardado', x2 + 128, y + 90, hw - 138, 18, tam=7.5)
         self.painel(x2, y + 140, hw, eh - 140, 'LAÇOS E INSTITUIÇÃO')
         self.entrada('lacos', x2 + 10, y + 152, hw - 20, eh - 140 - 20, tam=7.5, multi=True)
