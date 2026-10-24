@@ -244,8 +244,20 @@ let casos = 0;
   const novo = comExtrato({files: [{name: 'Codigo', source: antes}]});
   const atual = fs.readFileSync(path.join(raiz, 'apps-script/Salarios.gs'), 'utf8');
   assert.strictEqual(novo.files[0].source, atual);
-  assert.throws(() => comExtrato(novo), /já instalado/);
-  casos += 2;
+  assert.throws(() => comExtrato(novo), /já atualizado/);
+  // Cópia que já tinha o extrato: só o bloco muda, o desvio não duplica.
+  const velho = novo.files[0].source.replace('SALARIO_.f.ultimos', 'SALARIO_.f.ultimosVelho');
+  const de_novo = comExtrato({files: [{name: 'Codigo', source: velho}]}).files[0].source;
+  assert.strictEqual(de_novo.split('salarioGasto_(ss,r,e))return true;').length, 2);
+  assert.strictEqual(de_novo.split('function salarioGasto_(').length, 2);
+  assert.strictEqual(de_novo.split('function salarioNumero_(').length, 2);
+  // Cópia com o extrato da primeira versão (sem marcador de fim): o bloco antigo some inteiro.
+  const semMarca = antes.replace(/\n$/, '');
+  const primeira = comExtrato({files: [{name: 'Codigo', source: semMarca + '\nfunction depois_(){}\n'}]}).files[0].source;
+  const segunda = comExtrato({files: [{name: 'Codigo', source: primeira.replace('// FIM DO SALÁRIO POR FÓRMULA\n', '').replace('SALARIO_.f.ultimos', 'SALARIO_.f.ultimosVelho')}]}).files[0].source;
+  assert.strictEqual(segunda.split('function salarioGasto_(').length, 2);
+  assert(segunda.endsWith('// FIM DO SALÁRIO POR FÓRMULA\nfunction depois_(){}\n'));
+  casos += 7;
 }
 {
   // Preparar uma cópia já instalada: patch exato, recusa repetição.

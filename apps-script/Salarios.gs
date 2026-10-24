@@ -349,6 +349,10 @@ function salarioPrepararFormulas_(ss) {
   d.getRange('P10:Y10').setValues([SALARIO_.f.cab]);d.getRange('P11').setFormula(SALARIO_.f.tabela);
   Object.keys(SALARIO_.f.painel).forEach(function(a){cfg.getRange(a).setFormula(SALARIO_.f.painel[a]);});
   cfg.getRange('O74').setValue('Na hora, por fórmula');
+  // Últimos 10 créditos: livro + pendente da fórmula, numa faixa só (AA:AH), lida pelo painel.
+  if(d.getMaxColumns()<34)d.insertColumnsAfter(d.getMaxColumns(),34-d.getMaxColumns());
+  d.getRange('AA1').setValue('Últimos créditos (livro + pendente)');d.getRange('AA2').setFormula(SALARIO_.f.ultimos);
+  for(var i=1;i<=10;i++)[['K',1],['L',3],['N',5],['P',8]].forEach(function(v){cfg.getRange(v[0]+(80+i)).setFormula(salarioUltimo_(i,v[1],v[0]==='N'));});
   salarioPrepararCarteira_(ss);
   salarioLigacoes_(ss);
   return true;
@@ -359,6 +363,11 @@ function atualizarSalarioFormula() {var ss=SpreadsheetApp.getActive();return sal
  * EXTRATO e a caixa limpa; o saldo é a soma do extrato. O total soma também o que ainda estiver na caixa, então o
  * valor aparece na hora mesmo se o script não chegar a rodar. Nada lê a ficha no caminho comum. */
 SALARIO_.extrato = 'EXTRATO';
+SALARIO_.f.ultimos = "=IFERROR(ARRAY_CONSTRAIN(LET(a;VSTACK('SALÁRIOS'!C2:J;HSTACK(R11:R130;R11:R130;S11:X130));SORT(FILTER(a;ISNUMBER(INDEX(a;0;1)));1;FALSE));10;8);\"\")";
+function salarioUltimo_(i,k,meta) {
+  var c=function(k){return "INDEX('DADOS_SALARIOS'!$AA$2:$AH$11;"+i+';'+k+')';};
+  return '=LET(v;'+c(k)+';IF(v="";"";'+(meta?'v&" / "&'+c(6):'v')+'))';
+}
 function salarioNumero_(v) {
   if(typeof v==='number')return v;
   var s=String(v===undefined||v===null?'':v).replace(/[−–]/g,'-').replace(/[¥\s]/g,'');
@@ -410,3 +419,4 @@ function salarioGasto_(ss,r,e) {
   },10000);
   return true;
 }
+// FIM DO SALÁRIO POR FÓRMULA
