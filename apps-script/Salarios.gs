@@ -150,6 +150,7 @@ function salarioEditar_(e) {
   var nome=n==='CARTEIRA'&&salarioToca_(r,9,15,15,45);
   var total=n==='FICHA PESSOAL'&&salarioToca_(r,86,86,23,30);
   if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,86,87,15,21)&&salarioGasto_(ss,r,e))return true;
+  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,10,12,61,71)&&salarioCorrigirData_(ss,r,e))return true;
   if(!config&&!missao&&!nome&&!total&&!emitir)return false;
   // Com a rotina ativada, a edição instalável registra missões sem disputar o orçamento dos cartões/XP.
   if(!e.salarioInstalavel_&&PropertiesService.getScriptProperties().getProperty('salario_edicao')===ScriptApp.getScriptId()){
@@ -354,6 +355,7 @@ function salarioPrepararFormulas_(ss) {
   d.getRange('AA1').setValue('Últimos créditos (livro + pendente)');d.getRange('AA2').setFormula(SALARIO_.f.ultimos);
   for(var i=1;i<=10;i++)[['K',1],['L',3],['N',5],['P',8]].forEach(function(v){cfg.getRange(v[0]+(80+i)).setFormula(salarioUltimo_(i,v[1],v[0]==='N'));});
   salarioPrepararCarteira_(ss);
+  salarioPrepararCorrecao_(ss);
   salarioLigacoes_(ss);
   return true;
 }
@@ -416,6 +418,56 @@ function salarioGasto_(ss,r,e) {
         props.setProperty('salario_extrato',String(n+1));
       } else caixa.clearContent();
     }catch(err){salarioStatus_(ss,'⚠ '+err.message);console.log('Ienes: '+err.message);}
+  },10000);
+  return true;
+}
+/** Corrigir a data de uma missão pelo celular (o app do Android não mostra o menu Salários): o jogador escreve o
+ * nome em BI11 e a data em BO11. O resultado (✓ ou ⚠) aparece na própria caixa da data; deu certo, o nome limpa. */
+SALARIO_.correcao = {nome:'BI11', data:'BO11', colunaData:67};
+function salarioDataDigitada_(v) {
+  if(typeof v==='number')return salarioDia_(v);
+  if(v instanceof Date)return salarioDia_(v);
+  var m=/^(\d{1,2})\/(\d{1,2})(?:\/(\d{2}|\d{4}))?$/.exec(String(v===undefined||v===null?'':v).trim());if(!m)return NaN;
+  var z=function(x){return ('0'+x).slice(-2);},ano=m[3]?(m[3].length===2?'20'+m[3]:m[3]):salarioTextoDia_(salarioHoje_()).slice(-4);
+  var dia=salarioDiaISO_(ano+'-'+z(m[2])+'-'+z(m[1]));
+  return isFinite(dia)&&salarioTextoDia_(dia)===z(m[1])+'/'+z(m[2])+'/'+ano?dia:NaN;
+}
+/** Uma vez por ficha: a caixa vai no espaço livre sob MAIS MISSÕES, no mesmo formato do XP TOTAL (AW10:BA12). */
+function salarioPrepararCorrecao_(ss) {
+  var p=ss.getSheetByName('FICHA PESSOAL');
+  if(p.getRange('BI10').getValue()!=='')return false;
+  var modelo=p.getRange('AW10:BA12'),copia=SpreadsheetApp.CopyPasteType.PASTE_FORMAT;
+  modelo.copyTo(p.getRange('BI10:BM12'),copia,false);modelo.copyTo(p.getRange('BO10:BS12'),copia,false);
+  p.getRange('BI10:BM10').merge().setValue('CORRIGIR DATA · NOME DA MISSÃO');p.getRange('BO10:BS10').merge().setValue('DATA REAL · dd/mm/aaaa');
+  p.getRange('BI11:BM12').merge().setNumberFormat('@').setFontSize(11).setWrap(true)
+    .setNote('Escreva o nome da missão como está na lista e, ao lado, a data real em que ela foi concluída.');
+  p.getRange('BO11:BS12').merge().setNumberFormat('@').setFontSize(11).setWrap(true)
+    .setNote('Data real da missão (dd/mm/aaaa). Aqui aparece ✓ quando a data é corrigida, ou ⚠ com o motivo.');
+  ss.getSheetByName(SALARIO_.config).getRange('K76').setValue('Missão conta ao preencher nome + tipo. Corrigir data: caixa CORRIGIR DATA em FICHA PESSOAL (acima de MAIS MISSÕES), ou menu Salários no PC.');
+  return true;
+}
+function salarioCorrigirData_(ss,r,e) {
+  if(!e.salarioInstalavel_&&PropertiesService.getScriptProperties().getProperty('salario_edicao')===ScriptApp.getScriptId())return true;
+  var p=ss.getSheetByName('FICHA PESSOAL'),cNome=p.getRange(SALARIO_.correcao.nome),cData=p.getRange(SALARIO_.correcao.data);
+  var editouData=r.getColumn()>=SALARIO_.correcao.colunaData;
+  var feito=function(v){return /^[✓⚠]/.test(String(v));};
+  // Uma leitura: a outra metade da caixa. Só segue com nome e data preenchidos.
+  var nome=editouData?cNome.getValue():e.value,data=editouData?e.value:cData.getValue();
+  nome=String(nome===undefined||nome===null?'':nome).trim();
+  if(!nome||data===undefined||data===''||feito(data))return true;
+  var dia=salarioDataDigitada_(data),hoje=salarioHoje_();
+  salarioBloqueado_(ss,function(){
+    var aviso=function(t){cData.setValue('⚠ '+t);};
+    if(!isFinite(dia))return aviso('Data inválida: use dd/mm/aaaa');
+    if(dia>hoje)return aviso('A data não pode ser depois de hoje');
+    var sh=ss.getSheetByName(SALARIO_.dados),v=sh.getRange(1,1,sh.getMaxRows(),17).getValues();
+    if(dia<Number(v[1][16]))return aviso('Essa data cai num período já pago');
+    var chave=function(x){return String(x).replace(/^'/,'').trim().toLowerCase();},alvo=chave(nome),achou=[];
+    for(var i=1;i<v.length;i++)if(v[i][0]&&v[i][4]===true&&chave(v[i][1])===alvo)achou.push(i);
+    if(!achou.length)return aviso('Nenhuma missão com esse nome');
+    if(achou.length>1)return aviso('Mais de uma missão com esse nome');
+    sh.getRange(achou[0]+1,4).setValue(dia);
+    cNome.clearContent();cData.setValue('✓ '+nome+': '+salarioTextoDia_(dia));
   },10000);
   return true;
 }

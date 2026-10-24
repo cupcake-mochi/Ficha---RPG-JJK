@@ -21,6 +21,8 @@ const PARES = [
    "      var hoje=salarioHoje_();\n      // Por fórmula a edição só registra a missão; o pagamento já aparece na hora e o livro congela depois.\n      if(SALARIO_.formula){if(missao&&!config&&salarioToca_(r,15,87,49,72))salarioSincronizar_(ss,st,hoje,false);return;}\n      if(missao&&!config){"],
   ["  if(!config&&!missao&&!nome&&!total&&!emitir)return false;",
    "  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,86,87,15,21)&&salarioGasto_(ss,r,e))return true;\n  if(!config&&!missao&&!nome&&!total&&!emitir)return false;"],
+  ["  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,86,87,15,21)&&salarioGasto_(ss,r,e))return true;\n",
+   "  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,86,87,15,21)&&salarioGasto_(ss,r,e))return true;\n  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,10,12,61,71)&&salarioCorrigirData_(ss,r,e))return true;\n"],
 ];
 function preparar(conteudo) {
   const files = conteudo.files.map(f => Object.assign({}, f));

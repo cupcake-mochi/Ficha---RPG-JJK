@@ -113,3 +113,13 @@ Export .xlsx da cópia de teste comparado com a Candidata A (1427): mesmas 27 ab
 mesclagem a menos e uma a mais (caixa de ajuda), fórmulas iguais fora do salário (W86, painel O46–O72, últimos créditos).
 Erros só em `DADOS_SALARIOS!N24:N25`, sobra do bloco M1:N25 do lote antigo (a2ca590), sem nenhuma referência: limpo.
 Colunas recolhidas na A e abertas na teste (INVOCAÇÕES AB:AS, FICHA PESSOAL AV:BS) são só estado de grupo.
+
+## Corrigir data da missão pelo celular
+
+O menu Salários → Data da missão selecionada não aparece no app do Android. Caixa nova em `FICHA PESSOAL!BI10:BS12`
+(sob MAIS MISSÕES, formato copiado do XP TOTAL): nome da missão em BI11, data real em BO11 (texto, dd/mm/aaaa ou dd/mm).
+`salarioCorrigirData_` lê a outra metade da caixa e `DADOS_SALARIOS!A:Q` (uma leitura), acha a missão ativa pelo nome
+(sem diferenciar maiúsculas), grava a data em D e limpa o nome; o resultado aparece em BO11 (✓ ou ⚠ com o motivo: data
+inválida, depois de hoje, antes de Q2 = período já pago, nome inexistente ou repetido). O salário pendente recalcula
+pela fórmula. `salarioPrepararCorrecao_` cria a caixa e atualiza o texto de CONFIGURAÇÃO!K76. Na cópia de teste a caixa
+foi montada pela API com o mesmo resultado; rodar `mapearLote()` para ela entrar na troca de cores.
