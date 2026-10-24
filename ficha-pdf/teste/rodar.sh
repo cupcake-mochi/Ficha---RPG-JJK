@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Abre as quatro fichas no pdf.js (o leitor do Firefox) com JavaScript ligado,
-# preenche a Kaori do livro e confere 90 valores: contas, barras, régua de espaços e selos.
+# preenche a Kaori do livro, roda os casos de borda e confere contas, barras, régua de espaços, selos e travas.
 # Precisa de node, playwright e acesso ao npm na primeira vez.
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -11,4 +11,5 @@ trap 'kill $srv; rm -f ./*.pdf' EXIT
 sleep 1
 for f in mizuki-claro mizuki-escuro eclipse-claro eclipse-escuro; do
   node teste.js "ficha-ciclo-maldito-$f.pdf"
+  node teste-bordas.js "ficha-ciclo-maldito-$f.pdf"
 done

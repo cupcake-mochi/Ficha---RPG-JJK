@@ -33,7 +33,7 @@ Recomendação para o jogador: **Acrobat Reader no computador**. No Firefox tamb
 
 **Todo número que a ficha calcula tem ao lado uma caixinha ±** para bônus, penalidade, item ou exceção, e ela soma ao resultado. Se um valor não comporta ajuste, ele não é automático: fica como campo que o jogador escreve. Campos calculados são as etiquetas inclinadas com o número em negrito.
 
-A soma da carga usada é a única exceção: ela só soma o Volume que o próprio jogador digitou, então o ajuste é feito nos itens.
+Exceções: a carga usada e as parcelas da régua de espaços (fichas, talentos, expansão) só contam o que o próprio jogador preencheu; o ajuste é feito nos itens ou no ± do total da régua.
 
 ## Selos 封
 
@@ -78,10 +78,10 @@ Limites conhecidos:
 
 ```bash
 python3 ficha-pdf/gerar.py          # gera as quatro em ficha-pdf/saidas/
-bash ficha-pdf/teste/rodar.sh       # abre no pdf.js e confere 90 valores em cada cor
+bash ficha-pdf/teste/rodar.sh       # abre no pdf.js: 90 checagens do fluxo + 108 de bordas, em cada cor
 ```
 
-O gerador usa reportlab, pypdf e Pillow. O teste preenche a Kaori do livro (cap. 4: 23 PV, 8 PE, Defesa 13, Atletismo +4, CD 12, TRs +4/+3/+1/+1), sobe para o nível 10 (selos da Liberação e da Classe 0 abrem, o da Expansão espera o Refino 4), ganha um marco de Refino, monta a Expansão e uma Liberação, e chega ao nível 17. Confere contas, barras, régua de espaços, selos visíveis e campos travados. Precisa de node e playwright, e baixa o `pdfjs-dist` na primeira vez. `TELA=1` salva um print de cada página.
+O gerador usa reportlab, pypdf e Pillow. O teste preenche a Kaori do livro (cap. 4: 23 PV, 8 PE, Defesa 13, Atletismo +4, CD 12, TRs +4/+3/+1/+1), sobe para o nível 10 (selos da Liberação e da Classe 0 abrem, o da Expansão espera o Refino 4), ganha um marco de Refino, monta a Expansão e uma Liberação, e chega ao nível 17. Confere contas, barras, régua de espaços, selos visíveis e campos travados. O `teste-bordas.js` cobre a ficha vazia, os seis Caminhos, níveis fora da faixa, teto de DES e escudo, três Sequelas, ofícios, vírgula e texto em campo de número, as três faixas da Técnica Máxima, Expansão Sem Barreiras, régua estourada e o liga/desliga do IGNORAR SELOS, e falha se o leitor registrar qualquer erro. Precisa de node e playwright, e baixa o `pdfjs-dist` na primeira vez. `TELA=1` salva um print de cada página.
 
 As regras saem do livro R53 (`referencias-r53/LIVRO-COMPLETO.md`). Se o livro mudar uma tabela, a mudança entra nas constantes do topo do `gerar.py`.
 
