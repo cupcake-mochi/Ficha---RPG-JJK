@@ -97,9 +97,11 @@ function mapearLote() {
     var faixa = sh.getRange(1, 1, sh.getMaxRows(), sh.getMaxColumns());
     lidas.push({nome: nome, fundos: faixa.getBackgrounds(), letras: faixa.getFontColors()});
   });
-  var antes = r53LotePaletaPintada_(lidas.map(function (a) { return a.fundos; }));
-  var mapa = {paleta: antes.nome + ' · ' + (antes.modo === 'claro' ? 'Claro' : 'Escuro'), abas: {}}, faixas = 0;
+  // Paleta detectada aba por aba: uma troca que parou no meio deixa abas em paletas diferentes.
+  var mapa = {paletas: {}, abas: {}}, faixas = 0;
   lidas.forEach(function (a) {
+    var antes = r53LotePaletaPintada_([a.fundos]);
+    mapa.paletas[a.nome] = antes.nome + ' · ' + (antes.modo === 'claro' ? 'Claro' : 'Escuro');
     var k = r53LoteChaves_(antes.cores, a.fundos, a.letras);
     mapa.abas[a.nome] = {b: r53LoteFaixas_(k.b), f: r53LoteFaixas_(k.f)};
     ['b', 'f'].forEach(function (t) { Object.keys(mapa.abas[a.nome][t]).forEach(function (p) { faixas += mapa.abas[a.nome][t][p].length; }); });
@@ -111,7 +113,7 @@ function mapearLote() {
   var sh = ss.getSheetByName(R53_LOTE_MAPA_) || ss.insertSheet(R53_LOTE_MAPA_);
   sh.getRange(1, 1, R53_LOTE_LINHAS_, 1).setNumberFormat('@').setValues(linhas);
   sh.hideSheet();
-  console.log('MAPA paleta pintada: ' + mapa.paleta + ' · faixas: ' + faixas + ' · caracteres: ' + json.length);
+  console.log('MAPA paletas pintadas: ' + JSON.stringify(mapa.paletas) + ' · faixas: ' + faixas + ' · caracteres: ' + json.length);
 }
 
 function r53LoteTrocar_(e) {

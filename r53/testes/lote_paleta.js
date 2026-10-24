@@ -31,7 +31,7 @@ const ss = {getSheetByName: n => n === 'DADOS' ? {getRange: () => ({setValue: v 
 ctx.SpreadsheetApp = {getActive: () => ss, flush: () => ordem.push('flush')};
 vm.runInContext('mapearLote()', ctx);
 const mapa = JSON.parse(mapaGravado.map(l => l[0]).join(''));
-assert.strictEqual(mapa.paleta.split(' · ')[0], 'Blush');
+assert.strictEqual(mapa.paletas.CARTEIRA.split(' · ')[0], 'Blush');
 ordem.length = 0;
 vm.runInContext('r53LoteTrocar_({value: "Noite · Escuro"})', ctx);
 assert.strictEqual(ordem[0], 'ler mapa'); assert.strictEqual(ordem[ordem.length - 1], 'flush');
