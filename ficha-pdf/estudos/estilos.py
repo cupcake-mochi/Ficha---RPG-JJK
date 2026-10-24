@@ -839,6 +839,222 @@ class Expansao(Base):
             Registro.paragrafo(self, x + 14, yy + 6, w - 28, f['como'], 7)
 
 
+# ================================================================ MISTO · moldura C + cartões A
+class Misto(Expansao):
+    """Página 1 do C; repertório com as fichas catalográficas do A; páginas novas."""
+    nome = 'misto'
+    paragrafo = Registro.paragrafo
+    ficha_catalogo = Registro.ficha_catalogo
+
+    def caixa_txt(self, x, y, w, h, rot, valor='', tam=7.6):
+        k = self.k
+        self.txt(x, y, rot, 6, k['texto_fraco'])
+        self.poly(self.chanfro(x, y + 9, w, h, 5), fill=k['tinta'], stroke=k['linha'], lw=0.6)
+        if valor:
+            self.paragrafo(x + 5, y + 13, w - 10, valor, tam)
+
+    def selado(self, x, y, w, h, texto):
+        """Selo por cima de uma seção ainda fechada pelo nível; some sozinho ao chegar lá."""
+        k = self.k
+        self.c.saveState()
+        self.c.setFillColor(alpha(k['fundo'], 0.72))
+        self.c.rect(x, self.Y(y, h), w, h, stroke=0, fill=1)
+        self.c.restoreState()
+        selo = salva(recolore(os.path.join(RAIZ, 'arte/selo-封.png'), (194, 51, 77)), 'seloM.png')
+
+        def s():
+            self.c.drawImage(selo, -34, -34, 68, 68, mask='auto')
+        self.girado(x + w / 2 - 60, y + h / 2, -10, s)
+        self.txt(x + w / 2 - 14, y + h / 2 - 12, 'SELADO', 20, k['texto'])
+        self.txt(x + w / 2 - 14, y + h / 2 + 10, texto, 8, k['acento'])
+
+    # ------------------------------------------------ página 2 · técnica
+    def pagina2(self):
+        k = self.k
+        self.cabecalho('A TÉCNICA', 'FUNDAMENTO  ·  TALENTOS  ·  APTIDÕES  ·  術式', '術式')
+        y = 94
+        self.painel(22, y, W - 44, 156, 'FUNDAMENTO')
+        x0, cw = 34, W - 68
+        self.txt(x0, y + 10, 'NOME DA TÉCNICA', 6, k['texto_fraco'])
+        self.txt(x0, y + 19, 'Peso Encarnado', 13, k['texto'], 'Helvetica-Bold')
+        self.txt(x0 + 200, y + 10, 'ATRIBUTO', 6, k['texto_fraco'])
+        self.chip(x0 + 200, y + 19, 40, 14, 'FOR', True, 8)
+        self.txt(x0 + 256, y + 10, 'TIPOS DE DANO', 6, k['texto_fraco'])
+        self.chip(x0 + 256, y + 19, 70, 14, 'Concussão', True, 8)
+        self.txt(x0 + 340, y + 10, 'SELO', 6, k['texto_fraco'])
+        self.txt(x0 + 340, y + 20, 'tocar as palmas antes de conjurar', 8, k['texto'], 'Helvetica')
+        self.caixa_txt(x0, y + 42, cw / 2 - 6, 34, 'REGRA',
+                       'Aumenta o peso daquilo que Kaori prende entre as mãos.')
+        self.caixa_txt(x0 + cw / 2 + 6, y + 42, cw / 2 - 6, 34, 'EXPRESSÃO DA TÉCNICA',
+                       'Linhas como marcas de balança surgem nas palmas quando fala de algo importante.')
+        self.txt(x0, y + 94, 'FAMÍLIAS LIVRES', 6, k['texto_fraco'])
+        for i, f in enumerate(['Controle', 'Castigo']):
+            self.chip(x0 + i * 78, y + 104, 72, 16, f, True, 8.5)
+        self.txt(x0 + 170, y + 94, 'FAMÍLIAS FECHADAS', 6, k['texto_fraco'])
+        for i, f in enumerate(['Amparo', 'Área', 'Auxiliares']):
+            xx = x0 + 170 + i * 78
+            self.chip(xx, y + 104, 72, 16, f, False, 8.5)
+            self.linha(xx + 6, y + 112, xx + 66, y + 112, k['carimbo'], 1)
+        self.txt(x0, y + 128, 'As abertas que não são Livres não entram aqui: o livro deixa as outras quatro sem desconto.', 6, k['texto_fraco'])
+
+        # régua de espaços
+        y = 270
+        self.painel(22, y, W - 44, 58, 'ESPAÇOS DO REPERTÓRIO')
+        usados = [('feitiço', 2, 'carimbo'), ('talento', 1, 'acento'), ('expansão', 0, 'regua'), ('entidade', 0, 'bloco')]
+        total, n = 3, 24
+        x0, bw = 34, W - 68 - 120
+        j = 0
+        for _rot, q, cor in usados:
+            for _ in range(q):
+                sx = x0 + j * (bw / n)
+                self.poly([(sx + 3, y + 14), (sx + bw / n - 1, y + 14), (sx + bw / n - 4, y + 30), (sx, y + 30)], fill=k[cor])
+                j += 1
+        for jj in range(j, n):
+            sx = x0 + jj * (bw / n)
+            dentro = jj < max(total, j)
+            self.poly([(sx + 3, y + 14), (sx + bw / n - 1, y + 14), (sx + bw / n - 4, y + 30), (sx, y + 30)],
+                      fill=k['painel_alto'] if dentro else None, stroke=k['linha'], lw=0.4)
+        self.txt(W - 120, y + 11, '3 de 3', 18, k['texto'], 'Helvetica-Bold')
+        self.txt(W - 120, y + 32, 'passou? fica vermelho', 6, k['acento'])
+        xx = x0
+        for rot, q, cor in usados:
+            self.poly([(xx, y + 38), (xx + 8, y + 38), (xx + 6, y + 45), (xx - 2, y + 45)], fill=k[cor])
+            self.txt(xx + 12, y + 37.5, '%s  %d' % (rot.upper(), q), 6.5, k['texto_fraco'])
+            xx += 74
+        self.txt(xx + 10, y + 37.5, 'conta sozinho: cartões, talentos, expansão e entidade', 6.5, k['texto_fraco'])
+
+        # talentos pagos
+        y = 348
+        self.painel(22, y, W - 44, 196, 'TALENTOS PAGOS', )
+        self.txt(W - 40, y + 4, 'até 5 · CE 1/2/3 custam 1/2/3 espaços · a 6ª linha é o CE 4 da Restrição corporal', 6, k['texto_fraco'], al='d')
+        tal = [('1', 'Raiz', 'Não é movido à força nem fica Derrubado contra a vontade.')] + [('', '', '')] * 5
+        for i, (ce, nome, ef) in enumerate(tal):
+            yy = y + 14 + i * 29
+            self.poly(self.hexagono(48, yy + 11, 11), fill=k['carimbo'] if ce else None, stroke=k['texto'], lw=1)
+            self.txt(48, yy + 5, ce, 10, k['texto'], al='c')
+            self.txt(64, yy + 2, nome or 'nome do talento', 9.5, k['texto'] if nome else k['texto_fraco'], 'Helvetica-Bold')
+            self.txt(64, yy + 14, ef, 7.4, k['texto'], 'Helvetica')
+            self.linha(64, yy + 25, W - 80, yy + 25, k['linha'], 0.4, [0.5, 1.5])
+            self.chip(W - 74, yy + 3, 34, 14, ce or '-', bool(ce), 8)
+
+        # aptidões e classe 0
+        y = 562
+        hw = (W - 44 - 14) / 2
+        self.painel(22, y, hw, 256, 'APTIDÕES')
+        self.txt(22 + hw - 10, y + 4, 'só o nome · regra no livro', 6, k['texto_fraco'], al='d')
+        apt = ['Cobrir-se de Energia', 'Canalizar Energia'] + [''] * 10
+        for i, a in enumerate(apt):
+            yy = y + 14 + i * 19.6
+            self.txt(34, yy + 3, '%02d' % (i + 1), 7, k['bloco'])
+            self.txt(52, yy + 2, a or '', 8.6, k['texto'], 'Helvetica')
+            if i < 2:
+                self.chip(22 + hw - 52, yy + 1, 40, 12, 'grátis', False, 6.5)
+            self.linha(50, yy + 15, 22 + hw - 12, yy + 15, k['linha'], 0.4, [0.5, 1.5])
+        x2 = 22 + hw + 14
+        self.painel(x2, y, hw, 256, 'CLASSE 0')
+        self.txt(x2 + hw - 10, y + 4, 'grátis em PE · 2 a 5 pelo nível', 6, k['texto_fraco'], al='d')
+        for i in range(5):
+            yy = y + 14 + i * 47
+            self.txt(x2 + 12, yy + 2, 'nome', 6, k['texto_fraco'])
+            self.linha(x2 + 12, yy + 16, x2 + hw - 12, yy + 16, k['linha'], 0.6)
+            self.poly(self.chanfro(x2 + 12, yy + 20, hw - 24, 20, 4), fill=k['tinta'], stroke=k['linha'], lw=0.4)
+            if i >= 2:
+                self.c.saveState()
+                self.c.setFillColor(alpha(k['fundo'], 0.6))
+                self.c.rect(x2 + 6, self.Y(yy - 2, 46), hw - 12, 46, stroke=0, fill=1)
+                self.c.restoreState()
+                self.txt(x2 + hw / 2 - 40, yy + 15, '封  abre no nível %d' % [5, 11, 17][i - 2], 8, k['acento'])
+        self.txt(W / 2, 828, 'Ciclo Maldito · livro R53 · pág. 2', 6, k['texto_fraco'], al='c')
+
+    # ------------------------------------------------ página 3 · repertório
+    def pagina3(self):
+        self.cabecalho('REPERTÓRIO', 'FICHAS DE FEITIÇO, MANEJO E KATA  ·  UMA POR ESPAÇO  ·  術式', '術式')
+        gw, gh = (W - 44 - 14) / 2, 226
+        for i in range(6):
+            x = 22 + (i % 2) * (gw + 14)
+            y = 100 + (i // 2) * (gh + 16)
+            self.ficha_catalogo(x, y, gw, gh, FEITICO if i == 0 else None, i + 1)
+        self.txt(W / 2, 828, 'Ciclo Maldito · livro R53 · pág. 3 · repete na pág. 4 (fichas 07 a 12)', 6,
+                 self.k['texto_fraco'], al='c')
+
+    # ------------------------------------------------ página 5 · poderes avançados
+    def pagina_apice(self):
+        k = self.k
+        self.cabecalho('PODERES AVANÇADOS', 'EXPANSÃO DE DOMÍNIO  ·  LIBERAÇÃO MÁXIMA  ·  TÉCNICA MÁXIMA  ·  領域展開', '領域展開')
+        # expansão
+        y = 94
+        self.painel(22, y, W - 44, 318, 'EXPANSÃO DE DOMÍNIO')
+        degraus = [('INCOMPLETA', '2 espaços', 'nível 10 · refino 4'), ('COMPLETA', '3 espaços', 'nível 14 · refino 5'),
+                   ('SEM BARREIRAS', '5 espaços', 'refino 10 · especialista em Ocultismo')]
+        for i, (d, e, r) in enumerate(degraus):
+            x = 34 + i * 120
+            self.chip(x, y + 12, 110, 18, d, i == 1, 9)
+            self.txt(x + 4, y + 34, e, 7, k['acento'])
+            self.txt(x + 4, y + 44, r, 6, k['texto_fraco'])
+        self.txt(34, y + 62, 'NOME DO DOMÍNIO', 6, k['texto_fraco'])
+        self.txt(34, y + 71, 'Balança do Último Grão', 14, k['texto'], 'Helvetica-Bold')
+        cw = W - 68 - 150
+        self.caixa_txt(34, y + 94, cw, 40, 'ACERTO · o que acontece ao abrir e no começo de cada turno',
+                       'Toda criatura com energia na área sente o próprio peso multiplicado: 8d8 de Concussão.')
+        self.caixa_txt(34, y + 150, cw, 40, 'EFEITO · a capacidade que você usa enquanto ele dura',
+                       'Uma vez por turno, Kaori escolhe um alvo na área: ele não pode se levantar até o fim do turno dela.')
+        self.caixa_txt(34, y + 206, cw, 30, 'APARÊNCIA', 'Uma sala de pesagem antiga, com pratos de balança pendendo do teto.')
+        self.txt(34, y + 254, 'Incompleta: o Acerto rola como feitiço. Completa: garantido, sem ataque nem TR. '
+                 'Ao terminar, Rescaldo pelo resto da cena.', 6.4, k['texto_fraco'])
+        # coluna automática
+        x = W - 34 - 140
+        stats = [('ABERTURA', '24 PE', '6 × maior Classe'), ('RAIO', '7,5 m', '1,5 m × refino'),
+                 ('DURAÇÃO', '2 turnos', 'metade do refino'), ('DESCONTO', '−2 PE', 'nos feitiços dentro'),
+                 ('BARREIRA', '100 PV', '50 × metade do refino'), ('ACERTO', '8d8', '2 × maior Classe d8')]
+        for i, (rot, v, nota) in enumerate(stats):
+            yy = y + 12 + i * 44
+            self.txt(x, yy, rot, 6.5, k['texto_fraco'])
+            self.chip(x, yy + 9, 140, 20, v, True, 12)
+            self.txt(x + 4, yy + 32, nota, 5.8, k['acento'])
+        self.txt(x, y + 282, 'calculado pelo nível, refino e degrau', 6, k['texto_fraco'])
+        self.txt(W - 40, y + 4, 'exemplo: nível 14, refino 5, maior Classe 4', 6, k['texto_fraco'], al='d')
+
+        # liberações
+        y = 432
+        self.painel(22, y, W - 44, 162, 'LIBERAÇÕES MÁXIMAS')
+        cw3 = (W - 68 - 20) / 3
+        for i, nv in enumerate([10, 20, 30]):
+            x = 34 + i * (cw3 + 10)
+            self.poly(self.chanfro(x, y + 14, cw3, 138, 8), fill=k['tinta'], stroke=k['linha'], lw=0.6)
+            self.txt(x + 8, y + 20, 'NÍVEL %d' % nv, 7, k['acento'])
+            self.txt(x + 8, y + 31, 'nome', 9, k['texto_fraco'])
+            for j, (rot, v) in enumerate([('CLASSE', '3+'), ('PE', '3×C +50%'), ('DANO', '+C d8')]):
+                self.txt(x + 8 + j * (cw3 - 16) / 3, y + 50, rot, 5.8, k['texto_fraco'])
+                self.chip(x + 8 + j * (cw3 - 16) / 3, y + 59, (cw3 - 16) / 3 - 4, 13, v, False, 7)
+            self.txt(x + 8, y + 82, 'PREÇO DE CADA USO', 5.8, k['texto_fraco'])
+            for j, pr in enumerate(['Vazio', 'Sangue', 'Peso']):
+                self.poly([(x + 8 + j * 46 + 4, y + 92), (x + 8 + j * 46 + 8, y + 96), (x + 8 + j * 46 + 4, y + 100),
+                           (x + 8 + j * 46, y + 96)], stroke=k['texto'], lw=0.7)
+                self.txt(x + 8 + j * 46 + 11, y + 92, pr, 7, k['texto'], 'Helvetica')
+            for j in range(3):
+                self.linha(x + 8, y + 116 + j * 11, x + cw3 - 8, y + 116 + j * 11, k['linha'], 0.4, [0.5, 1.5])
+            if nv > 10:
+                self.selado(x + 1, y + 15, cw3 - 2, 136, 'nível %d' % nv)
+
+        # técnica máxima
+        y = 614
+        self.painel(22, y, W - 44, 204, 'TÉCNICA MÁXIMA')
+        for j, (rot, v) in enumerate([('DADOS', '24d8'), ('PONTOS', '8'), ('PE', '25'), ('USO', '1 por cena')]):
+            self.txt(34 + j * 92, y + 12, rot, 6, k['texto_fraco'])
+            self.chip(34 + j * 92, y + 21, 84, 18, v, True, 10.5)
+        self.txt(34 + 4 * 92, y + 12, 'FUNÇÃO', 6, k['texto_fraco'])
+        for j, f in enumerate(['dano', 'cura', 'utilidade']):
+            self.chip(34 + 4 * 92 + j * 46, y + 21, 42, 18, f, j == 0, 7.5)
+        self.txt(34, y + 50, 'FORMA', 6, k['texto_fraco'])
+        self.linha(34, y + 70, 200, y + 70, k['linha'], 0.6)
+        self.txt(214, y + 50, 'MELHORIAS (ATÉ 4)', 6, k['texto_fraco'])
+        for j in range(4):
+            self.chip(214 + j * 82, y + 58, 76, 14, '', False, 7)
+        self.caixa_txt(34, y + 84, W - 68, 60, 'COMO É')
+        self.selado(24, y + 2, W - 48, 200, 'abre no nível 17')
+        self.txt(W / 2, 828, 'Ciclo Maldito · livro R53 · pág. 5', 6, k['texto_fraco'], al='c')
+
+
 # ---------------------------------------------------------------- saída
 def main():
     os.makedirs(SAIDAS, exist_ok=True)
@@ -854,6 +1070,15 @@ def main():
         c.showPage()
         c.save()
         print(caminho)
+    caminho = os.path.join(SAIDAS, 'estudo-misto.pdf')
+    c = canvas.Canvas(caminho, pagesize=A4)
+    c.setTitle('Estudo de estilo · misto')
+    e = Misto(c, k)
+    for pg in (e.pagina1, e.pagina2, e.pagina3, e.pagina_apice):
+        pg()
+        c.showPage()
+    c.save()
+    print(caminho)
 
 
 if __name__ == '__main__':
