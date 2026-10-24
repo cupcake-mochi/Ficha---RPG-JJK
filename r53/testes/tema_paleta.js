@@ -30,14 +30,16 @@ const abaTema = {hideSheet() {}, getLastColumn: () => 2,
     : {setValues: v => { linhasTema[a] = v[0]; }, getValues: () => [linhasTema[2] || ['', ''], ['', '']].slice(0, c)}};
 let temAbaTema = false;
 const ss = {getId: () => 'X', getSheetByName: n => n === 'CARTEIRA' ? Object.assign({}, abaFicha, {getRange: (r, c, nr, nc) => r === 'C27' ? {getDisplayValue: () => 'Blush · Claro · rosa e coral'} : abaFicha.getRange(r, c, nr, nc)})
-    : n === 'R53_TEMA' ? (temAbaTema ? abaTema : null) : n === 'DADOS' ? {getRange: a => ({setValue: v => { log.valores[a] = v; }})} : null,
+    : n === 'R53_TEMA' ? (temAbaTema ? abaTema : null) : n === 'DADOS' ? {getSheetId: () => 3, getRange: a => ({setValue: v => { log.valores[a] = v; }})} : null,
   insertSheet: () => { temAbaTema = true; return abaTema; },
   getSpreadsheetTheme: () => ({setConcreteColor: (k, c) => { log.vagas[k] = c.rgb; }}), setSpreadsheetTheme() {},
   createDeveloperMetadataFinder: () => ({withKey: () => ({find: () => []})}), addDeveloperMetadata: (k, v) => { log.meta = JSON.parse(v); }};
 ctx.SpreadsheetApp = {getActive: () => ss, flush() {}, newColor: () => Object.create(cor),
   ThemeColorType: {TEXT: 'TEXT', BACKGROUND: 'BACKGROUND', ACCENT1: 'ACCENT1', ACCENT2: 'ACCENT2', ACCENT3: 'ACCENT3',
     ACCENT4: 'ACCENT4', ACCENT5: 'ACCENT5', ACCENT6: 'ACCENT6', HYPERLINK: 'HYPERLINK'}};
-ctx.PropertiesService = {getDocumentProperties: () => ({getProperty: k => log.props[k] || null, setProperty: (k, v) => { log.props[k] = v; }, deleteProperty: k => { delete log.props[k]; }})};
+const scriptProps = {};
+ctx.ScriptApp = {getScriptId: () => 'S1'};
+ctx.PropertiesService = {getScriptProperties: () => ({getProperty: k => scriptProps[k] || null}), getDocumentProperties: () => ({getProperty: k => log.props[k] || null, setProperty: (k, v) => { log.props[k] = v; }, deleteProperty: k => { delete log.props[k]; }})};
 const regua = {red: parseInt(t.regua.slice(0, 2), 16) / 255, green: parseInt(t.regua.slice(2, 4), 16) / 255, blue: parseInt(t.regua.slice(4), 16) / 255};
 ctx.Sheets = {Spreadsheets: {get: () => ({sheets: [{data: [{rowData: [{values: [{userEnteredFormat: {borders: {top: {style: 'SOLID', color: regua}, left: {style: 'SOLID', colorStyle: {rgbColor: {red: 1}}}}}}]}]}]}]}),
   batchUpdate: b => log.batch.push(b)}};
@@ -63,4 +65,18 @@ assert(log.rl.some(x => x[0] === 'f' && x[1] === '#' + n.acento && x[2][0] === '
 assert(log.rl.some(x => x[0] === 'l' && x[1] === '#' + n.osso_por_papel.acento));
 assert.strictEqual(log.valores.CZ51, '#' + n.barra);
 assert(log.meta && log.meta.paleta === 'Noite · Escuro');
+// Lote: com o instalável ativo o simples não pinta; o lote manda tudo numa chamada só.
+scriptProps.tema_instalavel = 'S1'; log.rl = []; log.vagas = {}; log.batch = [];
+vm.runInContext('r53TemaTrocar_({value: "Blush · Claro"})', ctx);
+assert.strictEqual(log.rl.length, 0); assert.deepStrictEqual(Object.keys(log.vagas), []);
+ss.getSpreadsheetTheme = () => ({getFontFamily: () => 'Arial'});
+const sheetsDe = n => n;
+vm.runInContext('r53TemaTrocarLote_(SpreadsheetApp.getActive(), "Noite · Escuro")', ctx);
+const lote = JSON.parse(JSON.stringify(log.batch[0].requests));
+const temaLote = lote[0].updateSpreadsheetProperties.properties.spreadsheetTheme.themeColors;
+assert.deepStrictEqual(temaLote.map(x => x.colorType).sort(), ['ACCENT1','ACCENT2','ACCENT3','ACCENT4','ACCENT5','ACCENT6','BACKGROUND','LINK','TEXT']);
+assert(lote.some(r => r.repeatCell && r.repeatCell.range.startRowIndex === 0 && r.repeatCell.range.startColumnIndex === 1 && r.repeatCell.fields === 'userEnteredFormat.backgroundColorStyle'));
+assert(lote[lote.length - 1].updateCells.rows[0].values[0].userEnteredValue.stringValue === '#' + n.barra);
+assert.deepStrictEqual(JSON.parse(JSON.stringify(vm.runInContext('r53TemaFaixa_(9, "AB12:AC12")', ctx))), {sheetId: 9, startRowIndex: 11, endRowIndex: 12, startColumnIndex: 27, endColumnIndex: 29});
+assert.strictEqual(log.meta.modo, 'lote');
 console.log(JSON.stringify({resultado: 'OK', limite: 'VM com serviços simulados; não mede o Sheets nem o Android.'}));

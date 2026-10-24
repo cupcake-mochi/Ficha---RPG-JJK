@@ -199,6 +199,8 @@ function r53TemaTrocar_(e) {
   var nome = e && e.value !== undefined ? e.value : e.range.getDisplayValue();
   var t = r53TemaCores_(nome);
   if (!t) return;
+  // Com o acionador instalável ativo, a troca vai inteira num lote só por r53TemaEdicao (ver abaixo).
+  if (PropertiesService.getScriptProperties().getProperty('tema_instalavel') === ScriptApp.getScriptId()) return;
   r53TemaVagas_(ss, t);
   var tVagas = Date.now() - t0;
   var aba = ss.getSheetByName(R53_TEMA_ABA_), chamadas = 0;
@@ -228,6 +230,81 @@ function r53TemaTrocar_(e) {
   PropertiesService.getDocumentProperties().deleteProperty('paleta_pendente');
   SpreadsheetApp.flush();
   var medicao = JSON.stringify({em: Date.now(), paleta: nome, vagasMs: tVagas, totalMs: Date.now() - t0, chamadas: chamadas});
+  var md = ss.createDeveloperMetadataFinder().withKey('r53_tema_medicao').find();
+  if (md.length) md[0].setValue(medicao); else ss.addDeveloperMetadata('r53_tema_medicao', medicao);
+}
+
+/**
+ * Troca num lote só (24/10/2026): cada gravação nesta ficha custa ~10 s de recálculo, e as 9 vagas uma a uma pelo
+ * SpreadsheetApp estouraram os 30 s do acionador simples na terceira. Tema, resto miúdo e barra vão numa chamada
+ * só da API do Sheets, que exige o acionador instalável (ativarTemaInstalavel, uma vez pelo editor).
+ */
+function ativarTemaInstalavel() {
+  var ss = SpreadsheetApp.getActive();
+  if (!r53TemaAtivo_(ss)) throw Error('Rode migrarParaTema até o RESUMO antes.');
+  if (!ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'r53TemaEdicao'; })) {
+    ScriptApp.newTrigger('r53TemaEdicao').forSpreadsheet(ss).onEdit().create();
+  }
+  PropertiesService.getScriptProperties().setProperty('tema_instalavel', ScriptApp.getScriptId());
+  console.log('RESUMO acionador do tema ativo');
+}
+
+function r53TemaEdicao(e) {
+  if (!e || !e.range || e.range.getSheet().getName() !== 'CARTEIRA' || e.range.getA1Notation() !== 'C27') return;
+  var ss = SpreadsheetApp.getActive();
+  if (r53TemaAtivo_(ss)) r53TemaTrocarLote_(ss, e.value !== undefined ? e.value : e.range.getDisplayValue());
+}
+
+function r53TemaFaixa_(sid, a1) {
+  var m = /^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(a1);
+  var col = function (l) { return l.split('').reduce(function (n, ch) { return n * 26 + ch.charCodeAt(0) - 64; }, 0); };
+  var c1 = col(m[1]), r1 = +m[2], c2 = m[3] ? col(m[3]) : c1, r2 = m[4] ? +m[4] : r1;
+  return {sheetId: sid, startRowIndex: r1 - 1, endRowIndex: r2, startColumnIndex: c1 - 1, endColumnIndex: c2};
+}
+
+function r53TemaRgb_(hex) {
+  hex = String(hex).replace('#', '');
+  return {red: parseInt(hex.slice(0, 2), 16) / 255, green: parseInt(hex.slice(2, 4), 16) / 255,
+          blue: parseInt(hex.slice(4, 6), 16) / 255};
+}
+
+function r53TemaTrocarLote_(ss, nome) {
+  var t0 = Date.now(), t = r53TemaCores_(nome);
+  if (!t) return;
+  var vagas = [['TEXT', t.texto], ['ACCENT5', t.regua], ['ACCENT6', t.regua]];
+  Object.keys(R53_TEMA_FUNDO_).forEach(function (papel) {
+    vagas.push([R53_TEMA_FUNDO_[papel] === 'HYPERLINK' ? 'LINK' : R53_TEMA_FUNDO_[papel], t[papel]]);
+  });
+  var pedidos = [{updateSpreadsheetProperties: {fields: 'spreadsheetTheme', properties: {spreadsheetTheme: {
+    primaryFontFamily: (ss.getSpreadsheetTheme() && ss.getSpreadsheetTheme().getFontFamily()) || 'Arial',
+    themeColors: vagas.map(function (v) { return {colorType: v[0], color: {rgbColor: r53TemaRgb_(v[1])}}; })}}}}];
+  var aba = ss.getSheetByName(R53_TEMA_ABA_);
+  var linhas = aba.getRange(2, 1, R53_TEMA_ABAS_.length, aba.getLastColumn()).getValues();
+  linhas.forEach(function (linha) {
+    var sh = linha[0] && ss.getSheetByName(linha[0]);
+    if (!sh) return;
+    var sid = sh.getSheetId(), resto = JSON.parse(linha.slice(1).join('') || '{}');
+    Object.keys(resto).forEach(function (k) {
+      var hex = r53TemaHexResto_(t, k);
+      if (!hex) return;
+      var fundo = k.slice(0, 1) === 'f';
+      var formato = fundo ? {backgroundColorStyle: {rgbColor: r53TemaRgb_(hex)}}
+                          : {textFormat: {foregroundColorStyle: {rgbColor: r53TemaRgb_(hex)}}};
+      var campo = fundo ? 'userEnteredFormat.backgroundColorStyle' : 'userEnteredFormat.textFormat.foregroundColorStyle';
+      resto[k].forEach(function (a1) {
+        pedidos.push({repeatCell: {range: r53TemaFaixa_(sid, a1), cell: {userEnteredFormat: formato}, fields: campo}});
+      });
+    });
+  });
+  var dados = ss.getSheetByName('DADOS');
+  pedidos.push({updateCells: {range: r53TemaFaixa_(dados.getSheetId(), 'CZ51'),
+    rows: [{values: [{userEnteredValue: {stringValue: '#' + t.barra}}]}], fields: 'userEnteredValue'}});
+  var tMontar = Date.now() - t0;
+  Sheets.Spreadsheets.batchUpdate({requests: pedidos}, ss.getId());
+  var medicao = JSON.stringify({em: Date.now(), paleta: nome, modo: 'lote', pedidos: pedidos.length,
+                                montarMs: tMontar, totalMs: Date.now() - t0});
+  console.log('TEMA ' + medicao);
+  PropertiesService.getDocumentProperties().deleteProperty('paleta_pendente');
   var md = ss.createDeveloperMetadataFinder().withKey('r53_tema_medicao').find();
   if (md.length) md[0].setValue(medicao); else ss.addDeveloperMetadata('r53_tema_medicao', medicao);
 }
