@@ -98,3 +98,11 @@ Pedido do Mizuki: acompanhar gastos e ganhos sem refazer conta no fim do dia.
 - Cópia já com fórmula: `node r53/diagnostico-android/preparar_salario_extrato.js entrada.json saida.json`, publicar e rodar
   `prepararSalarioLote()`. Na cópia de teste a migração foi feita pela API com o mesmo resultado (¥150.000 → EXTRATO!2,
   total seguiu ¥262.500).
+
+## Últimos 10 créditos com o pendente
+
+O painel listava só o livro, então ficava vazio enquanto o pendente (já somado no total) não era congelado.
+`DADOS_SALARIOS!AA2` (`SALARIO_.f.ultimos`) junta livro + tabela da fórmula, ordena pelo fim do período e corta em 10;
+`CONFIGURAÇÃO!K81:Q90` lê dessa faixa (`salarioUltimo_`). A aba ganhou 8 colunas (até AH). O bloco por fórmula agora
+termina no marcador `// FIM DO SALÁRIO POR FÓRMULA`, e `preparar_salario_extrato.js` troca o bloco inteiro em cópias já
+atualizadas (sem duplicar funções). Conferido na cópia de teste: 19/10 Grau 4 0/3 ¥37.500 e 19/09 Grau 4 1/3 ¥75.000.

@@ -1,7 +1,7 @@
 'use strict';
-// Leva a caixa ± GASTO / GANHO (extrato de ienes) a um projeto que já tem o salário por fórmula.
+// Atualiza um projeto que já tem o salário por fórmula: caixa ± GASTO / GANHO, extrato e últimos créditos.
 // Troca o bloco "Salário por fórmula" inteiro pelo do Salarios.gs e acrescenta o desvio no salarioEditar_.
-// Recusa se já estiver instalado ou se alguma âncora não aparece exatamente uma vez. Não publica nada.
+// Recusa se o bloco já estiver igual ou se alguma âncora não aparece exatamente uma vez. Não publica nada.
 // Uso: node r53/diagnostico-android/preparar_salario_extrato.js <conteúdo .json> <saída .json>
 // Depois de publicar, rode prepararSalarioLote() pelo editor: ele cria o EXTRATO com o saldo de O86.
 const fs = require('fs'), vm = require('vm');
@@ -13,14 +13,22 @@ function preparar(conteudo) {
   const cod = files.filter(f => /var SALARIO_ = \{/.test(f.source || ''));
   if (cod.length !== 1) throw Error('Módulo de salários ausente ou duplicado');
   let s = cod[0].source;
-  if (s.includes('salarioGasto_')) throw Error('Extrato já instalado');
+  if (s.includes(BLOCO.replace(/\n+$/, ''))) throw Error('Bloco já atualizado');
   if (!s.includes('SALARIO_.formula = true;')) throw Error('Instale antes o salário por fórmula');
   const ini = s.indexOf('\n/** Salário por fórmula'), f = s.indexOf(FIM);
   if (ini < 0 || f < ini || s.indexOf('\n/** Salário por fórmula', ini + 1) >= 0 || s.indexOf(FIM, f + 1) >= 0) throw Error('Bloco por fórmula divergente');
-  const fimLinha = s.indexOf('\n', f);
+  // O bloco termina no marcador; versões antigas, no fim do salarioGasto_ ou na linha do atualizarSalarioFormula.
+  const MARCA = '// FIM DO SALÁRIO POR FÓRMULA', gasto = s.indexOf('function salarioGasto_(');
+  let fimLinha;
+  if (s.includes(MARCA)) fimLinha = s.indexOf('\n', s.indexOf(MARCA));
+  else if (gasto >= 0) fimLinha = s.indexOf('\n}', gasto) + 2;
+  else fimLinha = s.indexOf('\n', f);
+  if (s.lastIndexOf('function salarioGasto_(') !== gasto) throw Error('salarioGasto_ duplicado');
   s = s.slice(0, ini) + BLOCO.replace(/\n+$/, '') + (fimLinha < 0 ? '' : s.slice(fimLinha));
-  if (s.split(DESVIO[0]).length !== 2) throw Error('Âncora divergente: ' + DESVIO[0].slice(0, 60));
-  s = s.replace(DESVIO[0], () => DESVIO[1]);
+  if (!s.includes(DESVIO[1])) {
+    if (s.split(DESVIO[0]).length !== 2) throw Error('Âncora divergente: ' + DESVIO[0].slice(0, 60));
+    s = s.replace(DESVIO[0], () => DESVIO[1]);
+  }
   new vm.Script(s);
   cod[0].source = s;
   return {files};
