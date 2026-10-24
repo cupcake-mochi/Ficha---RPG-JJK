@@ -451,8 +451,10 @@ function salarioCorrigirData_(ss,r,e) {
   var p=ss.getSheetByName('FICHA PESSOAL'),cNome=p.getRange(SALARIO_.correcao.nome),cData=p.getRange(SALARIO_.correcao.data);
   var editouData=r.getColumn()>=SALARIO_.correcao.colunaData;
   var feito=function(v){return /^[✓⚠]/.test(String(v));};
-  // Uma leitura: a outra metade da caixa. Só segue com nome e data preenchidos.
-  var nome=editouData?cNome.getValue():e.value,data=editouData?e.value:cData.getValue();
+  // O nome digitado fica nas propriedades: quem escreve nome e depois data não paga a leitura da caixa (3–5 s).
+  var props=PropertiesService.getDocumentProperties(),guardado=props.getProperty('salario_correcao_nome');
+  if(!editouData)props.setProperty('salario_correcao_nome',String(e.value===undefined?'':e.value));
+  var nome=editouData?(guardado!==null?guardado:cNome.getValue()):e.value,data=editouData?e.value:cData.getValue();
   nome=String(nome===undefined||nome===null?'':nome).trim();
   if(!nome||data===undefined||data===''||feito(data))return true;
   var dia=salarioDataDigitada_(data),hoje=salarioHoje_();
@@ -469,7 +471,7 @@ function salarioCorrigirData_(ss,r,e) {
     if(!achou.length)return aviso('Nenhuma missão com esse nome');
     if(achou.length>1)return aviso('Mais de uma missão com esse nome');
     sh.getRange(achou[0]+1,4).setValue(dia);
-    cNome.clearContent();cData.setValue('✓ '+nome+': '+salarioTextoDia_(dia));
+    cNome.clearContent();cData.setValue('✓ '+nome+': '+salarioTextoDia_(dia));props.setProperty('salario_correcao_nome','');
   },10000);
   return true;
 }

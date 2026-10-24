@@ -290,9 +290,19 @@ let casos = 0;
   // Nome escrito com a data vazia ou com o resultado anterior na caixa: não faz nada.
   r = caso('Missão A', '', 'nome'); assert.strictEqual(r.a.escritas.length, 0); assert.strictEqual(r.a.leituras(), 1);
   r = caso('Missão A', '✓ Missão A: 20/10/2026', 'nome'); assert.strictEqual(r.a.escritas.length, 0);
+  // Nome e depois data no mesmo arquivo: a data usa o nome guardado, sem ler a caixa.
+  {
+    const a = ambiente({dados});
+    a.ctx.salarioEditar_(a.evento('FICHA PESSOAL', 'BI11', 11, 61, undefined, 'Missão A'));
+    const lidas = a.leituras();
+    a.ctx.salarioEditar_(a.evento('FICHA PESSOAL', 'BO11', 11, 67, undefined, '20/10/2026'));
+    assert.strictEqual(a.leituras() - lidas, 1, 'só a leitura de DADOS_SALARIOS');
+    assert.strictEqual(a.escritas.filter(e => e[1] === 'BO11').pop()[2], '✓ Missão A: 20/10/2026');
+    assert.strictEqual(a.props.salario_correcao_nome, '');
+  }
   // Data primeiro, nome depois: corrige ao escrever o nome.
   assert.deepStrictEqual(caso('Missão A', '20/10/2026', 'nome').dia, [['2,4', 46315]]);
-  casos += 12;
+  casos += 15;
 }
 {
   // Preparar uma cópia já instalada: patch exato, recusa repetição.
