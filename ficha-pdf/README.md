@@ -15,9 +15,13 @@ Os PDFs ficam em [`saidas/`](saidas/), em quatro cores (Mizuki claro e escuro, E
 
 Recomendação para o jogador: **Acrobat Reader no computador**. No Firefox também funciona.
 
-## O que é automático
+## Regra: todo automático tem ±
 
-Cada campo automático (fundo mais forte, texto em negrito) tem ao lado uma caixinha **±** para bônus, penalidade, item ou exceção. Ela soma ao resultado.
+**Todo número que a ficha calcula tem ao lado uma caixinha ±** para bônus, penalidade, item ou exceção, e ela soma ao resultado. Se um valor não comporta ajuste, ele não deve ser automático: fica como campo que o jogador escreve. Campos automáticos têm fundo mais forte e texto em negrito.
+
+A soma da carga usada é a única exceção: ela só soma o Volume que o próprio jogador digitou, então o ajuste é feito nos itens.
+
+## O que é automático
 
 - **Nível →** Maestria, Espaços, Classe 0, Classe máxima e Refino (tabela de Progressão, cap. 9).
 - **Caminho + nível + CON →** Vida máxima. **Caminho + nível →** PE máximo. **ESS + nível →** Integridade.

@@ -23,9 +23,9 @@ const {chromium}=require('playwright');
  let ok=0,falha=0;
  for(const [k,v] of Object.entries(esperado)){const r=await ler(k); if(r===v)ok++; else {falha++; console.log('FALHA',k,'esperado',v,'veio',JSON.stringify(r));}}
  // ajustes, especialista, nível 10, sem traje, sequela
- await digita('nivel',10); await marca('per_atletismo_e'); await digita('defesa_aj',2); await digita('prot_equip',''); await marca('sequela_1'); await digita('vida_aj',-3); await digita('item_1_vol',3); await digita('item_2_vol',6);
+ await digita('nivel',10); await marca('per_atletismo_e'); await digita('defesa_aj',2); await digita('prot_equip',''); await marca('sequela_1'); await digita('vida_aj',-3); await digita('item_1_vol',3); await digita('item_2_vol',6); await digita('bloquear_aj',1); await digita('morr_aguentar_aj',2); await digita('morr_janela_aj',1);
  await p.waitForTimeout(800);
- const e2={maestria:'+2',refino:'3',classe_max:'3',protecao:'2',defesa:'16',bloquear:'2d10 + 5',per_atletismo:'+6',vida_max:String((12+2)+(7+2)*9-3),morr_janela:'2 rodadas',pe_max:'40',integ_max:String(20+6*9),carga_usada:'9 / 8  · acima do limite'};
+ const e2={maestria:'+2',refino:'3',classe_max:'3',protecao:'2',defesa:'16',bloquear:'2d10 + 6',morr_aguentar:String(Math.ceil(92/4)+2),morr_janela:'3 rodadas',per_atletismo:'+6',vida_max:String((12+2)+(7+2)*9-3),pe_max:'40',integ_max:String(20+6*9),carga_usada:'9 / 8  · acima do limite'};
  for(const [k,v] of Object.entries(e2)){const r=await ler(k); if(r===v)ok++; else {falha++; console.log('FALHA2',k,'esperado',v,'veio',JSON.stringify(r));}}
  console.log(pdf,'ok',ok,'falha',falha); if(falha) process.exitCode=1;
  if(process.env.TELA) await p.screenshot({path:'tela-'+pdf.replace('.pdf','')+'.png'});

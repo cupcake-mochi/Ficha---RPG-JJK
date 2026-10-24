@@ -357,8 +357,9 @@ class Ficha:
         self.ajuste('defesa_aj', x + 39, yy + 9)
         x += 68
         self.rotulo(x, yy, 'BLOQUEAR')
-        self.auto('bloquear', x, yy + 8, 60, 14,
-                  "var b=n('defesa')-11;event.value='2d10 '+(b>=0?'+ '+b:'- '+(-b));", 9)
+        self.auto('bloquear', x, yy + 8, 40, 14,
+                  "var b=n('defesa')-11+n('bloquear_aj');event.value='2d10 '+(b>=0?'+ '+b:'- '+(-b));", 8)
+        self.ajuste('bloquear_aj', x + 43, yy + 9, w=20)
         x += 66
         self.rotulo(x, yy, 'INICIATIVA')
         self.auto('iniciativa', x, yy + 8, 30, 14, "event.value=s(n('atr_des')+n('iniciativa_aj'));", 9)
@@ -472,21 +473,24 @@ class Ficha:
         y = y + oh + 6
         eh = 382 + 30 + 17.6 * len(PERICIAS) - y
         self.painel(rx, y, rw2, eh, 'SE A VIDA CHEGAR A 0 · MORRENDO')
-        cols = [('morr_aguentar', 'AGUENTAR', "event.value=Math.ceil(n('vida_max')/4);"),
-                ('morr_ins1', 'INSISTIR 1ª', "event.value=Math.min(Math.ceil(n('vida_max')/3),15*n('classe_max'));"),
-                ('morr_ins2', 'INSISTIR 2ª+', "event.value=Math.min(Math.ceil(n('vida_max')/2),15*n('classe_max'));")]
+        cols = [('morr_aguentar', 'AGUENTAR', "event.value=Math.ceil(n('vida_max')/4)+n('morr_aguentar_aj');"),
+                ('morr_ins1', 'INSISTIR 1ª', "event.value=Math.min(Math.ceil(n('vida_max')/3),15*n('classe_max'))+n('morr_ins1_aj');"),
+                ('morr_ins2', 'INSISTIR 2ª+', "event.value=Math.min(Math.ceil(n('vida_max')/2),15*n('classe_max'))+n('morr_ins2_aj');")]
         cw3 = (rw2 - 12) / 3
         for i, (nome, rot, js) in enumerate(cols):
             x = rx + 6 + i * cw3
             self.rotulo(x, y + 17, rot)
-            self.auto(nome, x, y + 25, cw3 - 8, 14, js, 9, dica='cura necessária para levantar')
+            self.auto(nome, x, y + 25, cw3 - 32, 14, js, 9, dica='cura necessária para levantar')
+            self.ajuste(nome + '_aj', x + cw3 - 29, y + 26, w=20)
         self.rotulo(rx + 6, y + 44, 'SEQUELAS')
         for i in range(3):
             self.caixa('sequela_%d' % (i + 1), rx + 48 + i * 13, y + 44, 9)
         self.rotulo(rx + 96, y + 44, 'JANELA')
-        self.auto('morr_janela', rx + 124, y + 42, rw2 - 130, 13,
+        self.auto('morr_janela', rx + 124, y + 42, rw2 - 156, 13,
                   "var q=(c('sequela_1')?1:0)+(c('sequela_2')?1:0)+(c('sequela_3')?1:0);"
-                  "event.value=q>=3?'Derrotado':(3-q)+(3-q==1?' rodada':' rodadas');", 8)
+                  "var r=3-q+n('morr_janela_aj');"
+                  "event.value=(q>=3||r<=0)?'Derrotado':r+(r==1?' rodada':' rodadas');", 8)
+        self.ajuste('morr_janela_aj', rx + rw2 - 28, y + 42.5, w=22)
         self.rotulo(rx + 6, y + 60, 'EXAUSTÃO')
         self.campo('exaustao', rx + 48, y + 58, 30, 13, alinh=1, numero=True)
         self.rotulo(rx + 84, y + 60, 'CONDIÇÕES')
