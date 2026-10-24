@@ -36,13 +36,17 @@ function r53TemaVagas_(ss, t) {
   var tema = ss.getSpreadsheetTheme() || ss.resetSpreadsheetTheme();
   var T = SpreadsheetApp.ThemeColorType;
   var cor = function (hex) { return SpreadsheetApp.newColor().setRgbColor('#' + hex).build(); };
-  tema.setConcreteColor(T.TEXT, cor(t.texto));
+  // Tempo de cada vaga no registro de execução: mede se cada setConcreteColor paga o recálculo da ficha.
+  var t0 = Date.now(), marca = function (o) { console.log('VAGA ' + o + ' ' + (Date.now() - t0) + ' ms'); };
+  marca('tema lido');
+  tema.setConcreteColor(T.TEXT, cor(t.texto)); marca('TEXT');
   Object.keys(R53_TEMA_FUNDO_).forEach(function (papel) {
-    tema.setConcreteColor(T[R53_TEMA_FUNDO_[papel]], cor(t[papel]));
+    tema.setConcreteColor(T[R53_TEMA_FUNDO_[papel]], cor(t[papel])); marca(R53_TEMA_FUNDO_[papel]);
   });
-  tema.setConcreteColor(T.ACCENT5, cor(t.regua));
-  tema.setConcreteColor(T.ACCENT6, cor(t.regua));
-  ss.setSpreadsheetTheme(tema);
+  tema.setConcreteColor(T.ACCENT5, cor(t.regua)); marca('ACCENT5');
+  tema.setConcreteColor(T.ACCENT6, cor(t.regua)); marca('ACCENT6');
+  ss.setSpreadsheetTheme(tema); marca('setSpreadsheetTheme');
+  SpreadsheetApp.flush(); marca('flush');
 }
 
 /** Cor do resto miúdo: f:papel (fundo), t:papel (letra), o:fundo (osso sobre esse fundo), a:fundo (aviso). */
@@ -196,6 +200,7 @@ function r53TemaBordas_(ss, sh, nl, nc, regua) {
 /** Troca pelo tema, chamada no onEdit da CARTEIRA!C27 quando a migração terminou. */
 function r53TemaTrocar_(e) {
   var t0 = Date.now(), ss = SpreadsheetApp.getActive();
+  console.log('TROCA início, ' + (t0 - (e && e.r53Inicio_ || t0)) + ' ms desde o onEdit');
   var nome = e && e.value !== undefined ? e.value : e.range.getDisplayValue();
   var t = r53TemaCores_(nome);
   if (!t) return;
