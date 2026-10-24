@@ -80,10 +80,10 @@ function salarioHistoricoGrau_(ss,estado,hoje,grau) {
   estado.graus=hist;return hist;
 }
 function salarioFechamentos_(ss) {var sh=ss.getSheetByName(SALARIO_.livro),n=sh.getLastRow()-1,rows=n>0?sh.getRange(2,1,n,12).getValues().filter(function(r){return r[0];}):[];rows.proximaLinha=n+2;rows.maxLinhas=sh.getMaxRows();return rows;}
-function salarioStatus_(ss,texto) {ss.getSheetByName(SALARIO_.config).getRange('O46').setValue(texto);}
+function salarioStatus_(ss,texto) {var c=ss.getSheetByName(SALARIO_.config).getRange('O46');if(SALARIO_.formula&&String(texto).charAt(0)!=='⚠')c.setFormula(SALARIO_.f.painel.O46);else c.setValue(texto);}
 function salarioLigacoes_(ss) {
   var p=ss.getSheetByName('FICHA PESSOAL');
-  var formula='=O86+SUM(\'SALÁRIOS\'!J2:J)';
+  var formula=SALARIO_.formula?SALARIO_.f.total:'=O86+SUM(\'SALÁRIOS\'!J2:J)';
   if(p.getRange('W86').getFormula()!==formula)p.getRange('W86').setFormula(formula);
 }
 function salarioBloqueado_(ss,fn,espera) {
@@ -93,6 +93,10 @@ function salarioBloqueado_(ss,fn,espera) {
 /** Fechamentos [início,fim): a missão do dia do vencimento pertence ao próximo ciclo. */
 function salarioApurar_(ss,hoje,cache) {
   cache=cache||{};
+  if(SALARIO_.formula){
+    var ms=cache.missoes||salarioSincronizar_(ss,cache.estado||salarioEstado_(ss),hoje,false,true);if(ms.gravar)ms.gravar();
+    SpreadsheetApp.flush();var feito=salarioCongelar_(ss,hoje);salarioStatus_(ss,'');return feito;
+  }
   var c=cache.config||salarioConfig_(ss),estado=cache.estado||salarioEstado_(ss),missoes=cache.missoes||salarioSincronizar_(ss,estado,hoje,false,true);
   var pagos=salarioFechamentos_(ss),ultimo=pagos.length?pagos[pagos.length-1]:null;
   if(ultimo){estado.inicio=Math.max(salarioDia_(ultimo[2]),c.emissao);}
@@ -158,6 +162,8 @@ function salarioEditar_(e) {
     try {
       var cfg=ss.getSheetByName(SALARIO_.config),st=salarioEstado_(ss);
       if(total)salarioLigacoes_(ss);
+      var chave=SALARIO_.formula&&salarioChaveTroca_(r,n);
+      if(chave){salarioRegistrarTroca_(ss,chave,e);return;}
       var controle=(config&&salarioToca_(r,39,39,15,17))||emitir;
       var reemitido=controle&&(e.value!==undefined?String(e.value).toUpperCase()==='TRUE':(emitir?r.getSheet().getRange('AT3'):cfg.getRange('O39')).getValue()===true);
       if(reemitido){
@@ -166,6 +172,7 @@ function salarioEditar_(e) {
         var dia=salarioHoje_(),dias=salarioInt_(cfg.getRange('O41').getValue(),1,3650,'o intervalo em dias');
         st.inicio=dia;st.ultimaEmissao=dia;salarioSalvarEstado_(ss,st);
         cfg.getRange('O38').setValue(salarioData_(dia));cfg.getRange('O39').setValue(false);ss.getSheetByName('CARTEIRA').getRange('AT3').setValue(false);
+        if(SALARIO_.formula){salarioStatus_(ss,'');return;}
         cfg.getRange('O48').setValue(salarioData_(dia+dias));cfg.getRange('O69').setValue(salarioData_(dia));
         cfg.getRange('O70').setFormula('=SUMPRODUCT(N(\'DADOS_SALARIOS\'!E2:E=TRUE);N(ISNUMBER(\'DADOS_SALARIOS\'!D2:D));N(\'DADOS_SALARIOS\'!D2:D>=INT(O69));N(\'DADOS_SALARIOS\'!D2:D<INT(O48));IFERROR(VLOOKUP(\'DADOS_SALARIOS\'!C2:C;K62:O67;5;FALSE);0))');
         cfg.getRange('O71').setFormula('=ROUNDDOWN(O50*IF(O44;O43+(1-O43)*MIN(O42;MAX(0;O70))/O42;1);0)');
@@ -173,6 +180,8 @@ function salarioEditar_(e) {
         return;
       }
       var hoje=salarioHoje_();
+      // Por fórmula a edição só registra a missão; o pagamento já aparece na hora e o livro congela depois.
+      if(SALARIO_.formula){if(missao&&!config&&salarioToca_(r,15,87,49,72))salarioSincronizar_(ss,st,hoje,false);return;}
       if(missao&&!config){
         var c=salarioConfig_(ss),g=String(ss.getSheetByName('FICHA PESSOAL').getRange('AB11').getValue()),ms=salarioSincronizar_(ss,st,hoje,false,true);
         salarioHistoricoGrau_(ss,st,hoje,g);
@@ -238,6 +247,7 @@ function instalarSalarios() {
     pp.getRange('W85').setValue('TOTAL DISPONÍVEL');pp.getRange('W86').setFormula('=O86+SUM(\'SALÁRIOS\'!J2:J)').setNumberFormat('"¥ "#,##0').setNote('Saldo manual de O86 + salários fechados. Consulte valores, prazos e participação em CONFIGURAÇÃO → Emissão e salários.');
     var estado={versao:1,inicio:salarioHoje_(),graus:[],ultimaEmissao:salarioHoje_()};
     salarioSincronizar_(ss,estado,salarioHoje_(),true);salarioSalvarEstado_(ss,estado);ds.hideSheet();livro.hideSheet();
+    if(SALARIO_.formula)salarioPrepararFormulas_(ss);
     return salarioApurar_(ss,salarioHoje_());
   });
 }
@@ -278,3 +288,62 @@ function salarioCriarPainel_(cfg,carteira) {
   carteira.getRange('AH3:AT3').breakApart();carteira.getRange('AH3:AS3').merge().setFormula('="Emitida "&TEXT(\'CONFIGURAÇÃO\'!O38;"dd.mm.yyyy")');
   carteira.getRange('AT3').insertCheckboxes().setValue(false).setNote('Emitir hoje: grava a data atual do Brasil e desmarca após salvar.');
 }
+
+/** Salário por fórmula (24/10/2026). O pendente é calculado na hora pela planilha, em qualquer aparelho e cópia,
+ * sem gatilho: DADOS_SALARIOS!P11 lista cada período vencido depois do livro e Q4 soma. O script só registra trocas
+ * (H:J, "valor até a troca") e congela a tabela no livro quando houver tempo. Vale o Grau do dia do fechamento. */
+SALARIO_.formula = true;
+SALARIO_.f = {aux:[["Salário por fórmula", "Valor"], ["Início do 1º período pendente", "=LET(ult;MAX('SALÁRIOS'!C2:C);em;INT('CONFIGURAÇÃO'!O38);IF(ult>0;MAX(ult;em);em))"], ["Períodos vencidos", "=LET(nome;CARTEIRA!O9;IF(AND('CONFIGURAÇÃO'!O40=TRUE;LEN(nome)>0;nome<>\"Coloque o nome do personagem aqui\");MAX(0;FLOOR((TODAY()-Q2)/'CONFIGURAÇÃO'!O41));0))"], ["A creditar", "=IF($Q$3=0;0;SUM(INDEX(P11:Y;0;9)))"], ["Trocas registradas", "=COUNTA(H2:H)"], ["Fechamentos no livro", "=COUNTA('SALÁRIOS'!A2:A)"], ["Linhas do livro", "=ROWS('SALÁRIOS'!A:A)"], ["Intervalo (dias)", "='CONFIGURAÇÃO'!O41"]], cab:["Período", "Início", "Fim", "Grau", "Salário de referência", "Participações", "Meta", "Parcela", "Salário", "Critério"], tabela:"=IF($Q$3=0;\"\";LET(lin;LAMBDA(k;LET(s;$Q$2+k*'CONFIGURAÇÃO'!$O$41;e;s+'CONFIGURAÇÃO'!$O$41;h;LAMBDA(ch;atual;IFERROR(INDEX(FILTER('DADOS_SALARIOS'!$J$2:$J;'DADOS_SALARIOS'!$I$2:$I=ch;'DADOS_SALARIOS'!$H$2:$H>=e);1);atual));g;h(\"Grau\";'FICHA PESSOAL'!$AB$11);base;h(\"base:\"&g;IFERROR(VLOOKUP(g;'CONFIGURAÇÃO'!$K$54:$O$58;5;0);0));metav;h(\"meta\";'CONFIGURAÇÃO'!$O$42);mini;h(\"minimo\";'CONFIGURAÇÃO'!$O$43);vf;h(\"verifica\";'CONFIGURAÇÃO'!$O$44);p;SUM(MAP('CONFIGURAÇÃO'!$K$62:$K$67;'CONFIGURAÇÃO'!$O$62:$O$67;LAMBDA(t;w;h(\"peso:\"&t;w)*COUNTIFS('DADOS_SALARIOS'!$C$2:$C;t;'DADOS_SALARIOS'!$E$2:$E;TRUE;'DADOS_SALARIOS'!$D$2:$D;\">=\"&s;'DADOS_SALARIOS'!$D$2:$D;\"<\"&e))));pc;IF(vf;mini+(1-mini)*MIN(metav;MAX(0;p))/metav;1);HSTACK(\"SAL1:\"&s&\":\"&e;s;e;g;base;p;metav;pc;ROUNDDOWN(base*pc+0,00000001;0);IF(vf;\"Participação no período\";\"Participação dispensada pela campanha\"))));REDUCE(lin(0);SEQUENCE($Q$3;1;0);LAMBDA(acc;k;IF(k=0;acc;VSTACK(acc;lin(k)))))))", painel:{"O46": "=IF(O40<>TRUE;\"Salário pausado; períodos pendentes serão pagos ao religar.\";IF(NOT(AND(LEN(CARTEIRA!O9)>0;CARTEIRA!O9<>\"Coloque o nome do personagem aqui\"));\"Aguardando o nome do personagem na CARTEIRA.\";\"Em dia · próximo fechamento \"&TEXT(O48;\"dd/mm/yyyy\")))", "O48": "='DADOS_SALARIOS'!Q2+('DADOS_SALARIOS'!Q3+1)*O41", "O49": "=SUM('SALÁRIOS'!J2:J)+'DADOS_SALARIOS'!Q4", "O69": "='DADOS_SALARIOS'!Q2+'DADOS_SALARIOS'!Q3*O41", "O70": "=SUMPRODUCT(N('DADOS_SALARIOS'!E2:E=TRUE);N(ISNUMBER('DADOS_SALARIOS'!D2:D));N('DADOS_SALARIOS'!D2:D>=INT(O69));N('DADOS_SALARIOS'!D2:D<INT(O69)+O41);IFERROR(VLOOKUP('DADOS_SALARIOS'!C2:C;K62:O67;5;FALSE);0))", "O71": "=ROUNDDOWN(O50*IF(O44;O43+(1-O43)*MIN(O42;MAX(0;O70))/O42;1);0)", "O72": "=IF(INT(O69)>INT(O38);O69;\"Nenhum\")"},
+  total:"=O86+SUM('SALÁRIOS'!J2:J)+'DADOS_SALARIOS'!Q4"};
+/** Valor anterior de uma regra que muda o pagamento de períodos passados. Uma célula por vez (oldValue). */
+function salarioChaveTroca_(r,n) {
+  if(r.getRow()!==r.getLastRow())return '';
+  if(n==='FICHA PESSOAL'&&r.getRow()===11&&r.getColumn()>=28&&r.getColumn()<=30)return 'Grau';
+  if(n!==SALARIO_.config||r.getColumn()>15||r.getLastColumn()<15)return '';
+  var l=r.getRow();
+  if(l===42)return 'meta';if(l===43)return 'minimo';if(l===44)return 'verifica';
+  if(l>=54&&l<=58)return 'base:'+SALARIO_.graus[l-54];
+  if(l>=62&&l<=67)return 'peso:'+SALARIO_.tipos[l-62];
+  return '';
+}
+function salarioValorTroca_(chave,v) {
+  if(v===undefined||v===null||v==='')return undefined;
+  if(chave==='Grau')return String(v);
+  if(chave==='verifica')return v===true||String(v).toUpperCase()==='TRUE';
+  var x=typeof v==='number'?v:Number(String(v).replace(',','.'));return isFinite(x)?x:undefined;
+}
+function salarioRegistrarTroca_(ss,chave,e) {
+  var antes=salarioValorTroca_(chave,e.oldValue),agora=salarioValorTroca_(chave,e.value);
+  if(antes===undefined||antes===agora)return false;
+  var sh=ss.getSheetByName(SALARIO_.dados),n=Number(sh.getRange('Q5').getValue())||0;
+  if(sh.getMaxRows()<n+2)sh.insertRowsAfter(sh.getMaxRows(),n+2-sh.getMaxRows());
+  sh.getRange(n+2,8,1,3).setValues([[salarioHoje_(),chave,antes]]);
+  return true;
+}
+/** Copia para o livro os períodos que a fórmula já calcula. Uma leitura; a fórmula recomeça no fim do livro. */
+function salarioCongelar_(ss,hoje) {
+  var sh=ss.getSheetByName(SALARIO_.dados),v=sh.getRange('P2:Y130').getValues();
+  var nLivro=Number(v[4][1])||0,linhas=Number(v[5][1])||0,dias=Number(v[6][1])||0;
+  var tabela=v.slice(9).filter(function(l){return /^SAL1:/.test(l[0]);});
+  var proximo=Number(v[0][1])+(Number(v[1][1])+1)*dias;
+  if(!tabela.length)return {novos:0,proximo:proximo};
+  var novos=tabela.map(function(l){return [l[0],salarioData_(l[1]),salarioData_(l[2]),salarioData_(hoje),l[3],l[4],l[5],l[6],l[7],l[8],l[9],JSON.stringify({formula:true,dias:dias})];});
+  var livro=ss.getSheetByName(SALARIO_.livro),at=nLivro+2;
+  if(linhas<at+novos.length-1)livro.insertRowsAfter(linhas,at+novos.length-1-linhas);
+  livro.getRange(at,1,novos.length,12).setValues(novos);
+  return {novos:novos.length,proximo:proximo};
+}
+/** Uma vez por ficha (pelo editor ou na instalação): colunas auxiliares, painel e total em fórmula. */
+function salarioPrepararFormulas_(ss) {
+  var d=ss.getSheetByName(SALARIO_.dados),cfg=ss.getSheetByName(SALARIO_.config);
+  d.getRange('H1:J1').setValues([['Troca (dia)','Regra','Valor até a troca']]);
+  d.getRange(1,16,SALARIO_.f.aux.length,1).setValues(SALARIO_.f.aux.map(function(l){return [l[0]];}));
+  d.getRange(1,17,1,1).setValue('Valor');
+  d.getRange(2,17,SALARIO_.f.aux.length-1,1).setFormulas(SALARIO_.f.aux.slice(1).map(function(l){return [l[1]];}));
+  d.getRange('P10:Y10').setValues([SALARIO_.f.cab]);d.getRange('P11').setFormula(SALARIO_.f.tabela);
+  Object.keys(SALARIO_.f.painel).forEach(function(a){cfg.getRange(a).setFormula(SALARIO_.f.painel[a]);});
+  cfg.getRange('O74').setValue('Na hora, por fórmula');
+  salarioLigacoes_(ss);
+  return true;
+}
+function atualizarSalarioFormula() {var ss=SpreadsheetApp.getActive();return salarioBloqueado_(ss,function(){return salarioPrepararFormulas_(ss);},30000);}

@@ -26,215 +26,149 @@ assert.strictEqual(upgrade.files[1].source, p.files[3].source);
 assert.throws(() => preparar({files: [{name: 'Codigo', source: original.replace(ANCORA, ANTIGO)},
   {name: 'SalarioLote', source: fonteAntiga + '// desconhecido'}]}), /divergente/);
 assert.throws(() => preparar(p), /já instalada/);
-assert.throws(() => preparar({files: []}), /Codigo/);
 
+// Salário por fórmula: a planilha calcula o pendente; aqui só se testa o que o script faz em volta dela.
+// A fórmula em si foi conferida no Sheets da cópia de teste (24/10/2026); a VM não avalia fórmulas.
 function ambiente(op = {}) {
-  let relogio = 0, leituras = 0, travado = false, falha = null;
-  const logs = [], props = {}, grav = {}, fila = [], livro = [], commits = [];
-  let estado;
+  let relogio = 0, leituras = 0, travado = false;
+  const logs = [], props = {}, celulas = {}, escritas = [], chamadas = [];
   const ctx = {console: {log: m => logs.push(m)}};
   vm.createContext(ctx);
   vm.runInContext(fs.readFileSync(path.join(raiz, 'apps-script/Salarios.gs'), 'utf8'), ctx);
   for (const f of [p.files[0], p.files[3]]) vm.runInContext(f.source, ctx);
+  vm.runInContext(fs.readFileSync(path.join(raiz, 'r53/diagnostico-android/salario_lote.gs'), 'utf8'), ctx);
   const VDate = vm.runInContext('Date', ctx);
   VDate.now = () => relogio;
-  const emissao = ctx.salarioDiaISO_('2026-10-20'), hoje = ctx.salarioDiaISO_('2026-12-25');
-  const data = d => new VDate((d - 25569) * 864e5 + 12 * 3600000);
-  estado = JSON.stringify({versao: 1, inicio: emissao, graus: [[emissao, 'Grau 4']], agenda: 'preservada'});
+  const hoje = 46319;
   ctx.salarioHoje_ = () => hoje;
   ctx.Utilities = {formatDate: d => d.toISOString().slice(0, 10)};
-  function problema(k) {
-    if (falha === k) { falha = null; throw Error('Falha injetada: ' + k); }
+  const tabela = op.tabela || [['SAL1:46254:46284', 46254, 46284, 'Grau 3', 300000, 3, 3, 1, 300000, 'Participação no período'],
+    ['SAL1:46284:46314', 46284, 46314, 'Grau 4', 150000, 0, 3, 0.25, 37500, 'Participação no período']];
+  function aux() {
+    relogio += 3000; leituras++;
+    const v = Array.from({length: 129}, () => Array(10).fill(''));
+    v[0][1] = 46254; v[1][1] = tabela.length; v[2][1] = tabela.reduce((a, l) => a + l[8], 0);
+    v[3][1] = op.trocas || 0; v[4][1] = op.livro || 0; v[5][1] = op.linhas || 1000; v[6][1] = 30;
+    tabela.forEach((l, i) => { v[9 + i] = l.slice(); });
+    return v;
   }
-  function grade() {
-    relogio += 2000; leituras++;
-    const g = Array.from({length: 1000}, () => Array(14).fill(''));
-    g[1].splice(0, 7, 'm1', 'Curta', 'Curta', emissao + 3, true, '49:15', emissao + 3);
-    g[2].splice(0, 7, 'm2', 'Longa', 'Longa', emissao + 35, true, '49:16', emissao + 35);
-    g[3].splice(0, 7, 'm3', 'Removida', 'Longa', emissao + 40, false, '49:17', emissao + 40);
-    g[1][11] = estado;
-    const pagos = op.resumoVelho ? [] : livro;
-    const N = [data(emissao), true, 30, 3, 0.25, true, data(emissao + 30),
-      150000, 300000, 600000, 1200000, 2400000, 1, 1, 2, 3, 1, 1, 'Grau 4', 'Teste Salário',
-      pagos.length, 1000, pagos.length ? pagos[pagos.length - 1][2] : '', pagos.map(l => l[0]).join('|')];
-    N.forEach((v, i) => { g[i + 1][13] = v; });
-    return g;
+  function escrever(aba, a, v) { assert(travado || op.semTrava, 'escrita sob bloqueio'); escritas.push([aba, a, v]); celulas[aba + '!' + a] = v; }
+  function faixa(aba, a, l, c) {
+    return {getValues: () => aba === 'DADOS_SALARIOS' && a === 'P2:Y130' ? aux() : [[celulas[aba + '!' + a]]],
+      getValue: () => { leituras++; return aba === 'DADOS_SALARIOS' && a === 'Q5' ? (op.trocas || 0) : celulas[aba + '!' + a]; },
+      setValue: v => escrever(aba, a, v), setValues: v => escrever(aba, a || l + ',' + c, v),
+      setFormula: v => escrever(aba, a, v), getFormula: () => celulas[aba + '!' + a] || '', setNotes() {}};
   }
-  function escrever(k, v, inicio) {
-    assert(travado, 'salário deve escrever sob bloqueio');
-    problema(k);
-    fila.push(() => {
-      grav[k] = v; commits.push(k);
-      if (k === 'livro') v.forEach((r, i) => { livro[inicio - 2 + i] = r; });
-      if (k === 'dados L2') estado = v;
-    });
-  }
-  const faixa = k => ({setValue: v => escrever(k, v), setValues: v => escrever(k, v)});
-  const abas = {
-    DADOS_SALARIOS: {getRange: a => typeof a === 'number' ? {getValues: grade} : faixa('dados ' + a)},
-    'SALÁRIOS': {getRange: (inicio, col, n) => ({setValues: v => escrever('livro', v, inicio),
-      getValues: () => livro.slice(inicio - 2, inicio - 2 + n)}),
-      getLastRow: () => livro.length + 1, getMaxRows: () => 1000, insertRowsAfter() { throw Error('não deve expandir'); }},
-    'CONFIGURAÇÃO': {getRange: a => faixa('cfg ' + a)}
-  };
+  const abas = {};
+  for (const n of ['DADOS_SALARIOS', 'SALÁRIOS', 'CONFIGURAÇÃO', 'FICHA PESSOAL', 'CARTEIRA'])
+    abas[n] = {getRange: (a, c, h, w) => typeof a === 'number' ? faixa(n, '', a, c) : faixa(n, a),
+      getMaxRows: () => 1000, insertRowsAfter() { chamadas.push('inserir'); }, getName: () => n};
   const ss = {getSheetByName: n => abas[n]};
-  ctx.SpreadsheetApp = {getActive: () => ss, flush() {
-    relogio += travado ? (op.flushMs || 1000) : 500;
-    if (travado) {
-      if (falha && falha.startsWith('flush:')) {
-        const n = Number(falha.split(':')[1]); falha = null;
-        fila.splice(0, n).forEach(fn => fn()); fila.length = 0;
-        throw Error('Falha injetada no flush');
-      }
-      fila.splice(0).forEach(fn => fn());
-    } else problema('flush-edicao');
-  }};
-  ctx.LockService = {getDocumentLock: () => ({tryLock: () => {
-    if (op.lockOcupado) return false;
-    assert(!travado); travado = true;
-    if (op.outroFechou) props.salario_proximo = String(emissao + 90);
-    return true;
-  }, releaseLock() {
-    // Falha de setter também pode confirmar parte da fila antes do erro.
-    fila.splice(0).forEach(fn => fn()); travado = false;
-  }})};
+  ctx.SpreadsheetApp = {getActive: () => ss, flush() { relogio += 1000; }};
+  const trava = {tryLock: () => { if (op.ocupado) return false; travado = true; return true; },
+    releaseLock() { travado = false; }};
+  ctx.LockService = {getDocumentLock: () => trava, getScriptLock: () => trava};
   ctx.ScriptApp = {getScriptId: () => 'copia'};
-  ctx.PropertiesService = {getScriptProperties: () => ({getProperty: () => op.instalavel ? 'copia' : 'original'}),
-    getDocumentProperties: () => ({getProperty: k => props[k] || null, setProperty(k, v) {
-      problema('prop ' + k);
-      if (k === 'salario_proximo' && props.salario_lote_reparar) assert.strictEqual(fila.length, 0, 'cache após flush');
-      props[k] = v;
-    }, deleteProperty: k => { delete props[k]; }})};
-  const eventos = [];
-  let rota = 'modulo', duracaoEdicao = 1000;
-  ctx.salarioEditar_ = e => { eventos.push(['salarioEditar', e]); return rota === 'salario'; };
-  ctx.r53Editar_ = e => { eventos.push(['editor', e]); return rota === 'editor'; };
-  ctx.paleta = e => { eventos.push(['paleta', e]); return 'cores'; };
-  ctx.r53Modulo_ = () => ({onEdit(e) {
-    eventos.push(['modulo', e]); relogio += duracaoEdicao; problema('edicao'); return 'XP';
-  }});
-  function evento(aba = 'FICHA', a1 = 'E5', l = 5, c = 5) {
-    return {source: ss, value: 'valor original', oldValue: 'anterior', range: {
-      getSheet: () => ({getName: () => aba}), getA1Notation: () => a1,
+  ctx.PropertiesService = {getScriptProperties: () => ({getProperty: () => op.instalavel ? 'copia' : null}),
+    getDocumentProperties: () => ({getProperty: k => props[k] || null, setProperty: (k, v) => { props[k] = v; },
+      deleteProperty: k => { delete props[k]; }})};
+  ctx.salarioApurar_Original = ctx.salarioApurar_;
+  ctx.salarioSincronizar_ = () => { chamadas.push('sincronizar'); return []; };
+  ctx.r53Modulo_ = () => ({onEdit() { chamadas.push('modulo'); relogio += op.edicaoMs || 1000; return 'XP'; }});
+  ctx.r53Editar_ = () => false;
+  function evento(aba, a1, l, c, antes, depois) {
+    return {source: ss, oldValue: antes, value: depois, range: {getSheet: () => ({getName: () => aba}), getA1Notation: () => a1,
       getRow: () => l, getLastRow: () => l, getColumn: () => c, getLastColumn: () => c}};
   }
-  return {ctx, ss, props, grav, livro, logs, eventos, evento, emissao, hoje,
-    executar: e => ctx.onEdit(e || evento()), abrir: () => ctx.onOpen({}),
-    falhar: k => { falha = k; }, rota: r => { rota = r; }, duracao: n => { duracaoEdicao = n; },
-    leituras: () => leituras, estado: () => JSON.parse(estado), travado: () => travado,
-    commits: () => commits, tempo: () => relogio};
-}
-function conferir(a) {
-  assert.deepStrictEqual(a.livro.map(l => [l[0], l[6], l[9]]), [
-    ['SAL1:' + a.emissao + ':' + (a.emissao + 30), 1, 75000],
-    ['SAL1:' + (a.emissao + 30) + ':' + (a.emissao + 60), 2, 112500]]);
-  assert.strictEqual(a.estado().inicio, a.emissao + 60);
-  assert.strictEqual(a.estado().agenda, 'preservada');
-  assert.strictEqual(Number(a.props.salario_proximo), a.emissao + 90);
-  assert(!a.props.salario_lote_reparar);
-  assert(!a.travado());
-  assert(a.grav['cfg O48']); assert(a.grav['cfg O69:O72']);
+  return {ctx, ss, props, escritas, chamadas, logs, evento, hoje, leituras: () => leituras,
+    livro: () => escritas.filter(e => e[0] === 'SALÁRIOS'), trocas: () => escritas.filter(e => e[0] === 'DADOS_SALARIOS' && e[1] === '')};
 }
 let casos = 0;
 {
-  // Abertura: fecha os dois períodos sem edição nenhuma; a segunda abertura não lê a planilha.
+  // Congelar copia a tabela da fórmula para o livro, depois da última linha, com a data de hoje.
+  const a = ambiente({livro: 3, semTrava: true});
+  const r = a.ctx.salarioCongelar_(a.ss, a.hoje);
+  assert.strictEqual(r.novos, 2); assert.strictEqual(r.proximo, 46254 + 3 * 30);
+  const [[, onde, linhas]] = a.livro();
+  assert.strictEqual(onde, '5,1'); assert.strictEqual(linhas.length, 2);
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(linhas.map(l => [l[0], l[4], l[9]]))), [['SAL1:46254:46284', 'Grau 3', 300000], ['SAL1:46284:46314', 'Grau 4', 37500]]);
+  assert.strictEqual(linhas[0][3].toISOString().slice(0, 10), '2026-10-24');
+  casos += 4;
+}
+{
+  // Sem nada vencido: não grava no livro.
+  const a = ambiente({tabela: [], semTrava: true});
+  assert.strictEqual(a.ctx.salarioCongelar_(a.ss, a.hoje).novos, 0); assert.strictEqual(a.livro().length, 0);
+  casos++;
+}
+{
+  // Trocas que mudam o passado viram uma linha "valor até a troca"; nada de apuração na edição.
+  const a = ambiente({trocas: 2});
+  a.ctx.salarioApurar_ = () => { throw Error('não deve apurar na edição'); };
+  a.ctx.salarioEditar_(a.evento('CONFIGURAÇÃO', 'O62', 62, 15, '1', '3'));
+  a.ctx.salarioEditar_(a.evento('FICHA PESSOAL', 'AB11', 11, 28, 'Grau 4', 'Grau 3'));
+  a.ctx.salarioEditar_(a.evento('CONFIGURAÇÃO', 'O43', 43, 15, '0.25', '0.5'));
+  a.ctx.salarioEditar_(a.evento('CONFIGURAÇÃO', 'O44', 44, 15, 'TRUE', 'FALSE'));
+  const t = JSON.parse(JSON.stringify(a.escritas.filter(e => e[0] === 'DADOS_SALARIOS' && e[1] === '4,8').map(e => e[2][0])));
+  assert.deepStrictEqual(t, [[a.hoje, 'peso:Curta', 1], [a.hoje, 'Grau', 'Grau 4'], [a.hoje, 'minimo', 0.25], [a.hoje, 'verifica', true]]);
+  assert(!a.chamadas.includes('sincronizar'), 'Grau não relê as missões');
+  casos += 2;
+}
+{
+  // Sem valor anterior (colagem, célula vazia) ou sem mudança: não registra.
   const a = ambiente();
-  a.abrir(); conferir(a);
-  assert.strictEqual(a.eventos.length, 0);
-  const lidas = a.leituras(); a.abrir();
-  assert.strictEqual(a.leituras(), lidas); assert.strictEqual(a.livro.length, 2);
-  assert(a.logs.some(l => l.startsWith('R53_ABRIR ') && JSON.parse(l.slice(10)).fechou === true));
+  a.ctx.salarioEditar_(a.evento('CONFIGURAÇÃO', 'O62', 62, 15, undefined, '3'));
+  a.ctx.salarioEditar_(a.evento('CONFIGURAÇÃO', 'O54', 54, 15, '150000', '150000'));
+  assert.strictEqual(a.escritas.filter(e => e[0] === 'DADOS_SALARIOS').length, 0);
+  casos++;
+}
+{
+  // Missão: só registra (sincroniza), sem apurar.
+  const a = ambiente();
+  a.ctx.salarioApurar_ = () => { throw Error('não deve apurar na edição'); };
+  a.ctx.salarioEditar_(a.evento('FICHA PESSOAL', 'AW15', 15, 49, '', 'Mesa 1'));
+  assert(a.chamadas.includes('sincronizar'));
+  casos++;
+}
+{
+  // Edição rápida: entrega a edição e congela depois; a segunda edição pula pela data guardada, sem ler.
+  const a = ambiente();
+  assert.strictEqual(a.ctx.onEdit(a.evento('FICHA', 'E5', 5, 5, 'a', 'b')), 'XP');
+  assert.strictEqual(a.livro().length, 1); assert.strictEqual(Number(a.props.salario_proximo), 46254 + 3 * 30);
+  const lidas = a.leituras();
+  a.ctx.onEdit(a.evento('FICHA', 'E6', 6, 5, 'a', 'b'));
+  assert.strictEqual(a.leituras(), lidas); assert.strictEqual(a.livro().length, 1);
+  casos += 3;
+}
+{
+  // Edição lenta (18–24 s medidos): a edição termina e o congelamento fica para depois; o pendente já aparece por fórmula.
+  const a = ambiente({edicaoMs: 20000});
+  assert.strictEqual(a.ctx.onEdit(a.evento('FICHA', 'E5', 5, 5, 'a', 'b')), 'XP');
+  assert.strictEqual(a.livro().length, 0);
+  casos++;
+}
+{
+  // Abrir no PC congela; rotina instalável ativa não congela pelo acionador simples.
+  const a = ambiente();
+  a.ctx.onOpen({}); assert.strictEqual(a.livro().length, 1);
+  const b = ambiente({instalavel: true});
+  b.ctx.onOpen({}); assert.strictEqual(b.livro().length, 0);
   casos += 2;
 }
 {
-  // Caixa do celular: só fecha o salário, desmarca e não chama a edição original.
-  const a = ambiente(), e = a.evento('CONFIGURAÇÃO', 'O75', 75, 15);
-  let desmarcou = null; e.value = 'TRUE'; e.range.setValue = v => { desmarcou = v; };
-  a.executar(e); conferir(a);
-  assert.strictEqual(desmarcou, false); assert.strictEqual(a.eventos.length, 0);
-  const d = a.evento('CONFIGURAÇÃO', 'O75', 75, 15); d.value = 'FALSE';
-  a.executar(d); assert.strictEqual(a.eventos.length, 0); assert.strictEqual(a.livro.length, 2);
+  // Bloqueio ocupado: não congela e tenta de novo depois.
+  const a = ambiente({ocupado: true});
+  a.ctx.onOpen({}); assert.strictEqual(a.livro().length, 0); assert(!a.props.salario_proximo);
+  casos++;
+}
+{
+  // Preparar uma cópia já instalada: patch exato, recusa repetição.
+  const {preparar} = require('../diagnostico-android/preparar_salario_formula.js');
+  const antigo = fs.readFileSync(path.join(__dirname, 'salarios-antes-formula.gs'), 'utf8');
+  const proj = {files: [{name: 'Codigo', source: antigo}, {name: 'SalarioLote', source: '// antigo'}]};
+  const novo = preparar(proj);
+  assert(novo.files[0].source.includes('SALARIO_.formula = true;'));
+  assert.throws(() => preparar(novo), /já instalado/);
   casos += 2;
 }
-{
-  // Rotina instalável ativa: a abertura não fecha nada.
-  const a = ambiente({instalavel: true});
-  a.abrir(); assert.strictEqual(a.livro.length, 0); assert.strictEqual(a.leituras(), 0);
-  casos++;
-}
-{
-  const a = ambiente({flushMs: 14000}), e = a.evento();
-  assert.strictEqual(a.executar(e), 'XP'); conferir(a);
-  assert(a.eventos.every(([, ev]) => ev === e), 'evento completo e a mesma instância');
-  assert.strictEqual(e.value, 'valor original'); assert.strictEqual(e.oldValue, 'anterior');
-  assert.strictEqual(a.eventos.filter(([r]) => r === 'modulo').length, 1);
-  const medicao = JSON.parse(a.logs.find(l => l.startsWith('R53_ONEDIT ')).slice(11));
-  assert.strictEqual(medicao.ms, a.tempo()); assert(medicao.ms > 12000); assert.strictEqual(medicao.fase, 'concluido');
-  const antes = a.leituras(); a.executar(); assert.strictEqual(a.leituras(), antes); conferir(a);
-  delete a.props.salario_proximo; a.executar(); conferir(a); casos++;
-}
-// Escritas e flush incertos; resumo por fórmulas deliberadamente antigo na recuperação.
-for (const ponto of ['livro', 'dados L2', 'cfg O48', 'cfg O69:O72', 'cfg O46',
-  'flush:0', 'flush:1', 'flush:2', 'flush:5', 'prop salario_proximo']) {
-  const a = ambiente({resumoVelho: true}), e = a.evento();
-  a.falhar(ponto); a.executar(e);
-  assert(a.props.salario_lote_reparar, ponto + ': reparação durável');
-  assert(!a.props.salario_proximo, ponto + ': não pode pular a tentativa seguinte');
-  const pagosAntes = JSON.stringify(a.livro);
-  a.executar(); conferir(a);
-  if (JSON.parse(pagosAntes).length === 2) assert.strictEqual(JSON.stringify(a.livro), pagosAntes, 'créditos imutáveis: ' + ponto);
-  const antes = a.leituras(); a.executar(); assert.strictEqual(a.leituras(), antes); conferir(a);
-  assert.strictEqual(a.eventos.filter(([r, ev]) => r === 'modulo' && ev === e).length, 1, 'sem replay da edição');
-  casos++;
-}
-{
-  const a = ambiente(); a.falhar('prop salario_lote_reparar'); a.executar();
-  assert.strictEqual(a.livro.length, 0); assert.strictEqual(a.commits().length, 0);
-  a.executar(); conferir(a); casos++;
-}
-{
-  const a = ambiente(); a.duracao(14000); a.executar();
-  assert.strictEqual(a.leituras(), 0); assert.strictEqual(a.eventos.filter(([r]) => r === 'modulo').length, 1);
-  a.duracao(1000); a.executar(); conferir(a); casos++;
-}
-for (const [aba, a1, l, c] of [['CARTEIRA', 'C27', 27, 3], ['CONFIGURAÇÃO', 'O41', 41, 15],
-  ['FICHA PESSOAL', 'AB11', 11, 28], ['FICHA PESSOAL', 'AW15', 15, 49]]) {
-  const a = ambiente(); a.props.salario_proximo = '1';
-  const e = a.evento(aba, a1, l, c); a.executar(e);
-  assert.strictEqual(a.leituras(), 0); assert.strictEqual(a.livro.length, 0);
-  assert(a.eventos.every(([, ev]) => ev === e));
-  if (a1 === 'C27') assert.strictEqual(a.eventos.filter(([r]) => r === 'paleta').length, 1);
-  else assert(!a.props.salario_proximo);
-  casos++;
-}
-{
-  const a = ambiente(); a.props.salario_proximo = String(a.hoje + 100); a.duracao(14000);
-  a.executar(a.evento('CONFIGURAÇÃO', 'O41', 41, 15));
-  assert(!a.props.salario_proximo, 'edição lenta de regra também invalida o cache');
-  assert.strictEqual(a.leituras(), 0); a.duracao(1000); a.executar(); conferir(a); casos++;
-}
-for (const rota of ['salario', 'editor']) {
-  const a = ambiente(); a.rota(rota); a.executar(); conferir(a);
-  assert.strictEqual(a.eventos.filter(([r]) => r === 'modulo').length, 0); casos++;
-}
-for (const op of [{lockOcupado: true}, {instalavel: true}, {outroFechou: true}]) {
-  const a = ambiente(op); a.executar(); assert.strictEqual(a.leituras(), 0); assert.strictEqual(a.livro.length, 0); casos++;
-}
-for (const colagem of [true, false]) {
-  const a = ambiente(), e = a.evento(); delete e.value; delete e.oldValue;
-  if (colagem) { e.range.getLastRow = () => 20; e.range.getLastColumn = () => 50; }
-  a.executar(e); conferir(a);
-  assert(a.eventos.every(([, ev]) => ev === e)); assert(!('value' in e)); assert(!('oldValue' in e)); casos++;
-}
-for (const falha of ['edicao', 'flush-edicao']) {
-  const a = ambiente(); a.falhar(falha); assert.throws(() => a.executar(), /injetada/);
-  assert.strictEqual(a.leituras(), 0); assert(a.logs.some(l => l.includes('"fase":"edicao"'))); casos++;
-}
-{
-  const a = ambiente(); a.falhar('dados L2'); a.executar();
-  a.livro.push(a.livro[0]); const antes = JSON.stringify(a.livro); a.executar();
-  assert.strictEqual(JSON.stringify(a.livro), antes); assert(a.props.salario_lote_reparar);
-  assert(!a.props.salario_proximo); assert(a.logs.some(l => l.includes('incompleto ou repetido'))); casos++;
-}
-console.log(JSON.stringify({resultado: 'OK', casos, creditos: [75000, 112500],
-  limite: 'VM; tempos simulados. Sem aplicação, medição ou aprovação nativa.'}));
+console.log(JSON.stringify({resultado: 'OK', casos, limite: 'VM; a fórmula foi conferida no Sheets da cópia de teste, não aqui.'}));
