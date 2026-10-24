@@ -48,7 +48,7 @@ function ambiente(op = {}) {
   function aux() {
     relogio += 3000; leituras++;
     const v = Array.from({length: 129}, () => Array(10).fill(''));
-    v[0][1] = 46254; v[1][1] = tabela.length; v[2][1] = tabela.reduce((a, l) => a + l[8], 0);
+    v[0][1] = 'q2' in op ? (typeof op.q2 === 'function' ? op.q2(ctx) : op.q2) : 46254; v[1][1] = tabela.length; v[2][1] = tabela.reduce((a, l) => a + l[8], 0);
     v[3][1] = op.trocas || 0; v[4][1] = op.livro || 0; v[5][1] = op.linhas || 1000; v[6][1] = 30;
     tabela.forEach((l, i) => { v[9 + i] = l.slice(); });
     return v;
@@ -262,7 +262,15 @@ let casos = 0;
   assert.strictEqual(segunda.split('salarioCorrigirData_(ss,r,e))return true;').length, 2);
   assert.strictEqual(segunda.split('function salarioGasto_(').length, 2);
   assert(segunda.endsWith('// FIM DO SALÁRIO POR FÓRMULA\nfunction depois_(){}\n'));
-  casos += 9;
+  assert.strictEqual(segunda.split('salarioEmitir_(ss,r,e,emitir))return true;').length, 2);
+  assert.strictEqual(segunda.split("'reemitirCarteira')").length, 2);
+  // Projeto com o desvio do primeiro nome (versão que não ficou): a linha sai e a emissão entra uma vez.
+  const linhaNome = "  if(SALARIO_.formula&&nome&&salarioPrimeiroNome_(e)){return false;}\n";
+  const comNome = segunda.replace('SALARIO_.f.ultimos', 'SALARIO_.f.ultimosVelho')
+    .replace('salarioEmitir_(ss,r,e,emitir))return true;\n', 'salarioEmitir_(ss,r,e,emitir))return true;\n' + linhaNome);
+  const semNome = comExtrato({files: [{name: 'Codigo', source: comNome}]}).files[0].source;
+  assert(!semNome.includes('salarioPrimeiroNome_')); assert.strictEqual(semNome.split('salarioEmitir_(ss,r,e,emitir))return true;').length, 2);
+  casos += 11;
 }
 {
   // Corrigir data pelo celular: nome em BI11, data em BO11; resultado na caixa da data.
@@ -303,6 +311,71 @@ let casos = 0;
   // Data primeiro, nome depois: corrige ao escrever o nome.
   assert.deepStrictEqual(caso('Missão A', '20/10/2026', 'nome').dia, [['2,4', 46315]]);
   casos += 15;
+}
+{
+  // Emissão: só a caixa EMITIR grava a data (N2), uma vez; escrever em O38 devolve a fórmula; nome não emite.
+  const emitir = (op, aba, a1, l, c, antes, depois) => {
+    const a = ambiente(op);
+    const r = a.ctx.salarioEditar_(a.evento(aba, a1, l, c, antes, depois));
+    const w = k => a.escritas.filter(e => e[1] === k).map(e => e[2] && e[2].toISOString ? e[2].toISOString().slice(0, 10) : e[2]);
+    return {r, a, n2: w('N2'), o38: w('O38'), at3: w('AT3'), o39: w('O39'), o46: w('O46')};
+  };
+  let r = emitir({}, 'CARTEIRA', 'AT3', 3, 46, 'FALSE', 'TRUE');
+  assert.strictEqual(r.r, true); assert.deepStrictEqual(r.n2, ['2026-10-24']); assert.deepStrictEqual(r.at3, [false]);
+  assert.deepStrictEqual(r.o39, [false]);
+  r = emitir({}, 'CONFIGURAÇÃO', 'O39', 39, 15, 'FALSE', 'TRUE'); assert.deepStrictEqual(r.n2, ['2026-10-24']);
+  // Já emitida: não regrava; avisa no painel e desmarca.
+  {
+    const a = ambiente(); a.put('DADOS_SALARIOS', 'N2', 46315);
+    a.ctx.salarioEditar_(a.evento('CARTEIRA', 'AT3', 3, 46, 'FALSE', 'TRUE'));
+    assert.strictEqual(a.escritas.filter(e => e[1] === 'N2').length, 0);
+    assert(/^⚠ Carteira já emitida em 20\/10\/2026/.test(a.escritas.filter(e => e[1] === 'O46').pop()[2]));
+    assert.strictEqual(a.escritas.filter(e => e[1] === 'AT3').pop()[2], false);
+  }
+  // Desmarcar não faz nada.
+  r = emitir({}, 'CARTEIRA', 'AT3', 3, 46, 'TRUE', 'FALSE'); assert.strictEqual(r.a.escritas.length, 0);
+  // Corrigir a data em O38: a fórmula volta sempre; data válida vai para N2.
+  r = emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '', '24/10/2026');
+  assert.strictEqual(r.r, true); assert.deepStrictEqual(r.n2, ['2026-10-24']); assert(/^=IF\(ISNUMBER\('DADOS_SALARIOS'!N2\)/.test(r.o38[0]));
+  assert.strictEqual(r.a.livro().length, 0, 'sem emissão anterior: nada a congelar');
+  assert.deepStrictEqual(emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '', '46319').n2, ['2026-10-24'], 'número de série');
+  // Sem emissão, data passada não vale: seria salário retroativo.
+  r = emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '', '15/10/2026'); assert.deepStrictEqual(r.n2, []);
+  assert.strictEqual(r.o46.pop(), '⚠ A emissão só pode ir para frente: use 24/10/2026 ou depois.');
+  r = emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '', '30/10/2026'); assert.deepStrictEqual(r.n2, []); assert.strictEqual(r.o46.pop(), '⚠ A emissão não pode ser depois de hoje.');
+  r = emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '', 'ontem'); assert.deepStrictEqual(r.n2, []); assert(/^⚠ Data de emissão inválida/.test(r.o46.pop()));
+  r = emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '20/10/2026', undefined); assert.deepStrictEqual(r.n2, []); assert.strictEqual(r.o38.length, 1);
+  assert(!r.o46.some(t => /^⚠/.test(t)), 'apagar só devolve a fórmula');
+  {
+    // Já emitida: congela o vencido antes, registra a troca e grava a data nova.
+    const a = ambiente(); a.put('DADOS_SALARIOS', 'N2', 46315); a.props.salario_proximo = '99999';
+    a.ctx.salarioEditar_(a.evento('CONFIGURAÇÃO', 'O38', 38, 15, '20/10/2026', '22/10/2026'));
+    const ordem = a.escritas.map(e => e[0] === 'SALÁRIOS' ? 'livro' : e[1]).filter(k => ['livro', 'N2'].includes(k) || /,8$/.test(k));
+    assert.deepStrictEqual(ordem, ['livro', '2,8', 'N2'], 'livro antes da troca e da data');
+    assert.deepStrictEqual(JSON.parse(JSON.stringify(a.escritas.find(e => e[1] === '2,8')[2][0].slice(1))), ['emissão', 46315]);
+    assert.strictEqual(a.escritas.find(e => e[1] === 'N2')[2].toISOString().slice(0, 10), '2026-10-22');
+    assert.strictEqual(a.props.salario_proximo, undefined);
+  }
+  {
+    // Já emitida: voltar a data é recusado sem congelar nem gravar nada.
+    const a = ambiente(); a.put('DADOS_SALARIOS', 'N2', 46315);
+    a.ctx.salarioEditar_(a.evento('CONFIGURAÇÃO', 'O38', 38, 15, '20/10/2026', '01/08/2026'));
+    assert.strictEqual(a.livro().length, 0); assert(!a.escritas.some(e => e[1] === 'N2' || /,8$/.test(e[1])));
+    assert.strictEqual(a.escritas.filter(e => e[1] === 'O46').pop()[2], '⚠ A emissão só pode ir para frente: use 20/10/2026 ou depois.');
+  }
+  // Escrever o nome não emite.
+  r = emitir({}, 'CARTEIRA', 'O9', 9, 15, 'Coloque o nome do personagem aqui', 'Yuji'); assert.deepStrictEqual(r.n2, []); assert.deepStrictEqual(r.o38, []);
+  casos += 28;
+}
+{
+  // Congelar: Q2 chega como Date; sem emissão (Q2 vazio) não lê de novo até amanhã.
+  const a = ambiente({tabela: [], semTrava: true});
+  assert.strictEqual(a.ctx.salarioCongelar_(a.ss, a.hoje).proximo, 46254 + 30, 'Q2 número');
+  const d = ambiente({tabela: [], semTrava: true, q2: ctx => new (vm.runInContext('Date', ctx))(Date.UTC(2026, 7, 20, 15))});
+  assert.strictEqual(d.ctx.salarioCongelar_(d.ss, d.hoje).proximo, 46254 + 30, 'Q2 como Date (formato de data)');
+  const v = ambiente({tabela: [], semTrava: true, q2: ''});
+  assert.strictEqual(v.ctx.salarioCongelar_(v.ss, v.hoje).proximo, v.hoje + 1, 'sem emissão: amanhã');
+  casos += 3;
 }
 {
   // Preparar uma cópia já instalada: patch exato, recusa repetição.

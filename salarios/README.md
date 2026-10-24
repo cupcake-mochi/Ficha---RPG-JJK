@@ -75,3 +75,21 @@ As doze notas são lidas por duas faixas de uma coluna, mantendo a preservação
 `node salarios/corrigir_abertura.js <Codigo-atual.gs> <Codigo-corrigido.gs>` prepara a atualização do pacote antigo sem alterar os cinco arquivos comprimidos. Os bytes originais são validados pelo SHA-256 antes de substituir funções por âncoras únicas; âncora divergente ou correção duplicada interrompe o carregamento. As âncoras mínimas da base R53 estão em `abertura_r53_original.json`, sem depender do histórico Git disponível em um clone. A geração integral usa diretamente as fontes corrigidas.
 
 Resultados e tempos da publicação estão em `VALIDACAO.json`. Evidências nativas e fontes relidas permanecem em `saidas/`, fora do Git.
+
+## Emissão obrigatória (24/10/2026, salário por fórmula)
+
+Valem estas regras e não as de O38 descritas acima:
+
+- O salário só conta depois de **EMITIR**: o checkbox CARTEIRA!AT3 (ou CONFIGURAÇÃO!O39) grava o dia de hoje em
+  DADOS_SALARIOS!N2, uma vez só. Sem emissão a CARTEIRA mostra "Não emitida · marque ao lado" e o painel avisa.
+- O38 mostra N2 e aceita correção (também no celular): escreva a data certa em dd/mm/aaaa. Ela só pode ir para frente,
+  entre a emissão atual e hoje; sem emissão, só vale a de hoje. Antes da troca, os períodos vencidos vão para o livro
+  (ficam pagos) e o ciclo aberto recomeça na data nova. A troca fica registrada em DADOS_SALARIOS!H:J ("emissão",
+  data anterior). Data inválida, futura ou para trás é recusada com aviso no painel; a fórmula de O38 volta sempre.
+  Resultado: corrigir a data nunca dá dinheiro a mais e nunca tira o que já venceu.
+- Marcar EMITIR de novo numa ficha já emitida não muda a data; o painel avisa e a caixa desmarca.
+- No PC, o menu **Salários › Reemitir carteira hoje…** faz o mesmo que escrever a data de hoje em O38.
+- A cópia da ficha base vem sem emissão, então ninguém recebe salário retroativo ao copiar.
+
+Texto para guias e bot: "Terminou a ficha? Escreva o nome do personagem na CARTEIRA e marque EMITIR, ao lado de
+'Não emitida'. O salário só começa a contar a partir desse dia. Se marcar no dia errado, corrija a data de emissão em CONFIGURAÇÃO (só dá para adiantar)."

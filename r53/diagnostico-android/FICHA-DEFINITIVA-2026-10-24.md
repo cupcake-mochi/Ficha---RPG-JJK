@@ -26,3 +26,15 @@ Candidata A ficaram intactas.
   derramamento de DADOS_SALARIOS!AA2 (a cópia de teste tem créditos, a nova não).
 - Painel: Grau 4, ¥ 150.000 de referência, próximo fechamento 19/11/2026, previsto ¥ 37.500 (0 participações, parcela
   mínima), TOTAL DISPONÍVEL ¥ 150.000, conferência "Na hora, por fórmula".
+
+## Cópias feitas pelos jogadores
+
+Nada roda em segundo plano: gatilhos e propriedades do documento não vão na cópia, e o salário pendente é só fórmula
+(depende de `TODAY()`). O risco era outro: a fórmula conta os períodos a partir da data de emissão (CONFIGURAÇÃO!O38),
+e a cópia herda a emissão da base (20/10/2026). Quem copiasse meses depois e preenchesse o nome receberia os períodos
+desde 20/10 na hora.
+
+Correção (`salarioPrimeiroNome_`, desvio em `salarioEditar_`): quando o nome do personagem na CARTEIRA passa de vazio ou
+do texto de exemplo para um nome de verdade, O38 vira a data de hoje. Renomear não reemite. A edição continua para o
+resto da ficha (retorna false). Aplicado na definitiva pelo `preparar_salario_extrato.js` (diff de 8 linhas, conferido).
+Lançamentos de teste do Mizuki no EXTRATO (−100 e +100) ficaram: somam zero.
