@@ -41,7 +41,8 @@ function ambiente(op = {}) {
   VDate.now = () => relogio;
   const hoje = 46319;
   ctx.salarioHoje_ = () => hoje;
-  ctx.Utilities = {formatDate: d => d.toISOString().slice(0, 10)};
+  ctx.Utilities = {formatDate: (d, tz, f) => { const [y, m, dd] = new Date(d.getTime() - 3 * 3600000).toISOString().slice(0, 10).split('-');
+    return f.replace('yyyy', y).replace('MM', m).replace('dd', dd); }};
   const tabela = op.tabela || [['SAL1:46254:46284', 46254, 46284, 'Grau 3', 300000, 3, 3, 1, 300000, 'Participação no período'],
     ['SAL1:46284:46314', 46284, 46314, 'Grau 4', 150000, 0, 3, 0.25, 37500, 'Participação no período']];
   function aux() {
@@ -54,9 +55,10 @@ function ambiente(op = {}) {
   }
   function escrever(aba, a, v) { assert(travado || op.semTrava, 'escrita sob bloqueio'); escritas.push([aba, a, v]); celulas[aba + '!' + a] = v; }
   function faixa(aba, a, l, c) {
-    return {getValues: () => aba === 'DADOS_SALARIOS' && a === 'P2:Y130' ? aux() : [[celulas[aba + '!' + a]]],
+    return {getValues: () => aba === 'DADOS_SALARIOS' && a === 'P2:Y130' ? aux()
+        : aba === 'DADOS_SALARIOS' && !a && l === 1 && c === 1 ? (leituras++, op.dados) : [[celulas[aba + '!' + a]]],
       getValue: () => { leituras++; return aba === 'DADOS_SALARIOS' && a === 'Q5' ? (op.trocas || 0) : celulas[aba + '!' + a]; },
-      setValue: v => escrever(aba, a, v), setValues: v => escrever(aba, a || l + ',' + c, v),
+      setValue: v => escrever(aba, a || l + ',' + c, v), setValues: v => escrever(aba, a || l + ',' + c, v),
       setFormula: v => escrever(aba, a, v), getFormula: () => celulas[aba + '!' + a] || '', setNotes() {},
       clearContent() { escrever(aba, a, ''); return this; }};
   }
@@ -84,7 +86,7 @@ function ambiente(op = {}) {
       getRow: () => l, getLastRow: () => l, getColumn: () => c, getLastColumn: () => c,
       getCell: () => ({getValue: () => { leituras++; return op.caixa; }})}};
   }
-  return {ctx, ss, props, escritas, chamadas, logs, evento, hoje, leituras: () => leituras,
+  return {ctx, ss, props, escritas, chamadas, logs, evento, hoje, leituras: () => leituras, put: (aba, a, v) => { celulas[aba + '!' + a] = v; },
     livro: () => escritas.filter(e => e[0] === 'SALÁRIOS'), trocas: () => escritas.filter(e => e[0] === 'DADOS_SALARIOS' && e[1] === '')};
 }
 let casos = 0;
@@ -254,10 +256,41 @@ let casos = 0;
   // Cópia com o extrato da primeira versão (sem marcador de fim): o bloco antigo some inteiro.
   const semMarca = antes.replace(/\n$/, '');
   const primeira = comExtrato({files: [{name: 'Codigo', source: semMarca + '\nfunction depois_(){}\n'}]}).files[0].source;
-  const segunda = comExtrato({files: [{name: 'Codigo', source: primeira.replace('// FIM DO SALÁRIO POR FÓRMULA\n', '').replace('SALARIO_.f.ultimos', 'SALARIO_.f.ultimosVelho')}]}).files[0].source;
+  assert(primeira.endsWith('// FIM DO SALÁRIO POR FÓRMULA\nfunction depois_(){}\n'));
+  const v1 = fs.readFileSync(path.join(__dirname, 'salarios-extrato-v1.gs'), 'utf8');
+  const segunda = comExtrato({files: [{name: 'Codigo', source: v1 + 'function depois_(){}\n'}]}).files[0].source;
+  assert.strictEqual(segunda.split('salarioCorrigirData_(ss,r,e))return true;').length, 2);
   assert.strictEqual(segunda.split('function salarioGasto_(').length, 2);
   assert(segunda.endsWith('// FIM DO SALÁRIO POR FÓRMULA\nfunction depois_(){}\n'));
-  casos += 7;
+  casos += 9;
+}
+{
+  // Corrigir data pelo celular: nome em BI11, data em BO11; resultado na caixa da data.
+  const dados = () => { const v = Array.from({length: 6}, () => Array(17).fill(''));
+    v[1][16] = 46254; v[1].splice(0, 5, 'id1', 'Missão A', 'Curta', 46300, true); v[2].splice(0, 5, 'id2', "'-Missão B", 'Longa', 46310, true);
+    v[3].splice(0, 5, 'id3', 'Missão C', 'Curta', 46301, false); v[4].splice(0, 5, 'id4', 'Dupla', 'Curta', 46300, true); v[5].splice(0, 5, 'id5', 'dupla ', 'Curta', 46301, true); return v; };
+  const caso = (nome, data, campo = 'data') => {
+    const a = ambiente({dados: dados()});
+    a.ctx.salarioEditar_(campo === 'data' ? (a.put('FICHA PESSOAL', 'BI11', nome), a.evento('FICHA PESSOAL', 'BO11', 11, 67, undefined, data))
+      : (a.put('FICHA PESSOAL', 'BO11', data), a.evento('FICHA PESSOAL', 'BI11', 11, 61, undefined, nome)));
+    const ult = a.escritas.filter(e => e[1] === 'BO11').pop();
+    return {a, msg: ult && ult[2], dia: a.escritas.filter(e => e[0] === 'DADOS_SALARIOS').map(e => [e[1], e[2]])};
+  };
+  let r = caso('missão a', '20/10/2026');
+  assert.strictEqual(r.msg, '✓ missão a: 20/10/2026'); assert.deepStrictEqual(r.dia, [['2,4', 46315]]);
+  assert.strictEqual(r.a.escritas.filter(e => e[1] === 'BI11').pop()[2], '');
+  assert.deepStrictEqual(caso('-Missão B', '21/10').dia, [['3,4', 46316]]);
+  assert.strictEqual(caso('Missão C', '20/10/2026').msg, '⚠ Nenhuma missão com esse nome');
+  assert.strictEqual(caso('dupla', '20/10/2026').msg, '⚠ Mais de uma missão com esse nome');
+  assert.strictEqual(caso('Missão A', '01/08/2026').msg, '⚠ Essa data cai num período já pago');
+  assert.strictEqual(caso('Missão A', '30/10/2026').msg, '⚠ A data não pode ser depois de hoje');
+  assert.strictEqual(caso('Missão A', '31/02/2026').msg, '⚠ Data inválida: use dd/mm/aaaa');
+  // Nome escrito com a data vazia ou com o resultado anterior na caixa: não faz nada.
+  r = caso('Missão A', '', 'nome'); assert.strictEqual(r.a.escritas.length, 0); assert.strictEqual(r.a.leituras(), 1);
+  r = caso('Missão A', '✓ Missão A: 20/10/2026', 'nome'); assert.strictEqual(r.a.escritas.length, 0);
+  // Data primeiro, nome depois: corrige ao escrever o nome.
+  assert.deepStrictEqual(caso('Missão A', '20/10/2026', 'nome').dia, [['2,4', 46315]]);
+  casos += 12;
 }
 {
   // Preparar uma cópia já instalada: patch exato, recusa repetição.

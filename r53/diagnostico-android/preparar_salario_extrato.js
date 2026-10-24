@@ -6,7 +6,7 @@
 // Depois de publicar, rode prepararSalarioLote() pelo editor: ele cria o EXTRATO com o saldo de O86.
 const fs = require('fs'), vm = require('vm');
 const {PARES, BLOCO} = require('./preparar_salario_formula.js');
-const DESVIO = PARES[PARES.length - 1];
+const DESVIOS = PARES.slice(-2);
 const FIM = 'function atualizarSalarioFormula() {';
 function preparar(conteudo) {
   const files = conteudo.files.map(f => Object.assign({}, f));
@@ -25,9 +25,12 @@ function preparar(conteudo) {
   else fimLinha = s.indexOf('\n', f);
   if (s.lastIndexOf('function salarioGasto_(') !== gasto) throw Error('salarioGasto_ duplicado');
   s = s.slice(0, ini) + BLOCO.replace(/\n+$/, '') + (fimLinha < 0 ? '' : s.slice(fimLinha));
-  if (!s.includes(DESVIO[1])) {
-    if (s.split(DESVIO[0]).length !== 2) throw Error('Âncora divergente: ' + DESVIO[0].slice(0, 60));
-    s = s.replace(DESVIO[0], () => DESVIO[1]);
+  for (const [de, para] of DESVIOS) {
+    // Já instalado: a linha que o par acrescenta (a primeira que não existia antes) está lá.
+    const nova = para.split('\n').find(l => !de.includes(l));
+    if (s.includes(nova)) continue;
+    if (s.split(de).length !== 2) throw Error('Âncora divergente: ' + de.slice(0, 60));
+    s = s.replace(de, () => para);
   }
   new vm.Script(s);
   cod[0].source = s;
