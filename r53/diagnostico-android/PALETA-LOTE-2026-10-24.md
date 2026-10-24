@@ -48,10 +48,9 @@ Se o layout de uma aba mudar, rode `mapearLote()` de novo.
 - INVOCAÇÕES: o Mizuki pediu uma caixa explicando que as fichas 2–6 e 8–12 abrem pelo + da lateral (no Android, se
   a lateral estiver recolhida, o + vira um pontinho; tocar no « do canto). A caixa é nova: depois de criá-la, rodar
   `mapearLote()` de novo para ela entrar na troca de cores.
-  Feita na cópia de teste em 24/10/2026: `INVOCAÇÕES!AB2:AR4` mesclada, fundo branco, Roboto 9 na cor do texto do
+  Feita na cópia de teste em 24/10/2026: `INVOCAÇÕES!AB2:AR4` mesclada, fundo #FAD7E3 (papel "painel"; branco não entra no mapa e ficaria fixo nas paletas escuras), Roboto 9 na cor do texto do
   cabeçalho (#2F0414), texto "COMO ABRIR AS OUTRAS FICHAS · As invocações 2 a 6 e 8 a 12 ficam recolhidas. Toque no +
   da lateral esquerda, na altura de cada ficha, para abrir. No celular, se a lateral estiver estreita, o + aparece como
-  um pontinho: toque no « do canto para abrir a lateral." Falta rodar `mapearLote()` na cópia; na base, repetir a caixa
-  e o mapa.
+  um pontinho: toque no « do canto para abrir a lateral." Rodar `mapearLote()` de novo depois da troca do fundo; na base, repetir a caixa e o mapa.
 - INVOCAÇÕES: os grupos de linha terminam antes do fim de cada bloco (ex.: grupo até 227, bloco até 238), então
   sobra o rodapé visível com o grupo fechado. Já vem da montagem; o Mizuki preferiu não mexer agora.
