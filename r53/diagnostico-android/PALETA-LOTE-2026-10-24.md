@@ -38,6 +38,10 @@ Se o layout de uma aba mudar, rode `mapearLote()` de novo.
 
 ## Pendências
 
+- Aviso da paleta (CARTEIRA!C29): na cópia de teste já diz "A troca leva uns 20 segundos e muda a ficha inteira de uma
+  vez. / Até as cores mudarem, não feche nem recarregue esta página." Na base, trocar também `TEXTO_AVISO_PALETA_`
+  (Codigo.gs e módulo), senão a revisão de abertura volta o texto antigo.
+
 - Ainda não aplicado na base nem na original. Antes: conferir que o `onOpen` não chama mais a paleta antiga
   (`paleta_pendente` / `r53PaletaLeve_().continuar`), que repintaria a arte e as bordas.
 - Barras: o lote grava a cor em `DADOS!CZ51`, que as fórmulas de SPARKLINE leem.
