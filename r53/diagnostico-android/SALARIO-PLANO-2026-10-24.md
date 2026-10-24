@@ -106,3 +106,10 @@ O painel listava só o livro, então ficava vazio enquanto o pendente (já somad
 `CONFIGURAÇÃO!K81:Q90` lê dessa faixa (`salarioUltimo_`). A aba ganhou 8 colunas (até AH). O bloco por fórmula agora
 termina no marcador `// FIM DO SALÁRIO POR FÓRMULA`, e `preparar_salario_extrato.js` troca o bloco inteiro em cópias já
 atualizadas (sem duplicar funções). Conferido na cópia de teste: 19/10 Grau 4 0/3 ¥37.500 e 19/09 Grau 4 1/3 ¥75.000.
+
+## Pente fino (24/10/2026)
+
+Export .xlsx da cópia de teste comparado com a Candidata A (1427): mesmas 27 abas (+ R53_LOTE e EXTRATO), nenhuma
+mesclagem a menos e uma a mais (caixa de ajuda), fórmulas iguais fora do salário (W86, painel O46–O72, últimos créditos).
+Erros só em `DADOS_SALARIOS!N24:N25`, sobra do bloco M1:N25 do lote antigo (a2ca590), sem nenhuma referência: limpo.
+Colunas recolhidas na A e abertas na teste (INVOCAÇÕES AB:AS, FICHA PESSOAL AV:BS) são só estado de grupo.
