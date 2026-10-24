@@ -11,6 +11,7 @@ var R53_LOTE_PAPEIS_ = ['fundo', 'tinta', 'painel', 'painel_alto', 'papel', 'men
                         'acento', 'painel_baixo', 'bloco', 'linha', 'regua'];
 var R53_LOTE_MAPA_ = 'R53_LOTE';
 var R53_LOTE_LINHAS_ = 40, R53_LOTE_PEDACO_ = 45000, R53_LOTE_LISTA_ = 400;
+var R53_LOTE_BORDA_ = {red: 0x85 / 255, green: 0x7F / 255, blue: 0x99 / 255}; // #857F99, escolhida pelo Mizuki
 var R53_LOTE_PALETAS_ = /*PALETAS*/null;
 
 function r53LoteCores_(nome) {
@@ -145,4 +146,44 @@ function r53LoteTrocar_(e) {
   marca('gravações enfileiradas (' + listas + ' listas)');
   SpreadsheetApp.flush();
   marca('flush (fim)');
+}
+
+/**
+ * Rodar uma vez pelo editor (na base, antes de copiar): pinta toda borda das abas visíveis com o #857F99, mantendo
+ * lado, espessura e estilo. Lê pela API do Sheets em blocos de 120 linhas e grava num batchUpdate só, porque cada
+ * gravação paga o recálculo da ficha inteira.
+ */
+function fixarBordasLote() {
+  var ss = SpreadsheetApp.getActive(), id = ss.getId(), pedidos = [], lados = 0, BLOCO = 120;
+  R53_LOTE_ABAS_.forEach(function (nome) {
+    var sh = ss.getSheetByName(nome);
+    if (!sh) return;
+    var nl = sh.getMaxRows(), nc = sh.getMaxColumns();
+    for (var r0 = 0; r0 < nl; r0 += BLOCO) {
+      var r1 = Math.min(nl, r0 + BLOCO), a1 = "'" + nome + "'!" + sh.getRange(r0 + 1, 1, r1 - r0, nc).getA1Notation();
+      var resp = Sheets.Spreadsheets.get(id, {ranges: [a1], fields: 'sheets.data.rowData.values.userEnteredFormat.borders'});
+      var linhas = ((((resp.sheets || [])[0] || {}).data || [])[0] || {}).rowData || [], rows = [], mudou = 0;
+      for (var i = 0; i < r1 - r0; i++) {
+        var vals = (linhas[i] && linhas[i].values) || [], row = [];
+        for (var c = 0; c < nc; c++) {
+          var b = vals[c] && vals[c].userEnteredFormat && vals[c].userEnteredFormat.borders, nb = {};
+          ['top', 'bottom', 'left', 'right'].forEach(function (lado) {
+            var x = b && b[lado];
+            if (!x || !x.style || x.style === 'NONE') return;
+            nb[lado] = {style: x.style, colorStyle: {rgbColor: R53_LOTE_BORDA_}};
+            mudou++;
+          });
+          row.push({userEnteredFormat: {borders: nb}});
+        }
+        rows.push({values: row});
+      }
+      if (!mudou) continue;
+      pedidos.push({updateCells: {range: {sheetId: sh.getSheetId(), startRowIndex: r0, endRowIndex: r1,
+        startColumnIndex: 0, endColumnIndex: nc}, rows: rows, fields: 'userEnteredFormat.borders'}});
+      lados += mudou;
+    }
+    console.log('BORDAS lida ' + nome + ' · lados até aqui: ' + lados);
+  });
+  if (pedidos.length) Sheets.Spreadsheets.batchUpdate({requests: pedidos}, id);
+  console.log('BORDAS fim · ' + lados + ' lados pintados com #857F99 em ' + pedidos.length + ' blocos');
 }

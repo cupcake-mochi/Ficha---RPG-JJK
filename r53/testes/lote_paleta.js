@@ -44,3 +44,16 @@ assert.strictEqual(grav['CARTEIRA f B1'], '#' + N.osso_por_papel.acento);
 assert.strictEqual(grav['CARTEIRA f B2'], '#' + N.linha);
 assert.strictEqual(grav.barra, '#' + N.barra);
 console.log(JSON.stringify({resultado: 'OK', limite: 'VM com serviços simulados; não mede o Sheets nem o Android.'}));
+// Bordas: toda borda vira #857F99 com o mesmo estilo; lado sem borda fica de fora; um batchUpdate só.
+const lotes = [];
+ctx.Sheets = {Spreadsheets: {
+  get: () => ({sheets: [{data: [{rowData: [{values: [{userEnteredFormat: {borders: {top: {style: 'SOLID_MEDIUM', colorStyle: {rgbColor: {red: 1}}}, left: {style: 'NONE'}}}}]}]}]}]}),
+  batchUpdate: (b) => lotes.push(b)}};
+const sh1 = {getMaxRows: () => 1, getMaxColumns: () => 1, getSheetId: () => 7, getRange: () => ({getA1Notation: () => 'A1'})};
+ctx.SpreadsheetApp = {getActive: () => ({getId: () => 'x', getSheetByName: n => n === 'CARTEIRA' || n === 'FICHA' ? sh1 : null})};
+vm.runInContext('fixarBordasLote()', ctx);
+assert.strictEqual(lotes.length, 1); assert.strictEqual(lotes[0].requests.length, 2);
+const bd = JSON.parse(JSON.stringify(lotes[0].requests[0].updateCells.rows[0].values[0].userEnteredFormat.borders));
+assert.deepStrictEqual(Object.keys(bd), ['top']); assert.strictEqual(bd.top.style, 'SOLID_MEDIUM');
+assert.strictEqual(Math.round(bd.top.colorStyle.rgbColor.red * 255), 0x85);
+console.log(JSON.stringify({bordas: 'OK'}));
