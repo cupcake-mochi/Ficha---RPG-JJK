@@ -58,3 +58,43 @@ Estado desta revisão: **28 cenários locais aprovados; aplicação e medição 
 `script.googleapis.com`, `oauth2.googleapis.com` e `accounts.google.com` retornaram
 403 pelo proxy desta sessão. Clasp 3.4.1 instalado em pasta ignorada; login
 não iniciado. Nenhuma planilha/projeto Google foi alterado.
+
+## Virada para salário por fórmula (24/10/2026, tarde)
+
+Medições que mudaram o plano: uma edição comum desta ficha gasta 18–24 s sozinha (logs `R53_ONEDIT`), então o
+fechamento em lote (~10 s) não cabe depois dela; e o app do Android não roda o `onOpen` (teste do Mizuki: nenhuma
+execução ao abrir). Alternativas comparadas no doc https://claude.ai/artifact/FndjoeVzL6YARoz9KKUQ2C.
+
+Decisão do Mizuki: o pendente é calculado por fórmula, na hora, em qualquer aparelho. Vale o Grau do dia do
+fechamento (sem proporcional).
+
+- `DADOS_SALARIOS!P2:Q8`: início do primeiro período pendente (fim do livro ou emissão), períodos vencidos, soma,
+  contadores. `P11` lista cada período pendente (mesmas colunas do livro).
+- `DADOS_SALARIOS!H:J`: registro de trocas, "valor até a troca". O `salarioEditar_` grava uma linha quando muda o
+  Grau (AB11), meta, parcela mínima, verificar missões, salário de um Grau ou peso de um tipo (uma célula, com
+  `oldValue`). A fórmula usa, para cada período, o valor que valia no fim dele.
+- Painel (O46, O48, O49, O69–O72) e o TOTAL DISPONÍVEL (W86) viram fórmula; W86 soma o pendente.
+- O script não apura mais na edição: missão só é registrada. `salarioCongelar_` copia a tabela P11 para o livro
+  (uma leitura, uma gravação) ao abrir no PC, numa edição rápida, no menu ou na rotina diária. Sem congelar, nada
+  some nem paga em dobro: a fórmula recomeça no fim do livro.
+- Conferido no Sheets da cópia de teste: 2 períodos, troca de Grau e de peso registradas → ¥ 337.500, igual à
+  conta à mão. Testes de VM: `r53/testes/salario_lote.js` (18 casos); `salarios/testes.js` continua cobrindo o
+  motor antigo (`SALARIO_.formula=false`).
+- Instalação numa cópia já com o módulo: `node r53/diagnostico-android/preparar_salario_formula.js captura.json
+  saida.json`, publicar, e rodar `prepararSalarioLote()` uma vez pelo editor.
+
+## Caixa ± GASTO / GANHO (dinheiro como a vida)
+
+Pedido do Mizuki: acompanhar gastos e ganhos sem refazer conta no fim do dia.
+
+- `FICHA PESSOAL!O86` deixa de ser o saldo manual e vira a caixa ± GASTO / GANHO. O jogador digita −500 ou 2000; o
+  script grava uma linha na aba oculta `EXTRATO` (data, valor, origem) e limpa a caixa. Validação aceita só número.
+- `W86` (TOTAL DISPONÍVEL) = `N(O86) + extrato + livro + pendente por fórmula`. Somar a caixa faz o valor aparecer na hora
+  mesmo se o script não rodar; quando ele roda, o valor só muda de lugar.
+- O lançamento é tratado no começo do `salarioEditar_` (`salarioGasto_`) e não segue para cartões/XP/paleta: nenhuma
+  leitura da ficha no caminho comum (contagem em `salario_extrato` nas propriedades; numa cópia, `getLastRow` uma vez).
+- Migração (`salarioPrepararCarteira_`, chamada por `prepararSalarioLote`/`atualizarSalarioFormula`): uma vez por ficha,
+  o valor que estava em O86 vira a linha "Saldo anterior" do extrato. Sem a aba `EXTRATO`, O86 segue como saldo manual.
+- Cópia já com fórmula: `node r53/diagnostico-android/preparar_salario_extrato.js entrada.json saida.json`, publicar e rodar
+  `prepararSalarioLote()`. Na cópia de teste a migração foi feita pela API com o mesmo resultado (¥150.000 → EXTRATO!2,
+  total seguiu ¥262.500).
