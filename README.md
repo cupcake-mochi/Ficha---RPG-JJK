@@ -10,7 +10,7 @@ Os repositórios irmãos: [o sistema](https://github.com/cupcake-mochi/JJK---Pro
 
 ## Comece por aqui
 
-**Ficha em PDF (protótipo):** [versão enxuta preenchível, quatro cores](ficha-pdf/README.md). Contas básicas automáticas com ± em cada uma; não mexe na planilha.
+**Ficha em PDF:** [seis páginas preenchíveis, quatro cores, estilo próprio](ficha-pdf/README.md). Contas automáticas com ± em cada uma e selos que abrem pelo nível; não mexe na planilha.
 
 **Emissão e salários:** [controles, ciclos, missões e rotina diária](salarios/README.md). Extensão incremental da R53, preservando a fórmula de gastos do jogador e registrando salários em histórico próprio.
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Abre as quatro fichas no pdf.js (o leitor do Firefox) com JavaScript ligado,
-# preenche a Kaori do livro e confere 43 valores calculados.
+# preenche a Kaori do livro e confere 90 valores: contas, barras, régua de espaços e selos.
 # Precisa de node, playwright e acesso ao npm na primeira vez.
 set -euo pipefail
 cd "$(dirname "$0")"
