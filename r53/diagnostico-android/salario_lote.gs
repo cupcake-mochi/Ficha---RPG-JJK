@@ -16,6 +16,7 @@ var R53_SAL_INICIAR_MS_ = 8000;
  * Se faltar orçamento, somente o salário aguarda uma nova edição. */
 function r53SalarioOnEdit_(e) {
   var inicio = Date.now(), fase = 'edicao', edicaoMs, resultado;
+  if (r53SalarioReceber_(e)) return;
   try {
     // Invalidar antes do processamento: uma edição de regra/Grau pode consumir
     // todo o prazo, e o vencimento antigo não pode continuar escondendo a revisão.
@@ -59,7 +60,10 @@ function prepararSalarioLote() {
   sh.getRange(2, 13, R53_SAL_FORMULAS_.length, 1).setValues(R53_SAL_FORMULAS_.map(function (l) { return [l[0]]; }));
   sh.getRange(2, 14, R53_SAL_FORMULAS_.length, 1).setFormulas(R53_SAL_FORMULAS_.map(function (l) { return [l[1]]; }));
   if (PropertiesService.getScriptProperties().getProperty('salario_edicao') !== ScriptApp.getScriptId())
-    ss.getSheetByName(SALARIO_.config).getRange('O74').setValue('Ao abrir a ficha após o vencimento');
+    ss.getSheetByName(SALARIO_.config).getRange('O74').setValue('Ao abrir no PC; no celular, marque abaixo');
+  var cfg = ss.getSheetByName(SALARIO_.config);
+  cfg.getRange(R53_SAL_RECEBER_.rotulo).setFormula('=IF(TODAY()>=INT(O48),"Salário disponível · marque para receber","Receber salário · nada pendente")');
+  cfg.getRange(R53_SAL_RECEBER_.caixa).insertCheckboxes().setValue(false);
   PropertiesService.getDocumentProperties().deleteProperty(R53_SAL_PROP_);
   console.log('SAL coluna de leitura pronta em DADOS_SALARIOS!M1:N' + (R53_SAL_FORMULAS_.length + 1));
 }
@@ -79,6 +83,23 @@ function r53SalarioLote_(e) {
   if (r.getSheet().getName() === 'CARTEIRA' && r.getA1Notation() === 'C27') return false;
   if (r53SalarioAreaPropria_(r)) { props.deleteProperty(R53_SAL_PROP_); return false; }
   return r53SalarioConferir_(e.source || SpreadsheetApp.getActive(), t0, props);
+}
+
+/** Caixa para o celular: o app do Android não roda o onOpen, e uma edição comum já gasta 18–24 s.
+ * Marcar a caixa é uma edição que só fecha o salário; a edição original não tem nada a fazer nessa célula. */
+var R53_SAL_RECEBER_ = {rotulo: 'K75', caixa: 'O75'};
+function r53SalarioReceber_(e) {
+  if (!e || !e.range || e.range.getSheet().getName() !== SALARIO_.config || e.range.getA1Notation() !== R53_SAL_RECEBER_.caixa) return false;
+  if (String(e.value).toUpperCase() !== 'TRUE') return true;
+  var t0 = Date.now(), ss = e.source || SpreadsheetApp.getActive(), props = PropertiesService.getDocumentProperties(), feito = false;
+  try { feito = r53SalarioConferir_(ss, t0, props); }
+  catch (err) { console.log('SAL caixa: ' + err.message); }
+  e.range.setValue(false);
+  var proximo = Number(props.getProperty(R53_SAL_PROP_));
+  if (!feito && proximo && !props.getProperty(R53_SAL_REPARAR_))
+    salarioStatus_(ss, 'Nada a receber agora · próximo fechamento ' + salarioTextoDia_(proximo));
+  console.log('R53_RECEBER ' + JSON.stringify({ms: Date.now() - t0, fechou: feito}));
+  return true;
 }
 
 /** Chamado no onOpen. Abrir a ficha não tem edição para atender, então os 30 s ficam livres para o lote

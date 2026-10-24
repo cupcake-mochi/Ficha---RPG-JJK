@@ -147,6 +147,16 @@ let casos = 0;
   casos += 2;
 }
 {
+  // Caixa do celular: só fecha o salário, desmarca e não chama a edição original.
+  const a = ambiente(), e = a.evento('CONFIGURAÇÃO', 'O75', 75, 15);
+  let desmarcou = null; e.value = 'TRUE'; e.range.setValue = v => { desmarcou = v; };
+  a.executar(e); conferir(a);
+  assert.strictEqual(desmarcou, false); assert.strictEqual(a.eventos.length, 0);
+  const d = a.evento('CONFIGURAÇÃO', 'O75', 75, 15); d.value = 'FALSE';
+  a.executar(d); assert.strictEqual(a.eventos.length, 0); assert.strictEqual(a.livro.length, 2);
+  casos += 2;
+}
+{
   // Rotina instalável ativa: a abertura não fecha nada.
   const a = ambiente({instalavel: true});
   a.abrir(); assert.strictEqual(a.livro.length, 0); assert.strictEqual(a.leituras(), 0);
