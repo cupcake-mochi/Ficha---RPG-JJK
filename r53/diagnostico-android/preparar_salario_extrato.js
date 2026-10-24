@@ -6,7 +6,7 @@
 // Depois de publicar, rode prepararSalarioLote() pelo editor: ele cria o EXTRATO com o saldo de O86.
 const fs = require('fs'), vm = require('vm');
 const {PARES, BLOCO} = require('./preparar_salario_formula.js');
-const DESVIOS = PARES.slice(-2);
+const DESVIOS = PARES.slice(-3);
 const FIM = 'function atualizarSalarioFormula() {';
 function preparar(conteudo) {
   const files = conteudo.files.map(f => Object.assign({}, f));

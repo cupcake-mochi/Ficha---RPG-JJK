@@ -23,6 +23,8 @@ const PARES = [
    "  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,86,87,15,21)&&salarioGasto_(ss,r,e))return true;\n  if(!config&&!missao&&!nome&&!total&&!emitir)return false;"],
   ["  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,86,87,15,21)&&salarioGasto_(ss,r,e))return true;\n",
    "  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,86,87,15,21)&&salarioGasto_(ss,r,e))return true;\n  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,10,12,61,71)&&salarioCorrigirData_(ss,r,e))return true;\n"],
+  ["  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,10,12,61,71)&&salarioCorrigirData_(ss,r,e))return true;\n",
+   "  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,10,12,61,71)&&salarioCorrigirData_(ss,r,e))return true;\n  if(SALARIO_.formula&&nome&&salarioPrimeiroNome_(e)){salarioBloqueado_(ss,function(){ss.getSheetByName(SALARIO_.config).getRange('O38').setValue(salarioData_(salarioHoje_()));},1500);return false;}\n"],
 ];
 function preparar(conteudo) {
   const files = conteudo.files.map(f => Object.assign({}, f));

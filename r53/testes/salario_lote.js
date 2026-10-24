@@ -262,7 +262,9 @@ let casos = 0;
   assert.strictEqual(segunda.split('salarioCorrigirData_(ss,r,e))return true;').length, 2);
   assert.strictEqual(segunda.split('function salarioGasto_(').length, 2);
   assert(segunda.endsWith('// FIM DO SALÁRIO POR FÓRMULA\nfunction depois_(){}\n'));
-  casos += 9;
+  assert.strictEqual(segunda.split('salarioPrimeiroNome_(e)){').length, 2);
+  assert.strictEqual(comExtrato({files: [{name: 'Codigo', source: segunda.replace('SALARIO_.f.ultimos', 'SALARIO_.f.ultimosVelho')}]}).files[0].source.split('salarioPrimeiroNome_(e)){').length, 2);
+  casos += 11;
 }
 {
   // Corrigir data pelo celular: nome em BI11, data em BO11; resultado na caixa da data.
@@ -303,6 +305,23 @@ let casos = 0;
   // Data primeiro, nome depois: corrige ao escrever o nome.
   assert.deepStrictEqual(caso('Missão A', '20/10/2026', 'nome').dia, [['2,4', 46315]]);
   casos += 15;
+}
+{
+  // Cópia nova: o primeiro nome do personagem emite a carteira hoje (senão a fórmula pagaria desde a emissão da cópia).
+  const nome = (antes, depois) => {
+    const a = ambiente();
+    const r = a.ctx.salarioEditar_(a.evento('CARTEIRA', 'O9', 9, 15, antes, depois));
+    return {r, o38: a.escritas.filter(e => e[0] === 'CONFIGURAÇÃO' && e[1] === 'O38').map(e => e[2].toISOString().slice(0, 10)), a};
+  };
+  let r = nome('Coloque o nome do personagem aqui', 'Yuji');
+  assert.strictEqual(r.r, false, 'o resto da edição do nome continua');
+  assert.deepStrictEqual(r.o38, ['2026-10-24']); assert.strictEqual(r.a.leituras(), 0);
+  assert.deepStrictEqual(nome(undefined, 'Yuji').o38, ['2026-10-24']);
+  assert.deepStrictEqual(nome('Yuji', 'Yuji Itadori').o38, [], 'renomear não reemite');
+  assert.deepStrictEqual(nome('Yuji', '').o38, []);
+  assert.deepStrictEqual(nome('', undefined).o38, [], 'colagem sem valor');
+  assert.deepStrictEqual(nome('', 'Coloque o nome do personagem aqui').o38, []);
+  casos += 7;
 }
 {
   // Preparar uma cópia já instalada: patch exato, recusa repetição.

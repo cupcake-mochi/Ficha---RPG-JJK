@@ -151,6 +151,7 @@ function salarioEditar_(e) {
   var total=n==='FICHA PESSOAL'&&salarioToca_(r,86,86,23,30);
   if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,86,87,15,21)&&salarioGasto_(ss,r,e))return true;
   if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,10,12,61,71)&&salarioCorrigirData_(ss,r,e))return true;
+  if(SALARIO_.formula&&nome&&salarioPrimeiroNome_(e)){salarioBloqueado_(ss,function(){ss.getSheetByName(SALARIO_.config).getRange('O38').setValue(salarioData_(salarioHoje_()));},1500);return false;}
   if(!config&&!missao&&!nome&&!total&&!emitir)return false;
   // Com a rotina ativada, a edição instalável registra missões sem disputar o orçamento dos cartões/XP.
   if(!e.salarioInstalavel_&&PropertiesService.getScriptProperties().getProperty('salario_edicao')===ScriptApp.getScriptId()){
@@ -474,5 +475,12 @@ function salarioCorrigirData_(ss,r,e) {
     cNome.clearContent();cData.setValue('✓ '+nome+': '+salarioTextoDia_(dia));props.setProperty('salario_correcao_nome','');
   },10000);
   return true;
+}
+/** Cópia nova da ficha: o primeiro nome do personagem emite a carteira hoje. Sem isso a fórmula pagaria os
+ * períodos desde a emissão que veio na cópia. Só vale quando o nome anterior estava vazio ou era o texto de exemplo. */
+function salarioPrimeiroNome_(e) {
+  if(e.value===undefined)return false;
+  var vazio=function(v){v=v===undefined||v===null?'':String(v).trim();return v===''||v==='Coloque o nome do personagem aqui';};
+  return vazio(e.oldValue)&&!vazio(e.value);
 }
 // FIM DO SALÁRIO POR FÓRMULA
