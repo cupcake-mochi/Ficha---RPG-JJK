@@ -13,10 +13,23 @@ function paletas() {
   for (;; j++) { if (src[j] === '{') d++; else if (src[j] === '}') { d--; if (!d) break; } }
   return JSON.parse(src.slice(s, j + 1));
 }
+function arte() {
+  const ctx = {};
+  vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(path.resolve(__dirname, '../../apps-script/Ficha.gs'), 'utf8'), ctx);
+  const ARTE = vm.runInContext('ARTE', ctx), imgs = {}, usadas = {};
+  vm.runInContext('ABAS', ctx).forEach(a => (a.imgs || []).forEach(im => {
+    (imgs[a.nome] = imgs[a.nome] || []).push([im[0], im[1], im[4]]);
+    usadas[im[4]] = ARTE[im[4]];
+  }));
+  return {arte: usadas, imgs};
+}
 function preparar(conteudo) {
   const tpl = fs.readFileSync(path.join(__dirname, 'lote_paleta.gs'), 'utf8');
   if (tpl.split('/*PALETAS*/null').length !== 2) throw Error('Marcador de PALETAS ausente');
-  const lote = tpl.replace('/*PALETAS*/null', () => JSON.stringify(paletas()));
+  const a = arte();
+  const lote = tpl.replace('/*PALETAS*/null', () => JSON.stringify(paletas()))
+    .replace('/*ARTE*/null', () => JSON.stringify(a.arte)).replace('/*IMGS*/null', () => JSON.stringify(a.imgs));
   new vm.Script(lote);
   const files = conteudo.files.map(f => Object.assign({}, f));
   if (files.some(f => f.name === 'LotePaleta')) throw Error('LotePaleta já instalado');

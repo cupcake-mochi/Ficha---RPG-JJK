@@ -13,6 +13,8 @@ var R53_LOTE_MAPA_ = 'R53_LOTE';
 var R53_LOTE_LINHAS_ = 40, R53_LOTE_PEDACO_ = 45000, R53_LOTE_LISTA_ = 400;
 var R53_LOTE_BORDA_ = {red: 0x85 / 255, green: 0x7F / 255, blue: 0x99 / 255}; // #857F99, escolhida pelo Mizuki
 var R53_LOTE_PALETAS_ = /*PALETAS*/null;
+// Arte da ficha (PNG de paleta de uma cor só, do construir()) e onde cada uma mora: {aba: [[linha, coluna, nome]]}.
+var R53_LOTE_ARTE_ = /*ARTE*/null, R53_LOTE_IMGS_ = /*IMGS*/null;
 
 function r53LoteCores_(nome) {
   var p = String(nome || '').trim().split(' · ');
@@ -186,4 +188,60 @@ function fixarBordasLote() {
   });
   if (pedidos.length) Sheets.Spreadsheets.batchUpdate({requests: pedidos}, id);
   console.log('BORDAS fim · ' + lados + ' lados pintados com #857F99 em ' + pedidos.length + ' blocos');
+}
+
+var R53_LOTE_CRC_ = null;
+function r53LoteCrc_(bytes, ini, fim) {
+  if (!R53_LOTE_CRC_) {
+    R53_LOTE_CRC_ = [];
+    for (var n = 0; n < 256; n++) {
+      var c = n;
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      R53_LOTE_CRC_.push(c >>> 0);
+    }
+  }
+  var crc = 0xFFFFFFFF;
+  for (var i = ini; i < fim; i++) crc = R53_LOTE_CRC_[(crc ^ bytes[i]) & 255] ^ (crc >>> 8);
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+
+/** Mesma conta do pngComCor_ (Codigo.gs): reescreve o bloco PLTE com uma cor só e refaz o CRC. Devolve base64. */
+function r53LotePng_(b64, hex) {
+  var bytes = Utilities.base64Decode(b64), sb = function (v) { return v > 127 ? v - 256 : v; };
+  var rgb = [parseInt(hex.substr(1, 2), 16), parseInt(hex.substr(3, 2), 16), parseInt(hex.substr(5, 2), 16)];
+  for (var pos = 8; pos + 12 <= bytes.length;) {
+    var len = ((bytes[pos] & 255) * 16777216) + ((bytes[pos + 1] & 255) << 16) + ((bytes[pos + 2] & 255) << 8) + (bytes[pos + 3] & 255);
+    if (String.fromCharCode(bytes[pos + 4] & 255, bytes[pos + 5] & 255, bytes[pos + 6] & 255, bytes[pos + 7] & 255) === 'PLTE') {
+      for (var i = 0; i < len; i++) bytes[pos + 8 + i] = sb(rgb[i % 3]);
+      var crc = r53LoteCrc_(bytes, pos + 4, pos + 8 + len);
+      for (var j = 0; j < 4; j++) bytes[pos + 8 + len + j] = sb((crc >>> (24 - 8 * j)) & 255);
+      return Utilities.base64Encode(bytes);
+    }
+    pos += 12 + len;
+  }
+  throw new Error('PNG sem bloco de paleta');
+}
+
+/**
+ * Rodar uma vez pelo editor (na base, antes de copiar): pinta a arte da ficha (pinceladas, moldura, gotinhas, selo)
+ * com o mesmo #857F99 da borda, e a troca de paleta deixa de mexer nela. Só a imagem com o título de alt PM-ARTE: é
+ * tocada; a foto do jogador fica como está.
+ */
+function fixarArteLote() {
+  var ss = SpreadsheetApp.getActive(), cor = '#857F99', feitas = 0;
+  Object.keys(R53_LOTE_IMGS_).forEach(function (nome) {
+    var sh = ss.getSheetByName(nome);
+    if (!sh) return;
+    R53_LOTE_IMGS_[nome].forEach(function (im) {
+      var cel = sh.getRange(im[0], im[1]), v = cel.getValue();
+      if (!v || v.valueType !== SpreadsheetApp.ValueType.IMAGE || String(v.getAltTextTitle()) !== 'PM-ARTE:' + im[2]) {
+        console.log('ARTE pulada ' + nome + ' ' + cel.getA1Notation() + ' (' + im[2] + ')');
+        return;
+      }
+      cel.setValue(SpreadsheetApp.newCellImage().setSourceUrl('data:image/png;base64,' + r53LotePng_(R53_LOTE_ARTE_[im[2]], cor))
+        .setAltTextTitle('PM-ARTE:' + im[2]).setAltTextDescription(cor).build());
+      feitas++;
+    });
+  });
+  console.log('ARTE fim · ' + feitas + ' imagens pintadas com ' + cor);
 }

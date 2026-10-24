@@ -57,3 +57,30 @@ const bd = JSON.parse(JSON.stringify(lotes[0].requests[0].updateCells.rows[0].va
 assert.deepStrictEqual(Object.keys(bd), ['top']); assert.strictEqual(bd.top.style, 'SOLID_MEDIUM');
 assert.strictEqual(Math.round(bd.top.colorStyle.rgbColor.red * 255), 0x85);
 console.log(JSON.stringify({bordas: 'OK'}));
+// Arte: a pincelada sai com o PLTE todo em #857F99 e o CRC certo; a imagem sem o título PM-ARTE: não é tocada.
+const zlib = require('zlib');
+ctx.Utilities = {base64Decode: s => Array.from(Buffer.from(s, 'base64')).map(b => b > 127 ? b - 256 : b),
+  base64Encode: a => Buffer.from(a.map(b => b & 255)).toString('base64')};
+const nomeArte = vm.runInContext('R53_LOTE_IMGS_.CARTEIRA[0][2]', ctx);
+const png = Buffer.from(vm.runInContext('r53LotePng_(R53_LOTE_ARTE_["' + nomeArte + '"], "#857F99")', ctx), 'base64');
+let pos = 8, achou = false;
+while (pos + 12 <= png.length) {
+  const len = png.readUInt32BE(pos), tipo = png.toString('latin1', pos + 4, pos + 8);
+  if (tipo === 'PLTE') {
+    for (let i = 0; i < len; i += 3) assert.deepStrictEqual([...png.subarray(pos + 8 + i, pos + 11 + i)], [0x85, 0x7F, 0x99]);
+    assert.strictEqual(png.readUInt32BE(pos + 8 + len), zlib.crc32(png.subarray(pos + 4, pos + 8 + len)));
+    achou = true;
+  }
+  pos += 12 + len;
+}
+assert(achou);
+const postas = [];
+const celula = titulo => ({getValue: () => ({valueType: 'IMG', getAltTextTitle: () => titulo}), setValue: v => postas.push(v), getA1Notation: () => 'X'});
+const shArte = {getRange: (r, c) => celula(r === 7 ? 'foto do jogador' : 'PM-ARTE:' + vm.runInContext('R53_LOTE_IMGS_.CARTEIRA', ctx).find(i => i[0] === r)[2])};
+const construtor = {setSourceUrl() { return this; }, setAltTextTitle() { return this; }, setAltTextDescription(d) { this.d = d; return this; }, build() { return this.d; }};
+ctx.SpreadsheetApp = {ValueType: {IMAGE: 'IMG'}, newCellImage: () => Object.create(construtor),
+  getActive: () => ({getSheetByName: n => n === 'CARTEIRA' ? shArte : null})};
+vm.runInContext('fixarArteLote()', ctx);
+assert.strictEqual(postas.length, vm.runInContext('R53_LOTE_IMGS_.CARTEIRA.length', ctx) - 1);
+assert(postas.every(d => d === '#857F99'));
+console.log(JSON.stringify({arte: 'OK', imagens_carteira: postas.length}));
