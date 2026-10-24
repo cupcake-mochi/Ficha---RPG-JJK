@@ -1,12 +1,40 @@
 /**
  * Fechamento do salário em lote, no acionador simples (teste em cópia descartável, 24/10/2026).
  *
- * Cópia sem rotina ativada não fecha o salário: a conferência leva ~80 s e o onEdit tem 30 s. Aqui a edição primeiro
+ * Cópia sem rotina ativada não fecha o salário: a conferência leva ~80 s e o onEdit tem 30 s. Depois da edição original,
  * compara hoje com o próximo fechamento guardado nas propriedades, sem ler a planilha. Vencido, lê uma vez só
  * DADOS_SALARIOS (missões carimbadas, estado e a coluna N, que junta por fórmula config, Grau, nome e livro), faz a
  * conta do salarioApurar_ na memória e grava tudo no fim. Mesma regra, mesmo bloqueio, mesma trava de período repetido.
  */
-var R53_SAL_PROP_ = 'salario_proximo', R53_SAL_LINHAS_ = 1000;
+var R53_SAL_PROP_ = 'salario_proximo', R53_SAL_REPARAR_ = 'salario_lote_reparar', R53_SAL_LINHAS_ = 1000;
+// O tempo das APIs não é previsível. Este limite só admite o início do lote;
+// a validação do onEdit inteiro no Google continua obrigatória antes da promoção.
+var R53_SAL_INICIAR_MS_ = 8000;
+
+/** A edição é entregue integralmente ao wrapper já instalado, com o evento original.
+ * Não há return do salário antes dos cartões/XP/paleta, nem replay desses efeitos.
+ * Se faltar orçamento, somente o salário aguarda uma nova edição. */
+function r53SalarioOnEdit_(e) {
+  var inicio = Date.now(), fase = 'edicao', edicaoMs, resultado;
+  try {
+    // Invalidar antes do processamento: uma edição de regra/Grau pode consumir
+    // todo o prazo, e o vencimento antigo não pode continuar escondendo a revisão.
+    try {
+      if (e && e.range && r53SalarioAreaPropria_(e.range))
+        PropertiesService.getDocumentProperties().deleteProperty(R53_SAL_PROP_);
+    } catch (err) { console.log('SAL invalidação: ' + err.message); }
+    resultado = r53OnEditOriginal_(e);
+    SpreadsheetApp.flush();
+    edicaoMs = Date.now() - inicio;
+    fase = 'salario';
+    if (edicaoMs < R53_SAL_INICIAR_MS_) r53SalarioLote_(e);
+    else console.log('SAL adiado: edição e flush consumiram ' + edicaoMs + ' ms');
+    fase = 'concluido';
+    return resultado;
+  } finally {
+    console.log('R53_ONEDIT ' + JSON.stringify({ms: Date.now() - inicio, edicaoMs: edicaoMs, fase: fase}));
+  }
+}
 // Coluna N de DADOS_SALARIOS, linha a linha a partir da 2.
 var R53_SAL_FORMULAS_ = [
   ["Emissão", "='CONFIGURAÇÃO'!O38"], ["Salário automático", "='CONFIGURAÇÃO'!O40"],
@@ -44,7 +72,7 @@ function r53SalarioAreaPropria_(r) {
     || n === 'CARTEIRA' && (salarioToca_(r, 3, 3, 46, 46) || salarioToca_(r, 9, 15, 15, 45));
 }
 
-/** Chamado no início do onEdit. Devolve true só quando fechou e já gastou mais de 12 s (o resto fica para a próxima edição). */
+/** Chamado depois da edição original e seu flush. Nunca cancela a edição. */
 function r53SalarioLote_(e) {
   if (!e || !e.range) return false;
   var t0 = Date.now(), r = e.range, props = PropertiesService.getDocumentProperties();
@@ -52,19 +80,36 @@ function r53SalarioLote_(e) {
   if (r53SalarioAreaPropria_(r)) { props.deleteProperty(R53_SAL_PROP_); return false; }
   if (PropertiesService.getScriptProperties().getProperty('salario_edicao') === ScriptApp.getScriptId()) return false;
   var hoje = salarioHoje_(), proximo = Number(props.getProperty(R53_SAL_PROP_));
-  if (proximo && hoje < proximo) return false;
+  if (proximo && hoje < proximo && !props.getProperty(R53_SAL_REPARAR_)) return false;
   var ss = e.source || SpreadsheetApp.getActive();
   var marca = function (o) { console.log('SAL ' + o + ' ' + (Date.now() - t0) + ' ms'); };
   marca('início');
-  var feito = salarioBloqueado_(ss, function () {
-    try { return r53SalarioFechar_(ss, hoje, props, marca); }
-    catch (err) { salarioStatus_(ss, '⚠ ' + err.message); console.log('Salários: ' + err.message); return false; }
-  }, 1500);
-  marca('flush (fim)');
-  return !!feito && Date.now() - t0 > 12000;
+  var lock = LockService.getDocumentLock();
+  if (!lock.tryLock(1500)) return false;
+  try {
+    // Outra edição pode ter fechado enquanto esta esperava o bloqueio.
+    proximo = Number(props.getProperty(R53_SAL_PROP_));
+    if (proximo && hoje < proximo && !props.getProperty(R53_SAL_REPARAR_)) return false;
+    var feito = r53SalarioFechar_(ss, hoje, props, marca);
+    SpreadsheetApp.flush();
+    marca('flush confirmado');
+    // A propriedade só permite pular leituras depois de confirmar livro, estado e painel.
+    props.setProperty(R53_SAL_PROP_, String(feito.proximo));
+    props.deleteProperty(R53_SAL_REPARAR_);
+    return feito.novos > 0;
+  } catch (err) {
+    props.deleteProperty(R53_SAL_PROP_);
+    console.log('Salários: ' + err.message);
+    // Um setter pode falhar depois de enfileirar o livro. Tenta concluir essa
+    // fila ainda sob lock; a marca de reparação continua mesmo se este flush passar.
+    try { SpreadsheetApp.flush(); }
+    catch (flushErr) { console.log('Salários: flush de recuperação falhou: ' + flushErr.message); }
+    // Não escreve um status após falha: criaria novas escritas não confirmadas.
+    return false;
+  } finally { lock.releaseLock(); }
 }
 
-/** A conta do salarioApurar_ sobre uma leitura só. Sem leituras depois desta: tudo o que segue fica na fila. */
+/** A conta do salarioApurar_ sobre uma leitura só; a recuperação relê também o livro persistido. */
 function r53SalarioFechar_(ss, hoje, props, marca) {
   var dados = ss.getSheetByName(SALARIO_.dados), v = dados.getRange(1, 1, R53_SAL_LINHAS_, 14).getValues();
   marca('leitura');
@@ -81,6 +126,19 @@ function r53SalarioFechar_(ss, hoje, props, marca) {
   var nPagos = Number(n(20)) || 0, linhasLivro = Number(n(21)) || 0, ultimoFim = salarioDia_(n(22));
   var pagos = {};
   String(n(23) || '').split('|').forEach(function (id) { if (id) pagos[id] = true; });
+  var reparar = !!props.getProperty(R53_SAL_REPARAR_), livro = ss.getSheetByName(SALARIO_.livro);
+  if (reparar) {
+    // Não confia no resumo por fórmulas após uma resposta de escrita incerta.
+    // O livro efetivamente persistido é a autoridade, mesmo com L2/painel adiantados.
+    var ultimaLinha = livro.getLastRow(), linhas = ultimaLinha > 1 ? livro.getRange(2, 1, ultimaLinha - 1, 12).getValues() : [];
+    pagos = {}; nPagos = 0; ultimoFim = NaN; linhasLivro = livro.getMaxRows();
+    linhas.forEach(function (l) {
+      if (!l[0] || pagos[l[0]] || !isFinite(salarioDia_(l[2])) || typeof l[9] !== 'number' || !isFinite(l[9]))
+        throw Error('Livro de salários incompleto ou repetido; preserve o histórico e revise antes de continuar.');
+      pagos[l[0]] = true; nPagos++; ultimoFim = salarioDia_(l[2]);
+    });
+    marca('livro relido para recuperação');
+  }
   var estado = v[1][11] ? JSON.parse(v[1][11]) : {};
   var missoes = v.slice(1).filter(function (l) { return l[0]; });
 
@@ -104,22 +162,28 @@ function r53SalarioFechar_(ss, hoje, props, marca) {
   marca('calculado (' + novos.length + ' fechamentos)');
   // Nada vencido (pausado, sem nome ou primeira edição numa cópia sem a data guardada): só guarda quando olhar de
   // novo, sem gravar na planilha. Nomear o personagem ou mexer na configuração apaga essa data (área própria).
-  if (!novos.length) {
-    props.setProperty(R53_SAL_PROP_, String(c.ligado && personagem ? Math.max(inicio + c.dias, hoje + 1) : hoje + 1));
-    return false;
+  if (!novos.length && !reparar) {
+    return {novos: 0, proximo: c.ligado && personagem ? Math.max(inicio + c.dias, hoje + 1) : hoje + 1};
   }
-  var livro = ss.getSheetByName(SALARIO_.livro), at = nPagos + 2;
-  if (linhasLivro < at + novos.length - 1) livro.insertRowsAfter(linhasLivro, at + novos.length - 1 - linhasLivro);
-  livro.getRange(at, 1, novos.length, 12).setValues(novos);
+  // Persistida ANTES da primeira escrita. Sobrevive a exceção/timeout, incluindo
+  // livro gravado com falha posterior no estado, painel ou flush.
+  props.setProperty(R53_SAL_REPARAR_, '1');
+  if (novos.length) {
+    var at = nPagos + 2;
+    if (linhasLivro < at + novos.length - 1) livro.insertRowsAfter(linhasLivro, at + novos.length - 1 - linhasLivro);
+    livro.getRange(at, 1, novos.length, 12).setValues(novos);
+  }
   estado.inicio = inicio; estado.ultimaEmissao = c.emissao;
   dados.getRange('L2').setValue(JSON.stringify(estado));
   var cfg = ss.getSheetByName(SALARIO_.config), p = salarioPontos_(missoes, inicio, inicio + c.dias, c.pesos);
   cfg.getRange('O48').setValue(salarioData_(inicio + c.dias));
   cfg.getRange('O69:O72').setValues([[salarioData_(inicio)], [p],
     [Object.prototype.hasOwnProperty.call(c.bases, grau) ? salarioValor_(c.bases[grau], p, c.meta, c.minimo, c.verifica) : 'Grau inválido'],
-    [salarioData_(inicio)]]);
-  salarioStatus_(ss, 'Em dia · próximo fechamento ' + salarioTextoDia_(inicio + c.dias));
-  props.setProperty(R53_SAL_PROP_, String(inicio + c.dias));
+    [novos.length ? salarioData_(inicio) : nPagos ? salarioData_(ultimoFim) : 'Nenhum']]);
+  salarioStatus_(ss, !c.ligado ? 'Salário pausado; períodos pendentes serão apurados ao religar.' :
+    !personagem ? 'Aguardando o nome do personagem na CARTEIRA.' :
+    inicio + c.dias <= hoje ? 'Há períodos pendentes; confira salários novamente.' :
+    'Em dia · próximo fechamento ' + salarioTextoDia_(inicio + c.dias));
   marca('gravações enfileiradas');
-  return true;
+  return {novos: novos.length, proximo: c.ligado && personagem ? inicio + c.dias : hoje + 1};
 }

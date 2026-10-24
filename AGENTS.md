@@ -1,3 +1,21 @@
+# Revisão salarial · 24/10/2026
+
+Continuar em `codex/otimizacao-android-r53`, base `27d848f`; não usar main.
+Leia `r53/diagnostico-android/SALARIO-PLANO-2026-10-24.md` e
+`SALARIO-INTEGRACAO-2026-10-24.md` na mesma pasta. Registro `a353fc2`
+do Claude conferido/incorporado ao plano. Cores resolvidas; não reabrir essa frente.
+Correção LOCAL: edição original antes do salário, admissão do lote até 8 s,
+marca durável de reparação antes das escritas e cache somente após flush.
+28 cenários da integração, 112 verificações salariais e smoke aprovados.
+Ainda NÃO aplicado nem medido no Google: os três endpoints Google solicitados
+retornaram 403 pelo proxy, mesmo com rede habilitada no comando. Clasp 3.4.1
+instalado em `nuvem-b47/saidas/clasp/`, ignorada; login não iniciado.
+Sem alterações nativas, acionadores ou acessos. Antes da definitiva A (1427…):
+snapshot atual, ensaio/recuperação em cópia, medição do onEdit inteiro e releitura.
+Nunca construir/continuar em preenchida. Sem agentes extras nem merge em main.
+Próxima ação integrada: GPT-6.1/High para ensaio nativo e interpretação dos tempos;
+Medium para conferir documentação. Não alterar configurações automaticamente.
+
 # Aplicação da fila nas candidatas Android · 23/10/2026 (noite)
 
 Leia primeiro `r53/diagnostico-android/APLICACAO-FILA-2026-10-23.json`.
