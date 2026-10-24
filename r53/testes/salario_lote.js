@@ -334,12 +334,38 @@ let casos = 0;
   }
   // Desmarcar não faz nada.
   r = emitir({}, 'CARTEIRA', 'AT3', 3, 46, 'TRUE', 'FALSE'); assert.strictEqual(r.a.escritas.length, 0);
-  // Digitar uma data em O38: a fórmula volta, N2 não muda.
-  r = emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '', '01/01/2026');
-  assert.strictEqual(r.r, true); assert.deepStrictEqual(r.n2, []); assert(/^=IF\(ISNUMBER\('DADOS_SALARIOS'!N2\)/.test(r.o38[0]));
+  // Corrigir a data em O38: a fórmula volta sempre; data válida vai para N2.
+  r = emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '', '24/10/2026');
+  assert.strictEqual(r.r, true); assert.deepStrictEqual(r.n2, ['2026-10-24']); assert(/^=IF\(ISNUMBER\('DADOS_SALARIOS'!N2\)/.test(r.o38[0]));
+  assert.strictEqual(r.a.livro().length, 0, 'sem emissão anterior: nada a congelar');
+  assert.deepStrictEqual(emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '', '46319').n2, ['2026-10-24'], 'número de série');
+  // Sem emissão, data passada não vale: seria salário retroativo.
+  r = emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '', '15/10/2026'); assert.deepStrictEqual(r.n2, []);
+  assert.strictEqual(r.o46.pop(), '⚠ A emissão só pode ir para frente: use 24/10/2026 ou depois.');
+  r = emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '', '30/10/2026'); assert.deepStrictEqual(r.n2, []); assert.strictEqual(r.o46.pop(), '⚠ A emissão não pode ser depois de hoje.');
+  r = emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '', 'ontem'); assert.deepStrictEqual(r.n2, []); assert(/^⚠ Data de emissão inválida/.test(r.o46.pop()));
+  r = emitir({}, 'CONFIGURAÇÃO', 'O38', 38, 15, '20/10/2026', undefined); assert.deepStrictEqual(r.n2, []); assert.strictEqual(r.o38.length, 1);
+  assert(!r.o46.some(t => /^⚠/.test(t)), 'apagar só devolve a fórmula');
+  {
+    // Já emitida: congela o vencido antes, registra a troca e grava a data nova.
+    const a = ambiente(); a.put('DADOS_SALARIOS', 'N2', 46315); a.props.salario_proximo = '99999';
+    a.ctx.salarioEditar_(a.evento('CONFIGURAÇÃO', 'O38', 38, 15, '20/10/2026', '22/10/2026'));
+    const ordem = a.escritas.map(e => e[0] === 'SALÁRIOS' ? 'livro' : e[1]).filter(k => ['livro', 'N2'].includes(k) || /,8$/.test(k));
+    assert.deepStrictEqual(ordem, ['livro', '2,8', 'N2'], 'livro antes da troca e da data');
+    assert.deepStrictEqual(JSON.parse(JSON.stringify(a.escritas.find(e => e[1] === '2,8')[2][0].slice(1))), ['emissão', 46315]);
+    assert.strictEqual(a.escritas.find(e => e[1] === 'N2')[2].toISOString().slice(0, 10), '2026-10-22');
+    assert.strictEqual(a.props.salario_proximo, undefined);
+  }
+  {
+    // Já emitida: voltar a data é recusado sem congelar nem gravar nada.
+    const a = ambiente(); a.put('DADOS_SALARIOS', 'N2', 46315);
+    a.ctx.salarioEditar_(a.evento('CONFIGURAÇÃO', 'O38', 38, 15, '20/10/2026', '01/08/2026'));
+    assert.strictEqual(a.livro().length, 0); assert(!a.escritas.some(e => e[1] === 'N2' || /,8$/.test(e[1])));
+    assert.strictEqual(a.escritas.filter(e => e[1] === 'O46').pop()[2], '⚠ A emissão só pode ir para frente: use 20/10/2026 ou depois.');
+  }
   // Escrever o nome não emite.
   r = emitir({}, 'CARTEIRA', 'O9', 9, 15, 'Coloque o nome do personagem aqui', 'Yuji'); assert.deepStrictEqual(r.n2, []); assert.deepStrictEqual(r.o38, []);
-  casos += 12;
+  casos += 28;
 }
 {
   // Congelar: Q2 chega como Date; sem emissão (Q2 vazio) não lê de novo até amanhã.

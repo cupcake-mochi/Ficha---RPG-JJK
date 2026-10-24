@@ -480,23 +480,45 @@ function salarioCorrigirData_(ss,r,e) {
   return true;
 }
 /** Emissão (24/10/2026): o salário só conta depois de emitir a carteira, uma vez, pela caixa EMITIR (CARTEIRA!AT3 ou
- * CONFIGURAÇÃO!O39). A data fica em DADOS_SALARIOS!N2, que só o script grava; O38 e a CARTEIRA só mostram. Assim a
- * cópia de uma ficha nova não herda emissão, e mexer na data não cria nem apaga períodos. Reemitir só pelo menu. */
+ * CONFIGURAÇÃO!O39). A data fica em DADOS_SALARIOS!N2, que só o script grava; O38 mostra e aceita correção
+ * (salarioMudarEmissao_), e a CARTEIRA só mostra. A cópia de uma ficha nova não herda emissão, e corrigir a data não
+ * paga de novo nem apaga o que já venceu. */
 SALARIO_.f.emissao = "=IF(ISNUMBER('DADOS_SALARIOS'!N2);'DADOS_SALARIOS'!N2;\"\")";
 SALARIO_.f.carteira = "=IF(ISNUMBER('CONFIGURAÇÃO'!O38);\"Emitida \"&TEXT('CONFIGURAÇÃO'!O38;\"dd.mm.yyyy\");\"Não emitida · marque ao lado\")";
 SALARIO_.nomeExemplo = 'Coloque o nome do personagem aqui';
 function salarioEmitir_(ss,r,e,emitir) {
   var cfg=ss.getSheetByName(SALARIO_.config);
-  if(!emitir&&r.getRow()<=38){salarioBloqueado_(ss,function(){cfg.getRange('O38').setFormula(SALARIO_.f.emissao);},1500);if(r.getLastRow()<39)return true;}
+  if(!emitir&&r.getRow()<=38){salarioMudarEmissao_(ss,cfg,e.value!==undefined?e.value:cfg.getRange('O38').getValue());if(r.getLastRow()<39)return true;}
   var marcado=e.value!==undefined?String(e.value).toUpperCase()==='TRUE':(emitir?r:cfg.getRange('O39')).getValue()===true;
   if(!marcado)return true;
   salarioBloqueado_(ss,function(){
     var c=ss.getSheetByName(SALARIO_.dados).getRange('N2'),ja=salarioDia_(c.getValue());
     cfg.getRange('O39').setValue(false);ss.getSheetByName('CARTEIRA').getRange('AT3').setValue(false);
-    if(isFinite(ja))return salarioStatus_(ss,'⚠ Carteira já emitida em '+salarioTextoDia_(ja)+'. Para reemitir, use Salários › Reemitir carteira hoje, no PC.');
+    if(isFinite(ja))return salarioStatus_(ss,'⚠ Carteira já emitida em '+salarioTextoDia_(ja)+'. Para corrigir, escreva a data certa em O38.');
     c.setValue(salarioData_(salarioHoje_()));salarioStatus_(ss,'');
   },1500);
   return true;
+}
+/** Data digitada em O38 (corrigir a emissão, também no celular). Só para frente e até hoje: nunca cria período.
+ * Antes de trocar, os períodos vencidos vão para o livro, então o que já venceu fica pago; o ciclo aberto recomeça na
+ * data nova. A troca fica registrada em H:J ('emissão', data anterior). A fórmula de O38 volta em qualquer caso. */
+function salarioMudarEmissao_(ss,cfg,bruto) {
+  var t=typeof bruto==='string'&&/^\d+(\.\d+)?$/.test(bruto.trim())?Math.floor(Number(bruto)):bruto;
+  var dia=salarioDataDigitada_(t),hoje=salarioHoje_();
+  salarioBloqueado_(ss,function(){
+    cfg.getRange('O38').setFormula(SALARIO_.f.emissao);
+    if(bruto===''||bruto===null||bruto===undefined)return;
+    if(!isFinite(dia))return salarioStatus_(ss,'⚠ Data de emissão inválida: use dd/mm/aaaa.');
+    if(dia>hoje)return salarioStatus_(ss,'⚠ A emissão não pode ser depois de hoje.');
+    var c=ss.getSheetByName(SALARIO_.dados).getRange('N2'),antes=salarioDia_(c.getValue());
+    // Só para frente: voltar a data criaria períodos que ninguém trabalhou. Sem emissão, a primeira é a de hoje.
+    var minimo=isFinite(antes)?antes:hoje;
+    if(dia<minimo)return salarioStatus_(ss,'⚠ A emissão só pode ir para frente: use '+salarioTextoDia_(minimo)+' ou depois.');
+    if(antes===dia)return;
+    if(isFinite(antes)){salarioCongelar_(ss,hoje);salarioRegistrarTroca_(ss,'emissão',{oldValue:antes,value:dia});}
+    c.setValue(salarioData_(dia));
+    PropertiesService.getDocumentProperties().deleteProperty('salario_proximo');salarioStatus_(ss,'');
+  },1500);
 }
 /** Menu, no PC: congela os períodos vencidos no livro e recomeça o ciclo hoje. */
 function reemitirCarteira() {
@@ -519,9 +541,9 @@ function salarioPrepararEmissao_(ss) {
   d.getRange('N2').setValue(nome!==''&&nome!==SALARIO_.nomeExemplo&&isFinite(em)?salarioData_(em):'');
   d.getRange('N2').setNumberFormat('dd/mm/yyyy');
   cfg.getRange('O38').clearDataValidations().setFormula(SALARIO_.f.emissao)
-    .setNote('Mostra a data gravada ao marcar EMITIR. Escrever aqui não muda nada: a data volta. Reemitir: menu Salários › Reemitir carteira hoje, no PC.');
+    .setNote('Data de emissão. Para corrigir, escreva a data certa (dd/mm/aaaa), entre a emissão atual e hoje. Os salários já vencidos ficam pagos; o ciclo aberto recomeça na data nova. A troca fica registrada.');
   cfg.getRange('O39').setNote('Emite a carteira hoje, uma vez só. O salário começa a contar a partir daí.');
-  cfg.getRange('K36').setValue('O salário só conta depois de emitir. Com a ficha pronta, marque EMITIR na CARTEIRA ou abaixo (uma vez só).');
+  cfg.getRange('K36').setValue('O salário só conta depois de emitir. Com a ficha pronta, marque EMITIR na CARTEIRA ou abaixo. Para corrigir a data, escreva em O38.');
   carteira.getRange('AH3').setFormula(SALARIO_.f.carteira);
   carteira.getRange('AT3').setNote('EMITIR: grava a data de hoje, uma vez só. O salário começa a contar a partir daí.');
   return true;

@@ -82,11 +82,14 @@ Valem estas regras e não as de O38 descritas acima:
 
 - O salário só conta depois de **EMITIR**: o checkbox CARTEIRA!AT3 (ou CONFIGURAÇÃO!O39) grava o dia de hoje em
   DADOS_SALARIOS!N2, uma vez só. Sem emissão a CARTEIRA mostra "Não emitida · marque ao lado" e o painel avisa.
-- O38 e "Emitida dd.mm.aaaa" só mostram N2. Digitar uma data em O38 não muda nada: a fórmula volta na hora.
+- O38 mostra N2 e aceita correção (também no celular): escreva a data certa em dd/mm/aaaa. Ela só pode ir para frente,
+  entre a emissão atual e hoje; sem emissão, só vale a de hoje. Antes da troca, os períodos vencidos vão para o livro
+  (ficam pagos) e o ciclo aberto recomeça na data nova. A troca fica registrada em DADOS_SALARIOS!H:J ("emissão",
+  data anterior). Data inválida, futura ou para trás é recusada com aviso no painel; a fórmula de O38 volta sempre.
+  Resultado: corrigir a data nunca dá dinheiro a mais e nunca tira o que já venceu.
 - Marcar EMITIR de novo numa ficha já emitida não muda a data; o painel avisa e a caixa desmarca.
-- Reemitir só pelo menu **Salários › Reemitir carteira hoje…**, no PC: congela no livro os períodos vencidos e recomeça
-  o ciclo hoje (as participações do ciclo aberto deixam de contar).
+- No PC, o menu **Salários › Reemitir carteira hoje…** faz o mesmo que escrever a data de hoje em O38.
 - A cópia da ficha base vem sem emissão, então ninguém recebe salário retroativo ao copiar.
 
 Texto para guias e bot: "Terminou a ficha? Escreva o nome do personagem na CARTEIRA e marque EMITIR, ao lado de
-'Não emitida'. O salário só começa a contar a partir desse dia, e a emissão é uma vez só."
+'Não emitida'. O salário só começa a contar a partir desse dia. Se marcar no dia errado, corrija a data de emissão em CONFIGURAÇÃO (só dá para adiantar)."
