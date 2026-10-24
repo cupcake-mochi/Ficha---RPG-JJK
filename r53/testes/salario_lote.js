@@ -109,8 +109,9 @@ let casos = 0;
   a.ctx.salarioEditar_(a.evento('FICHA PESSOAL', 'AB11', 11, 28, 'Grau 4', 'Grau 3'));
   a.ctx.salarioEditar_(a.evento('CONFIGURAÇÃO', 'O43', 43, 15, '0.25', '0.5'));
   a.ctx.salarioEditar_(a.evento('CONFIGURAÇÃO', 'O44', 44, 15, 'TRUE', 'FALSE'));
-  const t = JSON.parse(JSON.stringify(a.escritas.filter(e => e[0] === 'DADOS_SALARIOS' && e[1] === '4,8').map(e => e[2][0])));
-  assert.deepStrictEqual(t, [[a.hoje, 'peso:Curta', 1], [a.hoje, 'Grau', 'Grau 4'], [a.hoje, 'minimo', 0.25], [a.hoje, 'verifica', true]]);
+  const t = JSON.parse(JSON.stringify(a.escritas.filter(e => e[0] === 'DADOS_SALARIOS' && /,8$/.test(e[1])).map(e => [e[1]].concat(e[2][0]))));
+  assert.deepStrictEqual(t, [['4,8', a.hoje, 'peso:Curta', 1], ['5,8', a.hoje, 'Grau', 'Grau 4'], ['6,8', a.hoje, 'minimo', 0.25], ['7,8', a.hoje, 'verifica', true]]);
+  assert.strictEqual(a.props.salario_trocas, '6'); assert.strictEqual(a.leituras(), 1, 'só a primeira troca lê a contagem');
   assert(!a.chamadas.includes('sincronizar'), 'Grau não relê as missões');
   casos += 2;
 }

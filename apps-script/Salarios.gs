@@ -160,10 +160,11 @@ function salarioEditar_(e) {
   if(!ss.getSheetByName(SALARIO_.dados))return false;
   salarioBloqueado_(ss,function(){
     try {
-      var cfg=ss.getSheetByName(SALARIO_.config),st=salarioEstado_(ss);
-      if(total)salarioLigacoes_(ss);
+      // A troca vai antes de qualquer leitura: até ela chegar, a fórmula paga o passado com o valor novo.
       var chave=SALARIO_.formula&&salarioChaveTroca_(r,n);
       if(chave){salarioRegistrarTroca_(ss,chave,e);return;}
+      var cfg=ss.getSheetByName(SALARIO_.config),st=salarioEstado_(ss);
+      if(total)salarioLigacoes_(ss);
       var controle=(config&&salarioToca_(r,39,39,15,17))||emitir;
       var reemitido=controle&&(e.value!==undefined?String(e.value).toUpperCase()==='TRUE':(emitir?r.getSheet().getRange('AT3'):cfg.getRange('O39')).getValue()===true);
       if(reemitido){
@@ -315,9 +316,13 @@ function salarioValorTroca_(chave,v) {
 function salarioRegistrarTroca_(ss,chave,e) {
   var antes=salarioValorTroca_(chave,e.oldValue),agora=salarioValorTroca_(chave,e.value);
   if(antes===undefined||antes===agora)return false;
-  var sh=ss.getSheetByName(SALARIO_.dados),n=Number(sh.getRange('Q5').getValue())||0;
-  if(sh.getMaxRows()<n+2)sh.insertRowsAfter(sh.getMaxRows(),n+2-sh.getMaxRows());
+  // A contagem fica nas propriedades para não esperar uma leitura (3–5 s nesta ficha). Numa cópia ela não vem
+  // junto: aí lê Q5 (=COUNTA de H) uma vez. A linha de cada troca é gravada sozinha, e o flush vem logo depois.
+  var props=PropertiesService.getDocumentProperties(),guardado=props.getProperty('salario_trocas'),sh=ss.getSheetByName(SALARIO_.dados);
+  var n=guardado!==null&&guardado!==''?Number(guardado):Number(sh.getRange('Q5').getValue())||0;
   sh.getRange(n+2,8,1,3).setValues([[salarioHoje_(),chave,antes]]);
+  SpreadsheetApp.flush();
+  props.setProperty('salario_trocas',String(n+1));
   return true;
 }
 /** Copia para o livro os períodos que a fórmula já calcula. Uma leitura; a fórmula recomeça no fim do livro. */
