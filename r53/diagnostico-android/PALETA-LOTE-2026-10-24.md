@@ -45,5 +45,8 @@ Se o layout de uma aba mudar, rode `mapearLote()` de novo.
 - Ainda não aplicado na base nem na original. Antes: conferir que o `onOpen` não chama mais a paleta antiga
   (`paleta_pendente` / `r53PaletaLeve_().continuar`), que repintaria a arte e as bordas.
 - Barras: o lote grava a cor em `DADOS!CZ51`, que as fórmulas de SPARKLINE leem.
+- INVOCAÇÕES: o Mizuki pediu uma caixa explicando que as fichas 2–6 e 8–12 abrem pelo + da lateral (no Android, se
+  a lateral estiver recolhida, o + vira um pontinho; tocar no « do canto). A caixa é nova: depois de criá-la, rodar
+  `mapearLote()` de novo para ela entrar na troca de cores.
 - INVOCAÇÕES: os grupos de linha terminam antes do fim de cada bloco (ex.: grupo até 227, bloco até 238), então
   sobra o rodapé visível com o grupo fechado. Já vem da montagem; o Mizuki preferiu não mexer agora.
