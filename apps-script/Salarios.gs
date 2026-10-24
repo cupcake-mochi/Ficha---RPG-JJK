@@ -542,10 +542,10 @@ function salarioPrepararEmissao_(ss) {
   d.getRange('N2').setNumberFormat('dd/mm/yyyy');
   cfg.getRange('O38').clearDataValidations().setFormula(SALARIO_.f.emissao)
     .setNote('Data de emissão. Para corrigir, escreva a data certa (dd/mm/aaaa), entre a emissão atual e hoje. Os salários já vencidos ficam pagos; o ciclo aberto recomeça na data nova. A troca fica registrada.');
-  cfg.getRange('O39').setNote('Emite a carteira hoje, uma vez só. O salário começa a contar a partir daí.');
+  cfg.getRange('O39').setNote('Emite a carteira hoje e o salário começa a contar a partir daí. Para corrigir depois, escreva a data em O38.');
   cfg.getRange('K36').setValue('O salário só conta depois de emitir. Com a ficha pronta, marque EMITIR na CARTEIRA ou abaixo. Para corrigir a data, escreva em O38.');
   carteira.getRange('AH3').setFormula(SALARIO_.f.carteira);
-  carteira.getRange('AT3').setNote('EMITIR: grava a data de hoje, uma vez só. O salário começa a contar a partir daí.');
+  carteira.getRange('AT3').setNote('EMITIR: grava a data de hoje e o salário começa a contar a partir daí. Para corrigir depois, use a Data de emissão em CONFIGURAÇÃO.');
   return true;
 }
 // FIM DO SALÁRIO POR FÓRMULA
