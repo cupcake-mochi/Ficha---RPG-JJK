@@ -19,16 +19,29 @@ const fundos = [[h(A.fundo), h(A.acento), '#123456'], [h(A.fundo), h(A.painel), 
 const letras = [[h(A.texto), h(A.osso_por_papel.acento), '#123456'], [h(A.texto), h(A.linha), h(A.texto)]];
 let mapaGravado = null;
 const aba = nome => ({getMaxRows: () => 2, getMaxColumns: () => 3,
-  getRange: () => ({getBackgrounds: () => (ordem.push('ler'), fundos), getFontColors: () => letras}),
+  getName: () => nome,
+  getRange: (r, c) => ({getBackgrounds: () => (ordem.push('ler'), fundos), getFontColors: () => letras, getA1Notation: () => 'A1:C2',
+    setValue: v => { grav[nome + ' img ' + r + ',' + c] = v; }}),
   getRangeList: lista => ({setBackground: c => { ordem.push('gravar'); lista.forEach(a => grav[nome + ' b ' + a] = c); },
-                           setFontColor: c => { lista.forEach(a => grav[nome + ' f ' + a] = c); }})});
+                           setFontColor: c => { lista.forEach(a => grav[nome + ' f ' + a] = c); },
+                           setBorder: (t, l, b, r, v, h, c, e) => { lista.forEach(a => grav[nome + ' r ' + [t, l, b, r].map(x => x ? 1 : 0).join('') + ' ' + a] = c + ' ' + e); }})});
 const mapaAba = {getRange: () => ({setNumberFormat() { return this; }, setValues: v => { mapaGravado = v; },
   getValues: () => (ordem.push('ler mapa'), mapaGravado)}), hideSheet() {}};
 let temMapa = false;
 const ss = {getSheetByName: n => n === 'DADOS' ? {getRange: () => ({setValue: v => { grav.barra = v; }})}
   : n === 'R53_LOTE' ? (temMapa ? mapaAba : null) : n === 'CARTEIRA' ? aba(n) : null,
   insertSheet: () => (temMapa = true, mapaAba)};
-ctx.SpreadsheetApp = {getActive: () => ss, flush: () => ordem.push('flush')};
+// Bordas: topo nas duas primeiras células da linha 1 (um trecho só), esquerda em A1 e A2 (um trecho de coluna).
+const sol = {style: 'SOLID_MEDIUM'};
+ctx.Sheets = {Spreadsheets: {get: () => ({sheets: [{data: [{rowData: [
+  {values: [{userEnteredFormat: {borders: {top: sol, left: sol}}}, {userEnteredFormat: {borders: {top: sol}}}, {}]},
+  {values: [{userEnteredFormat: {borders: {left: sol}}}, {}, {}]}]}]}]})}};
+ctx.Utilities = {base64Decode: s => Array.from(Buffer.from(s, 'base64')).map(b => b > 127 ? b - 256 : b),
+  base64Encode: a => Buffer.from(a.map(b => b & 255)).toString('base64')};
+const construtor0 = {setSourceUrl() { return this; }, setAltTextTitle() { return this; }, setAltTextDescription(d) { this.d = d; return this; }, build() { return this.d; }};
+ctx.SpreadsheetApp = {getActive: () => ss, flush: () => ordem.push('flush'), BorderStyle: {SOLID_MEDIUM: 'SM'},
+  newCellImage: () => Object.create(construtor0)};
+ss.getId = () => 'x';
 vm.runInContext('mapearLote()', ctx);
 const mapa = JSON.parse(mapaGravado.map(l => l[0]).join(''));
 assert.strictEqual(mapa.paleta.split(' · ')[0], 'Blush');
@@ -43,6 +56,11 @@ assert(!Object.keys(grav).some(k => k.endsWith(' C1')));
 assert.strictEqual(grav['CARTEIRA f B1'], '#' + N.osso_por_papel.acento);
 assert.strictEqual(grav['CARTEIRA f B2'], '#' + N.linha);
 assert.strictEqual(grav.barra, '#' + N.barra);
+assert.strictEqual(grav['CARTEIRA r 1000 A1:B1'], '#' + N.regua + ' SM');
+assert.strictEqual(grav['CARTEIRA r 0100 A1:A2'], '#' + N.regua + ' SM');
+assert.strictEqual(Object.keys(grav).filter(k => k.includes(' r ')).length, 2);
+const cantos = vm.runInContext('R53_LOTE_IMGS_.CARTEIRA', ctx).filter(i => /canto/.test(i[2]));
+assert(cantos.length === 2 && cantos.every(i => grav['CARTEIRA img ' + i[0] + ',' + i[1]] === '#' + N.regua.toUpperCase()));
 console.log(JSON.stringify({resultado: 'OK', limite: 'VM com serviços simulados; não mede o Sheets nem o Android.'}));
 // Bordas: toda borda vira #857F99 com o mesmo estilo; lado sem borda fica de fora; um batchUpdate só.
 const lotes = [];

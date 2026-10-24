@@ -88,7 +88,49 @@ function r53LoteChaves_(antes, fundos, letras) {
   return {b: b, f: f};
 }
 
-/** Rodar uma vez pelo editor (na base, antes de copiar): grava o mapa de papéis na aba oculta R53_LOTE. */
+/**
+ * Bordas da aba por lado e estilo, em faixas que setBorder pinta só por fora: topo e base em trechos de uma linha,
+ * esquerda e direita em trechos de uma coluna (numa faixa mais alta, setBorder(top) pintaria só a primeira linha).
+ * Lê pela API do Sheets, porque o SpreadsheetApp não lê borda. Chave: "lado|ESTILO".
+ */
+function r53LoteMapaBordas_(ss, sh) {
+  var nl = sh.getMaxRows(), nc = sh.getMaxColumns(), BLOCO = 120, lados = ['top', 'bottom', 'left', 'right'], grade = {};
+  lados.forEach(function (l) { grade[l] = []; });
+  for (var r0 = 0; r0 < nl; r0 += BLOCO) {
+    var r1 = Math.min(nl, r0 + BLOCO), a1 = "'" + sh.getName() + "'!" + sh.getRange(r0 + 1, 1, r1 - r0, nc).getA1Notation();
+    var resp = Sheets.Spreadsheets.get(ss.getId(), {ranges: [a1], fields: 'sheets.data.rowData.values.userEnteredFormat.borders'});
+    var linhas = ((((resp.sheets || [])[0] || {}).data || [])[0] || {}).rowData || [];
+    for (var i = 0; i < r1 - r0; i++) {
+      var vals = (linhas[i] && linhas[i].values) || [];
+      lados.forEach(function (l) { grade[l].push([]); });
+      for (var c = 0; c < nc; c++) {
+        var b = vals[c] && vals[c].userEnteredFormat && vals[c].userEnteredFormat.borders;
+        lados.forEach(function (l) {
+          var x = b && b[l];
+          grade[l][r0 + i].push(x && x.style && x.style !== 'NONE' ? l + '|' + x.style : null);
+        });
+      }
+    }
+  }
+  var saida = {};
+  lados.forEach(function (l) {
+    var vertical = l === 'left' || l === 'right', g = grade[l];
+    var nA = vertical ? nc : nl, nB = vertical ? nl : nc;
+    for (var a = 0; a < nA; a++) {
+      for (var b = 0; b < nB; b++) {
+        var v = vertical ? g[b][a] : g[a][b];
+        if (!v) continue;
+        var b0 = b;
+        while (b + 1 < nB && (vertical ? g[b + 1][a] : g[a][b + 1]) === v) b++;
+        var ini = vertical ? r53LoteA1_(b0, a) : r53LoteA1_(a, b0), fim = vertical ? r53LoteA1_(b, a) : r53LoteA1_(a, b);
+        (saida[v] = saida[v] || []).push(ini === fim ? ini : ini + ':' + fim);
+      }
+    }
+  });
+  return saida;
+}
+
+/** Rodar uma vez pelo editor (na base, antes de copiar): grava o mapa de papéis e de bordas na aba oculta R53_LOTE. */
 function mapearLote() {
   var ss = SpreadsheetApp.getActive(), lidas = [];
   R53_LOTE_ABAS_.forEach(function (nome) {
@@ -103,6 +145,8 @@ function mapearLote() {
     var k = r53LoteChaves_(antes.cores, a.fundos, a.letras);
     mapa.abas[a.nome] = {b: r53LoteFaixas_(k.b), f: r53LoteFaixas_(k.f)};
     ['b', 'f'].forEach(function (t) { Object.keys(mapa.abas[a.nome][t]).forEach(function (p) { faixas += mapa.abas[a.nome][t][p].length; }); });
+    mapa.abas[a.nome].r = r53LoteMapaBordas_(ss, ss.getSheetByName(a.nome));
+    Object.keys(mapa.abas[a.nome].r).forEach(function (k) { faixas += mapa.abas[a.nome].r[k].length; });
   });
   var json = JSON.stringify(mapa), linhas = [];
   for (var i = 0; i < json.length; i += R53_LOTE_PEDACO_) linhas.push([json.slice(i, i + R53_LOTE_PEDACO_)]);
@@ -141,6 +185,23 @@ function r53LoteTrocar_(e) {
           listas++;
         }
       });
+    });
+    var regua = '#' + agora.regua, LADO = {top: 0, left: 1, bottom: 2, right: 3};
+    Object.keys(aba.r || {}).forEach(function (chave) {
+      var p = chave.split('|'), lados = [null, null, null, null, null, null], faixas = aba.r[chave];
+      lados[LADO[p[0]]] = true;
+      for (var i = 0; i < faixas.length; i += R53_LOTE_LISTA_) {
+        var rl = sh.getRangeList(faixas.slice(i, i + R53_LOTE_LISTA_));
+        rl.setBorder(lados[0], lados[1], lados[2], lados[3], null, null, regua, SpreadsheetApp.BorderStyle[p[1]]);
+        listas++;
+      }
+    });
+    // O canto chanfrado da moldura emenda na borda: segue a régua junto com ela.
+    (R53_LOTE_IMGS_[nome] || []).forEach(function (im) {
+      if (!/^carteira-canto/.test(im[2])) return;
+      sh.getRange(im[0], im[1]).setValue(SpreadsheetApp.newCellImage()
+        .setSourceUrl('data:image/png;base64,' + r53LotePng_(R53_LOTE_ARTE_[im[2]], regua.toUpperCase()))
+        .setAltTextTitle('PM-ARTE:' + im[2]).setAltTextDescription(regua.toUpperCase()).build());
     });
     marca('enfileirada ' + nome);
   });
