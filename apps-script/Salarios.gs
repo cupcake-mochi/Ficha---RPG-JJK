@@ -260,10 +260,10 @@ function salarioCriarPainel_(cfg,carteira) {
   cfg.getRange('O43').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberBetween(0,1).setAllowInvalid(false).build());
   titulo('K52:Q52','SALÁRIO POR GRAU');titulo('K60:Q60','PESO DAS MISSÕES');
   SALARIO_.graus.forEach(function(g,i){cfg.getRange(54+i,11,1,4).merge().setValue(g);cfg.getRange(54+i,15,1,3).merge().setValue(150000*Math.pow(2,i)).setNumberFormat('"¥ "#,##0');});
-  SALARIO_.tipos.forEach(function(t,i){cfg.getRange(62+i,11,1,4).merge().setValue(t);cfg.getRange(62+i,15,1,3).merge().setValue([1,1,2,3,0,0][i]);});
+  SALARIO_.tipos.forEach(function(t,i){cfg.getRange(62+i,11,1,4).merge().setValue(t);cfg.getRange(62+i,15,1,3).merge().setValue([1,1,2,3,1,1][i]);});
   cfg.getRange('O54:O58').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberGreaterThanOrEqualTo(0).setAllowInvalid(false).build());
   cfg.getRange('O62:O67').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberGreaterThanOrEqualTo(0).setAllowInvalid(false).build());
-  cfg.getRange('O66:O67').setNote('O livro não define participação salarial de solo. Padrão 0; a campanha pode configurar.');
+  cfg.getRange('O66:O67').setNote('Participação salarial de solo: padrão 1 por decisão da campanha; configurável.');
   cfg.getRange('K76:Q76').merge().setValue('Missão conta ao preencher nome + tipo. Corrigir data: menu Salários → Data da missão selecionada.');cfg.setRowHeight(76,48);
   cfg.getRange('O49').setFormula('=SUM(\'SALÁRIOS\'!J2:J)');
   cfg.getRange('O50').setFormula('=IFERROR(VLOOKUP(\'FICHA PESSOAL\'!AB11;K54:O58;5;FALSE);0)');

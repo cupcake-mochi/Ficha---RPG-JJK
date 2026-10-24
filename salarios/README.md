@@ -13,7 +13,7 @@ Os últimos dez créditos aparecem em **CONFIGURAÇÃO!K78:Q95**, do mais recent
 - O38: data de emissão fixa, editável. O39 grava o dia atual em Brasília e desmarca depois de salvar. Uma reemissão posterior ao último salário reinicia o próximo ciclo sem retirar créditos; uma data anterior não repete períodos pagos.
 - O40: ativa o salário. Desligar pausa a apuração; religar apura períodos pendentes.
 - O41: intervalo em dias corridos, padrão 30. O42: participações para salário completo, padrão 3. O43: parcela mínima, padrão 25%. O44: exige participação; desmarcar concede a referência integral.
-- O54:O58: salário por Grau. O62:O67: pesos das missões. Os valores do livro são ¥150.000, ¥300.000, ¥600.000, ¥1.200.000 e ¥2.400.000; curta/padrão 1, longa 2, final de arco 3. Solos começam em 0 porque o livro não define seu peso salarial; a campanha pode alterá-lo.
+- O54:O58: salário por Grau. O62:O67: pesos das missões. Os valores do livro são ¥150.000, ¥300.000, ¥600.000, ¥1.200.000 e ¥2.400.000; curta/padrão 1, longa 2, final de arco 3. Solos começam em 1 por decisão da campanha de 24/10/2026; a campanha pode alterá-lo. Essa mudança do instalador só afeta instalações novas, sem regravar pesos nem créditos existentes.
 - O48, O69:O72: vencimento, início, participações, previsão e último fechamento. O49 mostra os créditos acumulados; O50 mantém visível a referência integral do Grau atual.
 
 O saldo manual continua em **FICHA PESSOAL!O86**, inclusive fórmulas como `=150000-500`. **W86 — TOTAL DISPONÍVEL** soma esse resultado aos créditos do histórico **SALÁRIOS**. Não copie os créditos para O86: isso somaria a mesma renda duas vezes. Para gastar, continue descontando do campo manual; ele pode ficar negativo enquanto o total disponível permanece positivo.

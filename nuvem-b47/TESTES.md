@@ -1,3 +1,13 @@
+# Integração salarial · 24/10/2026
+
+O smoke inclui `r53/testes/salario_lote.js`: 28 cenários da edição original,
+recuperação de escritas/flush e cache confirmado. A fixture
+`r53/testes/salario-lote-a2ca590-fixture.gs` é a fonte pública exata do módulo
+experimental anterior; seu hash é conferido pelo preparador no teste de
+atualização. Não contém dados nativos e dispensa histórico Git no clone raso.
+Tempos da VM são simulados; o ensaio em cópia e a medição integral no Google
+seguem pendentes, conforme `r53/diagnostico-android/SALARIO-INTEGRACAO-2026-10-24.md`.
+
 # Manutenção Android e Sementes · 23/10/2026
 
 O smoke exige os nove módulos atuais, incluindo `PaletaAndroid.gs`.
