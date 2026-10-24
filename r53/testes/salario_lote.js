@@ -57,12 +57,15 @@ function ambiente(op = {}) {
     return {getValues: () => aba === 'DADOS_SALARIOS' && a === 'P2:Y130' ? aux() : [[celulas[aba + '!' + a]]],
       getValue: () => { leituras++; return aba === 'DADOS_SALARIOS' && a === 'Q5' ? (op.trocas || 0) : celulas[aba + '!' + a]; },
       setValue: v => escrever(aba, a, v), setValues: v => escrever(aba, a || l + ',' + c, v),
-      setFormula: v => escrever(aba, a, v), getFormula: () => celulas[aba + '!' + a] || '', setNotes() {}};
+      setFormula: v => escrever(aba, a, v), getFormula: () => celulas[aba + '!' + a] || '', setNotes() {},
+      clearContent() { escrever(aba, a, ''); return this; }};
   }
   const abas = {};
   for (const n of ['DADOS_SALARIOS', 'SALÁRIOS', 'CONFIGURAÇÃO', 'FICHA PESSOAL', 'CARTEIRA'])
     abas[n] = {getRange: (a, c, h, w) => typeof a === 'number' ? faixa(n, '', a, c) : faixa(n, a),
       getMaxRows: () => 1000, insertRowsAfter() { chamadas.push('inserir'); }, getName: () => n};
+  if (!op.semExtrato) abas.EXTRATO = {getRange: (a, c) => typeof a === 'number' ? faixa('EXTRATO', '', a, c) : faixa('EXTRATO', a),
+    getLastRow: () => { leituras++; return op.extratoUltima || 1; }, getName: () => 'EXTRATO'};
   const ss = {getSheetByName: n => abas[n]};
   ctx.SpreadsheetApp = {getActive: () => ss, flush() { relogio += 1000; }};
   const trava = {tryLock: () => { if (op.ocupado) return false; travado = true; return true; },
@@ -78,7 +81,8 @@ function ambiente(op = {}) {
   ctx.r53Editar_ = () => false;
   function evento(aba, a1, l, c, antes, depois) {
     return {source: ss, oldValue: antes, value: depois, range: {getSheet: () => ({getName: () => aba}), getA1Notation: () => a1,
-      getRow: () => l, getLastRow: () => l, getColumn: () => c, getLastColumn: () => c}};
+      getRow: () => l, getLastRow: () => l, getColumn: () => c, getLastColumn: () => c,
+      getCell: () => ({getValue: () => { leituras++; return op.caixa; }})}};
   }
   return {ctx, ss, props, escritas, chamadas, logs, evento, hoje, leituras: () => leituras,
     livro: () => escritas.filter(e => e[0] === 'SALÁRIOS'), trocas: () => escritas.filter(e => e[0] === 'DADOS_SALARIOS' && e[1] === '')};
@@ -161,6 +165,87 @@ let casos = 0;
   const a = ambiente({ocupado: true});
   a.ctx.onOpen({}); assert.strictEqual(a.livro().length, 0); assert(!a.props.salario_proximo);
   casos++;
+}
+{
+  // ± GASTO / GANHO: vira linha do extrato e a caixa limpa, sem ler a ficha e sem passar pelo resto da edição.
+  const a = ambiente();
+  a.props.salario_extrato = '1'; a.props.salario_proximo = String(a.hoje + 30);
+  assert.strictEqual(a.ctx.onEdit(a.evento('FICHA PESSOAL', 'O86', 86, 15, undefined, '-500')), 'salario');
+  a.ctx.onEdit(a.evento('FICHA PESSOAL', 'O86', 86, 15, undefined, '2.000'));
+  const ex = a.escritas.filter(e => e[0] === 'EXTRATO');
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(ex.map(e => [e[1], e[2][0][1], e[2][0][2]]))), [['3,1', -500, 'Ficha · gasto'], ['4,1', 2000, 'Ficha · ganho']]);
+  assert.strictEqual(a.escritas.filter(e => e[1] === 'O86' && e[2] === '').length, 2);
+  assert.strictEqual(a.props.salario_extrato, '3'); assert.strictEqual(a.leituras(), 0);
+  assert(!a.chamadas.includes('modulo'), 'não roda cartões/XP');
+  casos += 5;
+}
+{
+  // Cópia sem a contagem: lê a última linha do extrato uma vez. Fórmula/colagem sem e.value: lê a caixa.
+  const a = ambiente({extratoUltima: 4, caixa: 750});
+  a.ctx.salarioEditar_(a.evento('FICHA PESSOAL', 'O86', 86, 15, undefined, undefined));
+  const [[, onde, [[, v]]]] = a.escritas.filter(e => e[0] === 'EXTRATO');
+  assert.strictEqual(onde, '5,1'); assert.strictEqual(v, 750); assert.strictEqual(a.props.salario_extrato, '4');
+  casos += 3;
+}
+{
+  // Texto ou caixa apagada: nada entra no extrato. Sem EXTRATO (não preparado): O86 segue como saldo manual.
+  const a = ambiente();
+  assert.strictEqual(a.ctx.salarioEditar_(a.evento('FICHA PESSOAL', 'O86', 86, 15, '-5', 'abc')), true);
+  assert.strictEqual(a.ctx.salarioEditar_(a.evento('FICHA PESSOAL', 'O86', 86, 15, '-5', undefined)), true);
+  assert.strictEqual(a.escritas.length, 0);
+  const b = ambiente({semExtrato: true});
+  assert.strictEqual(b.ctx.onEdit(b.evento('FICHA PESSOAL', 'O86', 86, 15, '100', '200')), 'XP');
+  assert.strictEqual(b.escritas.filter(e => e[1] === 'O86').length, 0);
+  casos += 3;
+}
+{
+  // Rotina instalável ativa: o acionador simples deixa o lançamento para ela (não lança em dobro).
+  const a = ambiente({instalavel: true});
+  a.props.salario_extrato = '0';
+  a.ctx.salarioEditar_(a.evento('FICHA PESSOAL', 'O86', 86, 15, undefined, '-500'));
+  assert.strictEqual(a.escritas.length, 0);
+  const e = a.evento('FICHA PESSOAL', 'O86', 86, 15, undefined, '-500'); e.salarioInstalavel_ = true;
+  a.ctx.salarioEditar_(e);
+  assert.strictEqual(a.escritas.filter(x => x[0] === 'EXTRATO').length, 1);
+  casos += 2;
+}
+{
+  // Números como o Android manda: sinal de menos tipográfico, ¥, milhar com ponto, decimal com vírgula.
+  const a = ambiente();
+  assert.deepStrictEqual(['−500', '¥ 2.000', '1.500,5', '2,5', '12', 'abc', ''].map(a.ctx.salarioNumero_), [-500, 2000, 1500.5, 2.5, 12, NaN, NaN]);
+  casos++;
+}
+{
+  // Migração: o saldo de O86 vira a primeira linha do extrato; O86 limpa e vira a caixa; só uma vez.
+  const a = ambiente({semExtrato: true, semTrava: true});
+  const feitos = [];
+  const cadeia = nome => new Proxy(function () {}, {get: (_, k) => k === 'then' ? undefined : (...x) => { feitos.push([nome, k, x]); return cadeia(nome); }});
+  let novo;
+  a.ss.insertSheet = n => { novo = {getRange: (r, c, h, w) => { const g = cadeia('EXTRATO'); return typeof r === 'number' ? {setValues: v => feitos.push(['EXTRATO', 'linhas', [r, v]])} : g; },
+    setFrozenRows() {}, setColumnWidth() {}, hideSheet: () => feitos.push(['EXTRATO', 'hide'])}; return novo; };
+  const ficha = a.ss.getSheetByName('FICHA PESSOAL');
+  const o86 = new Proxy({getValue: () => 150000, getFormula: () => ''}, {get: (t, k) => t[k] || ((...x) => { feitos.push(['O86', k, x]); return cadeia('O86'); })});
+  ficha.getRange = r => r === 'O86' ? o86 : cadeia(r);
+  a.ctx.SpreadsheetApp.newDataValidation = () => cadeia('validacao');
+  assert.strictEqual(a.ctx.salarioPrepararCarteira_(a.ss), true);
+  const linhas = feitos.find(f => f[1] === 'linhas')[2];
+  assert.strictEqual(linhas[0], 2); assert.strictEqual(linhas[1][0][1], 150000);
+  assert(feitos.some(f => f[0] === 'O86' && f[1] === 'clearContent'));
+  assert(feitos.some(f => f[0] === 'W86' && f[1] === 'setFormula' && /N\(O86\)\+IFERROR\(SUM\(EXTRATO!B2:B\);0\)/.test(f[2][0])));
+  assert.strictEqual(a.props.salario_extrato, '1');
+  a.ss.getSheetByName = n => n === 'EXTRATO' ? novo : null;
+  assert.strictEqual(a.ctx.salarioPrepararCarteira_(a.ss), false);
+  casos += 6;
+}
+{
+  // Levar o extrato a uma cópia que já tem o salário por fórmula: troca o bloco inteiro e o desvio; recusa repetir.
+  const {preparar: comExtrato} = require('../diagnostico-android/preparar_salario_extrato.js');
+  const antes = fs.readFileSync(path.join(__dirname, 'salarios-com-formula.gs'), 'utf8');
+  const novo = comExtrato({files: [{name: 'Codigo', source: antes}]});
+  const atual = fs.readFileSync(path.join(raiz, 'apps-script/Salarios.gs'), 'utf8');
+  assert.strictEqual(novo.files[0].source, atual);
+  assert.throws(() => comExtrato(novo), /já instalado/);
+  casos += 2;
 }
 {
   // Preparar uma cópia já instalada: patch exato, recusa repetição.

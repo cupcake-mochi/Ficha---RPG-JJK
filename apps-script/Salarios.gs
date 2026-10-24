@@ -149,6 +149,7 @@ function salarioEditar_(e) {
   var emitir=n==='CARTEIRA'&&salarioToca_(r,3,3,46,46);
   var nome=n==='CARTEIRA'&&salarioToca_(r,9,15,15,45);
   var total=n==='FICHA PESSOAL'&&salarioToca_(r,86,86,23,30);
+  if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,86,87,15,21)&&salarioGasto_(ss,r,e))return true;
   if(!config&&!missao&&!nome&&!total&&!emitir)return false;
   // Com a rotina ativada, a edição instalável registra missões sem disputar o orçamento dos cartões/XP.
   if(!e.salarioInstalavel_&&PropertiesService.getScriptProperties().getProperty('salario_edicao')===ScriptApp.getScriptId()){
@@ -295,7 +296,7 @@ function salarioCriarPainel_(cfg,carteira) {
  * (H:J, "valor até a troca") e congela a tabela no livro quando houver tempo. Vale o Grau do dia do fechamento. */
 SALARIO_.formula = true;
 SALARIO_.f = {aux:[["Salário por fórmula", "Valor"], ["Início do 1º período pendente", "=LET(ult;MAX('SALÁRIOS'!C2:C);em;INT('CONFIGURAÇÃO'!O38);IF(ult>0;MAX(ult;em);em))"], ["Períodos vencidos", "=LET(nome;CARTEIRA!O9;IF(AND('CONFIGURAÇÃO'!O40=TRUE;LEN(nome)>0;nome<>\"Coloque o nome do personagem aqui\");MAX(0;FLOOR((TODAY()-Q2)/'CONFIGURAÇÃO'!O41));0))"], ["A creditar", "=IF($Q$3=0;0;SUM(INDEX(P11:Y;0;9)))"], ["Trocas registradas", "=COUNTA(H2:H)"], ["Fechamentos no livro", "=COUNTA('SALÁRIOS'!A2:A)"], ["Linhas do livro", "=ROWS('SALÁRIOS'!A:A)"], ["Intervalo (dias)", "='CONFIGURAÇÃO'!O41"]], cab:["Período", "Início", "Fim", "Grau", "Salário de referência", "Participações", "Meta", "Parcela", "Salário", "Critério"], tabela:"=IF($Q$3=0;\"\";LET(lin;LAMBDA(k;LET(s;$Q$2+k*'CONFIGURAÇÃO'!$O$41;e;s+'CONFIGURAÇÃO'!$O$41;h;LAMBDA(ch;atual;IFERROR(INDEX(FILTER('DADOS_SALARIOS'!$J$2:$J;'DADOS_SALARIOS'!$I$2:$I=ch;'DADOS_SALARIOS'!$H$2:$H>=e);1);atual));g;h(\"Grau\";'FICHA PESSOAL'!$AB$11);base;h(\"base:\"&g;IFERROR(VLOOKUP(g;'CONFIGURAÇÃO'!$K$54:$O$58;5;0);0));metav;h(\"meta\";'CONFIGURAÇÃO'!$O$42);mini;h(\"minimo\";'CONFIGURAÇÃO'!$O$43);vf;h(\"verifica\";'CONFIGURAÇÃO'!$O$44);p;SUM(MAP('CONFIGURAÇÃO'!$K$62:$K$67;'CONFIGURAÇÃO'!$O$62:$O$67;LAMBDA(t;w;h(\"peso:\"&t;w)*COUNTIFS('DADOS_SALARIOS'!$C$2:$C;t;'DADOS_SALARIOS'!$E$2:$E;TRUE;'DADOS_SALARIOS'!$D$2:$D;\">=\"&s;'DADOS_SALARIOS'!$D$2:$D;\"<\"&e))));pc;IF(vf;mini+(1-mini)*MIN(metav;MAX(0;p))/metav;1);HSTACK(\"SAL1:\"&s&\":\"&e;s;e;g;base;p;metav;pc;ROUNDDOWN(base*pc+0,00000001;0);IF(vf;\"Participação no período\";\"Participação dispensada pela campanha\"))));REDUCE(lin(0);SEQUENCE($Q$3;1;0);LAMBDA(acc;k;IF(k=0;acc;VSTACK(acc;lin(k)))))))", painel:{"O46": "=IF(O40<>TRUE;\"Salário pausado; períodos pendentes serão pagos ao religar.\";IF(NOT(AND(LEN(CARTEIRA!O9)>0;CARTEIRA!O9<>\"Coloque o nome do personagem aqui\"));\"Aguardando o nome do personagem na CARTEIRA.\";\"Em dia · próximo fechamento \"&TEXT(O48;\"dd/mm/yyyy\")))", "O48": "='DADOS_SALARIOS'!Q2+('DADOS_SALARIOS'!Q3+1)*O41", "O49": "=SUM('SALÁRIOS'!J2:J)+'DADOS_SALARIOS'!Q4", "O69": "='DADOS_SALARIOS'!Q2+'DADOS_SALARIOS'!Q3*O41", "O70": "=SUMPRODUCT(N('DADOS_SALARIOS'!E2:E=TRUE);N(ISNUMBER('DADOS_SALARIOS'!D2:D));N('DADOS_SALARIOS'!D2:D>=INT(O69));N('DADOS_SALARIOS'!D2:D<INT(O69)+O41);IFERROR(VLOOKUP('DADOS_SALARIOS'!C2:C;K62:O67;5;FALSE);0))", "O71": "=ROUNDDOWN(O50*IF(O44;O43+(1-O43)*MIN(O42;MAX(0;O70))/O42;1);0)", "O72": "=IF(INT(O69)>INT(O38);O69;\"Nenhum\")"},
-  total:"=O86+SUM('SALÁRIOS'!J2:J)+'DADOS_SALARIOS'!Q4"};
+  total:"=N(O86)+IFERROR(SUM(EXTRATO!B2:B);0)+SUM('SALÁRIOS'!J2:J)+'DADOS_SALARIOS'!Q4"};
 /** Valor anterior de uma regra que muda o pagamento de períodos passados. Uma célula por vez (oldValue). */
 function salarioChaveTroca_(r,n) {
   if(r.getRow()!==r.getLastRow())return '';
@@ -348,7 +349,64 @@ function salarioPrepararFormulas_(ss) {
   d.getRange('P10:Y10').setValues([SALARIO_.f.cab]);d.getRange('P11').setFormula(SALARIO_.f.tabela);
   Object.keys(SALARIO_.f.painel).forEach(function(a){cfg.getRange(a).setFormula(SALARIO_.f.painel[a]);});
   cfg.getRange('O74').setValue('Na hora, por fórmula');
+  salarioPrepararCarteira_(ss);
   salarioLigacoes_(ss);
   return true;
 }
 function atualizarSalarioFormula() {var ss=SpreadsheetApp.getActive();return salarioBloqueado_(ss,function(){return salarioPrepararFormulas_(ss);},30000);}
+
+/** Dinheiro como a vida (24/10/2026): O86 é a caixa ± GASTO / GANHO. O valor digitado vira uma linha da aba oculta
+ * EXTRATO e a caixa limpa; o saldo é a soma do extrato. O total soma também o que ainda estiver na caixa, então o
+ * valor aparece na hora mesmo se o script não chegar a rodar. Nada lê a ficha no caminho comum. */
+SALARIO_.extrato = 'EXTRATO';
+function salarioNumero_(v) {
+  if(typeof v==='number')return v;
+  var s=String(v===undefined||v===null?'':v).replace(/[−–]/g,'-').replace(/[¥\s]/g,'');
+  s=/^[+-]?\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)?s.replace(/\./g,'').replace(',','.'):s.replace(',','.');
+  var x=s===''?NaN:Number(s);return isFinite(x)?x:NaN;
+}
+/** Uma vez por ficha: cria o EXTRATO com o saldo que estava em O86 e transforma O86 na caixa de lançamento. */
+function salarioPrepararCarteira_(ss) {
+  if(ss.getSheetByName(SALARIO_.extrato))return false;
+  var pp=ss.getSheetByName('FICHA PESSOAL'),c=pp.getRange('O86'),antes=c.getValue(),formula=c.getFormula();
+  var ex=ss.insertSheet(SALARIO_.extrato),linhas=[];
+  ex.getRange('A1:C1').setValues([['Data','Valor','Origem']]).setFontWeight('bold').setBackground('#4B273F').setFontColor('#FFFFFF');
+  ex.setFrozenRows(1);ex.setColumnWidth(1,140);ex.setColumnWidth(2,120);ex.setColumnWidth(3,320);
+  ex.getRange('A2:A').setNumberFormat('dd/mm/yyyy hh:mm');ex.getRange('B2:B').setNumberFormat('"¥ "#,##0;"−¥ "#,##0');
+  var saldo=salarioNumero_(antes);
+  if(isFinite(saldo)&&saldo!==0)linhas.push([new Date(),saldo,'Saldo anterior (Ienes · ajuste manual'+(formula?', fórmula '+formula:'')+')']);
+  if(linhas.length)ex.getRange(2,1,linhas.length,3).setValues(linhas);
+  ex.getRange('A1:C').protect().setDescription('Extrato de ienes; os lançamentos entram pela caixa ± GASTO / GANHO da FICHA PESSOAL.').setWarningOnly(true);
+  ex.hideSheet();
+  pp.getRange('O85').setValue('± GASTO / GANHO');
+  c.clearContent().setNumberFormat('"¥ "#,##0;"−¥ "#,##0')
+    .setDataValidation(SpreadsheetApp.newDataValidation().requireNumberBetween(-1e12,1e12).setAllowInvalid(false).setHelpText('Digite só o número: −500 para gasto, 2000 para ganho.').build())
+    .setNote('Digite o gasto (−500) ou o ganho (2000). O valor entra no saldo, a caixa limpa e o lançamento fica na aba oculta EXTRATO.');
+  pp.getRange('W86').setFormula(SALARIO_.f.total).setNote('Saldo do extrato + salários fechados + salário pendente. Valores e prazos em CONFIGURAÇÃO → Emissão e salários; lançamentos na aba oculta EXTRATO.');
+  ss.getSheetByName(SALARIO_.config).getRange('K93').setValue('Os créditos somam no TOTAL DISPONÍVEL em FICHA PESSOAL. Gastos e ganhos vão na caixa ± GASTO / GANHO ao lado; cada lançamento fica na aba oculta EXTRATO.');
+  PropertiesService.getDocumentProperties().setProperty('salario_extrato',String(linhas.length));
+  return true;
+}
+/** Lança o que foi digitado em O86. true = a edição está tratada (não segue para o resto da ficha). */
+function salarioGasto_(ss,r,e) {
+  if(!e.salarioInstalavel_&&PropertiesService.getScriptProperties().getProperty('salario_edicao')===ScriptApp.getScriptId())return true;
+  var ex=ss.getSheetByName(SALARIO_.extrato);if(!ex)return false;
+  var v=salarioNumero_(e.value);
+  // Colagem, fórmula ou célula mesclada sem e.value: aí sim lê a caixa (uma leitura).
+  if(isNaN(v)&&e.value===undefined)v=salarioNumero_(r.getCell(1,1).getValue());
+  if(isNaN(v))return true;
+  var caixa=ss.getSheetByName('FICHA PESSOAL').getRange('O86');
+  salarioBloqueado_(ss,function(){
+    try {
+      if(v!==0){
+        // Contagem nas propriedades, como nas trocas; numa cópia ela não vem junto e lê a última linha uma vez.
+        var props=PropertiesService.getDocumentProperties(),guardado=props.getProperty('salario_extrato');
+        var n=guardado!==null&&guardado!==''?Number(guardado):ex.getLastRow()-1;
+        ex.getRange(n+2,1,1,3).setValues([[new Date(),v,'Ficha · '+(v<0?'gasto':'ganho')]]);
+        caixa.clearContent();SpreadsheetApp.flush();
+        props.setProperty('salario_extrato',String(n+1));
+      } else caixa.clearContent();
+    }catch(err){salarioStatus_(ss,'⚠ '+err.message);console.log('Ienes: '+err.message);}
+  },10000);
+  return true;
+}

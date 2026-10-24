@@ -82,3 +82,19 @@ fechamento (sem proporcional).
   motor antigo (`SALARIO_.formula=false`).
 - Instalação numa cópia já com o módulo: `node r53/diagnostico-android/preparar_salario_formula.js captura.json
   saida.json`, publicar, e rodar `prepararSalarioLote()` uma vez pelo editor.
+
+## Caixa ± GASTO / GANHO (dinheiro como a vida)
+
+Pedido do Mizuki: acompanhar gastos e ganhos sem refazer conta no fim do dia.
+
+- `FICHA PESSOAL!O86` deixa de ser o saldo manual e vira a caixa ± GASTO / GANHO. O jogador digita −500 ou 2000; o
+  script grava uma linha na aba oculta `EXTRATO` (data, valor, origem) e limpa a caixa. Validação aceita só número.
+- `W86` (TOTAL DISPONÍVEL) = `N(O86) + extrato + livro + pendente por fórmula`. Somar a caixa faz o valor aparecer na hora
+  mesmo se o script não rodar; quando ele roda, o valor só muda de lugar.
+- O lançamento é tratado no começo do `salarioEditar_` (`salarioGasto_`) e não segue para cartões/XP/paleta: nenhuma
+  leitura da ficha no caminho comum (contagem em `salario_extrato` nas propriedades; numa cópia, `getLastRow` uma vez).
+- Migração (`salarioPrepararCarteira_`, chamada por `prepararSalarioLote`/`atualizarSalarioFormula`): uma vez por ficha,
+  o valor que estava em O86 vira a linha "Saldo anterior" do extrato. Sem a aba `EXTRATO`, O86 segue como saldo manual.
+- Cópia já com fórmula: `node r53/diagnostico-android/preparar_salario_extrato.js entrada.json saida.json`, publicar e rodar
+  `prepararSalarioLote()`. Na cópia de teste a migração foi feita pela API com o mesmo resultado (¥150.000 → EXTRATO!2,
+  total seguiu ¥262.500).
