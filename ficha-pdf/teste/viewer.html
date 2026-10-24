@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/pdfjs-dist/web/pdf_viewer.css">
+<style>body{margin:0;background:#444}#c{position:absolute;inset:0;overflow:auto}</style></head>
+<body><div id="c"><div id="v" class="pdfViewer"></div></div>
+<script type="module">
+import * as pdfjsLib from './node_modules/pdfjs-dist/build/pdf.mjs';
+import * as V from './node_modules/pdfjs-dist/web/pdf_viewer.mjs';
+pdfjsLib.GlobalWorkerOptions.workerSrc='./node_modules/pdfjs-dist/build/pdf.worker.mjs';
+const bus=new V.EventBus();
+const link=new V.PDFLinkService({eventBus:bus});
+const sm=new V.PDFScriptingManager({eventBus:bus,sandboxBundleSrc:'/node_modules/pdfjs-dist/build/pdf.sandbox.mjs'});
+const viewer=new V.PDFViewer({container:document.getElementById('c'),eventBus:bus,linkService:link,scriptingManager:sm,annotationMode:pdfjsLib.AnnotationMode.ENABLE_FORMS});
+link.setViewer(viewer);sm.setViewer(viewer);
+const file=new URLSearchParams(location.search).get('file');
+const doc=await pdfjsLib.getDocument({url:file,enableScripting:true}).promise;
+viewer.setDocument(doc);link.setDocument(doc);sm.setDocument(doc);
+bus.on('pagesinit',()=>{viewer.currentScaleValue='page-width';});
+window.__doc=doc;window.__viewer=viewer;window.__ready=true;
+</script></body></html>
