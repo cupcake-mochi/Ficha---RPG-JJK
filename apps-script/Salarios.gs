@@ -133,7 +133,7 @@ function salarioSeguro_(ss,espera) {return salarioBloqueado_(ss,function(){try{r
 function salarioPronto_(ss) {var sh=ss.getSheetByName(SALARIO_.dados);return !!sh&&!!sh.getRange('L2').getValue();}
 function salarioMenu_() {
   SpreadsheetApp.getUi().createMenu('Salários').addItem('Conferir salários agora','conferirSalarios')
-    .addItem('Data da missão selecionada…','definirDataMissaoSalario').addSeparator()
+    .addItem('Data da missão selecionada…','definirDataMissaoSalario').addItem('Reemitir carteira hoje…','reemitirCarteira').addSeparator()
     .addItem('Ativar conferência diária','ativarSalarioDiario').addItem('Desativar conferência diária','desativarSalarioDiario').addToUi();
 }
 function salarioAbrir_() {
@@ -151,7 +151,7 @@ function salarioEditar_(e) {
   var total=n==='FICHA PESSOAL'&&salarioToca_(r,86,86,23,30);
   if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,86,87,15,21)&&salarioGasto_(ss,r,e))return true;
   if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,10,12,61,71)&&salarioCorrigirData_(ss,r,e))return true;
-  if(SALARIO_.formula&&nome&&salarioPrimeiroNome_(e)){salarioBloqueado_(ss,function(){ss.getSheetByName(SALARIO_.config).getRange('O38').setValue(salarioData_(salarioHoje_()));},1500);return false;}
+  if(SALARIO_.formula&&(emitir||config&&salarioToca_(r,38,39,15,15))&&salarioEmitir_(ss,r,e,emitir))return true;
   if(!config&&!missao&&!nome&&!total&&!emitir)return false;
   // Com a rotina ativada, a edição instalável registra missões sem disputar o orçamento dos cartões/XP.
   if(!e.salarioInstalavel_&&PropertiesService.getScriptProperties().getProperty('salario_edicao')===ScriptApp.getScriptId()){
@@ -297,7 +297,7 @@ function salarioCriarPainel_(cfg,carteira) {
  * sem gatilho: DADOS_SALARIOS!P11 lista cada período vencido depois do livro e Q4 soma. O script só registra trocas
  * (H:J, "valor até a troca") e congela a tabela no livro quando houver tempo. Vale o Grau do dia do fechamento. */
 SALARIO_.formula = true;
-SALARIO_.f = {aux:[["Salário por fórmula", "Valor"], ["Início do 1º período pendente", "=LET(ult;MAX('SALÁRIOS'!C2:C);em;INT('CONFIGURAÇÃO'!O38);IF(ult>0;MAX(ult;em);em))"], ["Períodos vencidos", "=LET(nome;CARTEIRA!O9;IF(AND('CONFIGURAÇÃO'!O40=TRUE;LEN(nome)>0;nome<>\"Coloque o nome do personagem aqui\");MAX(0;FLOOR((TODAY()-Q2)/'CONFIGURAÇÃO'!O41));0))"], ["A creditar", "=IF($Q$3=0;0;SUM(INDEX(P11:Y;0;9)))"], ["Trocas registradas", "=COUNTA(H2:H)"], ["Fechamentos no livro", "=COUNTA('SALÁRIOS'!A2:A)"], ["Linhas do livro", "=ROWS('SALÁRIOS'!A:A)"], ["Intervalo (dias)", "='CONFIGURAÇÃO'!O41"]], cab:["Período", "Início", "Fim", "Grau", "Salário de referência", "Participações", "Meta", "Parcela", "Salário", "Critério"], tabela:"=IF($Q$3=0;\"\";LET(lin;LAMBDA(k;LET(s;$Q$2+k*'CONFIGURAÇÃO'!$O$41;e;s+'CONFIGURAÇÃO'!$O$41;h;LAMBDA(ch;atual;IFERROR(INDEX(FILTER('DADOS_SALARIOS'!$J$2:$J;'DADOS_SALARIOS'!$I$2:$I=ch;'DADOS_SALARIOS'!$H$2:$H>=e);1);atual));g;h(\"Grau\";'FICHA PESSOAL'!$AB$11);base;h(\"base:\"&g;IFERROR(VLOOKUP(g;'CONFIGURAÇÃO'!$K$54:$O$58;5;0);0));metav;h(\"meta\";'CONFIGURAÇÃO'!$O$42);mini;h(\"minimo\";'CONFIGURAÇÃO'!$O$43);vf;h(\"verifica\";'CONFIGURAÇÃO'!$O$44);p;SUM(MAP('CONFIGURAÇÃO'!$K$62:$K$67;'CONFIGURAÇÃO'!$O$62:$O$67;LAMBDA(t;w;h(\"peso:\"&t;w)*COUNTIFS('DADOS_SALARIOS'!$C$2:$C;t;'DADOS_SALARIOS'!$E$2:$E;TRUE;'DADOS_SALARIOS'!$D$2:$D;\">=\"&s;'DADOS_SALARIOS'!$D$2:$D;\"<\"&e))));pc;IF(vf;mini+(1-mini)*MIN(metav;MAX(0;p))/metav;1);HSTACK(\"SAL1:\"&s&\":\"&e;s;e;g;base;p;metav;pc;ROUNDDOWN(base*pc+0,00000001;0);IF(vf;\"Participação no período\";\"Participação dispensada pela campanha\"))));REDUCE(lin(0);SEQUENCE($Q$3;1;0);LAMBDA(acc;k;IF(k=0;acc;VSTACK(acc;lin(k)))))))", painel:{"O46": "=IF(O40<>TRUE;\"Salário pausado; períodos pendentes serão pagos ao religar.\";IF(NOT(AND(LEN(CARTEIRA!O9)>0;CARTEIRA!O9<>\"Coloque o nome do personagem aqui\"));\"Aguardando o nome do personagem na CARTEIRA.\";\"Em dia · próximo fechamento \"&TEXT(O48;\"dd/mm/yyyy\")))", "O48": "='DADOS_SALARIOS'!Q2+('DADOS_SALARIOS'!Q3+1)*O41", "O49": "=SUM('SALÁRIOS'!J2:J)+'DADOS_SALARIOS'!Q4", "O69": "='DADOS_SALARIOS'!Q2+'DADOS_SALARIOS'!Q3*O41", "O70": "=SUMPRODUCT(N('DADOS_SALARIOS'!E2:E=TRUE);N(ISNUMBER('DADOS_SALARIOS'!D2:D));N('DADOS_SALARIOS'!D2:D>=INT(O69));N('DADOS_SALARIOS'!D2:D<INT(O69)+O41);IFERROR(VLOOKUP('DADOS_SALARIOS'!C2:C;K62:O67;5;FALSE);0))", "O71": "=ROUNDDOWN(O50*IF(O44;O43+(1-O43)*MIN(O42;MAX(0;O70))/O42;1);0)", "O72": "=IF(INT(O69)>INT(O38);O69;\"Nenhum\")"},
+SALARIO_.f = {aux:[["Salário por fórmula", "Valor"], ["Início do 1º período pendente", "=IF(ISNUMBER(N2);LET(ult;MAX('SALÁRIOS'!C2:C);em;INT(N2);IF(ult>0;MAX(ult;em);em));\"\")"], ["Períodos vencidos", "=LET(nome;CARTEIRA!O9;IF(AND(ISNUMBER(N2);'CONFIGURAÇÃO'!O40=TRUE;LEN(nome)>0;nome<>\"Coloque o nome do personagem aqui\");MAX(0;FLOOR((TODAY()-Q2)/'CONFIGURAÇÃO'!O41));0))"], ["A creditar", "=IF($Q$3=0;0;SUM(INDEX(P11:Y;0;9)))"], ["Trocas registradas", "=COUNTA(H2:H)"], ["Fechamentos no livro", "=COUNTA('SALÁRIOS'!A2:A)"], ["Linhas do livro", "=ROWS('SALÁRIOS'!A:A)"], ["Intervalo (dias)", "='CONFIGURAÇÃO'!O41"]], cab:["Período", "Início", "Fim", "Grau", "Salário de referência", "Participações", "Meta", "Parcela", "Salário", "Critério"], tabela:"=IF($Q$3=0;\"\";LET(lin;LAMBDA(k;LET(s;$Q$2+k*'CONFIGURAÇÃO'!$O$41;e;s+'CONFIGURAÇÃO'!$O$41;h;LAMBDA(ch;atual;IFERROR(INDEX(FILTER('DADOS_SALARIOS'!$J$2:$J;'DADOS_SALARIOS'!$I$2:$I=ch;'DADOS_SALARIOS'!$H$2:$H>=e);1);atual));g;h(\"Grau\";'FICHA PESSOAL'!$AB$11);base;h(\"base:\"&g;IFERROR(VLOOKUP(g;'CONFIGURAÇÃO'!$K$54:$O$58;5;0);0));metav;h(\"meta\";'CONFIGURAÇÃO'!$O$42);mini;h(\"minimo\";'CONFIGURAÇÃO'!$O$43);vf;h(\"verifica\";'CONFIGURAÇÃO'!$O$44);p;SUM(MAP('CONFIGURAÇÃO'!$K$62:$K$67;'CONFIGURAÇÃO'!$O$62:$O$67;LAMBDA(t;w;h(\"peso:\"&t;w)*COUNTIFS('DADOS_SALARIOS'!$C$2:$C;t;'DADOS_SALARIOS'!$E$2:$E;TRUE;'DADOS_SALARIOS'!$D$2:$D;\">=\"&s;'DADOS_SALARIOS'!$D$2:$D;\"<\"&e))));pc;IF(vf;mini+(1-mini)*MIN(metav;MAX(0;p))/metav;1);HSTACK(\"SAL1:\"&s&\":\"&e;s;e;g;base;p;metav;pc;ROUNDDOWN(base*pc+0,00000001;0);IF(vf;\"Participação no período\";\"Participação dispensada pela campanha\"))));REDUCE(lin(0);SEQUENCE($Q$3;1;0);LAMBDA(acc;k;IF(k=0;acc;VSTACK(acc;lin(k)))))))", painel:{"O46": "=IF(O40<>TRUE;\"Salário pausado; períodos pendentes serão pagos ao religar.\";IF(NOT(ISNUMBER('DADOS_SALARIOS'!N2));\"Carteira não emitida · marque EMITIR na CARTEIRA com a ficha pronta.\";IF(NOT(AND(LEN(CARTEIRA!O9)>0;CARTEIRA!O9<>\"Coloque o nome do personagem aqui\"));\"Aguardando o nome do personagem na CARTEIRA.\";\"Em dia · próximo fechamento \"&TEXT(O48;\"dd/mm/yyyy\"))))", "O48": "=IF('DADOS_SALARIOS'!Q2=\"\";\"\";'DADOS_SALARIOS'!Q2+('DADOS_SALARIOS'!Q3+1)*O41)", "O49": "=SUM('SALÁRIOS'!J2:J)+'DADOS_SALARIOS'!Q4", "O69": "=IF('DADOS_SALARIOS'!Q2=\"\";\"\";'DADOS_SALARIOS'!Q2+'DADOS_SALARIOS'!Q3*O41)", "O70": "=IF(O69=\"\";0;SUMPRODUCT(N('DADOS_SALARIOS'!E2:E=TRUE);N(ISNUMBER('DADOS_SALARIOS'!D2:D));N('DADOS_SALARIOS'!D2:D>=INT(O69));N('DADOS_SALARIOS'!D2:D<INT(O69)+O41);IFERROR(VLOOKUP('DADOS_SALARIOS'!C2:C;K62:O67;5;FALSE);0)))", "O71": "=ROUNDDOWN(O50*IF(O44;O43+(1-O43)*MIN(O42;MAX(0;O70))/O42;1);0)", "O72": "=IF(O69=\"\";\"Nenhum\";IF(INT(O69)>INT(O38);O69;\"Nenhum\"))"},
   total:"=N(O86)+IFERROR(SUM(EXTRATO!B2:B);0)+SUM('SALÁRIOS'!J2:J)+'DADOS_SALARIOS'!Q4"};
 /** Valor anterior de uma regra que muda o pagamento de períodos passados. Uma célula por vez (oldValue). */
 function salarioChaveTroca_(r,n) {
@@ -333,7 +333,9 @@ function salarioCongelar_(ss,hoje) {
   var sh=ss.getSheetByName(SALARIO_.dados),v=sh.getRange('P2:Y130').getValues();
   var nLivro=Number(v[4][1])||0,linhas=Number(v[5][1])||0,dias=Number(v[6][1])||0;
   var tabela=v.slice(9).filter(function(l){return /^SAL1:/.test(l[0]);});
-  var proximo=Number(v[0][1])+(Number(v[1][1])+1)*dias;
+  // Q2 tem formato de data (getValues devolve Date); vazio enquanto a carteira não foi emitida.
+  var q2=salarioDia_(v[0][1]);if(!isFinite(q2))return {novos:0,proximo:hoje+1};
+  var proximo=q2+(Number(v[1][1])+1)*dias;
   if(!tabela.length)return {novos:0,proximo:proximo};
   var novos=tabela.map(function(l){return [l[0],salarioData_(l[1]),salarioData_(l[2]),salarioData_(hoje),l[3],l[4],l[5],l[6],l[7],l[8],l[9],JSON.stringify({formula:true,dias:dias})];});
   var livro=ss.getSheetByName(SALARIO_.livro),at=nLivro+2;
@@ -357,6 +359,7 @@ function salarioPrepararFormulas_(ss) {
   for(var i=1;i<=10;i++)[['K',1],['L',3],['N',5],['P',8]].forEach(function(v){cfg.getRange(v[0]+(80+i)).setFormula(salarioUltimo_(i,v[1],v[0]==='N'));});
   salarioPrepararCarteira_(ss);
   salarioPrepararCorrecao_(ss);
+  salarioPrepararEmissao_(ss);
   salarioLigacoes_(ss);
   return true;
 }
@@ -476,11 +479,51 @@ function salarioCorrigirData_(ss,r,e) {
   },10000);
   return true;
 }
-/** Cópia nova da ficha: o primeiro nome do personagem emite a carteira hoje. Sem isso a fórmula pagaria os
- * períodos desde a emissão que veio na cópia. Só vale quando o nome anterior estava vazio ou era o texto de exemplo. */
-function salarioPrimeiroNome_(e) {
-  if(e.value===undefined)return false;
-  var vazio=function(v){v=v===undefined||v===null?'':String(v).trim();return v===''||v==='Coloque o nome do personagem aqui';};
-  return vazio(e.oldValue)&&!vazio(e.value);
+/** Emissão (24/10/2026): o salário só conta depois de emitir a carteira, uma vez, pela caixa EMITIR (CARTEIRA!AT3 ou
+ * CONFIGURAÇÃO!O39). A data fica em DADOS_SALARIOS!N2, que só o script grava; O38 e a CARTEIRA só mostram. Assim a
+ * cópia de uma ficha nova não herda emissão, e mexer na data não cria nem apaga períodos. Reemitir só pelo menu. */
+SALARIO_.f.emissao = "=IF(ISNUMBER('DADOS_SALARIOS'!N2);'DADOS_SALARIOS'!N2;\"\")";
+SALARIO_.f.carteira = "=IF(ISNUMBER('CONFIGURAÇÃO'!O38);\"Emitida \"&TEXT('CONFIGURAÇÃO'!O38;\"dd.mm.yyyy\");\"Não emitida · marque ao lado\")";
+SALARIO_.nomeExemplo = 'Coloque o nome do personagem aqui';
+function salarioEmitir_(ss,r,e,emitir) {
+  var cfg=ss.getSheetByName(SALARIO_.config);
+  if(!emitir&&r.getRow()<=38){salarioBloqueado_(ss,function(){cfg.getRange('O38').setFormula(SALARIO_.f.emissao);},1500);if(r.getLastRow()<39)return true;}
+  var marcado=e.value!==undefined?String(e.value).toUpperCase()==='TRUE':(emitir?r:cfg.getRange('O39')).getValue()===true;
+  if(!marcado)return true;
+  salarioBloqueado_(ss,function(){
+    var c=ss.getSheetByName(SALARIO_.dados).getRange('N2'),ja=salarioDia_(c.getValue());
+    cfg.getRange('O39').setValue(false);ss.getSheetByName('CARTEIRA').getRange('AT3').setValue(false);
+    if(isFinite(ja))return salarioStatus_(ss,'⚠ Carteira já emitida em '+salarioTextoDia_(ja)+'. Para reemitir, use Salários › Reemitir carteira hoje, no PC.');
+    c.setValue(salarioData_(salarioHoje_()));salarioStatus_(ss,'');
+  },1500);
+  return true;
+}
+/** Menu, no PC: congela os períodos vencidos no livro e recomeça o ciclo hoje. */
+function reemitirCarteira() {
+  if(!SALARIO_.formula)throw Error('Use a caixa de emissão: esta ficha não está no salário por fórmula.');
+  var ss=SpreadsheetApp.getActive(),ui=SpreadsheetApp.getUi();
+  var ok=ui.alert('Reemitir a carteira hoje?','Os salários vencidos vão para o livro antes. O ciclo aberto recomeça hoje: as participações dele deixam de contar.',ui.ButtonSet.OK_CANCEL);
+  if(ok!==ui.Button.OK)return false;
+  return salarioBloqueado_(ss,function(){
+    var hoje=salarioHoje_();salarioApurar_(ss,hoje);
+    ss.getSheetByName(SALARIO_.dados).getRange('N2').setValue(salarioData_(hoje));
+    PropertiesService.getDocumentProperties().deleteProperty('salario_proximo');salarioStatus_(ss,'');return true;
+  },30000);
+}
+/** Uma vez por ficha: a emissão sai de O38 (digitável) para N2. Só uma ficha com personagem herda a data de O38. */
+function salarioPrepararEmissao_(ss) {
+  var d=ss.getSheetByName(SALARIO_.dados),cfg=ss.getSheetByName(SALARIO_.config),carteira=ss.getSheetByName('CARTEIRA');
+  if(d.getRange('N1').getValue()!=='')return false;
+  var nome=String(carteira.getRange('O9').getValue()).trim(),em=salarioDia_(cfg.getRange('O38').getValue());
+  d.getRange('N1').setValue('Emissão (só o script grava)');
+  d.getRange('N2').setValue(nome!==''&&nome!==SALARIO_.nomeExemplo&&isFinite(em)?salarioData_(em):'');
+  d.getRange('N2').setNumberFormat('dd/mm/yyyy');
+  cfg.getRange('O38').clearDataValidations().setFormula(SALARIO_.f.emissao)
+    .setNote('Mostra a data gravada ao marcar EMITIR. Escrever aqui não muda nada: a data volta. Reemitir: menu Salários › Reemitir carteira hoje, no PC.');
+  cfg.getRange('O39').setNote('Emite a carteira hoje, uma vez só. O salário começa a contar a partir daí.');
+  cfg.getRange('K36').setValue('O salário só conta depois de emitir. Com a ficha pronta, marque EMITIR na CARTEIRA ou abaixo (uma vez só).');
+  carteira.getRange('AH3').setFormula(SALARIO_.f.carteira);
+  carteira.getRange('AT3').setNote('EMITIR: grava a data de hoje, uma vez só. O salário começa a contar a partir daí.');
+  return true;
 }
 // FIM DO SALÁRIO POR FÓRMULA
