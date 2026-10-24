@@ -461,7 +461,9 @@ function salarioCorrigirData_(ss,r,e) {
     if(!isFinite(dia))return aviso('Data inválida: use dd/mm/aaaa');
     if(dia>hoje)return aviso('A data não pode ser depois de hoje');
     var sh=ss.getSheetByName(SALARIO_.dados),v=sh.getRange(1,1,sh.getMaxRows(),17).getValues();
-    if(dia<Number(v[1][16]))return aviso('Essa data cai num período já pago');
+    // Q2 tem formato de data: getValues devolve Date, não o número de série.
+    var inicio=salarioDia_(v[1][16]);
+    if(isFinite(inicio)&&dia<inicio)return aviso('Essa data cai num período já pago');
     var chave=function(x){return String(x).replace(/^'/,'').trim().toLowerCase();},alvo=chave(nome),achou=[];
     for(var i=1;i<v.length;i++)if(v[i][0]&&v[i][4]===true&&chave(v[i][1])===alvo)achou.push(i);
     if(!achou.length)return aviso('Nenhuma missão com esse nome');

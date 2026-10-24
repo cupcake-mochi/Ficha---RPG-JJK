@@ -56,7 +56,7 @@ function ambiente(op = {}) {
   function escrever(aba, a, v) { assert(travado || op.semTrava, 'escrita sob bloqueio'); escritas.push([aba, a, v]); celulas[aba + '!' + a] = v; }
   function faixa(aba, a, l, c) {
     return {getValues: () => aba === 'DADOS_SALARIOS' && a === 'P2:Y130' ? aux()
-        : aba === 'DADOS_SALARIOS' && !a && l === 1 && c === 1 ? (leituras++, op.dados) : [[celulas[aba + '!' + a]]],
+        : aba === 'DADOS_SALARIOS' && !a && l === 1 && c === 1 ? (leituras++, typeof op.dados === 'function' ? op.dados(ctx) : op.dados) : [[celulas[aba + '!' + a]]],
       getValue: () => { leituras++; return aba === 'DADOS_SALARIOS' && a === 'Q5' ? (op.trocas || 0) : celulas[aba + '!' + a]; },
       setValue: v => escrever(aba, a || l + ',' + c, v), setValues: v => escrever(aba, a || l + ',' + c, v),
       setFormula: v => escrever(aba, a, v), getFormula: () => celulas[aba + '!' + a] || '', setNotes() {},
@@ -266,11 +266,13 @@ let casos = 0;
 }
 {
   // Corrigir data pelo celular: nome em BI11, data em BO11; resultado na caixa da data.
-  const dados = () => { const v = Array.from({length: 6}, () => Array(17).fill(''));
-    v[1][16] = 46254; v[1].splice(0, 5, 'id1', 'Missão A', 'Curta', 46300, true); v[2].splice(0, 5, 'id2', "'-Missão B", 'Longa', 46310, true);
+  const dados = ctx => { const v = Array.from({length: 6}, () => Array(17).fill(''));
+    v[1][16] = new (vm.runInContext('Date', ctx))(Date.UTC(2026, 7, 20, 15)); 
+    // Q2 vem como Date (formato de data), como no Sheets.
+    v[1].splice(0, 5, 'id1', 'Missão A', 'Curta', 46300, true); v[2].splice(0, 5, 'id2', "'-Missão B", 'Longa', 46310, true);
     v[3].splice(0, 5, 'id3', 'Missão C', 'Curta', 46301, false); v[4].splice(0, 5, 'id4', 'Dupla', 'Curta', 46300, true); v[5].splice(0, 5, 'id5', 'dupla ', 'Curta', 46301, true); return v; };
   const caso = (nome, data, campo = 'data') => {
-    const a = ambiente({dados: dados()});
+    const a = ambiente({dados});
     a.ctx.salarioEditar_(campo === 'data' ? (a.put('FICHA PESSOAL', 'BI11', nome), a.evento('FICHA PESSOAL', 'BO11', 11, 67, undefined, data))
       : (a.put('FICHA PESSOAL', 'BO11', data), a.evento('FICHA PESSOAL', 'BI11', 11, 61, undefined, nome)));
     const ult = a.escritas.filter(e => e[1] === 'BO11').pop();
