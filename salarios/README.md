@@ -75,3 +75,18 @@ As doze notas são lidas por duas faixas de uma coluna, mantendo a preservação
 `node salarios/corrigir_abertura.js <Codigo-atual.gs> <Codigo-corrigido.gs>` prepara a atualização do pacote antigo sem alterar os cinco arquivos comprimidos. Os bytes originais são validados pelo SHA-256 antes de substituir funções por âncoras únicas; âncora divergente ou correção duplicada interrompe o carregamento. As âncoras mínimas da base R53 estão em `abertura_r53_original.json`, sem depender do histórico Git disponível em um clone. A geração integral usa diretamente as fontes corrigidas.
 
 Resultados e tempos da publicação estão em `VALIDACAO.json`. Evidências nativas e fontes relidas permanecem em `saidas/`, fora do Git.
+
+## Emissão obrigatória (24/10/2026, salário por fórmula)
+
+Valem estas regras e não as de O38 descritas acima:
+
+- O salário só conta depois de **EMITIR**: o checkbox CARTEIRA!AT3 (ou CONFIGURAÇÃO!O39) grava o dia de hoje em
+  DADOS_SALARIOS!N2, uma vez só. Sem emissão a CARTEIRA mostra "Não emitida · marque ao lado" e o painel avisa.
+- O38 e "Emitida dd.mm.aaaa" só mostram N2. Digitar uma data em O38 não muda nada: a fórmula volta na hora.
+- Marcar EMITIR de novo numa ficha já emitida não muda a data; o painel avisa e a caixa desmarca.
+- Reemitir só pelo menu **Salários › Reemitir carteira hoje…**, no PC: congela no livro os períodos vencidos e recomeça
+  o ciclo hoje (as participações do ciclo aberto deixam de contar).
+- A cópia da ficha base vem sem emissão, então ninguém recebe salário retroativo ao copiar.
+
+Texto para guias e bot: "Terminou a ficha? Escreva o nome do personagem na CARTEIRA e marque EMITIR, ao lado de
+'Não emitida'. O salário só começa a contar a partir desse dia, e a emissão é uma vez só."
