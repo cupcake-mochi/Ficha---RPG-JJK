@@ -1,17 +1,19 @@
 'use strict';
 // Falhas de serviços e relógio controlados. Não chama o Google nem mede sua latência.
 const vm = require('vm'), assert = require('assert'), fs = require('fs'), path = require('path');
-const {preparar, NOVO, ANCORA, ANTIGO, ENTRADA} = require('../diagnostico-android/preparar_salario_lote.js');
+const {preparar, NOVO, ANCORA, ANTIGO, ENTRADA, ABRIR_NOVO} = require('../diagnostico-android/preparar_salario_lote.js');
 const raiz = path.resolve(__dirname, '../..');
 const original = ANCORA + 'if(salarioEditar_(e))return "salario";' +
   'if(e.range.getSheet().getName()==="CARTEIRA"&&e.range.getA1Notation()==="C27")return paleta(e);' +
-  'if(r53Editar_(e))return "editor";return r53Modulo_().onEdit(e);}';
+  'if(r53Editar_(e))return "editor";return r53Modulo_().onEdit(e);}' +
+  '\nfunction onOpen(e){e=e||{};if(typeof r53Menu_==="function")r53Menu_();menuPronto=1;}';
 const projeto = {files: [{name: 'Codigo', type: 'SERVER_JS', source: original},
   {name: 'Paleta', type: 'SERVER_JS', source: '// cores já resolvidas'},
   {name: 'appsscript', type: 'JSON', source: '{"timeZone":"America/Sao_Paulo"}'}]};
 const p = preparar(projeto);
 assert(p.files[0].source.startsWith(NOVO));
 assert(p.files[0].source.endsWith(ENTRADA));
+assert.strictEqual(p.files[0].source.split(ABRIR_NOVO).length, 2);
 assert.strictEqual(projeto.files[0].source, original);
 assert.deepStrictEqual(p.files.slice(1, 3), projeto.files.slice(1));
 // Fonte pública histórica, sem dados/credenciais; mantém o teste de atualização
@@ -117,7 +119,7 @@ function ambiente(op = {}) {
       getRow: () => l, getLastRow: () => l, getColumn: () => c, getLastColumn: () => c}};
   }
   return {ctx, ss, props, grav, livro, logs, eventos, evento, emissao, hoje,
-    executar: e => ctx.onEdit(e || evento()),
+    executar: e => ctx.onEdit(e || evento()), abrir: () => ctx.onOpen({}),
     falhar: k => { falha = k; }, rota: r => { rota = r; }, duracao: n => { duracaoEdicao = n; },
     leituras: () => leituras, estado: () => JSON.parse(estado), travado: () => travado,
     commits: () => commits, tempo: () => relogio};
@@ -134,6 +136,22 @@ function conferir(a) {
   assert(a.grav['cfg O48']); assert(a.grav['cfg O69:O72']);
 }
 let casos = 0;
+{
+  // Abertura: fecha os dois períodos sem edição nenhuma; a segunda abertura não lê a planilha.
+  const a = ambiente();
+  a.abrir(); conferir(a);
+  assert.strictEqual(a.eventos.length, 0);
+  const lidas = a.leituras(); a.abrir();
+  assert.strictEqual(a.leituras(), lidas); assert.strictEqual(a.livro.length, 2);
+  assert(a.logs.some(l => l.startsWith('R53_ABRIR ') && JSON.parse(l.slice(10)).fechou === true));
+  casos += 2;
+}
+{
+  // Rotina instalável ativa: a abertura não fecha nada.
+  const a = ambiente({instalavel: true});
+  a.abrir(); assert.strictEqual(a.livro.length, 0); assert.strictEqual(a.leituras(), 0);
+  casos++;
+}
 {
   const a = ambiente({flushMs: 14000}), e = a.evento();
   assert.strictEqual(a.executar(e), 'XP'); conferir(a);

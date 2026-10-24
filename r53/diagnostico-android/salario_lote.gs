@@ -59,7 +59,7 @@ function prepararSalarioLote() {
   sh.getRange(2, 13, R53_SAL_FORMULAS_.length, 1).setValues(R53_SAL_FORMULAS_.map(function (l) { return [l[0]]; }));
   sh.getRange(2, 14, R53_SAL_FORMULAS_.length, 1).setFormulas(R53_SAL_FORMULAS_.map(function (l) { return [l[1]]; }));
   if (PropertiesService.getScriptProperties().getProperty('salario_edicao') !== ScriptApp.getScriptId())
-    ss.getSheetByName(SALARIO_.config).getRange('O74').setValue('Na primeira edição após o vencimento');
+    ss.getSheetByName(SALARIO_.config).getRange('O74').setValue('Ao abrir a ficha após o vencimento');
   PropertiesService.getDocumentProperties().deleteProperty(R53_SAL_PROP_);
   console.log('SAL coluna de leitura pronta em DADOS_SALARIOS!M1:N' + (R53_SAL_FORMULAS_.length + 1));
 }
@@ -78,10 +78,24 @@ function r53SalarioLote_(e) {
   var t0 = Date.now(), r = e.range, props = PropertiesService.getDocumentProperties();
   if (r.getSheet().getName() === 'CARTEIRA' && r.getA1Notation() === 'C27') return false;
   if (r53SalarioAreaPropria_(r)) { props.deleteProperty(R53_SAL_PROP_); return false; }
+  return r53SalarioConferir_(e.source || SpreadsheetApp.getActive(), t0, props);
+}
+
+/** Chamado no onOpen. Abrir a ficha não tem edição para atender, então os 30 s ficam livres para o lote
+ * (~10 s medidos). Uma edição nesta ficha já gasta 18–24 s sozinha, e o lote raramente cabe depois dela. */
+function r53SalarioAbrir_() {
+  var t0 = Date.now(), feito = false;
+  try { feito = r53SalarioConferir_(SpreadsheetApp.getActive(), t0, PropertiesService.getDocumentProperties()); }
+  catch (err) { console.log('SAL abertura: ' + err.message); }
+  console.log('R53_ABRIR ' + JSON.stringify({ms: Date.now() - t0, fechou: feito}));
+  return feito;
+}
+
+/** Caminho comum à edição e à abertura: compara datas sem ler a planilha; vencido, fecha sob bloqueio. */
+function r53SalarioConferir_(ss, t0, props) {
   if (PropertiesService.getScriptProperties().getProperty('salario_edicao') === ScriptApp.getScriptId()) return false;
   var hoje = salarioHoje_(), proximo = Number(props.getProperty(R53_SAL_PROP_));
   if (proximo && hoje < proximo && !props.getProperty(R53_SAL_REPARAR_)) return false;
-  var ss = e.source || SpreadsheetApp.getActive();
   var marca = function (o) { console.log('SAL ' + o + ' ' + (Date.now() - t0) + ' ms'); };
   marca('início');
   var lock = LockService.getDocumentLock();
