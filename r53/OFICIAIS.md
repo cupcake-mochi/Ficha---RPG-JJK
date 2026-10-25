@@ -17,7 +17,7 @@ novos precederam a aplicação; os quatro códigos finais foram reabertos e reli
 integralmente iguais ao proposto. Nenhum dado de personagem foi preenchido nas
 oficiais para testar: os ensaios ocorreram em cópias nativas.
 
-- `Codigo.gs`: SHA-256 `618e7882babc6f00c51907d0ee818523604842bcac5e5b462a8301d7e85c8c4e`.
+- `Codigo.gs`: SHA-256 `f664e70a66063fba8fe966506d3e9446ba68e2ed0e0a4b45cc09e49ce7a2d66f`.
 - `EditorR53.gs`: SHA-256 `6cb49d97c49fe93591967b86c79c0435f74c1bf0b34c4a62d004ebb3ec887f81`.
 
 Fontes e pacote conferidos, geração de dados `7f85d740f71c4cb6`. O pacote integral
@@ -28,3 +28,7 @@ salários e correções desta revisão. Não reconstruir nem reaplicar os deltas
 Cobertura, tempos observados e limites: [pente-fino final](diagnostico-android/PENTE-FINO-FINAL-2026-10-25.md).
 Histórico: [Ritual](diagnostico-android/REVISAO-2026-10-25.md) e
 [carga e revisão ampliada](diagnostico-android/REVISAO-NATIVA-2026-10-25.md).
+
+Os rótulos públicos do cabeçalho e do número da carteira usam **1.0**, sem
+acompanhar as revisões do livro. Os metadados técnicos continuam preservados.
+Veja [versão pública](diagnostico-android/VERSAO-PUBLICA-2026-10-25.md).

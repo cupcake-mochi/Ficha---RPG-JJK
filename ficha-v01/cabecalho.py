@@ -22,6 +22,7 @@ Roda logo depois do desenho da mesa (ficha_layout.py) e ANTES do índice (indice
 import json, re
 import indice_ficha as ix
 import ficha_automatica as fa
+from versao_publica import VERSAO_PUBLICA
 
 TINTA, OSSO, FRACO, BLOCO = "FF0A0810", "FFE8DCD4", "FF998BA9", "FF756588"
 MARCA = "呪術"
@@ -50,9 +51,8 @@ def _estilo(layout, nome):
 
 
 def carimbo(sistema="DADOS!$F$1"):
-    """a linha de apoio da FICHA: o nome do sistema e o carimbo de versão, que avisa quando a ficha está atrás do livro"""
-    return (f'={sistema}&" · "&IF(DADOS!$B$1=DADOS!$D$1,"v"&DADOS!$B$1&" · em dia",'
-            f'"⚠ v"&DADOS!$B$1&" · a atual é a v"&DADOS!$D$1)')
+    """Nome do sistema e versão pública; a edição do livro fica nos metadados."""
+    return f'={sistema}&" · v{VERSAO_PUBLICA}"'
 
 
 def quem(layout, aba=""):

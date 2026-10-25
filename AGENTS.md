@@ -1,3 +1,17 @@
+# Versão pública e merge autorizado · 25/10/2026
+
+O usuário autorizou explicitamente integrar este ramo na main nesta etapa.
+Leia `r53/diagnostico-android/VERSAO-PUBLICA-2026-10-25.md`.
+As duas oficiais mostram 1.0 no cabeçalho e no número da carteira, sem o aviso
+sobre a revisão do livro. DADOS/ANALISE conservam os metadados técnicos R53.
+Aplicação incremental concluída após snapshots novos e ensaio de restauração.
+Codigo.gs salvo relido igual nas duas, SHA f664e70a…; EditorR53 inalterado.
+Fontes e duas fórmulas GS ajustadas; pacote conferido, não instalado integralmente.
+Não confundir mudança do rótulo com atualização de regras de uma nova edição.
+As restrições de não mesclar abaixo são o histórico anterior à autorização atual.
+Sem agentes/acionadores/acessos/Office/reconstrução. Sol/High para manutenção
+integrada; Medium para revisão. Não mudar configurações automaticamente.
+
 # Pente-fino final aplicado · 25/10/2026
 
 Leia `r53/diagnostico-android/PENTE-FINO-FINAL-2026-10-25.md` e seu JSON.

@@ -166,9 +166,10 @@ print(f"o nome do sistema na lombada ({_SISTEMA}): {_n_lomb} celula(s) diferente
 # ---------------------------------------------------------------------------------------------
 # A VERSAO NO NUMERO DA CARTEIRA (07/10/2026, o B33). O numero era "Nº M-" + a versao sem o ponto + o nome, do tempo
 # em que a versao era 0.258 e saia "M-0258". Com a versao em 1.0 saia "M-10". O Mizuki: "atualiza la pra 1.0". O numero
-# passa a mostrar a versao como ela e escrita, com o ponto: "Nº M-1.0-KAOR".
+# Desde 25/10/2026 usa a versão pública estável, independente da revisão interna do livro: "Nº M-1.0-KAOR".
 # ---------------------------------------------------------------------------------------------
-VERSAO_SEM_PONTO, VERSAO_COMO_E = 'SUBSTITUTE(DADOS!$B$1,".","")', "DADOS!$B$1"
+from versao_publica import VERSAO_PUBLICA
+VERSAO_SEM_PONTO, VERSAO_COMO_E = 'SUBSTITUTE(DADOS!$B$1,".","")', f'"{VERSAO_PUBLICA}"'
 _n_num = 0
 for _a in LAYOUT["abas"]:
     for _c in _a["celulas"]:
