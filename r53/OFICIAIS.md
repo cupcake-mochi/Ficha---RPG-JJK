@@ -11,10 +11,20 @@ A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são r
 
 ## Estado instalado
 
-Ritual corrigido em ambas: 12 fórmulas auxiliares de DADOS_AM e os dois moldes correspondentes no carregador instalado. Snapshots nativos anteriores preservados em área privada; aplicação incremental, sem reconstrução, acionadores ou alterações de acesso.
+As duas oficiais têm as correções incrementais de Ritual, carga das dez invocações,
+Classes, validação de funções bloqueadas e edição de missões. Snapshots nativos
+novos precederam a aplicação; os quatro códigos finais foram reabertos e relidos
+integralmente iguais ao proposto. Nenhum dado de personagem foi preenchido nas
+oficiais para testar: os ensaios ocorreram em cópias nativas.
 
-O código dos dois carregadores foi reaberto e relido integralmente igual à proposta. A execução de `verificarPacoteR53` concluiu em Era da Revolução (25 abas do pacote, 249 contextos, nenhuma sobra). Em Ciclo Maldito, essa execução manual pediu autorização; foi cancelada para preservar os acessos. Isso não impediu a gravação/releitura das fórmulas e do código.
+- `Codigo.gs`: SHA-256 `618e7882babc6f00c51907d0ee818523604842bcac5e5b462a8301d7e85c8c4e`.
+- `EditorR53.gs`: SHA-256 `6cb49d97c49fe93591967b86c79c0435f74c1bf0b34c4a62d004ebb3ec887f81`.
 
-As fontes GS do Git foram regeneradas, geração `6cdfaf4cca0a1426`. O pacote integral novo **não** substituiu os projetos instalados, preservando as melhorias incrementais anteriores de abertura, cores e salários. O módulo-base instalado continua com geração `e142593fdc5be157`, acompanhado dos incrementos.
+Fontes e pacote conferidos, geração de dados `7f85d740f71c4cb6`. O pacote integral
+novo **não** substituiu os projetos instalados. O módulo-base nativo continua na
+geração `e142593fdc5be157`, acompanhado dos incrementos de abertura, cores,
+salários e correções desta revisão. Não reconstruir nem reaplicar os deltas.
 
-Detalhes e limites: [revisão e aplicação de 25/10](diagnostico-android/REVISAO-2026-10-25.md).
+Cobertura, tempos observados e limites: [pente-fino final](diagnostico-android/PENTE-FINO-FINAL-2026-10-25.md).
+Histórico: [Ritual](diagnostico-android/REVISAO-2026-10-25.md) e
+[carga e revisão ampliada](diagnostico-android/REVISAO-NATIVA-2026-10-25.md).

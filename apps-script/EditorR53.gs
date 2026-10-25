@@ -26,14 +26,14 @@ function r53Amparo_(ss) {
  if(R53_REF_CACHE_.amparo)return R53_REF_CACHE_.amparo;
  var p=R53_EDITOR_.amparo;return R53_REF_CACHE_.amparo=ss.getSheetByName(p.aba).getRange(p.faixa).getValues()[0];
 }
-function r53Porta_(ss,g,key) {if(key!=='dano'&&g.classes.length>1&&g.classes[0]===0&&r53Ativa_(ss,g)===0)return false;var f=g.portas[key]||'FALSE';if(f==='TRUE')return true;if(f==='FALSE')return false;return r53Amparo_(ss)[g.entidade===null||typeof g.entidade==='undefined'?0:g.entidade+1]!=='Fechada';}
+function r53Porta_(ss,g,key,cl) {if(key!=='dano'&&g.classes.length>1&&g.classes[0]===0&&(cl===undefined?r53Ativa_(ss,g):cl)===0)return false;var f=g.portas[key]||'FALSE';if(f==='TRUE')return true;if(f==='FALSE')return false;return r53Amparo_(ss)[g.entidade===null||typeof g.entidade==='undefined'?0:g.entidade+1]!=='Fechada';}
 function r53Gravar_(ss,g,cl,values) {ss.getSheetByName(R53_EDITOR_.storage).getRange(g.editor+2,r53Indice_(g,cl),values.length,1).setValues(values.map(function(v){return [r53Literal_(v)];}));}
 function r53ValoresCartao_(ss,g) {
  var sh=ss.getSheetByName(g.aba),a=g.area_editor,m=sh.getRange(a[0],a[1],a[2]-a[0]+1,a[3]-a[1]+1).getValues();
- return function(pos){var p=r53Pos_(pos);return m[p[0]-a[0]][p[1]-a[1]];};
+ return function(pos,col){var p=col===undefined?r53Pos_(pos):[pos,col];return m[p[0]-a[0]][p[1]-a[1]];};
 }
-function r53SalvarCartao_(ss,g,cl,edited) {
- var get=r53ValoresCartao_(ss,g),values=r53LerVersao_(ss,g,cl),initial=values.slice();
+function r53SalvarCartao_(ss,g,cl,edited,snapshot,stored) {
+ var get=snapshot||r53ValoresCartao_(ss,g),values=stored?stored.slice():r53LerVersao_(ss,g,cl),initial=values.slice();
  Object.keys(g.entradas_diretas).forEach(function(k){
    if(/^usar_/.test(k)||/^pontos[123]$/.test(k))return;
    var v=get(g.entradas_diretas[k]),idx=r53Campo_(k);if(idx<0)return;
@@ -41,7 +41,7 @@ function r53SalvarCartao_(ss,g,cl,edited) {
    if(k==='fragil_pago'&&(typeof v!=='number'||v<0||v%1))throw Error('Frágil precisa de um número inteiro não negativo.');values[idx]=v;
  });
  ['dano','cura','vt'].forEach(function(key,i){
-   var pos=g.funcoes_diretas[key],open=r53Porta_(ss,g,key);if(!pos||!open)return;
+   var pos=g.funcoes_diretas[key],open=r53Porta_(ss,g,key,cl);if(!pos||!open)return;
    var v=get(pos);
    if(g.fixa){if(typeof v!=='boolean')throw Error('Use a caixa de seleção da função.');values[r53Campo_('funcao'+(i+1))]=v?['Dano','Cura','PV temporários'][i]:'';values[r53Campo_('pontos'+(i+1))]=0;}
    else {if(typeof v!=='number'||!isFinite(v)||v<0||v%1||(g.classes.length>1&&g.classes[0]===0&&cl===0&&v>1))throw Error('Distribua pontos inteiros; na Classe 0 use 0 ou 1 para escolher dano.');if(v!==initial[r53Campo_('pontos'+(i+1))]||(edited&&r53Atinge_(edited,pos)))values[r53Campo_('funcao'+(i+1))]=v>0?['Dano','Cura','PV temporários'][i]:'';values[r53Campo_('pontos'+(i+1))]=v;}
@@ -52,16 +52,20 @@ function r53SalvarCartao_(ss,g,cl,edited) {
  values[r53Campo_('r1_valida')]=true;values[r53Campo_('r2_valida')]=true;
  r53Gravar_(ss,g,cl,values);return values;
 }
-function r53Herdar_(ss,g,cl,from) {
- var vals=r53LerVersao_(ss,g,cl);
+function r53Herdar_(ss,g,cl,from,defer,known) {
+ var vals=known||r53LerVersao_(ss,g,cl);
  var empty=R53_EDITOR_.campos.every(function(f,i){return vals[i]===R53_EDITOR_.defaults[f[0]];});
- if(!empty||!from)return;
+ if(!empty||!from)return defer?{values:vals,herdar:false}:undefined;
  vals=R53_EDITOR_.campos.map(function(f,i){return /^(preparada|pontos[123]|migracao)$/.test(f[0])?R53_EDITOR_.defaults[f[0]]:from[i];});
+ if(defer)return {values:vals,herdar:true};
  r53Gravar_(ss,g,cl,vals);
 }
-function r53Mostrar_(ss,g,cl) {
- var vals=r53LerVersao_(ss,g,cl),sh=ss.getSheetByName(g.aba),a=g.area_escrita,grid=null;
- if(a){var range=sh.getRange(a[0],a[1],a[2]-a[0]+1,a[3]-a[1]+1),v=range.getValues(),f=range.getFormulas();grid=v.map(function(row,y){return row.map(function(x,z){return f[y][z]||r53Literal_(x);});});}
+function r53Mostrar_(ss,g,cl,state) {
+ var vals=state?state.values:r53LerVersao_(ss,g,cl),sh=ss.getSheetByName(g.aba),a=g.area_escrita,grid=null;
+ if(a){var range=sh.getRange(a[0],a[1],a[2]-a[0]+1,a[3]-a[1]+1),v=state&&state.card?Array.from({length:a[2]-a[0]+1},function(_,i){return Array.from({length:a[3]-a[1]+1},function(_,j){return state.card(a[0]+i,a[1]+j);});}):range.getValues(),f=range.getFormulas();grid=v.map(function(row,y){return row.map(function(x,z){return f[y][z]||r53Literal_(x);});});}
+ // Read gates and prepare validations before writing either storage or UI.
+ // A read after setValues waits for the entire workbook to recalculate.
+ var rules=r53RegrasCartao_(ss,g);
  Object.keys(g.entradas_diretas).forEach(function(k){
    var pos=g.entradas_diretas[k],i=r53Campo_(k),v=i<0?false:vals[i];
    if(/^usar_/.test(k)){var key=k.slice(5),n=['dano','cura','vt'].indexOf(key)+1;v=vals[r53Campo_('funcao'+n)]===['Dano','Cura','PV temporários'][n-1];}
@@ -69,19 +73,24 @@ function r53Mostrar_(ss,g,cl) {
    if(/^usar_/.test(k)&&!r53Porta_(ss,g,k.slice(5)))v='—';
    if(grid){var p=r53Pos_(pos);grid[p[0]-a[0]][p[1]-a[1]]=r53Literal_(v);}else sh.getRange(pos).setValue(r53Literal_(v));
  });
+ // Fixed cards can switch between checkbox and blocked dash. Install the
+ // destination rule before writing, otherwise Sheets rejects the dash.
+ if(g.fixa)rules.forEach(function(item){if(item)sh.getRange(item.pos).setDataValidation(item.rule);});
+ if(state&&state.herdar)r53Gravar_(ss,g,cl,vals);
  if(grid)g.gravacoes_diretas.forEach(function(b){sh.getRange(b[0],b[1],b[2]-b[0]+1,b[3]-b[1]+1).setValues(grid.slice(b[0]-a[0],b[2]-a[0]+1).map(function(row){return row.slice(b[1]-a[1],b[3]-a[1]+1);}));});
- r53BloqueiosCartao_(ss,g);
+ r53BloqueiosCartao_(ss,g,rules,!!g.fixa);
  PropertiesService.getDocumentProperties().setProperty('r53_classe_visivel_'+g.id,String(cl));
 }
-function r53BloqueiosCartao_(ss,g) {
- var sh=ss.getSheetByName(g.aba);
- ['dano','cura','vt'].forEach(function(key,i){var pos=g.funcoes_diretas[key];if(!pos)return;
-   var open=r53Porta_(ss,g,key),cell=sh.getRange(pos),rule;
-   if(!open)cell.setValue('—');
+function r53RegrasCartao_(ss,g) {
+ return ['dano','cura','vt'].map(function(key,i){var pos=g.funcoes_diretas[key];if(!pos)return null;
+   var open=r53Porta_(ss,g,key),rule;
    if(g.fixa)rule=open?SpreadsheetApp.newDataValidation().requireCheckbox().setAllowInvalid(false).build():SpreadsheetApp.newDataValidation().requireValueInList(['—'],false).setAllowInvalid(false).build();
    else {var k='pontos'+(i+1),formula='='+g.menus_diretos[k].formula;rule=SpreadsheetApp.newDataValidation().requireFormulaSatisfied(r53Formula_(formula,ss)).setAllowInvalid(false).build();}
-   cell.setDataValidation(rule);
+   return {pos:pos,open:open,rule:rule};
  });
+}
+function r53BloqueiosCartao_(ss,g,rules,validationsReady) {
+ var sh=ss.getSheetByName(g.aba);(rules||r53RegrasCartao_(ss,g)).forEach(function(item){if(!item)return;var cell=sh.getRange(item.pos);if(!validationsReady)cell.setDataValidation(item.rule);if(!item.open)cell.setValue('—');});
 }
 function r53SincronizarFamilias_(ss) {
  var current=r53Amparo_(ss),props=PropertiesService.getDocumentProperties(),raw=props.getProperty('r53_amparo_direto'),prev=raw?JSON.parse(raw):[];
@@ -126,24 +135,37 @@ function r53Editar_(e) {
      if(marker===null&&isFinite(old)&&g.classes.indexOf(old)>=0)props.setProperty(key,String(old));
      if(next!==r53Ativa_(ss,g))return; // A later Class selection is already visible.
      r53Coluna_(ss,g,next);
-     var previous=null;
+     // Read all seven small versions together, before any inherited state is written.
+     var matrix=ss.getSheetByName(R53_EDITOR_.storage).getRange(g.editor+2,2,R53_EDITOR_.campos.length,g.classes.length).getValues();
+     var version=function(cl){var col=r53Indice_(g,cl)-2;return matrix.map(function(row){return row[col];});};
+     var previous=null,get=r53ValoresCartao_(ss,g);
      if(isFinite(old)&&old!==next&&g.classes.indexOf(old)>=0){
-       previous=r53LerVersao_(ss,g,old);var get=r53ValoresCartao_(ss,g),dirty=Object.keys(g.entradas_diretas).some(function(k){var x=get(g.entradas_diretas[k]);if(x==='—')return false;var i=r53Campo_(k);if(/^usar_/.test(k)){var n=['dano','cura','vt'].indexOf(k.slice(5))+1;return x!==(previous[r53Campo_('funcao'+n)]===['Dano','Cura','PV temporários'][n-1]);}return i>=0&&x!==previous[i];});
-       if(dirty){sh.getRange(g.cel.classe).setValue(old);r53SalvarCartao_(ss,g,old,range);ss.toast('Uma edição ainda estava sendo salva. Ela foi preservada na Classe '+old+'. Escolha novamente a outra Classe.');return;}
+       previous=version(old);var dirty=Object.keys(g.entradas_diretas).some(function(k){var x=get(g.entradas_diretas[k]);if(x==='—')return false;var i=r53Campo_(k);if(/^usar_/.test(k)){var n=['dano','cura','vt'].indexOf(k.slice(5))+1;return x!==(previous[r53Campo_('funcao'+n)]===['Dano','Cura','PV temporários'][n-1]);}return i>=0&&x!==previous[i];});
+       if(dirty){r53Amparo_(ss);sh.getRange(g.cel.classe).setValue(old);r53SalvarCartao_(ss,g,old,range,get,previous);ss.toast('Uma edição ainda estava sendo salva. Ela foi preservada na Classe '+old+'. Escolha novamente a outra Classe.');return;}
      }
-     r53Herdar_(ss,g,next,previous);r53Mostrar_(ss,g,next);return;
+     var state=r53Herdar_(ss,g,next,previous,true,version(next));state.card=get;r53Mostrar_(ss,g,next,state);return;
    }
-   Object.keys(replay[gi]).forEach(function(k){sh.getRange(g.entradas_diretas[k]).setValue(r53Literal_(replay[gi][k]));});
-   if(g.classes.length>1){var props=PropertiesService.getDocumentProperties(),shown=props.getProperty('r53_classe_visivel_'+g.id);if(shown!==null&&Number(shown)!==r53Ativa_(ss,g)){sh.getRange(g.cel.classe).setValue(Number(shown));ss.toast('A edição foi preservada na Classe '+shown+'. Aguarde o salvamento e selecione a outra Classe novamente.');}}
+   // Replay queued input in memory; reading after writing each UI cell forced
+   // several workbook recalculations before its storage could be saved.
+   var snapshot=r53ValoresCartao_(ss,g),updates={},cl=r53Ativa_(ss,g),classRollback=false;
+   var get=function(pos,col){var key=col===undefined?pos:null;return key&&Object.prototype.hasOwnProperty.call(updates,key)?updates[key]:snapshot(pos,col);};
+   Object.keys(replay[gi]).forEach(function(k){updates[g.entradas_diretas[k]]=replay[gi][k];});
+   if(g.classes.length>1){var props=PropertiesService.getDocumentProperties(),shown=props.getProperty('r53_classe_visivel_'+g.id);if(shown!==null&&Number(shown)!==cl){cl=Number(shown);classRollback=true;}}
    var changed=Object.keys(g.entradas_diretas).filter(function(k){return r53Atinge_(range,g.entradas_diretas[k]);});
-   if(g.fixa)changed.filter(function(k){return /^usar_/.test(k)&&sh.getRange(g.entradas_diretas[k]).getValue()===true;}).forEach(function(k){
-     Object.keys(g.entradas_diretas).filter(function(other){return /^usar_/.test(other)&&other!==k&&r53Porta_(ss,g,other.slice(5));}).forEach(function(other){sh.getRange(g.entradas_diretas[other]).setValue(false);});
+   if(g.fixa)changed.filter(function(k){return /^usar_/.test(k)&&get(g.entradas_diretas[k])===true;}).forEach(function(k){
+     Object.keys(g.entradas_diretas).filter(function(other){return /^usar_/.test(other)&&other!==k&&r53Porta_(ss,g,other.slice(5),cl);}).forEach(function(other){updates[g.entradas_diretas[other]]=false;});
    });
-   var blocked=false;
-   ['dano','cura','vt'].forEach(function(key){var pos=g.funcoes_diretas[key];if(pos&&r53Atinge_(range,pos)&&!r53Porta_(ss,g,key)){sh.getRange(pos).setValue('—');blocked=true;}});
+   var blocked=false,rules=[];
+   ['dano','cura','vt'].forEach(function(key){var pos=g.funcoes_diretas[key];if(!pos||!r53Atinge_(range,pos))return;var open=r53Porta_(ss,g,key,cl);if(!open){updates[pos]='—';blocked=true;}if(g.fixa)rules.push({pos:pos,rule:open?SpreadsheetApp.newDataValidation().requireCheckbox().setAllowInvalid(false).build():SpreadsheetApp.newDataValidation().requireValueInList(['—'],false).setAllowInvalid(false).build()});});
+   var formulas=Object.keys(g.formulas).filter(function(pos){return r53Atinge_(range,pos);}).map(function(pos){return {pos:pos,formula:r53Formula_(g.formulas[pos],ss)};});
+   if(changed.length||r53Atinge_(range,g.cel.nome))r53SalvarCartao_(ss,g,cl,range,get);
+   // All reads have finished. Apply only the queued cells, leaving unrelated
+   // player input, formulas, notes and validations intact.
+   rules.forEach(function(item){sh.getRange(item.pos).setDataValidation(item.rule);});
+   Object.keys(updates).forEach(function(pos){sh.getRange(pos).setValue(r53Literal_(updates[pos]));});
+   if(classRollback){sh.getRange(g.cel.classe).setValue(cl);ss.toast('A edição foi preservada na Classe '+cl+'. Aguarde o salvamento e selecione a outra Classe novamente.');}
    if(blocked)ss.toast('Função indisponível nesta modalidade ou com Amparo Fechada.');
-   if(changed.length||r53Atinge_(range,g.cel.nome))r53SalvarCartao_(ss,g,r53Ativa_(ss,g),range);
-   Object.keys(g.formulas).forEach(function(pos){if(r53Atinge_(range,pos))sh.getRange(pos).setFormula(r53Formula_(g.formulas[pos],ss));});
+   formulas.forEach(function(item){sh.getRange(item.pos).setFormula(item.formula);});
   });
   return gs.some(function(g){return r53Atinge_(range,g.cel.nome)||Object.keys(g.entradas_diretas).some(function(k){return r53Atinge_(range,g.entradas_diretas[k]);})||Object.keys(g.formulas).some(function(p){return r53Atinge_(range,p);})||(g.cel.classe&&r53Atinge_(range,g.cel.classe));});
  } catch(err) {

@@ -439,6 +439,7 @@ function notasDosTipos_(e) {
 function onEdit(e) {
   var inicio = e && typeof e.r53Inicio_ === 'number' ? e.r53Inicio_ : Date.now();
   if (!e || !e.range) return;
+  if (typeof salarioIntegrarMissao_ === 'function' && salarioIntegrarMissao_(e,onEdit)) return;
   if (typeof salarioEditar_ === 'function' && salarioEditar_(e)) return;
   var aba = e.range.getSheet().getName();
   // A troca de paleta voltou pra cá em 25/09/2026, em passos que cabem nos 30 segundos, pra

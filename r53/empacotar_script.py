@@ -72,7 +72,7 @@ function verificarPacoteR53() {
 '''
  for n in public:
   if n=='onEdit':
-   bootstrap+='function onEdit(e){if(e)e.r53Inicio_=Date.now();if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(e&&e.range&&e.range.getSheet().getName()==="CARTEIRA"&&e.range.getA1Notation()==="C27")return typeof r53PaletaLeve_==="function" ? r53PaletaLeve_().trocar(e) : r53Modulo_().onEdit(e);if(typeof r53Editar_==="function" && r53Editar_(e))return;return r53Modulo_().onEdit(e); }\n'
+   bootstrap+='function onEdit(e){if(e)e.r53Inicio_=Date.now();if(typeof salarioIntegrarMissao_==="function"&&salarioIntegrarMissao_(e,function(ev){return r53Modulo_().onEdit(ev);}))return;if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(e&&e.range&&e.range.getSheet().getName()==="CARTEIRA"&&e.range.getA1Notation()==="C27")return typeof r53PaletaLeve_==="function" ? r53PaletaLeve_().trocar(e) : r53Modulo_().onEdit(e);if(typeof r53Editar_==="function" && r53Editar_(e))return;return r53Modulo_().onEdit(e); }\n'
   elif n=='onOpen':
    bootstrap+='function onOpen(e){e=e||{};e.r53Inicio_=Date.now();if(typeof r53PaletaLeve_!=="function")return r53Modulo_().onOpen(e);if(typeof salarioAbrir_==="function")salarioAbrir_();if(typeof r53Menu_==="function")r53Menu_();if(PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);}\n'
   elif n!='onSelectionChange':bootstrap+='function '+n+'(){return r53Modulo_()['+json.dumps(n)+'].apply(this,arguments);}\n'

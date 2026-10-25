@@ -1,12 +1,12 @@
 'use strict';
-const fs=require('fs'),vm=require('vm'),assert=require('assert');let checks=0;
+const fs=require('fs'),vm=require('vm'),assert=require('assert');let checks=0;const io=[];let enforceValidation=false;
 function eq(a,b){assert.deepStrictEqual(a,b);checks++;}
 function pos(a){let m=/^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(a.replace(/\$/g,''));assert(m,a);const col=s=>[...s].reduce((a,c)=>a*26+c.charCodeAt(0)-64,0);return [+m[2],col(m[1]),+(m[4]||m[2]),col(m[3]||m[1])];}
 class Range{
  constructor(sh,r,c,nr=1,nc=1){Object.assign(this,{sh,r,c,nr,nc});}getSheet(){return this.sh;}getRow(){return this.r;}getColumn(){return this.c;}getLastRow(){return this.r+this.nr-1;}getLastColumn(){return this.c+this.nc-1;}getNumRows(){return this.nr;}getNumColumns(){return this.nc;}
- getValues(){return Array.from({length:this.nr},(_,i)=>Array.from({length:this.nc},(_,j)=>this.sh.map.get(`${this.r+i},${this.c+j}`)??''));}getValue(){return this.getValues()[0][0];}
+ getValues(){io.push('read:'+this.sh.n);return Array.from({length:this.nr},(_,i)=>Array.from({length:this.nc},(_,j)=>this.sh.map.get(`${this.r+i},${this.c+j}`)??''));}getValue(){return this.getValues()[0][0];}
  getFormulas(){return this.getValues().map(r=>r.map(v=>typeof v==='string'&&v.startsWith('=')?v:''));}
- setValues(v){v.forEach((row,i)=>row.forEach((v,j)=>this.sh.map.set(`${this.r+i},${this.c+j}`,typeof v==='string'&&v.startsWith("'")?v.slice(1):v)));return this;}setValue(v){return this.setValues([[v]]);}setFormula(v){return this.setValue(v);}setDataValidation(v){this.sh.dv.set(`${this.r},${this.c}`,v);return this;}clearDataValidations(){this.sh.dv.delete(`${this.r},${this.c}`);return this;}
+ setValues(v){io.push('write:'+this.sh.n);v.forEach((row,i)=>row.forEach((v,j)=>{const key=`${this.r+i},${this.c+j}`,dv=this.sh.dv.get(key);if(enforceValidation&&dv&&dv.setAllowInvalid_args[0]===false){if(dv.requireCheckbox_args)assert.strictEqual(typeof v,'boolean','checkbox rejects '+v);if(dv.requireValueInList_args)assert(dv.requireValueInList_args[0].includes(v),'blocked field rejects '+v);}this.sh.map.set(key,typeof v==='string'&&v.startsWith("'")?v.slice(1):v);}));return this;}setValue(v){return this.setValues([[v]]);}setFormula(v){return this.setValue(v);}setDataValidation(v){this.sh.dv.set(`${this.r},${this.c}`,v);return this;}clearDataValidations(){this.sh.dv.delete(`${this.r},${this.c}`);return this;}
 }
 class Sheet{
  constructor(n){this.n=n;this.map=new Map;this.dv=new Map;}getName(){return this.n;}getRange(a,c,nr,nc){if(typeof a==='string'){let[r,c,rr,cc]=pos(a);return new Range(this,r,c,rr-r+1,cc-c+1);}return new Range(this,a,c,nr,nc);}
@@ -31,6 +31,13 @@ const first=cfg.contextos.find(g=>g.id==='feitico.1'),sh=ss.getSheetByName(first
 function read(g,cl,k){return box.r53LerVersao_(ss,g,cl)[fields.indexOf(k)];}
 function edit(g,p,v,old){let r=ss.getSheetByName(g.aba).getRange(p);r.setValue(v);return box.r53Editar_({range:r,source:ss,oldValue:old});}
 function cl(g,next,old){eq(edit(g,g.cel.classe,next,String(old)),true);}
+// Changing to a new version must finish all reads before its first write.
+// In Sheets a read after writing storage forces a full recalculation; the old
+// path timed out at 30.707 s and left the previous Class's points visible.
+io.length=0;cl(first,2,1);
+const firstWrite=io.findIndex(x=>x==='write:'+cfg.storage);
+eq(firstWrite>=0,true);eq(io.slice(firstWrite).some(x=>x.startsWith('read:')),false);
+cl(first,1,2);
 cl(first,3,1);edit(first,first.funcoes_diretas.dano,3);edit(first,first.funcoes_diretas.cura,2);eq(read(first,3,'pontos1'),3);eq(read(first,3,'pontos2'),2);
 cl(first,4,3);eq(read(first,4,'preparada'),false);eq(sh.getRange(first.funcoes_diretas.dano).getValue(),0);edit(first,first.funcoes_diretas.dano,4);cl(first,3,4);eq(sh.getRange(first.funcoes_diretas.dano).getValue(),3);eq(sh.getRange(first.funcoes_diretas.cura).getValue(),2);eq(read(first,4,'pontos1'),4);
 edit(first,first.funcoes_diretas.dano,-1);eq(sh.getRange(first.funcoes_diretas.dano).getValue(),3);edit(first,first.funcoes_diretas.dano,1.5);eq(read(first,3,'pontos1'),3);edit(first,first.funcoes_diretas.dano,'=1+1');eq(read(first,3,'pontos1'),3);
@@ -40,12 +47,27 @@ const entity=cfg.contextos.find(g=>g.id==='entidade.1.esp.1');cl(entity,3,1);edi
 const maximum=cfg.contextos.find(g=>g.id==='maxima.1');edit(maximum,maximum.funcoes_diretas.dano,true);edit(maximum,maximum.funcoes_diretas.cura,true);eq(ss.getSheetByName(maximum.aba).getRange(maximum.funcoes_diretas.dano).getValue(),false);eq(read(maximum,7,'funcao2'),'Cura');eq(ss.getSheetByName(maximum.aba).getRange(maximum.funcoes_diretas.vt).getValue(),'—');
 const zero=cfg.contextos.find(g=>g.id==='classe0.1');edit(zero,zero.funcoes_diretas.dano,true);eq(read(zero,0,'funcao1'),'Dano');
 const lib=cfg.contextos.find(g=>g.id==='entidade.1.liberacao.1');edit(lib,lib.funcoes_diretas.dano,4);eq(read(lib,3,'pontos1'),4);eq(Object.keys(lib.entradas_diretas).includes('m4'),true);eq(ss.getSheetByName(lib.aba).getRange(lib.funcoes_diretas.cura).getValue(),'—');
+// Native Sheets rejects a blocked dash under an existing strict checkbox rule.
+const lastMaximum=cfg.contextos.find(g=>g.id==='entidade.12.maxima.1');
+const blocked=ss.getSheetByName(lastMaximum.aba).getRange(lastMaximum.funcoes_diretas.vt);
+blocked.clearDataValidations().setValue(false).setDataValidation(box.SpreadsheetApp.newDataValidation().requireCheckbox().setAllowInvalid(false).build());
+enforceValidation=true;box.r53Mostrar_(ss,lastMaximum,7);enforceValidation=false;
+eq(blocked.getValue(),'—');eq(blocked.sh.dv.get(`${blocked.r},${blocked.c}`).requireValueInList_args[0][0],'—');
+// Point/checkbox edits must also complete every read before storage is written.
+for(const [g,value] of [[first,6],[lastMaximum,true]]){
+ io.length=0;edit(g,g.funcoes_diretas.dano,value);
+ const savedAt=io.findIndex(x=>x==='write:'+cfg.storage);
+ eq(savedAt>=0,true);eq(io.slice(savedAt).some(x=>x.startsWith('read:')),false);
+}
 // A visit to an unedited Class does not publish a draft version.
 cl(first,5,3);cl(first,3,5);eq(read(first,5,'preparada'),false);
 const computed=Object.keys(first.formulas)[0];edit(first,computed,999);eq(sh.getRange(computed).getValue(),first.formulas[computed]);
 cl(first,7,3);cl(first,8,7);eq(sh.getRange(first.cel.classe).getValue(),7);eq(/openById|UrlFetchApp|DriveApp|ScriptApp\.newTrigger/.test(fs.readFileSync(process.argv[2]||'apps-script/EditorR53.gs','utf8')),false);
 // A Class switch cannot silently replace input still waiting to be saved.
-cl(first,3,7);sh.getRange(first.funcoes_diretas.dano).setValue(5);cl(first,4,3);
+cl(first,3,7);sh.getRange(first.funcoes_diretas.dano).setValue(5);io.length=0;cl(first,4,3);
+// First write is the simulated user selection; second is the runtime rollback.
+const rollback=io.map((x,i)=>x==='write:'+first.aba?i:-1).filter(i=>i>=0)[1];
+eq(typeof rollback,'number');eq(io.slice(rollback).some(x=>x.startsWith('read:')),false);
 eq(sh.getRange(first.cel.classe).getValue(),3);eq(read(first,3,'pontos1'),5);
 eq(toasts.some(t=>t.includes('preservada na Classe')),true);
 cl(first,4,3);eq(sh.getRange(first.cel.classe).getValue(),4);

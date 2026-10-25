@@ -1,3 +1,23 @@
+# Pente-fino final aplicado · 25/10/2026
+
+Leia `r53/diagnostico-android/PENTE-FINO-FINAL-2026-10-25.md` e seu JSON.
+Duas oficiais atualizadas incrementalmente, após snapshots novos e ensaio nativo.
+Corrigidos: timeout/estado na troca de Classe, validação checkbox/traço e prazo
+na edição de missões. Apenas Codigo.gs e EditorR53.gs; quatro releituras após
+reabrir os projetos iguais à proposta. SHA Codigo 618e7882…, Editor 6cb49d97….
+Ritual/carga/salário/cores/escape ANALISE preservados. Não reaplicar o delta.
+22 cenários custom/campanha/62 verificações; 2.453 verificações dos 249 contextos;
+missões, emissão, dinheiro, períodos, modalidades e barras positivas aprovados.
+Evento simples final: missão 27,781 s, colagem 19,531 s. Latência Google varia;
+não afirmar garantia universal de 30 s nem ausência absoluta de defeitos.
+562 verificações locais do editor e 2.709 das missões; pacote conferido.
+Geração de dados 7f85d740f71c4cb6; pacote integral NÃO instalado.
+As pendências de autorização/ensaios salariais das entradas abaixo são históricas:
+a QA autorizada executou e a cobertura final está no relatório acima.
+Evidências privadas em `nuvem-b47/saidas/pente-fino-20261025/`, fora do Git.
+Sem agentes, acionadores, acessos, Office, reconstrução ou main. Sol/High para
+nova manutenção integrada; Medium para revisar a entrega. Não mudar configurações.
+
 # Revisão nativa ampliada e carga das invocações · 25/10/2026
 
 Leia `r53/diagnostico-android/REVISAO-NATIVA-2026-10-25.md` e seu JSON.
