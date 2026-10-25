@@ -1,5 +1,7 @@
 # Ficha digital do Projeto M
 
+**Modelos oficiais atuais:** [Era da Revolução e Ciclo Maldito — links confirmados em 25/10/2026](r53/OFICIAIS.md). Ambas receberam a correção de Ritual. [Resultados da revisão aprofundada](r53/diagnostico-android/REVISAO-2026-10-25.md).
+
 A ficha de personagem digital do **Projeto M**, o sistema de RPG de mesa de Jujutsu Kaisen da guilda — base d20, vários mestres, e personagem que atravessa mesas.
 
 Este repositório guarda **a especificação, as decisões e os validadores**. A ficha em si vai para o Google Sheets.

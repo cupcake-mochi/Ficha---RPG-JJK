@@ -1,5 +1,7 @@
 # Ficha definitiva (24/10/2026)
 
+> Atualização de 25/10: o usuário confirmou dois modelos oficiais. Consulte [OFICIAIS.md](../OFICIAIS.md) para os links atuais e a aplicação de Ritual. As informações abaixo registram a adoção anterior.
+
 Base: cópia nova da Candidata A (`1427V3IO_RSToQcsO1ZgAeArXoT_PdoHukN9jAVkBfy8`), escolhida pelo Mizuki. A Original e a
 Candidata A ficaram intactas.
 

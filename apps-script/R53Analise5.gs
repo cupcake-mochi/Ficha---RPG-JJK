@@ -358,7 +358,7 @@ var VALORES_R53_ANALISE_5_ = [
       [18353,2,"=IF('MONTAGENS'!C9051,\"[\"&IF('MONTAGENS'!C9050=INT('MONTAGENS'!C9050),TEXT('MONTAGENS'!C9050,\"0\"),SUBSTITUTE(TEXT('MONTAGENS'!C9050,\"0.###############\"),\",\",\".\"))&\",\"&TEXTJOIN(\",\",FALSE,MAP('MONTAGENS'!C9051:C9083,LAMBDA(item,IF(ISLOGICAL(item),IF(item,\"true\",\"false\"),IF(ISNUMBER(item),IF(item=INT(item),TEXT(item,\"0\"),SUBSTITUTE(TEXT(item,\"0.###############\"),\",\",\".\")),CHAR(34)&SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(item&\"\",CHAR(92),CHAR(92)&CHAR(92)),CHAR(34),CHAR(92)&CHAR(34)),CHAR(10),CHAR(92)&\"n\"),CHAR(13),CHAR(92)&\"r\"),CHAR(9),CHAR(92)&\"t\")&CHAR(34))))))&\"]\",\"\")",0],[18353,3,"=\"'MONTAGENS'!C9050\"",0],[18353,4,"entrada",0],[18354,1,"r53.entidade.10.liberacao.2.versao.5",0],[18354,2,"=IF('MONTAGENS'!D9051,\"[\"&IF('MONTAGENS'!D9050=INT('MONTAGENS'!D9050),TEXT('MONTAGENS'!D9050,\"0\"),SUBSTITUTE(TEXT('MONTAGENS'!D9050,\"0.###############\"),\",\",\".\"))&\",\"&TEXTJOIN(\",\",FALSE,MAP('MONTAGENS'!D9051:D9083,LAMBDA(item,IF(ISLOGICAL(item),IF(item,\"true\",\"false\"),IF(ISNUMBER(item),IF(item=INT(item),TEXT(item,\"0\"),SUBSTITUTE(TEXT(item,\"0.###############\"),\",\",\".\")),CHAR(34)&SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(item&\"\",CHAR(92),CHAR(92)&CHAR(92)),CHAR(34),CHAR(92)&CHAR(34)),CHAR(10),CHAR(92)&\"n\"),CHAR(13),CHAR(92)&\"r\"),CHAR(9),CHAR(92)&\"t\")&CHAR(34))))))&\"]\",\"\")",0],[18354,3,"=\"'MONTAGENS'!D9050\"",0],[18354,4,"entrada",0]
     ],
     "notas":[],
-    "geracao":"7477944d1a09c3ed",
+    "geracao":"6cdfaf4cca0a1426",
     "arquivo":"R53Analise5.gs"
   }
 ];

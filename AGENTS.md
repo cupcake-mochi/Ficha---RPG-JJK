@@ -1,4 +1,21 @@
-# Ritual · conferência focal · 25/10/2026
+# Oficiais e revisão aprofundada · 25/10/2026
+
+Os dois modelos oficiais confirmados pelo usuário são Era da Revolução `1MQqh…`
+e Ciclo Maldito `1pgLD…`; leia `r53/OFICIAIS.md` e
+`r53/diagnostico-android/REVISAO-2026-10-25.md`. A antiga `1u0z…` é histórica.
+Ritual APLICADO nas duas: 12 fórmulas e ajuste de dois moldes no Codigo.gs,
+após snapshots nativos e ensaio. Código salvo relido integralmente igual.
+Não reaplicar. 596 verificações nativas de Ritual e 89 cenários/285 condições
+da R53 passaram. Varredura das 58 abas sem erros de cálculo retornados.
+GS regenerados (`6cdfaf4cca0a1426`), mas pacote integral NÃO foi instalado:
+preservar os incrementos de salário/cores/Android. Conferência do pacote executou
+em Era da Revolução; em Ciclo Maldito e no ensaio pediu nova autorização e foi
+cancelada. Não ampliar acesso para repetir. Ficha do amigo permaneceu intacta.
+Evidências privadas em `nuvem-b47/saidas/revisao-20261025/`, fora do Git.
+Sem agentes extras, acionadores novos, reconstrução de preenchidas ou main.
+Sol/High para nova manutenção integrada; Medium para conferir o relatório.
+
+# Histórico: Ritual · conferência focal · 25/10/2026
 
 Falso alerta de Técnica Inata confirmado por leitura nativa de exemplo do usuário:
 o emissor avisava incondicionalmente ao encontrar Ritual. Fonte corrigida em
