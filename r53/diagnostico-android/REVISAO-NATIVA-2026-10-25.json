@@ -1,0 +1,72 @@
+{
+  "data": "2026-10-25",
+  "base": "4744f68",
+  "status": "correcao_carga_aplicada_duas_oficiais; ensaios_de_eventos_adicionais_pendentes",
+  "defeito": {
+    "campo": "DADOS_INVOC!EI3:EI7 e EI9:EI13",
+    "descricao": "Carga das invocações 2–6 e 8–12 somava linhas anteriores às expansões; total e aviso de limite podiam ficar errados sem erroValue.",
+    "causa": "extensoes_custom.formula não deslocava intervalos com nome de aba nas duas pontas",
+    "alteracoes_por_oficial": 10
+  },
+  "validacao": {
+    "pessoal": {
+      "cenarios": 33,
+      "grupos_de_assertivas": 118,
+      "combinacoes_xp": 288,
+      "erros_de_calculo_retornados": 0,
+      "salario_legado_excluido": true
+    },
+    "familias": {
+      "cenarios": 12,
+      "entidades": 12,
+      "vagas": 108,
+      "comparacoes": 2016,
+      "falhas": 0
+    },
+    "carga": {
+      "totais_corrigidos_conferidos": 36,
+      "entradas_de_volume": 108,
+      "ensaios_completos": 2,
+      "fracionarios": true,
+      "aviso_visual_segunda_invocacao": "7 de 5 · acima do limite"
+    },
+    "oficiais": {
+      "abas_afetadas_lidas": 4,
+      "posicoes": 280326,
+      "erros_de_calculo_retornados": 0
+    },
+    "python": {
+      "testes": 30,
+      "resultado": "OK"
+    },
+    "loader": {
+      "moldes": 10,
+      "recusa_atomica": true,
+      "idempotencia": true,
+      "modulo_real": true
+    },
+    "pacote": {
+      "arquivos": 9,
+      "abas": 25,
+      "contextos": 249,
+      "resultado": "OK"
+    }
+  },
+  "aplicacao": {
+    "snapshots_nativos_antes": 2,
+    "script_sha256_antes": "fd993d5ec2a8618e8e71ab954812c2cdd55c6271da515c487b08f86b9408cdc4",
+    "script_sha256_relido": "1609a8890f23c496b4c1d56525badb568b19d611d73713d673523e47a12fbeaf",
+    "geracao_fontes": "7f85d740f71c4cb6",
+    "geracao_modulo_instalado": "e142593fdc5be157",
+    "pacote_integral_instalado": false,
+    "verificacao_pacote_era": "25 abas / 249 contextos / sobras [] / execução concluída",
+    "verificacao_pacote_ciclo": "não repetida; autorização manual pendente desde a revisão anterior"
+  },
+  "limites": [
+    "As escritas API não disparam onEdit: troca/restauração de Classe, colagens e salário atual não certificados por estes cenários.",
+    "A permissão do novo projeto QA foi solicitada; usuário respondeu que autorizaria e avisaria. Conclusão ainda não confirmada.",
+    "Nenhuma medição Android nesta rodada.",
+    "A cópia QA recebeu as fórmulas corrigidas; seu Codigo.gs ainda é anterior ao patch de carga, não usar para certificar restauração até instalar o helper."
+  ],
+  "evidencias_privadas": "nuvem-b47/saidas/revisao-nativa-20261025/"
+}

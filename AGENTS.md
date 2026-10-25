@@ -1,3 +1,18 @@
+# Revisão nativa ampliada e carga das invocações · 25/10/2026
+
+Leia `r53/diagnostico-android/REVISAO-NATIVA-2026-10-25.md` e seu JSON.
+Carga de dez invocações corrigida nas duas oficiais, após snapshots atuais e
+ensaio nativo. Dez fórmulas e helper de restauração; código salvo relido igual
+(SHA 1609a889…). Não reaplicar. GS 7f85d740f71c4cb6, pacote integral não instalado.
+33 cenários pessoais/118 grupos, 288 combinações XP, 2.016 comparações de Famílias,
+36 totais de carga e releitura de quatro abas oficiais sem erros retornados.
+Salário legado excluído explicitamente do oráculo: edição via API não testa onEdit.
+QA nova aguardando confirmação de autorização; usuário disse que autorizaria.
+Pendentes os ensaios adicionais de eventos/Classes/colagens/salário. Antes de testar
+restauração nessa QA, instalar o helper de carga nela: só as oficiais já o têm.
+Dados privados em `nuvem-b47/saidas/revisao-nativa-20261025/`. Sem novos acionadores,
+agentes, Office ou main. Sol/High para continuar; Medium para conferir relatório.
+
 # Oficiais e revisão aprofundada · 25/10/2026
 
 Os dois modelos oficiais confirmados pelo usuário são Era da Revolução `1MQqh…`
