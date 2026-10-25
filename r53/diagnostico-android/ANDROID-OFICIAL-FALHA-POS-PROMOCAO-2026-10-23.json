@@ -1,0 +1,48 @@
+{
+  "data": "2026-10-23",
+  "estado": "ABERTURA_ANDROID_OFICIAL_NAO_RESOLVIDA",
+  "base_git": "a06225a",
+  "relatos_usuario": {
+    "oficial_pos_promocao": "Ainda não abre; carrega indefinidamente no telefone e segue pesada.",
+    "candidata_C_mesmo_telefone": "Abriu normalmente.",
+    "snapshot_R52": "Abre normalmente, um pouco lenta; link ainda não identificado.",
+    "copia_nativa_pos_promocao": {
+      "usuario": "Abre e consigo usar normalmente.",
+      "amigo": "Usuário relata que um amigo também testou e abriu normalmente.",
+      "limite": "Relatos funcionais, sem medição de tempo ou RAM; não constituem aceite da oficial original."
+    },
+    "oficial_por_link_direto_CARTEIRA": {
+      "resultado": "Também não abre; continua carregando indefinidamente.",
+      "percepcao": "Parece mais pesada, segundo o usuário; sem medição de tempo/RAM.",
+      "teste_concluido": true
+    }
+  },
+  "interpretacao": "A cópia nativa do conteúdo atual da oficial abre e permite uso nos testes relatados. A falha da oficial não foi resolvida. A investigação passa a diferenças ligadas ao documento e ao contexto de abertura; conteúdo e código por si só não bastam para explicar a diferença observada, e a causa ainda não está isolada.",
+  "comparacao_focal": {
+    "abas": 27,
+    "grade": 710587,
+    "regras_condicionais": 60,
+    "metadata_abas_regras_igual_C_oficial": true,
+    "metadata_copia_nova_igual_oficial": true,
+    "diferencas": "Paleta selecionada e formatos em sentinelas visuais; nenhuma diferença focal nos recursos/saldo/contrato lidos fora da seleção de paleta.",
+    "celulas_sentinelas_lidas": 86
+  },
+  "proximo_ensaio": "O link direto à CARTEIRA já falhou. Retomar investigação das diferenças de documento/contexto entre a oficial e a cópia funcional, com uma hipótese por ensaio e sem alterar acionadores ou substituir a oficial automaticamente. Não repetir a promoção ou apresentar o teste da CARTEIRA como pendente.",
+  "pendencias": [
+    "Isolar causa da diferença entre a oficial e a cópia funcional",
+    "Definir próxima intervenção controlada preservando mecânicas, contrato e salários"
+  ],
+  "limites": "Não atribuir a falha a acionadores, cache, paleta, memória, histórico ou R53 sem contraprova. Nenhuma nova alteração aplicada à oficial nesta investigação. Cores e Sementes permanecem adiadas.",
+  "modelo_recomendado": "Sol/High para investigação integrada, sem alterar configurações automaticamente.",
+  "comparacao_codigo": {
+    "caracteres": 659964,
+    "sha256_copia": "6112c6cf4ff34c88cea6c944b55aaf62a878e2310bb502b2ac5d2131f2d57e80",
+    "igual_ao_codigo_oficial_relido_na_promocao": true,
+    "verificacao": "Captura integral do editor da cópia; somente leitura.",
+    "acionadores_instalaveis_copia": 0,
+    "acionadores_instalaveis_oficial_ultima_conferencia": 3,
+    "limite": "Diferença inspecionada sem criar, remover ou ativar acionadores. Não demonstra causalidade. Abertura/uso relatados da cópia não validam automação salarial instalável."
+  },
+  "snapshot_R52": "Link ainda não identificado; referência secundária após controle com a cópia do conteúdo atual.",
+  "encerramento_desta_conversa": "A pedido do usuário, processo salvo para transferência ao próximo Codex; não houve nova intervenção na oficial após os testes de diagnóstico."
+}

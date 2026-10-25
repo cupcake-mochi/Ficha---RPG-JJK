@@ -1,3 +1,212 @@
+# Versão pública e merge autorizado · 25/10/2026
+
+O usuário autorizou explicitamente integrar este ramo na main nesta etapa.
+Leia `r53/diagnostico-android/VERSAO-PUBLICA-2026-10-25.md`.
+As duas oficiais mostram 1.0 no cabeçalho e no número da carteira, sem o aviso
+sobre a revisão do livro. DADOS/ANALISE conservam os metadados técnicos R53.
+Aplicação incremental concluída após snapshots novos e ensaio de restauração.
+Codigo.gs salvo relido igual nas duas, SHA f664e70a…; EditorR53 inalterado.
+Fontes e duas fórmulas GS ajustadas; pacote conferido, não instalado integralmente.
+Não confundir mudança do rótulo com atualização de regras de uma nova edição.
+As restrições de não mesclar abaixo são o histórico anterior à autorização atual.
+Sem agentes/acionadores/acessos/Office/reconstrução. Sol/High para manutenção
+integrada; Medium para revisão. Não mudar configurações automaticamente.
+
+# Pente-fino final aplicado · 25/10/2026
+
+Leia `r53/diagnostico-android/PENTE-FINO-FINAL-2026-10-25.md` e seu JSON.
+Duas oficiais atualizadas incrementalmente, após snapshots novos e ensaio nativo.
+Corrigidos: timeout/estado na troca de Classe, validação checkbox/traço e prazo
+na edição de missões. Apenas Codigo.gs e EditorR53.gs; quatro releituras após
+reabrir os projetos iguais à proposta. SHA Codigo 618e7882…, Editor 6cb49d97….
+Ritual/carga/salário/cores/escape ANALISE preservados. Não reaplicar o delta.
+22 cenários custom/campanha/62 verificações; 2.453 verificações dos 249 contextos;
+missões, emissão, dinheiro, períodos, modalidades e barras positivas aprovados.
+Evento simples final: missão 27,781 s, colagem 19,531 s. Latência Google varia;
+não afirmar garantia universal de 30 s nem ausência absoluta de defeitos.
+562 verificações locais do editor e 2.709 das missões; pacote conferido.
+Geração de dados 7f85d740f71c4cb6; pacote integral NÃO instalado.
+As pendências de autorização/ensaios salariais das entradas abaixo são históricas:
+a QA autorizada executou e a cobertura final está no relatório acima.
+Evidências privadas em `nuvem-b47/saidas/pente-fino-20261025/`, fora do Git.
+Sem agentes, acionadores, acessos, Office, reconstrução ou main. Sol/High para
+nova manutenção integrada; Medium para revisar a entrega. Não mudar configurações.
+
+# Revisão nativa ampliada e carga das invocações · 25/10/2026
+
+Leia `r53/diagnostico-android/REVISAO-NATIVA-2026-10-25.md` e seu JSON.
+Carga de dez invocações corrigida nas duas oficiais, após snapshots atuais e
+ensaio nativo. Dez fórmulas e helper de restauração; código salvo relido igual
+(SHA 1609a889…). Não reaplicar. GS 7f85d740f71c4cb6, pacote integral não instalado.
+33 cenários pessoais/118 grupos, 288 combinações XP, 2.016 comparações de Famílias,
+36 totais de carga e releitura de quatro abas oficiais sem erros retornados.
+Salário legado excluído explicitamente do oráculo: edição via API não testa onEdit.
+QA nova aguardando confirmação de autorização; usuário disse que autorizaria.
+Pendentes os ensaios adicionais de eventos/Classes/colagens/salário. Antes de testar
+restauração nessa QA, instalar o helper de carga nela: só as oficiais já o têm.
+Dados privados em `nuvem-b47/saidas/revisao-nativa-20261025/`. Sem novos acionadores,
+agentes, Office ou main. Sol/High para continuar; Medium para conferir relatório.
+
+# Oficiais e revisão aprofundada · 25/10/2026
+
+Os dois modelos oficiais confirmados pelo usuário são Era da Revolução `1MQqh…`
+e Ciclo Maldito `1pgLD…`; leia `r53/OFICIAIS.md` e
+`r53/diagnostico-android/REVISAO-2026-10-25.md`. A antiga `1u0z…` é histórica.
+Ritual APLICADO nas duas: 12 fórmulas e ajuste de dois moldes no Codigo.gs,
+após snapshots nativos e ensaio. Código salvo relido integralmente igual.
+Não reaplicar. 596 verificações nativas de Ritual e 89 cenários/285 condições
+da R53 passaram. Varredura das 58 abas sem erros de cálculo retornados.
+GS regenerados (`6cdfaf4cca0a1426`), mas pacote integral NÃO foi instalado:
+preservar os incrementos de salário/cores/Android. Conferência do pacote executou
+em Era da Revolução; em Ciclo Maldito e no ensaio pediu nova autorização e foi
+cancelada. Não ampliar acesso para repetir. Ficha do amigo permaneceu intacta.
+Evidências privadas em `nuvem-b47/saidas/revisao-20261025/`, fora do Git.
+Sem agentes extras, acionadores novos, reconstrução de preenchidas ou main.
+Sol/High para nova manutenção integrada; Medium para conferir o relatório.
+
+# Histórico: Ritual · conferência focal · 25/10/2026
+
+Falso alerta de Técnica Inata confirmado por leitura nativa de exemplo do usuário:
+o emissor avisava incondicionalmente ao encontrar Ritual. Fonte corrigida em
+`conteudos-b47/personagem/b47_personagem/usos.py`: usa a rota estruturada já
+resolvida, inclusive custom; preserva override explícito do integrador.
+Leia `r53/diagnostico-android/RITUAL-CORRECAO-2026-10-25.md` e o JSON de validação.
+Três testes do emissor, 50 do motor e QA nativa de 12 cenários/24 verificações
+passaram. GS não regenerados; nenhuma alteração na ficha do exemplo/definitiva.
+Delta de 12 fórmulas preparado em pasta privada, não aplicado. Para editar uma
+ficha preenchida: autorização para o alvo, snapshot novo, ensaio em cópia e
+releitura; nunca construir/continuar. Sol/High para aplicar, Medium para conferir.
+Sem agentes extras, acionadores/acessos novos ou merge em main.
+
+# Revisão salarial · 24/10/2026
+
+Continuar em `codex/otimizacao-android-r53`, base `27d848f`; não usar main.
+Leia `r53/diagnostico-android/SALARIO-PLANO-2026-10-24.md` e
+`SALARIO-INTEGRACAO-2026-10-24.md` na mesma pasta. Registro `a353fc2`
+do Claude conferido/incorporado ao plano. Cores resolvidas; não reabrir essa frente.
+Correção LOCAL: edição original antes do salário, admissão do lote até 8 s,
+marca durável de reparação antes das escritas e cache somente após flush.
+28 cenários da integração, 112 verificações salariais e smoke aprovados.
+Ainda NÃO aplicado nem medido no Google: os três endpoints Google solicitados
+retornaram 403 pelo proxy, mesmo com rede habilitada no comando. Clasp 3.4.1
+instalado em `nuvem-b47/saidas/clasp/`, ignorada; login não iniciado.
+Sem alterações nativas, acionadores ou acessos. Antes da definitiva A (1427…):
+snapshot atual, ensaio/recuperação em cópia, medição do onEdit inteiro e releitura.
+Nunca construir/continuar em preenchida. Sem agentes extras nem merge em main.
+Próxima ação integrada: GPT-6.1/High para ensaio nativo e interpretação dos tempos;
+Medium para conferir documentação. Não alterar configurações automaticamente.
+
+# Aplicação da fila nas candidatas Android · 23/10/2026 (noite)
+
+Leia primeiro `r53/diagnostico-android/APLICACAO-FILA-2026-10-23.json`.
+Acesso ao Apps Script obtido pela API com `clasp login --no-localhost` na nuvem.
+Original e seu código (6112c6cf…) NÃO alterados. Candidatas: A = 1427V3IO…
+(projeto 1TdTW8VJ…) e B = 1E9V_bvY… (projeto 1D0_H75n…), renomeadas no Drive.
+Nas duas: código 10b814cb… instalado e relido igual (gerador
+`preparar_fila_loader.js`, teste `r53/testes/fila_loader.js`); células de
+Sementes corrigidas e relidas; acionadores próprios criados pelo proprietário
+via `prepararCopiaAndroid` (0 antes, 3 depois; agenda em L2 aponta cada cópia).
+ACEITE: A e B abrem no Android; cores completam em segundo plano (paleta_segundo_plano.gs). DEFINITIVA: A (1427…), escolha do usuário em 23/10 22:00Z. B em reserva com rotinas salariais em no-op. Original intacta como contingência (seus acionadores seguem ativos). Troca entre abas segue pesada, sem medição.
+Não reaplicar o delta (o gerador recusa base diferente de 6112c6cf…).
+Modelo: Opus/High para nova aplicação; Medium para registrar o aceite.
+
+# Correções da fila e validação local/nativa parcial · 23/10/2026
+
+O usuário pediu prosseguir até concluir a fila. Leia primeiro
+`r53/diagnostico-android/FILA-VALIDADA-2026-10-23.md` e a prova SEMENTES-QA
+na mesma pasta. A fonte agora extrai as quatro Sementes; geração/lista/dropdown
+corrigidos. Quatro rotas aprovadas no Google somente em QA descartável.
+Paleta: acrescentada saída sob lock quando a pendência já terminou, com oito
+cenários locais; módulo leve regenerado. Latência Android não medida.
+Smoke dos nove módulos corrigido e aprovado. GS regenerados com barras zero:
+geração 7477944d1a09c3ed; delta integral de 12 campos previsto, demais campos
+das 25 abas-fonte iguais. 27 testes Python, pacote, cartões, constantes e
+regressão de paletas aprovados. Sem perda de mecânicas/capacidade identificada.
+NÃO declarar fila operacional encerrada: nenhuma correção desta etapa foi
+instalada na oficial/cópia funcional. Apps Script inacessível nesta sessão.
+Adoção da cópia, suas automações, recuperação de Sementes/validação no código,
+publicação da paleta e aceite Android continuam pendentes. ID da cópia testada
+ainda aguarda confirmação. Não repetir a promoção Android anterior.
+Original e candidata preservadas. Não executar construir/continuar em preenchida,
+importar Office, mesclar main ou abrir agentes extras. Sem alterações de acesso.
+Sol/High para delta nativo e automações; Medium para conferência focal.
+Os estados abaixo descrevem etapas anteriores; a pendência de GS/barras e smoke
+foi resolvida localmente nesta etapa.
+
+# Investigação de documento e alternativa por cópia · 23/10/2026
+
+O usuário autorizou continuar a investigação e usar a nova ficha como alternativa
+caso a causa não seja encontrada. Leia primeiro
+`r53/diagnostico-android/CONTINUIDADE-DOCUMENTO-ANDROID.md` e
+`COMPARACAO-DOCUMENTOS-2026-10-23.json` na mesma pasta.
+A oficial e a cópia compartilhada 1427V3IO_RSToQcsO1ZgAeArXoT_PdoHukN9jAVkBfy8
+foram relidas em 77 blocos cada, 710.587 posições: conteúdo, resultados, notas,
+validações e conteúdo de texto idênticos, mesmo hash; nenhuma diferença ou erro
+efetivo retornado. 121.311 fórmulas e 27.383.151 bytes de texto por documento.
+Propriedades das abas, 60 regras condicionais e permissões retornadas iguais.
+Causa específica ainda não isolada; não atribuir a cache, histórico ou acionadores.
+A cópia conserva em L2 o ID de agenda da original. Antes de concluir sua adoção,
+confirmar o ID que abriu no Android, conferir o projeto/acionadores da cópia,
+configurar suas rotinas e retestar a abertura. Não confundir dado copiado com
+acionador instalado. O usuário foi consultado sobre qual cópia foi testada;
+a confirmação específica ainda não foi recebida nesta etapa.
+Google Drive/Sheets acessível; Apps Script/navegador não expostos nesta sessão.
+Diagnóstico somente de leitura preparado em auditar_contexto_android.gs, testado
+localmente e NÃO instalado. Nenhuma planilha/acionador foi alterado nesta etapa.
+Dados completos privados em nuvem-b47/saidas/diagnostico-documentos-20261023/.
+Adoção operacional ainda pendente: não declarar troca ou automação concluída.
+Não repetir promoção/reconstruir. Original preservada; cores e Sementes adiadas.
+Sol/High para conferência de automações e preparação da cópia; Medium para aceite.
+
+# Promoção Android aplicada · 23/10/2026
+
+O usuário autorizou especificamente a promoção incremental nesta continuação.
+As 37 etapas foram aplicadas na oficial após snapshot nativo novo e preflight;
+não reaplicar o lote. Leia primeiro
+`r53/diagnostico-android/PROMOCAO-APLICADA-2026-10-23.json` e a entrega incremental.
+Código salvo relido integralmente: SHA-256
+`6112c6cf4ff34c88cea6c944b55aaf62a878e2310bb502b2ac5d2131f2d57e80`.
+Contrato ANALISE A:D: 73.576 células iguais, 18.393 chaves e zero erros;
+entradas, salários, nomes e proteção preservados. 27 abas; grade 710.587.
+Abertura web e três barras conferidas; onOpen e salarioAposAbrir concluíram.
+Teste Android oficial FALHOU: carregamento infinito no telefone do usuário.
+A C abre normalmente no mesmo aparelho; snapshot R52 abre um pouco lento.
+Leia `r53/diagnostico-android/ANDROID-OFICIAL-FALHA-POS-PROMOCAO-2026-10-23.json`.
+Cópia nativa pós-promoção ABRE e permite uso no telefone do usuário; amigo também
+testou e abriu, conforme relato. Código da cópia relido integralmente igual ao
+instalado na oficial. O link direto da oficial à CARTEIRA também FALHOU:
+continua carregando sem abrir. Esse teste está concluído; não repetir como pendência.
+Causa ainda não isolada; não cortar recursos nem substituir a oficial automaticamente.
+Prompt portátil salvo em `nuvem-b47/saidas/diagnostico-mobile-20261023/diagnostico-pos-promocao/`
+como `PROMPT-RETOMADA-CODEX-ANDROID-2026-10-23.txt`, ignorado pelo Git.
+Se ausente em outro computador, retomar pelo registro JSON sanitizado. R52 é secundária.
+Só depois do aceite Android, investigar lentidão das cores; Sementes separadas.
+Capturas e registros privados: `nuvem-b47/saidas/diagnostico-mobile-20261023/promocao-aplicada/`.
+Sem agentes extras, novos acionadores, acesso novo ou merge em main.
+Sol/High para investigação integrada da abertura; Medium para conferências focais.
+Não alterar configurações automaticamente. Os estados anteriores abaixo são históricos.
+
+# Preparação anterior · Android · 23/10/2026
+
+Leia `r53/diagnostico-android/RETOMADA-2026-10-23.md` e
+`r53/diagnostico-android/CANDIDATA-C-FINAL-2026-10-23.json`.
+O usuário confirmou: A não abre nos celulares fracos; B e C abrem, C está utilizável.
+A pedido dele, terminar otimização/abertura antes de retomar desempenho das cores.
+C recebeu 498 fórmulas compactadas, menos grade vazia e 15.869 constantes literais;
+releitura das 27 abas sem erros. Fontes GS regeneradas e pacote local conferido.
+Não reconstruir C/oficial nem promover automaticamente o pacote integral.
+Helper temporário removido e código salvo relido integralmente. Barras conferidas
+em QA nativa; guarda de zero aplicada na C e na fonte. Leia também
+`r53/diagnostico-android/ENTREGA-INCREMENTAL-2026-10-23.md`.
+A geração GS anterior ainda antecede esta guarda; não promover pacote integral.
+Promoção incremental preparada e ensaiada em 37 etapas sobre cópia atual; leia
+`r53/diagnostico-android/PROMOCAO-ENSAIADA-2026-10-23.json` e a entrega incremental.
+Oficial intacta. Aplicação nela exige autorização específica e novo preflight.
+Capturas/lotes privados desta continuação ficam em `diagnostico-mobile-20261023/promocao/`.
+Sem agentes extras, acesso novo ou merge em main. Evidências privadas em
+`nuvem-b47/saidas/diagnostico-mobile-20261023/`, ignoradas. Conferência focal:
+Sol/Medium; implementação integrada: Sol/High.
+
 # Extensão vigente · emissão e salários · 20/10/2026
 
 Terceira rodada: a abertura simples não revisa notas/paleta nem apura salários. O novo `salarioAposAbrir` chama `revisarAbertura` com orçamento instalável; o diário e a edição são mantidos. A reemissão só muda o ciclo aberto, sem varrer missões ou tocar nos créditos. A previsão por fórmula compara `INT` das datas para incluir missões do próprio dia. `salarios/corrigir_abertura.js` atualiza o carregador antigo por âncoras estritas após validar o hash original; os cinco catálogos não são regravados. A fonte integral já contém as mesmas correções. Leia os tempos e a evidência vigente em `salarios/VALIDACAO.json`; as falhas de abertura da rodada anterior são históricas.

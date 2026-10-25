@@ -1,0 +1,148 @@
+{
+  "data": "2026-10-25",
+  "base_git": "737e3d5",
+  "oficiais": [
+    {
+      "nome": "Era da Revolução",
+      "spreadsheet_id": "1MQqhHbIzzyoMQY5zLKOciiT5k9Y6AMI4MCSrPhu8V_k",
+      "formulas_corrigidas": 12,
+      "codigo_relido_igual": true,
+      "execucao_conferencia": "concluida"
+    },
+    {
+      "nome": "Ciclo Maldito",
+      "spreadsheet_id": "1pgLDZOYpUJrqTcwomaQl8Bjn-AuAcu_Aowd30G7YiJw",
+      "formulas_corrigidas": 12,
+      "codigo_relido_igual": true,
+      "execucao_conferencia": "pediu_autorizacao_cancelada"
+    }
+  ],
+  "snapshots_nativos_anteriores": 2,
+  "ensaio_nativo_separado": true,
+  "codigo_salvo_sha256": "fd993d5ec2a8618e8e71ab954812c2cdd55c6271da515c487b08f86b9408cdc4",
+  "geracao_integral": "6cdfaf4cca0a1426",
+  "delta_semantico_geracao": 2,
+  "pacote_integral_instalado": false,
+  "varredura_nativa": {
+    "abas": 58,
+    "blocos": 122,
+    "posicoes": 1541174,
+    "erros_retornados": 0
+  },
+  "ritual_nativo": {
+    "cenarios": 12,
+    "verificacoes": 596,
+    "aprovadas": 596,
+    "custom_por_entradas_reais": true,
+    "vagas_por_cenario": 12
+  },
+  "r53_nativo": {
+    "cenarios": 89,
+    "condicoes": 285,
+    "todos_aprovados": true
+  },
+  "auditoria_fontes": {
+    "abas": 25,
+    "formulas": 70090,
+    "referencias_explicitas": 160254,
+    "issues": []
+  },
+  "testes_python": {
+    "r53": 27,
+    "motor": 50,
+    "ritual": 3,
+    "patches": 4
+  },
+  "testes_js": [
+    {
+      "arquivo": "salarios/testes.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "salarios/testar_abertura.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "r53/testes/editor_runtime.js",
+      "exit_code": 1,
+      "classificacao": "historico_prototipo_ausente"
+    },
+    {
+      "arquivo": "r53/testes/cartoes_diretos_runtime.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "r53/testes/migracao_armazenamento.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "r53/testes/paleta_leve.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "r53/testes/paleta_concorrente.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "r53/testes/paleta_segundo_plano.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "r53/testes/lote_paleta.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "r53/testes/tema_paleta.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "r53/testes/salario_lote.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "acabamento-b47/testar-familias-custom.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "acabamento-b47/testar-configuracao-horizontal.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    },
+    {
+      "arquivo": "r53/diagnostico-android/testes_constantes.js",
+      "exit_code": 0,
+      "classificacao": "aprovado"
+    }
+  ],
+  "ritual_loader": {
+    "cenarios": 10,
+    "modulo_instalado_real": true,
+    "alteracoes_de_moldes": 2
+  },
+  "pacote": {
+    "abas": 25,
+    "contextos": 249,
+    "sem_perda": true,
+    "geracoes_misturadas": 0
+  },
+  "smoke": "aprovado",
+  "limites": [
+    "Teste editor_runtime.js depende de protótipo histórico ausente; controlador vigente passou em cartoes_diretos_runtime.js (550 verificações).",
+    "Execução manual do Apps Script da segunda oficial e ensaio não autorizada; nenhuma ampliação de acesso.",
+    "Não mede desempenho ou abertura em aparelho Android nesta rodada.",
+    "Não prova ausência universal de erros de regra; referências dinâmicas e fluxos manuais fora dos cenários não têm cobertura completa.",
+    "Ficha do amigo não alterada."
+  ],
+  "transporte": "aprovado"
+}

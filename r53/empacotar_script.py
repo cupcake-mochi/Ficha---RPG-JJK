@@ -11,7 +11,7 @@ OUT=ROOT/'r53/saidas/pacote-script'
 
 def gerar():
  OUT.mkdir(exist_ok=True,parents=True)
- folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs'])+['Habilidades.gs','Codigo.gs']
+ folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs','PaletaAndroid.gs'])+['Habilidades.gs','Codigo.gs']
  sources=[(folder/n).read_text() for n in names];source='\n'.join(sources)
  variables=sorted(set(re.findall(r'^var\s+([A-Za-z_$][\w$]*)\s*=',source,re.M)))
  functions=sorted(set(re.findall(r'^function\s+([A-Za-z_$][\w$]*)\s*\(',source,re.M)))
@@ -30,6 +30,7 @@ def gerar():
  (OUT/'EditorR53.gs').write_text((folder/'EditorR53.gs').read_text())
  # Módulo leve: edições de missão/data não precisam descompactar os catálogos.
  if (folder/'Salarios.gs').exists():(OUT/'Salarios.gs').write_text((folder/'Salarios.gs').read_text())
+ if (folder/'PaletaAndroid.gs').exists():(OUT/'PaletaAndroid.gs').write_text((folder/'PaletaAndroid.gs').read_text())
  bootstrap='''/** @OnlyCurrentDoc */
 // PACOTE R53 · entradas públicas; sem rede, sem gatilhos instaláveis novos.
 var R53_MODULO_;
@@ -59,16 +60,22 @@ function verificarPacoteR53() {
  bootstrap+='var R53_NAVEGACAO_ = '+json.dumps({'aba':inv['nome'],'alvos':[v[0] for v in inv.get('abrir',[])]},ensure_ascii=False)+';\n'
  bootstrap+='''function onSelectionChange(e) {
  if(!e || !e.range)return;
+ e.r53Inicio_=Date.now();
  var pending=true;
  try {pending=!!PropertiesService.getDocumentProperties().getProperty('paleta_pendente');}catch(err){}
  var address=e.range.getA1Notation().split(':')[0];
  var opening=R53_NAVEGACAO_.alvos.indexOf(address)>=0 && e.range.getSheet().getName()===R53_NAVEGACAO_.aba;
- if(pending || opening)return r53Modulo_().onSelectionChange(e);
+ if(opening)return r53Modulo_().onSelectionChange(e);
+ if(pending && typeof r53PaletaLeve_==='function')r53PaletaLeve_().continuar(e);
+ else if(pending)return r53Modulo_().onSelectionChange(e);
 }
 '''
  for n in public:
   if n=='onEdit':
-   bootstrap+='function onEdit(e){if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(typeof r53Editar_==="function" && r53Editar_(e))return;return r53Modulo_().onEdit(e); }\n'
+   bootstrap+=(ROOT/'r53/diagnostico-android/versao_publica.gs').read_text()
+   bootstrap+='function onEdit(e){if(e)e.r53Inicio_=Date.now();if(r53RestaurarVersaoPublica_(e))return;if(typeof salarioIntegrarMissao_==="function"&&salarioIntegrarMissao_(e,function(ev){return r53Modulo_().onEdit(ev);}))return;if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(e&&e.range&&e.range.getSheet().getName()==="CARTEIRA"&&e.range.getA1Notation()==="C27")return typeof r53PaletaLeve_==="function" ? r53PaletaLeve_().trocar(e) : r53Modulo_().onEdit(e);if(typeof r53Editar_==="function" && r53Editar_(e))return;return r53Modulo_().onEdit(e); }\n'
+  elif n=='onOpen':
+   bootstrap+='function onOpen(e){e=e||{};e.r53Inicio_=Date.now();if(typeof r53PaletaLeve_!=="function")return r53Modulo_().onOpen(e);if(typeof salarioAbrir_==="function")salarioAbrir_();if(typeof r53Menu_==="function")r53Menu_();if(PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);}\n'
   elif n!='onSelectionChange':bootstrap+='function '+n+'(){return r53Modulo_()['+json.dumps(n)+'].apply(this,arguments);}\n'
  (OUT/'Codigo.gs').write_text(bootstrap)
  (OUT/'fonte-modulo.js').write_text(source)

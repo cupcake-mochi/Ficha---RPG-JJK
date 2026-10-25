@@ -334,6 +334,22 @@ def exemplos():
     return EXEMPLOS
 
 
+def sementes(cap13):
+    """Aceita títulos filhos ou irmãos de Sementes, limitados pela próxima seção."""
+    inicio = next(i for i, l in enumerate(cap13) if l.lstrip('#').strip() == 'Sementes')
+    nivel = Lv.nivel(cap13[inicio])
+    trecho = []
+    for linha in cap13[inicio + 1:]:
+        if Lv.nivel(linha) and Lv.nivel(linha) < nivel:
+            break
+        trecho.append(linha)
+    quantidade = _n(re_frase(r'Escolha uma das (\w+) opções abaixo\.', trecho).group(1))
+    titulos = [l.lstrip('#').strip() for l in trecho if Lv.nivel(l)]
+    if len(titulos) != quantidade or len(set(titulos)) != quantidade:
+        raise ValueError('Sementes: títulos não correspondem à quantidade declarada no livro')
+    return titulos
+
+
 def rotas(cap13, cap12, catalogo_armas):
     marc = sec("Técnica Marcial", cap13)
     st = sec("Sem Técnica", cap13)
@@ -384,7 +400,7 @@ def rotas(cap13, cap12, catalogo_armas):
                    Lv.frase("Esta rota não concede Expansão de Domínio, incompleta ou completa, nem Extensão de Domínio."),
                    Lv.frase("O equipamento em uso é seu Selo."),
                    Lv.frase("PE significa Pontos de Energia para quem possui energia amaldiçoada e Pontos de Esforço para quem não possui.")],
-        "sementes": [n for n, _ in subsecoes(sec("Sementes", cap13))],
+        "sementes": sementes(cap13),
         "semente_frase": Lv.frase("Ela conta como uma aptidão adicional."),
         "grupos_de_arma": grupos,
         "rota_de_arma": Lv.frase("Ao escolher esta rota, selecione três categorias de armas diferentes entre as categorias de Equipamento."),

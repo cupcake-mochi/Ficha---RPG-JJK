@@ -1,0 +1,28 @@
+{
+  "rows": 249,
+  "alvos": [
+    "FD",
+    "FX"
+  ],
+  "bytes_antes": 14117440,
+  "bytes_depois": 7170378,
+  "originais_conferidas": 498,
+  "sha256": "ab80100f7794d1ecf924c6116f8862f6ff0b5d89dd1ddf96d0fd6012f78c450b",
+  "candidato": "1VO61vXu8FjsDvc27c5c_ke93be-4Ta2rGaToDCv0Wgc",
+  "formulas_conferidas": 498,
+  "resultados_formatos_validacoes_notas_iguais": true,
+  "total_texto_antes": 34725005,
+  "total_texto_depois": 27777943,
+  "grade_antes": 857739,
+  "grade_depois": 710587,
+  "formulas_antes": 137180,
+  "formulas_depois": 137180,
+  "QA_nativa": {
+    "casos": 89,
+    "comparacoes_exatas_efeitos": 89,
+    "comparacoes_exatas_avisos": 89,
+    "criterios_mecanicos": 89,
+    "erros": 0
+  },
+  "limite": "Comparação por API e testes sintéticos; candidato C ainda precisa de teste nos aparelhos afetados e revisão de acionadores para publicação."
+}

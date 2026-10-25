@@ -43,7 +43,19 @@ def formula(text, owner):
     for token in Tokenizer(text).items:
         value = token.value
         if token.type == 'OPERAND' and token.subtype == 'RANGE':
-            if '!' in value:
+            # Sheets aceita a aba repetida nas duas pontas do intervalo.
+            # rsplit isolava só a última ponta e tratava o restante como nome
+            # de aba; assim a soma de carga não acompanhava as inserções.
+            qualified = re.fullmatch(
+                r"('(?:[^']|'')+'|[^!:]+)!(\$?[A-Z]+\$?\d+):"
+                r"('(?:[^']|'')+'|[^!:]+)!(\$?[A-Z]+\$?\d+)", value)
+            if qualified:
+                left, a, right, b = qualified.groups()
+                sheet_left = left.strip("'").replace("''", "'")
+                sheet_right = right.strip("'").replace("''", "'")
+                value = (left+'!'+coord(sheet_left, a)+':'+
+                         right+'!'+coord(sheet_right, b))
+            elif '!' in value:
                 prefix, address = value.rsplit('!', 1)
                 sheet = prefix.strip("'").replace("''", "'")
                 value = prefix+'!'+coord(sheet, address)

@@ -63,8 +63,8 @@ def main():
             bundle = ROOT/'r53/saidas/pacote-script'
             published = json.loads((bundle/'manifesto.json').read_text())['arquivos']
             expected = {'Ficha.gs', 'Invocacoes.gs', 'Analise.gs', 'Configuracao.gs',
-                        'Origens.gs', 'EditorR53.gs', 'Codigo.gs', 'Salarios.gs'}
-            check('pacote R53 com módulo de salários', set(published) == expected, str(len(published)))
+                        'Origens.gs', 'EditorR53.gs', 'Codigo.gs', 'Salarios.gs', 'PaletaAndroid.gs'}
+            check('pacote R53 com salários e paleta leve', set(published) == expected, str(len(published)))
             for name in published:
                 size = (bundle/name).stat().st_size
                 limit = 1200000 if name == 'EditorR53.gs' else 900000
@@ -95,7 +95,9 @@ def main():
                                  cwd=ROOT, capture_output=True, text=True, timeout=60)
             check('salários: períodos, participação e idempotência', run.returncode == 0,
                   run.stderr.strip() or run.stdout.strip())
-            for name in ['salarios/testar_abertura.js', 'conteudos-b47/comum/testar-notas-contextuais.js']:
+            for name in ['salarios/testar_abertura.js', 'r53/testes/salario_lote.js',
+                         'r53/testes/missoes_integradas.js', 'r53/testes/versao_publica.js',
+                         'conteudos-b47/comum/testar-notas-contextuais.js']:
                 run = subprocess.run([node, str(ROOT/name)], cwd=ROOT, capture_output=True, text=True, timeout=60)
                 check(name, run.returncode == 0, run.stderr.strip() or run.stdout.strip())
         # Git identifica as fontes, evitando percorrer dependências em .venv.

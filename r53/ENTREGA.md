@@ -1,5 +1,7 @@
 # R53 · entrega na ficha oficial · 19/10/2026
 
+> Registro histórico da publicação de 19/10. Os **dois modelos oficiais atuais**, confirmados em 25/10/2026, estão em [OFICIAIS.md](OFICIAIS.md). O link antigo abaixo não é mais o modelo oficial de distribuição.
+
 ## Manutenção de salvamento · 20/10/2026
 
 Autorização explícita posterior do usuário para aplicar somente a correção de

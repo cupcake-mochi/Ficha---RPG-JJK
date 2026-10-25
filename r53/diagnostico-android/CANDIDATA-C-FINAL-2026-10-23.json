@@ -1,0 +1,139 @@
+{
+  "data": "2026-10-23",
+  "candidato": "1VO61vXu8FjsDvc27c5c_ke93be-4Ta2rGaToDCv0Wgc",
+  "fonte": "77 leituras delimitadas das 27 abas; máscara de fórmulas e erros",
+  "grade_total": 710587,
+  "formulas": 121311,
+  "bytes_formulas_utf8": 27383046,
+  "tamanho_drive_bytes": 1803404,
+  "erros": [],
+  "abas_detalhes": {
+    "CARTEIRA": {
+      "formulas": 9,
+      "bytes": 585,
+      "max": 117
+    },
+    "FICHA": {
+      "formulas": 675,
+      "bytes": 115491,
+      "max": 2049
+    },
+    "FICHA AMALDIÇOADA": {
+      "formulas": 837,
+      "bytes": 52317,
+      "max": 357
+    },
+    "INVOCAÇÕES": {
+      "formulas": 4833,
+      "bytes": 343530,
+      "max": 556
+    },
+    "FICHA PESSOAL": {
+      "formulas": 440,
+      "bytes": 123485,
+      "max": 545
+    },
+    "DADOS": {
+      "formulas": 422,
+      "bytes": 29044,
+      "max": 2135
+    },
+    "DADOS_AM": {
+      "formulas": 5368,
+      "bytes": 861837,
+      "max": 6764
+    },
+    "DADOS_INVOC": {
+      "formulas": 22107,
+      "bytes": 3816073,
+      "max": 7165
+    },
+    "DADOS_PROGRESSAO": {
+      "formulas": 433,
+      "bytes": 57277,
+      "max": 4766
+    },
+    "DADOS_CUSTOM": {
+      "formulas": 2872,
+      "bytes": 814929,
+      "max": 5031
+    },
+    "DADOS_CRIACAO": {
+      "formulas": 117,
+      "bytes": 10730,
+      "max": 651
+    },
+    "DADOS_MELHORIAS": {
+      "formulas": 5032,
+      "bytes": 818060,
+      "max": 2381
+    },
+    "DADOS_RESTRICOES": {
+      "formulas": 545,
+      "bytes": 58140,
+      "max": 819
+    },
+    "DADOS_DANOS": {
+      "formulas": 95,
+      "bytes": 7886,
+      "max": 466
+    },
+    "DADOS_FORMAS": {
+      "formulas": 5491,
+      "bytes": 1355673,
+      "max": 1046
+    },
+    "DADOS_APTIDOES": {
+      "formulas": 970,
+      "bytes": 52634,
+      "max": 250
+    },
+    "DADOS_TALENTOS": {
+      "formulas": 634,
+      "bytes": 43117,
+      "max": 250
+    },
+    "DADOS_ENTIDADES": {
+      "formulas": 528,
+      "bytes": 60508,
+      "max": 851
+    },
+    "ANALISE": {
+      "formulas": 18378,
+      "bytes": 1695111,
+      "max": 577
+    },
+    "CONFIGURAÇÃO": {
+      "formulas": 732,
+      "bytes": 87793,
+      "max": 248
+    },
+    "DADOS_CONFIG": {
+      "formulas": 848,
+      "bytes": 148795,
+      "max": 724
+    },
+    "MONTAGENS": {
+      "formulas": 3172,
+      "bytes": 516059,
+      "max": 271
+    },
+    "DADOS_R53": {
+      "formulas": 44607,
+      "bytes": 15940359,
+      "max": 17617
+    },
+    "DADOS_R53_CATALOGO": {
+      "formulas": 2166,
+      "bytes": 373613,
+      "max": 708
+    }
+  },
+  "relato_android": {
+    "A": "Abre lentamente no aparelho mais forte; não abre nos fracos.",
+    "B": "Abre nos aparelhos fracos.",
+    "C": "Abre e está utilizável nos aparelhos fracos; troca de cores funciona, mas foi percebida como lenta.",
+    "limite": "Relatos do usuário, sem medição de tempo ou memória."
+  },
+  "prioridade": "Otimização e abertura; cores adiadas por pedido do usuário."
+}

@@ -1,0 +1,60 @@
+{
+  "casos_existentes": 89,
+  "casos_adicionais": 1024,
+  "campos_comparados": 203679,
+  "resultados_iguais": true,
+  "cobertura_sufixos": {
+    "nenhum": 1031,
+    "ambos": 45,
+    "prazo": 31,
+    "tr": 6
+  },
+  "campos_alterados": [
+    "efeitos"
+  ],
+  "dependencias_efeitos": [
+    "anteparo_pv",
+    "cd_controle",
+    "classe",
+    "classe_efeito",
+    "contagem_21",
+    "contagem_22",
+    "contagem_23",
+    "contagem_24",
+    "contagem_25",
+    "contagem_26",
+    "controle_limitado",
+    "controle_sem_dano",
+    "entidade",
+    "fura_rd",
+    "lib",
+    "m1",
+    "m2",
+    "m3",
+    "m4",
+    "nome_m1",
+    "nome_m2",
+    "nome_m3",
+    "nome_m4",
+    "tm"
+  ],
+  "dependencias_iguais": true,
+  "fonte_sha256": "d48c12b3f22fb2e013103da731d64cc0d2edf889bc71a13c2fdf1abf0cb0af76",
+  "prototipo_sha256": "e5ea33ac9154c03ed4a17f54e92b4c9bbc89fcde00272552c9f8cf4564499643",
+  "escopo": "Experimento em memória; sem mudança de fonte de produção",
+  "nativo_preparado": {
+    "casos": 89,
+    "linhas": 90,
+    "colunas": 186,
+    "catalogo_linhas": 128,
+    "catalogo_colunas": 204,
+    "coluna_caso": "FZ",
+    "coluna_teste": "GB",
+    "coluna_fatorada": "GC",
+    "coluna_equivalencia": "GD",
+    "lotes": 38,
+    "pedidos": 82,
+    "formulas_originais_completas": true,
+    "compactacao_reexpandida_exata": true
+  }
+}

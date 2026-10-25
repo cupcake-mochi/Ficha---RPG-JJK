@@ -13,7 +13,7 @@ Os últimos dez créditos aparecem em **CONFIGURAÇÃO!K78:Q95**, do mais recent
 - O38: data de emissão fixa, editável. O39 grava o dia atual em Brasília e desmarca depois de salvar. Uma reemissão posterior ao último salário reinicia o próximo ciclo sem retirar créditos; uma data anterior não repete períodos pagos.
 - O40: ativa o salário. Desligar pausa a apuração; religar apura períodos pendentes.
 - O41: intervalo em dias corridos, padrão 30. O42: participações para salário completo, padrão 3. O43: parcela mínima, padrão 25%. O44: exige participação; desmarcar concede a referência integral.
-- O54:O58: salário por Grau. O62:O67: pesos das missões. Os valores do livro são ¥150.000, ¥300.000, ¥600.000, ¥1.200.000 e ¥2.400.000; curta/padrão 1, longa 2, final de arco 3. Solos começam em 0 porque o livro não define seu peso salarial; a campanha pode alterá-lo.
+- O54:O58: salário por Grau. O62:O67: pesos das missões. Os valores do livro são ¥150.000, ¥300.000, ¥600.000, ¥1.200.000 e ¥2.400.000; curta/padrão 1, longa 2, final de arco 3. Solos começam em 1 por decisão da campanha de 24/10/2026; a campanha pode alterá-lo. Essa mudança do instalador só afeta instalações novas, sem regravar pesos nem créditos existentes.
 - O48, O69:O72: vencimento, início, participações, previsão e último fechamento. O49 mostra os créditos acumulados; O50 mantém visível a referência integral do Grau atual.
 
 O saldo manual continua em **FICHA PESSOAL!O86**, inclusive fórmulas como `=150000-500`. **W86 — TOTAL DISPONÍVEL** soma esse resultado aos créditos do histórico **SALÁRIOS**. Não copie os créditos para O86: isso somaria a mesma renda duas vezes. Para gastar, continue descontando do campo manual; ele pode ficar negativo enquanto o total disponível permanece positivo.
@@ -75,3 +75,21 @@ As doze notas são lidas por duas faixas de uma coluna, mantendo a preservação
 `node salarios/corrigir_abertura.js <Codigo-atual.gs> <Codigo-corrigido.gs>` prepara a atualização do pacote antigo sem alterar os cinco arquivos comprimidos. Os bytes originais são validados pelo SHA-256 antes de substituir funções por âncoras únicas; âncora divergente ou correção duplicada interrompe o carregamento. As âncoras mínimas da base R53 estão em `abertura_r53_original.json`, sem depender do histórico Git disponível em um clone. A geração integral usa diretamente as fontes corrigidas.
 
 Resultados e tempos da publicação estão em `VALIDACAO.json`. Evidências nativas e fontes relidas permanecem em `saidas/`, fora do Git.
+
+## Emissão obrigatória (24/10/2026, salário por fórmula)
+
+Valem estas regras e não as de O38 descritas acima:
+
+- O salário só conta depois de **EMITIR**: o checkbox CARTEIRA!AT3 (ou CONFIGURAÇÃO!O39) grava o dia de hoje em
+  DADOS_SALARIOS!N2, uma vez só. Sem emissão a CARTEIRA mostra "Não emitida · marque ao lado" e o painel avisa.
+- O38 mostra N2 e aceita correção (também no celular): escreva a data certa em dd/mm/aaaa. Ela só pode ir para frente,
+  entre a emissão atual e hoje; sem emissão, só vale a de hoje. Antes da troca, os períodos vencidos vão para o livro
+  (ficam pagos) e o ciclo aberto recomeça na data nova. A troca fica registrada em DADOS_SALARIOS!H:J ("emissão",
+  data anterior). Data inválida, futura ou para trás é recusada com aviso no painel; a fórmula de O38 volta sempre.
+  Resultado: corrigir a data nunca dá dinheiro a mais e nunca tira o que já venceu.
+- Marcar EMITIR de novo numa ficha já emitida não muda a data; o painel avisa e a caixa desmarca.
+- No PC, o menu **Salários › Reemitir carteira hoje…** faz o mesmo que escrever a data de hoje em O38.
+- A cópia da ficha base vem sem emissão, então ninguém recebe salário retroativo ao copiar.
+
+Texto para guias e bot: "Terminou a ficha? Escreva o nome do personagem na CARTEIRA e marque EMITIR, ao lado de
+'Não emitida'. O salário só começa a contar a partir desse dia. Se marcar no dia errado, corrija a data de emissão em CONFIGURAÇÃO (só dá para adiantar)."

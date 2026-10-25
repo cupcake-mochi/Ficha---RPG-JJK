@@ -1,0 +1,114 @@
+{
+  "data": "2026-10-25",
+  "status": "aplicado_incremental_nas_duas_oficiais",
+  "oficiais": [
+    "1MQqhHbIzzyoMQY5zLKOciiT5k9Y6AMI4MCSrPhu8V_k",
+    "1pgLDZOYpUJrqTcwomaQl8Bjn-AuAcu_Aowd30G7YiJw"
+  ],
+  "snapshots_nativos_antes_da_aplicacao": 2,
+  "codigos_salvos_relidos_iguais": 4,
+  "sha256": {
+    "Codigo": "618e7882babc6f00c51907d0ee818523604842bcac5e5b462a8301d7e85c8c4e",
+    "EditorR53": "6cb49d97c49fe93591967b86c79c0435f74c1bf0b34c4a62d004ebb3ec887f81"
+  },
+  "correcoes": [
+    "leituras de versões e cartões antes das escritas",
+    "validação de checkbox/traço antes do valor bloqueado",
+    "painel de missões sem pacote pesado, XP e salário preservados"
+  ],
+  "cobertura": {
+    "custom_campanha": {
+      "cenarios": 22,
+      "verificacoes": 62,
+      "falhas": 0
+    },
+    "estrutura_contextos": {
+      "contextos": 249,
+      "verificacoes": 2453,
+      "falhas": 0
+    },
+    "missoes": {
+      "verificacoes": 9,
+      "falhas": 0
+    },
+    "salarios_periodos": {
+      "verificacoes": 8,
+      "falhas": 0
+    },
+    "dinheiro": {
+      "verificacoes": 5,
+      "falhas": 0
+    },
+    "emissao": {
+      "verificacoes": 7,
+      "falhas": 0
+    },
+    "modalidades": {
+      "verificacoes": 3,
+      "falhas": 0
+    },
+    "ultima_maxima": {
+      "verificacoes": 2,
+      "falhas": 0
+    },
+    "barras_positivas": [
+      0.2,
+      0.5,
+      0.8
+    ],
+    "local": {
+      "editor": 562,
+      "missoes": 2709,
+      "salario_legado": 112,
+      "lote_salario": 95
+    },
+    "moldes_xp_comparados": 292
+  },
+  "eventos_simples_concluidos_segundos": {
+    "classe_nova": 23.896,
+    "edicao_pendente": 22.163,
+    "recuperacao_formula": 13.494,
+    "colagem_final": 19.531,
+    "missao_final": 27.781
+  },
+  "falhas_historicas_reproduzidas": {
+    "classe_timeout_segundos": 30.707,
+    "missoes_timeouts_segundos": [
+      30.58,
+      30.865,
+      30.842,
+      30.68,
+      30.785,
+      31.013
+    ],
+    "maxima_validacao": "traço recusado sob regra de checkbox"
+  },
+  "pacote": {
+    "geracao_dados": "7f85d740f71c4cb6",
+    "arquivos": 9,
+    "abas": 25,
+    "contextos": 249,
+    "instalacao_integral": false,
+    "base_nativa": "e142593fdc5be157"
+  },
+  "restricoes": {
+    "novos_acionadores": false,
+    "novos_agentes": false,
+    "ampliacao_acesso": false,
+    "office": false,
+    "reconstrucao": false,
+    "main": false
+  },
+  "limites": [
+    "cenários representativos não provam ausência absoluta de defeitos",
+    "latência Google variável; alguns eventos têm margem pequena até 30 s",
+    "sem nova medição de tempo ou RAM Android",
+    "testes locais não medem latência nativa"
+  ],
+  "evidencias_privadas": "nuvem-b47/saidas/pente-fino-20261025/",
+  "copias_ensaio_restauradas": true,
+  "comparacao_restauracao": {
+    "campos_conferidos": 14827,
+    "divergencias": 0
+  }
+}

@@ -628,7 +628,16 @@ def trocas(layout, CAT=None):
     if len(barras) != 3 or any(fcel[c][1].count(osso_na_formula) != 2 for c in barras):
         raise SystemExit(f"a FICHA devia ter 3 barras com o osso escrito duas vezes em cada, e tem {barras}")
     for c in barras:
-        cel["FICHA"][c] = (fcel[c][1].replace(osso_na_formula, H[COR_DA_BARRA]), c)
+        # Sheets desenha uma barra cheia para atual=0 e máximo=0.
+        # Emita a função nativa com guarda explícita, sem o invólucro Office.
+        row = ix._lc(c)[0]
+        atual, maximo = f'$D${row}', f'$J${row}'
+        cor = (f'IF({atual}/{maximo}<=0.25,"#C2334D",'
+               f'IF({atual}/{maximo}<=0.5,"#D89B3A",{H[COR_DA_BARRA]}))')
+        formula = (f'=IFERROR(IF(OR(N({atual})<=0,N({maximo})<=0),"",'
+                   f'SPARKLINE({atual},{{"charttype","bar";"max",{maximo};'
+                   f'"color1",{cor}}})),"")')
+        cel["FICHA"][c] = (formula, c)
 
     # --- as três caixas da FICHA
     eq_c, xp_c, des_c = idx["equipamento"], idx["xp"], idx["deslocamento"]

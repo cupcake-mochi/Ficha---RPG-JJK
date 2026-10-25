@@ -1,0 +1,22 @@
+{
+  "data": "2026-10-25",
+  "resultado": "FALSO_ALERTA_CONFIRMADO_FONTE_CORRIGIDA",
+  "base_git": "53cb869",
+  "causa": "O integrador não fornece tecnica_inata; o emissor tratava Ritual como condição manual e emitia o aviso incondicional para a identidade Ritual.",
+  "correcao": "Usar a rota estruturada já resolvida pelo motor, compatível com origem custom: rota 1 atende Técnica Inata; rotas 2/3/4 mantêm o aviso. Verificação explícita do integrador tem precedência.",
+  "escopo": "Doze vagas de aptidão do personagem; checagem de Técnica Inata. Demais requisitos preservados.",
+  "testes": {
+    "regressao_emissor": 3,
+    "motor_existente": 50,
+    "cenarios_nativos_sinteticos": 12,
+    "verificacoes_nativas": 24,
+    "erros_nativos": 0
+  },
+  "aplicacao": {
+    "ficha_exemplo": "Somente leitura, sem qualquer alteração.",
+    "fonte_python": "Corrigida e testada.",
+    "GS_regenerados": false,
+    "delta_focal_privado": "Preparado para 12 fórmulas com pré-condições e rollback; não aplicado."
+  },
+  "privacidade": "Leituras do exemplo e lotes com identificadores ficam apenas em pasta ignorada. Nenhum dado de jogador versionado."
+}

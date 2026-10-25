@@ -25,7 +25,7 @@ function fixture(){
  let ss={getSheetByName:n=>sheets[n]},ui={createMenu(){return {addItem(){return this},addSeparator(){return this},addToUi(){}}}};
  let uuid=0;
  let ctx={console,Date,PropertiesService:{getScriptProperties:()=>({getProperty:()=>null})},ScriptApp:{getScriptId:()=>'qa'},SpreadsheetApp:{getActive:()=>ss,flush(){logs.push('flush')},getUi:()=>ui},LockService:{getDocumentLock:()=>({tryLock(){logs.push('lock');return true},releaseLock(){logs.push('release')}})},Utilities:{getUuid:()=>String(++uuid),formatDate(date,tz,format){let p=new Intl.DateTimeFormat('en-CA',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit'}).format(date);if(format==='yyyy-MM-dd')return p;return p.split('-').reverse().join('/');}}};
- vm.createContext(ctx);vm.runInContext(code,ctx);ctx.salarioHoje_=()=>today;
+ vm.createContext(ctx);vm.runInContext(code,ctx);ctx.salarioHoje_=()=>today;ctx.SALARIO_.formula=false; // motor antigo (rotina instalável sem fórmula); o modo fórmula é coberto em r53/testes/salario_formula.js
  const put=(name,a,v)=>sheets[name].getRange(a).setValue(v),get=(name,a)=>sheets[name].getRange(a).getValue();
  put('CONFIGURAÇÃO','O38',today);put('CONFIGURAÇÃO','O39',false);put('CONFIGURAÇÃO','O40',true);put('CONFIGURAÇÃO','O41',30);put('CONFIGURAÇÃO','O42',3);put('CONFIGURAÇÃO','O43',.25);put('CONFIGURAÇÃO','O44',true);
  [150000,300000,600000,1200000,2400000].forEach((n,i)=>put('CONFIGURAÇÃO','O'+(54+i),n));[1,1,2,3,0,0].forEach((n,i)=>put('CONFIGURAÇÃO','O'+(62+i),n));

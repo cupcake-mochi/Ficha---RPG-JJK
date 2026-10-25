@@ -1,0 +1,125 @@
+# Salário automático nas cópias · plano (24/10/2026)
+
+Documento completo (Claude Docs): https://claude.ai/artifact/7emraQpwXw12hUoJP1ZNij
+
+## Problema
+Cópia sem acionador instalável não fecha o salário no vencimento. O carimbo de data das missões já roda no acionador
+simples (vai junto na cópia); o que falta é o fechamento. A conferência atual leva 80,5 s (`salarios/VALIDACAO.json`)
+e o acionador simples tem 30 s. A cópia de teste mostra "Conferência automática: Diária" apontando para a rotina de
+outra ficha, que não roda nela.
+
+## Recomendação (C): fechar na edição, em lote
+1. Faixa oculta em DADOS_SALARIOS que junta por fórmula config (CONFIGURAÇÃO O38:O67), Grau (FICHA PESSOAL!AB11),
+   nome (CARTEIRA!O9), missões carimbadas, histórico de Graus e último fechamento. Uma leitura só.
+2. Em cada edição: compara hoje com o próximo fechamento guardado; não venceu, sai sem ler. Edição da C27 (paleta)
+   nunca dispara salário.
+3. Venceu: conta na memória, grava livro + estado + painel numa gravação, com o bloqueio e a trava de período repetido.
+4. Grau entra no carimbo: mudança no AB11 grava data + Grau no histórico.
+5. Corrigir o texto "Diária" em cópia sem rotina; padrão de peso das missões solo = 1 (decisão do Mizuki, 24/10).
+
+Valor igual ao fechamento no dia (períodos contados por data); o crédito aparece na 1ª edição após o vencimento.
+Meta de tempo: até ~22 s. Se passar de 30 s, próximas opções: híbrido fórmula + livro (E) ou rotina central (G).
+
+## Teste (só na cópia descartável 1ESL-AageFm_eo9ybp1ITFAAKm1t6I2FKJyYp8-SFOYU)
+- Nome + emissão 60 dias atrás + duas missões datadas → 2 períodos vencidos.
+- Editar uma célula e cronometrar; conferir créditos à mão; editar de novo sem duplicar; trocar paleta sem salário.
+
+## Estado anterior ao ensaio
+- Planejamento anterior à implementação em a2ca590; teste registrado em a353fc2.
+- Cópia de teste já tem solo simples/complexa com peso 1 (CONFIGURAÇÃO O66:O67). Na base, trocar também o padrão do
+  instalador (`apps-script/Salarios.gs`).
+
+## Teste na cópia (23/10/2026, horário de Brasília)
+
+Montagem: `prepararSalarioLote()` pelo editor (15,6 s). Dados: personagem "Teste Salário", emissão 20/08/2026,
+missão Curta em 25/08 e Longa em 25/09, Grau 4 (¥ 150.000), meta 3, mínimo 25%.
+
+| Edição | Logs | Resultado |
+|---|---|---|
+| 1ª (vencida) | início 2,9 s · leitura 6,1 s · 2 fechamentos calculados 6,1 s · flush 9,6 s | ¥ 75.000 (19/09) e ¥ 112.500 (19/10) no livro, total ¥ 337.500, próximo fechamento 18/11 |
+| 2ª | nenhum log SAL (caminho rápido) | sem crédito repetido |
+
+A conferência antiga levava ~80 s; o fechamento em lote gastou 9,6 s dentro do onEdit.
+
+## Revisão da integração · 24/10/2026 · Codex
+
+Correção local e testes descritos em [SALARIO-INTEGRACAO-2026-10-24.md](SALARIO-INTEGRACAO-2026-10-24.md).
+O registro de teste acima foi conferido em `a353fc2`, no ramo `claude/project-thread-0fb9fh`.
+Ele mede o trecho salarial; não comprova o tempo do onEdit inteiro.
+
+O wrapper agora termina o processamento da edição original antes do salário.
+Se a edição e seu flush já consumiram 8 s, só a conferência salarial aguarda
+outra edição. Não existe mais o retorno após 12 s que descartava o restante
+do evento. Falhas de escrita deixam uma marca de recuperação; o cache do
+próximo vencimento só é publicado depois do flush. A retomada relê o livro
+persistido e recompõe estado/painel sem repetir créditos.
+
+Estado desta revisão: **28 cenários locais aprovados; aplicação e medição nativas pendentes**.
+`script.googleapis.com`, `oauth2.googleapis.com` e `accounts.google.com` retornaram
+403 pelo proxy desta sessão. Clasp 3.4.1 instalado em pasta ignorada; login
+não iniciado. Nenhuma planilha/projeto Google foi alterado.
+
+## Virada para salário por fórmula (24/10/2026, tarde)
+
+Medições que mudaram o plano: uma edição comum desta ficha gasta 18–24 s sozinha (logs `R53_ONEDIT`), então o
+fechamento em lote (~10 s) não cabe depois dela; e o app do Android não roda o `onOpen` (teste do Mizuki: nenhuma
+execução ao abrir). Alternativas comparadas no doc https://claude.ai/artifact/FndjoeVzL6YARoz9KKUQ2C.
+
+Decisão do Mizuki: o pendente é calculado por fórmula, na hora, em qualquer aparelho. Vale o Grau do dia do
+fechamento (sem proporcional).
+
+- `DADOS_SALARIOS!P2:Q8`: início do primeiro período pendente (fim do livro ou emissão), períodos vencidos, soma,
+  contadores. `P11` lista cada período pendente (mesmas colunas do livro).
+- `DADOS_SALARIOS!H:J`: registro de trocas, "valor até a troca". O `salarioEditar_` grava uma linha quando muda o
+  Grau (AB11), meta, parcela mínima, verificar missões, salário de um Grau ou peso de um tipo (uma célula, com
+  `oldValue`). A fórmula usa, para cada período, o valor que valia no fim dele.
+- Painel (O46, O48, O49, O69–O72) e o TOTAL DISPONÍVEL (W86) viram fórmula; W86 soma o pendente.
+- O script não apura mais na edição: missão só é registrada. `salarioCongelar_` copia a tabela P11 para o livro
+  (uma leitura, uma gravação) ao abrir no PC, numa edição rápida, no menu ou na rotina diária. Sem congelar, nada
+  some nem paga em dobro: a fórmula recomeça no fim do livro.
+- Conferido no Sheets da cópia de teste: 2 períodos, troca de Grau e de peso registradas → ¥ 337.500, igual à
+  conta à mão. Testes de VM: `r53/testes/salario_lote.js` (18 casos); `salarios/testes.js` continua cobrindo o
+  motor antigo (`SALARIO_.formula=false`).
+- Instalação numa cópia já com o módulo: `node r53/diagnostico-android/preparar_salario_formula.js captura.json
+  saida.json`, publicar, e rodar `prepararSalarioLote()` uma vez pelo editor.
+
+## Caixa ± GASTO / GANHO (dinheiro como a vida)
+
+Pedido do Mizuki: acompanhar gastos e ganhos sem refazer conta no fim do dia.
+
+- `FICHA PESSOAL!O86` deixa de ser o saldo manual e vira a caixa ± GASTO / GANHO. O jogador digita −500 ou 2000; o
+  script grava uma linha na aba oculta `EXTRATO` (data, valor, origem) e limpa a caixa. Validação aceita só número.
+- `W86` (TOTAL DISPONÍVEL) = `N(O86) + extrato + livro + pendente por fórmula`. Somar a caixa faz o valor aparecer na hora
+  mesmo se o script não rodar; quando ele roda, o valor só muda de lugar.
+- O lançamento é tratado no começo do `salarioEditar_` (`salarioGasto_`) e não segue para cartões/XP/paleta: nenhuma
+  leitura da ficha no caminho comum (contagem em `salario_extrato` nas propriedades; numa cópia, `getLastRow` uma vez).
+- Migração (`salarioPrepararCarteira_`, chamada por `prepararSalarioLote`/`atualizarSalarioFormula`): uma vez por ficha,
+  o valor que estava em O86 vira a linha "Saldo anterior" do extrato. Sem a aba `EXTRATO`, O86 segue como saldo manual.
+- Cópia já com fórmula: `node r53/diagnostico-android/preparar_salario_extrato.js entrada.json saida.json`, publicar e rodar
+  `prepararSalarioLote()`. Na cópia de teste a migração foi feita pela API com o mesmo resultado (¥150.000 → EXTRATO!2,
+  total seguiu ¥262.500).
+
+## Últimos 10 créditos com o pendente
+
+O painel listava só o livro, então ficava vazio enquanto o pendente (já somado no total) não era congelado.
+`DADOS_SALARIOS!AA2` (`SALARIO_.f.ultimos`) junta livro + tabela da fórmula, ordena pelo fim do período e corta em 10;
+`CONFIGURAÇÃO!K81:Q90` lê dessa faixa (`salarioUltimo_`). A aba ganhou 8 colunas (até AH). O bloco por fórmula agora
+termina no marcador `// FIM DO SALÁRIO POR FÓRMULA`, e `preparar_salario_extrato.js` troca o bloco inteiro em cópias já
+atualizadas (sem duplicar funções). Conferido na cópia de teste: 19/10 Grau 4 0/3 ¥37.500 e 19/09 Grau 4 1/3 ¥75.000.
+
+## Pente fino (24/10/2026)
+
+Export .xlsx da cópia de teste comparado com a Candidata A (1427): mesmas 27 abas (+ R53_LOTE e EXTRATO), nenhuma
+mesclagem a menos e uma a mais (caixa de ajuda), fórmulas iguais fora do salário (W86, painel O46–O72, últimos créditos).
+Erros só em `DADOS_SALARIOS!N24:N25`, sobra do bloco M1:N25 do lote antigo (a2ca590), sem nenhuma referência: limpo.
+Colunas recolhidas na A e abertas na teste (INVOCAÇÕES AB:AS, FICHA PESSOAL AV:BS) são só estado de grupo.
+
+## Corrigir data da missão pelo celular
+
+O menu Salários → Data da missão selecionada não aparece no app do Android. Caixa nova em `FICHA PESSOAL!BI10:BS12`
+(sob MAIS MISSÕES, formato copiado do XP TOTAL): nome da missão em BI11, data real em BO11 (texto, dd/mm/aaaa ou dd/mm).
+`salarioCorrigirData_` lê a outra metade da caixa e `DADOS_SALARIOS!A:Q` (uma leitura), acha a missão ativa pelo nome
+(sem diferenciar maiúsculas), grava a data em D e limpa o nome; o resultado aparece em BO11 (✓ ou ⚠ com o motivo: data
+inválida, depois de hoje, antes de Q2 = período já pago, nome inexistente ou repetido). O salário pendente recalcula
+pela fórmula. `salarioPrepararCorrecao_` cria a caixa e atualiza o texto de CONFIGURAÇÃO!K76. Na cópia de teste a caixa
+foi montada pela API com o mesmo resultado; rodar `mapearLote()` para ela entrar na troca de cores.
