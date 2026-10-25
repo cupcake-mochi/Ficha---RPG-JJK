@@ -1,3 +1,17 @@
+# Ritual · conferência focal · 25/10/2026
+
+Falso alerta de Técnica Inata confirmado por leitura nativa de exemplo do usuário:
+o emissor avisava incondicionalmente ao encontrar Ritual. Fonte corrigida em
+`conteudos-b47/personagem/b47_personagem/usos.py`: usa a rota estruturada já
+resolvida, inclusive custom; preserva override explícito do integrador.
+Leia `r53/diagnostico-android/RITUAL-CORRECAO-2026-10-25.md` e o JSON de validação.
+Três testes do emissor, 50 do motor e QA nativa de 12 cenários/24 verificações
+passaram. GS não regenerados; nenhuma alteração na ficha do exemplo/definitiva.
+Delta de 12 fórmulas preparado em pasta privada, não aplicado. Para editar uma
+ficha preenchida: autorização para o alvo, snapshot novo, ensaio em cópia e
+releitura; nunca construir/continuar. Sol/High para aplicar, Medium para conferir.
+Sem agentes extras, acionadores/acessos novos ou merge em main.
+
 # Revisão salarial · 24/10/2026
 
 Continuar em `codex/otimizacao-android-r53`, base `27d848f`; não usar main.

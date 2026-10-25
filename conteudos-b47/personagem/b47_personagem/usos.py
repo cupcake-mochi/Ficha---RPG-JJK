@@ -24,7 +24,11 @@ def aplicar(layout,tr,livro,contexto):
         else:
             record=[cel,value,None];cells[cel]=record;aba['celulas'].append(record)
     indices=ix.indice(layout)
-    verificacoes=contexto.get('verificacoes',{})
+    verificacoes=dict(contexto.get('verificacoes',{}))
+    # A rota resolvida já incorpora as Origens custom: 1 é Fundamento/Técnica
+    # Inata; 2 é Sem Técnica, 3 é Marcial e 4 é Marcial sem energia. Ritual
+    # não precisa de uma confirmação manual incondicional nesse caso.
+    verificacoes.setdefault('tecnica_inata',f'({fam["ROTA"]}=1)')
     nivel,refino=fam['H']['nível'],fam['H']['refino']
     avisos=[]
     t=plano.tabelas['aptidao']
