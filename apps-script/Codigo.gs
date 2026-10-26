@@ -494,11 +494,13 @@ function onEdit(e) {
     try { devolverConta_(e, aba); } catch (err) { console.log('configuração: ' + err.message); }
     if (aba === 'CONFIGURAÇÃO') {
       try { notasDosTipos_(e); } catch (err) { console.log('tipo custom: ' + err.message); }
-      try { esticarCaixas_(e, aba); } catch (err) { console.log('texto custom: ' + err.message); }
+      // 26/10/2026: as cartas antes das caixas que esticam. As duas leem antes de gravar, e as cartas gravam na FICHA,
+      // não aqui: na ordem de antes, a leitura das cartas esperava o recálculo das alturas gravadas (~4,5 s).
       var specConfig = ABAS.filter(function (s) { return s.nome === 'CONFIGURAÇÃO'; })[0];
       if ((specConfig && specConfig.gatilhos_habilidades || ['B737:O792']).some(function (a1) { return tocaFaixa_(e.range, a1); })) {
         try { habilidadesDaFicha_(e, indiceEstatico_() || indice(), true); } catch (err) { console.log('cartas custom: ' + err.message); }
       }
+      try { esticarCaixas_(e, aba); } catch (err) { console.log('texto custom: ' + err.message); }
     }
     continuarPaleta_(inicio, null, false, e.range);
     return;
