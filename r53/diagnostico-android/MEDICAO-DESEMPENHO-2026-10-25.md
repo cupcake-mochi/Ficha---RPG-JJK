@@ -325,3 +325,91 @@ Mesmas edições da rodada anterior, uma por vez pelo navegador, na cópia `1HI9
 Todas concluídas. **Pior caso 18,9 s** (antes deste corte, 24,9 s; antes dos cortes, 30 s com timeout). Média das
 missões ≈ 15 s. Alguns logs vieram sem linhas (PERFIL/R53_ONEDIT), mas as execuções terminaram. Ao apagar as
 missões o nível ficou em 4, como no código de antes (o nível não desce); a cópia foi devolvida ao estado inicial.
+
+## Remendos 34–38 da CONFIGURAÇÃO na cópia (26/10, 14:15–14:19)
+
+Retomada da medição que outra conversa deixou no meio (parou no limite logo depois do remendo 38). Cópia
+`1HI96ICu…` com o módulo `15774d95`: os remendos 34–38 (módulo `52fc6903`) mais linhas `DIAG` de medição (só
+`console.log`). DADOS_PROGRESSAO!K7 e K8 em 0: nem o Caminho nem a Trilha custom em uso, o caso que os remendos
+36–37 cortam. Edições à mão pelo Chrome, uma por vez; duração do registro de Execuções. No fim AK51 e AS51 vazias de
+novo (conferido pela API). O grupo de colunas "02 Caminho e Trilha" da CONFIGURAÇÃO ficou aberto na cópia.
+
+| Edição | Duração | Status |
+|---|---:|---|
+| AK51 texto curto (Caminho, nível 2; primeira depois de abrir) | 20,9 s | Concluído |
+| AK51 texto longo (a caixa cresce) | 20,9 s | Concluído |
+| AK51 apagar (a caixa volta) | 18,7 s | Concluído |
+| AS51 texto curto (Trilha, nível 2) | 18,6 s | Concluído |
+| AS51 apagar | 18,0 s | Concluído |
+
+Antes dos remendos 34–35, escrever ou apagar esse texto levava 24–31 s e estourava (commit `13bcece`). Perfil da
+AS51 curta (onEdit 16,4 s): primeira ida ao Sheets 3,1 s; Famílias/Amparo 3,0 s; abrir o módulo 2,1 s; **cartas
+3,6 s** (é a leitura de DADOS_PROGRESSAO!K7:K8, outra aba; refazer as cartas custava 13,7–16 s); **esticar 4,2 s**
+(lê o retângulo das caixas mesmo quando nenhuma altura muda; o remendo 38 poupa só a gravação e o flush); paleta
+0,05 s. Folga no pior caso ~9 s. Próximo corte possível: as marcas K7/K8 chegam junto de outra leitura (ou ficam
+no índice estático), o que tira mais ~3 s.
+
+## Cartão em menos idas na cópia (26/10, 14:55–14:57)
+
+Corte no `apps-script/EditorR53.gs` (e no `r53/runtime_direto.gs`, de onde ele sai): numa célula só o `e.value` já é o
+valor e a releitura sai; a porta (Amparo, DADOS_R53_CATALOGO) só é lida quando a caixa de Dano/Cura/VT difere da
+versão salva ou foi a editada, porque igual ao salvo dá o mesmo resultado aberta ou fechada. `r53/testes/cartao_leve.js`
+roda o EditorR53 de antes e o de agora lado a lado em 23 edições (pontos, caixas, Classe 0, entidade, Família
+fechada e reaberta, colagem, erro): mesmas abas, versões, propriedades e avisos; pontos num cartão aberto 5 → 3
+leituras. Instalado só no EditorR53 da cópia `1HI96ICu…` (`d2e57223` → `68f21a08`, igual ao gerado no node).
+
+| Edição (FICHA AMALDIÇOADA, feitiço 1) | Antes do corte | Depois |
+|---|---:|---:|
+| E71 = 1 (primeira depois de abrir) | 23,2 s | 20,3 s |
+| E71 = 0 | 25,6 s | 23,4 s |
+| E71 = 2 / 1 | 23,4 s | 19,5 s |
+| E71 = 0 | 26,0 s | 20,7 s |
+
+Todas concluídas; média 24,5 → 21,0 s. Cartão e MONTAGENS voltaram a 0 (conferido pela API). Perfil da terceira
+(onEdit 17,4 s): primeira ida 2,7 s; área do cartão 4,4 s (agora é ela que espera o recálculo); versão salva na
+MONTAGENS 4,4 s; gravação e flush ~5 s. Sem a releitura (~3,8 s com a trava) e sem o Amparo (3,2 s).
+O que sobra é ler a MONTAGENS, outra aba: ela guarda campos que o cartão não mostra, então continua.
+
+## Teste do Mizuki na oficial Ciclo Maldito, pelo Android (26/10, 15:30–15:37)
+
+Roteiro: missão no painel da FICHA PESSOAL (nome, tipo Curta, apagar), texto em CONFIGURAÇÃO!AK51 e apagar,
+E71 do cartão e voltar, ± de vida. Abriu e já começou, no ritmo normal. Registro de Execuções: **16 onEdits, todos
+concluídos**, de 8,9 a 23,1 s.
+
+| Execução (s) | R53_ONEDIT ms / edição ms |
+|---|---|
+| 8,9 · 9,4 · 13,0 · 11,4 | 7.177 / 2.919 · 6.908 / 1.996 · 10.653 / 6.385 · 9.340 / 5.107 |
+| 15,4 · 19,0 · 21,5 · 23,1 · 20,5 · 20,0 · 21,6 · 18,7 · 21,0 · 20,2 · 17,7 · 16,4 | 13,9–21,0 s (edição = total) |
+
+Achado: nas edições que terminam em menos de 8 s, o `r53SalarioLote_` roda depois do flush e soma 4,3–4,9 s
+(ms − edicaoMs) sem congelar nada (nenhuma linha "SAL início" no log, então saiu cedo no `r53SalarioConferir_`).
+É o fim da execução da vida que ele sentiu "demorar um pouco". Não afeta o valor que aparece (ele vem no flush),
+mas segura a execução. Candidato: descobrir qual chamada custa esses 4 s (propriedades do script/documento,
+`ScriptApp.getScriptId`) e pular a conferência quando não há fechamento vencido.
+
+O teste deixou a missão "teste" em DADOS_SALARIOS!A2:G2 (Presente FALSE); apagada a pedido dele (A2:J2), o estado
+em L2 ficou igual. Nível 2 e XP 0 como antes; nenhuma nota restou no painel.
+
+## Conferência do salário sem perguntar a aba depois do flush (26/10, 15:50–15:56)
+
+Cópia nova da oficial Ciclo Maldito (`1coYY2bg…`, "TESTE salário", projeto `1QWudC45…`). Com marcas de tempo
+em cada chamada do `r53SalarioLote_` (só na cópia), numa célula vazia da FICHA AMALDIÇOADA:
+
+| Chamada depois do flush | Termina em |
+|---|---:|
+| `PropertiesService.getDocumentProperties()` | 2–4 ms |
+| **`e.range.getSheet().getName()`** | **4.640–4.793 ms** |
+| área própria, propriedades do script, `getScriptId`, `salarioHoje_`, `salario_proximo` | +100 ms no total |
+
+A primeira chamada à planilha depois do flush espera o recálculo da edição. O nome da aba já era lido no começo
+do `r53SalarioOnEdit_`; agora fica no evento (`e.r53SalAba_`) e a conferência usa ele, sem chamar a planilha
+(a CARTEIRA!C27 é reconhecida por linha e coluna). `r53/testes/salario_lote_aba.js`: 12 edições com o
+`salario_lote.gs` de antes e o de agora, mesmas decisões (apagar o próximo fechamento, conferir), chamadas à
+planilha depois do flush 45 → 0; `salario_lote.js` segue com 95 casos.
+
+| Mesma edição (escrever / apagar) | Antes | Depois |
+|---|---:|---:|
+| Execução | 11,7 / 8,9 s | 5,1 / 4,7 / 4,8 / 5,3 s |
+| R53_ONEDIT ms − edicaoMs | 4.892 / 4.735 ms | 32 / 90 ms |
+
+Vale para toda edição que termina em menos de 8 s (a vida, a Força, células livres). Oficiais ainda sem mudança.

@@ -20,7 +20,9 @@ const codigo = projeto.files.find(f => f.name === 'Codigo').source;
 const sha = t => crypto.createHash('sha256').update(t, 'utf8').digest('hex');
 
 // O módulo instalado, tirado das fatias do projeto, e o novo pelo incremento.
-const { velho, novo, hashVelho: hv } = projetoComIncremento(projeto, dump, DESDE);
+// Até o 33º: o 34º e o 35º (caixas da CONFIGURAÇÃO) mudam as alturas gravadas de propósito e têm teste próprio,
+// caixas_horizontais.js.
+const { velho, novo, hashVelho: hv } = projetoComIncremento(projeto, dump, DESDE, 33);
 
 function montar(modulo, hash) {
   const A = criar(JSON.parse(JSON.stringify(dump)), { props: { salario_proximo: '99999' } });

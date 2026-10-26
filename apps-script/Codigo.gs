@@ -498,7 +498,7 @@ function onEdit(e) {
       // não aqui: na ordem de antes, a leitura das cartas esperava o recálculo das alturas gravadas (~4,5 s).
       var specConfig = ABAS.filter(function (s) { return s.nome === 'CONFIGURAÇÃO'; })[0];
       if ((specConfig && specConfig.gatilhos_habilidades || ['B737:O792']).some(function (a1) { return tocaFaixa_(e.range, a1); })) {
-        try { habilidadesDaFicha_(e, indiceEstatico_() || indice(), true); } catch (err) { console.log('cartas custom: ' + err.message); }
+        try { if (!habilidadeCustomForaDeUso_(e)) habilidadesDaFicha_(e, indiceEstatico_() || indice(), true); } catch (err) { console.log('cartas custom: ' + err.message); }
       }
       try { esticarCaixas_(e, aba); } catch (err) { console.log('texto custom: ' + err.message); }
     }
@@ -1592,19 +1592,60 @@ function esticarCaixas_(e, nomeDaAba) {
   var valoresHorizontal = null;
   spec.esticam.forEach(function (x) {
     if (!x.gatilhos.some(toca)) return;
+    // 26/10/2026 (2): na CONFIGURAÇÃO um grupo só tem as 271 caixas da aba, e escrever numa delas lia ~74 mil células e
+    // regravava ~300 alturas (27 chamadas), estourando os 30 s. Quem se escreveu numa caixa só muda as linhas dela e,
+    // em cadeia, as das caixas que dividem linha com essas: as outras linhas saem iguais da mesma conta. Então a conta
+    // corre só nessas caixas, e a leitura e a gravação ficam nas linhas delas. Escrever fora de uma caixa faz tudo.
+    var caixas = x.textos, local = null;
+    if (spec.horizontal) {
+      var dentro = caixas.filter(function (c) { return c[1].some(toca); });
+      if (dentro.length) {
+        var R = {}, mudou = true;
+        dentro.forEach(function (c) { for (var k = 0; k < c[3]; k++) R[c[2] + k] = 1; });
+        while (mudou) {
+          mudou = false;
+          caixas.forEach(function (c) {
+            var t = false, k;
+            for (k = 0; k < c[3] && !t; k++) t = !!R[c[2] + k];
+            if (t) for (k = 0; k < c[3]; k++) if (!R[c[2] + k]) { R[c[2] + k] = 1; mudou = true; }
+          });
+        }
+        caixas = caixas.filter(function (c) { return R[c[2]]; });
+        local = lerRetanguloDosTextos_(origem, [{ textos: caixas }]);
+      }
+    }
     // 26/10/2026: o retângulo dos textos dos grupos tocados, não a aba inteira (~95 mil células na CONFIGURAÇÃO)
-    if (spec.horizontal && !valoresHorizontal) valoresHorizontal = lerRetanguloDosTextos_(origem, spec.esticam.filter(function (g) { return g.gatilhos.some(toca); }));
+    if (spec.horizontal && !local && !valoresHorizontal) valoresHorizontal = lerRetanguloDosTextos_(origem, spec.esticam.filter(function (g) { return g.gatilhos.some(toca); }));
     var alvo = x.aba === nomeDaAba ? origem : ss.getSheetByName(x.aba);
     if (!alvo) return;
-    var textos = x.textos.map(function (c) {
+    var lidos = local || valoresHorizontal;
+    var textos = caixas.map(function (c) {
       return c[1].map(function (a1) {
-        if (!valoresHorizontal) return String(origem.getRange(a1).getDisplayValue());
-        var f = limitesA1_(a1), linha = valoresHorizontal.m[f.l1 - valoresHorizontal.l1];
-        return String(linha ? linha[f.c1 - valoresHorizontal.c1] : '');
+        if (!lidos) return String(origem.getRange(a1).getDisplayValue());
+        var f = limitesA1_(a1), linha = lidos.m[f.l1 - lidos.l1];
+        return String(linha ? linha[f.c1 - lidos.c1] : '');
       })
                  .filter(function (t) { return t !== ''; }).join(' · ');
     });
-    var h = alturasQueEsticam_(x.textos, textos, MEDIDA_DAS_CARTAS_, x.minima, spec.horizontal ? spec.alturas : null);
+    var h = alturasQueEsticam_(caixas, textos, MEDIDA_DAS_CARTAS_, x.minima, spec.horizontal ? spec.alturas : null);
+    // 26/10/2026 (4): numa célula só, com o texto de antes na mão (e.oldValue), a mesma conta com ele diz se alguma
+    // altura muda; se nenhuma muda, não grava nada (gravar e o flush do fim custavam ~3-4 s medidos na cópia).
+    if (local && l1 === l2 && c1 === c2) {
+      var a1Editada = e.range.getA1Notation(), achou = false;
+      var antes = caixas.map(function (c, i) {
+        if (c[1].indexOf(a1Editada) < 0) return textos[i];
+        achou = true;
+        return c[1].map(function (a1) {
+          if (a1 === a1Editada) return String(e.oldValue === undefined || e.oldValue === null ? '' : e.oldValue);
+          var f = limitesA1_(a1), linha = lidos.m[f.l1 - lidos.l1];
+          return String(linha ? linha[f.c1 - lidos.c1] : '');
+        }).filter(function (t) { return t !== ''; }).join(' · ');
+      });
+      if (achou) {
+        var hAntes = alturasQueEsticam_(caixas, antes, MEDIDA_DAS_CARTAS_, x.minima, spec.horizontal ? spec.alturas : null);
+        if (Object.keys(h).every(function (l) { return h[l] === hAntes[l]; })) { n++; return; }
+      }
+    }
     // as linhas seguidas de mesma altura vão numa chamada só
     var linhas = Object.keys(h).map(Number).sort(function (a, b) { return a - b; });
     for (var i = 0; i < linhas.length;) {
@@ -1664,6 +1705,25 @@ function cartasDaDadosAm_(ss) {
   }
   for (var l = 1; l < v.length && v[l][cL] !== ''; l++) livres.push({ texto: String(v[l][cL]), linha: linhaDe(v[l][cL]) });
   return { cartas: cartas, livres: livres };
+}
+
+/**
+ * 26/10/2026 (3): medido na cópia, refazer as cartas a cada edição nas habilidades custom da CONFIGURAÇÃO levava
+ * 13,7–16 s, e com as caixas que esticam a edição passava dos 30 s. Só que o texto custom só entra nas cartas quando a
+ * FICHA usa o Caminho (ou a Trilha) custom: é o que diz o DADOS_PROGRESSAO!K7 (K8 para a Trilha), e o
+ * livroDasCartas_ ignora esse texto com a marca em 0. Então, numa edição só dentro dos textos e nomes das habilidades
+ * por nível (AK50:AX64; o Caminho até a AR, a Trilha da AS em diante) do lado sem uso, as cartas ficam como estão.
+ * O nome do Caminho e da Trilha custom e o resto da aba seguem refazendo as cartas sempre.
+ */
+function habilidadeCustomForaDeUso_(e) {
+  var r = e.range, l1 = r.getRow(), c1 = r.getColumn(), l2 = l1 + r.getNumRows() - 1, c2 = c1 + r.getNumColumns() - 1;
+  if (l1 < 50 || l2 > 64 || c1 < 37 || c2 > 50) return false;
+  var p = SpreadsheetApp.getActive().getSheetByName('DADOS_PROGRESSAO');
+  if (!p) return false;
+  var k = p.getRange('K7:K8').getValues(), lados = [];
+  if (c1 <= 44) lados.push(Number(k[0][0]));
+  if (c2 >= 45) lados.push(Number(k[1][0]));
+  return lados.every(function (x) { return x !== 1; });
 }
 
 // Textos custom entram nas mesmas nove cartas e conservam a edição manual.
