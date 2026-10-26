@@ -1,3 +1,62 @@
+# Fila ativa de desempenho · 25/10/2026
+
+Leia o topo do `PENDENCIAS.md` ("Fila de desempenho da ficha") antes de mexer em
+desempenho ou nas oficiais. Nada desta fila foi aplicado nas oficiais.
+Consertos 1–3 da fila (Famílias em cópia nova, FICHA PESSOAL, Força) estão no
+código e medidos em 26/10 numa cópia nova da oficial (`1xcXsFSk…`, gustavohmoura12):
+antes 30,7–31,0 s (tempo limite), depois 10,2–12,8 s. Oficiais não tocadas; passos
+no topo do `PENDENCIAS.md`. O `pacote_leve_remendos.json`
+tem agora 22 remendos: o módulo leve esperado passou de `2667ef41…` para `9d1cec81…`.
+
+# Pacote leve e leitura única · 25/10/2026 (Claude)
+
+Medido e aplicado SÓ em cópia de teste (`1kQuSgg…`); as oficiais não foram
+tocadas. Leia `r53/diagnostico-android/MEDICAO-DESEMPENHO-2026-10-25.md`.
+- Opção 1 no `apps-script/Codigo.gs`: `indiceEstatico_`, `lerCelulas_`,
+  `faixaDoMolde_`; DADOS só lida no Caminho e no XP. Os mesmos 14 trechos estão
+  em `r53/diagnostico-android/pacote_leve_remendos.json` para o pacote instalado.
+- Pacote leve: `node r53/diagnostico-android/instalar_pacote_leve.js 2667ef41…`
+  gera o trecho que roda no console do editor do Apps Script (o editor proíbe
+  `new Function`, por isso as correções são lidas como dados). Ele confere o hash
+  instalado (`2f153f65…`), embute os `r53Correcao*`, aplica a opção 1, corta as
+  tabelas da montagem e trava construir/continuar/acabar. Salvar o projeto depois
+  e recarregar o editor para conferir o hash `2667ef41…` no `r53Modulo_`.
+- Na cópia: abrir o módulo 11,4 → 1,8 s; ± da vida pelo gatilho 30,6 s (tempo
+  limite) → 11,5 s; Caminho 19,1 → 10,2 s; onOpen 17,9 → 2,1 s.
+- Para aplicar numa oficial: primeiro o `Codigo.gs` da corrida (seção abaixo),
+  depois o trecho. O trecho só mexe no `r53Modulo_` e nos cinco R53_CODIGO_.
+- Montar ficha nova continua pelo pacote completo do repositório.
+- Teste: `r53/testes/pacote_leve.js` (22 verificações).
+
+# Corrida Caminho/Trilha corrigida no repositório · 25/10/2026
+
+Revisão do Claude sobre a entrega abaixo: a Trilha escolhida durante a execução
+do Caminho era apagada com as cartas. `r53TrilhaTrocada_` (r53/caminho_io.gs)
+relê a Trilha só quando vai limpá-la; teste `r53/testes/caminho_corrida.js`.
+Eventos.gs/R53_EVENTOS iguais. NÃO aplicado nas oficiais: trocar apenas o
+`Caminho.gs` do fim do Codigo.gs delas (SHA novo e9b20182…, detalhes no fim de
+`r53/diagnostico-android/AUTOMACOES-COPIAS-2026-10-25.md`).
+
+# Automações em cópias aplicadas · 25/10/2026
+
+Leia `r53/diagnostico-android/AUTOMACOES-COPIAS-2026-10-25.md` e seu JSON.
+Incremento aplicado nas duas oficiais, com snapshots nativos e quatro releituras
+iguais. Codigo.gs d92f846e…; EditorR53.gs comprimido bc300464… (fonte legível
+continua no Git). Caminho, Trilha e treino em armas usam retrato nativo de 653
+referências na nova R53_EVENTOS oculta. São 30 abas físicas nas oficiais.
+Não reaplicar nem executar construir/continuar. As cópias antigas não se atualizam.
+QA: Emanador 12,259 s; Trilha 13,595 s; Vanguarda 11,191 s; desmarcação de grupo
+16,756 s; cartão persistiu e voltou a zero. 52 verificações integradas, 568 do
+editor, 74 de recursos/cartas, sete do contrato e pacote aprovados. Não chamar
+isso de garantia de 100% nem latência Android medida. Cores não remedidas.
+Gerar Caminho/Eventos com `node r53/caminho_leve.js`; o empacotador também faz.
+Pacote integral novo não foi instalado: preservar a base e todos os incrementos.
+O usuário autorizou a aplicação e deixou a revisão seguinte para o Claude.
+A cópia preenchida foi descartada pelo usuário; só as duas oficiais foram alvo.
+Evidências privadas em `nuvem-b47/saidas/pericias-caminho-20261025/` (ignorado).
+Sem agentes extras, acionadores, acessos ou Office. Sol/High para manutenção
+integrada; Medium para revisão. Não alterar configurações automaticamente.
+
 # Versão pública e merge autorizado · 25/10/2026
 
 O usuário autorizou explicitamente integrar este ramo na main nesta etapa.

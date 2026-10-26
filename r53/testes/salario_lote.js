@@ -245,7 +245,7 @@ let casos = 0;
   const antes = fs.readFileSync(path.join(__dirname, 'salarios-com-formula.gs'), 'utf8');
   const novo = comExtrato({files: [{name: 'Codigo', source: antes}]});
   const atual = fs.readFileSync(path.join(raiz, 'apps-script/Salarios.gs'), 'utf8');
-  assert.strictEqual(require('../diagnostico-android/preparar_missoes.js').preparar(novo.files[0].source), atual);
+  assert.strictEqual(require('../diagnostico-android/preparar_missoes_enxutas.js').preparar(require('../diagnostico-android/preparar_missoes.js').preparar(novo.files[0].source)), atual);
   assert.throws(() => comExtrato(novo), /já atualizado/);
   // Cópia que já tinha o extrato: só o bloco muda, o desvio não duplica.
   const velho = novo.files[0].source.replace('SALARIO_.f.ultimos', 'SALARIO_.f.ultimosVelho');

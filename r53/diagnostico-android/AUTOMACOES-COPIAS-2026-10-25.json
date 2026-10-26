@@ -1,0 +1,42 @@
+{
+  "data_local": "2026-10-25",
+  "estado": "aplicado incrementalmente nas duas oficiais; quatro releituras iguais",
+  "codigo_sha256": "d92f846e42aa1ad42237ced54da53772d6aa796ae580c90b84fa718a980c5827",
+  "editor_instalado_sha256": "bc3004641a1a28c148885638955e6db66ffebaa01cd8acea30415cbbcd30e993",
+  "editor_catalogo_sha256": "e4502f595c23edb8807c7241f330fa481599b6ec2ef687e9b2ce440ade3ddce8",
+  "retrato": {
+    "aba": "R53_EVENTOS",
+    "schema": "R53_EVENTOS_1",
+    "hash": "2b6c1de10e696fb99cf4872d9368d5ecfcd768a1725fb4daeef5637078d0348f",
+    "referencias": 653,
+    "linhas": 654,
+    "colunas": 2,
+    "erros_retornados_nas_duas_oficiais": 0
+  },
+  "validacao_local": {
+    "integradas": 52,
+    "editor": 568,
+    "recursos_cartas": 74,
+    "contrato": 7,
+    "pacote": "nove arquivos, 26 abas e 249 contextos; sem perda"
+  },
+  "tempos_google_segundos": {
+    "emanador": 12.259,
+    "trilha_condutor_armado": 13.595,
+    "cartao_persistencia": 20.303,
+    "cartao_restauracao": 20.917,
+    "vanguarda": 11.191,
+    "desmarcar_grupo_armas": 16.756
+  },
+  "pacote_integral_instalado": false,
+  "base_nativa": "e142593fdc5be157",
+  "geracao_base_fonte": "7f85d740f71c4cb6",
+  "abas_fisicas_oficiais": 30,
+  "contrato": "ANALISE12/esquema2 preservado",
+  "novos_acionadores": 0,
+  "novos_acessos": 0,
+  "snapshots_nativos_antes_da_aplicacao": true,
+  "ram_android_medida": false,
+  "cores_remedidas": false,
+  "evidencia_privada": "nuvem-b47/saidas/pericias-caminho-20261025/"
+}

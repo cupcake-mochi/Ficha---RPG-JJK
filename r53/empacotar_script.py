@@ -4,14 +4,16 @@ Conserva as fontes GS legíveis como origem. O pacote contém somente essas
 fontes, comprimidas; não busca código na rede nem concede permissões novas.
 Entradas públicas delegam ao módulo isolado, que mantém os seus globais.
 """
-import base64,gzip,hashlib,json,re
+import base64,gzip,hashlib,json,re,subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'r53/saidas/pacote-script'
 
 def gerar():
  OUT.mkdir(exist_ok=True,parents=True)
- folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs','PaletaAndroid.gs'])+['Habilidades.gs','Codigo.gs']
+ # Atualiza o retrato dos eventos a partir das fontes, inclusive em clone limpo.
+ subprocess.run(['node',str(ROOT/'r53/caminho_leve.js')],check=True,capture_output=True,text=True)
+ folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs','PaletaAndroid.gs','Caminho.gs'])+['Habilidades.gs','Codigo.gs']
  sources=[(folder/n).read_text() for n in names];source='\n'.join(sources)
  variables=sorted(set(re.findall(r'^var\s+([A-Za-z_$][\w$]*)\s*=',source,re.M)))
  functions=sorted(set(re.findall(r'^function\s+([A-Za-z_$][\w$]*)\s*\(',source,re.M)))
@@ -27,7 +29,7 @@ def gerar():
  for i,(name,part) in enumerate(zip(slots,parts)):(OUT/name).write_text('// PACOTE R53 · fonte e hashes em r53/empacotar_script.py\nvar R53_CODIGO_'+str(i)+'_ = '+json.dumps(part)+';\n')
  # Todos os três arquivos substituídos precisam deixar de declarar as abas antigas.
  for name in slots[len(parts):]:(OUT/name).write_text('// Parte de dados anterior incorporada ao pacote R53.\n')
- (OUT/'EditorR53.gs').write_text((folder/'EditorR53.gs').read_text())
+ subprocess.run(['node',str(ROOT/'r53/editor_lazy.js'),str(folder/'EditorR53.gs'),str(OUT/'EditorR53.gs')],check=True,capture_output=True,text=True)
  # Módulo leve: edições de missão/data não precisam descompactar os catálogos.
  if (folder/'Salarios.gs').exists():(OUT/'Salarios.gs').write_text((folder/'Salarios.gs').read_text())
  if (folder/'PaletaAndroid.gs').exists():(OUT/'PaletaAndroid.gs').write_text((folder/'PaletaAndroid.gs').read_text())
@@ -70,10 +72,11 @@ function verificarPacoteR53() {
  else if(pending)return r53Modulo_().onSelectionChange(e);
 }
 '''
+ bootstrap+=(folder/'Caminho.gs').read_text()
  for n in public:
   if n=='onEdit':
    bootstrap+=(ROOT/'r53/diagnostico-android/versao_publica.gs').read_text()
-   bootstrap+='function onEdit(e){if(e)e.r53Inicio_=Date.now();if(r53RestaurarVersaoPublica_(e))return;if(typeof salarioIntegrarMissao_==="function"&&salarioIntegrarMissao_(e,function(ev){return r53Modulo_().onEdit(ev);}))return;if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(e&&e.range&&e.range.getSheet().getName()==="CARTEIRA"&&e.range.getA1Notation()==="C27")return typeof r53PaletaLeve_==="function" ? r53PaletaLeve_().trocar(e) : r53Modulo_().onEdit(e);if(typeof r53Editar_==="function" && r53Editar_(e))return;return r53Modulo_().onEdit(e); }\n'
+   bootstrap+='function onEdit(e){if(e)e.r53Inicio_=Date.now();if(r53RestaurarVersaoPublica_(e))return;if(typeof salarioIntegrarMissao_==="function"&&salarioIntegrarMissao_(e,function(ev){return r53Modulo_().onEdit(ev);}))return;if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(e&&e.range&&e.range.getSheet().getName()==="CARTEIRA"&&e.range.getA1Notation()==="C27")return typeof r53PaletaLeve_==="function" ? r53PaletaLeve_().trocar(e) : r53Modulo_().onEdit(e);if(r53EditarCaminho_(e))return;if(typeof r53Editar_==="function" && r53Editar_(e))return;if(e)e.r53EditorVerificado_=true;return r53Modulo_().onEdit(e); }\n'
   elif n=='onOpen':
    bootstrap+='function onOpen(e){e=e||{};e.r53Inicio_=Date.now();if(typeof r53PaletaLeve_!=="function")return r53Modulo_().onOpen(e);if(typeof salarioAbrir_==="function")salarioAbrir_();if(typeof r53Menu_==="function")r53Menu_();if(PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);}\n'
   elif n!='onSelectionChange':bootstrap+='function '+n+'(){return r53Modulo_()['+json.dumps(n)+'].apply(this,arguments);}\n'

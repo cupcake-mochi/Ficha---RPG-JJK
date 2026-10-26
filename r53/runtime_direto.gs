@@ -31,6 +31,14 @@ function r53ValoresCartao_(ss,g) {
  var sh=ss.getSheetByName(g.aba),a=g.area_editor,m=sh.getRange(a[0],a[1],a[2]-a[0]+1,a[3]-a[1]+1).getValues();
  return function(pos,col){var p=col===undefined?r53Pos_(pos):[pos,col];return m[p[0]-a[0]][p[1]-a[1]];};
 }
+/** Verdadeiro quando gravar a caixa da função não mudaria nada: o mesmo valor salvo, num formato que a porta aberta aceita. */
+function r53FuncaoComoSalva_(g,v,initial,values,i,cl) {
+ var f=r53Campo_('funcao'+(i+1)),p=r53Campo_('pontos'+(i+1)),nome=['Dano','Cura','PV temporários'][i];
+ if(values[f]!==initial[f]||values[p]!==initial[p])return false;
+ if(g.fixa)return typeof v==='boolean'&&(v?nome:'')===initial[f]&&initial[p]===0;
+ if(typeof v!=='number'||!isFinite(v)||v<0||v%1||(g.classes.length>1&&g.classes[0]===0&&cl===0&&v>1))return false;
+ return v===initial[p];
+}
 function r53SalvarCartao_(ss,g,cl,edited,snapshot,stored) {
  var get=snapshot||r53ValoresCartao_(ss,g),values=stored?stored.slice():r53LerVersao_(ss,g,cl),initial=values.slice();
  Object.keys(g.entradas_diretas).forEach(function(k){
@@ -40,7 +48,11 @@ function r53SalvarCartao_(ss,g,cl,edited,snapshot,stored) {
    if(k==='fragil_pago'&&(typeof v!=='number'||v<0||v%1))throw Error('Frágil precisa de um número inteiro não negativo.');values[idx]=v;
  });
  ['dano','cura','vt'].forEach(function(key,i){
-   var pos=g.funcoes_diretas[key],open=r53Porta_(ss,g,key,cl);if(!pos||!open)return;
+   var pos=g.funcoes_diretas[key];if(!pos)return;
+   // 26/10/2026: a porta lê o Amparo em outra aba (~3 s). Com a caixa igual à versão salva e fora da edição,
+   // aberta ou fechada dá o mesmo resultado; só uma caixa diferente precisa da porta.
+   if(!(edited&&r53Atinge_(edited,pos))&&r53FuncaoComoSalva_(g,get(pos),initial,values,i,cl))return;
+   if(!r53Porta_(ss,g,key,cl))return;
    var v=get(pos);
    if(g.fixa){if(typeof v!=='boolean')throw Error('Use a caixa de seleção da função.');values[r53Campo_('funcao'+(i+1))]=v?['Dano','Cura','PV temporários'][i]:'';values[r53Campo_('pontos'+(i+1))]=0;}
    else {if(typeof v!=='number'||!isFinite(v)||v<0||v%1||(g.classes.length>1&&g.classes[0]===0&&cl===0&&v>1))throw Error('Distribua pontos inteiros; na Classe 0 use 0 ou 1 para escolher dano.');if(v!==initial[r53Campo_('pontos'+(i+1))]||(edited&&r53Atinge_(edited,pos)))values[r53Campo_('funcao'+(i+1))]=v>0?['Dano','Cura','PV temporários'][i]:'';values[r53Campo_('pontos'+(i+1))]=v;}
@@ -92,7 +104,11 @@ function r53BloqueiosCartao_(ss,g,rules,validationsReady) {
  var sh=ss.getSheetByName(g.aba);(rules||r53RegrasCartao_(ss,g)).forEach(function(item){if(!item)return;var cell=sh.getRange(item.pos);if(!validationsReady)cell.setDataValidation(item.rule);if(!item.open)cell.setValue('—');});
 }
 function r53SincronizarFamilias_(ss) {
- var current=r53Amparo_(ss),props=PropertiesService.getDocumentProperties(),raw=props.getProperty('r53_amparo_direto'),prev=raw?JSON.parse(raw):[];
+ var current=r53Amparo_(ss),props=PropertiesService.getDocumentProperties(),raw=props.getProperty('r53_amparo_direto');
+ // As propriedades do documento não vão na cópia da planilha. Sem estado, a
+ // cópia herda os cartões já acertados: guardar o atual em vez de varrer 249.
+ if(!raw){props.setProperty('r53_amparo_direto',JSON.stringify(current));return false;}
+ var prev=JSON.parse(raw);
  if(JSON.stringify(prev)===JSON.stringify(current))return false;
  var snapshots={},stored=null,groups={};
  R53_EDITOR_.contextos.forEach(function(g){
@@ -118,12 +134,15 @@ function r53SincronizarFamilias_(ss) {
 function r53Editar_(e) {
  R53_REF_CACHE_={};if(typeof R53_EDITOR_==='undefined'||R53_EDITOR_.esquema!==3||!e||!e.range)return false;
  var range=e.range,owner=range.getSheet().getName(),ss=e.source||SpreadsheetApp.getActive();
- if(!/^(FICHA|FICHA AMALDIÇOADA|INVOCAÇÕES|CONFIGURAÇÃO|CARTEIRA)$/.test(owner))return false;
+ // FICHA não contém cartões nem escolhas de Família. Em cópias novas, a
+ // sincronização inicial de 249 cartões esgotava o evento antes do Caminho.
+ if(!/^(FICHA AMALDIÇOADA|INVOCAÇÕES|CONFIGURAÇÃO|CARTEIRA)$/.test(owner))return false;
  var gs=R53_EDITOR_.contextos.filter(function(g){var a=g.area_editor;return g.aba===owner&&range.getLastRow()>=a[0]&&range.getRow()<=a[2]&&range.getLastColumn()>=a[1]&&range.getColumn()<=a[3];});
  if(!gs.length){r53SincronizarFamilias_(ss);return false;}
  // Capture before waiting: an older Class callback may overwrite the visible
  // cell while this newer input event is queued. Scalar events retain e.value.
- var replay=gs.map(function(g){var v={};Object.keys(g.entradas_diretas).forEach(function(k){var p=g.entradas_diretas[k];if(!r53Atinge_(range,p))return;var x=range.getSheet().getRange(p).getValue();if(e.value!==undefined&&range.getRow()===r53Pos_(p)[0]&&range.getColumn()===r53Pos_(p)[1]){x=e.value;var t=g.menus_diretos[k].tipo;if(t==='bool')x=String(x).toUpperCase()==='TRUE'?true:String(x).toUpperCase()==='FALSE'?false:x;else if(t==='custom'&&/^-?\d+(?:[.,]\d+)?$/.test(String(x)))x=Number(String(x).replace(',','.'));}v[k]=x;});return v;});
+ // 26/10/2026: numa célula só, o e.value já é o valor; reler a célula custava uma ida ao servidor.
+ var replay=gs.map(function(g){var v={};Object.keys(g.entradas_diretas).forEach(function(k){var p=g.entradas_diretas[k];if(!r53Atinge_(range,p))return;var unica=e.value!==undefined&&range.getRow()===r53Pos_(p)[0]&&range.getColumn()===r53Pos_(p)[1],x=unica?e.value:range.getSheet().getRange(p).getValue();if(unica){var t=g.menus_diretos[k].tipo;if(t==='bool')x=String(x).toUpperCase()==='TRUE'?true:String(x).toUpperCase()==='FALSE'?false:x;else if(t==='custom'&&/^-?\d+(?:[.,]\d+)?$/.test(String(x)))x=Number(String(x).replace(',','.'));}v[k]=x;});return v;});
  var lock=LockService.getDocumentLock();if(!lock.tryLock(20000)){PropertiesService.getDocumentProperties().setProperty('r53_recuperacao_'+Date.now(),JSON.stringify({aba:owner,contextos:gs.map(function(g){return g.id;}),valores:replay}));ss.toast('O salvamento demorou. Sua alteração foi guardada para recuperação; aguarde antes de continuar.');return true;}
  try {
   gs.forEach(function(g,gi){

@@ -13,20 +13,31 @@ function salarioMissaoDireta_(e) {
  var r=e.range,l1=r.getRow(),l2=r.getLastRow(),c1=r.getColumn(),c2=r.getLastColumn();
  if(r.getSheet().getName()!=='FICHA PESSOAL'||l1<15||l2>87||c1<49||c2>72)return false;
  var ss=e.source||SpreadsheetApp.getActive(),sh=r.getSheet(),idioma;
+ var restaurou=false;
  SALARIO_MISSOES_MOLDES_.forEach(function(t){
   if(t[0]<l1||t[0]>l2||t[1]<c1||t[1]>c2)return;
-  sh.getRange(t[0],t[1]).setFormula(r53Formula_(t[2],ss));
+  sh.getRange(t[0],t[1]).setFormula(r53Formula_(t[2],ss));restaurou=true;
  });
+ // Com o painel já lido nesta edição e nenhum molde regravado: se ainda falta XP para o próximo nível (BC11 > 0)
+ // ou o nível é o máximo (—), nada sobe e a DADOS não precisa ser lida.
+ var painel=!restaurou&&SALARIO_PAINEL_,semSubida=painel&&(painel.falta==='—'||typeof painel.falta==='number'&&painel.falta>0);
+ if(!semSubida){
  // O índice e a curva continuam sendo os da campanha, inclusive custom.
  // Excluir as linhas 1–3 evita consultar todos os resultados de combate.
- var dados=ss.getSheetByName('DADOS').getRange('AQ4:DP100').getValues(),xpCell,nivelCell;
- dados.forEach(function(row){if(row[76]==='xp total')xpCell=String(row[77]);if(row[10]==='nivel')nivelCell=String(row[11]);});
+ // A mesma faixa espelha o XP total (CY:CZ, a conta da FICHA PESSOAL!AW11) e o nível da FICHA: com os espelhos,
+ // é uma ida em vez de três. Uma ficha sem eles lê as duas células como antes.
+ var dados=ss.getSheetByName('DADOS').getRange('AQ4:DP100').getValues(),xpCell,nivelCell,xpEspelho,nivelEspelho;
+ dados.forEach(function(row){
+  if(row[76]==='xp total')xpCell=String(row[77]);if(row[10]==='nivel')nivelCell=String(row[11]);
+  if(row[60]==='xp total')xpEspelho=row[61];if(row[60]==='nível')nivelEspelho=row[61];
+ });
  if(!xpCell||!nivelCell)throw Error('Índice de XP/nível ausente.');
- var total=Number(sh.getRange(xpCell).getValue());if(isNaN(total))return true;
+ var total=Number(xpEspelho!==undefined?xpEspelho:sh.getRange(xpCell).getValue());if(isNaN(total))return true;
  var tabela=salarioTabelaDados_(dados,'nível',['xp acumulado']).map(function(l){return {nivel:l['nível'],xp:l['xp acumulado']};});
  var limiar=Number((salarioTabelaDados_(dados,'limiar do feito')[0]||{})['limiar do feito'])||0;
- var cell=ss.getSheetByName('FICHA').getRange(nivelCell),atual=Number(cell.getValue())||0;
+ var cell=ss.getSheetByName('FICHA').getRange(nivelCell),atual=Number(nivelEspelho!==undefined?nivelEspelho:cell.getValue())||0;
  var sobe=salarioNivelQueSobe_(tabela,total,atual,limiar);if(sobe!==null)cell.setValue(sobe);
+ }
  if(typeof r53ContinuarPaletaPendente_==='function')r53ContinuarPaletaPendente_(e);
  else if(typeof continuarPaleta_==='function')continuarPaleta_(e.r53Inicio_||Date.now(),null,false,r);
  return true;
@@ -80,9 +91,15 @@ function salarioConfig_(ss) {
   c.proximo=salarioDia_(sh.getRange('O48').getValue());
   return c;
 }
+// A leitura agrupada do painel começa na linha 11: o XP total (AW11) e o quanto falta para o próximo nível (BC11)
+// vêm junto e poupam a ida à DADOS quando o nível não tem como subir (ver salarioMissaoDireta_).
+var SALARIO_PAINEL_=null;
 function salarioMissoesAtuais_(ss,agrupar) {
-  var pessoal=ss.getSheetByName('FICHA PESSOAL'),faixa=pessoal.getRange(15,49,73,24),notas=faixa.getNotes(),out=[];
-  out.faixa=faixa;out.notas=notas;out.limpar=[];var matriz=agrupar?faixa.getValues():null;
+  // Valores antes das notas: a primeira ida à aba espera o recálculo, e as notas depois dela saem de graça;
+  // na ordem inversa as fórmulas do painel pagam a espera de novo (medido: ~3,5 s a mais).
+  var pessoal=ss.getSheetByName('FICHA PESSOAL'),faixa=pessoal.getRange(15,49,73,24),out=[],matriz=null;
+  if(agrupar){var tudo=pessoal.getRange(11,49,77,24).getValues();SALARIO_PAINEL_={xp:tudo[0][0],falta:tudo[0][6]};matriz=tudo.slice(4);}
+  var notas=faixa.getNotes();out.faixa=faixa;out.notas=notas;out.limpar=[];
   // Leia somente as entradas literais. Os totais de XP ao lado podem exigir o recálculo da ficha inteira.
   SALARIO_.colunas.forEach(function(col){var v=matriz?matriz.map(function(row){return row.slice(col-49,col-47);}):pessoal.getRange(15,col,73,2).getValues();for(var i=0;i<73;i++){
     var nome=String(v[i][0]||'').trim(),tipo=String(v[i][1]||'').trim();
@@ -93,10 +110,13 @@ function salarioMissoesAtuais_(ss,agrupar) {
 }
 /** A identidade viaja na nota da célula. Uma cópia da mesma missão não renova sua data. */
 function salarioSincronizar_(ss,estado,hoje,baseline,adiar,agrupar) {
-  var sh=ss.getSheetByName(SALARIO_.dados),n=Math.max(0,sh.getLastRow()-1);
-  var old=n?sh.getRange(2,1,n,7).getValues().filter(function(r){return r[0];}):[],map={},seen={},changed=false;
-  var porCaixa={};old.forEach(function(r){map[r[0]]=r;if(r[4]===true)porCaixa[r[5]]=r;});
+  // O painel antes dos registros: a FICHA PESSOAL paga uma espera só (valores, notas e cabeçalho), e os registros,
+  // que custam 5–11 s em qualquer posição, vêm depois sem fazer o painel esperar de novo.
   var atuais=salarioMissoesAtuais_(ss,agrupar),notesChanged=false;
+  // Uma ida só: a faixa aberta traz até a última linha da aba, e o tamanho dela dá o número de linhas.
+  var sh=ss.getSheetByName(SALARIO_.dados),todas=sh.getRange('A2:G').getValues(),max=todas.length+1;
+  var old=todas.filter(function(r){return r[0];}),map={},seen={},changed=false;
+  var porCaixa={};old.forEach(function(r){map[r[0]]=r;if(r[4]===true)porCaixa[r[5]]=r;});
   function semMarca(s){return s.replace(/(?:\n)?\[Salário: [^\]\n]+\]/g,'');}
   atuais.forEach(function(m){
     var row=m.id?map[m.id]:porCaixa[m.key],id=row?row[0]:(m.id||Utilities.getUuid());
@@ -109,7 +129,6 @@ function salarioSincronizar_(ss,estado,hoje,baseline,adiar,agrupar) {
   });
   atuais.limpar.forEach(function(p){atuais.notas[p[0]][p[1]]=semMarca(atuais.notas[p[0]][p[1]]);notesChanged=true;});
   old.forEach(function(r){if(!seen[r[0]]&&r[4]===true){r[4]=false;changed=true;}});
-  var max=sh.getMaxRows();
   old.gravar=function(){
     if(changed&&old.length){
       if(max<old.length+1)sh.insertRowsAfter(max,old.length+1-max);
@@ -216,7 +235,8 @@ function salarioEditar_(e) {
       // A troca vai antes de qualquer leitura: até ela chegar, a fórmula paga o passado com o valor novo.
       var chave=SALARIO_.formula&&salarioChaveTroca_(r,n);
       if(chave){salarioRegistrarTroca_(ss,chave,e);return;}
-      var cfg=ss.getSheetByName(SALARIO_.config),st=salarioEstado_(ss);
+      // Por fórmula, fora da CONFIGURAÇÃO e da CARTEIRA, o estado não é usado: a L2 espera o recálculo (~3 s).
+      var cfg=ss.getSheetByName(SALARIO_.config),st=SALARIO_.formula&&!config&&!emitir?null:salarioEstado_(ss);
       if(total)salarioLigacoes_(ss);
       var controle=(config&&salarioToca_(r,39,39,15,17))||emitir;
       var reemitido=controle&&(e.value!==undefined?String(e.value).toUpperCase()==='TRUE':(emitir?r.getSheet().getRange('AT3'):cfg.getRange('O39')).getValue()===true);

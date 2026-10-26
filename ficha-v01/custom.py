@@ -388,7 +388,7 @@ def prepara(layout):
 
 def integra(layout,tr,fp):
  """Trocas explícitas das fontes e contas. Não modifica nem desloca índices."""
- from ficha_pessoal import COLS_EQUIP, COLS_ITENS
+ from ficha_pessoal import COLS_EQUIP, COLS_ITENS, EQUIP_MENU
  cells={a['nome']:{x[0]:x for x in a['celulas']} for a in layout['abas']}
  antes={};depois={}
  def put(aba,c,v):
@@ -418,8 +418,10 @@ def integra(layout,tr,fp):
  def manual(c,v):
   put('FICHA PESSOAL',c,v)
   if c not in livres:livres.append(c)
- # Every inventory slot accepts catalog entries and free typing.
- equip_menu=f'D{G["equip_ini"]}:D{G["equip_fim"]}'
+ # 26/10/2026, pedido do Mizuki (como nas oficiais): menu do catálogo só nas seis
+ # primeiras vagas de equipáveis; as duas últimas e os itens guardados são de escrever.
+ # As contas de catálogo continuam: um nome do catálogo escrito à mão ainda preenche.
+ equip_menu=f'D{G["equip_ini"]}:D{G["equip_ini"]+EQUIP_MENU-1}'
  pessoal['menus']=[m for m in pessoal['menus'] if not m['onde'].startswith('D'+str(G['equip_ini']))]
  pessoal['menus'].append({'tipo':'list','formula':tab('equip',0),'onde':equip_menu,'vazio_ok':True,'mostra_seta':True})
  source={'Categoria':2,'Mão':3,'Dado':4,'Propriedades':5,'Força':6}
@@ -429,12 +431,11 @@ def integra(layout,tr,fp):
     v=f'=IF($D{row}="","",IFERROR(VLOOKUP($D{row},{tab("equip")},{source[label]},FALSE),""))'
    elif label=='Vol.':v=f'=IF($D{row}="","",IFERROR(IF($K{row}="",1,$K{row})*VLOOKUP($D{row},{tab("equip")},7,FALSE),""))'
    else:continue
-   if row>=G['equip_ini']+6:manual(c+str(row),v)
+   if row>=G['equip_ini']+EQUIP_MENU:manual(c+str(row),v)
   for c,col in [('AI',7),('AK',8),('AQ',9)]:
    manual(c+str(row),f'=IF($D{row}="","",IFERROR(VLOOKUP($D{row},{tab("stats")},{col},FALSE),""))')
  for columns in COLS_ITENS:
   (_,name,_),(_,qty,_),(_,volume,_)=columns
-  pessoal['menus'].append({'tipo':'list','formula':tab('item',0),'onde':f'{name}{G["itens_ini"]}:{name}{G["itens_fim"]}', 'vazio_ok':True,'mostra_seta':True})
   for row in range(G['itens_ini'],G['itens_fim']+1):
    old=cells['FICHA PESSOAL'][volume+str(row)][1]
    vol=f'IFERROR(VLOOKUP(${name}{row},{tab("item")},2,FALSE),{fp["R"]["leve"]})'

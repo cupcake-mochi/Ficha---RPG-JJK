@@ -1,3 +1,182 @@
+## Inventário da FICHA PESSOAL: menus destravados · 26/10/2026 (Claude) · aplicado nas duas oficiais
+
+O Mizuki viu que os itens guardados e os equipáveis guardados não aceitavam escrita. Nas duas oficiais (e na
+cópia de teste) os menus `D92:D99` (DADOS_CUSTOM!AA), `D104:D109` e `Z104:Z109` (DADOS_CUSTOM!AU) estavam
+**estritos**, embora o molde (`apps-script/Ficha.gs`, gerado por `ficha-v01/`) só ponha `D44` em
+`menus_estritos`; não achei quando travaram. Pedido dele: itens guardados só de escrever, e duas vagas livres nos
+equipáveis (o desenho original: "seis linhas com menu, duas livres"). Feito pela API do Sheets: `D98:D99`,
+`D104:D109` e `Z104:Z109` sem validação; `D92:D97` seguem com o menu. **Gerador em dia (26/10):** quem
+alargava o menu era o `integra()` do `ficha-v01/custom.py`; agora ele põe o catálogo só em `D92:D97`
+(`EQUIP_MENU`, o desenho do `ficha_pessoal.py`) e não põe menu nos itens guardados. As contas que puxam o
+catálogo ficam, então um nome do catálogo escrito à mão ainda preenche. Regerado: no molde só mudou o `dv`
+da FICHA PESSOAL; o selo da geração passou a `2d3a0bf73db57661` (as oficiais seguem no módulo instalado).
+
+## Experiência da cópia de teste · 26/10/2026 · bordas pelo tema e listas sem INDIRECT
+
+`r53/diagnostico-android/experimento_bordas_listas.gs` (só na cópia `1xcXsFSk…`, com o medidor `MedidaTeste`
+que grava cada onEdit na aba oculta `R53_MEDIDA`). `experimentoBordas()` passa as bordas das seis abas para a vaga
+ACCENT5 do tema e a troca de paleta escreve a régua em ACCENT5 e ACCENT6; `experimentoListas()` troca as 225
+`INDIRECT(SWITCH(...))` da DADOS_CUSTOM por `CHOOSE(MATCH(...))` e confere em todos os estados dos seletores.
+Medida 1 (sem as mudanças, tempo do script): FICHA 8,4 e 10,9 s; paleta 15,5 e 22,8 s.
+
+## Cartas antes das caixas que esticam · 26/10/2026 (Claude) · instalado nas duas oficiais com os remendos 34–38 (módulo `52fc6903`, v5)
+
+Pente fino depois da instalação: no arnês quase toda edição já fica entre ~7 e ~9 s. Na CONFIGURAÇÃO, o
+texto das habilidades custom esticava as caixas (27 alturas gravadas) e só depois lia as cartas, que
+então esperavam o recálculo (~16 s). A ordem inverteu (remendo 33; módulo `bddccf83…`, mapa do atalho
+regerado, igual fora o hash): as duas leem antes de gravar e as cartas gravam na FICHA. `leituras_curtas.js`
+segue sem diferença. Na FICHA PESSOAL, a segunda espera das missões só aparece quando se escreve por
+cima de uma conta: a XP precisa da conta recalculada, então fica.
+
+## Leituras curtas · 26/10/2026 (Claude) · instalado nas duas oficiais (ver r53/OFICIAIS.md)
+
+As últimas leituras de aba inteira que o arnês achou no onEdit saíram (remendos 23–32 do pacote
+leve; o `Codigo.gs` tem o mesmo texto). Custo modelado, antes → depois:
+
+- habilidades custom da CONFIGURAÇÃO (AK9:AX64): ~20 s → ~7 s (lia DADOS_AM e a FICHA inteiras);
+- saltos do topo da FICHA AMALDIÇOADA e da INVOCAÇÕES: ~18 s → ~11 s (a tabela vem só nas colunas
+  dela, e religa só o salto em que se escreveu; caixa, alvo e nome são fixos, os outros já estavam certos);
+- cartas da FICHA e caixas que esticam: ~16 s → ~11 s (só o retângulo das células usadas);
+- `indiceEstatico_()` no lugar do `indice()` nas habilidades da CONFIGURAÇÃO, na caixa de
+  habilidade e nas células livres: 15 células da FICHA saíram do mapa do atalho, porque o módulo
+  já não lê nada nelas.
+
+Módulo leve novo `fef2a94b…` (o da cópia de teste, `9d1cec81…`, mais o incremento do 23º em
+diante: `node r53/diagnostico-android/instalar_pacote_leve.js --incremento 22 …`). O mapa do atalho
+foi regerado para ele. O bloco do Caminho (`apps-script/Caminho.gs`) não muda: o gerador tira as
+funções do `Codigo.gs` de antes desses remendos. Teste novo `r53/testes/leituras_curtas.js` roda a
+exportação célula a célula no mapa (34 mil edições) com os dois módulos e confere as mesmas
+células, formatos, alturas e propriedades, e custo nunca maior. O que sobra de mais caro (~13–16 s)
+é a leitura do retângulo das habilidades custom da CONFIGURAÇÃO, a Classe da FICHA (DADOS A1:EG100)
+e o salário da FICHA PESSOAL. Falta medir no Google.
+
+## Atalho das células livres · 26/10/2026 (Claude) · instalado nas duas oficiais
+
+Arnês novo (`r53/arnes_custo.js`) roda o onEdit instalado inteiro contra a oficial exportada
+(`r53/xlsx_para_json.py`) e conta as idas ao servidor, com custo calibrado nas medições do Google.
+Com pacote leve e consertos 1–3, as edições comuns já estão no piso (uma espera de recálculo).
+O que sobrava: edição em célula onde o script não faz nada (texto livre, nome, descrição) ainda
+lia o Amparo das Famílias (CARTEIRA, FICHA AMALDIÇOADA, INVOCAÇÕES, CONFIGURAÇÃO) e abria o
+módulo só para concluir que não havia o que fazer: ~8,6 s no modelo (FICHA e FICHA PESSOAL ~3,9 s).
+Com o atalho: ~2,2 s, sem leitura.
+
+- `r53/atalho_livre.js` gera `r53/atalho_livre.gs`: mapa de onde cada uma das seis abas age, por
+  força bruta no módulo (três valores, e.value espiado), mais cartões, entradas do Amparo
+  rastreadas pelas fórmulas (P37 da AMALDIÇOADA, Famílias das INVOCAÇÕES, F140:G145 da
+  CONFIGURAÇÃO, Trilha), salário, Caminho, paleta e versão pública. Vale só para o módulo
+  `fef2a94b…` (era `9d1cec81…` até as leituras curtas) e o catálogo `e4502f59…`; com outro hash se desliga sozinho.
+- Trilha e Caminho marcam `r53_amparo_sujo`: a próxima edição nas quatro abas sincroniza e desmarca.
+  Achado de passagem: desde o `97abf4f` a FICHA não sincroniza as Famílias, então a troca de Trilha
+  só chegava aos cartões na próxima edição dessas abas; a marca mantém isso.
+- `r53/diagnostico-android/preparar_atalho.js` liga o atalho no `r53OnEditOriginal_` (reaplicar
+  troca só o mapa). Teste: `r53/testes/atalho_livre.js` (4.814 verificações com a exportação em
+  `nuvem-b47/saidas/atalho/`; sem ela, só as peças puras).
+- Regerar o mapa depois de trocar módulo, catálogo ou layout:
+  `node r53/atalho_livre.js <projeto .json> <ficha .json>`.
+- Falta medir no Google (cópia descartável) antes das oficiais.
+
+## Fila de desempenho da ficha · 25–26/10/2026 (Claude) · fila concluída, falta o teste no Android
+
+**Estado em 26/10, fim do dia.** Tudo desta fila está nas duas oficiais, cada passo com versão de backup e
+conferido byte a byte depois de salvar (detalhes e versões em `r53/OFICIAIS.md`):
+
+| Oficiais têm | Peça instalada | Backup antes |
+|---|---|---|
+| pacote leve + atalho das células livres | módulo `fef2a94b` | v1, v2 (limpeza) |
+| missões enxutas (três cortes) | `Codigo` | v3, v4 |
+| remendos 33–38 da CONFIGURAÇÃO | módulo `52fc6903` | v5 |
+| cartão em menos idas | `EditorR53` `68f21a08` | v6 |
+| conferência do salário sem esperar o recálculo | `SalarioLote` `366f6dd3` | v7 |
+
+Medido em cópia (`1HI96ICu…`, MEDICAO-DESEMPENHO): missões 11–19 s (estouravam), habilidade custom da
+CONFIGURAÇÃO 18–21 s (24–31 s), cartão 19,5–23,4 s (23–26 s), ± da vida ~7–9 s. Nenhuma edição
+medida passa de 24 s.
+
+Falta, nesta ordem:
+1. **O Mizuki testar as oficiais no Android:** uma missão no painel da FICHA PESSOAL, um texto em
+   CONFIGURAÇÃO!AK51, pontos de um cartão da FICHA AMALDIÇOADA e um ± de vida. Se algo passar de 30 s,
+   ler o registro de Execuções do horário.
+2. Só se o teste mostrar aperto: as marcas DADOS_PROGRESSAO!K7:K8 na CONFIGURAÇÃO (~3 s) e a leitura da
+   MONTAGENS no cartão (~4 s; guarda campos que o cartão não mostra, mexer pede cuidado).
+3. Em aberto por escolha dele: a corrida do personagem novo no Caminho.
+
+Ramo de trabalho `claude/project-thread-0fb9fh`, mesclado por PR em `codex/otimizacao-android-r53`
+(fora da `main`). O histórico da fila segue abaixo, com os itens 1–5 feitos.
+
+Feito e medido em cópia de teste (`1kQuSgg…`, "TESTE pacote leve"): leitura única nas
+edições comuns da FICHA e pacote leve. ± da vida 30,6 s (morria) → 11,5 s; Caminho
+19,1 → 10,2 s; abrir o módulo 11,4 → 1,8 s; onOpen 17,9 → 2,1 s.
+
+**Consertos 1–3 feitos (commits `79ee9cb`, `ac73543`) e medidos no Google em 26/10** numa
+cópia nova da oficial na gustavohmoura12 (`1xcXsFSk…`, "TESTE consertos 1-3"): as 6 edições
+do antes estouraram (30,7–31,0 s); as 9 do depois concluíram em 10,2–12,8 s (CARTEIRA,
+FICHA AMALDIÇOADA, arma na mão, Força). Tabela em MEDICAO-DESEMPENHO. Lá foi instalado o
+pacote leve do zero com os 22 remendos (sai `9d1cec81…`, igual ao node) e o `EditorR53`
+`d2e57223…`: é o ensaio do item 5. A cópia antiga `1kQuSgg…` (cupcakemochi1201) não recebeu
+nada; para ela continua valendo o caminho abaixo:
+- `EditorR53.gs`: colar por inteiro a saída de
+  `node r53/editor_lazy.js apps-script/EditorR53.gs <saída>`; instalado `bc300464…` → `d2e57223…`.
+- módulo: `node r53/diagnostico-android/instalar_pacote_leve.js --incremento 14 2667ef41d84e44f565228bae47d7a6b9cf08bb7bfef8c60f2467383075aaee53 9d1cec81cf90bac42dd044d619843857b9c5fff3538ea0b8a0909899ff62fdce`
+  gera o trecho do console; ele confere o hash instalado e aplica só os remendos 15–22.
+  Salvar o projeto e conferir o hash `9d1cec81…` no `r53Modulo_`.
+- Medir pelo gatilho: CARTEIRA A1 (duas vezes: a 1ª grava o estado), FICHA AMALDIÇOADA B500,
+  arma na mão D64, Força. Antes: 30,6–30,7 s (tempo limite) nas três primeiras.
+- Prompt pronto para outro Claude fazer isso pelo navegador (trechos embutidos, simulados num
+  editor de mentira com o módulo `2667ef41…` real):
+  `r53/diagnostico-android/PROMPT-INSTALAR-MEDIR-COPIA-2026-10-25.md`. Nesta sessão o Claude in
+  Chrome não conectou: o app só instalou a ponte da extensão para o Edge (não para o Brave), e a
+  sessão não achou o Edge mesmo depois de conectado.
+
+Fila, nesta ordem:
+
+1. **Sincronização das Famílias em cópia nova (crítico).** *Feito no código (`79ee9cb`):
+   sem `r53_amparo_direto`, grava o amparo atual e não sincroniza; no node a edição fora dos
+   cartões faz 1 leitura (era a varredura de 249 cartões). `cartoes_diretos_runtime.js` 584.* `r53SincronizarFamilias_`
+   (`apps-script/EditorR53.gs`) usa `r53_amparo_direto` das propriedades do documento, que
+   não vão na cópia da planilha. Sem estado, cada edição em CARTEIRA, FICHA AMALDIÇOADA,
+   INVOCAÇÕES e CONFIGURAÇÃO tenta acertar os 249 cartões, estoura e não grava: medido
+   30,6–30,7 s (tempo limite) três vezes. Proposta: sem estado guardado, gravar o atual e
+   não sincronizar (a cópia herda os cartões já acertados da oficial). O EditorR53.gs
+   instalado é o transporte de `r53/editor_lazy.js`; o código fica legível nele.
+2. **FICHA PESSOAL (alto).** *Feito no código (`ac73543`): `indicePessoal_` sai do molde
+   (`indiceDoMolde_`), tabelas da DADOS só nas colunas delas (`tabelaLida_`), notas vivas só no
+   retângulo das caixas (`notasVivasLeves_`). Contador do node: arma na mão 12 → 2 leituras,
+   capacidade da Origem 13 → 6; mesmas notas gravadas (`pessoal_leve.js`, 51).* Arma na mão (D64) estourou (30,6 s). `textoDaCapacidade_` e
+   `pessoalEditada_` releem o índice pessoal (`indicePessoal_`: `getLastRow` + leitura) em
+   toda edição da aba; o caminho das notas faz `flush`, `getDataRange` da DADOS e refaz as
+   notas vivas (12 idas no contador). Mesmo remédio da FICHA: índice do molde,
+   `faixaDoMolde_`, leitura agrupada.
+3. **Força e atributos (médio).** *Feito no código (`ac73543`): o onEdit comum chama
+   `fichaMexeNaPessoalLeve_` (8 → 2 leituras, mesmas notas). `fichaMexeNaPessoal_` e
+   `notasVivas_` ficaram intactas e o `Caminho.gs` gerado saiu idêntico.* `fichaMexeNaPessoal_` lê a DADOS inteira e refaz as notas
+   vivas (8 idas). Atenção: o `caminho_leve.js` extrai essa função e procura a linha
+   `var dados = ss.getSheetByName('DADOS').getDataRange().getValues();` dela.
+4. **Medir o que está no limite.** *Feito em 26/10: missões enxutas e cartão em menos idas, medidos e
+   instalados (ver o estado acima).* *Medido em 26/10 numa cópia nova da oficial (tabela e perfil
+   por rotina em MEDICAO-DESEMPENHO): toda edição no painel de missões da FICHA PESSOAL estoura os
+   30 s, mesmo com a planilha aquecida (o XP total aparece porque é fórmula; registro, data e nível
+   não terminam). O cartão conclui em 23–26 s aquecido e estoura logo depois de copiar. Próximo
+   passo: cortar idas no caminho da missão (`salarioEstado_` + `salarioSincronizar_` +
+   `salarioMissaoDireta_`, ~10 idas) e no do cartão (`r53ValoresCartao_`, `r53LerVersao_`,
+   `r53Amparo_`).* Missões da FICHA PESSOAL (27,8 s medido pelo ChatGPT;
+   colunas AW:BT recolhidas) e edição de cartão (~20 s).
+5. **Aplicar nas oficiais**, *feito (26/10, ver `r53/OFICIAIS.md`)*, com o aval do Mizuki: primeiro o `Codigo.gs` da corrida
+   (`r53/saidas/caminho-corrida/Codigo.gs`, ignorado; refazer trocando o bloco final do
+   Codigo instalado pelo `apps-script/Caminho.gs`), depois o trecho de
+   `instalar_pacote_leve.js` (já com os 22 remendos: sai `9d1cec81…` direto, sem o incremento),
+   e o `EditorR53.gs` novo (`d2e57223…`). Se os remendos da FICHA mudarem,
+   regenerar `pacote_leve_remendos.json` e o hash esperado.
+
+Fora da fila, sem efeito para o jogador: `regressao-construir`, `-pessoal` e `-paleta`
+falham pelo Sheets de mentira desatualizado (já falhavam antes); a corrida do personagem
+novo (Trilha terminando antes do Caminho) ficou aberta por decisão dele;
+`PaletaAndroid.gs` (591 KB) carrega em toda execução.
+
+Como medir: `r53/diagnostico-android/medir_carga.gs` (colar num arquivo vazio de uma
+cópia), registro em `script.google.com/u/1/home/projects/<id>/executions`. O editor proíbe
+`new Function` em código assíncrono da página; o seletor de funções só lista as do arquivo
+aberto.
+
 ## R53 publicada na oficial · 19/10/2026
 
 A ficha oficial foi atualizada, limpa e validada no mesmo endereço. Cartões diretos,
@@ -4335,18 +4514,43 @@ Migração nativa JÁ APLICADA na revisão, sem construir() e sem Excel: 37 lote
 
 Testes locais: 74 checagens de delta/cartas passaram; regressao-progressao (estrutura e cálculos independentes) passou; construção completa simulada corrigida e aprovada em correcao-grupo7-construir-final.log. A primeira execução detectou que o simulador retorna IF como texto: produção agora só consulta catálogo custom se os flags K7/K8 forem 1, e o teste fornece explicitamente os resultados de fórmula para o cenário de altura. O teste de altura foi atualizado para o cartão EXISTENTE, em vez do espelho removido. Não foi enfraquecida uma falha real. Não repetir tudo sem necessidade.
 
-PENDÊNCIA CRÍTICA: entrega dos seis scripts alterados ao editor vinculado. Código.gs (versão anterior ao pequeno filtro de flags; 257.342 caracteres) e Ficha.gs foram colados e conferidos. Não se confirmou persistência após recarga: Código talvez salvo, Ficha ainda indicava alteração pendente. Configuracao.gs NÃO foi colado; tentativa de copiar seu conteúdo grande derrubou duas vezes a conexão nativa do Brave (hipótese de limite de mensagem, não confirmada). Progressao.gs, ProgressaoPainel.gs e ProgressaoAnalise.gs ainda não enviados. A última versão de Codigo.gs local inclui também filtro K7/K8 e precisa ser reinstalada. Snapshot da versão colada antes do filtro em evidencias-3b/Codigo-grupo7-colado-antes-filtro.gs; HEAD dos seis arquivos em evidencias-3b/codigo-antes-correcao-grupo7/. Não declarar entrega concluída nem testar presumindo persistência.
+> **Superada (26/10/2026):** desde o R53 o código vai inteiro pela API do Apps Script, sem colar no navegador. O filtro K7/K8 está no `apps-script/Codigo.gs` e nas oficiais (ver `r53/OFICIAIS.md`). O parágrafo abaixo é histórico.
+
+PENDÊNCIA CRÍTICA (histórica): entrega dos seis scripts alterados ao editor vinculado. Código.gs (versão anterior ao pequeno filtro de flags; 257.342 caracteres) e Ficha.gs foram colados e conferidos. Não se confirmou persistência após recarga: Código talvez salvo, Ficha ainda indicava alteração pendente. Configuracao.gs NÃO foi colado; tentativa de copiar seu conteúdo grande derrubou duas vezes a conexão nativa do Brave (hipótese de limite de mensagem, não confirmada). Progressao.gs, ProgressaoPainel.gs e ProgressaoAnalise.gs ainda não enviados. A última versão de Codigo.gs local inclui também filtro K7/K8 e precisa ser reinstalada. Snapshot da versão colada antes do filtro em evidencias-3b/Codigo-grupo7-colado-antes-filtro.gs; HEAD dos seis arquivos em evidencias-3b/codigo-antes-correcao-grupo7/. Não declarar entrega concluída nem testar presumindo persistência.
 
 Navegador: sessão Brave passou de3→4→5 durante reconexões; aba Apps Script2140372220 foi criada pelo agente. Último estado: Debugger unattached. Pedi ao usuário reconectar extensão e manter aba aberta. Não usar handles velhos capturados em closures; função deve receber o tab atual como parâmetro. Não abrir editor concorrente enquanto houver gravações pendentes. Para Configuracao grande, evitar repetir cópia integral que derruba a conexão; considerar colagem/conferência por trechos COM verificações de foco. Não usar modelo interno do Monaco nem APIs ocultas. Todos os arquivos atuais locais estão íntegros.
 
 NENHUM CENÁRIO DE TESTE NOVO FOI ATIVADO. Backup já pronto para teste futuro: evidencias-3b/correcao-grupo7-antes-teste.json (FICHA/FP valores e notas, CONFIG737–792, cache CB2:CC10). Acrescentar backups de outros alvos que usar, como CONFIG879+ e B11:G12. Depois restaurar inclusive vazios e reler sem diferenças. Antes de testar de verdade, concluir instalação/persistência dos seis scripts. IAB aba2 da revisão continua acessível. Brave demais abas são do usuário, não inspecionar.
 
+> **Superada (26/10/2026):** os limites editáveis de Livres e Fechadas foram feitos na 3c (`TESTE-CUSTOM-3C.md`) e estão nas oficiais, em CONFIGURAÇÃO F157:F158 (coluna CAMPANHA; Neutras é o saldo). O parágrafo abaixo é histórico.
+
 Decisões da 3c já respondidas: BASE DO LIVRO opcional aprovada para Formas/Melhorias/Restrições/aptidões/Talentos/tipos de entidade; Famílias custom ACRESCENTADAS às nove do livro, mantendo limites. Usuário lembrou que CONFIGURAÇÃO deve permitir alterar quantidades de Livres/Fechadas/Neutras. Inventário do código: Livres e Fechadas são limites fixos do catálogo; Neutras são as restantes. Anunciei protótipo com dois limites editáveis e saldo Neutras calculado, ainda sujeito à aprovação do desenho. Sem implementação nem protótipo3c nesta correção. Retomar3c depois de fechar estes ajustes.
 
-HEAD atual 4e0f6c7 (commit da3b feito pelo usuário). Mudanças desta correção AINDA NÃO adicionadas ao índice. Sem commit/push. Antes de fechar: revisar diff, atualizar roteiros/contrato, git add delimitado e mensagem-de-commit.txt.
+(Histórico) HEAD da época 4e0f6c7. Mudanças desta correção ainda não estavam no índice naquele dia. Sem commit/push. Antes de fechar: revisar diff, atualizar roteiros/contrato, git add delimitado e mensagem-de-commit.txt.
 
 ---
 
 
 
 Teste nativo das duas colunas concluído, 5 verificações passaram; 21 entradas restauradas com zero diferenças, nenhum cenário ativo. Evidência correcao-grupo7-mecanica-nativa.json. Instalação de scripts e cartões nativos ainda pendentes por conexão do editor.
+
+### Experiência da cópia de teste: resultado (26/10)
+- Bordas pelo tema (ACCENT5/6): descartadas pelo Mizuki. A troca de paleta passou dos 30 s com o passo do tema e a cópia ficou lenta.
+- Listas da DADOS_CUSTOM sem INDIRECT (CHOOSE/MATCH): conteúdo igual nos estados conferidos e FICHA de 10,9 → 4,3 s, mas CONFIGURAÇÃO 19 s e a cópia travou em "alterando" com as três experiências juntas. Inconclusivo; não instalado. Se voltar, testar numa cópia limpa de uma oficial só com essa troca.
+- (Superado em 26/10, fim do dia: o remendo 33 entrou nas oficiais com os 34–38, módulo `52fc6903`.)
+
+## Missões enxutas · 26/10/2026 (Claude) · no ramo, fora das oficiais
+
+Retomado do chat que parou no limite (item 4 da fila). Edições no painel de missões da FICHA PESSOAL
+estouravam os 30 s nas oficiais. O corte (`r53/diagnostico-android/preparar_missoes_enxutas.js`, pares em
+`missoes_enxutas.json`, aplicado depois do `preparar_missoes.js`; o `apps-script/Salarios.gs` é o resultado):
+- por fórmula, fora da CONFIGURAÇÃO e da CARTEIRA, a edição não lê mais o estado em DADOS_SALARIOS!L2
+  (ninguém o usa nesse caminho; a leitura esperava o recálculo, ~3,3 s no perfil);
+- os registros de missões saem numa ida só (`A2:G` aberta), sem getLastRow nem getMaxRows;
+- o XP total e o nível vêm dos espelhos da DADOS (CY47:CZ48: `xp total` é a conta da FICHA PESSOAL!AW11,
+  `nível` é N(FICHA!AH11)), dentro da faixa AQ4:DP100 que já se lia. Uma ficha sem os espelhos lê como antes.
+Segundo corte: a leitura agrupada do painel começa na linha 11 e traz o XP total (AW11) e o quanto falta para o
+próximo nível (BC11). Se ainda falta XP ou o nível é o máximo, a DADOS nem é lida (só quando o nível pode subir,
+ou quando um molde foi regravado). Medido antes deste corte: 7 edições em 17–28 s (MEDICAO-DESEMPENHO). No caso
+comum, as leituras agora caem de 9 para 3; antes deste corte eram 4 (`r53/testes/missoes_enxutas.js`, com 48 cenários e as mesmas
+células, notas e nível). `salarios/testes.js` aprendeu a faixa aberta. **Medido e instalado nas oficiais em 26/10** (versões 3 e 4 de backup; terceiro corte: painel antes dos registros, valores antes das notas; pior caso 18,9 s). Ver `r53/OFICIAIS.md` e a MEDICAO-DESEMPENHO.

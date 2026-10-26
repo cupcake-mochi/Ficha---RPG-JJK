@@ -19,7 +19,7 @@ function fixture(){
  class Sheet {
   constructor(name){this.name=name;this.cells=new Map();this.notes=new Map();this.max=1000;}
   getName(){return this.name;}getLastRow(){return Math.max(1,...Array.from(this.cells.keys(),k=>+k.split(',')[0]));}getMaxRows(){return this.max;}insertRowsAfter(_,n){this.max+=n;}
-  getRange(r,c,h,w){if(typeof r==='string'){let m=/^([A-Z]+)(\d+)(?::([A-Z]+)(\d+))?$/.exec(r),col=s=>Array.from(s).reduce((n,c)=>n*26+c.charCodeAt(0)-64,0);return new Range(this,+m[2],col(m[1]),m[4]?+m[4]-m[2]+1:1,m[3]?col(m[3])-col(m[1])+1:1);}return new Range(this,r,c,h,w);}
+  getRange(r,c,h,w){if(typeof r==='string'){let m=/^([A-Z]+)(\d+)(?::([A-Z]+)(\d*))?$/.exec(r),col=s=>Array.from(s).reduce((n,c)=>n*26+c.charCodeAt(0)-64,0);return new Range(this,+m[2],col(m[1]),m[4]?+m[4]-m[2]+1:m[3]?this.max-m[2]+1:1,m[3]?col(m[3])-col(m[1])+1:1);}return new Range(this,r,c,h,w);}
  }
  let sheets=Object.fromEntries(['CONFIGURAÇÃO','FICHA PESSOAL','FICHA','CARTEIRA','DADOS_SALARIOS','SALÁRIOS'].map(n=>[n,new Sheet(n)]));
  let ss={getSheetByName:n=>sheets[n]},ui={createMenu(){return {addItem(){return this},addSeparator(){return this},addToUi(){}}}};

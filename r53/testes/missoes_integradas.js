@@ -26,7 +26,7 @@ assert.throws(()=>preparar(s.replace(antigo,'return;')),/divergente/);checks++;
 assert.throws(()=>preparar(s+s),/divergente/);checks++;
 let calls=0;const matrix=Array.from({length:73},()=>Array(24).fill('')),notes=matrix.map(r=>r.map(()=>''));
 for(const [off,type] of [[0,'Curta'],[6,'Longa'],[12,'Solo simples'],[18,'Final de arco']]){matrix[0][off]='Missão '+off;matrix[0][off+1]=type;}
-const sheet={getRange:(r,c,n,cols)=>({getNotes:()=>{calls++;return notes;},getValues:()=>{calls++;return matrix.map(row=>row.slice(c-49,c-49+cols));}})};
+const sheet={getRange:(r,c,n,cols)=>({getNotes:()=>{calls++;return notes;},getValues:()=>{calls++;return Array.from({length:4},()=>Array(24).fill('')).concat(matrix).slice(r-11,r-11+n).map(row=>row.slice(c-49,c-49+cols));}})};
 const ctx={};vm.createContext(ctx);vm.runInContext(source,ctx);const ss={getSheetByName:()=>sheet};
 const separate=ctx.salarioMissoesAtuais_(ss,false);eq(calls,5);calls=0;
 const grouped=ctx.salarioMissoesAtuais_(ss,true);eq(calls,2);eq(JSON.stringify(grouped),JSON.stringify(separate));eq(grouped.length,4);
