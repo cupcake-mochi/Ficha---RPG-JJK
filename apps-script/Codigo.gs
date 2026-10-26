@@ -535,7 +535,7 @@ function onEdit(e) {
   nivelPelaXP_(e, idx, lerDados);
   grupoDeArmaDaTrilha_(e, idx);
   trocaArmaDoCaminho_(e, idx);
-  try { fichaMexeNaPessoal_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }
+  try { fichaMexeNaPessoalLeve_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }
   continuarPaleta_(inicio, null, false, e.range);
 }
 
@@ -640,8 +640,63 @@ function tabelaDaDados_(dados, chave, outras) {
   return [];
 }
 
-/** O índice da FICHA PESSOAL: {campo: 'D39'} ou {campo: 'D45:AT57'}. Lê só as duas colunas dele. */
+/**
+ * Uma tabela da DADOS lida só nas colunas dela. 25/10/2026: a linha e as colunas do cabeçalho saem do molde, e a
+ * leitura vai do cabeçalho até o fim do molde; dá o mesmo que o tabelaDaDados_ com a DADOS inteira, que custava ~7 s.
+ * Sem o molde, ou sem o cabeçalho nele, lê a DADOS inteira como antes.
+ */
+function tabelaLida_(ss, chave, outras) {
+  outras = outras || [];
+  var aba = ss.getSheetByName('DADOS'), nomes = [chave].concat(outras), cab = {};
+  var spec = typeof ABAS === 'undefined' ? null : ABAS.filter(function (s) { return s.nome === 'DADOS'; })[0];
+  if (spec) spec.vals.forEach(function (t) {
+    if (nomes.indexOf(t[2]) < 0) return;
+    var l = cab[t[0]] = cab[t[0]] || {};
+    if (!l[t[2]] || t[1] < l[t[2]]) l[t[2]] = t[1];
+  });
+  var linha = Object.keys(cab).map(Number).sort(function (a, b) { return a - b; })
+    .filter(function (r) { return nomes.every(function (n) { return cab[r][n]; }); })[0];
+  if (!linha) return tabelaDaDados_(aba.getDataRange().getValues(), chave, outras);
+  var cols = nomes.map(function (n) { return cab[linha][n]; });
+  var c1 = Math.min.apply(null, cols), c2 = Math.max.apply(null, cols);
+  return tabelaDaDados_(aba.getRange(linha, c1, spec.rows - linha + 1, c2 - c1 + 1).getValues(), chave, outras);
+}
+
+/**
+ * Um índice tirado do molde da DADOS, pelas duas colunas dele (a do campo e a do endereço), como o indiceEstatico_
+ * faz com o da FICHA. Endereço que não é ADDRESS(ROW(aba!X)...) nem texto devolve null, e quem chama lê a planilha.
+ */
+function indiceDoMolde_(colCampo, colCel, cabecalho) {
+  var spec = typeof ABAS === 'undefined' ? null : ABAS.filter(function (s) { return s.nome === 'DADOS'; })[0];
+  if (!spec) return null;
+  var linhas = {};
+  spec.vals.forEach(function (t) {
+    if (t[1] !== colCampo && t[1] !== colCel) return;
+    (linhas[t[0]] = linhas[t[0]] || {})[t[1] === colCampo ? 'k' : 'v'] = t[2];
+  });
+  var m = {};
+  for (var r in linhas) {
+    var k = linhas[r].k, v = linhas[r].v;
+    if (!k || !v || k === cabecalho) continue;
+    if (typeof v === 'string' && v.charAt(0) === '=') {
+      var partes = [], re = /ADDRESS\(ROW\((?:'[^']+'|[A-Z_]+)!\$?([A-Z]+)\$?(\d+)\)/g, p;
+      while ((p = re.exec(v))) partes.push(p[1] + p[2]);
+      if (!partes.length) return null;
+      v = partes.join(':');
+    }
+    m[k] = String(v);
+  }
+  return m;
+}
+
+/**
+ * O índice da FICHA PESSOAL: {campo: 'D39'} ou {campo: 'D45:AT57'}. 25/10/2026: sai do molde; reler as duas colunas
+ * dele custava duas idas ao servidor em toda edição da aba. Sem o molde, lê só as duas colunas dele.
+ */
+var INDICE_PESSOAL_ESTATICO_;
 function indicePessoal_() {
+  if (INDICE_PESSOAL_ESTATICO_ === undefined) INDICE_PESSOAL_ESTATICO_ = indiceDoMolde_(IDXP_COL_CAMPO, IDXP_COL_CAMPO + 1, 'campo pessoal');
+  if (INDICE_PESSOAL_ESTATICO_) return INDICE_PESSOAL_ESTATICO_;
   var dados = SpreadsheetApp.getActive().getSheetByName('DADOS');
   var vals = dados.getRange(1, IDXP_COL_CAMPO, dados.getLastRow(), 2).getValues();
   var m = {};
@@ -905,6 +960,29 @@ function notasVivas_(ss, dados) {
   return n;
 }
 
+/**
+ * As notas vivas com leitura curta. 25/10/2026: da DADOS só as colunas da tabela das notas, e da FICHA PESSOAL só o
+ * retângulo das caixas que têm nota; o notasVivas_ lia as duas abas inteiras, e a arma na mão estourava os 30 s. O
+ * notasVivas_ fica como está porque o caminho_leve.js o extrai para o Caminho.
+ */
+function notasVivasLeves_(ss) {
+  var aba = ss.getSheetByName(ABA_PESSOAL_);
+  if (!aba) return 0;
+  var linhas = tabelaLida_(ss, 'nota viva', ['texto da nota', 'caixa da nota'])
+    .filter(function (l) { return l['caixa da nota']; });
+  if (!linhas.length) return 0;
+  var f = linhas.map(function (l) { return limitesA1_(String(l['caixa da nota'])); });
+  var l1 = Math.min.apply(null, f.map(function (x) { return x.l1; })), c1 = Math.min.apply(null, f.map(function (x) { return x.c1; }));
+  var l2 = Math.max.apply(null, f.map(function (x) { return x.l1; })), c2 = Math.max.apply(null, f.map(function (x) { return x.c1; }));
+  // As notas são lidas antes de qualquer escrita, como no notasVivas_.
+  var notas = aba.getRange(l1, c1, l2 - l1 + 1, c2 - c1 + 1).getNotes(), n = 0;
+  linhas.forEach(function (l, i) {
+    var texto = String(l['texto da nota'] || '');
+    if ((notas[f[i].l1 - l1][f[i].c1 - c1] || '') !== texto) { aba.getRange(String(l['caixa da nota'])).setNote(texto); n++; }
+  });
+  return n;
+}
+
 function pessoalEditada_(e) {
   var ss = SpreadsheetApp.getActive(), aba = e.range.getSheet();
   var ip = indicePessoal_();
@@ -914,10 +992,12 @@ function pessoalEditada_(e) {
   var notas = toca('em uso') || toca('fileira') || toca('equipáveis') || toca('itens') || toca('grau');
   if (!treino && !missao && !notas) return;         // o dossiê e o resto não pedem nada do script
   if (notas && volumeDoItem_(e, aba, ip)) SpreadsheetApp.flush();
-  var dados = ss.getSheetByName('DADOS').getDataRange().getValues();
+  // As notas leem só a tabela delas. O treino e a missão, que quase sempre chegam por outro caminho, leem a DADOS
+  // pelo tamanho do molde, sem o getDataRange.
+  var dados = treino || missao ? faixaDoMolde_(ss.getSheetByName('DADOS')).getValues() : null;
   if (treino) treinoMarcado_(e, aba, dados, ip);
   if (missao) nivelPelaMissao_(ss, dados, ip);
-  if (notas) notasVivas_(ss, dados);
+  if (notas) notasVivasLeves_(ss);
 }
 
 /**
@@ -934,8 +1014,7 @@ function textoDaCapacidade_(e) {
   var par = CAPACIDADES_DA_ORIGEM_.filter(function (p) { return ip[p[0]] && tocaFaixa_(e.range, ip[p[0]]); })[0];
   if (!par || !ip[par[1]]) return false;
   var nome = String(e.range.getValue() || '');
-  var dados = SpreadsheetApp.getActive().getSheetByName('DADOS').getDataRange().getValues();
-  var doLivro = tabelaDaDados_(dados, 'capacidade da origem').some(function (l) { return l['capacidade da origem'] === nome; });
+  var doLivro = tabelaLida_(SpreadsheetApp.getActive(), 'capacidade da origem').some(function (l) { return l['capacidade da origem'] === nome; });
   var custom = SpreadsheetApp.getActive().getSheetByName('DADOS_CUSTOM');
   var doCustom = custom && custom.getRange(2, 2, 25, 19).getValues().some(function (l) {
     return (l[0] === 'Marcante' || l[0] === 'Menor') && l[1] === nome && l[18] === true;
@@ -971,6 +1050,17 @@ function fichaMexeNaPessoal_(e, idx) {
   var dados = ss.getSheetByName('DADOS').getDataRange().getValues();
   if (caminho) treinoPeloCaminho_(ss, dados, String(e.value || ''));
   notasVivas_(ss, dados);
+}
+
+/**
+ * O fichaMexeNaPessoal_ do onEdit comum. 25/10/2026: a Força só refaz as notas, e com a leitura curta do
+ * notasVivasLeves_ (ler a DADOS inteira custava 8 idas). O Caminho, quando chega aqui, segue pelo de sempre.
+ */
+function fichaMexeNaPessoalLeve_(e, idx) {
+  var a1 = e.range.getA1Notation();
+  if (a1 === cel_(idx, 'caminho')) return fichaMexeNaPessoal_(e, idx);
+  if (a1 !== cel_(idx, 'atr_base_Força') && a1 !== cel_(idx, 'corpo_Força')) return;
+  notasVivasLeves_(SpreadsheetApp.getActive());
 }
 
 /** O que o construir() faz pela FICHA PESSOAL depois de montar: as notas que mudam nascem certas. */

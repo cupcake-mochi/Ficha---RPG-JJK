@@ -108,6 +108,62 @@ function trecho(remendos, esperado) {
     '} catch (err) { return "ERRO: " + err.message + " | " + String(err.stack).split("\\n").slice(0, 3).join(" / "); } })()';
 }
 
+/**
+ * Os remendos que um módulo já leve ainda não tem (do `desde`-ésimo em diante), aplicados na ordem e com a mesma
+ * regra: cada âncora uma vez só. Roda igual no node e no navegador.
+ */
+function aplicarIncremento(code, remendos, desde) {
+  if (code.indexOf('var R53_PACOTE_LEVE_ = true;\n') !== 0) throw new Error('O módulo instalado não é o pacote leve');
+  remendos.slice(desde).forEach(function (p, i) {
+    var n = code.split(p[0]).length - 1;
+    if (n !== 1) throw new Error('Remendo ' + (desde + i + 1) + ': âncora encontrada ' + n + ' vez(es)');
+    code = code.replace(p[0], function () { return p[1]; });
+  });
+  return code;
+}
+
+/**
+ * 25/10/2026: o trecho para uma cópia que já recebeu o pacote leve. Confere o hash instalado, aplica só os remendos
+ * novos, recompacta e grava os cinco arquivos de dados e o hash do r53Modulo_. Salvar o projeto depois.
+ */
+function trechoIncremento(remendos, desde, antes, esperado) {
+  return 'await (async () => { try {\n' +
+    'const aplicarIncremento = ' + aplicarIncremento.toString() + ';\n' +
+    'const remendos = ' + JSON.stringify(remendos) + ';\n' +
+    'const ms = monaco.editor.getModels();\n' +
+    'const dados = [];\n' +
+    'for (const m of ms) { const v = m.getValue(); const x = /^(\\/\\/[^\\n]*\\n)var R53_CODIGO_(\\d+)_ = ("[^\\n]*");\\n?$/.exec(v); if (x) dados[+x[2]] = {m, cab: x[1], s: JSON.parse(x[3])}; }\n' +
+    'if (dados.length !== 5 || dados.some(d => !d)) throw new Error("Esperava os cinco arquivos R53_CODIGO_");\n' +
+    'const cod = ms.filter(m => m.getValue().indexOf("function r53Modulo_()") >= 0);\n' +
+    'if (cod.length !== 1) throw new Error("r53Modulo_ não encontrado uma vez só");\n' +
+    'const fonte = cod[0].getValue();\n' +
+    'if (fonte.indexOf("R53_MODULO_=(new Function(code))();") < 0) throw new Error("O r53Modulo_ não é o do pacote leve");\n' +
+    'const hashAntigo = /if\\(hash!==\'([0-9a-f]{64})\'\\)throw new Error\\(\'Pacote R53 incompleto/.exec(fonte);\n' +
+    'if (!hashAntigo || hashAntigo[1] !== ' + JSON.stringify(antes) + ') throw new Error("Hash instalado diferente do esperado: " + (hashAntigo && hashAntigo[1]));\n' +
+    'const b64 = dados.map(d => d.s).join("");\n' +
+    'const bin = Uint8Array.from(atob(b64), c => c.charCodeAt(0));\n' +
+    'const texto = await new Response(new Blob([bin]).stream().pipeThrough(new DecompressionStream("gzip"))).text();\n' +
+    'const sha = async t => [...new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)))].map(b => b.toString(16).padStart(2, "0")).join("");\n' +
+    'if (await sha(texto) !== hashAntigo[1]) throw new Error("Pacote instalado diferente do hash conferido");\n' +
+    'const code = aplicarIncremento(texto, remendos, ' + JSON.stringify(desde) + ');\n' +
+    'const hashNovo = await sha(code);\n' +
+    'if (hashNovo !== ' + JSON.stringify(esperado) + ') throw new Error("O módulo saiu diferente do testado no node: " + hashNovo);\n' +
+    'const gz = new Uint8Array(await new Response(new Blob([new TextEncoder().encode(code)]).stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer());\n' +
+    'let novo64 = ""; for (let i = 0; i < gz.length; i += 0x8000) novo64 += String.fromCharCode.apply(null, gz.subarray(i, i + 0x8000));\n' +
+    'novo64 = btoa(novo64);\n' +
+    'const fatias = []; for (let i = 0; i < novo64.length; i += 850000) fatias.push(novo64.slice(i, i + 850000));\n' +
+    'if (fatias.length > 5) throw new Error("Pacote passa de cinco arquivos");\n' +
+    'dados.forEach((d, i) => d.m.setValue(d.cab + "var R53_CODIGO_" + i + "_ = " + JSON.stringify(fatias[i] || "") + ";\\n"));\n' +
+    'cod[0].setValue(fonte.replace(hashAntigo[0], hashAntigo[0].replace(hashAntigo[1], hashNovo)));\n' +
+    'return {remendos: remendos.length - ' + JSON.stringify(desde) + ', base64_antes: b64.length, base64_depois: novo64.length, arquivos_com_dados: fatias.length, hash_antigo: hashAntigo[1].slice(0, 12), hash_novo: hashNovo.slice(0, 12)};\n' +
+    '} catch (err) { return "ERRO: " + err.message + " | " + String(err.stack).split("\\n").slice(0, 3).join(" / "); } })()';
+}
+
 const remendos = () => JSON.parse(fs.readFileSync(path.join(__dirname, 'pacote_leve_remendos.json'), 'utf8'));
-if (require.main === module) process.stdout.write(trecho(remendos(), process.argv[2]));
-module.exports = { transformarModulo, corrigirSemExecutar, trecho, remendos };
+// node instalar_pacote_leve.js <esperado>                                  pacote completo -> leve
+// node instalar_pacote_leve.js --incremento <desde> <hash instalado> <esperado>  leve -> leve com os remendos novos
+if (require.main === module) {
+  const a = process.argv.slice(2);
+  process.stdout.write(a[0] === '--incremento' ? trechoIncremento(remendos(), Number(a[1]), a[2], a[3]) : trecho(remendos(), a[0]));
+}
+module.exports = { transformarModulo, corrigirSemExecutar, trecho, aplicarIncremento, trechoIncremento, remendos };

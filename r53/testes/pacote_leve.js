@@ -3,7 +3,7 @@
 // que carrega com as abas do jogador, e as correções lidas como dados dão o mesmo texto que executá-las.
 const fs = require('fs'), path = require('path'), vm = require('vm'), assert = require('assert');
 const raiz = path.resolve(__dirname, '..', '..');
-const { transformarModulo, corrigirSemExecutar, remendos } = require('../diagnostico-android/instalar_pacote_leve');
+const { transformarModulo, corrigirSemExecutar, aplicarIncremento, remendos } = require('../diagnostico-android/instalar_pacote_leve');
 let checks = 0;
 const ok = (c, m) => { assert(c, m); checks++; };
 
@@ -37,4 +37,14 @@ const texto = 'alfa beta gama delta "x"';
 const executado = new Function(fonte + '\nreturn r53CorrecaoCaminho_(r53CorrecaoFila_(r53CorrecaoAndroid_(r53CorrecaoAbertura_(' + JSON.stringify(texto) + '))));')();
 ok(corrigirSemExecutar(fonte, texto) === executado, 'correções como dados: ' + corrigirSemExecutar(fonte, texto) + ' / ' + executado);
 
-console.log(JSON.stringify({ checks, resultado: 'OK', escopo: 'remendos no Codigo.gs, corte da montagem, travas da montagem e correções sem executar texto; o hash do pacote instalado só é conferido no Google.' }));
+// 4. O incremento (25/10/2026): um módulo já leve recebe só os remendos do 15º em diante e chega ao Codigo.gs atual.
+const ja = 14, todos = remendos();
+let antigo = codigo;
+for (const p of todos.slice(ja).reverse()) { ok(antigo.split(p[1]).length === 2, 'remendo novo ambíguo no Codigo.gs'); antigo = antigo.replace(p[1], () => p[0]); }
+ok(aplicarIncremento('var R53_PACOTE_LEVE_ = true;\n' + antigo, todos, ja) === 'var R53_PACOTE_LEVE_ = true;\n' + codigo, 'incremento não reproduz o Codigo.gs');
+let recusa = null; try { aplicarIncremento(antigo, todos, ja); } catch (e) { recusa = e; }
+ok(recusa && /não é o pacote leve/.test(recusa.message), 'incremento aceitou módulo que não é leve');
+recusa = null; try { aplicarIncremento('var R53_PACOTE_LEVE_ = true;\n' + codigo, todos, ja); } catch (e) { recusa = e; }
+ok(recusa && /âncora encontrada 0 vez/.test(recusa.message), 'incremento aplicado duas vezes');
+
+console.log(JSON.stringify({ checks, resultado: 'OK', escopo: 'remendos no Codigo.gs, incremento num módulo já leve, corte da montagem, travas da montagem e correções sem executar texto; o hash do pacote instalado só é conferido no Google.' }));

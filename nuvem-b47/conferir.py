@@ -100,7 +100,7 @@ def main():
                          'r53/testes/caminho_loader.js',
                          'r53/testes/caminho_leve.js',
                          'r53/testes/caminho_integrado.js', 'r53/testes/caminho_corrida.js',
-                         'r53/testes/pacote_leve.js',
+                         'r53/testes/pacote_leve.js', 'r53/testes/pessoal_leve.js',
                          'r53/testes/editor_lazy.js',
                          'conteudos-b47/comum/testar-notas-contextuais.js']:
                 run = subprocess.run([node, str(ROOT/name)], cwd=ROOT, capture_output=True, text=True, timeout=60)
