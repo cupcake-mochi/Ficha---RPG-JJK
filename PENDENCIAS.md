@@ -1,3 +1,28 @@
+## Atalho das células livres · 26/10/2026 (Claude) · no ramo, fora das oficiais
+
+Arnês novo (`r53/arnes_custo.js`) roda o onEdit instalado inteiro contra a oficial exportada
+(`r53/xlsx_para_json.py`) e conta as idas ao servidor, com custo calibrado nas medições do Google.
+Com pacote leve e consertos 1–3, as edições comuns já estão no piso (uma espera de recálculo).
+O que sobrava: edição em célula onde o script não faz nada (texto livre, nome, descrição) ainda
+lia o Amparo das Famílias (CARTEIRA, FICHA AMALDIÇOADA, INVOCAÇÕES, CONFIGURAÇÃO) e abria o
+módulo só para concluir que não havia o que fazer: ~8,6 s no modelo (FICHA e FICHA PESSOAL ~3,9 s).
+Com o atalho: ~2,2 s, sem leitura.
+
+- `r53/atalho_livre.js` gera `r53/atalho_livre.gs`: mapa de onde cada uma das seis abas age, por
+  força bruta no módulo (três valores, e.value espiado), mais cartões, entradas do Amparo
+  rastreadas pelas fórmulas (P37 da AMALDIÇOADA, Famílias das INVOCAÇÕES, F140:G145 da
+  CONFIGURAÇÃO, Trilha), salário, Caminho, paleta e versão pública. Vale só para o módulo
+  `9d1cec81…` e o catálogo `e4502f59…`; com outro hash se desliga sozinho.
+- Trilha e Caminho marcam `r53_amparo_sujo`: a próxima edição nas quatro abas sincroniza e desmarca.
+  Achado de passagem: desde o `97abf4f` a FICHA não sincroniza as Famílias, então a troca de Trilha
+  só chegava aos cartões na próxima edição dessas abas; a marca mantém isso.
+- `r53/diagnostico-android/preparar_atalho.js` liga o atalho no `r53OnEditOriginal_` (reaplicar
+  troca só o mapa). Teste: `r53/testes/atalho_livre.js` (4.814 verificações com a exportação em
+  `nuvem-b47/saidas/atalho/`; sem ela, só as peças puras).
+- Regerar o mapa depois de trocar módulo, catálogo ou layout:
+  `node r53/atalho_livre.js <projeto .json> <ficha .json>`.
+- Falta medir no Google (cópia descartável) antes das oficiais.
+
 ## Fila de desempenho da ficha · 25/10/2026 (Claude) · FILA ATIVA
 
 Ramo `codex/otimizacao-android-r53` (commits `97abf4f`, `2ecb5ec`, `06b7d0d`, `5930122`),
