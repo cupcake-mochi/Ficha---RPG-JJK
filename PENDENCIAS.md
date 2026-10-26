@@ -4513,3 +4513,16 @@ Teste nativo das duas colunas concluído, 5 verificações passaram; 21 entradas
 - Bordas pelo tema (ACCENT5/6): descartadas pelo Mizuki. A troca de paleta passou dos 30 s com o passo do tema e a cópia ficou lenta.
 - Listas da DADOS_CUSTOM sem INDIRECT (CHOOSE/MATCH): conteúdo igual nos estados conferidos e FICHA de 10,9 → 4,3 s, mas CONFIGURAÇÃO 19 s e a cópia travou em "alterando" com as três experiências juntas. Inconclusivo; não instalado. Se voltar, testar numa cópia limpa de uma oficial só com essa troca.
 - Oficiais intocadas: seguem com o pacote leve fef2a94b. O remendo 33 (bddccf83) continua só no Git.
+
+## Missões enxutas · 26/10/2026 (Claude) · no ramo, fora das oficiais
+
+Retomado do chat que parou no limite (item 4 da fila). Edições no painel de missões da FICHA PESSOAL
+estouravam os 30 s nas oficiais. O corte (`r53/diagnostico-android/preparar_missoes_enxutas.js`, pares em
+`missoes_enxutas.json`, aplicado depois do `preparar_missoes.js`; o `apps-script/Salarios.gs` é o resultado):
+- por fórmula, fora da CONFIGURAÇÃO e da CARTEIRA, a edição não lê mais o estado em DADOS_SALARIOS!L2
+  (ninguém o usa nesse caminho; a leitura esperava o recálculo, ~3,3 s no perfil);
+- os registros de missões saem numa ida só (`A2:G` aberta), sem getLastRow nem getMaxRows;
+- o XP total e o nível vêm dos espelhos da DADOS (CY47:CZ48: `xp total` é a conta da FICHA PESSOAL!AW11,
+  `nível` é N(FICHA!AH11)), dentro da faixa AQ4:DP100 que já se lia. Uma ficha sem os espelhos lê como antes.
+No caso comum, as leituras caem de 9 para 4 (`r53/testes/missoes_enxutas.js`, com 48 cenários e as mesmas
+células, notas e nível). `salarios/testes.js` aprendeu a faixa aberta. Falta medir numa cópia e instalar.

@@ -96,7 +96,7 @@ def main():
             check('salários: períodos, participação e idempotência', run.returncode == 0,
                   run.stderr.strip() or run.stdout.strip())
             for name in ['salarios/testar_abertura.js', 'r53/testes/salario_lote.js',
-                         'r53/testes/missoes_integradas.js', 'r53/testes/versao_publica.js',
+                         'r53/testes/missoes_integradas.js', 'r53/testes/missoes_enxutas.js', 'r53/testes/versao_publica.js',
                          'r53/testes/caminho_loader.js',
                          'r53/testes/caminho_leve.js',
                          'r53/testes/caminho_integrado.js', 'r53/testes/caminho_corrida.js',

@@ -1,0 +1,26 @@
+[
+ [
+  " // Excluir as linhas 1–3 evita consultar todos os resultados de combate.\n var dados=ss.getSheetByName('DADOS').getRange('AQ4:DP100').getValues(),xpCell,nivelCell;\n dados.forEach(function(row){if(row[76]==='xp total')xpCell=String(row[77]);if(row[10]==='nivel')nivelCell=String(row[11]);});",
+  " // Excluir as linhas 1–3 evita consultar todos os resultados de combate.\n // A mesma faixa espelha o XP total (CY:CZ, a conta da FICHA PESSOAL!AW11) e o nível da FICHA: com os espelhos,\n // é uma ida em vez de três. Uma ficha sem eles lê as duas células como antes.\n var dados=ss.getSheetByName('DADOS').getRange('AQ4:DP100').getValues(),xpCell,nivelCell,xpEspelho,nivelEspelho;\n dados.forEach(function(row){\n  if(row[76]==='xp total')xpCell=String(row[77]);if(row[10]==='nivel')nivelCell=String(row[11]);\n  if(row[60]==='xp total')xpEspelho=row[61];if(row[60]==='nível')nivelEspelho=row[61];\n });"
+ ],
+ [
+  " if(!xpCell||!nivelCell)throw Error('Índice de XP/nível ausente.');\n var total=Number(sh.getRange(xpCell).getValue());if(isNaN(total))return true;",
+  " if(!xpCell||!nivelCell)throw Error('Índice de XP/nível ausente.');\n var total=Number(xpEspelho!==undefined?xpEspelho:sh.getRange(xpCell).getValue());if(isNaN(total))return true;"
+ ],
+ [
+  " var limiar=Number((salarioTabelaDados_(dados,'limiar do feito')[0]||{})['limiar do feito'])||0;\n var cell=ss.getSheetByName('FICHA').getRange(nivelCell),atual=Number(cell.getValue())||0;",
+  " var limiar=Number((salarioTabelaDados_(dados,'limiar do feito')[0]||{})['limiar do feito'])||0;\n var cell=ss.getSheetByName('FICHA').getRange(nivelCell),atual=Number(nivelEspelho!==undefined?nivelEspelho:cell.getValue())||0;"
+ ],
+ [
+  "function salarioSincronizar_(ss,estado,hoje,baseline,adiar,agrupar) {\n  var sh=ss.getSheetByName(SALARIO_.dados),n=Math.max(0,sh.getLastRow()-1);\n  var old=n?sh.getRange(2,1,n,7).getValues().filter(function(r){return r[0];}):[],map={},seen={},changed=false;",
+  "function salarioSincronizar_(ss,estado,hoje,baseline,adiar,agrupar) {\n  // Uma ida só: a faixa aberta traz até a última linha da aba, e o tamanho dela dá o número de linhas.\n  var sh=ss.getSheetByName(SALARIO_.dados),todas=sh.getRange('A2:G').getValues(),max=todas.length+1;\n  var old=todas.filter(function(r){return r[0];}),map={},seen={},changed=false;"
+ ],
+ [
+  "  old.forEach(function(r){if(!seen[r[0]]&&r[4]===true){r[4]=false;changed=true;}});\n  var max=sh.getMaxRows();",
+  "  old.forEach(function(r){if(!seen[r[0]]&&r[4]===true){r[4]=false;changed=true;}});"
+ ],
+ [
+  "      if(chave){salarioRegistrarTroca_(ss,chave,e);return;}\n      var cfg=ss.getSheetByName(SALARIO_.config),st=salarioEstado_(ss);",
+  "      if(chave){salarioRegistrarTroca_(ss,chave,e);return;}\n      // Por fórmula, fora da CONFIGURAÇÃO e da CARTEIRA, o estado não é usado: a L2 espera o recálculo (~3 s).\n      var cfg=ss.getSheetByName(SALARIO_.config),st=SALARIO_.formula&&!config&&!emitir?null:salarioEstado_(ss);"
+ ]
+]
