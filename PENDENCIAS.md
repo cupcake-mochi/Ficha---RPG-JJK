@@ -20,6 +20,11 @@ na cópia `1kQuSgg…`, que já tem o pacote leve:
   Salvar o projeto e conferir o hash `9d1cec81…` no `r53Modulo_`.
 - Medir pelo gatilho: CARTEIRA A1 (duas vezes: a 1ª grava o estado), FICHA AMALDIÇOADA B500,
   arma na mão D64, Força. Antes: 30,6–30,7 s (tempo limite) nas três primeiras.
+- Prompt pronto para outro Claude fazer isso pelo navegador (trechos embutidos, simulados num
+  editor de mentira com o módulo `2667ef41…` real):
+  `r53/diagnostico-android/PROMPT-INSTALAR-MEDIR-COPIA-2026-10-25.md`. Nesta sessão o Claude in
+  Chrome não conectou: o app só instalou a ponte da extensão para o Edge (não para o Brave), e a
+  sessão não achou o Edge mesmo depois de conectado.
 
 Fila, nesta ordem:
 
