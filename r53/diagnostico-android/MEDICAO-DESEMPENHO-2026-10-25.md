@@ -115,3 +115,23 @@ XP pelas missões da FICHA PESSOAL, que já têm caminho próprio.
    0 a 1,5 s (dentro da variação) e ela é o contrato do bot. O molde dela já saiu
    do módulo de edição na opção 3; só deixa de existir a volta automática da
    fórmula quando alguém escreve na ANALISE oculta.
+
+## O que ainda falha, com o pacote leve (mesma cópia)
+
+| Edição pelo acionador simples | Duração | Status |
+|---|---:|---|
+| CARTEIRA, célula qualquer (A1) e o desfazer | 30,7 s e 30,6 s | tempo limite |
+| FICHA AMALDIÇOADA, célula livre (B500) | 30,6 s | tempo limite |
+| FICHA PESSOAL, arma na mão principal (D64) | 30,6 s | tempo limite |
+| CARTEIRA, troca de paleta | 14,9 s (cor visível em ~10 s) | concluído |
+
+- **Sincronização das Famílias em cópia nova.** `r53SincronizarFamilias_` compara o
+  amparo atual com `r53_amparo_direto` das propriedades do documento, que não vão
+  na cópia da planilha. Sem estado anterior, toda edição em CARTEIRA, FICHA
+  AMALDIÇOADA, INVOCAÇÕES e CONFIGURAÇÃO tenta acertar os 249 cartões (81 idas no
+  contador do node), estoura e não grava o estado: repete em toda edição.
+- **FICHA PESSOAL.** `textoDaCapacidade_` e `pessoalEditada_` releem o índice
+  pessoal da DADOS em toda edição da aba, e o caminho das notas faz `flush`, lê a
+  DADOS inteira pelo `getDataRange` e reescreve as notas vivas (12 idas no node).
+- **Força e atributos.** `fichaMexeNaPessoal_` lê a DADOS inteira e refaz as notas
+  vivas (8 idas).
