@@ -25,3 +25,28 @@ o fim da execução faz a mesma espera. Descartado.
 Conclusão: o ± já está quase no piso (subir, primeira chamada, uma leitura, gravar). O que sobra de cortável é abrir
 o módulo (~1,3 s), com um caminho global só para as caixas de ± (as células viriam de um mapa gerado, como o do
 atalho das células livres). A primeira leitura e a gravação não somem.
+
+## Cortes da noite na cópia (`1kAXc_Wb…`, "TESTE cortes K7-MONTAGENS-Classe", projeto `1gICM0DK…`)
+
+Cópia nova da Era da Revolução (Codigo `452445ac`, EditorR53 `68f21a08`, módulo `52fc6903`, os mesmos da oficial). Edições
+pelo navegador, uma por vez; duração do onEdit no registro de Execuções, todas concluídas, nenhum erro. Entre as duas
+rodadas, o trecho de `preparar_cortes_noite.js` (sha256 `2f5249c7…`) devolveu módulo `9dc3480a`, Codigo `dc1aa740` e
+EditorR53 `c3d31096`; salvo e relido igual.
+
+| Edição | Antes | Depois |
+|---|---:|---:|
+| a. CONFIGURAÇÃO AS51 = texto curto (primeira depois de abrir) | 20,5 s | 24,2 s |
+| b. AS51 apagar | 14,8 s | 15,6 s |
+| c. AS51 = texto | 19,7 s | 15,9 s |
+| d. AS51 apagar | 21,5 s | 14,3 s |
+| e. FICHA AMALDIÇOADA E71 = 1 (primeira no cartão) | 19,3 s | 18,8 s |
+| f. E71 = 0 | 16,8 s | 13,7 s |
+| g. E71 = 1 | 17,8 s | 13,4 s |
+| h. E71 = 0 | 19,3 s | 14,9 s |
+| i. FICHA AN11 (XP) = 50 | 25,9 s | 14,5 s |
+
+A primeira edição depois de abrir paga a leitura e guarda (a abertura apaga as versões guardadas; as marcas só se
+apagam pelas células delas, mas a cópia nova não tinha nenhuma). Da segunda em diante: habilidade custom 19,7–21,5 →
+14,3–15,9 s, cartão 16,8–19,3 → 13,4–14,9 s, XP 25,9 → 14,5 s. Na XP, as duas rodadas devolveram a conta
+(`=DADOS!$CZ$47`); antes, o nível AH11 foi de 10 para 2 (o número digitado); depois ficou em 2 (já era o da conta,
+então essa rodada não prova sozinha que o nível fica parado; o node prova, `marcas_custom.js`).
