@@ -75,13 +75,32 @@ Com o atalho: ~2,2 s, sem leitura.
   `node r53/atalho_livre.js <projeto .json> <ficha .json>`.
 - Falta medir no Google (cópia descartável) antes das oficiais.
 
-## Fila de desempenho da ficha · 25/10/2026 (Claude) · FILA ATIVA
+## Fila de desempenho da ficha · 25–26/10/2026 (Claude) · fila concluída, falta o teste no Android
 
-Ramo `codex/otimizacao-android-r53` (commits `97abf4f`, `2ecb5ec`, `06b7d0d`, `5930122`),
-ainda fora da `main`. Medições e decisões em
-[MEDICAO-DESEMPENHO](r53/diagnostico-android/MEDICAO-DESEMPENHO-2026-10-25.md); instruções
-de instalação no topo do `AGENTS.md`. As duas oficiais (`r53/OFICIAIS.md`) **não** receberam
-nada desta fila: o Mizuki pediu para corrigir antes de aplicar.
+**Estado em 26/10, fim do dia.** Tudo desta fila está nas duas oficiais, cada passo com versão de backup e
+conferido byte a byte depois de salvar (detalhes e versões em `r53/OFICIAIS.md`):
+
+| Oficiais têm | Peça instalada | Backup antes |
+|---|---|---|
+| pacote leve + atalho das células livres | módulo `fef2a94b` | v1, v2 (limpeza) |
+| missões enxutas (três cortes) | `Codigo` | v3, v4 |
+| remendos 33–38 da CONFIGURAÇÃO | módulo `52fc6903` | v5 |
+| cartão em menos idas | `EditorR53` `68f21a08` | v6 |
+
+Medido em cópia (`1HI96ICu…`, MEDICAO-DESEMPENHO): missões 11–19 s (estouravam), habilidade custom da
+CONFIGURAÇÃO 18–21 s (24–31 s), cartão 19,5–23,4 s (23–26 s), ± da vida ~7–9 s. Nenhuma edição
+medida passa de 24 s.
+
+Falta, nesta ordem:
+1. **O Mizuki testar as oficiais no Android:** uma missão no painel da FICHA PESSOAL, um texto em
+   CONFIGURAÇÃO!AK51, pontos de um cartão da FICHA AMALDIÇOADA e um ± de vida. Se algo passar de 30 s,
+   ler o registro de Execuções do horário.
+2. Só se o teste mostrar aperto: as marcas DADOS_PROGRESSAO!K7:K8 na CONFIGURAÇÃO (~3 s) e a leitura da
+   MONTAGENS no cartão (~4 s; guarda campos que o cartão não mostra, mexer pede cuidado).
+3. Em aberto por escolha dele: a corrida do personagem novo no Caminho.
+
+Ramo de trabalho `claude/project-thread-0fb9fh`, mesclado por PR em `codex/otimizacao-android-r53`
+(fora da `main`). O histórico da fila segue abaixo, com os itens 1–5 feitos.
 
 Feito e medido em cópia de teste (`1kQuSgg…`, "TESTE pacote leve"): leitura única nas
 edições comuns da FICHA e pacote leve. ± da vida 30,6 s (morria) → 11,5 s; Caminho
@@ -131,7 +150,8 @@ Fila, nesta ordem:
    `notasVivas_` ficaram intactas e o `Caminho.gs` gerado saiu idêntico.* `fichaMexeNaPessoal_` lê a DADOS inteira e refaz as notas
    vivas (8 idas). Atenção: o `caminho_leve.js` extrai essa função e procura a linha
    `var dados = ss.getSheetByName('DADOS').getDataRange().getValues();` dela.
-4. **Medir o que está no limite.** *Medido em 26/10 numa cópia nova da oficial (tabela e perfil
+4. **Medir o que está no limite.** *Feito em 26/10: missões enxutas e cartão em menos idas, medidos e
+   instalados (ver o estado acima).* *Medido em 26/10 numa cópia nova da oficial (tabela e perfil
    por rotina em MEDICAO-DESEMPENHO): toda edição no painel de missões da FICHA PESSOAL estoura os
    30 s, mesmo com a planilha aquecida (o XP total aparece porque é fórmula; registro, data e nível
    não terminam). O cartão conclui em 23–26 s aquecido e estoura logo depois de copiar. Próximo
@@ -139,7 +159,7 @@ Fila, nesta ordem:
    `salarioMissaoDireta_`, ~10 idas) e no do cartão (`r53ValoresCartao_`, `r53LerVersao_`,
    `r53Amparo_`).* Missões da FICHA PESSOAL (27,8 s medido pelo ChatGPT;
    colunas AW:BT recolhidas) e edição de cartão (~20 s).
-5. **Aplicar nas oficiais**, com o aval do Mizuki: primeiro o `Codigo.gs` da corrida
+5. **Aplicar nas oficiais**, *feito (26/10, ver `r53/OFICIAIS.md`)*, com o aval do Mizuki: primeiro o `Codigo.gs` da corrida
    (`r53/saidas/caminho-corrida/Codigo.gs`, ignorado; refazer trocando o bloco final do
    Codigo instalado pelo `apps-script/Caminho.gs`), depois o trecho de
    `instalar_pacote_leve.js` (já com os 22 remendos: sai `9d1cec81…` direto, sem o incremento),
