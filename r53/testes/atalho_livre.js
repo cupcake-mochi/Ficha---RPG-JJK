@@ -28,13 +28,13 @@ assert.throws(() => preparar('function r53OnEditOriginal_(e){}', gs), /divergent
 const pasta = path.join(raiz, 'nuvem-b47/saidas/atalho');
 const fp = path.join(pasta, 'projeto-leve.json'), fd = path.join(pasta, 'oficial-era.json');
 if (!fs.existsSync(fp) || !fs.existsSync(fd)) { console.log('atalho_livre: ' + checks + ' verificações (sem a ficha exportada, integrado pulado)'); process.exit(0); }
-const { criar, projetoComIncremento } = require('../arnes_custo');
+const { criar, projetoComIncremento, remendosDoProjeto } = require('../arnes_custo');
 let projeto = JSON.parse(fs.readFileSync(fp, 'utf8'));
 const dump = JSON.parse(fs.readFileSync(fd, 'utf8'));
 // O mapa vale para um módulo só. A exportação é da cópia de teste (até o 22º remendo do pacote leve); se o mapa é do
 // módulo com os remendos seguintes (26/10/2026), o projeto recebe esse módulo antes.
 if (!projeto.files.find(f => f.name === 'Codigo').source.includes(/var R53_LIVRE_HASHES_=\["([0-9a-f]{64})"/.exec(gs)[1])) {
-  const p = projetoComIncremento(projeto, dump, 22);
+  const p = projetoComIncremento(projeto, dump, remendosDoProjeto(projeto));
   ok(gs.includes(p.hashNovo), 'mapa de outro módulo');
   projeto = p.projeto;
 }
@@ -43,7 +43,11 @@ function montar(comAtalho, ajuste) {
   const A = criar(JSON.parse(JSON.stringify(dump)), { props: { salario_proximo: '99999' } });
   for (const f of projeto.files.filter(f => f.type !== 'JSON')) {
     let s = f.source;
-    if (f.name === 'Codigo' && comAtalho) s = preparar(s, ajuste ? ajuste(gs) : gs);
+    if (f.name === 'Codigo' && comAtalho) {
+      // o módulo trocado pelo arnês fica no fim do Codigo, depois do atalho instalado que o preparar substitui
+      const novo = /\nvar R53_CODIGO_NOVO_=[^\n]*;\n$/.exec(s);
+      s = preparar(novo ? s.slice(0, novo.index) : s, ajuste ? ajuste(gs) : gs) + (novo ? novo[0] : '');
+    }
     vm.runInContext(s + '\n', A.ctx, { filename: f.name });
   }
   vm.runInContext('(function(){var o=r53Modulo_;r53Modulo_=function(){__abriu();return o.apply(this,arguments);};r53Modulo_.toString=function(){return String(o);};})();', Object.assign(A.ctx, { __abriu: () => { aberturas++; A.log.push({ t: 'M' }); } }));

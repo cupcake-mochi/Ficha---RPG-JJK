@@ -520,7 +520,8 @@ function onEdit(e) {
     return;
   }
   // 07/10/2026: e toda caixa calculada da FICHA, fora a vida, a energia e a integridade, que o jogador escreve
-  try { devolverConta_(e, 'FICHA'); } catch (err) { console.log('ficha, a conta: ' + err.message); }
+  var devolvidas = 0;
+  try { devolvidas = devolverConta_(e, 'FICHA'); } catch (err) { console.log('ficha, a conta: ' + err.message); }
   try { esticarCaixas_(e, 'FICHA'); } catch (err) { console.log('ficha, a caixa que estica: ' + err.message); }
   // O índice sai do molde; a DADOS só é lida quando a edição é numa caixa que precisa dela (Caminho e XP).
   var dadosLidos = null, lerDados = function () {
@@ -534,7 +535,9 @@ function onEdit(e) {
   marcarPericiasDoCaminho_(e, idx, noCaminho ? lerDados() : null);
   trilhaDoCaminho_(e, idx, noCaminho ? lerDados() : null);
   try { habilidadesDaFicha_(e, idx); } catch (err) { console.log('habilidades: ' + err.message); }
-  nivelPelaXP_(e, idx, lerDados);
+  // 26/10/2026 (6): a XP é conta; quem escreve nela recebe a conta de volta, e o nível ficava com o número digitado,
+  // depois de ler a DADOS inteira (~9 s). Com a conta devolvida, o nível fica como está.
+  if (!devolvidas) nivelPelaXP_(e, idx, lerDados);
   grupoDeArmaDaTrilha_(e, idx);
   trocaArmaDoCaminho_(e, idx);
   try { fichaMexeNaPessoalLeve_(e, idx); } catch (err) { console.log('ficha pessoal: ' + err.message); }
@@ -1718,12 +1721,34 @@ function cartasDaDadosAm_(ss) {
 function habilidadeCustomForaDeUso_(e) {
   var r = e.range, l1 = r.getRow(), c1 = r.getColumn(), l2 = l1 + r.getNumRows() - 1, c2 = c1 + r.getNumColumns() - 1;
   if (l1 < 50 || l2 > 64 || c1 < 37 || c2 > 50) return false;
-  var p = SpreadsheetApp.getActive().getSheetByName('DADOS_PROGRESSAO');
-  if (!p) return false;
-  var k = p.getRange('K7:K8').getValues(), lados = [];
-  if (c1 <= 44) lados.push(Number(k[0][0]));
-  if (c2 >= 45) lados.push(Number(k[1][0]));
+  var k = marcasCustom_(), lados = [];
+  if (!k) return false;
+  if (c1 <= 44) lados.push(k[0]);
+  if (c2 >= 45) lados.push(k[1]);
   return lados.every(function (x) { return x !== 1; });
+}
+
+/**
+ * 26/10/2026 (5): as marcas DADOS_PROGRESSAO!K7:K8 ([Caminho, Trilha]) guardadas nas propriedades do documento. Lê-las
+ * custava ~3,6 s (outra aba) em toda edição das habilidades custom; elas só mudam com o Caminho e a Trilha da FICHA e
+ * com o nome e os campos do Caminho e da Trilha custom na CONFIGURAÇÃO, e o r53LivreMarcar_ (atalho_livre.gs) apaga a
+ * guardada numa edição nessas células (o mapa delas sai das fórmulas, como o do Amparo). Sem guardada, como numa cópia
+ * nova (as propriedades não vão junto), lê a planilha e guarda.
+ */
+var MARCAS_CUSTOM_PROP_ = 'r53_marcas_custom';
+function marcasCustom_() {
+  var props = PropertiesService.getDocumentProperties(), guardada = props.getProperty(MARCAS_CUSTOM_PROP_);
+  if (guardada) {
+    try {
+      var g = JSON.parse(guardada);
+      if (g && g.length === 2 && typeof g[0] === 'number' && typeof g[1] === 'number') return g;
+    } catch (err) { console.log('marcas custom: ' + err.message); }
+  }
+  var p = SpreadsheetApp.getActive().getSheetByName('DADOS_PROGRESSAO');
+  if (!p) return null;
+  var k = p.getRange('K7:K8').getValues().map(function (l) { return Number(l[0]); });
+  props.setProperty(MARCAS_CUSTOM_PROP_, JSON.stringify(k));
+  return k;
 }
 
 // Textos custom entram nas mesmas nove cartas e conservam a edição manual.
