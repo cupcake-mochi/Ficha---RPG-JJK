@@ -75,3 +75,10 @@ Aval do Mizuki pelo cartão de decisão ("Instalar e estudar mais depois"). Nas 
 saiu byte a byte igual ao da cópia medida (`1HI96ICu…`, 21 edições de missão concluídas em 16–28 s). Antes, cada
 projeto ganhou a versão 3 de backup ("Antes das missões enxutas"). Os outros arquivos ficaram idênticos,
 conferido pela API.
+
+## Missões enxutas, terceiro corte · 26/10/2026
+
+Com o ok do Mizuki, as duas oficiais receberam o terceiro corte (painel antes dos registros, valores antes das
+notas). O preparador foi aplicado sobre o Codigo da versão 3 e o resultado saiu byte a byte igual ao da cópia medida
+(13 edições concluídas, pior caso 18,9 s). Antes, cada projeto ganhou a versão 4 de backup ("Antes do terceiro corte
+das missões"). Os outros arquivos ficaram idênticos, conferido pela API.

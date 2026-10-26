@@ -286,3 +286,42 @@ Planilhas falhou ao acessar o documento durante o registro ("Salários: O servi�
 apanhado pelo try do salário; a edição concluiu, mas o registro daquela missão ficou TRUE até a próxima edição
 de missão varrer o painel). Pior caso 24,9 s (antes deste corte, 27,7 s). O que sobra: primeira ida ao Sheets
 1,5–7 s, registros + notas + valores do painel 8–12 s, gravação e flush 4–6 s.
+
+## Quanto custa cada leitura do caminho das missões (26/10, 11:34–11:38, `medir_leituras_missao.gs`)
+
+Pelo editor, na cópia `1HI96ICu…`: grava uma missão em AW15:AX15, faz flush, lê numa ordem e apaga. Em ms:
+
+| Ordem | 1ª | 2ª | 3ª | 4ª |
+|---|---|---|---|---|
+| registros, notas, painel11 | registros 8770 | notas 3140 | painel11 3633 | |
+| literais, notas, registros, cabeçalho | literais 4534 | notas 7 | registros 8644 | cabeçalho 4569 |
+| notas, literais, registros, cabeçalho | notas 3579 | literais 5 | registros 7713 | cabeçalho 4610 |
+| painel15, notas, registros, cabeçalho | painel15 3545 | notas 17 | registros 5380 | cabeçalho 2816 |
+| cabeçalho, literais, notas, registros | cabeçalho 3285 | literais 9 | notas 15 | registros 6758 |
+| registros, notas, painel11 | registros 11121 | notas 2598 | painel11 2763 | |
+| literais, notas, registros, cabeçalho | literais 3775 | notas 10 | registros 8017 | cabeçalho 3217 |
+
+- A primeira leitura da FICHA PESSOAL custa 3,3–4,5 s; as seguintes da mesma aba saem quase de graça (5–17 ms).
+  A exceção é ler fórmula (painel11 ou cabeçalho) depois de outra aba: paga de novo, 2,8–4,6 s.
+- **Os registros (DADOS_SALARIOS!A2:G) custam 5,4–11,1 s em qualquer posição.** É a leitura mais cara do caminho.
+- Ordem mais barata: painel e notas da FICHA PESSOAL primeiro (uma espera só) e o cabeçalho junto deles, nunca
+  depois dos registros.
+
+## Terceiro corte na cópia (26/10, 11:43–11:56, painel antes dos registros, valores antes das notas)
+
+Mesmas edições da rodada anterior, uma por vez pelo navegador, na cópia `1HI96ICu…` (nível 3, XP 0 no início).
+
+| Edição | Duração | R53_ONEDIT |
+|---|---|---|
+| AW15 nome / AX15 Curta | 18,3 / 16,7 s | 16,2 / 14,1 s |
+| AX15 Longa | 11,3 s | 9,8 s |
+| AW20 nome / AX20 Padrão | 16,4 / 15,4 s | — / 13,5 s |
+| apagar AW15:AX15 / AW20:AX20 | 18,9 / 14,8 s | 15,7 / 12,3 s |
+| AW25 nome / AX25 Final de arco | 11,6 / 15,8 s | 9,3 / 13,4 s |
+| AW26 nome / AX26 Final de arco (**nível 3 → 4**) | 12,3 / 16,4 s | 10,0 / 14,5 s |
+| apagar AW25:AX26 | 12,9 s | 11,2 s |
+| AH11 = 3 (restauração, outro caminho) | 14,2 s | 11,8 s |
+
+Todas concluídas. **Pior caso 18,9 s** (antes deste corte, 24,9 s; antes dos cortes, 30 s com timeout). Média das
+missões ≈ 15 s. Alguns logs vieram sem linhas (PERFIL/R53_ONEDIT), mas as execuções terminaram. Ao apagar as
+missões o nível ficou em 4, como no código de antes (o nível não desce); a cópia foi devolvida ao estado inicial.
