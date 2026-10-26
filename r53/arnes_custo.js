@@ -188,7 +188,7 @@ function custo(log, modulo) {
 }
 // O projeto exportado com o módulo do pacote leve trocado pelo mesmo módulo mais os remendos do `desde`-ésimo em diante.
 // As fatias viram uma só (R53_CODIGO_NOVO_) e o hash do carregador passa a ser o do módulo novo; serve só ao arnês.
-function projetoComIncremento(projeto, dump, desde) {
+function projetoComIncremento(projeto, dump, desde, ate) {
   const { aplicarIncremento, remendos } = require('./diagnostico-android/instalar_pacote_leve');
   const p = JSON.parse(JSON.stringify(projeto)), cod = p.files.find(f => f.name === 'Codigo');
   const nomes = /Utilities\.base64Decode\(\[([^\]]+)\]/.exec(cod.source)[1];
@@ -198,7 +198,7 @@ function projetoComIncremento(projeto, dump, desde) {
   const sha = t => crypto.createHash('sha256').update(t, 'utf8').digest('hex');
   const hv = /hash!=='([0-9a-f]{64})'/.exec(cod.source)[1];
   if (sha(velho) !== hv) throw Error('módulo do projeto divergente do hash');
-  const novo = aplicarIncremento(velho, remendos(), desde), hn = sha(novo);
+  const novo = aplicarIncremento(velho, remendos().slice(0, ate), desde), hn = sha(novo);
   cod.source = cod.source.replace('[' + nomes + ']', '[R53_CODIGO_NOVO_]').replace(hv, hn) +
     '\nvar R53_CODIGO_NOVO_=' + JSON.stringify(zlib.gzipSync(Buffer.from(novo, 'utf8')).toString('base64')) + ';\n';
   return { projeto: p, velho, novo, hashVelho: hv, hashNovo: hn };

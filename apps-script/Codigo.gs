@@ -1592,19 +1592,42 @@ function esticarCaixas_(e, nomeDaAba) {
   var valoresHorizontal = null;
   spec.esticam.forEach(function (x) {
     if (!x.gatilhos.some(toca)) return;
+    // 26/10/2026 (2): na CONFIGURAÇÃO um grupo só tem as 271 caixas da aba, e escrever numa delas lia ~74 mil células e
+    // regravava ~300 alturas (27 chamadas), estourando os 30 s. Quem se escreveu numa caixa só muda as linhas dela e,
+    // em cadeia, as das caixas que dividem linha com essas: as outras linhas saem iguais da mesma conta. Então a conta
+    // corre só nessas caixas, e a leitura e a gravação ficam nas linhas delas. Escrever fora de uma caixa faz tudo.
+    var caixas = x.textos, local = null;
+    if (spec.horizontal) {
+      var dentro = caixas.filter(function (c) { return c[1].some(toca); });
+      if (dentro.length) {
+        var R = {}, mudou = true;
+        dentro.forEach(function (c) { for (var k = 0; k < c[3]; k++) R[c[2] + k] = 1; });
+        while (mudou) {
+          mudou = false;
+          caixas.forEach(function (c) {
+            var t = false, k;
+            for (k = 0; k < c[3] && !t; k++) t = !!R[c[2] + k];
+            if (t) for (k = 0; k < c[3]; k++) if (!R[c[2] + k]) { R[c[2] + k] = 1; mudou = true; }
+          });
+        }
+        caixas = caixas.filter(function (c) { return R[c[2]]; });
+        local = lerRetanguloDosTextos_(origem, [{ textos: caixas }]);
+      }
+    }
     // 26/10/2026: o retângulo dos textos dos grupos tocados, não a aba inteira (~95 mil células na CONFIGURAÇÃO)
-    if (spec.horizontal && !valoresHorizontal) valoresHorizontal = lerRetanguloDosTextos_(origem, spec.esticam.filter(function (g) { return g.gatilhos.some(toca); }));
+    if (spec.horizontal && !local && !valoresHorizontal) valoresHorizontal = lerRetanguloDosTextos_(origem, spec.esticam.filter(function (g) { return g.gatilhos.some(toca); }));
     var alvo = x.aba === nomeDaAba ? origem : ss.getSheetByName(x.aba);
     if (!alvo) return;
-    var textos = x.textos.map(function (c) {
+    var lidos = local || valoresHorizontal;
+    var textos = caixas.map(function (c) {
       return c[1].map(function (a1) {
-        if (!valoresHorizontal) return String(origem.getRange(a1).getDisplayValue());
-        var f = limitesA1_(a1), linha = valoresHorizontal.m[f.l1 - valoresHorizontal.l1];
-        return String(linha ? linha[f.c1 - valoresHorizontal.c1] : '');
+        if (!lidos) return String(origem.getRange(a1).getDisplayValue());
+        var f = limitesA1_(a1), linha = lidos.m[f.l1 - lidos.l1];
+        return String(linha ? linha[f.c1 - lidos.c1] : '');
       })
                  .filter(function (t) { return t !== ''; }).join(' · ');
     });
-    var h = alturasQueEsticam_(x.textos, textos, MEDIDA_DAS_CARTAS_, x.minima, spec.horizontal ? spec.alturas : null);
+    var h = alturasQueEsticam_(caixas, textos, MEDIDA_DAS_CARTAS_, x.minima, spec.horizontal ? spec.alturas : null);
     // as linhas seguidas de mesma altura vão numa chamada só
     var linhas = Object.keys(h).map(Number).sort(function (a, b) { return a - b; });
     for (var i = 0; i < linhas.length;) {
