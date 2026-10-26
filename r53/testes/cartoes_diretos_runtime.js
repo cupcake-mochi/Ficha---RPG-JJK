@@ -17,8 +17,15 @@ const sheets=new Map,props=new Map,toasts=[];
 const ss={getSheetByName(n){if(!sheets.has(n))sheets.set(n,new Sheet(n));return sheets.get(n);},toast(t){toasts.push(t);},getSpreadsheetLocale(){return'en_US';}};
 const lockTrace=[];let locked=false;
 const box={console,PropertiesService:{getDocumentProperties:()=>({getProperty:k=>props.get(k)||null,setProperty:(k,v)=>props.set(k,v)})},LockService:{getDocumentLock:()=>({tryLock(){locked=true;lockTrace.push('acquire');return true;},releaseLock(){assert(locked);assert.strictEqual(lockTrace.at(-1),'flush');locked=false;lockTrace.push('release');}})},SpreadsheetApp:{getActive:()=>ss,flush(){assert(locked);lockTrace.push('flush');},newDataValidation(){let o={};for(const k of ['requireCheckbox','requireValueInList','requireFormulaSatisfied','setAllowInvalid'])o[k]=function(...v){this[k+'_args']=v;return this;};o.build=function(){return {...this};};return o;}}};
+box.Utilities={DigestAlgorithm:{SHA_256:1},Charset:{UTF_8:1},base64Decode:s=>Buffer.from(s,'base64'),newBlob:x=>x,ungzip:x=>({getDataAsString:()=>require('zlib').gunzipSync(x).toString('utf8')}),computeDigest:(_,s)=>Array.from(require('crypto').createHash('sha256').update(s).digest())};
 vm.createContext(box);vm.runInContext(fs.readFileSync(process.argv[2]||'apps-script/EditorR53.gs','utf8'),box);
 const cfg=box.R53_EDITOR_,fields=cfg.campos.map(f=>f[0]);eq(cfg.esquema,3);eq(cfg.contextos.length,249);eq(!!cfg.paineis,false);
+// Uma cópia começa sem propriedades: editar Caminho/Trilha não pode iniciar
+// a recuperação de 249 cartões antes das automações da FICHA.
+for(const cell of ['D11','N11']){
+ const before=io.length;eq(box.r53Editar_({source:ss,range:ss.getSheetByName('FICHA').getRange(cell)}),false);
+ eq(io.length,before);eq(props.has('r53_amparo_direto'),false);
+}
 ss.getSheetByName(cfg.amparo.aba).getRange(cfg.amparo.faixa).setValues([Array(13).fill('Normal')]);
 for(const g of cfg.contextos){
  let p=g.classe_maxima.lastIndexOf('!');ss.getSheetByName(g.classe_maxima.slice(0,p).replace(/^'|'$/g,'')).getRange(g.classe_maxima.slice(p+1)).setValue(7);

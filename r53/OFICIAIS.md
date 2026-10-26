@@ -11,6 +11,21 @@ A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são r
 
 ## Estado instalado
 
+Atualização de automações em cópias: veja a
+[entrega e limites de validação](diagnostico-android/AUTOMACOES-COPIAS-2026-10-25.md).
+Caminho, Trilha, habilidades e grupos de treino foram corrigidos e ensaiados em
+cópia nova. As duas oficiais receberam a área oculta R53_EVENTOS (653 referências)
+e o incremento de código; quatro releituras após reabrir ficaram iguais.
+
+- `Codigo.gs` atual: `d92f846e42aa1ad42237ced54da53772d6aa796ae580c90b84fa718a980c5827`.
+- `EditorR53.gs` atual, transporte comprimido do mesmo catálogo:
+  `bc3004641a1a28c148885638955e6db66ffebaa01cd8acea30415cbbcd30e993`.
+
+São 30 abas físicas, mantendo ANALISE12/esquema2 e seus endereços. Novas cópias
+levam a correção; cópias antigas não recebem o código automaticamente.
+O pacote integral não foi reinstalado. Os hashes abaixo documentam a aplicação
+anterior de 25/10, antes deste incremento de automações.
+
 As duas oficiais têm as correções incrementais de Ritual, carga das dez invocações,
 Classes, validação de funções bloqueadas e edição de missões. Snapshots nativos
 novos precederam a aplicação; os quatro códigos finais foram reabertos e relidos

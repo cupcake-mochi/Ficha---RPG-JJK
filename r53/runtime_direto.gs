@@ -118,7 +118,9 @@ function r53SincronizarFamilias_(ss) {
 function r53Editar_(e) {
  R53_REF_CACHE_={};if(typeof R53_EDITOR_==='undefined'||R53_EDITOR_.esquema!==3||!e||!e.range)return false;
  var range=e.range,owner=range.getSheet().getName(),ss=e.source||SpreadsheetApp.getActive();
- if(!/^(FICHA|FICHA AMALDIÇOADA|INVOCAÇÕES|CONFIGURAÇÃO|CARTEIRA)$/.test(owner))return false;
+ // FICHA não contém cartões nem escolhas de Família. Em cópias novas, a
+ // sincronização inicial de 249 cartões esgotava o evento antes do Caminho.
+ if(!/^(FICHA AMALDIÇOADA|INVOCAÇÕES|CONFIGURAÇÃO|CARTEIRA)$/.test(owner))return false;
  var gs=R53_EDITOR_.contextos.filter(function(g){var a=g.area_editor;return g.aba===owner&&range.getLastRow()>=a[0]&&range.getRow()<=a[2]&&range.getLastColumn()>=a[1]&&range.getColumn()<=a[3];});
  if(!gs.length){r53SincronizarFamilias_(ss);return false;}
  // Capture before waiting: an older Class callback may overwrite the visible

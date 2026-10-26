@@ -97,6 +97,9 @@ def main():
                   run.stderr.strip() or run.stdout.strip())
             for name in ['salarios/testar_abertura.js', 'r53/testes/salario_lote.js',
                          'r53/testes/missoes_integradas.js', 'r53/testes/versao_publica.js',
+                         'r53/testes/caminho_loader.js',
+                         'r53/testes/caminho_leve.js',
+                         'r53/testes/caminho_integrado.js', 'r53/testes/editor_lazy.js',
                          'conteudos-b47/comum/testar-notas-contextuais.js']:
                 run = subprocess.run([node, str(ROOT/name)], cwd=ROOT, capture_output=True, text=True, timeout=60)
                 check(name, run.returncode == 0, run.stderr.strip() or run.stdout.strip())

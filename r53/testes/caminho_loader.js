@@ -1,0 +1,18 @@
+'use strict';
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const {preparar,ANTES,DEPOIS}=require('../diagnostico-android/preparar_caminho');
+const anchor='R53_MODULO_=(new Function(r53CorrecaoFila_(r53CorrecaoAndroid_(r53CorrecaoAbertura_(code)))))();';
+const wrapper='if(typeof r53Editar_==="function" && r53Editar_(e))return r53ContinuarPaletaPendente_(e);return r53Modulo_().onEdit(e);';
+const src='function load(){'+anchor+'}\nfunction edit(e){'+wrapper+'}';
+const out=preparar(src),box={};vm.createContext(box);vm.runInContext(out,box);
+assert.strictEqual(box.r53CorrecaoCaminho_(ANTES),DEPOIS);
+assert.throws(()=>box.r53CorrecaoCaminho_('divergente'),/divergente/);
+assert.throws(()=>preparar(out),/divergente/);
+assert.throws(()=>preparar(src+wrapper),/divergente/);
+let calls=0,got;
+box.r53Editar_=()=>{calls++;return false;};box.r53Modulo_=()=>({onEdit:e=>{got=e;return 7;}});
+box.r53EditarCaminho_=()=>false;
+const event={range:{}};assert.strictEqual(box.edit(event),7);assert.strictEqual(calls,1);assert.strictEqual(got,event);assert.strictEqual(event.r53EditorVerificado_,true);
+box.r53Editar_=()=>true;box.r53ContinuarPaletaPendente_=()=>11;assert.strictEqual(box.edit({}),11);
+box.r53EditarCaminho_=()=>true;box.r53Editar_=()=>{throw Error('Não pode carregar editor de combate no Caminho');};assert.strictEqual(box.edit({}),11);
+console.log('Caminho: carregador estrito, evento preservado e editor único aprovados.');

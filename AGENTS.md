@@ -1,3 +1,23 @@
+# Automações em cópias aplicadas · 25/10/2026
+
+Leia `r53/diagnostico-android/AUTOMACOES-COPIAS-2026-10-25.md` e seu JSON.
+Incremento aplicado nas duas oficiais, com snapshots nativos e quatro releituras
+iguais. Codigo.gs d92f846e…; EditorR53.gs comprimido bc300464… (fonte legível
+continua no Git). Caminho, Trilha e treino em armas usam retrato nativo de 653
+referências na nova R53_EVENTOS oculta. São 30 abas físicas nas oficiais.
+Não reaplicar nem executar construir/continuar. As cópias antigas não se atualizam.
+QA: Emanador 12,259 s; Trilha 13,595 s; Vanguarda 11,191 s; desmarcação de grupo
+16,756 s; cartão persistiu e voltou a zero. 52 verificações integradas, 568 do
+editor, 74 de recursos/cartas, sete do contrato e pacote aprovados. Não chamar
+isso de garantia de 100% nem latência Android medida. Cores não remedidas.
+Gerar Caminho/Eventos com `node r53/caminho_leve.js`; o empacotador também faz.
+Pacote integral novo não foi instalado: preservar a base e todos os incrementos.
+O usuário autorizou a aplicação e deixou a revisão seguinte para o Claude.
+A cópia preenchida foi descartada pelo usuário; só as duas oficiais foram alvo.
+Evidências privadas em `nuvem-b47/saidas/pericias-caminho-20261025/` (ignorado).
+Sem agentes extras, acionadores, acessos ou Office. Sol/High para manutenção
+integrada; Medium para revisão. Não alterar configurações automaticamente.
+
 # Versão pública e merge autorizado · 25/10/2026
 
 O usuário autorizou explicitamente integrar este ramo na main nesta etapa.

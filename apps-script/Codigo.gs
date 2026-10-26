@@ -449,7 +449,8 @@ function onEdit(e) {
     continuarPaleta_(inicio, e.oldValue, true, null, e.value);
     return;
   }
-  if (typeof r53Editar_ === 'function' && r53Editar_(e)) return;
+  if (typeof r53EditarCaminho_ === 'function' && r53EditarCaminho_(e)) return;
+  if (!e.r53EditorVerificado_ && typeof r53Editar_ === 'function' && r53Editar_(e)) return;
   // 01/10/2026: a FICHA PESSOAL tem as caixas de treino, as missões que sobem o nível e as notas que mudam.
   if (aba === ABA_PESSOAL_) {
     try { devolverConta_(e, ABA_PESSOAL_); } catch (err) { console.log('ficha pessoal, a conta: ' + err.message); }
