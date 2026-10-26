@@ -498,7 +498,7 @@ function onEdit(e) {
       // não aqui: na ordem de antes, a leitura das cartas esperava o recálculo das alturas gravadas (~4,5 s).
       var specConfig = ABAS.filter(function (s) { return s.nome === 'CONFIGURAÇÃO'; })[0];
       if ((specConfig && specConfig.gatilhos_habilidades || ['B737:O792']).some(function (a1) { return tocaFaixa_(e.range, a1); })) {
-        try { habilidadesDaFicha_(e, indiceEstatico_() || indice(), true); } catch (err) { console.log('cartas custom: ' + err.message); }
+        try { if (!habilidadeCustomForaDeUso_(e)) habilidadesDaFicha_(e, indiceEstatico_() || indice(), true); } catch (err) { console.log('cartas custom: ' + err.message); }
       }
       try { esticarCaixas_(e, aba); } catch (err) { console.log('texto custom: ' + err.message); }
     }
@@ -1687,6 +1687,25 @@ function cartasDaDadosAm_(ss) {
   }
   for (var l = 1; l < v.length && v[l][cL] !== ''; l++) livres.push({ texto: String(v[l][cL]), linha: linhaDe(v[l][cL]) });
   return { cartas: cartas, livres: livres };
+}
+
+/**
+ * 26/10/2026 (3): medido na cópia, refazer as cartas a cada edição nas habilidades custom da CONFIGURAÇÃO levava
+ * 13,7–16 s, e com as caixas que esticam a edição passava dos 30 s. Só que o texto custom só entra nas cartas quando a
+ * FICHA usa o Caminho (ou a Trilha) custom: é o que diz o DADOS_PROGRESSAO!K7 (K8 para a Trilha), e o
+ * livroDasCartas_ ignora esse texto com a marca em 0. Então, numa edição só dentro dos textos e nomes das habilidades
+ * por nível (AK50:AX64; o Caminho até a AR, a Trilha da AS em diante) do lado sem uso, as cartas ficam como estão.
+ * O nome do Caminho e da Trilha custom e o resto da aba seguem refazendo as cartas sempre.
+ */
+function habilidadeCustomForaDeUso_(e) {
+  var r = e.range, l1 = r.getRow(), c1 = r.getColumn(), l2 = l1 + r.getNumRows() - 1, c2 = c1 + r.getNumColumns() - 1;
+  if (l1 < 50 || l2 > 64 || c1 < 37 || c2 > 50) return false;
+  var p = SpreadsheetApp.getActive().getSheetByName('DADOS_PROGRESSAO');
+  if (!p) return false;
+  var k = p.getRange('K7:K8').getValues(), lados = [];
+  if (c1 <= 44) lados.push(Number(k[0][0]));
+  if (c2 >= 45) lados.push(Number(k[1][0]));
+  return lados.every(function (x) { return x !== 1; });
 }
 
 // Textos custom entram nas mesmas nove cartas e conservam a edição manual.
