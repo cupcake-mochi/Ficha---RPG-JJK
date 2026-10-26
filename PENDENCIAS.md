@@ -5,8 +5,11 @@ cópia de teste) os menus `D92:D99` (DADOS_CUSTOM!AA), `D104:D109` e `Z104:Z109`
 **estritos**, embora o molde (`apps-script/Ficha.gs`, gerado por `ficha-v01/`) só ponha `D44` em
 `menus_estritos`; não achei quando travaram. Pedido dele: itens guardados só de escrever, e duas vagas livres nos
 equipáveis (o desenho original: "seis linhas com menu, duas livres"). Feito pela API do Sheets: `D98:D99`,
-`D104:D109` e `Z104:Z109` sem validação; `D92:D97` seguem com o menu. **Pendente no gerador:** ao remontar a
-ficha, o `dv` da FICHA PESSOAL ainda põe menu em `D92:D99` e nos itens guardados.
+`D104:D109` e `Z104:Z109` sem validação; `D92:D97` seguem com o menu. **Gerador em dia (26/10):** quem
+alargava o menu era o `integra()` do `ficha-v01/custom.py`; agora ele põe o catálogo só em `D92:D97`
+(`EQUIP_MENU`, o desenho do `ficha_pessoal.py`) e não põe menu nos itens guardados. As contas que puxam o
+catálogo ficam, então um nome do catálogo escrito à mão ainda preenche. Regerado: no molde só mudou o `dv`
+da FICHA PESSOAL; o selo da geração passou a `2d3a0bf73db57661` (as oficiais seguem no módulo instalado).
 
 ## Experiência da cópia de teste · 26/10/2026 · bordas pelo tema e listas sem INDIRECT
 
