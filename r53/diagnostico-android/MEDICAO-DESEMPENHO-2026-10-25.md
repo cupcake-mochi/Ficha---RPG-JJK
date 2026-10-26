@@ -325,3 +325,26 @@ Mesmas edições da rodada anterior, uma por vez pelo navegador, na cópia `1HI9
 Todas concluídas. **Pior caso 18,9 s** (antes deste corte, 24,9 s; antes dos cortes, 30 s com timeout). Média das
 missões ≈ 15 s. Alguns logs vieram sem linhas (PERFIL/R53_ONEDIT), mas as execuções terminaram. Ao apagar as
 missões o nível ficou em 4, como no código de antes (o nível não desce); a cópia foi devolvida ao estado inicial.
+
+## Remendos 34–38 da CONFIGURAÇÃO na cópia (26/10, 14:15–14:19)
+
+Retomada da medição que outra conversa deixou no meio (parou no limite logo depois do remendo 38). Cópia
+`1HI96ICu…` com o módulo `15774d95`: os remendos 34–38 (módulo `52fc6903`) mais linhas `DIAG` de medição (só
+`console.log`). DADOS_PROGRESSAO!K7 e K8 em 0: nem o Caminho nem a Trilha custom em uso, o caso que os remendos
+36–37 cortam. Edições à mão pelo Chrome, uma por vez; duração do registro de Execuções. No fim AK51 e AS51 vazias de
+novo (conferido pela API). O grupo de colunas "02 Caminho e Trilha" da CONFIGURAÇÃO ficou aberto na cópia.
+
+| Edição | Duração | Status |
+|---|---:|---|
+| AK51 texto curto (Caminho, nível 2; primeira depois de abrir) | 20,9 s | Concluído |
+| AK51 texto longo (a caixa cresce) | 20,9 s | Concluído |
+| AK51 apagar (a caixa volta) | 18,7 s | Concluído |
+| AS51 texto curto (Trilha, nível 2) | 18,6 s | Concluído |
+| AS51 apagar | 18,0 s | Concluído |
+
+Antes dos remendos 34–35, escrever ou apagar esse texto levava 24–31 s e estourava (commit `13bcece`). Perfil da
+AS51 curta (onEdit 16,4 s): primeira ida ao Sheets 3,1 s; Famílias/Amparo 3,0 s; abrir o módulo 2,1 s; **cartas
+3,6 s** (é a leitura de DADOS_PROGRESSAO!K7:K8, outra aba; refazer as cartas custava 13,7–16 s); **esticar 4,2 s**
+(lê o retângulo das caixas mesmo quando nenhuma altura muda; o remendo 38 poupa só a gravação e o flush); paleta
+0,05 s. Folga no pior caso ~9 s. Próximo corte possível: as marcas K7/K8 chegam junto de outra leitura (ou ficam
+no índice estático), o que tira mais ~3 s.
