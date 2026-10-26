@@ -96,3 +96,14 @@ dos remendos 33-38 da CONFIGURAÇÃO" na Era da Revolução, 14:42), feita como 
 biblioteca, arquivada em seguida. Depois de salvar e recarregar, nas duas: módulo `52fc6903`, nenhum
 `fef2a94b` no Codigo, e Codigo, EditorR53, LotePaleta, PaletaSegundoPlano e SalarioLote idênticos aos da cópia.
 Medição na cópia: habilidade custom da CONFIGURAÇÃO em 18–21 s, todas concluídas (MEDICAO-DESEMPENHO).
+
+## Cartão em menos idas · 26/10/2026
+
+Aval do Mizuki no chat ("Pode instalar o corte do cartão nas duas oficiais (versão 6 de backup antes), exigindo o
+EditorR53 68f21a08 igual ao da cópia"). Pelo Chrome, na conta dona, só o EditorR53 mudou: três trechos do
+`preparar_cartao_leve.js` trocados no EditorR53 instalado, que precisava ser o `d2e57223` e saiu `68f21a08`, o
+mesmo gerado no node e medido na cópia `1HI96ICu…`. Antes, cada projeto ganhou a versão 6 de backup ("Antes do
+corte do cartão (26/10/2026)": Ciclo Maldito 15:06, Era da Revolução 15:10), implantação de biblioteca arquivada
+em seguida. Depois de salvar e recarregar, nas duas: EditorR53 `68f21a08`, módulo `52fc6903`, e Codigo,
+LotePaleta, PaletaSegundoPlano e SalarioLote como estavam. Medição na cópia: pontos do cartão em 19,5–23,4 s,
+todas concluídas (antes 23,2–26,0 s).
