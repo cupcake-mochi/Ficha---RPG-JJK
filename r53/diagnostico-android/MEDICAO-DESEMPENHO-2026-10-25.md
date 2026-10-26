@@ -246,3 +246,24 @@ Cartão (E71 = 1, 23,4 s, concluído):
 Nesta cópia cada ida ao servidor custa ~1,2–1,6 s mesmo sem recálculo pendente, e as
 leituras de outra aba custam 3–4 s. A missão faz umas dez idas em sequência; o cartão,
 umas oito.
+
+## Missões enxutas na mesma cópia (26/10, 10:46–10:55)
+
+Corte do `preparar_missoes_enxutas.js` instalado só no Codigo da cópia `1HI96ICu…` (versão 1 do projeto é a de
+antes). Edições pelo navegador, uma por vez, cada uma esperando a anterior concluir. No fim, AW15:AX20 vazio e
+XP total 0 de novo.
+
+| Edição | Duração | onEdit | Status |
+|---|---:|---:|---|
+| AW15 nome | 21,7 s | 19,5 s | Concluído |
+| AX15 Curta | 27,7 s | 24,3 s | Concluído |
+| AX15 Longa | 22,8 s | 21,2 s | Concluído |
+| AW20 nome | 17,5 s | 16,1 s | Concluído |
+| AX20 Padrão | 21,4 s | 19,6 s | Concluído |
+| apagar AW15:AX15 | 25,3 s | 22,3 s | Concluído |
+| apagar AW20:AX20 | 27,0 s | 25,1 s | Concluído |
+
+Antes, todas cortavam aos 30,6 s. Perfil típico: `r53SalarioAreaPropria_` 2,3–3,7 s; `salarioSincronizar_` 7,6–11,4 s
+(dos quais `salarioMissoesAtuais_`, notas e valores do painel, 4,1–6,2 s); `salarioMissaoDireta_` 4,1–5,9 s
+(era 10,4 s); gravação e flush 4–5 s. A folga no pior caso é de ~2 s: o que sobra de peso é a leitura
+dos registros (DADOS_SALARIOS, outra aba) e as duas leituras do painel.
