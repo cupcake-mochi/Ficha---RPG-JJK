@@ -3,8 +3,9 @@
 Leia o topo do `PENDENCIAS.md` ("Fila de desempenho da ficha") antes de mexer em
 desempenho ou nas oficiais. Nada desta fila foi aplicado nas oficiais.
 Consertos 1–3 da fila (Famílias em cópia nova, FICHA PESSOAL, Força) estão no
-código e testados no node, mas ainda não instalados nem medidos no Google; os
-passos de instalação estão no topo do `PENDENCIAS.md`. O `pacote_leve_remendos.json`
+código e medidos em 26/10 numa cópia nova da oficial (`1xcXsFSk…`, gustavohmoura12):
+antes 30,7–31,0 s (tempo limite), depois 10,2–12,8 s. Oficiais não tocadas; passos
+no topo do `PENDENCIAS.md`. O `pacote_leve_remendos.json`
 tem agora 22 remendos: o módulo leve esperado passou de `2667ef41…` para `9d1cec81…`.
 
 # Pacote leve e leitura única · 25/10/2026 (Claude)

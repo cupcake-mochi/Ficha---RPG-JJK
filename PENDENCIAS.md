@@ -10,9 +10,13 @@ Feito e medido em cópia de teste (`1kQuSgg…`, "TESTE pacote leve"): leitura �
 edições comuns da FICHA e pacote leve. ± da vida 30,6 s (morria) → 11,5 s; Caminho
 19,1 → 10,2 s; abrir o módulo 11,4 → 1,8 s; onOpen 17,9 → 2,1 s.
 
-**Consertos 1–3 feitos no repositório e testados no node (commits `79ee9cb`, `ac73543`),
-ainda NÃO instalados nem medidos no Google** (o Chrome estava desconectado). Para instalar
-na cópia `1kQuSgg…`, que já tem o pacote leve:
+**Consertos 1–3 feitos (commits `79ee9cb`, `ac73543`) e medidos no Google em 26/10** numa
+cópia nova da oficial na gustavohmoura12 (`1xcXsFSk…`, "TESTE consertos 1-3"): as 6 edições
+do antes estouraram (30,7–31,0 s); as 9 do depois concluíram em 10,2–12,8 s (CARTEIRA,
+FICHA AMALDIÇOADA, arma na mão, Força). Tabela em MEDICAO-DESEMPENHO. Lá foi instalado o
+pacote leve do zero com os 22 remendos (sai `9d1cec81…`, igual ao node) e o `EditorR53`
+`d2e57223…`: é o ensaio do item 5. A cópia antiga `1kQuSgg…` (cupcakemochi1201) não recebeu
+nada; para ela continua valendo o caminho abaixo:
 - `EditorR53.gs`: colar por inteiro a saída de
   `node r53/editor_lazy.js apps-script/EditorR53.gs <saída>`; instalado `bc300464…` → `d2e57223…`.
 - módulo: `node r53/diagnostico-android/instalar_pacote_leve.js --incremento 14 2667ef41d84e44f565228bae47d7a6b9cf08bb7bfef8c60f2467383075aaee53 9d1cec81cf90bac42dd044d619843857b9c5fff3538ea0b8a0909899ff62fdce`

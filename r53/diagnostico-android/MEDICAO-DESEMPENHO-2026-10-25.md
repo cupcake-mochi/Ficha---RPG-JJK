@@ -136,7 +136,7 @@ XP pelas missões da FICHA PESSOAL, que já têm caminho próprio.
 - **Força e atributos.** `fichaMexeNaPessoal_` lê a DADOS inteira e refaz as notas
   vivas (8 idas).
 
-## Consertos 1–3, no node (ainda sem medição no Google)
+## Consertos 1–3, no node
 
 Contador de idas (Sheets de mentira, onEdit de verdade), antes → depois:
 
@@ -153,3 +153,42 @@ As notas gravadas são as mesmas de antes (`r53/testes/pessoal_leve.js`). Módul
 com os remendos novos: `9d1cec81cf90bac42dd044d619843857b9c5fff3538ea0b8a0909899ff62fdce`
 (a partir do `2667ef41…` instalado na cópia). `EditorR53.gs` de transporte novo:
 `d2e572232a58643addb44847710cd0b4568ba5b8f8c95e8ac9d894e777ab48ef`.
+
+## Consertos 1–3 no Google · 26/10/2026 (cópia nova)
+
+Cópia nova da Ciclo Maldito oficial feita pelo Drive na gustavohmoura12:
+`1xcXsFSkK8AffAe-mJ5pWFPztvYgy7hlFpZ_v8TK4NR0` ("TESTE consertos 1-3 — pode apagar —
+25-10-2026"), projeto `1_K6fs0OnMnPuFBZlVLCxr6AwhQUepMw76eurRZh_w24nuTdUY7RICTcU`. As
+oficiais não foram tocadas. Instalado de fábrica: `Codigo.gs` `d92f846e…`, `EditorR53`
+`bc300464…`, módulo completo `2f153f65…` com a cadeia de correções. É o caso "cópia nova"
+do conserto 1 (sem `r53_amparo_direto`) e o mesmo caminho de instalação das oficiais.
+
+Instalação pelo console do editor: o bloco novo do `r53SincronizarFamilias_`
+(`bc300464…` → `d2e57223…`) e o pacote leve do zero com os 22 remendos
+(`instalar_pacote_leve.js`, remendos baixados do commit `9231191` e conferidos pelo
+SHA-256 `f69a2e0c…`): 21,4 → 8,3 MB, 31 tabelas cortadas, 3 travas, módulo `9d1cec81…`,
+o mesmo hash calculado no node a partir do `2667ef41…`. Projeto salvo e editor recarregado:
+`EditorR53` `d2e57223…`, módulo declarado e real `9d1cec81…`.
+
+Pelo acionador simples (registro de Execuções), edições feitas à mão na planilha:
+
+| Edição | Antes | Depois |
+|---|---:|---:|
+| CARTEIRA A1 = x | 30,707 s, tempo limite | — |
+| CARTEIRA A1 apagada (1ª depois, grava o estado das Famílias) | — | 10,577 s, concluído |
+| CARTEIRA A1 = x (2ª) | — | 12,390 s, concluído |
+| CARTEIRA A1 apagada (3ª) | — | 10,869 s, concluído |
+| FICHA AMALDIÇOADA B452 = x / apagada | 30,783 s, tempo limite | 12,763 s, concluído |
+| FICHA PESSOAL D66 apagada (linha da mão; a conta voltou) | 30,766 s, tempo limite | — |
+| FICHA PESSOAL D64 apagada (arma na mão) | 30,975 s, tempo limite | 11,331 s, concluído |
+| FICHA PESSOAL D64 = Soco | 31,002 s, tempo limite | 10,191 s, concluído |
+| FICHA D21 Força 0 → 1 / 1 → 10 | 30,692 s, tempo limite | 12,644 s, concluído |
+| FICHA D21 Força 10 → vazio | — | 10,639 s, concluído |
+| FICHA D21 Força vazio → 0 | — | 11,692 s, concluído |
+
+Conferido na tela: a nota embaixo da mão voltou ao texto do Soco ("O dado desarmado é d4 com
+maestria 1…"); a conta da D66 apagada voltou. Células devolvidas ao original (A1 e B452
+vazias, D64 Soco, D21 0). Reescolher o mesmo valor no menu não dispara o gatilho, por isso a
+arma foi medida apagando e voltando. A B500 da FICHA AMALDIÇOADA está num grupo recolhido;
+usei a B452, também fora dos cartões. O "antes" desta cópia é sem o pacote leve (o que os
+jogadores têm hoje); o "depois" soma pacote leve e consertos 1–3.
