@@ -19,7 +19,7 @@ ACCENT5 do tema e a troca de paleta escreve a régua em ACCENT5 e ACCENT6; `expe
 `INDIRECT(SWITCH(...))` da DADOS_CUSTOM por `CHOOSE(MATCH(...))` e confere em todos os estados dos seletores.
 Medida 1 (sem as mudanças, tempo do script): FICHA 8,4 e 10,9 s; paleta 15,5 e 22,8 s.
 
-## Cartas antes das caixas que esticam · 26/10/2026 (Claude) · no ramo, fora das oficiais
+## Cartas antes das caixas que esticam · 26/10/2026 (Claude) · instalado nas duas oficiais com os remendos 34–38 (módulo `52fc6903`, v5)
 
 Pente fino depois da instalação: no arnês quase toda edição já fica entre ~7 e ~9 s. Na CONFIGURAÇÃO, o
 texto das habilidades custom esticava as caixas (27 alturas gravadas) e só depois lia as cartas, que
@@ -4536,7 +4536,7 @@ Teste nativo das duas colunas concluído, 5 verificações passaram; 21 entradas
 ### Experiência da cópia de teste: resultado (26/10)
 - Bordas pelo tema (ACCENT5/6): descartadas pelo Mizuki. A troca de paleta passou dos 30 s com o passo do tema e a cópia ficou lenta.
 - Listas da DADOS_CUSTOM sem INDIRECT (CHOOSE/MATCH): conteúdo igual nos estados conferidos e FICHA de 10,9 → 4,3 s, mas CONFIGURAÇÃO 19 s e a cópia travou em "alterando" com as três experiências juntas. Inconclusivo; não instalado. Se voltar, testar numa cópia limpa de uma oficial só com essa troca.
-- Oficiais intocadas: seguem com o pacote leve fef2a94b. O remendo 33 (bddccf83) continua só no Git.
+- (Superado em 26/10, fim do dia: o remendo 33 entrou nas oficiais com os 34–38, módulo `52fc6903`.)
 
 ## Missões enxutas · 26/10/2026 (Claude) · no ramo, fora das oficiais
 
