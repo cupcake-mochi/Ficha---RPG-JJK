@@ -17,7 +17,8 @@ const { criar, custo, projetoComIncremento } = require('../arnes_custo');
 const projeto = JSON.parse(fs.readFileSync(fp, 'utf8')), dump = JSON.parse(fs.readFileSync(fd, 'utf8'));
 const sha = t => crypto.createHash('sha256').update(t, 'utf8').digest('hex');
 const { novo: antigo, hashVelho: hv } = projetoComIncremento(projeto, dump, 22, 35);
-const { novo } = projetoComIncremento(projeto, dump, 22);
+// Até o 37º: o 38º (alturas sem mudança não são gravadas) tem teste no caixas_horizontais.js.
+const { novo } = projetoComIncremento(projeto, dump, 22, 37);
 ok(antigo !== novo, 'o 36º e o 37º mudam o módulo');
 
 function montar(modulo) {

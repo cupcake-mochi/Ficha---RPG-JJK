@@ -1628,6 +1628,24 @@ function esticarCaixas_(e, nomeDaAba) {
                  .filter(function (t) { return t !== ''; }).join(' · ');
     });
     var h = alturasQueEsticam_(caixas, textos, MEDIDA_DAS_CARTAS_, x.minima, spec.horizontal ? spec.alturas : null);
+    // 26/10/2026 (4): numa célula só, com o texto de antes na mão (e.oldValue), a mesma conta com ele diz se alguma
+    // altura muda; se nenhuma muda, não grava nada (gravar e o flush do fim custavam ~3-4 s medidos na cópia).
+    if (local && l1 === l2 && c1 === c2) {
+      var a1Editada = e.range.getA1Notation(), achou = false;
+      var antes = caixas.map(function (c, i) {
+        if (c[1].indexOf(a1Editada) < 0) return textos[i];
+        achou = true;
+        return c[1].map(function (a1) {
+          if (a1 === a1Editada) return String(e.oldValue === undefined || e.oldValue === null ? '' : e.oldValue);
+          var f = limitesA1_(a1), linha = lidos.m[f.l1 - lidos.l1];
+          return String(linha ? linha[f.c1 - lidos.c1] : '');
+        }).filter(function (t) { return t !== ''; }).join(' · ');
+      });
+      if (achou) {
+        var hAntes = alturasQueEsticam_(caixas, antes, MEDIDA_DAS_CARTAS_, x.minima, spec.horizontal ? spec.alturas : null);
+        if (Object.keys(h).every(function (l) { return h[l] === hAntes[l]; })) { n++; return; }
+      }
+    }
     // as linhas seguidas de mesma altura vão numa chamada só
     var linhas = Object.keys(h).map(Number).sort(function (a, b) { return a - b; });
     for (var i = 0; i < linhas.length;) {
