@@ -348,3 +348,24 @@ AS51 curta (onEdit 16,4 s): primeira ida ao Sheets 3,1 s; Famílias/Amparo 3,0 s
 (lê o retângulo das caixas mesmo quando nenhuma altura muda; o remendo 38 poupa só a gravação e o flush); paleta
 0,05 s. Folga no pior caso ~9 s. Próximo corte possível: as marcas K7/K8 chegam junto de outra leitura (ou ficam
 no índice estático), o que tira mais ~3 s.
+
+## Cartão em menos idas na cópia (26/10, 14:55–14:57)
+
+Corte no `apps-script/EditorR53.gs` (e no `r53/runtime_direto.gs`, de onde ele sai): numa célula só o `e.value` já é o
+valor e a releitura sai; a porta (Amparo, DADOS_R53_CATALOGO) só é lida quando a caixa de Dano/Cura/VT difere da
+versão salva ou foi a editada, porque igual ao salvo dá o mesmo resultado aberta ou fechada. `r53/testes/cartao_leve.js`
+roda o EditorR53 de antes e o de agora lado a lado em 23 edições (pontos, caixas, Classe 0, entidade, Família
+fechada e reaberta, colagem, erro): mesmas abas, versões, propriedades e avisos; pontos num cartão aberto 5 → 3
+leituras. Instalado só no EditorR53 da cópia `1HI96ICu…` (`d2e57223` → `68f21a08`, igual ao gerado no node).
+
+| Edição (FICHA AMALDIÇOADA, feitiço 1) | Antes do corte | Depois |
+|---|---:|---:|
+| E71 = 1 (primeira depois de abrir) | 23,2 s | 20,3 s |
+| E71 = 0 | 25,6 s | 23,4 s |
+| E71 = 2 / 1 | 23,4 s | 19,5 s |
+| E71 = 0 | 26,0 s | 20,7 s |
+
+Todas concluídas; média 24,5 → 21,0 s. Cartão e MONTAGENS voltaram a 0 (conferido pela API). Perfil da terceira
+(onEdit 17,4 s): primeira ida 2,7 s; área do cartão 4,4 s (agora é ela que espera o recálculo); versão salva na
+MONTAGENS 4,4 s; gravação e flush ~5 s. Sem a releitura (~3,8 s com a trava) e sem o Amparo (3,2 s).
+O que sobra é ler a MONTAGENS, outra aba: ela guarda campos que o cartão não mostra, então continua.
