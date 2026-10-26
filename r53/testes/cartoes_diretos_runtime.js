@@ -34,6 +34,20 @@ for(const g of cfg.contextos){
  box.r53Mostrar_(ss,g,g.classes[0]===null?7:g.classes[0]);
  assert(!g.abrir_editor);assert(Object.keys(g.entradas_diretas).length>=1);checks+=2;
 }
+// Cópia nova: as propriedades do documento não vão junto. Editar fora dos
+// cartões guarda o amparo atual sem varrer os 249 (estourava 30 s no Google).
+for(const [aba,cell] of [['CARTEIRA','A1'],['FICHA AMALDIÇOADA','B500'],['INVOCAÇÕES','A1'],['CONFIGURAÇÃO','A1']]){
+ props.delete('r53_amparo_direto');box.R53_REF_CACHE_={};io.length=0;
+ eq(box.r53Editar_({source:ss,range:ss.getSheetByName(aba).getRange(cell)}),false);
+ eq(io,['read:'+cfg.amparo.aba]);eq(JSON.parse(props.get('r53_amparo_direto')),Array(13).fill('Normal'));
+}
+// Com o estado guardado, fechar uma Família ainda acerta só os cartões dela.
+{const esp=cfg.contextos.find(g=>g.id==='entidade.1.esp.1'),inv=ss.getSheetByName(esp.aba),cura=inv.getRange(esp.funcoes_diretas.cura).getValue();
+ ss.getSheetByName(cfg.amparo.aba).getRange(cfg.amparo.faixa).setValues([['Normal','Fechada',...Array(11).fill('Normal')]]);box.R53_REF_CACHE_={};io.length=0;
+ eq(box.r53Editar_({source:ss,range:ss.getSheetByName('CARTEIRA').getRange('A1')}),false);
+ eq(inv.getRange(esp.funcoes_diretas.cura).getValue(),'—');eq(io.includes('read:FICHA AMALDIÇOADA'),false);
+ ss.getSheetByName(cfg.amparo.aba).getRange(cfg.amparo.faixa).setValues([Array(13).fill('Normal')]);box.R53_REF_CACHE_={};box.r53SincronizarFamilias_(ss);
+ eq(inv.getRange(esp.funcoes_diretas.cura).getValue(),cura);props.delete('r53_amparo_direto');}
 const first=cfg.contextos.find(g=>g.id==='feitico.1'),sh=ss.getSheetByName(first.aba);
 function read(g,cl,k){return box.r53LerVersao_(ss,g,cl)[fields.indexOf(k)];}
 function edit(g,p,v,old){let r=ss.getSheetByName(g.aba).getRange(p);r.setValue(v);return box.r53Editar_({range:r,source:ss,oldValue:old});}

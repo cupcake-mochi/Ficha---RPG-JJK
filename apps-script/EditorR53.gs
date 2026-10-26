@@ -93,7 +93,11 @@ function r53BloqueiosCartao_(ss,g,rules,validationsReady) {
  var sh=ss.getSheetByName(g.aba);(rules||r53RegrasCartao_(ss,g)).forEach(function(item){if(!item)return;var cell=sh.getRange(item.pos);if(!validationsReady)cell.setDataValidation(item.rule);if(!item.open)cell.setValue('—');});
 }
 function r53SincronizarFamilias_(ss) {
- var current=r53Amparo_(ss),props=PropertiesService.getDocumentProperties(),raw=props.getProperty('r53_amparo_direto'),prev=raw?JSON.parse(raw):[];
+ var current=r53Amparo_(ss),props=PropertiesService.getDocumentProperties(),raw=props.getProperty('r53_amparo_direto');
+ // As propriedades do documento não vão na cópia da planilha. Sem estado, a
+ // cópia herda os cartões já acertados: guardar o atual em vez de varrer 249.
+ if(!raw){props.setProperty('r53_amparo_direto',JSON.stringify(current));return false;}
+ var prev=JSON.parse(raw);
  if(JSON.stringify(prev)===JSON.stringify(current))return false;
  var snapshots={},stored=null,groups={};
  R53_EDITOR_.contextos.forEach(function(g){
