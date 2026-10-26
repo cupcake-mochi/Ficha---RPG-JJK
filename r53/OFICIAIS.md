@@ -107,3 +107,13 @@ corte do cartão (26/10/2026)": Ciclo Maldito 15:06, Era da Revolução 15:10), 
 em seguida. Depois de salvar e recarregar, nas duas: EditorR53 `68f21a08`, módulo `52fc6903`, e Codigo,
 LotePaleta, PaletaSegundoPlano e SalarioLote como estavam. Medição na cópia: pontos do cartão em 19,5–23,4 s,
 todas concluídas (antes 23,2–26,0 s).
+
+## SalarioLote sem esperar o recálculo · 26/10/2026
+
+Aval do Mizuki no chat ("Pode instalar o SalarioLote novo nas duas oficiais (versão 7 de backup antes), exigindo o
+arquivo 366f6dd3 igual ao da cópia"). Pelo Chrome, na conta dona, só o SalarioLote mudou: era o `d30b2972` (o do
+repositório antes do corte) e passou a ser o `r53/diagnostico-android/salario_lote.gs` atual, `366f6dd3`, o mesmo
+medido na cópia `1coYY2bg…`. Antes, cada projeto ganhou a versão 7 de backup ("Antes do SalarioLote novo
+(26/10/2026)": Ciclo Maldito 15:59, Era da Revolução 16:03), implantação de biblioteca arquivada em seguida.
+Depois de salvar e recarregar, nas duas: SalarioLote `366f6dd3`, EditorR53 `68f21a08`, módulo `52fc6903`, e
+Codigo, LotePaleta e PaletaSegundoPlano como estavam. Na cópia, edição simples 8,9–11,7 s → 4,7–5,3 s.

@@ -86,6 +86,7 @@ conferido byte a byte depois de salvar (detalhes e versões em `r53/OFICIAIS.md`
 | missões enxutas (três cortes) | `Codigo` | v3, v4 |
 | remendos 33–38 da CONFIGURAÇÃO | módulo `52fc6903` | v5 |
 | cartão em menos idas | `EditorR53` `68f21a08` | v6 |
+| conferência do salário sem esperar o recálculo | `SalarioLote` `366f6dd3` | v7 |
 
 Medido em cópia (`1HI96ICu…`, MEDICAO-DESEMPENHO): missões 11–19 s (estouravam), habilidade custom da
 CONFIGURAÇÃO 18–21 s (24–31 s), cartão 19,5–23,4 s (23–26 s), ± da vida ~7–9 s. Nenhuma edição
