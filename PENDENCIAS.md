@@ -1,3 +1,50 @@
+## Fila de desempenho da ficha · 25/10/2026 (Claude) · FILA ATIVA
+
+Ramo `codex/otimizacao-android-r53` (commits `97abf4f`, `2ecb5ec`, `06b7d0d`, `5930122`),
+ainda fora da `main`. Medições e decisões em
+[MEDICAO-DESEMPENHO](r53/diagnostico-android/MEDICAO-DESEMPENHO-2026-10-25.md); instruções
+de instalação no topo do `AGENTS.md`. As duas oficiais (`r53/OFICIAIS.md`) **não** receberam
+nada desta fila: o Mizuki pediu para corrigir antes de aplicar.
+
+Feito e medido em cópia de teste (`1kQuSgg…`, "TESTE pacote leve"): leitura única nas
+edições comuns da FICHA e pacote leve. ± da vida 30,6 s (morria) → 11,5 s; Caminho
+19,1 → 10,2 s; abrir o módulo 11,4 → 1,8 s; onOpen 17,9 → 2,1 s.
+
+Fila, nesta ordem:
+
+1. **Sincronização das Famílias em cópia nova (crítico).** `r53SincronizarFamilias_`
+   (`apps-script/EditorR53.gs`) usa `r53_amparo_direto` das propriedades do documento, que
+   não vão na cópia da planilha. Sem estado, cada edição em CARTEIRA, FICHA AMALDIÇOADA,
+   INVOCAÇÕES e CONFIGURAÇÃO tenta acertar os 249 cartões, estoura e não grava: medido
+   30,6–30,7 s (tempo limite) três vezes. Proposta: sem estado guardado, gravar o atual e
+   não sincronizar (a cópia herda os cartões já acertados da oficial). O EditorR53.gs
+   instalado é o transporte de `r53/editor_lazy.js`; o código fica legível nele.
+2. **FICHA PESSOAL (alto).** Arma na mão (D64) estourou (30,6 s). `textoDaCapacidade_` e
+   `pessoalEditada_` releem o índice pessoal (`indicePessoal_`: `getLastRow` + leitura) em
+   toda edição da aba; o caminho das notas faz `flush`, `getDataRange` da DADOS e refaz as
+   notas vivas (12 idas no contador). Mesmo remédio da FICHA: índice do molde,
+   `faixaDoMolde_`, leitura agrupada.
+3. **Força e atributos (médio).** `fichaMexeNaPessoal_` lê a DADOS inteira e refaz as notas
+   vivas (8 idas). Atenção: o `caminho_leve.js` extrai essa função e procura a linha
+   `var dados = ss.getSheetByName('DADOS').getDataRange().getValues();` dela.
+4. **Medir o que está no limite.** Missões da FICHA PESSOAL (27,8 s medido pelo ChatGPT;
+   colunas AW:BT recolhidas) e edição de cartão (~20 s).
+5. **Aplicar nas oficiais**, com o aval do Mizuki: primeiro o `Codigo.gs` da corrida
+   (`r53/saidas/caminho-corrida/Codigo.gs`, ignorado; refazer trocando o bloco final do
+   Codigo instalado pelo `apps-script/Caminho.gs`), depois o trecho de
+   `instalar_pacote_leve.js`, depois os consertos 1–3. Se os remendos da FICHA mudarem,
+   regenerar `pacote_leve_remendos.json` e o hash esperado.
+
+Fora da fila, sem efeito para o jogador: `regressao-construir`, `-pessoal` e `-paleta`
+falham pelo Sheets de mentira desatualizado (já falhavam antes); a corrida do personagem
+novo (Trilha terminando antes do Caminho) ficou aberta por decisão dele;
+`PaletaAndroid.gs` (591 KB) carrega em toda execução.
+
+Como medir: `r53/diagnostico-android/medir_carga.gs` (colar num arquivo vazio de uma
+cópia), registro em `script.google.com/u/1/home/projects/<id>/executions`. O editor proíbe
+`new Function` em código assíncrono da página; o seletor de funções só lista as do arquivo
+aberto.
+
 ## R53 publicada na oficial · 19/10/2026
 
 A ficha oficial foi atualizada, limpa e validada no mesmo endereço. Cartões diretos,

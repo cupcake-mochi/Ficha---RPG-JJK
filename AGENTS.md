@@ -1,3 +1,8 @@
+# Fila ativa de desempenho · 25/10/2026
+
+Leia o topo do `PENDENCIAS.md` ("Fila de desempenho da ficha") antes de mexer em
+desempenho ou nas oficiais. Nada desta fila foi aplicado nas oficiais.
+
 # Pacote leve e leitura única · 25/10/2026 (Claude)
 
 Medido e aplicado SÓ em cópia de teste (`1kQuSgg…`); as oficiais não foram
