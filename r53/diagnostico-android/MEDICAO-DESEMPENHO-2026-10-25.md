@@ -267,3 +267,22 @@ Antes, todas cortavam aos 30,6 s. Perfil típico: `r53SalarioAreaPropria_` 2,3�
 (dos quais `salarioMissoesAtuais_`, notas e valores do painel, 4,1–6,2 s); `salarioMissaoDireta_` 4,1–5,9 s
 (era 10,4 s); gravação e flush 4–5 s. A folga no pior caso é de ~2 s: o que sobra de peso é a leitura
 dos registros (DADOS_SALARIOS, outra aba) e as duas leituras do painel.
+
+## Segundo corte na mesma cópia (26/10, 11:06–11:27)
+
+Com a DADOS lida só quando o nível pode subir. 14 onEdits, todos concluídos:
+
+| Edição | Duração | onEdit |
+|---|---:|---:|
+| AW15 nome / AX15 Curta / AX15 Longa | 22,2 / 24,9 / 21,3 s | 20,4 / 22,7 / 18,8 s |
+| AW20 nome / AX20 Padrão | 16,4 / 20,3 s | 14,3 / 18,2 s |
+| apagar AW15:AX15 / AW20:AX20 | 21,3 / 22,8 s | 19,2 / 20,5 s |
+| AW25 nome / AX25 Final de arco (XP 300) | 16,6 / 22,8 s | 14,7 / 20,5 s |
+| AW26 nome / AX26 Final de arco (XP 600, **nível 3 → 4**) | 19,5 / 21,4 s | 17,9 / 19,0 s |
+| apagar AW25:AX25 / AW26:AX26 | 24,9 / 24,6 s | 21,5 / 22,1 s |
+
+`salarioMissaoDireta_` só passou de 0,3 s na subida de nível (3,3 s) e numa execução em que o serviço
+Planilhas falhou ao acessar o documento durante o registro ("Salários: O serviço Planilhas apresentou falha…",
+apanhado pelo try do salário; a edição concluiu, mas o registro daquela missão ficou TRUE até a próxima edição
+de missão varrer o painel). Pior caso 24,9 s (antes deste corte, 27,7 s). O que sobra: primeira ida ao Sheets
+1,5–7 s, registros + notas + valores do painel 8–12 s, gravação e flush 4–6 s.
