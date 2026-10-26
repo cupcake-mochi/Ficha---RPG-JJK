@@ -83,6 +83,35 @@ medida novamente; seu algoritmo foi preservado. Não afirmar “100% sem erros�
 resposta instantânea de todas as automações. Sequências rápidas de edições
 concorrentes merecem revisão específica.
 
+## Revisão do Claude: Caminho e Trilha em sequência rápida
+
+A execução do Caminho lê o retrato no começo e grava uns 10 s depois. Uma Trilha
+escolhida nesse meio-tempo era apagada, com as cartas dela: Emanador +
+Ressonante → Bastião, e Muro escolhida durante a execução, terminava em
+"Escolha sua Trilha" com as quatro cartas vazias.
+
+Corrigido em `r53/caminho_io.gs` (`r53TrilhaTrocada_`): só quando vai limpar a
+Trilha, a execução do Caminho relê aquela célula. Se o jogador já trocou, ela
+não grava a Trilha, as nove cartas (nome, texto, nota, altura) nem
+`DADOS_PROGRESSAO!CB2:CC10`, porque a execução da Trilha recalcula tudo isso com o
+Caminho novo. Perícias, treino e "trocou por arma" seguem gravados. Sem troca
+pendente, a única leitura a mais é essa célula; personagem novo e mesmo Caminho
+não leem nada a mais.
+
+`r53/testes/caminho_corrida.js` (17 verificações) compara a corrida com as duas
+escolhas feitas uma de cada vez, em três trocas, e reprova sem o descarte.
+`Eventos.gs` e a `R53_EVENTOS` não mudam. **Ainda não aplicado nas oficiais:** o
+`Codigo.gs` delas é o anterior com o `Caminho.gs` no fim; trocar só esse bloco dá
+SHA-256 `e9b20182947bb98b39a629d98d8e8dcead07e1b4116146731047d35c3dce404c`
+(arquivo pronto em `r53/saidas/caminho-corrida/Codigo.gs`, ignorado pelo Git).
+Continua aberto o caso sem limpeza: personagem novo cuja Trilha termina antes do
+Caminho gravar. As cartas visíveis ficam certas, menos a do nível 7 em Incursor +
+Pugilista (a única versão "Caminho com a Trilha" do livro), que volta ao texto só
+do Caminho. O registro oculto `CB2:CC10` perde as quatro linhas da Trilha; para
+texto do livro isso não pesa, porque ele é reconhecido pelo livro inteiro, mas
+um texto de Trilha custom passaria a ser tratado como texto do jogador. Fechar
+isso pede a mesma releitura em toda troca de Caminho.
+
 Novas cópias das oficiais recebem o incremento. Cópias antigas não herdam
 automaticamente o código novo. Ao mudar layout ou os campos necessários aos
 eventos, regenerar `Caminho.gs` e `Eventos.gs` com `node r53/caminho_leve.js`;

@@ -1,3 +1,12 @@
+# Corrida Caminho/Trilha corrigida no repositório · 25/10/2026
+
+Revisão do Claude sobre a entrega abaixo: a Trilha escolhida durante a execução
+do Caminho era apagada com as cartas. `r53TrilhaTrocada_` (r53/caminho_io.gs)
+relê a Trilha só quando vai limpá-la; teste `r53/testes/caminho_corrida.js`.
+Eventos.gs/R53_EVENTOS iguais. NÃO aplicado nas oficiais: trocar apenas o
+`Caminho.gs` do fim do Codigo.gs delas (SHA novo e9b20182…, detalhes no fim de
+`r53/diagnostico-android/AUTOMACOES-COPIAS-2026-10-25.md`).
+
 # Automações em cópias aplicadas · 25/10/2026
 
 Leia `r53/diagnostico-android/AUTOMACOES-COPIAS-2026-10-25.md` e seu JSON.

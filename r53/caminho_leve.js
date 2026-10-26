@@ -54,8 +54,10 @@ function gerar(){
  var real=e.source||SpreadsheetApp.getActive(),seed=r53CapturarEvento_(real),fila=r53FilaCaminho_(real,seed),ss=R53_CAMINHO_SS_=fila.ss,dados=R53_CAMINHO_DADOS_,idx=indiceDosDados_(dados);
  e=Object.assign({},e,{source:ss,range:fila.range(e.range)});
  if(e.range.getSheet().getName()==='FICHA PESSOAL'){treinoMarcado_(e,e.range.getSheet(),dados,R53_CAMINHO_IP_);fila.aplicar();return;}
+ var cc=cel_(idx,'caminho'),ct=cel_(idx,'trilha'),trilhaAntes=cc&&ct&&e.range.getA1Notation()===cc?String(ss.getSheetByName('FICHA').getRange(ct).getValue()):null;
  marcarPericiasDoCaminho_(e,idx,dados);trilhaDoCaminho_(e,idx,dados);
  habilidadesDaFicha_(e,idx);grupoDeArmaDaTrilha_(e,idx);trocaArmaDoCaminho_(e,idx);fichaMexeNaPessoal_(e,idx);
+ if(trilhaAntes!==null)r53TrilhaTrocada_(real,fila,ct,trilhaAntes);
  fila.aplicar();
 }};`;
  new Function(code);
