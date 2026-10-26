@@ -1,3 +1,12 @@
+## Cartas antes das caixas que esticam · 26/10/2026 (Claude) · no ramo, fora das oficiais
+
+Pente fino depois da instalação: no arnês quase toda edição já fica entre ~7 e ~9 s. Na CONFIGURAÇÃO, o
+texto das habilidades custom esticava as caixas (27 alturas gravadas) e só depois lia as cartas, que
+então esperavam o recálculo (~16 s). A ordem inverteu (remendo 33; módulo `bddccf83…`, mapa do atalho
+regerado, igual fora o hash): as duas leem antes de gravar e as cartas gravam na FICHA. `leituras_curtas.js`
+segue sem diferença. Na FICHA PESSOAL, a segunda espera das missões só aparece quando se escreve por
+cima de uma conta: a XP precisa da conta recalculada, então fica.
+
 ## Leituras curtas · 26/10/2026 (Claude) · instalado nas duas oficiais (ver r53/OFICIAIS.md)
 
 As últimas leituras de aba inteira que o arnês achou no onEdit saíram (remendos 23–32 do pacote
