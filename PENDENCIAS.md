@@ -131,7 +131,13 @@ Fila, nesta ordem:
    `notasVivas_` ficaram intactas e o `Caminho.gs` gerado saiu idêntico.* `fichaMexeNaPessoal_` lê a DADOS inteira e refaz as notas
    vivas (8 idas). Atenção: o `caminho_leve.js` extrai essa função e procura a linha
    `var dados = ss.getSheetByName('DADOS').getDataRange().getValues();` dela.
-4. **Medir o que está no limite.** Missões da FICHA PESSOAL (27,8 s medido pelo ChatGPT;
+4. **Medir o que está no limite.** *Medido em 26/10 numa cópia nova da oficial (tabela e perfil
+   por rotina em MEDICAO-DESEMPENHO): toda edição no painel de missões da FICHA PESSOAL estoura os
+   30 s, mesmo com a planilha aquecida (o XP total aparece porque é fórmula; registro, data e nível
+   não terminam). O cartão conclui em 23–26 s aquecido e estoura logo depois de copiar. Próximo
+   passo: cortar idas no caminho da missão (`salarioEstado_` + `salarioSincronizar_` +
+   `salarioMissaoDireta_`, ~10 idas) e no do cartão (`r53ValoresCartao_`, `r53LerVersao_`,
+   `r53Amparo_`).* Missões da FICHA PESSOAL (27,8 s medido pelo ChatGPT;
    colunas AW:BT recolhidas) e edição de cartão (~20 s).
 5. **Aplicar nas oficiais**, com o aval do Mizuki: primeiro o `Codigo.gs` da corrida
    (`r53/saidas/caminho-corrida/Codigo.gs`, ignorado; refazer trocando o bloco final do

@@ -192,3 +192,57 @@ vazias, D64 Soco, D21 0). Reescolher o mesmo valor no menu não dispara o gatilh
 arma foi medida apagando e voltando. A B500 da FICHA AMALDIÇOADA está num grupo recolhido;
 usei a B452, também fora dos cartões. O "antes" desta cópia é sem o pacote leve (o que os
 jogadores têm hoje); o "depois" soma pacote leve e consertos 1–3.
+
+## Missões e cartão nas oficiais de 26/10 (cópia nova, pelo navegador)
+
+Cópia da Ciclo Maldito oficial feita em 26/10 às 09:19, com o pacote leve `fef2a94b`
+instalado: `1HI96ICu-kf_tzvEm-mKWswQqY1yuqQLc5OHxHf5Fg1A` ("TESTE missões e cartão —
+pode apagar"), projeto `1VZL7GoZHax9lW4LGh0QPfO7QZ203-147J0eGtyAYwXSIedC_fBaSnRFm`.
+Edições feitas à mão na planilha; duração do registro de Execuções. Tudo voltou ao
+valor de antes no fim.
+
+| Edição pelo acionador simples | Logo depois de copiar | Planilha já aquecida |
+|---|---:|---:|
+| FICHA PESSOAL, nome de missão (AW15 / AW16) | 30,6 e 30,6 s, tempo limite | — |
+| FICHA PESSOAL, tipo da missão (AX15 Curta / AX16 Padrão) | 30,4 e 30,6 s, tempo limite | — |
+| FICHA PESSOAL, troca do tipo (AX16 Longa) | — | 30,6 s, tempo limite |
+| FICHA PESSOAL, apagar as duas missões | — | 30,5 s, tempo limite |
+| FICHA AMALDIÇOADA, pontos do cartão (E71 = 1 / volta a 0) | 30,4 e 30,6 s, tempo limite | 23,2 / 25,6 / 23,4 / 26,0 s, concluído |
+| FICHA, célula vazia (AX460, atalho) | 14,0 s | 7,4 s |
+| onOpen | 20,8 s | — |
+
+- **Cópia recém-criada aquece:** nos primeiros minutos tudo custa mais (célula vazia
+  14,0 → 7,4 s depois de ~4 min parada). O cartão só conclui depois de aquecer.
+- **Missões estouram sempre:** mesmo aquecida, toda edição no painel de missões
+  (rows 15–87, AW:BT) passa dos 30 s. O XP total aparece porque é fórmula, mas o registro
+  da missão, a nota com a data e a subida de nível não terminam.
+
+Perfil pelo gatilho (`medir_perfil.gs` como último arquivo da cópia: cada função global
+de salário/cartão que passa de 0,3 s escreve no registro quando termina; não pede
+autorização, ao contrário de rodar pelo editor numa cópia nova):
+
+Missão (nome em AW15), tempo desde o carregamento:
+
+| Rotina | Duração | Termina em |
+|---|---:|---:|
+| `r53SalarioAreaPropria_` (primeira chamada ao Sheets) | 1,2 s | 1,2 s |
+| `salarioEstado_` (DADOS_SALARIOS!L2, espera o recálculo) | 3,3 s | 4,8 s |
+| `salarioSincronizar_` (getLastRow, registros A:G, painel 73×24 em notas e valores) | 9,8 s | 14,7 s |
+| ↳ `salarioMissoesAtuais_` (notas + valores do painel) | 3,1 s | 14,7 s |
+| `salarioMissaoDireta_` (DADOS!AQ4:DP100, XP total, nível da FICHA) | 10,4 s | 25,1 s |
+| gravação dos registros, das notas e flush | — | corta aos 30,6 s |
+
+Cartão (E71 = 1, 23,4 s, concluído):
+
+| Rotina | Duração | Termina em |
+|---|---:|---:|
+| `r53SalarioAreaPropria_` | 1,6 s | 1,6 s |
+| trava, releitura das entradas diretas | ~3,8 s | ~5,4 s |
+| `r53ValoresCartao_` (área do cartão, espera o recálculo) | 4,3 s | 9,7 s |
+| `r53LerVersao_` (versão salva na MONTAGENS) | 3,9 s | 13,8 s |
+| `r53Amparo_` via `r53Porta_` (DADOS_R53_CATALOGO!X10:AJ10) | 3,2 s | 17,0 s |
+| gravação e flush | ~4,1 s | 21,1 s |
+
+Nesta cópia cada ida ao servidor custa ~1,2–1,6 s mesmo sem recálculo pendente, e as
+leituras de outra aba custam 3–4 s. A missão faz umas dez idas em sequência; o cartão,
+umas oito.
