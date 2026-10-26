@@ -1,3 +1,21 @@
+## Inventário da FICHA PESSOAL: menus destravados · 26/10/2026 (Claude) · aplicado nas duas oficiais
+
+O Mizuki viu que os itens guardados e os equipáveis guardados não aceitavam escrita. Nas duas oficiais (e na
+cópia de teste) os menus `D92:D99` (DADOS_CUSTOM!AA), `D104:D109` e `Z104:Z109` (DADOS_CUSTOM!AU) estavam
+**estritos**, embora o molde (`apps-script/Ficha.gs`, gerado por `ficha-v01/`) só ponha `D44` em
+`menus_estritos`; não achei quando travaram. Pedido dele: itens guardados só de escrever, e duas vagas livres nos
+equipáveis (o desenho original: "seis linhas com menu, duas livres"). Feito pela API do Sheets: `D98:D99`,
+`D104:D109` e `Z104:Z109` sem validação; `D92:D97` seguem com o menu. **Pendente no gerador:** ao remontar a
+ficha, o `dv` da FICHA PESSOAL ainda põe menu em `D92:D99` e nos itens guardados.
+
+## Experiência da cópia de teste · 26/10/2026 · bordas pelo tema e listas sem INDIRECT
+
+`r53/diagnostico-android/experimento_bordas_listas.gs` (só na cópia `1xcXsFSk…`, com o medidor `MedidaTeste`
+que grava cada onEdit na aba oculta `R53_MEDIDA`). `experimentoBordas()` passa as bordas das seis abas para a vaga
+ACCENT5 do tema e a troca de paleta escreve a régua em ACCENT5 e ACCENT6; `experimentoListas()` troca as 225
+`INDIRECT(SWITCH(...))` da DADOS_CUSTOM por `CHOOSE(MATCH(...))` e confere em todos os estados dos seletores.
+Medida 1 (sem as mudanças, tempo do script): FICHA 8,4 e 10,9 s; paleta 15,5 e 22,8 s.
+
 ## Cartas antes das caixas que esticam · 26/10/2026 (Claude) · no ramo, fora das oficiais
 
 Pente fino depois da instalação: no arnês quase toda edição já fica entre ~7 e ~9 s. Na CONFIGURAÇÃO, o
