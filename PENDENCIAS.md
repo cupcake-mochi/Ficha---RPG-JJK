@@ -4499,3 +4499,8 @@ HEAD atual 4e0f6c7 (commit da3b feito pelo usuário). Mudanças desta correção
 
 
 Teste nativo das duas colunas concluído, 5 verificações passaram; 21 entradas restauradas com zero diferenças, nenhum cenário ativo. Evidência correcao-grupo7-mecanica-nativa.json. Instalação de scripts e cartões nativos ainda pendentes por conexão do editor.
+
+### Experiência da cópia de teste: resultado (26/10)
+- Bordas pelo tema (ACCENT5/6): descartadas pelo Mizuki. A troca de paleta passou dos 30 s com o passo do tema e a cópia ficou lenta.
+- Listas da DADOS_CUSTOM sem INDIRECT (CHOOSE/MATCH): conteúdo igual nos estados conferidos e FICHA de 10,9 → 4,3 s, mas CONFIGURAÇÃO 19 s e a cópia travou em "alterando" com as três experiências juntas. Inconclusivo; não instalado. Se voltar, testar numa cópia limpa de uma oficial só com essa troca.
+- Oficiais intocadas: seguem com o pacote leve fef2a94b. O remendo 33 (bddccf83) continua só no Git.
