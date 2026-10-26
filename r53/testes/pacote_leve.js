@@ -7,9 +7,10 @@ const { transformarModulo, corrigirSemExecutar, aplicarIncremento, remendos } = 
 let checks = 0;
 const ok = (c, m) => { assert(c, m); checks++; };
 
-// 1. Cada remendo instalado deixa o texto que está no Codigo.gs do repositório.
+// 1. Cada remendo instalado deixa o texto que está no Codigo.gs do repositório. Um remendo pode mexer no texto que um
+// anterior deixou (26/10/2026: a tabelaLida_ do 16º virou a tabelaLidaDe_ no 23º), então confere de trás pra frente.
 const codigo = fs.readFileSync(path.join(raiz, 'apps-script/Codigo.gs'), 'utf8');
-for (const [i, p] of remendos().entries()) ok(codigo.includes(p[1]), 'remendo ' + (i + 1) + ' fora do Codigo.gs');
+{ let t = codigo; for (const [i, p] of [...remendos().entries()].reverse()) { ok(t.includes(p[1]), 'remendo ' + (i + 1) + ' fora do Codigo.gs'); t = t.replace(p[1], () => p[0]); } }
 
 // 2. Sem remendos, o corte vale para o módulo montado das fontes do repositório.
 const fontes = require(path.join(raiz, 'medidas/carregar-ficha.js')).fontes() + '\n' + codigo;
@@ -46,5 +47,11 @@ let recusa = null; try { aplicarIncremento(antigo, todos, ja); } catch (e) { rec
 ok(recusa && /não é o pacote leve/.test(recusa.message), 'incremento aceitou módulo que não é leve');
 recusa = null; try { aplicarIncremento('var R53_PACOTE_LEVE_ = true;\n' + codigo, todos, ja); } catch (e) { recusa = e; }
 ok(recusa && /âncora encontrada 0 vez/.test(recusa.message), 'incremento aplicado duas vezes');
+
+// 5. O segundo incremento (26/10/2026): o módulo leve da cópia de teste já tem até o 22º e recebe do 23º em diante.
+const ja2 = 22;
+let antigo2 = codigo;
+for (const p of todos.slice(ja2).reverse()) { ok(antigo2.split(p[1]).length === 2, 'remendo ' + ja2 + '+ ambíguo no Codigo.gs'); antigo2 = antigo2.replace(p[1], () => p[0]); }
+ok(aplicarIncremento('var R53_PACOTE_LEVE_ = true;\n' + antigo2, todos, ja2) === 'var R53_PACOTE_LEVE_ = true;\n' + codigo, 'segundo incremento não reproduz o Codigo.gs');
 
 console.log(JSON.stringify({ checks, resultado: 'OK', escopo: 'remendos no Codigo.gs, incremento num módulo já leve, corte da montagem, travas da montagem e correções sem executar texto; o hash do pacote instalado só é conferido no Google.' }));

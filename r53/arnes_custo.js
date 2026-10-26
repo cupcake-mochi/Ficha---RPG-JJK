@@ -76,7 +76,8 @@ function criar(dump, opts = {}) {
     'setDataValidation', 'setDataValidations', 'clearDataValidations', 'setBorder', 'setWrap', 'setHorizontalAlignment', 'setVerticalAlignment',
     'setFontSize', 'setFontFamily', 'setFontStyle', 'setFontLine', 'insertCheckboxes', 'removeCheckboxes', 'merge', 'breakApart', 'setWrapStrategy',
     'clearFormat', 'setTextRotation', 'setShowHyperlink', 'setFontSizes', 'setFontFamilies', 'setFontStyles', 'setWraps', 'setHorizontalAlignments', 'setVerticalAlignments'];
-  W.forEach(k => { Range.prototype[k] = function () { this._w(k); return this; }; });
+  // os argumentos ficam no registro (x), para comparar duas versões do código pelo que gravam
+  W.forEach(k => { Range.prototype[k] = function () { this._w(k); log[log.length - 1].x = JSON.stringify([...arguments]); return this; }; });
   class Sheet {
     constructor(n, d) { this.n = n; this.d = d; this.cells = new Map(Object.entries(d.cells)); this.rows = d.rows; this.cols = d.cols; }
     cel(r, c, criar) { const k = r + ',' + c; let x = this.cells.get(k);
@@ -96,7 +97,7 @@ function criar(dump, opts = {}) {
     getMaxRows() { op('R', { k: 'getMaxRows', a: this.n, n: 1 }); return this.rows; }
     getMaxColumns() { op('R', { k: 'getMaxColumns', a: this.n, n: 1 }); return this.cols; }
     isSheetHidden() { return this.d.hidden; }
-    setRowHeights() { op('W', { k: 'alturas', a: this.n }); return this; } setRowHeight() { op('W', { k: 'altura', a: this.n }); return this; }
+    setRowHeights() { op('W', { k: 'alturas', a: this.n, x: JSON.stringify([...arguments]) }); return this; } setRowHeight() { op('W', { k: 'altura', a: this.n, x: JSON.stringify([...arguments]) }); return this; }
     setColumnWidth() { op('W', { k: 'largura', a: this.n }); return this; }
     insertRowsAfter(r, n) { op('W', { k: 'inserir linhas', a: this.n }); this.rows += n; return this; }
     getRowGroup() { op('R', { k: 'grupo', a: this.n, n: 1 }); return null; }
@@ -154,6 +155,16 @@ function criar(dump, opts = {}) {
   ctx.globalThis = ctx;
   vm.createContext(ctx);
   return { ctx, ss, sheets, log, props, sprops, op, reset() { log.length = 0; pend = 0; lidas = 0; },
+    // as células que esta edição mudou de fato (gravar o mesmo que já estava não conta), como estão agora: {aba!r,c: {v, f, n}}
+    alteradas() {
+      const o = {}, de = x => x ? { v: x.v === undefined ? '' : x.v, f: x.f || '', n: x.n || '' } : { v: '', f: '', n: '' }, vistos = new Set();
+      for (const [sh, k, antes] of journal) {
+        if (vistos.has(sh.n + '!' + k)) continue; vistos.add(sh.n + '!' + k);
+        const a = de(antes), d = de(sh.cells.get(k));
+        if (JSON.stringify(a) !== JSON.stringify(d)) o[sh.n + '!' + k] = d;
+      }
+      return o;
+    },
     desfazer() { for (let i = journal.length - 1; i >= 0; i--) { const [sh, k, o] = journal[i]; if (o === undefined) sh.cells.delete(k); else sh.cells.set(k, o); } journal = []; } };
 }
 
@@ -175,4 +186,21 @@ function custo(log, modulo) {
   return { s: Math.round(s * 10) / 10, barreiras: b, leituras: log.filter(e => e.t === 'R').length, gravacoes: log.filter(e => e.t === 'W').length,
     modulo: log.some(e => e.t === 'M') };
 }
-module.exports = { criar, custo };
+// O projeto exportado com o módulo do pacote leve trocado pelo mesmo módulo mais os remendos do `desde`-ésimo em diante.
+// As fatias viram uma só (R53_CODIGO_NOVO_) e o hash do carregador passa a ser o do módulo novo; serve só ao arnês.
+function projetoComIncremento(projeto, dump, desde) {
+  const { aplicarIncremento, remendos } = require('./diagnostico-android/instalar_pacote_leve');
+  const p = JSON.parse(JSON.stringify(projeto)), cod = p.files.find(f => f.name === 'Codigo');
+  const nomes = /Utilities\.base64Decode\(\[([^\]]+)\]/.exec(cod.source)[1];
+  const A = criar(dump);
+  for (const f of p.files.filter(f => f.type !== 'JSON')) vm.runInContext(f.source + '\n', A.ctx, { filename: f.name });
+  const velho = zlib.gunzipSync(Buffer.from(vm.runInContext('[' + nomes + '].join("")', A.ctx), 'base64')).toString('utf8');
+  const sha = t => crypto.createHash('sha256').update(t, 'utf8').digest('hex');
+  const hv = /hash!=='([0-9a-f]{64})'/.exec(cod.source)[1];
+  if (sha(velho) !== hv) throw Error('módulo do projeto divergente do hash');
+  const novo = aplicarIncremento(velho, remendos(), desde), hn = sha(novo);
+  cod.source = cod.source.replace('[' + nomes + ']', '[R53_CODIGO_NOVO_]').replace(hv, hn) +
+    '\nvar R53_CODIGO_NOVO_=' + JSON.stringify(zlib.gzipSync(Buffer.from(novo, 'utf8')).toString('base64')) + ';\n';
+  return { projeto: p, velho, novo, hashVelho: hv, hashNovo: hn };
+}
+module.exports = { criar, custo, projetoComIncremento };

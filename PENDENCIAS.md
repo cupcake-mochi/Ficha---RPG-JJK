@@ -1,3 +1,25 @@
+## Leituras curtas · 26/10/2026 (Claude) · no ramo, fora das oficiais
+
+As últimas leituras de aba inteira que o arnês achou no onEdit saíram (remendos 23–32 do pacote
+leve; o `Codigo.gs` tem o mesmo texto). Custo modelado, antes → depois:
+
+- habilidades custom da CONFIGURAÇÃO (AK9:AX64): ~20 s → ~7 s (lia DADOS_AM e a FICHA inteiras);
+- saltos do topo da FICHA AMALDIÇOADA e da INVOCAÇÕES: ~18 s → ~11 s (a tabela vem só nas colunas
+  dela, e religa só o salto em que se escreveu; caixa, alvo e nome são fixos, os outros já estavam certos);
+- cartas da FICHA e caixas que esticam: ~16 s → ~11 s (só o retângulo das células usadas);
+- `indiceEstatico_()` no lugar do `indice()` nas habilidades da CONFIGURAÇÃO, na caixa de
+  habilidade e nas células livres: 15 células da FICHA saíram do mapa do atalho, porque o módulo
+  já não lê nada nelas.
+
+Módulo leve novo `fef2a94b…` (o da cópia de teste, `9d1cec81…`, mais o incremento do 23º em
+diante: `node r53/diagnostico-android/instalar_pacote_leve.js --incremento 22 …`). O mapa do atalho
+foi regerado para ele. O bloco do Caminho (`apps-script/Caminho.gs`) não muda: o gerador tira as
+funções do `Codigo.gs` de antes desses remendos. Teste novo `r53/testes/leituras_curtas.js` roda a
+exportação célula a célula no mapa (34 mil edições) com os dois módulos e confere as mesmas
+células, formatos, alturas e propriedades, e custo nunca maior. O que sobra de mais caro (~13–16 s)
+é a leitura do retângulo das habilidades custom da CONFIGURAÇÃO, a Classe da FICHA (DADOS A1:EG100)
+e o salário da FICHA PESSOAL. Falta medir no Google.
+
 ## Atalho das células livres · 26/10/2026 (Claude) · no ramo, fora das oficiais
 
 Arnês novo (`r53/arnes_custo.js`) roda o onEdit instalado inteiro contra a oficial exportada
@@ -12,7 +34,7 @@ Com o atalho: ~2,2 s, sem leitura.
   força bruta no módulo (três valores, e.value espiado), mais cartões, entradas do Amparo
   rastreadas pelas fórmulas (P37 da AMALDIÇOADA, Famílias das INVOCAÇÕES, F140:G145 da
   CONFIGURAÇÃO, Trilha), salário, Caminho, paleta e versão pública. Vale só para o módulo
-  `9d1cec81…` e o catálogo `e4502f59…`; com outro hash se desliga sozinho.
+  `fef2a94b…` (era `9d1cec81…` até as leituras curtas) e o catálogo `e4502f59…`; com outro hash se desliga sozinho.
 - Trilha e Caminho marcam `r53_amparo_sujo`: a próxima edição nas quatro abas sincroniza e desmarca.
   Achado de passagem: desde o `97abf4f` a FICHA não sincroniza as Famílias, então a troca de Trilha
   só chegava aos cartões na próxima edição dessas abas; a marca mantém isso.

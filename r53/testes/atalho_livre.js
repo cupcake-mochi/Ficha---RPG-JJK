@@ -28,8 +28,16 @@ assert.throws(() => preparar('function r53OnEditOriginal_(e){}', gs), /divergent
 const pasta = path.join(raiz, 'nuvem-b47/saidas/atalho');
 const fp = path.join(pasta, 'projeto-leve.json'), fd = path.join(pasta, 'oficial-era.json');
 if (!fs.existsSync(fp) || !fs.existsSync(fd)) { console.log('atalho_livre: ' + checks + ' verificações (sem a ficha exportada, integrado pulado)'); process.exit(0); }
-const { criar } = require('../arnes_custo');
-const projeto = JSON.parse(fs.readFileSync(fp, 'utf8')), dump = JSON.parse(fs.readFileSync(fd, 'utf8'));
+const { criar, projetoComIncremento } = require('../arnes_custo');
+let projeto = JSON.parse(fs.readFileSync(fp, 'utf8'));
+const dump = JSON.parse(fs.readFileSync(fd, 'utf8'));
+// O mapa vale para um módulo só. A exportação é da cópia de teste (até o 22º remendo do pacote leve); se o mapa é do
+// módulo com os remendos seguintes (26/10/2026), o projeto recebe esse módulo antes.
+if (!projeto.files.find(f => f.name === 'Codigo').source.includes(/var R53_LIVRE_HASHES_=\["([0-9a-f]{64})"/.exec(gs)[1])) {
+  const p = projetoComIncremento(projeto, dump, 22);
+  ok(gs.includes(p.hashNovo), 'mapa de outro módulo');
+  projeto = p.projeto;
+}
 function montar(comAtalho, ajuste) {
   // salário já conferido no período: o fechamento em lote não lê nada nesta edição
   const A = criar(JSON.parse(JSON.stringify(dump)), { props: { salario_proximo: '99999' } });
