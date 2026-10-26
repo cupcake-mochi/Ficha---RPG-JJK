@@ -389,3 +389,27 @@ mas segura a execução. Candidato: descobrir qual chamada custa esses 4 s (prop
 
 O teste deixou a missão "teste" em DADOS_SALARIOS!A2:G2 (Presente FALSE); apagada a pedido dele (A2:J2), o estado
 em L2 ficou igual. Nível 2 e XP 0 como antes; nenhuma nota restou no painel.
+
+## Conferência do salário sem perguntar a aba depois do flush (26/10, 15:50–15:56)
+
+Cópia nova da oficial Ciclo Maldito (`1coYY2bg…`, "TESTE salário", projeto `1QWudC45…`). Com marcas de tempo
+em cada chamada do `r53SalarioLote_` (só na cópia), numa célula vazia da FICHA AMALDIÇOADA:
+
+| Chamada depois do flush | Termina em |
+|---|---:|
+| `PropertiesService.getDocumentProperties()` | 2–4 ms |
+| **`e.range.getSheet().getName()`** | **4.640–4.793 ms** |
+| área própria, propriedades do script, `getScriptId`, `salarioHoje_`, `salario_proximo` | +100 ms no total |
+
+A primeira chamada à planilha depois do flush espera o recálculo da edição. O nome da aba já era lido no começo
+do `r53SalarioOnEdit_`; agora fica no evento (`e.r53SalAba_`) e a conferência usa ele, sem chamar a planilha
+(a CARTEIRA!C27 é reconhecida por linha e coluna). `r53/testes/salario_lote_aba.js`: 12 edições com o
+`salario_lote.gs` de antes e o de agora, mesmas decisões (apagar o próximo fechamento, conferir), chamadas à
+planilha depois do flush 45 → 0; `salario_lote.js` segue com 95 casos.
+
+| Mesma edição (escrever / apagar) | Antes | Depois |
+|---|---:|---:|
+| Execução | 11,7 / 8,9 s | 5,1 / 4,7 / 4,8 / 5,3 s |
+| R53_ONEDIT ms − edicaoMs | 4.892 / 4.735 ms | 32 / 90 ms |
+
+Vale para toda edição que termina em menos de 8 s (a vida, a Força, células livres). Oficiais ainda sem mudança.

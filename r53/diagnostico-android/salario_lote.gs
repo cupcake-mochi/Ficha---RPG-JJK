@@ -16,8 +16,12 @@ function r53SalarioOnEdit_(e) {
   var inicio = Date.now(), fase = 'edicao', edicaoMs, resultado;
   try {
     try {
-      if (e && e.range && r53SalarioAreaPropria_(e.range))
-        PropertiesService.getDocumentProperties().deleteProperty(R53_SAL_PROP_);
+      // 26/10/2026: o nome da aba fica guardado no evento. Perguntado de novo depois do flush, ele esperava o
+      // recálculo da edição (4,6–4,8 s medidos na cópia em toda edição rápida).
+      if (e && e.range) {
+        e.r53SalAba_ = e.range.getSheet().getName();
+        if (r53SalarioAreaPropria_(e.range, e.r53SalAba_)) PropertiesService.getDocumentProperties().deleteProperty(R53_SAL_PROP_);
+      }
     } catch (err) { console.log('SAL invalidação: ' + err.message); }
     resultado = r53OnEditOriginal_(e);
     SpreadsheetApp.flush();
@@ -40,8 +44,8 @@ function prepararSalarioLote() {
 }
 
 /** Áreas que o salarioEditar_ já trata (e que mudam o próximo fechamento). */
-function r53SalarioAreaPropria_(r) {
-  var n = r.getSheet().getName();
+function r53SalarioAreaPropria_(r, aba) {
+  var n = aba || r.getSheet().getName();
   return n === SALARIO_.config && salarioToca_(r, 35, 76, 11, 17)
     || n === 'FICHA PESSOAL' && (salarioToca_(r, 15, 87, 49, 72) || salarioToca_(r, 11, 11, 28, 30) || salarioToca_(r, 86, 86, 23, 30))
     || n === 'CARTEIRA' && (salarioToca_(r, 3, 3, 46, 46) || salarioToca_(r, 9, 15, 15, 45));
@@ -50,9 +54,9 @@ function r53SalarioAreaPropria_(r) {
 /** Chamado depois da edição original e seu flush. Nunca cancela a edição. */
 function r53SalarioLote_(e) {
   if (!e || !e.range) return false;
-  var t0 = Date.now(), r = e.range, props = PropertiesService.getDocumentProperties();
-  if (r.getSheet().getName() === 'CARTEIRA' && r.getA1Notation() === 'C27') return false;
-  if (r53SalarioAreaPropria_(r)) { props.deleteProperty(R53_SAL_PROP_); return false; }
+  var t0 = Date.now(), r = e.range, props = PropertiesService.getDocumentProperties(), aba = e.r53SalAba_ || r.getSheet().getName();
+  if (aba === 'CARTEIRA' && r.getRow() === 27 && r.getLastRow() === 27 && r.getColumn() === 3 && r.getLastColumn() === 3) return false;
+  if (r53SalarioAreaPropria_(r, aba)) { props.deleteProperty(R53_SAL_PROP_); return false; }
   return r53SalarioConferir_(e.source || SpreadsheetApp.getActive(), t0, props);
 }
 
