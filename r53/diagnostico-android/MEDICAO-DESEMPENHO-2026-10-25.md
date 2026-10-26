@@ -369,3 +369,23 @@ Todas concluídas; média 24,5 → 21,0 s. Cartão e MONTAGENS voltaram a 0 (con
 (onEdit 17,4 s): primeira ida 2,7 s; área do cartão 4,4 s (agora é ela que espera o recálculo); versão salva na
 MONTAGENS 4,4 s; gravação e flush ~5 s. Sem a releitura (~3,8 s com a trava) e sem o Amparo (3,2 s).
 O que sobra é ler a MONTAGENS, outra aba: ela guarda campos que o cartão não mostra, então continua.
+
+## Teste do Mizuki na oficial Ciclo Maldito, pelo Android (26/10, 15:30–15:37)
+
+Roteiro: missão no painel da FICHA PESSOAL (nome, tipo Curta, apagar), texto em CONFIGURAÇÃO!AK51 e apagar,
+E71 do cartão e voltar, ± de vida. Abriu e já começou, no ritmo normal. Registro de Execuções: **16 onEdits, todos
+concluídos**, de 8,9 a 23,1 s.
+
+| Execução (s) | R53_ONEDIT ms / edição ms |
+|---|---|
+| 8,9 · 9,4 · 13,0 · 11,4 | 7.177 / 2.919 · 6.908 / 1.996 · 10.653 / 6.385 · 9.340 / 5.107 |
+| 15,4 · 19,0 · 21,5 · 23,1 · 20,5 · 20,0 · 21,6 · 18,7 · 21,0 · 20,2 · 17,7 · 16,4 | 13,9–21,0 s (edição = total) |
+
+Achado: nas edições que terminam em menos de 8 s, o `r53SalarioLote_` roda depois do flush e soma 4,3–4,9 s
+(ms − edicaoMs) sem congelar nada (nenhuma linha "SAL início" no log, então saiu cedo no `r53SalarioConferir_`).
+É o fim da execução da vida que ele sentiu "demorar um pouco". Não afeta o valor que aparece (ele vem no flush),
+mas segura a execução. Candidato: descobrir qual chamada custa esses 4 s (propriedades do script/documento,
+`ScriptApp.getScriptId`) e pular a conferência quando não há fechamento vencido.
+
+O teste deixou a missão "teste" em DADOS_SALARIOS!A2:G2 (Presente FALSE); apagada a pedido dele (A2:J2), o estado
+em L2 ficou igual. Nível 2 e XP 0 como antes; nenhuma nota restou no painel.
