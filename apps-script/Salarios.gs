@@ -95,9 +95,11 @@ function salarioConfig_(ss) {
 // vêm junto e poupam a ida à DADOS quando o nível não tem como subir (ver salarioMissaoDireta_).
 var SALARIO_PAINEL_=null;
 function salarioMissoesAtuais_(ss,agrupar) {
-  var pessoal=ss.getSheetByName('FICHA PESSOAL'),faixa=pessoal.getRange(15,49,73,24),notas=faixa.getNotes(),out=[];
-  out.faixa=faixa;out.notas=notas;out.limpar=[];var matriz=null;
+  // Valores antes das notas: a primeira ida à aba espera o recálculo, e as notas depois dela saem de graça;
+  // na ordem inversa as fórmulas do painel pagam a espera de novo (medido: ~3,5 s a mais).
+  var pessoal=ss.getSheetByName('FICHA PESSOAL'),faixa=pessoal.getRange(15,49,73,24),out=[],matriz=null;
   if(agrupar){var tudo=pessoal.getRange(11,49,77,24).getValues();SALARIO_PAINEL_={xp:tudo[0][0],falta:tudo[0][6]};matriz=tudo.slice(4);}
+  var notas=faixa.getNotes();out.faixa=faixa;out.notas=notas;out.limpar=[];
   // Leia somente as entradas literais. Os totais de XP ao lado podem exigir o recálculo da ficha inteira.
   SALARIO_.colunas.forEach(function(col){var v=matriz?matriz.map(function(row){return row.slice(col-49,col-47);}):pessoal.getRange(15,col,73,2).getValues();for(var i=0;i<73;i++){
     var nome=String(v[i][0]||'').trim(),tipo=String(v[i][1]||'').trim();
@@ -108,11 +110,13 @@ function salarioMissoesAtuais_(ss,agrupar) {
 }
 /** A identidade viaja na nota da célula. Uma cópia da mesma missão não renova sua data. */
 function salarioSincronizar_(ss,estado,hoje,baseline,adiar,agrupar) {
+  // O painel antes dos registros: a FICHA PESSOAL paga uma espera só (valores, notas e cabeçalho), e os registros,
+  // que custam 5–11 s em qualquer posição, vêm depois sem fazer o painel esperar de novo.
+  var atuais=salarioMissoesAtuais_(ss,agrupar),notesChanged=false;
   // Uma ida só: a faixa aberta traz até a última linha da aba, e o tamanho dela dá o número de linhas.
   var sh=ss.getSheetByName(SALARIO_.dados),todas=sh.getRange('A2:G').getValues(),max=todas.length+1;
   var old=todas.filter(function(r){return r[0];}),map={},seen={},changed=false;
   var porCaixa={};old.forEach(function(r){map[r[0]]=r;if(r[4]===true)porCaixa[r[5]]=r;});
-  var atuais=salarioMissoesAtuais_(ss,agrupar),notesChanged=false;
   function semMarca(s){return s.replace(/(?:\n)?\[Salário: [^\]\n]+\]/g,'');}
   atuais.forEach(function(m){
     var row=m.id?map[m.id]:porCaixa[m.key],id=row?row[0]:(m.id||Utilities.getUuid());
