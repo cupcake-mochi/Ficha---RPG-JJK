@@ -27,7 +27,8 @@ function r53ExpPintarTema_(hex) {
 var r53LoteTrocarSemTema_ = r53LoteTrocar_;
 r53LoteTrocar_ = function (e) {
   var r = r53LoteTrocarSemTema_(e);
-  if (PropertiesService.getDocumentProperties().getProperty(R53_EXP_PROP_BORDAS_) !== 'sim') return r;
+  // 26/10: bordas pelo tema descartadas pelo Mizuki; a troca de paleta não mexe mais no tema.
+  if (true || PropertiesService.getDocumentProperties().getProperty(R53_EXP_PROP_BORDAS_) !== 'sim') return r;
   var agora = r53LoteCores_(e && e.value !== undefined ? e.value : e.range.getDisplayValue());
   if (agora && agora.regua) {
     var t0 = Date.now();
@@ -156,30 +157,46 @@ function experimentoListas() {
     var m = /'CONFIGURAÇÃO'!\$([A-Z]+)\$(\d+)/.exec(l[0]); if (m) seletores[m[1] + m[2]] = 1;
   });
   var sel = Object.keys(seletores), estados = [''].concat(Object.keys(rotulos), ['Nada disso']);
-  var originais = sel.map(function (a1) { return cfg.getRange(a1).getValue(); });
-  var lerTudo = function () {
-    var out = [];
-    estados.forEach(function (s) {
-      cfg.getRangeList(sel).setValue(s);
-      SpreadsheetApp.flush();
-      out.push(JSON.stringify(grade.getDisplayValues()));
-    });
-    return out;
-  };
-  var relatorio = alvos.length + ' fórmulas, ' + sel.length + ' seletores, ' + estados.length + ' estados';
+  // Cada seletor só aceita os próprios rótulos: a validação sai durante a leitura e volta igual no fim.
+  // Os estados são muitos para uma execução só: o progresso fica numa propriedade e cada rodada continua de onde parou.
+  var props = PropertiesService.getDocumentProperties(), CHAVE = 'r53_exp_listas';
+  var p = JSON.parse(props.getProperty(CHAVE) || 'null') || { fase: 'antes', k: 0, antes: [], depois: [] };
+  var faixas = sel.map(function (a1) { return cfg.getRange(a1); });
+  var originais = faixas.map(function (r) { return r.getValue(); }), regras = faixas.map(function (r) { return r.getDataValidation(); });
+  var resumo = function () { return Utilities.base64Encode(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, JSON.stringify(grade.getDisplayValues()))); };
+  var relatorio = alvos.length + ' fórmulas, ' + sel.length + ' seletores, ' + estados.length + ' estados', fim = false;
   try {
-    var antes = lerTudo();
-    alvos.forEach(function (a) { dc.getRange(a[0] + 1, a[1] + 1).setFormula(a[3]); });
-    var depois = lerTudo(), iguais = antes.every(function (v, k) { return v === depois[k]; });
-    if (!iguais) {
-      alvos.forEach(function (a) { dc.getRange(a[0] + 1, a[1] + 1).setFormula(a[2]); });
-      var dif = estados.filter(function (s, k) { return antes[k] !== depois[k]; });
-      relatorio = 'LISTAS: DIFERENTE, voltei as fórmulas de antes. ' + relatorio + '. Estados com diferença: ' + dif.join(', ');
+    faixas.forEach(function (r) { r.clearDataValidations(); });
+    while (Date.now() - t00 < 240000 && !fim) {
+      if (p.k < estados.length) {
+        cfg.getRangeList(sel).setValue(estados[p.k]);
+        SpreadsheetApp.flush();
+        p[p.fase].push(resumo());
+        p.k++;
+        props.setProperty(CHAVE, JSON.stringify(p));
+      } else if (p.fase === 'antes') {
+        alvos.forEach(function (a) { dc.getRange(a[0] + 1, a[1] + 1).setFormula(a[3]); });
+        p.fase = 'depois'; p.k = 0;
+        props.setProperty(CHAVE, JSON.stringify(p));
+      } else {
+        fim = true;
+      }
+    }
+    if (fim) {
+      var dif = estados.filter(function (s, k) { return p.antes[k] !== p.depois[k]; });
+      if (dif.length) {
+        alvos.forEach(function (a) { dc.getRange(a[0] + 1, a[1] + 1).setFormula(a[2]); });
+        relatorio = 'LISTAS: DIFERENTE, voltei as fórmulas de antes. ' + relatorio + '. Estados com diferença: ' + dif.map(function (s) { return s || '(vazio)'; }).join(', ');
+      } else {
+        relatorio = 'LISTAS: iguais em todos os estados, ficaram sem INDIRECT. ' + relatorio;
+      }
+      props.deleteProperty(CHAVE);
     } else {
-      relatorio = 'LISTAS: iguais em todos os estados, ficaram sem INDIRECT. ' + relatorio;
+      props.setProperty(CHAVE, JSON.stringify(p));
+      relatorio = 'LISTAS: parcial, fase ' + p.fase + ' em ' + p.k + ' de ' + estados.length + ' estados. Rode experimentoListas de novo. ' + relatorio;
     }
   } finally {
-    sel.forEach(function (a1, k) { cfg.getRange(a1).setValue(originais[k]); });
+    faixas.forEach(function (r, k) { r.setValue(originais[k]); if (regras[k]) r.setDataValidation(regras[k]); });
     SpreadsheetApp.flush();
   }
   r53ExpRegistrar_(relatorio + ' (' + Math.round((Date.now() - t00) / 1000) + ' s)');
