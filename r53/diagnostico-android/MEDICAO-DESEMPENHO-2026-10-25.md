@@ -135,3 +135,21 @@ XP pelas missões da FICHA PESSOAL, que já têm caminho próprio.
   DADOS inteira pelo `getDataRange` e reescreve as notas vivas (12 idas no node).
 - **Força e atributos.** `fichaMexeNaPessoal_` lê a DADOS inteira e refaz as notas
   vivas (8 idas).
+
+## Consertos 1–3, no node (ainda sem medição no Google)
+
+Contador de idas (Sheets de mentira, onEdit de verdade), antes → depois:
+
+| Edição | Leituras antes | Leituras depois |
+|---|---:|---:|
+| CARTEIRA / FICHA AMALDIÇOADA / INVOCAÇÕES / CONFIGURAÇÃO, cópia sem estado | varredura dos 249 cartões | 1 |
+| FICHA PESSOAL, arma na mão (D64) | 12 | 2 |
+| FICHA PESSOAL, item da mochila (D104) | 12 | 2 |
+| FICHA PESSOAL, capacidade marcante da Origem | 13 | 6 |
+| FICHA PESSOAL, texto da capacidade | 7 | 3 |
+| FICHA, Força (atributo base) | 8 | 2 |
+
+As notas gravadas são as mesmas de antes (`r53/testes/pessoal_leve.js`). Módulo leve
+com os remendos novos: `9d1cec81cf90bac42dd044d619843857b9c5fff3538ea0b8a0909899ff62fdce`
+(a partir do `2667ef41…` instalado na cópia). `EditorR53.gs` de transporte novo:
+`d2e572232a58643addb44847710cd0b4568ba5b8f8c95e8ac9d894e777ab48ef`.

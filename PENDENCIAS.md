@@ -10,21 +10,39 @@ Feito e medido em cópia de teste (`1kQuSgg…`, "TESTE pacote leve"): leitura �
 edições comuns da FICHA e pacote leve. ± da vida 30,6 s (morria) → 11,5 s; Caminho
 19,1 → 10,2 s; abrir o módulo 11,4 → 1,8 s; onOpen 17,9 → 2,1 s.
 
+**Consertos 1–3 feitos no repositório e testados no node (commits `79ee9cb`, `ac73543`),
+ainda NÃO instalados nem medidos no Google** (o Chrome estava desconectado). Para instalar
+na cópia `1kQuSgg…`, que já tem o pacote leve:
+- `EditorR53.gs`: colar por inteiro a saída de
+  `node r53/editor_lazy.js apps-script/EditorR53.gs <saída>`; instalado `bc300464…` → `d2e57223…`.
+- módulo: `node r53/diagnostico-android/instalar_pacote_leve.js --incremento 14 2667ef41d84e44f565228bae47d7a6b9cf08bb7bfef8c60f2467383075aaee53 9d1cec81cf90bac42dd044d619843857b9c5fff3538ea0b8a0909899ff62fdce`
+  gera o trecho do console; ele confere o hash instalado e aplica só os remendos 15–22.
+  Salvar o projeto e conferir o hash `9d1cec81…` no `r53Modulo_`.
+- Medir pelo gatilho: CARTEIRA A1 (duas vezes: a 1ª grava o estado), FICHA AMALDIÇOADA B500,
+  arma na mão D64, Força. Antes: 30,6–30,7 s (tempo limite) nas três primeiras.
+
 Fila, nesta ordem:
 
-1. **Sincronização das Famílias em cópia nova (crítico).** `r53SincronizarFamilias_`
+1. **Sincronização das Famílias em cópia nova (crítico).** *Feito no código (`79ee9cb`):
+   sem `r53_amparo_direto`, grava o amparo atual e não sincroniza; no node a edição fora dos
+   cartões faz 1 leitura (era a varredura de 249 cartões). `cartoes_diretos_runtime.js` 584.* `r53SincronizarFamilias_`
    (`apps-script/EditorR53.gs`) usa `r53_amparo_direto` das propriedades do documento, que
    não vão na cópia da planilha. Sem estado, cada edição em CARTEIRA, FICHA AMALDIÇOADA,
    INVOCAÇÕES e CONFIGURAÇÃO tenta acertar os 249 cartões, estoura e não grava: medido
    30,6–30,7 s (tempo limite) três vezes. Proposta: sem estado guardado, gravar o atual e
    não sincronizar (a cópia herda os cartões já acertados da oficial). O EditorR53.gs
    instalado é o transporte de `r53/editor_lazy.js`; o código fica legível nele.
-2. **FICHA PESSOAL (alto).** Arma na mão (D64) estourou (30,6 s). `textoDaCapacidade_` e
+2. **FICHA PESSOAL (alto).** *Feito no código (`ac73543`): `indicePessoal_` sai do molde
+   (`indiceDoMolde_`), tabelas da DADOS só nas colunas delas (`tabelaLida_`), notas vivas só no
+   retângulo das caixas (`notasVivasLeves_`). Contador do node: arma na mão 12 → 2 leituras,
+   capacidade da Origem 13 → 6; mesmas notas gravadas (`pessoal_leve.js`, 51).* Arma na mão (D64) estourou (30,6 s). `textoDaCapacidade_` e
    `pessoalEditada_` releem o índice pessoal (`indicePessoal_`: `getLastRow` + leitura) em
    toda edição da aba; o caminho das notas faz `flush`, `getDataRange` da DADOS e refaz as
    notas vivas (12 idas no contador). Mesmo remédio da FICHA: índice do molde,
    `faixaDoMolde_`, leitura agrupada.
-3. **Força e atributos (médio).** `fichaMexeNaPessoal_` lê a DADOS inteira e refaz as notas
+3. **Força e atributos (médio).** *Feito no código (`ac73543`): o onEdit comum chama
+   `fichaMexeNaPessoalLeve_` (8 → 2 leituras, mesmas notas). `fichaMexeNaPessoal_` e
+   `notasVivas_` ficaram intactas e o `Caminho.gs` gerado saiu idêntico.* `fichaMexeNaPessoal_` lê a DADOS inteira e refaz as notas
    vivas (8 idas). Atenção: o `caminho_leve.js` extrai essa função e procura a linha
    `var dados = ss.getSheetByName('DADOS').getDataRange().getValues();` dela.
 4. **Medir o que está no limite.** Missões da FICHA PESSOAL (27,8 s medido pelo ChatGPT;
@@ -32,7 +50,8 @@ Fila, nesta ordem:
 5. **Aplicar nas oficiais**, com o aval do Mizuki: primeiro o `Codigo.gs` da corrida
    (`r53/saidas/caminho-corrida/Codigo.gs`, ignorado; refazer trocando o bloco final do
    Codigo instalado pelo `apps-script/Caminho.gs`), depois o trecho de
-   `instalar_pacote_leve.js`, depois os consertos 1–3. Se os remendos da FICHA mudarem,
+   `instalar_pacote_leve.js` (já com os 22 remendos: sai `9d1cec81…` direto, sem o incremento),
+   e o `EditorR53.gs` novo (`d2e57223…`). Se os remendos da FICHA mudarem,
    regenerar `pacote_leve_remendos.json` e o hash esperado.
 
 Fora da fila, sem efeito para o jogador: `regressao-construir`, `-pessoal` e `-paleta`
