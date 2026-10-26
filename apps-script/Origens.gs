@@ -96,7 +96,7 @@ var VALORES_DAS_ORIGENS_ = [
       [80,127,"Num descanso curto em ambiente propício para sua Restrição, recupere 40% dos PE máximos, arredondados para baixo, mínimo 1, sem ultrapassar o máximo.\n\nOs cuidados continuam obrigatórios: estrutura protegida e assistência no Debilitado; apoio e atendimento no Quebradiço; os cuidados registrados no Exaurido. Reduções ou impedimentos específicos à recuperação de PE continuam valendo. Fora de ambiente propício, use a recuperação normal. A redução de cura do Exaurido afeta vida, não esses PE.",5],[81,122,"Sobrecarga Deliberada",5],[81,123,"Restrição Celestial · Restrição corporal",5],[81,124,"menor",5],[81,125,"",5],[81,126,"Uma vez por cena",5],[81,127,"Uma vez por cena, antes das rolagens de um feitiço comum de Classe 1 ou maior, pague PE adicionais iguais à metade do custo-base, arredondada para cima, e escolha vantagem em uma rolagem de ataque ou desvantagem para um alvo em um TR da aplicação inicial.\n\nEscolha antes do dado. O custo-base é o da Classe utilizada, antes de descontos e acréscimos: base 9 PE cobra 5 PE adicionais, além do custo normal do feitiço. Só aquela rolagem recebe o benefício; não alcança outros ataques, alvos ou TRs posteriores para sair de uma condição. Não vale para Manejos ou Máximas.",5],[82,122,"Leitura de Reservas",5],[82,123,"Restrição Celestial · Restrição corporal",5],[82,124,"menor",5],[82,125,"",5],[82,126,"Passiva",5],[82,127,"Ao passar num exame de fluxo com Sentir Energia, descubra também os PE atuais e máximos do alvo naquele momento. Mantenha o procedimento normal; esta é uma informação adicional do exame.",5],[83,122,"Último Fôlego de Energia",5],[83,123,"Restrição Celestial · Restrição corporal",5],[83,124,"menor",5],[83,125,"",5],[83,126,"Uma vez por descanso longo",5],
       [83,127,"Uma vez por descanso longo, após pagar um feitiço que deixe sua energia em zero, receba PE temporários iguais a 2 × sua maior Classe, respeitando o teto normal. Duram até o fim do próximo turno e não podem ser armazenados na Reserva Condensada.",5],[84,122,"Percepção Estendida",5],[84,123,"Restrição Celestial · Restrição corporal",5],[84,124,"menor",5],[84,125,"",5],[84,126,"Passiva",5],[84,127,"O alcance de Vasculhar com Sentir Energia aumenta de 18 m para 36 m, permanentemente. Mantenha ação, testes e obstáculos normais. Isso não aumenta outros sentidos, procedimentos ou alcances de feitiços.",5],[85,122,"Prática Cotidiana",5],[85,123,"Restrição Celestial · Restrição corporal",5],[85,124,"menor",5],[85,125,"",5],[85,126,"Passiva",5],[85,127,"Aprenda dois feitiços adicionais de Classe 0, compatíveis com sua técnica, em quaisquer Formas normalmente permitidas nessa Classe. Eles ficam além da quantidade normal conhecida e seguem as demais regras dessas aplicações.\n\nEsses feitiços podem usar qualquer função compatível com a técnica e permitida na Classe 0. Eles não viram espaços comuns para Talentos ou invocações.",5]
     ],
-    "geracao":"7f85d740f71c4cb6",
+    "geracao":"2d3a0bf73db57661",
     "arquivo":"Origens.gs"
   },
   {
@@ -254,7 +254,7 @@ var VALORES_DAS_ORIGENS_ = [
       ],
       [26,24,"=IF(AND($B26=\"Ferramenta amaldiçoada\",NOT(OR(COUNTIF('DADOS_CUSTOM'!$CK$2:$CK$75,E26)>0,OR(COUNTIFS('DADOS_CUSTOM'!$C$2:$C$26,E26,'DADOS_CUSTOM'!$B$2:$B$26,\"Arma\",'DADOS_CUSTOM'!$U$2:$U$26,\"\")=1,COUNTIFS('DADOS_CUSTOM'!$C$2:$C$26,E26,'DADOS_CUSTOM'!$B$2:$B$26,\"Escudo\",'DADOS_CUSTOM'!$U$2:$U$26,\"\")=1,COUNTIFS('DADOS_CUSTOM'!$C$2:$C$26,E26,'DADOS_CUSTOM'!$B$2:$B$26,\"Uniforme\",'DADOS_CUSTOM'!$U$2:$U$26,\"\")=1,COUNTIFS('DADOS_CUSTOM'!$C$2:$C$26,E26,'DADOS_CUSTOM'!$B$2:$B$26,\"Item comum\",'DADOS_CUSTOM'!$U$2:$U$26,\"\")=1)))),\"Base da ferramenta não existe ou tem erro\",\"\")",0]
     ],
-    "geracao":"7f85d740f71c4cb6",
+    "geracao":"2d3a0bf73db57661",
     "arquivo":"Origens.gs"
   },
   {
@@ -637,7 +637,7 @@ var VALORES_DAS_ORIGENS_ = [
         0
       ]
     ],
-    "geracao":"7f85d740f71c4cb6",
+    "geracao":"2d3a0bf73db57661",
     "arquivo":"Origens.gs"
   }
 ];

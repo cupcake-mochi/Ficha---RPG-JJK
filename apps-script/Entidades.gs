@@ -65,7 +65,7 @@ var ABAS_DAS_ENTIDADES = [
     "paleta_fixa":true,
     "caixas":[],
     "depois":"GLOSSÁRIO",
-    "geracao":"7f85d740f71c4cb6",
+    "geracao":"2d3a0bf73db57661",
     "arquivo":"Entidades.gs"
   }
 ];

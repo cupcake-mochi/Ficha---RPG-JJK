@@ -5,8 +5,11 @@ cópia de teste) os menus `D92:D99` (DADOS_CUSTOM!AA), `D104:D109` e `Z104:Z109`
 **estritos**, embora o molde (`apps-script/Ficha.gs`, gerado por `ficha-v01/`) só ponha `D44` em
 `menus_estritos`; não achei quando travaram. Pedido dele: itens guardados só de escrever, e duas vagas livres nos
 equipáveis (o desenho original: "seis linhas com menu, duas livres"). Feito pela API do Sheets: `D98:D99`,
-`D104:D109` e `Z104:Z109` sem validação; `D92:D97` seguem com o menu. **Pendente no gerador:** ao remontar a
-ficha, o `dv` da FICHA PESSOAL ainda põe menu em `D92:D99` e nos itens guardados.
+`D104:D109` e `Z104:Z109` sem validação; `D92:D97` seguem com o menu. **Gerador em dia (26/10):** quem
+alargava o menu era o `integra()` do `ficha-v01/custom.py`; agora ele põe o catálogo só em `D92:D97`
+(`EQUIP_MENU`, o desenho do `ficha_pessoal.py`) e não põe menu nos itens guardados. As contas que puxam o
+catálogo ficam, então um nome do catálogo escrito à mão ainda preenche. Regerado: no molde só mudou o `dv`
+da FICHA PESSOAL; o selo da geração passou a `2d3a0bf73db57661` (as oficiais seguem no módulo instalado).
 
 ## Experiência da cópia de teste · 26/10/2026 · bordas pelo tema e listas sem INDIRECT
 
@@ -128,7 +131,13 @@ Fila, nesta ordem:
    `notasVivas_` ficaram intactas e o `Caminho.gs` gerado saiu idêntico.* `fichaMexeNaPessoal_` lê a DADOS inteira e refaz as notas
    vivas (8 idas). Atenção: o `caminho_leve.js` extrai essa função e procura a linha
    `var dados = ss.getSheetByName('DADOS').getDataRange().getValues();` dela.
-4. **Medir o que está no limite.** Missões da FICHA PESSOAL (27,8 s medido pelo ChatGPT;
+4. **Medir o que está no limite.** *Medido em 26/10 numa cópia nova da oficial (tabela e perfil
+   por rotina em MEDICAO-DESEMPENHO): toda edição no painel de missões da FICHA PESSOAL estoura os
+   30 s, mesmo com a planilha aquecida (o XP total aparece porque é fórmula; registro, data e nível
+   não terminam). O cartão conclui em 23–26 s aquecido e estoura logo depois de copiar. Próximo
+   passo: cortar idas no caminho da missão (`salarioEstado_` + `salarioSincronizar_` +
+   `salarioMissaoDireta_`, ~10 idas) e no do cartão (`r53ValoresCartao_`, `r53LerVersao_`,
+   `r53Amparo_`).* Missões da FICHA PESSOAL (27,8 s medido pelo ChatGPT;
    colunas AW:BT recolhidas) e edição de cartão (~20 s).
 5. **Aplicar nas oficiais**, com o aval do Mizuki: primeiro o `Codigo.gs` da corrida
    (`r53/saidas/caminho-corrida/Codigo.gs`, ignorado; refazer trocando o bloco final do
@@ -4504,3 +4513,19 @@ Teste nativo das duas colunas concluído, 5 verificações passaram; 21 entradas
 - Bordas pelo tema (ACCENT5/6): descartadas pelo Mizuki. A troca de paleta passou dos 30 s com o passo do tema e a cópia ficou lenta.
 - Listas da DADOS_CUSTOM sem INDIRECT (CHOOSE/MATCH): conteúdo igual nos estados conferidos e FICHA de 10,9 → 4,3 s, mas CONFIGURAÇÃO 19 s e a cópia travou em "alterando" com as três experiências juntas. Inconclusivo; não instalado. Se voltar, testar numa cópia limpa de uma oficial só com essa troca.
 - Oficiais intocadas: seguem com o pacote leve fef2a94b. O remendo 33 (bddccf83) continua só no Git.
+
+## Missões enxutas · 26/10/2026 (Claude) · no ramo, fora das oficiais
+
+Retomado do chat que parou no limite (item 4 da fila). Edições no painel de missões da FICHA PESSOAL
+estouravam os 30 s nas oficiais. O corte (`r53/diagnostico-android/preparar_missoes_enxutas.js`, pares em
+`missoes_enxutas.json`, aplicado depois do `preparar_missoes.js`; o `apps-script/Salarios.gs` é o resultado):
+- por fórmula, fora da CONFIGURAÇÃO e da CARTEIRA, a edição não lê mais o estado em DADOS_SALARIOS!L2
+  (ninguém o usa nesse caminho; a leitura esperava o recálculo, ~3,3 s no perfil);
+- os registros de missões saem numa ida só (`A2:G` aberta), sem getLastRow nem getMaxRows;
+- o XP total e o nível vêm dos espelhos da DADOS (CY47:CZ48: `xp total` é a conta da FICHA PESSOAL!AW11,
+  `nível` é N(FICHA!AH11)), dentro da faixa AQ4:DP100 que já se lia. Uma ficha sem os espelhos lê como antes.
+Segundo corte: a leitura agrupada do painel começa na linha 11 e traz o XP total (AW11) e o quanto falta para o
+próximo nível (BC11). Se ainda falta XP ou o nível é o máximo, a DADOS nem é lida (só quando o nível pode subir,
+ou quando um molde foi regravado). Medido antes deste corte: 7 edições em 17–28 s (MEDICAO-DESEMPENHO). No caso
+comum, as leituras agora caem de 9 para 3; antes deste corte eram 4 (`r53/testes/missoes_enxutas.js`, com 48 cenários e as mesmas
+células, notas e nível). `salarios/testes.js` aprendeu a faixa aberta. Falta medir numa cópia e instalar.

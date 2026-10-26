@@ -67,3 +67,11 @@ Aval do Mizuki pelo cartão de decisão. Nas duas oficiais saíram 31 arquivos s
 planilhas antigas. Configuracao e Origens ficam, porque guardam R53_CODIGO_3_ e R53_CODIGO_4_, que o carregador lê.
 Antes de limpar, cada projeto ganhou a versão 2 de backup ("Antes da limpeza de arquivos vazios"). O resto ficou
 idêntico, conferido pela API. Se o empacotar_script.py rodar de novo, ele recria os 29 comentários: inofensivo.
+
+## Missões enxutas · 26/10/2026
+
+Aval do Mizuki pelo cartão de decisão ("Instalar e estudar mais depois"). Nas duas oficiais, só o Codigo mudou:
+`preparar_missoes_enxutas.js` (os dois cortes, ver PENDENCIAS) aplicado sobre o Codigo instalado. O resultado
+saiu byte a byte igual ao da cópia medida (`1HI96ICu…`, 21 edições de missão concluídas em 16–28 s). Antes, cada
+projeto ganhou a versão 3 de backup ("Antes das missões enxutas"). Os outros arquivos ficaram idênticos,
+conferido pela API.
