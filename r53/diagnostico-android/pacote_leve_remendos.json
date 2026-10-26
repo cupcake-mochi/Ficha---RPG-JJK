@@ -1,0 +1,58 @@
+[
+[
+"  try { esticarCaixas_(e, 'FICHA'); } catch (err) { console.log('ficha, a caixa que estica: ' + err.message); }\n  // Uma leitura da DADOS serve ao índice, às perícias e à Trilha.\n  var dados = SpreadsheetApp.getActive().getSheetByName('DADOS').getDataRange().getValues();\n  var idx = indiceDosDados_(dados);\n  try { descansar_(e, idx); } catch (err) { console.log('ficha, o descanso: ' + err.message); }\n",
+"  try { esticarCaixas_(e, 'FICHA'); } catch (err) { console.log('ficha, a caixa que estica: ' + err.message); }\n  // O índice sai do molde; a DADOS só é lida quando a edição é numa caixa que precisa dela (Caminho e XP).\n  var dadosLidos = null, lerDados = function () {\n    return dadosLidos || (dadosLidos = faixaDoMolde_(SpreadsheetApp.getActive().getSheetByName('DADOS')).getValues());\n  };\n  var idx = indiceEstatico_() || indiceDosDados_(lerDados());\n  var noCaminho = e.range.getA1Notation() === cel_(idx, 'caminho');\n  try { descansar_(e, idx); } catch (err) { console.log('ficha, o descanso: ' + err.message); }\n"
+],
+[
+"  prenderTemp_(e, idx);\n  marcarPericiasDoCaminho_(e, idx, dados);\n  trilhaDoCaminho_(e, idx, dados);\n  try { habilidadesDaFicha_(e, idx); } catch (err) { console.log('habilidades: ' + err.message); }\n",
+"  prenderTemp_(e, idx);\n  marcarPericiasDoCaminho_(e, idx, noCaminho ? lerDados() : null);\n  trilhaDoCaminho_(e, idx, noCaminho ? lerDados() : null);\n  try { habilidadesDaFicha_(e, idx); } catch (err) { console.log('habilidades: ' + err.message); }\n"
+],
+[
+"  try { habilidadesDaFicha_(e, idx); } catch (err) { console.log('habilidades: ' + err.message); }\n  nivelPelaXP_(e, idx);\n  grupoDeArmaDaTrilha_(e, idx);\n",
+"  try { habilidadesDaFicha_(e, idx); } catch (err) { console.log('habilidades: ' + err.message); }\n  nivelPelaXP_(e, idx, lerDados);\n  grupoDeArmaDaTrilha_(e, idx);\n"
+],
+[
+"  });\n  return m;\n}\n\n",
+"  });\n  return m;\n}\n\n/**\n * O mesmo índice, tirado do molde da DADOS sem ir à planilha. 25/10/2026: cada ida ao servidor custa 1,5 a 2 s\n * nesta ficha, e ler a DADOS inteira pelo getDataRange custava 5 a 6 s em toda edição da FICHA, só para achar\n * endereços que não mudam. As células do índice são ADDRESS(ROW(FICHA!X)...) ou texto; outra conta devolve null,\n * e quem chama lê a planilha como antes.\n */\nvar INDICE_ESTATICO_;\nfunction indiceEstatico_() {\n  if (INDICE_ESTATICO_ !== undefined) return INDICE_ESTATICO_;\n  var spec = typeof ABAS === 'undefined' ? null : ABAS.filter(function (s) { return s.nome === 'DADOS'; })[0];\n  if (!spec) return (INDICE_ESTATICO_ = null);\n  var linhas = {};\n  spec.vals.forEach(function (t) {\n    if (t[1] !== IDX_COL_CAMPO && t[1] !== IDX_COL_CEL) return;\n    (linhas[t[0]] = linhas[t[0]] || {})[t[1] === IDX_COL_CAMPO ? 'k' : 'v'] = t[2];\n  });\n  var m = {};\n  for (var r in linhas) {\n    var k = linhas[r].k, v = linhas[r].v;\n    if (!k || !v) continue;\n    if (typeof v === 'string' && v.charAt(0) === '=') {\n      var partes = [], re = /ADDRESS\\(ROW\\((?:'[^']+'|[A-Z_]+)!\\$?([A-Z]+)\\$?(\\d+)\\)/g, p;\n      while ((p = re.exec(v))) partes.push(p[1] + p[2]);\n      if (!partes.length) return (INDICE_ESTATICO_ = null);\n      v = partes.join(':');\n    }\n    m[k] = String(v);\n  }\n  return (INDICE_ESTATICO_ = m);\n}\n\n/** Várias células da mesma aba numa leitura só, pelo retângulo que cobre todas: {'D26': valor, ...}. */\nfunction lerCelulas_(aba, lista) {\n  var f = lista.map(limitesA1_);\n  var l1 = Math.min.apply(null, f.map(function (x) { return x.l1; })), c1 = Math.min.apply(null, f.map(function (x) { return x.c1; }));\n  var l2 = Math.max.apply(null, f.map(function (x) { return x.l1; })), c2 = Math.max.apply(null, f.map(function (x) { return x.c1; }));\n  var v = aba.getRange(l1, c1, l2 - l1 + 1, c2 - c1 + 1).getValues(), out = {};\n  lista.forEach(function (a1, i) { out[a1] = v[f[i].l1 - l1][f[i].c1 - c1]; });\n  return out;\n}\n\n/** A aba inteira pelo tamanho do molde: o getDataRange sozinho custava 4,7 s na DADOS (medido em 25/10/2026). */\nfunction faixaDoMolde_(aba) {\n  var nome = aba.getName(), spec = typeof ABAS === 'undefined' ? null : ABAS.filter(function (s) { return s.nome === nome; })[0];\n  return spec && spec.rows && spec.cols ? aba.getRange(1, 1, spec.rows, spec.cols) : aba.getDataRange();\n}\n\n"
+],
+[
+" */\nfunction nivelPelaXP_(e, idx) {\n  var cx = cel_(idx, 'xp'), cn = cel_(idx, 'nivel');\n",
+" */\nfunction nivelPelaXP_(e, idx, lerDados) {\n  var cx = cel_(idx, 'xp'), cn = cel_(idx, 'nivel');\n"
+],
+[
+"  if (isNaN(xp)) return;\n  var dados = SpreadsheetApp.getActive().getSheetByName('DADOS').getDataRange().getValues();\n  for (var r = 0; r + 1 < dados.length; r++) {\n",
+"  if (isNaN(xp)) return;\n  var dados = lerDados ? lerDados() : faixaDoMolde_(SpreadsheetApp.getActive().getSheetByName('DADOS')).getValues();\n  for (var r = 0; r + 1 < dados.length; r++) {\n"
+],
+[
+"    if (!ct || ct !== e.range.getA1Notation()) return;\n    var antes = e.range.getValue();\n    var depois = tetoTemp_(antes, ficha.getRange(cel_(idx, r + '_max')).getValue());\n    if (depois !== antes) e.range.setValue(depois);\n",
+"    if (!ct || ct !== e.range.getA1Notation()) return;\n    var v = lerCelulas_(ficha, [ct, cel_(idx, r + '_max')]);\n    var antes = v[ct];\n    var depois = tetoTemp_(antes, v[cel_(idx, r + '_max')]);\n    if (depois !== antes) e.range.setValue(depois);\n"
+],
+[
+"    if (!cd || cd !== e.range.getA1Notation()) return;\n    var passo = Number(e.range.getValue());\n    if (!passo) return;\n",
+"    if (!cd || cd !== e.range.getA1Notation()) return;\n    var ca = cel_(idx, r), cm = cel_(idx, r + '_max'), ct = cel_(idx, r + '_temp');\n    // As quatro caixas estão na mesma linha: uma leitura em vez de quatro idas ao servidor\n    var v = lerCelulas_(ficha, [cd, ca, cm].concat(ct ? [ct] : []));\n    var passo = Number(v[cd]);\n    if (!passo) return;\n"
+],
+[
+"    if (!passo) return;\n    var atual = ficha.getRange(cel_(idx, r));\n    var ct = cel_(idx, r + '_temp');\n    var temp = ct ? ficha.getRange(ct) : null;\n    var antes = temp ? Math.max(0, Number(temp.getValue()) || 0) : 0;\n\n",
+"    if (!passo) return;\n    var antes = ct ? Math.max(0, Number(v[ct]) || 0) : 0;\n\n"
+],
+[
+"\n    var fim = aplicaPasso_(atual.getValue(),\n                           ficha.getRange(cel_(idx, r + '_max')).getValue(),\n                           antes, passo);\n\n",
+"\n    var fim = aplicaPasso_(v[ca], v[cm], antes, passo);\n\n"
+],
+[
+"\n    atual.setValue(fim.atual);\n    if (temp && fim.temp !== antes) temp.setValue(fim.temp);\n    e.range.clearContent();\n",
+"\n    ficha.getRange(ca).setValue(fim.atual);\n    if (ct && fim.temp !== antes) ficha.getRange(ct).setValue(fim.temp);\n    e.range.clearContent();\n"
+],
+[
+"  var ficha = e.range.getSheet();\n  var le = function (k) { var c = cel_(idx, k); return c ? Number(ficha.getRange(c).getValue()) || 0 : 0; };\n  var onde = { vida: 'vida', pe: 'energia', integ: 'integridade', exaustao: 'exaustão' };\n",
+"  var ficha = e.range.getSheet();\n  var onde = { vida: 'vida', pe: 'energia', integ: 'integridade', exaustao: 'exaustão' };\n"
+],
+[
+"                                                       .filter(function (c) { return c; });\n  var antes = { vidaMax: le('vida_max'), peMax: le('energia_max'), integMax: le('integridade_max') };\n",
+"                                                       .filter(function (c) { return c; });\n  var cExtras = cel_(idx, 'sequela extras');\n  // Tudo o que o descanso consulta numa leitura só (cada ida ao servidor custa 1,5 a 2 s)\n  var lidas = ['vida_max', 'energia_max', 'integridade_max'].concat(Object.keys(onde).map(function (k) { return onde[k]; }))\n    .map(function (k) { return cel_(idx, k); }).concat(caixinhas, cExtras ? [cExtras] : []).filter(function (c) { return c; });\n  var v = lerCelulas_(ficha, lidas);\n  var le = function (k) { var c = cel_(idx, k); return c ? Number(v[c]) || 0 : 0; };\n  var antes = { vidaMax: le('vida_max'), peMax: le('energia_max'), integMax: le('integridade_max') };\n"
+],
+[
+"  Object.keys(onde).forEach(function (k) { antes[k] = le(onde[k]); });\n  var cExtras = cel_(idx, 'sequela extras');\n  var extras = cExtras ? Math.max(0, Number(ficha.getRange(cExtras).getValue()) || 0) : 0;\n  antes.sequelas = caixinhas.filter(function (c) { return ficha.getRange(c).getValue() === true; }).length + extras;\n  var fim = contaDoDescanso_(tipo, antes);\n",
+"  Object.keys(onde).forEach(function (k) { antes[k] = le(onde[k]); });\n  var extras = cExtras ? Math.max(0, Number(v[cExtras]) || 0) : 0;\n  antes.sequelas = caixinhas.filter(function (c) { return v[c] === true; }).length + extras;\n  var fim = contaDoDescanso_(tipo, antes);\n"
+]
+]

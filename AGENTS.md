@@ -1,3 +1,23 @@
+# Pacote leve e leitura única · 25/10/2026 (Claude)
+
+Medido e aplicado SÓ em cópia de teste (`1kQuSgg…`); as oficiais não foram
+tocadas. Leia `r53/diagnostico-android/MEDICAO-DESEMPENHO-2026-10-25.md`.
+- Opção 1 no `apps-script/Codigo.gs`: `indiceEstatico_`, `lerCelulas_`,
+  `faixaDoMolde_`; DADOS só lida no Caminho e no XP. Os mesmos 14 trechos estão
+  em `r53/diagnostico-android/pacote_leve_remendos.json` para o pacote instalado.
+- Pacote leve: `node r53/diagnostico-android/instalar_pacote_leve.js 2667ef41…`
+  gera o trecho que roda no console do editor do Apps Script (o editor proíbe
+  `new Function`, por isso as correções são lidas como dados). Ele confere o hash
+  instalado (`2f153f65…`), embute os `r53Correcao*`, aplica a opção 1, corta as
+  tabelas da montagem e trava construir/continuar/acabar. Salvar o projeto depois
+  e recarregar o editor para conferir o hash `2667ef41…` no `r53Modulo_`.
+- Na cópia: abrir o módulo 11,4 → 1,8 s; ± da vida pelo gatilho 30,6 s (tempo
+  limite) → 11,5 s; Caminho 19,1 → 10,2 s; onOpen 17,9 → 2,1 s.
+- Para aplicar numa oficial: primeiro o `Codigo.gs` da corrida (seção abaixo),
+  depois o trecho. O trecho só mexe no `r53Modulo_` e nos cinco R53_CODIGO_.
+- Montar ficha nova continua pelo pacote completo do repositório.
+- Teste: `r53/testes/pacote_leve.js` (22 verificações).
+
 # Corrida Caminho/Trilha corrigida no repositório · 25/10/2026
 
 Revisão do Claude sobre a entrega abaixo: a Trilha escolhida durante a execução
