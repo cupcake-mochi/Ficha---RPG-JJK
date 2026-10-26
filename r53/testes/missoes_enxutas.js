@@ -54,6 +54,8 @@ function ambiente(source, op) {
   pos('DADOS', 'BA9', 'nivel'); pos('DADOS', 'BB9', 'AH11'); pos('DADOS', 'DO10', 'xp total'); pos('DADOS', 'DP10', 'AW11');
   if (op.espelhos) { pos('DADOS', 'CY47', 'xp total'); pos('DADOS', 'CZ47', op.xp); pos('DADOS', 'CY48', 'nível'); pos('DADOS', 'CZ48', op.nivel); }
   pos('FICHA PESSOAL', 'AW11', op.xp); pos('FICHA', 'AH11', op.nivel);
+  // BC11 como a ficha calcula: o XP do próximo nível (curva da DADOS) menos o total; — no nível máximo.
+  pos('FICHA PESSOAL', 'BC11', op.falta !== undefined ? op.falta : (+op.nivel || 0) >= 30 ? '—' : Math.max(0, (+op.nivel || 0) * 100 - (+op.xp || 0)));
   pos('DADOS_SALARIOS', 'L2', JSON.stringify({inicio: 46000}));
   for (const [a1, v] of op.painel) pos('FICHA PESSOAL', a1, v);
   for (const l of op.registros || []) l.forEach((v, j) => abas.DADOS_SALARIOS.cells.set((op.registros.indexOf(l) + 2) + ',' + (j + 1), v));
@@ -73,7 +75,7 @@ function ambiente(source, op) {
 
 let idasAntes = 0, idasDepois = 0, casos = 0;
 const cenarios = [];
-for (const espelhos of [true, false]) for (const [xp, nivel, limiar] of [[0, 1, 0], [450, 2, 0], [450, 6, 0], [2500, 3, 10], [99999, 21, 20], ['', 4, 0]])
+for (const espelhos of [true, false]) for (const [xp, nivel, limiar] of [[0, 1, 0], [450, 2, 0], [450, 6, 0], [500, 5, 0], [2500, 3, 10], [99999, 21, 20], [99999, 30, 0], ['', 4, 0]])
   for (const [onde, valor, painel, registros] of [
     ['AW15', 'Missão A', [['AX15', 'Curta']], []],
     ['AX16', 'Longa', [['AW16', 'Missão B']], []],
@@ -97,6 +99,8 @@ for (const op of cenarios) {
   eq(n.a.idas.some(x => /L2|12 1×1/.test(x) && /DADOS_SALARIOS valor/.test(x)), false, onde + ' sem ler o estado');
   eq(n.a.idas.filter(x => /última linha|linhas$/.test(x)), [], onde + ' sem getLastRow/getMaxRows');
   if (op.espelhos) eq(n.a.idas.filter(x => /^(FICHA|FICHA PESSOAL) valor /.test(x)), [], onde + ' XP e nível pelos espelhos');
+  const falta = n.a.abas['FICHA PESSOAL'].cells.get('11,55');
+  eq(n.a.idas.some(x => /^DADOS valores/.test(x)), !(falta === '—' || falta > 0), onde + ' DADOS só quando o nível pode subir');
   idasAntes += v.a.idas.filter(x => x !== 'flush').length; idasDepois += n.a.idas.filter(x => x !== 'flush').length; casos++;
 }
 // O caso comum, contado à parte: nome de missão novo, com os espelhos.

@@ -13,10 +13,15 @@ function salarioMissaoDireta_(e) {
  var r=e.range,l1=r.getRow(),l2=r.getLastRow(),c1=r.getColumn(),c2=r.getLastColumn();
  if(r.getSheet().getName()!=='FICHA PESSOAL'||l1<15||l2>87||c1<49||c2>72)return false;
  var ss=e.source||SpreadsheetApp.getActive(),sh=r.getSheet(),idioma;
+ var restaurou=false;
  SALARIO_MISSOES_MOLDES_.forEach(function(t){
   if(t[0]<l1||t[0]>l2||t[1]<c1||t[1]>c2)return;
-  sh.getRange(t[0],t[1]).setFormula(r53Formula_(t[2],ss));
+  sh.getRange(t[0],t[1]).setFormula(r53Formula_(t[2],ss));restaurou=true;
  });
+ // Com o painel já lido nesta edição e nenhum molde regravado: se ainda falta XP para o próximo nível (BC11 > 0)
+ // ou o nível é o máximo (—), nada sobe e a DADOS não precisa ser lida.
+ var painel=!restaurou&&SALARIO_PAINEL_,semSubida=painel&&(painel.falta==='—'||typeof painel.falta==='number'&&painel.falta>0);
+ if(!semSubida){
  // O índice e a curva continuam sendo os da campanha, inclusive custom.
  // Excluir as linhas 1–3 evita consultar todos os resultados de combate.
  // A mesma faixa espelha o XP total (CY:CZ, a conta da FICHA PESSOAL!AW11) e o nível da FICHA: com os espelhos,
@@ -32,6 +37,7 @@ function salarioMissaoDireta_(e) {
  var limiar=Number((salarioTabelaDados_(dados,'limiar do feito')[0]||{})['limiar do feito'])||0;
  var cell=ss.getSheetByName('FICHA').getRange(nivelCell),atual=Number(nivelEspelho!==undefined?nivelEspelho:cell.getValue())||0;
  var sobe=salarioNivelQueSobe_(tabela,total,atual,limiar);if(sobe!==null)cell.setValue(sobe);
+ }
  if(typeof r53ContinuarPaletaPendente_==='function')r53ContinuarPaletaPendente_(e);
  else if(typeof continuarPaleta_==='function')continuarPaleta_(e.r53Inicio_||Date.now(),null,false,r);
  return true;
@@ -85,9 +91,13 @@ function salarioConfig_(ss) {
   c.proximo=salarioDia_(sh.getRange('O48').getValue());
   return c;
 }
+// A leitura agrupada do painel começa na linha 11: o XP total (AW11) e o quanto falta para o próximo nível (BC11)
+// vêm junto e poupam a ida à DADOS quando o nível não tem como subir (ver salarioMissaoDireta_).
+var SALARIO_PAINEL_=null;
 function salarioMissoesAtuais_(ss,agrupar) {
   var pessoal=ss.getSheetByName('FICHA PESSOAL'),faixa=pessoal.getRange(15,49,73,24),notas=faixa.getNotes(),out=[];
-  out.faixa=faixa;out.notas=notas;out.limpar=[];var matriz=agrupar?faixa.getValues():null;
+  out.faixa=faixa;out.notas=notas;out.limpar=[];var matriz=null;
+  if(agrupar){var tudo=pessoal.getRange(11,49,77,24).getValues();SALARIO_PAINEL_={xp:tudo[0][0],falta:tudo[0][6]};matriz=tudo.slice(4);}
   // Leia somente as entradas literais. Os totais de XP ao lado podem exigir o recálculo da ficha inteira.
   SALARIO_.colunas.forEach(function(col){var v=matriz?matriz.map(function(row){return row.slice(col-49,col-47);}):pessoal.getRange(15,col,73,2).getValues();for(var i=0;i<73;i++){
     var nome=String(v[i][0]||'').trim(),tipo=String(v[i][1]||'').trim();

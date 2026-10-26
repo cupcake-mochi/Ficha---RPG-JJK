@@ -4524,5 +4524,8 @@ estouravam os 30 s nas oficiais. O corte (`r53/diagnostico-android/preparar_miss
 - os registros de missões saem numa ida só (`A2:G` aberta), sem getLastRow nem getMaxRows;
 - o XP total e o nível vêm dos espelhos da DADOS (CY47:CZ48: `xp total` é a conta da FICHA PESSOAL!AW11,
   `nível` é N(FICHA!AH11)), dentro da faixa AQ4:DP100 que já se lia. Uma ficha sem os espelhos lê como antes.
-No caso comum, as leituras caem de 9 para 4 (`r53/testes/missoes_enxutas.js`, com 48 cenários e as mesmas
+Segundo corte: a leitura agrupada do painel começa na linha 11 e traz o XP total (AW11) e o quanto falta para o
+próximo nível (BC11). Se ainda falta XP ou o nível é o máximo, a DADOS nem é lida (só quando o nível pode subir,
+ou quando um molde foi regravado). Medido antes deste corte: 7 edições em 17–28 s (MEDICAO-DESEMPENHO). No caso
+comum, as leituras agora caem de 9 para 3; antes deste corte eram 4 (`r53/testes/missoes_enxutas.js`, com 48 cenários e as mesmas
 células, notas e nível). `salarios/testes.js` aprendeu a faixa aberta. Falta medir numa cópia e instalar.
