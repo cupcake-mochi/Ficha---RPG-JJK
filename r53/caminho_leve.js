@@ -10,8 +10,16 @@ const NOMES=['cel_','indiceDosDados_','tabelaDaDados_','limitesA1_',
  'caixasDeTreino_','treinoDoCaminho_','gravarCaixas_','treinoPeloCaminho_',
  'notasVivas_','fichaMexeNaPessoal_','treinoMarcado_','treinoDepoisDaCaixa_','tocaFaixa_'];
 function corpo(src,n){const s=src.indexOf('function '+n+'('),e=src.indexOf('\n}',s);if(s<0||e<0)throw Error('Função ausente: '+n);const out=src.slice(s,e+2);new Function(out);return out;}
+// O bloco do Caminho já lê só o que precisa (ioPatches abaixo). As leituras curtas de 26/10/2026 no Codigo.gs (remendos
+// do 23º em diante do pacote leve) não mudam nada nele: as funções saem do Codigo.gs de antes delas, e o bloco fica igual.
+const REMENDOS_FORA_DO_CAMINHO=22;
+function fonte(){
+ let src=fs.readFileSync(path.join(root,'apps-script/Codigo.gs'),'utf8');
+ for(const p of require('./diagnostico-android/instalar_pacote_leve').remendos().slice(REMENDOS_FORA_DO_CAMINHO).reverse()){if(src.split(p[1]).length!==2)throw Error('Remendo do pacote leve divergente');src=src.replace(p[1],()=>p[0]);}
+ return src;
+}
 function gerar(){
- const src=fs.readFileSync(path.join(root,'apps-script/Codigo.gs'),'utf8');
+ const src=fonte();
  const ioPatches=[['var vals = ficha.getDataRange().getValues();','var vals = r53LerPericias_(ficha);'],['var grade = ficha.getDataRange(), valores = grade.getValues(), notas = grade.getNotes();','var grade = r53GradeCartas_(ficha), valores = grade.getValues(), notas = grade.getNotes();'],["var v = ss.getSheetByName(DADOS_DA_AMALDICOADA_).getDataRange().getValues(), h = v[0];","var v = R53_CAMINHO_CARTAS_, h = v[0];"],["var dados = ss.getSheetByName('DADOS').getDataRange().getValues();","var dados = r53DadosNotasCaminho_(ss);"]];
  let helpers=NOMES.map(n=>corpo(src,n)).join('\n');
  for(const[a,b]of ioPatches){if(helpers.split(a).length!==2)throw Error('Leitura divergente: '+a);helpers=helpers.replace(a,b);}
@@ -83,4 +91,4 @@ function gerar(){
  new Function(output);return {output,code,hash,helpers:NOMES.length,ioPatches,requests,eventosOutput,eventSchema};
 }
 if(require.main===module){let d=gerar();fs.writeFileSync(path.join(root,'apps-script/Caminho.gs'),d.output);fs.writeFileSync(path.join(root,'apps-script/Eventos.gs'),d.eventosOutput);fs.writeFileSync(path.join(root,'r53/saidas/eventos-pedidos.json'),JSON.stringify(d.requests));console.log(JSON.stringify({bytes:d.code.length,transporte:d.output.length,hash:d.hash,funcoes:d.helpers,referencias:d.eventSchema.refs.length}));}
-module.exports={gerar,corpo,NOMES};
+module.exports={gerar,corpo,fonte,NOMES};

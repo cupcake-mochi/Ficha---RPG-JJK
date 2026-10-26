@@ -465,7 +465,7 @@ function onEdit(e) {
     try {
       devolverConta_(e);
       // 07/10/2026: o salto em que alguém escreveu por cima volta a ser a ligação até a seção
-      if (e.range.getRow() <= LINHA_DOS_SALTOS_) ligarSaltosDe_(SpreadsheetApp.getActive(), ABA_AMALDICOADA_, DADOS_DA_AMALDICOADA_);
+      if (e.range.getRow() <= LINHA_DOS_SALTOS_) ligarSaltosDe_(SpreadsheetApp.getActive(), ABA_AMALDICOADA_, DADOS_DA_AMALDICOADA_, null, e.range);
     } catch (err) { console.log('ficha amaldiçoada: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
     return;
@@ -478,7 +478,7 @@ function onEdit(e) {
     try {
       // a linha da lista do conjunto volta como referência, sem a ligação até a ficha: a ligação é refeita na hora
       if (devolverConta_(e, ABA_INVOCACOES_) && e.range.getColumn() <= COLUNA_DA_LISTA_DE_INVOCACOES_) {
-        ligarSaltosDe_(SpreadsheetApp.getActive(), ABA_INVOCACOES_, DADOS_DA_INVOCACAO_);
+        ligarSaltosDe_(SpreadsheetApp.getActive(), ABA_INVOCACOES_, DADOS_DA_INVOCACAO_, null, e.range);
       }
     } catch (err) { console.log('invocações: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
@@ -497,7 +497,7 @@ function onEdit(e) {
       try { esticarCaixas_(e, aba); } catch (err) { console.log('texto custom: ' + err.message); }
       var specConfig = ABAS.filter(function (s) { return s.nome === 'CONFIGURAÇÃO'; })[0];
       if ((specConfig && specConfig.gatilhos_habilidades || ['B737:O792']).some(function (a1) { return tocaFaixa_(e.range, a1); })) {
-        try { habilidadesDaFicha_(e, indice(), true); } catch (err) { console.log('cartas custom: ' + err.message); }
+        try { habilidadesDaFicha_(e, indiceEstatico_() || indice(), true); } catch (err) { console.log('cartas custom: ' + err.message); }
       }
     }
     continuarPaleta_(inicio, null, false, e.range);
@@ -645,10 +645,13 @@ function tabelaDaDados_(dados, chave, outras) {
  * leitura vai do cabeçalho até o fim do molde; dá o mesmo que o tabelaDaDados_ com a DADOS inteira, que custava ~7 s.
  * Sem o molde, ou sem o cabeçalho nele, lê a DADOS inteira como antes.
  */
-function tabelaLida_(ss, chave, outras) {
+function tabelaLida_(ss, chave, outras) { return tabelaLidaDe_(ss, 'DADOS', chave, outras); }
+
+/** A mesma leitura curta em outra aba de dados (DADOS_AM, DADOS_INVOC): 26/10/2026, o religar dos saltos lia a aba inteira. */
+function tabelaLidaDe_(ss, nomeDaAba, chave, outras) {
   outras = outras || [];
-  var aba = ss.getSheetByName('DADOS'), nomes = [chave].concat(outras), cab = {};
-  var spec = typeof ABAS === 'undefined' ? null : ABAS.filter(function (s) { return s.nome === 'DADOS'; })[0];
+  var aba = ss.getSheetByName(nomeDaAba), nomes = [chave].concat(outras), cab = {};
+  var spec = typeof ABAS === 'undefined' ? null : ABAS.filter(function (s) { return s.nome === nomeDaAba; })[0];
   if (spec) spec.vals.forEach(function (t) {
     if (nomes.indexOf(t[2]) < 0) return;
     var l = cab[t[0]] = cab[t[0]] || {};
@@ -1151,7 +1154,7 @@ function livresDaAba_(spec) {
   var out = {};
   (spec.livres || []).forEach(function (a1) { out[a1] = true; });
   if (spec.nome === 'FICHA') {
-    var idx = indice();
+    var idx = indiceEstatico_() || indice();
     LIVRES_DA_TRAVA.forEach(function (k) { var c = cel_(idx, k); if (c) out[c] = true; });
   }
   return out;
@@ -1316,7 +1319,7 @@ function redutorDaInvocacao_(e) {
 }
 
 /** Os saltos de uma aba, lidos da aba de dados dela. Devolve quantos escreveu, ou null se a aba não existe. */
-function ligarSaltosDe_(ss, nomeDaAba, nomeDosDados, separador) {
+function ligarSaltosDe_(ss, nomeDaAba, nomeDosDados, separador, onde) {
   var aba = ss.getSheetByName(nomeDaAba), dados = ss.getSheetByName(nomeDosDados);
   if (!aba || !dados) return null;
   var gid = aba.getSheetId(), n = 0;
@@ -1327,8 +1330,10 @@ function ligarSaltosDe_(ss, nomeDaAba, nomeDosDados, separador) {
   var sep = separador || (/^en/i.test(String(ss.getSpreadsheetLocale())) ? ',' : ';');
   // 02/10/2026: o nome de quatro saltos muda com a rota (Feitiços, Manejos ou Katas), e o link cita a célula do nome na
   // DADOS_AM ('nome do salto'), e não o texto.
-  tabelaDaDados_(dados.getDataRange().getValues(), 'salto', ['caixa do salto', 'alvo do salto', 'nome do salto']).forEach(function (l) {
+  // 26/10/2026: o onEdit passa `onde` e religa só o salto em que se escreveu; a tabela vem só nas colunas dela.
+  tabelaLidaDe_(ss, nomeDosDados, 'salto', ['caixa do salto', 'alvo do salto', 'nome do salto']).forEach(function (l) {
     if (!l['caixa do salto'] || !l['alvo do salto']) return;
+    if (onde && !tocaFaixa_(onde, String(l['caixa do salto']))) return;
     var nome = l['nome do salto'] ? String(l['nome do salto']) : '"' + String(l['salto']).replace(/"/g, '""') + '"';
     aba.getRange(String(l['caixa do salto'])).setFormula('=HYPERLINK("#gid=' + gid + '&range=' + l['alvo do salto'] + '"' + sep + nome + ')');
     n++;
@@ -1556,6 +1561,16 @@ function alturasQueEsticam_(caixas, textos, M, minima, pisos) {
   return h;
 }
 
+/** Os textos de vários grupos que esticam numa leitura só: {m: valores exibidos, l1, c1} do retângulo que os cobre. */
+function lerRetanguloDosTextos_(aba, grupos) {
+  var fs = [];
+  grupos.forEach(function (g) { g.textos.forEach(function (c) { c[1].forEach(function (a1) { var f = limitesA1_(a1); if (f) fs.push(f); }); }); });
+  if (!fs.length) return { m: [], l1: 1, c1: 1 };
+  var l1 = Math.min.apply(null, fs.map(function (f) { return f.l1; })), c1 = Math.min.apply(null, fs.map(function (f) { return f.c1; }));
+  var l2 = Math.max.apply(null, fs.map(function (f) { return f.l2; })), c2 = Math.max.apply(null, fs.map(function (f) { return f.c2; }));
+  return { m: aba.getRange(l1, c1, l2 - l1 + 1, c2 - c1 + 1).getDisplayValues(), l1: l1, c1: c1 };
+}
+
 function esticarCaixas_(e, nomeDaAba) {
   if (typeof MEDIDA_DAS_CARTAS_ === 'undefined') return 0;
   var spec = ABAS.filter(function (s) { return s.nome === nomeDaAba; })[0];
@@ -1575,14 +1590,15 @@ function esticarCaixas_(e, nomeDaAba) {
   var valoresHorizontal = null;
   spec.esticam.forEach(function (x) {
     if (!x.gatilhos.some(toca)) return;
-    if (spec.horizontal && !valoresHorizontal) valoresHorizontal = origem.getRange(1, 1, spec.rows, spec.cols).getDisplayValues();
+    // 26/10/2026: o retângulo dos textos dos grupos tocados, não a aba inteira (~95 mil células na CONFIGURAÇÃO)
+    if (spec.horizontal && !valoresHorizontal) valoresHorizontal = lerRetanguloDosTextos_(origem, spec.esticam.filter(function (g) { return g.gatilhos.some(toca); }));
     var alvo = x.aba === nomeDaAba ? origem : ss.getSheetByName(x.aba);
     if (!alvo) return;
     var textos = x.textos.map(function (c) {
       return c[1].map(function (a1) {
         if (!valoresHorizontal) return String(origem.getRange(a1).getDisplayValue());
-        var f = limitesA1_(a1);
-        return String(valoresHorizontal[f.l1-1][f.c1-1]);
+        var f = limitesA1_(a1), linha = valoresHorizontal.m[f.l1 - valoresHorizontal.l1];
+        return String(linha ? linha[f.c1 - valoresHorizontal.c1] : '');
       })
                  .filter(function (t) { return t !== ''; }).join(' · ');
     });
@@ -1618,9 +1634,23 @@ function escreverTextoDoLivro_(celula, texto, titulos) {
   celula.setRichTextValue(rico.build());
 }
 
+/** A faixa da aba de dados que vai da primeira à última destas colunas (cabeçalho na linha 1 do molde). Sem molde, a aba toda. */
+function colunasDoMolde_(aba, nomes) {
+  var nome = aba.getName(), spec = typeof ABAS === 'undefined' ? null : ABAS.filter(function (s) { return s.nome === nome; })[0];
+  var cols = spec ? nomes.map(function (n) {
+    var t = spec.vals.filter(function (t) { return t[0] === 1 && t[2] === n; })[0];
+    return t ? t[1] : 0;
+  }) : [];
+  if (!spec || cols.indexOf(0) >= 0) return aba.getDataRange();
+  var c1 = Math.min.apply(null, cols), c2 = Math.max.apply(null, cols);
+  return aba.getRange(1, c1, spec.rows, c2 - c1 + 1);
+}
+
 // as cartas e as caixas livres que a DADOS_AM publica: [{fonte, nivel, nome, texto, linha}] e [{texto, linha}]
 function cartasDaDadosAm_(ss) {
-  var v = ss.getSheetByName(DADOS_DA_AMALDICOADA_).getDataRange().getValues(), h = v[0];
+  // 26/10/2026: só as colunas das cartas, pelo cabeçalho do molde (a aba inteira custava ~4,5 s a mais)
+  var v = colunasDoMolde_(ss.getSheetByName(DADOS_DA_AMALDICOADA_),
+    ['habilidade: carta', 'nível da carta', 'célula do nome', 'célula do texto', 'célula do texto livre']).getValues(), h = v[0];
   var cC = h.indexOf('habilidade: carta'), cN = h.indexOf('nível da carta');
   var cNm = h.indexOf('célula do nome'), cTx = h.indexOf('célula do texto'), cL = h.indexOf('célula do texto livre');
   if (cC < 0 || cN < 0 || cNm < 0 || cTx < 0 || cL < 0) return null;
@@ -1658,9 +1688,16 @@ function habilidadesDaFicha_(e, idx, forcar) {
   if (!D) return;
   // Ler as nove cartas célula por célula, e regravar toda nota vazia, fazia
   // a escolha de Caminho ultrapassar os 30 s do gatilho simples no Sheets.
-  var grade = ficha.getDataRange(), valores = grade.getValues(), notas = grade.getNotes();
+  // 26/10/2026: e ler a FICHA inteira (valores e notas) custava ~9 s; basta o retângulo das células usadas.
+  var usadas = [cc, ct];
+  D.cartas.forEach(function (c) { usadas.push(c.nome, c.texto); });
+  var caixa = usadas.map(limitesA1_);
+  var l0 = Math.min.apply(null, caixa.map(function (f) { return f.l1; })), c0 = Math.min.apply(null, caixa.map(function (f) { return f.c1; }));
+  var grade = ficha.getRange(l0, c0, Math.max.apply(null, caixa.map(function (f) { return f.l2; })) - l0 + 1,
+    Math.max.apply(null, caixa.map(function (f) { return f.c2; })) - c0 + 1);
+  var valores = grade.getValues(), notas = grade.getNotes();
   var le = function (matriz, a1) {
-    var f = limitesA1_(a1), v = matriz[f.l1 - 1][f.c1 - 1];
+    var f = limitesA1_(a1), linha = matriz[f.l1 - l0], v = linha && linha[f.c1 - c0];
     return v === undefined || v === null ? '' : String(v);
   };
   var caminho = le(valores, cc), trilha = le(valores, ct);
@@ -1700,7 +1737,7 @@ function caixaDeHabilidadeEditada_(e) {
   var texto = String(ficha.getRange(alvo.texto).getValue());
   ficha.setRowHeights(alvo.linha, MEDIDA_DAS_CARTAS_.caixa, alturaDaCaixa_(texto, MEDIDA_DAS_CARTAS_));
   if (!carta) return;
-  var idx = indice(), cc = cel_(idx, 'caminho'), ct = cel_(idx, 'trilha');
+  var idx = indiceEstatico_() || indice(), cc = cel_(idx, 'caminho'), ct = cel_(idx, 'trilha');
   var i = D.cartas.indexOf(carta), atuais = D.cartas.map(function (c) { return { nome: '', texto: '' }; });
   var caminho = String(ficha.getRange(cc).getValue()), trilha = String(ficha.getRange(ct).getValue());
   var n = cartasDaFicha_(livroDasCartas_(ss, caminho, trilha), D.cartas, caminho, trilha, atuais)[i];

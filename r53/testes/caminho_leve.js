@@ -1,8 +1,8 @@
 'use strict';
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-const {gerar,corpo,NOMES}=require('../caminho_leve');const d=gerar();
+const {gerar,corpo,fonte,NOMES}=require('../caminho_leve');const d=gerar();
 assert.strictEqual(fs.readFileSync('apps-script/Caminho.gs','utf8'),d.output);
-const src=fs.readFileSync('apps-script/Codigo.gs','utf8');
+const src=fonte();
 for(const n of NOMES){let body=corpo(src,n);for(const[a,b]of d.ioPatches)body=body.replace(a,b);body=body.replace(/ss.getSheetByName\('DADOS_PROGRESSAO'\)/g,'r53ProgCaminho_(ss)').replace(/SpreadsheetApp.getActive\(\).getSheetByName\('DADOS_PROGRESSAO'\)/g,'r53ProgCaminho_(SpreadsheetApp.getActive())').replace(/SpreadsheetApp.getActive\(\)/g,'R53_CAMINHO_SS_');assert(d.code.includes(body),n);}
 assert(!/R53_CODIGO_|R53_EDITOR_|r53Modulo_/.test(d.code));
 const box={};vm.createContext(box);vm.runInContext(d.output,box);
