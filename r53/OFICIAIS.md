@@ -59,3 +59,11 @@ Histórico: [Ritual](diagnostico-android/REVISAO-2026-10-25.md) e
 Os rótulos públicos do cabeçalho e do número da carteira usam **1.0**, sem
 acompanhar as revisões do livro. Os metadados técnicos continuam preservados.
 Veja [versão pública](diagnostico-android/VERSAO-PUBLICA-2026-10-25.md).
+
+## Limpeza dos projetos · 26/10/2026
+
+Aval do Mizuki pelo cartão de decisão. Nas duas oficiais saíram 31 arquivos sem uso: 29 só com o comentário
+"Conteúdo incluído no pacote R53" e os diagnósticos AuditarAndroid e ConfigurarCopiaAndroid, presos a IDs de
+planilhas antigas. Configuracao e Origens ficam, porque guardam R53_CODIGO_3_ e R53_CODIGO_4_, que o carregador lê.
+Antes de limpar, cada projeto ganhou a versão 2 de backup ("Antes da limpeza de arquivos vazios"). O resto ficou
+idêntico, conferido pela API. Se o empacotar_script.py rodar de novo, ele recria os 29 comentários: inofensivo.
