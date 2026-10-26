@@ -1,4 +1,4 @@
-## Leituras curtas · 26/10/2026 (Claude) · no ramo, fora das oficiais
+## Leituras curtas · 26/10/2026 (Claude) · instalado nas duas oficiais (ver r53/OFICIAIS.md)
 
 As últimas leituras de aba inteira que o arnês achou no onEdit saíram (remendos 23–32 do pacote
 leve; o `Codigo.gs` tem o mesmo texto). Custo modelado, antes → depois:
@@ -20,7 +20,7 @@ células, formatos, alturas e propriedades, e custo nunca maior. O que sobra de 
 é a leitura do retângulo das habilidades custom da CONFIGURAÇÃO, a Classe da FICHA (DADOS A1:EG100)
 e o salário da FICHA PESSOAL. Falta medir no Google.
 
-## Atalho das células livres · 26/10/2026 (Claude) · no ramo, fora das oficiais
+## Atalho das células livres · 26/10/2026 (Claude) · instalado nas duas oficiais
 
 Arnês novo (`r53/arnes_custo.js`) roda o onEdit instalado inteiro contra a oficial exportada
 (`r53/xlsx_para_json.py`) e conta as idas ao servidor, com custo calibrado nas medições do Google.

@@ -11,6 +11,18 @@ A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são r
 
 ## Estado instalado
 
+**26/10/2026, pacote otimizado (com o aval do Mizuki):** as duas oficiais receberam o pacote leve
+(módulo `fef2a94b…`, que é o módulo instalado `2f153f65…` com as correções embutidas, os remendos
+1–32 de `pacote_leve_remendos.json` e a montagem cortada), o bloco do Caminho de
+`apps-script/Caminho.gs`, o atalho das células livres (`r53/atalho_livre.gs`, mapa `ce92ede0…`) e o
+`EditorR53.gs` `d2e57223…`. Antes de subir: o script das duas era idêntico (fora a formatação do
+manifesto, mantido o de cada uma); o mesmo módulo saiu do instalado com 22 remendos (`9d1cec81…`, o da
+cópia de teste) e com 32 (`fef2a94b…`); a Ciclo Maldito exportada gera o mesmo mapa do atalho que a
+Era; e no arnês a oficial de antes e o pacote montado gravaram o mesmo em 35.729 edições em cada uma.
+`Codigo.gs` instalado: `1d8eb5b3…`. A **versão 1** de cada projeto do Apps Script guarda o script
+anterior (`d92f846e…` / `bc300464…`) para voltar. Ainda não medido no Google.
+
+
 Atualização de automações em cópias: veja a
 [entrega e limites de validação](diagnostico-android/AUTOMACOES-COPIAS-2026-10-25.md).
 Caminho, Trilha, habilidades e grupos de treino foram corrigidos e ensaiados em
