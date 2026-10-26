@@ -82,3 +82,17 @@ Com o ok do Mizuki, as duas oficiais receberam o terceiro corte (painel antes do
 notas). O preparador foi aplicado sobre o Codigo da versão 3 e o resultado saiu byte a byte igual ao da cópia medida
 (13 edições concluídas, pior caso 18,9 s). Antes, cada projeto ganhou a versão 4 de backup ("Antes do terceiro corte
 das missões"). Os outros arquivos ficaram idênticos, conferido pela API.
+
+## Remendos 33–38 da CONFIGURAÇÃO · 26/10/2026
+
+Aval do Mizuki no chat ("Pode instalar 33–38 nas duas oficiais… exigindo o módulo 52fc6903 igual à cópia sem
+DIAG"). Pelo Chrome, na conta dona, só o pacote do módulo mudou: os cinco arquivos `R53_CODIGO_` e o hash no
+Codigo (as duas ocorrências: a conferência do `r53Modulo_` e a do atalho). Remendos 33–38 do
+`pacote_leve_remendos.json` aplicados sobre o `fef2a94b`; o instalador exigia `fef2a94b` antes e `52fc6903` depois,
+e recusou sem gravar quando tentei só 34–38 (o 33, cartas antes das caixas, está por baixo dos outros). O módulo
+`52fc6903` é exatamente o da cópia medida `1HI96ICu…` sem as linhas `DIAG` (conferido pelo SHA-256). Antes, cada
+projeto ganhou a versão 5 de backup ("Antes dos remendos 34-38 da CONFIGURAÇÃO" na Ciclo Maldito, 14:32; "Antes
+dos remendos 33-38 da CONFIGURAÇÃO" na Era da Revolução, 14:42), feita como as anteriores: implantação de
+biblioteca, arquivada em seguida. Depois de salvar e recarregar, nas duas: módulo `52fc6903`, nenhum
+`fef2a94b` no Codigo, e Codigo, EditorR53, LotePaleta, PaletaSegundoPlano e SalarioLote idênticos aos da cópia.
+Medição na cópia: habilidade custom da CONFIGURAÇÃO em 18–21 s, todas concluídas (MEDICAO-DESEMPENHO).
