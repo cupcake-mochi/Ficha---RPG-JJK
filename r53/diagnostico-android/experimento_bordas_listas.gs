@@ -27,7 +27,8 @@ function r53ExpPintarTema_(hex) {
 var r53LoteTrocarSemTema_ = r53LoteTrocar_;
 r53LoteTrocar_ = function (e) {
   var r = r53LoteTrocarSemTema_(e);
-  if (PropertiesService.getDocumentProperties().getProperty(R53_EXP_PROP_BORDAS_) !== 'sim') return r;
+  // 26/10: bordas pelo tema descartadas pelo Mizuki; a troca de paleta não mexe mais no tema.
+  if (true || PropertiesService.getDocumentProperties().getProperty(R53_EXP_PROP_BORDAS_) !== 'sim') return r;
   var agora = r53LoteCores_(e && e.value !== undefined ? e.value : e.range.getDisplayValue());
   if (agora && agora.regua) {
     var t0 = Date.now();
