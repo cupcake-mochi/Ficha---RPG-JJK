@@ -430,7 +430,7 @@ var VALORES_PERSONAGEM_PAINEL_ = [
       }
     ],
     "notas":[["EZ101","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["EZ147","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["EZ193","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["EZ239","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["EZ55","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FD106","Lembrete. Aprovação pertence ao bot no chat."],["FD14","Lembrete. Aprovação pertence ao bot no chat."],["FD152","Lembrete. Aprovação pertence ao bot no chat."],["FD198","Lembrete. Aprovação pertence ao bot no chat."],["FD60","Lembrete. Aprovação pertence ao bot no chat."],["FH101","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FH147","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FH193","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FH239","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FH55","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FL106","Lembrete. Aprovação pertence ao bot no chat."],["FL14","Lembrete. Aprovação pertence ao bot no chat."],["FL152","Lembrete. Aprovação pertence ao bot no chat."],["FL198","Lembrete. Aprovação pertence ao bot no chat."],["FL60","Lembrete. Aprovação pertence ao bot no chat."]],
-    "geracao":"be3a28b454881d77",
+    "geracao":"aeee4abf35088455",
     "arquivo":"PersonagemPainel.gs"
   },
   {
@@ -443,7 +443,7 @@ var VALORES_PERSONAGEM_PAINEL_ = [
     "alturas":{},
     "esticam":[],
     "notas":[["FQ117","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FQ144","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FQ36","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FQ63","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FQ90","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FU122","Lembrete. Aprovação pertence ao bot no chat."],["FU14","Lembrete. Aprovação pertence ao bot no chat."],["FU41","Lembrete. Aprovação pertence ao bot no chat."],["FU68","Lembrete. Aprovação pertence ao bot no chat."],["FU95","Lembrete. Aprovação pertence ao bot no chat."],["FY117","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FY144","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FY36","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FY63","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["FY90","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["GC122","Lembrete. Aprovação pertence ao bot no chat."],["GC14","Lembrete. Aprovação pertence ao bot no chat."],["GC41","Lembrete. Aprovação pertence ao bot no chat."],["GC68","Lembrete. Aprovação pertence ao bot no chat."],["GC95","Lembrete. Aprovação pertence ao bot no chat."]],
-    "geracao":"be3a28b454881d77",
+    "geracao":"aeee4abf35088455",
     "arquivo":"PersonagemPainel.gs"
   },
   {
@@ -456,7 +456,7 @@ var VALORES_PERSONAGEM_PAINEL_ = [
     "alturas":{},
     "esticam":[],
     "notas":[["GH109","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["GH134","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["GH34","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["GH59","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["GH84","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["GL114","Lembrete. Aprovação pertence ao bot no chat."],["GL14","Lembrete. Aprovação pertence ao bot no chat."],["GL39","Lembrete. Aprovação pertence ao bot no chat."],["GL64","Lembrete. Aprovação pertence ao bot no chat."],["GL89","Lembrete. Aprovação pertence ao bot no chat."],["GP109","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["GP134","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["GP34","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["GP59","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["GP84","Avisos do cadastro. Inválidos permanecem exportados e saem dos menus."],["GT114","Lembrete. Aprovação pertence ao bot no chat."],["GT14","Lembrete. Aprovação pertence ao bot no chat."],["GT39","Lembrete. Aprovação pertence ao bot no chat."],["GT64","Lembrete. Aprovação pertence ao bot no chat."],["GT89","Lembrete. Aprovação pertence ao bot no chat."]],
-    "geracao":"be3a28b454881d77",
+    "geracao":"aeee4abf35088455",
     "arquivo":"PersonagemPainel.gs"
   }
 ];

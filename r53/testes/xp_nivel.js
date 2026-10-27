@@ -35,6 +35,10 @@ if (fs.existsSync(fd)) {
   eq(exportada, curva, 'a curva da oficial é a do livro');
   curva = exportada;
 }
+const dvFicha = /"dv":(\[\[.*?\]\]),\n/.exec(inteiro.slice(inteiro.indexOf('"nome":"FICHA"'), inteiro.indexOf('"nome":"FICHA AMALDIÇOADA"')));
+const menuNivel = JSON.parse(dvFicha[1]).filter(d => d[0] === 'AH11');
+eq(menuNivel, [['AH11', '"' + Array.from({ length: 30 }, (_, i) => i + 1).join(',') + '"']], 'o NÍVEL é menu de 1 a 30');
+ok(/"menus_estritos":\[[^\]]*"AH11"/.test(inteiro.slice(inteiro.indexOf('"nome":"FICHA"'), inteiro.indexOf('"nome":"FICHA AMALDIÇOADA"'))), 'e estrito');
 eq(NIVEL, { nivel: 'AH11', contas: 'CY47:CZ54', base: 7, celula: 'CZ54', curva: 'AQ5:AR33' }, 'endereços do atalho');
 
 // 2. A conta, no atalho gerado
@@ -95,6 +99,10 @@ eq(roda({ total: 0, valor: '10', antes: '1', rotulo: '' }), [], 'ficha sem a bas
 eq(roda({ total: 0, valor: '', antes: '10' }), [], 'apagou o nível: nada');
 eq(roda({ total: 0, valor: 'dez', antes: '1' }), [], 'texto: nada');
 eq(roda({ total: 0, valor: '10.5', antes: '1' }), [], 'quebrado: nada');
+eq(roda({ total: 3950, valor: '0', antes: '10' }), [], 'zero: nada');
+eq(roda({ total: 3950, valor: '-3', antes: '10' }), [], 'negativo: nada');
+eq(roda({ total: 3950, valor: '31', antes: '10' }), [], 'acima do 30: nada');
+eq(roda({ total: 3950, valor: '8', antes: 'dez' }), [], 'antes inválido conta como subir, e o XP já passa do 8: fica');
 eq(roda({ total: 0, valor: '10' }), [['CZ54', 3700]], 'sem o valor de antes: como subir');
 // pelo r53EdicaoLivre_: a caixa do nível acerta a base e o resto segue como antes
 const p = planilha({ total: 0, valor: '10', antes: '1' });

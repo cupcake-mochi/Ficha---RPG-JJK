@@ -14,7 +14,9 @@ const before = read(loader.arquivos().map(name => cp.execFileSync('git',
   {encoding:'utf8', maxBuffer:100000000})).join('\n'));
 const after = read(loader.fontes());
 // 27/10/2026, o nível escrito na mão: a base do XP (CY54/CZ54), o XP total somando ela e a nota do XP total.
-const expected = new Set(['DADOS.vals.47,104.0', 'DADOS.vals.54,103', 'DADOS.vals.54,104', 'FICHA PESSOAL.notas.14.1']);
+// E o NÍVEL da FICHA (AH11) como menu estrito de 1 a 30.
+const expected = new Set(['DADOS.vals.47,104.0', 'DADOS.vals.54,103', 'DADOS.vals.54,104', 'FICHA PESSOAL.notas.14.1',
+  'FICHA.dv.AH11', 'FICHA.menus_estritos']);
 const changed = [];
 function compare(a,b,path) {
   if (JSON.stringify(a) === JSON.stringify(b)) return;
@@ -28,6 +30,8 @@ function compare(a,b,path) {
 }
 function normalize(sheet) {
   sheet.vals = Object.fromEntries(sheet.vals.map(v => [v[0]+','+v[1],v.slice(2)]));
+  // os menus pela faixa: um menu novo no meio da lista não desloca os outros (27/10/2026, o NÍVEL da FICHA)
+  if (Array.isArray(sheet.dv)) sheet.dv = Object.fromEntries(sheet.dv.map(d => [d[0], d.slice(1)]));
   return sheet;
 }
 assert.strictEqual(after.length,before.length);
@@ -45,6 +49,7 @@ for (let i=0;i<4;i++) {
   assert.strictEqual(sheet('DADOS_AM').vals[row+',97'][0],
     `=IF($A$2=2,IFERROR(INDEX($CO$2:$CO$5,${i+1}),""),IF($A$2>=3,IFERROR(INDEX($CQ$2:$CQ$4,${i+1}),""),""))`);
 }
-assert.strictEqual(sheet('FICHA AMALDIÇOADA').dv[0][1], 'DADOS_AM!$CS$2:$CS$5');
+assert.deepStrictEqual(sheet('FICHA AMALDIÇOADA').dv.J16, ['DADOS_AM!$CS$2:$CS$5']);
+assert.deepStrictEqual(sheet('FICHA').dv.AH11, ['"' + Array.from({length:30}, (_, i) => i + 1).join(',') + '"']);
 console.log(JSON.stringify({resultado:'OK',abas:after.length,mudancas_autorizadas:changed.length,
   demais_campos_iguais:true,escopo:'Fonte gerada; não compara a ficha preenchida'}));

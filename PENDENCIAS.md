@@ -8,13 +8,19 @@ também mexesse no XP; a conversão pela fração foi a minha recomendação no 
 - O atalho (`r53LivreNivel_`, chamado pelo `r53EdicaoLivre_` na FICHA!AH11 sozinha) acerta a base: subindo, o XP vai
   para o acumulado do nível novo (se já passa dele, fica); descendo, guarda a mesma fração do caminho até o próximo; se
   o XP já cabe no nível, nada. Uma leitura da DADOS e uma gravação, sem abrir o módulo. Ficha sem o rótulo "xp base"
-  não grava nada. O módulo (9dc3480a) não muda; o Codigo vai de 07a66b0a para 183cacda.
+  não grava nada, e nível fora de 1 a 30 ou quebrado também não. O módulo (9dc3480a) não muda; o Codigo vai de
+  07a66b0a para 97c430f4.
+- Segurança, a pedido dele depois do teste no celular ("recomendo colocar meios de segurança... caso o jogador coloque
+  valor invalido"): o NÍVEL (FICHA!AH11) virou menu estrito de 1 a 30 (`monta.py`), e o `delta_fila` compara os menus
+  pela faixa (um menu novo no meio da lista não desloca os outros).
+- Testado no celular dele numa cópia ("TESTE xp nível (descartável)", `14l3Bywwm…`): nível 11 na mão, missão, descer e
+  subir, todos os números certos ("so demora um poucom mas n é mt").
 - Notas: a do XP TOTAL (FICHA PESSOAL AW10, no gerador) e as de NÍVEL e XP da FICHA (AH10, AN10, no Codigo.gs). As do
   Codigo.gs só entram no módulo no próximo pacote inteiro; nas oficiais elas vão direto na célula.
-- Testes: `r53/testes/xp_nivel.js` (20.638 verificações, 9.900 pares de nível e XP, quatro defeitos plantados acenderam),
-  a parte 5 do `atalho_livre.js` (o onEdit inteiro grava só a base, sem o módulo) e o `delta_fila.js` com as 4 mudanças.
+- Testes: `r53/testes/xp_nivel.js` (20.644 verificações, 9.900 pares de nível e XP, quatro defeitos plantados acenderam),
+  a parte 5 do `atalho_livre.js` (o onEdit inteiro grava só a base, sem o módulo) e o `delta_fila.js` com as 6 mudanças.
 - Instalação: `node r53/diagnostico-android/preparar_xp_nivel.js <projeto-leve.json> <trecho>` (troca só o atalho) e,
-  na planilha, DADOS!CY54 "xp base", CZ54 0, a fórmula nova do CZ47 e as três notas.
+  na planilha, DADOS!CY54 "xp base", CZ54 0, a fórmula nova do CZ47, as três notas e o menu estrito do AH11.
 
 ## Testes no Linux com a ficha real · 27/10/2026 (Claude)
 

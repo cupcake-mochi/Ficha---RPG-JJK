@@ -283,7 +283,7 @@ function r53LivreNivelAlvo_(curva,total,n,o){
 function r53LivreNivel_(e){
  try{
   var x=R53_LIVRE_NIVEL_,n=Number(e.value),o=Number(e.oldValue);
-  if(e.value===undefined||e.value===''||isNaN(n)||n!==Math.floor(n))return;
+  if(e.value===undefined||e.value===''||isNaN(n)||n!==Math.floor(n)||n<1)return;
   var ss=e.source||e.range.getSheet().getParent(),d=ss.getSheetByName('DADOS');if(!d)return;
   var v=d.getRange(x.contas).getValues();
   if(v[0][0]!=='xp total'||v[x.base][0]!=='xp base')return;
