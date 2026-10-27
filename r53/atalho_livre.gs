@@ -20,11 +20,46 @@ function r53EdicaoLivre_(e){
   if(!e||!e.range)return false;var r=e.range,aba=r.getSheet().getName(),lista=R53_LIVRE_[aba],m=R53_LIVRE_MARCAS_[aba];
   // As marcas custom guardadas pelo módulo deixam de valer (marcasCustom_); apagar não lê a planilha.
   if(m&&r53LivreToca_(m,r))PropertiesService.getDocumentProperties().deleteProperty('r53_marcas_custom');
+  if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r);
   if(!lista||r53LivreToca_(lista,r)||!r53LivreValido_())return false;
   // Trilha ou Caminho mudou desde a última sincronização: a próxima edição nas quatro abas sincroniza.
   if(R53_LIVRE_FAMILIAS_.indexOf(aba)>=0&&PropertiesService.getDocumentProperties().getProperty(R53_LIVRE_PROP_))return false;
   return true;
  }catch(err){console.log('atalho livre: '+err.message);return false;}
+}
+// As caixas de ± da FICHA: o aplicarDelta_ do módulo sem abrir o módulo (a conta é o aplicaPasso_ dele).
+// a: atual, m: máximo, t: temporária; l: o retângulo da leitura; p: onde cada uma (±, a, m, t) cai nele.
+var R53_LIVRE_DELTA_={"AM26":{"a":"D26","m":"J26","t":"AF26","l":[26,4,1,36],"p":[[0,35],[0,0],[0,6],[0,28]]},"AM30":{"a":"D30","m":"J30","t":"AF30","l":[30,4,1,36],"p":[[0,35],[0,0],[0,6],[0,28]]},"AM34":{"a":"D34","m":"J34","t":"AF34","l":[34,4,1,36],"p":[[0,35],[0,0],[0,6],[0,28]]}};
+function r53LivrePasso_(atual, max, temp, passo) {
+  atual = Number(atual) || 0;
+  max = Number(max) || 0;
+  temp = Math.max(0, Number(temp) || 0);
+  passo = Number(passo) || 0;
+
+  var novo = atual;
+  if (passo < 0) {
+    var comido = Math.min(temp, -passo);
+    temp = temp - comido;
+    novo = atual - (-passo - comido);
+  } else {
+    novo = atual + passo;
+  }
+  return {
+    atual: Math.max(0, max ? Math.min(novo, max) : novo),
+    temp: temp
+  };
+}
+/** true: a caixa de ± foi tratada aqui. Erro antes de gravar devolve false, e o módulo faz como sempre. */
+function r53LivreDelta_(r){
+ var x=R53_LIVRE_DELTA_[r.getA1Notation()],gravou=false;
+ try{
+  var ficha=r.getSheet(),v=ficha.getRange(x.l[0],x.l[1],x.l[2],x.l[3]).getValues(),q=function(i){var p=x.p[i];return v[p[0]][p[1]];};
+  var passo=Number(q(0));if(!passo)return true;
+  var antes=x.t?Math.max(0,Number(q(3))||0):0,fim=r53LivrePasso_(q(1),q(2),antes,passo);
+  gravou=true;ficha.getRange(x.a).setValue(fim.atual);
+  if(x.t&&fim.temp!==antes)ficha.getRange(x.t).setValue(fim.temp);
+  r.clearContent();return true;
+ }catch(err){console.log('atalho do ±: '+err.message);return gravou;}
 }
 /** Antes do Caminho: Trilha e Caminho mudam o Amparo sem passar pelas quatro abas. */
 function r53LivreMarcar_(e){

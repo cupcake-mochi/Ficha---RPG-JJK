@@ -67,7 +67,7 @@ function editar(A, aba, r, c, v) {
 }
 let aberturas = 0;
 const novo = montar(true), velho = montar(false);
-const mapa = vm.runInContext('R53_LIVRE_', novo.ctx);
+const mapa = vm.runInContext('R53_LIVRE_', novo.ctx), delta = vm.runInContext('R53_LIVRE_DELTA_', novo.ctx);
 const toca = (l, r, c) => l.some(a => r >= a[0] && r <= a[2] && c >= a[1] && c <= a[3]);
 // semente fixa: a mesma amostra em toda rodada
 let s = 20261026; const rnd = n => { s = (s * 1103515245 + 12345) % 2147483648; return s % n; };
@@ -78,6 +78,8 @@ for (const aba of Object.keys(mapa)) {
     const r = 1 + rnd(sh.rows), c = 1 + rnd(sh.cols), v = ['texto', 7, ''][k % 3];
     const livre = !toca(mapa[aba], r, c);
     if (!livre && presas >= 900) continue;
+    // as caixas de ± fazem o mesmo sem abrir o módulo: conferidas no caixas_delta.js
+    if (aba === 'FICHA' && Object.prototype.hasOwnProperty.call(delta, novo.ss.getSheetByName(aba).getRange(r, c).getA1Notation())) continue;
     const a = editar(novo, aba, r, c, v);
     if (livre) {
       livres++;
