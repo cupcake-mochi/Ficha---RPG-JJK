@@ -1,4 +1,4 @@
-## XP digitado em cima da caixa de XP · 27/10/2026 (Claude) · testado numa cópia, nada nas oficiais
+## XP digitado em cima da caixa de XP · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 13 de backup)
 
 Pedido do Mizuki: um jeito de pôr o XP atual na mão sem quebrar a conta, com as missões antigas parando de mexer no XP e
 as novas somando por cima. Ele escolheu testar na mesma caixa ("se o tempo estiver estourando ou ficando acima de 20seg a
@@ -19,7 +19,8 @@ gente faz duas caixas") e o nível seguindo o XP nos dois sentidos.
   acenderam) e os de antes. Notas novas de NÍVEL e XP no Codigo.gs (entram no pacote inteiro; nas oficiais, direto na
   FICHA!AH10 e AN10).
 - Instalação: `node r53/diagnostico-android/preparar_xp_atualizar.js nuvem-b47/saidas/atalho/projeto-leve.json <trecho>`
-  (Codigo `b8410018` → `52302778`), mais as duas notas. Nas oficiais só com o ok do Mizuki e a versão 13 de backup.
+  (Codigo `b8410018` → `52302778`), mais as duas notas. Instalado nas duas oficiais com a versão 13 de backup
+  (r53/OFICIAIS.md, PR #41).
 
 ## Missões sem a leitura dos registros quando nada pode mudar · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 12 de backup)
 

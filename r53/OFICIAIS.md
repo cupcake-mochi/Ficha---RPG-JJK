@@ -196,6 +196,24 @@ Os dois últimos candidatos de fórmula (os 225 INDIRECT da DADOS_CUSTOM e a col
 não mudaram o tempo de edição (PENDENCIAS.md, PRs #33 e #34); nenhum foi às oficiais. O Mizuki fechou a otimização ("pode
 fechar então"). Estado final das duas oficiais: a tabela da seção "XP com o nível escrito na mão", com a versão 10 de backup.
 
+## XP digitado em cima da caixa de XP · 27/10/2026
+
+Aval do Mizuki no chat ("Acha necessario otimizar mais antes de dar merge e install? se n, pode dar install e merge";
+15,4 s na cópia, abaixo dos 20 s que ele pôs de limite). Pelo navegador do app, na conta dona (`/u/1/` lá). Antes, nas
+duas, os dez arquivos iguais à seção das missões (Codigo `b8410018`), e a versão 13 de backup ("Antes do XP digitado na
+caixa de XP (27/10/2026)": Era da Revolução 14:04, Ciclo Maldito 14:08), implantação de biblioteca arquivada em seguida.
+
+- Projeto: só o Codigo, sete pares (`r53/diagnostico-android/preparar_xp_atualizar.js`): no salário o
+  `salarioXpCongelado_`, no atalho a `r53LivreXp_` e o desvio da FICHA!AN11. O trecho conferiu o Codigo `b8410018`
+  antes e `52302778` depois.
+- Planilha, pela API do Sheets: as notas da FICHA!AH10 (NÍVEL) e AN10 (XP), iguais às do Codigo.gs. Conferido nas duas
+  que a DADOS!CY54 tem "xp base" e a FICHA!AN11 é `=DADOS!$CZ$47`, a conta que o atalho devolve.
+
+Depois de salvar e recarregar, iguais nas duas: Codigo `52302778…`; EditorR53 `c3d31096`, Analise `2ea7e9d4`, Ficha
+`6012dcb3`, Invocacoes `ebf20bb1`, Configuracao `bb784c6d`, Origens `90095228`, LotePaleta `848e878b`,
+PaletaSegundoPlano `a5a0e83d` e SalarioLote `366f6dd3` sem mudança. Módulo `9dc3480a` sem mudança. Para voltar: versão
+13 (e as notas antigas estão na seção "XP com o nível escrito na mão").
+
 ## Missões sem a leitura dos registros · 27/10/2026
 
 Aval do Mizuki no chat ("oq estavamos fazendo antes pode instalar e mesclar", sobre o PR #39). Pelo navegador do app, na
