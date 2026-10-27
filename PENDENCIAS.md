@@ -1,3 +1,24 @@
+## Carteira viva: escolhas, recursos e condições · 27/10/2026 · não instalada
+
+PR 31 em rascunho. Main `57117fb` incorporada por `6d4ddf1`; PR 38 registra
+backup 11 das oficiais, não reaplicado aqui. Contrato público reproduzível e
+três novos perfis: 19 escolhas básicas, 20 recursos/bônus, nove condições/descanso.
+Recursos atuais voltam às fórmulas dos máximos; notas de fábrica restauradas,
+incluindo Sequelas extras. Máximos, regras/catálogos, formatos e validações preservados.
+Diário único de cena excedia tamanho: separado e guarda de 9.000 bytes UTF-8
+adicionada antes de gravar, sem mudar a assinatura financeira v1. 502 cenários
+offline passaram (101/80/78 + 243 novos), incluídos no smoke Linux. Leitura
+nativa: 112 conferências em cada oficial, sem escrita; sete variantes de aspas
+opcionais reconhecidas estritamente. Projeção por Sheets API em cópia privada
+do Ciclo: 48 campos/notas, 11.634 comparações delimitadas sem diferença;
+recursos acompanharam máximos após escolhas fictícias (23/23, 8/8, 26/26).
+Cópia na lixeira/aba fechada. Não executou os novos diários Apps Script/OAuth.
+Leia `r53/inicializacao/ESCOLHAS-RECURSOS-2026-10-27.md` e README: cobertura e
+limites. Grau, treinos, capacidades de Origem, técnica/Famílias, inventário,
+entidades/cartões, fotos/recuperações, orquestração e automações ainda pendentes.
+Criação segue bloqueada; sem pacote instalado, merge em main, deploy ou escopo novo.
+Próxima implementação GPT-6 Astra / Alto; revisão focal Médio.
+
 ## Carteira viva: nível/base de XP e textos pessoais · 27/10/2026 · protótipos
 
 PR 31 em rascunho, branch `codex/inicializacao-financeira-carteira`. Main

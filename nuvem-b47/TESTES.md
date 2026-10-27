@@ -1,3 +1,13 @@
+# Escolhas, recursos e condições da Carteira · 27/10/2026
+
+O smoke inclui `r53/testes/inicializacao_pessoal.js`: 243 cenários novos,
+contrato público conferido contra fonte sem regenerar, falhas de escrita,
+limites, concorrência, notas, fórmulas e variantes Google. Total de inicialização
+502 (101/80/78/243), sem somar ao bot. Guarda de diário acima de 9.000 bytes
+UTF-8 exige zero escrita; recursos/condições separados por esse limite real.
+Projeção Sheets API não é execução Apps Script: ver
+`r53/inicializacao/ESCOLHAS-RECURSOS-2026-10-27.md`. Não libera criação.
+
 # Inicialização parcial da Carteira · 27/10/2026
 
 O smoke inclui `r53/testes/inicializacao_financeiro.js` (101 cenários),

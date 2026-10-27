@@ -7,10 +7,11 @@ bot permanece bloqueada. Não executar em ficha oficial ou de jogador.
 O modelo do servidor é a ficha do sistema com configurações extras da mesa.
 A cópia deve conservar essas regras e catálogos; não deve herdar identidade,
 progressão, inventário, missões, cartões ou dinheiro de outro personagem.
-Os protótipos cobrem o financeiro, o nível inicial/base de XP e 14 campos de
-texto pessoal. **Não oferecem uma ficha inteira pronta para cadastro.** A base
-incorporada atualmente é a main `b0dc6aacef08b2c01a7f8a3519bbcc9bff9546ed` (merge
-`84bcd56`); inclui XP base, fechamento da otimização Android e PR 37 salarial.
+Os protótipos cobrem financeiro, nível/base de XP, 14 textos pessoais,
+19 escolhas básicas, 20 entradas de recursos/bônus e nove de condições/descanso. **Não oferecem uma ficha inteira pronta para cadastro.** A base
+incorporada atualmente é a main `57117fbe5c2361e6a09bfa00f037b4bcfaa8437f` (merge
+`6d4ddf1`); inclui XP base, fechamento da otimização Android e PRs 37/38 salariais. A versão 11 instalada nas oficiais foi apenas
+registrada pela main; esta branch não a reaplica.
 Não reabrir aquela otimização nem instalar o pacote inteiro por rotina.
 
 ## Financeiro
@@ -108,6 +109,59 @@ fórmula de imagem ou outro conteúdo causa recusa. Isso **não inspeciona nem
 remove imagens sobrepostas**: fotos/arte continuam pendentes no retorno.
 Textos e notas pessoais não são colocados no diário ou na resposta.
 
+## Escolhas, recursos e condições
+
+`pessoal.gs` e `contrato_pessoal.gs` acrescentam três perfis independentes:
+
+| Perfil / funções Previa e Aplicar | Cobertura |
+|---|---|
+| `r53NovaFichaEscolhas*` | 19 escolhas básicas da FICHA: Caminho, Trilha, Origem, cinco atributos base, cinco distribuições de Corpo, três contadores de marcos e três seletores pessoais de atributo |
+| `r53NovaFichaRecursos*` | 20 entradas: Vida/Energia/Integridade atuais, seus bônus/temporários/caixas ± e oito bônus pessoais de estatísticas |
+| `r53NovaFichaCondicoes*` | Nove entradas: descanso/último descanso, três Sequelas, Sequelas extras, Exaustão, resistências e imunidades |
+
+Escolhas voltam aos valores de fábrica da ficha, incluindo os convites de
+Caminho/Trilha e a Origem Latente. Atributos/distribuições/marcos ficam em 0;
+isso **não distribui os pontos nem conclui a criação**. Não escolhe Grau,
+treinos, capacidades da Origem, técnica, Famílias ou cartões.
+
+Recursos atuais voltam a `=J26`, `=J30` e `=J34`, o comportamento do modelo.
+Assim acompanham seus máximos enquanto o personagem é montado; não recebem
+um número herdado ou deduzido do resultado antigo. Os máximos e demais
+fórmulas protegidas não são sobrescritos. Fórmula pessoal desconhecida num
+campo atual é recusada; número de recurso gasto pode ser inicializado.
+
+As notas das 48 entradas voltam às notas de fábrica. Isso remove texto
+pessoal sem apagar a instrução de Sequelas extras. Notas dos cabeçalhos,
+formatos, validações, regras e catálogos ficam fora das escritas.
+
+Contrato gerado apenas dos campos listados da fonte pública Ficha.gs:
+
+```sh
+node r53/inicializacao/gerar_contrato_pessoal.js --conferir
+```
+
+`--conferir` não regenera nada; divergência exige revisão do produtor antes
+de usar o gerador sem a opção. Não identifica código instalado no Google.
+Os hashes aceitam só as variantes conhecidas dos separadores e das aspas
+opcionais em FICHA/DADOS_PROGRESSAO, preservando textos entre aspas duplas.
+Mudanças na conta/referência continuam recusadas. A conferência de rótulos e
+fórmulas desses perfis usa duas leituras em bloco de `FICHA!D10:AT70`;
+não guarda as leituras entre chamadas nem elimina a releitura antes das escritas.
+
+O primeiro desenho juntava 29 entradas de cena e ultrapassava o tamanho por
+valor do diário. Recursos e condições foram separados; o executor agora
+recusa qualquer diário acima de **9.000 bytes UTF-8 antes de gravar**. Não
+alterar a expectativa para permitir um diário que só cabe na VM. O formato e
+a assinatura financeira v1 continuam iguais.
+
+502 cenários de inicialização passaram (101 financeiro, 80 nível/base, 78
+textos, 243 escolhas/recursos/condições). Leitura nativa das duas oficiais:
+112 conferências por documento, zero divergências após tratar as variantes
+Google. Projeção dos efeitos em cópia privada do Ciclo: 48 campos/notas e
+11.634 comparações delimitadas preservadas sem diferença. Recursos ligados
+aos máximos, nota de Sequelas extras restaurada; cópia na lixeira. Não é
+execução nativa dos diários. [Registro](ESCOLHAS-RECURSOS-2026-10-27.md).
+
 ## Ordem e limite entre domínios
 
 São perfis fixos do produtor, nunca um plano arbitrário enviado pelo navegador.
@@ -170,15 +224,17 @@ limpeza. Não há opção “forçar” ou rollback automático de dados pessoai
 node r53/testes/inicializacao_financeiro.js
 node r53/testes/inicializacao_progressao.js
 node r53/testes/inicializacao_identidade.js
+node r53/testes/inicializacao_pessoal.js
 ```
 
-259 cenários offline (101 financeiros, 80 de nível/base e 78 de textos),
+502 cenários offline (101 financeiros, 80 de nível/base, 78 de textos e
+243 de escolhas/recursos/condições),
 incluindo todas as fronteiras de escrita antes/depois,
 queda entre conteúdo/notas, propriedades parcialmente removidas, repetição,
 edição concorrente, linhas físicas tardias, prévia envelhecida, alvo inválido,
 modo legado, fórmula desconhecida, preservação de regras e ausência de texto
 financeiro no diário. VM com serviços simulados; não executa fórmulas e não
-mede latência do Google. O smoke de nuvem inclui os três testes.
+mede latência do Google. O smoke de nuvem inclui os quatro testes; o novo também confere o contrato gerado.
 CI Linux final do integrado `84bcd56` aprovado: [40535287570](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40535287570).
 CI anterior do protótipo `280a7dc`: [40534237271](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40534237271).
 Registro posterior apenas documental, sem repetir a bateria.
@@ -209,9 +265,10 @@ Detalhes em [NIVEL-TEXTOS-2026-10-27.md](NIVEL-TEXTOS-2026-10-27.md).
 
 ## O que falta antes de liberar criação
 
-- Inicialização pessoal completa: fotos/arte, escolhas, atributos, treinos,
-  marcos, recursos, inventário, entidades, cartões e MONTAGENS. Nível/base e
-  textos têm protótipos, não aceite nativo dos executores.
+- Inicialização pessoal completa: fotos/arte, Grau, treinos, capacidades de
+  Origem, técnica/Famílias, inventário, entidades, cartões e MONTAGENS. As
+  escolhas básicas, atributos/marcos pessoais, recursos e condições tratados
+  têm protótipos; ainda falta aceite nativo dos executores e cobertura restante.
 - Propriedades de recuperação/editor que podem repor dados antigos, incluindo
   caches novos `r53_versoes` e `r53_marcas_custom`, além de Classe/amparo/recuperações.
 - Orquestração entre fases, conferência combinada, limites de custo e prova

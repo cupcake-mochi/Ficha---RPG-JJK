@@ -49,6 +49,10 @@ function ambiente(op = {}) {
     return {getValues: () => read('v'), getFormulas: () => read('f'), getNotes: () => read('n'),
       getValue: () => read('v')[0][0],
       setValue(v) { edit('valor', 'v', v); return this; },
+      setFormula(v) { mutation('formula', `${sheet}!${addr}`, () => {
+        for(let r=r1;r<=r2;r++)for(let c=c1;c<=c2;c++)cells.set(`${sheet}!${r},${c}`, {...get(sheet,r,c),v:'',f:v});
+      }); return this; },
+      setNote(v) { edit('nota', 'n', v); return this; },
       clearContent() { edit('conteudo', 'v', ''); return this; },
       clearNote() { edit('notas', 'n', ''); return this; }};
   }
@@ -64,6 +68,7 @@ function ambiente(op = {}) {
   }; }
   ctx.PropertiesService = {getDocumentProperties: () => props(doc, 'doc'), getScriptProperties: () => props(script, 'script')};
   ctx.Utilities = {DigestAlgorithm: {SHA_256: 'sha256'}, Charset: {UTF_8: 'utf8'},
+    newBlob: value => ({getBytes: () => [...Buffer.from(value, 'utf8')]}),
     computeDigest: (algo, s) => [...crypto.createHash(algo).update(s, 'utf8').digest()]};
   ctx.LockService = {getDocumentLock: () => ({tryLock() { if (op.ocupado) return false; lock = true; return true; },
     releaseLock() { assert(lock); lock = false; }})};

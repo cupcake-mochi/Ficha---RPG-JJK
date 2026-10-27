@@ -26,6 +26,14 @@ function r53NovaFinHash_(v) {
   return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, r53NovaFinCanon_(v), Utilities.Charset.UTF_8)
     .map(function(b) { return ('0' + ((b + 256) % 256).toString(16)).slice(-2); }).join('');
 }
+function r53NovaDiarioSalvar_(props, chave, diario) {
+  var texto = JSON.stringify(diario);
+  // Margem conservadora dentro do limite por valor do Apps Script. Recusar
+  // antes da primeira escrita, sem aceitar um diário que só cabe na VM.
+  if (Utilities.newBlob(texto).getBytes().length > 9000)
+    r53NovaFinErro_('diário excede o limite; dividir o domínio antes de inicializar.');
+  props.setProperty(chave, texto);
+}
 function r53NovaFinContexto_(ss, contexto) {
   if (!contexto || contexto.versao !== 1 || !/^[a-zA-Z0-9_-]{16,100}$/.test(contexto.operacao || '') ||
       typeof contexto.destino !== 'string' || typeof contexto.modelo !== 'string' || !contexto.modelo ||
@@ -81,7 +89,7 @@ function r53NovaFinOperacoes_(ss) {
 function r53NovaFinLer_(ss, op) {
   if (op.tipo === 'propriedade') return r53NovaFinProps_(op).getProperty(op.chave);
   var r = r53NovaFinFaixa_(ss, op);
-  if (op.tipo === 'notas') return r.getNotes();
+  if (op.tipo === 'notas' || op.tipo === 'nota') return r.getNotes();
   var formulas = r.getFormulas(), valores = r.getValues();
   // Resultado em cache pode mudar após limpar o livro. Identificar a fórmula,
   // não seu resultado transitório, evita uma falsa edição concorrente em O86.
@@ -98,6 +106,8 @@ function r53NovaFinDepois_(atual, op) {
   if (op.tipo === 'propriedade') return null;
   var vazio = function(m, v) { return m.map(function(l) { return l.map(function() { return v; }); }); };
   if (op.tipo === 'notas') return vazio(atual, '');
+  if (op.tipo === 'nota') return vazio(atual, op.valor);
+  if (op.tipo === 'formula') return {valores: vazio(atual.valores, null), formulas: vazio(atual.formulas, op.formula)};
   return {valores: vazio(atual.valores, op.tipo === 'valor' ? op.valor : ''), formulas: vazio(atual.formulas, '')};
 }
 function r53NovaFinFormulas_() {
@@ -194,7 +204,7 @@ function r53NovaPerfilAplicar_(ss, contexto, assinatura, perfil) {
       var plano = r53NovaFinMontar_(ss, contexto, perfil);
       if (typeof assinatura !== 'string' || assinatura !== r53NovaFinHash_(plano)) r53NovaFinErro_('a cópia mudou após a prévia.');
       j = {assinatura: assinatura, plano: plano, concluido: false};
-      dp.setProperty(perfil.diario, JSON.stringify(j));
+      r53NovaDiarioSalvar_(dp, perfil.diario, j);
     }
     if (r53NovaFinHash_(ops) !== j.plano.layout || perfil.preservados(ss) !== j.plano.preservados)
       r53NovaFinErro_('estrutura, fórmula ou configuração mudou; revisão manual necessária.');
@@ -223,6 +233,8 @@ function r53NovaPerfilAplicar_(ss, contexto, assinatura, perfil) {
       else {
         var r = r53NovaFinFaixa_(ss, op);
         if (op.tipo === 'notas') r.clearNote();
+        else if (op.tipo === 'nota') r.setNote(op.valor);
+        else if (op.tipo === 'formula') r.setFormula(op.formula);
         else if (op.tipo === 'valor') r.setValue(op.valor);
         else r.clearContent();
       }
@@ -238,7 +250,7 @@ function r53NovaPerfilAplicar_(ss, contexto, assinatura, perfil) {
         ((novo || escritas > 0) && ops.some(function(op, i) { return r53NovaFinHash_(r53NovaFinLer_(ss, op)) !== j.plano.passos[i].depois; })))
       r53NovaFinErro_('pós-condição não confirmada; não cadastrar a cópia.');
     if (!j.concluido) {
-      j.concluido = true; dp.setProperty(perfil.diario, JSON.stringify(j));
+      j.concluido = true; r53NovaDiarioSalvar_(dp, perfil.diario, j);
     }
     return {versao: 1, dominio: perfil.nome, concluido: true, criacaoDisponivel: false,
             operacao: vinculo.operacao, pendente: perfil.pendente.slice()};
