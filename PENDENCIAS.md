@@ -1,3 +1,22 @@
+## Carteira viva: Grau, Origem e treinos · 27/10/2026 · não instalada
+
+PR 31 em rascunho. Main 64b84e4 incorporada por 3f57c19; inclui PRs 39/40,
+registro de instalação/backup 12 por outro trabalho, sem reaplicar aqui.
+Quatro perfis novos, 268 células: Grau/Origem 10, Perícias 99, Ofícios/TR 94,
+armas 65. Defaults e notas da fábrica, catálogos preservados; Grau 4 sem
+inferência pelo nível. Bônus custom em AL; W86 protegido pelo overlay salarial.
+Escrita por matrizes com diários/limites; estado intermediário desconhecido
+provoca recusa, sem sobrescrita/rollback. Assinatura financeira v1 mantida.
+692 cenários offline passaram (101/80/78/243/190); regressões upstream de
+missões 2.076 e salário 95 passaram. Leitura nativa: 457 conferências por
+oficial, zero divergências; nenhuma escrita, cópia ou execução Apps Script
+nova. Relatório r53/inicializacao/FORMACAO-2026-10-27.md e README.
+Ainda faltam técnica/Famílias, inventário, entidades/cartões/MONTAGENS, fotos,
+recuperações, orquestração/conferência final, automações, novo responsável e
+integração drive.file/prova nativa completa. Criação continua bloqueada;
+fora do pacote/bot, sem merge em main ou deploy. Próxima implementação
+GPT-6 Astra / Alto; revisão focal Médio. Entradas abaixo são históricas.
+
 ## Carteira viva: escolhas, recursos e condições · 27/10/2026 · não instalada
 
 PR 31 em rascunho. Main `57117fb` incorporada por `6d4ddf1`; PR 38 registra

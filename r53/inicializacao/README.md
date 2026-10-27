@@ -8,10 +8,12 @@ O modelo do servidor é a ficha do sistema com configurações extras da mesa.
 A cópia deve conservar essas regras e catálogos; não deve herdar identidade,
 progressão, inventário, missões, cartões ou dinheiro de outro personagem.
 Os protótipos cobrem financeiro, nível/base de XP, 14 textos pessoais,
-19 escolhas básicas, 20 entradas de recursos/bônus e nove de condições/descanso. **Não oferecem uma ficha inteira pronta para cadastro.** A base
-incorporada atualmente é a main `57117fbe5c2361e6a09bfa00f037b4bcfaa8437f` (merge
-`6d4ddf1`); inclui XP base, fechamento da otimização Android e PRs 37/38 salariais. A versão 11 instalada nas oficiais foi apenas
-registrada pela main; esta branch não a reaplica.
+19 escolhas básicas, 20 entradas de recursos/bônus, nove condições/descanso e
+268 campos de Grau/Origem, Perícias, Ofícios/TR e armas. **Não oferecem uma
+ficha inteira pronta para cadastro.** A base incorporada é a main
+`64b84e4cef0b1b0a05c2159c9dc700459a0f2dc9` (merge `3f57c19`). Inclui o código
+salarial da PR 39 e o registro da PR 40 sobre instalação/backup 12 das oficiais,
+feito por outro trabalho. Esta branch não reaplica essa instalação.
 Não reabrir aquela otimização nem instalar o pacote inteiro por rotina.
 
 ## Financeiro
@@ -286,3 +288,28 @@ Não reconstruir a ficha, não instalar este protótipo nas oficiais, não mudar
 seus escopos nem adicionar acionadores para contornar esses itens. Próxima
 implementação integrada: **GPT-6 Astra / Alto**; revisão focal: esforço Médio.
 A indicação não altera a configuração do modelo automaticamente.
+
+## Grau, Origem e treinos
+
+`formacao.gs` usa `contrato_formacao.gs`, extraído de Ficha/Pessoal e do módulo
+salarial. Confira sem regenerar com
+`node r53/inicializacao/gerar_contrato_formacao.js --conferir`.
+
+| Perfil | Células | Inicialização |
+|---|---:|---|
+| Grau/Origem | 10 | Grau 4 de fábrica, menus/histórico vazios e fórmulas originais de descrição, Ofício e talento |
+| Perícias | 99 | Treinos/especialidades desmarcados e bônus pessoais zerados |
+| Ofícios/TR | 94 | Treinos/bônus, atributos padrão e fórmulas dos atributos de Ofícios custom |
+| Armas | 65 | Grupos e armas individuais desmarcados |
+
+Não infere Grau pelo nível nem concede treinos de Caminho. Não há seletor de
+Grau inicial de campanha reconhecido neste contrato; uma opção futura exige
+semântica explícita. Catálogos custom permanecem: os bônus pessoais novos estão
+em AL, enquanto campos antigos da B47 são espelhos derivados ou mesclas.
+Notas de fábrica voltam, inclusive a instrução extensa da Origem.
+
+As matrizes de conteúdo e notas seguem o mesmo diário/trava, quatro escritas
+por chamada e limite de 9.000 bytes. Fórmula Google só é reconhecida se constar
+na lista exata do campo. Se uma escrita de matriz deixar estado intermediário,
+a rotina recusa continuar: não sobrescreve nem faz rollback automático.
+Relatório e provas: [FORMACAO-2026-10-27.md](FORMACAO-2026-10-27.md).

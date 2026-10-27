@@ -1,3 +1,12 @@
+# Grau, Origem e treinos da Carteira · 27/10/2026
+
+Smoke inclui `r53/testes/inicializacao_formacao.js`: 190 cenários novos.
+Inicialização total 692 (101/80/78/243/190), assinatura financeira v1 fixa,
+contrato gerado conferido sem regeneração, falhas por escrita e matriz parcial
+recusada. Guardas do salário usam a fórmula instalada pelo módulo Salarios.
+Leitura das oficiais foi somente leitura, 457 conferências cada; não executou
+os novos perfis no Apps Script. Ver FORMACAO-2026-10-27.md na inicialização.
+
 # Escolhas, recursos e condições da Carteira · 27/10/2026
 
 O smoke inclui `r53/testes/inicializacao_pessoal.js`: 243 cenários novos,

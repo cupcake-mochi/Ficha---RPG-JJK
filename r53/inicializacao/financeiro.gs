@@ -89,8 +89,15 @@ function r53NovaFinOperacoes_(ss) {
 function r53NovaFinLer_(ss, op) {
   if (op.tipo === 'propriedade') return r53NovaFinProps_(op).getProperty(op.chave);
   var r = r53NovaFinFaixa_(ss, op);
-  if (op.tipo === 'notas' || op.tipo === 'nota') return r.getNotes();
+  if (op.tipo === 'notas' || op.tipo === 'nota' || op.tipo === 'notas_matriz') return r.getNotes();
   var formulas = r.getFormulas(), valores = r.getValues();
+  // Apenas equivalências exatas publicadas pelo produtor para estes alvos.
+  // Não normalizar fórmulas desconhecidas nem resultados calculados.
+  formulas = formulas.map(function(l, i) { return l.map(function(f, k) {
+    var lista = op.tipo === 'formula' ? op.formulasEquivalentes :
+      op.tipo === 'matriz' && op.formulasEquivalentes && op.formulasEquivalentes[i] ? op.formulasEquivalentes[i][k] : null;
+    return f && lista && lista.indexOf(f) >= 0 ? (op.tipo === 'formula' ? op.formula : op.valores[i][k]) : f;
+  }); });
   // Resultado em cache pode mudar após limpar o livro. Identificar a fórmula,
   // não seu resultado transitório, evita uma falsa edição concorrente em O86.
   return {valores: valores.map(function(l, i) { return l.map(function(v, k) {
@@ -107,7 +114,12 @@ function r53NovaFinDepois_(atual, op) {
   var vazio = function(m, v) { return m.map(function(l) { return l.map(function() { return v; }); }); };
   if (op.tipo === 'notas') return vazio(atual, '');
   if (op.tipo === 'nota') return vazio(atual, op.valor);
+  if (op.tipo === 'notas_matriz') return op.notas;
   if (op.tipo === 'formula') return {valores: vazio(atual.valores, null), formulas: vazio(atual.formulas, op.formula)};
+  if (op.tipo === 'matriz') return {
+    valores: op.valores.map(function(l) { return l.map(function(v) { return typeof v === 'string' && v.charAt(0) === '=' ? null : v; }); }),
+    formulas: op.valores.map(function(l) { return l.map(function(v) { return typeof v === 'string' && v.charAt(0) === '=' ? v : ''; }); })
+  };
   return {valores: vazio(atual.valores, op.tipo === 'valor' ? op.valor : ''), formulas: vazio(atual.formulas, '')};
 }
 function r53NovaFinFormulas_() {
@@ -234,6 +246,8 @@ function r53NovaPerfilAplicar_(ss, contexto, assinatura, perfil) {
         var r = r53NovaFinFaixa_(ss, op);
         if (op.tipo === 'notas') r.clearNote();
         else if (op.tipo === 'nota') r.setNote(op.valor);
+        else if (op.tipo === 'notas_matriz') r.setNotes(op.notas);
+        else if (op.tipo === 'matriz') r.setValues(op.valores);
         else if (op.tipo === 'formula') r.setFormula(op.formula);
         else if (op.tipo === 'valor') r.setValue(op.valor);
         else r.clearContent();

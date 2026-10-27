@@ -53,6 +53,14 @@ function ambiente(op = {}) {
         for(let r=r1;r<=r2;r++)for(let c=c1;c<=c2;c++)cells.set(`${sheet}!${r},${c}`, {...get(sheet,r,c),v:'',f:v});
       }); return this; },
       setNote(v) { edit('nota', 'n', v); return this; },
+      setValues(m) { mutation('valores', `${sheet}!${addr}`, () => {
+        assert.equal(m.length,r2-r1+1); assert(m.every(l=>l.length===c2-c1+1));
+        for(let r=r1;r<=r2;r++)for(let c=c1;c<=c2;c++){const v=m[r-r1][c-c1],f=typeof v==='string'&&v.startsWith('=')?v:'';cells.set(`${sheet}!${r},${c}`,{...get(sheet,r,c),v:f?'':v,f});}
+      }); return this; },
+      setNotes(m) { mutation('notasMatriz', `${sheet}!${addr}`, () => {
+        assert.equal(m.length,r2-r1+1); assert(m.every(l=>l.length===c2-c1+1));
+        for(let r=r1;r<=r2;r++)for(let c=c1;c<=c2;c++)cells.set(`${sheet}!${r},${c}`,{...get(sheet,r,c),n:m[r-r1][c-c1]});
+      }); return this; },
       clearContent() { edit('conteudo', 'v', ''); return this; },
       clearNote() { edit('notas', 'n', ''); return this; }};
   }
