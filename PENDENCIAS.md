@@ -1,3 +1,16 @@
+## Recálculo: os 225 INDIRECT da DADOS_CUSTOM não pesam · 27/10/2026 (Claude) · nada instalado
+
+`r53/diagnostico-android/grafo_recalculo.py <ficha exportada .json> [aba!célula ...]` monta o grafo de dependências das
+124.603 fórmulas da oficial exportada. As únicas funções voláteis são os 525 INDIRECT de 225 fórmulas da DADOS_CUSTOM
+(as listas dos menus da CONFIGURAÇÃO); atrás deles vêm 4.017 células (405 da DADOS_R53, ~2 MB de fórmula). Um ± de vida,
+sozinho, faz recalcular 3 células.
+Teste numa cópia nova da Era (`1xS6WobF…`, "TESTE recálculo INDIRECT (descartável)"): uma regex só (findReplace da API)
+trocou os 525 por `CHOOSE(IFERROR(MATCH(seletor;{os 8 rótulos};0);9);as 9 faixas)`, a mesma troca do
+`experimento_listas.gs`; três somas de controle da DADOS_CUSTOM inteira deram iguais nos 10 estados dos 25 seletores,
+antes e depois. ± de vida (FICHA!AM26), duração do onEdit: antes 10,7 / 11,6 / 12,7 / 14,9 / 10,3 / 8,1 s (mediana 11,1),
+depois 12,2 / 10,7 / 10,2 / 11,3 / 7,2 / 11,4 s (mediana 11,0): dentro da oscilação. Não vale levar para as oficiais.
+Próximo candidato, da REVISAO-FINAL §4: a coluna FD da DADOS_R53 (249 fórmulas sem consumidor, ~8,9 MB de texto).
+
 ## XP com o nível escrito na mão · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 10 de backup)
 
 Com o nível 10 escrito e 250 de XP, a caixa de falta da FICHA PESSOAL pedia 4.150 (o acumulado do 11 menos o XP, que
