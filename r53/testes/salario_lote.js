@@ -374,7 +374,8 @@ let casos = 0;
   const d = ambiente({tabela: [], semTrava: true, q2: ctx => new (vm.runInContext('Date', ctx))(Date.UTC(2026, 7, 20, 15))});
   assert.strictEqual(d.ctx.salarioCongelar_(d.ss, d.hoje).proximo, 46254 + 30, 'Q2 como Date (formato de data)');
   const v = ambiente({tabela: [], semTrava: true, q2: ''});
-  assert.strictEqual(v.ctx.salarioCongelar_(v.ss, v.hoje).proximo, v.hoje + 1, 'sem emissão: amanhã');
+  // 27/10/2026: sem emissão, a próxima conferência fica para longe; emitir apaga a data (abertura_salario.js).
+  assert.strictEqual(v.ctx.salarioCongelar_(v.ss, v.hoje).proximo, v.hoje + 3650, 'sem emissão: longe');
   casos += 3;
 }
 {

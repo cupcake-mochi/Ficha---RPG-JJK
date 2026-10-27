@@ -66,3 +66,39 @@ Codigo mudou. Edições pelo navegador, uma a cada ~20 s, duração do onEdit no
 Média 12,4 → 11,4 s: o ~1 s esperado aparece, mas dentro da oscilação do Google (±2–4 s por edição). Depois, as outras
 caixas: integridade 65/65 −1 → 64 (12,3 s), +5 → 65, preso no máximo (14,4 s); energia 0 sem máximo +2 → 2 (11,4 s).
 Todas as caixas limparam. Vida 53 → 50 → … → 47, coerente com os ± digitados.
+
+## Abertura (onOpen): a releitura diária do salário · 27/10/2026
+
+Execuções das oficiais (7 dias): onOpen de 8,0–11,6 s quando o log tem "SAL início … SAL congelados 0" (o
+`r53SalarioAbrir_` relê a DADOS_SALARIOS!P2:Y130, ~7,5 s, e não acha nada), e 2,5–3,1 s quando ele pula. Na página geral,
+o de 20,6 s (11:21) é a primeira abertura de uma cópia nova: 7,8 s do salário e o resto da cópia fria.
+
+Cópia da Era (`12m47x86…`, "TESTE abertura (descartável)", projeto `1ktGwNGj…`), com o perfil por rotina:
+
+| Abertura | Execução | onOpen | Onde |
+|---|---:|---:|---|
+| 1ª (sem a data guardada) | 9,9 s | 7,7 s | `salarioCongelar_` 6,0 s, `r53Menu_` 1,2 s |
+| 2ª | 4,6 s | 1,3 s | `salarioMenu_` 0,8 s |
+| 3ª | 1,6 s | 0,3 s | — |
+
+Causa: sem carteira emitida, o `salarioCongelar_` devolvia `proximo: hoje+1`, e a data guardada (`salario_proximo`)
+vencia todo dia. As oficiais são fichas base sem carteira: a primeira abertura de cada dia (no Android, onde o onOpen
+não roda, a primeira edição rápida) pagava ~6–7,5 s. Corte: `hoje+3650`. Emitir apaga a data guardada
+(`salarioEmitir_`, `reemitirCarteira` e o onEdit da CARTEIRA!AT3 e da CONFIGURAÇÃO O38:O39, área própria do
+`r53SalarioOnEdit_`), e a conferência volta na hora; com a carteira emitida, nada muda.
+`r53/testes/abertura_salario.js` (15): sem carteira, 3650 dias (antes, amanhã); com carteira, igual; em três dias seguidos
+as releituras caem de 3 para 0. Instalação: `node r53/diagnostico-android/preparar_abertura_salario.js
+nuvem-b47/saidas/atalho/projeto-leve.json <trecho>` troca só essa linha do Codigo (`97c430f4` → `f86423cf`).
+
+Medido com o corte instalado na mesma cópia (Codigo `f86423cf`, mais uma linha de log só na cópia que mostra a data
+guardada). Uma edição na área do salário (FICHA PESSOAL!AW15) apaga a data, como faria uma emissão; depois:
+
+| Abertura | Execução | onOpen | Conferência do salário | Data guardada |
+|---|---:|---:|---|---|
+| 12:42:10 | 7,5 s | 5,7 s | rodou: `salarioCongelar_` 4,6 s, congelados 0 | `49972` (hoje 46322 + 3650) |
+| 12:42:48 | 3,2 s | 0,7 s | pulou (0,16 s) | `49972` |
+
+Antes do corte, a mesma data ficava em `46323` (amanhã) e a conferência voltava na primeira abertura do dia seguinte.
+Observação fora do corte: apagar o "x" da AW15 (nome sem tipo, nada registrado) estourou os 30 s às 12:41:08 sem nenhuma
+linha de log; o "x" em si levou 12,6 s. Não se repetiu porque a edição seguinte caiu na AW14 (o rótulo "MISSÃO" da cópia
+ficou vazio; a cópia é descartável). Fica para o item das missões.
