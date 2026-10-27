@@ -10,9 +10,12 @@ let checks = 0;
 const eq = (a, b, m) => { assert.deepStrictEqual(a, b, m); checks++; };
 const raiz = path.resolve(__dirname, '..', '..');
 const antes = execSync('git show 57117fb:apps-script/Salarios.gs', { cwd: raiz }).toString('utf8');
+// O de agora já tem o XP congelado; sem marca nas notas ele faz o mesmo, e é ele que roda contra o de 57117fb.
 const agora = fs.readFileSync(path.join(raiz, 'apps-script/Salarios.gs'), 'utf8');
-eq(preparar(antes), agora, 'o preparador reproduz o Salarios.gs');
-assert.throws(() => preparar(agora), /já presentes/); checks++;
+// Depois desta troca veio a do XP congelado (27/10, preparar_xp_atualizar.js), com o próprio teste.
+const comXp = require('../diagnostico-android/preparar_xp_atualizar').preparar;
+eq(comXp(preparar(antes)), agora, 'o preparador reproduz o Salarios.gs');
+assert.throws(() => preparar(preparar(antes)), /já presentes/); checks++;
 assert.throws(() => preparar(antes.replace("getRange('A2:G')", "getRange('A2:H')")), /divergente/); checks++;
 
 const OP = { espelhos: true, xp: 450, nivel: 6, limiar: 0, painel: [], registros: [] };

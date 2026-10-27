@@ -218,6 +218,74 @@ function gerar(projeto, dump) {
 // A caixa do nível na FICHA e, na DADOS, as contas da pessoal do XP total (CY47) até a base (CY54) e a curva do nível.
 const NIVEL = { nivel: 'AH11', contas: 'CY47:CZ54', base: 7, celula: 'CZ54', curva: 'AQ5:AR33' };
 
+// O XP digitado em cima da caixa de XP da FICHA (27/10/2026). A caixa é a conta =DADOS!$CZ$47 (soma das missões mais a
+// base da DADOS!CZ54); quem digita um número nela troca o XP total inteiro por ele. A base fica com o número menos a soma
+// das missões de agora, e cada missão que já tem XP fica congelada na nota da caixa dela ("[XP congelado: x · id]"):
+// mudar ou apagar uma delas depois não mexe no total (Salarios.gs, salarioXpCongelado_), e as missões novas somam por
+// cima. O nível segue o XP nos dois sentidos, com a trava do feito: abaixo do limiar ele não passa do limiar sozinho.
+// No fim a conta volta para a caixa. Apagar a caixa só devolve a conta. As funções vão para a ficha pelo String().
+const XP = { caixas: ['AN11', 'AN11:AT11'], formula: '=DADOS!$CZ$47', dados: 'AQ4:CZ54', nivel: 'AH11', base: 'CZ54',
+  painel: [15, 49, 73, 24], colunas: [49, 55, 61, 67] };
+/** O nível do XP pela curva [[nível, acumulado]] (na ficha, do 2 ao 30): o maior nível cujo acumulado cabe, como na
+ *  subida pelas missões (salarioNivelQueSobe_); abaixo da primeira linha, o nível anterior a ela. Com o nível até o
+ *  limiar do feito, não passa do limiar. */
+function r53LivreXpNivel_(curva, xp, atual, limiar) {
+  var alvo = Math.max(1, curva[0][0] - 1);
+  for (var i = 0; i < curva.length; i++) if (curva[i][1] <= xp && curva[i][0] > alvo) alvo = curva[i][0];
+  if (limiar && atual <= limiar) alvo = Math.min(alvo, limiar);
+  return alvo;
+}
+/** A nota com a marca do congelamento trocada (ou tirada, com marca vazia), antes da marca do salário. */
+function r53LivreXpNota_(nota, marca) {
+  var limpa = String(nota || '').replace(/\n?\[XP congelado: [^\]\n]*\]/g, ''), i = limpa.search(/\n?\[Salário: /);
+  if (!marca) return limpa;
+  if (i < 0) return limpa + (limpa ? '\n' : '') + marca;
+  return limpa.slice(0, i) + (i ? '\n' : '') + marca + (limpa.charAt(i) === '\n' ? '' : '\n') + limpa.slice(i);
+}
+/** true: a caixa de XP foi tratada aqui. Erro antes de gravar devolve false, e o módulo devolve a conta como sempre. */
+function r53LivreXp_(e) {
+  var x = R53_LIVRE_XP_, r = e.range, gravou = false;
+  try {
+    var bruto = e.value !== undefined ? e.value : r.getValue(), texto = String(bruto).trim();
+    if (texto === '' || texto.charAt(0) === '=') { r.setFormula(x.formula); return true; }
+    var n = Number(texto);
+    if (!isFinite(n) || n < 0 || n !== Math.floor(n)) { r.setFormula(x.formula); return true; }
+    var ss = e.source || r.getSheet().getParent(), d = ss.getSheetByName('DADOS'), p = ss.getSheetByName('FICHA PESSOAL');
+    if (!d || !p) return false;
+    // AQ4:CZ54: a curva em AQ:AR (linhas 5–33), o limiar em CW4:CW5, as contas em CY47:CZ54 (XP total, nível, base).
+    var v = d.getRange(x.dados).getValues();
+    if (v[0][0] !== 'nível' || v[0][1] !== 'xp acumulado' || v[43][60] !== 'xp total' || v[44][60] !== 'nível' || v[50][60] !== 'xp base') return false;
+    var curva = [];
+    for (var i = 1; i <= 29; i++) if (v[i][0] !== '' && v[i][1] !== '') curva.push([Number(v[i][0]), Number(v[i][1])]);
+    if (!curva.length) return false;
+    var limiar = v[0][58] === 'limiar do feito' ? Number(v[1][58]) || 0 : 0, atual = Number(v[44][61]) || 0;
+    var faixa = p.getRange(x.painel[0], x.painel[1], x.painel[2], x.painel[3]), val = faixa.getValues(), notas = faixa.getNotes();
+    var soma = 0, mexeu = false;
+    x.colunas.forEach(function (col) {
+      var o = col - x.painel[1];
+      for (var l = 0; l < val.length; l++) {
+        var xp = Number(val[l][o + 4]) || 0, nota = String(notas[l][o] || '');
+        var id = (/\[Salário: ([^\] ·]+) · /.exec(nota) || [])[1] || '';
+        soma += xp;
+        var nova = r53LivreXpNota_(nota, xp ? '[XP congelado: ' + xp + (id ? ' · ' + id : '') + ']' : '');
+        if (nova !== nota) { notas[l][o] = nova; mexeu = true; }
+      }
+    });
+    var alvo = r53LivreXpNivel_(curva, n, atual, limiar);
+    gravou = true;
+    d.getRange(x.base).setValue(n - soma);
+    if (mexeu) faixa.setNotes(notas);
+    if (alvo !== atual) r.getSheet().getRange(x.nivel).setValue(alvo);
+    r.setFormula(x.formula);
+    return true;
+  } catch (err) {
+    console.log('atalho do XP: ' + err.message);
+    if (gravou) try { r.setFormula(x.formula); } catch (err2) {}
+    return gravou;
+  }
+}
+const XP_FONTE = [r53LivreXpNivel_, r53LivreXpNota_, r53LivreXp_].map(String).join('\n');
+
 function fonte(mapa, hashModulo, hashCatalogo, gatilhos, marcas, delta) {
   const corpo = JSON.stringify(mapa);
   const sha = crypto.createHash('sha256').update(corpo).digest('hex');
@@ -244,6 +312,7 @@ function r53EdicaoLivre_(e){
   // As marcas custom guardadas pelo módulo deixam de valer (marcasCustom_); apagar não lê a planilha.
   if(m&&r53LivreToca_(m,r))PropertiesService.getDocumentProperties().deleteProperty('r53_marcas_custom');
   if(aba==='FICHA'&&r.getA1Notation()===R53_LIVRE_NIVEL_.nivel)r53LivreNivel_(e);
+  if(aba==='FICHA'&&R53_LIVRE_XP_.caixas.indexOf(r.getA1Notation())>=0&&r53LivreXp_(e))return true;
   if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r);
   if(!lista||r53LivreToca_(lista,r)||!r53LivreValido_())return false;
   // Trilha ou Caminho mudou desde a última sincronização: a próxima edição nas quatro abas sincroniza.
@@ -295,6 +364,10 @@ function r53LivreNivel_(e){
   d.getRange(x.celula).setValue(base+alvo-total);
  }catch(err){console.log('atalho do nível: '+err.message);}
 }
+// O XP digitado em cima da caixa de XP: o número vira o XP total; as missões de agora ficam congeladas na nota da caixa
+// e as novas somam por cima. O nível segue o XP, com a trava do feito. Ver r53/atalho_livre.js.
+var R53_LIVRE_XP_=${JSON.stringify(XP)};
+${XP_FONTE}
 /** Antes do Caminho: Trilha e Caminho mudam o Amparo sem passar pelas quatro abas. */
 function r53LivreMarcar_(e){
  try{if(e&&e.range&&e.range.getSheet().getName()==='FICHA'&&r53LivreToca_(R53_LIVRE_GATILHOS_,e.range))PropertiesService.getDocumentProperties().setProperty(R53_LIVRE_PROP_,'1');}
@@ -336,4 +409,4 @@ if (require.main === module && process.argv[2] === '--so-delta') {
   console.log(JSON.stringify({ alvo, modulo: r.hashModulo.slice(0, 8), catalogo: r.hashCatalogo.slice(0, 8), contagem: r.contagem,
     sha: crypto.createHash('sha256').update(r.output).digest('hex') }, null, 1));
 }
-module.exports = { NIVEL, gerar, soDelta, caixasDelta, moduloTexto, DELTA_ESPERADO, retangulos, entradasDoAmparo, referencias, FIXAS, ABAS, FAMILIAS };
+module.exports = { fonte, NIVEL, XP, r53LivreXpNivel_, r53LivreXpNota_, r53LivreXp_, gerar, soDelta, caixasDelta, moduloTexto, DELTA_ESPERADO, retangulos, entradasDoAmparo, referencias, FIXAS, ABAS, FAMILIAS };
