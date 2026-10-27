@@ -30,7 +30,7 @@ function mundo(fonte){
  }
  const ss={getSheetByName(n){if(!sheets.has(n))sheets.set(n,new Sheet(n));return sheets.get(n);},toast(t){toasts.push(t);},getSpreadsheetLocale(){return 'en_US';}};
  const box={console:{log(){}},
-  PropertiesService:{getDocumentProperties:()=>({getProperty:k=>props.has(k)?props.get(k):null,setProperty:(k,v)=>props.set(k,v)})},
+  PropertiesService:{getDocumentProperties:()=>({getProperty:k=>props.has(k)?props.get(k):null,setProperty:(k,v)=>props.set(k,v),deleteProperty:k=>props.delete(k)})},
   LockService:{getDocumentLock:()=>({tryLock:()=>true,releaseLock(){}})},
   SpreadsheetApp:{getActive:()=>ss,flush(){io.push('flush');},newDataValidation(){const o={};for(const k of ['requireCheckbox','requireValueInList','requireFormulaSatisfied','setAllowInvalid'])o[k]=function(...v){this[k+'_args']=v;return this;};o.build=function(){return {...this};};return o;}},
   Utilities:{base64Decode:s=>Buffer.from(s,'base64'),newBlob:x=>x,ungzip:x=>({getDataAsString:()=>require('zlib').gunzipSync(x).toString('utf8')})}};
@@ -46,7 +46,8 @@ function mundo(fonte){
  props.set('r53_amparo_direto',JSON.stringify(Array(13).fill('Normal')));
  function foto(){
   const abas={};for(const [n,sh] of sheets)abas[n]={v:[...sh.map].sort(),dv:[...sh.dv].sort()};
-  return JSON.parse(JSON.stringify({abas,props:[...props].sort(),toasts}));
+  // r53_versoes (versão guardada, 26/10/2026 à noite) tem teste próprio: cartao_versao.js
+  return JSON.parse(JSON.stringify({abas,props:[...props].filter(p=>p[0]!=='r53_versoes').sort(),toasts}));
  }
  return {box,ss,cfg,io,foto,sh:n=>ss.getSheetByName(n)};
 }
@@ -93,7 +94,8 @@ const tabela=[
  passo('entidade fechada: melhoria 1',w=>edita(w,'entidade.1.esp.1',esp.entradas_diretas.m1,'Alcance')),
 ];
 // O caso medido no Google (pontos num cartão de Família aberta) perde a releitura e o Amparo.
-const comum=tabela[0];eq(comum.antes-comum.depois,2);eq(comum.abas.includes(A.cfg.amparo.aba),true);
+// 26/10/2026 à noite: a Classe visível também sai da área já lida (r53AtivaNaFoto_).
+const comum=tabela[0];eq(comum.antes-comum.depois,3);eq(comum.abas.includes(A.cfg.amparo.aba),true);
 assert(tabela.every(t=>t.depois<=t.antes),'nenhum passo lê mais que antes');checks++;
 if(process.argv.includes('--tabela'))console.table(tabela.map(t=>({passo:t.nome,leituras:t.antes+' → '+t.depois,'abas que saíram':t.abas.join(', ')})));
 console.log(JSON.stringify({checks,resultado:'OK',escopo:tabela.length+' edições com o EditorR53 de antes e o de agora: mesmas abas, versões, propriedades e avisos; leituras '+comum.antes+' → '+comum.depois+' nos pontos de um cartão aberto'}));

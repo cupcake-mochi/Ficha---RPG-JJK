@@ -203,4 +203,11 @@ function projetoComIncremento(projeto, dump, desde, ate) {
     '\nvar R53_CODIGO_NOVO_=' + JSON.stringify(zlib.gzipSync(Buffer.from(novo, 'utf8')).toString('base64')) + ';\n';
   return { projeto: p, velho, novo, hashVelho: hv, hashNovo: hn };
 }
-module.exports = { criar, custo, projetoComIncremento };
+// Quantos remendos do pacote_leve_remendos.json o módulo do projeto exportado já tem, pelo hash dele: a exportação
+// de 25/10 é da cópia de teste (22º); a de 26/10 à noite, da oficial Era da Revolução (38º).
+const REMENDOS_POR_HASH = { '9d1cec81': 22, '52fc6903': 38 };
+function remendosDoProjeto(projeto) {
+  const hv = /hash!=='([0-9a-f]{64})'/.exec(projeto.files.find(f => f.name === 'Codigo').source)[1];
+  return REMENDOS_POR_HASH[hv.slice(0, 8)];
+}
+module.exports = { criar, custo, projetoComIncremento, remendosDoProjeto };

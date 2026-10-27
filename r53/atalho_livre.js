@@ -12,7 +12,7 @@
 //
 // Uso: node r53/atalho_livre.js <projeto instalado .json> <ficha exportada .json> [saída .gs]
 // A ficha exportada sai do r53/xlsx_para_json.py; nem ela nem o projeto vão para o Git (nuvem-b47/saidas/atalho/).
-const fs = require('fs'), path = require('path'), vm = require('vm'), crypto = require('crypto');
+const fs = require('fs'), path = require('path'), vm = require('vm'), crypto = require('crypto'), zlib = require('zlib');
 const { criar } = require('./arnes_custo');
 
 const ABAS = ['CARTEIRA', 'FICHA AMALDIÇOADA', 'INVOCAÇÕES', 'CONFIGURAÇÃO', 'FICHA', 'FICHA PESSOAL'];
@@ -121,8 +121,67 @@ function retangulos(lista) {
   return out.sort((x, y) => x[0] - y[0] || x[1] - y[1]);
 }
 
+// As caixas de ± da FICHA (27/10/2026). No ± da vida, abrir o módulo custava ~1,3 s dos ~10 s, só para o
+// aplicarDelta_: uma leitura da linha e as gravações. O atalho faz o mesmo sem abrir o módulo, com as células do índice
+// estático e a conta (aplicaPasso_) copiadas do módulo de onde o mapa saiu. Se o aplicarDelta_ do módulo mudar, o
+// gerador recusa: o atalho só imita o que está aqui.
+const DELTA_ESPERADO = `function aplicarDelta_(e, idx) {
+  var ficha = SpreadsheetApp.getActive().getSheetByName('FICHA');
+  ['vida', 'energia', 'integridade'].forEach(function (r) {
+    var cd = cel_(idx, r + '_delta');
+    if (!cd || cd !== e.range.getA1Notation()) return;
+    var ca = cel_(idx, r), cm = cel_(idx, r + '_max'), ct = cel_(idx, r + '_temp');
+    // As quatro caixas estão na mesma linha: uma leitura em vez de quatro idas ao servidor
+    var v = lerCelulas_(ficha, [cd, ca, cm].concat(ct ? [ct] : []));
+    var passo = Number(v[cd]);
+    if (!passo) return;
+    var antes = ct ? Math.max(0, Number(v[ct]) || 0) : 0;
+
+    var fim = aplicaPasso_(v[ca], v[cm], antes, passo);
+
+    ficha.getRange(ca).setValue(fim.atual);
+    if (ct && fim.temp !== antes) ficha.getRange(ct).setValue(fim.temp);
+    e.range.clearContent();
+  });
+}`;
+function moduloTexto(projeto) {
+  const fatias = projeto.files.map(f => /^(\/\/[^\n]*\n)var R53_CODIGO_(\d+)_ = ("[^\n]*");\n?$/.exec(f.source)).filter(Boolean);
+  if (!fatias.length) throw Error('o projeto não tem os pedaços R53_CODIGO_');
+  return zlib.gunzipSync(Buffer.from(fatias.sort((a, b) => a[2] - b[2]).map(x => JSON.parse(x[3])).join(''), 'base64')).toString('utf8');
+}
+function funcao(texto, nome) {
+  const i = texto.indexOf('\nfunction ' + nome + '('), j = texto.indexOf('\n}\n', i);
+  if (i < 0 || j < 0 || texto.indexOf('\nfunction ' + nome + '(', i + 1) >= 0) throw Error(nome + ' não encontrado uma vez só no módulo');
+  return texto.slice(i + 1, j + 2);
+}
+function caixasDelta(A, projeto) {
+  const texto = moduloTexto(projeto);
+  if (funcao(texto, 'aplicarDelta_') !== DELTA_ESPERADO) throw Error('o aplicarDelta_ do módulo mudou: revise o atalho das caixas de ±');
+  const passo = funcao(texto, 'aplicaPasso_');
+  const marca = '\nreturn {"acabar":';
+  if (texto.split(marca).length !== 2) throw Error('fim do módulo divergente');
+  A.ctx.__code = texto.replace(marca, '\nreturn {"__idx":function(){return indiceEstatico_();},"acabar":');
+  const idx = vm.runInContext('(new Function(__code))().__idx()', A.ctx);
+  delete A.ctx.__code;
+  if (!idx) throw Error('o módulo não tem índice estático: as caixas de ± leriam a DADOS');
+  const cel = k => idx[k] ? String(idx[k]).replace(/\$/g, '') : null, pos = a => { const m = /^([A-Z]+)(\d+)$/.exec(a); return [+m[2], numCol(m[1])]; };
+  const caixas = {};
+  for (const r of ['vida', 'energia', 'integridade']) {
+    const cd = cel(r + '_delta');
+    if (!cd) continue;
+    const lista = [cd, cel(r), cel(r + '_max')].concat(cel(r + '_temp') ? [cel(r + '_temp')] : []);
+    if (lista.slice(0, 3).some(x => !x || !/^[A-Z]+\d+$/.test(x)) || (lista[3] && !/^[A-Z]+\d+$/.test(lista[3]))) throw Error('célula do ± de ' + r + ' fora do formato: ' + lista);
+    // o mesmo retângulo do lerCelulas_
+    const p = lista.map(pos), l1 = Math.min(...p.map(x => x[0])), c1 = Math.min(...p.map(x => x[1]));
+    const l2 = Math.max(...p.map(x => x[0])), c2 = Math.max(...p.map(x => x[1]));
+    caixas[cd] = { a: lista[1], m: lista[2], t: lista[3] || null, l: [l1, c1, l2 - l1 + 1, c2 - c1 + 1], p: p.map(x => [x[0] - l1, x[1] - c1]) };
+  }
+  return { caixas, passo: passo.replace('function aplicaPasso_(', 'function r53LivrePasso_(') };
+}
+
 function gerar(projeto, dump) {
   const { A, hashModulo, hashCatalogo } = carregar(projeto, dump);
+  const delta = caixasDelta(A, projeto);
   vm.runInContext('r53Modulo_()', A.ctx);
   const E = vm.runInContext('r53ConfigEditor_()', A.ctx);
   const treino = vm.runInContext('typeof R53_TREINO_AREA_!=="undefined"?R53_TREINO_AREA_:null', A.ctx);
@@ -133,6 +192,13 @@ function gerar(projeto, dump) {
   const amparo = entradasDoAmparo(dump, [p.aba, +m[2], numCol(m[1]), +m[4], numCol(m[3])]);
   const fora = Object.keys(amparo).filter(s => !ABAS.includes(s) && !dump[s].hidden);
   if (fora.length) throw Error('o Amparo depende de abas visíveis fora do mapa: ' + fora.join(', '));
+  // As marcas do Caminho e da Trilha custom (DADOS_PROGRESSAO!K7:K8), que o módulo guarda nas propriedades: as células
+  // digitadas de que elas dependem apagam a guardada (r53EdicaoLivre_), dentro ou fora do mapa.
+  const marcas = entradasDoAmparo(dump, ['DADOS_PROGRESSAO', 7, 11, 8, 11]);
+  const foraM = Object.keys(marcas).filter(s => !ABAS.includes(s) && !dump[s].hidden);
+  if (foraM.length) throw Error('as marcas custom dependem de abas visíveis fora do mapa: ' + foraM.join(', '));
+  const marcasVisiveis = {};
+  Object.keys(marcas).filter(s => ABAS.includes(s)).forEach(s => { marcasVisiveis[s] = retangulos(marcas[s]); });
   const mapa = {}, contagem = {};
   for (const aba of ABAS) {
     const cartoes = E.contextos.filter(g => g.aba === aba).map(g => g.area_editor);
@@ -145,10 +211,14 @@ function gerar(projeto, dump) {
   }
   // A Trilha (FICHA) também muda o Amparo; o Caminho pode limpar a Trilha.
   const gatilhos = (amparo.FICHA || []).concat([[11, 4, 11, 4], [11, 14, 11, 14]]);
-  return { mapa, contagem, hashModulo, hashCatalogo, gatilhos: retangulos(gatilhos), output: fonte(mapa, hashModulo, hashCatalogo, retangulos(gatilhos)) };
+  return { mapa, contagem, hashModulo, hashCatalogo, gatilhos: retangulos(gatilhos), marcas: marcasVisiveis, delta: delta.caixas,
+    output: fonte(mapa, hashModulo, hashCatalogo, retangulos(gatilhos), marcasVisiveis, delta) };
 }
 
-function fonte(mapa, hashModulo, hashCatalogo, gatilhos) {
+// A caixa do nível na FICHA e, na DADOS, as contas da pessoal do XP total (CY47) até a base (CY54) e a curva do nível.
+const NIVEL = { nivel: 'AH11', contas: 'CY47:CZ54', base: 7, celula: 'CZ54', curva: 'AQ5:AR33' };
+
+function fonte(mapa, hashModulo, hashCatalogo, gatilhos, marcas, delta) {
   const corpo = JSON.stringify(mapa);
   const sha = crypto.createHash('sha256').update(corpo).digest('hex');
   return `// GERADO por r53/atalho_livre.js; mapa ${sha.slice(0, 16)}. Não editar à mão.
@@ -158,6 +228,8 @@ var R53_LIVRE_FAMILIAS_=${JSON.stringify(FAMILIAS)};
 var R53_LIVRE_GATILHOS_=${JSON.stringify(gatilhos)};
 var R53_LIVRE_HASHES_=[${JSON.stringify(hashModulo)},${JSON.stringify(hashCatalogo)}];
 var R53_LIVRE_PROP_='r53_amparo_sujo';
+// Onde se mudam as marcas DADOS_PROGRESSAO!K7:K8 que o módulo guarda (marcasCustom_).
+var R53_LIVRE_MARCAS_=${JSON.stringify(marcas || {})};
 function r53LivreToca_(lista,r){var l1=r.getRow(),l2=r.getLastRow(),c1=r.getColumn(),c2=r.getLastColumn();
  for(var i=0;i<lista.length;i++){var a=lista[i];if(l1<=a[2]&&l2>=a[0]&&c1<=a[3]&&c2>=a[1])return true;}return false;}
 // O mapa só vale para o módulo e o catálogo de onde saiu.
@@ -168,12 +240,60 @@ function r53LivreValido_(){
 /** true: a edição caiu numa célula em que nada do script age; sai sem ler a planilha. */
 function r53EdicaoLivre_(e){
  try{
-  if(!e||!e.range)return false;var r=e.range,aba=r.getSheet().getName(),lista=R53_LIVRE_[aba];
+  if(!e||!e.range)return false;var r=e.range,aba=r.getSheet().getName(),lista=R53_LIVRE_[aba],m=R53_LIVRE_MARCAS_[aba];
+  // As marcas custom guardadas pelo módulo deixam de valer (marcasCustom_); apagar não lê a planilha.
+  if(m&&r53LivreToca_(m,r))PropertiesService.getDocumentProperties().deleteProperty('r53_marcas_custom');
+  if(aba==='FICHA'&&r.getA1Notation()===R53_LIVRE_NIVEL_.nivel)r53LivreNivel_(e);
+  if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r);
   if(!lista||r53LivreToca_(lista,r)||!r53LivreValido_())return false;
   // Trilha ou Caminho mudou desde a última sincronização: a próxima edição nas quatro abas sincroniza.
   if(R53_LIVRE_FAMILIAS_.indexOf(aba)>=0&&PropertiesService.getDocumentProperties().getProperty(R53_LIVRE_PROP_))return false;
   return true;
  }catch(err){console.log('atalho livre: '+err.message);return false;}
+}
+// As caixas de ± da FICHA: o aplicarDelta_ do módulo sem abrir o módulo (a conta é o aplicaPasso_ dele).
+// a: atual, m: máximo, t: temporária; l: o retângulo da leitura; p: onde cada uma (±, a, m, t) cai nele.
+var R53_LIVRE_DELTA_=${JSON.stringify(delta ? delta.caixas : {})};
+${delta ? delta.passo + '\n' : 'function r53LivrePasso_(){throw Error("sem conta do ±");}\n'}/** true: a caixa de ± foi tratada aqui. Erro antes de gravar devolve false, e o módulo faz como sempre. */
+function r53LivreDelta_(r){
+ var x=R53_LIVRE_DELTA_[r.getA1Notation()],gravou=false;
+ try{
+  var ficha=r.getSheet(),v=ficha.getRange(x.l[0],x.l[1],x.l[2],x.l[3]).getValues(),q=function(i){var p=x.p[i];return v[p[0]][p[1]];};
+  var passo=Number(q(0));if(!passo)return true;
+  var antes=x.t?Math.max(0,Number(q(3))||0):0,fim=r53LivrePasso_(q(1),q(2),antes,passo);
+  gravou=true;ficha.getRange(x.a).setValue(fim.atual);
+  if(x.t&&fim.temp!==antes)ficha.getRange(x.t).setValue(fim.temp);
+  r.clearContent();return true;
+ }catch(err){console.log('atalho do ±: '+err.message);return gravou;}
+}
+// O nível escrito na mão (27/10/2026): o XP total da DADOS é a soma das missões mais a base, e aqui a base é acertada
+// para o XP caber no nível novo. Subindo, o XP vai para o acumulado do nível; descendo, guarda a mesma fração do caminho
+// até o próximo. Se o XP já cabe no nível, nada muda. Só a caixa do nível sozinha; a ficha sem a base fica como estava.
+var R53_LIVRE_NIVEL_=${JSON.stringify(NIVEL)};
+function r53LivreNivelAlvo_(curva,total,n,o){
+ var acum=function(k){if(k<curva[0][0])return 0;for(var i=0;i<curva.length;i++)if(curva[i][0]===k)return curva[i][1];return null;};
+ var an=acum(n),prox=acum(n+1);if(an===null)return null;
+ if(total>=an&&(prox===null||total<prox))return null;
+ if(o>n){
+  var ao=acum(o),po=acum(o+1),feito=ao===null||po===null||po<=ao?0:Math.min(Math.max(total-ao,0),po-ao);
+  return prox===null||prox<=an?an:Math.min(an+(feito?Math.floor(feito*(prox-an)/(po-ao)):0),prox-1);
+ }
+ return total<an?an:null;
+}
+function r53LivreNivel_(e){
+ try{
+  var x=R53_LIVRE_NIVEL_,n=Number(e.value),o=Number(e.oldValue);
+  if(e.value===undefined||e.value===''||isNaN(n)||n!==Math.floor(n)||n<1)return;
+  var ss=e.source||e.range.getSheet().getParent(),d=ss.getSheetByName('DADOS');if(!d)return;
+  var v=d.getRange(x.contas).getValues();
+  if(v[0][0]!=='xp total'||v[x.base][0]!=='xp base')return;
+  var curva=d.getRange(x.curva).getValues().filter(function(l){return l[0]!==''&&l[1]!=='';})
+   .map(function(l){return [Number(l[0]),Number(l[1])];});
+  if(!curva.length)return;
+  var total=Number(v[0][1])||0,base=Number(v[x.base][1])||0,alvo=r53LivreNivelAlvo_(curva,total,n,isNaN(o)?0:o);
+  if(alvo===null||alvo===total)return;
+  d.getRange(x.celula).setValue(base+alvo-total);
+ }catch(err){console.log('atalho do nível: '+err.message);}
 }
 /** Antes do Caminho: Trilha e Caminho mudam o Amparo sem passar pelas quatro abas. */
 function r53LivreMarcar_(e){
@@ -188,7 +308,26 @@ function r53LivreConferido_(e){
 `;
 }
 
-if (require.main === module) {
+// Só as caixas de ±, sem a ficha exportada: o mapa, os gatilhos e as marcas saem do atalho_livre.gs já gerado para o
+// mesmo módulo e catálogo (eles não dependem do ±); recusa se o projeto for de outro módulo ou catálogo.
+function soDelta(projeto, gs) {
+  const pega = (nome) => { const m = new RegExp('^var ' + nome + '=(.*);$', 'm').exec(gs); if (!m) throw Error(nome + ' ausente no atalho'); return JSON.parse(m[1]); };
+  const mapa = pega('R53_LIVRE_'), gatilhos = pega('R53_LIVRE_GATILHOS_'), marcas = pega('R53_LIVRE_MARCAS_'), hashes = pega('R53_LIVRE_HASHES_');
+  const { A, hashModulo, hashCatalogo } = carregar(projeto, {});
+  if (hashes[0] !== hashModulo || hashes[1] !== hashCatalogo) throw Error('o atalho é de outro módulo ou catálogo: regerar com a ficha exportada');
+  const delta = caixasDelta(A, projeto);
+  return { mapa, hashModulo, hashCatalogo, delta: delta.caixas, output: fonte(mapa, hashModulo, hashCatalogo, gatilhos, marcas, delta) };
+}
+
+if (require.main === module && process.argv[2] === '--so-delta') {
+  const [proj, saida] = process.argv.slice(3);
+  if (!proj) throw Error('Uso: node r53/atalho_livre.js --so-delta <projeto .json> [saída .gs]');
+  const alvo = saida || path.join(__dirname, 'atalho_livre.gs');
+  const r = soDelta(JSON.parse(fs.readFileSync(proj, 'utf8')), fs.readFileSync(path.join(__dirname, 'atalho_livre.gs'), 'utf8'));
+  fs.writeFileSync(alvo, r.output);
+  console.log(JSON.stringify({ alvo, modulo: r.hashModulo.slice(0, 8), catalogo: r.hashCatalogo.slice(0, 8), delta: r.delta,
+    sha: crypto.createHash('sha256').update(r.output).digest('hex') }, null, 1));
+} else if (require.main === module) {
   const [proj, dumpf, saida] = process.argv.slice(2);
   if (!proj || !dumpf) throw Error('Uso: node r53/atalho_livre.js <projeto .json> <ficha .json> [saída .gs]');
   const r = gerar(JSON.parse(fs.readFileSync(proj, 'utf8')), JSON.parse(fs.readFileSync(dumpf, 'utf8')));
@@ -197,4 +336,4 @@ if (require.main === module) {
   console.log(JSON.stringify({ alvo, modulo: r.hashModulo.slice(0, 8), catalogo: r.hashCatalogo.slice(0, 8), contagem: r.contagem,
     sha: crypto.createHash('sha256').update(r.output).digest('hex') }, null, 1));
 }
-module.exports = { gerar, retangulos, entradasDoAmparo, referencias, FIXAS, ABAS, FAMILIAS };
+module.exports = { NIVEL, gerar, soDelta, caixasDelta, moduloTexto, DELTA_ESPERADO, retangulos, entradasDoAmparo, referencias, FIXAS, ABAS, FAMILIAS };
