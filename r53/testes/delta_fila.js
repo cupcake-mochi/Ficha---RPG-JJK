@@ -1,5 +1,7 @@
 'use strict';
-// Compara toda a geração com a base auditada; só barras e Sementes podem mudar.
+// Compara toda a geração com a base auditada (f484f49, 27/10/2026); nenhuma aba pode mudar.
+// A base anterior, fa54ab6, só aceitava as 12 mudanças das barras e das Sementes e ficou para trás
+// com o Caminho.gs, o Eventos.gs e as 17 mudanças que vieram depois.
 const vm = require('vm'), cp = require('child_process'), assert = require('assert');
 const loader = require('../../medidas/carregar-ficha');
 function read(source) {
@@ -8,16 +10,10 @@ function read(source) {
   return JSON.parse(JSON.stringify(ctx.ABAS));
 }
 const before = read(loader.arquivos().map(name => cp.execFileSync('git',
-  ['show', 'fa54ab633313b2f230c4c669041b6d552a66c9c6:apps-script/' + name],
+  ['show', 'f484f49ade742c435c41367b19a321f910ee8316:apps-script/' + name],
   {encoding:'utf8', maxBuffer:100000000})).join('\n'));
 const after = read(loader.fontes());
-const expected = new Set([
-  ...[26,30,34].map(row => `FICHA.vals.${row},19.0`),
-  'FICHA AMALDIÇOADA.dv.0.1',
-  ...[2,3,4].map(row => `DADOS_AM.vals.${row},97.0`),
-  ...[2,3,4,5].map(row => `DADOS_AM.vals.${row},93`),
-  'DADOS_AM.vals.5,97'
-]);
+const expected = new Set();
 const changed = [];
 function compare(a,b,path) {
   if (JSON.stringify(a) === JSON.stringify(b)) return;

@@ -1,3 +1,12 @@
+## Testes no Linux com a ficha real · 27/10/2026 (Claude)
+
+`nuvem-b47/saidas/atalho/oficial-era.json` gerada pelo `r53/xlsx_para_json.py` de um xlsx da Era oficial de 27/10
+(30 abas, 266.629 células; fora do git). Com ela: caixas_delta (16.713 verificações, 96 edições na exportada),
+atalho_livre (4.815), cortes_noite (15) e marcas_custom (12.405) passaram; leituras_curtas se pula sozinho fora do
+22º remendo (o módulo está no 41º). pacote_runtime passou depois do `empacotar_script.py` (EditorR53 c3d31096). A base
+do delta_fila passou para o f484f49 (sem mudança aceita) e o editor_runtime foi aposentado (nuvem-b47/TESTES.md).
+Falta: o teste no Android e a lixeira das cópias "TESTE caixas delta" e "TESTE vida".
+
 ## Caixas de ± da FICHA sem abrir o módulo · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 9 de backup)
 
 O último corte conhecido no ± da vida (~1,3 s dos ~10 s, MEDICAO-DESEMPENHO-2026-10-26-fim). O `r53/atalho_livre.gs`
