@@ -102,3 +102,46 @@ Antes do corte, a mesma data ficava em `46323` (amanhã) e a conferência voltav
 Observação fora do corte: apagar o "x" da AW15 (nome sem tipo, nada registrado) estourou os 30 s às 12:41:08 sem nenhuma
 linha de log; o "x" em si levou 12,6 s. Não se repetiu porque a edição seguinte caiu na AW14 (o rótulo "MISSÃO" da cópia
 ficou vazio; a cópia é descartável). Fica para o item das missões.
+
+## Missões: a leitura dos registros quando nada pode mudar · 27/10/2026
+
+Cópia da Era (`1KWr3WEX…`, "TESTE missões cache (descartável)", projeto `1wgTFjEL…`), com o perfil por rotina, Codigo
+`f86423cf` (o das oficiais). As quatro edições do painel, uma de cada vez, todas concluídas:
+
+| Edição | Execução | onEdit | `salarioMissoesAtuais_` | `salarioSincronizar_` | `salarioBloqueado_` |
+|---|---:|---:|---:|---:|---:|
+| AW15 "Caçada" (sem tipo) | 9,8 s | 7,55 s | 4,0 s | 6,2 s | 6,5 s |
+| AX15 "Curta" (registra; XP 3700 → 3750) | 13,5 s | 11,1 s | 2,4 s | 5,1 s | 8,3 s |
+| apaga AX15 | 12,0 s | 10,2 s | — | 4,9 s | 7,8 s |
+| apaga AW15 | 12,6 s | 10,7 s | 2,6 s | 5,0 s | 8,1 s |
+
+Os registros (`DADOS_SALARIOS!A2:G`) custam ~2,5 s em toda edição do painel, inclusive nas que não podem mudar registro
+nenhum. O estouro de 30 s visto antes não se repetiu. A nota que parecia sobrar na AW15 depois de apagar o nome era só a
+dica de tela velha: depois de recarregar a planilha, a nota tinha saído.
+
+Corte (sem cache, sem divergência possível): `salarioRegistrosIntactos_` olha o painel que a edição já leu. Se cada caixa
+tocada fica sem missão antes e depois da edição (o nome editado com o tipo vazio ou fora da lista, o tipo editado com o
+nome vazio, ou só os modificadores AY/AZ…), a DADOS_SALARIOS não é lida; só a marca de uma caixa sem nome sai da nota.
+Nome e tipo da mesma caixa na mesma edição (colar, apagar a linha) leem tudo como antes. O caso que espera: um registro
+que ficou para trás (uma edição que estourou o tempo antes de gravar) só se acerta na próxima edição que forma ou desfaz
+uma missão. `r53/testes/missoes_sem_registros.js` (2.076): as quatro edições medidas, mais nove casos e 400 sorteadas, pelo
+Salarios.gs de `57117fb` e pelo de agora em Sheets de mentira separados; depois de cada uma, abas e gravações iguais; 226
+das 400 sem ler os registros. Três mutações do corte foram pegas. Instalação: `node
+r53/diagnostico-android/preparar_missoes_sem_registros.js nuvem-b47/saidas/atalho/projeto-leve.json <trecho>`
+(Codigo `f86423cf` → `b8410018`).
+
+Na mesma cópia, com o corte instalado: as mesmas quatro edições deram 10,1 / 12,1 / 12,0 / 11,3 s; nas duas que pulam, a
+sincronização caiu para o tempo do painel (2,96 s e 2,34 s), mas na primeira a espera do recálculo foi parar antes
+(a chamada das missões começou 4,25 s depois, contra 0,87 s). Para separar isso da oscilação, nome sem tipo na AW16 (digitar,
+apagar, digitar, apagar), trocando o código na cópia entre as rodadas:
+
+| Código | Execuções (s) | Média |
+|---|---|---:|
+| novo `b8410018` | 8,3 / 7,0 / 8,1 / 9,0 | 8,1 s |
+| antigo `f86423cf` | 12,6 / 10,0 / 12,0 / 12,8 | 11,8 s |
+| novo `b8410018` | 7,5 / 7,5 / 7,9 / 6,1 | 7,25 s |
+
+Nessas edições, ~4 s a menos e sem sobreposição entre as faixas. Nas que formam ou desfazem missão nada muda (a leitura
+continua). No uso normal do painel isso é a metade das edições de nome e tipo (digitar o nome antes do tipo, apagar o
+segundo campo depois do primeiro) e toda edição de modificador. Um tropeço na cópia: depois de recarregar, a planilha
+abriu na aba FICHA e o primeiro "Caçada" caiu na AU8 mesclada de lá; desfeito com Ctrl+Z (cópia descartável).

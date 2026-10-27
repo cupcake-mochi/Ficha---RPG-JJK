@@ -99,25 +99,46 @@ function salarioMissoesAtuais_(ss,agrupar) {
   // na ordem inversa as fórmulas do painel pagam a espera de novo (medido: ~3,5 s a mais).
   var pessoal=ss.getSheetByName('FICHA PESSOAL'),faixa=pessoal.getRange(15,49,73,24),out=[],matriz=null;
   if(agrupar){var tudo=pessoal.getRange(11,49,77,24).getValues();SALARIO_PAINEL_={xp:tudo[0][0],falta:tudo[0][6]};matriz=tudo.slice(4);}
-  var notas=faixa.getNotes();out.faixa=faixa;out.notas=notas;out.limpar=[];
+  var notas=faixa.getNotes();out.faixa=faixa;out.notas=notas;out.limpar=[];out.caixas={};
   // Leia somente as entradas literais. Os totais de XP ao lado podem exigir o recálculo da ficha inteira.
   SALARIO_.colunas.forEach(function(col){var v=matriz?matriz.map(function(row){return row.slice(col-49,col-47);}):pessoal.getRange(15,col,73,2).getValues();for(var i=0;i<73;i++){
-    var nome=String(v[i][0]||'').trim(),tipo=String(v[i][1]||'').trim();
+    var nome=String(v[i][0]||'').trim(),tipo=String(v[i][1]||'').trim();out.caixas[col+':'+(i+15)]=[nome,tipo];
     var match=/\[Salário: ([^\] ·]+) · [^\]]+\]/.exec(notas[i][col-49]);
     if(nome&&SALARIO_.tipos.indexOf(tipo)>=0)out.push({key:col+':'+(i+15),nome:nome,tipo:tipo,id:match?match[1]:'',row:i,off:col-49});
     if(!nome&&match)out.limpar.push([i,col-49]);
   }});return out;
 }
+/** 27/10/2026: a edição não muda registro nenhum quando cada caixa que ela toca fica sem missão antes e depois dela:
+ *  o nome editado com o tipo vazio ou fora da lista, ou o tipo editado com o nome vazio. Os modificadores (AY, AZ…)
+ *  nunca mudam registro. Nome e tipo da mesma caixa na mesma edição (colar, apagar a linha): lê tudo, como antes. */
+function salarioRegistrosIntactos_(r,atuais) {
+  var l1=Math.max(r.getRow(),SALARIO_.primeira),l2=Math.min(r.getLastRow(),SALARIO_.ultima),c1=r.getColumn(),c2=r.getLastColumn();
+  for(var k=0;k<SALARIO_.colunas.length;k++){
+    var col=SALARIO_.colunas[k],nome=col>=c1&&col<=c2,tipo=col+1>=c1&&col+1<=c2;
+    if(nome&&tipo)return false;if(!nome&&!tipo)continue;
+    for(var l=l1;l<=l2;l++){var cx=atuais.caixas[col+':'+l];if(!cx||(nome?SALARIO_.tipos.indexOf(cx[1])>=0:!!cx[0]))return false;}
+  }
+  return true;
+}
 /** A identidade viaja na nota da célula. Uma cópia da mesma missão não renova sua data. */
-function salarioSincronizar_(ss,estado,hoje,baseline,adiar,agrupar) {
+function salarioSincronizar_(ss,estado,hoje,baseline,adiar,agrupar,edicao) {
   // O painel antes dos registros: a FICHA PESSOAL paga uma espera só (valores, notas e cabeçalho), e os registros,
   // que custam 5–11 s em qualquer posição, vêm depois sem fazer o painel esperar de novo.
   var atuais=salarioMissoesAtuais_(ss,agrupar),notesChanged=false;
+  function semMarca(s){return s.replace(/(?:\n)?\[Salário: [^\]\n]+\]/g,'');}
+  // Sem missão que possa mudar, os registros ficam como estão e a DADOS_SALARIOS não é lida (~2,5 s medidos numa cópia
+  // da Era). Só a marca de uma caixa sem nome sai da nota. Um registro que ficou para trás (uma edição que estourou o
+  // tempo) se acerta na próxima edição que forma ou desfaz uma missão.
+  if(edicao&&salarioRegistrosIntactos_(edicao,atuais)){
+    var nada=[];atuais.limpar.forEach(function(p){atuais.notas[p[0]][p[1]]=semMarca(atuais.notas[p[0]][p[1]]);notesChanged=true;});
+    nada.gravar=function(){if(notesChanged)atuais.faixa.setNotes(atuais.notas);};
+    if(!adiar)nada.gravar();
+    return nada;
+  }
   // Uma ida só: a faixa aberta traz até a última linha da aba, e o tamanho dela dá o número de linhas.
   var sh=ss.getSheetByName(SALARIO_.dados),todas=sh.getRange('A2:G').getValues(),max=todas.length+1;
   var old=todas.filter(function(r){return r[0];}),map={},seen={},changed=false;
   var porCaixa={};old.forEach(function(r){map[r[0]]=r;if(r[4]===true)porCaixa[r[5]]=r;});
-  function semMarca(s){return s.replace(/(?:\n)?\[Salário: [^\]\n]+\]/g,'');}
   atuais.forEach(function(m){
     var row=m.id?map[m.id]:porCaixa[m.key],id=row?row[0]:(m.id||Utilities.getUuid());
     if(seen[id])return;seen[id]=true;
@@ -255,7 +276,7 @@ function salarioEditar_(e) {
       }
       var hoje=salarioHoje_();
       // Por fórmula a edição só registra a missão; o pagamento já aparece na hora e o livro congela depois.
-      if(SALARIO_.formula){if(missao&&!config&&salarioToca_(r,15,87,49,72)){var ms=salarioSincronizar_(ss,st,hoje,false,true,!!e.salarioAntesGravar_);if(e.salarioAntesGravar_)e.salarioAntesGravar_();ms.gravar();}return;}
+      if(SALARIO_.formula){if(missao&&!config&&salarioToca_(r,15,87,49,72)){var ms=salarioSincronizar_(ss,st,hoje,false,true,!!e.salarioAntesGravar_,r);if(e.salarioAntesGravar_)e.salarioAntesGravar_();ms.gravar();}return;}
       if(missao&&!config){
         var c=salarioConfig_(ss),g=String(ss.getSheetByName('FICHA PESSOAL').getRange('AB11').getValue()),ms=salarioSincronizar_(ss,st,hoje,false,true);
         salarioHistoricoGrau_(ss,st,hoje,g);
