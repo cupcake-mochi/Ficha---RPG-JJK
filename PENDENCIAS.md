@@ -6,7 +6,8 @@ três novos perfis: 19 escolhas básicas, 20 recursos/bônus, nove condições/d
 Recursos atuais voltam às fórmulas dos máximos; notas de fábrica restauradas,
 incluindo Sequelas extras. Máximos, regras/catálogos, formatos e validações preservados.
 Diário único de cena excedia tamanho: separado e guarda de 9.000 bytes UTF-8
-adicionada antes de gravar, sem mudar a assinatura financeira v1. 502 cenários
+adicionada antes de gravar, sem mudar a assinatura financeira v1. CI Linux 40540295538 aprovado no código `a55517d` às 13:24:13 Brasília;
+run duplicado também passou antes de ser possível cancelá-lo. 502 cenários
 offline passaram (101/80/78 + 243 novos), incluídos no smoke Linux. Leitura
 nativa: 112 conferências em cada oficial, sem escrita; sete variantes de aspas
 opcionais reconhecidas estritamente. Projeção por Sheets API em cópia privada

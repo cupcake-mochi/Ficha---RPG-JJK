@@ -235,7 +235,9 @@ edição concorrente, linhas físicas tardias, prévia envelhecida, alvo inváli
 modo legado, fórmula desconhecida, preservação de regras e ausência de texto
 financeiro no diário. VM com serviços simulados; não executa fórmulas e não
 mede latência do Google. O smoke de nuvem inclui os quatro testes; o novo também confere o contrato gerado.
-CI Linux final do integrado `84bcd56` aprovado: [40535287570](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40535287570).
+CI atual do código `a55517d` aprovado: [40540295538](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40540295538),
+502 cenários e demais regressões. Documentação posterior não exige repetição.
+CI anterior do integrado `84bcd56` aprovado: [40535287570](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40535287570).
 CI anterior do protótipo `280a7dc`: [40534237271](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40534237271).
 Registro posterior apenas documental, sem repetir a bateria.
 Regressão independente de XP: `node r53/testes/xp_nivel.js`, 20.643

@@ -39,6 +39,17 @@ outros domínios, limite de quatro passos, contrato ausente, variantes nativas
 positivas/negativas e diário abaixo de 9.000 bytes. VM não avalia fórmulas,
 não valida latência Google nem certifica automações. Incluído no smoke Linux.
 
+## CI Linux
+
+Código `a55517deb9b77c43b796c80ac41f1029c0fdebd7` aprovado no
+[run 40540295538](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40540295538) em 27/10 às 16:24:13 UTC
+(13:24:13 Brasília). Log conferido: 101/80/78/243 cenários, pacote autossuficiente
+de nove arquivos, regressões salariais/missões/editor, sintaxe de 277 fontes
+Python/212 JS-GS, catálogo, progressão e Kaori. Run duplicado do push
+40540284431 também concluiu aprovado antes da tentativa de cancelá-lo; não foi
+possível cancelar um run já encerrado. Não somar as duas execuções como cobertura.
+Registro posterior apenas documental com `[skip ci]`, sem nova bateria ou pacote.
+
 ## Leitura das oficiais
 
 Somente leitura das duas oficiais: metadados de 30 abas e três intervalos
