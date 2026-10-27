@@ -1,3 +1,13 @@
+## Arrumação · 27/10/2026 (Claude)
+
+Item 4 da lista de 27/10 ("faz a 4 ai").
+- `r53/testes/leituras_curtas.js` aposentado: comparava o módulo de 22 remendos com o mesmo mais os remendos 23–33,
+  instalados nas oficiais desde 26/10; com a exportação de hoje (38 remendos) ele só se pulava. Fica no histórico do Git.
+  Saiu da bateria do `nuvem-b47/conferir.py`, que ganhou os três testes de 27/10 (abertura_salario,
+  missoes_sem_registros, xp_atualizar).
+- Notas novas do Codigo.gs e do Ficha.gs: continuam para o próximo pacote inteiro; as de NÍVEL e XP já estão nas células
+  das oficiais desde a instalação da caixa de XP, então nada fica diferente para quem usa.
+
 ## XP digitado em cima da caixa de XP · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 13 de backup)
 
 Pedido do Mizuki: um jeito de pôr o XP atual na mão sem quebrar a conta, com as missões antigas parando de mexer no XP e

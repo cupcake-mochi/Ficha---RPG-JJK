@@ -100,8 +100,9 @@ def main():
                          'r53/testes/caminho_loader.js',
                          'r53/testes/caminho_leve.js',
                          'r53/testes/caminho_integrado.js', 'r53/testes/caminho_corrida.js',
-                         'r53/testes/pacote_leve.js', 'r53/testes/pessoal_leve.js', 'r53/testes/atalho_livre.js', 'r53/testes/leituras_curtas.js', 'r53/testes/caixas_horizontais.js', 'r53/testes/cartas_custom.js',
+                         'r53/testes/pacote_leve.js', 'r53/testes/pessoal_leve.js', 'r53/testes/atalho_livre.js', 'r53/testes/caixas_horizontais.js', 'r53/testes/cartas_custom.js',
                          'r53/testes/editor_lazy.js',
+                         'r53/testes/abertura_salario.js', 'r53/testes/missoes_sem_registros.js', 'r53/testes/xp_atualizar.js',
                          'conteudos-b47/comum/testar-notas-contextuais.js']:
                 run = subprocess.run([node, str(ROOT/name)], cwd=ROOT, capture_output=True, text=True, timeout=300)
                 check(name, run.returncode == 0, run.stderr.strip() or run.stdout.strip())
