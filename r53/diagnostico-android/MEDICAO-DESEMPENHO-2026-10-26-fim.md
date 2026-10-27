@@ -89,3 +89,16 @@ não roda, a primeira edição rápida) pagava ~6–7,5 s. Corte: `hoje+3650`. E
 `r53/testes/abertura_salario.js` (15): sem carteira, 3650 dias (antes, amanhã); com carteira, igual; em três dias seguidos
 as releituras caem de 3 para 0. Instalação: `node r53/diagnostico-android/preparar_abertura_salario.js
 nuvem-b47/saidas/atalho/projeto-leve.json <trecho>` troca só essa linha do Codigo (`97c430f4` → `f86423cf`).
+
+Medido com o corte instalado na mesma cópia (Codigo `f86423cf`, mais uma linha de log só na cópia que mostra a data
+guardada). Uma edição na área do salário (FICHA PESSOAL!AW15) apaga a data, como faria uma emissão; depois:
+
+| Abertura | Execução | onOpen | Conferência do salário | Data guardada |
+|---|---:|---:|---|---|
+| 12:42:10 | 7,5 s | 5,7 s | rodou: `salarioCongelar_` 4,6 s, congelados 0 | `49972` (hoje 46322 + 3650) |
+| 12:42:48 | 3,2 s | 0,7 s | pulou (0,16 s) | `49972` |
+
+Antes do corte, a mesma data ficava em `46323` (amanhã) e a conferência voltava na primeira abertura do dia seguinte.
+Observação fora do corte: apagar o "x" da AW15 (nome sem tipo, nada registrado) estourou os 30 s às 12:41:08 sem nenhuma
+linha de log; o "x" em si levou 12,6 s. Não se repetiu porque a edição seguinte caiu na AW14 (o rótulo "MISSÃO" da cópia
+ficou vazio; a cópia é descartável). Fica para o item das missões.
