@@ -11,6 +11,13 @@ provoca recusa, sem sobrescrita/rollback. Assinatura financeira v1 mantida.
 missões 2.076 e salário 95 passaram. Leitura nativa: 457 conferências por
 oficial, zero divergências; nenhuma escrita, cópia ou execução Apps Script
 nova. Relatório r53/inicializacao/FORMACAO-2026-10-27.md e README.
+CI Linux do código `73dffdac18bdd55b9a3b5b52a9cd7665fdc9dfeb` aprovado em
+27/10 às 14:00:26 Brasília: [40546156146](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40546156146).
+692 cenários de inicialização confirmados no log; pacote de nove arquivos,
+regressões, catálogo/progressão/Kaori, sintaxe de 277 fontes Python e 219 JS/GS.
+Run duplicado 40546148817 cancelado. Fechamento posterior só documental com
+`[skip ci]`, sem repetir a bateria ou publicar pacote.
+
 Ainda faltam técnica/Famílias, inventário, entidades/cartões/MONTAGENS, fotos,
 recuperações, orquestração/conferência final, automações, novo responsável e
 integração drive.file/prova nativa completa. Criação continua bloqueada;

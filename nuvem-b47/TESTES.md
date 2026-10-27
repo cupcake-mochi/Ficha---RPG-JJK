@@ -7,6 +7,13 @@ recusada. Guardas do salário usam a fórmula instalada pelo módulo Salarios.
 Leitura das oficiais foi somente leitura, 457 conferências cada; não executou
 os novos perfis no Apps Script. Ver FORMACAO-2026-10-27.md na inicialização.
 
+CI Linux do código `73dffdac18bdd55b9a3b5b52a9cd7665fdc9dfeb` aprovado em
+27/10 às 14:00:26 Brasília: [40546156146](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40546156146).
+692 cenários de inicialização confirmados no log; pacote de nove arquivos,
+regressões, catálogo/progressão/Kaori, sintaxe de 277 fontes Python e 219 JS/GS.
+Run duplicado 40546148817 cancelado. Fechamento posterior só documental com
+`[skip ci]`, sem repetir a bateria ou publicar pacote.
+
 # Escolhas, recursos e condições da Carteira · 27/10/2026
 
 O smoke inclui `r53/testes/inicializacao_pessoal.js`: 243 cenários novos,
