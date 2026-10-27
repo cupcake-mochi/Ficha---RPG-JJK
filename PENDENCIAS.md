@@ -1,3 +1,31 @@
+## Caixas de ± da FICHA sem abrir o módulo · 27/10/2026 (Claude) · medido numa cópia, falta o ok para as oficiais
+
+O último corte conhecido no ± da vida (~1,3 s dos ~10 s, MEDICAO-DESEMPENHO-2026-10-26-fim). O `r53/atalho_livre.gs`
+ganhou `R53_LIVRE_DELTA_` (AM26, AM30, AM34 → atual D, máximo J, temp AF da mesma linha, e o retângulo D:AM da leitura) e
+`r53LivreDelta_`, chamado pelo `r53EdicaoLivre_` antes do mapa: uma leitura, as mesmas gravações do `aplicarDelta_`, e o
+módulo fica fechado. Colagem em várias células, outro módulo ou erro antes de gravar caem no caminho de sempre; erro
+depois de gravar não cai (o módulo aplicaria o ± de novo).
+- Gerador: `node r53/atalho_livre.js --so-delta <projeto .json>` regera só as caixas sem a ficha exportada (mapa, gatilhos
+  e marcas saem do `.gs` do mesmo módulo); o gerador completo também as faz. As células vêm do índice estático do módulo
+  e a conta é o `aplicaPasso_` dele copiado; se o `aplicarDelta_` do módulo mudar, o gerador recusa.
+- Instalação: `node r53/diagnostico-android/preparar_caixas_delta.js <projeto-leve.json> <trecho>`: troca só o bloco do
+  atalho no fim do Codigo, conferindo antes Codigo `dc1aa740` e o atalho de `895d1ec`, e depois Codigo `07a66b0a`.
+  Módulo, EditorR53 e os outros arquivos ficam iguais. Trecho `c3ac308f…` (32.809 bytes).
+- Teste `r53/testes/caixas_delta.js` (16.132 verificações): 7.056 combinações de ±, atual, máximo e temp contra o
+  `aplicarDelta_` do módulo (mesmas células, mesmas gravações na mesma ordem); 72 edições pelo onEdit inteiro, antes e
+  depois, numa ficha esparsa (mesmas células, gravações e propriedades; depois, uma leitura e sem módulo); colagem,
+  hash trocado e erro antes de gravar; o trecho num editor de mentira. Quatro defeitos plantados acenderam. No caminho
+  de antes as 72 edições também fazem uma leitura só e nenhuma gravação de propriedade: fora o `aplicarDelta_`, nada do
+  módulo olha a planilha nessas células, então a ficha esparsa vale pela exportada (`oficial-era.json`, que não estava
+  neste computador; com ela, o teste roda também nela).
+- Medido no Google numa cópia nova da Era (`1aNuAcj2…`, "TESTE caixas delta (descartável)"): ± da vida, mediana
+  11,5 → 10,9 s, média 12,4 → 11,4 s, dentro da oscilação do Google; as três caixas aplicaram e limparam certo
+  (MEDICAO-DESEMPENHO-2026-10-26-fim). Para as oficiais, com o ok: versão 9 de backup, o mesmo trecho (Codigo
+  `dc1aa740` → `07a66b0a`), salvar, recarregar e conferir os dez hashes.
+- A cópia K7 (`1kAXc_Wb…`) foi para a lixeira em 26/10. A "TESTE vida" (`1QPKjsv6…`) segue esperando o link inteiro.
+- Neste Windows: sem node nem python instalados; usei o node 24 do runtime do Codex com um pré-carregamento que grava o
+  byte de sistema do gzip como no Linux (sem isso o EditorR53 de transporte sai com outro hash).
+
 ## Cortes da noite: marcas K7/K8, versão salva do cartão e XP · 26/10/2026 (Claude) · instalado nas duas oficiais
 
 Os cortes que sobravam da fila (o ± da vida ficou como está, ~10 s, quase no piso):
