@@ -1,4 +1,4 @@
-## Recálculo: os 225 INDIRECT da DADOS_CUSTOM não pesam · 27/10/2026 (Claude) · nada instalado
+## Recálculo: nem os 225 INDIRECT nem a coluna FD pesam · 27/10/2026 (Claude) · nada instalado
 
 `r53/diagnostico-android/grafo_recalculo.py <ficha exportada .json> [aba!célula ...]` monta o grafo de dependências das
 124.603 fórmulas da oficial exportada. As únicas funções voláteis são os 525 INDIRECT de 225 fórmulas da DADOS_CUSTOM
@@ -10,6 +10,11 @@ trocou os 525 por `CHOOSE(IFERROR(MATCH(seletor;{os 8 rótulos};0);9);as 9 faixa
 antes e depois. ± de vida (FICHA!AM26), duração do onEdit: antes 10,7 / 11,6 / 12,7 / 14,9 / 10,3 / 8,1 s (mediana 11,1),
 depois 12,2 / 10,7 / 10,2 / 11,3 / 7,2 / 11,4 s (mediana 11,0): dentro da oscilação. Não vale levar para as oficiais.
 Próximo candidato, da REVISAO-FINAL §4: a coluna FD da DADOS_R53 (249 fórmulas sem consumidor, ~8,9 MB de texto).
+Testado na mesma cópia, depois dos INDIRECT: o grafo confirma que nada depende da FD, e as 249 foram apagadas pela API
+(FD2:FD251, o cabeçalho ficou). Cartão (FICHA AMALDIÇOADA!E71, sem contar a primeira depois de abrir): antes 10,9 / 11,3 /
+10,6 / 11,2 s, depois 12,2 / 10,8 / 13,3 / 11,4 s. ± de vida: antes mediana 11,0 s, depois 12,6 / 11,6 / 10,4 / 9,7 / 11,5 s
+(mediana 11,5). Também sem ganho; não vale levar. Com isso não sobra candidato concreto: o tempo de edição (~11 s no
+servidor) não acompanha nem as voláteis nem o tamanho das fórmulas. A cópia foi para a lixeira.
 
 ## XP com o nível escrito na mão · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 10 de backup)
 
