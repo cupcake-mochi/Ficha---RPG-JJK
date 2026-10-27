@@ -1,4 +1,4 @@
-## XP com o nível escrito na mão · 27/10/2026 (Claude) · testando numa cópia, oficiais esperando o ok
+## XP com o nível escrito na mão · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 10 de backup)
 
 Com o nível 10 escrito e 250 de XP, a caixa de falta da FICHA PESSOAL pedia 4.150 (o acumulado do 11 menos o XP, que
 contava do zero) em vez dos 450 do 10 para o 11. O Mizuki escolheu a opção A ("faz a A") e pediu que descer o nível na mão
