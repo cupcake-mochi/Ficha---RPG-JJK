@@ -1,3 +1,19 @@
+## Carteira viva: inicialização financeira em protótipo · 27/10/2026 · não instalada
+
+A pedido do Mizuki, o modelo do servidor conserva as configurações extras da mesa,
+sem reutilizar o personagem do modelo. `r53/inicializacao/financeiro.gs` implementa
+somente o domínio financeiro: prévia, diário, retomada após interrupção e conferência
+de fórmulas. Não é inicialização completa nem certificado aceito pelo bot; não foi
+incluído no pacote e não instala gatilhos. Não aplicar nas oficiais ou em personagens.
+Leia `r53/inicializacao/README.md` antes de continuar. Base main `d0836390`; branch
+`codex/inicializacao-financeira-carteira`, PR separada da PR 84 do consumidor.
+96 cenários offline novos aprovados; salário por fórmula e missões com regressões
+focais aprovadas. Leitura nativa pontual das duas oficiais, sem escrita: âncoras e
+grade compatíveis, estado financeiro herdável confirmado. Execução do protótipo no
+Google, inicialização pessoal completa, automações e novo responsável ainda pendentes.
+Sem publicação, merge, novos escopos, reconstrução ou alteração nas oficiais.
+Próxima implementação integrada: GPT-6 Astra / Alto; revisão focal: Médio.
+
 ## Inventário da FICHA PESSOAL: menus destravados · 26/10/2026 (Claude) · aplicado nas duas oficiais
 
 O Mizuki viu que os itens guardados e os equipáveis guardados não aceitavam escrita. Nas duas oficiais (e na
