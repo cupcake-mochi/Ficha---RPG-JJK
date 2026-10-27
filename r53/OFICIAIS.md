@@ -140,3 +140,23 @@ Depois de salvar e recarregar, iguais nas duas:
 
 Módulo `9dc3480a…9ffc`: o hash no Codigo e os três pedaços `R53_CODIGO_` descomprimidos (850000, 850000 e 237688
 caracteres; os dois últimos arquivos vazios). Ficha e Invocacoes iguais é esperado: o começo do gzip saiu idêntico.
+
+## Caixas de ± sem abrir o módulo · 26–27/10/2026
+
+Aval do Mizuki no chat ("Pode instalar o atalho das caixas de ± nas duas oficiais (versão 9 de backup antes), exigindo o
+Codigo dc1aa740 → 07a66b0a igual ao da cópia"). Pelo Claude in Chrome, na conta dona (`/u/0/` naquele navegador), só o
+Codigo mudou: o bloco gerado do atalho no fim dele trocado pelo `r53/atalho_livre.gs` de `36d08ad` (`be124889…`, baixado
+pela página do editor e conferido lá), com as mesmas conferências do `preparar_caixas_delta.js` (Codigo `dc1aa740` e
+atalho `fa5e793c` antes, Codigo `07a66b0a` depois). Medido antes na cópia `1aNuAcj2…` (MEDICAO-DESEMPENHO-2026-10-26-fim).
+
+Antes, nas duas, os dez arquivos conferidos iguais aos da tabela dos cortes da noite, e a versão 9 de backup ("Antes do
+atalho das caixas de ± (27/10/2026)": Era da Revolução 23:54, Ciclo Maldito 23:56 de 26/10), implantação de biblioteca
+arquivada em seguida. O trecho devolveu `07a66b0a` nas duas. Depois de salvar e recarregar, iguais nas duas:
+
+| Arquivo | Antes | Depois |
+|---|---|---|
+| Codigo | `dc1aa740…04b1` | `07a66b0a…bc8f` |
+| EditorR53, Analise, Ficha, Invocacoes | `c3d31096…`, `2ea7e9d4…`, `6012dcb3…`, `ebf20bb1…` | sem mudança |
+| Configuracao, Origens, LotePaleta, PaletaSegundoPlano, SalarioLote | `bb784c6d…`, `90095228…`, `848e878b…`, `a5a0e83d…`, `366f6dd3…` | sem mudança |
+
+Módulo `9dc3480a` sem mudança (os pedaços não foram tocados). Para voltar: versão 9 de cada projeto.
