@@ -50,3 +50,19 @@ apagam pelas células delas, mas a cópia nova não tinha nenhuma). Da segunda e
 14,3–15,9 s, cartão 16,8–19,3 → 13,4–14,9 s, XP 25,9 → 14,5 s. Na XP, as duas rodadas devolveram a conta
 (`=DADOS!$CZ$47`); antes, o nível AH11 foi de 10 para 2 (o número digitado); depois ficou em 2 (já era o da conta,
 então essa rodada não prova sozinha que o nível fica parado; o node prova, `marcas_custom.js`).
+
+## Caixas de ± sem abrir o módulo (cópia `1aNuAcj2…`, "TESTE caixas delta (descartável)", projeto `1kIcshvU…`) · 26/10, 23:40–23:49
+
+Cópia nova da Era da Revolução pelo `/copy` (sem abrir a oficial). Os dez arquivos do script batiam com os das oficiais
+(Codigo `dc1aa740`, EditorR53 `c3d31096`, Analise `2ea7e9d4`…). O trecho do `preparar_caixas_delta.js` rodou com o bloco
+baixado do commit `36d08ad` (hash `be124889` conferido na página) e devolveu Codigo `07a66b0a`; salvo, recarregado, só o
+Codigo mudou. Edições pelo navegador, uma a cada ~20 s, duração do onEdit no registro de Execuções, todas concluídas.
+
+| FICHA!AM26 (± da vida) | aquecimento | −3/+3 alternados | mediana |
+|---|---:|---|---:|
+| antes (Codigo `dc1aa740`) | 13,2 s | 11,5 / 11,2 / 15,4 / 11,6 s | 11,5 s |
+| depois (Codigo `07a66b0a`) | 11,2 s | 13,1 / 11,2 / 10,4 / 10,7 s | 10,9 s |
+
+Média 12,4 → 11,4 s: o ~1 s esperado aparece, mas dentro da oscilação do Google (±2–4 s por edição). Depois, as outras
+caixas: integridade 65/65 −1 → 64 (12,3 s), +5 → 65, preso no máximo (14,4 s); energia 0 sem máximo +2 → 2 (11,4 s).
+Todas as caixas limparam. Vida 53 → 50 → … → 47, coerente com os ± digitados.

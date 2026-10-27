@@ -1,4 +1,4 @@
-## Caixas de ± da FICHA sem abrir o módulo · 27/10/2026 (Claude) · pronto no node, falta medir numa cópia
+## Caixas de ± da FICHA sem abrir o módulo · 27/10/2026 (Claude) · medido numa cópia, falta o ok para as oficiais
 
 O último corte conhecido no ± da vida (~1,3 s dos ~10 s, MEDICAO-DESEMPENHO-2026-10-26-fim). O `r53/atalho_livre.gs`
 ganhou `R53_LIVRE_DELTA_` (AM26, AM30, AM34 → atual D, máximo J, temp AF da mesma linha, e o retângulo D:AM da leitura) e
@@ -18,6 +18,11 @@ depois de gravar não cai (o módulo aplicaria o ± de novo).
   de antes as 72 edições também fazem uma leitura só e nenhuma gravação de propriedade: fora o `aplicarDelta_`, nada do
   módulo olha a planilha nessas células, então a ficha esparsa vale pela exportada (`oficial-era.json`, que não estava
   neste computador; com ela, o teste roda também nela).
+- Medido no Google numa cópia nova da Era (`1aNuAcj2…`, "TESTE caixas delta (descartável)"): ± da vida, mediana
+  11,5 → 10,9 s, média 12,4 → 11,4 s, dentro da oscilação do Google; as três caixas aplicaram e limparam certo
+  (MEDICAO-DESEMPENHO-2026-10-26-fim). Para as oficiais, com o ok: versão 9 de backup, o mesmo trecho (Codigo
+  `dc1aa740` → `07a66b0a`), salvar, recarregar e conferir os dez hashes.
+- A cópia K7 (`1kAXc_Wb…`) foi para a lixeira em 26/10. A "TESTE vida" (`1QPKjsv6…`) segue esperando o link inteiro.
 - Neste Windows: sem node nem python instalados; usei o node 24 do runtime do Codex com um pré-carregamento que grava o
   byte de sistema do gzip como no Linux (sem isso o EditorR53 de transporte sai com outro hash).
 
