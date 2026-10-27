@@ -111,8 +111,10 @@ Ensaio inicial em cópia descartável do Ciclo: prévia concluída em 115,013 s;
 a aplicação atingiu seis minutos durante a conferência final, sem retornar
 sucesso. Leitura externa dos sete intervalos completos confirmou zero
 entradas/notas restantes e saldo/períodos/crédito pendente zero. Isso não
-substitui concluir o diário. A retomada e a versão com orçamento são testadas
-separadamente; consultar o registro nativo nesta pasta antes de continuar.
+substitui concluir o diário. A retomada concluiu em 236,503 s. Em outra cópia, a versão com orçamento
+concluiu em 283,416 s; repetição em 150,489 s, com estado comparado igual.
+As duas cópias foram enviadas à lixeira. O custo ainda exige otimização e
+integração própria antes de uso pelo jogador; consultar [o registro nativo](NATIVO-2026-10-27.md) antes de continuar.
 
 ## O que falta antes de liberar criação
 

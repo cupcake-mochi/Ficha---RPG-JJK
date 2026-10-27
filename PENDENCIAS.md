@@ -11,8 +11,11 @@ Leia `r53/inicializacao/README.md` antes de continuar. Base main `d0836390`; bra
 focais aprovadas. Leitura nativa pontual das duas oficiais, sem escrita: âncoras e
 grade compatíveis, estado financeiro herdável confirmado. Primeira prévia nativa passou; aplicação atingiu seis minutos na conferência
 final. Limite de quatro escritas/chamada, orçamento e retirada de leituras
-redundantes implementados com três regressões. Diário nativo/retomada e medição da
-versão corrigida em andamento. Inicialização pessoal completa, automações e novo
+redundantes implementados com três regressões. A mesma operação retomou e concluiu em 236,503 s. A versão corrigida concluiu
+em nova cópia sem timeout; conferência externa com saldo zero e fórmulas/regras
+preservadas. Nova aplicação 283,416 s; repetição 150,489 s, mesmo estado comparado. Duas cópias
+na lixeira; zero acionadores listados para o executor. Detalhes e limites em
+`r53/inicializacao/NATIVO-2026-10-27.md`. Inicialização pessoal completa, automações e novo
 responsável ainda pendentes.
 Sem publicação, merge, novos escopos, reconstrução ou alteração nas oficiais.
 Próxima implementação integrada: GPT-6 Astra / Alto; revisão focal: Médio.
