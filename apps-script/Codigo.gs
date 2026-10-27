@@ -246,9 +246,12 @@ function notasDeRegra_(ss, idx) {
                          'treze categorias; Guia, Emanador e Evocador treinam só Arma de Fogo e Balestra.',
     'nivel': 'Editável a qualquer hora, sem aviso. Anotar uma missão na FICHA PESSOAL sobe o nível ' +
              'sozinho, pela curva do capítulo Progressão, até o 20: dali em diante o livro pede um feito, e ' +
-             'quem sobe é você. O XP nunca desce o nível, e quem não usa XP sobe aqui na mão.',
-    'xp': 'A soma das missões anotadas na FICHA PESSOAL, no painel depois da coluna AU. Para mudar, ' +
-         'anote a missão lá. O nível ao lado sobe sozinho pela curva do capítulo Progressão.',
+             'quem sobe é você. O XP nunca desce o nível, e quem não usa XP sobe aqui na mão. Escrever o ' +
+             'nível acerta o XP: subindo, ele vai para o começo do nível novo; descendo, guarda a mesma parte do ' +
+             'caminho até o próximo nível.',
+    'xp': 'A soma das missões anotadas na FICHA PESSOAL, no painel depois da coluna AU, mais o acerto de ' +
+         'quando o nível foi escrito na mão. Para mudar, anote a missão lá. O nível ao lado sobe sozinho pela ' +
+         'curva do capítulo Progressão.',
     'trocou por arma': 'Só vale pra Guia, Emanador e Evocador. Cada troca é 2 das 5 perícias ' +
                        'livres do Caminho por treino numa arma específica — não a categoria, não ' +
                        'o tipo, uma arma da lista. Pode repetir até 2 vezes.',

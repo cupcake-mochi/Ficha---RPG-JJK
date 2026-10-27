@@ -180,6 +180,16 @@ if _n_num != 1:
     raise SystemExit(f"monta: o numero da CARTEIRA devia ser uma celula so, e achei {_n_num}")
 print("a versao no numero da CARTEIRA: 1 formula diferente da exportacao")
 
+# 27/10/2026: o NIVEL da FICHA (AH11) vira menu estrito de 1 a 30. Escrever o nivel acerta o XP (r53LivreNivel_ do
+# atalho), e o Mizuki pediu "meios de seguranca pra caso o jogador coloque valor invalido": texto, quebrado, zero ou
+# acima do topo da curva o Sheets recusa antes do script. Apagar continua valendo.
+_FICHA = next(a for a in LAYOUT["abas"] if a["nome"] == "FICHA")
+if any("AH11" in m["onde"].split() for m in _FICHA["menus"]):
+    raise SystemExit("monta: o NIVEL da FICHA ja tem menu na exportacao")
+_FICHA["menus"].append({"onde": "AH11", "tipo": "list", "formula": '"' + ",".join(str(n) for n in range(1, 31)) + '"',
+                        "vazio_ok": True, "mostra_seta": True})
+_FICHA.setdefault("menus_estritos", []).append("AH11")
+
 # 17/09/2026: o GLOSSARIO, entre a DADOS e a INVOCACAO -- o que cada atributo, pericia, oficio e
 # termo da ficha quer dizer. Nao tem planilha viva por tras, ao contrario das outras seis: nasce
 # inteiro aqui, reaproveitando os estilos que o CATALOGO ja usa. Ver glossario.py.

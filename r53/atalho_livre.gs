@@ -20,6 +20,7 @@ function r53EdicaoLivre_(e){
   if(!e||!e.range)return false;var r=e.range,aba=r.getSheet().getName(),lista=R53_LIVRE_[aba],m=R53_LIVRE_MARCAS_[aba];
   // As marcas custom guardadas pelo módulo deixam de valer (marcasCustom_); apagar não lê a planilha.
   if(m&&r53LivreToca_(m,r))PropertiesService.getDocumentProperties().deleteProperty('r53_marcas_custom');
+  if(aba==='FICHA'&&r.getA1Notation()===R53_LIVRE_NIVEL_.nivel)r53LivreNivel_(e);
   if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r);
   if(!lista||r53LivreToca_(lista,r)||!r53LivreValido_())return false;
   // Trilha ou Caminho mudou desde a última sincronização: a próxima edição nas quatro abas sincroniza.
@@ -60,6 +61,35 @@ function r53LivreDelta_(r){
   if(x.t&&fim.temp!==antes)ficha.getRange(x.t).setValue(fim.temp);
   r.clearContent();return true;
  }catch(err){console.log('atalho do ±: '+err.message);return gravou;}
+}
+// O nível escrito na mão (27/10/2026): o XP total da DADOS é a soma das missões mais a base, e aqui a base é acertada
+// para o XP caber no nível novo. Subindo, o XP vai para o acumulado do nível; descendo, guarda a mesma fração do caminho
+// até o próximo. Se o XP já cabe no nível, nada muda. Só a caixa do nível sozinha; a ficha sem a base fica como estava.
+var R53_LIVRE_NIVEL_={"nivel":"AH11","contas":"CY47:CZ54","base":7,"celula":"CZ54","curva":"AQ5:AR33"};
+function r53LivreNivelAlvo_(curva,total,n,o){
+ var acum=function(k){if(k<curva[0][0])return 0;for(var i=0;i<curva.length;i++)if(curva[i][0]===k)return curva[i][1];return null;};
+ var an=acum(n),prox=acum(n+1);if(an===null)return null;
+ if(total>=an&&(prox===null||total<prox))return null;
+ if(o>n){
+  var ao=acum(o),po=acum(o+1),feito=ao===null||po===null||po<=ao?0:Math.min(Math.max(total-ao,0),po-ao);
+  return prox===null||prox<=an?an:Math.min(an+(feito?Math.floor(feito*(prox-an)/(po-ao)):0),prox-1);
+ }
+ return total<an?an:null;
+}
+function r53LivreNivel_(e){
+ try{
+  var x=R53_LIVRE_NIVEL_,n=Number(e.value),o=Number(e.oldValue);
+  if(e.value===undefined||e.value===''||isNaN(n)||n!==Math.floor(n)||n<1)return;
+  var ss=e.source||e.range.getSheet().getParent(),d=ss.getSheetByName('DADOS');if(!d)return;
+  var v=d.getRange(x.contas).getValues();
+  if(v[0][0]!=='xp total'||v[x.base][0]!=='xp base')return;
+  var curva=d.getRange(x.curva).getValues().filter(function(l){return l[0]!==''&&l[1]!=='';})
+   .map(function(l){return [Number(l[0]),Number(l[1])];});
+  if(!curva.length)return;
+  var total=Number(v[0][1])||0,base=Number(v[x.base][1])||0,alvo=r53LivreNivelAlvo_(curva,total,n,isNaN(o)?0:o);
+  if(alvo===null||alvo===total)return;
+  d.getRange(x.celula).setValue(base+alvo-total);
+ }catch(err){console.log('atalho do nível: '+err.message);}
 }
 /** Antes do Caminho: Trilha e Caminho mudam o Amparo sem passar pelas quatro abas. */
 function r53LivreMarcar_(e){

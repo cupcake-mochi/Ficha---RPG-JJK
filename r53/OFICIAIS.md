@@ -160,3 +160,28 @@ arquivada em seguida. O trecho devolveu `07a66b0a` nas duas. Depois de salvar e 
 | Configuracao, Origens, LotePaleta, PaletaSegundoPlano, SalarioLote | `bb784c6d…`, `90095228…`, `848e878b…`, `a5a0e83d…`, `366f6dd3…` | sem mudança |
 
 Módulo `9dc3480a` sem mudança (os pedaços não foram tocados). Para voltar: versão 9 de cada projeto.
+
+## XP com o nível escrito na mão · 27/10/2026
+
+Aval do Mizuki no chat ("okey", depois de testar a cópia `14l3Bywwm…` "TESTE xp nível (descartável)" no celular e
+pedir os "meios de segurança"). Pelo Claude in Chrome, na conta dona (`/u/2/` no Chrome do Linux). Antes, nas duas, os dez
+arquivos iguais à tabela das caixas de ± (Codigo `07a66b0a`), e a versão 10 de backup ("Antes do XP com nível escrito na
+mão (27/10/2026)": Era da Revolução 11:05, Ciclo Maldito 11:09), implantação de biblioteca arquivada em seguida.
+
+- Projeto: só o Codigo, o bloco gerado do atalho no fim trocado pelo `r53/atalho_livre.gs` de `ed4ff8c` (`8c42ec76…`,
+  baixado pela página do editor e conferido lá), com as conferências do `preparar_xp_nivel.js` (Codigo `07a66b0a` e
+  atalho `be124889` antes, Codigo `97c430f4` depois).
+- Planilha, pela API do Sheets: DADOS!CY54 "xp base" e CZ54 0; DADOS!CZ47 com `+N(DADOS!$CZ$54)` no fim; as notas de
+  FICHA!AH10 (NÍVEL), FICHA!AN10 (XP) e FICHA PESSOAL!AW10 (XP TOTAL); e o NÍVEL (FICHA!AH11) em menu estrito de 1 a 30.
+
+Depois de salvar e recarregar, iguais nas duas:
+
+| Arquivo | Antes | Depois |
+|---|---|---|
+| Codigo | `07a66b0a…bc8f` | `97c430f4…73f9` |
+| EditorR53, Analise, Ficha, Invocacoes | `c3d31096…`, `2ea7e9d4…`, `6012dcb3…`, `ebf20bb1…` | sem mudança |
+| Configuracao, Origens, LotePaleta, PaletaSegundoPlano, SalarioLote | `bb784c6d…`, `90095228…`, `848e878b…`, `a5a0e83d…`, `366f6dd3…` | sem mudança |
+
+Módulo `9dc3480a` sem mudança. O Ficha do projeto continua `6012dcb3`: o Ficha.gs regerado no repositório (base do XP e
+menu do NÍVEL) só entra num pacote inteiro; nas oficiais a planilha já foi acertada à mão. Para voltar: versão 10 de cada
+projeto, e na planilha desfazer as cinco mudanças acima.
