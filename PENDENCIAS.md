@@ -1,3 +1,10 @@
+## Otimização Android fechada · 27/10/2026
+
+O Mizuki fechou a otimização depois dos testes do recálculo ("pode fechar então"). As oficiais ficam com Codigo `97c430f4` e a
+versão 10 de backup (r53/OFICIAIS.md). Fica em aberto só o que não é desempenho: o `leituras_curtas.js` presos ao 22º remendo,
+as notas novas do Codigo.gs que só entram no próximo pacote inteiro, e umas sete cópias "descartável" de 23–25/10 no Drive da
+gustavohmoura12, que esperam o ok dele para a lixeira.
+
 ## Recálculo: nem os 225 INDIRECT nem a coluna FD pesam · 27/10/2026 (Claude) · nada instalado
 
 `r53/diagnostico-android/grafo_recalculo.py <ficha exportada .json> [aba!célula ...]` monta o grafo de dependências das

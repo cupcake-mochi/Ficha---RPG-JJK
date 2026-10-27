@@ -185,3 +185,13 @@ Depois de salvar e recarregar, iguais nas duas:
 Módulo `9dc3480a` sem mudança. O Ficha do projeto continua `6012dcb3`: o Ficha.gs regerado no repositório (base do XP e
 menu do NÍVEL) só entra num pacote inteiro; nas oficiais a planilha já foi acertada à mão. Para voltar: versão 10 de cada
 projeto, e na planilha desfazer as cinco mudanças acima.
+
+Depois, a pedido dele ("1 - sim"): na Era da Revolução oficial, DADOS!CZ54 (a base do XP) = 3700, para a ficha nascer no
+nível 10 com o XP no começo dele (XP total 3700, falta 700 para o 11). O Ciclo Maldito está no nível 2, que já bate com 0.
+Conferido pela API: CY47:CZ54 da Era = xp total 3700, nível 10, próximo 4400, deste nível 3700, base 3700.
+
+## Fim da otimização Android · 27/10/2026
+
+Os dois últimos candidatos de fórmula (os 225 INDIRECT da DADOS_CUSTOM e a coluna FD da DADOS_R53) foram medidos numa cópia e
+não mudaram o tempo de edição (PENDENCIAS.md, PRs #33 e #34); nenhum foi às oficiais. O Mizuki fechou a otimização ("pode
+fechar então"). Estado final das duas oficiais: a tabela da seção "XP com o nível escrito na mão", com a versão 10 de backup.
