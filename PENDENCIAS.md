@@ -7,6 +7,7 @@ Executor financeiro extraído para perfis fixos, mantendo a assinatura/diário v
 Novos domínios: nível inicial/base XP (AH11/CZ54) e 14 textos/notas pessoais.
 Não inicializam atributos, escolhas, recursos, imagens, inventário, cartões
 ou recuperações. Não entram no pacote nem no bot; criação continua bloqueada.
+CI Linux 40534237271 aprovado no código `280a7dc` (12:47:26 Brasília).
 259 cenários offline aprovados (101 financeiro/80 nível-base/78 textos), mais
 20.643 verificações de XP/9.900 combinações sem exportação opcional. Leitura
 nativa revelou `;` em G46: guardas aceitam só essa variante conhecida, com

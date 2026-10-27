@@ -177,6 +177,8 @@ edição concorrente, linhas físicas tardias, prévia envelhecida, alvo inváli
 modo legado, fórmula desconhecida, preservação de regras e ausência de texto
 financeiro no diário. VM com serviços simulados; não executa fórmulas e não
 mede latência do Google. O smoke de nuvem inclui os três testes.
+CI Linux do código `280a7dc` aprovado: [40534237271](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40534237271).
+Registro posterior apenas documental, sem repetir a bateria.
 Regressão independente de XP: `node r53/testes/xp_nivel.js`, 20.643
 verificações/9.900 combinações sem a exportação nativa opcional.
 

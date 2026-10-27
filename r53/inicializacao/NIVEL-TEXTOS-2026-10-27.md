@@ -36,6 +36,16 @@ fora do domínio, assinatura financeira anterior e ordem entre financeiro e
 nível. XP: 20.643 verificações/9.900 combinações; sem a exportação opcional.
 A VM não calcula fórmulas do Sheets. Os três testes entram no smoke Linux.
 
+## CI Linux
+
+Código `280a7dcd0b3fb56b0a43dd6e0d88aaadcb08d634`: [run 40534237271](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40534237271)
+aprovado em 27/10/2026 às 15:47:26 UTC (12:47:26 Brasília). Confirmados no log
+os 101/80/78 cenários, pacote autossuficiente de nove arquivos sem os
+inicializadores, limites de tamanho, regressões de salário/missões/editor,
+sintaxe de 277 fontes Python e 206 JS/GS, catálogo, progressão e Kaori.
+O run duplicado do push foi cancelado; o run da PR passou no mesmo código.
+O registro posterior é documental e usa `[skip ci]`; não exige nova bateria.
+
 ## Leituras nativas e defeito encontrado
 
 As duas oficiais foram consultadas somente para leitura: metadados de 30 abas
