@@ -1,11 +1,11 @@
-## Missões sem a leitura dos registros quando nada pode mudar · 27/10/2026 (Claude) · medido numa cópia, nada nas oficiais
+## Missões sem a leitura dos registros quando nada pode mudar · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 12 de backup)
 
 Item 2 da lista de 27/10. Toda edição no painel de missões da FICHA PESSOAL lia a DADOS_SALARIOS!A2:G (~2,5 s), mesmo
 quando a caixa editada ficava sem missão antes e depois (nome sem tipo, tipo sem nome, modificadores). Agora essas pulam a
 leitura: sem cache, nada que possa divergir da aba. Numa cópia da Era, nome sem tipo digitado e apagado: 11,8 s de média
 com o código das oficiais, 8,1 e 7,25 s com o novo (r53/diagnostico-android/MEDICAO-DESEMPENHO-2026-10-26-fim.md).
-Teste `r53/testes/missoes_sem_registros.js`. Para as oficiais: Codigo `f86423cf` → `b8410018`, com a versão 12 de backup,
-só com o ok do Mizuki. O estouro de 30 s visto uma vez não se repetiu. A cópia "TESTE missões cache (descartável)" pode
+Teste `r53/testes/missoes_sem_registros.js`. Instalado nas duas oficiais (PR #39), Codigo `f86423cf` → `b8410018`,
+com a versão 12 de backup (r53/OFICIAIS.md). O estouro de 30 s visto uma vez não se repetiu. A cópia "TESTE missões cache (descartável)" pode
 ir para a lixeira.
 
 ## Abertura sem a releitura diária do salário · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 11 de backup)

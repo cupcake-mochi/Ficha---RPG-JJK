@@ -196,6 +196,24 @@ Os dois últimos candidatos de fórmula (os 225 INDIRECT da DADOS_CUSTOM e a col
 não mudaram o tempo de edição (PENDENCIAS.md, PRs #33 e #34); nenhum foi às oficiais. O Mizuki fechou a otimização ("pode
 fechar então"). Estado final das duas oficiais: a tabela da seção "XP com o nível escrito na mão", com a versão 10 de backup.
 
+## Missões sem a leitura dos registros · 27/10/2026
+
+Aval do Mizuki no chat ("oq estavamos fazendo antes pode instalar e mesclar", sobre o PR #39). Pelo navegador do app, na
+conta dona (`/u/1/` lá). Antes, nas duas, os dez arquivos iguais à seção da abertura (Codigo `f86423cf`), e a versão 12
+de backup ("Antes das missões sem a leitura dos registros (27/10/2026)": Era da Revolução 13:32, Ciclo Maldito 13:35),
+implantação de biblioteca arquivada em seguida.
+
+- Projeto: só o Codigo, `salarioMissoesAtuais_`, `salarioSincronizar_` com a `salarioRegistrosIntactos_` nova e a chamada
+  no `salarioEditar_` (`r53/diagnostico-android/preparar_missoes_sem_registros.js`). O trecho conferiu o Codigo
+  `f86423cf` antes e `b8410018` depois.
+- Planilha: nada.
+
+Depois de salvar e recarregar, iguais nas duas: Codigo `b8410018…`; EditorR53 `c3d31096`, Analise `2ea7e9d4`, Ficha
+`6012dcb3`, Invocacoes `ebf20bb1`, Configuracao `bb784c6d`, Origens `90095228`, LotePaleta `848e878b`,
+PaletaSegundoPlano `a5a0e83d` e SalarioLote `366f6dd3` sem mudança. Módulo `9dc3480a` sem mudança. Para voltar: versão 12.
+Efeito esperado: a edição no painel de missões que não forma nem desfaz missão (nome sem tipo, tipo sem nome,
+modificadores) sai ~4 s mais rápida; as outras, iguais. Medição na cópia: MEDICAO-DESEMPENHO-2026-10-26-fim.md.
+
 ## Abertura sem a releitura diária do salário · 27/10/2026
 
 Aval do Mizuki no chat ("Pode mesclar o PR #37 e instalar o corte da abertura nas duas oficiais, com versão 11 de backup
