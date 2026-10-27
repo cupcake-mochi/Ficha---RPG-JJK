@@ -16,7 +16,8 @@ const BASE = 'f484f49', CODIGO_ANTES = '07a66b0a';
 function gerar(projetoAntesDosCortes) {
   const g = caixas.gerar(projetoAntesDosCortes);
   const atalhoVelho = execSync('git show ' + BASE + ':r53/atalho_livre.gs', { cwd: raiz, maxBuffer: 1 << 26 }).toString('utf8');
-  const atalhoNovo = fs.readFileSync(path.join(raiz, 'r53/atalho_livre.gs'), 'utf8');
+  // O atalho deste passo é o de ed4ff8c (o instalado com o nível escrito na mão); o do disco já tem os passos seguintes.
+  const atalhoNovo = execSync('git show ed4ff8c:r53/atalho_livre.gs', { cwd: raiz, maxBuffer: 1 << 26 }).toString('utf8');
   if (atalhoNovo.indexOf('function r53LivreNivel_') < 0) throw Error('r53/atalho_livre.gs sem o acerto do nível');
   const codigo = atalhoNoCodigo(g.codigo, atalhoVelho);
   if (sha(codigo).slice(0, 8) !== CODIGO_ANTES) throw Error('o Codigo de hoje saiu ' + sha(codigo).slice(0, 8) + ', esperava ' + CODIGO_ANTES);

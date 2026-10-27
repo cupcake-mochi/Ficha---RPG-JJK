@@ -99,10 +99,11 @@ function salarioMissoesAtuais_(ss,agrupar) {
   // na ordem inversa as fórmulas do painel pagam a espera de novo (medido: ~3,5 s a mais).
   var pessoal=ss.getSheetByName('FICHA PESSOAL'),faixa=pessoal.getRange(15,49,73,24),out=[],matriz=null;
   if(agrupar){var tudo=pessoal.getRange(11,49,77,24).getValues();SALARIO_PAINEL_={xp:tudo[0][0],falta:tudo[0][6]};matriz=tudo.slice(4);}
-  var notas=faixa.getNotes();out.faixa=faixa;out.notas=notas;out.limpar=[];out.caixas={};
+  var notas=faixa.getNotes();out.faixa=faixa;out.notas=notas;out.limpar=[];out.caixas={};out.xpCaixas=matriz?{}:null;
   // Leia somente as entradas literais. Os totais de XP ao lado podem exigir o recálculo da ficha inteira.
   SALARIO_.colunas.forEach(function(col){var v=matriz?matriz.map(function(row){return row.slice(col-49,col-47);}):pessoal.getRange(15,col,73,2).getValues();for(var i=0;i<73;i++){
     var nome=String(v[i][0]||'').trim(),tipo=String(v[i][1]||'').trim();out.caixas[col+':'+(i+15)]=[nome,tipo];
+    if(matriz)out.xpCaixas[col+':'+(i+15)]=matriz[i][col-45];
     var match=/\[Salário: ([^\] ·]+) · [^\]]+\]/.exec(notas[i][col-49]);
     if(nome&&SALARIO_.tipos.indexOf(tipo)>=0)out.push({key:col+':'+(i+15),nome:nome,tipo:tipo,id:match?match[1]:'',row:i,off:col-49});
     if(!nome&&match)out.limpar.push([i,col-49]);
@@ -120,6 +121,36 @@ function salarioRegistrosIntactos_(r,atuais) {
   }
   return true;
 }
+/** 27/10/2026: o XP digitado em cima da caixa de XP da FICHA (r53LivreXp_, no atalho) congela as missões que já tinham
+ *  XP: a nota da caixa guarda "[XP congelado: x · id]". Enquanto for a mesma missão (o mesmo id do salário, ou a caixa
+ *  sem nome), o que mudar no XP dela (tipo, modificador, apagar) volta para a base da DADOS e o XP total não mexe; a
+ *  marca acompanha o valor novo e sai quando a caixa sem nome zera. Uma missão nova na caixa (outro id) descongela: a
+ *  parte da antiga sai da base e a nova conta inteira. A base é gravada na hora, antes do XP e do nível da edição
+ *  (salarioMissaoDireta_), e o painel já lido recebe a diferença. Devolve se alguma nota mudou. */
+function salarioXpCongelado_(ss,atuais) {
+  var re=/\n?\[XP congelado: (-?[\d.]+)(?: · ([^\]\n]*))?\]/,xp=atuais.xpCaixas,delta=0,mexeu=false;
+  for(var i=0;i<73;i++)for(var k=0;k<SALARIO_.colunas.length;k++){
+    var col=SALARIO_.colunas[k],off=col-49,chave=col+':'+(i+15),nota=String(atuais.notas[i][off]||''),m=re.exec(nota);
+    if(!m)continue;
+    if(!xp){var v=ss.getSheetByName('FICHA PESSOAL').getRange(15,49,73,24).getValues();xp={};
+      SALARIO_.colunas.forEach(function(c){for(var l=0;l<73;l++)xp[c+':'+(l+15)]=v[l][c-45];});}
+    var x=Number(m[1])||0,dono=m[2]||'',y=Number(xp[chave])||0,nome=(atuais.caixas[chave]||[''])[0];
+    var id=(/\[Salário: ([^\] ·]+) · /.exec(nota)||[])[1]||'',nova;
+    if(nome&&id!==dono){delta+=x;nova=nota.replace(re,'');}
+    else {delta+=x-y;nova=!nome&&!y?nota.replace(re,''):nota.replace(re,function(s){return (s.charAt(0)==='\n'?'\n':'')+'[XP congelado: '+y+(dono?' · '+dono:'')+']';});}
+    if(nova!==nota){atuais.notas[i][off]=nova;mexeu=true;}
+  }
+  if(delta){
+    var d=ss.getSheetByName('DADOS'),b=d.getRange('CY54:CZ54').getValues()[0];
+    if(b[0]!=='xp base')throw Error('Missão com XP congelado numa ficha sem a base do XP (DADOS!CY54).');
+    d.getRange('CZ54').setValue((Number(b[1])||0)+delta);
+    if(SALARIO_PAINEL_){
+      if(typeof SALARIO_PAINEL_.xp==='number')SALARIO_PAINEL_.xp+=delta;
+      if(typeof SALARIO_PAINEL_.falta==='number')SALARIO_PAINEL_.falta=Math.max(0,SALARIO_PAINEL_.falta-delta);
+    }
+  }
+  return mexeu;
+}
 /** A identidade viaja na nota da célula. Uma cópia da mesma missão não renova sua data. */
 function salarioSincronizar_(ss,estado,hoje,baseline,adiar,agrupar,edicao) {
   // O painel antes dos registros: a FICHA PESSOAL paga uma espera só (valores, notas e cabeçalho), e os registros,
@@ -131,6 +162,7 @@ function salarioSincronizar_(ss,estado,hoje,baseline,adiar,agrupar,edicao) {
   // tempo) se acerta na próxima edição que forma ou desfaz uma missão.
   if(edicao&&salarioRegistrosIntactos_(edicao,atuais)){
     var nada=[];atuais.limpar.forEach(function(p){atuais.notas[p[0]][p[1]]=semMarca(atuais.notas[p[0]][p[1]]);notesChanged=true;});
+    if(salarioXpCongelado_(ss,atuais))notesChanged=true;
     nada.gravar=function(){if(notesChanged)atuais.faixa.setNotes(atuais.notas);};
     if(!adiar)nada.gravar();
     return nada;
@@ -149,6 +181,7 @@ function salarioSincronizar_(ss,estado,hoje,baseline,adiar,agrupar,edicao) {
     if(atuais.notas[m.row][m.off]!==note){atuais.notas[m.row][m.off]=note;notesChanged=true;}
   });
   atuais.limpar.forEach(function(p){atuais.notas[p[0]][p[1]]=semMarca(atuais.notas[p[0]][p[1]]);notesChanged=true;});
+  if(salarioXpCongelado_(ss,atuais))notesChanged=true;
   old.forEach(function(r){if(!seen[r[0]]&&r[4]===true){r[4]=false;changed=true;}});
   old.gravar=function(){
     if(changed&&old.length){

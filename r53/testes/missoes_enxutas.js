@@ -13,7 +13,7 @@ const eq = (a, b, m) => { assert.deepStrictEqual(a, b, m); checks++; };
 const base = comExtrato({files: [{name: 'Codigo', source: fs.readFileSync(path.join(__dirname, 'salarios-com-formula.gs'), 'utf8')}]}).files[0].source;
 const antes = comMissoes(base), depois = enxutas(antes);
 // Depois delas veio a troca de 27/10 (missões sem a leitura dos registros), que tem o próprio teste.
-eq(require('../diagnostico-android/preparar_missoes_sem_registros.js').preparar(depois), fs.readFileSync(path.join(raiz, 'apps-script/Salarios.gs'), 'utf8'), 'o Salarios.gs é o resultado do preparador');
+eq(require('../diagnostico-android/preparar_xp_atualizar.js').preparar(require('../diagnostico-android/preparar_missoes_sem_registros.js').preparar(depois)), fs.readFileSync(path.join(raiz, 'apps-script/Salarios.gs'), 'utf8'), 'o Salarios.gs é o resultado do preparador');
 assert.throws(() => enxutas(depois), /já presentes/); checks++;
 assert.throws(() => enxutas(antes.replace("getRange('AQ4:DP100')", "getRange('AQ4:DP99')")), /divergente/); checks++;
 

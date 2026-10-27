@@ -1,3 +1,26 @@
+## XP digitado em cima da caixa de XP · 27/10/2026 (Claude) · testado numa cópia, nada nas oficiais
+
+Pedido do Mizuki: um jeito de pôr o XP atual na mão sem quebrar a conta, com as missões antigas parando de mexer no XP e
+as novas somando por cima. Ele escolheu testar na mesma caixa ("se o tempo estiver estourando ou ficando acima de 20seg a
+gente faz duas caixas") e o nível seguindo o XP nos dois sentidos.
+- Digitar um número em cima da FICHA!AN11 (a conta =DADOS!$CZ$47): o atalho (`r53LivreXp_`, gerado pelo
+  `r53/atalho_livre.js`) põe na base da DADOS!CZ54 o número menos a soma das missões, congela cada missão que tem XP na
+  nota da caixa dela (`[XP congelado: x · id do salário]`), acerta o nível (o maior que o XP alcança, como na subida
+  pelas missões; até o 20 não passa dele) e devolve a conta para a caixa. Apagar a caixa ou escrever algo que não é
+  número inteiro só devolve a conta. Ficha sem o rótulo "xp base" fica como antes (o módulo devolve a conta).
+- Congeladas (`salarioXpCongelado_` no Salarios.gs): enquanto for a mesma missão (mesmo id, ou a caixa sem nome), o que
+  mudar no XP dela volta para a base e o total não mexe; apagar nome e tipo tira a marca sem mudar o XP. Uma missão nova
+  na caixa (outro id) descongela: a parte da antiga sai da base e a nova conta inteira.
+- Cópia da Era ("TESTE missões cache (descartável)"): missão Caçada Curta (3750), digitar 5000 → XP 5000, nível 10 → 11,
+  conta de volta, nota com a marca; Caçada Curta → Longa: continua 5000; missão nova Curta: 5050. Tempos: digitar o XP
+  15,4 s (o atalho 7,1 s; onEdit 12,8 s), mudar a congelada 15,3 s, missão nova 8,4 e 14,1 s. Abaixo dos 20 s: fica a
+  mesma caixa.
+- Testes: `r53/testes/xp_atualizar.js` (87, Sheets de mentira com XP e total recalculados; quatro defeitos plantados
+  acenderam) e os de antes. Notas novas de NÍVEL e XP no Codigo.gs (entram no pacote inteiro; nas oficiais, direto na
+  FICHA!AH10 e AN10).
+- Instalação: `node r53/diagnostico-android/preparar_xp_atualizar.js nuvem-b47/saidas/atalho/projeto-leve.json <trecho>`
+  (Codigo `b8410018` → `52302778`), mais as duas notas. Nas oficiais só com o ok do Mizuki e a versão 13 de backup.
+
 ## Missões sem a leitura dos registros quando nada pode mudar · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 12 de backup)
 
 Item 2 da lista de 27/10. Toda edição no painel de missões da FICHA PESSOAL lia a DADOS_SALARIOS!A2:G (~2,5 s), mesmo
