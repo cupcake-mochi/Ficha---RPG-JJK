@@ -404,7 +404,11 @@ function salarioCongelar_(ss,hoje) {
   var nLivro=Number(v[4][1])||0,linhas=Number(v[5][1])||0,dias=Number(v[6][1])||0;
   var tabela=v.slice(9).filter(function(l){return /^SAL1:/.test(l[0]);});
   // Q2 tem formato de data (getValues devolve Date); vazio enquanto a carteira não foi emitida.
-  var q2=salarioDia_(v[0][1]);if(!isFinite(q2))return {novos:0,proximo:hoje+1};
+  // 27/10/2026: sem carteira emitida, a próxima conferência fica para longe. Emitir apaga a data guardada
+  // (salarioEmitir_, reemitirCarteira e a edição da CARTEIRA!AT3 e da CONFIGURAÇÃO O38:O39), e a conferência volta na
+  // hora. Com "amanhã", a primeira abertura (ou, no Android, a primeira edição rápida) de cada dia relia a DADOS_SALARIOS
+  // inteira à toa: 6–7,5 s medidos numa cópia da Era.
+  var q2=salarioDia_(v[0][1]);if(!isFinite(q2))return {novos:0,proximo:hoje+3650};
   var proximo=q2+(Number(v[1][1])+1)*dias;
   if(!tabela.length)return {novos:0,proximo:proximo};
   var novos=tabela.map(function(l){return [l[0],salarioData_(l[1]),salarioData_(l[2]),salarioData_(hoje),l[3],l[4],l[5],l[6],l[7],l[8],l[9],JSON.stringify({formula:true,dias:dias})];});
