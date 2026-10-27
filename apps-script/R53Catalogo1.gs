@@ -279,7 +279,7 @@ var VALORES_R53_CATALOGO_1_ = [
       [179,10,"=IF('DADOS_RESTRICOES'!M62=\"\",0,'DADOS_RESTRICOES'!P62)",0],[179,11,"=IF('DADOS_RESTRICOES'!M62=\"\",\"\",\"custom.restricoes.30\")",0],[179,12,"=IF('DADOS_RESTRICOES'!M62=\"\",0,1)",0],[179,13,"=IF('DADOS_RESTRICOES'!M62=\"\",0,1)",0],[179,14,"=IF('DADOS_RESTRICOES'!M62=\"\",0,0)",0],[179,15,"=IF('DADOS_RESTRICOES'!M62=\"\",\"\",IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_RESTRICOES'!E31,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_R53_CATALOGO'!$A$2:$O$119,15,FALSE),\"custom.restricoes.30\"))",0]
     ],
     "notas":[],
-    "geracao":"2d3a0bf73db57661",
+    "geracao":"be3a28b454881d77",
     "arquivo":"R53Catalogo1.gs"
   }
 ];

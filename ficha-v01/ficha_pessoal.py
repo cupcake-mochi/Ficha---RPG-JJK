@@ -481,6 +481,13 @@ def trocas(layout, CAT=None):
     import ficha_automatica as _fa_o
     conta("origem da ficha", f'=SUBSTITUTE({_A(idx["origem"], "FICHA!")},"{_fa_o.SEM_TECNICA}","")')
     conta("sem técnica", f'=IF(ISNUMBER(SEARCH("{_fa_o.SEM_TECNICA}",{_A(idx["origem"], "FICHA!")})),1,0)')
+    # 27/10/2026, o nível escrito na mão: o XP total é a soma das missões mais esta base, que o atalho do Codigo.gs
+    # (r53LivreNivel_) acerta quando alguém escreve o nível na FICHA. Subindo, o XP vai para o acumulado do nível novo;
+    # descendo, guarda a mesma fração do caminho até o próximo. Pedido do Mizuki ("faz a A"): com o nível 10 escrito e
+    # 250 de XP, a caixa de falta pedia 4.150 em vez dos 450 que faltam do 10 para o 11.
+    conta("xp base", 0)
+    i_xp = next(i for i, (n, _) in enumerate(contas) if n == "xp total")
+    contas[i_xp] = ("xp total", contas[i_xp][1] + f'+N({H["xp base"]})')
     for i, (nome, form) in enumerate(contas, start=1):
         cel["DADOS"][f"{ix._letras(c_contas)}{lin_cab + i}"] = (nome, ref_txt)
         cel["DADOS"][f"{ix._letras(c_contas + 1)}{lin_cab + i}"] = (form, ref_num)
@@ -837,8 +844,8 @@ NOTAS = {
     "livre": "As duas últimas linhas são livres: digite a linha inteira, para o que não está na lista.",
     "linha_livre": "Linha livre: digite o nome e as outras colunas à mão. Serve para o que não está no menu das linhas "
                    "de cima. Na coluna Vol., digite o Volume da linha inteira.",
-    "xp_total": "A soma da coluna Total de todas as missões. A caixa XP da FICHA mostra este mesmo número, e o nível "
-                "sobe por ele.",
+    "xp_total": "A soma da coluna Total de todas as missões, mais o acerto de quando o nível foi escrito na mão na "
+                "FICHA. A caixa XP da FICHA mostra este mesmo número, e o nível sobe por ele.",
     "falta": "O XP acumulado que o próximo nível pede, menos o seu XP total. O nível é o da FICHA. Do 20 para o 21 o "
              "livro pede também um feito, e o 30 é o topo.",
     "xp": "Escolha o tipo da missão. {tipos}.",

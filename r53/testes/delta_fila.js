@@ -1,5 +1,5 @@
 'use strict';
-// Compara toda a geração com a base auditada (f484f49, 27/10/2026); nenhuma aba pode mudar.
+// Compara toda a geração com a base auditada (f484f49, 27/10/2026); só muda o que a lista diz.
 // A base anterior, fa54ab6, só aceitava as 12 mudanças das barras e das Sementes e ficou para trás
 // com o Caminho.gs, o Eventos.gs e as 17 mudanças que vieram depois.
 const vm = require('vm'), cp = require('child_process'), assert = require('assert');
@@ -13,7 +13,8 @@ const before = read(loader.arquivos().map(name => cp.execFileSync('git',
   ['show', 'f484f49ade742c435c41367b19a321f910ee8316:apps-script/' + name],
   {encoding:'utf8', maxBuffer:100000000})).join('\n'));
 const after = read(loader.fontes());
-const expected = new Set();
+// 27/10/2026, o nível escrito na mão: a base do XP (CY54/CZ54), o XP total somando ela e a nota do XP total.
+const expected = new Set(['DADOS.vals.47,104.0', 'DADOS.vals.54,103', 'DADOS.vals.54,104', 'FICHA PESSOAL.notas.14.1']);
 const changed = [];
 function compare(a,b,path) {
   if (JSON.stringify(a) === JSON.stringify(b)) return;
@@ -33,6 +34,9 @@ assert.strictEqual(after.length,before.length);
 for (let i=0;i<before.length;i++) compare(normalize(before[i]),normalize(after[i]),after[i].nome);
 assert.deepStrictEqual(new Set(changed),expected);
 const sheet = name => after.find(s => s.nome === name);
+assert(sheet('DADOS').vals['47,104'][0].endsWith('+N(DADOS!$CZ$54)'));
+assert.deepStrictEqual(sheet('DADOS').vals['54,103'], ['xp base',5]);
+assert.deepStrictEqual(sheet('DADOS').vals['54,104'], [0,7]);
 for (const row of [26,30,34]) assert(sheet('FICHA').vals[row+',19'][0].includes(`IF(OR(N($D$${row})<=0,N($J$${row})<=0),""`));
 const names = ['Domínio Simples','Energia Reversa','Pétala','Aptidão Própria'];
 for (let i=0;i<4;i++) {

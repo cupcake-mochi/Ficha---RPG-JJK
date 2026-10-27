@@ -1,3 +1,21 @@
+## XP com o nível escrito na mão · 27/10/2026 (Claude) · testando numa cópia, oficiais esperando o ok
+
+Com o nível 10 escrito e 250 de XP, a caixa de falta da FICHA PESSOAL pedia 4.150 (o acumulado do 11 menos o XP, que
+contava do zero) em vez dos 450 do 10 para o 11. O Mizuki escolheu a opção A ("faz a A") e pediu que descer o nível na mão
+também mexesse no XP; a conversão pela fração foi a minha recomendação no lugar de zerar (veto dele em aberto).
+- A DADOS ganhou a base do XP (CY54 "xp base", CZ54 = 0) e o XP total (CZ47) soma `+N(DADOS!$CZ$54)`; gerador
+  `ficha-v01/ficha_pessoal.py`, Ficha.gs regerado (selo be3a28b4). A falta, a barra e a subida pelo XP já leem o CZ47.
+- O atalho (`r53LivreNivel_`, chamado pelo `r53EdicaoLivre_` na FICHA!AH11 sozinha) acerta a base: subindo, o XP vai
+  para o acumulado do nível novo (se já passa dele, fica); descendo, guarda a mesma fração do caminho até o próximo; se
+  o XP já cabe no nível, nada. Uma leitura da DADOS e uma gravação, sem abrir o módulo. Ficha sem o rótulo "xp base"
+  não grava nada. O módulo (9dc3480a) não muda; o Codigo vai de 07a66b0a para 183cacda.
+- Notas: a do XP TOTAL (FICHA PESSOAL AW10, no gerador) e as de NÍVEL e XP da FICHA (AH10, AN10, no Codigo.gs). As do
+  Codigo.gs só entram no módulo no próximo pacote inteiro; nas oficiais elas vão direto na célula.
+- Testes: `r53/testes/xp_nivel.js` (20.638 verificações, 9.900 pares de nível e XP, quatro defeitos plantados acenderam),
+  a parte 5 do `atalho_livre.js` (o onEdit inteiro grava só a base, sem o módulo) e o `delta_fila.js` com as 4 mudanças.
+- Instalação: `node r53/diagnostico-android/preparar_xp_nivel.js <projeto-leve.json> <trecho>` (troca só o atalho) e,
+  na planilha, DADOS!CY54 "xp base", CZ54 0, a fórmula nova do CZ47 e as três notas.
+
 ## Testes no Linux com a ficha real · 27/10/2026 (Claude)
 
 `nuvem-b47/saidas/atalho/oficial-era.json` gerada pelo `r53/xlsx_para_json.py` de um xlsx da Era oficial de 27/10

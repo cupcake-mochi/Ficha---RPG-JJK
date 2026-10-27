@@ -80,6 +80,8 @@ for (const aba of Object.keys(mapa)) {
     if (!livre && presas >= 900) continue;
     // as caixas de ± fazem o mesmo sem abrir o módulo: conferidas no caixas_delta.js
     if (aba === 'FICHA' && Object.prototype.hasOwnProperty.call(delta, novo.ss.getSheetByName(aba).getRange(r, c).getA1Notation())) continue;
+    // a caixa do nível acerta a base do XP (lê a DADOS) sem abrir o módulo: conferida no fim daqui e no xp_nivel.js
+    if (aba === 'FICHA' && r === 11 && c === 34) continue;
     const a = editar(novo, aba, r, c, v);
     if (livre) {
       livres++;
@@ -115,4 +117,13 @@ ok(!editar(novo, 'CARTEIRA', lr, lc, 'y').log.some(l => l.startsWith('R ')), 'de
 editar(novo, 'FICHA', 11, 4, 'Vanguarda');
 const fl = (() => { const sh = novo.ss.getSheetByName('FICHA'); for (let r = 200; r <= sh.rows; r++) for (let c = 1; c <= sh.cols; c++) if (!toca(mapa.FICHA, r, c)) return [r, c]; })();
 ok(!editar(novo, 'FICHA', fl[0], fl[1], 'x').log.some(l => /^[RM] /.test(l)), 'FICHA livre segue sem ler com a marca');
+// 5. O nível escrito na mão (27/10/2026): a exportação é de antes da base do XP, então ela entra aqui (CY54:CZ54)
+const nivel = (A, v) => { const d = A.ss.getSheetByName('DADOS'); d.cel(54, 103, true).v = 'xp base'; d.cel(54, 104, true).v = 0;
+  return editar(A, 'FICHA', 11, 34, v); };
+const semBase = editar(novo, 'FICHA', 11, 34, 12);
+ok(!semBase.erro && !semBase.log.some(l => /^W /.test(l)), 'ficha sem a base: nada gravado');
+const n12 = nivel(novo, 12);
+ok(!n12.erro && !n12.log.includes('M  '), 'nível escrito: sem erro e sem o módulo: ' + n12.erro);
+eq(n12.log.filter(l => /^W /.test(l)).length, 1, 'uma gravação só: ' + n12.log.join(' | '));
+ok(n12.log.some(l => /^W /.test(l) && /CZ54/.test(l)), 'nível escrito grava a base: ' + n12.log.join(' | '));
 console.log('atalho_livre: ' + checks + ' verificações (' + livres + ' livres, ' + presas + ' do mapa)');
