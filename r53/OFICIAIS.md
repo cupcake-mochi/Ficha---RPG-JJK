@@ -117,3 +117,17 @@ medido na cópia `1coYY2bg…`. Antes, cada projeto ganhou a versão 7 de backup
 (26/10/2026)": Ciclo Maldito 15:59, Era da Revolução 16:03), implantação de biblioteca arquivada em seguida.
 Depois de salvar e recarregar, nas duas: SalarioLote `366f6dd3`, EditorR53 `68f21a08`, módulo `52fc6903`, e
 Codigo, LotePaleta e PaletaSegundoPlano como estavam. Na cópia, edição simples 8,9–11,7 s → 4,7–5,3 s.
+
+## Cortes da noite · 26–27/10/2026
+
+Aval do Mizuki no cartão ("Pode instalar nas duas"). Pelo navegador do app, na conta dona, um trecho único
+(`r53/diagnostico-android/preparar_cortes_noite.js`, arquivo `2f5249c7…`) troca o módulo (remendos 39–41), o Codigo
+(hash do módulo e atalho regerado) e o EditorR53; ele confere Codigo `452445ac`, EditorR53 `68f21a08`, módulo
+`52fc6903` e o bloco do atalho antes e recusa sem gravar se algo não bater.
+
+- **Era da Revolução (instalada, 26/10 ~23:55):** versão 8 de backup ("Antes dos cortes da noite (26/10/2026)"),
+  implantação de biblioteca arquivada em seguida. Depois de salvar e recarregar: Codigo `dc1aa740…04b1`, EditorR53
+  `c3d31096…153e`, módulo `9dc3480a…9ffc` (o hash no Codigo e os pedaços `R53_CODIGO_` descomprimidos), LotePaleta,
+  PaletaSegundoPlano e SalarioLote como estavam.
+- **Ciclo Maldito: pendente.** Interrompido a pedido do Mizuki à meia-noite; conferir o estado antes de retomar
+  (Codigo `452445ac` = ainda não instalada; `dc1aa740` = instalada).
