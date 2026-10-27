@@ -1,3 +1,14 @@
+# Inicialização parcial da Carteira · 27/10/2026
+
+O smoke inclui `r53/testes/inicializacao_financeiro.js` (101 cenários),
+`inicializacao_progressao.js` (80) e `inicializacao_identidade.js` (78).
+Executor por perfis fixos, nível/base de XP e 14 textos/notas; não entram no
+pacote. A assinatura financeira v1 anterior é uma expectativa fixa conferida.
+São provas offline de protocolo/escopo; não executam fórmulas Google nem
+liberam criação. Ensaio nativo e limites em
+`r53/inicializacao/NIVEL-TEXTOS-2026-10-27.md`. Sem confundir projeção Sheets API
+com execução dos diários Apps Script.
+
 # Base do delta_fila e editor_runtime aposentado · 27/10/2026
 
 `r53/testes/delta_fila.js` compara a geração com o f484f49 e não aceita

@@ -7,10 +7,13 @@ bot permanece bloqueada. Não executar em ficha oficial ou de jogador.
 O modelo do servidor é a ficha do sistema com configurações extras da mesa.
 A cópia deve conservar essas regras e catálogos; não deve herdar identidade,
 progressão, inventário, missões, cartões ou dinheiro de outro personagem.
-A implementação abaixo cobre **somente o domínio financeiro**. Não oferece
-uma ficha inteira pronta para cadastro.
+Os protótipos cobrem o financeiro, o nível inicial/base de XP e 14 campos de
+texto pessoal. **Não oferecem uma ficha inteira pronta para cadastro.** A base
+atual é a main `9536746405f12a9e159e9173b54a2a861c0a871a`, incorporada nesta
+branch; inclui o novo campo de XP base e o fechamento da otimização Android.
+Não reabrir aquela otimização nem instalar o pacote inteiro por rotina.
 
-## O que está implementado
+## Financeiro
 
 `financeiro.gs` fornece prévia, aplicação explícita e retomada com trava do
 documento. Não registra menus, eventos, endpoints ou acionadores e não é
@@ -48,17 +51,85 @@ opcionais em `'DADOS_SALARIOS'!`, observada no salvamento do Google.
 O estado de L2 não cria início de ciclo, emissão, histórico de Grau ou vínculo
 de agenda. O leitor real `salarioEstado_` o aceita, e as fórmulas atuais
 condicionam início/períodos vencidos a N2 numérica. Essa é evidência estática e
-local; ainda falta executar e conferir o resultado no Google. Não usar esse
+local, complementada pelo ensaio financeiro nativo anterior descrito abaixo.
+Esse ensaio não valida as novas rotinas nem o executor extraído nesta rodada. Não usar esse
 estado no modo legado. Dinheiro inicial permitido pela mesa será uma
 operação explícita posterior; não converter o saldo herdado em crédito novo.
 
-Nível/XP não são parâmetros deste módulo. AH11, AN11 e a regra E46:G46 são
-preservados e conferidos. A inicialização geral ainda deve decidir o nível
-pessoal a partir da regra da mesa, sem gravar em XP calculado.
+Nível/XP não são parâmetros do domínio financeiro. AH11, AN11 e a regra
+E46:G46 são preservados e conferidos nessa fase. O domínio seguinte trata
+nível/base sem gravar em XP calculado.
+
+## Nível inicial e base de XP
+
+`progressao.gs` fornece `r53NovaFichaProgressaoPrevia` e
+`r53NovaFichaProgressaoAplicar`, usando o executor interno de `financeiro.gs`.
+Exige diário financeiro concluído **da mesma operação/cópia/modelo** e missões
+vazias, com suas 292 fórmulas de total reconhecidas e recalculadas. Isso prova
+uma fase registrada, não revalida todo o financeiro como certificado geral.
+
+A rotina lê o nível resolvido da regra `CONFIGURAÇÃO!E46:G46` (nível inteiro
+entre 1 e 30) e a curva atual `DADOS!AQ5:AR33`. Escreve apenas:
+
+- `FICHA!AH11`: nível inicial resolvido da mesa;
+- `DADOS!CZ54`: XP acumulado necessário para começar nesse nível; nível 1 usa 0.
+
+A curva pode ser customizada pela mesa; não é substituída por uma tabela fixa.
+A rotina recusa curva incompleta, decrescente, não numérica ou com fórmula
+inesperada. As fórmulas `DADOS!CZ47` e `FICHA!AN11` são preservadas. O novo
+campo de base é obrigatório: API não dispara o onEdit que ajusta XP numa
+edição manual do nível. Não deduzir a base pelo XP total herdado.
+
+O Google devolveu G46 com ponto e vírgula na leitura nativa. É aceita somente
+a troca dos separadores da fórmula conhecida; mudar referências, operações
+ou o limite de nível continua causando recusa. O mesmo vale para os totais
+de missão. Não distribui atributos, concede marcos, escolhe Caminho/Origem,
+limpa treinamentos ou inicializa recursos.
+
+## Textos pessoais
+
+`identidade.gs` fornece `r53NovaFichaIdentidadePrevia` e
+`r53NovaFichaIdentidadeAplicar`, também com diário/retomada próprios. Trata
+somente os campos abaixo e suas notas de entrada:
+
+| Aba | Entradas |
+|---|---|
+| CARTEIRA | O9: nome volta ao texto de preenchimento; AK22: registrado por |
+| FICHA PESSOAL | AI11 idade; AO11 altura; Q15 olhos; Y15 cabelo; AG15 pele; AO15 gênero |
+| FICHA PESSOAL | Q19 aparência; AI19 cicatrizes; Q23 traço; Q27 história; Q35 laços/anotações; D31 personalidade |
+
+Os 14 rótulos precisam corresponder ao fonte. Notas de fábrica dessas entradas
+são vazias; instruções nos cabeçalhos são preservadas. Os espelhos de nome/foto
+em `FICHA!AB2`, `FICHA PESSOAL!Q11/D10` continuam fórmulas. `CARTEIRA!Z22`
+(servidor usado), Grau e escolhas de jogo não são modificados por este domínio.
+
+Só aceita C8 vazia ou com o marcador de foto do modelo. Imagem em célula,
+fórmula de imagem ou outro conteúdo causa recusa. Isso **não inspeciona nem
+remove imagens sobrepostas**: fotos/arte continuam pendentes no retorno.
+Textos e notas pessoais não são colocados no diário ou na resposta.
+
+## Ordem e limite entre domínios
+
+São perfis fixos do produtor, nunca um plano arbitrário enviado pelo navegador.
+O diário financeiro v1 e sua assinatura foram preservados na extração do
+executor; uma regressão usa a assinatura capturada do código `4f3555d`.
+Cada perfil mantém sua própria prévia, assinatura e diário. Todos retornam
+`criacaoDisponivel=false`, mesmo quando `concluido=true` no domínio.
+
+No ensaio do protocolo, concluir financeiro antes de nível/XP; a fase textual
+é independente. **Não reiniciar a sequência do primeiro domínio a cada
+retentativa.** O financeiro protege o nível que existia na sua prévia; depois
+de inicializar o nível, aquela conferência financeira antiga deve recusar.
+A retomada atual é por domínio, não um orquestrador global pronto para uso.
+
+Ainda falta uma conferência final combinada: fases concluídas não garantem
+que outro domínio permaneceu intacto após uma edição. A cópia deve ficar
+isolada do jogador até esse fechamento. Não apagar diários nem fabricar um
+diário financeiro concluído para testar o domínio seguinte.
 
 ## Falhas e retomada
 
-Cada chamada aplica no máximo quatro passos de escrita e usa um orçamento
+Cada perfil aplica no máximo quatro passos de escrita por chamada e usa um orçamento
 local de 210 s antes de iniciar outro passo ou a conferência final. Se o
 orçamento acabar, retorna `concluido=false, retomar=true`; isso não libera
 cadastro. A mesma operação continua em uma chamada posterior. O tempo gasto
@@ -95,14 +166,19 @@ limpeza. Não há opção “forçar” ou rollback automático de dados pessoai
 
 ```sh
 node r53/testes/inicializacao_financeiro.js
+node r53/testes/inicializacao_progressao.js
+node r53/testes/inicializacao_identidade.js
 ```
 
-99 cenários offline, incluindo todas as fronteiras de escrita antes/depois,
+259 cenários offline (101 financeiros, 80 de nível/base e 78 de textos),
+incluindo todas as fronteiras de escrita antes/depois,
 queda entre conteúdo/notas, propriedades parcialmente removidas, repetição,
 edição concorrente, linhas físicas tardias, prévia envelhecida, alvo inválido,
 modo legado, fórmula desconhecida, preservação de regras e ausência de texto
 financeiro no diário. VM com serviços simulados; não executa fórmulas e não
-mede latência do Google. O smoke de nuvem inclui este teste.
+mede latência do Google. O smoke de nuvem inclui os três testes.
+Regressão independente de XP: `node r53/testes/xp_nivel.js`, 20.643
+verificações/9.900 combinações sem a exportação nativa opcional.
 
 Conferência de leitura nativa em 27/10/2026: metadados e onze faixas pontuais
 nas duas oficiais; grades financeiras de 1.000 linhas e âncoras esperadas
@@ -113,14 +189,28 @@ sucesso. Leitura externa dos sete intervalos completos confirmou zero
 entradas/notas restantes e saldo/períodos/crédito pendente zero. Isso não
 substitui concluir o diário. A retomada concluiu em 236,503 s. Em outra cópia, a versão com orçamento
 concluiu em 283,416 s; repetição em 150,489 s, com estado comparado igual.
-As duas cópias foram enviadas à lixeira. O custo ainda exige otimização e
+As duas cópias foram enviadas à lixeira. Essa prova se refere ao código
+financeiro anterior `4f3555d`, antes da extração do executor e da main atual.
+O custo ainda exige otimização e
 integração própria antes de uso pelo jogador; consultar [o registro nativo](NATIVO-2026-10-27.md) antes de continuar.
+
+Na continuação de 27/10, uma nova cópia descartável da Era recebeu uma
+**projeção dos efeitos via Sheets API**, sem executar os diários Apps Script.
+14 textos/notas e nível/base aprovados; 8.998 comparações de campos preservados
+sem diferença. XP 3.700 → 3.750 com missão de 50 → 3.700 ao retirá-la.
+Isso valida o cálculo nativo e os alvos de escrita; não prova a execução dos
+novos perfis, retomada nativa, OAuth próprio ou automações. Cópia na lixeira.
+Detalhes em [NIVEL-TEXTOS-2026-10-27.md](NIVEL-TEXTOS-2026-10-27.md).
 
 ## O que falta antes de liberar criação
 
-- Inventário e inicialização pessoal completos: identidade/imagens, escolhas,
-  progressão, recursos, inventário, entidades, cartões e MONTAGENS.
-- Propriedades de recuperação/editor que podem repor dados antigos.
+- Inicialização pessoal completa: fotos/arte, escolhas, atributos, treinos,
+  marcos, recursos, inventário, entidades, cartões e MONTAGENS. Nível/base e
+  textos têm protótipos, não aceite nativo dos executores.
+- Propriedades de recuperação/editor que podem repor dados antigos, incluindo
+  caches novos `r53_versoes` e `r53_marcas_custom`, além de Classe/amparo/recuperações.
+- Orquestração entre fases, conferência combinada, limites de custo e prova
+  de preservação do financeiro depois de concluir os outros domínios.
 - Prova do código instalado, origem da cópia e novo responsável; os flags
   atuais são pré-condições do protótipo, não um certificado para o bot.
 - Integração permitida com `drive.file`, sem inventar execução remota de

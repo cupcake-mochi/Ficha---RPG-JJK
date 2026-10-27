@@ -85,7 +85,13 @@ function r53NovaFinLer_(ss, op) {
   var formulas = r.getFormulas(), valores = r.getValues();
   // Resultado em cache pode mudar após limpar o livro. Identificar a fórmula,
   // não seu resultado transitório, evita uma falsa edição concorrente em O86.
-  return {valores: valores.map(function(l, i) { return l.map(function(v, k) { return formulas[i][k] ? null : v; }); }),
+  return {valores: valores.map(function(l, i) { return l.map(function(v, k) {
+    if (formulas[i][k]) return null;
+    if (v !== null && typeof v === 'object' && Object.prototype.toString.call(v) !== '[object Date]')
+      r53NovaFinErro_('imagem ou valor de célula não suportado; nada será limpo.');
+    if (typeof v === 'number' && !isFinite(v)) r53NovaFinErro_('número de célula inválido.');
+    return v;
+  }); }),
           formulas: formulas};
 }
 function r53NovaFinDepois_(atual, op) {
@@ -127,39 +133,56 @@ function r53NovaFinPreservados_(ss) {
   saida.push(['campanha', r53NovaFinLer_(ss, {aba: 'CONFIGURAÇÃO', faixa: 'E46:G46'})]);
   return r53NovaFinHash_(saida);
 }
-function r53NovaFinMontar_(ss, contexto) {
-  var vinculo = r53NovaFinContexto_(ss, contexto), ops = r53NovaFinOperacoes_(ss), mudancas = 0;
+function r53NovaFinPerfil_() {
+  return {nome: 'financeiro', diario: R53_NOVA_FIN_.diario, limites: R53_NOVA_FIN_,
+          operacoes: r53NovaFinOperacoes_, preservados: r53NovaFinPreservados_,
+          pendente: ['identidade', 'progressao', 'inventario', 'cartoes', 'automacoes', 'prova_nativa']};
+}
+function r53NovaFinMontar_(ss, contexto, perfil) {
+  perfil = perfil || r53NovaFinPerfil_();
+  var vinculo = r53NovaFinContexto_(ss, contexto), ops = perfil.operacoes(ss, contexto), mudancas = 0;
   var passos = ops.map(function(op) {
     var atual = r53NovaFinLer_(ss, op);
     if (atual && atual.formulas && !op.formulasLivres && atual.formulas.some(function(l) { return l.some(Boolean); }))
-      r53NovaFinErro_('fórmula inesperada em entrada financeira; modelo não suportado.');
+      r53NovaFinErro_('fórmula inesperada em entrada a inicializar; modelo não suportado.');
     var antes = r53NovaFinHash_(atual), depois = r53NovaFinHash_(r53NovaFinDepois_(atual, op));
     if (antes !== depois) mudancas++;
     return {antes: antes, depois: depois};
   });
-  return {vinculo: vinculo, layout: r53NovaFinHash_(ops), preservados: r53NovaFinPreservados_(ss),
+  return {vinculo: vinculo, layout: r53NovaFinHash_(ops), preservados: perfil.preservados(ss),
           passos: passos, alteracoes: mudancas};
 }
 /** Prévia sem gravação. O hash não inclui valores pessoais no retorno. */
 function r53NovaFichaFinanceiroPrevia(ss, contexto) {
+  return r53NovaPerfilPrevia_(ss, contexto, r53NovaFinPerfil_());
+}
+/** Executor interno. O perfil vem do código do produtor, nunca do navegador. */
+function r53NovaPerfilPrevia_(ss, contexto, perfil) {
+  r53NovaFinContexto_(ss, contexto);
+  if (perfil.precondicao) perfil.precondicao(ss, contexto);
   var dp = PropertiesService.getDocumentProperties();
-  if (dp.getProperty(R53_NOVA_FIN_.diario)) r53NovaFinErro_('já existe uma inicialização; retome a mesma operação.');
-  var plano = r53NovaFinMontar_(ss, contexto);
+  if (dp.getProperty(perfil.diario)) r53NovaFinErro_('já existe uma inicialização; retome a mesma operação.');
+  var plano = r53NovaFinMontar_(ss, contexto, perfil);
   return {versao: 1, operacao: plano.vinculo.operacao, destino: plano.vinculo.destino,
           assinatura: r53NovaFinHash_(plano), alteracoes: plano.alteracoes,
-          dominio: 'financeiro', criacaoDisponivel: false};
+          dominio: perfil.nome, criacaoDisponivel: false};
 }
 /** Aplica/retoma sob trava; nunca sobrescreve estado diferente do antes/depois previsto.
  * Falha/timeout deixa diário incompleto. Uma cópia assim não pode ser cadastrada.
  */
 function r53NovaFichaFinanceiroAplicar(ss, contexto, assinatura) {
+  return r53NovaPerfilAplicar_(ss, contexto, assinatura, r53NovaFinPerfil_());
+}
+function r53NovaPerfilAplicar_(ss, contexto, assinatura, perfil) {
   var inicio = Date.now();
   var lock = LockService.getDocumentLock();
   if (!lock.tryLock(1500)) r53NovaFinErro_('outra operação em andamento.');
   try {
     var dp = PropertiesService.getDocumentProperties();
-    var vinculo = r53NovaFinContexto_(ss, contexto), ops = r53NovaFinOperacoes_(ss);
-    var raw = dp.getProperty(R53_NOVA_FIN_.diario), j, novo = !raw;
+    var vinculo = r53NovaFinContexto_(ss, contexto);
+    if (perfil.precondicao) perfil.precondicao(ss, contexto);
+    var ops = perfil.operacoes(ss, contexto);
+    var raw = dp.getProperty(perfil.diario), j, novo = !raw;
     if (raw) {
       try { j = JSON.parse(raw); } catch (err) { r53NovaFinErro_('diário inválido; revisão manual necessária.'); }
       if (!j || !j.plano || !Array.isArray(j.plano.passos) || j.plano.passos.length !== ops.length ||
@@ -168,12 +191,12 @@ function r53NovaFichaFinanceiroAplicar(ss, contexto, assinatura) {
       if (j.assinatura !== assinatura || r53NovaFinCanon_(j.plano.vinculo) !== r53NovaFinCanon_(vinculo))
         r53NovaFinErro_('operação diferente da inicialização pendente.');
     } else {
-      var plano = r53NovaFinMontar_(ss, contexto);
+      var plano = r53NovaFinMontar_(ss, contexto, perfil);
       if (typeof assinatura !== 'string' || assinatura !== r53NovaFinHash_(plano)) r53NovaFinErro_('a cópia mudou após a prévia.');
       j = {assinatura: assinatura, plano: plano, concluido: false};
-      dp.setProperty(R53_NOVA_FIN_.diario, JSON.stringify(j));
+      dp.setProperty(perfil.diario, JSON.stringify(j));
     }
-    if (r53NovaFinHash_(ops) !== j.plano.layout || r53NovaFinPreservados_(ss) !== j.plano.preservados)
+    if (r53NovaFinHash_(ops) !== j.plano.layout || perfil.preservados(ss) !== j.plano.preservados)
       r53NovaFinErro_('estrutura, fórmula ou configuração mudou; revisão manual necessária.');
     // Validar TODOS os passos antes de retomar qualquer escrita.
     // Uma operação nova acabou de ler TODOS os estados para validar a prévia.
@@ -187,13 +210,13 @@ function r53NovaFichaFinanceiroAplicar(ss, contexto, assinatura) {
     });
     var escritas = 0;
     var incompleto = function() {
-      return {versao: 1, dominio: 'financeiro', concluido: false, retomar: true,
+      return {versao: 1, dominio: perfil.nome, concluido: false, retomar: true,
               operacao: vinculo.operacao, criacaoDisponivel: false};
     };
     for (var i = 0; i < ops.length; i++) {
       var op = ops[i], p = j.plano.passos[i];
       if (estados[i] === p.depois) continue;
-      if (escritas >= R53_NOVA_FIN_.escritasPorExecucao || Date.now() - inicio >= R53_NOVA_FIN_.orcamentoMs)
+      if (escritas >= perfil.limites.escritasPorExecucao || Date.now() - inicio >= perfil.limites.orcamentoMs)
         return incompleto();
       if (r53NovaFinHash_(r53NovaFinLer_(ss, op)) !== p.antes) r53NovaFinErro_('edição concorrente; operação interrompida.');
       if (op.tipo === 'propriedade') r53NovaFinProps_(op).deleteProperty(op.chave);
@@ -209,15 +232,15 @@ function r53NovaFichaFinanceiroAplicar(ss, contexto, assinatura) {
     }
     // Reservar tempo para a conferência final. Na retomada sem escrita, todos
     // os passos já foram conferidos acima: não ler o livro inteiro duas vezes.
-    if (Date.now() - inicio >= R53_NOVA_FIN_.orcamentoMs) return incompleto();
+    if (Date.now() - inicio >= perfil.limites.orcamentoMs) return incompleto();
     SpreadsheetApp.flush();
-    if (r53NovaFinPreservados_(ss) !== j.plano.preservados ||
+    if (perfil.preservados(ss) !== j.plano.preservados ||
         ((novo || escritas > 0) && ops.some(function(op, i) { return r53NovaFinHash_(r53NovaFinLer_(ss, op)) !== j.plano.passos[i].depois; })))
       r53NovaFinErro_('pós-condição não confirmada; não cadastrar a cópia.');
     if (!j.concluido) {
-      j.concluido = true; dp.setProperty(R53_NOVA_FIN_.diario, JSON.stringify(j));
+      j.concluido = true; dp.setProperty(perfil.diario, JSON.stringify(j));
     }
-    return {versao: 1, dominio: 'financeiro', concluido: true, criacaoDisponivel: false,
-            operacao: vinculo.operacao, pendente: ['identidade', 'progressao', 'inventario', 'cartoes', 'automacoes', 'prova_nativa']};
+    return {versao: 1, dominio: perfil.nome, concluido: true, criacaoDisponivel: false,
+            operacao: vinculo.operacao, pendente: perfil.pendente.slice()};
   } finally { lock.releaseLock(); }
 }

@@ -1,3 +1,26 @@
+## Carteira viva: nível/base de XP e textos pessoais · 27/10/2026 · protótipos
+
+PR 31 em rascunho, branch `codex/inicializacao-financeira-carteira`. Main
+`9536746405f12a9e159e9173b54a2a861c0a871a` incorporada (merge `8cb12ac`),
+incluindo XP base e fechamento da otimização Android. Não reabrir desempenho.
+Executor financeiro extraído para perfis fixos, mantendo a assinatura/diário v1.
+Novos domínios: nível inicial/base XP (AH11/CZ54) e 14 textos/notas pessoais.
+Não inicializam atributos, escolhas, recursos, imagens, inventário, cartões
+ou recuperações. Não entram no pacote nem no bot; criação continua bloqueada.
+259 cenários offline aprovados (101 financeiro/80 nível-base/78 textos), mais
+20.643 verificações de XP/9.900 combinações sem exportação opcional. Leitura
+nativa revelou `;` em G46: guardas aceitam só essa variante conhecida, com
+regressões positiva e negativa. Projeção dos efeitos pelo conector, em cópia
+nova privada da Era: 14 campos limpos, 8.998 comparações preservadas sem
+diferença; XP 3.700→3.750 com missão de 50→3.700 após retirar. Cópia na lixeira,
+aba fechada. Não executou os novos perfis Apps Script nem OAuth próprio.
+Leia `r53/inicializacao/README.md` e `NIVEL-TEXTOS-2026-10-27.md`: provas,
+ordem por domínio e limites. O ensaio financeiro anterior não valida o executor
+extraído. Falta orquestração, conferência final conjunta, domínios restantes,
+latência, automações e novo responsável. Não apagar diários para reiniciar fases.
+Sem instalação em oficial, acionadores, novos escopos, merge em main ou deploy.
+Próxima implementação: GPT-6 Astra / Alto; revisão focal: Médio.
+
 ## Carteira viva: inicialização financeira em protótipo · 27/10/2026 · não instalada
 
 A pedido do Mizuki, o modelo do servidor conserva as configurações extras da mesa,
