@@ -9,7 +9,8 @@ const novo = fs.readFileSync('apps-script/Salarios.gs', 'utf8');
 const antigo = execSync('git show 9536746:apps-script/Salarios.gs').toString('utf8');
 const lote = fs.readFileSync('r53/diagnostico-android/salario_lote.gs', 'utf8');
 const { par, aplicar } = require('../diagnostico-android/preparar_abertura_salario');
-eq(aplicar(antigo, par()), novo, 'o par do preparador reproduz o Salarios.gs');
+// O Salarios.gs logo depois desta troca (57117fb); a de 27/10 das missões veio em seguida, com o próprio teste.
+eq(aplicar(antigo, par()), execSync('git show 57117fb:apps-script/Salarios.gs').toString('utf8'), 'o par do preparador reproduz o Salarios.gs');
 
 const HOJE = 46322;
 function mundo(fonte, emitida, linhas) {
