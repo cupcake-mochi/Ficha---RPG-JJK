@@ -1,4 +1,4 @@
-## Cortes da noite: marcas K7/K8, versão salva do cartão e XP · 26/10/2026 (Claude) · instalado na Era da Revolução; Ciclo Maldito pendente
+## Cortes da noite: marcas K7/K8, versão salva do cartão e XP · 26/10/2026 (Claude) · instalado nas duas oficiais
 
 Os cortes que sobravam da fila (o ± da vida ficou como está, ~10 s, quase no piso):
 - **CONFIGURAÇÃO, habilidades custom:** `marcasCustom_` guarda DADOS_PROGRESSAO!K7:K8 na propriedade `r53_marcas_custom`;

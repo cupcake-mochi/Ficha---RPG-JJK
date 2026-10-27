@@ -125,9 +125,18 @@ Aval do Mizuki no cartão ("Pode instalar nas duas"). Pelo navegador do app, na 
 (hash do módulo e atalho regerado) e o EditorR53; ele confere Codigo `452445ac`, EditorR53 `68f21a08`, módulo
 `52fc6903` e o bloco do atalho antes e recusa sem gravar se algo não bater.
 
-- **Era da Revolução (instalada, 26/10 ~23:55):** versão 8 de backup ("Antes dos cortes da noite (26/10/2026)"),
-  implantação de biblioteca arquivada em seguida. Depois de salvar e recarregar: Codigo `dc1aa740…04b1`, EditorR53
-  `c3d31096…153e`, módulo `9dc3480a…9ffc` (o hash no Codigo e os pedaços `R53_CODIGO_` descomprimidos), LotePaleta,
-  PaletaSegundoPlano e SalarioLote como estavam.
-- **Ciclo Maldito: pendente.** Interrompido a pedido do Mizuki à meia-noite; conferir o estado antes de retomar
-  (Codigo `452445ac` = ainda não instalada; `dc1aa740` = instalada).
+Nas duas, versão 8 de backup ("Antes dos cortes da noite (26/10/2026)": Era da Revolução 20:48, Ciclo Maldito
+20:59), implantação de biblioteca arquivada em seguida. O trecho conferido na página (`2f5249c7…`) rodou sem erro.
+Depois de salvar e recarregar, iguais nas duas:
+
+| Arquivo | Antes | Depois |
+|---|---|---|
+| Codigo | `452445ac…` | `dc1aa740…04b1` |
+| EditorR53 | `68f21a08…` | `c3d31096…153e` |
+| Analise (pedaço 2) | `b367b063…` | `2ea7e9d4…` |
+| Ficha, Invocacoes (pedaços 0 e 1) | `6012dcb3…`, `ebf20bb1…` | sem mudança |
+| Configuracao, Origens (pedaços vazios) | `bb784c6d…`, `90095228…` | sem mudança |
+| LotePaleta, PaletaSegundoPlano, SalarioLote | `848e878b…`, `a5a0e83d…`, `366f6dd3…` | sem mudança |
+
+Módulo `9dc3480a…9ffc`: o hash no Codigo e os três pedaços `R53_CODIGO_` descomprimidos (850000, 850000 e 237688
+caracteres; os dois últimos arquivos vazios). Ficha e Invocacoes iguais é esperado: o começo do gzip saiu idêntico.
