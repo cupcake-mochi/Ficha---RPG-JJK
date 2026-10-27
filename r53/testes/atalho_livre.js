@@ -28,13 +28,13 @@ assert.throws(() => preparar('function r53OnEditOriginal_(e){}', gs), /divergent
 const pasta = path.join(raiz, 'nuvem-b47/saidas/atalho');
 const fp = path.join(pasta, 'projeto-leve.json'), fd = path.join(pasta, 'oficial-era.json');
 if (!fs.existsSync(fp) || !fs.existsSync(fd)) { console.log('atalho_livre: ' + checks + ' verificações (sem a ficha exportada, integrado pulado)'); process.exit(0); }
-const { criar, projetoComIncremento } = require('../arnes_custo');
+const { criar, projetoComIncremento, remendosDoProjeto } = require('../arnes_custo');
 let projeto = JSON.parse(fs.readFileSync(fp, 'utf8'));
 const dump = JSON.parse(fs.readFileSync(fd, 'utf8'));
 // O mapa vale para um módulo só. A exportação é da cópia de teste (até o 22º remendo do pacote leve); se o mapa é do
 // módulo com os remendos seguintes (26/10/2026), o projeto recebe esse módulo antes.
 if (!projeto.files.find(f => f.name === 'Codigo').source.includes(/var R53_LIVRE_HASHES_=\["([0-9a-f]{64})"/.exec(gs)[1])) {
-  const p = projetoComIncremento(projeto, dump, 22);
+  const p = projetoComIncremento(projeto, dump, remendosDoProjeto(projeto));
   ok(gs.includes(p.hashNovo), 'mapa de outro módulo');
   projeto = p.projeto;
 }
@@ -43,7 +43,11 @@ function montar(comAtalho, ajuste) {
   const A = criar(JSON.parse(JSON.stringify(dump)), { props: { salario_proximo: '99999' } });
   for (const f of projeto.files.filter(f => f.type !== 'JSON')) {
     let s = f.source;
-    if (f.name === 'Codigo' && comAtalho) s = preparar(s, ajuste ? ajuste(gs) : gs);
+    if (f.name === 'Codigo' && comAtalho) {
+      // o módulo trocado pelo arnês fica no fim do Codigo, depois do atalho instalado que o preparar substitui
+      const novo = /\nvar R53_CODIGO_NOVO_=[^\n]*;\n$/.exec(s);
+      s = preparar(novo ? s.slice(0, novo.index) : s, ajuste ? ajuste(gs) : gs) + (novo ? novo[0] : '');
+    }
     vm.runInContext(s + '\n', A.ctx, { filename: f.name });
   }
   vm.runInContext('(function(){var o=r53Modulo_;r53Modulo_=function(){__abriu();return o.apply(this,arguments);};r53Modulo_.toString=function(){return String(o);};})();', Object.assign(A.ctx, { __abriu: () => { aberturas++; A.log.push({ t: 'M' }); } }));
@@ -63,7 +67,7 @@ function editar(A, aba, r, c, v) {
 }
 let aberturas = 0;
 const novo = montar(true), velho = montar(false);
-const mapa = vm.runInContext('R53_LIVRE_', novo.ctx);
+const mapa = vm.runInContext('R53_LIVRE_', novo.ctx), delta = vm.runInContext('R53_LIVRE_DELTA_', novo.ctx);
 const toca = (l, r, c) => l.some(a => r >= a[0] && r <= a[2] && c >= a[1] && c <= a[3]);
 // semente fixa: a mesma amostra em toda rodada
 let s = 20261026; const rnd = n => { s = (s * 1103515245 + 12345) % 2147483648; return s % n; };
@@ -74,6 +78,10 @@ for (const aba of Object.keys(mapa)) {
     const r = 1 + rnd(sh.rows), c = 1 + rnd(sh.cols), v = ['texto', 7, ''][k % 3];
     const livre = !toca(mapa[aba], r, c);
     if (!livre && presas >= 900) continue;
+    // as caixas de ± fazem o mesmo sem abrir o módulo: conferidas no caixas_delta.js
+    if (aba === 'FICHA' && Object.prototype.hasOwnProperty.call(delta, novo.ss.getSheetByName(aba).getRange(r, c).getA1Notation())) continue;
+    // a caixa do nível acerta a base do XP (lê a DADOS) sem abrir o módulo: conferida no fim daqui e no xp_nivel.js
+    if (aba === 'FICHA' && r === 11 && c === 34) continue;
     const a = editar(novo, aba, r, c, v);
     if (livre) {
       livres++;
@@ -109,4 +117,13 @@ ok(!editar(novo, 'CARTEIRA', lr, lc, 'y').log.some(l => l.startsWith('R ')), 'de
 editar(novo, 'FICHA', 11, 4, 'Vanguarda');
 const fl = (() => { const sh = novo.ss.getSheetByName('FICHA'); for (let r = 200; r <= sh.rows; r++) for (let c = 1; c <= sh.cols; c++) if (!toca(mapa.FICHA, r, c)) return [r, c]; })();
 ok(!editar(novo, 'FICHA', fl[0], fl[1], 'x').log.some(l => /^[RM] /.test(l)), 'FICHA livre segue sem ler com a marca');
+// 5. O nível escrito na mão (27/10/2026): a exportação é de antes da base do XP, então ela entra aqui (CY54:CZ54)
+const nivel = (A, v) => { const d = A.ss.getSheetByName('DADOS'); d.cel(54, 103, true).v = 'xp base'; d.cel(54, 104, true).v = 0;
+  return editar(A, 'FICHA', 11, 34, v); };
+const semBase = editar(novo, 'FICHA', 11, 34, 12);
+ok(!semBase.erro && !semBase.log.some(l => /^W /.test(l)), 'ficha sem a base: nada gravado');
+const n12 = nivel(novo, 12);
+ok(!n12.erro && !n12.log.includes('M  '), 'nível escrito: sem erro e sem o módulo: ' + n12.erro);
+eq(n12.log.filter(l => /^W /.test(l)).length, 1, 'uma gravação só: ' + n12.log.join(' | '));
+ok(n12.log.some(l => /^W /.test(l) && /CZ54/.test(l)), 'nível escrito grava a base: ' + n12.log.join(' | '));
 console.log('atalho_livre: ' + checks + ' verificações (' + livres + ' livres, ' + presas + ' do mapa)');

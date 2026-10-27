@@ -1,3 +1,14 @@
+# Base do delta_fila e editor_runtime aposentado · 27/10/2026
+
+`r53/testes/delta_fila.js` compara a geração com o f484f49 e não aceita
+mudança nenhuma. A base antiga, fa54ab6, não tinha o `Caminho.gs` nem o
+`Eventos.gs` e acusava 17 mudanças de evolução normal (versão fixa na CARTEIRA
+e na FICHA, validações da FICHA PESSOAL, aviso do Ritual em DADOS_AM, somas da
+DADOS_INVOC) e a aba R53_EVENTOS. Um defeito plantado na CONFIGURAÇÃO acendeu.
+`r53/testes/editor_runtime.js` saiu: dependia do `EditorR53-prototipo.gs`, que
+vem do `modelo-r53.json` e de um retrato nativo que não existem em nenhum
+checkout. O controlador vigente segue coberto pelo `cartoes_diretos_runtime.js`.
+
 # Integração salarial · 24/10/2026
 
 O smoke inclui `r53/testes/salario_lote.js`: 28 cenários da edição original,

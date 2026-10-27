@@ -20,6 +20,109 @@ responsável ainda pendentes.
 Sem publicação, merge, novos escopos, reconstrução ou alteração nas oficiais.
 Próxima implementação integrada: GPT-6 Astra / Alto; revisão focal: Médio.
 
+## Otimização Android fechada · 27/10/2026
+
+O Mizuki fechou a otimização depois dos testes do recálculo ("pode fechar então"). As oficiais ficam com Codigo `97c430f4` e a
+versão 10 de backup (r53/OFICIAIS.md). Fica em aberto só o que não é desempenho: o `leituras_curtas.js` presos ao 22º remendo,
+as notas novas do Codigo.gs que só entram no próximo pacote inteiro, e umas sete cópias "descartável" de 23–25/10 no Drive da
+gustavohmoura12, que esperam o ok dele para a lixeira.
+
+## Recálculo: nem os 225 INDIRECT nem a coluna FD pesam · 27/10/2026 (Claude) · nada instalado
+
+`r53/diagnostico-android/grafo_recalculo.py <ficha exportada .json> [aba!célula ...]` monta o grafo de dependências das
+124.603 fórmulas da oficial exportada. As únicas funções voláteis são os 525 INDIRECT de 225 fórmulas da DADOS_CUSTOM
+(as listas dos menus da CONFIGURAÇÃO); atrás deles vêm 4.017 células (405 da DADOS_R53, ~2 MB de fórmula). Um ± de vida,
+sozinho, faz recalcular 3 células.
+Teste numa cópia nova da Era (`1xS6WobF…`, "TESTE recálculo INDIRECT (descartável)"): uma regex só (findReplace da API)
+trocou os 525 por `CHOOSE(IFERROR(MATCH(seletor;{os 8 rótulos};0);9);as 9 faixas)`, a mesma troca do
+`experimento_listas.gs`; três somas de controle da DADOS_CUSTOM inteira deram iguais nos 10 estados dos 25 seletores,
+antes e depois. ± de vida (FICHA!AM26), duração do onEdit: antes 10,7 / 11,6 / 12,7 / 14,9 / 10,3 / 8,1 s (mediana 11,1),
+depois 12,2 / 10,7 / 10,2 / 11,3 / 7,2 / 11,4 s (mediana 11,0): dentro da oscilação. Não vale levar para as oficiais.
+Próximo candidato, da REVISAO-FINAL §4: a coluna FD da DADOS_R53 (249 fórmulas sem consumidor, ~8,9 MB de texto).
+Testado na mesma cópia, depois dos INDIRECT: o grafo confirma que nada depende da FD, e as 249 foram apagadas pela API
+(FD2:FD251, o cabeçalho ficou). Cartão (FICHA AMALDIÇOADA!E71, sem contar a primeira depois de abrir): antes 10,9 / 11,3 /
+10,6 / 11,2 s, depois 12,2 / 10,8 / 13,3 / 11,4 s. ± de vida: antes mediana 11,0 s, depois 12,6 / 11,6 / 10,4 / 9,7 / 11,5 s
+(mediana 11,5). Também sem ganho; não vale levar. Com isso não sobra candidato concreto: o tempo de edição (~11 s no
+servidor) não acompanha nem as voláteis nem o tamanho das fórmulas. A cópia foi para a lixeira.
+
+## XP com o nível escrito na mão · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 10 de backup)
+
+Com o nível 10 escrito e 250 de XP, a caixa de falta da FICHA PESSOAL pedia 4.150 (o acumulado do 11 menos o XP, que
+contava do zero) em vez dos 450 do 10 para o 11. O Mizuki escolheu a opção A ("faz a A") e pediu que descer o nível na mão
+também mexesse no XP; a conversão pela fração foi a minha recomendação no lugar de zerar (veto dele em aberto).
+- A DADOS ganhou a base do XP (CY54 "xp base", CZ54 = 0) e o XP total (CZ47) soma `+N(DADOS!$CZ$54)`; gerador
+  `ficha-v01/ficha_pessoal.py`, Ficha.gs regerado (selo be3a28b4). A falta, a barra e a subida pelo XP já leem o CZ47.
+- O atalho (`r53LivreNivel_`, chamado pelo `r53EdicaoLivre_` na FICHA!AH11 sozinha) acerta a base: subindo, o XP vai
+  para o acumulado do nível novo (se já passa dele, fica); descendo, guarda a mesma fração do caminho até o próximo; se
+  o XP já cabe no nível, nada. Uma leitura da DADOS e uma gravação, sem abrir o módulo. Ficha sem o rótulo "xp base"
+  não grava nada, e nível fora de 1 a 30 ou quebrado também não. O módulo (9dc3480a) não muda; o Codigo vai de
+  07a66b0a para 97c430f4.
+- Segurança, a pedido dele depois do teste no celular ("recomendo colocar meios de segurança... caso o jogador coloque
+  valor invalido"): o NÍVEL (FICHA!AH11) virou menu estrito de 1 a 30 (`monta.py`), e o `delta_fila` compara os menus
+  pela faixa (um menu novo no meio da lista não desloca os outros).
+- Testado no celular dele numa cópia ("TESTE xp nível (descartável)", `14l3Bywwm…`): nível 11 na mão, missão, descer e
+  subir, todos os números certos ("so demora um poucom mas n é mt").
+- Notas: a do XP TOTAL (FICHA PESSOAL AW10, no gerador) e as de NÍVEL e XP da FICHA (AH10, AN10, no Codigo.gs). As do
+  Codigo.gs só entram no módulo no próximo pacote inteiro; nas oficiais elas vão direto na célula.
+- Testes: `r53/testes/xp_nivel.js` (20.644 verificações, 9.900 pares de nível e XP, quatro defeitos plantados acenderam),
+  a parte 5 do `atalho_livre.js` (o onEdit inteiro grava só a base, sem o módulo) e o `delta_fila.js` com as 6 mudanças.
+- Instalação: `node r53/diagnostico-android/preparar_xp_nivel.js <projeto-leve.json> <trecho>` (troca só o atalho) e,
+  na planilha, DADOS!CY54 "xp base", CZ54 0, a fórmula nova do CZ47, as três notas e o menu estrito do AH11.
+
+## Testes no Linux com a ficha real · 27/10/2026 (Claude)
+
+`nuvem-b47/saidas/atalho/oficial-era.json` gerada pelo `r53/xlsx_para_json.py` de um xlsx da Era oficial de 27/10
+(30 abas, 266.629 células; fora do git). Com ela: caixas_delta (16.713 verificações, 96 edições na exportada),
+atalho_livre (4.815), cortes_noite (15) e marcas_custom (12.405) passaram; leituras_curtas se pula sozinho fora do
+22º remendo (o módulo está no 41º). pacote_runtime passou depois do `empacotar_script.py` (EditorR53 c3d31096). A base
+do delta_fila passou para o f484f49 (sem mudança aceita) e o editor_runtime foi aposentado (nuvem-b47/TESTES.md).
+Falta: o teste no Android e a lixeira das cópias "TESTE caixas delta" e "TESTE vida".
+
+## Caixas de ± da FICHA sem abrir o módulo · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 9 de backup)
+
+O último corte conhecido no ± da vida (~1,3 s dos ~10 s, MEDICAO-DESEMPENHO-2026-10-26-fim). O `r53/atalho_livre.gs`
+ganhou `R53_LIVRE_DELTA_` (AM26, AM30, AM34 → atual D, máximo J, temp AF da mesma linha, e o retângulo D:AM da leitura) e
+`r53LivreDelta_`, chamado pelo `r53EdicaoLivre_` antes do mapa: uma leitura, as mesmas gravações do `aplicarDelta_`, e o
+módulo fica fechado. Colagem em várias células, outro módulo ou erro antes de gravar caem no caminho de sempre; erro
+depois de gravar não cai (o módulo aplicaria o ± de novo).
+- Gerador: `node r53/atalho_livre.js --so-delta <projeto .json>` regera só as caixas sem a ficha exportada (mapa, gatilhos
+  e marcas saem do `.gs` do mesmo módulo); o gerador completo também as faz. As células vêm do índice estático do módulo
+  e a conta é o `aplicaPasso_` dele copiado; se o `aplicarDelta_` do módulo mudar, o gerador recusa.
+- Instalação: `node r53/diagnostico-android/preparar_caixas_delta.js <projeto-leve.json> <trecho>`: troca só o bloco do
+  atalho no fim do Codigo, conferindo antes Codigo `dc1aa740` e o atalho de `895d1ec`, e depois Codigo `07a66b0a`.
+  Módulo, EditorR53 e os outros arquivos ficam iguais. Trecho `c3ac308f…` (32.809 bytes).
+- Teste `r53/testes/caixas_delta.js` (16.132 verificações): 7.056 combinações de ±, atual, máximo e temp contra o
+  `aplicarDelta_` do módulo (mesmas células, mesmas gravações na mesma ordem); 72 edições pelo onEdit inteiro, antes e
+  depois, numa ficha esparsa (mesmas células, gravações e propriedades; depois, uma leitura e sem módulo); colagem,
+  hash trocado e erro antes de gravar; o trecho num editor de mentira. Quatro defeitos plantados acenderam. No caminho
+  de antes as 72 edições também fazem uma leitura só e nenhuma gravação de propriedade: fora o `aplicarDelta_`, nada do
+  módulo olha a planilha nessas células, então a ficha esparsa vale pela exportada (`oficial-era.json`, que não estava
+  neste computador; com ela, o teste roda também nela).
+- Medido no Google numa cópia nova da Era (`1aNuAcj2…`, "TESTE caixas delta (descartável)"): ± da vida, mediana
+  11,5 → 10,9 s, média 12,4 → 11,4 s, dentro da oscilação do Google; as três caixas aplicaram e limparam certo
+  (MEDICAO-DESEMPENHO-2026-10-26-fim). Instalado nas duas oficiais em 26–27/10 (r53/OFICIAIS.md): versão 9 de backup, o mesmo trecho (Codigo
+  `dc1aa740` → `07a66b0a`), salvo, recarregado e os dez hashes conferidos nas duas.
+- A cópia K7 (`1kAXc_Wb…`) foi para a lixeira em 26/10. A "TESTE vida" (`1QPKjsv6…`) segue esperando o link inteiro.
+- Neste Windows: sem node nem python instalados; usei o node 24 do runtime do Codex com um pré-carregamento que grava o
+  byte de sistema do gzip como no Linux (sem isso o EditorR53 de transporte sai com outro hash).
+
+## Cortes da noite: marcas K7/K8, versão salva do cartão e XP · 26/10/2026 (Claude) · instalado nas duas oficiais
+
+Os cortes que sobravam da fila (o ± da vida ficou como está, ~10 s, quase no piso):
+- **CONFIGURAÇÃO, habilidades custom:** `marcasCustom_` guarda DADOS_PROGRESSAO!K7:K8 na propriedade `r53_marcas_custom`;
+  o `r53EdicaoLivre_` do atalho regerado a apaga numa edição em qualquer célula de que K7/K8 dependem (89 na
+  CONFIGURAÇÃO, rastreadas pelas fórmulas, mais FICHA D11/N11). Remendo 39.
+- **XP da FICHA (era a "Classe da FICHA" da lista):** escrever por cima da XP devolve a conta e não mexe mais no nível
+  (antes o nível ia para o número digitado, depois de ler a DADOS inteira). Remendos 40 e 41. Módulo `9dc3480a`.
+- **Cartão:** a versão salva sai da propriedade `r53_versoes` (as últimas gravadas pelo `r53Gravar_`, só valores que
+  voltam iguais da planilha); a abertura (`r53Menu_`) e uma edição na MONTAGENS apagam. A Classe visível sai da área do
+  cartão já lida. EditorR53 `c3d31096`.
+- Instalação: `node r53/diagnostico-android/preparar_cortes_noite.js <projeto exportado> <trecho>` gera um trecho único
+  que confere Codigo `452445ac`, EditorR53 `68f21a08` e módulo `52fc6903` antes e Codigo `dc1aa740` depois.
+- Testes: `marcas_custom.js`, `cartao_versao.js`, `cortes_noite.js` (precisam da exportação em `nuvem-b47/saidas/atalho/`).
+- Medido na cópia `1kAXc_Wb…`: da segunda edição em diante, habilidade custom 19,7–21,5 → 14,3–15,9 s, cartão
+  16,8–19,3 → 13,4–14,9 s, XP 25,9 → 14,5 s (MEDICAO-DESEMPENHO-2026-10-26-fim).
+
 ## Inventário da FICHA PESSOAL: menus destravados · 26/10/2026 (Claude) · aplicado nas duas oficiais
 
 O Mizuki viu que os itens guardados e os equipáveis guardados não aceitavam escrita. Nas duas oficiais (e na

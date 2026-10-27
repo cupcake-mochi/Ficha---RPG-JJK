@@ -12,7 +12,7 @@ var CONTRATO_CRIACAO_ = [
       [6868,1,"aviso.custom.familia.8",0],[6868,2,"='DADOS_CRIACAO'!$F$9&\"\"",0],[6868,3,"=\"'DADOS_CRIACAO'!F9\"",0],[6868,4,"aviso",0],[6869,1,"aviso.custom.familia.9",0],[6869,2,"='DADOS_CRIACAO'!$F$10&\"\"",0],[6869,3,"=\"'DADOS_CRIACAO'!F10\"",0],[6869,4,"aviso",0],[6870,1,"aviso.custom.familia.10",0],[6870,2,"='DADOS_CRIACAO'!$F$11&\"\"",0],[6870,3,"=\"'DADOS_CRIACAO'!F11\"",0],[6870,4,"aviso",0],[6871,1,"regra.familias_livres",0],[6871,2,"='CONFIGURAÇÃO'!$H$157&\"\"",0],[6871,3,"=\"'CONFIGURAÇÃO'!H157\"",0],[6871,4,"configuração",0],[6872,1,"regra.familias_livres.campanha",0],[6872,2,"=IF(ISBLANK('CONFIGURAÇÃO'!$G$157),\"\",'CONFIGURAÇÃO'!$G$157&\"\")",0],[6872,3,"=\"'CONFIGURAÇÃO'!G157\"",0],[6872,4,"entrada",0],[6873,1,"regra.familias_fechadas",0],[6873,2,"='CONFIGURAÇÃO'!$H$158&\"\"",0],[6873,3,"=\"'CONFIGURAÇÃO'!H158\"",0],[6873,4,"configuração",0],[6874,1,"regra.familias_fechadas.campanha",0],[6874,2,"=IF(ISBLANK('CONFIGURAÇÃO'!$G$158),\"\",'CONFIGURAÇÃO'!$G$158&\"\")",0],[6874,3,"=\"'CONFIGURAÇÃO'!G158\"",0],[6874,4,"entrada",0],[6875,1,"regra.familias_neutras",0],[6875,2,"='CONFIGURAÇÃO'!$H$159&\"\"",0],[6875,3,"=\"'CONFIGURAÇÃO'!H159\"",0],[6875,4,"configuração",0],[6876,1,"regra.familias_total",0],[6876,2,"='CONFIGURAÇÃO'!$H$160&\"\"",0],[6876,3,"=\"'CONFIGURAÇÃO'!H160\"",0],[6876,4,"configuração",0],[6877,1,"aviso.regras_familias",0],[6877,2,"='CONFIGURAÇÃO'!$C$162&\"\"",0],[6877,3,"=\"'CONFIGURAÇÃO'!C162\"",0],[6877,4,"aviso",0]
     ],
     "notas":[],
-    "geracao":"2d3a0bf73db57661",
+    "geracao":"aeee4abf35088455",
     "arquivo":"CriacaoAnalise.gs"
   }
 ];
