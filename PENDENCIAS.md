@@ -1,3 +1,20 @@
+## Cortes da noite: marcas K7/K8, versão salva do cartão e XP · 26/10/2026 (Claude) · instalado nas duas oficiais
+
+Os cortes que sobravam da fila (o ± da vida ficou como está, ~10 s, quase no piso):
+- **CONFIGURAÇÃO, habilidades custom:** `marcasCustom_` guarda DADOS_PROGRESSAO!K7:K8 na propriedade `r53_marcas_custom`;
+  o `r53EdicaoLivre_` do atalho regerado a apaga numa edição em qualquer célula de que K7/K8 dependem (89 na
+  CONFIGURAÇÃO, rastreadas pelas fórmulas, mais FICHA D11/N11). Remendo 39.
+- **XP da FICHA (era a "Classe da FICHA" da lista):** escrever por cima da XP devolve a conta e não mexe mais no nível
+  (antes o nível ia para o número digitado, depois de ler a DADOS inteira). Remendos 40 e 41. Módulo `9dc3480a`.
+- **Cartão:** a versão salva sai da propriedade `r53_versoes` (as últimas gravadas pelo `r53Gravar_`, só valores que
+  voltam iguais da planilha); a abertura (`r53Menu_`) e uma edição na MONTAGENS apagam. A Classe visível sai da área do
+  cartão já lida. EditorR53 `c3d31096`.
+- Instalação: `node r53/diagnostico-android/preparar_cortes_noite.js <projeto exportado> <trecho>` gera um trecho único
+  que confere Codigo `452445ac`, EditorR53 `68f21a08` e módulo `52fc6903` antes e Codigo `dc1aa740` depois.
+- Testes: `marcas_custom.js`, `cartao_versao.js`, `cortes_noite.js` (precisam da exportação em `nuvem-b47/saidas/atalho/`).
+- Medido na cópia `1kAXc_Wb…`: da segunda edição em diante, habilidade custom 19,7–21,5 → 14,3–15,9 s, cartão
+  16,8–19,3 → 13,4–14,9 s, XP 25,9 → 14,5 s (MEDICAO-DESEMPENHO-2026-10-26-fim).
+
 ## Inventário da FICHA PESSOAL: menus destravados · 26/10/2026 (Claude) · aplicado nas duas oficiais
 
 O Mizuki viu que os itens guardados e os equipáveis guardados não aceitavam escrita. Nas duas oficiais (e na

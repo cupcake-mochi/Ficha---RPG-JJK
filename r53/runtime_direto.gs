@@ -1,6 +1,7 @@
 /** Edição direta R53. Apenas a planilha atual; sem navegação ou painel. */
 var R53_REF_CACHE_ = {};
-function r53Menu_() {}
+// 26/10/2026: a abertura apaga as versões guardadas (r53LerVersao_): o histórico de versões da planilha recarrega a página.
+function r53Menu_() {try{PropertiesService.getDocumentProperties().deleteProperty(R53_VERSOES_PROP_);}catch(err){console.log('versões guardadas: '+err.message);}}
 function r53Pos_(a1) {var m=/^([A-Z]+)(\d+)$/.exec(a1),c=0;for(var i=0;i<m[1].length;i++)c=c*26+m[1].charCodeAt(i)-64;return [+m[2],c];}
 function r53Atinge_(range,a1) {var p=r53Pos_(a1);return p[0]>=range.getRow()&&p[0]<=range.getLastRow()&&p[1]>=range.getColumn()&&p[1]<=range.getLastColumn();}
 function r53Literal_(v) {return typeof v==='string'&&/^[=']/.test(v)?"'"+v:v;}
@@ -18,15 +19,43 @@ function r53LeReferencia_(ss,address) {
 function r53Classes_(ss,g) {var max=Number(r53LeReferencia_(ss,g.classe_maxima));return g.classes.filter(function(c){return c===null||c===0||c<=max;}).map(function(c){return c===null?max:c;});}
 function r53Coluna_(ss,g,cl) {if(typeof cl!=='number'||cl%1||r53Classes_(ss,g).indexOf(cl)<0)throw Error('Escolha uma Classe disponível neste cartão.');return g.classes.indexOf(g.classes[0]===null?null:cl)+2;}
 function r53Ativa_(ss,g) {if(g.classes[0]===null)return Number(r53LeReferencia_(ss,g.classe_maxima));if(g.classes.length===1)return g.classes[0];return Number(ss.getSheetByName(g.aba).getRange(g.cel.classe).getValue());}
+// 26/10/2026: a Classe visível quase sempre está na área do cartão, já lida; reler a célula custava uma ida ao servidor.
+function r53AtivaNaFoto_(ss,g,foto) {if(g.classes[0]!==null&&g.classes.length>1){var p=r53Pos_(g.cel.classe),a=g.area_editor;if(p[0]>=a[0]&&p[0]<=a[2]&&p[1]>=a[1]&&p[1]<=a[3])return Number(foto(p[0],p[1]));}return r53Ativa_(ss,g);}
 function r53Indice_(g,cl) {var i=g.classes[0]===null?0:g.classes.indexOf(cl);if(i<0)throw Error('Versão de Classe inválida.');return i+2;}
-function r53LerVersao_(ss,g,cl) {return ss.getSheetByName(R53_EDITOR_.storage).getRange(g.editor+2,r53Indice_(g,cl),R53_EDITOR_.campos.length,1).getValues().map(function(r){return r[0];});}
+/**
+ * 26/10/2026: a versão salva na MONTAGENS, outra aba, custava ~4 s em cada edição de cartão. Só o r53Gravar_ grava a
+ * MONTAGENS, então as últimas versões gravadas ficam numa propriedade do documento e a leitura sai dela. Só se guarda
+ * versão que volta igual da planilha (número, caixa, texto com letra e sem algarismo); a abertura (r53Menu_) e uma
+ * edição na própria MONTAGENS apagam todas. Sem guardada, como numa cópia nova, lê a aba como antes.
+ */
+var R53_VERSOES_PROP_='r53_versoes',R53_VERSOES_LIMITE_=8000;
+function r53VersaoSegura_(v) {return typeof v==='boolean'||typeof v==='number'&&isFinite(v)||typeof v==='string'&&(v===''||/[A-Za-zÀ-ÿ]/.test(v)&&!/\d/.test(v)&&v.trim()===v&&!/^(true|false|verdadeiro|falso)$/i.test(v));}
+function r53Versoes_() {
+ if(R53_REF_CACHE_.versoes)return R53_REF_CACHE_.versoes;
+ var v=null;try{v=JSON.parse(PropertiesService.getDocumentProperties().getProperty(R53_VERSOES_PROP_)||'null');}catch(err){v=null;}
+ if(!v||v.campos!==R53_EDITOR_.campos.length||!Array.isArray(v.lista))v={campos:R53_EDITOR_.campos.length,lista:[]};
+ return R53_REF_CACHE_.versoes=v;
+}
+function r53GuardarVersao_(g,cl,values) {
+ var v=r53Versoes_(),k=g.editor+':'+r53Indice_(g,cl),antes=v.lista.length;
+ v.lista=v.lista.filter(function(x){return x[0]!==k;});
+ if(values.every(r53VersaoSegura_))v.lista.unshift([k,values.slice()]);
+ else if(v.lista.length===antes)return;
+ while(v.lista.length&&JSON.stringify(v).length>R53_VERSOES_LIMITE_)v.lista.pop();
+ PropertiesService.getDocumentProperties().setProperty(R53_VERSOES_PROP_,JSON.stringify(v));
+}
+function r53LerVersao_(ss,g,cl) {
+ var k=g.editor+':'+r53Indice_(g,cl),guardada=r53Versoes_().lista.filter(function(x){return x[0]===k;})[0];
+ if(guardada&&guardada[1].length===R53_EDITOR_.campos.length)return guardada[1].slice();
+ return ss.getSheetByName(R53_EDITOR_.storage).getRange(g.editor+2,r53Indice_(g,cl),R53_EDITOR_.campos.length,1).getValues().map(function(r){return r[0];});
+}
 function r53Campo_(key) {return R53_EDITOR_.campos.map(function(f){return f[0];}).indexOf(key);}
 function r53Amparo_(ss) {
  if(R53_REF_CACHE_.amparo)return R53_REF_CACHE_.amparo;
  var p=R53_EDITOR_.amparo;return R53_REF_CACHE_.amparo=ss.getSheetByName(p.aba).getRange(p.faixa).getValues()[0];
 }
 function r53Porta_(ss,g,key,cl) {if(key!=='dano'&&g.classes.length>1&&g.classes[0]===0&&(cl===undefined?r53Ativa_(ss,g):cl)===0)return false;var f=g.portas[key]||'FALSE';if(f==='TRUE')return true;if(f==='FALSE')return false;return r53Amparo_(ss)[g.entidade===null||typeof g.entidade==='undefined'?0:g.entidade+1]!=='Fechada';}
-function r53Gravar_(ss,g,cl,values) {ss.getSheetByName(R53_EDITOR_.storage).getRange(g.editor+2,r53Indice_(g,cl),values.length,1).setValues(values.map(function(v){return [r53Literal_(v)];}));}
+function r53Gravar_(ss,g,cl,values) {ss.getSheetByName(R53_EDITOR_.storage).getRange(g.editor+2,r53Indice_(g,cl),values.length,1).setValues(values.map(function(v){return [r53Literal_(v)];}));r53GuardarVersao_(g,cl,values);}
 function r53ValoresCartao_(ss,g) {
  var sh=ss.getSheetByName(g.aba),a=g.area_editor,m=sh.getRange(a[0],a[1],a[2]-a[0]+1,a[3]-a[1]+1).getValues();
  return function(pos,col){var p=col===undefined?r53Pos_(pos):[pos,col];return m[p[0]-a[0]][p[1]-a[1]];};
@@ -134,6 +163,8 @@ function r53SincronizarFamilias_(ss) {
 function r53Editar_(e) {
  R53_REF_CACHE_={};if(typeof R53_EDITOR_==='undefined'||R53_EDITOR_.esquema!==3||!e||!e.range)return false;
  var range=e.range,owner=range.getSheet().getName(),ss=e.source||SpreadsheetApp.getActive();
+ // Quem escreve na MONTAGENS muda versões que podem estar guardadas (r53LerVersao_).
+ if(owner===R53_EDITOR_.storage){PropertiesService.getDocumentProperties().deleteProperty(R53_VERSOES_PROP_);return false;}
  // FICHA não contém cartões nem escolhas de Família. Em cópias novas, a
  // sincronização inicial de 249 cartões esgotava o evento antes do Caminho.
  if(!/^(FICHA AMALDIÇOADA|INVOCAÇÕES|CONFIGURAÇÃO|CARTEIRA)$/.test(owner))return false;
@@ -165,7 +196,7 @@ function r53Editar_(e) {
    }
    // Replay queued input in memory; reading after writing each UI cell forced
    // several workbook recalculations before its storage could be saved.
-   var snapshot=r53ValoresCartao_(ss,g),updates={},cl=r53Ativa_(ss,g),classRollback=false;
+   var snapshot=r53ValoresCartao_(ss,g),updates={},cl=r53AtivaNaFoto_(ss,g,snapshot),classRollback=false;
    var get=function(pos,col){var key=col===undefined?pos:null;return key&&Object.prototype.hasOwnProperty.call(updates,key)?updates[key]:snapshot(pos,col);};
    Object.keys(replay[gi]).forEach(function(k){updates[g.entradas_diretas[k]]=replay[gi][k];});
    if(g.classes.length>1){var props=PropertiesService.getDocumentProperties(),shown=props.getProperty('r53_classe_visivel_'+g.id);if(shown!==null&&Number(shown)!==cl){cl=Number(shown);classRollback=true;}}

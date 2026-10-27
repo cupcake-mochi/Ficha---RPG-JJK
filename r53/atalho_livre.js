@@ -133,6 +133,13 @@ function gerar(projeto, dump) {
   const amparo = entradasDoAmparo(dump, [p.aba, +m[2], numCol(m[1]), +m[4], numCol(m[3])]);
   const fora = Object.keys(amparo).filter(s => !ABAS.includes(s) && !dump[s].hidden);
   if (fora.length) throw Error('o Amparo depende de abas visíveis fora do mapa: ' + fora.join(', '));
+  // As marcas do Caminho e da Trilha custom (DADOS_PROGRESSAO!K7:K8), que o módulo guarda nas propriedades: as células
+  // digitadas de que elas dependem apagam a guardada (r53EdicaoLivre_), dentro ou fora do mapa.
+  const marcas = entradasDoAmparo(dump, ['DADOS_PROGRESSAO', 7, 11, 8, 11]);
+  const foraM = Object.keys(marcas).filter(s => !ABAS.includes(s) && !dump[s].hidden);
+  if (foraM.length) throw Error('as marcas custom dependem de abas visíveis fora do mapa: ' + foraM.join(', '));
+  const marcasVisiveis = {};
+  Object.keys(marcas).filter(s => ABAS.includes(s)).forEach(s => { marcasVisiveis[s] = retangulos(marcas[s]); });
   const mapa = {}, contagem = {};
   for (const aba of ABAS) {
     const cartoes = E.contextos.filter(g => g.aba === aba).map(g => g.area_editor);
@@ -145,10 +152,11 @@ function gerar(projeto, dump) {
   }
   // A Trilha (FICHA) também muda o Amparo; o Caminho pode limpar a Trilha.
   const gatilhos = (amparo.FICHA || []).concat([[11, 4, 11, 4], [11, 14, 11, 14]]);
-  return { mapa, contagem, hashModulo, hashCatalogo, gatilhos: retangulos(gatilhos), output: fonte(mapa, hashModulo, hashCatalogo, retangulos(gatilhos)) };
+  return { mapa, contagem, hashModulo, hashCatalogo, gatilhos: retangulos(gatilhos), marcas: marcasVisiveis,
+    output: fonte(mapa, hashModulo, hashCatalogo, retangulos(gatilhos), marcasVisiveis) };
 }
 
-function fonte(mapa, hashModulo, hashCatalogo, gatilhos) {
+function fonte(mapa, hashModulo, hashCatalogo, gatilhos, marcas) {
   const corpo = JSON.stringify(mapa);
   const sha = crypto.createHash('sha256').update(corpo).digest('hex');
   return `// GERADO por r53/atalho_livre.js; mapa ${sha.slice(0, 16)}. Não editar à mão.
@@ -158,6 +166,8 @@ var R53_LIVRE_FAMILIAS_=${JSON.stringify(FAMILIAS)};
 var R53_LIVRE_GATILHOS_=${JSON.stringify(gatilhos)};
 var R53_LIVRE_HASHES_=[${JSON.stringify(hashModulo)},${JSON.stringify(hashCatalogo)}];
 var R53_LIVRE_PROP_='r53_amparo_sujo';
+// Onde se mudam as marcas DADOS_PROGRESSAO!K7:K8 que o módulo guarda (marcasCustom_).
+var R53_LIVRE_MARCAS_=${JSON.stringify(marcas || {})};
 function r53LivreToca_(lista,r){var l1=r.getRow(),l2=r.getLastRow(),c1=r.getColumn(),c2=r.getLastColumn();
  for(var i=0;i<lista.length;i++){var a=lista[i];if(l1<=a[2]&&l2>=a[0]&&c1<=a[3]&&c2>=a[1])return true;}return false;}
 // O mapa só vale para o módulo e o catálogo de onde saiu.
@@ -168,7 +178,9 @@ function r53LivreValido_(){
 /** true: a edição caiu numa célula em que nada do script age; sai sem ler a planilha. */
 function r53EdicaoLivre_(e){
  try{
-  if(!e||!e.range)return false;var r=e.range,aba=r.getSheet().getName(),lista=R53_LIVRE_[aba];
+  if(!e||!e.range)return false;var r=e.range,aba=r.getSheet().getName(),lista=R53_LIVRE_[aba],m=R53_LIVRE_MARCAS_[aba];
+  // As marcas custom guardadas pelo módulo deixam de valer (marcasCustom_); apagar não lê a planilha.
+  if(m&&r53LivreToca_(m,r))PropertiesService.getDocumentProperties().deleteProperty('r53_marcas_custom');
   if(!lista||r53LivreToca_(lista,r)||!r53LivreValido_())return false;
   // Trilha ou Caminho mudou desde a última sincronização: a próxima edição nas quatro abas sincroniza.
   if(R53_LIVRE_FAMILIAS_.indexOf(aba)>=0&&PropertiesService.getDocumentProperties().getProperty(R53_LIVRE_PROP_))return false;

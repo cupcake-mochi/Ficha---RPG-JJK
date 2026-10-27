@@ -13,8 +13,10 @@ const ok = (c, m) => { assert(c, m); checks++; };
 const pasta = path.join(raiz, 'nuvem-b47/saidas/atalho');
 const fp = path.join(pasta, 'projeto-leve.json'), fd = path.join(pasta, 'oficial-era.json');
 if (!fs.existsSync(fp) || !fs.existsSync(fd)) { console.log('caixas_horizontais: sem a ficha exportada, pulado'); process.exit(0); }
-const { criar, custo, projetoComIncremento } = require('../arnes_custo');
+const { criar, custo, projetoComIncremento, remendosDoProjeto } = require('../arnes_custo');
 const projeto = JSON.parse(fs.readFileSync(fp, 'utf8')), dump = JSON.parse(fs.readFileSync(fd, 'utf8'));
+// Compara módulos montados a partir do 22º remendo: só roda com a exportação da cópia de teste de 25/10.
+if (remendosDoProjeto(projeto) !== 22) { console.log('caixas_horizontais: a exportação está noutro módulo (' + remendosDoProjeto(projeto) + 'º remendo), pulado'); process.exit(0); }
 const sha = t => crypto.createHash('sha256').update(t, 'utf8').digest('hex');
 const { novo: antigo, hashVelho: hv } = projetoComIncremento(projeto, dump, 22, 33);
 const { novo } = projetoComIncremento(projeto, dump, 22);
