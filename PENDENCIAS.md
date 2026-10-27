@@ -7,10 +7,13 @@ de fórmulas. Não é inicialização completa nem certificado aceito pelo bot; 
 incluído no pacote e não instala gatilhos. Não aplicar nas oficiais ou em personagens.
 Leia `r53/inicializacao/README.md` antes de continuar. Base main `d0836390`; branch
 `codex/inicializacao-financeira-carteira`, PR separada da PR 84 do consumidor.
-96 cenários offline novos aprovados; salário por fórmula e missões com regressões
+99 cenários offline novos aprovados; salário por fórmula e missões com regressões
 focais aprovadas. Leitura nativa pontual das duas oficiais, sem escrita: âncoras e
-grade compatíveis, estado financeiro herdável confirmado. Execução do protótipo no
-Google, inicialização pessoal completa, automações e novo responsável ainda pendentes.
+grade compatíveis, estado financeiro herdável confirmado. Primeira prévia nativa passou; aplicação atingiu seis minutos na conferência
+final. Limite de quatro escritas/chamada, orçamento e retirada de leituras
+redundantes implementados com três regressões. Diário nativo/retomada e medição da
+versão corrigida em andamento. Inicialização pessoal completa, automações e novo
+responsável ainda pendentes.
 Sem publicação, merge, novos escopos, reconstrução ou alteração nas oficiais.
 Próxima implementação integrada: GPT-6 Astra / Alto; revisão focal: Médio.
 

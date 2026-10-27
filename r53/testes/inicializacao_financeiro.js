@@ -105,7 +105,16 @@ function ambiente(op = {}) {
   return {ctx, ss, sheets, cells, doc, script, writes, context, put, range, get,
     hook: fn => { hook = fn; }, locked: () => lock,
     preview: () => ctx.r53NovaFichaFinanceiroPrevia(ss, context),
-    apply: p => ctx.r53NovaFichaFinanceiroAplicar(ss, context, p.assinatura)};
+    apply: p => ctx.r53NovaFichaFinanceiroAplicar(ss, context, p.assinatura),
+    complete(p) {
+      for (let i = 0; i < 20; i++) {
+        const r = ctx.r53NovaFichaFinanceiroAplicar(ss, context, p.assinatura);
+        if (r.concluido) return r;
+        assert.equal(r.retomar, true); assert.equal(r.criacaoDisponivel, false);
+        assert.equal(JSON.parse(doc.get(ctx.R53_NOVA_FIN_.diario)).concluido, false);
+      }
+      throw Error('não concluiu em 20 retomadas');
+    }};
 }
 function verificar(a) {
   const val = (s, x) => a.range(s, x).getValue();
@@ -137,13 +146,13 @@ caso('prévia não grava e não revela dados', () => {
   assert(!/SEGREDO|missão privada|123456|projeto-antigo/.test(JSON.stringify(p)));
 });
 caso('limpeza financeira preserva campanha e o que não pertence ao domínio', () => {
-  const a = ambiente(); const p = a.preview(), r = a.apply(p); verificar(a);
+  const a = ambiente(); const p = a.preview(), r = a.complete(p); verificar(a);
   assert.equal(r.criacaoDisponivel, false); assert.equal(r.concluido, true);
   assert(r.pendente.includes('inventario')); assert(r.pendente.includes('prova_nativa'));
-  const n = a.writes.length; a.apply(p); assert.equal(a.writes.length, n, 'segunda execução não grava');
+  const n = a.writes.length; a.complete(p); assert.equal(a.writes.length, n, 'segunda execução não grava');
 });
 caso('última linha 5000 e notas são limpas mesmo sem emissão', () => {
-  const a = ambiente({rows: 5000, semEmissao: true}); a.apply(a.preview()); verificar(a);
+  const a = ambiente({rows: 5000, semEmissao: true}); a.complete(a.preview()); verificar(a);
   for (const s of ['EXTRATO', 'SALÁRIOS', 'DADOS_SALARIOS']) {
     assert.equal(a.range(s, 'C5000').getValue(), ''); assert.equal(a.range(s, 'C5000').getNotes()[0][0], '');
     assert.equal(a.range(s, 'A1').getValue(), 'Cabeçalho');
@@ -151,7 +160,7 @@ caso('última linha 5000 e notas são limpas mesmo sem emissão', () => {
 });
 caso('cache de fórmula de O86 pode recalcular sem representar edição', () => {
   let n = 0; const a = ambiente({o86Formula: true, recalculo: () => ++n});
-  a.apply(a.preview()); verificar(a);
+  a.complete(a.preview()); verificar(a);
 });
 for (const id of ['1MQqhHbIzzyoMQY5zLKOciiT5k9Y6AMI4MCSrPhu8V_k', '1pgLDZOYpUJrqTcwomaQl8Bjn-AuAcu_Aowd30G7YiJw'])
   caso('recusa oficial ' + id.slice(0, 5), () => { const a = ambiente({id}); assert.throws(() => a.preview(), /cópia nova/); assert.equal(a.writes.length, 0); });
@@ -171,63 +180,63 @@ caso('fórmula protegida desconhecida não é certificada só por começar com i
 caso('aspas opcionais de DADOS_SALARIOS normalizadas pelo Google são aceitas', () => {
   const a = ambiente();
   for (const c of a.cells.values()) c.f = c.f.replace(/'DADOS_SALARIOS'!/g, 'DADOS_SALARIOS!');
-  a.apply(a.preview()); verificar(a);
+  a.complete(a.preview()); verificar(a);
 });
 caso('aba ausente', () => { const a = ambiente(); delete a.sheets.SALÁRIOS; assert.throws(() => a.preview()); assert.equal(a.writes.length, 0); });
-caso('prévia envelhecida não cria diário nem limpa', () => { const a = ambiente(), p = a.preview(); a.put('EXTRATO', 'B2', 'novo'); assert.throws(() => a.apply(p), /mudou após/); assert.equal(a.writes.length, 0); assert(!a.locked()); });
-caso('alterar fórmula da campanha mantendo cache invalida prévia', () => { const a = ambiente(), p = a.preview(); a.put('CONFIGURAÇÃO', 'G46', 5, '=5'); assert.throws(() => a.apply(p), /mudou após/); assert.equal(a.writes.length, 0); });
-caso('trava ocupada', () => { const a = ambiente({ocupado: true}), p = a.preview(); assert.throws(() => a.apply(p), /outra operação/); assert.equal(a.writes.length, 0); });
+caso('prévia envelhecida não cria diário nem limpa', () => { const a = ambiente(), p = a.preview(); a.put('EXTRATO', 'B2', 'novo'); assert.throws(() => a.complete(p), /mudou após/); assert.equal(a.writes.length, 0); assert(!a.locked()); });
+caso('alterar fórmula da campanha mantendo cache invalida prévia', () => { const a = ambiente(), p = a.preview(); a.put('CONFIGURAÇÃO', 'G46', 5, '=5'); assert.throws(() => a.complete(p), /mudou após/); assert.equal(a.writes.length, 0); });
+caso('trava ocupada', () => { const a = ambiente({ocupado: true}), p = a.preview(); assert.throws(() => a.complete(p), /outra operação/); assert.equal(a.writes.length, 0); });
 // Todas as fronteiras reais de escrita: antes e depois da chamada, inclusive
 // depois de apagar conteúdo e antes de apagar notas, e entre duas propriedades.
-const base = ambiente(); base.apply(base.preview());
+const base = ambiente(); base.complete(base.preview());
 for (let falha = 1; falha <= base.writes.length; falha++) for (const fase of ['antes', 'depois'])
   caso(`retoma queda ${fase} da escrita ${falha}`, () => {
     const a = ambiente(), p = a.preview(); let n = 0;
     a.hook(f => { if (f === fase && ++n === falha) throw new Error('queda simulada'); });
-    assert.throws(() => a.apply(p), /queda simulada/); assert(!a.locked());
-    a.hook(null); a.apply(p); verificar(a);
+    assert.throws(() => a.complete(p), /queda simulada/); assert(!a.locked());
+    a.hook(null); a.complete(p); verificar(a);
   });
 caso('edição alheia em nota depois de queda não é apagada', () => {
   const a = ambiente(), p = a.preview(); a.hook((f, kind) => { if (f === 'depois' && kind === 'conteudo') throw Error('queda'); });
-  assert.throws(() => a.apply(p), /queda/); a.hook(null);
+  assert.throws(() => a.complete(p), /queda/); a.hook(null);
   a.put('EXTRATO', 'A2', '', '', 'nota nova'); const n = a.writes.length;
-  assert.throws(() => a.apply(p), /editados/); assert.equal(a.writes.length, n);
+  assert.throws(() => a.complete(p), /editados/); assert.equal(a.writes.length, n);
   assert.equal(a.range('EXTRATO', 'A2').getNotes()[0][0], 'nota nova');
 });
 caso('propriedade salarial alterada durante pausa não é apagada', () => {
   const a = ambiente(), p = a.preview(); a.hook((f, kind) => { if (f === 'depois' && kind === 'excluirPropriedade') throw Error('queda'); });
-  assert.throws(() => a.apply(p), /queda/); a.hook(null); a.doc.set('salario_proximo', 'estado novo');
-  const n = a.writes.length; assert.throws(() => a.apply(p), /editados/); assert.equal(a.writes.length, n);
+  assert.throws(() => a.complete(p), /queda/); a.hook(null); a.doc.set('salario_proximo', 'estado novo');
+  const n = a.writes.length; assert.throws(() => a.complete(p), /editados/); assert.equal(a.writes.length, n);
   assert.equal(a.doc.get('salario_proximo'), 'estado novo');
 });
 caso('mesma chamada depois do uso não reinicializa', () => {
-  const a = ambiente(), p = a.preview(); a.apply(p); a.put('EXTRATO', 'A2', 'novo lançamento');
-  const n = a.writes.length; assert.throws(() => a.apply(p), /editados|já foi usada/); assert.equal(a.writes.length, n);
+  const a = ambiente(), p = a.preview(); a.complete(p); a.put('EXTRATO', 'A2', 'novo lançamento');
+  const n = a.writes.length; assert.throws(() => a.complete(p), /editados|já foi usada/); assert.equal(a.writes.length, n);
 });
 caso('propriedade original reaparecida após conclusão não é apagada', () => {
-  const a = ambiente(), p = a.preview(); a.apply(p); a.doc.set('salario_proximo', 'SEGREDO-salario_proximo');
-  const n = a.writes.length; assert.throws(() => a.apply(p), /já foi usada/); assert.equal(a.writes.length, n);
+  const a = ambiente(), p = a.preview(); a.complete(p); a.doc.set('salario_proximo', 'SEGREDO-salario_proximo');
+  const n = a.writes.length; assert.throws(() => a.complete(p), /já foi usada/); assert.equal(a.writes.length, n);
 });
 caso('outra operação não toma diário pendente nem cria nova prévia', () => {
-  const a = ambiente(), p = a.preview(); a.apply(p); a.context.operacao = 'outra_operacao_00002';
-  const n = a.writes.length; assert.throws(() => a.apply(p), /operação diferente/); assert.throws(() => a.preview(), /retome/); assert.equal(a.writes.length, n);
+  const a = ambiente(), p = a.preview(); a.complete(p); a.context.operacao = 'outra_operacao_00002';
+  const n = a.writes.length; assert.throws(() => a.complete(p), /operação diferente/); assert.throws(() => a.preview(), /retome/); assert.equal(a.writes.length, n);
 });
 for (const raw of ['{', 'null', '{}']) caso('diário inválido ' + raw, () => {
   const a = ambiente(), p = a.preview(); a.doc.set(a.ctx.R53_NOVA_FIN_.diario, raw);
-  assert.throws(() => a.apply(p), /diário inválido/); assert.equal(a.writes.length, 0);
+  assert.throws(() => a.complete(p), /diário inválido/); assert.equal(a.writes.length, 0);
 });
 caso('diário adulterado', () => {
-  const a = ambiente(), p = a.preview(); a.apply(p); const k = a.ctx.R53_NOVA_FIN_.diario, j = JSON.parse(a.doc.get(k));
+  const a = ambiente(), p = a.preview(); a.complete(p); const k = a.ctx.R53_NOVA_FIN_.diario, j = JSON.parse(a.doc.get(k));
   j.plano.alteracoes++; a.doc.set(k, JSON.stringify(j)); const n = a.writes.length;
-  assert.throws(() => a.apply(p), /diário inválido/); assert.equal(a.writes.length, n);
+  assert.throws(() => a.complete(p), /diário inválido/); assert.equal(a.writes.length, n);
 });
 caso('edição no meio da execução interrompe sem sobrescrever', () => {
-  const a = ambiente(), p = a.preview(); a.hook((f, kind) => { if (f === 'depois' && kind === 'conteudo') a.put('DADOS_SALARIOS', 'N2', 'emissão nova'); });
-  assert.throws(() => a.apply(p), /concorrente/); assert.equal(a.range('DADOS_SALARIOS', 'N2').getValue(), 'emissão nova');
+  const a = ambiente(), p = a.preview(); a.hook((f, kind) => { if (f === 'depois' && kind === 'conteudo') a.put('SALÁRIOS', 'A2', 'lançamento novo'); });
+  assert.throws(() => a.apply(p), /concorrente/); assert.equal(a.range('SALÁRIOS', 'A2').getValue(), 'lançamento novo');
   assert.equal(JSON.parse(a.doc.get(a.ctx.R53_NOVA_FIN_.diario)).concluido, false);
 });
 caso('estado inicial não inventa início, emissão ou agenda; fórmulas reais exigem emissão', () => {
-  const a = ambiente(); a.apply(a.preview()); const state = a.ctx.salarioEstado_(a.ss);
+  const a = ambiente(); a.complete(a.preview()); const state = a.ctx.salarioEstado_(a.ss);
   for (const key of ['inicio', 'ultimaEmissao', 'agenda']) assert.equal(state[key], undefined);
   assert.equal(a.ctx.SALARIO_.formula, true);
   const aux = a.ctx.SALARIO_.f.aux;
@@ -235,5 +244,25 @@ caso('estado inicial não inventa início, emissão ou agenda; fórmulas reais e
   assert(aux[2][1].includes('AND(ISNUMBER(N2);'), 'períodos vencidos dependem de emissão');
   assert(a.ctx.SALARIO_.f.emissao.includes("ISNUMBER('DADOS_SALARIOS'!N2)"));
   // Conferência estática do fonte e do leitor reais; não avaliação das fórmulas.
+});
+
+caso('execução parcial limita escritas e não declara conclusão', () => {
+  const a = ambiente(), p = a.preview(); const r = a.apply(p);
+  assert.equal(r.concluido, false); assert.equal(r.retomar, true);
+  assert.equal(a.writes.filter(([tipo]) => tipo !== 'propriedade').length, 4);
+  assert.equal(JSON.parse(a.doc.get(a.ctx.R53_NOVA_FIN_.diario)).concluido, false);
+  a.complete(p); verificar(a);
+});
+caso('orçamento esgotado deixa diário retomável sem limpar', () => {
+  const a = ambiente(), p = a.preview(); a.ctx.R53_NOVA_FIN_.orcamentoMs = -1;
+  const r = a.apply(p); assert.equal(r.concluido, false); assert.equal(r.retomar, true);
+  assert.equal(a.writes.length, 1, 'somente diário, sem alteração na ficha');
+  a.ctx.R53_NOVA_FIN_.orcamentoMs = 210000; a.complete(p); verificar(a);
+});
+caso('sem orçamento para conferir não devolve conclusão', () => {
+  const a = ambiente(), p = a.preview(); a.complete(p);
+  a.ctx.R53_NOVA_FIN_.orcamentoMs = -1;
+  const n = a.writes.length, r = a.apply(p);
+  assert.equal(r.concluido, false); assert.equal(r.retomar, true); assert.equal(a.writes.length, n);
 });
 console.log(`${cenarios} cenários offline de inicialização financeira aprovados; nenhuma prova nativa ou liberação de criação.`);

@@ -1,6 +1,6 @@
 # Inicializar uma cópia nova
 
-Protótipo do produtor para a etapa 7 da Carteira viva. **Não instalado, não
+Protótipo do produtor para a etapa 7 da Carteira viva. **Não instalado nas oficiais, não
 incluído no pacote e sem integração de escrita com o bot.** A criação pelo
 bot permanece bloqueada. Não executar em ficha oficial ou de jogador.
 
@@ -58,6 +58,20 @@ pessoal a partir da regra da mesa, sem gravar em XP calculado.
 
 ## Falhas e retomada
 
+Cada chamada aplica no máximo quatro passos de escrita e usa um orçamento
+local de 210 s antes de iniciar outro passo ou a conferência final. Se o
+orçamento acabar, retorna `concluido=false, retomar=true`; isso não libera
+cadastro. A mesma operação continua em uma chamada posterior. O tempo gasto
+pelo próprio serviço Google não é cancelável e esse orçamento **não garante**
+latência máxima ou ausência de timeout externo.
+
+A aplicação nova reaproveita a leitura integral que acabou de comparar com a
+prévia. Cada passo alterado continua relido antes/depois, e uma conclusão com
+escritas exige conferência integral. Na retomada sem escrita, todos os passos
+já foram conferidos na entrada; a rotina não lê o livro inteiro uma segunda
+vez sem necessidade. Essas mudanças tratam um timeout nativo de seis minutos
+observado na primeira implementação, não reduzem os critérios de conclusão.
+
 Cada limpeza de conteúdo, limpeza de notas e exclusão de propriedade tem
 seu próprio estado anterior/posterior. Isso permite retomar após uma queda
 entre chamadas do Google, inclusive entre duas propriedades. Não existe
@@ -83,7 +97,7 @@ limpeza. Não há opção “forçar” ou rollback automático de dados pessoai
 node r53/testes/inicializacao_financeiro.js
 ```
 
-96 cenários offline, incluindo todas as fronteiras de escrita antes/depois,
+99 cenários offline, incluindo todas as fronteiras de escrita antes/depois,
 queda entre conteúdo/notas, propriedades parcialmente removidas, repetição,
 edição concorrente, linhas físicas tardias, prévia envelhecida, alvo inválido,
 modo legado, fórmula desconhecida, preservação de regras e ausência de texto
@@ -93,7 +107,12 @@ mede latência do Google. O smoke de nuvem inclui este teste.
 Conferência de leitura nativa em 27/10/2026: metadados e onze faixas pontuais
 nas duas oficiais; grades financeiras de 1.000 linhas e âncoras esperadas
 presentes. A leitura não aplicou o inicializador nem alterou as fontes.
-Registros posteriores de cópia/execução, se houver, devem distinguir isso.
+Ensaio inicial em cópia descartável do Ciclo: prévia concluída em 115,013 s;
+a aplicação atingiu seis minutos durante a conferência final, sem retornar
+sucesso. Leitura externa dos sete intervalos completos confirmou zero
+entradas/notas restantes e saldo/períodos/crédito pendente zero. Isso não
+substitui concluir o diário. A retomada e a versão com orçamento são testadas
+separadamente; consultar o registro nativo nesta pasta antes de continuar.
 
 ## O que falta antes de liberar criação
 

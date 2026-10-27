@@ -6,6 +6,8 @@
 var R53_NOVA_FIN_ = {
   versao: 1,
   diario: 'r53_nova_ficha_financeiro_v1',
+  escritasPorExecucao: 4,
+  orcamentoMs: 210000,
   oficiais: ['1MQqhHbIzzyoMQY5zLKOciiT5k9Y6AMI4MCSrPhu8V_k', '1pgLDZOYpUJrqTcwomaQl8Bjn-AuAcu_Aowd30G7YiJw'],
   propriedadesDocumento: ['salario_extrato', 'salario_trocas', 'salario_correcao_nome', 'salario_proximo'],
   propriedadesScript: ['salario_edicao'],
@@ -151,12 +153,13 @@ function r53NovaFichaFinanceiroPrevia(ss, contexto) {
  * Falha/timeout deixa diário incompleto. Uma cópia assim não pode ser cadastrada.
  */
 function r53NovaFichaFinanceiroAplicar(ss, contexto, assinatura) {
+  var inicio = Date.now();
   var lock = LockService.getDocumentLock();
   if (!lock.tryLock(1500)) r53NovaFinErro_('outra operação em andamento.');
   try {
     var dp = PropertiesService.getDocumentProperties();
     var vinculo = r53NovaFinContexto_(ss, contexto), ops = r53NovaFinOperacoes_(ss);
-    var raw = dp.getProperty(R53_NOVA_FIN_.diario), j;
+    var raw = dp.getProperty(R53_NOVA_FIN_.diario), j, novo = !raw;
     if (raw) {
       try { j = JSON.parse(raw); } catch (err) { r53NovaFinErro_('diário inválido; revisão manual necessária.'); }
       if (!j || !j.plano || !Array.isArray(j.plano.passos) || j.plano.passos.length !== ops.length ||
@@ -173,15 +176,25 @@ function r53NovaFichaFinanceiroAplicar(ss, contexto, assinatura) {
     if (r53NovaFinHash_(ops) !== j.plano.layout || r53NovaFinPreservados_(ss) !== j.plano.preservados)
       r53NovaFinErro_('estrutura, fórmula ou configuração mudou; revisão manual necessária.');
     // Validar TODOS os passos antes de retomar qualquer escrita.
-    var estados = ops.map(function(op, i) {
+    // Uma operação nova acabou de ler TODOS os estados para validar a prévia.
+    // Não repetir essa leitura inteira antes das escritas; cada passo alterado
+    // é relido antes de gravar e a conclusão exige conferência completa.
+    var estados = novo ? j.plano.passos.map(function(p) { return p.antes; }) : ops.map(function(op, i) {
       var h = r53NovaFinHash_(r53NovaFinLer_(ss, op)), p = j.plano.passos[i];
       if (h !== p.antes && h !== p.depois) r53NovaFinErro_('dados editados durante a inicialização; nada será sobrescrito.');
       if (j.concluido && h !== p.depois) r53NovaFinErro_('a cópia já foi usada depois da inicialização.');
       return h;
     });
+    var escritas = 0;
+    var incompleto = function() {
+      return {versao: 1, dominio: 'financeiro', concluido: false, retomar: true,
+              operacao: vinculo.operacao, criacaoDisponivel: false};
+    };
     for (var i = 0; i < ops.length; i++) {
       var op = ops[i], p = j.plano.passos[i];
       if (estados[i] === p.depois) continue;
+      if (escritas >= R53_NOVA_FIN_.escritasPorExecucao || Date.now() - inicio >= R53_NOVA_FIN_.orcamentoMs)
+        return incompleto();
       if (r53NovaFinHash_(r53NovaFinLer_(ss, op)) !== p.antes) r53NovaFinErro_('edição concorrente; operação interrompida.');
       if (op.tipo === 'propriedade') r53NovaFinProps_(op).deleteProperty(op.chave);
       else {
@@ -192,10 +205,14 @@ function r53NovaFichaFinanceiroAplicar(ss, contexto, assinatura) {
       }
       SpreadsheetApp.flush();
       if (r53NovaFinHash_(r53NovaFinLer_(ss, op)) !== p.depois) r53NovaFinErro_('gravação não confirmada; revisão manual necessária.');
+      escritas++;
     }
+    // Reservar tempo para a conferência final. Na retomada sem escrita, todos
+    // os passos já foram conferidos acima: não ler o livro inteiro duas vezes.
+    if (Date.now() - inicio >= R53_NOVA_FIN_.orcamentoMs) return incompleto();
     SpreadsheetApp.flush();
     if (r53NovaFinPreservados_(ss) !== j.plano.preservados ||
-        ops.some(function(op, i) { return r53NovaFinHash_(r53NovaFinLer_(ss, op)) !== j.plano.passos[i].depois; }))
+        ((novo || escritas > 0) && ops.some(function(op, i) { return r53NovaFinHash_(r53NovaFinLer_(ss, op)) !== j.plano.passos[i].depois; })))
       r53NovaFinErro_('pós-condição não confirmada; não cadastrar a cópia.');
     if (!j.concluido) {
       j.concluido = true; dp.setProperty(R53_NOVA_FIN_.diario, JSON.stringify(j));
