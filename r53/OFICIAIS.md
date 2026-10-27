@@ -195,3 +195,22 @@ Conferido pela API: CY47:CZ54 da Era = xp total 3700, nível 10, próximo 4400, 
 Os dois últimos candidatos de fórmula (os 225 INDIRECT da DADOS_CUSTOM e a coluna FD da DADOS_R53) foram medidos numa cópia e
 não mudaram o tempo de edição (PENDENCIAS.md, PRs #33 e #34); nenhum foi às oficiais. O Mizuki fechou a otimização ("pode
 fechar então"). Estado final das duas oficiais: a tabela da seção "XP com o nível escrito na mão", com a versão 10 de backup.
+
+## Abertura sem a releitura diária do salário · 27/10/2026
+
+Aval do Mizuki no chat ("Pode mesclar o PR #37 e instalar o corte da abertura nas duas oficiais, com versão 11 de backup
+antes e conferindo os dez hashes"). Pelo navegador do app, na conta dona (`/u/1/` lá). Antes, nas duas, os dez arquivos
+iguais à tabela da seção "XP com o nível escrito na mão" (Codigo `97c430f4`), e a versão 11 de backup ("Antes da
+abertura sem a relida diária do salário (27/10/2026)": Era da Revolução 12:51, Ciclo Maldito 12:54), implantação de
+biblioteca arquivada em seguida.
+
+- Projeto: só o Codigo, uma linha do `salarioCongelar_` (`r53/diagnostico-android/preparar_abertura_salario.js`):
+  sem carteira emitida, a próxima conferência vai para `hoje+3650` em vez de amanhã. O trecho conferiu o Codigo
+  `97c430f4` antes e `f86423cf` depois.
+- Planilha: nada.
+
+Depois de salvar e recarregar, iguais nas duas: Codigo `f86423cf…`; EditorR53 `c3d31096`, Analise `2ea7e9d4`, Ficha
+`6012dcb3`, Invocacoes `ebf20bb1`, Configuracao `bb784c6d`, Origens `90095228`, LotePaleta `848e878b`,
+PaletaSegundoPlano `a5a0e83d` e SalarioLote `366f6dd3` sem mudança. Módulo `9dc3480a` sem mudança. Para voltar: versão 11.
+Efeito esperado: nas fichas base (sem carteira), a conferência do salário roda uma vez e não volta a cada dia; numa
+ficha com carteira emitida, nada muda. Medição na cópia: MEDICAO-DESEMPENHO-2026-10-26-fim.md.

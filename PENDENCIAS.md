@@ -44,6 +44,15 @@ na lixeira; zero acionadores listados para o executor. Detalhes e limites em
 responsável ainda pendentes.
 Sem publicação, merge, novos escopos, reconstrução ou alteração nas oficiais.
 Próxima implementação integrada: GPT-6 Astra / Alto; revisão focal: Médio.
+## Abertura sem a releitura diária do salário · 27/10/2026 (Claude) · instalado nas duas oficiais (versão 11 de backup)
+
+Item 1 da lista de 27/10 (PR #37). Os onOpen de 8–11 s das oficiais eram a conferência do salário relendo a
+DADOS_SALARIOS!P2:Y130 (~7,5 s) na primeira abertura de cada dia (no Android, onde o onOpen não roda, na primeira edição
+rápida), porque sem carteira emitida a próxima conferência ficava para amanhã. Agora fica para daqui a 3650 dias; emitir
+apaga a data e ela volta na hora. Codigo `97c430f4` → `f86423cf` nas duas (r53/OFICIAIS.md). O de 20 s era a primeira
+abertura de uma cópia nova (salário mais cópia fria). Observação para o item 2 (missões): numa cópia, apagar um nome
+sem tipo no painel estourou 30 s uma vez, sem log; não se repetiu. A cópia "TESTE abertura (descartável)" pode ir para
+a lixeira.
 
 ## Otimização Android fechada · 27/10/2026
 
