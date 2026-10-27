@@ -1,6 +1,6 @@
 # Nível e textos pessoais · 27/10/2026
 
-Continuação da PR 31 do produtor, em rascunho. Base main atual
+Continuação da PR 31 do produtor, em rascunho. Primeira base main desta rodada
 `9536746405f12a9e159e9173b54a2a861c0a871a`, incorporada pelo merge `8cb12ac`.
 O fechamento de desempenho e a base de XP dessa main foram preservados.
 Protótipos fora do pacote, sem menus, eventos, endpoints ou integração com o
@@ -36,7 +36,33 @@ fora do domínio, assinatura financeira anterior e ordem entre financeiro e
 nível. XP: 20.643 verificações/9.900 combinações; sem a exportação opcional.
 A VM não calcula fórmulas do Sheets. Os três testes entram no smoke Linux.
 
+## Main salarial incorporada no fechamento
+
+A main avançou durante a rodada para `b0dc6aacef08b2c01a7f8a3519bbcc9bff9546ed`,
+merge da PR 37. Foram lidos os cinco arquivos alterados: `Salarios.gs` muda a
+próxima conferência de hoje+1 para hoje+3650 quando não há carteira emitida;
+emitir continua invalidando essa data. Não altera as fórmulas protegidas ou
+os alvos dos inicializadores. Medição/preparador e testes vêm da main; esta
+rodada não instalou essa mudança nas oficiais.
+
+A atualização foi incorporada no merge `84bcd566ae74d73bd8fdaf3889aa1ab5d7c68722`.
+Regressões focais depois do merge: 15 verificações de abertura, 95 salariais
+e 101 cenários financeiros passaram, incluindo a assinatura v1 fixa. O ensaio
+Sheets API descrito abaixo foi anterior a esse merge; não é ensaio nativo desse código.
+A abertura pode recriar `salario_proximo` após a limpeza: ativação e conferência
+final devem distinguir esse novo cache válido de estado antigo. A criação
+continua bloqueada; os diários por domínio não resolvem essa interação.
+
 ## CI Linux
+
+Versão integrada `84bcd566ae74d73bd8fdaf3889aa1ab5d7c68722`:
+[run 40535287570](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40535287570) aprovado em 27/10 às 15:53:51 UTC
+(12:53:51 Brasília). Log conferido: 101/80/78 cenários, pacote de nove arquivos,
+277 fontes Python/208 JS-GS e regressões do smoke aprovados. Run duplicado
+do push cancelado. Novo CI foi necessário pela mudança real em Salarios.gs,
+não pela documentação. Registro final posterior apenas documental, `[skip ci]`.
+
+CI anterior, antes de incorporar a PR 37:
 
 Código `280a7dcd0b3fb56b0a43dd6e0d88aaadcb08d634`: [run 40534237271](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40534237271)
 aprovado em 27/10/2026 às 15:47:26 UTC (12:47:26 Brasília). Confirmados no log

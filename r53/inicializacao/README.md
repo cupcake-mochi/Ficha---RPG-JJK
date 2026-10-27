@@ -9,8 +9,8 @@ A cópia deve conservar essas regras e catálogos; não deve herdar identidade,
 progressão, inventário, missões, cartões ou dinheiro de outro personagem.
 Os protótipos cobrem o financeiro, o nível inicial/base de XP e 14 campos de
 texto pessoal. **Não oferecem uma ficha inteira pronta para cadastro.** A base
-atual é a main `9536746405f12a9e159e9173b54a2a861c0a871a`, incorporada nesta
-branch; inclui o novo campo de XP base e o fechamento da otimização Android.
+incorporada atualmente é a main `b0dc6aacef08b2c01a7f8a3519bbcc9bff9546ed` (merge
+`84bcd56`); inclui XP base, fechamento da otimização Android e PR 37 salarial.
 Não reabrir aquela otimização nem instalar o pacote inteiro por rotina.
 
 ## Financeiro
@@ -124,7 +124,9 @@ A retomada atual é por domínio, não um orquestrador global pronto para uso.
 
 Ainda falta uma conferência final combinada: fases concluídas não garantem
 que outro domínio permaneceu intacto após uma edição. A cópia deve ficar
-isolada do jogador até esse fechamento. Não apagar diários nem fabricar um
+isolada do jogador até esse fechamento. A abertura pode recriar
+`salario_proximo`; isso precisa de tratamento explícito na ativação e na
+conferência final, sem apagar diários para aceitar um estado diferente. Não apagar diários nem fabricar um
 diário financeiro concluído para testar o domínio seguinte.
 
 ## Falhas e retomada
@@ -177,7 +179,8 @@ edição concorrente, linhas físicas tardias, prévia envelhecida, alvo inváli
 modo legado, fórmula desconhecida, preservação de regras e ausência de texto
 financeiro no diário. VM com serviços simulados; não executa fórmulas e não
 mede latência do Google. O smoke de nuvem inclui os três testes.
-CI Linux do código `280a7dc` aprovado: [40534237271](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40534237271).
+CI Linux final do integrado `84bcd56` aprovado: [40535287570](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40535287570).
+CI anterior do protótipo `280a7dc`: [40534237271](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40534237271).
 Registro posterior apenas documental, sem repetir a bateria.
 Regressão independente de XP: `node r53/testes/xp_nivel.js`, 20.643
 verificações/9.900 combinações sem a exportação nativa opcional.
