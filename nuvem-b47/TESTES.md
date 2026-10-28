@@ -1,3 +1,23 @@
+## Carteira viva: inventário e equipamento · 28/10/2026 · não instalada
+
+PR 31, main ef361cc reconferida sem novos commits. Três perfis novos: equipados
+5 campos, equipáveis 88, itens 36; mais quatro notas vivas sem escrita em suas
+fórmulas protegidas. Estoque pessoal limpo, fórmulas e instruções restauradas,
+catálogos/configurações preservados. Contratos anteriores/assinatura v1 iguais.
+Variante decimal nativa 0,1 reconhecida somente nas fórmulas exatas de Volume.
+417 cenários direcionados e 101 financeiros passaram; coleção atual 921.
+Leitura de 161 entradas/guardas em cada oficial sem divergência ou escrita.
+Projeção Sheets API em cópia privada: 133 alvos, 10.450 comparações preservadas,
+sem erros; carga 0,3 de 5 igual ao modelo (Traje 1). Cópia na lixeira/aba fechada.
+Não é execução Apps Script/diários/OAuth nem criação completa.
+
+Relatório r53/inicializacao/INVENTARIO-2026-10-28.md e README atualizado.
+Próximo: campos restantes da CARTEIRA e propriedades de recuperação; depois
+entidades/cartões/MONTAGENS. Ainda faltam arte, orquestração/conferência final,
+automações/notas vivas, novo responsável e integração drive.file/prova nativa.
+Criação bloqueada, fora do pacote/bot. Sem merge/deploy, escopo novo ou chamada
+paga. GPT-6 Astra / Alto; revisão focal Médio. Entradas abaixo são históricas.
+
 # técnica e Famílias · 28/10/2026 · não instalada
 
 Main ef361cc incorporada por a72adc0 (PRs 41–43). XP manual/missões congeladas

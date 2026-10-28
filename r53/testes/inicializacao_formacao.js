@@ -9,7 +9,7 @@ const letra=n=>{let s='';while(n){n--;s=String.fromCharCode(65+n%26)+s;n=Math.fl
 const valor=(s,a)=>{const p=a1(a);return original.get(s).get(p[0]+','+p[1])??'';};
 const nota=(s,a)=>g.ABAS.find(x=>x.nome===s).notas?.find(x=>x[0]===a)?.[1]||'';
 const sources=['contrato_formacao','formacao'].map(n=>fs.readFileSync(path.join(root,'r53/inicializacao/'+n+'.gs'),'utf8'));
-const nomes=['grau_origem','pericias','oficios_tr','armas','tecnica','familias'];
+const nomes=['grau_origem','pericias','oficios_tr','armas','tecnica','familias','equipados','equipaveis','itens'];
 let casos=0;function caso(n,f){try{f();casos++;}catch(e){e.message=n+': '+e.message;throw e;}}
 function visitar(x,fn){const [r,c,r2,c2]=a1(x.faixa);for(let rr=r;rr<=r2;rr++)for(let cc=c;cc<=c2;cc++)fn(letra(cc)+rr,rr-r,cc-c);}
 function preparado(nome){const a=ambiente();for(const f of sources)vm.runInContext(f,a.ctx);a.sheets['FICHA AMALDIÇOADA']={getRange:addr=>a.range('FICHA AMALDIÇOADA',addr)};a.nome=nome;a.c=a.ctx.R53_NOVA_FORMACAO_CONTRATO_.dominios[nome];
@@ -22,16 +22,16 @@ function preparado(nome){const a=ambiente();for(const f of sources)vm.runInConte
  a.concluir=p=>{for(let i=0;i<40;i++){const r=a.aplicar(p);if(r.concluido)return r;assert.equal(r.retomar,true);}throw Error('retomadas demais');};return a;
 }
 function conferir(a){for(const x of a.c.entradas)visitar(x,addr=>{const r=a.range(x.aba,addr),v=valor(x.aba,addr);if(x.tipo==='formula')assert.equal(r.getFormulas()[0][0],v);else{assert.equal(r.getValue(),v);assert.equal(r.getFormulas()[0][0],'');}assert.equal(r.getNotes()[0][0],nota(x.aba,addr));});
- for(const x of a.c.guardas)visitar(x,addr=>{const v=valor(x.aba,addr),r=a.range(x.aba,addr);if(typeof v==='string'&&v.startsWith('='))assert.equal(r.getFormulas()[0][0],v);else assert.equal(r.getValue(),v);assert.equal(r.getNotes()[0][0],'INSTRUÇÃO NO RÓTULO');});
+ for(const x of a.c.guardas)visitar(x,addr=>{const v=valor(x.aba,addr),r=a.range(x.aba,addr);if(typeof v==='string'&&v.startsWith('='))assert.equal(r.getFormulas()[0][0],v);else assert.equal(r.getValue(),v);assert.equal(r.getNotes()[0][0],(a.c.somenteNotas||[]).some(x=>x.aba==='FICHA PESSOAL'&&x.faixa===addr)?nota(x.aba,addr):'INSTRUÇÃO NO RÓTULO');});
  assert.equal(a.range('CONFIGURAÇÃO','AK51').getValue(),'REGRA CUSTOM DA MESA');assert.equal(a.range('CONFIGURAÇÃO','F46').getValue(),10);assert.equal(a.range('FICHA','AH11').getValue(),30);assert.equal(a.range('DADOS','CZ54').getValue(),3700);
- assert.equal(a.range('FICHA PESSOAL','Q27').getValue(),'HISTÓRIA PRESERVADA');assert.equal(a.range('FICHA PESSOAL','D92').getValue(),'INVENTÁRIO PRESERVADO');assert.equal(a.range('FICHA','N439').getFormulas()[0][0],String(valor('FICHA','N439')).startsWith('=')?valor('FICHA','N439'):'');assert.equal(a.range('EXTRATO','A2').getValue(),'SEGREDO financeiro');
+ assert.equal(a.range('FICHA PESSOAL','Q27').getValue(),'HISTÓRIA PRESERVADA');if(a.nome!=='equipaveis')assert.equal(a.range('FICHA PESSOAL','D92').getValue(),'INVENTÁRIO PRESERVADO');assert.equal(a.range('FICHA','N439').getFormulas()[0][0],String(valor('FICHA','N439')).startsWith('=')?valor('FICHA','N439'):'');assert.equal(a.range('EXTRATO','A2').getValue(),'SEGREDO financeiro');
  assert.equal(a.doc.get('r53_recuperacao_personagem'),'recuperação fora deste domínio');
  for(const c of a.cells.values()){assert.equal(c.fmt,'tema');assert.equal(c.dv,'menu');}
  const raw=a.doc.get(a.ctx.r53NovaFormPerfil_(a.nome).diario);assert(Buffer.byteLength(raw)<9000);assert(!raw.includes('PRIVADO'));assert(!raw.includes('NOTA PRIVADA'));assert.equal(JSON.parse(raw).concluido,true);assert(!a.locked());
 }
 caso('contrato e fontes independentes concordam sem regeneração',()=>{
  execFileSync(process.execPath,['r53/inicializacao/gerar_contrato_formacao.js','--conferir'],{cwd:root});
- const quant={grau_origem:10,pericias:99,oficios_tr:94,armas:65,tecnica:11,familias:19};
+ const quant={grau_origem:10,pericias:99,oficios_tr:94,armas:65,tecnica:11,familias:19,equipados:5,equipaveis:88,itens:36};
  for(const n of nomes){const a=preparado(n);let total=0;for(const x of a.c.entradas)visitar(x,(addr,i,j)=>{total++;assert.equal(x.valores[i][j],valor(x.aba,addr));assert.equal(x.notas[i][j],nota(x.aba,addr));});assert.equal(total,quant[n]);}
 });
 for(const nome of nomes){
@@ -50,7 +50,7 @@ caso('Origem restaura fórmulas e a instrução do menu, não copia a prosa',()=
 caso('custom B47 usa AL, preserva nomes/mirrors derivados e restaura atributo do ofício',()=>{const a=preparado('oficios_tr');a.concluir(a.previa());assert(a.c.entradas.some(x=>x.faixa==='AL118:AL127'));assert(!a.c.entradas.some(x=>x.faixa==='O118:O127'));assert.equal(a.range('FICHA','W118').getFormulas()[0][0],valor('FICHA','W118'));const b=preparado('pericias');b.concluir(b.previa());assert(b.c.entradas.some(x=>x.faixa==='AL94:AL103'));assert(!b.c.entradas.some(x=>x.faixa==='R94:R103'));});
 caso('matriz parcialmente alterada não é assumida como gravação completa',()=>{const a=preparado('pericias'),p=a.previa();a.hook((f,t)=>{if(f==='antes'&&t==='valores'){a.put('FICHA','D80',false);throw Error('queda parcial');}});assert.throws(()=>a.aplicar(p),/queda parcial/);a.hook(null);const n=a.writes.length;assert.throws(()=>a.aplicar(p),/editados/);assert.equal(a.writes.length,n);assert.equal(a.range('FICHA','E80').getValue(),true);});
 caso('edição em uma nota da matriz depois de queda impede retomada',()=>{const a=preparado('armas'),p=a.previa();a.hook((f,t)=>{if(f==='depois'&&t==='valores')throw Error('queda');});assert.throws(()=>a.aplicar(p),/queda/);a.hook(null);a.put('FICHA PESSOAL','D72',false,'','NOTA NOVA');const n=a.writes.length;assert.throws(()=>a.aplicar(p),/editados/);assert.equal(a.writes.length,n);});
-caso('normalização do Google após gravar matriz não quebra a pós-condição',()=>{const {variantes}=require('../inicializacao/gerar_contrato_formacao');for(const nome of ['grau_origem','oficios_tr','familias']){const a=preparado(nome);a.hook((f,t)=>{if(f==='depois'&&t==='valores')for(const x of a.c.entradas)if(x.tipo==='formula')visitar(x,(addr,i,j)=>{if(a.range(x.aba,addr).getFormulas()[0][0])a.put(x.aba,addr,999,variantes(x.valores[i][j]).at(-1),a.range(x.aba,addr).getNotes()[0][0]);});});a.concluir(a.previa());for(const x of a.c.entradas)if(x.tipo==='formula')visitar(x,(addr,i,j)=>assert(variantes(x.valores[i][j]).includes(a.range(x.aba,addr).getFormulas()[0][0])));}});
+caso('normalização do Google após gravar matriz não quebra a pós-condição',()=>{const {variantes}=require('../inicializacao/gerar_contrato_formacao');for(const nome of ['grau_origem','oficios_tr','familias','equipaveis','itens']){const a=preparado(nome);a.hook((f,t)=>{if(f==='depois'&&t==='valores')for(const x of a.c.entradas)if(x.tipo==='formula')visitar(x,(addr,i,j)=>{if(a.range(x.aba,addr).getFormulas()[0][0])a.put(x.aba,addr,999,variantes(x.valores[i][j]).at(-1),a.range(x.aba,addr).getNotes()[0][0]);});});a.concluir(a.previa());for(const x of a.c.entradas)if(x.tipo==='formula')visitar(x,(addr,i,j)=>assert(variantes(x.valores[i][j]).includes(a.range(x.aba,addr).getFormulas()[0][0])));}});
 caso('guarda nativa aceita só fórmulas equivalentes sem mudar conta',()=>{const {variantes}=require('../inicializacao/gerar_contrato_formacao');for(const nome of nomes){const a=preparado(nome);for(const x of a.c.guardas)visitar(x,addr=>{const v=valor(x.aba,addr);if(typeof v==='string'&&v.startsWith('='))a.put(x.aba,addr,999,variantes(v).at(-1));});a.concluir(a.previa());}const b=preparado('grau_origem');b.put('FICHA PESSOAL','D51',1,'=1');assert.throws(()=>b.previa(),/protegida/);});
 caso('contrato e domínio inexistentes não criam escrita',()=>{const a=preparado('armas');assert.throws(()=>a.ctx.r53NovaFormContrato_('constructor'),/contrato/);a.ctx.R53_NOVA_FORMACAO_CONTRATO_=undefined;assert.throws(()=>a.previa(),/contrato/);assert.equal(a.writes.length,0);});
 caso('saldo protegido usa o preparador salarial, não a antiga apresentação mensal',()=>{
@@ -80,8 +80,62 @@ caso('Famílias do livro neutras e custom calculadas sem apagar definições',()
 for(const [nome,aba,addr]of [['familias','FICHA AMALDIÇOADA','O41'],['grau_origem','FICHA PESSOAL','D45'],['oficios_tr','FICHA','W118']])
  caso('fórmula editável desconhecida recusada '+nome,()=>{const a=preparado(nome);a.put(aba,addr,0,'=0');assert.throws(()=>a.previa(),/fórmula pessoal/);assert.equal(a.writes.length,0);});
 caso('diários anteriores de formação têm o mesmo layout com os novos domínios',()=>{
- // Hashes fixos dos quatro contratos publicados no commit 73dffda; funciona em clone raso.
- const hashes={grau_origem:'1e5bd718e6ad714350a5c78aae912ecc1fb4d2fb00d3356adc53e9641afe7d84',pericias:'e652c80f5155dea891a0d60e064310e64e90c15d95b6fcc010f06516d414386d',oficios_tr:'13a407d5e903f4e73fcfc8715ae45cc27c0ca76666b388b6509a26cd2d210c4a',armas:'b9a3bba86f490261484c7a5fc2707af44ec3c8c64196d9ec48dc9f466672e0f7'};
+ // Hashes fixos: quatro contratos em 73dffda e técnica/Famílias em a92cba8; funciona em clone raso.
+ const hashes={grau_origem:'1e5bd718e6ad714350a5c78aae912ecc1fb4d2fb00d3356adc53e9641afe7d84',pericias:'e652c80f5155dea891a0d60e064310e64e90c15d95b6fcc010f06516d414386d',oficios_tr:'13a407d5e903f4e73fcfc8715ae45cc27c0ca76666b388b6509a26cd2d210c4a',armas:'b9a3bba86f490261484c7a5fc2707af44ec3c8c64196d9ec48dc9f466672e0f7',tecnica:'81acd6d204c867a909e0f48743d9d93442252ca40ceeb3360d90480ce7fb1579',familias:'ce1a4f3cb54899ebfc1e6293602b7c108a311b95f18531aed4949be50ca3d97c'};
  for(const [nome,hash]of Object.entries(hashes))assert.equal(require('node:crypto').createHash('sha256').update(JSON.stringify(preparado(nome).c)).digest('hex'),hash);
 });
-console.log(`${casos} cenários offline de Grau/Origem/treinos/técnica/Famílias aprovados; sem aceite nativo ou criação geral.`);
+caso('equipados restaura Soco, mão livre e Traje 1 sem dar inventário ou dinheiro',()=>{
+ const a=preparado('equipados');a.concluir(a.ctx.r53NovaFichaEquipadosPrevia(a.ss,a.context));
+ for(const [c,v]of [['D64','Soco'],['S64','—'],['AH64','Traje 1'],['L86',0],['AN86','']])assert.equal(a.range('FICHA PESSOAL',c).getValue(),v);
+ assert.equal(a.range('FICHA PESSOAL','O86').getValue(),-500);assert.equal(a.range('FICHA PESSOAL','D92').getValue(),'INVENTÁRIO PRESERVADO');
+ assert(a.range('FICHA PESSOAL','D64').getNotes()[0][0].includes('EQUIPÁVEIS GUARDADOS'));
+ const readOnly=['D66','S66','D86','AF86'];
+ for(const c of readOnly){assert.equal(a.range('FICHA PESSOAL',c).getFormulas()[0][0],valor('FICHA PESSOAL',c));assert.equal(a.range('FICHA PESSOAL',c).getNotes()[0][0],'');}
+ assert(!a.writes.some(([t,d])=>t==='valores'&&readOnly.some(c=>d==='FICHA PESSOAL!'+c)));
+});
+caso('nota viva concorrente após queda não é apagada pela retomada',()=>{
+ const a=preparado('equipados'),p=a.previa();
+ a.hook((fase,t,d)=>{if(fase==='depois'&&t==='notasMatriz'&&d==='FICHA PESSOAL!D66')throw Error('queda na nota');});
+ assert.throws(()=>a.concluir(p),/queda na nota/);a.hook(null);
+ a.put('FICHA PESSOAL','S66',123,valor('FICHA PESSOAL','S66'),'AVISO ALTERADO DEPOIS');const n=a.writes.length;
+ assert.throws(()=>a.aplicar(p),/editados/);assert.equal(a.writes.length,n);assert.equal(a.range('FICHA PESSOAL','S66').getNotes()[0][0],'AVISO ALTERADO DEPOIS');
+});
+caso('equipáveis livres perdem dados pessoais mas recuperam fórmulas e instruções',()=>{
+ const a=preparado('equipaveis');a.put('CONFIGURAÇÃO','D200','catálogo mantido');a.put('DADOS_CUSTOM','AA2','Arma custom mantida');
+ a.put('INVOCAÇÕES','D92','equipamento de entidade fora deste domínio');a.put('FICHA PESSOAL','E98','interior da mescla');
+ for(const r of [98,99])for(const c of ['D','K','M','S','U','W','AE','AG','AI','AK','AQ'])a.put('FICHA PESSOAL',c+r,'PERSONAGEM ANTERIOR','','NOTA ANTERIOR');
+ a.concluir(a.ctx.r53NovaFichaEquipaveisPrevia(a.ss,a.context));conferir(a);
+ for(const r of [98,99]){assert.equal(a.range('FICHA PESSOAL','D'+r).getValue(),'');assert(a.range('FICHA PESSOAL','D'+r).getNotes()[0][0].startsWith('Linha livre:'));assert(a.range('FICHA PESSOAL','AG'+r).getFormulas()[0][0].includes('$K'+r));}
+ assert.equal(a.range('FICHA PESSOAL','E98').getValue(),'interior da mescla');assert.equal(a.range('DADOS_CUSTOM','AA2').getValue(),'Arma custom mantida');assert.equal(a.range('CONFIGURAÇÃO','D200').getValue(),'catálogo mantido');assert.equal(a.range('INVOCAÇÕES','D92').getValue(),'equipamento de entidade fora deste domínio');
+});
+caso('itens limpam os dois lados e restauram Volume sobrescrito sem herdar números',()=>{
+ const a=preparado('itens');for(const c of ['V104','AR109'])a.put('FICHA PESSOAL',c,999,'','volume autorizado anterior');
+ a.put('DADOS_CUSTOM','AU2','Item custom mantido');a.concluir(a.ctx.r53NovaFichaItensPrevia(a.ss,a.context));conferir(a);
+ for(let r=104;r<=109;r++){for(const c of ['D','T','Z','AP'])assert.equal(a.range('FICHA PESSOAL',c+r).getValue(),'');for(const c of ['V','AR'])assert.equal(a.range('FICHA PESSOAL',c+r).getFormulas()[0][0],valor('FICHA PESSOAL',c+r));}
+ assert.equal(a.range('DADOS_CUSTOM','AU2').getValue(),'Item custom mantido');
+});
+for(const [dom,c] of [['equipaveis','AG98'],['equipaveis','AK92'],['itens','AR109']])caso('inventário recusa fórmula personalizada sem sobrescrever '+c,()=>{
+ const a=preparado(dom);a.put('FICHA PESSOAL',c,42,'=42');assert.throws(()=>a.previa(),/fórmula pessoal/);assert.equal(a.writes.length,0);
+});
+caso('contrato de inventário coincide com montagem pública completa, não só recorte do gerador',()=>{
+ const full={};vm.createContext(full);vm.runInContext(require('../../medidas/carregar-ficha').fontes(),full);
+ const sheet=full.ABAS.find(x=>x.nome==='FICHA PESSOAL'),cells=new Map(sheet.vals.map(x=>[x[0]+','+x[1],x[2]]));
+ for(const nome of ['equipados','equipaveis','itens']){const a=preparado(nome);for(const x of a.c.entradas)visitar(x,(addr,i,j)=>{const p=a1(addr);assert.equal(x.valores[i][j],cells.get(p[0]+','+p[1])??'');assert.equal(x.notas[i][j],sheet.notas.find(n=>n[0]===addr)?.[1]||'');});}
+});
+caso('Volume aceita decimal nativo 0,1 somente na fórmula inteira conhecida',()=>{
+ const a=preparado('itens');
+ const native='=IF($D104="";"";IF($T104="";1;$T104)*IFERROR(VLOOKUP($D104;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))';
+ a.put('FICHA PESSOAL','V104',0,native);const p=a.previa();a.concluir(p);conferir(a);
+ for(const f of [native.replace('0,1','0,2'),native.replace('$T104','$T105'),native.replace('$AX$64','$AX$65')]){
+  const b=preparado('itens');b.put('FICHA PESSOAL','V104',0,f);assert.throws(()=>b.previa(),/fórmula pessoal/);assert.equal(b.writes.length,0);
+ }
+});
+caso('Volume localizado depois da escrita mantém a retomada e pós-condição',()=>{
+ const a=preparado('itens'),{variantesVolume}=require('../inicializacao/gerar_contrato_formacao');
+ a.hook((fase,t)=>{if(fase==='depois'&&t==='valores')for(const x of a.c.entradas)if(x.tipo==='formula')visitar(x,(addr,i,j)=>{
+  if(a.range(x.aba,addr).getFormulas()[0][0])a.put(x.aba,addr,0,variantesVolume(x.valores[i][j]).at(-1),a.range(x.aba,addr).getNotes()[0][0]);
+ });});
+ const p=a.previa();a.concluir(p);const n=a.writes.length;a.aplicar(p);assert.equal(a.writes.length,n);
+ for(const x of a.c.entradas)if(x.tipo==='formula')visitar(x,addr=>assert(a.range(x.aba,addr).getFormulas()[0][0].endsWith(';0,1))')));
+});
+console.log(`${casos} cenários offline de Grau/Origem/treinos/técnica/Famílias/inventário aprovados; sem aceite nativo ou criação geral.`);

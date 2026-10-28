@@ -10,7 +10,8 @@ progressão, inventário, missões, cartões ou dinheiro de outro personagem.
 Os protótipos cobrem financeiro, nível/base de XP, 14 textos pessoais,
 19 escolhas básicas, 20 entradas de recursos/bônus, nove condições/descanso e
 268 campos de Grau/Origem, Perícias, Ofícios/TR e armas, mais 11 entradas do
-cabeçalho da técnica e 19 estados de Famílias. **Não oferecem uma ficha inteira
+cabeçalho da técnica, 19 estados de Famílias, 129 campos de inventário/equipamento
+e quatro notas vivas. **Não oferecem uma ficha inteira
 pronta para cadastro.** Base incorporada: main
 `ef361ccdf7a0210781176e3c42d318cde147553d`, merge `a72adc0` (PRs 41–43).
 Inclui XP manual e marcas de missões congeladas. A instalação/backup 13 das
@@ -230,14 +231,14 @@ node r53/testes/inicializacao_pessoal.js
 node r53/testes/inicializacao_formacao.js
 ```
 
-782 cenários offline: 101 financeiros, 82 de nível/base, 78 de textos,
-243 de escolhas/recursos/condições e 278 de formação/técnica/Famílias. Incluem
+Coleção atual: 921 cenários offline (101 financeiros, 82 de nível/base, 78 de
+textos, 243 pessoais e 417 de formação/técnica/Famílias/inventário). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
 nem mede latência Google. O smoke inclui os cinco arquivos de testes.
-CI final `763a78b` aprovado: [40681468287](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40681468287).
+CI anterior à extensão de inventário, `763a78b`, aprovado: [40681468287](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40681468287).
 Resultados anteriores e limites nativos ficam nos relatórios datados; o registro
-atual está em [TECNICA-FAMILIAS-2026-10-28.md](TECNICA-FAMILIAS-2026-10-28.md).
+atual está em [INVENTARIO-2026-10-28.md](INVENTARIO-2026-10-28.md).
 Regressão independente de XP: `node r53/testes/xp_nivel.js`, 20.643
 verificações/9.900 combinações sem a exportação nativa opcional.
 
@@ -266,7 +267,7 @@ Detalhes em [NIVEL-TEXTOS-2026-10-27.md](NIVEL-TEXTOS-2026-10-27.md).
 ## O que falta antes de liberar criação
 
 - Inicialização pessoal completa: fotos/arte, campos restantes da CARTEIRA
-  (incluindo nome declarado da técnica), inventário/equipamento, entidades,
+  (incluindo nome declarado da técnica), entidades e seus equipamentos,
   cartões e MONTAGENS. Os domínios já tratados têm protótipos, sem aceite
   nativo completo dos executores. Famílias ainda exigem sincronização com
   cartões, amparo e recuperações; não basta restaurar seus menus.
@@ -330,3 +331,19 @@ separadores aceitam somente a fórmula inteira conhecida. Na projeção pela
 Sheets API em locale pt_BR foi necessário usar ponto e vírgula; isso não prova
 qual comportamento terá `setValues` no Apps Script, cujo ensaio segue pendente.
 O teste nativo delimitado e suas ressalvas estão no relatório de 28/10.
+
+## Inventário e equipamento
+
+`r53NovaFichaEquipadosPrevia/Aplicar`, `r53NovaFichaEquipaveisPrevia/Aplicar`
+e `r53NovaFichaItensPrevia/Aplicar` acrescentam 129 campos ao mesmo executor.
+Soco, mão livre e Traje 1 são defaults do modelo; bônus de carga e situação do
+Traje reiniciados. Nomes/quantidades do estoque são limpos, fórmulas originais
+restauradas inclusive nas linhas livres e Volumes sobrescritos. Catálogos da
+mesa, dinheiro, treinos, mesclas, formatos e validações ficam preservados.
+
+Quatro notas vivas antigas são limpas sem escrever suas fórmulas protegidas.
+A regeneração delas depende das automações finais; não liberar criação com
+avisos vazios como se isso fosse aprovação. Contratos anteriores iguais.
+Volume pt_BR aceita somente a variante exata do decimal 0,1. Valores,
+referências ou contas diferentes continuam recusados. Relatório com alvos,
+testes e projeção nativa: [INVENTARIO-2026-10-28.md](INVENTARIO-2026-10-28.md).

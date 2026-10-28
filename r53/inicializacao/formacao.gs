@@ -1,4 +1,4 @@
-/** Grau, Origem, treinos, técnica e Famílias de cópia nova. Sem integração no bot/pacote.
+/** Grau, Origem, treinos, técnica, Famílias e inventário de cópia nova. Sem integração no bot/pacote.
  * Requer financeiro.gs e contrato_formacao.gs confiáveis e da mesma versão.
  * Não concede treinos, aprova capacidades ou executa eventos de Caminho.
  */
@@ -19,6 +19,9 @@ function r53NovaFormOperacoes_(nome) {
   r53NovaFormContrato_(nome).entradas.forEach(function(x) {
     ops.push({aba: x.aba, faixa: x.faixa, tipo: 'matriz', valores: x.valores,
               formulasLivres: x.tipo === 'formula', formulasEquivalentes: x.equivalentes});
+    ops.push({aba: x.aba, faixa: x.faixa, tipo: 'notas_matriz', notas: x.notas});
+  });
+  (r53NovaFormContrato_(nome).somenteNotas || []).forEach(function(x) {
     ops.push({aba: x.aba, faixa: x.faixa, tipo: 'notas_matriz', notas: x.notas});
   });
   return ops;
@@ -67,7 +70,7 @@ function r53NovaFormPerfil_(nome) {
           limites: {escritasPorExecucao: 4, orcamentoMs: 210000},
           operacoes: function() { return r53NovaFormOperacoes_(nome); },
           preservados: function(ss) { return r53NovaFormPreservados_(ss, nome); },
-          pendente: ['outros_dominios_da_copia', 'cartoes_e_sincronizacao_de_familias', 'inventario', 'entidades_e_cartoes',
+          pendente: ['outros_dominios_da_copia', 'cartoes_e_sincronizacao_de_familias', 'notas_vivas_e_equipamento_das_entidades', 'entidades_e_cartoes',
                      'fotos_e_recuperacoes', 'automacoes_e_novo_responsavel', 'conferencia_conjunta', 'prova_nativa']};
 }
 function r53NovaFichaGrauOrigemPrevia(ss, ctx) { return r53NovaPerfilPrevia_(ss, ctx, r53NovaFormPerfil_('grau_origem')); }
@@ -83,3 +86,10 @@ function r53NovaFichaTecnicaPrevia(ss, ctx) { return r53NovaPerfilPrevia_(ss, ct
 function r53NovaFichaTecnicaAplicar(ss, ctx, hash) { return r53NovaPerfilAplicar_(ss, ctx, hash, r53NovaFormPerfil_('tecnica')); }
 function r53NovaFichaFamiliasPrevia(ss, ctx) { return r53NovaPerfilPrevia_(ss, ctx, r53NovaFormPerfil_('familias')); }
 function r53NovaFichaFamiliasAplicar(ss, ctx, hash) { return r53NovaPerfilAplicar_(ss, ctx, hash, r53NovaFormPerfil_('familias')); }
+
+function r53NovaFichaEquipadosPrevia(ss, ctx) { return r53NovaPerfilPrevia_(ss, ctx, r53NovaFormPerfil_('equipados')); }
+function r53NovaFichaEquipadosAplicar(ss, ctx, hash) { return r53NovaPerfilAplicar_(ss, ctx, hash, r53NovaFormPerfil_('equipados')); }
+function r53NovaFichaEquipaveisPrevia(ss, ctx) { return r53NovaPerfilPrevia_(ss, ctx, r53NovaFormPerfil_('equipaveis')); }
+function r53NovaFichaEquipaveisAplicar(ss, ctx, hash) { return r53NovaPerfilAplicar_(ss, ctx, hash, r53NovaFormPerfil_('equipaveis')); }
+function r53NovaFichaItensPrevia(ss, ctx) { return r53NovaPerfilPrevia_(ss, ctx, r53NovaFormPerfil_('itens')); }
+function r53NovaFichaItensAplicar(ss, ctx, hash) { return r53NovaPerfilAplicar_(ss, ctx, hash, r53NovaFormPerfil_('itens')); }

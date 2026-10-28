@@ -38,9 +38,29 @@ const contrato={versao:1,dominios:{
  oficios_tr:build([...ofBool.map(a=>[F,a,'bool']),...ofBonus.map(a=>[F,a,'bonus']),...['K108:K113','X108:X112','AK108','AK81'].map(a=>[F,a,'texto']),[F,'W118:W127','formula']],['F108:F113','S108:S112','AG108:AG111','AK109:AK111','D115','F118:F127','AD118:AD127','N108','AA108','AP108','AF114','AN114','AK79','AK83'].map(a=>[F,a]),{[F]:'D78:AT127'}),
  armas:build(['D','M','V','AE','AM'].map(c=>[P,c+'71:'+c+'83','bool']),['D69','E71:E83','N71:N83','W71:W83','AF71:AF83','AN71:AN83','D67'].map(a=>[P,a]),{[P]:'D67:AT83'}),
  tecnica:build(tecnica.map(a=>[A,a,'texto']),['D9','D11','J11','L11','P11','R11','D15','D21','D25','L28','D32','P32','R32','D12','L12','P12','R12','J15','P15','D16','P16','D17','J17','P17','D19','J19','P19','L25','R33'].map(a=>[A,a]),{[A]:'D9:T34'}),
- familias:build([...['D37:G37','J37:M37','P37'].map(a=>[A,a,'estado_familia']),[A,'O41:O50','formula']],['D36:G36','J36:M36','P36','Q36','Q37','D38','D39','D40','O40','D41:D50'].map(a=>[A,a]),{[A]:'D36:T50'})
+ familias:build([...['D37:G37','J37:M37','P37'].map(a=>[A,a,'estado_familia']),[A,'O41:O50','formula']],['D36:G36','J36:M36','P36','Q36','Q37','D38','D39','D40','O40','D41:D50'].map(a=>[A,a]),{[A]:'D36:T50'}),
+ equipados:build([['D64','texto'],['S64','texto'],['AH64','texto'],['L86','bonus'],['AN86','texto']].map(([a,t])=>[P,a,t]),['D61','D63','S63','AH63','D66','S66','AH66','D85','L85','AF85','AN85','D86','AF86'].map(a=>[P,a]),{[P]:'D61:AT87'}),
+ equipaveis:build([...['D92:D99','K92:K99'].map(a=>[P,a,'texto']),...['M','S','U','W','AE','AG','AI','AK','AQ'].map(c=>[P,c+'92:'+c+'99','formula'])],['D89',...['D','K','M','S','U','W','AE','AG','AI','AK','AQ'].map(c=>c+'91')].map(a=>[P,a]),{[P]:'D89:AT99'}),
+ itens:build([...['D','T','Z','AP'].map(c=>[P,c+'104:'+c+'109','texto']),...['V','AR'].map(c=>[P,c+'104:'+c+'109','formula'])],['D101',...['D','T','V','Z','AP','AR'].map(c=>c+'103')].map(a=>[P,a]),{[P]:'D101:AT109'})
 }};
-for(const d of Object.values(contrato.dominios))for(const x of [...d.entradas,...d.guardas]){
+// O Google em pt_BR salva o fallback decimal dos Volumes como 0,1.
+// Acrescentar só esta representação da fórmula inteira, sem normalizar entrada arbitrária.
+function variantesVolume(f) {
+ const v=variantes(f),locais=v.filter(x=>x.includes(';')).map(x=>{
+  if(!/;0\.1\)\)$/.test(x))throw Error('fallback de Volume mudou; revisar a fórmula');
+  return x.replace(/;0\.1\)\)$/, ';0,1))');
+ });
+ return [...new Set([...v,...locais])];
+}
+for(const x of contrato.dominios.itens.entradas)if(x.tipo==='formula')
+ x.equivalentes=x.valores.map(l=>l.map(variantesVolume));
+// Notas vivas antigas não podem acompanhar as mãos/carga da cópia nova.
+// O conteúdo dessas células continua protegido; a fase de automações regenerará as notas.
+contrato.dominios.equipados.somenteNotas=['D66','S66','D86','AF86'].map(a=>{
+ const x=entrada(P,a,'formula');
+ return {aba:x.aba,faixa:x.faixa,notas:x.notas};
+});
+for(const d of Object.values(contrato.dominios))for(const x of [...d.entradas,...d.guardas,...(d.somenteNotas||[])]){
  const a=coord(x.faixa),b=d.leituras[x.aba]&&coord(d.leituras[x.aba]);
  if(!b||a[0]<b[0]||a[1]<b[1]||a[2]>b[2]||a[3]>b[3])throw Error('guarda/entrada fora da leitura '+x.aba+'!'+x.faixa);
 }
@@ -48,4 +68,4 @@ for(const d of Object.values(contrato.dominios))for(const x of [...d.entradas,..
 if(contrato.dominios.grau_origem.entradas[0].valores[0][0]!=='Grau 4')throw Error('mudou o Grau de fábrica; revisar a regra inicial');
 const text='/** Contrato de formação gerado das fontes públicas, sem dados de jogador. */\nvar R53_NOVA_FORMACAO_CONTRATO_ = '+JSON.stringify(contrato,null,2)+';\n';
 if(require.main===module){const file=path.join(__dirname,'contrato_formacao.gs');if(process.argv.includes('--conferir')){if(fs.readFileSync(file,'utf8')!==text)throw Error('contrato de formação desatualizado; revisar antes de regenerar');console.log('Contrato de formação igual às fontes.');}else fs.writeFileSync(file,text);}
-module.exports={contrato,variantes,coord,dados,letra};
+module.exports={contrato,variantes,variantesVolume,coord,dados,letra};

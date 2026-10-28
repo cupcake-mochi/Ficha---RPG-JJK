@@ -5050,6 +5050,2285 @@ var R53_NOVA_FORMACAO_CONTRATO_ = {
       "leituras": {
         "FICHA AMALDIÇOADA": "D36:T50"
       }
+    },
+    "equipados": {
+      "entradas": [
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D64",
+          "tipo": "texto",
+          "valores": [
+            [
+              "Soco"
+            ]
+          ],
+          "notas": [
+            [
+              "Para uma arma aparecer neste menu, escolha ela antes nos EQUIPÁVEIS GUARDADOS, mais abaixo nesta aba. O menu lista o Soco e o que estiver guardado lá. Com arma de duas mãos aqui, a mão secundária fica ocupada. A linha de baixo mostra o dado e as propriedades, e a nota dela diz o que cada uma faz."
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "S64",
+          "tipo": "texto",
+          "valores": [
+            [
+              "—"
+            ]
+          ],
+          "notas": [
+            [
+              "Para uma arma ou um escudo aparecer neste menu, escolha antes nos EQUIPÁVEIS GUARDADOS, mais abaixo nesta aba. O menu lista as armas de uma mão e os escudos guardados lá. Com arma Versátil na mão principal, aparece a opção de segurar a mesma arma nas duas mãos, e o dado sobe um passo."
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AH64",
+          "tipo": "texto",
+          "valores": [
+            [
+              "Traje 1"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "L86",
+          "tipo": "bonus",
+          "valores": [
+            [
+              0
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AN86",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        }
+      ],
+      "guardas": [
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D61",
+          "celulas": [
+            [
+              {
+                "valor": "EM USO"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D63",
+          "celulas": [
+            [
+              {
+                "valor": "MÃO PRINCIPAL"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "S63",
+          "celulas": [
+            [
+              {
+                "valor": "MÃO SECUNDÁRIA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AH63",
+          "celulas": [
+            [
+              {
+                "valor": "VESTINDO"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D66",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "318c4dbe1b72652ac321904d45fcb62c1c67294efaafc1aa5ab380200d5d324b",
+                  "a5e1b261d48f68b65466918147e1e6f783558b2a365123966f09ce830dabbd6b"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "S66",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "2bdb1351db31813c8e23f40153c85a6caeab4f721439ab3aaa67d9df1fa64743",
+                  "0d981cbb142fe36fb27f4723d7d4ebfcf95a71dfab56f9f3083fc4342017afce"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AH66",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "55bc299e63110f64e388a092d8c2fbbc1e0a8cfc02d0e88fda75736f99be05ba",
+                  "65f28ea9cefeb362420e8230d70a7b05f4294cf896ee3e7acb40b10d76336b41"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D85",
+          "celulas": [
+            [
+              {
+                "valor": "CARGA · LIMITE 5 + FORÇA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "L85",
+          "celulas": [
+            [
+              {
+                "valor": "Buff/Debuff"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AF85",
+          "celulas": [
+            [
+              {
+                "valor": "REQUISITO DE FORÇA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AN85",
+          "celulas": [
+            [
+              {
+                "valor": "SITUAÇÃO DO TRAJE"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D86",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "2f5f2654eab25da93a1888ca45cfc1cc81018b1f42fe852649ad1a22d4dd7e3b",
+                  "402f053ba426794576b22420d005db46174ac68f967d6a4685f762e354f17c40"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AF86",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "4804249c8590ec5c847690d0356481d17e9bd0532ebf17d04434d1d417cf4431",
+                  "1d35f2926b6f58a9a0b349cc238e2479f2f68f9e1a950556879e2e61a3f50b87"
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "leituras": {
+        "FICHA PESSOAL": "D61:AT87"
+      },
+      "somenteNotas": [
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D66",
+          "notas": [
+            [
+              ""
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "S66",
+          "notas": [
+            [
+              ""
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D86",
+          "notas": [
+            [
+              ""
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AF86",
+          "notas": [
+            [
+              ""
+            ]
+          ]
+        }
+      ]
+    },
+    "equipaveis": {
+      "entradas": [
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D92:D99",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              "Linha livre: digite o nome e as outras colunas à mão. Serve para o que não está no menu das linhas de cima. Na coluna Vol., digite o Volume da linha inteira."
+            ],
+            [
+              "Linha livre: digite o nome e as outras colunas à mão. Serve para o que não está no menu das linhas de cima. Na coluna Vol., digite o Volume da linha inteira."
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "K92:K99",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "M92:M99",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;'DADOS_CUSTOM'!$AA$2:$AK$106;2;FALSE);\"\"))",
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,DADOS_CUSTOM!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;DADOS_CUSTOM!$AA$2:$AK$106;2;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;'DADOS_CUSTOM'!$AA$2:$AK$106;2;FALSE);\"\"))",
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,DADOS_CUSTOM!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;DADOS_CUSTOM!$AA$2:$AK$106;2;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;'DADOS_CUSTOM'!$AA$2:$AK$106;2;FALSE);\"\"))",
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,DADOS_CUSTOM!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;DADOS_CUSTOM!$AA$2:$AK$106;2;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;'DADOS_CUSTOM'!$AA$2:$AK$106;2;FALSE);\"\"))",
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,DADOS_CUSTOM!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;DADOS_CUSTOM!$AA$2:$AK$106;2;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;'DADOS_CUSTOM'!$AA$2:$AK$106;2;FALSE);\"\"))",
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,DADOS_CUSTOM!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;DADOS_CUSTOM!$AA$2:$AK$106;2;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;'DADOS_CUSTOM'!$AA$2:$AK$106;2;FALSE);\"\"))",
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,DADOS_CUSTOM!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;DADOS_CUSTOM!$AA$2:$AK$106;2;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;'DADOS_CUSTOM'!$AA$2:$AK$106;2;FALSE);\"\"))",
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,DADOS_CUSTOM!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;DADOS_CUSTOM!$AA$2:$AK$106;2;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;'DADOS_CUSTOM'!$AA$2:$AK$106;2;FALSE);\"\"))",
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,DADOS_CUSTOM!$AA$2:$AK$106,2,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;DADOS_CUSTOM!$AA$2:$AK$106;2;FALSE);\"\"))"
+              ]
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "S92:S99",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;'DADOS_CUSTOM'!$AA$2:$AK$106;3;FALSE);\"\"))",
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,DADOS_CUSTOM!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;DADOS_CUSTOM!$AA$2:$AK$106;3;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;'DADOS_CUSTOM'!$AA$2:$AK$106;3;FALSE);\"\"))",
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,DADOS_CUSTOM!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;DADOS_CUSTOM!$AA$2:$AK$106;3;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;'DADOS_CUSTOM'!$AA$2:$AK$106;3;FALSE);\"\"))",
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,DADOS_CUSTOM!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;DADOS_CUSTOM!$AA$2:$AK$106;3;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;'DADOS_CUSTOM'!$AA$2:$AK$106;3;FALSE);\"\"))",
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,DADOS_CUSTOM!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;DADOS_CUSTOM!$AA$2:$AK$106;3;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;'DADOS_CUSTOM'!$AA$2:$AK$106;3;FALSE);\"\"))",
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,DADOS_CUSTOM!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;DADOS_CUSTOM!$AA$2:$AK$106;3;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;'DADOS_CUSTOM'!$AA$2:$AK$106;3;FALSE);\"\"))",
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,DADOS_CUSTOM!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;DADOS_CUSTOM!$AA$2:$AK$106;3;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;'DADOS_CUSTOM'!$AA$2:$AK$106;3;FALSE);\"\"))",
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,DADOS_CUSTOM!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;DADOS_CUSTOM!$AA$2:$AK$106;3;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;'DADOS_CUSTOM'!$AA$2:$AK$106;3;FALSE);\"\"))",
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,DADOS_CUSTOM!$AA$2:$AK$106,3,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;DADOS_CUSTOM!$AA$2:$AK$106;3;FALSE);\"\"))"
+              ]
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "U92:U99",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;'DADOS_CUSTOM'!$AA$2:$AK$106;4;FALSE);\"\"))",
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,DADOS_CUSTOM!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;DADOS_CUSTOM!$AA$2:$AK$106;4;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;'DADOS_CUSTOM'!$AA$2:$AK$106;4;FALSE);\"\"))",
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,DADOS_CUSTOM!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;DADOS_CUSTOM!$AA$2:$AK$106;4;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;'DADOS_CUSTOM'!$AA$2:$AK$106;4;FALSE);\"\"))",
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,DADOS_CUSTOM!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;DADOS_CUSTOM!$AA$2:$AK$106;4;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;'DADOS_CUSTOM'!$AA$2:$AK$106;4;FALSE);\"\"))",
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,DADOS_CUSTOM!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;DADOS_CUSTOM!$AA$2:$AK$106;4;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;'DADOS_CUSTOM'!$AA$2:$AK$106;4;FALSE);\"\"))",
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,DADOS_CUSTOM!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;DADOS_CUSTOM!$AA$2:$AK$106;4;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;'DADOS_CUSTOM'!$AA$2:$AK$106;4;FALSE);\"\"))",
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,DADOS_CUSTOM!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;DADOS_CUSTOM!$AA$2:$AK$106;4;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;'DADOS_CUSTOM'!$AA$2:$AK$106;4;FALSE);\"\"))",
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,DADOS_CUSTOM!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;DADOS_CUSTOM!$AA$2:$AK$106;4;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;'DADOS_CUSTOM'!$AA$2:$AK$106;4;FALSE);\"\"))",
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,DADOS_CUSTOM!$AA$2:$AK$106,4,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;DADOS_CUSTOM!$AA$2:$AK$106;4;FALSE);\"\"))"
+              ]
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "W92:W99",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;'DADOS_CUSTOM'!$AA$2:$AK$106;5;FALSE);\"\"))",
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,DADOS_CUSTOM!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;DADOS_CUSTOM!$AA$2:$AK$106;5;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;'DADOS_CUSTOM'!$AA$2:$AK$106;5;FALSE);\"\"))",
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,DADOS_CUSTOM!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;DADOS_CUSTOM!$AA$2:$AK$106;5;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;'DADOS_CUSTOM'!$AA$2:$AK$106;5;FALSE);\"\"))",
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,DADOS_CUSTOM!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;DADOS_CUSTOM!$AA$2:$AK$106;5;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;'DADOS_CUSTOM'!$AA$2:$AK$106;5;FALSE);\"\"))",
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,DADOS_CUSTOM!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;DADOS_CUSTOM!$AA$2:$AK$106;5;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;'DADOS_CUSTOM'!$AA$2:$AK$106;5;FALSE);\"\"))",
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,DADOS_CUSTOM!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;DADOS_CUSTOM!$AA$2:$AK$106;5;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;'DADOS_CUSTOM'!$AA$2:$AK$106;5;FALSE);\"\"))",
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,DADOS_CUSTOM!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;DADOS_CUSTOM!$AA$2:$AK$106;5;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;'DADOS_CUSTOM'!$AA$2:$AK$106;5;FALSE);\"\"))",
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,DADOS_CUSTOM!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;DADOS_CUSTOM!$AA$2:$AK$106;5;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;'DADOS_CUSTOM'!$AA$2:$AK$106;5;FALSE);\"\"))",
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,DADOS_CUSTOM!$AA$2:$AK$106,5,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;DADOS_CUSTOM!$AA$2:$AK$106;5;FALSE);\"\"))"
+              ]
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AE92:AE99",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;'DADOS_CUSTOM'!$AA$2:$AK$106;6;FALSE);\"\"))",
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,DADOS_CUSTOM!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;DADOS_CUSTOM!$AA$2:$AK$106;6;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;'DADOS_CUSTOM'!$AA$2:$AK$106;6;FALSE);\"\"))",
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,DADOS_CUSTOM!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;DADOS_CUSTOM!$AA$2:$AK$106;6;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;'DADOS_CUSTOM'!$AA$2:$AK$106;6;FALSE);\"\"))",
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,DADOS_CUSTOM!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;DADOS_CUSTOM!$AA$2:$AK$106;6;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;'DADOS_CUSTOM'!$AA$2:$AK$106;6;FALSE);\"\"))",
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,DADOS_CUSTOM!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;DADOS_CUSTOM!$AA$2:$AK$106;6;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;'DADOS_CUSTOM'!$AA$2:$AK$106;6;FALSE);\"\"))",
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,DADOS_CUSTOM!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;DADOS_CUSTOM!$AA$2:$AK$106;6;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;'DADOS_CUSTOM'!$AA$2:$AK$106;6;FALSE);\"\"))",
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,DADOS_CUSTOM!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;DADOS_CUSTOM!$AA$2:$AK$106;6;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;'DADOS_CUSTOM'!$AA$2:$AK$106;6;FALSE);\"\"))",
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,DADOS_CUSTOM!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;DADOS_CUSTOM!$AA$2:$AK$106;6;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;'DADOS_CUSTOM'!$AA$2:$AK$106;6;FALSE);\"\"))",
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,DADOS_CUSTOM!$AA$2:$AK$106,6,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;DADOS_CUSTOM!$AA$2:$AK$106;6;FALSE);\"\"))"
+              ]
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AG92:AG99",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF($D92=\"\",\"\",IFERROR(IF($K92=\"\",1,$K92)*VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D93=\"\",\"\",IFERROR(IF($K93=\"\",1,$K93)*VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D94=\"\",\"\",IFERROR(IF($K94=\"\",1,$K94)*VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D95=\"\",\"\",IFERROR(IF($K95=\"\",1,$K95)*VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D96=\"\",\"\",IFERROR(IF($K96=\"\",1,$K96)*VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D97=\"\",\"\",IFERROR(IF($K97=\"\",1,$K97)*VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D98=\"\",\"\",IFERROR(IF($K98=\"\",1,$K98)*VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D99=\"\",\"\",IFERROR(IF($K99=\"\",1,$K99)*VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF($D92=\"\",\"\",IFERROR(IF($K92=\"\",1,$K92)*VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(IF($K92=\"\";1;$K92)*VLOOKUP($D92;'DADOS_CUSTOM'!$AA$2:$AK$106;7;FALSE);\"\"))",
+                "=IF($D92=\"\",\"\",IFERROR(IF($K92=\"\",1,$K92)*VLOOKUP($D92,DADOS_CUSTOM!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(IF($K92=\"\";1;$K92)*VLOOKUP($D92;DADOS_CUSTOM!$AA$2:$AK$106;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D93=\"\",\"\",IFERROR(IF($K93=\"\",1,$K93)*VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(IF($K93=\"\";1;$K93)*VLOOKUP($D93;'DADOS_CUSTOM'!$AA$2:$AK$106;7;FALSE);\"\"))",
+                "=IF($D93=\"\",\"\",IFERROR(IF($K93=\"\",1,$K93)*VLOOKUP($D93,DADOS_CUSTOM!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(IF($K93=\"\";1;$K93)*VLOOKUP($D93;DADOS_CUSTOM!$AA$2:$AK$106;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D94=\"\",\"\",IFERROR(IF($K94=\"\",1,$K94)*VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(IF($K94=\"\";1;$K94)*VLOOKUP($D94;'DADOS_CUSTOM'!$AA$2:$AK$106;7;FALSE);\"\"))",
+                "=IF($D94=\"\",\"\",IFERROR(IF($K94=\"\",1,$K94)*VLOOKUP($D94,DADOS_CUSTOM!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(IF($K94=\"\";1;$K94)*VLOOKUP($D94;DADOS_CUSTOM!$AA$2:$AK$106;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D95=\"\",\"\",IFERROR(IF($K95=\"\",1,$K95)*VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(IF($K95=\"\";1;$K95)*VLOOKUP($D95;'DADOS_CUSTOM'!$AA$2:$AK$106;7;FALSE);\"\"))",
+                "=IF($D95=\"\",\"\",IFERROR(IF($K95=\"\",1,$K95)*VLOOKUP($D95,DADOS_CUSTOM!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(IF($K95=\"\";1;$K95)*VLOOKUP($D95;DADOS_CUSTOM!$AA$2:$AK$106;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D96=\"\",\"\",IFERROR(IF($K96=\"\",1,$K96)*VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(IF($K96=\"\";1;$K96)*VLOOKUP($D96;'DADOS_CUSTOM'!$AA$2:$AK$106;7;FALSE);\"\"))",
+                "=IF($D96=\"\",\"\",IFERROR(IF($K96=\"\",1,$K96)*VLOOKUP($D96,DADOS_CUSTOM!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(IF($K96=\"\";1;$K96)*VLOOKUP($D96;DADOS_CUSTOM!$AA$2:$AK$106;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D97=\"\",\"\",IFERROR(IF($K97=\"\",1,$K97)*VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(IF($K97=\"\";1;$K97)*VLOOKUP($D97;'DADOS_CUSTOM'!$AA$2:$AK$106;7;FALSE);\"\"))",
+                "=IF($D97=\"\",\"\",IFERROR(IF($K97=\"\",1,$K97)*VLOOKUP($D97,DADOS_CUSTOM!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(IF($K97=\"\";1;$K97)*VLOOKUP($D97;DADOS_CUSTOM!$AA$2:$AK$106;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D98=\"\",\"\",IFERROR(IF($K98=\"\",1,$K98)*VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(IF($K98=\"\";1;$K98)*VLOOKUP($D98;'DADOS_CUSTOM'!$AA$2:$AK$106;7;FALSE);\"\"))",
+                "=IF($D98=\"\",\"\",IFERROR(IF($K98=\"\",1,$K98)*VLOOKUP($D98,DADOS_CUSTOM!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(IF($K98=\"\";1;$K98)*VLOOKUP($D98;DADOS_CUSTOM!$AA$2:$AK$106;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D99=\"\",\"\",IFERROR(IF($K99=\"\",1,$K99)*VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(IF($K99=\"\";1;$K99)*VLOOKUP($D99;'DADOS_CUSTOM'!$AA$2:$AK$106;7;FALSE);\"\"))",
+                "=IF($D99=\"\",\"\",IFERROR(IF($K99=\"\",1,$K99)*VLOOKUP($D99,DADOS_CUSTOM!$AA$2:$AK$106,7,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(IF($K99=\"\";1;$K99)*VLOOKUP($D99;DADOS_CUSTOM!$AA$2:$AK$106;7;FALSE);\"\"))"
+              ]
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AI92:AI99",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;'DADOS_CUSTOM'!$BM$2:$BU$125;7;FALSE);\"\"))",
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,DADOS_CUSTOM!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;DADOS_CUSTOM!$BM$2:$BU$125;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;'DADOS_CUSTOM'!$BM$2:$BU$125;7;FALSE);\"\"))",
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,DADOS_CUSTOM!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;DADOS_CUSTOM!$BM$2:$BU$125;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;'DADOS_CUSTOM'!$BM$2:$BU$125;7;FALSE);\"\"))",
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,DADOS_CUSTOM!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;DADOS_CUSTOM!$BM$2:$BU$125;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;'DADOS_CUSTOM'!$BM$2:$BU$125;7;FALSE);\"\"))",
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,DADOS_CUSTOM!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;DADOS_CUSTOM!$BM$2:$BU$125;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;'DADOS_CUSTOM'!$BM$2:$BU$125;7;FALSE);\"\"))",
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,DADOS_CUSTOM!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;DADOS_CUSTOM!$BM$2:$BU$125;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;'DADOS_CUSTOM'!$BM$2:$BU$125;7;FALSE);\"\"))",
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,DADOS_CUSTOM!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;DADOS_CUSTOM!$BM$2:$BU$125;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;'DADOS_CUSTOM'!$BM$2:$BU$125;7;FALSE);\"\"))",
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,DADOS_CUSTOM!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;DADOS_CUSTOM!$BM$2:$BU$125;7;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;'DADOS_CUSTOM'!$BM$2:$BU$125;7;FALSE);\"\"))",
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,DADOS_CUSTOM!$BM$2:$BU$125,7,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;DADOS_CUSTOM!$BM$2:$BU$125;7;FALSE);\"\"))"
+              ]
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AK92:AK99",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;'DADOS_CUSTOM'!$BM$2:$BU$125;8;FALSE);\"\"))",
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,DADOS_CUSTOM!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;DADOS_CUSTOM!$BM$2:$BU$125;8;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;'DADOS_CUSTOM'!$BM$2:$BU$125;8;FALSE);\"\"))",
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,DADOS_CUSTOM!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;DADOS_CUSTOM!$BM$2:$BU$125;8;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;'DADOS_CUSTOM'!$BM$2:$BU$125;8;FALSE);\"\"))",
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,DADOS_CUSTOM!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;DADOS_CUSTOM!$BM$2:$BU$125;8;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;'DADOS_CUSTOM'!$BM$2:$BU$125;8;FALSE);\"\"))",
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,DADOS_CUSTOM!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;DADOS_CUSTOM!$BM$2:$BU$125;8;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;'DADOS_CUSTOM'!$BM$2:$BU$125;8;FALSE);\"\"))",
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,DADOS_CUSTOM!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;DADOS_CUSTOM!$BM$2:$BU$125;8;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;'DADOS_CUSTOM'!$BM$2:$BU$125;8;FALSE);\"\"))",
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,DADOS_CUSTOM!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;DADOS_CUSTOM!$BM$2:$BU$125;8;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;'DADOS_CUSTOM'!$BM$2:$BU$125;8;FALSE);\"\"))",
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,DADOS_CUSTOM!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;DADOS_CUSTOM!$BM$2:$BU$125;8;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;'DADOS_CUSTOM'!$BM$2:$BU$125;8;FALSE);\"\"))",
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,DADOS_CUSTOM!$BM$2:$BU$125,8,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;DADOS_CUSTOM!$BM$2:$BU$125;8;FALSE);\"\"))"
+              ]
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AQ92:AQ99",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))"
+            ],
+            [
+              "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;'DADOS_CUSTOM'!$BM$2:$BU$125;9;FALSE);\"\"))",
+                "=IF($D92=\"\",\"\",IFERROR(VLOOKUP($D92,DADOS_CUSTOM!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D92=\"\";\"\";IFERROR(VLOOKUP($D92;DADOS_CUSTOM!$BM$2:$BU$125;9;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;'DADOS_CUSTOM'!$BM$2:$BU$125;9;FALSE);\"\"))",
+                "=IF($D93=\"\",\"\",IFERROR(VLOOKUP($D93,DADOS_CUSTOM!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D93=\"\";\"\";IFERROR(VLOOKUP($D93;DADOS_CUSTOM!$BM$2:$BU$125;9;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;'DADOS_CUSTOM'!$BM$2:$BU$125;9;FALSE);\"\"))",
+                "=IF($D94=\"\",\"\",IFERROR(VLOOKUP($D94,DADOS_CUSTOM!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D94=\"\";\"\";IFERROR(VLOOKUP($D94;DADOS_CUSTOM!$BM$2:$BU$125;9;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;'DADOS_CUSTOM'!$BM$2:$BU$125;9;FALSE);\"\"))",
+                "=IF($D95=\"\",\"\",IFERROR(VLOOKUP($D95,DADOS_CUSTOM!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D95=\"\";\"\";IFERROR(VLOOKUP($D95;DADOS_CUSTOM!$BM$2:$BU$125;9;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;'DADOS_CUSTOM'!$BM$2:$BU$125;9;FALSE);\"\"))",
+                "=IF($D96=\"\",\"\",IFERROR(VLOOKUP($D96,DADOS_CUSTOM!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D96=\"\";\"\";IFERROR(VLOOKUP($D96;DADOS_CUSTOM!$BM$2:$BU$125;9;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;'DADOS_CUSTOM'!$BM$2:$BU$125;9;FALSE);\"\"))",
+                "=IF($D97=\"\",\"\",IFERROR(VLOOKUP($D97,DADOS_CUSTOM!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D97=\"\";\"\";IFERROR(VLOOKUP($D97;DADOS_CUSTOM!$BM$2:$BU$125;9;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;'DADOS_CUSTOM'!$BM$2:$BU$125;9;FALSE);\"\"))",
+                "=IF($D98=\"\",\"\",IFERROR(VLOOKUP($D98,DADOS_CUSTOM!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D98=\"\";\"\";IFERROR(VLOOKUP($D98;DADOS_CUSTOM!$BM$2:$BU$125;9;FALSE);\"\"))"
+              ]
+            ],
+            [
+              [
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,'DADOS_CUSTOM'!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;'DADOS_CUSTOM'!$BM$2:$BU$125;9;FALSE);\"\"))",
+                "=IF($D99=\"\",\"\",IFERROR(VLOOKUP($D99,DADOS_CUSTOM!$BM$2:$BU$125,9,FALSE),\"\"))",
+                "=IF($D99=\"\";\"\";IFERROR(VLOOKUP($D99;DADOS_CUSTOM!$BM$2:$BU$125;9;FALSE);\"\"))"
+              ]
+            ]
+          ]
+        }
+      ],
+      "guardas": [
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D89",
+          "celulas": [
+            [
+              {
+                "valor": "EQUIPÁVEIS GUARDADOS"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D91",
+          "celulas": [
+            [
+              {
+                "valor": "EQUIPÁVEL"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "K91",
+          "celulas": [
+            [
+              {
+                "valor": "QTD."
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "M91",
+          "celulas": [
+            [
+              {
+                "valor": "CATEGORIA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "S91",
+          "celulas": [
+            [
+              {
+                "valor": "MÃO"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "U91",
+          "celulas": [
+            [
+              {
+                "valor": "DADO"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "W91",
+          "celulas": [
+            [
+              {
+                "valor": "PROPRIEDADES"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AE91",
+          "celulas": [
+            [
+              {
+                "valor": "FORÇA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AG91",
+          "celulas": [
+            [
+              {
+                "valor": "VOL."
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AI91",
+          "celulas": [
+            [
+              {
+                "valor": "GRAU"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AK91",
+          "celulas": [
+            [
+              {
+                "valor": "ESTIGMA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AQ91",
+          "celulas": [
+            [
+              {
+                "valor": "DESGASTE"
+              }
+            ]
+          ]
+        }
+      ],
+      "leituras": {
+        "FICHA PESSOAL": "D89:AT99"
+      }
+    },
+    "itens": {
+      "entradas": [
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D104:D109",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "T104:T109",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "Z104:Z109",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AP104:AP109",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ],
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "V104:V109",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF($D104=\"\",\"\",IF($T104=\"\",1,$T104)*IFERROR(VLOOKUP($D104,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ],
+            [
+              "=IF($D105=\"\",\"\",IF($T105=\"\",1,$T105)*IFERROR(VLOOKUP($D105,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ],
+            [
+              "=IF($D106=\"\",\"\",IF($T106=\"\",1,$T106)*IFERROR(VLOOKUP($D106,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ],
+            [
+              "=IF($D107=\"\",\"\",IF($T107=\"\",1,$T107)*IFERROR(VLOOKUP($D107,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ],
+            [
+              "=IF($D108=\"\",\"\",IF($T108=\"\",1,$T108)*IFERROR(VLOOKUP($D108,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ],
+            [
+              "=IF($D109=\"\",\"\",IF($T109=\"\",1,$T109)*IFERROR(VLOOKUP($D109,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF($D104=\"\",\"\",IF($T104=\"\",1,$T104)*IFERROR(VLOOKUP($D104,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D104=\"\";\"\";IF($T104=\"\";1;$T104)*IFERROR(VLOOKUP($D104;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D104=\"\",\"\",IF($T104=\"\",1,$T104)*IFERROR(VLOOKUP($D104,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D104=\"\";\"\";IF($T104=\"\";1;$T104)*IFERROR(VLOOKUP($D104;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D104=\"\";\"\";IF($T104=\"\";1;$T104)*IFERROR(VLOOKUP($D104;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($D104=\"\";\"\";IF($T104=\"\";1;$T104)*IFERROR(VLOOKUP($D104;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ],
+            [
+              [
+                "=IF($D105=\"\",\"\",IF($T105=\"\",1,$T105)*IFERROR(VLOOKUP($D105,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D105=\"\";\"\";IF($T105=\"\";1;$T105)*IFERROR(VLOOKUP($D105;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D105=\"\",\"\",IF($T105=\"\",1,$T105)*IFERROR(VLOOKUP($D105,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D105=\"\";\"\";IF($T105=\"\";1;$T105)*IFERROR(VLOOKUP($D105;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D105=\"\";\"\";IF($T105=\"\";1;$T105)*IFERROR(VLOOKUP($D105;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($D105=\"\";\"\";IF($T105=\"\";1;$T105)*IFERROR(VLOOKUP($D105;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ],
+            [
+              [
+                "=IF($D106=\"\",\"\",IF($T106=\"\",1,$T106)*IFERROR(VLOOKUP($D106,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D106=\"\";\"\";IF($T106=\"\";1;$T106)*IFERROR(VLOOKUP($D106;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D106=\"\",\"\",IF($T106=\"\",1,$T106)*IFERROR(VLOOKUP($D106,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D106=\"\";\"\";IF($T106=\"\";1;$T106)*IFERROR(VLOOKUP($D106;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D106=\"\";\"\";IF($T106=\"\";1;$T106)*IFERROR(VLOOKUP($D106;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($D106=\"\";\"\";IF($T106=\"\";1;$T106)*IFERROR(VLOOKUP($D106;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ],
+            [
+              [
+                "=IF($D107=\"\",\"\",IF($T107=\"\",1,$T107)*IFERROR(VLOOKUP($D107,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D107=\"\";\"\";IF($T107=\"\";1;$T107)*IFERROR(VLOOKUP($D107;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D107=\"\",\"\",IF($T107=\"\",1,$T107)*IFERROR(VLOOKUP($D107,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D107=\"\";\"\";IF($T107=\"\";1;$T107)*IFERROR(VLOOKUP($D107;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D107=\"\";\"\";IF($T107=\"\";1;$T107)*IFERROR(VLOOKUP($D107;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($D107=\"\";\"\";IF($T107=\"\";1;$T107)*IFERROR(VLOOKUP($D107;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ],
+            [
+              [
+                "=IF($D108=\"\",\"\",IF($T108=\"\",1,$T108)*IFERROR(VLOOKUP($D108,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D108=\"\";\"\";IF($T108=\"\";1;$T108)*IFERROR(VLOOKUP($D108;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D108=\"\",\"\",IF($T108=\"\",1,$T108)*IFERROR(VLOOKUP($D108,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D108=\"\";\"\";IF($T108=\"\";1;$T108)*IFERROR(VLOOKUP($D108;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D108=\"\";\"\";IF($T108=\"\";1;$T108)*IFERROR(VLOOKUP($D108;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($D108=\"\";\"\";IF($T108=\"\";1;$T108)*IFERROR(VLOOKUP($D108;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ],
+            [
+              [
+                "=IF($D109=\"\",\"\",IF($T109=\"\",1,$T109)*IFERROR(VLOOKUP($D109,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D109=\"\";\"\";IF($T109=\"\";1;$T109)*IFERROR(VLOOKUP($D109;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D109=\"\",\"\",IF($T109=\"\",1,$T109)*IFERROR(VLOOKUP($D109,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($D109=\"\";\"\";IF($T109=\"\";1;$T109)*IFERROR(VLOOKUP($D109;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($D109=\"\";\"\";IF($T109=\"\";1;$T109)*IFERROR(VLOOKUP($D109;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($D109=\"\";\"\";IF($T109=\"\";1;$T109)*IFERROR(VLOOKUP($D109;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AR104:AR109",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF($Z104=\"\",\"\",IF($AP104=\"\",1,$AP104)*IFERROR(VLOOKUP($Z104,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ],
+            [
+              "=IF($Z105=\"\",\"\",IF($AP105=\"\",1,$AP105)*IFERROR(VLOOKUP($Z105,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ],
+            [
+              "=IF($Z106=\"\",\"\",IF($AP106=\"\",1,$AP106)*IFERROR(VLOOKUP($Z106,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ],
+            [
+              "=IF($Z107=\"\",\"\",IF($AP107=\"\",1,$AP107)*IFERROR(VLOOKUP($Z107,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ],
+            [
+              "=IF($Z108=\"\",\"\",IF($AP108=\"\",1,$AP108)*IFERROR(VLOOKUP($Z108,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ],
+            [
+              "=IF($Z109=\"\",\"\",IF($AP109=\"\",1,$AP109)*IFERROR(VLOOKUP($Z109,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF($Z104=\"\",\"\",IF($AP104=\"\",1,$AP104)*IFERROR(VLOOKUP($Z104,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z104=\"\";\"\";IF($AP104=\"\";1;$AP104)*IFERROR(VLOOKUP($Z104;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z104=\"\",\"\",IF($AP104=\"\",1,$AP104)*IFERROR(VLOOKUP($Z104,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z104=\"\";\"\";IF($AP104=\"\";1;$AP104)*IFERROR(VLOOKUP($Z104;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z104=\"\";\"\";IF($AP104=\"\";1;$AP104)*IFERROR(VLOOKUP($Z104;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($Z104=\"\";\"\";IF($AP104=\"\";1;$AP104)*IFERROR(VLOOKUP($Z104;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ],
+            [
+              [
+                "=IF($Z105=\"\",\"\",IF($AP105=\"\",1,$AP105)*IFERROR(VLOOKUP($Z105,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z105=\"\";\"\";IF($AP105=\"\";1;$AP105)*IFERROR(VLOOKUP($Z105;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z105=\"\",\"\",IF($AP105=\"\",1,$AP105)*IFERROR(VLOOKUP($Z105,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z105=\"\";\"\";IF($AP105=\"\";1;$AP105)*IFERROR(VLOOKUP($Z105;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z105=\"\";\"\";IF($AP105=\"\";1;$AP105)*IFERROR(VLOOKUP($Z105;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($Z105=\"\";\"\";IF($AP105=\"\";1;$AP105)*IFERROR(VLOOKUP($Z105;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ],
+            [
+              [
+                "=IF($Z106=\"\",\"\",IF($AP106=\"\",1,$AP106)*IFERROR(VLOOKUP($Z106,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z106=\"\";\"\";IF($AP106=\"\";1;$AP106)*IFERROR(VLOOKUP($Z106;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z106=\"\",\"\",IF($AP106=\"\",1,$AP106)*IFERROR(VLOOKUP($Z106,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z106=\"\";\"\";IF($AP106=\"\";1;$AP106)*IFERROR(VLOOKUP($Z106;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z106=\"\";\"\";IF($AP106=\"\";1;$AP106)*IFERROR(VLOOKUP($Z106;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($Z106=\"\";\"\";IF($AP106=\"\";1;$AP106)*IFERROR(VLOOKUP($Z106;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ],
+            [
+              [
+                "=IF($Z107=\"\",\"\",IF($AP107=\"\",1,$AP107)*IFERROR(VLOOKUP($Z107,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z107=\"\";\"\";IF($AP107=\"\";1;$AP107)*IFERROR(VLOOKUP($Z107;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z107=\"\",\"\",IF($AP107=\"\",1,$AP107)*IFERROR(VLOOKUP($Z107,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z107=\"\";\"\";IF($AP107=\"\";1;$AP107)*IFERROR(VLOOKUP($Z107;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z107=\"\";\"\";IF($AP107=\"\";1;$AP107)*IFERROR(VLOOKUP($Z107;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($Z107=\"\";\"\";IF($AP107=\"\";1;$AP107)*IFERROR(VLOOKUP($Z107;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ],
+            [
+              [
+                "=IF($Z108=\"\",\"\",IF($AP108=\"\",1,$AP108)*IFERROR(VLOOKUP($Z108,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z108=\"\";\"\";IF($AP108=\"\";1;$AP108)*IFERROR(VLOOKUP($Z108;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z108=\"\",\"\",IF($AP108=\"\",1,$AP108)*IFERROR(VLOOKUP($Z108,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z108=\"\";\"\";IF($AP108=\"\";1;$AP108)*IFERROR(VLOOKUP($Z108;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z108=\"\";\"\";IF($AP108=\"\";1;$AP108)*IFERROR(VLOOKUP($Z108;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($Z108=\"\";\"\";IF($AP108=\"\";1;$AP108)*IFERROR(VLOOKUP($Z108;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ],
+            [
+              [
+                "=IF($Z109=\"\",\"\",IF($AP109=\"\",1,$AP109)*IFERROR(VLOOKUP($Z109,'DADOS_CUSTOM'!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z109=\"\";\"\";IF($AP109=\"\";1;$AP109)*IFERROR(VLOOKUP($Z109;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z109=\"\",\"\",IF($AP109=\"\",1,$AP109)*IFERROR(VLOOKUP($Z109,DADOS_CUSTOM!$AU$2:$AX$64,2,FALSE),0.1))",
+                "=IF($Z109=\"\";\"\";IF($AP109=\"\";1;$AP109)*IFERROR(VLOOKUP($Z109;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0.1))",
+                "=IF($Z109=\"\";\"\";IF($AP109=\"\";1;$AP109)*IFERROR(VLOOKUP($Z109;'DADOS_CUSTOM'!$AU$2:$AX$64;2;FALSE);0,1))",
+                "=IF($Z109=\"\";\"\";IF($AP109=\"\";1;$AP109)*IFERROR(VLOOKUP($Z109;DADOS_CUSTOM!$AU$2:$AX$64;2;FALSE);0,1))"
+              ]
+            ]
+          ]
+        }
+      ],
+      "guardas": [
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D101",
+          "celulas": [
+            [
+              {
+                "valor": "ITENS GUARDADOS"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "D103",
+          "celulas": [
+            [
+              {
+                "valor": "ITEM"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "T103",
+          "celulas": [
+            [
+              {
+                "valor": "QTD."
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "V103",
+          "celulas": [
+            [
+              {
+                "valor": "VOL."
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "Z103",
+          "celulas": [
+            [
+              {
+                "valor": "ITEM"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AP103",
+          "celulas": [
+            [
+              {
+                "valor": "QTD."
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA PESSOAL",
+          "faixa": "AR103",
+          "celulas": [
+            [
+              {
+                "valor": "VOL."
+              }
+            ]
+          ]
+        }
+      ],
+      "leituras": {
+        "FICHA PESSOAL": "D101:AT109"
+      }
     }
   }
 };
