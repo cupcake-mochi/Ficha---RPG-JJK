@@ -369,5 +369,7 @@ descritor anterior; a suíte dos cartões faz a regressão completa no CI.
 
 O cenário conjunto de recibos passa de 498 para 571 nomes reais de perfis,
 com operações sintéticas e a mesma reserva de 100 KB. Não fabrica uma fase
-financeira concluída nem certifica o orquestrador. Coleção esperada 2.610;
-registrar o CI final antes de declarar a validação completa.
+financeira concluída nem certifica o orquestrador. Resultado: 412.036 bytes,
+pico 412.402. Coleção completa 2.610/zero falhas confirmada no CI 40701063975,
+código baf652d, em 28/10 às 10:58:19 Brasília. Pacote nove arquivos e sintaxe
+277 Python/238 JS-GS aprovados; duplicado 40701053252 cancelado.

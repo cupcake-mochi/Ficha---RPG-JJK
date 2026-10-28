@@ -49,8 +49,13 @@ Cache volátil invalidado; caches persistentes e MONTAGENS continuam separados.
 - Fórmulas regionais/desconhecidas, foto em célula, menus, mesclas com mesma
   âncora mas tamanho alterado, matriz parcialmente gravada e notas concorrentes.
 - Teste de quota conjunta ampliado para 571 nomes reais de perfis com operações
-  sintéticas, mais reserva de 100 KB. Resultado final a registrar.
-- Coleção prevista 2.610 cenários de inicialização; CI final a registrar.
+  sintéticas, mais reserva de 100 KB: 412.036 bytes finais, pico 412.402.
+- [CI 40701063975](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40701063975) aprovado no código
+  `baf652d5dbd9db8ba5a0ca64ca04bfbebfb6738c`, em 28/10 às 10:58:19 Brasília:
+  **2.610 cenários de inicialização**, zero falhas (101/82/78/243/441/155/370/
+  791/44/305). Pacote nove arquivos/sintaxe 277 Python/238 JS-GS e demais
+  regressões aprovados. Duplicado 40701053252 cancelado.
+- Fechamento posterior só documental `[skip ci]`; não repetir suíte/publicar.
 
 ## Leitura das oficiais
 

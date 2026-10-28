@@ -6,9 +6,12 @@ por matrizes de âncoras, com notas e fórmulas de fábrica. Configurações/cat
 cálculos, cartões R53/MONTAGENS preservados. Menus conhecidos são mantidos e
 entram na assinatura; mesclas exigem geometria exata. Recibos/quota existentes;
 adaptador de validações extraído sem mudar descritores; executor intacto.
-305 cenários locais passaram; coleção prevista 2.610, CI final pendente.
+305 cenários locais passaram; coleção completa 2.610/zero falhas confirmada
+no CI 40701063975, código baf652d, aprovado em 28/10 às 10:58:19 Brasília.
+Pacote nove arquivos, sintaxe 277 Python/238 JS-GS e demais regressões passaram;
+duplicado 40701053252 cancelado, fechamento só documental [skip ci].
 73 recibos reais 36.719 bytes, maior diário pendente 3.165. Teste de quota
-ampliado de 498 para 571 perfis com reserva 100 KB; registrar resultado final.
+ampliado de 498 para 571 perfis com reserva 100 KB: 412.036 bytes/pico 412.402.
 Leitura das oficiais: primeira/última entidade e conjunto, por arquivo 195
 entradas/validações, 284 guardas; critérios e valores/fórmulas iguais. 105 menus
 estritos preservados; barra pt_BR reconhecida por fórmula inteira. Duas notas

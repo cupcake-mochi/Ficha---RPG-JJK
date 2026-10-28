@@ -238,11 +238,12 @@ node r53/testes/inicializacao_recibos.js
 node r53/testes/inicializacao_entidades.js
 ```
 
-Coleção prevista nesta revisão: 2.610 cenários offline (101 financeiros, 82 de nível/base, 78 de
+Coleção atual: 2.610 cenários offline (101 financeiros, 82 de nível/base, 78 de
 textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS, 791 de cartões visíveis, 44 de recibos/quota e 305 de entidades). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
 nem mede latência Google. O smoke inclui os dez arquivos de testes.
+CI das entidades `baf652d` aprovado: [40701063975](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40701063975), 2.610 cenários, em 28/10 às 10:58:19 Brasília. Pacote nove arquivos/sintaxe 277 Python/238 JS-GS; demais regressões passaram. Duplicado 40701053252 cancelado.
 CI dos recibos `af8e83f` aprovado: [40697164990](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40697164990), 2.305 cenários, em 28/10 às 10:34:44 Brasília; pacote nove arquivos/sintaxe 277 Python/234 JS-GS. Duplicado 40697154581 cancelado.
 CI anterior a recibos `216e44c` aprovado: [40694498546](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40694498546), 2.261 cenários, em 28/10 às 10:16:56 Brasília.
 CI anterior aos cartões visíveis, `5749b3a`, aprovado: [40690086385](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40690086385), 1.470 cenários, em 28/10 às 09:45:06 Brasília.
@@ -446,8 +447,8 @@ substituição que reduza espaço pode continuar acima da margem para recuperar
 um diário existente; isso não libera novas operações. O valor é relido após
 a gravação. Nem registros alheios nem recibos são apagados para abrir espaço.
 
-A simulação conjunta de 498 recibos, com reserva de 100 KB, fica em 372.263
-bytes (pico 372.629). É prova do protocolo offline, não medição no Google nem
+A simulação conjunta ampliada de 571 recibos (cartões e entidades), com
+reserva de 100 KB, fica em 412.036 bytes (pico 412.402). É prova do protocolo offline, não medição no Google nem
 reserva real de todos os domínios futuros. O orquestrador ainda terá de limitar
 fases simultâneas, considerar recuperações/novos domínios e conferir o conjunto
 antes de cadastrar. Lock não bloqueia edição humana nem outros escritores que
