@@ -32,6 +32,16 @@ function ambiente(op = {}) {
     f(); writes.push([kind, target]);
     if (hook) hook('depois', kind, target);
   }
+  function validation(d) {
+    if (!d || typeof d !== 'object') return null;
+    return {getCriteriaType:()=>d.tipo,getCriteriaValues:()=>d.argumentos,
+      getAllowInvalid:()=>d.permiteInvalido,getHelpText:()=>d.ajuda||'',data:d};
+  }
+  function validate(old,v) {
+    if (!op.validarEntradas || !old.dv || typeof old.dv !== 'object' || old.dv.permiteInvalido) return;
+    if(old.dv.tipo==='CHECKBOX')assert.equal(typeof v,'boolean','valor incompatível com checkbox');
+    if(old.dv.tipo==='VALUE_IN_LIST')assert(old.dv.argumentos[0].includes(v),'valor fora da lista');
+  }
   function range(sheet, addr) {
     const [r1, c1, r2, c2] = a1(addr);
     const read = field => Array.from({length: r2 - r1 + 1}, (_, i) =>
@@ -43,11 +53,18 @@ function ambiente(op = {}) {
     const edit = (kind, field, value) => mutation(kind, `${sheet}!${addr}`, () => {
       for (let r = r1; r <= r2; r++) for (let c = c1; c <= c2; c++) {
         const old = get(sheet, r, c);
+        if(field!=='n')validate(old,value);
         cells.set(`${sheet}!${r},${c}`, field === 'n' ? {...old, n: value} : {...old, v: value, f: ''});
       }
     });
     return {getValues: () => read('v'), getFormulas: () => read('f'), getNotes: () => read('n'),
       getValue: () => read('v')[0][0],
+      getDataValidation: () => validation(get(sheet,r1,c1).dv),
+      getDataValidations: () => read('dv').map(row=>row.map(validation)),
+      getMergedRanges: () => [],
+      setDataValidation(d) { mutation('validacao', `${sheet}!${addr}`,()=>{
+        for(let r=r1;r<=r2;r++)for(let c=c1;c<=c2;c++)cells.set(`${sheet}!${r},${c}`,{...get(sheet,r,c),dv:d?d.data:null});
+      });return this; },
       setValue(v) { edit('valor', 'v', v); return this; },
       setFormula(v) { mutation('formula', `${sheet}!${addr}`, () => {
         for(let r=r1;r<=r2;r++)for(let c=c1;c<=c2;c++)cells.set(`${sheet}!${r},${c}`, {...get(sheet,r,c),v:'',f:v});
@@ -68,7 +85,7 @@ function ambiente(op = {}) {
   for (const name of ['EXTRATO', 'SALÁRIOS', 'DADOS_SALARIOS', 'FICHA PESSOAL', 'CONFIGURAÇÃO', 'CARTEIRA', 'FICHA', 'DADOS']) {
     sheets[name] = {getRange: addr => range(name, addr), getMaxRows: () => op.rows || 120};
   }
-  const ss = {getId: () => op.id || 'copia-descartavel', getSheetByName: n => sheets[n] || null};
+  const ss = {getSpreadsheetLocale:()=>op.locale||'pt_BR',getId: () => op.id || 'copia-descartavel', getSheetByName: n => sheets[n] || null};
   function props(map, scope) { return {
     getProperty: k => map.has(k) ? map.get(k) : null,
     getKeys: () => [...map.keys()],
@@ -81,7 +98,14 @@ function ambiente(op = {}) {
     computeDigest: (algo, s) => [...crypto.createHash(algo).update(s, 'utf8').digest()]};
   ctx.LockService = {getDocumentLock: () => ({tryLock() { if (op.ocupado) return false; lock = true; return true; },
     releaseLock() { assert(lock); lock = false; }})};
-  ctx.SpreadsheetApp = {getActive: () => op.ativoDiferente ? {getId: () => 'outro'} : ss, flush() {}};
+  const newDataValidation=()=>{const d={tipo:null,argumentos:[],permiteInvalido:true,ajuda:''};return {
+    requireCheckbox(...args){d.tipo='CHECKBOX';d.argumentos=args;return this;},
+    requireValueInList(list,show){d.tipo='VALUE_IN_LIST';d.argumentos=[Array.from(list),show];return this;},
+    requireFormulaSatisfied(f){d.tipo='CUSTOM_FORMULA';d.argumentos=[f];return this;},
+    setAllowInvalid(v){d.permiteInvalido=v;return this;},setHelpText(v){d.ajuda=v;return this;},
+    build(){return validation(JSON.parse(JSON.stringify(d)));}
+  };};
+  ctx.SpreadsheetApp = {newDataValidation, getActive: () => op.ativoDiferente ? {getId: () => 'outro'} : ss, flush() {}};
   const expected = ctx.r53NovaFinFormulas_();
   ctx.R53_NOVA_FIN_.formulas.forEach(([sheet, addr], i) => {
     const [r1, c1, r2, c2] = a1(addr);

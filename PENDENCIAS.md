@@ -1,3 +1,20 @@
+## Carteira viva: cartões visíveis · 28/10/2026 · não instalada
+
+PR 31: valores, notas e validações das funções nos 249 cartões, com diário
+individual e retomada. Portas seguem Amparo/Classe de fábrica; regra antes do
+valor. Recusa validação/mescla/fórmula desconhecida e edição concorrente.
+Executor ampliado só com tipo validacao; contratos anteriores preservados.
+101 financeiros, 441 formação e sete focais passaram; coleção nova no CI.
+Leitura das oficiais: nove contextos, 124 entradas, 210 guardas e 25 validações
+por arquivo sem diferença; nenhuma escrita/cópia/execução Apps Script.
+Bloqueio comprovado: os diários completos acumulados não cabem na quota
+conjunta. Resolver orçamento/compactação com recibos antes da integração;
+não apagar diários para forçar nova limpeza. Também faltam dados das entidades,
+arte, orquestração, automações/treinos/notas, responsável e prova drive.file/nativa.
+Criação bloqueada, protótipos fora do pacote/bot, sem merge/deploy ou novos acessos.
+Relatório r53/inicializacao/CARTOES-VISIVEIS-2026-10-28.md.
+GPT-6 Astra Alto; revisão Médio. Entradas abaixo são históricas.
+
 ## Carteira viva: versões dos cartões · 28/10/2026 · não instalada
 
 PR 31: MONTAGENS por cartão, 249 contextos e 48.015 entradas, todas as Classes.

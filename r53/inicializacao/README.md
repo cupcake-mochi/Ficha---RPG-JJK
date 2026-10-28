@@ -12,7 +12,8 @@ Os protótipos cobrem financeiro, nível/base de XP, 14 textos pessoais,
 268 campos de Grau/Origem, Perícias, Ofícios/TR e armas, mais 11 entradas do
 cabeçalho da técnica, 19 estados de Famílias, 129 campos de inventário/equipamento
 e quatro notas vivas, três campos restantes da CARTEIRA, memórias conhecidas
-e as versões guardadas dos 249 cartões em MONTAGENS. **Não oferecem uma ficha inteira
+as versões guardadas dos 249 cartões em MONTAGENS e seus campos visíveis,
+com validações das funções. **Não oferecem uma ficha inteira
 pronta para cadastro.** Base incorporada: main
 `ef361ccdf7a0210781176e3c42d318cde147553d`, merge `a72adc0` (PRs 41–43).
 Inclui XP manual e marcas de missões congeladas. A instalação/backup 13 das
@@ -411,3 +412,18 @@ entidades e não elimina o cache persistente do editor. A sequência completa
 precisa terminar o domínio de memórias e conferir tudo sem eventos intermediários.
 Não usar a conclusão de um cartão como certificado de criação. Relatório e
 limites: [MONTAGENS-2026-10-28.md](MONTAGENS-2026-10-28.md).
+
+## Campos visíveis dos cartões
+
+`cartoes.gs`/`contrato_cartoes.gs` e `validacoes.gs` acrescentam as funções
+`r53NovaFichaCartaoPrevia` e `r53NovaFichaCartaoAplicar`, com ID conhecido do
+cartão e contexto confiável. Restauram Classe/nome/COMO É e entradas explícitas
+do editor, mais notas. Regras das funções são aplicadas antes dos valores;
+função bloqueada recebe `—`, respeitando Amparo e Classe de destino. Preservam
+fórmulas/rótulos e demais menus. Ver
+[CARTOES-VISIVEIS-2026-10-28.md](CARTOES-VISIVEIS-2026-10-28.md).
+
+**Os diários completos acumulados ultrapassam a quota conjunta de propriedades.**
+O protocolo isolado por cartão não é uma orquestração liberada. Antes de integrar,
+resolver orçamento/retenção/recibos sem perder proteção contra reinicialização.
+Continuam pendentes entidades, arte, automações e prova nativa do conjunto.

@@ -330,3 +330,12 @@ confere as fórmulas de Classe máxima e o leitor real antes/depois de limpar
 MONTAGENS e o cache persistente. Não testa escrita nativa nem cartões visíveis.
 A coleção de inicialização passa a 1.470; ver relatório em
 `r53/inicializacao/MONTAGENS-2026-10-28.md`.
+
+### Campos visíveis dos cartões · 28/10/2026
+
+Smoke inclui `r53/testes/inicializacao_cartoes.js`: todos os 249 cartões,
+portas, validações antes do valor, queda em cada escrita, concorrência e
+preservação das contas/menus. Uma invocação com `--foco REGEX` executa apenas
+nomes selecionados e imprime `FOCO PARCIAL`; não equivale à coleção completa.
+CI chama sem filtro. O teste também acusa a quota agregada insuficiente;
+criação e execução integrada continuam bloqueadas.

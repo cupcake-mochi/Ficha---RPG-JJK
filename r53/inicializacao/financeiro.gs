@@ -89,6 +89,13 @@ function r53NovaFinOperacoes_(ss) {
 function r53NovaFinLer_(ss, op) {
   if (op.tipo === 'propriedade') return r53NovaFinProps_(op).getProperty(op.chave);
   var r = r53NovaFinFaixa_(ss, op);
+  if (op.tipo === 'validacao') {
+    var dv = r53NovaValidLer_(r);
+    if (dv && dv.tipo === 'CUSTOM_FORMULA' && dv.argumentos.length === 1 &&
+        op.formulasEquivalentes && op.formulasEquivalentes.indexOf(dv.argumentos[0]) >= 0)
+      dv.argumentos = op.regra.argumentos.slice();
+    return dv;
+  }
   if (op.tipo === 'notas' || op.tipo === 'nota' || op.tipo === 'notas_matriz') return r.getNotes();
   var formulas = r.getFormulas(), valores = r.getValues();
   // Apenas equivalências exatas publicadas pelo produtor para estes alvos.
@@ -111,6 +118,7 @@ function r53NovaFinLer_(ss, op) {
 }
 function r53NovaFinDepois_(atual, op) {
   if (op.tipo === 'propriedade') return null;
+  if (op.tipo === 'validacao') return op.regra;
   var vazio = function(m, v) { return m.map(function(l) { return l.map(function() { return v; }); }); };
   if (op.tipo === 'notas') return vazio(atual, '');
   if (op.tipo === 'nota') return vazio(atual, op.valor);
@@ -244,7 +252,8 @@ function r53NovaPerfilAplicar_(ss, contexto, assinatura, perfil) {
       if (op.tipo === 'propriedade') r53NovaFinProps_(op).deleteProperty(op.chave);
       else {
         var r = r53NovaFinFaixa_(ss, op);
-        if (op.tipo === 'notas') r.clearNote();
+        if (op.tipo === 'validacao') r53NovaValidGravar_(r, op.regra);
+        else if (op.tipo === 'notas') r.clearNote();
         else if (op.tipo === 'nota') r.setNote(op.valor);
         else if (op.tipo === 'notas_matriz') r.setNotes(op.notas);
         else if (op.tipo === 'matriz') r.setValues(op.valores);
