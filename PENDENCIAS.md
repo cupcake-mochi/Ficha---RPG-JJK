@@ -1,3 +1,19 @@
+## Carteira viva: inventário de imagens · 28/10/2026 · não instalado
+
+PR 31: leitura paginada de todas as células físicas, inclusive abas ocultas,
+com antes/depois, assinatura, quota e checkpoint por página. 79 cenários locais
+passaram; maior checkpoint 1.109 bytes. Conta imagens fora das fotos, fórmulas,
+marcadores de decoração, sobreposições e desenhos sem alterar células.
+Não é snapshot consistente nem prova de pixels: três indicadores de liberação
+continuam falsos. Ensaio real numa planilha técnica descartável confirmou
+CellImage individual/em bloco/espelho, URL igual em duas execuções próximas e
+espelho preservado após limpeza fictícia. Não é execução nativa do inventário
+ou da inicialização; descartável na lixeira. Leia
+`r53/inicializacao/INVENTARIO-IMAGENS-2026-10-28.md`.
+CI completo ainda a conferir. Criação bloqueada, fora do pacote/bot, sem
+merge/deploy, oficial/jogador, modelo pago ou acesso amplo novo.
+Sol Alto para continuar; revisão Médio. Entradas abaixo são históricas.
+
 ## Carteira viva: fotos nas caixas — arte parcial · 28/10/2026 · não instalada
 
 PR 31: um perfil com 13 fotos + espelho pessoal, valores/notas de fábrica,
