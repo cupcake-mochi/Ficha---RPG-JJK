@@ -44,7 +44,7 @@ a rotina não tenta adivinhar se uma expressão diferente é equivalente.
 (139 adicionais aos 278 anteriores), mais 101 financeiros. Falhas antes/depois
 de cada escrita, retomada, concorrência, notas, preservação e contrato contra
 a montagem pública completa estão cobertos. A coleção de inicialização soma
-921 cenários (101/82/78/243/417); o CI desta entrega deve confirmar o conjunto.
+921 cenários (101/82/78/243/417), confirmados pelo CI desta entrega.
 A VM não calcula fórmulas Google nem mede sua latência.
 
 Google: metadados e FICHA PESSOAL D61:AT109 das duas oficiais, só leitura.
@@ -84,3 +84,12 @@ fases apagando diários. Não mudar o endpoint bloqueado do bot.
 
 Sem merge em main, deploy na Discloud, Gateway ou chamada paga. Próxima
 implementação GPT-6 Astra / Alto; revisão focal Médio.
+
+## CI
+
+CI Linux aprovado no código `86410bee3fc70fa81f124a695253e032688c3ebe` em
+28/10/2026 às 08:56:07 Brasília: [40683614201](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40683614201).
+921 cenários confirmados (101/82/78/243/417), pacote de nove arquivos, sintaxe
+277 Python/220 JS-GS, catálogo/progressão/Kaori e demais regressões aprovados.
+Run duplicado 40683604255 cancelado. Fechamento apenas documental com
+`[skip ci]`; sem repetir suíte ou publicar pacote.

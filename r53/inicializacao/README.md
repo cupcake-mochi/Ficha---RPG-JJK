@@ -236,6 +236,7 @@ textos, 243 pessoais e 417 de formação/técnica/Famílias/inventário). Inclue
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
 nem mede latência Google. O smoke inclui os cinco arquivos de testes.
+CI atual `86410be` aprovado: [40683614201](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40683614201), com 921 cenários.
 CI anterior à extensão de inventário, `763a78b`, aprovado: [40681468287](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40681468287).
 Resultados anteriores e limites nativos ficam nos relatórios datados; o registro
 atual está em [INVENTARIO-2026-10-28.md](INVENTARIO-2026-10-28.md).

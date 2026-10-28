@@ -11,6 +11,13 @@ Projeção Sheets API em cópia privada: 133 alvos, 10.450 comparações preserv
 sem erros; carga 0,3 de 5 igual ao modelo (Traje 1). Cópia na lixeira/aba fechada.
 Não é execução Apps Script/diários/OAuth nem criação completa.
 
+CI Linux aprovado no código `86410bee3fc70fa81f124a695253e032688c3ebe` em
+28/10/2026 às 08:56:07 Brasília: [40683614201](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40683614201).
+921 cenários confirmados (101/82/78/243/417), pacote de nove arquivos, sintaxe
+277 Python/220 JS-GS, catálogo/progressão/Kaori e demais regressões aprovados.
+Run duplicado 40683604255 cancelado. Fechamento apenas documental com
+`[skip ci]`; sem repetir suíte ou publicar pacote.
+
 Relatório r53/inicializacao/INVENTARIO-2026-10-28.md e README atualizado.
 Próximo: campos restantes da CARTEIRA e propriedades de recuperação; depois
 entidades/cartões/MONTAGENS. Ainda faltam arte, orquestração/conferência final,
