@@ -235,6 +235,7 @@ node r53/testes/inicializacao_formacao.js
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
 nem mede latência Google. O smoke inclui os cinco arquivos de testes.
+CI final `763a78b` aprovado: [40681468287](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40681468287).
 Resultados anteriores e limites nativos ficam nos relatórios datados; o registro
 atual está em [TECNICA-FAMILIAS-2026-10-28.md](TECNICA-FAMILIAS-2026-10-28.md).
 Regressão independente de XP: `node r53/testes/xp_nivel.js`, 20.643

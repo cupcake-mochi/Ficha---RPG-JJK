@@ -80,3 +80,14 @@ Ambos usam git show de bases históricas que faltavam no checkout raso.
 O workflow passa a buscar somente os dois commits fixos 9536746 e 57117fb,
 com SHA completo e depth=1, antes do smoke. Nenhuma expectativa/comparação
 foi removida ou alterada. O run duplicado 40681039147 foi cancelado.
+
+## Fechamento do CI
+
+CI Linux do código `763a78bd5fd3d799dd1273f24b6839a5c118d47a` aprovado em
+28/10/2026 às 08:39:49 Brasília: [40681468287](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40681468287).
+Confirmados os 782 cenários, 15 verificações de abertura, 2.076 de missões e
+87 de XP manual, pacote de nove arquivos, sintaxe de 277 fontes Python/220 JS-GS,
+catálogo/progressão/Kaori e demais regressões. Run duplicado 40681461827
+cancelado. O primeiro run 40681047195 falhou por bases ausentes, corrigidas
+sem mudar expectativas. Registro final só documental `[skip ci]`, sem repetir
+suíte, instalar pacote ou liberar criação.
