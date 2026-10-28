@@ -19,6 +19,17 @@ pronta para cadastro.** Base incorporada: main
 Inclui XP manual e marcas de missões congeladas. A instalação/backup 13 das
 oficiais foi feita por outro trabalho; não reaplicar nem reabrir a otimização.
 
+## Sequência dos domínios — ainda sem liberação
+
+`sequencia.gs` coordena 599 perfis de escrita e duas inspeções de imagens,
+com até 32 recuperações adicionais capturadas no início. Uma prévia/aplicação
+por chamada, assinatura durável e cursor; trava única durante filho e avanço.
+Não reinicia no financeiro depois de a progressão mudar o nível. Não adota
+fases avulsas ou apaga diário para começar outra operação. Não recebe plano
+do navegador. Continua fora do pacote/bot e mantém criação bloqueada mesmo
+ao percorrer todas as fases; conferência conjunta/automação/prova nativa faltam.
+Leia [SEQUENCIA-2026-10-28.md](SEQUENCIA-2026-10-28.md) para a ordem e os limites.
+
 ## Financeiro
 
 `financeiro.gs` fornece prévia, aplicação explícita e retomada com trava do
@@ -237,13 +248,15 @@ node r53/testes/inicializacao_cartoes.js
 node r53/testes/inicializacao_recibos.js
 node r53/testes/inicializacao_entidades.js
 node r53/testes/inicializacao_arte.js
+node r53/testes/inicializacao_inventario_imagens.js
+node r53/testes/inicializacao_sequencia.js
 ```
 
-Coleção atual: 2.747 cenários offline (101 financeiros, 82 de nível/base, 78 de
+Coleção anterior às imagens/sequência: 2.747 cenários offline (101 financeiros, 82 de nível/base, 78 de
 textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS, 791 de cartões visíveis, 44 de recibos/quota, 305 de entidades e 137 de fotos). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
-nem mede latência Google. O smoke inclui os onze arquivos de testes.
+nem mede latência Google. O smoke agora inclui treze arquivos: mais 79 cenários de imagens e a bateria da sequência. Consulte o relatório mais recente para o CI completo.
 CI das fotos `350c56d` aprovado: [40706336130](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40706336130), 2.747 cenários, em 28/10 às 11:32:49 Brasília. Pacote nove arquivos/sintaxe 277 Python/242 JS-GS e demais regressões passaram; duplicado 40706329406 cancelado.
 CI das entidades `baf652d` aprovado: [40701063975](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40701063975), 2.610 cenários, em 28/10 às 10:58:19 Brasília. Pacote nove arquivos/sintaxe 277 Python/238 JS-GS; demais regressões passaram. Duplicado 40701053252 cancelado.
 CI dos recibos `af8e83f` aprovado: [40697164990](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40697164990), 2.305 cenários, em 28/10 às 10:34:44 Brasília; pacote nove arquivos/sintaxe 277 Python/234 JS-GS. Duplicado 40697154581 cancelado.

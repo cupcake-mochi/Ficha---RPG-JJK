@@ -254,7 +254,12 @@ function r53NovaPerfilAplicar_(ss, contexto, assinatura, perfil) {
   var inicio = Date.now();
   var lock = LockService.getDocumentLock();
   if (!lock.tryLock(1500)) r53NovaFinErro_('outra operação em andamento.');
-  try {
+  try { return r53NovaPerfilAplicarTravado_(ss, contexto, assinatura, perfil, inicio); }
+  finally { lock.releaseLock(); }
+}
+// Interna: somente sob a trava de documento já obtida pelo executor/sequência.
+function r53NovaPerfilAplicarTravado_(ss, contexto, assinatura, perfil, inicio) {
+  if (inicio === undefined) inicio = Date.now();
     var dp = PropertiesService.getDocumentProperties();
     var vinculo = r53NovaFinContexto_(ss, contexto);
     if (perfil.precondicao) perfil.precondicao(ss, contexto);
@@ -337,5 +342,4 @@ function r53NovaPerfilAplicar_(ss, contexto, assinatura, perfil) {
     }
     return {versao: 1, dominio: perfil.nome, concluido: true, criacaoDisponivel: false,
             operacao: vinculo.operacao, pendente: perfil.pendente.slice()};
-  } finally { lock.releaseLock(); }
 }

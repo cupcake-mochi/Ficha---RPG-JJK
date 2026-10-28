@@ -113,9 +113,15 @@ function r53NovaFichaImagensPrevia(ss,ctx,fase){
   return {assinatura:r53NovaFinHash_([p.vinculo,p.layout,p.paginas.length]),paginas:p.paginas.length,celulas:p.celulas,criacaoDisponivel:false};
 }
 function r53NovaFichaImagensInspecionar(ss,ctx,fase,assinatura){
-  var inicio=Date.now(),chave=r53NovaInvImagemFase_(fase),lock=LockService.getDocumentLock();
+  var inicio=Date.now(),lock=LockService.getDocumentLock();
   if(!lock.tryLock(1500))r53NovaFinErro_('outra operação em andamento.');
-  try{
+  try{return r53NovaInvImagemInspecionarTravado_(ss,ctx,fase,assinatura,inicio);}
+  finally{lock.releaseLock();}
+}
+// Interna: não chamar sem a trava de documento da sequência/executor.
+function r53NovaInvImagemInspecionarTravado_(ss,ctx,fase,assinatura,inicio){
+  if(inicio===undefined)inicio=Date.now();
+  var chave=r53NovaInvImagemFase_(fase);
     var p=r53NovaInvImagemPlano_(ss,ctx,fase),esperada=r53NovaFinHash_([p.vinculo,p.layout,p.paginas.length]),dp=PropertiesService.getDocumentProperties(),raw=dp.getProperty(chave),j;
     if(assinatura!==esperada)r53NovaFinErro_('grade, abas ou objetos mudaram após a prévia.');
     if(raw!==null)j=r53NovaInvImagemLerDiario_(raw,p,assinatura);
@@ -134,5 +140,4 @@ function r53NovaFichaImagensInspecionar(ss,ctx,fase,assinatura){
     return {leituraConcluida:j.concluido,retomar:!j.concluido,paginasLidas:j.proxima,totalPaginas:j.totalPaginas,contagem:j.contagem,
       sobrepostas:p.sobrepostas,desenhos:p.desenhos,amostra:j.amostra,amostraLimitada:j.contagem.fora+j.contagem.indeterminadas+j.contagem.decoracoesAusentes>j.amostra.length,
       retrataSomenteEstaRodada:true,consistenciaTemporalVerificada:false,autenticidadeDecoracaoVerificada:false,criacaoDisponivel:false};
-  }finally{lock.releaseLock();}
 }
