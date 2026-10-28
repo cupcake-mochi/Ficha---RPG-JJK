@@ -19,6 +19,15 @@ pronta para cadastro.** Base incorporada: main
 Inclui XP manual e marcas de missões congeladas. A instalação/backup 13 das
 oficiais foi feita por outro trabalho; não reaplicar nem reabrir a otimização.
 
+## Primeiro transporte REST no consumidor — parcial
+
+PR84 do bot tem coleta REST para financeiro/progressão, com contexto/cota e
+versão por chamada. Ainda não interpreta o contrato/recibos GS nem lê
+PropertiesService; não equivale ao executor ou à conferência deste repositório.
+Próximo: contrato determinístico e estado cifrado no backend, preservando o
+acesso por arquivo escolhido. Criação bloqueada; sem GS novo ou prova nativa.
+Relatório do bot `Closure/docs/carteira-viva/COLETA-REST-2026-10-28.md`.
+
 ## Páginas sem gravação e observação de versão — ainda parcial
 
 `conferencia_paginas.gs` retorna plano/lotes de até quatro perfis sem escrever

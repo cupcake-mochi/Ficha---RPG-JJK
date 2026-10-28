@@ -1,3 +1,26 @@
+## Carteira viva: primeiro transporte REST no consumidor · 28/10/2026 · não instalado
+
+Produtor funcional permanece 2427024, fechamento anterior f36b410; não houve
+alteração GS nesta rodada. Consumidor PR84 acrescenta grade_inicializacao.py:
+coleta REST de financeiro/progressão com seletores fixos, fórmulas/resultados/
+notas/formato numérico separados; não executa os perfis deste repositório.
+Contexto e cota por GET, versão antes/depois das páginas, prazo absoluto.
+24 novos/95 direcionados locais passaram. Consumidor código b5934be, CI
+40735993584: 1.362 executados/1.361 aprovados/um opcional, zero falhas,
+245,141 s; job concluído em 28/10 às 14:32:42 Brasília. Execução anterior
+40735653225 cancelada/substituída após revisão dos prazos.
+Não coleta PropertiesService, imagens, mesclas ou validações, nem certifica
+pós-estados. Próximo: exportar contrato determinístico para backend e adaptar
+estado/recibos cifrados com vínculo de cópia, antes de qualquer escrita/liberação.
+Os contratos/guardas/diários GS existentes ficam preservados; não apagá-los ou
+adotá-los implicitamente como diários do backend. Automação/código instalado,
+responsável, isolamento e prova nativa continuam pendentes. Criação bloqueada,
+sem merge/deploy ou escopo novo. Relatório consumidor:
+Closure/docs/carteira-viva/COLETA-REST-2026-10-28.md (RPG---BOT).
+CI produtor anterior 40731673476: 2.952 cenários/zero falhas, não repetido por
+registro documental. Nenhum Google/Discord autenticado ou ficha real nesta rodada.
+Sol Alto para integrar; Médio para revisar. Entradas abaixo históricas.
+
 ## Carteira viva: páginas sem gravação e versão · 28/10/2026 · não instalada
 
 PR31: plano e lotes de quatro perfis sem escrita de células ou propriedades;
