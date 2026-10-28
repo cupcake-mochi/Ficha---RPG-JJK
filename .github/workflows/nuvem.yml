@@ -19,6 +19,13 @@ jobs:
         with:
           node-version: '20'
       - run: bash nuvem-b47/preparar.sh
+      # Os testes salariais comparam o fonte atual com duas bases imutáveis.
+      # O checkout raso padrão não contém esses objetos; não pular as comparações.
+      - name: Buscar bases dos testes salariais
+        run: |
+          git fetch --no-tags --depth=1 origin \
+            9536746405f12a9e159e9173b54a2a861c0a871a \
+            57117fbe5c2361e6a09bfa00f037b4bcfaa8437f
       - run: .venv/bin/python nuvem-b47/conferir.py --smoke
       - uses: actions/upload-artifact@v4
         if: always()

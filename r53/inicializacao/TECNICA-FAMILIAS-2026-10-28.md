@@ -71,3 +71,12 @@ fases nem apagar diários para contornar mudança de estado.
 Criação incondicionalmente bloqueada; protótipos fora do pacote/bot. Sem merge
 em main, deploy, Gateway, modelo pago, ampliação de escopo ou acesso novo.
 Próxima implementação GPT-6 Astra / Alto; revisão focal Médio.
+
+## Correção do preparo do CI
+
+O run 40681047195 no código a92cba8 passou os 782 cenários, mas falhou em dois
+testes recém-incluídos pela main: abertura_salario e missoes_sem_registros.
+Ambos usam git show de bases históricas que faltavam no checkout raso.
+O workflow passa a buscar somente os dois commits fixos 9536746 e 57117fb,
+com SHA completo e depth=1, antes do smoke. Nenhuma expectativa/comparação
+foi removida ou alterada. O run duplicado 40681039147 foi cancelado.

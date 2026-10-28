@@ -287,8 +287,8 @@ A indicação não altera a configuração do modelo automaticamente.
 
 ## Grau, Origem e treinos
 
-`formacao.gs` usa `contrato_formacao.gs`, extraído de Ficha/Pessoal e do módulo
-salarial. Confira sem regenerar com
+`formacao.gs` usa `contrato_formacao.gs`, extraído de Ficha/Pessoal, do módulo
+salarial e do overlay R53Cartoes1. Confira sem regenerar com
 `node r53/inicializacao/gerar_contrato_formacao.js --conferir`.
 
 | Perfil | Células | Inicialização |

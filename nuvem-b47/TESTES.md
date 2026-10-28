@@ -259,3 +259,12 @@ contraprovas; teste de envio da nova revisão efd8dd8: 10/10; smoke final passou
 reais confirmados, cálculos e restauração na descartável. Não houve upload de
 Apps Script ou execução de construir/continuar; testes de gatilhos, alturas,
 visual Google, latência e migração da revisão continuam pendentes.
+
+## Correção do preparo do CI
+
+O run 40681047195 no código a92cba8 passou os 782 cenários, mas falhou em dois
+testes recém-incluídos pela main: abertura_salario e missoes_sem_registros.
+Ambos usam git show de bases históricas que faltavam no checkout raso.
+O workflow passa a buscar somente os dois commits fixos 9536746 e 57117fb,
+com SHA completo e depth=1, antes do smoke. Nenhuma expectativa/comparação
+foi removida ou alterada. O run duplicado 40681039147 foi cancelado.
