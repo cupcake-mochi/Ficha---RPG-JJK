@@ -4012,6 +4012,1044 @@ var R53_NOVA_FORMACAO_CONTRATO_ = {
       "leituras": {
         "FICHA PESSOAL": "D67:AT83"
       }
+    },
+    "tecnica": {
+      "entradas": [
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "J12",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "J16",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D18",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "J18",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "P18",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D22",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D26",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "L26",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "L29",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D33",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "P33",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        }
+      ],
+      "guardas": [
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D9",
+          "celulas": [
+            [
+              {
+                "valor": "TÉCNICA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D11",
+          "celulas": [
+            [
+              {
+                "valor": "NOME DA TÉCNICA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "J11",
+          "celulas": [
+            [
+              {
+                "valor": "TIPO DE DANO"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "L11",
+          "celulas": [
+            [
+              {
+                "valor": "ATRIBUTO DA TÉCNICA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "P11",
+          "celulas": [
+            [
+              {
+                "valor": "CONJURAÇÃO"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "R11",
+          "celulas": [
+            [
+              {
+                "valor": "CD"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D15",
+          "celulas": [
+            [
+              {
+                "valor": "ROTA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D21",
+          "celulas": [
+            [
+              {
+                "valor": "REGRA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D25",
+          "celulas": [
+            [
+              {
+                "valor": "DESCRIÇÃO"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "L28",
+          "celulas": [
+            [
+              {
+                "valor": "EXPRESSÃO DA TÉCNICA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D32",
+          "celulas": [
+            [
+              {
+                "valor": "REGRA PRÓPRIA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "P32",
+          "celulas": [
+            [
+              {
+                "valor": "CATEGORIA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "R32",
+          "celulas": [
+            [
+              {
+                "valor": "ESPAÇOS"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D12",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "7598244f4b06183afb4470c5fab942e8a1fd9dd9d281a7c9a1b43c0b7c170285"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "L12",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "1ba47bb5f48fed5efe9fcdb9736278866ed050f26cde014d5d205b1d8b0d76b8"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "P12",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "e7132b2fc833a466146a52505d51bdbc6b2e747756174f2df872bd910c9c5c9b"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "R12",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "7be04c6b80ff4cfb94f826474f936afd44bb1b7b2c7024e2dd7294b9b39aff71"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "J15",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "bcde836a86c857255e3c793ec6e94fb26f94d736461294a3c5c8b3d6df7416f8"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "P15",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "aa4534feca72d17829a4317480d9ce49657fee3509473b5cfed90fd9d2e0ca22"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D16",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "a30824fb56ef8c3eb8b52af31ecc8f293bcaf780c6a9099ad25990fb91ac0396"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "P16",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "95af77e2281db3eab17168e8a034e7f8bdea2a69324cc7b47c3493c0e2e0d6ae"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D17",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "3060883d9ce62d13e3127724dd39234068b6a0a53af8e2fd80c86b1c12eca1c9"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "J17",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "5c87f29b9c2cfdcab22ea21e8039facd983edfcf1736efd8835caa8a1865c4ba"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "P17",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "381d2c4d7e7af2f937fdfb242f72c2213134a1ad5e30fe32d423d43c4232720a"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D19",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "1082221c74abb6949b7da10f3e002f0ee6a7107883c3f6d8ea20417f025273d9"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "J19",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "b90ac12d2acc501dc9b778fb8738c693048feb4b9e91b74ea13d607d5a883001"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "P19",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "b0dbd6eeb584281682c0a77ef1600bc3c2cbb3ca637d6e93f330b183ea68be04"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "L25",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "4eb07647cb9a2fa45512199adddd56a5c339b0d5fabd1af3e505892e17c8cc0a"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "R33",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "4c754801025c650434401cf24e5ad4d0469b3163d8df8f05556ff04313de4975"
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "leituras": {
+        "FICHA AMALDIÇOADA": "D9:T34"
+      }
+    },
+    "familias": {
+      "entradas": [
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D37:G37",
+          "tipo": "estado_familia",
+          "valores": [
+            [
+              "Neutra",
+              "Neutra",
+              "Neutra",
+              "Neutra"
+            ]
+          ],
+          "notas": [
+            [
+              "",
+              "",
+              "",
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [],
+              [],
+              [],
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "J37:M37",
+          "tipo": "estado_familia",
+          "valores": [
+            [
+              "Neutra",
+              "Neutra",
+              "Neutra",
+              "Neutra"
+            ]
+          ],
+          "notas": [
+            [
+              "",
+              "",
+              "",
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [],
+              [],
+              [],
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "P37",
+          "tipo": "estado_familia",
+          "valores": [
+            [
+              "Neutra"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "O41:O50",
+          "tipo": "formula",
+          "valores": [
+            [
+              "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$2),'DADOS_CRIACAO'!$B$2<>\"\",TRIM('DADOS_CRIACAO'!$B$2)='DADOS_CRIACAO'!$B$2,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$2,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$2,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")"
+            ],
+            [
+              "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$3),'DADOS_CRIACAO'!$B$3<>\"\",TRIM('DADOS_CRIACAO'!$B$3)='DADOS_CRIACAO'!$B$3,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$3,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$3,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")"
+            ],
+            [
+              "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$4),'DADOS_CRIACAO'!$B$4<>\"\",TRIM('DADOS_CRIACAO'!$B$4)='DADOS_CRIACAO'!$B$4,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$4,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$4,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")"
+            ],
+            [
+              "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$5),'DADOS_CRIACAO'!$B$5<>\"\",TRIM('DADOS_CRIACAO'!$B$5)='DADOS_CRIACAO'!$B$5,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$5,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$5,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")"
+            ],
+            [
+              "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$6),'DADOS_CRIACAO'!$B$6<>\"\",TRIM('DADOS_CRIACAO'!$B$6)='DADOS_CRIACAO'!$B$6,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$6,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$6,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")"
+            ],
+            [
+              "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$7),'DADOS_CRIACAO'!$B$7<>\"\",TRIM('DADOS_CRIACAO'!$B$7)='DADOS_CRIACAO'!$B$7,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$7,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$7,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")"
+            ],
+            [
+              "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$8),'DADOS_CRIACAO'!$B$8<>\"\",TRIM('DADOS_CRIACAO'!$B$8)='DADOS_CRIACAO'!$B$8,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$8,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$8,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")"
+            ],
+            [
+              "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$9),'DADOS_CRIACAO'!$B$9<>\"\",TRIM('DADOS_CRIACAO'!$B$9)='DADOS_CRIACAO'!$B$9,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$9,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$9,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")"
+            ],
+            [
+              "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$10),'DADOS_CRIACAO'!$B$10<>\"\",TRIM('DADOS_CRIACAO'!$B$10)='DADOS_CRIACAO'!$B$10,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$10,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$10,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")"
+            ],
+            [
+              "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$11),'DADOS_CRIACAO'!$B$11<>\"\",TRIM('DADOS_CRIACAO'!$B$11)='DADOS_CRIACAO'!$B$11,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$11,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$11,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")"
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ],
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              [
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$2),'DADOS_CRIACAO'!$B$2<>\"\",TRIM('DADOS_CRIACAO'!$B$2)='DADOS_CRIACAO'!$B$2,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$2,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$2,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$2);'DADOS_CRIACAO'!$B$2<>\"\";TRIM('DADOS_CRIACAO'!$B$2)='DADOS_CRIACAO'!$B$2;COUNTIF('DADOS_CRIACAO'!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$2;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF('DADOS_CRIACAO'!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$2;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$2),DADOS_CRIACAO!$B$2<>\"\",TRIM(DADOS_CRIACAO!$B$2)=DADOS_CRIACAO!$B$2,COUNTIF(DADOS_CRIACAO!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$2,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF(DADOS_CRIACAO!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$2,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$2);DADOS_CRIACAO!$B$2<>\"\";TRIM(DADOS_CRIACAO!$B$2)=DADOS_CRIACAO!$B$2;COUNTIF(DADOS_CRIACAO!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$2;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF(DADOS_CRIACAO!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$2;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")"
+              ]
+            ],
+            [
+              [
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$3),'DADOS_CRIACAO'!$B$3<>\"\",TRIM('DADOS_CRIACAO'!$B$3)='DADOS_CRIACAO'!$B$3,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$3,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$3,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$3);'DADOS_CRIACAO'!$B$3<>\"\";TRIM('DADOS_CRIACAO'!$B$3)='DADOS_CRIACAO'!$B$3;COUNTIF('DADOS_CRIACAO'!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$3;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF('DADOS_CRIACAO'!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$3;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$3),DADOS_CRIACAO!$B$3<>\"\",TRIM(DADOS_CRIACAO!$B$3)=DADOS_CRIACAO!$B$3,COUNTIF(DADOS_CRIACAO!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$3,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF(DADOS_CRIACAO!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$3,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$3);DADOS_CRIACAO!$B$3<>\"\";TRIM(DADOS_CRIACAO!$B$3)=DADOS_CRIACAO!$B$3;COUNTIF(DADOS_CRIACAO!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$3;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF(DADOS_CRIACAO!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$3;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")"
+              ]
+            ],
+            [
+              [
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$4),'DADOS_CRIACAO'!$B$4<>\"\",TRIM('DADOS_CRIACAO'!$B$4)='DADOS_CRIACAO'!$B$4,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$4,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$4,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$4);'DADOS_CRIACAO'!$B$4<>\"\";TRIM('DADOS_CRIACAO'!$B$4)='DADOS_CRIACAO'!$B$4;COUNTIF('DADOS_CRIACAO'!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$4;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF('DADOS_CRIACAO'!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$4;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$4),DADOS_CRIACAO!$B$4<>\"\",TRIM(DADOS_CRIACAO!$B$4)=DADOS_CRIACAO!$B$4,COUNTIF(DADOS_CRIACAO!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$4,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF(DADOS_CRIACAO!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$4,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$4);DADOS_CRIACAO!$B$4<>\"\";TRIM(DADOS_CRIACAO!$B$4)=DADOS_CRIACAO!$B$4;COUNTIF(DADOS_CRIACAO!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$4;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF(DADOS_CRIACAO!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$4;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")"
+              ]
+            ],
+            [
+              [
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$5),'DADOS_CRIACAO'!$B$5<>\"\",TRIM('DADOS_CRIACAO'!$B$5)='DADOS_CRIACAO'!$B$5,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$5,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$5,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$5);'DADOS_CRIACAO'!$B$5<>\"\";TRIM('DADOS_CRIACAO'!$B$5)='DADOS_CRIACAO'!$B$5;COUNTIF('DADOS_CRIACAO'!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$5;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF('DADOS_CRIACAO'!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$5;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$5),DADOS_CRIACAO!$B$5<>\"\",TRIM(DADOS_CRIACAO!$B$5)=DADOS_CRIACAO!$B$5,COUNTIF(DADOS_CRIACAO!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$5,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF(DADOS_CRIACAO!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$5,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$5);DADOS_CRIACAO!$B$5<>\"\";TRIM(DADOS_CRIACAO!$B$5)=DADOS_CRIACAO!$B$5;COUNTIF(DADOS_CRIACAO!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$5;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF(DADOS_CRIACAO!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$5;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")"
+              ]
+            ],
+            [
+              [
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$6),'DADOS_CRIACAO'!$B$6<>\"\",TRIM('DADOS_CRIACAO'!$B$6)='DADOS_CRIACAO'!$B$6,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$6,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$6,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$6);'DADOS_CRIACAO'!$B$6<>\"\";TRIM('DADOS_CRIACAO'!$B$6)='DADOS_CRIACAO'!$B$6;COUNTIF('DADOS_CRIACAO'!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$6;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF('DADOS_CRIACAO'!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$6;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$6),DADOS_CRIACAO!$B$6<>\"\",TRIM(DADOS_CRIACAO!$B$6)=DADOS_CRIACAO!$B$6,COUNTIF(DADOS_CRIACAO!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$6,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF(DADOS_CRIACAO!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$6,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$6);DADOS_CRIACAO!$B$6<>\"\";TRIM(DADOS_CRIACAO!$B$6)=DADOS_CRIACAO!$B$6;COUNTIF(DADOS_CRIACAO!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$6;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF(DADOS_CRIACAO!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$6;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")"
+              ]
+            ],
+            [
+              [
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$7),'DADOS_CRIACAO'!$B$7<>\"\",TRIM('DADOS_CRIACAO'!$B$7)='DADOS_CRIACAO'!$B$7,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$7,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$7,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$7);'DADOS_CRIACAO'!$B$7<>\"\";TRIM('DADOS_CRIACAO'!$B$7)='DADOS_CRIACAO'!$B$7;COUNTIF('DADOS_CRIACAO'!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$7;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF('DADOS_CRIACAO'!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$7;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$7),DADOS_CRIACAO!$B$7<>\"\",TRIM(DADOS_CRIACAO!$B$7)=DADOS_CRIACAO!$B$7,COUNTIF(DADOS_CRIACAO!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$7,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF(DADOS_CRIACAO!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$7,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$7);DADOS_CRIACAO!$B$7<>\"\";TRIM(DADOS_CRIACAO!$B$7)=DADOS_CRIACAO!$B$7;COUNTIF(DADOS_CRIACAO!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$7;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF(DADOS_CRIACAO!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$7;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")"
+              ]
+            ],
+            [
+              [
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$8),'DADOS_CRIACAO'!$B$8<>\"\",TRIM('DADOS_CRIACAO'!$B$8)='DADOS_CRIACAO'!$B$8,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$8,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$8,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$8);'DADOS_CRIACAO'!$B$8<>\"\";TRIM('DADOS_CRIACAO'!$B$8)='DADOS_CRIACAO'!$B$8;COUNTIF('DADOS_CRIACAO'!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$8;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF('DADOS_CRIACAO'!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$8;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$8),DADOS_CRIACAO!$B$8<>\"\",TRIM(DADOS_CRIACAO!$B$8)=DADOS_CRIACAO!$B$8,COUNTIF(DADOS_CRIACAO!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$8,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF(DADOS_CRIACAO!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$8,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$8);DADOS_CRIACAO!$B$8<>\"\";TRIM(DADOS_CRIACAO!$B$8)=DADOS_CRIACAO!$B$8;COUNTIF(DADOS_CRIACAO!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$8;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF(DADOS_CRIACAO!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$8;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")"
+              ]
+            ],
+            [
+              [
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$9),'DADOS_CRIACAO'!$B$9<>\"\",TRIM('DADOS_CRIACAO'!$B$9)='DADOS_CRIACAO'!$B$9,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$9,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$9,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$9);'DADOS_CRIACAO'!$B$9<>\"\";TRIM('DADOS_CRIACAO'!$B$9)='DADOS_CRIACAO'!$B$9;COUNTIF('DADOS_CRIACAO'!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$9;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF('DADOS_CRIACAO'!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$9;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$9),DADOS_CRIACAO!$B$9<>\"\",TRIM(DADOS_CRIACAO!$B$9)=DADOS_CRIACAO!$B$9,COUNTIF(DADOS_CRIACAO!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$9,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF(DADOS_CRIACAO!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$9,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$9);DADOS_CRIACAO!$B$9<>\"\";TRIM(DADOS_CRIACAO!$B$9)=DADOS_CRIACAO!$B$9;COUNTIF(DADOS_CRIACAO!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$9;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF(DADOS_CRIACAO!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$9;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")"
+              ]
+            ],
+            [
+              [
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$10),'DADOS_CRIACAO'!$B$10<>\"\",TRIM('DADOS_CRIACAO'!$B$10)='DADOS_CRIACAO'!$B$10,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$10,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$10,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$10);'DADOS_CRIACAO'!$B$10<>\"\";TRIM('DADOS_CRIACAO'!$B$10)='DADOS_CRIACAO'!$B$10;COUNTIF('DADOS_CRIACAO'!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$10;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF('DADOS_CRIACAO'!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$10;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$10),DADOS_CRIACAO!$B$10<>\"\",TRIM(DADOS_CRIACAO!$B$10)=DADOS_CRIACAO!$B$10,COUNTIF(DADOS_CRIACAO!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$10,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF(DADOS_CRIACAO!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$10,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$10);DADOS_CRIACAO!$B$10<>\"\";TRIM(DADOS_CRIACAO!$B$10)=DADOS_CRIACAO!$B$10;COUNTIF(DADOS_CRIACAO!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$10;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF(DADOS_CRIACAO!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$10;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")"
+              ]
+            ],
+            [
+              [
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$11),'DADOS_CRIACAO'!$B$11<>\"\",TRIM('DADOS_CRIACAO'!$B$11)='DADOS_CRIACAO'!$B$11,COUNTIF('DADOS_CRIACAO'!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$11,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF('DADOS_CRIACAO'!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$11,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT('DADOS_CRIACAO'!$B$11);'DADOS_CRIACAO'!$B$11<>\"\";TRIM('DADOS_CRIACAO'!$B$11)='DADOS_CRIACAO'!$B$11;COUNTIF('DADOS_CRIACAO'!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$11;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF('DADOS_CRIACAO'!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE('DADOS_CRIACAO'!$B$11;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$11),DADOS_CRIACAO!$B$11<>\"\",TRIM(DADOS_CRIACAO!$B$11)=DADOS_CRIACAO!$B$11,COUNTIF(DADOS_CRIACAO!$B$2:$B$11,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$11,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=1,COUNTIF(DADOS_CRIACAO!$H$2:$H$10,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$11,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))=0),\"Neutra\",\"\")",
+                "=IF(AND(ISTEXT(DADOS_CRIACAO!$B$11);DADOS_CRIACAO!$B$11<>\"\";TRIM(DADOS_CRIACAO!$B$11)=DADOS_CRIACAO!$B$11;COUNTIF(DADOS_CRIACAO!$B$2:$B$11;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$11;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=1;COUNTIF(DADOS_CRIACAO!$H$2:$H$10;SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(DADOS_CRIACAO!$B$11;\"~\";\"~~\");\"*\";\"~*\");\"?\";\"~?\"))=0);\"Neutra\";\"\")"
+              ]
+            ]
+          ]
+        }
+      ],
+      "guardas": [
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D36:G36",
+          "celulas": [
+            [
+              {
+                "valor": "ALCANCE"
+              },
+              {
+                "valor": "ÁREA"
+              },
+              {
+                "valor": "MIRA"
+              },
+              {
+                "valor": "CONTROLE"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "J36:M36",
+          "celulas": [
+            [
+              {
+                "valor": "AUXILIARES"
+              },
+              {
+                "valor": "CASTIGO"
+              },
+              {
+                "valor": "TEMPO"
+              },
+              {
+                "valor": "MARCA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "P36",
+          "celulas": [
+            [
+              {
+                "valor": "AMPARO"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "Q36",
+          "celulas": [
+            [
+              {
+                "valor": "LIVRES · FECHADAS"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "Q37",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "f8e8a651c9fc87e1660569aafacbb052d5a61f3586a51b973a09f1d3e29cf3ee"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D38",
+          "celulas": [
+            [
+              {
+                "valor": "FAMÍLIAS CUSTOM · CONFIGURAÇÃO"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D39",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "9d36f59c1296d4528553d53b49a9f28282cdbd8f8e7efe4f38120628bf84fe73",
+                  "09c450acf3bb24f7d6a36b2b8e5a0e2b0d75978322b64156b14e353e09a14689",
+                  "507a51b257b5eed27c6a6892c735487b9a48df462f3d2641428958c41513844d",
+                  "23885fe43a63520fe8bfec01e27248cf71eaf106379eb247b2d0948ecfe1dd9e"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D40",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "dd10920f88c0c54fca3ec65999839873a7e213eb630f5b6ead725eac7629cd20",
+                  "26fd473cc65d563a535a671f18039e68973dffdb542513a6ab40ea4c93b8bcc5",
+                  "cf8d223c2ca45e8462a9152007c67d280f4194fbc2b12a02a909a968bdd5456d",
+                  "20ab162ecb3803fc82a593ad903230d41302f0fb63c0781e7750b4fe204db0b5"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "O40",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "7d67056e12d73dce082781e1489ef64f5ab7c9919f5be809b646cc237bc774b0",
+                  "00dc0a727ae4fb4efb375fd8e6cd490be1d9444034e277f44c75d1f14d14f124",
+                  "3795c65999800a7e5bfc7c2c14e9eafd60db3377f195fc9ac6437c69b33a2d84",
+                  "d40cd4b89ad675e59f82c97a65e21071a9c79da5e4d388bc95da72faa3be2f15"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "FICHA AMALDIÇOADA",
+          "faixa": "D41:D50",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "fcff8fe084b9f3738c422a4d5db5a0a75e6a7846e3d9eda4999266573d2367f0",
+                  "e4493e816b846690b424de18028f97a341078536b6833a7ca7154f3a17b81464"
+                ]
+              }
+            ],
+            [
+              {
+                "formulas": [
+                  "c9605be741f60ef40cb9289c267d0564b0fdf4364a594af234faee827e378cbd",
+                  "c747da94851f208ea16ef47f48e1a2164b2c5c4752016207691de0f9469a0833"
+                ]
+              }
+            ],
+            [
+              {
+                "formulas": [
+                  "c358728dfdffecaaad3fdacf5a38ea521a721745e1e0d13fbc673c6e76d15859",
+                  "a0e4c0b7b0b8d2cccc30a16531f86ca36782caebfa177321a548709dfc5e0fc8"
+                ]
+              }
+            ],
+            [
+              {
+                "formulas": [
+                  "bbf0f05fb3df67fcf2196315480438d18dc661826933fe5211b71edab5148534",
+                  "eeb09a3f0b88f0ba80f46f2564472157a5761bf016684d929f4a2cf6d7cc8576"
+                ]
+              }
+            ],
+            [
+              {
+                "formulas": [
+                  "d57d67be6edc864ab972fac6e12911ba02a918870d23a3e31af7b94d120f2973",
+                  "f9b38d42e620cb284c6a8eef509abb2354999850220e7b3a2749d90ad3354798"
+                ]
+              }
+            ],
+            [
+              {
+                "formulas": [
+                  "b489d0b7f7666306301b1493996e21e737ab72dfbea6c40571cd8989dea9f705",
+                  "8270c6c97e0958f13af42d8a24ccadfae80d8861fc5f9c664b04b402da11f5cf"
+                ]
+              }
+            ],
+            [
+              {
+                "formulas": [
+                  "45d316e881c0501e5f54bba3d73cf2b8f12ad4967560bf9b500786ca8b24c9d4",
+                  "0d0adee6e55551f16c74bf4ada67cf75a9a744bc189c6722b21e8c0aa90662e8"
+                ]
+              }
+            ],
+            [
+              {
+                "formulas": [
+                  "fd0ef2ed30fab330da0545bc353bed91a0a203283bc192cf51f1403ac527649c",
+                  "42ca366219bbfd38017468078967769c54ab8df27133c5132f4448e49c6fbcd8"
+                ]
+              }
+            ],
+            [
+              {
+                "formulas": [
+                  "1f83ddd190158ff741b9dcc2eff25c4cbb2e9d6361a84c39de8e2cb50def22e9",
+                  "2d0fa3d021af618c5124d8387b419821c4410f1fb5f11ae339852bf7fcb2da73"
+                ]
+              }
+            ],
+            [
+              {
+                "formulas": [
+                  "45770e7e0d28a6ae3bd7437b068da63c9b116c33549a4d4e079cf239e1c14072",
+                  "39679a9c8a8597a8ec5c929ab373f365fbbbec00d27e900a48c4a0f652aa795a"
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "leituras": {
+        "FICHA AMALDIÇOADA": "D36:T50"
+      }
     }
   }
 };

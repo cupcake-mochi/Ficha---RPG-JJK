@@ -106,4 +106,18 @@ caso('progressão não libera reexecutar financeiro com o nível anterior',()=>{
 caso('missão inserida depois invalida a repetição',()=>{const a=preparado(),p=a.progPreview();a.progComplete(p);a.put('FICHA PESSOAL','AW15','nova missão');const n=a.writes.length;assert.throws(()=>a.progApply(p),/missões/);assert.equal(a.writes.length,n);});
 caso('limite de passos e retomada entre nível e base',()=>{const a=preparado(),p=a.progPreview();a.ctx.R53_NOVA_PROG_.escritasPorExecucao=1;const r=a.progApply(p);assert.equal(r.concluido,false);assert.equal(r.retomar,true);assert.equal(a.range('DADOS','CZ54').getValue(),987654);a.progComplete(p);verificar(a,10,3700);});
 caso('dados e notas pessoais não aparecem no diário',()=>{const a=preparado(),p=a.progPreview();a.progComplete(p);const j=a.doc.get(a.ctx.R53_NOVA_PROG_.diario);assert(!j.includes('987654'));assert(!j.includes('habilidade custom'));assert(Buffer.byteLength(j)<9000);});
+caso('marcas novas de XP congelado saem no financeiro e não reajustam a base',()=>{
+ const a=preparado({semFinanceiro:true});
+ for(const c of ['AW','BC','BI','BO'])a.put('FICHA PESSOAL',c+'15','missão antiga','','Nota antiga\n[XP congelado: 3750 · id-antigo]\n[Salário: id-antigo · 2026-10-27]');
+ a.complete(a.preview());
+ const notas=a.range('FICHA PESSOAL','AW15:BT87').getNotes();
+ const base=a.range('DADOS','CZ54').getValue();
+ assert.equal(a.ctx.salarioXpCongelado_(a.ss,{notas,caixas:{},xpCaixas:{}}),false);
+ assert.equal(a.range('DADOS','CZ54').getValue(),base);
+ a.writes.length=0;a.progComplete(a.progPreview());verificar(a,10,3700);
+});
+caso('marca de XP congelado reinserida depois do financeiro impede progressão',()=>{
+ const a=preparado();a.put('FICHA PESSOAL','AW87','','','[XP congelado: 3750 · id-antigo]');
+ assert.throws(()=>a.progPreview(),/missões não estão limpas/);assert.equal(a.writes.length,0);
+});
 console.log(`${casos} cenários offline de nível inicial/base XP aprovados; sem inicialização geral ou aceite nativo.`);

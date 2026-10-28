@@ -9,12 +9,12 @@ A cópia deve conservar essas regras e catálogos; não deve herdar identidade,
 progressão, inventário, missões, cartões ou dinheiro de outro personagem.
 Os protótipos cobrem financeiro, nível/base de XP, 14 textos pessoais,
 19 escolhas básicas, 20 entradas de recursos/bônus, nove condições/descanso e
-268 campos de Grau/Origem, Perícias, Ofícios/TR e armas. **Não oferecem uma
-ficha inteira pronta para cadastro.** A base incorporada é a main
-`64b84e4cef0b1b0a05c2159c9dc700459a0f2dc9` (merge `3f57c19`). Inclui o código
-salarial da PR 39 e o registro da PR 40 sobre instalação/backup 12 das oficiais,
-feito por outro trabalho. Esta branch não reaplica essa instalação.
-Não reabrir aquela otimização nem instalar o pacote inteiro por rotina.
+268 campos de Grau/Origem, Perícias, Ofícios/TR e armas, mais 11 entradas do
+cabeçalho da técnica e 19 estados de Famílias. **Não oferecem uma ficha inteira
+pronta para cadastro.** Base incorporada: main
+`ef361ccdf7a0210781176e3c42d318cde147553d`, merge `a72adc0` (PRs 41–43).
+Inclui XP manual e marcas de missões congeladas. A instalação/backup 13 das
+oficiais foi feita por outro trabalho; não reaplicar nem reabrir a otimização.
 
 ## Financeiro
 
@@ -227,21 +227,16 @@ node r53/testes/inicializacao_financeiro.js
 node r53/testes/inicializacao_progressao.js
 node r53/testes/inicializacao_identidade.js
 node r53/testes/inicializacao_pessoal.js
+node r53/testes/inicializacao_formacao.js
 ```
 
-502 cenários offline (101 financeiros, 80 de nível/base, 78 de textos e
-243 de escolhas/recursos/condições),
-incluindo todas as fronteiras de escrita antes/depois,
-queda entre conteúdo/notas, propriedades parcialmente removidas, repetição,
-edição concorrente, linhas físicas tardias, prévia envelhecida, alvo inválido,
-modo legado, fórmula desconhecida, preservação de regras e ausência de texto
-financeiro no diário. VM com serviços simulados; não executa fórmulas e não
-mede latência do Google. O smoke de nuvem inclui os quatro testes; o novo também confere o contrato gerado.
-CI atual do código `a55517d` aprovado: [40540295538](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40540295538),
-502 cenários e demais regressões. Documentação posterior não exige repetição.
-CI anterior do integrado `84bcd56` aprovado: [40535287570](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40535287570).
-CI anterior do protótipo `280a7dc`: [40534237271](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40534237271).
-Registro posterior apenas documental, sem repetir a bateria.
+782 cenários offline: 101 financeiros, 82 de nível/base, 78 de textos,
+243 de escolhas/recursos/condições e 278 de formação/técnica/Famílias. Incluem
+falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
+notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
+nem mede latência Google. O smoke inclui os cinco arquivos de testes.
+Resultados anteriores e limites nativos ficam nos relatórios datados; o registro
+atual está em [TECNICA-FAMILIAS-2026-10-28.md](TECNICA-FAMILIAS-2026-10-28.md).
 Regressão independente de XP: `node r53/testes/xp_nivel.js`, 20.643
 verificações/9.900 combinações sem a exportação nativa opcional.
 
@@ -269,10 +264,11 @@ Detalhes em [NIVEL-TEXTOS-2026-10-27.md](NIVEL-TEXTOS-2026-10-27.md).
 
 ## O que falta antes de liberar criação
 
-- Inicialização pessoal completa: fotos/arte, Grau, treinos, capacidades de
-  Origem, técnica/Famílias, inventário, entidades, cartões e MONTAGENS. As
-  escolhas básicas, atributos/marcos pessoais, recursos e condições tratados
-  têm protótipos; ainda falta aceite nativo dos executores e cobertura restante.
+- Inicialização pessoal completa: fotos/arte, campos restantes da CARTEIRA
+  (incluindo nome declarado da técnica), inventário/equipamento, entidades,
+  cartões e MONTAGENS. Os domínios já tratados têm protótipos, sem aceite
+  nativo completo dos executores. Famílias ainda exigem sincronização com
+  cartões, amparo e recuperações; não basta restaurar seus menus.
 - Propriedades de recuperação/editor que podem repor dados antigos, incluindo
   caches novos `r53_versoes` e `r53_marcas_custom`, além de Classe/amparo/recuperações.
 - Orquestração entre fases, conferência combinada, limites de custo e prova
@@ -313,3 +309,23 @@ por chamada e limite de 9.000 bytes. Fórmula Google só é reconhecida se const
 na lista exata do campo. Se uma escrita de matriz deixar estado intermediário,
 a rotina recusa continuar: não sobrescreve nem faz rollback automático.
 Relatório e provas: [FORMACAO-2026-10-27.md](FORMACAO-2026-10-27.md).
+
+## Técnica e Famílias
+
+Dois perfis em `formacao.gs`, com funções `r53NovaFichaTecnicaPrevia/Aplicar`
+e `r53NovaFichaFamiliasPrevia/Aplicar`, usam o mesmo executor e seus limites.
+O gerador inclui `R53Cartoes1.gs`, responsável pelo cabeçalho final da aba.
+
+- Técnica: limpa J12, J16, D18, J18, P18, D22, D26, L26, L29, D33 e P33 da
+  FICHA AMALDIÇOADA. Nome, atributo, conjuração e CD derivados são protegidos;
+  o nome declarado na CARTEIRA não pertence a este domínio e segue pendente.
+- Famílias: nove estados do livro voltam a Neutra. O41:O50 recupera as fórmulas
+  originais: custom válida fica Neutra; sem definição válida fica vazia.
+  As definições da mesa, nomes e fórmulas derivadas são preservadas.
+
+Não concede Famílias, aprova custom ou limpa cartões/amparo. Fórmula pessoal
+não reconhecida provoca recusa antes de escrever. As variantes de aspas e
+separadores aceitam somente a fórmula inteira conhecida. Na projeção pela
+Sheets API em locale pt_BR foi necessário usar ponto e vírgula; isso não prova
+qual comportamento terá `setValues` no Apps Script, cujo ensaio segue pendente.
+O teste nativo delimitado e suas ressalvas estão no relatório de 28/10.

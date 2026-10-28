@@ -1,3 +1,22 @@
+## Carteira viva: técnica e Famílias · 28/10/2026 · não instalada
+
+Main ef361cc incorporada por a72adc0 (PRs 41–43). XP manual/missões congeladas
+reconciliados; backup 13 das oficiais registrado por outro trabalho, não reaplicar.
+PR 31: dois perfis novos, 11 entradas de técnica e 19 de Famílias, preservando
+catálogos/derivados. 782 cenários locais (101/82/78/243/278), mais 87 de XP manual.
+84 entradas/guardas lidas em cada oficial, zero divergências e nenhuma escrita.
+Projeção Sheets API em cópia privada: 30 alvos restaurados, 8.132 comparações
+preservadas sem diferença; duas Famílias custom, inclusive nome com *, Neutra.
+Fórmulas via API exigiram variante exata com ponto e vírgula; não confundir com
+execução Apps Script. Cópia na lixeira. Relatório TECNICA-FAMILIAS-2026-10-28.md
+em r53/inicializacao e README atualizado.
+
+Próximo: inventário/equipamento. Também faltam campos pessoais da CARTEIRA,
+entidades/cartões/MONTAGENS, arte/recuperações, orquestração/conferência final,
+automações, novo responsável e integração drive.file/prova nativa completa.
+Criação bloqueada; fora do pacote/bot, sem merge/deploy ou novos escopos.
+GPT-6 Astra / Alto; revisão focal Médio. Entradas abaixo são históricas.
+
 ## Carteira viva: Grau, Origem e treinos · 27/10/2026 · não instalada
 
 PR 31 em rascunho. Main 64b84e4 incorporada por 3f57c19; inclui PRs 39/40,

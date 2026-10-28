@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict'),{execFileSync}=require('node:child_process');
 const {ambiente,a1}=require('./apoio_inicializacao');
-const root=path.resolve(__dirname,'../..'),g={};vm.createContext(g);for(const n of ['Ficha','Pessoal','Salarios'])vm.runInContext(fs.readFileSync(path.join(root,'apps-script/'+n+'.gs'),'utf8'),g);
+const root=path.resolve(__dirname,'../..'),g={};vm.createContext(g);for(const n of ['Ficha','Pessoal','Salarios','R53Cartoes1'])vm.runInContext(fs.readFileSync(path.join(root,'apps-script/'+n+'.gs'),'utf8'),g);
 const original=new Map(g.ABAS.map(x=>[x.nome,new Map(x.vals.map(v=>[v[0]+','+v[1],v[2]]))]));
 for(const x of g.VALORES_CUSTOM_)for(const [r,c,v]of x.vals)original.get(x.nome)?.set(r+','+c,v);
 original.get('FICHA PESSOAL').set('86,23',g.SALARIO_.f.total);
@@ -9,10 +9,10 @@ const letra=n=>{let s='';while(n){n--;s=String.fromCharCode(65+n%26)+s;n=Math.fl
 const valor=(s,a)=>{const p=a1(a);return original.get(s).get(p[0]+','+p[1])??'';};
 const nota=(s,a)=>g.ABAS.find(x=>x.nome===s).notas?.find(x=>x[0]===a)?.[1]||'';
 const sources=['contrato_formacao','formacao'].map(n=>fs.readFileSync(path.join(root,'r53/inicializacao/'+n+'.gs'),'utf8'));
-const nomes=['grau_origem','pericias','oficios_tr','armas'];
+const nomes=['grau_origem','pericias','oficios_tr','armas','tecnica','familias'];
 let casos=0;function caso(n,f){try{f();casos++;}catch(e){e.message=n+': '+e.message;throw e;}}
 function visitar(x,fn){const [r,c,r2,c2]=a1(x.faixa);for(let rr=r;rr<=r2;rr++)for(let cc=c;cc<=c2;cc++)fn(letra(cc)+rr,rr-r,cc-c);}
-function preparado(nome){const a=ambiente();for(const f of sources)vm.runInContext(f,a.ctx);a.nome=nome;a.c=a.ctx.R53_NOVA_FORMACAO_CONTRATO_.dominios[nome];
+function preparado(nome){const a=ambiente();for(const f of sources)vm.runInContext(f,a.ctx);a.sheets['FICHA AMALDIÇOADA']={getRange:addr=>a.range('FICHA AMALDIÇOADA',addr)};a.nome=nome;a.c=a.ctx.R53_NOVA_FORMACAO_CONTRATO_.dominios[nome];
  for(const x of a.c.guardas)visitar(x,addr=>{const v=valor(x.aba,addr);a.put(x.aba,addr,typeof v==='string'&&v.startsWith('=')?123:v,typeof v==='string'&&v.startsWith('=')?v:'','INSTRUÇÃO NO RÓTULO');});
  for(const x of a.c.entradas)visitar(x,addr=>a.put(x.aba,addr,x.tipo==='bool'?true:x.tipo==='bonus'?44:'TEXTO PRIVADO ANTIGO','','NOTA PRIVADA ANTIGA'));
  a.put('CONFIGURAÇÃO','AK51','REGRA CUSTOM DA MESA');a.put('CONFIGURAÇÃO','F46',10);a.put('FICHA','AH11',30);a.put('DADOS','CZ54',3700);a.put('FICHA PESSOAL','Q27','HISTÓRIA PRESERVADA');a.put('FICHA PESSOAL','D92','INVENTÁRIO PRESERVADO');
@@ -31,7 +31,7 @@ function conferir(a){for(const x of a.c.entradas)visitar(x,addr=>{const r=a.rang
 }
 caso('contrato e fontes independentes concordam sem regeneração',()=>{
  execFileSync(process.execPath,['r53/inicializacao/gerar_contrato_formacao.js','--conferir'],{cwd:root});
- const quant={grau_origem:10,pericias:99,oficios_tr:94,armas:65};
+ const quant={grau_origem:10,pericias:99,oficios_tr:94,armas:65,tecnica:11,familias:19};
  for(const n of nomes){const a=preparado(n);let total=0;for(const x of a.c.entradas)visitar(x,(addr,i,j)=>{total++;assert.equal(x.valores[i][j],valor(x.aba,addr));assert.equal(x.notas[i][j],nota(x.aba,addr));});assert.equal(total,quant[n]);}
 });
 for(const nome of nomes){
@@ -50,7 +50,7 @@ caso('Origem restaura fórmulas e a instrução do menu, não copia a prosa',()=
 caso('custom B47 usa AL, preserva nomes/mirrors derivados e restaura atributo do ofício',()=>{const a=preparado('oficios_tr');a.concluir(a.previa());assert(a.c.entradas.some(x=>x.faixa==='AL118:AL127'));assert(!a.c.entradas.some(x=>x.faixa==='O118:O127'));assert.equal(a.range('FICHA','W118').getFormulas()[0][0],valor('FICHA','W118'));const b=preparado('pericias');b.concluir(b.previa());assert(b.c.entradas.some(x=>x.faixa==='AL94:AL103'));assert(!b.c.entradas.some(x=>x.faixa==='R94:R103'));});
 caso('matriz parcialmente alterada não é assumida como gravação completa',()=>{const a=preparado('pericias'),p=a.previa();a.hook((f,t)=>{if(f==='antes'&&t==='valores'){a.put('FICHA','D80',false);throw Error('queda parcial');}});assert.throws(()=>a.aplicar(p),/queda parcial/);a.hook(null);const n=a.writes.length;assert.throws(()=>a.aplicar(p),/editados/);assert.equal(a.writes.length,n);assert.equal(a.range('FICHA','E80').getValue(),true);});
 caso('edição em uma nota da matriz depois de queda impede retomada',()=>{const a=preparado('armas'),p=a.previa();a.hook((f,t)=>{if(f==='depois'&&t==='valores')throw Error('queda');});assert.throws(()=>a.aplicar(p),/queda/);a.hook(null);a.put('FICHA PESSOAL','D72',false,'','NOTA NOVA');const n=a.writes.length;assert.throws(()=>a.aplicar(p),/editados/);assert.equal(a.writes.length,n);});
-caso('normalização do Google após gravar matriz não quebra a pós-condição',()=>{const {variantes}=require('../inicializacao/gerar_contrato_formacao');for(const nome of ['grau_origem','oficios_tr']){const a=preparado(nome);a.hook((f,t)=>{if(f==='depois'&&t==='valores')for(const x of a.c.entradas)if(x.tipo==='formula')visitar(x,(addr,i,j)=>{if(a.range(x.aba,addr).getFormulas()[0][0])a.put(x.aba,addr,999,variantes(x.valores[i][j]).at(-1),a.range(x.aba,addr).getNotes()[0][0]);});});a.concluir(a.previa());for(const x of a.c.entradas)if(x.tipo==='formula')visitar(x,(addr,i,j)=>assert(variantes(x.valores[i][j]).includes(a.range(x.aba,addr).getFormulas()[0][0])));}});
+caso('normalização do Google após gravar matriz não quebra a pós-condição',()=>{const {variantes}=require('../inicializacao/gerar_contrato_formacao');for(const nome of ['grau_origem','oficios_tr','familias']){const a=preparado(nome);a.hook((f,t)=>{if(f==='depois'&&t==='valores')for(const x of a.c.entradas)if(x.tipo==='formula')visitar(x,(addr,i,j)=>{if(a.range(x.aba,addr).getFormulas()[0][0])a.put(x.aba,addr,999,variantes(x.valores[i][j]).at(-1),a.range(x.aba,addr).getNotes()[0][0]);});});a.concluir(a.previa());for(const x of a.c.entradas)if(x.tipo==='formula')visitar(x,(addr,i,j)=>assert(variantes(x.valores[i][j]).includes(a.range(x.aba,addr).getFormulas()[0][0])));}});
 caso('guarda nativa aceita só fórmulas equivalentes sem mudar conta',()=>{const {variantes}=require('../inicializacao/gerar_contrato_formacao');for(const nome of nomes){const a=preparado(nome);for(const x of a.c.guardas)visitar(x,addr=>{const v=valor(x.aba,addr);if(typeof v==='string'&&v.startsWith('='))a.put(x.aba,addr,999,variantes(v).at(-1));});a.concluir(a.previa());}const b=preparado('grau_origem');b.put('FICHA PESSOAL','D51',1,'=1');assert.throws(()=>b.previa(),/protegida/);});
 caso('contrato e domínio inexistentes não criam escrita',()=>{const a=preparado('armas');assert.throws(()=>a.ctx.r53NovaFormContrato_('constructor'),/contrato/);a.ctx.R53_NOVA_FORMACAO_CONTRATO_=undefined;assert.throws(()=>a.previa(),/contrato/);assert.equal(a.writes.length,0);});
 caso('saldo protegido usa o preparador salarial, não a antiga apresentação mensal',()=>{
@@ -58,4 +58,30 @@ caso('saldo protegido usa o preparador salarial, não a antiga apresentação me
  assert.notEqual(antiga,g.SALARIO_.f.total);a.put('FICHA PESSOAL','W86',150000,antiga);
  assert.throws(()=>a.previa(),/protegida/);assert.equal(a.writes.length,0);
 });
-console.log(`${casos} cenários offline de Grau/Origem/perícias/ofícios/TR/armas aprovados; sem aceite nativo ou criação geral.`);
+caso('técnica limpa textos e escolhas sem apagar nome, atributo e contas derivados',()=>{
+ const a=preparado('tecnica');a.put('CARTEIRA','D24','Técnica declarada preservada');
+ a.put('MONTAGENS','B3','cartão antigo fora deste domínio');a.doc.set('r53_amparo_direto','estado antigo fora deste domínio');
+ const p=a.ctx.r53NovaFichaTecnicaPrevia(a.ss,a.context);a.concluir(p);conferir(a);
+ assert.equal(a.range('CARTEIRA','D24').getValue(),'Técnica declarada preservada');
+ assert.equal(a.range('MONTAGENS','B3').getValue(),'cartão antigo fora deste domínio');
+ assert.equal(a.doc.get('r53_amparo_direto'),'estado antigo fora deste domínio');
+ for(const addr of ['J12','J16','D18','J18','P18','D22','D26','L26','L29','D33','P33'])assert.equal(a.range('FICHA AMALDIÇOADA',addr).getValue(),'');
+});
+caso('Famílias do livro neutras e custom calculadas sem apagar definições',()=>{
+ const a=preparado('familias');a.put('CONFIGURAÇÃO','B2','Família da mesa');
+ a.put('DADOS_CRIACAO','B2','Família da mesa');a.put('FICHA AMALDIÇOADA','H37','INTERIOR PRESERVADO');
+ a.put('INVOCAÇÕES','D12','Entidade fora deste domínio');
+ a.concluir(a.ctx.r53NovaFichaFamiliasPrevia(a.ss,a.context));conferir(a);
+ for(const c of ['D','E','F','G','J','K','L','M','P'])assert.equal(a.range('FICHA AMALDIÇOADA',c+'37').getValue(),'Neutra');
+ for(let r=41;r<=50;r++)assert.equal(a.range('FICHA AMALDIÇOADA','O'+r).getFormulas()[0][0],valor('FICHA AMALDIÇOADA','O'+r));
+ assert.equal(a.range('DADOS_CRIACAO','B2').getValue(),'Família da mesa');assert.equal(a.range('CONFIGURAÇÃO','B2').getValue(),'Família da mesa');
+ assert.equal(a.range('FICHA AMALDIÇOADA','H37').getValue(),'INTERIOR PRESERVADO');assert.equal(a.range('INVOCAÇÕES','D12').getValue(),'Entidade fora deste domínio');
+});
+for(const [nome,aba,addr]of [['familias','FICHA AMALDIÇOADA','O41'],['grau_origem','FICHA PESSOAL','D45'],['oficios_tr','FICHA','W118']])
+ caso('fórmula editável desconhecida recusada '+nome,()=>{const a=preparado(nome);a.put(aba,addr,0,'=0');assert.throws(()=>a.previa(),/fórmula pessoal/);assert.equal(a.writes.length,0);});
+caso('diários anteriores de formação têm o mesmo layout com os novos domínios',()=>{
+ // Hashes fixos dos quatro contratos publicados no commit 73dffda; funciona em clone raso.
+ const hashes={grau_origem:'1e5bd718e6ad714350a5c78aae912ecc1fb4d2fb00d3356adc53e9641afe7d84',pericias:'e652c80f5155dea891a0d60e064310e64e90c15d95b6fcc010f06516d414386d',oficios_tr:'13a407d5e903f4e73fcfc8715ae45cc27c0ca76666b388b6509a26cd2d210c4a',armas:'b9a3bba86f490261484c7a5fc2707af44ec3c8c64196d9ec48dc9f466672e0f7'};
+ for(const [nome,hash]of Object.entries(hashes))assert.equal(require('node:crypto').createHash('sha256').update(JSON.stringify(preparado(nome).c)).digest('hex'),hash);
+});
+console.log(`${casos} cenários offline de Grau/Origem/treinos/técnica/Famílias aprovados; sem aceite nativo ou criação geral.`);
