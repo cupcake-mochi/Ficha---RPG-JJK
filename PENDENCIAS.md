@@ -1,3 +1,22 @@
+## Carteira viva: recibos e quota · 28/10/2026 · não instalada
+
+PR 31: cartões visíveis e MONTAGENS trocam o diário completo por recibo após
+conferência final, na mesma chave, sem exclusão. Retomada incompleta preservada;
+recibo só confere, recusa cópia usada, assinatura/vínculo/layout/guardas diferentes.
+Diários v1 desses perfis migram somente após conferência. Outros perfis/assinaturas
+mantidos. Todas as gravações de diário agora contam propriedades alheias, teto
+450.000 bytes com margem e 9.000 por valor, e confirmam persistência por releitura.
+44 testes novos e seis focais de cartões passaram; 101 financeiros passaram
+antes da última guarda de releitura. CI completo pendente nesta revisão (2.305
+previstos). Simulação 498 recibos + reserva 100 KB: 372.263 bytes, pico 372.629.
+Não é ensaio Google, autenticação ou garantia de espaço dos domínios futuros.
+Próximo: dados/recursos/equipamentos das entidades, arte, orquestração com
+orçamento total/conferência final, automações/treinos/notas, responsável e prova
+nativa/drive.file. Criação bloqueada, fora do pacote/bot; sem merge/deploy,
+edição de planilhas, acessos novos ou modelos pagos. Relatório
+r53/inicializacao/RECIBOS-2026-10-28.md. GPT-6.1 Sol Alto para implementação;
+Médio para revisão focal, conforme AGENTS.md. Entradas abaixo são históricas.
+
 ## Carteira viva: cartões visíveis · 28/10/2026 · não instalada
 
 PR 31: valores, notas e validações das funções nos 249 cartões, com diário

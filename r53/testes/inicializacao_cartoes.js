@@ -7,7 +7,7 @@ const maps=new Map(original.ABAS.map(s=>[s.nome,new Map(s.vals.map(x=>[x[0]+','+
 for(const s of original.VALORES_CUSTOM_||[])for(const [r,c,v]of s.vals)maps.get(s.nome)?.set(r+','+c,v);
 const sourceNames=['apps-script/EditorR53.gs',...['validacoes','contrato_cartoes','cartoes'].map(n=>'r53/inicializacao/'+n+'.gs')];
 const scripts=sourceNames.map(p=>new vm.Script(fs.readFileSync(path.join(root,p),'utf8')));
-let casos=0,bytes=0,maxBytes=0,entradas=0;
+let casos=0,bytes=0,maxBytes=0,entradas=0;const acumulados=new Map();
 const foco=process.argv[2]==='--foco'?new RegExp(process.argv[3]):null;
 function caso(nome,fn){if(foco&&!foco.test(nome))return;try{fn();casos++;}catch(e){e.message=nome+': '+e.message;throw e;}}
 function descriptor(tipo,args,invalid=false){return {tipo,argumentos:args,permiteInvalido:invalid,ajuda:''};}
@@ -24,6 +24,7 @@ function preparado(id='feitico.1',amparo='Neutra',op={}){
  a.previa=()=>a.ctx.r53NovaFichaCartaoPrevia(a.ss,a.context,id);
  a.aplicar=p=>a.ctx.r53NovaFichaCartaoAplicar(a.ss,a.context,id,p.assinatura);
  a.concluir=p=>{for(let i=0;i<30;i++){const r=a.aplicar(p);assert.equal(r.criacaoDisponivel,false);if(r.concluido)return r;assert.equal(r.retomar,true);}throw Error('retomadas demais');};
+ for(const [k,v]of op.diarios||[])a.doc.set(k,v);
  a.antes={cells:new Map(a.cells),doc:new Map(a.doc),script:JSON.stringify([...a.script])};return a;
 }
 function conferir(a){assert.equal(JSON.stringify(a.ctx.R53_REF_CACHE_),'{}');const alvos=new Set();for(const x of a.g.entradas){const [r,c]=pos(x.faixa),cell=a.get(a.g.aba,r,c),d=a.g.dinamicas[x.faixa];let v=x.valor;
@@ -39,7 +40,7 @@ caso('contrato reproduzível e alvos literais do fonte completo',()=>{
  for(const g of Object.values(contrato.contextos))for(const x of g.entradas){const v=maps.get(g.aba).get(pos(x.faixa).join(','))??'';assert.equal(x.valor,v);assert(!String(v).startsWith('='));}
 });
 for(const id of Object.keys(contrato.contextos))caso(id+' inicializa com quatro escritas por chamada e repete sem alterar',()=>{
- const a=preparado(id),p=a.previa();assert.equal(a.writes.length,0);assert.equal(p.criacaoDisponivel,false);const r=a.aplicar(p);assert.equal(r.concluido,false);assert.equal(a.writes.filter(x=>x[0]!=='propriedade').length,4);a.concluir(p);const raw=conferir(a);bytes+=Buffer.byteLength(raw);maxBytes=Math.max(maxBytes,Buffer.byteLength(raw));entradas+=a.g.entradas.length;
+ const a=preparado(id,'Neutra',{diarios:acumulados}),p=a.previa();assert.equal(a.writes.length,0);assert.equal(p.criacaoDisponivel,false);const r=a.aplicar(p);assert.equal(r.concluido,false);assert.equal(a.writes.filter(x=>x[0]!=='propriedade').length,4);a.concluir(p);const raw=conferir(a);acumulados.set(a.ctx.r53NovaCartPerfil_(id).diario,raw);assert.equal(JSON.parse(raw).recibo,1);bytes+=Buffer.byteLength(raw);maxBytes=Math.max(maxBytes,Buffer.byteLength(raw));entradas+=a.g.entradas.length;
  const n=a.writes.length;a.aplicar(p);assert.equal(a.writes.length,n);
 });
 const modos=[...new Set(original.R53_EDITOR_.contextos.map(c=>c.modo))].map(m=>original.R53_EDITOR_.contextos.find(c=>c.modo===m).id);
@@ -74,5 +75,5 @@ caso('idioma inglês preserva vírgulas nas fórmulas de validação',()=>{const
 caso('imagem em entrada não é apagada',()=>{const a=preparado();a.put(a.g.aba,'E64',{valueType:'IMAGE'});assert.throws(()=>a.previa(),/imagem ou valor/);assert.equal(a.writes.length,0);});
 caso('nova mescla com âncora diferente impede limpar entrada',()=>{const a=preparado(),base=a.sheets[a.g.aba].getRange;a.sheets[a.g.aba].getRange=addr=>({...base(addr),getMergedRanges:()=>addr==='E64'?[{getRow:()=>64,getColumn:()=>4}]:[]});assert.throws(()=>a.previa(),/interior de mescla/);assert.equal(a.writes.length,0);});
 caso('fórmula de validação com conta alterada não é normalizada',()=>{const a=preparado(),d=a.g.dinamicas.E71;a.setDV('E71',descriptor('CUSTOM_FORMULA',[d.formula+'+1']));assert.throws(()=>a.previa(),/validação de função/);assert.equal(a.writes.length,0);});
-caso('quota agregada é sinalizada como impedimento da integração, sem ignorar limite individual',()=>{assert(bytes>500*1024);assert(maxBytes<9000);});
-console.log(`${foco?"FOCO PARCIAL · ":""}${casos} cenários offline de cartões visíveis aprovados; ${entradas} entradas; diários ${bytes} bytes, maior ${maxBytes}. Quota conjunta e prova nativa pendentes.`);
+caso('249 recibos acumulados cabem sem ultrapassar 150 KB, sem apagar registros',()=>{assert.equal(acumulados.size,249);assert(bytes<150000);assert(maxBytes<600);});
+console.log(`${foco?"FOCO PARCIAL · ":""}${casos} cenários offline de cartões visíveis aprovados; ${entradas} entradas; diários ${bytes} bytes, maior ${maxBytes}. Recibos acumulados; orquestração global e prova nativa pendentes.`);

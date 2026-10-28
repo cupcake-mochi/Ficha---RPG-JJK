@@ -66,7 +66,7 @@ function r53NovaCartPreservados_(ss, id, contratoConfiavel) {
 }
 function r53NovaCartPerfil_(id) {
   var g = r53NovaCartContrato_(id);
-  return {nome:'cartoes_'+id,diario:'r53_nova_ficha_cartoes_'+id+'_v1',limites:{escritasPorExecucao:4,orcamentoMs:210000},
+  return {recibo:true,nome:'cartoes_'+id,diario:'r53_nova_ficha_cartoes_'+id+'_v1',limites:{escritasPorExecucao:4,orcamentoMs:210000},
     operacoes:function(ss) {
       var amparo = r53NovaCartAmparo_(ss,g), ops = [];
       g.entradas.forEach(function(x) {

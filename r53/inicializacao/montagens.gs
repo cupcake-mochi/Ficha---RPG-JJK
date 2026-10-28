@@ -44,7 +44,7 @@ function r53NovaMontPreservados_(ss, id) {
 }
 function r53NovaMontPerfil_(id) {
   var c = r53NovaMontContrato_(id), g = c.contextos[id];
-  return {nome: 'montagens_' + id, diario: 'r53_nova_ficha_montagens_' + id + '_v1',
+  return {recibo: true, nome: 'montagens_' + id, diario: 'r53_nova_ficha_montagens_' + id + '_v1',
     limites: {escritasPorExecucao: 4, orcamentoMs: 210000},
     operacoes: function() {
       return [{aba: 'MONTAGENS', faixa: g.faixa, tipo: 'matriz', valores: c.campos.map(function(campo) {

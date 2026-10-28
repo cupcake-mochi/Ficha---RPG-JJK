@@ -337,5 +337,18 @@ Smoke inclui `r53/testes/inicializacao_cartoes.js`: todos os 249 cartões,
 portas, validações antes do valor, queda em cada escrita, concorrência e
 preservação das contas/menus. Uma invocação com `--foco REGEX` executa apenas
 nomes selecionados e imprime `FOCO PARCIAL`; não equivale à coleção completa.
-CI chama sem filtro. O teste também acusa a quota agregada insuficiente;
-criação e execução integrada continuam bloqueadas.
+CI chama sem filtro. A expectativa antiga de quota insuficiente foi substituída
+pela conferência de 249 recibos acumulados no mesmo armazenamento, após a
+implementação dos recibos. Não houve redução de cenários mecânicos.
+
+### Recibos e orçamento de propriedades · 28/10/2026
+
+`r53/testes/inicializacao_recibos.js`: 44 cenários. Falhas antes/depois de todas
+as escritas, recibo terminal sem reexecução, vínculo à operação/cópia/modelo/domínio,
+layout/guardas, edição de dados/fórmulas/notas, migração v1, persistência silenciosa,
+quota UTF-8 individual/conjunta, propriedades alheias e compactação perto do teto.
+Teste conjunto com 498 nomes reais de perfis, operações sintéticas e reserva
+100 KB: 372.263 bytes, pico 372.629. As duas suítes de cartões também acumulam
+seus 249 recibos reais, cada uma; não confundir com criação nativa completa.
+Coleção prevista: 2.305; conclusão da suíte completa depende do CI desta revisão.
+Criação e execução integrada continuam bloqueadas.

@@ -21,6 +21,7 @@ function preparado(id='feitico.1',op={}){
  a.previa=()=>a.ctx.r53NovaFichaMontagensPrevia(a.ss,a.context,id);
  a.aplicar=p=>a.ctx.r53NovaFichaMontagensAplicar(a.ss,a.context,id,p.assinatura);
  a.concluir=p=>{for(let i=0;i<10;i++){const r=a.aplicar(p);assert.equal(r.criacaoDisponivel,false);if(r.concluido)return r;}throw Error('retomadas demais');};
+ for(const [k,v]of op.diarios||[])a.doc.set(k,v);
  a.antes={cells:new Map(a.cells),doc:new Map(a.doc),script:JSON.stringify([...a.script])};return a;
 }
 function conferir(a){
@@ -34,10 +35,10 @@ caso('contrato regenerável, fontes integrais, sem fabricar novos valores',()=>{
  assert.equal(Object.keys(contrato.contextos).length,249);assert.equal(contrato.campos.length,33);
  for(const c of Object.values(contrato.contextos))visitar(c.faixa,(_,r,col)=>assert.equal(original.get(r+','+col)??'',contrato.defaults[contrato.campos[r-c.editor-2][0]]));
 });
-let bytes=0,positions=0;
+let bytes=0,positions=0;const acumulados=new Map();
 for(const id of Object.keys(contrato.contextos))caso(id+' limpa todas as Classes, preserva vizinhos e repete sem escrita',()=>{
- const a=preparado(id),p=a.previa();assert.equal(a.writes.length,0);assert.equal(p.criacaoDisponivel,false);a.concluir(p);conferir(a);
- const raw=a.doc.get(a.ctx.r53NovaMontPerfil_(id).diario);bytes+=Buffer.byteLength(raw);positions+=33*a.c.classes.length;
+ const a=preparado(id,{diarios:acumulados}),p=a.previa();assert.equal(a.writes.length,0);assert.equal(p.criacaoDisponivel,false);a.concluir(p);conferir(a);
+ const raw=a.doc.get(a.ctx.r53NovaMontPerfil_(id).diario);acumulados.set(a.ctx.r53NovaMontPerfil_(id).diario,raw);assert.equal(JSON.parse(raw).recibo,1);bytes+=Buffer.byteLength(raw);positions+=33*a.c.classes.length;
  const n=a.writes.length;a.aplicar(p);assert.equal(a.writes.length,n);
 });
 const amostras=[...new Set(native.R53_EDITOR_.contextos.map(c=>c.modo))].map(m=>native.R53_EDITOR_.contextos.find(c=>c.modo===m).id);
@@ -86,5 +87,5 @@ caso('leitor real volta aos defaults depois de limpar armazenamento e cache pers
  assert.equal(r.criacaoDisponivel,false);
  for(const cl of g.classes)assert.deepEqual(Array.from(a.ctx.r53LerVersao_(a.ss,g,cl)),Array.from(contrato.campos,f=>contrato.defaults[f[0]]));
 });
-caso('mesmo todos os diários de MONTAGENS cabem sem valores privados; reserva não certifica quota global',()=>{assert(bytes<300000);});
+caso('mesmo todos os diários de MONTAGENS cabem sem valores privados; reserva não certifica quota global',()=>{assert.equal(acumulados.size,249);assert(bytes<150000);});
 console.log(`${casos} cenários offline de MONTAGENS aprovados; ${positions} posições em 249 cartões; ${bytes} bytes de diários. Cartões visíveis e execução nativa pendentes.`);

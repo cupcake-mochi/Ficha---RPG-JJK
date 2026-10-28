@@ -234,14 +234,15 @@ node r53/testes/inicializacao_formacao.js
 node r53/testes/inicializacao_memorias.js
 node r53/testes/inicializacao_montagens.js
 node r53/testes/inicializacao_cartoes.js
+node r53/testes/inicializacao_recibos.js
 ```
 
-Coleção atual: 2.261 cenários offline (101 financeiros, 82 de nível/base, 78 de
-textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS e 791 de cartões visíveis). Incluem
+Coleção prevista nesta revisão: 2.305 cenários offline (101 financeiros, 82 de nível/base, 78 de
+textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS, 791 de cartões visíveis e 44 de recibos/quota). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
-nem mede latência Google. O smoke inclui os oito arquivos de testes.
-CI atual `216e44c` aprovado: [40694498546](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40694498546), 2.261 cenários, em 28/10 às 10:16:56 Brasília.
+nem mede latência Google. O smoke inclui os nove arquivos de testes.
+CI anterior a recibos `216e44c` aprovado: [40694498546](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40694498546), 2.261 cenários, em 28/10 às 10:16:56 Brasília.
 CI anterior aos cartões visíveis, `5749b3a`, aprovado: [40690086385](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40690086385), 1.470 cenários, em 28/10 às 09:45:06 Brasília.
 CI anterior a MONTAGENS, `8bb9335`, aprovado: [CI 40686604745](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40686604745), com 1.100 cenários.
 CI anterior ao bloco CARTEIRA/memórias, `86410be`, aprovado: [40683614201](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40683614201), com 921 cenários.
@@ -425,7 +426,31 @@ função bloqueada recebe `—`, respeitando Amparo e Classe de destino. Preserv
 fórmulas/rótulos e demais menus. Ver
 [CARTOES-VISIVEIS-2026-10-28.md](CARTOES-VISIVEIS-2026-10-28.md).
 
-**Os diários completos acumulados ultrapassam a quota conjunta de propriedades.**
-O protocolo isolado por cartão não é uma orquestração liberada. Antes de integrar,
-resolver orçamento/retenção/recibos sem perder proteção contra reinicialização.
-Continuam pendentes entidades, arte, automações e prova nativa do conjunto.
+## Espaço dos registros de retomada
+
+Cartões visíveis e MONTAGENS guardam o diário detalhado enquanto estiverem
+incompletos. Após a conferência final, o executor substitui o valor na mesma
+chave por um recibo, sem apagar a chave. O recibo guarda hashes da operação,
+cópia/modelo/domínio, layout, guardas e de todos os resultados esperados.
+Uma repetição só confere: não volta à limpeza nem gera um novo estado anterior.
+Diários antigos concluídos desses dois perfis também podem ser compactados,
+mas somente depois de conferir seus dados e sua assinatura. Os demais perfis
+continuam no formato anterior, inclusive a dependência financeiro → progressão.
+
+Toda gravação de diário confere os 9.000 bytes por valor e a ocupação conjunta
+de **450.000 bytes**, contando chaves e valores UTF-8, inclusive propriedades
+alheias. Falta de espaço impede criar o diário antes de limpar entradas. Uma
+substituição que reduza espaço pode continuar acima da margem para recuperar
+um diário existente; isso não libera novas operações. O valor é relido após
+a gravação. Nem registros alheios nem recibos são apagados para abrir espaço.
+
+A simulação conjunta de 498 recibos, com reserva de 100 KB, fica em 372.263
+bytes (pico 372.629). É prova do protocolo offline, não medição no Google nem
+reserva real de todos os domínios futuros. O orquestrador ainda terá de limitar
+fases simultâneas, considerar recuperações/novos domínios e conferir o conjunto
+antes de cadastrar. Lock não bloqueia edição humana nem outros escritores que
+não cooperem; a cópia precisa continuar isolada. Hash não é autenticação.
+
+Relatório: [RECIBOS-2026-10-28.md](RECIBOS-2026-10-28.md). Continuam pendentes
+entidades, arte, automações, integração drive.file e prova nativa do conjunto.
+Criação permanece bloqueada.

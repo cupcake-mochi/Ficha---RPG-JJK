@@ -26,13 +26,58 @@ function r53NovaFinHash_(v) {
   return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, r53NovaFinCanon_(v), Utilities.Charset.UTF_8)
     .map(function(b) { return ('0' + ((b + 256) % 256).toString(16)).slice(-2); }).join('');
 }
+// Inclui todas as propriedades, também as que este protótipo não administra.
+// 450.000 bytes deixa margem abaixo de 500 KB; contar chaves é conservador.
+function r53NovaDiarioBytes_(v) { return Utilities.newBlob(v).getBytes().length; }
 function r53NovaDiarioSalvar_(props, chave, diario) {
-  var texto = JSON.stringify(diario);
-  // Margem conservadora dentro do limite por valor do Apps Script. Recusar
-  // antes da primeira escrita, sem aceitar um diário que só cabe na VM.
-  if (Utilities.newBlob(texto).getBytes().length > 9000)
+  var texto = JSON.stringify(diario), tamanho = r53NovaDiarioBytes_(texto);
+  if (tamanho > 9000)
     r53NovaFinErro_('diário excede o limite; dividir o domínio antes de inicializar.');
+  var todos = props.getProperties(), antes = 0;
+  Object.keys(todos).forEach(function(k) {
+    antes += r53NovaDiarioBytes_(k) + r53NovaDiarioBytes_(todos[k]);
+  });
+  var existe = Object.prototype.hasOwnProperty.call(todos, chave);
+  var depois = antes + tamanho + (existe ? -r53NovaDiarioBytes_(todos[chave]) : r53NovaDiarioBytes_(chave));
+  // Uma substituição menor pode recuperar uma cópia já acima da margem.
+  // Não excluir registros nem liberar novas escritas por causa dessa exceção.
+  if (depois > 450000 && !(existe && depois < antes))
+    r53NovaFinErro_('sem espaço seguro para o diário; não iniciar outro domínio.');
   props.setProperty(chave, texto);
+  if (props.getProperty(chave) !== texto) r53NovaFinErro_('gravação do diário não confirmada.');
+}
+function r53NovaReciboVinculo_(vinculo, perfil) {
+  return r53NovaFinHash_([vinculo, perfil.nome, perfil.diario]);
+}
+function r53NovaReciboCriar_(j, perfil) {
+  var r = {recibo: 1, concluido: true, assinatura: j.assinatura,
+    vinculo: r53NovaReciboVinculo_(j.plano.vinculo, perfil),
+    layout: j.plano.layout, preservados: j.plano.preservados,
+    resultado: r53NovaFinHash_(j.plano.passos.map(function(p) { return p.depois; }))};
+  return {recibo: r.recibo, concluido: r.concluido, assinatura: r.assinatura,
+    vinculo: r.vinculo, layout: r.layout, preservados: r.preservados,
+    resultado: r.resultado, integridade: r53NovaFinHash_(r)};
+}
+function r53NovaReciboConferir_(ss, perfil, ops, vinculo, assinatura, r) {
+  var campos = ['assinatura', 'concluido', 'integridade', 'layout', 'preservados', 'recibo', 'resultado', 'vinculo'];
+  if (perfil.recibo !== true || !r || r.recibo !== 1 || r.concluido !== true ||
+      Object.keys(r).sort().join(',') !== campos.join(',') ||
+      ['assinatura', 'integridade', 'layout', 'preservados', 'resultado', 'vinculo'].some(function(k) {
+        return typeof r[k] !== 'string' || !/^[a-f0-9]{64}$/.test(r[k]);
+      })) r53NovaFinErro_('diário inválido; recibo não reconhecido.');
+  var base = {recibo: r.recibo, concluido: r.concluido, assinatura: r.assinatura,
+    vinculo: r.vinculo, layout: r.layout, preservados: r.preservados, resultado: r.resultado};
+  if (r.integridade !== r53NovaFinHash_(base)) r53NovaFinErro_('diário inválido; recibo alterado.');
+  if (r.assinatura !== assinatura || r.vinculo !== r53NovaReciboVinculo_(vinculo, perfil))
+    r53NovaFinErro_('operação diferente da inicialização concluída.');
+  if (r.layout !== r53NovaFinHash_(ops) || r.preservados !== perfil.preservados(ss))
+    r53NovaFinErro_('estrutura, fórmula ou configuração mudou; revisão manual necessária.');
+  var estados = ops.map(function(op) { return r53NovaFinHash_(r53NovaFinLer_(ss, op)); });
+  if (r.preservados !== perfil.preservados(ss))
+    r53NovaFinErro_('estrutura, fórmula ou configuração mudou durante a conferência.');
+  if (r.resultado !== r53NovaFinHash_(estados))
+    r53NovaFinErro_('a cópia já foi usada depois da inicialização.');
+  // Sem escrita: o recibo é terminal. Nunca reconstruir passos "antes".
 }
 function r53NovaFinContexto_(ss, contexto) {
   if (!contexto || contexto.versao !== 1 || !/^[a-zA-Z0-9_-]{16,100}$/.test(contexto.operacao || '') ||
@@ -215,6 +260,14 @@ function r53NovaPerfilAplicar_(ss, contexto, assinatura, perfil) {
     var raw = dp.getProperty(perfil.diario), j, novo = !raw;
     if (raw) {
       try { j = JSON.parse(raw); } catch (err) { r53NovaFinErro_('diário inválido; revisão manual necessária.'); }
+      if (j && Object.prototype.hasOwnProperty.call(j, 'recibo')) {
+        r53NovaReciboConferir_(ss, perfil, ops, vinculo, assinatura, j);
+        if (Date.now() - inicio >= perfil.limites.orcamentoMs)
+          return {versao: 1, dominio: perfil.nome, concluido: false, retomar: true,
+                  operacao: vinculo.operacao, criacaoDisponivel: false};
+        return {versao: 1, dominio: perfil.nome, concluido: true, criacaoDisponivel: false,
+                operacao: vinculo.operacao, pendente: perfil.pendente.slice()};
+      }
       if (!j || !j.plano || !Array.isArray(j.plano.passos) || j.plano.passos.length !== ops.length ||
           typeof j.concluido !== 'boolean' || j.assinatura !== r53NovaFinHash_(j.plano))
         r53NovaFinErro_('diário inválido; revisão manual necessária.');
@@ -272,7 +325,11 @@ function r53NovaPerfilAplicar_(ss, contexto, assinatura, perfil) {
     if (perfil.preservados(ss) !== j.plano.preservados ||
         ((novo || escritas > 0) && ops.some(function(op, i) { return r53NovaFinHash_(r53NovaFinLer_(ss, op)) !== j.plano.passos[i].depois; })))
       r53NovaFinErro_('pós-condição não confirmada; não cadastrar a cópia.');
-    if (!j.concluido) {
+    if (perfil.recibo === true) {
+      // Uma única substituição na mesma chave: nunca apagar antes de gravar.
+      // Se o serviço cair, a retomada encontra o diário completo OU o recibo.
+      r53NovaDiarioSalvar_(dp, perfil.diario, r53NovaReciboCriar_(j, perfil));
+    } else if (!j.concluido) {
       j.concluido = true; r53NovaDiarioSalvar_(dp, perfil.diario, j);
     }
     return {versao: 1, dominio: perfil.nome, concluido: true, criacaoDisponivel: false,
