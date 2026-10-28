@@ -237,11 +237,12 @@ node r53/testes/inicializacao_cartoes.js
 node r53/testes/inicializacao_recibos.js
 ```
 
-Coleção prevista nesta revisão: 2.305 cenários offline (101 financeiros, 82 de nível/base, 78 de
+Coleção atual: 2.305 cenários offline (101 financeiros, 82 de nível/base, 78 de
 textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS, 791 de cartões visíveis e 44 de recibos/quota). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
 nem mede latência Google. O smoke inclui os nove arquivos de testes.
+CI dos recibos `af8e83f` aprovado: [40697164990](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40697164990), 2.305 cenários, em 28/10 às 10:34:44 Brasília; pacote nove arquivos/sintaxe 277 Python/234 JS-GS. Duplicado 40697154581 cancelado.
 CI anterior a recibos `216e44c` aprovado: [40694498546](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40694498546), 2.261 cenários, em 28/10 às 10:16:56 Brasília.
 CI anterior aos cartões visíveis, `5749b3a`, aprovado: [40690086385](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40690086385), 1.470 cenários, em 28/10 às 09:45:06 Brasília.
 CI anterior a MONTAGENS, `8bb9335`, aprovado: [CI 40686604745](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40686604745), com 1.100 cenários.

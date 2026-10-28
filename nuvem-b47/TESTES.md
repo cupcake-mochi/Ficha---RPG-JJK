@@ -350,5 +350,7 @@ quota UTF-8 individual/conjunta, propriedades alheias e compactação perto do t
 Teste conjunto com 498 nomes reais de perfis, operações sintéticas e reserva
 100 KB: 372.263 bytes, pico 372.629. As duas suítes de cartões também acumulam
 seus 249 recibos reais, cada uma; não confundir com criação nativa completa.
-Coleção prevista: 2.305; conclusão da suíte completa depende do CI desta revisão.
+Coleção completa: 2.305, confirmados no CI 40697164990, código af8e83f,
+aprovado em 28/10 às 10:34:44 Brasília. Pacote/sintaxe e demais regressões
+aprovados. Duplicado 40697154581 cancelado.
 Criação e execução integrada continuam bloqueadas.

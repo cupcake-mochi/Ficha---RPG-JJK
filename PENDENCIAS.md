@@ -6,9 +6,10 @@ recibo só confere, recusa cópia usada, assinatura/vínculo/layout/guardas dife
 Diários v1 desses perfis migram somente após conferência. Outros perfis/assinaturas
 mantidos. Todas as gravações de diário agora contam propriedades alheias, teto
 450.000 bytes com margem e 9.000 por valor, e confirmam persistência por releitura.
-44 testes novos e seis focais de cartões passaram; 101 financeiros passaram
-antes da última guarda de releitura. CI completo pendente nesta revisão (2.305
-previstos). Simulação 498 recibos + reserva 100 KB: 372.263 bytes, pico 372.629.
+44 testes novos e seis focais de cartões passaram localmente. CI 40697164990
+aprovado no código af8e83f em 28/10 às 10:34:44 Brasília: 2.305 cenários,
+zero falhas, pacote nove arquivos/sintaxe 277 Python/234 JS-GS. Duplicado
+40697154581 cancelado; fechamento apenas documental [skip ci]. Simulação 498 recibos + reserva 100 KB: 372.263 bytes, pico 372.629.
 Não é ensaio Google, autenticação ou garantia de espaço dos domínios futuros.
 Próximo: dados/recursos/equipamentos das entidades, arte, orquestração com
 orçamento total/conferência final, automações/treinos/notas, responsável e prova
