@@ -10,7 +10,10 @@ CellImage individual/em bloco/espelho, URL igual em duas execuções próximas e
 espelho preservado após limpeza fictícia. Não é execução nativa do inventário
 ou da inicialização; descartável na lixeira. Leia
 `r53/inicializacao/INVENTARIO-IMAGENS-2026-10-28.md`.
-CI completo ainda a conferir. Criação bloqueada, fora do pacote/bot, sem
+CI 40713143485 aprovado no código b35436e, 28/10 às 12:13:10 Brasília:
+2.826 cenários/zero falhas, pacote nove arquivos e sintaxe 277 Python/245 JS-GS;
+duplicado 40713131601 cancelado. Fechamento somente documental [skip ci].
+Criação bloqueada, fora do pacote/bot, sem
 merge/deploy, oficial/jogador, modelo pago ou acesso amplo novo.
 Sol Alto para continuar; revisão Médio. Entradas abaixo são históricas.
 

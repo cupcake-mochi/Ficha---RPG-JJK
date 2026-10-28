@@ -54,8 +54,13 @@ A correção feita no teste de renomear aba reconhece a recusa de âncora ausent
 essa guarda é anterior à comparação de assinatura, e deve continuar recusando.
 
 Comando: `node r53/testes/inicializacao_inventario_imagens.js`.
-Incluído em `nuvem-b47/conferir.py --smoke`; CI completo a conferir no SHA do código.
-Coleção prevista: 2.826 cenários de inicialização (2.747 anteriores + 79).
+Incluído em `nuvem-b47/conferir.py --smoke`. CI completo
+[40713143485](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40713143485)
+aprovado no código `b35436ecd67dd20366be547000a8382a2b337b71`, em 28/10 às
+12:13:10 Brasília: 2.826 cenários de inicialização (2.747 anteriores + 79),
+zero falhas. Pacote nove arquivos, sintaxe 277 Python/245 JS-GS e demais
+regressões passaram. Duplicado 40713131601 cancelado. Fechamento posterior
+somente documental [skip ci], sem nova suíte ou publicação.
 
 ## Ensaio real no Google
 
