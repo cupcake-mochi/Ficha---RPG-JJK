@@ -1,6 +1,6 @@
 # Páginas de leitura e versão do arquivo
 
-28/10/2026 · PR31, fora do pacote/bot e não instalado. Main produtor ef361cc e
+28/10/2026 · PR31, código `24270240915da6a0e8b7f2723acfa2fd3dc55c87`, fora do pacote/bot e não instalado. Main produtor ef361cc e
 bot main de42447 reconferidas. Criação continua bloqueada.
 
 ## O que foi implementado
@@ -85,7 +85,16 @@ foi copiada para fixtures do consumidor e aceita pelo teste Python. Isso prova
 formato de saída, não autenticação, execução remota ou cálculo Google.
 
 Comando: `node r53/testes/inicializacao_conferencia_paginas.js`.
-CI completo desta continuação em fechamento; total previsto 2.952 cenários.
+[CI completo 40731673476](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40731673476)
+aprovado no código `2427024`: coleção de inicialização com 2.952 cenários e
+zero falhas, pacote de nove arquivos, sintaxe 277 Python/253 JS-GS e demais
+regressões aprovadas. Job concluído em 28/10 às 14:07:25 Brasília. Execução
+duplicada de push 40731660220 cancelada; mantida a da PR.
+
+Consumidor código `1c15ee549a7ebb40c70c688e3ec6a9a6e23db638`, CI 40731678916:
+1.338 executados/1.337 aprovados/um opcional, zero falhas, 272,214 s; job concluído
+às 14:06:23 Brasília. 71 direcionados locais aprovados. Fechamento posterior
+só documental [skip ci], sem nova suíte/publicação por documentação.
 Sem Google/Discord, oficial/jogador, acesso novo, modelo pago, merge/deploy/Gateway.
 Sol Alto para adaptador/integração; Médio para revisão focal.
 

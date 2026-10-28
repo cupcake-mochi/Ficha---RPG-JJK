@@ -5,7 +5,12 @@ PR31: plano e lotes de quatro perfis sem escrita de células ou propriedades;
 aceita no Python. PR84 agora tem código: guarda interna de versão Drive/contexto,
 sem token persistido, página duplicada, retomada após erro temporário e conclusão
 reconfirmadas; criação continua bloqueada. Corrigida aceitação de versão vazia na
-leitura existente, reproduzida antes/recusada depois. CI completo em fechamento.
+leitura existente, reproduzida antes/recusada depois. CI produtor 40731673476
+aprovado no código 2427024: 2.952 cenários de inicialização/zero falhas, pacote
+nove arquivos/sintaxe 277 Python/253 JS-GS e demais regressões, 28/10 às
+14:07:25 Brasília. Duplicado 40731660220 cancelado. Consumidor código 1c15ee5,
+CI 40731678916: 1.338 executados/1.337 aprovados/um opcional, zero falhas,
+272,214 s, 14:06:23 Brasília. Fechamento só documental [skip ci].
 Não é snapshot dos cálculos. Ponte nativa de execução do produtor ainda não
 entregue: scripts.run não é habilitado por pressupor drive.file; preservar
 escopo atual e estudar adaptador REST/backend ou rota específica separadamente.
