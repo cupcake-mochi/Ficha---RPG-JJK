@@ -1,0 +1,783 @@
+{
+  "protocolo": "carteira-contrato-rest-1",
+  "fontes": {
+    "apps-script/Salarios.gs": "47e7db6fe7d8a71b0adf6756898ea3fabf4d9d15eb02ed9b3bb3d460675ca319",
+    "apps-script/Ficha.gs": "973eb5b358a1d4036289e40e4c9a7325acf8a2a4f7b7c1ac05728a2ebc2ded4a",
+    "apps-script/Pessoal.gs": "1a7286c13f6f979933be1d7441385bec39c585f62c19a11a66e90ddc875494eb",
+    "apps-script/Configuracao.gs": "68b4765f51aaa4f047a8fc2fd89f781f656220b8b01d1d3950669380b40ce4a9",
+    "r53/inicializacao/financeiro.gs": "bcc11a91a0c6ded19e5183ad287091e7a3223a622cdcc9ace6b545f0808280de",
+    "r53/inicializacao/progressao.gs": "dae6bc04467dcb0233ca581e58c359e9eb5cd7e4e7f8edc7e649d41d4f928ad9"
+  },
+  "financeiro": {
+    "operacoes": [
+      {
+        "aba": "EXTRATO",
+        "faixa": "A2:C5000",
+        "tipo": "limpar",
+        "formulasLivres": false
+      },
+      {
+        "aba": "EXTRATO",
+        "faixa": "A2:C5000",
+        "tipo": "notas"
+      },
+      {
+        "aba": "SALÁRIOS",
+        "faixa": "A2:L5000",
+        "tipo": "limpar",
+        "formulasLivres": false
+      },
+      {
+        "aba": "SALÁRIOS",
+        "faixa": "A2:L5000",
+        "tipo": "notas"
+      },
+      {
+        "aba": "DADOS_SALARIOS",
+        "faixa": "A2:J5000",
+        "tipo": "limpar",
+        "formulasLivres": false
+      },
+      {
+        "aba": "DADOS_SALARIOS",
+        "faixa": "A2:J5000",
+        "tipo": "notas"
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "AW15:AZ87",
+        "tipo": "limpar",
+        "formulasLivres": false
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "AW15:AZ87",
+        "tipo": "notas"
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "BC15:BF87",
+        "tipo": "limpar",
+        "formulasLivres": false
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "BC15:BF87",
+        "tipo": "notas"
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "BI15:BL87",
+        "tipo": "limpar",
+        "formulasLivres": false
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "BI15:BL87",
+        "tipo": "notas"
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "BO15:BR87",
+        "tipo": "limpar",
+        "formulasLivres": false
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "BO15:BR87",
+        "tipo": "notas"
+      },
+      {
+        "aba": "DADOS_SALARIOS",
+        "faixa": "N2",
+        "tipo": "limpar",
+        "formulasLivres": false
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "O86",
+        "tipo": "limpar",
+        "formulasLivres": true
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "BI11",
+        "tipo": "limpar",
+        "formulasLivres": false
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "BO11",
+        "tipo": "limpar",
+        "formulasLivres": false
+      },
+      {
+        "aba": "DADOS_SALARIOS",
+        "faixa": "L2",
+        "tipo": "valor",
+        "valor": "{\"versao\":1,\"graus\":[]}",
+        "formulasLivres": false
+      },
+      {
+        "aba": "CONFIGURAÇÃO",
+        "faixa": "O39",
+        "tipo": "valor",
+        "valor": false,
+        "formulasLivres": false
+      },
+      {
+        "aba": "CARTEIRA",
+        "faixa": "AT3",
+        "tipo": "valor",
+        "valor": false,
+        "formulasLivres": false
+      },
+      {
+        "tipo": "propriedade",
+        "escopo": "documento",
+        "chave": "salario_extrato"
+      },
+      {
+        "tipo": "propriedade",
+        "escopo": "documento",
+        "chave": "salario_trocas"
+      },
+      {
+        "tipo": "propriedade",
+        "escopo": "documento",
+        "chave": "salario_correcao_nome"
+      },
+      {
+        "tipo": "propriedade",
+        "escopo": "documento",
+        "chave": "salario_proximo"
+      },
+      {
+        "tipo": "propriedade",
+        "escopo": "script",
+        "chave": "salario_edicao"
+      }
+    ],
+    "guardas": [
+      {
+        "aba": "DADOS_SALARIOS",
+        "faixa": "Q2:Q8",
+        "formulas": [
+          [
+            [
+              "=IF(ISNUMBER(N2);LET(ult;MAX('SALÁRIOS'!C2:C);em;INT(N2);IF(ult>0;MAX(ult;em);em));\"\")"
+            ]
+          ],
+          [
+            [
+              "=LET(nome;CARTEIRA!O9;IF(AND(ISNUMBER(N2);'CONFIGURAÇÃO'!O40=TRUE;LEN(nome)>0;nome<>\"Coloque o nome do personagem aqui\");MAX(0;FLOOR((TODAY()-Q2)/'CONFIGURAÇÃO'!O41));0))"
+            ]
+          ],
+          [
+            [
+              "=IF($Q$3=0;0;SUM(INDEX(P11:Y;0;9)))"
+            ]
+          ],
+          [
+            [
+              "=COUNTA(H2:H)"
+            ]
+          ],
+          [
+            [
+              "=COUNTA('SALÁRIOS'!A2:A)"
+            ]
+          ],
+          [
+            [
+              "=ROWS('SALÁRIOS'!A:A)"
+            ]
+          ],
+          [
+            [
+              "='CONFIGURAÇÃO'!O41"
+            ]
+          ]
+        ]
+      },
+      {
+        "aba": "DADOS_SALARIOS",
+        "faixa": "P11",
+        "formulas": [
+          [
+            [
+              "=IF($Q$3=0;\"\";LET(lin;LAMBDA(k;LET(s;$Q$2+k*'CONFIGURAÇÃO'!$O$41;e;s+'CONFIGURAÇÃO'!$O$41;h;LAMBDA(ch;atual;IFERROR(INDEX(FILTER('DADOS_SALARIOS'!$J$2:$J;'DADOS_SALARIOS'!$I$2:$I=ch;'DADOS_SALARIOS'!$H$2:$H>=e);1);atual));g;h(\"Grau\";'FICHA PESSOAL'!$AB$11);base;h(\"base:\"&g;IFERROR(VLOOKUP(g;'CONFIGURAÇÃO'!$K$54:$O$58;5;0);0));metav;h(\"meta\";'CONFIGURAÇÃO'!$O$42);mini;h(\"minimo\";'CONFIGURAÇÃO'!$O$43);vf;h(\"verifica\";'CONFIGURAÇÃO'!$O$44);p;SUM(MAP('CONFIGURAÇÃO'!$K$62:$K$67;'CONFIGURAÇÃO'!$O$62:$O$67;LAMBDA(t;w;h(\"peso:\"&t;w)*COUNTIFS('DADOS_SALARIOS'!$C$2:$C;t;'DADOS_SALARIOS'!$E$2:$E;TRUE;'DADOS_SALARIOS'!$D$2:$D;\">=\"&s;'DADOS_SALARIOS'!$D$2:$D;\"<\"&e))));pc;IF(vf;mini+(1-mini)*MIN(metav;MAX(0;p))/metav;1);HSTACK(\"SAL1:\"&s&\":\"&e;s;e;g;base;p;metav;pc;ROUNDDOWN(base*pc+0,00000001;0);IF(vf;\"Participação no período\";\"Participação dispensada pela campanha\"))));REDUCE(lin(0);SEQUENCE($Q$3;1;0);LAMBDA(acc;k;IF(k=0;acc;VSTACK(acc;lin(k)))))))",
+              "=IF($Q$3=0;\"\";LET(lin;LAMBDA(k;LET(s;$Q$2+k*'CONFIGURAÇÃO'!$O$41;e;s+'CONFIGURAÇÃO'!$O$41;h;LAMBDA(ch;atual;IFERROR(INDEX(FILTER('DADOS_SALARIOS'!$J$2:$J;'DADOS_SALARIOS'!$I$2:$I=ch;'DADOS_SALARIOS'!$H$2:$H>=e);1);atual));g;h(\"Grau\";'FICHA PESSOAL'!$AB$11);base;h(\"base:\"&g;IFERROR(VLOOKUP(g;'CONFIGURAÇÃO'!$K$54:$O$58;5;0);0));metav;h(\"meta\";'CONFIGURAÇÃO'!$O$42);mini;h(\"minimo\";'CONFIGURAÇÃO'!$O$43);vf;h(\"verifica\";'CONFIGURAÇÃO'!$O$44);p;SUM(MAP('CONFIGURAÇÃO'!$K$62:$K$67;'CONFIGURAÇÃO'!$O$62:$O$67;LAMBDA(t;w;h(\"peso:\"&t;w)*COUNTIFS('DADOS_SALARIOS'!$C$2:$C;t;'DADOS_SALARIOS'!$E$2:$E;TRUE;'DADOS_SALARIOS'!$D$2:$D;\">=\"&s;'DADOS_SALARIOS'!$D$2:$D;\"<\"&e))));pc;IF(vf;mini+(1-mini)*MIN(metav;MAX(0;p))/metav;1);HSTACK(\"SAL1:\"&s&\":\"&e;s;e;g;base;p;metav;pc;ROUNDDOWN(base*pc+0;00000001;0);IF(vf;\"Participação no período\";\"Participação dispensada pela campanha\"))));REDUCE(lin(0);SEQUENCE($Q$3;1;0);LAMBDA(acc;k;IF(k=0;acc;VSTACK(acc;lin(k)))))))",
+              "=IF($Q$3=0;\"\";LET(lin;LAMBDA(k;LET(s;$Q$2+k*'CONFIGURAÇÃO'!$O$41;e;s+'CONFIGURAÇÃO'!$O$41;h;LAMBDA(ch;atual;IFERROR(INDEX(FILTER(DADOS_SALARIOS!$J$2:$J;DADOS_SALARIOS!$I$2:$I=ch;DADOS_SALARIOS!$H$2:$H>=e);1);atual));g;h(\"Grau\";'FICHA PESSOAL'!$AB$11);base;h(\"base:\"&g;IFERROR(VLOOKUP(g;'CONFIGURAÇÃO'!$K$54:$O$58;5;0);0));metav;h(\"meta\";'CONFIGURAÇÃO'!$O$42);mini;h(\"minimo\";'CONFIGURAÇÃO'!$O$43);vf;h(\"verifica\";'CONFIGURAÇÃO'!$O$44);p;SUM(MAP('CONFIGURAÇÃO'!$K$62:$K$67;'CONFIGURAÇÃO'!$O$62:$O$67;LAMBDA(t;w;h(\"peso:\"&t;w)*COUNTIFS(DADOS_SALARIOS!$C$2:$C;t;DADOS_SALARIOS!$E$2:$E;TRUE;DADOS_SALARIOS!$D$2:$D;\">=\"&s;DADOS_SALARIOS!$D$2:$D;\"<\"&e))));pc;IF(vf;mini+(1-mini)*MIN(metav;MAX(0;p))/metav;1);HSTACK(\"SAL1:\"&s&\":\"&e;s;e;g;base;p;metav;pc;ROUNDDOWN(base*pc+0,00000001;0);IF(vf;\"Participação no período\";\"Participação dispensada pela campanha\"))));REDUCE(lin(0);SEQUENCE($Q$3;1;0);LAMBDA(acc;k;IF(k=0;acc;VSTACK(acc;lin(k)))))))",
+              "=IF($Q$3=0;\"\";LET(lin;LAMBDA(k;LET(s;$Q$2+k*'CONFIGURAÇÃO'!$O$41;e;s+'CONFIGURAÇÃO'!$O$41;h;LAMBDA(ch;atual;IFERROR(INDEX(FILTER(DADOS_SALARIOS!$J$2:$J;DADOS_SALARIOS!$I$2:$I=ch;DADOS_SALARIOS!$H$2:$H>=e);1);atual));g;h(\"Grau\";'FICHA PESSOAL'!$AB$11);base;h(\"base:\"&g;IFERROR(VLOOKUP(g;'CONFIGURAÇÃO'!$K$54:$O$58;5;0);0));metav;h(\"meta\";'CONFIGURAÇÃO'!$O$42);mini;h(\"minimo\";'CONFIGURAÇÃO'!$O$43);vf;h(\"verifica\";'CONFIGURAÇÃO'!$O$44);p;SUM(MAP('CONFIGURAÇÃO'!$K$62:$K$67;'CONFIGURAÇÃO'!$O$62:$O$67;LAMBDA(t;w;h(\"peso:\"&t;w)*COUNTIFS(DADOS_SALARIOS!$C$2:$C;t;DADOS_SALARIOS!$E$2:$E;TRUE;DADOS_SALARIOS!$D$2:$D;\">=\"&s;DADOS_SALARIOS!$D$2:$D;\"<\"&e))));pc;IF(vf;mini+(1-mini)*MIN(metav;MAX(0;p))/metav;1);HSTACK(\"SAL1:\"&s&\":\"&e;s;e;g;base;p;metav;pc;ROUNDDOWN(base*pc+0;00000001;0);IF(vf;\"Participação no período\";\"Participação dispensada pela campanha\"))));REDUCE(lin(0);SEQUENCE($Q$3;1;0);LAMBDA(acc;k;IF(k=0;acc;VSTACK(acc;lin(k)))))))"
+            ]
+          ]
+        ]
+      },
+      {
+        "aba": "DADOS_SALARIOS",
+        "faixa": "AA2",
+        "formulas": [
+          [
+            [
+              "=IFERROR(ARRAY_CONSTRAIN(LET(a;VSTACK('SALÁRIOS'!C2:J;HSTACK(R11:R130;R11:R130;S11:X130));SORT(FILTER(a;ISNUMBER(INDEX(a;0;1)));1;FALSE));10;8);\"\")"
+            ]
+          ]
+        ]
+      },
+      {
+        "aba": "FICHA PESSOAL",
+        "faixa": "W86",
+        "formulas": [
+          [
+            [
+              "=N(O86)+IFERROR(SUM(EXTRATO!B2:B);0)+SUM('SALÁRIOS'!J2:J)+'DADOS_SALARIOS'!Q4",
+              "=N(O86)+IFERROR(SUM(EXTRATO!B2:B);0)+SUM('SALÁRIOS'!J2:J)+DADOS_SALARIOS!Q4"
+            ]
+          ]
+        ]
+      },
+      {
+        "aba": "CONFIGURAÇÃO",
+        "faixa": "O38",
+        "formulas": [
+          [
+            [
+              "=IF(ISNUMBER('DADOS_SALARIOS'!N2);'DADOS_SALARIOS'!N2;\"\")",
+              "=IF(ISNUMBER(DADOS_SALARIOS!N2);DADOS_SALARIOS!N2;\"\")"
+            ]
+          ]
+        ]
+      },
+      {
+        "aba": "CARTEIRA",
+        "faixa": "AH3",
+        "formulas": [
+          [
+            [
+              "=IF(ISNUMBER('CONFIGURAÇÃO'!O38);\"Emitida \"&TEXT('CONFIGURAÇÃO'!O38;\"dd.mm.yyyy\");\"Não emitida · marque ao lado\")"
+            ]
+          ]
+        ]
+      },
+      {
+        "aba": "FICHA",
+        "faixa": "AN11",
+        "formulas": [
+          [
+            [
+              "=DADOS!$CZ$47"
+            ]
+          ]
+        ]
+      }
+    ]
+  },
+  "progressao": {
+    "piso": {
+      "base": 0,
+      "prefixo": "—",
+      "minimo": 1,
+      "maximo": 30
+    },
+    "missoes_linhas": [
+      15,
+      87
+    ],
+    "custos": [
+      {
+        "nivel": 1,
+        "linha": 65,
+        "livro": "",
+        "formulas": [
+          "=IF(F65=\"\",IF(E65=\"\",\"\",E65),IF(IFERROR(AND(ISNUMBER(F65),F65>=0,INT(F65)=F65),FALSE),F65,NA()))",
+          "=IF(F65=\"\";IF(E65=\"\";\"\";E65);IF(IFERROR(AND(ISNUMBER(F65);F65>=0;INT(F65)=F65);FALSE);F65;NA()))"
+        ]
+      },
+      {
+        "nivel": 2,
+        "linha": 66,
+        "livro": 200,
+        "formulas": [
+          "=IF(F66=\"\",IF(E66=\"\",\"\",E66),IF(IFERROR(AND(ISNUMBER(F66),F66>=0,INT(F66)=F66),FALSE),F66,NA()))",
+          "=IF(F66=\"\";IF(E66=\"\";\"\";E66);IF(IFERROR(AND(ISNUMBER(F66);F66>=0;INT(F66)=F66);FALSE);F66;NA()))"
+        ]
+      },
+      {
+        "nivel": 3,
+        "linha": 67,
+        "livro": 300,
+        "formulas": [
+          "=IF(F67=\"\",IF(E67=\"\",\"\",E67),IF(IFERROR(AND(ISNUMBER(F67),F67>=0,INT(F67)=F67),FALSE),F67,NA()))",
+          "=IF(F67=\"\";IF(E67=\"\";\"\";E67);IF(IFERROR(AND(ISNUMBER(F67);F67>=0;INT(F67)=F67);FALSE);F67;NA()))"
+        ]
+      },
+      {
+        "nivel": 4,
+        "linha": 68,
+        "livro": 300,
+        "formulas": [
+          "=IF(F68=\"\",IF(E68=\"\",\"\",E68),IF(IFERROR(AND(ISNUMBER(F68),F68>=0,INT(F68)=F68),FALSE),F68,NA()))",
+          "=IF(F68=\"\";IF(E68=\"\";\"\";E68);IF(IFERROR(AND(ISNUMBER(F68);F68>=0;INT(F68)=F68);FALSE);F68;NA()))"
+        ]
+      },
+      {
+        "nivel": 5,
+        "linha": 69,
+        "livro": 500,
+        "formulas": [
+          "=IF(F69=\"\",IF(E69=\"\",\"\",E69),IF(IFERROR(AND(ISNUMBER(F69),F69>=0,INT(F69)=F69),FALSE),F69,NA()))",
+          "=IF(F69=\"\";IF(E69=\"\";\"\";E69);IF(IFERROR(AND(ISNUMBER(F69);F69>=0;INT(F69)=F69);FALSE);F69;NA()))"
+        ]
+      },
+      {
+        "nivel": 6,
+        "linha": 70,
+        "livro": 500,
+        "formulas": [
+          "=IF(F70=\"\",IF(E70=\"\",\"\",E70),IF(IFERROR(AND(ISNUMBER(F70),F70>=0,INT(F70)=F70),FALSE),F70,NA()))",
+          "=IF(F70=\"\";IF(E70=\"\";\"\";E70);IF(IFERROR(AND(ISNUMBER(F70);F70>=0;INT(F70)=F70);FALSE);F70;NA()))"
+        ]
+      },
+      {
+        "nivel": 7,
+        "linha": 71,
+        "livro": 500,
+        "formulas": [
+          "=IF(F71=\"\",IF(E71=\"\",\"\",E71),IF(IFERROR(AND(ISNUMBER(F71),F71>=0,INT(F71)=F71),FALSE),F71,NA()))",
+          "=IF(F71=\"\";IF(E71=\"\";\"\";E71);IF(IFERROR(AND(ISNUMBER(F71);F71>=0;INT(F71)=F71);FALSE);F71;NA()))"
+        ]
+      },
+      {
+        "nivel": 8,
+        "linha": 72,
+        "livro": 700,
+        "formulas": [
+          "=IF(F72=\"\",IF(E72=\"\",\"\",E72),IF(IFERROR(AND(ISNUMBER(F72),F72>=0,INT(F72)=F72),FALSE),F72,NA()))",
+          "=IF(F72=\"\";IF(E72=\"\";\"\";E72);IF(IFERROR(AND(ISNUMBER(F72);F72>=0;INT(F72)=F72);FALSE);F72;NA()))"
+        ]
+      },
+      {
+        "nivel": 9,
+        "linha": 73,
+        "livro": 700,
+        "formulas": [
+          "=IF(F73=\"\",IF(E73=\"\",\"\",E73),IF(IFERROR(AND(ISNUMBER(F73),F73>=0,INT(F73)=F73),FALSE),F73,NA()))",
+          "=IF(F73=\"\";IF(E73=\"\";\"\";E73);IF(IFERROR(AND(ISNUMBER(F73);F73>=0;INT(F73)=F73);FALSE);F73;NA()))"
+        ]
+      },
+      {
+        "nivel": 10,
+        "linha": 74,
+        "livro": 700,
+        "formulas": [
+          "=IF(F74=\"\",IF(E74=\"\",\"\",E74),IF(IFERROR(AND(ISNUMBER(F74),F74>=0,INT(F74)=F74),FALSE),F74,NA()))",
+          "=IF(F74=\"\";IF(E74=\"\";\"\";E74);IF(IFERROR(AND(ISNUMBER(F74);F74>=0;INT(F74)=F74);FALSE);F74;NA()))"
+        ]
+      },
+      {
+        "nivel": 11,
+        "linha": 75,
+        "livro": 900,
+        "formulas": [
+          "=IF(F75=\"\",IF(E75=\"\",\"\",E75),IF(IFERROR(AND(ISNUMBER(F75),F75>=0,INT(F75)=F75),FALSE),F75,NA()))",
+          "=IF(F75=\"\";IF(E75=\"\";\"\";E75);IF(IFERROR(AND(ISNUMBER(F75);F75>=0;INT(F75)=F75);FALSE);F75;NA()))"
+        ]
+      },
+      {
+        "nivel": 12,
+        "linha": 76,
+        "livro": 900,
+        "formulas": [
+          "=IF(F76=\"\",IF(E76=\"\",\"\",E76),IF(IFERROR(AND(ISNUMBER(F76),F76>=0,INT(F76)=F76),FALSE),F76,NA()))",
+          "=IF(F76=\"\";IF(E76=\"\";\"\";E76);IF(IFERROR(AND(ISNUMBER(F76);F76>=0;INT(F76)=F76);FALSE);F76;NA()))"
+        ]
+      },
+      {
+        "nivel": 13,
+        "linha": 77,
+        "livro": 900,
+        "formulas": [
+          "=IF(F77=\"\",IF(E77=\"\",\"\",E77),IF(IFERROR(AND(ISNUMBER(F77),F77>=0,INT(F77)=F77),FALSE),F77,NA()))",
+          "=IF(F77=\"\";IF(E77=\"\";\"\";E77);IF(IFERROR(AND(ISNUMBER(F77);F77>=0;INT(F77)=F77);FALSE);F77;NA()))"
+        ]
+      },
+      {
+        "nivel": 14,
+        "linha": 78,
+        "livro": 1100,
+        "formulas": [
+          "=IF(F78=\"\",IF(E78=\"\",\"\",E78),IF(IFERROR(AND(ISNUMBER(F78),F78>=0,INT(F78)=F78),FALSE),F78,NA()))",
+          "=IF(F78=\"\";IF(E78=\"\";\"\";E78);IF(IFERROR(AND(ISNUMBER(F78);F78>=0;INT(F78)=F78);FALSE);F78;NA()))"
+        ]
+      },
+      {
+        "nivel": 15,
+        "linha": 79,
+        "livro": 1100,
+        "formulas": [
+          "=IF(F79=\"\",IF(E79=\"\",\"\",E79),IF(IFERROR(AND(ISNUMBER(F79),F79>=0,INT(F79)=F79),FALSE),F79,NA()))",
+          "=IF(F79=\"\";IF(E79=\"\";\"\";E79);IF(IFERROR(AND(ISNUMBER(F79);F79>=0;INT(F79)=F79);FALSE);F79;NA()))"
+        ]
+      },
+      {
+        "nivel": 16,
+        "linha": 80,
+        "livro": 1100,
+        "formulas": [
+          "=IF(F80=\"\",IF(E80=\"\",\"\",E80),IF(IFERROR(AND(ISNUMBER(F80),F80>=0,INT(F80)=F80),FALSE),F80,NA()))",
+          "=IF(F80=\"\";IF(E80=\"\";\"\";E80);IF(IFERROR(AND(ISNUMBER(F80);F80>=0;INT(F80)=F80);FALSE);F80;NA()))"
+        ]
+      },
+      {
+        "nivel": 17,
+        "linha": 81,
+        "livro": 1300,
+        "formulas": [
+          "=IF(F81=\"\",IF(E81=\"\",\"\",E81),IF(IFERROR(AND(ISNUMBER(F81),F81>=0,INT(F81)=F81),FALSE),F81,NA()))",
+          "=IF(F81=\"\";IF(E81=\"\";\"\";E81);IF(IFERROR(AND(ISNUMBER(F81);F81>=0;INT(F81)=F81);FALSE);F81;NA()))"
+        ]
+      },
+      {
+        "nivel": 18,
+        "linha": 82,
+        "livro": 1300,
+        "formulas": [
+          "=IF(F82=\"\",IF(E82=\"\",\"\",E82),IF(IFERROR(AND(ISNUMBER(F82),F82>=0,INT(F82)=F82),FALSE),F82,NA()))",
+          "=IF(F82=\"\";IF(E82=\"\";\"\";E82);IF(IFERROR(AND(ISNUMBER(F82);F82>=0;INT(F82)=F82);FALSE);F82;NA()))"
+        ]
+      },
+      {
+        "nivel": 19,
+        "linha": 83,
+        "livro": 1300,
+        "formulas": [
+          "=IF(F83=\"\",IF(E83=\"\",\"\",E83),IF(IFERROR(AND(ISNUMBER(F83),F83>=0,INT(F83)=F83),FALSE),F83,NA()))",
+          "=IF(F83=\"\";IF(E83=\"\";\"\";E83);IF(IFERROR(AND(ISNUMBER(F83);F83>=0;INT(F83)=F83);FALSE);F83;NA()))"
+        ]
+      },
+      {
+        "nivel": 20,
+        "linha": 84,
+        "livro": 1500,
+        "formulas": [
+          "=IF(F84=\"\",IF(E84=\"\",\"\",E84),IF(IFERROR(AND(ISNUMBER(F84),F84>=0,INT(F84)=F84),FALSE),F84,NA()))",
+          "=IF(F84=\"\";IF(E84=\"\";\"\";E84);IF(IFERROR(AND(ISNUMBER(F84);F84>=0;INT(F84)=F84);FALSE);F84;NA()))"
+        ]
+      },
+      {
+        "nivel": 21,
+        "linha": 85,
+        "livro": 1500,
+        "formulas": [
+          "=IF(F85=\"\",IF(E85=\"\",\"\",E85),IF(IFERROR(AND(ISNUMBER(F85),F85>=0,INT(F85)=F85),FALSE),F85,NA()))",
+          "=IF(F85=\"\";IF(E85=\"\";\"\";E85);IF(IFERROR(AND(ISNUMBER(F85);F85>=0;INT(F85)=F85);FALSE);F85;NA()))"
+        ]
+      },
+      {
+        "nivel": 22,
+        "linha": 86,
+        "livro": 1500,
+        "formulas": [
+          "=IF(F86=\"\",IF(E86=\"\",\"\",E86),IF(IFERROR(AND(ISNUMBER(F86),F86>=0,INT(F86)=F86),FALSE),F86,NA()))",
+          "=IF(F86=\"\";IF(E86=\"\";\"\";E86);IF(IFERROR(AND(ISNUMBER(F86);F86>=0;INT(F86)=F86);FALSE);F86;NA()))"
+        ]
+      },
+      {
+        "nivel": 23,
+        "linha": 87,
+        "livro": 1700,
+        "formulas": [
+          "=IF(F87=\"\",IF(E87=\"\",\"\",E87),IF(IFERROR(AND(ISNUMBER(F87),F87>=0,INT(F87)=F87),FALSE),F87,NA()))",
+          "=IF(F87=\"\";IF(E87=\"\";\"\";E87);IF(IFERROR(AND(ISNUMBER(F87);F87>=0;INT(F87)=F87);FALSE);F87;NA()))"
+        ]
+      },
+      {
+        "nivel": 24,
+        "linha": 88,
+        "livro": 1700,
+        "formulas": [
+          "=IF(F88=\"\",IF(E88=\"\",\"\",E88),IF(IFERROR(AND(ISNUMBER(F88),F88>=0,INT(F88)=F88),FALSE),F88,NA()))",
+          "=IF(F88=\"\";IF(E88=\"\";\"\";E88);IF(IFERROR(AND(ISNUMBER(F88);F88>=0;INT(F88)=F88);FALSE);F88;NA()))"
+        ]
+      },
+      {
+        "nivel": 25,
+        "linha": 89,
+        "livro": 1700,
+        "formulas": [
+          "=IF(F89=\"\",IF(E89=\"\",\"\",E89),IF(IFERROR(AND(ISNUMBER(F89),F89>=0,INT(F89)=F89),FALSE),F89,NA()))",
+          "=IF(F89=\"\";IF(E89=\"\";\"\";E89);IF(IFERROR(AND(ISNUMBER(F89);F89>=0;INT(F89)=F89);FALSE);F89;NA()))"
+        ]
+      },
+      {
+        "nivel": 26,
+        "linha": 90,
+        "livro": 1700,
+        "formulas": [
+          "=IF(F90=\"\",IF(E90=\"\",\"\",E90),IF(IFERROR(AND(ISNUMBER(F90),F90>=0,INT(F90)=F90),FALSE),F90,NA()))",
+          "=IF(F90=\"\";IF(E90=\"\";\"\";E90);IF(IFERROR(AND(ISNUMBER(F90);F90>=0;INT(F90)=F90);FALSE);F90;NA()))"
+        ]
+      },
+      {
+        "nivel": 27,
+        "linha": 91,
+        "livro": 1700,
+        "formulas": [
+          "=IF(F91=\"\",IF(E91=\"\",\"\",E91),IF(IFERROR(AND(ISNUMBER(F91),F91>=0,INT(F91)=F91),FALSE),F91,NA()))",
+          "=IF(F91=\"\";IF(E91=\"\";\"\";E91);IF(IFERROR(AND(ISNUMBER(F91);F91>=0;INT(F91)=F91);FALSE);F91;NA()))"
+        ]
+      },
+      {
+        "nivel": 28,
+        "linha": 92,
+        "livro": 1700,
+        "formulas": [
+          "=IF(F92=\"\",IF(E92=\"\",\"\",E92),IF(IFERROR(AND(ISNUMBER(F92),F92>=0,INT(F92)=F92),FALSE),F92,NA()))",
+          "=IF(F92=\"\";IF(E92=\"\";\"\";E92);IF(IFERROR(AND(ISNUMBER(F92);F92>=0;INT(F92)=F92);FALSE);F92;NA()))"
+        ]
+      },
+      {
+        "nivel": 29,
+        "linha": 93,
+        "livro": 1700,
+        "formulas": [
+          "=IF(F93=\"\",IF(E93=\"\",\"\",E93),IF(IFERROR(AND(ISNUMBER(F93),F93>=0,INT(F93)=F93),FALSE),F93,NA()))",
+          "=IF(F93=\"\";IF(E93=\"\";\"\";E93);IF(IFERROR(AND(ISNUMBER(F93);F93>=0;INT(F93)=F93);FALSE);F93;NA()))"
+        ]
+      }
+    ],
+    "regra": [
+      "=IF(F46=\"\",E46,IF(IFERROR(AND(ISNUMBER(F46),F46>=1,INT(F46)=F46,F46<=30),FALSE),F46,NA()))",
+      "=IF(F46=\"\";E46;IF(IFERROR(AND(ISNUMBER(F46);F46>=1;INT(F46)=F46;F46<=30);FALSE);F46;NA()))"
+    ],
+    "xp": "=SUM('FICHA PESSOAL'!$BA$15:$BA$87)+SUM('FICHA PESSOAL'!$BG$15:$BG$87)+SUM('FICHA PESSOAL'!$BM$15:$BM$87)+SUM('FICHA PESSOAL'!$BS$15:$BS$87)+N(DADOS!$CZ$54)",
+    "curva": [
+      {
+        "linha": 5,
+        "nivel": 2,
+        "formula": "=DADOS_CONFIG!$Z$3",
+        "fonte": "Z3"
+      },
+      {
+        "linha": 6,
+        "nivel": 3,
+        "formula": "=DADOS_CONFIG!$Z$4",
+        "fonte": "Z4"
+      },
+      {
+        "linha": 7,
+        "nivel": 4,
+        "formula": "=DADOS_CONFIG!$Z$5",
+        "fonte": "Z5"
+      },
+      {
+        "linha": 8,
+        "nivel": 5,
+        "formula": "=DADOS_CONFIG!$Z$6",
+        "fonte": "Z6"
+      },
+      {
+        "linha": 9,
+        "nivel": 6,
+        "formula": "=DADOS_CONFIG!$Z$7",
+        "fonte": "Z7"
+      },
+      {
+        "linha": 10,
+        "nivel": 7,
+        "formula": "=DADOS_CONFIG!$Z$8",
+        "fonte": "Z8"
+      },
+      {
+        "linha": 11,
+        "nivel": 8,
+        "formula": "=DADOS_CONFIG!$Z$9",
+        "fonte": "Z9"
+      },
+      {
+        "linha": 12,
+        "nivel": 9,
+        "formula": "=DADOS_CONFIG!$Z$10",
+        "fonte": "Z10"
+      },
+      {
+        "linha": 13,
+        "nivel": 10,
+        "formula": "=DADOS_CONFIG!$Z$11",
+        "fonte": "Z11"
+      },
+      {
+        "linha": 14,
+        "nivel": 11,
+        "formula": "=DADOS_CONFIG!$Z$12",
+        "fonte": "Z12"
+      },
+      {
+        "linha": 15,
+        "nivel": 12,
+        "formula": "=DADOS_CONFIG!$Z$13",
+        "fonte": "Z13"
+      },
+      {
+        "linha": 16,
+        "nivel": 13,
+        "formula": "=DADOS_CONFIG!$Z$14",
+        "fonte": "Z14"
+      },
+      {
+        "linha": 17,
+        "nivel": 14,
+        "formula": "=DADOS_CONFIG!$Z$15",
+        "fonte": "Z15"
+      },
+      {
+        "linha": 18,
+        "nivel": 15,
+        "formula": "=DADOS_CONFIG!$Z$16",
+        "fonte": "Z16"
+      },
+      {
+        "linha": 19,
+        "nivel": 16,
+        "formula": "=DADOS_CONFIG!$Z$17",
+        "fonte": "Z17"
+      },
+      {
+        "linha": 20,
+        "nivel": 17,
+        "formula": "=DADOS_CONFIG!$Z$18",
+        "fonte": "Z18"
+      },
+      {
+        "linha": 21,
+        "nivel": 18,
+        "formula": "=DADOS_CONFIG!$Z$19",
+        "fonte": "Z19"
+      },
+      {
+        "linha": 22,
+        "nivel": 19,
+        "formula": "=DADOS_CONFIG!$Z$20",
+        "fonte": "Z20"
+      },
+      {
+        "linha": 23,
+        "nivel": 20,
+        "formula": "=DADOS_CONFIG!$Z$21",
+        "fonte": "Z21"
+      },
+      {
+        "linha": 24,
+        "nivel": 21,
+        "formula": "=DADOS_CONFIG!$Z$22",
+        "fonte": "Z22"
+      },
+      {
+        "linha": 25,
+        "nivel": 22,
+        "formula": "=DADOS_CONFIG!$Z$23",
+        "fonte": "Z23"
+      },
+      {
+        "linha": 26,
+        "nivel": 23,
+        "formula": "=DADOS_CONFIG!$Z$24",
+        "fonte": "Z24"
+      },
+      {
+        "linha": 27,
+        "nivel": 24,
+        "formula": "=DADOS_CONFIG!$Z$25",
+        "fonte": "Z25"
+      },
+      {
+        "linha": 28,
+        "nivel": 25,
+        "formula": "=DADOS_CONFIG!$Z$26",
+        "fonte": "Z26"
+      },
+      {
+        "linha": 29,
+        "nivel": 26,
+        "formula": "=DADOS_CONFIG!$Z$27",
+        "fonte": "Z27"
+      },
+      {
+        "linha": 30,
+        "nivel": 27,
+        "formula": "=DADOS_CONFIG!$Z$28",
+        "fonte": "Z28"
+      },
+      {
+        "linha": 31,
+        "nivel": 28,
+        "formula": "=DADOS_CONFIG!$Z$29",
+        "fonte": "Z29"
+      },
+      {
+        "linha": 32,
+        "nivel": 29,
+        "formula": "=DADOS_CONFIG!$Z$30",
+        "fonte": "Z30"
+      },
+      {
+        "linha": 33,
+        "nivel": 30,
+        "formula": "=DADOS_CONFIG!$Z$31",
+        "fonte": "Z31"
+      }
+    ],
+    "missoes": [
+      {
+        "coluna": 53,
+        "formulas": [
+          "=IF($AX{linha}=\"\",\"\",IFERROR(IF(ROUND(VLOOKUP($AX{linha},DADOS!$CL$5:$CM$10,2,FALSE)*IF($AY{linha}=\"\",1,VLOOKUP($AY{linha},DADOS!$CO$5:$CP$7,2,FALSE))*IF($AZ{linha}=\"\",1,VLOOKUP($AZ{linha},DADOS!$CR$5:$CS$15,2,FALSE)),4)>0,MAX(1,FLOOR(ROUND(VLOOKUP($AX{linha},DADOS!$CL$5:$CM$10,2,FALSE)*IF($AY{linha}=\"\",1,VLOOKUP($AY{linha},DADOS!$CO$5:$CP$7,2,FALSE))*IF($AZ{linha}=\"\",1,VLOOKUP($AZ{linha},DADOS!$CR$5:$CS$15,2,FALSE)),4),1)),0),\"\"))",
+          "=IF($AX{linha}=\"\";\"\";IFERROR(IF(ROUND(VLOOKUP($AX{linha};DADOS!$CL$5:$CM$10;2;FALSE)*IF($AY{linha}=\"\";1;VLOOKUP($AY{linha};DADOS!$CO$5:$CP$7;2;FALSE))*IF($AZ{linha}=\"\";1;VLOOKUP($AZ{linha};DADOS!$CR$5:$CS$15;2;FALSE));4)>0;MAX(1;FLOOR(ROUND(VLOOKUP($AX{linha};DADOS!$CL$5:$CM$10;2;FALSE)*IF($AY{linha}=\"\";1;VLOOKUP($AY{linha};DADOS!$CO$5:$CP$7;2;FALSE))*IF($AZ{linha}=\"\";1;VLOOKUP($AZ{linha};DADOS!$CR$5:$CS$15;2;FALSE));4);1));0);\"\"))"
+        ]
+      },
+      {
+        "coluna": 59,
+        "formulas": [
+          "=IF($BD{linha}=\"\",\"\",IFERROR(IF(ROUND(VLOOKUP($BD{linha},DADOS!$CL$5:$CM$10,2,FALSE)*IF($BE{linha}=\"\",1,VLOOKUP($BE{linha},DADOS!$CO$5:$CP$7,2,FALSE))*IF($BF{linha}=\"\",1,VLOOKUP($BF{linha},DADOS!$CR$5:$CS$15,2,FALSE)),4)>0,MAX(1,FLOOR(ROUND(VLOOKUP($BD{linha},DADOS!$CL$5:$CM$10,2,FALSE)*IF($BE{linha}=\"\",1,VLOOKUP($BE{linha},DADOS!$CO$5:$CP$7,2,FALSE))*IF($BF{linha}=\"\",1,VLOOKUP($BF{linha},DADOS!$CR$5:$CS$15,2,FALSE)),4),1)),0),\"\"))",
+          "=IF($BD{linha}=\"\";\"\";IFERROR(IF(ROUND(VLOOKUP($BD{linha};DADOS!$CL$5:$CM$10;2;FALSE)*IF($BE{linha}=\"\";1;VLOOKUP($BE{linha};DADOS!$CO$5:$CP$7;2;FALSE))*IF($BF{linha}=\"\";1;VLOOKUP($BF{linha};DADOS!$CR$5:$CS$15;2;FALSE));4)>0;MAX(1;FLOOR(ROUND(VLOOKUP($BD{linha};DADOS!$CL$5:$CM$10;2;FALSE)*IF($BE{linha}=\"\";1;VLOOKUP($BE{linha};DADOS!$CO$5:$CP$7;2;FALSE))*IF($BF{linha}=\"\";1;VLOOKUP($BF{linha};DADOS!$CR$5:$CS$15;2;FALSE));4);1));0);\"\"))"
+        ]
+      },
+      {
+        "coluna": 65,
+        "formulas": [
+          "=IF($BJ{linha}=\"\",\"\",IFERROR(IF(ROUND(VLOOKUP($BJ{linha},DADOS!$CL$5:$CM$10,2,FALSE)*IF($BK{linha}=\"\",1,VLOOKUP($BK{linha},DADOS!$CO$5:$CP$7,2,FALSE))*IF($BL{linha}=\"\",1,VLOOKUP($BL{linha},DADOS!$CR$5:$CS$15,2,FALSE)),4)>0,MAX(1,FLOOR(ROUND(VLOOKUP($BJ{linha},DADOS!$CL$5:$CM$10,2,FALSE)*IF($BK{linha}=\"\",1,VLOOKUP($BK{linha},DADOS!$CO$5:$CP$7,2,FALSE))*IF($BL{linha}=\"\",1,VLOOKUP($BL{linha},DADOS!$CR$5:$CS$15,2,FALSE)),4),1)),0),\"\"))",
+          "=IF($BJ{linha}=\"\";\"\";IFERROR(IF(ROUND(VLOOKUP($BJ{linha};DADOS!$CL$5:$CM$10;2;FALSE)*IF($BK{linha}=\"\";1;VLOOKUP($BK{linha};DADOS!$CO$5:$CP$7;2;FALSE))*IF($BL{linha}=\"\";1;VLOOKUP($BL{linha};DADOS!$CR$5:$CS$15;2;FALSE));4)>0;MAX(1;FLOOR(ROUND(VLOOKUP($BJ{linha};DADOS!$CL$5:$CM$10;2;FALSE)*IF($BK{linha}=\"\";1;VLOOKUP($BK{linha};DADOS!$CO$5:$CP$7;2;FALSE))*IF($BL{linha}=\"\";1;VLOOKUP($BL{linha};DADOS!$CR$5:$CS$15;2;FALSE));4);1));0);\"\"))"
+        ]
+      },
+      {
+        "coluna": 71,
+        "formulas": [
+          "=IF($BP{linha}=\"\",\"\",IFERROR(IF(ROUND(VLOOKUP($BP{linha},DADOS!$CL$5:$CM$10,2,FALSE)*IF($BQ{linha}=\"\",1,VLOOKUP($BQ{linha},DADOS!$CO$5:$CP$7,2,FALSE))*IF($BR{linha}=\"\",1,VLOOKUP($BR{linha},DADOS!$CR$5:$CS$15,2,FALSE)),4)>0,MAX(1,FLOOR(ROUND(VLOOKUP($BP{linha},DADOS!$CL$5:$CM$10,2,FALSE)*IF($BQ{linha}=\"\",1,VLOOKUP($BQ{linha},DADOS!$CO$5:$CP$7,2,FALSE))*IF($BR{linha}=\"\",1,VLOOKUP($BR{linha},DADOS!$CR$5:$CS$15,2,FALSE)),4),1)),0),\"\"))",
+          "=IF($BP{linha}=\"\";\"\";IFERROR(IF(ROUND(VLOOKUP($BP{linha};DADOS!$CL$5:$CM$10;2;FALSE)*IF($BQ{linha}=\"\";1;VLOOKUP($BQ{linha};DADOS!$CO$5:$CP$7;2;FALSE))*IF($BR{linha}=\"\";1;VLOOKUP($BR{linha};DADOS!$CR$5:$CS$15;2;FALSE));4)>0;MAX(1;FLOOR(ROUND(VLOOKUP($BP{linha};DADOS!$CL$5:$CM$10;2;FALSE)*IF($BQ{linha}=\"\";1;VLOOKUP($BQ{linha};DADOS!$CO$5:$CP$7;2;FALSE))*IF($BR{linha}=\"\";1;VLOOKUP($BR{linha};DADOS!$CR$5:$CS$15;2;FALSE));4);1));0);\"\"))"
+        ]
+      }
+    ],
+    "rotulos": [
+      {
+        "aba": "CONFIGURAÇÃO",
+        "celula": "C46",
+        "valor": "Nível inicial"
+      },
+      {
+        "aba": "DADOS",
+        "celula": "CY47",
+        "valor": "xp total"
+      },
+      {
+        "aba": "DADOS",
+        "celula": "CY54",
+        "valor": "xp base"
+      }
+    ]
+  },
+  "criacaoDisponivel": false,
+  "conferenciaConjuntaConcluida": false,
+  "consistenciaTemporalVerificada": false,
+  "imagensAtuaisConferidas": false
+}

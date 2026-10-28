@@ -26,8 +26,13 @@ function r53NovaProgDados_(ss) {
   var range = dados.getRange('AQ5:AR33'), curva = range.getValues(), fc = range.getFormulas();
   if (curva.length !== 29 || fc.length !== 29) r53NovaFinErro_('curva de XP incompleta.');
   curva.forEach(function(l, i) {
+    // DADOS_CONFIG reinicia o acumulado no nível inicial da mesa. O prefixo
+    // abaixo dele é exatamente "—", não uma curva numérica do nível 2.
+    var abaixo = i + 2 < nivel;
     if (l.length !== 2 || l[0] !== i + 2 || fc[i][0] || fc[i][1] !== '=DADOS_CONFIG!$Z$' + (i + 3) ||
-        !r53NovaProgInteiro_(l[1]) || (i > 0 && l[1] < curva[i - 1][1]))
+        (abaixo ? l[1] !== '—' : !r53NovaProgInteiro_(l[1]) ||
+          (i + 2 === nivel && l[1] !== 0) ||
+          (i > 0 && i + 1 >= nivel && l[1] < curva[i - 1][1])))
       r53NovaFinErro_('curva de XP inválida ou ainda não calculada.');
   });
   return {nivel: nivel, base: nivel === 1 ? 0 : curva[nivel - 2][1],

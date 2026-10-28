@@ -19,6 +19,14 @@ pronta para cadastro.** Base incorporada: main
 Inclui XP manual e marcas de missões congeladas. A instalação/backup 13 das
 oficiais foi feita por outro trabalho; não reaplicar nem reabrir a otimização.
 
+## Contrato REST e piso do XP — parcial
+
+Contrato público exportado em `contrato_rest.json`; conferir com
+`node r53/inicializacao/gerar_contrato_rest.js --conferir`. O consumidor fixa seu
+hash e confere financeiro/progressão, ainda sem escrita/criação. Corrigida a
+curva de início: “—” abaixo do piso e base zero nele, confirmados em descartável.
+[Reprodução, testes e limites](CONTRATO-REST-2026-10-28.md).
+
 ## Primeiro transporte REST no consumidor — parcial
 
 PR84 do bot tem coleta REST para financeiro/progressão, com contexto/cota e
@@ -117,10 +125,11 @@ A rotina lê o nível resolvido da regra `CONFIGURAÇÃO!E46:G46` (nível inteir
 entre 1 e 30) e a curva atual `DADOS!AQ5:AR33`. Escreve apenas:
 
 - `FICHA!AH11`: nível inicial resolvido da mesa;
-- `DADOS!CZ54`: XP acumulado necessário para começar nesse nível; nível 1 usa 0.
+- `DADOS!CZ54`: base zero no nível inicial; o acumulado da campanha é relativo a esse piso.
 
 A curva pode ser customizada pela mesa; não é substituída por uma tabela fixa.
-A rotina recusa curva incompleta, decrescente, não numérica ou com fórmula
+Abaixo do piso exige “—”; no piso exige zero. Acima dele, a rotina recusa curva
+incompleta, decrescente, não numérica ou com fórmula
 inesperada. As fórmulas `DADOS!CZ47` e `FICHA!AN11` são preservadas. O novo
 campo de base é obrigatório: API não dispara o onEdit que ajusta XP numa
 edição manual do nível. Não deduzir a base pelo XP total herdado.

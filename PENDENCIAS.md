@@ -1,3 +1,22 @@
+## Carteira viva: contrato REST e piso de XP · 28/10/2026 · não instalado
+
+Corrigida recusa de curva válida: abaixo do nível inicial o acumulado é “—”,
+no piso é zero. Testes antigos simulavam uma curva de nível 2 com piso 10;
+oráculo corrigido pelas fórmulas publicadas. Antes falhou/depois passou. Sondagem
+em cópia descartável confirmou pisos 2/10/30, custom 2100 e nível 1 pendente ou
+com custo explícito zero; 13 fórmulas financeiras conferidas. Cópia na lixeira,
+aba fechada; oficial/jogador intactos. Não executou inicializador/Apps Script.
+Exportador de contrato público REST com hashes de seis fontes, guardas exatas,
+piso/custos/curva/missões; consumidor copia/pina o JSON. 47 novos +82 progressão,
+67 sequência e 43 leitura locais passaram; CI completo em fechamento. Contratos
+anteriores/diários preservados; operação com base anterior incompatível recusa
+sem apagar/reiniciar. Consumidor confere dois domínios e emite recibo de leitura
+cifrado; não é diário de escrita nem criação pronta. Faltam estado/persistência,
+demais domínios, propriedades, automações/responsável e integração/prova nativa.
+Criação bloqueada; sem merge/deploy/modelo pago/escopo novo ou publicação GS.
+Leia r53/inicializacao/CONTRATO-REST-2026-10-28.md. Sol Alto; revisão Médio.
+Entradas abaixo históricas.
+
 ## Carteira viva: primeiro transporte REST no consumidor · 28/10/2026 · não instalado
 
 Produtor funcional permanece 2427024, fechamento anterior f36b410; não houve

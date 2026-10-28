@@ -41,8 +41,9 @@ function preparado(op={}){
 function seedProgressao(a){
  a.put('CONFIGURAÇÃO','C46','Nível inicial');a.put('CONFIGURAÇÃO','E46',2);a.put('CONFIGURAÇÃO','F46',10);a.put('CONFIGURAÇÃO','G46',10,a.ctx.R53_NOVA_PROG_.regra);a.put('FICHA','AH11',29);
  a.put('DADOS','CY54','xp base');a.put('DADOS','CY47','xp total');a.put('DADOS','CZ54',9999);a.put('DADOS','CZ47',9999,a.ctx.R53_NOVA_PROG_.xp);
- const curva=[0,200,500,800,1300,1800,2300,3000,3700,4400,5300,6200,7100,8200,9300,10400,11700,13000,14300,15800,17300,18800,20500,22200,23900,25600,27300,29000,30700];
- for(let i=0;i<29;i++){a.put('DADOS','AQ'+(i+5),i+2);a.put('DADOS','AR'+(i+5),curva[i],'=DADOS_CONFIG!$Z$'+(i+3));}
+
+ const atual=require('./curva_inicial').curvaInicial(10);
+ for(let i=0;i<29;i++){a.put('DADOS','AQ'+(i+5),i+2);a.put('DADOS','AR'+(i+5),atual[i],'=DADOS_CONFIG!$Z$'+(i+3));}
  for(let r=15;r<=87;r++)for(let g=0;g<4;g++)a.put('FICHA PESSOAL',['BA','BG','BM','BS'][g]+r,'',a.ctx.r53NovaProgFormulaMissao_(r,g));
 
 }
@@ -105,7 +106,7 @@ caso('foto ainda presente na rodada depois bloqueia avanço final',()=>{
 for(const op of [{ocupado:true},{ativoDiferente:true},{id:'1MQqhHbIzzyoMQY5zLKOciiT5k9Y6AMI4MCSrPhu8V_k'}])caso('trava ou alvo recusados preservam dados',()=>{const a=preparado(op);assert.throws(()=>a.aplicar({assinatura:'x'}),/andamento|vinculado|alvo/);assert.equal(a.writes.length,0);assert.equal(a.seqlock,0);});
 caso('financeiro e progressão reais: muda nível, retoma depois sem reaplicar financeiro',()=>{
  const a=preparado({perfisReais:true});seedProgressao(a);
- const p=a.previa();a.concluir(p);assert.equal(a.range('FICHA','AH11').getValue(),10);assert.equal(a.range('DADOS','CZ54').getValue(),3700);
+ const p=a.previa();a.concluir(p);assert.equal(a.range('FICHA','AH11').getValue(),10);assert.equal(a.range('DADOS','CZ54').getValue(),0);
  const chamadas=a.chamadas.filter(n=>n==='financeiro').length,w=a.writes.length;a.concluir(p);assert.equal(a.writes.length,w);assert.equal(a.chamadas.filter(n=>n==='financeiro').length,chamadas);
  const old=JSON.parse(a.doc.get(a.ctx.R53_NOVA_FIN_.diario));assert.throws(()=>a.ctx.r53NovaFichaFinanceiroAplicar(a.ss,a.context,old.assinatura),/configuração mudou/);assert.equal(a.writes.length,w);
 });
