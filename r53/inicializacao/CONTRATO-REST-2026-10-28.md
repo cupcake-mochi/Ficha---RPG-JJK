@@ -1,6 +1,6 @@
 # Contrato REST e piso do XP
 
-28/10/2026 · PR31, etapa 7 parcial. Não instalado nem publicado. Criação bloqueada.
+28/10/2026 · PR31, código `d7adec7820500f7951d982b34f512f9c75d05c2b`, etapa 7 parcial. Não instalado nem publicado. Criação bloqueada.
 Main produtor ef361cc e bot de42447 reconferidas antes das alterações.
 
 ## Defeito reproduzido e corrigido
@@ -45,8 +45,13 @@ revisão explícita do contrato. Não amplia equivalências de fórmula por heur
 Não muda contratos anteriores, diários GS, permissões ou a ficha oficial.
 
 47 cenários novos de contrato/piso e 82 de progressão passaram; sequência 67 e
-leitura conjunta 43 passaram. CI completo em fechamento; esperado 2.999 cenários
-de inicialização. O consumidor agora confere estes dois domínios via REST e cria
+leitura conjunta 43 passaram. [CI completo 40743272303](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40743272303)
+aprovado no código d7adec7 em 28/10 às 15:18:33 Brasília: **2.999 cenários de
+inicialização/zero falhas**, pacote nove arquivos, sintaxe 277 Python/256 JS-GS e
+demais regressões aprovados. Duplicado de push 40743263267 cancelado. Consumidor
+código 22b6512, CI 40743430137: 1.385 executados/1.384 aprovados/um opcional,
+zero falhas, 181,422 s; job concluído às 15:19:00 Brasília. Fechamento posterior
+só documental [skip ci], sem nova suíte/publicação por documentação. O consumidor agora confere estes dois domínios via REST e cria
 recibo cifrado histórico; não implementa diário persistido/retomada de escrita.
 
 Faltam adaptação dos demais domínios, propriedades de Apps Script, persistência

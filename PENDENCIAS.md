@@ -8,7 +8,11 @@ com custo explícito zero; 13 fórmulas financeiras conferidas. Cópia na lixeir
 aba fechada; oficial/jogador intactos. Não executou inicializador/Apps Script.
 Exportador de contrato público REST com hashes de seis fontes, guardas exatas,
 piso/custos/curva/missões; consumidor copia/pina o JSON. 47 novos +82 progressão,
-67 sequência e 43 leitura locais passaram; CI completo em fechamento. Contratos
+67 sequência e 43 leitura locais passaram. Código d7adec7, CI 40743272303 aprovado
+às 15:18:33 Brasília: 2.999 cenários/zero falhas, pacote nove arquivos/sintaxe
+277 Python/256 JS-GS e demais regressões; duplicado 40743263267 cancelado.
+Consumidor código 22b6512/CI 40743430137: 1.385 executados/1.384 aprovados/um
+opcional, zero falhas, 181,422 s, 15:19:00 Brasília. Fechamento só documental. Contratos
 anteriores/diários preservados; operação com base anterior incompatível recusa
 sem apagar/reiniciar. Consumidor confere dois domínios e emite recibo de leitura
 cifrado; não é diário de escrita nem criação pronta. Faltam estado/persistência,
