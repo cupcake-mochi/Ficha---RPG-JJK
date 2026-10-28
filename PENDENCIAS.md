@@ -1,3 +1,20 @@
+## Carteira viva: páginas sem gravação e versão · 28/10/2026 · não instalada
+
+PR31: plano e lotes de quatro perfis sem escrita de células ou propriedades;
+631 perfis/158 páginas, 16 cenários novos locais e amostra real de saída em VM
+aceita no Python. PR84 agora tem código: guarda interna de versão Drive/contexto,
+sem token persistido, página duplicada, retomada após erro temporário e conclusão
+reconfirmadas; criação continua bloqueada. Corrigida aceitação de versão vazia na
+leitura existente, reproduzida antes/recusada depois. CI completo em fechamento.
+Não é snapshot dos cálculos. Ponte nativa de execução do produtor ainda não
+entregue: scripts.run não é habilitado por pressupor drive.file; preservar
+escopo atual e estudar adaptador REST/backend ou rota específica separadamente.
+Relatório `r53/inicializacao/VERSAO-LEITURA-2026-10-28.md`.
+Faltam execução autorizada, código/isolamento, consistência/cálculos/imagens,
+preservação global/quota nativa, automações/treinos/notas e responsável.
+Sem Google/Discord, oficial/jogador, novo acesso, modelo pago, merge/deploy.
+Sol Alto para integrar; revisão Médio. Entradas abaixo históricas.
+
 ## Carteira viva: leitura conjunta e Classe 0 · 28/10/2026 · não instalada
 
 PR31: mapa direto de 599 perfis, 10.178 operações/17.316 guardas declaradas:
