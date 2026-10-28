@@ -71,6 +71,7 @@ function ambiente(op = {}) {
   const ss = {getId: () => op.id || 'copia-descartavel', getSheetByName: n => sheets[n] || null};
   function props(map, scope) { return {
     getProperty: k => map.has(k) ? map.get(k) : null,
+    getKeys: () => [...map.keys()],
     setProperty: (k, v) => mutation('propriedade', scope + ':' + k, () => map.set(k, v)),
     deleteProperty: k => mutation('excluirPropriedade', scope + ':' + k, () => map.delete(k))
   }; }

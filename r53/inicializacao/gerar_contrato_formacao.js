@@ -41,6 +41,7 @@ const contrato={versao:1,dominios:{
  familias:build([...['D37:G37','J37:M37','P37'].map(a=>[A,a,'estado_familia']),[A,'O41:O50','formula']],['D36:G36','J36:M36','P36','Q36','Q37','D38','D39','D40','O40','D41:D50'].map(a=>[A,a]),{[A]:'D36:T50'}),
  equipados:build([['D64','texto'],['S64','texto'],['AH64','texto'],['L86','bonus'],['AN86','texto']].map(([a,t])=>[P,a,t]),['D61','D63','S63','AH63','D66','S66','AH66','D85','L85','AF85','AN85','D86','AF86'].map(a=>[P,a]),{[P]:'D61:AT87'}),
  equipaveis:build([...['D92:D99','K92:K99'].map(a=>[P,a,'texto']),...['M','S','U','W','AE','AG','AI','AK','AQ'].map(c=>[P,c+'92:'+c+'99','formula'])],['D89',...['D','K','M','S','U','W','AE','AG','AI','AK','AQ'].map(c=>c+'91')].map(a=>[P,a]),{[P]:'D89:AT99'}),
+ carteira:build(['O13','O27','O30'].map(a=>['CARTEIRA',a,'texto']),['O8','O17','Z17','AK17','O18','Z18','AK18','O21','Z21','AK21','O22','O26'].map(a=>['CARTEIRA',a]),{'CARTEIRA':'O8:AT32'}),
  itens:build([...['D','T','Z','AP'].map(c=>[P,c+'104:'+c+'109','texto']),...['V','AR'].map(c=>[P,c+'104:'+c+'109','formula'])],['D101',...['D','T','V','Z','AP','AR'].map(c=>c+'103')].map(a=>[P,a]),{[P]:'D101:AT109'})
 }};
 // O Google em pt_BR salva o fallback decimal dos Volumes como 0,1.

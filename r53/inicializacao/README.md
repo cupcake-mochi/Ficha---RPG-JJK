@@ -229,17 +229,18 @@ node r53/testes/inicializacao_progressao.js
 node r53/testes/inicializacao_identidade.js
 node r53/testes/inicializacao_pessoal.js
 node r53/testes/inicializacao_formacao.js
+node r53/testes/inicializacao_memorias.js
 ```
 
-Coleção atual: 921 cenários offline (101 financeiros, 82 de nível/base, 78 de
-textos, 243 pessoais e 417 de formação/técnica/Famílias/inventário). Incluem
+Coleção atual: 1.100 cenários offline (101 financeiros, 82 de nível/base, 78 de
+textos, 243 pessoais, 441 de formação/inventário/CARTEIRA e 155 de memórias). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
-nem mede latência Google. O smoke inclui os cinco arquivos de testes.
-CI atual `86410be` aprovado: [40683614201](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40683614201), com 921 cenários.
+nem mede latência Google. O smoke inclui os seis arquivos de testes.
+CI anterior ao bloco CARTEIRA/memórias, `86410be`, aprovado: [40683614201](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40683614201), com 921 cenários.
 CI anterior à extensão de inventário, `763a78b`, aprovado: [40681468287](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40681468287).
 Resultados anteriores e limites nativos ficam nos relatórios datados; o registro
-atual está em [INVENTARIO-2026-10-28.md](INVENTARIO-2026-10-28.md).
+atual está em [CARTEIRA-MEMORIAS-2026-10-28.md](CARTEIRA-MEMORIAS-2026-10-28.md).
 Regressão independente de XP: `node r53/testes/xp_nivel.js`, 20.643
 verificações/9.900 combinações sem a exportação nativa opcional.
 
@@ -267,13 +268,12 @@ Detalhes em [NIVEL-TEXTOS-2026-10-27.md](NIVEL-TEXTOS-2026-10-27.md).
 
 ## O que falta antes de liberar criação
 
-- Inicialização pessoal completa: fotos/arte, campos restantes da CARTEIRA
-  (incluindo nome declarado da técnica), entidades e seus equipamentos,
+- Inicialização pessoal completa: fotos/arte, entidades e seus equipamentos,
   cartões e MONTAGENS. Os domínios já tratados têm protótipos, sem aceite
   nativo completo dos executores. Famílias ainda exigem sincronização com
   cartões, amparo e recuperações; não basta restaurar seus menus.
-- Propriedades de recuperação/editor que podem repor dados antigos, incluindo
-  caches novos `r53_versoes` e `r53_marcas_custom`, além de Classe/amparo/recuperações.
+- Integrar e validar nativamente o protocolo de memórias abaixo; tratar sua
+  ordem com MONTAGENS e a regeneração de Classe/amparo após a limpeza.
 - Orquestração entre fases, conferência combinada, limites de custo e prova
   de preservação do financeiro depois de concluir os outros domínios.
 - Prova do código instalado, origem da cópia e novo responsável; os flags
@@ -321,7 +321,7 @@ O gerador inclui `R53Cartoes1.gs`, responsável pelo cabeçalho final da aba.
 
 - Técnica: limpa J12, J16, D18, J18, P18, D22, D26, L26, L29, D33 e P33 da
   FICHA AMALDIÇOADA. Nome, atributo, conjuração e CD derivados são protegidos;
-  o nome declarado na CARTEIRA não pertence a este domínio e segue pendente.
+  o nome declarado na CARTEIRA pertence ao perfil `carteira`, separado.
 - Famílias: nove estados do livro voltam a Neutra. O41:O50 recupera as fórmulas
   originais: custom válida fica Neutra; sem definição válida fica vazia.
   As definições da mesa, nomes e fórmulas derivadas são preservadas.
@@ -348,3 +348,46 @@ avisos vazios como se isso fosse aprovação. Contratos anteriores iguais.
 Volume pt_BR aceita somente a variante exata do decimal 0,1. Valores,
 referências ou contas diferentes continuam recusados. Relatório com alvos,
 testes e projeção nativa: [INVENTARIO-2026-10-28.md](INVENTARIO-2026-10-28.md).
+
+## CARTEIRA e memórias do editor
+
+`r53NovaFichaCarteiraPrevia/Aplicar` restaura somente O13 (complemento do
+nome), O27 (técnica declarada) e O30 (resumo), incluindo notas de fábrica.
+Z22, servidor usado, fica preservado. Nome e jogador já pertencem à identidade;
+emissão pertence ao financeiro. Foto/arte continuam pendentes. São três âncoras
+pessoais, não uma limpeza da aba inteira. Cabeçalhos e espelhos são conferidos.
+
+`memorias.gs` usa `contrato_memorias.gs`, gerado do editor público. A inspeção
+`r53NovaFichaMemoriasInspecionar(ss, ctx)` retorna quantidade de memórias,
+número de grupos e identificadores das recuperações. Nunca retorna seu conteúdo
+nem aprova a criação. Usa `getKeys`, não lê todas as propriedades do documento.
+
+- `r53NovaFichaMemoriasPrevia(ss, ctx, grupo)` e `...Aplicar(ss, ctx, grupo, hash)`:
+  grupos fixos 0–10, até 24 chaves cada. Cobrem quatro caches e 249 marcadores
+  de Classe. Não recalcular os grupos a partir das chaves que ainda existem:
+  a lista fixa permite retomar depois de exclusões parciais.
+- `r53NovaFichaRecuperacaoPrevia(ss, ctx, chave)` e
+  `...Aplicar(ss, ctx, chave, hash)`: uma recuperação por diário, somente a
+  chave exata `r53_recuperacao_` seguida de um timestamp de 13 algarismos,
+  formato emitido pelo editor atual. Selecionar a chave retornada pela inspeção.
+  Não existe função para apagar uma propriedade arbitrária recebida do navegador.
+- Grupos e recuperações usam o mesmo executor: quatro exclusões por chamada,
+  orçamento de 210 s, diário com hashes abaixo de 9.000 bytes, trava, prévia,
+  releitura, retomada e recusa de alteração concorrente. O executor financeiro
+  e as assinaturas anteriores não foram modificados.
+- O cache volátil `R53_REF_CACHE_` também é invalidado ao sair da aplicação,
+  inclusive em falha. Caso contrário, o mesmo processo poderia reler uma versão
+  antiga mesmo depois de excluir `r53_versoes` do documento.
+
+Nenhuma célula, MONTAGENS, configuração, propriedade de script/usuário ou diário
+alheio é apagado por esse protocolo. Um nome desconhecido nos namespaces de
+Classe/recuperação provoca recusa, sem expor seu nome/valor e sem apagar nada.
+Novas recuperações conhecidas aparecem na inspeção seguinte; concluir um grupo
+não garante que o conjunto esteja vazio. Inspecionar novamente ao final.
+
+A ordem integrada ainda falta: a cópia deve ficar isolada, as automações não
+podem produzir estado novo durante a limpeza e MONTAGENS/cartões precisam ser
+reinicializados antes de religar os consumidores. Limpar caches não limpa os
+cartões armazenados. Depois, regenerar amparo/notas e conferir o conjunto.
+Não apagar os diários para tentar de novo. Ver
+[CARTEIRA-MEMORIAS-2026-10-28.md](CARTEIRA-MEMORIAS-2026-10-28.md).

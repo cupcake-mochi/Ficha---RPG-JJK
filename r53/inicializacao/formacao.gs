@@ -93,3 +93,6 @@ function r53NovaFichaEquipaveisPrevia(ss, ctx) { return r53NovaPerfilPrevia_(ss,
 function r53NovaFichaEquipaveisAplicar(ss, ctx, hash) { return r53NovaPerfilAplicar_(ss, ctx, hash, r53NovaFormPerfil_('equipaveis')); }
 function r53NovaFichaItensPrevia(ss, ctx) { return r53NovaPerfilPrevia_(ss, ctx, r53NovaFormPerfil_('itens')); }
 function r53NovaFichaItensAplicar(ss, ctx, hash) { return r53NovaPerfilAplicar_(ss, ctx, hash, r53NovaFormPerfil_('itens')); }
+
+function r53NovaFichaCarteiraPrevia(ss, ctx) { return r53NovaPerfilPrevia_(ss, ctx, r53NovaFormPerfil_('carteira')); }
+function r53NovaFichaCarteiraAplicar(ss, ctx, hash) { return r53NovaPerfilAplicar_(ss, ctx, hash, r53NovaFormPerfil_('carteira')); }

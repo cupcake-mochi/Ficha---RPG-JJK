@@ -6770,6 +6770,222 @@ var R53_NOVA_FORMACAO_CONTRATO_ = {
         "FICHA PESSOAL": "D89:AT99"
       }
     },
+    "carteira": {
+      "entradas": [
+        {
+          "aba": "CARTEIRA",
+          "faixa": "O13",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "O27",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "O30",
+          "tipo": "texto",
+          "valores": [
+            [
+              ""
+            ]
+          ],
+          "notas": [
+            [
+              ""
+            ]
+          ],
+          "equivalentes": [
+            [
+              []
+            ]
+          ]
+        }
+      ],
+      "guardas": [
+        {
+          "aba": "CARTEIRA",
+          "faixa": "O8",
+          "celulas": [
+            [
+              {
+                "valor": "PORTADOR"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "O17",
+          "celulas": [
+            [
+              {
+                "valor": "CAMINHO"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "Z17",
+          "celulas": [
+            [
+              {
+                "valor": "TRILHA"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "AK17",
+          "celulas": [
+            [
+              {
+                "valor": "ORIGEM"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "O18",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "85755778e3a2ce320eb2360a3c71b2faf54f8832399d96ed38fc0363ea4cc280",
+                  "567575f6cc273f1e320965921b8906eb0702672ab112b09f14e68037ee52e977"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "Z18",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "ef2c5b0182d3ed65d245cf3078f264c8e17c38c1209ff7b11dd705f1da4ca7b8",
+                  "a137b206e9f98875b805274ae425192900673f436efa5b3b8162a89cfbfd786e"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "AK18",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "ee612285e606c1a5597ccf5f3ed02e77162b7d8e7e26cb4a1cccee140eb493d6",
+                  "4c04caf1e44dc9d193e846ed8c7d5868796d5f273769e6fb46de5708c50eefea"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "O21",
+          "celulas": [
+            [
+              {
+                "valor": "NÍVEL"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "Z21",
+          "celulas": [
+            [
+              {
+                "valor": "SERVIDOR USADO"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "AK21",
+          "celulas": [
+            [
+              {
+                "valor": "REGISTRADO POR"
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "O22",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "b72d12311d663aef545b809d094d0c5ca5815bdc0ad1502ccfe5d53247d64ba3",
+                  "b23617aff1bc37918c56e63034ce2188096671b0e9555de4086dede5f1d1e534"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "aba": "CARTEIRA",
+          "faixa": "O26",
+          "celulas": [
+            [
+              {
+                "formulas": [
+                  "218cf8c83b17756ff7a6021d2264e210ca6f3cfb3461b5d9693ed8d8a5c05b9e",
+                  "80487df7f6d5f5fa711de754a01c69a0fba5a699a77c9ec7d64bc75c052b4813"
+                ]
+              }
+            ]
+          ]
+        }
+      ],
+      "leituras": {
+        "CARTEIRA": "O8:AT32"
+      }
+    },
     "itens": {
       "entradas": [
         {

@@ -1,3 +1,19 @@
+## Carteira viva: CARTEIRA e memórias · 28/10/2026 · não instalada
+
+PR 31: três campos pessoais da CARTEIRA e protocolo separado de memórias.
+Quatro caches e 249 marcadores de Classe em 11 grupos fixos; recuperações
+por timestamp com diário individual. Só propriedades de documento conhecidas;
+configurações, células e demais diários preservados. Retomada, concorrência,
+limites e cache volátil tratados. Contratos anteriores/executor financeiro iguais.
+441 cenários de formação, 155 de memórias e 101 financeiros passaram localmente;
+coleção completa de 1.100 aguardando CI. Quinze entradas/guardas por oficial
+conferidas somente por leitura, sem divergência; sem novo ensaio de escrita.
+Relatório: r53/inicializacao/CARTEIRA-MEMORIAS-2026-10-28.md.
+Próximo entidades/cartões/MONTAGENS, arte, orquestração/conferência, automações,
+responsável, integração drive.file e prova nativa. Criação bloqueada, fora do
+pacote/bot. Sem merge/deploy ou novos acessos. GPT-6 Astra Alto; revisão Médio.
+Entradas abaixo são históricas.
+
 ## Carteira viva: inventário e equipamento · 28/10/2026 · não instalada
 
 PR 31, main ef361cc reconferida sem novos commits. Três perfis novos: equipados

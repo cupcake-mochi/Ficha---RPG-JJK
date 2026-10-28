@@ -9,7 +9,7 @@ const letra=n=>{let s='';while(n){n--;s=String.fromCharCode(65+n%26)+s;n=Math.fl
 const valor=(s,a)=>{const p=a1(a);return original.get(s).get(p[0]+','+p[1])??'';};
 const nota=(s,a)=>g.ABAS.find(x=>x.nome===s).notas?.find(x=>x[0]===a)?.[1]||'';
 const sources=['contrato_formacao','formacao'].map(n=>fs.readFileSync(path.join(root,'r53/inicializacao/'+n+'.gs'),'utf8'));
-const nomes=['grau_origem','pericias','oficios_tr','armas','tecnica','familias','equipados','equipaveis','itens'];
+const nomes=['grau_origem','pericias','oficios_tr','armas','tecnica','familias','equipados','equipaveis','itens','carteira'];
 let casos=0;function caso(n,f){try{f();casos++;}catch(e){e.message=n+': '+e.message;throw e;}}
 function visitar(x,fn){const [r,c,r2,c2]=a1(x.faixa);for(let rr=r;rr<=r2;rr++)for(let cc=c;cc<=c2;cc++)fn(letra(cc)+rr,rr-r,cc-c);}
 function preparado(nome){const a=ambiente();for(const f of sources)vm.runInContext(f,a.ctx);a.sheets['FICHA AMALDIÇOADA']={getRange:addr=>a.range('FICHA AMALDIÇOADA',addr)};a.nome=nome;a.c=a.ctx.R53_NOVA_FORMACAO_CONTRATO_.dominios[nome];
@@ -31,7 +31,7 @@ function conferir(a){for(const x of a.c.entradas)visitar(x,addr=>{const r=a.rang
 }
 caso('contrato e fontes independentes concordam sem regeneração',()=>{
  execFileSync(process.execPath,['r53/inicializacao/gerar_contrato_formacao.js','--conferir'],{cwd:root});
- const quant={grau_origem:10,pericias:99,oficios_tr:94,armas:65,tecnica:11,familias:19,equipados:5,equipaveis:88,itens:36};
+ const quant={grau_origem:10,pericias:99,oficios_tr:94,armas:65,tecnica:11,familias:19,equipados:5,equipaveis:88,itens:36,carteira:3};
  for(const n of nomes){const a=preparado(n);let total=0;for(const x of a.c.entradas)visitar(x,(addr,i,j)=>{total++;assert.equal(x.valores[i][j],valor(x.aba,addr));assert.equal(x.notas[i][j],nota(x.aba,addr));});assert.equal(total,quant[n]);}
 });
 for(const nome of nomes){
@@ -59,10 +59,10 @@ caso('saldo protegido usa o preparador salarial, não a antiga apresentação me
  assert.throws(()=>a.previa(),/protegida/);assert.equal(a.writes.length,0);
 });
 caso('técnica limpa textos e escolhas sem apagar nome, atributo e contas derivados',()=>{
- const a=preparado('tecnica');a.put('CARTEIRA','D24','Técnica declarada preservada');
+ const a=preparado('tecnica');a.put('CARTEIRA','O27','Técnica declarada preservada');
  a.put('MONTAGENS','B3','cartão antigo fora deste domínio');a.doc.set('r53_amparo_direto','estado antigo fora deste domínio');
  const p=a.ctx.r53NovaFichaTecnicaPrevia(a.ss,a.context);a.concluir(p);conferir(a);
- assert.equal(a.range('CARTEIRA','D24').getValue(),'Técnica declarada preservada');
+ assert.equal(a.range('CARTEIRA','O27').getValue(),'Técnica declarada preservada');
  assert.equal(a.range('MONTAGENS','B3').getValue(),'cartão antigo fora deste domínio');
  assert.equal(a.doc.get('r53_amparo_direto'),'estado antigo fora deste domínio');
  for(const addr of ['J12','J16','D18','J18','P18','D22','D26','L26','L29','D33','P33'])assert.equal(a.range('FICHA AMALDIÇOADA',addr).getValue(),'');
@@ -80,8 +80,8 @@ caso('Famílias do livro neutras e custom calculadas sem apagar definições',()
 for(const [nome,aba,addr]of [['familias','FICHA AMALDIÇOADA','O41'],['grau_origem','FICHA PESSOAL','D45'],['oficios_tr','FICHA','W118']])
  caso('fórmula editável desconhecida recusada '+nome,()=>{const a=preparado(nome);a.put(aba,addr,0,'=0');assert.throws(()=>a.previa(),/fórmula pessoal/);assert.equal(a.writes.length,0);});
 caso('diários anteriores de formação têm o mesmo layout com os novos domínios',()=>{
- // Hashes fixos: quatro contratos em 73dffda e técnica/Famílias em a92cba8; funciona em clone raso.
- const hashes={grau_origem:'1e5bd718e6ad714350a5c78aae912ecc1fb4d2fb00d3356adc53e9641afe7d84',pericias:'e652c80f5155dea891a0d60e064310e64e90c15d95b6fcc010f06516d414386d',oficios_tr:'13a407d5e903f4e73fcfc8715ae45cc27c0ca76666b388b6509a26cd2d210c4a',armas:'b9a3bba86f490261484c7a5fc2707af44ec3c8c64196d9ec48dc9f466672e0f7',tecnica:'81acd6d204c867a909e0f48743d9d93442252ca40ceeb3360d90480ce7fb1579',familias:'ce1a4f3cb54899ebfc1e6293602b7c108a311b95f18531aed4949be50ca3d97c'};
+ // Hashes fixos: quatro contratos em 73dffda, técnica/Famílias em a92cba8, inventário em 86410be; funciona em clone raso.
+ const hashes={equipados:"f4f68778805c2395c41e5a286434016d9e60f7178475b9a714d3f55fffcbf5a4",equipaveis:"d3046b3753c320114d42d676dde31e529a289f3bb002b52c96537f84749b675e",itens:"61e84811f0fe3b4df3ee144dd76d993e53240b6b2cf7d678e6611da8353e47b4",grau_origem:'1e5bd718e6ad714350a5c78aae912ecc1fb4d2fb00d3356adc53e9641afe7d84',pericias:'e652c80f5155dea891a0d60e064310e64e90c15d95b6fcc010f06516d414386d',oficios_tr:'13a407d5e903f4e73fcfc8715ae45cc27c0ca76666b388b6509a26cd2d210c4a',armas:'b9a3bba86f490261484c7a5fc2707af44ec3c8c64196d9ec48dc9f466672e0f7',tecnica:'81acd6d204c867a909e0f48743d9d93442252ca40ceeb3360d90480ce7fb1579',familias:'ce1a4f3cb54899ebfc1e6293602b7c108a311b95f18531aed4949be50ca3d97c'};
  for(const [nome,hash]of Object.entries(hashes))assert.equal(require('node:crypto').createHash('sha256').update(JSON.stringify(preparado(nome).c)).digest('hex'),hash);
 });
 caso('equipados restaura Soco, mão livre e Traje 1 sem dar inventário ou dinheiro',()=>{
@@ -138,4 +138,17 @@ caso('Volume localizado depois da escrita mantém a retomada e pós-condição',
  const p=a.previa();a.concluir(p);const n=a.writes.length;a.aplicar(p);assert.equal(a.writes.length,n);
  for(const x of a.c.entradas)if(x.tipo==='formula')visitar(x,addr=>assert(a.range(x.aba,addr).getFormulas()[0][0].endsWith(';0,1))')));
 });
-console.log(`${casos} cenários offline de Grau/Origem/treinos/técnica/Famílias/inventário aprovados; sem aceite nativo ou criação geral.`);
+caso('CARTEIRA limpa só complemento, técnica declarada e resumo, preservando servidor e identidade',()=>{
+ const a=preparado('carteira');
+ for(const [c,v] of [['Z22','Mesa custom'],['O9','Nome tratado em outro domínio'],['AK22','Jogador'],['C8','FOTO\n顔']])a.put('CARTEIRA',c,v,'','nota preservada');
+ a.concluir(a.ctx.r53NovaFichaCarteiraPrevia(a.ss,a.context));conferir(a);
+ for(const c of ['O13','O27','O30']){assert.equal(a.range('CARTEIRA',c).getValue(),'');assert.equal(a.range('CARTEIRA',c).getNotes()[0][0],'');}
+ assert.equal(a.range('CARTEIRA','Z22').getValue(),'Mesa custom');assert.equal(a.range('CARTEIRA','O9').getValue(),'Nome tratado em outro domínio');assert.equal(a.range('CARTEIRA','AK22').getValue(),'Jogador');
+ assert.equal(a.range('CARTEIRA','C8').getValue(),'FOTO\n顔');assert.equal(a.range('CARTEIRA','AT3').getValue(),true);
+ const full={};vm.createContext(full);vm.runInContext(require('../../medidas/carregar-ficha').fontes(),full);
+ const sheet=full.ABAS.find(x=>x.nome==='CARTEIRA');
+ for(const x of a.c.entradas)visitar(x,(addr,i,j)=>{const p=a1(addr);assert.equal(x.valores[i][j],sheet.vals.find(v=>v[0]===p[0]&&v[1]===p[1])[2]);});
+ const am=full.ABAS.find(x=>x.nome==='DADOS_AM');
+ assert(am.vals.some(x=>typeof x[2]==='string'&&x[2].includes('CARTEIRA!$O$27')),'O27 é o nome realmente consumido');
+});
+console.log(`${casos} cenários offline de Grau/Origem/treinos/técnica/Famílias/inventário/CARTEIRA aprovados; sem aceite nativo ou criação geral.`);
