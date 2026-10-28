@@ -264,6 +264,12 @@ node r53/testes/inicializacao_sequencia.js
 node r53/testes/inicializacao_conferencia.js
 ```
 
+Coleção atual: 2.936 cenários de inicialização. CI completo [40722524965](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40722524965)
+aprovado no código `4987b50a947208502934561ac0351670fcdaebc7`, 28/10 às
+13:10:58 Brasília: **2.936 cenários/zero falhas**. Pacote nove arquivos,
+sintaxe 277 Python/250 JS-GS e demais regressões passaram. Duplicado
+40722509904 cancelado; fechamento só documental [skip ci], sem nova suíte/publicação.
+
 Coleção no checkpoint anterior: **2.893 cenários**, zero falhas, incluindo 79 de imagens e 67 da
 sequência. CI completo [40716269167](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40716269167)
 aprovado no código `408a31abbdb8824bbe39f2e2997e80e30c65914e`, 28/10 às

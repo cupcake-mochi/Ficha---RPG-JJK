@@ -9,7 +9,10 @@ preservada), cadeia e contador dos registros dos filhos; não adota v1 nem apaga
 diários. Leitor só de pós-estados/guardas/registros, um perfil por chamada;
 sem Aplicar/limpeza. Checkpoint próprio e todos os indicadores de liberação
 continuam falsos. 101 financeiros, 67 da sequência (máximo 1.773 bytes) e
-43 novos da leitura (354 bytes) locais aprovados; CI completo em fechamento. Relatório
+43 novos da leitura (354 bytes) locais aprovados. CI 40722524965 aprovado no
+código 4987b50, 28/10 às 13:10:58 Brasília: 2.936 cenários/zero falhas,
+pacote nove arquivos/sintaxe 277 Python/250 JS-GS e demais regressões passaram.
+Duplicado 40722509904 cancelado; fechamento só documental [skip ci]. Relatório
 `r53/inicializacao/CONFERENCIA-2026-10-28.md` e mapa JSON público reproduzível.
 Faltam consistência temporal/imagens atuais/arte, preservação global, quota
 nativa, automações/treinos/notas, responsável e integração/prova drive.file.

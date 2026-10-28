@@ -111,8 +111,11 @@ node r53/testes/inicializacao_conferencia.js
 
 101 cenários financeiros e 67 da sequência passaram localmente. Sequência v2:
 maior coordenador 1.773 bytes com 32 recuperações. 43 cenários novos da leitura
-passaram, incluindo os 599 slots; maior checkpoint 354 bytes. CI completo em
-fechamento; total previsto de inicialização 2.936 (2.893 anteriores + 43). A bateria inclui
+passaram, incluindo os 599 slots; maior checkpoint 354 bytes. CI completo [40722524965](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40722524965)
+aprovado no código `4987b50a947208502934561ac0351670fcdaebc7`, 28/10 às
+13:10:58 Brasília: **2.936 cenários/zero falhas**. Pacote nove arquivos,
+sintaxe 277 Python/250 JS-GS e demais regressões passaram. Duplicado
+40722509904 cancelado; fechamento só documental [skip ci], sem nova suíte/publicação. A bateria inclui
 599 slots de leitura com perfis pequenos controlados e registro real do
 executor; isso não é aplicação dos 599 perfis reais sobre uma mesma ficha.
 Há casos separados de financeiro/progressão e dos cinco Classe 0 usando os
