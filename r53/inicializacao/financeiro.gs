@@ -189,7 +189,7 @@ function r53NovaFinFormulaCanon_(s) {
   // referências absolutas, operadores ou aspas de nomes com acentos/espaços.
   return s.replace(/'DADOS_SALARIOS'!/g, 'DADOS_SALARIOS!');
 }
-function r53NovaFinPreservados_(ss) {
+function r53NovaFinGuardas_(ss) {
   var esperadas = r53NovaFinFormulas_();
   var saida = R53_NOVA_FIN_.formulas.map(function(x, i) {
     var sh = ss.getSheetByName(x[0]);
@@ -208,7 +208,13 @@ function r53NovaFinPreservados_(ss) {
   // A configuração da campanha e o nível não são parâmetros deste domínio.
   saida.push(['nivel', r53NovaFinLer_(ss, {aba: 'FICHA', faixa: 'AH11'})]);
   saida.push(['campanha', r53NovaFinLer_(ss, {aba: 'CONFIGURAÇÃO', faixa: 'E46:G46'})]);
-  return r53NovaFinHash_(saida);
+  return saida;
+}
+function r53NovaFinPreservados_(ss) { return r53NovaFinHash_(r53NovaFinGuardas_(ss)); }
+// Projeção adicional do coordenador: só o nível é alterado pela progressão.
+// A guarda v1 completa acima continua igual e NÃO permite ignorar o nível.
+function r53NovaFinProtecaoCompartilhada_(ss) {
+  return r53NovaFinHash_(r53NovaFinGuardas_(ss).filter(function(x) { return x[0] !== 'nivel'; }));
 }
 function r53NovaFinPerfil_() {
   return {nome: 'financeiro', diario: R53_NOVA_FIN_.diario, limites: R53_NOVA_FIN_,

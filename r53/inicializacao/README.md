@@ -19,6 +19,17 @@ pronta para cadastro.** Base incorporada: main
 Inclui XP manual e marcas de missões congeladas. A instalação/backup 13 das
 oficiais foi feita por outro trabalho; não reaplicar nem reabrir a otimização.
 
+## Leitura conjunta dos perfis — ainda parcial
+
+Sequência v2 registra os filhos concluídos e uma projeção das proteções
+financeiras que devem permanecer após a progressão. `conferencia.gs` lê um
+perfil por chamada e verifica registros, guardas e pós-estados sem executar
+limpeza. Os cinco cartões Classe 0 são processados de baixo para cima devido
+às guardas compartilhadas; teste com todos preenchidos reproduz o defeito
+anterior e passa na ordem nova. Não migra sequências v1 ou fases avulsas.
+Imagens atuais e consistência temporal ainda não são certificadas, e criação
+continua bloqueada. Leia [CONFERENCIA-2026-10-28.md](CONFERENCIA-2026-10-28.md).
+
 ## Sequência dos domínios — ainda sem liberação
 
 `sequencia.gs` coordena 599 perfis de escrita e duas inspeções de imagens,
@@ -250,9 +261,10 @@ node r53/testes/inicializacao_entidades.js
 node r53/testes/inicializacao_arte.js
 node r53/testes/inicializacao_inventario_imagens.js
 node r53/testes/inicializacao_sequencia.js
+node r53/testes/inicializacao_conferencia.js
 ```
 
-Coleção atual: **2.893 cenários**, zero falhas, incluindo 79 de imagens e 67 da
+Coleção no checkpoint anterior: **2.893 cenários**, zero falhas, incluindo 79 de imagens e 67 da
 sequência. CI completo [40716269167](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40716269167)
 aprovado no código `408a31abbdb8824bbe39f2e2997e80e30c65914e`, 28/10 às
 12:32:28 Brasília: 2.893 cenários/zero falhas. Pacote nove arquivos, sintaxe
@@ -263,7 +275,7 @@ Coleção anterior às imagens/sequência: 2.747 cenários offline (101 financei
 textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS, 791 de cartões visíveis, 44 de recibos/quota, 305 de entidades e 137 de fotos). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
-nem mede latência Google. O smoke agora inclui treze arquivos: mais 79 cenários de imagens e a bateria da sequência. Consulte o relatório mais recente para o CI completo.
+nem mede latência Google. O smoke agora inclui quatorze arquivos: mais 79 cenários de imagens e a bateria da sequência. Consulte o relatório mais recente para o CI completo.
 CI das fotos `350c56d` aprovado: [40706336130](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40706336130), 2.747 cenários, em 28/10 às 11:32:49 Brasília. Pacote nove arquivos/sintaxe 277 Python/242 JS-GS e demais regressões passaram; duplicado 40706329406 cancelado.
 CI das entidades `baf652d` aprovado: [40701063975](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40701063975), 2.610 cenários, em 28/10 às 10:58:19 Brasília. Pacote nove arquivos/sintaxe 277 Python/238 JS-GS; demais regressões passaram. Duplicado 40701053252 cancelado.
 CI dos recibos `af8e83f` aprovado: [40697164990](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40697164990), 2.305 cenários, em 28/10 às 10:34:44 Brasília; pacote nove arquivos/sintaxe 277 Python/234 JS-GS. Duplicado 40697154581 cancelado.

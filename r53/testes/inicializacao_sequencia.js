@@ -26,7 +26,7 @@ function preparado(op={}){
   return {leituraConcluida:true,contagem:{fora:0,indeterminadas:0,decoracoesAusentes:0,fotos:0,...a.bad.contagem},sobrepostas:0,desenhos:0,...a.bad};
  };
  if(!op.perfisReais)a.ctx.r53NovaSeqPerfil_=fase=>{
-  const p=op.planoReal?a.realPerfil(fase):{nome:fase.tipo+'_'+fase.id,diario:'r53_nova_ficha_mock_'+fase.tipo+'_'+fase.id,recibo:true};
+  const p=a.realPerfil(fase);
   const index=(op.planoReal?a.realPlano([]):a.ctx.r53NovaSeqPlano_([])).findIndex(f=>f.tipo===fase.tipo&&f.id===fase.id)+1;
   return {...p,precondicao:null,recibo:true,limites:{escritasPorExecucao:4,orcamentoMs:210000},pendente:['prova_nativa'],preservados:()=>a.ctx.r53NovaFinHash_(['guarda']),
    operacoes:()=>fase.tipo==='recuperacao'?[{tipo:'propriedade',escopo:'documento',chave:fase.id}]:Array.from({length:op.passos||1},(_,i)=>({tipo:'valor',aba:'FICHA',faixa:'A'+(1000+index*20+i),valor:'inicial'}))};
@@ -38,6 +38,16 @@ function preparado(op={}){
  a.concluir=p=>{for(let i=0;i<3000;i++){const r=a.aplicar(p);assert.equal(r.criacaoDisponivel,false);assert.equal(r.conferenciaConjuntaConcluida,false);assert(!a.locked());assert.equal(a.seqlock,0);for(const [k,v]of a.doc)if(k===a.ctx.R53_NOVA_SEQUENCIA_.diario){maior=Math.max(maior,Buffer.byteLength(v));assert(!/SEGREDO|PRIVADO|copia-descartavel|modelo-sintetico/.test(v));}if(r.fasesPercorridas)return r;}throw Error('retomadas excedidas');};
  return a;
 }
+function seedProgressao(a){
+ a.put('CONFIGURAÇÃO','C46','Nível inicial');a.put('CONFIGURAÇÃO','E46',2);a.put('CONFIGURAÇÃO','F46',10);a.put('CONFIGURAÇÃO','G46',10,a.ctx.R53_NOVA_PROG_.regra);a.put('FICHA','AH11',29);
+ a.put('DADOS','CY54','xp base');a.put('DADOS','CY47','xp total');a.put('DADOS','CZ54',9999);a.put('DADOS','CZ47',9999,a.ctx.R53_NOVA_PROG_.xp);
+ const curva=[0,200,500,800,1300,1800,2300,3000,3700,4400,5300,6200,7100,8200,9300,10400,11700,13000,14300,15800,17300,18800,20500,22200,23900,25600,27300,29000,30700];
+ for(let i=0;i<29;i++){a.put('DADOS','AQ'+(i+5),i+2);a.put('DADOS','AR'+(i+5),curva[i],'=DADOS_CONFIG!$Z$'+(i+3));}
+ for(let r=15;r<=87;r++)for(let g=0;g<4;g++)a.put('FICHA PESSOAL',['BA','BG','BM','BS'][g]+r,'',a.ctx.r53NovaProgFormulaMissao_(r,g));
+
+}
+module.exports={preparado,seedProgressao};
+if(require.main===module){
 caso('manifesto real tem 601 fases, identidades únicas e ordem de dependências',()=>{
  const a=preparado(),p=a.realPlano([]),pos=(tipo,id='')=>p.findIndex(x=>x.tipo===tipo&&x.id===id);
  assert.equal(p.length,601);assert.equal(new Set(p.map(x=>x.tipo+':'+x.id)).size,601);
@@ -94,11 +104,7 @@ caso('foto ainda presente na rodada depois bloqueia avanço final',()=>{
 });
 for(const op of [{ocupado:true},{ativoDiferente:true},{id:'1MQqhHbIzzyoMQY5zLKOciiT5k9Y6AMI4MCSrPhu8V_k'}])caso('trava ou alvo recusados preservam dados',()=>{const a=preparado(op);assert.throws(()=>a.aplicar({assinatura:'x'}),/andamento|vinculado|alvo/);assert.equal(a.writes.length,0);assert.equal(a.seqlock,0);});
 caso('financeiro e progressão reais: muda nível, retoma depois sem reaplicar financeiro',()=>{
- const a=preparado({perfisReais:true});a.put('CONFIGURAÇÃO','C46','Nível inicial');a.put('CONFIGURAÇÃO','E46',2);a.put('CONFIGURAÇÃO','F46',10);a.put('CONFIGURAÇÃO','G46',10,a.ctx.R53_NOVA_PROG_.regra);a.put('FICHA','AH11',29);
- a.put('DADOS','CY54','xp base');a.put('DADOS','CY47','xp total');a.put('DADOS','CZ54',9999);a.put('DADOS','CZ47',9999,a.ctx.R53_NOVA_PROG_.xp);
- const curva=[0,200,500,800,1300,1800,2300,3000,3700,4400,5300,6200,7100,8200,9300,10400,11700,13000,14300,15800,17300,18800,20500,22200,23900,25600,27300,29000,30700];
- for(let i=0;i<29;i++){a.put('DADOS','AQ'+(i+5),i+2);a.put('DADOS','AR'+(i+5),curva[i],'=DADOS_CONFIG!$Z$'+(i+3));}
- for(let r=15;r<=87;r++)for(let g=0;g<4;g++)a.put('FICHA PESSOAL',['BA','BG','BM','BS'][g]+r,'',a.ctx.r53NovaProgFormulaMissao_(r,g));
+ const a=preparado({perfisReais:true});seedProgressao(a);
  const p=a.previa();a.concluir(p);assert.equal(a.range('FICHA','AH11').getValue(),10);assert.equal(a.range('DADOS','CZ54').getValue(),3700);
  const chamadas=a.chamadas.filter(n=>n==='financeiro').length,w=a.writes.length;a.concluir(p);assert.equal(a.writes.length,w);assert.equal(a.chamadas.filter(n=>n==='financeiro').length,chamadas);
  const old=JSON.parse(a.doc.get(a.ctx.R53_NOVA_FIN_.diario));assert.throws(()=>a.ctx.r53NovaFichaFinanceiroAplicar(a.ss,a.context,old.assinatura),/configuração mudou/);assert.equal(a.writes.length,w);
@@ -107,10 +113,12 @@ caso('32 recuperações cabem no coordenador e permanecem no manifesto após apa
  const a=preparado();for(let i=0;i<32;i++)a.doc.set('r53_recuperacao_'+(1793037909500+i),'SEGREDO');const p=a.previa();assert.equal(p.recuperacoes,32);a.concluir(p);assert.equal(a.j().recuperacoes.length,32);assert.equal(a.j().proxima,35);
 });
 caso('filho criado por fora depois do início não é adotado nem apagado',()=>{
- const a=preparado(),p=a.previa();a.aplicar(p);a.aplicar(p);a.doc.set('r53_nova_ficha_mock_financeiro_','{}');const w=a.writes.length;assert.throws(()=>a.aplicar(p),/já existe uma inicialização/);assert.equal(a.writes.length,w);assert.equal(a.j().proxima,1);
+ const a=preparado(),p=a.previa();a.aplicar(p);a.aplicar(p);a.doc.set(a.ctx.R53_NOVA_FIN_.diario,'{}');const w=a.writes.length;assert.throws(()=>a.aplicar(p),/já existe uma inicialização/);assert.equal(a.writes.length,w);assert.equal(a.j().proxima,1);
 });
 caso('prazo esgotado do filho mantém assinatura e cursor sem iniciar outra fase',()=>{
  const a=preparado(),original=a.ctx.r53NovaSeqPerfil_;a.ctx.r53NovaSeqPerfil_=fase=>{const p=original(fase);p.limites.orcamentoMs=0;return p;};const p=a.previa();a.aplicar(p);a.aplicar(p);a.aplicar(p);const assinatura=a.j().ativo.assinatura,w=a.writes.length;a.aplicar(p);assert.equal(a.j().ativo.assinatura,assinatura);assert.equal(a.j().proxima,1);assert(a.writes.slice(w).every(([t])=>t==='propriedade'));
 });
 caso('checkpoints e privacidade continuam dentro do teto por valor',()=>{assert(maior<9000);});
 console.log(`${casos} cenários offline da sequência fixa aprovados; maior diário ${maior} bytes. 601 fases de protocolo; prova nativa e conferência conjunta pendentes, criação bloqueada.`);
+
+}

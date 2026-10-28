@@ -1,0 +1,674 @@
+{
+  "versao": 1,
+  "perfis": 599,
+  "operacoesCelulares": 10178,
+  "guardasDeclaradas": 17316,
+  "escritasCruzadas": [],
+  "escritasEmGuardas": [
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "identidade_textual",
+      "aba": "CARTEIRA",
+      "escrita": "C8",
+      "leitura": "C8",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_1_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I15",
+      "leitura": "I15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_1_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I15",
+      "leitura": "I15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_1_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I15",
+      "leitura": "I15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_1_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I15",
+      "leitura": "I15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_1_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I15",
+      "leitura": "I15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_1_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I15",
+      "leitura": "I15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_2_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I246",
+      "leitura": "I246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_2_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I246",
+      "leitura": "I246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_2_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I246",
+      "leitura": "I246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_2_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I246",
+      "leitura": "I246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_2_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I246",
+      "leitura": "I246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_2_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I246",
+      "leitura": "I246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_3_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I477",
+      "leitura": "I477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_3_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I477",
+      "leitura": "I477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_3_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I477",
+      "leitura": "I477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_3_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I477",
+      "leitura": "I477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_3_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I477",
+      "leitura": "I477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_3_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I477",
+      "leitura": "I477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_4_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I708",
+      "leitura": "I708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_4_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I708",
+      "leitura": "I708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_4_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I708",
+      "leitura": "I708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_4_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I708",
+      "leitura": "I708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_4_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I708",
+      "leitura": "I708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_4_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I708",
+      "leitura": "I708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_5_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I939",
+      "leitura": "I939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_5_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I939",
+      "leitura": "I939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_5_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I939",
+      "leitura": "I939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_5_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I939",
+      "leitura": "I939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_5_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I939",
+      "leitura": "I939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_5_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I939",
+      "leitura": "I939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_6_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I1170",
+      "leitura": "I1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_6_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I1170",
+      "leitura": "I1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_6_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I1170",
+      "leitura": "I1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_6_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I1170",
+      "leitura": "I1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_6_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I1170",
+      "leitura": "I1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_6_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "I1170",
+      "leitura": "I1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_7_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB15",
+      "leitura": "AB15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_7_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB15",
+      "leitura": "AB15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_7_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB15",
+      "leitura": "AB15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_7_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB15",
+      "leitura": "AB15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_7_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB15",
+      "leitura": "AB15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_7_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB15",
+      "leitura": "AB15",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_8_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB246",
+      "leitura": "AB246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_8_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB246",
+      "leitura": "AB246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_8_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB246",
+      "leitura": "AB246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_8_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB246",
+      "leitura": "AB246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_8_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB246",
+      "leitura": "AB246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_8_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB246",
+      "leitura": "AB246",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_9_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB477",
+      "leitura": "AB477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_9_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB477",
+      "leitura": "AB477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_9_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB477",
+      "leitura": "AB477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_9_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB477",
+      "leitura": "AB477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_9_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB477",
+      "leitura": "AB477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_9_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB477",
+      "leitura": "AB477",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_10_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB708",
+      "leitura": "AB708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_10_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB708",
+      "leitura": "AB708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_10_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB708",
+      "leitura": "AB708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_10_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB708",
+      "leitura": "AB708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_10_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB708",
+      "leitura": "AB708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_10_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB708",
+      "leitura": "AB708",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_11_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB939",
+      "leitura": "AB939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_11_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB939",
+      "leitura": "AB939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_11_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB939",
+      "leitura": "AB939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_11_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB939",
+      "leitura": "AB939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_11_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB939",
+      "leitura": "AB939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_11_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB939",
+      "leitura": "AB939",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_12_atributos_treinos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB1170",
+      "leitura": "AB1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_12_familias",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB1170",
+      "leitura": "AB1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_12_identidade",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB1170",
+      "leitura": "AB1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_12_inventario",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB1170",
+      "leitura": "AB1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_12_recursos",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB1170",
+      "leitura": "AB1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "entidades_12_talentos_expansao",
+      "aba": "INVOCAÇÕES",
+      "escrita": "AB1170",
+      "leitura": "AB1170",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "fotos_ancoras",
+      "leitor": "identidade_textual",
+      "aba": "FICHA PESSOAL",
+      "escrita": "D10",
+      "leitura": "D10",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "nivel_e_base_xp",
+      "leitor": "financeiro",
+      "aba": "FICHA",
+      "escrita": "AH11",
+      "leitura": "AH11",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "cartoes_classe0.5",
+      "leitor": "cartoes_classe0.4",
+      "aba": "FICHA AMALDIÇOADA",
+      "escrita": "Q327",
+      "leitura": "Q327",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "cartoes_classe0.5",
+      "leitor": "cartoes_classe0.4",
+      "aba": "FICHA AMALDIÇOADA",
+      "escrita": "F327",
+      "leitura": "F327",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "cartoes_classe0.4",
+      "leitor": "cartoes_classe0.3",
+      "aba": "FICHA AMALDIÇOADA",
+      "escrita": "Q326",
+      "leitura": "Q326",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "cartoes_classe0.4",
+      "leitor": "cartoes_classe0.3",
+      "aba": "FICHA AMALDIÇOADA",
+      "escrita": "F326",
+      "leitura": "F326",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "cartoes_classe0.3",
+      "leitor": "cartoes_classe0.2",
+      "aba": "FICHA AMALDIÇOADA",
+      "escrita": "Q325",
+      "leitura": "Q325",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "cartoes_classe0.3",
+      "leitor": "cartoes_classe0.2",
+      "aba": "FICHA AMALDIÇOADA",
+      "escrita": "F325",
+      "leitura": "F325",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "cartoes_classe0.2",
+      "leitor": "cartoes_classe0.1",
+      "aba": "FICHA AMALDIÇOADA",
+      "escrita": "Q324",
+      "leitura": "Q324",
+      "camada": "conteudo"
+    },
+    {
+      "escritor": "cartoes_classe0.2",
+      "leitor": "cartoes_classe0.1",
+      "aba": "FICHA AMALDIÇOADA",
+      "escrita": "F324",
+      "leitura": "F324",
+      "camada": "conteudo"
+    }
+  ],
+  "limite": "Mapa direto de endereços: não enumera toda leitura dinâmica, validações, propriedades ou dependências de fórmulas/eventos. Sem prova nativa."
+}

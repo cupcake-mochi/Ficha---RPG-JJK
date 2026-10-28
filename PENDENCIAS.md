@@ -1,3 +1,22 @@
+## Carteira viva: leitura conjunta e Classe 0 · 28/10/2026 · não instalada
+
+PR31: mapa direto de 599 perfis, 10.178 operações/17.316 guardas declaradas:
+zero escritas cruzadas, 83 interseções escrita/guarda. Encontrado defeito real
+nos cinco Classe 0 preenchidos: guardas leem a linha seguinte. Ordem corrigida
+de baixo para cima, sem afrouxar guardas/contratos dos cartões.
+Sequência v2 guarda projeção financeira sem o nível (guarda antiga completa
+preservada), cadeia e contador dos registros dos filhos; não adota v1 nem apaga
+diários. Leitor só de pós-estados/guardas/registros, um perfil por chamada;
+sem Aplicar/limpeza. Checkpoint próprio e todos os indicadores de liberação
+continuam falsos. 101 financeiros, 67 da sequência (máximo 1.773 bytes) e
+43 novos da leitura (354 bytes) locais aprovados; CI completo em fechamento. Relatório
+`r53/inicializacao/CONFERENCIA-2026-10-28.md` e mapa JSON público reproduzível.
+Faltam consistência temporal/imagens atuais/arte, preservação global, quota
+nativa, automações/treinos/notas, responsável e integração/prova drive.file.
+Sem Google/Discord, oficial/jogador, novo acesso, modelo pago ou merge/deploy/Gateway.
+Consumidor PR84 só docs. Sol Alto para integrar; revisão Médio.
+Entradas abaixo históricas.
+
 ## Carteira viva: sequência fixa · 28/10/2026 · não instalada
 
 PR31: coordenador de 599 perfis + duas inspeções, até 32 recuperações, uma fase

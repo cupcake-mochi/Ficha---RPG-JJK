@@ -35,6 +35,8 @@ function conferir(a){assert.equal(JSON.stringify(a.ctx.R53_REF_CACHE_),'{}');con
  for(const [k,v]of a.antes.doc)assert.equal(a.doc.get(k),v);assert.equal(JSON.stringify([...a.script]),a.antes.script);
  const raw=a.doc.get(a.ctx.r53NovaCartPerfil_(a.id).diario);assert(Buffer.byteLength(raw)<9000);assert(!raw.includes('PRIVAD'));assert(JSON.parse(raw).concluido);assert(!a.locked());return raw;
 }
+module.exports={preparado,maps,descriptor};
+if(require.main===module){
 caso('contrato reproduzível e alvos literais do fonte completo',()=>{
  execFileSync(process.execPath,['r53/inicializacao/gerar_contrato_cartoes.js','--conferir'],{cwd:root});assert.equal(Object.keys(contrato.contextos).length,249);
  for(const g of Object.values(contrato.contextos))for(const x of g.entradas){const v=maps.get(g.aba).get(pos(x.faixa).join(','))??'';assert.equal(x.valor,v);assert(!String(v).startsWith('='));}
@@ -77,3 +79,5 @@ caso('nova mescla com âncora diferente impede limpar entrada',()=>{const a=prep
 caso('fórmula de validação com conta alterada não é normalizada',()=>{const a=preparado(),d=a.g.dinamicas.E71;a.setDV('E71',descriptor('CUSTOM_FORMULA',[d.formula+'+1']));assert.throws(()=>a.previa(),/validação de função/);assert.equal(a.writes.length,0);});
 caso('249 recibos acumulados cabem sem ultrapassar 150 KB, sem apagar registros',()=>{assert.equal(acumulados.size,249);assert(bytes<150000);assert(maxBytes<600);});
 console.log(`${foco?"FOCO PARCIAL · ":""}${casos} cenários offline de cartões visíveis aprovados; ${entradas} entradas; diários ${bytes} bytes, maior ${maxBytes}. Recibos acumulados; orquestração global e prova nativa pendentes.`);
+
+}

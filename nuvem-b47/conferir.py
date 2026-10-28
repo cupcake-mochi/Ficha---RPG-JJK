@@ -99,7 +99,7 @@ def main():
                          'r53/testes/inicializacao_financeiro.js',
                          'r53/testes/inicializacao_progressao.js', 'r53/testes/inicializacao_identidade.js',
                          'r53/testes/inicializacao_pessoal.js',
-                         'r53/testes/inicializacao_formacao.js', 'r53/testes/inicializacao_memorias.js', 'r53/testes/inicializacao_montagens.js', 'r53/testes/inicializacao_cartoes.js', 'r53/testes/inicializacao_recibos.js', 'r53/testes/inicializacao_entidades.js', 'r53/testes/inicializacao_arte.js', 'r53/testes/inicializacao_inventario_imagens.js', 'r53/testes/inicializacao_sequencia.js',
+                         'r53/testes/inicializacao_formacao.js', 'r53/testes/inicializacao_memorias.js', 'r53/testes/inicializacao_montagens.js', 'r53/testes/inicializacao_cartoes.js', 'r53/testes/inicializacao_recibos.js', 'r53/testes/inicializacao_entidades.js', 'r53/testes/inicializacao_arte.js', 'r53/testes/inicializacao_inventario_imagens.js', 'r53/testes/inicializacao_sequencia.js', 'r53/testes/inicializacao_conferencia.js',
                          'r53/testes/missoes_integradas.js', 'r53/testes/missoes_enxutas.js', 'r53/testes/versao_publica.js',
                          'r53/testes/caminho_loader.js',
                          'r53/testes/caminho_leve.js',
