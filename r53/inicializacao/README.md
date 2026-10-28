@@ -252,6 +252,13 @@ node r53/testes/inicializacao_inventario_imagens.js
 node r53/testes/inicializacao_sequencia.js
 ```
 
+Coleção atual: **2.893 cenários**, zero falhas, incluindo 79 de imagens e 67 da
+sequência. CI completo [40716269167](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40716269167)
+aprovado no código `408a31abbdb8824bbe39f2e2997e80e30c65914e`, 28/10 às
+12:32:28 Brasília: 2.893 cenários/zero falhas. Pacote nove arquivos, sintaxe
+277 Python/247 JS-GS e demais regressões passaram. Duplicado 40716253746
+cancelado; fechamento só documental [skip ci], sem nova suíte/publicação.
+
 Coleção anterior às imagens/sequência: 2.747 cenários offline (101 financeiros, 82 de nível/base, 78 de
 textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS, 791 de cartões visíveis, 44 de recibos/quota, 305 de entidades e 137 de fotos). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,

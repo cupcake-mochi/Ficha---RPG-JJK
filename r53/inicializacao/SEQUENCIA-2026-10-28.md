@@ -82,7 +82,11 @@ Sem limpeza automática de decoração custom ou imagens fora das âncoras.
 ## Validação e o que não está pronto
 
 67 cenários novos locais passaram; maior coordenador 1.553 bytes com 32
-recuperações. Consultar o CI completo no fechamento.
+recuperações. CI completo [40716269167](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40716269167)
+aprovado no código `408a31abbdb8824bbe39f2e2997e80e30c65914e`, 28/10 às
+12:32:28 Brasília: 2.893 cenários/zero falhas. Pacote nove arquivos, sintaxe
+277 Python/247 JS-GS e demais regressões passaram. Duplicado 40716253746
+cancelado; fechamento só documental [skip ci], sem nova suíte/publicação.
 A bateria usa serviços simulados e cobre os 601 slots do protocolo com perfis
 pequenos, quedas antes/depois de cada gravação, assinatura ativa, cursor,
 limites, prazo, recuperação, quota, privacidade e travamento de arte. Um teste
@@ -101,6 +105,12 @@ conhecidas/treinos/notas vivas, atribuir novo responsável e integrar/provar cri
 com drive.file numa descartável. A sequência não verifica novamente todos os
 filhos ao terminar: o fechamento conjunto é uma fase posterior obrigatória.
 Não executar editor/abrir ao jogador entre fases; trava não impede edição humana.
+A próxima implementação deve mapear as interseções entre escritas e guardas dos
+perfis e produzir uma conferência somente de leitura. Não chamar Aplicar de novo
+para verificar tudo nem afrouxar a guarda financeira: progressão é uma alteração
+intencional que exige tratamento explícito no fechamento, sem inventar uma prova
+de preservação global a partir de recibos locais. A revisão do código instalado
+e a cópia isolada continuam sendo obrigações do integrador confiável.
 
 Sem leitura/escrita Google nesta rodada, modelo pago, merge, deploy, Gateway,
 acesso novo ou alteração em oficial/jogador. Consumidor PR84 recebe só docs.

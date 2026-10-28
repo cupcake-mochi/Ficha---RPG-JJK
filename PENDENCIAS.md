@@ -8,7 +8,10 @@ anteriores preservados. Criação continua bloqueada ao terminar a sequência:
 faltam conferência conjunta/consistência/arte, quota total, automações/treinos/
 notas, responsável e integração/prova drive.file. Relatório
 `r53/inicializacao/SEQUENCIA-2026-10-28.md`. 67 cenários novos locais passaram,
-maior coordenador 1.553 bytes; CI completo em fechamento.
+maior coordenador 1.553 bytes. CI 40716269167 aprovado no código 408a31a,
+28/10 às 12:32:28 Brasília: 2.893 cenários/zero falhas, pacote nove arquivos/
+sintaxe 277 Python/247 JS-GS e demais regressões. Duplicado 40716253746
+cancelado; fechamento só documental [skip ci].
 Sem Google, oficial/jogador, modelo pago, merge/deploy/Gateway ou escopo novo.
 Consumidor PR84 só docs. Sol Alto para integrar; revisão Médio.
 Entradas abaixo são históricas.
