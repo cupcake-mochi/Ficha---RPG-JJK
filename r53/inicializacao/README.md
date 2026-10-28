@@ -13,7 +13,7 @@ Os protótipos cobrem financeiro, nível/base de XP, 14 textos pessoais,
 cabeçalho da técnica, 19 estados de Famílias, 129 campos de inventário/equipamento
 e quatro notas vivas, três campos restantes da CARTEIRA, memórias conhecidas,
 as versões guardadas dos 249 cartões em MONTAGENS e seus campos visíveis,
-com validações das funções. **Não oferecem uma ficha inteira
+com validações das funções, além de 1.165 entradas das 12 entidades e do conjunto. **Não oferecem uma ficha inteira
 pronta para cadastro.** Base incorporada: main
 `ef361ccdf7a0210781176e3c42d318cde147553d`, merge `a72adc0` (PRs 41–43).
 Inclui XP manual e marcas de missões congeladas. A instalação/backup 13 das
@@ -235,13 +235,14 @@ node r53/testes/inicializacao_memorias.js
 node r53/testes/inicializacao_montagens.js
 node r53/testes/inicializacao_cartoes.js
 node r53/testes/inicializacao_recibos.js
+node r53/testes/inicializacao_entidades.js
 ```
 
-Coleção atual: 2.305 cenários offline (101 financeiros, 82 de nível/base, 78 de
-textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS, 791 de cartões visíveis e 44 de recibos/quota). Incluem
+Coleção prevista nesta revisão: 2.610 cenários offline (101 financeiros, 82 de nível/base, 78 de
+textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS, 791 de cartões visíveis, 44 de recibos/quota e 305 de entidades). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
-nem mede latência Google. O smoke inclui os nove arquivos de testes.
+nem mede latência Google. O smoke inclui os dez arquivos de testes.
 CI dos recibos `af8e83f` aprovado: [40697164990](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40697164990), 2.305 cenários, em 28/10 às 10:34:44 Brasília; pacote nove arquivos/sintaxe 277 Python/234 JS-GS. Duplicado 40697154581 cancelado.
 CI anterior a recibos `216e44c` aprovado: [40694498546](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40694498546), 2.261 cenários, em 28/10 às 10:16:56 Brasília.
 CI anterior aos cartões visíveis, `5749b3a`, aprovado: [40690086385](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40690086385), 1.470 cenários, em 28/10 às 09:45:06 Brasília.
@@ -452,6 +453,45 @@ fases simultâneas, considerar recuperações/novos domínios e conferir o conju
 antes de cadastrar. Lock não bloqueia edição humana nem outros escritores que
 não cooperem; a cópia precisa continuar isolada. Hash não é autenticação.
 
-Relatório: [RECIBOS-2026-10-28.md](RECIBOS-2026-10-28.md). Continuam pendentes
-entidades, arte, automações, integração drive.file e prova nativa do conjunto.
+Relatório: [RECIBOS-2026-10-28.md](RECIBOS-2026-10-28.md). Continuam pendentes arte, automações, orquestração, integração drive.file e prova
+nativa do conjunto. Os dados das entidades são tratados no domínio abaixo.
 Criação permanece bloqueada.
+
+
+## Dados das entidades
+
+`entidades.gs` e `contrato_entidades.gs` oferecem `r53NovaFichaEntidadePrevia` e
+`r53NovaFichaEntidadeAplicar`. Recebem somente o contexto confiável, uma chave
+conhecida de grupo e a assinatura da prévia. Chaves: `1_identidade`,
+`1_atributos_treinos`, `1_recursos`, `1_familias`, `1_inventario`,
+`1_talentos_expansao`, repetidas de 1 a 12, e `conjunto` para Defesa usa.
+73 perfis, 1.165 entradas; não aceitam endereços livres.
+
+| Grupo por entidade | Entradas |
+|---|---|
+| Identificação | 9: nome, tipo, ofício, aquisição/nível obtido, talismã, autonomia, corpo e definição |
+| Atributos e treinos | 29: pontos/Buff-Debuff, quatro TRs e escolha treinada, atributo de acerto/Físico usa e sete Perícias |
+| Recursos | 8: vida atual, temporária, ±, reserva, alma, Integridade atual, condições e anotações |
+| Famílias | 19: nove escolhas e dez fórmulas de estado custom |
+| Inventário | 18: três equipados/seus Volumes e seis guardados/seus Volumes |
+| Talentos e Expansão | 14: oito talentos, três da Trilha e nome/COMO É/degrau da Expansão |
+
+Vida/Integridade atuais voltam às fórmulas originais de fábrica; máximos,
+tetos, resultados e catálogos são preservados. As definições custom da mesa
+não são limpas. Cartões R53, MONTAGENS e caches persistentes são outros domínios.
+As notas de entrada voltam ao fonte; notas contextuais do tipo precisam ser
+regeneradas pela futura fase de automações. Não liberar cadastro entre fases.
+
+Menus conhecidos são conservados, aceitando as versões estrita publicada e
+não estrita do fonte. O descritor real entra na assinatura: mudança durante a
+retomada recusa. Toda mescla das entradas precisa ter a geometria do contrato.
+Fórmulas regionais conhecidas são comparadas por inteiro, inclusive a barra
+SPARKLINE com separador de coluna `\` no pt_BR; não normalizar fórmulas arbitrárias.
+
+Foto em célula/fórmula desconhecida provoca recusa, sem apagar. Só aceita
+marcador de fábrica ou célula vazia; imagens sobrepostas e arte permanecem
+pendentes. A limpeza de arte terá de preceder esses grupos quando houver foto.
+Os grupos usam os recibos/quota existentes; 73 recibos reais somam 36.719 bytes,
+maior diário pendente 3.165 na VM. Ainda falta o orquestrador final.
+
+Ver [ENTIDADES-2026-10-28.md](ENTIDADES-2026-10-28.md) para validação e limites.

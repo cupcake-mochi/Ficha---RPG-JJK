@@ -2,7 +2,10 @@
  * nunca do navegador. Somente caixa padrão, lista e fórmula são graváveis.
  */
 function r53NovaValidLer_(r) {
-  var dv = r.getDataValidation();
+  return r53NovaValidDescrever_(r.getDataValidation());
+}
+// Mesmo descritor para leitura em lote, sem pedir uma célula de cada vez.
+function r53NovaValidDescrever_(dv) {
   if (!dv) return null;
   var tipo = String(dv.getCriteriaType()), args = dv.getCriteriaValues();
   function valor(v) {

@@ -93,16 +93,18 @@ caso('respeita orçamento ao reconferir recibo sem refazer limpeza',()=>{
  const a=preparo(),p=a.previa();a.aplicar(p);a.perfil.limites.orcamentoMs=0;const n=a.writes.length;const r=a.aplicar(p);assert.equal(r.concluido,false);assert(r.retomar);assert.equal(a.writes.length,n);
 });
 let total=0,pico=0;
-caso('498 recibos num só store mais 100 KB reservados e diário pendente cabem',()=>{
+caso('571 recibos num só store mais 100 KB reservados e diário pendente cabem',()=>{
  const a=preparo();encher(a,100000);const props=a.ctx.PropertiesService.getDocumentProperties;
  const contar=()=>[...a.doc].reduce((n,[k,v])=>n+Buffer.byteLength(k)+Buffer.byteLength(v),0);
  const factory=props;a.ctx.PropertiesService.getDocumentProperties=()=>{const p=factory();return {...p,setProperty:(k,v)=>{p.setProperty(k,v);pico=Math.max(pico,contar());assert(pico<=450000);}};};
- for(const tipo of ['montagens','cartoes'])for(const id of Object.keys(contrato.contextos)){
-  a.perfil.nome=tipo+'_'+id;a.perfil.diario='r53_nova_ficha_'+tipo+'_'+id+'_v1';a.put('FICHA','A1','SEGREDO');a.put('FICHA','A2','PRIVADO','','NOTA PRIVADA');
+ const perfis=['montagens','cartoes'].flatMap(tipo=>Object.keys(contrato.contextos).map(id=>tipo+'_'+id));
+ perfis.push(...Object.keys(require('../inicializacao/gerar_contrato_entidades').contrato.dominios).map(id=>'entidades_'+id));
+ for(const nome of perfis){
+  a.perfil.nome=nome;a.perfil.diario='r53_nova_ficha_'+nome+'_v1';a.put('FICHA','A1','SEGREDO');a.put('FICHA','A2','PRIVADO','','NOTA PRIVADA');
   a.aplicar(a.previa());assert.equal(recibo(a).recibo,1);
  }
- assert.equal([...a.doc].filter(([k])=>k.startsWith('r53_nova_ficha_')).length,498);
+ assert.equal([...a.doc].filter(([k])=>k.startsWith('r53_nova_ficha_')).length,571);
  // Reserva de valor máximo e chave para o próximo domínio, ainda sem limpar nada.
  assert(contar()+9100<450000);total=contar();assert(!a.writes.some(([tipo])=>tipo==='excluirPropriedade'));
 });
-console.log(`${casos} cenários offline de recibos/quota aprovados; 498 recibos + reserva: ${total} bytes, pico ${pico}. Não é prova nativa nem orquestração completa.`);
+console.log(`${casos} cenários offline de recibos/quota aprovados; 571 recibos + reserva: ${total} bytes, pico ${pico}. Não é prova nativa nem orquestração completa.`);

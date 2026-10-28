@@ -354,3 +354,20 @@ Coleção completa: 2.305, confirmados no CI 40697164990, código af8e83f,
 aprovado em 28/10 às 10:34:44 Brasília. Pacote/sintaxe e demais regressões
 aprovados. Duplicado 40697154581 cancelado.
 Criação e execução integrada continuam bloqueadas.
+
+
+### Dados das entidades · 28/10/2026
+
+`r53/testes/inicializacao_entidades.js`: 305 cenários, 73 perfis/1.165 entradas.
+Todas as 12 entidades são aplicadas isoladamente, com preservação de vizinhos,
+configurações, contas, cartões e catálogos; recibos acumulados. Quedas antes/
+depois de cada escrita nos seis grupos representativos e no conjunto, edição
+concorrente, fórmulas regionais/desconhecidas, foto em célula, validações,
+mesclas exatas e limites de alvo/quota. A VM não executa fórmulas do Sheets.
+O adaptador de validações foi extraído em função compartilhada, sem mudar o
+descritor anterior; a suíte dos cartões faz a regressão completa no CI.
+
+O cenário conjunto de recibos passa de 498 para 571 nomes reais de perfis,
+com operações sintéticas e a mesma reserva de 100 KB. Não fabrica uma fase
+financeira concluída nem certifica o orquestrador. Coleção esperada 2.610;
+registrar o CI final antes de declarar a validação completa.

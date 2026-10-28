@@ -1,3 +1,26 @@
+## Carteira viva: dados das entidades · 28/10/2026 · não instalada
+
+PR 31: 73 perfis (seis por entidade + conjunto), 1.165 entradas. Identidade,
+atributos/treinos, recursos, Famílias, inventário e talentos/Expansão restaurados
+por matrizes de âncoras, com notas e fórmulas de fábrica. Configurações/catálogos,
+cálculos, cartões R53/MONTAGENS preservados. Menus conhecidos são mantidos e
+entram na assinatura; mesclas exigem geometria exata. Recibos/quota existentes;
+adaptador de validações extraído sem mudar descritores; executor intacto.
+305 cenários locais passaram; coleção prevista 2.610, CI final pendente.
+73 recibos reais 36.719 bytes, maior diário pendente 3.165. Teste de quota
+ampliado de 498 para 571 perfis com reserva 100 KB; registrar resultado final.
+Leitura das oficiais: primeira/última entidade e conjunto, por arquivo 195
+entradas/validações, 284 guardas; critérios e valores/fórmulas iguais. 105 menus
+estritos preservados; barra pt_BR reconhecida por fórmula inteira. Duas notas
+contextuais por arquivo são geradas, não estáticas: limpar herdadas e regenerar
+na futura fase de automações. Nenhuma escrita/cópia/execução Apps Script/OAuth.
+Fotos só vazias/marcador; imagem exige arte antes desses grupos. Próximo arte,
+orquestração/quota total/conferência conjunta, automações/treinos/notas,
+responsável, integração/prova drive.file/nativa. Criação bloqueada, protótipos
+fora do pacote/bot, sem merge/deploy, acessos novos ou modelos pagos. Relatório
+r53/inicializacao/ENTIDADES-2026-10-28.md. GPT-6.1 Sol Alto; revisão Médio.
+Entradas abaixo históricas.
+
 ## Carteira viva: recibos e quota · 28/10/2026 · não instalada
 
 PR 31: cartões visíveis e MONTAGENS trocam o diário completo por recibo após
