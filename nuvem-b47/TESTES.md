@@ -382,5 +382,8 @@ notas, preservação de dez decorações, quedas, recibos, fórmulas/cache, gett
 URLs instáveis/expiradas, imagens soltas/desenhos, abas, mesclas/validações e
 proteção contra novo uso. Um caso mantém imagem fora das âncoras e exige
 pendência explícita: não é auditoria de arte completa. Quota expandida para
-572 nomes de perfis + reserva 100 KB. Coleção prevista 2.747; registrar CI.
+572 nomes de perfis + reserva 100 KB: 412.570 bytes/pico 412.936. Coleção
+completa 2.747/zero falhas no CI 40706336130, código 350c56d, aprovado em
+28/10 às 11:32:49 Brasília; pacote nove arquivos, sintaxe 277 Python/242 JS-GS
+e demais regressões passaram. Duplicado 40706329406 cancelado.
 Sem execução de serviços, pixels/latência/escopos ou prova nativa da remoção.

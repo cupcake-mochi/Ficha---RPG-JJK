@@ -7,8 +7,11 @@ CellImage identificável; URL/alt text somente em hash, sem fetch/log/persistên
 Recusa identificação instável e valores desconhecidos. Sobreposição/desenho em
 qualquer aba bloqueia sem remoção. Imagens em outras células NÃO são auditadas:
 pendência explícita, sem certificado de limpeza global. Criação bloqueada.
-137 cenários locais passaram; coleção prevista 2.747, CI final pendente. Teste
-conjunto ampliado para 572 perfis + reserva 100 KB; registrar resultado final.
+137 cenários locais passaram; coleção 2.747/zero falhas confirmada no CI
+40706336130, código 350c56d, aprovado em 28/10 às 11:32:49 Brasília. Pacote
+nove arquivos/sintaxe 277 Python/242 JS-GS e demais regressões passaram;
+duplicado 40706329406 cancelado. Fechamento só documental [skip ci]. Teste
+conjunto 572 perfis + reserva 100 KB: 412.570 bytes/pico 412.936.
 Sem nova leitura/escrita de planilha, cópia, Apps Script, OAuth, escopo ou modelo
 pago. Consulta só à documentação pública da API, sem buscar imagens.
 Próximo: prova CellImage/URL em descartável e auditoria das imagens fora de
