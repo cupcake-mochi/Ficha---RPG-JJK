@@ -236,13 +236,14 @@ node r53/testes/inicializacao_montagens.js
 node r53/testes/inicializacao_cartoes.js
 node r53/testes/inicializacao_recibos.js
 node r53/testes/inicializacao_entidades.js
+node r53/testes/inicializacao_arte.js
 ```
 
-Coleção atual: 2.610 cenários offline (101 financeiros, 82 de nível/base, 78 de
-textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS, 791 de cartões visíveis, 44 de recibos/quota e 305 de entidades). Incluem
+Coleção prevista nesta revisão: 2.747 cenários offline (101 financeiros, 82 de nível/base, 78 de
+textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS, 791 de cartões visíveis, 44 de recibos/quota, 305 de entidades e 137 de fotos). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
-nem mede latência Google. O smoke inclui os dez arquivos de testes.
+nem mede latência Google. O smoke inclui os onze arquivos de testes.
 CI das entidades `baf652d` aprovado: [40701063975](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40701063975), 2.610 cenários, em 28/10 às 10:58:19 Brasília. Pacote nove arquivos/sintaxe 277 Python/238 JS-GS; demais regressões passaram. Duplicado 40701053252 cancelado.
 CI dos recibos `af8e83f` aprovado: [40697164990](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40697164990), 2.305 cenários, em 28/10 às 10:34:44 Brasília; pacote nove arquivos/sintaxe 277 Python/234 JS-GS. Duplicado 40697154581 cancelado.
 CI anterior a recibos `216e44c` aprovado: [40694498546](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40694498546), 2.261 cenários, em 28/10 às 10:16:56 Brasília.
@@ -279,7 +280,7 @@ Detalhes em [NIVEL-TEXTOS-2026-10-27.md](NIVEL-TEXTOS-2026-10-27.md).
 
 ## O que falta antes de liberar criação
 
-- Inicialização pessoal completa: fotos/arte, entidades e seus equipamentos,
+- Inicialização pessoal completa: imagens fora das caixas de foto, arte e
   protocolo global de diários e aplicação conjunta. Cartões visíveis/validações,
   MONTAGENS e os outros domínios já tratados têm protótipos, sem aceite
   nativo completo dos executores. Famílias ainda exigem sincronização com
@@ -496,3 +497,23 @@ Os grupos usam os recibos/quota existentes; 73 recibos reais somam 36.719 bytes,
 maior diário pendente 3.165 na VM. Ainda falta o orquestrador final.
 
 Ver [ENTIDADES-2026-10-28.md](ENTIDADES-2026-10-28.md) para validação e limites.
+
+
+## Fotos nas caixas conhecidas — arte parcial
+
+`arte.gs`/`contrato_arte.gs` acrescentam `r53NovaFichaFotosPrevia/Aplicar`.
+Uma fase restaura as 13 caixas de foto e o espelho pessoal, incluindo notas,
+sem escrever nas dez decorações do modelo. Usa recibos e os limites anteriores.
+A operação especializada `foto` reconhece texto/URL, fórmula IMAGE e CellImage;
+figuras desconhecidas recusam, sem mudar os leitores dos demais domínios.
+URL de conteúdo/alt text são usados apenas dentro de hashes, sem armazenamento
+ou retorno. Identificação temporária instável provoca recusa, sem nova limpeza.
+
+Fotos devem preceder identidade textual e dados das entidades. Presença de
+imagem sobreposta ou desenho em qualquer aba impede a aplicação; nada é
+removido por heurística. **Imagens em outras células ainda não são auditadas**;
+isso aparece como pendência no retorno, que mantém `criacaoDisponivel=false`.
+O suporte real a CellImage/estabilidade da URL precisa de ensaio Apps Script
+em cópia descartável. Não confundir o perfil com arte integralmente resolvida.
+
+Ver [FOTOS-2026-10-28.md](FOTOS-2026-10-28.md) e as ações obrigatórias de continuidade.

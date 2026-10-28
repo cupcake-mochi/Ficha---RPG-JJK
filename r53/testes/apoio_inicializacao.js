@@ -59,6 +59,7 @@ function ambiente(op = {}) {
     });
     return {getValues: () => read('v'), getFormulas: () => read('f'), getNotes: () => read('n'),
       getValue: () => read('v')[0][0],
+      getFormula: () => read('f')[0][0],
       getDataValidation: () => validation(get(sheet,r1,c1).dv),
       getDataValidations: () => read('dv').map(row=>row.map(validation)),
       getMergedRanges: () => [],

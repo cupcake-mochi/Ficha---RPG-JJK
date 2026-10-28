@@ -1,3 +1,24 @@
+## Carteira viva: fotos nas caixas — arte parcial · 28/10/2026 · não instalada
+
+PR 31: um perfil com 13 fotos + espelho pessoal, valores/notas de fábrica,
+mesclas/validações guardadas e dez decorações fora dos alvos. Tipo interno foto
+no executor, contratos/assinaturas antigos preservados. Texto/URL, IMAGE e
+CellImage identificável; URL/alt text somente em hash, sem fetch/log/persistência.
+Recusa identificação instável e valores desconhecidos. Sobreposição/desenho em
+qualquer aba bloqueia sem remoção. Imagens em outras células NÃO são auditadas:
+pendência explícita, sem certificado de limpeza global. Criação bloqueada.
+137 cenários locais passaram; coleção prevista 2.747, CI final pendente. Teste
+conjunto ampliado para 572 perfis + reserva 100 KB; registrar resultado final.
+Sem nova leitura/escrita de planilha, cópia, Apps Script, OAuth, escopo ou modelo
+pago. Consulta só à documentação pública da API, sem buscar imagens.
+Próximo: prova CellImage/URL em descartável e auditoria das imagens fora de
+âncoras/decoração custom. Depois orquestração/quota/conferência global,
+automações/treinos/notas, novo responsável e integração drive.file/nativa.
+Não declarar arte concluída nem apagar diário para recomeçar se URL expirar.
+Protótipos fora do pacote/bot; sem merge/deploy. Relatório
+r53/inicializacao/FOTOS-2026-10-28.md. Sol Alto; revisão Médio (AGENTS.md).
+Entradas abaixo históricas.
+
 ## Carteira viva: dados das entidades · 28/10/2026 · não instalada
 
 PR 31: 73 perfis (seis por entidade + conjunto), 1.165 entradas. Identidade,

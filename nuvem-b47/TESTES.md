@@ -373,3 +373,14 @@ financeira concluída nem certifica o orquestrador. Resultado: 412.036 bytes,
 pico 412.402. Coleção completa 2.610/zero falhas confirmada no CI 40701063975,
 código baf652d, em 28/10 às 10:58:19 Brasília. Pacote nove arquivos e sintaxe
 277 Python/238 JS-GS aprovados; duplicado 40701053252 cancelado.
+
+
+### Fotos nas âncoras · 28/10/2026 — arte parcial
+
+`r53/testes/inicializacao_arte.js`: 137 cenários. Limpeza de 13 caixas + espelho,
+notas, preservação de dez decorações, quedas, recibos, fórmulas/cache, getters,
+URLs instáveis/expiradas, imagens soltas/desenhos, abas, mesclas/validações e
+proteção contra novo uso. Um caso mantém imagem fora das âncoras e exige
+pendência explícita: não é auditoria de arte completa. Quota expandida para
+572 nomes de perfis + reserva 100 KB. Coleção prevista 2.747; registrar CI.
+Sem execução de serviços, pixels/latência/escopos ou prova nativa da remoção.

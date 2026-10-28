@@ -132,6 +132,7 @@ function r53NovaFinOperacoes_(ss) {
   return passos;
 }
 function r53NovaFinLer_(ss, op) {
+  if (op.tipo === 'foto') return r53NovaArteLer_(ss, op);
   if (op.tipo === 'propriedade') return r53NovaFinProps_(op).getProperty(op.chave);
   var r = r53NovaFinFaixa_(ss, op);
   if (op.tipo === 'validacao') {
@@ -162,6 +163,7 @@ function r53NovaFinLer_(ss, op) {
           formulas: formulas};
 }
 function r53NovaFinDepois_(atual, op) {
+  if (op.tipo === 'foto') return r53NovaArteDepois_(op);
   if (op.tipo === 'propriedade') return null;
   if (op.tipo === 'validacao') return op.regra;
   var vazio = function(m, v) { return m.map(function(l) { return l.map(function() { return v; }); }); };
@@ -305,7 +307,8 @@ function r53NovaPerfilAplicar_(ss, contexto, assinatura, perfil) {
       if (op.tipo === 'propriedade') r53NovaFinProps_(op).deleteProperty(op.chave);
       else {
         var r = r53NovaFinFaixa_(ss, op);
-        if (op.tipo === 'validacao') r53NovaValidGravar_(r, op.regra);
+        if (op.tipo === 'foto') { if (op.formulaDestino) r.setFormula(op.formulaDestino); else r.setValue(op.valor); }
+        else if (op.tipo === 'validacao') r53NovaValidGravar_(r, op.regra);
         else if (op.tipo === 'notas') r.clearNote();
         else if (op.tipo === 'nota') r.setNote(op.valor);
         else if (op.tipo === 'notas_matriz') r.setNotes(op.notas);
