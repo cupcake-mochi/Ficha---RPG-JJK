@@ -231,18 +231,20 @@ node r53/testes/inicializacao_identidade.js
 node r53/testes/inicializacao_pessoal.js
 node r53/testes/inicializacao_formacao.js
 node r53/testes/inicializacao_memorias.js
+node r53/testes/inicializacao_montagens.js
 ```
 
-Coleção atual: 1.100 cenários offline (101 financeiros, 82 de nível/base, 78 de
-textos, 243 pessoais, 441 de formação/inventário/CARTEIRA e 155 de memórias). Incluem
+Coleção atual: 1.470 cenários offline (101 financeiros, 82 de nível/base, 78 de
+textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias e 370 de MONTAGENS). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
-nem mede latência Google. O smoke inclui os seis arquivos de testes.
-CI atual `8bb9335` aprovado: [CI 40686604745](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40686604745), com 1.100 cenários.
+nem mede latência Google. O smoke inclui os sete arquivos de testes.
+CI atual `5749b3a` aprovado: [40690086385](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40690086385), 1.470 cenários, em 28/10 às 09:45:06 Brasília.
+CI anterior a MONTAGENS, `8bb9335`, aprovado: [CI 40686604745](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40686604745), com 1.100 cenários.
 CI anterior ao bloco CARTEIRA/memórias, `86410be`, aprovado: [40683614201](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40683614201), com 921 cenários.
 CI anterior à extensão de inventário, `763a78b`, aprovado: [40681468287](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40681468287).
 Resultados anteriores e limites nativos ficam nos relatórios datados; o registro
-atual está em [CARTEIRA-MEMORIAS-2026-10-28.md](CARTEIRA-MEMORIAS-2026-10-28.md).
+atual está em [MONTAGENS-2026-10-28.md](MONTAGENS-2026-10-28.md).
 Regressão independente de XP: `node r53/testes/xp_nivel.js`, 20.643
 verificações/9.900 combinações sem a exportação nativa opcional.
 
@@ -271,7 +273,8 @@ Detalhes em [NIVEL-TEXTOS-2026-10-27.md](NIVEL-TEXTOS-2026-10-27.md).
 ## O que falta antes de liberar criação
 
 - Inicialização pessoal completa: fotos/arte, entidades e seus equipamentos,
-  cartões e MONTAGENS. Os domínios já tratados têm protótipos, sem aceite
+  cartões visíveis e suas validações. MONTAGENS e os outros domínios já tratados
+  têm protótipos, sem aceite
   nativo completo dos executores. Famílias ainda exigem sincronização com
   cartões, amparo e recuperações; não basta restaurar seus menus.
 - Integrar e validar nativamente o protocolo de memórias abaixo; tratar sua

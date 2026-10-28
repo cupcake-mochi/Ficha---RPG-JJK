@@ -5,7 +5,10 @@ Defaults/notas das entradas restaurados; fórmulas de título/Classe máxima e
 rótulos preservados. Recusa editor fora do contrato, validações/mesclas novas,
 fórmulas desconhecidas e edição concorrente. Diário individual, retomada e
 cache volátil; executor/contratos anteriores iguais. 370 cenários novos e 101
-financeiros passaram localmente; coleção esperada no CI: 1.470.
+financeiros passaram localmente; coleção 1.470 confirmada no CI 40690086385,
+aprovado em 28/10 às 09:45:06 Brasília no código 5749b3a. Sintaxe 277 Python/
+228 JS-GS e demais verificações passaram. Duplicado 40690078538 cancelado.
+Fechamento documental [skip ci], sem repetir suíte ou publicar.
 Leitura das duas oficiais: oito modos, 1.300 entradas/guardas por arquivo,
 sem divergências ou escrita. Relatório r53/inicializacao/MONTAGENS-2026-10-28.md.
 Cartões visíveis e suas validações continuam pendentes, assim como entidades,

@@ -49,9 +49,12 @@ guarda hashes, nunca o conteúdo removido. Cache volátil é descartado ao sair.
 - Dados de leitura e comparador ficaram em `nuvem-b47/saidas/montagens-20261028/`,
   ignorados. Nenhuma cópia, edição nativa, execução Apps Script ou OAuth novo.
 
-A coleção anterior tinha 1.100 cenários; com este módulo são 1.470. O resultado
-do CI desta revisão será registrado no fechamento, sem repetir a suíte do bot
-por alterações exclusivamente documentais no consumidor.
+A coleção completa de **1.470** cenários passou no
+[CI 40690086385](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40690086385),
+código `5749b3af25f3b4082900a26685db655a696c4c26`, concluído em 28/10 às
+09:45:06 Brasília. Sintaxe de 277 fontes Python e 228 JS/GS e demais verificações
+do smoke aprovadas. Run duplicado 40690078538 cancelado. Fechamento posterior
+somente documental com `[skip ci]`; sem repetir suíte do bot ou gerar ZIP.
 
 ## O que ainda falta
 
