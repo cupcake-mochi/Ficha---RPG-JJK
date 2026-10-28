@@ -6,7 +6,8 @@ por timestamp com diário individual. Só propriedades de documento conhecidas;
 configurações, células e demais diários preservados. Retomada, concorrência,
 limites e cache volátil tratados. Contratos anteriores/executor financeiro iguais.
 441 cenários de formação, 155 de memórias e 101 financeiros passaram localmente;
-coleção completa de 1.100 aguardando CI. Quinze entradas/guardas por oficial
+coleção completa de 1.100 aprovada no CI 40686604745 no código 8bb9335,
+em 28/10 às 09:19:25 Brasília. Duplicado 40686597423 cancelado. Quinze entradas/guardas por oficial
 conferidas somente por leitura, sem divergência; sem novo ensaio de escrita.
 Relatório: r53/inicializacao/CARTEIRA-MEMORIAS-2026-10-28.md.
 Próximo entidades/cartões/MONTAGENS, arte, orquestração/conferência, automações,

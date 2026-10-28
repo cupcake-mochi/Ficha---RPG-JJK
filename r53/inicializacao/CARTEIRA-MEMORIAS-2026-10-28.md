@@ -43,8 +43,10 @@ A inspeção final ainda pode indicar recuperações criadas durante outras fase
   contrato inválido, alvo oficial, trava, conteúdo grande e leitura real do cache.
 - 101 financeiros passaram; layout/assinatura financeira v1 preservados.
 - Hashes dos nove contratos de formação anteriores preservados.
-- Total esperado no CI: 1.100 (101/82/78/243/441/155). Conferir resultado abaixo
-  antes de declarar a coleção completa aprovada nesta rodada.
+- Total confirmado no CI: **1.100** (101/82/78/243/441/155), 179 novos.
+  [CI 40686604745](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40686604745) aprovado em 28/10 às 09:19:25 Brasília,
+  código `8bb93355cb5d20d75ead1d8ba9a4b6d7c3ad88cc`. Pacote de nove arquivos e
+  demais regressões do smoke também passaram. Duplicado 40686597423 cancelado.
 - Leitura das duas oficiais: 15 entradas/guardas cada e as três notas de entrada,
   zero divergências com variantes exatas dos separadores. Sem escrita.
   Uma consulta de metadados recebeu 429; repetição posterior foi suficiente.
