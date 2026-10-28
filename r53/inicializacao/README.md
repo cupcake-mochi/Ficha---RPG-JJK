@@ -11,7 +11,7 @@ Os protótipos cobrem financeiro, nível/base de XP, 14 textos pessoais,
 19 escolhas básicas, 20 entradas de recursos/bônus, nove condições/descanso e
 268 campos de Grau/Origem, Perícias, Ofícios/TR e armas, mais 11 entradas do
 cabeçalho da técnica, 19 estados de Famílias, 129 campos de inventário/equipamento
-e quatro notas vivas, três campos restantes da CARTEIRA, memórias conhecidas
+e quatro notas vivas, três campos restantes da CARTEIRA, memórias conhecidas,
 as versões guardadas dos 249 cartões em MONTAGENS e seus campos visíveis,
 com validações das funções. **Não oferecem uma ficha inteira
 pronta para cadastro.** Base incorporada: main
@@ -233,19 +233,21 @@ node r53/testes/inicializacao_pessoal.js
 node r53/testes/inicializacao_formacao.js
 node r53/testes/inicializacao_memorias.js
 node r53/testes/inicializacao_montagens.js
+node r53/testes/inicializacao_cartoes.js
 ```
 
-Coleção atual: 1.470 cenários offline (101 financeiros, 82 de nível/base, 78 de
-textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias e 370 de MONTAGENS). Incluem
+Coleção atual: 2.261 cenários offline (101 financeiros, 82 de nível/base, 78 de
+textos, 243 pessoais, 441 de formação/inventário/CARTEIRA, 155 de memórias, 370 de MONTAGENS e 791 de cartões visíveis). Incluem
 falha antes/depois das escritas, retomada, concorrência, fórmulas desconhecidas,
 notas e compatibilidade dos contratos anteriores. A VM não executa fórmulas
-nem mede latência Google. O smoke inclui os sete arquivos de testes.
-CI atual `5749b3a` aprovado: [40690086385](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40690086385), 1.470 cenários, em 28/10 às 09:45:06 Brasília.
+nem mede latência Google. O smoke inclui os oito arquivos de testes.
+CI atual `216e44c` aprovado: [40694498546](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40694498546), 2.261 cenários, em 28/10 às 10:16:56 Brasília.
+CI anterior aos cartões visíveis, `5749b3a`, aprovado: [40690086385](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40690086385), 1.470 cenários, em 28/10 às 09:45:06 Brasília.
 CI anterior a MONTAGENS, `8bb9335`, aprovado: [CI 40686604745](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40686604745), com 1.100 cenários.
 CI anterior ao bloco CARTEIRA/memórias, `86410be`, aprovado: [40683614201](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40683614201), com 921 cenários.
 CI anterior à extensão de inventário, `763a78b`, aprovado: [40681468287](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40681468287).
 Resultados anteriores e limites nativos ficam nos relatórios datados; o registro
-atual está em [MONTAGENS-2026-10-28.md](MONTAGENS-2026-10-28.md).
+atual está em [CARTOES-VISIVEIS-2026-10-28.md](CARTOES-VISIVEIS-2026-10-28.md).
 Regressão independente de XP: `node r53/testes/xp_nivel.js`, 20.643
 verificações/9.900 combinações sem a exportação nativa opcional.
 
@@ -274,8 +276,8 @@ Detalhes em [NIVEL-TEXTOS-2026-10-27.md](NIVEL-TEXTOS-2026-10-27.md).
 ## O que falta antes de liberar criação
 
 - Inicialização pessoal completa: fotos/arte, entidades e seus equipamentos,
-  cartões visíveis e suas validações. MONTAGENS e os outros domínios já tratados
-  têm protótipos, sem aceite
+  protocolo global de diários e aplicação conjunta. Cartões visíveis/validações,
+  MONTAGENS e os outros domínios já tratados têm protótipos, sem aceite
   nativo completo dos executores. Famílias ainda exigem sincronização com
   cartões, amparo e recuperações; não basta restaurar seus menus.
 - Integrar e validar nativamente o protocolo de memórias abaixo; tratar sua

@@ -4,11 +4,14 @@ PR 31: valores, notas e validações das funções nos 249 cartões, com diário
 individual e retomada. Portas seguem Amparo/Classe de fábrica; regra antes do
 valor. Recusa validação/mescla/fórmula desconhecida e edição concorrente.
 Executor ampliado só com tipo validacao; contratos anteriores preservados.
-101 financeiros, 441 formação e sete focais passaram; coleção nova no CI.
+101 financeiros, 441 formação e sete focais passaram; CI 40694498546 aprovado
+no código 216e44c em 28/10 às 10:16:56 Brasília: 791 novos, 2.261 totais,
+pacote nove arquivos e sintaxe 277 Python/233 JS-GS. Duplicado 40694490233
+cancelado; fechamento só documental [skip ci], sem repetir suíte/publicar.
 Leitura das oficiais: nove contextos, 124 entradas, 210 guardas e 25 validações
 por arquivo sem diferença; nenhuma escrita/cópia/execução Apps Script.
 Bloqueio comprovado: os diários completos acumulados não cabem na quota
-conjunta. Resolver orçamento/compactação com recibos antes da integração;
+conjunta (1.396.929 bytes; maior 5.765). Resolver orçamento/compactação com recibos antes da integração;
 não apagar diários para forçar nova limpeza. Também faltam dados das entidades,
 arte, orquestração, automações/treinos/notas, responsável e prova drive.file/nativa.
 Criação bloqueada, protótipos fora do pacote/bot, sem merge/deploy ou novos acessos.

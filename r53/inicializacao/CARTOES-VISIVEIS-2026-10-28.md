@@ -10,7 +10,8 @@ ou integração de escrita no bot. Criação permanece bloqueada. Complementa
 `r53NovaFichaCartaoAplicar(ss, ctx, id, assinatura)`. O ID seleciona um dos 249
 cartões do contrato público; não aceita endereço ou perfil do navegador.
 
-O contrato inclui nome, Classe e COMO É quando forem entradas, além dos campos
+São 3.863 entradas e 737 validações de função. O contrato inclui nome, Classe
+e COMO É quando forem entradas, além dos campos
 pessoais explícitos do editor: Forma, funções/pontos, Melhorias, Restrições,
 Controle, uso pessoal e gasto de Frágil. Valores e notas voltam aos defaults
 extraídos da montagem completa. Rótulos, fórmulas de contas/avisos e menus
@@ -59,8 +60,13 @@ evita recalcular todos os menus dos outros 248 cartões a cada retomada.
   com conta diferente. O ajuste das expectativas usou a célula de fábrica
   independente e variantes semânticas exatas; não alterou regra do produtor.
 - 101 cenários financeiros e 441 de formação passaram novamente após ampliar
-  o executor e a VM. O conjunto completo deste módulo é executado no CI;
-  resultado e totais serão registrados no fechamento.
+  o executor e a VM. O conjunto completo passou no
+  [CI 40694498546](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40694498546),
+  código `216e44c99c9aabc389f8f8811418dd538e6d5735`, concluído em 28/10 às
+  10:16:56 Brasília: **791 novos, 2.261 no total**
+  (101/82/78/243/441/155/370/791). Pacote de nove arquivos, sintaxe 277 Python/
+  233 JS-GS e demais verificações do smoke passaram. Duplicado 40694490233
+  cancelado. Fechamento posterior só documental, `[skip ci]`.
 - A VM simula recusa de texto/número em checkbox e de valor fora da lista.
   Não executa fórmulas de validação nem certifica comportamento/latência do
   serviço Google. A prova de escrita Apps Script em descartáveis permanece
@@ -72,8 +78,9 @@ fora do pacote e do bot; não há ZIP ou publicação por esta extensão.
 
 ## Limite de armazenamento
 
-Os diários completos dos 249 cartões ultrapassam a quota conjunta de
-propriedades, embora cada um caiba abaixo de 9.000 bytes. A integração não
+Os diários completos dos 249 cartões somaram 1.396.929 bytes na VM.
+Ultrapassam a quota conjunta de propriedades, embora o maior tenha apenas
+5.765 bytes e cada um caiba abaixo de 9.000 bytes. A integração não
 pode simplesmente executar todos e deixar todos os diários detalhados vivos.
 Esse bloqueio é testado explicitamente. Precisa de orçamento global e um
 protocolo de compactação/recibos que preserve vínculo, retomada e a recusa
