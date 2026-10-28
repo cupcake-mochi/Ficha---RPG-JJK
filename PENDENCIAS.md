@@ -1,3 +1,20 @@
+## Carteira viva: versões dos cartões · 28/10/2026 · não instalada
+
+PR 31: MONTAGENS por cartão, 249 contextos e 48.015 entradas, todas as Classes.
+Defaults/notas das entradas restaurados; fórmulas de título/Classe máxima e
+rótulos preservados. Recusa editor fora do contrato, validações/mesclas novas,
+fórmulas desconhecidas e edição concorrente. Diário individual, retomada e
+cache volátil; executor/contratos anteriores iguais. 370 cenários novos e 101
+financeiros passaram localmente; coleção esperada no CI: 1.470.
+Leitura das duas oficiais: oito modos, 1.300 entradas/guardas por arquivo,
+sem divergências ou escrita. Relatório r53/inicializacao/MONTAGENS-2026-10-28.md.
+Cartões visíveis e suas validações continuam pendentes, assim como entidades,
+arte, orquestração/quota global, automações, responsável e integração/prova
+nativa. Limpar MONTAGENS não limpa o cache persistente: sequência comprovada
+com o leitor real e o domínio de memórias. Criação bloqueada, fora do pacote.
+Sem merge/deploy, acesso novo ou modelo pago. GPT-6 Astra Alto; revisão Médio.
+Entradas abaixo são históricas.
+
 ## Carteira viva: CARTEIRA e memórias · 28/10/2026 · não instalada
 
 PR 31: três campos pessoais da CARTEIRA e protocolo separado de memórias.

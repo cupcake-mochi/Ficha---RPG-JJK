@@ -11,7 +11,8 @@ Os protótipos cobrem financeiro, nível/base de XP, 14 textos pessoais,
 19 escolhas básicas, 20 entradas de recursos/bônus, nove condições/descanso e
 268 campos de Grau/Origem, Perícias, Ofícios/TR e armas, mais 11 entradas do
 cabeçalho da técnica, 19 estados de Famílias, 129 campos de inventário/equipamento
-e quatro notas vivas. **Não oferecem uma ficha inteira
+e quatro notas vivas, três campos restantes da CARTEIRA, memórias conhecidas
+e as versões guardadas dos 249 cartões em MONTAGENS. **Não oferecem uma ficha inteira
 pronta para cadastro.** Base incorporada: main
 `ef361ccdf7a0210781176e3c42d318cde147553d`, merge `a72adc0` (PRs 41–43).
 Inclui XP manual e marcas de missões congeladas. A instalação/backup 13 das
@@ -392,3 +393,18 @@ reinicializados antes de religar os consumidores. Limpar caches não limpa os
 cartões armazenados. Depois, regenerar amparo/notas e conferir o conjunto.
 Não apagar os diários para tentar de novo. Ver
 [CARTEIRA-MEMORIAS-2026-10-28.md](CARTEIRA-MEMORIAS-2026-10-28.md).
+
+## Versões guardadas dos cartões
+
+`montagens.gs` e `contrato_montagens.gs` cobrem as 48.015 posições das versões
+dos 249 cartões. As funções `r53NovaFichaMontagensPrevia` e
+`r53NovaFichaMontagensAplicar` recebem o ID conhecido do cartão, além do
+contexto confiável; cada cartão tem diário separado. Defaults restaurados,
+notas pessoais das entradas removidas, fórmulas/rótulos protegidos. Validações
+ou mesclas inesperadas no bloco impedem a execução.
+
+Isso não inicializa os campos visíveis nem suas validações, não limpa as
+entidades e não elimina o cache persistente do editor. A sequência completa
+precisa terminar o domínio de memórias e conferir tudo sem eventos intermediários.
+Não usar a conclusão de um cartão como certificado de criação. Relatório e
+limites: [MONTAGENS-2026-10-28.md](MONTAGENS-2026-10-28.md).

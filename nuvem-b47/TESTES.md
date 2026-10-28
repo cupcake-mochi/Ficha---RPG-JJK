@@ -321,3 +321,12 @@ Ambos usam git show de bases históricas que faltavam no checkout raso.
 O workflow passa a buscar somente os dois commits fixos 9536746 e 57117fb,
 com SHA completo e depth=1, antes do smoke. Nenhuma expectativa/comparação
 foi removida ou alterada. O run duplicado 40681039147 foi cancelado.
+
+### Versões dos cartões · 28/10/2026
+
+Smoke inclui `r53/testes/inicializacao_montagens.js`: 370 cenários offline,
+249 contextos, 48.015 posições; oito modos com quedas e concorrência. Também
+confere as fórmulas de Classe máxima e o leitor real antes/depois de limpar
+MONTAGENS e o cache persistente. Não testa escrita nativa nem cartões visíveis.
+A coleção de inicialização passa a 1.470; ver relatório em
+`r53/inicializacao/MONTAGENS-2026-10-28.md`.
