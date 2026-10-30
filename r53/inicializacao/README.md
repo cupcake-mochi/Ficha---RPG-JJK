@@ -1,5 +1,14 @@
 # Inicializar uma cópia nova
 
+## Propriedades separadas · 30/10 — protótipo autorizado, não instalado
+
+Novo perfil `propriedades.gs`: cinco chaves com diário próprio, células financeiras
+já limpas e preservadas; inspeção de rotinas sem criar acionadores ou atestar
+identidade.46 cenários novos/101 financeiros/47 de contrato REST aprovados.
+[Implementação, limites e ensaio pendente](PROPRIEDADES-2026-10-30.md).
+Contrato REST e diários/assinaturas anteriores preservados. Não libera criação.
+
+
 Protótipo do produtor para a etapa 7 da Carteira viva. **Não instalado nas oficiais, não
 incluído no pacote e sem integração de escrita com o bot.** A criação pelo
 bot permanece bloqueada. Não executar em ficha oficial ou de jogador.
@@ -275,6 +284,7 @@ limpeza. Não há opção “forçar” ou rollback automático de dados pessoai
 
 ```sh
 node r53/testes/inicializacao_financeiro.js
+node r53/testes/inicializacao_propriedades.js
 node r53/testes/inicializacao_progressao.js
 node r53/testes/inicializacao_identidade.js
 node r53/testes/inicializacao_pessoal.js

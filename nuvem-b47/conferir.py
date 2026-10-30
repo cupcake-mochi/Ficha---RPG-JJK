@@ -96,7 +96,7 @@ def main():
             check('salários: períodos, participação e idempotência', run.returncode == 0,
                   run.stderr.strip() or run.stdout.strip())
             for name in ['salarios/testar_abertura.js', 'r53/testes/salario_lote.js',
-                         'r53/testes/inicializacao_financeiro.js',
+                         'r53/testes/inicializacao_financeiro.js', 'r53/testes/inicializacao_propriedades.js',
                          'r53/testes/inicializacao_progressao.js', 'r53/testes/inicializacao_identidade.js',
                          'r53/testes/inicializacao_pessoal.js',
                          'r53/testes/inicializacao_formacao.js', 'r53/testes/inicializacao_memorias.js', 'r53/testes/inicializacao_montagens.js', 'r53/testes/inicializacao_cartoes.js', 'r53/testes/inicializacao_recibos.js', 'r53/testes/inicializacao_entidades.js', 'r53/testes/inicializacao_arte.js', 'r53/testes/inicializacao_inventario_imagens.js', 'r53/testes/inicializacao_sequencia.js', 'r53/testes/inicializacao_conferencia.js', 'r53/testes/inicializacao_conferencia_paginas.js', 'r53/testes/inicializacao_contrato_rest.js',

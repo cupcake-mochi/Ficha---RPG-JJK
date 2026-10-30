@@ -1,3 +1,15 @@
+## Carteira viva: propriedades isoladas · 30/10/2026 · não instalado
+
+Autorizado pelo mantenedor no PR31. Perfil separado de cinco propriedades,
+sem escrever células/reexecutar financeiro/criar acionadores. Contexto interno,
+projeto e execução vinculados, preservação das propriedades alheias/diários,
+retomada e inspeção somente de leitura sem atestado de identidade/ativação.
+46 cenários novos,101 financeiros e47 de contrato REST aprovados; CI completo e
+ensaio nativo pendentes. Contrato REST/pacote instalado/assinaturas anteriores
+preservados; criação bloqueada. Leia r53/inicializacao/PROPRIEDADES-2026-10-30.md.
+Sem oficial/jogador, main, publicação, acionador, OAuth das Guias ou modelo pago.
+Sol/Alto para implementação; Médio na revisão. Entradas abaixo históricas.
+
 ## Carteira viva: contrato REST e piso de XP · 28/10/2026 · não instalado
 
 Corrigida recusa de curva válida: abaixo do nível inicial o acumulado é “—”,
