@@ -4,9 +4,14 @@ Autorizado pelo mantenedor no PR31. Perfil separado de cinco propriedades,
 sem escrever células/reexecutar financeiro/criar acionadores. Contexto interno,
 projeto e execução vinculados, preservação das propriedades alheias/diários,
 retomada e inspeção somente de leitura sem atestado de identidade/ativação.
-46 cenários novos,101 financeiros e47 de contrato REST aprovados; CI completo e
-ensaio nativo pendentes. Contrato REST/pacote instalado/assinaturas anteriores
-preservados; criação bloqueada. Leia r53/inicializacao/PROPRIEDADES-2026-10-30.md.
+46 cenários novos,101 financeiros e47 de contrato REST aprovados; CI completo
+41063190512 de adf3661 aprovado às10:29:43 Brasília. Ensaio nativo encerrado
+às11:26:34: cinco ausências, sentinelas/hash preservados, retomada e repetição
+sem mudanças, zero rotinas visíveis. Acesso invalidado e nova execução recusada
+sem renovar; cópia na lixeira/abas fechadas. Só uma conta/cópia Ciclo, sem
+atestado autenticado no backend, evento real ou ativação. Custo e erro operacional
+registrados no relatório vinculado, sem afrouxar validações.
+Contrato REST/pacote instalado/assinaturas anteriores preservados; criação bloqueada. Leia r53/inicializacao/PROPRIEDADES-2026-10-30.md.
 Sem oficial/jogador, main, publicação, acionador, OAuth das Guias ou modelo pago.
 Sol/Alto para implementação; Médio na revisão. Entradas abaixo históricas.
 

@@ -1,6 +1,7 @@
 # Propriedades financeiras separadas da ativação
 
-30/10/2026 · PR31 · protótipo autorizado pelo mantenedor · não instalado.
+30/10/2026 · PR31 · protótipo autorizado pelo mantenedor · não publicado.
+Instalado somente em uma cópia privada descartável para ensaio, não nas oficiais.
 
 `propriedades.gs` acrescenta um perfil independente para as cinco propriedades
 financeiras depois de as células terem sido inicializadas pelo REST ou por outro
@@ -61,13 +62,30 @@ fechamento; não houve relaxamento da guarda nem expectativa ampliada.
 
 101 cenários financeiros e47 de contrato REST aprovados. Hash REST preservado:
 `1001e7c3605c754b5bf04c33cfd65542c90ef4b897deffda40167a2bafb30439`.
-O teste novo entra no CI do produtor. CI completo e ensaio nativo ainda pendentes.
+O teste novo entra no CI do produtor. Código `adf36610a8b077377c95d4e9195dad318d0b0b2b`:
+[CI41063190512](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/41063190512)
+aprovado em30/10 às10:29:43 Brasília, incluindo os46 casos novos; log completo
+conferido. Execução duplicada41063183156 cancelada. Ensaio nativo separado encerrado.
 
-Próximo ensaio: cópia privada nova, financeiro no pós-estado, cinco resíduos
-fictícios e sentinelas alheias. Aplicar/retomar sem células alteradas, repetir,
-inspecionar sem criar acionadores, invalidar a autorização do projeto e enviar
-a cópia à lixeira. A conta correta faz login/avisos Google. Não usar cópias ou
-concessões revogadas de ensaios anteriores.
+Ensaio nativo em uma cópia privada manual do Ciclo, sem colaboradores:
+preparação financeira anterior atingiu361s; diário íntegro foi retomado na mesma
+operação em271s. Prévia identificou cinco alterações; aplicação limitada em duas
+chamadas, seguida de leitura posterior: cinco ausências, sentinelas alheias e hash
+das células/fórmulas/configuração/demais propriedades preservados. Repetição
+concluiu sem alterar nenhuma propriedade. Inspeção viu zero acionadores da conta;
+nenhuma rotina foi instalada ou removida. Quatro indicadores globais falsos.
+
+`invalidateAuth()` executado; a consulta de status na mesma chamada ainda retornou
+não requerida. A prova foi a tentativa posterior, que abriu Autorização obrigatória:
+cancelada sem renovar. Cópia confirmada na lixeira recuperável, abas próprias
+fechadas e porta8876 livre às11:26:34 Brasília. Fonte do produto idêntico a adf3661;
+auxiliares QA foram separados para evitar leituras extras do próprio ensaio.
+Não houve novo OAuth das Guias, banco/cadastro, escopo, evento real ou atestado.
+
+[Relatório completo e limitações do ensaio](https://github.com/cupcake-mochi/RPG---BOT/blob/codex/carteira-viva-etapa-7/Closure/docs/carteira-viva/NATIVO-PROPRIEDADES-2026-10-30.md).
+Registra também o erro de seleção do agente/tentativa cancelada, custos observados
+e detalhes de limpeza. Uma conta/cópia não valida Era, modelo do servidor,
+ativação/responsável/horário/rotinas de outras contas ou preservação fora do contrato.
 
 Depois faltam ativação própria verificável, demais domínios/conferência conjunta,
 concorrência/CAS e prova integrada de Era, Ciclo e servidor. Sem oficial/jogador,
