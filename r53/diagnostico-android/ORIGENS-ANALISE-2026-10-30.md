@@ -61,6 +61,12 @@ O contrato de domínio exportado antes da apresentação permanece inalterado.
   origens/migração. Os 89 casos do motor e 584 verificações do editor passaram. O transporte do
   pacote passou: nove arquivos, 26 abas de dados e 249 contextos.
 
+A primeira validação no Git expôs uma falha anterior de preparação do clone
+raso: faltavam os commits `9536746` e `57117fb`, usados pelas regressões
+salariais. O workflow recebeu a mesma busca de bases imutáveis já presente
+na PR31. Nenhum teste foi removido/afrouxado, e nenhum código da Carteira viva
+foi incorporado. O workflow nas duas frentes fica idêntico nesse trecho.
+
 Os menus CE foram preservados. Não houve alteração do RPG---BOT nem da correção
 da PR85. Todos os valores de aviso em B da cópia ficaram iguais: diferenças de
 compras na Ampliação, peças incompatíveis com Classe 0 e orçamento negativo
