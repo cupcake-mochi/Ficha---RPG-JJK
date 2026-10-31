@@ -1,3 +1,31 @@
+# Revisão mecânica em QA · 31/10/2026
+
+Sessão encerrada a pedido do usuário para dormir. Retomar por
+`r53/diagnostico-android/RETOMADA-MECANICAS-2026-10-31.md` e pela PR45,
+implementação c4f6901, CI 41164312219 aprovado. Só salvar nesta sessão;
+nenhuma autorização nova de aplicação. O roteiro registra inclusive a
+reabertura intermediária pela API antes dos dois timeouts nativos: repetir
+fechar/reabrir só pela UI numa cópia nova antes de generalizar a causa.
+
+Leia `r53/diagnostico-android/REVISAO-MECANICAS-2026-10-31.md`.
+Ramo separado `codex/revisao-mecanicas-20261030`, base main 5ea10b4.
+276 cenários/2.080 verificações nativas aprovadas; após delta, 1.035 rechecagens.
+Correção preparada para falso válido ao fechar Amparo com cura/PV temporários
+salvos: 244 fórmulas GA, contas/entradas/versões/contrato ANALISE iguais no modelo.
+GS 8c38acf72c7e6a33 regenerados, pacote integral NÃO instalado. Delta ensaiado
+nas duas cópias; migração offline `r53/diagnosticos_funcoes.py` exige A:M/GA,
+guardas de layout/ID/fórmula e releitura antes de aplicar. Reversão de três e
+repetição zero conferidas no Google. Só QA recebeu escritas; jogador/oficiais/
+PR31 intactos. NÃO promover automaticamente.
+Pendência real: reabrir Amparo com 36 cartões preenchidos atingiu 30,561/30,454 s,
+deixando `—`; recuperação NÃO aprovada. O delta de aviso não resolve isso.
+Não confundir testes aritméticos via API com onEdit. Colisão do antigo catálogo
+de QA 53018005/R53_EVENTOS evitada; gerador agora usa 53018901, ainda exige
+metadados antes de aplicação. O teste antigo de Morrendo usa regras custom
+deliberadas e foi preservado. Evidências privadas na pasta ignorada indicada
+no relatório. Sem agentes, novos acionadores/acessos, Office ou paleta.
+Sol/High para manutenção integrada; Medium para revisão, sem mudar opções.
+
 # Origens da ANALISE · aplicadas nas oficiais · 30/10/2026
 
 Usuário autorizou merge da PR44 e aplicação com backup. Leia
