@@ -17,6 +17,9 @@ const after = read(loader.fontes());
 // E o NÍVEL da FICHA (AH11) como menu estrito de 1 a 30.
 const expected = new Set(['DADOS.vals.47,104.0', 'DADOS.vals.54,103', 'DADOS.vals.54,104', 'FICHA PESSOAL.notas.14.1',
   'FICHA.dv.AH11', 'FICHA.menus_estritos']);
+// 30/10: somente os endereços de origem conferidos, sem mudar B/chaves/partes.
+const origens = require('../diagnostico-android/ORIGENS-ANALISE-2026-10-30.json').mudancas;
+for (const change of origens) expected.add('ANALISE.vals.'+change.linha+',3.0');
 const changed = [];
 function compare(a,b,path) {
   if (JSON.stringify(a) === JSON.stringify(b)) return;
@@ -38,6 +41,17 @@ assert.strictEqual(after.length,before.length);
 for (let i=0;i<before.length;i++) compare(normalize(before[i]),normalize(after[i]),after[i].nome);
 assert.deepStrictEqual(new Set(changed),expected);
 const sheet = name => after.find(s => s.nome === name);
+const oldAnalysis = before.find(s => s.nome === 'ANALISE');
+const origemTexto = value => /^="(?:[^"]|"")*"$/.test(value) ? value.slice(2,-1).replace(/""/g,'"') : value;
+for (const change of origens) {
+  assert.strictEqual(oldAnalysis.vals[change.linha+',1'][0], change.chave);
+  assert.strictEqual(sheet('ANALISE').vals[change.linha+',1'][0], change.chave);
+  // Aceita a representação literal ou ="...", conservando a mesma em cada célula.
+  const oldOrigin = oldAnalysis.vals[change.linha+',3'][0], newOrigin = sheet('ANALISE').vals[change.linha+',3'][0];
+  assert.strictEqual(oldOrigin.startsWith('="'), newOrigin.startsWith('="'));
+  assert.strictEqual(origemTexto(oldOrigin), change.antes);
+  assert.strictEqual(origemTexto(newOrigin), change.depois);
+}
 assert(sheet('DADOS').vals['47,104'][0].endsWith('+N(DADOS!$CZ$54)'));
 assert.deepStrictEqual(sheet('DADOS').vals['54,103'], ['xp base',5]);
 assert.deepStrictEqual(sheet('DADOS').vals['54,104'], [0,7]);

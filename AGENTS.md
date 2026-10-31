@@ -1,3 +1,21 @@
+# Origens da ANALISE · 30/10/2026 · correção separada
+
+Leia `r53/diagnostico-android/ORIGENS-ANALISE-2026-10-30.md` e seu manifesto.
+Ramo `codex/corrigir-origens-analise-20261030`, base main ef361cc; PR31 intacta.
+Corrigidos três transportes físicos de metadados: CONFIGURAÇÃO horizontal,
+extensões e cartões. 2.627 C alteradas (2.417 únicas/210 compostas); restante do
+modelo igual. 18.393 chaves, 45.698 referências/grades e 5.885 origens de 3.264
+fórmulas compostas conferidas. GS 5ddce2b71c0732ad regenerados/pacote conferido,
+NÃO instalados. Só cópia descartável nativa recebeu C; A/B/D iguais, zero erros,
+repetição sem pedidos e reversão de três amostras aprovada. Cópia na lixeira.
+`r53/origens_analise.py` prepara plano offline por chave, guardas B/C/D e reversão.
+Aplicação existente exige snapshot/releitura atual e alvo autorizado; plano não
+trava a API. Modelos antigos com restauração de ANALISE precisam de manutenção
+incremental específica, ainda não ensaiada. Não promover pacote integral.
+Jogador/oficiais intactos; sem CE removido/avisos afrouxados, agentes, acionadores,
+acesso novo, Office ou merge. Evidências privadas só na pasta ignorada indicada
+no relatório. Sol/High na integração; Medium na revisão, sem alterar opções.
+
 # Fila ativa de desempenho · 25/10/2026
 
 Leia o topo do `PENDENCIAS.md` ("Fila de desempenho da ficha") antes de mexer em

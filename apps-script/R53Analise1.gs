@@ -231,7 +231,7 @@ var VALORES_R53_ANALISE_1_ = [
       [11227,1,"r53.entidade.4.esp.1.sem_uso",0],[11227,2,"='DADOS_R53'!DV87&\"\"",0],[11227,3,"=\"'DADOS_R53'!DV87\"",0],[11227,4,"resultado",0],[11228,1,"r53.entidade.4.esp.1.pe",0],[11228,2,"='DADOS_R53'!DX87&\"\"",0],[11228,3,"=\"'DADOS_R53'!DX87\"",0],[11228,4,"resultado",0],[11229,1,"r53.entidade.4.esp.1.cd_normal",0],[11229,2,"='DADOS_R53'!EB87&\"\"",0],[11229,3,"=\"'DADOS_R53'!EB87\"",0],[11229,4,"resultado",0],[11230,1,"r53.entidade.4.esp.1.cd_controle",0],[11230,2,"='DADOS_R53'!EC87&\"\"",0],[11230,3,"=\"'DADOS_R53'!EC87\"",0],[11230,4,"resultado",0],[11231,1,"r53.entidade.4.esp.1.funcao",0],[11231,2,"='DADOS_R53'!FH87&\"\"",0],[11231,3,"=\"'DADOS_R53'!FH87\"",0],[11231,4,"resultado",0],[11232,1,"r53.entidade.4.esp.1.avisos",0],[11232,2,"='DADOS_R53'!FX87&\"\"",0],[11232,3,"=\"'DADOS_R53'!FX87\"",0],[11232,4,"aviso",0],[11233,1,"r53.entidade.4.esp.1.entrada",0],[11233,2,"=IF('DADOS_R53'!B87<>\"\",\"[\"&TEXTJOIN(\",\",FALSE,MAP('DADOS_R53'!A87:AX87,LAMBDA(item,IF(ISLOGICAL(item),IF(item,\"true\",\"false\"),IF(ISNUMBER(item),IF(item=INT(item),TEXT(item,\"0\"),SUBSTITUTE(TEXT(item,\"0.###############\"),\",\",\".\")),CHAR(34)&SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(item&\"\",CHAR(92),CHAR(92)&CHAR(92)),CHAR(34),CHAR(92)&CHAR(34)),CHAR(10),CHAR(92)&\"n\"),CHAR(13),CHAR(92)&\"r\"),CHAR(9),CHAR(92)&\"t\")&CHAR(34))))))&\"]\",\"\")",0],[11233,3,"=\"'DADOS_R53'!A87:AX87\"",0],[11233,4,"entrada",0]
     ],
     "notas":[],
-    "geracao":"aeee4abf35088455",
+    "geracao":"5ddce2b71c0732ad",
     "arquivo":"R53Analise1.gs"
   }
 ];

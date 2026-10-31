@@ -106,6 +106,10 @@ def main():
                          'conteudos-b47/comum/testar-notas-contextuais.js']:
                 run = subprocess.run([node, str(ROOT/name)], cwd=ROOT, capture_output=True, text=True, timeout=300)
                 check(name, run.returncode == 0, run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_origens_analise'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=60)
+        check('ANALISE: origens, tipos e migração somente de C', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
         # Git identifica as fontes, evitando percorrer dependências em .venv.
         files = subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT).decode().split('\0')
         py_count = 0
