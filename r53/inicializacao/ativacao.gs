@@ -51,7 +51,9 @@ function r53NovaFichaAtivacaoAplicar(ss, contexto) {
       var propsRaw = dp.getProperty(R53_NOVA_PROPS_.diario), props;
       try { props = JSON.parse(propsRaw); } catch (e) { r53NovaFinErro_('propriedades ainda não preparadas.'); }
       if (!props || props.concluido !== true) r53NovaFinErro_('propriedades ainda não preparadas.');
-      r53NovaPerfilAplicarTravado_(ss, contexto, props.assinatura, r53NovaPropsPerfil_(), Date.now());
+      var conferencia = r53NovaPerfilAplicarTravado_(ss, contexto, props.assinatura, r53NovaPropsPerfil_(), Date.now());
+      if (!conferencia || conferencia.concluido !== true)
+        r53NovaFinErro_('a conferência das propriedades não terminou; nenhuma rotina foi instalada.');
       if (r53NovaPropsAcionadores_().length || sp.getProperty('salario_edicao') !== null)
         r53NovaFinErro_('cópia já possui rotinas ou marca de edição.');
       j = {versao: 1, vinculo: vinculo, preservados: r53NovaAtivacaoPreservados_(ss),

@@ -65,4 +65,5 @@ for(const modo of ['oficial','modelo','cadastrada','responsavel'])caso('contexto
  if(modo==='responsavel')a.context.responsavelConfirmado=false;
  assert.throws(a.run,/cópia nova/);assert.equal(a.rt.creates.length,0);
 });
+caso('conferência de propriedades sem orçamento não autoriza instalar',()=>{const a=criar();a.ctx.r53NovaPerfilAplicarTravado_=()=>({concluido:false,retomar:true});assert.throws(a.run,/conferência das propriedades não terminou/);assert.equal(a.rt.creates.length,0);assert.equal(a.doc.get(a.ctx.R53_NOVA_ATIVACAO_.diario),undefined);});
 console.log(`${casos} cenários de ativação local aprovados; sem evento Google real ou atestado ao backend.`);
