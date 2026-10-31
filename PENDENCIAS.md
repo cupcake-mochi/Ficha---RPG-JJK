@@ -1,3 +1,424 @@
+## Carteira viva: propriedades isoladas · 30/10/2026 · não instalado
+
+Autorizado pelo mantenedor no PR31. Perfil separado de cinco propriedades,
+sem escrever células/reexecutar financeiro/criar acionadores. Contexto interno,
+projeto e execução vinculados, preservação das propriedades alheias/diários,
+retomada e inspeção somente de leitura sem atestado de identidade/ativação.
+46 cenários novos,101 financeiros e47 de contrato REST aprovados; CI completo
+41063190512 de adf3661 aprovado às10:29:43 Brasília. Ensaio nativo encerrado
+às11:26:34: cinco ausências, sentinelas/hash preservados, retomada e repetição
+sem mudanças, zero rotinas visíveis. Acesso invalidado e nova execução recusada
+sem renovar; cópia na lixeira/abas fechadas. Só uma conta/cópia Ciclo, sem
+atestado autenticado no backend, evento real ou ativação. Custo e erro operacional
+registrados no relatório vinculado, sem afrouxar validações.
+Contrato REST/pacote instalado/assinaturas anteriores preservados; criação bloqueada. Leia r53/inicializacao/PROPRIEDADES-2026-10-30.md.
+Sem oficial/jogador, main, publicação, acionador, OAuth das Guias ou modelo pago.
+Sol/Alto para implementação; Médio na revisão. Entradas abaixo históricas.
+
+## Carteira viva: contrato REST e piso de XP · 28/10/2026 · não instalado
+
+Corrigida recusa de curva válida: abaixo do nível inicial o acumulado é “—”,
+no piso é zero. Testes antigos simulavam uma curva de nível 2 com piso 10;
+oráculo corrigido pelas fórmulas publicadas. Antes falhou/depois passou. Sondagem
+em cópia descartável confirmou pisos 2/10/30, custom 2100 e nível 1 pendente ou
+com custo explícito zero; 13 fórmulas financeiras conferidas. Cópia na lixeira,
+aba fechada; oficial/jogador intactos. Não executou inicializador/Apps Script.
+Exportador de contrato público REST com hashes de seis fontes, guardas exatas,
+piso/custos/curva/missões; consumidor copia/pina o JSON. 47 novos +82 progressão,
+67 sequência e 43 leitura locais passaram. Código d7adec7, CI 40743272303 aprovado
+às 15:18:33 Brasília: 2.999 cenários/zero falhas, pacote nove arquivos/sintaxe
+277 Python/256 JS-GS e demais regressões; duplicado 40743263267 cancelado.
+Consumidor código 22b6512/CI 40743430137: 1.385 executados/1.384 aprovados/um
+opcional, zero falhas, 181,422 s, 15:19:00 Brasília. Fechamento só documental. Contratos
+anteriores/diários preservados; operação com base anterior incompatível recusa
+sem apagar/reiniciar. Consumidor confere dois domínios e emite recibo de leitura
+cifrado; não é diário de escrita nem criação pronta. Faltam estado/persistência,
+demais domínios, propriedades, automações/responsável e integração/prova nativa.
+Criação bloqueada; sem merge/deploy/modelo pago/escopo novo ou publicação GS.
+Leia r53/inicializacao/CONTRATO-REST-2026-10-28.md. Sol Alto; revisão Médio.
+Entradas abaixo históricas.
+
+## Carteira viva: primeiro transporte REST no consumidor · 28/10/2026 · não instalado
+
+Produtor funcional permanece 2427024, fechamento anterior f36b410; não houve
+alteração GS nesta rodada. Consumidor PR84 acrescenta grade_inicializacao.py:
+coleta REST de financeiro/progressão com seletores fixos, fórmulas/resultados/
+notas/formato numérico separados; não executa os perfis deste repositório.
+Contexto e cota por GET, versão antes/depois das páginas, prazo absoluto.
+24 novos/95 direcionados locais passaram. Consumidor código b5934be, CI
+40735993584: 1.362 executados/1.361 aprovados/um opcional, zero falhas,
+245,141 s; job concluído em 28/10 às 14:32:42 Brasília. Execução anterior
+40735653225 cancelada/substituída após revisão dos prazos.
+Não coleta PropertiesService, imagens, mesclas ou validações, nem certifica
+pós-estados. Próximo: exportar contrato determinístico para backend e adaptar
+estado/recibos cifrados com vínculo de cópia, antes de qualquer escrita/liberação.
+Os contratos/guardas/diários GS existentes ficam preservados; não apagá-los ou
+adotá-los implicitamente como diários do backend. Automação/código instalado,
+responsável, isolamento e prova nativa continuam pendentes. Criação bloqueada,
+sem merge/deploy ou escopo novo. Relatório consumidor:
+Closure/docs/carteira-viva/COLETA-REST-2026-10-28.md (RPG---BOT).
+CI produtor anterior 40731673476: 2.952 cenários/zero falhas, não repetido por
+registro documental. Nenhum Google/Discord autenticado ou ficha real nesta rodada.
+Sol Alto para integrar; Médio para revisar. Entradas abaixo históricas.
+
+## Carteira viva: páginas sem gravação e versão · 28/10/2026 · não instalada
+
+PR31: plano e lotes de quatro perfis sem escrita de células ou propriedades;
+631 perfis/158 páginas, 16 cenários novos locais e amostra real de saída em VM
+aceita no Python. PR84 agora tem código: guarda interna de versão Drive/contexto,
+sem token persistido, página duplicada, retomada após erro temporário e conclusão
+reconfirmadas; criação continua bloqueada. Corrigida aceitação de versão vazia na
+leitura existente, reproduzida antes/recusada depois. CI produtor 40731673476
+aprovado no código 2427024: 2.952 cenários de inicialização/zero falhas, pacote
+nove arquivos/sintaxe 277 Python/253 JS-GS e demais regressões, 28/10 às
+14:07:25 Brasília. Duplicado 40731660220 cancelado. Consumidor código 1c15ee5,
+CI 40731678916: 1.338 executados/1.337 aprovados/um opcional, zero falhas,
+272,214 s, 14:06:23 Brasília. Fechamento só documental [skip ci].
+Não é snapshot dos cálculos. Ponte nativa de execução do produtor ainda não
+entregue: scripts.run não é habilitado por pressupor drive.file; preservar
+escopo atual e estudar adaptador REST/backend ou rota específica separadamente.
+Relatório `r53/inicializacao/VERSAO-LEITURA-2026-10-28.md`.
+Faltam execução autorizada, código/isolamento, consistência/cálculos/imagens,
+preservação global/quota nativa, automações/treinos/notas e responsável.
+Sem Google/Discord, oficial/jogador, novo acesso, modelo pago, merge/deploy.
+Sol Alto para integrar; revisão Médio. Entradas abaixo históricas.
+
+## Carteira viva: leitura conjunta e Classe 0 · 28/10/2026 · não instalada
+
+PR31: mapa direto de 599 perfis, 10.178 operações/17.316 guardas declaradas:
+zero escritas cruzadas, 83 interseções escrita/guarda. Encontrado defeito real
+nos cinco Classe 0 preenchidos: guardas leem a linha seguinte. Ordem corrigida
+de baixo para cima, sem afrouxar guardas/contratos dos cartões.
+Sequência v2 guarda projeção financeira sem o nível (guarda antiga completa
+preservada), cadeia e contador dos registros dos filhos; não adota v1 nem apaga
+diários. Leitor só de pós-estados/guardas/registros, um perfil por chamada;
+sem Aplicar/limpeza. Checkpoint próprio e todos os indicadores de liberação
+continuam falsos. 101 financeiros, 67 da sequência (máximo 1.773 bytes) e
+43 novos da leitura (354 bytes) locais aprovados. CI 40722524965 aprovado no
+código 4987b50, 28/10 às 13:10:58 Brasília: 2.936 cenários/zero falhas,
+pacote nove arquivos/sintaxe 277 Python/250 JS-GS e demais regressões passaram.
+Duplicado 40722509904 cancelado; fechamento só documental [skip ci]. Relatório
+`r53/inicializacao/CONFERENCIA-2026-10-28.md` e mapa JSON público reproduzível.
+Faltam consistência temporal/imagens atuais/arte, preservação global, quota
+nativa, automações/treinos/notas, responsável e integração/prova drive.file.
+Sem Google/Discord, oficial/jogador, novo acesso, modelo pago ou merge/deploy/Gateway.
+Consumidor PR84 só docs. Sol Alto para integrar; revisão Médio.
+Entradas abaixo históricas.
+
+## Carteira viva: sequência fixa · 28/10/2026 · não instalada
+
+PR31: coordenador de 599 perfis + duas inspeções, até 32 recuperações, uma fase
+por chamada. Assinatura ativa antes do filho, cursor só após conclusão, trava
+única; não repete financeiro depois de mudar o nível. Não adota fases avulsas
+nem apaga diários. Miolos dos executores extraídos, formatos/assinaturas/guardas
+anteriores preservados. Criação continua bloqueada ao terminar a sequência:
+faltam conferência conjunta/consistência/arte, quota total, automações/treinos/
+notas, responsável e integração/prova drive.file. Relatório
+`r53/inicializacao/SEQUENCIA-2026-10-28.md`. 67 cenários novos locais passaram,
+maior coordenador 1.553 bytes. CI 40716269167 aprovado no código 408a31a,
+28/10 às 12:32:28 Brasília: 2.893 cenários/zero falhas, pacote nove arquivos/
+sintaxe 277 Python/247 JS-GS e demais regressões. Duplicado 40716253746
+cancelado; fechamento só documental [skip ci].
+Sem Google, oficial/jogador, modelo pago, merge/deploy/Gateway ou escopo novo.
+Consumidor PR84 só docs. Sol Alto para integrar; revisão Médio.
+Entradas abaixo são históricas.
+
+## Carteira viva: inventário de imagens · 28/10/2026 · não instalado
+
+PR 31: leitura paginada de todas as células físicas, inclusive abas ocultas,
+com antes/depois, assinatura, quota e checkpoint por página. 79 cenários locais
+passaram; maior checkpoint 1.109 bytes. Conta imagens fora das fotos, fórmulas,
+marcadores de decoração, sobreposições e desenhos sem alterar células.
+Não é snapshot consistente nem prova de pixels: três indicadores de liberação
+continuam falsos. Ensaio real numa planilha técnica descartável confirmou
+CellImage individual/em bloco/espelho, URL igual em duas execuções próximas e
+espelho preservado após limpeza fictícia. Não é execução nativa do inventário
+ou da inicialização; descartável na lixeira. Leia
+`r53/inicializacao/INVENTARIO-IMAGENS-2026-10-28.md`.
+CI 40713143485 aprovado no código b35436e, 28/10 às 12:13:10 Brasília:
+2.826 cenários/zero falhas, pacote nove arquivos e sintaxe 277 Python/245 JS-GS;
+duplicado 40713131601 cancelado. Fechamento somente documental [skip ci].
+Criação bloqueada, fora do pacote/bot, sem
+merge/deploy, oficial/jogador, modelo pago ou acesso amplo novo.
+Sol Alto para continuar; revisão Médio. Entradas abaixo são históricas.
+
+## Carteira viva: fotos nas caixas — arte parcial · 28/10/2026 · não instalada
+
+PR 31: um perfil com 13 fotos + espelho pessoal, valores/notas de fábrica,
+mesclas/validações guardadas e dez decorações fora dos alvos. Tipo interno foto
+no executor, contratos/assinaturas antigos preservados. Texto/URL, IMAGE e
+CellImage identificável; URL/alt text somente em hash, sem fetch/log/persistência.
+Recusa identificação instável e valores desconhecidos. Sobreposição/desenho em
+qualquer aba bloqueia sem remoção. Imagens em outras células NÃO são auditadas:
+pendência explícita, sem certificado de limpeza global. Criação bloqueada.
+137 cenários locais passaram; coleção 2.747/zero falhas confirmada no CI
+40706336130, código 350c56d, aprovado em 28/10 às 11:32:49 Brasília. Pacote
+nove arquivos/sintaxe 277 Python/242 JS-GS e demais regressões passaram;
+duplicado 40706329406 cancelado. Fechamento só documental [skip ci]. Teste
+conjunto 572 perfis + reserva 100 KB: 412.570 bytes/pico 412.936.
+Sem nova leitura/escrita de planilha, cópia, Apps Script, OAuth, escopo ou modelo
+pago. Consulta só à documentação pública da API, sem buscar imagens.
+Próximo: prova CellImage/URL em descartável e auditoria das imagens fora de
+âncoras/decoração custom. Depois orquestração/quota/conferência global,
+automações/treinos/notas, novo responsável e integração drive.file/nativa.
+Não declarar arte concluída nem apagar diário para recomeçar se URL expirar.
+Protótipos fora do pacote/bot; sem merge/deploy. Relatório
+r53/inicializacao/FOTOS-2026-10-28.md. Sol Alto; revisão Médio (AGENTS.md).
+Entradas abaixo históricas.
+
+## Carteira viva: dados das entidades · 28/10/2026 · não instalada
+
+PR 31: 73 perfis (seis por entidade + conjunto), 1.165 entradas. Identidade,
+atributos/treinos, recursos, Famílias, inventário e talentos/Expansão restaurados
+por matrizes de âncoras, com notas e fórmulas de fábrica. Configurações/catálogos,
+cálculos, cartões R53/MONTAGENS preservados. Menus conhecidos são mantidos e
+entram na assinatura; mesclas exigem geometria exata. Recibos/quota existentes;
+adaptador de validações extraído sem mudar descritores; executor intacto.
+305 cenários locais passaram; coleção completa 2.610/zero falhas confirmada
+no CI 40701063975, código baf652d, aprovado em 28/10 às 10:58:19 Brasília.
+Pacote nove arquivos, sintaxe 277 Python/238 JS-GS e demais regressões passaram;
+duplicado 40701053252 cancelado, fechamento só documental [skip ci].
+73 recibos reais 36.719 bytes, maior diário pendente 3.165. Teste de quota
+ampliado de 498 para 571 perfis com reserva 100 KB: 412.036 bytes/pico 412.402.
+Leitura das oficiais: primeira/última entidade e conjunto, por arquivo 195
+entradas/validações, 284 guardas; critérios e valores/fórmulas iguais. 105 menus
+estritos preservados; barra pt_BR reconhecida por fórmula inteira. Duas notas
+contextuais por arquivo são geradas, não estáticas: limpar herdadas e regenerar
+na futura fase de automações. Nenhuma escrita/cópia/execução Apps Script/OAuth.
+Fotos só vazias/marcador; imagem exige arte antes desses grupos. Próximo arte,
+orquestração/quota total/conferência conjunta, automações/treinos/notas,
+responsável, integração/prova drive.file/nativa. Criação bloqueada, protótipos
+fora do pacote/bot, sem merge/deploy, acessos novos ou modelos pagos. Relatório
+r53/inicializacao/ENTIDADES-2026-10-28.md. GPT-6.1 Sol Alto; revisão Médio.
+Entradas abaixo históricas.
+
+## Carteira viva: recibos e quota · 28/10/2026 · não instalada
+
+PR 31: cartões visíveis e MONTAGENS trocam o diário completo por recibo após
+conferência final, na mesma chave, sem exclusão. Retomada incompleta preservada;
+recibo só confere, recusa cópia usada, assinatura/vínculo/layout/guardas diferentes.
+Diários v1 desses perfis migram somente após conferência. Outros perfis/assinaturas
+mantidos. Todas as gravações de diário agora contam propriedades alheias, teto
+450.000 bytes com margem e 9.000 por valor, e confirmam persistência por releitura.
+44 testes novos e seis focais de cartões passaram localmente. CI 40697164990
+aprovado no código af8e83f em 28/10 às 10:34:44 Brasília: 2.305 cenários,
+zero falhas, pacote nove arquivos/sintaxe 277 Python/234 JS-GS. Duplicado
+40697154581 cancelado; fechamento apenas documental [skip ci]. Simulação 498 recibos + reserva 100 KB: 372.263 bytes, pico 372.629.
+Não é ensaio Google, autenticação ou garantia de espaço dos domínios futuros.
+Próximo: dados/recursos/equipamentos das entidades, arte, orquestração com
+orçamento total/conferência final, automações/treinos/notas, responsável e prova
+nativa/drive.file. Criação bloqueada, fora do pacote/bot; sem merge/deploy,
+edição de planilhas, acessos novos ou modelos pagos. Relatório
+r53/inicializacao/RECIBOS-2026-10-28.md. GPT-6.1 Sol Alto para implementação;
+Médio para revisão focal, conforme AGENTS.md. Entradas abaixo são históricas.
+
+## Carteira viva: cartões visíveis · 28/10/2026 · não instalada
+
+PR 31: valores, notas e validações das funções nos 249 cartões, com diário
+individual e retomada. Portas seguem Amparo/Classe de fábrica; regra antes do
+valor. Recusa validação/mescla/fórmula desconhecida e edição concorrente.
+Executor ampliado só com tipo validacao; contratos anteriores preservados.
+101 financeiros, 441 formação e sete focais passaram; CI 40694498546 aprovado
+no código 216e44c em 28/10 às 10:16:56 Brasília: 791 novos, 2.261 totais,
+pacote nove arquivos e sintaxe 277 Python/233 JS-GS. Duplicado 40694490233
+cancelado; fechamento só documental [skip ci], sem repetir suíte/publicar.
+Leitura das oficiais: nove contextos, 124 entradas, 210 guardas e 25 validações
+por arquivo sem diferença; nenhuma escrita/cópia/execução Apps Script.
+Bloqueio comprovado: os diários completos acumulados não cabem na quota
+conjunta (1.396.929 bytes; maior 5.765). Resolver orçamento/compactação com recibos antes da integração;
+não apagar diários para forçar nova limpeza. Também faltam dados das entidades,
+arte, orquestração, automações/treinos/notas, responsável e prova drive.file/nativa.
+Criação bloqueada, protótipos fora do pacote/bot, sem merge/deploy ou novos acessos.
+Relatório r53/inicializacao/CARTOES-VISIVEIS-2026-10-28.md.
+GPT-6 Astra Alto; revisão Médio. Entradas abaixo são históricas.
+
+## Carteira viva: versões dos cartões · 28/10/2026 · não instalada
+
+PR 31: MONTAGENS por cartão, 249 contextos e 48.015 entradas, todas as Classes.
+Defaults/notas das entradas restaurados; fórmulas de título/Classe máxima e
+rótulos preservados. Recusa editor fora do contrato, validações/mesclas novas,
+fórmulas desconhecidas e edição concorrente. Diário individual, retomada e
+cache volátil; executor/contratos anteriores iguais. 370 cenários novos e 101
+financeiros passaram localmente; coleção 1.470 confirmada no CI 40690086385,
+aprovado em 28/10 às 09:45:06 Brasília no código 5749b3a. Sintaxe 277 Python/
+228 JS-GS e demais verificações passaram. Duplicado 40690078538 cancelado.
+Fechamento documental [skip ci], sem repetir suíte ou publicar.
+Leitura das duas oficiais: oito modos, 1.300 entradas/guardas por arquivo,
+sem divergências ou escrita. Relatório r53/inicializacao/MONTAGENS-2026-10-28.md.
+Cartões visíveis e suas validações continuam pendentes, assim como entidades,
+arte, orquestração/quota global, automações, responsável e integração/prova
+nativa. Limpar MONTAGENS não limpa o cache persistente: sequência comprovada
+com o leitor real e o domínio de memórias. Criação bloqueada, fora do pacote.
+Sem merge/deploy, acesso novo ou modelo pago. GPT-6 Astra Alto; revisão Médio.
+Entradas abaixo são históricas.
+
+## Carteira viva: CARTEIRA e memórias · 28/10/2026 · não instalada
+
+PR 31: três campos pessoais da CARTEIRA e protocolo separado de memórias.
+Quatro caches e 249 marcadores de Classe em 11 grupos fixos; recuperações
+por timestamp com diário individual. Só propriedades de documento conhecidas;
+configurações, células e demais diários preservados. Retomada, concorrência,
+limites e cache volátil tratados. Contratos anteriores/executor financeiro iguais.
+441 cenários de formação, 155 de memórias e 101 financeiros passaram localmente;
+coleção completa de 1.100 aprovada no CI 40686604745 no código 8bb9335,
+em 28/10 às 09:19:25 Brasília. Duplicado 40686597423 cancelado. Quinze entradas/guardas por oficial
+conferidas somente por leitura, sem divergência; sem novo ensaio de escrita.
+Relatório: r53/inicializacao/CARTEIRA-MEMORIAS-2026-10-28.md.
+Próximo entidades/cartões/MONTAGENS, arte, orquestração/conferência, automações,
+responsável, integração drive.file e prova nativa. Criação bloqueada, fora do
+pacote/bot. Sem merge/deploy ou novos acessos. GPT-6 Astra Alto; revisão Médio.
+Entradas abaixo são históricas.
+
+## Carteira viva: inventário e equipamento · 28/10/2026 · não instalada
+
+PR 31, main ef361cc reconferida sem novos commits. Três perfis novos: equipados
+5 campos, equipáveis 88, itens 36; mais quatro notas vivas sem escrita em suas
+fórmulas protegidas. Estoque pessoal limpo, fórmulas e instruções restauradas,
+catálogos/configurações preservados. Contratos anteriores/assinatura v1 iguais.
+Variante decimal nativa 0,1 reconhecida somente nas fórmulas exatas de Volume.
+417 cenários direcionados e 101 financeiros passaram; coleção atual 921.
+Leitura de 161 entradas/guardas em cada oficial sem divergência ou escrita.
+Projeção Sheets API em cópia privada: 133 alvos, 10.450 comparações preservadas,
+sem erros; carga 0,3 de 5 igual ao modelo (Traje 1). Cópia na lixeira/aba fechada.
+Não é execução Apps Script/diários/OAuth nem criação completa.
+
+CI Linux aprovado no código `86410bee3fc70fa81f124a695253e032688c3ebe` em
+28/10/2026 às 08:56:07 Brasília: [40683614201](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40683614201).
+921 cenários confirmados (101/82/78/243/417), pacote de nove arquivos, sintaxe
+277 Python/220 JS-GS, catálogo/progressão/Kaori e demais regressões aprovados.
+Run duplicado 40683604255 cancelado. Fechamento apenas documental com
+`[skip ci]`; sem repetir suíte ou publicar pacote.
+
+Relatório r53/inicializacao/INVENTARIO-2026-10-28.md e README atualizado.
+Próximo: campos restantes da CARTEIRA e propriedades de recuperação; depois
+entidades/cartões/MONTAGENS. Ainda faltam arte, orquestração/conferência final,
+automações/notas vivas, novo responsável e integração drive.file/prova nativa.
+Criação bloqueada, fora do pacote/bot. Sem merge/deploy, escopo novo ou chamada
+paga. GPT-6 Astra / Alto; revisão focal Médio. Entradas abaixo são históricas.
+
+## Carteira viva: técnica e Famílias · 28/10/2026 · não instalada
+
+Main ef361cc incorporada por a72adc0 (PRs 41–43). XP manual/missões congeladas
+reconciliados; backup 13 das oficiais registrado por outro trabalho, não reaplicar.
+PR 31: dois perfis novos, 11 entradas de técnica e 19 de Famílias, preservando
+catálogos/derivados. 782 cenários locais (101/82/78/243/278), mais 87 de XP manual.
+84 entradas/guardas lidas em cada oficial, zero divergências e nenhuma escrita.
+Projeção Sheets API em cópia privada: 30 alvos restaurados, 8.132 comparações
+preservadas sem diferença; duas Famílias custom, inclusive nome com *, Neutra.
+Fórmulas via API exigiram variante exata com ponto e vírgula; não confundir com
+execução Apps Script. Cópia na lixeira. Relatório TECNICA-FAMILIAS-2026-10-28.md
+em r53/inicializacao e README atualizado.
+
+CI Linux do código `763a78bd5fd3d799dd1273f24b6839a5c118d47a` aprovado em
+28/10/2026 às 08:39:49 Brasília: [40681468287](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40681468287).
+Confirmados os 782 cenários, 15 verificações de abertura, 2.076 de missões e
+87 de XP manual, pacote de nove arquivos, sintaxe de 277 fontes Python/220 JS-GS,
+catálogo/progressão/Kaori e demais regressões. Run duplicado 40681461827
+cancelado. O primeiro run 40681047195 falhou por bases ausentes, corrigidas
+sem mudar expectativas. Registro final só documental `[skip ci]`, sem repetir
+suíte, instalar pacote ou liberar criação.
+
+Próximo: inventário/equipamento. Também faltam campos pessoais da CARTEIRA,
+entidades/cartões/MONTAGENS, arte/recuperações, orquestração/conferência final,
+automações, novo responsável e integração drive.file/prova nativa completa.
+Criação bloqueada; fora do pacote/bot, sem merge/deploy ou novos escopos.
+GPT-6 Astra / Alto; revisão focal Médio. Entradas abaixo são históricas.
+
+## Carteira viva: Grau, Origem e treinos · 27/10/2026 · não instalada
+
+PR 31 em rascunho. Main 64b84e4 incorporada por 3f57c19; inclui PRs 39/40,
+registro de instalação/backup 12 por outro trabalho, sem reaplicar aqui.
+Quatro perfis novos, 268 células: Grau/Origem 10, Perícias 99, Ofícios/TR 94,
+armas 65. Defaults e notas da fábrica, catálogos preservados; Grau 4 sem
+inferência pelo nível. Bônus custom em AL; W86 protegido pelo overlay salarial.
+Escrita por matrizes com diários/limites; estado intermediário desconhecido
+provoca recusa, sem sobrescrita/rollback. Assinatura financeira v1 mantida.
+692 cenários offline passaram (101/80/78/243/190); regressões upstream de
+missões 2.076 e salário 95 passaram. Leitura nativa: 457 conferências por
+oficial, zero divergências; nenhuma escrita, cópia ou execução Apps Script
+nova. Relatório r53/inicializacao/FORMACAO-2026-10-27.md e README.
+CI Linux do código `73dffdac18bdd55b9a3b5b52a9cd7665fdc9dfeb` aprovado em
+27/10 às 14:00:26 Brasília: [40546156146](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40546156146).
+692 cenários de inicialização confirmados no log; pacote de nove arquivos,
+regressões, catálogo/progressão/Kaori, sintaxe de 277 fontes Python e 219 JS/GS.
+Run duplicado 40546148817 cancelado. Fechamento posterior só documental com
+`[skip ci]`, sem repetir a bateria ou publicar pacote.
+
+Ainda faltam técnica/Famílias, inventário, entidades/cartões/MONTAGENS, fotos,
+recuperações, orquestração/conferência final, automações, novo responsável e
+integração drive.file/prova nativa completa. Criação continua bloqueada;
+fora do pacote/bot, sem merge em main ou deploy. Próxima implementação
+GPT-6 Astra / Alto; revisão focal Médio. Entradas abaixo são históricas.
+
+## Carteira viva: escolhas, recursos e condições · 27/10/2026 · não instalada
+
+PR 31 em rascunho. Main `57117fb` incorporada por `6d4ddf1`; PR 38 registra
+backup 11 das oficiais, não reaplicado aqui. Contrato público reproduzível e
+três novos perfis: 19 escolhas básicas, 20 recursos/bônus, nove condições/descanso.
+Recursos atuais voltam às fórmulas dos máximos; notas de fábrica restauradas,
+incluindo Sequelas extras. Máximos, regras/catálogos, formatos e validações preservados.
+Diário único de cena excedia tamanho: separado e guarda de 9.000 bytes UTF-8
+adicionada antes de gravar, sem mudar a assinatura financeira v1. CI Linux 40540295538 aprovado no código `a55517d` às 13:24:13 Brasília;
+run duplicado também passou antes de ser possível cancelá-lo. 502 cenários
+offline passaram (101/80/78 + 243 novos), incluídos no smoke Linux. Leitura
+nativa: 112 conferências em cada oficial, sem escrita; sete variantes de aspas
+opcionais reconhecidas estritamente. Projeção por Sheets API em cópia privada
+do Ciclo: 48 campos/notas, 11.634 comparações delimitadas sem diferença;
+recursos acompanharam máximos após escolhas fictícias (23/23, 8/8, 26/26).
+Cópia na lixeira/aba fechada. Não executou os novos diários Apps Script/OAuth.
+Leia `r53/inicializacao/ESCOLHAS-RECURSOS-2026-10-27.md` e README: cobertura e
+limites. Grau, treinos, capacidades de Origem, técnica/Famílias, inventário,
+entidades/cartões, fotos/recuperações, orquestração e automações ainda pendentes.
+Criação segue bloqueada; sem pacote instalado, merge em main, deploy ou escopo novo.
+Próxima implementação GPT-6 Astra / Alto; revisão focal Médio.
+
+## Carteira viva: nível/base de XP e textos pessoais · 27/10/2026 · protótipos
+
+PR 31 em rascunho, branch `codex/inicializacao-financeira-carteira`. Main
+`b0dc6aacef08b2c01a7f8a3519bbcc9bff9546ed` incorporada (merges `8cb12ac` e `84bcd56`),
+incluindo XP base, fechamento da otimização Android e PR 37 salarial. Não reabrir desempenho.
+Executor financeiro extraído para perfis fixos, mantendo a assinatura/diário v1.
+Novos domínios: nível inicial/base XP (AH11/CZ54) e 14 textos/notas pessoais.
+Não inicializam atributos, escolhas, recursos, imagens, inventário, cartões
+ou recuperações. Não entram no pacote nem no bot; criação continua bloqueada.
+CI Linux final 40535287570 aprovado no integrado `84bcd56` (12:53:51 Brasília);
+antes, 40534237271 em `280a7dc`. Runs duplicados de push cancelados.
+259 cenários offline aprovados (101 financeiro/80 nível-base/78 textos), mais
+20.643 verificações de XP/9.900 combinações sem exportação opcional. Leitura
+nativa revelou `;` em G46: guardas aceitam só essa variante conhecida, com
+regressões positiva e negativa. Projeção dos efeitos pelo conector, em cópia
+nova privada da Era: 14 campos limpos, 8.998 comparações preservadas sem
+diferença; XP 3.700→3.750 com missão de 50→3.700 após retirar. Cópia na lixeira,
+aba fechada. Não executou os novos perfis Apps Script nem OAuth próprio.
+Leia `r53/inicializacao/README.md` e `NIVEL-TEXTOS-2026-10-27.md`: provas,
+ordem por domínio e limites. O ensaio financeiro anterior não valida o executor
+extraído. Falta orquestração, conferência final conjunta, domínios restantes,
+latência, automações e novo responsável. Não apagar diários para reiniciar fases.
+Sem instalação em oficial, acionadores, novos escopos, merge em main ou deploy.
+Próxima implementação: GPT-6 Astra / Alto; revisão focal: Médio.
+
+## Carteira viva: inicialização financeira em protótipo · 27/10/2026 · não instalada
+
+A pedido do Mizuki, o modelo do servidor conserva as configurações extras da mesa,
+sem reutilizar o personagem do modelo. `r53/inicializacao/financeiro.gs` implementa
+somente o domínio financeiro: prévia, diário, retomada após interrupção e conferência
+de fórmulas. Não é inicialização completa nem certificado aceito pelo bot; não foi
+incluído no pacote e não instala gatilhos. Não aplicar nas oficiais ou em personagens.
+Leia `r53/inicializacao/README.md` antes de continuar. Base main `d0836390`; branch
+`codex/inicializacao-financeira-carteira`, PR separada da PR 84 do consumidor.
+99 cenários offline novos aprovados; salário por fórmula e missões com regressões
+focais aprovadas. Leitura nativa pontual das duas oficiais, sem escrita: âncoras e
+grade compatíveis, estado financeiro herdável confirmado. Primeira prévia nativa passou; aplicação atingiu seis minutos na conferência
+final. Limite de quatro escritas/chamada, orçamento e retirada de leituras
+redundantes implementados com três regressões. A mesma operação retomou e concluiu em 236,503 s. A versão corrigida concluiu
+em nova cópia sem timeout; conferência externa com saldo zero e fórmulas/regras
+preservadas. Nova aplicação 283,416 s; repetição 150,489 s, mesmo estado comparado. Duas cópias
+na lixeira; zero acionadores listados para o executor. Detalhes e limites em
+`r53/inicializacao/NATIVO-2026-10-27.md`. Inicialização pessoal completa, automações e novo
+responsável ainda pendentes.
+Sem publicação, merge, novos escopos, reconstrução ou alteração nas oficiais.
+Próxima implementação integrada: GPT-6 Astra / Alto; revisão focal: Médio.
+
 ## Arrumação · 27/10/2026 (Claude)
 
 Item 4 da lista de 27/10 ("faz a 4 ai").
