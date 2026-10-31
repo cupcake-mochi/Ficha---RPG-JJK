@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const {ambiente}=require('./apoio_inicializacao');
-let casos=0;function caso(n,f){try{f();casos++;}catch(e){e.message=n+': '+e.message;throw e;}}
+let casos=0;function caso(n,f){if(process.argv[2]&&n!==process.argv[2])return;try{f();casos++;}catch(e){e.message=n+': '+e.message;throw e;}}
 const json=x=>JSON.parse(JSON.stringify(x));
 function criar(){
  const a=ambiente();a.complete(a.preview());
@@ -66,4 +66,18 @@ for(const modo of ['oficial','modelo','cadastrada','responsavel'])caso('contexto
  assert.throws(a.run,/cópia nova/);assert.equal(a.rt.creates.length,0);
 });
 caso('conferência de propriedades sem orçamento não autoriza instalar',()=>{const a=criar();a.ctx.r53NovaPerfilAplicarTravado_=()=>({concluido:false,retomar:true});assert.throws(a.run,/conferência das propriedades não terminou/);assert.equal(a.rt.creates.length,0);assert.equal(a.doc.get(a.ctx.R53_NOVA_ATIVACAO_.diario),undefined);});
+caso('falha de preservação não publica diário ativo nem executa evento',()=>{
+ const a=criar();a.run();a.run();a.run();const chamadas=[];
+ a.ctx.salarioRegistrarEdicao=()=>chamadas.push(1);
+ a.hook((fase,t,k)=>{
+  if(fase==='depois'&&t==='propriedade'&&k==='script:salario_edicao')a.script.set('concorrente','alterada');
+  if(fase==='depois'&&t==='propriedade'&&k==='doc:'+a.ctx.R53_NOVA_ATIVACAO_.diario){
+   const j=JSON.parse(a.doc.get(a.ctx.R53_NOVA_ATIVACAO_.diario));
+   if(j.concluido)a.ctx.r53NovaCopiaSalarioEdicao({triggerUid:'id-2',source:a.ss});
+  }
+ });
+ assert.throws(a.run,/preservação/);a.hook(null);
+ assert.equal(JSON.parse(a.doc.get(a.ctx.R53_NOVA_ATIVACAO_.diario)).concluido,false);
+ assert.equal(chamadas.length,0);assert.equal(a.rt.creates.length,3);
+});
 console.log(`${casos} cenários de ativação local aprovados; sem evento Google real ou atestado ao backend.`);

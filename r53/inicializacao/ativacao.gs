@@ -77,6 +77,7 @@ function r53NovaFichaAtivacaoAplicar(ss, contexto) {
     var marca = sp.getProperty('salario_edicao'), projeto = ScriptApp.getScriptId();
     if (marca !== null && !(j.ids.length === 3 && (j.marcando || j.concluido) && marca === projeto))
       r53NovaFinErro_('marca de edição incompatível.');
+    var concluirAgora = false;
     if (j.concluido) {
       if (marca !== projeto) r53NovaFinErro_('marca de edição removida após conclusão.');
     } else if (j.ids.length < 3) {
@@ -93,10 +94,12 @@ function r53NovaFichaAtivacaoAplicar(ss, contexto) {
       j.marcando = true; r53NovaAtivacaoSalvar_(dp, j);
       sp.setProperty('salario_edicao', projeto);
       if (sp.getProperty('salario_edicao') !== projeto) r53NovaFinErro_('marca de edição não confirmada.');
-      j.concluido = true; j.marcando = false; r53NovaAtivacaoSalvar_(dp, j);
+      j.concluido = true; j.marcando = false; concluirAgora = true;
     }
     if (j.preservados !== r53NovaAtivacaoPreservados_(ss))
       r53NovaFinErro_('preservação após ativação divergiu; revisar manualmente.');
+    // Só publicar o estado que libera os wrappers após a conferência final.
+    if (concluirAgora) r53NovaAtivacaoSalvar_(dp, j);
     return {versao: 1, rotinasInstaladasNestaConta: j.ids.length, instalacaoLocalConcluida: j.concluido,
       retomar: !j.concluido, ativacaoConcluida: false, financeiroConcluido: false,
       criacaoDisponivel: false, responsavelVerificadoPeloBot: false,
