@@ -9,7 +9,22 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
-## Estado instalado
+## Origens da ANALISE · 30/10/2026
+
+Com autorização expressa e dois backups nativos completos anteriores, as duas
+oficiais receberam somente as **2.627 correções de C** da PR44. A/B/D foram
+relidos integralmente iguais, 18.393 chaves, zero erros retornados e repetição
+sem pedidos. Tipos, notas, validações, formatos e as 30 abas foram preservados.
+[Aplicação e recuperação](diagnostico-android/ORIGENS-OFICIAIS-2026-10-30.md).
+
+Nenhum Apps Script foi alterado: vinte arquivos salvos relidos iguais. Codigo
+`52302778…`, EditorR53 `c3d31096…`, módulo `9dc3480a…`; o molde da ANALISE já
+está ausente no pacote otimizado. Não reinstalar o pacote integral por causa
+deste conserto. Novas cópias herdam as origens corretas; cópias antigas exigem
+atualização própria. A ficha do jogador e a PR31 ficaram fora da aplicação.
+Backups e evidências têm registro privado na pasta ignorada, sem IDs no Git.
+
+## Histórico do estado instalado
 
 **26/10/2026, pacote otimizado (com o aval do Mizuki):** as duas oficiais receberam o pacote leve
 (módulo `fef2a94b…`, que é o módulo instalado `2f153f65…` com as correções embutidas, os remendos

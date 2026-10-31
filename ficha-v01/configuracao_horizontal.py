@@ -188,7 +188,11 @@ def aplica(layout):
     for a in layout['abas']:
         owner = a['nome']
         for x in a['celulas']:
-            x[1] = formula(x[1],owner)
+            if owner == 'ANALISE' and re.fullmatch(r'C[0-9]+', x[0]):
+                from referencias_origem import mover
+                x[1] = mover(x[1], lambda aba, endereco: faixa(endereco) if aba == NOME else endereco)
+            else:
+                x[1] = formula(x[1],owner)
             if owner == NOME:
                 x[0] = coord(x[0])
                 if len(x)>3: x[3] = faixa(x[3])
