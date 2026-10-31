@@ -8,6 +8,7 @@ import re
 from functools import lru_cache
 from openpyxl.formula import Tokenizer
 from openpyxl.utils.cell import coordinate_to_tuple, get_column_letter as L
+from referencias_origem import mover as mover_origem
 
 INSERCOES = {'FICHA': [(92, 13), (103, 13)],
              'FICHA AMALDIÇOADA': [(39, 13)],
@@ -72,7 +73,13 @@ def deslocar(layout):
         indices_am = {re.match(r'[A-Z]+',x[0])[0] for x in a['celulas']
                       if x[0].endswith('1') and x[1]=='caixa calculada'} if owner=='DADOS_AM' else set()
         for x in a['celulas']:
-            x[0] = own(x[0]); x[1] = formula(x[1], owner)
+            x[0] = own(x[0])
+            # Origem é texto (muitas vezes ="'ABA'!A1"), não um operando
+            # RANGE. Aplica o mesmo mapa físico, só à coluna de metadados.
+            if owner == 'ANALISE' and re.fullmatch(r'C[0-9]+', x[0]):
+                x[1] = mover_origem(x[1], coord)
+            else:
+                x[1] = formula(x[1], owner)
             if indices_am and re.match(r'[A-Z]+',x[0])[0] in indices_am and isinstance(x[1],str) and re.fullmatch(r'[A-Z]+\d+',x[1]):
                 x[1] = coord('FICHA AMALDIÇOADA',x[1])
             if len(x) > 3:

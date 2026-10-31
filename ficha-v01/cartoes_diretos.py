@@ -279,6 +279,19 @@ def aplica(layout,tr):
     for owner,cm in cells.items():
         for pos,item in cm.items():
             v=item[1]
+            if owner == 'ANALISE' and re.fullmatch(r'C[0-9]+', pos) and v == originals[owner].get(pos):
+                from referencias_origem import mover
+                def destino(aba, endereco):
+                    partes=[]
+                    for p in endereco.split(':'):
+                        target=moves.get((aba,p.replace('$','')))
+                        m=re.fullmatch(r'(\$?)([A-Z]+)(\$?)([0-9]+)',p)
+                        if target and m:
+                            rr,cc=coordinate_to_tuple(target);p=m[1]+L(cc)+m[3]+str(rr)
+                        partes.append(p)
+                    return ':'.join(partes)
+                item[1]=mover(v,destino)
+                continue
             if v!=originals[owner].get(pos) or not isinstance(v,str) or not v.startswith('='):continue
             output=[]
             for token in Tokenizer(v).items:

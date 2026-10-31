@@ -1,3 +1,37 @@
+# Origens da ANALISE · aplicadas nas oficiais · 30/10/2026
+
+Usuário autorizou merge da PR44 e aplicação com backup. Leia
+`r53/diagnostico-android/ORIGENS-OFICIAIS-2026-10-30.md`.
+Duas cópias nativas completas de backup preservadas; 2.627 C corrigidas por
+oficial. A/B/D integralmente iguais, 18.393 chaves, zero erros retornados,
+tipos/apóstrofos/notas/validações/formatos e 30 abas preservados. Repetição zero.
+Vinte arquivos Apps Script recarregados e relidos iguais. Codigo 52302778… e
+módulo 9dc3480a… continuam instalados: ANALISE/fontes/seis fragmentos são null
+no módulo otimizado, então não há molde antigo para substituir nessas oficiais.
+NÃO instalar pacote integral nem reconstruir. Jogador e PR31 intactos; PR31
+permanece aberta em 83996e8. Evidências/backups só em
+`nuvem-b47/saidas/origens-oficiais-20261030/`, ignorado. Novas cópias herdam C;
+cópias antigas precisam de migração autorizada. A entrada seguinte é o ensaio.
+Sol/Medium para conferência; High para implementação, sem mudar configurações.
+
+# Origens da ANALISE · ensaio anterior · 30/10/2026
+
+Leia `r53/diagnostico-android/ORIGENS-ANALISE-2026-10-30.md` e seu manifesto.
+Ramo `codex/corrigir-origens-analise-20261030`, base main ef361cc; PR31 intacta.
+Corrigidos três transportes físicos de metadados: CONFIGURAÇÃO horizontal,
+extensões e cartões. 2.627 C alteradas (2.417 únicas/210 compostas); restante do
+modelo igual. 18.393 chaves, 45.698 referências/grades e 5.885 origens de 3.264
+fórmulas compostas conferidas. GS 5ddce2b71c0732ad regenerados/pacote conferido,
+NÃO instalados. Só cópia descartável nativa recebeu C; A/B/D iguais, zero erros,
+repetição sem pedidos e reversão de três amostras aprovada. Cópia na lixeira.
+`r53/origens_analise.py` prepara plano offline por chave, guardas B/C/D e reversão.
+Aplicação existente exige snapshot/releitura atual e alvo autorizado; plano não
+trava a API. Modelos antigos com restauração de ANALISE precisam de manutenção
+incremental específica, ainda não ensaiada. Não promover pacote integral.
+Jogador/oficiais intactos; sem CE removido/avisos afrouxados, agentes, acionadores,
+acesso novo, Office ou merge. Evidências privadas só na pasta ignorada indicada
+no relatório. Sol/High na integração; Medium na revisão, sem alterar opções.
+
 # Fila ativa de desempenho · 25/10/2026
 
 Leia o topo do `PENDENCIAS.md` ("Fila de desempenho da ficha") antes de mexer em
