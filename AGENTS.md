@@ -1,4 +1,20 @@
-# Origens da ANALISE · 30/10/2026 · correção separada
+# Origens da ANALISE · aplicadas nas oficiais · 30/10/2026
+
+Usuário autorizou merge da PR44 e aplicação com backup. Leia
+`r53/diagnostico-android/ORIGENS-OFICIAIS-2026-10-30.md`.
+Duas cópias nativas completas de backup preservadas; 2.627 C corrigidas por
+oficial. A/B/D integralmente iguais, 18.393 chaves, zero erros retornados,
+tipos/apóstrofos/notas/validações/formatos e 30 abas preservados. Repetição zero.
+Vinte arquivos Apps Script recarregados e relidos iguais. Codigo 52302778… e
+módulo 9dc3480a… continuam instalados: ANALISE/fontes/seis fragmentos são null
+no módulo otimizado, então não há molde antigo para substituir nessas oficiais.
+NÃO instalar pacote integral nem reconstruir. Jogador e PR31 intactos; PR31
+permanece aberta em 83996e8. Evidências/backups só em
+`nuvem-b47/saidas/origens-oficiais-20261030/`, ignorado. Novas cópias herdam C;
+cópias antigas precisam de migração autorizada. A entrada seguinte é o ensaio.
+Sol/Medium para conferência; High para implementação, sem mudar configurações.
+
+# Origens da ANALISE · ensaio anterior · 30/10/2026
 
 Leia `r53/diagnostico-android/ORIGENS-ANALISE-2026-10-30.md` e seu manifesto.
 Ramo `codex/corrigir-origens-analise-20261030`, base main ef361cc; PR31 intacta.
