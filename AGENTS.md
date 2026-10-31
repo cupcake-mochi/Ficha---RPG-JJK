@@ -1,5 +1,12 @@
 # Revisão mecânica em QA · 31/10/2026
 
+Sessão encerrada a pedido do usuário para dormir. Retomar por
+`r53/diagnostico-android/RETOMADA-MECANICAS-2026-10-31.md` e pela PR45,
+implementação c4f6901, CI 41164312219 aprovado. Só salvar nesta sessão;
+nenhuma autorização nova de aplicação. O roteiro registra inclusive a
+reabertura intermediária pela API antes dos dois timeouts nativos: repetir
+fechar/reabrir só pela UI numa cópia nova antes de generalizar a causa.
+
 Leia `r53/diagnostico-android/REVISAO-MECANICAS-2026-10-31.md`.
 Ramo separado `codex/revisao-mecanicas-20261030`, base main 5ea10b4.
 276 cenários/2.080 verificações nativas aprovadas; após delta, 1.035 rechecagens.
