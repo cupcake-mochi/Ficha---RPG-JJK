@@ -1,7 +1,7 @@
 /** Protótipo interno: instala rotinas apenas na cópia e conta executantes.
  * Sem endpoint, reset financeiro ou atestado de identidade para as Guias.
  */
-var R53_NOVA_ATIVACAO_ = {diario: 'r53_nova_ficha_ativacao_local_v1',
+var R53_NOVA_ATIVACAO_ = {diario: 'r53_nova_ficha_ativacao_local_v1', orcamentoPreparoMs: 180000,
   nomes: ['r53NovaCopiaSalarioDiario', 'r53NovaCopiaSalarioEdicao', 'r53NovaCopiaSalarioAbrir']};
 function r53NovaAtivacaoPreservados_(ss) {
   var celulas = r53NovaFinOperacoes_(ss).filter(function(op) { return op.tipo !== 'propriedade'; })
@@ -39,7 +39,14 @@ function r53NovaAtivacaoLista_(ss, j) {
       r53NovaFinErro_('rotina incompatível; nada foi substituído.');
   });
 }
+function r53NovaAtivacaoResultado_(j) {
+  return {versao: 1, rotinasInstaladasNestaConta: j.ids.length, instalacaoLocalConcluida: j.concluido,
+    retomar: !j.concluido, ativacaoConcluida: false, financeiroConcluido: false,
+    criacaoDisponivel: false, responsavelVerificadoPeloBot: false,
+    pendente: ['evento_real', 'outras_contas_nao_observadas', 'identidade_verificavel_pelo_backend', 'demais_dominios']};
+}
 function r53NovaFichaAtivacaoAplicar(ss, contexto) {
+  var inicio = Date.now();
   var lock = LockService.getDocumentLock();
   if (!lock || !lock.tryLock(1000)) r53NovaFinErro_('outra inicialização está em andamento.');
   try {
@@ -59,6 +66,11 @@ function r53NovaFichaAtivacaoAplicar(ss, contexto) {
       j = {versao: 1, vinculo: vinculo, preservados: r53NovaAtivacaoPreservados_(ss),
            ids: [], pendente: false, marcando: false, concluido: false};
       r53NovaAtivacaoSalvar_(dp, j);
+      // A conferência inicial das propriedades pode consumir quase toda a chamada.
+      // Guardar somente a preparação, sem iniciar create() depois dessa fase longa.
+      // A retomada relê a preservação e as rotinas; não reutiliza dados em memória.
+      if (Date.now() - inicio >= R53_NOVA_ATIVACAO_.orcamentoPreparoMs)
+        return r53NovaAtivacaoResultado_(j);
     } else {
       try { j = JSON.parse(raw); } catch (e) { r53NovaFinErro_('diário de ativação inválido.'); }
       if (!j || j.versao !== 1 || !Array.isArray(j.ids) || j.ids.length > 3 ||
@@ -100,10 +112,7 @@ function r53NovaFichaAtivacaoAplicar(ss, contexto) {
       r53NovaFinErro_('preservação após ativação divergiu; revisar manualmente.');
     // Só publicar o estado que libera os wrappers após a conferência final.
     if (concluirAgora) r53NovaAtivacaoSalvar_(dp, j);
-    return {versao: 1, rotinasInstaladasNestaConta: j.ids.length, instalacaoLocalConcluida: j.concluido,
-      retomar: !j.concluido, ativacaoConcluida: false, financeiroConcluido: false,
-      criacaoDisponivel: false, responsavelVerificadoPeloBot: false,
-      pendente: ['evento_real', 'outras_contas_nao_observadas', 'identidade_verificavel_pelo_backend', 'demais_dominios']};
+    return r53NovaAtivacaoResultado_(j);
   } finally { lock.releaseLock(); }
 }
 

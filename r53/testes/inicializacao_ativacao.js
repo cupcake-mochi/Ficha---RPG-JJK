@@ -80,4 +80,37 @@ caso('falha de preservação não publica diário ativo nem executa evento',()=>
  assert.equal(JSON.parse(a.doc.get(a.ctx.R53_NOVA_ATIVACAO_.diario)).concluido,false);
  assert.equal(chamadas.length,0);assert.equal(a.rt.creates.length,3);
 });
+function prepararLento(a, atraso=180000) {
+ let tempo=0; a.ctx.Date={now:()=>tempo};
+ const salvar=a.ctx.r53NovaAtivacaoSalvar_;
+ a.ctx.r53NovaAtivacaoSalvar_=(dp,j)=>{salvar(dp,j);tempo=atraso;};
+ const r=a.run(); a.ctx.r53NovaAtivacaoSalvar_=salvar;
+ return r;
+}
+caso('preparo lento persiste sem criar e retoma sem refazer propriedades',()=>{
+ const a=criar(),r=prepararLento(a);
+ assert.equal(r.rotinasInstaladasNestaConta,0);assert.equal(r.retomar,true);
+ assert.equal(r.instalacaoLocalConcluida,false);assert.equal(a.rt.creates.length,0);
+ assert.equal(a.locked(),false);
+ assert.equal(a.script.get('salario_edicao'),undefined);
+ for(const k of ['criacaoDisponivel','financeiroConcluido','ativacaoConcluida','responsavelVerificadoPeloBot'])assert.equal(r[k],false);
+ a.ctx.r53NovaPerfilAplicarTravado_=()=>{throw Error('não repetir propriedades');};
+ vm.runInContext(fs.readFileSync(path.join(__dirname,'../inicializacao/ativacao.gs'),'utf8'),a.ctx);
+ a.done();assert.equal(a.rt.creates.length,3);
+});
+caso('preparo abaixo do orçamento mantém a primeira instalação na mesma chamada',()=>{
+ const a=criar(),r=prepararLento(a,179999);
+ assert.equal(r.rotinasInstaladasNestaConta,1);assert.equal(a.rt.creates.length,1);
+ assert.equal(r.retomar,true);assert.equal(a.locked(),false);
+});
+caso('preparo lento não autoriza eventos nem ignora edição na retomada',()=>{
+ const a=criar();prepararLento(a);let chamadas=0;a.ctx.salarioRegistrarEdicao=()=>chamadas++;
+ a.ctx.r53NovaCopiaSalarioEdicao({triggerUid:'id-2',source:a.ss});assert.equal(chamadas,0);
+ a.put('EXTRATO','A2','edição posterior');assert.throws(a.run,/já foi usada/);
+ assert.equal(a.rt.creates.length,0);
+});
+caso('preparo lento não adota rotina alheia na retomada',()=>{
+ const a=criar();prepararLento(a);a.rt.triggers.push({});
+ assert.throws(a.run,/rotina não registrada/);assert.equal(a.rt.creates.length,0);
+});
 console.log(`${casos} cenários de ativação local aprovados; sem evento Google real ou atestado ao backend.`);
