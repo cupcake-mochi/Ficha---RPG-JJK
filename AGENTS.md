@@ -1,3 +1,17 @@
+# Organização do HD externo · 02/11/2026 (Claude)
+
+`/media/mizuki/HD Externo II/Claude/` foi reorganizado; mapa no `LEIA-ME.md` da
+raiz do HD (fora do git). Nada deste repositório mudou e nada foi apagado.
+Continuam no mesmo caminho: `Claude/Claude 3/`, `Claude/Claude 2/ficha-android-r53/`
+(o `alternates` dele aponta para `Claude 3/.git/objects`),
+`Claude/ficha-android-cortes-20261026/`, `Claude/Planejamento-ficha/` e
+`Claude/agentes-2026-09-16/`. `Claude/ficha-salarios-20261020/` (ramo já no
+GitHub, sem pendência) foi para `Claude/_quarentena-2026-11/`. O clone velho em
+`Claude/Ficha/Ficha---RPG-JJK/` ficou onde está: tem 3 arquivos modificados que não
+estão em nenhum commit (`apps-script/Ficha.gs`, `conferir-ficha-xlsx.py`,
+`ficha/modelo.gs.js`). PROMPTs de continuação agora ficam em `Claude/_handoffs/`.
+Pasta nova de trabalho não nasce solta na raiz do HD.
+
 # Origens da ANALISE · aplicadas nas oficiais · 30/10/2026
 
 Usuário autorizou merge da PR44 e aplicação com backup. Leia
