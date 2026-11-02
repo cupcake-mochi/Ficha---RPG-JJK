@@ -144,13 +144,18 @@ function r53SincronizarFamilias_(ss) {
  R53_EDITOR_.contextos.forEach(function(g){
    var i=g.entidade===null||typeof g.entidade==='undefined'?0:g.entidade+1;if(current[i]===prev[i])return;
    var sh=ss.getSheetByName(g.aba),matrix=snapshots[g.aba]||(snapshots[g.aba]=sh.getDataRange().getValues());
+   // 02/11/2026: a Classe já está na matriz desta aba, lida linhas acima; reler com
+   // r53Ativa_ custava uma ida ao servidor por cartão (até duas, contando a de r53Porta_),
+   // e isso sozinho travava a reabertura do Amparo com cartões preenchidos. Lazy: só calcula
+   // quando algum dos dois pontos abaixo precisa (cartão de Classe 0 ou restauração do "—").
+   var ativaGuardada;function ativa(){return ativaGuardada!==undefined?ativaGuardada:(ativaGuardada=g.classes[0]===null||g.classes.length===1?r53Ativa_(ss,g):Number(matrix[r53Pos_(g.cel.classe)[0]-1][r53Pos_(g.cel.classe)[1]-1]));}
    ['cura','vt'].forEach(function(key,n){
      var pos=g.funcoes_diretas[key];if(!pos||g.portas[key]==='FALSE')return;
-     var p=r53Pos_(pos),value=matrix[p[0]-1][p[1]-1],open=r53Porta_(ss,g,key),next=value;
+     var p=r53Pos_(pos),value=matrix[p[0]-1][p[1]-1],cl=g.classes.length>1&&g.classes[0]===0?ativa():undefined,open=r53Porta_(ss,g,key,cl),next=value;
      if(!open)next='—';
      else if(value==='—'){
        stored=stored||ss.getSheetByName(R53_EDITOR_.storage).getDataRange().getValues();
-       var col=r53Indice_(g,r53Ativa_(ss,g))-1;
+       var col=r53Indice_(g,ativa())-1;
        next=g.fixa?stored[g.editor+1+r53Campo_('funcao'+(n+2))][col]===['Cura','PV temporários'][n]:stored[g.editor+1+r53Campo_('pontos'+(n+2))][col];
      }
      if(next===value)return;
