@@ -123,7 +123,8 @@ def trocas(layout, tr, r0=None, guarda=frozenset()):
     # as Passivas: a Livre e a Regra Própria, da Técnica, e as doze cartas sem buraco
     cP = D.T["carta_passiva"][0]
     PAS = D.faixa("passivas")          # o resumo do livro (ficha_amaldicoada.resumo): inteiro se cabe na caixa, a primeira frase se não
-    PCOL = lambda k: fa._faixa(cP + k, 2, cP + k, 1 + fa.PAGAS + fa.DO_LEQUE)
+    # 03/11/2026: a lista corre pelas catorze cartas (as doze, a da Origem e a extra), nos mesmos doze lugares do menu
+    PCOL = lambda k: fa._faixa(cP + k, 2, cP + k, 1 + fa.PAGAS + fa.DO_LEQUE + len(fa.EXTRAS))
     reg_txt, livre_txt = fa._A(f"D{G['regra_propria'] + 1}", AM), fa._A(f"L{G['descricao'] + 4}", AM)
     cPm = D.prox
     mp = lambda k, n: f"${fa.L(cPm + k)}{n}"

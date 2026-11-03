@@ -1,3 +1,38 @@
+## Talentos grátis: o da Origem e o extra · 03/11/2026 (Claude) · instalado nas duas oficiais (só planilha)
+
+Pedido do Mizuki ("quando uma origem da talento extra, ela registra? E outras fontes?"). Antes, a FICHA AMALDIÇOADA só
+tinha os cinco Talentos pagos e os sete do Leque: o Talento de CE 1 que três menores dão (Manifestação Instintiva, Traço
+Incorporado, Construção Especializada) e qualquer Talento grátis de outra fonte ocupavam uma vaga paga. Os dois
+feitiços fora dos espaços da Coexistência (marcante do Receptáculo) também não entravam na conta.
+- FICHA AMALDIÇOADA: duas cartas novas na fileira do sétimo Talento do Leque, que já tinha dois lugares vazios (nenhuma
+  linha da aba muda). **Talento · Origem** (J426): "Grátis" com uma das três menores e CE 1; "⚠ Vaga" sem a menor;
+  "⚠ CE 1" se o Talento for de CE 2 (em vermelho). **Talento · Extra** (P426): "Grátis" quando a CONFIGURAÇÃO dá a
+  vaga; "⚠ Vaga" sem ela. Nenhuma das duas gasta espaço.
+- Orçamento (linha 54): GRÁTIS soma os feitiços do Leque, os 2 da Coexistência e os da CONFIGURAÇÃO; LIVRES sobe junto.
+- CONFIGURAÇÃO: duas caixas novas em BÔNUS E MUDANÇAS, **Talentos grátis** e **Feitiços fora dos espaços**, nas linhas
+  livres 52–53 da DADOS_CONFIG; as 50 de antes não mudam de linha.
+- Menu rápido (seção 8 da FICHA): a lista de Talentos corre pelas catorze cartas, nos mesmos doze lugares.
+- ANALISE: 15 chaves novas no fim (`passiva.origem.*`, `passiva.extra.*`, `vagas.*` e os dois avisos da CONFIGURAÇÃO),
+  formato 12 mantido (ESQUEMA-ANALISE.md). O bot lê isso numa PR à parte no RPG---BOT.
+- Paleta: o mapa da R53_LOTE ganhou as duas cartas (copiadas das linhas 426–432 da primeira carta).
+- Só planilha: nenhum arquivo do Apps Script muda nas oficiais, então não precisa de backup de versão.
+
+Cópia de teste da Era ("TESTE talento de origem (descartável)", `1HOae6smqvODRSKqmpW7hi_p_GlUNYnEMBqm-AoT3fK0`), no
+navegador: Manifestação Instintiva + Leitura → Grátis; Fluxo (CE 2) → ⚠ CE 1; Extra sem bônus → ⚠ Vaga; "Talentos
+grátis" +1 → Grátis; Receptáculo + Coexistência → GRÁTIS +2 (LIVRES 9 → 11); "Feitiços fora dos espaços" +1 → GRÁTIS +3
+(LIVRES 12). Menu rápido com Fluxo e Instinto nos lugares 13 e 14; ANALISE lendo as 15 chaves; troca de paleta (Sálvia
+Claro e de volta) pintou as cartas novas igual às outras, 16,4 e 16,7 s. Edições na CONFIGURAÇÃO 4–5 s; trocar a Origem
+11,2 s; trocar a marcante para Coexistência 24,3 s (18,4 s de edição), sem medição antiga para comparar.
+
+Ficou de fora ou para saber:
+- Menor de outra Origem (Manifestação Instintiva escolhida no Receptáculo) também abre a vaga; o aviso que já existe
+  (`menor_de_outra_origem`) acusa a escolha.
+- Personagens que já têm o Talento da Origem numa carta paga precisam passá-lo para a carta nova na mão.
+- A ficha não confere se o Talento é passivo (só a Categoria de Efeito).
+- `regressao-amaldicoada.py` atualizado para as catorze cartas, mas não rodado (precisa do LibreOffice). Três
+  validadores já falham na main sem esta mudança: comparar-ficha-01 (~12 mil diferenças antigas), conferir-decisoes
+  (4 problemas manuais), regressao-paleta (TypeError `r.getNumRows`).
+
 ## Arrumação · 27/10/2026 (Claude)
 
 Item 4 da lista de 27/10 ("faz a 4 ai").

@@ -29,6 +29,9 @@ CAT = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))
 TEC = json.load(open("ficha-v01/tecnica-do-livro.json", encoding="utf-8"))
 DEC = json.load(open("decisoes-ficha.json", encoding="utf-8"))
 G = fa.geometria()
+# 03/11/2026: a marcante e as menores do dossiê da FICHA PESSOAL (o Talento da Origem e a Coexistência)
+_GP = fa.fp.geometria(fa.fp.regras(CAT))
+MARCANTE_FP, MENORES_FP = _GP["cap_menu"][0], _GP["cap_menu"][1:]
 ABA, DAM = fa.NOME, fa.DADOS_AM
 FALHAS = []
 
@@ -737,6 +740,10 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
     pactos = [(cel.get(c["forma"]), cel.get(c["modifica"])) for c in PACTOS]
     espacos = 2 + n // 2 + marcos(n)          # 10/10/2026 (B45): no livro final o pacto não concede mais espaço conhecido
     leque = min(ficha.get("leque", 0), marcos(n))
+    pes = wb["FICHA PESSOAL"]
+    # 03/11/2026: a Coexistência dá dois feitiços fora dos espaços; uma das três menores dá a vaga do Talento da Origem
+    gratis = leque + (fa.FEITICOS_DA_MARCANTE if txt(pes[MARCANTE_FP].value) == fa.MARCANTE_COM_FEITICOS else 0)
+    vaga_origem = any(txt(pes[c].value) in fa.MENORES_COM_TALENTO for c in MENORES_FP)
     montados = sum(1 for ft in ficha.get("feiticos", []) if ft["nome"])
     cp_regra = cel.get(G["cp_regra"]) or 0
     em_passivas = sum(CP_PASSIVA[p] for p in passivas[:fa.PAGAS] if p) + max(0, cp_regra - 1)
@@ -744,9 +751,9 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
     # 08/10/2026 (B41): a invocação adquirida por espaço conhecido ocupa um espaço (Construir invocações); a domada, a
     # criada e a de lista de ritual, não. A ficha de invocação sem nome não existe
     em_invoc = sum(1 for nome_i, aquis_i in ficha.get("invocacoes", []) if nome_i and aquis_i == "Espaço conhecido")
-    livres = espacos + leque - montados - em_passivas - no_dominio - em_invoc
+    livres = espacos + gratis - montados - em_passivas - no_dominio - em_invoc
     sem = "⚠ " if em_passivas + no_dominio + em_invoc > espacos else ""
-    esperado = {"maior_classe": str(maior_classe(n)), "espacos": str(espacos), "leque": f"+{leque}", "em_feiticos": str(montados),
+    esperado = {"maior_classe": str(maior_classe(n)), "espacos": str(espacos), "leque": f"+{gratis}", "em_feiticos": str(montados),
                 "em_passivas": f"{sem}{em_passivas}", "no_dominio": f"{sem}{no_dominio}", "em_invocacoes": f"{sem}{em_invoc}",
                 "livres": ("⚠ " if livres < 0 else "") + str(livres)}
     t = G["orc_caixas"] + 1
@@ -842,12 +849,14 @@ for nome in [x for x in ("kaori", "velho", "meio", "nova") if x in FICHAS]:
         else:
             cp = CP_PASSIVA[p]
             esp_p = (f"⚠ Nível {NIVEL_DA_CP[cp]}" if NIVEL_DA_CP[cp] > n else f"CE {cp}",
-                     f"{cp} esp." if i < fa.PAGAS else "⚠ Vaga" if i - fa.PAGAS + 1 > leque else "Grátis",
+                     f"{cp} esp." if i < fa.PAGAS else ("⚠ Vaga" if i - fa.PAGAS + 1 > leque else "Grátis") if i < fa.PAGAS + fa.DO_LEQUE
+                     else ("⚠ Vaga" if not vaga_origem else "⚠ CE 1" if cp > 1 else "Grátis") if fa.EXTRAS[i - fa.PAGAS - fa.DO_LEQUE] == "Origem"
+                     else "⚠ Vaga",           # a Extra só abre com Talentos grátis na CONFIGURAÇÃO, que as fichas de teste não usam
                      FAZ[p] if p in FAZ else FAZ["Talento Próprio"] + " Escreva a sua na caixa de baixo.")
         lido_p = (v(c["cp"]), v(c["custo"]), v(c["faz"]))
         if lido_p != esp_p:
             ruins.append(f"Passiva {i + 1} ({p}): {lido_p} != {esp_p}")
-    checa(f"{nome}: as doze cartas de Passiva (a Classe Passiva, o custo, a vaga do Leque e o que ela faz)", not ruins, "; ".join(ruins[:3]))
+    checa(f"{nome}: as catorze cartas de Talento (a Categoria, o custo, a vaga do Leque, da Origem e a extra, e o que ele faz)", not ruins, "; ".join(ruins[:3]))
     ruins = []
     APT = {a["nome"]: a for a in TEC["aptidoes"]}
     aptidoes = [cel.get(c["nome"]) for c in APTIDOES]
@@ -1305,7 +1314,7 @@ larguras = [int(round(8 * ws0.column_dimensions[ix._letras(c)].width - 1)) for c
 larguras = [28 if abs(ws0.column_dimensions[ix._letras(c)].width - 4.0) < 1e-6 else p for c, p in zip(range(1, fa.COLS + 1), larguras)]
 checa(f"as três cartas têm {sum(fa.PX_CARTA)} px cada, e a página {sum(fa.PX_COLUNAS)} px", larguras == fa.PX_COLUNAS, str(larguras))
 checa("os lugares cobrem o teto do livro: 24 espaços no nível 30, sete feitiços do Leque e três de pacto",
-      fa.N_FEITICOS >= 2 + 30 // 2 + 2 * len(PROG["marcos"]) + 3 and fa.PAGAS + fa.DO_LEQUE == 12 and len(PASSIVAS) == 12 and len(APTIDOES) >= 11)
+      fa.N_FEITICOS >= 2 + 30 // 2 + 2 * len(PROG["marcos"]) + 3 and fa.PAGAS + fa.DO_LEQUE == 12 and len(PASSIVAS) == 12 + len(fa.EXTRAS) and len(APTIDOES) >= 11)
 import conferir_feitico as _cf
 checa("as quatro Restrições de frequência são as do conferir_feitico.py", set(fa.FREQUENCIA) == set(_cf.FREQUENCIA) == set(FREQUENCIA))
 formulas_am = [c for linha in ws0.iter_rows() for c in linha if isinstance(c.value, str) and c.value.startswith("=")]

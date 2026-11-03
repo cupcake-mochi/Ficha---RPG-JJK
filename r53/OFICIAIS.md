@@ -9,6 +9,26 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Talentos grátis: o da Origem e o extra · 03/11/2026
+
+Com autorização expressa ("Pode aplicar"), as duas oficiais receberam pela API do Sheets a mudança testada na cópia
+"TESTE talento de origem (descartável)" (`1HOae6smqvODRSKqmpW7hi_p_GlUNYnEMBqm-AoT3fK0`). **Só planilha:** nenhum
+arquivo do Apps Script mudou, então não houve versão de backup. Antes de mexer, as células que mudam foram lidas nas
+duas e estavam com o valor antigo esperado; a R53_LOTE das duas era igual (182.070 caracteres).
+- FICHA AMALDIÇOADA: cartas Talento · Origem (J426) e Talento · Extra (P426), com formato, menus e notas; título da
+  seção 8 e "GRÁTIS" no orçamento (J54), notas novas em J54 e S54.
+- DADOS_AM: linhas 14–15 das passivas, menu rápido de 12 para 14 cartas (KG4:KJ15, 4 trocas de faixa), contas
+  HL51:HM55 e o GRÁTIS/LIVRES (KV19, HM21).
+- DADOS_CONFIG: alvos "Talentos grátis" e "Feitiços fora dos espaços" nas linhas 52–53.
+- ANALISE: 15 linhas novas no fim (18.395–18.409; a aba foi de 18.394 para 18.409 linhas), formato 12.
+- R53_LOTE: mapa da paleta com as duas cartas (14 trocas no A1; 182.070 → 182.326 caracteres).
+
+Conferência depois: o mapa das duas é igual ao calculado e o JSON abre; das 174 células do plano, 156 iguais e 18 só
+sem as aspas que o Sheets tira de nome de aba sem espaço (o mesmo da cópia); nenhum erro de fórmula. Para voltar:
+apagar as linhas 18.395–18.409 da ANALISE, limpar J426:T432 da FICHA AMALDIÇOADA, HO14:HW15 e HL51:HM55 da DADOS_AM
+e A52:H53 da DADOS_CONFIG, e devolver o que era: KG4:KJ15 com as faixas até a linha 13 (`$HP$2:$HP$13`, `$HQ`, `$HV`, `$HW`), KV19 `="+"&DADOS_AM!$HM$8`, HM21 `=$HM$13+$HM$8-$HM$17-$HM$18-$HM$19`, J54 "DO LEQUE", D408 "TALENTOS DO LEQUE · um por escolha de Leque, sem ocupar espaço" e o mapa da R53_LOTE (o gerador da main anterior a esta PR reproduz tudo). Fichas já copiadas
+por jogadores continuam sem as cartas novas.
+
 ## Amparo: dois cortes no recálculo · 03/11/2026
 
 Com autorização expressa (PR48 mesclada), as duas oficiais trocaram **só o EditorR53 e o

@@ -41,6 +41,7 @@ e DADOS_INVOC (uma linha por invocação). A ficha já calcula quase tudo isto: 
 | feitiços | `feitico.N.classe`, `.nome`, `.forma`, `.peca.1..4`, `.restricao.1..2`, `.liberacao` | DADOS_AM, "conta de feitiço" (36 lugares) |
 | Classe 0 | `classe0.N.forma`, `.melhoria`, `.restricao` | DADOS_AM |
 | passivas e aptidões | `passiva.N.nome`, `aptidao.N.nome` | DADOS_AM, cartas |
+| Talentos grátis (03/11/2026) | `passiva.origem`, `passiva.extra`, com `.categoria`, `.texto` e `.vaga` | FICHA AMALDIÇOADA, as duas cartas ao lado do 7º Talento do Leque |
 | domínio | `dominio.degrau`, `dominio.espacos` | FICHA AMALDIÇOADA |
 | pactos | `pacto.N.nome`, `.forma`, `.modifica`, `.tamanho`, `.dou`, `.recebo`, `.clausula` | FICHA AMALDIÇOADA (3 lugares) |
 | invocações | `invocacao.N.nome`, `.tipo`, `.aquisicao`, `.nivel_fixo`, `.talisma`, `.oficio`, `.ponto.<atributo>`, `.familia.1..5`, `.pericia.1..7`, `.talento.1..8`, `.feitico.K.*` | DADOS_INVOC, "conta de ficha" (12 fichas) |
@@ -319,3 +320,27 @@ literais e rejeita erros de fórmula ou avisos de custom não vazios. Isso não
 atualiza o bot. Os ensaios nativos focais usaram exportação técnica auxiliar,
 mantendo GS/ANALISE principal v10 nessas cópias. Somente a futura prova conjunta
 e migração guardada permitem declarar a revisão preenchida no formato 11.
+
+## Talentos grátis e feitiços fora dos espaços · formato 12 mantido (03/11/2026)
+
+Duas vagas novas de Talento na FICHA AMALDIÇOADA, que não são pagas nem do Leque: a da **Origem** (Manifestação
+Instintiva, Traço Incorporado ou Construção Especializada como menor, só CE 1) e a **extra** (outras fontes, aberta
+pela caixa "Talentos grátis" em BÔNUS E MUDANÇAS). A marcante Coexistência soma dois feitiços fora dos espaços, e a
+caixa "Feitiços fora dos espaços" soma outras fontes.
+
+As 15 linhas entram no fim da aba, depois de tudo, e nenhuma chave antiga muda de linha nem de sentido; por isso o
+formato continua 12. As chaves novas não têm número de posição: `passiva.1..12` seguem sendo as cinco pagas e as sete do
+Leque.
+
+| chave | parte | o que é |
+|---|---|---|
+| `passiva.origem`, `passiva.extra` | entrada | o Talento escolhido na carta |
+| `passiva.<vaga>.categoria` | entrada | a caixa de Categoria da carta ("CE 1", "⚠ Nível 7") |
+| `passiva.<vaga>.texto` | entrada | SEU TEXTO da carta |
+| `passiva.<vaga>.vaga` | resultado | "Grátis", "⚠ Vaga" (sem direito) ou, na Origem, "⚠ CE 1" (acima da Categoria 1) |
+| `vagas.talento_origem`, `vagas.talento_extra` | resultado | 1 quando a vaga existe (a extra é o número da CONFIGURAÇÃO) |
+| `vagas.feiticos_origem`, `vagas.feiticos_extra`, `vagas.feiticos_gratis` | resultado | 2 da Coexistência; o da CONFIGURAÇÃO; Leque + os dois |
+| `aviso.efeito_caixa.talentos_gratis`, `aviso.efeito_caixa.feiticos_fora_dos_espacos` | aviso | o aviso das duas caixas novas de BÔNUS E MUDANÇAS |
+
+A ficha não confere se o Talento da Origem é passivo (Traço Incorporado e Construção Especializada pedem isso): fica com
+o mestre e com o bot.
