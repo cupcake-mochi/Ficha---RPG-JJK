@@ -29,9 +29,11 @@ function r53NovaPropsOperacoes_(ss) {
   return r53NovaFinOperacoes_(ss).filter(function(op) { return op.tipo === 'propriedade'; });
 }
 function r53NovaPropsPreservados_(ss) {
-  var celulas = r53NovaFinOperacoes_(ss).filter(function(op) { return op.tipo !== 'propriedade'; })
-    .map(function(op) {
-      var atual = r53NovaFinLer_(ss, op), h = r53NovaFinHash_(atual);
+  // Leitura completa em lote: células e guardas na mesma faixa por aba.
+  var ops = r53NovaFinOperacoes_(ss).filter(function(op) { return op.tipo !== 'propriedade'; });
+  var lote = r53NovaFinLote_(ss, r53NovaFinPedidos_(ops).concat(r53NovaFinGuardasPedidos_()));
+  var celulas = ops.map(function(op) {
+      var atual = r53NovaFinLerDoLote_(lote, op), h = r53NovaFinHash_(atual);
       if (h !== r53NovaFinHash_(r53NovaFinDepois_(atual, op)))
         r53NovaFinErro_('as células financeiras ainda não estão limpas; não tratar propriedades.');
       return h;
@@ -49,7 +51,7 @@ function r53NovaPropsPreservados_(ss) {
         return [k, r53NovaFinHash_(todos[k])];
       })];
     });
-  return r53NovaFinHash_([r53NovaPropsExecucao_(), r53NovaFinGuardas_(ss), celulas, outras]);
+  return r53NovaFinHash_([r53NovaPropsExecucao_(), r53NovaFinGuardas_(ss, lote), celulas, outras]);
 }
 function r53NovaPropsPerfil_() {
   return {nome: 'propriedades_financeiras', diario: R53_NOVA_PROPS_.diario, limites: R53_NOVA_PROPS_,

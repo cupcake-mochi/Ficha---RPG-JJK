@@ -5,7 +5,7 @@
     "apps-script/Ficha.gs": "d86d114e3a2bd6cdc5c53683bbf6401961e7859a2e461ee06935b80b4255e838",
     "apps-script/Pessoal.gs": "3cf8a4eb8e601b596d9e9b94c2f76e901574d1ff1e2d87a83fdb1adb6985f92b",
     "apps-script/Configuracao.gs": "1eb52860bdf9b44681245a36d1821204e95f6ebfb939b307443607c657ef2779",
-    "r53/inicializacao/financeiro.gs": "bcc11a91a0c6ded19e5183ad287091e7a3223a622cdcc9ace6b545f0808280de",
+    "r53/inicializacao/financeiro.gs": "13fac6badf2da3b626df5c648a23625635769ef39215f915dad692eacf146715",
     "r53/inicializacao/progressao.gs": "dae6bc04467dcb0233ca581e58c359e9eb5cd7e4e7f8edc7e649d41d4f928ad9"
   },
   "financeiro": {

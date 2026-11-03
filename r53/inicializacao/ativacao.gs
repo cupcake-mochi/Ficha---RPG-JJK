@@ -54,9 +54,11 @@ function r53NovaPulsoEvento_(ss, j, rotina) {
   }
 }
 function r53NovaAtivacaoPreservados_(ss) {
-  var celulas = r53NovaFinOperacoes_(ss).filter(function(op) { return op.tipo !== 'propriedade'; })
-    .map(function(op) {
-      var atual = r53NovaFinLer_(ss, op);
+  // Leitura completa em lote: células e guardas na mesma faixa por aba.
+  var ops = r53NovaFinOperacoes_(ss).filter(function(op) { return op.tipo !== 'propriedade'; });
+  var lote = r53NovaFinLote_(ss, r53NovaFinPedidos_(ops).concat(r53NovaFinGuardasPedidos_()));
+  var celulas = ops.map(function(op) {
+      var atual = r53NovaFinLerDoLote_(lote, op);
       if (r53NovaFinHash_(atual) !== r53NovaFinHash_(r53NovaFinDepois_(atual, op)))
         r53NovaFinErro_('a cópia já foi usada; não ativar automaticamente.');
       return r53NovaFinHash_(atual);
@@ -68,7 +70,7 @@ function r53NovaAtivacaoPreservados_(ss) {
         return !(i === 0 && k === R53_NOVA_ATIVACAO_.diario) && !(i === 1 && k === 'salario_edicao');
       }).map(function(k) { return [k, r53NovaFinHash_(d[k])]; });
     });
-  return r53NovaFinHash_([r53NovaFinGuardas_(ss), celulas, outras]);
+  return r53NovaFinHash_([r53NovaFinGuardas_(ss, lote), celulas, outras]);
 }
 function r53NovaAtivacaoSalvar_(dp, j) {
   delete j.integridade;
@@ -113,13 +115,16 @@ function r53NovaFichaAtivacaoAplicar(ss, contexto) {
         r53NovaFinErro_('a conferência das propriedades não terminou; nenhuma rotina foi instalada.');
       if (r53NovaPropsAcionadores_().length || sp.getProperty('salario_edicao') !== null)
         r53NovaFinErro_('cópia já possui rotinas ou marca de edição.');
+      var captura = Date.now();
       j = {versao: 1, operacao: contexto.operacao, vinculo: vinculo, preservados: r53NovaAtivacaoPreservados_(ss),
            ids: [], pendente: false, marcando: false, concluido: false};
+      captura = Date.now() - captura;
       r53NovaAtivacaoSalvar_(dp, j);
       // A conferência inicial das propriedades pode consumir quase toda a chamada.
-      // Guardar somente a preparação, sem iniciar create() depois dessa fase longa.
+      // Guardar somente a preparação, sem iniciar create() depois dessa fase longa;
+      // a criação ainda exige a conferência final, com custo igual ao da captura.
       // A retomada relê a preservação e as rotinas; não reutiliza dados em memória.
-      if (Date.now() - inicio >= R53_NOVA_ATIVACAO_.orcamentoPreparoMs)
+      if (Date.now() - inicio + captura >= R53_NOVA_ATIVACAO_.orcamentoPreparoMs)
         return r53NovaAtivacaoResultado_(j);
     } else {
       try { j = JSON.parse(raw); } catch (e) { r53NovaFinErro_('diário de ativação inválido.'); }
@@ -131,7 +136,8 @@ function r53NovaFichaAtivacaoAplicar(ss, contexto) {
       if (integridade !== r53NovaFinHash_(j) || j.vinculo !== vinculo)
         r53NovaFinErro_('diário ou execução diferente; não retomar.');
     }
-    if (j.preservados !== r53NovaAtivacaoPreservados_(ss))
+    // Capturada agora nesta execução e sob a trava: não reler a mesma preservação.
+    if (raw && j.preservados !== r53NovaAtivacaoPreservados_(ss))
       r53NovaFinErro_('células ou propriedades mudaram; revisão manual necessária.');
     // Não adotar rotina encontrada após resposta perdida: horário do CLOCK não é inspecionável.
     if (j.pendente) r53NovaFinErro_('criação de rotina incerta; conferir manualmente, sem repetir.');

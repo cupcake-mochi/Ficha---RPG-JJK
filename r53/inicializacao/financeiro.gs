@@ -143,7 +143,9 @@ function r53NovaFinLer_(ss, op) {
     return dv;
   }
   if (op.tipo === 'notas' || op.tipo === 'nota' || op.tipo === 'notas_matriz') return r.getNotes();
-  var formulas = r.getFormulas(), valores = r.getValues();
+  return r53NovaFinConteudo_(op, r.getFormulas(), r.getValues());
+}
+function r53NovaFinConteudo_(op, formulas, valores) {
   // Apenas equivalências exatas publicadas pelo produtor para estes alvos.
   // Não normalizar fórmulas desconhecidas nem resultados calculados.
   formulas = formulas.map(function(l, i) { return l.map(function(f, k) {
@@ -161,6 +163,53 @@ function r53NovaFinLer_(ss, op) {
     return v;
   }); }),
           formulas: formulas};
+}
+/* Leitura em lote para conferências completas. Sonda nativa de 03/11: cada ida ao
+ * Sheets custa ~3 s quase sem depender do tamanho da faixa. Uma faixa envolvente
+ * por aba, buscada no primeiro uso e recortada em memória, devolve o mesmo que as
+ * leituras separadas. Nunca atravessa escrita: cada conferência monta o seu lote. */
+function r53NovaFinA1_(a1) {
+  var m = /^([A-Z]{1,3})([0-9]{1,5})(?::([A-Z]{1,3})([0-9]{1,5}))?$/.exec(a1);
+  if (!m) r53NovaFinErro_('faixa fora do contrato.');
+  var col = function(t) { for (var n = 0, i = 0; i < t.length; i++) n = n * 26 + t.charCodeAt(i) - 64; return n; };
+  return [Number(m[2]), col(m[1]), Number(m[4] || m[2]), col(m[3] || m[1])];
+}
+function r53NovaFinColuna_(n) {
+  for (var s = ''; n > 0; n = Math.floor((n - 1) / 26)) s = String.fromCharCode(65 + (n - 1) % 26) + s;
+  return s;
+}
+function r53NovaFinLote_(ss, pedidos) {
+  var abas = {};
+  pedidos.forEach(function(p) {
+    var a = r53NovaFinA1_(p.faixa), b = Object.prototype.hasOwnProperty.call(abas, p.aba) ? abas[p.aba] : null;
+    if (!b) b = abas[p.aba] = {caixa: a.slice(), campos: {}};
+    else b.caixa = [Math.min(b.caixa[0], a[0]), Math.min(b.caixa[1], a[1]), Math.max(b.caixa[2], a[2]), Math.max(b.caixa[3], a[3])];
+    p.campos.forEach(function(c) { b.campos[c] = true; });
+  });
+  return function(aba, faixa, campo, erro) {
+    var b = Object.prototype.hasOwnProperty.call(abas, aba) ? abas[aba] : null, a = r53NovaFinA1_(faixa), c = b && b.caixa;
+    if (!b || !b.campos[campo] || a[0] < c[0] || a[1] < c[1] || a[2] > c[2] || a[3] > c[3])
+      r53NovaFinErro_('leitura em lote fora do pedido.');
+    if (!b.dados) {
+      var sh = ss.getSheetByName(aba);
+      if (!sh) r53NovaFinErro_(erro);
+      // Mesma ordem das leituras separadas: fórmulas, valores, notas.
+      var r = sh.getRange(r53NovaFinColuna_(c[1]) + c[0] + ':' + r53NovaFinColuna_(c[3]) + c[2]);
+      b.dados = {f: b.campos.f ? r.getFormulas() : null, v: b.campos.v ? r.getValues() : null,
+                 n: b.campos.n ? r.getNotes() : null};
+    }
+    return b.dados[campo].slice(a[0] - c[0], a[2] - c[0] + 1).map(function(l) { return l.slice(a[1] - c[1], a[3] - c[1] + 1); });
+  };
+}
+// Só os passos de célula do contrato financeiro (limpar, valor e notas).
+function r53NovaFinPedidos_(ops) {
+  return ops.map(function(op) { return {aba: op.aba, faixa: op.faixa, campos: op.tipo === 'notas' ? ['n'] : ['f', 'v']}; });
+}
+function r53NovaFinLerDoLote_(lote, op) {
+  var erro = 'falta uma aba do contrato financeiro.';
+  if (op.tipo === 'notas') return lote(op.aba, op.faixa, 'n', erro);
+  if (op.tipo !== 'limpar' && op.tipo !== 'valor') r53NovaFinErro_('leitura em lote fora do contrato.');
+  return r53NovaFinConteudo_(op, lote(op.aba, op.faixa, 'f', erro), lote(op.aba, op.faixa, 'v', erro));
 }
 function r53NovaFinDepois_(atual, op) {
   if (op.tipo === 'foto') return r53NovaArteDepois_(op);
@@ -189,12 +238,19 @@ function r53NovaFinFormulaCanon_(s) {
   // referências absolutas, operadores ou aspas de nomes com acentos/espaços.
   return s.replace(/'DADOS_SALARIOS'!/g, 'DADOS_SALARIOS!');
 }
-function r53NovaFinGuardas_(ss) {
-  var esperadas = r53NovaFinFormulas_();
+function r53NovaFinGuardasPedidos_() {
+  return R53_NOVA_FIN_.formulas.map(function(x) { return {aba: x[0], faixa: x[1], campos: ['f']}; })
+    .concat([{aba: 'FICHA', faixa: 'AH11', campos: ['f', 'v']}, {aba: 'CONFIGURAÇÃO', faixa: 'E46:G46', campos: ['f', 'v']}]);
+}
+// Sem lote, monta um só para as guardas; com lote, reaproveita a leitura completa.
+function r53NovaFinGuardas_(ss, lote) {
+  lote = lote || r53NovaFinLote_(ss, r53NovaFinGuardasPedidos_());
+  var esperadas = r53NovaFinFormulas_(), ler = function(aba, faixa) {
+    var erro = 'falta uma aba do contrato financeiro.';
+    return r53NovaFinConteudo_({}, lote(aba, faixa, 'f', erro), lote(aba, faixa, 'v', erro));
+  };
   var saida = R53_NOVA_FIN_.formulas.map(function(x, i) {
-    var sh = ss.getSheetByName(x[0]);
-    if (!sh) r53NovaFinErro_('falta uma aba de fórmulas.');
-    var f = sh.getRange(x[1]).getFormulas();
+    var f = lote(x[0], x[1], 'f', 'falta uma aba de fórmulas.');
     if (!f.length || f.some(function(l) { return l.some(function(c) { return typeof c !== 'string' || c.charAt(0) !== '='; }); }))
       r53NovaFinErro_('falta uma fórmula financeira protegida.');
     if (f.length !== esperadas[i].length || f.some(function(l, j) {
@@ -206,8 +262,8 @@ function r53NovaFinGuardas_(ss) {
     return [x[0], x[1], f];
   });
   // A configuração da campanha e o nível não são parâmetros deste domínio.
-  saida.push(['nivel', r53NovaFinLer_(ss, {aba: 'FICHA', faixa: 'AH11'})]);
-  saida.push(['campanha', r53NovaFinLer_(ss, {aba: 'CONFIGURAÇÃO', faixa: 'E46:G46'})]);
+  saida.push(['nivel', ler('FICHA', 'AH11')]);
+  saida.push(['campanha', ler('CONFIGURAÇÃO', 'E46:G46')]);
   return saida;
 }
 function r53NovaFinPreservados_(ss) { return r53NovaFinHash_(r53NovaFinGuardas_(ss)); }
@@ -287,23 +343,28 @@ function r53NovaPerfilAplicarTravado_(ss, contexto, assinatura, perfil, inicio) 
       if (j.assinatura !== assinatura || r53NovaFinCanon_(j.plano.vinculo) !== r53NovaFinCanon_(vinculo))
         r53NovaFinErro_('operação diferente da inicialização pendente.');
     } else {
-      var plano = r53NovaFinMontar_(ss, contexto, perfil);
+      var leitura = Date.now(), plano = r53NovaFinMontar_(ss, contexto, perfil);
+      leitura = Date.now() - leitura;
       if (typeof assinatura !== 'string' || assinatura !== r53NovaFinHash_(plano)) r53NovaFinErro_('a cópia mudou após a prévia.');
       j = {assinatura: assinatura, plano: plano, concluido: false};
       r53NovaDiarioSalvar_(dp, perfil.diario, j);
     }
-    if (r53NovaFinHash_(ops) !== j.plano.layout || perfil.preservados(ss) !== j.plano.preservados)
+    // Uma operação nova acabou de ler preservados e estados no montar, nesta
+    // execução e sob a trava: não repetir essa leitura completa (~85 s no Google
+    // para propriedades em 03/11). A retomada relê tudo e mede quanto custou.
+    if (!novo) leitura = Date.now();
+    if (r53NovaFinHash_(ops) !== j.plano.layout || (!novo && perfil.preservados(ss) !== j.plano.preservados))
       r53NovaFinErro_('estrutura, fórmula ou configuração mudou; revisão manual necessária.');
     // Validar TODOS os passos antes de retomar qualquer escrita.
-    // Uma operação nova acabou de ler TODOS os estados para validar a prévia.
-    // Não repetir essa leitura inteira antes das escritas; cada passo alterado
-    // é relido antes de gravar e a conclusão exige conferência completa.
+    // Não repetir na operação nova a leitura inteira antes das escritas; cada passo
+    // alterado é relido antes de gravar e a conclusão exige conferência completa.
     var estados = novo ? j.plano.passos.map(function(p) { return p.antes; }) : ops.map(function(op, i) {
       var h = r53NovaFinHash_(r53NovaFinLer_(ss, op)), p = j.plano.passos[i];
       if (h !== p.antes && h !== p.depois) r53NovaFinErro_('dados editados durante a inicialização; nada será sobrescrito.');
       if (j.concluido && h !== p.depois) r53NovaFinErro_('a cópia já foi usada depois da inicialização.');
       return h;
     });
+    if (!novo) leitura = Date.now() - leitura;
     var escritas = 0;
     var incompleto = function() {
       return {versao: 1, dominio: perfil.nome, concluido: false, retomar: true,
@@ -332,12 +393,14 @@ function r53NovaPerfilAplicarTravado_(ss, contexto, assinatura, perfil, inicio) 
       if (r53NovaFinHash_(r53NovaFinLer_(ss, op)) !== p.depois) r53NovaFinErro_('gravação não confirmada; revisão manual necessária.');
       escritas++;
     }
-    // Reservar tempo para a conferência final. Na retomada sem escrita, todos
-    // os passos já foram conferidos acima: não ler o livro inteiro duas vezes.
-    if (Date.now() - inicio >= perfil.limites.orcamentoMs) return incompleto();
+    // Na retomada sem escrita, preservados e passos já foram conferidos acima nesta
+    // execução: não ler o livro inteiro duas vezes. Com conferência final, reservar
+    // o custo medido da leitura completa: o teste do orçamento vem antes dela.
+    var conferir = novo || escritas > 0;
+    if (Date.now() - inicio + (conferir ? leitura : 0) >= perfil.limites.orcamentoMs) return incompleto();
     SpreadsheetApp.flush();
-    if (perfil.preservados(ss) !== j.plano.preservados ||
-        ((novo || escritas > 0) && ops.some(function(op, i) { return r53NovaFinHash_(r53NovaFinLer_(ss, op)) !== j.plano.passos[i].depois; })))
+    if (conferir && (perfil.preservados(ss) !== j.plano.preservados ||
+        ops.some(function(op, i) { return r53NovaFinHash_(r53NovaFinLer_(ss, op)) !== j.plano.passos[i].depois; })))
       r53NovaFinErro_('pós-condição não confirmada; não cadastrar a cópia.');
     if (perfil.recibo === true) {
       // Uma única substituição na mesma chave: nunca apagar antes de gravar.
