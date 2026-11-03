@@ -12,6 +12,19 @@ estão em nenhum commit (`apps-script/Ficha.gs`, `conferir-ficha-xlsx.py`,
 `ficha/modelo.gs.js`). PROMPTs de continuação agora ficam em `Claude/_handoffs/`.
 Pasta nova de trabalho não nasce solta na raiz do HD.
 
+# Amparo: dois cortes no recálculo · aplicados nas oficiais · 03/11/2026 (Claude)
+
+Usuário autorizou merge da PR48 e aplicação com backup. A reabertura do Amparo da entidade
+ainda marcava 29,4 s na cópia. Perfil de chamadas: cada chamada à planilha depois da troca
+espera o recálculo (~3–5 s), cobrado na hora da chamada. Cortadas duas: o flush do
+SalarioLote passados 8 s, e a leitura da MONTAGENS na reabertura (quem fecha guarda o valor
+coberto pelo "—" em `r53_versoes.fechados`). Cópia: reabrir 17,5 s, fechar 18,6 s.
+Ensaio: `r53/testes/amparo_reabertura_custo.js` (cinco casos) e `salario_lote_aba.js`.
+Nas duas oficiais: backup = implantação Biblioteca **versão 15** ("Antes dos cortes da
+reabertura do Amparo"), depois trocados SÓ o EditorR53 `d8e99a70…` → `08badae1…` e o
+SalarioLote `366f6dd3…` → `aaaa74f3…`, relidos após recarregar. Demais arquivos intactos.
+Fichas já copiadas por jogadores não recebem a troca. Não medido no Android.
+
 # Amparo: reabertura sem estourar o onEdit · aplicada nas oficiais · 03/11/2026 (Claude)
 
 Usuário autorizou merge da PR46 e aplicação com backup. Reabrir o Amparo com cartões
