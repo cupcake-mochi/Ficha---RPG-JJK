@@ -12,6 +12,19 @@ estão em nenhum commit (`apps-script/Ficha.gs`, `conferir-ficha-xlsx.py`,
 `ficha/modelo.gs.js`). PROMPTs de continuação agora ficam em `Claude/_handoffs/`.
 Pasta nova de trabalho não nasce solta na raiz do HD.
 
+# Amparo: reabertura sem estourar o onEdit · aplicada nas oficiais · 03/11/2026 (Claude)
+
+Usuário autorizou merge da PR46 e aplicação com backup. Reabrir o Amparo com cartões
+preenchidos estourava os 30 s do onEdit (30,8 s na cópia). Agora a sincronização das
+Famílias lê só a faixa dos cartões das Famílias que mudaram (FICHA AMALDIÇOADA e
+MONTAGENS) em vez das abas inteiras. Cópia de teste: fechar 15,4 s, reabrir 15,8 s.
+Ensaio: `r53/testes/amparo_reabertura_custo.js` (pessoal, gravar fechado, entidade 1).
+Nas duas oficiais: backup = implantação Biblioteca **versão 14** ("Antes do conserto da
+reabertura do Amparo"), depois trocado SÓ o EditorR53 `c3d31096…` → `d8e99a70…`
+(transporte de `node r53/editor_lazy.js apps-script/EditorR53.gs`), relido após recarregar.
+Demais arquivos intactos. Entidade não medida no Google (cópia sem entidade criada).
+Cópia de teste na lixeira.
+
 # Origens da ANALISE · aplicadas nas oficiais · 30/10/2026
 
 Usuário autorizou merge da PR44 e aplicação com backup. Leia
