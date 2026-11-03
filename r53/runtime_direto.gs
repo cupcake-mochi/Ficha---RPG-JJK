@@ -135,10 +135,11 @@ function r53BloqueiosCartao_(ss,g,rules,validationsReady) {
 // 02/11/2026: a reabertura do Amparo estourava os 30 s do onEdit lendo a FICHA AMALDIÇOADA inteira (557×20, ~6 s)
 // e a MONTAGENS inteira (9465×9, ~11 s), por cima do recálculo da troca (~7 s na primeira leitura). Medido na cópia
 // de teste com logs de tempo. Agora cada uma lê só a faixa de linhas onde estão os cartões que interessam.
-// Na aba do cartão: as linhas com Classe, Cura ou PV temp. dos cartões desta aba (na FICHA, 64-356).
-function r53FaixaFamilias_(sh,aba) {
+// Na aba do cartão: as linhas com Classe, Cura ou PV temp. dos cartões das Famílias que mudaram nesta aba (na FICHA,
+// 64-356; na INVOCAÇÕES, ~3,8 mil células por entidade, contra 56 mil das doze juntas).
+function r53FaixaFamilias_(sh,aba,current,prev) {
  var r0=Infinity,r1=0,c1=0;
- R53_EDITOR_.contextos.forEach(function(g){if(g.aba!==aba)return;[g.funcoes_diretas.cura,g.funcoes_diretas.vt,g.cel.classe].forEach(function(pos){if(!pos)return;var p=r53Pos_(pos);r0=Math.min(r0,p[0]);r1=Math.max(r1,p[0]);c1=Math.max(c1,p[1]);});});
+ R53_EDITOR_.contextos.forEach(function(g){var i=g.entidade===null||typeof g.entidade==='undefined'?0:g.entidade+1;if(g.aba!==aba||current[i]===prev[i])return;[g.funcoes_diretas.cura,g.funcoes_diretas.vt,g.cel.classe].forEach(function(pos){if(!pos)return;var p=r53Pos_(pos);r0=Math.min(r0,p[0]);r1=Math.max(r1,p[0]);c1=Math.max(c1,p[1]);});});
  if(!r1)return {at:function(){return undefined;}};
  var m=sh.getRange(r0,1,r1-r0+1,c1).getValues();return {at:function(r,c){return m[r-r0][c-1];}};
 }
@@ -158,7 +159,7 @@ function r53SincronizarFamilias_(ss) {
  var snapshots={},stored=null,groups={};
  R53_EDITOR_.contextos.forEach(function(g){
    var i=g.entidade===null||typeof g.entidade==='undefined'?0:g.entidade+1;if(current[i]===prev[i])return;
-   var sh=ss.getSheetByName(g.aba),matrix=snapshots[g.aba]||(snapshots[g.aba]=r53FaixaFamilias_(sh,g.aba));
+   var sh=ss.getSheetByName(g.aba),matrix=snapshots[g.aba]||(snapshots[g.aba]=r53FaixaFamilias_(sh,g.aba,current,prev));
    // 02/11/2026: a Classe já está na matriz desta aba, lida linhas acima; reler com
    // r53Ativa_ custava uma ida ao servidor por cartão (até duas, contando a de r53Porta_),
    // e isso sozinho travava a reabertura do Amparo com cartões preenchidos. Lazy: só calcula

@@ -5,10 +5,11 @@
 // por ler a MONTAGENS inteira (9465×9, ~11 s) e a FICHA AMALDIÇOADA inteira (557×20, ~6 s), somadas ao recálculo da
 // troca (~7 s na primeira leitura). O modelo de custo do arnês (r53/arnes_custo.js) cobra ~4,5 s por aba inteira,
 // seja qual for o tamanho, e não enxergava isso; por isso aqui a régua é a quantidade de células lidas. Na cópia,
-// lendo só as faixas, a reabertura caiu de 30,8 s (estouro) para 20,3 s.
+// lendo só as faixas, a reabertura caiu de 30,8 s (estouro) para 15,8 s (fechar: 15,4 s).
 //
-// Dois casos: (1) fechar e reabrir; (2) gravar um cartão com o Amparo fechado e reabrir. Nos dois, cada Cura e
-// PV temp. tem de voltar ao valor de antes de fechar (no caso 2, ao valor novo).
+// Três casos: (1) fechar e reabrir; (2) gravar um cartão com o Amparo fechado e reabrir; (3) fechar e reabrir o Amparo
+// da primeira entidade, cujos cartões ficam na INVOCAÇÕES. Em todos, cada Cura e PV temp. tem de voltar ao valor de
+// antes de fechar (no caso 2, ao valor novo).
 //
 // Uso: node r53/testes/amparo_reabertura_custo.js [EditorR53.gs]
 const fs = require('fs'), vm = require('vm');
@@ -67,20 +68,32 @@ function montar() {
     A.ctx.R53_REF_CACHE_ = {};
     A.ctx.r53Mostrar_(ss, g, g.classes[0] === null ? 8 : g.classes[0]);
   }
+  // Os 17 cartões da primeira entidade, todos com Cura e PV temporários (caso 3).
+  const entidade = cfg.contextos.filter(g => g.entidade === 0);
+  for (const g of entidade) {
+    const cl = g.classes[g.classes.length - 1], col = g.classes.length + 1;
+    const linha = k => ss.getSheetByName(cfg.storage).getRange(g.editor + 2 + fields.indexOf(k), col, 1, 1);
+    linha('funcao2').setValue('Cura'); linha('pontos2').setValue(g.fixa ? 0 : 4);
+    linha('funcao3').setValue('PV temporários'); linha('pontos3').setValue(g.fixa ? 0 : 1);
+    if (g.cel.classe) ss.getSheetByName(g.aba).getRange(g.cel.classe).setValue(cl);
+    A.ctx.R53_REF_CACHE_ = {};
+    A.ctx.r53Mostrar_(ss, g, cl);
+  }
   // Abertura a frio: a sincronização só guarda o Amparo atual.
   A.ctx.R53_REF_CACHE_ = {};
   A.ctx.r53SincronizarFamilias_(ss);
 
   const celulas = [];
-  for (const g of pessoais) for (const key of ['cura', 'vt']) {
-    const pos = g.funcoes_diretas[key]; if (pos && g.portas[key] !== 'FALSE') celulas.push(pos);
+  for (const g of pessoais.concat(entidade)) for (const key of ['cura', 'vt']) {
+    const pos = g.funcoes_diretas[key]; if (pos && g.portas[key] !== 'FALSE') celulas.push(g.aba + '!' + pos);
   }
-  const visiveis = () => Object.fromEntries(celulas.map(p => [p, ss.getSheetByName('FICHA AMALDIÇOADA').getRange(p).getValue()]));
-  return { A, ss, cfg, fields, preenchidos, classe, setCel, celulas, visiveis };
+  const visiveis = () => Object.fromEntries(celulas.map(p => { const [aba, a1] = p.split('!'); return [p, ss.getSheetByName(aba).getRange(a1).getValue()]; }));
+  return { A, ss, cfg, fields, preenchidos, entidade, classe, setCel, celulas, visiveis };
 }
 
-function trocar(M, valor) {
-  M.setCel(M.cfg.amparo.aba, M.cfg.amparo.faixa.split(':')[0], valor);
+// familia: 0 é a pessoal, 1 a primeira entidade (a coluna seguinte na faixa do Amparo).
+function trocar(M, valor, familia = 0) {
+  M.ss.getSheetByName(M.cfg.amparo.aba).getRange(M.cfg.amparo.faixa.split(':')[0]).offset(0, familia).setValue(valor);
   M.A.reset(); M.A.ctx.R53_REF_CACHE_ = {};
   M.A.ctx.r53SincronizarFamilias_(M.ss);
   const R = M.A.log.filter(e => e.t === 'R');
@@ -120,10 +133,22 @@ let falhas = 0;
   vals[M.fields.indexOf('pontos2')] = 5;
   M.A.ctx.r53Gravar_(M.ss, g, cl, vals);
   const r = trocar(M, 'Normal');
-  antes[g.funcoes_diretas.cura] = 5;
+  antes[g.aba + '!' + g.funcoes_diretas.cura] = 5;
   console.log('\n(2) REABRIR depois de gravar ' + g.id + ' fechado —', linha(r));
   falhas += conferir(M, antes, 'reabrir depois de gravar fechado');
 }
 
-console.log(falhas ? '\nFALHOU: ' + falhas + ' célula(s) não voltaram ao valor certo.' : '\nOK: todas as células voltaram ao valor certo nos dois casos.');
+// (3) Fechar e reabrir o Amparo da primeira entidade: lê só as linhas dela, na INVOCAÇÕES e na MONTAGENS.
+{
+  const M = montar(), antes = M.visiveis();
+  const f = trocar(M, 'Fechada', 1);
+  const fechadas = M.celulas.filter(p => p.startsWith('INVOCAÇÕES!') && M.visiveis()[p] === '—').length;
+  const r = trocar(M, 'Normal', 1);
+  console.log('\n(3) ENTIDADE 1, ' + M.entidade.length + ' cartões — FECHAR —', linha(f), '| em "—" depois:', fechadas);
+  console.log('    REABRIR —', linha(r));
+  if (!fechadas) { console.log('  ✗ entidade: nenhum cartão foi para "—" ao fechar'); falhas++; }
+  falhas += conferir(M, antes, 'reabrir a entidade');
+}
+
+console.log(falhas ? '\nFALHOU: ' + falhas + ' célula(s) não voltaram ao valor certo.' : '\nOK: todas as células voltaram ao valor certo nos três casos.');
 process.exit(falhas ? 1 : 0);
