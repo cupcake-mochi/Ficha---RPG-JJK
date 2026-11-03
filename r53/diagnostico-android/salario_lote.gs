@@ -24,7 +24,10 @@ function r53SalarioOnEdit_(e) {
       }
     } catch (err) { console.log('SAL invalidação: ' + err.message); }
     resultado = r53OnEditOriginal_(e);
-    SpreadsheetApp.flush();
+    // 03/11/2026: o flush só serve para medir a edição inteira antes de decidir o salário. Passados os 8 s, o salário
+    // não roda de qualquer jeito, e o flush esperava o recálculo à toa (~5 s no Amparo da entidade; sem ele a execução
+    // fechou ~3 s antes na cópia). As gravações pendentes vão no fim da execução.
+    if (Date.now() - inicio < R53_SAL_INICIAR_MS_) SpreadsheetApp.flush();
     edicaoMs = Date.now() - inicio;
     fase = 'salario';
     if (edicaoMs < R53_SAL_INICIAR_MS_) r53SalarioLote_(e);

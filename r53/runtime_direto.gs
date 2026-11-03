@@ -37,10 +37,12 @@ function r53Versoes_() {
  return R53_REF_CACHE_.versoes=v;
 }
 function r53GuardarVersao_(g,cl,values) {
- var v=r53Versoes_(),k=g.editor+':'+r53Indice_(g,cl),antes=v.lista.length;
+ var v=r53Versoes_(),k=g.editor+':'+r53Indice_(g,cl),antes=v.lista.length,fechado=!!(v.fechados&&v.fechados[k]);
+ // Gravar o cartão invalida a Cura e o PV temp. guardados quando o Amparo fechou (r53SincronizarFamilias_).
+ if(fechado)delete v.fechados[k];
  v.lista=v.lista.filter(function(x){return x[0]!==k;});
  if(values.every(r53VersaoSegura_))v.lista.unshift([k,values.slice()]);
- else if(v.lista.length===antes)return;
+ else if(v.lista.length===antes&&!fechado)return;
  while(v.lista.length&&JSON.stringify(v).length>R53_VERSOES_LIMITE_)v.lista.pop();
  PropertiesService.getDocumentProperties().setProperty(R53_VERSOES_PROP_,JSON.stringify(v));
 }
@@ -156,7 +158,7 @@ function r53SincronizarFamilias_(ss) {
  if(!raw){props.setProperty('r53_amparo_direto',JSON.stringify(current));return false;}
  var prev=JSON.parse(raw);
  if(JSON.stringify(prev)===JSON.stringify(current))return false;
- var snapshots={},stored=null,groups={};
+ var snapshots={},stored=null,groups={},fechados={},guardarFechados=false;
  R53_EDITOR_.contextos.forEach(function(g){
    var i=g.entidade===null||typeof g.entidade==='undefined'?0:g.entidade+1;if(current[i]===prev[i])return;
    var sh=ss.getSheetByName(g.aba),matrix=snapshots[g.aba]||(snapshots[g.aba]=r53FaixaFamilias_(sh,g.aba,current,prev));
@@ -171,10 +173,21 @@ function r53SincronizarFamilias_(ss) {
    ['cura','vt'].forEach(function(key,n){
      var pos=g.funcoes_diretas[key];if(!pos||g.portas[key]==='FALSE')return;
      var p=r53Pos_(pos),value=matrix.at(p[0],p[1]),cl=g.classes.length>1&&g.classes[0]===0?ativa():undefined,open=r53Porta_(ss,g,key,cl),next=value;
-     if(!open)next='—';
+     // 03/11/2026: reabrir lia a MONTAGENS para achar o valor coberto pelo "—" (~5 s na cópia, levando a reabertura
+     // da entidade a 29 s). Agora quem fecha guarda o valor visível em r53_versoes.fechados; quem reabre usa a versão
+     // guardada do cartão, depois esse valor, e só sem os dois lê a MONTAGENS. Gravar o cartão apaga o guardado dele
+     // (r53GuardarVersao_), e editar a MONTAGENS à mão apaga r53_versoes inteira.
+     var tipo=g.fixa?'boolean':'number',k;
+     if(!open){
+       next='—';
+       if(value!=='—'&&typeof value===tipo){k=g.editor+':'+coluna();(fechados[k]=fechados[k]||[null,null])[n]=value;guardarFechados=true;}
+     }
      else if(value==='—'){
-       stored=stored||r53FaixaMontagens_(ss,current,prev);
-       var salvo=stored.at(g.editor+2+r53Campo_(g.fixa?'funcao'+(n+2):'pontos'+(n+2)),coluna());
+       k=g.editor+':'+coluna();
+       var vs=r53Versoes_(),versao=vs.lista.filter(function(x){return x[0]===k;})[0],f=vs.fechados&&vs.fechados[k],campo=r53Campo_(g.fixa?'funcao'+(n+2):'pontos'+(n+2)),salvo;
+       if(versao&&versao[1].length===R53_EDITOR_.campos.length)salvo=versao[1][campo];
+       else if(f&&typeof f[n]===tipo)salvo=g.fixa?(f[n]?['Cura','PV temporários'][n]:''):f[n];
+       else{stored=stored||r53FaixaMontagens_(ss,current,prev);salvo=stored.at(g.editor+2+campo,coluna());}
        next=g.fixa?salvo===['Cura','PV temporários'][n]:salvo;
      }
      if(next===value)return;
@@ -183,6 +196,11 @@ function r53SincronizarFamilias_(ss) {
    });
  });
  Object.keys(groups).forEach(function(k){var v=groups[k];v.sh.getRangeList(v.places).setValue(v.value);});
+ if(guardarFechados){
+   var vs=r53Versoes_();vs.fechados=vs.fechados||{};Object.keys(fechados).forEach(function(k){vs.fechados[k]=fechados[k];});
+   while(vs.lista.length&&JSON.stringify(vs).length>R53_VERSOES_LIMITE_)vs.lista.pop();
+   props.setProperty(R53_VERSOES_PROP_,JSON.stringify(vs));
+ }
  props.setProperty('r53_amparo_direto',JSON.stringify(current));return true;
 }
 function r53Editar_(e) {
