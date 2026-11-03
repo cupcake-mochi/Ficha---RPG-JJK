@@ -107,7 +107,21 @@ function ambiente(op = {}) {
     setAllowInvalid(v){d.permiteInvalido=v;return this;},setHelpText(v){d.ajuda=v;return this;},
     build(){return validation(JSON.parse(JSON.stringify(d)));}
   };};
-  ctx.SpreadsheetApp = {newDataValidation, getActive: () => op.ativoDiferente ? {getId: () => 'outro'} : ss, flush() {}};
+  // Metadados de desenvolvedor do documento (só os que o produtor grava).
+  const meta = [];
+  ss.addDeveloperMetadata = (key, value, vis) => mutation('metadado', 'meta:' + key, () => meta.push({key, value, vis}));
+  ss.createDeveloperMetadataFinder = () => {
+    let k = null, vis = null;
+    const b = {withKey(x) { k = x; return b; }, withLocationType() { return b; },
+      withVisibility(x) { vis = x; return b; },
+      find: () => meta.filter(m => m.key === k && (!vis || m.vis === vis)).map(m => ({
+        getValue: () => m.value,
+        setValue(v) { mutation('metadado', 'meta:' + k, () => { m.value = v; }); }}))};
+    return b;
+  };
+  ctx.SpreadsheetApp = {newDataValidation, getActive: () => op.ativoDiferente ? {getId: () => 'outro'} : ss, flush() {},
+    DeveloperMetadataVisibility: {DOCUMENT: 'DOCUMENT', PROJECT: 'PROJECT'},
+    DeveloperMetadataLocationType: {SPREADSHEET: 'SPREADSHEET'}};
   const expected = ctx.r53NovaFinFormulas_();
   ctx.R53_NOVA_FIN_.formulas.forEach(([sheet, addr], i) => {
     const [r1, c1, r2, c2] = a1(addr);
@@ -138,7 +152,7 @@ function ambiente(op = {}) {
   script.set('paleta', 'conservar');
   const context = {versao: 1, operacao: 'operacao_sintetica_0001', destino: ss.getId(), modelo: 'modelo-sintetico',
     arquivosRegistrados: [], responsavelConfirmado: true, copiaNovaConfirmada: true};
-  return {ctx, ss, sheets, cells, doc, script, writes, context, put, range, get,
+  return {ctx, ss, sheets, cells, doc, script, writes, meta, context, put, range, get,
     hook: fn => { hook = fn; }, locked: () => lock,
     preview: () => ctx.r53NovaFichaFinanceiroPrevia(ss, context),
     apply: p => ctx.r53NovaFichaFinanceiroAplicar(ss, context, p.assinatura),

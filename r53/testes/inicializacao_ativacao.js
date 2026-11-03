@@ -113,4 +113,69 @@ caso('preparo lento não adota rotina alheia na retomada',()=>{
  const a=criar();prepararLento(a);a.rt.triggers.push({});
  assert.throws(a.run,/rotina não registrada/);assert.equal(a.rt.creates.length,0);
 });
+// ---- Pulso de ativação (metadados de desenvolvedor DOCUMENT) ----
+const CAMPOS_PULSO=['arquivo','operacao','quando','rotina','sequencia'];
+const itensPulso=(a,r)=>{const m=a.meta.filter(x=>x.key==='r53_pulso_'+r);assert(m.length<=1);return m.length?JSON.parse(m[0].value).itens:[];};
+function relogio(a,t0=1800000000000){const r={t:t0};a.ctx.Date={now:()=>r.t};return r;}
+caso('pulso de instalação só depois da conclusão, visível ao bot, e repetição não grava',()=>{
+ const a=criar();a.run();a.run();a.run();assert.equal(a.meta.length,0);
+ const r=a.run();assert.equal(r.instalacaoLocalConcluida,true);assert.equal(r.pulsoInstalacaoPresente,true);
+ assert.equal(a.meta.length,1);assert.equal(a.meta[0].vis,'DOCUMENT');
+ const [p]=itensPulso(a,'instalacao');assert.deepEqual(Object.keys(p).sort(),CAMPOS_PULSO);
+ assert.equal(p.rotina,'instalacao');assert.equal(p.operacao,a.context.operacao);assert.equal(p.arquivo,a.ss.getId());assert.equal(p.sequencia,1);
+ const w=a.writes.length;assert.equal(a.run().pulsoInstalacaoPresente,true);assert.equal(a.writes.length,w);assert.equal(a.meta.length,1);
+});
+caso('falha ao gravar o pulso de instalação não desfaz a instalação e a repetição grava',()=>{
+ const a=criar();a.run();a.run();a.run();const f=a.ss.createDeveloperMetadataFinder;a.ss.createDeveloperMetadataFinder=()=>{throw Error('metadado indisponível');};
+ const r=a.run();assert.equal(r.instalacaoLocalConcluida,true);assert.equal(r.pulsoInstalacaoPresente,false);assert.equal(a.meta.length,0);
+ a.ss.createDeveloperMetadataFinder=f;assert.equal(a.run().pulsoInstalacaoPresente,true);assert.equal(a.meta.length,1);assert.equal(a.rt.creates.length,3);
+});
+caso('pulso de evento só depois do trabalho concluir, com o formato esperado',()=>{
+ const a=criar();a.done();const vistos=[];
+ for(const [nome,fn,uid] of [['diario','salarioDiario','id-1'],['edicao','salarioRegistrarEdicao','id-2'],['abertura','salarioAposAbrir','id-3']])
+  a.ctx[fn]=()=>vistos.push([nome,itensPulso(a,nome).length]);
+ const ck=json([...a.cells]),dp=a.doc.get(a.ctx.R53_NOVA_ATIVACAO_.diario),sp=json([...a.script]),r=relogio(a);
+ const ev={triggerUid:'id-2',source:a.ss};
+ a.ctx.r53NovaCopiaSalarioDiario({triggerUid:'id-1'});a.ctx.r53NovaCopiaSalarioEdicao(ev);a.ctx.r53NovaCopiaSalarioAbrir({triggerUid:'id-3',source:a.ss});
+ assert.deepEqual(vistos,[['diario',0],['edicao',0],['abertura',0]]);
+ for(const n of ['diario','edicao','abertura']){const [p]=itensPulso(a,n);assert.deepEqual(Object.keys(p).sort(),CAMPOS_PULSO);
+  assert.equal(p.rotina,n);assert.equal(p.sequencia,1);assert.equal(p.quando,1800000000);assert.equal(p.arquivo,a.ss.getId());assert.equal(p.operacao,a.context.operacao);
+  assert(/^[A-Za-z0-9_-]{1,128}$/.test(p.operacao)&&/^[A-Za-z0-9_-]{1,128}$/.test(p.arquivo));}
+ assert(a.meta.every(m=>m.vis==='DOCUMENT'));
+ assert.deepEqual(json([...a.cells]),ck);assert.deepEqual(json([...a.script]),sp);assert.equal(a.doc.get(a.ctx.R53_NOVA_ATIVACAO_.diario),dp);
+ assert(a.run().instalacaoLocalConcluida);assert.equal(a.rt.creates.length,3);// preservação continua batendo
+});
+caso('sequência do diário cresce e edição/abertura respeitam o intervalo',()=>{
+ const a=criar();a.done();a.ctx.salarioDiario=()=>{};a.ctx.salarioRegistrarEdicao=()=>{};const r=relogio(a);const ev={triggerUid:'id-2',source:a.ss};
+ for(let i=0;i<7;i++){a.ctx.r53NovaCopiaSalarioDiario({triggerUid:'id-1'});r.t+=86400000;}
+ const d=itensPulso(a,'diario');assert.equal(d.length,5);assert.deepEqual(d.map(p=>p.sequencia),[3,4,5,6,7]);
+ a.ctx.r53NovaCopiaSalarioEdicao(ev);r.t+=60000;a.ctx.r53NovaCopiaSalarioEdicao(ev);assert.equal(itensPulso(a,'edicao').length,1);
+ r.t+=600000;a.ctx.r53NovaCopiaSalarioEdicao(ev);assert.deepEqual(itensPulso(a,'edicao').map(p=>p.sequencia),[1,2]);
+});
+caso('erro no trabalho não gera pulso e o erro sobe',()=>{
+ const a=criar();a.done();a.ctx.salarioRegistrarEdicao=()=>{throw Error('falha salarial');};
+ assert.throws(()=>a.ctx.r53NovaCopiaSalarioEdicao({triggerUid:'id-2',source:a.ss}),/falha salarial/);assert.equal(itensPulso(a,'edicao').length,0);
+});
+caso('antes da conclusão, ou com UID/fonte errados, nenhum pulso',()=>{
+ const a=criar();a.run();a.run();a.ctx.salarioRegistrarEdicao=()=>{};
+ a.ctx.r53NovaCopiaSalarioEdicao({triggerUid:'id-2',source:a.ss});assert.equal(a.meta.length,0);
+ a.done();a.ctx.r53NovaCopiaSalarioEdicao({triggerUid:'outro',source:a.ss});a.ctx.r53NovaCopiaSalarioEdicao({triggerUid:'id-2',source:{getId:()=>'outro'}});
+ assert.equal(a.meta.filter(m=>m.key!=='r53_pulso_instalacao').length,0);
+});
+caso('falha do pulso, trava ocupada ou pulso ilegível não quebram o evento nem são sobrescritos',()=>{
+ const a=criar();a.done();let n=0;a.ctx.salarioRegistrarEdicao=()=>++n;a.ctx.salarioDiario=()=>++n;a.ctx.salarioAposAbrir=()=>++n;relogio(a);
+ const ev={triggerUid:'id-2',source:a.ss},f=a.ss.createDeveloperMetadataFinder,lk=a.ctx.LockService;
+ a.ss.createDeveloperMetadataFinder=()=>{throw Error('sem metadado');};assert.equal(a.ctx.r53NovaCopiaSalarioEdicao(ev),1);
+ a.ss.createDeveloperMetadataFinder=f;a.ctx.LockService={getDocumentLock:()=>({tryLock:()=>false,releaseLock(){throw Error('não deveria soltar');}})};
+ assert.equal(a.ctx.r53NovaCopiaSalarioEdicao(ev),2);assert.equal(itensPulso(a,'edicao').length,0);
+ a.ctx.LockService=lk;a.meta.push({key:'r53_pulso_diario',value:'{lixo',vis:'DOCUMENT'});
+ a.ctx.r53NovaCopiaSalarioDiario({triggerUid:'id-1'});assert.equal(a.meta.find(m=>m.key==='r53_pulso_diario').value,'{lixo');
+ a.meta.push({key:'r53_pulso_abertura',value:'{"versao":1,"itens":[]}',vis:'DOCUMENT'},{key:'r53_pulso_abertura',value:'{"versao":1,"itens":[]}',vis:'DOCUMENT'});
+ a.ctx.r53NovaCopiaSalarioAbrir({triggerUid:'id-3',source:a.ss});assert(a.meta.filter(m=>m.key==='r53_pulso_abertura').every(m=>m.value==='{"versao":1,"itens":[]}'));
+ assert.equal(a.locked(),false);
+});
+caso('pulso invisível ao bot (PROJECT) não é aceito como existente',()=>{
+ const a=criar();a.meta.push({key:'r53_pulso_instalacao',value:'{"versao":1,"itens":[]}',vis:'PROJECT'});
+ a.done();assert.equal(a.meta.filter(m=>m.vis==='DOCUMENT'&&m.key==='r53_pulso_instalacao').length,1);
+});
 console.log(`${casos} cenários de ativação local aprovados; sem evento Google real ou atestado ao backend.`);
