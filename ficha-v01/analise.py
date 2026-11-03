@@ -277,6 +277,30 @@ def trocas(layout, fa, fp_tr, fam, fiv):
     return {"linhas": linhas}
 
 
+def talentos_gratis(fam, cfg):
+    """03/11/2026: a vaga de Talento da Origem, a extra e os feitiços fora dos espaços. Vão no fim da aba, depois de
+    tudo, para nenhuma chave antiga mudar de linha; chaves novas, sem número de posição (o bot lê passiva.N de 1 a 12
+    como pagas e do Leque), e o formato continua o mesmo porque nenhuma chave antiga mudou de sentido."""
+    import configuracao
+    AM = "FICHA AMALDIÇOADA"
+    H = fam["H"]
+    linhas = []
+
+    def lê(k, ref, parte="entrada"):
+        linhas.append([k, f'=IF(ISBLANK({ref}),"",{ref}&"")', ref.replace("$", ""), parte])
+    for nome, c in zip(("origem", "extra"), fam["passivas_extras"]):
+        lê(f"passiva.{nome}", _ref(AM, c["nome"]))
+        lê(f"passiva.{nome}.categoria", _ref(AM, c["cp"]))
+        lê(f"passiva.{nome}.texto", _ref(AM, c["texto"]))
+        lê(f"passiva.{nome}.vaga", _ref(AM, c["custo"]), "resultado")
+    for k, conta in (("vagas.talento_origem", "talento da origem"), ("vagas.talento_extra", "talentos extras"),
+                     ("vagas.feiticos_origem", "feitiços da origem"), ("vagas.feiticos_extra", "feitiços extras"),
+                     ("vagas.feiticos_gratis", "feitiços grátis")):
+        lê(k, H[conta], "resultado")
+    linhas += configuracao.exporta_novos(cfg)
+    return linhas
+
+
 def aba(layout, tr):
     """a aba inteira: oculta, sem cor própria (a da folha), quatro colunas e uma linha por informação"""
     neutro = [["Roboto", 12, "000000", False, False], "FFFFFF", None, None, None]

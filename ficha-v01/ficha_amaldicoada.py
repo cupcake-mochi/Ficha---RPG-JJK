@@ -60,6 +60,14 @@ C1, CN = C("D"), C("T")                      # a primeira e a última coluna de 
 # Leque (sete marcos). 10/10/2026 (B45): no livro final o pacto não concede mais espaço conhecido.
 N_FEITICOS, POR_LOTE, N_LIB = 36, 12, 3
 PAGAS, DO_LEQUE = 5, 7
+# 03/11/2026: as duas vagas que não são pagas nem do Leque, no lugar vazio ao lado do sétimo Talento do Leque (a fileira
+# de três já existia, então nenhuma linha muda). A da Origem: as três menores que dão um Talento de CE 1 fora dos espaços
+# e dos cinco pagos (Manifestação Instintiva, Traço Incorporado, Construção Especializada). A Extra: outras fontes,
+# lançadas em BÔNUS E MUDANÇAS da CONFIGURAÇÃO (Talentos grátis).
+EXTRAS = ("Origem", "Extra")
+MENORES_COM_TALENTO = ("Manifestação Instintiva", "Traço Incorporado", "Construção Especializada")
+# a marcante Coexistência do Receptáculo: Repertório Compartilhado, dois feitiços (ou Manejos) fora dos espaços
+MARCANTE_COM_FEITICOS, FEITICOS_DA_MARCANTE = "Coexistência", 2
 N_APT, APT_LOTE = 12, 6
 N_PACTOS, N_ZERO, N_MEL, N_RES = 3, 5, 4, 2
 FX = 2                                       # o título de seção ocupa duas linhas, como na FICHA PESSOAL
@@ -494,8 +502,10 @@ def geometria():
     lin += ((PAGAS + 2) // 3) * (ALT_P + 1)
     g["lote_leque"] = {"faixa": lin, "ini": lin + 1}
     lin += 2
-    for k, f in _fileiras(DO_LEQUE):
+    for k, f in _fileiras(DO_LEQUE + len(EXTRAS)):
         g["passivas"].append((lin + f * (ALT_P + 1), CARTAS[k]))
+    # as vagas extras cabem nas fileiras que o Leque já tinha: nenhuma linha da aba anda
+    assert (DO_LEQUE + len(EXTRAS) + 2) // 3 == (DO_LEQUE + 2) // 3
     lin += ((DO_LEQUE + 2) // 3) * (ALT_P + 1)
     g["lote_leque"]["fim"] = lin - 2
     lin = fecha("passivas", lin - 2)
@@ -907,7 +917,9 @@ def trocas(layout, CAT=None, TEC=None):
                  "metade do refino", "terço do refino", "degrau do domínio", "dados da técnica máxima", "montagem da técnica máxima",
                  "gasto da técnica máxima", "fechada na técnica máxima", "rota", "equipamento", "arma",
                  "atributo do grupo 1", "atributo do grupo 2", "atributo do grupo 3", "valor do grupo 1", "valor do grupo 2",
-                 "valor do grupo 3", "atributos dos grupos", "usos do estímulo"):
+                 "valor do grupo 3", "atributos dos grupos", "usos do estímulo",
+                 # 03/11/2026: no fim, para nenhuma conta antiga mudar de endereço
+                 "talento da origem", "talentos extras", "feitiços da origem", "feitiços extras", "feitiços grátis"):
         reserva(nome)
 
     D.tabela("feit", [("conta de feitiço" if k == "lugar" else k) for k in nomes],
@@ -924,6 +936,9 @@ def trocas(layout, CAT=None, TEC=None):
     PASS, CPT, DOM, GRU = D.faixa("passivas"), D.faixa("cp"), D.faixa("dom"), D.faixa("grupos")
     cp_de = lambda cel: f'IFERROR(VLOOKUP({_A(cel, AM)},{PASS},2,FALSE),0)'
     tm_mel = [_a1(C(a), G["tm_mel"]) for a, _ in G["cols_tm_mel"]]
+    GP = fp.geometria(fp.regras(CAT))
+    MARCANTE = _A(GP["cap_menu"][0], fp.FP)
+    MENORES = [_A(c, fp.FP) for c in GP["cap_menu"][1:]]
     tm_cod = [f'IFERROR(VLOOKUP({_A(G["tm_forma"], AM)},{D.faixa("formas", ate=4)},4,FALSE),0)'] + \
              [f'IFERROR(VLOOKUP({_A(m, AM)},{PECAS},4,FALSE),0)' for m in tm_mel]
     tm_fech = [f'IFERROR(VLOOKUP({_A(G["tm_forma"], AM)},{D.faixa("formas", ate=5)},5,FALSE),0)'] + \
@@ -954,11 +969,11 @@ def trocas(layout, CAT=None, TEC=None):
         "espaços em invocações": (f'=IFERROR(INDEX({DADOS_DA_INVOCACAO}!$2:$2,MATCH("{ESPACOS_POR_INVOCACAO}",'
                                   f'{DADOS_DA_INVOCACAO}!$1:$1,0)),0)'),
         "sem espaço": f"=IF({H['espaços em passivas']}+{H['espaços no domínio']}+{H['espaços em invocações']}>{H['espaços']},1,0)",
-        "cabem": (f"={H['espaços']}+{H['escolhas de Leque']}-{H['espaços em passivas']}-{H['espaços no domínio']}"
+        "cabem": (f"={H['espaços']}+{H['feitiços grátis']}-{H['espaços em passivas']}-{H['espaços no domínio']}"
                   f"-{H['espaços em invocações']}"),
         "livres": f"={H['cabem']}-{H['feitiços montados']}",
         "passivas pagas": "=" + "+".join(f'IF({_A(p["nome"], AM)}<>"",1,0)' for p in passivas_c[:PAGAS]),
-        "passivas do Leque": "=" + "+".join(f'IF({_A(p["nome"], AM)}<>"",1,0)' for p in passivas_c[PAGAS:]),
+        "passivas do Leque": "=" + "+".join(f'IF({_A(p["nome"], AM)}<>"",1,0)' for p in passivas_c[PAGAS:PAGAS + DO_LEQUE]),
         "aptidões anotadas": "=" + "+".join(f'IF({_A(a["nome"], AM)}<>"",1,0)' for a in aptidoes_c),
         "aptidões compráveis": f"=MAX(0,N({_conta_da_ficha(layout, 'máximo de aptidões')})-{len([a for a in R['aptidoes'] if a['gratis'] and not a['bencao']])})",
         "pactos permanentes": "=" + "+".join(f'IF({_A(p["forma"], AM)}="{PERMANENTE}",1,0)' for p in pactos_c),
@@ -988,6 +1003,14 @@ def trocas(layout, CAT=None, TEC=None):
             f'IF(AND({H[f"atributo do grupo {i + 1}"]}<>""' + "".join(f',{H[f"atributo do grupo {i + 1}"]}<>{H[f"atributo do grupo {j + 1}"]}' for j in range(i)) + '),1,0)'
             for i in range(N_GRUPOS)),
         "usos do estímulo": f'=IF({H["refino"]}>=10,2,1)&"× por cena"',
+        # 03/11/2026: o que vem de graça fora do Leque. As menores e a marcante saem do dossiê da FICHA PESSOAL; os dois
+        # "extras" são o alvo de BÔNUS E MUDANÇAS na CONFIGURAÇÃO (outras fontes), e por isso nascem numa conta própria
+        "talento da origem": "=IF(OR(" + ",".join(f'{m}="{n}"' for m in MENORES for n in MENORES_COM_TALENTO) + "),1,0)",
+        "talentos extras": "=0",
+        "feitiços da origem": f'=IF({MARCANTE}="{MARCANTE_COM_FEITICOS}",{FEITICOS_DA_MARCANTE},0)',
+        "feitiços extras": "=0",
+        "feitiços grátis": (f"={H['escolhas de Leque']}+{H['feitiços da origem']}"
+                            f"+MAX(0,INT(N({H['feitiços extras']})))"),
     }
     assert list(formulas) and set(formulas) == set(ordem_das_contas), set(formulas) ^ set(ordem_das_contas)
     D.prox = c_contas
@@ -999,14 +1022,18 @@ def trocas(layout, CAT=None, TEC=None):
     pp = lambda k, n: f"${L(cP + k)}{n}"
     D.tabela("carta_passiva", ["carta de passiva", "passiva anotada", "classe passiva anotada", "nível que libera", "o que ela faz",
                                "classe passiva na carta", "custo na carta", "seu texto da passiva", "ordem da passiva"],
-             [[f"Talento {i + 1}" + (" · Leque" if i >= PAGAS else ""),
+             [[f"Talento {i + 1}" + ("" if i < PAGAS else " · Leque" if i < PAGAS + DO_LEQUE else " · " + EXTRAS[i - PAGAS - DO_LEQUE]),
                f'={_A(p["nome"], AM)}&""',
                (lambda n: f"=IFERROR(VLOOKUP({pp(1, n)},{PASS},2,FALSE),0)"),
                (lambda n: f"=IFERROR(VLOOKUP({pp(2, n)},{CPT},2,FALSE),0)"),
                (lambda n: f'=IFERROR(VLOOKUP({pp(1, n)},{PASS},3,FALSE),"")'),
                (lambda n: f'=IF({pp(2, n)}=0,"",IF({pp(3, n)}>{H["nível"]},"{T_ERRO} Nível "&{pp(3, n)},"CE "&{pp(2, n)}))'),
-               ((lambda n, j=i - PAGAS + 1: f'=IF({pp(2, n)}=0,"",IF({j}>{H["escolhas de Leque"]},"{T_ERRO} Vaga","Grátis"))') if i >= PAGAS
-                else (lambda n: f'=IF({pp(2, n)}=0,"",{pp(2, n)}&" esp.")')),
+               ((lambda n: f'=IF({pp(2, n)}=0,"",{pp(2, n)}&" esp.")') if i < PAGAS
+                else (lambda n, j=i - PAGAS + 1: f'=IF({pp(2, n)}=0,"",IF({j}>{H["escolhas de Leque"]},"{T_ERRO} Vaga","Grátis"))')
+                if i < PAGAS + DO_LEQUE
+                else (lambda n: f'=IF({pp(2, n)}=0,"",IF({H["talento da origem"]}<1,"{T_ERRO} Vaga",IF({pp(2, n)}>1,"{T_ERRO} CE 1","Grátis")))')
+                if EXTRAS[i - PAGAS - DO_LEQUE] == "Origem"
+                else (lambda n: f'=IF({pp(2, n)}=0,"",IF(N({H["talentos extras"]})<1,"{T_ERRO} Vaga","Grátis"))')),
                f'={_A(p["texto"], AM)}&""',
                (lambda n: f'=IF({pp(1, n)}="","",COUNTIF(${L(cP + 1)}$2:{pp(1, n)},"?*"))')]
               for i, p in enumerate(passivas_c)])
@@ -1076,7 +1103,10 @@ def trocas(layout, CAT=None, TEC=None):
     }
     return {"aba_dados": aba_dados, "G": G, "R": R, "D": D, "H": HA, "FEIT": FEIT, "lugares": lugares, "col": col,
             "rotulo": lambda k: rotulo(k, DA), "ROTA": DA + ROTA,
-            "passivas_c": passivas_c, "aptidoes_c": aptidoes_c, "pactos_c": pactos_c, "zero_c": zero_c, "tm_mel": tm_mel}
+            # 03/11/2026: as doze de sempre continuam em passivas_c (a ANALISE e o menu leem a lista nessa ordem); as
+            # duas novas vão à parte, para nenhum endereço antigo andar
+            "passivas_c": passivas_c[:PAGAS + DO_LEQUE], "passivas_extras": passivas_c[PAGAS + DO_LEQUE:],
+            "aptidoes_c": aptidoes_c, "pactos_c": pactos_c, "zero_c": zero_c, "tm_mel": tm_mel}
 
 
 def _cols_dos_saltos():
@@ -1121,15 +1151,16 @@ NOTAS = {
     "familias": "O Fundamento tem {livres} Famílias Livres e {fechadas} Fechadas. As outras ficam Neutras.",
     "maior_classe": "Sobe nos níveis 1, 5, 9, 13, 17, 21 e 26. Vem da FICHA.",
     "espacos": "2 + metade do nível + um por marco alcançado.",
-    "leque": "Cada escolha de Leque no marco dá um feitiço a mais e um Talento, sem pagar espaços por eles. A escolha é marcada "
-             "na FICHA, em Marco Escolhido.",
+    "leque": "Os feitiços que não ocupam espaço. Cada escolha de Leque no marco dá um (e um Talento); a escolha é marcada na "
+             "FICHA, em Marco Escolhido. A marcante Coexistência do Receptáculo dá dois (Repertório Compartilhado). Outras "
+             "fontes entram em BÔNUS E MUDANÇAS da CONFIGURAÇÃO, na caixa Feitiços fora dos espaços.",
     "em_feiticos": "Os feitiços com nome. Classe 0 e Liberação Máxima não ocupam espaço.",
     "em_passivas": "Cada Talento pago ocupa tantos espaços quanto a Categoria de Efeito dele. A Regra Própria acima da Categoria 1 "
                    "entra aqui. Talento e Domínio só gastam espaço: o feitiço do Leque não paga nenhum dos dois.",
     "no_dominio": "A Expansão de Domínio custa 2, 3 ou 5 espaços, conforme o degrau.",
     "em_invocacoes": "Cada invocação da aba INVOCAÇÕES com nome e aquisição Espaço conhecido ocupa um espaço, mesmo recolhida. "
                      "Domada, criada ou de lista de ritual não ocupa.",
-    "livres": "Os espaços, mais os feitiços do Leque, menos o que já foi gasto.",
+    "livres": "Os espaços, mais os feitiços grátis, menos o que já foi gasto.",
     "indice": "Escolha a Classe e a fileira mostra os números dela. Em branco, mostra os da sua maior Classe.",
     "zero_indice": "Não muda com o menu: quantos feitiços de Classe 0 o nível dá, e os dados deles.",
     "zero_mel": "Cabe uma Melhoria Leve, e ela tira um dado.",
@@ -1154,6 +1185,11 @@ NOTAS = {
     "seu_texto": "Para a entrada Própria do menu, escreva aqui o texto dela, fechado com o mestre. Nas outras, é espaço para anotação.",
     "passiva_custo": "O Talento pago ocupa tantos espaços de feitiço quanto a Categoria de Efeito dele. O do Leque não ocupa "
                      "espaço, mas só existe com a escolha de Leque no marco.",
+    "passiva_origem": "O Talento de Categoria de Efeito 1 que a menor da Origem dá: Manifestação Instintiva, Traço Incorporado "
+                      "ou Construção Especializada, escolhida na FICHA PESSOAL. Não ocupa espaço e não conta nos cinco pagos. "
+                      "Traço Incorporado e Construção Especializada pedem um Talento passivo: confira com o mestre.",
+    "passiva_extra": "Um Talento grátis de outra fonte (Origem criada com o mestre, item, pacto, decisão do mestre). A vaga "
+                     "abre com Talentos grátis em BÔNUS E MUDANÇAS da CONFIGURAÇÃO. Não ocupa espaço e não conta nos cinco pagos.",
     "apt_refino": "Começa em 1, e cada marco dá +1. Escolher Refino no marco dá mais +1. O teto é 10. Na Restrição Celestial sem "
                   "energia é a Lapidação, nos mesmos degraus.",
     "apt_compradas": "Cada escolha de Refino, marcada na FICHA, compra uma aptidão; com o refino já em 10, duas. A semente do Sem "
@@ -1433,7 +1469,7 @@ def aba(layout, tr):
     t = G["orc_caixas"]
     sem = H["sem espaço"]
     caixas = [("MAIOR CLASSE", f"={MAXC}", "maior_classe"), ("ESPAÇOS", f"={H['espaços']}", "espacos"),
-              ("DO LEQUE", f'="+"&{H["escolhas de Leque"]}', "leque"), (f'="EM "&UPPER({ROT("feitiços")})', f"={H['feitiços montados']}", "em_feiticos"),
+              ("GRÁTIS", f'="+"&{H["feitiços grátis"]}', "leque"), (f'="EM "&UPPER({ROT("feitiços")})', f"={H['feitiços montados']}", "em_feiticos"),
               ("EM TALENTOS", f'=IF({sem}=1,"{T_ERRO} ","")&{H["espaços em passivas"]}', "em_passivas"),
               ("NO DOMÍNIO", f'=IF({sem}=1,"{T_ERRO} ","")&{H["espaços no domínio"]}', "no_dominio"),
               ("EM INVOCAÇÕES", f'=IF({sem}=1,"{T_ERRO} ","")&{H["espaços em invocações"]}', "em_invocacoes"),
@@ -1569,18 +1605,21 @@ def aba(layout, tr):
     # --- os Talentos (a Passiva da v0.331)
     titulo("passivas")
     cP = D.T["carta_passiva"][0]
-    for i, ((r0, c0), cel) in enumerate(zip(G["passivas"], tr["passivas_c"])):
+    assert len(G["passivas"]) == len(tr["passivas_c"]) + len(tr["passivas_extras"])
+    for i, ((r0, c0), cel) in enumerate(zip(G["passivas"], tr["passivas_c"] + tr["passivas_extras"])):
         a, b, c, d, e = (c0 + k for k in range(5))
         assert f.add("nome_menu", a, r0, b, r0) == cel["nome"]
         assert f.add("peq", c, r0, c, r0, f"={_abs(cP + 5, 2 + i, DA)}") == cel["cp"]
-        assert f.add("peq", d, r0, e, r0, f"={_abs(cP + 6, 2 + i, DA)}", NOTAS["passiva_custo"] if i in (0, PAGAS) else None) == cel["custo"]
+        nota = (NOTAS["passiva_custo"] if i in (0, PAGAS) else
+                NOTAS["passiva_" + EXTRAS[i - PAGAS - DO_LEQUE].lower()] if i >= PAGAS + DO_LEQUE else None)
+        assert f.add("peq", d, r0, e, r0, f"={_abs(cP + 6, 2 + i, DA)}", nota) == cel["custo"]
         f.add("rot", a, r0 + 1, e, r0 + 1, "O QUE FAZ")
         assert f.add("txt", a, r0 + 2, e, r0 + 4, f"={_abs(cP + 4, 2 + i, DA)}") == cel["faz"]
         f.add("rot", a, r0 + 5, a, r0 + 6, "SEU TEXTO", NOTAS["seu_texto"] if i == 0 else None)
         assert f.add("txt", b, r0 + 5, e, r0 + 6) == cel["texto"]
         f.menu(cel["nome"], D.faixa("passivas", so=5, aba=DA))
     f.add("lote", "D", G["lote_leque"]["faixa"], "T", G["lote_leque"]["faixa"],
-          "TALENTOS DO LEQUE · um por escolha de Leque, sem ocupar espaço")
+          "TALENTOS GRÁTIS · um por escolha de Leque, o da Origem e o extra, sem ocupar espaço")
 
     # --- as aptidões e o refino
     titulo("aptidoes")

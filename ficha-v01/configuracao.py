@@ -18,6 +18,10 @@ FIM = INICIO + QUANTIDADE - 1
 COLUNAS = ("B", "C", "D", "E", "F", "G")
 CAMPOS = ("ligado", "caixa", "como", "valor", "tipo_de_fonte", "fonte")
 FONTES = ("Pacto", "Origem", "Origem custom", "Item", "Técnica", "Decisão do mestre")
+# 03/11/2026: as 50 caixas de antes ficam onde estavam. As novas entram no fim da lista, nas linhas vazias do painel de
+# resultados (a aba não cresce: os cartões custom moram logo abaixo dela), e o aviso delas vai para o fim da ANALISE.
+ALVOS_ANTIGOS = 50
+ALVOS_DA_AMALDICOADA = (("Talentos grátis", "talentos extras"), ("Feitiços fora dos espaços", "feitiços extras"))
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CF = "'CONFIGURAÇÃO'!"
 
@@ -82,7 +86,7 @@ def anterior(formula):
     raise ValueError("fórmula da configuração sem conta-base válida")
 
 
-def alvos(layout, pessoal):
+def alvos(layout, pessoal, fam=None):
     idx = ix.indice(layout)
     out = []
     for rot, chave in (("Vida máxima", "vida_max"), ("PE máximo", "energia_max"),
@@ -108,11 +112,16 @@ def alvos(layout, pessoal):
             if not candidatos:
                 raise ValueError(f"sem resultado para {grupo} · {nome}")
             out.append((f"{grupo} · {nome}", "FICHA", min(candidatos)[1]))
+    assert len(out) == ALVOS_ANTIGOS, len(out)
+    if fam is not None:
+        for rot, conta in ALVOS_DA_AMALDICOADA:
+            aba, coord = fam["H"][conta].split("!")
+            out.append((rot, aba, coord.replace("$", "")))
     return out
 
 
-def trocas(layout, pessoal):
-    destinos = alvos(layout, pessoal)
+def trocas(layout, pessoal, fam=None):
+    destinos = alvos(layout, pessoal, fam)
     celulas, antes = {}, {}
     for linha, (nome, aba, coord) in enumerate(destinos, 2):
         valor = next(r[1] for r in ix._aba(layout, aba)["celulas"] if r[0] == coord)
@@ -133,7 +142,8 @@ def _aba(nome, linhas, colunas):
 
 def abas(layout, tr):
     """Dois painéis: entradas à esquerda, efeitos por caixa à direita."""
-    n = max(FIM + 4, len(tr["alvos"]) + 13)
+    n = max(FIM + 4, ALVOS_ANTIGOS + 13)
+    assert INICIO + len(tr["alvos"]) - 1 <= n, "o painel de resultados não cabe na aba"
     a, h = _aba(NOME, n, 13), _aba(DADOS, max(len(tr["alvos"]), QUANTIDADE) + 3, 16)
     # Os papéis vêm do Mizuki Escuro do Codigo.gs, a fonte da paleta.
     codigo = open(os.path.join(RAIZ, "apps-script", "Codigo.gs"), encoding="utf-8").read()
@@ -261,7 +271,16 @@ def exporta(tr):
             valor = f'=N({origem})&""' if campo == "ligado" else f'=IF(ISBLANK({origem}),"",{origem}&"")'
             linhas.append([f"efeito.{n}.{campo}", valor, origem.replace("$", ""), "configuração"])
         linhas.append([f"aviso.efeito.{n}", f'={DADOS}!$M${n + 1}&""', f"{DADOS}!M{n + 1}", "aviso"])
-    for n, (nome, aba, coord) in enumerate(tr["alvos"], 2):
-        chave = ix._norm(nome).replace(" · ", ".").replace(" ", "_")
-        linhas.append([f"aviso.efeito_caixa.{chave}", f'={DADOS}!$E${n}&""', f"{DADOS}!E{n}", "aviso"])
+    for n, (nome, aba, coord) in enumerate(tr["alvos"][:ALVOS_ANTIGOS], 2):
+        linhas.append(_aviso_da_caixa(n, nome))
     return linhas
+
+
+def _aviso_da_caixa(n, nome):
+    chave = ix._norm(nome).replace(" · ", ".").replace(" ", "_")
+    return [f"aviso.efeito_caixa.{chave}", f'={DADOS}!$E${n}&""', f"{DADOS}!E{n}", "aviso"]
+
+
+def exporta_novos(tr):
+    """As caixas acrescentadas depois das 50: o aviso delas, para o fim da ANALISE."""
+    return [_aviso_da_caixa(n, nome) for n, (nome, aba, coord) in enumerate(tr["alvos"], 2) if n - 2 >= ALVOS_ANTIGOS]

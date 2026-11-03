@@ -38,10 +38,12 @@ function r53Versoes_() {
  return R53_REF_CACHE_.versoes=v;
 }
 function r53GuardarVersao_(g,cl,values) {
- var v=r53Versoes_(),k=g.editor+':'+r53Indice_(g,cl),antes=v.lista.length;
+ var v=r53Versoes_(),k=g.editor+':'+r53Indice_(g,cl),antes=v.lista.length,fechado=!!(v.fechados&&v.fechados[k]);
+ // Gravar o cartão invalida a Cura e o PV temp. guardados quando o Amparo fechou (r53SincronizarFamilias_).
+ if(fechado)delete v.fechados[k];
  v.lista=v.lista.filter(function(x){return x[0]!==k;});
  if(values.every(r53VersaoSegura_))v.lista.unshift([k,values.slice()]);
- else if(v.lista.length===antes)return;
+ else if(v.lista.length===antes&&!fechado)return;
  while(v.lista.length&&JSON.stringify(v).length>R53_VERSOES_LIMITE_)v.lista.pop();
  PropertiesService.getDocumentProperties().setProperty(R53_VERSOES_PROP_,JSON.stringify(v));
 }
@@ -133,6 +135,23 @@ function r53RegrasCartao_(ss,g) {
 function r53BloqueiosCartao_(ss,g,rules,validationsReady) {
  var sh=ss.getSheetByName(g.aba);(rules||r53RegrasCartao_(ss,g)).forEach(function(item){if(!item)return;var cell=sh.getRange(item.pos);if(!validationsReady)cell.setDataValidation(item.rule);if(!item.open)cell.setValue('—');});
 }
+// 02/11/2026: a reabertura do Amparo estourava os 30 s do onEdit lendo a FICHA AMALDIÇOADA inteira (557×20, ~6 s)
+// e a MONTAGENS inteira (9465×9, ~11 s), por cima do recálculo da troca (~7 s na primeira leitura). Medido na cópia
+// de teste com logs de tempo. Agora cada uma lê só a faixa de linhas onde estão os cartões que interessam.
+// Na aba do cartão: as linhas com Classe, Cura ou PV temp. dos cartões das Famílias que mudaram nesta aba (na FICHA,
+// 64-356; na INVOCAÇÕES, ~3,8 mil células por entidade, contra 56 mil das doze juntas).
+function r53FaixaFamilias_(sh,aba,current,prev) {
+ var r0=Infinity,r1=0,c1=0;
+ R53_EDITOR_.contextos.forEach(function(g){var i=g.entidade===null||typeof g.entidade==='undefined'?0:g.entidade+1;if(g.aba!==aba||current[i]===prev[i])return;[g.funcoes_diretas.cura,g.funcoes_diretas.vt,g.cel.classe].forEach(function(pos){if(!pos)return;var p=r53Pos_(pos);r0=Math.min(r0,p[0]);r1=Math.max(r1,p[0]);c1=Math.max(c1,p[1]);});});
+ if(!r1)return {at:function(){return undefined;}};
+ var m=sh.getRange(r0,1,r1-r0+1,c1).getValues();return {at:function(r,c){return m[r-r0][c-1];}};
+}
+// Na MONTAGENS: as linhas dos cartões das Famílias que mudaram (a pessoal ocupa 7-1711: 13,6 mil células, contra 85 mil).
+function r53FaixaMontagens_(ss,current,prev) {
+ var r0=Infinity,r1=0,c1=0,n=R53_EDITOR_.campos.length;
+ R53_EDITOR_.contextos.forEach(function(g){var i=g.entidade===null||typeof g.entidade==='undefined'?0:g.entidade+1;if(current[i]===prev[i]||!g.funcoes_diretas.cura&&!g.funcoes_diretas.vt)return;r0=Math.min(r0,g.editor+2);r1=Math.max(r1,g.editor+1+n);c1=Math.max(c1,g.classes.length+1);});
+ var m=r1?ss.getSheetByName(R53_EDITOR_.storage).getRange(r0,1,r1-r0+1,c1).getValues():[];return {at:function(r,c){return (m[r-r0]||[])[c-1];}};
+}
 function r53SincronizarFamilias_(ss) {
  var current=r53Amparo_(ss),props=PropertiesService.getDocumentProperties(),raw=props.getProperty('r53_amparo_direto');
  // As propriedades do documento não vão na cópia da planilha. Sem estado, a
@@ -140,18 +159,37 @@ function r53SincronizarFamilias_(ss) {
  if(!raw){props.setProperty('r53_amparo_direto',JSON.stringify(current));return false;}
  var prev=JSON.parse(raw);
  if(JSON.stringify(prev)===JSON.stringify(current))return false;
- var snapshots={},stored=null,groups={};
+ var snapshots={},stored=null,groups={},fechados={},guardarFechados=false;
  R53_EDITOR_.contextos.forEach(function(g){
    var i=g.entidade===null||typeof g.entidade==='undefined'?0:g.entidade+1;if(current[i]===prev[i])return;
-   var sh=ss.getSheetByName(g.aba),matrix=snapshots[g.aba]||(snapshots[g.aba]=sh.getDataRange().getValues());
+   var sh=ss.getSheetByName(g.aba),matrix=snapshots[g.aba]||(snapshots[g.aba]=r53FaixaFamilias_(sh,g.aba,current,prev));
+   // 02/11/2026: a Classe já está na matriz desta aba, lida linhas acima; reler com
+   // r53Ativa_ custava uma ida ao servidor por cartão (até duas, contando a de r53Porta_),
+   // e isso sozinho travava a reabertura do Amparo com cartões preenchidos. Lazy: só calcula
+   // quando algum dos dois pontos abaixo precisa (cartão de Classe 0 ou restauração do "—").
+   var ativaGuardada;function ativa(){return ativaGuardada!==undefined?ativaGuardada:(ativaGuardada=g.classes[0]===null||g.classes.length===1?r53Ativa_(ss,g):Number(matrix.at(r53Pos_(g.cel.classe)[0],r53Pos_(g.cel.classe)[1])));}
+   // Sem Classe própria (classes[0]===null) a coluna é sempre a 2: não precisa ler a Classe máxima, que fica numa aba
+   // de cálculo e, lida no meio da reabertura, custou ~6 s na cópia.
+   function coluna(){return g.classes[0]===null?2:r53Indice_(g,ativa());}
    ['cura','vt'].forEach(function(key,n){
      var pos=g.funcoes_diretas[key];if(!pos||g.portas[key]==='FALSE')return;
-     var p=r53Pos_(pos),value=matrix[p[0]-1][p[1]-1],open=r53Porta_(ss,g,key),next=value;
-     if(!open)next='—';
+     var p=r53Pos_(pos),value=matrix.at(p[0],p[1]),cl=g.classes.length>1&&g.classes[0]===0?ativa():undefined,open=r53Porta_(ss,g,key,cl),next=value;
+     // 03/11/2026: reabrir lia a MONTAGENS para achar o valor coberto pelo "—" (~5 s na cópia, levando a reabertura
+     // da entidade a 29 s). Agora quem fecha guarda o valor visível em r53_versoes.fechados; quem reabre usa a versão
+     // guardada do cartão, depois esse valor, e só sem os dois lê a MONTAGENS. Gravar o cartão apaga o guardado dele
+     // (r53GuardarVersao_), e editar a MONTAGENS à mão apaga r53_versoes inteira.
+     var tipo=g.fixa?'boolean':'number',k;
+     if(!open){
+       next='—';
+       if(value!=='—'&&typeof value===tipo){k=g.editor+':'+coluna();(fechados[k]=fechados[k]||[null,null])[n]=value;guardarFechados=true;}
+     }
      else if(value==='—'){
-       stored=stored||ss.getSheetByName(R53_EDITOR_.storage).getDataRange().getValues();
-       var col=r53Indice_(g,r53Ativa_(ss,g))-1;
-       next=g.fixa?stored[g.editor+1+r53Campo_('funcao'+(n+2))][col]===['Cura','PV temporários'][n]:stored[g.editor+1+r53Campo_('pontos'+(n+2))][col];
+       k=g.editor+':'+coluna();
+       var vs=r53Versoes_(),versao=vs.lista.filter(function(x){return x[0]===k;})[0],f=vs.fechados&&vs.fechados[k],campo=r53Campo_(g.fixa?'funcao'+(n+2):'pontos'+(n+2)),salvo;
+       if(versao&&versao[1].length===R53_EDITOR_.campos.length)salvo=versao[1][campo];
+       else if(f&&typeof f[n]===tipo)salvo=g.fixa?(f[n]?['Cura','PV temporários'][n]:''):f[n];
+       else{stored=stored||r53FaixaMontagens_(ss,current,prev);salvo=stored.at(g.editor+2+campo,coluna());}
+       next=g.fixa?salvo===['Cura','PV temporários'][n]:salvo;
      }
      if(next===value)return;
      var id=g.aba+'|'+JSON.stringify(next);if(!groups[id])groups[id]={sh:sh,value:next,places:[]};groups[id].places.push(pos);
@@ -159,6 +197,11 @@ function r53SincronizarFamilias_(ss) {
    });
  });
  Object.keys(groups).forEach(function(k){var v=groups[k];v.sh.getRangeList(v.places).setValue(v.value);});
+ if(guardarFechados){
+   var vs=r53Versoes_();vs.fechados=vs.fechados||{};Object.keys(fechados).forEach(function(k){vs.fechados[k]=fechados[k];});
+   while(vs.lista.length&&JSON.stringify(vs).length>R53_VERSOES_LIMITE_)vs.lista.pop();
+   props.setProperty(R53_VERSOES_PROP_,JSON.stringify(vs));
+ }
  props.setProperty('r53_amparo_direto',JSON.stringify(current));return true;
 }
 function r53Editar_(e) {

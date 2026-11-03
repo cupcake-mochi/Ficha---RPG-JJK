@@ -458,13 +458,16 @@ def efeitos(layout,tr,put,fiv):
         put('DADOS_INVOC',coord,cfg.envolve(old,n))
         tr['efeitos_invocacoes'].append((n,key))
     h['linhas']=max(h['linhas'],89)
-    # The old 50 targets retain their exact row numbers.
+    # The old 50 targets retain their exact row numbers. 03/11/2026: the two cursed-sheet targets (Talentos grátis,
+    # Feitiços fora dos espaços) sit in the free rows 52-53, right before the custom ones.
+    fim=cfg.ALVOS_ANTIGOS+len(cfg.ALVOS_DA_AMALDICOADA)+1
+    assert fim<54,fim
     for x in list(h['celulas']):
         if isinstance(x[1],str) and x[1].startswith('='):
-            v=x[1].replace('$A$2:$A$51','$A$2:$A$89').replace('C2:C51','C2:C89')
+            v=x[1].replace(f'$A$2:$A${fim}','$A$2:$A$89').replace(f'C2:C{fim}','C2:C89')
             put(cfg.DADOS,x[0],v)
     for m in ix._aba(layout,'CONFIGURAÇÃO')['menus']:
-        if m['formula']=='DADOS_CONFIG!$A$2:$A$51':m['formula']='DADOS_CONFIG!$A$2:$A$89'
+        if m['formula']==f'DADOS_CONFIG!$A$2:$A${fim}':m['formula']='DADOS_CONFIG!$A$2:$A$89'
 
 
 def exporta(tr):
