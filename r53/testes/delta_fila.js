@@ -20,7 +20,9 @@ const expected = new Set(['DADOS.vals.47,104.0', 'DADOS.vals.54,103', 'DADOS.val
 // 30/10: somente os endereços de origem conferidos, sem mudar B/chaves/partes.
 const origens = require('../diagnostico-android/ORIGENS-ANALISE-2026-10-30.json').mudancas;
 for (const change of origens) expected.add('ANALISE.vals.'+change.linha+',3.0');
-const changed = [];
+// 31/10 (PR45): os avisos de funções dos 249 cartões, na coluna GA da DADOS_R53, e a parte "abaixo" que os repete.
+const avisosFuncoes = /^DADOS_R53\.(vals\.\d+,183(\.0)?|abaixo\.[\d.]+)$/;
+const changed = [], avisos = [];
 function compare(a,b,path) {
   if (JSON.stringify(a) === JSON.stringify(b)) return;
   if (a && b && typeof a === 'object' && typeof b === 'object') {
@@ -28,6 +30,7 @@ function compare(a,b,path) {
       if (key !== 'geracao') compare(a[key],b[key],path+'.'+key);
     }
   } else {
+    if (avisosFuncoes.test(path)) { avisos.push(path); return; }
     assert(expected.has(path), 'Mudança inesperada: '+path); changed.push(path);
   }
 }
@@ -40,6 +43,7 @@ function normalize(sheet) {
 assert.strictEqual(after.length,before.length);
 for (let i=0;i<before.length;i++) compare(normalize(before[i]),normalize(after[i]),after[i].nome);
 assert.deepStrictEqual(new Set(changed),expected);
+assert.strictEqual(avisos.filter(p => p.includes(',183')).length, 249);
 const sheet = name => after.find(s => s.nome === name);
 const oldAnalysis = before.find(s => s.nome === 'ANALISE');
 const origemTexto = value => /^="(?:[^"]|"")*"$/.test(value) ? value.slice(2,-1).replace(/""/g,'"') : value;

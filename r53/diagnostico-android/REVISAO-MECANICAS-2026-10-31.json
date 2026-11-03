@@ -1,0 +1,44 @@
+{
+  "data": "2026-10-31",
+  "branch": "codex/revisao-mecanicas-20261030",
+  "base": "5ea10b482f638dc767a3aa07af21796007c90487",
+  "escopo": "QA nativa descartável; sem escritas nas oficiais/jogador/PR31",
+  "geracao": "8c38acf72c7e6a33",
+  "nativo": {
+    "cenarios": 276,
+    "verificacoes": 2080,
+    "rechecagens": 1035,
+    "posicoes_preservacao": 45225,
+    "diagnosticos_alterados": 244,
+    "diagnosticos_ja_iguais": 5,
+    "reversao_amostras": 3,
+    "repeticao_pedidos": 0
+  },
+  "local": {
+    "python": 52,
+    "motor": 89,
+    "editor": 584,
+    "smoke": "OK"
+  },
+  "falhas": [
+    {
+      "id": "amparo-aviso",
+      "estado": "corrigida no gerador e ensaiada nas cópias; sem promoção"
+    },
+    {
+      "id": "amparo-recuperacao",
+      "estado": "pendente",
+      "segundos_execucoes_reprovadas": [
+        30.561,
+        30.454
+      ]
+    }
+  ],
+  "infraestrutura": {
+    "catalogo_qa_id_antigo": 53018005,
+    "catalogo_qa_id_novo": 53018901,
+    "nota": "Metadados ainda exigidos antes de usar a ferramenta antiga"
+  },
+  "descartaveis": "duas cópias movidas à lixeira recuperável",
+  "snapshots_versionados": false
+}

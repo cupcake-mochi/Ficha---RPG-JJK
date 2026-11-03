@@ -84,6 +84,8 @@ def main(folder):
     check('treinos', [c('treinos', 'DADOS!AK' + str(n)) for n in [19, 20, 27]] == [11, 3, 13])
     check('deslocamento com buff', str(f('deslocamento', 'deslocamento')).replace(',', '.') == '6.5 m')
     life, level = f('morrendo', 'vida_max'), f('morrendo', 'classe máxima')
+    # O cenário de regressao-campanha.py configura deliberadamente estas
+    # frações/teto; isto não é o oráculo da regra padrão do livro.
     check('Aguentar', f('morrendo', 'morrendo aguentar') == math.ceil(life * .5))
     check('Insistir', f('morrendo', 'morrendo insistir 1') == min(math.ceil(life * .25), 2 * level)
           and f('morrendo', 'morrendo insistir 2') == min(math.ceil(life * .75), 2 * level))

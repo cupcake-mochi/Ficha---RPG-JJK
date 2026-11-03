@@ -7,7 +7,8 @@ from verificar import CASOS,BASE
 from formulas import native,x
 from formas_custom import CAMPOS as FORMA_CAMPOS
 CAT_ABA='DADOS_R53_TESTES'
-CAT_ID=53018005
+# 53018005 pertence à R53_EVENTOS. Este catálogo só pode ocupar uma aba de QA.
+CAT_ID=53018901
 
 def col(n):
     s=''
