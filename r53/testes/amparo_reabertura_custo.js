@@ -7,9 +7,13 @@
 // seja qual for o tamanho, e não enxergava isso; por isso aqui a régua é a quantidade de células lidas. Na cópia,
 // lendo só as faixas, a reabertura caiu de 30,8 s (estouro) para 15,8 s (fechar: 15,4 s).
 //
-// Três casos: (1) fechar e reabrir; (2) gravar um cartão com o Amparo fechado e reabrir; (3) fechar e reabrir o Amparo
-// da primeira entidade, cujos cartões ficam na INVOCAÇÕES. Em todos, cada Cura e PV temp. tem de voltar ao valor de
-// antes de fechar (no caso 2, ao valor novo).
+// 03/11/2026: a reabertura da entidade ainda marcou 29,4 s na cópia, e a faixa da MONTAGENS custava ~5 s dela. Quem
+// fecha agora guarda o valor coberto pelo "—" em r53_versoes.fechados, e a reabertura não lê a MONTAGENS (casos 1 e 3).
+//
+// Cinco casos: (1) fechar e reabrir; (2) gravar um cartão com o Amparo fechado e reabrir; (3) fechar e reabrir o Amparo
+// da primeira entidade, cujos cartões ficam na INVOCAÇÕES; (4) gravar fechado um cartão que a versão guardada não
+// aceita (texto com número), que tem de cair na MONTAGENS; (5) reabrir sem nada guardado, como depois de editar a
+// MONTAGENS à mão. Em todos, cada Cura e PV temp. tem de voltar ao valor de antes de fechar (nos casos 2 e 4, ao novo).
 //
 // Uso: node r53/testes/amparo_reabertura_custo.js [EditorR53.gs]
 const fs = require('fs'), vm = require('vm');
@@ -98,6 +102,7 @@ function trocar(M, valor, familia = 0) {
   M.A.ctx.r53SincronizarFamilias_(M.ss);
   const R = M.A.log.filter(e => e.t === 'R');
   return { leituras: R.length, celulas: R.reduce((n, e) => n + e.n, 0), maior: R.reduce((m, e) => Math.max(m, e.n), 0),
+    montagens: R.filter(e => String(e.a).startsWith('MONTAGENS!')).length,
     maiores: R.filter(e => e.n > 1000).map(e => e.a + ' (' + e.n + ')') };
 }
 
@@ -119,6 +124,7 @@ let falhas = 0;
   const r = trocar(M, 'Normal');
   console.log('\n(1) FECHAR  —', linha(f), '| em "—" depois:', fechadas);
   console.log('    REABRIR —', linha(r));
+  if (r.montagens) { console.log('  ✗ reabrir leu a MONTAGENS com os valores guardados ao fechar'); falhas++; }
   falhas += conferir(M, antes, 'reabrir');
 }
 
@@ -147,8 +153,37 @@ let falhas = 0;
   console.log('\n(3) ENTIDADE 1, ' + M.entidade.length + ' cartões — FECHAR —', linha(f), '| em "—" depois:', fechadas);
   console.log('    REABRIR —', linha(r));
   if (!fechadas) { console.log('  ✗ entidade: nenhum cartão foi para "—" ao fechar'); falhas++; }
+  if (r.montagens) { console.log('  ✗ entidade: reabrir leu a MONTAGENS com os valores guardados ao fechar'); falhas++; }
   falhas += conferir(M, antes, 'reabrir a entidade');
 }
 
-console.log(falhas ? '\nFALHOU: ' + falhas + ' célula(s) não voltaram ao valor certo.' : '\nOK: todas as células voltaram ao valor certo nos três casos.');
+// (4) Gravado fechado com um texto que a versão guardada recusa (r53VersaoSegura_): a versão sai da lista e o valor
+// guardado ao fechar também (r53GuardarVersao_), então a reabertura lê a MONTAGENS e traz o valor novo.
+{
+  const M = montar(), antes = M.visiveis();
+  trocar(M, 'Fechada');
+  const g = M.preenchidos.find(x => !x.fixa && x.classes[0] !== null), cl = M.classe.get(g);
+  const texto = M.fields.findIndex(k => !/^(funcao|pontos|usar_)/.test(k));
+  M.A.ctx.R53_REF_CACHE_ = {};
+  const vals = M.A.ctx.r53LerVersao_(M.ss, g, cl);
+  vals[texto] = 'Golpe 2'; vals[M.fields.indexOf('pontos2')] = 6;
+  M.A.ctx.r53Gravar_(M.ss, g, cl, vals);
+  const r = trocar(M, 'Normal');
+  antes[g.aba + '!' + g.funcoes_diretas.cura] = 6;
+  console.log('\n(4) REABRIR depois de gravar ' + g.id + ' fechado com "' + M.fields[texto] + '" inseguro —', linha(r));
+  if (!r.montagens) { console.log('  ✗ sem versão guardada, a reabertura devia ter lido a MONTAGENS'); falhas++; }
+  falhas += conferir(M, antes, 'reabrir depois de gravar fechado com texto inseguro');
+}
+
+// (5) Sem nada guardado (r53_versoes apagada, como numa edição à mão na MONTAGENS): volta a ler a MONTAGENS.
+{
+  const M = montar(), antes = M.visiveis();
+  trocar(M, 'Fechada');
+  M.A.ctx.PropertiesService.getDocumentProperties().deleteProperty('r53_versoes');
+  const r = trocar(M, 'Normal');
+  console.log('\n(5) REABRIR sem r53_versoes —', linha(r));
+  falhas += conferir(M, antes, 'reabrir sem nada guardado');
+}
+
+console.log(falhas ? '\nFALHOU: ' + falhas + ' problema(s).' : '\nOK: todas as células voltaram ao valor certo nos cinco casos.');
 process.exit(falhas ? 1 : 0);

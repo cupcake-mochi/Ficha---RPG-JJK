@@ -2,6 +2,8 @@
 // Conferência do salário sem perguntar a aba depois do flush (26/10/2026): o salario_lote.gs de antes e o de agora
 // tomam as mesmas decisões (apagar o próximo fechamento, conferir ou não) e o de agora não chama a planilha depois
 // do flush, onde cada chamada esperava o recálculo da edição (4,6–4,8 s medidos na cópia).
+// 03/11/2026: passados os 8 s o salário não roda, e o flush também sai (esperava o recálculo à toa, ~5 s no Amparo da
+// entidade). As decisões comparam-se sem ele; o flush tem de aparecer só nas edições abaixo dos 8 s.
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),{execSync}=require('child_process');
 let checks=0;
 function eq(a,b,m){assert.deepStrictEqual(a,b,m);checks++;}
@@ -33,7 +35,9 @@ const casos=[
 let antes=0;
 for(const c of casos){
  const a=rodar(antigo,...c),b=rodar(novo,...c);
- eq(b.out,a.out,c.join(' '));eq(b.decisoes,a.decisoes,c.join(' '));
+ const semFlush=d=>d.filter(x=>x!=='flush');
+ eq(b.out,a.out,c.join(' '));eq(semFlush(b.decisoes),semFlush(a.decisoes),c.join(' '));
+ eq(b.decisoes.includes('flush'),c[3]<8000,c.join(' ')+': flush só abaixo dos 8 s');
  eq(b.depois,0,c.join(' ')+': chamada à planilha depois do flush');antes+=a.depois;
 }
 assert(antes>0,'o de antes chamava a planilha depois do flush');checks++;
