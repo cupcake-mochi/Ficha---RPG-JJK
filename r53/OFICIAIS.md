@@ -9,6 +9,22 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Amparo: dois cortes no recálculo · 03/11/2026
+
+Com autorização expressa (PR48 mesclada), as duas oficiais trocaram **só o EditorR53 e o
+SalarioLote**: EditorR53 `d8e99a70…` → `08badae1…` e SalarioLote `366f6dd3…` → `aaaa74f3…`,
+relidos iguais depois de recarregar. Antes, cada projeto ganhou o backup nativo **versão 15**
+(implantação Biblioteca "Antes dos cortes da reabertura do Amparo (03/11/2026)": Era da
+Revolução 10:56, Ciclo Maldito 11:00); para voltar, restaurar esses dois arquivos dessa versão.
+Sem mudança, iguais nas duas: Analise `2ea7e9d4`, Codigo `52302778`, Configuracao `bb784c6d`,
+Ficha `6012dcb3`, Invocacoes `ebf20bb1`, LotePaleta `848e878b`, Origens `90095228`,
+PaletaSegundoPlano `a5a0e83d`. Nenhum dado de personagem foi tocado.
+
+Efeito medido na cópia de teste: reabrir o Amparo da entidade 29,4 s → 17,5 s; fechar
+22–23 s → 18,6 s. A primeira reabertura depois da troca ainda lê a MONTAGENS (o fechamento
+que está valendo foi feito pelo código antigo, sem guardar os valores); a partir do próximo
+fechamento, não. Fichas já copiadas por jogadores continuam com o código antigo.
+
 ## Amparo: reabertura · 03/11/2026
 
 Com autorização expressa (PR46 mesclada), as duas oficiais trocaram **só o EditorR53**:
