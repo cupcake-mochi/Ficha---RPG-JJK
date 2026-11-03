@@ -9,6 +9,15 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Amparo: reabertura · 03/11/2026
+
+Com autorização expressa (PR46 mesclada), as duas oficiais trocaram **só o EditorR53**:
+`c3d31096…` → `d8e99a70…`, relido igual depois de recarregar. Antes, cada projeto ganhou o
+backup nativo **versão 14** (implantação Biblioteca "Antes do conserto da reabertura do
+Amparo (03/11/2026)"); para voltar, restaurar o EditorR53 dessa versão. Nenhum outro arquivo
+do Apps Script nem dado de personagem foi tocado. No momento da troca as duas estavam com o
+Amparo pessoal Neutra e o das entidades Fechada, sem reabertura pendente.
+
 ## Origens da ANALISE · 30/10/2026
 
 Com autorização expressa e dois backups nativos completos anteriores, as duas
