@@ -1,3 +1,43 @@
+# Organização do HD externo · 02/11/2026 (Claude)
+
+`/media/mizuki/HD Externo II/Claude/` foi reorganizado; mapa no `LEIA-ME.md` da
+raiz do HD (fora do git). Nada deste repositório mudou e nada foi apagado.
+Continuam no mesmo caminho: `Claude/Claude 3/`, `Claude/Claude 2/ficha-android-r53/`
+(o `alternates` dele aponta para `Claude 3/.git/objects`),
+`Claude/ficha-android-cortes-20261026/`, `Claude/Planejamento-ficha/` e
+`Claude/agentes-2026-09-16/`. `Claude/ficha-salarios-20261020/` (ramo já no
+GitHub, sem pendência) foi para `Claude/_quarentena-2026-11/`. O clone velho em
+`Claude/Ficha/Ficha---RPG-JJK/` ficou onde está: tem 3 arquivos modificados que não
+estão em nenhum commit (`apps-script/Ficha.gs`, `conferir-ficha-xlsx.py`,
+`ficha/modelo.gs.js`). PROMPTs de continuação agora ficam em `Claude/_handoffs/`.
+Pasta nova de trabalho não nasce solta na raiz do HD.
+
+# Amparo: dois cortes no recálculo · aplicados nas oficiais · 03/11/2026 (Claude)
+
+Usuário autorizou merge da PR48 e aplicação com backup. A reabertura do Amparo da entidade
+ainda marcava 29,4 s na cópia. Perfil de chamadas: cada chamada à planilha depois da troca
+espera o recálculo (~3–5 s), cobrado na hora da chamada. Cortadas duas: o flush do
+SalarioLote passados 8 s, e a leitura da MONTAGENS na reabertura (quem fecha guarda o valor
+coberto pelo "—" em `r53_versoes.fechados`). Cópia: reabrir 17,5 s, fechar 18,6 s.
+Ensaio: `r53/testes/amparo_reabertura_custo.js` (cinco casos) e `salario_lote_aba.js`.
+Nas duas oficiais: backup = implantação Biblioteca **versão 15** ("Antes dos cortes da
+reabertura do Amparo"), depois trocados SÓ o EditorR53 `d8e99a70…` → `08badae1…` e o
+SalarioLote `366f6dd3…` → `aaaa74f3…`, relidos após recarregar. Demais arquivos intactos.
+Fichas já copiadas por jogadores não recebem a troca. Não medido no Android.
+
+# Amparo: reabertura sem estourar o onEdit · aplicada nas oficiais · 03/11/2026 (Claude)
+
+Usuário autorizou merge da PR46 e aplicação com backup. Reabrir o Amparo com cartões
+preenchidos estourava os 30 s do onEdit (30,8 s na cópia). Agora a sincronização das
+Famílias lê só a faixa dos cartões das Famílias que mudaram (FICHA AMALDIÇOADA e
+MONTAGENS) em vez das abas inteiras. Cópia de teste: fechar 15,4 s, reabrir 15,8 s.
+Ensaio: `r53/testes/amparo_reabertura_custo.js` (pessoal, gravar fechado, entidade 1).
+Nas duas oficiais: backup = implantação Biblioteca **versão 14** ("Antes do conserto da
+reabertura do Amparo"), depois trocado SÓ o EditorR53 `c3d31096…` → `d8e99a70…`
+(transporte de `node r53/editor_lazy.js apps-script/EditorR53.gs`), relido após recarregar.
+Demais arquivos intactos. Entidade não medida no Google (cópia sem entidade criada).
+Cópia de teste na lixeira.
+
 # Origens da ANALISE · aplicadas nas oficiais · 30/10/2026
 
 Usuário autorizou merge da PR44 e aplicação com backup. Leia

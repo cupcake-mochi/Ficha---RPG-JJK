@@ -240,7 +240,7 @@ custom.tabelas(LAYOUT, _CUSTOM, _FP)
 custom.integra(LAYOUT, _CUSTOM, _FP)
 custom.guarda(_CUSTOM)
 import configuracao
-_CFG = configuracao.trocas(LAYOUT, _FP)
+_CFG = configuracao.trocas(LAYOUT, _FP, _FAM)
 configuracao.aplica(LAYOUT, _CFG)
 campanha.desenha(LAYOUT, _CAMP)
 custom.desenha(LAYOUT, _CUSTOM)
@@ -327,6 +327,8 @@ _AN['linhas'].extend(entidades_custom.exporta(_ENTIDADES))
 _ENTIDADES['analise_fim'] = len(_AN['linhas'])+1
 _AN['linhas'].extend(montagens_r53.exporta(_R53))
 _AN['linhas'].extend(montagens_r53.exporta_versoes(_R53))
+# 03/11/2026: os Talentos grátis (Origem e extra) e os feitiços fora dos espaços, no fim de tudo
+_AN['linhas'].extend(analise.talentos_gratis(_FAM, _CFG))
 LAYOUT["abas"].append(analise.aba(LAYOUT, _AN))
 print(f"a ANALISE: {len(_AN['linhas'])} linha(s), oculta")
 

@@ -2,9 +2,9 @@
   "protocolo": "carteira-contrato-rest-1",
   "fontes": {
     "apps-script/Salarios.gs": "47e7db6fe7d8a71b0adf6756898ea3fabf4d9d15eb02ed9b3bb3d460675ca319",
-    "apps-script/Ficha.gs": "d86d114e3a2bd6cdc5c53683bbf6401961e7859a2e461ee06935b80b4255e838",
-    "apps-script/Pessoal.gs": "3cf8a4eb8e601b596d9e9b94c2f76e901574d1ff1e2d87a83fdb1adb6985f92b",
-    "apps-script/Configuracao.gs": "1eb52860bdf9b44681245a36d1821204e95f6ebfb939b307443607c657ef2779",
+    "apps-script/Ficha.gs": "8b9cb0ae018d805e5c64a33cc1eaf1b2bf1ff47b0a0887f286be85a2de90b58f",
+    "apps-script/Pessoal.gs": "b5a79e986dfe02b502f8c6751a9ed3de29fac09a1e8ec40bcbaffd391af5d4f2",
+    "apps-script/Configuracao.gs": "6eb81f569619e230467da5c5a26c0bd76e3a260b76e33c934fc546c5ceb0a6d6",
     "r53/inicializacao/financeiro.gs": "bcc11a91a0c6ded19e5183ad287091e7a3223a622cdcc9ace6b545f0808280de",
     "r53/inicializacao/progressao.gs": "dae6bc04467dcb0233ca581e58c359e9eb5cd7e4e7f8edc7e649d41d4f928ad9"
   },
