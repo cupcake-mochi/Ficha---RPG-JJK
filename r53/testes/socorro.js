@@ -1,8 +1,20 @@
 'use strict';
 const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
 const source=fs.readFileSync('apps-script/CuraRecebida.gs','utf8')+'\n'+fs.readFileSync('apps-script/Socorro.gs','utf8'),c={};vm.createContext(c);vm.runInContext(source,c);
-let n=0;const t=f=>{f();n++;},base={atual:0,maximo:23,classe:1,sequelas:0,regras:[.25,1/3,.5,15,3],corpo:'Corpo Próprio',corporal:false};
+let n=0;const t=f=>{f();n++;},base={atual:0,maximo:23,classe:1,sequelas:0,integridade:20,integridadeMax:20,regras:[.25,1/3,.5,15,3],corpo:'Corpo Próprio',corporal:false};
 for(const [max,cl,want] of [[23,1,[6,8,12]],[93,3,[24,31,45]],[395,7,[99,105,105]],[1,1,[1,1,1]]])for(let k=1;k<=3;k++)t(()=>assert.equal(c.r53SocorroNovaQueda_({...base,maximo:max,classe:cl},k).necessario,want[k-1]));
+const zeroDuplo = c.r53SocorroNovaQueda_({...base, integridade: 0}, 2);
+t(()=>assert.deepEqual([zeroDuplo.status,zeroDuplo.escolha,zeroDuplo.janela,zeroDuplo.necessario], ['Derrotado',0,0,0]));
+t(()=>assert.equal(c.r53SocorroNovaQueda_({...base, integridadeMax: 0, integridade: 0}, 2).status,'Morrendo'));
+t(()=>assert.equal(c.r53SocorroNovaQueda_({...base, integridadeMax: 0, integridade: ''}, 2).escolha,2));
+t(()=>assert.throws(()=>c.r53SocorroNovaQueda_({...base, integridade: ''}, 2), /Confira a Integridade/));
+const lerRegistro = estado => c.r53SocorroLer_({getSheetByName: () => ({
+  getRange: a => ({getValue: () => a === 'A2' ? 'SOCORRO_R53_1' : JSON.stringify(estado)})
+})});
+t(()=>assert.equal(lerRegistro(zeroDuplo).escolha,0));
+t(()=>assert.equal(lerRegistro({...zeroDuplo,status:'Encerrado no descanso'}).escolha,0));
+t(()=>assert.throws(()=>lerRegistro({...zeroDuplo,status:'Morrendo',janela:3}), /Escolha ou tratamento/));
+
 let q=c.r53SocorroNovaQueda_(base,1),x=c.r53SocorroContaCura_(q,base,3);t(()=>assert.equal(x.vida,0));t(()=>assert.equal(x.estado.tratamento,3));t(()=>assert.equal(x.saiu,false));
 x=c.r53SocorroContaCura_(x.estado,{...base,maximo:40},3);t(()=>assert.equal(x.vida,6));t(()=>assert.equal(x.estado.referencia,23));t(()=>assert.equal(x.estado.necessario,6));t(()=>assert.equal(x.saiu,true));t(()=>assert.equal(q.tratamento,0));
 x=c.r53SocorroContaCura_(q,{...base,maximo:4},9);t(()=>assert.equal(x.vida,4));t(()=>assert.equal(x.estado.tratamento,9));
@@ -36,11 +48,11 @@ t(()=>assert.equal(batches.length,1));let updates=batches[0].requests.filter(r=>
 batches=[];c.r53SocorroGravar_(ss,q,{caixas:[true,true,true],extras:2},6,true);t(()=>assert.equal(batches[0].requests.find(r=>r.updateCells&&r.updateCells.start.rowIndex===49).updateCells.rows[0].values[0].userEnteredValue.numberValue,3));
 c.Sheets.Spreadsheets.batchUpdate=()=>{throw Error('falha do serviço');};t(()=>assert.throws(()=>c.r53SocorroGravar_(ss,q,base,0,false)));
 // Cancelar e detectar conflito entre diálogo e gravação não escrevem.
-for(const mode of ['cancel','no','changed','busy']){
+for(const mode of ['cancel','no','changed','integridade mudou','busy']){
  let writes=0,reads=0,alerts=[];
  const ss2={toast(){}};
  const ctx={SpreadsheetApp:{getActive:()=>ss2,getUi:()=>({Button:{OK:'OK',YES:'YES'},ButtonSet:{OK_CANCEL:1,YES_NO:2},prompt:()=>({getSelectedButton:()=>mode==='cancel'?'CANCEL':'OK',getResponseText:()=> '1'}),alert:(...a)=>{alerts.push(a);return mode==='no'?'NO':'YES';}})},LockService:{getDocumentLock:()=>({tryLock:()=>mode!=='busy',releaseLock(){}})}};
- vm.createContext(ctx);vm.runInContext(source,ctx);ctx.r53SocorroRecursos_=()=>({...base,maximo:mode==='changed'&&reads++?40:23});ctx.r53SocorroLer_=()=>null;ctx.r53SocorroGravar_=()=>writes++;ctx.registrarQueda();t(()=>assert.equal(writes,0));
+ vm.createContext(ctx);vm.runInContext(source,ctx);ctx.r53SocorroRecursos_=()=>({...base,...(reads++ ? (mode==='changed' ? {maximo:40} : mode==='integridade mudou' ? {integridade:0} : {}) : {})});ctx.r53SocorroLer_=()=>null;ctx.r53SocorroGravar_=()=>writes++;ctx.registrarQueda();t(()=>assert.equal(writes,0));
 }
 // A entrada real do menu grava apenas o registro e a vida depois da derrota.
 for (const [conversao, confirmacao, vidaEsperada, vidaInicial = 0] of [

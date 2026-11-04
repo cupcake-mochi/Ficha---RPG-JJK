@@ -1,8 +1,19 @@
+/** Máximo zero representa a ausência da barra, independentemente do valor antigo em D34. */
+function r53SocorroIntegridadeEsgotada_(s) {
+  if (s.integridadeMax === 0) return false;
+  if (!Number.isFinite(s.integridadeMax) || s.integridadeMax < 0 || !Number.isFinite(s.integridade))
+    throw Error('Confira a Integridade atual e máxima antes de registrar a queda.');
+  return s.integridade <= 0;
+}
 /** Registro explícito da queda: a referência não acompanha mudanças posteriores do máximo. */
 function r53SocorroNovaQueda_(s, escolha) {
   if(s.atual!==0)throw Error('Registre a queda quando a vida estiver em zero.');
   if(!Number.isSafeInteger(s.maximo)||s.maximo<1||!Number.isSafeInteger(s.classe)||s.classe<1||!Number.isSafeInteger(s.sequelas)||s.sequelas<0)
     throw Error('Confira máximo de vida, Classe e Sequelas.');
+  if (r53SocorroIntegridadeEsgotada_(s)) {
+    return {versao: 1, referencia: s.maximo, classe: s.classe, escolha: 0, necessario: 0,
+      tratamento: 0, janela: 0, status: 'Derrotado'};
+  }
   if([1,2,3].indexOf(escolha)<0)throw Error('Escolha 1 (Aguentar), 2 (Insistir pela primeira vez) ou 3 (Insistir novamente).');
   if(!s.regras||s.regras.length!==5||s.regras.some(function(v){return typeof v!=='number'||!isFinite(v)||v<0;})||!Number.isSafeInteger(s.regras[4]))throw Error('Confira as regras de Morrendo na CONFIGURAÇÃO.');
   var necessario=Math.ceil(Number((s.maximo*s.regras[escolha-1]).toFixed(10)));
@@ -55,12 +66,20 @@ function r53SocorroLer_(ss) {
   var aba=ss.getSheetByName('SOCORRO');if(!aba)return null;
   if(aba.getRange('A2').getValue()!=='SOCORRO_R53_1')throw Error('Já existe uma aba SOCORRO sem o formato esperado. Nada foi alterado.');
   var estado;try{estado=JSON.parse(aba.getRange('B2').getValue());}catch(e){throw Error('Registro de socorro inválido. Confira antes de continuar.');}
-  if(!estado||estado.versao!==1||['Morrendo','Derrotado','Socorrido','Encerrado manualmente','Encerrado no descanso'].indexOf(estado.status)<0||![estado.referencia,estado.classe,estado.necessario,estado.tratamento,estado.janela].every(Number.isSafeInteger)||estado.referencia<1||estado.classe<1||estado.necessario<1||estado.tratamento<0||estado.janela<0||[1,2,3].indexOf(estado.escolha)<0)throw Error('Registro de socorro inconsistente. Nada foi alterado.');
+  if(!estado||estado.versao!==1||['Morrendo','Derrotado','Socorrido','Encerrado manualmente','Encerrado no descanso'].indexOf(estado.status)<0||![estado.referencia,estado.classe,estado.necessario,estado.tratamento,estado.janela].every(Number.isSafeInteger)||estado.referencia<1||estado.classe<1||estado.tratamento<0||estado.janela<0)throw Error('Registro de socorro inconsistente. Nada foi alterado.');
+  var derrotaIntegridade = estado.escolha === 0 && estado.necessario === 0 &&
+    estado.tratamento === 0 && estado.janela === 0 &&
+    ['Derrotado','Encerrado manualmente','Encerrado no descanso'].indexOf(estado.status) >= 0;
+  var quedaComEscolha = [1,2,3].indexOf(estado.escolha) >= 0 && estado.necessario >= 1;
+  if (!derrotaIntegridade && !quedaComEscolha) throw Error('Escolha ou tratamento inválidos no registro de socorro.');
   if (estado.tratamentoConvertido !== undefined && estado.tratamentoConvertido !== true) throw Error('Conversão de tratamento inválida. Confira SOCORRO.');
   return estado;
 }
 function r53SocorroRecursos_(ss) {
   var s=r53LerCura_(ss),f=ss.getSheetByName('FICHA');
+  var integridade = f.getRange('D34:J34').getValues()[0];
+  s.integridade = integridade[0];
+  s.integridadeMax = integridade[6];
   s.classe=f.getRange('Z73').getValue();
   s.caixas=['F48','H48','J48'].map(function(a){return f.getRange(a).getValue();});
   s.extras=f.getRange('J50').getValue();if(s.extras==='')s.extras=0;
@@ -76,8 +95,8 @@ function r53SocorroGravar_(ss,estado,recursos,vida,sequela,alteracoes) {
   if(!aba){while(ss.getSheets().some(function(s){return s.getSheetId()===id;}))id++;
     requests.push({addSheet:{properties:{sheetId:id,title:'SOCORRO',gridProperties:{rowCount:30,columnCount:3}}}});
   }
-  var escolha=['','Aguentar','Insistir · primeira vez na cena','Insistir · segunda vez em diante'][estado.escolha];
-  var rows=[['SOCORRO','Registro da queda'],['SOCORRO_R53_1',JSON.stringify(estado)],['',''],['Estado',estado.status],['Máximo de referência',estado.referencia],['Maior Classe na queda',estado.classe],['Escolha registrada',escolha],['Tratamento necessário',estado.necessario],['Tratamento recebido',estado.tratamento],['Janela restante (rodadas)',estado.janela],['Como usar','Recursos → Aplicar cura acumula tratamento em Morrendo e recupera vida em Derrotado, após confirmação do mestre.'],['Janela','Use Consumir rodada da janela após cada volta completa ou dano posterior que alcance a vida.'],['Limites','Resolva estabilização e resgates expressos com o mestre. O descanso longo pode encerrar uma queda quando a recuperação permitir.'],['Previsão','As caixas de Morrendo na FICHA calculam a próxima queda. Este registro conserva os valores da queda atual.'],['Insistir','A contagem por cena é informada ao registrar; manter-se agindo não é uma nova escolha.']];
+  var escolha=['Derrota por Integridade','Aguentar','Insistir · primeira vez na cena','Insistir · segunda vez em diante'][estado.escolha];
+  var rows=[['SOCORRO','Registro da queda'],['SOCORRO_R53_1',JSON.stringify(estado)],['',''],['Estado',estado.status],['Máximo de referência',estado.referencia],['Maior Classe na queda',estado.classe],['Escolha registrada',escolha],['Tratamento necessário',estado.escolha === 0 ? 'Não se aplica' : estado.necessario],['Tratamento recebido',estado.tratamento],['Janela restante (rodadas)',estado.janela],['Como usar','Recursos → Aplicar cura acumula tratamento em Morrendo e recupera vida em Derrotado, após confirmação do mestre.'],['Janela','Use Consumir rodada da janela após cada volta completa ou dano posterior que alcance a vida.'],['Limites','Resolva estabilização e resgates expressos com o mestre. O descanso longo pode encerrar uma queda quando a recuperação permitir.'],['Previsão','As caixas de Morrendo na FICHA calculam a próxima queda. Este registro conserva os valores da queda atual.'],['Insistir','A contagem por cena é informada ao registrar; manter-se agindo não é uma nova escolha.']];
   requests.push({updateCells:{start:{sheetId:id,rowIndex:0,columnIndex:0},rows:rows.map(function(r){return {values:r.map(r53SocorroCelula_)};}),fields:'userEnteredValue'}});
   requests.push({updateDimensionProperties:{range:{sheetId:id,dimension:'ROWS',startIndex:1,endIndex:2},properties:{hiddenByUser:true},fields:'hiddenByUser'}});
   requests.push({updateDimensionProperties:{range:{sheetId:id,dimension:'COLUMNS',startIndex:0,endIndex:1},properties:{pixelSize:240},fields:'pixelSize'}});
@@ -94,10 +113,22 @@ function r53SocorroGravar_(ss,estado,recursos,vida,sequela,alteracoes) {
 function registrarQueda() {
   var ui=SpreadsheetApp.getUi(),ss=SpreadsheetApp.getActive(),s,anterior,estado;
   try{s=r53SocorroRecursos_(ss);anterior=r53SocorroLer_(ss);if(r53SocorroAtivo_(anterior))throw Error('Há uma queda em andamento. Consulte SOCORRO; não registre a mesma queda novamente.');if(s.atual!==0)throw Error('A vida precisa estar em zero para registrar uma queda.');}catch(e){ui.alert(e.message);return;}
-  var resposta=ui.prompt('Registrar queda','Registre imediatamente ao cair. Máximo atual: '+s.maximo+'.\n1 = Aguentar\n2 = Insistir pela primeira vez na cena\n3 = Insistir novamente na cena\nInforme 1, 2 ou 3. Se o máximo já mudou desde a queda, confira a referência com o mestre antes de registrar.',ui.ButtonSet.OK_CANCEL);
-  if(resposta.getSelectedButton()!==ui.Button.OK)return;
-  try{var escolha=resposta.getResponseText().trim();if(!/^[123]$/.test(escolha))throw Error('Informe 1, 2 ou 3.');estado=r53SocorroNovaQueda_(s,Number(escolha));}catch(e){ui.alert(e.message);return;}
-  if(ui.alert('Confirmar queda','Referência: '+estado.referencia+' · tratamento necessário: '+estado.necessario+' · janela: '+estado.janela+'\nEstado: '+estado.status+'. Os valores ficarão registrados em SOCORRO.',ui.ButtonSet.YES_NO)!==ui.Button.YES)return;
+  try {
+    if (r53SocorroIntegridadeEsgotada_(s)) {
+      estado = r53SocorroNovaQueda_(s, 0);
+    } else {
+      var resposta=ui.prompt('Registrar queda','Registre imediatamente ao cair. Máximo atual: '+s.maximo+'.\n1 = Aguentar\n2 = Insistir pela primeira vez na cena\n3 = Insistir novamente na cena\nInforme 1, 2 ou 3. Se o máximo já mudou desde a queda, confira a referência com o mestre antes de registrar.',ui.ButtonSet.OK_CANCEL);
+      if (resposta.getSelectedButton() !== ui.Button.OK) return;
+      var escolha = resposta.getResponseText().trim();
+      if (!/^[123]$/.test(escolha)) throw Error('Informe 1, 2 ou 3.');
+      estado = r53SocorroNovaQueda_(s, Number(escolha));
+    }
+  } catch (erro) { ui.alert(erro.message); return; }
+  var resumo = estado.escolha === 0
+    ? 'Vida e Integridade estão em zero. Registre Derrotado por Integridade, sem janela de socorro. A queda também envolveu vida zero.'
+    : 'Referência: '+estado.referencia+' · tratamento necessário: '+estado.necessario+' · janela: '+estado.janela+
+      '\nEstado: '+estado.status+'. Os valores ficarão registrados em SOCORRO.';
+  if (ui.alert('Confirmar queda', resumo, ui.ButtonSet.YES_NO) !== ui.Button.YES) return;
   var lock=LockService.getDocumentLock();if(!lock.tryLock(5000)){ui.alert('Outra operação está em andamento. Tente novamente.');return;}var erro;
   try{if(JSON.stringify(s)!==JSON.stringify(r53SocorroRecursos_(ss))||JSON.stringify(anterior)!==JSON.stringify(r53SocorroLer_(ss)))throw Error('A ficha mudou durante a confirmação. Confira e tente novamente.');r53SocorroGravar_(ss,estado,s,null,false);}catch(e){erro=e.message;}finally{lock.releaseLock();}
   if(erro)ui.alert(erro);else ss.toast('Referência e tratamento registrados na aba SOCORRO.','Queda registrada',6);

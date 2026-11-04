@@ -185,7 +185,7 @@ vm.runInContext(fs.readFileSync(path.join(raiz, 'apps-script', 'Socorro.gs'), 'u
 const socorro = ss.insertSheet('SOCORRO');
 socorro.getRange('A2').setValue('SOCORRO_R53_1');
 const queda = ctx.r53SocorroNovaQueda_({
-  atual: 0, maximo: 23, classe: 1, sequelas: 1, regras: [.25, 1/3, .5, 15, 3]
+  atual: 0, maximo: 23, classe: 1, sequelas: 1, integridade: 20, integridadeMax: 20, regras: [.25, 1/3, .5, 15, 3]
 }, 2);
 const lote = [];
 ctx.Sheets = { Spreadsheets: { batchUpdate: ({requests}) => lote.push(requests) } };
