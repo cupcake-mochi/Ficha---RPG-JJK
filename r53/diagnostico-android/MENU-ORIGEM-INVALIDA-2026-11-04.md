@@ -62,13 +62,16 @@ base `93a109c` no histórico local. Não é uma medição de tempo ou RAM no And
 ## Limites e atualização futura
 
 Não foi repetida a bateria completa de cartões nem o teste Android. A cópia
-não é modelo de distribuição. A restauração automática destas duas fórmulas
-não foi ensaiada; a instalação incremental do código de restauração em fichas
-existentes deve ser validada antes de qualquer promoção.
+não é modelo de distribuição. A instalação incremental do código de restauração foi ensaiada nesta cópia;
+novos destinos continuam exigindo snapshot e verificação de compatibilidade.
 
 Para aplicar em ficha existente: autorização do destino, snapshot fresco de
 CP3/CQ3 e do projeto Apps Script; comparar fórmulas com as antigas esperadas,
-preparar somente as duas substituições e conferir o molde instalado. Nunca
+preparar somente as duas substituições e atualizar o molde instalado com
+`preparar_menu_origem_loader.js entrada.gs SHA256 saida.gs`. O preparador
+valida o hash, âncora única e ausência de instalação repetida. O helper
+`menu_origem_molde.gs` verifica ambos os moldes antes de alterar qualquer um;
+aceita somente fórmula antiga exata ou nova já aplicada, sem alteração parcial. Nunca
 instalar o pacote integral nem executar construir/continuar. Os modelos GS
 regenerados pertencem ao Git, não foram instalados na cópia ou nas oficiais.
 
@@ -78,3 +81,31 @@ e exige que somente CP3/CQ3 mudem nas abas, desconsiderando o selo de geração.
 Snapshot e evidências brutas ficam fora do Git.
 
 Revisão: Sol/Medium; implementação integrada: Sol/High. Configurações não alteradas.
+
+## Revisão e restauração nativa — 04/11/2026
+
+A cópia ainda tinha o carregador anterior à PR55. Apagar CP3 pela interface
+restaurou a fórmula antiga (confirmado por releitura), demonstrando que trocar
+só a fórmula da célula não basta na promoção incremental.
+
+Snapshot do Codigo.gs antes:
+`792abb536784e0ac9c34f1cf5cce20c0245b89b5c2917770d568e38a597a3c79`.
+Instalado somente o delta dos dois moldes, preservando todos os incrementos
+existentes. Código salvo, editor recarregado e releitura integral idêntica:
+`212f2acb0662169305ad9e031b753ca674158d55f471d8e4f4691faaf71f594f`.
+
+- Apagar CP3 pela interface: onEdit recuperou a fórmula **nova**, resultado
+  Corpo Debilitado para a Origem publicada selecionada.
+- Sobrescrever CQ3 com 999 pela interface: onEdit recuperou a fórmula **nova**,
+  resultado Reserva Condensada.
+- Releitura de CP3/CQ3 integralmente igual às fórmulas sanitizadas esperadas,
+  sem reposição manual de fórmula entre a edição e a leitura de cada ensaio.
+- 19 verificações locais: idempotência, divergência sem aplicação parcial,
+  abas/células ausentes ou duplicadas, paridade com GS, hash, âncora única,
+  rejeição de instalação repetida e preservação do restante do carregador.
+  Esse teste passou a integrar o smoke do GitHub.
+- Comparação integral das abas contra PR54 passou novamente.
+
+A aba auxiliar foi desocultada somente na cópia para permitir as edições
+nativas e ficou visível para revisão. Não foram criados acionadores nem
+instalado pacote integral. Tempos de gatilho/Android não foram medidos.
