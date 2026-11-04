@@ -55,6 +55,8 @@ function r53SocorroContaCura_(estado,s,bruto,jaConvertido) {
   }
   if(estado.status!=='Morrendo'||estado.janela<1)throw Error('Registro sem janela de Morrendo válida. Confira SOCORRO.');
   if(s.atual!==0)throw Error('O registro está em Morrendo, mas a vida foi alterada. Confira o registro antes de continuar.');
+  if (r53SocorroIntegridadeEsgotada_(s))
+    throw Error('Integridade esgotada durante Morrendo. Use Recursos → Registrar queda para registrar Derrotado por Integridade.');
   var conta=r53ContaCura_(s,bruto), total=estado.tratamento+conta.ganho;
   if(!Number.isSafeInteger(total))throw Error('Tratamento fora do limite suportado.');
   var depois=JSON.parse(JSON.stringify(estado));depois.tratamento=total;
@@ -72,6 +74,10 @@ function r53SocorroLer_(ss) {
     ['Derrotado','Encerrado manualmente','Encerrado no descanso'].indexOf(estado.status) >= 0;
   var quedaComEscolha = [1,2,3].indexOf(estado.escolha) >= 0 && estado.necessario >= 1;
   if (!derrotaIntegridade && !quedaComEscolha) throw Error('Escolha ou tratamento inválidos no registro de socorro.');
+  if (estado.derrotaIntegridade !== undefined &&
+      (estado.derrotaIntegridade !== true || estado.janela !== 0 ||
+      ['Derrotado','Encerrado manualmente','Encerrado no descanso'].indexOf(estado.status) < 0))
+    throw Error('Derrota por Integridade inválida no registro de socorro.');
   if (estado.tratamentoConvertido !== undefined && estado.tratamentoConvertido !== true) throw Error('Conversão de tratamento inválida. Confira SOCORRO.');
   return estado;
 }
@@ -96,7 +102,8 @@ function r53SocorroGravar_(ss,estado,recursos,vida,sequela,alteracoes) {
     requests.push({addSheet:{properties:{sheetId:id,title:'SOCORRO',gridProperties:{rowCount:30,columnCount:3}}}});
   }
   var escolha=['Derrota por Integridade','Aguentar','Insistir · primeira vez na cena','Insistir · segunda vez em diante'][estado.escolha];
-  var rows=[['SOCORRO','Registro da queda'],['SOCORRO_R53_1',JSON.stringify(estado)],['',''],['Estado',estado.status],['Máximo de referência',estado.referencia],['Maior Classe na queda',estado.classe],['Escolha registrada',escolha],['Tratamento necessário',estado.escolha === 0 ? 'Não se aplica' : estado.necessario],['Tratamento recebido',estado.tratamento],['Janela restante (rodadas)',estado.janela],['Como usar','Recursos → Aplicar cura acumula tratamento em Morrendo e recupera vida em Derrotado, após confirmação do mestre.'],['Janela','Use Consumir rodada da janela após cada volta completa ou dano posterior que alcance a vida.'],['Limites','Resolva estabilização e resgates expressos com o mestre. O descanso longo pode encerrar uma queda quando a recuperação permitir.'],['Previsão','As caixas de Morrendo na FICHA calculam a próxima queda. Este registro conserva os valores da queda atual.'],['Insistir','A contagem por cena é informada ao registrar; manter-se agindo não é uma nova escolha.']];
+  if (estado.derrotaIntegridade) escolha += ' · depois, derrota por Integridade';
+  var rows=[['SOCORRO','Registro da queda'],['SOCORRO_R53_1',JSON.stringify(estado)],['',''],['Estado',estado.status],['Máximo de referência',estado.referencia],['Maior Classe na queda',estado.classe],['Escolha registrada',escolha],['Tratamento necessário',estado.escolha === 0 || estado.derrotaIntegridade ? 'Não se aplica' : estado.necessario],['Tratamento recebido',estado.tratamento],['Janela restante (rodadas)',estado.janela],['Como usar','Recursos → Aplicar cura acumula tratamento em Morrendo e recupera vida em Derrotado, após confirmação do mestre.'],['Janela','Use Consumir rodada da janela após cada volta completa ou dano posterior que alcance a vida.'],['Limites','Resolva estabilização e resgates expressos com o mestre. O descanso longo pode encerrar uma queda quando a recuperação permitir.'],['Previsão','As caixas de Morrendo na FICHA calculam a próxima queda. Este registro conserva os valores da queda atual.'],['Insistir','A contagem por cena é informada ao registrar; manter-se agindo não é uma nova escolha.']];
   requests.push({updateCells:{start:{sheetId:id,rowIndex:0,columnIndex:0},rows:rows.map(function(r){return {values:r.map(r53SocorroCelula_)};}),fields:'userEnteredValue'}});
   requests.push({updateDimensionProperties:{range:{sheetId:id,dimension:'ROWS',startIndex:1,endIndex:2},properties:{hiddenByUser:true},fields:'hiddenByUser'}});
   requests.push({updateDimensionProperties:{range:{sheetId:id,dimension:'COLUMNS',startIndex:0,endIndex:1},properties:{pixelSize:240},fields:'pixelSize'}});
@@ -112,10 +119,19 @@ function r53SocorroGravar_(ss,estado,recursos,vida,sequela,alteracoes) {
 }
 function registrarQueda() {
   var ui=SpreadsheetApp.getUi(),ss=SpreadsheetApp.getActive(),s,anterior,estado;
-  try{s=r53SocorroRecursos_(ss);anterior=r53SocorroLer_(ss);if(r53SocorroAtivo_(anterior))throw Error('Há uma queda em andamento. Consulte SOCORRO; não registre a mesma queda novamente.');if(s.atual!==0)throw Error('A vida precisa estar em zero para registrar uma queda.');}catch(e){ui.alert(e.message);return;}
   try {
-    if (r53SocorroIntegridadeEsgotada_(s)) {
-      estado = r53SocorroNovaQueda_(s, 0);
+    s = r53SocorroRecursos_(ss);
+    anterior = r53SocorroLer_(ss);
+    if (s.atual !== 0) throw Error('A vida precisa estar em zero para registrar uma queda.');
+    var integridadeEsgotada = r53SocorroIntegridadeEsgotada_(s);
+    if (r53SocorroAtivo_(anterior) && !(anterior.status === 'Morrendo' && integridadeEsgotada))
+      throw Error('Há uma queda em andamento. Consulte SOCORRO; não registre a mesma queda novamente.');
+  } catch (erro) { ui.alert(erro.message); return; }
+  try {
+    if (integridadeEsgotada) {
+      estado = anterior && anterior.status === 'Morrendo'
+        ? Object.assign({}, anterior, {status: 'Derrotado', janela: 0, derrotaIntegridade: true})
+        : r53SocorroNovaQueda_(s, 0);
     } else {
       var resposta=ui.prompt('Registrar queda','Registre imediatamente ao cair. Máximo atual: '+s.maximo+'.\n1 = Aguentar\n2 = Insistir pela primeira vez na cena\n3 = Insistir novamente na cena\nInforme 1, 2 ou 3. Se o máximo já mudou desde a queda, confira a referência com o mestre antes de registrar.',ui.ButtonSet.OK_CANCEL);
       if (resposta.getSelectedButton() !== ui.Button.OK) return;
@@ -124,7 +140,9 @@ function registrarQueda() {
       estado = r53SocorroNovaQueda_(s, Number(escolha));
     }
   } catch (erro) { ui.alert(erro.message); return; }
-  var resumo = estado.escolha === 0
+  var resumo = estado.derrotaIntegridade
+    ? 'A Integridade acabou durante Morrendo. Registre Derrotado por Integridade e encerre a janela. O tratamento acumulado (' + estado.tratamento + ') será preservado.'
+    : estado.escolha === 0
     ? 'Vida e Integridade estão em zero. Registre Derrotado por Integridade, sem janela de socorro. A queda também envolveu vida zero.'
     : 'Referência: '+estado.referencia+' · tratamento necessário: '+estado.necessario+' · janela: '+estado.janela+
       '\nEstado: '+estado.status+'. Os valores ficarão registrados em SOCORRO.';
@@ -197,4 +215,16 @@ function descansarComQueda() {
   catch (erro) { erroDescanso = erro.message; }
   finally { lock.releaseLock(); }
   if (erroDescanso) ui.alert(erroDescanso);
+}
+
+/** Migração de moldes em projetos já instalados. O pacote novo já traz a fórmula. */
+function r53AjustarIndicadorIntegridade_(abas) {
+  var fichas = abas.filter(function (aba) { return aba.nome === 'FICHA'; });
+  if (fichas.length !== 1) throw Error('Indicador de Integridade: molde da FICHA divergente.');
+  var alvos = fichas[0].vals.filter(function (v) { return v[0] === 37 && v[1] === 4; });
+  if (alvos.length !== 1) throw Error('Indicador de Integridade: molde D37 ausente ou duplicado.');
+  var antes = "=IF($D$34=\"\",\" \",IF($D$34<=0,\"Estágio 4 · Você não é mais você mesmo\",IF($D$34<=$J$34/4,\"Estágio 3 · Desvantagem em ataques e TRs\",IF($D$34<=$J$34/2,\"Estágio 2 · Metade do deslocamento, +1 PE por Classe\",IF($D$34<=$J$34*3/4,\"Estágio 1 · Desvantagem em perícias\",\"Alma Inteira\")))))";
+  var depois = "=IF(OR($D$34=\"\",$J$34=0),\" \",IF($D$34<=0,\"Estágio 4 · Você não é mais você mesmo\",IF($D$34<=$J$34/4,\"Estágio 3 · Desvantagem em ataques e TRs\",IF($D$34<=$J$34/2,\"Estágio 2 · Metade do deslocamento, +1 PE por Classe\",IF($D$34<=$J$34*3/4,\"Estágio 1 · Desvantagem em perícias\",\"Alma Inteira\")))))";
+  if (alvos[0][2] !== antes && alvos[0][2] !== depois) throw Error('Indicador de Integridade: fórmula D37 divergente.');
+  alvos[0][2] = depois;
 }

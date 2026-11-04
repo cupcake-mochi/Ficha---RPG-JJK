@@ -88,4 +88,28 @@ for (const [conversao, confirmacao, vidaEsperada, vidaInicial = 0] of [
   t(()=>assert.equal(Boolean(registro.tratamentoConvertido), confirmacao === 'YES'));
   t(()=>assert.deepEqual([registro.status, registro.janela, registro.tratamento], ['Derrotado', 0, 4]));
 }
+// Uma perda posterior de Integridade termina a janela, conservando o tratamento.
+const emAndamento = {...q, tratamento: 3, janela: 2};
+t(()=>assert.throws(()=>c.r53SocorroContaCura_(emAndamento, {...base, integridade: 0}, 6), /Integridade esgotada/));
+let atualizado, resumoQueda;
+c.SpreadsheetApp = {
+  getActive: () => ({toast(){}}),
+  getUi: () => ({Button:{YES:'YES'},ButtonSet:{},alert:(titulo,texto)=>{resumoQueda=texto;return 'YES';},
+    prompt:()=>{throw Error('Insistir não pode ser oferecido');}})
+};
+c.r53SocorroLer_ = () => emAndamento;
+c.r53SocorroRecursos_ = () => ({...base, integridade: 0});
+c.r53SocorroGravar_ = (ss, estado, recursos, vida, sequela) => {atualizado = {estado,vida,sequela};};
+c.registrarQueda();
+t(()=>assert.match(resumoQueda,/durante Morrendo/));
+t(()=>assert.deepEqual({...atualizado.estado},{...emAndamento,status:'Derrotado',janela:0,derrotaIntegridade:true}));
+t(()=>assert.deepEqual([atualizado.vida,atualizado.sequela],[null,false]));
+
+const molde = [{nome:'FICHA',vals:[[37,4,'=FÓRMULA_DIVERGENTE',0]]}];
+t(()=>assert.throws(()=>c.r53AjustarIndicadorIntegridade_(molde), /fórmula D37 divergente/));
+const trecho = fs.readFileSync('apps-script/Ficha.gs','utf8').match(/\[37,4,("(?:[^"\\]|\\.)*Estágio 4(?:[^"\\]|\\.)*"),\d+\]/);
+const formula = JSON.parse(trecho[1]);
+molde[0].vals[0][2] = formula;
+c.r53AjustarIndicadorIntegridade_(molde);
+t(()=>assert.equal(molde[0].vals[0][2],formula));
 console.log(JSON.stringify({resultado:'OK',verificacoes:n}));
