@@ -1,3 +1,17 @@
+# Correção preparada de ± · 04/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FILA-RECURSOS-2026-11-04.md`.
+Ramo `codex/correcao-fila-recursos-20261104`, sobre PR59 `06b777f`.
+A03/A09 corrigidos localmente no onEdit e atalho; 500 verificações/18 rotas,
+18 verificações incrementais com snapshots privados, pacote leve 134.
+Preparador offline exige Codigo integrado `8a0f2ed6…`, produz `d40da400…`.
+Nada aplicado no Google. Navegador desativado impede ensaio nativo; não concluir
+latência/fila global resolvidas. Limites de eventos, colagens, concorrência e
+falha parcial estão documentados. Outros oito achados permanecem abertos.
+Sem merge, oficiais/jogador/PR31, acionadores ou acesso novo. Evidências privadas
+em `nuvem-b47/saidas/correcao-fila-recursos/`, ignorado. Revisão Sol/Medium;
+ensaio/implementação Sol/High. Não mudar configurações automaticamente.
+
 # Auditoria consolidada de mecânicas · 04/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-CONSOLIDADA-MECANICAS-2026-11-04.md`
