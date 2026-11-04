@@ -2085,13 +2085,13 @@ function textoDoDescanso_(tipo, antes, fim) {
 }
 
 /** O menu do descanso foi escolhido: aplica, registra, devolve o menu ao convite e avisa. Devolve true se descansou. */
-function r53DescansarComQueda(tipo, queda) {
+function r53DescansarComQueda(tipo, queda, jaConvertido) {
   var idx = indiceEstatico_();
   var ficha = SpreadsheetApp.getActive().getSheetByName('FICHA');
-  return descansar_({range: ficha.getRange(cel_(idx, 'descanso')), value: tipo}, idx, queda);
+  return descansar_({range: ficha.getRange(cel_(idx, 'descanso')), value: tipo}, idx, queda, jaConvertido);
 }
 
-function descansar_(e, idx, quedaConfirmada) {
+function descansar_(e, idx, quedaConfirmada, jaConvertido) {
   var cd = cel_(idx, 'descanso');
   if (!cd || cd !== e.range.getA1Notation().split(':')[0]) return false;
   // 04/11/2026: o evento já traz a escolha; ler a célula custava quase 5 s dos 30 do gatilho.
@@ -2142,8 +2142,8 @@ function descansar_(e, idx, quedaConfirmada) {
   }
   if (quedaAtiva) {
     var recursos = antes;
-    var convertido = r53SocorroTratamentoPendente_(queda, antes.vida, antes.vidaMax);
-    if (convertido) recursos = Object.assign({}, antes, {vida: convertido});
+    var conversao = r53SocorroResolverConversao_(queda, antes.vida, antes.vidaMax, jaConvertido);
+    if (conversao.convertido) recursos = Object.assign({}, antes, {vida: antes.vida + conversao.convertido});
     var recuperados = contaDoDescanso_(tipo, recursos);
     var encerrou = recuperados.vida >= 1 &&
       (queda.status !== 'Derrotado' || antes.integMax === 0 || recuperados.integ >= 1);
@@ -2156,8 +2156,7 @@ function descansar_(e, idx, quedaConfirmada) {
     });
     caixinhas.forEach(function (c) { if (v[c] === true) alteracoes.push([c, false]); });
     if (cExtras && extras) alteracoes.push([cExtras, 0]);
-    var registro = encerrou ? Object.assign({}, queda, {status: 'Encerrado no descanso'}) : queda;
-    if (convertido) registro = Object.assign({}, registro, {tratamentoConvertido: true});
+    var registro = encerrou ? Object.assign({}, conversao.estado, {status: 'Encerrado no descanso'}) : conversao.estado;
     r53SocorroGravar_(SpreadsheetApp.getActive(), registro, null, null, false,
       alteracoes.filter(function (par) { return par[0]; }).map(function (par) {
         var pos = limitesA1_(par[0]);

@@ -189,12 +189,13 @@ const queda = ctx.r53SocorroNovaQueda_({
 }, 2);
 const lote = [];
 ctx.Sheets = { Spreadsheets: { batchUpdate: ({requests}) => lote.push(requests) } };
-for (const [tipo, corpo, derrotado, tratamento, vida, status, convertido] of [
+for (const [tipo, corpo, derrotado, tratamento, vida, status, convertido, manual = false] of [
   [LP, 'Corpo Exaurido', false, 0, 5, 'Encerrado no descanso'],
   [LF, 'Corpo Exaurido', false, 0, 0, 'Morrendo'],
   [LF, 'Corpo Exaurido', true, 3, 3, 'Encerrado no descanso'],
   [LF, '', false, 0, 11, 'Encerrado no descanso'],
-  [LF, 'Corpo Exaurido', true, 3, 0, 'Derrotado', true]
+  [LF, 'Corpo Exaurido', true, 3, 0, 'Derrotado', true],
+  [LP, 'Corpo Exaurido', true, 3, 5, 'Encerrado no descanso', false, true]
 ]) {
   const registro = { ...queda, ...(derrotado ? {status: 'Derrotado', janela: 0} : {}), tratamento, ...(convertido ? {tratamentoConvertido: true} : {}) };
   socorro.getRange('B2').setValue(JSON.stringify(registro));
@@ -206,11 +207,12 @@ for (const [tipo, corpo, derrotado, tratamento, vida, status, convertido] of [
   assert.equal(le('descanso'), 'Escolha o descanso');
   assert.throws(() => ctx.r53DescansarComQueda(tipo, {...registro, janela: 5}), /registro da queda mudou/);
   assert.equal(lote.length, 0);
-  assert.equal(ctx.r53DescansarComQueda(tipo, registro), true);
+  assert.equal(ctx.r53DescansarComQueda(tipo, registro, manual), true);
   assert.equal(lote.length, 1);
   const atualizacoes = lote.pop().filter(r => r.updateCells).map(r => r.updateCells);
   const serializado = atualizacoes.find(r => r.rows[1]).rows[1].values[1].userEnteredValue.stringValue;
   assert.equal(JSON.parse(serializado).status, status);
+  if (derrotado) assert.equal(JSON.parse(serializado).tratamentoConvertido, true);
   const escrito = chave => {
     const pos = ctx.limitesA1_(idx[chave]);
     return atualizacoes.find(r => r.start.rowIndex === pos.l1 - 1 && r.start.columnIndex === pos.c1 - 1)
