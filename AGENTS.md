@@ -1,3 +1,25 @@
+# Auditoria ampliada de mecânicas · 04/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-AMPLIADA-2026-11-04.md` e seu JSON.
+Ramo `codex/auditoria-mecanicas-ampliada-20261104`, sobre PR58 `11ab8d1`.
+Diagnóstico somente: Integridade não reduz deslocamento calculado (personagem
+e entidade), mínimo 1 da Integridade com vida máxima zero e resumo de estágio
+incompleto, conferidos em QA nativa. Dois problemas de colagem reproduzidos em
+helpers locais: ± da entidade apaga vizinho; TEMP multicélula ignora teto.
+Falta ensaio desses eventos no Google: navegador desativado nas configurações
+do Work; usuário consultado. API não dispara onEdit. Não afirmar 100%.
+18 cenários de recursos/condições e 16 regressões de montagem nativos; os 16
+passaram, inclusive 12 rejeições legítimas. Local: montagem 89, descanso 66,
+socorro 98 e cura 35 aprovados; eventos 2 conformes/2 divergentes.
+15 campos restaurados e relidos iguais. Evidências privadas somente em
+`nuvem-b47/saidas/auditoria-ampliada/`, ignorado. Duas abas de QA permanecem
+na descartável. Sem produção alterada, merge, oficiais, jogador ou PR31.
+PR57/58 com dois checks SUCCESS cada; PR31 em `765e3b2`, intocada.
+Fila ainda aberta no relatório: eventos, Bênçãos/imunidades, custos/Classe,
+capacidades e demais combinações contra R66. Usos por dia e condições já
+documentados como manuais não são automaticamente defeitos de automação.
+Sol/High para investigação; Sol/Medium para revisão, sem mudar configurações.
+
 # Auditoria de reservas temporárias · 04/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-RESERVAS-2026-11-04.md` e seu JSON.
