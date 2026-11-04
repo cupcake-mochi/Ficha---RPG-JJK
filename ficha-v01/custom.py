@@ -494,7 +494,10 @@ def integra(layout,tr,fp):
   'B122':f'=IF($B$121,INDEX({faixa(9,QUANTIDADE+1)},$B$120),"")',
   'B123':f'=IF($B$121,INDEX({faixa(10,QUANTIDADE+1)},$B$120),"")',
   'B124':f'=IF($B$121,INDEX({faixa(11,QUANTIDADE+1)},$B$120),"")',
-  'B125':f'=IF($B$121,INDEX({faixa(12,QUANTIDADE+1)},$B$120),"")'}
+  'B125':f'=IF($B$121,INDEX({faixa(12,QUANTIDADE+1)},$B$120),"")',
+  # A Defesa e o descanso herdam a Restrição corporal só pela Origem publicada ou por um cartão válido com essa base.
+  'B126':f'=OR({ori}={texto(RESTRICAO)},$B$123={texto(RESTRICAO)})',
+  'B127':f'=AND({mn}<>"",COUNTIF({cmenu},{mn})>0)'}
  for c,v in helpers.items():tr['aba']['celulas'].append([c,v,None])
  # Preserve the old branch verbatim for every book Origin.
  for aba in ['DADOS']:

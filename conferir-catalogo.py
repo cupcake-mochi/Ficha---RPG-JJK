@@ -14,6 +14,7 @@ import json, re, sys, os
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import livro as Lv
+from r53.textos_revisados import PRENUNCIO, PRENUNCIO_TRECHO, REACAO
 
 CAT = json.load(open("catalogo-projeto-m.json", encoding="utf-8"))
 MAN = " ".join(re.sub(r"(?m)^#+\s*", "", Lv.texto()).split())
@@ -238,8 +239,17 @@ _ok("o menu de Origem e o origens-do-livro.json falam das mesmas entradas",
     {o["menu"] for o in _OL["origens"]} == set(list(CAT["origens"])[:6]) | {r for r in _rot if r.startswith("Restrição Celestial · ")})
 # os parágrafos de texto (as fileiras de tabela e os subtítulos, que o extrator escreve como "Título.", ficam de fora)
 _tits = {l_.lstrip("#").strip() + "." for l_ in Lv.linhas() if Lv.nivel(l_)}
+def confere_texto_origem(o, c):
+    texto = c["texto"]
+    if (o["menu"], c["nome"]) == ("Restrição Celestial · Sem Energia", "Ataque sem Prenúncio"):
+        trecho_atualizado = PRENUNCIO_TRECHO + " " + PRENUNCIO
+        if texto.count(trecho_atualizado) != 1:
+            return False
+        texto = texto.replace(trecho_atualizado, PRENUNCIO_TRECHO)
+    return all(tem(p) for p in texto.split("\n\n") if " | " not in p and p not in _tits)
+
 _mal = [(o["menu"], c["nome"]) for o in _OL["origens"] for c in o["marcantes"] + o["menores"]
-        if not all(tem(p_) for p_ in c["texto"].split("\n\n") if " | " not in p_ and p_ not in _tits)]
+        if not confere_texto_origem(o, c)]
 _ok("o texto de cada marcante e de cada menor está no livro, parágrafo por parágrafo", not _mal, str(_mal[:5]))
 
 print("\nPROGRESSÃO")
@@ -379,8 +389,14 @@ _ok("nada do fora do livro foi para o livro: o desconto e o arredondamento antig
 
 print("\nO TEXTO DO CATÁLOGO, CONTRA O LIVRO")
 # o manual.txt é texto limpo: cada frase que o catálogo diz ter tirado do livro tem de estar nele, inteira
+def confere_texto_catalogo(tipo, nome, texto):
+    if (tipo, nome) == ("melhorias", "Reação"):
+        base, separador, trecho = _norm(texto).rpartition(" " + REACAO)
+        return bool(separador) and not trecho and tem(base)
+    return tem(texto)
+
 for _tab_, _campo in (("melhorias", "efeito"), ("restricoes", "o_que_muda"), ("pericias", "descricao"), ("origens", "em_uma_linha")):
-    _mal = [n for n, e in CAT[_tab_].items() if isinstance(e, dict) and isinstance(e.get(_campo), str) and not tem(e[_campo])]
+    _mal = [n for n, e in CAT[_tab_].items() if isinstance(e, dict) and isinstance(e.get(_campo), str) and not confere_texto_catalogo(_tab_, n, e[_campo])]
     _ok(f"as frases de {_tab_}.{_campo} estão no livro", not _mal, str(_mal[:6]))
 _mal = [n for n, t in CAT["oficios"].items() if not tem(t.rstrip("."))]
 _ok("as aplicações de cada ofício estão no livro", not _mal, str(_mal))
