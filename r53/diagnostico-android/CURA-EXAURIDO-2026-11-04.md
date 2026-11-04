@@ -31,7 +31,7 @@ O teste não cria uma implementação paralela nem declara cura automática.
 
 Cópia descartável nativa derivada da QA da PR53, sem instalar novos scripts.
 Corpo Exaurido, base corporal publicada válida, máximo 20. Entradas de
-preparação via API; aplicação do ± e escolha de descanso pela interface para
+preparação via API; aplicação do ± pela interface para
 disparar onEdit. Não são medições de desempenho.
 
 ## Implementação aprovada e preparada
@@ -52,7 +52,7 @@ confere a entrada pública e o registro do menu sem carregar o módulo pesado.
 A ação fica em arquivo separado no pacote integral; nenhuma geração de abas
 ou mudança das mecânicas de descanso é necessária.
 
-## Evidência nativa e pendência
+## Evidência nativa e limites
 
 Antes da instalação, no Exaurido com máximo 20 e vida 1:
 - ±9 resultou em 10, campo de ajuste limpo.
@@ -62,9 +62,18 @@ Somente a cópia descartável recebeu o acréscimo ao Codigo e o registro do
 menu no onOpen. Snapshot privado anterior SHA-256
 `a4c69dafe55ff33b269a340edbdca9cf02cdeeee3519935c8223c9fb7fd40b8f`.
 Código salvo, editor recarregado e releitura integral idêntica ao preparado.
-O menu apareceu, mas executar Aplicar cura solicitou autorização do projeto
-copiado. **Aplicação nativa da nova cura ainda não validada**; aguarda usuário.
-Também não foi testado no Android. Não declarar pronto para promoção.
+O usuário concluiu a autorização solicitada pelo Google. Ensaios pela interface:
+- Aplicar cura 9: confirmação exibiu ganho 4 e vida 1 → 5; após Sim,
+  releitura nativa confirmou D26=5, J26=20 e AF26=0.
+- Aplicar cura 1: confirmação exibiu ganho mínimo 1 e vida 5 → 6;
+  escolhido Não, vida permaneceu 5, conferida na interface.
+- Código salvo e relido integralmente antes do ensaio, sem divergências.
+
+Cancelamento e mínimo foram vistos na interface; teto, dados inválidos,
+conflito durante confirmação e corpos alternativos foram cobertos localmente,
+não repetidos no Google. Android não testado. Descanso não foi reexecutado
+nesta rodada: a ação não chama nem modifica suas rotas. Não equivale a
+validação integral da ficha nem autoriza promoção automática.
 
 ## Atualização futura de fichas existentes
 
