@@ -11,8 +11,21 @@ function r53SocorroNovaQueda_(s, escolha) {
   var janela=Math.max(0,s.regras[4]-s.sequelas);
   return {versao:1,referencia:s.maximo,classe:s.classe,escolha:escolha,necessario:necessario,tratamento:0,janela:janela,status:janela?'Morrendo':'Derrotado'};
 }
+/** Registros antigos com vida positiva já tiveram a conversão feita manualmente. */
+function r53SocorroTratamentoPendente_(estado, vida, maximo) {
+  return estado.status === 'Derrotado' && vida === 0 && !estado.tratamentoConvertido
+    ? Math.min(maximo, estado.tratamento) : 0;
+}
 function r53SocorroContaCura_(estado,s,bruto) {
-  if(estado.status!=='Morrendo'||estado.janela<1)throw Error('Cura comum não encerra Derrotado ou uma janela esgotada. Resolva a situação com o mestre.');
+  if (estado.status === 'Derrotado' && estado.janela === 0) {
+    var cura = r53ContaCura_(s, bruto);
+    var convertido = bruto > 0 ? r53SocorroTratamentoPendente_(estado, s.atual, s.maximo) : 0;
+    var base = s.atual + convertido;
+    var vida = base + Math.min(cura.ganho, Math.max(0, s.maximo - base));
+    var registro = vida !== s.atual ? Object.assign({}, estado, {tratamentoConvertido: true}) : estado;
+    return {estado: registro, vida: vida, saiu: false, ganho: cura.ganho, reduz: cura.reduz, convertido: convertido};
+  }
+  if(estado.status!=='Morrendo'||estado.janela<1)throw Error('Registro sem janela de Morrendo válida. Confira SOCORRO.');
   if(s.atual!==0)throw Error('O registro está em Morrendo, mas a vida foi alterada. Confira o registro antes de continuar.');
   var conta=r53ContaCura_(s,bruto), total=estado.tratamento+conta.ganho;
   if(!Number.isSafeInteger(total))throw Error('Tratamento fora do limite suportado.');
@@ -26,6 +39,7 @@ function r53SocorroLer_(ss) {
   if(aba.getRange('A2').getValue()!=='SOCORRO_R53_1')throw Error('Já existe uma aba SOCORRO sem o formato esperado. Nada foi alterado.');
   var estado;try{estado=JSON.parse(aba.getRange('B2').getValue());}catch(e){throw Error('Registro de socorro inválido. Confira antes de continuar.');}
   if(!estado||estado.versao!==1||['Morrendo','Derrotado','Socorrido','Encerrado manualmente','Encerrado no descanso'].indexOf(estado.status)<0||![estado.referencia,estado.classe,estado.necessario,estado.tratamento,estado.janela].every(Number.isSafeInteger)||estado.referencia<1||estado.classe<1||estado.necessario<1||estado.tratamento<0||estado.janela<0||[1,2,3].indexOf(estado.escolha)<0)throw Error('Registro de socorro inconsistente. Nada foi alterado.');
+  if (estado.tratamentoConvertido !== undefined && estado.tratamentoConvertido !== true) throw Error('Conversão de tratamento inválida. Confira SOCORRO.');
   return estado;
 }
 function r53SocorroRecursos_(ss) {
@@ -46,7 +60,7 @@ function r53SocorroGravar_(ss,estado,recursos,vida,sequela,alteracoes) {
     requests.push({addSheet:{properties:{sheetId:id,title:'SOCORRO',gridProperties:{rowCount:30,columnCount:3}}}});
   }
   var escolha=['','Aguentar','Insistir · primeira vez na cena','Insistir · segunda vez em diante'][estado.escolha];
-  var rows=[['SOCORRO','Registro da queda'],['SOCORRO_R53_1',JSON.stringify(estado)],['',''],['Estado',estado.status],['Máximo de referência',estado.referencia],['Maior Classe na queda',estado.classe],['Escolha registrada',escolha],['Tratamento necessário',estado.necessario],['Tratamento recebido',estado.tratamento],['Janela restante (rodadas)',estado.janela],['Como usar','Recursos → Aplicar cura acumula tratamento enquanto estiver Morrendo.'],['Janela','Use Consumir rodada da janela após cada volta completa ou dano posterior que alcance a vida.'],['Limites','Estabilização, resgates expressos e saída de Derrotado exigem resolução manual com o mestre. Não use cura comum para essas exceções.'],['Previsão','As caixas de Morrendo na FICHA calculam a próxima queda. Este registro conserva os valores da queda atual.'],['Insistir','A contagem por cena é informada ao registrar; manter-se agindo não é uma nova escolha.']];
+  var rows=[['SOCORRO','Registro da queda'],['SOCORRO_R53_1',JSON.stringify(estado)],['',''],['Estado',estado.status],['Máximo de referência',estado.referencia],['Maior Classe na queda',estado.classe],['Escolha registrada',escolha],['Tratamento necessário',estado.necessario],['Tratamento recebido',estado.tratamento],['Janela restante (rodadas)',estado.janela],['Como usar','Recursos → Aplicar cura acumula tratamento em Morrendo e recupera vida em Derrotado, após confirmação do mestre.'],['Janela','Use Consumir rodada da janela após cada volta completa ou dano posterior que alcance a vida.'],['Limites','Resolva estabilização e resgates expressos com o mestre. O descanso longo pode encerrar uma queda quando a recuperação permitir.'],['Previsão','As caixas de Morrendo na FICHA calculam a próxima queda. Este registro conserva os valores da queda atual.'],['Insistir','A contagem por cena é informada ao registrar; manter-se agindo não é uma nova escolha.']];
   requests.push({updateCells:{start:{sheetId:id,rowIndex:0,columnIndex:0},rows:rows.map(function(r){return {values:r.map(r53SocorroCelula_)};}),fields:'userEnteredValue'}});
   requests.push({updateDimensionProperties:{range:{sheetId:id,dimension:'ROWS',startIndex:1,endIndex:2},properties:{hiddenByUser:true},fields:'hiddenByUser'}});
   requests.push({updateDimensionProperties:{range:{sheetId:id,dimension:'COLUMNS',startIndex:0,endIndex:1},properties:{pixelSize:240},fields:'pixelSize'}});
@@ -83,10 +97,18 @@ function r53SocorroAplicarCura_(ss,bruto) {
   try{s=r53SocorroRecursos_(ss);antes=r53SocorroLer_(ss);if(!r53SocorroAtivo_(antes))throw Error('Vida em zero: use Recursos → Registrar queda antes de aplicar cura.');conta=r53SocorroContaCura_(antes,s,bruto);}catch(e){ui.alert(e.message);return;}
   if(conta.ganho===0){ui.alert('Cura zero: o tratamento e a vida foram preservados.');return;}
   var texto='Referência da queda: '+antes.referencia+' · necessário: '+antes.necessario+'\nCura válida: '+conta.ganho+(conta.reduz?' (redução do Corpo Exaurido aplicada)':'')+'\nTratamento: '+antes.tratamento+' → '+conta.estado.tratamento+'\n'+(conta.saiu?'Encerra Morrendo: vida '+conta.vida+' e uma Sequela.':'Tratamento insuficiente: vida continua zero.')+'\nA vida temporária não muda. Confirme apenas cura válida para este alvo.';
-  if(ui.alert('Confirmar tratamento',texto,ui.ButtonSet.YES_NO)!==ui.Button.YES)return;
+  var derrotado = antes.status === 'Derrotado';
+  if (derrotado) {
+    if (conta.vida === s.atual) { ui.alert('A vida já está no máximo.'); return; }
+    texto = 'Confirme com o mestre que o personagem está vivo e pode receber cura.\n' +
+      (conta.convertido ? 'Tratamento convertido em vida uma única vez: ' + conta.convertido + '.\n' : '') +
+      'Cura válida: ' + conta.ganho + (conta.reduz ? ' (redução do Corpo Exaurido aplicada)' : '') +
+      '\nVida: ' + s.atual + ' → ' + conta.vida + '. A derrota continua, a janela permanece em zero e nenhuma Sequela é registrada.';
+  }
+  if(ui.alert(derrotado ? 'Confirmar cura após a derrota' : 'Confirmar tratamento',texto,ui.ButtonSet.YES_NO)!==ui.Button.YES)return;
   var lock=LockService.getDocumentLock();if(!lock.tryLock(5000)){ui.alert('Outra operação está em andamento. Tente novamente.');return;}var erro;
   try{if(JSON.stringify(s)!==JSON.stringify(r53SocorroRecursos_(ss))||JSON.stringify(antes)!==JSON.stringify(r53SocorroLer_(ss)))throw Error('A ficha ou o tratamento mudou durante a confirmação. Confira e tente novamente.');r53SocorroGravar_(ss,conta.estado,s,conta.vida,conta.saiu);}catch(e){erro=e.message;}finally{lock.releaseLock();}
-  if(erro)ui.alert(erro);else ss.toast(conta.saiu?'Socorro concluído; uma Sequela registrada.':'Tratamento acumulado; vida permanece zero.','Socorro',6);
+  if(erro)ui.alert(erro);else ss.toast(derrotado ? 'Vida ' + s.atual + ' → ' + conta.vida + ' · Derrotado' : conta.saiu?'Socorro concluído; uma Sequela registrada.':'Tratamento acumulado; vida permanece zero.','Socorro',6);
 }
 /** Saída administrativa explícita para exceções resolvidas com o mestre; não concede recursos. */
 function encerrarRegistroSocorro() {

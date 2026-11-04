@@ -189,13 +189,14 @@ const queda = ctx.r53SocorroNovaQueda_({
 }, 2);
 const lote = [];
 ctx.Sheets = { Spreadsheets: { batchUpdate: ({requests}) => lote.push(requests) } };
-for (const [tipo, corpo, derrotado, tratamento, vida, status] of [
+for (const [tipo, corpo, derrotado, tratamento, vida, status, convertido] of [
   [LP, 'Corpo Exaurido', false, 0, 5, 'Encerrado no descanso'],
   [LF, 'Corpo Exaurido', false, 0, 0, 'Morrendo'],
   [LF, 'Corpo Exaurido', true, 3, 3, 'Encerrado no descanso'],
-  [LF, '', false, 0, 11, 'Encerrado no descanso']
+  [LF, '', false, 0, 11, 'Encerrado no descanso'],
+  [LF, 'Corpo Exaurido', true, 3, 0, 'Derrotado', true]
 ]) {
-  const registro = { ...queda, ...(derrotado ? {status: 'Derrotado', janela: 0} : {}), tratamento };
+  const registro = { ...queda, ...(derrotado ? {status: 'Derrotado', janela: 0} : {}), tratamento, ...(convertido ? {tratamentoConvertido: true} : {}) };
   socorro.getRange('B2').setValue(JSON.stringify(registro));
   for (const [chave, valor] of Object.entries({ ...base, vida: 0, origem: restricao, marcante: corpo,
     'menor 1': '', 'menor 2': '' })) celula(chave).setValue(valor);

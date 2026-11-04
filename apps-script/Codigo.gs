@@ -2142,9 +2142,8 @@ function descansar_(e, idx, quedaConfirmada) {
   }
   if (quedaAtiva) {
     var recursos = antes;
-    if (queda.status === 'Derrotado' && antes.vida === 0) {
-      recursos = Object.assign({}, antes, {vida: Math.min(antes.vidaMax, queda.tratamento)});
-    }
+    var convertido = r53SocorroTratamentoPendente_(queda, antes.vida, antes.vidaMax);
+    if (convertido) recursos = Object.assign({}, antes, {vida: convertido});
     var recuperados = contaDoDescanso_(tipo, recursos);
     var encerrou = recuperados.vida >= 1 &&
       (queda.status !== 'Derrotado' || antes.integMax === 0 || recuperados.integ >= 1);
@@ -2158,6 +2157,7 @@ function descansar_(e, idx, quedaConfirmada) {
     caixinhas.forEach(function (c) { if (v[c] === true) alteracoes.push([c, false]); });
     if (cExtras && extras) alteracoes.push([cExtras, 0]);
     var registro = encerrou ? Object.assign({}, queda, {status: 'Encerrado no descanso'}) : queda;
+    if (convertido) registro = Object.assign({}, registro, {tratamentoConvertido: true});
     r53SocorroGravar_(SpreadsheetApp.getActive(), registro, null, null, false,
       alteracoes.filter(function (par) { return par[0]; }).map(function (par) {
         var pos = limitesA1_(par[0]);

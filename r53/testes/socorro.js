@@ -10,7 +10,19 @@ x=c.r53SocorroContaCura_(q,{...base,corpo:'Corpo Exaurido',corporal:true},9);t((
 t(()=>assert.equal(c.r53SocorroContaCura_(q,{...base,corpo:'Corpo Exaurido',corporal:true},1).estado.tratamento,1));
 for(const seq of [0,1,2,3,5])t(()=>assert.equal(c.r53SocorroNovaQueda_({...base,sequelas:seq},1).janela,Math.max(0,3-seq)));
 for(const patch of [{atual:1},{maximo:0},{classe:0},{sequelas:-1},{regras:[.25,1/3,.5,15,1.5]}])t(()=>assert.throws(()=>c.r53SocorroNovaQueda_({...base,...patch},1)));
-t(()=>assert.throws(()=>c.r53SocorroContaCura_(c.r53SocorroNovaQueda_({...base,sequelas:3},1),base,99)));
+const derrotado = {...q, status: 'Derrotado', janela: 0, tratamento: 4};
+const exaurido = {...base, corpo: 'Corpo Exaurido', corporal: true};
+for (const [estado, atual, bruto, vida, conversao] of [
+  [derrotado, 0, 6, 7, 4], [derrotado, 4, 6, 7, 0],
+  [{...derrotado, tratamentoConvertido: true}, 0, 6, 3, 0],
+  [derrotado, 22, 6, 23, 0], [derrotado, 0, 0, 0, 0]
+]) {
+  const resultado = c.r53SocorroContaCura_(estado, {...exaurido, atual}, bruto);
+  t(()=>assert.deepEqual([resultado.vida, resultado.convertido, resultado.saiu, resultado.estado.status,
+    resultado.estado.janela, resultado.estado.tratamento],
+    [vida, conversao, false, 'Derrotado', 0, 4]));
+  t(()=>assert.equal(Boolean(resultado.estado.tratamentoConvertido), vida !== atual));
+}
 t(()=>assert.throws(()=>c.r53SocorroContaCura_(q,{...base,atual:1},99)));
 t(()=>assert.equal(c.r53SocorroContaCura_(q,base,0).estado.tratamento,0));
 // Testa o lote real: registro, vida e uma única Sequela juntos; falha do serviço não tem fallback parcial.
@@ -26,5 +38,35 @@ for(const mode of ['cancel','no','changed','busy']){
  const ss2={toast(){}};
  const ctx={SpreadsheetApp:{getActive:()=>ss2,getUi:()=>({Button:{OK:'OK',YES:'YES'},ButtonSet:{OK_CANCEL:1,YES_NO:2},prompt:()=>({getSelectedButton:()=>mode==='cancel'?'CANCEL':'OK',getResponseText:()=> '1'}),alert:(...a)=>{alerts.push(a);return mode==='no'?'NO':'YES';}})},LockService:{getDocumentLock:()=>({tryLock:()=>mode!=='busy',releaseLock(){}})}};
  vm.createContext(ctx);vm.runInContext(source,ctx);ctx.r53SocorroRecursos_=()=>({...base,maximo:mode==='changed'&&reads++?40:23});ctx.r53SocorroLer_=()=>null;ctx.r53SocorroGravar_=()=>writes++;ctx.registrarQueda();t(()=>assert.equal(writes,0));
+}
+// A entrada real do menu grava apenas o registro e a vida depois da derrota.
+for (const [confirmacao, vidaEsperada] of [['NO', 0], ['YES', 7]]) {
+  const confirmacoes = [];
+  let registro = derrotado, vida = 0;
+  const ss = {
+    getId: () => 'QA',
+    getSheetByName: nome => nome === 'SOCORRO' ? {getSheetId: () => 2} : {getSheetId: () => 1},
+    toast() {}
+  };
+  const ui = {
+    Button: {OK: 'OK', YES: 'YES'}, ButtonSet: {},
+    prompt: () => ({getSelectedButton: () => 'OK', getResponseText: () => '6'}),
+    alert: titulo => {confirmacoes.push(titulo); return confirmacao;}
+  };
+  c.SpreadsheetApp = {getActive: () => ss, getUi: () => ui};
+  c.LockService = {getDocumentLock: () => ({tryLock: () => true, releaseLock() {}})};
+  c.r53SocorroLer_ = () => registro;
+  c.r53LerCura_ = () => ({...exaurido, atual: vida});
+  c.r53SocorroRecursos_ = () => ({...exaurido, atual: vida, caixas: [true, false, false], extras: 0});
+  c.Sheets.Spreadsheets.batchUpdate = ({requests}) => {
+    const escritas = requests.filter(r => r.updateCells?.fields === 'userEnteredValue').map(r => r.updateCells);
+    assert.deepEqual(Array.from(escritas, r => [r.start.sheetId, r.start.rowIndex]), [[2, 0], [1, 25]]);
+    registro = JSON.parse(escritas[0].rows[1].values[1].userEnteredValue.stringValue);
+    vida = escritas[1].rows[0].values[0].userEnteredValue.numberValue;
+  };
+  c.aplicarCuraRecebida();
+  t(()=>assert.deepEqual(confirmacoes, ['Confirmar cura após a derrota']));
+  t(()=>assert.equal(vida, vidaEsperada));
+  t(()=>assert.deepEqual([registro.status, registro.janela, registro.tratamento], ['Derrotado', 0, 4]));
 }
 console.log(JSON.stringify({resultado:'OK',verificacoes:n}));
