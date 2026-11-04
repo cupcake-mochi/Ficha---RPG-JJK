@@ -458,7 +458,9 @@ def integra(layout,tr,fp):
  customorigin=f'COUNTIFS({faixa(3,QUANTIDADE+1)},{selected},{faixa(2,QUANTIDADE+1)},"Origem",{faixa(20,QUANTIDADE+1)},TRUE)=1'
  can_create=f'OR({selected}={texto(RESTRICAO)},AND({customorigin},OR({base}="",{base}={texto(SEM_BASE)},{base}={texto(RESTRICAO)})))'
  cmenu=faixa(94,160)
- inherited=f'(({tab("origem_cap",1)}={selected})+(({base}<>"")*({base}<>{texto(SEM_BASE)})*({tab("origem_cap",1)}={base})))'
+ # A base preenchida em cartão inválido não pode alimentar capacidades herdadas.
+ base_menu=f'IF({customorigin},{base},"")'
+ inherited=f'(({tab("origem_cap",1)}={selected})+(({base_menu}<>"")*({base_menu}<>{texto(SEM_BASE)})*({tab("origem_cap",1)}={base_menu})))'
  corrections={
   'CP2':f'=IF({can_create},{texto(fp["R"]["origens_do_livro"]["criada"])},"")',
   'CP3':f'=IFERROR(FILTER({tab("origem_cap",0)},{inherited},{tab("origem_cap",2)}="marcante"),"")',
