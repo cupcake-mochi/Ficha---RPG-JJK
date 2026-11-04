@@ -1,4 +1,27 @@
-# Auditoria ampliada de mecânicas · 04/11/2026
+# Auditoria consolidada de mecânicas · 04/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-CONSOLIDADA-MECANICAS-2026-11-04.md`
+e seu JSON; substituem a fila preliminar da entrada seguinte. PR59, mesmo ramo
+`codex/auditoria-mecanicas-ampliada-20261104`, diagnóstico sem produção corrigida.
+Dez achados A00–A09: inclui Vigília, teto nas 12 invocações, ganho ± com máximo
+zero e perda da primeira entrada em dois descontos enfileirados. Colagens/fila
+confirmadas no onEdit completo local e/ou helper do atalho, ainda NÃO em eventos
+reais Google: navegador desativado, reconferido. Não atribuir a latência a esses
+achados sem medir. Nova cópia Ciclo confirmou A01/A02/A06, sem tocar oficiais.
+89/89 montagens e 69/69 cálculos de perícias nativos conformes; 31 abas de cada
+cópia sem erros de fórmula. Estática: 70.801 fórmulas/161.721 referências, zero
+ocorrências. OnEdit diagnóstico: 25 casos, 5 conformes/20 divergentes, não verde.
+Suítes ampliadas: 15 passaram, duas puladas por fixture privada ausente, uma
+falhou por comparar arquivo novo Socorro.gs com commit onde não existia (B01).
+Testes adicionais de personagem 50/3 e molde de Origem 19 passaram.
+Campos restaurados/relidos iguais em lotes 15/5/10/75 (há campos repetidos).
+Snapshots/recibos/IDs só em `nuvem-b47/saidas/auditoria-ampliada/`, ignorado.
+Análise disponível consolidada, não certificado de 100%: repetir eventos reais
+quando o navegador estiver habilitado; corrigir A09/A03 primeiro, separadamente.
+Sem merge, oficiais, jogador, PR31, acionadores ou mudanças de acesso.
+Sol/High para correções; Sol/Medium para revisão, sem mudar configurações.
+
+# Auditoria ampliada de mecânicas · 04/11/2026 (etapa anterior)
 
 Leia `r53/diagnostico-android/AUDITORIA-AMPLIADA-2026-11-04.md` e seu JSON.
 Ramo `codex/auditoria-mecanicas-ampliada-20261104`, sobre PR58 `11ab8d1`.

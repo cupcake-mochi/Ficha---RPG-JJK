@@ -1,0 +1,1370 @@
+{
+  "data": "2026-11-04",
+  "base_auditada": "bf94e7eb253e47abaa402da92bcffb7a3b216874",
+  "livro": "e3058ad29180fdec2efec75b512446c49bf87b3d",
+  "nativo": {
+    "montagem": 89,
+    "montagem_aprovada": 89,
+    "pericias": 69,
+    "pericias_aprovadas": 69,
+    "abas_era": 31,
+    "abas_ciclo": 31,
+    "erros_era": [],
+    "erros_ciclo": []
+  },
+  "montagem_restante": [
+    {
+      "caso": "01b • Toque não recupera base",
+      "aprovado": true
+    },
+    {
+      "caso": "02 • Toque Classe 3 / Precisão",
+      "aprovado": true
+    },
+    {
+      "caso": "03 • Mescla preparada Classe 3",
+      "aprovado": true
+    },
+    {
+      "caso": "04 • Mescla preparada Classe 4",
+      "aprovado": true
+    },
+    {
+      "caso": "05b • Área Fechada impede Mais Um",
+      "aprovado": true
+    },
+    {
+      "caso": "05c • Guarda individual independe de Amparo",
+      "aprovado": true
+    },
+    {
+      "caso": "06 • Controle Livre sem dano",
+      "aprovado": true
+    },
+    {
+      "caso": "06b • Desconto não concede reforço sozinho",
+      "aprovado": true
+    },
+    {
+      "caso": "07c • Cone / Queima-Roupa",
+      "aprovado": true
+    },
+    {
+      "caso": "07d • Aura rejeita Longe",
+      "aprovado": true
+    },
+    {
+      "caso": "07e • Toque rejeita Queima-Roupa",
+      "aprovado": true
+    },
+    {
+      "caso": "08 • Entidade Classe 3 / Livre",
+      "aprovado": true
+    },
+    {
+      "caso": "08b • Pessoa Classe 3 / Livre",
+      "aprovado": true
+    },
+    {
+      "caso": "09 • Entidade Classe 1 / VT",
+      "aprovado": true
+    },
+    {
+      "caso": "09b • Entidade C1 / coletivo sem pontos",
+      "aprovado": true
+    },
+    {
+      "caso": "10 • Firmeza categorias diferentes",
+      "aprovado": true
+    },
+    {
+      "caso": "10b • Firmeza categoria duplicada",
+      "aprovado": true
+    },
+    {
+      "caso": "11 • Forma Fluida / Aura",
+      "aprovado": true
+    },
+    {
+      "caso": "11b • Remodelar / Explosão reduzida",
+      "aprovado": true
+    },
+    {
+      "caso": "12c • Máxima dano fixo / sobra",
+      "aprovado": true
+    },
+    {
+      "caso": "12d • Máxima rejeita Salto",
+      "aprovado": true
+    },
+    {
+      "caso": "12e • Liberação Classe 3 / Linha",
+      "aprovado": true
+    },
+    {
+      "caso": "14 • Antigo ambíguo preservado",
+      "aprovado": true
+    },
+    {
+      "caso": "Sobrecusto é adicional independente",
+      "aprovado": true
+    },
+    {
+      "caso": "Entidade: Aura comandada permite condição",
+      "aprovado": true
+    },
+    {
+      "caso": "Dano adicional: Salto só uma vez",
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • Explosão / alcance e área distintos",
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • Cone com Queima-Roupa conserva tamanho",
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • Entidade C6 alcance real e área reduzida",
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • Entidade C7 área maior",
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • benefício individual Classe 6",
+      "aprovado": true
+    },
+    {
+      "caso": "Medidas • Cone Classe 0 primeiro aumento",
+      "aprovado": true
+    },
+    {
+      "caso": "Função • mescla aparece no cartão",
+      "aprovado": true
+    },
+    {
+      "caso": "Firmeza • categoria no resultado",
+      "aprovado": true
+    },
+    {
+      "caso": "TR de dano exige escolha registrada",
+      "aprovado": true
+    },
+    {
+      "caso": "TR Físico e CD ficam apresentados",
+      "aprovado": true
+    },
+    {
+      "caso": "Controle exige tipo de TR",
+      "aprovado": true
+    },
+    {
+      "caso": "Fraqueza de Vigor devolve Leve",
+      "aprovado": true
+    },
+    {
+      "caso": "Fraqueza de Espírito devolve Média",
+      "aprovado": true
+    },
+    {
+      "caso": "Recuo fixa condição Leve",
+      "aprovado": true
+    },
+    {
+      "caso": "Terreno precisa de área",
+      "aprovado": true
+    },
+    {
+      "caso": "Terreno de área não inventa TR",
+      "aprovado": true
+    },
+    {
+      "caso": "Opções de Terreno não concedem repetição",
+      "aprovado": true
+    },
+    {
+      "caso": "Exposições não se acumulam",
+      "aprovado": true
+    },
+    {
+      "caso": "Penalidades próprias não se acumulam",
+      "aprovado": true
+    },
+    {
+      "caso": "Família própria Normal paga preço integral",
+      "aprovado": true
+    },
+    {
+      "caso": "Família própria Livre recebe desconto pessoal",
+      "aprovado": true
+    },
+    {
+      "caso": "Família própria Livre de entidade arredonda para baixo",
+      "aprovado": true
+    },
+    {
+      "caso": "Cadastro incompleto não libera efeito próprio",
+      "aprovado": true
+    },
+    {
+      "caso": "Controle próprio exige compatibilidade registrada",
+      "aprovado": true
+    },
+    {
+      "caso": "Controle próprio compatível recebe CD própria",
+      "aprovado": true
+    },
+    {
+      "caso": "Aliases não duplicam a mesma categoria de Firmeza",
+      "aprovado": true
+    },
+    {
+      "caso": "Básica da entidade preserva d6 e atuação própria",
+      "aprovado": true
+    },
+    {
+      "caso": "Básica adicional de Repertório usa Classe 0 e d6",
+      "aprovado": true
+    },
+    {
+      "caso": "Classe 0 do personagem conserva d8",
+      "aprovado": true
+    },
+    {
+      "caso": "Especial da entidade conserva d8",
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível17 dano",
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível17 cura",
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível21 dano",
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível21 cura",
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível26 dano",
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima de domada nível26 cura",
+      "aprovado": true
+    },
+    {
+      "caso": "Liberação da domada C3 soma próprios6pontos e3d8",
+      "aprovado": true
+    },
+    {
+      "caso": "Entidade Reação usa coletiva e dispensa básica",
+      "aprovado": true
+    },
+    {
+      "caso": "Forma própria paga preço integral e conserva alcance",
+      "aprovado": true
+    },
+    {
+      "caso": "Longe da Forma própria muda somente alcance estruturado",
+      "aprovado": true
+    },
+    {
+      "caso": "Forma própria respeita Família Fechada",
+      "aprovado": true
+    },
+    {
+      "caso": "Forma própria conserva permissão de Classe0",
+      "aprovado": true
+    },
+    {
+      "caso": "Quebra Coisa participa do teto de4C",
+      "aprovado": true
+    },
+    {
+      "caso": "Máxima TR conserva três quartos do dano",
+      "aprovado": true
+    },
+    {
+      "caso": "Controle curto recebe uma rodada e CD própria",
+      "aprovado": true
+    },
+    {
+      "caso": "Terreno reforçado não ganha TR inventado",
+      "aprovado": true
+    },
+    {
+      "caso": "Concentrada substitui rodada adicional mas conserva CD",
+      "aprovado": true
+    }
+  ],
+  "pericias": [
+    {
+      "cenario": "sem treino",
+      "verificacoes": [
+        {
+          "nome": "Atletismo",
+          "esperado": 2,
+          "obtido": {
+            "numberValue": 2
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Acrobacia",
+          "esperado": 3,
+          "obtido": {
+            "numberValue": 3
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Furtividade",
+          "esperado": 3,
+          "obtido": {
+            "numberValue": 3
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Pontaria",
+          "esperado": 3,
+          "obtido": {
+            "numberValue": 3
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Prestidigitação",
+          "esperado": 3,
+          "obtido": {
+            "numberValue": 3
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Investigação",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Intuição",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Ocultismo",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Religião",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "História",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Hierarquia",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Medicina",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Sobrevivência",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Natureza",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Lidar com Animais",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Tecnologia",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Sentir Energia",
+          "esperado": 6,
+          "obtido": {
+            "numberValue": 6
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Percepção",
+          "esperado": 6,
+          "obtido": {
+            "numberValue": 6
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Persuasão",
+          "esperado": 6,
+          "obtido": {
+            "numberValue": 6
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Enganação",
+          "esperado": 6,
+          "obtido": {
+            "numberValue": 6
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Intimidação",
+          "esperado": 6,
+          "obtido": {
+            "numberValue": 6
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Atuação",
+          "esperado": 6,
+          "obtido": {
+            "numberValue": 6
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Provocar",
+          "esperado": 6,
+          "obtido": {
+            "numberValue": 6
+          },
+          "conforme": true
+        }
+      ]
+    },
+    {
+      "cenario": "treinada",
+      "verificacoes": [
+        {
+          "nome": "Atletismo",
+          "esperado": 5,
+          "obtido": {
+            "numberValue": 5
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Acrobacia",
+          "esperado": 6,
+          "obtido": {
+            "numberValue": 6
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Furtividade",
+          "esperado": 6,
+          "obtido": {
+            "numberValue": 6
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Pontaria",
+          "esperado": 6,
+          "obtido": {
+            "numberValue": 6
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Prestidigitação",
+          "esperado": 6,
+          "obtido": {
+            "numberValue": 6
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Investigação",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Intuição",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Ocultismo",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Religião",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "História",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Hierarquia",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Medicina",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Sobrevivência",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Natureza",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Lidar com Animais",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Tecnologia",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Sentir Energia",
+          "esperado": 9,
+          "obtido": {
+            "numberValue": 9
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Percepção",
+          "esperado": 9,
+          "obtido": {
+            "numberValue": 9
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Persuasão",
+          "esperado": 9,
+          "obtido": {
+            "numberValue": 9
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Enganação",
+          "esperado": 9,
+          "obtido": {
+            "numberValue": 9
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Intimidação",
+          "esperado": 9,
+          "obtido": {
+            "numberValue": 9
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Atuação",
+          "esperado": 9,
+          "obtido": {
+            "numberValue": 9
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Provocar",
+          "esperado": 9,
+          "obtido": {
+            "numberValue": 9
+          },
+          "conforme": true
+        }
+      ]
+    },
+    {
+      "cenario": "especializada com buff",
+      "verificacoes": [
+        {
+          "nome": "Atletismo",
+          "esperado": 7,
+          "obtido": {
+            "numberValue": 7
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Acrobacia",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Furtividade",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Pontaria",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Prestidigitação",
+          "esperado": 8,
+          "obtido": {
+            "numberValue": 8
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Investigação",
+          "esperado": 10,
+          "obtido": {
+            "numberValue": 10
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Intuição",
+          "esperado": 10,
+          "obtido": {
+            "numberValue": 10
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Ocultismo",
+          "esperado": 10,
+          "obtido": {
+            "numberValue": 10
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Religião",
+          "esperado": 10,
+          "obtido": {
+            "numberValue": 10
+          },
+          "conforme": true
+        },
+        {
+          "nome": "História",
+          "esperado": 10,
+          "obtido": {
+            "numberValue": 10
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Hierarquia",
+          "esperado": 10,
+          "obtido": {
+            "numberValue": 10
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Medicina",
+          "esperado": 10,
+          "obtido": {
+            "numberValue": 10
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Sobrevivência",
+          "esperado": 10,
+          "obtido": {
+            "numberValue": 10
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Natureza",
+          "esperado": 10,
+          "obtido": {
+            "numberValue": 10
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Lidar com Animais",
+          "esperado": 10,
+          "obtido": {
+            "numberValue": 10
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Tecnologia",
+          "esperado": 10,
+          "obtido": {
+            "numberValue": 10
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Sentir Energia",
+          "esperado": 11,
+          "obtido": {
+            "numberValue": 11
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Percepção",
+          "esperado": 11,
+          "obtido": {
+            "numberValue": 11
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Persuasão",
+          "esperado": 11,
+          "obtido": {
+            "numberValue": 11
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Enganação",
+          "esperado": 11,
+          "obtido": {
+            "numberValue": 11
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Intimidação",
+          "esperado": 11,
+          "obtido": {
+            "numberValue": 11
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Atuação",
+          "esperado": 11,
+          "obtido": {
+            "numberValue": 11
+          },
+          "conforme": true
+        },
+        {
+          "nome": "Provocar",
+          "esperado": 11,
+          "obtido": {
+            "numberValue": 11
+          },
+          "conforme": true
+        }
+      ]
+    }
+  ],
+  "restauracao": {
+    "primeiro_lote": 15,
+    "vigilia_era": 5,
+    "ciclo_mecanicas": 10,
+    "ciclo_pericias": 75,
+    "todos_iguais": true,
+    "nota": "Contagens por lote; há campos repetidos entre lotes."
+  },
+  "achados": [
+    {
+      "id": "A00",
+      "titulo": "Temporários aceitos com máximo zero",
+      "evidencia": "Sheets (PR58) e local"
+    },
+    {
+      "id": "A01",
+      "titulo": "Integridade não reduz deslocamento",
+      "evidencia": "Sheets, cópias Era e Ciclo"
+    },
+    {
+      "id": "A02",
+      "titulo": "Entidade com vida máxima zero recebe Integridade 1",
+      "evidencia": "Sheets, cópias Era e Ciclo"
+    },
+    {
+      "id": "A03",
+      "titulo": "Colagem na caixa ± apaga reserva vizinha",
+      "evidencia": "onEdit completo local"
+    },
+    {
+      "id": "A04",
+      "titulo": "Colagem abrangendo TEMP ignora teto",
+      "evidencia": "onEdit completo local"
+    },
+    {
+      "id": "A05",
+      "titulo": "Resumo dos estágios 3 e 4 omite consequências",
+      "evidencia": "Texto/fórmula relidos no Sheets"
+    },
+    {
+      "id": "A06",
+      "titulo": "Vigília não reduz Exaustão efetiva no deslocamento",
+      "evidencia": "Sheets, cópias Era e Ciclo"
+    },
+    {
+      "id": "A07",
+      "titulo": "Teto de vida temporária ausente nas 12 invocações",
+      "evidencia": "onEdit completo local"
+    },
+    {
+      "id": "A08",
+      "titulo": "Ganho pelo ± ultrapassa máximo zero",
+      "evidencia": "onEdit completo local e helper do atalho"
+    },
+    {
+      "id": "A09",
+      "titulo": "Descontos enfileirados perdem a primeira entrada",
+      "evidencia": "onEdit completo local e helper do atalho"
+    }
+  ],
+  "limites": [
+    "Navegador desativado; faltam eventos reais de colagem e fila",
+    "Nenhuma correção aplicada",
+    "Não prova ausência universal de defeitos",
+    "Usos por dia e condições manuais não foram classificados como bugs de automação",
+    "Sem merge, oficiais, jogador ou PR31"
+  ],
+  "onedit_local": {
+    "escopo": "onEdit completo e atalho locais, sem recálculo e sem navegador",
+    "casos": 25,
+    "conformes": 5,
+    "divergencias": [
+      {
+        "nome": "teto entidade 1",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 2",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 3",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 4",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 5",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 6",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 7",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 8",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 9",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 10",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 11",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 12",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "delta entidade X13:Y13",
+        "esperado": [
+          [
+            8,
+            20,
+            0,
+            "",
+            7
+          ]
+        ],
+        "obtido": [
+          [
+            8,
+            20,
+            0,
+            "",
+            ""
+          ]
+        ],
+        "conforme": false
+      },
+      {
+        "nome": "teto personagem AF26:AR26",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "ganho com máximo zero D26",
+        "esperado": 0,
+        "obtido": 5,
+        "conforme": false
+      },
+      {
+        "nome": "ganho com máximo zero D30",
+        "esperado": 0,
+        "obtido": 5,
+        "conforme": false
+      },
+      {
+        "nome": "dois gastos FICHA enfileirados",
+        "esperado": 12,
+        "obtido": 17,
+        "conforme": false
+      },
+      {
+        "nome": "dois gastos INVOCAÇÕES enfileirados",
+        "esperado": 12,
+        "obtido": 17,
+        "conforme": false
+      },
+      {
+        "nome": "atalho real máximo zero",
+        "esperado": 0,
+        "obtido": 5,
+        "conforme": false
+      },
+      {
+        "nome": "atalho real enfileirados",
+        "esperado": 12,
+        "obtido": 17,
+        "conforme": false
+      }
+    ],
+    "resultados": [
+      {
+        "nome": "teto entidade 1",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 2",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 3",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 4",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 5",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 6",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 7",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 8",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 9",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 10",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 11",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "teto entidade 12",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "delta entidade X13",
+        "esperado": [
+          [
+            8,
+            20,
+            0,
+            "",
+            7
+          ]
+        ],
+        "obtido": [
+          [
+            8,
+            20,
+            0,
+            "",
+            7
+          ]
+        ],
+        "conforme": true
+      },
+      {
+        "nome": "delta entidade X13:Y13",
+        "esperado": [
+          [
+            8,
+            20,
+            0,
+            "",
+            7
+          ]
+        ],
+        "obtido": [
+          [
+            8,
+            20,
+            0,
+            "",
+            ""
+          ]
+        ],
+        "conforme": false
+      },
+      {
+        "nome": "teto personagem AF26",
+        "esperado": 10,
+        "obtido": 10,
+        "conforme": true
+      },
+      {
+        "nome": "teto personagem AF26:AR26",
+        "esperado": 10,
+        "obtido": 15,
+        "conforme": false
+      },
+      {
+        "nome": "ganho com máximo zero D26",
+        "esperado": 0,
+        "obtido": 5,
+        "conforme": false
+      },
+      {
+        "nome": "ganho com máximo zero D30",
+        "esperado": 0,
+        "obtido": 5,
+        "conforme": false
+      },
+      {
+        "nome": "dois gastos FICHA processados separadamente",
+        "esperado": 12,
+        "obtido": 12,
+        "conforme": true
+      },
+      {
+        "nome": "dois gastos FICHA enfileirados",
+        "esperado": 12,
+        "obtido": 17,
+        "conforme": false
+      },
+      {
+        "nome": "dois gastos INVOCAÇÕES processados separadamente",
+        "esperado": 12,
+        "obtido": 12,
+        "conforme": true
+      },
+      {
+        "nome": "dois gastos INVOCAÇÕES enfileirados",
+        "esperado": 12,
+        "obtido": 17,
+        "conforme": false
+      },
+      {
+        "nome": "atalho real máximo zero",
+        "esperado": 0,
+        "obtido": 5,
+        "conforme": false
+      },
+      {
+        "nome": "atalho real separados",
+        "esperado": 12,
+        "obtido": 12,
+        "conforme": true
+      },
+      {
+        "nome": "atalho real enfileirados",
+        "esperado": 12,
+        "obtido": 17,
+        "conforme": false
+      }
+    ]
+  },
+  "auditoria_estatica": {
+    "abas": 26,
+    "formulas": 70801,
+    "referencias_explicitas": 161721,
+    "issues": []
+  },
+  "regressoes": [
+    {
+      "teste": "xp_nivel",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "xp_atualizar",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "caminho_corrida",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "caminho_integrado",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "cartas_custom",
+      "estado": "pulada",
+      "codigo": 0
+    },
+    {
+      "teste": "marcas_custom",
+      "estado": "pulada",
+      "codigo": 0
+    },
+    {
+      "teste": "cartoes_diretos_runtime",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "menu_origem",
+      "estado": "falhou",
+      "codigo": 1
+    },
+    {
+      "teste": "ritual_loader",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "vida_bloquear_molde",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "deslocamento_molde",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "missoes_integradas",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "salario_lote",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "salario_lote_aba",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "test_origens_analise",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "test_contrato",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "test_intervalos_qualificados",
+      "estado": "passou",
+      "codigo": 0
+    },
+    {
+      "teste": "test_integridade_tipos",
+      "estado": "passou",
+      "codigo": 0
+    }
+  ]
+}

@@ -15,16 +15,19 @@ from formulas import X
 IDS = [0, 5, 10, 11, 23, 24, 28, 29, 32, 34, 35, 43, 49, 53, 59, 60]
 
 
-def gerar():
+def gerar(restantes=False):
     originais, antigo_id, antigo_nome = g.CASOS, g.CAT_ID, g.CAT_ABA
-    casos = [originais[i] for i in IDS]
+    selecionados = [i for i in range(len(originais)) if i not in IDS] if restantes else IDS
+    casos = [originais[i] for i in selecionados]
+    sid = 53019003 if restantes else 53019001
+    nomes = ['QA catalogo restante', 'QA montagem restante'] if restantes else ['QA catalogo ampliado', 'QA montagem ampliada']
     try:
         g.CASOS = casos
-        g.CAT_ID, g.CAT_ABA = 53019001, 'QA catalogo ampliado'
+        g.CAT_ID, g.CAT_ABA = sid, nomes[0]
         pedidos = g.gerar()
     finally:
         g.CASOS, g.CAT_ID, g.CAT_ABA = originais, antigo_id, antigo_nome
-    pedidos[1]['updateCells']['start']['sheetId'] = 53019002
+    pedidos[1]['updateCells']['start']['sheetId'] = sid + 1
     necessarios = set()
 
     def visitar(node):
@@ -39,7 +42,7 @@ def gerar():
             visitar(arg)
 
     for caso in casos:
-        for chave in caso['esperado']:
+        for chave in set(caso['esperado']) | set(caso.get('contem', {})) | set(caso.get('nao_contem', {})):
             if chave in g.ARVORE:
                 necessarios.add(chave)
                 visitar(g.ARVORE[chave])
@@ -54,7 +57,7 @@ def gerar():
         rows = dados['rows']
         adds.append({'addSheet': {'properties': {
             'sheetId': dados['start']['sheetId'],
-            'title': ['QA catalogo ampliado', 'QA montagem ampliada'][i],
+            'title': nomes[i],
             'gridProperties': {'rowCount': len(rows) + 2,
                                'columnCount': max(len(r['values']) for r in rows)}}}})
     for row in pedidos[0]['updateCells']['rows']:
@@ -64,5 +67,6 @@ def gerar():
 
 
 if __name__ == '__main__':
-    Path(sys.argv[1]).write_text(json.dumps(gerar(), ensure_ascii=False, separators=(',', ':')))
-    print('16 cenários; ler QA montagem ampliada!FZ2:GB17 depois de aplicar em cópia.')
+    restantes = '--restantes' in sys.argv
+    Path(sys.argv[1]).write_text(json.dumps(gerar(restantes), ensure_ascii=False, separators=(',', ':')))
+    print('73 cenários restantes' if restantes else '16 cenários; ler QA montagem ampliada!FZ2:GB17 depois de aplicar em cópia.')
