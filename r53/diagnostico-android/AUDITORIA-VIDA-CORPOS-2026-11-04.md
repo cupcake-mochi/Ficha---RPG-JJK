@@ -1,5 +1,8 @@
 # Auditoria nativa: vida máxima e Bloquear
 
+**Histórico anterior à correção.** A implementação e a validação posteriores
+estão em [CORRECAO-VIDA-BLOQUEAR-2026-11-04.md](CORRECAO-VIDA-BLOQUEAR-2026-11-04.md).
+
 Base examinada: PR52 em `600f4ec81f74d523e7b0f07598d6a60b2b8a6c12`.
 Ramo separado de auditoria. Este documento registra defeitos reproduzidos;
 não contém nem publica suas correções. Oficiais, jogador e PR31 não foram

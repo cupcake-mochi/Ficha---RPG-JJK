@@ -61,6 +61,25 @@ def limita_deslocamento_corporal(formula, idx):
         base=formula[1:], **{k: ref("FICHA", idx[k]) for k in ("marcante", "vida", "vida_max")})
 
 
+# "trocar por" continua sendo uma decisão explícita sobre o resultado final.
+MOLDE_VIDA_QUEBRADICO = (
+    '=IF(AND(' + BASE_CORPORAL + ',{marcante}="Corpo Quebradiço",'
+    'DADOS_CONFIG!$C$2<>1),LET(vidaNormal,{base},'
+    'IF(vidaNormal="","",MAX(1,INT(vidaNormal/2)))),{base})'
+)
+
+
+def _padrao_vida_quebradico():
+    p = re.escape(MOLDE_VIDA_QUEBRADICO)
+    p = p.replace(re.escape("{marcante}"), r"'FICHA'!\$[A-Z]+\$[1-9]\d*")
+    p = p.replace(re.escape("{base}"), r"(?P<base>IF\(DADOS_CONFIG!.*)", 1)
+    p = p.replace(re.escape("{base}"), r"(?P=base)")
+    return re.compile(p)
+
+
+VIDA_QUEBRADICO = _padrao_vida_quebradico()
+
+
 def ref(aba, coord):
     l, c = ix._lc(coord)
     return f"'{aba}'!${ix._letras(c)}${l}"
@@ -100,6 +119,9 @@ def anterior(formula):
     O comportamento com efeitos é recalculado na regressão de configuração.
     """
     import campanha
+    vida = VIDA_QUEBRADICO.fullmatch(formula) if isinstance(formula, str) else None
+    if vida:
+        formula = "=" + vida["base"]
     corporal = DESLOCAMENTO_CORPORAL.fullmatch(formula) if isinstance(formula, str) else None
     if corporal:
         formula = "=" + corporal["base"]
@@ -175,9 +197,20 @@ def trocas(layout, pessoal, fam=None):
             # A Defesa fixa do corpo real prevalece sobre os ajustes numéricos da ficha.
             cond = CONDICAO_DEFESA_FIXA.format(marcante=ref(aba, idx["marcante"]))
             formula = f'=IF({cond},0,{formula[1:]})'
+        if nome == "Vida máxima":
+            formula = MOLDE_VIDA_QUEBRADICO.format(base=formula[1:], marcante=ref(aba, idx["marcante"]))
         if nome == "Deslocamento":
             formula = limita_deslocamento_corporal(formula, idx)
         celulas.setdefault(aba, {})[coord] = formula
+    # Localiza a saída de Bloquear pelo rótulo; não desloca coordenadas globalmente.
+    l, c = ix._lc(ix._Ficha(layout).unico("BLOQUEAR"))
+    coord = ix._letras(c) + str(l + 1)
+    original = next(r[1] for r in ix._aba(layout, "FICHA")["celulas"] if r[0] == coord)
+    if not isinstance(original, str) or not original.startswith('="2d10 + "'):
+        raise ValueError("Molde de Bloquear inesperado")
+    cond = CONDICAO_DEFESA_FIXA.format(marcante=ref("FICHA", idx["marcante"]))
+    antes.setdefault("FICHA", {})[coord] = original
+    celulas.setdefault("FICHA", {})[coord] = f'=IF({cond},"Não pode bloquear",{original[1:]})'
     return {"alvos": destinos, "antes": antes, "celulas": celulas}
 
 
