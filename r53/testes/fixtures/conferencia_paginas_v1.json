@@ -1,0 +1,32 @@
+{
+  "assinaturaSequencia": "2123740a0e32f1339b0d9c1f02db7e261558a7e72d6dad836c984122c74aad0d",
+  "plano": {
+    "protocolo": "carteira-conferencia-pagina-1",
+    "assinatura": "8caf3b4a2734a32713c7261c133f9edd94bc15881089ed579a779223f50ed2e3",
+    "sequencia": "970e633892b14941358b77e5722d237f6072e8cc1d9b45ae44e49278f86d312c",
+    "perfis": 2,
+    "porPagina": 4,
+    "paginas": 1,
+    "criacaoDisponivel": false,
+    "conferenciaConjuntaConcluida": false,
+    "imagensAtuaisConferidas": false,
+    "consistenciaTemporalVerificada": false
+  },
+  "paginas": [
+    {
+      "protocolo": "carteira-conferencia-pagina-1",
+      "assinatura": "8caf3b4a2734a32713c7261c133f9edd94bc15881089ed579a779223f50ed2e3",
+      "sequencia": "970e633892b14941358b77e5722d237f6072e8cc1d9b45ae44e49278f86d312c",
+      "perfis": 2,
+      "porPagina": 4,
+      "paginas": 1,
+      "criacaoDisponivel": false,
+      "conferenciaConjuntaConcluida": false,
+      "imagensAtuaisConferidas": false,
+      "consistenciaTemporalVerificada": false,
+      "pagina": 0,
+      "lidos": 2,
+      "estado": "e848e437e1c956746f8bd03e45bce96b5c79141f5cfdad94040b63d6394c43ae"
+    }
+  ]
+}

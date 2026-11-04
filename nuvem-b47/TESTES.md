@@ -1,3 +1,112 @@
+## Carteira viva: CARTEIRA e memórias · 28/10/2026 · não instalada
+
+PR 31: três campos pessoais da CARTEIRA e protocolo separado de memórias.
+Quatro caches e 249 marcadores de Classe em 11 grupos fixos; recuperações
+por timestamp com diário individual. Só propriedades de documento conhecidas;
+configurações, células e demais diários preservados. Retomada, concorrência,
+limites e cache volátil tratados. Contratos anteriores/executor financeiro iguais.
+441 cenários de formação, 155 de memórias e 101 financeiros passaram localmente;
+coleção completa de 1.100 aprovada no CI 40686604745 no código 8bb9335,
+em 28/10 às 09:19:25 Brasília. Duplicado 40686597423 cancelado. Quinze entradas/guardas por oficial
+conferidas somente por leitura, sem divergência; sem novo ensaio de escrita.
+Relatório: r53/inicializacao/CARTEIRA-MEMORIAS-2026-10-28.md.
+Próximo entidades/cartões/MONTAGENS, arte, orquestração/conferência, automações,
+responsável, integração drive.file e prova nativa. Criação bloqueada, fora do
+pacote/bot. Sem merge/deploy ou novos acessos. GPT-6 Astra Alto; revisão Médio.
+Entradas abaixo são históricas.
+
+## Carteira viva: inventário e equipamento · 28/10/2026 · não instalada
+
+PR 31, main ef361cc reconferida sem novos commits. Três perfis novos: equipados
+5 campos, equipáveis 88, itens 36; mais quatro notas vivas sem escrita em suas
+fórmulas protegidas. Estoque pessoal limpo, fórmulas e instruções restauradas,
+catálogos/configurações preservados. Contratos anteriores/assinatura v1 iguais.
+Variante decimal nativa 0,1 reconhecida somente nas fórmulas exatas de Volume.
+417 cenários direcionados e 101 financeiros passaram; coleção atual 921.
+Leitura de 161 entradas/guardas em cada oficial sem divergência ou escrita.
+Projeção Sheets API em cópia privada: 133 alvos, 10.450 comparações preservadas,
+sem erros; carga 0,3 de 5 igual ao modelo (Traje 1). Cópia na lixeira/aba fechada.
+Não é execução Apps Script/diários/OAuth nem criação completa.
+
+CI Linux aprovado no código `86410bee3fc70fa81f124a695253e032688c3ebe` em
+28/10/2026 às 08:56:07 Brasília: [40683614201](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40683614201).
+921 cenários confirmados (101/82/78/243/417), pacote de nove arquivos, sintaxe
+277 Python/220 JS-GS, catálogo/progressão/Kaori e demais regressões aprovados.
+Run duplicado 40683604255 cancelado. Fechamento apenas documental com
+`[skip ci]`; sem repetir suíte ou publicar pacote.
+
+Relatório r53/inicializacao/INVENTARIO-2026-10-28.md e README atualizado.
+Próximo: campos restantes da CARTEIRA e propriedades de recuperação; depois
+entidades/cartões/MONTAGENS. Ainda faltam arte, orquestração/conferência final,
+automações/notas vivas, novo responsável e integração drive.file/prova nativa.
+Criação bloqueada, fora do pacote/bot. Sem merge/deploy, escopo novo ou chamada
+paga. GPT-6 Astra / Alto; revisão focal Médio. Entradas abaixo são históricas.
+
+# técnica e Famílias · 28/10/2026 · não instalada
+
+Main ef361cc incorporada por a72adc0 (PRs 41–43). XP manual/missões congeladas
+reconciliados; backup 13 das oficiais registrado por outro trabalho, não reaplicar.
+PR 31: dois perfis novos, 11 entradas de técnica e 19 de Famílias, preservando
+catálogos/derivados. 782 cenários locais (101/82/78/243/278), mais 87 de XP manual.
+84 entradas/guardas lidas em cada oficial, zero divergências e nenhuma escrita.
+Projeção Sheets API em cópia privada: 30 alvos restaurados, 8.132 comparações
+preservadas sem diferença; duas Famílias custom, inclusive nome com *, Neutra.
+Fórmulas via API exigiram variante exata com ponto e vírgula; não confundir com
+execução Apps Script. Cópia na lixeira. Relatório TECNICA-FAMILIAS-2026-10-28.md
+em r53/inicializacao e README atualizado.
+
+CI Linux do código `763a78bd5fd3d799dd1273f24b6839a5c118d47a` aprovado em
+28/10/2026 às 08:39:49 Brasília: [40681468287](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40681468287).
+Confirmados os 782 cenários, 15 verificações de abertura, 2.076 de missões e
+87 de XP manual, pacote de nove arquivos, sintaxe de 277 fontes Python/220 JS-GS,
+catálogo/progressão/Kaori e demais regressões. Run duplicado 40681461827
+cancelado. O primeiro run 40681047195 falhou por bases ausentes, corrigidas
+sem mudar expectativas. Registro final só documental `[skip ci]`, sem repetir
+suíte, instalar pacote ou liberar criação.
+
+Próximo: inventário/equipamento. Também faltam campos pessoais da CARTEIRA,
+entidades/cartões/MONTAGENS, arte/recuperações, orquestração/conferência final,
+automações, novo responsável e integração drive.file/prova nativa completa.
+Criação bloqueada; fora do pacote/bot, sem merge/deploy ou novos escopos.
+GPT-6 Astra / Alto; revisão focal Médio. Entradas abaixo são históricas.
+
+# Grau, Origem e treinos da Carteira · 27/10/2026
+
+Smoke inclui `r53/testes/inicializacao_formacao.js`: 190 cenários novos.
+Inicialização total 692 (101/80/78/243/190), assinatura financeira v1 fixa,
+contrato gerado conferido sem regeneração, falhas por escrita e matriz parcial
+recusada. Guardas do salário usam a fórmula instalada pelo módulo Salarios.
+Leitura das oficiais foi somente leitura, 457 conferências cada; não executou
+os novos perfis no Apps Script. Ver FORMACAO-2026-10-27.md na inicialização.
+
+CI Linux do código `73dffdac18bdd55b9a3b5b52a9cd7665fdc9dfeb` aprovado em
+27/10 às 14:00:26 Brasília: [40546156146](https://github.com/cupcake-mochi/Ficha---RPG-JJK/actions/runs/40546156146).
+692 cenários de inicialização confirmados no log; pacote de nove arquivos,
+regressões, catálogo/progressão/Kaori, sintaxe de 277 fontes Python e 219 JS/GS.
+Run duplicado 40546148817 cancelado. Fechamento posterior só documental com
+`[skip ci]`, sem repetir a bateria ou publicar pacote.
+
+# Escolhas, recursos e condições da Carteira · 27/10/2026
+
+O smoke inclui `r53/testes/inicializacao_pessoal.js`: 243 cenários novos,
+contrato público conferido contra fonte sem regenerar, falhas de escrita,
+limites, concorrência, notas, fórmulas e variantes Google. Total de inicialização
+502 (101/80/78/243), sem somar ao bot. Guarda de diário acima de 9.000 bytes
+UTF-8 exige zero escrita; recursos/condições separados por esse limite real.
+Projeção Sheets API não é execução Apps Script: ver
+`r53/inicializacao/ESCOLHAS-RECURSOS-2026-10-27.md`. Não libera criação.
+
+# Inicialização parcial da Carteira · 27/10/2026
+
+O smoke inclui `r53/testes/inicializacao_financeiro.js` (101 cenários),
+`inicializacao_progressao.js` (80) e `inicializacao_identidade.js` (78).
+Executor por perfis fixos, nível/base de XP e 14 textos/notas; não entram no
+pacote. A assinatura financeira v1 anterior é uma expectativa fixa conferida.
+São provas offline de protocolo/escopo; não executam fórmulas Google nem
+liberam criação. Ensaio nativo e limites em
+`r53/inicializacao/NIVEL-TEXTOS-2026-10-27.md`. Sem confundir projeção Sheets API
+com execução dos diários Apps Script.
+
 # Base do delta_fila e editor_runtime aposentado · 27/10/2026
 
 `r53/testes/delta_fila.js` compara a geração com o f484f49 e não aceita
@@ -203,3 +312,78 @@ contraprovas; teste de envio da nova revisão efd8dd8: 10/10; smoke final passou
 reais confirmados, cálculos e restauração na descartável. Não houve upload de
 Apps Script ou execução de construir/continuar; testes de gatilhos, alturas,
 visual Google, latência e migração da revisão continuam pendentes.
+
+## Correção do preparo do CI
+
+O run 40681047195 no código a92cba8 passou os 782 cenários, mas falhou em dois
+testes recém-incluídos pela main: abertura_salario e missoes_sem_registros.
+Ambos usam git show de bases históricas que faltavam no checkout raso.
+O workflow passa a buscar somente os dois commits fixos 9536746 e 57117fb,
+com SHA completo e depth=1, antes do smoke. Nenhuma expectativa/comparação
+foi removida ou alterada. O run duplicado 40681039147 foi cancelado.
+
+### Versões dos cartões · 28/10/2026
+
+Smoke inclui `r53/testes/inicializacao_montagens.js`: 370 cenários offline,
+249 contextos, 48.015 posições; oito modos com quedas e concorrência. Também
+confere as fórmulas de Classe máxima e o leitor real antes/depois de limpar
+MONTAGENS e o cache persistente. Não testa escrita nativa nem cartões visíveis.
+A coleção de inicialização passa a 1.470; ver relatório em
+`r53/inicializacao/MONTAGENS-2026-10-28.md`.
+
+### Campos visíveis dos cartões · 28/10/2026
+
+Smoke inclui `r53/testes/inicializacao_cartoes.js`: todos os 249 cartões,
+portas, validações antes do valor, queda em cada escrita, concorrência e
+preservação das contas/menus. Uma invocação com `--foco REGEX` executa apenas
+nomes selecionados e imprime `FOCO PARCIAL`; não equivale à coleção completa.
+CI chama sem filtro. A expectativa antiga de quota insuficiente foi substituída
+pela conferência de 249 recibos acumulados no mesmo armazenamento, após a
+implementação dos recibos. Não houve redução de cenários mecânicos.
+
+### Recibos e orçamento de propriedades · 28/10/2026
+
+`r53/testes/inicializacao_recibos.js`: 44 cenários. Falhas antes/depois de todas
+as escritas, recibo terminal sem reexecução, vínculo à operação/cópia/modelo/domínio,
+layout/guardas, edição de dados/fórmulas/notas, migração v1, persistência silenciosa,
+quota UTF-8 individual/conjunta, propriedades alheias e compactação perto do teto.
+Teste conjunto com 498 nomes reais de perfis, operações sintéticas e reserva
+100 KB: 372.263 bytes, pico 372.629. As duas suítes de cartões também acumulam
+seus 249 recibos reais, cada uma; não confundir com criação nativa completa.
+Coleção completa: 2.305, confirmados no CI 40697164990, código af8e83f,
+aprovado em 28/10 às 10:34:44 Brasília. Pacote/sintaxe e demais regressões
+aprovados. Duplicado 40697154581 cancelado.
+Criação e execução integrada continuam bloqueadas.
+
+
+### Dados das entidades · 28/10/2026
+
+`r53/testes/inicializacao_entidades.js`: 305 cenários, 73 perfis/1.165 entradas.
+Todas as 12 entidades são aplicadas isoladamente, com preservação de vizinhos,
+configurações, contas, cartões e catálogos; recibos acumulados. Quedas antes/
+depois de cada escrita nos seis grupos representativos e no conjunto, edição
+concorrente, fórmulas regionais/desconhecidas, foto em célula, validações,
+mesclas exatas e limites de alvo/quota. A VM não executa fórmulas do Sheets.
+O adaptador de validações foi extraído em função compartilhada, sem mudar o
+descritor anterior; a suíte dos cartões faz a regressão completa no CI.
+
+O cenário conjunto de recibos passa de 498 para 571 nomes reais de perfis,
+com operações sintéticas e a mesma reserva de 100 KB. Não fabrica uma fase
+financeira concluída nem certifica o orquestrador. Resultado: 412.036 bytes,
+pico 412.402. Coleção completa 2.610/zero falhas confirmada no CI 40701063975,
+código baf652d, em 28/10 às 10:58:19 Brasília. Pacote nove arquivos e sintaxe
+277 Python/238 JS-GS aprovados; duplicado 40701053252 cancelado.
+
+
+### Fotos nas âncoras · 28/10/2026 — arte parcial
+
+`r53/testes/inicializacao_arte.js`: 137 cenários. Limpeza de 13 caixas + espelho,
+notas, preservação de dez decorações, quedas, recibos, fórmulas/cache, getters,
+URLs instáveis/expiradas, imagens soltas/desenhos, abas, mesclas/validações e
+proteção contra novo uso. Um caso mantém imagem fora das âncoras e exige
+pendência explícita: não é auditoria de arte completa. Quota expandida para
+572 nomes de perfis + reserva 100 KB: 412.570 bytes/pico 412.936. Coleção
+completa 2.747/zero falhas no CI 40706336130, código 350c56d, aprovado em
+28/10 às 11:32:49 Brasília; pacote nove arquivos, sintaxe 277 Python/242 JS-GS
+e demais regressões passaram. Duplicado 40706329406 cancelado.
+Sem execução de serviços, pixels/latência/escopos ou prova nativa da remoção.
