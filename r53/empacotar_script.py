@@ -13,7 +13,7 @@ def gerar():
  OUT.mkdir(exist_ok=True,parents=True)
  # Atualiza o retrato dos eventos a partir das fontes, inclusive em clone limpo.
  subprocess.run(['node',str(ROOT/'r53/caminho_leve.js')],check=True,capture_output=True,text=True)
- folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs','PaletaAndroid.gs','Caminho.gs'])+['Habilidades.gs','Codigo.gs']
+ folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs','PaletaAndroid.gs','Caminho.gs','CuraRecebida.gs'])+['Habilidades.gs','Codigo.gs']
  sources=[(folder/n).read_text() for n in names];source='\n'.join(sources)
  variables=sorted(set(re.findall(r'^var\s+([A-Za-z_$][\w$]*)\s*=',source,re.M)))
  functions=sorted(set(re.findall(r'^function\s+([A-Za-z_$][\w$]*)\s*\(',source,re.M)))
@@ -33,6 +33,7 @@ def gerar():
  # Módulo leve: edições de missão/data não precisam descompactar os catálogos.
  if (folder/'Salarios.gs').exists():(OUT/'Salarios.gs').write_text((folder/'Salarios.gs').read_text())
  if (folder/'PaletaAndroid.gs').exists():(OUT/'PaletaAndroid.gs').write_text((folder/'PaletaAndroid.gs').read_text())
+ (OUT/'CuraRecebida.gs').write_text((folder/'CuraRecebida.gs').read_text())
  bootstrap='''/** @OnlyCurrentDoc */
 // PACOTE R53 · entradas públicas; sem rede, sem gatilhos instaláveis novos.
 var R53_MODULO_;
@@ -78,7 +79,7 @@ function verificarPacoteR53() {
    bootstrap+=(ROOT/'r53/diagnostico-android/versao_publica.gs').read_text()
    bootstrap+='function onEdit(e){if(e)e.r53Inicio_=Date.now();if(r53RestaurarVersaoPublica_(e))return;if(typeof salarioIntegrarMissao_==="function"&&salarioIntegrarMissao_(e,function(ev){return r53Modulo_().onEdit(ev);}))return;if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(e&&e.range&&e.range.getSheet().getName()==="CARTEIRA"&&e.range.getA1Notation()==="C27")return typeof r53PaletaLeve_==="function" ? r53PaletaLeve_().trocar(e) : r53Modulo_().onEdit(e);if(r53EditarCaminho_(e))return;if(typeof r53Editar_==="function" && r53Editar_(e))return;if(e)e.r53EditorVerificado_=true;return r53Modulo_().onEdit(e); }\n'
   elif n=='onOpen':
-   bootstrap+='function onOpen(e){e=e||{};e.r53Inicio_=Date.now();if(typeof r53PaletaLeve_!=="function")return r53Modulo_().onOpen(e);if(typeof salarioAbrir_==="function")salarioAbrir_();if(typeof r53Menu_==="function")r53Menu_();if(PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);}\n'
+   bootstrap+='function onOpen(e){if(typeof r53CuraMenu_==="function")r53CuraMenu_();e=e||{};e.r53Inicio_=Date.now();if(typeof r53PaletaLeve_!=="function")return r53Modulo_().onOpen(e);if(typeof salarioAbrir_==="function")salarioAbrir_();if(typeof r53Menu_==="function")r53Menu_();if(PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);}\n'
   elif n!='onSelectionChange':bootstrap+='function '+n+'(){return r53Modulo_()['+json.dumps(n)+'].apply(this,arguments);}\n'
  (OUT/'Codigo.gs').write_text(bootstrap)
  (OUT/'fonte-modulo.js').write_text(source)

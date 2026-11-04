@@ -35,12 +35,14 @@ let edits=0,loaded=0;fast.r53Editar_=()=>{edits++;return true;};fast.R53_MODULO_
 fast.salarioEditar_=()=>true;fast.onEdit({});assert.strictEqual(edits,1);assert.strictEqual(loaded,0);
 // Abrir a ficha sem uma troca de paleta pendente só registra os menus.
 // O módulo completo de regras não deve ser carregado nesse caminho.
-let menus=0,appearance=0;
+let menus=0,appearance=0,curas=0;
+fast.r53CuraMenu_=()=>{curas++;};
+assert.strictEqual(typeof bundle.aplicarCuraRecebida,'function');
 fast.salarioAbrir_=()=>{menus++;};fast.r53Menu_=()=>{menus++;};
 fast.r53PaletaLeve_=()=>({continuar(){appearance++;}});
 fast.R53_MODULO_.onOpen=()=>{throw new Error('Abertura carregou regras pesadas');};
-pending=false;fast.onOpen({});assert.strictEqual(menus,2);assert.strictEqual(appearance,0);
-pending=true;fast.onOpen({});assert.strictEqual(menus,4);assert.strictEqual(appearance,1);
+pending=false;fast.onOpen({});assert.strictEqual(menus,2);assert.strictEqual(curas,1);assert.strictEqual(appearance,0);
+pending=true;fast.onOpen({});assert.strictEqual(menus,4);assert.strictEqual(curas,2);assert.strictEqual(appearance,1);
 for(const name of ['instalarSalarios','conferirSalarios','salarioDiario','ativarSalarioDiario','definirDataMissaoSalario'])assert.strictEqual(vm.runInContext('typeof '+name,bundle),'function');
 // Misturar/omitir uma parte deve falhar antes de executar a geração.
 let broken=context();for(const name of Object.keys(m.arquivos))vm.runInContext(fs.readFileSync(path.join(out,name),'utf8'),broken);

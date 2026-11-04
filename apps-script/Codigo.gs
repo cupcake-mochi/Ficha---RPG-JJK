@@ -3078,6 +3078,7 @@ function configurarPaleta_(ss, force) {
  * acionador instalável, sem disputar o limite de trinta segundos.
  */
 function onOpen(e) {
+  if (typeof r53CuraMenu_ === "function") r53CuraMenu_();
   var inicio = e && typeof e.r53Inicio_ === 'number' ? e.r53Inicio_ : Date.now();
   if (typeof salarioAbrir_ === 'function') salarioAbrir_();
   if (typeof r53Menu_ === 'function') r53Menu_();
