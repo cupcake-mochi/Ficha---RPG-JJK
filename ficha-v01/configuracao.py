@@ -32,6 +32,35 @@ DEFESA_FIXA = re.compile(r'=IF\(' + re.escape(CONDICAO_DEFESA_FIXA).replace(
     r'\{marcante\}', r"'FICHA'!\$[A-Z]+\$[1-9]\d*") + r',0,(IF\(DADOS_CONFIG!.*)\)$')
 
 
+# Limites do corpo real vêm depois dos ajustes numéricos, como a Defesa fixa.
+# A conta normal continua inteira no ramo sem Restrição e dentro do teto do Exaurido.
+MOLDE_DESLOCAMENTO_CORPORAL = (
+    '=IF(AND(' + BASE_CORPORAL + ',OR({marcante}="Corpo Debilitado",'
+    '{marcante}="Corpo Quebradiço")),"0 m",'
+    'IF(AND(' + BASE_CORPORAL + ',{marcante}="Corpo Exaurido"),'
+    'IF(N({vida})<=INT(N({vida_max})/2),"0 m",'
+    'MIN(4.5,VALUE(SUBSTITUTE(({base})," m","")))&" m"),{base}))'
+)
+
+
+def _padrao_deslocamento_corporal():
+    padrao = re.escape(MOLDE_DESLOCAMENTO_CORPORAL)
+    for nome in ("marcante", "vida", "vida_max", "base"):
+        campo = re.escape("{" + nome + "}")
+        valor = r"'FICHA'!\$[A-Z]+\$[1-9]\d*" if nome != "base" else r"IF\(DADOS_CONFIG!.*"
+        padrao = padrao.replace(campo, "(?P<" + nome + ">" + valor + ")", 1)
+        padrao = padrao.replace(campo, "(?P=" + nome + ")")
+    return re.compile(padrao)
+
+
+DESLOCAMENTO_CORPORAL = _padrao_deslocamento_corporal()
+
+
+def limita_deslocamento_corporal(formula, idx):
+    return MOLDE_DESLOCAMENTO_CORPORAL.format(
+        base=formula[1:], **{k: ref("FICHA", idx[k]) for k in ("marcante", "vida", "vida_max")})
+
+
 def ref(aba, coord):
     l, c = ix._lc(coord)
     return f"'{aba}'!${ix._letras(c)}${l}"
@@ -71,6 +100,9 @@ def anterior(formula):
     O comportamento com efeitos é recalculado na regressão de configuração.
     """
     import campanha
+    corporal = DESLOCAMENTO_CORPORAL.fullmatch(formula) if isinstance(formula, str) else None
+    if corporal:
+        formula = "=" + corporal["base"]
     defesa_fixa = DEFESA_FIXA.fullmatch(formula) if isinstance(formula, str) else None
     if defesa_fixa:
         formula = "=" + defesa_fixa[1]
@@ -143,6 +175,8 @@ def trocas(layout, pessoal, fam=None):
             # A Defesa fixa do corpo real prevalece sobre os ajustes numéricos da ficha.
             cond = CONDICAO_DEFESA_FIXA.format(marcante=ref(aba, idx["marcante"]))
             formula = f'=IF({cond},0,{formula[1:]})'
+        if nome == "Deslocamento":
+            formula = limita_deslocamento_corporal(formula, idx)
         celulas.setdefault(aba, {})[coord] = formula
     return {"alvos": destinos, "antes": antes, "celulas": celulas}
 
