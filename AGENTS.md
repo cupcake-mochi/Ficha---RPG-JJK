@@ -1,3 +1,18 @@
+# Preparação incremental PRs 51–56 · recuperada · 04/11/2026
+
+Leia `r53/diagnostico-android/PREPARACAO-INCREMENTAL-5156-2026-11-04.md`.
+Ramo separado `codex/preparacao-incremental-5156-20261104`, baseado na PR56
+`618370e`. A antiga pasta de trabalho foi preservada; o novo clone é independente
+em `Claude/02-RPG/_trabalho/ficha-integracao-5156-20261104`.
+Código relido nas duas QA igual ao hash ensaiado `8a0f2ed6…`; preparador offline
+reproduz exatamente a proposta a partir do Codigo anterior `52302778…`.
+58 verificações com snapshots privados, 48 portáteis; descanso 66, cura 35,
+SOCORRO 98 e pacote leve 132 aprovados. Sem novos ensaios de menus nesta rodada.
+Snapshots recuperados em `nuvem-b47/saidas/integracao-5156/`, ignorado.
+Não são snapshots atuais das oficiais. Sem merge, alteração de oficiais/jogador
+ou PR31. Próxima revisão: Sol/Medium; futura aplicação: Sol/High, com autorização,
+backup atual e conferência de alvos. Não alterar configurações automaticamente.
+
 # Organização do HD externo · 02/11/2026 (Claude)
 
 `/media/mizuki/HD Externo II/Claude/` foi reorganizado; mapa no `LEIA-ME.md` da
