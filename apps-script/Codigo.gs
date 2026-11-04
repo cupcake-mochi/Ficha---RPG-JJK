@@ -2085,7 +2085,13 @@ function textoDoDescanso_(tipo, antes, fim) {
 }
 
 /** O menu do descanso foi escolhido: aplica, registra, devolve o menu ao convite e avisa. Devolve true se descansou. */
-function descansar_(e, idx) {
+function r53DescansarComQueda(tipo, queda) {
+  var idx = indiceEstatico_();
+  var ficha = SpreadsheetApp.getActive().getSheetByName('FICHA');
+  return descansar_({range: ficha.getRange(cel_(idx, 'descanso')), value: tipo}, idx, queda);
+}
+
+function descansar_(e, idx, quedaConfirmada) {
   var cd = cel_(idx, 'descanso');
   if (!cd || cd !== e.range.getA1Notation().split(':')[0]) return false;
   // 04/11/2026: o evento já traz a escolha; ler a célula custava quase 5 s dos 30 do gatilho.
@@ -2103,7 +2109,19 @@ function descansar_(e, idx) {
   var v = lerCelulas_(ficha, lidas);
   // Um evento atrasado não pode reaplicar um descanso já concluído ou substituir outra escolha.
   // O menu vem na mesma leitura dos recursos, sem uma chamada extra ao Sheets.
-  if (String(v[cd]) !== tipo) return false;
+  if (!quedaConfirmada && String(v[cd]) !== tipo) return false;
+  if (quedaConfirmada && v[cd] !== SEM_DESCANSO_) throw Error('Aguarde o menu de descanso voltar a Escolha o descanso.');
+  var queda = DESCANSOS_[tipo].longo && typeof r53SocorroLer_ === 'function'
+    ? r53SocorroLer_(SpreadsheetApp.getActive()) : null;
+  var quedaAtiva = queda && r53SocorroAtivo_(queda);
+  if (quedaConfirmada && (!quedaAtiva || JSON.stringify(quedaConfirmada) !== JSON.stringify(queda))) {
+    throw Error('O registro da queda mudou. Confira SOCORRO e tente novamente.');
+  }
+  if (quedaAtiva && !quedaConfirmada) {
+    e.range.setValue(SEM_DESCANSO_);
+    SpreadsheetApp.getActive().toast('Use Recursos → Descanso longo com queda ativa.', 'Queda em andamento', 8);
+    return false;
+  }
   var valor = function (k) { return v[cel_(idx, k)]; };
   var le = function (k) { return Number(valor(k)) || 0; };
   var antes = { vidaMax: le('vida_max'), peMax: le('energia_max'), integMax: le('integridade_max') };
@@ -2121,6 +2139,33 @@ function descansar_(e, idx) {
     var corporal = regras[0][0] === true;
     antes.exaurido = corporal && corpo === 'Corpo Exaurido';
     antes.recuperacaoAbundante = corporal && abundante && regras[1][0] === true;
+  }
+  if (quedaAtiva) {
+    var recursos = antes;
+    if (queda.status === 'Derrotado' && antes.vida === 0) {
+      recursos = Object.assign({}, antes, {vida: Math.min(antes.vidaMax, queda.tratamento)});
+    }
+    var recuperados = contaDoDescanso_(tipo, recursos);
+    var encerrou = recuperados.vida >= 1 &&
+      (queda.status !== 'Derrotado' || antes.integMax === 0 || recuperados.integ >= 1);
+    var textoQueda = textoDoDescanso_(tipo, antes, recuperados) + (encerrou
+      ? ' · queda encerrada; Sequelas removidas após a recuperação'
+      : ' · queda permanece ativa; confira a recuperação com o mestre');
+    var alteracoes = [[cd, SEM_DESCANSO_], [cel_(idx, 'último descanso'), textoQueda]];
+    Object.keys(onde).forEach(function (k) {
+      if (recuperados[k] !== antes[k]) alteracoes.push([cel_(idx, onde[k]), recuperados[k]]);
+    });
+    caixinhas.forEach(function (c) { if (v[c] === true) alteracoes.push([c, false]); });
+    if (cExtras && extras) alteracoes.push([cExtras, 0]);
+    var registro = encerrou ? Object.assign({}, queda, {status: 'Encerrado no descanso'}) : queda;
+    r53SocorroGravar_(SpreadsheetApp.getActive(), registro, null, null, false,
+      alteracoes.filter(function (par) { return par[0]; }).map(function (par) {
+        var pos = limitesA1_(par[0]);
+        return {updateCells: {start: {sheetId: ficha.getSheetId(), rowIndex: pos.l1 - 1, columnIndex: pos.c1 - 1},
+          rows: [{values: [r53SocorroCelula_(par[1])]}], fields: 'userEnteredValue'}};
+      }));
+    SpreadsheetApp.getActive().toast(textoQueda, 'Descanso', 8);
+    return true;
   }
   var fim = contaDoDescanso_(tipo, antes);
   // só o que mudou é escrito: a caixa que nasceu como conta (o atual de uma ficha intocada) fica como está

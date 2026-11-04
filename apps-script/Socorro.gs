@@ -25,7 +25,7 @@ function r53SocorroLer_(ss) {
   var aba=ss.getSheetByName('SOCORRO');if(!aba)return null;
   if(aba.getRange('A2').getValue()!=='SOCORRO_R53_1')throw Error('Já existe uma aba SOCORRO sem o formato esperado. Nada foi alterado.');
   var estado;try{estado=JSON.parse(aba.getRange('B2').getValue());}catch(e){throw Error('Registro de socorro inválido. Confira antes de continuar.');}
-  if(!estado||estado.versao!==1||['Morrendo','Derrotado','Socorrido','Encerrado manualmente'].indexOf(estado.status)<0||![estado.referencia,estado.classe,estado.necessario,estado.tratamento,estado.janela].every(Number.isSafeInteger)||estado.referencia<1||estado.classe<1||estado.necessario<1||estado.tratamento<0||estado.janela<0||[1,2,3].indexOf(estado.escolha)<0)throw Error('Registro de socorro inconsistente. Nada foi alterado.');
+  if(!estado||estado.versao!==1||['Morrendo','Derrotado','Socorrido','Encerrado manualmente','Encerrado no descanso'].indexOf(estado.status)<0||![estado.referencia,estado.classe,estado.necessario,estado.tratamento,estado.janela].every(Number.isSafeInteger)||estado.referencia<1||estado.classe<1||estado.necessario<1||estado.tratamento<0||estado.janela<0||[1,2,3].indexOf(estado.escolha)<0)throw Error('Registro de socorro inconsistente. Nada foi alterado.');
   return estado;
 }
 function r53SocorroRecursos_(ss) {
@@ -39,7 +39,7 @@ function r53SocorroRecursos_(ss) {
 }
 function r53SocorroCelula_(v){return {userEnteredValue:typeof v==='number'?{numberValue:v}:typeof v==='boolean'?{boolValue:v}:{stringValue:String(v)}};}
 /** Uma única requisição atômica: registro, vida e Sequela não ficam pela metade. */
-function r53SocorroGravar_(ss,estado,recursos,vida,sequela) {
+function r53SocorroGravar_(ss,estado,recursos,vida,sequela,alteracoes) {
   if(typeof Sheets==='undefined')throw Error('O serviço Google Sheets deste projeto não está disponível. Nenhuma alteração foi aplicada.');
   var aba=ss.getSheetByName('SOCORRO'),id=aba?aba.getSheetId():73018010,requests=[];
   if(!aba){while(ss.getSheets().some(function(s){return s.getSheetId()===id;}))id++;
@@ -58,7 +58,7 @@ function r53SocorroGravar_(ss,estado,recursos,vida,sequela) {
   if(sequela){var livre=recursos.caixas.indexOf(false),pos=livre<0?[49,9]:[47,[5,7,9][livre]];
     requests.push({updateCells:{start:{sheetId:fid,rowIndex:pos[0],columnIndex:pos[1]},rows:[{values:[r53SocorroCelula_(livre<0?recursos.extras+1:true)]}],fields:'userEnteredValue'}});
   }
-  Sheets.Spreadsheets.batchUpdate({requests:requests},ss.getId());
+  Sheets.Spreadsheets.batchUpdate({requests:requests.concat(alteracoes || [])},ss.getId());
 }
 function registrarQueda() {
   var ui=SpreadsheetApp.getUi(),ss=SpreadsheetApp.getActive(),s,anterior,estado;
@@ -97,3 +97,25 @@ function encerrarRegistroSocorro() {
   try{if(JSON.stringify(antes)!==JSON.stringify(r53SocorroLer_(ss)))throw Error('O registro mudou. Confira antes de encerrar.');antes.status='Encerrado manualmente';r53SocorroGravar_(ss,antes,null,null,false);}catch(e){erro=e.message;}finally{lock.releaseLock();}if(erro)ui.alert(erro);
 }
 function r53SocorroAtivo_(estado){return !!estado&&['Morrendo','Derrotado'].indexOf(estado.status)>=0;}
+
+/** Usa o cálculo do descanso normal em uma ação autorizada pelo menu. */
+function descansarComQueda() {
+  var ss = SpreadsheetApp.getActive(), ui = SpreadsheetApp.getUi(), queda;
+  try {
+    queda = r53SocorroLer_(ss);
+    if (!r53SocorroAtivo_(queda)) throw Error('Não há queda ativa. Use o descanso na FICHA.');
+  } catch (erro) { ui.alert(erro.message); return; }
+  var resposta = ui.prompt('Descanso longo com queda ativa',
+    'Use após o mestre confirmar o descanso e a recuperação do personagem vivo.\n1 = lugar propício\n2 = fora de lugar propício\nSe a recuperação encerrar a queda, as Sequelas serão removidas ao final.',
+    ui.ButtonSet.OK_CANCEL);
+  if (resposta.getSelectedButton() !== ui.Button.OK) return;
+  var escolha = resposta.getResponseText().trim();
+  if (escolha !== '1' && escolha !== '2') { ui.alert('Informe 1 ou 2.'); return; }
+  var tipo = escolha === '1' ? 'Longo · lugar propício' : 'Longo · fora';
+  var lock = LockService.getDocumentLock(), erroDescanso;
+  if (!lock.tryLock(5000)) { ui.alert('Outra operação está em andamento. Tente novamente.'); return; }
+  try { r53DescansarComQueda(tipo, queda); }
+  catch (erro) { erroDescanso = erro.message; }
+  finally { lock.releaseLock(); }
+  if (erroDescanso) ui.alert(erroDescanso);
+}

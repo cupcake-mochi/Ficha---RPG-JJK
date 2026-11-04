@@ -1,6 +1,6 @@
 /** Cura recebida pelo personagem. Independente do módulo pesado e da caixa ±. */
 function r53CuraMenu_() {
-  SpreadsheetApp.getUi().createMenu('Recursos').addItem('Aplicar cura', 'aplicarCuraRecebida').addItem('Registrar queda', 'registrarQueda').addItem('Consumir rodada da janela', 'consumirRodadaSocorro').addItem('Encerrar registro manualmente', 'encerrarRegistroSocorro').addToUi();
+  SpreadsheetApp.getUi().createMenu('Recursos').addItem('Aplicar cura', 'aplicarCuraRecebida').addItem('Registrar queda', 'registrarQueda').addItem('Consumir rodada da janela', 'consumirRodadaSocorro').addItem('Encerrar registro manualmente', 'encerrarRegistroSocorro').addItem('Descanso longo com queda ativa', 'descansarComQueda').addToUi();
 }
 function r53ContaCura_(s, bruto) {
   if (!Number.isSafeInteger(bruto) || bruto < 0) throw Error('Informe uma cura inteira, igual ou maior que zero.');
