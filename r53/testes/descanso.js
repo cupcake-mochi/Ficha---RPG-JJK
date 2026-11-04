@@ -106,11 +106,73 @@ semLeitura.getValue = () => { throw new Error('descansar_ leu a célula tendo e.
 for (const [chave, valor] of Object.entries({ ...base, origem: restricao, marcante: 'Corpo Exaurido', 'menor 1': abundante, 'menor 2': '' })) {
   celula(chave).setValue(valor);
 }
-range.setValue('Escolha o descanso');
+range.setValue(CP);
 assert.equal(ctx.descansar_({ range: semLeitura, value: CP }, idx), true);
 assert.equal(le('energia'), 5);
 assert.equal(le('descanso'), 'Escolha o descanso');
 cenarios++;
+
+// O mesmo evento reapresentado depois do reset não pode recuperar PE outra vez.
+const registroAntes = le('último descanso'), avisosAntes = P.avisos.length;
+assert.equal(ctx.descansar_({ range: semLeitura, value: CP }, idx), false);
+assert.equal(le('energia'), 5);
+assert.equal(le('último descanso'), registroAntes);
+assert.equal(P.avisos.length, avisosAntes);
+cenarios++;
+
+// Uma escolha diferente mais recente deve ficar intacta, junto com os recursos e o registro.
+range.setValue(LF);
+assert.equal(ctx.descansar_({ range: semLeitura, value: CP }, idx), false);
+assert.equal(le('descanso'), LF);
+assert.equal(le('energia'), 5);
+assert.equal(le('último descanso'), registroAntes);
+assert.equal(P.avisos.length, avisosAntes);
+cenarios++;
+
+// Um novo descanso escolhido de propósito continua válido, inclusive do mesmo tipo.
+range.setValue(CP);
+assert.equal(ctx.descansar_({ range: semLeitura, value: CP }, idx), true);
+assert.equal(le('energia'), 9);
+assert.equal(le('descanso'), 'Escolha o descanso');
+cenarios++;
+
+// Colagem/evento sem value mantém a leitura de reserva, mas não repete após o reset.
+assert.equal(ctx.descansar_({ range }, idx), false);
+assert.equal(le('energia'), 9);
+cenarios++;
+
+// O menu não amplia a faixa nem acrescenta uma chamada à leitura em lote.
+const lerAntes = ctx.lerCelulas_;
+let lotes = 0;
+ctx.lerCelulas_ = (aba, lista) => {
+  lotes++;
+  assert(lista.includes(idx.descanso));
+  const bounds = xs => xs.map(ctx.limitesA1_).reduce((b, r) =>
+    [Math.min(b[0], r.l1), Math.min(b[1], r.c1), Math.max(b[2], r.l1), Math.max(b[3], r.c1)],
+    [Infinity, Infinity, 0, 0]);
+  assert.deepEqual(bounds(lista), bounds(lista.filter(c => c !== idx.descanso)));
+  return lerAntes(aba, lista);
+};
+range.setValue(CP);
+assert.equal(ctx.descansar_({ range: semLeitura, value: CP }, idx), true);
+assert.equal(lotes, 1);
+ctx.lerCelulas_ = lerAntes;
+cenarios++;
+
+// Todos os tipos recusam repetição após o reset, inclusive a cura aditiva do Exaurido.
+for (const tipo of [CP, CF, LP, LF]) {
+  for (const [chave, valor] of Object.entries({ ...base, origem: restricao, marcante: 'Corpo Exaurido',
+    'menor 1': abundante, 'menor 2': '' })) celula(chave).setValue(valor);
+  range.setValue(tipo);
+  assert.equal(ctx.descansar_({ range, value: tipo }, idx), true);
+  const depois = estado.map(le), registro = le('último descanso'), avisos = P.avisos.length;
+  assert.equal(ctx.descansar_({ range, value: tipo }, idx), false);
+  assert.deepEqual(estado.map(le), depois);
+  assert.equal(le('último descanso'), registro);
+  assert.equal(le('descanso'), 'Escolha o descanso');
+  assert.equal(P.avisos.length, avisos);
+  cenarios++;
+}
 
 // O convite no evento não é descanso, e nada muda na ficha.
 celula('energia').setValue(1);

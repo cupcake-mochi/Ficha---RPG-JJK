@@ -186,5 +186,13 @@
   [
     "  var tipo = String(e.range.getValue());",
     "  // 04/11/2026: o evento já traz a escolha; ler a célula custava quase 5 s dos 30 do gatilho.\n  var tipo = String(e.value !== undefined ? e.value : e.range.getValue());"
+  ],
+  [
+    "  var campos = ['vida_max', 'energia_max', 'integridade_max', 'origem', 'marcante', 'menor 1', 'menor 2'];",
+    "  var campos = ['descanso', 'vida_max', 'energia_max', 'integridade_max', 'origem', 'marcante', 'menor 1', 'menor 2'];"
+  ],
+  [
+    "  var v = lerCelulas_(ficha, lidas);\n  var valor = function (k) { return v[cel_(idx, k)]; };",
+    "  var v = lerCelulas_(ficha, lidas);\n  // Um evento atrasado não pode reaplicar um descanso já concluído ou substituir outra escolha.\n  // O menu vem na mesma leitura dos recursos, sem uma chamada extra ao Sheets.\n  if (String(v[cd]) !== tipo) return false;\n  var valor = function (k) { return v[cel_(idx, k)]; };"
   ]
 ]

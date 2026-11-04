@@ -2097,10 +2097,13 @@ function descansar_(e, idx) {
                                                        .filter(function (c) { return c; });
   var cExtras = cel_(idx, 'sequela extras');
   // Tudo o que o descanso consulta numa leitura só (cada ida ao servidor custa 1,5 a 2 s)
-  var campos = ['vida_max', 'energia_max', 'integridade_max', 'origem', 'marcante', 'menor 1', 'menor 2'];
+  var campos = ['descanso', 'vida_max', 'energia_max', 'integridade_max', 'origem', 'marcante', 'menor 1', 'menor 2'];
   var lidas = campos.concat(Object.keys(onde).map(function (k) { return onde[k]; }))
     .map(function (k) { return cel_(idx, k); }).concat(caixinhas, cExtras ? [cExtras] : []).filter(function (c) { return c; });
   var v = lerCelulas_(ficha, lidas);
+  // Um evento atrasado não pode reaplicar um descanso já concluído ou substituir outra escolha.
+  // O menu vem na mesma leitura dos recursos, sem uma chamada extra ao Sheets.
+  if (String(v[cd]) !== tipo) return false;
   var valor = function (k) { return v[cel_(idx, k)]; };
   var le = function (k) { return Number(valor(k)) || 0; };
   var antes = { vidaMax: le('vida_max'), peMax: le('energia_max'), integMax: le('integridade_max') };
