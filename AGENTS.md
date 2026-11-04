@@ -1,3 +1,15 @@
+# Auditoria de reservas temporárias · 04/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-RESERVAS-2026-11-04.md` e seu JSON.
+Ramo `codex/auditoria-reservas-20261104`, sobre PR57 `8db0bae`. Diagnóstico,
+sem correção de produção: `tetoTemp_` aceita vida/PE temporários com máximo zero.
+Regra conferida na R66 `e3058ad…`. Na QA nativa: sete cenários válidos, cinco
+conformes e dois divergentes pela mesma causa. Localmente 46 casos, 43 conformes
+e três divergências. Não apresentar o diagnóstico como suíte toda aprovada.
+Os 12 campos da QA foram restaurados; código nativo intacto. Evidências privadas
+em `nuvem-b47/saidas/auditoria-reservas/`, ignorado. Sem merge/oficiais/jogador/PR31.
+Próxima correção focal: Sol/High; revisão: Sol/Medium, sem mudar configurações.
+
 # Preparação incremental PRs 51–56 · recuperada · 04/11/2026
 
 Leia `r53/diagnostico-android/PREPARACAO-INCREMENTAL-5156-2026-11-04.md`.

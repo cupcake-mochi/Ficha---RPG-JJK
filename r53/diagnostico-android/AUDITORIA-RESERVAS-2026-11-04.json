@@ -1,0 +1,593 @@
+{
+  "escopo": "Funções reais do módulo e atalho; não simula onEdit nativo",
+  "casos": 46,
+  "aprovados": 43,
+  "divergencias": [
+    {
+      "tipo": "teto",
+      "max": 0,
+      "recebido": 1,
+      "esperado": 0,
+      "obtido": 1,
+      "conforme": false
+    },
+    {
+      "tipo": "teto",
+      "max": 0,
+      "recebido": 6,
+      "esperado": 0,
+      "obtido": 6,
+      "conforme": false
+    },
+    {
+      "tipo": "teto",
+      "max": 0,
+      "recebido": 15,
+      "esperado": 0,
+      "obtido": 15,
+      "conforme": false
+    }
+  ],
+  "resultados": [
+    {
+      "tipo": "teto",
+      "max": 0,
+      "recebido": -2,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 0,
+      "recebido": 0,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 0,
+      "recebido": 1,
+      "esperado": 0,
+      "obtido": 1,
+      "conforme": false
+    },
+    {
+      "tipo": "teto",
+      "max": 0,
+      "recebido": 6,
+      "esperado": 0,
+      "obtido": 6,
+      "conforme": false
+    },
+    {
+      "tipo": "teto",
+      "max": 0,
+      "recebido": 15,
+      "esperado": 0,
+      "obtido": 15,
+      "conforme": false
+    },
+    {
+      "tipo": "teto",
+      "max": 1,
+      "recebido": -2,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 1,
+      "recebido": 0,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 1,
+      "recebido": 1,
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 1,
+      "recebido": 6,
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 1,
+      "recebido": 15,
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 2,
+      "recebido": -2,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 2,
+      "recebido": 0,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 2,
+      "recebido": 1,
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 2,
+      "recebido": 6,
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 2,
+      "recebido": 15,
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 3,
+      "recebido": -2,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 3,
+      "recebido": 0,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 3,
+      "recebido": 1,
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 3,
+      "recebido": 6,
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 3,
+      "recebido": 15,
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 8,
+      "recebido": -2,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 8,
+      "recebido": 0,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 8,
+      "recebido": 1,
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 8,
+      "recebido": 6,
+      "esperado": 4,
+      "obtido": 4,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 8,
+      "recebido": 15,
+      "esperado": 4,
+      "obtido": 4,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 23,
+      "recebido": -2,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 23,
+      "recebido": 0,
+      "esperado": 0,
+      "obtido": 0,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 23,
+      "recebido": 1,
+      "esperado": 1,
+      "obtido": 1,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 23,
+      "recebido": 6,
+      "esperado": 6,
+      "obtido": 6,
+      "conforme": true
+    },
+    {
+      "tipo": "teto",
+      "max": 23,
+      "recebido": 15,
+      "esperado": 11,
+      "obtido": 11,
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "absorção parcial",
+      "caminho": "modulo",
+      "entrada": [
+        10,
+        23,
+        11,
+        -12
+      ],
+      "esperado": {
+        "atual": 9,
+        "temp": 0
+      },
+      "obtido": {
+        "atual": 9,
+        "temp": 0
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "absorção parcial",
+      "caminho": "atalho",
+      "entrada": [
+        10,
+        23,
+        11,
+        -12
+      ],
+      "esperado": {
+        "atual": 9,
+        "temp": 0
+      },
+      "obtido": {
+        "atual": 9,
+        "temp": 0
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "só temporária",
+      "caminho": "modulo",
+      "entrada": [
+        10,
+        23,
+        11,
+        -5
+      ],
+      "esperado": {
+        "atual": 10,
+        "temp": 6
+      },
+      "obtido": {
+        "atual": 10,
+        "temp": 6
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "só temporária",
+      "caminho": "atalho",
+      "entrada": [
+        10,
+        23,
+        11,
+        -5
+      ],
+      "esperado": {
+        "atual": 10,
+        "temp": 6
+      },
+      "obtido": {
+        "atual": 10,
+        "temp": 6
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "gasto de PE",
+      "caminho": "modulo",
+      "entrada": [
+        2,
+        8,
+        4,
+        -5
+      ],
+      "esperado": {
+        "atual": 1,
+        "temp": 0
+      },
+      "obtido": {
+        "atual": 1,
+        "temp": 0
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "gasto de PE",
+      "caminho": "atalho",
+      "entrada": [
+        2,
+        8,
+        4,
+        -5
+      ],
+      "esperado": {
+        "atual": 1,
+        "temp": 0
+      },
+      "obtido": {
+        "atual": 1,
+        "temp": 0
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "limite inferior",
+      "caminho": "modulo",
+      "entrada": [
+        3,
+        23,
+        2,
+        -50
+      ],
+      "esperado": {
+        "atual": 0,
+        "temp": 0
+      },
+      "obtido": {
+        "atual": 0,
+        "temp": 0
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "limite inferior",
+      "caminho": "atalho",
+      "entrada": [
+        3,
+        23,
+        2,
+        -50
+      ],
+      "esperado": {
+        "atual": 0,
+        "temp": 0
+      },
+      "obtido": {
+        "atual": 0,
+        "temp": 0
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "ganho não repõe temporária",
+      "caminho": "modulo",
+      "entrada": [
+        10,
+        23,
+        3,
+        4
+      ],
+      "esperado": {
+        "atual": 14,
+        "temp": 3
+      },
+      "obtido": {
+        "atual": 14,
+        "temp": 3
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "ganho não repõe temporária",
+      "caminho": "atalho",
+      "entrada": [
+        10,
+        23,
+        3,
+        4
+      ],
+      "esperado": {
+        "atual": 14,
+        "temp": 3
+      },
+      "obtido": {
+        "atual": 14,
+        "temp": 3
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "ganho limitado ao máximo",
+      "caminho": "modulo",
+      "entrada": [
+        22,
+        23,
+        3,
+        8
+      ],
+      "esperado": {
+        "atual": 23,
+        "temp": 3
+      },
+      "obtido": {
+        "atual": 23,
+        "temp": 3
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "ganho limitado ao máximo",
+      "caminho": "atalho",
+      "entrada": [
+        22,
+        23,
+        3,
+        8
+      ],
+      "esperado": {
+        "atual": 23,
+        "temp": 3
+      },
+      "obtido": {
+        "atual": 23,
+        "temp": 3
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "temporária protege vida zero",
+      "caminho": "modulo",
+      "entrada": [
+        0,
+        23,
+        3,
+        -2
+      ],
+      "esperado": {
+        "atual": 0,
+        "temp": 1
+      },
+      "obtido": {
+        "atual": 0,
+        "temp": 1
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "temporária protege vida zero",
+      "caminho": "atalho",
+      "entrada": [
+        0,
+        23,
+        3,
+        -2
+      ],
+      "esperado": {
+        "atual": 0,
+        "temp": 1
+      },
+      "obtido": {
+        "atual": 0,
+        "temp": 1
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "ajuste nulo",
+      "caminho": "modulo",
+      "entrada": [
+        10,
+        23,
+        3,
+        0
+      ],
+      "esperado": {
+        "atual": 10,
+        "temp": 3
+      },
+      "obtido": {
+        "atual": 10,
+        "temp": 3
+      },
+      "conforme": true
+    },
+    {
+      "tipo": "delta",
+      "nome": "ajuste nulo",
+      "caminho": "atalho",
+      "entrada": [
+        10,
+        23,
+        3,
+        0
+      ],
+      "esperado": {
+        "atual": 10,
+        "temp": 3
+      },
+      "obtido": {
+        "atual": 10,
+        "temp": 3
+      },
+      "conforme": true
+    }
+  ]
+}
