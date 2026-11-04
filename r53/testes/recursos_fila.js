@@ -51,6 +51,19 @@ ficha.getRange=function(...args){const r=get(...args);if(args[0]==='D26'){const 
 put(ficha,{AM26:-5});eq(ctx.r53EdicaoLivre_({source:ss,range:get('AM26'),value:'-5'}),true);
 eq(writes,1);eq(get('D26').getValue(),10);eq(get('AM26').getValue(),-5);eq(trace,['lock','flush','release']);eq(toasts.length,2);
 ficha.getRange=get;ctx.LockService=originalLock;ctx.SpreadsheetApp.flush=originalFlush;
+// Um comando recusado pode sumir da caixa quando o evento seguinte termina.
+let tentativas=0;
+ctx.LockService={getDocumentLock:()=>({tryLock:()=>++tentativas>1,releaseLock:()=>{}})};
+toasts=[];logs.length=0;
+put(ficha,{D26:20,J26:20,AF26:0,AM26:-3});
+const caixaVida=ficha.getRange('AM26');
+ctx.r53EdicaoLivre_({source:ss,range:caixaVida,value:'-5'});
+ctx.r53EdicaoLivre_({source:ss,range:caixaVida,value:'-3',oldValue:'-5'});
+eq(ficha.getRange('D26').getValue(),17);
+eq(caixaVida.getValue(),'');
+eq(toasts.length,1);
+eq(toasts[0][0],'Ajuste -5 em FICHA!AM26 não aplicado. Confira os saldos e repita esse ajuste se necessário.');
+ctx.LockService=originalLock;
 // A aritmética não muda nesta correção (inclusive A08 ainda pendente).
 for(const a of [0,5,20,''])for(const m of [0,20])for(const t of [0,3])for(const d of [-30,-3,0,3,30]){
  const antes=ctx.aplicaPasso_(a,m,t,d),depois=ctx.r53LivrePasso_(a,m,t,d);eq(JSON.stringify(antes),JSON.stringify(depois));

@@ -4,14 +4,14 @@
  * Sempre consome o caminho, mesmo numa falha: não repetir uma gravação parcial.
  */
 function r53DeltaExecutar_(e, x, calcular) {
-  var trava, presa = false, escreveu = false, enviou = false;
+  var trava, passo = null, presa = false, escreveu = false, enviou = false;
   var aba = e.range.getSheet();
   try {
     var unica = e.range.getNumRows() === 1 && e.range.getNumColumns() === 1;
     // Uma exclusão antiga não deve consumir a entrada que chegou depois dela.
     if (unica && e.value === undefined && e.oldValue !== undefined) return true;
     var evento = unica && e.value !== undefined;
-    var passo = evento ? Number(e.value) : null;
+    if (evento) passo = Number(e.value);
     if (evento && (!isFinite(passo) || !passo)) return true;
     trava = LockService.getDocumentLock();
     if (!trava || !trava.tryLock(1000)) throw Error('outro ajuste de recurso ainda está em execução');
@@ -44,9 +44,11 @@ function r53DeltaExecutar_(e, x, calcular) {
   } catch (err) {
     console.log('ajuste ±: ' + err.message);
     try {
-      (e.source || SpreadsheetApp.getActive()).toast(
-        escreveu ? 'O ajuste pode ter sido aplicado parcialmente. Confira os saldos antes de repetir.' :
-          'O ajuste não foi aplicado. Confira a caixa ± e tente novamente.', 'Recursos', 10);
+      var alvo = aba.getName() + '!' + x.d;
+      var ajuste = passo !== null && isFinite(passo) ? 'Ajuste ' + passo + ' em ' + alvo : 'Ajuste em ' + alvo;
+      var mensagem = escreveu ? ajuste + ' pode ter sido aplicado parcialmente. Confira os saldos antes de repetir.' :
+        ajuste + ' não aplicado. Confira os saldos e repita esse ajuste se necessário.';
+      (e.source || SpreadsheetApp.getActive()).toast(mensagem, 'Recursos', 10);
     } catch (aviso) { console.log('aviso ±: ' + aviso.message); }
   } finally {
     if (presa) {

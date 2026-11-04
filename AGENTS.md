@@ -2,9 +2,10 @@
 
 Leia `r53/diagnostico-android/CORRECAO-FILA-RECURSOS-2026-11-04.md`.
 Ramo `codex/correcao-fila-recursos-20261104`, sobre PR59 `06b777f`.
-A03/A09 corrigidos localmente no onEdit e atalho; 500 verificações/18 rotas,
+A03/A09 corrigidos localmente no onEdit e atalho; 504 verificações/18 rotas,
 18 verificações incrementais com snapshots privados, pacote leve 134.
-Preparador offline exige Codigo integrado `8a0f2ed6…`, produz `d40da400…`.
+Preparador offline exige Codigo integrado `8a0f2ed6…`, produz `e5338f56…`.
+A revisão da PR60 incluiu o valor e a caixa no aviso de ajuste recusado.
 Nada aplicado no Google. Navegador desativado impede ensaio nativo; não concluir
 latência/fila global resolvidas. Limites de eventos, colagens, concorrência e
 falha parcial estão documentados. Outros oito achados permanecem abertos.

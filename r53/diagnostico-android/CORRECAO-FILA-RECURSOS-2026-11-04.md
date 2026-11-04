@@ -24,9 +24,16 @@ As gravações são enviadas antes de liberar a trava. Falha de trava ou escrita
 emite aviso; o atalho não tenta aplicar de novo pelo módulo. A aritmética existente
 foi preservada, inclusive os problemas fora deste escopo, como A08.
 
+Na revisão da PR60, simulamos a recusa de −5 pela trava seguida da aplicação
+de −3. O saldo termina em 17 e a caixa fica vazia. O aviso agora identifica
+o valor recebido e a caixa, quando o valor já é conhecido, para que o usuário
+saiba qual ajuste conferir. O aviso antigo só mandava olhar a caixa. O teste
+novo falhou com o aviso antigo e passou com o novo. A recusa continua sem
+repetição automática.
+
 ## Verificações
 
-- `node r53/testes/recursos_fila.js`: 500 verificações, 18 rotas, onEdit completo
+- `node r53/testes/recursos_fila.js`: 504 verificações, 18 rotas, onEdit completo
   e dispatcher rápido simulados. Duas entradas diferentes/iguais, TEMP, exclusão,
   limites, decimais, atuais vazios das entidades e colagens; falha da trava,
   falha depois da gravação, flush/liberação e ausência de segunda aplicação.
@@ -58,7 +65,7 @@ instalam/executam o Apps Script vinculado. Edições por API não testam onEdit.
 
 `preparar_recursos_fila.js` opera somente offline. Aceita o Codigo da integração
 51–56, SHA-256 `8a0f2ed68117420c28df342f5fee4621ea648eb6aa32765a75a620bccba8b7a0`.
-Produz `d40da4009b55bda256b8917c1e2b0687e1d90af652bb08127a2f00c085b2a702`.
+Produz `e5338f56d61fc6a2e5e665db0219daccc3a6e91c7e49ec642c85e1bb70e717b9`.
 O snapshot recuperado não substitui um snapshot atual antes de aplicar.
 
 1. Habilitar o controle do navegador e criar cópia descartável da integração.
@@ -85,8 +92,9 @@ o atalho até o fim do arquivo: ele descartaria os incrementos anexados.
   de intervalos continuam usando a célula atual; duas colagens já sobrescritas
   não podem ser reconstruídas por esse payload.
   [Objeto de evento](https://developers.google.com/apps-script/guides/triggers/events).
-- A trava coordena estes scripts ±, não impede edições humanas, menus que não
-  usam a mesma trava ou uma edição entre a releitura e a limpeza. Não existe
+- A trava de documento também é usada por cura, descanso, SOCORRO e Famílias
+  das invocações. Inclua uma dessas operações no ensaio de contenção. A trava
+  não impede edições humanas entre a releitura e a limpeza. Não existe
   transação entre saldo/TEMP/limpeza; falha parcial exige conferir os saldos.
 - Um segundo evento pode exceder a espera de 1 segundo e exigir reaplicação
   manual após aviso. A escolha do limite precisa do ensaio de latência nativa;
