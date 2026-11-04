@@ -64,8 +64,9 @@ em `O67` e `DADOS_CUSTOM!B126`:
 | Debilitado, 23 de 23 PV | 0 m |
 | Quebradiço, 23 de 23 PV | 0 m |
 
-A cópia de movimento foi criada a partir da QA anterior. Só recebeu as duas
-fórmulas acima, as entradas dos cenários e uma aba auxiliar de testes. Não é uma
+A cópia de movimento foi criada a partir da QA anterior. Recebeu as duas
+fórmulas acima, as entradas dos cenários, uma aba auxiliar de testes e, na
+continuação, o delta do molde de restauração descrito abaixo. Não é uma
 implantação integral da PR51. Por exemplo, a Defesa exibida nessa cópia ainda
 pode vir de um molde anterior. O teste é exclusivamente de deslocamento.
 Os valores controlados da vida máxima não testam a redução própria do Quebradiço.
@@ -78,8 +79,41 @@ Os valores controlados da vida máxima não testam a redução própria do Quebr
 
 O ensaio de tabela controla o booleano da base corporal. Não repete a validação
 nativa dos cartões custom feita na PR51. Não houve bateria ampla de toda a ficha,
-medição Android nem teste nativo de restauração após apagar a célula calculada.
-As entradas integradas foram alteradas pela API, que não dispara `onEdit`.
+medição Android. As quatro entradas integradas foram alteradas pela API, que
+não dispara `onEdit`; o ensaio adicional abaixo usa edição pela interface.
+
+## Restauração nativa — continuação de 04/11/2026
+
+Na mesma cópia descartável, instalado apenas o delta do molde de O67 no
+`Codigo.gs` existente. Snapshot anterior preservado fora do Git. O preparador
+`preparar_deslocamento_loader.js` exige SHA256 do snapshot e uma única âncora,
+recusa reaplicação e grava outro arquivo local, sem acessar o Google.
+O helper `deslocamento_corporal_molde.gs` aceita somente a fórmula antiga exata
+ou a nova, exige FICHA/O67 únicos e altera só o valor da fórmula no molde.
+Os demais incrementos do carregador são preservados. Não é pacote integral.
+
+Pela interface do Google Sheets, com Corpo Quebradiço:
+
+| Edição real em FICHA!O67 | Resultado após onEdit |
+| --- | --- |
+| Substituir por `999` | Fórmula corrigida restaurada; `0 m` |
+| Apagar com Delete | Fórmula corrigida restaurada; `0 m` |
+
+A releitura pela API confirmou a fórmula integral esperada nas duas provas,
+normalizando apenas as aspas opcionais dos nomes FICHA/DADOS_CUSTOM. Não houve
+reposição manual da fórmula entre as provas. A interface exibiu o aviso de
+recuperação automática. Captura e respostas brutas ficaram fora do Git.
+
+O editor do Apps Script foi recarregado e seu conteúdo salvo foi relido inteiro,
+idêntico ao arquivo proposto. SHA256 do Codigo.gs da cópia:
+
+- Antes: `476c3522be47461669e48d65f142cad2c4f3735ecd6182fa15a813eaa31e4f35`.
+- Depois/relido: `fb87d449f3e532894f246082369d797641a791ae77cf48b9207f9fc25ee747d2`.
+
+`node r53/testes/deslocamento_molde.js`: 20 verificações aprovadas, cobrindo
+paridade com GS gerado, delta único, idempotência, rejeição sem alteração parcial
+de moldes divergentes e preservação do restante do carregador. Isso não valida
+outros modelos instalados: cada promoção exige snapshot e ensaio próprios.
 
 ## Aplicação futura em fichas existentes
 
@@ -90,7 +124,9 @@ incrementos existentes.
 1. Conferir a presença e a fórmula correta de `DADOS_CUSTOM!B126`, vinda da PR51.
 2. Aplicar o delta de `FICHA!O67`, conservando formato, nota e validação.
 3. Atualizar também o molde de O67 usado pela restauração no código instalado,
-   com guarda da fórmula anterior. A troca isolada da célula não basta como
+   com guarda da fórmula anterior. O preparador offline e o helper acima foram
+   ensaiados somente na cópia; conferir compatibilidade do carregador atual.
+   A troca isolada da célula não basta como
    publicação permanente.
 4. Ensaiar a restauração e a mudança de vida na cópia de promoção, reler o código
    salvo e os resultados antes de qualquer aplicação autorizada.
