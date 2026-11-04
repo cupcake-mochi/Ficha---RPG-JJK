@@ -38,6 +38,7 @@ fast.salarioEditar_=()=>true;fast.onEdit({});assert.strictEqual(edits,1);assert.
 let menus=0,appearance=0,curas=0;
 fast.r53CuraMenu_=()=>{curas++;};
 assert.strictEqual(typeof bundle.aplicarCuraRecebida,'function');
+for(const name of ['registrarQueda','consumirRodadaSocorro','encerrarRegistroSocorro'])assert.strictEqual(typeof bundle[name],'function');
 fast.salarioAbrir_=()=>{menus++;};fast.r53Menu_=()=>{menus++;};
 fast.r53PaletaLeve_=()=>({continuar(){appearance++;}});
 fast.R53_MODULO_.onOpen=()=>{throw new Error('Abertura carregou regras pesadas');};

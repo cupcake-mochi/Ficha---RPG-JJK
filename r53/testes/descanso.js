@@ -179,4 +179,48 @@ celula('energia').setValue(1);
 assert.equal(ctx.descansar_({ range: semLeitura, value: 'Escolha o descanso' }, idx), false);
 assert.equal(le('energia'), 1);
 cenarios++;
+// Uma queda ativa desvia o seletor normal para a ação autorizada.
+const vm = require('node:vm');
+vm.runInContext(fs.readFileSync(path.join(raiz, 'apps-script', 'Socorro.gs'), 'utf8'), ctx);
+const socorro = ss.insertSheet('SOCORRO');
+socorro.getRange('A2').setValue('SOCORRO_R53_1');
+const queda = ctx.r53SocorroNovaQueda_({
+  atual: 0, maximo: 23, classe: 1, sequelas: 1, integridade: 20, integridadeMax: 20, regras: [.25, 1/3, .5, 15, 3]
+}, 2);
+const lote = [];
+ctx.Sheets = { Spreadsheets: { batchUpdate: ({requests}) => lote.push(requests) } };
+for (const [tipo, corpo, derrotado, tratamento, vida, status, convertido, manual = false] of [
+  [LP, 'Corpo Exaurido', false, 0, 5, 'Encerrado no descanso'],
+  [LF, 'Corpo Exaurido', false, 0, 0, 'Morrendo'],
+  [LF, 'Corpo Exaurido', true, 3, 3, 'Encerrado no descanso'],
+  [LF, '', false, 0, 11, 'Encerrado no descanso'],
+  [LF, 'Corpo Exaurido', true, 3, 0, 'Derrotado', true],
+  [LP, 'Corpo Exaurido', true, 3, 5, 'Encerrado no descanso', false, true]
+]) {
+  const registro = { ...queda, ...(derrotado ? {status: 'Derrotado', janela: 0} : {}), tratamento, ...(convertido ? {tratamentoConvertido: true} : {}) };
+  socorro.getRange('B2').setValue(JSON.stringify(registro));
+  for (const [chave, valor] of Object.entries({ ...base, vida: 0, origem: restricao, marcante: corpo,
+    'menor 1': '', 'menor 2': '' })) celula(chave).setValue(valor);
+  range.setValue(tipo);
+  assert.equal(ctx.descansar_({range, value: tipo}, idx), false);
+  assert.equal(le('vida'), 0);
+  assert.equal(le('descanso'), 'Escolha o descanso');
+  assert.throws(() => ctx.r53DescansarComQueda(tipo, {...registro, janela: 5}), /registro da queda mudou/);
+  assert.equal(lote.length, 0);
+  assert.equal(ctx.r53DescansarComQueda(tipo, registro, manual), true);
+  assert.equal(lote.length, 1);
+  const atualizacoes = lote.pop().filter(r => r.updateCells).map(r => r.updateCells);
+  const serializado = atualizacoes.find(r => r.rows[1]).rows[1].values[1].userEnteredValue.stringValue;
+  assert.equal(JSON.parse(serializado).status, status);
+  if (derrotado) assert.equal(JSON.parse(serializado).tratamentoConvertido, true);
+  const escrito = chave => {
+    const pos = ctx.limitesA1_(idx[chave]);
+    return atualizacoes.find(r => r.start.rowIndex === pos.l1 - 1 && r.start.columnIndex === pos.c1 - 1)
+      ?.rows[0].values[0].userEnteredValue;
+  };
+  assert.equal(escrito('vida')?.numberValue ?? 0, vida);
+  assert.equal(escrito('sequela 1').boolValue, false);
+  assert.equal(escrito('sequela extras').numberValue, 0);
+  cenarios++;
+}
 console.log(JSON.stringify({ resultado: 'OK', cenarios }));

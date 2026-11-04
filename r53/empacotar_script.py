@@ -13,7 +13,7 @@ def gerar():
  OUT.mkdir(exist_ok=True,parents=True)
  # Atualiza o retrato dos eventos a partir das fontes, inclusive em clone limpo.
  subprocess.run(['node',str(ROOT/'r53/caminho_leve.js')],check=True,capture_output=True,text=True)
- folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs','PaletaAndroid.gs','Caminho.gs','CuraRecebida.gs'])+['Habilidades.gs','Codigo.gs']
+ folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs','PaletaAndroid.gs','Caminho.gs','CuraRecebida.gs','Socorro.gs'])+['Habilidades.gs','Codigo.gs']
  sources=[(folder/n).read_text() for n in names];source='\n'.join(sources)
  variables=sorted(set(re.findall(r'^var\s+([A-Za-z_$][\w$]*)\s*=',source,re.M)))
  functions=sorted(set(re.findall(r'^function\s+([A-Za-z_$][\w$]*)\s*\(',source,re.M)))
@@ -33,6 +33,7 @@ def gerar():
  # Módulo leve: edições de missão/data não precisam descompactar os catálogos.
  if (folder/'Salarios.gs').exists():(OUT/'Salarios.gs').write_text((folder/'Salarios.gs').read_text())
  if (folder/'PaletaAndroid.gs').exists():(OUT/'PaletaAndroid.gs').write_text((folder/'PaletaAndroid.gs').read_text())
+ (OUT/'Socorro.gs').write_text((folder/'Socorro.gs').read_text())
  (OUT/'CuraRecebida.gs').write_text((folder/'CuraRecebida.gs').read_text())
  bootstrap='''/** @OnlyCurrentDoc */
 // PACOTE R53 · entradas públicas; sem rede, sem gatilhos instaláveis novos.
