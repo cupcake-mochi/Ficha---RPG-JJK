@@ -1278,7 +1278,11 @@ def _carta_de_feitico(f, tr, r0, c0, i, lib, com_nota):
     f.add("cel", d, r0 + F_N1, e, r0 + F_N1, v("resolve"))
     f.add("cel", a, r0 + F_N2, a, r0 + F_N2, v("acao"))
     f.add("peq", b, r0 + F_N2, e, r0 + F_N2, v("alcance"))
-    f.add("rot", a, r0 + F_MEL, a, r0 + F_MEL + N_MEL - 1, "MELHORIAS", nota("melhorias"))
+    ajuda_melhorias = nota("melhorias")
+    if ajuda_melhorias and not lib:
+        from r53.textos_revisados import REACAO
+        ajuda_melhorias += " Reação. " + REACAO
+    f.add("rot", a, r0 + F_MEL, a, r0 + F_MEL + N_MEL - 1, "MELHORIAS", ajuda_melhorias)
     for k in range(N_MEL):
         assert f.add("cel_esq", b, r0 + F_MEL + k, c, r0 + F_MEL + k) == cel["mel"][k]
         f.add("peq", d, r0 + F_MEL + k, e, r0 + F_MEL + k, v(f"pt{k + 1}"))

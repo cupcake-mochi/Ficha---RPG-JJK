@@ -24,6 +24,12 @@ ALVOS_ANTIGOS = 50
 ALVOS_DA_AMALDICOADA = (("Talentos grátis", "talentos extras"), ("Feitiços fora dos espaços", "feitiços extras"))
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CF = "'CONFIGURAÇÃO'!"
+BASE_CORPORAL = "'DADOS_CUSTOM'!$B$126"
+CORPOS_DEFESA_FIXA = ("Corpo Debilitado", "Corpo Quebradiço", "Corpo Exaurido")
+CONDICAO_DEFESA_FIXA = "AND(" + BASE_CORPORAL + ",OR(" + ",".join(
+    '{marcante}="' + corpo + '"' for corpo in CORPOS_DEFESA_FIXA) + "))"
+DEFESA_FIXA = re.compile(r'=IF\(' + re.escape(CONDICAO_DEFESA_FIXA).replace(
+    r'\{marcante\}', r"'FICHA'!\$[A-Z]+\$[1-9]\d*") + r',0,(IF\(DADOS_CONFIG!.*)\)$')
 
 
 def ref(aba, coord):
@@ -65,6 +71,9 @@ def anterior(formula):
     O comportamento com efeitos é recalculado na regressão de configuração.
     """
     import campanha
+    defesa_fixa = DEFESA_FIXA.fullmatch(formula) if isinstance(formula, str) else None
+    if defesa_fixa:
+        formula = "=" + defesa_fixa[1]
     if not isinstance(formula, str) or not formula.startswith("=IF(DADOS_CONFIG!"):
         return campanha.anterior(formula)
     itens = Tokenizer(formula).items
@@ -123,12 +132,18 @@ def alvos(layout, pessoal, fam=None):
 def trocas(layout, pessoal, fam=None):
     destinos = alvos(layout, pessoal, fam)
     celulas, antes = {}, {}
+    idx = ix.indice(layout)
     for linha, (nome, aba, coord) in enumerate(destinos, 2):
         valor = next(r[1] for r in ix._aba(layout, aba)["celulas"] if r[0] == coord)
         if not isinstance(valor, str) or not valor.startswith("="):
             raise ValueError(f"{aba}!{coord}: o alvo não é calculado")
         antes.setdefault(aba, {})[coord] = valor
-        celulas.setdefault(aba, {})[coord] = envolve(valor, linha)
+        formula = envolve(valor, linha)
+        if nome == "Defesa":
+            # A Defesa fixa do corpo real prevalece sobre os ajustes numéricos da ficha.
+            cond = CONDICAO_DEFESA_FIXA.format(marcante=ref(aba, idx["marcante"]))
+            formula = f'=IF({cond},0,{formula[1:]})'
+        celulas.setdefault(aba, {})[coord] = formula
     return {"alvos": destinos, "antes": antes, "celulas": celulas}
 
 

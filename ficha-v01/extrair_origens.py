@@ -19,7 +19,7 @@ O que é cada entrada de `origens` (na ordem do menu de Origem):
     por ela) e `historia` quando depende de uma história (as duas de Manutenção, que o menu mostra sempre);
   · `legados`: as sugestões de Legado de história da entrada; `oficio` e `ce4`, as caixas que só aquela Origem usa.
 
-Nenhum texto é digitado aqui: cada parágrafo vem do manual palavra por palavra. O que é decisão deste arquivo, e não do
+Os parágrafos vêm do manual, com o esclarecimento da R61 sobre Ataque sem Prenúncio. O que é decisão deste arquivo, e não do
 livro, é só a `freq` (a frequência que o espelho da FICHA mostra), tirada da primeira frase que a diz, e a soma 67 das
 menores, que o livro dá (8 + 8 + 10 + 7 + 8 + 8 + 2 + 8 + 8) e a extração confere.
 """
@@ -28,6 +28,7 @@ import json, os, re, sys
 AQUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(AQUI))
 import livro as Lv
+from r53.textos_revisados import PRENUNCIO, PRENUNCIO_TRECHO
 
 SAIDA = os.path.join(AQUI, "origens-do-livro.json")
 CAPITULO = "5. Origens"
@@ -151,6 +152,10 @@ def _menores(L, historia=None):
 
 def _marcante(nome, L, extra=""):
     t = _corpo(L) + (("\n\n" + extra) if extra else "")
+    if nome == "Ataque sem Prenúncio":
+        if t.count(PRENUNCIO_TRECHO) != 1:
+            raise ValueError("Rever a atualização da R61 no texto de Ataque sem Prenúncio.")
+        t = t.replace(PRENUNCIO_TRECHO, PRENUNCIO_TRECHO + " " + PRENUNCIO)
     return {"nome": nome, "texto": t, "freq": frequencia(t)}
 
 

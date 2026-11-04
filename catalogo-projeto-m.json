@@ -887,7 +887,7 @@
    ],
    "familia": "Tempo",
    "peso": "Pesada",
-   "efeito": "Conjure com sua Reação quando ocorrer um gatilho perceptível, definido na criação. Resolva depois de o gatilho terminar, salvo regra expressa que permita intervir antes. Um gatilho de sofrer dano não evita o dano que já aconteceu.\n\nCumpra alvo, alcance, visão, Selo e os outros requisitos nesse momento. Não combina com Rápido, Armado, Atrasar ou Parado, nem substitui a Ação Completa das aplicações máximas."
+   "efeito": "Conjure com sua Reação quando ocorrer um gatilho perceptível, definido na criação. Resolva depois de o gatilho terminar, salvo regra expressa que permita intervir antes. Um gatilho de sofrer dano não evita o dano que já aconteceu.\n\nCumpra alvo, alcance, visão, Selo e os outros requisitos nesse momento. Não combina com Rápido, Armado, Atrasar ou Parado, nem substitui a Ação Completa das aplicações máximas.\n\nFora do seu turno, esta conjuração fica fora do limite de feitiços do próprio turno. Durante ele, vale o limite de um feitiço de Classe 1 ou maior, salvo exceção expressa."
   },
   "Armado": {
    "fonte_id": "catalogo--melhoria-armado",

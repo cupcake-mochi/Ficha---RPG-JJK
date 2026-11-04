@@ -154,7 +154,9 @@ function notasDeRegra_(ss, idx) {
     'descanso': 'Escolha o tipo e a ficha aplica: o curto devolve PE (25% do máximo em lugar propício; fora dele, 25%, ' +
                 '15%, 5% ou nada, pelo degrau de Exaustão); o longo devolve vida, PE e Integridade e desmarca as Sequelas ' +
                 '(em lugar propício, tudo ao máximo e a Exaustão sai; fora, vida e PE vão à metade, se estiverem ' +
-                'abaixo, e a Exaustão fica). O mestre diz se o lugar é propício. O menu volta sozinho ao convite.',
+                'abaixo, e a Exaustão fica). Com Corpo Exaurido, o longo soma 25% dos PV máximos em lugar propício ' +
+                '(mínimo 1), e fora dele não recupera PV. Recuperação Abundante dá 40% de PE no curto propício, ' +
+                'respeitando impedimentos específicos. Confirme os cuidados com o mestre. O menu volta ao convite.',
     // 14/10/2026 (B46): no livro R50, Insistir deixou de custar vida máxima, e a ressalva do máximo perdido saiu
     'último descanso': 'O que o último descanso mudou, para conferir ou desfazer à mão. A ficha não mexe na vida ' +
                        'temporária, nos usos por dia e nas condições.',
@@ -2039,7 +2041,7 @@ var DESCANSOS_ = {
 };
 var PE_DO_DESCANSO_CURTO_ = [25, 15, 5, 0];   // % do PE máximo, pelo degrau de Exaustão, fora de lugar propício
 
-/** `s` é {vida, vidaMax, pe, peMax, integ, integMax, sequelas, exaustao}. Devolve {vida, pe, integ, sequelas, exaustao}. */
+/** Calcula o descanso a partir dos recursos e das capacidades de Origem já selecionadas. */
 function contaDoDescanso_(tipo, s) {
   var d = DESCANSOS_[tipo];
   if (!d) return null;
@@ -2048,14 +2050,21 @@ function contaDoDescanso_(tipo, s) {
               exaustao: Math.max(0, Math.min(PE_DO_DESCANSO_CURTO_.length - 1, n(s.exaustao))) };
   var vidaMax = n(s.vidaMax), peMax = n(s.peMax), integMax = n(s.integMax);
   if (!d.longo) {
-    var pct = PE_DO_DESCANSO_CURTO_[d.propicio ? 0 : fim.exaustao];
+    var pct = d.propicio && s.recuperacaoAbundante ? 40 : PE_DO_DESCANSO_CURTO_[d.propicio ? 0 : fim.exaustao];
     var ganho = Math.floor(peMax * pct / 100);
     if (ganho < 1 && peMax * pct > 0) ganho = 1;
     if (peMax > 0) fim.pe = Math.max(fim.pe, Math.min(peMax, fim.pe + ganho));
     return fim;
   }
   var metade = function (max) { return Math.max(1, Math.floor(max / 2)); };
-  if (vidaMax > 0) fim.vida = d.propicio ? vidaMax : Math.max(fim.vida, metade(vidaMax));
+  if (vidaMax > 0) {
+    if (!s.exaurido) {
+      fim.vida = d.propicio ? vidaMax : Math.max(fim.vida, metade(vidaMax));
+    } else if (d.propicio) {
+      var ganhoVida = Math.max(1, Math.floor(vidaMax / 4));
+      fim.vida = Math.max(fim.vida, Math.min(vidaMax, fim.vida + ganhoVida));
+    }
+  }
   if (peMax > 0) fim.pe = d.propicio ? peMax : Math.max(fim.pe, metade(peMax));
   if (integMax > 0) fim.integ = integMax;
   fim.sequelas = 0;
@@ -2079,7 +2088,8 @@ function textoDoDescanso_(tipo, antes, fim) {
 function descansar_(e, idx) {
   var cd = cel_(idx, 'descanso');
   if (!cd || cd !== e.range.getA1Notation().split(':')[0]) return false;
-  var tipo = String(e.range.getValue());
+  // 04/11/2026: o evento já traz a escolha; ler a célula custava quase 5 s dos 30 do gatilho.
+  var tipo = String(e.value !== undefined ? e.value : e.range.getValue());
   if (!DESCANSOS_[tipo]) return false;
   var ficha = e.range.getSheet();
   var onde = { vida: 'vida', pe: 'energia', integ: 'integridade', exaustao: 'exaustão' };
@@ -2087,14 +2097,31 @@ function descansar_(e, idx) {
                                                        .filter(function (c) { return c; });
   var cExtras = cel_(idx, 'sequela extras');
   // Tudo o que o descanso consulta numa leitura só (cada ida ao servidor custa 1,5 a 2 s)
-  var lidas = ['vida_max', 'energia_max', 'integridade_max'].concat(Object.keys(onde).map(function (k) { return onde[k]; }))
+  var campos = ['descanso', 'vida_max', 'energia_max', 'integridade_max', 'origem', 'marcante', 'menor 1', 'menor 2'];
+  var lidas = campos.concat(Object.keys(onde).map(function (k) { return onde[k]; }))
     .map(function (k) { return cel_(idx, k); }).concat(caixinhas, cExtras ? [cExtras] : []).filter(function (c) { return c; });
   var v = lerCelulas_(ficha, lidas);
-  var le = function (k) { var c = cel_(idx, k); return c ? Number(v[c]) || 0 : 0; };
+  // Um evento atrasado não pode reaplicar um descanso já concluído ou substituir outra escolha.
+  // O menu vem na mesma leitura dos recursos, sem uma chamada extra ao Sheets.
+  if (String(v[cd]) !== tipo) return false;
+  var valor = function (k) { return v[cel_(idx, k)]; };
+  var le = function (k) { return Number(valor(k)) || 0; };
   var antes = { vidaMax: le('vida_max'), peMax: le('energia_max'), integMax: le('integridade_max') };
   Object.keys(onde).forEach(function (k) { antes[k] = le(onde[k]); });
   var extras = cExtras ? Math.max(0, Number(v[cExtras]) || 0) : 0;
   antes.sequelas = caixinhas.filter(function (c) { return v[c] === true; }).length + extras;
+  var corpo = valor('marcante');
+  var abundante = valor('menor 1') === 'Recuperação Abundante' || valor('menor 2') === 'Recuperação Abundante';
+  if (corpo === 'Corpo Exaurido' || abundante) {
+    // A publicada com corpo do livro dispensa outra leitura; custom e corpo próprio dependem da DADOS_CUSTOM.
+    var publicado = valor('origem') === 'Restrição Celestial · Restrição corporal' &&
+      ['Corpo Debilitado', 'Corpo Quebradiço', 'Corpo Exaurido'].indexOf(corpo) >= 0;
+    var custom = publicado ? null : SpreadsheetApp.getActive().getSheetByName('DADOS_CUSTOM');
+    var regras = custom ? custom.getRange(126, 2, 2, 1).getValues() : [[publicado], [publicado]];
+    var corporal = regras[0][0] === true;
+    antes.exaurido = corporal && corpo === 'Corpo Exaurido';
+    antes.recuperacaoAbundante = corporal && abundante && regras[1][0] === true;
+  }
   var fim = contaDoDescanso_(tipo, antes);
   // só o que mudou é escrito: a caixa que nasceu como conta (o atual de uma ficha intocada) fica como está
   Object.keys(onde).forEach(function (k) {
