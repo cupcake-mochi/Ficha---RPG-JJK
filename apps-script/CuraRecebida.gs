@@ -1,6 +1,6 @@
 /** Cura recebida pelo personagem. Independente do módulo pesado e da caixa ±. */
 function r53CuraMenu_() {
-  SpreadsheetApp.getUi().createMenu('Recursos').addItem('Aplicar cura', 'aplicarCuraRecebida').addToUi();
+  SpreadsheetApp.getUi().createMenu('Recursos').addItem('Aplicar cura', 'aplicarCuraRecebida').addItem('Registrar queda', 'registrarQueda').addItem('Consumir rodada da janela', 'consumirRodadaSocorro').addItem('Encerrar registro manualmente', 'encerrarRegistroSocorro').addToUi();
 }
 function r53ContaCura_(s, bruto) {
   if (!Number.isSafeInteger(bruto) || bruto < 0) throw Error('Informe uma cura inteira, igual ou maior que zero.');
@@ -26,6 +26,13 @@ function aplicarCuraRecebida() {
   if(!/^\d+$/.test(texto)){ui.alert('Informe um número inteiro igual ou maior que zero.');return;}
   var s,conta,bruto=Number(texto);
   try{s=r53LerCura_(ss);conta=r53ContaCura_(s,bruto);}catch(err){ui.alert(err.message);return;}
+  try {
+    var queda=typeof r53SocorroLer_==='function'?r53SocorroLer_(ss):null;
+    if(s.atual===0||(queda&&r53SocorroAtivo_(queda))) {
+      if(typeof r53SocorroAplicarCura_!=='function')throw Error('Vida em zero: registre o tratamento de Morrendo antes de alterar a vida.');
+      r53SocorroAplicarCura_(ss,bruto);return;
+    }
+  } catch(err) {ui.alert(err.message);return;}
   if(!conta.aplicado){ui.alert('Nenhuma vida será acrescentada. A vida atual foi preservada.');return;}
   var resumo='Cura informada: '+bruto+'\n'+(conta.reduz?'Corpo Exaurido: metade, arredondada para baixo, mínimo 1.\n':'')+
     'Ganho após a regra: '+conta.ganho+'\nVida: '+s.atual+' → '+conta.depois+' (máximo '+s.maximo+').\nA vida temporária não muda.';
