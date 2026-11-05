@@ -1,8 +1,42 @@
-# Ajustes ± — correção de A03/A09, preparada para revisão
+# Ajustes ± da PR60
+
+## Resultado do ensaio nativo em 04/11/2026
+
+Foi criada uma cópia descartável da QA integrada da Era. O hash atual de
+Codigo.gs era `8a0f2ed6…`. Apenas Codigo.gs recebeu o patch de `26ce13e`.
+Depois de salvar e recarregar, o arquivo tinha o hash previsto `e5338f56…`
+e os outros nove arquivos GS mantinham seus hashes. Os comandos da tabela
+foram inseridos pela interface. A API serviu para preparar e reler os
+saldos. A planilha tinha localidade pt-BR.
+
+| Cenário | Resultado | Duração de onEdit |
+| --- | --- | --- |
+| Vida 20, digitar −5 e −3 em FICHA!AM26 | **Falhou.** Vida 15 e −3 permaneceu na caixa. O esperado era 12 e caixa vazia. O Google entregou ambos os eventos e registrou contenção no segundo. | 18,185 s e 7,735 s |
+| Vida 10, TEMP 3, colar −5 e 7 em INVOCAÇÕES!X13:Y13 | **Passou.** Vida 8, TEMP 0, caixa ± vazia e vizinha Y13 igual a 7. | 29,260 s |
+| Vida 15, digitar −2 isolado em FICHA!AM26 | **Passou.** Vida 13 e caixa vazia. | 17,156 s |
+| PE 8, digitar −1,5 em FICHA!AM30 | **Falhou.** PE 8 e a caixa reteve o número −1,5. O esperado era PE 6,5 e caixa vazia. | 5,716 s |
+| PE 8, digitar −2 na mesma caixa | **Passou.** PE 6 e caixa vazia. | 14,549 s |
+| Integridade 20, TEMP 3, digitar −5 em FICHA!AM34 | **Passou.** Integridade 18, TEMP 0 e caixa vazia. | 14,602 s |
+
+A execução que recusou o segundo desconto registrou “ajuste ±: outro ajuste
+de recurso ainda está em execução”. Os tempos são de cada onEdit inteiro.
+Eles não isolam a duração da trava nem o custo de flush. A hipótese para o
+decimal é que o texto localizado do evento não passa em `Number(e.value)`.
+O teste confirmou o efeito na planilha, mas não capturou o texto do evento.
+
+A03 tem um caso nativo aprovado. A09 e decimais impedem o aceite da PR.
+A duração observada na colagem ficou perto do limite do gatilho simples.
+Antes de repetir as demais rotas, corrigir o tratamento de números localizados
+e rever como processar dois ajustes entregues que disputam a trava. Os outros
+11 redutores continuam com cobertura local. Menus, exclusão e medições da
+trava isolada não foram testados nesta rodada.
+
+Os 12 campos editados foram restaurados e relidos iguais, inclusive fórmulas
+e vazios. O patch permanece somente na descartável. Os eventos testados
+não exigiram autorização. A PR60 fica em rascunho.
 
 Base: PR59 `06b777f060a7305faa5feab975aa3f10cac3e44c`, sobre a pilha 51–58.
-Ramo: `codex/correcao-fila-recursos-20261104`. Não houve aplicação no Google,
-merge, edição de oficiais/jogador/PR31, novos acionadores ou mudanças de acesso.
+Ramo: `codex/correcao-fila-recursos-20261104`. A preparação anterior ao ensaio ocorreu sem aplicação no Google.
 
 ## Problemas e mudança
 
@@ -57,11 +91,9 @@ de exportação privada ausente; isso não conta como aprovação desses cenári
 A primeira rodada falhou na comparação histórica do remendo 11; após explicitar
 a reversão das duas funções novas, a suíte focal e o smoke completo passaram.
 
-Esses testes não são eventos nativos, não medem latência nem recálculo Google.
-O controle de navegador está desativado no Work; os conectores disponíveis não
-instalam/executam o Apps Script vinculado. Edições por API não testam onEdit.
+A bateria acima é local. Para os eventos nativos, veja o resultado no início deste registro.
 
-## Instalação incremental ainda pendente
+## Procedimento para instalação incremental
 
 `preparar_recursos_fila.js` opera somente offline. Aceita o Codigo da integração
 51–56, SHA-256 `8a0f2ed68117420c28df342f5fee4621ea648eb6aa32765a75a620bccba8b7a0`.
@@ -104,4 +136,4 @@ o atalho até o fim do arquivo: ele descartaria os incrementos anexados.
   fila documentada. Não houve alteração de regras para eliminar avisos legítimos.
 
 Próxima ação: revisão Sol/Medium; ensaio nativo e ajustes Sol/High, sem alterar
-configurações automaticamente. PR deve permanecer rascunho até o ensaio nativo.
+configurações automaticamente. A PR permanece em rascunho enquanto os casos reprovados estiverem abertos.

@@ -1,3 +1,16 @@
+# Ensaio nativo da PR60 · 04/11/2026
+
+Leia o resultado no início de
+`r53/diagnostico-android/CORRECAO-FILA-RECURSOS-2026-11-04.md`.
+Código `e5338f56…` instalado e relido em cópia nova da integração Era.
+Os outros nove GS e os 12 campos restaurados foram conferidos.
+A03 passou em X13:Y13. A09 falhou com dois onEdit entregues, pois a segunda
+execução encontrou a trava ocupada. PE −1,5 também falhou no pt-BR, enquanto
+o inteiro na mesma caixa passou. A PR60 continua em rascunho.
+Nenhuma autorização foi pedida nos eventos testados. Sem merge, oficiais,
+jogador, PR31, acionadores ou mudanças de acesso. Sol/High para corrigir
+e repetir os casos nativos, Sol/Medium para revisar. Sem mudar configurações.
+
 # Correção preparada de ± · 04/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-FILA-RECURSOS-2026-11-04.md`.
@@ -6,8 +19,7 @@ A03/A09 corrigidos localmente no onEdit e atalho; 504 verificações/18 rotas,
 18 verificações incrementais com snapshots privados, pacote leve 134.
 Preparador offline exige Codigo integrado `8a0f2ed6…`, produz `e5338f56…`.
 A revisão da PR60 incluiu o valor e a caixa no aviso de ajuste recusado.
-Nada aplicado no Google. Navegador desativado impede ensaio nativo; não concluir
-latência/fila global resolvidas. Limites de eventos, colagens, concorrência e
+Estado anterior ao ensaio nativo acima. Não concluir latência/fila global resolvidas. Limites de eventos, colagens, concorrência e
 falha parcial estão documentados. Outros oito achados permanecem abertos.
 Sem merge, oficiais/jogador/PR31, acionadores ou acesso novo. Evidências privadas
 em `nuvem-b47/saidas/correcao-fila-recursos/`, ignorado. Revisão Sol/Medium;
