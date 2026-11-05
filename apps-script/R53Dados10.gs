@@ -252,7 +252,7 @@ var VALORES_R53_DADOS_10_ = [
       [219,183,"=IF(AND('DADOS_INVOC'!DF6=\"Maldição domada\",'DADOS_INVOC'!FO6>=10),\"\",\"Trunfo exige maldição domada com técnica própria e nível de aquisição\")",0]
     ],
     "notas":[],
-    "geracao":"cb692d3f96e4e754",
+    "geracao":"4a11f363478f92f5",
     "arquivo":"R53Dados10.gs"
   }
 ];

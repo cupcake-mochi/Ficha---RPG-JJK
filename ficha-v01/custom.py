@@ -388,7 +388,7 @@ def prepara(layout):
 
 def integra(layout,tr,fp):
  """Trocas explícitas das fontes e contas. Não modifica nem desloca índices."""
- from ficha_pessoal import COLS_EQUIP, COLS_ITENS, EQUIP_MENU
+ from ficha_pessoal import COLS_EQUIP, COLS_ITENS, EQUIP_MENU, quantidade_equipavel
  cells={a['nome']:{x[0]:x for x in a['celulas']} for a in layout['abas']}
  antes={};depois={}
  def put(aba,c,v):
@@ -429,7 +429,7 @@ def integra(layout,tr,fp):
   for label,c,_ in COLS_EQUIP:
    if label in source:
     v=f'=IF($D{row}="","",IFERROR(VLOOKUP($D{row},{tab("equip")},{source[label]},FALSE),""))'
-   elif label=='Vol.':v=f'=IF($D{row}="","",IFERROR(IF($K{row}="",1,$K{row})*VLOOKUP($D{row},{tab("equip")},7,FALSE),""))'
+   elif label=='Vol.':v=f'=IF($D{row}="","",IFERROR({quantidade_equipavel(f"$K{row}")}*VLOOKUP($D{row},{tab("equip")},7,FALSE),""))'
    else:continue
    if row>=G['equip_ini']+EQUIP_MENU:manual(c+str(row),v)
   for c,col in [('AI',7),('AK',8),('AQ',9)]:

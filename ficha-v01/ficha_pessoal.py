@@ -163,6 +163,12 @@ def _faixa(c1, l1, c2, l2, aba=""):
     return f"{aba}${ix._letras(c1)}${l1}:${ix._letras(c2)}${l2}"
 
 
+def quantidade_equipavel(celula):
+    """Quantidade efetiva. Zero e dados inválidos não oferecem unidades."""
+    return (f'IFERROR(IF({celula}="",1,'
+            f'IF(AND(ISNUMBER({celula}),{celula}>0,INT({celula})={celula}),{celula},0)),0)')
+
+
 def _endereco(coord, aba):
     """o endereço em fórmula, que anda sozinho se alguém inserir linha (o mesmo molde do índice da FICHA)"""
     return f"=ADDRESS(ROW({aba}{coord}),COLUMN({aba}{coord}),4)"
@@ -397,41 +403,66 @@ def trocas(layout, CAT=None):
     FOR, MAE, NIV = (_A(idx[k], "FICHA!") for k in ("atr_Força", "maestria", "nivel"))
     UNIF, GRAUS = faixa_t("unif"), faixa_t("grau")
 
-    def da_tabela(quem, coluna, numero=False, vazio='""'):
-        v = f'VLOOKUP({quem},{TAB},{desloc[coluna]},FALSE)'
+    # A coluna entre as contas e os menus estava vazia. As contas existentes
+    # mantêm seus endereços, inclusive os consumidos pelas fichas já montadas.
+    ini, fim = G["equip_ini"], G["equip_fim"]
+    eq_linhas = range(ini, fim + 1)
+    eq_nome, eq_cat, eq_mao = (_faixa(C(c), ini, C(c), fim, FP) for c in ("D", "M", "S"))
+    eq_sec = f'(({eq_cat}="Escudo")+({eq_mao}=1)>0)'
+    c_qtd = c_contas + 2
+    eq_qtd = _faixa(c_qtd, lin_cab + 1, c_qtd, lin_cab + len(eq_linhas), "DADOS!")
+    principal = _abs(c_qtd, lin_cab + len(eq_linhas) + 1, "DADOS!")
+    secundaria = _abs(c_qtd, lin_cab + len(eq_linhas) + 2, "DADOS!")
+
+    def helper(linha, formula):
+        coord = _a1(c_qtd, linha)
+        if coord in cel["DADOS"] or dcel.get(coord, (None, None))[1] is not None:
+            raise ValueError(f"Auxiliar de estoque ocuparia DADOS!{coord}")
+        cel["DADOS"][coord] = (formula, coord)
+
+    for i, linha in enumerate(eq_linhas, lin_cab + 1):
+        helper(i, "=" + quantidade_equipavel(_abs(C("K"), linha, FP)))
+    for i, nome, pode in ((1, P, f'{eq_cat}<>"Escudo"'), (2, S, eq_sec)):
+        helper(lin_cab + len(eq_linhas) + i,
+               f'=IF({nome}="",0,IFERROR(MATCH(1,ARRAYFORMULA(({eq_nome}={nome})*({eq_qtd}>0)*({pode})),0),0))')
+
+    def da_tabela(linha, coluna, numero=False, vazio='""'):
+        v = f'IF({linha}=0,"",INDEX({TAB},{linha},{desloc[coluna]}))'
         return f'IFERROR(VALUE({v}&""),0)' if numero else f'IFERROR({v}&"",{vazio})'
+
+    def estoque_secundario(nome):
+        return f'SUMPRODUCT(--({eq_nome}={nome}),--{eq_sec},{eq_qtd})>IF(AND({nome}={P},{principal}>0),1,0)'
 
     conta("força", f"=N({FOR})")
     conta("soco na principal", f'=IF(OR({P}="",{P}="{SOCO}"),1,0)')
     soco = H["soco na principal"]
-    conta("categoria da principal", f'=IF({soco}=1,"{SOCO}",{da_tabela(P, "Categoria")})')
-    conta("mão da principal", f'=IF({soco}=1,1,{da_tabela(P, "Mão", True)})')
+    conta("categoria da principal", f'=IF({soco}=1,"{SOCO}",{da_tabela(principal, "Categoria")})')
+    conta("mão da principal", f'=IF({soco}=1,1,{da_tabela(principal, "Mão", True)})')
     conta("dado da principal", f'=IF({soco}=1,CHOOSE(MIN(4,MAX(1,N({MAE}))),' + ",".join(f'"{d}"' for d in R["soco"]) +
-          f'),{da_tabela(P, "Dado")})')
-    conta("propriedades da principal", f'=IF({soco}=1,"",{da_tabela(P, "Propriedades")})')
-    conta("força da principal", f'=IF({soco}=1,0,{da_tabela(P, "Força", True)})')
-    conta("nas duas mãos", f'=IF(AND(ISNUMBER(SEARCH("Versátil",{H["propriedades da principal"]})),{S}="{NAS_DUAS}"),1,0)')
+          f'),{da_tabela(principal, "Dado")})')
+    conta("propriedades da principal", f'=IF({soco}=1,"",{da_tabela(principal, "Propriedades")})')
+    conta("força da principal", f'=IF({soco}=1,0,{da_tabela(principal, "Força", True)})')
+    conta("nas duas mãos", f'=IF(AND({H["mão da principal"]}=1,ISNUMBER(SEARCH("Versátil",{H["propriedades da principal"]})),{S}="{NAS_DUAS}"),1,0)')
     d_ = H["dado da principal"]
-    conta("dado em uso", f'=IF({H["nas duas mãos"]}=1,IF({d_}="d6","d8",IF({d_}="d8","d10",IF({d_}="d10","d12",{d_}))),{d_})')
-    conta("alcance da principal", f'=IFERROR(VLOOKUP({P},{EQUIP},8,FALSE)&"","")')
-    conta("recarga da principal", f'=IFERROR(VLOOKUP({P},{EQUIP},9,FALSE)&"","")')
+    conta("dado em uso", f'=IF({H["nas duas mãos"]}=1,SWITCH({d_},"d6","d8","1d6","1d8","d8","d10","1d8","1d10","d10","d12","1d10","1d12",{d_}),{d_})')
+    conta("alcance da principal", f'=IF({principal}=0,"",IFERROR(VLOOKUP({P},{EQUIP},8,FALSE)&"",""))')
+    conta("recarga da principal", f'=IF({principal}=0,"",IFERROR(VLOOKUP({P},{EQUIP},9,FALSE)&"",""))')
     # treinada: a caixa da arma; se a arma foi digitada numa linha livre, a caixa do grupo da categoria dela
     conta("treino da principal",
-          f'=IF({soco}=1,1,IF(IFERROR(VLOOKUP({P},{EQUIP},10,FALSE),'
-          f'IFERROR(VLOOKUP({H["categoria da principal"]},{faixa_t("categ")},4,FALSE),FALSE))=TRUE,1,0))')
-    conta("secundária vale", f'=IF(AND({H["mão da principal"]}<>2,{S}<>"",{S}<>"{MAO_LIVRE}",{S}<>"{NAS_DUAS}"),1,0)')
+          f'=IF({soco}=1,1,IF({principal}=0,0,IF(IFERROR(VLOOKUP({P},{EQUIP},10,FALSE),'
+          f'IFERROR(VLOOKUP({H["categoria da principal"]},{faixa_t("categ")},4,FALSE),FALSE))=TRUE,1,0)))')
+    conta("secundária vale", f'=IF(AND({H["mão da principal"]}<>2,{S}<>"",{S}<>"{MAO_LIVRE}",{S}<>"{NAS_DUAS}",{secundaria}>0,{estoque_secundario(S)}),1,0)')
     sv = H["secundária vale"]
-    conta("categoria da secundária", f'=IF({sv}=1,{da_tabela(S, "Categoria")},"")')
+    conta("categoria da secundária", f'=IF({sv}=1,{da_tabela(secundaria, "Categoria")},"")')
     conta("escudo na secundária", f'=IF(AND({sv}=1,{H["categoria da secundária"]}="Escudo"),1,0)')
-    conta("dado da secundária", f'=IF({sv}=1,{da_tabela(S, "Dado")},"")')
-    conta("propriedades da secundária", f'=IF({sv}=1,{da_tabela(S, "Propriedades")},"")')
-    conta("força da secundária", f'=IF({sv}=1,{da_tabela(S, "Força", True)},0)')
+    conta("dado da secundária", f'=IF({sv}=1,{da_tabela(secundaria, "Dado")},"")')
+    conta("propriedades da secundária", f'=IF({sv}=1,{da_tabela(secundaria, "Propriedades")},"")')
+    conta("força da secundária", f'=IF({sv}=1,{da_tabela(secundaria, "Força", True)},0)')
     conta("alcance da secundária", f'=IF({sv}=1,IFERROR(VLOOKUP({S},{EQUIP},8,FALSE)&"",""),"")')
     conta("recarga da secundária", f'=IF({sv}=1,IFERROR(VLOOKUP({S},{EQUIP},9,FALSE)&"",""),"")')
     # quantos equipáveis guardados entram no menu de cada mão: com zero, a linha embaixo da mão diz como pôr um lá
-    eq_nome, eq_cat, eq_mao = (_faixa(C(c_), G["equip_ini"], C(c_), G["equip_fim"], FP) for c_ in ("D", "M", "S"))
-    conta("guardados para a principal", f'=SUMPRODUCT(--({eq_nome}<>""),--({eq_cat}<>"Escudo"))')
-    conta("guardados para a secundária", f'=SUMPRODUCT(--({eq_nome}<>""),--((({eq_cat}="Escudo")+({eq_mao}=1))>0))')
+    conta("guardados para a principal", f'=SUMPRODUCT(--({eq_nome}<>""),--({eq_cat}<>"Escudo"),--({eq_qtd}>0))')
+    conta("guardados para a secundária", f'=SUMPRODUCT(--({eq_nome}<>""),--{eq_sec},--({eq_qtd}>0))')
     conta("uniforme vale", f'=IF(ISNUMBER(MATCH({V},{faixa_t("unif", so=0)},0)),1,0)')
     uv = H["uniforme vale"]
     for nome, col in (("proteção do uniforme", 2), ("teto do uniforme", 3), ("força do uniforme", 4),
@@ -444,9 +475,9 @@ def trocas(layout, CAT=None):
     conta("falta força na principal", f'=IF({H["força da principal"]}>{f_},1,0)')
     conta("falta força na secundária", f'=IF(AND({sv}=1,{H["força da secundária"]}>{f_}),1,0)')
     conta("falta força no uniforme", f'=IF(AND({uv}=1,{H["força do uniforme"]}>{f_}),1,0)')
-    vols = [_faixa(C("AG"), G["equip_ini"], C("AG"), G["equip_fim"], FP)] + \
-           [_faixa(C(cols[2][1]), G["itens_ini"], C(cols[2][1]), G["itens_fim"], FP) for cols in COLS_ITENS]
-    conta("volume guardado", "=" + "+".join(f"SUM({v})" for v in vols))
+    vol_equip = _faixa(C("AG"), ini, C("AG"), fim, FP)
+    vol_itens = [_faixa(C(cols[2][1]), G["itens_ini"], C(cols[2][1]), G["itens_fim"], FP) for cols in COLS_ITENS]
+    conta("volume guardado", f'=SUMIF({eq_qtd},">0",{vol_equip})+' + "+".join(f"SUM({v})" for v in vol_itens))
     # o livro soma sem arredondar; o ROUND em duas casas só tira o resto de ponto flutuante (0,1 + 0,2)
     conta("carga", f'=ROUND({H["volume guardado"]}+{H["volume do uniforme"]},2)')
     # 08/10/2026 (B42): o Buff/Debuff da carga soma no limite (uma habilidade que deixa carregar mais, ou menos)
@@ -496,13 +527,14 @@ def trocas(layout, CAT=None):
     prox[0] = c_contas + 3
 
     # --- os menus que mudam com a ficha: as duas mãos e o que o Grau deixa vestir
-    eq_linhas = range(G["equip_ini"], G["equip_fim"] + 1)
     nome_, cat_, mao_ = (lambda l: _abs(C("D"), l, FP)), (lambda l: _abs(C("M"), l, FP)), (lambda l: _abs(C("S"), l, FP))
+    qtd_ = lambda l: _abs(c_qtd, lin_cab + 1 + l - ini, "DADOS!")
     tabela("menu_principal", ["menu da mão principal"],
-           [[SOCO]] + [[f'=IF(AND({nome_(l)}<>"",{cat_(l)}<>"Escudo"),{nome_(l)},"")'] for l in eq_linhas])
+           [[SOCO]] + [[f'=IF(AND({nome_(l)}<>"",{cat_(l)}<>"Escudo",{qtd_(l)}>0),{nome_(l)},"")'] for l in eq_linhas])
     tabela("menu_secundaria", ["menu da mão secundária"],
-           [[MAO_LIVRE], [f'=IF(AND({H["mão da principal"]}<>2,ISNUMBER(SEARCH("Versátil",{H["propriedades da principal"]}))),"{NAS_DUAS}","")']] +
-           [[f'=IF(AND({H["mão da principal"]}<>2,{nome_(l)}<>"",OR({cat_(l)}="Escudo",N({mao_(l)})=1)),{nome_(l)},"")'] for l in eq_linhas])
+           [[MAO_LIVRE], [f'=IF(AND({H["mão da principal"]}=1,ISNUMBER(SEARCH("Versátil",{H["propriedades da principal"]}))),"{NAS_DUAS}","")']] +
+           [[f'=IF(AND({H["mão da principal"]}<>2,{nome_(l)}<>"",OR({cat_(l)}="Escudo",N({mao_(l)})=1),'
+             f'{qtd_(l)}>0,{estoque_secundario(nome_(l))}),{nome_(l)},"")'] for l in eq_linhas])
     col_u = T["unif"][0]
     tabela("menu_vestindo", ["menu do vestindo"],
            [[SEM_UNIFORME]] + [[f'=IF({H["ordem do grau"]}>={_abs(col_u + 5, T["unif"][1] + i, "DADOS!")},'
@@ -1071,7 +1103,8 @@ def aba(layout, tr):
     f.add("peq", "S", L + 4, "AF", L + 4,
           f'=IF({H["mão da principal"]}=2,"Ocupada: a arma da outra mão é de duas mãos",'
           f'IF({S}="{NAS_DUAS}",IF({duas}=1,"A mesma arma, nas duas mãos","A arma da outra mão não é Versátil"),'
-          f'IF({sv}=0,IF({H["guardados para a secundária"]}=0,"{T_GUARDE_S}","Mão livre"),'
+          f'IF({sv}=0,IF(AND({S}<>"",{S}<>"{MAO_LIVRE}"),"Sem unidade disponível para a mão secundária",'
+          f'IF({H["guardados para a secundária"]}=0,"{T_GUARDE_S}","Mão livre")),'
           f'IF({H["categoria da secundária"]}="","Não está nos equipáveis guardados",'
           f'IF({esc}=1,"Escudo · "&{H["propriedades da secundária"]},' +
           detalhe(H["dado da secundária"], H["propriedades da secundária"], H["alcance da secundária"],
@@ -1123,7 +1156,7 @@ def aba(layout, tr):
     # --- os equipáveis guardados
     L = _titulo(f, L_EQUIP, "D", "AT", "EQUIPÁVEIS GUARDADOS", NOTAS["livre"])
     EQUIP = tr["faixa_t"]("equip")
-    notas_col = {"Qtd.": NOTAS["qtd"], "Vol.": NOTAS["vol"], "Grau": NOTAS["grau_ferramenta"], "Estigma": NOTAS["estigma"],
+    notas_col = {"Qtd.": "Use um inteiro a partir de zero. Em branco vale 1. Zero deixa o item fora de uso.", "Vol.": NOTAS["vol"], "Grau": NOTAS["grau_ferramenta"], "Estigma": NOTAS["estigma"],
                  "Desgaste": NOTAS["desgaste"]}
     for rot, a, b in COLS_EQUIP:
         f.add("rot", a, L + 1, b, L + 1, rot.upper(), notas_col.get(rot))
@@ -1136,7 +1169,7 @@ def aba(layout, tr):
             if com_menu and rot in da_dados:
                 v = f'=IF($D{lin}="","",IFERROR(VLOOKUP($D{lin},{EQUIP},{da_dados[rot]},FALSE),""))'
             elif com_menu and rot == "Vol.":
-                v = f'=IF($D{lin}="","",IFERROR(IF($K{lin}="",1,$K{lin})*VLOOKUP($D{lin},{EQUIP},7,FALSE),""))'
+                v = f'=IF($D{lin}="","",IFERROR({quantidade_equipavel(f'$K{lin}')}*VLOOKUP($D{lin},{EQUIP},7,FALSE),""))'
             f.add("cel_esq" if rot in esquerda else "cel", a, lin, b, lin, v)
     for lin in range(G["equip_ini"] + EQUIP_MENU, G["equip_fim"] + 1):
         f.notas[f"D{lin}"] = NOTAS["linha_livre"]
@@ -1238,6 +1271,10 @@ def aba(layout, tr):
         "altura_padrao": ficha.get("altura_padrao"), "grade": False,
         "celulas": [[k, v[0], v[1]] for k, v in f.cel.items()],
         "mescladas": f.mesclas, "menus": f.menus, "condicional": [], "imagens": imagens,
+        "validacoes_formula": [
+            [f"K{r}", f'=IFERROR((K{r}="")+ISNUMBER(K{r})*(K{r}>=0)*(INT(K{r})=K{r})>0)']
+            for r in range(G["equip_ini"], G["equip_fim"] + 1)
+        ],
         "notas": f.notas,
         # o painel é um grupo de colunas fechado, e a extensão é outro, dentro dele, também fechado
         "grupos": {"linhas": [[G["treino_ini"], G["treino_fim"], False],

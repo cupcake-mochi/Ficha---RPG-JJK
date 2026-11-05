@@ -972,6 +972,11 @@ function menusSuspensos_(ss) {
       aba.getRange(1, 1, spec.rows, spec.cols).setDataValidations(regras);
       return;
     }
+    (spec.validacoes_formula || []).forEach(function (d) {
+      var regra = SpreadsheetApp.newDataValidation().requireFormulaSatisfied(d[1]).setAllowInvalid(false).build();
+      aba.getRange(d[0]).setDataValidation(regra);
+      n++;
+    });
     (spec.dv || []).forEach(function (d) {
       aba.getRange(d[0].replace(/\$/g, '')).setDataValidation(regraDe(d[1], (spec.menus_estritos || []).indexOf(d[0]) >= 0));
       n++;
