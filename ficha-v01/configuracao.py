@@ -187,6 +187,14 @@ def trocas(layout, pessoal, fam=None):
     destinos = alvos(layout, pessoal, fam)
     celulas, antes = {}, {}
     idx = ix.indice(layout)
+    imune_exaustao = f'{ref("FICHA", idx["origem"])}="Corpo Amaldiçoado"'
+    casco = None
+    if fam is not None:
+        h = fam["H"]
+        aptidoes = fam["D"].faixa("carta_aptidao", so=1, aba="DADOS_AM!")
+        casco = (f'AND({fam["ROTA"]}=4,{h["refino"]}>=7,'
+                 f'{h["aptidões anotadas"]}<={h["aptidões compráveis"]},'
+                 f'COUNTIF({aptidoes},"Casco")>0,{ref("FICHA", idx["atr_Constituição"])}>=4)')
     for linha, (nome, aba, coord) in enumerate(destinos, 2):
         valor = next(r[1] for r in ix._aba(layout, aba)["celulas"] if r[0] == coord)
         if not isinstance(valor, str) or not valor.startswith("="):
@@ -203,7 +211,11 @@ def trocas(layout, pessoal, fam=None):
             ancora = exaustao + ">=2"
             if valor.count(ancora) != 1:
                 raise ValueError("Limite de Exaustão mudou no deslocamento")
-            valor = valor.replace(ancora, f'{exaustao}-IF({vigilia},1,0)>=2')
+            efetiva = f'IF({imune_exaustao},0,MAX(0,{exaustao}-IF({vigilia},1,0)))'
+            valor = valor.replace(ancora, f'{efetiva}>=2')
+        if casco and nome in ("Vida máxima", "TR · Vigor"):
+            bonus = f'INT({ref("FICHA", idx["nivel"])}/2)' if nome == "Vida máxima" else '1'
+            valor = f'=LET(baseBencao,{valor[1:]},IF(baseBencao="","",baseBencao+IF({casco},{bonus},0)))'
         formula = envolve(valor, linha)
         if nome == "Defesa":
             # A Defesa fixa do corpo real prevalece sobre os ajustes numéricos da ficha.
@@ -214,6 +226,15 @@ def trocas(layout, pessoal, fam=None):
         if nome == "Deslocamento":
             formula = limita_deslocamento_corporal(formula, idx)
         celulas.setdefault(aba, {})[coord] = formula
+    if fam is not None and idx.get("exaustão"):
+        import estado_do_personagem as ep
+        r, c = ix._lc(idx["exaustão"])
+        coord = ix._letras(c) + str(r + 1)
+        original = next(v[1] for v in ix._aba(layout, "FICHA")["celulas"] if v[0] == coord)
+        antes.setdefault("FICHA", {})[coord] = original
+        celulas.setdefault("FICHA", {})[coord] = (
+            f'=IF({imune_exaustao},"Imune a Exaustão · o estágio marcado não aplica penalidades",'
+            + ep.efeito(efetiva)[1:] + ')')
     # Localiza a saída de Bloquear pelo rótulo; não desloca coordenadas globalmente.
     l, c = ix._lc(ix._Ficha(layout).unico("BLOQUEAR"))
     coord = ix._letras(c) + str(l + 1)
