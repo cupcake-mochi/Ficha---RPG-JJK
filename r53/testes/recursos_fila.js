@@ -11,6 +11,7 @@ let checks=0;const eq=(a,b)=>{assert.deepEqual(a,b);checks++;};
 const ficha=ss.getSheetByName('FICHA'),inv=ss.getSheetByName('INVOCAÇÕES');
 const caixas=ctx.ABAS.find(s=>s.nome==='INVOCAÇÕES').redutores;
 const put=(s,vals)=>Object.entries(vals).forEach(([a,v])=>s.getRange(a).setValue(v));
+ss.setSpreadsheetLocale('pt_BR');
 const casos=[];
 for(const linha of [26,30,34])for(const modo of ['onEdit','atalho'])casos.push({s:ficha,d:'AM'+linha,a:'D'+linha,m:'J'+linha,t:'AF'+linha,modo});
 for(const [d,a,t,m]of caixas)casos.push({s:inv,d,a,m,t,modo:'onEdit'});
@@ -28,6 +29,8 @@ for(const x of casos){
  reset(0,10);s.getRange(d).setValue(50);run(evento('50'));eq(s.getRange(a).getValue(),20);
  reset(3,10);s.getRange(d).setValue(-50);run(evento('-50'));eq(s.getRange(a).getValue(),0);eq(s.getRange(t).getValue(),0);
  reset(0,10);s.getRange(d).setValue(-0.5);run(evento('-0.5'));eq(s.getRange(a).getValue(),9.5);
+ reset(0,10);s.getRange(d).setValue(-1.5);run(evento('-1,5'));
+ eq(s.getRange(a).getValue(),8.5);eq(s.getRange(d).getValue(),'');
  if(s===inv){
   reset(0,'');s.getRange(d).setValue(-5);run(evento('-5'));eq(s.getRange(a).getValue(),15);
   const neighbor=(d.startsWith('X')?'Y':'AR')+d.match(/\d+/)[0];
@@ -63,6 +66,22 @@ eq(ficha.getRange('D26').getValue(),17);
 eq(caixaVida.getValue(),'');
 eq(toasts.length,1);
 eq(toasts[0][0],'Ajuste -5 em FICHA!AM26 não aplicado. Confira os saldos e repita esse ajuste se necessário.');
+ctx.LockService=originalLock;
+// Os eventos foram entregues. A primeira gravação leva mais de um segundo
+// para liberar o documento, mas termina dentro da janela de espera.
+const esperaSimuladaMs=4000;
+let segundo=false;
+ctx.LockService={getDocumentLock:()=>({
+ tryLock:ms=>!segundo||ms>=esperaSimuladaMs,
+ releaseLock:()=>{segundo=true;}
+})};
+toasts=[];logs.length=0;
+put(ficha,{D26:20,J26:20,AF26:0,AM26:-3});
+ctx.r53EdicaoLivre_({source:ss,range:caixaVida,value:'-5'});
+ctx.r53EdicaoLivre_({source:ss,range:caixaVida,value:'-3',oldValue:'-5'});
+eq(ficha.getRange('D26').getValue(),12);
+eq(caixaVida.getValue(),'');
+eq(toasts,[]);
 ctx.LockService=originalLock;
 // A aritmética não muda nesta correção (inclusive A08 ainda pendente).
 for(const a of [0,5,20,''])for(const m of [0,20])for(const t of [0,3])for(const d of [-30,-3,0,3,30]){

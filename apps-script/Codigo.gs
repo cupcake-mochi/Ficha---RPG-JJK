@@ -1927,10 +1927,19 @@ function r53DeltaExecutar_(e, x, calcular) {
     // Uma exclusão antiga não deve consumir a entrada que chegou depois dela.
     if (unica && e.value === undefined && e.oldValue !== undefined) return true;
     var evento = unica && e.value !== undefined;
-    if (evento) passo = Number(e.value);
+    if (evento) {
+      passo = Number(e.value);
+      // No pt-BR, o evento pode trazer o texto com vírgula, mesmo quando a célula é numérica.
+      if (isNaN(passo) && typeof e.value === 'string' &&
+          /^[+-]?\d+(?:\.\d{3})*,\d+$/.test(e.value.trim()) &&
+          (e.source || aba.getParent()).getSpreadsheetLocale() === 'pt_BR') {
+        passo = Number(e.value.trim().replace(/\./g, '').replace(',', '.'));
+      }
+    }
     if (evento && (!isFinite(passo) || !passo)) return true;
     trava = LockService.getDocumentLock();
-    if (!trava || !trava.tryLock(1000)) throw Error('outro ajuste de recurso ainda está em execução');
+    // Dá tempo para o desconto anterior gravar, com espera limitada no onEdit.
+    if (!trava || !trava.tryLock(12000)) throw Error('outro ajuste de recurso ainda está em execução');
     presa = true;
     var enderecos = [x.d, x.a, x.m].concat(x.t ? [x.t] : []);
     var pos = enderecos.map(function (a) {
@@ -1943,7 +1952,8 @@ function r53DeltaExecutar_(e, x, calcular) {
     var l = Math.min.apply(null, ls), c = Math.min.apply(null, cs);
     var v = aba.getRange(l, c, Math.max.apply(null, ls)-l+1, Math.max.apply(null, cs)-c+1).getValues();
     var q = function (i) { return v[pos[i][0]-l][pos[i][1]-c]; };
-    if (!evento) passo = Number(q(0));
+    var comandoAtual = Number(q(0));
+    if (!evento) passo = comandoAtual;
     if (!isFinite(passo) || !passo) return true;
     var max = Number(q(2)) || 0, atual = q(1);
     var antes = x.t ? Math.max(0, Number(q(3)) || 0) : 0;
@@ -1952,9 +1962,9 @@ function r53DeltaExecutar_(e, x, calcular) {
     escreveu = true;
     aba.getRange(x.a).setValue(fim.atual);
     if (x.t && fim.temp !== antes) aba.getRange(x.t).setValue(fim.temp);
-    // Nunca limpar a seleção inteira nem uma entrada posterior de outro valor.
-    var delta = aba.getRange(x.d);
-    if (Number(delta.getValue()) === passo) delta.clearContent();
+    // Usa a leitura sob a trava, antes de escrever. Reler depois das escritas
+    // força um envio intermediário ao Sheets e prolonga a contenção.
+    if (comandoAtual === passo) aba.getRange(x.d).clearContent();
     SpreadsheetApp.flush();
     enviou = true;
   } catch (err) {

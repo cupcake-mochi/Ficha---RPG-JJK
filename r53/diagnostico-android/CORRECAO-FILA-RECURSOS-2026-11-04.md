@@ -1,6 +1,41 @@
 # Ajustes ± da PR60
 
-## Resultado do ensaio nativo em 04/11/2026
+## Reteste da correção em 04/11/2026
+
+A leitura do evento reconhece a vírgula decimal quando a planilha usa pt-BR.
+A trava aguarda até 12 s. O script usa a leitura feita sob a trava para
+decidir se limpa a caixa e envia as gravações juntas. Antes, reler a caixa
+depois de escrever os saldos introduzia um envio intermediário. A janela
+entre leitura e limpeza continua sem proteção contra edição humana.
+
+A mesma descartável recebeu Codigo.gs com SHA-256
+`6aec0d0a1e88f777475bc7578fc231c982f0d9b08783c6e8fbe90becdf920455`.
+A releitura após salvar confirmou o hash e os outros nove arquivos GS
+mantiveram seus hashes. A API preparou e relê os saldos. Cada comando
+abaixo foi inserido pela interface.
+
+| Cenário | Resultado observado | Duração de onEdit |
+| --- | --- | --- |
+| Vida 20 com −5 e −3 seguidos | Vida 12 e caixa vazia | 20,105 s e 11,191 s |
+| PE 8 com −1,5 em pt-BR | PE 6,5 e caixa vazia | 13,370 s |
+| Vida 10 e TEMP 3, colar −5 e 7 em INVOCAÇÕES!X13:Y13 | Vida 8, TEMP 0, X13 vazio e Y13 igual a 7 | 20,006 s |
+| Integridade 20 e TEMP 3 com −5 | Integridade 18, TEMP 0 e caixa vazia | 11,590 s |
+| Vida 12 com −2 isolado | Vida 10 e caixa vazia | 12,539 s |
+| PE 6,5 com −2 isolado | PE 4,5 e caixa vazia | 9,610 s |
+
+Os dois eventos rápidos começaram no intervalo de um segundo no registro.
+Os tempos são do onEdit inteiro. A colagem anterior levou 29,260 s e
+a desta rodada levou 20,006 s. Uma execução por versão não mede ganho típico.
+Os 12 campos de teste foram restaurados e relidos iguais. O Google não pediu
+autorização. Os 11 redutores restantes e os menus não fizeram parte do reteste.
+
+Passaram 543 verificações locais em 18 rotas, 18 verificações incrementais com
+snapshots privados, 134 do pacote leve e o smoke portátil. A espera continua
+limitada e o aviso de recusa permanece. Os descontos testados são comutativos.
+Uma mistura de ganho e perda ainda pode depender da ordem de execução do
+Google. O gatilho também pode deixar de entregar eventos em rajadas maiores.
+
+## Primeiro ensaio nativo em 04/11/2026 (histórico)
 
 Foi criada uma cópia descartável da QA integrada da Era. O hash atual de
 Codigo.gs era `8a0f2ed6…`. Apenas Codigo.gs recebeu o patch de `26ce13e`.
@@ -24,7 +59,7 @@ Eles não isolam a duração da trava nem o custo de flush. A hipótese para o
 decimal é que o texto localizado do evento não passa em `Number(e.value)`.
 O teste confirmou o efeito na planilha, mas não capturou o texto do evento.
 
-A03 tem um caso nativo aprovado. A09 e decimais impedem o aceite da PR.
+Nesse primeiro ensaio, A03 passou e A09 e decimais impediram o aceite.
 A duração observada na colagem ficou perto do limite do gatilho simples.
 Antes de repetir as demais rotas, corrigir o tratamento de números localizados
 e rever como processar dois ajustes entregues que disputam a trava. Os outros
@@ -38,7 +73,7 @@ não exigiram autorização. A PR60 fica em rascunho.
 Base: PR59 `06b777f060a7305faa5feab975aa3f10cac3e44c`, sobre a pilha 51–58.
 Ramo: `codex/correcao-fila-recursos-20261104`. A preparação anterior ao ensaio ocorreu sem aplicação no Google.
 
-## Problemas e mudança
+## Preparação e revisão anteriores ao ensaio (histórico)
 
 A09: com saldo 20, duas edições −5 e −3 já entregues à célula deixavam 17:
 a primeira execução lia o −3 mais recente e apagava a caixa antes da segunda.
@@ -97,7 +132,7 @@ A bateria acima é local. Para os eventos nativos, veja o resultado no início d
 
 `preparar_recursos_fila.js` opera somente offline. Aceita o Codigo da integração
 51–56, SHA-256 `8a0f2ed68117420c28df342f5fee4621ea648eb6aa32765a75a620bccba8b7a0`.
-Produz `e5338f56d61fc6a2e5e665db0219daccc3a6e91c7e49ec642c85e1bb70e717b9`.
+Produz `6aec0d0a1e88f777475bc7578fc231c982f0d9b08783c6e8fbe90becdf920455`.
 O snapshot recuperado não substitui um snapshot atual antes de aplicar.
 
 1. Habilitar o controle do navegador e criar cópia descartável da integração.
@@ -128,7 +163,7 @@ o atalho até o fim do arquivo: ele descartaria os incrementos anexados.
   das invocações. Inclua uma dessas operações no ensaio de contenção. A trava
   não impede edições humanas entre a releitura e a limpeza. Não existe
   transação entre saldo/TEMP/limpeza; falha parcial exige conferir os saldos.
-- Um segundo evento pode exceder a espera de 1 segundo e exigir reaplicação
+- Um segundo evento pode exceder a espera de 12 segundos e exigir reaplicação
   manual após aviso. A escolha do limite precisa do ensaio de latência nativa;
   não declarar resolvida toda a fila nem a demora de 19–20 segundos relatada.
   [Flush antes de liberar a trava](https://developers.google.com/apps-script/reference/lock/lock).
@@ -136,4 +171,4 @@ o atalho até o fim do arquivo: ele descartaria os incrementos anexados.
   fila documentada. Não houve alteração de regras para eliminar avisos legítimos.
 
 Próxima ação: revisão Sol/Medium; ensaio nativo e ajustes Sol/High, sem alterar
-configurações automaticamente. A PR permanece em rascunho enquanto os casos reprovados estiverem abertos.
+configurações automaticamente. A PR permanece em rascunho para revisão após o reteste.

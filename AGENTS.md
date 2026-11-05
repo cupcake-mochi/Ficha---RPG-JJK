@@ -1,3 +1,16 @@
+# Reteste nativo da PR60 · 04/11/2026
+
+Leia o reteste no início de
+`r53/diagnostico-android/CORRECAO-FILA-RECURSOS-2026-11-04.md`.
+Codigo `6aec0d0a…` salvo e relido na mesma descartável da Era. Os outros nove
+GS mantiveram seus hashes. Os seis cenários passaram, incluindo 20 − 5 − 3 = 12
+e PE 8 − 1,5 = 6,5. A colagem preservou Y13 e levou 20,006 s nesta execução.
+12 campos restaurados e relidos iguais. Local: 543 verificações/18 rotas,
+incremental 18, pacote leve 134 e smoke aprovados. A trava espera até 12 s;
+isso não recupera eventos que o Google não entregou nem garante ordem.
+PR60 em rascunho para revisão. Sem merge, oficiais, jogador, PR31, acionadores
+ou autorização nova. Sol/Medium para revisão. Não mudar configurações.
+
 # Ensaio nativo da PR60 · 04/11/2026
 
 Leia o resultado no início de
