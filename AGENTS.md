@@ -1,3 +1,23 @@
+# Revisão PR66 e auditoria de recursos de Origem · 05/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR66-2026-11-05.md` e
+`r53/diagnostico-android/AUDITORIA-ORIGENS-RECURSOS-2026-11-05.md`/JSON.
+PR66 f2bc70f revisada, dois checks SUCCESS e sem conflito. Testes focais
+78/138 e transporte real aprovados; não houve alteração nessa PR.
+Ramo separado `codex/auditoria-origens-recursos-20261105`, diagnóstico:
+O01 PE máximo do Núcleo, O02 barra de Integridade indevida, O03 inatividade
+sem efeito em movimento/Bloquear, O04 bônus de Fôlego ausente. O05: dois
+onEdit no Ciclo atingiram tempo, com repetição concluída no mesmo código.
+Não atribuir à PR66 sem isolar causa; não houve A/B válido com código antigo.
+24 perfis/eventos nativos concluídos; dois timeouts separados. Local 10
+contas, seis conformes/quatro divergentes: diagnóstico não é teste verde.
+14 entradas por cópia restauradas; 1.609 células relidas sem diferenças
+de valores/fórmulas, notas ou validações. Código d5845c03… relido igual.
+Sem correção nova de produção, merge, oficiais, jogador, PR31 ou acionador.
+Próxima correção: ausência da barra/PE do Núcleo e apuração de O05 antes
+de ampliar leituras. Sol/High para investigar/ensaiar, Sol/Medium para revisar.
+Não mudar configurações automaticamente.
+
 # Correção de descanso/Origem · 05/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-DESCANSO-ORIGENS-2026-11-05.md`.
