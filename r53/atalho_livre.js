@@ -144,6 +144,7 @@ const DELTA_ESPERADO = `function aplicarDelta_(e, idx) {
     e.range.clearContent();
   });
 }`;
+const DELTA_ATUAL = "function aplicarDelta_(e, idx) {\n  ['vida', 'energia', 'integridade'].forEach(function (r) {\n    var cd = cel_(idx, r + '_delta');\n    if (!cd || cd !== e.range.getA1Notation()) return;\n    r53DeltaExecutar_(e, { d: cd, a: cel_(idx, r), m: cel_(idx, r + '_max'), t: cel_(idx, r + '_temp') }, aplicaPasso_);\n  });\n}";
 function moduloTexto(projeto) {
   const fatias = projeto.files.map(f => /^(\/\/[^\n]*\n)var R53_CODIGO_(\d+)_ = ("[^\n]*");\n?$/.exec(f.source)).filter(Boolean);
   if (!fatias.length) throw Error('o projeto não tem os pedaços R53_CODIGO_');
@@ -156,7 +157,10 @@ function funcao(texto, nome) {
 }
 function caixasDelta(A, projeto) {
   const texto = moduloTexto(projeto);
-  if (funcao(texto, 'aplicarDelta_') !== DELTA_ESPERADO) throw Error('o aplicarDelta_ do módulo mudou: revise o atalho das caixas de ±');
+  if (![DELTA_ESPERADO, DELTA_ATUAL].includes(funcao(texto, 'aplicarDelta_'))) throw Error('o aplicarDelta_ do módulo mudou: revise o atalho das caixas de ±');
+  if (funcao(texto, 'aplicarDelta_') === DELTA_ATUAL &&
+      funcao(texto, 'r53DeltaExecutar_') !== funcao(fs.readFileSync(path.join(__dirname, 'recursos_delta.gs'), 'utf8'), 'r53DeltaExecutar_'))
+    throw Error('o motor do ± mudou: revise o atalho');
   const passo = funcao(texto, 'aplicaPasso_');
   const marca = '\nreturn {"acabar":';
   if (texto.split(marca).length !== 2) throw Error('fim do módulo divergente');
@@ -313,7 +317,7 @@ function r53EdicaoLivre_(e){
   if(m&&r53LivreToca_(m,r))PropertiesService.getDocumentProperties().deleteProperty('r53_marcas_custom');
   if(aba==='FICHA'&&r.getA1Notation()===R53_LIVRE_NIVEL_.nivel)r53LivreNivel_(e);
   if(aba==='FICHA'&&R53_LIVRE_XP_.caixas.indexOf(r.getA1Notation())>=0&&r53LivreXp_(e))return true;
-  if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r);
+  if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r,e);
   if(!lista||r53LivreToca_(lista,r)||!r53LivreValido_())return false;
   // Trilha ou Caminho mudou desde a última sincronização: a próxima edição nas quatro abas sincroniza.
   if(R53_LIVRE_FAMILIAS_.indexOf(aba)>=0&&PropertiesService.getDocumentProperties().getProperty(R53_LIVRE_PROP_))return false;
@@ -323,18 +327,12 @@ function r53EdicaoLivre_(e){
 // As caixas de ± da FICHA: o aplicarDelta_ do módulo sem abrir o módulo (a conta é o aplicaPasso_ dele).
 // a: atual, m: máximo, t: temporária; l: o retângulo da leitura; p: onde cada uma (±, a, m, t) cai nele.
 var R53_LIVRE_DELTA_=${JSON.stringify(delta ? delta.caixas : {})};
-${delta ? delta.passo + '\n' : 'function r53LivrePasso_(){throw Error("sem conta do ±");}\n'}/** true: a caixa de ± foi tratada aqui. Erro antes de gravar devolve false, e o módulo faz como sempre. */
-function r53LivreDelta_(r){
- var x=R53_LIVRE_DELTA_[r.getA1Notation()],gravou=false;
- try{
-  var ficha=r.getSheet(),v=ficha.getRange(x.l[0],x.l[1],x.l[2],x.l[3]).getValues(),q=function(i){var p=x.p[i];return v[p[0]][p[1]];};
-  var passo=Number(q(0));if(!passo)return true;
-  var antes=x.t?Math.max(0,Number(q(3))||0):0,fim=r53LivrePasso_(q(1),q(2),antes,passo);
-  gravou=true;ficha.getRange(x.a).setValue(fim.atual);
-  if(x.t&&fim.temp!==antes)ficha.getRange(x.t).setValue(fim.temp);
-  r.clearContent();return true;
- }catch(err){console.log('atalho do ±: '+err.message);return gravou;}
+${delta ? delta.passo + '\n' : 'function r53LivrePasso_(){throw Error("sem conta do ±");}\n'}// O evento é preservado no atalho. Uma falha nunca repete o ajuste no módulo.
+function r53LivreDelta_(r,e){
+ var x=R53_LIVRE_DELTA_[r.getA1Notation()];
+ return r53LivreDeltaExecutar_(e||{range:r},{d:r.getA1Notation(),a:x.a,m:x.m,t:x.t},r53LivrePasso_);
 }
+${fs.readFileSync(path.join(__dirname,'recursos_delta.gs'),'utf8').replace('function r53DeltaExecutar_(', 'function r53LivreDeltaExecutar_(')}
 // O nível escrito na mão (27/10/2026): o XP total da DADOS é a soma das missões mais a base, e aqui a base é acertada
 // para o XP caber no nível novo. Subindo, o XP vai para o acumulado do nível; descendo, guarda a mesma fração do caminho
 // até o próximo. Se o XP já cabe no nível, nada muda. Só a caixa do nível sozinha; a ficha sem a base fica como estava.
@@ -409,4 +407,4 @@ if (require.main === module && process.argv[2] === '--so-delta') {
   console.log(JSON.stringify({ alvo, modulo: r.hashModulo.slice(0, 8), catalogo: r.hashCatalogo.slice(0, 8), contagem: r.contagem,
     sha: crypto.createHash('sha256').update(r.output).digest('hex') }, null, 1));
 }
-module.exports = { fonte, NIVEL, XP, r53LivreXpNivel_, r53LivreXpNota_, r53LivreXp_, gerar, soDelta, caixasDelta, moduloTexto, DELTA_ESPERADO, retangulos, entradasDoAmparo, referencias, FIXAS, ABAS, FAMILIAS };
+module.exports = { fonte, NIVEL, XP, r53LivreXpNivel_, r53LivreXpNota_, r53LivreXp_, gerar, soDelta, caixasDelta, moduloTexto, DELTA_ESPERADO, DELTA_ATUAL, retangulos, entradasDoAmparo, referencias, FIXAS, ABAS, FAMILIAS };

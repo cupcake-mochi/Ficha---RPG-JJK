@@ -1,3 +1,43 @@
+# Reteste nativo da PR60 · 04/11/2026
+
+Leia o reteste no início de
+`r53/diagnostico-android/CORRECAO-FILA-RECURSOS-2026-11-04.md`.
+Codigo `6aec0d0a…` salvo e relido na mesma descartável da Era. Os outros nove
+GS mantiveram seus hashes. Os seis cenários passaram, incluindo 20 − 5 − 3 = 12
+e PE 8 − 1,5 = 6,5. A colagem preservou Y13 e levou 20,006 s nesta execução.
+12 campos restaurados e relidos iguais. Local: 543 verificações/18 rotas,
+incremental 18, pacote leve 134 e smoke aprovados. A trava espera até 12 s;
+isso não recupera eventos que o Google não entregou nem garante ordem.
+PR60 em rascunho para revisão. Sem merge, oficiais, jogador, PR31, acionadores
+ou autorização nova. Sol/Medium para revisão. Não mudar configurações.
+
+# Ensaio nativo da PR60 · 04/11/2026
+
+Leia o resultado no início de
+`r53/diagnostico-android/CORRECAO-FILA-RECURSOS-2026-11-04.md`.
+Código `e5338f56…` instalado e relido em cópia nova da integração Era.
+Os outros nove GS e os 12 campos restaurados foram conferidos.
+A03 passou em X13:Y13. A09 falhou com dois onEdit entregues, pois a segunda
+execução encontrou a trava ocupada. PE −1,5 também falhou no pt-BR, enquanto
+o inteiro na mesma caixa passou. A PR60 continua em rascunho.
+Nenhuma autorização foi pedida nos eventos testados. Sem merge, oficiais,
+jogador, PR31, acionadores ou mudanças de acesso. Sol/High para corrigir
+e repetir os casos nativos, Sol/Medium para revisar. Sem mudar configurações.
+
+# Correção preparada de ± · 04/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FILA-RECURSOS-2026-11-04.md`.
+Ramo `codex/correcao-fila-recursos-20261104`, sobre PR59 `06b777f`.
+A03/A09 corrigidos localmente no onEdit e atalho; 504 verificações/18 rotas,
+18 verificações incrementais com snapshots privados, pacote leve 134.
+Preparador offline exige Codigo integrado `8a0f2ed6…`, produz `e5338f56…`.
+A revisão da PR60 incluiu o valor e a caixa no aviso de ajuste recusado.
+Estado anterior ao ensaio nativo acima. Não concluir latência/fila global resolvidas. Limites de eventos, colagens, concorrência e
+falha parcial estão documentados. Outros oito achados permanecem abertos.
+Sem merge, oficiais/jogador/PR31, acionadores ou acesso novo. Evidências privadas
+em `nuvem-b47/saidas/correcao-fila-recursos/`, ignorado. Revisão Sol/Medium;
+ensaio/implementação Sol/High. Não mudar configurações automaticamente.
+
 # Auditoria consolidada de mecânicas · 04/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-CONSOLIDADA-MECANICAS-2026-11-04.md`

@@ -22,7 +22,7 @@ function r53EdicaoLivre_(e){
   if(m&&r53LivreToca_(m,r))PropertiesService.getDocumentProperties().deleteProperty('r53_marcas_custom');
   if(aba==='FICHA'&&r.getA1Notation()===R53_LIVRE_NIVEL_.nivel)r53LivreNivel_(e);
   if(aba==='FICHA'&&R53_LIVRE_XP_.caixas.indexOf(r.getA1Notation())>=0&&r53LivreXp_(e))return true;
-  if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r);
+  if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r,e);
   if(!lista||r53LivreToca_(lista,r)||!r53LivreValido_())return false;
   // Trilha ou Caminho mudou desde a última sincronização: a próxima edição nas quatro abas sincroniza.
   if(R53_LIVRE_FAMILIAS_.indexOf(aba)>=0&&PropertiesService.getDocumentProperties().getProperty(R53_LIVRE_PROP_))return false;
@@ -51,18 +51,85 @@ function r53LivrePasso_(atual, max, temp, passo) {
     temp: temp
   };
 }
-/** true: a caixa de ± foi tratada aqui. Erro antes de gravar devolve false, e o módulo faz como sempre. */
-function r53LivreDelta_(r){
- var x=R53_LIVRE_DELTA_[r.getA1Notation()],gravou=false;
- try{
-  var ficha=r.getSheet(),v=ficha.getRange(x.l[0],x.l[1],x.l[2],x.l[3]).getValues(),q=function(i){var p=x.p[i];return v[p[0]][p[1]];};
-  var passo=Number(q(0));if(!passo)return true;
-  var antes=x.t?Math.max(0,Number(q(3))||0):0,fim=r53LivrePasso_(q(1),q(2),antes,passo);
-  gravou=true;ficha.getRange(x.a).setValue(fim.atual);
-  if(x.t&&fim.temp!==antes)ficha.getRange(x.t).setValue(fim.temp);
-  r.clearContent();return true;
- }catch(err){console.log('atalho do ±: '+err.message);return gravou;}
+// O evento é preservado no atalho. Uma falha nunca repete o ajuste no módulo.
+function r53LivreDelta_(r,e){
+ var x=R53_LIVRE_DELTA_[r.getA1Notation()];
+ return r53LivreDeltaExecutar_(e||{range:r},{d:r.getA1Notation(),a:x.a,m:x.m,t:x.t},r53LivrePasso_);
 }
+/** ±: usa o valor do evento entregue; a trava serializa somente estes ajustes.
+ * Não reconstrói eventos descartados pelo Google nem ordena eventos fora de ordem.
+ * x = {d:delta,a:atual,m:max,t:temp,cheio:atual vazio significa máximo}.
+ * Sempre consome o caminho, mesmo numa falha: não repetir uma gravação parcial.
+ */
+function r53LivreDeltaExecutar_(e, x, calcular) {
+  var trava, passo = null, presa = false, escreveu = false, enviou = false;
+  var aba = e.range.getSheet();
+  try {
+    var unica = e.range.getNumRows() === 1 && e.range.getNumColumns() === 1;
+    // Uma exclusão antiga não deve consumir a entrada que chegou depois dela.
+    if (unica && e.value === undefined && e.oldValue !== undefined) return true;
+    var evento = unica && e.value !== undefined;
+    if (evento) {
+      passo = Number(e.value);
+      // No pt-BR, o evento pode trazer o texto com vírgula, mesmo quando a célula é numérica.
+      if (isNaN(passo) && typeof e.value === 'string' &&
+          /^[+-]?\d+(?:\.\d{3})*,\d+$/.test(e.value.trim()) &&
+          (e.source || aba.getParent()).getSpreadsheetLocale() === 'pt_BR') {
+        passo = Number(e.value.trim().replace(/\./g, '').replace(',', '.'));
+      }
+    }
+    if (evento && (!isFinite(passo) || !passo)) return true;
+    trava = LockService.getDocumentLock();
+    // Dá tempo para o desconto anterior gravar, com espera limitada no onEdit.
+    if (!trava || !trava.tryLock(12000)) throw Error('outro ajuste de recurso ainda está em execução');
+    presa = true;
+    var enderecos = [x.d, x.a, x.m].concat(x.t ? [x.t] : []);
+    var pos = enderecos.map(function (a) {
+      var m = /^([A-Z]+)([0-9]+)$/.exec(a), c = 0;
+      if (!m) throw Error('endereço de recurso inválido');
+      for (var i = 0; i < m[1].length; i++) c = c * 26 + m[1].charCodeAt(i) - 64;
+      return [Number(m[2]), c];
+    });
+    var ls = pos.map(function (p) { return p[0]; }), cs = pos.map(function (p) { return p[1]; });
+    var l = Math.min.apply(null, ls), c = Math.min.apply(null, cs);
+    var v = aba.getRange(l, c, Math.max.apply(null, ls)-l+1, Math.max.apply(null, cs)-c+1).getValues();
+    var q = function (i) { return v[pos[i][0]-l][pos[i][1]-c]; };
+    var comandoAtual = Number(q(0));
+    if (!evento) passo = comandoAtual;
+    if (!isFinite(passo) || !passo) return true;
+    var max = Number(q(2)) || 0, atual = q(1);
+    var antes = x.t ? Math.max(0, Number(q(3)) || 0) : 0;
+    if (x.cheio && (atual === '' || atual === null)) atual = max;
+    var fim = calcular(atual, max, antes, passo);
+    escreveu = true;
+    aba.getRange(x.a).setValue(fim.atual);
+    if (x.t && fim.temp !== antes) aba.getRange(x.t).setValue(fim.temp);
+    // Usa a leitura sob a trava, antes de escrever. Reler depois das escritas
+    // força um envio intermediário ao Sheets e prolonga a contenção.
+    if (comandoAtual === passo) aba.getRange(x.d).clearContent();
+    SpreadsheetApp.flush();
+    enviou = true;
+  } catch (err) {
+    console.log('ajuste ±: ' + err.message);
+    try {
+      var alvo = aba.getName() + '!' + x.d;
+      var ajuste = passo !== null && isFinite(passo) ? 'Ajuste ' + passo + ' em ' + alvo : 'Ajuste em ' + alvo;
+      var mensagem = escreveu ? ajuste + ' pode ter sido aplicado parcialmente. Confira os saldos antes de repetir.' :
+        ajuste + ' não aplicado. Confira os saldos e repita esse ajuste se necessário.';
+      (e.source || SpreadsheetApp.getActive()).toast(mensagem, 'Recursos', 10);
+    } catch (aviso) { console.log('aviso ±: ' + aviso.message); }
+  } finally {
+    if (presa) {
+      // Uma falha parcial também precisa ser enviada antes de liberar a trava.
+      try { if (escreveu && !enviou) SpreadsheetApp.flush(); }
+      catch (envio) { console.log('envio ±: ' + envio.message); }
+      try { trava.releaseLock(); }
+      catch (liberar) { console.log('trava ±: ' + liberar.message); }
+    }
+  }
+  return true;
+}
+
 // O nível escrito na mão (27/10/2026): o XP total da DADOS é a soma das missões mais a base, e aqui a base é acertada
 // para o XP caber no nível novo. Subindo, o XP vai para o acumulado do nível; descendo, guarda a mesma fração do caminho
 // até o próximo. Se o XP já cabe no nível, nada muda. Só a caixa do nível sozinha; a ficha sem a base fica como estava.

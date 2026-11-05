@@ -64,7 +64,7 @@ for(const modo of ['máximo zero','separados','enfileirados']){
   for(const[a,v]of Object.entries({D26:modo==='máximo zero'?0:20,J26:modo==='máximo zero'?0:20,AF26:0}))ficha.getRange(a).setValue(v);
   logs.length=0;
   if(modo==='máximo zero'){ficha.getRange('AM26').setValue(5);ctx.r53LivreDelta_(ficha.getRange('AM26'));}
-  else if(modo==='enfileirados'){ficha.getRange('AM26').setValue(-3);ctx.r53LivreDelta_(ficha.getRange('AM26'));ctx.r53LivreDelta_(ficha.getRange('AM26'));}
+  else if(modo==='enfileirados'){ficha.getRange('AM26').setValue(-3);const range=ficha.getRange('AM26');ctx.r53LivreDelta_(range,{range,source:ss,value:'-5'});ctx.r53LivreDelta_(range,{range,source:ss,value:'-3',oldValue:'-5'});}
   else for(const v of [-5,-3]){ficha.getRange('AM26').setValue(v);ctx.r53LivreDelta_(ficha.getRange('AM26'));}
   assert.deepEqual(logs,[]);
   const esperado=modo==='máximo zero'?0:12,obtido=ficha.getRange('D26').getValue();

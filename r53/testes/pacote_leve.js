@@ -10,7 +10,19 @@ const ok = (c, m) => { assert(c, m); checks++; };
 // 1. Cada remendo instalado deixa o texto que está no Codigo.gs do repositório. Um remendo pode mexer no texto que um
 // anterior deixou (26/10/2026: a tabelaLida_ do 16º virou a tabelaLidaDe_ no 23º), então confere de trás pra frente.
 const codigo = fs.readFileSync(path.join(raiz, 'apps-script/Codigo.gs'), 'utf8');
-{ let t = codigo; for (const [i, p] of [...remendos().entries()].reverse()) { ok(t.includes(p[1]), 'remendo ' + (i + 1) + ' fora do Codigo.gs'); t = t.replace(p[1], () => p[0]); } }
+{
+ // A correção posterior de ± substitui a função que o remendo 11 otimizou.
+ // Reverte só as duas funções exatas antes de conferir a cadeia histórica.
+ // O patch atual é validado separadamente em recursos_fila_incremental.js.
+ const runtime = fs.readFileSync(path.join(raiz, 'r53/diagnostico-android/recursos_fila_runtime.gs'), 'utf8');
+ const delta = JSON.parse(runtime.match(/var mudancas = (.*);/)[1]);
+ let t = codigo;
+ for (const [antes, depois] of delta) {
+   ok(t.split(depois).length === 2, 'função atual de ± ausente ou ambígua');
+   t = t.replace(depois, () => antes);
+ }
+ for (const [i, p] of [...remendos().entries()].reverse()) { ok(t.includes(p[1]), 'remendo ' + (i + 1) + ' fora do Codigo.gs'); t = t.replace(p[1], () => p[0]); }
+}
 
 // 2. Sem remendos, o corte vale para o módulo montado das fontes do repositório.
 const fontes = require(path.join(raiz, 'medidas/carregar-ficha.js')).fontes() + '\n' + codigo;
