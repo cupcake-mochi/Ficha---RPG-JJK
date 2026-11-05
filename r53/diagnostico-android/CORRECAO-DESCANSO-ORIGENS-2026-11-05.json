@@ -1,0 +1,252 @@
+{
+  "data": "2026-11-05",
+  "pr": 66,
+  "estado": "rascunho; aguardando autorização para dois ensaios de menu",
+  "cenarios": [
+    {
+      "modelo": "Era",
+      "cenario": "Artificial · curto fora",
+      "esperado": {
+        "pe": 15,
+        "exaustao": 3
+      },
+      "obtido": {
+        "pe": 15,
+        "vida": 6,
+        "exaustao": 3
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Artificial · longo fora",
+      "esperado": {
+        "pe": 60,
+        "vida": 77,
+        "exaustao": 0
+      },
+      "obtido": {
+        "pe": 60,
+        "vida": 77,
+        "exaustao": 0
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Latente · longo fora",
+      "esperado": {
+        "pe": 30,
+        "vida": 38
+      },
+      "obtido": {
+        "pe": 30,
+        "vida": 38,
+        "exaustao": 0
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Custom válida · curto fora",
+      "esperado": {
+        "pe": 15,
+        "exaustao": 3
+      },
+      "obtido": {
+        "pe": 15,
+        "vida": 38,
+        "exaustao": 3
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Custom inválida · curto fora",
+      "esperado": {
+        "pe": 0,
+        "exaustao": 3
+      },
+      "obtido": {
+        "pe": 0,
+        "vida": 38,
+        "exaustao": 3
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Exaurido · longo propício",
+      "esperado": {
+        "pe": 60,
+        "vida": 25
+      },
+      "obtido": {
+        "pe": 60,
+        "vida": 25,
+        "exaustao": 0
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Abundante · curto propício",
+      "esperado": {
+        "pe": 24
+      },
+      "obtido": {
+        "pe": 24,
+        "vida": 25,
+        "exaustao": 0
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Era",
+      "cenario": "Queda ativa · menu normal recusado",
+      "esperado": {
+        "pe": 0,
+        "vida": 0,
+        "exaustao": 3
+      },
+      "obtido": {
+        "pe": 0,
+        "vida": 0,
+        "exaustao": 3
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Artificial · curto fora",
+      "esperado": {
+        "pe": 5,
+        "exaustao": 3
+      },
+      "obtido": {
+        "pe": 5,
+        "vida": 6,
+        "exaustao": 3
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Artificial · longo fora",
+      "esperado": {
+        "pe": 20,
+        "vida": 37,
+        "exaustao": 0
+      },
+      "obtido": {
+        "pe": 20,
+        "vida": 37,
+        "exaustao": 0
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Latente · longo fora",
+      "esperado": {
+        "pe": 10,
+        "vida": 18
+      },
+      "obtido": {
+        "pe": 10,
+        "vida": 18,
+        "exaustao": 0
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Custom válida · curto fora",
+      "esperado": {
+        "pe": 5,
+        "exaustao": 3
+      },
+      "obtido": {
+        "pe": 5,
+        "vida": 18,
+        "exaustao": 3
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Custom inválida · curto fora",
+      "esperado": {
+        "pe": 0,
+        "exaustao": 3
+      },
+      "obtido": {
+        "pe": 0,
+        "vida": 18,
+        "exaustao": 3
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Exaurido · longo propício",
+      "esperado": {
+        "pe": 20,
+        "vida": 15
+      },
+      "obtido": {
+        "pe": 20,
+        "vida": 15,
+        "exaustao": 0
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Abundante · curto propício",
+      "esperado": {
+        "pe": 8
+      },
+      "obtido": {
+        "pe": 8,
+        "vida": 15,
+        "exaustao": 0
+      },
+      "resultado": "aprovado"
+    },
+    {
+      "modelo": "Ciclo",
+      "cenario": "Queda ativa · menu normal recusado",
+      "esperado": {
+        "pe": 0,
+        "vida": 0,
+        "exaustao": 3
+      },
+      "obtido": {
+        "pe": 0,
+        "vida": 0,
+        "exaustao": 3
+      },
+      "resultado": "aprovado"
+    }
+  ],
+  "restauracao": [
+    {
+      "modelo": "Era",
+      "celulasComparadas": 432,
+      "diferencas": [],
+      "erros": []
+    },
+    {
+      "modelo": "Ciclo",
+      "celulasComparadas": 432,
+      "diferencas": [],
+      "erros": []
+    }
+  ],
+  "pendentes": [
+    "Era: Recursos → Descanso longo com queda ativa",
+    "Ciclo: Recursos → Descanso longo com queda ativa"
+  ],
+  "codigoSha256": "d5845c0367be94e63f12b799053d5432d0ec4af5beea3a3d05bf32b607a2a084"
+}
