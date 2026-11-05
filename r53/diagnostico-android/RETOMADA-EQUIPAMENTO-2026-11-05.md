@@ -1,3 +1,17 @@
+# Reteste concluído — 05/11/2026
+
+Os dois Codigo.gs foram reabertos e relidos com SHA-256 idêntico ao
+proposto. K92 rejeitou −10 pela interface nas duas cópias. S66 e AG92
+foram substituídas por marcadores de teste e restauradas automaticamente
+pelo onEdit nas duas cópias. Todos os 63 alvos por cópia foram relidos
+iguais ao plano instalado. Não houve aplicação manual das quatro fórmulas
+para obter esse resultado. K92 continuou vazio. Teste focal de equipamento
+passou com 55 alvos e oito validações. Nenhuma autorização nova foi pedida.
+
+As pendências 1–3 abaixo estão concluídas. A investigação de Bênçãos
+e imunidades segue em relatório separado. Evidência privada local em
+`nuvem-b47/saidas/correcao-equipamento/reteste-20261105.json`.
+
 # Pausa solicitada pelo usuário — equipamento
 
 PR64 em rascunho, ramo `codex/correcao-equipamento-20261104`, base PR63.

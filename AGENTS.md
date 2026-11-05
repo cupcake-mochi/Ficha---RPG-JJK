@@ -1,3 +1,13 @@
+# Equipamento validado · 05/11/2026
+
+PR64 sobre PR63. Leia o reteste no início de
+`r53/diagnostico-android/RETOMADA-EQUIPAMENTO-2026-11-05.md`.
+Codigo salvo e relido nas duas descartáveis, quatro restaurações reais
+e duas rejeições de quantidade passaram. Os 63 alvos por cópia conferem.
+Bênçãos/imunidades foram ensaiadas separadamente, sem produção corrigida.
+Sem merge, oficiais, jogador ou PR31. Sol/Medium para revisão, Sol/High
+para próximos achados. Não alterar configurações automaticamente.
+
 # Pausa de equipamento · 05/11/2026
 
 Leia `r53/diagnostico-android/RETOMADA-EQUIPAMENTO-2026-11-05.md`.
