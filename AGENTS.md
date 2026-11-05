@@ -1,3 +1,30 @@
+# Revisão PR67 e passivas de Origem · 05/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR67-2026-11-05.md` e
+`AUDITORIA-PASSIVAS-ORIGEM-2026-11-05.md`/JSON na mesma pasta.
+PR67 971228d revisada: sem novo bloqueio no escopo, dois checks SUCCESS,
+sem conflito, sem merge. Testes focais 88/138 e transporte real passaram.
+Ramo separado `codex/auditoria-passivas-origem-20261105`, somente diagnóstico.
+P01: Reserva Excedente não soma 2×Essência aos PE. P02: Bolsa Orgânica
+não soma Maestria à carga; penalidades de movimento antecipadas confirmadas.
+Ambas têm compensação manual funcional; a nota da carga orienta esse ajuste.
+P03: Prática Cotidiana ausente do mostrador e faltam duas linhas no nível 30;
+não confundir com bloqueio de conjuração, que não foi demonstrado.
+
+20 releituras de cenários por cópia; replay: 52 comparações, 28 conformes,
+24 divergentes por três causas. Quatro bônus de repertório/Talento conformes.
+Nove entradas restantes por cópia restauradas ao encerrar; 1.939 células
+comparadas nos campos disponíveis dos snapshots, sem diferenças/erros.
+Notas de Classe 0 não pedidas no snapshot focal: não certificadas; não escritas.
+Código bae62817… relido igual nas duas, sem regravação. Evidências privadas
+em `nuvem-b47/saidas/auditoria-passivas-origem/`, ignorado pelo Git.
+
+Próximo: P01/P02 com cuidado para não duplicar compensações; P03 em entrega
+estrutural separada, preservando IDs e os 249 contextos existentes.
+Não foram aplicadas correções novas. Sem merge, oficiais, jogador, PR31,
+acionadores, agentes ou acesso novo. Sol/High para corrigir/ensaiar,
+Sol/Medium para revisão, sem alterar configurações automaticamente.
+
 # PR67 · Núcleo, Fôlego e descanso leve · 05/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-ORIGENS-RECURSOS-2026-11-05.md`/JSON.
