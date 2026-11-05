@@ -1,3 +1,13 @@
+# Correção de Bênçãos/imunidades · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-BENCAOS-IMUNIDADES-2026-11-05.md`.
+PR65 sobre PR64, implementação 6a35402. Casco, imunidade à Exaustão e texto
+de Estímulo corrigidos. Treze cenários mecânicos por cópia, onze cartas
+por cópia e oito restaurações reais passaram. Dezenove entradas por cópia
+restauradas e seis alvos relidos. Codigo 170273ca… salvo/reaberto nas duas
+descartáveis. Smoke local aprovado. Sem merge, oficiais, jogador ou PR31.
+Sol/Medium para revisão e Sol/High para bordas restantes; não alterar ajustes.
+
 # Bênçãos/imunidades em análise · 05/11/2026
 
 Leia `r53/diagnostico-android/BENCAOS-IMUNIDADES-2026-11-05.md`.
