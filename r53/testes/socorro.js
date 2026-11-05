@@ -109,7 +109,13 @@ const molde = [{nome:'FICHA',vals:[[37,4,'=FÓRMULA_DIVERGENTE',0]]}];
 t(()=>assert.throws(()=>c.r53AjustarIndicadorIntegridade_(molde), /fórmula D37 divergente/));
 const trecho = fs.readFileSync('apps-script/Ficha.gs','utf8').match(/\[37,4,("(?:[^"\\]|\\.)*Estágio 4(?:[^"\\]|\\.)*"),\d+\]/);
 const formula = JSON.parse(trecho[1]);
-molde[0].vals[0][2] = formula;
+const revisao = require('../diagnostico-android/integridade_movimento_plano.json')
+  .find(d => d.aba === 'FICHA' && d.r === 37 && d.c === 4);
+t(() => assert.equal(formula, revisao.depois));
+const comGuarda = revisao.antes;
+molde[0].vals[0][2] = comGuarda.replace('OR($D$34="",$J$34=0)', '$D$34=""');
 c.r53AjustarIndicadorIntegridade_(molde);
-t(()=>assert.equal(molde[0].vals[0][2],formula));
+t(() => assert.equal(molde[0].vals[0][2], comGuarda));
+c.r53AjustarIndicadorIntegridade_(molde);
+t(() => assert.equal(molde[0].vals[0][2], comGuarda));
 console.log(JSON.stringify({resultado:'OK',verificacoes:n}));

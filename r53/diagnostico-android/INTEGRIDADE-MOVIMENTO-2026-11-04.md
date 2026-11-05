@@ -56,3 +56,8 @@ O teste do modelo incremental passou também contra os fragmentos compactados
 do snapshot privado. A bateria integral do pacote foi interrompida localmente
 por pressão de memória. O smoke do GitHub é a execução de referência dessa
 bateria.
+
+A primeira rodada de CI identificou comparações históricas de D37 na pilha
+51–56 e em SOCORRO. Os testes passaram a conferir tanto a guarda histórica
+quanto sua transição exata para o resumo atual. As suítes focais passaram
+com 60 e 100 verificações, respectivamente.
