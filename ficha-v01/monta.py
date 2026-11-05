@@ -577,6 +577,7 @@ def _extras(a):
            # 01/10/2026, a FICHA AMALDICOADA: as fileiras de cartas que sao copia da primeira, a validacao numa matriz so,
            # e, na DADOS_AM, as colunas que o script preenche para baixo a partir da primeira linha
            "menus_estritos": a.get("menus_estritos", []),
+           "validacoes_formula": a.get("validacoes_formula", []),
            "copias": a.get("copias", []), "validacao_em_matriz": a.get("validacao_em_matriz", False),
            "abaixo": a.get("abaixo", []),
            # 02/10/2026, o menu rapido da FICHA: as linhas que a trava de formula do script deixa de fora

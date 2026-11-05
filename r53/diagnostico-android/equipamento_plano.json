@@ -1,0 +1,422 @@
+{
+  "celulas": [
+    {
+      "aba": "FICHA PESSOAL",
+      "r": 66,
+      "c": 19,
+      "antes": "=IF(DADOS!$CZ$8=2,\"Ocupada: a arma da outra mão é de duas mãos\",IF($S$64=\"Nas duas mãos\",IF(DADOS!$CZ$12=1,\"A mesma arma, nas duas mãos\",\"A arma da outra mão não é Versátil\"),IF(DADOS!$CZ$17=0,IF(DADOS!$CZ$26=0,\"Mão livre · arma de uma mão ou escudo guardado aparece aqui\",\"Mão livre\"),IF(DADOS!$CZ$18=\"\",\"Não está nos equipáveis guardados\",IF(DADOS!$CZ$19=1,\"Escudo · \"&DADOS!$CZ$21,DADOS!$CZ$20&IF(DADOS!$CZ$21<>\"\",\" · \"&DADOS!$CZ$21,\"\")&IF(DADOS!$CZ$23<>\"\",\" · \"&DADOS!$CZ$23,\"\")&IF(DADOS!$CZ$24<>\"\",\" · recarga a cada \"&DADOS!$CZ$24,\"\"))))))",
+      "depois": "=IF(DADOS!$CZ$8=2,\"Ocupada: a arma da outra mão é de duas mãos\",IF($S$64=\"Nas duas mãos\",IF(DADOS!$CZ$12=1,\"A mesma arma, nas duas mãos\",\"A arma da outra mão não é Versátil\"),IF(DADOS!$CZ$17=0,IF(AND($S$64<>\"\",$S$64<>\"—\"),\"Sem unidade disponível para a mão secundária\",IF(DADOS!$CZ$26=0,\"Mão livre · arma de uma mão ou escudo guardado aparece aqui\",\"Mão livre\")),IF(DADOS!$CZ$18=\"\",\"Não está nos equipáveis guardados\",IF(DADOS!$CZ$19=1,\"Escudo · \"&DADOS!$CZ$21,DADOS!$CZ$20&IF(DADOS!$CZ$21<>\"\",\" · \"&DADOS!$CZ$21,\"\")&IF(DADOS!$CZ$23<>\"\",\" · \"&DADOS!$CZ$23,\"\")&IF(DADOS!$CZ$24<>\"\",\" · recarga a cada \"&DADOS!$CZ$24,\"\"))))))"
+    },
+    {
+      "aba": "FICHA PESSOAL",
+      "r": 92,
+      "c": 33,
+      "antes": "=IF($D92=\"\",\"\",IFERROR(IF($K92=\"\",1,$K92)*VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+      "depois": "=IF($D92=\"\",\"\",IFERROR(IFERROR(IF($K92=\"\",1,IF(AND(ISNUMBER($K92),$K92>0,INT($K92)=$K92),$K92,0)),0)*VLOOKUP($D92,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+    },
+    {
+      "aba": "FICHA PESSOAL",
+      "r": 93,
+      "c": 33,
+      "antes": "=IF($D93=\"\",\"\",IFERROR(IF($K93=\"\",1,$K93)*VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+      "depois": "=IF($D93=\"\",\"\",IFERROR(IFERROR(IF($K93=\"\",1,IF(AND(ISNUMBER($K93),$K93>0,INT($K93)=$K93),$K93,0)),0)*VLOOKUP($D93,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+    },
+    {
+      "aba": "FICHA PESSOAL",
+      "r": 94,
+      "c": 33,
+      "antes": "=IF($D94=\"\",\"\",IFERROR(IF($K94=\"\",1,$K94)*VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+      "depois": "=IF($D94=\"\",\"\",IFERROR(IFERROR(IF($K94=\"\",1,IF(AND(ISNUMBER($K94),$K94>0,INT($K94)=$K94),$K94,0)),0)*VLOOKUP($D94,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+    },
+    {
+      "aba": "FICHA PESSOAL",
+      "r": 95,
+      "c": 33,
+      "antes": "=IF($D95=\"\",\"\",IFERROR(IF($K95=\"\",1,$K95)*VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+      "depois": "=IF($D95=\"\",\"\",IFERROR(IFERROR(IF($K95=\"\",1,IF(AND(ISNUMBER($K95),$K95>0,INT($K95)=$K95),$K95,0)),0)*VLOOKUP($D95,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+    },
+    {
+      "aba": "FICHA PESSOAL",
+      "r": 96,
+      "c": 33,
+      "antes": "=IF($D96=\"\",\"\",IFERROR(IF($K96=\"\",1,$K96)*VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+      "depois": "=IF($D96=\"\",\"\",IFERROR(IFERROR(IF($K96=\"\",1,IF(AND(ISNUMBER($K96),$K96>0,INT($K96)=$K96),$K96,0)),0)*VLOOKUP($D96,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+    },
+    {
+      "aba": "FICHA PESSOAL",
+      "r": 97,
+      "c": 33,
+      "antes": "=IF($D97=\"\",\"\",IFERROR(IF($K97=\"\",1,$K97)*VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+      "depois": "=IF($D97=\"\",\"\",IFERROR(IFERROR(IF($K97=\"\",1,IF(AND(ISNUMBER($K97),$K97>0,INT($K97)=$K97),$K97,0)),0)*VLOOKUP($D97,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+    },
+    {
+      "aba": "FICHA PESSOAL",
+      "r": 98,
+      "c": 33,
+      "antes": "=IF($D98=\"\",\"\",IFERROR(IF($K98=\"\",1,$K98)*VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+      "depois": "=IF($D98=\"\",\"\",IFERROR(IFERROR(IF($K98=\"\",1,IF(AND(ISNUMBER($K98),$K98>0,INT($K98)=$K98),$K98,0)),0)*VLOOKUP($D98,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+    },
+    {
+      "aba": "FICHA PESSOAL",
+      "r": 99,
+      "c": 33,
+      "antes": "=IF($D99=\"\",\"\",IFERROR(IF($K99=\"\",1,$K99)*VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))",
+      "depois": "=IF($D99=\"\",\"\",IFERROR(IFERROR(IF($K99=\"\",1,IF(AND(ISNUMBER($K99),$K99>0,INT($K99)=$K99),$K99,0)),0)*VLOOKUP($D99,'DADOS_CUSTOM'!$AA$2:$AK$106,7,FALSE),\"\"))"
+    },
+    {
+      "aba": "FICHA PESSOAL",
+      "addr": "K91",
+      "antes": "Em branco vale 1.",
+      "depois": "Use um inteiro a partir de zero. Em branco vale 1. Zero deixa o item fora de uso."
+    },
+    {
+      "aba": "DADOS",
+      "r": 6,
+      "c": 106,
+      "antes": "=IF(AND('FICHA PESSOAL'!$D$92<>\"\",'FICHA PESSOAL'!$M$92<>\"Escudo\"),'FICHA PESSOAL'!$D$92,\"\")",
+      "depois": "=IF(AND('FICHA PESSOAL'!$D$92<>\"\",'FICHA PESSOAL'!$M$92<>\"Escudo\",DADOS!$DA$5>0),'FICHA PESSOAL'!$D$92,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 6,
+      "c": 108,
+      "antes": "=IF(AND(DADOS!$CZ$8<>2,ISNUMBER(SEARCH(\"Versátil\",DADOS!$CZ$10))),\"Nas duas mãos\",\"\")",
+      "depois": "=IF(AND(DADOS!$CZ$8=1,ISNUMBER(SEARCH(\"Versátil\",DADOS!$CZ$10))),\"Nas duas mãos\",\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 7,
+      "c": 104,
+      "antes": "=IF(DADOS!$CZ$6=1,\"Soco\",IFERROR(VLOOKUP('FICHA PESSOAL'!$D$64,'FICHA PESSOAL'!$D$92:$AH$99,10,FALSE)&\"\",\"\"))",
+      "depois": "=IF(DADOS!$CZ$6=1,\"Soco\",IFERROR(IF(DADOS!$DA$13=0,\"\",INDEX('FICHA PESSOAL'!$D$92:$AH$99,DADOS!$DA$13,10))&\"\",\"\"))"
+    },
+    {
+      "aba": "DADOS",
+      "r": 7,
+      "c": 106,
+      "antes": "=IF(AND('FICHA PESSOAL'!$D$93<>\"\",'FICHA PESSOAL'!$M$93<>\"Escudo\"),'FICHA PESSOAL'!$D$93,\"\")",
+      "depois": "=IF(AND('FICHA PESSOAL'!$D$93<>\"\",'FICHA PESSOAL'!$M$93<>\"Escudo\",DADOS!$DA$6>0),'FICHA PESSOAL'!$D$93,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 7,
+      "c": 108,
+      "antes": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$92<>\"\",OR('FICHA PESSOAL'!$M$92=\"Escudo\",N('FICHA PESSOAL'!$S$92)=1)),'FICHA PESSOAL'!$D$92,\"\")",
+      "depois": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$92<>\"\",OR('FICHA PESSOAL'!$M$92=\"Escudo\",N('FICHA PESSOAL'!$S$92)=1),DADOS!$DA$5>0,SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99='FICHA PESSOAL'!$D$92),--(('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1)>0),DADOS!$DA$5:$DA$12)>IF(AND('FICHA PESSOAL'!$D$92='FICHA PESSOAL'!$D$64,DADOS!$DA$13>0),1,0)),'FICHA PESSOAL'!$D$92,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 8,
+      "c": 104,
+      "antes": "=IF(DADOS!$CZ$6=1,1,IFERROR(VALUE(VLOOKUP('FICHA PESSOAL'!$D$64,'FICHA PESSOAL'!$D$92:$AH$99,16,FALSE)&\"\"),0))",
+      "depois": "=IF(DADOS!$CZ$6=1,1,IFERROR(VALUE(IF(DADOS!$DA$13=0,\"\",INDEX('FICHA PESSOAL'!$D$92:$AH$99,DADOS!$DA$13,16))&\"\"),0))"
+    },
+    {
+      "aba": "DADOS",
+      "r": 8,
+      "c": 106,
+      "antes": "=IF(AND('FICHA PESSOAL'!$D$94<>\"\",'FICHA PESSOAL'!$M$94<>\"Escudo\"),'FICHA PESSOAL'!$D$94,\"\")",
+      "depois": "=IF(AND('FICHA PESSOAL'!$D$94<>\"\",'FICHA PESSOAL'!$M$94<>\"Escudo\",DADOS!$DA$7>0),'FICHA PESSOAL'!$D$94,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 8,
+      "c": 108,
+      "antes": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$93<>\"\",OR('FICHA PESSOAL'!$M$93=\"Escudo\",N('FICHA PESSOAL'!$S$93)=1)),'FICHA PESSOAL'!$D$93,\"\")",
+      "depois": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$93<>\"\",OR('FICHA PESSOAL'!$M$93=\"Escudo\",N('FICHA PESSOAL'!$S$93)=1),DADOS!$DA$6>0,SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99='FICHA PESSOAL'!$D$93),--(('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1)>0),DADOS!$DA$5:$DA$12)>IF(AND('FICHA PESSOAL'!$D$93='FICHA PESSOAL'!$D$64,DADOS!$DA$13>0),1,0)),'FICHA PESSOAL'!$D$93,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 9,
+      "c": 104,
+      "antes": "=IF(DADOS!$CZ$6=1,CHOOSE(MIN(4,MAX(1,N(FICHA!$D$67))),\"d4\",\"d6\",\"d8\",\"d10\"),IFERROR(VLOOKUP('FICHA PESSOAL'!$D$64,'FICHA PESSOAL'!$D$92:$AH$99,18,FALSE)&\"\",\"\"))",
+      "depois": "=IF(DADOS!$CZ$6=1,CHOOSE(MIN(4,MAX(1,N(FICHA!$D$67))),\"d4\",\"d6\",\"d8\",\"d10\"),IFERROR(IF(DADOS!$DA$13=0,\"\",INDEX('FICHA PESSOAL'!$D$92:$AH$99,DADOS!$DA$13,18))&\"\",\"\"))"
+    },
+    {
+      "aba": "DADOS",
+      "r": 9,
+      "c": 106,
+      "antes": "=IF(AND('FICHA PESSOAL'!$D$95<>\"\",'FICHA PESSOAL'!$M$95<>\"Escudo\"),'FICHA PESSOAL'!$D$95,\"\")",
+      "depois": "=IF(AND('FICHA PESSOAL'!$D$95<>\"\",'FICHA PESSOAL'!$M$95<>\"Escudo\",DADOS!$DA$8>0),'FICHA PESSOAL'!$D$95,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 9,
+      "c": 108,
+      "antes": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$94<>\"\",OR('FICHA PESSOAL'!$M$94=\"Escudo\",N('FICHA PESSOAL'!$S$94)=1)),'FICHA PESSOAL'!$D$94,\"\")",
+      "depois": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$94<>\"\",OR('FICHA PESSOAL'!$M$94=\"Escudo\",N('FICHA PESSOAL'!$S$94)=1),DADOS!$DA$7>0,SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99='FICHA PESSOAL'!$D$94),--(('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1)>0),DADOS!$DA$5:$DA$12)>IF(AND('FICHA PESSOAL'!$D$94='FICHA PESSOAL'!$D$64,DADOS!$DA$13>0),1,0)),'FICHA PESSOAL'!$D$94,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 10,
+      "c": 104,
+      "antes": "=IF(DADOS!$CZ$6=1,\"\",IFERROR(VLOOKUP('FICHA PESSOAL'!$D$64,'FICHA PESSOAL'!$D$92:$AH$99,20,FALSE)&\"\",\"\"))",
+      "depois": "=IF(DADOS!$CZ$6=1,\"\",IFERROR(IF(DADOS!$DA$13=0,\"\",INDEX('FICHA PESSOAL'!$D$92:$AH$99,DADOS!$DA$13,20))&\"\",\"\"))"
+    },
+    {
+      "aba": "DADOS",
+      "r": 10,
+      "c": 106,
+      "antes": "=IF(AND('FICHA PESSOAL'!$D$96<>\"\",'FICHA PESSOAL'!$M$96<>\"Escudo\"),'FICHA PESSOAL'!$D$96,\"\")",
+      "depois": "=IF(AND('FICHA PESSOAL'!$D$96<>\"\",'FICHA PESSOAL'!$M$96<>\"Escudo\",DADOS!$DA$9>0),'FICHA PESSOAL'!$D$96,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 10,
+      "c": 108,
+      "antes": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$95<>\"\",OR('FICHA PESSOAL'!$M$95=\"Escudo\",N('FICHA PESSOAL'!$S$95)=1)),'FICHA PESSOAL'!$D$95,\"\")",
+      "depois": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$95<>\"\",OR('FICHA PESSOAL'!$M$95=\"Escudo\",N('FICHA PESSOAL'!$S$95)=1),DADOS!$DA$8>0,SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99='FICHA PESSOAL'!$D$95),--(('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1)>0),DADOS!$DA$5:$DA$12)>IF(AND('FICHA PESSOAL'!$D$95='FICHA PESSOAL'!$D$64,DADOS!$DA$13>0),1,0)),'FICHA PESSOAL'!$D$95,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 11,
+      "c": 104,
+      "antes": "=IF(DADOS!$CZ$6=1,0,IFERROR(VALUE(VLOOKUP('FICHA PESSOAL'!$D$64,'FICHA PESSOAL'!$D$92:$AH$99,28,FALSE)&\"\"),0))",
+      "depois": "=IF(DADOS!$CZ$6=1,0,IFERROR(VALUE(IF(DADOS!$DA$13=0,\"\",INDEX('FICHA PESSOAL'!$D$92:$AH$99,DADOS!$DA$13,28))&\"\"),0))"
+    },
+    {
+      "aba": "DADOS",
+      "r": 11,
+      "c": 106,
+      "antes": "=IF(AND('FICHA PESSOAL'!$D$97<>\"\",'FICHA PESSOAL'!$M$97<>\"Escudo\"),'FICHA PESSOAL'!$D$97,\"\")",
+      "depois": "=IF(AND('FICHA PESSOAL'!$D$97<>\"\",'FICHA PESSOAL'!$M$97<>\"Escudo\",DADOS!$DA$10>0),'FICHA PESSOAL'!$D$97,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 11,
+      "c": 108,
+      "antes": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$96<>\"\",OR('FICHA PESSOAL'!$M$96=\"Escudo\",N('FICHA PESSOAL'!$S$96)=1)),'FICHA PESSOAL'!$D$96,\"\")",
+      "depois": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$96<>\"\",OR('FICHA PESSOAL'!$M$96=\"Escudo\",N('FICHA PESSOAL'!$S$96)=1),DADOS!$DA$9>0,SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99='FICHA PESSOAL'!$D$96),--(('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1)>0),DADOS!$DA$5:$DA$12)>IF(AND('FICHA PESSOAL'!$D$96='FICHA PESSOAL'!$D$64,DADOS!$DA$13>0),1,0)),'FICHA PESSOAL'!$D$96,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 12,
+      "c": 104,
+      "antes": "=IF(AND(ISNUMBER(SEARCH(\"Versátil\",DADOS!$CZ$10)),'FICHA PESSOAL'!$S$64=\"Nas duas mãos\"),1,0)",
+      "depois": "=IF(AND(DADOS!$CZ$8=1,ISNUMBER(SEARCH(\"Versátil\",DADOS!$CZ$10)),'FICHA PESSOAL'!$S$64=\"Nas duas mãos\"),1,0)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 12,
+      "c": 106,
+      "antes": "=IF(AND('FICHA PESSOAL'!$D$98<>\"\",'FICHA PESSOAL'!$M$98<>\"Escudo\"),'FICHA PESSOAL'!$D$98,\"\")",
+      "depois": "=IF(AND('FICHA PESSOAL'!$D$98<>\"\",'FICHA PESSOAL'!$M$98<>\"Escudo\",DADOS!$DA$11>0),'FICHA PESSOAL'!$D$98,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 12,
+      "c": 108,
+      "antes": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$97<>\"\",OR('FICHA PESSOAL'!$M$97=\"Escudo\",N('FICHA PESSOAL'!$S$97)=1)),'FICHA PESSOAL'!$D$97,\"\")",
+      "depois": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$97<>\"\",OR('FICHA PESSOAL'!$M$97=\"Escudo\",N('FICHA PESSOAL'!$S$97)=1),DADOS!$DA$10>0,SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99='FICHA PESSOAL'!$D$97),--(('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1)>0),DADOS!$DA$5:$DA$12)>IF(AND('FICHA PESSOAL'!$D$97='FICHA PESSOAL'!$D$64,DADOS!$DA$13>0),1,0)),'FICHA PESSOAL'!$D$97,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 13,
+      "c": 104,
+      "antes": "=IF(DADOS!$CZ$12=1,IF(DADOS!$CZ$9=\"d6\",\"d8\",IF(DADOS!$CZ$9=\"d8\",\"d10\",IF(DADOS!$CZ$9=\"d10\",\"d12\",DADOS!$CZ$9))),DADOS!$CZ$9)",
+      "depois": "=IF(DADOS!$CZ$12=1,SWITCH(DADOS!$CZ$9,\"d6\",\"d8\",\"1d6\",\"1d8\",\"d8\",\"d10\",\"1d8\",\"1d10\",\"d10\",\"d12\",\"1d10\",\"1d12\",DADOS!$CZ$9),DADOS!$CZ$9)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 13,
+      "c": 106,
+      "antes": "=IF(AND('FICHA PESSOAL'!$D$99<>\"\",'FICHA PESSOAL'!$M$99<>\"Escudo\"),'FICHA PESSOAL'!$D$99,\"\")",
+      "depois": "=IF(AND('FICHA PESSOAL'!$D$99<>\"\",'FICHA PESSOAL'!$M$99<>\"Escudo\",DADOS!$DA$12>0),'FICHA PESSOAL'!$D$99,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 13,
+      "c": 108,
+      "antes": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$98<>\"\",OR('FICHA PESSOAL'!$M$98=\"Escudo\",N('FICHA PESSOAL'!$S$98)=1)),'FICHA PESSOAL'!$D$98,\"\")",
+      "depois": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$98<>\"\",OR('FICHA PESSOAL'!$M$98=\"Escudo\",N('FICHA PESSOAL'!$S$98)=1),DADOS!$DA$11>0,SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99='FICHA PESSOAL'!$D$98),--(('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1)>0),DADOS!$DA$5:$DA$12)>IF(AND('FICHA PESSOAL'!$D$98='FICHA PESSOAL'!$D$64,DADOS!$DA$13>0),1,0)),'FICHA PESSOAL'!$D$98,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 14,
+      "c": 104,
+      "antes": "=IFERROR(VLOOKUP('FICHA PESSOAL'!$D$64,'DADOS_CUSTOM'!$AA$2:$AK$106,8,FALSE)&\"\",\"\")",
+      "depois": "=IF(DADOS!$DA$13=0,\"\",IFERROR(VLOOKUP('FICHA PESSOAL'!$D$64,'DADOS_CUSTOM'!$AA$2:$AK$106,8,FALSE)&\"\",\"\"))"
+    },
+    {
+      "aba": "DADOS",
+      "r": 14,
+      "c": 108,
+      "antes": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$99<>\"\",OR('FICHA PESSOAL'!$M$99=\"Escudo\",N('FICHA PESSOAL'!$S$99)=1)),'FICHA PESSOAL'!$D$99,\"\")",
+      "depois": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$D$99<>\"\",OR('FICHA PESSOAL'!$M$99=\"Escudo\",N('FICHA PESSOAL'!$S$99)=1),DADOS!$DA$12>0,SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99='FICHA PESSOAL'!$D$99),--(('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1)>0),DADOS!$DA$5:$DA$12)>IF(AND('FICHA PESSOAL'!$D$99='FICHA PESSOAL'!$D$64,DADOS!$DA$13>0),1,0)),'FICHA PESSOAL'!$D$99,\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 15,
+      "c": 104,
+      "antes": "=IFERROR(VLOOKUP('FICHA PESSOAL'!$D$64,'DADOS_CUSTOM'!$AA$2:$AK$106,9,FALSE)&\"\",\"\")",
+      "depois": "=IF(DADOS!$DA$13=0,\"\",IFERROR(VLOOKUP('FICHA PESSOAL'!$D$64,'DADOS_CUSTOM'!$AA$2:$AK$106,9,FALSE)&\"\",\"\"))"
+    },
+    {
+      "aba": "DADOS",
+      "r": 16,
+      "c": 104,
+      "antes": "=IF(DADOS!$CZ$6=1,1,IF(IFERROR(VLOOKUP('FICHA PESSOAL'!$D$64,'DADOS_CUSTOM'!$AA$2:$AK$106,10,FALSE),IFERROR(VLOOKUP(DADOS!$CZ$7,DADOS!$BP$5:$BT$17,4,FALSE),FALSE))=TRUE,1,0))",
+      "depois": "=IF(DADOS!$CZ$6=1,1,IF(DADOS!$DA$13=0,0,IF(IFERROR(VLOOKUP('FICHA PESSOAL'!$D$64,'DADOS_CUSTOM'!$AA$2:$AK$106,10,FALSE),IFERROR(VLOOKUP(DADOS!$CZ$7,DADOS!$BP$5:$BT$17,4,FALSE),FALSE))=TRUE,1,0)))"
+    },
+    {
+      "aba": "DADOS",
+      "r": 17,
+      "c": 104,
+      "antes": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$S$64<>\"\",'FICHA PESSOAL'!$S$64<>\"—\",'FICHA PESSOAL'!$S$64<>\"Nas duas mãos\"),1,0)",
+      "depois": "=IF(AND(DADOS!$CZ$8<>2,'FICHA PESSOAL'!$S$64<>\"\",'FICHA PESSOAL'!$S$64<>\"—\",'FICHA PESSOAL'!$S$64<>\"Nas duas mãos\",DADOS!$DA$14>0,SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99='FICHA PESSOAL'!$S$64),--(('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1)>0),DADOS!$DA$5:$DA$12)>IF(AND('FICHA PESSOAL'!$S$64='FICHA PESSOAL'!$D$64,DADOS!$DA$13>0),1,0)),1,0)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 18,
+      "c": 104,
+      "antes": "=IF(DADOS!$CZ$17=1,IFERROR(VLOOKUP('FICHA PESSOAL'!$S$64,'FICHA PESSOAL'!$D$92:$AH$99,10,FALSE)&\"\",\"\"),\"\")",
+      "depois": "=IF(DADOS!$CZ$17=1,IFERROR(IF(DADOS!$DA$14=0,\"\",INDEX('FICHA PESSOAL'!$D$92:$AH$99,DADOS!$DA$14,10))&\"\",\"\"),\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 20,
+      "c": 104,
+      "antes": "=IF(DADOS!$CZ$17=1,IFERROR(VLOOKUP('FICHA PESSOAL'!$S$64,'FICHA PESSOAL'!$D$92:$AH$99,18,FALSE)&\"\",\"\"),\"\")",
+      "depois": "=IF(DADOS!$CZ$17=1,IFERROR(IF(DADOS!$DA$14=0,\"\",INDEX('FICHA PESSOAL'!$D$92:$AH$99,DADOS!$DA$14,18))&\"\",\"\"),\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 21,
+      "c": 104,
+      "antes": "=IF(DADOS!$CZ$17=1,IFERROR(VLOOKUP('FICHA PESSOAL'!$S$64,'FICHA PESSOAL'!$D$92:$AH$99,20,FALSE)&\"\",\"\"),\"\")",
+      "depois": "=IF(DADOS!$CZ$17=1,IFERROR(IF(DADOS!$DA$14=0,\"\",INDEX('FICHA PESSOAL'!$D$92:$AH$99,DADOS!$DA$14,20))&\"\",\"\"),\"\")"
+    },
+    {
+      "aba": "DADOS",
+      "r": 22,
+      "c": 104,
+      "antes": "=IF(DADOS!$CZ$17=1,IFERROR(VALUE(VLOOKUP('FICHA PESSOAL'!$S$64,'FICHA PESSOAL'!$D$92:$AH$99,28,FALSE)&\"\"),0),0)",
+      "depois": "=IF(DADOS!$CZ$17=1,IFERROR(VALUE(IF(DADOS!$DA$14=0,\"\",INDEX('FICHA PESSOAL'!$D$92:$AH$99,DADOS!$DA$14,28))&\"\"),0),0)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 25,
+      "c": 104,
+      "antes": "=SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99<>\"\"),--('FICHA PESSOAL'!$M$92:$M$99<>\"Escudo\"))",
+      "depois": "=SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99<>\"\"),--('FICHA PESSOAL'!$M$92:$M$99<>\"Escudo\"),--(DADOS!$DA$5:$DA$12>0))"
+    },
+    {
+      "aba": "DADOS",
+      "r": 26,
+      "c": 104,
+      "antes": "=SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99<>\"\"),--((('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1))>0))",
+      "depois": "=SUMPRODUCT(--('FICHA PESSOAL'!$D$92:$D$99<>\"\"),--(('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1)>0),--(DADOS!$DA$5:$DA$12>0))"
+    },
+    {
+      "aba": "DADOS",
+      "r": 39,
+      "c": 104,
+      "antes": "=SUM('FICHA PESSOAL'!$AG$92:$AG$99)+SUM('FICHA PESSOAL'!$V$104:$V$109)+SUM('FICHA PESSOAL'!$AR$104:$AR$109)",
+      "depois": "=SUMIF(DADOS!$DA$5:$DA$12,\">0\",'FICHA PESSOAL'!$AG$92:$AG$99)+SUM('FICHA PESSOAL'!$V$104:$V$109)+SUM('FICHA PESSOAL'!$AR$104:$AR$109)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 5,
+      "c": 105,
+      "antes": null,
+      "depois": "=IFERROR(IF('FICHA PESSOAL'!$K$92=\"\",1,IF(AND(ISNUMBER('FICHA PESSOAL'!$K$92),'FICHA PESSOAL'!$K$92>0,INT('FICHA PESSOAL'!$K$92)='FICHA PESSOAL'!$K$92),'FICHA PESSOAL'!$K$92,0)),0)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 6,
+      "c": 105,
+      "antes": null,
+      "depois": "=IFERROR(IF('FICHA PESSOAL'!$K$93=\"\",1,IF(AND(ISNUMBER('FICHA PESSOAL'!$K$93),'FICHA PESSOAL'!$K$93>0,INT('FICHA PESSOAL'!$K$93)='FICHA PESSOAL'!$K$93),'FICHA PESSOAL'!$K$93,0)),0)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 7,
+      "c": 105,
+      "antes": null,
+      "depois": "=IFERROR(IF('FICHA PESSOAL'!$K$94=\"\",1,IF(AND(ISNUMBER('FICHA PESSOAL'!$K$94),'FICHA PESSOAL'!$K$94>0,INT('FICHA PESSOAL'!$K$94)='FICHA PESSOAL'!$K$94),'FICHA PESSOAL'!$K$94,0)),0)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 8,
+      "c": 105,
+      "antes": null,
+      "depois": "=IFERROR(IF('FICHA PESSOAL'!$K$95=\"\",1,IF(AND(ISNUMBER('FICHA PESSOAL'!$K$95),'FICHA PESSOAL'!$K$95>0,INT('FICHA PESSOAL'!$K$95)='FICHA PESSOAL'!$K$95),'FICHA PESSOAL'!$K$95,0)),0)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 9,
+      "c": 105,
+      "antes": null,
+      "depois": "=IFERROR(IF('FICHA PESSOAL'!$K$96=\"\",1,IF(AND(ISNUMBER('FICHA PESSOAL'!$K$96),'FICHA PESSOAL'!$K$96>0,INT('FICHA PESSOAL'!$K$96)='FICHA PESSOAL'!$K$96),'FICHA PESSOAL'!$K$96,0)),0)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 10,
+      "c": 105,
+      "antes": null,
+      "depois": "=IFERROR(IF('FICHA PESSOAL'!$K$97=\"\",1,IF(AND(ISNUMBER('FICHA PESSOAL'!$K$97),'FICHA PESSOAL'!$K$97>0,INT('FICHA PESSOAL'!$K$97)='FICHA PESSOAL'!$K$97),'FICHA PESSOAL'!$K$97,0)),0)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 11,
+      "c": 105,
+      "antes": null,
+      "depois": "=IFERROR(IF('FICHA PESSOAL'!$K$98=\"\",1,IF(AND(ISNUMBER('FICHA PESSOAL'!$K$98),'FICHA PESSOAL'!$K$98>0,INT('FICHA PESSOAL'!$K$98)='FICHA PESSOAL'!$K$98),'FICHA PESSOAL'!$K$98,0)),0)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 12,
+      "c": 105,
+      "antes": null,
+      "depois": "=IFERROR(IF('FICHA PESSOAL'!$K$99=\"\",1,IF(AND(ISNUMBER('FICHA PESSOAL'!$K$99),'FICHA PESSOAL'!$K$99>0,INT('FICHA PESSOAL'!$K$99)='FICHA PESSOAL'!$K$99),'FICHA PESSOAL'!$K$99,0)),0)"
+    },
+    {
+      "aba": "DADOS",
+      "r": 13,
+      "c": 105,
+      "antes": null,
+      "depois": "=IF('FICHA PESSOAL'!$D$64=\"\",0,IFERROR(MATCH(1,ARRAYFORMULA(('FICHA PESSOAL'!$D$92:$D$99='FICHA PESSOAL'!$D$64)*(DADOS!$DA$5:$DA$12>0)*('FICHA PESSOAL'!$M$92:$M$99<>\"Escudo\")),0),0))"
+    },
+    {
+      "aba": "DADOS",
+      "r": 14,
+      "c": 105,
+      "antes": null,
+      "depois": "=IF('FICHA PESSOAL'!$S$64=\"\",0,IFERROR(MATCH(1,ARRAYFORMULA(('FICHA PESSOAL'!$D$92:$D$99='FICHA PESSOAL'!$S$64)*(DADOS!$DA$5:$DA$12>0)*((('FICHA PESSOAL'!$M$92:$M$99=\"Escudo\")+('FICHA PESSOAL'!$S$92:$S$99=1)>0))),0),0))"
+    }
+  ],
+  "validacoes": [
+    [
+      "K92",
+      "=IFERROR((K92=\"\")+ISNUMBER(K92)*(K92>=0)*(INT(K92)=K92)>0)"
+    ],
+    [
+      "K93",
+      "=IFERROR((K93=\"\")+ISNUMBER(K93)*(K93>=0)*(INT(K93)=K93)>0)"
+    ],
+    [
+      "K94",
+      "=IFERROR((K94=\"\")+ISNUMBER(K94)*(K94>=0)*(INT(K94)=K94)>0)"
+    ],
+    [
+      "K95",
+      "=IFERROR((K95=\"\")+ISNUMBER(K95)*(K95>=0)*(INT(K95)=K95)>0)"
+    ],
+    [
+      "K96",
+      "=IFERROR((K96=\"\")+ISNUMBER(K96)*(K96>=0)*(INT(K96)=K96)>0)"
+    ],
+    [
+      "K97",
+      "=IFERROR((K97=\"\")+ISNUMBER(K97)*(K97>=0)*(INT(K97)=K97)>0)"
+    ],
+    [
+      "K98",
+      "=IFERROR((K98=\"\")+ISNUMBER(K98)*(K98>=0)*(INT(K98)=K98)>0)"
+    ],
+    [
+      "K99",
+      "=IFERROR((K99=\"\")+ISNUMBER(K99)*(K99>=0)*(INT(K99)=K99)>0)"
+    ]
+  ]
+}
