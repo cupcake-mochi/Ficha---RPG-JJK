@@ -4,6 +4,7 @@ const p=require('../diagnostico-android/preparar_bencaos_imunidades');
 const {formulaLocal}=require('../diagnostico-android/preparar_pilha_5156');
 const ctx=vm.createContext({});
 vm.runInContext(require('../../medidas/carregar-ficha').fontes(),ctx);
+require('../diagnostico-android/preparar_origens_recursos').reverterModelo(ctx.ABAS);
 assert.equal(ctx.SOBRAS_.length,0);
 vm.runInContext(p.molde(),ctx);
 const key=d=>d.aba+'!'+(d.addr||d.r+','+d.c);

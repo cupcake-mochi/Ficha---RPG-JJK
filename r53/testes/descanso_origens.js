@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),zlib=require('node:zlib'),path=require('node:path');
 const p=require('../diagnostico-android/preparar_descanso_origens');
-const fonte=fs.readFileSync('apps-script/Codigo.gs','utf8');
+const fonte=require('../diagnostico-android/preparar_origens_recursos').reverterFonte(fs.readFileSync('apps-script/Codigo.gs','utf8'));
 const antigo=p.reverterFonte(fonte);
 assert.notEqual(antigo,fonte);
 const c=vm.createContext({code:antigo});vm.runInContext(p.runtime(),c);

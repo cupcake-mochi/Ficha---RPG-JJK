@@ -12,8 +12,10 @@ OUT=ROOT/'r53/saidas/pacote-script'
 def gerar():
  OUT.mkdir(exist_ok=True,parents=True)
  # Atualiza o retrato dos eventos a partir das fontes, inclusive em clone limpo.
+ subprocess.run(['node',str(ROOT/'r53/descanso_leve.js')],check=True,capture_output=True,text=True)
  subprocess.run(['node',str(ROOT/'r53/caminho_leve.js')],check=True,capture_output=True,text=True)
  folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs','PaletaAndroid.gs','Caminho.gs','CuraRecebida.gs','Socorro.gs'])+['Habilidades.gs','Codigo.gs']
+ names=[n for n in names if n!='Descanso.gs']
  sources=[(folder/n).read_text() for n in names];source='\n'.join(sources)
  variables=sorted(set(re.findall(r'^var\s+([A-Za-z_$][\w$]*)\s*=',source,re.M)))
  functions=sorted(set(re.findall(r'^function\s+([A-Za-z_$][\w$]*)\s*\(',source,re.M)))
@@ -75,10 +77,12 @@ function verificarPacoteR53() {
 }
 '''
  bootstrap+=(folder/'Caminho.gs').read_text()
+ bootstrap+=(folder/'Descanso.gs').read_text()
  for n in public:
   if n=='onEdit':
    bootstrap+=(ROOT/'r53/diagnostico-android/versao_publica.gs').read_text()
-   bootstrap+='function onEdit(e){if(e)e.r53Inicio_=Date.now();if(r53RestaurarVersaoPublica_(e))return;if(typeof salarioIntegrarMissao_==="function"&&salarioIntegrarMissao_(e,function(ev){return r53Modulo_().onEdit(ev);}))return;if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(e&&e.range&&e.range.getSheet().getName()==="CARTEIRA"&&e.range.getA1Notation()==="C27")return typeof r53PaletaLeve_==="function" ? r53PaletaLeve_().trocar(e) : r53Modulo_().onEdit(e);if(r53EditarCaminho_(e))return;if(typeof r53Editar_==="function" && r53Editar_(e))return;if(e)e.r53EditorVerificado_=true;return r53Modulo_().onEdit(e); }\n'
+   bootstrap+='function onEdit(e){if(e)e.r53Inicio_=Date.now();if(r53DescansoEdit_(e)){if(typeof r53PaletaLeve_==="function"&&PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);return;}if(r53RestaurarVersaoPublica_(e))return;if(typeof salarioIntegrarMissao_==="function"&&salarioIntegrarMissao_(e,function(ev){return r53Modulo_().onEdit(ev);}))return;if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(e&&e.range&&e.range.getSheet().getName()==="CARTEIRA"&&e.range.getA1Notation()==="C27")return typeof r53PaletaLeve_==="function" ? r53PaletaLeve_().trocar(e) : r53Modulo_().onEdit(e);if(r53EditarCaminho_(e))return;if(typeof r53Editar_==="function" && r53Editar_(e))return;if(e)e.r53EditorVerificado_=true;return r53Modulo_().onEdit(e); }\n'
+  elif n=='r53DescansarComQueda':bootstrap+='function r53DescansarComQueda(tipo,queda,jaConvertido){return r53DescansoLeve_().comQueda(tipo,queda,jaConvertido);}\n'
   elif n=='onOpen':
    bootstrap+='function onOpen(e){if(typeof r53CuraMenu_==="function")r53CuraMenu_();e=e||{};e.r53Inicio_=Date.now();if(typeof r53PaletaLeve_!=="function")return r53Modulo_().onOpen(e);if(typeof salarioAbrir_==="function")salarioAbrir_();if(typeof r53Menu_==="function")r53Menu_();if(PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);}\n'
   elif n!='onSelectionChange':bootstrap+='function '+n+'(){return r53Modulo_()['+json.dumps(n)+'].apply(this,arguments);}\n'
@@ -88,7 +92,7 @@ function verificarPacoteR53() {
  # Arquivos desta geração que existirem separadamente no projeto antigo
  # duplicariam a inicialização. Guardar o conteúdo antes de trocar por estes
  # marcadores; não tocar em arquivos externos desconhecidos do projeto.
- legados=[n for n in names if n not in arquivos]
+ legados=[n for n in names if n not in arquivos]+['Descanso.gs']
  destino_legado=OUT/'legado';destino_legado.mkdir(exist_ok=True)
  for name in legados:(destino_legado/name).write_text('// Conteúdo incluído no pacote R53; fonte legível preservada no repositório.\n')
  manifest=dict(fonte_sha256=digest,geracao_arquivos=names,entradas_publicas=public,partes=len(parts),bytes_fonte=len(raw),bytes_base64=len(b64),arquivos=arquivos,arquivos_legados_desativar=legados)

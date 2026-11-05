@@ -27,6 +27,7 @@ function descanso(tipo, campos, esperado, registro, regras = {}) {
   dadosCustom.getRange('B123').setValue(regras.base || '');
   dadosCustom.getRange('B126').setValue(regras.corporal === true);
   dadosCustom.getRange('B127').setValue(regras.permitida === true);
+  dadosCustom.getRange('B130').setValue(regras.folego === true);
   for (const [chave, valor] of Object.entries({ ...base, origem: restricao, marcante: 'Corpo Exaurido',
     'menor 1': abundante, 'menor 2': '', ...campos })) {
     celula(chave).setValue(valor);
@@ -93,6 +94,17 @@ descanso(CP, { origem: custom, 'menor 1': '' }, [3, 3, 4, 2, true, 2], /PE 1 →
 
 // Existência Artificial: local propício sem mutar a tabela nem apagar o grau no curto.
 const artificial = { origem: 'Corpo Amaldiçoado', marcante: 'Existência Artificial', 'menor 1': '' };
+const folego = {origem:'Restrição Celestial · Sem Energia',marcante:'Ataque sem Prenúncio','menor 1':'Fôlego Recuperado','menor 2':'','classe máxima':3,energia:0};
+descanso(CP,folego,[3,5,4,2,true,2],/PE 0 → 5/);
+descanso(CF,folego,[3,4,4,2,true,2],/PE 0 → 4/);
+descanso(CF,{...folego,'exaustão':3},[3,0,4,3,true,2],/nada mudou/);
+descanso(CP,{...folego,energia:9},[3,10,4,2,true,2],/PE 9 → 10/);
+descanso(CP,{...folego,'classe máxima':0},[3,2,4,2,true,2],/PE 0 → 2/);
+descanso(CP,{...folego,'menor 1':'','menor 2':'Fôlego Recuperado'},[3,5,4,2,true,2],/PE 0 → 5/);
+descanso(CP,{...folego,origem:'Sem energia custom'},[3,5,4,2,true,2],/PE 0 → 5/,{folego:true});
+descanso(CP,{...folego,origem:'Custom inválida'},[3,2,4,2,true,2],/PE 0 → 2/);
+descanso(CP,{...folego,origem:'Latente'},[3,2,4,2,true,2],/PE 0 → 2/);
+descanso(LP,folego,[23,10,20,0,false,0],/PE 0 → 10/);
 descanso(CF, { ...artificial, energia: 0, 'exaustão': 3 }, [3, 2, 4, 3, true, 2], /Existência Artificial/);
 descanso(LF, { ...artificial, energia: 0, 'exaustão': 3 }, [23, 10, 20, 0, false, 0], /local tratado como propício/);
 descanso(CF, { ...artificial, energia: 9 }, [3, 10, 4, 2, true, 2], /PE 9 → 10/);

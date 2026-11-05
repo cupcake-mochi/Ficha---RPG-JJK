@@ -1,3 +1,56 @@
+# PR67 · Núcleo, Fôlego e descanso leve · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ORIGENS-RECURSOS-2026-11-05.md`/JSON.
+O01–O04 corrigidos sobre PR66 f2bc70f no ramo
+`codex/auditoria-origens-recursos-20261105`. Geração `95250bc5cf94a1b0`,
+zero SOBRAS, oito alvos iguais ao plano. Código incremental SHA
+`bae62817a2ae03281dff1247c7e2f97d6ac0518a6f90271bf6de96da98a09130`.
+Exige a instalação PR66 d5845c03…; não instalar pacote integral nas existentes.
+
+Nas duas descartáveis: marcos de nível, vagas, custom válida/inválida,
+CONFIGURAÇÃO e Fôlego aprovados. Queda sem barra registrou Morrendo;
+longo com queda ativa recuperou vida/PE e encerrou o registro. Dezesseis
+restaurações de fórmula conferidas após edições reais, incluindo colagem
+nos quatro helpers. Entradas restauradas: 24 por cópia, SOCORRO incluída.
+1.433 células por cópia relidas sem diferenças de valores/fórmulas, notas
+ou validações (exceto os oito alvos novos esperados), sem erros nos intervalos.
+DADOS_CUSTOM novamente oculta. Código reaberto/relido igual nas duas, sem QA67.
+
+Local: 88 descansos, dez contas de auditoria conformes, transporte atômico,
+replay do modelo antigo e pacote aprovados. Smoke completo aprovado antes
+da última revisão de testes; uma repetição excedeu 60 s em pacote_runtime
+com menos de 800 MB disponíveis/swap cheia; repetição isolada passou.
+Consultar os checks do head atual na PR antes de promover.
+
+O05: rota curta do menu evita o módulo pesado. Um controle antes/depois:
+24,961 → 13,986 s no Google, 17,817 → 11,329 s entre marcadores do handler.
+Não prova causa única, eliminação de todos os timeouts, RAM ou abertura Android.
+As demais edições ainda seguem o pipeline completo. Perfis temporários removidos.
+Snapshots/fontes privados em `nuvem-b47/saidas/correcao-origens-recursos/`.
+Somente descartáveis alteradas. Sem merge, oficiais, jogador, PR31,
+acionadores, outros agentes ou mudanças de acesso. Sol/Medium para revisar;
+Sol/High para investigar novas bordas. Não alterar configurações automaticamente.
+
+# Revisão PR66 e auditoria de recursos de Origem · 05/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR66-2026-11-05.md` e
+`r53/diagnostico-android/AUDITORIA-ORIGENS-RECURSOS-2026-11-05.md`/JSON.
+PR66 f2bc70f revisada, dois checks SUCCESS e sem conflito. Testes focais
+78/138 e transporte real aprovados; não houve alteração nessa PR.
+Ramo separado `codex/auditoria-origens-recursos-20261105`, diagnóstico:
+O01 PE máximo do Núcleo, O02 barra de Integridade indevida, O03 inatividade
+sem efeito em movimento/Bloquear, O04 bônus de Fôlego ausente. O05: dois
+onEdit no Ciclo atingiram tempo, com repetição concluída no mesmo código.
+Não atribuir à PR66 sem isolar causa; não houve A/B válido com código antigo.
+24 perfis/eventos nativos concluídos; dois timeouts separados. Local 10
+contas, seis conformes/quatro divergentes: diagnóstico não é teste verde.
+14 entradas por cópia restauradas; 1.609 células relidas sem diferenças
+de valores/fórmulas, notas ou validações. Código d5845c03… relido igual.
+Sem correção nova de produção, merge, oficiais, jogador, PR31 ou acionador.
+Próxima correção: ausência da barra/PE do Núcleo e apuração de O05 antes
+de ampliar leituras. Sol/High para investigar/ensaiar, Sol/Medium para revisar.
+Não mudar configurações automaticamente.
+
 # Correção de descanso/Origem · 05/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-DESCANSO-ORIGENS-2026-11-05.md`.

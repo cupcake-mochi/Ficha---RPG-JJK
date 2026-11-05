@@ -448,6 +448,11 @@ function notasDosTipos_(e) {
 function onEdit(e) {
   var inicio = e && typeof e.r53Inicio_ === 'number' ? e.r53Inicio_ : Date.now();
   if (!e || !e.range) return;
+  // O menu isolado dispensa restauradores e catálogos; colagens seguem a rota completa.
+  if (typeof r53DescansoEdit_ === 'function' && r53DescansoEdit_(e)) {
+    continuarPaleta_(inicio, null, false, e.range);
+    return;
+  }
   if (r53RestaurarVersaoPublica_(e)) { continuarPaleta_(inicio,null,false,e.range); return; }
   if (typeof salarioIntegrarMissao_ === 'function' && salarioIntegrarMissao_(e,onEdit)) return;
   if (typeof salarioEditar_ === 'function' && salarioEditar_(e)) return;
@@ -2129,6 +2134,8 @@ function contaDoDescanso_(tipo, s) {
     var pct = d.propicio && s.recuperacaoAbundante ? 40 : PE_DO_DESCANSO_CURTO_[d.propicio ? 0 : fim.exaustao];
     var ganho = Math.floor(peMax * pct / 100);
     if (ganho < 1 && peMax * pct > 0) ganho = 1;
+    // Fôlego só complementa uma recuperação permitida; não vence a proibição do grau 3.
+    if (pct > 0 && s.folegoRecuperado) ganho += Math.max(0, Math.floor(n(s.classeDisponivel)));
     if (peMax > 0) fim.pe = Math.max(fim.pe, Math.min(peMax, fim.pe + ganho));
     return fim;
   }
@@ -2181,7 +2188,7 @@ function descansar_(e, idx, quedaConfirmada, jaConvertido) {
                                                        .filter(function (c) { return c; });
   var cExtras = cel_(idx, 'sequela extras');
   // Tudo o que o descanso consulta numa leitura só (cada ida ao servidor custa 1,5 a 2 s)
-  var campos = ['descanso', 'vida_max', 'energia_max', 'integridade_max', 'origem', 'marcante', 'menor 1', 'menor 2'];
+  var campos = ['descanso', 'vida_max', 'energia_max', 'integridade_max', 'origem', 'marcante', 'menor 1', 'menor 2', 'classe máxima'];
   var lidas = campos.concat(Object.keys(onde).map(function (k) { return onde[k]; }))
     .map(function (k) { return cel_(idx, k); }).concat(caixinhas, cExtras ? [cExtras] : []).filter(function (c) { return c; });
   var v = lerCelulas_(ficha, lidas);
@@ -2211,11 +2218,15 @@ function descansar_(e, idx, quedaConfirmada, jaConvertido) {
   var publicado = valor('origem') === 'Restrição Celestial · Restrição corporal' &&
     ['Corpo Debilitado', 'Corpo Quebradiço', 'Corpo Exaurido'].indexOf(corpo) >= 0;
   antes.existenciaArtificial = valor('origem') === 'Corpo Amaldiçoado';
+  var semEnergia = valor('origem') === 'Restrição Celestial · Sem Energia';
   // Uma leitura limitada também fornece a base válida e as duas permissões corporais.
-  var custom = !antes.existenciaArtificial && !publicado ? SpreadsheetApp.getActive().getSheetByName('DADOS_CUSTOM') : null;
-  var regras = custom ? custom.getRange(121, 2, 7, 1).getValues() : [];
+  var custom = !antes.existenciaArtificial && !publicado && !semEnergia ? SpreadsheetApp.getActive().getSheetByName('DADOS_CUSTOM') : null;
+  var regras = custom ? custom.getRange(121, 2, 10, 1).getValues() : [];
   if (regras.length && regras[0][0] === true && regras[2][0] === 'Corpo Amaldiçoado')
     antes.existenciaArtificial = true;
+  var temFolego = valor('menor 1') === 'Fôlego Recuperado' || valor('menor 2') === 'Fôlego Recuperado';
+  antes.folegoRecuperado = temFolego && (semEnergia || (regras.length > 9 && regras[9][0] === true));
+  antes.classeDisponivel = le('classe máxima');
   if (corpo === 'Corpo Exaurido' || abundante) {
     var corporal = publicado || (regras.length > 5 && regras[5][0] === true);
     antes.exaurido = corporal && corpo === 'Corpo Exaurido';

@@ -1,0 +1,58 @@
+[
+  {
+    "aba": "FICHA",
+    "r": 30,
+    "c": 10,
+    "antes": "=IF(DADOS_CONFIG!$E$3<>\"\",NA(),IF(DADOS_CONFIG!$C$3=1,DADOS_CONFIG!$D$3,IF(DADOS_CONFIG!$B$3=0,IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"),IF((IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"))=\"\",\"\",(IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"))+DADOS_CONFIG!$B$3))))",
+    "depois": "=LET(peNucleo,IF(DADOS_CONFIG!$E$3<>\"\",NA(),IF(DADOS_CONFIG!$C$3=1,DADOS_CONFIG!$D$3,IF(DADOS_CONFIG!$B$3=0,IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"),IF((IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"))=\"\",\"\",(IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"))+DADOS_CONFIG!$B$3)))),IF(OR(peNucleo=\"\",DADOS_CONFIG!$C$3=1),peNucleo,peNucleo+DADOS_CUSTOM!$B$131))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 34,
+    "c": 10,
+    "antes": "=IF(DADOS_CONFIG!$E$4<>\"\",NA(),IF(DADOS_CONFIG!$C$4=1,DADOS_CONFIG!$D$4,IF(DADOS_CONFIG!$B$4=0,IFERROR((20+(AJ19+5)*($AH$11-1))+IFERROR(VALUE($P$34&\"\"),0),\"\"),IF((IFERROR((20+(AJ19+5)*($AH$11-1))+IFERROR(VALUE($P$34&\"\"),0),\"\"))=\"\",\"\",(IFERROR((20+(AJ19+5)*($AH$11-1))+IFERROR(VALUE($P$34&\"\"),0),\"\"))+DADOS_CONFIG!$B$4))))",
+    "depois": "=IF(DADOS_CUSTOM!$B$128,0,IF(DADOS_CONFIG!$E$4<>\"\",NA(),IF(DADOS_CONFIG!$C$4=1,DADOS_CONFIG!$D$4,IF(DADOS_CONFIG!$B$4=0,IFERROR((20+(AJ19+5)*($AH$11-1))+IFERROR(VALUE($P$34&\"\"),0),\"\"),IF((IFERROR((20+(AJ19+5)*($AH$11-1))+IFERROR(VALUE($P$34&\"\"),0),\"\"))=\"\",\"\",(IFERROR((20+(AJ19+5)*($AH$11-1))+IFERROR(VALUE($P$34&\"\"),0),\"\"))+DADOS_CONFIG!$B$4)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 67,
+    "c": 15,
+    "antes": "=IF(AND('DADOS_CUSTOM'!$B$126,OR('FICHA'!$D$52=\"Corpo Debilitado\",'FICHA'!$D$52=\"Corpo Quebradiço\")),\"0 m\",IF(AND('DADOS_CUSTOM'!$B$126,'FICHA'!$D$52=\"Corpo Exaurido\"),IF(N('FICHA'!$D$26)<=INT(N('FICHA'!$J$26)/2),\"0 m\",MIN(4.5,VALUE(SUBSTITUTE((IF(DADOS_CONFIG!$E$12<>\"\",NA(),IF(DADOS_CONFIG!$C$12=1,(DADOS_CONFIG!$D$12)&\" m\",IF(DADOS_CONFIG!$B$12=0,IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia))))&\" m\",(IF((IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))=\"\",\"\",(IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))+DADOS_CONFIG!$B$12))&\" m\")))),\" m\",\"\")))&\" m\"),IF(DADOS_CONFIG!$E$12<>\"\",NA(),IF(DADOS_CONFIG!$C$12=1,(DADOS_CONFIG!$D$12)&\" m\",IF(DADOS_CONFIG!$B$12=0,IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia))))&\" m\",(IF((IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))=\"\",\"\",(IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))+DADOS_CONFIG!$B$12))&\" m\")))))",
+    "depois": "=LET(movNucleo,IF(AND('DADOS_CUSTOM'!$B$126,OR('FICHA'!$D$52=\"Corpo Debilitado\",'FICHA'!$D$52=\"Corpo Quebradiço\")),\"0 m\",IF(AND('DADOS_CUSTOM'!$B$126,'FICHA'!$D$52=\"Corpo Exaurido\"),IF(N('FICHA'!$D$26)<=INT(N('FICHA'!$J$26)/2),\"0 m\",MIN(4.5,VALUE(SUBSTITUTE((IF(DADOS_CONFIG!$E$12<>\"\",NA(),IF(DADOS_CONFIG!$C$12=1,(DADOS_CONFIG!$D$12)&\" m\",IF(DADOS_CONFIG!$B$12=0,IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia))))&\" m\",(IF((IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))=\"\",\"\",(IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))+DADOS_CONFIG!$B$12))&\" m\")))),\" m\",\"\")))&\" m\"),IF(DADOS_CONFIG!$E$12<>\"\",NA(),IF(DADOS_CONFIG!$C$12=1,(DADOS_CONFIG!$D$12)&\" m\",IF(DADOS_CONFIG!$B$12=0,IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia))))&\" m\",(IF((IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))=\"\",\"\",(IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(IF(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123=\"Corpo Amaldiçoado\")),0,MAX(0,N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)))>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))+DADOS_CONFIG!$B$12))&\" m\"))))),IF(DADOS_CUSTOM!$B$129,FLOOR(MAX(0,VALUE(SUBSTITUTE(movNucleo,\" m\",\"\"))/2),1.5)&\" m\",movNucleo))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 56,
+    "c": 26,
+    "antes": "=IF(AND('DADOS_CUSTOM'!$B$126,OR('FICHA'!$D$52=\"Corpo Debilitado\",'FICHA'!$D$52=\"Corpo Quebradiço\",'FICHA'!$D$52=\"Corpo Exaurido\")),\"Não pode bloquear\",\"2d10 + \" & D59-11)",
+    "depois": "=IF(DADOS_CUSTOM!$B$129,\"Não pode bloquear · Núcleo inativo\",IF(AND('DADOS_CUSTOM'!$B$126,OR('FICHA'!$D$52=\"Corpo Debilitado\",'FICHA'!$D$52=\"Corpo Quebradiço\",'FICHA'!$D$52=\"Corpo Exaurido\")),\"Não pode bloquear\",\"2d10 + \" & D59-11))"
+  },
+  {
+    "aba": "DADOS_CUSTOM",
+    "r": 128,
+    "c": 2,
+    "antes": null,
+    "depois": "=AND(OR('FICHA'!$X$11=\"Corpo Amaldiçoado\",AND($B$121,$B$123=\"Corpo Amaldiçoado\")),OR('FICHA'!$S$52=\"Núcleo Dependente\",'FICHA'!$AG$52=\"Núcleo Dependente\"))"
+  },
+  {
+    "aba": "DADOS_CUSTOM",
+    "r": 129,
+    "c": 2,
+    "antes": null,
+    "depois": "=AND($B$128,N('FICHA'!$D$30)<=0,N('FICHA'!$AF$30)<=0)"
+  },
+  {
+    "aba": "DADOS_CUSTOM",
+    "r": 130,
+    "c": 2,
+    "antes": null,
+    "depois": "=AND(OR('FICHA'!$X$11=\"Restrição Celestial · Sem Energia\",AND($B$121,$B$123=\"Restrição Celestial · Sem Energia\")),OR('FICHA'!$S$52=\"Fôlego Recuperado\",'FICHA'!$AG$52=\"Fôlego Recuperado\"))"
+  },
+  {
+    "aba": "DADOS_CUSTOM",
+    "r": 131,
+    "c": 2,
+    "antes": null,
+    "depois": "=IF($B$128,MAX(0,N('FICHA'!$AJ$19))+MIN(7,MAX(0,INT((N('FICHA'!$AH$11)-2)/4)))*INT(MAX(0,N('FICHA'!$AJ$19))/2),0)"
+  }
+]
