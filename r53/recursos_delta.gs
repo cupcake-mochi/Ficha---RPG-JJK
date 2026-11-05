@@ -39,9 +39,9 @@ function r53DeltaExecutar_(e, x, calcular) {
     var comandoAtual = Number(q(0));
     if (!evento) passo = comandoAtual;
     if (!isFinite(passo) || !passo) return true;
-    var max = Number(q(2)) || 0, atual = q(1);
+    var max = q(2), atual = q(1);
     var antes = x.t ? Math.max(0, Number(q(3)) || 0) : 0;
-    if (x.cheio && (atual === '' || atual === null)) atual = max;
+    if (x.cheio && (atual === '' || atual === null)) atual = Number(max) || 0;
     var fim = calcular(atual, max, antes, passo);
     escreveu = true;
     aba.getRange(x.a).setValue(fim.atual);

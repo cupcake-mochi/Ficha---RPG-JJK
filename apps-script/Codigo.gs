@@ -1955,9 +1955,9 @@ function r53DeltaExecutar_(e, x, calcular) {
     var comandoAtual = Number(q(0));
     if (!evento) passo = comandoAtual;
     if (!isFinite(passo) || !passo) return true;
-    var max = Number(q(2)) || 0, atual = q(1);
+    var max = q(2), atual = q(1);
     var antes = x.t ? Math.max(0, Number(q(3)) || 0) : 0;
-    if (x.cheio && (atual === '' || atual === null)) atual = max;
+    if (x.cheio && (atual === '' || atual === null)) atual = Number(max) || 0;
     var fim = calcular(atual, max, antes, passo);
     escreveu = true;
     aba.getRange(x.a).setValue(fim.atual);
@@ -1990,6 +1990,7 @@ function r53DeltaExecutar_(e, x, calcular) {
 // END RECURSOS_DELTA
 function aplicaPasso_(atual, max, temp, passo) {
   atual = Number(atual) || 0;
+  var maximoZero = max === 0 || (typeof max === 'string' && max.trim() !== '' && Number(max) === 0);
   max = Number(max) || 0;
   temp = Math.max(0, Number(temp) || 0);
   passo = Number(passo) || 0;
@@ -2003,7 +2004,7 @@ function aplicaPasso_(atual, max, temp, passo) {
     novo = atual + passo;
   }
   return {
-    atual: Math.max(0, max ? Math.min(novo, max) : novo),
+    atual: Math.max(0, max || maximoZero ? Math.min(novo, max) : novo),
     temp: temp
   };
 }
@@ -2019,11 +2020,13 @@ function aplicaPasso_(atual, max, temp, passo) {
  * O "fica a maior" da A2 não mora aqui: quem digita a temporária pode estar
  * trocando de fonte ou zerando no fim da cena, e o script não sabe qual.
  */
-function tetoTemp_(valor, max) {
+function tetoTemp_(valor, max, preservarIntegridade) {
   if (valor === '' || valor === null || valor === undefined) return valor;
   var v = Number(valor);
   if (isNaN(v)) return valor;
   v = Math.max(0, v);
+  var maximoZero = max === 0 || (typeof max === 'string' && max.trim() !== '' && Number(max) === 0);
+  if (maximoZero && !preservarIntegridade) return 0;
   max = Number(max) || 0;
   if (max <= 0) return v;
   var teto = Math.max(1, Math.floor(max / 2));
@@ -2038,7 +2041,7 @@ function prenderTemp_(e, idx) {
     if (!ct || ct !== e.range.getA1Notation()) return;
     var v = lerCelulas_(ficha, [ct, cel_(idx, r + '_max')]);
     var antes = v[ct];
-    var depois = tetoTemp_(antes, v[cel_(idx, r + '_max')]);
+    var depois = tetoTemp_(antes, v[cel_(idx, r + '_max')], r === 'integridade');
     if (depois !== antes) e.range.setValue(depois);
   });
 }

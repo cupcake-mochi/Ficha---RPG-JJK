@@ -1,3 +1,17 @@
+# Tetos com máximo zero · 04/11/2026
+
+Leia `r53/diagnostico-android/MAXIMOS-ZERO-2026-11-04.md`. PR60 está
+pronta para revisão no commit `eaab143`. A00/A08 seguem em ramo separado
+sobre PR60. A00 corrige a edição manual de TEMP de vida/PE. A08 impede
+ganho por ± acima de um máximo explicitamente zero. O máximo em branco
+mantém o comportamento anterior. A regra de Integridade TEMP fica para
+análise própria. Seis cenários nativos aprovados em descartável nova,
+Código `5b81e86d…` relido e oito campos restaurados. 627 verificações
+locais, incremental 24, pacote leve 137, diagnóstico de reservas 46/46 e
+smoke aprovados. A01/A02/A04/A05/A06/A07 continuam na fila.
+Sem merge, oficiais, jogador, PR31, acionadores ou acesso novo.
+Sol/Medium para revisar. Sol/High para o próximo lote. Sem mudar configurações.
+
 # Reteste nativo da PR60 · 04/11/2026
 
 Leia o reteste no início de

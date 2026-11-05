@@ -34,6 +34,7 @@ function r53EdicaoLivre_(e){
 var R53_LIVRE_DELTA_={"AM26":{"a":"D26","m":"J26","t":"AF26","l":[26,4,1,36],"p":[[0,35],[0,0],[0,6],[0,28]]},"AM30":{"a":"D30","m":"J30","t":"AF30","l":[30,4,1,36],"p":[[0,35],[0,0],[0,6],[0,28]]},"AM34":{"a":"D34","m":"J34","t":"AF34","l":[34,4,1,36],"p":[[0,35],[0,0],[0,6],[0,28]]}};
 function r53LivrePasso_(atual, max, temp, passo) {
   atual = Number(atual) || 0;
+  var maximoZero = max === 0 || (typeof max === 'string' && max.trim() !== '' && Number(max) === 0);
   max = Number(max) || 0;
   temp = Math.max(0, Number(temp) || 0);
   passo = Number(passo) || 0;
@@ -47,7 +48,7 @@ function r53LivrePasso_(atual, max, temp, passo) {
     novo = atual + passo;
   }
   return {
-    atual: Math.max(0, max ? Math.min(novo, max) : novo),
+    atual: Math.max(0, max || maximoZero ? Math.min(novo, max) : novo),
     temp: temp
   };
 }
@@ -97,9 +98,9 @@ function r53LivreDeltaExecutar_(e, x, calcular) {
     var comandoAtual = Number(q(0));
     if (!evento) passo = comandoAtual;
     if (!isFinite(passo) || !passo) return true;
-    var max = Number(q(2)) || 0, atual = q(1);
+    var max = q(2), atual = q(1);
     var antes = x.t ? Math.max(0, Number(q(3)) || 0) : 0;
-    if (x.cheio && (atual === '' || atual === null)) atual = max;
+    if (x.cheio && (atual === '' || atual === null)) atual = Number(max) || 0;
     var fim = calcular(atual, max, antes, passo);
     escreveu = true;
     aba.getRange(x.a).setValue(fim.atual);
