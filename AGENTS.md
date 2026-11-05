@@ -6,9 +6,10 @@ separado sobre a PR62. Era 16, Ciclo 9, mais um teste com compra calculada
 de Vigília e 44 controles de movimento corporal nativos, todos aprovados.
 41 alvos por cópia conferidos. 57 entradas temporárias restauradas.
 Geração `cb692d3f96e4e754` e proposta incremental `9f64aa8c…` verificadas
-offline. O código de restauração ainda precisa de ensaio nativo antes
-de publicar. Sem merge, oficiais, jogador, PR31, acionadores ou acesso
-novo. Sol/Medium para revisar, Sol/High para ensaiar a instalação.
+offline. PR63 com 14 restaurações por onEdit no Sheets, sete por cópia.
+Os 44 alvos de cada cópia voltaram iguais ao snapshot. DADOS_INVOC foi
+relida como aba auxiliar, fora da restauração automática. Sem merge,
+oficiais, jogador, PR31, acionadores ou acesso novo. Sol/Medium para revisar, Sol/High para ensaiar a instalação.
 Não alterar configurações automaticamente.
 
 # Teto de TEMP em colagens e invocações · 04/11/2026

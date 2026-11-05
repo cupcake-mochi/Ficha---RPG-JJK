@@ -39,9 +39,10 @@ O plano offline distingue as sete fórmulas e a nota do modelo dos 41 alvos
 nas fichas montadas. DADOS_INVOC guarda um molde e preenche as 12 linhas.
 O preparador exige o Codigo da PR62 e gera separadamente a atualização
 do modelo usado pelo Apps Script para restaurar fórmulas. Esse código é
-preparado offline, sem instalação nos ensaios de recálculo. Uma aplicação
-futura exige snapshot atual do código e dos alvos, e ensaio do onEdit em
-descartável antes de publicar. Não usar geração integral como migração.
+preparado offline. A instalação nas descartáveis ocorreu depois dos
+ensaios de recálculo, para a validação do onEdit descrita abaixo. Uma
+aplicação futura exige snapshot atual do código e dos alvos. Não usar
+geração integral como migração.
 
 A geração `cb692d3f96e4e754` foi empacotada. A comparação de valores e
 notas das 26 abas encontrou somente as sete fórmulas e a nota previstas.
@@ -61,3 +62,32 @@ A primeira rodada de CI identificou comparações históricas de D37 na pilha
 51–56 e em SOCORRO. Os testes passaram a conferir tanto a guarda histórica
 quanto sua transição exata para o resumo atual. As suítes focais passaram
 com 60 e 100 verificações, respectivamente.
+
+## Restauração por edição real
+
+O Codigo.gs foi instalado nas duas descartáveis após confirmar as bases
+da Era (PR62, `3767fb0f…`) e do Ciclo (pilha 51–56, `8a0f2ed6…`). Na
+cópia do Ciclo, os nove módulos complementares conferidos coincidiam com
+a base conhecida. Após salvar e reabrir os dois editores, o Codigo.gs
+relido em ambos tinha o SHA-256 da proposta acima. O preparador continua
+exigindo a base da PR62.
+
+Em cada cópia, sete fórmulas foram sobrescritas individualmente pela
+interface do Sheets com marcadores de texto:
+
+- FICHA!D37 e O67, resumo de Integridade e deslocamento final.
+- DADOS_CONFIG!F12 e G12, valores de deslocamento da configuração.
+- INVOCAÇÕES!W18, X18 e S24, espelhos de máximo, estágio e deslocamento.
+
+Os 14 marcadores apareceram após a edição. As 14 execuções do acionador
+simples onEdit concluíram e restauraram a fórmula exata registrada antes
+da edição, sem reposição manual ou pela API. DADOS_CONFIG foi ocultada
+novamente nas duas cópias. A leitura final comparou 44 alvos por cópia:
+40 fórmulas e uma nota da PR, mais os três espelhos de invocação. Nenhuma
+divergência ou erro de fórmula nesses alvos. As 36 fórmulas internas de
+DADOS_INVOC foram relidas nessa comparação. A aba auxiliar fica fora da
+rota de restauração automática do onEdit.
+
+O teste local `integridade_movimento.js` também passou novamente com o
+snapshot privado. A instalação e as edições deste ensaio ficaram nas
+descartáveis.
