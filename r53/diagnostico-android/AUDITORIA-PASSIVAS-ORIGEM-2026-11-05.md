@@ -1,3 +1,7 @@
+> Atualização: P01/P02 têm correção e ensaios separados em
+> `CORRECAO-RESERVA-BOLSA-2026-11-05.md`/JSON. P03 continua pendente.
+> Os resultados abaixo preservam o diagnóstico anterior à correção.
+
 # Reservas, carga e repertório das Origens
 
 Diagnóstico sobre PR67 `971228d2b82980a331a8ebcc577bde6f4fa8b804`.

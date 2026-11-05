@@ -870,7 +870,7 @@ NOTAS = {
     "carga": "O limite é 5 + Força, em Volume, mais o Buff/Debuff ao lado. Cada item leve vale 0,1. Acima do limite e até o dobro, "
              "o deslocamento cai pela metade e os TR Físicos têm desvantagem; acima do dobro, você não se desloca. Arrastar, "
              "empurrar ou levantar vai até o dobro.",
-    "carga_buff": "Soma no limite de carga o que a conta do livro não cobre, como uma habilidade. Número negativo reduz.",
+    "carga_buff": "Bolsa Orgânica já aumenta automaticamente o limite em Maestria quando válida. Use este Buff para outros ajustes; número negativo reduz. Ao atualizar uma ficha antiga, confira a compensação manual dessa menor para não aplicá-la duas vezes.",
     "ienes": "Digite quanto você tem. A ficha nova começa com a mensalidade do Grau 4, que é o fundo da criação.",
     "salario": "Sai do Grau, pela tabela Salário por patente do livro.",
     "requisito": "Olha a arma de cada mão, o escudo e o uniforme. Quando algo pede mais Força do que você tem, a nota "

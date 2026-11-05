@@ -120,6 +120,8 @@ def anterior(formula):
     """
     import campanha
     import origens_recursos
+    import passivas_origem
+    formula = passivas_origem.anterior(formula)
     formula = origens_recursos.anterior(formula)
     vida = VIDA_QUEBRADICO.fullmatch(formula) if isinstance(formula, str) else None
     if vida:
@@ -249,6 +251,9 @@ def trocas(layout, pessoal, fam=None):
     celulas.setdefault("FICHA", {})[coord] = f'=IF({cond},"Não pode bloquear",{original[1:]})'
     import origens_recursos
     origens_recursos.aplicar(celulas, idx)
+    import passivas_origem
+    carga = pessoal["H"]["limite de carga"].split("!")[-1].replace("$", "")
+    passivas_origem.aplicar(celulas, idx, carga)
     return {"alvos": destinos, "antes": antes, "celulas": celulas}
 
 
@@ -378,6 +383,8 @@ def aplica(layout, tr):
                 r[1] = mudancas[r[0]]
     a, h = abas(layout, tr)
     layout["abas"] += [a, h]
+    import passivas_origem
+    passivas_origem.notas(layout)
     return a
 
 

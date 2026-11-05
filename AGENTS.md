@@ -1,3 +1,36 @@
+# Reserva/Bolsa concluída para revisão · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-RESERVA-BOLSA-2026-11-05.md`/JSON.
+Ramo `codex/correcao-reserva-bolsa-20261105`, base PR68 6a5440a.
+P01/P02 corrigidos: Reserva soma 2×Essência, Bolsa soma Maestria; ambas
+as vagas e custom validada. Não recarrega PE. Trocar por permanece final.
+Seis alvos, geração `326e5d03a6aac4ee`, zero SOBRAS. Modelo integral
+preservado fora dos seis alvos e metadados de geração. Exige código PR67
+bae62817…; proposto/instalado só nas QA: 4b0d2cc1952ac3726a47a1969c66c04e30658f7397a927f7af0930615ee9daa9.
+
+207 verificações focais e smoke final passaram. 26 cenários por cópia,
+com controles de Núcleo/Fôlego, CONFIGURAÇÃO, ambas as vagas e limites de
+carga. Preflight recusa compensações possíveis, incluindo linhas +2/−2
+que se anulam; não desconta ajustes existentes. DADOS!CZ41 não tinha
+rota de recuperação: guarda estreita nova restaura só essa célula antes
+do módulo pesado. Oito fórmulas restauradas por edição real; falhas
+intermediárias registradas separadamente. Diagnóstico temporário retirado.
+Codigo.gs final salvo/reaberto e relido integralmente igual nas duas.
+
+Dezoito entradas restantes por cópia restauradas; 1.899 células por cópia
+relidas sem diferenças de valores/fórmulas, notas ou validações, exceto os
+seis alvos novos, sem erros nos intervalos. Abas voltaram à visibilidade
+anterior. SOCORRO não foi escrita. Snapshots privados em
+`nuvem-b47/saidas/correcao-reserva-bolsa/`, ignorados pelo Git.
+Pacote integral gerado/testado, não instalado. Conferir checks do head
+atual antes de promover. Uma montagem local anterior excedeu 60 s sob
+pressão de memória; repetição final passou sem ampliar o limite.
+
+Próximo: revisão desta entrega; P03/Prática Cotidiana estrutural separada,
+preservando os 249 contextos. Sem merge, oficiais, jogador, PR31,
+acionadores, agentes ou acesso novo. Sol/Medium para revisar, Sol/High
+para o próximo ensaio. Não alterar configurações automaticamente.
+
 # Revisão PR67 e passivas de Origem · 05/11/2026
 
 Leia `r53/diagnostico-android/REVISAO-PR67-2026-11-05.md` e

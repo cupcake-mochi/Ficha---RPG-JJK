@@ -1,0 +1,42 @@
+[
+  {
+    "aba": "FICHA",
+    "r": 30,
+    "c": 10,
+    "antes": "=LET(peNucleo,IF(DADOS_CONFIG!$E$3<>\"\",NA(),IF(DADOS_CONFIG!$C$3=1,DADOS_CONFIG!$D$3,IF(DADOS_CONFIG!$B$3=0,IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"),IF((IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"))=\"\",\"\",(IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"))+DADOS_CONFIG!$B$3)))),IF(OR(peNucleo=\"\",DADOS_CONFIG!$C$3=1),peNucleo,peNucleo+DADOS_CUSTOM!$B$131))",
+    "depois": "=LET(peOrigem,LET(peNucleo,IF(DADOS_CONFIG!$E$3<>\"\",NA(),IF(DADOS_CONFIG!$C$3=1,DADOS_CONFIG!$D$3,IF(DADOS_CONFIG!$B$3=0,IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"),IF((IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"))=\"\",\"\",(IFERROR((IFERROR(IF($D$11=\"\",\"\",VLOOKUP($D$11,'DADOS_PROGRESSAO'!$M$2:$T$8,5,FALSE)*$AH$11),\"\"))+IFERROR(VALUE($P$30&\"\"),0),\"\"))+DADOS_CONFIG!$B$3)))),IF(OR(peNucleo=\"\",DADOS_CONFIG!$C$3=1),peNucleo,peNucleo+DADOS_CUSTOM!$B$131)),IF(OR(peOrigem=\"\",DADOS_CONFIG!$C$3=1),peOrigem,peOrigem+DADOS_CUSTOM!$B$132))"
+  },
+  {
+    "aba": "DADOS",
+    "r": 41,
+    "c": 104,
+    "antes": "=IF(DADOS_CONFIG!$E$13<>\"\",NA(),IF(DADOS_CONFIG!$C$13=1,DADOS_CONFIG!$D$13,IF(DADOS_CONFIG!$B$13=0,5+DADOS!$CZ$5+N('FICHA PESSOAL'!$L$86),IF((5+DADOS!$CZ$5+N('FICHA PESSOAL'!$L$86))=\"\",\"\",(5+DADOS!$CZ$5+N('FICHA PESSOAL'!$L$86))+DADOS_CONFIG!$B$13))))",
+    "depois": "=LET(cargaOrigem,IF(DADOS_CONFIG!$E$13<>\"\",NA(),IF(DADOS_CONFIG!$C$13=1,DADOS_CONFIG!$D$13,IF(DADOS_CONFIG!$B$13=0,5+DADOS!$CZ$5+N('FICHA PESSOAL'!$L$86),IF((5+DADOS!$CZ$5+N('FICHA PESSOAL'!$L$86))=\"\",\"\",(5+DADOS!$CZ$5+N('FICHA PESSOAL'!$L$86))+DADOS_CONFIG!$B$13)))),IF(OR(cargaOrigem=\"\",DADOS_CONFIG!$C$13=1),cargaOrigem,cargaOrigem+DADOS_CUSTOM!$B$133))"
+  },
+  {
+    "aba": "DADOS_CUSTOM",
+    "r": 132,
+    "c": 2,
+    "antes": null,
+    "depois": "=IF(AND($B$126,OR('FICHA'!$S$52=\"Reserva Excedente\",'FICHA'!$AG$52=\"Reserva Excedente\")),2*MAX(0,N('FICHA'!$AJ$19)),0)"
+  },
+  {
+    "aba": "DADOS_CUSTOM",
+    "r": 133,
+    "c": 2,
+    "antes": null,
+    "depois": "=IF(AND(OR('FICHA'!$X$11=\"Híbrido\",AND($B$121,$B$123=\"Híbrido\")),OR('FICHA'!$S$52=\"Bolsa Orgânica\",'FICHA'!$AG$52=\"Bolsa Orgânica\")),MAX(0,N('FICHA'!$D$67)),0)"
+  },
+  {
+    "aba": "FICHA",
+    "addr": "P30",
+    "antes": null,
+    "depois": "Reserva Excedente e Núcleo Dependente já entram automaticamente nos PE máximos quando válidos. Use este Buff somente para outros ajustes. Ao atualizar uma ficha antiga, confira as compensações manuais dessas capacidades para não aplicar o mesmo benefício duas vezes."
+  },
+  {
+    "aba": "FICHA PESSOAL",
+    "addr": "L85",
+    "antes": "Soma no limite de carga o que a conta do livro não cobre, como uma habilidade. Número negativo reduz.",
+    "depois": "Bolsa Orgânica já aumenta automaticamente o limite em Maestria quando válida. Use este Buff para outros ajustes; número negativo reduz. Ao atualizar uma ficha antiga, confira a compensação manual dessa menor para não aplicá-la duas vezes."
+  }
+]

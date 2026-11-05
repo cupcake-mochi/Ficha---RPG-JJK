@@ -9,6 +9,7 @@ const key = d => [d.aba, d.addr || d.r + ',' + d.c].join('!');
 assert.equal(new Set(patch.plano.map(key)).size, patch.plano.length);
 const ctx = vm.createContext({});
 vm.runInContext(require('../../medidas/carregar-ficha').fontes(), ctx);
+require('../diagnostico-android/preparar_reserva_bolsa').reverterModelo(ctx.ABAS);
 require('../diagnostico-android/preparar_origens_recursos').reverterModelo(ctx.ABAS);
 assert.equal(ctx.SOBRAS_.length, 0);
 vm.runInContext(patch.molde(), ctx);

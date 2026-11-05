@@ -448,6 +448,10 @@ function notasDosTipos_(e) {
 function onEdit(e) {
   var inicio = e && typeof e.r53Inicio_ === 'number' ? e.r53Inicio_ : Date.now();
   if (!e || !e.range) return;
+  if (typeof r53RestaurarCargaOrigem_ === 'function' && r53RestaurarCargaOrigem_(e)) {
+    continuarPaleta_(inicio, null, false, e.range);
+    return;
+  }
   // O menu isolado dispensa restauradores e catálogos; colagens seguem a rota completa.
   if (typeof r53DescansoEdit_ === 'function' && r53DescansoEdit_(e)) {
     continuarPaleta_(inicio, null, false, e.range);
