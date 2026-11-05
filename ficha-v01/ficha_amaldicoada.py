@@ -1198,7 +1198,7 @@ NOTAS = {
                   "energia é a Defesa sem Armadura, com os mesmos números na Lapidação.",
     "apt_canalizar": "De graça no refino 1. Dados a mais em cada ataque com arma ou desarmado: 1d4 no refino 1 e 2, 2d4 do 3 ao 5, "
                      "3d4 do 6 ao 8, 4d4 no 9 e 4d6 no 10. Na "
-                     "Restrição Celestial sem energia é o Estímulo Muscular, com o mesmo dano na arma, e só na arma.",
+                     "Restrição Celestial sem energia é o Estímulo Muscular: aplica-se a ataques com arma ou desarmados. Não entra no dano de Katas e não dobra no crítico, salvo permissão expressa de uma habilidade.",
     # 11/10/2026 (livro final R43, item 160): a Reação tira só a proteção passiva. Até 10/10 a nota dizia "você fica sem
     # proteção", que era a regra antiga (incluía o Traje, o Revestimento e o escudo)
     "apt_reacao": "Como Reação e 2 PE, reduz o dano de um golpe em 1,5 × refino, para baixo. Você perde só a proteção passiva "
@@ -1634,7 +1634,7 @@ def aba(layout, tr):
     assert f.caixa(*cx[1], t, "COMPRADAS", f'=IF({anot}>{comp},"{T_ERRO} ","")&{anot}&" de "&{comp}', "num", NOTAS["apt_compradas"]) == G["apt_compradas"]
     assert G["apt_cobrir"] == f.caixa(*cx[2], t, f'=UPPER({ROT("graça 1")})', f'="Proteção "&(FLOOR({REF}/3,1)+1)', "val", NOTAS["apt_cobrir"])
     assert G["apt_canalizar"] == f.caixa(*cx[3], t, f'=UPPER({ROT("graça 2")})',
-                                 f'="+"&IF({REF}>=9,4,IF({REF}>=6,3,IF({REF}>=3,2,1)))&IF({REF}>=10,"d6","d4")&" na arma"', "val", NOTAS["apt_canalizar"])
+                                 f'="+"&IF({REF}>=9,4,IF({REF}>=6,3,IF({REF}>=3,2,1)))&IF({REF}>=10,"d6","d4")&" em arma ou desarmado"', "val", NOTAS["apt_canalizar"])
     assert G["apt_reacao"] == f.caixa(*cx[4], t, f'=UPPER({ROT("reação")})', f'="RD "&FLOOR(1.5*{REF},1)&" por 2 PE"', "val", NOTAS["apt_reacao"])
     # a linha do Estímulo Muscular: a perícia e o Teste de Resistência escolhidos na criação, e os usos
     t = G["estimulo"]

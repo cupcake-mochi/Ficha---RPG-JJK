@@ -21,7 +21,9 @@ for (const d of p.plano) {
    a.vals.find(x => x[0] === d.r && x[1] === d.c)[2];
  const revisao = revisoes.find(x => x.aba === d.aba && (d.addr ? x.addr === d.addr : x.r === d.r && x.c === d.c));
  if (revisao) t(() => assert.equal(revisao.antes, d.depois));
- t(() => assert.equal(atual, revisao ? revisao.depois : d.depois));
+ const posterior = require('../diagnostico-android/bencaos_imunidades_plano.json').find(x => x.aba === d.aba && (d.addr ? x.addr === d.addr : x.r === d.r && x.c === d.c));
+ if (posterior) t(() => assert.equal(posterior.antes, revisao ? revisao.depois : d.depois));
+ t(() => assert.equal(atual, posterior ? posterior.depois : revisao ? revisao.depois : d.depois));
 }
 for(const locale of ['pt_BR','en_US']){
  const snapshot={locale,cells:p.plano.map(d=>({...d,sheetId:['FICHA','DADOS_CUSTOM','DADOS','FICHA AMALDIÇOADA'].indexOf(d.aba),[d.addr?'note':'value']:p.formulaLocal(d.antes,locale)}))};

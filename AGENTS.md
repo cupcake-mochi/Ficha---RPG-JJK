@@ -1,3 +1,47 @@
+# PR65 · imunidade custom corrigida · 05/11/2026
+
+Leia `r53/diagnostico-android/IMUNIDADE-CUSTOM-CORRIGIDA-2026-11-05.md`.
+Implementação f8c86e5 resolve P2 da revisão. B121 e B123 validam a base
+herdada; cadastro inválido não ganha imunidade. Sete cenários por cópia,
+duas edições reais de grau e quatro restaurações reais passaram.
+Codigo 19ae4c19… salvo/reaberto nas duas cópias. Dez entradas por cópia
+restauradas e seis alvos relidos. Smoke local e checks do código aprovados.
+Sem merge, oficiais, jogador ou PR31. Sol/Medium para revisão; Sol/High
+para próximos ensaios. Não mudar ajustes automaticamente.
+
+# Revisão da PR65 · pendência custom · 05/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR65-2026-11-05.md`.
+Head 4286179 tinha dois checks aprovados, mas a revisão confirmou nas
+duas descartáveis que Origem custom válida com base Corpo Amaldiçoado
+perde a imunidade à Exaustão. A condição em configuracao.py consulta só
+o nome publicado, ignorando B123 validado. Nenhuma correção nova aplicada.
+Dez entradas por cópia restauradas e relidas. Sem merge, oficiais, jogador
+ou PR31. Sol/High para corrigir/ensaiar, Sol/Medium para revisão. Não mudar ajustes.
+
+# Correção de Bênçãos/imunidades · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-BENCAOS-IMUNIDADES-2026-11-05.md`.
+PR65 sobre PR64, implementação 6a35402. Casco, imunidade à Exaustão e texto
+de Estímulo corrigidos. Treze cenários mecânicos por cópia, onze cartas
+por cópia e oito restaurações reais passaram. Dezenove entradas por cópia
+restauradas e seis alvos relidos. Codigo 170273ca… salvo/reaberto nas duas
+descartáveis. Smoke local aprovado. Sem merge, oficiais, jogador ou PR31.
+Sol/Medium para revisão e Sol/High para bordas restantes; não alterar ajustes.
+
+# Bênçãos/imunidades em análise · 05/11/2026
+
+Leia `r53/diagnostico-android/BENCAOS-IMUNIDADES-2026-11-05.md`.
+Ramo de diagnóstico separado sobre PR64 ffdee60. Casco não soma vida/TR
+no recálculo das duas cópias; Estímulo tem texto que exclui desarmados,
+mas os cinco degraus de dados conferem. Corpo Amaldiçoado aceita Exaustão
+2 pela interface da Era e sofre o teto de movimento. Sete entradas de
+cada cópia restauradas. Outras onze Bênçãos têm revisão textual; falta
+ensaio nativo de montagem/eventos. Não há correção nova de produção.
+PR64 pronta para revisão, dois checks SUCCESS e CLEAN, sem merge.
+PR31 preservada em 765e3b2. Sol/High para próximos ensaios, Sol/Medium
+para revisão. Não alterar configurações automaticamente.
+
 # Equipamento validado · 05/11/2026
 
 PR64 sobre PR63. Leia o reteste no início de
