@@ -31,13 +31,16 @@ REFS = {"'DADOS_CUSTOM'!$B$126": "B", "'FICHA'!$D$52": "C",
         "'FICHA'!$D$26": "D", "'FICHA'!$J$26": "E", "$W$67": "F",
         "DADOS_CONFIG!$S$9": "G", "DADOS!$CZ$45": "H", "DADOS!$CZ$46": "I",
         "$O$48": "J", "DADOS_CONFIG!$B$12": "K", "DADOS_CONFIG!$C$12": "L",
-        "DADOS_CONFIG!$D$12": "M", "DADOS_CONFIG!$E$12": "N"}
+        "DADOS_CONFIG!$D$12": "M", "DADOS_CONFIG!$E$12": "N",
+        "$D$34": "O", "$J$34": "P", "DADOS_AM!$A$2": "Q", "DADOS_AM!$HM$6": "R",
+        "DADOS_AM!$HM$25": "S", "DADOS_AM!$HM$26": "T", "DADOS_AM!$HZ$2:$HZ$13": "U"}
 
 
 def localiza(formula, linha):
     itens = Tokenizer(formula).items
     return "=" + "".join(REFS[t.value] + str(linha)
-                         if t.type == "OPERAND" and t.subtype == "RANGE" else t.value for t in itens)
+                         if t.type == "OPERAND" and t.subtype == "RANGE" and t.value not in {"distancia", "tetoExaustao"}
+                         else t.value for t in itens)
 
 
 def pt_br(formula):
@@ -51,7 +54,9 @@ def casos():
     # corporal, marcante, vida, máximo, buff, base, meia marcha, parado,
     # Exaustão, somar, quantidade de trocas, trocar por, erro de configuração
     padrao = dict(corporal=True, corpo="Corpo Exaurido", vida=12, maximo=23,
-                  buff=0, base=9, meia=0, parado=0, exaustao=0, soma=0, trocas=0, troca=0, erro="")
+                  buff=0, base=9, meia=0, parado=0, exaustao=0, soma=0, trocas=0, troca=0, erro="",
+                  integridade=26, integridade_max=26, rota=1, lapidacao=1,
+                  anotadas=0, compraveis=0, bencao="")
     def caso(nome, esperado, **entradas):
         out.append([nome, *dict(padrao, **entradas).values(), esperado])
     for corpo in ("Corpo Debilitado", "Corpo Quebradiço"):
@@ -88,6 +93,15 @@ def casos():
     caso("Outra Origem com carga", 0, corporal=False, parado=1)
     caso("Outra Origem com troca", 28, corporal=False, trocas=1, troca=28)
     caso("Outra Origem com erro", "#N/A", corporal=False, erro="Entrada inválida")
+    caso("Integridade 2 e Exaustão 2 em 9 m", 4.5, corporal=False, integridade=13, exaustao=2)
+    caso("Integridade 2 e Exaustão 2 em 6 m", 3, corporal=False, integridade=13, exaustao=2, base=6)
+    caso("Integridade 2 arredonda na escala", 3, corporal=False, integridade=13, base=7.5)
+    caso("Derrota por Integridade", 0, corporal=False, integridade=0)
+    caso("Sem barra", 9, corporal=False, integridade=0, integridade_max=0)
+    caso("Vigília habilitada", 9, corporal=False, exaustao=2,
+         rota=4, lapidacao=4, anotadas=1, compraveis=1, bencao="Vigília")
+    caso("Vigília sem vaga", 4.5, corporal=False, exaustao=2,
+         rota=4, lapidacao=4, anotadas=1, compraveis=0, bencao="Vigília")
     return out
 
 
@@ -105,18 +119,19 @@ def main():
         assert not cfg.DESLOCAMENTO_CORPORAL.fullmatch(adulterada)
     linhas=casos()
     if args.pedidos:
-        cab=["Caso", "Base corporal", "Corpo", "Vida", "Vida máxima", "Buff", "Base m", "Meia marcha", "Carga impede", "Exaustão", "Somar", "Trocas", "Trocar por", "Erro", "Esperado m", "Resultado", "OK"]
+        cab=["Caso", "Base corporal", "Corpo", "Vida", "Vida máxima", "Buff", "Base m", "Meia marcha", "Carga impede", "Exaustão", "Somar", "Trocas", "Trocar por", "Erro", "Integridade", "Integridade máxima", "Rota", "Lapidação", "Anotadas", "Compráveis", "Bênção",
+             "Esperado m", "Resultado", "OK"]
         def v(x):
             return {"userEnteredValue": {"boolValue" if isinstance(x,bool) else "numberValue" if isinstance(x,(int,float)) else "stringValue":x}}
         rows=[{"values":[v(x) for x in cab]}]
         for n,caso in enumerate(linhas,2):
             formula=localiza(f["movimento"],n)
-            prova=f'=ISNA(P{n})' if caso[-1]=="#N/A" else f'=VALUE(SUBSTITUTE(P{n}," m",""))=O{n}'
+            prova=f'=ISNA(W{n})' if caso[-1]=="#N/A" else f'=VALUE(SUBSTITUTE(W{n}," m",""))=V{n}'
             rows.append({"values":[*[v(x) for x in caso],{"userEnteredValue":{"formulaValue":pt_br(formula)}}, {"userEnteredValue":{"formulaValue":pt_br(prova)}}]})
-        req=[{"addSheet":{"properties":{"sheetId":args.sheet_id,"title":"QA deslocamento corporal", "gridProperties":{"rowCount":len(rows)+5,"columnCount":17,"frozenRowCount":1}}}},
+        req=[{"addSheet":{"properties":{"sheetId":args.sheet_id,"title":"QA deslocamento corporal", "gridProperties":{"rowCount":len(rows)+5,"columnCount":24,"frozenRowCount":1}}}},
              {"updateCells":{"start":{"sheetId":args.sheet_id,"rowIndex":0,"columnIndex":0},"rows":rows,"fields":"userEnteredValue"}},
              {"repeatCell":{"range":{"sheetId":args.sheet_id,"startRowIndex":0,"endRowIndex":1},"cell":{"userEnteredFormat":{"textFormat":{"bold":True},"backgroundColor":{"red":0.85,"green":0.9,"blue":0.95}}},"fields":"userEnteredFormat"}},
-             {"autoResizeDimensions":{"dimensions":{"sheetId":args.sheet_id,"dimension":"COLUMNS","startIndex":0,"endIndex":17}}}]
+             {"autoResizeDimensions":{"dimensions":{"sheetId":args.sheet_id,"dimension":"COLUMNS","startIndex":0,"endIndex":24}}}]
         args.pedidos.write_text(json.dumps(req,ensure_ascii=False))
         args.pedidos.with_suffix(".formulas.json").write_text(json.dumps({k:pt_br(v) for k,v in f.items()}, ensure_ascii=False))
     print(json.dumps({"estrutura":"OK", "cenarios_para_recalculo_nativo":len(linhas)}))

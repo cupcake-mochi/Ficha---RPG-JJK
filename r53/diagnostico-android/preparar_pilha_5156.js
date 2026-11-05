@@ -59,10 +59,10 @@ function entrada(v) {
 }
 // Snapshot normalizado: {locale, cells:[{aba,r,c OU addr,sheetId,value OU note}]}.
 // Produz pedidos e reversão guardada; quem aplicar deve reler os alvos imediatamente antes.
-function planejarCelulas(snapshot, reverter=false) {
+function planejarCelulas(snapshot, reverter=false, entradas=plano) {
   if (!snapshot || !Array.isArray(snapshot.cells)) throw Error('Snapshot de células ausente');
   const ids = new Map(), abasPorId = new Map();
-  const requests = plano.map(d => {
+  const requests = entradas.map(d => {
     const encontrados=snapshot.cells.filter(x=>chave(x)===chave(d));
     if (encontrados.length!==1) throw Error('Alvo ausente ou duplicado: '+chave(d));
     const x=encontrados[0], p=coordenadas(d), id=x.sheetId;

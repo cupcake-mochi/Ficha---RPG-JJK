@@ -14,7 +14,15 @@ const ruins=clone(antes);ruins.at(-1).notas.at(-1)[1]='divergente';const copia=c
 t(()=>assert.throws(()=>c.r53AjustarPilha516_(ruins),/divergente/));t(()=>assert.deepEqual(ruins,copia));
 // Paridade dos 14 alvos com as fontes geradas, incluindo estilos existentes preservados.
 const fontes={};vm.createContext(fontes);vm.runInContext(require('../../medidas/carregar-ficha').fontes(),fontes);
-for(const d of p.plano){const a=fontes.ABAS.find(x=>x.nome===d.aba);t(()=>assert.equal(d.addr?a.notas.find(x=>x[0]===d.addr)[1]:a.vals.find(x=>x[0]===d.r&&x[1]===d.c)[2],d.depois));}
+const revisoes = require('../diagnostico-android/integridade_movimento_plano.json');
+for (const d of p.plano) {
+ const a = fontes.ABAS.find(x => x.nome === d.aba);
+ const atual = d.addr ? a.notas.find(x => x[0] === d.addr)[1] :
+   a.vals.find(x => x[0] === d.r && x[1] === d.c)[2];
+ const revisao = revisoes.find(x => x.aba === d.aba && (d.addr ? x.addr === d.addr : x.r === d.r && x.c === d.c));
+ if (revisao) t(() => assert.equal(revisao.antes, d.depois));
+ t(() => assert.equal(atual, revisao ? revisao.depois : d.depois));
+}
 for(const locale of ['pt_BR','en_US']){
  const snapshot={locale,cells:p.plano.map(d=>({...d,sheetId:['FICHA','DADOS_CUSTOM','DADOS','FICHA AMALDIÇOADA'].indexOf(d.aba),[d.addr?'note':'value']:p.formulaLocal(d.antes,locale)}))};
  const copy=clone(snapshot),out=p.planejarCelulas(snapshot);t(()=>assert.equal(out.requests.length,14));t(()=>assert.deepEqual(snapshot,copy));

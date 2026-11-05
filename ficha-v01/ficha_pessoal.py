@@ -659,8 +659,25 @@ def trocas(layout, CAT=None):
     # (estado_do_personagem.py); numa exportação de antes dela, a conta fica como era
     import estado_do_personagem as _ep
     metros = f'({m.group(1)})/IF({H["meia marcha"]}=1,2,1)'
-    if idx.get("exaustão"):
-        metros = f'MIN(IF(N({_A(idx["exaustão"])})>=2,{_ep.LIMITE_DA_EXAUSTAO},9999),{metros})'
+    limite = (f'IF(N({_A(idx["exaustão"])})>=2,{_ep.LIMITE_DA_EXAUSTAO},9999)'
+              if idx.get("exaustão") else "9999")
+    atual, maximo = _A(idx["integridade"]), _A(idx["integridade_max"])
+    metade = f'AND(ISNUMBER({atual}),N({maximo})>0,{atual}<={maximo}/2)'
+    # Compare os limites de Exaustão e Integridade antes de arredondar a distância reduzida.
+    metros = (f'LET(distancia,{metros},tetoExaustao,{limite},'
+              f'IF({metade},IF({atual}<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),'
+              'MIN(tetoExaustao,distancia)))')
+    estagios = [(c, f) for c, f, _ in fcel.values()
+                if isinstance(f, str) and f.startswith("=") and "Estágio 4 · Você não é mais você mesmo" in f]
+    (c_estagio, formula_estagio), = estagios
+    inicio_estagio = f'=IF({atual}="",'
+    if not formula_estagio.startswith(inicio_estagio):
+        raise ValueError("A fórmula do estágio de Integridade mudou")
+    formula_estagio = formula_estagio.replace(inicio_estagio, f'=IF(OR({atual}="",{maximo}=0),', 1)
+    cel["FICHA"][c_estagio] = (
+        formula_estagio.replace("Estágio 4 · Você não é mais você mesmo", "Estágio 4 · Inconsciente e Derrotado")
+        .replace("Estágio 3 · Desvantagem em ataques e TRs",
+                 "Estágio 3 · Desvantagem em ataques e TRs, Classe máxima à metade"), c_estagio)
     cel["FICHA"][des_c] = (f'=IF({H["parado pela carga"]}=1,0,{metros})&" m"', des_c)
     # 14/10/2026 (B46): o espelho da Origem, embaixo das barras (estado_do_personagem.py): o nome de cada capacidade e a
     # frequência dela, do livro, ou "Criada com o mestre"

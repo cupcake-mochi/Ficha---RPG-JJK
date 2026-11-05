@@ -192,6 +192,18 @@ def trocas(layout, pessoal, fam=None):
         if not isinstance(valor, str) or not valor.startswith("="):
             raise ValueError(f"{aba}!{coord}: o alvo não é calculado")
         antes.setdefault(aba, {})[coord] = valor
+        if nome == "Deslocamento" and fam is not None and idx.get("exaustão"):
+            # Reuse os contadores da compra e a rota publicados pela FICHA AMALDIÇOADA.
+            h = fam["H"]
+            aptidoes = fam["D"].faixa("carta_aptidao", so=1, aba="DADOS_AM!")
+            vigilia = (f'AND({fam["ROTA"]}=4,{h["refino"]}>=4,'
+                       f'{h["aptidões anotadas"]}<={h["aptidões compráveis"]},'
+                       f'COUNTIF({aptidoes},"Vigília")>0)')
+            exaustao = f'N({ref("FICHA", idx["exaustão"]).split("!")[1]})'
+            ancora = exaustao + ">=2"
+            if valor.count(ancora) != 1:
+                raise ValueError("Limite de Exaustão mudou no deslocamento")
+            valor = valor.replace(ancora, f'{exaustao}-IF({vigilia},1,0)>=2')
         formula = envolve(valor, linha)
         if nome == "Defesa":
             # A Defesa fixa do corpo real prevalece sobre os ajustes numéricos da ficha.
