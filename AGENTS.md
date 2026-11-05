@@ -1,3 +1,15 @@
+# Auditoria de descanso/Origem · 05/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-DESCANSO-ORIGENS-2026-11-05.md`.
+PR65 5f6abea revisada, dois checks SUCCESS e sem novo bloqueio no escopo
+corrigido. No ramo separado de diagnóstico, D01/D02 confirmados por
+eventos reais nas duas cópias: Corpo Amaldiçoado recebe só metade dos PE
+no longo fora e recebe zero no curto fora com Exaustão marcada 3.
+Curto propício recupera 25% corretamente. Ainda sem correção nova.
+Treze entradas por cópia restauradas, SOCORRO relido igual.
+Sem merge, oficiais, jogador ou PR31. Sol/High para corrigir/ensaiar,
+Sol/Medium para revisar. Não mudar configurações automaticamente.
+
 # PR65 · imunidade custom corrigida · 05/11/2026
 
 Leia `r53/diagnostico-android/IMUNIDADE-CUSTOM-CORRIGIDA-2026-11-05.md`.
