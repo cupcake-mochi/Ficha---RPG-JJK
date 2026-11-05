@@ -26,6 +26,10 @@ for(const x of casos){
  reset(6);s.getRange(d).setValue(-3);run(evento('-5'));run(evento('-3','-5'));eq(s.getRange(a).getValue(),18);eq(s.getRange(t).getValue(),0);
  reset();s.getRange(d).setValue(-3);run(evento(undefined,'-5'));eq(s.getRange(a).getValue(),20);eq(s.getRange(d).getValue(),-3);
  for(const valor of ['0','x','Infinity']){run(evento(valor));eq(s.getRange(a).getValue(),20);eq(s.getRange(d).getValue(),-3);}
+ reset(0,0);s.getRange(m).setValue(0);s.getRange(d).setValue(5);run(evento('5'));
+ eq(s.getRange(a).getValue(),0);eq(s.getRange(d).getValue(),'');
+ reset(0,0);s.getRange(m).setValue('');s.getRange(d).setValue(5);run(evento('5'));
+ eq(s.getRange(a).getValue(),5);eq(s.getRange(d).getValue(),'');
  reset(0,10);s.getRange(d).setValue(50);run(evento('50'));eq(s.getRange(a).getValue(),20);
  reset(3,10);s.getRange(d).setValue(-50);run(evento('-50'));eq(s.getRange(a).getValue(),0);eq(s.getRange(t).getValue(),0);
  reset(0,10);s.getRange(d).setValue(-0.5);run(evento('-0.5'));eq(s.getRange(a).getValue(),9.5);
@@ -36,6 +40,15 @@ for(const x of casos){
   const neighbor=(d.startsWith('X')?'Y':'AR')+d.match(/\d+/)[0];
   reset(3,10);put(s,{[d]:-5,[neighbor]:7});run({source:ss,range:s.getRange(d+':'+neighbor)});
   eq(s.getRange(a).getValue(),8);eq(s.getRange(t).getValue(),0);eq(s.getRange(d).getValue(),'');eq(s.getRange(neighbor).getValue(),7);
+ }
+}
+// A00: o teto da edição manual distingue zero de um máximo em branco.
+for(const linha of [26,30,34]){
+ const temp='AF'+linha,max='J'+linha;
+ for(const [limite,esperado] of [[0,linha===34?9:0],['',9],[1,1],[20,9]]){
+  put(ficha,{[temp]:9,[max]:limite});
+  ctx.onEdit({source:ss,range:ficha.getRange(temp),value:'9'});
+  eq(ficha.getRange(temp).getValue(),esperado);
  }
 }
 eq(logs,[]);
@@ -83,7 +96,7 @@ eq(ficha.getRange('D26').getValue(),12);
 eq(caixaVida.getValue(),'');
 eq(toasts,[]);
 ctx.LockService=originalLock;
-// A aritmética não muda nesta correção (inclusive A08 ainda pendente).
+// O módulo e o atalho aplicam a mesma aritmética, inclusive com máximo zero.
 for(const a of [0,5,20,''])for(const m of [0,20])for(const t of [0,3])for(const d of [-30,-3,0,3,30]){
  const antes=ctx.aplicaPasso_(a,m,t,d),depois=ctx.r53LivrePasso_(a,m,t,d);eq(JSON.stringify(antes),JSON.stringify(depois));
 }
