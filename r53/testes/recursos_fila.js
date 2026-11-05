@@ -51,6 +51,23 @@ for(const linha of [26,30,34]){
   eq(ficha.getRange(temp).getValue(),esperado);
  }
 }
+// TEMP deve chegar ao módulo em todas as entidades, inclusive onde o atalho
+// anterior considerava a célula livre.
+for(const [delta,atual,temp,max] of caixas){
+ const range=inv.getRange(temp);
+ put(inv,{[atual]:10,[max]:20,[temp]:15,[delta]:''});
+ const e={source:ss,range,value:'15'};
+ eq(ctx.r53EdicaoLivre_(e),false);
+ ctx.onEdit(e);
+ eq(range.getValue(),10);
+ eq(inv.getRange(atual).getValue(),10);
+}
+put(ficha,{AF26:15,J26:20,AF30:20,J30:18,AM26:-5,D26:10});
+ctx.onEdit({source:ss,range:ficha.getRange('AF26:AM30')});
+eq(ficha.getRange('AF26').getValue(),10);
+eq(ficha.getRange('AF30').getValue(),9);
+eq(ficha.getRange('AM26').getValue(),-5);
+eq(ficha.getRange('D26').getValue(),10);
 eq(logs,[]);
 // Falha de trava: nenhum saldo consumido, campo preservado, aviso e sem fallback.
 const originalLock=ctx.LockService,originalFlush=ctx.SpreadsheetApp.flush;let trace=[],toasts=[];

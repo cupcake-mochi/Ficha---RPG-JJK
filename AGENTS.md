@@ -1,3 +1,16 @@
+# Teto de TEMP em colagens e invocações · 04/11/2026
+
+Leia `r53/diagnostico-android/TEMP-COLAGENS-INVOCACOES-2026-11-04.md`.
+PR61 pronta para revisão no commit `cb04317`. A04/A07 em ramo separado
+sobre a PR61. Quatro cenários nativos aprovados, incluindo colagem
+sobre a fórmula de máximo. Codigo `3767fb0f…` relido; sete células
+restauradas e 47 conferidas. Locais: 667 verificações, diagnóstico onEdit
+25/25, incremental 27, pacote leve 138 e smoke aprovados. Invocações nas
+duas colunas ensaiadas no Google e as 12 rotas verificadas localmente.
+Ainda na fila: A01, A02, A05 e A06. Sem merge, oficiais, jogador, PR31
+ou acionadores. Sol/Medium para revisão, Sol/High para o próximo lote.
+Não alterar configurações automaticamente.
+
 # Tetos com máximo zero · 04/11/2026
 
 Leia `r53/diagnostico-android/MAXIMOS-ZERO-2026-11-04.md`. PR60 está
