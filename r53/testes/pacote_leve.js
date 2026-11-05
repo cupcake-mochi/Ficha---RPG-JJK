@@ -10,13 +10,14 @@ const ok = (c, m) => { assert(c, m); checks++; };
 // 1. Cada remendo instalado deixa o texto que está no Codigo.gs do repositório. Um remendo pode mexer no texto que um
 // anterior deixou (26/10/2026: a tabelaLida_ do 16º virou a tabelaLidaDe_ no 23º), então confere de trás pra frente.
 const codigo = fs.readFileSync(path.join(raiz, 'apps-script/Codigo.gs'), 'utf8');
+const historico = require('../diagnostico-android/preparar_descanso_origens').reverterFonte(codigo);
 {
  // A correção posterior de ± substitui a função que o remendo 11 otimizou.
  // Reverte só as duas funções exatas antes de conferir a cadeia histórica.
  // O patch atual é validado separadamente em recursos_fila_incremental.js.
  const runtime = fs.readFileSync(path.join(raiz, 'r53/diagnostico-android/recursos_fila_runtime.gs'), 'utf8');
  const delta = JSON.parse(runtime.match(/var mudancas = (.*);/)[1]);
- let t = codigo;
+ let t = historico;
  for (const [antes, depois] of delta) {
    ok(t.split(depois).length === 2, 'função atual de ± ausente ou ambígua');
    t = t.replace(depois, () => antes);
@@ -52,18 +53,18 @@ ok(corrigirSemExecutar(fonte, texto) === executado, 'correções como dados: ' +
 
 // 4. O incremento (25/10/2026): um módulo já leve recebe só os remendos do 15º em diante e chega ao Codigo.gs atual.
 const ja = 14, todos = remendos();
-let antigo = codigo;
+let antigo = historico;
 for (const p of todos.slice(ja).reverse()) { ok(antigo.split(p[1]).length === 2, 'remendo novo ambíguo no Codigo.gs'); antigo = antigo.replace(p[1], () => p[0]); }
-ok(aplicarIncremento('var R53_PACOTE_LEVE_ = true;\n' + antigo, todos, ja) === 'var R53_PACOTE_LEVE_ = true;\n' + codigo, 'incremento não reproduz o Codigo.gs');
+ok(aplicarIncremento('var R53_PACOTE_LEVE_ = true;\n' + antigo, todos, ja) === 'var R53_PACOTE_LEVE_ = true;\n' + historico, 'incremento não reproduz o Codigo.gs');
 let recusa = null; try { aplicarIncremento(antigo, todos, ja); } catch (e) { recusa = e; }
 ok(recusa && /não é o pacote leve/.test(recusa.message), 'incremento aceitou módulo que não é leve');
-recusa = null; try { aplicarIncremento('var R53_PACOTE_LEVE_ = true;\n' + codigo, todos, ja); } catch (e) { recusa = e; }
+recusa = null; try { aplicarIncremento('var R53_PACOTE_LEVE_ = true;\n' + historico, todos, ja); } catch (e) { recusa = e; }
 ok(recusa && /âncora encontrada 0 vez/.test(recusa.message), 'incremento aplicado duas vezes');
 
 // 5. O segundo incremento (26/10/2026): o módulo leve da cópia de teste já tem até o 22º e recebe do 23º em diante.
 const ja2 = 22;
-let antigo2 = codigo;
+let antigo2 = historico;
 for (const p of todos.slice(ja2).reverse()) { ok(antigo2.split(p[1]).length === 2, 'remendo ' + ja2 + '+ ambíguo no Codigo.gs'); antigo2 = antigo2.replace(p[1], () => p[0]); }
-ok(aplicarIncremento('var R53_PACOTE_LEVE_ = true;\n' + antigo2, todos, ja2) === 'var R53_PACOTE_LEVE_ = true;\n' + codigo, 'segundo incremento não reproduz o Codigo.gs');
+ok(aplicarIncremento('var R53_PACOTE_LEVE_ = true;\n' + antigo2, todos, ja2) === 'var R53_PACOTE_LEVE_ = true;\n' + historico, 'segundo incremento não reproduz o Codigo.gs');
 
 console.log(JSON.stringify({ checks, resultado: 'OK', escopo: 'remendos no Codigo.gs, incremento num módulo já leve, corte da montagem, travas da montagem e correções sem executar texto; o hash do pacote instalado só é conferido no Google.' }));

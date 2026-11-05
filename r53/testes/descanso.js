@@ -23,6 +23,8 @@ const estado = ['vida', 'energia', 'integridade', 'exaustão', 'sequela 1', 'seq
 let cenarios = 0;
 
 function descanso(tipo, campos, esperado, registro, regras = {}) {
+  dadosCustom.getRange('B121').setValue(regras.valida === true);
+  dadosCustom.getRange('B123').setValue(regras.base || '');
   dadosCustom.getRange('B126').setValue(regras.corporal === true);
   dadosCustom.getRange('B127').setValue(regras.permitida === true);
   for (const [chave, valor] of Object.entries({ ...base, origem: restricao, marcante: 'Corpo Exaurido',
@@ -88,6 +90,23 @@ descanso(CP, { marcante: 'Tentativa e Erro' }, [3, 3, 4, 2, true, 2], /PE 1 → 
 descanso(CP, { origem: custom, marcante: 'Tentativa e Erro' }, [3, 3, 4, 2, true, 2], /PE 1 → 3/,
   { corporal: true, permitida: false });
 descanso(CP, { origem: custom, 'menor 1': '' }, [3, 3, 4, 2, true, 2], /PE 1 → 3/, baseCorporal);
+
+// Existência Artificial: local propício sem mutar a tabela nem apagar o grau no curto.
+const artificial = { origem: 'Corpo Amaldiçoado', marcante: 'Existência Artificial', 'menor 1': '' };
+descanso(CF, { ...artificial, energia: 0, 'exaustão': 3 }, [3, 2, 4, 3, true, 2], /Existência Artificial/);
+descanso(LF, { ...artificial, energia: 0, 'exaustão': 3 }, [23, 10, 20, 0, false, 0], /local tratado como propício/);
+descanso(CF, { ...artificial, energia: 9 }, [3, 10, 4, 2, true, 2], /PE 9 → 10/);
+descanso(CF, { ...artificial, energia: 0, energia_max: 1 }, [3, 1, 4, 2, true, 2], /PE 0 → 1/);
+descanso(CF, { ...artificial, energia: 0, energia_max: 0 }, [3, 0, 4, 2, true, 2], /Existência Artificial/);
+descanso(CF, { ...artificial, energia: 15 }, [3, 15, 4, 2, true, 2], /Existência Artificial/);
+const corpoCustom = { ...artificial, origem: 'Corpo montado', energia: 0, 'exaustão': 3 };
+descanso(CF, corpoCustom, [3, 2, 4, 3, true, 2], /Existência Artificial/, {valida:true, base:'Corpo Amaldiçoado'});
+descanso(LF, corpoCustom, [23, 10, 20, 0, false, 0], /Existência Artificial/, {valida:true, base:'Corpo Amaldiçoado'});
+descanso(CF, corpoCustom, [3, 0, 4, 3, true, 2], /fora de lugar propício/, {valida:false, base:'Corpo Amaldiçoado'});
+descanso(CF, corpoCustom, [3, 0, 4, 3, true, 2], /fora de lugar propício/, {valida:true, base:'Nenhuma'});
+assert.equal(ctx.DESCANSOS_[LF].propicio, false);
+assert.equal(ctx.DESCANSOS_[CF].propicio, false);
+assert.equal(ctx.contaDoDescanso_('inválido', {}), null);
 
 // Ficha antiga, sem as células novas: o que depende delas cai na regra normal.
 dadosCustom.getRange('B126:B127').clearContent();
@@ -189,17 +208,21 @@ const queda = ctx.r53SocorroNovaQueda_({
 }, 2);
 const lote = [];
 ctx.Sheets = { Spreadsheets: { batchUpdate: ({requests}) => lote.push(requests) } };
-for (const [tipo, corpo, derrotado, tratamento, vida, status, convertido, manual = false] of [
+for (const [tipo, corpo, derrotado, tratamento, vida, status, convertido, manual = false, origem = restricao, artificialCustom = false] of [
   [LP, 'Corpo Exaurido', false, 0, 5, 'Encerrado no descanso'],
   [LF, 'Corpo Exaurido', false, 0, 0, 'Morrendo'],
   [LF, 'Corpo Exaurido', true, 3, 3, 'Encerrado no descanso'],
   [LF, '', false, 0, 11, 'Encerrado no descanso'],
   [LF, 'Corpo Exaurido', true, 3, 0, 'Derrotado', true],
-  [LP, 'Corpo Exaurido', true, 3, 5, 'Encerrado no descanso', false, true]
+  [LP, 'Corpo Exaurido', true, 3, 5, 'Encerrado no descanso', false, true],
+  [LF, 'Existência Artificial', false, 0, 23, 'Encerrado no descanso', false, false, 'Corpo Amaldiçoado'],
+  [LF, 'Existência Artificial', false, 0, 23, 'Encerrado no descanso', false, false, 'Corpo montado', true]
 ]) {
+  dadosCustom.getRange('B121').setValue(artificialCustom);
+  dadosCustom.getRange('B123').setValue(artificialCustom ? 'Corpo Amaldiçoado' : '');
   const registro = { ...queda, ...(derrotado ? {status: 'Derrotado', janela: 0} : {}), tratamento, ...(convertido ? {tratamentoConvertido: true} : {}) };
   socorro.getRange('B2').setValue(JSON.stringify(registro));
-  for (const [chave, valor] of Object.entries({ ...base, vida: 0, origem: restricao, marcante: corpo,
+  for (const [chave, valor] of Object.entries({ ...base, vida: 0, origem, marcante: corpo,
     'menor 1': '', 'menor 2': '' })) celula(chave).setValue(valor);
   range.setValue(tipo);
   assert.equal(ctx.descansar_({range, value: tipo}, idx), false);
@@ -219,6 +242,7 @@ for (const [tipo, corpo, derrotado, tratamento, vida, status, convertido, manual
       ?.rows[0].values[0].userEnteredValue;
   };
   assert.equal(escrito('vida')?.numberValue ?? 0, vida);
+  if (origem === 'Corpo Amaldiçoado' || artificialCustom) assert.equal(escrito('energia').numberValue, 10);
   assert.equal(escrito('sequela 1').boolValue, false);
   assert.equal(escrito('sequela extras').numberValue, 0);
   cenarios++;

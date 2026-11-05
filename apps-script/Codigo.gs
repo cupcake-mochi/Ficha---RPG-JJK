@@ -2113,8 +2113,13 @@ var DESCANSOS_ = {
 var PE_DO_DESCANSO_CURTO_ = [25, 15, 5, 0];   // % do PE máximo, pelo degrau de Exaustão, fora de lugar propício
 
 /** Calcula o descanso a partir dos recursos e das capacidades de Origem já selecionadas. */
-function contaDoDescanso_(tipo, s) {
+function regraDoDescanso_(tipo, s) {
   var d = DESCANSOS_[tipo];
+  return d ? { longo: d.longo, propicio: d.propicio || s.existenciaArtificial === true } : null;
+}
+
+function contaDoDescanso_(tipo, s) {
+  var d = regraDoDescanso_(tipo, s);
   if (!d) return null;
   var n = function (x) { return Number(x) || 0; };
   var fim = { vida: n(s.vida), pe: n(s.pe), integ: n(s.integ), sequelas: n(s.sequelas),
@@ -2145,8 +2150,10 @@ function contaDoDescanso_(tipo, s) {
 
 /** O que o descanso mudou, numa linha: é o que fica escrito ao lado do menu e o que o aviso diz. */
 function textoDoDescanso_(tipo, antes, fim) {
-  var d = DESCANSOS_[tipo];
+  var d = regraDoDescanso_(tipo, antes);
   var partes = [(d.longo ? 'Longo' : 'Curto') + (d.propicio ? ', em lugar propício' : ', fora de lugar propício')];
+  if (antes.existenciaArtificial && !DESCANSOS_[tipo].propicio)
+    partes.push('Existência Artificial: local tratado como propício');
   [['vida', 'vida'], ['PE', 'pe'], ['Integridade', 'integ'], ['Sequelas', 'sequelas'], ['Exaustão', 'exaustao']].forEach(function (p) {
     if (antes[p[1]] !== fim[p[1]]) partes.push(p[0] + ' ' + antes[p[1]] + ' → ' + fim[p[1]]);
   });
@@ -2201,15 +2208,18 @@ function descansar_(e, idx, quedaConfirmada, jaConvertido) {
   antes.sequelas = caixinhas.filter(function (c) { return v[c] === true; }).length + extras;
   var corpo = valor('marcante');
   var abundante = valor('menor 1') === 'Recuperação Abundante' || valor('menor 2') === 'Recuperação Abundante';
+  var publicado = valor('origem') === 'Restrição Celestial · Restrição corporal' &&
+    ['Corpo Debilitado', 'Corpo Quebradiço', 'Corpo Exaurido'].indexOf(corpo) >= 0;
+  antes.existenciaArtificial = valor('origem') === 'Corpo Amaldiçoado';
+  // Uma leitura limitada também fornece a base válida e as duas permissões corporais.
+  var custom = !antes.existenciaArtificial && !publicado ? SpreadsheetApp.getActive().getSheetByName('DADOS_CUSTOM') : null;
+  var regras = custom ? custom.getRange(121, 2, 7, 1).getValues() : [];
+  if (regras.length && regras[0][0] === true && regras[2][0] === 'Corpo Amaldiçoado')
+    antes.existenciaArtificial = true;
   if (corpo === 'Corpo Exaurido' || abundante) {
-    // A publicada com corpo do livro dispensa outra leitura; custom e corpo próprio dependem da DADOS_CUSTOM.
-    var publicado = valor('origem') === 'Restrição Celestial · Restrição corporal' &&
-      ['Corpo Debilitado', 'Corpo Quebradiço', 'Corpo Exaurido'].indexOf(corpo) >= 0;
-    var custom = publicado ? null : SpreadsheetApp.getActive().getSheetByName('DADOS_CUSTOM');
-    var regras = custom ? custom.getRange(126, 2, 2, 1).getValues() : [[publicado], [publicado]];
-    var corporal = regras[0][0] === true;
+    var corporal = publicado || (regras.length > 5 && regras[5][0] === true);
     antes.exaurido = corporal && corpo === 'Corpo Exaurido';
-    antes.recuperacaoAbundante = corporal && abundante && regras[1][0] === true;
+    antes.recuperacaoAbundante = corporal && abundante && (publicado || regras[6][0] === true);
   }
   if (quedaAtiva) {
     var recursos = antes;

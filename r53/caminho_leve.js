@@ -15,6 +15,8 @@ function corpo(src,n){const s=src.indexOf('function '+n+'('),e=src.indexOf('\n}'
 const REMENDOS_FORA_DO_CAMINHO=22;
 function fonte(){
  let src=fs.readFileSync(path.join(root,'apps-script/Codigo.gs'),'utf8');
+ // O Caminho não extrai funções de descanso; preserve sua base histórica de extração.
+ src=require('./diagnostico-android/preparar_descanso_origens').reverterFonte(src);
  for(const p of require('./diagnostico-android/instalar_pacote_leve').remendos().slice(REMENDOS_FORA_DO_CAMINHO).reverse()){if(src.split(p[1]).length!==2)throw Error('Remendo do pacote leve divergente');src=src.replace(p[1],()=>p[0]);}
  return src;
 }

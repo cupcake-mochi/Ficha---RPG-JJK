@@ -1,3 +1,30 @@
+# Correção de descanso/Origem · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-DESCANSO-ORIGENS-2026-11-05.md`.
+PR66 sobre PR65, implementação 6e5f401 e teste histórico 5b9f6e4.
+D01/D02 corrigidos; 78 cenários locais, transporte antigo real, pacote
+leve 138 e smoke aprovados. Codigo d5845c03… salvo/reaberto nas duas
+descartáveis. Dezoito cenários nativos passaram, incluindo longo fora
+com Morrendo pelo menu Recursos nas duas. Autorizações pelo usuário.
+23 entradas por cópia e SOCORRO restauradas; releitura ampliada de 1.074
+células por cópia sem diferenças de valores/fórmulas, notas, validações
+ou formatos. Fixtures temporárias desfeitas. Nenhum código mudou após
+os 16 cenários iniciais. PR66 para revisão após checks do head final.
+Sem merge, oficiais, jogador ou PR31. Sol/Medium para revisar,
+Sol/High para próximos ensaios. Não mudar configurações automaticamente.
+
+# Auditoria de descanso/Origem · 05/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-DESCANSO-ORIGENS-2026-11-05.md`.
+PR65 5f6abea revisada, dois checks SUCCESS e sem novo bloqueio no escopo
+corrigido. No ramo separado de diagnóstico, D01/D02 confirmados por
+eventos reais nas duas cópias: Corpo Amaldiçoado recebe só metade dos PE
+no longo fora e recebe zero no curto fora com Exaustão marcada 3.
+Curto propício recupera 25% corretamente. Ainda sem correção nova.
+Treze entradas por cópia restauradas, SOCORRO relido igual.
+Sem merge, oficiais, jogador ou PR31. Sol/High para corrigir/ensaiar,
+Sol/Medium para revisar. Não mudar configurações automaticamente.
+
 # PR65 · imunidade custom corrigida · 05/11/2026
 
 Leia `r53/diagnostico-android/IMUNIDADE-CUSTOM-CORRIGIDA-2026-11-05.md`.
