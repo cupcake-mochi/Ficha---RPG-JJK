@@ -502,6 +502,8 @@ def integra(layout,tr,fp):
   'B127':f'=AND({mn}<>"",COUNTIF({cmenu},{mn})>0)'}
  import origens_recursos
  helpers.update(origens_recursos.helpers(ix.indice(layout)))
+ import passivas_origem
+ helpers.update(passivas_origem.helpers(ix.indice(layout)))
  for c,v in helpers.items():tr['aba']['celulas'].append([c,v,None])
  # Preserve the old branch verbatim for every book Origin.
  for aba in ['DADOS']:
