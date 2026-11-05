@@ -288,6 +288,8 @@ function r53LivreXp_(e) {
     return gravou;
   }
 }
+// Âncoras TEMP dos seis pares de entidades. A paridade com redutores é testada.
+const TEMP_INVOC = [13, 244, 475, 706, 937, 1168].flatMap(r => [23, 42].map(c => [r, c, r, c]));
 const XP_FONTE = [r53LivreXpNivel_, r53LivreXpNota_, r53LivreXp_].map(String).join('\n');
 
 function fonte(mapa, hashModulo, hashCatalogo, gatilhos, marcas, delta) {
@@ -300,6 +302,7 @@ var R53_LIVRE_FAMILIAS_=${JSON.stringify(FAMILIAS)};
 var R53_LIVRE_GATILHOS_=${JSON.stringify(gatilhos)};
 var R53_LIVRE_HASHES_=[${JSON.stringify(hashModulo)},${JSON.stringify(hashCatalogo)}];
 var R53_LIVRE_PROP_='r53_amparo_sujo';
+var R53_LIVRE_TEMP_INVOC_=${JSON.stringify(TEMP_INVOC)};
 // Onde se mudam as marcas DADOS_PROGRESSAO!K7:K8 que o módulo guarda (marcasCustom_).
 var R53_LIVRE_MARCAS_=${JSON.stringify(marcas || {})};
 function r53LivreToca_(lista,r){var l1=r.getRow(),l2=r.getLastRow(),c1=r.getColumn(),c2=r.getLastColumn();
@@ -318,6 +321,7 @@ function r53EdicaoLivre_(e){
   if(aba==='FICHA'&&r.getA1Notation()===R53_LIVRE_NIVEL_.nivel)r53LivreNivel_(e);
   if(aba==='FICHA'&&R53_LIVRE_XP_.caixas.indexOf(r.getA1Notation())>=0&&r53LivreXp_(e))return true;
   if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r,e);
+  if(aba==='INVOCAÇÕES'&&r53LivreToca_(R53_LIVRE_TEMP_INVOC_,r))return false;
   if(!lista||r53LivreToca_(lista,r)||!r53LivreValido_())return false;
   // Trilha ou Caminho mudou desde a última sincronização: a próxima edição nas quatro abas sincroniza.
   if(R53_LIVRE_FAMILIAS_.indexOf(aba)>=0&&PropertiesService.getDocumentProperties().getProperty(R53_LIVRE_PROP_))return false;

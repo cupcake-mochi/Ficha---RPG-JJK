@@ -5,6 +5,7 @@ var R53_LIVRE_FAMILIAS_=["CARTEIRA","FICHA AMALDIÇOADA","INVOCAÇÕES","CONFIGU
 var R53_LIVRE_GATILHOS_=[[11,4,11,4],[11,14,11,14]];
 var R53_LIVRE_HASHES_=["9dc3480af82287b153bf6e18c76f2bc111baaca63bd3cbf4f85ecd628ac09ffc","e4502f595c23edb8807c7241f330fa481599b6ec2ef687e9b2ce440ade3ddce8"];
 var R53_LIVRE_PROP_='r53_amparo_sujo';
+var R53_LIVRE_TEMP_INVOC_=[[13,23,13,23],[13,42,13,42],[244,23,244,23],[244,42,244,42],[475,23,475,23],[475,42,475,42],[706,23,706,23],[706,42,706,42],[937,23,937,23],[937,42,937,42],[1168,23,1168,23],[1168,42,1168,42]];
 // Onde se mudam as marcas DADOS_PROGRESSAO!K7:K8 que o módulo guarda (marcasCustom_).
 var R53_LIVRE_MARCAS_={"CONFIGURAÇÃO":[[11,41,11,41],[11,49,11,49],[11,54,11,54],[11,58,11,58],[11,62,11,62],[11,66,11,66],[13,37,13,37],[13,45,13,45],[13,54,13,54],[13,62,13,62],[13,71,13,71],[13,79,13,79],[14,40,36,40],[14,48,15,48],[14,57,14,57],[14,65,14,65],[16,54,16,54],[16,62,16,62],[25,54,25,54],[25,58,25,58],[25,62,25,62],[25,66,25,66],[27,54,27,54],[27,62,27,62],[27,71,27,71],[27,79,27,79],[28,57,28,57],[28,65,28,65],[30,54,30,54],[30,62,30,62],[39,54,39,54],[39,58,39,58],[39,62,39,62],[39,66,39,66],[41,54,41,54],[41,62,41,62],[41,71,41,71],[41,79,41,79],[42,57,42,57],[42,65,42,65],[44,54,44,54],[44,62,44,62],[53,54,53,54],[53,58,53,58],[53,62,53,62],[53,66,53,66],[55,54,55,54],[55,62,55,62],[55,71,55,71],[55,79,55,79],[56,57,56,57],[56,65,56,65],[58,54,58,54],[58,62,58,62],[67,54,67,54],[67,58,67,58],[67,62,67,62],[67,66,67,66],[69,54,69,54],[69,62,69,62],[69,71,69,71],[69,79,69,79],[70,57,70,57],[70,65,70,65],[72,54,72,54],[72,62,72,62]],"FICHA":[[11,4,11,4],[11,14,11,14]]};
 function r53LivreToca_(lista,r){var l1=r.getRow(),l2=r.getLastRow(),c1=r.getColumn(),c2=r.getLastColumn();
@@ -23,6 +24,7 @@ function r53EdicaoLivre_(e){
   if(aba==='FICHA'&&r.getA1Notation()===R53_LIVRE_NIVEL_.nivel)r53LivreNivel_(e);
   if(aba==='FICHA'&&R53_LIVRE_XP_.caixas.indexOf(r.getA1Notation())>=0&&r53LivreXp_(e))return true;
   if(aba==='FICHA'&&R53_LIVRE_DELTA_.hasOwnProperty(r.getA1Notation())&&r53LivreValido_())return r53LivreDelta_(r,e);
+  if(aba==='INVOCAÇÕES'&&r53LivreToca_(R53_LIVRE_TEMP_INVOC_,r))return false;
   if(!lista||r53LivreToca_(lista,r)||!r53LivreValido_())return false;
   // Trilha ou Caminho mudou desde a última sincronização: a próxima edição nas quatro abas sincroniza.
   if(R53_LIVRE_FAMILIAS_.indexOf(aba)>=0&&PropertiesService.getDocumentProperties().getProperty(R53_LIVRE_PROP_))return false;

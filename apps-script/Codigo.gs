@@ -490,6 +490,7 @@ function onEdit(e) {
         ligarSaltosDe_(SpreadsheetApp.getActive(), ABA_INVOCACOES_, DADOS_DA_INVOCACAO_, null, e.range);
       }
     } catch (err) { console.log('invocações: ' + err.message); }
+    try { prenderTemp_(e); } catch (err) { console.log('invocações, TEMP: ' + err.message); }
     continuarPaleta_(inicio, null, false, e.range);
     return;
   }
@@ -2035,14 +2036,29 @@ function tetoTemp_(valor, max, preservarIntegridade) {
 
 /** Prende no teto o TEMP digitado à mão. A caixinha de ± só desce a temporária. */
 function prenderTemp_(e, idx) {
-  var ficha = SpreadsheetApp.getActive().getSheetByName('FICHA');
-  ['vida', 'energia', 'integridade'].forEach(function (r) {
-    var ct = cel_(idx, r + '_temp');
-    if (!ct || ct !== e.range.getA1Notation()) return;
-    var v = lerCelulas_(ficha, [ct, cel_(idx, r + '_max')]);
-    var antes = v[ct];
-    var depois = tetoTemp_(antes, v[cel_(idx, r + '_max')], r === 'integridade');
-    if (depois !== antes) e.range.setValue(depois);
+  var aba = e.range.getSheet(), campos;
+  if (idx) {
+    campos = ['vida', 'energia', 'integridade'].map(function (r) {
+      return [cel_(idx, r + '_temp'), cel_(idx, r + '_max'), r === 'integridade'];
+    });
+  } else {
+    var spec = ABAS.filter(function (s) { return s.nome === ABA_INVOCACOES_; })[0];
+    campos = (spec && spec.redutores || []).map(function (r) {
+      return [r[2], r[3], false];
+    });
+  }
+
+  // Só limitar as âncoras editadas. A seleção pode também conter outras entradas.
+  var tocados = campos.filter(function (c) {
+    return c[0] && c[1] && tocaFaixa_(e.range, c[0]);
+  });
+  if (!tocados.length) return;
+  var enderecos = tocados.reduce(function (lista, c) { return lista.concat(c.slice(0, 2)); }, []);
+  var valores = lerCelulas_(aba, enderecos);
+  tocados.forEach(function (c) {
+    var antes = valores[c[0]];
+    var depois = tetoTemp_(antes, valores[c[1]], c[2]);
+    if (depois !== antes) aba.getRange(c[0]).setValue(depois);
   });
 }
 
@@ -2279,7 +2295,8 @@ function testeTeto() {
     ['abaixo do teto',                       [12, 40], 12],
     ['máximo ímpar arredonda para baixo',    [99, 23], 11],
     ['campo vazio continua vazio',           ['', 40], ''],
-    ['sem máximo não há teto',               [27, 0], 27]
+    ['sem máximo não há teto',               [27, ''], 27],
+    ['máximo zero limita a zero',             [27, 0], 0]
   ];
   var falhou = 0;
   casos.forEach(function (c) {
@@ -2289,7 +2306,7 @@ function testeTeto() {
     Logger.log((ok ? 'OK   ' : 'FALHA') + ' \u00b7 ' + c[0] +
                ' \u00b7 ' + r + ' (esperado ' + c[2] + ')');
   });
-  Logger.log(falhou ? (falhou + ' FALHA(S)') : 'as 5 passaram');
+  Logger.log(falhou ? (falhou + ' FALHA(S)') : 'as ' + casos.length + ' passaram');
 }
 
 /**

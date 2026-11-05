@@ -5,10 +5,12 @@ const runtime=fs.readFileSync('r53/diagnostico-android/recursos_fila_runtime.gs'
 const source=fs.readFileSync('apps-script/Codigo.gs','utf8'),engine=fs.readFileSync('r53/recursos_delta.gs','utf8');
 const fn=(s,n)=>{const a=s.indexOf('function '+n+'(');assert(a>=0);return s.slice(a,s.indexOf('\n}\n',a)+2);};
 const changes=JSON.parse(runtime.match(/var mudancas = (.*);/)[1]);
+const gancho=JSON.parse(runtime.match(/var ganchoTemp = (.*);/)[1]);
 let checks=0;const eq=(a,b)=>{assert.deepEqual(a,b);checks++;},throws=f=>{assert.throws(f);checks++;};
 for(const [old,novo]of changes)eq(novo,fn(source,novo.match(/^function (\w+)/)[1]));
 eq(require('../atalho_livre').DELTA_ATUAL,fn(source,'aplicarDelta_'));
-const c={code:changes.map(x=>x[0]).join('\n')+'\n'};vm.createContext(c);vm.runInContext(runtime,c);
+eq(source.split(gancho[1]).length,2);
+const c={code:changes.map(x=>x[0]).join('\n')+'\nfunction editarInvocacao(e) { try {\n'+gancho[0]+'\n}\n'};vm.createContext(c);vm.runInContext(runtime,c);
 eq(c.code.includes(engine),true);new vm.Script(c.code);checks++;
 throws(()=>vm.runInContext(runtime,c));
 throws(()=>p.preparar('código desconhecido'));throws(()=>p.preparar(''));
@@ -28,7 +30,7 @@ if(process.argv[2]){
  vm.runInContext(runtime,box);new vm.Script('(function(){'+box.code+'})()');checks++;
  for(const [,novo]of changes)eq(box.code.includes(novo),true);
  // O módulo otimizado conserva as demais funções e todos os catálogos.
- let volta=box.code;volta=volta.slice((engine+'\n').length);for(const [a,b]of changes)volta=p.trocar(volta,b,a);eq(volta,integrado);
+ let volta=box.code;volta=volta.slice((engine+'\n').length);for(const [a,b]of [...changes,gancho])volta=p.trocar(volta,b,a);eq(volta,integrado);
  console.log(JSON.stringify({proposta:p.sha(novo),snapshot:p.sha(original),aplicado:false}));
 }
 console.log(JSON.stringify({resultado:'OK',verificacoes:checks,snapshotsPrivados:!!process.argv[2]}));
