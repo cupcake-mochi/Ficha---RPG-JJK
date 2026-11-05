@@ -1,9 +1,9 @@
 # Revisão da PR65 e auditoria dos descansos
 
 Atualização: D01/D02 receberam correção separada na PR66. Consulte
-`CORRECAO-DESCANSO-ORIGENS-2026-11-05.md` para os 16 cenários nativos
-aprovados, a restauração e a autorização ainda pendente do ensaio com
-queda ativa. O restante deste documento conserva o diagnóstico anterior.
+`CORRECAO-DESCANSO-ORIGENS-2026-11-05.md` para os 18 cenários nativos
+aprovados e a restauração, incluindo o ensaio de menu com queda ativa
+após autorização pelo usuário. O restante conserva o diagnóstico anterior.
 
 PR65 revisada no head `5f6abeae7517b51544edf3e2abb5b6c159aef9c5`.
 Os dois checks estão SUCCESS, sem conflito. Teste focal dos seis alvos,

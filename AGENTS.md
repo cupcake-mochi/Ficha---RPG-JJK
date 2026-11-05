@@ -4,14 +4,14 @@ Leia `r53/diagnostico-android/CORRECAO-DESCANSO-ORIGENS-2026-11-05.md`.
 PR66 sobre PR65, implementação 6e5f401 e teste histórico 5b9f6e4.
 D01/D02 corrigidos; 78 cenários locais, transporte antigo real, pacote
 leve 138 e smoke aprovados. Codigo d5845c03… salvo/reaberto nas duas
-descartáveis. Dezesseis cenários nativos passaram. Falta o comando de
-descanso com queda ativa nas duas: Google pediu autorização, usuário
-avisado; não conceder em seu lugar. PR66 permanece em rascunho.
-23 entradas por cópia e SOCORRO restauradas; 432 células por cópia
-relidas, sem diferenças de valores/fórmulas, notas ou validações.
-Fixtures de Morrendo desfeitas: preparar novamente após autorização.
-Sem merge, oficiais, jogador ou PR31. Sol/High para ensaio final,
-Sol/Medium para revisar. Não mudar configurações automaticamente.
+descartáveis. Dezoito cenários nativos passaram, incluindo longo fora
+com Morrendo pelo menu Recursos nas duas. Autorizações pelo usuário.
+23 entradas por cópia e SOCORRO restauradas; releitura ampliada de 1.074
+células por cópia sem diferenças de valores/fórmulas, notas, validações
+ou formatos. Fixtures temporárias desfeitas. Nenhum código mudou após
+os 16 cenários iniciais. PR66 para revisão após checks do head final.
+Sem merge, oficiais, jogador ou PR31. Sol/Medium para revisar,
+Sol/High para próximos ensaios. Não mudar configurações automaticamente.
 
 # Auditoria de descanso/Origem · 05/11/2026
 

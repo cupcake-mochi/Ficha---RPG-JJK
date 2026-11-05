@@ -56,7 +56,9 @@ Nenhuma autorização para oficiais ou merge foi usada nesta etapa.
 
 Codigo.gs foi salvo, reaberto e relido integralmente nas duas descartáveis
 com o SHA-256 proposto acima. Sete cenários mecânicos por cópia e uma
-recusa de descanso normal com queda ativa por cópia passaram: 16 no total.
+recusa de descanso normal com queda ativa por cópia passaram inicialmente.
+Após a autorização pelo usuário, o comando de descanso com queda ativa
+também passou nas duas cópias: 18 cenários nativos no total.
 Os eventos foram edições reais de D45; a API preparou e restaurou os estados.
 O menu voltou ao estado inicial e o resumo foi conferido antes de mudar
 a montagem. Não se contabilizaram leituras durante o processamento como
@@ -72,6 +74,7 @@ resultados concluídos.
 | Corpo Exaurido, longo propício | Vida 6 → 25 | Vida 6 → 15 |
 | Recuperação Abundante, curto propício | PE 0 → 24 | PE 0 → 8 |
 | Morrendo, longo pelo menu normal da célula | Recusado, recursos e registro preservados | Recusado, recursos e registro preservados |
+| Artificial em Morrendo, longo fora pelo menu Recursos | Vida 0 → 77; PE 0 → 60; grau 0; queda encerrada | Vida 0 → 37; PE 0 → 20; grau 0; queda encerrada |
 
 Os máximos naturais da montagem eram vida 77/37 e PE 60/20. B121/B123
 foram relidos como válido/base correta no controle positivo e inválido/base
@@ -79,12 +82,16 @@ vazia no negativo. A custom inválida não recebeu benefício por ter o texto
 da base escrito no cadastro. Os ensaios assumem os requisitos de segurança
 e permissão da mesa para realizar o descanso.
 
-**Pendente:** Recursos → Descanso longo com queda ativa nas duas cópias.
-O Google exibiu Autorização obrigatória em ambas. O agente não concedeu
-acesso; o usuário recebeu os links e o pedido de autorização. Esse caso
-passou localmente, mas não está validado no Google. A PR permanece em
-rascunho até concluir o ensaio. Para retomá-lo, preparar novamente uma
-queda válida: as fixtures ativas já foram desfeitas.
+**Ensaio de menu concluído:** o Google exigiu autorização nas duas cópias,
+concluída pelo usuário. Novo snapshot foi salvo e os registros de Morrendo
+foram preparados novamente. Pela interface Recursos → Descanso longo com
+queda ativa, informou-se 2 (fora de lugar propício). As duas cópias aplicaram
+a exceção, zeraram Exaustão e Sequelas e gravaram Encerrado no descanso.
+Referência, Classe, escolha, necessário, tratamento zero e janela foram
+preservados no registro. O resumo explica o local efetivo e o encerramento.
+O ensaio usou registros controlados por API; não é um novo teste de
+Registrar queda nem das conversões de tratamento, cobertas em outras entregas.
+Não há pendência conhecida deste lote; não certifica todas as mecânicas.
 
 Vinte e três campos de entrada por cópia foram restaurados, incluindo o
 cartão custom, e SOCORRO A1:C30 foi restaurada. Releitura de 432 células
@@ -92,9 +99,18 @@ materializadas por cópia encontrou zero diferenças em valores/fórmulas,
 notas e validações em relação ao snapshot inicial, e zero erros nos
 intervalos conferidos. Isso não é uma nova varredura integral da ficha.
 
+Após o ensaio autorizado, as mesmas 23 entradas por cópia e SOCORRO foram
+novamente restauradas a partir do snapshot fresco. Releitura ampliada de
+1.074 células materializadas por cópia encontrou zero diferenças em
+valores/fórmulas, notas, validações e formatos de célula, e zero erros nos
+intervalos conferidos. D39 e os campos escritos pelo registro de socorro
+também estão nessa comparação. Os dados temporários de Morrendo foram
+desfeitos. Nenhum código precisou mudar depois dos 16 cenários iniciais.
+
 Snapshots, leituras e recibos permanecem em
 `nuvem-b47/saidas/correcao-descanso-origens/`, ignorado pelo Git. O JSON
 ao lado deste relatório contém somente resultados sanitizados.
 
-Sem merge, oficiais, jogador, PR31, acionadores ou mudança de acesso.
-Sol/High para ensaio integrado; Sol/Medium para revisão. Não mudar ajustes.
+Sem merge, oficiais, jogador, PR31 ou acionadores novos. Autorizações
+das duas cópias concluídas pelo usuário; nenhum acesso concedido pelo agente.
+Sol/Medium para revisão; Sol/High para futuros ensaios. Não mudar ajustes.
