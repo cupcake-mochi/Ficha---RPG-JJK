@@ -47,6 +47,8 @@ if(process.argv[2]){
  for(const f of ['Ficha','Invocacoes','Analise','Configuracao','Origens']){const text=read('qa-era-'+f+'.gs'),m=/var R53_CODIGO_(\d+)_ = ("[^\n]*");/.exec(text);assert(m);fragmentos[+m[1]]=JSON.parse(m[2]);}
  const modulo=zlib.gunzipSync(Buffer.from(fragmentos.join(''),'base64')).toString('utf8');t(()=>assert.equal(p.sha(modulo),p.MODULO));
  const ctx={code:modulo};vm.createContext(ctx);vm.runInContext(fs.readFileSync('r53/diagnostico-android/pilha_5156_runtime.gs','utf8'),ctx);
+ // A fonte integral agora inclui a revisão posterior do descanso por Origem.
+ vm.runInContext(require('../diagnostico-android/preparar_descanso_origens').runtime(),ctx);
  const anterior=vm.runInNewContext('(function(){'+modulo+'})()'),mod=vm.runInNewContext('(function(){'+ctx.code+'})()');
  t(()=>assert.equal(typeof mod.r53DescansarComQueda,'function'));
  const model=JSON.parse(JSON.stringify(mod.__estado().abas));c.r53AjustarPilha516_(model);t(()=>assert.equal(model.length,anterior.__estado().abas.length));
