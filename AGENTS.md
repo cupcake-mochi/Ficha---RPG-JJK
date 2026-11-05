@@ -1,3 +1,13 @@
+# Revisão da PR65 · pendência custom · 05/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR65-2026-11-05.md`.
+Head 4286179 tinha dois checks aprovados, mas a revisão confirmou nas
+duas descartáveis que Origem custom válida com base Corpo Amaldiçoado
+perde a imunidade à Exaustão. A condição em configuracao.py consulta só
+o nome publicado, ignorando B123 validado. Nenhuma correção nova aplicada.
+Dez entradas por cópia restauradas e relidas. Sem merge, oficiais, jogador
+ou PR31. Sol/High para corrigir/ensaiar, Sol/Medium para revisão. Não mudar ajustes.
+
 # Correção de Bênçãos/imunidades · 05/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-BENCAOS-IMUNIDADES-2026-11-05.md`.
