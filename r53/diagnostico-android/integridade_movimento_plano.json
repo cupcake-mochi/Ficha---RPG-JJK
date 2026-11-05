@@ -1,0 +1,57 @@
+[
+  {
+    "aba": "FICHA",
+    "r": 37,
+    "c": 4,
+    "antes": "=IF(OR($D$34=\"\",$J$34=0),\" \",IF($D$34<=0,\"Estágio 4 · Você não é mais você mesmo\",IF($D$34<=$J$34/4,\"Estágio 3 · Desvantagem em ataques e TRs\",IF($D$34<=$J$34/2,\"Estágio 2 · Metade do deslocamento, +1 PE por Classe\",IF($D$34<=$J$34*3/4,\"Estágio 1 · Desvantagem em perícias\",\"Alma Inteira\")))))",
+    "depois": "=IF(OR($D$34=\"\",$J$34=0),\" \",IF($D$34<=0,\"Estágio 4 · Inconsciente e Derrotado\",IF($D$34<=$J$34/4,\"Estágio 3 · Desvantagem em ataques e TRs, Classe máxima à metade\",IF($D$34<=$J$34/2,\"Estágio 2 · Metade do deslocamento, +1 PE por Classe\",IF($D$34<=$J$34*3/4,\"Estágio 1 · Desvantagem em perícias\",\"Alma Inteira\")))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 67,
+    "c": 15,
+    "antes": "=IF(AND('DADOS_CUSTOM'!$B$126,OR('FICHA'!$D$52=\"Corpo Debilitado\",'FICHA'!$D$52=\"Corpo Quebradiço\")),\"0 m\",IF(AND('DADOS_CUSTOM'!$B$126,'FICHA'!$D$52=\"Corpo Exaurido\"),IF(N('FICHA'!$D$26)<=INT(N('FICHA'!$J$26)/2),\"0 m\",MIN(4.5,VALUE(SUBSTITUTE((IF(DADOS_CONFIG!$E$12<>\"\",NA(),IF(DADOS_CONFIG!$C$12=1,(DADOS_CONFIG!$D$12)&\" m\",IF(DADOS_CONFIG!$B$12=0,IF(DADOS!$CZ$46=1,0,MIN(IF(N($O$48)>=2,4.5,9999),(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1)))&\" m\",(IF((IF(DADOS!$CZ$46=1,0,MIN(IF(N($O$48)>=2,4.5,9999),(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1))))=\"\",\"\",(IF(DADOS!$CZ$46=1,0,MIN(IF(N($O$48)>=2,4.5,9999),(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1))))+DADOS_CONFIG!$B$12))&\" m\")))),\" m\",\"\")))&\" m\"),IF(DADOS_CONFIG!$E$12<>\"\",NA(),IF(DADOS_CONFIG!$C$12=1,(DADOS_CONFIG!$D$12)&\" m\",IF(DADOS_CONFIG!$B$12=0,IF(DADOS!$CZ$46=1,0,MIN(IF(N($O$48)>=2,4.5,9999),(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1)))&\" m\",(IF((IF(DADOS!$CZ$46=1,0,MIN(IF(N($O$48)>=2,4.5,9999),(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1))))=\"\",\"\",(IF(DADOS!$CZ$46=1,0,MIN(IF(N($O$48)>=2,4.5,9999),(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1))))+DADOS_CONFIG!$B$12))&\" m\")))))",
+    "depois": "=IF(AND('DADOS_CUSTOM'!$B$126,OR('FICHA'!$D$52=\"Corpo Debilitado\",'FICHA'!$D$52=\"Corpo Quebradiço\")),\"0 m\",IF(AND('DADOS_CUSTOM'!$B$126,'FICHA'!$D$52=\"Corpo Exaurido\"),IF(N('FICHA'!$D$26)<=INT(N('FICHA'!$J$26)/2),\"0 m\",MIN(4.5,VALUE(SUBSTITUTE((IF(DADOS_CONFIG!$E$12<>\"\",NA(),IF(DADOS_CONFIG!$C$12=1,(DADOS_CONFIG!$D$12)&\" m\",IF(DADOS_CONFIG!$B$12=0,IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia))))&\" m\",(IF((IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))=\"\",\"\",(IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))+DADOS_CONFIG!$B$12))&\" m\")))),\" m\",\"\")))&\" m\"),IF(DADOS_CONFIG!$E$12<>\"\",NA(),IF(DADOS_CONFIG!$C$12=1,(DADOS_CONFIG!$D$12)&\" m\",IF(DADOS_CONFIG!$B$12=0,IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia))))&\" m\",(IF((IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))=\"\",\"\",(IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE($W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(N($O$48)-IF(AND(DADOS_AM!$A$2=4,DADOS_AM!$HM$6>=4,DADOS_AM!$HM$25<=DADOS_AM!$HM$26,COUNTIF(DADOS_AM!$HZ$2:$HZ$13,\"Vigília\")>0),1,0)>=2,4.5,9999),IF(AND(ISNUMBER($D$34),N($J$34)>0,$D$34<=$J$34/2),IF($D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia)))))+DADOS_CONFIG!$B$12))&\" m\")))))"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "addr": "W17",
+    "antes": "Metade da vida máxima, para baixo, com mínimo 1: a regra das criaturas que não são personagens.",
+    "depois": "Metade da vida máxima, para baixo, com mínimo 1 se a vida máxima for positiva."
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 191,
+    "antes": "=IF(AND($FM2=1,$EJ2<>\"Sem alma\"),MAX(1,INT($GF2/2)),\"\")",
+    "depois": "=IF(AND($FM2=1,$EJ2<>\"Sem alma\"),IF($GF2>0,MAX(1,INT($GF2/2)),0),\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 195,
+    "antes": "=IF($FM2=0,\"\",IF($GI2=\"\",\"Sem alma · imune a dano de Alma\",IF($GK2<=0,\"Estágio 4 · caída, como a zero de vida\",IF($GK2<=$GI2/4,\"Estágio 3 · desvantagem em ataques e TRs, Classe pela metade\",IF($GK2<=$GI2/2,\"Estágio 2 · metade do deslocamento, +1 PE por Classe\",IF($GK2<=$GI2*3/4,\"Estágio 1 · desvantagem em perícias\",\"Alma inteira\"))))))",
+    "depois": "=IF($FM2=0,\"\",IF($GI2=\"\",\"Sem alma · imune a dano de Alma\",IF(N($GI2)<=0,\"—\",IF($GK2<=0,\"Estágio 4 · Inconsciente e Derrotada\",IF($GK2<=$GI2/4,\"Estágio 3 · desvantagem em ataques e TRs, Classe máxima à metade\",IF($GK2<=$GI2/2,\"Estágio 2 · metade do deslocamento, +1 PE por Classe\",IF($GK2<=$GI2*3/4,\"Estágio 1 · desvantagem em perícias\",\"Alma inteira\")))))))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 223,
+    "antes": "=SUBSTITUTE(IF($EI2>2*$HC2,0,IF($EI2>$HC2,$GN2/2,$GN2))&\" m\",\".\",\",\")",
+    "depois": "=SUBSTITUTE(IF($EI2>2*$HC2,0,IF(AND(ISNUMBER($GK2),N($GI2)>0,$GK2<=$GI2/2),IF($GK2<=0,0,FLOOR(MAX(0,(IF($EI2>$HC2,$GN2/2,$GN2))/2),1.5)),IF($EI2>$HC2,$GN2/2,$GN2)))&\" m\",\".\",\",\")"
+  },
+  {
+    "aba": "DADOS_CONFIG",
+    "r": 12,
+    "c": 6,
+    "antes": "=IF(DADOS!$CZ$46=1,0,MIN(IF(N('FICHA'!$O$48)>=2,4.5,9999),(DADOS_CONFIG!$S$9+IFERROR(VALUE('FICHA'!$W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1)))&\" m\"",
+    "depois": "=IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE('FICHA'!$W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(N('FICHA'!$O$48)>=2,4.5,9999),IF(AND(ISNUMBER('FICHA'!$D$34),N('FICHA'!$J$34)>0,'FICHA'!$D$34<='FICHA'!$J$34/2),IF('FICHA'!$D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia))))&\" m\""
+  },
+  {
+    "aba": "DADOS_CONFIG",
+    "r": 12,
+    "c": 7,
+    "antes": "=IF(DADOS!$CZ$46=1,0,MIN(IF(N('FICHA'!$O$48)>=2,4.5,9999),(DADOS_CONFIG!$S$9+IFERROR(VALUE('FICHA'!$W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1)))",
+    "depois": "=IF(DADOS!$CZ$46=1,0,LET(distancia,(DADOS_CONFIG!$S$9+IFERROR(VALUE('FICHA'!$W$67&\"\"),0))/IF(DADOS!$CZ$45=1,2,1),tetoExaustao,IF(N('FICHA'!$O$48)>=2,4.5,9999),IF(AND(ISNUMBER('FICHA'!$D$34),N('FICHA'!$J$34)>0,'FICHA'!$D$34<='FICHA'!$J$34/2),IF('FICHA'!$D$34<=0,0,FLOOR(MAX(0,MIN(tetoExaustao,distancia/2)),1.5)),MIN(tetoExaustao,distancia))))"
+  }
+]

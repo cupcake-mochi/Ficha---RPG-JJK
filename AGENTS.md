@@ -1,3 +1,16 @@
+# Integridade, movimento e Vigília · 04/11/2026
+
+Leia `r53/diagnostico-android/INTEGRIDADE-MOVIMENTO-2026-11-04.md`.
+PR62 pronta para revisão no commit `528e20e`. A01/A02/A05/A06 em ramo
+separado sobre a PR62. Era 16, Ciclo 9, mais um teste com compra calculada
+de Vigília e 44 controles de movimento corporal nativos, todos aprovados.
+41 alvos por cópia conferidos. 57 entradas temporárias restauradas.
+Geração `cb692d3f96e4e754` e proposta incremental `9f64aa8c…` verificadas
+offline. O código de restauração ainda precisa de ensaio nativo antes
+de publicar. Sem merge, oficiais, jogador, PR31, acionadores ou acesso
+novo. Sol/Medium para revisar, Sol/High para ensaiar a instalação.
+Não alterar configurações automaticamente.
+
 # Teto de TEMP em colagens e invocações · 04/11/2026
 
 Leia `r53/diagnostico-android/TEMP-COLAGENS-INVOCACOES-2026-11-04.md`.

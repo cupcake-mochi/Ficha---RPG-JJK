@@ -81,7 +81,7 @@ N_ATR, N_PER, N_FAM, N_TAL, N_TALX, N_LIB = 5, 7, 5, 8, 3, 3
 COM_ALMA, SEM_ALMA = "Com alma", "Sem alma"
 # o que a caixa do estágio diz: inteira, os quatro estágios (Estágios de Integridade) e a entidade sem alma
 ESTAGIOS = ("Alma inteira", "Estágio 1 · desvantagem em perícias", "Estágio 2 · metade do deslocamento, +1 PE por Classe",
-            "Estágio 3 · desvantagem em ataques e TRs, Classe pela metade", "Estágio 4 · caída, como a zero de vida",
+            "Estágio 3 · desvantagem em ataques e TRs, Classe máxima à metade", "Estágio 4 · Inconsciente e Derrotada",
             "Sem alma · imune a dano de Alma")
 EM_USO = ("MÃO 1", "MÃO 2", "VESTE")         # o equipamento em uso, um lugar por linha
 N_GUARDA = 6                                 # as linhas de item guardado
@@ -494,14 +494,14 @@ def trocas(layout, cor_da_barra=None):
         # de Classe se aplicam às especiais que ela executa" (Queda e destruição); "Um corpo não autônomo não tem alma".
         # A caixa da atual nasce cheia, como a da vida, e é livre.
         com = f'AND({P("tem")}=1,{P("alma")}<>"{SEM_ALMA}")'
-        o["imax"] = f'=IF({com},MAX(1,INT({P("vida")}/2)),"")'
+        o["imax"] = f'=IF({com},IF({P("vida")}>0,MAX(1,INT({P("vida")}/2)),0),"")'
         o["integ0"] = f'={P("imax")}'
         o["iatual"] = (f'=IF({P("imax")}="","",IF({P("integ_c")}="",{P("imax")},'
                        f'MAX(0,MIN(IFERROR(VALUE({P("integ_c")}),{P("imax")}),{P("imax")}))))')
         o["d_imax"] = f'=IF({P("tem")}=0,"",IF({P("imax")}="","—",{P("imax")}))'
         ia, im = P("iatual"), P("imax")
-        o["d_est"] = (f'=IF({P("tem")}=0,"",IF({im}="","{ESTAGIOS[5]}",IF({ia}<=0,"{ESTAGIOS[4]}",IF({ia}<={im}/4,"{ESTAGIOS[3]}",'
-                      f'IF({ia}<={im}/2,"{ESTAGIOS[2]}",IF({ia}<={im}*3/4,"{ESTAGIOS[1]}","{ESTAGIOS[0]}"))))))')
+        o["d_est"] = (f'=IF({P("tem")}=0,"",IF({im}="","{ESTAGIOS[5]}",IF(N({im})<=0,"—",IF({ia}<=0,"{ESTAGIOS[4]}",IF({ia}<={im}/4,"{ESTAGIOS[3]}",'
+                      f'IF({ia}<={im}/2,"{ESTAGIOS[2]}",IF({ia}<={im}*3/4,"{ESTAGIOS[1]}","{ESTAGIOS[0]}")))))))')
         o["desl"] = f'=9+{P("us4")}'
         o["vf"] = f'=IF({P("fis")}="Destreza",{P("t1")},{P("t0")})'
         for k, (nome_tr, atr) in enumerate(TESTES):
@@ -536,8 +536,11 @@ def trocas(layout, cor_da_barra=None):
         o["d_cd"] = f'=IF({P("cd")}="","",{P("cd")})'
         # 10/10/2026 (B45): a entidade "segue as regras gerais de Carga": acima do limite e até o dobro, metade do
         # deslocamento; acima do dobro, não se desloca com a carga
-        o["d_desl"] = (f'=SUBSTITUTE(IF({P("evol")}>2*{P("carga")},0,IF({P("evol")}>{P("carga")},{P("desl")}/2,{P("desl")}))'
-                       f'&" m",".",",")')
+        distancia = f'IF({P("evol")}>{P("carga")},{P("desl")}/2,{P("desl")})'
+        metade = f'AND(ISNUMBER({ia}),N({im})>0,{ia}<={im}/2)'
+        o["d_desl"] = (f'=SUBSTITUTE(IF({P("evol")}>2*{P("carga")},0,'
+                       f'IF({metade},IF({ia}<=0,0,FLOOR(MAX(0,({distancia})/2),1.5)),{distancia}))'
+                       '&" m",".",",")')
         for k in range(4):
             o[f"d_tr{k}"] = f'={sinal(P(f"tr{k}"))}'
         o["d_per"] = f'=IF({P("tper")}>{P("nper")},"{T_ERRO} ","")&"PERÍCIAS · "&{P("tper")}&" DE "&{P("nper")}'
@@ -885,7 +888,7 @@ NOTAS = {
             "precisa constar da definição.",
     "integ": "Nasce cheia e acompanha a máxima até você escrever aqui. Cada ponto de dano de Alma tira 1 de vida e 1 de "
              "Integridade. A zero ela cai, como a zero de vida, e volta com pelo menos 1.",
-    "integ_max": "Metade da vida máxima, para baixo, com mínimo 1: a regra das criaturas que não são personagens.",
+    "integ_max": "Metade da vida máxima, para baixo, com mínimo 1 se a vida máxima for positiva.",
     "estagio": "Pelo que falta da Integridade: um quarto, desvantagem em perícias; metade, deslocamento pela metade e +1 PE por "
                "Classe nas especiais; três quartos, desvantagem em ataques e TRs e a Classe das especiais pela metade; toda, ela cai.",
     "reserva": "Só a maldição domada com técnica própria: nível × (1 + um terço da Essência dela). Escreva quanto ainda resta. O "
