@@ -1,3 +1,14 @@
+# PR65 · imunidade custom corrigida · 05/11/2026
+
+Leia `r53/diagnostico-android/IMUNIDADE-CUSTOM-CORRIGIDA-2026-11-05.md`.
+Implementação f8c86e5 resolve P2 da revisão. B121 e B123 validam a base
+herdada; cadastro inválido não ganha imunidade. Sete cenários por cópia,
+duas edições reais de grau e quatro restaurações reais passaram.
+Codigo 19ae4c19… salvo/reaberto nas duas cópias. Dez entradas por cópia
+restauradas e seis alvos relidos. Smoke local e checks do código aprovados.
+Sem merge, oficiais, jogador ou PR31. Sol/Medium para revisão; Sol/High
+para próximos ensaios. Não mudar ajustes automaticamente.
+
 # Revisão da PR65 · pendência custom · 05/11/2026
 
 Leia `r53/diagnostico-android/REVISAO-PR65-2026-11-05.md`.

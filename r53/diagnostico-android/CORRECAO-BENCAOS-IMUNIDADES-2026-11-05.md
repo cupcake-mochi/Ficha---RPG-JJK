@@ -1,3 +1,7 @@
+> Atualização: a pendência custom foi corrigida em f8c86e5. Consulte
+> `IMUNIDADE-CUSTOM-CORRIGIDA-2026-11-05.md` para o estado e o hash atuais.
+> O registro abaixo preserva a etapa anterior.
+
 # Correção de Bênçãos e imunidades
 
 PR65, base PR64, implementação `6a35402`. Responde a B01, B02 e I01 de
