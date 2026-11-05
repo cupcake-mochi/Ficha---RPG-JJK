@@ -1,3 +1,36 @@
+# PR67 · Núcleo, Fôlego e descanso leve · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ORIGENS-RECURSOS-2026-11-05.md`/JSON.
+O01–O04 corrigidos sobre PR66 f2bc70f no ramo
+`codex/auditoria-origens-recursos-20261105`. Geração `95250bc5cf94a1b0`,
+zero SOBRAS, oito alvos iguais ao plano. Código incremental SHA
+`bae62817a2ae03281dff1247c7e2f97d6ac0518a6f90271bf6de96da98a09130`.
+Exige a instalação PR66 d5845c03…; não instalar pacote integral nas existentes.
+
+Nas duas descartáveis: marcos de nível, vagas, custom válida/inválida,
+CONFIGURAÇÃO e Fôlego aprovados. Queda sem barra registrou Morrendo;
+longo com queda ativa recuperou vida/PE e encerrou o registro. Dezesseis
+restaurações de fórmula conferidas após edições reais, incluindo colagem
+nos quatro helpers. Entradas restauradas: 24 por cópia, SOCORRO incluída.
+1.433 células por cópia relidas sem diferenças de valores/fórmulas, notas
+ou validações (exceto os oito alvos novos esperados), sem erros nos intervalos.
+DADOS_CUSTOM novamente oculta. Código reaberto/relido igual nas duas, sem QA67.
+
+Local: 88 descansos, dez contas de auditoria conformes, transporte atômico,
+replay do modelo antigo e pacote aprovados. Smoke completo aprovado antes
+da última revisão de testes; uma repetição excedeu 60 s em pacote_runtime
+com menos de 800 MB disponíveis/swap cheia; repetição isolada passou.
+Consultar os checks do head atual na PR antes de promover.
+
+O05: rota curta do menu evita o módulo pesado. Um controle antes/depois:
+24,961 → 13,986 s no Google, 17,817 → 11,329 s entre marcadores do handler.
+Não prova causa única, eliminação de todos os timeouts, RAM ou abertura Android.
+As demais edições ainda seguem o pipeline completo. Perfis temporários removidos.
+Snapshots/fontes privados em `nuvem-b47/saidas/correcao-origens-recursos/`.
+Somente descartáveis alteradas. Sem merge, oficiais, jogador, PR31,
+acionadores, outros agentes ou mudanças de acesso. Sol/Medium para revisar;
+Sol/High para investigar novas bordas. Não alterar configurações automaticamente.
+
 # Revisão PR66 e auditoria de recursos de Origem · 05/11/2026
 
 Leia `r53/diagnostico-android/REVISAO-PR66-2026-11-05.md` e

@@ -14,6 +14,7 @@ const ruins=clone(antes);ruins.at(-1).notas.at(-1)[1]='divergente';const copia=c
 t(()=>assert.throws(()=>c.r53AjustarPilha516_(ruins),/divergente/));t(()=>assert.deepEqual(ruins,copia));
 // Paridade dos 14 alvos com as fontes geradas, incluindo estilos existentes preservados.
 const fontes={};vm.createContext(fontes);vm.runInContext(require('../../medidas/carregar-ficha').fontes(),fontes);
+require('../diagnostico-android/preparar_origens_recursos').reverterModelo(fontes.ABAS);
 const revisoes = require('../diagnostico-android/integridade_movimento_plano.json');
 for (const d of p.plano) {
  const a = fontes.ABAS.find(x => x.nome === d.aba);
@@ -49,6 +50,7 @@ if(process.argv[2]){
  const ctx={code:modulo};vm.createContext(ctx);vm.runInContext(fs.readFileSync('r53/diagnostico-android/pilha_5156_runtime.gs','utf8'),ctx);
  // A fonte integral agora inclui a revisão posterior do descanso por Origem.
  vm.runInContext(require('../diagnostico-android/preparar_descanso_origens').runtime(),ctx);
+ vm.runInContext(require('../diagnostico-android/preparar_origens_recursos').runtime(),ctx);
  const anterior=vm.runInNewContext('(function(){'+modulo+'})()'),mod=vm.runInNewContext('(function(){'+ctx.code+'})()');
  t(()=>assert.equal(typeof mod.r53DescansarComQueda,'function'));
  const model=JSON.parse(JSON.stringify(mod.__estado().abas));c.r53AjustarPilha516_(model);t(()=>assert.equal(model.length,anterior.__estado().abas.length));

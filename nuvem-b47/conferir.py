@@ -102,7 +102,7 @@ def main():
                          'r53/testes/caminho_leve.js',
                          'r53/testes/caminho_integrado.js', 'r53/testes/caminho_corrida.js',
                          'r53/testes/pacote_leve.js', 'r53/testes/pessoal_leve.js', 'r53/testes/atalho_livre.js', 'r53/testes/caixas_horizontais.js', 'r53/testes/cartas_custom.js',
-                         'r53/testes/recursos_fila.js', 'r53/testes/recursos_fila_incremental.js', 'r53/testes/integridade_movimento.js', 'r53/testes/equipamento.js', 'r53/testes/bencaos_imunidades.js', 'r53/testes/pilha_5156.js', 'r53/testes/editor_lazy.js', 'r53/testes/menu_origem_molde.js', 'r53/testes/socorro.js', 'r53/testes/cura_recebida.js', 'r53/testes/descanso.js', 'r53/testes/descanso_origens.js',
+                         'r53/testes/recursos_fila.js', 'r53/testes/recursos_fila_incremental.js', 'r53/testes/integridade_movimento.js', 'r53/testes/equipamento.js', 'r53/testes/bencaos_imunidades.js', 'r53/testes/pilha_5156.js', 'r53/testes/editor_lazy.js', 'r53/testes/menu_origem_molde.js', 'r53/testes/socorro.js', 'r53/testes/cura_recebida.js', 'r53/testes/descanso.js', 'r53/testes/descanso_origens.js', 'r53/testes/origens_recursos.js',
                          'r53/testes/abertura_salario.js', 'r53/testes/missoes_sem_registros.js', 'r53/testes/xp_atualizar.js',
                          'conteudos-b47/comum/testar-notas-contextuais.js']:
                 run = subprocess.run([node, str(ROOT/name)], cwd=ROOT, capture_output=True, text=True, timeout=300)

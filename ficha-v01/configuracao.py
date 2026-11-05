@@ -119,6 +119,8 @@ def anterior(formula):
     O comportamento com efeitos é recalculado na regressão de configuração.
     """
     import campanha
+    import origens_recursos
+    formula = origens_recursos.anterior(formula)
     vida = VIDA_QUEBRADICO.fullmatch(formula) if isinstance(formula, str) else None
     if vida:
         formula = "=" + vida["base"]
@@ -245,6 +247,8 @@ def trocas(layout, pessoal, fam=None):
     cond = CONDICAO_DEFESA_FIXA.format(marcante=ref("FICHA", idx["marcante"]))
     antes.setdefault("FICHA", {})[coord] = original
     celulas.setdefault("FICHA", {})[coord] = f'=IF({cond},"Não pode bloquear",{original[1:]})'
+    import origens_recursos
+    origens_recursos.aplicar(celulas, idx)
     return {"alvos": destinos, "antes": antes, "celulas": celulas}
 
 

@@ -1,5 +1,10 @@
 # Auditoria de recursos e estados das Origens
 
+Registro histórico do diagnóstico anterior à correção. O01–O04 foram
+tratados na própria PR67; veja `CORRECAO-ORIGENS-RECURSOS-2026-11-05.md`
+para implementação, ensaios e limites da investigação de O05. Os resultados
+originais abaixo foram preservados como evidência, não representam o head novo.
+
 Diagnóstico separado sobre PR66 `f2bc70fd27b73db1cda3260b108f1c78371daea9`.
 A revisão dessa PR está em `REVISAO-PR66-2026-11-05.md`: dois checks
 SUCCESS e sem novo bloqueio no escopo de Existência Artificial.
