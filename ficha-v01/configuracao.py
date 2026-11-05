@@ -187,7 +187,8 @@ def trocas(layout, pessoal, fam=None):
     destinos = alvos(layout, pessoal, fam)
     celulas, antes = {}, {}
     idx = ix.indice(layout)
-    imune_exaustao = f'{ref("FICHA", idx["origem"])}="Corpo Amaldiçoado"'
+    imune_exaustao = (f'OR({ref("FICHA", idx["origem"])}="Corpo Amaldiçoado",'
+                     'AND(DADOS_CUSTOM!$B$121,DADOS_CUSTOM!$B$123="Corpo Amaldiçoado"))')
     casco = None
     if fam is not None:
         h = fam["H"]

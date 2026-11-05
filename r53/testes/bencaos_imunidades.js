@@ -18,5 +18,21 @@ const antes=JSON.stringify(ruim);assert.throws(()=>ctx.r53AjustarBencaosImunidad
 ctx.r53AjustarBencaosImunidades_(abas);const depois=JSON.stringify(abas);ctx.r53AjustarBencaosImunidades_(abas);assert.equal(JSON.stringify(abas),depois);
 for(const locale of ['pt_BR','en_US']){const cells=p.plano.map(d=>({...d,sheetId:abas.findIndex(a=>a.nome===d.aba),[d.addr?'note':'value']:formulaLocal(d.antes,locale)}));assert.equal(p.planejar({locale,cells}).requests.length,p.plano.length);for(const c of cells)c[c.addr?'note':'value']=formulaLocal(c.depois,locale);assert.equal(p.planejar({locale,cells},true).requests.length,p.plano.length);assert.throws(()=>p.planejar({locale,cells}),/divergente/);}
 assert.throws(()=>p.prepararCodigo('outro projeto'),/incompatível/);
+assert.throws(()=>p.atualizarCodigoRevisao('outro projeto'),/incompatível/);
+const revisao=require('../diagnostico-android/imunidade_custom_revisao_plano.json');
+assert.equal(revisao.length,2);
+for(const d of revisao)assert.equal(p.plano.find(x=>key(x)===key(d)).depois,d.depois);
+for(const locale of ['pt_BR','en_US']) {
+ const cells=revisao.map(d=>({...d,sheetId:0,value:formulaLocal(d.antes,locale)}));
+ assert.equal(p.planejarRevisao({locale,cells}).requests.length,2);
+ for(const d of cells)d.value=formulaLocal(d.depois,locale);
+ assert.equal(p.planejarRevisao({locale,cells},true).requests.length,2);
+ assert.throws(()=>p.planejarRevisao({locale,cells}),/divergente/);
+}
 if(process.argv[2]){const s=fs.readFileSync(process.argv[2],'utf8'),novo=p.prepararCodigo(s);new vm.Script(novo);assert.throws(()=>p.prepararCodigo(novo),/incompatível/);}
+if(process.argv[3]) {
+ const anterior=fs.readFileSync(process.argv[3],'utf8'),novo=p.atualizarCodigoRevisao(anterior);
+ assert.equal(novo,p.prepararCodigo(fs.readFileSync(process.argv[2],'utf8')));
+ new vm.Script(novo);assert.throws(()=>p.atualizarCodigoRevisao(novo),/incompatível/);
+}
 console.log(JSON.stringify({resultado:'OK',alvos:p.plano.length,basePrivada:!!process.argv[2]}));
