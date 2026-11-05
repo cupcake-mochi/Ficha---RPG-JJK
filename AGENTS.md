@@ -1,3 +1,16 @@
+# Bênçãos/imunidades em análise · 05/11/2026
+
+Leia `r53/diagnostico-android/BENCAOS-IMUNIDADES-2026-11-05.md`.
+Ramo de diagnóstico separado sobre PR64 ffdee60. Casco não soma vida/TR
+no recálculo das duas cópias; Estímulo tem texto que exclui desarmados,
+mas os cinco degraus de dados conferem. Corpo Amaldiçoado aceita Exaustão
+2 pela interface da Era e sofre o teto de movimento. Sete entradas de
+cada cópia restauradas. Outras onze Bênçãos têm revisão textual; falta
+ensaio nativo de montagem/eventos. Não há correção nova de produção.
+PR64 pronta para revisão, dois checks SUCCESS e CLEAN, sem merge.
+PR31 preservada em 765e3b2. Sol/High para próximos ensaios, Sol/Medium
+para revisão. Não alterar configurações automaticamente.
+
 # Equipamento validado · 05/11/2026
 
 PR64 sobre PR63. Leia o reteste no início de

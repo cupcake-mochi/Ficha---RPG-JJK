@@ -53,9 +53,12 @@ Envenenado. Nas duas cópias, Corpo Amaldiçoado e O48=2 resultam em O67
 de 4,5 m. Com O48=0, o movimento volta a 9 m. A fórmula de O67 considera
 Vigília, mas não contém dispensa pela Origem para esse teto.
 
-Foi uma escrita por API de um grau permitido pelo menu 0–3. Falta testar
-a edição real do grau e eventuais avisos/reversão pelo script antes de
-concluir que o usuário consegue manter esse estado pelo uso normal.
+Primeiro foi uma escrita por API de um grau permitido pelo menu 0–3.
+Depois, na Era, O48=2 foi digitado pela interface. O valor permaneceu,
+O49 mostrou desvantagem em perícias/ofícios e o teto de 4,5 m, e O67
+permaneceu em 4,5 m na releitura posterior. Não houve rejeição ou diálogo
+na edição. Esse ensaio real confirma que o estado incompatível chega
+aos cálculos, sem provar que o Google gerou Exaustão automaticamente.
 Não foi aplicada uma condição Envenenado, dano ou imunidade de combate.
 AK48 permanece livre nas leituras; ausência de texto automático nessa
 caixa, isoladamente, não prova que uma condição esteja sendo aplicada.
@@ -68,7 +71,11 @@ Exaustão. Não foram alteradas as fórmulas de produção nesta rodada.
 Evidência privada em `nuvem-b47/saidas/correcao-equipamento/reteste-20261105.json`,
 ignorada pelo Git. Ela contém também os snapshots e resultados.
 
-Ainda não há cobertura de todas as Bênçãos/imunidades: faltam Ímpeto,
+Os textos do catálogo das outras onze Bênçãos foram comparados com as
+seções de corpo, perseguição e combate da R66. Não apareceu outra
+divergência textual nessa leitura. Isso não testa montagem ou eventos.
+
+Ainda não há cobertura nativa de todas as Bênçãos/imunidades: faltam Ímpeto,
 Presilha, Faro, Sem Pegada, Vulto, Esteio, Antecipar, Represália, Sangue Frio,
 Campo e Assombro. Algumas descrevem resolução de mesa, não cálculos
 automáticos; comparar cada regra com texto, requisitos e efeitos existentes.
