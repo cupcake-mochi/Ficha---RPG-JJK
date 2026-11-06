@@ -4,6 +4,7 @@ O avaliador serve para diagnósticos locais; o produto usa as mesmas expressões
 como fórmulas comuns de Google Sheets, sem funções customizadas ou autorização.
 """
 import math
+import re
 from dataclasses import dataclass
 
 @dataclass(frozen=True)
@@ -79,6 +80,7 @@ def evaluate(e, env, catalog):
     if op=='SUM': return sum(map(number,a))
     if op=='MIN': return min(map(number,a))
     if op=='MAX': return max(map(number,a))
+    if op=='REGEXMATCH': return re.search(a[1],str(a[0])) is not None
     if op=='ROUNDUP': return math.ceil(number(a[0]))
     if op=='INT': return math.floor(number(a[0]))
     if op=='TEXTJOIN': return str(a[0]).join(str(v) for v in a[2:] if v!='')

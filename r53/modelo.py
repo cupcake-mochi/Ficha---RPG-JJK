@@ -61,9 +61,10 @@ def arvore(registro_livre=False):
     def peso(v): return IF(v.eq(1),l,IF(v.eq(2),m,IF(v.eq(3),p,0)))
     def estado(fam): return IF(FAMILY(fam).eq('Fechada'),1,0)
     def livre(fam): return IF(FAMILY(fam).eq('Livre'),1,0)
-    # A declaração de efeitos interrompíveis não pode incluir o preço de Precisão.
-    teto_fragil=SUM([IF(ref('nome_m'+str(i)).eq('Precisão'),0,ref('pago_m'+str(i)))
-                     for i in range(1,5)])
+    # Estas Melhorias só alteram a resolução, o alcance ou os alvos.
+    sem_efeito_interrompivel=r'^(?:Precisão|Passo|Empurrão|Longe|Mais Um|Rajada|Remate)$'
+    teto_fragil=SUM([IF(f('REGEXMATCH',ref('nome_m'+str(i)),sem_efeito_interrompivel),
+                        0,ref('pago_m'+str(i))) for i in range(1,5)])
     fragil_pago=ref('fragil_pago')
     def tem_melhoria(*nomes):
         return OR(*[ref('nome_m'+str(i)).eq(nome) for i in range(1,5) for nome in nomes])
