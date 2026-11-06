@@ -1,3 +1,17 @@
+# Instalação PR81 e auditoria de Frágil no catálogo · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-FRAGIL-CATALOGO-2026-11-06.md`.
+PR81 `bfe00a5` sem conflito e com dois checks aprovados. Era e Ciclo
+receberam 753 fórmulas e Código relido. Seis recuperações por edição
+real passaram, incluindo os créditos totais herdados da PR80.
+
+Em 19 cenários por cópia, 14 Melhorias ainda financiaram Frágil
+em montagens que terminavam na própria resolução. Guarda e Fica
+conservaram crédito legítimo. Relidas 624 células após repor as
+entradas, incluindo 539 de MONTAGENS, sem diferenças ou erros.
+PR81 instalada nas descartáveis. Sol/Medium para revisão e
+Sol/High para correção e ensaio.
+
 # Correção de Frágil com Melhorias instantâneas · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-FRAGIL-INSTANTANEO-2026-11-06.md`.
