@@ -17,12 +17,16 @@ function prepararCodigo(src) {
 }
 
 function prepararCelulas(snapshot, linhas = alvos.linhas) {
+  return planejarComBase(snapshot, linhas, alvos.formulas(), base);
+}
+
+function planejarComBase(snapshot, linhas, formulas, base) {
   const {locale, cells} = snapshot ?? {};
   if (!base[locale] || !Array.isArray(cells)) throw Error('Snapshot atual obrigatório');
   if (!linhas.length || new Set(linhas).size !== linhas.length ||
       !linhas.every(r => alvos.linhas.includes(r))) throw Error('Linhas de montagem inválidas');
 
-  const formulas = alvos.formulas().filter(d => linhas.includes(d.r));
+  formulas = formulas.filter(d => linhas.includes(d.r));
   const atuais = new Map();
   for (const x of cells) {
     const chave = x.r + ':' + x.c;
@@ -63,10 +67,9 @@ function prepararCelulas(snapshot, linhas = alvos.linhas) {
   };
 }
 
-if (require.main === module) {
-  const [codigo, celulas, destino] = process.argv.slice(2);
+function escreverEntrega([codigo, celulas, destino], prepararCodigo, prepararCelulas, script) {
   if (!codigo || !celulas || !destino || fs.existsSync(destino)) {
-    throw Error('Uso: node preparar_rajada_alvos.js Codigo-snapshot.gs celulas-snapshot.json pasta-nova');
+    throw Error('Uso: node '+script+' Codigo-snapshot.gs celulas-snapshot.json pasta-nova');
   }
   const anterior = fs.readFileSync(codigo, 'utf8');
   const snapshot = JSON.parse(fs.readFileSync(celulas, 'utf8'));
@@ -83,4 +86,8 @@ if (require.main === module) {
   }
 }
 
-module.exports = {prepararCodigo, prepararCelulas};
+if (require.main === module) {
+  escreverEntrega(process.argv.slice(2), prepararCodigo, prepararCelulas, 'preparar_rajada_alvos.js');
+}
+
+module.exports = {prepararCodigo, prepararCelulas, planejarComBase, escreverEntrega};

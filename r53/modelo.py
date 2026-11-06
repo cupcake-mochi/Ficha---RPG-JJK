@@ -60,6 +60,10 @@ def arvore(registro_livre=False):
     def peso(v): return IF(v.eq(1),l,IF(v.eq(2),m,IF(v.eq(3),p,0)))
     def estado(fam): return IF(FAMILY(fam).eq('Fechada'),1,0)
     def livre(fam): return IF(FAMILY(fam).eq('Livre'),1,0)
+    # A declaração de efeitos interrompíveis não pode incluir o preço de Precisão.
+    teto_fragil=SUM([IF(ref('nome_m'+str(i)).eq('Precisão'),0,ref('pago_m'+str(i)))
+                     for i in range(1,5)])
+    fragil_pago=ref('fragil_pago')
     for tipo,n in [('m',4),('r',2)]:
         for i in range(1,n+1):
             entrada=ref(tipo+str(i));fam=add('familia_'+tipo+str(i),LOOK(entrada,'familia'))
@@ -76,8 +80,9 @@ def arvore(registro_livre=False):
                 # Exigências já obrigatórias não financiam a própria montagem.
                 bloqueada=OR(tm,AND(lib,OR(nome.eq('Atrasar'),nome.eq('Parado'))),
                              AND(nome.eq('Tudo ou Nada'),sem_dano_aplicado))
-                valor=IF(ref('nome_'+tipo+str(i)).eq('Frágil'),MIN(l,MAX(0,ref('fragil_pago'))),valor)
-                add('retorno_'+tipo+str(i),IF(OR(entrada.eq(''),valido.eq(False),bloqueada),0,IF(zero,1,valor)))
+                valor=IF(nome.eq('Frágil'),MIN(IF(zero,1,l),MAX(0,fragil_pago),teto_fragil),
+                         IF(zero,1,valor))
+                add('retorno_'+tipo+str(i),IF(OR(entrada.eq(''),valido.eq(False),bloqueada),0,valor))
     qtdm=add('quantidade_melhorias',SUM([IF(ref('m'+str(i)).ne(''),1,0) for i in range(1,5)]))
     qtdr=add('quantidade_restricoes',SUM([IF(ref('r'+str(i)).ne(''),1,0) for i in range(1,3)]))
     aux=OR(npeca('Guarda').gt(0),npeca('Impulso').gt(0),npeca('Firmeza').gt(0))
@@ -247,11 +252,12 @@ def arvore(registro_livre=False):
     err(AND(npeca('Armado').gt(0),nres('Carregar').gt(0)),'Armado e Carregar incompatíveis')
     err(AND(OR(*[ref('m'+str(i)).eq('Concentrada') for i in range(1,5)]),OR(*[ref('m'+str(i)).eq('Duradoura') for i in range(1,5)])),'Escolha Concentrada ou Duradoura')
     err(AND(ref('dano'),OR(ref('cura'),ref('vt')),ref('dependencias').eq('')),'Registre independência ou dependência das parcelas da mescla')
-    err(AND(npeca('Fica').gt(0),OR(area.eq(False),ref('dano').eq(False))),'Fica exige área de dano')
+    err(AND(npeca('Fica').gt(0),OR(area.eq(False),dano.le(0))),'Fica exige área de dano')
     err(AND(npeca('Rajada').gt(0),OR(area,dano.le(0),False if registro_livre else ref('res_dano').ne('Ataque'))),'Rajada exige alvo individual com ataque e dados')
     err(AND(nres('Tudo ou Nada').gt(0),OR(sem_dano_aplicado,False if registro_livre else ref('res_dano').ne('TR'))),'Tudo ou Nada exige dano por TR')
-    err(AND(nres('Frágil').gt(0),ref('fragil_pago').le(0)),'Frágil exige Melhorias interrompíveis pagas')
-    err(ref('fragil_pago').gt(pago),'Frágil: gasto interrompível não pode exceder o gasto real')
+    fragil=nres('Frágil').gt(0)
+    err(AND(fragil,OR(fragil_pago.le(0),teto_fragil.le(0))),'Frágil exige Melhorias interrompíveis pagas')
+    err(fragil_pago.gt(IF(fragil,teto_fragil,pago)),'Frágil: gasto interrompível não pode exceder o gasto real')
     err(SUM([LOOK(ref('r'+str(i)),'frequencia') for i in [1,2]]).gt(1),'Uma Vez/Condicional/Aquecer: um grupo de frequência')
     err(AND(npeca('Toca a Alma').gt(0),OR(c.lt(3),False if registro_livre else ref('permite_alma').eq(False),lib)),'Toca a Alma exige Classe 3, Regra de alma e não aceita Liberação')
     err(AND(npeca('Inescapável').gt(0),OR(forma.ne('Projétil'),ref('dano').eq(False),qtdm.gt(1),qtdr.gt(0),tm,lib)),'Inescapável: só Projétil de dano, única Melhoria, sem Restrições ou máximas')
