@@ -1,3 +1,26 @@
+# Correção de Rajada e Tudo ou Nada · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-RAJADA-ALVOS-2026-11-06.md`.
+Base PR75 `af22de9`, geração `7b36806bc7e5c2fe`. Rajada em área
+ou sem dados pede revisão. Tudo ou Nada sem dano pede revisão e não
+devolve pontos em nenhuma posição. São 1.004 fórmulas em DADOS_R53.
+
+Passaram os cenários focais nas descartáveis Era e Ciclo. Foram relidas
+324 células por cópia após a reversão, sem diferenças ou erros. Editor
+e montagens preservados. Recuperação ensaiada localmente. Instalação
+integral e Apps Script ainda exigem ensaio nativo antes de promoção.
+Sol/Medium para revisão e Sol/High para instalação e ensaio.
+
+# Revisão PR75 e auditoria de alvos · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-RAJADA-ALVOS-2026-11-06.md`.
+PR75 `af22de9`, dois checks aprovados e sem conflito. Rajada é
+aceita em Explosão e em cura sem dano. Tudo ou Nada sem dano
+também é aceito e devolve 2 pontos. Confirmado nas descartáveis
+Era e Ciclo, com nove cenários e 319 células relidas por cópia.
+Diagnóstico no ramo `codex/auditoria-rajada-alvos-20261106`. Sol/Medium
+para revisão e Sol/High para correção ou ensaio nativo.
+
 # Carregar, Armado e duração de Guarda · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-TEMPO-FEITICOS-2026-11-06.md`.

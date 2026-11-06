@@ -14,10 +14,11 @@ t(()=>assert.equal(crypto.createHash('sha256').update(JSON.stringify(conjuracao.
 const indexes=new Map(c.ABAS.map(a=>[a.nome,{spec:a,values:new Map(a.vals.map(v=>[v[0]+','+v[1],v]))}]));
 const v=(aba,a1)=>{const m=/^([A-Z]+)(\d+)$/.exec(a1),col=[...m[1]].reduce((a,x)=>26*a+x.charCodeAt(0)-64,0),r=+m[2],spec=indexes.get(aba).spec,direct=indexes.get(aba).values.get(r+','+col);if(direct)return aba==='ANALISE'&&col===2&&direct[2]==="'0"?'0':direct[2];const block=(spec.abaixo||[]).find(b=>b[0]<r&&b[2]>=r&&b[1]<=col&&b[3]>=col);if(block){const src=indexes.get(aba).values.get(block[0]+','+col);if(src)return require('../../medidas/sheets-de-mentira').deslocaFormula(src[2],r-block[0]);}return null;};
 const posterior = new Map(classeZero.plano.map(d => [d.aba+'!'+col(d.c)+d.r,d]));
+const rajada = new Map(require('../rajada_alvos').formulas().map(d => [d.aba+'!'+col(d.c)+d.r,d.depois]));
 for(const x of p.p.cells){
  const delta=posterior.get(x.aba+'!'+x.a1);
  if(delta)t(()=>assert.equal(delta.antes,x.depois));
- t(()=>assert.equal(p.norm(v(x.aba,x.a1)),p.norm(delta?.depois??x.depois),x.aba+'!'+x.a1));
+ t(()=>assert.equal(p.norm(v(x.aba,x.a1)),p.norm(rajada.get(x.aba+'!'+x.a1)??delta?.depois??x.depois),x.aba+'!'+x.a1));
 }
 t(()=>assert.equal(v('DADOS_R53','A251'),'r53.editor.gid'));
 for(const g of editor.contextos.slice(249)){
@@ -78,8 +79,8 @@ t(()=>assert.equal(writes.length,0));
 writes=[];t(()=>assert.equal(b.r53PraticaRestaurar_(event('DADOS_R53',2,160,3,161)),false));
 t(()=>assert.deepEqual(writes.map(w=>[w.r,w.c,w.h,w.w]),[[2,160,2,1]]));
 t(()=>assert.equal(writes[0].x[0][0],formulaLocal(v('DADOS_R53','FD2'),'pt_BR')));
-t(()=>assert.equal(loads,1));t(()=>assert.equal(rt.gerar(),fs.readFileSync('apps-script/PraticaCotidiana.gs','utf8')));
+t(()=>assert.equal(loads,2));t(()=>assert.equal(rt.gerar(),fs.readFileSync('apps-script/PraticaCotidiana.gs','utf8')));
 // Optional full historical model comparison, using a private baseline without publishing it.
-if(process.argv[2]){const old=JSON.parse(fs.readFileSync(process.argv[2]));for(const a of old){const cur=c.ABAS.find(b=>b.nome===a.nome),allowed=new Set(p.p.cells.filter(x=>x.aba===a.nome).map(x=>x.a1));for(const cell of a.vals){const a1=col(cell[1])+cell[0];if(!allowed.has(a1))t(()=>assert.equal(v(a.nome,a1),a.nome==='ANALISE'&&cell[1]===2&&cell[2]==="'0"?'0':cell[2],a.nome+'!'+a1));}}}
+if(process.argv[2]){const old=JSON.parse(fs.readFileSync(process.argv[2]));for(const a of old){const cur=c.ABAS.find(b=>b.nome===a.nome),allowed=new Set(p.p.cells.filter(x=>x.aba===a.nome).map(x=>x.a1));for(const cell of a.vals){const a1=col(cell[1])+cell[0];if(!allowed.has(a1)&&!rajada.has(a.nome+'!'+a1))t(()=>assert.equal(v(a.nome,a1),a.nome==='ANALISE'&&cell[1]===2&&cell[2]==="'0"?'0':cell[2],a.nome+'!'+a1));}}}
 function col(n){let s='';for(;n;n=Math.floor((n-1)/26))s=String.fromCharCode(65+(n-1)%26)+s;return s;}
 console.log(JSON.stringify({resultado:'OK',verificacoes:checks,contextosAntigosPreservados:249,contextosNovos:2,escopo:'estrutura, transporte e restauração em VM; Google separado'}));

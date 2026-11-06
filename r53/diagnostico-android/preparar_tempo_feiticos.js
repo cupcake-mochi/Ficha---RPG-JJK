@@ -59,7 +59,7 @@ function prepararCodigo(src) {
   hashes[1] = editorProposto().hash;
   let novo = trocar(src, hashLine[0], 'var R53_LIVRE_HASHES_=' + JSON.stringify(hashes) + ';');
   novo = trocar(novo, anchor, anchor + ' r53AjustarTempoFeiticos_(R53_MODULO_.__estado().abas);');
-  novo = trocar(novo, runtime.gerar(undefined, []), runtime.gerar());
+  novo = trocar(novo, runtime.gerar(undefined, []), runtime.gerar(undefined, undefined, []));
   return novo + '\n' + molde();
 }
 
