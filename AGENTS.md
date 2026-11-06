@@ -1,3 +1,16 @@
+# Correção de Sem Volta e devoluções de Classe 0 · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-SEM-VOLTA-CLASSE-ZERO-2026-11-06.md`.
+Base PR77 `fa2acaa`, geração `0e12da1540182de5`. Sem Volta perde a
+devolução quando há efeito garantido. Na Classe 0, Sobrecusto e
+Queima-Roupa em Projétil não devolvem pontos. São 753 fórmulas.
+
+Passaram 18 cenários por descartável. Entradas e fórmulas de teste
+repostas, com 622 células relidas sem diferença por cópia, incluindo
+539 posições de MONTAGENS. PR77 nas descartáveis. Instalação integral
+e recuperação por edição real da nova geração ainda requerem ensaio.
+Sol/Medium para revisão e Sol/High para instalação e ensaio.
+
 # Instalação PR77 e auditoria de Restrições · 06/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-SEM-VOLTA-CLASSE-ZERO-2026-11-06.md`.

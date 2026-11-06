@@ -242,8 +242,9 @@ def aplica(layout,tr):
             rr=g['campos'][invariant];pool=R.ref(R.EDITOR,f'$B${rr}:${L(nc+1)}${rr}')
             changes.append(f'IF(SUMPRODUCT(({prepared}=TRUE)*({pool}<>INDEX({pool},1,MATCH(TRUE,{prepared},0))))>0,"{invariant}","")')
         dc[tr['colunas']['identidade_ampliacao']+str(row)][1]='=IFERROR(TEXTJOIN(" · ",TRUE,'+','.join(changes)+'),"")' if nc>1 else '=""'
-        ff=M.formulas(row,tr['colunas'],tr['lookup_range'],familias_range=tr['familias_range'],familias_coluna=f'IFERROR(VALUE(REGEXEXTRACT(A{row},"^entidade[.]([0-9]+)[.]"))+2,2)',formas_range=tr['formas_range'],registro_livre=True,saidas={"avisos","valida"})
-        for k in ['avisos','valida']:
+        ff=M.formulas(row,tr['colunas'],tr['lookup_range'],familias_range=tr['familias_range'],familias_coluna=f'IFERROR(VALUE(REGEXEXTRACT(A{row},"^entidade[.]([0-9]+)[.]"))+2,2)',formas_range=tr['formas_range'],registro_livre=True,saidas={"avisos","valida","retorno_r1","retorno_r2"},
+                      descricao=R.ref(owner,cel['como']) if cel.get('como') else '""')
+        for k in ('retorno_r1','retorno_r2','avisos','valida'):
             value=ff[k]
             if k=='avisos':value='=TEXTJOIN(" · ",TRUE,'+value[1:]+','+tr['colunas']['avisos_funcoes']+str(row)+',IF('+data('identidade_ampliacao')+'<>"","Ampliação altera funções ou peças: "&'+data('identidade_ampliacao')+',""))'
             dc[tr['colunas'][k]+str(row)][1]=f'=IF({tr["colunas"]["nome"]}{row}="",'+('FALSE' if k=='valida' else '""')+','+value[1:]+')'

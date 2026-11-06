@@ -32,4 +32,4 @@ if (require.main === module) {
   escreverEntrega(process.argv.slice(2), prepararCodigo, prepararCelulas, 'preparar_fragil_fica.js');
 }
 
-module.exports = {colunas, formulas, prepararCodigo, prepararCelulas};
+module.exports = {colunas, formulas, blocoMontagens, prepararCodigo, prepararCelulas};
