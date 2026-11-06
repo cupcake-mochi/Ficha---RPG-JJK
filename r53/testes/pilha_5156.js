@@ -17,6 +17,7 @@ const fontes={};vm.createContext(fontes);vm.runInContext(require('../../medidas/
 require('../diagnostico-android/preparar_reserva_bolsa').reverterModelo(fontes.ABAS);
 require('../diagnostico-android/preparar_origens_recursos').reverterModelo(fontes.ABAS);
 const revisoes = require('../diagnostico-android/integridade_movimento_plano.json');
+const conjuracao = require('../diagnostico-android/conjuracao_integridade_plano.json');
 for (const d of p.plano) {
  const a = fontes.ABAS.find(x => x.nome === d.aba);
  const atual = d.addr ? a.notas.find(x => x[0] === d.addr)[1] :
@@ -25,7 +26,10 @@ for (const d of p.plano) {
  if (revisao) t(() => assert.equal(revisao.antes, d.depois));
  const posterior = require('../diagnostico-android/bencaos_imunidades_plano.json').find(x => x.aba === d.aba && (d.addr ? x.addr === d.addr : x.r === d.r && x.c === d.c));
  if (posterior) t(() => assert.equal(posterior.antes, revisao ? revisao.depois : d.depois));
- t(() => assert.equal(atual, posterior ? posterior.depois : revisao ? revisao.depois : d.depois));
+ const antesConjuracao = posterior ? posterior.depois : revisao ? revisao.depois : d.depois;
+ const ultima = !d.addr && conjuracao.find(x => x.aba === d.aba && x.r === d.r && x.c === d.c);
+ if (ultima) t(() => assert.equal(ultima.antes, antesConjuracao));
+ t(() => assert.equal(atual, ultima ? ultima.depois : antesConjuracao));
 }
 for(const locale of ['pt_BR','en_US']){
  const snapshot={locale,cells:p.plano.map(d=>({...d,sheetId:['FICHA','DADOS_CUSTOM','DADOS','FICHA AMALDIÇOADA'].indexOf(d.aba),[d.addr?'note':'value']:p.formulaLocal(d.antes,locale)}))};

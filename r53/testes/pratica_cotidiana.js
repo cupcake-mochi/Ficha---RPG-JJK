@@ -4,7 +4,8 @@ const p=require('../diagnostico-android/preparar_pratica_cotidiana'),rt=require(
 let checks=0;const t=f=>{f();checks++;},clone=x=>JSON.parse(JSON.stringify(x));
 const c={};vm.runInNewContext(require('../../medidas/carregar-ficha').fontes(),c);t(()=>assert.equal(c.SOBRAS_.length,0));
 const editor=c.R53_EDITOR_;t(()=>assert.equal(editor.contextos.length,251));
-t(()=>assert.equal(crypto.createHash('sha256').update(JSON.stringify(editor.contextos.slice(0,249))).digest('hex'),'09d6c58b762db5290f8ac12807d9c631e6840449b104873d6cf5100c3918c9a6'));
+const conjuracao=require('../diagnostico-android/preparar_conjuracao_integridade');
+t(()=>assert.equal(crypto.createHash('sha256').update(JSON.stringify(conjuracao.reverterEditor(editor).contextos.slice(0,249))).digest('hex'),'09d6c58b762db5290f8ac12807d9c631e6840449b104873d6cf5100c3918c9a6'));
 const indexes=new Map(c.ABAS.map(a=>[a.nome,{spec:a,values:new Map(a.vals.map(v=>[v[0]+','+v[1],v]))}]));
 const v=(aba,a1)=>{const m=/^([A-Z]+)(\d+)$/.exec(a1),col=[...m[1]].reduce((a,x)=>26*a+x.charCodeAt(0)-64,0),r=+m[2],spec=indexes.get(aba).spec,direct=indexes.get(aba).values.get(r+','+col);if(direct)return aba==='ANALISE'&&col===2&&direct[2]==="'0"?'0':direct[2];const block=(spec.abaixo||[]).find(b=>b[0]<r&&b[2]>=r&&b[1]<=col&&b[3]>=col);if(block){const src=indexes.get(aba).values.get(block[0]+','+col);if(src)return require('../../medidas/sheets-de-mentira').deslocaFormula(src[2],r-block[0]);}return null;};
 for(const x of p.p.cells)t(()=>assert.equal(p.norm(v(x.aba,x.a1)),p.norm(x.depois),x.aba+'!'+x.a1));

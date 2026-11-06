@@ -420,6 +420,13 @@ import editor_r53
 editor_r53.aplica(LAYOUT, _R53)
 import pratica_cotidiana
 _PRATICA = pratica_cotidiana.aplica(LAYOUT, _R53, _AN)
+import conjuracao_integridade
+_CONJURACAO = conjuracao_integridade.aplica(LAYOUT, _R53)
+if '--plano-conjuracao' in sys.argv:
+    _destino = sys.argv[sys.argv.index('--plano-conjuracao')+1]
+    with open(_destino, 'w', encoding='utf-8') as _f:
+        json.dump(_CONJURACAO, _f, ensure_ascii=False, indent=2)
+        _f.write('\n')
 if '--exportar-r53' in sys.argv:
     editor_r53.escrever(_R53, os.path.join(AQUI, '..', 'r53', 'saidas', 'EditorR53.gs'))
     _r53_destino=sys.argv[sys.argv.index('--exportar-r53')+1]
