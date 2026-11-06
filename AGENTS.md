@@ -1,3 +1,15 @@
+# Revisão PR73 e auditoria de benefícios · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-BENEFICIOS-ALCANCE-2026-11-06.md`.
+PR73 `868ebb8`, dois checks aprovados e sem conflito.
+Nas descartáveis com a PR73, Guarda, Impulso e Firmeza sem dano
+mostram 18 m em vez de 9 m na Classe 3. Com dano, Guarda e Longe,
+o resumo omite os 18 m de benefício e mostra os 36 m de dano.
+Os controles de Longe e Maior passaram. Repostas 13 entradas e
+relidas 324 células por cópia sem diferenças. Diagnóstico no ramo
+`codex/auditoria-beneficios-alcance-20261106`. Sol/Medium para revisão
+e Sol/High para correção ou ensaio nativo.
+
 # Alcance de cura e PV temporários · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-ALCANCE-CURA-2026-11-06.md`.
