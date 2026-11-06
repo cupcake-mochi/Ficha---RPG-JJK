@@ -1,3 +1,18 @@
+# Instalação PR78 e auditoria de devoluções incompatíveis · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-DEVOLUCOES-INCOMPATIVEIS-2026-11-06.md`.
+PR78 `262e264` com dois checks aprovados. Era e Ciclo receberam
+753 fórmulas e Código relido. Seis recuperações por edição real
+passaram. Uma tentativa no Ciclo durante os lotes excedeu 30 s.
+A repetição após a instalação passou. DADOS_R53 voltou a ficar oculta.
+
+Em 16 cenários por cópia, Queima-Roupa devolveu pontos em Toque,
+Aura, uso só em si e com Longe. Atrasar + Rápido, Parado + Reação
+e Carregar + Armado também devolveram pontos apesar do aviso.
+A releitura após o ensaio não encontrou diferenças em 622 células
+por cópia, incluindo 539 posições de MONTAGENS. PR78 instalada
+nas descartáveis. Sol/Medium para revisão e Sol/High para ensaio.
+
 # Correção de Sem Volta e devoluções de Classe 0 · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-SEM-VOLTA-CLASSE-ZERO-2026-11-06.md`.
