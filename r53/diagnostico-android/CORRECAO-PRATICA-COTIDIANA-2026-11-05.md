@@ -25,7 +25,9 @@ e indica que as vagas exigem revisão.
   91 chaves no fim, das linhas 18410 a 18500.
 - A recuperação consulta os dados das duas vagas somente quando uma
   edição toca seus alvos. Colagens com entradas e fórmulas recuperam
-  as fórmulas e deixam o editor gravar a montagem. A restauração de
+  as fórmulas e deixam o editor gravar a montagem. O atalho de edição
+  mantém a assinatura do módulo antigo e recebe a assinatura do editor
+  atualizado e os dois retângulos novos. A restauração de
   literais usa escape para preservar apóstrofos e manter `0` como texto.
 - O mapa de aparência incorpora as áreas novas e a indicação. O ensaio
   visual mostrou o cabeçalho `USAR` no bloco novo. O cabeçalho antigo
@@ -33,7 +35,7 @@ e indica que as vagas exigem revisão.
 
 ## Validação
 
-- 214.408 verificações de paridade e transporte, incluindo os 249
+- 214.429 verificações de paridade e transporte, incluindo os 249
   contextos anteriores. Os 94 checks do smoke local passaram, com
   pacote integral, recuperação e preflight. Geração `c09878807ae4a15e`,
   zero SOBRAS.
@@ -45,6 +47,9 @@ e indica que as vagas exigem revisão.
   fórmulas, registros e literais. Uma colagem recuperou quatro fórmulas
   e salvou os dois cartões. A mudança de Projétil para Toque persistiu
   em MONTAGENS e alterou o alcance de 9 m para 1,5 m nas duas cópias.
+  Duas fórmulas adicionais voltaram após apagar `D328:T330` nas duas
+  cópias com o código final. O título da Liberação precisou de escrita
+  separada da indicação nova para voltar nessa edição.
 - Uma versão intermediária restaurou `0` como número. Repetição com o
   código final confirmou texto nas duas cópias. Uma navegação do ensaio
   na Era também atingiu seis células fora do alvo em DADOS_R53. Elas
@@ -80,7 +85,7 @@ validação foi feita apenas nas duas descartáveis, sem executar
 na ficha do jogador ou alteração na PR31.
 
 Código incremental salvo e relido
-`279856ca058ca7eb6f774879102552c174b6b00f85b1fccc09667d9cbf8107ec`.
+`50f3aa55662adc7251a9be91cae4aace316c84ec3df3f53af471c841094b633b`.
 Editor relido
 `98413975988095b99da8f260c7295b09d00f7f40ae85b4f14ec86f9e88ed6844`.
 Evidências privadas em `nuvem-b47/saidas/correcao-pratica-cotidiana/`.

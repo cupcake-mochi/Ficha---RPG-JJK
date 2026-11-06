@@ -7,13 +7,15 @@ recebe 91 chaves no fim, sem mudar esquema. Geração c09878807ae4a15e.
 
 Nas novas cópias descartáveis de Era e Ciclo passaram dez cenários de
 cálculo por cópia, 17 recuperações de células por edição real, colagem
-com persistência dos dois cartões e mudança de Forma. Zero restaurado
+com persistência dos dois cartões e mudança de Forma. As duas fórmulas
+da fronteira D328:T330 também voltaram por edição real. O atalho de
+edições comuns conserva o módulo e reconhece o novo editor. Zero restaurado
 como texto no código final e origem com apóstrofo íntegro. Vinte entradas
 de teste restauradas por cópia, limpeza da memória concluída e 1.750
 células relidas por cópia sem divergência ou erro nos intervalos.
-214.408 verificações locais e smoke de 94 checks passaram.
+214.429 verificações locais e smoke de 94 checks passaram.
 
-Instalação incremental ensaiada sobre a PR69, com código final 279856ca…
+Instalação incremental ensaiada sobre a PR69, com código final 50f3aa55…
 e editor 98413975… relidos. Snapshots privados em
 `nuvem-b47/saidas/correcao-pratica-cotidiana/`. Pacote integral gerado
 e testado à parte. Alterações nativas restritas às duas descartáveis.

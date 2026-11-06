@@ -4,11 +4,28 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const p=require('./pratica_cotidiana_plano.json'),runtime=require('../pratica_cotidiana_runtime');
 const {formulaLocal}=require('./preparar_pilha_5156');
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
+function editorProposto(){
+ const raw=fs.readFileSync(path.join(__dirname,'../../apps-script/EditorR53.gs'),'utf8');
+ return require('../editor_lazy').preparar(raw);
+}
+function atualizarAtalho(src,editor){
+ const hashLine=/^var R53_LIVRE_HASHES_=(\[[^\n]+\]);$/m.exec(src);
+ const areaLine=/^var R53_LIVRE_=(\{[^\n]+\});$/m.exec(src);
+ if(!hashLine||!areaLine)throw Error('Prática: atalho instalado divergente');
+ const hashes=JSON.parse(hashLine[1]),areas=JSON.parse(areaLine[1]);
+ const cards=JSON.parse(editor.json).contextos.slice(249);
+ if(cards.length!==2||cards.some(g=>g.aba!=='FICHA AMALDIÇOADA'))throw Error('Prática: novas áreas do atalho divergentes');
+ for(const card of cards)areas[card.aba].push(card.area_editor);
+ hashes[1]=editor.hash;
+ return src.replace(hashLine[0],'var R53_LIVRE_HASHES_='+JSON.stringify(hashes)+';')
+           .replace(areaLine[0],'var R53_LIVRE_='+JSON.stringify(areas)+';');
+}
 function prepararCodigo(src){
  if(sha(src)!==p.baseCodigoSha256)throw Error('Prática: exige Codigo.gs PR69 ensaiado');
  const anchor='if(r53RestaurarCargaOrigem_(e))return r53ContinuarPaletaPendente_(e);';
  if(src.split(anchor).length!==2)throw Error('Prática: entrada onEdit divergente');
  src=src.replace(anchor,'if(r53PraticaRestaurar_(e))return r53ContinuarPaletaPendente_(e);'+anchor);
+ src=atualizarAtalho(src,editorProposto());
  // O módulo antigo conserva seu catálogo; a edição efetiva usa o editor leve atualizado.
  const report='cartoes:s.editor.contextos.length,sobras:s.sobras';
  if(src.split(report).length!==2)throw Error('Prática: verificador divergente');
@@ -16,8 +33,7 @@ function prepararCodigo(src){
 }
 function prepararEditor(src){
  if(sha(src)!==p.baseEditorSha256)throw Error('Prática: editor instalado divergente');
- const raw=fs.readFileSync(path.join(__dirname,'../../apps-script/EditorR53.gs'),'utf8');
- const novo=require('../editor_lazy').preparar(raw).code;
+ const novo=editorProposto().code;
  // Nenhuma mudança no runtime ou nos 249 registros existentes é autorizada.
  const z=require('node:zlib'),read=s=>{const m=/Utilities.base64Decode\(("[^"]+")\)/.exec(s);if(!m)throw Error('Editor inválido');return JSON.parse(z.gunzipSync(Buffer.from(JSON.parse(m[1]),'base64')).toString());};
  const a=read(src),b=read(novo);if(b.contextos.length!==251||JSON.stringify(a.contextos)!==JSON.stringify(b.contextos.slice(0,249)))throw Error('Prática: contexto histórico alterado');
@@ -79,4 +95,4 @@ function planejarInstalacao(snapshot,metadata){
  }else throw Error('Snapshot do mapa de aparência obrigatório');
  return{requests};
 }
-module.exports={p,sha,prepararCodigo,prepararEditor,planejar,planejarInstalacao,norm};
+module.exports={p,sha,prepararCodigo,prepararEditor,planejar,planejarInstalacao,norm,atualizarAtalho};

@@ -25,12 +25,37 @@ for(const locale of ['pt_BR','en_US']){
  const missing=clone(s);missing.cells.pop();t(()=>assert.throws(()=>p.planejar(missing),/ausente/));
 }
 t(()=>assert.throws(()=>p.prepararCodigo('base errada'),/PR69/));t(()=>assert.throws(()=>p.prepararEditor('base errada'),/divergente/));
+const atalho=fs.readFileSync('r53/atalho_livre.gs','utf8'),leve=require('../editor_lazy').preparar(fs.readFileSync('apps-script/EditorR53.gs','utf8'));
+const extrair=(src,name)=>JSON.parse(src.split('var '+name+'=')[1].split(';\n')[0]);
+const hashesAntes=extrair(atalho,'R53_LIVRE_HASHES_');
+const atualizado=p.atualizarAtalho(atalho,leve);
+t(()=>assert.deepEqual(extrair(atualizado,'R53_LIVRE_HASHES_'),[hashesAntes[0],leve.hash]));
+const oldAreas=extrair(atalho,'R53_LIVRE_'),newAreas=extrair(atualizado,'R53_LIVRE_');
+for(const [aba,areas] of Object.entries(oldAreas))t(()=>assert.deepEqual(newAreas[aba].slice(0,areas.length),areas));
+const shortcut={PropertiesService:{getDocumentProperties:()=>({getProperty:()=>null})}};
+vm.createContext(shortcut);
+vm.runInContext('function r53Modulo_(){return '+JSON.stringify(hashesAntes[0])+';}\n'+leve.code+'\n'+atualizado,shortcut);
+t(()=>assert.equal(shortcut.r53LivreValido_(),true));
+const simples=(r,c)=>({range:{getRow:()=>r,getLastRow:()=>r,getColumn:()=>c,getLastColumn:()=>c,getSheet:()=>({getName:()=> 'FICHA AMALDIÇOADA'}),getA1Notation:()=>''}});
+t(()=>assert.equal(shortcut.r53EdicaoLivre_(simples(561,1)),true));
+t(()=>assert.equal(shortcut.r53EdicaoLivre_(simples(566,17)),false));
+t(()=>assert.equal(shortcut.r53EdicaoLivre_(simples(567,6)),false));
 // The cold common path must neither ask for a sheet nor decompress the payload.
 let loads=0,writes=[];const b={Utilities:{base64Decode:s=>Buffer.from(s,'base64'),newBlob:x=>x,ungzip:x=>{loads++;return{getDataAsString:()=>z.gunzipSync(x).toString()};}},SpreadsheetApp:{newRichTextValue:()=>({setText(x){this.x=x;return this;},build(){return{rich:this.x};}})},r53CargaFormulaNoIdioma_:formulaLocal};vm.createContext(b);vm.runInContext(rt.gerar(),b);
-function event(name,r,c,rr=r,cc=c){return{range:{getRow:()=>r,getLastRow:()=>rr,getColumn:()=>c,getLastColumn:()=>cc,getSheet:()=>({getName:()=>name,getParent:()=>({getSpreadsheetLocale:()=> 'pt_BR'}),getRange:(r,c,h,w)=>({setValues:x=>writes.push({name,r,c,h,w,x,rich:false}),setRichTextValues:x=>writes.push({name,r,c,h,w,x,rich:true})})})}};}
+function event(name,r,c,rr=r,cc=c){return{range:{getRow:()=>r,getLastRow:()=>rr,getColumn:()=>c,getLastColumn:()=>cc,getSheet:()=>({getName:()=>name,getParent:()=>({getSpreadsheetLocale:()=> 'pt_BR'}),getRange:(r,c,h,w)=>({setValues:x=>writes.push({name,r,c,h,w,x,rich:false}),setFormula:x=>writes.push({name,r,c,h:1,w:1,x:[[x]],rich:false}),setRichTextValues:x=>writes.push({name,r,c,h,w,x,rich:true})})})}};}
 for(const [r,c]of [[11,4],[566,4],[566,6],[566,17],[567,10]]){const e=event('FICHA AMALDIÇOADA',r,c);e.range.getSheet=()=>{throw Error('edição comum consultou a aba');};t(()=>assert.equal(b.r53PraticaRestaurar_(e),false));}t(()=>assert.equal(loads,0));
 t(()=>assert.equal(b.r53PraticaRestaurar_(event('FICHA AMALDIÇOADA',566,4,567,20)),false));t(()=>assert(writes.every(w=>[16,18].includes(w.c))));t(()=>assert.equal(writes.length,2));t(()=>assert.equal(loads,1));
 t(()=>assert.equal(b.r53PraticaRestaurar_(event('FICHA AMALDIÇOADA',566,16)),true));
+writes=[];t(()=>assert.equal(b.r53PraticaRestaurar_(event('FICHA AMALDIÇOADA',328,4,330,20)),true));
+t(()=>assert.deepEqual(writes.map(w=>[w.r,w.c,w.h,w.w]),[[328,4,1,1],[329,4,1,1]]));
+t(()=>assert.equal(writes[1].x[0][0],v('FICHA AMALDIÇOADA','D329')));
+writes=[];t(()=>assert.equal(b.r53PraticaRestaurar_(event('FICHA AMALDIÇOADA',329,4)),true));
+t(()=>assert.deepEqual(writes.map(w=>[w.r,w.c]),[[329,4]]));
+writes=[];t(()=>assert.equal(b.r53PraticaRestaurar_(event('FICHA AMALDIÇOADA',327,4,330,20)),false));
+writes=[];t(()=>assert.equal(b.r53PraticaRestaurar_(event('DADOS_CUSTOM',133,2,136,2)),false));
+t(()=>assert.deepEqual(writes.map(w=>[w.r,w.c,w.h,w.w]),[[134,2,3,1]]));
+writes=[];t(()=>assert.equal(b.r53PraticaRestaurar_(event('DADOS_R53',251,1,252,3)),false));
+t(()=>assert.deepEqual(writes.map(w=>[w.r,w.c,w.h,w.w]),[[252,1,1,3]]));
 writes=[];t(()=>assert.equal(b.r53PraticaRestaurar_(event('DADOS_R53',252,1,253,183)),true));t(()=>assert.equal(writes.length,1));t(()=>assert.equal(writes[0].x.length,2));t(()=>assert.equal(writes[0].x[0].length,183));t(()=>assert.equal(writes[0].x[0][0],'classe0.6'));t(()=>assert.equal(writes[0].x[1][0],'classe0.7'));t(()=>assert(writes[0].x[0].some(x=>typeof x==='string'&&x.includes('D566'))));
 const addr=rt.dados().find(x=>x[0]==='ANALISE'&&x[2]===3&&typeof x[3]==='string'&&x[3].startsWith("'"));writes=[];b.r53PraticaRestaurar_(event('ANALISE',addr[1],3));t(()=>assert.equal(writes[0].x[0][0].rich,"'"+addr[3]));
 const zero=rt.dados().find(x=>x[0]==='ANALISE'&&x[2]===2&&x[3]==='0');writes=[];b.r53PraticaRestaurar_(event('ANALISE',zero[1],2));t(()=>assert.equal(writes[0].x[0][0].rich,"'0"));

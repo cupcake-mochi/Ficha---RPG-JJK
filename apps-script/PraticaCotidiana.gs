@@ -4,17 +4,20 @@ function r53PraticaDados_(){if(!R53_PRATICA_CACHE_)R53_PRATICA_CACHE_=JSON.parse
 function r53PraticaRestaurar_(e){
  if(!e||!e.range)return false;var range=e.range,r1=range.getRow(),r2=range.getLastRow(),c1=range.getColumn(),c2=range.getLastColumn();
  function toca(a,b,c,d){return r1<=c&&r2>=a&&c1<=d&&c2>=b;}
- if(!(toca(10,221,10,221)||toca(134,2,136,2)||toca(252,1,253,183)||toca(328,4,328,4)||toca(563,4,565,20)||toca(566,16,567,16)||toca(566,18,567,20)||toca(18410,1,18500,4)))return false;
+ function dentro(a,b,c,d){return r1>=a&&r2<=c&&c1>=b&&c2<=d;}
+ if(!(toca(10,221,10,221)||toca(134,2,136,2)||toca(252,1,253,183)||toca(328,4,329,4)||toca(563,4,565,20)||toca(566,16,567,16)||toca(566,18,567,20)||toca(18410,1,18500,4)))return false;
  var sheet=range.getSheet(),name=sheet.getName();
  if(['FICHA AMALDIÇOADA','DADOS_AM','DADOS_CUSTOM','DADOS_R53','ANALISE'].indexOf(name)<0)return false;
  var data=r53PraticaDados_().filter(function(v){return v[0]===name&&v[1]>=r1&&v[1]<=r2&&v[2]>=c1&&v[2]<=c2;});
- if(!data.length)return false;
+ var fronteira=name==='FICHA AMALDIÇOADA'&&toca(328,4,329,4);
+ if(!data.length&&!fronteira)return false;
  var locale=sheet.getParent().getSpreadsheetLocale();
  function value(v){return typeof v==='string'&&v.charAt(0)==='='?r53CargaFormulaNoIdioma_(v,locale):v;}
  if(name==='DADOS_R53'){
   var a=Math.max(r1,252),b=Math.min(r2,253),l=Math.max(c1,1),h=Math.min(c2,183),rows=[];
   for(var r=a;r<=b;r++){var line=[];for(var c=l;c<=h;c++){var found=data.filter(function(v){return v[1]===r&&v[2]===c;});if(found.length!==1)throw Error('Prática: célula calculada ausente');line.push(value(found[0][3]));}rows.push(line);}
-  sheet.getRange(a,l,rows.length,h-l+1).setValues(rows);return true;
+  sheet.getRange(a,l,rows.length,h-l+1).setValues(rows);
+  return dentro(252,1,253,183);
  }
  // Agrupa por coluna e tipo: textos permanecem textos, inclusive apóstrofos e "0".
  data.sort(function(a,b){return a[2]-b[2]||a[1]-b[1];});var groups=[];
@@ -25,6 +28,14 @@ function r53PraticaRestaurar_(e){
   last.rows.push([val]);
  });
  groups.forEach(function(g){var cell=sheet.getRange(g.r,g.c,g.rows.length,1);if(g.rich)cell.setRichTextValues(g.rows);else cell.setValues(g.rows);});
- // Colagens que incluem entradas ainda precisam salvar as versões no editor.
- return !(name==='FICHA AMALDIÇOADA'&&r1<=567&&r2>=566&&(c1<=14&&c2>=4||c1<=17&&c2>=17));
+ // A indicação encosta na Liberação, que ocupa duas linhas mescladas.
+ // Recupera a âncora separadamente quando a edição toca um dos dois blocos.
+ if(fronteira)sheet.getRange(329,4).setFormula('=DADOS_AM!$KV$36');
+ // A rota curta só encerra eventos cobertos por esta correção.
+ // Entradas e fórmulas históricas da mesma colagem seguem o editor anterior.
+ if(name==='FICHA AMALDIÇOADA'){
+  return (fronteira&&dentro(328,4,330,20))||dentro(563,4,565,20)||
+         dentro(566,16,567,16)||dentro(566,18,567,20);
+ }
+ return data.length===(r2-r1+1)*(c2-c1+1);
 }
