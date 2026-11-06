@@ -1,3 +1,14 @@
+# Revisão PR72 e auditoria de feitiços de cura · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-ALCANCE-CURA-2026-11-06.md`.
+PR72 `b7c06b0`, dois checks aprovados e sem conflitos. Diagnóstico
+no ramo `codex/auditoria-alcance-cura-20261106`. Em nove cenários por
+descartável, a base Média de cura e a alocação de dados passaram.
+O resumo de Projétil exibe somente o alcance ofensivo, inclusive
+quando há apenas cura ou PV temporários. Dez entradas repostas e 243
+células relidas por cópia sem diferenças. Sol/Medium para revisão e
+Sol/High para correção ou ensaio nativo.
+
 # Correção de Classe 0 pronta para revisão · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-CLASSE-ZERO-2026-11-06.md`.
