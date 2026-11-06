@@ -1,3 +1,32 @@
+# Correção de devoluções incompatíveis · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-DEVOLUCOES-INCOMPATIVEIS-2026-11-06.md`.
+Base PR78 `262e264`, geração `d83d3c969a6469cb`. As sete combinações
+de Queima-Roupa e Tempo perdem apenas a devolução indevida nas
+duas vagas. São 502 fórmulas nas colunas CK e CP.
+
+Passaram 20 cenários por descartável. Quatro fórmulas focais e
+21 entradas repostas por cópia. Relidas 622 células sem diferenças,
+incluindo 539 posições de MONTAGENS. A PR78 segue instalada nas
+descartáveis. Smoke e transporte passaram. Instalação integral e
+recuperação por edição real da nova geração ainda requerem ensaio.
+Sol/Medium para revisão e Sol/High para instalação e ensaio.
+
+# Instalação PR78 e auditoria de devoluções incompatíveis · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-DEVOLUCOES-INCOMPATIVEIS-2026-11-06.md`.
+PR78 `262e264` com dois checks aprovados. Era e Ciclo receberam
+753 fórmulas e Código relido. Seis recuperações por edição real
+passaram. Uma tentativa no Ciclo durante os lotes excedeu 30 s.
+A repetição após a instalação passou. DADOS_R53 voltou a ficar oculta.
+
+Em 16 cenários por cópia, Queima-Roupa devolveu pontos em Toque,
+Aura, uso só em si e com Longe. Atrasar + Rápido, Parado + Reação
+e Carregar + Armado também devolveram pontos apesar do aviso.
+A releitura após o ensaio não encontrou diferenças em 622 células
+por cópia, incluindo 539 posições de MONTAGENS. PR78 instalada
+nas descartáveis. Sol/Medium para revisão e Sol/High para ensaio.
+
 # Correção de Sem Volta e devoluções de Classe 0 · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-SEM-VOLTA-CLASSE-ZERO-2026-11-06.md`.
