@@ -32,6 +32,7 @@ def x(v): return v if isinstance(v,X) else X('lit',(v,))
 def ref(k): return X('ref',(k,))
 def f(op,*args): return X(op,tuple(x(a) for a in args))
 def IF(c,a,b=0): return f('IF',c,a,b)
+def LET(nome,valor,corpo): return X('let',(nome,x(valor),x(corpo)))
 def AND(*v): return f('AND',*v) if v else x(True)
 def OR(*v): return f('OR',*v) if v else x(False)
 def SUM(v): return f('SUM',*v) if v else x(0)
@@ -55,6 +56,9 @@ def evaluate(e, env, catalog):
     if op=='lit': return e.args[0]
     if op=='ref': return env.get(e.args[0],0)
     if op=='IF': return evaluate(e.args[1] if evaluate(e.args[0],env,catalog) else e.args[2],env,catalog)
+    if op=='let':
+        nome,valor,corpo=e.args
+        return evaluate(corpo,{**env,nome:evaluate(valor,env,catalog)},catalog)
     if op=='family':
         name=evaluate(e.args[0],env,catalog)
         return 'Neutra' if not name else env.get('fam_'+name,env.get('_familias',{}).get(name,'Fechada'))
@@ -96,6 +100,11 @@ def native(e, refs, lookup_range, lookup_fields, separator=','):
         if v is None: return '""'
         return str(v).replace('.', ',') if separator == ';' else str(v)
     if op=='ref': return refs[e.args[0]]
+    if op=='let':
+        nome,valor,corpo=e.args
+        argumentos=[nome,native(valor,refs,lookup_range,lookup_fields,separator),
+                    native(corpo,{**refs,nome:nome},lookup_range,lookup_fields,separator)]
+        return 'LET('+separator.join(argumentos)+')'
     if op=='form':
         value=native(e.args[0],refs,lookup_range,lookup_fields,separator)
         empty='0' if e.args[1] in ('peso','classe_0','coletiva') else '""'

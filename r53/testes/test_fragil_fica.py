@@ -57,6 +57,47 @@ class FragilFica(unittest.TestCase):
                     if not valido:
                         self.assertIn('Frágil: gasto interrompível não pode exceder o gasto real', r['avisos'])
 
+    def test_catalogo_sem_efeito_em_andamento_nao_financia_fragil(self):
+        casos = ('Salto', 'Estilhaço', 'Quebra Coisa', 'Rasga Escudo', 'Rápido',
+                 'Reação', 'Silencioso', 'Sem Ver', 'Fura', 'Sem Cobertura', 'Perseguir',
+                 'Maior · um degrau', 'Maior · três degraus', 'Escolher', 'Contorno')
+        for livre in (False, True):
+            for slot in (1, 2):
+                for melhoria in casos:
+                    with self.subTest(livre=livre, vaga=slot, melhoria=melhoria):
+                        forma = 'Cone' if melhoria.startswith('Maior') or melhoria in ('Escolher', 'Contorno') else 'Projétil'
+                        r = self.avaliar(livre, m2=melhoria, forma=forma, fragil_pago=2,
+                                         **{f'r{slot}': 'Frágil', f'r{slot}_valida': True})
+                        self.assertFalse(r['valida'])
+                        self.assertEqual(r[f'retorno_r{slot}'], 0)
+                        self.assertIn('Frágil exige Melhorias interrompíveis pagas', r['avisos'])
+
+    def test_ajuste_de_area_conserva_declaracao_com_fica(self):
+        for livre in (False, True):
+            for melhoria, gasto in (('Maior · um degrau', 5), ('Escolher', 6), ('Contorno', 5)):
+                for outra, valido, credito in (('Fica', True, 2), ('Estilhaço', False, 0)):
+                    with self.subTest(livre=livre, melhoria=melhoria, outra=outra):
+                        r = self.avaliar(livre, forma='Cone', m1=melhoria, m2=outra,
+                                         fragil_pago=gasto if valido else 2,
+                                         r1='Frágil', r1_valida=True)
+                        self.assertEqual(r['valida'], valido, r['avisos'])
+                        self.assertEqual(r['retorno_r1'], credito)
+
+    def test_ajuste_de_area_preserva_terreno_e_efeito_proprio(self):
+        for livre in (False, True):
+            terreno = self.avaliar(livre, forma='Cone', m1='Terreno · terreno difícil', m2='Maior · um degrau',
+                                    fragil_pago=4, r1='Frágil', r1_valida=True)
+            self.assertTrue(terreno['valida'], terreno['avisos'])
+            self.assertEqual(terreno['retorno_r1'], 2)
+            opcao = dict(nome='Efeito Próprio', tipo='melhorias', familia='Área',
+                         peso=1, repeticoes=1, classe_minima=0, cadastro_valido=1,
+                         rotulo_base='Área de teste')
+            propria = self.avaliar(livre, forma='Cone', m1='Área de teste', m2='Contorno',
+                                    catalogo_extra={'Área de teste': opcao}, fragil_pago=4,
+                                    r2='Frágil', r2_valida=True)
+            self.assertTrue(propria['valida'], propria['avisos'])
+            self.assertEqual(propria['retorno_r2'], 2)
+
     def test_efeito_proprio_pode_manter_gasto_declarado(self):
         for livre in (False, True):
             for nome, credito, valido in (('Efeito Próprio', 2, True), ('Passo', 0, False)):

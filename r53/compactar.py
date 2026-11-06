@@ -31,7 +31,8 @@ def compartilhar_buscas(expr, refs, lookup_range, fields, separator=','):
     """Retorna vínculos LET e árvore; a emissão antiga fica se não diminuir."""
     counts = Counter()
     def visit(e):
-        if not isinstance(e, X):
+        # Uma busca dentro de LET pode depender de um nome local.
+        if not isinstance(e, X) or e.op == 'let':
             return
         if e.op == 'lookup' and e.args[0].op in ('ref', 'lit'):
             counts[e] += 1
@@ -60,7 +61,7 @@ def compartilhar_buscas(expr, refs, lookup_range, fields, separator=','):
         bindings.append((name, node))
         replacements[node] = ref(name)
     def replace(e):
-        if not isinstance(e, X):
+        if not isinstance(e, X) or e.op == 'let':
             return e
         if e in replacements:
             return replacements[e]
