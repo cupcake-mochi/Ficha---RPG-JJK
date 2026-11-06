@@ -435,12 +435,14 @@ if '--plano-classe-zero' in sys.argv:
         json.dump(_CLASSE_ZERO, _f, ensure_ascii=False, indent=2)
         _f.write('\n')
 import alcance_cura
-_ALCANCE_CURA = alcance_cura.aplica(LAYOUT, _R53)
-if '--plano-alcance-cura' in sys.argv:
-    _destino = sys.argv[sys.argv.index('--plano-alcance-cura')+1]
-    with open(_destino, 'w', encoding='utf-8') as _f:
-        json.dump(_ALCANCE_CURA, _f, ensure_ascii=False, indent=2)
-        _f.write('\n')
+_ALCANCE_CURA, _ALCANCE_BENEFICIOS = alcance_cura.aplica(LAYOUT, _R53)
+for _opcao, _plano in (('--plano-alcance-cura', _ALCANCE_CURA),
+                       ('--plano-alcance-beneficios', _ALCANCE_BENEFICIOS)):
+    if _opcao in sys.argv:
+        _destino = sys.argv[sys.argv.index(_opcao)+1]
+        with open(_destino, 'w', encoding='utf-8') as _f:
+            json.dump(_plano, _f, ensure_ascii=False, indent=2)
+            _f.write('\n')
 if '--exportar-r53' in sys.argv:
     editor_r53.escrever(_R53, os.path.join(AQUI, '..', 'r53', 'saidas', 'EditorR53.gs'))
     _r53_destino=sys.argv[sys.argv.index('--exportar-r53')+1]

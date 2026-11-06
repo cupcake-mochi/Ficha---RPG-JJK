@@ -254,7 +254,7 @@ var VALORES_R53_DADOS_2_ = [
       [43,181,"=AND(IF(B43=\"\",FALSE,(FX43=\"\")),NOT(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10))",0],[43,182,"=\"\"",0],[43,183,"=TEXTJOIN(\" · \",TRUE,\"\",IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Limite de feitiços Classe 0 excedido\",\"\"))",0]
     ],
     "notas":[],
-    "geracao":"a00e1dcd00966e8b",
+    "geracao":"79a9235ee3d37edc",
     "arquivo":"R53Dados2.gs"
   }
 ];

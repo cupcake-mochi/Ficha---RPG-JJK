@@ -1,3 +1,16 @@
+# Alcance de Guarda, Impulso e Firmeza · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ALCANCE-BENEFICIOS-2026-11-06.md`.
+Ramo `codex/alcance-beneficios-20261106`, base PR73 `868ebb8`.
+São 36 resumos dos feitiços comuns, geração `79a9235ee3d37edc`.
+
+Nas descartáveis Era e Ciclo passaram dez cenários por cópia e a
+recuperação de D81 por edição real nas duas. Repostas 13 entradas
+por cópia. Das 359 células relidas, incluindo 259 posições de
+MONTAGENS, só as 36 fórmulas previstas diferiram. Promoção exige
+snapshot atualizado e os arquivos ensaiados da PR73. Sol/Medium
+para revisão.
+
 # Revisão PR73 e auditoria de benefícios · 06/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-BENEFICIOS-ALCANCE-2026-11-06.md`.
