@@ -1,3 +1,28 @@
+# Carregar, Armado e duração de Guarda · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-TEMPO-FEITICOS-2026-11-06.md`.
+Ramo `codex/tempo-feiticos-20261106`, base PR74 `758c571`.
+São 108 fórmulas nos cartões comuns e em suas descrições internas.
+Geração `8b5cc6b4e78f44af`.
+
+Passaram 14 cenários em cada descartável e três recuperações por
+edição real. As 13 entradas foram repostas e 426 células relidas por
+cópia, com apenas as 108 alterações previstas. Promoção exige
+snapshot atualizado e arquivos ensaiados da PR74. Sol/Medium para
+revisão.
+
+# Revisão PR74 e auditoria de Tempo · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-TEMPO-FEITICOS-2026-11-06.md`.
+PR74 `758c571`, dois checks aprovados e sem conflito. Na Era e no
+Ciclo, Carregar e Armado não detalham preparo e disparo no cartão
+comum. Guarda com Concentrada/Duradoura mantém o prazo normal no
+texto interno e inclui só um aviso genérico de prolongamento.
+Foram 12 cenários por cópia, 11 entradas repostas e 320 células
+relidas sem diferenças. Diagnóstico no ramo
+`codex/auditoria-tempo-feiticos-20261106`. Sol/Medium para revisão,
+Sol/High para correção ou ensaio nativo.
+
 # Alcance de Guarda, Impulso e Firmeza · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-ALCANCE-BENEFICIOS-2026-11-06.md`.

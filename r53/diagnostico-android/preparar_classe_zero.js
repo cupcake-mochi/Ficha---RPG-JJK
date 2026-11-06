@@ -61,7 +61,7 @@ function prepararCodigo(src) {
   hashes[1] = editorProposto().hash;
   let novo = trocar(src, atalho[0], 'var R53_LIVRE_HASHES_=' + JSON.stringify(hashes) + ';');
   novo = trocar(novo, anchor, anchor + ' r53AjustarClasseZero_(R53_MODULO_.__estado().abas);');
-  novo = trocar(novo, runtime.gerar([]), runtime.gerar());
+  novo = trocar(novo, runtime.gerar([]), runtime.gerar(undefined, []));
   return novo + '\n' + molde();
 }
 

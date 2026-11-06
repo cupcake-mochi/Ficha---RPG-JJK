@@ -72,7 +72,7 @@ var ABAS_PERSONAGEM_APTIDOES = [
     "paleta_fixa":true,
     "caixas":[[17,2,34],[25,2,34],[27,2,34]],
     "depois":"GLOSSÁRIO",
-    "geracao":"79a9235ee3d37edc",
+    "geracao":"8b5cc6b4e78f44af",
     "arquivo":"AptidoesPersonagem.gs"
   }
 ];
