@@ -111,7 +111,10 @@ const trecho = fs.readFileSync('apps-script/Ficha.gs','utf8').match(/\[37,4,("(?
 const formula = JSON.parse(trecho[1]);
 const revisao = require('../diagnostico-android/integridade_movimento_plano.json')
   .find(d => d.aba === 'FICHA' && d.r === 37 && d.c === 4);
-t(() => assert.equal(formula, revisao.depois));
+const conjuracao = require('../diagnostico-android/conjuracao_integridade_plano.json')
+  .find(d => d.aba === 'FICHA' && d.r === 37 && d.c === 4);
+t(() => assert.equal(conjuracao.antes, revisao.depois));
+t(() => assert.equal(formula, conjuracao.depois));
 const comGuarda = revisao.antes;
 molde[0].vals[0][2] = comGuarda.replace('OR($D$34="",$J$34=0)', '$D$34=""');
 c.r53AjustarIndicadorIntegridade_(molde);

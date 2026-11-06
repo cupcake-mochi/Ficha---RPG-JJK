@@ -56,7 +56,7 @@ var CONTRATO_PERSONAGEM_ = [
       [7991,1,"aviso.personagem.talento.12",0],[7991,2,"='DADOS_AM'!$LO13&\"\"",0],[7991,3,"=\"'DADOS_AM'!LO13\"",0],[7991,4,"aviso",0]
     ],
     "notas":[],
-    "geracao":"c09878807ae4a15e",
+    "geracao":"78c44defd6fc1285",
     "arquivo":"PersonagemAnalise.gs"
   }
 ];

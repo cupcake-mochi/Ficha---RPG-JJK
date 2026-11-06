@@ -20,7 +20,10 @@ const alvo = (modelo, d) => {
     aba.vals.find(v => v[0] === d.r && v[1] === d.c)?.[2];
 };
 for (const d of patch.plano) {
-  const posterior = require('../diagnostico-android/bencaos_imunidades_plano.json').find(x => key(x) === key(d));
+  const posterior = [
+    ...require('../diagnostico-android/bencaos_imunidades_plano.json'),
+    ...require('../diagnostico-android/conjuracao_integridade_plano.json'),
+  ].find(x => key(x) === key(d));
   if (posterior) assert.equal(posterior.antes, d.depois, key(d));
   assert.equal(alvo(ctx.ABAS, d), posterior ? posterior.depois : d.depois, key(d));
   const aba = abas.find(a => a.nome === d.aba);

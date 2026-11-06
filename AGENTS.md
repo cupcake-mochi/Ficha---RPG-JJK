@@ -1,3 +1,17 @@
+# Conjuração por Integridade pronta para revisão · 05/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CONJURACAO-INTEGRIDADE-2026-11-05.md`.
+Ramo `codex/conjuracao-integridade-20261105`, base PR70 4324ad3.
+A correção altera 41 fórmulas de exibição e preserva o custo base, a
+validade e os dados das montagens. Geração 78c44defd6fc1285.
+
+Nas descartáveis de Era e Ciclo, passaram 24 cenários nativos e quatro
+recuperações por edição real. A releitura final de 209 células por cópia
+confirmou as mudanças previstas, sem diferenças adicionais ou erros nos
+intervalos. O smoke passou. A instalação incremental exige os arquivos
+da PR70 e um snapshot atual dos alvos. Sol/Medium para revisar.
+Somente descartáveis nesta etapa.
+
 # Prática Cotidiana concluída para revisão · 05/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-PRATICA-COTIDIANA-2026-11-05.md`.
