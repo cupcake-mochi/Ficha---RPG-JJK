@@ -12,6 +12,7 @@ CAT=json.loads((RAIZ/'r53/catalogo.json').read_text())
 OPCOES={v['rotulo']:v for v in CAT['opcoes']}
 FAMILIAS=['Alcance','Controle','Auxiliares','Marca','Castigo','Amparo','Área','Mira','Tempo']
 TRS=['Físico','Vigor','Intelecto','Espírito']
+DECLARACAO_SEM_VOLTA='Sem Volta: pode falhar por completo'
 FORMAS=['Projétil','Toque','Explosão','Aura','Cone','Linha']
 LOOKUP_FIELDS=['rotulo','nome','tipo','familia','peso','degraus','repeticoes','classe_minima','tr','frequencia','id','proprio','cadastro_valido','controle_compat','rotulo_base']
 INPUTS=['id','nome','classe','modalidade','nivel','preparada','forma','dano','cura','vt','p_dano','p_cura','p_vt',
@@ -64,6 +65,19 @@ def arvore(registro_livre=False):
     teto_fragil=SUM([IF(ref('nome_m'+str(i)).eq('Precisão'),0,ref('pago_m'+str(i)))
                      for i in range(1,5)])
     fragil_pago=ref('fragil_pago')
+    def tem_melhoria(*nomes):
+        return OR(*[ref('nome_m'+str(i)).eq(nome) for i in range(1,5) for nome in nomes])
+    # A validação antecede o saldo. PV e dano efetivos podem depender da própria devolução.
+    beneficio=OR(tem_melhoria('Guarda','Impulso','Firmeza'),AND(zero.eq(False),semdano.eq(False),
+                 OR(AND(ref('cura'),OR(tm,ref('p_cura').gt(0))),
+                    AND(ref('vt'),tm.eq(False),ref('p_vt').gt(0)))))
+    declarada=ref('sem_volta_declarada') if registro_livre else ref('dependencias').eq(DECLARACAO_SEM_VOLTA)
+    dependencia=AND(declarada,OR(sem_dano_aplicado.eq(False),tem_melhoria('Condição','Prende','Cerca')))
+    tudo_ou_nada=OR(*[AND(LOOK(ref('r'+str(i)),'nome').eq('Tudo ou Nada'),ref('r'+str(i)+'_valida'))
+                     for i in (1,2)])
+    resolucao_garantida=False if registro_livre else AND(sem_dano_aplicado.eq(False),
+        OR(ref('res_dano').eq('Automático'),AND(ref('res_dano').eq('TR'),tudo_ou_nada.eq(False))))
+    sem_volta_sem_risco=OR(tem_melhoria('Inescapável'),resolucao_garantida,AND(beneficio,dependencia.eq(False)))
     for tipo,n in [('m',4),('r',2)]:
         for i in range(1,n+1):
             entrada=ref(tipo+str(i));fam=add('familia_'+tipo+str(i),LOOK(entrada,'familia'))
@@ -79,7 +93,9 @@ def arvore(registro_livre=False):
                 valor=IF(qr,IF(forma.eq('Projétil'),m,l),peso(w))
                 # Exigências já obrigatórias não financiam a própria montagem.
                 bloqueada=OR(tm,AND(lib,OR(nome.eq('Atrasar'),nome.eq('Parado'))),
-                             AND(nome.eq('Tudo ou Nada'),sem_dano_aplicado))
+                             AND(nome.eq('Tudo ou Nada'),sem_dano_aplicado),
+                             AND(nome.eq('Sem Volta'),sem_volta_sem_risco),
+                             AND(zero,OR(nome.eq('Sobrecusto'),AND(qr,forma.eq('Projétil')))))
                 valor=IF(nome.eq('Frágil'),MIN(IF(zero,1,l),MAX(0,fragil_pago),teto_fragil),
                          IF(zero,1,valor))
                 add('retorno_'+tipo+str(i),IF(OR(entrada.eq(''),valido.eq(False),bloqueada),0,valor))
@@ -203,7 +219,7 @@ def arvore(registro_livre=False):
     def err(c,t):
         # A interface direta guarda a adjudicação na descrição. Só os avisos
         # que exigiam campos textuais separados são dispensados nessa rota.
-        if registro_livre and (t.startswith(('A Regra/definição','Registre destinatários','Registre a permissão','Registre independência','Escolha o tipo do TR','TR da aplicação','Sem Volta exige'))):return
+        if registro_livre and (t.startswith(('A Regra/definição','Registre destinatários','Registre a permissão','Registre independência','Escolha o tipo do TR','TR da aplicação'))):return
         erros.append(IF(c,t,''))
     err(OR(publicada,propria).eq(False),'Forma não publicada: cadastrar ou revisar antes do uso')
     err(AND(propria,FAMILY(FORM(rawforma,'familia')).eq('Fechada')),'Família Fechada: Forma própria indisponível')
@@ -242,7 +258,10 @@ def arvore(registro_livre=False):
     err((nres('Recuo')+nres('Fraqueza')+nres('Peso Morto')).gt(1),'Recuo, Fraqueza e Peso Morto não se combinam')
     err(AND(npeca('Terreno').gt(0),area.eq(False)),'Terreno exige Forma de área')
     err(AND(npeca('Mais Um').gt(0),area),'Mais Um acrescenta destinatários individuais, não áreas')
-    err(AND(nres('Sem Volta').gt(0),ref('res_dano').eq('Automático')),'Sem Volta exige possibilidade de falha completa')
+    err(AND(nres('Sem Volta').gt(0),sem_volta_sem_risco),
+        'Sem Volta exige possibilidade de falha completa' +
+        ('. Se todos os efeitos dependerem da resolução, registre em linha própria em COMO É: ' +
+         DECLARACAO_SEM_VOLTA if registro_livre else ''))
     err(AND(ref('dano'),ref('res_dano').eq('TR'),OR(*[ref('tr_dano').eq(n) for n in TRS]).eq(False)),'Escolha o tipo do TR de dano')
     err(AND(efeitosctrl,OR(*[ref('tr_controle').eq(n) for n in TRS]).eq(False)),'Escolha o tipo do TR de Controle')
     err(AND(efeitosctrl,ref('dano'),ref('res_dano').eq('TR'),ref('tr_dano').ne(ref('tr_controle'))),'TR da aplicação: mesmo tipo para dano e Controle; CDs podem diferir')
@@ -300,9 +319,11 @@ def calcular(entradas,catalogo_extra=None,familias_custom=None,formas_custom=Non
     return env
 
 
-def formulas(linha, colunas, lookup_range, separator=',',familias_range=None,familias_coluna=2,formas_range=None,registro_livre=False,saidas=None):
+def formulas(linha, colunas, lookup_range, separator=',',familias_range=None,familias_coluna=2,formas_range=None,registro_livre=False,saidas=None,descricao='""'):
     from compactar import native_compact
     refs={k:colunas[k]+str(linha) for k in INPUTS+list(ARVORE)}
+    if registro_livre:
+        refs['sem_volta_declarada']=f'REGEXMATCH(TO_TEXT({descricao}),"(?im)^[ \t]*{DECLARACAO_SEM_VOLTA}[ \t]*$")'
     if formas_range:
         from formas_custom import CAMPOS as FC
         refs.update(__formas_range__=formas_range,__formas_campos__=FC)
