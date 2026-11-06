@@ -418,6 +418,8 @@ _EXTENSOES_CUSTOM = extensoes_custom.aplica(LAYOUT, _PROG, _CRIACAO, _FIV)
 montagens_r53.finaliza(_R53)
 import editor_r53
 editor_r53.aplica(LAYOUT, _R53)
+import pratica_cotidiana
+_PRATICA = pratica_cotidiana.aplica(LAYOUT, _R53, _AN)
 if '--exportar-r53' in sys.argv:
     editor_r53.escrever(_R53, os.path.join(AQUI, '..', 'r53', 'saidas', 'EditorR53.gs'))
     _r53_destino=sys.argv[sys.argv.index('--exportar-r53')+1]

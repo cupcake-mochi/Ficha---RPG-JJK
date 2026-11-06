@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const p=require('../diagnostico-android/preparar_origens_recursos');
-const fonte=require('../reserva_bolsa_restaurar').reverterFonte(fs.readFileSync('apps-script/Codigo.gs','utf8')),base=p.reverterFonte(fonte);
+const fonte=require('../reserva_bolsa_restaurar').reverterFonte(require('../pratica_cotidiana_runtime').reverterFonte(fs.readFileSync('apps-script/Codigo.gs','utf8'))),base=p.reverterFonte(fonte);
 const c=vm.createContext({code:base});vm.runInContext(p.runtime(),c);
 for(const [,depois]of p.mudancas.slice(0,2))assert(c.code.includes(depois));
 assert.throws(()=>vm.runInContext(p.runtime(),c),/divergente/);

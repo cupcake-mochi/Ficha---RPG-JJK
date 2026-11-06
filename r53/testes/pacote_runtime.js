@@ -10,10 +10,10 @@ let bundle=context();for(const name of Object.keys(m.arquivos))vm.runInContext(f
 // Prova de autonomia antes de carregar qualquer arquivo legado.
 let standalone=vm.runInContext('r53Modulo_().__estado()',bundle);
 assert.strictEqual(hash(standalone.abas),expected);assert.strictEqual(standalone.geracao,gen);
-assert.deepStrictEqual(Array.from(standalone.sobras),[]);assert.strictEqual(standalone.editor.contextos.length,249);
+assert.deepStrictEqual(Array.from(standalone.sobras),[]);assert.strictEqual(standalone.editor.contextos.length,251);
 for(const name of m.geracao_arquivos.filter(n=>!m.arquivos[n]))vm.runInContext(fs.readFileSync(path.join(root,'apps-script',name),'utf8'),bundle);
 let state=vm.runInContext('r53Modulo_().__estado()',bundle);
-assert.strictEqual(hash(state.abas),expected);assert.strictEqual(state.geracao,gen);assert.deepStrictEqual(Array.from(state.sobras),[]);assert.strictEqual(state.editor.contextos.length,249);
+assert.strictEqual(hash(state.abas),expected);assert.strictEqual(state.geracao,gen);assert.deepStrictEqual(Array.from(state.sobras),[]);assert.strictEqual(state.editor.contextos.length,251);
 for(const name of m.entradas_publicas)assert.strictEqual(vm.runInContext('typeof '+name,bundle),'function');
 assert.strictEqual(vm.runInContext('r53Modulo_()===r53Modulo_()',bundle),true);
 // Um clique comum não carrega as tabelas; os dois comportamentos originais
