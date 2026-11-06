@@ -19,7 +19,9 @@ const alcance = require('../diagnostico-android/preparar_alcance_cura');
 const apoio = require('../diagnostico-android/preparar_alcance_beneficios');
 const posteriores = new Map(alcance.plano.map(d => [key(d), d]));
 const maisRecentes = new Map(apoio.plano.map(d => [key(d), d]));
-const config = alcance.reverterEditor(apoio.reverterEditor(vmContext.R53_EDITOR_));
+const tempo = require('../diagnostico-android/preparar_tempo_feiticos');
+const novos = new Map(tempo.plano.map(d => [key(d), d]));
+const config = alcance.reverterEditor(apoio.reverterEditor(tempo.reverterEditor(vmContext.R53_EDITOR_)));
 const anterior = p.reverterEditor(config);
 assert.equal(anterior.contextos.length, 251);
 for (const d of p.plano) {
@@ -28,7 +30,10 @@ for (const d of p.plano) {
   const maisRecente = maisRecentes.get(key(d));
   if (posterior) assert.equal(posterior.antes, d.depois, key(d));
   if (maisRecente) assert.equal(maisRecente.antes, posterior?.depois ?? d.depois, key(d));
-  assert.equal(a.vals.find(v => v[0] === d.r && v[1] === d.c)[2], maisRecente?.depois ?? posterior?.depois ?? d.depois, key(d));
+  const novo = novos.get(key(d));
+  const esperado = maisRecente?.depois ?? posterior?.depois ?? d.depois;
+  if (novo) assert.equal(novo.antes, esperado, key(d));
+  assert.equal(a.vals.find(v => v[0] === d.r && v[1] === d.c)[2], novo?.depois ?? esperado, key(d));
   if (d.cartao) {
     assert.equal(config.contextos.find(g => g.id === d.cartao).formulas[d.a1], d.depois, d.cartao);
   }

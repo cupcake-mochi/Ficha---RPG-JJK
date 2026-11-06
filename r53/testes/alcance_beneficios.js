@@ -15,12 +15,16 @@ const tabs = [...new Set(p.plano.map(d => d.aba))];
 assert.deepEqual(tabs, ['FICHA AMALDIÇOADA']);
 assert.equal(p.plano.length, 36);
 assert.equal(new Set(p.plano.map(key)).size, 36);
-const config = vmContext.R53_EDITOR_;
+const tempo = require('../diagnostico-android/preparar_tempo_feiticos');
+const novos = new Map(tempo.plano.map(d => [key(d), d]));
+const config = tempo.reverterEditor(vmContext.R53_EDITOR_);
 const anterior = p.reverterEditor(config);
 assert.equal(anterior.contextos.length, 251);
 for (const d of p.plano) {
   const a = vmContext.ABAS.find(a => a.nome === d.aba);
-  assert.equal(a.vals.find(v => v[0] === d.r && v[1] === d.c)[2], d.depois, key(d));
+  const novo = novos.get(key(d));
+  assert.equal(novo?.antes, d.depois, key(d));
+  assert.equal(a.vals.find(v => v[0] === d.r && v[1] === d.c)[2], novo.depois, key(d));
   if (d.cartao) {
     assert.equal(config.contextos.find(g => g.id === d.cartao).formulas[d.a1], d.depois, d.cartao);
   }
