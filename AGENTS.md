@@ -1,3 +1,18 @@
+# Instalação PR80 e auditoria de Frágil · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-FRAGIL-INSTANTANEO-2026-11-06.md`.
+PR80 `97d1b00` sem conflito e com dois checks aprovados após ajuste
+no teste de recuperação de CZ em Classe 0. Era e Ciclo receberam
+753 fórmulas e Código relido. Seis recuperações por edição real
+passaram, incluindo CZ2, CZ253 e os avisos herdados da PR78.
+
+Em 14 cenários por cópia, seis montagens instantâneas receberam
+crédito de Frágil indevido. Guarda + Passo aceitou gasto declarado
+acima do elegível. A releitura após repor as entradas encontrou
+zero diferenças em 624 células por cópia, incluindo 539 de
+MONTAGENS. PR80 instalada nas descartáveis. Sol/Medium para
+revisão e Sol/High para correção e ensaio.
+
 # Correção de Restrições agrupadas e de Classe 0 · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-RESTRICOES-AGRUPADAS-2026-11-06.md`.
