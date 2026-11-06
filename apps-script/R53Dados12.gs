@@ -152,7 +152,7 @@ var VALORES_R53_DADOS_12_ = [
       [253,181,"=AND(IF(B253=\"\",FALSE,(FX253=\"\")),DADOS_CUSTOM!$B$134=2,DADOS_CUSTOM!$B$135<=DADOS_AM!$HM$10)",0],[253,182,"=\"\"",0],[253,183,"=TEXTJOIN(\" · \",TRUE,IF(DADOS_CUSTOM!$B$134=2,\"\",\"Requer Prática Cotidiana\"),IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Limite de feitiços Classe 0 excedido\",\"\"))",0]
     ],
     "notas":[],
-    "geracao":"78c44defd6fc1285",
+    "geracao":"f655b21dc9d2e46f",
     "arquivo":"R53Dados12.gs"
   }
 ];

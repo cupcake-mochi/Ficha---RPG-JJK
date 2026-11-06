@@ -5,10 +5,17 @@ let checks=0;const t=f=>{f();checks++;},clone=x=>JSON.parse(JSON.stringify(x));
 const c={};vm.runInNewContext(require('../../medidas/carregar-ficha').fontes(),c);t(()=>assert.equal(c.SOBRAS_.length,0));
 const editor=c.R53_EDITOR_;t(()=>assert.equal(editor.contextos.length,251));
 const conjuracao=require('../diagnostico-android/preparar_conjuracao_integridade');
-t(()=>assert.equal(crypto.createHash('sha256').update(JSON.stringify(conjuracao.reverterEditor(editor).contextos.slice(0,249))).digest('hex'),'09d6c58b762db5290f8ac12807d9c631e6840449b104873d6cf5100c3918c9a6'));
+const classeZero=require('../diagnostico-android/preparar_classe_zero');
+const antesClasseZero=classeZero.reverterEditor(editor);
+t(()=>assert.equal(crypto.createHash('sha256').update(JSON.stringify(conjuracao.reverterEditor(antesClasseZero).contextos.slice(0,249))).digest('hex'),'09d6c58b762db5290f8ac12807d9c631e6840449b104873d6cf5100c3918c9a6'));
 const indexes=new Map(c.ABAS.map(a=>[a.nome,{spec:a,values:new Map(a.vals.map(v=>[v[0]+','+v[1],v]))}]));
 const v=(aba,a1)=>{const m=/^([A-Z]+)(\d+)$/.exec(a1),col=[...m[1]].reduce((a,x)=>26*a+x.charCodeAt(0)-64,0),r=+m[2],spec=indexes.get(aba).spec,direct=indexes.get(aba).values.get(r+','+col);if(direct)return aba==='ANALISE'&&col===2&&direct[2]==="'0"?'0':direct[2];const block=(spec.abaixo||[]).find(b=>b[0]<r&&b[2]>=r&&b[1]<=col&&b[3]>=col);if(block){const src=indexes.get(aba).values.get(block[0]+','+col);if(src)return require('../../medidas/sheets-de-mentira').deslocaFormula(src[2],r-block[0]);}return null;};
-for(const x of p.p.cells)t(()=>assert.equal(p.norm(v(x.aba,x.a1)),p.norm(x.depois),x.aba+'!'+x.a1));
+const posterior = new Map(classeZero.plano.map(d => [d.aba+'!'+col(d.c)+d.r,d]));
+for(const x of p.p.cells){
+ const delta=posterior.get(x.aba+'!'+x.a1);
+ if(delta)t(()=>assert.equal(delta.antes,x.depois));
+ t(()=>assert.equal(p.norm(v(x.aba,x.a1)),p.norm(delta?.depois??x.depois),x.aba+'!'+x.a1));
+}
 t(()=>assert.equal(v('DADOS_R53','A251'),'r53.editor.gid'));
 for(const g of editor.contextos.slice(249)){
  t(()=>assert.deepEqual(Object.keys(g.formulas).sort(),[g.cel.dano,g.cel.alcance].sort()));
@@ -60,6 +67,11 @@ t(()=>assert.deepEqual(writes.map(w=>[w.r,w.c,w.h,w.w]),[[252,1,1,3]]));
 writes=[];t(()=>assert.equal(b.r53PraticaRestaurar_(event('DADOS_R53',252,1,253,183)),true));t(()=>assert.equal(writes.length,1));t(()=>assert.equal(writes[0].x.length,2));t(()=>assert.equal(writes[0].x[0].length,183));t(()=>assert.equal(writes[0].x[0][0],'classe0.6'));t(()=>assert.equal(writes[0].x[1][0],'classe0.7'));t(()=>assert(writes[0].x[0].some(x=>typeof x==='string'&&x.includes('D566'))));
 const addr=rt.dados().find(x=>x[0]==='ANALISE'&&x[2]===3&&typeof x[3]==='string'&&x[3].startsWith("'"));writes=[];b.r53PraticaRestaurar_(event('ANALISE',addr[1],3));t(()=>assert.equal(writes[0].x[0][0].rich,"'"+addr[3]));
 const zero=rt.dados().find(x=>x[0]==='ANALISE'&&x[2]===2&&x[3]==='0');writes=[];b.r53PraticaRestaurar_(event('ANALISE',zero[1],2));t(()=>assert.equal(writes[0].x[0][0].rich,"'0"));
+writes=[];t(()=>assert.equal(b.r53PraticaRestaurar_(event('DADOS_R53',41,181,45,183)),false));
+t(()=>assert.deepEqual(writes.map(w=>[w.r,w.c,w.h]),[[41,181,5],[41,183,5]]));
+t(()=>assert.equal(writes[0].x[0][0],formulaLocal(v('DADOS_R53','FY41'),'pt_BR')));
+writes=[];t(()=>assert.equal(b.r53PraticaRestaurar_(event('DADOS_R53',41,182)),false));
+t(()=>assert.equal(writes.length,0));
 t(()=>assert.equal(loads,1));t(()=>assert.equal(rt.gerar(),fs.readFileSync('apps-script/PraticaCotidiana.gs','utf8')));
 // Optional full historical model comparison, using a private baseline without publishing it.
 if(process.argv[2]){const old=JSON.parse(fs.readFileSync(process.argv[2]));for(const a of old){const cur=c.ABAS.find(b=>b.nome===a.nome),allowed=new Set(p.p.cells.filter(x=>x.aba===a.nome).map(x=>x.a1));for(const cell of a.vals){const a1=col(cell[1])+cell[0];if(!allowed.has(a1))t(()=>assert.equal(v(a.nome,a1),a.nome==='ANALISE'&&cell[1]===2&&cell[2]==="'0"?'0':cell[2],a.nome+'!'+a1));}}}

@@ -1,0 +1,187 @@
+[
+  {
+    "aba": "DADOS_CUSTOM",
+    "r": 135,
+    "c": 2,
+    "antes": "=SUMPRODUCT(--(LEN('FICHA AMALDIÇOADA'!D323:D327)>0))+SUMPRODUCT(--(LEN('FICHA AMALDIÇOADA'!D566:D567)>0))",
+    "depois": "=SUMPRODUCT(--(LEN('FICHA AMALDIÇOADA'!D323:D327)>0))+IF($B$134=2,SUMPRODUCT(--(LEN('FICHA AMALDIÇOADA'!D566:D567)>0)),0)"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 323,
+    "c": 18,
+    "antes": "=IF('DADOS_R53'!$B$41<>\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$EQ$41,'DADOS_R53'!$ES$41),\"\")",
+    "depois": "=IF('DADOS_R53'!$B$41<>\"\",TEXTJOIN(\" · \",TRUE,IF(AND(NOT('DADOS_R53'!$H$41),NOT('DADOS_R53'!$BE$41),OR('DADOS_R53'!$BN$41=\"Guarda\",'DADOS_R53'!$BN$41=\"Impulso\",'DADOS_R53'!$BN$41=\"Firmeza\")),IF('DADOS_R53'!$AY$41=\"Toque\",\"1,5 m\",\"4,5 m\"),'DADOS_R53'!$EQ$41),'DADOS_R53'!$ES$41),\"\")",
+    "cartao": "classe0.1",
+    "a1": "R323"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 323,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$41=\"\",\"\",IF('DADOS_R53'!$H$41,'DADOS_R53'!$DS$41,\"Utilidade\"))",
+    "depois": "=IF('DADOS_R53'!$B$41=\"\",\"\",IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Revisar limite de Classe 0\",IF('DADOS_R53'!$H$41,'DADOS_R53'!$DS$41,\"Utilidade\")))",
+    "cartao": "classe0.1",
+    "a1": "P323"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 41,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Limite de feitiços Classe 0 excedido\",\"\"))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 41,
+    "c": 181,
+    "antes": "=IF(B41=\"\",FALSE,(FX41=\"\"))",
+    "depois": "=AND(IF(B41=\"\",FALSE,(FX41=\"\")),NOT(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10))"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 324,
+    "c": 18,
+    "antes": "=IF('DADOS_R53'!$B$42<>\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$EQ$42,'DADOS_R53'!$ES$42),\"\")",
+    "depois": "=IF('DADOS_R53'!$B$42<>\"\",TEXTJOIN(\" · \",TRUE,IF(AND(NOT('DADOS_R53'!$H$42),NOT('DADOS_R53'!$BE$42),OR('DADOS_R53'!$BN$42=\"Guarda\",'DADOS_R53'!$BN$42=\"Impulso\",'DADOS_R53'!$BN$42=\"Firmeza\")),IF('DADOS_R53'!$AY$42=\"Toque\",\"1,5 m\",\"4,5 m\"),'DADOS_R53'!$EQ$42),'DADOS_R53'!$ES$42),\"\")",
+    "cartao": "classe0.2",
+    "a1": "R324"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 324,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$42=\"\",\"\",IF('DADOS_R53'!$H$42,'DADOS_R53'!$DS$42,\"Utilidade\"))",
+    "depois": "=IF('DADOS_R53'!$B$42=\"\",\"\",IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Revisar limite de Classe 0\",IF('DADOS_R53'!$H$42,'DADOS_R53'!$DS$42,\"Utilidade\")))",
+    "cartao": "classe0.2",
+    "a1": "P324"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 42,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Limite de feitiços Classe 0 excedido\",\"\"))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 42,
+    "c": 181,
+    "antes": "=IF(B42=\"\",FALSE,(FX42=\"\"))",
+    "depois": "=AND(IF(B42=\"\",FALSE,(FX42=\"\")),NOT(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10))"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 325,
+    "c": 18,
+    "antes": "=IF('DADOS_R53'!$B$43<>\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$EQ$43,'DADOS_R53'!$ES$43),\"\")",
+    "depois": "=IF('DADOS_R53'!$B$43<>\"\",TEXTJOIN(\" · \",TRUE,IF(AND(NOT('DADOS_R53'!$H$43),NOT('DADOS_R53'!$BE$43),OR('DADOS_R53'!$BN$43=\"Guarda\",'DADOS_R53'!$BN$43=\"Impulso\",'DADOS_R53'!$BN$43=\"Firmeza\")),IF('DADOS_R53'!$AY$43=\"Toque\",\"1,5 m\",\"4,5 m\"),'DADOS_R53'!$EQ$43),'DADOS_R53'!$ES$43),\"\")",
+    "cartao": "classe0.3",
+    "a1": "R325"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 325,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$43=\"\",\"\",IF('DADOS_R53'!$H$43,'DADOS_R53'!$DS$43,\"Utilidade\"))",
+    "depois": "=IF('DADOS_R53'!$B$43=\"\",\"\",IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Revisar limite de Classe 0\",IF('DADOS_R53'!$H$43,'DADOS_R53'!$DS$43,\"Utilidade\")))",
+    "cartao": "classe0.3",
+    "a1": "P325"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 43,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Limite de feitiços Classe 0 excedido\",\"\"))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 43,
+    "c": 181,
+    "antes": "=IF(B43=\"\",FALSE,(FX43=\"\"))",
+    "depois": "=AND(IF(B43=\"\",FALSE,(FX43=\"\")),NOT(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10))"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 326,
+    "c": 18,
+    "antes": "=IF('DADOS_R53'!$B$44<>\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$EQ$44,'DADOS_R53'!$ES$44),\"\")",
+    "depois": "=IF('DADOS_R53'!$B$44<>\"\",TEXTJOIN(\" · \",TRUE,IF(AND(NOT('DADOS_R53'!$H$44),NOT('DADOS_R53'!$BE$44),OR('DADOS_R53'!$BN$44=\"Guarda\",'DADOS_R53'!$BN$44=\"Impulso\",'DADOS_R53'!$BN$44=\"Firmeza\")),IF('DADOS_R53'!$AY$44=\"Toque\",\"1,5 m\",\"4,5 m\"),'DADOS_R53'!$EQ$44),'DADOS_R53'!$ES$44),\"\")",
+    "cartao": "classe0.4",
+    "a1": "R326"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 326,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$44=\"\",\"\",IF('DADOS_R53'!$H$44,'DADOS_R53'!$DS$44,\"Utilidade\"))",
+    "depois": "=IF('DADOS_R53'!$B$44=\"\",\"\",IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Revisar limite de Classe 0\",IF('DADOS_R53'!$H$44,'DADOS_R53'!$DS$44,\"Utilidade\")))",
+    "cartao": "classe0.4",
+    "a1": "P326"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 44,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Limite de feitiços Classe 0 excedido\",\"\"))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 44,
+    "c": 181,
+    "antes": "=IF(B44=\"\",FALSE,(FX44=\"\"))",
+    "depois": "=AND(IF(B44=\"\",FALSE,(FX44=\"\")),NOT(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10))"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 327,
+    "c": 18,
+    "antes": "=IF('DADOS_R53'!$B$45<>\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$EQ$45,'DADOS_R53'!$ES$45),\"\")",
+    "depois": "=IF('DADOS_R53'!$B$45<>\"\",TEXTJOIN(\" · \",TRUE,IF(AND(NOT('DADOS_R53'!$H$45),NOT('DADOS_R53'!$BE$45),OR('DADOS_R53'!$BN$45=\"Guarda\",'DADOS_R53'!$BN$45=\"Impulso\",'DADOS_R53'!$BN$45=\"Firmeza\")),IF('DADOS_R53'!$AY$45=\"Toque\",\"1,5 m\",\"4,5 m\"),'DADOS_R53'!$EQ$45),'DADOS_R53'!$ES$45),\"\")",
+    "cartao": "classe0.5",
+    "a1": "R327"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 327,
+    "c": 16,
+    "antes": "=IF('DADOS_R53'!$B$45=\"\",\"\",IF('DADOS_R53'!$H$45,'DADOS_R53'!$DS$45,\"Utilidade\"))",
+    "depois": "=IF('DADOS_R53'!$B$45=\"\",\"\",IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Revisar limite de Classe 0\",IF('DADOS_R53'!$H$45,'DADOS_R53'!$DS$45,\"Utilidade\")))",
+    "cartao": "classe0.5",
+    "a1": "P327"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 45,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",IF(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10,\"Limite de feitiços Classe 0 excedido\",\"\"))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 45,
+    "c": 181,
+    "antes": "=IF(B45=\"\",FALSE,(FX45=\"\"))",
+    "depois": "=AND(IF(B45=\"\",FALSE,(FX45=\"\")),NOT(DADOS_CUSTOM!$B$135>DADOS_AM!$HM$10))"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 566,
+    "c": 18,
+    "antes": "=IF(DADOS_CUSTOM!$B$134=2,IF('DADOS_R53'!$B$252<>\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$EQ$252,'DADOS_R53'!$ES$252),\"\"),\"\")",
+    "depois": "=IF(DADOS_CUSTOM!$B$134=2,IF('DADOS_R53'!$B$252<>\"\",TEXTJOIN(\" · \",TRUE,IF(AND(NOT('DADOS_R53'!$H$252),NOT('DADOS_R53'!$BE$252),OR('DADOS_R53'!$BN$252=\"Guarda\",'DADOS_R53'!$BN$252=\"Impulso\",'DADOS_R53'!$BN$252=\"Firmeza\")),IF('DADOS_R53'!$AY$252=\"Toque\",\"1,5 m\",\"4,5 m\"),'DADOS_R53'!$EQ$252),'DADOS_R53'!$ES$252),\"\"),\"\")",
+    "cartao": "classe0.6",
+    "a1": "R566"
+  },
+  {
+    "aba": "FICHA AMALDIÇOADA",
+    "r": 567,
+    "c": 18,
+    "antes": "=IF(DADOS_CUSTOM!$B$134=2,IF('DADOS_R53'!$B$253<>\"\",TEXTJOIN(\" · \",TRUE,'DADOS_R53'!$EQ$253,'DADOS_R53'!$ES$253),\"\"),\"\")",
+    "depois": "=IF(DADOS_CUSTOM!$B$134=2,IF('DADOS_R53'!$B$253<>\"\",TEXTJOIN(\" · \",TRUE,IF(AND(NOT('DADOS_R53'!$H$253),NOT('DADOS_R53'!$BE$253),OR('DADOS_R53'!$BN$253=\"Guarda\",'DADOS_R53'!$BN$253=\"Impulso\",'DADOS_R53'!$BN$253=\"Firmeza\")),IF('DADOS_R53'!$AY$253=\"Toque\",\"1,5 m\",\"4,5 m\"),'DADOS_R53'!$EQ$253),'DADOS_R53'!$ES$253),\"\"),\"\")",
+    "cartao": "classe0.7",
+    "a1": "R567"
+  }
+]

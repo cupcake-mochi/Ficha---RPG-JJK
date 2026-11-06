@@ -1,3 +1,27 @@
+# Correção de Classe 0 pronta para revisão · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CLASSE-ZERO-2026-11-06.md`.
+Ramo `codex/correcao-classe-zero-20261106`, base PR71 `c54f74a`.
+São 23 fórmulas para alcance individual e teto de conhecidos,
+geração `f655b21dc9d2e46f`. As montagens conservam os endereços e valores.
+
+Nas descartáveis Era e Ciclo passaram sete cenários por cópia e quatro
+recuperações por edição real. Repostas 44 entradas em cada cópia.
+A releitura de 408 células por cópia encontrou somente as 23 mudanças
+previstas. A instalação incremental exige snapshot atualizado e os
+arquivos ensaiados da PR71. Sol/Medium para revisar.
+
+# Revisão da PR71 e auditoria de Classe 0 · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-CLASSE-ZERO-2026-11-06.md`.
+PR71 `c54f74a`, dois checks aprovados e sem conflito com PR70.
+Ramo de diagnóstico `codex/auditoria-classe-zero-20261106`. Confirmado
+nas descartáveis Era e Ciclo que Impulso à distância exibe 9 m em vez de
+4,5 m e que cinco Classe 0 comuns continuam válidos com limite de dois.
+Foram restauradas 44 entradas por cópia e relidas 156 células sem
+divergências. A evidência privada está em `nuvem-b47/saidas/auditoria-classe-zero/`.
+Sol/Medium para revisão, Sol/High para implementação ou ensaio nativo.
+
 # Conjuração por Integridade pronta para revisão · 05/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-CONJURACAO-INTEGRIDADE-2026-11-05.md`.
