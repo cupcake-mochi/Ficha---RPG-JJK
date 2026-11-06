@@ -1,3 +1,18 @@
+# Instalação PR79 e auditoria de Restrições agrupadas · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-RESTRICOES-AGRUPADAS-2026-11-06.md`.
+PR79 `4118bb9` sem conflito e com dois checks aprovados. Era e Ciclo
+receberam 502 fórmulas e Código relido. Seis recuperações por edição
+real passaram, incluindo dois controles herdados da PR78. A aba
+interna voltou a ficar oculta e as duas cópias estão com a PR79.
+
+Em 21 cenários por cópia foram reproduzidas 15 devoluções indevidas.
+Há quatro Restrições Médias em Classe 0 e onze combinações comuns
+com aviso. As 21 entradas de ensaio foram repostas por cópia. A
+releitura de 622 células, incluindo 539 posições de MONTAGENS,
+encontrou zero diferenças e zero erros. Sol/Medium para revisão
+e Sol/High para correção e ensaio.
+
 # Correção de devoluções incompatíveis · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-DEVOLUCOES-INCOMPATIVEIS-2026-11-06.md`.
