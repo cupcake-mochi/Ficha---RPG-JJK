@@ -67,6 +67,7 @@ def arvore(registro_livre=False):
     fragil_pago=ref('fragil_pago')
     def tem_melhoria(*nomes):
         return OR(*[ref('nome_m'+str(i)).eq(nome) for i in range(1,5) for nome in nomes])
+    qr_forma_incompativel=OR(forma.eq('Toque'),forma.eq('Aura'),ref('pessoal'))
     # A validação antecede o saldo. PV e dano efetivos podem depender da própria devolução.
     beneficio=OR(tem_melhoria('Guarda','Impulso','Firmeza'),AND(zero.eq(False),semdano.eq(False),
                  OR(AND(ref('cura'),OR(tm,ref('p_cura').gt(0))),
@@ -91,8 +92,12 @@ def arvore(registro_livre=False):
                 qr=nome.eq('Queima-Roupa')
                 valido=ref(tipo+str(i)+'_valida')
                 valor=IF(qr,IF(forma.eq('Projétil'),m,l),peso(w))
-                # Exigências já obrigatórias não financiam a própria montagem.
-                bloqueada=OR(tm,AND(lib,OR(nome.eq('Atrasar'),nome.eq('Parado'))),
+                # Uma Restrição incompatível não financia a montagem, mesmo em cartões livres.
+                incompativel=OR(AND(qr,OR(qr_forma_incompativel,tem_melhoria('Longe'))),
+                                AND(nome.eq('Atrasar'),tem_melhoria('Rápido')),
+                                AND(nome.eq('Parado'),tem_melhoria('Reação')),
+                                AND(nome.eq('Carregar'),tem_melhoria('Armado')))
+                bloqueada=OR(incompativel,tm,AND(lib,OR(nome.eq('Atrasar'),nome.eq('Parado'))),
                              AND(nome.eq('Tudo ou Nada'),sem_dano_aplicado),
                              AND(nome.eq('Sem Volta'),sem_volta_sem_risco),
                              AND(zero,OR(nome.eq('Sobrecusto'),AND(qr,forma.eq('Projétil')))))
@@ -251,7 +256,7 @@ def arvore(registro_livre=False):
     err(AND(ref('controle').ne('Sem reforço'),comum.eq(False)),'Esta modalidade não recebe reforço de Controle')
     err(AND(semdano,OR(ref('dano'),ref('cura'),ref('vt'),SUM([ref('p_dano'),ref('p_cura'),ref('p_vt')]).gt(0))),'Sem dano descarta todo o saldo, incluindo cura e vida temporária')
     err(AND(OR(forma.eq('Toque'),forma.eq('Aura')),npeca('Longe').gt(0)),'Toque/Aura não aceita Longe')
-    err(AND(nres('Queima-Roupa').gt(0),OR(forma.eq('Toque'),forma.eq('Aura'),ref('pessoal'))),'Queima-Roupa incompatível com Forma/pessoal')
+    err(AND(nres('Queima-Roupa').gt(0),qr_forma_incompativel),'Queima-Roupa incompatível com Forma/pessoal')
     err(AND(nres('Queima-Roupa').gt(0),npeca('Longe').gt(0)),'Queima-Roupa conserva proximidade: não aceita Longe')
     err(AND(npeca('Maior').gt(0),area.eq(False)),'Maior exige Forma de área')
     err(AND(nres('Barulho').gt(0),nres('Assinatura').gt(0)),'Barulho e Assinatura: escolha uma exposição')

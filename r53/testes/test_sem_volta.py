@@ -7,14 +7,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import modelo
 
 
+def avaliar_montagem(livre, **entradas):
+    dados = dict(nome='QA', nivel=30, classe=3, preparada=True, dano=True,
+                 p_dano=2, permite_dano=True, permite_cura=True,
+                 permite_vt=True, dest_dano='Alvo', dest_cura='Aliado',
+                 dest_vt='Aliado', origem_permissao='Definição')
+    with patch.object(modelo, 'ARVORE', modelo.arvore(livre)):
+        return modelo.calcular({**dados, **entradas})
+
+
 class SemVoltaClasseZero(unittest.TestCase):
-    def avaliar(self, livre, **entradas):
-        dados = dict(nome='QA', nivel=30, classe=3, preparada=True, dano=True,
-                     p_dano=2, permite_dano=True, permite_cura=True,
-                     permite_vt=True, dest_dano='Alvo', dest_cura='Aliado',
-                     dest_vt='Aliado', origem_permissao='Definição')
-        with patch.object(modelo, 'ARVORE', modelo.arvore(livre)):
-            return modelo.calcular({**dados, **entradas})
+    avaliar = staticmethod(avaliar_montagem)
 
     def test_sem_volta_nao_financia_efeitos_garantidos(self):
         for livre in (False, True):
