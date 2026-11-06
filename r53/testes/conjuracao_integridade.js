@@ -15,12 +15,16 @@ const tabs = [...new Set(p.plano.map(d => d.aba))];
 assert.deepEqual(tabs, ['FICHA', 'FICHA AMALDIÇOADA']);
 assert.equal(p.plano.length, 41);
 assert.equal(new Set(p.plano.map(key)).size, 41);
-const config = vmContext.R53_EDITOR_;
+const alcance = require('../diagnostico-android/preparar_alcance_cura');
+const posteriores = new Map(alcance.plano.map(d => [key(d), d]));
+const config = alcance.reverterEditor(vmContext.R53_EDITOR_);
 const anterior = p.reverterEditor(config);
 assert.equal(anterior.contextos.length, 251);
 for (const d of p.plano) {
   const a = vmContext.ABAS.find(a => a.nome === d.aba);
-  assert.equal(a.vals.find(v => v[0] === d.r && v[1] === d.c)[2], d.depois, key(d));
+  const posterior = posteriores.get(key(d));
+  if (posterior) assert.equal(posterior.antes, d.depois, key(d));
+  assert.equal(a.vals.find(v => v[0] === d.r && v[1] === d.c)[2], posterior?.depois ?? d.depois, key(d));
   if (d.cartao) {
     assert.equal(config.contextos.find(g => g.id === d.cartao).formulas[d.a1], d.depois, d.cartao);
   }

@@ -1,3 +1,16 @@
+# Alcance de cura e PV temporários · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ALCANCE-CURA-2026-11-06.md`.
+Ramo `codex/alcance-cura-pv-20261106`, base PR72 `b7c06b0`.
+São 36 fórmulas de resumo dos feitiços comuns e a recuperação
+correspondente. Geração `a00e1dcd00966e8b`.
+
+Nas descartáveis Era e Ciclo passaram dez cenários por cópia e
+a recuperação de D81 por edição real em ambas. A releitura de
+723 células por cópia, incluindo 518 posições de MONTAGENS, confirmou
+somente o delta de 36 fórmulas. Promoção exige snapshot atualizado
+dos alvos e dos arquivos da PR72. Sol/Medium para revisão.
+
 # Revisão PR72 e auditoria de feitiços de cura · 06/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-ALCANCE-CURA-2026-11-06.md`.
