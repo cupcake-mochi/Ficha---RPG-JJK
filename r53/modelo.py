@@ -5,7 +5,7 @@ IDs da publicação; permissões da Regra/definição são escolhas explícitas.
 """
 import json
 from pathlib import Path
-from formulas import X,x,ref,f,IF,AND,OR,SUM,MIN,MAX,UP,INT,JOIN,LOOK,FAMILY,FORM,evaluate,native
+from formulas import X,x,ref,f,IF,LET,AND,OR,SUM,MIN,MAX,UP,INT,JOIN,LOOK,FAMILY,FORM,evaluate,native
 
 RAIZ=Path(__file__).resolve().parents[1]
 CAT=json.loads((RAIZ/'r53/catalogo.json').read_text())
@@ -61,10 +61,15 @@ def arvore(registro_livre=False):
     def peso(v): return IF(v.eq(1),l,IF(v.eq(2),m,IF(v.eq(3),p,0)))
     def estado(fam): return IF(FAMILY(fam).eq('Fechada'),1,0)
     def livre(fam): return IF(FAMILY(fam).eq('Livre'),1,0)
-    # Estas Melhorias só alteram a resolução, o alcance ou os alvos.
-    sem_efeito_interrompivel=r'^(?:Precisão|Passo|Empurrão|Longe|Mais Um|Rajada|Remate)$'
-    teto_fragil=SUM([IF(f('REGEXMATCH',ref('nome_m'+str(i)),sem_efeito_interrompivel),
-                        0,ref('pago_m'+str(i))) for i in range(1,5)])
+    instantaneas=('Precisão|Passo|Empurrão|Longe|Mais Um|Rajada|Remate|Salto|Estilhaço|'
+                  'Quebra Coisa|Rasga Escudo|Rápido|Reação|Silencioso|Sem Ver|Fura|Sem Cobertura|Perseguir')
+    nomes_fragil=[ref('nome_m'+str(i)) for i in range(1,5)]
+    area_persistente=AND(area,f('REGEXMATCH',JOIN(*nomes_fragil),
+                               r'(?:^|; )(?:Fica|Terreno|Efeito Próprio)(?:; |$)'))
+    exclusao=x(f'^(?:{instantaneas}').cat(IF(area_persistente,'','|Maior|Escolher|Contorno')).cat(')$')
+    teto_fragil=LET('fragilbase',exclusao,SUM([
+        IF(f('REGEXMATCH',nome,ref('fragilbase')),0,ref('pago_m'+str(i)))
+        for i,nome in enumerate(nomes_fragil,1)]))
     fragil_pago=ref('fragil_pago')
     def tem_melhoria(*nomes):
         return OR(*[ref('nome_m'+str(i)).eq(nome) for i in range(1,5) for nome in nomes])
@@ -292,8 +297,10 @@ def arvore(registro_livre=False):
     err(AND(npeca('Rajada').gt(0),OR(area,dano.le(0),False if registro_livre else ref('res_dano').ne('Ataque'))),'Rajada exige alvo individual com ataque e dados')
     err(AND(nres('Tudo ou Nada').gt(0),OR(sem_dano_aplicado,False if registro_livre else ref('res_dano').ne('TR'))),'Tudo ou Nada exige dano por TR')
     fragil=nres('Frágil').gt(0)
-    err(AND(fragil,OR(fragil_pago.le(0),teto_fragil.le(0))),'Frágil exige Melhorias interrompíveis pagas')
-    err(fragil_pago.gt(IF(fragil,teto_fragil,pago)),'Frágil: gasto interrompível não pode exceder o gasto real')
+    gasto_fragil=ref('gastofragil')
+    erros.append(LET('gastofragil',IF(fragil,teto_fragil,pago),JOIN(
+        IF(AND(fragil,OR(fragil_pago.le(0),gasto_fragil.le(0))),'Frágil exige Melhorias interrompíveis pagas',''),
+        IF(fragil_pago.gt(gasto_fragil),'Frágil: gasto interrompível não pode exceder o gasto real',''))))
     err(frequencia_repetida,'Uma Vez/Condicional/Aquecer: um grupo de frequência')
     err(AND(npeca('Toca a Alma').gt(0),OR(c.lt(3),False if registro_livre else ref('permite_alma').eq(False),lib)),'Toca a Alma exige Classe 3, Regra de alma e não aceita Liberação')
     err(AND(npeca('Inescapável').gt(0),OR(forma.ne('Projétil'),ref('dano').eq(False),qtdm.gt(1),qtdr.gt(0),tm,lib)),'Inescapável: só Projétil de dano, única Melhoria, sem Restrições ou máximas')

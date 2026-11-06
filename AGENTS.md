@@ -1,3 +1,18 @@
+# Correção de Frágil no catálogo · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FRAGIL-CATALOGO-2026-11-06.md`.
+Base PR81 `bfe00a5`, geração `2cc6f80b1789c0f0`. A correção cobre
+14 casos de Frágil, com tratamento separado para ajustes de área.
+São 753 fórmulas em CK, CP e FX. O pacote tem cinco partes e
+21.560 bytes de margem.
+
+Passaram 24 cenários por descartável. Foram repostas seis fórmulas
+e 21 entradas por cópia. Relidas 624 células sem diferenças,
+incluindo 539 posições de MONTAGENS. As cópias estão com a PR81.
+Smoke, transporte e recuperação simulada passaram. Instalação
+integral e recuperação por edição real ainda requerem ensaio.
+Sol/Medium para revisão e Sol/High para ensaio.
+
 # Instalação PR81 e auditoria de Frágil no catálogo · 06/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-FRAGIL-CATALOGO-2026-11-06.md`.
