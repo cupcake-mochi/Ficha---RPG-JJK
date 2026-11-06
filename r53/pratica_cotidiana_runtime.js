@@ -2,6 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),z=require('node:zlib');
 const root=path.resolve(__dirname,'..');
 const rajadaAlvos=require('./rajada_alvos');
+const colunasMontagem=[...rajadaAlvos.colunas,104].sort((a,b)=>a-b); // Inclui CZ, crédito total.
 const GUARDA="  if (typeof r53PraticaRestaurar_ === 'function' && r53PraticaRestaurar_(e)) {\n    continuarPaleta_(inicio, null, false, e.range);\n    return;\n  }\n";
 function dados(deltas=require('./diagnostico-android/classe_zero_plano.json'), tempo=[]){
  const p=require('./diagnostico-android/pratica_cotidiana_plano.json');
@@ -37,13 +38,13 @@ function gerarMontagem(alvos){
 function r53PraticaMontagem_(){if(!R53_PRATICA_MONTAGEM_)R53_PRATICA_MONTAGEM_=JSON.parse(Utilities.ungzip(Utilities.newBlob(Utilities.base64Decode(${JSON.stringify(comprimir(moldes))}),'application/gzip')).getDataAsString('UTF-8'));return R53_PRATICA_MONTAGEM_;}
 `;
 }
-function gerar(deltas, tempo=deltas===undefined?require('./diagnostico-android/tempo_feiticos_plano.json'):[], rajada=deltas===undefined&&tempo.length?rajadaAlvos.formulas():[]){
+function gerar(deltas, tempo=deltas===undefined?require('./diagnostico-android/tempo_feiticos_plano.json'):[], rajada=deltas===undefined&&tempo.length?rajadaAlvos.formulas(undefined,colunasMontagem):[]){
  deltas ??= require('./diagnostico-android/classe_zero_plano.json');
  const efeitos=tempo.filter(d=>d.aba==='DADOS_R53');
  const classeZero=deltas.filter(d=>d.aba==='DADOS_R53');
  const payload=comprimir(dados(deltas,efeitos));
  const anterior=`toca(10,221,10,221)||toca(134,2,136,2)||toca(252,1,253,183)${classeZero.length?'||toca(41,181,45,183)':''}${efeitos.length?'||toca(2,160,37,160)':''}||toca(328,4,329,4)||toca(563,4,565,20)||toca(566,16,567,16)||toca(566,18,567,20)||toca(18410,1,18500,4)`;
- const montagem = rajadaAlvos.colunas.map(c=>`toca(2,${c},253,${c})`).join('||');
+ const montagem = [...new Set(rajada.map(d=>d.c))].map(c=>`toca(2,${c},253,${c})`).join('||');
  const dadosMontagem = rajada.length ? gerarMontagem(rajada) : '';
  const guarda = rajada.length
    ? `var anterior=${anterior};\n if(!anterior&&!(${montagem}))return false;`
@@ -105,5 +106,5 @@ ${dadosMontagem}function r53PraticaRestaurar_(e){
 `;
 }
 function reverterFonte(src){if(src.split(GUARDA).length!==2)throw Error('Guarda de Prática divergente');return src.replace(GUARDA,'');}
-module.exports={dados,gerar,GUARDA,reverterFonte};
-if(require.main===module){const code=gerar();new Function(code);fs.writeFileSync(path.join(root,'apps-script/PraticaCotidiana.gs'),code);console.log(JSON.stringify({bytes:code.length,alvos:dados(undefined,require('./diagnostico-android/tempo_feiticos_plano.json').filter(d=>d.aba==='DADOS_R53')).length+rajadaAlvos.formulas().length}));}
+module.exports={dados,gerar,colunasMontagem,GUARDA,reverterFonte};
+if(require.main===module){const code=gerar();new Function(code);fs.writeFileSync(path.join(root,'apps-script/PraticaCotidiana.gs'),code);console.log(JSON.stringify({bytes:code.length,alvos:dados(undefined,require('./diagnostico-android/tempo_feiticos_plano.json').filter(d=>d.aba==='DADOS_R53')).length+rajadaAlvos.formulas(undefined,colunasMontagem).length}));}

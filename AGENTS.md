@@ -1,3 +1,33 @@
+# Correção de Restrições agrupadas e de Classe 0 · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-RESTRICOES-AGRUPADAS-2026-11-06.md`.
+Base PR79 `4118bb9`, geração `a4a5a3cc3698c18a`. São 753 fórmulas
+em CK, CP e CZ. Pares proibidos mantêm o aviso e contam só o maior
+crédito elegível. Atrasar com Reação, Aquecer com Remate e opções
+de Classe 0 acima de Leve perdem o crédito indevido.
+
+Passaram 25 cenários por descartável, incluindo os 15 casos da
+auditoria. Foram repostas seis fórmulas e 21 entradas por cópia.
+Relidas 624 células sem diferença ou erro, incluindo 539 posições
+de MONTAGENS. PR79 nas descartáveis. Smoke e transporte passaram.
+Instalação integral e recuperação por edição real da nova geração
+ainda requerem ensaio. Sol/Medium para revisão e Sol/High para ensaio.
+
+# Instalação PR79 e auditoria de Restrições agrupadas · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-RESTRICOES-AGRUPADAS-2026-11-06.md`.
+PR79 `4118bb9` sem conflito e com dois checks aprovados. Era e Ciclo
+receberam 502 fórmulas e Código relido. Seis recuperações por edição
+real passaram, incluindo dois controles herdados da PR78. A aba
+interna voltou a ficar oculta e as duas cópias estão com a PR79.
+
+Em 21 cenários por cópia foram reproduzidas 15 devoluções indevidas.
+Há quatro Restrições Médias em Classe 0 e onze combinações comuns
+com aviso. As 21 entradas de ensaio foram repostas por cópia. A
+releitura de 622 células, incluindo 539 posições de MONTAGENS,
+encontrou zero diferenças e zero erros. Sol/Medium para revisão
+e Sol/High para correção e ensaio.
+
 # Correção de devoluções incompatíveis · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-DEVOLUCOES-INCOMPATIVEIS-2026-11-06.md`.

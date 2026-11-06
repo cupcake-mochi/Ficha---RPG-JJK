@@ -94,13 +94,14 @@ def arvore(registro_livre=False):
                 valor=IF(qr,IF(forma.eq('Projétil'),m,l),peso(w))
                 # Uma Restrição incompatível não financia a montagem, mesmo em cartões livres.
                 incompativel=OR(AND(qr,OR(qr_forma_incompativel,tem_melhoria('Longe'))),
-                                AND(nome.eq('Atrasar'),tem_melhoria('Rápido')),
+                                AND(nome.eq('Atrasar'),tem_melhoria('Rápido','Reação')),
                                 AND(nome.eq('Parado'),tem_melhoria('Reação')),
-                                AND(nome.eq('Carregar'),tem_melhoria('Armado')))
+                                AND(nome.eq('Carregar'),tem_melhoria('Armado')),
+                                AND(nome.eq('Aquecer'),tem_melhoria('Remate')))
                 bloqueada=OR(incompativel,tm,AND(lib,OR(nome.eq('Atrasar'),nome.eq('Parado'))),
                              AND(nome.eq('Tudo ou Nada'),sem_dano_aplicado),
                              AND(nome.eq('Sem Volta'),sem_volta_sem_risco),
-                             AND(zero,OR(nome.eq('Sobrecusto'),AND(qr,forma.eq('Projétil')))))
+                             AND(zero,OR(w.ne(1),nome.eq('Sobrecusto'),AND(qr,forma.eq('Projétil')))))
                 valor=IF(nome.eq('Frágil'),MIN(IF(zero,1,l),MAX(0,fragil_pago),teto_fragil),
                          IF(zero,1,valor))
                 add('retorno_'+tipo+str(i),IF(OR(entrada.eq(''),valido.eq(False),bloqueada),0,valor))
@@ -111,7 +112,17 @@ def arvore(registro_livre=False):
     cf=add('custo_forma',IF(zero,0,IF(propria,peso(FORM(rawforma,'peso')),IF(forma.eq('Explosão'),m,IF(OR(forma.eq('Aura'),forma.eq('Cone'),forma.eq('Linha')),l,0)))))
     pago=add('melhorias_pagas',SUM([ref('pago_m'+str(i)) for i in range(1,5)]))
     toque=add('retorno_toque',IF(AND(forma.eq('Toque'),zero.eq(False),tm.eq(False),ref('pessoal').eq(False)),l,0))
-    devolucao=add('devolucao',MIN(SUM([ref('retorno_r1'),ref('retorno_r2'),toque]),pago,IF(zero,1,2*c)))
+    nomes_r=[ref('nome_r1'),ref('nome_r2')]
+    repetida=AND(ref('r1').ne(''),nomes_r[0].eq(nomes_r[1]))
+    frequencia_repetida=SUM([LOOK(ref('r'+str(i)),'frequencia') for i in [1,2]]).gt(1)
+    def mesmo_grupo(*nomes):
+        return AND(*[OR(*[escolhida.eq(nome) for nome in nomes]) for escolhida in nomes_r])
+    conflito_restricoes=OR(repetida,frequencia_repetida,mesmo_grupo('Atrasar','Parado'),
+                           mesmo_grupo('Barulho','Assinatura'),mesmo_grupo('Recuo','Fraqueza','Peso Morto'))
+    retornos=[ref('retorno_r1'),ref('retorno_r2')]
+    # O aviso permanece. O saldo provisório conta só o maior crédito elegível do par.
+    credito_restricoes=IF(conflito_restricoes,MAX(*retornos),SUM(retornos))
+    devolucao=add('devolucao',MIN(credito_restricoes+toque,pago,IF(zero,1,2*c)))
     saldo=add('saldo',orc-base-cf-pago+devolucao)
     semdano=add('controle_sem_dano',semdano)
     limdano=add('controle_limitado',AND(comum,ref('controle').eq('Dano limitado à Classe')))
@@ -282,7 +293,7 @@ def arvore(registro_livre=False):
     fragil=nres('Frágil').gt(0)
     err(AND(fragil,OR(fragil_pago.le(0),teto_fragil.le(0))),'Frágil exige Melhorias interrompíveis pagas')
     err(fragil_pago.gt(IF(fragil,teto_fragil,pago)),'Frágil: gasto interrompível não pode exceder o gasto real')
-    err(SUM([LOOK(ref('r'+str(i)),'frequencia') for i in [1,2]]).gt(1),'Uma Vez/Condicional/Aquecer: um grupo de frequência')
+    err(frequencia_repetida,'Uma Vez/Condicional/Aquecer: um grupo de frequência')
     err(AND(npeca('Toca a Alma').gt(0),OR(c.lt(3),False if registro_livre else ref('permite_alma').eq(False),lib)),'Toca a Alma exige Classe 3, Regra de alma e não aceita Liberação')
     err(AND(npeca('Inescapável').gt(0),OR(forma.ne('Projétil'),ref('dano').eq(False),qtdm.gt(1),qtdr.gt(0),tm,lib)),'Inescapável: só Projétil de dano, única Melhoria, sem Restrições ou máximas')
     err(AND(tm,OR(*[npeca(n).gt(0) for n in ['Salto','Queima','Estilhaço','Acúmulo','Remate','Fica','Inescapável','Armado','Segura']])),'Peça não permitida na Técnica Máxima')
@@ -308,7 +319,7 @@ def arvore(registro_livre=False):
         err(AND(v.ne(''),LOOK(v,'tipo').ne('restricoes')),'Restrição não reconhecida: posição '+str(i))
         err(AND(v.ne(''),ref('r'+str(i)+'_valida').eq(False)),'Confirme exigência válida: Restrição '+str(i))
         err(AND(zero,v.ne(''),OR(ref('peso_r'+str(i)).ne(1),AND(nome.eq('Queima-Roupa'),forma.eq('Projétil')))),'Classe 0 aceita somente Restrição Leve válida')
-    err(AND(ref('r1').ne(''),ref('nome_r1').eq(ref('nome_r2'))),'Não repetir o mesmo impedimento')
+    err(repetida,'Não repetir o mesmo impedimento')
     err(ref('migracao').eq('Revisão necessária'),'Registro antigo exige revisão antes do uso')
     avisos=add('avisos',JOIN(*erros))
     add('valida',avisos.eq(''))
