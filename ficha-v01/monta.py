@@ -427,6 +427,13 @@ if '--plano-conjuracao' in sys.argv:
     with open(_destino, 'w', encoding='utf-8') as _f:
         json.dump(_CONJURACAO, _f, ensure_ascii=False, indent=2)
         _f.write('\n')
+import classe_zero
+_CLASSE_ZERO = classe_zero.aplica(LAYOUT, _R53)
+if '--plano-classe-zero' in sys.argv:
+    _destino = sys.argv[sys.argv.index('--plano-classe-zero')+1]
+    with open(_destino, 'w', encoding='utf-8') as _f:
+        json.dump(_CLASSE_ZERO, _f, ensure_ascii=False, indent=2)
+        _f.write('\n')
 if '--exportar-r53' in sys.argv:
     editor_r53.escrever(_R53, os.path.join(AQUI, '..', 'r53', 'saidas', 'EditorR53.gs'))
     _r53_destino=sys.argv[sys.argv.index('--exportar-r53')+1]

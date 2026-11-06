@@ -1,3 +1,16 @@
+# Correção de Classe 0 pronta para revisão · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CLASSE-ZERO-2026-11-06.md`.
+Ramo `codex/correcao-classe-zero-20261106`, base PR71 `c54f74a`.
+São 23 fórmulas para alcance individual e teto de conhecidos,
+geração `f655b21dc9d2e46f`. As montagens conservam os endereços e valores.
+
+Nas descartáveis Era e Ciclo passaram sete cenários por cópia e quatro
+recuperações por edição real. Repostas 44 entradas em cada cópia.
+A releitura de 408 células por cópia encontrou somente as 23 mudanças
+previstas. A instalação incremental exige snapshot atualizado e os
+arquivos ensaiados da PR71. Sol/Medium para revisar.
+
 # Revisão da PR71 e auditoria de Classe 0 · 06/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-CLASSE-ZERO-2026-11-06.md`.

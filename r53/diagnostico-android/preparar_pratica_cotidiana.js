@@ -29,7 +29,7 @@ function prepararCodigo(src){
  // O módulo antigo conserva seu catálogo; a edição efetiva usa o editor leve atualizado.
  const report='cartoes:s.editor.contextos.length,sobras:s.sobras';
  if(src.split(report).length!==2)throw Error('Prática: verificador divergente');
- return src.replace(report,'cartoes:r53ConfigEditor_().contextos.length,cartoesModulo:s.editor.contextos.length,sobras:s.sobras')+'\n'+runtime.gerar();
+ return src.replace(report,'cartoes:r53ConfigEditor_().contextos.length,cartoesModulo:s.editor.contextos.length,sobras:s.sobras')+'\n'+runtime.gerar([]);
 }
 function prepararEditor(src){
  if(sha(src)!==p.baseEditorSha256)throw Error('Prática: editor instalado divergente');
