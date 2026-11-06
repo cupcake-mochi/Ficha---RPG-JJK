@@ -1,3 +1,18 @@
+# Correção de Frágil com Melhorias instantâneas · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FRAGIL-INSTANTANEO-2026-11-06.md`.
+Base PR80 `97d1b00`, geração `52bef8f75b425d85`. Frágil exclui
+Passo, Empurrão, Longe, Mais Um, Rajada e Remate do teto de gasto.
+São 753 fórmulas em CK, CP e FX. A versão compacta coube em cinco
+partes do pacote com 24.192 bytes de margem.
+
+Passaram 15 cenários por descartável na versão compacta. Foram
+repostas seis fórmulas e 21 entradas por cópia. Relidas 624 células
+sem diferenças, incluindo 539 posições de MONTAGENS. As cópias
+estão com a PR80. Smoke, transporte e recuperação simulada
+passaram. Instalação integral e recuperação por edição real
+ainda requerem ensaio. Sol/Medium para revisão e Sol/High para ensaio.
+
 # Instalação PR80 e auditoria de Frágil · 06/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-FRAGIL-INSTANTANEO-2026-11-06.md`.
