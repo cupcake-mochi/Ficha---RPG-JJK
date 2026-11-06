@@ -15,6 +15,8 @@ assert.equal(alvos.length, 1004);
 assert.equal(new Set(alvos.map(d => d.r + ':' + d.c)).size, 1004);
 assert.ok(alvos.every(d => d.r !== 251 && d.aba === 'DADOS_R53'));
 
+const alvosRecuperacao = formulas(undefined, rt.colunasMontagem);
+assert.equal(alvosRecuperacao.length, 1255);
 let loads = 0;
 const ctx = vm.createContext({
   Utilities: {
@@ -56,17 +58,20 @@ const legados = rt.dados(undefined, require('../diagnostico-android/tempo_feitic
   .filter(d => d.aba === 'DADOS_R53')).filter(([aba, r, c]) =>
   aba === 'DADOS_R53' && r >= 2 && r <= 250 && c >= 89 && c <= 181);
 const esperados = new Set([
-  ...alvos.filter(d => d.r <= 250).map(d => d.r + ':' + d.c),
+  ...alvosRecuperacao.filter(d => d.r <= 250).map(d => d.r + ':' + d.c),
   ...legados.map(([, r, c]) => r + ':' + c),
 ]);
 assert.deepEqual(new Set(writes.keys()), esperados);
-for (const d of alvos.filter(d => d.r <= 250)) {
+for (const d of alvosRecuperacao.filter(d => d.r <= 250)) {
   assert.equal(writes.get(d.r + ':' + d.c), formulaLocal(d.depois, 'pt_BR'));
 }
 assert.equal(loads, 2);
+assert.equal(editar('DADOS_R53', 2, 104), true);
+assert.equal(writes.size, 1);
+assert.equal(writes.get('2:104'), formulaLocal(alvosRecuperacao.find(d => d.r === 2 && d.c === 104).depois, 'pt_BR'));
 assert.equal(editar('DADOS_R53', 251, 89), false);
 assert.equal(writes.size, 0);
-for (const d of alvos.filter(d => d.r > 250)) {
+for (const d of alvosRecuperacao.filter(d => d.r > 250)) {
   assert.equal(editar(d.aba, d.r, d.c), true);
   assert.equal(writes.get(d.r + ':' + d.c), formulaLocal(d.depois, 'pt_BR'));
 }

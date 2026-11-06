@@ -1,3 +1,18 @@
+# Correção de Restrições agrupadas e de Classe 0 · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-RESTRICOES-AGRUPADAS-2026-11-06.md`.
+Base PR79 `4118bb9`, geração `a4a5a3cc3698c18a`. São 753 fórmulas
+em CK, CP e CZ. Pares proibidos mantêm o aviso e contam só o maior
+crédito elegível. Atrasar com Reação, Aquecer com Remate e opções
+de Classe 0 acima de Leve perdem o crédito indevido.
+
+Passaram 25 cenários por descartável, incluindo os 15 casos da
+auditoria. Foram repostas seis fórmulas e 21 entradas por cópia.
+Relidas 624 células sem diferença ou erro, incluindo 539 posições
+de MONTAGENS. PR79 nas descartáveis. Smoke e transporte passaram.
+Instalação integral e recuperação por edição real da nova geração
+ainda requerem ensaio. Sol/Medium para revisão e Sol/High para ensaio.
+
 # Instalação PR79 e auditoria de Restrições agrupadas · 06/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-RESTRICOES-AGRUPADAS-2026-11-06.md`.
