@@ -1,3 +1,15 @@
+# Revisão PR74 e auditoria de Tempo · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-TEMPO-FEITICOS-2026-11-06.md`.
+PR74 `758c571`, dois checks aprovados e sem conflito. Na Era e no
+Ciclo, Carregar e Armado não detalham preparo e disparo no cartão
+comum. Guarda com Concentrada/Duradoura mantém o prazo normal no
+texto interno e inclui só um aviso genérico de prolongamento.
+Foram 12 cenários por cópia, 11 entradas repostas e 320 células
+relidas sem diferenças. Diagnóstico no ramo
+`codex/auditoria-tempo-feiticos-20261106`. Sol/Medium para revisão,
+Sol/High para correção ou ensaio nativo.
+
 # Alcance de Guarda, Impulso e Firmeza · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-ALCANCE-BENEFICIOS-2026-11-06.md`.
