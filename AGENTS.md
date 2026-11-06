@@ -1,3 +1,28 @@
+# Correção de Frágil e Fica · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FRAGIL-FICA-2026-11-06.md`.
+Base PR76 `4911da8`, geração `2048c458847ad339`. Só Precisão
+não financia Frágil e Fica exige dano efetivo. São 753 fórmulas.
+
+Passaram 13 cenários por descartável. As entradas e fórmulas de
+teste voltaram à PR76. Relidas 596 células por cópia sem diferenças,
+incluindo 532 posições de MONTAGENS. Entrega e recuperação verificadas
+localmente. Instalação integral e recuperação real ainda requerem
+ensaio nativo. Sol/Medium para revisão e Sol/High para ensaio.
+
+# Instalação PR76 e auditoria de Frágil e Fica · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-FRAGIL-FICA-2026-11-06.md`.
+A PR76 `4911da8` está com dois checks aprovados. Nas descartáveis
+Era e Ciclo, Código salvo e relido, 1.004 fórmulas aplicadas e três
+recuperações por edição real em cada. A aba interna voltou a ficar
+oculta. A releitura das montagens amostradas não mostrou diferenças.
+
+Pente-fino confirmou Frágil devolvendo 2 com somente Precisão e Fica
+válido com 0d8 após Toca a Alma. Nove cenários e 599 células relidas
+por cópia após repor os dados. A PR76 permanece instalada nas QAs.
+Sol/Medium para revisar e Sol/High para corrigir ou ensaiar.
+
 # Correção de Rajada e Tudo ou Nada · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-RAJADA-ALVOS-2026-11-06.md`.
