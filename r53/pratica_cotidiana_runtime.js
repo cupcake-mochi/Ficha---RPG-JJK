@@ -38,7 +38,7 @@ function gerarMontagem(alvos){
 function r53PraticaMontagem_(){if(!R53_PRATICA_MONTAGEM_)R53_PRATICA_MONTAGEM_=JSON.parse(Utilities.ungzip(Utilities.newBlob(Utilities.base64Decode(${JSON.stringify(comprimir(moldes))}),'application/gzip')).getDataAsString('UTF-8'));return R53_PRATICA_MONTAGEM_;}
 `;
 }
-function gerar(deltas, tempo=deltas===undefined?require('./diagnostico-android/tempo_feiticos_plano.json'):[], rajada=deltas===undefined&&tempo.length?rajadaAlvos.formulas(undefined,colunasMontagem):[]){
+function gerar(deltas, tempo=deltas===undefined?require('./diagnostico-android/tempo_feiticos_plano.json'):[], rajada=deltas===undefined&&tempo.length?rajadaAlvos.formulas(undefined,colunasMontagem).concat(require('./liberacoes').formulas()):[]){
  deltas ??= require('./diagnostico-android/classe_zero_plano.json');
  const efeitos=tempo.filter(d=>d.aba==='DADOS_R53');
  const classeZero=deltas.filter(d=>d.aba==='DADOS_R53');

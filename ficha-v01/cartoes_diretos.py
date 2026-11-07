@@ -232,7 +232,7 @@ def aplica(layout,tr):
             raw(key,'='+flag)
             raw('p_'+key,'=0' if g['fixa'] else f'=IF(AND({gate},ISNUMBER({val})),{val},0)')
         for k in ['r1_valida','r2_valida']:raw(k,True)
-        dc[tr['colunas']['avisos_funcoes']+str(row)][1]='='+('IF('+g['requisito']+',"","Trunfo exige maldição domada com técnica própria e nível de aquisição")' if g.get('requisito') else '""')
+        dc[tr['colunas']['avisos_funcoes']+str(row)][1]='='+R.aviso_requisito(g)
         # Textual adjudication belongs to COMO É, not a second input form.
         # Ampliação preserves the spell's identity; only its allocation scales.
         invariants=['forma','funcao1','funcao2','funcao3','m1','m2','m3','m4','r1','r2','controle','pessoal']
