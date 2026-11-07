@@ -1,3 +1,16 @@
+# Instalação da PR82 nas descartáveis · 06/11/2026
+
+Leia `r53/diagnostico-android/INSTALACAO-PR82-2026-11-06.md`.
+PR82 `b11c46a` sem conflito e com dois checks aprovados. Era e
+Ciclo receberam 753 fórmulas cada. Seis recuperações por edição
+real passaram, incluindo Classe 0 e crédito herdado da PR80.
+
+Passaram seis controles por descartável com a PR82 instalada.
+Após repor as entradas, a releitura de 624 células por cópia,
+incluindo 539 posições de MONTAGENS, encontrou zero diferenças
+e zero erros. A PR82 segue nas descartáveis. Sol/Medium para
+revisão e Sol/High para ensaio de instalação.
+
 # Correção de Frágil no catálogo · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-FRAGIL-CATALOGO-2026-11-06.md`.
