@@ -1,3 +1,20 @@
+# Correção de Corrói e Mira Livre · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CORROI-MIRA-LIVRE-2026-11-07.md`.
+Base PR83 `b6c1ac1`, geração `604968957e08baef`. Corrói passa a
+exigir Mira Livre nas quatro vagas e nas modalidades de entidade.
+O delta contém 251 fórmulas de FX e preserva preços e compras.
+
+Passaram 104 cenários por descartável, incluindo as 12 entidades,
+e 212 montagens locais. Foram repostas 330 entradas e 13 fórmulas
+focais por cópia. A comparação de 5.218 posições, incluindo 3.647
+de MONTAGENS, encontrou zero diferenças e zero erros. As duas
+descartáveis voltaram à PR83. Smoke e transporte passaram.
+
+O pacote mantém cinco partes com margem de 452 bytes. A instalação
+integral e a recuperação por edição real da correção aguardam
+ensaio. Sol/Medium para revisão e Sol/High para ensaio.
+
 # Auditoria de Mira após a PR83 · 07/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-MIRA-2026-11-07.md`.
