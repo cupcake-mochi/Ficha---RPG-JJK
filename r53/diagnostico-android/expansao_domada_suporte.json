@@ -1,0 +1,290 @@
+[
+  {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP2)-INDEX($I$2:$N$8,$FP2,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$2:$RJ$2,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP3)-INDEX($I$2:$N$8,$FP3,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$3:$RJ$3,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP4)-INDEX($I$2:$N$8,$FP4,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$4:$RJ$4,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP5)-INDEX($I$2:$N$8,$FP5,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$5:$RJ$5,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP6)-INDEX($I$2:$N$8,$FP6,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$6:$RJ$6,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP7)-INDEX($I$2:$N$8,$FP7,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$7:$RJ$7,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP8)-INDEX($I$2:$N$8,$FP8,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$8:$RJ$8,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP9)-INDEX($I$2:$N$8,$FP9,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$9:$RJ$9,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP10)-INDEX($I$2:$N$8,$FP10,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$10:$RJ$10,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP11)-INDEX($I$2:$N$8,$FP11,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$11:$RJ$11,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP12)-INDEX($I$2:$N$8,$FP12,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$12:$RJ$12,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 269,
+    "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP13)-INDEX($I$2:$N$8,$FP13,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$13:$RJ$13,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
+  },
+  {
+    "aba": "ANALISE",
+    "r": 2948,
+    "c": 1,
+    "depois": "invocacao.1.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 2948,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$Q$226),\"\",'INVOCAÇÕES'!$Q$226&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 2948,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!Q226"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3040,
+    "c": 1,
+    "depois": "invocacao.2.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3040,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$Q$457),\"\",'INVOCAÇÕES'!$Q$457&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3040,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!Q457"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3132,
+    "c": 1,
+    "depois": "invocacao.3.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3132,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$Q$688),\"\",'INVOCAÇÕES'!$Q$688&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3132,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!Q688"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3224,
+    "c": 1,
+    "depois": "invocacao.4.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3224,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$Q$919),\"\",'INVOCAÇÕES'!$Q$919&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3224,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!Q919"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3316,
+    "c": 1,
+    "depois": "invocacao.5.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3316,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$Q$1150),\"\",'INVOCAÇÕES'!$Q$1150&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3316,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!Q1150"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3408,
+    "c": 1,
+    "depois": "invocacao.6.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3408,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$Q$1381),\"\",'INVOCAÇÕES'!$Q$1381&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3408,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!Q1381"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3500,
+    "c": 1,
+    "depois": "invocacao.7.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3500,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$AJ$226),\"\",'INVOCAÇÕES'!$AJ$226&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3500,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!AJ226"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3592,
+    "c": 1,
+    "depois": "invocacao.8.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3592,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$AJ$457),\"\",'INVOCAÇÕES'!$AJ$457&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3592,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!AJ457"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3684,
+    "c": 1,
+    "depois": "invocacao.9.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3684,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$AJ$688),\"\",'INVOCAÇÕES'!$AJ$688&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3684,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!AJ688"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3776,
+    "c": 1,
+    "depois": "invocacao.10.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3776,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$AJ$919),\"\",'INVOCAÇÕES'!$AJ$919&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3776,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!AJ919"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3868,
+    "c": 1,
+    "depois": "invocacao.11.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3868,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$AJ$1150),\"\",'INVOCAÇÕES'!$AJ$1150&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3868,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!AJ1150"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3960,
+    "c": 1,
+    "depois": "invocacao.12.exp.acerto"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3960,
+    "c": 2,
+    "depois": "=IF(ISBLANK('INVOCAÇÕES'!$AJ$1381),\"\",'INVOCAÇÕES'!$AJ$1381&\"\")"
+  },
+  {
+    "aba": "ANALISE",
+    "r": 3960,
+    "c": 3,
+    "depois": "'INVOCAÇÕES'!AJ1381"
+  }
+]

@@ -28,9 +28,9 @@ extrair_invocacao.py lê dos capítulos 16 e 17 do manual.txt. As Melhorias, as 
 proibidos são os da FICHA AMALDIÇOADA (catalogo-projeto-m.json e decisoes-ficha.json), lidos por ficha_amaldicoada.regras().
 
 O QUE ESTA ABA NÃO FAZ: as Intervenções de Vínculo (são ações; a aba guarda os pontos), a lista de ritual e a
-fabricação. Ela não confere quem pode ter trunfo (o livro os dá à domada com técnica própria), nem se os degraus de
-Domínio da domada gastaram espaço de especial. A Integridade da entidade com alma não tem caixa: o capítulo 17 não dá
-a máxima dela.
+fabricação. O módulo expansao_domada.py acrescenta a conferência de requisitos
+estruturados e do orçamento de especiais/domínio depois do layout final.
+Técnica própria e histórico de aquisição dos degraus ainda exigem revisão da mesa.
 """
 import json, math, os, re
 

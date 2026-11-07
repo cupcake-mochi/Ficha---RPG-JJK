@@ -80,7 +80,7 @@ var ABAS_DAS_MELHORIAS = [
     "paleta_fixa":true,
     "caixas":[],
     "depois":"GLOSSÁRIO",
-    "geracao":"913e7d60d156ef11",
+    "geracao":"ed25e7759cd26b7e",
     "arquivo":"Melhorias.gs"
   }
 ];

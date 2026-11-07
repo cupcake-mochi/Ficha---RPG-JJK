@@ -262,7 +262,7 @@ def trocas(layout, fa, fp_tr, fam, fiv):
         for tipo in ("tm", "exp"):
             for campo, c in g[tipo].items():
                 if campo not in ("r0", "c0"):
-                    lê(f"{base}.{tipo}.{campo}", I(c), "resultado" if campo in ("pe", "dados", "acao", "pede") else "entrada")
+                    lê(f"{base}.{tipo}.{campo}", I(c), "resultado" if campo in ("pe", "dados", "acao", "pede", "acerto") else "entrada")
     for carta in fiv["cartas"]:
         f_, tipo, num, c = carta[:4]
         base = f"invocacao.{f_ + 1}.{tipo}.{num + 1}"

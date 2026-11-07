@@ -56,7 +56,9 @@ def main():
         # O controlador direto é o único módulo maior: orçamento explícito de
         # 1,2 MB, conferido na instalação nativa; partes de dados seguem <900 KB.
         packed = subprocess.run([sys.executable, str(ROOT/'r53/empacotar_script.py')],
-                                cwd=ROOT, capture_output=True, text=True, timeout=60)
+                                # A compressão gzip mais densa é só de preparação;
+                                # não altera o limite de execução no Apps Script.
+                                cwd=ROOT, capture_output=True, text=True, timeout=180)
         check('empacotamento R53 a partir das fontes versionadas', packed.returncode == 0,
               packed.stderr.strip() or 'exit='+str(packed.returncode))
         if packed.returncode == 0:
@@ -102,7 +104,7 @@ def main():
                          'r53/testes/caminho_leve.js',
                          'r53/testes/caminho_integrado.js', 'r53/testes/caminho_corrida.js',
                          'r53/testes/pacote_leve.js', 'r53/testes/pessoal_leve.js', 'r53/testes/atalho_livre.js', 'r53/testes/caixas_horizontais.js', 'r53/testes/cartas_custom.js',
-                         'r53/testes/recursos_fila.js', 'r53/testes/recursos_fila_incremental.js', 'r53/testes/integridade_movimento.js', 'r53/testes/equipamento.js', 'r53/testes/bencaos_imunidades.js', 'r53/testes/pilha_5156.js', 'r53/testes/editor_lazy.js', 'r53/testes/menu_origem_molde.js', 'r53/testes/socorro.js', 'r53/testes/cura_recebida.js', 'r53/testes/descanso.js', 'r53/testes/descanso_origens.js', 'r53/testes/origens_recursos.js', 'r53/testes/reserva_bolsa.js', 'r53/testes/pratica_cotidiana.js', 'r53/testes/pratica_instalacao.js', 'r53/testes/conjuracao_integridade.js', 'r53/testes/classe_zero.js', 'r53/testes/alcance_cura.js', 'r53/testes/alcance_beneficios.js', 'r53/testes/tempo_feiticos.js', 'r53/testes/rajada_alvos.js', 'r53/testes/fragil_fica.js', 'r53/testes/sem_volta.js', 'r53/testes/devolucoes_incompativeis.js', 'r53/testes/restricoes_agrupadas.js', 'r53/testes/fragil_instantaneo.js', 'r53/testes/fragil_catalogo.js', 'r53/testes/forma_funcao.js', 'r53/testes/corroi.js', 'r53/testes/liberacoes.js',
+                         'r53/testes/recursos_fila.js', 'r53/testes/recursos_fila_incremental.js', 'r53/testes/integridade_movimento.js', 'r53/testes/equipamento.js', 'r53/testes/bencaos_imunidades.js', 'r53/testes/pilha_5156.js', 'r53/testes/editor_lazy.js', 'r53/testes/menu_origem_molde.js', 'r53/testes/socorro.js', 'r53/testes/cura_recebida.js', 'r53/testes/descanso.js', 'r53/testes/descanso_origens.js', 'r53/testes/origens_recursos.js', 'r53/testes/reserva_bolsa.js', 'r53/testes/pratica_cotidiana.js', 'r53/testes/pratica_instalacao.js', 'r53/testes/conjuracao_integridade.js', 'r53/testes/classe_zero.js', 'r53/testes/alcance_cura.js', 'r53/testes/alcance_beneficios.js', 'r53/testes/tempo_feiticos.js', 'r53/testes/rajada_alvos.js', 'r53/testes/fragil_fica.js', 'r53/testes/sem_volta.js', 'r53/testes/devolucoes_incompativeis.js', 'r53/testes/restricoes_agrupadas.js', 'r53/testes/fragil_instantaneo.js', 'r53/testes/fragil_catalogo.js', 'r53/testes/forma_funcao.js', 'r53/testes/corroi.js', 'r53/testes/liberacoes.js', 'r53/testes/expansao_domada.js',
                          'r53/testes/abertura_salario.js', 'r53/testes/missoes_sem_registros.js', 'r53/testes/xp_atualizar.js',
                          'conteudos-b47/comum/testar-notas-contextuais.js']:
                 run = subprocess.run([node, str(ROOT/name)], cwd=ROOT, capture_output=True, text=True, timeout=300)
@@ -139,7 +141,7 @@ def main():
                              cwd=ROOT, capture_output=True, text=True, timeout=60)
         check('Corrói: Mira Livre em cartões pessoais e de entidades', run.returncode == 0,
               run.stderr.strip() or run.stdout.strip())
-        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_liberacoes'],
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_liberacoes', 'r53.testes.test_expansao_domada'],
                              cwd=ROOT, capture_output=True, text=True, timeout=60)
         check('Liberações Máximas: níveis de aquisição por posição', run.returncode == 0,
               run.stderr.strip() or run.stdout.strip())

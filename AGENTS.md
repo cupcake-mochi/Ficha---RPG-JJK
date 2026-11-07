@@ -1,3 +1,31 @@
+# Correção da Expansão da domada · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-EXPANSAO-DOMADA-2026-11-07.md`.
+Base PR85 `735d499`, geração `ed25e7759cd26b7e`. Requisitos estruturados e
+orçamento conjunto agora pedem revisão; aquisição ocupa 2/3/5 no total.
+Sem Barreiras mostra PE fechado/aberto sem reduzir o grau adquirido.
+Os 12 exp.acerto da ANALISE passam a resultado; chaves, B e C preservados.
+Técnica própria, histórico de aquisição e permissões de tipo custom seguem
+em conferência explícita da mesa, sem aprovação automática universal.
+
+512 cenários nativos por QA Era/Ciclo passaram. Oito edições reais recuperaram
+cabeçalhos, o bloco misto de PE/Acerto/requisito e os registros inicial/final
+na ANALISE, preservando o escape dos apóstrofos. Seleção real e visual passaram.
+As entradas temporárias foram restauradas; 4.658 posições por cópia, incluindo
+2.072 de MONTAGENS, tiveram somente 48 células e 36 notas previstas de delta.
+Zero diferenças adicionais e zero erros nos intervalos lidos. Auxiliares ocultas.
+Código incremental salvo e relido, SHA-256
+`5b7bb420739efeeb28e036b8da79f38bcc0e19b20d4d14f229f0effaac74e7ef`.
+O pacote Android antigo omite ANALISE do retrato: o preparador preserva essa
+separação. Não retirar a recuperação externa nem seu escape de literais.
+
+Comparação do modelo: 280.001 posições e 26 abas, somente o delta previsto.
+Relatório local do smoke: 119 aprovações. Zopfli só na preparação permite manter
+cinco partes (3.854.032 bytes Base64); formato gzip padrão, sem serviço novo.
+A entrega exige Código PR85 e snapshot fresco. Pacote integral regenerado,
+não instalado. Oficiais, jogador e PR31 intactos, sem merge. Sol/Medium para
+revisão e Sol/High para futura integração/ensaio.
+
 # Auditoria da Expansão da domada · 07/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-EXPANSAO-DOMADA-2026-11-07.md`.

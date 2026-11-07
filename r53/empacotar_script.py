@@ -15,9 +15,10 @@ def gerar():
  subprocess.run(['node',str(ROOT/'r53/descanso_leve.js')],check=True,capture_output=True,text=True)
  subprocess.run(['node',str(ROOT/'r53/reserva_bolsa_restaurar.js')],check=True,capture_output=True,text=True)
  subprocess.run(['node',str(ROOT/'r53/pratica_cotidiana_runtime.js')],check=True,capture_output=True,text=True)
+ subprocess.run(['node',str(ROOT/'r53/expansao_domada_runtime.js')],check=True,capture_output=True,text=True)
  subprocess.run(['node',str(ROOT/'r53/caminho_leve.js')],check=True,capture_output=True,text=True)
  folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs','PaletaAndroid.gs','Caminho.gs','CuraRecebida.gs','Socorro.gs'])+['Habilidades.gs','Codigo.gs']
- names=[n for n in names if n not in ['Descanso.gs','ReservaBolsa.gs','PraticaCotidiana.gs']]
+ names=[n for n in names if n not in ['Descanso.gs','ReservaBolsa.gs','PraticaCotidiana.gs','ExpansaoDomada.gs']]
  sources=[(folder/n).read_text() for n in names];source='\n'.join(sources)
  variables=sorted(set(re.findall(r'^var\s+([A-Za-z_$][\w$]*)\s*=',source,re.M)))
  functions=sorted(set(re.findall(r'^function\s+([A-Za-z_$][\w$]*)\s*\(',source,re.M)))
@@ -30,9 +31,15 @@ def gerar():
  step=850_000
  slots=['Ficha.gs','Invocacoes.gs','Analise.gs','Configuracao.gs','Origens.gs']
  if len(b64)>step*len(slots):
-  # Blocos menores de deflate podem comprimir melhor as fórmulas repetidas.
   compressor=zlib.compressobj(9,zlib.DEFLATED,31,4)
   b64=base64.b64encode(compressor.compress(raw)+compressor.flush()).decode()
+ if len(b64)>step*len(slots):
+  # Zopfli produz gzip padrão; só a preparação local fica mais demorada.
+  # O Google continua usando Utilities.ungzip, sem biblioteca ou acesso novo.
+  import zopfli.gzip
+  comprimido=zopfli.gzip.compress(raw,numiterations=1)
+  if gzip.decompress(comprimido)!=raw:raise ValueError('Compressão divergente')
+  b64=base64.b64encode(comprimido).decode()
  parts=[b64[i:i+step] for i in range(0,len(b64),step)]
  if len(parts)>len(slots):raise ValueError('Pacote excede os cinco arquivos de dados reservados')
  for i,(name,part) in enumerate(zip(slots,parts)):(OUT/name).write_text('// PACOTE R53 · fonte e hashes em r53/empacotar_script.py\nvar R53_CODIGO_'+str(i)+'_ = '+json.dumps(part)+';\n')
@@ -87,10 +94,11 @@ function verificarPacoteR53() {
  bootstrap+=(folder/'Descanso.gs').read_text()
  bootstrap+=(folder/'ReservaBolsa.gs').read_text()
  bootstrap+=(folder/'PraticaCotidiana.gs').read_text()
+ bootstrap+=(folder/'ExpansaoDomada.gs').read_text()
  for n in public:
   if n=='onEdit':
    bootstrap+=(ROOT/'r53/diagnostico-android/versao_publica.gs').read_text()
-   bootstrap+='function onEdit(e){if(e)e.r53Inicio_=Date.now();if(r53PraticaRestaurar_(e)){if(typeof r53PaletaLeve_==="function"&&PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);return;}if(r53RestaurarCargaOrigem_(e)){if(typeof r53PaletaLeve_==="function"&&PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);return;}if(r53DescansoEdit_(e)){if(typeof r53PaletaLeve_==="function"&&PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);return;}if(r53RestaurarVersaoPublica_(e))return;if(typeof salarioIntegrarMissao_==="function"&&salarioIntegrarMissao_(e,function(ev){return r53Modulo_().onEdit(ev);}))return;if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(e&&e.range&&e.range.getSheet().getName()==="CARTEIRA"&&e.range.getA1Notation()==="C27")return typeof r53PaletaLeve_==="function" ? r53PaletaLeve_().trocar(e) : r53Modulo_().onEdit(e);if(r53EditarCaminho_(e))return;if(typeof r53Editar_==="function" && r53Editar_(e))return;if(e)e.r53EditorVerificado_=true;return r53Modulo_().onEdit(e); }\n'
+   bootstrap+='function onEdit(e){if(e)e.r53Inicio_=Date.now();if(r53ExpansaoRestaurar_(e))return;if(r53PraticaRestaurar_(e)){if(typeof r53PaletaLeve_==="function"&&PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);return;}if(r53RestaurarCargaOrigem_(e)){if(typeof r53PaletaLeve_==="function"&&PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);return;}if(r53DescansoEdit_(e)){if(typeof r53PaletaLeve_==="function"&&PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);return;}if(r53RestaurarVersaoPublica_(e))return;if(typeof salarioIntegrarMissao_==="function"&&salarioIntegrarMissao_(e,function(ev){return r53Modulo_().onEdit(ev);}))return;if(typeof salarioEditar_==="function" && salarioEditar_(e))return;if(e&&e.range&&e.range.getSheet().getName()==="CARTEIRA"&&e.range.getA1Notation()==="C27")return typeof r53PaletaLeve_==="function" ? r53PaletaLeve_().trocar(e) : r53Modulo_().onEdit(e);if(r53EditarCaminho_(e))return;if(typeof r53Editar_==="function" && r53Editar_(e))return;if(e)e.r53EditorVerificado_=true;return r53Modulo_().onEdit(e); }\n'
   elif n=='r53DescansarComQueda':bootstrap+='function r53DescansarComQueda(tipo,queda,jaConvertido){return r53DescansoLeve_().comQueda(tipo,queda,jaConvertido);}\n'
   elif n=='onOpen':
    bootstrap+='function onOpen(e){if(typeof r53CuraMenu_==="function")r53CuraMenu_();e=e||{};e.r53Inicio_=Date.now();if(typeof r53PaletaLeve_!=="function")return r53Modulo_().onOpen(e);if(typeof salarioAbrir_==="function")salarioAbrir_();if(typeof r53Menu_==="function")r53Menu_();if(PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);}\n'
@@ -101,7 +109,7 @@ function verificarPacoteR53() {
  # Arquivos desta geração que existirem separadamente no projeto antigo
  # duplicariam a inicialização. Guardar o conteúdo antes de trocar por estes
  # marcadores; não tocar em arquivos externos desconhecidos do projeto.
- legados=[n for n in names if n not in arquivos]+['Descanso.gs','ReservaBolsa.gs','PraticaCotidiana.gs']
+ legados=[n for n in names if n not in arquivos]+['Descanso.gs','ReservaBolsa.gs','PraticaCotidiana.gs','ExpansaoDomada.gs']
  destino_legado=OUT/'legado';destino_legado.mkdir(exist_ok=True)
  for name in legados:(destino_legado/name).write_text('// Conteúdo incluído no pacote R53; fonte legível preservada no repositório.\n')
  manifest=dict(fonte_sha256=digest,geracao_arquivos=names,entradas_publicas=public,partes=len(parts),bytes_fonte=len(raw),bytes_base64=len(b64),arquivos=arquivos,arquivos_legados_desativar=legados)
