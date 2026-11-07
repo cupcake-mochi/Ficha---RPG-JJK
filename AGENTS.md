@@ -1,3 +1,22 @@
+# Correção de aquisição das Liberações · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-LIBERACOES-2026-11-07.md`.
+Ramo `codex/liberacoes-niveis-20261107`, base PR84 `74d83b7`, geração
+`913e7d60d156ef11`. Os três cartões pessoais exigem níveis 10, 20 e 30.
+O delta contém GA38:GA40 e os moldes/guardas correspondentes no Código.
+
+Instalação incremental concluída nas descartáveis Era e Ciclo, após
+snapshots novos. Código salvo e relido igual nas duas, SHA-256
+`7512bf622897eb1145f3849a55ccd80419a147e8cd540a3c2b6113d84c8cdfb7`.
+Duas edições reais em bloco recuperaram as seis fórmulas.
+
+Passaram 39 cenários por cópia. As 58 entradas temporárias foram
+restauradas. A conferência de 1.121 posições por cópia, incluindo 777
+de MONTAGENS, encontrou somente o delta previsto de três fórmulas e
+zero erros. DADOS_R53 voltou a ficar oculta. Correção nas duas QAs.
+Smoke e transporte passaram. Pacote em cinco partes, margem de 304 bytes.
+Sol/Medium para revisão e Sol/High para próximo ensaio ou correção.
+
 # Instalação da PR84 nas descartáveis · 07/11/2026
 
 Leia `r53/diagnostico-android/INSTALACAO-PR84-2026-11-07.md`.
