@@ -1,3 +1,30 @@
+# Revisão PR88 com bloqueio · 07/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR88-ERROS-NOMES-2026-11-07.md` e
+`revisao_pr88_erros_nomes_2026-11-07.json`. PR88 `4d22fb7` segue aberta,
+sem conflitos e com dois checks SUCCESS, mas R88-01 [P2] impede considerá-la
+pronta: LEN avalia todo B2:B253 antes do filtro de identidade e propaga
+erro de nome de uma básica para os 12 cabeçalhos/12 requisitos normais.
+
+Reproduzido nas duas QAs com J71 =1/0 e =NA(). Texto, número e fórmula
+vazia são controles corretos. A/B com a fórmula anterior em IE2 confirmou
+a regressão da PR88; tudo foi reposto. Não voltar a COUNTIFS ?*, que perde
+números, nem esconder toda a conta com IFERROR(…,0). Isolar a avaliação,
+mantendo erro na origem e avisos mecânicos legítimos. Código não corrigido
+nesta rodada; não instalado pacote ou script. PR88/PR31 não alteradas.
+
+Testes focais de preparação/recuperação e modelo passaram novamente.
+Dez cenários globais (quatro com propagação, seis controles), 240 resultados
+observados; um defeito, não 240. Treze entradas/cópia restauradas; amostra
+de 1.038 posições, 999 MONTAGENS, zero diferenças ou erros remanescentes.
+Metadados idênticos, visual restaurado e auxiliares ocultas nas duas.
+Não houve ensaio de eventos; API de entrada não dispara onEdit.
+
+Ramo só de revisão `codex/revisao-pr88-contagens-20261107`. Dados privados
+em `nuvem-b47/saidas/revisao-pr88-contagens/`, ignorado. Sem merge, oficiais,
+jogador ou PR31. Próximo passo é corrigir R88-01 antes de ampliar o pente-fino.
+Sol/High para corrigir/ensaiar; Sol/Medium para revisar a evidência.
+
 # Contagem das especiais normais corrigida · 07/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-CONTAGEM-ESPECIAIS-2026-11-07.md` e
