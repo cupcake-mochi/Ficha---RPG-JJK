@@ -1,3 +1,20 @@
+# Auditoria de Mira após a PR83 · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-MIRA-2026-11-07.md`.
+PR83 `b6c1ac1` contém o relatório de instalação. As descartáveis
+Era e Ciclo estão com a PR83 e a recuperação por edição real passou.
+
+Foi confirmado um erro de requisito de Família. Corrói fica VÁLIDO
+com Mira Neutra nas vagas 1 e 4, embora a R66 exija Mira Livre.
+Os controles de Mira Livre, Mira Fechada e Fura passaram. O mesmo
+problema aparece nos modos estruturado e direto do avaliador local.
+O requisito nas entidades ainda requer ensaio nativo.
+
+Passaram seis controles da PR83 por cópia. Foram repostas 18
+entradas. A comparação de 861 posições por cópia, incluindo 539
+de MONTAGENS, encontrou zero diferenças e zero erros. Sol/Medium
+para revisão e Sol/High para correção e ensaio.
+
 # Instalação da PR83 nas descartáveis · 07/11/2026
 
 Leia `r53/diagnostico-android/INSTALACAO-PR83-2026-11-07.md`.
