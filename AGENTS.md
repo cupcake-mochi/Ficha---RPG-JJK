@@ -1,3 +1,27 @@
+# Revisão PR87 e orçamento normal · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-REPERTORIO-NORMAL-2026-11-07.md`.
+PR87 `0554071` revisada, aberta, sem conflitos e com dois checks SUCCESS.
+Repetidos os testes focais de preparação/recuperação e de equivalência do
+modelo (280.056 posições/26 abas). Sem bloqueio novo no escopo dos extras.
+O ramo da PR87 e seu código instalado foram preservados.
+
+Pente-fino confirmou N01: orçamento das especiais normais usa ?* nos nomes,
+ignorando números/booleanos e fórmulas numéricas. Duas especiais 7/8 mais
+Completa no nível próprio 14 mostram 0+3 de 4, sem avisar do gasto real 5/4.
+Um defeito, com 120 reproduções e 120 controles em 240 casos nas duas QAs,
+nas 12 entidades. Critério vem da PR86; extras da PR87 já usam <>.
+Nenhuma correção nova aplicada. Não substituir ?* globalmente.
+
+158 entradas/cópia restauradas, zero diferenças e erros nas faixas lidas:
+33.458 posições solicitadas, 31.968 de MONTAGENS (incluem vazios implícitos).
+Conferência visual nativa final passou. Não houve ensaio novo de onEdit.
+Evidência sanitizada em `repertorio_normal_resultados_2026-11-07.json`;
+dados privados em `nuvem-b47/saidas/auditoria-repertorio-normal/`, ignorado.
+Ramo separado `codex/auditoria-repertorio-normal-20261107`, sobre a PR87.
+Sem merge, oficiais, jogador ou PR31. Sol/Medium para revisar diagnóstico;
+Sol/High para corrigir N01 e ensaiar atualização/recuperação incremental.
+
 # Correção do repertório das Trilhas · 07/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-REPERTORIO-TRILHA-2026-11-07.md` e a
