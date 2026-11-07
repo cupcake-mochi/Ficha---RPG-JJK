@@ -452,6 +452,13 @@ for _sufixo, _dados in (('plano', _EXPANSAO_DOMADA), ('notas', _EXPANSAO_NOTAS),
     with open(os.path.join(AQUI, '..', 'r53', 'diagnostico-android', 'expansao_domada_'+_sufixo+'.json'), 'w', encoding='utf-8') as _f:
         json.dump(_dados, _f, ensure_ascii=False, indent=2)
         _f.write('\n')
+import repertorio_trilha
+_REPERTORIO_PLANO, _REPERTORIO_NOTAS, _REPERTORIO_UI = repertorio_trilha.aplica(LAYOUT, _R53)
+for _sufixo, _dados in (('plano', _REPERTORIO_PLANO), ('notas', _REPERTORIO_NOTAS), ('ui', _REPERTORIO_UI),
+                        ('suporte', repertorio_trilha.suporte(LAYOUT, _R53))):
+    with open(os.path.join(AQUI, '..', 'r53', 'diagnostico-android', 'repertorio_trilha_'+_sufixo+'.json'), 'w', encoding='utf-8') as _f:
+        json.dump(_dados, _f, ensure_ascii=False, indent=2)
+        _f.write('\n')
 if '--plano-tempo-feiticos' in sys.argv:
     _destino = sys.argv[sys.argv.index('--plano-tempo-feiticos')+1]
     with open(_destino, 'w', encoding='utf-8') as _f:

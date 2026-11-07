@@ -15,6 +15,8 @@ function corpo(src,n){const s=src.indexOf('function '+n+'('),e=src.indexOf('\n}'
 const REMENDOS_FORA_DO_CAMINHO=22;
 function fonte(){
  let src=fs.readFileSync(path.join(root,'apps-script/Codigo.gs'),'utf8');
+ // A extração histórica do Caminho não incorpora o restaurador dos extras.
+ src=require('./repertorio_trilha_runtime').reverterFonte(src);
  src=require('./reserva_bolsa_restaurar').reverterFonte(require('./pratica_cotidiana_runtime').reverterFonte(src));
  src=require('./diagnostico-android/preparar_origens_recursos').reverterFonte(src);
  // O Caminho não extrai funções de descanso; preserve sua base histórica de extração.
