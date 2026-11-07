@@ -4,7 +4,7 @@ Conserva as fontes GS legíveis como origem. O pacote contém somente essas
 fontes, comprimidas; não busca código na rede nem concede permissões novas.
 Entradas públicas delegam ao módulo isolado, que mantém os seus globais.
 """
-import base64,gzip,hashlib,json,re,subprocess
+import base64,gzip,hashlib,json,re,subprocess,zlib
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'r53/saidas/pacote-script'
@@ -27,8 +27,13 @@ def gerar():
  source+='\nfunction globais_(){return {'+','.join(json.dumps(n)+':'+n for n in variables)+'};}\n'
  source+='\nreturn {'+','.join(json.dumps(n)+':'+n for n in public)+',__estado:function(){return {abas:ABAS,sobras:SOBRAS_,geracao:GERACAO_,editor:R53_EDITOR_};}};'
  raw=source.encode();digest=hashlib.sha256(raw).hexdigest();b64=base64.b64encode(gzip.compress(raw,mtime=0)).decode()
- step=850_000;parts=[b64[i:i+step] for i in range(0,len(b64),step)]
+ step=850_000
  slots=['Ficha.gs','Invocacoes.gs','Analise.gs','Configuracao.gs','Origens.gs']
+ if len(b64)>step*len(slots):
+  # Blocos menores de deflate podem comprimir melhor as fórmulas repetidas.
+  compressor=zlib.compressobj(9,zlib.DEFLATED,31,4)
+  b64=base64.b64encode(compressor.compress(raw)+compressor.flush()).decode()
+ parts=[b64[i:i+step] for i in range(0,len(b64),step)]
  if len(parts)>len(slots):raise ValueError('Pacote excede os cinco arquivos de dados reservados')
  for i,(name,part) in enumerate(zip(slots,parts)):(OUT/name).write_text('// PACOTE R53 · fonte e hashes em r53/empacotar_script.py\nvar R53_CODIGO_'+str(i)+'_ = '+json.dumps(part)+';\n')
  # Todos os três arquivos substituídos precisam deixar de declarar as abas antigas.

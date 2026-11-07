@@ -1,3 +1,17 @@
+# Correção de Forma e função das Melhorias · 06/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FORMA-FUNCAO-2026-11-06.md`.
+Base PR82 `b11c46a`, geração `258490d8ac01ff61`. A correção cobre
+dez combinações de Escolher, Contorno, Perseguir, Reserva e Sugar.
+São 251 fórmulas em FX. O pacote mantém cinco partes.
+
+Passaram 18 cenários por descartável. Foram repostas duas fórmulas
+e 15 entradas por cópia. Relidas 624 células sem diferenças nem
+erros, incluindo 539 posições de MONTAGENS. As duas descartáveis
+voltaram à PR82. Smoke, transporte e recuperação simulada passaram.
+Instalação integral e recuperação por edição real ficam para o
+ensaio de instalação. Sol/Medium para revisão e Sol/High para ensaio.
+
 # Auditoria de Forma e função das Melhorias · 06/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-FORMA-FUNCAO-2026-11-06.md`.
