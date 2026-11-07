@@ -1,3 +1,17 @@
+# Instalação da PR83 nas descartáveis · 07/11/2026
+
+Leia `r53/diagnostico-android/INSTALACAO-PR83-2026-11-07.md`.
+PR83 `02a7fc1` revisada, sem conflitos e com dois checks aprovados.
+Era e Ciclo receberam 251 fórmulas de FX cada, em 21 lotes, e o
+Código incremental foi salvo e relido. Passaram seis recuperações
+por edição real e seis controles mecânicos por cópia.
+
+As 18 entradas temporárias foram repostas. A comparação com o
+snapshot anterior à instalação cobriu 861 posições por cópia,
+incluindo 539 de MONTAGENS, sem diferenças nem erros. DADOS_R53
+voltou a ficar oculta. PR83 instalada nas duas descartáveis.
+Sol/Medium para revisão e Sol/High para ensaio e correção.
+
 # Correção de Forma e função das Melhorias · 06/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-FORMA-FUNCAO-2026-11-06.md`.
