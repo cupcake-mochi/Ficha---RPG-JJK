@@ -1,3 +1,16 @@
+# Auditoria de Forma e função das Melhorias · 06/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-FORMA-FUNCAO-2026-11-06.md`.
+Era e Ciclo com PR82. Em 20 cenários por cópia foram confirmadas
+10 combinações válidas sem aviso indevidamente. Escolher e
+Contorno passam em Projétil e Toque, Perseguir passa em Cone e
+Explosão, Reserva passa sem cura e Sugar passa com dano zero.
+
+As 15 entradas foram repostas em cada rodada. A releitura de
+624 células por cópia, incluindo 539 posições de MONTAGENS,
+encontrou zero diferenças e zero erros. Sol/Medium para revisão
+e Sol/High para correção e ensaio.
+
 # Instalação da PR82 nas descartáveis · 06/11/2026
 
 Leia `r53/diagnostico-android/INSTALACAO-PR82-2026-11-06.md`.
