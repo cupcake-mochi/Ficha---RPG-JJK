@@ -450,6 +450,9 @@ _EXPANSAO_DOMADA, _EXPANSAO_NOTAS = expansao_domada.aplica(LAYOUT, _R53)
 with open(os.path.join(AQUI, '..', 'r53', 'diagnostico-android', 'repertorio_normal_plano.json'), 'w', encoding='utf-8') as _f:
     json.dump(expansao_domada.plano_contagem(_EXPANSAO_DOMADA), _f, ensure_ascii=False, indent=2)
     _f.write('\n')
+with open(os.path.join(AQUI, '..', 'r53', 'diagnostico-android', 'isolamento_nomes_plano.json'), 'w', encoding='utf-8') as _f:
+    json.dump(expansao_domada.plano_contagem(_EXPANSAO_DOMADA, 'global'), _f, ensure_ascii=False, indent=2)
+    _f.write('\n')
 for _sufixo, _dados in (('plano', _EXPANSAO_DOMADA), ('notas', _EXPANSAO_NOTAS),
                         ('suporte', expansao_domada.suporte(LAYOUT, _EXPANSAO_DOMADA))):
     with open(os.path.join(AQUI, '..', 'r53', 'diagnostico-android', 'expansao_domada_'+_sufixo+'.json'), 'w', encoding='utf-8') as _f:

@@ -1,3 +1,26 @@
+# Pausa para Windows · isolamento PR88 · 07/11/2026
+
+Usuário pediu parar e salvar para continuar no Windows. Leia
+`r53/diagnostico-android/PROMPT-RETOMADA-ISOLAMENTO-PR88-2026-11-07.md`.
+Checkpoint WIP em `codex/wip-isolamento-pr88-20261107`, separado da PR88.
+Não está pronto para revisão: geração interrompida, GS ainda c59bcb593daf38af,
+propostas JSON já atualizadas. Snapshots privados antes-0/1 ficaram truncados:
+NÃO usar. Não há processo de geração deixado em execução. Refazer snapshots
+e geração/empacotamento em série antes de aplicar.
+
+Implementação WIP filtra categoria/entidade antes de LEN, preservando erros
+próprios. Nove casos do protótipo na Era passaram e foram restaurados.
+Python focal e testes JS de transporte/recuperação passaram; as duas rotas
+de preparação produziram proposta 36ca73efd1eca6809fd8ddfa1be324eebaad2f5aef0830d4c25c6aaeaaaff3bc.
+Não aplicada nas QAs, sem matriz final/edição real/smoke final. Código
+instalado esperado nas duas ainda 8935211c6e87cd4515b0df860bd0d71524f316d08e42013f86cc9fa6b1d53bea;
+exige releitura fresca. Verificar conexões no Windows, sem presumir acesso.
+
+PR88 remota continua em 4d22fb7; incorporar este WIP nela apenas após validar,
+preservando atualizações concorrentes. Sem merge, oficiais, jogador ou PR31.
+Privados em nuvem-b47/saidas/isolamento-pr88/, ignorado. Sol/High para retomar
+implementação/ensaios; Sol/Medium para revisão, sem mudar configurações.
+
 # Revisão PR88 com bloqueio · 07/11/2026
 
 Leia `r53/diagnostico-android/REVISAO-PR88-ERROS-NOMES-2026-11-07.md` e

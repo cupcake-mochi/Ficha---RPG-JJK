@@ -28,19 +28,26 @@ def contagem(row, criterio=None):
     O critério antigo serve apenas para gerar o delta incremental exato.
     Não converte nomes e não conta versões nem extras da Trilha.
     """
-    if criterio not in (None, '?*'):
+    if criterio not in (None, '?*', 'global'):
         raise ValueError('Critério de contagem desconhecido')
     if criterio == '?*':
         return (f'COUNTIFS(DADOS_R53!$A$2:$A$253,"entidade."&$DD{row}&".esp.*",'
                 'DADOS_R53!$B$2:$B$253,"?*")')
-    # COUNTIFS com <> ainda conta referências a fórmulas que devolvem "".
-    # O comprimento do valor convertido em texto distingue vazio de 0/FALSE.
-    return (f'SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,"^entidade[.]"&$DD{row}&"[.]esp[.]")),'
-            'N(LEN(DADOS_R53!$B$2:$B$253&"")>0))')
+    identidade = f'REGEXMATCH(DADOS_R53!$A$2:$A$253,"^entidade[.]"&$DD{row}&"[.]esp[.]")'
+    if criterio == 'global':
+        # Somente para preparar a migração da primeira versão da PR88.
+        return (f'SUMPRODUCT(N({identidade}),'
+                'N(LEN(DADOS_R53!$B$2:$B$253&"")>0))')
+    # Filtrar antes de LEN impede que um nome com erro fora da categoria/
+    # entidade contamine a soma. Erros dos próprios nomes continuam visíveis.
+    # O comprimento em texto distingue vazio de 0/FALSE sem converter entradas.
+    return (f'SUMPRODUCT(N(LEN(FILTER(DADOS_R53!$B$2:$B$253,{identidade})&"")>0))')
 
 
-def plano_contagem(plano):
+def plano_contagem(plano, criterio_anterior='?*'):
     """24 alterações sobre PR87; não repete aquisição, notas ou ANALISE."""
+    if criterio_anterior not in ('?*', 'global'):
+        raise ValueError('Base de contagem desconhecida')
     deltas = []
     for d in plano:
         if d['aba'] != DI or d['c'] not in (239, 270):
@@ -49,7 +56,7 @@ def plano_contagem(plano):
         if d['depois'].count(atual) != 1:
             raise ValueError('Contagem normal divergente')
         deltas.append(dict(aba=DI, r=d['r'], c=d['c'],
-                           antes=d['depois'].replace(atual, contagem(d['r'], '?*')),
+                           antes=d['depois'].replace(atual, contagem(d['r'], criterio_anterior)),
                            depois=d['depois']))
     if len(deltas) != 24:
         raise ValueError('Doze orçamentos e requisitos obrigatórios')

@@ -34,10 +34,12 @@ class ExpansaoDomada(unittest.TestCase):
     def test_delta_contagem_restrito(self):
         plano = [dict(aba=E.DI, r=r, c=c, depois=E.formulas(r, [f'P{i}' for i in range(8)], '$BN$2:$BN$6')[col])
                  for r in range(2, 14) for col, c in [('IE', 239), ('JH', 268), ('JJ', 270)]]
-        deltas = E.plano_contagem(plano)
-        self.assertEqual(len(deltas), 24)
-        for d in deltas:
-            self.assertEqual(d['antes'].replace(E.contagem(d['r'], '?*'), E.contagem(d['r'])), d['depois'])
+        for anterior in ('?*', 'global'):
+            deltas = E.plano_contagem(plano, anterior)
+            self.assertEqual(len(deltas), 24)
+            for d in deltas:
+                self.assertEqual(d['antes'].replace(E.contagem(d['r'], anterior), E.contagem(d['r'])), d['depois'])
+                self.assertIn('LEN(FILTER(', d['depois'])
         with self.assertRaises(ValueError):
             E.plano_contagem(plano[:-1])
         with self.assertRaises(ValueError):

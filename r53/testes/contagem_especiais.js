@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const p=require('../diagnostico-android/preparar_contagem_especiais'),rt=require('../expansao_domada_runtime');
 const {formulaLocal}=require('../diagnostico-android/preparar_pilha_5156');
 const plano=p.plano();assert.equal(plano.length,24);
-for(const d of plano){assert.equal(d.aba,'DADOS_INVOC');assert.ok([239,270].includes(d.c));assert.ok(d.r>=2&&d.r<=13);const old=`COUNTIFS(DADOS_R53!$A$2:$A$253,"entidade."&$DD${d.r}&".esp.*",DADOS_R53!$B$2:$B$253,"?*")`,value=`SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,"^entidade[.]"&$DD${d.r}&"[.]esp[.]")),N(LEN(DADOS_R53!$B$2:$B$253&"")>0))`;assert.equal(d.antes.replace(old,value),d.depois);}
+for(const d of plano){assert.equal(d.aba,'DADOS_INVOC');assert.ok([239,270].includes(d.c));assert.ok(d.r>=2&&d.r<=13);const old=`COUNTIFS(DADOS_R53!$A$2:$A$253,"entidade."&$DD${d.r}&".esp.*",DADOS_R53!$B$2:$B$253,"?*")`,value=`SUMPRODUCT(N(LEN(FILTER(DADOS_R53!$B$2:$B$253,REGEXMATCH(DADOS_R53!$A$2:$A$253,"^entidade[.]"&$DD${d.r}&"[.]esp[.]"))&"")>0))`;assert.equal(d.antes.replace(old,value),d.depois);}
 assert.throws(()=>p.prepararCodigo('base desconhecida'),/PR87/);
 for(const locale of ['pt_BR','en_US']){
  const snap={locale,cells:plano.map(d=>({...d,sheetId:12,value:formulaLocal(d.antes,locale)}))};const pr=p.prepararCelulas(snap);

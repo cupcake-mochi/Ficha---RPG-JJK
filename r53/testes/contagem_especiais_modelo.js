@@ -1,8 +1,8 @@
 'use strict';
 const assert=require('node:assert/strict');
 const {ler,expandir}=require('./expansao_domada_modelo');
-const plano=require('../diagnostico-android/repertorio_normal_plano.json');
-function comparar(pasta){
+const padrao=require('../diagnostico-android/repertorio_normal_plano.json');
+function comparar(pasta,plano=padrao){
  const antes=ler(pasta),depois=ler('apps-script'),allowed=new Map(plano.map(d=>[d.aba+'!'+d.r+':'+d.c,d])),seen=new Set();let posicoes=0;
  assert.equal(antes.length,depois.length);
  for(const a of antes){const b=depois.find(b=>b.nome===a.nome);assert.ok(b);const meta=x=>Object.fromEntries(Object.entries(x).filter(([k])=>!['vals','abaixo','geracao'].includes(k)));assert.deepEqual(meta(b),meta(a),'Metadados '+a.nome);
