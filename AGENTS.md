@@ -1,3 +1,59 @@
+# Correção do repertório das Trilhas · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-REPERTORIO-TRILHA-2026-11-07.md` e a
+evidência sanitizada `repertorio_trilha_validacao_2026-11-07.json`.
+Ramo `codex/repertorio-trilha-20261107`, sobre auditoria `81b1745`/PR86
+`6568838`. Concessão por Caminho/Trilha/nível/atributo e limite compartilhado
+entre três capacidades e três talentos agora geram REVISAR, sem apagar compras.
+Conjunto escolhe atributo permanente em INVOCAÇÕES!D35, independente da Defesa.
+
+Geração `d09f5a8d7aa821e6`: 102 valores/fórmulas, 14 notas, três mesclas;
+72 fórmulas FY/FZ inalteradas acompanham recuperação mista. Pacote integral
+regenerado, NÃO instalado. Só incremental nas duas QAs Era/Ciclo.
+Código salvo e relido nas duas, SHA-256
+`26b78470c8eda2443ee74f650b5a925cde1fdbeea7a79c8387c3304e9767968c`.
+Guardas leves preservam escolha, cache de versões e recuperação externa.
+O módulo Android antigo omite DADOS_R53/ANALISE: não injetar aba parcial.
+Preservar novos moldes GA e escape dos literais da ANALISE.
+
+234 casos nativos e 16 ações reais aprovados. Falha inicial de recuperação
+dos rótulos mesclados corrigida e repetida. Nome numérico/booleano também
+ocupa vaga: manter critério <> na contagem dos cartões, sem coagir entradas.
+13.644 posições/cópia, 11.988 de MONTAGENS: apenas 118 células previstas
+de delta, zero diferenças inesperadas ou erros de fórmula nos intervalos.
+Entradas temporárias restauradas, auxiliares ocultas e visual conferido.
+120 verificações locais e comparação de 280.056 posições/26 abas passaram.
+
+Entrega para revisão, sem merge. Oficiais, jogador e PR31 intactos.
+Antes de futura instalação: snapshot fresco e base Código PR86 exata
+`5b7bb420739efeeb28e036b8da79f38bcc0e19b20d4d14f229f0effaac74e7ef`.
+Reversão de valores não desfaz notas/formatação/mesclas; guardar tudo.
+Evidências privadas só em `nuvem-b47/saidas/correcao-repertorio/`, ignorado.
+Sol/Medium para revisão e Sol/High para futura integração/ensaio.
+
+# Revisão PR86 e auditoria de repertório da Trilha · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-REPERTORIO-TRILHA-2026-11-07.md`.
+PR86 `6568838` revisada, sem conflitos e com dois checks aprovados.
+Testes focais de preparação, fórmula e modelo passaram novamente.
+Nenhum bloqueio novo confirmado dentro do escopo da PR86.
+
+Nas descartáveis Era/Ciclo, 40 cenários por cópia confirmaram duas lacunas
+legadas: as escolhas extras não validam aquisição por Trilha/nível/atributo,
+e as três capacidades e três talentos não compartilham limite consolidado.
+São 22 excedentes e 18 controles por cópia; não são 22 defeitos diferentes.
+O VÁLIDO atual avalia a montagem, sem aprovação completa da aquisição.
+Não debitar esses extras dos espaços comuns ou da Expansão da domada.
+
+Duas edições reais recuperaram M173. As 183 entradas foram repostas por
+cópia. Conferidas 3.535 posições, incluindo 1.998 de MONTAGENS, com zero
+diferenças e zero erros. As 84 origens diretas e 12 multicélula amostradas
+da ANALISE estão corretas nas duas. Auxiliares permanecem ocultas.
+Nenhuma correção nova aplicada; código das QAs e PR86 preservado.
+Auditoria separada em `codex/auditoria-repertorio-trilha-20261107`.
+Sem merge e sem alterações nas oficiais, jogador ou PR31.
+Sol/Medium para revisão e Sol/High para futura correção/ensaio.
+
 # Correção da Expansão da domada · 07/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-EXPANSAO-DOMADA-2026-11-07.md`.

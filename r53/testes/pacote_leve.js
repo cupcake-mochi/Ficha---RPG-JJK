@@ -10,7 +10,7 @@ const ok = (c, m) => { assert(c, m); checks++; };
 // 1. Cada remendo instalado deixa o texto que está no Codigo.gs do repositório. Um remendo pode mexer no texto que um
 // anterior deixou (26/10/2026: a tabelaLida_ do 16º virou a tabelaLidaDe_ no 23º), então confere de trás pra frente.
 const codigo = fs.readFileSync(path.join(raiz, 'apps-script/Codigo.gs'), 'utf8');
-const historico = require('../diagnostico-android/preparar_descanso_origens').reverterFonte(require('../diagnostico-android/preparar_origens_recursos').reverterFonte(require('../reserva_bolsa_restaurar').reverterFonte(require('../pratica_cotidiana_runtime').reverterFonte(codigo))));
+const historico = require('../diagnostico-android/preparar_descanso_origens').reverterFonte(require('../diagnostico-android/preparar_origens_recursos').reverterFonte(require('../reserva_bolsa_restaurar').reverterFonte(require('../pratica_cotidiana_runtime').reverterFonte(require('../repertorio_trilha_runtime').reverterFonte(codigo)))));
 {
  // A correção posterior de ± substitui a função que o remendo 11 otimizou.
  // Reverte só as duas funções exatas antes de conferir a cadeia histórica.

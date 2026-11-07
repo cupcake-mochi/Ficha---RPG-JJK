@@ -1,0 +1,716 @@
+[
+  {
+    "aba": "DADOS_INVOC",
+    "r": 16,
+    "c": 105,
+    "antes": null,
+    "depois": "repertório da Trilha"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 16,
+    "c": 106,
+    "antes": null,
+    "depois": "limite extra"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 16,
+    "c": 107,
+    "antes": null,
+    "depois": "escolhas extras usadas"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 16,
+    "c": 108,
+    "antes": null,
+    "depois": "revisão dos extras"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 17,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.1\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 17,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO2>=8)+INT($FO2>=16)+INT($FO2>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 17,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD2&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF2:$FH2,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 17,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC17=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC17>$DB17,\"Escolhas extras excedidas: \"&$DC17&\"/\"&$DB17,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 57,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$17)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 58,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$17)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 59,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$17)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 170,
+    "c": 9,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$17<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$17&\"/\"&'DADOS_INVOC'!$DB$17&IF('DADOS_INVOC'!$DD$17<>\"\",\" · \"&'DADOS_INVOC'!$DD$17,\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 18,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.2\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 18,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO3>=8)+INT($FO3>=16)+INT($FO3>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 18,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD3&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF3:$FH3,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 18,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC18=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC18>$DB18,\"Escolhas extras excedidas: \"&$DC18&\"/\"&$DB18,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 70,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$18)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 71,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$18)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 72,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$18)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 401,
+    "c": 9,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$18<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$18&\"/\"&'DADOS_INVOC'!$DB$18&IF('DADOS_INVOC'!$DD$18<>\"\",\" · \"&'DADOS_INVOC'!$DD$18,\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 19,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.3\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 19,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO4>=8)+INT($FO4>=16)+INT($FO4>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 19,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD4&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF4:$FH4,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 19,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC19=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC19>$DB19,\"Escolhas extras excedidas: \"&$DC19&\"/\"&$DB19,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 83,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$19)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 84,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$19)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 85,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$19)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 632,
+    "c": 9,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$19<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$19&\"/\"&'DADOS_INVOC'!$DB$19&IF('DADOS_INVOC'!$DD$19<>\"\",\" · \"&'DADOS_INVOC'!$DD$19,\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 20,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.4\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 20,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO5>=8)+INT($FO5>=16)+INT($FO5>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 20,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD5&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF5:$FH5,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 20,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC20=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC20>$DB20,\"Escolhas extras excedidas: \"&$DC20&\"/\"&$DB20,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 96,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$20)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 97,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$20)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 98,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$20)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 863,
+    "c": 9,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$20<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$20&\"/\"&'DADOS_INVOC'!$DB$20&IF('DADOS_INVOC'!$DD$20<>\"\",\" · \"&'DADOS_INVOC'!$DD$20,\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 21,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.5\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 21,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO6>=8)+INT($FO6>=16)+INT($FO6>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 21,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD6&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF6:$FH6,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 21,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC21=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC21>$DB21,\"Escolhas extras excedidas: \"&$DC21&\"/\"&$DB21,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 109,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$21)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 110,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$21)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 111,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$21)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 1094,
+    "c": 9,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$21<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$21&\"/\"&'DADOS_INVOC'!$DB$21&IF('DADOS_INVOC'!$DD$21<>\"\",\" · \"&'DADOS_INVOC'!$DD$21,\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 22,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.6\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 22,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO7>=8)+INT($FO7>=16)+INT($FO7>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 22,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD7&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF7:$FH7,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 22,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC22=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC22>$DB22,\"Escolhas extras excedidas: \"&$DC22&\"/\"&$DB22,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 122,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$22)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 123,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$22)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 124,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$22)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 1325,
+    "c": 9,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$22<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$22&\"/\"&'DADOS_INVOC'!$DB$22&IF('DADOS_INVOC'!$DD$22<>\"\",\" · \"&'DADOS_INVOC'!$DD$22,\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 23,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.7\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 23,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO8>=8)+INT($FO8>=16)+INT($FO8>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 23,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD8&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF8:$FH8,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 23,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC23=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC23>$DB23,\"Escolhas extras excedidas: \"&$DC23&\"/\"&$DB23,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 135,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$23)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 136,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$23)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 137,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$23)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 170,
+    "c": 28,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$23<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$23&\"/\"&'DADOS_INVOC'!$DB$23&IF('DADOS_INVOC'!$DD$23<>\"\",\" · \"&'DADOS_INVOC'!$DD$23,\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 24,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.8\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 24,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO9>=8)+INT($FO9>=16)+INT($FO9>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 24,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD9&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF9:$FH9,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 24,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC24=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC24>$DB24,\"Escolhas extras excedidas: \"&$DC24&\"/\"&$DB24,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 148,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$24)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 149,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$24)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 150,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$24)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 401,
+    "c": 28,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$24<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$24&\"/\"&'DADOS_INVOC'!$DB$24&IF('DADOS_INVOC'!$DD$24<>\"\",\" · \"&'DADOS_INVOC'!$DD$24,\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 25,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.9\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 25,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO10>=8)+INT($FO10>=16)+INT($FO10>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 25,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD10&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF10:$FH10,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 25,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC25=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC25>$DB25,\"Escolhas extras excedidas: \"&$DC25&\"/\"&$DB25,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 161,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$25)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 162,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$25)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 163,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$25)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 632,
+    "c": 28,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$25<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$25&\"/\"&'DADOS_INVOC'!$DB$25&IF('DADOS_INVOC'!$DD$25<>\"\",\" · \"&'DADOS_INVOC'!$DD$25,\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 26,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.10\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 26,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO11>=8)+INT($FO11>=16)+INT($FO11>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 26,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD11&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF11:$FH11,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 26,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC26=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC26>$DB26,\"Escolhas extras excedidas: \"&$DC26&\"/\"&$DB26,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 174,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$26)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 175,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$26)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 176,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$26)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 863,
+    "c": 28,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$26<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$26&\"/\"&'DADOS_INVOC'!$DB$26&IF('DADOS_INVOC'!$DD$26<>\"\",\" · \"&'DADOS_INVOC'!$DD$26,\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 27,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.11\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 27,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO12>=8)+INT($FO12>=16)+INT($FO12>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 27,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD12&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF12:$FH12,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 27,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC27=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC27>$DB27,\"Escolhas extras excedidas: \"&$DC27&\"/\"&$DB27,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 187,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$27)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 188,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$27)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 189,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$27)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 1094,
+    "c": 28,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$27<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$27&\"/\"&'DADOS_INVOC'!$DB$27&IF('DADOS_INVOC'!$DD$27<>\"\",\" · \"&'DADOS_INVOC'!$DD$27,\"\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 28,
+    "c": 105,
+    "antes": null,
+    "depois": "=\"entidade.12\""
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 28,
+    "c": 106,
+    "antes": null,
+    "depois": "=LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),IF(FICHA!$D$11=\"Evocador\",IF($DB$4=\"Invocação Principal\",IF($DB$2>=2,INT($FO13>=8)+INT($FO13>=16)+INT($FO13>=24),0),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))),INT(atributo/2),0)),0))"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 28,
+    "c": 107,
+    "antes": null,
+    "depois": "=COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD13&\".ext.*\",DADOS_R53!$B$2:$B$253,\"<>\")+COUNTIF($FF13:$FH13,\"?*\")"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 28,
+    "c": 108,
+    "antes": null,
+    "depois": "=IF($DC28=0,\"\",LET(atributo,IF('INVOCAÇÕES'!$D$35=\"Essência\",IFERROR(VALUE(FICHA!$AJ$21),-1),IFERROR(VALUE(FICHA!$AB$21),-1)),TEXTJOIN(\" · \",TRUE,IF(FICHA!$D$11=\"Evocador\",\"\",\"Repertório extra exige Evocador\"),IF(OR($DB$4=\"Invocação Principal\",$DB$4=\"Múltiplas Invocações\"),\"\",\"Trilha sem escolhas extras\"),IF(AND($DB$4=\"Invocação Principal\",$DB$2<2),\"Trilha exige nível 2 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2<27),\"Repertório do Conjunto: nível mínimo 27 do invocador\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\")=FALSE),\"Escolha Essência ou Inteligência em O CONJUNTO\",\"\"),IF(AND($DB$4=\"Múltiplas Invocações\",$DB$2>=27,OR('INVOCAÇÕES'!$D$35=\"Essência\",'INVOCAÇÕES'!$D$35=\"Inteligência\"),AND(atributo>=0,atributo=INT(atributo))=FALSE),\"Atributo permanente inválido\",\"\"),IF($DC28>$DB28,\"Escolhas extras excedidas: \"&$DC28&\"/\"&$DB28,\"\"))))"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 200,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$28)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 201,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$28)"
+  },
+  {
+    "aba": "DADOS_R53",
+    "r": 202,
+    "c": 183,
+    "antes": "=\"\"",
+    "depois": "=TEXTJOIN(\" · \",TRUE,\"\",'DADOS_INVOC'!$DD$28)"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 1325,
+    "c": 28,
+    "antes": "REPERTÓRIO DA TRILHA · só o Evocador: as escolhas a mais da Invocação Principal e do Repertório do Conjunto",
+    "depois": "=IF('DADOS_INVOC'!$DD$28<>\"\",\"REVISAR · \",\"\")&\"REPERTÓRIO DA TRILHA · \"&'DADOS_INVOC'!$DC$28&\"/\"&'DADOS_INVOC'!$DB$28&IF('DADOS_INVOC'!$DD$28<>\"\",\" · \"&'DADOS_INVOC'!$DD$28,\"\")"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 34,
+    "c": 4,
+    "antes": null,
+    "depois": "REPERTÓRIO DO CONJUNTO USA"
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "r": 37,
+    "c": 4,
+    "antes": null,
+    "depois": "Escolha o atributo do repertório extra. Usa o valor permanente, sem Buff/Debuff; não altera a Defesa."
+  }
+]
