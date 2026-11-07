@@ -283,7 +283,8 @@ def arvore(registro_livre=False):
         IF(area,IF(tem_requisito('Perseguir'),'Perseguir exige alvo individual',''),
            IF(tem_requisito('Escolher|Contorno'),'Escolher e Contorno exigem Forma de área','')),
         IF(AND(cura.le(0),tem_requisito('Reserva')),'Reserva exige dados de cura',''),
-        IF(AND(dano.le(0),tem_requisito('Sugar')),'Sugar exige dano inicial efetivo',''))))
+        IF(AND(dano.le(0),tem_requisito('Sugar')),'Sugar exige dano inicial efetivo',''),
+        IF(AND(ref('fam_Mira').ne('Livre'),tem_requisito('Corrói')),'Corrói exige Mira Livre',''))))
     err(AND(nres('Barulho').gt(0),nres('Assinatura').gt(0)),'Barulho e Assinatura: escolha uma exposição')
     err((nres('Recuo')+nres('Fraqueza')+nres('Peso Morto')).gt(1),'Recuo, Fraqueza e Peso Morto não se combinam')
     err(AND(npeca('Terreno').gt(0),area.eq(False)),'Terreno exige Forma de área')

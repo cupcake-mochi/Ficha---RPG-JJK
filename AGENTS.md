@@ -1,3 +1,52 @@
+# Instalação da PR84 nas descartáveis · 07/11/2026
+
+Leia `r53/diagnostico-android/INSTALACAO-PR84-2026-11-07.md`.
+PR84 `24a91bd` revisada, sem conflitos e com dois checks aprovados.
+Era e Ciclo receberam 251 fórmulas de FX em cinco lotes cada.
+O Código incremental foi salvo e relido. Passaram seis recuperações
+por edição real, com cartões pessoais, entidades e Classe 0.
+
+Passaram 39 controles pós-instalação por cópia, incluindo as 12
+entidades. As 330 entradas foram repostas. A comparação de 5.218
+posições por cópia, incluindo 3.647 de MONTAGENS, encontrou zero
+diferenças e zero erros. DADOS_R53 voltou a ficar oculta. PR84
+instalada nas duas descartáveis. Sol/Medium para revisão e
+Sol/High para ensaio e correção.
+
+# Correção de Corrói e Mira Livre · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CORROI-MIRA-LIVRE-2026-11-07.md`.
+Base PR83 `b6c1ac1`, geração `604968957e08baef`. Corrói passa a
+exigir Mira Livre nas quatro vagas e nas modalidades de entidade.
+O delta contém 251 fórmulas de FX e preserva preços e compras.
+
+Passaram 104 cenários por descartável, incluindo as 12 entidades,
+e 212 montagens locais. Foram repostas 330 entradas e 13 fórmulas
+focais por cópia. A comparação de 5.218 posições, incluindo 3.647
+de MONTAGENS, encontrou zero diferenças e zero erros. As duas
+descartáveis voltaram à PR83. Smoke e transporte passaram.
+
+O pacote mantém cinco partes com margem de 452 bytes. A instalação
+integral e a recuperação por edição real da correção aguardam
+ensaio. Sol/Medium para revisão e Sol/High para ensaio.
+
+# Auditoria de Mira após a PR83 · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-MIRA-2026-11-07.md`.
+PR83 `b6c1ac1` contém o relatório de instalação. As descartáveis
+Era e Ciclo estão com a PR83 e a recuperação por edição real passou.
+
+Foi confirmado um erro de requisito de Família. Corrói fica VÁLIDO
+com Mira Neutra nas vagas 1 e 4, embora a R66 exija Mira Livre.
+Os controles de Mira Livre, Mira Fechada e Fura passaram. O mesmo
+problema aparece nos modos estruturado e direto do avaliador local.
+O requisito nas entidades ainda requer ensaio nativo.
+
+Passaram seis controles da PR83 por cópia. Foram repostas 18
+entradas. A comparação de 861 posições por cópia, incluindo 539
+de MONTAGENS, encontrou zero diferenças e zero erros. Sol/Medium
+para revisão e Sol/High para correção e ensaio.
+
 # Instalação da PR83 nas descartáveis · 07/11/2026
 
 Leia `r53/diagnostico-android/INSTALACAO-PR83-2026-11-07.md`.
