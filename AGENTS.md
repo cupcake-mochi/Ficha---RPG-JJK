@@ -1,3 +1,71 @@
+# Correção da Expansão da domada · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-EXPANSAO-DOMADA-2026-11-07.md`.
+Base PR85 `735d499`, geração `ed25e7759cd26b7e`. Requisitos estruturados e
+orçamento conjunto agora pedem revisão; aquisição ocupa 2/3/5 no total.
+Sem Barreiras mostra PE fechado/aberto sem reduzir o grau adquirido.
+Os 12 exp.acerto da ANALISE passam a resultado; chaves, B e C preservados.
+Técnica própria, histórico de aquisição e permissões de tipo custom seguem
+em conferência explícita da mesa, sem aprovação automática universal.
+
+512 cenários nativos por QA Era/Ciclo passaram. Oito edições reais recuperaram
+cabeçalhos, o bloco misto de PE/Acerto/requisito e os registros inicial/final
+na ANALISE, preservando o escape dos apóstrofos. Seleção real e visual passaram.
+As entradas temporárias foram restauradas; 4.658 posições por cópia, incluindo
+2.072 de MONTAGENS, tiveram somente 48 células e 36 notas previstas de delta.
+Zero diferenças adicionais e zero erros nos intervalos lidos. Auxiliares ocultas.
+Código incremental salvo e relido, SHA-256
+`5b7bb420739efeeb28e036b8da79f38bcc0e19b20d4d14f229f0effaac74e7ef`.
+O pacote Android antigo omite ANALISE do retrato: o preparador preserva essa
+separação. Não retirar a recuperação externa nem seu escape de literais.
+
+Comparação do modelo: 280.001 posições e 26 abas, somente o delta previsto.
+Relatório local do smoke: 119 aprovações. Zopfli só na preparação permite manter
+cinco partes (3.854.032 bytes Base64); formato gzip padrão, sem serviço novo.
+A entrega exige Código PR85 e snapshot fresco. Pacote integral regenerado,
+não instalado. Oficiais, jogador e PR31 intactos, sem merge. Sol/Medium para
+revisão e Sol/High para futura integração/ensaio.
+
+# Auditoria da Expansão da domada · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-EXPANSAO-DOMADA-2026-11-07.md`.
+Base `109dff6`, implementação PR85 `735d499` nas QAs Era e Ciclo.
+Foram 210 cenários por cópia: 168 de contas nas 12 posições, 24 de
+requisitos e 18 de gastos. Contas de PE e Acerto corresponderam à R66.
+
+Confirmadas duas lacunas legadas de validação: requisito do domínio
+é só texto e gasto de domínio não é consolidado com as especiais.
+Completa + duas especiais no nível 14 soma 5/4 sem alerta conjunto.
+As 12 chaves exp.acerto da ANALISE saem como entrada apesar da
+origem calculada. Valores e origens estavam corretos; consumidor externo
+não foi auditado. Nenhuma correção aplicada. Separar grau adquirido e
+modo fechado/aberto antes de automatizar o gasto permanente 2/3/5.
+
+Restauradas 332 entradas por cópia, incluindo as 108 posições de Família.
+Comparação de 4.443 posições por cópia, incluindo 2.072 de MONTAGENS,
+com zero diferenças e zero erros. Ensaios via API, sem onEdit nesta matriz.
+Sol/Medium para revisar achados e Sol/High para futura correção/ensaio.
+
+# Revisão PR85 e auditoria de trunfos · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-TRUNFOS-ENTIDADES-2026-11-07.md`.
+PR85 `735d499` revisada, sem conflitos e com dois checks aprovados.
+Testes focais e transporte passaram novamente. A correção segue nas
+QA Era e Ciclo, com DADOS_R53 oculta.
+
+Passaram 104 cenários nativos por cópia, na primeira e na última
+entidade, sobre aquisição, nível próprio, dados, PE, tipos e 15 peças
+da Máxima. Mais 60 montagens locais passaram nos dois modos e nas
+modalidades pessoal e de entidade. As referências dos 48 trunfos das
+12 entidades foram conferidas. Nenhum erro novo confirmado nesse escopo.
+
+As 153 entradas temporárias, incluindo as 18 posições de Família,
+foram restauradas. A comparação de 2.610 posições por cópia, incluindo
+1.184 de MONTAGENS, encontrou zero diferenças e zero erros. Não houve
+mudança no código da PR85. Expansão da domada e gastos de espaços têm
+procedimentos próprios e permanecem fora desta matriz. Sol/Medium para
+revisão da PR85 e Sol/High para continuar o pente-fino.
+
 # Correção de aquisição das Liberações · 07/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-LIBERACOES-2026-11-07.md`.

@@ -445,6 +445,13 @@ for _opcao, _plano in (('--plano-alcance-cura', _ALCANCE_CURA),
             _f.write('\n')
 import tempo_feiticos
 _TEMPO_FEITICOS = tempo_feiticos.aplica(LAYOUT, _R53)
+import expansao_domada
+_EXPANSAO_DOMADA, _EXPANSAO_NOTAS = expansao_domada.aplica(LAYOUT, _R53)
+for _sufixo, _dados in (('plano', _EXPANSAO_DOMADA), ('notas', _EXPANSAO_NOTAS),
+                        ('suporte', expansao_domada.suporte(LAYOUT, _EXPANSAO_DOMADA))):
+    with open(os.path.join(AQUI, '..', 'r53', 'diagnostico-android', 'expansao_domada_'+_sufixo+'.json'), 'w', encoding='utf-8') as _f:
+        json.dump(_dados, _f, ensure_ascii=False, indent=2)
+        _f.write('\n')
 if '--plano-tempo-feiticos' in sys.argv:
     _destino = sys.argv[sys.argv.index('--plano-tempo-feiticos')+1]
     with open(_destino, 'w', encoding='utf-8') as _f:
