@@ -1,3 +1,21 @@
+# Auditoria de Liberações após a PR84 · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-LIBERACOES-2026-11-07.md`.
+PR84 `74d83b7` contém o relatório de instalação. As duas descartáveis
+estão com a PR84 e passaram seis recuperações por edição real.
+Os dois checks da PR84 passaram no novo head.
+
+Foi confirmado um defeito de progressão dos três cartões pessoais de
+Liberação Máxima. As posições ficam VÁLIDO antes dos níveis 10, 20 e
+30. Foram 18 cenários nativos por cópia, com nove aprovações indevidas
+e nove controles legítimos. O avaliador local reproduziu nos dois modos.
+A progressão das Liberações das entidades ainda requer apuração.
+
+As 52 entradas foram repostas. A comparação de 1.118 posições por
+cópia, incluindo 777 de MONTAGENS, encontrou zero diferenças e zero
+erros. O relatório é separado da PR84 e não contém correção mecânica.
+Sol/Medium para revisão e Sol/High para correção e ensaio.
+
 # Instalação da PR84 nas descartáveis · 07/11/2026
 
 Leia `r53/diagnostico-android/INSTALACAO-PR84-2026-11-07.md`.
