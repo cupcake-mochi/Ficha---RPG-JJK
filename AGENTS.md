@@ -1,3 +1,23 @@
+# Revisão PR85 e auditoria de trunfos · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-TRUNFOS-ENTIDADES-2026-11-07.md`.
+PR85 `735d499` revisada, sem conflitos e com dois checks aprovados.
+Testes focais e transporte passaram novamente. A correção segue nas
+QA Era e Ciclo, com DADOS_R53 oculta.
+
+Passaram 104 cenários nativos por cópia, na primeira e na última
+entidade, sobre aquisição, nível próprio, dados, PE, tipos e 15 peças
+da Máxima. Mais 60 montagens locais passaram nos dois modos e nas
+modalidades pessoal e de entidade. As referências dos 48 trunfos das
+12 entidades foram conferidas. Nenhum erro novo confirmado nesse escopo.
+
+As 153 entradas temporárias, incluindo as 18 posições de Família,
+foram restauradas. A comparação de 2.610 posições por cópia, incluindo
+1.184 de MONTAGENS, encontrou zero diferenças e zero erros. Não houve
+mudança no código da PR85. Expansão da domada e gastos de espaços têm
+procedimentos próprios e permanecem fora desta matriz. Sol/Medium para
+revisão da PR85 e Sol/High para continuar o pente-fino.
+
 # Correção de aquisição das Liberações · 07/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-LIBERACOES-2026-11-07.md`.
