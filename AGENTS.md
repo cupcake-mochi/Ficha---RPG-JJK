@@ -1,3 +1,18 @@
+# Instalação da PR84 nas descartáveis · 07/11/2026
+
+Leia `r53/diagnostico-android/INSTALACAO-PR84-2026-11-07.md`.
+PR84 `24a91bd` revisada, sem conflitos e com dois checks aprovados.
+Era e Ciclo receberam 251 fórmulas de FX em cinco lotes cada.
+O Código incremental foi salvo e relido. Passaram seis recuperações
+por edição real, com cartões pessoais, entidades e Classe 0.
+
+Passaram 39 controles pós-instalação por cópia, incluindo as 12
+entidades. As 330 entradas foram repostas. A comparação de 5.218
+posições por cópia, incluindo 3.647 de MONTAGENS, encontrou zero
+diferenças e zero erros. DADOS_R53 voltou a ficar oculta. PR84
+instalada nas duas descartáveis. Sol/Medium para revisão e
+Sol/High para ensaio e correção.
+
 # Correção de Corrói e Mira Livre · 07/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-CORROI-MIRA-LIVRE-2026-11-07.md`.
