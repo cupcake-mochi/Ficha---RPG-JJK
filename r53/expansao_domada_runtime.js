@@ -1,9 +1,8 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),z=require('node:zlib');
 const root=path.resolve(__dirname,'..');
-function gerar(plano=require('./diagnostico-android/expansao_domada_plano.json')) {
+function gerar(plano=require('./diagnostico-android/expansao_domada_plano.json'),suporte=require('./diagnostico-android/expansao_domada_suporte.json')) {
  const notas=require('./diagnostico-android/expansao_domada_notas.json');
- const suporte=require('./diagnostico-android/expansao_domada_suporte.json');
  const linhasAnalise=plano.filter(d=>d.aba==='ANALISE').map(d=>d.r);
  const inicioAnalise=Math.min(...linhasAnalise),fimAnalise=Math.max(...linhasAnalise);
  const payload=z.gzipSync(JSON.stringify({valores:plano,notas,suporte}),{mtime:0}).toString('base64');

@@ -1,3 +1,32 @@
+# Contagem das especiais normais corrigida · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CONTAGEM-ESPECIAIS-2026-11-07.md` e
+`contagem_especiais_validacao_2026-11-07.json`. Ramo separado
+`codex/contagem-especiais-20261107`, sobre auditoria `95820b8`/PR87 `0554071`.
+SUMPRODUCT por identidade normal e LEN do nome convertido em texto corrige
+números/zero/booleanos e exclui fórmula que retorna vazio. Tipos preservados.
+Só 24 fórmulas IE2:IE13/JJ2:JJ13; sem apagar ou regravar montagens salvas.
+
+288 casos nativos passaram nas 12 entidades das duas QAs. COUNTIFS com <>
+reprovou no vazio por fórmula e foi substituído. Apagamento misto IE:IF
+atingiu 30 s na tentativa intermediária: acrescentados 12 moldes IF
+inalterados à recuperação leve. Não retirar esses moldes nem o escape
+da ANALISE. Oito edições reais na versão final passaram; oito onEdit
+Concluído no histórico. Matriz não foi repetida após só adicionar suporte.
+
+Código final salvo e relido nas duas QAs, SHA-256
+`8935211c6e87cd4515b0df860bd0d71524f316d08e42013f86cc9fa6b1d53bea`.
+Geração final `c59bcb593daf38af`, cinco partes; pacote integral NÃO instalado.
+Comparação do modelo: 280.056 posições/26 abas, apenas 24 alterações.
+121 verificações locais passaram. Entradas temporárias restauradas:
+158/cópia; 33.494 posições, 31.968 MONTAGENS, só 24 deltas previstos,
+zero diferenças inesperadas e erros nas faixas. Auxiliares ocultas;
+cabeçalhos e estado restaurado conferidos visualmente.
+
+Preparador exige base PR87 exata e snapshot fresco. Sem merge, oficiais,
+jogador ou PR31. Dados privados só em `nuvem-b47/saidas/correcao-contagem/`.
+Sol/Medium para revisão; Sol/High para integração futura em base diferente.
+
 # Revisão PR87 e orçamento normal · 07/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-REPERTORIO-NORMAL-2026-11-07.md`.

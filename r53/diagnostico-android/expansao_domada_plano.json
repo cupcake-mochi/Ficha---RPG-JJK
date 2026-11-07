@@ -4,7 +4,7 @@
     "r": 2,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ2&\"d6 · \"&$GV2&IF($GV2>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP2&\" · \"&$GX2&IF($GX2>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD2&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL2,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV2,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV2&\" · Classe \"&$FP2&\" · básica \"&$FQ2&\"d6 · \"&$GX2&IF($GX2=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD2&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL2,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV2,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV2&\" · Classe \"&$FP2&\" · básica \"&$FQ2&\"d6 · \"&$GX2&IF($GX2=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -18,14 +18,14 @@
     "r": 2,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL2,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL2=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL2,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD2&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL2,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF2=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF2,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO2<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV2,\"espaços excedidos: \"&ocupados&\"/\"&$GV2,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL2=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL2,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD2&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL2,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF2=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF2,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO2<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV2,\"espaços excedidos: \"&ocupados&\"/\"&$GV2,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "DADOS_INVOC",
     "r": 3,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ3&\"d6 · \"&$GV3&IF($GV3>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP3&\" · \"&$GX3&IF($GX3>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD3&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL3,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV3,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV3&\" · Classe \"&$FP3&\" · básica \"&$FQ3&\"d6 · \"&$GX3&IF($GX3=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD3&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL3,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV3,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV3&\" · Classe \"&$FP3&\" · básica \"&$FQ3&\"d6 · \"&$GX3&IF($GX3=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -39,14 +39,14 @@
     "r": 3,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL3,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL3=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL3,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD3&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL3,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF3=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF3,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO3<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV3,\"espaços excedidos: \"&ocupados&\"/\"&$GV3,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL3=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL3,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD3&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL3,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF3=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF3,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO3<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV3,\"espaços excedidos: \"&ocupados&\"/\"&$GV3,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "DADOS_INVOC",
     "r": 4,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ4&\"d6 · \"&$GV4&IF($GV4>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP4&\" · \"&$GX4&IF($GX4>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD4&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL4,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV4,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV4&\" · Classe \"&$FP4&\" · básica \"&$FQ4&\"d6 · \"&$GX4&IF($GX4=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD4&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL4,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV4,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV4&\" · Classe \"&$FP4&\" · básica \"&$FQ4&\"d6 · \"&$GX4&IF($GX4=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -60,14 +60,14 @@
     "r": 4,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL4,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL4=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL4,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD4&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL4,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF4=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF4,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO4<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV4,\"espaços excedidos: \"&ocupados&\"/\"&$GV4,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL4=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL4,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD4&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL4,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF4=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF4,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO4<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV4,\"espaços excedidos: \"&ocupados&\"/\"&$GV4,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "DADOS_INVOC",
     "r": 5,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ5&\"d6 · \"&$GV5&IF($GV5>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP5&\" · \"&$GX5&IF($GX5>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD5&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL5,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV5,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV5&\" · Classe \"&$FP5&\" · básica \"&$FQ5&\"d6 · \"&$GX5&IF($GX5=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD5&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL5,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV5,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV5&\" · Classe \"&$FP5&\" · básica \"&$FQ5&\"d6 · \"&$GX5&IF($GX5=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -81,14 +81,14 @@
     "r": 5,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL5,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL5=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL5,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD5&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL5,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF5=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF5,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO5<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV5,\"espaços excedidos: \"&ocupados&\"/\"&$GV5,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL5=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL5,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD5&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL5,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF5=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF5,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO5<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV5,\"espaços excedidos: \"&ocupados&\"/\"&$GV5,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "DADOS_INVOC",
     "r": 6,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ6&\"d6 · \"&$GV6&IF($GV6>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP6&\" · \"&$GX6&IF($GX6>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD6&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL6,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV6,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV6&\" · Classe \"&$FP6&\" · básica \"&$FQ6&\"d6 · \"&$GX6&IF($GX6=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD6&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL6,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV6,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV6&\" · Classe \"&$FP6&\" · básica \"&$FQ6&\"d6 · \"&$GX6&IF($GX6=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -102,14 +102,14 @@
     "r": 6,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL6,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL6=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL6,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD6&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL6,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF6=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF6,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO6<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV6,\"espaços excedidos: \"&ocupados&\"/\"&$GV6,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL6=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL6,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD6&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL6,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF6=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF6,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO6<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV6,\"espaços excedidos: \"&ocupados&\"/\"&$GV6,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "DADOS_INVOC",
     "r": 7,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ7&\"d6 · \"&$GV7&IF($GV7>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP7&\" · \"&$GX7&IF($GX7>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD7&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL7,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV7,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV7&\" · Classe \"&$FP7&\" · básica \"&$FQ7&\"d6 · \"&$GX7&IF($GX7=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD7&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL7,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV7,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV7&\" · Classe \"&$FP7&\" · básica \"&$FQ7&\"d6 · \"&$GX7&IF($GX7=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -123,14 +123,14 @@
     "r": 7,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL7,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL7=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL7,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD7&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL7,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF7=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF7,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO7<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV7,\"espaços excedidos: \"&ocupados&\"/\"&$GV7,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL7=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL7,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD7&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL7,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF7=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF7,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO7<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV7,\"espaços excedidos: \"&ocupados&\"/\"&$GV7,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "DADOS_INVOC",
     "r": 8,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ8&\"d6 · \"&$GV8&IF($GV8>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP8&\" · \"&$GX8&IF($GX8>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD8&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL8,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV8,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV8&\" · Classe \"&$FP8&\" · básica \"&$FQ8&\"d6 · \"&$GX8&IF($GX8=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD8&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL8,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV8,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV8&\" · Classe \"&$FP8&\" · básica \"&$FQ8&\"d6 · \"&$GX8&IF($GX8=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -144,14 +144,14 @@
     "r": 8,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL8,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL8=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL8,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD8&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL8,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF8=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF8,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO8<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV8,\"espaços excedidos: \"&ocupados&\"/\"&$GV8,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL8=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL8,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD8&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL8,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF8=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF8,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO8<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV8,\"espaços excedidos: \"&ocupados&\"/\"&$GV8,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "DADOS_INVOC",
     "r": 9,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ9&\"d6 · \"&$GV9&IF($GV9>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP9&\" · \"&$GX9&IF($GX9>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD9&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL9,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV9,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV9&\" · Classe \"&$FP9&\" · básica \"&$FQ9&\"d6 · \"&$GX9&IF($GX9=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD9&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL9,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV9,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV9&\" · Classe \"&$FP9&\" · básica \"&$FQ9&\"d6 · \"&$GX9&IF($GX9=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -165,14 +165,14 @@
     "r": 9,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL9,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL9=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL9,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD9&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL9,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF9=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF9,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO9<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV9,\"espaços excedidos: \"&ocupados&\"/\"&$GV9,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL9=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL9,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD9&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL9,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF9=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF9,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO9<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV9,\"espaços excedidos: \"&ocupados&\"/\"&$GV9,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "DADOS_INVOC",
     "r": 10,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ10&\"d6 · \"&$GV10&IF($GV10>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP10&\" · \"&$GX10&IF($GX10>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD10&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL10,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV10,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV10&\" · Classe \"&$FP10&\" · básica \"&$FQ10&\"d6 · \"&$GX10&IF($GX10=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD10&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL10,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV10,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV10&\" · Classe \"&$FP10&\" · básica \"&$FQ10&\"d6 · \"&$GX10&IF($GX10=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -186,14 +186,14 @@
     "r": 10,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL10,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL10=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL10,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD10&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL10,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF10=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF10,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO10<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV10,\"espaços excedidos: \"&ocupados&\"/\"&$GV10,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL10=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL10,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD10&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL10,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF10=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF10,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO10<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV10,\"espaços excedidos: \"&ocupados&\"/\"&$GV10,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "DADOS_INVOC",
     "r": 11,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ11&\"d6 · \"&$GV11&IF($GV11>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP11&\" · \"&$GX11&IF($GX11>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD11&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL11,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV11,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV11&\" · Classe \"&$FP11&\" · básica \"&$FQ11&\"d6 · \"&$GX11&IF($GX11=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD11&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL11,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV11,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV11&\" · Classe \"&$FP11&\" · básica \"&$FQ11&\"d6 · \"&$GX11&IF($GX11=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -207,14 +207,14 @@
     "r": 11,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL11,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL11=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL11,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD11&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL11,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF11=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF11,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO11<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV11,\"espaços excedidos: \"&ocupados&\"/\"&$GV11,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL11=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL11,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD11&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL11,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF11=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF11,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO11<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV11,\"espaços excedidos: \"&ocupados&\"/\"&$GV11,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "DADOS_INVOC",
     "r": 12,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ12&\"d6 · \"&$GV12&IF($GV12>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP12&\" · \"&$GX12&IF($GX12>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD12&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL12,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV12,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV12&\" · Classe \"&$FP12&\" · básica \"&$FQ12&\"d6 · \"&$GX12&IF($GX12=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD12&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL12,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV12,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV12&\" · Classe \"&$FP12&\" · básica \"&$FQ12&\"d6 · \"&$GX12&IF($GX12=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -228,14 +228,14 @@
     "r": 12,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL12,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL12=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL12,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD12&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL12,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF12=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF12,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO12<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV12,\"espaços excedidos: \"&ocupados&\"/\"&$GV12,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL12=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL12,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD12&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL12,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF12=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF12,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO12<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV12,\"espaços excedidos: \"&ocupados&\"/\"&$GV12,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "DADOS_INVOC",
     "r": 13,
     "c": 239,
     "antes": "=\"HABILIDADES · básica de \"&$FQ13&\"d6 · \"&$GV13&IF($GV13>1,\" espaços\",\" espaço\")&\" de especial até a Classe \"&$FP13&\" · \"&$GX13&IF($GX13>1,\" talentos\",\" talento\")",
-    "depois": "=LET(conhecidas,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD13&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\"),dominio,SWITCH($FL13,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV13,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV13&\" · Classe \"&$FP13&\" · básica \"&$FQ13&\"d6 · \"&$GX13&IF($GX13=1,\" talento\",\" talentos\"))"
+    "depois": "=LET(conhecidas,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD13&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0)),dominio,SWITCH($FL13,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),IF(conhecidas+dominio>$GV13,\"REVISAR · \",\"\")&\"HABILIDADES · especiais + domínio \"&conhecidas&\"+\"&dominio&\" de \"&$GV13&\" · Classe \"&$FP13&\" · básica \"&$FQ13&\"d6 · \"&$GX13&IF($GX13=1,\" talento\",\" talentos\"))"
   },
   {
     "aba": "DADOS_INVOC",
@@ -249,7 +249,7 @@
     "r": 13,
     "c": 270,
     "antes": "=IFERROR(VLOOKUP($FL13,$CU$2:$CW$4,3,FALSE),\"Escolha o degrau\")",
-    "depois": "=IF($FL13=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL13,$CU$2:$CU$4,0),0),ocupados,COUNTIFS(DADOS_R53!$A$2:$A$253,\"entidade.\"&$DD13&\".esp.*\",DADOS_R53!$B$2:$B$253,\"?*\")+SWITCH($FL13,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF13=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF13,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO13<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV13,\"espaços excedidos: \"&ocupados&\"/\"&$GV13,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
+    "depois": "=IF($FL13=\"\",\"Escolha o degrau\",LET(degrau,IFERROR(MATCH($FL13,$CU$2:$CU$4,0),0),ocupados,SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,\"^entidade[.]\"&$DD13&\"[.]esp[.]\")),N(LEN(DADOS_R53!$B$2:$B$253&\"\")>0))+SWITCH($FL13,\"Incompleta\",2,\"Completa\",3,\"Sem Barreiras\",5,0),problemas,TEXTJOIN(\" · \",TRUE,IF(degrau=0,\"degrau desconhecido\",\"\"),IF($DF13=\"Maldição domada\",\"\",IF(COUNTIF($BN$2:$BN$6,SUBSTITUTE(SUBSTITUTE(SUBSTITUTE($DF13,\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"))>0,\"tipo incompatível\",\"tipo custom: conferir permissão\")),IF($FO13<IF(degrau=1,10,14),\"nível mínimo \"&IF(degrau=1,10,14),\"\"),IF(N(DADOS_AM!$HM$6)<IF(degrau=1,4,IF(degrau=2,5,10)),\"refino mínimo \"&IF(degrau=1,4,IF(degrau=2,5,10)),\"\"),IF(AND(degrau=3,FICHA!$E$87<>TRUE),\"especialização em Ocultismo\",\"\"),IF(ocupados>$GV13,\"espaços excedidos: \"&ocupados&\"/\"&$GV13,\"\")),IF(problemas<>\"\",\"REVISAR · \"&problemas,\"Requisitos numéricos atendidos · conferir técnica própria e etapas\")))"
   },
   {
     "aba": "ANALISE",
