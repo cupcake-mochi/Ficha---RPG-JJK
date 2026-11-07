@@ -1,0 +1,2090 @@
+{
+  "data": "2026-11-07",
+  "pr": 88,
+  "head": "4d22fb71f222da220712aec668b90ee1b52a94e4",
+  "checks": {
+    "push": "SUCCESS",
+    "pull_request": "SUCCESS"
+  },
+  "achado": {
+    "id": "R88-01",
+    "prioridade": "P2",
+    "resumo": "Erro no nome de uma básica contamina orçamentos de especiais de todas as entidades",
+    "origem": "INVOCAÇÕES!J71",
+    "registro": "entidade.1.bas.1",
+    "afetados": [
+      "DADOS_INVOC!IE2:IE13",
+      "DADOS_INVOC!JJ2:JJ13"
+    ],
+    "regressao_confirmada": true,
+    "corrigido": false
+  },
+  "cenarios_globais": 10,
+  "controles": 6,
+  "propagacoes": 4,
+  "resultados_observados": 240,
+  "copias": [
+    {
+      "copia": "Era",
+      "resultados": [
+        {
+          "case": "basica_texto",
+          "expectedError": null,
+          "sourceId": "entidade.1.bas.1",
+          "sourceValue": {
+            "stringValue": "QA básica"
+          },
+          "observations": [
+            {
+              "cell": "DADOS_INVOC!IE2",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ2",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE3",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ3",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE4",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ4",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE5",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ5",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE6",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ6",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE7",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ7",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE8",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ8",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE9",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ9",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE10",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ10",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE11",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ11",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE12",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ12",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE13",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ13",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            }
+          ]
+        },
+        {
+          "case": "basica_numero",
+          "expectedError": null,
+          "sourceId": "entidade.1.bas.1",
+          "sourceValue": {
+            "numberValue": 7
+          },
+          "observations": [
+            {
+              "cell": "DADOS_INVOC!IE2",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ2",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE3",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ3",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE4",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ4",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE5",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ5",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE6",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ6",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE7",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ7",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE8",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ8",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE9",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ9",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE10",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ10",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE11",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ11",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE12",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ12",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE13",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ13",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            }
+          ]
+        },
+        {
+          "case": "basica_formula_vazia",
+          "expectedError": null,
+          "sourceId": "entidade.1.bas.1",
+          "sourceValue": null,
+          "observations": [
+            {
+              "cell": "DADOS_INVOC!IE2",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ2",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE3",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ3",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE4",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ4",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE5",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ5",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE6",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ6",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE7",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ7",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE8",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ8",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE9",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ9",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE10",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ10",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE11",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ11",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE12",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ12",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            },
+            {
+              "cell": "DADOS_INVOC!IE13",
+              "value": {
+                "stringValue": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+              },
+              "formatted": "HABILIDADES · especiais + domínio 0+3 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ13",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5"
+            }
+          ]
+        },
+        {
+          "case": "basica_divisao_zero",
+          "expectedError": "DIVIDE_BY_ZERO",
+          "sourceId": "entidade.1.bas.1",
+          "sourceValue": {
+            "errorValue": {
+              "type": "DIVIDE_BY_ZERO",
+              "message": "Function DIVIDE parameter 2 cannot be zero."
+            }
+          },
+          "observations": [
+            {
+              "cell": "DADOS_INVOC!IE2",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ2",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE3",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ3",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE4",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ4",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE5",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ5",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE6",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ6",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE7",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ7",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE8",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ8",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE9",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ9",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE10",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ10",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE11",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ11",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE12",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ12",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE13",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ13",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            }
+          ]
+        },
+        {
+          "case": "basica_na",
+          "expectedError": "N_A",
+          "sourceId": "entidade.1.bas.1",
+          "sourceValue": {
+            "errorValue": {
+              "type": "N_A"
+            }
+          },
+          "observations": [
+            {
+              "cell": "DADOS_INVOC!IE2",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ2",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE3",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ3",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE4",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ4",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE5",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ5",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE6",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ6",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE7",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ7",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE8",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ8",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE9",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ9",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE10",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ10",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE11",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ11",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE12",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ12",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE13",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ13",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            }
+          ]
+        }
+      ],
+      "comparacao_anterior": {
+        "erro_proposta": "DIVIDE_BY_ZERO",
+        "controle_anterior": "HABILIDADES · especiais + domínio 0+0 de 3 · Classe 3 · básica 2d6 · 3 talentos"
+      },
+      "preservacao": {
+        "posicoes": 1038,
+        "montagens": 999,
+        "posicoes_com_metadados_explicitos": 435,
+        "diferencas": 0,
+        "erros_remanescentes": 0,
+        "metadados_iguais": true,
+        "entradas_repostas": 13
+      }
+    },
+    {
+      "copia": "Ciclo",
+      "resultados": [
+        {
+          "case": "basica_texto",
+          "expectedError": null,
+          "sourceId": "entidade.1.bas.1",
+          "sourceValue": {
+            "stringValue": "QA básica"
+          },
+          "observations": [
+            {
+              "cell": "DADOS_INVOC!IE2",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ2",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE3",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ3",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE4",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ4",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE5",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ5",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE6",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ6",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE7",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ7",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE8",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ8",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE9",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ9",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE10",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ10",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE11",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ11",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE12",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ12",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE13",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ13",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            }
+          ]
+        },
+        {
+          "case": "basica_numero",
+          "expectedError": null,
+          "sourceId": "entidade.1.bas.1",
+          "sourceValue": {
+            "numberValue": 7
+          },
+          "observations": [
+            {
+              "cell": "DADOS_INVOC!IE2",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ2",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE3",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ3",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE4",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ4",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE5",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ5",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE6",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ6",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE7",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ7",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE8",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ8",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE9",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ9",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE10",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ10",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE11",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ11",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE12",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ12",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE13",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ13",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            }
+          ]
+        },
+        {
+          "case": "basica_formula_vazia",
+          "expectedError": null,
+          "sourceId": "entidade.1.bas.1",
+          "sourceValue": null,
+          "observations": [
+            {
+              "cell": "DADOS_INVOC!IE2",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ2",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE3",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ3",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE4",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ4",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE5",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ5",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE6",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ6",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE7",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ7",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE8",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ8",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE9",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ9",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE10",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ10",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE11",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ11",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE12",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ12",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            },
+            {
+              "cell": "DADOS_INVOC!IE13",
+              "value": {
+                "stringValue": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+              },
+              "formatted": "REVISAR · HABILIDADES · especiais + domínio 0+3 de 1 · Classe 1 · básica 1d6 · 1 talento"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ13",
+              "value": {
+                "stringValue": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+              },
+              "formatted": "REVISAR · tipo incompatível · nível mínimo 14 · refino mínimo 5 · espaços excedidos: 3/1"
+            }
+          ]
+        },
+        {
+          "case": "basica_divisao_zero",
+          "expectedError": "DIVIDE_BY_ZERO",
+          "sourceId": "entidade.1.bas.1",
+          "sourceValue": {
+            "errorValue": {
+              "type": "DIVIDE_BY_ZERO",
+              "message": "Function DIVIDE parameter 2 cannot be zero."
+            }
+          },
+          "observations": [
+            {
+              "cell": "DADOS_INVOC!IE2",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ2",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE3",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ3",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE4",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ4",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE5",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ5",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE6",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ6",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE7",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ7",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE8",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ8",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE9",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ9",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE10",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ10",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE11",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ11",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE12",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ12",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!IE13",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ13",
+              "value": {
+                "errorValue": {
+                  "type": "DIVIDE_BY_ZERO",
+                  "message": "Function DIVIDE parameter 2 cannot be zero."
+                }
+              },
+              "formatted": "#DIV/0!"
+            }
+          ]
+        },
+        {
+          "case": "basica_na",
+          "expectedError": "N_A",
+          "sourceId": "entidade.1.bas.1",
+          "sourceValue": {
+            "errorValue": {
+              "type": "N_A"
+            }
+          },
+          "observations": [
+            {
+              "cell": "DADOS_INVOC!IE2",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ2",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE3",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ3",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE4",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ4",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE5",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ5",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE6",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ6",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE7",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ7",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE8",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ8",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE9",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ9",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE10",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ10",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE11",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ11",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE12",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ12",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!IE13",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            },
+            {
+              "cell": "DADOS_INVOC!JJ13",
+              "value": {
+                "errorValue": {
+                  "type": "N_A"
+                }
+              },
+              "formatted": "#N/A"
+            }
+          ]
+        }
+      ],
+      "comparacao_anterior": {
+        "erro_proposta": "DIVIDE_BY_ZERO",
+        "controle_anterior": "HABILIDADES · especiais + domínio 0+0 de 1 · Classe 1 · básica 1d6 · 1 talento"
+      },
+      "preservacao": {
+        "posicoes": 1038,
+        "montagens": 999,
+        "posicoes_com_metadados_explicitos": 435,
+        "diferencas": 0,
+        "erros_remanescentes": 0,
+        "metadados_iguais": true,
+        "entradas_repostas": 13
+      }
+    }
+  ]
+}
