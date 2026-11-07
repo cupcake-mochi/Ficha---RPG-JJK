@@ -1,3 +1,23 @@
+# Auditoria da Expansão da domada · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-EXPANSAO-DOMADA-2026-11-07.md`.
+Base `109dff6`, implementação PR85 `735d499` nas QAs Era e Ciclo.
+Foram 210 cenários por cópia: 168 de contas nas 12 posições, 24 de
+requisitos e 18 de gastos. Contas de PE e Acerto corresponderam à R66.
+
+Confirmadas duas lacunas legadas de validação: requisito do domínio
+é só texto e gasto de domínio não é consolidado com as especiais.
+Completa + duas especiais no nível 14 soma 5/4 sem alerta conjunto.
+As 12 chaves exp.acerto da ANALISE saem como entrada apesar da
+origem calculada. Valores e origens estavam corretos; consumidor externo
+não foi auditado. Nenhuma correção aplicada. Separar grau adquirido e
+modo fechado/aberto antes de automatizar o gasto permanente 2/3/5.
+
+Restauradas 332 entradas por cópia, incluindo as 108 posições de Família.
+Comparação de 4.443 posições por cópia, incluindo 2.072 de MONTAGENS,
+com zero diferenças e zero erros. Ensaios via API, sem onEdit nesta matriz.
+Sol/Medium para revisar achados e Sol/High para futura correção/ensaio.
+
 # Revisão PR85 e auditoria de trunfos · 07/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-TRUNFOS-ENTIDADES-2026-11-07.md`.
