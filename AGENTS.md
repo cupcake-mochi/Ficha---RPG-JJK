@@ -1,3 +1,27 @@
+# Aquisição de invocações auditada · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-AQUISICAO-INVOCACOES-2026-11-07.md`
+e `aquisicao_invocacoes_resultados_2026-11-07.json`. AQ01 [P2] confirmado:
+Criação ainda acompanha o invocador até o fim da Classe (R44), mas R66
+conserva o nível de fabricação. Ex.: criada no 1 chega ao 4, 14 PV e dois
+espaços em vez de 5 PV e um espaço. Não é regressão da PR88.
+
+120 casos nas duas descartáveis: 106 conformes, 14 divergentes da mesma
+causa. Débito de espaços conhecidos, inclusive nomes numéricos/booleanos,
+passou. Diagnóstico somente; nenhuma correção de código/fórmula instalada.
+49 entradas/cópia restauradas; 86.067 posições/cópia comparadas, 85.887
+da MONTAGENS inteira. Zero diferenças inesperadas, metadados iguais,
+visuais conferidos e auxiliares ocultas. Sem ensaio novo de onEdit.
+
+Ramo separado `codex/auditoria-aquisicao-invocacoes-20261107`. Próximo passo:
+reconciliar catálogo/extração, progressão, notas e moldes de recuperação;
+snapshots frescos e delta incremental nas duas QAs, sem pacote integral.
+Cobrir níveis abaixo/igual/acima, obtido vazio e novo projeto. Sol/High
+para corrigir/ensaiar; Sol/Medium para revisar este diagnóstico. Não mudar
+configurações nem delegar a subagentes. Privados só em
+`nuvem-b47/saidas/aquisicao-invocacoes/`, ignorado. Sem oficiais, jogador,
+merge, main ou PR31. PR88 preservada em ab05bcf; PR31 em 765e3b2.
+
 # Revisão final da PR88 · 07/11/2026
 
 Leia `r53/diagnostico-android/REVISAO-ISOLAMENTO-PR88-2026-11-07.md` e
