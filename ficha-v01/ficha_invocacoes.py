@@ -435,7 +435,14 @@ def trocas(layout, cor_da_barra=None):
         P = lambda k: f"${L(colf[k])}{n}"
         Rg = lambda a, b: f"${L(colf[a])}{n}:${L(colf[b])}{n}"
         da = lambda cel: f'={_A(cel, IV)}&""'
-        o = {"ficha": i, "nome": da(g["nome"]), "tipo": da(g["tipo"]), "aquis": da(g["aquis"]), "nfixo": f"=N({_A(g['nivel_fixo'], IV)})",
+        # AQ02: não perder o tipo com N(). Zero é só o vazio; -1 é inválido.
+        entrada_nivel = _A(g['nivel_fixo'], IV)
+        vazio_nivel = f'OR(ISBLANK({entrada_nivel}),AND(ISTEXT({entrada_nivel}),{entrada_nivel}=""))'
+        nivel_validado = (f'=IFERROR(IF({vazio_nivel},0,IF(ISNUMBER({entrada_nivel}),'
+                          f'IF(AND({entrada_nivel}=INT({entrada_nivel}),{entrada_nivel}>=1,{entrada_nivel}<=30),'
+                          f'{entrada_nivel},-1),IF(ISTEXT({entrada_nivel}),'
+                          f'IF(REGEXMATCH({entrada_nivel},"^([1-9]|[12][0-9]|30)$"),VALUE({entrada_nivel}),-1),-1))),-1)')
+        o = {"ficha": i, "nome": da(g["nome"]), "tipo": da(g["tipo"]), "aquis": da(g["aquis"]), "nfixo": nivel_validado,
              "talisma": da(g["talisma"]), "acerto": da(g["acerto"]), "fis": da(g["fis"]), "trT": da(g["trT"]),
              "vida_c": da(g["vida"]), "temp": f"=N({_A(g['temp'], IV)})",
              # o Volume do que ela empunha, veste e guarda: a soma das caixas de VOL. do equipamento
@@ -523,7 +530,9 @@ def trocas(layout, cor_da_barra=None):
         o["rep"] = "=" + "+".join(f'IF({P(f"f{k}")}="",0,IF(COUNTIF({FF},{P(f"f{k}")})>1,1,0))' for k in range(N_FAM))
         o["maxfam"] = f"={H['famílias da trilha']}"
         # --- o que a aba mostra
-        o["d_titulo"] = (f'=IF({tem}=0,"INVOCAÇÃO {i} · lugar vazio",{P("nome")}&" · "&{P("tipo")}&" · nível "&{nn}&" · vida "&{P("atual")}&" de "&{P("vida")})')
+        revisao_nivel = (f'IF(AND({P("acomp")}=0,{P("nfixo")}=-1),'
+                         '" · REVISAR: nível obtido inválido; cálculo provisório no nível 1","")')
+        o["d_titulo"] = (f'=IF({tem}=0,"INVOCAÇÃO {i} · lugar vazio",{P("nome")}&" · "&{P("tipo")}&{revisao_nivel}&" · nível "&{nn}&" · vida "&{P("atual")}&" de "&{P("vida")})')
         o["d_lomb"] = f'=IF({tem}=0,"VAZIA",UPPER({P("nome")}))'
         o["d_mae"] = f"={sinal(MAE)}"
         o["d_ent"] = f'={P("ent")}&" PE"'
@@ -582,7 +591,7 @@ def trocas(layout, cor_da_barra=None):
         o["d_ea"] = (f'="Acerto "&MAX(0,INDEX({PONTOS},{cl})-INDEX({PRECOS},{cl},2+3*IF(AND({fam_ines}<>"",'
                      f'OR({fam_ines}={P("f0")},{fam_ines}={P("f1")})),1,0)))&"d8"')
         o["d_er"] = f'=IFERROR(VLOOKUP({P("exp")},{EXPANSAO},3,FALSE),"Escolha o degrau")'
-        o["d_rol"] = (f'={i}&" · "&IF({tem}=0,"vazia",{P("nome")}&" · nv "&{nn}&" · "&{P("atual")}&"/"&{P("vida")})')
+        o["d_rol"] = (f'={i}&" · "&IF({tem}=0,"vazia",{P("nome")}&{revisao_nivel}&" · nv "&{nn}&" · "&{P("atual")}&"/"&{P("vida")})')
         return [o[k] for k in nomes_f]
 
     D.tabela("fichas", [("conta de ficha" if k == "ficha" else k) for k in nomes_f], [[None] for _ in LUG])
@@ -851,11 +860,14 @@ NOTAS = {
              "Escreva ao lado o nível em que ela foi obtida ou fabricada.",
     "nivel_fixo": "Só para a domada e a criada: registre o nível em que foi obtida ou fabricada, até o seu. "
                   "Ela conserva esse nível; a criada não melhora quando você sobe de nível ou a repara. "
-                  "Em branco, a ficha mantém a prévia no seu nível; preencha o nível obtido para fixá-lo.",
+                  "Em branco, a ficha mantém a prévia no seu nível; preencha o nível obtido para fixá-lo. "
+                  "Use um inteiro de 1 a 30. Texto contendo só os dígitos desse nível é interpretado como número. "
+                  "Entrada inválida fica preservada, exige revisão e usa cálculo provisório no nível 1.",
     "talisma": "Só o shikigami de criação: a carga deixada no talismã no descanso longo adianta parte da próxima entrada. O "
                "talismã ocupa 0,5 de Volume.",
     "nivel": "O nível dela. Com espaço conhecido ou lista de ritual é o seu; a domada conserva o nível obtido e a criada "
-             "conserva o de fabricação. Nunca passa do seu. Para domada e criada, preencha o nível obtido ao lado da aquisição.",
+             "conserva o de fabricação. Nunca passa do seu. Para domada e criada, preencha o nível obtido ao lado da aquisição. "
+             "Entrada inválida mostra REVISAR no título e na lista; as contas no nível 1 são provisórias, não aprovam a entidade.",
     "classe": "A maior Classe que o nível dela permite: sobe nos níveis 5, 9, 13, 17, 21 e 26.",
     "maestria": "Sempre a sua, mesmo numa domada de nível menor. Vem da FICHA.",
     "entrada": "Manifestar custa a maior Classe dela em PE, e a sua Ação Bônus. Com o talismã carregado, metade, para cima. "
@@ -1105,6 +1117,7 @@ def aba(layout, tr):
         assert caixa(A1, a[1], r + 37, "AQUISIÇÃO", LIV["aquisicoes"][0]["nome"], "cel", nota("aquis")) == g["aquis"]
         f.menu(g["aquis"], D.faixa("aquis", so=0, aba=DI))
         assert caixa(a[2], a[2], r + 37, "OBTIDA NO NÍVEL", None, "cel", nota("nivel_fixo")) == g["nivel_fixo"]
+        f.menu(g["nivel_fixo"], '"' + ",".join(str(n) for n in range(1, 31)) + '"')
         assert caixa(a[3], A5, r + 37, "TALISMÃ", SEM_CARGA, "cel", nota("talisma")) == g["talisma"]
         f.menu(g["talisma"], D.faixa("carga", aba=DI))
         # --- no meio: os números
@@ -1311,6 +1324,7 @@ def aba(layout, tr):
         "mescladas": f.mesclas,
         "menus": [{"onde": " ".join(onde), "tipo": "list", "formula": formula, "vazio_ok": True, "mostra_seta": True}
                   for formula, onde in f.menus.items()],
+        "menus_estritos": [g["nivel_fixo"] for g in tr["fichas_c"]],
         "condicional": [], "imagens": pincel, "notas": f.notas,
         "grupos": {"linhas": grupos, "colunas": grupos_col},
         # 08/10/2026, do pente-fino no Sheets: "O link da segunda invocação chega ao cabeçalho, mas a ficha continua

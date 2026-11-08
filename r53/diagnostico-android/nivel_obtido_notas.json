@@ -1,0 +1,14 @@
+[
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "K46",
+    "antes": "Só para a domada e a criada: registre o nível em que foi obtida ou fabricada, até o seu. Ela conserva esse nível; a criada não melhora quando você sobe de nível ou a repara. Em branco, a ficha mantém a prévia no seu nível; preencha o nível obtido para fixá-lo.",
+    "depois": "Só para a domada e a criada: registre o nível em que foi obtida ou fabricada, até o seu. Ela conserva esse nível; a criada não melhora quando você sobe de nível ou a repara. Em branco, a ficha mantém a prévia no seu nível; preencha o nível obtido para fixá-lo. Use um inteiro de 1 a 30. Texto contendo só os dígitos desse nível é interpretado como número. Entrada inválida fica preservada, exige revisão e usa cálculo provisório no nível 1."
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "O12",
+    "antes": "O nível dela. Com espaço conhecido ou lista de ritual é o seu; a domada conserva o nível obtido e a criada conserva o de fabricação. Nunca passa do seu. Para domada e criada, preencha o nível obtido ao lado da aquisição.",
+    "depois": "O nível dela. Com espaço conhecido ou lista de ritual é o seu; a domada conserva o nível obtido e a criada conserva o de fabricação. Nunca passa do seu. Para domada e criada, preencha o nível obtido ao lado da aquisição. Entrada inválida mostra REVISAR no título e na lista; as contas no nível 1 são provisórias, não aprovam a entidade."
+  }
+]
