@@ -1,3 +1,30 @@
+# Isolamento dos nomes da PR88 concluído · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ISOLAMENTO-NOMES-PR88-2026-11-07.md`
+e `isolamento_nomes_validacao_2026-11-07.json` na mesma pasta. R88-01 corrigido:
+FILTER restringe categoria/entidade antes de LEN, conservando erros próprios,
+números/zero/FALSE e o vazio por fórmula. Só 24 fórmulas IE/JJ mudam.
+
+Aplicação incremental concluída nas descartáveis Era/Ciclo. Código fresco
+8935211c… conferido antes; proposta 36ca73efd1eca6809fd8ddfa1be324eebaad2f5aef0830d4c25c6aaeaaaff3bc
+salva, projetos reabertos e relidos integralmente iguais. Dez onEdit reais
+Concluído: quatro formatos de bloco e um controle com erro próprio por cópia.
+288 casos de contagem e 16 configurações globais de isolamento passaram.
+
+160 entradas por cópia restauradas. Comparação de 53.554 posições/cópia,
+53.334 MONTAGENS: apenas as 24 mudanças previstas, zero diferenças extras.
+Metadados iguais, visuais conferidos e auxiliares ocultas. Geração
+e4537f58af975d8c; 280.056 posições/26 abas, somente 24 fórmulas diferentes.
+Smoke final 122 checks aprovado. Pacote integral regenerado, NÃO instalado.
+Cabeçalho gzip da Expansão e CRLF do editor normalizados para Windows,
+com testes; hash/base estritos preservados. Privados somente na pasta
+ignorada `nuvem-b47/saidas/isolamento-windows/`.
+
+Atualizar/revisar na PR88, sem merge, oficiais, jogador, PR31 ou force push.
+PR31 preservada em 765e3b2. Sol/Medium para revisão, Sol/High para novo
+ensaio/implementação; não mudar configurações automaticamente.
+As entradas abaixo registram o histórico anterior à retomada concluída.
+
 # Pausa para Windows · isolamento PR88 · 07/11/2026
 
 Usuário pediu parar e salvar para continuar no Windows. Leia

@@ -5,7 +5,10 @@ function gerar(plano=require('./diagnostico-android/expansao_domada_plano.json')
  const notas=require('./diagnostico-android/expansao_domada_notas.json');
  const linhasAnalise=plano.filter(d=>d.aba==='ANALISE').map(d=>d.r);
  const inicioAnalise=Math.min(...linhasAnalise),fimAnalise=Math.max(...linhasAnalise);
- const payload=z.gzipSync(JSON.stringify({valores:plano,notas,suporte}),{mtime:0}).toString('base64');
+ const gzip=z.gzipSync(JSON.stringify({valores:plano,notas,suporte}),{mtime:0});
+ // Cabeçalho canônico: o SO do Windows não deve mudar a âncora do instalador.
+ gzip[9]=3;
+ const payload=gzip.toString('base64');
  return `// GERADO por r53/expansao_domada_runtime.js. Só aquisição e metadados calculados.
 var R53_EXPANSAO_CACHE_;
 function r53ExpansaoCarga_(){if(!R53_EXPANSAO_CACHE_)R53_EXPANSAO_CACHE_=JSON.parse(Utilities.ungzip(Utilities.newBlob(Utilities.base64Decode(${JSON.stringify(payload)}),'application/gzip')).getDataAsString('UTF-8'));return R53_EXPANSAO_CACHE_;}

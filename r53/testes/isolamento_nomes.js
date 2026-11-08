@@ -2,6 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),z=require('node:zlib'),crypto=require('node:crypto'),path=require('node:path');
 const p=require('../diagnostico-android/preparar_isolamento_nomes'),rt=require('../expansao_domada_runtime'),{formulaLocal}=require('../diagnostico-android/preparar_pilha_5156');
 assert.equal(p.plano().length,24);assert.throws(()=>p.prepararCodigo('outra base'),/PR88/);
+assert.equal(Buffer.from(rt.gerar().match(/base64Decode\("([^"]+)"\)/)[1],'base64')[9],3,'Cabeçalho gzip igual no Windows e Linux');
 for(const d of p.plano()){assert.equal(d.aba,'DADOS_INVOC');assert.ok([239,270].includes(d.c));assert.ok(d.r>=2&&d.r<=13);const old=`SUMPRODUCT(N(REGEXMATCH(DADOS_R53!$A$2:$A$253,"^entidade[.]"&$DD${d.r}&"[.]esp[.]")),N(LEN(DADOS_R53!$B$2:$B$253&"")>0))`,fixed=`SUMPRODUCT(N(LEN(FILTER(DADOS_R53!$B$2:$B$253,REGEXMATCH(DADOS_R53!$A$2:$A$253,"^entidade[.]"&$DD${d.r}&"[.]esp[.]"))&"")>0))`;assert.equal(d.antes.replace(old,fixed),d.depois);}
 for(const locale of ['pt_BR','en_US']){
  const snap={locale,cells:p.plano().map(d=>({...d,sheetId:9,value:formulaLocal(d.antes,locale)}))},pr=p.prepararCelulas(snap);assert.equal(pr.pedidos.length,24);assert.equal(pr.reverter(pr.final).length,24);

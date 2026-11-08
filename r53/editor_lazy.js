@@ -2,6 +2,7 @@
 // O catálogo permanece igual; o evento só o materializa se consultar o editor.
 const fs=require('fs'),z=require('zlib'),crypto=require('crypto');
 function preparar(src){
+ src=src.replace(/\r\n/g,'\n');
  const m=/^var R53_EDITOR_ = (\{[^\n]+\});\n/.exec(src);if(!m)throw Error('Editor: catálogo ausente ou já preparado');
  const data=JSON.parse(m[1]),json=JSON.stringify(data),hash=crypto.createHash('sha256').update(json).digest('hex'),payload=z.gzipSync(json,{mtime:0}).toString('base64');
  const head='var R53_EDITOR_CACHE_;\nfunction r53ConfigEditor_(){if(R53_EDITOR_CACHE_)return R53_EDITOR_CACHE_;var text=Utilities.ungzip(Utilities.newBlob(Utilities.base64Decode('+JSON.stringify(payload)+'),"application/gzip")).getDataAsString("UTF-8");var hash=Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,text,Utilities.Charset.UTF_8).map(function(b){return ("0"+((b+256)%256).toString(16)).slice(-2);}).join("");if(hash!=='+JSON.stringify(hash)+')throw Error("Editor: catálogo divergente");return R53_EDITOR_CACHE_=JSON.parse(text);}\n'+

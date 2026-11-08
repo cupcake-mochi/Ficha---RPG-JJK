@@ -71,7 +71,7 @@ var ABAS_DA_PROGRESSAO = [
     "paleta_fixa":true,
     "caixas":[],
     "depois":"GLOSSÁRIO",
-    "geracao":"c59bcb593daf38af",
+    "geracao":"e4537f58af975d8c",
     "arquivo":"Progressao.gs"
   }
 ];
