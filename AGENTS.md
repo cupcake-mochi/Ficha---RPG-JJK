@@ -1,3 +1,34 @@
+# Retomada Linux · PR89 revisada e AQ02 confirmado · 08/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR89-E-ENTRADAS-NIVEL-2026-11-08.md`
+e `revisao_pr89_entradas_nivel_2026-11-08.json`. Windows concluiu a PR88
+em ab05bcf e abriu a PR89 em e2b0330; não retomar o antigo WIP Linux.
+PR89 revisada no delta de níveis inteiros válidos, sem novo achado nesse
+escopo; dois jobs smoke SUCCESS. Testes focais/transporte/modelo repetidos,
+13 valores e três notas relidos nas duas QAs. Não repetidos os eventos,
+smoke integral ou readback integral do código Google registrados no Windows.
+
+AQ02 [P2] legado, não corrigido: nível obtido aceita texto/frações/booleanos.
+Texto 7 vira nível 30 (92 PV e oito espaços em vez de 23 PV/dois na primeira
+entidade); 7,5 produz nível/PV fracionados. N(entrada) perde a distinção de
+tipo e zero cai na prévia do invocador. O vazio é comportamento compatível
+intencional, não erro. Mesma causa em Criação e Maldição domada, anterior à
+PR89. Matriz nova: 40 configurações, 80 observações, entidades 1/12 nas duas
+descartáveis; API nativa, sem evento real nesta rodada.
+
+Nove entradas/cópia restauradas; 11.371 posições/cópia comparadas, incluindo
+11.322 MONTAGENS em 34 contextos. Zero diferenças, metadados iguais no escopo
+original, visual restaurado e auxiliares ocultas. Não é MONTAGENS inteira;
+formatação condicional não tinha baseline nesta rodada. Privados somente em
+`nuvem-b47/saidas/auditoria-nivel-obtido-20261108/`, ignorado e agora válidos.
+
+Ramo `codex/revisao-pr89-entradas-20261108`, somente parecer/diagnóstico.
+Próximo: corrigir AQ02 em ramo próprio, snapshots frescos e incremento mínimo
+nas duas QAs, preservando montagens, compatibilidade do vazio, suportes/IF e
+escape da ANALISE. Sem merge, oficiais, jogador, PR31, acesso ou acionadores.
+PR31 continua 765e3b2; PR89 e2b0330. Sol/High para implementar/ensaiar,
+Sol/Medium para revisar o parecer; não mudar configurações nem abrir agentes.
+
 # Criação com nível fixo concluída nas QAs · 08/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-CRIACAO-NIVEL-FIXO-2026-11-08.md`
