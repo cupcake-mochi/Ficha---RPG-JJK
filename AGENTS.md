@@ -1,3 +1,42 @@
+# AQ02 corrigido e ensaiado nas duas QAs · 08/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-NIVEL-OBTIDO-2026-11-08.md` e
+`nivel_obtido_validacao_2026-11-08.json`. Texto só com dígitos 1–30 vira
+nível válido; número inteiro 1–30 válido; vazio mantém a prévia. Demais
+entradas ficam preservadas e sinalizadas como inválidas: -1 em nfixo,
+nível calculado provisório 1 e REVISAR no título/lista para domada/criada.
+Aquisições que acompanham o invocador ignoram esse campo. ANALISE mantém
+chaves/tipos/fórmulas/endereços; nivel_fixo agora sinaliza inválido com -1.
+Não foi alterado/testado consumidor ou PR31.
+
+Incremento nas descartáveis: 36 fórmulas, duas notas e 12 menus estritos
+(50 pedidos/cópia). Código fresco ffd349c9…; código salvo, reaberto e relido
+integralmente igual b709ad14b6340c132279f5a44030cb9a737c3f1251322c9929c6ffd341d9f38e.
+Conservar 60 moldes vizinhos novos inalterados, 49 suportes da PR89, IF da
+PR88 e escape da ANALISE. Conferência manual do pacote concluiu nas duas.
+
+240 casos nativos, seis controles de interface, 12 recuperações reais e
+16 onEdit Concluído. 49 entradas/cópia restauradas. Comparadas
+86.178 posições/cópia, incluindo MONTAGENS inteira A1:I9543 (85.887).
+Só os 50 campos previstos mudaram; zero extras; metadados com formatação
+condicional iguais. Auxiliares ocultas, visuais restaurados e abas de teste
+fechadas. O usuário pediu não acumular abas desnecessárias.
+
+Geração fe4f36eb411d303b; 280.056 posições/26 abas, delta exato e modelo
+incremental igual ao integral. Pacote integral regenerado, NÃO instalado.
+Smoke local 124/124; guardas offline de suporte/FO repetidas focalmente após
+o smoke, sem mudança do código Google. Geração inicial 143 não vale como
+aprovação; pipeline persistente final teve quatro saídas zero.
+
+Ramo `codex/validacao-nivel-obtido-20261108`, sobre PR89 e2b0330 e parecer
+0a1ad65. Entrega para revisão, sem merge, oficiais, jogador ou PR31; PR31
+continua 765e3b2. Privados só em
+`nuvem-b47/saidas/validacao-nivel-obtido-20261108/`, ignorado. Para eventual
+aplicação: snapshot fresco e preflight de código, valores, suporte, notas
+e validações; exige base final PR89. Não repetir testes sem causa nem
+reconstruir preenchidas. Sol/Medium para revisar, Sol/High para novo
+ensaio/implementação; não alterar configurações ou abrir agentes.
+
 # Retomada Linux · PR89 revisada e AQ02 confirmado · 08/11/2026
 
 Leia `r53/diagnostico-android/REVISAO-PR89-E-ENTRADAS-NIVEL-2026-11-08.md`
