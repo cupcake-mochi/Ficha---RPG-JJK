@@ -1,3 +1,23 @@
+# Revisão final da PR88 · 07/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-ISOLAMENTO-PR88-2026-11-07.md` e
+`revisao_isolamento_pr88_2026-11-07.json`. Head ab05bcf revisado contra
+PR87 0554071: sem novos achados acionáveis no escopo; R88-01 resolvido.
+PR aberta, sem conflitos, dois smoke SUCCESS no head revisado.
+
+Repetidos testes focais com os insumos Android privados e duas bases,
+comparação de 280.056 posições/26 abas (só 24 fórmulas), editor LF/CRLF
+e três testes Python. Auditoria das evidências guardadas confirmou código,
+preservação, dez recuperações completas e dez onEdit Concluído.
+Matrizes/eventos nativos e smoke integral NÃO repetidos nesta revisão.
+Nenhuma escrita Google ou mudança no código da PR88 nesta etapa.
+
+Parecer separado em `codex/revisao-isolamento-pr88-20261107`. Sem merge,
+oficiais, jogador, PR31 ou main. Privados só em
+`nuvem-b47/saidas/revisao-isolamento-pr88/`, ignorado. Próximo pente-fino:
+Sol/High em fronteira delimitada; Sol/Medium para conferir o parecer.
+Não mudar configurações. Aplicar em oficiais exige instrução específica.
+
 # Isolamento dos nomes da PR88 concluído · 07/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-ISOLAMENTO-NOMES-PR88-2026-11-07.md`
