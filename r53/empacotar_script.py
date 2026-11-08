@@ -17,9 +17,10 @@ def gerar():
  subprocess.run(['node',str(ROOT/'r53/pratica_cotidiana_runtime.js')],check=True,capture_output=True,text=True)
  subprocess.run(['node',str(ROOT/'r53/expansao_domada_runtime.js')],check=True,capture_output=True,text=True)
  subprocess.run(['node',str(ROOT/'r53/repertorio_trilha_runtime.js')],check=True,capture_output=True,text=True)
+ subprocess.run(['node',str(ROOT/'r53/criacao_nivel_fixo_runtime.js')],check=True,capture_output=True,text=True)
  subprocess.run(['node',str(ROOT/'r53/caminho_leve.js')],check=True,capture_output=True,text=True)
  folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs','PaletaAndroid.gs','Caminho.gs','CuraRecebida.gs','Socorro.gs'])+['Habilidades.gs','Codigo.gs']
- names=[n for n in names if n not in ['Descanso.gs','ReservaBolsa.gs','PraticaCotidiana.gs','ExpansaoDomada.gs','RepertorioTrilha.gs']]
+ names=[n for n in names if n not in ['Descanso.gs','ReservaBolsa.gs','PraticaCotidiana.gs','ExpansaoDomada.gs','RepertorioTrilha.gs','CriacaoNivelFixo.gs']]
  sources=[(folder/n).read_text() for n in names];source='\n'.join(sources)
  variables=sorted(set(re.findall(r'^var\s+([A-Za-z_$][\w$]*)\s*=',source,re.M)))
  functions=sorted(set(re.findall(r'^function\s+([A-Za-z_$][\w$]*)\s*\(',source,re.M)))
@@ -62,6 +63,7 @@ function r53Modulo_() {
  var hash=Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,code,Utilities.Charset.UTF_8).map(function(b){return ('0'+((b+256)%256).toString(16)).slice(-2);}).join('');
  if(hash!=='HASH')throw new Error('Pacote R53 incompleto: conteúdo divergente.');
  R53_MODULO_=(new Function(code))();
+ try { r53AjustarCriacao_(R53_MODULO_.__estado().abas); } catch(err) { R53_MODULO_=null; throw err; }
  if(R53_MODULO_.__estado().sobras.length)throw new Error('Gerações de dados misturadas no pacote.');
  return R53_MODULO_;
 }
@@ -97,6 +99,7 @@ function verificarPacoteR53() {
  bootstrap+=(folder/'PraticaCotidiana.gs').read_text()
  bootstrap+=(folder/'ExpansaoDomada.gs').read_text()
  bootstrap+=(folder/'RepertorioTrilha.gs').read_text()
+ bootstrap+=(folder/'CriacaoNivelFixo.gs').read_text()
  for n in public:
   if n=='onEdit':
    bootstrap+=(ROOT/'r53/diagnostico-android/versao_publica.gs').read_text()
@@ -105,13 +108,16 @@ function verificarPacoteR53() {
   elif n=='onOpen':
    bootstrap+='function onOpen(e){if(typeof r53CuraMenu_==="function")r53CuraMenu_();e=e||{};e.r53Inicio_=Date.now();if(typeof r53PaletaLeve_!=="function")return r53Modulo_().onOpen(e);if(typeof salarioAbrir_==="function")salarioAbrir_();if(typeof r53Menu_==="function")r53Menu_();if(PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);}\n'
   elif n!='onSelectionChange':bootstrap+='function '+n+'(){return r53Modulo_()['+json.dumps(n)+'].apply(this,arguments);}\n'
+ guard='function onEdit(e){if(e)e.r53Inicio_=Date.now();'
+ if bootstrap.count(guard)!=1:raise ValueError('Guarda onEdit de Criação divergente')
+ bootstrap=bootstrap.replace(guard,guard+'if(r53CriacaoRestaurar_(e)){if(typeof r53PaletaLeve_==="function"&&PropertiesService.getDocumentProperties().getProperty("paleta_pendente"))r53PaletaLeve_().continuar(e);return;}')
  (OUT/'Codigo.gs').write_text(bootstrap)
  (OUT/'fonte-modulo.js').write_text(source)
  arquivos={p.name:dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in OUT.glob('*.gs')}
  # Arquivos desta geração que existirem separadamente no projeto antigo
  # duplicariam a inicialização. Guardar o conteúdo antes de trocar por estes
  # marcadores; não tocar em arquivos externos desconhecidos do projeto.
- legados=[n for n in names if n not in arquivos]+['Descanso.gs','ReservaBolsa.gs','PraticaCotidiana.gs','ExpansaoDomada.gs','RepertorioTrilha.gs']
+ legados=[n for n in names if n not in arquivos]+['Descanso.gs','ReservaBolsa.gs','PraticaCotidiana.gs','ExpansaoDomada.gs','RepertorioTrilha.gs','CriacaoNivelFixo.gs']
  destino_legado=OUT/'legado';destino_legado.mkdir(exist_ok=True)
  for name in legados:(destino_legado/name).write_text('// Conteúdo incluído no pacote R53; fonte legível preservada no repositório.\n')
  manifest=dict(fonte_sha256=digest,geracao_arquivos=names,entradas_publicas=public,partes=len(parts),bytes_fonte=len(raw),bytes_base64=len(b64),arquivos=arquivos,arquivos_legados_desativar=legados)

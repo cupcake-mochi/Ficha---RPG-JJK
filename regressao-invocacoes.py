@@ -510,8 +510,8 @@ checa("Onda de Classe 1 com Impulso e Gesto cabe nos 2 pontos, com saldo zero", 
 v = le("domada")
 checa("a domada de nível 10 e Essência 3 tem 20 PE de reserva, entra por 3 PE e retorna por 6",
       v(G["reserva_rot"]) == "RESERVA · MÁX. 20" and v(G["status"][3]) == "3 PE" and v(G["status"][4]) == "6 PE", f'{v(G["reserva_rot"])} {v(G["status"][3])} {v(G["status"][4])}')
-checa("a criada de nível fixo 6 acompanha até 8 com invocador no 11, acompanha até 7 no 7, e a domada conserva 6",
-      [le(n)(G["status"][0]) for n in ("criada no teto", "criada acompanha", "domada fixa")] == [8, 7, 6])
+checa("a criada de nível fixo 6 conserva 6 com invocador no 11 e no 7, e a domada conserva 6",
+      [le(n)(G["status"][0]) for n in ("criada no teto", "criada acompanha", "domada fixa")] == [6, 6, 6])
 v = le("domada menor")
 checa("a domada de nível 5 de um invocador de nível 10: o nível é o dela, a maestria é a dele (ataque 3 + 2)",
       v(G["status"][0]) == 5 and v(G["status"][2]) == "+2" and v(G["stat"][0]) == "+5" and v(G["stat"][3]) == 27, f'{[v(c) for c in G["status"]]} {v(G["stat"][0])}')

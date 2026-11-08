@@ -1,0 +1,20 @@
+[
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "I46",
+    "antes": "Como ela foi obtida. Espaço conhecido e lista de ritual acompanham o seu nível. A domada fica no nível em que foi domada. A criada acompanha o seu nível até o último nível da Classe em que foi criada; passar à Classe seguinte pede reconstruir (o mesmo teste, um degrau mais fácil). Escreva ao lado o nível em que ela foi obtida.",
+    "depois": "Como ela foi obtida. Espaço conhecido e lista de ritual acompanham o seu nível. A domada fica no nível em que foi domada. A criada conserva o nível de fabricação; uma versão mais poderosa exige novo projeto. Escreva ao lado o nível em que ela foi obtida ou fabricada."
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "K46",
+    "antes": "Só para a domada e a criada: o nível em que ela foi domada, ou criada e reconstruída, até o seu. A domada fica nele; a criada sobe com você até o fim da Classe dele (criada no 6, Classe 2, vai até o 8). Em branco, a ficha usa o seu nível.",
+    "depois": "Só para a domada e a criada: registre o nível em que foi obtida ou fabricada, até o seu. Ela conserva esse nível; a criada não melhora quando você sobe de nível ou a repara. Em branco, a ficha mantém a prévia no seu nível; preencha o nível obtido para fixá-lo."
+  },
+  {
+    "aba": "INVOCAÇÕES",
+    "a1": "O12",
+    "antes": "O nível dela. Com espaço conhecido ou lista de ritual é o seu; a domada fica no nível em que foi domada; a criada acompanha o seu até o último nível da Classe em que foi criada. Nunca passa do seu.",
+    "depois": "O nível dela. Com espaço conhecido ou lista de ritual é o seu; a domada conserva o nível obtido e a criada conserva o de fabricação. Nunca passa do seu. Para domada e criada, preencha o nível obtido ao lado da aquisição."
+  }
+]

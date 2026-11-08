@@ -1,0 +1,3007 @@
+{
+  "schema": 1,
+  "date": "2026-11-07",
+  "scope": "aquisição, nível e débito de invocações; diagnóstico sem correção",
+  "branch": "codex/auditoria-aquisicao-invocacoes-20261107",
+  "base": "bcb82fcda9c6916fa26fa1248d87da0b6a286f99",
+  "book": {
+    "repository": "cupcake-mochi/JJK---Project",
+    "commit": "e3058ad29180fdec2efec75b512446c49bf87b3d",
+    "paths": [
+      "sistema/05-material/livro/manual/60-invocacoes.md",
+      "sistema/05-material/livro/planejamento-editorial/invocacoes/fabricacao/lote-01/FABRICACAO-DE-ENTIDADES.md"
+    ]
+  },
+  "copies": [
+    "Era descartável",
+    "Ciclo descartável"
+  ],
+  "summary": {
+    "cases": 120,
+    "conformant": 106,
+    "divergent": 14,
+    "distinctDefects": 1
+  },
+  "finding": {
+    "id": "AQ01",
+    "priority": 2,
+    "status": "confirmado, não corrigido",
+    "title": "Criação acompanha o nível até o fim da Classe, em desacordo com R66",
+    "source": "regra R44 preexistente; não introduzida pela PR88"
+  },
+  "progressionCases": [
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 1,
+      "type": "Shikigami de técnica",
+      "fixed": 1,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 2,
+      "type": "Shikigami de técnica",
+      "fixed": 4,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 3,
+      "type": "Shikigami de técnica",
+      "fixed": 5,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 4,
+      "type": "Shikigami de técnica",
+      "fixed": 8,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 5,
+      "type": "Shikigami de técnica",
+      "fixed": 9,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 6,
+      "type": "Shikigami de técnica",
+      "fixed": 12,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 7,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 13,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 8,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 16,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 9,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 17,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 10,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 20,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 11,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 21,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "entity": 12,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 26,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 1,
+      "type": "Shikigami de técnica",
+      "fixed": 1,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 2,
+      "type": "Shikigami de técnica",
+      "fixed": 4,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 3,
+      "type": "Shikigami de técnica",
+      "fixed": 5,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 4,
+      "type": "Shikigami de técnica",
+      "fixed": 8,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 5,
+      "type": "Shikigami de técnica",
+      "fixed": 9,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 6,
+      "type": "Shikigami de técnica",
+      "fixed": 12,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 7,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 13,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 8,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 16,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 9,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 17,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 10,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 20,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 11,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 21,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "entity": 12,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 26,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 1,
+      "type": "Maldição domada",
+      "fixed": 1,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 1,
+        "cl": 1,
+        "basic": 1,
+        "slots": 1,
+        "hp": 5
+      },
+      "actual": {
+        "level": 1,
+        "cl": 1,
+        "basic": 1,
+        "slots": 1,
+        "hp": 5
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 2,
+      "type": "Maldição domada",
+      "fixed": 4,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 4,
+        "cl": 1,
+        "basic": 1,
+        "slots": 2,
+        "hp": 14
+      },
+      "actual": {
+        "level": 4,
+        "cl": 1,
+        "basic": 1,
+        "slots": 2,
+        "hp": 14
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 3,
+      "type": "Maldição domada",
+      "fixed": 5,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 5,
+        "cl": 2,
+        "basic": 2,
+        "slots": 2,
+        "hp": 17
+      },
+      "actual": {
+        "level": 5,
+        "cl": 2,
+        "basic": 2,
+        "slots": 2,
+        "hp": 17
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 4,
+      "type": "Maldição domada",
+      "fixed": 8,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 8,
+        "cl": 2,
+        "basic": 2,
+        "slots": 3,
+        "hp": 26
+      },
+      "actual": {
+        "level": 8,
+        "cl": 2,
+        "basic": 2,
+        "slots": 3,
+        "hp": 26
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 5,
+      "type": "Maldição domada",
+      "fixed": 9,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 9,
+        "cl": 3,
+        "basic": 2,
+        "slots": 3,
+        "hp": 29
+      },
+      "actual": {
+        "level": 9,
+        "cl": 3,
+        "basic": 2,
+        "slots": 3,
+        "hp": 29
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 6,
+      "type": "Maldição domada",
+      "fixed": 12,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 12,
+        "cl": 3,
+        "basic": 2,
+        "slots": 4,
+        "hp": 38
+      },
+      "actual": {
+        "level": 12,
+        "cl": 3,
+        "basic": 2,
+        "slots": 4,
+        "hp": 38
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 7,
+      "type": "Maldição domada",
+      "fixed": 13,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 13,
+        "cl": 4,
+        "basic": 2,
+        "slots": 4,
+        "hp": 41
+      },
+      "actual": {
+        "level": 13,
+        "cl": 4,
+        "basic": 2,
+        "slots": 4,
+        "hp": 41
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 8,
+      "type": "Maldição domada",
+      "fixed": 16,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 16,
+        "cl": 4,
+        "basic": 2,
+        "slots": 5,
+        "hp": 50
+      },
+      "actual": {
+        "level": 16,
+        "cl": 4,
+        "basic": 2,
+        "slots": 5,
+        "hp": 50
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 9,
+      "type": "Maldição domada",
+      "fixed": 17,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 17,
+        "cl": 5,
+        "basic": 3,
+        "slots": 5,
+        "hp": 53
+      },
+      "actual": {
+        "level": 17,
+        "cl": 5,
+        "basic": 3,
+        "slots": 5,
+        "hp": 53
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 10,
+      "type": "Maldição domada",
+      "fixed": 20,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 20,
+        "cl": 5,
+        "basic": 3,
+        "slots": 6,
+        "hp": 62
+      },
+      "actual": {
+        "level": 20,
+        "cl": 5,
+        "basic": 3,
+        "slots": 6,
+        "hp": 62
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 11,
+      "type": "Maldição domada",
+      "fixed": 21,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 21,
+        "cl": 6,
+        "basic": 3,
+        "slots": 6,
+        "hp": 65
+      },
+      "actual": {
+        "level": 21,
+        "cl": 6,
+        "basic": 3,
+        "slots": 6,
+        "hp": 65
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "entity": 12,
+      "type": "Maldição domada",
+      "fixed": 26,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 26,
+        "cl": 7,
+        "basic": 3,
+        "slots": 7,
+        "hp": 80
+      },
+      "actual": {
+        "level": 26,
+        "cl": 7,
+        "basic": 3,
+        "slots": 7,
+        "hp": 80
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 1,
+      "type": "Shikigami de criação",
+      "fixed": 1,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 1,
+        "cl": 1,
+        "basic": 1,
+        "slots": 1,
+        "hp": 5
+      },
+      "actual": {
+        "level": 4,
+        "cl": 1,
+        "basic": 1,
+        "slots": 2,
+        "hp": 14
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 2,
+      "type": "Shikigami de criação",
+      "fixed": 4,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 4,
+        "cl": 1,
+        "basic": 1,
+        "slots": 2,
+        "hp": 14
+      },
+      "actual": {
+        "level": 4,
+        "cl": 1,
+        "basic": 1,
+        "slots": 2,
+        "hp": 14
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 3,
+      "type": "Shikigami de criação",
+      "fixed": 5,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 5,
+        "cl": 2,
+        "basic": 2,
+        "slots": 2,
+        "hp": 17
+      },
+      "actual": {
+        "level": 8,
+        "cl": 2,
+        "basic": 2,
+        "slots": 3,
+        "hp": 26
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 4,
+      "type": "Shikigami de criação",
+      "fixed": 8,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 8,
+        "cl": 2,
+        "basic": 2,
+        "slots": 3,
+        "hp": 26
+      },
+      "actual": {
+        "level": 8,
+        "cl": 2,
+        "basic": 2,
+        "slots": 3,
+        "hp": 26
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 5,
+      "type": "Shikigami de criação",
+      "fixed": 9,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 9,
+        "cl": 3,
+        "basic": 2,
+        "slots": 3,
+        "hp": 29
+      },
+      "actual": {
+        "level": 12,
+        "cl": 3,
+        "basic": 2,
+        "slots": 4,
+        "hp": 38
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 6,
+      "type": "Shikigami de criação",
+      "fixed": 12,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 12,
+        "cl": 3,
+        "basic": 2,
+        "slots": 4,
+        "hp": 38
+      },
+      "actual": {
+        "level": 12,
+        "cl": 3,
+        "basic": 2,
+        "slots": 4,
+        "hp": 38
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 7,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 13,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 13,
+        "cl": 4,
+        "basic": 2,
+        "slots": 4,
+        "hp": 53
+      },
+      "actual": {
+        "level": 16,
+        "cl": 4,
+        "basic": 2,
+        "slots": 5,
+        "hp": 65
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 8,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 16,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 16,
+        "cl": 4,
+        "basic": 2,
+        "slots": 5,
+        "hp": 65
+      },
+      "actual": {
+        "level": 16,
+        "cl": 4,
+        "basic": 2,
+        "slots": 5,
+        "hp": 65
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 9,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 17,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 17,
+        "cl": 5,
+        "basic": 3,
+        "slots": 5,
+        "hp": 69
+      },
+      "actual": {
+        "level": 20,
+        "cl": 5,
+        "basic": 3,
+        "slots": 6,
+        "hp": 81
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 10,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 20,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 20,
+        "cl": 5,
+        "basic": 3,
+        "slots": 6,
+        "hp": 81
+      },
+      "actual": {
+        "level": 20,
+        "cl": 5,
+        "basic": 3,
+        "slots": 6,
+        "hp": 81
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 11,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 21,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 21,
+        "cl": 6,
+        "basic": 3,
+        "slots": 6,
+        "hp": 85
+      },
+      "actual": {
+        "level": 25,
+        "cl": 6,
+        "basic": 3,
+        "slots": 7,
+        "hp": 101
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "entity": 12,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 26,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 26,
+        "cl": 7,
+        "basic": 3,
+        "slots": 7,
+        "hp": 105
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 121
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 1,
+      "type": "Shikigami de técnica",
+      "fixed": 1,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 2,
+      "type": "Shikigami de técnica",
+      "fixed": 4,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 3,
+      "type": "Shikigami de técnica",
+      "fixed": 5,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 4,
+      "type": "Shikigami de técnica",
+      "fixed": 8,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 5,
+      "type": "Shikigami de técnica",
+      "fixed": 9,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 6,
+      "type": "Shikigami de técnica",
+      "fixed": 12,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 7,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 13,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 8,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 16,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 9,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 17,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 10,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 20,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 11,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 21,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "entity": 12,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 26,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 1,
+      "type": "Shikigami de técnica",
+      "fixed": 1,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 2,
+      "type": "Shikigami de técnica",
+      "fixed": 4,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 3,
+      "type": "Shikigami de técnica",
+      "fixed": 5,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 4,
+      "type": "Shikigami de técnica",
+      "fixed": 8,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 5,
+      "type": "Shikigami de técnica",
+      "fixed": 9,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 6,
+      "type": "Shikigami de técnica",
+      "fixed": 12,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 7,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 13,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 8,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 16,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 9,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 17,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 10,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 20,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 11,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 21,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "entity": 12,
+      "type": "Corpo amaldiçoado de técnica",
+      "fixed": 26,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 92
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 1,
+      "type": "Maldição domada",
+      "fixed": 1,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 1,
+        "cl": 1,
+        "basic": 1,
+        "slots": 1,
+        "hp": 5
+      },
+      "actual": {
+        "level": 1,
+        "cl": 1,
+        "basic": 1,
+        "slots": 1,
+        "hp": 5
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 2,
+      "type": "Maldição domada",
+      "fixed": 4,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 4,
+        "cl": 1,
+        "basic": 1,
+        "slots": 2,
+        "hp": 14
+      },
+      "actual": {
+        "level": 4,
+        "cl": 1,
+        "basic": 1,
+        "slots": 2,
+        "hp": 14
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 3,
+      "type": "Maldição domada",
+      "fixed": 5,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 5,
+        "cl": 2,
+        "basic": 2,
+        "slots": 2,
+        "hp": 17
+      },
+      "actual": {
+        "level": 5,
+        "cl": 2,
+        "basic": 2,
+        "slots": 2,
+        "hp": 17
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 4,
+      "type": "Maldição domada",
+      "fixed": 8,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 8,
+        "cl": 2,
+        "basic": 2,
+        "slots": 3,
+        "hp": 26
+      },
+      "actual": {
+        "level": 8,
+        "cl": 2,
+        "basic": 2,
+        "slots": 3,
+        "hp": 26
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 5,
+      "type": "Maldição domada",
+      "fixed": 9,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 9,
+        "cl": 3,
+        "basic": 2,
+        "slots": 3,
+        "hp": 29
+      },
+      "actual": {
+        "level": 9,
+        "cl": 3,
+        "basic": 2,
+        "slots": 3,
+        "hp": 29
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 6,
+      "type": "Maldição domada",
+      "fixed": 12,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 12,
+        "cl": 3,
+        "basic": 2,
+        "slots": 4,
+        "hp": 38
+      },
+      "actual": {
+        "level": 12,
+        "cl": 3,
+        "basic": 2,
+        "slots": 4,
+        "hp": 38
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 7,
+      "type": "Maldição domada",
+      "fixed": 13,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 13,
+        "cl": 4,
+        "basic": 2,
+        "slots": 4,
+        "hp": 41
+      },
+      "actual": {
+        "level": 13,
+        "cl": 4,
+        "basic": 2,
+        "slots": 4,
+        "hp": 41
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 8,
+      "type": "Maldição domada",
+      "fixed": 16,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 16,
+        "cl": 4,
+        "basic": 2,
+        "slots": 5,
+        "hp": 50
+      },
+      "actual": {
+        "level": 16,
+        "cl": 4,
+        "basic": 2,
+        "slots": 5,
+        "hp": 50
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 9,
+      "type": "Maldição domada",
+      "fixed": 17,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 17,
+        "cl": 5,
+        "basic": 3,
+        "slots": 5,
+        "hp": 53
+      },
+      "actual": {
+        "level": 17,
+        "cl": 5,
+        "basic": 3,
+        "slots": 5,
+        "hp": 53
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 10,
+      "type": "Maldição domada",
+      "fixed": 20,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 20,
+        "cl": 5,
+        "basic": 3,
+        "slots": 6,
+        "hp": 62
+      },
+      "actual": {
+        "level": 20,
+        "cl": 5,
+        "basic": 3,
+        "slots": 6,
+        "hp": 62
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 11,
+      "type": "Maldição domada",
+      "fixed": 21,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 21,
+        "cl": 6,
+        "basic": 3,
+        "slots": 6,
+        "hp": 65
+      },
+      "actual": {
+        "level": 21,
+        "cl": 6,
+        "basic": 3,
+        "slots": 6,
+        "hp": 65
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "entity": 12,
+      "type": "Maldição domada",
+      "fixed": 26,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 26,
+        "cl": 7,
+        "basic": 3,
+        "slots": 7,
+        "hp": 80
+      },
+      "actual": {
+        "level": 26,
+        "cl": 7,
+        "basic": 3,
+        "slots": 7,
+        "hp": 80
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 1,
+      "type": "Shikigami de criação",
+      "fixed": 1,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 1,
+        "cl": 1,
+        "basic": 1,
+        "slots": 1,
+        "hp": 5
+      },
+      "actual": {
+        "level": 4,
+        "cl": 1,
+        "basic": 1,
+        "slots": 2,
+        "hp": 14
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 2,
+      "type": "Shikigami de criação",
+      "fixed": 4,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 4,
+        "cl": 1,
+        "basic": 1,
+        "slots": 2,
+        "hp": 14
+      },
+      "actual": {
+        "level": 4,
+        "cl": 1,
+        "basic": 1,
+        "slots": 2,
+        "hp": 14
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 3,
+      "type": "Shikigami de criação",
+      "fixed": 5,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 5,
+        "cl": 2,
+        "basic": 2,
+        "slots": 2,
+        "hp": 17
+      },
+      "actual": {
+        "level": 8,
+        "cl": 2,
+        "basic": 2,
+        "slots": 3,
+        "hp": 26
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 4,
+      "type": "Shikigami de criação",
+      "fixed": 8,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 8,
+        "cl": 2,
+        "basic": 2,
+        "slots": 3,
+        "hp": 26
+      },
+      "actual": {
+        "level": 8,
+        "cl": 2,
+        "basic": 2,
+        "slots": 3,
+        "hp": 26
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 5,
+      "type": "Shikigami de criação",
+      "fixed": 9,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 9,
+        "cl": 3,
+        "basic": 2,
+        "slots": 3,
+        "hp": 29
+      },
+      "actual": {
+        "level": 12,
+        "cl": 3,
+        "basic": 2,
+        "slots": 4,
+        "hp": 38
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 6,
+      "type": "Shikigami de criação",
+      "fixed": 12,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 12,
+        "cl": 3,
+        "basic": 2,
+        "slots": 4,
+        "hp": 38
+      },
+      "actual": {
+        "level": 12,
+        "cl": 3,
+        "basic": 2,
+        "slots": 4,
+        "hp": 38
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 7,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 13,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 13,
+        "cl": 4,
+        "basic": 2,
+        "slots": 4,
+        "hp": 53
+      },
+      "actual": {
+        "level": 16,
+        "cl": 4,
+        "basic": 2,
+        "slots": 5,
+        "hp": 65
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 8,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 16,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 16,
+        "cl": 4,
+        "basic": 2,
+        "slots": 5,
+        "hp": 65
+      },
+      "actual": {
+        "level": 16,
+        "cl": 4,
+        "basic": 2,
+        "slots": 5,
+        "hp": 65
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 9,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 17,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 17,
+        "cl": 5,
+        "basic": 3,
+        "slots": 5,
+        "hp": 69
+      },
+      "actual": {
+        "level": 20,
+        "cl": 5,
+        "basic": 3,
+        "slots": 6,
+        "hp": 81
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 10,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 20,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 20,
+        "cl": 5,
+        "basic": 3,
+        "slots": 6,
+        "hp": 81
+      },
+      "actual": {
+        "level": 20,
+        "cl": 5,
+        "basic": 3,
+        "slots": 6,
+        "hp": 81
+      },
+      "differences": [],
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 11,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 21,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 21,
+        "cl": 6,
+        "basic": 3,
+        "slots": 6,
+        "hp": 85
+      },
+      "actual": {
+        "level": 25,
+        "cl": 6,
+        "basic": 3,
+        "slots": 7,
+        "hp": 101
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "entity": 12,
+      "type": "Corpo amaldiçoado de criação",
+      "fixed": 26,
+      "invoker": 30,
+      "constitution": 0,
+      "hpAdjustment": 0,
+      "expected": {
+        "level": 26,
+        "cl": 7,
+        "basic": 3,
+        "slots": 7,
+        "hp": 105
+      },
+      "actual": {
+        "level": 30,
+        "cl": 7,
+        "basic": 3,
+        "slots": 8,
+        "hp": 121
+      },
+      "differences": [
+        "level",
+        "slots",
+        "hp"
+      ],
+      "conformant": false
+    }
+  ],
+  "nameCases": [
+    {
+      "copy": 0,
+      "entity": 1,
+      "case": "texto",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "entity": 2,
+      "case": "numero",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "entity": 3,
+      "case": "zero",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "entity": 4,
+      "case": "false",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "entity": 5,
+      "case": "true",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "entity": 6,
+      "case": "numero_texto",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "entity": 7,
+      "case": "formula_numero",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "entity": 8,
+      "case": "formula_vazia",
+      "expectedPresence": 0,
+      "actualPresence": 0,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "entity": 9,
+      "case": "vazio",
+      "expectedPresence": 0,
+      "actualPresence": 0,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "entity": 10,
+      "case": "equacao_literal",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "entity": 11,
+      "case": "formula_textual",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 0,
+      "entity": 12,
+      "case": "espaco",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 1,
+      "case": "texto",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 2,
+      "case": "numero",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 3,
+      "case": "zero",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 4,
+      "case": "false",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 5,
+      "case": "true",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 6,
+      "case": "numero_texto",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 7,
+      "case": "formula_numero",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 8,
+      "case": "formula_vazia",
+      "expectedPresence": 0,
+      "actualPresence": 0,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 9,
+      "case": "vazio",
+      "expectedPresence": 0,
+      "actualPresence": 0,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 10,
+      "case": "equacao_literal",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 11,
+      "case": "formula_textual",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    },
+    {
+      "copy": 1,
+      "entity": 12,
+      "case": "espaco",
+      "expectedPresence": 1,
+      "actualPresence": 1,
+      "typePreserved": true,
+      "ok": true
+    }
+  ],
+  "debitChecks": [
+    {
+      "copy": 0,
+      "mode": "Espaço conhecido",
+      "expected": 12,
+      "JM2": {
+        "numberValue": 12
+      },
+      "HM19": {
+        "numberValue": 12
+      },
+      "R55": {
+        "stringValue": "12"
+      },
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Lista de ritual",
+      "expected": 0,
+      "JM2": {
+        "numberValue": 0
+      },
+      "HM19": {
+        "numberValue": 0
+      },
+      "R55": {
+        "stringValue": "0"
+      },
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Maldição domada",
+      "expected": 0,
+      "JM2": {
+        "numberValue": 0
+      },
+      "HM19": {
+        "numberValue": 0
+      },
+      "R55": {
+        "stringValue": "0"
+      },
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "Criação",
+      "expected": 0,
+      "JM2": {
+        "numberValue": 0
+      },
+      "HM19": {
+        "numberValue": 0
+      },
+      "R55": {
+        "stringValue": "0"
+      },
+      "conformant": true
+    },
+    {
+      "copy": 0,
+      "mode": "nomes heterogêneos em Espaço conhecido",
+      "expected": 10,
+      "JM2": {
+        "numberValue": 10
+      },
+      "HM19": {
+        "numberValue": 10
+      },
+      "R55": {
+        "stringValue": "10"
+      },
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Espaço conhecido",
+      "expected": 12,
+      "JM2": {
+        "numberValue": 12
+      },
+      "HM19": {
+        "numberValue": 12
+      },
+      "R55": {
+        "stringValue": "12"
+      },
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Lista de ritual",
+      "expected": 0,
+      "JM2": {
+        "numberValue": 0
+      },
+      "HM19": {
+        "numberValue": 0
+      },
+      "R55": {
+        "stringValue": "0"
+      },
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Maldição domada",
+      "expected": 0,
+      "JM2": {
+        "numberValue": 0
+      },
+      "HM19": {
+        "numberValue": 0
+      },
+      "R55": {
+        "stringValue": "0"
+      },
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "Criação",
+      "expected": 0,
+      "JM2": {
+        "numberValue": 0
+      },
+      "HM19": {
+        "numberValue": 0
+      },
+      "R55": {
+        "stringValue": "0"
+      },
+      "conformant": true
+    },
+    {
+      "copy": 1,
+      "mode": "nomes heterogêneos em Espaço conhecido",
+      "expected": 10,
+      "JM2": {
+        "numberValue": 10
+      },
+      "HM19": {
+        "numberValue": 10
+      },
+      "R55": {
+        "stringValue": "10"
+      },
+      "conformant": true
+    }
+  ],
+  "preservation": [
+    {
+      "copy": 0,
+      "inputRestored": 49,
+      "positionsCompared": 86067,
+      "montagensPositions": 85887,
+      "montagensExplicit": 36972,
+      "unexpectedDifferences": 0,
+      "metadataEqual": true
+    },
+    {
+      "copy": 1,
+      "inputRestored": 49,
+      "positionsCompared": 86067,
+      "montagensPositions": 85887,
+      "montagensExplicit": 36972,
+      "unexpectedDifferences": 0,
+      "metadataEqual": true
+    }
+  ],
+  "visualChecks": [
+    {
+      "copy": 0,
+      "restored": true
+    },
+    {
+      "copy": 1,
+      "restored": true
+    }
+  ],
+  "evidenceHashes": {
+    "livro-r66-invocacoes.md": "4df82e672d063b4d4bfe3394d93bb75052ec3e07d44d90b83c0ea32f10439f82",
+    "fabricacao-r66.md": "cd7eb01826e2d5f5ca7205eb6dbbf510cce5e67483207e5bf58aa5b350cb4dfa",
+    "results.json": "d5f1934b2cd8361ffe824fc5a2120f2c946687bed962b0b7a716df95d4361d70",
+    "name-results.json": "716b5385517962d18e9ea3699291f044e3dd8e746ec360c6ab40d9b78dbddd69",
+    "preservation.json": "d8a1d2f1d0b42a3e95b29c871b201ba94e0b0f00c60ea0f088137487bd4bf731",
+    "era-restaurada.png": "84b861fc8b852a5d619afec5bff5d3f1062521411a3cd3ad34fe9c14e4d0c1bc",
+    "ciclo-restaurada.png": "75c933f001faae43a6ee24336c37fc574a6eadc62118cb6635f60e74fcad3813"
+  },
+  "limits": [
+    "Só invocador 30 e níveis obtidos explícitos nesta matriz",
+    "Não certifica montagens completas nem entidades ativas",
+    "API não dispara onEdit; nenhum ensaio de evento nesta rodada",
+    "Comparação de células delimitada a 86.067 posições por cópia e aos campos lidos",
+    "Sem edição de fórmulas/scripts ou instalação",
+    "Sem acesso às oficiais ou fichas de jogador, sem merge"
+  ],
+  "preservedPullRequests": {
+    "31": "765e3b24fb49a1ca8c6fd4cfaf16aa6fa6bad943",
+    "88": "ab05bcf9cc5f831dfe460544f935546e40296ea8"
+  }
+}

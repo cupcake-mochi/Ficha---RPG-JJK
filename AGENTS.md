@@ -1,3 +1,97 @@
+# Criação com nível fixo concluída nas QAs · 08/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CRIACAO-NIVEL-FIXO-2026-11-08.md`
+e `criacao_nivel_fixo_validacao_2026-11-08.json`. AQ01 corrigido: Criação
+conserva o nível fabricado registrado, até o invocador. Vazio conserva a
+prévia histórica; preencher para fixar. Delta: BQ5, FO2:FO13 e três notas
+I46/K46/O12 (o modelo real não tinha 36 notas). Catálogo/extração com
+referência focal R66 explícita; manual histórico não reescrito.
+
+Incremento salvo e relido nas duas descartáveis. Base fresca 36ca73ef…;
+código final ffd349c9299342d735917697355d3f278f526ff74b9e009706ce61a8b0784352.
+312 casos e 26 controles de débito passaram. Dez edições reais finais
+passaram e constam Concluído. FM2:FQ3 exigiu 24 moldes vizinhos adicionais:
+suporte final 49, inalterado na instalação. Não retirar esses moldes,
+os IF da PR88 ou o escape da ANALISE. Matriz anterior ao ajuste só de suporte.
+
+49 entradas/cópia restauradas; 86.082 posições/cópia comparadas, 85.887
+de MONTAGENS inteira. Somente 16 deltas previstos, zero extras, metadados
+iguais e visuais restaurados. Auxiliares ocultas. Geração 72fa80b901f2249c;
+280.056 posições/26 abas, só 13 valores e três notas. Smoke final 123 checks
+aprovado. Pacote integral regenerado, NÃO instalado. Windows: PYTHONUTF8=1
+para subprocessos. Regressão/arnes Calc atualizados, mas Calc não executado.
+
+Ramo `codex/criacao-nivel-fixo-20261108`; privativos só em
+`nuvem-b47/saidas/criacao-nivel-fixo/retomada-08/`, ignorado. Entrega para
+revisão, sem merge, oficiais, jogador, main ou PR31. PR88 em ab05bcf,
+PR31 em 765e3b2. Sol/Medium para revisão; Sol/High para nova implementação
+ou ensaio, sem mudar configurações nem delegar a subagentes.
+As entradas abaixo são o histórico anterior à retomada concluída.
+
+# Pausa para manutenção do disco E · 08/11/2026
+
+Usuário pediu parar e salvar. Não retomar sem nova instrução. Leia
+`r53/diagnostico-android/PROMPT-RETOMADA-CRIACAO-2026-11-08.md`.
+WIP em `codex/wip-criacao-nivel-fixo-20261108`, sobre fe52bb1.
+Correção AQ01 parcialmente escrita; não pronta, não instalada e sem PR.
+Faltam três JSONs de plano/notas/suporte, integração do bootstrap e testes.
+
+Geração com `-X utf8` terminou em saída 0, mas não foi validada. Gerados
+guardados em `nuvem-b47/saidas/criacao-nivel-fixo/gerados-wip/`, ignorado;
+artefatos versionados repostos à base. Fontes parciais conservadas no WIP.
+Não ficou processo de geração ativo. Dois códigos frescos das QAs tinham
+SHA 36ca73ef…; refazer leituras e snapshots completos antes de aplicar.
+Snapshots da sessão só em memória NÃO servem de backup para instalação.
+
+Nenhuma escrita Google nesta sessão: sem entradas de teste ou restauração
+pendente. Oficiais, jogador, PR88, PR31 e main intactos; sem merge.
+Não pressupor caminhos antigos no disco E ao retomar. Sol/High para
+correção/ensaio; sem mudar configurações ou delegar a subagentes.
+
+# Aquisição de invocações auditada · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-AQUISICAO-INVOCACOES-2026-11-07.md`
+e `aquisicao_invocacoes_resultados_2026-11-07.json`. AQ01 [P2] confirmado:
+Criação ainda acompanha o invocador até o fim da Classe (R44), mas R66
+conserva o nível de fabricação. Ex.: criada no 1 chega ao 4, 14 PV e dois
+espaços em vez de 5 PV e um espaço. Não é regressão da PR88.
+
+120 casos nas duas descartáveis: 106 conformes, 14 divergentes da mesma
+causa. Débito de espaços conhecidos, inclusive nomes numéricos/booleanos,
+passou. Diagnóstico somente; nenhuma correção de código/fórmula instalada.
+49 entradas/cópia restauradas; 86.067 posições/cópia comparadas, 85.887
+da MONTAGENS inteira. Zero diferenças inesperadas, metadados iguais,
+visuais conferidos e auxiliares ocultas. Sem ensaio novo de onEdit.
+
+Ramo separado `codex/auditoria-aquisicao-invocacoes-20261107`. Próximo passo:
+reconciliar catálogo/extração, progressão, notas e moldes de recuperação;
+snapshots frescos e delta incremental nas duas QAs, sem pacote integral.
+Cobrir níveis abaixo/igual/acima, obtido vazio e novo projeto. Sol/High
+para corrigir/ensaiar; Sol/Medium para revisar este diagnóstico. Não mudar
+configurações nem delegar a subagentes. Privados só em
+`nuvem-b47/saidas/aquisicao-invocacoes/`, ignorado. Sem oficiais, jogador,
+merge, main ou PR31. PR88 preservada em ab05bcf; PR31 em 765e3b2.
+
+# Revisão final da PR88 · 07/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-ISOLAMENTO-PR88-2026-11-07.md` e
+`revisao_isolamento_pr88_2026-11-07.json`. Head ab05bcf revisado contra
+PR87 0554071: sem novos achados acionáveis no escopo; R88-01 resolvido.
+PR aberta, sem conflitos, dois smoke SUCCESS no head revisado.
+
+Repetidos testes focais com os insumos Android privados e duas bases,
+comparação de 280.056 posições/26 abas (só 24 fórmulas), editor LF/CRLF
+e três testes Python. Auditoria das evidências guardadas confirmou código,
+preservação, dez recuperações completas e dez onEdit Concluído.
+Matrizes/eventos nativos e smoke integral NÃO repetidos nesta revisão.
+Nenhuma escrita Google ou mudança no código da PR88 nesta etapa.
+
+Parecer separado em `codex/revisao-isolamento-pr88-20261107`. Sem merge,
+oficiais, jogador, PR31 ou main. Privados só em
+`nuvem-b47/saidas/revisao-isolamento-pr88/`, ignorado. Próximo pente-fino:
+Sol/High em fronteira delimitada; Sol/Medium para conferir o parecer.
+Não mudar configurações. Aplicar em oficiais exige instrução específica.
+
 # Isolamento dos nomes da PR88 concluído · 07/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-ISOLAMENTO-NOMES-PR88-2026-11-07.md`
