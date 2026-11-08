@@ -156,4 +156,3 @@ Evidência sanitizada em `nivel_obtido_validacao_2026-11-08.json`.
 Privados apenas em `nuvem-b47/saidas/validacao-nivel-obtido-20261108/`,
 ignorado: backups, matriz, pedidos, releituras, recuperações e capturas.
 Nenhum snapshot, dado pessoal ou credencial incluído no Git.
-

@@ -20,4 +20,3 @@ function comparar(pasta){
 }
 if(require.main===module)console.log(JSON.stringify(comparar(process.argv[2])));
 module.exports={comparar};
-

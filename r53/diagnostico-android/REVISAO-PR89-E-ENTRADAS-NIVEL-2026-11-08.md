@@ -127,4 +127,3 @@ recuperação da PR89 e o escape da ANALISE. Nenhuma promoção autorizada aqui.
 
 Recomendação: Sol/High para implementar/ensaiar AQ02; Sol/Medium para revisar
 este parecer. Não alterar configurações nem abrir agentes.
-

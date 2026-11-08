@@ -43,4 +43,3 @@ function prepararValidacoes(cells){
 }
 module.exports={base,plano,notas,validacoes,suporte,conferirSuporte,prepararCodigo,prepararCelulas,prepararNotas,prepararValidacoes};
 if(require.main===module){const [input,output]=process.argv.slice(2);if(!input||!output)throw Error('Informe código atual e proposta privados');const src=fs.readFileSync(input,'utf8'),out=prepararCodigo(src);new Function(out);fs.writeFileSync(output,out);console.log(JSON.stringify({antes:sha(src),depois:sha(out),alvos:plano().length,notas:notas().length,validacoes:validacoes().length,aplicado:false}));}
-

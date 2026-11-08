@@ -43,4 +43,3 @@ if(process.argv[2]){
  }
 }
 console.log(JSON.stringify({resultado:'OK',valores:36,notas:2,validacoes:12,suporte:60,locales:2,escopo:'snapshots, reversão, recuperação e atomicidade; transporte opcional'}));
-

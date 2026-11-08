@@ -31,4 +31,3 @@ function gerar(pasta){
 }
 if(require.main===module){const d=gerar(process.argv[2]);for(const [k,v]of Object.entries(d))fs.writeFileSync(path.join(__dirname,'nivel_obtido_'+k+'.json'),JSON.stringify(v,null,2)+'\n');console.log(Object.fromEntries(Object.entries(d).map(([k,v])=>[k,v.length])));}
 module.exports={gerar};
-

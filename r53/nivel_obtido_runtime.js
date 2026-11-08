@@ -28,4 +28,3 @@ function r53AjustarNivel_(abas){
 }
 module.exports={gerar};
 if(require.main===module)fs.writeFileSync(path.join(__dirname,'../apps-script/NivelObtido.gs'),gerar());
-
