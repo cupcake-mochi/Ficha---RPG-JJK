@@ -1,0 +1,6088 @@
+{
+  "data": "2026-11-07",
+  "pr_revisada": 87,
+  "head": "0554071051697790d9c807f2478f6c5816018aa1",
+  "checks": {
+    "smoke_push": "SUCCESS",
+    "smoke_pr": "SUCCESS"
+  },
+  "referencia": {
+    "livro": "R66",
+    "commit": "e3058ad29180fdec2efec75b512446c49bf87b3d"
+  },
+  "configuracao": {
+    "nivel_invocador": 30,
+    "nivel_proprio": 14,
+    "tipo": "Maldição domada",
+    "aquisicao": "Maldição domada",
+    "degrau": "Completa",
+    "custo_dominio": 3,
+    "capacidade": 4,
+    "casos_por_copia": 120
+  },
+  "casos": [
+    {
+      "id": "texto",
+      "values": [
+        {
+          "stringValue": "QA normal A"
+        },
+        {
+          "stringValue": "QA normal B"
+        }
+      ],
+      "expected": 2
+    },
+    {
+      "id": "numeros",
+      "values": [
+        {
+          "numberValue": 7
+        },
+        {
+          "numberValue": 8
+        }
+      ],
+      "expected": 2
+    },
+    {
+      "id": "zero",
+      "values": [
+        {
+          "numberValue": 0
+        },
+        {
+          "numberValue": 1
+        }
+      ],
+      "expected": 2
+    },
+    {
+      "id": "booleanos",
+      "values": [
+        {
+          "boolValue": false
+        },
+        {
+          "boolValue": true
+        }
+      ],
+      "expected": 2
+    },
+    {
+      "id": "numeros_em_texto",
+      "values": [
+        {
+          "stringValue": "0"
+        },
+        {
+          "stringValue": "1"
+        }
+      ],
+      "expected": 2
+    },
+    {
+      "id": "formulas_numericas",
+      "values": [
+        {
+          "formulaValue": "=7"
+        },
+        {
+          "formulaValue": "=8"
+        }
+      ],
+      "expected": 2
+    },
+    {
+      "id": "misto_texto_numero",
+      "values": [
+        {
+          "stringValue": "QA normal A"
+        },
+        {
+          "numberValue": 8
+        }
+      ],
+      "expected": 2
+    },
+    {
+      "id": "vazios",
+      "values": [
+        {
+          "formulaValue": "=\"\""
+        },
+        null
+      ],
+      "expected": 0
+    },
+    {
+      "id": "formulas_textuais",
+      "values": [
+        {
+          "formulaValue": "=\"7\""
+        },
+        {
+          "formulaValue": "=\"8\""
+        }
+      ],
+      "expected": 2
+    },
+    {
+      "id": "equacao_literal",
+      "values": [
+        {
+          "stringValue": "=7"
+        },
+        {
+          "stringValue": "=8"
+        }
+      ],
+      "expected": 2
+    }
+  ],
+  "copias": [
+    {
+      "copia": "Era",
+      "casos": [
+        {
+          "case": "texto",
+          "entity": 1,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 2,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 3,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 4,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 5,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 6,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 7,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 8,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 9,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 10,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 11,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 12,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 1,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 2,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 3,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 4,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 5,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 6,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 7,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 8,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 9,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 10,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 11,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 12,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 1,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 2,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 3,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 4,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 5,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 6,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 7,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 8,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 9,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 10,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 11,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 12,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 1,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 2,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 3,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 4,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 5,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 6,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 7,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 8,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 9,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 10,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 11,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 12,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 1,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 2,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 3,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 4,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 5,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 6,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 7,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 8,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 9,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 10,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 11,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 12,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 1,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 2,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 3,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 4,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 5,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 6,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 7,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 8,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 9,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 10,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 11,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 12,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 1,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 2,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 3,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 4,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 5,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 6,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 7,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 8,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 9,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 10,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 11,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 12,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 1,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 2,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 3,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 4,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 5,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 6,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 7,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 8,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 9,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 10,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 11,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 12,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 1,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 2,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 3,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 4,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 5,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 6,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 7,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 8,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 9,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 10,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 11,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 12,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 1,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 2,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 3,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 4,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 5,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 6,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 7,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 8,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 9,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 10,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 11,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 12,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        }
+      ],
+      "divergencias_de_contagem": 60,
+      "controles_corretos": 60,
+      "entradas_restauradas": 158,
+      "preservacao": {
+        "i": 0,
+        "positions": 17786,
+        "montagens": 16320,
+        "differences": [],
+        "errors": [],
+        "positions_requested": 33458,
+        "montagens_requested": 31968,
+        "missing_trailing_cells_treated_as_empty": true
+      }
+    },
+    {
+      "copia": "Ciclo",
+      "casos": [
+        {
+          "case": "texto",
+          "entity": 1,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 2,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 3,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 4,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 5,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 6,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 7,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 8,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 9,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 10,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 11,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "texto",
+          "entity": 12,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "stringValue": "QA normal B"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 1,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 2,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 3,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 4,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 5,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 6,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 7,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 8,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 9,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 10,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 11,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros",
+          "entity": 12,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 1,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 2,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 3,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 4,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 5,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 6,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 7,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 8,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 9,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 10,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 11,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "zero",
+          "entity": 12,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "numberValue": 0
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "numberValue": 1
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 1,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 2,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 3,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 4,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 5,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 6,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 7,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 8,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 9,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 10,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 11,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "booleanos",
+          "entity": 12,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "boolValue": false
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "boolValue": true
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 1,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 2,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 3,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 4,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 5,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 6,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 7,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 8,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 9,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 10,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 11,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "numeros_em_texto",
+          "entity": 12,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "stringValue": "0"
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "stringValue": "1"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 1,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 2,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 3,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 4,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 5,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 6,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 7,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 8,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 9,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 10,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 11,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_numericas",
+          "entity": 12,
+          "expected": 2,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "numberValue": 7
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 1,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 2,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 3,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 4,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 5,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 6,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 7,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 8,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 9,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 10,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 11,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "misto_texto_numero",
+          "entity": 12,
+          "expected": 2,
+          "count": 1,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 1+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "stringValue": "QA normal A"
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "numberValue": 8
+              }
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 1,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 2,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 3,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 4,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 5,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 6,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 7,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 8,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 9,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 10,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 11,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "vazios",
+          "entity": 12,
+          "expected": 0,
+          "count": 0,
+          "domain": 3,
+          "capacity": 4,
+          "header": "HABILIDADES · especiais + domínio 0+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "Requisitos numéricos atendidos · conferir técnica própria e etapas",
+          "spaceWarning": false,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": null
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": null
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 1,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 2,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 3,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 4,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 5,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 6,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 7,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 8,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 9,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 10,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 11,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "formulas_textuais",
+          "entity": 12,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "stringValue": "7"
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "stringValue": "8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 1,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.1.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.1.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 2,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.2.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.2.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 3,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.3.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.3.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 4,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.4.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.4.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 5,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.5.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.5.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 6,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.6.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.6.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 7,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.7.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.7.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 8,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.8.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.8.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 9,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.9.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.9.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 10,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.10.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.10.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 11,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.11.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.11.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        },
+        {
+          "case": "equacao_literal",
+          "entity": 12,
+          "expected": 2,
+          "count": 2,
+          "domain": 3,
+          "capacity": 4,
+          "header": "REVISAR · HABILIDADES · especiais + domínio 2+3 de 4 · Classe 4 · básica 2d6 · 4 talentos",
+          "warning": "REVISAR · espaços excedidos: 5/4",
+          "spaceWarning": true,
+          "names": [
+            {
+              "id": "entidade.12.esp.1",
+              "value": {
+                "stringValue": "=7"
+              }
+            },
+            {
+              "id": "entidade.12.esp.2",
+              "value": {
+                "stringValue": "=8"
+              }
+            }
+          ]
+        }
+      ],
+      "divergencias_de_contagem": 60,
+      "controles_corretos": 60,
+      "entradas_restauradas": 158,
+      "preservacao": {
+        "i": 1,
+        "positions": 17786,
+        "montagens": 16320,
+        "differences": [],
+        "errors": [],
+        "positions_requested": 33458,
+        "montagens_requested": 31968,
+        "missing_trailing_cells_treated_as_empty": true
+      }
+    }
+  ],
+  "total_casos": 240,
+  "total_reproducoes": 120,
+  "defeitos_confirmados": 1
+}

@@ -72,6 +72,78 @@
     "depois": "=\"Acerto \"&MAX(0,INDEX($P$2:$P$8,$FP13)-INDEX($I$2:$N$8,$FP13,2+3*IF(AND(IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\")<>\"\",COUNTIF($RB$13:$RJ$13,IFERROR(VLOOKUP(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(\"Inescapável\",\"~\",\"~~\"),\"*\",\"~*\"),\"?\",\"~?\"),'DADOS_MELHORIAS'!$AG$2:$AL$118,2,FALSE),\"\"))>0),1,0)))&\"d8\""
   },
   {
+    "aba": "DADOS_INVOC",
+    "r": 2,
+    "c": 240,
+    "depois": "=IF($GY2>$GX2,\"⚠ \",\"\")&\"TALENTOS · \"&$GY2&\" DE \"&$GX2"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 3,
+    "c": 240,
+    "depois": "=IF($GY3>$GX3,\"⚠ \",\"\")&\"TALENTOS · \"&$GY3&\" DE \"&$GX3"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 4,
+    "c": 240,
+    "depois": "=IF($GY4>$GX4,\"⚠ \",\"\")&\"TALENTOS · \"&$GY4&\" DE \"&$GX4"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 5,
+    "c": 240,
+    "depois": "=IF($GY5>$GX5,\"⚠ \",\"\")&\"TALENTOS · \"&$GY5&\" DE \"&$GX5"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 6,
+    "c": 240,
+    "depois": "=IF($GY6>$GX6,\"⚠ \",\"\")&\"TALENTOS · \"&$GY6&\" DE \"&$GX6"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 7,
+    "c": 240,
+    "depois": "=IF($GY7>$GX7,\"⚠ \",\"\")&\"TALENTOS · \"&$GY7&\" DE \"&$GX7"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 8,
+    "c": 240,
+    "depois": "=IF($GY8>$GX8,\"⚠ \",\"\")&\"TALENTOS · \"&$GY8&\" DE \"&$GX8"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 9,
+    "c": 240,
+    "depois": "=IF($GY9>$GX9,\"⚠ \",\"\")&\"TALENTOS · \"&$GY9&\" DE \"&$GX9"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 10,
+    "c": 240,
+    "depois": "=IF($GY10>$GX10,\"⚠ \",\"\")&\"TALENTOS · \"&$GY10&\" DE \"&$GX10"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 11,
+    "c": 240,
+    "depois": "=IF($GY11>$GX11,\"⚠ \",\"\")&\"TALENTOS · \"&$GY11&\" DE \"&$GX11"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 12,
+    "c": 240,
+    "depois": "=IF($GY12>$GX12,\"⚠ \",\"\")&\"TALENTOS · \"&$GY12&\" DE \"&$GX12"
+  },
+  {
+    "aba": "DADOS_INVOC",
+    "r": 13,
+    "c": 240,
+    "depois": "=IF($GY13>$GX13,\"⚠ \",\"\")&\"TALENTOS · \"&$GY13&\" DE \"&$GX13"
+  },
+  {
     "aba": "ANALISE",
     "r": 2948,
     "c": 1,

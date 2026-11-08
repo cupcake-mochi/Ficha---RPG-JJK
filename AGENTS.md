@@ -1,3 +1,133 @@
+# Isolamento dos nomes da PR88 concluído · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ISOLAMENTO-NOMES-PR88-2026-11-07.md`
+e `isolamento_nomes_validacao_2026-11-07.json` na mesma pasta. R88-01 corrigido:
+FILTER restringe categoria/entidade antes de LEN, conservando erros próprios,
+números/zero/FALSE e o vazio por fórmula. Só 24 fórmulas IE/JJ mudam.
+
+Aplicação incremental concluída nas descartáveis Era/Ciclo. Código fresco
+8935211c… conferido antes; proposta 36ca73efd1eca6809fd8ddfa1be324eebaad2f5aef0830d4c25c6aaeaaaff3bc
+salva, projetos reabertos e relidos integralmente iguais. Dez onEdit reais
+Concluído: quatro formatos de bloco e um controle com erro próprio por cópia.
+288 casos de contagem e 16 configurações globais de isolamento passaram.
+
+160 entradas por cópia restauradas. Comparação de 53.554 posições/cópia,
+53.334 MONTAGENS: apenas as 24 mudanças previstas, zero diferenças extras.
+Metadados iguais, visuais conferidos e auxiliares ocultas. Geração
+e4537f58af975d8c; 280.056 posições/26 abas, somente 24 fórmulas diferentes.
+Smoke final 122 checks aprovado. Pacote integral regenerado, NÃO instalado.
+Cabeçalho gzip da Expansão e CRLF do editor normalizados para Windows,
+com testes; hash/base estritos preservados. Privados somente na pasta
+ignorada `nuvem-b47/saidas/isolamento-windows/`.
+
+Atualizar/revisar na PR88, sem merge, oficiais, jogador, PR31 ou force push.
+PR31 preservada em 765e3b2. Sol/Medium para revisão, Sol/High para novo
+ensaio/implementação; não mudar configurações automaticamente.
+As entradas abaixo registram o histórico anterior à retomada concluída.
+
+# Pausa para Windows · isolamento PR88 · 07/11/2026
+
+Usuário pediu parar e salvar para continuar no Windows. Leia
+`r53/diagnostico-android/PROMPT-RETOMADA-ISOLAMENTO-PR88-2026-11-07.md`.
+Checkpoint WIP em `codex/wip-isolamento-pr88-20261107`, separado da PR88.
+Não está pronto para revisão: geração interrompida, GS ainda c59bcb593daf38af,
+propostas JSON já atualizadas. Snapshots privados antes-0/1 ficaram truncados:
+NÃO usar. Não há processo de geração deixado em execução. Refazer snapshots
+e geração/empacotamento em série antes de aplicar.
+
+Implementação WIP filtra categoria/entidade antes de LEN, preservando erros
+próprios. Nove casos do protótipo na Era passaram e foram restaurados.
+Python focal e testes JS de transporte/recuperação passaram; as duas rotas
+de preparação produziram proposta 36ca73efd1eca6809fd8ddfa1be324eebaad2f5aef0830d4c25c6aaeaaaff3bc.
+Não aplicada nas QAs, sem matriz final/edição real/smoke final. Código
+instalado esperado nas duas ainda 8935211c6e87cd4515b0df860bd0d71524f316d08e42013f86cc9fa6b1d53bea;
+exige releitura fresca. Verificar conexões no Windows, sem presumir acesso.
+
+PR88 remota continua em 4d22fb7; incorporar este WIP nela apenas após validar,
+preservando atualizações concorrentes. Sem merge, oficiais, jogador ou PR31.
+Privados em nuvem-b47/saidas/isolamento-pr88/, ignorado. Sol/High para retomar
+implementação/ensaios; Sol/Medium para revisão, sem mudar configurações.
+
+# Revisão PR88 com bloqueio · 07/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR88-ERROS-NOMES-2026-11-07.md` e
+`revisao_pr88_erros_nomes_2026-11-07.json`. PR88 `4d22fb7` segue aberta,
+sem conflitos e com dois checks SUCCESS, mas R88-01 [P2] impede considerá-la
+pronta: LEN avalia todo B2:B253 antes do filtro de identidade e propaga
+erro de nome de uma básica para os 12 cabeçalhos/12 requisitos normais.
+
+Reproduzido nas duas QAs com J71 =1/0 e =NA(). Texto, número e fórmula
+vazia são controles corretos. A/B com a fórmula anterior em IE2 confirmou
+a regressão da PR88; tudo foi reposto. Não voltar a COUNTIFS ?*, que perde
+números, nem esconder toda a conta com IFERROR(…,0). Isolar a avaliação,
+mantendo erro na origem e avisos mecânicos legítimos. Código não corrigido
+nesta rodada; não instalado pacote ou script. PR88/PR31 não alteradas.
+
+Testes focais de preparação/recuperação e modelo passaram novamente.
+Dez cenários globais (quatro com propagação, seis controles), 240 resultados
+observados; um defeito, não 240. Treze entradas/cópia restauradas; amostra
+de 1.038 posições, 999 MONTAGENS, zero diferenças ou erros remanescentes.
+Metadados idênticos, visual restaurado e auxiliares ocultas nas duas.
+Não houve ensaio de eventos; API de entrada não dispara onEdit.
+
+Ramo só de revisão `codex/revisao-pr88-contagens-20261107`. Dados privados
+em `nuvem-b47/saidas/revisao-pr88-contagens/`, ignorado. Sem merge, oficiais,
+jogador ou PR31. Próximo passo é corrigir R88-01 antes de ampliar o pente-fino.
+Sol/High para corrigir/ensaiar; Sol/Medium para revisar a evidência.
+
+# Contagem das especiais normais corrigida · 07/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CONTAGEM-ESPECIAIS-2026-11-07.md` e
+`contagem_especiais_validacao_2026-11-07.json`. Ramo separado
+`codex/contagem-especiais-20261107`, sobre auditoria `95820b8`/PR87 `0554071`.
+SUMPRODUCT por identidade normal e LEN do nome convertido em texto corrige
+números/zero/booleanos e exclui fórmula que retorna vazio. Tipos preservados.
+Só 24 fórmulas IE2:IE13/JJ2:JJ13; sem apagar ou regravar montagens salvas.
+
+288 casos nativos passaram nas 12 entidades das duas QAs. COUNTIFS com <>
+reprovou no vazio por fórmula e foi substituído. Apagamento misto IE:IF
+atingiu 30 s na tentativa intermediária: acrescentados 12 moldes IF
+inalterados à recuperação leve. Não retirar esses moldes nem o escape
+da ANALISE. Oito edições reais na versão final passaram; oito onEdit
+Concluído no histórico. Matriz não foi repetida após só adicionar suporte.
+
+Código final salvo e relido nas duas QAs, SHA-256
+`8935211c6e87cd4515b0df860bd0d71524f316d08e42013f86cc9fa6b1d53bea`.
+Geração final `c59bcb593daf38af`, cinco partes; pacote integral NÃO instalado.
+Comparação do modelo: 280.056 posições/26 abas, apenas 24 alterações.
+121 verificações locais passaram. Entradas temporárias restauradas:
+158/cópia; 33.494 posições, 31.968 MONTAGENS, só 24 deltas previstos,
+zero diferenças inesperadas e erros nas faixas. Auxiliares ocultas;
+cabeçalhos e estado restaurado conferidos visualmente.
+
+Preparador exige base PR87 exata e snapshot fresco. Sem merge, oficiais,
+jogador ou PR31. Dados privados só em `nuvem-b47/saidas/correcao-contagem/`.
+Sol/Medium para revisão; Sol/High para integração futura em base diferente.
+
+# Revisão PR87 e orçamento normal · 07/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-REPERTORIO-NORMAL-2026-11-07.md`.
+PR87 `0554071` revisada, aberta, sem conflitos e com dois checks SUCCESS.
+Repetidos os testes focais de preparação/recuperação e de equivalência do
+modelo (280.056 posições/26 abas). Sem bloqueio novo no escopo dos extras.
+O ramo da PR87 e seu código instalado foram preservados.
+
+Pente-fino confirmou N01: orçamento das especiais normais usa ?* nos nomes,
+ignorando números/booleanos e fórmulas numéricas. Duas especiais 7/8 mais
+Completa no nível próprio 14 mostram 0+3 de 4, sem avisar do gasto real 5/4.
+Um defeito, com 120 reproduções e 120 controles em 240 casos nas duas QAs,
+nas 12 entidades. Critério vem da PR86; extras da PR87 já usam <>.
+Nenhuma correção nova aplicada. Não substituir ?* globalmente.
+
+158 entradas/cópia restauradas, zero diferenças e erros nas faixas lidas:
+33.458 posições solicitadas, 31.968 de MONTAGENS (incluem vazios implícitos).
+Conferência visual nativa final passou. Não houve ensaio novo de onEdit.
+Evidência sanitizada em `repertorio_normal_resultados_2026-11-07.json`;
+dados privados em `nuvem-b47/saidas/auditoria-repertorio-normal/`, ignorado.
+Ramo separado `codex/auditoria-repertorio-normal-20261107`, sobre a PR87.
+Sem merge, oficiais, jogador ou PR31. Sol/Medium para revisar diagnóstico;
+Sol/High para corrigir N01 e ensaiar atualização/recuperação incremental.
+
 # Correção do repertório das Trilhas · 07/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-REPERTORIO-TRILHA-2026-11-07.md` e a

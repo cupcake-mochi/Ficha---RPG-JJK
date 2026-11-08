@@ -22,14 +22,54 @@ NOTA = ('O degrau registra a aquisição permanente: Incompleta ocupa 2 espaços
         'PE são fechado/aberto, respectivamente. Nenhuma montagem é apagada.')
 
 
+def contagem(row, criterio=None):
+    """Nomes não vazios ocupam vaga mesmo quando seu tipo não é texto.
+
+    O critério antigo serve apenas para gerar o delta incremental exato.
+    Não converte nomes e não conta versões nem extras da Trilha.
+    """
+    if criterio not in (None, '?*', 'global'):
+        raise ValueError('Critério de contagem desconhecido')
+    if criterio == '?*':
+        return (f'COUNTIFS(DADOS_R53!$A$2:$A$253,"entidade."&$DD{row}&".esp.*",'
+                'DADOS_R53!$B$2:$B$253,"?*")')
+    identidade = f'REGEXMATCH(DADOS_R53!$A$2:$A$253,"^entidade[.]"&$DD{row}&"[.]esp[.]")'
+    if criterio == 'global':
+        # Somente para preparar a migração da primeira versão da PR88.
+        return (f'SUMPRODUCT(N({identidade}),'
+                'N(LEN(DADOS_R53!$B$2:$B$253&"")>0))')
+    # Filtrar antes de LEN impede que um nome com erro fora da categoria/
+    # entidade contamine a soma. Erros dos próprios nomes continuam visíveis.
+    # O comprimento em texto distingue vazio de 0/FALSE sem converter entradas.
+    return (f'SUMPRODUCT(N(LEN(FILTER(DADOS_R53!$B$2:$B$253,{identidade})&"")>0))')
+
+
+def plano_contagem(plano, criterio_anterior='?*'):
+    """24 alterações sobre PR87; não repete aquisição, notas ou ANALISE."""
+    if criterio_anterior not in ('?*', 'global'):
+        raise ValueError('Base de contagem desconhecida')
+    deltas = []
+    for d in plano:
+        if d['aba'] != DI or d['c'] not in (239, 270):
+            continue
+        atual = contagem(d['r'])
+        if d['depois'].count(atual) != 1:
+            raise ValueError('Contagem normal divergente')
+        deltas.append(dict(aba=DI, r=d['r'], c=d['c'],
+                           antes=d['depois'].replace(atual, contagem(d['r'], criterio_anterior)),
+                           depois=d['depois']))
+    if len(deltas) != 24:
+        raise ValueError('Doze orçamentos e requisitos obrigatórios')
+    return deltas
+
+
 def formulas(row, nomes, tipos):
     if len(nomes) != 8 or len(set(nomes)) != 8:
         raise ValueError('São necessárias oito identidades normais por entidade')
     stage, nivel, classe, capacidade = (f'${c}{row}' for c in ('FL', 'FO', 'FP', 'GV'))
     # Conta identidades no registro leve, não as sete versões de cada cartão.
     # Os IDs excluem básicas, extras da Trilha e trunfos sem listas de endereços.
-    conhecidas = (f'COUNTIFS(DADOS_R53!$A$2:$A$253,"entidade."&$DD{row}&".esp.*",'
-                  'DADOS_R53!$B$2:$B$253,"?*")')
+    conhecidas = contagem(row)
     custo = f'SWITCH({stage},"Incompleta",2,"Completa",3,"Sem Barreiras",5,0)'
     total = f'{conhecidas}+{custo}'
     hab = (f'=LET(conhecidas,{conhecidas},dominio,{custo},'
@@ -108,6 +148,9 @@ def suporte(layout, plano):
     cells = {a['nome']: {c[0]: c[1] for c in a['celulas']} for a in layout['abas']
              if a['nome'] in ('ANALISE', DI)}
     out = [dict(aba=DI, r=r, c=269, depois=cells[DI]['JI'+str(r)]) for r in range(2, 14)]
+    # Colagem/apagamento IE:IF não precisa carregar o editor integral só
+    # para recuperar a fórmula vizinha, que não muda mecanicamente.
+    out += [dict(aba=DI, r=r, c=240, depois=cells[DI]['IF'+str(r)]) for r in range(2, 14)]
     for d in plano:
         if d['aba'] != 'ANALISE':
             continue
@@ -118,6 +161,6 @@ def suporte(layout, plano):
                 if match:
                     value = match[1].replace('""', '"')
             out.append(dict(aba='ANALISE', r=d['r'], c=col, depois=value))
-    if len(out) != 48:
+    if len(out) != 60:
         raise ValueError('Moldes de suporte do domínio divergentes')
     return out
