@@ -240,8 +240,8 @@ if __name__ == "__main__":
     if "--confere" in sys.argv:
         velho = open(SAIDA, encoding="utf-8").read() if os.path.exists(SAIDA) else ""
         if velho != novo:
-            raise SystemExit("o invocacao-do-livro.json não bate com o manual.txt: rode ficha-v01/extrair_invocacao.py")
-        print("o invocacao-do-livro.json bate com o manual.txt")
+            raise SystemExit("o invocacao-do-livro.json não bate com as fontes: rode ficha-v01/extrair_invocacao.py")
+        print("o invocacao-do-livro.json bate com a fonte histórica e a correção focal R66")
     else:
         open(SAIDA, "w", encoding="utf-8").write(novo)
         d = json.loads(novo)

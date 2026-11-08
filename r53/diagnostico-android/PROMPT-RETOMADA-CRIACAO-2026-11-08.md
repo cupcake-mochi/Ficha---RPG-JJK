@@ -1,5 +1,9 @@
 # Pausa solicitada · Criação com nível fixo · 08/11/2026
 
+> Retomada concluída no ramo `codex/criacao-nivel-fixo-20261108`. Consulte
+> `CORRECAO-CRIACAO-NIVEL-FIXO-2026-11-08.md` para o estado final. O texto
+> abaixo conserva o checkpoint histórico, anterior à correção ensaiada.
+
 O usuário pediu parar e salvar porque vai mexer no disco E.
 **Não retomar automaticamente.** Ao receber nova instrução para continuar,
 verificar os caminhos disponíveis; não pressupor que o E permaneceu igual.

@@ -30,6 +30,9 @@ function r53AjustarCriacao_(abas){
   if(d.aba!=='DADOS_INVOC'||d.c!==171||blocks.length!==1||blocks[0][0]!==2||blocks[0][2]!==13)throw Error('Criação: cópia abaixo divergente');
   var base=carga.valores.filter(function(x){return x.aba===d.aba&&x.r===2&&x.c===d.c;})[0],first=a.vals.filter(function(v){return v[0]===2&&v[1]===d.c;});
   if(!base||first.length!==1||(first[0][2]!==base.antes&&first[0][2]!==base.depois))throw Error('Criação: molde divergente');
+  // A geração integral já possui o molde novo. Mantém sua representação
+  // compacta para que o bootstrap não altere o hash do modelo atual.
+  if(first[0][2]===base.depois)return;
   ops.push([a,null,d,first[0][3]]);if(!copias.some(function(x){return x.a===a&&x.b===blocks[0];}))copias.push({a:a,b:blocks[0]});
  });
  carga.notas.forEach(function(d){var tabs=abas.filter(function(a){return a.nome===d.aba;});if(tabs.length!==1)throw Error('Criação: aba de notas divergente');var a=tabs[0],cells=(a.notas||[]).filter(function(v){return v[0]===d.a1;});if(cells.length!==1||(cells[0][1]!==d.antes&&cells[0][1]!==d.depois))throw Error('Criação: nota divergente');notes.push([cells[0],d.depois]);});

@@ -1,3 +1,33 @@
+# Criação com nível fixo concluída nas QAs · 08/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CRIACAO-NIVEL-FIXO-2026-11-08.md`
+e `criacao_nivel_fixo_validacao_2026-11-08.json`. AQ01 corrigido: Criação
+conserva o nível fabricado registrado, até o invocador. Vazio conserva a
+prévia histórica; preencher para fixar. Delta: BQ5, FO2:FO13 e três notas
+I46/K46/O12 (o modelo real não tinha 36 notas). Catálogo/extração com
+referência focal R66 explícita; manual histórico não reescrito.
+
+Incremento salvo e relido nas duas descartáveis. Base fresca 36ca73ef…;
+código final ffd349c9299342d735917697355d3f278f526ff74b9e009706ce61a8b0784352.
+312 casos e 26 controles de débito passaram. Dez edições reais finais
+passaram e constam Concluído. FM2:FQ3 exigiu 24 moldes vizinhos adicionais:
+suporte final 49, inalterado na instalação. Não retirar esses moldes,
+os IF da PR88 ou o escape da ANALISE. Matriz anterior ao ajuste só de suporte.
+
+49 entradas/cópia restauradas; 86.082 posições/cópia comparadas, 85.887
+de MONTAGENS inteira. Somente 16 deltas previstos, zero extras, metadados
+iguais e visuais restaurados. Auxiliares ocultas. Geração 72fa80b901f2249c;
+280.056 posições/26 abas, só 13 valores e três notas. Smoke final 123 checks
+aprovado. Pacote integral regenerado, NÃO instalado. Windows: PYTHONUTF8=1
+para subprocessos. Regressão/arnes Calc atualizados, mas Calc não executado.
+
+Ramo `codex/criacao-nivel-fixo-20261108`; privativos só em
+`nuvem-b47/saidas/criacao-nivel-fixo/retomada-08/`, ignorado. Entrega para
+revisão, sem merge, oficiais, jogador, main ou PR31. PR88 em ab05bcf,
+PR31 em 765e3b2. Sol/Medium para revisão; Sol/High para nova implementação
+ou ensaio, sem mudar configurações nem delegar a subagentes.
+As entradas abaixo são o histórico anterior à retomada concluída.
+
 # Pausa para manutenção do disco E · 08/11/2026
 
 Usuário pediu parar e salvar. Não retomar sem nova instrução. Leia

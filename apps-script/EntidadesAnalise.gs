@@ -29,7 +29,7 @@ var CONTRATO_ENTIDADES_ = [
       [8219,3,"=\"'DADOS_ENTIDADES'!AG19\"",0],[8219,4,"aviso",0],[8220,1,"aviso.custom.talento_entidade.19",0],[8220,2,"='DADOS_ENTIDADES'!$AG$20&\"\"",0],[8220,3,"=\"'DADOS_ENTIDADES'!AG20\"",0],[8220,4,"aviso",0],[8221,1,"aviso.custom.talento_entidade.20",0],[8221,2,"='DADOS_ENTIDADES'!$AG$21&\"\"",0],[8221,3,"=\"'DADOS_ENTIDADES'!AG21\"",0],[8221,4,"aviso",0]
     ],
     "notas":[],
-    "geracao":"e4537f58af975d8c",
+    "geracao":"72fa80b901f2249c",
     "arquivo":"EntidadesAnalise.gs"
   }
 ];
