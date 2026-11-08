@@ -17,9 +17,10 @@ def gerar():
  subprocess.run(['node',str(ROOT/'r53/pratica_cotidiana_runtime.js')],check=True,capture_output=True,text=True)
  subprocess.run(['node',str(ROOT/'r53/expansao_domada_runtime.js')],check=True,capture_output=True,text=True)
  subprocess.run(['node',str(ROOT/'r53/repertorio_trilha_runtime.js')],check=True,capture_output=True,text=True)
+ subprocess.run(['node',str(ROOT/'r53/criacao_nivel_fixo_runtime.js')],check=True,capture_output=True,text=True)
  subprocess.run(['node',str(ROOT/'r53/caminho_leve.js')],check=True,capture_output=True,text=True)
  folder=ROOT/'apps-script';names=['Ficha.gs']+sorted(p.name for p in folder.glob('*.gs') if p.name not in ['Ficha.gs','Codigo.gs','Habilidades.gs','Salarios.gs','PaletaAndroid.gs','Caminho.gs','CuraRecebida.gs','Socorro.gs'])+['Habilidades.gs','Codigo.gs']
- names=[n for n in names if n not in ['Descanso.gs','ReservaBolsa.gs','PraticaCotidiana.gs','ExpansaoDomada.gs','RepertorioTrilha.gs']]
+ names=[n for n in names if n not in ['Descanso.gs','ReservaBolsa.gs','PraticaCotidiana.gs','ExpansaoDomada.gs','RepertorioTrilha.gs','CriacaoNivelFixo.gs']]
  sources=[(folder/n).read_text() for n in names];source='\n'.join(sources)
  variables=sorted(set(re.findall(r'^var\s+([A-Za-z_$][\w$]*)\s*=',source,re.M)))
  functions=sorted(set(re.findall(r'^function\s+([A-Za-z_$][\w$]*)\s*\(',source,re.M)))
@@ -97,6 +98,7 @@ function verificarPacoteR53() {
  bootstrap+=(folder/'PraticaCotidiana.gs').read_text()
  bootstrap+=(folder/'ExpansaoDomada.gs').read_text()
  bootstrap+=(folder/'RepertorioTrilha.gs').read_text()
+ bootstrap+=(folder/'CriacaoNivelFixo.gs').read_text()
  for n in public:
   if n=='onEdit':
    bootstrap+=(ROOT/'r53/diagnostico-android/versao_publica.gs').read_text()

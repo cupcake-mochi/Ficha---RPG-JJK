@@ -1,3 +1,23 @@
+# Pausa para manutenção do disco E · 08/11/2026
+
+Usuário pediu parar e salvar. Não retomar sem nova instrução. Leia
+`r53/diagnostico-android/PROMPT-RETOMADA-CRIACAO-2026-11-08.md`.
+WIP em `codex/wip-criacao-nivel-fixo-20261108`, sobre fe52bb1.
+Correção AQ01 parcialmente escrita; não pronta, não instalada e sem PR.
+Faltam três JSONs de plano/notas/suporte, integração do bootstrap e testes.
+
+Geração com `-X utf8` terminou em saída 0, mas não foi validada. Gerados
+guardados em `nuvem-b47/saidas/criacao-nivel-fixo/gerados-wip/`, ignorado;
+artefatos versionados repostos à base. Fontes parciais conservadas no WIP.
+Não ficou processo de geração ativo. Dois códigos frescos das QAs tinham
+SHA 36ca73ef…; refazer leituras e snapshots completos antes de aplicar.
+Snapshots da sessão só em memória NÃO servem de backup para instalação.
+
+Nenhuma escrita Google nesta sessão: sem entradas de teste ou restauração
+pendente. Oficiais, jogador, PR88, PR31 e main intactos; sem merge.
+Não pressupor caminhos antigos no disco E ao retomar. Sol/High para
+correção/ensaio; sem mudar configurações ou delegar a subagentes.
+
 # Aquisição de invocações auditada · 07/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-AQUISICAO-INVOCACOES-2026-11-07.md`

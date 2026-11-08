@@ -149,11 +149,18 @@ def ler():
         talentos.append({"nome": n, "ce": int(ce) if ce.isdigit() else [int(x) for x in re.findall(r"\d", ce)], "funcao": f.split(". ")[0] + "."})
     teto_ce = [{"niveis": [int(x) for x in re.findall(r"\d+", n)], "ce": int(c)} for n, c in tabela("Nível do ganho | CE máxima da escolha", CONSTRUIR)]
     tipos = [{"nome": n, "corpo": c, "ficha": f} for n, c, f in tabela("Tipo | Origem e corpo | Característica da ficha", CONSTRUIR)]
-    # 14/10/2026 (B46, livro R44, item 189): a entidade de Criação acompanha o nível do invocador "até o último nível da
-    # Classe dela"; passar disso pede reconstruir. A domada continua conservando o nível em que foi domada
+    # AQ01: reconcilia somente a evolução de Criação com a referência R66.
     aquisicoes = [{"nome": n, "custa": c, "evolui": e, "acompanha": "companha" in e,
                    "ate_o_fim_da_classe": "até o último nível da Classe" in e}
                   for n, c, e in tabela("Aquisição | Investimento | Evolução", CONSTRUIR)]
+    correcao = json.load(open(os.path.join(AQUI, 'aquisicao-criacao-r66.json'), encoding='utf-8'))
+    frase = 'As criadas não sobem de nível junto com você.'
+    if correcao['commit'] != 'e3058ad29180fdec2efec75b512446c49bf87b3d' or frase not in correcao['trecho']:
+        raise SystemExit('extrair_invocacao: referência de evolução de Criação divergente')
+    criadas = [a for a in aquisicoes if a['nome'] == 'Criação']
+    if len(criadas) != 1 or criadas[0]['evolui'] != 'Acompanha seu nível até o último nível da Classe dela; passar disso pede reconstruir.':
+        raise SystemExit('extrair_invocacao: base histórica de Criação mudou; revisar a reconciliação R66')
+    criadas[0].update(evolui=frase, acompanha=False, ate_o_fim_da_classe=False)
     familias = [l[0] for l in tabela("Família | Aplicações comuns", CONSTRUIR)]
 
     # --- os trunfos da domada
@@ -216,7 +223,8 @@ def ler():
 
     return {
         "_meta": {"o_que_e": "o que a aba INVOCAÇÕES lê do livro e o catálogo não tem", "livro": FONTE["livro"],
-                  "sha256_do_livro": FONTE["sha256"], "gerado_por": "ficha-v01/extrair_invocacao.py"},
+                  "sha256_do_livro": FONTE["sha256"], "gerado_por": "ficha-v01/extrair_invocacao.py",
+                  "correcoes": [correcao]},
         "frases": {k: {"livro": f, "conta": c} for k, (f, c) in frases.items()},
         "progressao": prog, "classes": classes, "marcos": [int(x) for x in re.findall(r"\d+", frases["marcos"][0])[:7]],
         "familias": familias, "formas": formas, "alcance": alc, "area": area, "reduzidas": reduzidas,

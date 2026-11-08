@@ -369,10 +369,9 @@ def trocas(layout, cor_da_barra=None):
              [[t["nome"], t["ce"], t["faz"], t["nome"] if t["ce"] == 1 else ""] for t in R["talentos"]])
     TALENTOS = D.faixa("talentos")
     D.tabela("tipos", ["tipo de entidade"], [[t["nome"]] for t in LIV["tipos"]])
-    # o que a aquisição faz com o nível: 1 acompanha o seu, 0 conserva o de quando foi obtida, 2 acompanha o seu até o
-    # último nível da Classe em que foi criada (a Criação, desde o livro R44)
+    # AQ01/R66: 1 acompanha o invocador; 0 conserva o nível obtido/fabricado.
     D.tabela("aquis", ["aquisição", "acompanha o nível"],
-             [[a["nome"], 2 if a.get("ate_o_fim_da_classe") else int(a["acompanha"])] for a in LIV["aquisicoes"]])
+             [[a["nome"], int(a["acompanha"])] for a in LIV["aquisicoes"]])
     AQUIS = D.faixa("aquis")
     D.tabela("familias", ["família"], [[f] for f in R["familias"]])
     D.tabela("atributos", ["atributo"], [[n] for n, _ in ATRS])
@@ -463,11 +462,10 @@ def trocas(layout, cor_da_barra=None):
         nn, cl, tem = P("n"), P("cl"), P("tem")
         o["tem"] = f'=IF({P("nome")}<>"",1,0)'
         o["acomp"] = f'=IFERROR(VLOOKUP({P("aquis")},{AQUIS},2,FALSE),1)'
-        # 14/10/2026 (B46): a criada acompanha o seu nível até o último da Classe do nível em que foi criada (ou
-        # reconstruída): com o nível fixo 6 (Classe 2, níveis 5 a 8) e você no 11, ela fica no 8
+        # AQ01/R66: domada e criada conservam o nível registrado, até o seu.
+        # O vazio mantém a prévia histórica no nível do invocador.
         fixo = f'MAX(1,MIN({NIV},IF({P("nfixo")}=0,{NIV},{P("nfixo")})))'
-        fim_da_classe = "".join(f'IF({fixo}<={p_["ate"]},{p_["ate"]},' for p_ in LIV["progressao"]) + f'{LIV["progressao"][-1]["ate"]}' + ")" * len(LIV["progressao"])
-        o["n"] = f'=IF({P("acomp")}=1,{NIV},IF({P("acomp")}=2,MIN({NIV},{fim_da_classe}),{fixo}))'
+        o["n"] = f'=IF({P("acomp")}=1,{NIV},{fixo})'
         o["cl"] = f"=VLOOKUP(MAX(1,{nn}),{PROG},2,TRUE)"
         o["db"] = f"=VLOOKUP(MAX(1,{nn}),{PROG},3,TRUE)"
         for k in range(N_ATR):
@@ -848,17 +846,16 @@ NOTAS = {
               "serve ao teste de criação, ao reparo e ao socorro. Entalhador, Forja, Alfaiate e Caligrafia são exemplos; a lista "
               "não é fechada, e dá para escrever outro. O reparo, num descanso curto, recupera metade da vida máxima; com o corpo "
               "uma Classe acima de quem repara, um terço (teste Difícil); duas ou mais acima, um quarto.",
-    # 14/10/2026 (B46, livro R44, item 189): a criada acompanha o seu nível até o último nível da Classe dela
     "aquis": "Como ela foi obtida. Espaço conhecido e lista de ritual acompanham o seu nível. A domada fica no nível em que foi "
-             "domada. A criada acompanha o seu nível até o último nível da Classe em que foi criada; passar à Classe seguinte "
-             "pede reconstruir (o mesmo teste, um degrau mais fácil). Escreva ao lado o nível em que ela foi obtida.",
-    "nivel_fixo": "Só para a domada e a criada: o nível em que ela foi domada, ou criada e reconstruída, até o seu. A domada fica "
-                  "nele; a criada sobe com você até o fim da Classe dele (criada no 6, Classe 2, vai até o 8). Em branco, a "
-                  "ficha usa o seu nível.",
+             "domada. A criada conserva o nível de fabricação; uma versão mais poderosa exige novo projeto. "
+             "Escreva ao lado o nível em que ela foi obtida ou fabricada.",
+    "nivel_fixo": "Só para a domada e a criada: registre o nível em que foi obtida ou fabricada, até o seu. "
+                  "Ela conserva esse nível; a criada não melhora quando você sobe de nível ou a repara. "
+                  "Em branco, a ficha mantém a prévia no seu nível; preencha o nível obtido para fixá-lo.",
     "talisma": "Só o shikigami de criação: a carga deixada no talismã no descanso longo adianta parte da próxima entrada. O "
                "talismã ocupa 0,5 de Volume.",
-    "nivel": "O nível dela. Com espaço conhecido ou lista de ritual é o seu; a domada fica no nível em que foi domada; a criada "
-             "acompanha o seu até o último nível da Classe em que foi criada. Nunca passa do seu.",
+    "nivel": "O nível dela. Com espaço conhecido ou lista de ritual é o seu; a domada conserva o nível obtido e a criada "
+             "conserva o de fabricação. Nunca passa do seu. Para domada e criada, preencha o nível obtido ao lado da aquisição.",
     "classe": "A maior Classe que o nível dela permite: sobe nos níveis 5, 9, 13, 17, 21 e 26.",
     "maestria": "Sempre a sua, mesmo numa domada de nível menor. Vem da FICHA.",
     "entrada": "Manifestar custa a maior Classe dela em PE, e a sua Ação Bônus. Com o talismã carregado, metade, para cima. "
