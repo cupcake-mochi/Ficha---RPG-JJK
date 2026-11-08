@@ -1,3 +1,39 @@
+# PR90 revisada e atributos das invocações auditados · 08/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR90-E-ATRIBUTOS-2026-11-08.md` e
+`revisao_pr90_atributos_2026-11-08.json`. PR90 em 4eeb276, sobre PR89
+e2b0330: sem bloqueio novo no delta revisado, dois workflows SUCCESS
+(42534146894/42534090450). Testes focais de nível/transporte real e modelo
+repetidos; 280.056 posições/26 abas, delta exato. Evidências anteriores
+240 casos/12 recuperações/código relido revisadas, NÃO repetidas nesta rodada.
+
+Pente-fino novo: 44 observações de atributos nas entidades 1/12 das duas QAs,
+34 controles aprovados e dez sondagens forçadas. Criação, orçamento, Marcos,
+teto seis e buffs passaram no domínio testado. Menus de pontos já estritos
+0–6. N(texto) perde pontos/Constituição/PV se texto conseguir ficar gravado:
+3 textual calculou 0/6 gastos/5 PV; 3 numérico, 3/9/8. Estado reproduzido
+via API e typeText automatizado nas duas. Teclado convencional recusou texto
+nas duas; colagem explícita e fórmula textual recusadas na Era. Registrar
+como robustez condicional, NÃO bug comprovado do fluxo comum ou da PR90.
+Não corrigido; antes de priorizar, reproduzir manualmente ou definir suporte
+a dados externos. Não contar negativos/frações/7 via API como bugs comuns.
+
+29 entradas/cópia restauradas; 86.000 posições/cópia comparadas, MONTAGENS
+inteira A1:I9543 incluída. Zero diferenças nos cinco campos de célula lidos;
+metadados com condicional iguais. Formato numérico Q20 restaurado após
+inserção automatizada; baseline individual da Ciclo, pares/gerador na Era.
+Visuais restaurados, auxiliares ocultas, duas abas de teste fechadas. Não
+houve instalação de fórmula/script nem nova autorização Google nesta rodada.
+
+Ramo separado `codex/revisao-pr90-auditoria-20261108`, só parecer/diagnóstico.
+Privados válidos em `nuvem-b47/saidas/revisao-pr90-atributos-20261108/`,
+ignorados. Sem merge, oficiais, jogador, PR31, acesso ou acionadores.
+PR31 continua 765e3b2. Preservar código instalado b709ad14…, 60 suportes
+PR90, 49 suportes PR89, IF da PR88 e escape ANALISE. Pacote integral NÃO
+instalado. Próximo recorte plausível: perícias/treinos das entidades e limites.
+Sol/Medium revisão; Sol/High novo ensaio/implementação, sem mudar configurações
+ou abrir agentes. Não afirmar conclusão do pente-fino global.
+
 # AQ02 corrigido e ensaiado nas duas QAs · 08/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-NIVEL-OBTIDO-2026-11-08.md` e
