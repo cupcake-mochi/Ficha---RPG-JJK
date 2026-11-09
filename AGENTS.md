@@ -1,3 +1,26 @@
+# Colagem de pontos de atributo corrigida · 08/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-COLAGEM-ATRIBUTOS-2026-11-08.md`
+e `atributos_entidades_validacao_2026-11-08.json`. ATR-N-TEXTO corrigido
+nas 60 fórmulas DJ:DN das 12 entidades. Dígito textual 0–6 passa a
+contar no cálculo, preservando o valor digitado e o menu estrito.
+Os outros textos não somam pontos e o caminho numérico permanece.
+
+Geração ec14f1ff36db9816. Modelo integral de 280.056 posições e 26
+abas conferido. Só 60 fórmulas mudaram. Candidato testado igual ao
+delta regenerado. Pacote integral regenerado, não instalado.
+
+96 observações nativas, 480 conferências de entrada e quatro colagens
+reais nas duas QAs. Na colagem de 3 textual, CON 3, nove pontos e
+PV 8, iguais ao controle numérico. Entradas e formatos dos ensaios
+repostos. 86.594 posições/cópia, MONTAGENS inteira e metadados
+conferidos. Só ficaram as 60 alterações de fórmula. Abas fechadas.
+
+Ramo `codex/corrige-colagem-atributos-20261108`, sobre a PR91.
+Privados em `nuvem-b47/saidas/correcao-colagem-atributos-20261108/`.
+Sem merge, oficiais, jogador ou PR31. Preservar suportes anteriores
+e escape ANALISE.
+
 # PR91 revisada e colagem de atributos confirmada · 08/11/2026
 
 Leia `r53/diagnostico-android/REVISAO-PR91-E-COLAGEM-ATRIBUTOS-2026-11-08.md`

@@ -20,8 +20,9 @@ function normalizarFormula(formula) {
   ).join('');
 }
 
-function comparar(base, atual) {
+function comparar(base, atual, { valores = formulas, notas = [nota] } = {}) {
   assert.deepEqual(atual.map(a => a.nome), base.map(a => a.nome), 'Abas divergentes');
+  const permitidos = new Set([...valores.values()].map(a1 => 'DADOS_INVOC!' + a1).concat(notas));
   const delta = [];
   let posicoes = 0;
   for (const [i, antes] of base.entries()) {
@@ -33,7 +34,7 @@ function comparar(base, atual) {
     for (const pos of new Set([...origem.keys(), ...destino.keys()])) {
       posicoes++;
       if (origem.get(pos) === destino.get(pos)) continue;
-      const a1 = formulas.get(pos);
+      const a1 = valores.get(pos);
       assert.ok(antes.nome === 'DADOS_INVOC' && a1, 'Mudança fora do alvo: ' + antes.nome + ' ' + pos);
       delta.push({ aba: antes.nome, a1, campo: 'formula', antes: origem.get(pos), depois: destino.get(pos) });
     }
@@ -41,11 +42,11 @@ function comparar(base, atual) {
     const notasDepois = new Map(depois.notas || []);
     for (const a1 of new Set([...notasAntes.keys(), ...notasDepois.keys()])) {
       if (notasAntes.get(a1) === notasDepois.get(a1)) continue;
-      assert.equal(antes.nome + '!' + a1, nota, 'Nota fora do alvo');
+      assert.ok(notas.includes(antes.nome + '!' + a1), 'Nota fora do alvo');
       delta.push({ aba: antes.nome, a1, campo: 'nota', antes: notasAntes.get(a1), depois: notasDepois.get(a1) });
     }
   }
-  assert.deepEqual(new Set(delta.map(d => d.aba + '!' + d.a1)), alvos);
+  assert.deepEqual(new Set(delta.map(d => d.aba + '!' + d.a1)), permitidos);
   return { abas: base.length, posicoes, delta };
 }
 

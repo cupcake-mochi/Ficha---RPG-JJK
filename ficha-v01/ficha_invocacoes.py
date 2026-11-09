@@ -70,6 +70,11 @@ def blocos(k):
     return [lombada(k) + 1 + (N_BLOCO + 1) * j for j in range(3)]
 
 
+def pontos_distribuidos(entrada):
+    """Conta um dígito do menu mesmo quando a colagem o preserva como texto."""
+    return f'=IF(ISTEXT({entrada}),IF(REGEXMATCH({entrada},"^[0-6]$"),VALUE({entrada}),0),N({entrada}))'
+
+
 COLS = lombada(N_COLUNAS - 1) + PASSO_COL - 1          # a última é o respiro da direita
 PX_COLUNAS = [PX_FINA] * 3 + [PX_CONJ] * N_CONJ + [PX_FINA] + ([PX_FINA] + ([PX_BLOCO] * N_BLOCO + [PX_FINA]) * 3) * N_COLUNAS
 assert len(PX_COLUNAS) == COLS
@@ -449,7 +454,8 @@ def trocas(layout, cor_da_barra=None):
              "evol": f"=SUM({_A(g['eq_vol'][0], IV)}:{_A(g['eq_vol'][-1], IV)},{_A(g['guarda_vol'][0], IV)}:{_A(g['guarda_vol'][-1], IV)})",
              "reserva": da(g["reserva"]), "exp": da(g["exp"]["degrau"]), "alma": da(g["alma"]), "integ_c": da(g["integ"])}
         for k in range(N_ATR):
-            o[f"p{k}"], o[f"u{k}"] = f"=N({_A(g['pts'][k], IV)})", f"=N({_A(g['buff'][k], IV)})"
+            o[f"p{k}"] = pontos_distribuidos(_A(g["pts"][k], IV))
+            o[f"u{k}"] = f"=N({_A(g['buff'][k], IV)})"
         for k in range(5):
             o[f"us{k}"] = f"=N({_A(g['bstat'][k], IV)})"
         for k in range(4):
