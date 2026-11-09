@@ -1,10 +1,13 @@
 # Pontos de atributo forçados por colagem · 09/11/2026
 
+> **Corrigido no mesmo ramo** (seção *Correção*, no fim): o resumo de
+> pontos passou a acusar erro para ponto fora de inteiro 0–6.
+
 Retoma as três sondagens do parecer da PR90 (negativo, fração e 7
 pontos), que tinham sido gravadas só pela API e ficaram classificadas
 como "limite de defesa da fórmula". A pergunta era se a interface comum
 consegue chegar nesses valores. **Consegue.** Isto é só parecer e
-evidência, sem mudança de fórmula.
+evidência; a correção veio depois, a pedido do Mizuki.
 
 ## O caminho
 
@@ -65,4 +68,33 @@ numérico da `Q20` tinha mudado; os demais campos de formato foram
 comparados com a vizinha `P20` e estavam iguais. Navegador fechado. A
 cópia pelo menu deixou `-1` na área de transferência do sistema.
 
-Nenhuma escrita fora das duas QAs. Nenhuma fórmula alterada.
+Nenhuma escrita fora das duas QAs nesta etapa.
+
+## Correção
+
+`d_pontos` (`DADOS_INVOC!HL2:HL13`, 12 fórmulas) ganhou a condição
+`fora`: algum ponto `DJ:DN` menor que 0, maior que 6 ou não inteiro.
+Ela entra no `OR` que acende o erro e acrescenta o sufixo
+` · PONTO FORA DE 0 A 6`. A entrada não é reescrita; menu, montagem,
+ANALISE e o cálculo dos atributos não mudam. Texto inválido continua
+valendo 0 pela regra da PR92 e não dispara o aviso.
+
+Geração `a55595143d33c5e1` (antes `6701a3e4b549d436`): no modelo de
+280.056 posições e 26 abas, só as 12 fórmulas mudaram. Teste focal
+`r53/testes/pontos_forcados.js` (aplicação e reversão em pt_BR e en_US,
+recusa de divergência, molde e semântica) entrou no smoke, que passou.
+
+**No Sheets (pt_BR):** as 12 fórmulas das duas QAs batiam com a base;
+o delta foi instalado e relido.
+
+| cópia | pontos | resumo |
+|---|---|---|
+| Era | 4/4/3/1/−1 | ⚠ ATRIBUTOS · 11 DE 11 PONTOS · PONTO FORA DE 0 A 6 |
+| Era | 3,5/3,5/3/1/0 | ⚠ ATRIBUTOS · 11 DE 11 PONTOS · PONTO FORA DE 0 A 6 |
+| Era | 4/4/3/0/0 (controle) | ATRIBUTOS · 11 DE 11 PONTOS |
+| Ciclo | 0/0/−1/0/0 | ⚠ ATRIBUTOS · -1 DE 9 PONTOS · PONTO FORA DE 0 A 6 |
+| Ciclo | 3/3/3/0/0 (controle) | ATRIBUTOS · 9 DE 9 PONTOS |
+
+O 7 em nível alto ficou coberto pela condição `> 6` (teste local), sem
+ensaio no Sheets. Pontos repostos em 0 nas duas (Era PV 32, Ciclo PV 8);
+o delta segue instalado nas QAs. Pacote integral não gerado nem instalado.
