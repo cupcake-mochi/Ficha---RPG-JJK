@@ -559,7 +559,11 @@ def trocas(layout, cor_da_barra=None):
         # --- o que a aba mostra
         revisao_nivel = (f'IF(AND({P("acomp")}=0,{P("nfixo")}=-1),'
                          '" · REVISAR: nível obtido inválido; cálculo provisório no nível 1","")')
-        o["d_titulo"] = (f'=IF({tem}=0,"INVOCAÇÃO {i} · lugar vazio",{P("nome")}&" · "&{P("tipo")}&{revisao_nivel}&" · nível "&{nn}&" · vida "&{P("atual")}&" de "&{P("vida")})')
+        # 09/11/2026: "a entidade tem um Teste de Resistência treinado". Vazio, ou texto colado por cima do menu, tirava a
+        # maestria de todos os TR em silêncio; o título passa a pedir a escolha, sem reescrever a caixa.
+        tr_valido = "OR(" + ",".join(f'{P("trT")}="{nome_tr}"' for nome_tr, _ in TESTES) + ")"
+        revisao_tr = f'IF({tr_valido},""," · REVISAR: escolha o TR treinado")'
+        o["d_titulo"] = (f'=IF({tem}=0,"INVOCAÇÃO {i} · lugar vazio",{P("nome")}&" · "&{P("tipo")}&{revisao_nivel}&{revisao_tr}&" · nível "&{nn}&" · vida "&{P("atual")}&" de "&{P("vida")})')
         o["d_lomb"] = f'=IF({tem}=0,"VAZIA",UPPER({P("nome")}))'
         o["d_mae"] = f"={sinal(MAE)}"
         o["d_ent"] = f'={P("ent")}&" PE"'
