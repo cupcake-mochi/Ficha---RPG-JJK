@@ -1,3 +1,26 @@
+# PR91 revisada e colagem de atributos confirmada · 08/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR91-E-COLAGEM-ATRIBUTOS-2026-11-08.md`
+e `revisao_pr91_colagem_atributos_2026-11-08.json`. PR91 b804d1a sobre
+PR90 4eeb276, dois workflows SUCCESS, sem bloqueio no delta revisado.
+Modelo e preparador reconferidos. 25 alvos nativos já atualizados.
+O37 nas duas QAs recuperou a fórmula e o aviso após Backspace real.
+
+ATR-N-TEXTO agora reproduzido pela interface comum nas duas QAs.
+O21 recebe apóstrofo e 3, Ctrl+C, Ctrl+Shift+V em Q20. Fica texto 3
+com validação estrita, CON 0, seis pontos gastos, PV 5. Número 3 pelo
+mesmo caminho dá CON 3, nove pontos, PV 8. Legado, fora do delta PR91.
+Próximo item é tratar pontos textuais válidos preservando entrada e menu.
+Não extrapolar as outras entradas forçadas do parecer da PR90.
+
+22 posições do cenário por cópia. Dez valores e dois formatos repostos.
+86.494 posições por cópia, MONTAGENS inteira incluída. Zero diferenças
+nos campos comparados e metadados iguais. Abas de teste fechadas.
+Ramo `codex/revisao-pr91-fila-20261108`, só parecer e diagnóstico.
+Privados em `nuvem-b47/saidas/revisao-pr91-fila-20261108/`, ignorados.
+Sem merge, oficiais, jogador ou PR31. Preservar suportes anteriores e
+escape ANALISE.
+
 # Contagem de perícias das entidades corrigida · 08/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-PERICIAS-ENTIDADES-2026-11-08.md`
