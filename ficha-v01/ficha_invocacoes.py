@@ -564,8 +564,12 @@ def trocas(layout, cor_da_barra=None):
         o["d_mae"] = f"={sinal(MAE)}"
         o["d_ent"] = f'={P("ent")}&" PE"'
         o["d_ret"] = f'={P("ret")}&" PE"'
-        o["d_pontos"] = (f'=IF(OR({P("gastos")}>{P("disp")},{P("acima")}>{P("marc")}),"{T_ERRO} ",IF(AND({tem}=1,{P("gastos")}<{P("disp")}),"{T_AVISO}",""))'
-                         f'&"ATRIBUTOS · "&{P("gastos")}&" DE "&{P("disp")}&" PONTOS"&IF({P("acima")}>{P("marc")}," · ACIMA DE 3 SÓ COM MARCO","")')
+        # 09/11/2026: o menu dos pontos só aceita 0–6, mas Colar especial › Só os valores grava qualquer número por
+        # cima dele. Negativo e fração fechavam o orçamento sem aviso; agora acusam erro, sem reescrever a entrada.
+        fora = "OR(" + ",".join(f'{P(f"p{k}")}<0,{P(f"p{k}")}>6,{P(f"p{k}")}<>INT({P(f"p{k}")})' for k in range(N_ATR)) + ")"
+        o["d_pontos"] = (f'=IF(OR({P("gastos")}>{P("disp")},{P("acima")}>{P("marc")},{fora}),"{T_ERRO} ",IF(AND({tem}=1,{P("gastos")}<{P("disp")}),"{T_AVISO}",""))'
+                         f'&"ATRIBUTOS · "&{P("gastos")}&" DE "&{P("disp")}&" PONTOS"&IF({P("acima")}>{P("marc")}," · ACIMA DE 3 SÓ COM MARCO","")'
+                         f'&IF({fora}," · PONTO FORA DE 0 A 6","")')
         o["d_atq"] = f'=IF({P("atq")}="","",{sinal(P("atq"))})'
         o["d_cd"] = f'=IF({P("cd")}="","",{P("cd")})'
         # 10/10/2026 (B45): a entidade "segue as regras gerais de Carga": acima do limite e até o dobro, metade do
