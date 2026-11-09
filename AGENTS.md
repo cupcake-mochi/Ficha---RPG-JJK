@@ -1,3 +1,86 @@
+# Contagem de perícias das entidades corrigida · 08/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-PERICIAS-ENTIDADES-2026-11-08.md`
+e `pericias_entidades_validacao_2026-11-08.json`. PT01/PT02/PT03 corrigidos
+no gerador e nas duas QAs. Resumo conta apenas escolhas válidas e distintas
+e sinaliza repetição, fora do catálogo e limite. Mantém as entradas e a
+validação de ofícios. Nota ensina cadastro em CONFIGURAÇÃO.
+
+Delta de 24 fórmulas GU/HT e nota L42. Geração 8c985bea26747123.
+Modelo integral: 280.056 posições, 26 abas, delta exato. Smoke local
+passou. Pacote integral regenerado, não instalado. Cópias mantêm
+o Apps Script da PR90 e receberam somente as 25 alterações de célula.
+
+52 observações nativas aprovadas. Repetição pela interface mostrou
+3 de 4 com aviso em ambas. Ofício recém-cadastrado aceito em ambas.
+Ciclo recusou digitação inicial e aceitou seleção pelo menu. 63 entradas
+restauradas por cópia, 86.494 posições comparadas com MONTAGENS inteira.
+Apenas os 25 campos esperados divergiram. Abas de teste fechadas.
+
+Ramo `codex/corrige-pericias-entidades-20261108`, sobre a PR90.
+Privados em `nuvem-b47/saidas/correcao-pericias-entidades-20261108/`.
+Sem merge, oficiais, jogador ou PR31. Preservar suportes anteriores,
+escape ANALISE e correções incrementais já instaladas.
+
+# Perícias e treinos das entidades auditados · 08/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-PERICIAS-TREINOS-ENTIDADES-2026-11-08.md`
+e `auditoria_pericias_treinos_entidades_2026-11-08.json`. Ramo separado
+`codex/auditoria-pericias-entidades-20261108`, sobre o parecer 1eb4965.
+40 observações nativas nas entidades 1/12 das duas QAs, com 34 controles
+aprovados e seis reproduções. Cobertas as 23 perícias, Inteligência base
+0–6, os quatro TRs, Físico em Força/Destreza, buffs e degraus de Maestria.
+
+PT01: repetir Atletismo ocupa duas vagas e exibe 4/4 com três perícias
+distintas, inclusive pelo menu real nas duas QAs. PT02: retirar perícia
+custom do cadastro mantém nome e vaga, perde bônus e não avisa no resumo.
+Repor o cadastro recupera o bônus. PT03: nota do Ofício Compatível omite
+o cadastro custom e a digitação fora do menu foi recusada nas duas QAs.
+Achados documentados. Fórmulas e código instalado não foram alterados.
+
+61 entradas/cópia restauradas. Comparadas 86.474 posições por cópia,
+incluindo MONTAGENS inteira A1:I9543, sem diferenças nos campos lidos.
+Metadados com condicional iguais e abas de teste fechadas. Privados em
+`nuvem-b47/saidas/auditoria-pericias-entidades-20261108/`, ignorados.
+Sem merge, oficiais, jogador, PR31, acesso ou acionadores. PR31 em
+765e3b2. Preservar suportes e escape ANALISE descritos abaixo.
+
+# PR90 revisada e atributos das invocações auditados · 08/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR90-E-ATRIBUTOS-2026-11-08.md` e
+`revisao_pr90_atributos_2026-11-08.json`. PR90 em 4eeb276, sobre PR89
+e2b0330: sem bloqueio novo no delta revisado, dois workflows SUCCESS
+(42534146894/42534090450). Testes focais de nível/transporte real e modelo
+repetidos; 280.056 posições/26 abas, delta exato. Evidências anteriores
+240 casos/12 recuperações/código relido revisadas, NÃO repetidas nesta rodada.
+
+Pente-fino novo: 44 observações de atributos nas entidades 1/12 das duas QAs,
+34 controles aprovados e dez sondagens forçadas. Criação, orçamento, Marcos,
+teto seis e buffs passaram no domínio testado. Menus de pontos já estritos
+0–6. N(texto) perde pontos/Constituição/PV se texto conseguir ficar gravado:
+3 textual calculou 0/6 gastos/5 PV; 3 numérico, 3/9/8. Estado reproduzido
+via API e typeText automatizado nas duas. Teclado convencional recusou texto
+nas duas; colagem explícita e fórmula textual recusadas na Era. Registrar
+como robustez condicional, NÃO bug comprovado do fluxo comum ou da PR90.
+Não corrigido; antes de priorizar, reproduzir manualmente ou definir suporte
+a dados externos. Não contar negativos/frações/7 via API como bugs comuns.
+
+29 entradas/cópia restauradas; 86.000 posições/cópia comparadas, MONTAGENS
+inteira A1:I9543 incluída. Zero diferenças nos cinco campos de célula lidos;
+metadados com condicional iguais. Formato numérico Q20 restaurado após
+inserção automatizada; baseline individual da Ciclo, pares/gerador na Era.
+Visuais restaurados, auxiliares ocultas, duas abas de teste fechadas. Não
+houve instalação de fórmula/script nem nova autorização Google nesta rodada.
+
+Ramo separado `codex/revisao-pr90-auditoria-20261108`, só parecer/diagnóstico.
+Privados válidos em `nuvem-b47/saidas/revisao-pr90-atributos-20261108/`,
+ignorados. Sem merge, oficiais, jogador, PR31, acesso ou acionadores.
+PR31 continua 765e3b2. Preservar código instalado b709ad14…, 60 suportes
+PR90, 49 suportes PR89, IF da PR88 e escape ANALISE. Pacote integral NÃO
+instalado. Próximo recorte plausível: perícias/treinos das entidades e limites.
+Sol/Medium revisão; Sol/High novo ensaio/implementação, sem mudar configurações
+ou abrir agentes. Não afirmar conclusão do pente-fino global.
+
 # AQ02 corrigido e ensaiado nas duas QAs · 08/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-NIVEL-OBTIDO-2026-11-08.md` e
