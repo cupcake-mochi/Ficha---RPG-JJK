@@ -1,3 +1,12 @@
+# Pontos forçados por colagem confirmados · 09/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PONTOS-FORCADOS-2026-11-09.md`.
+Colar especial › Só os valores grava qualquer número por cima do menu
+estrito dos pontos. Negativo e fração fecham o orçamento sem aviso; o 7
+só passa sem aviso a partir do nível 18 (deduzido da fórmula). Só
+parecer, nenhuma fórmula mudou. Correção sugerida: erro no `d_pontos`
+para ponto fora de inteiro 0–6, aguardando o ok do Mizuki. QAs repostas.
+
 # Colagem de Buff/Debuff corrigida · 09/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-COLAGEM-BUFFS-2026-11-09.md`
