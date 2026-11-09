@@ -75,6 +75,15 @@ def pontos_distribuidos(entrada):
     return f'=IF(ISTEXT({entrada}),IF(REGEXMATCH({entrada},"^[0-6]$"),VALUE({entrada}),0),N({entrada}))'
 
 
+def ajuste_textual(entrada):
+    """Buff/Debuff colado como texto: inteiro ASCII com sinal opcional vale o número.
+
+    Decimais textuais e outros textos seguem valendo zero; números passam por N().
+    """
+    return (f'=IF(ISTEXT({entrada}),IF(REGEXMATCH({entrada},"^[+-]?[0-9]+$"),'
+            f'VALUE(SUBSTITUTE({entrada},"+","")),0),N({entrada}))')
+
+
 COLS = lombada(N_COLUNAS - 1) + PASSO_COL - 1          # a última é o respiro da direita
 PX_COLUNAS = [PX_FINA] * 3 + [PX_CONJ] * N_CONJ + [PX_FINA] + ([PX_FINA] + ([PX_BLOCO] * N_BLOCO + [PX_FINA]) * 3) * N_COLUNAS
 assert len(PX_COLUNAS) == COLS
@@ -455,11 +464,11 @@ def trocas(layout, cor_da_barra=None):
              "reserva": da(g["reserva"]), "exp": da(g["exp"]["degrau"]), "alma": da(g["alma"]), "integ_c": da(g["integ"])}
         for k in range(N_ATR):
             o[f"p{k}"] = pontos_distribuidos(_A(g["pts"][k], IV))
-            o[f"u{k}"] = f"=N({_A(g['buff'][k], IV)})"
+            o[f"u{k}"] = ajuste_textual(_A(g['buff'][k], IV))
         for k in range(5):
-            o[f"us{k}"] = f"=N({_A(g['bstat'][k], IV)})"
+            o[f"us{k}"] = ajuste_textual(_A(g['bstat'][k], IV))
         for k in range(4):
-            o[f"ut{k}"] = f"=N({_A(g['btr'][k], IV)})"
+            o[f"ut{k}"] = ajuste_textual(_A(g['btr'][k], IV))
         for k in range(N_FAM):
             o[f"f{k}"] = da(g["fam"][k])
         for k in range(N_PER):

@@ -1,3 +1,23 @@
+# Colagem de Buff/Debuff corrigida · 09/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-COLAGEM-BUFFS-2026-11-09.md`
+e `buffs_entidades_validacao_2026-11-09.json`. As famílias u, us e ut
+(168 fórmulas DO:DS e DW:EE das 12 entidades) passam a aceitar inteiro
+ASCII com sinal colado como texto; o resto do texto continua zero e o
+caminho numérico permanece. Decimal textual fora, pendente de locale.
+
+Geração 6701a3e4b549d436. Modelo de 280.056 posições e 26 abas: só as
+168 fórmulas mudaram. Pacote integral não gerado nem instalado.
+
+Colagem real pelo menu nas duas QAs: Era `-2` deu CON −2, PV 10,
+Vigor −4; Ciclo `+2` deu CON 2, PV 14, Vigor 4; controles numéricos
+iguais. Entradas e formatos repostos, nota da O21 intacta. MONTAGENS
+só na grade, sem comparação célula a célula. Delta segue instalado.
+
+Ramo `codex/corrige-colagem-buffs-20261109`, sobre a PR92.
+Privados em `nuvem-b47/saidas/correcao-colagem-buffs-20261109/`.
+Sem merge, oficiais, jogador ou PR31.
+
 # Colagem de pontos de atributo corrigida · 08/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-COLAGEM-ATRIBUTOS-2026-11-08.md`
