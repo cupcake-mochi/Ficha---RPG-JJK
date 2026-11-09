@@ -1,3 +1,27 @@
+# Contagem de perícias das entidades corrigida · 08/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-PERICIAS-ENTIDADES-2026-11-08.md`
+e `pericias_entidades_validacao_2026-11-08.json`. PT01/PT02/PT03 corrigidos
+no gerador e nas duas QAs. Resumo conta apenas escolhas válidas e distintas
+e sinaliza repetição, fora do catálogo e limite. Mantém as entradas e a
+validação de ofícios. Nota ensina cadastro em CONFIGURAÇÃO.
+
+Delta de 24 fórmulas GU/HT e nota L42. Geração 8c985bea26747123.
+Modelo integral: 280.056 posições, 26 abas, delta exato. Smoke local
+passou. Pacote integral regenerado, não instalado. Cópias mantêm
+o Apps Script da PR90 e receberam somente as 25 alterações de célula.
+
+52 observações nativas aprovadas. Repetição pela interface mostrou
+3 de 4 com aviso em ambas. Ofício recém-cadastrado aceito em ambas.
+Ciclo recusou digitação inicial e aceitou seleção pelo menu. 63 entradas
+restauradas por cópia, 86.494 posições comparadas com MONTAGENS inteira.
+Apenas os 25 campos esperados divergiram. Abas de teste fechadas.
+
+Ramo `codex/corrige-pericias-entidades-20261108`, sobre a PR90.
+Privados em `nuvem-b47/saidas/correcao-pericias-entidades-20261108/`.
+Sem merge, oficiais, jogador ou PR31. Preservar suportes anteriores,
+escape ANALISE e correções incrementais já instaladas.
+
 # Perícias e treinos das entidades auditados · 08/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-PERICIAS-TREINOS-ENTIDADES-2026-11-08.md`

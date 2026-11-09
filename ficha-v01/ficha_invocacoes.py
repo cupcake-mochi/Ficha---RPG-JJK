@@ -513,7 +513,19 @@ def trocas(layout, cor_da_barra=None):
             base = P("vf") if atr is None else P(f"t{atr}")
             o[f"tr{k}"] = f'={base}+IF({P("trT")}="{nome_tr}",{MAE},0)+{P(f"ut{k}")}'
         o["nper"] = f'=4+INT({P("p3")}/2)'
-        o["tper"] = f'=COUNTIF({PER},"?*")'
+        # O bônus preenchido confirma que a escolha ainda resolve no catálogo.
+        # Compare os nomes diretamente para não interpretar caracteres como curingas.
+        escolhas = []
+        for k in range(N_PER):
+            bonus = P(f"d_pb{k}")
+            primeira = "TRUE"
+            if k:
+                nomes_anteriores = Rg("per0", f"per{k - 1}")
+                bonus_anteriores = Rg("d_pb0", f"d_pb{k - 1}")
+                anteriores = f'SUMPRODUCT(IFERROR(({nomes_anteriores}={P(f"per{k}")})*({bonus_anteriores}<>""),0))'
+                primeira = f'{anteriores}=0'
+            escolhas.append(f'IFERROR(IF(AND({bonus}<>"",{primeira}),1,0),0)')
+        o["tper"] = '=SUM(' + ','.join(escolhas) + ')'
         o["esp"] = f"=INT((2+{nn}/2)/2)"
         o["nbas"] = f"=IF({nn}>={ABRE_BAS[1]},2,1)"
         o["ntal"] = f'=1+{P("marc")}'
@@ -550,7 +562,15 @@ def trocas(layout, cor_da_barra=None):
                        '&" m",".",",")')
         for k in range(4):
             o[f"d_tr{k}"] = f'={sinal(P(f"tr{k}"))}'
-        o["d_per"] = f'=IF({P("tper")}>{P("nper")},"{T_ERRO} ","")&"PERÍCIAS · "&{P("tper")}&" DE "&{P("nper")}'
+        validas = f'COUNTIF({Rg("d_pb0", f"d_pb{N_PER - 1}")},"?*")'
+        repetidas = f'{validas}>{P("tper")}'
+        fora_do_catalogo = f'COUNTIF({PER},"?*")>{validas}'
+        excesso_pericias = f'{P("tper")}>{P("nper")}'
+        o["d_per"] = (f'=IF(OR({repetidas},{fora_do_catalogo},{excesso_pericias}),"{T_ERRO} ","")'
+                      f'&"PERÍCIAS · "&{P("tper")}&" DE "&{P("nper")}'
+                      f'&IF({repetidas}," · REPETIDA","")'
+                      f'&IF({fora_do_catalogo}," · FORA DO CATÁLOGO","")'
+                      f'&IF({excesso_pericias}," · ACIMA DO LIMITE","")')
         for k in range(N_PER):
             pk = P(f"per{k}")
             o[f"d_pb{k}"] = f'=IF({pk}="","",IFERROR({sinal(f"(INDEX({TT},1,MATCH(VLOOKUP({pk},{PERICIAS},2,FALSE),{ATRIBUTOS},0))+{MAE})")},""))'
@@ -852,8 +872,9 @@ NOTAS = {
     "tipo": "O tipo combina origem e corpo. O shikigami de técnica é a referência; o corpo de criação ganha 4 + Constituição de vida "
             "por nível; o shikigami de criação mora num talismã; a domada conserva o nível em que foi domada.",
     "oficio": "Só a entidade de criação (o shikigami de talismã e o corpo de criação): o ofício escolhido na criação dela, que "
-              "serve ao teste de criação, ao reparo e ao socorro. Entalhador, Forja, Alfaiate e Caligrafia são exemplos; a lista "
-              "não é fechada, e dá para escrever outro. O reparo, num descanso curto, recupera metade da vida máxima; com o corpo "
+              "serve ao teste de criação, ao reparo e ao socorro. Entalhador, Forja, Alfaiate e Caligrafia são exemplos. "
+              "Para usar outro, cadastre um Ofício em CONFIGURAÇÃO e depois escolha no menu. "
+              "O reparo, num descanso curto, recupera metade da vida máxima; com o corpo "
               "uma Classe acima de quem repara, um terço (teste Difícil); duas ou mais acima, um quarto.",
     "aquis": "Como ela foi obtida. Espaço conhecido e lista de ritual acompanham o seu nível. A domada fica no nível em que foi "
              "domada. A criada conserva o nível de fabricação; uma versão mais poderosa exige novo projeto. "
