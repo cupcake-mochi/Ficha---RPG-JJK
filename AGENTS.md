@@ -1,3 +1,26 @@
+# Perícias e treinos das entidades auditados · 08/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-PERICIAS-TREINOS-ENTIDADES-2026-11-08.md`
+e `auditoria_pericias_treinos_entidades_2026-11-08.json`. Ramo separado
+`codex/auditoria-pericias-entidades-20261108`, sobre o parecer 1eb4965.
+40 observações nativas nas entidades 1/12 das duas QAs, com 34 controles
+aprovados e seis reproduções. Cobertas as 23 perícias, Inteligência base
+0–6, os quatro TRs, Físico em Força/Destreza, buffs e degraus de Maestria.
+
+PT01: repetir Atletismo ocupa duas vagas e exibe 4/4 com três perícias
+distintas, inclusive pelo menu real nas duas QAs. PT02: retirar perícia
+custom do cadastro mantém nome e vaga, perde bônus e não avisa no resumo.
+Repor o cadastro recupera o bônus. PT03: nota do Ofício Compatível omite
+o cadastro custom e a digitação fora do menu foi recusada nas duas QAs.
+Achados documentados. Fórmulas e código instalado não foram alterados.
+
+61 entradas/cópia restauradas. Comparadas 86.474 posições por cópia,
+incluindo MONTAGENS inteira A1:I9543, sem diferenças nos campos lidos.
+Metadados com condicional iguais e abas de teste fechadas. Privados em
+`nuvem-b47/saidas/auditoria-pericias-entidades-20261108/`, ignorados.
+Sem merge, oficiais, jogador, PR31, acesso ou acionadores. PR31 em
+765e3b2. Preservar suportes e escape ANALISE descritos abaixo.
+
 # PR90 revisada e atributos das invocações auditados · 08/11/2026
 
 Leia `r53/diagnostico-android/REVISAO-PR90-E-ATRIBUTOS-2026-11-08.md` e
