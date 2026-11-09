@@ -1,3 +1,20 @@
+# PR92 revisada e Buff/Debuff textual reproduzido · 08/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR92-E-BUFFS-ENTIDADES-2026-11-08.md`
+e `revisao_pr92_buffs_entidades_2026-11-08.json`. PR92 6c9128a sobre
+PR91 b804d1a, dois workflows SUCCESS, sem bloqueio na revisão.
+Preparador reproduziu o plano e as 60 fórmulas já estavam nas QAs.
+
+B/D-N-TEXTO confirmado nas duas descartáveis com colagem real
+em Q21, R26 e P31. Ajuste textual com sinal é aceito e fica visível,
+mas vale zero para Constituição, PV máximo e Vigor. Número pelo
+mesmo caminho aplica o ajuste. Pontos base continuam em nove.
+Próxima frente: corrigir as conversões u/us/ut separadamente da PR92.
+
+Ramo `codex/revisao-pr92-buffs-20261108`, apenas parecer e evidência.
+Privados em `nuvem-b47/saidas/revisao-pr92-buffs-20261108/`.
+Sem merge, oficiais, jogador ou PR31. Preservar o escape ANALISE.
+
 # Colagem de pontos de atributo corrigida · 08/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-COLAGEM-ATRIBUTOS-2026-11-08.md`

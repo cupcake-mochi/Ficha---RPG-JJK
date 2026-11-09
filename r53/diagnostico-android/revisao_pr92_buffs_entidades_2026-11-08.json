@@ -1,0 +1,141 @@
+{
+  "date": "2026-11-08",
+  "review": {
+    "pull_request": 92,
+    "head": "6c9128aad33d346f57a868b2daf2f60e63180dc9",
+    "base": "b804d1a45bbdd83c04411b45b3ed30525ba8eb34",
+    "workflows": {
+      "pull_request": {
+        "run": 42544395671,
+        "result": "success"
+      },
+      "push": {
+        "run": 42544375995,
+        "result": "success"
+      }
+    },
+    "blocking_findings": 0,
+    "local_test": "r53/testes/atributos_entidades.js",
+    "local_test_passed": true,
+    "model_sheets": 26,
+    "model_positions": 280056,
+    "regenerated_delta_byte_identical": true,
+    "installed_formulas_matching_per_copy": 60,
+    "delta_write_requests_sent": 0
+  },
+  "finding": {
+    "id": "B/D-N-TEXTO",
+    "status": "confirmed",
+    "predates_pr": 92,
+    "sheet": "INVOCAÇÕES",
+    "entity": 1,
+    "source": "O21",
+    "destinations": [
+      "Q21",
+      "R26",
+      "P31"
+    ],
+    "normalizations": [
+      "DADOS_INVOC!DQ2",
+      "DADOS_INVOC!DZ2",
+      "DADOS_INVOC!EC2"
+    ],
+    "outputs": [
+      "DADOS_INVOC!FT2",
+      "DADOS_INVOC!GF2",
+      "DADOS_INVOC!GQ2",
+      "DADOS_INVOC!FW2"
+    ],
+    "method": "Colagem de valores pela interface Google Sheets com Ctrl+C e Ctrl+Shift+V, com releitura nativa dos tipos e resultados.",
+    "baseline": {
+      "constitution": 3,
+      "max_hp": 8,
+      "vigor": 3,
+      "points_spent": 9
+    },
+    "scenarios": [
+      {
+        "copy": "Era",
+        "input_type": "stringValue",
+        "input": "-2",
+        "adjustments": [
+          0,
+          0,
+          0
+        ],
+        "constitution": 3,
+        "max_hp": 8,
+        "vigor": 3,
+        "points_spent": 9
+      },
+      {
+        "copy": "Era",
+        "input_type": "numberValue",
+        "input": -2,
+        "adjustments": [
+          -2,
+          -2,
+          -2
+        ],
+        "constitution": 1,
+        "max_hp": 4,
+        "vigor": -1,
+        "points_spent": 9
+      },
+      {
+        "copy": "Ciclo",
+        "input_type": "stringValue",
+        "input": "+2",
+        "adjustments": [
+          0,
+          0,
+          0
+        ],
+        "constitution": 3,
+        "max_hp": 8,
+        "vigor": 3,
+        "points_spent": 9
+      },
+      {
+        "copy": "Ciclo",
+        "input_type": "numberValue",
+        "input": 2,
+        "adjustments": [
+          2,
+          2,
+          2
+        ],
+        "constitution": 5,
+        "max_hp": 12,
+        "vigor": 7,
+        "points_spent": 9
+      }
+    ]
+  },
+  "preservation": {
+    "positions_per_copy": 86596,
+    "montagens_positions_per_copy": 85887,
+    "fixture_positions_per_copy": 17,
+    "compared": [
+      {
+        "copy": "Era",
+        "inputs_restored": true,
+        "scope_differences": 0,
+        "montagens_differences": 0,
+        "metadata_equal": true,
+        "changed_values_restored": 9,
+        "changed_formats_restored": 4
+      },
+      {
+        "copy": "Ciclo",
+        "inputs_restored": true,
+        "scope_differences": 0,
+        "montagens_differences": 0,
+        "metadata_equal": true,
+        "changed_values_restored": 9,
+        "changed_formats_restored": 4
+      }
+    ],
+    "tabs_closed": true
+  }
+}
