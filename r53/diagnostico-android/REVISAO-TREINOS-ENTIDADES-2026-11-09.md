@@ -3,7 +3,8 @@
 Recorte que o parecer da PR90 deixou como próximo: perícias e treinos
 das entidades, seus limites e buffs. Referência: manual de invocações
 no commit `e3058ad` do JJK---Project (`60-invocacoes.md`, igual ao da
-`bbc4428`, última mudança do arquivo). Só parecer, nenhuma fórmula mudou.
+`bbc4428`, última mudança do arquivo). O achado 1 foi corrigido (ver
+"Correção"); o 2 é decisão de regra.
 
 ## A regra
 
@@ -49,6 +50,42 @@ Inteligência da entidade", que pode ser lida como o total. Na prática:
 um Buff de +2 em INT não abre uma perícia a mais, e um Debuff não fecha.
 É uma escolha defensável (buff temporário não daria treino permanente),
 mas é decisão de regra, não bug. Fica para o Mizuki.
+
+## Correção do achado 1
+
+`d_titulo` (DADOS_INVOC!HG2:HG13) ganhou, logo antes de " · nível ":
+
+```
+IF(OR($DVr="Físico";$DVr="Vigor";$DVr="Intelecto";$DVr="Espírito");"";" · REVISAR: escolha o TR treinado")
+```
+
+`$DV` é a mesma caixa que dá a maestria aos quatro TR. O "=" do Sheets
+não diferencia maiúsculas, então "vigor" vale; acento e espaço contam,
+então "Fisico" ou " Vigor" pedem revisão, como pedem na conta do TR. Vaga
+sem nome continua "lugar vazio". A entrada não é reescrita.
+
+O `NivelObtido` grava o título com o aviso de nível e o restaura quando
+alguém edita a coluna. Os 12 pares `antes`/`depois` da coluna 215 em
+`nivel_obtido_valores.json` receberam o mesmo trecho. Sem isso o pacote
+R53 recusava o modelo ("Nível obtido: valor divergente") e a restauração
+apagaria o aviso novo.
+
+Arquivos: `ficha-v01/ficha_invocacoes.py`, plano
+`preparar_tr_treinado.js` → `tr_treinado_delta.json` (12 fórmulas em
+280.056 posições de 26 abas), teste `r53/testes/tr_treinado.js` no smoke.
+
+**Ensaio nas duas QAs, 09/11.** HG2:HG13 conferidas iguais ao `antes`
+(pt_BR) e trocadas pelo `depois`. Na vaga 1, com nome provisório:
+
+| QA | TR treinado | título |
+|---|---|---|
+| Era | vazio | `… · REVISAR: escolha o TR treinado · nível 10 · vida 32 de 32` |
+| Era | Vigor | `… · nível 10 · vida 32 de 32` |
+| Era | Fisico (colado) | `… · REVISAR: escolha o TR treinado · nível 10 …` |
+| Ciclo | vazio | `… · REVISAR: escolha o TR treinado · nível 2 · vida 8 de 8` |
+| Ciclo | Espírito | `… · nível 2 · vida 8 de 8` |
+
+Nome e TR voltaram a vazio; o título voltou a "INVOCAÇÃO 1 · lugar vazio".
 
 ## Fora do recorte
 

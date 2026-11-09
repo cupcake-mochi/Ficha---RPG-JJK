@@ -1,3 +1,15 @@
+# TR treinado das entidades com aviso · 09/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-TREINOS-ENTIDADES-2026-11-09.md`.
+Com nome e `trT` vazio ou fora dos quatro testes, nenhum TR recebia a
+maestria, em silêncio. Corrigido: `d_titulo` (HG2:HG13, 12 fórmulas)
+mostra "REVISAR: escolha o TR treinado", sem reescrever a entrada. O
+`NivelObtido` grava e restaura esse mesmo título; seus 12 pares da coluna
+215 ganharam o trecho, senão o pacote recusava o modelo e a restauração
+apagava o aviso. Geração 4fd2e2ede2c04f51. Ensaiado nas duas QAs (vazio
+e "Fisico" avisam; "Vigor" e "Espírito" limpam), nome e TR repostos.
+Achado 2 (`nper` pelos pontos, não pelo total) segue com o Mizuki.
+
 # Pontos forçados por colagem confirmados · 09/11/2026
 
 Leia `r53/diagnostico-android/REVISAO-PONTOS-FORCADOS-2026-11-09.md`.
