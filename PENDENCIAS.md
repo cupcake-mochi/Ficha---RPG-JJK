@@ -1,3 +1,16 @@
+## Buff/Debuff decimal e leitura diferente entre fichas · 09/11/2026 (Claude) · decisão adiada
+
+Saiu da PR93. O Mizuki escolheu manter as invocações como estão (texto decimal vale 0, número decimal passa)
+e deixar o resto para uma sessão própria, com teste no Sheets.
+- **Leitura diferente:** a ficha do jogador lê Buff/Debuff com `IFERROR(VALUE(buff&""),0)` (defesa, conjuração,
+  CD de feitiço, campanha). Isso aceita texto decimal conforme a região. As invocações aceitam só inteiro ASCII com
+  sinal. A mesma colagem pode contar numa ficha e zerar na outra.
+- **Decimal escondido:** a caixa B/D usa o formato `"B/D "+0`. O número 1,5 entra na conta como 1,5 e aparece
+  "B/D 2". A regra de arredondamento (ESPECIFICACAO-ficha-digital.md, "sempre para o lado que não te favorece")
+  não é aplicada.
+- **Caminhos já levantados:** B, alinhar as invocações com `VALUE(x&"")`; C, Buff/Debuff só inteiro nas duas fichas,
+  com decimal zerado ou arredondado contra o jogador. Os dois mudam mecânica e precisam do ok dele.
+
 ## Talentos grátis: o da Origem e o extra · 03/11/2026 (Claude) · instalado nas duas oficiais (só planilha)
 
 Pedido do Mizuki ("quando uma origem da talento extra, ela registra? E outras fontes?"). Antes, a FICHA AMALDIÇOADA só

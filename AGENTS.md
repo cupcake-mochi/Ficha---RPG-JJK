@@ -1,3 +1,35 @@
+# Pontos forçados por colagem confirmados · 09/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PONTOS-FORCADOS-2026-11-09.md`.
+Colar especial › Só os valores grava qualquer número por cima do menu
+estrito dos pontos. Negativo e fração fecham o orçamento sem aviso; o 7
+só passa sem aviso a partir do nível 18 (deduzido da fórmula). Corrigido:
+`d_pontos` (HL2:HL13, 12 fórmulas) acusa erro e "PONTO FORA DE 0 A 6",
+sem reescrever a entrada. Geração a55595143d33c5e1, só 12 fórmulas no
+modelo. Ensaiado nas duas QAs (negativo e fração acusam, controles
+limpos), delta instalado nelas, pontos repostos. Ramo
+`codex/revisao-pontos-forcados-20261109`, sobre a PR93.
+
+# Colagem de Buff/Debuff corrigida · 09/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-COLAGEM-BUFFS-2026-11-09.md`
+e `buffs_entidades_validacao_2026-11-09.json`. As famílias u, us e ut
+(168 fórmulas DO:DS e DW:EE das 12 entidades) passam a aceitar inteiro
+ASCII com sinal colado como texto; o resto do texto continua zero e o
+caminho numérico permanece. Decimal textual fora, pendente de locale.
+
+Geração 6701a3e4b549d436. Modelo de 280.056 posições e 26 abas: só as
+168 fórmulas mudaram. Pacote integral não gerado nem instalado.
+
+Colagem real pelo menu nas duas QAs: Era `-2` deu CON −2, PV 10,
+Vigor −4; Ciclo `+2` deu CON 2, PV 14, Vigor 4; controles numéricos
+iguais. Entradas e formatos repostos, nota da O21 intacta. MONTAGENS
+só na grade, sem comparação célula a célula. Delta segue instalado.
+
+Ramo `codex/corrige-colagem-buffs-20261109`, sobre a PR92.
+Privados em `nuvem-b47/saidas/correcao-colagem-buffs-20261109/`.
+Sem merge, oficiais, jogador ou PR31.
+
 # Colagem de pontos de atributo corrigida · 08/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-COLAGEM-ATRIBUTOS-2026-11-08.md`

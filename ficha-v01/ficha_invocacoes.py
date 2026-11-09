@@ -75,6 +75,15 @@ def pontos_distribuidos(entrada):
     return f'=IF(ISTEXT({entrada}),IF(REGEXMATCH({entrada},"^[0-6]$"),VALUE({entrada}),0),N({entrada}))'
 
 
+def ajuste_textual(entrada):
+    """Buff/Debuff colado como texto: inteiro ASCII com sinal opcional vale o número.
+
+    Decimais textuais e outros textos seguem valendo zero; números passam por N().
+    """
+    return (f'=IF(ISTEXT({entrada}),IF(REGEXMATCH({entrada},"^[+-]?[0-9]+$"),'
+            f'VALUE(SUBSTITUTE({entrada},"+","")),0),N({entrada}))')
+
+
 COLS = lombada(N_COLUNAS - 1) + PASSO_COL - 1          # a última é o respiro da direita
 PX_COLUNAS = [PX_FINA] * 3 + [PX_CONJ] * N_CONJ + [PX_FINA] + ([PX_FINA] + ([PX_BLOCO] * N_BLOCO + [PX_FINA]) * 3) * N_COLUNAS
 assert len(PX_COLUNAS) == COLS
@@ -455,11 +464,11 @@ def trocas(layout, cor_da_barra=None):
              "reserva": da(g["reserva"]), "exp": da(g["exp"]["degrau"]), "alma": da(g["alma"]), "integ_c": da(g["integ"])}
         for k in range(N_ATR):
             o[f"p{k}"] = pontos_distribuidos(_A(g["pts"][k], IV))
-            o[f"u{k}"] = f"=N({_A(g['buff'][k], IV)})"
+            o[f"u{k}"] = ajuste_textual(_A(g['buff'][k], IV))
         for k in range(5):
-            o[f"us{k}"] = f"=N({_A(g['bstat'][k], IV)})"
+            o[f"us{k}"] = ajuste_textual(_A(g['bstat'][k], IV))
         for k in range(4):
-            o[f"ut{k}"] = f"=N({_A(g['btr'][k], IV)})"
+            o[f"ut{k}"] = ajuste_textual(_A(g['btr'][k], IV))
         for k in range(N_FAM):
             o[f"f{k}"] = da(g["fam"][k])
         for k in range(N_PER):
@@ -555,8 +564,12 @@ def trocas(layout, cor_da_barra=None):
         o["d_mae"] = f"={sinal(MAE)}"
         o["d_ent"] = f'={P("ent")}&" PE"'
         o["d_ret"] = f'={P("ret")}&" PE"'
-        o["d_pontos"] = (f'=IF(OR({P("gastos")}>{P("disp")},{P("acima")}>{P("marc")}),"{T_ERRO} ",IF(AND({tem}=1,{P("gastos")}<{P("disp")}),"{T_AVISO}",""))'
-                         f'&"ATRIBUTOS · "&{P("gastos")}&" DE "&{P("disp")}&" PONTOS"&IF({P("acima")}>{P("marc")}," · ACIMA DE 3 SÓ COM MARCO","")')
+        # 09/11/2026: o menu dos pontos só aceita 0–6, mas Colar especial › Só os valores grava qualquer número por
+        # cima dele. Negativo e fração fechavam o orçamento sem aviso; agora acusam erro, sem reescrever a entrada.
+        fora = "OR(" + ",".join(f'{P(f"p{k}")}<0,{P(f"p{k}")}>6,{P(f"p{k}")}<>INT({P(f"p{k}")})' for k in range(N_ATR)) + ")"
+        o["d_pontos"] = (f'=IF(OR({P("gastos")}>{P("disp")},{P("acima")}>{P("marc")},{fora}),"{T_ERRO} ",IF(AND({tem}=1,{P("gastos")}<{P("disp")}),"{T_AVISO}",""))'
+                         f'&"ATRIBUTOS · "&{P("gastos")}&" DE "&{P("disp")}&" PONTOS"&IF({P("acima")}>{P("marc")}," · ACIMA DE 3 SÓ COM MARCO","")'
+                         f'&IF({fora}," · PONTO FORA DE 0 A 6","")')
         o["d_atq"] = f'=IF({P("atq")}="","",{sinal(P("atq"))})'
         o["d_cd"] = f'=IF({P("cd")}="","",{P("cd")})'
         # 10/10/2026 (B45): a entidade "segue as regras gerais de Carga": acima do limite e até o dobro, metade do
