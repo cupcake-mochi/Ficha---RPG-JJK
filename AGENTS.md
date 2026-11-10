@@ -1,3 +1,10 @@
+# Iniciativa, CD e ataques do jogador auditados · 10/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-COMBATE-JOGADOR-2026-11-10.md`. As cinco fórmulas e a maestria batem com o
+livro R66, e a Kaori no nível 10 bate no Sheets. Achado aberto, com decisão do Mizuki: os menus Z67, AK67 e AE70 não
+são estritos, e vazio ou "FORCA" sem cedilha dá #N/A na caixa e na ANALISE. Constituição no menu de ataque não tem
+fonte no livro. Nenhuma fórmula mudou.
+
 # Ponto fora de 0 a 6 na ficha do jogador · 10/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-PONTOS-FICHA-2026-11-10.md`. O resumo dos pontos (FICHA Z15) e o do
