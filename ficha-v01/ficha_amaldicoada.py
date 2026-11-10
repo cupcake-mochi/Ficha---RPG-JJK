@@ -31,6 +31,7 @@ desenha as rotas sem Fundamento (Técnica Marcial, Sem Técnica e Restrição Ce
 import json, math, os, re
 
 import indice_ficha as ix
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 import ficha_pessoal as fp
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -1407,7 +1408,7 @@ def aba(layout, tr):
     at = [H[f"atributo do grupo {i + 1}"] for i in range(N_GRUPOS)]
     vg = [H[f"valor do grupo {i + 1}"] for i in range(N_GRUPOS)]
     primeiro = lambda xs: f'IF({at[0]}<>"",{xs[0]},IF({at[1]}<>"",{xs[1]},{xs[2]}))'
-    buff_conj, buff_cd = f'IFERROR(VALUE({FF("buff de conjuração")}&""),0)', f'IFERROR(VALUE({FF("buff de cd de feitiço")}&""),0)'
+    buff_conj, buff_cd = leitura_buff(FF("buff de conjuração")), leitura_buff(FF("buff de cd de feitiço"))
     conj_de = lambda v: f'"d20 + "&({MAE}+{v}+{buff_conj})'
     cd_de = lambda v: f'(8+{MAE}+{v}+{buff_cd})'
     pela_arma = lambda um, nenhum: f'IF({NAT}=0,"{nenhum}",IF({NAT}=1,{um},"Por grupo"))'

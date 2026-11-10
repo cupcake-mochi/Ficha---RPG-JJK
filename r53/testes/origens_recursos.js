@@ -10,7 +10,7 @@ assert.throws(()=>vm.runInContext(p.runtime(),ruim),/divergente/);assert.equal(r
 assert.equal(p.runtime(),fs.readFileSync('r53/diagnostico-android/origens_recursos_runtime.gs','utf8'));
 assert.throws(()=>p.prepararCodigo('base errada'),/divergente/);
 const model=vm.createContext({});vm.runInContext(require('../../medidas/carregar-ficha').fontes(),model);
-require('../diagnostico-android/preparar_reserva_bolsa').reverterModelo(model.ABAS);
+require('../diagnostico-android/preparar_buff_decimal').reverterModelo(model.ABAS);require('../diagnostico-android/preparar_reserva_bolsa').reverterModelo(model.ABAS);
 assert.equal(model.SOBRAS_.length,0);
 for(const d of p.plano)assert.equal(model.ABAS.find(a=>a.nome===d.aba).vals.find(v=>v[0]===d.r&&v[1]===d.c)?.[2],d.depois);
 const alterado=JSON.parse(JSON.stringify(model.ABAS)),d=p.plano.at(-1);

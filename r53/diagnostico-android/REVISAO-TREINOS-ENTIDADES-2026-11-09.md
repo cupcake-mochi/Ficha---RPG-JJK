@@ -4,7 +4,7 @@ Recorte que o parecer da PR90 deixou como próximo: perícias e treinos
 das entidades, seus limites e buffs. Referência: manual de invocações
 no commit `e3058ad` do JJK---Project (`60-invocacoes.md`, igual ao da
 `bbc4428`, última mudança do arquivo). O achado 1 foi corrigido (ver
-"Correção"); o 2 é decisão de regra.
+"Correção"); o 2 ficou como está por decisão do Mizuki.
 
 ## A regra
 
@@ -50,6 +50,11 @@ Inteligência da entidade", que pode ser lida como o total. Na prática:
 um Buff de +2 em INT não abre uma perícia a mais, e um Debuff não fecha.
 É uma escolha defensável (buff temporário não daria treino permanente),
 mas é decisão de regra, não bug. Fica para o Mizuki.
+
+**Decisão do Mizuki, 10/11/2026: fica como está.** "n deve liberar a mais,
+a n ser q seja um buff permanente, mas ai n é ai que coloca". O campo
+Buff/Debuff é efeito temporário e não libera perícia; aumento permanente
+entra nos pontos. `nper` continua `4 + INT(p3 / 2)`.
 
 ## Correção do achado 1
 
