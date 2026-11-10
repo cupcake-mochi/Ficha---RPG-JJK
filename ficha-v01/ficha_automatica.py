@@ -459,12 +459,20 @@ def trocas(layout, CAT=None):
         cel["FICHA"][idx[chave]] = (formula, idx[chave])
     for n, _, _ in ix.ATRS:
         poe("atr_" + n, f"={_N(idx['atr_base_' + n])}+{_N(idx['corpo_' + n])}")
+    # 10/11/2026: as caixas de pontos não têm menu; negativo, fração, 7 e "1/2" (vira data) passavam sem aviso.
+    # O resumo acusa sem reescrever a entrada. Texto que não é número continua valendo 0, em silêncio, como nas entidades.
+    # O teto do jogador segue a campanha (a camada de campanha troca o número pela caixa da CONFIGURAÇÃO); o Corpo fica em 6.
+    def fora(prefixo, teto=6):
+        ns = [_N(idx[prefixo + n]) for n, _, _ in ix.ATRS]
+        return "OR(" + ",".join(f"{x}<0,{x}>{teto},{x}<>INT({x})" for x in ns) + ")"
     poe("pontos disponíveis",
-        f'=IF({H_["pontos distribuídos"]}>{H_["pontos de atributo"]},{H_["pontos distribuídos"]}-{H_["pontos de atributo"]}&" a mais",'
+        f'=IF({fora("atr_base_", R["teto_atributo"])},"Ponto fora de 0 a {R["teto_atributo"]}",'
+        f'IF({H_["pontos distribuídos"]}>{H_["pontos de atributo"]},{H_["pontos distribuídos"]}-{H_["pontos de atributo"]}&" a mais",'
         f'IF({H_["maior atributo"]}>{R["teto_atributo"]},"Um atributo passou de {R["teto_atributo"]}",'
         f'IF(AND({H_["marcos que já passou"]}=0,{H_["maior atributo pequeno"]}>{R["teto_criacao"]}),"Na criação, nenhum acima de {R["teto_criacao"]}",'
-        f'{H_["pontos de atributo"]}-{H_["pontos distribuídos"]}&" de "&{H_["pontos de atributo"]})))')
-    poe("pontos de corpo", f'="Pontos de Marco de Corpo Disponíveis - "&{texto(H_["pontos de Corpo usados"], H_["marcos de Corpo"])}')
+        f'{H_["pontos de atributo"]}-{H_["pontos distribuídos"]}&" de "&{H_["pontos de atributo"]}))))')
+    poe("pontos de corpo", f'="Pontos de Marco de Corpo Disponíveis - "&IF({fora("corpo_")},"Ponto fora de 0 a 6",'
+        f'{texto(H_["pontos de Corpo usados"], H_["marcos de Corpo"])})')
     poe("marcos escolhidos",
         f'=IF({H_["marcos escolhidos"]}>{H_["marcos que já passou"]},{H_["marcos escolhidos"]}-{H_["marcos que já passou"]}&" a mais",'
         f'IF({H_["marcos que já passou"]}=0,"Escolha 1 a cada 4 Nv",'

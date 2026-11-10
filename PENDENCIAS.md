@@ -1,3 +1,10 @@
+## Pontos da ficha do jogador sem aviso · 10/11/2026 (Claude) · resolvido em 10/11/2026
+
+As caixas de pontos (D21…AJ21) e de Corpo (AK15:AS15) aceitavam negativo, fração e 7 sem aviso, e "1/2" virava
+"46052 a mais". Agora Z15 e AK14 mostram "Ponto fora de 0 a N" sem reescrever a entrada. Está nas duas QAs.
+Detalhes em `r53/diagnostico-android/CORRECAO-PONTOS-FICHA-2026-11-10.md`. Fica para outra rodada: `ler-analise.py`
+(leitor de teste da raiz) atrasado em relação ao formato atual.
+
 ## Buff/Debuff decimal e leitura diferente entre fichas · 09/11/2026 (Claude) · resolvido em 10/11/2026
 
 **Resolvido (10/11/2026):** o Mizuki escolheu o caminho C, arredondar contra o dono. As duas fichas usam a mesma leitura

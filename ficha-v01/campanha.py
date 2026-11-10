@@ -68,7 +68,7 @@ def trocas(layout, extras=None):
   poe('DADOS',c,s.replace(velho,novo))
  muda_conta('pontos de atributo','=9+',f'={ref("atributos_pontos")}+')
  c=idx['pontos disponíveis'];s=f(c)
- s=s.replace('>6,',f'>{ref("atributos_teto")},').replace('"Um atributo passou de 6"',f'"Um atributo passou de "&{ref("atributos_teto")}')
+ s=s.replace('>6,',f'>{ref("atributos_teto")},').replace('"Um atributo passou de 6"',f'"Um atributo passou de "&{ref("atributos_teto")}').replace('"Ponto fora de 0 a 6"',f'"Ponto fora de 0 a "&{ref("atributos_teto")}')
  s=s.replace('>3)',f'>{ref("atributos_teto_criacao")})').replace('"Na criação, nenhum acima de 3"',f'"Na criação, nenhum acima de "&{ref("atributos_teto_criacao")}')
  poe('FICHA',c,s)
  c=conta('rota do ofício');s=cells['DADOS'][c][1]
