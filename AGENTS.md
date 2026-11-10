@@ -1,3 +1,10 @@
+# Mapa de cobertura do pente-fino · 10/11/2026
+
+Leia `r53/diagnostico-android/MAPA-COBERTURA-2026-11-10.md` antes de escolher o próximo recorte. Nas
+invocações, toda área teve olhar dedicado. Na ficha do jogador, nunca foram olhados: iniciativa, CD e ataques,
+TR, ofícios e as travas da criação contra colagem. Talentos e Aptidões só têm teste local. Quatro testes
+não provam o que parecem (`vida_bloquear_molde`, `menu_origem`, `cartas_custom`, `marcas_custom`).
+
 # Buff/Debuff decimal contra o dono · 10/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-BUFF-DECIMAL-2026-11-10.md`. As duas fichas usam a mesma leitura de
