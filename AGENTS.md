@@ -1,3 +1,11 @@
+# Ponto fora de 0 a 6 na ficha do jogador · 10/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-PONTOS-FICHA-2026-11-10.md`. O resumo dos pontos (FICHA Z15) e o do
+Corpo (AK14) acusam "Ponto fora de 0 a N" quando uma caixa é negativa, fracionada ou passa do teto ("1/2" vira
+data e também acusa). Nada é reescrito nem arredondado; texto não numérico vale 0 em silêncio. O teto dos pontos
+segue a campanha (`DADOS_CONFIG!$S$5`); o do Corpo é 6 fixo. Geração 66aa9dde4fdec0b1: só 2 fórmulas.
+Instalado e ensaiado nas duas QAs, entradas repostas. Bot sem mudança; `ler-analise.py` atrasado, fica para depois.
+
 # Mapa de cobertura do pente-fino · 10/11/2026
 
 Leia `r53/diagnostico-android/MAPA-COBERTURA-2026-11-10.md` antes de escolher o próximo recorte. Nas
