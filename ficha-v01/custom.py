@@ -11,6 +11,7 @@ from copy import deepcopy
 from pathlib import Path
 import indice_ficha as ix
 import livro
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 
 RAIZ = Path(__file__).resolve().parent.parent
 NOME = 'DADOS_CUSTOM'
@@ -552,7 +553,7 @@ def integra(layout,tr,fp):
  des=ref(idx['atr_Destreza'],'FICHA');buff=ref(idx['buff de defesa'],'FICHA')
  teto=f'MIN(IFERROR(VALUE({uteto}&""),9999),{shieldteto})'
  old=cells['FICHA'][idx['defesa']][1]
- put('FICHA',idx['defesa'],f'=IF({customgear},10+MIN({des},{teto})+{ref(protcell,"FICHA")}+IFERROR(VALUE({buff}&""),0),{old[1:]})')
+ put('FICHA',idx['defesa'],f'=IF({customgear},10+MIN({des},{teto})+{ref(protcell,"FICHA")}+{leitura_buff(buff)},{old[1:]})')
  # Invalid selected custom records must not silently fall back to an avulso value.
  # The visible per-card warning and ANALISE publish the cause.
  tr['antes']=antes;tr['depois']=depois

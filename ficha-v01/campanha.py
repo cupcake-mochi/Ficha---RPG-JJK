@@ -14,6 +14,7 @@ from pathlib import Path
 import indice_ficha as ix
 import ficha_automatica
 import livro
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 
 RAIZ = Path(__file__).resolve().parent.parent
 CF = "'CONFIGURAÇÃO'!"
@@ -113,7 +114,7 @@ def trocas(layout, extras=None):
  for n in range(2,31):poe('DADOS',f'{ix._letras(col)}{row+n-1}',f'={DC}!$Z${n+1}')
  c=idx['vida_max'];old=f(c);nivel=_r('FICHA',idx['nivel']);con=_r('FICHA',idx['atr_Constituição'])
  buff=_r('FICHA',idx['buff de vida'])
- nova=f'IF({DC}!$AF$32<>"",NA(),SUM({DC}!$AF$2:$AF$31)+IFERROR(VALUE({buff}&""),0))'
+ nova=f'IF({DC}!$AF$32<>"",NA(),SUM({DC}!$AF$2:$AF$31)+{leitura_buff(buff)})'
  poe('FICHA',c,f'=IF({ref("vida_rolada")}="Não",{old[1:]},{nova})')
  return tr
 

@@ -37,6 +37,7 @@ import json, math, os, re
 import indice_ficha as ix
 import ficha_pessoal as fp
 import ficha_amaldicoada as fa
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NOME = "INVOCAÇÕES"
@@ -76,12 +77,12 @@ def pontos_distribuidos(entrada):
 
 
 def ajuste_textual(entrada):
-    """Buff/Debuff colado como texto: inteiro ASCII com sinal opcional vale o número.
+    """Buff/Debuff da entidade: a mesma leitura da ficha do jogador (leitura_buff).
 
-    Decimais textuais e outros textos seguem valendo zero; números passam por N().
+    Inteiro vale ele mesmo; decimal, digitado ou colado, arredonda contra o dono
+    (10/11/2026); outro texto vale zero.
     """
-    return (f'=IF(ISTEXT({entrada}),IF(REGEXMATCH({entrada},"^[+-]?[0-9]+$"),'
-            f'VALUE(SUBSTITUTE({entrada},"+","")),0),N({entrada}))')
+    return "=" + leitura_buff(entrada)
 
 
 COLS = lombada(N_COLUNAS - 1) + PASSO_COL - 1          # a última é o respiro da direita

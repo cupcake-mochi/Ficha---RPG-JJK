@@ -1,4 +1,12 @@
-## Buff/Debuff decimal e leitura diferente entre fichas · 09/11/2026 (Claude) · decisão adiada
+## Buff/Debuff decimal e leitura diferente entre fichas · 09/11/2026 (Claude) · resolvido em 10/11/2026
+
+**Resolvido (10/11/2026):** o Mizuki escolheu o caminho C, arredondar contra o dono. As duas fichas usam a mesma leitura
+(`ficha-v01/leitura_buff.py`): +1,5 vale +1, +0,5 vale +1, −1,5 vale −2 e −0,5 vale −1. Texto só vale quando é número
+simples, e "1/2" vale 0. Está nas duas QAs. Detalhes em `r53/diagnostico-android/CORRECAO-BUFF-DECIMAL-2026-11-10.md`.
+O formato da caixa B/D não mudou: um 1,5 digitado ainda aparece "B/D 2", embora a conta some 1.
+
+Registro original:
+
 
 Saiu da PR93. O Mizuki escolheu manter as invocações como estão (texto decimal vale 0, número decimal passa)
 e deixar o resto para uma sessão própria, com teste no Sheets.

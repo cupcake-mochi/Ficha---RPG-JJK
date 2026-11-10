@@ -1,3 +1,12 @@
+# Buff/Debuff decimal contra o dono · 10/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-BUFF-DECIMAL-2026-11-10.md`. As duas fichas usam a mesma leitura de
+Buff/Debuff (`ficha-v01/leitura_buff.py`): ganho decimal desce e nunca fica abaixo de 1, custo decimal sobe.
+Texto só vale quando é número simples ("1/2" vale 0). Geração c8c2dae1ce50fa1b: 206 fórmulas, só a troca do
+leitor (FICHA 11, DADOS_AM 5, DADOS_INVOC 168, DADOS_CONFIG 22). A camada `preparar_buff_decimal.reverterModelo`
+vem antes da Reserva/Bolsa nos comparadores históricos. Instalado e ensaiado nas duas QAs, entradas repostas.
+O achado 2 da revisão dos treinos (`nper`) foi decidido: segue pelos pontos.
+
 # TR treinado das entidades com aviso · 09/11/2026
 
 Leia `r53/diagnostico-android/REVISAO-TREINOS-ENTIDADES-2026-11-09.md`.

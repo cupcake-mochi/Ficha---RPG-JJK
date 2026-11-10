@@ -39,6 +39,7 @@ ESCOLHA_CAMINHO = "Escolha seu Caminho"
 ESCOLHA_TRILHA = "Escolha sua Trilha"
 SEM_TECNICA = " · Sem Técnica"
 from ficha_layout import NOME_PORTADOR
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 ROTULOS_CORRIGIDOS = {"Pontos Dísponíveis": "Pontos Disponíveis",
                       "Péricias Dispóniveis": "Perícias Disponíveis",
                       "Ofícios Dispóniveis": "Ofícios Disponíveis",
@@ -115,6 +116,10 @@ def _A(c, aba=""):
 
 def _N(c, aba=""):
     return f'IFERROR(VALUE({_A(c, aba)}&""),0)'
+
+
+def _B(c, aba=""):
+    return leitura_buff(_A(c, aba))
 
 
 def _faixas(celulas):
@@ -542,16 +547,16 @@ def trocas(layout, CAT=None):
         if not b or not idx.get(chave):
             continue
         atual_f = fcel[idx[chave]][1]
-        if not isinstance(atual_f, str) or _N(b) in atual_f:
+        if not isinstance(atual_f, str) or _B(b) in atual_f:
             continue
         m_d20 = re.match(r'^="d20 \+ "\s*&\s*\+?(.*)$', atual_f)
         m_m = re.match(r"^(\d+) m$", atual_f.strip())
         if m_d20:
-            poe(chave, f'="d20 + "&({m_d20.group(1)}+{_N(b)})')
+            poe(chave, f'="d20 + "&({m_d20.group(1)}+{_B(b)})')
         elif m_m:
-            poe(chave, f'=({m_m.group(1)}+{_N(b)})&" m"')
+            poe(chave, f'=({m_m.group(1)}+{_B(b)})&" m"')
         elif atual_f.startswith("="):
-            poe(chave, f"{atual_f}+{_N(b)}")
+            poe(chave, f"{atual_f}+{_B(b)}")
     # o Caminho e a Trilha nascem pedindo a escolha, e a vida e a energia esperam o Caminho
     poe("caminho", ESCOLHA_CAMINHO)
     poe("trilha", ESCOLHA_TRILHA)
@@ -576,8 +581,8 @@ def trocas(layout, CAT=None):
         if not b or not idx.get(k):
             continue
         vf = cel["FICHA"].get(idx[k], (fcel[idx[k]][1],))[0]
-        if isinstance(vf, str) and vf.startswith("=") and _N(b) not in vf:
-            poe(k, f'=IFERROR(({vf[1:]})+{_N(b)},"")')
+        if isinstance(vf, str) and vf.startswith("=") and _B(b) not in vf:
+            poe(k, f'=IFERROR(({vf[1:]})+{_B(b)},"")')
     nome = idx.get("nome")
     if nome:
         cel["FICHA"][nome] = (f'=IF(OR(CARTEIRA!$O$9="",CARTEIRA!$O$9="{NOME_PORTADOR}"),"",CARTEIRA!$O$9)', nome) \
