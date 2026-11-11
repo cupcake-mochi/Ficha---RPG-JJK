@@ -532,11 +532,16 @@ def trocas(layout, CAT=None):
         if idx.get(chave):
             poe(chave, f'=IF({SE}=1,"{R["bencaos_de_graca"][i_ - 1]}","{R["aptidoes_de_graca"][i_ - 1]}")')
     ESP_ = f'AND({H_["especializações"]}>0,{_A(idx["nivel"])}<{R["especializa"]})'
+    # 11/11/2026, achado do Mizuki: cada especialização gasta uma escolha de Corpo no marco (R66, Corpo: "pode
+    # especializar um já treinado, em vez do novo treino"). Sem o Corpo marcado, o contador dizia só "1 a mais".
+    SEM_CORPO_ = f'{H_["especializações"]}>{H_["marcos de Corpo"]}'
+    falta_corpo_ = f'({H_["especializações"]}-{H_["marcos de Corpo"]})'
     for campo, usados, base_, corpo_ in (("perícias disponíveis", p, H_["perícias da rota"], H_["Corpo nas perícias"]),
                                          ("ofícios disponíveis", o, H_["ofícios da rota"], H_["Corpo nos ofícios"])):
         poe(campo, f'=IF({ESP_},"Especialização só no nível {R["especializa"]}",'
+                   f'IF({SEM_CORPO_},"Especialização sem marco de Corpo",'
                    f'IF({H_["treinos a mais"]}>0,{H_["treinos a mais"]}&" a mais",'
-                   f'{base_}+{corpo_}-{usados}&" de "&({base_}+{corpo_})))')
+                   f'{base_}+{corpo_}-{usados}&" de "&({base_}+{corpo_}))))')
     if idx.get("escolhas de perícia"):
         # 17/09/2026: a frase junta o que falta da criacao e do marco de Corpo, sem os itens que sao zero
         def qtd(n, um, varios):
@@ -561,9 +566,11 @@ def trocas(layout, CAT=None):
                  f'{lista([(fp2_, "perícia", "perícias"), (u2_,) + CORPO_])}&" sem ofício","")')
         poe("escolhas de perícia",
             f'=IF({ESP_},"Especialização só no nível {R["especializa"]}: tire a marcação",'
+            f'IF({SEM_CORPO_},"Marcou "&{qtd(falta_corpo_, "especialização", "especializações")}'
+            f'&" sem marco de Corpo: escolha Corpo no Marco Escolhido ou tire a marcação",'
             f'IF({H_["treinos a mais"]}>0,"Marcou "&{H_["treinos a mais"]}&" a mais: tire uma perícia, um ofício ou uma especialização",'
             f'IF({fp_}+{fo_}+{u_}=0,"Tudo escolhido",'
-            f'{o_rota}&{o_dica}&{o_sem})))')
+            f'{o_rota}&{o_dica}&{o_sem}))))')
     poe("testes disponíveis", f'={texto(H_["testes treinados"], str(R["testes"]))}')
     if cab_leque or c4:
         cel["FICHA"][f"{ix._letras(c4)}{lc}"] = (
