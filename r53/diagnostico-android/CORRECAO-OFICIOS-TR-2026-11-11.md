@@ -97,7 +97,8 @@ exato. Era e Ciclo deram **20 de 20**.
 
 - **Fichas já criadas.** O padrão novo vale para ficha nova. Ficha de jogador antiga guarda o que estava no menu.
 - **Oficiais.** Nada foi aplicado nas oficiais. Isso fica para o Mizuki decidir, junto com a mescla da pilha na main.
-- **Especialização sem treino (decisão do Mizuki).** Vale para perícias e ofícios. Na QA Era, E109 marcado com D109
+- **Especialização sem treino:** resolvida no mesmo dia, ver `CORRECAO-ESPECIALIZACAO-2026-11-11.md`.
+  Registro original: Vale para perícias e ofícios. Na QA Era, E109 marcado com D109
   desmarcado deu 3 (maestria 2 + 1), sem gastar vaga de treino. Pelo livro, a especialização só vale em perícia ou
   ofício treinado. Mexer nisso toca umas 34 fórmulas.
 - **Texto em caixa numérica (decisão do Mizuki).** Um "x" colado na caixa de Treino ou Especialização (D80), ou

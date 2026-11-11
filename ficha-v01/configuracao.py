@@ -74,6 +74,36 @@ def avisa_menu(formula, valor, linha):
     return f'=IF({menu_invalido(menu, linha, nomes)},"{AVISO_ATRIBUTO}",{formula[1:]})'
 
 
+# 11/11/2026: pelo livro (R66, Especialização), a especialização só vale em perícia ou ofício treinado. Com a caixa
+# de especialização marcada e a de treino não, a conta somava maestria e meia sem gastar treino. A caixa avisa, por
+# fora do aviso de atributo; com valor fixo da campanha não avisa. "=TRUE" não quebra com texto colado na caixa.
+AVISO_TREINO = "Marque o treino"
+TREINO_E_ESPEC = re.compile(r'IF\((' + _REF + r'), \$D\$67 \+ INT\(\$D\$67 / 2\), IF\((' + _REF + r'), \$D\$67, 0\)\)')
+AVISO_SEM_TREINO = re.compile(r'=IF\(AND\(DADOS_CONFIG!\$C\$(\d+)<>1,(' + _REF + r')=TRUE,(' + _REF + r')<>TRUE\),"'
+                              + AVISO_TREINO + r'",(IF\(.*)\)$')
+
+
+def caixas_de_treino(valor):
+    """(especialização, treino) da conta, ou None quando ela não tem especialização."""
+    pares = set(TREINO_E_ESPEC.findall(valor))
+    if not pares:
+        return None
+    if len(pares) != 1:
+        raise ValueError(f"conta com duas especializações: {sorted(pares)}")
+    return pares.pop()
+
+
+def sem_treino(espec, treino, linha):
+    return f'AND({DADOS}!$C${linha}<>1,{espec}=TRUE,{treino}<>TRUE)'
+
+
+def avisa_treino(formula, valor, linha):
+    achado = caixas_de_treino(valor)
+    if achado is None:
+        raise ValueError("conta sem especialização")
+    return f'=IF({sem_treino(*achado, linha)},"{AVISO_TREINO}",{formula[1:]})'
+
+
 # Limites do corpo real vêm depois dos ajustes numéricos, como a Defesa fixa.
 # A conta normal continua inteira no ramo sem Restrição e dentro do teto do Exaurido.
 MOLDE_DESLOCAMENTO_CORPORAL = (
@@ -174,6 +204,15 @@ def anterior(formula):
     defesa_fixa = DEFESA_FIXA.fullmatch(formula) if isinstance(formula, str) else None
     if defesa_fixa:
         formula = "=" + defesa_fixa[1]
+    treino = AVISO_SEM_TREINO.fullmatch(formula) if isinstance(formula, str) else None
+    if treino:
+        linha, base = int(treino[1]), treino[4]
+        # as duas caixas e a linha da DADOS_CONFIG do aviso têm de ser as da própria conta
+        if caixas_de_treino(base) != (treino[2], treino[3]) or \
+                set(re.findall(r'DADOS_CONFIG!\$[A-E]\$(\d+)', base)) != {str(linha)} or \
+                f'=IF({sem_treino(treino[2], treino[3], linha)},"{AVISO_TREINO}",{base})' != formula:
+            raise ValueError("aviso de especialização sem treino adulterado")
+        formula = "=" + base
     aviso = AVISO_MENU.fullmatch(formula) if isinstance(formula, str) else None
     if aviso:
         linha, menu, base = int(aviso[1]), aviso[2], aviso[4]
@@ -279,6 +318,8 @@ def trocas(layout, pessoal, fam=None):
             formula = f'=IF({cond},0,{formula[1:]})'
         if nome in COM_MENU_DE_ATRIBUTO or opcoes_do_menu(valor):
             formula = avisa_menu(formula, valor, linha)
+        if nome.startswith(("Perícia · ", "Ofício · ")):
+            formula = avisa_treino(formula, valor, linha)
         if nome == "Vida máxima":
             formula = MOLDE_VIDA_QUEBRADICO.format(base=formula[1:], marcante=ref(aba, idx["marcante"]))
         if nome == "Deslocamento":
