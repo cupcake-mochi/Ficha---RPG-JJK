@@ -32,23 +32,46 @@ DEFESA_FIXA = re.compile(r'=IF\(' + re.escape(CONDICAO_DEFESA_FIXA).replace(
     r'\{marcante\}', r"'FICHA'!\$[A-Z]+\$[1-9]\d*") + r',0,(IF\(DADOS_CONFIG!.*)\)$')
 # 10/11/2026: menu de atributo vazio ou fora dos cinco nomes ("FORCA" sem cedilha) quebrava a caixa com #N/A, porque o
 # IFS da conta não tem caso padrão. A caixa avisa, sem reescrever o menu. Com valor fixo da campanha o menu não conta.
+# 11/11/2026: vale para toda conta com menu de atributo no IFS (os onze Ofícios e o TR Físico também). Os nomes aceitos
+# saem do próprio IFS, na ordem dele: o TR Físico aceita só FORÇA e DESTREZA, como o menu dele.
 ATRIBUTOS = ("FORÇA", "DESTREZA", "CONSTITUIÇÃO", "INTELIGÊNCIA", "ESSÊNCIA")
 COM_MENU_DE_ATRIBUTO = ("CD de feitiço", "Conjuração", "Corpo a corpo", "À distância")
 AVISO_ATRIBUTO = "Escolha o atributo"
-MENU_DO_IFS = re.compile(r'IFS\((\$?[A-Z]+\$?[1-9]\d*)="FORÇA",')
-AVISO_MENU = re.compile(r'=IF\(AND\(DADOS_CONFIG!\$C\$(\d+)<>1,NOT\(OR\((\$?[A-Z]+\$?[1-9]\d*)="FORÇA",[^()]*\)\)\),"'
+_REF = r'\$?[A-Z]+\$?[1-9]\d*'
+_NOME = "|".join(ATRIBUTOS)
+MENU_DO_IFS = re.compile(r'IFS\((' + _REF + r')="FORÇA",')
+OPCAO_DO_IFS = re.compile(r'(' + _REF + r')="(' + _NOME + r')"')
+AVISO_MENU = re.compile(r'=IF\(AND\(DADOS_CONFIG!\$C\$(\d+)<>1,NOT\(OR\((' + _REF + r')="FORÇA",([^()]*)\)\)\),"'
                         + AVISO_ATRIBUTO + r'",(IF\(DADOS_CONFIG!.*)\)$')
 
 
-def menu_invalido(menu, linha):
-    return (f'AND({DADOS}!$C${linha}<>1,NOT(OR(' + ",".join(f'{menu}="{a}"' for a in ATRIBUTOS) + ')))')
+def menu_invalido(menu, linha, nomes=ATRIBUTOS):
+    return (f'AND({DADOS}!$C${linha}<>1,NOT(OR(' + ",".join(f'{menu}="{a}"' for a in nomes) + ')))')
+
+
+def opcoes_do_menu(valor):
+    """(menu, nomes) do IFS da conta, ou None quando a conta não tem menu de atributo."""
+    menus = set(MENU_DO_IFS.findall(valor))
+    if not menus:
+        return None
+    if len(menus) != 1:
+        raise ValueError(f"menu de atributo inesperado: {sorted(menus)}")
+    menu = menus.pop()
+    nomes = []
+    for ref_, nome in OPCAO_DO_IFS.findall(valor):
+        if ref_ != menu:
+            raise ValueError(f"IFS com dois menus: {menu} e {ref_}")
+        if nome not in nomes:
+            nomes.append(nome)
+    return menu, tuple(nomes)
 
 
 def avisa_menu(formula, valor, linha):
-    menus = set(MENU_DO_IFS.findall(valor))
-    if len(menus) != 1:
-        raise ValueError(f"menu de atributo inesperado: {sorted(menus)}")
-    return f'=IF({menu_invalido(menus.pop(), linha)},"{AVISO_ATRIBUTO}",{formula[1:]})'
+    achado = opcoes_do_menu(valor)
+    if achado is None:
+        raise ValueError("conta sem menu de atributo")
+    menu, nomes = achado
+    return f'=IF({menu_invalido(menu, linha, nomes)},"{AVISO_ATRIBUTO}",{formula[1:]})'
 
 
 # Limites do corpo real vêm depois dos ajustes numéricos, como a Defesa fixa.
@@ -153,8 +176,11 @@ def anterior(formula):
         formula = "=" + defesa_fixa[1]
     aviso = AVISO_MENU.fullmatch(formula) if isinstance(formula, str) else None
     if aviso:
-        linha, menu, base = int(aviso[1]), aviso[2], aviso[3]
-        if f'=IF({menu_invalido(menu, linha)},"{AVISO_ATRIBUTO}",{base})' != formula:
+        linha, menu, base = int(aviso[1]), aviso[2], aviso[4]
+        # os nomes do aviso têm de ser os do IFS da própria conta, e o menu também
+        achado = opcoes_do_menu(base)
+        if achado is None or achado[0] != menu or \
+                f'=IF({menu_invalido(menu, linha, achado[1])},"{AVISO_ATRIBUTO}",{base})' != formula:
             raise ValueError("aviso do menu de atributo adulterado")
         formula = "=" + base
     if not isinstance(formula, str) or not formula.startswith("=IF(DADOS_CONFIG!"):
@@ -251,7 +277,7 @@ def trocas(layout, pessoal, fam=None):
             # A Defesa fixa do corpo real prevalece sobre os ajustes numéricos da ficha.
             cond = CONDICAO_DEFESA_FIXA.format(marcante=ref(aba, idx["marcante"]))
             formula = f'=IF({cond},0,{formula[1:]})'
-        if nome in COM_MENU_DE_ATRIBUTO:
+        if nome in COM_MENU_DE_ATRIBUTO or opcoes_do_menu(valor):
             formula = avisa_menu(formula, valor, linha)
         if nome == "Vida máxima":
             formula = MOLDE_VIDA_QUEBRADICO.format(base=formula[1:], marcante=ref(aba, idx["marcante"]))
