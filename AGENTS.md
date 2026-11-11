@@ -1,3 +1,11 @@
+# Menu de atributo sem #N/A · 10/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-AVISO-ATRIBUTO-2026-11-10.md`. Com o menu Z67, AK67 ou AE70 vazio ou fora dos
+cinco nomes, a CD, a Conjuração e os ataques (FICHA linha 63) mostram "Escolha o atributo" no lugar do #N/A, sem
+reescrever o menu. Com a caixa fixada pela CONFIGURAÇÃO não avisa. O aviso fica por fora do envoltório da
+configuração (`configuracao.avisa_menu`), e o `anterior` o desfaz. Geração 10101178be8ab3cb, só 4 fórmulas. A camada
+`preparar_aviso_atributo.reverterModelo` vem antes da do Buff decimal nos comparadores. Instalado e ensaiado nas duas QAs.
+
 # Iniciativa, CD e ataques do jogador auditados · 10/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-COMBATE-JOGADOR-2026-11-10.md`. As cinco fórmulas e a maestria batem com o

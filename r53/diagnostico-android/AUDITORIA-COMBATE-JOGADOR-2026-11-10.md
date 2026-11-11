@@ -46,6 +46,8 @@ recorte.
 
 ### 1. Menu de atributo vazio ou escrito errado vira #N/A (erro)
 
+**Resolvido em 10/11/2026** pelo caminho A (aviso na caixa): ver `CORRECAO-AVISO-ATRIBUTO-2026-11-10.md`.
+
 Os três menus (Z67 da técnica, AK67 do corpo a corpo, AE70 da distância) **não são estritos**. A fórmula usa
 `IFS` sem caso padrão, então qualquer valor fora dos cinco nomes quebra a caixa.
 

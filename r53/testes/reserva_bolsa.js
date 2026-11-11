@@ -33,7 +33,7 @@ const invalid=ativa(snapshot(),false,true);set(invalid,'DADOS_CUSTOM',121,2,fals
 for(const mutate of [s=>s.cells.pop(),s=>s.cells.push(clone(s.cells.at(-1))),s=>delete s.cells.at(-1).effective,s=>s.cells.at(-1).effective={errorValue:{type:'N_A'}},s=>s.cells.at(-1).sheetId=999]){
  const s=snapshot();mutate(s);t(()=>assert.throws(()=>p.planejar(s)));
 }
-const ctx=vm.createContext({});vm.runInContext(require('../../medidas/carregar-ficha').fontes(),ctx);t(()=>assert.equal(ctx.SOBRAS_.length,0));require('../diagnostico-android/preparar_buff_decimal').reverterModelo(ctx.ABAS);
+const ctx=vm.createContext({});vm.runInContext(require('../../medidas/carregar-ficha').fontes(),ctx);t(()=>assert.equal(ctx.SOBRAS_.length,0));require('../diagnostico-android/preparar_aviso_atributo').reverterModelo(ctx.ABAS);require('../diagnostico-android/preparar_buff_decimal').reverterModelo(ctx.ABAS);
 const alvo=(a,d)=>{const sh=a.find(a=>a.nome===d.aba);return d.addr?sh.notas.find(x=>x[0]===d.addr)?.[1]:sh.vals.find(x=>x[0]===d.r&&x[1]===d.c)?.[2];};
 for(const d of p.plano)t(()=>assert.equal(alvo(ctx.ABAS,d),d.depois));
 const errado=clone(ctx.ABAS),ult=p.plano.at(-1),sh=errado.find(a=>a.nome===ult.aba);(ult.addr?sh.notas.find(x=>x[0]===ult.addr):sh.vals.find(x=>x[0]===ult.r&&x[1]===ult.c))[ult.addr?1:2]='divergente';const orig=clone(errado);t(()=>assert.throws(()=>p.reverterModelo(errado),/divergente/));t(()=>assert.deepEqual(errado,orig));
