@@ -27,7 +27,7 @@ mostra onde houve olhar dedicado, não que a área está livre de erro.
 | Defesa, equipamento, mãos, carga | Conferida | AUDITORIA-EQUIPAMENTO, AUDITORIA-PASSIVAS-ORIGEM | — |
 | Conjuração e teto por Integridade | Conferida | AUDITORIA-CONJURACAO-INTEGRIDADE | — |
 | Buff/Debuff (os 11 campos) | Conferida | CORRECAO-BUFF-DECIMAL | caixa B/D mostra "B/D 2" para 1,5 (só visual) |
-| Iniciativa, CD de feitiço, ataque corpo a corpo e à distância | Conferida (10/11) | AUDITORIA-COMBATE-JOGADOR | menu de atributo vazio ou sem acento dá #N/A (decisão do Mizuki) |
+| Iniciativa, CD de feitiço, ataque corpo a corpo e à distância | Conferida (10/11) | AUDITORIA-COMBATE-JOGADOR, CORRECAO-AVISO-ATRIBUTO | — |
 | Perícias (23) | Parcial | AUDITORIA-CONSOLIDADA: 69 casos no Sheets em 04/11 | sem colagem de texto ou valor fora do menu |
 | **Testes de Resistência do jogador** | **Nunca olhada** | só os das entidades foram conferidos | treino, maestria e TR treinado do jogador |
 | **Ofícios (11)** | **Nunca olhada** | nenhuma auditoria | contagem, atributo e treino |

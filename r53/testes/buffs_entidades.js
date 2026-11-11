@@ -50,7 +50,7 @@ const casos = [
 for (const [v, esperado] of casos) assert.ok(Object.is(ajuste(v) + 0, esperado + 0), JSON.stringify(v));
 
 // O leitor de 10/11 (buff decimal) é a camada seguinte: descascada antes de comparar com este plano.
-const dados = require('../diagnostico-android/preparar_buff_decimal').reverterModelo(ler('apps-script')).find(a => a.nome === 'DADOS_INVOC');
+const dados = require('../diagnostico-android/preparar_buff_decimal').reverterModelo(require('../diagnostico-android/preparar_aviso_atributo').reverterModelo(ler('apps-script'))).find(a => a.nome === 'DADOS_INVOC');
 const formulas = expandir(dados);
 for (const d of delta) {
   assert.equal(formulas.get(d.r + ':' + d.c), d.depois, 'Modelo e plano divergem em ' + chave(d));
