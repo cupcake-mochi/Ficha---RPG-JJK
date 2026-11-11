@@ -205,6 +205,26 @@ def trocas(layout, CAT=None):
     OFI_T, OFI_E = caixas(CAT["oficios"], 2), caixas(CAT["oficios"], 1)
     TR_T = caixas(trs, 1)
 
+    # --- 11/11/2026: o menu de atributo de cada ofício nasce no atributo padrão da tabela de Ofícios do livro.
+    #     A planilha viva trazia INTELIGÊNCIA nos onze, e a Condução de uma ficha nova somava Inteligência.
+    import livro
+    _, fil_of = livro.tabela(livro.secao("Ofícios"), "Ofício")
+    padrao = {f_[0].strip(): f_[1].strip().upper() for f_ in fil_of if len(f_) >= 2}
+    nomes_atr = {n.upper() for n, _, _ in ix.ATRS}
+    if set(padrao) != {n.strip() for n in CAT["oficios"]} or not set(padrao.values()) <= nomes_atr:
+        raise SystemExit(f"a tabela de Ofícios do manual.txt nao bate com o catalogo: {padrao}")
+    for nome in CAT["oficios"]:
+        c = next(k for k, v in fcel.items() if isinstance(v[1], str) and v[1].strip() == nome)
+        lin, col = ix._lc(c)
+        menus = sorted((ix._lc(k)[1], k) for k, v in fcel.items()
+                       if ix._lc(k)[0] == lin and ix._lc(k)[1] > col and isinstance(v[1], str)
+                       and v[1].strip() in nomes_atr)
+        if not menus:
+            raise SystemExit(f"nao achei o menu de atributo de {nome!r} na FICHA")
+        menu = menus[0][1]
+        if fcel[menu][1] != padrao[nome]:
+            cel["FICHA"][menu] = (padrao[nome], menu)
+
     # --- a area das Passivas: cabecalho, linhas, e as duas a mais. Depois da primeira vez a planilha viva ja
     #     volta dividida e com as linhas novas, e a limpeza so reescreve o cabecalho do Leque.
     classe = sorted((c for c, v in fcel.items() if v[1] == "Classe" and ix._lc(c)[1] > ix._col("U")), key=ix._lc)
