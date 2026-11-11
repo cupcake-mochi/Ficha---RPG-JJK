@@ -49,7 +49,9 @@ else:
     raise SystemExit('aviso adulterado aceito')
 print('ok')
 `;
-assert.equal(execFileSync('python3', ['-c', py], { encoding: 'utf8' }).trim(), 'ok');
+// O configuracao.py importa o openpyxl, que no CI só existe no .venv do smoke.
+const python = require('node:fs').existsSync('.venv/bin/python') ? '.venv/bin/python' : 'python3';
+assert.equal(execFileSync(python, ['-c', py], { encoding: 'utf8' }).trim(), 'ok');
 
 // Instalação: aplicar e reverter nas duas localidades, recusando célula divergente.
 for (const locale of ['pt_BR', 'en_US']) {
