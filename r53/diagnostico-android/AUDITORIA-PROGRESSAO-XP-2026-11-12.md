@@ -34,7 +34,9 @@ onEdit. A caixa de XP continuou com a fórmula `=DADOS!$CZ$47`, e as contas da `
 
 ## Achados
 
-### 1. A missão pode subir mais de um nível (regra, decisão do Mizuki)
+### 1. A missão pode subir mais de um nível (corrigido em 12/11)
+
+O Mizuki pediu a trava. Ver `CORRECAO-TRAVA-NIVEL-MISSAO-2026-11-12.md`.
 
 O R66 diz: "Você avança no máximo um nível por missão concluída". A ficha guarda o XP como total acumulado e põe o
 nível no maior que cabe nele (`salarioNivelQueSobe_` no `Salarios.gs`; `nivelQueSobe_` no `Codigo.gs`). A conta do XP
@@ -66,4 +68,5 @@ mentira com o catálogo: com 400, ele quebra.
 
 ## Fora desta auditoria
 
-Nada mudou na ficha, nas QAs (o ensaio foi reposto) nem nas oficiais. Os achados 1 e 2 esperam a decisão do Mizuki.
+Esta auditoria não mudou a ficha, as QAs (o ensaio foi reposto) nem as oficiais. O achado 1 foi corrigido depois, a
+pedido do Mizuki. O achado 2 espera a decisão dele.
