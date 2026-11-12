@@ -1,3 +1,12 @@
+# A linha congelada · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-XP-LINHA-CONGELADA-2026-11-12.md`. Substitui o nome no registro (#109), a pedido
+do Mizuki. As missões que estavam no painel na hora do XP digitado (FICHA!AN11) ficam congeladas, e nada na linha
+descongela: o mesmo nome, o nome com erro, outra missão ou a caixa vazia não mexem no XP total. Missão nova vai numa
+linha vazia. Para liberar a linha, esvazie a caixa e digite o XP de novo, ou apague a marca. Sai o `salarioMesmoNome_`.
+Preparador `preparar_xp_linha_congelada.js`, no fim da cadeia. Instalado nas duas QAs (`4f6600227cd1`; a Era recebeu
+junto o corte de 25 e o #109) e ensaiado no Ciclo, reposto. A Era tem um ensaio do #109 sem repor, de outra sessão.
+
 # XP congelado preso à mesma missão pelo nome · 12/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-XP-CONGELADO-NOME-2026-11-12.md`. Apagar e redigitar o nome de uma missão

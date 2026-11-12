@@ -124,17 +124,25 @@ const idDe = s => (/\[Salário: ([^\] ·]+) · /.exec(s) || [])[1] || null;
   f.missao('BC15', 'Missão B'); eq(L.total(), 1000); eq(marca(L.nota('BC15')).split(' · ')[0], '200');
   f.missao('BC15', ''); f.missao('BD15', ''); eq(L.total(), 1000); eq(marca(L.nota('BC15')).split(' · ')[0], '0');
 
-  // Missão nova em caixa vazia e na caixa que ficou livre (com outro nome): somam por cima, e a marca sai.
-  f.missao('BI15', 'Missão C'); f.missao('BJ15', 'Padrão'); eq(L.total(), 1100); eq(marca(L.nota('BI15')), null);
-  f.missao('BC15', 'Missão D'); eq(L.total(), 1100, 'nome sem tipo espera'); f.missao('BD15', 'Curta'); eq(L.total(), 1150); eq(L.nivel(), 5);
-  eq(marca(L.nota('BC15')), null, 'missão nova descongela');
+  // 12/11/2026, a linha congelada (pedido do Mizuki): o nome com erro de digitação e outra missão inteira também não
+  // contam. A marca acompanha o XP da caixa.
+  f.missao('BC15', 'Missao B.'); f.missao('BD15', 'Longa'); eq(L.total(), 1000, 'erro de digitação não conta de novo');
+  f.missao('BC15', 'Missão D'); f.missao('BD15', 'Curta'); eq(L.total(), 1000, 'outra missão na linha congelada não conta');
+  eq(marca(L.nota('BC15')).split(' · ')[0], '50'); eq(L.nivel(), 5);
+  // Para liberar a linha: esvaziar a caixa e apagar a marca da nota. Aí a missão nova conta inteira.
+  f.missao('BC15', ''); f.missao('BD15', ''); eq(L.total(), 1000); eq(marca(L.nota('BC15')).split(' · ')[0], '0');
+  f.a.abas['FICHA PESSOAL'].notes.set('15,55', '');
+  f.missao('BC15', 'Missão D'); f.missao('BD15', 'Curta'); eq(L.total(), 1050, 'linha liberada conta'); eq(marca(L.nota('BC15')), null);
+  // Missão nova em caixa vazia: soma por cima.
+  f.missao('BI15', 'Missão C'); f.missao('BJ15', 'Padrão'); eq(L.total(), 1150); eq(marca(L.nota('BI15')), null);
 
-  // Caixa congelada reaproveitada sem apagar o tipo: apagar o nome segura o total; um nome diferente conta a missão inteira.
+  // Caixa congelada reaproveitada sem apagar o tipo: o nome novo também não conta, e o nível não sobe.
   f.missao('AW15', ''); eq(L.total(), 1150);
-  f.missao('AW15', 'Missão E'); eq(L.total(), 1350); eq(L.nivel(), 6, 'missão nova sobe o nível'); eq(marca(L.nota('AW15')), null); assert(idDe(L.nota('AW15')) !== idA); checks++;
+  f.missao('AW15', 'Missão E'); eq(L.total(), 1150, 'nome novo na linha congelada não conta'); eq(L.nivel(), 5);
+  eq(marca(L.nota('AW15')).split(' · ')[0], '200'); assert(idDe(L.nota('AW15')) !== idA); checks++;
 
   // Tipo antes do nome numa caixa nova: o tipo sozinho já conta (como sempre), e o nome não muda nada.
-  f.missao('BP16', 'Curta'); eq(L.total(), 1400); f.missao('BO16', 'Missão F'); eq(L.total(), 1400);
+  f.missao('BP16', 'Curta'); eq(L.total(), 1200); f.missao('BO16', 'Missão F'); eq(L.total(), 1200);
 
   // XP para baixo: o nível desce junto; tudo o que tem XP fica congelado de novo.
   eq(f.xp(500), true); eq(L.total(), 500); eq(L.nivel(), 4); eq(L.caixa(), FORMULA);

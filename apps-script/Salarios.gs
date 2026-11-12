@@ -137,20 +137,16 @@ function salarioRegistrosIntactos_(r,atuais) {
   return true;
 }
 /** 27/10/2026: o XP digitado em cima da caixa de XP da FICHA (r53LivreXp_, no atalho) congela as missões que já tinham
- *  XP: a nota da caixa guarda "[XP congelado: x · id]". Enquanto for a mesma missão, o que mudar no XP dela (tipo,
- *  modificador, apagar) volta para a base da DADOS e o XP total não mexe; a marca acompanha o valor novo. Uma missão nova
- *  na caixa descongela: a parte da antiga sai da base e a nova conta inteira. A base é gravada na hora, antes do XP e do
+ *  XP: a nota da caixa guarda "[XP congelado: x · id]". O que mudar no XP dela (tipo, modificador, apagar) volta para a
+ *  base da DADOS e o XP total não mexe; a marca acompanha o valor novo. A base é gravada na hora, antes do XP e do
  *  nível da edição (salarioMissaoDireta_), e o painel já lido recebe a diferença. Devolve se alguma nota mudou.
- *  12/11/2026 (pedido do Mizuki): apagar o nome de uma congelada e digitar de novo dava outro id, e a missão contava
- *  outra vez. Agora a decisão espera a caixa formar missão (nome e tipo) e lê o registro (`map`, da DADOS_SALARIOS):
- *  com outro id, o mesmo nome do registro dono da marca, na mesma caixa, é a mesma missão; ela segue congelada e a marca
- *  passa para o id novo. O nome é comparado sem diferença de maiúscula, espaço e acento. Nome diferente é missão nova
- *  e conta inteira. A caixa vazia guarda a marca com 0 (antes ela saía), para apagar nome e tipo e redigitar os dois
- *  também não contar de novo. Sem o registro (a edição que não forma missão), a marca só acompanha o valor. */
-function salarioMesmoNome_(a,b) {
-  function n(s){return String(s==null?'':s).replace(/^'/,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toLowerCase();}
-  return n(a)!==''&&n(a)===n(b);
-}
+ *  12/11/2026 (pedido do Mizuki): o congelamento fica preso à linha. Só congela quem estava no painel na hora do XP
+ *  digitado, e o XP digitado já conta com ela. Antes, um id novo na caixa podia descongelar (nome diferente do registro
+ *  dono da marca), e redigitar o nome com um erro de digitação somava o XP de novo. Agora nada na linha descongela:
+ *  o mesmo nome, outro nome, outro tipo ou a caixa vazia, o total não mexe e a marca acompanha o XP da caixa, com 0 na
+ *  caixa vazia, e passa para o id do salário da missão que está nela. Missão nova vai numa linha vazia. Digitar o XP
+ *  de novo tira a marca das caixas vazias (r53LivreXp_), e apagar a marca da nota com a caixa vazia também libera a
+ *  linha. O `map` dos registros não é mais usado; fica na assinatura para a chamada não mudar. */
 function salarioXpCongelado_(ss,atuais,map) {
   var re=/\n?\[XP congelado: (-?[\d.]+)(?: · ([^\]\n]*))?\]/,xp=atuais.xpCaixas,delta=0,mexeu=false;
   for(var i=0;i<73;i++)for(var k=0;k<SALARIO_.colunas.length;k++){
@@ -158,10 +154,8 @@ function salarioXpCongelado_(ss,atuais,map) {
     if(!m)continue;
     if(!xp){var v=ss.getSheetByName('FICHA PESSOAL').getRange(15,49,73,24).getValues();xp={};
       SALARIO_.colunas.forEach(function(c){for(var l=0;l<73;l++)xp[c+':'+(l+15)]=v[l][c-45];});}
-    var x=Number(m[1])||0,dono=m[2]||'',y=Number(xp[chave])||0,nome=(atuais.caixas[chave]||[''])[0];
-    var id=(/\[Salário: ([^\] ·]+) · /.exec(nota)||[])[1]||'',nova,antiga=map&&dono?map[dono]:null;
-    if(id&&id!==dono&&map&&!(antiga&&String(antiga[5]).replace(/^'/,'')===chave&&salarioMesmoNome_(antiga[1],nome))){delta+=x;nova=nota.replace(re,'');}
-    else {var dono2=id&&map?id:dono;delta+=x-y;nova=nota.replace(re,function(s){return (s.charAt(0)==='\n'?'\n':'')+'[XP congelado: '+y+(dono2?' · '+dono2:'')+']';});}
+    var x=Number(m[1])||0,y=Number(xp[chave])||0,id=(/\[Salário: ([^\] ·]+) · /.exec(nota)||[])[1]||m[2]||'';
+    delta+=x-y;var nova=nota.replace(re,function(s){return (s.charAt(0)==='\n'?'\n':'')+'[XP congelado: '+y+(id?' · '+id:'')+']';});
     if(nova!==nota){atuais.notas[i][off]=nova;mexeu=true;}
   }
   if(delta){
