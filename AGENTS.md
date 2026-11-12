@@ -7,6 +7,15 @@ Mizuki, as QAs e o estado delas, e o que está pendente:
 - a auditoria da CONFIGURAÇÃO;
 - as decisões abertas dele.
 
+# CONFIGURAÇÃO auditada contra o R66 · 12/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-CONFIGURACAO-2026-11-12.md`. Nenhum número diverge do R66 (a R67 do mesmo dia só
+mexe na Técnica Máxima). Batem as regras de campanha, o custo de XP, o dado e a vida dos seis Caminhos e as Famílias das
+invocações e da técnica. Ensaio no Ciclo, reposto: o exemplo da Kaori (Bastião, CON 2, 23 de vida) com a vida rolada, e o
+dado acima do d12 dá aviso. Achados abertos, com decisão do Mizuki: as notas citam o R51; "Não autônoma" está fora do
+catálogo `fora_do_livro` e tem o nome que o R66 usa para o corpo sem alma; as notas da vida rolada parecem se
+contradizer; e o Buff/Debuff de vida está em 24 nas duas QAs. Nada mudou na ficha.
+
 # A linha congelada · 12/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-XP-LINHA-CONGELADA-2026-11-12.md`. Substitui o nome no registro (#109), a pedido
