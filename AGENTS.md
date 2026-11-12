@@ -1,3 +1,11 @@
+# Progressão e XP auditados · 12/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-PROGRESSAO-XP-2026-11-12.md`. A curva de XP, o XP das missões, o desconto da
+semana, o arredondamento, o Limiar do nível 20 e os marcos batem com o R66. Ensaio na QA da Era: 20000 de XP para no
+nível 20; o nível 23 digitado (o feito) guarda o XP. Achados abertos, com decisão do Mizuki: a missão com adicional 2x
+pode subir dois níveis (o livro manda no máximo um por missão), e o menu de desconto para no 7º da semana. O
+`xp_atualizar.js` tinha o Final de arco em 400 e agora confere os tipos contra o catálogo. Nada mudou na ficha.
+
 # Frequência por cena nas cartas · 12/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-FREQUENCIA-CENA-2026-11-12.md`. O R66 trocou "uma vez por combate" por "uma vez
