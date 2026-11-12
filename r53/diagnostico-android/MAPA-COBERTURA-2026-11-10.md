@@ -40,7 +40,7 @@ mostra onde houve olhar dedicado, não que a área está livre de erro.
 | Origens, passivas, recursos, imunidades | Conferida | AUDITORIA-ORIGENS-RECURSOS, AUDITORIA-PASSIVAS-ORIGEM, BENCAOS-IMUNIDADES, IMUNIDADE-CUSTOM, MENU-ORIGEM-INVALIDA | — |
 | Talentos e Aptidões (requisitos e vagas) | Conferida (11/11) | CORRECAO-OFICIOS-TR, testes `test_motor`, "Talentos grátis" de 03/11 | limite: "aptidões a mais no teto" supõe a ordem de Refino mais favorável |
 | Condições (13) | Manual por desenho | só Morrendo, Exaurido, Exaustão e Envenenado aparecem nas auditorias | nada, a menos que o Mizuki queira automatizar |
-| Progressão e XP | Conferida contra o R66 (12/11) | AUDITORIA-PROGRESSAO-XP, `xp_atualizar`, `xp_nivel` | curva, missões e limiar batem; ensaio do limiar e do feito na QA da Era; um nível por missão corrigido em 12/11 (CORRECAO-TRAVA-NIVEL-MISSAO); corte do XP abaixo de 25 em 12/11 (CORRECAO-CORTE-XP-25, `corte_xp_missao`), que fecha o desconto do 7º em diante; aberto: o XP congelado que soma de novo ao redigitar o nome |
+| Progressão e XP | Conferida contra o R66 (12/11) | AUDITORIA-PROGRESSAO-XP, `xp_atualizar`, `xp_nivel` | curva, missões e limiar batem; ensaio do limiar e do feito na QA da Era; um nível por missão corrigido em 12/11 (CORRECAO-TRAVA-NIVEL-MISSAO); corte do XP abaixo de 25 em 12/11 (CORRECAO-CORTE-XP-25, `corte_xp_missao`), que fecha o desconto do 7º em diante; XP congelado preso à mesma missão pelo nome em 12/11 (CORRECAO-XP-CONGELADO-NOME, `xp_atualizar`), ensaio nas QAs pendente |
 | CONFIGURAÇÃO e campanha (vida rolada, ajustes) | Parcial | só tocada pela PR96 (leitura do Buff) | sem auditoria dedicada |
 
 ## Invocações (INVOCAÇÕES, DADOS_INVOC)

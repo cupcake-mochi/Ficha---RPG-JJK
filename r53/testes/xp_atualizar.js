@@ -106,15 +106,30 @@ const idDe = s => (/\[Salário: ([^\] ·]+) · /.exec(s) || [])[1] || null;
   f.missao('AX15', 'Longa'); eq(L.total(), 1000); eq(marca(L.nota('AW15')), '200 · ' + idA);
   f.missao('AW15', 'Missão A corrigida'); eq(L.total(), 1000); eq(idDe(L.nota('AW15')), idA, 'corrigir o nome conserva o id');
 
-  // Missão antiga apagada, nome primeiro e tipo depois: o total não mexe em nenhum passo; a marca sai no fim.
+  // 12/11/2026: apagar o nome de uma congelada e digitar o mesmo de novo não conta outra vez (antes: +200). O id muda, a
+  // marca passa para ele e o valor congelado fica. Maiúscula, espaço e acento não fazem outro nome.
   f.missao('BC15', ''); eq(L.total(), 1000); eq(marca(L.nota('BC15')), '200 · ' + idB, 'sem nome, ainda congelada');
-  f.missao('BD15', ''); eq(L.total(), 1000); eq(marca(L.nota('BC15')), null); eq(L.nota('BC15'), '');
+  f.missao('BC15', '  missao   b '); eq(L.total(), 1000, 'o mesmo nome é a mesma missão');
+  const idB2 = idDe(L.nota('BC15')); assert(idB2 && idB2 !== idB); checks++;
+  eq(marca(L.nota('BC15')), '200 · ' + idB2, 'a marca passa para o id novo');
+  f.missao('BD15', 'Padrão'); eq(L.total(), 1000, 'e segue congelada: o tipo novo não mexe'); eq(marca(L.nota('BC15')), '100 · ' + idB2);
+  f.missao('BD15', 'Longa'); eq(L.total(), 1000);
 
-  // Missão nova em caixa vazia e na caixa que ficou livre: somam por cima.
+  // Apagar nome e tipo e redigitar os dois iguais, nas duas ordens: o total não mexe em nenhum passo. A caixa vazia guarda
+  // a marca com 0 (antes ela saía, e a missão redigitada contava inteira).
+  f.missao('BC15', ''); f.missao('BD15', ''); eq(L.total(), 1000); eq(L.nota('BC15'), '[XP congelado: 0 · ' + idB2 + ']');
+  f.missao('BC15', 'Missão B'); eq(L.total(), 1000, 'nome sem tipo espera'); f.missao('BD15', 'Longa'); eq(L.total(), 1000, 'mesma missão não conta de novo');
+  const idB3 = idDe(L.nota('BC15')); eq(marca(L.nota('BC15')), '200 · ' + idB3);
+  f.missao('BC15', ''); f.missao('BD15', ''); f.missao('BD15', 'Longa'); eq(L.total(), 1000, 'tipo sem nome: a marca acompanha');
+  f.missao('BC15', 'Missão B'); eq(L.total(), 1000); eq(marca(L.nota('BC15')).split(' · ')[0], '200');
+  f.missao('BC15', ''); f.missao('BD15', ''); eq(L.total(), 1000); eq(marca(L.nota('BC15')).split(' · ')[0], '0');
+
+  // Missão nova em caixa vazia e na caixa que ficou livre (com outro nome): somam por cima, e a marca sai.
   f.missao('BI15', 'Missão C'); f.missao('BJ15', 'Padrão'); eq(L.total(), 1100); eq(marca(L.nota('BI15')), null);
-  f.missao('BC15', 'Missão D'); f.missao('BD15', 'Curta'); eq(L.total(), 1150); eq(L.nivel(), 5);
+  f.missao('BC15', 'Missão D'); eq(L.total(), 1100, 'nome sem tipo espera'); f.missao('BD15', 'Curta'); eq(L.total(), 1150); eq(L.nivel(), 5);
+  eq(marca(L.nota('BC15')), null, 'missão nova descongela');
 
-  // Caixa congelada reaproveitada sem apagar o tipo: apagar o nome segura o total; o nome novo conta a missão inteira.
+  // Caixa congelada reaproveitada sem apagar o tipo: apagar o nome segura o total; um nome diferente conta a missão inteira.
   f.missao('AW15', ''); eq(L.total(), 1150);
   f.missao('AW15', 'Missão E'); eq(L.total(), 1350); eq(L.nivel(), 6, 'missão nova sobe o nível'); eq(marca(L.nota('AW15')), null); assert(idDe(L.nota('AW15')) !== idA); checks++;
 
