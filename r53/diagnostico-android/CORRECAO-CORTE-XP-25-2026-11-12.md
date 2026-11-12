@@ -79,7 +79,9 @@ pela API, num pedido só por planilha:
 | Era (`1LBZOf9v…`) | **292 de 292** | BA15, BG50 e BS87 com o corte; CR9 "7ª ou mais", CS9 0, CR15:CS15 vazias |
 | Ciclo (`1HQqGOVG…`) | **292 de 292** | idem |
 
-**Codigo instalado (`SALARIO_MISSOES_MOLDES_`): PENDENTE.** O Claude in Chrome não estava conectado. Sem essa troca,
+**Codigo instalado (`SALARIO_MISSOES_MOLDES_`): instalado depois, em 12/11.** No Ciclo, por outra sessão. Na Era, junto
+com a linha congelada (`CORRECAO-XP-LINHA-CONGELADA-2026-11-12.md`): `b5861c145394` → `c175d8389dce`, 292 moldes.
+O texto abaixo é de quando estava pendente. O Claude in Chrome não estava conectado. Sem essa troca,
 quem apagar uma fórmula do TOTAL recebe de volta o molde antigo. O trecho está pronto:
 
 ```bash

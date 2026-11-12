@@ -1,3 +1,12 @@
+# Continuar daqui · 12/11/2026
+
+Sessão nova, em qualquer máquina: leia `r53/diagnostico-android/PROMPT-CONTINUAR-2026-11-12.md`. Ele tem as regras do
+Mizuki, as QAs e o estado delas, e o que está pendente:
+- o pacote do dia 12/11 nas oficiais, com o ok dele;
+- o aviso na nota da missão congelada, opcional;
+- a auditoria da CONFIGURAÇÃO;
+- as decisões abertas dele.
+
 # A linha congelada · 12/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-XP-LINHA-CONGELADA-2026-11-12.md`. Substitui o nome no registro (#109), a pedido
@@ -5,7 +14,7 @@ do Mizuki. As missões que estavam no painel na hora do XP digitado (FICHA!AN11)
 descongela: o mesmo nome, o nome com erro, outra missão ou a caixa vazia não mexem no XP total. Missão nova vai numa
 linha vazia. Para liberar a linha, esvazie a caixa e digite o XP de novo, ou apague a marca. Sai o `salarioMesmoNome_`.
 Preparador `preparar_xp_linha_congelada.js`, no fim da cadeia. Instalado nas duas QAs (`4f6600227cd1`; a Era recebeu
-junto o corte de 25 e o #109) e ensaiado no Ciclo, reposto. A Era tem um ensaio do #109 sem repor, de outra sessão.
+junto o corte de 25 e o #109) e ensaiado no Ciclo, reposto. O ensaio do #109 que sobrou na Era foi reposto.
 
 # XP congelado preso à mesma missão pelo nome · 12/11/2026
 
