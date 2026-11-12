@@ -25,7 +25,7 @@ for (const d of delta.filter(d => p.CONTAS[d.r + ':' + d.c])) assert.ok(d.depois
 const tabela = livro.slice(livro.indexOf('Ofício | Atributo padrão | Aplicações'));
 const padrao = Object.fromEntries(tabela.split('\n').slice(1, 12).map(l => l.split(' | ')).map(([o, a]) => [o, a.toUpperCase()]));
 assert.equal(Object.keys(padrao).length, 11);
-const abas = require('../diagnostico-android/preparar_especializacao').reverterModelo(require('../diagnostico-android/preparar_texto_extra').reverterModelo(ler('apps-script'))); // a camada da especialização vem depois
+const abas = require('../diagnostico-android/preparar_especializacao').reverterModelo(require('../diagnostico-android/preparar_texto_extra').reverterModelo(require('../diagnostico-android/preparar_corte_xp_missao').reverterModelo(ler('apps-script')))); // a camada da especialização vem depois
 const ficha = () => expandir(abas.find(a => a.nome === 'FICHA'));
 const f = ficha();
 for (const [nome, atr] of Object.entries(padrao)) {

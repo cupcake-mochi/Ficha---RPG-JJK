@@ -31,7 +31,7 @@ assert.ok(curto.indexOf('só no nível 10') < curto.indexOf('sem marco de Corpo'
 assert.ok(delta.find(d => d.r === 105 && d.c === 37).depois.includes('" sem marco de Corpo: escolha Corpo no Marco Escolhido ou tire a marcação"'));
 
 // O modelo gerado bate com o depois; a camada se descasca de volta ao antes, atomicamente.
-const abas = require('../diagnostico-android/preparar_texto_extra').reverterModelo(ler('apps-script'));
+const abas = require('../diagnostico-android/preparar_texto_extra').reverterModelo(require('../diagnostico-android/preparar_corte_xp_missao').reverterModelo(ler('apps-script')));
 const ficha = () => expandir(abas.find(a => a.nome === 'FICHA'));
 for (const d of delta) assert.equal(ficha().get(d.r + ':' + d.c), d.depois, 'Modelo e plano divergem');
 const errado = structuredClone(abas);

@@ -40,7 +40,7 @@ mostra onde houve olhar dedicado, não que a área está livre de erro.
 | Origens, passivas, recursos, imunidades | Conferida | AUDITORIA-ORIGENS-RECURSOS, AUDITORIA-PASSIVAS-ORIGEM, BENCAOS-IMUNIDADES, IMUNIDADE-CUSTOM, MENU-ORIGEM-INVALIDA | — |
 | Talentos e Aptidões (requisitos e vagas) | Conferida (11/11) | CORRECAO-OFICIOS-TR, testes `test_motor`, "Talentos grátis" de 03/11 | limite: "aptidões a mais no teto" supõe a ordem de Refino mais favorável |
 | Condições (13) | Manual por desenho | só Morrendo, Exaurido, Exaustão e Envenenado aparecem nas auditorias | nada, a menos que o Mizuki queira automatizar |
-| Progressão e XP | Conferida contra o R66 (12/11) | AUDITORIA-PROGRESSAO-XP, `xp_atualizar`, `xp_nivel` | curva, missões e limiar batem; ensaio do limiar e do feito na QA da Era; um nível por missão corrigido em 12/11 (CORRECAO-TRAVA-NIVEL-MISSAO); aberto para o Mizuki: o desconto do 8º em diante |
+| Progressão e XP | Conferida contra o R66 (12/11) | AUDITORIA-PROGRESSAO-XP, `xp_atualizar`, `xp_nivel` | curva, missões e limiar batem; ensaio do limiar e do feito na QA da Era; um nível por missão corrigido em 12/11 (CORRECAO-TRAVA-NIVEL-MISSAO); corte do XP abaixo de 25 em 12/11 (CORRECAO-CORTE-XP-25, `corte_xp_missao`), que fecha o desconto do 7º em diante; aberto: o XP congelado que soma de novo ao redigitar o nome |
 | CONFIGURAÇÃO e campanha (vida rolada, ajustes) | Parcial | só tocada pela PR96 (leitura do Buff) | sem auditoria dedicada |
 
 ## Invocações (INVOCAÇÕES, DADOS_INVOC)
@@ -84,5 +84,5 @@ Ordem sugerida, pelo tamanho do estrago se o erro existir:
 3. ~~**TR e ofícios do jogador.**~~ Auditado e consertado em 11/11 (CORRECAO-OFICIOS-TR).
 4. ~~**Talentos e Aptidões.**~~ Auditado em 11/11: requisitos batem com o R66.
 5. ~~**Caminhos e Trilhas.**~~ Auditado em 11/11 contra o R66 (AUDITORIA-CAMINHOS-TRILHAS): números batem; as cinco cartas com frequência antiga foram corrigidas em 12/11.
-6. ~~**Progressão e XP.**~~ Auditado em 12/11 contra o R66 (AUDITORIA-PROGRESSAO-XP): números batem; a trava de um nível por missão entrou em 12/11; o desconto do 8º espera o Mizuki.
+6. ~~**Progressão e XP.**~~ Auditado em 12/11 contra o R66 (AUDITORIA-PROGRESSAO-XP): números batem; a trava de um nível por missão entrou em 12/11; o corte de 25 XP (12/11) resolveu o desconto do 7º em diante.
 7. **Consertar os testes quebrados ou pulados.** Dois consertados em 11/11; sobram `cartas_custom`/`marcas_custom` (manuais) e a regressão da Kaori (LibreOffice).
