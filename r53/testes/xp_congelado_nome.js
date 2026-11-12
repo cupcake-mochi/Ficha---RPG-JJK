@@ -6,7 +6,10 @@ const fs = require('node:fs'), assert = require('node:assert'), vm = require('no
 const P = require('../diagnostico-android/preparar_xp_congelado_nome');
 let checks = 0;
 const eq = (a, b, m) => { assert.deepStrictEqual(a, b, m); checks++; };
-const agora = fs.readFileSync('apps-script/Salarios.gs', 'utf8');
+// Desde a linha congelada (preparar_xp_linha_congelada.js, depois deste na cadeia), o salário deste passo é o de agora
+// sem ela.
+const L = require('../diagnostico-android/preparar_xp_linha_congelada');
+const agora = L.aplicar(fs.readFileSync('apps-script/Salarios.gs', 'utf8'), L.PARES.map(([a, b]) => [b, a]), 'sem a linha congelada');
 const volta = P.PARES.map(([a, b]) => [b, a]);
 const antes = P.aplicar(agora, volta, 'reverter');
 eq(P.preparar(antes), agora, 'o preparador leva o salário de antes ao de agora');

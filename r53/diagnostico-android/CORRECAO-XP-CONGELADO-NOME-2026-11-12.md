@@ -1,5 +1,7 @@
 # XP congelado preso à mesma missão pelo nome · 12/11/2026
 
+**Substituído no mesmo dia pela linha congelada** (`CORRECAO-XP-LINHA-CONGELADA-2026-11-12.md`), a pedido do Mizuki.
+
 Pedido do Mizuki. O caso foi confirmado na QA da Era (3900 → 4100).
 
 ## O problema

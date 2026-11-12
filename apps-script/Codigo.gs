@@ -258,7 +258,8 @@ function notasDeRegra_(ss, idx) {
          'Progressão. Para trocar o XP inteiro, digite o número novo em cima desta caixa: ele vira o XP total, ' +
          'o nível acompanha (até o 20; dali em diante o livro pede um feito) e a conta volta para a caixa. As ' +
          'missões que já estavam no painel ficam congeladas, como mostra a nota da caixa delas: mudar ou apagar ' +
-         'uma delas não mexe mais no XP. As novas somam por cima. Apagar esta caixa só devolve a conta.',
+         'uma delas não mexe mais no XP, e uma missão nova escrita por cima de uma linha congelada também não ' +
+         'conta. Anote as novas numa linha vazia: elas somam por cima. Apagar esta caixa só devolve a conta.',
     'trocou por arma': 'Só vale pra Guia, Emanador e Evocador. Cada troca é 2 das 5 perícias ' +
                        'livres do Caminho por treino numa arma específica — não a categoria, não ' +
                        'o tipo, uma arma da lista. Pode repetir até 2 vezes.',
