@@ -64,7 +64,11 @@ fica congelada e não conta. Basta dar um nome diferente.
 
 **Smoke completo:** 162 OK, saída 0.
 
-## QAs: PENDENTE
+## QAs: instalado depois (12/11)
+
+No Ciclo, por outra sessão (`6ecbe5931682`). Na Era, junto com a linha congelada, que substituiu esta regra. O ensaio
+desta regra na Era ficou sem repor e foi reposto na sessão da linha congelada. O texto abaixo é de quando estava
+pendente.
 
 O ensaio no Sheets e a instalação no Codigo das duas QAs não foram feitos. O Claude in Chrome estava desconectado, e o
 navegador do app não tinha a conta Google. Falta, quando o Chrome voltar:

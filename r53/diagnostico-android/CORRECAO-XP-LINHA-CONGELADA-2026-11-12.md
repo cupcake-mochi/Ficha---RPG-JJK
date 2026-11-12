@@ -107,8 +107,11 @@ O nível voltou a 2 e o XP a 0.
 
 **A Era não foi usada no ensaio.** O painel dela tinha as missões "Ensaio A" (congelada) e "Ensaio D", com o XP em 4100
 e a base em 3850. Os registros "Ensaio A" a "D" estão no `DADOS_SALARIOS`. É o ensaio do #109, de outra sessão, e não
-foi reposto. Fica para quem fez repor, ou para o Mizuki liberar. O estado de partida era nível 10, XP 3700, painel vazio
+foi reposto. O estado de partida era nível 10, XP 3700, painel vazio
 e só a linha 2 no `DADOS_SALARIOS`.
+
+**Reposto depois, em 12/11:** AW15:AX15 e BC15:BD15 limpas, com as notas; as linhas 3 a 6 do `DADOS_SALARIOS`
+limpas; `DADOS!CZ54` = 3700 e `FICHA!AH11` = 10. Conferido: nível 10, XP 3700.
 
 ## Fora deste conserto
 
