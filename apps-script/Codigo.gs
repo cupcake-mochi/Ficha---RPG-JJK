@@ -247,7 +247,8 @@ function notasDeRegra_(ss, idx) {
     'treinado em armas': 'Automático pelo Caminho, sem escolha: Bastião, Vanguarda e Incursor treinam as ' +
                          'treze categorias; Guia, Emanador e Evocador treinam só Arma de Fogo e Balestra.',
     'nivel': 'Editável a qualquer hora, sem aviso. Anotar uma missão na FICHA PESSOAL sobe o nível ' +
-             'sozinho, pela curva do capítulo Progressão, até o 20: dali em diante o livro pede um feito, e ' +
+             'sozinho, pela curva do capítulo Progressão, no máximo um nível por missão (o XP que sobra fica ' +
+             'guardado para a próxima), até o 20: dali em diante o livro pede um feito, e ' +
              'quem sobe é você. As missões nunca descem o nível (o XP digitado na caixa de XP leva o nível junto, ' +
              'para cima ou para baixo), e quem não usa XP sobe aqui na mão. Escrever o ' +
              'nível acerta o XP: subindo, ele vai para o começo do nível novo; descendo, guarda a mesma parte do ' +
@@ -871,10 +872,12 @@ function nivelDoXp_(tabela, xp) {
  * nível por anotar uma missão. E ele para no limiar do feito (o 20 do livro) enquanto o personagem não
  * passou dele: "Você chega ao nível 20 por XP. Você passa dele por feito." Quem já passou sobe normalmente.
  */
-function nivelQueSobe_(tabela, xp, atual, limiar) {
+function nivelQueSobe_(tabela, xp, atual, limiar, teto) {
   var alvo = nivelDoXp_(tabela, xp);
   if (alvo === null) return null;
   if (limiar && atual <= limiar) alvo = Math.min(alvo, limiar);
+  // 12/11/2026, livro R66: "no máximo um nível por missão concluída". Abaixo da curva, o teto é a primeira linha dela.
+  if (teto !== undefined && teto !== null && tabela.length) alvo = Math.min(alvo, Math.max(teto, Number(tabela[0].nivel)));
   return alvo > atual ? alvo : null;
 }
 
@@ -947,7 +950,8 @@ function nivelPelaMissao_(ss, dados, ip) {
   var cn = cel_(indiceDosDados_(dados), 'nivel');
   if (!cn) return;
   var caixa = ss.getSheetByName('FICHA').getRange(cn);
-  var sobe = nivelQueSobe_(tabela, total, Number(caixa.getValue()) || 0, limiar);
+  // Este caminho só roda sem o Salarios.gs, que conta as missões da edição; aqui é um nível por edição.
+  var atual = Number(caixa.getValue()) || 0, sobe = nivelQueSobe_(tabela, total, atual, limiar, atual + 1);
   if (sobe !== null) caixa.setValue(sobe);
 }
 

@@ -1,3 +1,11 @@
+# Um nível por missão · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-TRAVA-NIVEL-MISSAO-2026-11-12.md`. Livro R66: no máximo um nível por missão. No
+painel de missões, só a edição que mexe no nome ou no tipo sobe o nível, no máximo um por missão tocada
+(`salarioMissoesDaEdicao_`); o adicional e o desconto sozinhos guardam o XP. O feito e o XP ou nível digitados à mão
+continuam livres. Mudança no Salarios.gs entra como preparador da cadeia (`preparar_trava_nivel_missao.js`, depois do
+`preparar_xp_atualizar.js`). Instalado e ensaiado nas duas QAs, entradas repostas.
+
 # Progressão e XP auditados · 12/11/2026
 
 Leia `r53/diagnostico-android/AUDITORIA-PROGRESSAO-XP-2026-11-12.md`. A curva de XP, o XP das missões, o desconto da
