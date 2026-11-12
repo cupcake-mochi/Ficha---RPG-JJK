@@ -1,3 +1,13 @@
+# Corte do XP da missão abaixo de 25 · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CORTE-XP-25-2026-11-12.md`. Regra da casa, fora do livro (catálogo
+`fora_do_livro.xp_minimo_da_missao`): a missão cujo XP final fica abaixo de 25 paga 0, cada missão por si, e vale para
+as já anotadas. O menu de desconto tem 10 linhas ("7ª ou mais" com fração 0); a CR15:CS15 fica vazia para a faixa não
+mudar. Geração c86ee6159f0e8463: 292 fórmulas do TOTAL, 4 caixas da DADOS e 8 notas. Os moldes do salário mudam no json
+e no Salarios.gs pela mesma troca (`preparar_corte_xp_missao.js`); a camada entra por dentro da do texto no Extra nos
+comparadores. Fórmulas, menu e notas instalados e ensaiados nas duas QAs; o `SALARIO_MISSOES_MOLDES_` do Codigo das QAs
+ficou pendente (Chrome desconectado).
+
 # Um nível por missão · 12/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-TRAVA-NIVEL-MISSAO-2026-11-12.md`. Livro R66: no máximo um nível por missão. No
