@@ -71,7 +71,8 @@ atributos na tabela de Caminhos (`DADOS`, `custom_progressao.py`, `ANALISE`).
 
 ## Decisões do Mizuki
 
-1. Corrigir as cinco cartas para "uma vez por cena" (regra do R66).
+1. ~~Corrigir as cinco cartas para "uma vez por cena" (regra do R66).~~ Feito em 12/11
+   (`CORRECAO-FREQUENCIA-CENA-2026-11-12.md`).
 2. Atualizar todo o texto da ficha para a redação do R66. Isso pede:
    - manual.txt novo;
    - o extrator ajustado aos títulos do R66;
