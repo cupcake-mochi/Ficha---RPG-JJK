@@ -387,7 +387,7 @@ var ABAS_DO_CUSTOM = [
     "paleta_fixa":true,
     "caixas":[],
     "depois":"GLOSSÁRIO",
-    "geracao":"4f2d24aa29003eb4",
+    "geracao":"7201a34fd878a19c",
     "arquivo":"Custom.gs"
   }
 ];

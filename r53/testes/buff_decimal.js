@@ -27,7 +27,7 @@ const py = execFileSync('python3', ['-c', 'import sys; sys.path.insert(0, sys.ar
 assert.equal(py, p.leitor('$X$9'));
 
 // O modelo gerado bate com o depois; a camada se descasca de volta ao antes, atomicamente.
-const abas = require('../diagnostico-android/preparar_aviso_atributo').reverterModelo(require('../diagnostico-android/preparar_menu_oficios').reverterModelo(require('../diagnostico-android/preparar_especializacao').reverterModelo(ler('apps-script')))); // a camada do aviso de atributo (10/11) vem por cima
+const abas = require('../diagnostico-android/preparar_aviso_atributo').reverterModelo(require('../diagnostico-android/preparar_menu_oficios').reverterModelo(require('../diagnostico-android/preparar_especializacao').reverterModelo(require('../diagnostico-android/preparar_texto_extra').reverterModelo(ler('apps-script'))))); // a camada do aviso de atributo (10/11) vem por cima
 for (const d of delta) assert.equal(expandir(abas.find(a => a.nome === d.aba)).get(d.r + ':' + d.c), d.depois);
 const errado = structuredClone(abas);
 // Estraga a última célula da FICHA: as outras abas já conferidas não podem ficar meio revertidas.

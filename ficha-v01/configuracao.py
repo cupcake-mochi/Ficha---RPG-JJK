@@ -104,6 +104,49 @@ def avisa_treino(formula, valor, linha):
     return f'=IF({sem_treino(*achado, linha)},"{AVISO_TREINO}",{formula[1:]})'
 
 
+# 11/11/2026: texto numa caixa de número ("dois" no Extra) ou de marcar ("x" colado em Trein ou Espec) dava #VALUE!
+# no total de perícias, ofícios e TRs. A caixa avisa (decisão do Mizuki), por fora dos outros avisos; com valor fixo
+# da campanha não avisa. O ISERROR repete a operação da conta: um "2" colado como texto soma como número e não avisa.
+AVISO_EXTRA = "Extra só aceita número"
+AVISO_CAIXA = "Apague o texto em Trein/Espec"
+_SOLTA = re.compile(r'(?<![$!A-Za-z_\d])([A-Z]+[1-9]\d*)(?![\d(])')
+AVISO_TEXTO_EXTRA = re.compile(r'=IF\(AND\(DADOS_CONFIG!\$C\$(\d+)<>1,ISERROR\((' + _REF + r')\+0\)\),"'
+                               + AVISO_EXTRA + r'",(IF\(.*)\)$')
+AVISO_TEXTO_CAIXA = re.compile(r'=IF\(AND\(DADOS_CONFIG!\$C\$(\d+)<>1,OR\(ISERROR\(IF\((' + _REF + r'),0,0\)\),'
+                               r'ISERROR\(IF\((' + _REF + r'),0,0\)\)\)\),"' + AVISO_CAIXA + r'",(IF\(.*)\)$')
+
+
+def extra_da_conta(valor):
+    """A caixa Extra: a única referência relativa da conta que não é menu, treino nem especialização."""
+    fora = set(caixas_de_treino(valor) or ())
+    menu = opcoes_do_menu(valor)
+    if menu:
+        fora.add(menu[0])
+    soltas = set(_SOLTA.findall(valor)) - fora
+    if len(soltas) != 1:
+        raise ValueError(f"conta sem um Extra só: {sorted(soltas)}")
+    return soltas.pop()
+
+
+def texto_no_extra(extra, linha):
+    return f'AND({DADOS}!$C${linha}<>1,ISERROR({extra}+0))'
+
+
+def texto_na_caixa(espec, treino, linha):
+    return f'AND({DADOS}!$C${linha}<>1,OR(ISERROR(IF({treino},0,0)),ISERROR(IF({espec},0,0))))'
+
+
+def avisa_texto(formula, valor, linha):
+    caixas = caixas_de_treino(valor)
+    if caixas:
+        formula = f'=IF({texto_na_caixa(*caixas, linha)},"{AVISO_CAIXA}",{formula[1:]})'
+    return f'=IF({texto_no_extra(extra_da_conta(valor), linha)},"{AVISO_EXTRA}",{formula[1:]})'
+
+
+def _so_da_linha(base, linha):
+    return set(re.findall(r'DADOS_CONFIG!\$[A-E]\$(\d+)', base)) == {str(linha)}
+
+
 # Limites do corpo real vêm depois dos ajustes numéricos, como a Defesa fixa.
 # A conta normal continua inteira no ramo sem Restrição e dentro do teto do Exaurido.
 MOLDE_DESLOCAMENTO_CORPORAL = (
@@ -204,6 +247,21 @@ def anterior(formula):
     defesa_fixa = DEFESA_FIXA.fullmatch(formula) if isinstance(formula, str) else None
     if defesa_fixa:
         formula = "=" + defesa_fixa[1]
+    texto = AVISO_TEXTO_EXTRA.fullmatch(formula) if isinstance(formula, str) else None
+    if texto:
+        linha, base = int(texto[1]), texto[3]
+        # o Extra e a linha da DADOS_CONFIG do aviso têm de ser os da própria conta
+        if extra_da_conta(base) != texto[2] or not _so_da_linha(base, linha) or \
+                f'=IF({texto_no_extra(texto[2], linha)},"{AVISO_EXTRA}",{base})' != formula:
+            raise ValueError("aviso de texto no Extra adulterado")
+        formula = "=" + base
+    texto = AVISO_TEXTO_CAIXA.fullmatch(formula) if isinstance(formula, str) else None
+    if texto:
+        linha, treino_, espec, base = int(texto[1]), texto[2], texto[3], texto[4]
+        if caixas_de_treino(base) != (espec, treino_) or not _so_da_linha(base, linha) or \
+                f'=IF({texto_na_caixa(espec, treino_, linha)},"{AVISO_CAIXA}",{base})' != formula:
+            raise ValueError("aviso de texto em Trein/Espec adulterado")
+        formula = "=" + base
     treino = AVISO_SEM_TREINO.fullmatch(formula) if isinstance(formula, str) else None
     if treino:
         linha, base = int(treino[1]), treino[4]
@@ -320,6 +378,8 @@ def trocas(layout, pessoal, fam=None):
             formula = avisa_menu(formula, valor, linha)
         if nome.startswith(("Perícia · ", "Ofício · ")):
             formula = avisa_treino(formula, valor, linha)
+        if nome.startswith(("Perícia · ", "Ofício · ", "TR · ")):
+            formula = avisa_texto(formula, valor, linha)
         if nome == "Vida máxima":
             formula = MOLDE_VIDA_QUEBRADICO.format(base=formula[1:], marcante=ref(aba, idx["marcante"]))
         if nome == "Deslocamento":

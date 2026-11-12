@@ -101,7 +101,8 @@ exato. Era e Ciclo deram **20 de 20**.
   Registro original: Vale para perícias e ofícios. Na QA Era, E109 marcado com D109
   desmarcado deu 3 (maestria 2 + 1), sem gastar vaga de treino. Pelo livro, a especialização só vale em perícia ou
   ofício treinado. Mexer nisso toca umas 34 fórmulas.
-- **Texto em caixa numérica (decisão do Mizuki).** Um "x" colado na caixa de Treino ou Especialização (D80), ou
+- **Texto em caixa numérica:** resolvido no mesmo dia, ver `CORRECAO-TEXTO-EXTRA-2026-11-11.md`. Registro
+  original: Um "x" colado na caixa de Treino ou Especialização (D80), ou
   "dois" escrito no Extra (R81), dá #VALUE! no total da perícia. Os Extras dos ofícios e dos TRs devem fazer o mesmo.
 - **Limite dos Talentos (só registro).** O cálculo de "aptidões a mais no teto" supõe a ordem de Refino mais
   favorável, porque a ficha não sabe em que ordem o jogador escolheu.

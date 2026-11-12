@@ -28,9 +28,9 @@ mostra onde houve olhar dedicado, não que a área está livre de erro.
 | Conjuração e teto por Integridade | Conferida | AUDITORIA-CONJURACAO-INTEGRIDADE | — |
 | Buff/Debuff (os 11 campos) | Conferida | CORRECAO-BUFF-DECIMAL | caixa B/D mostra "B/D 2" para 1,5 (só visual) |
 | Iniciativa, CD de feitiço, ataque corpo a corpo e à distância | Conferida (10/11) | AUDITORIA-COMBATE-JOGADOR, CORRECAO-AVISO-ATRIBUTO | — |
-| Perícias (23) | Parcial | AUDITORIA-CONSOLIDADA: 69 casos no Sheets em 04/11; CORRECAO-OFICIOS-TR (11/11) | especialização sem treino e sem marco de Corpo avisam desde 11/11 (CORRECAO-ESPECIALIZACAO); falta decidir texto no Extra (#VALUE!) |
-| Testes de Resistência do jogador | Conferida (11/11) | CORRECAO-OFICIOS-TR | Físico com menu fora de FORÇA/DESTREZA avisa desde 11/11 |
-| Ofícios (11) | Conferida (11/11) | CORRECAO-OFICIOS-TR | padrão do livro, aviso de atributo e especialização sem treino consertados; #VALUE! do Extra igual às perícias |
+| Perícias (23) | Conferida (11/11) | AUDITORIA-CONSOLIDADA: 69 casos no Sheets em 04/11; CORRECAO-OFICIOS-TR, CORRECAO-ESPECIALIZACAO e CORRECAO-TEXTO-EXTRA (11/11) | especialização sem treino, sem marco de Corpo e texto no Extra ou em Trein/Espec avisam na caixa desde 11/11 |
+| Testes de Resistência do jogador | Conferida (11/11) | CORRECAO-OFICIOS-TR, CORRECAO-TEXTO-EXTRA | Físico com menu fora de FORÇA/DESTREZA e texto no Extra avisam desde 11/11 |
+| Ofícios (11) | Conferida (11/11) | CORRECAO-OFICIOS-TR, CORRECAO-ESPECIALIZACAO, CORRECAO-TEXTO-EXTRA | padrão do livro, aviso de atributo, especialização sem treino e texto no Extra ou em Trein/Espec consertados |
 | Travas da criação do jogador (pontos, atributos) | Conferida (10/11) | CORRECAO-PONTOS-FICHA (PR98) | — |
 | Montagem de feitiço, custo, Classe, Formas, Famílias | Conferida | 89 casos do motor R53 e as auditorias de 06/11 e 07/11 (alcance, cura, tempo, Rajada, Frágil, Fica, Sem Volta, devoluções, restrições, forma e função, Mira/Corrói) | — |
 | Classe 0 e Prática Cotidiana | Conferida | AUDITORIA-CLASSE-ZERO, CORRECAO-PRATICA-COTIDIANA | — |

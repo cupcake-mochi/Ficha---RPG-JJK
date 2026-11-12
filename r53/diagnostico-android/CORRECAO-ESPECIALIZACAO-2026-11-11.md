@@ -72,6 +72,6 @@ A instalação usou `findReplace` literal na célula inteira, uma célula por pe
 
 ## Fora deste conserto
 
-- **Texto em caixa numérica.** Um "dois" no Extra ainda dá #VALUE! no total. Fica para decisão do Mizuki: aviso ou
-  ler o texto como 0.
+- **Texto em caixa numérica.** Resolvido no mesmo dia, com aviso na caixa (decisão do Mizuki): ver
+  `CORRECAO-TEXTO-EXTRA-2026-11-11.md`.
 - **Oficiais.** Nada foi aplicado. Isso fica para o Mizuki, junto com a mescla da pilha na main.
