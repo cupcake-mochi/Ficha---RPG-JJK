@@ -36,7 +36,7 @@ mostra onde houve olhar dedicado, não que a área está livre de erro.
 | Classe 0 e Prática Cotidiana | Conferida | AUDITORIA-CLASSE-ZERO, CORRECAO-PRATICA-COTIDIANA | — |
 | Repertório normal e das Trilhas | Conferida | AUDITORIA-REPERTORIO-NORMAL, AUDITORIA-REPERTORIO-TRILHA | — |
 | Liberações Máximas | Conferida | CORRECAO-LIBERACOES | — |
-| Caminhos e Trilhas | Parcial | testes locais `caminho_*` (smoke) | sem auditoria no Sheets |
+| Caminhos e Trilhas | Conferida contra o R66 (11/11) | AUDITORIA-CAMINHOS-TRILHAS | cinco cartas dizem "por combate" e o R66 diz "por cena"; texto da ficha na redação do R53 (decisão do Mizuki) |
 | Origens, passivas, recursos, imunidades | Conferida | AUDITORIA-ORIGENS-RECURSOS, AUDITORIA-PASSIVAS-ORIGEM, BENCAOS-IMUNIDADES, IMUNIDADE-CUSTOM, MENU-ORIGEM-INVALIDA | — |
 | Talentos e Aptidões (requisitos e vagas) | Conferida (11/11) | CORRECAO-OFICIOS-TR, testes `test_motor`, "Talentos grátis" de 03/11 | limite: "aptidões a mais no teto" supõe a ordem de Refino mais favorável |
 | Condições (13) | Manual por desenho | só Morrendo, Exaurido, Exaustão e Envenenado aparecem nas auditorias | nada, a menos que o Mizuki queira automatizar |
@@ -83,4 +83,5 @@ Ordem sugerida, pelo tamanho do estrago se o erro existir:
 2. ~~**Iniciativa, CD e ataques.**~~ Auditado em 10/11 (AUDITORIA-COMBATE-JOGADOR). São números de toda rodada de combate, e o único teste é a Kaori, fora do smoke.
 3. ~~**TR e ofícios do jogador.**~~ Auditado e consertado em 11/11 (CORRECAO-OFICIOS-TR).
 4. ~~**Talentos e Aptidões.**~~ Auditado em 11/11: requisitos batem com o R66.
-5. **Consertar os testes quebrados ou pulados.** Dois consertados em 11/11; sobram `cartas_custom`/`marcas_custom` (manuais) e a regressão da Kaori (LibreOffice).
+5. ~~**Caminhos e Trilhas.**~~ Auditado em 11/11 contra o R66 (AUDITORIA-CAMINHOS-TRILHAS): números batem; cinco cartas com frequência antiga.
+6. **Consertar os testes quebrados ou pulados.** Dois consertados em 11/11; sobram `cartas_custom`/`marcas_custom` (manuais) e a regressão da Kaori (LibreOffice).

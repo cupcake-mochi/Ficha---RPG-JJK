@@ -2,7 +2,8 @@
 
 Pente fino pedido pelo Mizuki em 11/11 ("passe um pente fino verificando e resolva"). Foram três áreas do
 `MAPA-COBERTURA-2026-11-10.md` que ainda não tinham auditoria no jogador: Testes de Resistência, Ofícios, e
-Talentos e Aptidões. A referência é o livro R66 (`manual.txt`).
+Talentos e Aptidões. A referência é o livro R66. O `manual.txt` do repositório é o R53, e as regras usadas aqui são
+iguais nas duas versões (`AUDITORIA-CAMINHOS-TRILHAS-2026-11-11.md`).
 
 ## O que estava certo
 
