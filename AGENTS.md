@@ -1,3 +1,12 @@
+# XP congelado preso à mesma missão pelo nome · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-XP-CONGELADO-NOME-2026-11-12.md`. Apagar e redigitar o nome de uma missão
+congelada (XP digitado na FICHA!AN11) não conta mais de novo: com outro id, o mesmo nome do registro dono da marca
+(DADOS_SALARIOS, mesma caixa) mantém o congelamento e passa a marca; nome diferente conta inteira. Comparação sem
+maiúscula, espaço e acento (`salarioMesmoNome_`); a caixa vazia guarda a marca com 0; só decide quando a caixa forma
+missão, no caminho que lê os registros (`map`). Preparador `preparar_xp_congelado_nome.js`, no fim da cadeia. QAs
+pendentes (Chrome desconectado): instalar o trecho e ensaiar na Era.
+
 # Corte do XP da missão abaixo de 25 · 12/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-CORTE-XP-25-2026-11-12.md`. Regra da casa, fora do livro (catálogo

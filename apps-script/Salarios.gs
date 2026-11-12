@@ -137,12 +137,21 @@ function salarioRegistrosIntactos_(r,atuais) {
   return true;
 }
 /** 27/10/2026: o XP digitado em cima da caixa de XP da FICHA (r53LivreXp_, no atalho) congela as missões que já tinham
- *  XP: a nota da caixa guarda "[XP congelado: x · id]". Enquanto for a mesma missão (o mesmo id do salário, ou a caixa
- *  sem nome), o que mudar no XP dela (tipo, modificador, apagar) volta para a base da DADOS e o XP total não mexe; a
- *  marca acompanha o valor novo e sai quando a caixa sem nome zera. Uma missão nova na caixa (outro id) descongela: a
- *  parte da antiga sai da base e a nova conta inteira. A base é gravada na hora, antes do XP e do nível da edição
- *  (salarioMissaoDireta_), e o painel já lido recebe a diferença. Devolve se alguma nota mudou. */
-function salarioXpCongelado_(ss,atuais) {
+ *  XP: a nota da caixa guarda "[XP congelado: x · id]". Enquanto for a mesma missão, o que mudar no XP dela (tipo,
+ *  modificador, apagar) volta para a base da DADOS e o XP total não mexe; a marca acompanha o valor novo. Uma missão nova
+ *  na caixa descongela: a parte da antiga sai da base e a nova conta inteira. A base é gravada na hora, antes do XP e do
+ *  nível da edição (salarioMissaoDireta_), e o painel já lido recebe a diferença. Devolve se alguma nota mudou.
+ *  12/11/2026 (pedido do Mizuki): apagar o nome de uma congelada e digitar de novo dava outro id, e a missão contava
+ *  outra vez. Agora a decisão espera a caixa formar missão (nome e tipo) e lê o registro (`map`, da DADOS_SALARIOS):
+ *  com outro id, o mesmo nome do registro dono da marca, na mesma caixa, é a mesma missão; ela segue congelada e a marca
+ *  passa para o id novo. O nome é comparado sem diferença de maiúscula, espaço e acento. Nome diferente é missão nova
+ *  e conta inteira. A caixa vazia guarda a marca com 0 (antes ela saía), para apagar nome e tipo e redigitar os dois
+ *  também não contar de novo. Sem o registro (a edição que não forma missão), a marca só acompanha o valor. */
+function salarioMesmoNome_(a,b) {
+  function n(s){return String(s==null?'':s).replace(/^'/,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toLowerCase();}
+  return n(a)!==''&&n(a)===n(b);
+}
+function salarioXpCongelado_(ss,atuais,map) {
   var re=/\n?\[XP congelado: (-?[\d.]+)(?: · ([^\]\n]*))?\]/,xp=atuais.xpCaixas,delta=0,mexeu=false;
   for(var i=0;i<73;i++)for(var k=0;k<SALARIO_.colunas.length;k++){
     var col=SALARIO_.colunas[k],off=col-49,chave=col+':'+(i+15),nota=String(atuais.notas[i][off]||''),m=re.exec(nota);
@@ -150,9 +159,9 @@ function salarioXpCongelado_(ss,atuais) {
     if(!xp){var v=ss.getSheetByName('FICHA PESSOAL').getRange(15,49,73,24).getValues();xp={};
       SALARIO_.colunas.forEach(function(c){for(var l=0;l<73;l++)xp[c+':'+(l+15)]=v[l][c-45];});}
     var x=Number(m[1])||0,dono=m[2]||'',y=Number(xp[chave])||0,nome=(atuais.caixas[chave]||[''])[0];
-    var id=(/\[Salário: ([^\] ·]+) · /.exec(nota)||[])[1]||'',nova;
-    if(nome&&id!==dono){delta+=x;nova=nota.replace(re,'');}
-    else {delta+=x-y;nova=!nome&&!y?nota.replace(re,''):nota.replace(re,function(s){return (s.charAt(0)==='\n'?'\n':'')+'[XP congelado: '+y+(dono?' · '+dono:'')+']';});}
+    var id=(/\[Salário: ([^\] ·]+) · /.exec(nota)||[])[1]||'',nova,antiga=map&&dono?map[dono]:null;
+    if(id&&id!==dono&&map&&!(antiga&&String(antiga[5]).replace(/^'/,'')===chave&&salarioMesmoNome_(antiga[1],nome))){delta+=x;nova=nota.replace(re,'');}
+    else {var dono2=id&&map?id:dono;delta+=x-y;nova=nota.replace(re,function(s){return (s.charAt(0)==='\n'?'\n':'')+'[XP congelado: '+y+(dono2?' · '+dono2:'')+']';});}
     if(nova!==nota){atuais.notas[i][off]=nova;mexeu=true;}
   }
   if(delta){
@@ -196,7 +205,7 @@ function salarioSincronizar_(ss,estado,hoje,baseline,adiar,agrupar,edicao) {
     if(atuais.notas[m.row][m.off]!==note){atuais.notas[m.row][m.off]=note;notesChanged=true;}
   });
   atuais.limpar.forEach(function(p){atuais.notas[p[0]][p[1]]=semMarca(atuais.notas[p[0]][p[1]]);notesChanged=true;});
-  if(salarioXpCongelado_(ss,atuais))notesChanged=true;
+  if(salarioXpCongelado_(ss,atuais,map))notesChanged=true;
   old.forEach(function(r){if(!seen[r[0]]&&r[4]===true){r[4]=false;changed=true;}});
   old.gravar=function(){
     if(changed&&old.length){
