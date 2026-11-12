@@ -40,7 +40,7 @@ mostra onde houve olhar dedicado, não que a área está livre de erro.
 | Origens, passivas, recursos, imunidades | Conferida | AUDITORIA-ORIGENS-RECURSOS, AUDITORIA-PASSIVAS-ORIGEM, BENCAOS-IMUNIDADES, IMUNIDADE-CUSTOM, MENU-ORIGEM-INVALIDA | — |
 | Talentos e Aptidões (requisitos e vagas) | Conferida (11/11) | CORRECAO-OFICIOS-TR, testes `test_motor`, "Talentos grátis" de 03/11 | limite: "aptidões a mais no teto" supõe a ordem de Refino mais favorável |
 | Condições (13) | Manual por desenho | só Morrendo, Exaurido, Exaustão e Envenenado aparecem nas auditorias | nada, a menos que o Mizuki queira automatizar |
-| Progressão e XP | Parcial | `xp_atualizar`, `xp_nivel` (local) | sem auditoria no Sheets |
+| Progressão e XP | Conferida contra o R66 (12/11) | AUDITORIA-PROGRESSAO-XP, `xp_atualizar`, `xp_nivel` | curva, missões e limiar batem; ensaio do limiar e do feito na QA da Era; abertos para o Mizuki: um nível por missão (com adicional 2x a ficha pula dois) e o desconto do 8º em diante |
 | CONFIGURAÇÃO e campanha (vida rolada, ajustes) | Parcial | só tocada pela PR96 (leitura do Buff) | sem auditoria dedicada |
 
 ## Invocações (INVOCAÇÕES, DADOS_INVOC)
@@ -84,4 +84,5 @@ Ordem sugerida, pelo tamanho do estrago se o erro existir:
 3. ~~**TR e ofícios do jogador.**~~ Auditado e consertado em 11/11 (CORRECAO-OFICIOS-TR).
 4. ~~**Talentos e Aptidões.**~~ Auditado em 11/11: requisitos batem com o R66.
 5. ~~**Caminhos e Trilhas.**~~ Auditado em 11/11 contra o R66 (AUDITORIA-CAMINHOS-TRILHAS): números batem; as cinco cartas com frequência antiga foram corrigidas em 12/11.
-6. **Consertar os testes quebrados ou pulados.** Dois consertados em 11/11; sobram `cartas_custom`/`marcas_custom` (manuais) e a regressão da Kaori (LibreOffice).
+6. ~~**Progressão e XP.**~~ Auditado em 12/11 contra o R66 (AUDITORIA-PROGRESSAO-XP): números batem; dois achados de regra esperam o Mizuki.
+7. **Consertar os testes quebrados ou pulados.** Dois consertados em 11/11; sobram `cartas_custom`/`marcas_custom` (manuais) e a regressão da Kaori (LibreOffice).

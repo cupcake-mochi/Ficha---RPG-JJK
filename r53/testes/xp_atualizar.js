@@ -12,7 +12,15 @@ const eq = (a, b, m) => { assert.deepStrictEqual(a, b, m); checks++; };
 const raiz = path.resolve(__dirname, '..', '..');
 const salarios = fs.readFileSync(path.join(raiz, 'apps-script/Salarios.gs'), 'utf8');
 const atalho = fs.readFileSync(path.join(raiz, 'r53/atalho_livre.gs'), 'utf8');
-const TIPOS = { 'Curta': 50, 'Padrão': 100, 'Longa': 200, 'Final de arco': 400, 'Solo simples': 75, 'Solo complexa': 150 };
+const TIPOS = { 'Curta': 50, 'Padrão': 100, 'Longa': 200, 'Final de arco': 300, 'Solo simples': 75, 'Solo complexa': 150 };
+// O XP de cada tipo é o do catálogo (capítulo Progressão, mais as missões solo da guilda): a ficha de mentira não
+// pode ficar com um número que a DADOS não tem (12/11/2026: o Final de arco estava 400, o livro diz 300).
+{
+  const cat = JSON.parse(fs.readFileSync(path.join(raiz, 'catalogo-projeto-m.json'), 'utf8'));
+  const doCatalogo = Object.assign({}, ...Object.entries(cat.missoes.tamanho).map(([k, v]) => ({ [k.charAt(0).toUpperCase() + k.slice(1)]: v })),
+    cat.fora_do_livro.missoes_solo);
+  eq(TIPOS, doCatalogo, 'o XP dos tipos de missão é o do catálogo');
+}
 const COLS = [49, 55, 61, 67], FORMULA = '=DADOS!$CZ$47';
 
 // ---------- 1. As peças soltas ----------
