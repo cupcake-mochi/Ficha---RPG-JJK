@@ -1,3 +1,12 @@
+# Frequência por cena nas cartas · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FREQUENCIA-CENA-2026-11-12.md`. O R66 trocou "uma vez por combate" por "uma vez
+por cena" em cinco habilidades (Especial Combinada, Resposta Técnica da Dupla, Um Passo à Frente, Sentença Final,
+Trajetória Perfeita). As oito frases moram em `r53/textos_revisados.py` (`FREQUENCIA_POR_CENA`), e o
+`extrair_habilidades.py` as aplica sobre o manual R53, parando se uma frase sumir ou sobrar "por combate". Nas QAs, o
+`instalar_frequencia_cena.js` troca as frases no módulo R53 e no caminho leve do `Codigo.gs`, conferindo os dois
+hashes. Instalado e ensaiado nas duas QAs, entradas repostas.
+
 # Menu de atributo sem #N/A · 10/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-AVISO-ATRIBUTO-2026-11-10.md`. Com o menu Z67, AK67 ou AE70 vazio ou fora dos
