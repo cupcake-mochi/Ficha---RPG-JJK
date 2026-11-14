@@ -35,8 +35,20 @@ Ensaio no Ciclo, visto no Chrome:
 | Q31 | 3 | branca |
 | R31 (outra faixa) | 2,5 | âmbar |
 
-Valores repostos e relidos (todos "B/D 0"; AJ224 vazio). As fichas da segunda coluna estavam recolhidas e não foram
-vistas, mas a regra é a mesma, com a mesma âncora.
+Valores repostos e relidos (todos "B/D 0"; AJ224 vazio). As outras fichas estavam recolhidas e não foram vistas;
+a seção abaixo conta o que isso escondeu.
+
+## Conserto no mesmo dia: as faixas das fichas 2 a 6
+
+A fonte (`ficha_invocacoes.py`) monta as faixas com a geometria real do gerador e estava certa. Mas os endereços
+escritos à mão no `Invocacoes.gs` e nas QAs saíram de um script avulso que chamou o `linha_da_fileira` fora do
+gerador. Ele deu fichas a cada 198 linhas (21, 219, 417…), e o certo é a cada 231 (21, 252, 483…), como os
+`redutores`. Nas fichas 2 a 6 de cada coluna, a regra caía em outras células. Texto não pinta, então nada ficou
+errado na tela, mas o aviso não aparecia nessas fichas.
+
+Corrigido a partir dos `redutores` do próprio `Invocacoes.gs`: linha da caixa ± + 8, + 13 e + 18, com colunas O:S
+(AH:AL na segunda coluna). Conferido na QA da Era que AH1176, AH1181 e AH1186 são caixas B/D. A regra foi trocada
+(`updateConditionalFormatRule`, índice 3) nas duas QAs.
 
 ## Oficiais
 
