@@ -60,6 +60,11 @@ function corDeEstado_(ss, idx) {
     regras.push(SpreadsheetApp.newConditionalFormatRule()
       .whenFormulaSatisfied(formula50)
       .setFontColor('#D89B3A').setRanges([alvo]).build());
+    // 14/11/2026: a caixa de ± com número ainda não foi aplicada; se ficar assim, a edição se perdeu (a nota explica)
+    var delta = cel_(idx, r + '_delta');
+    if (delta) regras.push(SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=' + delta + '<>""')
+      .setBackground('#D89B3A').setFontColor('#FFFFFF').setRanges([ficha.getRange(delta)]).build());
   });
   // 17/09/2026: as caixas de X de Y ficam vermelhas quando a conta avisa que passou. O texto do aviso
   // sai da fórmula da própria caixa, e estes trechos são os que ela escreve.
@@ -283,6 +288,13 @@ function notasDeRegra_(ss, idx) {
   });
   notas['buff de deslocamento'] = 'Soma no deslocamento, em metros, o que nenhuma outra caixa cobre. ' +
                                   'Número negativo reduz.';
+  // 14/11/2026, pedido do Mizuki ("Sim, faz o aviso"): o Google às vezes descarta uma edição numa rajada, e o número
+  // fica parado na caixa sem ser aplicado. A caixa de ± com número fica âmbar (corDeEstado_), e a nota explica.
+  ['vida', 'energia', 'integridade'].forEach(function (k) {
+    notas[k + '_delta'] = 'Escreva −9 ou +5 e aperte Enter: a ficha aplica no atual e limpa a caixa. A perda gasta o ' +
+                         'temporário primeiro.' +
+                         ' Enquanto o número está aqui, a caixa fica âmbar: ainda não foi aplicado. Se continuar depois de um minuto, ele se perdeu (o Google às vezes descarta edições rápidas em sequência): confira o atual e digite de novo.';
+  });
   var n = 0;
   // A aba é lida uma vez (valor, fórmula e nota), as notas são postas na matriz e a matriz volta numa gravação só.
   var lido = ficha.getDataRange(), valores = lido.getValues(), formulas = lido.getFormulas(), postas = lido.getNotes();

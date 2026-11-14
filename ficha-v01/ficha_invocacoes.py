@@ -935,7 +935,8 @@ NOTAS = {
               "desvantagem, porque a entidade não tem treino em armas.",
     "pericias": "4 + metade da Inteligência, para baixo. O número ao lado é o atributo da perícia mais a sua maestria.",
     "delta": "Escreva −9 ou +5 e aperte Enter: a ficha aplica na vida atual e limpa a caixa. A perda gasta a vida temporária "
-             "primeiro, e a vida não passa da máxima.",
+             "primeiro, e a vida não passa da máxima."
+             " Enquanto o número está aqui, a caixa fica âmbar: ainda não foi aplicado. Se continuar depois de um minuto, ele se perdeu (o Google às vezes descarta edições rápidas em sequência): confira o atual e digite de novo.",
     "vida_atual": "Nasce cheia, igual à máxima, e a acompanha até você escrever aqui ou usar a caixa de ±. Em branco, a vida "
                   "conta como cheia. Curar não funciona a zero: use o retorno ou o descanso longo.",
     "alma": "O corpo amaldiçoado não autônomo não tem alma: é imune ao dano de Alma e não tem Integridade. O autônomo, com alma, "
@@ -1366,6 +1367,9 @@ def aba(layout, tr):
     bd0 = tr["fichas_c"][0]["buff"][0]
     condicional.append({"faixas": [f"{g[k][0]}:{g[k][-1]}" for g in tr["fichas_c"] for k in ("buff", "bstat", "btr")],
                         "formula": f"=N({bd0})<>INT(N({bd0}))", "fonte": AMBAR})
+    # 14/11/2026: a caixa de ± com número ainda não foi aplicada; se ficar assim, a edição se perdeu (a nota explica)
+    d0 = tr["fichas_c"][0]["delta"]
+    condicional.append({"faixas": [g["delta"] for g in tr["fichas_c"]], "formula": f'={d0}<>""', "fundo": AMBAR, "fonte": BRANCO})
     base = ficha["colunas_larg"][0][2]
     return {
         "nome": NOME, "estado": "visible", "linhas": LIN, "colunas": COLS,
