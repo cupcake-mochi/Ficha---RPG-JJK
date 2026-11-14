@@ -7,6 +7,16 @@ Mizuki, as QAs e o estado delas, e o que está pendente:
 - a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
 - as decisões abertas dele.
 
+# As pontas do mapa de cobertura · 14/11/2026
+
+Leia `r53/diagnostico-android/PONTAS-DO-MAPA-2026-11-14.md`.
+- A Kaori pela API no Ciclo: os seis números batem.
+- `cartas_custom`/`marcas_custom` ficam históricos.
+- O menu Aplicar cura não existe no Android; no celular vale a caixa ± com a metade.
+- A varredura da caixa ± na rajada não é segura (aplicaria em dobro um evento atrasado). Só um aviso visual é possível,
+  e espera o Mizuki.
+- O Ciclo tem `FICHA!P30` = 10 (sobra de teste), também à espera dele.
+
 # Buff/Debuff decimal fica âmbar nas INVOCAÇÕES · 14/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-AVISO-DECIMAL-BD-2026-11-14.md`. A caixa B/D mostrava 1,5 como "B/D +2" e a conta
