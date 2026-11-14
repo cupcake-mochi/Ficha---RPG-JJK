@@ -202,6 +202,10 @@ def aplica(layout,tr):
             antes={y:(cm[L(18)+str(y)][1],cm[L(18)+str(y)][2],a.get('notas',{}).get(L(18)+str(y))) for y in (rr-1,rr)}
             clear(rr-1,18,rr,20);clear(rr+1,20,rr+1,20)
             for y,(valor,estilo,nota) in antes.items():
+                if y==rr:
+                    # R67: a Forma e a base saem dos dados-base, então a conta mostra só pontos − Melhorias = sobra
+                    valor=(f'=IF({data("nome")}<>"",{data("orcamento")}&" − Melhorias "&{data("melhorias_pagas")}'
+                           f'&" = "&{data("saldo")}&" pontos","")')
                 # o valor continua em duas linhas, como era R356:T357
                 p=put(L(18)+str(y),valor,'label' if y<rr else 'result',L(19)+str(y if y<rr else rr+1),nota);cm[p][2]=estilo
             sem_dano(rr-1,20)

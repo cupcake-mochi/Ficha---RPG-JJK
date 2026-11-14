@@ -7,6 +7,29 @@ Mizuki, as QAs e o estado delas, e o que está pendente:
 - a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
 - as decisões abertas dele.
 
+# Técnica Máxima no livro R67 · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-MAXIMA-R67-2026-11-14.md`.
+
+**O que mudou**
+- A Forma e a base da função saem dos dados-base.
+- Os pontos pagam só as Melhorias.
+- PV temporários viram função.
+- Sem dano tem uma caixa própria e ganha o reforço de Controle.
+- A conta da MONTAGEM mostra "pontos − Melhorias = sobra".
+
+**Testes**
+- `test_maxima_r67` com 11 defeitos plantados, mais a conta.
+
+**QAs**
+- Aplicado nas duas, conferido e reposto. Nenhuma QA ficou com a R67.
+- O EditorR53 das QAs não foi trocado.
+
+**Fora desta rodada**
+- Nada nas oficiais.
+- Nenhum `construir()`.
+- Fica para o Mizuki: a linha 9975 do livro nega o reforço que a R67-08 dá.
+
 # Caixa ± pendente fica âmbar · 14/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-AVISO-CAIXA-PM-2026-11-14.md`. Enquanto a caixa ± (FICHA AM26/AM30/AM34 e as 12

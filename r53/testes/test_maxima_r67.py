@@ -148,5 +148,51 @@ class MaximaR67(unittest.TestCase):
                 self.assertTrue(conferir(mutante(velho, novo)), f'o defeito {nome!r} passou sem ser visto')
 
 
+REPO = AQUI.parent
+CONTA_ANTIGA = ("=IF('DADOS_R53'!$B$46<>\"\",'DADOS_R53'!$BL$46&\" − base \"&'DADOS_R53'!$CV$46&\" − Forma \"&"
+                "'DADOS_R53'!$CW$46&\" − peças \"&'DADOS_R53'!$CX$46&\" + devolução \"&'DADOS_R53'!$CZ$46&\" = \"&"
+                "'DADOS_R53'!$DA$46&\" pontos\",\"\")")
+
+
+def falhas_conta(formula):
+    """A conta da MONTAGEM no cartão da Máxima (R356): na R67 os pontos pagam só as Melhorias, então ela mostra
+    pontos − Melhorias = sobra, sem base, Forma ou devolução (que agora saem dos dados-base)."""
+    falhas = []
+    for trecho in ('$BL$46', '− Melhorias', '$CX$46', '$DA$46'):
+        if trecho not in formula:
+            falhas.append(f'conta sem {trecho!r}')
+    for trecho in ('− base', '− Forma', 'devolução', '$CV$46', '$CW$46', '$CZ$46'):
+        if trecho in formula:
+            falhas.append(f'conta ainda tem {trecho!r}')
+    return falhas
+
+
+def conta_gerada():
+    """A fórmula de R356 da FICHA AMALDIÇOADA como o gerador escreveu no R53Cartoes1.gs, e a que o editor da Classe
+    reescreve (EditorR53.gs); as duas precisam ser a mesma."""
+    import json
+    import re
+    cart = (REPO / 'apps-script' / 'R53Cartoes1.gs').read_text(encoding='utf-8')
+    m = re.search(r'\[356,18,("(?:[^"\\]|\\.)*")', cart)
+    no_cartao = json.loads(m.group(1)) if m else ''
+    ed = (REPO / 'apps-script' / 'EditorR53.gs').read_text(encoding='utf-8')
+    linha = next(l for l in ed.splitlines() if l.startswith('var R53_EDITOR_ = '))
+    editor = [c['formulas']['R356'] for c in json.loads(linha[len('var R53_EDITOR_ = '):].rstrip(';'))['contextos']
+              if isinstance(c, dict) and 'R356' in (c.get('formulas') or {}) and '$B$46' in c['formulas']['R356']]
+    return no_cartao, editor
+
+
+class ContaMontagemMaxima(unittest.TestCase):
+    def test_conta_gerada_sem_base_nem_forma(self):
+        no_cartao, editor = conta_gerada()
+        self.assertEqual(falhas_conta(no_cartao), [], no_cartao)
+        self.assertTrue(editor, 'o editor não tem a conta da Máxima')
+        for f in editor:
+            self.assertEqual(f, no_cartao, 'o editor reescreve a conta diferente do cartão')
+
+    def test_defeito_plantado_conta_antiga_acende(self):
+        self.assertTrue(falhas_conta(CONTA_ANTIGA), 'a conta antiga (base e Forma) passou sem ser vista')
+
+
 if __name__ == '__main__':
     unittest.main()
