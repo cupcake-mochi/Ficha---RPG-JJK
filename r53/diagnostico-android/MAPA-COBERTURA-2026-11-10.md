@@ -41,7 +41,7 @@ mostra onde houve olhar dedicado, não que a área está livre de erro.
 | Talentos e Aptidões (requisitos e vagas) | Conferida (11/11) | CORRECAO-OFICIOS-TR, testes `test_motor`, "Talentos grátis" de 03/11 | limite: "aptidões a mais no teto" supõe a ordem de Refino mais favorável |
 | Condições (13) | Manual por desenho | só Morrendo, Exaurido, Exaustão e Envenenado aparecem nas auditorias | nada, a menos que o Mizuki queira automatizar |
 | Progressão e XP | Conferida contra o R66 (12/11) | AUDITORIA-PROGRESSAO-XP, `xp_atualizar`, `xp_nivel` | curva, missões e limiar batem; ensaio do limiar e do feito na QA da Era; um nível por missão corrigido em 12/11 (CORRECAO-TRAVA-NIVEL-MISSAO); corte do XP abaixo de 25 em 12/11 (CORRECAO-CORTE-XP-25, `corte_xp_missao`), que fecha o desconto do 7º em diante; XP congelado preso à linha em 12/11 (CORRECAO-XP-LINHA-CONGELADA, `xp_atualizar`, `xp_linha_congelada`; substitui o nome no registro do #109), instalado nas duas QAs e ensaiado no Ciclo |
-| CONFIGURAÇÃO e campanha (vida rolada, ajustes) | Conferida contra o R66 (12/11) | AUDITORIA-CONFIGURACAO | números batem; ensaio da vida rolada no Ciclo; achados de texto e de nome (R51 nas notas, "Não autônoma", notas da vida rolada) esperam decisão do Mizuki |
+| CONFIGURAÇÃO e campanha (vida rolada, ajustes) | Conferida contra o R66 (12/11); achados fechados (14/11) | AUDITORIA-CONFIGURACAO, CORRECAO-ACHADOS-CONFIGURACAO | números batem; ensaio da vida rolada no Ciclo; notas sem versão do livro, "Não autônoma" registrada como regra da casa, vida rolada com uma frase só |
 
 ## Invocações (INVOCAÇÕES, DADOS_INVOC)
 
