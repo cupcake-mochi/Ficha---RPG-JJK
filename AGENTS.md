@@ -7,14 +7,21 @@ Mizuki, as QAs e o estado delas, e o que está pendente:
 - a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
 - as decisões abertas dele.
 
+# Caixa ± pendente fica âmbar · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-AVISO-CAIXA-PM-2026-11-14.md`. Enquanto a caixa ± (FICHA AM26/AM30/AM34 e as 12
+das invocações) tem número, ela fica âmbar; se continuar depois de um minuto, a edição se perdeu, e a nota manda
+conferir e digitar de novo. A conta não mudou. Aplicado nas duas QAs e testado digitando no Ciclo; nada nas oficiais.
+O mesmo ramo corrige as faixas do B/D decimal nas fichas 2 a 6.
+
 # As pontas do mapa de cobertura · 14/11/2026
 
 Leia `r53/diagnostico-android/PONTAS-DO-MAPA-2026-11-14.md`.
 - A Kaori pela API no Ciclo: os seis números batem.
 - `cartas_custom`/`marcas_custom` ficam históricos.
 - O menu Aplicar cura não existe no Android; no celular vale a caixa ± com a metade.
-- A varredura da caixa ± na rajada não é segura (aplicaria em dobro um evento atrasado). Só um aviso visual é possível,
-  e espera o Mizuki.
+- A varredura da caixa ± na rajada não é segura (aplicaria em dobro um evento atrasado). Só um aviso visual é possível;
+  feito no mesmo dia (ver acima).
 - O Ciclo tem `FICHA!P30` = 10 (sobra de teste), também à espera dele.
 
 # Buff/Debuff decimal fica âmbar nas INVOCAÇÕES · 14/11/2026

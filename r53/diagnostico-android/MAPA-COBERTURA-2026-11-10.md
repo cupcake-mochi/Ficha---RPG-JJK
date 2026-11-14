@@ -20,7 +20,7 @@ mostra onde houve olhar dedicado, não que a área está livre de erro.
 | área | estado | onde foi olhada | o que falta |
 |---|---|---|---|
 | Vida máxima e Bloquear | Conferida | AUDITORIA-VIDA-CORPOS, CORRECAO-VIDA-BLOQUEAR | — (`vida_bloquear_molde.js` consertado e no smoke em 11/11) |
-| Vida e energia temporárias, caixa ± | Conferida | AUDITORIA-RESERVAS, MAXIMOS-ZERO, CORRECAO-FILA-RECURSOS, TEMP-COLAGENS | rajada de mais de dois eventos ainda pode perder entrada (limite do Google); a varredura não é segura, só um aviso visual (PONTAS-DO-MAPA, 14/11, espera o Mizuki) |
+| Vida e energia temporárias, caixa ± | Conferida | AUDITORIA-RESERVAS, MAXIMOS-ZERO, CORRECAO-FILA-RECURSOS, TEMP-COLAGENS | rajada de mais de dois eventos ainda pode perder entrada (limite do Google); a varredura não é segura; feito o aviso visual: a caixa com número fica âmbar e a nota manda redigitar (CORRECAO-AVISO-CAIXA-PM, 14/11) |
 | Integridade, estágios, Exaustão, deslocamento | Conferida | INTEGRIDADE-MOVIMENTO, DESLOCAMENTO-CORPORAL, AUDITORIA-CONJURACAO-INTEGRIDADE | — |
 | Morrendo, socorro, cura do Exaurido | Conferida | AUDITORIA-MORRENDO, SOCORRO, CURA-EXAURIDO | o menu Aplicar cura não existe no app do Android; no celular vale a caixa ± com a metade (PONTAS-DO-MAPA, 14/11) |
 | Descanso | Conferida | AUDITORIA-DESCANSO-ORIGENS, DESCANSO-EVENTO-REPETIDO | — |
