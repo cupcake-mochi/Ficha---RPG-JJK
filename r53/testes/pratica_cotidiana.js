@@ -10,16 +10,43 @@ const alcance=require('../diagnostico-android/preparar_alcance_cura');
 const apoio=require('../diagnostico-android/preparar_alcance_beneficios');
 const tempo=require('../diagnostico-android/preparar_tempo_feiticos');
 const antesClasseZero=classeZero.reverterEditor(alcance.reverterEditor(apoio.reverterEditor(tempo.reverterEditor(editor))));
-t(()=>assert.equal(crypto.createHash('sha256').update(JSON.stringify(conjuracao.reverterEditor(antesClasseZero).contextos.slice(0,249))).digest('hex'),'09d6c58b762db5290f8ac12807d9c631e6840449b104873d6cf5100c3918c9a6'));
+t(()=>assert.equal(crypto.createHash('sha256').update(JSON.stringify(conjuracao.reverterEditor(antesClasseZero).contextos.slice(0,249))).digest('hex'),'4c261bae634e99bb6834c1bae7b015a5a2907e1b3efa81a5436fe2c32d4f6c18'));
 const indexes=new Map(c.ABAS.map(a=>[a.nome,{spec:a,values:new Map(a.vals.map(v=>[v[0]+','+v[1],v]))}]));
 const v=(aba,a1)=>{const m=/^([A-Z]+)(\d+)$/.exec(a1),col=[...m[1]].reduce((a,x)=>26*a+x.charCodeAt(0)-64,0),r=+m[2],spec=indexes.get(aba).spec,direct=indexes.get(aba).values.get(r+','+col);if(direct)return aba==='ANALISE'&&col===2&&direct[2]==="'0"?'0':direct[2];const block=(spec.abaixo||[]).find(b=>b[0]<r&&b[2]>=r&&b[1]<=col&&b[3]>=col);if(block){const src=indexes.get(aba).values.get(block[0]+','+col);if(src)return require('../../medidas/sheets-de-mentira').deslocaFormula(src[2],r-block[0]);}return null;};
 const posterior = new Map(classeZero.plano.map(d => [d.aba+'!'+col(d.c)+d.r,d]));
 const montagemAtual = new Map(require('../rajada_alvos').formulas(undefined,rt.colunasMontagem).map(d => [d.aba+'!'+col(d.c)+d.r,d.depois]));
+// R67 (14/11/2026): a Técnica Máxima ganhou ramos novos, presos a BB (é Máxima), em sete colunas. As linhas
+// 252 e 253 são cartões de Classe 0 (D fixo), então BB é sempre FALSE nelas: com BB falso, a fórmula nova tem de
+// ser a mesma do plano congelado. Fora dessas 14 células, a comparação continua literal.
+const R67_MAXIMA=new Set(['CV','DA','DB','DG','DH','DI','FH'].flatMap(c=>['DADOS_R53!'+c+'252','DADOS_R53!'+c+'253']));
+const semMaxima=(f,r)=>{
+ const alvo='IF(BB'+r+',';let out=String(f);
+ for(let i=out.indexOf(alvo);i>=0;i=out.indexOf(alvo)){
+  const args=[];let j=i+alvo.length,inicio=j,nivel=0,aspas=false;
+  for(;j<out.length;j++){const ch=out[j];if(ch==='"'){aspas=!aspas;continue;}if(aspas)continue;
+   if(ch==='(')nivel++;else if(ch===')'){if(!nivel){args.push(out.slice(inicio,j));break;}nivel--;}
+   else if(ch===','&&!nivel){args.push(out.slice(inicio,j));inicio=j+1;}}
+  if(args.length!==2)throw Error('IF(BB) malformado: '+f);
+  out=out.slice(0,i)+args[1]+out.slice(j+1);
+ }
+ return p.norm(out.replace(new RegExp(',BB'+r+'(?=[,)])','g'),'').replace(/OR\((\$?[A-Z]{1,3}\$?\d+)\)/g,'$1'));
+};
+let r67Conferidas=0;
 for(const x of p.p.cells){
  const delta=posterior.get(x.aba+'!'+x.a1);
  if(delta)t(()=>assert.equal(delta.antes,x.depois));
- t(()=>assert.equal(p.norm(v(x.aba,x.a1)),p.norm(montagemAtual.get(x.aba+'!'+x.a1)??delta?.depois??x.depois),x.aba+'!'+x.a1));
+ const esperado=montagemAtual.get(x.aba+'!'+x.a1)??delta?.depois??x.depois;
+ if(R67_MAXIMA.has(x.aba+'!'+x.a1)&&p.norm(v(x.aba,x.a1))!==p.norm(esperado)){
+  const r=x.a1.replace(/^[A-Z]+/,'');
+  t(()=>assert.equal(v('DADOS_R53','D'+r),'Classe 0'));
+  t(()=>assert.equal(semMaxima(v(x.aba,x.a1),r),semMaxima(esperado,r),x.aba+'!'+x.a1));
+  r67Conferidas++;continue;
+ }
+ t(()=>assert.equal(p.norm(v(x.aba,x.a1)),p.norm(esperado),x.aba+'!'+x.a1));
 }
+t(()=>assert.equal(r67Conferidas,R67_MAXIMA.size));
+// Defeito plantado: um ramo de Máxima que mudasse a conta fora de BB acende.
+t(()=>assert.notEqual(semMaxima(v('DADOS_R53','DG252').replace('(2*C252)','(3*C252)'),'252'),semMaxima(p.p.cells.find(x=>x.aba==='DADOS_R53'&&x.a1==='DG252').depois,'252')));
 t(()=>assert.equal(v('DADOS_R53','A251'),'r53.editor.gid'));
 for(const g of editor.contextos.slice(249)){
  t(()=>assert.deepEqual(Object.keys(g.formulas).sort(),[g.cel.dano,g.cel.alcance].sort()));

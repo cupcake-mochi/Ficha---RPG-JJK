@@ -141,6 +141,10 @@ def main():
                              cwd=ROOT, capture_output=True, text=True, timeout=60)
         check('Corrói: Mira Livre em cartões pessoais e de entidades', run.returncode == 0,
               run.stderr.strip() or run.stdout.strip())
+        run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_maxima_r67'],
+                             cwd=ROOT, capture_output=True, text=True, timeout=300)
+        check('Técnica Máxima R67: Forma e base nos dados, defeitos plantados', run.returncode == 0,
+              run.stderr.strip() or run.stdout.strip())
         run = subprocess.run([sys.executable, '-m', 'unittest', 'r53.testes.test_liberacoes', 'r53.testes.test_expansao_domada'],
                              cwd=ROOT, capture_output=True, text=True, timeout=60)
         check('Liberações Máximas: níveis de aquisição por posição', run.returncode == 0,

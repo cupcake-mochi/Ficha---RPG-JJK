@@ -36,6 +36,7 @@ mostra onde houve olhar dedicado, não que a área está livre de erro.
 | Classe 0 e Prática Cotidiana | Conferida | AUDITORIA-CLASSE-ZERO, CORRECAO-PRATICA-COTIDIANA | — |
 | Repertório normal e das Trilhas | Conferida | AUDITORIA-REPERTORIO-NORMAL, AUDITORIA-REPERTORIO-TRILHA | — |
 | Liberações Máximas | Conferida | CORRECAO-LIBERACOES | — |
+| Técnica Máxima (pessoal e domada) | Conferida | CORRECAO-MAXIMA-R67 | o onEdit das caixas não foi testado: o EditorR53 das QAs é antigo; a linha 9975 do livro contradiz a R67-08 (decisão dele) |
 | Caminhos e Trilhas | Conferida contra o R66 (11/11) | AUDITORIA-CAMINHOS-TRILHAS | as cinco cartas "por combate" passaram a "por cena" em 12/11 (CORRECAO-FREQUENCIA-CENA); texto da ficha na redação do R53 (decisão do Mizuki) |
 | Origens, passivas, recursos, imunidades | Conferida | AUDITORIA-ORIGENS-RECURSOS, AUDITORIA-PASSIVAS-ORIGEM, BENCAOS-IMUNIDADES, IMUNIDADE-CUSTOM, MENU-ORIGEM-INVALIDA | — |
 | Talentos e Aptidões (requisitos e vagas) | Conferida (11/11) | CORRECAO-OFICIOS-TR, testes `test_motor`, "Talentos grátis" de 03/11 | limite: "aptidões a mais no teto" supõe a ordem de Refino mais favorável |

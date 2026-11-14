@@ -14,6 +14,7 @@ O fluxo após elementos de largura inteira aproveita ambas as colunas quando a d
 - PDF noturno: `output/pdf/Ciclo-Maldito-R53-Noturno-Vinho-e-Pessego.pdf`.
 - Texto completo: `LIVRO-COMPLETO.md`.
 - 202 blocos com antes/depois: `ALTERACOES-R52-para-R53.json`.
+- Atualização parcial de 14/11/2026: os 4 blocos da Técnica Máxima no `BLOCOS-R53.json` estão no texto da v0.378 (R67); antes/depois em `ALTERACOES-R66-para-R67.json`. O `LIVRO-COMPLETO.md` desta pasta continua R53.
 - Conferências: `evidencias/CONFERENCIA.json`, `revisao-r53/VALIDACAO-R53.json`, `revisao-r53/CONTAS-VIDA-TEMPORARIA.json` e `revisao-r53/VALIDACAO-NOTURNO.json`.
 - Revisão visual e seus limites: `revisao-r53/REVISAO-VISUAL.json`.
 

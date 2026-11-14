@@ -973,7 +973,8 @@ NOTAS = {
     "trunfos": "Trunfos exigem maldição domada com técnica própria e os níveis de aquisição do livro. Confira os avisos dos cartões; a descrição registra as permissões específicas.",
     "lib": "A domada conhece uma no nível 10, duas no 20 e três no 30. Classe 3 ou maior, e não ocupa espaço de especial. "
            "Custa 3 × Classe × 1,5 PE, para cima.",
-    "tm": "A faixa usa o nível dela, que não sobe com o seu. Os pontos pagam Forma e Melhorias, sem comprar dados.",
+    "tm": "A faixa usa o nível dela, que não sobe com o seu. A Forma e a base da função saem dos dados-base; os pontos "
+          "pagam só as Melhorias, sem comprar dados. A correção pela R67 não gasta a revisão.",
     "exp": "O refino, a maestria e a especialização são os seus. Posição, vida e Teste de Resistência de Vigor são os dela. O Acerto "
            "de dano é montado como o do jogador: os pontos de especial da maior Classe dela, menos o preço Médio do Inescapável "
            "(com o desconto da Família Livre), 1d8 por ponto.",

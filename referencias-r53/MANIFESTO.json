@@ -26,9 +26,13 @@
       "bytes": 554671,
       "sha256": "42067cd6d5126500fc37293611c307d85b1f91a3c32b337eea982eecd62908c1"
     },
+    "ALTERACOES-R66-para-R67.json": {
+      "bytes": 33817,
+      "sha256": "4b5460d2bf5e4d1a779ea453edaa3e5f56da56f1aad0304275fb661f27f722cc"
+    },
     "BLOCOS-R53.json": {
-      "bytes": 1129262,
-      "sha256": "0bad21b6ca1eab1e9c233945d5dfab964619ad36e6ffd93f9e69423b8b16a94b"
+      "bytes": 1131230,
+      "sha256": "47fc66602c071512ab29b58cd95897ecf7090b019d1ffdf9e3ee96c3654dd70a"
     },
     "CATALOGO-E-INTERFACES-R53.json": {
       "bytes": 378299,
@@ -54,5 +58,6 @@
       "bytes": 28196,
       "sha256": "7b38b37a4821a4776ee4f0f4667c51b6c170a207e59845acbe34ff7b4c757540"
     }
-  }
+  },
+  "atualizacao_parcial": "14/11/2026: os 4 blocos da Técnica Máxima (fundamento--maxima, fundamento--passagem, fundamento--retirada, campo--inv-maxima) estão no texto da v0.378 (R67); o resto continua R53. Registro em ALTERACOES-R66-para-R67.json."
 }
