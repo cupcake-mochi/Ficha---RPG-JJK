@@ -921,7 +921,7 @@ NOTAS = {
                "Ação Bônus. A carga do talismã não abate este preço. Ela volta com metade da vida máxima, no mínimo 1.",
     "pontos": "9 pontos, cada atributo entre 0 e 3, e mais 1 ponto nos níveis 6, 10, 14, 18, 22, 26 e 30. O teto é 6.",
     "atributo": "O número grande é o total. Embaixo dele, os pontos que você distribuiu, e embaixo o Buff/Debuff.",
-    "bd": "Buff/Debuff: o que você digitar aqui soma, ou tira, do número de cima.",
+    "bd": "Buff/Debuff: o que você digitar aqui soma, ou tira, do número de cima. Decimal arredonda contra você (1,5 vale 1; −1,5 vale −2) e deixa o número âmbar.",
     "ataque": "Atributo de acerto + a sua maestria.",
     "cd": "8 + atributo de acerto + a sua maestria.",
     "defesa": "10 + Destreza dela + metade da sua Essência ou Inteligência, a que o conjunto escolheu. Com traje ou revestimento, a "
@@ -1360,6 +1360,12 @@ def aba(layout, tr):
     condicional = [{"faixas": [corpo], "contem": T_ERRO, "fundo": VERMELHO, "fonte": BRANCO},
                    {"faixas": [corpo], "comeca": T_AVISO, "fonte": AMBAR},
                    {"faixas": [corpo], "contem": SEM_NOME, "fonte": AMBAR}]
+    # 14/11/2026: o Buff/Debuff decimal arredonda contra o dono (CORRECAO-BUFF-DECIMAL), mas a caixa "B/D "+0
+    # mostrava 1,5 como "B/D +2". A letra fica âmbar quando o número tem decimal, e a nota da primeira caixa explica.
+    # A referência é relativa à primeira caixa: cada célula das 36 faixas se lê a si mesma.
+    bd0 = tr["fichas_c"][0]["buff"][0]
+    condicional.append({"faixas": [f"{g[k][0]}:{g[k][-1]}" for g in tr["fichas_c"] for k in ("buff", "bstat", "btr")],
+                        "formula": f"=N({bd0})<>INT(N({bd0}))", "fonte": AMBAR})
     base = ficha["colunas_larg"][0][2]
     return {
         "nome": NOME, "estado": "visible", "linhas": LIN, "colunas": COLS,
