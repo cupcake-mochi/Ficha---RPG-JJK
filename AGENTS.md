@@ -28,7 +28,9 @@ Leia `r53/diagnostico-android/CORRECAO-MAXIMA-R67-2026-11-14.md`.
 **Fora desta rodada**
 - Nada nas oficiais.
 - Nenhum `construir()`.
-- Fica para o Mizuki: a linha 9975 do livro nega o reforço que a R67-08 dá.
+- ~~Fica para o Mizuki: a linha 9975 do livro nega o reforço que a R67-08 dá.~~ Resolvido pelo livro R68 (v0.379).
+  As duas frases de Controle foram trocadas no catálogo da ficha, e o registro está em
+  `referencias-r53/ALTERACOES-R67-para-R68.json`. Não muda conta nem `.gs`.
 
 # Caixa ± pendente fica âmbar · 14/11/2026
 
