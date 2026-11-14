@@ -4,8 +4,19 @@ Sessão nova, em qualquer máquina: leia `r53/diagnostico-android/PROMPT-CONTINU
 Mizuki, as QAs e o estado delas, e o que está pendente:
 - o pacote do dia 12/11 nas oficiais, com o ok dele;
 - o aviso na nota da missão congelada, opcional;
-- a auditoria da CONFIGURAÇÃO;
+- a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
 - as decisões abertas dele.
+
+# Achados da CONFIGURAÇÃO decididos · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ACHADOS-CONFIGURACAO-2026-11-14.md`. Decisões do Mizuki:
+- as notas dizem "livro", sem a versão;
+- "Não autônoma" fica, como regra da casa que vai sair num livro de guias, registrada em `fora_do_livro` do catálogo
+  (com conferência contra o `familias_invocacao.py`);
+- a vida rolada diz "Anote só o dado; a ficha soma a Constituição.";
+- o Buff/Debuff de vida (`FICHA!P26`) foi esvaziado nas duas QAs.
+
+Nenhum número mudou. Nada nas oficiais.
 
 # CONFIGURAÇÃO auditada contra o R66 · 12/11/2026
 

@@ -102,8 +102,9 @@ Como trabalhar nas QAs:
 
 ## O que está pendente
 
-1. **Oficiais (precisa do ok dele).** Nada do dia 12/11 foi aplicado nelas. Os IDs das oficiais não estão no git: peça
-   o link ao Mizuki. Faça o backup nativo antes.
+1. **Oficiais (precisa do ok dele).** Nada do dia 12/11 foi aplicado nelas; a última mudança é de 03/11, então falta
+   tudo de #63 em diante (correção de 14/11: os links das duas oficiais estão no `r53/OFICIAIS.md`). Faça o backup
+   nativo antes. Os textos da CONFIGURAÇÃO de 14/11 (`CORRECAO-ACHADOS-CONFIGURACAO-2026-11-14.md`) também entram.
    - **No Codigo instalado,** os três trechos, nesta ordem:
      1. `preparar_corte_xp_missao.js`, com os 292 moldes;
      2. `preparar_xp_congelado_nome.js`;
@@ -115,12 +116,13 @@ Como trabalhar nas QAs:
      - `findReplace` com regex nas fórmulas da FICHA PESSOAL!BA15:BS87;
      - `DADOS!CR9:CS9` e `CR15:CS15`;
      - as 8 notas.
-   - **Depois,** registre no `r53/OFICIAIS.md`, sem IDs completos.
+   - **Depois,** registre no `r53/OFICIAIS.md` o que foi aplicado.
 2. **Aviso dentro da nota da missão congelada (opcional, pergunte).** Hoje a nota mostra só `[XP congelado: x · id]`.
    Uma frase como "já está no XP digitado: apagar ou mudar não altera o XP" pede mexer:
    - no atalho: o `r53/atalho_livre.js` gera o `r53/atalho_livre.gs`, que vai no fim do Codigo;
    - e no `salarioXpCongelado_`, juntos.
-3. **Próximo item do pente fino:** a auditoria da aba CONFIGURAÇÃO, contra o livro R66. A fonte é
+3. **Feito em 12–14/11:** a auditoria da CONFIGURAÇÃO (#112) e os achados decididos pelo Mizuki
+   (`CORRECAO-ACHADOS-CONFIGURACAO-2026-11-14.md`). Fica como modelo para o próximo item. A auditoria era contra o livro R66. A fonte é
    `cupcake-mochi/JJK---Project`, `sistema/05-material/livro/ciclo-maldito-r41/LIVRO-COMPLETO.md`. Siga o modelo das
    auditorias anteriores (`AUDITORIA-PROGRESSAO-XP-2026-11-12.md`):
    - um documento por auditoria, com os achados;
