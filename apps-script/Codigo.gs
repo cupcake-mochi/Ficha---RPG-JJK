@@ -60,6 +60,11 @@ function corDeEstado_(ss, idx) {
     regras.push(SpreadsheetApp.newConditionalFormatRule()
       .whenFormulaSatisfied(formula50)
       .setFontColor('#D89B3A').setRanges([alvo]).build());
+    // 14/11/2026: a caixa de ± com número ainda não foi aplicada; se ficar assim, a edição se perdeu (a nota explica)
+    var delta = cel_(idx, r + '_delta');
+    if (delta) regras.push(SpreadsheetApp.newConditionalFormatRule()
+      .whenFormulaSatisfied('=' + delta + '<>""')
+      .setBackground('#D89B3A').setFontColor('#FFFFFF').setRanges([ficha.getRange(delta)]).build());
   });
   // 17/09/2026: as caixas de X de Y ficam vermelhas quando a conta avisa que passou. O texto do aviso
   // sai da fórmula da própria caixa, e estes trechos são os que ela escreve.
@@ -247,7 +252,8 @@ function notasDeRegra_(ss, idx) {
     'treinado em armas': 'Automático pelo Caminho, sem escolha: Bastião, Vanguarda e Incursor treinam as ' +
                          'treze categorias; Guia, Emanador e Evocador treinam só Arma de Fogo e Balestra.',
     'nivel': 'Editável a qualquer hora, sem aviso. Anotar uma missão na FICHA PESSOAL sobe o nível ' +
-             'sozinho, pela curva do capítulo Progressão, até o 20: dali em diante o livro pede um feito, e ' +
+             'sozinho, pela curva do capítulo Progressão, no máximo um nível por missão (o XP que sobra fica ' +
+             'guardado para a próxima), até o 20: dali em diante o livro pede um feito, e ' +
              'quem sobe é você. As missões nunca descem o nível (o XP digitado na caixa de XP leva o nível junto, ' +
              'para cima ou para baixo), e quem não usa XP sobe aqui na mão. Escrever o ' +
              'nível acerta o XP: subindo, ele vai para o começo do nível novo; descendo, guarda a mesma parte do ' +
@@ -257,7 +263,8 @@ function notasDeRegra_(ss, idx) {
          'Progressão. Para trocar o XP inteiro, digite o número novo em cima desta caixa: ele vira o XP total, ' +
          'o nível acompanha (até o 20; dali em diante o livro pede um feito) e a conta volta para a caixa. As ' +
          'missões que já estavam no painel ficam congeladas, como mostra a nota da caixa delas: mudar ou apagar ' +
-         'uma delas não mexe mais no XP. As novas somam por cima. Apagar esta caixa só devolve a conta.',
+         'uma delas não mexe mais no XP, e uma missão nova escrita por cima de uma linha congelada também não ' +
+         'conta. Anote as novas numa linha vazia: elas somam por cima. Apagar esta caixa só devolve a conta.',
     'trocou por arma': 'Só vale pra Guia, Emanador e Evocador. Cada troca é 2 das 5 perícias ' +
                        'livres do Caminho por treino numa arma específica — não a categoria, não ' +
                        'o tipo, uma arma da lista. Pode repetir até 2 vezes.',
@@ -281,6 +288,13 @@ function notasDeRegra_(ss, idx) {
   });
   notas['buff de deslocamento'] = 'Soma no deslocamento, em metros, o que nenhuma outra caixa cobre. ' +
                                   'Número negativo reduz.';
+  // 14/11/2026, pedido do Mizuki ("Sim, faz o aviso"): o Google às vezes descarta uma edição numa rajada, e o número
+  // fica parado na caixa sem ser aplicado. A caixa de ± com número fica âmbar (corDeEstado_), e a nota explica.
+  ['vida', 'energia', 'integridade'].forEach(function (k) {
+    notas[k + '_delta'] = 'Escreva −9 ou +5 e aperte Enter: a ficha aplica no atual e limpa a caixa. A perda gasta o ' +
+                         'temporário primeiro.' +
+                         ' Enquanto o número está aqui, a caixa fica âmbar: ainda não foi aplicado. Se continuar depois de um minuto, ele se perdeu (o Google às vezes descarta edições rápidas em sequência): confira o atual e digite de novo.';
+  });
   var n = 0;
   // A aba é lida uma vez (valor, fórmula e nota), as notas são postas na matriz e a matriz volta numa gravação só.
   var lido = ficha.getDataRange(), valores = lido.getValues(), formulas = lido.getFormulas(), postas = lido.getNotes();
@@ -871,10 +885,12 @@ function nivelDoXp_(tabela, xp) {
  * nível por anotar uma missão. E ele para no limiar do feito (o 20 do livro) enquanto o personagem não
  * passou dele: "Você chega ao nível 20 por XP. Você passa dele por feito." Quem já passou sobe normalmente.
  */
-function nivelQueSobe_(tabela, xp, atual, limiar) {
+function nivelQueSobe_(tabela, xp, atual, limiar, teto) {
   var alvo = nivelDoXp_(tabela, xp);
   if (alvo === null) return null;
   if (limiar && atual <= limiar) alvo = Math.min(alvo, limiar);
+  // 12/11/2026, livro R66: "no máximo um nível por missão concluída". Abaixo da curva, o teto é a primeira linha dela.
+  if (teto !== undefined && teto !== null && tabela.length) alvo = Math.min(alvo, Math.max(teto, Number(tabela[0].nivel)));
   return alvo > atual ? alvo : null;
 }
 
@@ -947,7 +963,8 @@ function nivelPelaMissao_(ss, dados, ip) {
   var cn = cel_(indiceDosDados_(dados), 'nivel');
   if (!cn) return;
   var caixa = ss.getSheetByName('FICHA').getRange(cn);
-  var sobe = nivelQueSobe_(tabela, total, Number(caixa.getValue()) || 0, limiar);
+  // Este caminho só roda sem o Salarios.gs, que conta as missões da edição; aqui é um nível por edição.
+  var atual = Number(caixa.getValue()) || 0, sobe = nivelQueSobe_(tabela, total, atual, limiar, atual + 1);
   if (sobe !== null) caixa.setValue(sobe);
 }
 

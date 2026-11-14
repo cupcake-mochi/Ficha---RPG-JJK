@@ -1,0 +1,261 @@
+[
+  {
+    "aba": "FICHA",
+    "r": 79,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$26<>\"\",NA(),IF(DADOS_CONFIG!$C$26=1,DADOS_CONFIG!$D$26,IF(DADOS_CONFIG!$B$26=0,$AB$19 + IF(U79, $D$67 + INT($D$67 / 2), IF(T79, $D$67, 0)) + AH79,IF(($AB$19 + IF(U79, $D$67 + INT($D$67 / 2), IF(T79, $D$67, 0)) + AH79)=\"\",\"\",($AB$19 + IF(U79, $D$67 + INT($D$67 / 2), IF(T79, $D$67, 0)) + AH79)+DADOS_CONFIG!$B$26))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$26<>1,U79=TRUE,T79<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$26<>\"\",NA(),IF(DADOS_CONFIG!$C$26=1,DADOS_CONFIG!$D$26,IF(DADOS_CONFIG!$B$26=0,$AB$19 + IF(U79, $D$67 + INT($D$67 / 2), IF(T79, $D$67, 0)) + AH79,IF(($AB$19 + IF(U79, $D$67 + INT($D$67 / 2), IF(T79, $D$67, 0)) + AH79)=\"\",\"\",($AB$19 + IF(U79, $D$67 + INT($D$67 / 2), IF(T79, $D$67, 0)) + AH79)+DADOS_CONFIG!$B$26)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 80,
+    "c": 16,
+    "antes": "=IF(DADOS_CONFIG!$E$14<>\"\",NA(),IF(DADOS_CONFIG!$C$14=1,DADOS_CONFIG!$D$14,IF(DADOS_CONFIG!$B$14=0,$D$19 + IF(E80, $D$67 + INT($D$67 / 2), IF(D80, $D$67, 0)) + R80,IF(($D$19 + IF(E80, $D$67 + INT($D$67 / 2), IF(D80, $D$67, 0)) + R80)=\"\",\"\",($D$19 + IF(E80, $D$67 + INT($D$67 / 2), IF(D80, $D$67, 0)) + R80)+DADOS_CONFIG!$B$14))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$14<>1,E80=TRUE,D80<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$14<>\"\",NA(),IF(DADOS_CONFIG!$C$14=1,DADOS_CONFIG!$D$14,IF(DADOS_CONFIG!$B$14=0,$D$19 + IF(E80, $D$67 + INT($D$67 / 2), IF(D80, $D$67, 0)) + R80,IF(($D$19 + IF(E80, $D$67 + INT($D$67 / 2), IF(D80, $D$67, 0)) + R80)=\"\",\"\",($D$19 + IF(E80, $D$67 + INT($D$67 / 2), IF(D80, $D$67, 0)) + R80)+DADOS_CONFIG!$B$14)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 80,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$27<>\"\",NA(),IF(DADOS_CONFIG!$C$27=1,DADOS_CONFIG!$D$27,IF(DADOS_CONFIG!$B$27=0,$AB$19 + IF(U80, $D$67 + INT($D$67 / 2), IF(T80, $D$67, 0)) + AH80,IF(($AB$19 + IF(U80, $D$67 + INT($D$67 / 2), IF(T80, $D$67, 0)) + AH80)=\"\",\"\",($AB$19 + IF(U80, $D$67 + INT($D$67 / 2), IF(T80, $D$67, 0)) + AH80)+DADOS_CONFIG!$B$27))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$27<>1,U80=TRUE,T80<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$27<>\"\",NA(),IF(DADOS_CONFIG!$C$27=1,DADOS_CONFIG!$D$27,IF(DADOS_CONFIG!$B$27=0,$AB$19 + IF(U80, $D$67 + INT($D$67 / 2), IF(T80, $D$67, 0)) + AH80,IF(($AB$19 + IF(U80, $D$67 + INT($D$67 / 2), IF(T80, $D$67, 0)) + AH80)=\"\",\"\",($AB$19 + IF(U80, $D$67 + INT($D$67 / 2), IF(T80, $D$67, 0)) + AH80)+DADOS_CONFIG!$B$27)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 81,
+    "c": 16,
+    "antes": "=IF(DADOS_CONFIG!$E$15<>\"\",NA(),IF(DADOS_CONFIG!$C$15=1,DADOS_CONFIG!$D$15,IF(DADOS_CONFIG!$B$15=0,$L$19 + IF(E81, $D$67 + INT($D$67 / 2), IF(D81, $D$67, 0)) + R81,IF(($L$19 + IF(E81, $D$67 + INT($D$67 / 2), IF(D81, $D$67, 0)) + R81)=\"\",\"\",($L$19 + IF(E81, $D$67 + INT($D$67 / 2), IF(D81, $D$67, 0)) + R81)+DADOS_CONFIG!$B$15))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$15<>1,E81=TRUE,D81<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$15<>\"\",NA(),IF(DADOS_CONFIG!$C$15=1,DADOS_CONFIG!$D$15,IF(DADOS_CONFIG!$B$15=0,$L$19 + IF(E81, $D$67 + INT($D$67 / 2), IF(D81, $D$67, 0)) + R81,IF(($L$19 + IF(E81, $D$67 + INT($D$67 / 2), IF(D81, $D$67, 0)) + R81)=\"\",\"\",($L$19 + IF(E81, $D$67 + INT($D$67 / 2), IF(D81, $D$67, 0)) + R81)+DADOS_CONFIG!$B$15)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 81,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$28<>\"\",NA(),IF(DADOS_CONFIG!$C$28=1,DADOS_CONFIG!$D$28,IF(DADOS_CONFIG!$B$28=0,$AB$19 + IF(U81, $D$67 + INT($D$67 / 2), IF(T81, $D$67, 0)) + AH81,IF(($AB$19 + IF(U81, $D$67 + INT($D$67 / 2), IF(T81, $D$67, 0)) + AH81)=\"\",\"\",($AB$19 + IF(U81, $D$67 + INT($D$67 / 2), IF(T81, $D$67, 0)) + AH81)+DADOS_CONFIG!$B$28))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$28<>1,U81=TRUE,T81<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$28<>\"\",NA(),IF(DADOS_CONFIG!$C$28=1,DADOS_CONFIG!$D$28,IF(DADOS_CONFIG!$B$28=0,$AB$19 + IF(U81, $D$67 + INT($D$67 / 2), IF(T81, $D$67, 0)) + AH81,IF(($AB$19 + IF(U81, $D$67 + INT($D$67 / 2), IF(T81, $D$67, 0)) + AH81)=\"\",\"\",($AB$19 + IF(U81, $D$67 + INT($D$67 / 2), IF(T81, $D$67, 0)) + AH81)+DADOS_CONFIG!$B$28)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 82,
+    "c": 16,
+    "antes": "=IF(DADOS_CONFIG!$E$16<>\"\",NA(),IF(DADOS_CONFIG!$C$16=1,DADOS_CONFIG!$D$16,IF(DADOS_CONFIG!$B$16=0,$L$19 + IF(E82, $D$67 + INT($D$67 / 2), IF(D82, $D$67, 0)) + R82,IF(($L$19 + IF(E82, $D$67 + INT($D$67 / 2), IF(D82, $D$67, 0)) + R82)=\"\",\"\",($L$19 + IF(E82, $D$67 + INT($D$67 / 2), IF(D82, $D$67, 0)) + R82)+DADOS_CONFIG!$B$16))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$16<>1,E82=TRUE,D82<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$16<>\"\",NA(),IF(DADOS_CONFIG!$C$16=1,DADOS_CONFIG!$D$16,IF(DADOS_CONFIG!$B$16=0,$L$19 + IF(E82, $D$67 + INT($D$67 / 2), IF(D82, $D$67, 0)) + R82,IF(($L$19 + IF(E82, $D$67 + INT($D$67 / 2), IF(D82, $D$67, 0)) + R82)=\"\",\"\",($L$19 + IF(E82, $D$67 + INT($D$67 / 2), IF(D82, $D$67, 0)) + R82)+DADOS_CONFIG!$B$16)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 82,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$29<>\"\",NA(),IF(DADOS_CONFIG!$C$29=1,DADOS_CONFIG!$D$29,IF(DADOS_CONFIG!$B$29=0,$AB$19 + IF(U82, $D$67 + INT($D$67 / 2), IF(T82, $D$67, 0)) + AH82,IF(($AB$19 + IF(U82, $D$67 + INT($D$67 / 2), IF(T82, $D$67, 0)) + AH82)=\"\",\"\",($AB$19 + IF(U82, $D$67 + INT($D$67 / 2), IF(T82, $D$67, 0)) + AH82)+DADOS_CONFIG!$B$29))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$29<>1,U82=TRUE,T82<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$29<>\"\",NA(),IF(DADOS_CONFIG!$C$29=1,DADOS_CONFIG!$D$29,IF(DADOS_CONFIG!$B$29=0,$AB$19 + IF(U82, $D$67 + INT($D$67 / 2), IF(T82, $D$67, 0)) + AH82,IF(($AB$19 + IF(U82, $D$67 + INT($D$67 / 2), IF(T82, $D$67, 0)) + AH82)=\"\",\"\",($AB$19 + IF(U82, $D$67 + INT($D$67 / 2), IF(T82, $D$67, 0)) + AH82)+DADOS_CONFIG!$B$29)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 83,
+    "c": 16,
+    "antes": "=IF(DADOS_CONFIG!$E$17<>\"\",NA(),IF(DADOS_CONFIG!$C$17=1,DADOS_CONFIG!$D$17,IF(DADOS_CONFIG!$B$17=0,$L$19 + IF(E83, $D$67 + INT($D$67 / 2), IF(D83, $D$67, 0)) + R83,IF(($L$19 + IF(E83, $D$67 + INT($D$67 / 2), IF(D83, $D$67, 0)) + R83)=\"\",\"\",($L$19 + IF(E83, $D$67 + INT($D$67 / 2), IF(D83, $D$67, 0)) + R83)+DADOS_CONFIG!$B$17))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$17<>1,E83=TRUE,D83<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$17<>\"\",NA(),IF(DADOS_CONFIG!$C$17=1,DADOS_CONFIG!$D$17,IF(DADOS_CONFIG!$B$17=0,$L$19 + IF(E83, $D$67 + INT($D$67 / 2), IF(D83, $D$67, 0)) + R83,IF(($L$19 + IF(E83, $D$67 + INT($D$67 / 2), IF(D83, $D$67, 0)) + R83)=\"\",\"\",($L$19 + IF(E83, $D$67 + INT($D$67 / 2), IF(D83, $D$67, 0)) + R83)+DADOS_CONFIG!$B$17)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 83,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$25<>\"\",NA(),IF(DADOS_CONFIG!$C$25=1,DADOS_CONFIG!$D$25,IF(DADOS_CONFIG!$B$25=0,$AB$19 + IF(U83, $D$67 + INT($D$67 / 2), IF(T83, $D$67, 0)) + AH83,IF(($AB$19 + IF(U83, $D$67 + INT($D$67 / 2), IF(T83, $D$67, 0)) + AH83)=\"\",\"\",($AB$19 + IF(U83, $D$67 + INT($D$67 / 2), IF(T83, $D$67, 0)) + AH83)+DADOS_CONFIG!$B$25))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$25<>1,U83=TRUE,T83<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$25<>\"\",NA(),IF(DADOS_CONFIG!$C$25=1,DADOS_CONFIG!$D$25,IF(DADOS_CONFIG!$B$25=0,$AB$19 + IF(U83, $D$67 + INT($D$67 / 2), IF(T83, $D$67, 0)) + AH83,IF(($AB$19 + IF(U83, $D$67 + INT($D$67 / 2), IF(T83, $D$67, 0)) + AH83)=\"\",\"\",($AB$19 + IF(U83, $D$67 + INT($D$67 / 2), IF(T83, $D$67, 0)) + AH83)+DADOS_CONFIG!$B$25)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 84,
+    "c": 16,
+    "antes": "=IF(DADOS_CONFIG!$E$18<>\"\",NA(),IF(DADOS_CONFIG!$C$18=1,DADOS_CONFIG!$D$18,IF(DADOS_CONFIG!$B$18=0,$L$19 + IF(E84, $D$67 + INT($D$67 / 2), IF(D84, $D$67, 0)) + R84,IF(($L$19 + IF(E84, $D$67 + INT($D$67 / 2), IF(D84, $D$67, 0)) + R84)=\"\",\"\",($L$19 + IF(E84, $D$67 + INT($D$67 / 2), IF(D84, $D$67, 0)) + R84)+DADOS_CONFIG!$B$18))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$18<>1,E84=TRUE,D84<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$18<>\"\",NA(),IF(DADOS_CONFIG!$C$18=1,DADOS_CONFIG!$D$18,IF(DADOS_CONFIG!$B$18=0,$L$19 + IF(E84, $D$67 + INT($D$67 / 2), IF(D84, $D$67, 0)) + R84,IF(($L$19 + IF(E84, $D$67 + INT($D$67 / 2), IF(D84, $D$67, 0)) + R84)=\"\",\"\",($L$19 + IF(E84, $D$67 + INT($D$67 / 2), IF(D84, $D$67, 0)) + R84)+DADOS_CONFIG!$B$18)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 84,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$30<>\"\",NA(),IF(DADOS_CONFIG!$C$30=1,DADOS_CONFIG!$D$30,IF(DADOS_CONFIG!$B$30=0,$AJ$19 + IF(U84, $D$67 + INT($D$67 / 2), IF(T84, $D$67, 0)) + AH84,IF(($AJ$19 + IF(U84, $D$67 + INT($D$67 / 2), IF(T84, $D$67, 0)) + AH84)=\"\",\"\",($AJ$19 + IF(U84, $D$67 + INT($D$67 / 2), IF(T84, $D$67, 0)) + AH84)+DADOS_CONFIG!$B$30))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$30<>1,U84=TRUE,T84<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$30<>\"\",NA(),IF(DADOS_CONFIG!$C$30=1,DADOS_CONFIG!$D$30,IF(DADOS_CONFIG!$B$30=0,$AJ$19 + IF(U84, $D$67 + INT($D$67 / 2), IF(T84, $D$67, 0)) + AH84,IF(($AJ$19 + IF(U84, $D$67 + INT($D$67 / 2), IF(T84, $D$67, 0)) + AH84)=\"\",\"\",($AJ$19 + IF(U84, $D$67 + INT($D$67 / 2), IF(T84, $D$67, 0)) + AH84)+DADOS_CONFIG!$B$30)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 85,
+    "c": 16,
+    "antes": "=IF(DADOS_CONFIG!$E$19<>\"\",NA(),IF(DADOS_CONFIG!$C$19=1,DADOS_CONFIG!$D$19,IF(DADOS_CONFIG!$B$19=0,$AB$19 + IF(E85, $D$67 + INT($D$67 / 2), IF(D85, $D$67, 0)) + R85,IF(($AB$19 + IF(E85, $D$67 + INT($D$67 / 2), IF(D85, $D$67, 0)) + R85)=\"\",\"\",($AB$19 + IF(E85, $D$67 + INT($D$67 / 2), IF(D85, $D$67, 0)) + R85)+DADOS_CONFIG!$B$19))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$19<>1,E85=TRUE,D85<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$19<>\"\",NA(),IF(DADOS_CONFIG!$C$19=1,DADOS_CONFIG!$D$19,IF(DADOS_CONFIG!$B$19=0,$AB$19 + IF(E85, $D$67 + INT($D$67 / 2), IF(D85, $D$67, 0)) + R85,IF(($AB$19 + IF(E85, $D$67 + INT($D$67 / 2), IF(D85, $D$67, 0)) + R85)=\"\",\"\",($AB$19 + IF(E85, $D$67 + INT($D$67 / 2), IF(D85, $D$67, 0)) + R85)+DADOS_CONFIG!$B$19)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 85,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$31<>\"\",NA(),IF(DADOS_CONFIG!$C$31=1,DADOS_CONFIG!$D$31,IF(DADOS_CONFIG!$B$31=0,$AJ$19 + IF(U85, $D$67 + INT($D$67 / 2), IF(T85, $D$67, 0)) + AH85,IF(($AJ$19 + IF(U85, $D$67 + INT($D$67 / 2), IF(T85, $D$67, 0)) + AH85)=\"\",\"\",($AJ$19 + IF(U85, $D$67 + INT($D$67 / 2), IF(T85, $D$67, 0)) + AH85)+DADOS_CONFIG!$B$31))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$31<>1,U85=TRUE,T85<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$31<>\"\",NA(),IF(DADOS_CONFIG!$C$31=1,DADOS_CONFIG!$D$31,IF(DADOS_CONFIG!$B$31=0,$AJ$19 + IF(U85, $D$67 + INT($D$67 / 2), IF(T85, $D$67, 0)) + AH85,IF(($AJ$19 + IF(U85, $D$67 + INT($D$67 / 2), IF(T85, $D$67, 0)) + AH85)=\"\",\"\",($AJ$19 + IF(U85, $D$67 + INT($D$67 / 2), IF(T85, $D$67, 0)) + AH85)+DADOS_CONFIG!$B$31)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 86,
+    "c": 16,
+    "antes": "=IF(DADOS_CONFIG!$E$20<>\"\",NA(),IF(DADOS_CONFIG!$C$20=1,DADOS_CONFIG!$D$20,IF(DADOS_CONFIG!$B$20=0,$AB$19 + IF(E86, $D$67 + INT($D$67 / 2), IF(D86, $D$67, 0)) + R86,IF(($AB$19 + IF(E86, $D$67 + INT($D$67 / 2), IF(D86, $D$67, 0)) + R86)=\"\",\"\",($AB$19 + IF(E86, $D$67 + INT($D$67 / 2), IF(D86, $D$67, 0)) + R86)+DADOS_CONFIG!$B$20))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$20<>1,E86=TRUE,D86<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$20<>\"\",NA(),IF(DADOS_CONFIG!$C$20=1,DADOS_CONFIG!$D$20,IF(DADOS_CONFIG!$B$20=0,$AB$19 + IF(E86, $D$67 + INT($D$67 / 2), IF(D86, $D$67, 0)) + R86,IF(($AB$19 + IF(E86, $D$67 + INT($D$67 / 2), IF(D86, $D$67, 0)) + R86)=\"\",\"\",($AB$19 + IF(E86, $D$67 + INT($D$67 / 2), IF(D86, $D$67, 0)) + R86)+DADOS_CONFIG!$B$20)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 86,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$32<>\"\",NA(),IF(DADOS_CONFIG!$C$32=1,DADOS_CONFIG!$D$32,IF(DADOS_CONFIG!$B$32=0,$AJ$19 + IF(U86, $D$67 + INT($D$67 / 2), IF(T86, $D$67, 0)) + AH86,IF(($AJ$19 + IF(U86, $D$67 + INT($D$67 / 2), IF(T86, $D$67, 0)) + AH86)=\"\",\"\",($AJ$19 + IF(U86, $D$67 + INT($D$67 / 2), IF(T86, $D$67, 0)) + AH86)+DADOS_CONFIG!$B$32))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$32<>1,U86=TRUE,T86<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$32<>\"\",NA(),IF(DADOS_CONFIG!$C$32=1,DADOS_CONFIG!$D$32,IF(DADOS_CONFIG!$B$32=0,$AJ$19 + IF(U86, $D$67 + INT($D$67 / 2), IF(T86, $D$67, 0)) + AH86,IF(($AJ$19 + IF(U86, $D$67 + INT($D$67 / 2), IF(T86, $D$67, 0)) + AH86)=\"\",\"\",($AJ$19 + IF(U86, $D$67 + INT($D$67 / 2), IF(T86, $D$67, 0)) + AH86)+DADOS_CONFIG!$B$32)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 87,
+    "c": 16,
+    "antes": "=IF(DADOS_CONFIG!$E$21<>\"\",NA(),IF(DADOS_CONFIG!$C$21=1,DADOS_CONFIG!$D$21,IF(DADOS_CONFIG!$B$21=0,$AB$19 + IF(E87, $D$67 + INT($D$67 / 2), IF(D87, $D$67, 0)) + R87,IF(($AB$19 + IF(E87, $D$67 + INT($D$67 / 2), IF(D87, $D$67, 0)) + R87)=\"\",\"\",($AB$19 + IF(E87, $D$67 + INT($D$67 / 2), IF(D87, $D$67, 0)) + R87)+DADOS_CONFIG!$B$21))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$21<>1,E87=TRUE,D87<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$21<>\"\",NA(),IF(DADOS_CONFIG!$C$21=1,DADOS_CONFIG!$D$21,IF(DADOS_CONFIG!$B$21=0,$AB$19 + IF(E87, $D$67 + INT($D$67 / 2), IF(D87, $D$67, 0)) + R87,IF(($AB$19 + IF(E87, $D$67 + INT($D$67 / 2), IF(D87, $D$67, 0)) + R87)=\"\",\"\",($AB$19 + IF(E87, $D$67 + INT($D$67 / 2), IF(D87, $D$67, 0)) + R87)+DADOS_CONFIG!$B$21)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 87,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$33<>\"\",NA(),IF(DADOS_CONFIG!$C$33=1,DADOS_CONFIG!$D$33,IF(DADOS_CONFIG!$B$33=0,$AJ$19 + IF(U87, $D$67 + INT($D$67 / 2), IF(T87, $D$67, 0)) + AH87,IF(($AJ$19 + IF(U87, $D$67 + INT($D$67 / 2), IF(T87, $D$67, 0)) + AH87)=\"\",\"\",($AJ$19 + IF(U87, $D$67 + INT($D$67 / 2), IF(T87, $D$67, 0)) + AH87)+DADOS_CONFIG!$B$33))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$33<>1,U87=TRUE,T87<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$33<>\"\",NA(),IF(DADOS_CONFIG!$C$33=1,DADOS_CONFIG!$D$33,IF(DADOS_CONFIG!$B$33=0,$AJ$19 + IF(U87, $D$67 + INT($D$67 / 2), IF(T87, $D$67, 0)) + AH87,IF(($AJ$19 + IF(U87, $D$67 + INT($D$67 / 2), IF(T87, $D$67, 0)) + AH87)=\"\",\"\",($AJ$19 + IF(U87, $D$67 + INT($D$67 / 2), IF(T87, $D$67, 0)) + AH87)+DADOS_CONFIG!$B$33)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 88,
+    "c": 16,
+    "antes": "=IF(DADOS_CONFIG!$E$22<>\"\",NA(),IF(DADOS_CONFIG!$C$22=1,DADOS_CONFIG!$D$22,IF(DADOS_CONFIG!$B$22=0,$AB$19 + IF(E88, $D$67 + INT($D$67 / 2), IF(D88, $D$67, 0)) + R88,IF(($AB$19 + IF(E88, $D$67 + INT($D$67 / 2), IF(D88, $D$67, 0)) + R88)=\"\",\"\",($AB$19 + IF(E88, $D$67 + INT($D$67 / 2), IF(D88, $D$67, 0)) + R88)+DADOS_CONFIG!$B$22))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$22<>1,E88=TRUE,D88<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$22<>\"\",NA(),IF(DADOS_CONFIG!$C$22=1,DADOS_CONFIG!$D$22,IF(DADOS_CONFIG!$B$22=0,$AB$19 + IF(E88, $D$67 + INT($D$67 / 2), IF(D88, $D$67, 0)) + R88,IF(($AB$19 + IF(E88, $D$67 + INT($D$67 / 2), IF(D88, $D$67, 0)) + R88)=\"\",\"\",($AB$19 + IF(E88, $D$67 + INT($D$67 / 2), IF(D88, $D$67, 0)) + R88)+DADOS_CONFIG!$B$22)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 88,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$34<>\"\",NA(),IF(DADOS_CONFIG!$C$34=1,DADOS_CONFIG!$D$34,IF(DADOS_CONFIG!$B$34=0,$AJ$19 + IF(U88, $D$67 + INT($D$67 / 2), IF(T88, $D$67, 0)) + AH88,IF(($AJ$19 + IF(U88, $D$67 + INT($D$67 / 2), IF(T88, $D$67, 0)) + AH88)=\"\",\"\",($AJ$19 + IF(U88, $D$67 + INT($D$67 / 2), IF(T88, $D$67, 0)) + AH88)+DADOS_CONFIG!$B$34))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$34<>1,U88=TRUE,T88<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$34<>\"\",NA(),IF(DADOS_CONFIG!$C$34=1,DADOS_CONFIG!$D$34,IF(DADOS_CONFIG!$B$34=0,$AJ$19 + IF(U88, $D$67 + INT($D$67 / 2), IF(T88, $D$67, 0)) + AH88,IF(($AJ$19 + IF(U88, $D$67 + INT($D$67 / 2), IF(T88, $D$67, 0)) + AH88)=\"\",\"\",($AJ$19 + IF(U88, $D$67 + INT($D$67 / 2), IF(T88, $D$67, 0)) + AH88)+DADOS_CONFIG!$B$34)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 89,
+    "c": 16,
+    "antes": "=IF(DADOS_CONFIG!$E$23<>\"\",NA(),IF(DADOS_CONFIG!$C$23=1,DADOS_CONFIG!$D$23,IF(DADOS_CONFIG!$B$23=0,$AB$19 + IF(E89, $D$67 + INT($D$67 / 2), IF(D89, $D$67, 0)) + R89,IF(($AB$19 + IF(E89, $D$67 + INT($D$67 / 2), IF(D89, $D$67, 0)) + R89)=\"\",\"\",($AB$19 + IF(E89, $D$67 + INT($D$67 / 2), IF(D89, $D$67, 0)) + R89)+DADOS_CONFIG!$B$23))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$23<>1,E89=TRUE,D89<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$23<>\"\",NA(),IF(DADOS_CONFIG!$C$23=1,DADOS_CONFIG!$D$23,IF(DADOS_CONFIG!$B$23=0,$AB$19 + IF(E89, $D$67 + INT($D$67 / 2), IF(D89, $D$67, 0)) + R89,IF(($AB$19 + IF(E89, $D$67 + INT($D$67 / 2), IF(D89, $D$67, 0)) + R89)=\"\",\"\",($AB$19 + IF(E89, $D$67 + INT($D$67 / 2), IF(D89, $D$67, 0)) + R89)+DADOS_CONFIG!$B$23)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 89,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$35<>\"\",NA(),IF(DADOS_CONFIG!$C$35=1,DADOS_CONFIG!$D$35,IF(DADOS_CONFIG!$B$35=0,$AJ$19 + IF(U89, $D$67 + INT($D$67 / 2), IF(T89, $D$67, 0)) + AH89,IF(($AJ$19 + IF(U89, $D$67 + INT($D$67 / 2), IF(T89, $D$67, 0)) + AH89)=\"\",\"\",($AJ$19 + IF(U89, $D$67 + INT($D$67 / 2), IF(T89, $D$67, 0)) + AH89)+DADOS_CONFIG!$B$35))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$35<>1,U89=TRUE,T89<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$35<>\"\",NA(),IF(DADOS_CONFIG!$C$35=1,DADOS_CONFIG!$D$35,IF(DADOS_CONFIG!$B$35=0,$AJ$19 + IF(U89, $D$67 + INT($D$67 / 2), IF(T89, $D$67, 0)) + AH89,IF(($AJ$19 + IF(U89, $D$67 + INT($D$67 / 2), IF(T89, $D$67, 0)) + AH89)=\"\",\"\",($AJ$19 + IF(U89, $D$67 + INT($D$67 / 2), IF(T89, $D$67, 0)) + AH89)+DADOS_CONFIG!$B$35)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 89,
+    "c": 37,
+    "antes": "=IF(AND(DADOS!$AK$15>0,$AH$11<10),\"Especialização só no nível 10\",IF(DADOS!$AK$24>0,DADOS!$AK$24&\" a mais\",DADOS!$AK$19+DADOS!$AK$21-DADOS!$AK$13&\" de \"&(DADOS!$AK$19+DADOS!$AK$21)))",
+    "depois": "=IF(AND(DADOS!$AK$15>0,$AH$11<10),\"Especialização só no nível 10\",IF(DADOS!$AK$15>DADOS!$AK$10,\"Especialização sem marco de Corpo\",IF(DADOS!$AK$24>0,DADOS!$AK$24&\" a mais\",DADOS!$AK$19+DADOS!$AK$21-DADOS!$AK$13&\" de \"&(DADOS!$AK$19+DADOS!$AK$21))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 90,
+    "c": 16,
+    "antes": "=IF(DADOS_CONFIG!$E$24<>\"\",NA(),IF(DADOS_CONFIG!$C$24=1,DADOS_CONFIG!$D$24,IF(DADOS_CONFIG!$B$24=0,$AB$19 + IF(E90, $D$67 + INT($D$67 / 2), IF(D90, $D$67, 0)) + R90,IF(($AB$19 + IF(E90, $D$67 + INT($D$67 / 2), IF(D90, $D$67, 0)) + R90)=\"\",\"\",($AB$19 + IF(E90, $D$67 + INT($D$67 / 2), IF(D90, $D$67, 0)) + R90)+DADOS_CONFIG!$B$24))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$24<>1,E90=TRUE,D90<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$24<>\"\",NA(),IF(DADOS_CONFIG!$C$24=1,DADOS_CONFIG!$D$24,IF(DADOS_CONFIG!$B$24=0,$AB$19 + IF(E90, $D$67 + INT($D$67 / 2), IF(D90, $D$67, 0)) + R90,IF(($AB$19 + IF(E90, $D$67 + INT($D$67 / 2), IF(D90, $D$67, 0)) + R90)=\"\",\"\",($AB$19 + IF(E90, $D$67 + INT($D$67 / 2), IF(D90, $D$67, 0)) + R90)+DADOS_CONFIG!$B$24)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 90,
+    "c": 32,
+    "antes": "=IF(DADOS_CONFIG!$E$36<>\"\",NA(),IF(DADOS_CONFIG!$C$36=1,DADOS_CONFIG!$D$36,IF(DADOS_CONFIG!$B$36=0,$AJ$19 + IF(U90, $D$67 + INT($D$67 / 2), IF(T90, $D$67, 0)) + AH90,IF(($AJ$19 + IF(U90, $D$67 + INT($D$67 / 2), IF(T90, $D$67, 0)) + AH90)=\"\",\"\",($AJ$19 + IF(U90, $D$67 + INT($D$67 / 2), IF(T90, $D$67, 0)) + AH90)+DADOS_CONFIG!$B$36))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$36<>1,U90=TRUE,T90<>TRUE),\"Marque o treino\",IF(DADOS_CONFIG!$E$36<>\"\",NA(),IF(DADOS_CONFIG!$C$36=1,DADOS_CONFIG!$D$36,IF(DADOS_CONFIG!$B$36=0,$AJ$19 + IF(U90, $D$67 + INT($D$67 / 2), IF(T90, $D$67, 0)) + AH90,IF(($AJ$19 + IF(U90, $D$67 + INT($D$67 / 2), IF(T90, $D$67, 0)) + AH90)=\"\",\"\",($AJ$19 + IF(U90, $D$67 + INT($D$67 / 2), IF(T90, $D$67, 0)) + AH90)+DADOS_CONFIG!$B$36)))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 105,
+    "c": 37,
+    "antes": "=IF(AND(DADOS!$AK$15>0,$AH$11<10),\"Especialização só no nível 10: tire a marcação\",IF(DADOS!$AK$24>0,\"Marcou \"&DADOS!$AK$24&\" a mais: tire uma perícia, um ofício ou uma especialização\",IF(DADOS!$AK$25+DADOS!$AK$26+DADOS!$AK$23=0,\"Tudo escolhido\",\"Falta: \"&IF(DADOS!$AK$25>0,DADOS!$AK$25&IF(DADOS!$AK$25=1,\" perícia\",\" perícias\"),\"\")&IF(AND(DADOS!$AK$26>0,OR(DADOS!$AK$25>0)),IF(OR(DADOS!$AK$23>0),\", \",\" e \"),\"\")&IF(DADOS!$AK$26>0,DADOS!$AK$26&IF(DADOS!$AK$26=1,\" ofício\",\" ofícios\"),\"\")&IF(AND(DADOS!$AK$23>0,OR(DADOS!$AK$25>0,DADOS!$AK$26>0)),\" e \",\"\")&IF(DADOS!$AK$23>0,DADOS!$AK$23&IF(DADOS!$AK$23=1,\" escolha de Corpo\",\" escolhas de Corpo\"),\"\")&IF(AND(DADOS!$AK$23>0,DADOS!$AK$25+DADOS!$AK$26=0),\" (+1 perícia, +1 ofício\"&IF($AH$11>=10,\" ou uma especialização\",\"\")&\")\",\"\")&IF(AND(DADOS!$AK$17=1,DADOS!$AK$14<=0),\", ou \"&IF(DADOS!$AK$27>0,DADOS!$AK$27&IF(DADOS!$AK$27=1,\" perícia\",\" perícias\"),\"\")&IF(AND(DADOS!$AK$28>0,OR(DADOS!$AK$27>0)),\" e \",\"\")&IF(DADOS!$AK$28>0,DADOS!$AK$28&IF(DADOS!$AK$28=1,\" escolha de Corpo\",\" escolhas de Corpo\"),\"\")&\" sem ofício\",\"\"))))",
+    "depois": "=IF(AND(DADOS!$AK$15>0,$AH$11<10),\"Especialização só no nível 10: tire a marcação\",IF(DADOS!$AK$15>DADOS!$AK$10,\"Marcou \"&(DADOS!$AK$15-DADOS!$AK$10)&IF((DADOS!$AK$15-DADOS!$AK$10)=1,\" especialização\",\" especializações\")&\" sem marco de Corpo: escolha Corpo no Marco Escolhido ou tire a marcação\",IF(DADOS!$AK$24>0,\"Marcou \"&DADOS!$AK$24&\" a mais: tire uma perícia, um ofício ou uma especialização\",IF(DADOS!$AK$25+DADOS!$AK$26+DADOS!$AK$23=0,\"Tudo escolhido\",\"Falta: \"&IF(DADOS!$AK$25>0,DADOS!$AK$25&IF(DADOS!$AK$25=1,\" perícia\",\" perícias\"),\"\")&IF(AND(DADOS!$AK$26>0,OR(DADOS!$AK$25>0)),IF(OR(DADOS!$AK$23>0),\", \",\" e \"),\"\")&IF(DADOS!$AK$26>0,DADOS!$AK$26&IF(DADOS!$AK$26=1,\" ofício\",\" ofícios\"),\"\")&IF(AND(DADOS!$AK$23>0,OR(DADOS!$AK$25>0,DADOS!$AK$26>0)),\" e \",\"\")&IF(DADOS!$AK$23>0,DADOS!$AK$23&IF(DADOS!$AK$23=1,\" escolha de Corpo\",\" escolhas de Corpo\"),\"\")&IF(AND(DADOS!$AK$23>0,DADOS!$AK$25+DADOS!$AK$26=0),\" (+1 perícia, +1 ofício\"&IF($AH$11>=10,\" ou uma especialização\",\"\")&\")\",\"\")&IF(AND(DADOS!$AK$17=1,DADOS!$AK$14<=0),\", ou \"&IF(DADOS!$AK$27>0,DADOS!$AK$27&IF(DADOS!$AK$27=1,\" perícia\",\" perícias\"),\"\")&IF(AND(DADOS!$AK$28>0,OR(DADOS!$AK$27>0)),\" e \",\"\")&IF(DADOS!$AK$28>0,DADOS!$AK$28&IF(DADOS!$AK$28=1,\" escolha de Corpo\",\" escolhas de Corpo\"),\"\")&\" sem ofício\",\"\")))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 108,
+    "c": 14,
+    "antes": "=IF(AND(DADOS_CONFIG!$C$37<>1,NOT(OR(K108=\"FORÇA\",K108=\"DESTREZA\",K108=\"CONSTITUIÇÃO\",K108=\"INTELIGÊNCIA\",K108=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$37<>\"\",NA(),IF(DADOS_CONFIG!$C$37=1,DADOS_CONFIG!$D$37,IF(DADOS_CONFIG!$B$37=0,+IFS(K108=\"FORÇA\",$D$19, K108=\"DESTREZA\",$L$19, K108=\"CONSTITUIÇÃO\",$T$19, K108=\"INTELIGÊNCIA\",$AB$19, K108=\"ESSÊNCIA\",$AJ$19) + IF(E108, $D$67 + INT($D$67 / 2), IF(D108, $D$67, 0)) + O108,IF((+IFS(K108=\"FORÇA\",$D$19, K108=\"DESTREZA\",$L$19, K108=\"CONSTITUIÇÃO\",$T$19, K108=\"INTELIGÊNCIA\",$AB$19, K108=\"ESSÊNCIA\",$AJ$19) + IF(E108, $D$67 + INT($D$67 / 2), IF(D108, $D$67, 0)) + O108)=\"\",\"\",(+IFS(K108=\"FORÇA\",$D$19, K108=\"DESTREZA\",$L$19, K108=\"CONSTITUIÇÃO\",$T$19, K108=\"INTELIGÊNCIA\",$AB$19, K108=\"ESSÊNCIA\",$AJ$19) + IF(E108, $D$67 + INT($D$67 / 2), IF(D108, $D$67, 0)) + O108)+DADOS_CONFIG!$B$37)))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$37<>1,E108=TRUE,D108<>TRUE),\"Marque o treino\",IF(AND(DADOS_CONFIG!$C$37<>1,NOT(OR(K108=\"FORÇA\",K108=\"DESTREZA\",K108=\"CONSTITUIÇÃO\",K108=\"INTELIGÊNCIA\",K108=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$37<>\"\",NA(),IF(DADOS_CONFIG!$C$37=1,DADOS_CONFIG!$D$37,IF(DADOS_CONFIG!$B$37=0,+IFS(K108=\"FORÇA\",$D$19, K108=\"DESTREZA\",$L$19, K108=\"CONSTITUIÇÃO\",$T$19, K108=\"INTELIGÊNCIA\",$AB$19, K108=\"ESSÊNCIA\",$AJ$19) + IF(E108, $D$67 + INT($D$67 / 2), IF(D108, $D$67, 0)) + O108,IF((+IFS(K108=\"FORÇA\",$D$19, K108=\"DESTREZA\",$L$19, K108=\"CONSTITUIÇÃO\",$T$19, K108=\"INTELIGÊNCIA\",$AB$19, K108=\"ESSÊNCIA\",$AJ$19) + IF(E108, $D$67 + INT($D$67 / 2), IF(D108, $D$67, 0)) + O108)=\"\",\"\",(+IFS(K108=\"FORÇA\",$D$19, K108=\"DESTREZA\",$L$19, K108=\"CONSTITUIÇÃO\",$T$19, K108=\"INTELIGÊNCIA\",$AB$19, K108=\"ESSÊNCIA\",$AJ$19) + IF(E108, $D$67 + INT($D$67 / 2), IF(D108, $D$67, 0)) + O108)+DADOS_CONFIG!$B$37))))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 108,
+    "c": 27,
+    "antes": "=IF(AND(DADOS_CONFIG!$C$43<>1,NOT(OR(X108=\"FORÇA\",X108=\"DESTREZA\",X108=\"CONSTITUIÇÃO\",X108=\"INTELIGÊNCIA\",X108=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$43<>\"\",NA(),IF(DADOS_CONFIG!$C$43=1,DADOS_CONFIG!$D$43,IF(DADOS_CONFIG!$B$43=0,+IFS(X108=\"FORÇA\",$D$19, X108=\"DESTREZA\",$L$19, X108=\"CONSTITUIÇÃO\",$T$19, X108=\"INTELIGÊNCIA\",$AB$19, X108=\"ESSÊNCIA\",$AJ$19) + IF(R108, $D$67 + INT($D$67 / 2), IF(Q108, $D$67, 0)) + AB108,IF((+IFS(X108=\"FORÇA\",$D$19, X108=\"DESTREZA\",$L$19, X108=\"CONSTITUIÇÃO\",$T$19, X108=\"INTELIGÊNCIA\",$AB$19, X108=\"ESSÊNCIA\",$AJ$19) + IF(R108, $D$67 + INT($D$67 / 2), IF(Q108, $D$67, 0)) + AB108)=\"\",\"\",(+IFS(X108=\"FORÇA\",$D$19, X108=\"DESTREZA\",$L$19, X108=\"CONSTITUIÇÃO\",$T$19, X108=\"INTELIGÊNCIA\",$AB$19, X108=\"ESSÊNCIA\",$AJ$19) + IF(R108, $D$67 + INT($D$67 / 2), IF(Q108, $D$67, 0)) + AB108)+DADOS_CONFIG!$B$43)))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$43<>1,R108=TRUE,Q108<>TRUE),\"Marque o treino\",IF(AND(DADOS_CONFIG!$C$43<>1,NOT(OR(X108=\"FORÇA\",X108=\"DESTREZA\",X108=\"CONSTITUIÇÃO\",X108=\"INTELIGÊNCIA\",X108=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$43<>\"\",NA(),IF(DADOS_CONFIG!$C$43=1,DADOS_CONFIG!$D$43,IF(DADOS_CONFIG!$B$43=0,+IFS(X108=\"FORÇA\",$D$19, X108=\"DESTREZA\",$L$19, X108=\"CONSTITUIÇÃO\",$T$19, X108=\"INTELIGÊNCIA\",$AB$19, X108=\"ESSÊNCIA\",$AJ$19) + IF(R108, $D$67 + INT($D$67 / 2), IF(Q108, $D$67, 0)) + AB108,IF((+IFS(X108=\"FORÇA\",$D$19, X108=\"DESTREZA\",$L$19, X108=\"CONSTITUIÇÃO\",$T$19, X108=\"INTELIGÊNCIA\",$AB$19, X108=\"ESSÊNCIA\",$AJ$19) + IF(R108, $D$67 + INT($D$67 / 2), IF(Q108, $D$67, 0)) + AB108)=\"\",\"\",(+IFS(X108=\"FORÇA\",$D$19, X108=\"DESTREZA\",$L$19, X108=\"CONSTITUIÇÃO\",$T$19, X108=\"INTELIGÊNCIA\",$AB$19, X108=\"ESSÊNCIA\",$AJ$19) + IF(R108, $D$67 + INT($D$67 / 2), IF(Q108, $D$67, 0)) + AB108)+DADOS_CONFIG!$B$43))))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 109,
+    "c": 14,
+    "antes": "=IF(AND(DADOS_CONFIG!$C$38<>1,NOT(OR(K109=\"FORÇA\",K109=\"DESTREZA\",K109=\"CONSTITUIÇÃO\",K109=\"INTELIGÊNCIA\",K109=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$38<>\"\",NA(),IF(DADOS_CONFIG!$C$38=1,DADOS_CONFIG!$D$38,IF(DADOS_CONFIG!$B$38=0,+IFS(K109=\"FORÇA\",$D$19, K109=\"DESTREZA\",$L$19, K109=\"CONSTITUIÇÃO\",$T$19, K109=\"INTELIGÊNCIA\",$AB$19, K109=\"ESSÊNCIA\",$AJ$19) + IF(E109, $D$67 + INT($D$67 / 2), IF(D109, $D$67, 0)) + O109,IF((+IFS(K109=\"FORÇA\",$D$19, K109=\"DESTREZA\",$L$19, K109=\"CONSTITUIÇÃO\",$T$19, K109=\"INTELIGÊNCIA\",$AB$19, K109=\"ESSÊNCIA\",$AJ$19) + IF(E109, $D$67 + INT($D$67 / 2), IF(D109, $D$67, 0)) + O109)=\"\",\"\",(+IFS(K109=\"FORÇA\",$D$19, K109=\"DESTREZA\",$L$19, K109=\"CONSTITUIÇÃO\",$T$19, K109=\"INTELIGÊNCIA\",$AB$19, K109=\"ESSÊNCIA\",$AJ$19) + IF(E109, $D$67 + INT($D$67 / 2), IF(D109, $D$67, 0)) + O109)+DADOS_CONFIG!$B$38)))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$38<>1,E109=TRUE,D109<>TRUE),\"Marque o treino\",IF(AND(DADOS_CONFIG!$C$38<>1,NOT(OR(K109=\"FORÇA\",K109=\"DESTREZA\",K109=\"CONSTITUIÇÃO\",K109=\"INTELIGÊNCIA\",K109=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$38<>\"\",NA(),IF(DADOS_CONFIG!$C$38=1,DADOS_CONFIG!$D$38,IF(DADOS_CONFIG!$B$38=0,+IFS(K109=\"FORÇA\",$D$19, K109=\"DESTREZA\",$L$19, K109=\"CONSTITUIÇÃO\",$T$19, K109=\"INTELIGÊNCIA\",$AB$19, K109=\"ESSÊNCIA\",$AJ$19) + IF(E109, $D$67 + INT($D$67 / 2), IF(D109, $D$67, 0)) + O109,IF((+IFS(K109=\"FORÇA\",$D$19, K109=\"DESTREZA\",$L$19, K109=\"CONSTITUIÇÃO\",$T$19, K109=\"INTELIGÊNCIA\",$AB$19, K109=\"ESSÊNCIA\",$AJ$19) + IF(E109, $D$67 + INT($D$67 / 2), IF(D109, $D$67, 0)) + O109)=\"\",\"\",(+IFS(K109=\"FORÇA\",$D$19, K109=\"DESTREZA\",$L$19, K109=\"CONSTITUIÇÃO\",$T$19, K109=\"INTELIGÊNCIA\",$AB$19, K109=\"ESSÊNCIA\",$AJ$19) + IF(E109, $D$67 + INT($D$67 / 2), IF(D109, $D$67, 0)) + O109)+DADOS_CONFIG!$B$38))))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 109,
+    "c": 27,
+    "antes": "=IF(AND(DADOS_CONFIG!$C$44<>1,NOT(OR(X109=\"FORÇA\",X109=\"DESTREZA\",X109=\"CONSTITUIÇÃO\",X109=\"INTELIGÊNCIA\",X109=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$44<>\"\",NA(),IF(DADOS_CONFIG!$C$44=1,DADOS_CONFIG!$D$44,IF(DADOS_CONFIG!$B$44=0,+IFS(X109=\"FORÇA\",$D$19, X109=\"DESTREZA\",$L$19, X109=\"CONSTITUIÇÃO\",$T$19, X109=\"INTELIGÊNCIA\",$AB$19, X109=\"ESSÊNCIA\",$AJ$19) + IF(R109, $D$67 + INT($D$67 / 2), IF(Q109, $D$67, 0)) + AB109,IF((+IFS(X109=\"FORÇA\",$D$19, X109=\"DESTREZA\",$L$19, X109=\"CONSTITUIÇÃO\",$T$19, X109=\"INTELIGÊNCIA\",$AB$19, X109=\"ESSÊNCIA\",$AJ$19) + IF(R109, $D$67 + INT($D$67 / 2), IF(Q109, $D$67, 0)) + AB109)=\"\",\"\",(+IFS(X109=\"FORÇA\",$D$19, X109=\"DESTREZA\",$L$19, X109=\"CONSTITUIÇÃO\",$T$19, X109=\"INTELIGÊNCIA\",$AB$19, X109=\"ESSÊNCIA\",$AJ$19) + IF(R109, $D$67 + INT($D$67 / 2), IF(Q109, $D$67, 0)) + AB109)+DADOS_CONFIG!$B$44)))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$44<>1,R109=TRUE,Q109<>TRUE),\"Marque o treino\",IF(AND(DADOS_CONFIG!$C$44<>1,NOT(OR(X109=\"FORÇA\",X109=\"DESTREZA\",X109=\"CONSTITUIÇÃO\",X109=\"INTELIGÊNCIA\",X109=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$44<>\"\",NA(),IF(DADOS_CONFIG!$C$44=1,DADOS_CONFIG!$D$44,IF(DADOS_CONFIG!$B$44=0,+IFS(X109=\"FORÇA\",$D$19, X109=\"DESTREZA\",$L$19, X109=\"CONSTITUIÇÃO\",$T$19, X109=\"INTELIGÊNCIA\",$AB$19, X109=\"ESSÊNCIA\",$AJ$19) + IF(R109, $D$67 + INT($D$67 / 2), IF(Q109, $D$67, 0)) + AB109,IF((+IFS(X109=\"FORÇA\",$D$19, X109=\"DESTREZA\",$L$19, X109=\"CONSTITUIÇÃO\",$T$19, X109=\"INTELIGÊNCIA\",$AB$19, X109=\"ESSÊNCIA\",$AJ$19) + IF(R109, $D$67 + INT($D$67 / 2), IF(Q109, $D$67, 0)) + AB109)=\"\",\"\",(+IFS(X109=\"FORÇA\",$D$19, X109=\"DESTREZA\",$L$19, X109=\"CONSTITUIÇÃO\",$T$19, X109=\"INTELIGÊNCIA\",$AB$19, X109=\"ESSÊNCIA\",$AJ$19) + IF(R109, $D$67 + INT($D$67 / 2), IF(Q109, $D$67, 0)) + AB109)+DADOS_CONFIG!$B$44))))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 110,
+    "c": 14,
+    "antes": "=IF(AND(DADOS_CONFIG!$C$39<>1,NOT(OR(K110=\"FORÇA\",K110=\"DESTREZA\",K110=\"CONSTITUIÇÃO\",K110=\"INTELIGÊNCIA\",K110=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$39<>\"\",NA(),IF(DADOS_CONFIG!$C$39=1,DADOS_CONFIG!$D$39,IF(DADOS_CONFIG!$B$39=0,+IFS(K110=\"FORÇA\",$D$19, K110=\"DESTREZA\",$L$19, K110=\"CONSTITUIÇÃO\",$T$19, K110=\"INTELIGÊNCIA\",$AB$19, K110=\"ESSÊNCIA\",$AJ$19) + IF(E110, $D$67 + INT($D$67 / 2), IF(D110, $D$67, 0)) + O110,IF((+IFS(K110=\"FORÇA\",$D$19, K110=\"DESTREZA\",$L$19, K110=\"CONSTITUIÇÃO\",$T$19, K110=\"INTELIGÊNCIA\",$AB$19, K110=\"ESSÊNCIA\",$AJ$19) + IF(E110, $D$67 + INT($D$67 / 2), IF(D110, $D$67, 0)) + O110)=\"\",\"\",(+IFS(K110=\"FORÇA\",$D$19, K110=\"DESTREZA\",$L$19, K110=\"CONSTITUIÇÃO\",$T$19, K110=\"INTELIGÊNCIA\",$AB$19, K110=\"ESSÊNCIA\",$AJ$19) + IF(E110, $D$67 + INT($D$67 / 2), IF(D110, $D$67, 0)) + O110)+DADOS_CONFIG!$B$39)))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$39<>1,E110=TRUE,D110<>TRUE),\"Marque o treino\",IF(AND(DADOS_CONFIG!$C$39<>1,NOT(OR(K110=\"FORÇA\",K110=\"DESTREZA\",K110=\"CONSTITUIÇÃO\",K110=\"INTELIGÊNCIA\",K110=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$39<>\"\",NA(),IF(DADOS_CONFIG!$C$39=1,DADOS_CONFIG!$D$39,IF(DADOS_CONFIG!$B$39=0,+IFS(K110=\"FORÇA\",$D$19, K110=\"DESTREZA\",$L$19, K110=\"CONSTITUIÇÃO\",$T$19, K110=\"INTELIGÊNCIA\",$AB$19, K110=\"ESSÊNCIA\",$AJ$19) + IF(E110, $D$67 + INT($D$67 / 2), IF(D110, $D$67, 0)) + O110,IF((+IFS(K110=\"FORÇA\",$D$19, K110=\"DESTREZA\",$L$19, K110=\"CONSTITUIÇÃO\",$T$19, K110=\"INTELIGÊNCIA\",$AB$19, K110=\"ESSÊNCIA\",$AJ$19) + IF(E110, $D$67 + INT($D$67 / 2), IF(D110, $D$67, 0)) + O110)=\"\",\"\",(+IFS(K110=\"FORÇA\",$D$19, K110=\"DESTREZA\",$L$19, K110=\"CONSTITUIÇÃO\",$T$19, K110=\"INTELIGÊNCIA\",$AB$19, K110=\"ESSÊNCIA\",$AJ$19) + IF(E110, $D$67 + INT($D$67 / 2), IF(D110, $D$67, 0)) + O110)+DADOS_CONFIG!$B$39))))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 110,
+    "c": 27,
+    "antes": "=IF(AND(DADOS_CONFIG!$C$45<>1,NOT(OR(X110=\"FORÇA\",X110=\"DESTREZA\",X110=\"CONSTITUIÇÃO\",X110=\"INTELIGÊNCIA\",X110=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$45<>\"\",NA(),IF(DADOS_CONFIG!$C$45=1,DADOS_CONFIG!$D$45,IF(DADOS_CONFIG!$B$45=0,+IFS(X110=\"FORÇA\",$D$19, X110=\"DESTREZA\",$L$19, X110=\"CONSTITUIÇÃO\",$T$19, X110=\"INTELIGÊNCIA\",$AB$19, X110=\"ESSÊNCIA\",$AJ$19) + IF(R110, $D$67 + INT($D$67 / 2), IF(Q110, $D$67, 0)) + AB110,IF((+IFS(X110=\"FORÇA\",$D$19, X110=\"DESTREZA\",$L$19, X110=\"CONSTITUIÇÃO\",$T$19, X110=\"INTELIGÊNCIA\",$AB$19, X110=\"ESSÊNCIA\",$AJ$19) + IF(R110, $D$67 + INT($D$67 / 2), IF(Q110, $D$67, 0)) + AB110)=\"\",\"\",(+IFS(X110=\"FORÇA\",$D$19, X110=\"DESTREZA\",$L$19, X110=\"CONSTITUIÇÃO\",$T$19, X110=\"INTELIGÊNCIA\",$AB$19, X110=\"ESSÊNCIA\",$AJ$19) + IF(R110, $D$67 + INT($D$67 / 2), IF(Q110, $D$67, 0)) + AB110)+DADOS_CONFIG!$B$45)))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$45<>1,R110=TRUE,Q110<>TRUE),\"Marque o treino\",IF(AND(DADOS_CONFIG!$C$45<>1,NOT(OR(X110=\"FORÇA\",X110=\"DESTREZA\",X110=\"CONSTITUIÇÃO\",X110=\"INTELIGÊNCIA\",X110=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$45<>\"\",NA(),IF(DADOS_CONFIG!$C$45=1,DADOS_CONFIG!$D$45,IF(DADOS_CONFIG!$B$45=0,+IFS(X110=\"FORÇA\",$D$19, X110=\"DESTREZA\",$L$19, X110=\"CONSTITUIÇÃO\",$T$19, X110=\"INTELIGÊNCIA\",$AB$19, X110=\"ESSÊNCIA\",$AJ$19) + IF(R110, $D$67 + INT($D$67 / 2), IF(Q110, $D$67, 0)) + AB110,IF((+IFS(X110=\"FORÇA\",$D$19, X110=\"DESTREZA\",$L$19, X110=\"CONSTITUIÇÃO\",$T$19, X110=\"INTELIGÊNCIA\",$AB$19, X110=\"ESSÊNCIA\",$AJ$19) + IF(R110, $D$67 + INT($D$67 / 2), IF(Q110, $D$67, 0)) + AB110)=\"\",\"\",(+IFS(X110=\"FORÇA\",$D$19, X110=\"DESTREZA\",$L$19, X110=\"CONSTITUIÇÃO\",$T$19, X110=\"INTELIGÊNCIA\",$AB$19, X110=\"ESSÊNCIA\",$AJ$19) + IF(R110, $D$67 + INT($D$67 / 2), IF(Q110, $D$67, 0)) + AB110)+DADOS_CONFIG!$B$45))))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 111,
+    "c": 14,
+    "antes": "=IF(AND(DADOS_CONFIG!$C$40<>1,NOT(OR(K111=\"FORÇA\",K111=\"DESTREZA\",K111=\"CONSTITUIÇÃO\",K111=\"INTELIGÊNCIA\",K111=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$40<>\"\",NA(),IF(DADOS_CONFIG!$C$40=1,DADOS_CONFIG!$D$40,IF(DADOS_CONFIG!$B$40=0,+IFS(K111=\"FORÇA\",$D$19, K111=\"DESTREZA\",$L$19, K111=\"CONSTITUIÇÃO\",$T$19, K111=\"INTELIGÊNCIA\",$AB$19, K111=\"ESSÊNCIA\",$AJ$19) + IF(E111, $D$67 + INT($D$67 / 2), IF(D111, $D$67, 0)) + O111,IF((+IFS(K111=\"FORÇA\",$D$19, K111=\"DESTREZA\",$L$19, K111=\"CONSTITUIÇÃO\",$T$19, K111=\"INTELIGÊNCIA\",$AB$19, K111=\"ESSÊNCIA\",$AJ$19) + IF(E111, $D$67 + INT($D$67 / 2), IF(D111, $D$67, 0)) + O111)=\"\",\"\",(+IFS(K111=\"FORÇA\",$D$19, K111=\"DESTREZA\",$L$19, K111=\"CONSTITUIÇÃO\",$T$19, K111=\"INTELIGÊNCIA\",$AB$19, K111=\"ESSÊNCIA\",$AJ$19) + IF(E111, $D$67 + INT($D$67 / 2), IF(D111, $D$67, 0)) + O111)+DADOS_CONFIG!$B$40)))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$40<>1,E111=TRUE,D111<>TRUE),\"Marque o treino\",IF(AND(DADOS_CONFIG!$C$40<>1,NOT(OR(K111=\"FORÇA\",K111=\"DESTREZA\",K111=\"CONSTITUIÇÃO\",K111=\"INTELIGÊNCIA\",K111=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$40<>\"\",NA(),IF(DADOS_CONFIG!$C$40=1,DADOS_CONFIG!$D$40,IF(DADOS_CONFIG!$B$40=0,+IFS(K111=\"FORÇA\",$D$19, K111=\"DESTREZA\",$L$19, K111=\"CONSTITUIÇÃO\",$T$19, K111=\"INTELIGÊNCIA\",$AB$19, K111=\"ESSÊNCIA\",$AJ$19) + IF(E111, $D$67 + INT($D$67 / 2), IF(D111, $D$67, 0)) + O111,IF((+IFS(K111=\"FORÇA\",$D$19, K111=\"DESTREZA\",$L$19, K111=\"CONSTITUIÇÃO\",$T$19, K111=\"INTELIGÊNCIA\",$AB$19, K111=\"ESSÊNCIA\",$AJ$19) + IF(E111, $D$67 + INT($D$67 / 2), IF(D111, $D$67, 0)) + O111)=\"\",\"\",(+IFS(K111=\"FORÇA\",$D$19, K111=\"DESTREZA\",$L$19, K111=\"CONSTITUIÇÃO\",$T$19, K111=\"INTELIGÊNCIA\",$AB$19, K111=\"ESSÊNCIA\",$AJ$19) + IF(E111, $D$67 + INT($D$67 / 2), IF(D111, $D$67, 0)) + O111)+DADOS_CONFIG!$B$40))))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 111,
+    "c": 27,
+    "antes": "=IF(AND(DADOS_CONFIG!$C$47<>1,NOT(OR(X111=\"FORÇA\",X111=\"DESTREZA\",X111=\"CONSTITUIÇÃO\",X111=\"INTELIGÊNCIA\",X111=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$47<>\"\",NA(),IF(DADOS_CONFIG!$C$47=1,DADOS_CONFIG!$D$47,IF(DADOS_CONFIG!$B$47=0,+IFS(X111=\"FORÇA\",$D$19, X111=\"DESTREZA\",$L$19, X111=\"CONSTITUIÇÃO\",$T$19, X111=\"INTELIGÊNCIA\",$AB$19, X111=\"ESSÊNCIA\",$AJ$19) + IF(R111, $D$67 + INT($D$67 / 2), IF(Q111, $D$67, 0)) + AB111,IF((+IFS(X111=\"FORÇA\",$D$19, X111=\"DESTREZA\",$L$19, X111=\"CONSTITUIÇÃO\",$T$19, X111=\"INTELIGÊNCIA\",$AB$19, X111=\"ESSÊNCIA\",$AJ$19) + IF(R111, $D$67 + INT($D$67 / 2), IF(Q111, $D$67, 0)) + AB111)=\"\",\"\",(+IFS(X111=\"FORÇA\",$D$19, X111=\"DESTREZA\",$L$19, X111=\"CONSTITUIÇÃO\",$T$19, X111=\"INTELIGÊNCIA\",$AB$19, X111=\"ESSÊNCIA\",$AJ$19) + IF(R111, $D$67 + INT($D$67 / 2), IF(Q111, $D$67, 0)) + AB111)+DADOS_CONFIG!$B$47)))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$47<>1,R111=TRUE,Q111<>TRUE),\"Marque o treino\",IF(AND(DADOS_CONFIG!$C$47<>1,NOT(OR(X111=\"FORÇA\",X111=\"DESTREZA\",X111=\"CONSTITUIÇÃO\",X111=\"INTELIGÊNCIA\",X111=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$47<>\"\",NA(),IF(DADOS_CONFIG!$C$47=1,DADOS_CONFIG!$D$47,IF(DADOS_CONFIG!$B$47=0,+IFS(X111=\"FORÇA\",$D$19, X111=\"DESTREZA\",$L$19, X111=\"CONSTITUIÇÃO\",$T$19, X111=\"INTELIGÊNCIA\",$AB$19, X111=\"ESSÊNCIA\",$AJ$19) + IF(R111, $D$67 + INT($D$67 / 2), IF(Q111, $D$67, 0)) + AB111,IF((+IFS(X111=\"FORÇA\",$D$19, X111=\"DESTREZA\",$L$19, X111=\"CONSTITUIÇÃO\",$T$19, X111=\"INTELIGÊNCIA\",$AB$19, X111=\"ESSÊNCIA\",$AJ$19) + IF(R111, $D$67 + INT($D$67 / 2), IF(Q111, $D$67, 0)) + AB111)=\"\",\"\",(+IFS(X111=\"FORÇA\",$D$19, X111=\"DESTREZA\",$L$19, X111=\"CONSTITUIÇÃO\",$T$19, X111=\"INTELIGÊNCIA\",$AB$19, X111=\"ESSÊNCIA\",$AJ$19) + IF(R111, $D$67 + INT($D$67 / 2), IF(Q111, $D$67, 0)) + AB111)+DADOS_CONFIG!$B$47))))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 112,
+    "c": 14,
+    "antes": "=IF(AND(DADOS_CONFIG!$C$41<>1,NOT(OR(K112=\"FORÇA\",K112=\"DESTREZA\",K112=\"CONSTITUIÇÃO\",K112=\"INTELIGÊNCIA\",K112=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$41<>\"\",NA(),IF(DADOS_CONFIG!$C$41=1,DADOS_CONFIG!$D$41,IF(DADOS_CONFIG!$B$41=0,+IFS(K112=\"FORÇA\",$D$19, K112=\"DESTREZA\",$L$19, K112=\"CONSTITUIÇÃO\",$T$19, K112=\"INTELIGÊNCIA\",$AB$19, K112=\"ESSÊNCIA\",$AJ$19) + IF(E112, $D$67 + INT($D$67 / 2), IF(D112, $D$67, 0)) + O112,IF((+IFS(K112=\"FORÇA\",$D$19, K112=\"DESTREZA\",$L$19, K112=\"CONSTITUIÇÃO\",$T$19, K112=\"INTELIGÊNCIA\",$AB$19, K112=\"ESSÊNCIA\",$AJ$19) + IF(E112, $D$67 + INT($D$67 / 2), IF(D112, $D$67, 0)) + O112)=\"\",\"\",(+IFS(K112=\"FORÇA\",$D$19, K112=\"DESTREZA\",$L$19, K112=\"CONSTITUIÇÃO\",$T$19, K112=\"INTELIGÊNCIA\",$AB$19, K112=\"ESSÊNCIA\",$AJ$19) + IF(E112, $D$67 + INT($D$67 / 2), IF(D112, $D$67, 0)) + O112)+DADOS_CONFIG!$B$41)))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$41<>1,E112=TRUE,D112<>TRUE),\"Marque o treino\",IF(AND(DADOS_CONFIG!$C$41<>1,NOT(OR(K112=\"FORÇA\",K112=\"DESTREZA\",K112=\"CONSTITUIÇÃO\",K112=\"INTELIGÊNCIA\",K112=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$41<>\"\",NA(),IF(DADOS_CONFIG!$C$41=1,DADOS_CONFIG!$D$41,IF(DADOS_CONFIG!$B$41=0,+IFS(K112=\"FORÇA\",$D$19, K112=\"DESTREZA\",$L$19, K112=\"CONSTITUIÇÃO\",$T$19, K112=\"INTELIGÊNCIA\",$AB$19, K112=\"ESSÊNCIA\",$AJ$19) + IF(E112, $D$67 + INT($D$67 / 2), IF(D112, $D$67, 0)) + O112,IF((+IFS(K112=\"FORÇA\",$D$19, K112=\"DESTREZA\",$L$19, K112=\"CONSTITUIÇÃO\",$T$19, K112=\"INTELIGÊNCIA\",$AB$19, K112=\"ESSÊNCIA\",$AJ$19) + IF(E112, $D$67 + INT($D$67 / 2), IF(D112, $D$67, 0)) + O112)=\"\",\"\",(+IFS(K112=\"FORÇA\",$D$19, K112=\"DESTREZA\",$L$19, K112=\"CONSTITUIÇÃO\",$T$19, K112=\"INTELIGÊNCIA\",$AB$19, K112=\"ESSÊNCIA\",$AJ$19) + IF(E112, $D$67 + INT($D$67 / 2), IF(D112, $D$67, 0)) + O112)+DADOS_CONFIG!$B$41))))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 112,
+    "c": 27,
+    "antes": "=IF(AND(DADOS_CONFIG!$C$46<>1,NOT(OR(X112=\"FORÇA\",X112=\"DESTREZA\",X112=\"CONSTITUIÇÃO\",X112=\"INTELIGÊNCIA\",X112=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$46<>\"\",NA(),IF(DADOS_CONFIG!$C$46=1,DADOS_CONFIG!$D$46,IF(DADOS_CONFIG!$B$46=0,+IFS(X112=\"FORÇA\",$D$19, X112=\"DESTREZA\",$L$19, X112=\"CONSTITUIÇÃO\",$T$19, X112=\"INTELIGÊNCIA\",$AB$19, X112=\"ESSÊNCIA\",$AJ$19) + IF(R112, $D$67 + INT($D$67 / 2), IF(Q112, $D$67, 0)) + AB112,IF((+IFS(X112=\"FORÇA\",$D$19, X112=\"DESTREZA\",$L$19, X112=\"CONSTITUIÇÃO\",$T$19, X112=\"INTELIGÊNCIA\",$AB$19, X112=\"ESSÊNCIA\",$AJ$19) + IF(R112, $D$67 + INT($D$67 / 2), IF(Q112, $D$67, 0)) + AB112)=\"\",\"\",(+IFS(X112=\"FORÇA\",$D$19, X112=\"DESTREZA\",$L$19, X112=\"CONSTITUIÇÃO\",$T$19, X112=\"INTELIGÊNCIA\",$AB$19, X112=\"ESSÊNCIA\",$AJ$19) + IF(R112, $D$67 + INT($D$67 / 2), IF(Q112, $D$67, 0)) + AB112)+DADOS_CONFIG!$B$46)))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$46<>1,R112=TRUE,Q112<>TRUE),\"Marque o treino\",IF(AND(DADOS_CONFIG!$C$46<>1,NOT(OR(X112=\"FORÇA\",X112=\"DESTREZA\",X112=\"CONSTITUIÇÃO\",X112=\"INTELIGÊNCIA\",X112=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$46<>\"\",NA(),IF(DADOS_CONFIG!$C$46=1,DADOS_CONFIG!$D$46,IF(DADOS_CONFIG!$B$46=0,+IFS(X112=\"FORÇA\",$D$19, X112=\"DESTREZA\",$L$19, X112=\"CONSTITUIÇÃO\",$T$19, X112=\"INTELIGÊNCIA\",$AB$19, X112=\"ESSÊNCIA\",$AJ$19) + IF(R112, $D$67 + INT($D$67 / 2), IF(Q112, $D$67, 0)) + AB112,IF((+IFS(X112=\"FORÇA\",$D$19, X112=\"DESTREZA\",$L$19, X112=\"CONSTITUIÇÃO\",$T$19, X112=\"INTELIGÊNCIA\",$AB$19, X112=\"ESSÊNCIA\",$AJ$19) + IF(R112, $D$67 + INT($D$67 / 2), IF(Q112, $D$67, 0)) + AB112)=\"\",\"\",(+IFS(X112=\"FORÇA\",$D$19, X112=\"DESTREZA\",$L$19, X112=\"CONSTITUIÇÃO\",$T$19, X112=\"INTELIGÊNCIA\",$AB$19, X112=\"ESSÊNCIA\",$AJ$19) + IF(R112, $D$67 + INT($D$67 / 2), IF(Q112, $D$67, 0)) + AB112)+DADOS_CONFIG!$B$46))))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 113,
+    "c": 14,
+    "antes": "=IF(AND(DADOS_CONFIG!$C$42<>1,NOT(OR(K113=\"FORÇA\",K113=\"DESTREZA\",K113=\"CONSTITUIÇÃO\",K113=\"INTELIGÊNCIA\",K113=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$42<>\"\",NA(),IF(DADOS_CONFIG!$C$42=1,DADOS_CONFIG!$D$42,IF(DADOS_CONFIG!$B$42=0,+IFS(K113=\"FORÇA\",$D$19, K113=\"DESTREZA\",$L$19, K113=\"CONSTITUIÇÃO\",$T$19, K113=\"INTELIGÊNCIA\",$AB$19, K113=\"ESSÊNCIA\",$AJ$19) + IF(E113, $D$67 + INT($D$67 / 2), IF(D113, $D$67, 0)) + O113,IF((+IFS(K113=\"FORÇA\",$D$19, K113=\"DESTREZA\",$L$19, K113=\"CONSTITUIÇÃO\",$T$19, K113=\"INTELIGÊNCIA\",$AB$19, K113=\"ESSÊNCIA\",$AJ$19) + IF(E113, $D$67 + INT($D$67 / 2), IF(D113, $D$67, 0)) + O113)=\"\",\"\",(+IFS(K113=\"FORÇA\",$D$19, K113=\"DESTREZA\",$L$19, K113=\"CONSTITUIÇÃO\",$T$19, K113=\"INTELIGÊNCIA\",$AB$19, K113=\"ESSÊNCIA\",$AJ$19) + IF(E113, $D$67 + INT($D$67 / 2), IF(D113, $D$67, 0)) + O113)+DADOS_CONFIG!$B$42)))))",
+    "depois": "=IF(AND(DADOS_CONFIG!$C$42<>1,E113=TRUE,D113<>TRUE),\"Marque o treino\",IF(AND(DADOS_CONFIG!$C$42<>1,NOT(OR(K113=\"FORÇA\",K113=\"DESTREZA\",K113=\"CONSTITUIÇÃO\",K113=\"INTELIGÊNCIA\",K113=\"ESSÊNCIA\"))),\"Escolha o atributo\",IF(DADOS_CONFIG!$E$42<>\"\",NA(),IF(DADOS_CONFIG!$C$42=1,DADOS_CONFIG!$D$42,IF(DADOS_CONFIG!$B$42=0,+IFS(K113=\"FORÇA\",$D$19, K113=\"DESTREZA\",$L$19, K113=\"CONSTITUIÇÃO\",$T$19, K113=\"INTELIGÊNCIA\",$AB$19, K113=\"ESSÊNCIA\",$AJ$19) + IF(E113, $D$67 + INT($D$67 / 2), IF(D113, $D$67, 0)) + O113,IF((+IFS(K113=\"FORÇA\",$D$19, K113=\"DESTREZA\",$L$19, K113=\"CONSTITUIÇÃO\",$T$19, K113=\"INTELIGÊNCIA\",$AB$19, K113=\"ESSÊNCIA\",$AJ$19) + IF(E113, $D$67 + INT($D$67 / 2), IF(D113, $D$67, 0)) + O113)=\"\",\"\",(+IFS(K113=\"FORÇA\",$D$19, K113=\"DESTREZA\",$L$19, K113=\"CONSTITUIÇÃO\",$T$19, K113=\"INTELIGÊNCIA\",$AB$19, K113=\"ESSÊNCIA\",$AJ$19) + IF(E113, $D$67 + INT($D$67 / 2), IF(D113, $D$67, 0)) + O113)+DADOS_CONFIG!$B$42))))))"
+  },
+  {
+    "aba": "FICHA",
+    "r": 114,
+    "c": 32,
+    "antes": "=IF(AND(DADOS!$AK$15>0,$AH$11<10),\"Especialização só no nível 10\",IF(DADOS!$AK$24>0,DADOS!$AK$24&\" a mais\",DADOS!$AK$20+DADOS!$AK$22-DADOS!$AK$14&\" de \"&(DADOS!$AK$20+DADOS!$AK$22)))",
+    "depois": "=IF(AND(DADOS!$AK$15>0,$AH$11<10),\"Especialização só no nível 10\",IF(DADOS!$AK$15>DADOS!$AK$10,\"Especialização sem marco de Corpo\",IF(DADOS!$AK$24>0,DADOS!$AK$24&\" a mais\",DADOS!$AK$20+DADOS!$AK$22-DADOS!$AK$14&\" de \"&(DADOS!$AK$20+DADOS!$AK$22))))"
+  }
+]

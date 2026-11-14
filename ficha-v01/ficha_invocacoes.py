@@ -37,6 +37,7 @@ import json, math, os, re
 import indice_ficha as ix
 import ficha_pessoal as fp
 import ficha_amaldicoada as fa
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NOME = "INVOCAÇÕES"
@@ -68,6 +69,20 @@ def lombada(k):
 def blocos(k):
     """a primeira coluna de cada um dos três blocos da coluna de fichas k"""
     return [lombada(k) + 1 + (N_BLOCO + 1) * j for j in range(3)]
+
+
+def pontos_distribuidos(entrada):
+    """Conta um dígito do menu mesmo quando a colagem o preserva como texto."""
+    return f'=IF(ISTEXT({entrada}),IF(REGEXMATCH({entrada},"^[0-6]$"),VALUE({entrada}),0),N({entrada}))'
+
+
+def ajuste_textual(entrada):
+    """Buff/Debuff da entidade: a mesma leitura da ficha do jogador (leitura_buff).
+
+    Inteiro vale ele mesmo; decimal, digitado ou colado, arredonda contra o dono
+    (10/11/2026); outro texto vale zero.
+    """
+    return "=" + leitura_buff(entrada)
 
 
 COLS = lombada(N_COLUNAS - 1) + PASSO_COL - 1          # a última é o respiro da direita
@@ -449,11 +464,12 @@ def trocas(layout, cor_da_barra=None):
              "evol": f"=SUM({_A(g['eq_vol'][0], IV)}:{_A(g['eq_vol'][-1], IV)},{_A(g['guarda_vol'][0], IV)}:{_A(g['guarda_vol'][-1], IV)})",
              "reserva": da(g["reserva"]), "exp": da(g["exp"]["degrau"]), "alma": da(g["alma"]), "integ_c": da(g["integ"])}
         for k in range(N_ATR):
-            o[f"p{k}"], o[f"u{k}"] = f"=N({_A(g['pts'][k], IV)})", f"=N({_A(g['buff'][k], IV)})"
+            o[f"p{k}"] = pontos_distribuidos(_A(g["pts"][k], IV))
+            o[f"u{k}"] = ajuste_textual(_A(g['buff'][k], IV))
         for k in range(5):
-            o[f"us{k}"] = f"=N({_A(g['bstat'][k], IV)})"
+            o[f"us{k}"] = ajuste_textual(_A(g['bstat'][k], IV))
         for k in range(4):
-            o[f"ut{k}"] = f"=N({_A(g['btr'][k], IV)})"
+            o[f"ut{k}"] = ajuste_textual(_A(g['btr'][k], IV))
         for k in range(N_FAM):
             o[f"f{k}"] = da(g["fam"][k])
         for k in range(N_PER):
@@ -544,13 +560,21 @@ def trocas(layout, cor_da_barra=None):
         # --- o que a aba mostra
         revisao_nivel = (f'IF(AND({P("acomp")}=0,{P("nfixo")}=-1),'
                          '" · REVISAR: nível obtido inválido; cálculo provisório no nível 1","")')
-        o["d_titulo"] = (f'=IF({tem}=0,"INVOCAÇÃO {i} · lugar vazio",{P("nome")}&" · "&{P("tipo")}&{revisao_nivel}&" · nível "&{nn}&" · vida "&{P("atual")}&" de "&{P("vida")})')
+        # 09/11/2026: "a entidade tem um Teste de Resistência treinado". Vazio, ou texto colado por cima do menu, tirava a
+        # maestria de todos os TR em silêncio; o título passa a pedir a escolha, sem reescrever a caixa.
+        tr_valido = "OR(" + ",".join(f'{P("trT")}="{nome_tr}"' for nome_tr, _ in TESTES) + ")"
+        revisao_tr = f'IF({tr_valido},""," · REVISAR: escolha o TR treinado")'
+        o["d_titulo"] = (f'=IF({tem}=0,"INVOCAÇÃO {i} · lugar vazio",{P("nome")}&" · "&{P("tipo")}&{revisao_nivel}&{revisao_tr}&" · nível "&{nn}&" · vida "&{P("atual")}&" de "&{P("vida")})')
         o["d_lomb"] = f'=IF({tem}=0,"VAZIA",UPPER({P("nome")}))'
         o["d_mae"] = f"={sinal(MAE)}"
         o["d_ent"] = f'={P("ent")}&" PE"'
         o["d_ret"] = f'={P("ret")}&" PE"'
-        o["d_pontos"] = (f'=IF(OR({P("gastos")}>{P("disp")},{P("acima")}>{P("marc")}),"{T_ERRO} ",IF(AND({tem}=1,{P("gastos")}<{P("disp")}),"{T_AVISO}",""))'
-                         f'&"ATRIBUTOS · "&{P("gastos")}&" DE "&{P("disp")}&" PONTOS"&IF({P("acima")}>{P("marc")}," · ACIMA DE 3 SÓ COM MARCO","")')
+        # 09/11/2026: o menu dos pontos só aceita 0–6, mas Colar especial › Só os valores grava qualquer número por
+        # cima dele. Negativo e fração fechavam o orçamento sem aviso; agora acusam erro, sem reescrever a entrada.
+        fora = "OR(" + ",".join(f'{P(f"p{k}")}<0,{P(f"p{k}")}>6,{P(f"p{k}")}<>INT({P(f"p{k}")})' for k in range(N_ATR)) + ")"
+        o["d_pontos"] = (f'=IF(OR({P("gastos")}>{P("disp")},{P("acima")}>{P("marc")},{fora}),"{T_ERRO} ",IF(AND({tem}=1,{P("gastos")}<{P("disp")}),"{T_AVISO}",""))'
+                         f'&"ATRIBUTOS · "&{P("gastos")}&" DE "&{P("disp")}&" PONTOS"&IF({P("acima")}>{P("marc")}," · ACIMA DE 3 SÓ COM MARCO","")'
+                         f'&IF({fora}," · PONTO FORA DE 0 A 6","")')
         o["d_atq"] = f'=IF({P("atq")}="","",{sinal(P("atq"))})'
         o["d_cd"] = f'=IF({P("cd")}="","",{P("cd")})'
         # 10/10/2026 (B45): a entidade "segue as regras gerais de Carga": acima do limite e até o dobro, metade do
@@ -897,7 +921,7 @@ NOTAS = {
                "Ação Bônus. A carga do talismã não abate este preço. Ela volta com metade da vida máxima, no mínimo 1.",
     "pontos": "9 pontos, cada atributo entre 0 e 3, e mais 1 ponto nos níveis 6, 10, 14, 18, 22, 26 e 30. O teto é 6.",
     "atributo": "O número grande é o total. Embaixo dele, os pontos que você distribuiu, e embaixo o Buff/Debuff.",
-    "bd": "Buff/Debuff: o que você digitar aqui soma, ou tira, do número de cima.",
+    "bd": "Buff/Debuff: o que você digitar aqui soma, ou tira, do número de cima. Decimal arredonda contra você (1,5 vale 1; −1,5 vale −2) e deixa o número âmbar.",
     "ataque": "Atributo de acerto + a sua maestria.",
     "cd": "8 + atributo de acerto + a sua maestria.",
     "defesa": "10 + Destreza dela + metade da sua Essência ou Inteligência, a que o conjunto escolheu. Com traje ou revestimento, a "
@@ -911,7 +935,8 @@ NOTAS = {
               "desvantagem, porque a entidade não tem treino em armas.",
     "pericias": "4 + metade da Inteligência, para baixo. O número ao lado é o atributo da perícia mais a sua maestria.",
     "delta": "Escreva −9 ou +5 e aperte Enter: a ficha aplica na vida atual e limpa a caixa. A perda gasta a vida temporária "
-             "primeiro, e a vida não passa da máxima.",
+             "primeiro, e a vida não passa da máxima."
+             " Enquanto o número está aqui, a caixa fica âmbar: ainda não foi aplicado. Se continuar depois de um minuto, ele se perdeu (o Google às vezes descarta edições rápidas em sequência): confira o atual e digite de novo.",
     "vida_atual": "Nasce cheia, igual à máxima, e a acompanha até você escrever aqui ou usar a caixa de ±. Em branco, a vida "
                   "conta como cheia. Curar não funciona a zero: use o retorno ou o descanso longo.",
     "alma": "O corpo amaldiçoado não autônomo não tem alma: é imune ao dano de Alma e não tem Integridade. O autônomo, com alma, "
@@ -948,7 +973,8 @@ NOTAS = {
     "trunfos": "Trunfos exigem maldição domada com técnica própria e os níveis de aquisição do livro. Confira os avisos dos cartões; a descrição registra as permissões específicas.",
     "lib": "A domada conhece uma no nível 10, duas no 20 e três no 30. Classe 3 ou maior, e não ocupa espaço de especial. "
            "Custa 3 × Classe × 1,5 PE, para cima.",
-    "tm": "A faixa usa o nível dela, que não sobe com o seu. Os pontos pagam Forma e Melhorias, sem comprar dados.",
+    "tm": "A faixa usa o nível dela, que não sobe com o seu. A Forma e a base da função saem dos dados-base; os pontos "
+          "pagam só as Melhorias, sem comprar dados. A correção pela R67 não gasta a revisão.",
     "exp": "O refino, a maestria e a especialização são os seus. Posição, vida e Teste de Resistência de Vigor são os dela. O Acerto "
            "de dano é montado como o do jogador: os pontos de especial da maior Classe dela, menos o preço Médio do Inescapável "
            "(com o desconto da Família Livre), 1d8 por ponto.",
@@ -1336,6 +1362,15 @@ def aba(layout, tr):
     condicional = [{"faixas": [corpo], "contem": T_ERRO, "fundo": VERMELHO, "fonte": BRANCO},
                    {"faixas": [corpo], "comeca": T_AVISO, "fonte": AMBAR},
                    {"faixas": [corpo], "contem": SEM_NOME, "fonte": AMBAR}]
+    # 14/11/2026: o Buff/Debuff decimal arredonda contra o dono (CORRECAO-BUFF-DECIMAL), mas a caixa "B/D "+0
+    # mostrava 1,5 como "B/D +2". A letra fica âmbar quando o número tem decimal, e a nota da primeira caixa explica.
+    # A referência é relativa à primeira caixa: cada célula das 36 faixas se lê a si mesma.
+    bd0 = tr["fichas_c"][0]["buff"][0]
+    condicional.append({"faixas": [f"{g[k][0]}:{g[k][-1]}" for g in tr["fichas_c"] for k in ("buff", "bstat", "btr")],
+                        "formula": f"=N({bd0})<>INT(N({bd0}))", "fonte": AMBAR})
+    # 14/11/2026: a caixa de ± com número ainda não foi aplicada; se ficar assim, a edição se perdeu (a nota explica)
+    d0 = tr["fichas_c"][0]["delta"]
+    condicional.append({"faixas": [g["delta"] for g in tr["fichas_c"]], "formula": f'={d0}<>""', "fundo": AMBAR, "fonte": BRANCO})
     base = ficha["colunas_larg"][0][2]
     return {
         "nome": NOME, "estado": "visible", "linhas": LIN, "colunas": COLS,

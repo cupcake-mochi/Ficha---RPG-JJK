@@ -372,6 +372,13 @@ _FL = CAT["fora_do_livro"]
 _ok("fora do livro: as missões solo e os multiplicadores têm nome e número, e nenhum repete um tamanho do livro",
     all(isinstance(v, (int, float)) and v > 0 for k in ("missoes_solo", "xp_adicional") for v in _FL[k].values())
     and len(_FL["missoes_solo"]) == 2 and not set(_FL["missoes_solo"]) & {t[0].upper() + t[1:] for t in MIS["tamanho"]})
+# 14/11/2026: a invocação Não autônoma é regra da casa (prevista para o Guia de Criação). O ganho do catálogo é o que
+# o gerador das Famílias usa como padrão da CONFIGURAÇÃO.
+_fam_inv = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "ficha-v01", "familias_invocacao.py"), encoding="utf-8").read()
+_ok("fora do livro: a invocação Não autônoma ganha no catálogo o mesmo número de Famílias Livres que o gerador dá",
+    "('livres_nao_autonoma', 'Não autônoma · Livres adicionais', "
+    + str(_FL["invocacao_nao_autonoma"]["familias_livres_adicionais"]) + ")" in _fam_inv
+    and "exceto a Reação" in _FL["invocacao_nao_autonoma"]["ordem_previa"])
 _ok("a vida inicial da Vanguarda entrou no livro (B45), e saiu do fora do livro",
     any(f[0] == "Vida inicial" and f[1].startswith(str(CAT["caminhos"]["Vanguarda"]["vida_inicial"]) + " + Constituição")
         for _, fs in Lv.tabelas(Lv.secao("Vanguarda", dentro=C6)) for f in fs)

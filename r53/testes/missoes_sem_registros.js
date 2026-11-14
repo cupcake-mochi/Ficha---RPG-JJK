@@ -14,7 +14,15 @@ const antes = execSync('git show 57117fb:apps-script/Salarios.gs', { cwd: raiz }
 const agora = fs.readFileSync(path.join(raiz, 'apps-script/Salarios.gs'), 'utf8');
 // Depois desta troca veio a do XP congelado (27/10, preparar_xp_atualizar.js), com o próprio teste.
 const comXp = require('../diagnostico-android/preparar_xp_atualizar').preparar;
-eq(comXp(preparar(antes)), agora, 'o preparador reproduz o Salarios.gs');
+// E depois a trava de um nível por missão (12/11/2026, preparar_trava_nivel_missao.js), com o próprio teste.
+const comTrava = require('../diagnostico-android/preparar_trava_nivel_missao').preparar;
+// E o corte do XP da missão abaixo de 25 (12/11/2026, preparar_corte_xp_missao.js): o de 57117fb tem os moldes antigos.
+// Nos outros testes da cadeia os moldes vêm do salarios/missoes_moldes.json, que já tem o corte.
+const comCorte = require('../diagnostico-android/preparar_corte_xp_missao').preparar;
+// E o XP congelado preso à mesma missão pelo nome (12/11/2026, preparar_xp_congelado_nome.js), com o próprio teste.
+const comNome = require('../diagnostico-android/preparar_xp_congelado_nome').preparar;
+const comLinha = require('../diagnostico-android/preparar_xp_linha_congelada').preparar;
+eq(comLinha(comNome(comCorte(comTrava(comXp(preparar(antes)))))), agora, 'o preparador reproduz o Salarios.gs');
 assert.throws(() => preparar(preparar(antes)), /já presentes/); checks++;
 assert.throws(() => preparar(antes.replace("getRange('A2:G')", "getRange('A2:H')")), /divergente/); checks++;
 

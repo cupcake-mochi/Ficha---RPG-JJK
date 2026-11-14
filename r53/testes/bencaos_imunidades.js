@@ -4,7 +4,7 @@ const p=require('../diagnostico-android/preparar_bencaos_imunidades');
 const {formulaLocal}=require('../diagnostico-android/preparar_pilha_5156');
 const ctx=vm.createContext({});
 vm.runInContext(require('../../medidas/carregar-ficha').fontes(),ctx);
-require('../diagnostico-android/preparar_reserva_bolsa').reverterModelo(ctx.ABAS);
+require('../diagnostico-android/preparar_aviso_atributo').reverterModelo(require('../diagnostico-android/preparar_menu_oficios').reverterModelo(require('../diagnostico-android/preparar_especializacao').reverterModelo(require('../diagnostico-android/preparar_texto_extra').reverterModelo(require('../diagnostico-android/preparar_corte_xp_missao').reverterModelo(ctx.ABAS)))));require('../diagnostico-android/preparar_buff_decimal').reverterModelo(ctx.ABAS);require('../diagnostico-android/preparar_reserva_bolsa').reverterModelo(ctx.ABAS);
 require('../diagnostico-android/preparar_origens_recursos').reverterModelo(ctx.ABAS);
 assert.equal(ctx.SOBRAS_.length,0);
 vm.runInContext(p.molde(),ctx);

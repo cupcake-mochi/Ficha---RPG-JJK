@@ -12,7 +12,15 @@ const eq = (a, b, m) => { assert.deepStrictEqual(a, b, m); checks++; };
 const raiz = path.resolve(__dirname, '..', '..');
 const salarios = fs.readFileSync(path.join(raiz, 'apps-script/Salarios.gs'), 'utf8');
 const atalho = fs.readFileSync(path.join(raiz, 'r53/atalho_livre.gs'), 'utf8');
-const TIPOS = { 'Curta': 50, 'Padrão': 100, 'Longa': 200, 'Final de arco': 400, 'Solo simples': 75, 'Solo complexa': 150 };
+const TIPOS = { 'Curta': 50, 'Padrão': 100, 'Longa': 200, 'Final de arco': 300, 'Solo simples': 75, 'Solo complexa': 150 };
+// O XP de cada tipo é o do catálogo (capítulo Progressão, mais as missões solo da guilda): a ficha de mentira não
+// pode ficar com um número que a DADOS não tem (12/11/2026: o Final de arco estava 400, o livro diz 300).
+{
+  const cat = JSON.parse(fs.readFileSync(path.join(raiz, 'catalogo-projeto-m.json'), 'utf8'));
+  const doCatalogo = Object.assign({}, ...Object.entries(cat.missoes.tamanho).map(([k, v]) => ({ [k.charAt(0).toUpperCase() + k.slice(1)]: v })),
+    cat.fora_do_livro.missoes_solo);
+  eq(TIPOS, doCatalogo, 'o XP dos tipos de missão é o do catálogo');
+}
 const COLS = [49, 55, 61, 67], FORMULA = '=DADOS!$CZ$47';
 
 // ---------- 1. As peças soltas ----------
@@ -98,20 +106,43 @@ const idDe = s => (/\[Salário: ([^\] ·]+) · /.exec(s) || [])[1] || null;
   f.missao('AX15', 'Longa'); eq(L.total(), 1000); eq(marca(L.nota('AW15')), '200 · ' + idA);
   f.missao('AW15', 'Missão A corrigida'); eq(L.total(), 1000); eq(idDe(L.nota('AW15')), idA, 'corrigir o nome conserva o id');
 
-  // Missão antiga apagada, nome primeiro e tipo depois: o total não mexe em nenhum passo; a marca sai no fim.
+  // 12/11/2026: apagar o nome de uma congelada e digitar o mesmo de novo não conta outra vez (antes: +200). O id muda, a
+  // marca passa para ele e o valor congelado fica. Maiúscula, espaço e acento não fazem outro nome.
   f.missao('BC15', ''); eq(L.total(), 1000); eq(marca(L.nota('BC15')), '200 · ' + idB, 'sem nome, ainda congelada');
-  f.missao('BD15', ''); eq(L.total(), 1000); eq(marca(L.nota('BC15')), null); eq(L.nota('BC15'), '');
+  f.missao('BC15', '  missao   b '); eq(L.total(), 1000, 'o mesmo nome é a mesma missão');
+  const idB2 = idDe(L.nota('BC15')); assert(idB2 && idB2 !== idB); checks++;
+  eq(marca(L.nota('BC15')), '200 · ' + idB2, 'a marca passa para o id novo');
+  f.missao('BD15', 'Padrão'); eq(L.total(), 1000, 'e segue congelada: o tipo novo não mexe'); eq(marca(L.nota('BC15')), '100 · ' + idB2);
+  f.missao('BD15', 'Longa'); eq(L.total(), 1000);
 
-  // Missão nova em caixa vazia e na caixa que ficou livre: somam por cima.
-  f.missao('BI15', 'Missão C'); f.missao('BJ15', 'Padrão'); eq(L.total(), 1100); eq(marca(L.nota('BI15')), null);
-  f.missao('BC15', 'Missão D'); f.missao('BD15', 'Curta'); eq(L.total(), 1150); eq(L.nivel(), 5);
+  // Apagar nome e tipo e redigitar os dois iguais, nas duas ordens: o total não mexe em nenhum passo. A caixa vazia guarda
+  // a marca com 0 (antes ela saía, e a missão redigitada contava inteira).
+  f.missao('BC15', ''); f.missao('BD15', ''); eq(L.total(), 1000); eq(L.nota('BC15'), '[XP congelado: 0 · ' + idB2 + ']');
+  f.missao('BC15', 'Missão B'); eq(L.total(), 1000, 'nome sem tipo espera'); f.missao('BD15', 'Longa'); eq(L.total(), 1000, 'mesma missão não conta de novo');
+  const idB3 = idDe(L.nota('BC15')); eq(marca(L.nota('BC15')), '200 · ' + idB3);
+  f.missao('BC15', ''); f.missao('BD15', ''); f.missao('BD15', 'Longa'); eq(L.total(), 1000, 'tipo sem nome: a marca acompanha');
+  f.missao('BC15', 'Missão B'); eq(L.total(), 1000); eq(marca(L.nota('BC15')).split(' · ')[0], '200');
+  f.missao('BC15', ''); f.missao('BD15', ''); eq(L.total(), 1000); eq(marca(L.nota('BC15')).split(' · ')[0], '0');
 
-  // Caixa congelada reaproveitada sem apagar o tipo: apagar o nome segura o total; o nome novo conta a missão inteira.
+  // 12/11/2026, a linha congelada (pedido do Mizuki): o nome com erro de digitação e outra missão inteira também não
+  // contam. A marca acompanha o XP da caixa.
+  f.missao('BC15', 'Missao B.'); f.missao('BD15', 'Longa'); eq(L.total(), 1000, 'erro de digitação não conta de novo');
+  f.missao('BC15', 'Missão D'); f.missao('BD15', 'Curta'); eq(L.total(), 1000, 'outra missão na linha congelada não conta');
+  eq(marca(L.nota('BC15')).split(' · ')[0], '50'); eq(L.nivel(), 5);
+  // Para liberar a linha: esvaziar a caixa e apagar a marca da nota. Aí a missão nova conta inteira.
+  f.missao('BC15', ''); f.missao('BD15', ''); eq(L.total(), 1000); eq(marca(L.nota('BC15')).split(' · ')[0], '0');
+  f.a.abas['FICHA PESSOAL'].notes.set('15,55', '');
+  f.missao('BC15', 'Missão D'); f.missao('BD15', 'Curta'); eq(L.total(), 1050, 'linha liberada conta'); eq(marca(L.nota('BC15')), null);
+  // Missão nova em caixa vazia: soma por cima.
+  f.missao('BI15', 'Missão C'); f.missao('BJ15', 'Padrão'); eq(L.total(), 1150); eq(marca(L.nota('BI15')), null);
+
+  // Caixa congelada reaproveitada sem apagar o tipo: o nome novo também não conta, e o nível não sobe.
   f.missao('AW15', ''); eq(L.total(), 1150);
-  f.missao('AW15', 'Missão E'); eq(L.total(), 1350); eq(L.nivel(), 6, 'missão nova sobe o nível'); eq(marca(L.nota('AW15')), null); assert(idDe(L.nota('AW15')) !== idA); checks++;
+  f.missao('AW15', 'Missão E'); eq(L.total(), 1150, 'nome novo na linha congelada não conta'); eq(L.nivel(), 5);
+  eq(marca(L.nota('AW15')).split(' · ')[0], '200'); assert(idDe(L.nota('AW15')) !== idA); checks++;
 
   // Tipo antes do nome numa caixa nova: o tipo sozinho já conta (como sempre), e o nome não muda nada.
-  f.missao('BP16', 'Curta'); eq(L.total(), 1400); f.missao('BO16', 'Missão F'); eq(L.total(), 1400);
+  f.missao('BP16', 'Curta'); eq(L.total(), 1200); f.missao('BO16', 'Missão F'); eq(L.total(), 1200);
 
   // XP para baixo: o nível desce junto; tudo o que tem XP fica congelado de novo.
   eq(f.xp(500), true); eq(L.total(), 500); eq(L.nivel(), 4); eq(L.caixa(), FORMULA);

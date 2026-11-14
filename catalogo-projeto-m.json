@@ -2835,6 +2835,10 @@
    "1,50x": 1.5,
    "2x": 2
   },
-  "xp_adicional_nota": "o livro manda aplicar 'evento de dobro ou outro ajuste anunciado' antes do arredondamento final; estes são os ajustes da guilda"
+  "xp_adicional_nota": "o livro manda aplicar 'evento de dobro ou outro ajuste anunciado' antes do arredondamento final; estes são os ajustes da guilda",
+  "xp_minimo_da_missao": 25,
+  "xp_minimo_da_missao_nota": "12/11/2026, decisão do Mizuki ('pode por'): a missão cujo XP final (tipo, adicional, falha e desconto da semana, arredondado para baixo) fica abaixo de 25 paga 0; exatamente 25 paga. Cada missão se olha sozinha. Vale também para as missões já anotadas; as congeladas pelo XP digitado não mudam. Substitui, na ficha, o mínimo de 1 XP do livro.",
+  "invocacao_nao_autonoma": {"familias_livres_adicionais": 1, "ordem_previa": "toda ação, exceto a Reação"},
+  "invocacao_nao_autonoma_nota": "regra da casa, confirmada pelo Mizuki em 14/11/2026 e anotada desde 15/10/2026 (PENDENCIAS, ESTUDO-CUSTOM-3C, TESTE-CONFIGURACAO); vai sair num livro de guias (o Guia de Criação). A invocação Não autônoma ganha uma Família Livre a mais, que é também uma Família aberta nova, e precisa de ordem prévia para toda ação, exceto a Reação. O ganho é ajustável na CONFIGURAÇÃO (familias_invocacao.py, livres_nao_autonoma). Não é o corpo não autônomo do livro (Cura e reparo: corpo amaldiçoado sem alma, imune ao dano de Alma): o nome coincide, a regra não."
  }
 }

@@ -8,6 +8,14 @@ from openpyxl.utils.cell import coordinate_to_tuple,range_boundaries,get_column_
 import montagens_r53 as R
 import modelo as M
 
+# Técnica Máxima R67 (livro v0.378): textos das caixas de função e da caixa SEM DANO.
+NOTA_FUNCAO_MAXIMA=('Marque somente uma função: dano, cura ou PV temporários (ou a caixa SEM DANO). A Forma e a base da '
+                    'função saem dos dados-base, nos preços da maior Classe (1 ponto = 1d8); os pontos de montagem pagam só '
+                    'as Melhorias.')
+NOTA_SEM_DANO=('Máxima sem dano: marque quando ela não causa dano, cura nem PV temporários. O Efeito Próprio principal '
+               '(até Pesada) sai dos dados-base e o resto dos dados é descartado; descreva o efeito em COMO É. Com '
+               'Melhoria de Controle, ganha o reforço: +1 rodada no prazo curto e +2 na CD. Deixe as funções desmarcadas.')
+
 
 def expandir(layout,tr):
     import extensoes_custom as ex
@@ -105,10 +113,23 @@ def aplica(layout,tr):
             m['onde']=pos;g['menus_diretos'][k]=m
             a.setdefault('notas',{})[pos]=('Marque quando o feitiço afetar exclusivamente quem o executa. Deixe desmarcado se puder afetar outras criaturas. Na Forma Toque, usar somente em si não concede devolução de pontos. Descreva alvos e detalhes em COMO É.' if k=='pessoal' else 'Escolha neste cartão. A Classe selecionada conserva suas próprias escolhas.')
             return pos
+        def sem_dano(r,col):
+            # R67 (12/11/2026): a Máxima sem dano é uma caixa, não um menu de preço. Ela grava "Sem dano" no campo
+            # controle de DADOS_R53 (sem coluna nova); o Efeito Próprio principal (até Pesada) fica em COMO É.
+            # A caixa fica fora das entradas_diretas: com uma Classe só, não há versão a guardar no armazenamento.
+            box(r,col,col,'SEM DANO','label')
+            pos=box(r+1,col,col,False,'input',NOTA_SEM_DANO)
+            g['menus_diretos']['sem_dano']=dict(onde=pos,tipo='bool',formula='',vazio_ok=False,mostra_seta=False)
+            g['sem_dano']=pos
+            box(r+2,col,col,f'=IF({data("nome")}="","",IF({pos}=TRUE,IF({data("bonus_controle")}>0,"CD "&{data("cd_controle")},"Efeito"),"—"))','result')
+            return pos
         def functions(r,c):
             box(r,c,c,'FUNÇÃO','label');box(r+1,c,c,'Usar' if g['fixa'] else ('=IF('+data('zero')+',"Usar (0/1)","Pontos")' if g.get('extra') else 'Pontos'),'label');box(r+2,c,c,'Resultado','label')
-            for i,(label,key,start,end) in enumerate([('DANO','dano',c+1,c+1),('CURA','cura',c+2,c+2),('PV TEMP.','vt',c+3,c+4)],1):
-                gate='FALSE' if (key!='dano' and g['modo'] in ['Classe 0','Básica']) or (key=='cura' and 'Liberação' in g['modo']) or (key=='vt' and 'Máxima' in g['modo']) else 'TRUE' if key=='dano' else f'{data("fam_Amparo")}<>"Fechada"'
+            maxima=g['modo'] in ['Técnica Máxima','Máxima de entidade']
+            for i,(label,key,start,end) in enumerate([('DANO','dano',c+1,c+1),('CURA','cura',c+2,c+2),('PV TEMP.','vt',c+3,c+3 if maxima else c+4)],1):
+                # R67: a vida temporária virou função da Técnica Máxima (pessoal e da domada), com a porta da cura.
+                # A Liberação Máxima segue como estava.
+                gate='FALSE' if (key!='dano' and g['modo'] in ['Classe 0','Básica']) or (key=='cura' and 'Liberação' in g['modo']) or (key=='vt' and g['modo']=='Liberação Máxima') else 'TRUE' if key=='dano' else f'{data("fam_Amparo")}<>"Fechada"'
                 if g.get('extra') and key!='dano':gate=f'AND({data("classe")}<>0,{gate})'
                 g.setdefault('portas',{})[key]=gate
                 box(r,start,end,f'=IF({gate},"{label}","—")','label')
@@ -119,9 +140,10 @@ def aplica(layout,tr):
                     gate_indirect=re.sub(r"'DADOS_R53'!([A-Z$0-9]+)",lambda m:'INDIRECT("\'DADOS_R53\'!'+m[1]+'")',gate)
                     g['menus_diretos']['pontos'+str(i)]['formula']=f'IF({gate_indirect},AND(ISNUMBER({v}),{v}>=0,INT({v})={v}),{v}="—")'
 
-                a['notas'][pos]=('Marque somente uma função. Esta modalidade tem dados próprios.' if g['fixa'] else 'Distribua pontos inteiros. Os pontos usados aqui deixam de estar disponíveis nas outras funções.')+' Cura/PV temporários ficam indisponíveis com Amparo Fechada. Defina alvos, resolução e detalhes em COMO É.'
+                a['notas'][pos]=(NOTA_FUNCAO_MAXIMA if maxima else 'Marque somente uma função. Esta modalidade tem dados próprios.' if g['fixa'] else 'Distribua pontos inteiros. Os pontos usados aqui deixam de estar disponíveis nas outras funções.')+' Cura/PV temporários ficam indisponíveis com Amparo Fechada. Defina alvos, resolução e detalhes em COMO É.'
                 result=data('dano_resultado') if key=='dano' else data('cura_d8')+'&"d8"' if key=='cura' else data('vida_temporaria')+'&" PV"'
                 box(r+2,start,end,f'=IF({gate},IF({data("nome")}<>"",{result},""),"—")','result')
+            if maxima:sem_dano(r,c+4)
         normal='linha_funcao' in g and g.get('modo') not in ['Liberação de entidade','Máxima de entidade']
         if normal:
             r,c=g['linha_funcao'],g['coluna']
@@ -168,12 +190,25 @@ def aplica(layout,tr):
         elif g['modo']=='Técnica Máxima':
             rr,cc=coordinate_to_tuple(cel['nome']);cel['como']=L(cc)+str(rr+6);clear(rr-1,12,rr+1,14)
             for key,col,label in [('dano',12,'DANO'),('cura',13,'CURA'),('vt',14,'PV TEMP.')]:
-                gate='TRUE' if key=='dano' else f'{data("fam_Amparo")}<>"Fechada"' if key=='cura' else 'FALSE'
+                # R67: PV temporários viram função da Máxima, com a porta da cura (Amparo aberta).
+                gate='TRUE' if key=='dano' else f'{data("fam_Amparo")}<>"Fechada"'
                 g.setdefault('portas',{})[key]=gate
                 box(rr-1,col,col,f'=IF({gate},"{label}","—")','label')
                 inp('usar_'+key,rr,col,col,'bool',False);g.setdefault('funcoes_diretas',{})[key]=L(col)+str(rr)
-                result=data('dano_resultado') if key=='dano' else data('cura_d8')+'&"d8"'
+                a['notas'][L(col)+str(rr)]=NOTA_FUNCAO_MAXIMA+' Cura/PV temporários ficam indisponíveis com Amparo Fechada.'
+                result=data('dano_resultado') if key=='dano' else data('cura_d8')+'&"d8"' if key=='cura' else data('vida_temporaria')+'&" PV"'
                 box(rr+1,col,col,f'=IF({gate},IF({data("nome")}<>"",{result},""),"—")','result')
+            # MONTAGEM encolhe para R:S e a caixa SEM DANO entra em T, na largura das funções.
+            antes={y:(cm[L(18)+str(y)][1],cm[L(18)+str(y)][2],a.get('notas',{}).get(L(18)+str(y))) for y in (rr-1,rr)}
+            clear(rr-1,18,rr,20);clear(rr+1,20,rr+1,20)
+            for y,(valor,estilo,nota) in antes.items():
+                if y==rr:
+                    # R67: a Forma e a base saem dos dados-base, então a conta mostra só pontos − Melhorias = sobra
+                    valor=(f'=IF({data("nome")}<>"",{data("orcamento")}&" − Melhorias "&{data("melhorias_pagas")}'
+                           f'&" = "&{data("saldo")}&" pontos","")')
+                # o valor continua em duas linhas, como era R356:T357
+                p=put(L(18)+str(y),valor,'label' if y<rr else 'result',L(19)+str(y if y<rr else rr+1),nota);cm[p][2]=estilo
+            sem_dano(rr-1,20)
             for k,pos in [('forma',cel['forma'])]+[('m'+str(i),p) for i,p in enumerate(cel['mel'],1)]:
                 put(pos,'Projétil' if k=='forma' else '');g['entradas_diretas'][k]=pos
                 g['menus_diretos'][k]=dict(onde=pos,tipo='list',formula=tr['menus_editor']['forma' if k=='forma' else 'melhoria'],vazio_ok=True,mostra_seta=True,estrito=True)
@@ -219,6 +254,7 @@ def aplica(layout,tr):
         # Prepared state remains persisted per Class; editing the card saves it.
         for k,pos in g['entradas_diretas'].items():
             if k in M.INPUTS:raw(k,'='+R.ref(owner,pos))
+        if g.get('sem_dano'):raw('controle',f'=IF({R.ref(owner,g["sem_dano"])}=TRUE,"Sem dano","Sem reforço")')
         for i,key in enumerate(['dano','cura','vt'],1):
             gate=g['portas'].get(key,'FALSE');pos=g.get('funcoes_diretas',{}).get(key)
             val=R.ref(owner,pos) if pos else '0'

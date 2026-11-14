@@ -39,6 +39,7 @@ ESCOLHA_CAMINHO = "Escolha seu Caminho"
 ESCOLHA_TRILHA = "Escolha sua Trilha"
 SEM_TECNICA = " · Sem Técnica"
 from ficha_layout import NOME_PORTADOR
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 ROTULOS_CORRIGIDOS = {"Pontos Dísponíveis": "Pontos Disponíveis",
                       "Péricias Dispóniveis": "Perícias Disponíveis",
                       "Ofícios Dispóniveis": "Ofícios Disponíveis",
@@ -115,6 +116,10 @@ def _A(c, aba=""):
 
 def _N(c, aba=""):
     return f'IFERROR(VALUE({_A(c, aba)}&""),0)'
+
+
+def _B(c, aba=""):
+    return leitura_buff(_A(c, aba))
 
 
 def _faixas(celulas):
@@ -199,6 +204,26 @@ def trocas(layout, CAT=None):
     PER_T, PER_E = caixas(CAT["pericias"], 2), caixas(CAT["pericias"], 1)
     OFI_T, OFI_E = caixas(CAT["oficios"], 2), caixas(CAT["oficios"], 1)
     TR_T = caixas(trs, 1)
+
+    # --- 11/11/2026: o menu de atributo de cada ofício nasce no atributo padrão da tabela de Ofícios do livro.
+    #     A planilha viva trazia INTELIGÊNCIA nos onze, e a Condução de uma ficha nova somava Inteligência.
+    import livro
+    _, fil_of = livro.tabela(livro.secao("Ofícios"), "Ofício")
+    padrao = {f_[0].strip(): f_[1].strip().upper() for f_ in fil_of if len(f_) >= 2}
+    nomes_atr = {n.upper() for n, _, _ in ix.ATRS}
+    if set(padrao) != {n.strip() for n in CAT["oficios"]} or not set(padrao.values()) <= nomes_atr:
+        raise SystemExit(f"a tabela de Ofícios do manual.txt nao bate com o catalogo: {padrao}")
+    for nome in CAT["oficios"]:
+        c = next(k for k, v in fcel.items() if isinstance(v[1], str) and v[1].strip() == nome)
+        lin, col = ix._lc(c)
+        menus = sorted((ix._lc(k)[1], k) for k, v in fcel.items()
+                       if ix._lc(k)[0] == lin and ix._lc(k)[1] > col and isinstance(v[1], str)
+                       and v[1].strip() in nomes_atr)
+        if not menus:
+            raise SystemExit(f"nao achei o menu de atributo de {nome!r} na FICHA")
+        menu = menus[0][1]
+        if fcel[menu][1] != padrao[nome]:
+            cel["FICHA"][menu] = (padrao[nome], menu)
 
     # --- a area das Passivas: cabecalho, linhas, e as duas a mais. Depois da primeira vez a planilha viva ja
     #     volta dividida e com as linhas novas, e a limpeza so reescreve o cabecalho do Leque.
@@ -454,12 +479,20 @@ def trocas(layout, CAT=None):
         cel["FICHA"][idx[chave]] = (formula, idx[chave])
     for n, _, _ in ix.ATRS:
         poe("atr_" + n, f"={_N(idx['atr_base_' + n])}+{_N(idx['corpo_' + n])}")
+    # 10/11/2026: as caixas de pontos não têm menu; negativo, fração, 7 e "1/2" (vira data) passavam sem aviso.
+    # O resumo acusa sem reescrever a entrada. Texto que não é número continua valendo 0, em silêncio, como nas entidades.
+    # O teto do jogador segue a campanha (a camada de campanha troca o número pela caixa da CONFIGURAÇÃO); o Corpo fica em 6.
+    def fora(prefixo, teto=6):
+        ns = [_N(idx[prefixo + n]) for n, _, _ in ix.ATRS]
+        return "OR(" + ",".join(f"{x}<0,{x}>{teto},{x}<>INT({x})" for x in ns) + ")"
     poe("pontos disponíveis",
-        f'=IF({H_["pontos distribuídos"]}>{H_["pontos de atributo"]},{H_["pontos distribuídos"]}-{H_["pontos de atributo"]}&" a mais",'
+        f'=IF({fora("atr_base_", R["teto_atributo"])},"Ponto fora de 0 a {R["teto_atributo"]}",'
+        f'IF({H_["pontos distribuídos"]}>{H_["pontos de atributo"]},{H_["pontos distribuídos"]}-{H_["pontos de atributo"]}&" a mais",'
         f'IF({H_["maior atributo"]}>{R["teto_atributo"]},"Um atributo passou de {R["teto_atributo"]}",'
         f'IF(AND({H_["marcos que já passou"]}=0,{H_["maior atributo pequeno"]}>{R["teto_criacao"]}),"Na criação, nenhum acima de {R["teto_criacao"]}",'
-        f'{H_["pontos de atributo"]}-{H_["pontos distribuídos"]}&" de "&{H_["pontos de atributo"]})))')
-    poe("pontos de corpo", f'="Pontos de Marco de Corpo Disponíveis - "&{texto(H_["pontos de Corpo usados"], H_["marcos de Corpo"])}')
+        f'{H_["pontos de atributo"]}-{H_["pontos distribuídos"]}&" de "&{H_["pontos de atributo"]}))))')
+    poe("pontos de corpo", f'="Pontos de Marco de Corpo Disponíveis - "&IF({fora("corpo_")},"Ponto fora de 0 a 6",'
+        f'{texto(H_["pontos de Corpo usados"], H_["marcos de Corpo"])})')
     poe("marcos escolhidos",
         f'=IF({H_["marcos escolhidos"]}>{H_["marcos que já passou"]},{H_["marcos escolhidos"]}-{H_["marcos que já passou"]}&" a mais",'
         f'IF({H_["marcos que já passou"]}=0,"Escolha 1 a cada 4 Nv",'
@@ -499,11 +532,16 @@ def trocas(layout, CAT=None):
         if idx.get(chave):
             poe(chave, f'=IF({SE}=1,"{R["bencaos_de_graca"][i_ - 1]}","{R["aptidoes_de_graca"][i_ - 1]}")')
     ESP_ = f'AND({H_["especializações"]}>0,{_A(idx["nivel"])}<{R["especializa"]})'
+    # 11/11/2026, achado do Mizuki: cada especialização gasta uma escolha de Corpo no marco (R66, Corpo: "pode
+    # especializar um já treinado, em vez do novo treino"). Sem o Corpo marcado, o contador dizia só "1 a mais".
+    SEM_CORPO_ = f'{H_["especializações"]}>{H_["marcos de Corpo"]}'
+    falta_corpo_ = f'({H_["especializações"]}-{H_["marcos de Corpo"]})'
     for campo, usados, base_, corpo_ in (("perícias disponíveis", p, H_["perícias da rota"], H_["Corpo nas perícias"]),
                                          ("ofícios disponíveis", o, H_["ofícios da rota"], H_["Corpo nos ofícios"])):
         poe(campo, f'=IF({ESP_},"Especialização só no nível {R["especializa"]}",'
+                   f'IF({SEM_CORPO_},"Especialização sem marco de Corpo",'
                    f'IF({H_["treinos a mais"]}>0,{H_["treinos a mais"]}&" a mais",'
-                   f'{base_}+{corpo_}-{usados}&" de "&({base_}+{corpo_})))')
+                   f'{base_}+{corpo_}-{usados}&" de "&({base_}+{corpo_}))))')
     if idx.get("escolhas de perícia"):
         # 17/09/2026: a frase junta o que falta da criacao e do marco de Corpo, sem os itens que sao zero
         def qtd(n, um, varios):
@@ -528,9 +566,11 @@ def trocas(layout, CAT=None):
                  f'{lista([(fp2_, "perícia", "perícias"), (u2_,) + CORPO_])}&" sem ofício","")')
         poe("escolhas de perícia",
             f'=IF({ESP_},"Especialização só no nível {R["especializa"]}: tire a marcação",'
+            f'IF({SEM_CORPO_},"Marcou "&{qtd(falta_corpo_, "especialização", "especializações")}'
+            f'&" sem marco de Corpo: escolha Corpo no Marco Escolhido ou tire a marcação",'
             f'IF({H_["treinos a mais"]}>0,"Marcou "&{H_["treinos a mais"]}&" a mais: tire uma perícia, um ofício ou uma especialização",'
             f'IF({fp_}+{fo_}+{u_}=0,"Tudo escolhido",'
-            f'{o_rota}&{o_dica}&{o_sem})))')
+            f'{o_rota}&{o_dica}&{o_sem}))))')
     poe("testes disponíveis", f'={texto(H_["testes treinados"], str(R["testes"]))}')
     if cab_leque or c4:
         cel["FICHA"][f"{ix._letras(c4)}{lc}"] = (
@@ -542,16 +582,16 @@ def trocas(layout, CAT=None):
         if not b or not idx.get(chave):
             continue
         atual_f = fcel[idx[chave]][1]
-        if not isinstance(atual_f, str) or _N(b) in atual_f:
+        if not isinstance(atual_f, str) or _B(b) in atual_f:
             continue
         m_d20 = re.match(r'^="d20 \+ "\s*&\s*\+?(.*)$', atual_f)
         m_m = re.match(r"^(\d+) m$", atual_f.strip())
         if m_d20:
-            poe(chave, f'="d20 + "&({m_d20.group(1)}+{_N(b)})')
+            poe(chave, f'="d20 + "&({m_d20.group(1)}+{_B(b)})')
         elif m_m:
-            poe(chave, f'=({m_m.group(1)}+{_N(b)})&" m"')
+            poe(chave, f'=({m_m.group(1)}+{_B(b)})&" m"')
         elif atual_f.startswith("="):
-            poe(chave, f"{atual_f}+{_N(b)}")
+            poe(chave, f"{atual_f}+{_B(b)}")
     # o Caminho e a Trilha nascem pedindo a escolha, e a vida e a energia esperam o Caminho
     poe("caminho", ESCOLHA_CAMINHO)
     poe("trilha", ESCOLHA_TRILHA)
@@ -576,8 +616,8 @@ def trocas(layout, CAT=None):
         if not b or not idx.get(k):
             continue
         vf = cel["FICHA"].get(idx[k], (fcel[idx[k]][1],))[0]
-        if isinstance(vf, str) and vf.startswith("=") and _N(b) not in vf:
-            poe(k, f'=IFERROR(({vf[1:]})+{_N(b)},"")')
+        if isinstance(vf, str) and vf.startswith("=") and _B(b) not in vf:
+            poe(k, f'=IFERROR(({vf[1:]})+{_B(b)},"")')
     nome = idx.get("nome")
     if nome:
         cel["FICHA"][nome] = (f'=IF(OR(CARTEIRA!$O$9="",CARTEIRA!$O$9="{NOME_PORTADOR}"),"",CARTEIRA!$O$9)', nome) \

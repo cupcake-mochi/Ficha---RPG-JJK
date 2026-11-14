@@ -31,6 +31,7 @@ desenha as rotas sem Fundamento (Técnica Marcial, Sem Técnica e Restrição Ce
 import json, math, os, re
 
 import indice_ficha as ix
+from leitura_buff import buff as leitura_buff  # 10/11/2026: Buff/Debuff decimal contra o dono
 import ficha_pessoal as fp
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -987,7 +988,8 @@ def trocas(layout, CAT=None, TEC=None):
         "terço do refino": f"=MAX(1,FLOOR({H['refino']}/3,1))",
         "dados da técnica máxima": f'=IFERROR(VLOOKUP({H["nível"]},{D.faixa("tm")},2,TRUE),0)',
         "montagem da técnica máxima": f'=IFERROR(VLOOKUP({H["nível"]},{D.faixa("tm")},3,TRUE),0)',
-        "gasto da técnica máxima": "=" + "+".join(f"IF({k}=0,0,INDEX({PRECOS},{H['maior classe']},{k}))" for k in tm_cod),
+        # R67: a Forma sai dos dados-base; os pontos de montagem pagam só as Melhorias (tm_cod[0] é a Forma).
+        "gasto da técnica máxima": "=" + "+".join(f"IF({k}=0,0,INDEX({PRECOS},{H['maior classe']},{k}))" for k in tm_cod[1:]),
         "fechada na técnica máxima": "=" + "+".join(tm_fech),
         "rota": f"={ROTA}",
         "equipamento": "=" + equip,
@@ -1166,9 +1168,11 @@ NOTAS = {
     "zero_mel": "Cabe uma Melhoria Leve, e ela tira um dado.",
     "zero_res": "Cabe uma Restrição Leve: ela devolve o dado que a Melhoria tirou, sem criar pontos. Toque não "
                 "concede devolução automática na Classe 0; Aura conserva seu procedimento.",
-    "tm_dano": "Fixo pela faixa de nível. Nenhum ponto compra mais dados.",
+    "tm_dano": "Dados-base pela faixa de nível. A Forma e a base da função saem deles; nenhum ponto compra mais dados.",
     "tm_pe": "{pe} × a sua maior Classe.",
-    "tm_montagem": "Os pontos de montagem compram só a Forma e as Melhorias, nos preços da sua maior Classe. O que sobrar se perde.",
+    "tm_montagem": ("Os pontos de montagem pagam só as Melhorias, nos preços da sua maior Classe; a Forma e a base da função "
+                    "saem dos dados-base. O que sobrar se perde. Ficha salva antes da R67 foi recalculada pela regra nova, "
+                    "e essa correção não gasta a revisão da Máxima."),
     "dom_refino": "Vem da FICHA. Sobe nos marcos.",
     "dom_pe": "{pe} × a sua maior Classe. Sem barreira, {pe_sem} ×.",
     "dom_dura": "Metade do refino, em rodadas. No mínimo uma.",
@@ -1407,7 +1411,7 @@ def aba(layout, tr):
     at = [H[f"atributo do grupo {i + 1}"] for i in range(N_GRUPOS)]
     vg = [H[f"valor do grupo {i + 1}"] for i in range(N_GRUPOS)]
     primeiro = lambda xs: f'IF({at[0]}<>"",{xs[0]},IF({at[1]}<>"",{xs[1]},{xs[2]}))'
-    buff_conj, buff_cd = f'IFERROR(VALUE({FF("buff de conjuração")}&""),0)', f'IFERROR(VALUE({FF("buff de cd de feitiço")}&""),0)'
+    buff_conj, buff_cd = leitura_buff(FF("buff de conjuração")), leitura_buff(FF("buff de cd de feitiço"))
     conj_de = lambda v: f'"d20 + "&({MAE}+{v}+{buff_conj})'
     cd_de = lambda v: f'(8+{MAE}+{v}+{buff_cd})'
     pela_arma = lambda um, nenhum: f'IF({NAT}=0,"{nenhum}",IF({NAT}=1,{um},"Por grupo"))'

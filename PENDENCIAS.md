@@ -1,3 +1,31 @@
+## Pontos da ficha do jogador sem aviso · 10/11/2026 (Claude) · resolvido em 10/11/2026
+
+As caixas de pontos (D21…AJ21) e de Corpo (AK15:AS15) aceitavam negativo, fração e 7 sem aviso, e "1/2" virava
+"46052 a mais". Agora Z15 e AK14 mostram "Ponto fora de 0 a N" sem reescrever a entrada. Está nas duas QAs.
+Detalhes em `r53/diagnostico-android/CORRECAO-PONTOS-FICHA-2026-11-10.md`. Fica para outra rodada: `ler-analise.py`
+(leitor de teste da raiz) atrasado em relação ao formato atual.
+
+## Buff/Debuff decimal e leitura diferente entre fichas · 09/11/2026 (Claude) · resolvido em 10/11/2026
+
+**Resolvido (10/11/2026):** o Mizuki escolheu o caminho C, arredondar contra o dono. As duas fichas usam a mesma leitura
+(`ficha-v01/leitura_buff.py`): +1,5 vale +1, +0,5 vale +1, −1,5 vale −2 e −0,5 vale −1. Texto só vale quando é número
+simples, e "1/2" vale 0. Está nas duas QAs. Detalhes em `r53/diagnostico-android/CORRECAO-BUFF-DECIMAL-2026-11-10.md`.
+O formato da caixa B/D não mudou: um 1,5 digitado ainda aparece "B/D 2", embora a conta some 1.
+
+Registro original:
+
+
+Saiu da PR93. O Mizuki escolheu manter as invocações como estão (texto decimal vale 0, número decimal passa)
+e deixar o resto para uma sessão própria, com teste no Sheets.
+- **Leitura diferente:** a ficha do jogador lê Buff/Debuff com `IFERROR(VALUE(buff&""),0)` (defesa, conjuração,
+  CD de feitiço, campanha). Isso aceita texto decimal conforme a região. As invocações aceitam só inteiro ASCII com
+  sinal. A mesma colagem pode contar numa ficha e zerar na outra.
+- **Decimal escondido:** a caixa B/D usa o formato `"B/D "+0`. O número 1,5 entra na conta como 1,5 e aparece
+  "B/D 2". A regra de arredondamento (ESPECIFICACAO-ficha-digital.md, "sempre para o lado que não te favorece")
+  não é aplicada.
+- **Caminhos já levantados:** B, alinhar as invocações com `VALUE(x&"")`; C, Buff/Debuff só inteiro nas duas fichas,
+  com decimal zerado ou arredondado contra o jogador. Os dois mudam mecânica e precisam do ok dele.
+
 ## Talentos grátis: o da Origem e o extra · 03/11/2026 (Claude) · instalado nas duas oficiais (só planilha)
 
 Pedido do Mizuki ("quando uma origem da talento extra, ela registra? E outras fontes?"). Antes, a FICHA AMALDIÇOADA só

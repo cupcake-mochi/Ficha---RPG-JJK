@@ -1,3 +1,260 @@
+# Continuar daqui · 12/11/2026
+
+Sessão nova, em qualquer máquina: leia `r53/diagnostico-android/PROMPT-CONTINUAR-2026-11-12.md`. Ele tem as regras do
+Mizuki, as QAs e o estado delas, e o que está pendente:
+- o pacote do dia 12/11 nas oficiais, com o ok dele;
+- o aviso na nota da missão congelada, opcional;
+- a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
+- as decisões abertas dele.
+
+# Técnica Máxima no livro R67 · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-MAXIMA-R67-2026-11-14.md`.
+
+**O que mudou**
+- A Forma e a base da função saem dos dados-base.
+- Os pontos pagam só as Melhorias.
+- PV temporários viram função.
+- Sem dano tem uma caixa própria e ganha o reforço de Controle.
+- A conta da MONTAGEM mostra "pontos − Melhorias = sobra".
+
+**Testes**
+- `test_maxima_r67` com 11 defeitos plantados, mais a conta.
+
+**QAs**
+- Aplicado nas duas, conferido e reposto. Nenhuma QA ficou com a R67.
+- O EditorR53 das QAs não foi trocado.
+
+**Fora desta rodada**
+- Nada nas oficiais.
+- Nenhum `construir()`.
+- Fica para o Mizuki: a linha 9975 do livro nega o reforço que a R67-08 dá.
+
+# Caixa ± pendente fica âmbar · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-AVISO-CAIXA-PM-2026-11-14.md`. Enquanto a caixa ± (FICHA AM26/AM30/AM34 e as 12
+das invocações) tem número, ela fica âmbar; se continuar depois de um minuto, a edição se perdeu, e a nota manda
+conferir e digitar de novo. A conta não mudou. Aplicado nas duas QAs e testado digitando no Ciclo; nada nas oficiais.
+O mesmo ramo corrige as faixas do B/D decimal nas fichas 2 a 6.
+
+# As pontas do mapa de cobertura · 14/11/2026
+
+Leia `r53/diagnostico-android/PONTAS-DO-MAPA-2026-11-14.md`.
+- A Kaori pela API no Ciclo: os seis números batem.
+- `cartas_custom`/`marcas_custom` ficam históricos.
+- O menu Aplicar cura não existe no Android; no celular vale a caixa ± com a metade.
+- A varredura da caixa ± na rajada não é segura (aplicaria em dobro um evento atrasado). Só um aviso visual é possível;
+  feito no mesmo dia (ver acima).
+- O Ciclo tem `FICHA!P30` = 10 (sobra de teste), também à espera dele.
+
+# Buff/Debuff decimal fica âmbar nas INVOCAÇÕES · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-AVISO-DECIMAL-BD-2026-11-14.md`. A caixa B/D mostrava 1,5 como "B/D +2" e a conta
+usava 1. Agora a letra fica âmbar quando há decimal (168 caixas, 36 faixas, uma regra) e a nota de O21 explica. A
+conta não mudou. Aplicado e visto nas duas QAs; nada nas oficiais.
+
+# Achados da CONFIGURAÇÃO decididos · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-ACHADOS-CONFIGURACAO-2026-11-14.md`. Decisões do Mizuki:
+- as notas dizem "livro", sem a versão;
+- "Não autônoma" fica, como regra da casa que vai sair num livro de guias, registrada em `fora_do_livro` do catálogo
+  (com conferência contra o `familias_invocacao.py`);
+- a vida rolada diz "Anote só o dado; a ficha soma a Constituição.";
+- o Buff/Debuff de vida (`FICHA!P26`) foi esvaziado nas duas QAs.
+
+Nenhum número mudou. Nada nas oficiais.
+
+# CONFIGURAÇÃO auditada contra o R66 · 12/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-CONFIGURACAO-2026-11-12.md`. Nenhum número diverge do R66 (a R67 do mesmo dia só
+mexe na Técnica Máxima). Batem as regras de campanha, o custo de XP, o dado e a vida dos seis Caminhos e as Famílias das
+invocações e da técnica. Ensaio no Ciclo, reposto: o exemplo da Kaori (Bastião, CON 2, 23 de vida) com a vida rolada, e o
+dado acima do d12 dá aviso. Achados abertos, com decisão do Mizuki: as notas citam o R51; "Não autônoma" está fora do
+catálogo `fora_do_livro` e tem o nome que o R66 usa para o corpo sem alma; as notas da vida rolada parecem se
+contradizer; e o Buff/Debuff de vida está em 24 nas duas QAs. Nada mudou na ficha.
+
+# A linha congelada · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-XP-LINHA-CONGELADA-2026-11-12.md`. Substitui o nome no registro (#109), a pedido
+do Mizuki. As missões que estavam no painel na hora do XP digitado (FICHA!AN11) ficam congeladas, e nada na linha
+descongela: o mesmo nome, o nome com erro, outra missão ou a caixa vazia não mexem no XP total. Missão nova vai numa
+linha vazia. Para liberar a linha, esvazie a caixa e digite o XP de novo, ou apague a marca. Sai o `salarioMesmoNome_`.
+Preparador `preparar_xp_linha_congelada.js`, no fim da cadeia. Instalado nas duas QAs (`4f6600227cd1`; a Era recebeu
+junto o corte de 25 e o #109) e ensaiado no Ciclo, reposto. O ensaio do #109 que sobrou na Era foi reposto.
+
+# XP congelado preso à mesma missão pelo nome · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-XP-CONGELADO-NOME-2026-11-12.md`. Apagar e redigitar o nome de uma missão
+congelada (XP digitado na FICHA!AN11) não conta mais de novo: com outro id, o mesmo nome do registro dono da marca
+(DADOS_SALARIOS, mesma caixa) mantém o congelamento e passa a marca; nome diferente conta inteira. Comparação sem
+maiúscula, espaço e acento (`salarioMesmoNome_`); a caixa vazia guarda a marca com 0; só decide quando a caixa forma
+missão, no caminho que lê os registros (`map`). Preparador `preparar_xp_congelado_nome.js`, no fim da cadeia. QAs
+pendentes (Chrome desconectado): instalar o trecho e ensaiar na Era.
+
+# Corte do XP da missão abaixo de 25 · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-CORTE-XP-25-2026-11-12.md`. Regra da casa, fora do livro (catálogo
+`fora_do_livro.xp_minimo_da_missao`): a missão cujo XP final fica abaixo de 25 paga 0, cada missão por si, e vale para
+as já anotadas. O menu de desconto tem 10 linhas ("7ª ou mais" com fração 0); a CR15:CS15 fica vazia para a faixa não
+mudar. Geração c86ee6159f0e8463: 292 fórmulas do TOTAL, 4 caixas da DADOS e 8 notas. Os moldes do salário mudam no json
+e no Salarios.gs pela mesma troca (`preparar_corte_xp_missao.js`); a camada entra por dentro da do texto no Extra nos
+comparadores. Fórmulas, menu e notas instalados e ensaiados nas duas QAs; o `SALARIO_MISSOES_MOLDES_` do Codigo das QAs
+ficou pendente (Chrome desconectado).
+
+# Um nível por missão · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-TRAVA-NIVEL-MISSAO-2026-11-12.md`. Livro R66: no máximo um nível por missão. No
+painel de missões, só a edição que mexe no nome ou no tipo sobe o nível, no máximo um por missão tocada
+(`salarioMissoesDaEdicao_`); o adicional e o desconto sozinhos guardam o XP. O feito e o XP ou nível digitados à mão
+continuam livres. Mudança no Salarios.gs entra como preparador da cadeia (`preparar_trava_nivel_missao.js`, depois do
+`preparar_xp_atualizar.js`). Instalado e ensaiado nas duas QAs, entradas repostas.
+
+# Progressão e XP auditados · 12/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-PROGRESSAO-XP-2026-11-12.md`. A curva de XP, o XP das missões, o desconto da
+semana, o arredondamento, o Limiar do nível 20 e os marcos batem com o R66. Ensaio na QA da Era: 20000 de XP para no
+nível 20; o nível 23 digitado (o feito) guarda o XP. Achados abertos, com decisão do Mizuki: a missão com adicional 2x
+pode subir dois níveis (o livro manda no máximo um por missão), e o menu de desconto para no 7º da semana. O
+`xp_atualizar.js` tinha o Final de arco em 400 e agora confere os tipos contra o catálogo. Nada mudou na ficha.
+
+# Frequência por cena nas cartas · 12/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-FREQUENCIA-CENA-2026-11-12.md`. O R66 trocou "uma vez por combate" por "uma vez
+por cena" em cinco habilidades (Especial Combinada, Resposta Técnica da Dupla, Um Passo à Frente, Sentença Final,
+Trajetória Perfeita). As oito frases moram em `r53/textos_revisados.py` (`FREQUENCIA_POR_CENA`), e o
+`extrair_habilidades.py` as aplica sobre o manual R53, parando se uma frase sumir ou sobrar "por combate". Nas QAs, o
+`instalar_frequencia_cena.js` troca as frases no módulo R53 e no caminho leve do `Codigo.gs`, conferindo os dois
+hashes. Instalado e ensaiado nas duas QAs, entradas repostas.
+
+# Menu de atributo sem #N/A · 10/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-AVISO-ATRIBUTO-2026-11-10.md`. Com o menu Z67, AK67 ou AE70 vazio ou fora dos
+cinco nomes, a CD, a Conjuração e os ataques (FICHA linha 63) mostram "Escolha o atributo" no lugar do #N/A, sem
+reescrever o menu. Com a caixa fixada pela CONFIGURAÇÃO não avisa. O aviso fica por fora do envoltório da
+configuração (`configuracao.avisa_menu`), e o `anterior` o desfaz. Geração 10101178be8ab3cb, só 4 fórmulas. A camada
+`preparar_aviso_atributo.reverterModelo` vem antes da do Buff decimal nos comparadores. Instalado e ensaiado nas duas QAs.
+
+# Iniciativa, CD e ataques do jogador auditados · 10/11/2026
+
+Leia `r53/diagnostico-android/AUDITORIA-COMBATE-JOGADOR-2026-11-10.md`. As cinco fórmulas e a maestria batem com o
+livro R66, e a Kaori no nível 10 bate no Sheets. Achado aberto, com decisão do Mizuki: os menus Z67, AK67 e AE70 não
+são estritos, e vazio ou "FORCA" sem cedilha dá #N/A na caixa e na ANALISE. Constituição no menu de ataque não tem
+fonte no livro. Nenhuma fórmula mudou.
+
+# Ponto fora de 0 a 6 na ficha do jogador · 10/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-PONTOS-FICHA-2026-11-10.md`. O resumo dos pontos (FICHA Z15) e o do
+Corpo (AK14) acusam "Ponto fora de 0 a N" quando uma caixa é negativa, fracionada ou passa do teto ("1/2" vira
+data e também acusa). Nada é reescrito nem arredondado; texto não numérico vale 0 em silêncio. O teto dos pontos
+segue a campanha (`DADOS_CONFIG!$S$5`); o do Corpo é 6 fixo. Geração 66aa9dde4fdec0b1: só 2 fórmulas.
+Instalado e ensaiado nas duas QAs, entradas repostas. Bot sem mudança; `ler-analise.py` atrasado, fica para depois.
+
+# Mapa de cobertura do pente-fino · 10/11/2026
+
+Leia `r53/diagnostico-android/MAPA-COBERTURA-2026-11-10.md` antes de escolher o próximo recorte. Nas
+invocações, toda área teve olhar dedicado. Na ficha do jogador, nunca foram olhados: iniciativa, CD e ataques,
+TR, ofícios e as travas da criação contra colagem. Talentos e Aptidões só têm teste local. Quatro testes
+não provam o que parecem (`vida_bloquear_molde`, `menu_origem`, `cartas_custom`, `marcas_custom`).
+
+# Buff/Debuff decimal contra o dono · 10/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-BUFF-DECIMAL-2026-11-10.md`. As duas fichas usam a mesma leitura de
+Buff/Debuff (`ficha-v01/leitura_buff.py`): ganho decimal desce e nunca fica abaixo de 1, custo decimal sobe.
+Texto só vale quando é número simples ("1/2" vale 0). Geração c8c2dae1ce50fa1b: 206 fórmulas, só a troca do
+leitor (FICHA 11, DADOS_AM 5, DADOS_INVOC 168, DADOS_CONFIG 22). A camada `preparar_buff_decimal.reverterModelo`
+vem antes da Reserva/Bolsa nos comparadores históricos. Instalado e ensaiado nas duas QAs, entradas repostas.
+O achado 2 da revisão dos treinos (`nper`) foi decidido: segue pelos pontos.
+
+# TR treinado das entidades com aviso · 09/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-TREINOS-ENTIDADES-2026-11-09.md`.
+Com nome e `trT` vazio ou fora dos quatro testes, nenhum TR recebia a
+maestria, em silêncio. Corrigido: `d_titulo` (HG2:HG13, 12 fórmulas)
+mostra "REVISAR: escolha o TR treinado", sem reescrever a entrada. O
+`NivelObtido` grava e restaura esse mesmo título; seus 12 pares da coluna
+215 ganharam o trecho, senão o pacote recusava o modelo e a restauração
+apagava o aviso. Geração 4fd2e2ede2c04f51. Ensaiado nas duas QAs (vazio
+e "Fisico" avisam; "Vigor" e "Espírito" limpam), nome e TR repostos.
+Achado 2 (`nper` pelos pontos, não pelo total) segue com o Mizuki.
+
+# Pontos forçados por colagem confirmados · 09/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PONTOS-FORCADOS-2026-11-09.md`.
+Colar especial › Só os valores grava qualquer número por cima do menu
+estrito dos pontos. Negativo e fração fecham o orçamento sem aviso; o 7
+só passa sem aviso a partir do nível 18 (deduzido da fórmula). Corrigido:
+`d_pontos` (HL2:HL13, 12 fórmulas) acusa erro e "PONTO FORA DE 0 A 6",
+sem reescrever a entrada. Geração a55595143d33c5e1, só 12 fórmulas no
+modelo. Ensaiado nas duas QAs (negativo e fração acusam, controles
+limpos), delta instalado nelas, pontos repostos. Ramo
+`codex/revisao-pontos-forcados-20261109`, sobre a PR93.
+
+# Colagem de Buff/Debuff corrigida · 09/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-COLAGEM-BUFFS-2026-11-09.md`
+e `buffs_entidades_validacao_2026-11-09.json`. As famílias u, us e ut
+(168 fórmulas DO:DS e DW:EE das 12 entidades) passam a aceitar inteiro
+ASCII com sinal colado como texto; o resto do texto continua zero e o
+caminho numérico permanece. Decimal textual fora, pendente de locale.
+
+Geração 6701a3e4b549d436. Modelo de 280.056 posições e 26 abas: só as
+168 fórmulas mudaram. Pacote integral não gerado nem instalado.
+
+Colagem real pelo menu nas duas QAs: Era `-2` deu CON −2, PV 10,
+Vigor −4; Ciclo `+2` deu CON 2, PV 14, Vigor 4; controles numéricos
+iguais. Entradas e formatos repostos, nota da O21 intacta. MONTAGENS
+só na grade, sem comparação célula a célula. Delta segue instalado.
+
+Ramo `codex/corrige-colagem-buffs-20261109`, sobre a PR92.
+Privados em `nuvem-b47/saidas/correcao-colagem-buffs-20261109/`.
+Sem merge, oficiais, jogador ou PR31.
+
+# Colagem de pontos de atributo corrigida · 08/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-COLAGEM-ATRIBUTOS-2026-11-08.md`
+e `atributos_entidades_validacao_2026-11-08.json`. ATR-N-TEXTO corrigido
+nas 60 fórmulas DJ:DN das 12 entidades. Dígito textual 0–6 passa a
+contar no cálculo, preservando o valor digitado e o menu estrito.
+Os outros textos não somam pontos e o caminho numérico permanece.
+
+Geração ec14f1ff36db9816. Modelo integral de 280.056 posições e 26
+abas conferido. Só 60 fórmulas mudaram. Candidato testado igual ao
+delta regenerado. Pacote integral regenerado, não instalado.
+
+96 observações nativas, 480 conferências de entrada e quatro colagens
+reais nas duas QAs. Na colagem de 3 textual, CON 3, nove pontos e
+PV 8, iguais ao controle numérico. Entradas e formatos dos ensaios
+repostos. 86.594 posições/cópia, MONTAGENS inteira e metadados
+conferidos. Só ficaram as 60 alterações de fórmula. Abas fechadas.
+
+Ramo `codex/corrige-colagem-atributos-20261108`, sobre a PR91.
+Privados em `nuvem-b47/saidas/correcao-colagem-atributos-20261108/`.
+Sem merge, oficiais, jogador ou PR31. Preservar suportes anteriores
+e escape ANALISE.
+
+# PR91 revisada e colagem de atributos confirmada · 08/11/2026
+
+Leia `r53/diagnostico-android/REVISAO-PR91-E-COLAGEM-ATRIBUTOS-2026-11-08.md`
+e `revisao_pr91_colagem_atributos_2026-11-08.json`. PR91 b804d1a sobre
+PR90 4eeb276, dois workflows SUCCESS, sem bloqueio no delta revisado.
+Modelo e preparador reconferidos. 25 alvos nativos já atualizados.
+O37 nas duas QAs recuperou a fórmula e o aviso após Backspace real.
+
+ATR-N-TEXTO agora reproduzido pela interface comum nas duas QAs.
+O21 recebe apóstrofo e 3, Ctrl+C, Ctrl+Shift+V em Q20. Fica texto 3
+com validação estrita, CON 0, seis pontos gastos, PV 5. Número 3 pelo
+mesmo caminho dá CON 3, nove pontos, PV 8. Legado, fora do delta PR91.
+Próximo item é tratar pontos textuais válidos preservando entrada e menu.
+Não extrapolar as outras entradas forçadas do parecer da PR90.
+
+22 posições do cenário por cópia. Dez valores e dois formatos repostos.
+86.494 posições por cópia, MONTAGENS inteira incluída. Zero diferenças
+nos campos comparados e metadados iguais. Abas de teste fechadas.
+Ramo `codex/revisao-pr91-fila-20261108`, só parecer e diagnóstico.
+Privados em `nuvem-b47/saidas/revisao-pr91-fila-20261108/`, ignorados.
+Sem merge, oficiais, jogador ou PR31. Preservar suportes anteriores e
+escape ANALISE.
+
 # Contagem de perícias das entidades corrigida · 08/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-PERICIAS-ENTIDADES-2026-11-08.md`

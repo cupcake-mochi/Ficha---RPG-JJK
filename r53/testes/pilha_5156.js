@@ -14,7 +14,7 @@ const ruins=clone(antes);ruins.at(-1).notas.at(-1)[1]='divergente';const copia=c
 t(()=>assert.throws(()=>c.r53AjustarPilha516_(ruins),/divergente/));t(()=>assert.deepEqual(ruins,copia));
 // Paridade dos 14 alvos com as fontes geradas, incluindo estilos existentes preservados.
 const fontes={};vm.createContext(fontes);vm.runInContext(require('../../medidas/carregar-ficha').fontes(),fontes);
-require('../diagnostico-android/preparar_reserva_bolsa').reverterModelo(fontes.ABAS);
+require('../diagnostico-android/preparar_aviso_atributo').reverterModelo(require('../diagnostico-android/preparar_menu_oficios').reverterModelo(require('../diagnostico-android/preparar_especializacao').reverterModelo(require('../diagnostico-android/preparar_texto_extra').reverterModelo(require('../diagnostico-android/preparar_corte_xp_missao').reverterModelo(fontes.ABAS)))));require('../diagnostico-android/preparar_buff_decimal').reverterModelo(fontes.ABAS);require('../diagnostico-android/preparar_reserva_bolsa').reverterModelo(fontes.ABAS);
 require('../diagnostico-android/preparar_origens_recursos').reverterModelo(fontes.ABAS);
 const revisoes = require('../diagnostico-android/integridade_movimento_plano.json');
 const conjuracao = require('../diagnostico-android/conjuracao_integridade_plano.json');

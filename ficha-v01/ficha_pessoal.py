@@ -179,17 +179,26 @@ def _endereco_faixa(c1, c2, aba):
             f"ADDRESS(ROW({aba}{c2}),COLUMN({aba}{c2}),4)")
 
 
-def descontos(missoes):
+def descontos(missoes, maximo=None, corte=0):
     """o menu de desconto da missão: as posições da semana que pagam menos que cheio, da tabela do livro, e a falha
     que pagou metade. O livro aplica as duas juntas ("200 × ½ × ½ = 50 XP" na terceira longa que falhou), e o Mizuki
     decidiu em 04/10/2026 que o menu traz as duas opções: cada posição que paga menos ganha também a versão com falha,
-    pela metade dela."""
-    pos = []
+    pela metade dela.
+
+    12/11/2026 (fora do livro, decisão do Mizuki): a missão que fica abaixo do `corte` (25 XP) paga 0. A primeira
+    posição em que nem a maior missão possível (`maximo`: o maior tipo vezes o maior adicional) chega ao corte vira
+    "Nª ou mais", com fração 0, e as posições depois dela saem do menu. As versões com falha ficam só para as posições
+    que ainda pagam."""
+    pos, resto = [], []
     for p, pct in missoes["desconto_da_semana"].items():
         v = float(pct.rstrip("%").replace(",", ".")) / 100
-        if v < 1:
-            pos.append((f"{p} · {pct}", v))
-    return pos + [("Falha · metade", 0.5)] + [(f"{n} · falha", v / 2) for n, v in pos]
+        if v >= 1:
+            continue
+        if maximo is not None and int(round(maximo * v, 4)) < corte:
+            resto = [(f"{p} ou mais", 0)]
+            break
+        pos.append((f"{p} · {pct}", v))
+    return pos + resto + [("Falha · metade", 0.5)] + [(f"{n} · falha", v / 2) for n, v in pos]
 
 
 def regras(CAT=None):
@@ -249,7 +258,9 @@ def regras(CAT=None):
         "situacoes": [s[0].upper() + s[1:] for s in eq["situacoes_do_traje"]] + [OUTRA_SITUACAO],
         "soco": [eq["soco_por_maestria"][str(i)] for i in range(1, 5)],
         "leve": leve, "limite_base": int(re.match(r"(\d+) \+ Força", eq["volume"]["limite"]).group(1)),
-        "tipos": tipos, "multiplicadores": list(fora["xp_adicional"].items()), "descontos": descontos(CAT["missoes"]),
+        "tipos": tipos, "multiplicadores": list(fora["xp_adicional"].items()), "descontos": descontos(CAT["missoes"], max(v for _, v in tipos) * max(fora["xp_adicional"].values()),
+                                fora["xp_minimo_da_missao"]),
+        "xp_minimo": fora["xp_minimo_da_missao"],
         "niveis": CAT["progressao"]["tabela_impressa"], "limiar": CAT["progressao"]["limiar_do_feito"]["nivel"],
         # 14/10/2026 (B46): as Origens do livro R45, que o extrair_origens.py lê do capítulo 5
         "origens_do_livro": json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "origens-do-livro.json"),
@@ -384,7 +395,9 @@ def trocas(layout, CAT=None):
     tabela("sit", ["situação do traje"], [[s] for s in R["situacoes"]])
     tabela("tipo", ["tipo de missão", "xp do tipo"], [list(t) for t in R["tipos"]])
     tabela("mult", ["adicional da missão", "multiplicador"], [list(t) for t in R["multiplicadores"]])
-    tabela("desc", ["desconto da missão", "fração paga"], [list(t) for t in R["descontos"]])
+    # 12/11/2026: com o corte de 25 XP o menu caiu de 11 para 10 linhas. A faixa guarda a 11ª vazia para o endereço
+    # (DADOS!CR5:CS15) das fórmulas, do menu e das fichas já instaladas não mudar.
+    tabela("desc", ["desconto da missão", "fração paga"], [list(t) for t in R["descontos"]] + [[None, None]] * max(0, 11 - len(R["descontos"])))
     tabela("grau_ferramenta", ["grau da ferramenta"], [["—"]] + [[p[0]] for p in R["patentes"]])
     # o nível em que o XP sozinho para de subir: dali em diante o livro pede um feito
     tabela("limiar", ["limiar do feito"], [[R["limiar"]]])
@@ -900,11 +913,12 @@ NOTAS = {
     "xp": "Escolha o tipo da missão. {tipos}.",
     "adicional": "O multiplicador da missão, quando a mesa dá: {mults}. Em branco, a missão vale o XP do tipo.",
     "desconto": "Para a missão que pagou menos. Na sua semana, as duas primeiras pagam cheio, a terceira 50%, a quarta 25%, "
-                "a quinta 12,5%, a sexta 6,25%, e cada uma depois paga metade da anterior. Missão que falhou e o mestre deu "
-                "metade é Falha; se ela também foi da terceira em diante, escolha a posição com falha (a terceira longa "
-                "que falhou paga 200 × ½ × ½ = 50). Em branco, paga cheio.",
-    "total": "O XP do tipo, vezes o Adicional, vezes o Desconto, arredondado para baixo só no fim. Quando a conta dá mais "
-             "que zero e menos que 1, a missão paga 1.",
+                "a quinta 12,5% e a sexta 6,25%. Da sétima em diante, escolha 7ª ou mais: nenhuma missão chega a 25 XP "
+                "ali, e pela regra da casa ela paga 0. Missão que falhou e o mestre deu metade é Falha; se ela também "
+                "foi da terceira em diante, escolha a posição com falha (a terceira longa que falhou paga 200 × ½ × ½ = "
+                "50). Em branco, paga cheio.",
+    "total": "O XP do tipo, vezes o Adicional, vezes o Desconto, arredondado para baixo só no fim. Regra da casa: abaixo "
+             "de 25, a missão paga 0 (25 paga).",
     "extensao": "Mais duas tabelas de missão, para quando as duas primeiras encherem. O XP total soma as quatro. Elas ficam "
                 "num grupo de colunas fechado, dentro do painel.",
     "niveis": "A curva do livro, fixa. Para subir é o que custa sair daquele nível. Acumulado é o XP total em que você "
@@ -1216,9 +1230,10 @@ def aba(layout, tr):
             f.add("cel", cd, lin, ct - 1, lin)
             v = (f'ROUND(VLOOKUP({x},{TIPO},2,FALSE)*IF({a}="",1,VLOOKUP({a},{MULT},2,FALSE))*'
                  f'IF({d}="",1,VLOOKUP({d},{DESC},2,FALSE)),4)')
-            # o livro: arredonda para baixo só o XP final; positivo e menor que 1 vira 1
+            # o livro arredonda para baixo só o XP final. 12/11/2026 (fora do livro, decisão do Mizuki): abaixo de 25
+            # a missão paga 0, no lugar do mínimo de 1 do livro
             formulas_total.append(f.add("cel", ct, lin, b + ULT, lin,
-                  f'=IF({x}="","",IFERROR(IF({v}>0,MAX(1,FLOOR({v},1)),0),""))'))
+                  f'=IF({x}="","",IFERROR(IF(FLOOR({v},1)>={R["xp_minimo"]},FLOOR({v},1),0),""))'))
         f.menu(f"{ix._letras(cx)}{G['missao_ini']}:{ix._letras(cx)}{G['missao_fim']}", tr["faixa_t"]("tipo", so=0))
         f.menu(f"{ix._letras(ca)}{G['missao_ini']}:{ix._letras(ca)}{G['missao_fim']}", tr["faixa_t"]("mult", so=0))
         f.menu(f"{ix._letras(cd)}{G['missao_ini']}:{ix._letras(cd)}{G['missao_fim']}", tr["faixa_t"]("desc", so=0))
