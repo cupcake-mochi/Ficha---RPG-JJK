@@ -26,7 +26,7 @@ mostra onde houve olhar dedicado, não que a área está livre de erro.
 | Descanso | Conferida | AUDITORIA-DESCANSO-ORIGENS, DESCANSO-EVENTO-REPETIDO | — |
 | Defesa, equipamento, mãos, carga | Conferida | AUDITORIA-EQUIPAMENTO, AUDITORIA-PASSIVAS-ORIGEM | — |
 | Conjuração e teto por Integridade | Conferida | AUDITORIA-CONJURACAO-INTEGRIDADE | — |
-| Buff/Debuff (os 11 campos) | Conferida | CORRECAO-BUFF-DECIMAL | caixa B/D mostra "B/D 2" para 1,5 (só visual) |
+| Buff/Debuff (os 11 campos) | Conferida | CORRECAO-BUFF-DECIMAL | — (14/11: decimal deixa a caixa B/D das invocações âmbar, CORRECAO-AVISO-DECIMAL-BD) |
 | Iniciativa, CD de feitiço, ataque corpo a corpo e à distância | Conferida (10/11) | AUDITORIA-COMBATE-JOGADOR, CORRECAO-AVISO-ATRIBUTO | — |
 | Perícias (23) | Conferida (11/11) | AUDITORIA-CONSOLIDADA: 69 casos no Sheets em 04/11; CORRECAO-OFICIOS-TR, CORRECAO-ESPECIALIZACAO e CORRECAO-TEXTO-EXTRA (11/11) | especialização sem treino, sem marco de Corpo e texto no Extra ou em Trein/Espec avisam na caixa desde 11/11 |
 | Testes de Resistência do jogador | Conferida (11/11) | CORRECAO-OFICIOS-TR, CORRECAO-TEXTO-EXTRA | Físico com menu fora de FORÇA/DESTREZA e texto no Extra avisam desde 11/11 |

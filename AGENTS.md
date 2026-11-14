@@ -7,6 +7,12 @@ Mizuki, as QAs e o estado delas, e o que está pendente:
 - a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
 - as decisões abertas dele.
 
+# Buff/Debuff decimal fica âmbar nas INVOCAÇÕES · 14/11/2026
+
+Leia `r53/diagnostico-android/CORRECAO-AVISO-DECIMAL-BD-2026-11-14.md`. A caixa B/D mostrava 1,5 como "B/D +2" e a conta
+usava 1. Agora a letra fica âmbar quando há decimal (168 caixas, 36 faixas, uma regra) e a nota de O21 explica. A
+conta não mudou. Aplicado e visto nas duas QAs; nada nas oficiais.
+
 # Achados da CONFIGURAÇÃO decididos · 14/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-ACHADOS-CONFIGURACAO-2026-11-14.md`. Decisões do Mizuki:
