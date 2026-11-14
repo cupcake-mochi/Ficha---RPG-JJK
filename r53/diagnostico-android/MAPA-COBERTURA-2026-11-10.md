@@ -20,9 +20,9 @@ mostra onde houve olhar dedicado, não que a área está livre de erro.
 | área | estado | onde foi olhada | o que falta |
 |---|---|---|---|
 | Vida máxima e Bloquear | Conferida | AUDITORIA-VIDA-CORPOS, CORRECAO-VIDA-BLOQUEAR | — (`vida_bloquear_molde.js` consertado e no smoke em 11/11) |
-| Vida e energia temporárias, caixa ± | Conferida | AUDITORIA-RESERVAS, MAXIMOS-ZERO, CORRECAO-FILA-RECURSOS, TEMP-COLAGENS | rajada de mais de dois eventos ainda pode perder entrada (limite do Google, documentado) |
+| Vida e energia temporárias, caixa ± | Conferida | AUDITORIA-RESERVAS, MAXIMOS-ZERO, CORRECAO-FILA-RECURSOS, TEMP-COLAGENS | rajada de mais de dois eventos ainda pode perder entrada (limite do Google); a varredura não é segura, só um aviso visual (PONTAS-DO-MAPA, 14/11, espera o Mizuki) |
 | Integridade, estágios, Exaustão, deslocamento | Conferida | INTEGRIDADE-MOVIMENTO, DESLOCAMENTO-CORPORAL, AUDITORIA-CONJURACAO-INTEGRIDADE | — |
-| Morrendo, socorro, cura do Exaurido | Conferida | AUDITORIA-MORRENDO, SOCORRO, CURA-EXAURIDO | Android não testado (CURA-EXAURIDO) |
+| Morrendo, socorro, cura do Exaurido | Conferida | AUDITORIA-MORRENDO, SOCORRO, CURA-EXAURIDO | o menu Aplicar cura não existe no app do Android; no celular vale a caixa ± com a metade (PONTAS-DO-MAPA, 14/11) |
 | Descanso | Conferida | AUDITORIA-DESCANSO-ORIGENS, DESCANSO-EVENTO-REPETIDO | — |
 | Defesa, equipamento, mãos, carga | Conferida | AUDITORIA-EQUIPAMENTO, AUDITORIA-PASSIVAS-ORIGEM | — |
 | Conjuração e teto por Integridade | Conferida | AUDITORIA-CONJURACAO-INTEGRIDADE | — |
@@ -71,8 +71,8 @@ Nas invocações não sobrou nenhuma área sem olhar dedicado.
 |---|---|
 | `vida_bloquear_molde.js` | ~~falha~~ consertado em 11/11 e no smoke |
 | `menu_origem.js` | ~~falha no histórico~~ reescrito em 11/11 (confere CP3 e CQ3) e no smoke |
-| `cartas_custom.js`, `marcas_custom.js` | saem com código 0, mas pulam sem a ficha exportada: teste manual, precisa do `oficial-era.json` privado |
-| `regressao-kaori-na-ficha.py` | precisa do LibreOffice e não está no smoke; o `conferir-kaori.py` do smoke confere só o catálogo |
+| `cartas_custom.js`, `marcas_custom.js` | históricos (14/11): comparam os remendos 35 e 37 com a exportação de 25/10, que está no Linux; já instalados |
+| `regressao-kaori-na-ficha.py` | precisa do LibreOffice e não está no smoke; o núcleo (seis números) foi ensaiado pela API no Ciclo em 14/11 e bate (PONTAS-DO-MAPA) |
 
 ## O que eu atacaria primeiro
 
@@ -85,4 +85,4 @@ Ordem sugerida, pelo tamanho do estrago se o erro existir:
 4. ~~**Talentos e Aptidões.**~~ Auditado em 11/11: requisitos batem com o R66.
 5. ~~**Caminhos e Trilhas.**~~ Auditado em 11/11 contra o R66 (AUDITORIA-CAMINHOS-TRILHAS): números batem; as cinco cartas com frequência antiga foram corrigidas em 12/11.
 6. ~~**Progressão e XP.**~~ Auditado em 12/11 contra o R66 (AUDITORIA-PROGRESSAO-XP): números batem; a trava de um nível por missão entrou em 12/11; o corte de 25 XP (12/11) resolveu o desconto do 7º em diante.
-7. **Consertar os testes quebrados ou pulados.** Dois consertados em 11/11; sobram `cartas_custom`/`marcas_custom` (manuais) e a regressão da Kaori (LibreOffice).
+7. **Consertar os testes quebrados ou pulados.** Dois consertados em 11/11; sobram `cartas_custom`/`marcas_custom` (manuais) e a regressão da Kaori (LibreOffice). Em 14/11: os dois primeiros ficam históricos e o núcleo da Kaori bate pela API (PONTAS-DO-MAPA).
