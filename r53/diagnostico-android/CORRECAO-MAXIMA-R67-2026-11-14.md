@@ -142,3 +142,12 @@ Aplicado pela API nas duas, validado e reposto. Nenhuma QA ficou com a R67.
   diferença de texto.
 - **Ponto do livro para o Mizuki decidir:** a linha 9975 do v0.378 diz que a Técnica Máxima não recebe reforço, e
   a R67-08 dá o reforço à Máxima sem dano. A ficha segue a R67-08.
+  - **Resolvido na R68 (v0.379, 14/11).** O livro passou a dar o reforço à Máxima sem dano, na pessoal e na domada.
+  - **Na ficha:** só a frase de cada um dos dois blocos de Controle foi trocada, com o registro em
+    `referencias-r53/ALTERACOES-R67-para-R68.json`. O bloco publicado inteiro traz redação de outras revisões, e a
+    ficha não segue essas revisões.
+  - **O que isso muda:** nada nas contas, que já davam o reforço. Nada nos `.gs` também: depois de regenerar, nenhum
+    mudou, porque esse texto não aparece na planilha.
+  - **Teste:** `test_maxima_r67`, classe `ControleR68`. Confere as frases no `BLOCOS-R53.json` e no
+    `r53/catalogo.json`, confere que o modelo dá +2 na CD na pessoal e na domada, e tem um defeito plantado com a
+    frase antiga.

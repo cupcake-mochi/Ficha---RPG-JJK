@@ -194,5 +194,56 @@ class ContaMontagemMaxima(unittest.TestCase):
         self.assertTrue(falhas_conta(CONTA_ANTIGA), 'a conta antiga (base e Forma) passou sem ser vista')
 
 
+# R68 (livro v0.379, 14/11/2026): as seções de Controle passam a dar o reforço à Máxima sem dano.
+# As frases foram escritas aqui à mão, a partir do R67-para-R68.json do livro, sem ler o arquivo de registro da ficha.
+R68_FRASES = {
+    'fundamento--controle': (
+        'Classe 0, Liberação Máxima e Técnica Máxima não recebem este reforço de feitiço comum.',
+        'Classe 0 e Liberação Máxima não recebem este reforço de feitiço comum. A Técnica Máxima o recebe só na '
+        'aplicação sem dano, descrita em [Técnica Máxima](#fundamento--maxima).'),
+    'construcao--entidades-controle': (
+        'A básica e as aplicações máximas não recebem esse reforço comum.',
+        'A básica e a Liberação Máxima não recebem esse reforço comum. A Técnica Máxima da domada o recebe só na '
+        'aplicação sem dano, como a pessoal.'),
+}
+
+
+def falhas_r68(blocos):
+    falhas = []
+    for bloco, (antiga, nova) in R68_FRASES.items():
+        texto = blocos.get(bloco, '')
+        if antiga in texto:
+            falhas.append(bloco + ': ainda nega o reforço à Máxima sem dano')
+        if texto.count(nova) != 1:
+            falhas.append(bloco + ': falta a frase da R68')
+    return falhas
+
+
+def ler_json(caminho):
+    import json
+    return json.loads((REPO / caminho).read_text(encoding='utf-8'))
+
+
+class ControleR68(unittest.TestCase):
+    def test_blocos_e_catalogo_na_r68(self):
+        self.assertEqual(falhas_r68(ler_json('referencias-r53/BLOCOS-R53.json')), [])
+        self.assertEqual(falhas_r68(ler_json('r53/catalogo.json')['fontes']), [])
+
+    def test_modelo_da_o_reforco_que_o_texto_promete(self):
+        # O texto novo só vale se a conta concorda: Máxima sem dano, pessoal e domada, com Controle.
+        mod = modelo
+        for modo in ('Técnica Máxima', 'Máxima de entidade'):
+            r = avaliar(mod, False, modalidade=modo, nivel=17, classe=5,
+                        controle='Sem dano', m1='Condição · Derrubado', cd=15)
+            self.assertEqual((r['bonus_controle'], r['cd_controle'], r['valida']), (2, 17, True), modo)
+
+    def test_defeito_plantado_frase_antiga_acende(self):
+        blocos = ler_json('referencias-r53/BLOCOS-R53.json')
+        for bloco, (antiga, nova) in R68_FRASES.items():
+            plantado = dict(blocos)
+            plantado[bloco] = plantado[bloco].replace(nova, antiga)
+            self.assertTrue(falhas_r68(plantado), 'a frase antiga de ' + bloco + ' passou sem ser vista')
+
+
 if __name__ == '__main__':
     unittest.main()
