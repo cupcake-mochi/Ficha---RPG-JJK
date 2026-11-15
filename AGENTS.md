@@ -7,6 +7,26 @@ Mizuki, as QAs e o estado delas, e o que está pendente:
 - a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
 - as decisões abertas dele.
 
+# Módulo achatado e DADOS_CUSTOM sem INDIRECT · 15/11/2026
+
+Leia `r53/diagnostico-android/DESEMPENHO-MODULO-E-INDIRECT-2026-11-15.md`. Só desempenho, nenhuma conta muda.
+
+**Achatador**
+- `preparar_modulo_achatado.js` é o último preparador da cadeia.
+- Aplica os remendos de texto uma vez, na instalação, e tira o SHA-256 da execução.
+- Na cópia descartável, o módulo caiu de 1,7–4,1 s para 1,8–3,0 s por edição.
+- Recusa Codigo já achatado: um preparador novo roda sobre o backup não achatado, e o achatador roda de novo.
+
+**INDIRECT**
+- Os 525 `INDIRECT(SWITCH(...))` da DADOS_CUSTOM viraram `CHOOSE(IFERROR(MATCH(...)))`.
+- A troca está no gerador e nos `.gs`.
+- Planilha já montada: os dois `findReplace` do `preparar_custom_sem_indirect.js`, conferidos na cópia fria com 0
+  diferenças.
+
+**Fora desta rodada**
+- Nada nas oficiais.
+- Nenhum `construir()`.
+
 # Técnica Máxima no livro R67 · 14/11/2026
 
 Leia `r53/diagnostico-android/CORRECAO-MAXIMA-R67-2026-11-14.md`.

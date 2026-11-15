@@ -58,6 +58,18 @@ def escolha(tipo, opcoes, padrao='""'):
  return 'SWITCH('+tipo+','+','.join(texto(k)+','+v for k,v in opcoes.items())+','+padrao+')'
 
 
+def escolha_faixa(tipo, opcoes, padrao):
+ """A faixa escolhida pelo tipo, como referência direta.
+
+ Antes era INDIRECT(SWITCH(tipo,"Origem","'ABA'!$A$2:$A$9",...)): INDIRECT é volátil e as 525 cópias
+ recalculavam a cada edição em qualquer aba (pente fino de 15/11/2026). SWITCH não devolve faixa no
+ Sheets (a lista do menu some); CHOOSE devolve. Tipo fora da lista cai no padrão, como no SWITCH.
+ """
+ chaves = list(opcoes)
+ return ('CHOOSE(IFERROR(MATCH('+tipo+',{'+';'.join(texto(k) for k in chaves)+'},0),'+str(len(chaves)+1)+'),'
+         + ','.join(opcoes[k] for k in chaves)+','+padrao+')')
+
+
 def itens_livro():
  cab, rows = livro.tabela(livro.secao('Itens comuns'), 'Item')
  assert cab == ['Item', 'Conteúdo', 'Preço (¥)', 'Volume']
@@ -176,9 +188,9 @@ def desenha(layout, tr=None):
    put(c,None,'entrada',f'O{r+5+i}',note)
    if i<7:
     col=110+(n-1)*7+i
-    opts=escolha(t,{k:texto(pr['origens_marcante' if k=='Marcante' and i==0 else lista_campo(v[i])]) for k,v in CAMPOS.items()},texto(pr['vazio']))
+    opts=escolha_faixa(t,{k:pr['origens_marcante' if k=='Marcante' and i==0 else lista_campo(v[i])] for k,v in CAMPOS.items()},pr['vazio'])
     helper(f'{ix._letras(col)}1',f'cartão {n} · opção {i+1}')
-    helper(f'{ix._letras(col)}2',f'=IFERROR(UNIQUE(FILTER(INDIRECT({opts}),INDIRECT({opts})<>"")),"")')
+    helper(f'{ix._letras(col)}2',f'=IFERROR(UNIQUE(FILTER({opts},{opts}<>"")),"")')
     menu(c,faixa(col,160))
   put(f'J{r+18}','EFEITO · DESCRIÇÃO','rotulo',f'O{r+18}', 'Texto integral. Descreve regras; não interpreta a prosa como cálculo.')
   put(g['efeito'],None,'efeito',f'O{r+23}')
@@ -237,8 +249,8 @@ def valida(tr, fp):
    v=f'${ix._letras(5+i)}{row}'
    used=escolha(t,{k:texto(labels[i]) for k,labels in CAMPOS.items()})
    if i<7:
-    ps=escolha(t,{k:texto(pools['origens_marcante' if k=='Marcante' and i==0 else lista_campo(labels[i])]) for k,labels in CAMPOS.items()},texto(pools['vazio']))
-    checks.append(f'IF(AND({v}<>"",{used}=""),"Apague campo que este tipo não usa",IF(AND({v}<>"",COUNTIF(INDIRECT({ps}),{v})=0),"Opção inválida: "&{used},""))')
+    ps=escolha_faixa(t,{k:pools['origens_marcante' if k=='Marcante' and i==0 else lista_campo(labels[i])] for k,labels in CAMPOS.items()},pools['vazio'])
+    checks.append(f'IF(AND({v}<>"",{used}=""),"Apague campo que este tipo não usa",IF(AND({v}<>"",COUNTIF({ps},{v})=0),"Opção inválida: "&{used},""))')
    else:
     numeric={typ:label for typ,labels in CAMPOS.items() if (label:=labels[i]) in ['FORÇA','VOLUME','PREÇO','PROTEÇÃO','TETO DE DESTREZA','DESGASTE','RECARGA']}
     pred='OR('+','.join(t+'='+texto(k) for k in numeric)+')'
