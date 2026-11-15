@@ -54,6 +54,30 @@ Uma edição de Buff/Debuff (FICHA!L59) se divide em três partes:
 - **TODAY em DADOS_SALARIOS!Q3:** é um só. Não vale mexer.
 - **Literais de migração no Codigo:** ≈ 600 KB, e o `r53Modulo_` remonta o módulo em toda execução (patches de texto, `new Function` e cerca de 15 `r53Ajustar*`). Isso fica no corpo e ainda não foi medido isoladamente.
 
+## A montagem do módulo (`r53Modulo_`), medida
+
+Toda execução começa com `R53_MODULO_` vazio, então toda edição remonta o módulo. Pus um cronômetro em cada etapa, na D, em 6 edições de L59 com a cópia morna:
+
+| Etapa | Tempo |
+|---|---|
+| base64 + ungzip + texto | 0,9–1,9 s |
+| SHA-256 do código | 0,08–0,23 s |
+| remendos de texto (`split`/`replace` no código inteiro) | 0,4–1,0 s |
+| `new Function(code)` | 0,22–0,65 s |
+| ~15 `r53Ajustar*` | 0,07–0,33 s |
+| **total do módulo** | **1,7–4,1 s** |
+
+- O módulo é 60–85% do corpo do onEdit, que vai de 2,1 a 4,8 s.
+- O código descompactado tem **8.730.984 caracteres**, e o onEdit precisa de uma fração disso.
+
+Corte possível, do mais simples ao mais trabalhoso:
+
+1. **Aplicar os remendos na hora de empacotar**, não em toda edição. Ganha ≈ 0,4–1,0 s. O texto final do módulo fica igual; muda só o hash conferido.
+2. **Tirar o SHA-256 da execução**, conferindo na instalação. Ganha ≈ 0,1–0,2 s.
+3. **Separar o que o onEdit usa do resto** (construir, dados das abas). Diminui a descompactação e o `new Function`. Pode ganhar ≈ 1–2 s, mas mexe na arquitetura e precisa de estudo.
+
+Depois do módulo, quem mais pesa é a espera do recálculo (1–3 s). Ela depende do que a célula editada alimenta na planilha, não do código.
+
 ## Como a troca foi feita na D (para levar ao gerador)
 
 Fiz duas buscas-e-trocas com regex em DADOS_CUSTOM!DF2:JZ26, incluindo fórmulas.
