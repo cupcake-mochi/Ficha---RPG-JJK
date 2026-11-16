@@ -13,6 +13,17 @@ Base lida: `codex/corrige-colagem-atributos-20261108` em `bf0ee8a` (merge do #12
 - **D4:** as notas de FICHA!AH10 e AN10 com o texto novo, pela API.
 - **D5:** forma B. A cadeia roda na Fase 0, sem Google. Na oficial vai o resultado conferido.
 
+- **Ensaio (16/11, "Liberar o ensaio" e depois "Ensaio pelo Codex"):** o ensaio da seção 7 vai para o Codex, que
+  instalou a cadeia nas QAs. O Claude não tem canal para levar ao Google arquivos desse tamanho: Codigo de 1,3 MB e
+  mais de 10 MB de fórmulas na DADOS_R53. O conector e o console passam tudo pelas mensagens, e o navegador do app
+  bloqueia o localhost.
+  - O pacote fica fora do git, em `02-RPG/_trabalho/rodada-oficiais-20261116/`:
+    - `fase0/`: os finais da cadeia;
+    - `referencia/`: o trecho do molde e os hashes esperados.
+  - O roteiro está em `_handoffs/PROMPT-codex-ensaio-rodada-oficiais-2026-11-16.md`.
+  - O ensaio também gera o plano de planilha composto (antes = a oficial de hoje, depois = o fim), que vai para a
+    oficial na forma B.
+
 O ok para a rodada nas oficiais ainda não foi dado: vem depois do ensaio.
 
 ### Feito depois da decisão (16/11, sem Google)
@@ -385,7 +396,11 @@ inteira. O ensaio é:
   - se D2 entrar: digitar por cima de Z15 e conferir que volta a fórmula nova;
 - medir algumas edições, como no teste do celular de 16/11.
 
-Para esse ensaio na cópia (não na oficial) preciso do seu ok e do navegador com a conta.
+Liberado por você em 16/11 e passado ao Codex (ver "Decidido pelo Mizuki em 16/11"). Hashes esperados no ensaio:
+- Codigo `4f660022…` antes do molde e `b3ed2f7e7b80…` depois do trecho do molde;
+- EditorR53 `676337f1…`;
+- módulo `bd42b535…`;
+- no achatador, o texto que o `new Function` recebe: `35d00ae28bfa…`, em 3 partes.
 
 ## 8. Riscos
 
