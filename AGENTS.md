@@ -7,6 +7,17 @@ Mizuki, as QAs e o estado delas, e o que está pendente:
 - a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
 - as decisões abertas dele.
 
+# Atalho das edições livres religado · 16/11/2026
+
+Depois da rodada nas oficiais, todo Buff, vida, texto ou nota passou a rodar o onEdit inteiro (~3–5 s a mais).
+O `R53_LIVRE_HASHES_[0]` ficou no 9dc3480a: o #105 trocou o pacote (bd42b535) e o achatador deixou só a fonte
+35d00ae2 no `r53Modulo_`. O `r53LivreValido_` não acha o hash e desliga o atalho calado.
+
+- `preparar_religar_atalho.js` troca o hash, só para trocas conferidas (lista `VERIFICADAS`). Conferir troca nova:
+  `--conferir <pasta antes> <pasta depois>` lista as células livres cujo molde mudou.
+- O achatador agora leva o atalho junto e **recusa** Codigo com o atalho já desligado.
+- Teste: `r53/testes/religar_atalho.js`. Nas oficiais, só com o Mizuki no PC e backup antes.
+
 # Módulo achatado e DADOS_CUSTOM sem INDIRECT · 15/11/2026
 
 Leia `r53/diagnostico-android/DESEMPENHO-MODULO-E-INDIRECT-2026-11-15.md`. Só desempenho, nenhuma conta muda.
