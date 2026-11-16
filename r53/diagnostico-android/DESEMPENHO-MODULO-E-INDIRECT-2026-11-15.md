@@ -87,3 +87,33 @@ atômico e fica limitado à DADOS_CUSTOM. A resposta tem de dizer 225 fórmulas 
   3. achatador;
   4. Ctrl+S;
   5. os dois `findReplace` da DADOS_CUSTOM.
+
+## Teste no celular · 16/11/2026
+
+O emulador Android não passou do login do Google, então o Mizuki testou no próprio celular, em duas cópias
+descartáveis do Ciclo:
+- **ANTES:** a oficial como está.
+- **DEPOIS:** achatador e troca do INDIRECT (523 de 525 fórmulas; veja abaixo).
+
+**Resultado.**
+- Edições comuns ficaram rápidas: 2–4 s de script.
+- O ± de vida e de energia levou ~10 s sozinho. É o caminho mais caro: trava do documento mais `flush`.
+- Em rajada, as edições fazem fila na trava e algumas estouram os 30 s: 7 na ANTES, 3 na DEPOIS. Os valores
+  terminaram certos nas duas.
+- ANTES × DEPOIS: sem diferença que dê para sentir.
+- **Conselho de mesa:** um ajuste só, com o total, em vez de vários seguidos.
+
+**Achados que mudam a instalação nas oficiais.**
+- **O achatador quase não ganha nas oficiais.** O `Codigo` delas não tem remendos no `r53Modulo_` (a cadeia de
+  preparadores ainda não foi aplicada). Nelas, o achatador só tira o SHA-256, uns 0,1–0,2 s. O ganho de 0,5–1,2 s da
+  seção 1 é de cópia com os preparadores pendentes.
+- **Localizar e substituir pela interface dispara o `onEdit`.** O restaurador da DADOS_CUSTOM regrava DF2/DG2 a partir
+  do molde do pacote, que ainda tem INDIRECT. Por isso a DEPOIS ficou com 523 de 525. Nas oficiais, a troca vai só pela
+  API (`findReplace`, que não dispara o `onEdit`), e o molde precisa vir junto com o `Custom.gs` e o `Origens.gs` novos.
+- **Nomes das funções.** Na interface em pt-BR as fórmulas aparecem como INDIRETO/ESCOLHER/SEERRO/CORRESP. A regex do
+  preparador é para a API, que usa os nomes em inglês.
+
+**Aviso âmbar.**
+- Testado na DEPOIS: o ± isolado levou 10,5–10,7 s, o mesmo que sem a regra.
+- A cor aparece no Enter e some quando o script aplica.
+- Instalado nas duas oficiais no mesmo dia; veja `r53/OFICIAIS.md`.
