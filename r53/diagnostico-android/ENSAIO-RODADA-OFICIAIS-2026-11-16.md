@@ -1,6 +1,6 @@
 # Ensaio da rodada nas oficiais · 16/11/2026
 
-**Ensaio pendente: instalação e testes nativos não iniciados.** Este relatório registra um checkpoint, não aprova a rodada nas oficiais.
+**Ensaio interrompido na conferência prévia do #57: `FICHA!J26` recusada pelo preparador.** Os dez hashes do projeto e o módulo da cópia Era bateram. Instalação e testes nativos não iniciados; nenhuma escrita nas células ou no código. Este relatório não aprova a rodada nas oficiais.
 
 Pedido do Mizuki: “leia o promtp acima e siga as instruções”, com o roteiro “Ensaio da rodada nas oficiais, numa cópia fria de cada uma”.
 Base após `git fetch`: `codex/corrige-colagem-atributos-20261108`, commit `7357c36`.
@@ -20,13 +20,48 @@ Ramo deste relatório: `codex/ensaio-rodada-oficiais-20261116`. Nenhum merge.
 
 Origem Era `1MQqhHbI…`; cópia Era `18Yj-2ya…`; projeto da cópia `1bikx37d…`. Links completos somente nos arquivos privados.
 
-## Impedimento observado
+## Impedimento inicial do console e retomada
 
 O Brave bloqueou a colagem da expressão de leitura dos hashes no console de desenvolvedor com o aviso Self-XSS, solicitando que o usuário digite `allow pasting`.
-A expressão só leria os modelos Monaco e calcularia SHA-256, sem alterar o projeto. Sua execução não foi confirmada e nenhum resultado de hash do Google foi obtido.
+A expressão só leria os modelos Monaco e calcularia SHA-256, sem alterar o projeto. Sua execução não foi confirmada nessa primeira tentativa.
 
-Foi solicitada a liberação manual ao Mizuki. O aviso não foi contornado, e não foi observado pedido de autorização do Google.
-O console e a cópia foram mantidos disponíveis para a retomada.
+Mizuki informou “pronto” depois do pedido de liberação manual. Depois pediu preferência pelos controles da guia, pois estava usando o PC. A leitura foi retomada pela própria guia do Apps Script, selecionando e copiando o conteúdo integral de cada arquivo. O CRLF acrescentado pelo transporte do clipboard no Windows foi convertido para LF antes do SHA-256. Os dez fontes foram guardados em privado. Não foi preciso executar a expressão no console. Nenhum pedido de autorização do Google foi observado.
+
+## Partida da cópia Era relida no Google
+
+Nenhum arquivo alterado. Os prefixos esperados vêm da seção 1 do plano; Codigo, EditorR53 e módulo também conferidos com os hashes integrais da cadeia.
+
+| Arquivo | Prefixo esperado | SHA-256 integral relido | Resultado |
+|---|---|---|---|
+| Analise | `2ea7e9d4` | `2ea7e9d453917956fd7f9707c72bd1225961e186ab21fda9202dd53556d295b4` | igual |
+| Codigo | `52302778` | `52302778db247518b39eb9ebd741cb6a24fc58063a992a24bda69789dac1c775` | igual |
+| EditorR53 | `08badae1` | `08badae12322539ff013e728bbf6ad270d9f68455bd4eac548648c2a4ae1b910` | igual |
+| SalarioLote | `aaaa74f3` | `aaaa74f32b0c7294422272baa541fd94f69ffc4a00e447605d4a461b6aed259e` | igual |
+| Ficha | `6012dcb3` | `6012dcb3dbcd1050f91101c14c68d68ce30c9640c82a56d3ceb4104724003e34` | igual |
+| Invocacoes | `ebf20bb1` | `ebf20bb167b57cc73a1b7cf71c635303805e43aa7e21f89109f02cb4ba520ee9` | igual |
+| Configuracao | `bb784c6d` | `bb784c6d0e5fcd08f37650802e10e87413c094570af71393809c4cf8edd1b69f` | igual |
+| Origens | `90095228` | `9009522887026e3c402345862566834186fd166f336cc8e5c745077351e43792` | igual |
+| LotePaleta | `848e878b` | `848e878b4a2aa4c44a8bffcbf294281d9e77919474babb6ef60732e03fc081c7` | igual |
+| PaletaSegundoPlano | `a5a0e83d` | `a5a0e83def3c0363fbc75f634e051b21c601d3b87636f4bb3caa16b97357eeee` | igual |
+
+Módulo descompactado: `9dc3480af82287b153bf6e18c76f2bc111baaca63bd3cbf4f85ecd628ac09ffc`, cinco partes. Igual ao início exigido.
+
+## Parada na conferência prévia do #57
+
+Antes da instalação, foram lidas pela API as 14 células do primeiro plano. O `planejarCelulas` do `preparar_pilha_5156.js` foi executado localmente no commit próprio do #57, `8db0bae93a3fb04a4a165d632590a0b270aef51a`, com os valores efetivamente recebidos do Sheets.
+
+**Recusa literal:** `Célula divergente: FICHA!26,10:value`, isto é, `FICHA!J26`. Nenhum pedido foi aplicado e nenhuma nova tentativa com dados transformados foi feita.
+
+| Comparação do “antes” de J26, já localizado para pt_BR | SHA-256 |
+|---|---|
+| Esperado pelo preparador | `4185fc245e14960def4bf2ae1d3f81e0b2c28cffcf5b62f756930bab9e77d695` |
+| Fórmula lida da cópia | `a76b5137db31983209895d485901c2e81a79c7f007645a83bfdba8bb019986c1` |
+
+Diagnóstico local, sem nova escrita ou tentativa de aplicação: a diferença de J26 são as aspas nas referências a abas de nome simples. O preparador espera, por exemplo, `'DADOS_PROGRESSAO'!` e `'FICHA'!`; a API devolve `DADOS_PROGRESSAO!` e `FICHA!`. Ao desconsiderar somente essas aspas, fora de literais de texto, os dois textos ficam iguais. Não foi identificada diferença de conta nessa célula, mas o preparador histórico compara o texto literalmente e recusa.
+
+O snapshot original, o preparador e a célula foram preservados. Não foi acrescentada normalização por fora para fazer a guarda passar. O restante do primeiro plano não foi validado após a recusa; não extrapolar o diagnóstico de J26 para os demais alvos.
+
+Não foi iniciada a etapa 3 do roteiro: nenhum arquivo do pacote instalado, nenhuma célula alterada e cronômetro da janela não iniciado. A recusa foi antecipada durante a preparação do snapshot/plano, antes de expor a cópia a um estado intermediário.
 
 ## Hashes relidos localmente, por passo
 
@@ -92,8 +127,8 @@ Esta tabela prova somente a integridade dos arquivos privados recebidos. “Igua
 | Item | Era | Ciclo |
 |---|---|---|
 | Cópia fria | criada e preservada | não criada |
-| Dez hashes de partida e módulo `9dc3480a` relidos no Google | pendente | não iniciado |
-| Snapshot inicial de todos os alvos | pendente; só metadados lidos | não iniciado |
+| Dez hashes de partida e módulo `9dc3480a` relidos no Google | conferidos, todos iguais | não iniciado |
+| Snapshot inicial de todos os alvos | parcial: 14 células do #57 e metadados; restante não lido | não iniciado |
 | Código forma B e molde D2+D3 | não instalados | não instalados |
 | `spreadsheets.batchUpdate` enviados | 0 | 0 |
 | Respostas de `findReplace` | nenhuma | nenhuma |
@@ -110,7 +145,7 @@ Esta tabela prova somente a integridade dos arquivos privados recebidos. “Igua
 
 Nenhuma célula foi editada. Não rodaram: ± de vida, Buff decimal na FICHA e na entidade, missão no painel, XP total digitado, cartão de Classe 0, menus custom de Arma e Origem, nem restauração da fórmula nova em FICHA!Z15.
 
-Também não rodaram a comparação com as QAs, a varredura de erros de fórmula, os preparadores de planilha nos commits próprios ou a composição do plano e da reversão. Não há evidência de aprovação funcional nativa.
+Também não rodaram a comparação com as QAs, a varredura de erros de fórmula, os preparadores de planilha posteriores ao #57 ou a composição do plano e da reversão. O #57 foi somente preparado no commit próprio e recusou J26, sem aplicação. Não há evidência de aprovação funcional nativa.
 
 ## Preservação e retomada
 
@@ -118,8 +153,8 @@ Também não rodaram a comparação com as QAs, a varredura de erros de fórmula
 - Nenhuma função de Apps Script foi executada. Nenhum `construir()`, `continuar()`, acionador ou versão foi criado.
 - A cópia da Era não foi apagada. O Ciclo aguarda a conclusão integral da Era, como manda o roteiro.
 - #117 continua excluído por D1; #116/#120 não foram reaplicados.
-- Depois da liberação manual, começar pelos dez hashes e pelo módulo da cópia Era. Havendo divergência, parar e registrar; não substituir o código.
+- A partida do projeto está confirmada. A retomada depende de uma decisão sobre a incompatibilidade literal do preparador #57 com o formato das fórmulas retornado pelo Sheets. Não continuar por cima da recusa. Não mesclar esta PR enquanto o ensaio estiver incompleto.
 - Antes de instalar, obter o snapshot completo dos alvos. Usar o `referencia/trecho-molde.js` privado já fornecido, sem gerar outro.
 - A rodada nas oficiais continua dependendo de Mizuki no PC, backup e autorização posterior ao ensaio.
 
-Evidências privadas: `rodada-oficiais-20261116/ensaio/copia-era.json`, `estado-inicial.json` e `hashes-pacote-local.json`. Não há snapshot completo, plano composto ou reversão ainda.
+Evidências privadas em `rodada-oficiais-20261116/ensaio/`: `copia-era.json`, `estado-inicial.json`, `hashes-pacote-local.json`; em `era/`, `projeto-inicial/` (dez fontes), `hashes-iniciais.json`, `metadados-iniciais.json`, `preflight-57-api.json`, `preflight-57-snapshot.json` e `preflight-57-resultado.json`. Não há snapshot completo, plano composto ou reversão ainda.
