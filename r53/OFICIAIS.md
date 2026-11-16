@@ -9,6 +9,38 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Rodada de 16/11/2026 nas oficiais
+
+Mizuki autorizou: “tô no pc, pode aplicar nas oficiais pelo método que vc testou. faz o backup e confere cada uma antes, começa pela Era e, se der tudo certo, segue pro Ciclo.” A Era foi aplicada e conferida antes do Ciclo.
+
+| Oficial | Backup anterior no Drive | Backup nativo do projeto (Brasília) | Aplicação do plano com guardas e releitura |
+|---|---|---|---|
+| Era da Revolução | BACKUP antes da rodada 16-11-2026 · Era da Revolução | Versão 16, 18:04 | 7 min 27,067 s |
+| Ciclo Maldito | BACKUP antes da rodada 16-11-2026 · Ciclo Maldito | Versão 16, 18:19 | 5 min 47,720 s |
+
+As duas versões têm a descrição “Antes da rodada de 16/11”. A implantação de biblioteca de cada backup foi arquivada. Há cópia privada dos dez fontes de partida.
+
+| Arquivo | SHA-256 antes, ambas | SHA-256 depois, ambas |
+|---|---|---|
+| Analise | 2ea7e9d453917956… | 98f8f056cd4f86cc… |
+| Codigo | 52302778db247518… | a7f6f33050c3bdf9… |
+| EditorR53 | 08badae12322539f… | 676337f165f7056d… |
+| SalarioLote | aaaa74f32b0c7294… | aaaa74f32b0c7294… |
+| Ficha | 6012dcb3dbcd1050… | 6c0391edac631146… |
+| Invocacoes | ebf20bb167b57cc7… | e73584ddf3b14a66… |
+| Configuracao | bb784c6d0e5fcd08… | b5dfcd181c3ccb43… |
+| Origens | 9009522887026e3c… | b5dfcd181c3ccb43… |
+| LotePaleta | 848e878b4a2aa4c4… | 848e878b4a2aa4c4… |
+| PaletaSegundoPlano | a5a0e83def3c0363… | a5a0e83def3c0363… |
+
+Em cada oficial, os dez arquivos de partida e o módulo 9dc3480af822… coincidiram com a própria cópia fria. Salvo e recarregado o pacote com o molde ensaiado (Codigo b3ed2f7e7b80…, EditorR53 676337f165f7…, módulo bd42b5351ec1… em cinco partes). Por último foram instalados os arquivos achatados ensaiados. O texto descompactado relido tem SHA-256 35d00ae28bfa9836566db4cec46cc14bf4c55da1e6ebb342b30aec2d7d263b10 em três partes. A instalação usou os controles da guia do editor.
+
+Na planilha, a forma B reuniu #57, #63–#65a, #67, #69–#96, #98, #100–#103, #108, #113, D4, #114 e #119 conforme a tabela por etapa do [ensaio](diagnostico-android/ENSAIO-RODADA-OFICIAIS-2026-11-16.md). As contagens históricas por PR são as do ensaio. Nas oficiais rodou o plano composto de cada uma, com 3.471 pedidos em 18 chamadas da API. Respostas efetivamente confirmadas em cada oficial, por lote na ordem: 37, 710, 468, 71, 71, 98, 90, 90, 85, 89, 86, 88, 89, 83, 82, 519, 658, 57. D2/D3 incluídos no molde, D4 nas duas notas, R67/#117 excluída, aviso âmbar #116/#120 preservado.
+
+Em cada oficial, os 17.632 campos anteriores coincidiram com o ensaio. Na chegada, 25.424 controles de campos e 90 de estrutura passaram. Os dez arquivos foram relidos após recarregar o editor. A varredura das 30 abas encontrou zero erros de fórmula. A seção Prática Cotidiana foi aberta na ficha em modo de consulta. Os testes de personagem ficaram nas cópias.
+
+Para voltar, a versão 16 guarda o projeto anterior e a inversa guardada de cada planilha tem 2.520 pedidos em 15 lotes, incluindo as duas bordas e cinco validações da desmesclagem. Conferir o estado antes de usar a inversa para preservar edições posteriores. As cópias completas e as evidências ficam na pasta privada rodada-oficiais-20261116/aplicacao e as inversas em ensaio/{era,ciclo}/composto/reversao.json.
+
 ## Aviso âmbar nas caixas ± · 16/11/2026
 
 Com autorização expressa ("Pode aplicar"), as duas oficiais receberam pela API do Sheets o aviso de
