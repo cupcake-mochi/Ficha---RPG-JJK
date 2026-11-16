@@ -9,6 +9,28 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Salário: início do período sem hora · 16/11/2026
+
+Com autorização expressa ("Aplica"), as duas oficiais receberam pela API do Sheets a fórmula nova do
+`DADOS_SALARIOS!Q2` (PR #128, `preparar_salario_datas.js`, `FORMULA_Q2`). **Só planilha, uma célula em cada:**
+nenhum arquivo do Apps Script mudou, nenhum `construir()`, nenhum dado de personagem tocado.
+- Antes: `…IF(ult>0;MAX(ult;em);em)…`. Depois: `…IF(ult>0;MAX(INT(ult);em);em)…`.
+- Lido antes nas duas: o livro SALÁRIOS vazio e a fórmula antiga. Relido depois: a fórmula nova, o Q2 vazio (carteira
+  não emitida, como antes) e Q3:Q8 sem mudança (0, 0, 0, 0, 1000 e 30).
+
+**Não aplicado: o trecho no Codigo.** O backup nativo do projeto não foi feito (a janela do app estava escondida e o
+menu Implantar não abriu), então o código ficou como estava. Lido no editor do Ciclo: o Codigo (`a7f6f33050c3`) tem os
+dois trechos antigos uma vez cada, ou seja, o `preparar_salario_datas.js` encaixa. O da Era não foi lido.
+- A fórmula sozinha já dá o resultado certo: conferido na simulação do `r53/testes/salario_datas.js` com o código
+  antigo e a fórmula nova, intervalos de 1, 7 e 30 dias, sem erro.
+- Enquanto o Codigo não for trocado, o texto da fórmula dentro dele é o antigo. Rodar o `salarioPrepararFormulas_` de
+  novo (ou um `construir()`) devolve a fórmula antiga ao Q2.
+- Falta, com o Mizuki no PC: backup nativo e o trecho no Codigo das duas.
+
+Para voltar: escrever no Q2 a fórmula de antes,
+`=IF(ISNUMBER(N2);LET(ult;MAX('SALÁRIOS'!C2:C);em;INT(N2);IF(ult>0;MAX(ult;em);em));"")`. Fichas já copiadas por
+jogadores continuam com a fórmula antiga.
+
 ## Aviso âmbar nas caixas ± · 16/11/2026
 
 Com autorização expressa ("Pode aplicar"), as duas oficiais receberam pela API do Sheets o aviso de
