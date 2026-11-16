@@ -29,13 +29,30 @@ O ok para a rodada nas oficiais ainda não foi dado: vem depois do ensaio.
   - Custo: +52 mil caracteres no Codigo e ~10–20 ms por carga do módulo no node. No Apps Script, medir no ensaio.
 - **D4 pronto:** `notas_nivel_xp.json` com o antes e o depois das notas de FICHA!AH10 e AN10. O "antes" é o texto do
   main (#50); na rodada, a nota da oficial tem de estar igual a ele, senão para.
-- **Fase 0, a cauda da cadeia reproduzida:** a partir do Codigo `b709ad14` e das partes do módulo guardadas em
-  privado, saíram os mesmos hashes das QAs: #105 `0292582a`, #107 `b5861c14`, #108 `c175d838`, #109 `6ecbe593`,
-  #110 `4f6600227cd1aeaf…`. Isso confirma o `0292582a`, que era inferido. Ele só bate com o gzip do navegador
-  (nível padrão, byte de sistema 3). Os arquivos estão em `02-RPG/_trabalho/rodada-oficiais-20261116/`, fora do git.
-- **Os outros pontos da cadeia já estão guardados em privado** (`ficha-integracao-5156-20261104/nuvem-b47/saidas/`):
-  todos os Codigo de `52302778` a `b709ad14` e os seis EditorR53. Faltam só os intermediários do #61 e do #62
-  (`5b81e86d`, `3767fb0f`); a Fase 0 refaz esses dois a partir do commit de cada PR.
+- **Fase 0, parte do código: fechada ("Terminar a Fase 0").** O `reproduzir_cadeia_oficiais.js` refaz, sem Google,
+  a cadeia inteira: de `52302778` até `4f6600227cd1…` no Codigo, de `08badae1` até `676337f1` no EditorR53, e de
+  `9dc3480a` até `bd42b535` no módulo.
+  - São 42 passos, e cada preparador roda num worktree no commit do próprio PR. Todos os hashes da seção 3 bateram,
+    sem exceção. O roteiro leva ~35 s.
+  - Comparação byte a byte:
+    - 35 dos 42 arquivos têm um igual, do mesmo hash, guardado em privado daquela época
+      (`ficha-integracao-5156-20261104/nuvem-b47/saidas/`), que saiu das QAs. Entre eles estão o Codigo `b709ad14`
+      (#90) e o EditorR53 `676337f1` (#75).
+    - Os 5 da cauda (#105–#110) e as cinco partes do módulo saíram iguais aos de `02-RPG/_trabalho/rodada-oficiais-20261116/`.
+    - O fim, `4f6600227cd1`, é o hash que as duas QAs registraram depois do #110
+      (`CORRECAO-XP-LINHA-CONGELADA-2026-11-12.md`).
+  - Os dois que faltavam em privado, o #61 (`5b81e86d`) e o #62 (`3767fb0f`), agora existem.
+  - O `0292582a` do #105, que era inferido, está confirmado.
+  - Por cima do resultado, o `molde_api.js` privado passou nas 25 verificações: o molde e o achatador sobre o Codigo
+    e o módulo que a Fase 0 gerou.
+  - O que a reprodução precisou (está no cabeçalho do roteiro):
+    - o gzip com o byte de sistema 3, como no Linux e no navegador. No Windows, o Node grava 10 e o hash muda do #70
+      em diante;
+    - #60, #61 e #62 refazem a mesma troca a partir do `8a0f2ed6`, cada um com os arquivos do próprio commit;
+    - no head do #65 e do #88, o `prepararCodigo` já faz as duas etapas. Os meio-termos `170273ca` e `8935211c`
+      ficaram dentro do PR;
+    - o #105 é um trecho de console. O roteiro faz a mesma troca no node, com as frases do commit do #105.
+  - Os arquivos gerados ficam fora do git.
 
 ## Resumo
 
@@ -205,7 +222,9 @@ módulo     9dc3480a ─#105→ bd42b535 ─#119→ (achatado, 3 partes em vez d
 SalarioLote, LotePaleta, PaletaSegundoPlano: sem mudança
 ```
 
-Os hashes estão completos nos preparadores (`BASE`) e nos documentos de cada correção. A QA do Ciclo pulou alguns
+Os #51–#56 entram pelo `preparar_pilha_5156.js` do #57. No #65 e no #88, o preparador do head vai direto ao segundo
+hash (o primeiro é um meio-termo dentro do PR). Os hashes completos estão no `reproduzir_cadeia_oficiais.js` (`PASSOS`),
+que refaz a cadeia toda sem Google (Fase 0, 16/11: os 42 passos bateram). A QA do Ciclo pulou alguns
 passos de código em cópias descartáveis (#60–#62 e o #108/#109 por outra sessão), mas as duas QAs fecharam no mesmo
 `4f660022`.
 
@@ -289,14 +308,21 @@ Rodados na base de hoje, eles não reproduzem os hashes ensaiados. Os que confer
 contextos 44 e 204–248 mudaram). Cada passo tem de rodar **no commit do próprio PR**: `git worktree add` no topo de
 cada ramo da pilha, ou no merge de cada PR do #93 em diante.
 
-**Fase 0, sem Google (vale para as duas formas):**
-- ler o projeto inteiro de uma oficial pela API, só leitura;
-- ler as células-alvo dos planos;
-- num diretório privado (`nuvem-b47/saidas/rodada-oficiais/`, fora do git), rodar a cadeia inteira, passo a passo,
-  cada um no seu commit, conferindo **todos** os hashes da seção 3;
-- saída: os arquivos finais (Codigo `4f660022`, EditorR53 `676337f1`, módulo `bd42b535`) e os pedidos de planilha
-  de cada passo;
-- conferir os finais contra o projeto da QA, lido pela API: Codigo, EditorR53 e as cinco partes têm de sair iguais.
+**Fase 0 (vale para as duas formas):**
+- **feito em 16/11, sem Google:** rodar a cadeia inteira, passo a passo, cada um no seu commit, conferindo **todos**
+  os hashes da seção 3:
+
+  ```
+  node r53/diagnostico-android/reproduzir_cadeia_oficiais.js <Codigo 52302778> <EditorR53 08badae1> <partes do módulo 9dc3480a> <pasta-nova>
+  ```
+
+  Saída, fora do git: os arquivos finais (Codigo `4f660022`, EditorR53 `676337f1`, módulo `bd42b535`) e um Codigo ou
+  EditorR53 por passo. Comparados com os arquivos guardados das QAs, saíram iguais (ver "Feito depois da decisão").
+- **falta, e precisa do Google (só leitura):**
+  - ler o projeto inteiro de uma oficial e conferir a partida (seção 1);
+  - ler o projeto da QA e conferir que os finais saem iguais ao que está lá hoje. Isso já foi conferido contra os
+    arquivos e os hashes registrados, mas não contra uma leitura de hoje;
+  - ler as células-alvo e compor o plano de planilha num só (antes = a oficial, depois = o fim da cadeia).
 
 Depois, duas formas de levar à oficial:
 
@@ -370,7 +396,7 @@ Para esse ensaio na cópia (não na oficial) preciso do seu ok e do navegador co
 
   Ou pelo histórico de versões da planilha, que leva junto qualquer coisa feita depois.
 - **Jogador copiando a oficial durante a rodada** leva o estado do meio. Fazer num horário calmo.
-- **O Codigo do #105** (`0292582a`) é inferido. Se a Fase 0 der outro hash, a cadeia para ali e eu investigo antes.
+- **O Codigo do #105** (`0292582a`) era inferido. A Fase 0 confirmou o hash.
 - **O caminho leve** precisa ser `98fb3594` para o instalador do #105. Nada na cadeia mexe nele, mas não está escrito
   em documento que a oficial tem esse hash. O instalador confere e recusa.
 - **Autorizações.** Nas QAs, depois do #90, você autorizou o Google para rodar o `verificarPacoteR53`. Nas oficiais
@@ -398,8 +424,11 @@ Sem ID completo no git.
 
 - Nada no Google: nem leitura das oficiais, nem cópia, nem QA. Os hashes da seção 1 são os do `OFICIAIS.md` de 03/11,
   não uma leitura de hoje.
-- A Fase 0 está pela metade. A cauda (#105–#110) foi reproduzida e bate. Do #51 ao #90, a cadeia ainda não foi
-  repetida com cada preparador no commit do próprio PR; por enquanto conta só com os arquivos guardados daquela época.
+- Da Fase 0, a parte do código está fechada e bate (#57–#110, 42 passos). Ainda faltam, e todas pedem Google:
+  - a leitura de hoje da oficial e da QA;
+  - o plano de planilha composto.
+- O plano de planilha de cada passo (#51–#103) não foi recomposto na Fase 0. Os pedidos continuam nos preparadores e
+  nos planos de cada PR.
 - O `preparar_molde_api.js` não rodou no Google: nem em QA, nem em cópia, nem no editor. O custo no Apps Script não
   foi medido.
 - Nenhum número de regra muda: o molde só repete no modelo as fórmulas que já foram pela API.
