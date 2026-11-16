@@ -9,6 +9,30 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Aviso âmbar nas caixas ± · 16/11/2026
+
+Com autorização expressa ("Pode aplicar"), as duas oficiais receberam pela API do Sheets o aviso de
+`r53/diagnostico-android/CORRECAO-AVISO-CAIXA-PM-2026-11-14.md`. **Só planilha:** nenhum arquivo do Apps Script mudou,
+nenhum `construir()`, nada digitado nas fichas, nenhum dado de personagem tocado.
+- FICHA: 3 regras novas no topo da lista, uma para cada caixa ± (AM26, AM30, AM34). Fórmula `=AMxx<>""`, fundo
+  `#D89B3A`, texto branco. Notas novas nos títulos AM25, AM29 e AM33.
+- INVOCAÇÕES: 1 regra nova no topo, `=X13<>""`, nas 12 caixas ± (X e AQ das linhas 13, 244, 475, 706, 937 e 1168),
+  mesma cor. A nota de X12 ganhou a frase do âmbar.
+
+Antes, lido nas duas: FICHA com 22 regras e nenhuma nas caixas ±; AM25/AM29/AM33 sem nota; INVOCAÇÕES com 3 regras
+(⚠, "! ", "Dê um nome") em D9:AS1394; X12 com a nota antiga e AQ12 sem nota. Depois, relido nas duas: as regras no topo
+com a fórmula, a cor e as faixas certas, e as quatro notas com o texto novo.
+
+Custo: medido na cópia de teste de 16/11, o ± isolado levou 10,5–10,7 s com a regra, o mesmo que sem ela. A cor é
+calculada pelo navegador, não pelo script.
+
+Para voltar: apagar a regra de índice 0 das INVOCAÇÕES e as de índice 0 a 2 da FICHA, limpar as notas de
+AM25/AM29/AM33 e devolver a nota de X12: "Escreva −9 ou +5 e aperte Enter: a ficha aplica na vida atual e limpa a
+caixa. A perda gasta a vida temporária primeiro, e a vida não passa da máxima."
+
+O `Codigo.gs` das oficiais é anterior ao aviso. Um `construir()` com ele remonta as abas sem estas regras e notas. Fichas
+já copiadas por jogadores continuam sem o aviso.
+
 ## Talentos grátis: o da Origem e o extra · 03/11/2026
 
 Com autorização expressa ("Pode aplicar"), as duas oficiais receberam pela API do Sheets a mudança testada na cópia
