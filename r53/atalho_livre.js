@@ -32,7 +32,9 @@ function carregar(projeto, dump) {
   const A = criar(dump, {});
   for (const f of files) vm.runInContext(f.source + '\n', A.ctx, { filename: f.name });
   const codigo = files.map(f => f.source).join('\n');
-  const modulo = /hash!=='([0-9a-f]{64})'/.exec(files.find(f => f.name === 'Codigo').source);
+  // Módulo não achatado: hash do pacote. Achatado (preparar_modulo_achatado.js): hash da fonte, na linha da marca.
+  const cod = files.find(f => f.name === 'Codigo').source;
+  const modulo = /hash!=='([0-9a-f]{64})'/.exec(cod) || / \/\/ R53 achatado: [^\n]*; fonte ([0-9a-f]{64})\./.exec(cod);
   const catalogo = /if\(hash!=="([0-9a-f]{64})"\)throw Error\("Editor: catálogo divergente"\)/.exec(files.find(f => f.name === 'EditorR53').source);
   if (!modulo || !catalogo) throw Error('hash do módulo ou do catálogo não encontrado no projeto');
   return { A, codigo, hashModulo: modulo[1], hashCatalogo: catalogo[1] };
