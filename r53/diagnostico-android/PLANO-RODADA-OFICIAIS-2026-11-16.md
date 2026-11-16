@@ -5,6 +5,38 @@ oficiais (Era da Revolução e Ciclo Maldito) estão em `r53/OFICIAIS.md`; aqui 
 
 Base lida: `codex/corrige-colagem-atributos-20261108` em `bf0ee8a` (merge do #121), depois de `git fetch`.
 
+## Decidido pelo Mizuki em 16/11 ("Seguir recomendações")
+
+- **D1:** a R67 (#117) fica para a rodada seguinte.
+- **D2 + D3:** um preparador novo de molde, para as fórmulas de #91–#103 e as 225 da DADOS_CUSTOM sem INDIRECT.
+  Ensaio numa QA antes das oficiais. Entra depois do #110 e antes do achatador.
+- **D4:** as notas de FICHA!AH10 e AN10 com o texto novo, pela API.
+- **D5:** forma B. A cadeia roda na Fase 0, sem Google. Na oficial vai o resultado conferido.
+
+O ok para a rodada nas oficiais ainda não foi dado: vem depois do ensaio.
+
+### Feito depois da decisão (16/11, sem Google)
+
+- **D2 + D3 prontos:** `preparar_molde_api.js`, com o plano congelado `molde_api_plano.json` e o teste
+  `r53/testes/molde_api.js` (no smoke).
+  - São 593 fórmulas no molde: FICHA 54, FICHA PESSOAL 292, DADOS_CONFIG 22 e DADOS_CUSTOM 225.
+  - Ficam de fora a DADOS_INVOC e a DADOS_AM, porque o onEdit não restaura essas abas, e os 8 valores de menu do
+    #101, porque o restaurador só devolve fórmula.
+  - Cada "antes" foi conferido igual ao modelo instalado nas QAs, e cada "depois" igual ao gerador atual.
+  - Exige o Codigo `4f660022` e recusa se o ajuste já estiver lá.
+  - No teste privado, com o Codigo real e o módulo: o modelo sai com as 593 novas, e continua assim depois do
+    achatador.
+  - Custo: +52 mil caracteres no Codigo e ~10–20 ms por carga do módulo no node. No Apps Script, medir no ensaio.
+- **D4 pronto:** `notas_nivel_xp.json` com o antes e o depois das notas de FICHA!AH10 e AN10. O "antes" é o texto do
+  main (#50); na rodada, a nota da oficial tem de estar igual a ele, senão para.
+- **Fase 0, a cauda da cadeia reproduzida:** a partir do Codigo `b709ad14` e das partes do módulo guardadas em
+  privado, saíram os mesmos hashes das QAs: #105 `0292582a`, #107 `b5861c14`, #108 `c175d838`, #109 `6ecbe593`,
+  #110 `4f6600227cd1aeaf…`. Isso confirma o `0292582a`, que era inferido. Ele só bate com o gzip do navegador
+  (nível padrão, byte de sistema 3). Os arquivos estão em `02-RPG/_trabalho/rodada-oficiais-20261116/`, fora do git.
+- **Os outros pontos da cadeia já estão guardados em privado** (`ficha-integracao-5156-20261104/nuvem-b47/saidas/`):
+  todos os Codigo de `52302778` a `b709ad14` e os seis EditorR53. Faltam só os intermediários do #61 e do #62
+  (`5b81e86d`, `3767fb0f`); a Fase 0 refaz esses dois a partir do commit de cada PR.
+
 ## Resumo
 
 - As oficiais pararam em **03/11** (Codigo `52302778`, módulo `9dc3480a`, EditorR53 `08badae1`, SalarioLote
@@ -166,7 +198,8 @@ Codigo     52302778 ─#51-56→ 8a0f2ed6 ─#60→ 6aec0d0a ─#61→ 5b81e86d 
            ─#72→ e45999e3 ─#73→ 5c8c7493 ─#74→ 2005362b ─#75→ 21a59ce6 ─#76→ 6062ac46 ─#77→ cc5b05bf ─#78→ 01e64224
            ─#79→ 30306ed0 ─#80→ 9fc4f2eb ─#81→ e44e7f0c ─#82→ ec0bbd15 ─#83→ cf8dc596 ─#84→ da89202e ─#85→ 7512bf62
            ─#86→ 5b7bb420 ─#87→ 26b78470 ─#88→ 8935211c → 36ca73ef ─#89→ ffd349c9 ─#90→ b709ad14
-           ─#105→ 0292582a ─#107→ b5861c14 ─#108→ c175d838 ─#109→ 6ecbe593 ─#110→ 4f660022 ─#119→ (achatado)
+           ─#105→ 0292582a ─#107→ b5861c14 ─#108→ c175d838 ─#109→ 6ecbe593 ─#110→ 4f660022
+           ─molde (D2+D3)→ (hash do trecho gerado) ─#119→ (achatado)
 EditorR53  08badae1 ─#70→ 98413975 ─#71→ 165fc80d ─#72→ 13cf7ddf ─#73→ aa77309c ─#74→ 2ed5d1e1 ─#75→ 676337f1
 módulo     9dc3480a ─#105→ bd42b535 ─#119→ (achatado, 3 partes em vez de 5)
 SalarioLote, LotePaleta, PaletaSegundoPlano: sem mudança
@@ -286,15 +319,15 @@ Para cada oficial, **com você no PC**, uma de cada vez, a Era primeiro:
 2. **Backup nativo do projeto:** versão 16, "Antes da rodada de 16/11", implantação de biblioteca arquivada em
    seguida, como as anteriores. Se der, também uma cópia da planilha no Drive.
 3. **Código**, conferindo o hash a cada passo. Forma A: os passos da seção 3, na ordem. Forma B: Codigo, EditorR53 e
-   módulo do #105. Nos dois casos, o #105 vem depois do #90 e antes do #107. Se você liberar D2/D3, o preparador de
-   molde entra aqui, depois do #110.
-4. **Ctrl+S**, recarregar e reler os hashes: Codigo `4f660022` (ou o hash do preparador de molde), EditorR53
+   módulo do #105. Nos dois casos, o #105 vem depois do #90 e antes do #107. Depois do #110 entra o
+   `preparar_molde_api.js` (D2 + D3), pelo trecho gerado uma vez e usado igual no ensaio e nas oficiais.
+4. **Ctrl+S**, recarregar e reler os hashes: o Codigo com o hash que o trecho do molde imprime, EditorR53
    `676337f1`, módulo `bd42b535`.
 5. **Planilha pela API** (o `batchUpdate` não dispara o onEdit), relendo os alvos antes de cada lote:
    1. #51–#90 (seção 2.2), na ordem;
    2. #91–#103 (seção 2.3). O #96 vai depois do #93;
    3. #108: o `findReplace` da FICHA PESSOAL!BA15:BS87 (tem de dizer 292), DADOS!CR9:CS9 e CR15:CS15, e as 8 notas;
-   4. #113: as notas e o C98 da CONFIGURAÇÃO;
+   4. #113: as notas e o C98 da CONFIGURAÇÃO; D4: as notas de FICHA!AH10 e AN10 (`notas_nivel_xp.json`);
    5. #114: a regra no índice 4 da INVOCAÇÕES e a nota de O21;
    6. #119: os dois `findReplace` da DADOS_CUSTOM, **num `batchUpdate` só, só pela API**. As respostas têm de dizer
       225/4725 e 225/525. Outro número: desfazer pelo histórico de versões.
@@ -365,5 +398,8 @@ Sem ID completo no git.
 
 - Nada no Google: nem leitura das oficiais, nem cópia, nem QA. Os hashes da seção 1 são os do `OFICIAIS.md` de 03/11,
   não uma leitura de hoje.
-- A Fase 0 não foi feita: a cadeia não foi repetida localmente nesta sessão. O `0292582a` do #105 é inferido.
-- Nenhum teste novo. O plano não muda código nem número de regra.
+- A Fase 0 está pela metade. A cauda (#105–#110) foi reproduzida e bate. Do #51 ao #90, a cadeia ainda não foi
+  repetida com cada preparador no commit do próprio PR; por enquanto conta só com os arquivos guardados daquela época.
+- O `preparar_molde_api.js` não rodou no Google: nem em QA, nem em cópia, nem no editor. O custo no Apps Script não
+  foi medido.
+- Nenhum número de regra muda: o molde só repete no modelo as fórmulas que já foram pela API.
