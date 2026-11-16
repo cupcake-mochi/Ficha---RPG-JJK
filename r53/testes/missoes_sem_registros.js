@@ -22,7 +22,9 @@ const comCorte = require('../diagnostico-android/preparar_corte_xp_missao').prep
 // E o XP congelado preso à mesma missão pelo nome (12/11/2026, preparar_xp_congelado_nome.js), com o próprio teste.
 const comNome = require('../diagnostico-android/preparar_xp_congelado_nome').preparar;
 const comLinha = require('../diagnostico-android/preparar_xp_linha_congelada').preparar;
-eq(comLinha(comNome(comCorte(comTrava(comXp(preparar(antes)))))), agora, 'o preparador reproduz o Salarios.gs');
+// E as datas do salário sem hora (16/11/2026, preparar_salario_datas.js), com o próprio teste.
+const comDatas = require('../diagnostico-android/preparar_salario_datas').preparar;
+eq(comDatas(comLinha(comNome(comCorte(comTrava(comXp(preparar(antes))))))), agora, 'o preparador reproduz o Salarios.gs');
 assert.throws(() => preparar(preparar(antes)), /já presentes/); checks++;
 assert.throws(() => preparar(antes.replace("getRange('A2:G')", "getRange('A2:H')")), /divergente/); checks++;
 
