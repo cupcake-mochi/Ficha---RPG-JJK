@@ -44,4 +44,5 @@ Valores repostos e relidos: AM30 e X13 vazias, energia atual `D30` = 10.
 
 ## Oficiais
 
-Nada aplicado. Na rodada das oficiais entram as regras e as notas, pela API, como nas QAs.
+Aplicado nas duas em 16/11/2026, pela API: regras e notas, como nas QAs. O registro e a volta estão em
+`r53/OFICIAIS.md` ("Aviso âmbar nas caixas ±").
