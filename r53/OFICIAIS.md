@@ -35,14 +35,21 @@ nenhum arquivo do Apps Script mudou, nenhum `construir()`, nenhum dado de person
 - Lido antes nas duas: o livro SALÁRIOS vazio e a fórmula antiga. Relido depois: a fórmula nova, o Q2 vazio (carteira
   não emitida, como antes) e Q3:Q8 sem mudança (0, 0, 0, 0, 1000 e 30).
 
-**Não aplicado: o trecho no Codigo.** O backup nativo do projeto não foi feito (a janela do app estava escondida e o
-menu Implantar não abriu), então o código ficou como estava. Lido no editor do Ciclo: o Codigo (`a7f6f33050c3`) tem os
-dois trechos antigos uma vez cada, ou seja, o `preparar_salario_datas.js` encaixa. O da Era não foi lido.
-- A fórmula sozinha já dá o resultado certo: conferido na simulação do `r53/testes/salario_datas.js` com o código
-  antigo e a fórmula nova, intervalos de 1, 7 e 30 dias, sem erro.
-- Enquanto o Codigo não for trocado, o texto da fórmula dentro dele é o antigo. Rodar o `salarioPrepararFormulas_` de
-  novo (ou um `construir()`) devolve a fórmula antiga ao Q2.
-- Falta, com o Mizuki no PC: backup nativo e o trecho no Codigo das duas.
+**Trecho no Codigo: aplicado em 17/11/2026**, com o Mizuki no PC ("pode sim, resolver as 3").
+- Backup antes, cópia pelo Drive de cada oficial (leva o projeto junto): "BACKUP antes do trecho do salário
+  17-11-2026 · Era da Revolução" (`1pw47Xru…`) e "… · Ciclo Maldito" (`1ZtZZTnn…`).
+- O trecho do `preparar_salario_datas.js` rodou no editor de cada projeto, os dois pares uma vez cada:
+  Codigo `c81c26ffa5ee` → `c7f388f70e0a` nas duas (o `c81c…` é o Codigo já com o atalho religado).
+- Salvo e relido depois de recarregar a página: `c7f388f70e0a`, com `MAX(INT(ult);em)` e
+  `salarioData_(Math.floor(l[1]))` presentes. Agora o `salarioPrepararFormulas_` (ou um `construir()`) escreve a
+  fórmula nova no Q2.
+- Não rodou no Sheets: nenhum salário foi fechado depois da troca; a conta só foi conferida na simulação do
+  `r53/testes/salario_datas.js` (intervalos de 1, 7 e 30 dias, sem erro).
+- Para voltar o código: `node r53/diagnostico-android/preparar_salario_datas.js --reverter` gera o trecho inverso, ou
+  restaurar o Codigo do backup.
+
+Antes disso (16/11) o trecho não tinha sido aplicado: o backup nativo não saiu porque a janela do app estava
+escondida.
 
 Para voltar: escrever no Q2 a fórmula de antes,
 `=IF(ISNUMBER(N2);LET(ult;MAX('SALÁRIOS'!C2:C);em;INT(N2);IF(ult>0;MAX(ult;em);em));"")`. Fichas já copiadas por
