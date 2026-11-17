@@ -210,6 +210,7 @@ texto procurado tem de vir no formato do Sheets.
 | #117 | Técnica Máxima R67 | **sem preparador** (ponto D1) | 40 `findReplace` com regex na DADOS_R53, cartões da FA e das 12 domadas, DADOS_AM!HM38 |
 | #118 | Controle R68 | — | — (o texto não aparece na planilha) |
 | #119 | módulo achatado e DADOS_CUSTOM sem INDIRECT | `preparar_modulo_achatado.js`, **por último** | 2 `findReplace` na DADOS_CUSTOM: 225 fórmulas / 4725 ocorrências, depois 225 / 525 |
+| #128 | datas do salário sem hora (entrou depois deste plano) | `preparar_salario_datas.js`, no fim da cadeia do salário e antes do achatador. Ciclo: `a7f6f33050c3` → `a52ed1f343d4`. **Falta nas duas**: `ROTEIRO-PC-SALARIO-DATAS-2026-11-16.md` | fórmula do `DADOS_SALARIOS!Q2`: **já nas oficiais** (16/11, #129) |
 | #120 | aviso âmbar nas oficiais | — | **já nas oficiais** |
 | #121 | pente fino e teste no celular | — | — |
 

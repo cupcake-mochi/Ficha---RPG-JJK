@@ -19,7 +19,10 @@ Achado do ChatGPT numa cópia descartável: a cada fechamento as datas do livro 
 - Planilha já montada precisa das duas coisas: o trecho no Codigo e a fórmula nova no Q2 (`FORMULA_Q2`, pela API).
   Só com o código, a hora para de acumular mas fica um dia de atraso; a fórmula é que resolve.
 - Livro que já andou não é recalculado: o ciclo segue do último fim gravado, arredondado para o dia.
-- Teste: `r53/testes/salario_datas.js` (4 defeitos plantados). Nas oficiais, nada aplicado: o livro delas está vazio.
+- Teste: `r53/testes/salario_datas.js` (9 defeitos plantados). Ele também guarda o pente-fino de 16/11: nenhuma
+  fórmula do salário compara data gravada com hora (N2, O38, O48, O69, livro) sem `INT`. Não achou outro defeito.
+- Oficiais: a fórmula do Q2 está nas duas (#129). Falta o trecho no Codigo, com o Mizuki no PC:
+  `r53/diagnostico-android/ROTEIRO-PC-SALARIO-DATAS-2026-11-16.md`.
 
 # Atalho das edições livres religado · 16/11/2026
 
