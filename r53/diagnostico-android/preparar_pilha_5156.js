@@ -57,6 +57,13 @@ function entrada(v) {
   if (typeof v === 'number' && Number.isFinite(v)) return {numberValue:v};
   throw Error('Tipo de célula inesperado');
 }
+// O Sheets retira aspas opcionais de nomes simples de aba. Só a comparação
+// ignora essa representação; literais, notas e pedidos permanecem intactos.
+function formulaComparavel(v) {
+  if (typeof v !== 'string' || !v.startsWith('=')) return v;
+  return v.split(/("(?:[^"]|"")*")/).map((parte, i) => i % 2 ? parte :
+    parte.replace(/(?<![A-Za-z_0-9'])'([A-Za-z_][A-Za-z_0-9]*)'!/g, '$1!')).join('');
+}
 // Snapshot normalizado: {locale, cells:[{aba,r,c OU addr,sheetId,value OU note}]}.
 // Produz pedidos e reversão guardada; quem aplicar deve reler os alvos imediatamente antes.
 function planejarCelulas(snapshot, reverter=false, entradas=plano) {
@@ -72,7 +79,8 @@ function planejarCelulas(snapshot, reverter=false, entradas=plano) {
     const atual=d.addr?x.note:x.value;
     const antes=formulaLocal(reverter?d.depois:d.antes,snapshot.locale);
     const depois=formulaLocal(reverter?d.antes:d.depois,snapshot.locale);
-    if ((atual ?? '') !== (antes ?? '')) throw Error('Célula divergente: '+chave(d));
+    const comparavel = d.addr ? v => v : formulaComparavel;
+    if (comparavel(atual ?? '') !== comparavel(antes ?? '')) throw Error('Célula divergente: '+chave(d));
     const fields=d.addr?'note':'userEnteredValue';
     const cell=d.addr?{note:depois ?? ''}:{userEnteredValue:entrada(depois)};
     return {updateCells:{start:{sheetId:id,rowIndex:p.r-1,columnIndex:p.c-1},rows:[{values:[cell]}],fields}};
@@ -93,4 +101,4 @@ if(require.main===module) {
   for(const [nome,conteudo] of Object.entries({'Codigo-proposto.gs':novo,'Codigo-reversao.gs':fonte,'pedidos.json':JSON.stringify(pedidos,null,2),'reversao.json':JSON.stringify(reversao,null,2),
     'manifesto.json':JSON.stringify({antes:ANTES,depois:DEPOIS,moduloPreservado:MODULO,celulas:11,notas:3,aplicado:false,snapshotCelulas:sha(JSON.stringify(snapshot))},null,2)}))fs.writeFileSync(path.join(destino,nome),conteudo);
 }
-module.exports={preparar,planejarCelulas,formulaLocal,coordenadas,chave,plano,sha,ANTES,DEPOIS,MODULO};
+module.exports={preparar,planejarCelulas,formulaLocal,formulaComparavel,coordenadas,chave,plano,sha,ANTES,DEPOIS,MODULO};

@@ -9,6 +9,23 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Atalho das edições livres religado · 16/11/2026
+
+Pedido do Mizuki no chat, com ele no PC: "Sim, faz os backups" e "agora q o pc ta desbloqueado, vc consegeu efazer tudo, n?".
+A rodada trocou o módulo (9dc3480a → bd42b535 → achatado `35d00ae2`) sem levar o `R53_LIVRE_HASHES_[0]`, então o
+atalho das edições livres se desligou calado nas duas oficiais: toda edição simples rodava o onEdit inteiro (~3–5 s de
+código a mais). Conserto da PR #127 (`preparar_religar_atalho.js`).
+- Backup antes, no Drive da conta dona: "BACKUP antes do atalho 16-11-2026 · Era da Revolução" e "… · Ciclo Maldito".
+  Ele pediu para mandar os dois para a lixeira em 17/11, depois da medida.
+- Era primeiro, depois Ciclo: o trecho respondeu `9dc3480a -> 35d00ae2` e mudou só a linha do `R53_LIVRE_HASHES_`
+  (2.106 linhas antes e depois). Salvo e relido depois de recarregar: `HASHES_[0]` = `35d00ae2`, os dez arquivos com o
+  mesmo tamanho. Codigo `a7f6f33050c3` → `c81c26ffa5ee` (conta feita no Node sobre o achatado de referência; o
+  `preparar_salario_datas.js` continua encaixando).
+- Medido no Ciclo em 17/11, Buff da vida FICHA!P26 (0 → 1 → 0 → 1 → 0, termina como estava): `R53_ONEDIT.ms` 314, 822,
+  373 e 328 ms. A Era não foi medida.
+
+Para voltar: trocar o `R53_LIVRE_HASHES_[0]` de volta para `9dc3480af822…` (o atalho só se desliga; nada mais muda).
+
 ## Salário: início do período sem hora · 16/11/2026
 
 Com autorização expressa ("Aplica"), as duas oficiais receberam pela API do Sheets a fórmula nova do
@@ -30,6 +47,38 @@ dois trechos antigos uma vez cada, ou seja, o `preparar_salario_datas.js` encaix
 Para voltar: escrever no Q2 a fórmula de antes,
 `=IF(ISNUMBER(N2);LET(ult;MAX('SALÁRIOS'!C2:C);em;INT(N2);IF(ult>0;MAX(ult;em);em));"")`. Fichas já copiadas por
 jogadores continuam com a fórmula antiga.
+
+## Rodada de 16/11/2026 nas oficiais
+
+Mizuki autorizou: “tô no pc, pode aplicar nas oficiais pelo método que vc testou. faz o backup e confere cada uma antes, começa pela Era e, se der tudo certo, segue pro Ciclo.” A Era foi aplicada e conferida antes do Ciclo.
+
+| Oficial | Backup anterior no Drive | Backup nativo do projeto (Brasília) | Aplicação do plano com guardas e releitura |
+|---|---|---|---|
+| Era da Revolução | BACKUP antes da rodada 16-11-2026 · Era da Revolução | Versão 16, 18:04 | 7 min 27,067 s |
+| Ciclo Maldito | BACKUP antes da rodada 16-11-2026 · Ciclo Maldito | Versão 16, 18:19 | 5 min 47,720 s |
+
+As duas versões têm a descrição “Antes da rodada de 16/11”. A implantação de biblioteca de cada backup foi arquivada. Há cópia privada dos dez fontes de partida.
+
+| Arquivo | SHA-256 antes, ambas | SHA-256 depois, ambas |
+|---|---|---|
+| Analise | 2ea7e9d453917956… | 98f8f056cd4f86cc… |
+| Codigo | 52302778db247518… | a7f6f33050c3bdf9… |
+| EditorR53 | 08badae12322539f… | 676337f165f7056d… |
+| SalarioLote | aaaa74f32b0c7294… | aaaa74f32b0c7294… |
+| Ficha | 6012dcb3dbcd1050… | 6c0391edac631146… |
+| Invocacoes | ebf20bb167b57cc7… | e73584ddf3b14a66… |
+| Configuracao | bb784c6d0e5fcd08… | b5dfcd181c3ccb43… |
+| Origens | 9009522887026e3c… | b5dfcd181c3ccb43… |
+| LotePaleta | 848e878b4a2aa4c4… | 848e878b4a2aa4c4… |
+| PaletaSegundoPlano | a5a0e83def3c0363… | a5a0e83def3c0363… |
+
+Em cada oficial, os dez arquivos de partida e o módulo 9dc3480af822… coincidiram com a própria cópia fria. Salvo e recarregado o pacote com o molde ensaiado (Codigo b3ed2f7e7b80…, EditorR53 676337f165f7…, módulo bd42b5351ec1… em cinco partes). Por último foram instalados os arquivos achatados ensaiados. O texto descompactado relido tem SHA-256 35d00ae28bfa9836566db4cec46cc14bf4c55da1e6ebb342b30aec2d7d263b10 em três partes. A instalação usou os controles da guia do editor.
+
+Na planilha, a forma B reuniu #57, #63–#65a, #67, #69–#96, #98, #100–#103, #108, #113, D4, #114 e #119 conforme a tabela por etapa do [ensaio](diagnostico-android/ENSAIO-RODADA-OFICIAIS-2026-11-16.md). As contagens históricas por PR são as do ensaio. Nas oficiais rodou o plano composto de cada uma, com 3.471 pedidos em 18 chamadas da API. Respostas efetivamente confirmadas em cada oficial, por lote na ordem: 37, 710, 468, 71, 71, 98, 90, 90, 85, 89, 86, 88, 89, 83, 82, 519, 658, 57. D2/D3 incluídos no molde, D4 nas duas notas, R67/#117 excluída, aviso âmbar #116/#120 preservado.
+
+Em cada oficial, os 17.632 campos anteriores coincidiram com o ensaio. Na chegada, 25.424 controles de campos e 90 de estrutura passaram. Os dez arquivos foram relidos após recarregar o editor. A varredura das 30 abas encontrou zero erros de fórmula. A seção Prática Cotidiana foi aberta na ficha em modo de consulta. Os testes de personagem ficaram nas cópias.
+
+Para voltar, a versão 16 guarda o projeto anterior e a inversa guardada de cada planilha tem 2.520 pedidos em 15 lotes, incluindo as duas bordas e cinco validações da desmesclagem. Conferir o estado antes de usar a inversa para preservar edições posteriores. As cópias completas e as evidências ficam na pasta privada rodada-oficiais-20261116/aplicacao e as inversas em ensaio/{era,ciclo}/composto/reversao.json.
 
 ## Aviso âmbar nas caixas ± · 16/11/2026
 
