@@ -66,6 +66,7 @@ Ciclo Maldito (RPG de mesa do Mizuki).
 5. trava_nivel_missao
 6. xp_congelado_nome
 7. xp_linha_congelada
+8. salario_datas (16/11/2026: as datas do livro sem acumular 9 h; `preparar_salario_datas.js`)
 
 Siga o modelo do `r53/diagnostico-android/preparar_xp_linha_congelada.js`. Os testes `missoes_enxutas.js`,
 `missoes_sem_registros.js` e `salario_lote.js` conferem que a cadeia reproduz o Salarios.gs.
@@ -108,7 +109,9 @@ Como trabalhar nas QAs:
    - **No Codigo instalado,** os três trechos, nesta ordem:
      1. `preparar_corte_xp_missao.js`, com os 292 moldes;
      2. `preparar_xp_congelado_nome.js`;
-     3. `preparar_xp_linha_congelada.js`.
+     3. `preparar_xp_linha_congelada.js`;
+     4. `preparar_salario_datas.js` (16/11/2026). A fórmula nova do `DADOS_SALARIOS!Q2` já está nas duas oficiais;
+        falta só este trecho. Roteiro: `ROTEIRO-PC-SALARIO-DATAS-2026-11-16.md`.
 
      Se a oficial ainda não tiver a trava de nível do #107 (`function salarioMissoesDaEdicao_(` ausente), o
      `preparar_trava_nivel_missao.js` vem antes. Confira o hash a cada passo.

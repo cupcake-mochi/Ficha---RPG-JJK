@@ -139,6 +139,38 @@ for (const [nome, fonte] of Object.entries(plantados)) {
   eq(hora(antes), [9, 18, 3, 12], 'fórmula antiga + código antigo: 9 h a mais a cada fechamento');
 }
 
+// 5. Pente-fino (16/11/2026): as outras datas que o script grava com hora (09:00 de Brasília, pelo salarioData_) são a
+// emissão (DADOS_SALARIOS!N2, CONFIGURAÇÃO!O38), o próximo fechamento (O48), o início do ciclo (O69) e as três datas do
+// livro SALÁRIOS (B, C, D). Nenhuma fórmula pode comparar ou somar uma delas sem tirar a hora. As datas das missões
+// (DADOS_SALARIOS!D) e das trocas (H) são gravadas como dia inteiro e não entram aqui.
+function semInt(fonte) {
+  const achados = [];
+  // a) comparação direta com O38, O48 ou O69 (o certo é INT(O69), INT(O48)…)
+  for (const m of fonte.matchAll(/(?:[<>]=?|=)\s*(O38|O48|O69)\b(?!\s*=\\?")/g)) achados.push('comparação sem INT: ' + m[0]);
+  // b) N2 em conta sem INT (ISNUMBER(N2) e N2 sozinho num teste não são conta)
+  for (const m of fonte.matchAll(/(?<!ISNUMBER\()(?<!INT\()(?<![A-Z$'!])N2\b\s*[-+*/<>]/g)) achados.push('N2 em conta sem INT: ' + m[0]);
+  // c) coluna de data do livro lida por fórmula: só o MAX do fim, e o resultado dele passa por INT
+  for (const m of fonte.matchAll(/'SALÁRIOS'!\$?([BCD])\$?\d*:\$?[BCD]/g)) {
+    if (m[1] !== 'C' || !fonte.includes("LET(ult;MAX('SALÁRIOS'!C2:C)") || !fonte.includes('MAX(INT(ult);em)')) achados.push('livro lido sem INT: ' + m[0]);
+  }
+  return achados;
+}
+eq(semInt(agora), [], 'nenhuma fórmula do salário usa data com hora sem INT');
+{
+  const plantadosInt = {
+    'O70 compara a missão com o O69 cru': agora.replace(">=INT(O69));N(\\'DADOS_SALARIOS\\'!D2:D<INT(O48)", ">=O69);N(\\'DADOS_SALARIOS\\'!D2:D<INT(O48)"),
+    'O72 compara o O69 cru com a emissão': agora.replace('IF(INT(O69)>INT(O38);O69', 'IF(INT(O69)>O38;O69'),
+    'emissão em conta sem INT': agora.replace('em;INT(N2);', 'em;N2+0;'),
+    'outra fórmula lê o início do livro': agora.replace("=COUNTA('SALÁRIOS'!A2:A)", "=COUNTIF('SALÁRIOS'!B2:B;\">0\")"),
+    'o fim do livro volta sem INT': antes,
+  };
+  for (const [nome, fonte] of Object.entries(plantadosInt)) {
+    assert.notStrictEqual(fonte, agora, 'defeito não plantado: ' + nome);
+    assert(semInt(fonte).length > 0, 'defeito plantado não acendeu: ' + nome); acesos++; checks++;
+  }
+  plantados.__int = Object.keys(plantadosInt).length;
+}
+
 // O trecho do console parseia nos dois sentidos e roda contra um editor de mentira.
 for (const r of [false, true]) {
   const f = new (Object.getPrototypeOf(async function () {}).constructor)('monaco', 'crypto', 'window', 'return ' + P.trecho(r));
@@ -149,7 +181,7 @@ for (const r of [false, true]) {
     const outro = { getValue: () => '// outro arquivo', setValue: () => { throw Error('não devia gravar'); } };
     f({ editor: { getModels: () => [outro, modelo] } }, require('node:crypto').webcrypto, win).then(res => {
       assert(!String(res).startsWith('ERRO'), res); eq(gravado, P.aplicar(instalado, P.PARES, 'x')); eq(win.__salarioDatasAntes, instalado);
-      console.log(JSON.stringify({ checks, resultado: 'OK', defeitos_plantados: acesos + ' de ' + Object.keys(plantados).length + ' acenderam', escopo: 'datas do salário sem hora: preparador, trecho e fechamentos em sequência' }));
+      console.log(JSON.stringify({ checks, resultado: 'OK', defeitos_plantados: acesos + ' de ' + (Object.keys(plantados).length - 1 + plantados.__int) + ' acenderam', escopo: 'datas do salário sem hora: preparador, trecho e fechamentos em sequência' }));
     }).catch(e => { console.error(e); process.exit(1); });
   }
 }
