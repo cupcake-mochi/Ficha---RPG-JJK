@@ -9,6 +9,45 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Atalho das edições livres religado · 16/11/2026
+
+Pedido do Mizuki no chat, com ele no PC: "Sim, faz os backups" e "agora q o pc ta desbloqueado, vc consegeu efazer tudo, n?".
+A rodada trocou o módulo (9dc3480a → bd42b535 → achatado `35d00ae2`) sem levar o `R53_LIVRE_HASHES_[0]`, então o
+atalho das edições livres se desligou calado nas duas oficiais: toda edição simples rodava o onEdit inteiro (~3–5 s de
+código a mais). Conserto da PR #127 (`preparar_religar_atalho.js`).
+- Backup antes, no Drive da conta dona: "BACKUP antes do atalho 16-11-2026 · Era da Revolução" e "… · Ciclo Maldito".
+  Ele pediu para mandar os dois para a lixeira em 17/11, depois da medida.
+- Era primeiro, depois Ciclo: o trecho respondeu `9dc3480a -> 35d00ae2` e mudou só a linha do `R53_LIVRE_HASHES_`
+  (2.106 linhas antes e depois). Salvo e relido depois de recarregar: `HASHES_[0]` = `35d00ae2`, os dez arquivos com o
+  mesmo tamanho. Codigo `a7f6f33050c3` → `c81c26ffa5ee` (conta feita no Node sobre o achatado de referência; o
+  `preparar_salario_datas.js` continua encaixando).
+- Medido no Ciclo em 17/11, Buff da vida FICHA!P26 (0 → 1 → 0 → 1 → 0, termina como estava): `R53_ONEDIT.ms` 314, 822,
+  373 e 328 ms. A Era não foi medida.
+
+Para voltar: trocar o `R53_LIVRE_HASHES_[0]` de volta para `9dc3480af822…` (o atalho só se desliga; nada mais muda).
+
+## Salário: início do período sem hora · 16/11/2026
+
+Com autorização expressa ("Aplica"), as duas oficiais receberam pela API do Sheets a fórmula nova do
+`DADOS_SALARIOS!Q2` (PR #128, `preparar_salario_datas.js`, `FORMULA_Q2`). **Só planilha, uma célula em cada:**
+nenhum arquivo do Apps Script mudou, nenhum `construir()`, nenhum dado de personagem tocado.
+- Antes: `…IF(ult>0;MAX(ult;em);em)…`. Depois: `…IF(ult>0;MAX(INT(ult);em);em)…`.
+- Lido antes nas duas: o livro SALÁRIOS vazio e a fórmula antiga. Relido depois: a fórmula nova, o Q2 vazio (carteira
+  não emitida, como antes) e Q3:Q8 sem mudança (0, 0, 0, 0, 1000 e 30).
+
+**Não aplicado: o trecho no Codigo.** O backup nativo do projeto não foi feito (a janela do app estava escondida e o
+menu Implantar não abriu), então o código ficou como estava. Lido no editor do Ciclo: o Codigo (`a7f6f33050c3`) tem os
+dois trechos antigos uma vez cada, ou seja, o `preparar_salario_datas.js` encaixa. O da Era não foi lido.
+- A fórmula sozinha já dá o resultado certo: conferido na simulação do `r53/testes/salario_datas.js` com o código
+  antigo e a fórmula nova, intervalos de 1, 7 e 30 dias, sem erro.
+- Enquanto o Codigo não for trocado, o texto da fórmula dentro dele é o antigo. Rodar o `salarioPrepararFormulas_` de
+  novo (ou um `construir()`) devolve a fórmula antiga ao Q2.
+- Falta, com o Mizuki no PC: backup nativo e o trecho no Codigo das duas.
+
+Para voltar: escrever no Q2 a fórmula de antes,
+`=IF(ISNUMBER(N2);LET(ult;MAX('SALÁRIOS'!C2:C);em;INT(N2);IF(ult>0;MAX(ult;em);em));"")`. Fichas já copiadas por
+jogadores continuam com a fórmula antiga.
+
 ## Rodada de 16/11/2026 nas oficiais
 
 Mizuki autorizou: “tô no pc, pode aplicar nas oficiais pelo método que vc testou. faz o backup e confere cada uma antes, começa pela Era e, se der tudo certo, segue pro Ciclo.” A Era foi aplicada e conferida antes do Ciclo.

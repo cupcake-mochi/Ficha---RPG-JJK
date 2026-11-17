@@ -7,6 +7,34 @@ Mizuki, as QAs e o estado delas, e o que está pendente:
 - a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
 - as decisões abertas dele.
 
+# Datas do salário sem hora · 16/11/2026
+
+Achado do ChatGPT numa cópia descartável: a cada fechamento as datas do livro SALÁRIOS ganhavam 9 horas. O
+`salarioCongelar_` grava o fim do período ao meio-dia UTC (09:00 em Brasília) e a fórmula do início do período
+(`DADOS_SALARIOS!Q2`) lia esse fim sem tirar a hora. Cada ciclo durava o intervalo mais 9 h: com intervalo de 1 dia,
+7 dias pagavam 5 salários em vez de 7.
+
+- Conserto: a fórmula usa `MAX(INT(ult);em)`. Reforço: o `salarioCongelar_` arredonda o dia antes de gravar.
+- `preparar_salario_datas.js` é o último da cadeia do `Salarios.gs` (depois do `preparar_xp_linha_congelada.js`).
+- Planilha já montada precisa das duas coisas: o trecho no Codigo e a fórmula nova no Q2 (`FORMULA_Q2`, pela API).
+  Só com o código, a hora para de acumular mas fica um dia de atraso; a fórmula é que resolve.
+- Livro que já andou não é recalculado: o ciclo segue do último fim gravado, arredondado para o dia.
+- Teste: `r53/testes/salario_datas.js` (9 defeitos plantados). Ele também guarda o pente-fino de 16/11: nenhuma
+  fórmula do salário compara data gravada com hora (N2, O38, O48, O69, livro) sem `INT`. Não achou outro defeito.
+- Oficiais: a fórmula do Q2 está nas duas (#129). Falta o trecho no Codigo, com o Mizuki no PC:
+  `r53/diagnostico-android/ROTEIRO-PC-SALARIO-DATAS-2026-11-16.md`.
+
+# Atalho das edições livres religado · 16/11/2026
+
+Depois da rodada nas oficiais, todo Buff, vida, texto ou nota passou a rodar o onEdit inteiro (~3–5 s a mais).
+O `R53_LIVRE_HASHES_[0]` ficou no 9dc3480a: o #105 trocou o pacote (bd42b535) e o achatador deixou só a fonte
+35d00ae2 no `r53Modulo_`. O `r53LivreValido_` não acha o hash e desliga o atalho calado.
+
+- `preparar_religar_atalho.js` troca o hash, só para trocas conferidas (lista `VERIFICADAS`). Conferir troca nova:
+  `--conferir <pasta antes> <pasta depois>` lista as células livres cujo molde mudou.
+- O achatador agora leva o atalho junto e **recusa** Codigo com o atalho já desligado.
+- Teste: `r53/testes/religar_atalho.js`. Nas oficiais, só com o Mizuki no PC e backup antes.
+
 # Módulo achatado e DADOS_CUSTOM sem INDIRECT · 15/11/2026
 
 Leia `r53/diagnostico-android/DESEMPENHO-MODULO-E-INDIRECT-2026-11-15.md`. Só desempenho, nenhuma conta muda.

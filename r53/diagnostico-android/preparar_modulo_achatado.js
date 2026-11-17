@@ -17,6 +17,12 @@
 // No console do editor do Apps Script (projeto com o Codigo instalado aberto):
 //   node r53/diagnostico-android/preparar_modulo_achatado.js > trecho.js     (achata; depois Ctrl+S)
 // Desfazer: na mesma aba, window.__achatadoReverter(); ou restaurar a versão de backup do projeto.
+//
+// Atalho das edições livres (16/11/2026): o r53LivreValido_ procura o R53_LIVRE_HASHES_[0] no texto do r53Modulo_.
+// Achatar tira dali o hash do pacote, então o achatador troca o R53_LIVRE_HASHES_[0] pelo hash da fonte achatada.
+// O código executado é o mesmo, então o mapa continua valendo. Se o atalho já estava desligado antes (o
+// R53_LIVRE_HASHES_[0] não é o hash do pacote instalado), o achatador recusa: religar antes com
+// preparar_religar_atalho.js. Foi isso que passou calado na rodada de 16/11 (o #105 trocou o pacote).
 const zlib = require('zlib'), crypto = require('crypto'), vm = require('vm');
 
 const ABRE = 'function r53Modulo_() {';
@@ -47,6 +53,18 @@ function separar(src) {
   partes.forEach((p, i) => { if (p !== 'R53_CODIGO_' + i + '_') throw new Error('Partes fora de ordem: ' + mCode[1]); });
   return { ini: ini, fim: fim + 2, partes: partes, hash: mHash[1],
            remendos: linhas.slice(5, iInst).join('\n'), cauda: linhas.slice(iInst).join('\n') };
+}
+
+/** Pura: leva o atalho das edições livres para o hash da fonte achatada; recusa atalho já desligado. */
+function ajustarAtalho(codigo, hashPacote, hashFinal) {
+  const n = codigo.split('var R53_LIVRE_HASHES_=').length - 1;
+  if (n === 0) return { codigo: codigo, atalho: 'sem atalho' };
+  const m = /^var R53_LIVRE_HASHES_=\["([0-9a-f]{64})",("[0-9a-f]{64}")\];$/m.exec(codigo);
+  if (n !== 1 || !m) throw new Error('Atalho das edições livres com forma inesperada');
+  if (m[1] !== hashPacote) throw new Error('Atalho das edições livres já desligado (' + m[1].slice(0, 8) + ' em vez de ' +
+    hashPacote.slice(0, 8) + '): religar antes com preparar_religar_atalho.js');
+  return { codigo: codigo.replace(m[0], () => 'var R53_LIVRE_HASHES_=["' + hashFinal + '",' + m[2] + '];'),
+    atalho: hashPacote.slice(0, 8) + ' -> ' + hashFinal.slice(0, 8) };
 }
 
 /** Pura: roda o bloco de remendos instalado sobre o código, como o r53Modulo_ faria a cada execução. */
@@ -94,6 +112,7 @@ function distribuir(b64, sep, achadas, arquivos, passo) {
 /** Node (testes e conferência local): mesma conta do trecho, síncrona. Devolve os textos novos, sem gravar nada. */
 function achatar(codigo, arquivos, passo) {
   const sep = separar(codigo), achadas = lerPartes(arquivos);
+  ajustarAtalho(codigo, sep.hash, sep.hash);
   const b64 = sep.partes.map((_, k) => { if (!achadas[k]) throw new Error('R53_CODIGO_' + k + '_ ausente'); return achadas[k].valor; }).join('');
   const original = zlib.gunzipSync(Buffer.from(b64, 'base64')).toString('utf8');
   if (crypto.createHash('sha256').update(original, 'utf8').digest('hex') !== sep.hash) throw new Error('Pacote instalado não confere com o hash do r53Modulo_');
@@ -102,9 +121,10 @@ function achatar(codigo, arquivos, passo) {
   const novoB64 = zlib.gzipSync(Buffer.from(final, 'utf8'), { level: 9 }).toString('base64');
   if (zlib.gunzipSync(Buffer.from(novoB64, 'base64')).toString('utf8') !== final) throw new Error('Compressão divergente');
   const d = distribuir(novoB64, sep, achadas, arquivos, passo);
-  const novoCodigo = codigo.slice(0, sep.ini) + novoModulo(sep, d.nPartes, final.length, hashFinal) + codigo.slice(sep.fim);
+  const at = ajustarAtalho(codigo.slice(0, sep.ini) + novoModulo(sep, d.nPartes, final.length, hashFinal) + codigo.slice(sep.fim), sep.hash, hashFinal);
+  const novoCodigo = at.codigo;
   new vm.Script(novoCodigo);
-  return { codigo: novoCodigo, arquivos: d.saida, final: final, hashFinal: hashFinal, nPartes: d.nPartes, remendos: sep.remendos.length };
+  return { codigo: novoCodigo, arquivos: d.saida, final: final, hashFinal: hashFinal, nPartes: d.nPartes, remendos: sep.remendos.length, atalho: at.atalho };
 }
 
 /** O trecho para o console do editor: mesma conta, com as APIs de compressão do navegador. */
@@ -131,7 +151,7 @@ function compilar(params, corpo) {
 }
 
 function trecho() {
-  const f = [separar, novoModulo, lerPartes, distribuir, compilar].map(x => 'const ' + x.name + ' = ' + x.toString() + ';').join('\n');
+  const f = [separar, novoModulo, lerPartes, distribuir, compilar, ajustarAtalho].map(x => 'const ' + x.name + ' = ' + x.toString() + ';').join('\n');
   return 'await (async () => { try {\n' +
     'const ABRE = ' + JSON.stringify(ABRE) + ', PRIMEIRA = ' + JSON.stringify(PRIMEIRA) + ', INSTANCIA = ' + JSON.stringify(INSTANCIA) + ', MARCA = ' + JSON.stringify(MARCA) + ';\n' +
     'const PASSO = ' + PASSO + ', MAX_PARTES = ' + MAX_PARTES + ', CABECA_PARTE = ' + JSON.stringify(CABECA_PARTE) + ', PARTE_VAZIA = ' + JSON.stringify(PARTE_VAZIA) + ';\n' +
@@ -145,6 +165,7 @@ function trecho() {
     'const cod = modelos.filter((m, i) => textos[i].indexOf(ABRE) >= 0);\n' +
     'if (cod.length !== 1) throw new Error("r53Modulo_ encontrado em " + cod.length + " arquivo(s)");\n' +
     'const codigo = cod[0].getValue(), sep = separar(codigo), achadas = lerPartes(textos);\n' +
+    'ajustarAtalho(codigo, sep.hash, sep.hash);\n' +
     'const b64 = sep.partes.map((_, k) => { if (!achadas[k]) throw new Error("R53_CODIGO_" + k + "_ ausente"); return achadas[k].valor; }).join("");\n' +
     'const original = new TextDecoder().decode(await passar(deB64(b64), new DecompressionStream("gzip")));\n' +
     'if (await sha(original) !== sep.hash) throw new Error("Pacote instalado não confere com o hash do r53Modulo_");\n' +
@@ -152,16 +173,17 @@ function trecho() {
     'const novoB64 = paraB64(await passar(new TextEncoder().encode(final), new CompressionStream("gzip")));\n' +
     'if (new TextDecoder().decode(await passar(deB64(novoB64), new DecompressionStream("gzip"))) !== final) throw new Error("Compressão divergente");\n' +
     'const d = distribuir(novoB64, sep, achadas, textos);\n' +
-    'const novoCodigo = codigo.slice(0, sep.ini) + novoModulo(sep, d.nPartes, final.length, hashFinal) + codigo.slice(sep.fim);\n' +
+    'const at = ajustarAtalho(codigo.slice(0, sep.ini) + novoModulo(sep, d.nPartes, final.length, hashFinal) + codigo.slice(sep.fim), sep.hash, hashFinal);\n' +
+    'const novoCodigo = at.codigo;\n' +
     'compilar("", novoCodigo);\n' +
     'const antes = {}; antes[modelos.indexOf(cod[0])] = codigo; Object.keys(d.saida).forEach(a => { antes[a] = textos[a]; });\n' +
     'window.__achatadoAntes = antes;\n' +
     'window.__achatadoReverter = () => { Object.keys(antes).forEach(a => modelos[a].setValue(antes[a])); return "revertido; salvar com Ctrl+S"; };\n' +
     'Object.keys(d.saida).forEach(a => modelos[a].setValue(d.saida[a]));\n' +
     'cod[0].setValue(novoCodigo);\n' +
-    'return JSON.stringify({ antes: sep.hash.slice(0, 12), final: hashFinal.slice(0, 12), caracteres: final.length, remendos: sep.remendos.length, partes: sep.partes.length + " -> " + d.nPartes, base64: b64.length + " -> " + novoB64.length, codigo: codigo.length + " -> " + novoCodigo.length, salvar: "Ctrl+S" });\n' +
+    'return JSON.stringify({ antes: sep.hash.slice(0, 12), final: hashFinal.slice(0, 12), caracteres: final.length, remendos: sep.remendos.length, partes: sep.partes.length + " -> " + d.nPartes, base64: b64.length + " -> " + novoB64.length, codigo: codigo.length + " -> " + novoCodigo.length, atalho: at.atalho, salvar: "Ctrl+S" });\n' +
     '} catch (err) { return "ERRO: " + err.message; } })()';
 }
 
 if (require.main === module) process.stdout.write(trecho() + '\n');
-module.exports = { ABRE, PRIMEIRA, INSTANCIA, MARCA, PASSO, CABECA_PARTE, PARTE_VAZIA, separar, aplicarRemendos, novoModulo, lerPartes, distribuir, achatar, trecho };
+module.exports = { ABRE, PRIMEIRA, INSTANCIA, MARCA, PASSO, CABECA_PARTE, PARTE_VAZIA, separar, aplicarRemendos, ajustarAtalho, novoModulo, lerPartes, distribuir, achatar, trecho };
