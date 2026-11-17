@@ -7,6 +7,20 @@ Mizuki, as QAs e o estado delas, e o que está pendente:
 - a auditoria da CONFIGURAÇÃO (feita, e os achados fechados em 14/11);
 - as decisões abertas dele.
 
+# ANALISE estática · 17/11/2026
+
+Leia `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`. A coluna B da ANALISE vira valor numa exportação sob
+pedido (`apps-script/AnaliseEstatica.gs`); os modelos moram na aba oculta `ANALISE_MODELOS`. Exporta pelo menu Bot, pela
+caixa da CARTEIRA AT4 (o celular não tem menu) e no fim do `construir()`. A primeira edição depois marca
+`analise.estado = desatualizada`. Formato 13 no `ESQUEMA-ANALISE.md`.
+
+- Ganchos no Codigo de entrada do pacote (`r53/empacotar_script.py`), não no `apps-script/Codigo.gs`.
+- Fórmula nova na ANALISE: escreva na coluna B e rode o menu Bot, que junta aos modelos.
+- Teste: `r53/testes/analise_estatica.js` (24 defeitos plantados).
+- Com a ANALISE viva, cada leitura da planilha custa 2 a 3 s, do tamanho que for: a caixa lê uma vez só. Escrita
+  pendente se perde quando o tempo acaba: `flush` antes de guardar propriedade que aponte para ela. Prova na Era no documento.
+- Oficiais: só depois do bot ler o formato 13, com o Mizuki no PC e backup (roteiro no documento).
+
 # Datas do salário sem hora · 16/11/2026
 
 Achado do ChatGPT numa cópia descartável: a cada fechamento as datas do livro SALÁRIOS ganhavam 9 horas. O

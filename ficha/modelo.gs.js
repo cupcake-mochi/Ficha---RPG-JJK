@@ -610,6 +610,11 @@ function acabamento_(ss, feito, rel) {
     feito.push('constantes Android: ' + otimizarAnaliseAndroid().convertidas);
     rel.etapa('constantes da ANALISE');
   }
+  // 17/11/2026: a ficha nova nasce com a ANALISE exportada (valores, sem fórmula viva). AnaliseEstatica.gs.
+  if (typeof analiseExportarNaMontagem_ === 'function') {
+    feito.push('ANALISE exportada: ' + analiseExportarNaMontagem_());
+    rel.etapa('ANALISE exportada para o bot');
+  }
 }
 
 /**

@@ -66,7 +66,7 @@ def main():
             published = json.loads((bundle/'manifesto.json').read_text())['arquivos']
             expected = {'Ficha.gs', 'Invocacoes.gs', 'Analise.gs', 'Configuracao.gs',
                         'Origens.gs', 'EditorR53.gs', 'Codigo.gs', 'Salarios.gs', 'PaletaAndroid.gs',
-                        'CuraRecebida.gs', 'Socorro.gs'}
+                        'CuraRecebida.gs', 'Socorro.gs', 'AnaliseEstatica.gs'}
             check('pacote R53 com salários, paleta leve e cura recebida', set(published) == expected, str(len(published)))
             for name in published:
                 size = (bundle/name).stat().st_size
