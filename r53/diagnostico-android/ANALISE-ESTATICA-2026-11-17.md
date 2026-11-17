@@ -124,3 +124,14 @@ A ordem importa: **o bot precisa ler o formato 13 antes** (PR à parte no RPG---
 6. Medir o ± (o `R53_ONEDIT`) e baixar o CSV da ANALISE para conferir `analise.estado = em_dia`.
 
 As oficiais **não** precisam do pacote novo: a mudança do módulo (`acabar_`) só vale para montar ficha nova.
+
+### Feito em 17/11 (registro completo em `r53/OFICIAIS.md`, seção "ANALISE estática")
+
+- Bot primeiro: RPG---BOT#104 mesclada antes da primeira oficial.
+- Era e Ciclo: backup, arquivo `AnaliseEstatica`, ganchos (Codigo `c7f388f70e0a` → `57a8398fa8c5`), exportação.
+- **O passo 5 não funcionou pelo menu:** "Bot > Exportar para o bot" deu erro genérico, sem execução registrada. Pelo
+  editor (Executar `exportarParaOBot`) saiu: Era 93 s, Ciclo 129 s (a Ciclo pediu autorização). A estimativa de ~25 s
+  do menu ficou bem abaixo do real, mas a execução pelo editor tem o limite de 6 min.
+- CSV das duas: formato 13, `em_dia`, sem `#`. Na Ciclo, igual ao vivo de antes fora das três linhas esperadas.
+- **Passo 6 (medir o ±) não saiu:** a única edição medida, na Ciclo, caiu num erro do servidor da Google depois de 150 s.
+- Continua sem rodar: a marca `desatualizada` numa oficial, a caixa AT4 de verdade, o menu Bot, a paleta.

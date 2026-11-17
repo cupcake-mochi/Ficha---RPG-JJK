@@ -9,6 +9,42 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## ANALISE estática · 17/11/2026
+
+Pedido do Mizuki no chat, com ele no PC: "Sim, as duas coisas" (mesclar a PR #132 da ficha e a RPG---BOT#104 do bot,
+e instalar nas oficiais). O bot já lia o formato 13 antes da primeira oficial mudar. Era primeiro, depois Ciclo.
+Detalhes do mecanismo: `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`.
+
+- **Backup antes**, cópia pelo Drive de cada oficial (leva o projeto junto): "BACKUP antes da ANALISE estática
+  17-11-2026 · Era da Revolução" e "… · Ciclo Maldito".
+- **Projeto:** arquivo novo `AnaliseEstatica` (o `apps-script/AnaliseEstatica.gs`, `6ab0b843…`) e os dois ganchos do
+  `preparar_analise_estatica.js` no Codigo (`onEdit` depois da guarda, `onOpen` depois do `r53CuraMenu_()`).
+  Codigo `c7f388f70e0a` → `57a8398fa8c5` nas duas. O módulo comprimido não mudou, então o atalho calado continua valendo.
+- Relido depois de recarregar o editor, iguais nas duas: Codigo `57a8398fa8c5`, AnaliseEstatica `6ab0b8432a9e`,
+  Analise `98f8f056cd4f`, Configuracao/Origens `b5dfcd181c3c`, EditorR53 `676337f165f7`, Ficha `6c0391edac63`,
+  Invocacoes `e73584ddf3b1`, LotePaleta `848e878b4a2a`, PaletaSegundoPlano `a5a0e83def3c`, SalarioLote `aaaa74f32b0c`.
+- **Primeira exportação:** o item "Bot > Exportar para o bot" do menu deu o erro genérico ("Ocorreu um erro no script
+  exportarParaOBot"), sem execução registrada. Rodado pelo editor (Executar `exportarParaOBot`), funcionou:
+  - Era: 93 s, sem pedir autorização. CARTEIRA AH4 "Bot: em dia · 17/11 18:19".
+  - Ciclo: pediu autorização (o Mizuki autorizou), 129 s. AH4 "Bot: em dia · 17/11 18:29".
+  - Cada exportação criou a `ANALISE_MODELOS` oculta e a caixa AT4 da CARTEIRA.
+- **CSV do bot** (link `gviz … sheet=ANALISE`), baixado depois de cada exportação: `formato.versao` 13,
+  `analise.estado` `em_dia`, `analise.exportada_em` com a hora da exportação, nenhum `#` de erro, as mesmas 18.500 chaves
+  nas duas. No Ciclo, comparado linha a linha com o CSV vivo de antes (formato 12): só mudaram `formato.versao` e as
+  duas linhas novas.
+- **Escorregão na Ciclo:** ao medir o ±, o Buff da vida (FICHA!P26) foi para 10 em vez de 1. O `onEdit` dessa edição
+  (18:31) falhou depois de 150 s com "erro do servidor" da Google (a página de execuções também dava 500), então a
+  ANALISE não foi marcada desatualizada. Digitar 0 na célula não pegou; o 0 foi escrito pela API do Sheets (sem
+  `onEdit`). Relido: P26 0, vida máxima J26 0 (fórmula), vida atual D26 19, como antes. O CSV exportado às 18:29 já
+  tinha `buff.vida` 0 e `vida_max` 0, então continua em dia.
+- **Não rodou no Sheets:** o ± medido nas oficiais com o gancho (a única tentativa caiu no erro do servidor); a marca
+  `desatualizada` depois de uma edição; um clique na caixa AT4 (no PC ou no celular); o menu Bot (deu erro, ver acima);
+  a troca de paleta com a linha 4 da CARTEIRA; um `construir()`.
+
+Para voltar: restaurar o Codigo do backup, ou `node r53/diagnostico-android/preparar_analise_estatica.js --reverter`
+no editor e apagar o arquivo `AnaliseEstatica`. A ANALISE fica com valores congelados até alguém refazer as fórmulas
+(o `construir()` ou o backup).
+
 ## Atalho das edições livres religado · 16/11/2026
 
 Pedido do Mizuki no chat, com ele no PC: "Sim, faz os backups" e "agora q o pc ta desbloqueado, vc consegeu efazer tudo, n?".
