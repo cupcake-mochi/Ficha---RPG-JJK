@@ -177,5 +177,22 @@ saíram em branco (o teste escrevia `__velho__` antes da fórmula para provar qu
 restaurada e reexportada, com CSV de novo igual à referência.
 
 O bloco custa ~15 s quase sem depender do tamanho (leitura ~4 s, dois `flush` ~9 s). Somado aos ~7 s de fora e ao
-primeiro toque, a marcação fica em 25–30 s. Próxima ideia, não testada: dividir cada bloco em duas marcações
-(uma escreve e calcula, a outra congela).
+primeiro toque, a marcação fica em 25–30 s.
+
+**Meio bloco por marcação também não resolve** (testado na mesma cópia, ramo local
+`claude/analise-caixa-metades-teste`, commit `d259b92`, fora da PR). Cada bloco foi dividido em calcular e congelar,
+que podiam cair em marcações separadas. O CSV saiu igual à referência, mas:
+
+| Marcação | Código | Execução inteira | O que fez |
+|---|---|---|---|
+| 10:02:53 | 8,7 s | 13,9 s | só congelar |
+| 10:02:23 | 16,1 s | 21,9 s | só calcular |
+| 10:03:24 | 18,3 s | 24,9 s | calcular e congelar |
+| 10:05:35 | 16,5 s | 30,1 s | só calcular |
+
+O tempo fora do código (abertura do gatilho, desmarcar a caixa, aviso) variou de 6 a 14 s, e a metade de calcular
+sozinha (leitura ~3–5 s mais o flush ~4–6 s, mais o primeiro toque ~3 s) já chega no limite quando ele vem alto. O
+que manda é a variação do Google, não o tamanho do trabalho.
+
+O que protege a exportação mesmo assim: o progresso é gravado depois de cada `flush`. Uma marcação que estoura os 30 s
+perde só o pedaço em andamento, e a caixa fica marcada; o toque seguinte desmarca sem exportar.
