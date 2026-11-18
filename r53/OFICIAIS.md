@@ -9,6 +9,112 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## ANALISE estática · 17/11/2026
+
+Pedido do Mizuki no chat, com ele no PC: "Sim, as duas coisas" (mesclar a PR #132 da ficha e a RPG---BOT#104 do bot,
+e instalar nas oficiais). O bot já lia o formato 13 antes da primeira oficial mudar. Era primeiro, depois Ciclo.
+Detalhes do mecanismo: `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`.
+
+- **Backup antes**, cópia pelo Drive de cada oficial (leva o projeto junto): "BACKUP antes da ANALISE estática
+  17-11-2026 · Era da Revolução" e "… · Ciclo Maldito".
+- **Projeto:** arquivo novo `AnaliseEstatica` (o `apps-script/AnaliseEstatica.gs`, `6ab0b843…`) e os dois ganchos do
+  `preparar_analise_estatica.js` no Codigo (`onEdit` depois da guarda, `onOpen` depois do `r53CuraMenu_()`).
+  Codigo `c7f388f70e0a` → `57a8398fa8c5` nas duas. O módulo comprimido não mudou, então o atalho calado continua valendo.
+- Relido depois de recarregar o editor, iguais nas duas: Codigo `57a8398fa8c5`, AnaliseEstatica `6ab0b8432a9e`,
+  Analise `98f8f056cd4f`, Configuracao/Origens `b5dfcd181c3c`, EditorR53 `676337f165f7`, Ficha `6c0391edac63`,
+  Invocacoes `e73584ddf3b1`, LotePaleta `848e878b4a2a`, PaletaSegundoPlano `a5a0e83def3c`, SalarioLote `aaaa74f32b0c`.
+- **Primeira exportação:** o item "Bot > Exportar para o bot" do menu deu o erro genérico ("Ocorreu um erro no script
+  exportarParaOBot"), sem execução registrada. Rodado pelo editor (Executar `exportarParaOBot`), funcionou:
+  - Era: 93 s, sem pedir autorização. CARTEIRA AH4 "Bot: em dia · 17/11 18:19".
+  - Ciclo: pediu autorização (o Mizuki autorizou), 129 s. AH4 "Bot: em dia · 17/11 18:29".
+  - Cada exportação criou a `ANALISE_MODELOS` oculta e a caixa AT4 da CARTEIRA.
+- **CSV do bot** (link `gviz … sheet=ANALISE`), baixado depois de cada exportação: `formato.versao` 13,
+  `analise.estado` `em_dia`, `analise.exportada_em` com a hora da exportação, nenhum `#` de erro, as mesmas 18.500 chaves
+  nas duas. No Ciclo, comparado linha a linha com o CSV vivo de antes (formato 12): só mudaram `formato.versao` e as
+  duas linhas novas.
+- **Escorregão na Ciclo:** ao medir o ±, o Buff da vida (FICHA!P26) foi para 10 em vez de 1. O `onEdit` dessa edição
+  (18:31) falhou depois de 150 s com "erro do servidor" da Google (a página de execuções também dava 500), então a
+  ANALISE não foi marcada desatualizada. Digitar 0 na célula não pegou; o 0 foi escrito pela API do Sheets (sem
+  `onEdit`). Relido: P26 0, vida máxima J26 0 (fórmula), vida atual D26 19, como antes. O CSV exportado às 18:29 já
+  tinha `buff.vida` 0 e `vida_max` 0, então continua em dia.
+- **Ciclo, 18/11 de manhã** (painel do navegador do app com login refeito):
+  - **Menu Bot > Exportar para o bot funcionou:** execução do tipo "Menu", 67,4 s, em dia às 08:34. O erro de 17/11
+    não voltou. O que mudou entre um e outro foi a autorização da Ciclo e o login refeito; não se sabe qual dos dois
+    resolveu. A Era não foi testada pelo menu.
+  - **Caixa AT4 funcionou com cliques de verdade, mas em três marcações:** `onEdit` de 24,1 s (6.488/18.480), 26,0 s
+    (12.986/18.480) e **29,1 s** (em dia às 08:47), a última a menos de 1 s do limite de 30 s do gatilho simples. Na
+    cópia da fase 1 eram duas marcações (26,6 s e 16,4 s).
+  - CSV depois de cada exportação: igual, linha a linha, ao exportado em 17/11 (fora `analise.exportada_em`), sem `#`.
+- **Caixa em blocos de 4.000 linhas, 18/11** (commit `bfdcf23`): backup antes, no Drive da conta dona,
+  "BACKUP antes da caixa em blocos menores 18-11-2026 · Era da Revolução" e "… · Ciclo Maldito". Só o arquivo
+  `AnaliseEstatica` mudou, `6ab0b8432a9e` → `7aea9ab87a17`, nas duas; os outros dez arquivos relidos iguais. Medido na
+  Ciclo: 26,2 s, 16,3 s (sem avanço) e 26,5 s por marcação, sem ganho claro (ver
+  `ANALISE-ESTATICA-2026-11-17.md`). Exportação terminada pelo menu (70,7 s), em dia às 09:17, CSV igual.
+  Duas cópias feitas antes pelo conector do Drive ficaram na outra conta, sem acesso para conferir; não valem como
+  backup.
+- **Caixa lê só o bloco e exporta em qualquer toque, 18/11 à tarde** (commits `37506b2` e `065be2a`, PR #133).
+  Pedido do Mizuki no chat: "Publica e instala". Backup antes, pela página de cópia de cada oficial (leva o projeto
+  junto), no Drive da conta dona: "BACKUP antes da caixa em qualquer toque 18-11-2026 · Ciclo Maldito" (`1i2a9Z…`)
+  e "… · Era da Revolução" (`1ioU9w…`). Só o arquivo `AnaliseEstatica` mudou, `7aea9ab87a17` → `450709a1a988`, nas
+  duas; relido depois de recarregar o editor, e os outros dez arquivos iguais aos de antes. Medido antes só na cópia
+  de teste (`1i7jy5b6…`, ver `ANALISE-ESTATICA-2026-11-17.md`); nas oficiais nenhuma marcação nem exportação rodou
+  depois da instalação.
+- **Testado logo depois, 18/11 10:31–10:38** (pedido do Mizuki: "faça os testes"), no painel do navegador do app:
+  - **Ciclo, caixa AT4:** de em dia até em dia de novo em 5 toques, 20,1, 18,7, 18,3, 19,9 e 20,7 s, todos concluídos
+    (na versão anterior eram 24 a 29 s). CSV igual à referência (`8d40252463892e70`, 18.502 linhas, sem `#`).
+  - **Era, menu Bot > Exportar para o bot:** 73,7 s, concluído, em dia às 10:37. CSV igual ao de antes da exportação
+    (`9bfc57db7091f8fd`, sem `#`). Primeira vez do menu na Era.
+  - **Marca `desatualizada`** (na cópia de teste `1i7jy5b6…`, não nas oficiais): editar o portador da CARTEIRA trocou o
+    texto para "Bot: desatualizada · marque ao lado" e a ANALISE para `desatualizada`. Essa edição levou **29,97 s** e
+    a seguinte 29,55 s, as duas concluídas; o registro diz 19,9 s dentro do código da ficha (`R53_ONEDIT`). É o tempo da
+    edição do portador, não da ANALISE (na segunda o estado já era desatualizada), e está colado no limite de 30 s.
+- **Não rodou no Sheets (depois dos testes):** a caixa no celular; o ± medido nas próprias oficiais; a troca de paleta
+  com a linha 4 da CARTEIRA; um `construir()`.
+- **Antes dos testes não tinha rodado:** a caixa nova nas oficiais (nem no PC); o ± medido nas oficiais com o gancho; a marca `desatualizada` depois de uma edição (no
+  painel, o teclado não chega à célula e a lista de opções não aceita o clique; a edição feita pelo Mizuki não gerou
+  `onEdit`); a caixa AT4 no celular; o menu Bot na Era; a troca de paleta com a linha 4 da CARTEIRA; um `construir()`.
+- **Cortes A e B do portador, 18/11 por volta das 11 h** (commits `6840223` e `0381484`, PR #133). Pedido do Mizuki
+  no chat: "Sim, instala". Backup antes, pela página de cópia (leva o projeto junto), no Drive da conta dona:
+  "BACKUP antes dos cortes do portador 18-11-2026 · Ciclo Maldito" (`17Y3R4…`) e "… · Era da Revolução" (`1s-jeX…`).
+  Duas linhas trocadas, cada uma só se o hash de antes batesse:
+  - **A** no EditorR53 (o `if(!gs.length)` do `r53Editar_`): o portador não relê o Amparo.
+  - **B** no Codigo (o `var nome=` do `salarioEditar_`, o mesmo par do `preparar_portador_sem_trava.js`): no modo
+    fórmula o portador não trava nem dá flush.
+  - Codigo `57a8398fa8c5` → `261b452940ad` e EditorR53 `676337f165f7` → `abade0324d3f`, iguais nas duas; relido depois
+    de recarregar o editor, os outros nove arquivos sem mudança.
+  - **Ciclo, portador editado e voltado** (O9 "Teste portador", depois o texto original, conferido pelo CSV):
+    `onEdit` de **13,0 s** e **9,8 s**, os dois concluídos (antes dos cortes, na cópia: 22,6 a 30,7 s, um estouro).
+    A ANALISE ficou `desatualizada` (AH4 "Bot: desatualizada · marque ao lado"), como deve depois de uma edição.
+    A exportação para voltar a em dia não foi rodada por mim (a permissão barrou o clique no menu): o Mizuki rodou
+    Bot > Exportar para o bot, em dia às 11:23. CSV igual à referência (`8d40252463892e70` sem a linha
+    `analise.exportada_em`, 18.502 linhas, formato 13, sem `#`).
+  - **Não rodou:** o portador na Era; o celular; um `construir()`.
+- **Corte C e o Amparo sujo, 18/11 por volta das 11:35** (commit `8f46597`, PR #133). Pedido do Mizuki no chat:
+  "pode fazer a 1, 3, 4, 5 (todo ganho é bom, se afetar nada negativamente ta tudo bem)". Backup: os de manhã
+  (`17Y3R4…` e `1s-jeX…`), anteriores a todos os cortes. Duas trocas, cada uma só se o hash de antes batesse:
+  - **C** no Codigo (`preparar_portador_sem_modulo.js`): o portador sai do `r53OnEditOriginal_` depois do
+    `r53LivreConferido_`, com o `r53ContinuarPaletaPendente_`, sem carregar o módulo.
+  - **A corrigido** no EditorR53: com a marca `r53_amparo_sujo` (Trilha ou Caminho mudou na FICHA) o portador
+    sincroniza as Famílias como antes. Sem isso, o `r53LivreConferido_` apagava a marca sem a sincronização rodar.
+  - Codigo `261b452940ad` → `94f1a184f2af` e EditorR53 `abade0324d3f` → `35065b22a3ea`, iguais nas duas; relido depois
+    de recarregar o editor, os outros nove arquivos sem mudança.
+- **Testado nas oficiais, 18/11 11:39–13:40** (no painel do navegador do app):
+  - **Portador, Ciclo:** 6,6 s e 10,5 s (com A e B eram 13,0 e 9,8). O registro diz 1,3 s dentro do código
+    (`R53_ONEDIT`); o resto é o Google abrindo o projeto. **Era:** 12,8 s e 3,7 s. Nas duas o nome foi salvo, apareceu
+    na FICHA PESSOAL, marcou a ANALISE `desatualizada` e voltou ao texto original (conferido pelo CSV).
+  - **± na Ciclo** (FICHA!AM34, integridade 25/25): −1 deu 24 em 11,9 s, +1 voltou a 25 em 13,6 s. A vida não serviu
+    de teste: com o máximo em 0 (J26), o ± zeraria a vida atual (19). Na Era a vida e a energia estão em 0/0.
+  - **Paleta na Ciclo:** "Mizuki · Claro · rosa e magenta" em 19,3 s e de volta a "Mizuki · Escuro · ameixa e rosa"
+    em 16,9 s, as duas concluídas. A linha 4 da CARTEIRA (texto "Bot: …" e caixa AT4) pintou com a paleta clara e
+    ficou legível; a FICHA voltou igual à da Era.
+  - **Depois dos testes:** a ANALISE das duas ficou `desatualizada` (AH4 "Bot: desatualizada · marque ao lado"); falta
+    o Mizuki rodar Bot > Exportar para o bot em cada uma.
+  - **Não rodou:** o celular.
+
+Para voltar: restaurar o Codigo do backup, ou `node r53/diagnostico-android/preparar_analise_estatica.js --reverter`
+no editor e apagar o arquivo `AnaliseEstatica`. A ANALISE fica com valores congelados até alguém refazer as fórmulas
+(o `construir()` ou o backup).
+
 ## Atalho das edições livres religado · 16/11/2026
 
 Pedido do Mizuki no chat, com ele no PC: "Sim, faz os backups" e "agora q o pc ta desbloqueado, vc consegeu efazer tudo, n?".
