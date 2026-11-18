@@ -28,9 +28,13 @@ var ANALISE_EST_ = {
   // - um bloco de 6.000 linhas levou 10 s: leitura 1,8 s, cálculo 3,9 s, congelamento 4,3 s;
   // - criar os modelos levou 21 s (ler as fórmulas 7,9 s, gravar a aba 13,4 s), mais ~8 s de abertura do gatilho.
   // Um bloco só começa se o tempo gasto mais a duração do último bloco (guardada) couber no limite. Na caixa o limite
-  // é 18 s contados do começo do onEdit: os ~7 s de antes dele também saem dos 30 s do gatilho simples, e um bloco
+  // é 16 s contados do começo do onEdit: os ~7 s de antes dele também saem dos 30 s do gatilho simples, e um bloco
   // pode levar mais que o anterior (na Era: 6,7 s e depois 8,5 s; a marcação inteira deu 26,6 s).
-  bloco: 6500, blocoMsPadrao: 12000, limiteCaixa: 18000, limiteMenu: 300000, limiteMontagem: 90000, versao: '13'
+  // Na oficial do Ciclo (18/11) a caixa com blocos de 6.500 linhas deu 24,1 s, 26,0 s e 29,1 s: o bloco garantido
+  // ficou lento demais para os 30 s. A caixa usa blocos de 4.000 linhas (~5 marcações, cada uma longe do limite);
+  // menu e montagem, sem o limite do gatilho, seguem com 6.500.
+  bloco: 6500, blocoCaixa: 4000, blocoMsPadrao: 12000, limiteCaixa: 16000, limiteMenu: 300000, limiteMontagem: 90000,
+  versao: '13'
 };
 
 /** Menu do PC. O app do Android não roda o onOpen; lá vale a caixa da CARTEIRA. */
@@ -128,10 +132,11 @@ function analiseExportar_(t0, limite, juntar) {
     analiseCaixaInstalar_(ss, props);
     analiseMarcar_(ss, an, props, 'exportando', linhas, analiseContar_(modelos, prox) + '/' + total);
     var est = Number(props.getProperty(C.propBlocoMs)) || C.blocoMsPadrao, blocos = 0;
+    var tam = juntar ? C.bloco : C.blocoCaixa;
     // Um bloco por execução fica garantido se a execução não criou os modelos e ainda não gastou metade do limite: sem
     // isso, um bloco medido acima do limite travaria a caixa para sempre.
     while (prox <= ultima && (Date.now() - t0 + est < limite || (!blocos && !lidos.novos && Date.now() - t0 < limite / 2))) {
-      var tb = Date.now(), fim = Math.min(prox + C.bloco - 1, ultima);
+      var tb = Date.now(), fim = Math.min(prox + tam - 1, ultima);
       analiseEscreverBloco_(an, modelos, prox, fim);
       SpreadsheetApp.flush();
       var faixa = an.getRange(prox, 2, fim - prox + 1, 1);

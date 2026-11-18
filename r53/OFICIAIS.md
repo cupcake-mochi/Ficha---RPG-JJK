@@ -37,9 +37,17 @@ Detalhes do mecanismo: `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`.
   ANALISE não foi marcada desatualizada. Digitar 0 na célula não pegou; o 0 foi escrito pela API do Sheets (sem
   `onEdit`). Relido: P26 0, vida máxima J26 0 (fórmula), vida atual D26 19, como antes. O CSV exportado às 18:29 já
   tinha `buff.vida` 0 e `vida_max` 0, então continua em dia.
-- **Não rodou no Sheets:** o ± medido nas oficiais com o gancho (a única tentativa caiu no erro do servidor); a marca
-  `desatualizada` depois de uma edição; um clique na caixa AT4 (no PC ou no celular); o menu Bot (deu erro, ver acima);
-  a troca de paleta com a linha 4 da CARTEIRA; um `construir()`.
+- **Ciclo, 18/11 de manhã** (painel do navegador do app com login refeito):
+  - **Menu Bot > Exportar para o bot funcionou:** execução do tipo "Menu", 67,4 s, em dia às 08:34. O erro de 17/11
+    não voltou. O que mudou entre um e outro foi a autorização da Ciclo e o login refeito; não se sabe qual dos dois
+    resolveu. A Era não foi testada pelo menu.
+  - **Caixa AT4 funcionou com cliques de verdade, mas em três marcações:** `onEdit` de 24,1 s (6.488/18.480), 26,0 s
+    (12.986/18.480) e **29,1 s** (em dia às 08:47), a última a menos de 1 s do limite de 30 s do gatilho simples. Na
+    cópia da fase 1 eram duas marcações (26,6 s e 16,4 s).
+  - CSV depois de cada exportação: igual, linha a linha, ao exportado em 17/11 (fora `analise.exportada_em`), sem `#`.
+- **Não rodou no Sheets:** o ± medido nas oficiais com o gancho; a marca `desatualizada` depois de uma edição (no
+  painel, o teclado não chega à célula e a lista de opções não aceita o clique; a edição feita pelo Mizuki não gerou
+  `onEdit`); a caixa AT4 no celular; o menu Bot na Era; a troca de paleta com a linha 4 da CARTEIRA; um `construir()`.
 
 Para voltar: restaurar o Codigo do backup, ou `node r53/diagnostico-android/preparar_analise_estatica.js --reverter`
 no editor e apagar o arquivo `AnaliseEstatica`. A ANALISE fica com valores congelados até alguém refazer as fórmulas

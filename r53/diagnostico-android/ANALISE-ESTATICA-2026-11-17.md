@@ -34,13 +34,13 @@ Decisões do Mizuki (17/11):
 ## Como funciona
 
 - **Exportar:**
-  1. escreve os modelos na coluna B em blocos de 6.500 linhas;
+  1. escreve os modelos na coluna B em blocos de 6.500 linhas (4.000 na caixa, desde 18/11);
   2. espera o cálculo (`flush`);
   3. troca cada bloco pelo valor (`copyTo` com `contentsOnly`) e espera de novo (`flush`);
   4. guarda o progresso e a duração do bloco depois de cada um.
 
-  Um bloco só começa se o tempo já gasto mais a duração do último bloco couber no limite. Na caixa o limite é 18 s
-  contados do começo do `onEdit`, para caber nos 30 s do gatilho simples. Se não couber, o texto diz
+  Um bloco só começa se o tempo já gasto mais a duração do último bloco couber no limite. Na caixa o limite é 16 s
+  (18 s até 18/11) contados do começo do `onEdit`, para caber nos 30 s do gatilho simples. Se não couber, o texto diz
   "exportando N/T · marque de novo".
 - **A caixa lê a planilha uma vez só** (os modelos). O número de modelos e as linhas de estado vêm das propriedades
   do documento. Motivo: com a ANALISE viva, cada leitura custa de 2 a 3 s, do tamanho que for (ver a prova abaixo).
@@ -134,4 +134,8 @@ As oficiais **não** precisam do pacote novo: a mudança do módulo (`acabar_`) 
   do menu ficou bem abaixo do real, mas a execução pelo editor tem o limite de 6 min.
 - CSV das duas: formato 13, `em_dia`, sem `#`. Na Ciclo, igual ao vivo de antes fora das três linhas esperadas.
 - **Passo 6 (medir o ±) não saiu:** a única edição medida, na Ciclo, caiu num erro do servidor da Google depois de 150 s.
-- Continua sem rodar: a marca `desatualizada` numa oficial, a caixa AT4 de verdade, o menu Bot, a paleta.
+- **18/11, Ciclo:** o menu Bot funcionou (67,4 s). A caixa AT4, clicada de verdade, exportou em três marcações:
+  24,1 s, 26,0 s e **29,1 s**. A última passou a menos de 1 s do limite de 30 s. O bloco garantido de 6.500 linhas
+  era lento demais na oficial. **Ajuste (18/11):** a caixa passou a blocos de 4.000 linhas e limite de 16 s; menu e
+  montagem seguem com 6.500. Conta esperada na oficial: ~5 marcações de ~20–23 s. Ainda não instalado nas oficiais.
+- Continua sem rodar: a marca `desatualizada` numa oficial, a caixa no celular, o menu na Era, a paleta.

@@ -371,8 +371,8 @@ colunas.
 - Os modelos (o texto das fórmulas) moram na aba oculta `ANALISE_MODELOS`. A linha N de lá é a linha N da ANALISE. O
   link do bot (`sheet=ANALISE`) não a baixa.
 - Exportar: escreve os modelos em blocos de 6.500 linhas, espera o cálculo e troca cada bloco pelo valor. O progresso é
-  guardado bloco a bloco: se o tempo acabar (a caixa tem os 30 s do gatilho simples), a próxima marcação continua. Na
-  Era, reexportar pela caixa levou duas marcações.
+  guardado bloco a bloco: se o tempo acabar (a caixa tem os 30 s do gatilho simples), a próxima marcação continua. A
+  caixa usa blocos de 4.000 linhas; numa ficha do tamanho das oficiais, reexportar por ela leva umas cinco marcações.
 - A primeira edição depois de exportar marca `desatualizada` na ANALISE e na CARTEIRA. As seguintes só leem uma
   propriedade do documento. Edição no meio de uma exportação faz a próxima recomeçar do início.
 - Escrita à mão na coluna B congelada é apagada e marca `desatualizada`; não vira modelo.

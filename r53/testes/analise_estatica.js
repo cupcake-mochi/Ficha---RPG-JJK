@@ -145,7 +145,7 @@ function suite(fonte) {
   r = null;
   t('caixa tratada aqui', () => assert.equal(s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 })), true));
   t('caixa desmarcada', () => assert.equal(s.cart.getRange('AT4').getValue(), false));
-  t('parcial: exportando e progresso guardado', () => { assert.equal(chave(s, 'analise.estado'), 'exportando'); assert.equal(s.props.m.get('analise_exportar_prox'), '6502'); assert.match(s.cart.getRange('AH4').getValue(), /^Bot: exportando 6498\/6999 · marque de novo$/); });
+  t('parcial: exportando e progresso guardado', () => { assert.equal(chave(s, 'analise.estado'), 'exportando'); assert.equal(s.props.m.get('analise_exportar_prox'), '4002'); assert.match(s.cart.getRange('AH4').getValue(), /^Bot: exportando 3998\/6999 · marque de novo$/); });
   t('duração do bloco guardada', () => assert.equal(s.props.m.get('analise_bloco_ms'), '16000'));
   t('blocos feitos já sem fórmula', () => assert.equal(formulasB(s), 0));
   t('primeiro bloco já com o valor novo', () => assert.equal(chave(s, 'chave.0'), 'NOVO'));
@@ -159,7 +159,7 @@ function suite(fonte) {
   s.p.dados.k6998 = 'FIM';
   s.c.analiseNaEdicao_(ev(s, 'FICHA', 'B5', '2'));
   s.clock.t = 0; s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 }));
-  t('parcial de novo', () => assert.equal(s.props.m.get('analise_exportar_prox'), '6502'));
+  t('parcial de novo', () => assert.equal(s.props.m.get('analise_exportar_prox'), '4002'));
   s.p.dados.k0 = 'MEIO';
   s.c.analiseNaEdicao_(ev(s, 'FICHA', 'B5', '9'));
   t('edição no meio apaga o progresso', () => { assert.equal(s.props.m.has('analise_exportar_prox'), false); assert.equal(s.cart.getRange('AH4').getValue(), 'Bot: editada no meio · marque de novo'); });
@@ -245,9 +245,9 @@ function suite(fonte) {
   s.c.exportarParaOBot(); s.c.analiseNaEdicao_(ev(s, 'FICHA', 'B5', '1'));
   s.props.m.set('analise_bloco_ms', '50000');
   s.clock.t = 0; s.clock.passo = 15000; s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 }));
-  t('bloco lento: um por marcação', () => assert.equal(s.props.m.get('analise_exportar_prox'), '6502'));
+  t('bloco lento: um por marcação', () => assert.equal(s.props.m.get('analise_exportar_prox'), '4002'));
   s.clock.t = 11000; s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 }));
-  t('bloco lento: passou da metade, não força', () => assert.equal(s.props.m.get('analise_exportar_prox'), '6502'));
+  t('bloco lento: passou da metade, não força', () => assert.equal(s.props.m.get('analise_exportar_prox'), '4002'));
   return n;
 }
 
@@ -333,6 +333,7 @@ new vm.Script(prep.trecho()); new vm.Script(prep.trecho(true)); total += 2;
     ['sem a duração medida', 'est = Date.now() - tb;', ''],
     ['força bloco depois da metade', ' && Date.now() - t0 < limite / 2)', ')'],
     ['linhas sem flush', 'tempo acaba.\n    SpreadsheetApp.flush();', 'tempo acaba.'],
+    ['caixa com o bloco do menu', 'var tam = juntar ? C.bloco : C.blocoCaixa;', 'var tam = C.bloco;'],
     ['caixa sem flush', 'insertCheckboxes().setValue(false);\n  SpreadsheetApp.flush();', 'insertCheckboxes().setValue(false);']
   ];
   for (const [nome, velho, novo] of DEFEITOS) {
