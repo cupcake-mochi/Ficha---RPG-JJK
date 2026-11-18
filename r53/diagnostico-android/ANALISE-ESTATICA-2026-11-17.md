@@ -205,3 +205,12 @@ Na cópia:
   gravado: o texto ficou em 0/18.480 e a marcação seguinte pulou para 7.988;
 - depois, uma marcação por bloco: 32,3, 26,1, 23,0 e 31,1 s, todas concluídas (o corte não é exato nos 30 s);
 - CSV igual à referência (`8d40252463892e70`).
+
+### Nas oficiais, 18/11 depois da instalação
+
+- Ciclo, caixa: 5 toques de 20,1, 18,7, 18,3, 19,9 e 20,7 s (antes 24 a 29 s), todos concluídos; CSV igual.
+  Ler só o bloco e escrever o estado só quando muda tirou ~6 s de cada toque.
+- Era, menu: 73,7 s, CSV igual ao de antes.
+- Cópia de teste: editar o portador marcou `desatualizada` como devia, mas a edição levou 29,97 s (19,9 s dentro do
+  código da ficha, pelo `R53_ONEDIT`) e a seguinte 29,55 s. Não é a ANALISE: na segunda o estado já era desatualizada
+  e a marca só lê uma propriedade. É o que está mais perto do limite agora.

@@ -59,7 +59,18 @@ Detalhes do mecanismo: `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`.
   duas; relido depois de recarregar o editor, e os outros dez arquivos iguais aos de antes. Medido antes só na cópia
   de teste (`1i7jy5b6…`, ver `ANALISE-ESTATICA-2026-11-17.md`); nas oficiais nenhuma marcação nem exportação rodou
   depois da instalação.
-- **Não rodou no Sheets:** a caixa nova nas oficiais (nem no PC); o ± medido nas oficiais com o gancho; a marca `desatualizada` depois de uma edição (no
+- **Testado logo depois, 18/11 10:31–10:38** (pedido do Mizuki: "faça os testes"), no painel do navegador do app:
+  - **Ciclo, caixa AT4:** de em dia até em dia de novo em 5 toques, 20,1, 18,7, 18,3, 19,9 e 20,7 s, todos concluídos
+    (na versão anterior eram 24 a 29 s). CSV igual à referência (`8d40252463892e70`, 18.502 linhas, sem `#`).
+  - **Era, menu Bot > Exportar para o bot:** 73,7 s, concluído, em dia às 10:37. CSV igual ao de antes da exportação
+    (`9bfc57db7091f8fd`, sem `#`). Primeira vez do menu na Era.
+  - **Marca `desatualizada`** (na cópia de teste `1i7jy5b6…`, não nas oficiais): editar o portador da CARTEIRA trocou o
+    texto para "Bot: desatualizada · marque ao lado" e a ANALISE para `desatualizada`. Essa edição levou **29,97 s** e
+    a seguinte 29,55 s, as duas concluídas; o registro diz 19,9 s dentro do código da ficha (`R53_ONEDIT`). É o tempo da
+    edição do portador, não da ANALISE (na segunda o estado já era desatualizada), e está colado no limite de 30 s.
+- **Não rodou no Sheets (depois dos testes):** a caixa no celular; o ± medido nas próprias oficiais; a troca de paleta
+  com a linha 4 da CARTEIRA; um `construir()`.
+- **Antes dos testes não tinha rodado:** a caixa nova nas oficiais (nem no PC); o ± medido nas oficiais com o gancho; a marca `desatualizada` depois de uma edição (no
   painel, o teclado não chega à célula e a lista de opções não aceita o clique; a edição feita pelo Mizuki não gerou
   `onEdit`); a caixa AT4 no celular; o menu Bot na Era; a troca de paleta com a linha 4 da CARTEIRA; um `construir()`.
 
