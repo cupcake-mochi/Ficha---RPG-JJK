@@ -137,5 +137,11 @@ As oficiais **não** precisam do pacote novo: a mudança do módulo (`acabar_`) 
 - **18/11, Ciclo:** o menu Bot funcionou (67,4 s). A caixa AT4, clicada de verdade, exportou em três marcações:
   24,1 s, 26,0 s e **29,1 s**. A última passou a menos de 1 s do limite de 30 s. O bloco garantido de 6.500 linhas
   era lento demais na oficial. **Ajuste (18/11):** a caixa passou a blocos de 4.000 linhas e limite de 16 s; menu e
-  montagem seguem com 6.500. Conta esperada na oficial: ~5 marcações de ~20–23 s. Ainda não instalado nas oficiais.
+  montagem seguem com 6.500. Conta esperada na oficial: ~5 marcações de ~20–23 s.
+- **O ajuste não resolveu (instalado nas duas oficiais em 18/11, medido na Ciclo):** as marcações deram 26,2 s
+  (3.988/18.480), 16,3 s (**sem avanço**) e 26,5 s (7.988/18.480). Um bloco de 4.000 linhas custa quase o mesmo que
+  um de 6.500, então o tempo é dominado por custo fixo (o recálculo no `flush`), não pelo número de linhas. E o tempo
+  antes do primeiro bloco às vezes passa de 8 s (metade do limite), e aí a marcação não faz bloco nenhum. A exportação
+  foi terminada pelo menu (70,7 s), e o CSV saiu igual ao anterior. Próximo passo: medir onde vão os segundos dentro
+  do `onEdit` da caixa antes de mexer de novo.
 - Continua sem rodar: a marca `desatualizada` numa oficial, a caixa no celular, o menu na Era, a paleta.

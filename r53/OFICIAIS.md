@@ -45,6 +45,13 @@ Detalhes do mecanismo: `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`.
     (12.986/18.480) e **29,1 s** (em dia às 08:47), a última a menos de 1 s do limite de 30 s do gatilho simples. Na
     cópia da fase 1 eram duas marcações (26,6 s e 16,4 s).
   - CSV depois de cada exportação: igual, linha a linha, ao exportado em 17/11 (fora `analise.exportada_em`), sem `#`.
+- **Caixa em blocos de 4.000 linhas, 18/11** (commit `bfdcf23`): backup antes, no Drive da conta dona,
+  "BACKUP antes da caixa em blocos menores 18-11-2026 · Era da Revolução" e "… · Ciclo Maldito". Só o arquivo
+  `AnaliseEstatica` mudou, `6ab0b8432a9e` → `7aea9ab87a17`, nas duas; os outros dez arquivos relidos iguais. Medido na
+  Ciclo: 26,2 s, 16,3 s (sem avanço) e 26,5 s por marcação, sem ganho claro (ver
+  `ANALISE-ESTATICA-2026-11-17.md`). Exportação terminada pelo menu (70,7 s), em dia às 09:17, CSV igual.
+  Duas cópias feitas antes pelo conector do Drive ficaram na outra conta, sem acesso para conferir; não valem como
+  backup.
 - **Não rodou no Sheets:** o ± medido nas oficiais com o gancho; a marca `desatualizada` depois de uma edição (no
   painel, o teclado não chega à célula e a lista de opções não aceita o clique; a edição feita pelo Mizuki não gerou
   `onEdit`); a caixa AT4 no celular; o menu Bot na Era; a troca de paleta com a linha 4 da CARTEIRA; um `construir()`.
