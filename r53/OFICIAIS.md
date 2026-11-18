@@ -52,7 +52,14 @@ Detalhes do mecanismo: `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`.
   `ANALISE-ESTATICA-2026-11-17.md`). Exportação terminada pelo menu (70,7 s), em dia às 09:17, CSV igual.
   Duas cópias feitas antes pelo conector do Drive ficaram na outra conta, sem acesso para conferir; não valem como
   backup.
-- **Não rodou no Sheets:** o ± medido nas oficiais com o gancho; a marca `desatualizada` depois de uma edição (no
+- **Caixa lê só o bloco e exporta em qualquer toque, 18/11 à tarde** (commits `37506b2` e `065be2a`, PR #133).
+  Pedido do Mizuki no chat: "Publica e instala". Backup antes, pela página de cópia de cada oficial (leva o projeto
+  junto), no Drive da conta dona: "BACKUP antes da caixa em qualquer toque 18-11-2026 · Ciclo Maldito" (`1i2a9Z…`)
+  e "… · Era da Revolução" (`1ioU9w…`). Só o arquivo `AnaliseEstatica` mudou, `7aea9ab87a17` → `450709a1a988`, nas
+  duas; relido depois de recarregar o editor, e os outros dez arquivos iguais aos de antes. Medido antes só na cópia
+  de teste (`1i7jy5b6…`, ver `ANALISE-ESTATICA-2026-11-17.md`); nas oficiais nenhuma marcação nem exportação rodou
+  depois da instalação.
+- **Não rodou no Sheets:** a caixa nova nas oficiais (nem no PC); o ± medido nas oficiais com o gancho; a marca `desatualizada` depois de uma edição (no
   painel, o teclado não chega à célula e a lista de opções não aceita o clique; a edição feita pelo Mizuki não gerou
   `onEdit`); a caixa AT4 no celular; o menu Bot na Era; a troca de paleta com a linha 4 da CARTEIRA; um `construir()`.
 
