@@ -73,6 +73,20 @@ Detalhes do mecanismo: `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`.
 - **Antes dos testes não tinha rodado:** a caixa nova nas oficiais (nem no PC); o ± medido nas oficiais com o gancho; a marca `desatualizada` depois de uma edição (no
   painel, o teclado não chega à célula e a lista de opções não aceita o clique; a edição feita pelo Mizuki não gerou
   `onEdit`); a caixa AT4 no celular; o menu Bot na Era; a troca de paleta com a linha 4 da CARTEIRA; um `construir()`.
+- **Cortes A e B do portador, 18/11 por volta das 11 h** (commits `6840223` e `0381484`, PR #133). Pedido do Mizuki
+  no chat: "Sim, instala". Backup antes, pela página de cópia (leva o projeto junto), no Drive da conta dona:
+  "BACKUP antes dos cortes do portador 18-11-2026 · Ciclo Maldito" (`17Y3R4…`) e "… · Era da Revolução" (`1s-jeX…`).
+  Duas linhas trocadas, cada uma só se o hash de antes batesse:
+  - **A** no EditorR53 (o `if(!gs.length)` do `r53Editar_`): o portador não relê o Amparo.
+  - **B** no Codigo (o `var nome=` do `salarioEditar_`, o mesmo par do `preparar_portador_sem_trava.js`): no modo
+    fórmula o portador não trava nem dá flush.
+  - Codigo `57a8398fa8c5` → `261b452940ad` e EditorR53 `676337f165f7` → `abade0324d3f`, iguais nas duas; relido depois
+    de recarregar o editor, os outros nove arquivos sem mudança.
+  - **Ciclo, portador editado e voltado** (O9 "Teste portador", depois o texto original, conferido pelo CSV):
+    `onEdit` de **13,0 s** e **9,8 s**, os dois concluídos (antes dos cortes, na cópia: 22,6 a 30,7 s, um estouro).
+    A ANALISE ficou `desatualizada` (AH4 "Bot: desatualizada · marque ao lado"), como deve depois de uma edição.
+    A exportação para voltar a em dia não foi rodada por mim (a permissão barrou o clique no menu): fica com o Mizuki.
+  - **Não rodou:** o portador na Era; o celular; um `construir()`.
 
 Para voltar: restaurar o Codigo do backup, ou `node r53/diagnostico-android/preparar_analise_estatica.js --reverter`
 no editor e apagar o arquivo `AnaliseEstatica`. A ANALISE fica com valores congelados até alguém refazer as fórmulas
