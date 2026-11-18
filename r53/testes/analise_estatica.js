@@ -12,7 +12,7 @@ const prep = require(path.join(RAIZ, 'r53/diagnostico-android/preparar_analise_e
 function letras(c) { let s = ''; while (c) { const r = (c - 1) % 26; s = String.fromCharCode(65 + r) + s; c = (c - 1 - r) / 26; } return s; }
 function pos(a1) { const m = /^([A-Z]+)(\d+)$/.exec(a1); let c = 0; for (const ch of m[1]) c = c * 26 + ch.charCodeAt(0) - 64; return [+m[2], c]; }
 function novaPlanilha(clock) {
-  const dados = {}, abas = [], log = { escritas: [], flush: 0, leituras: 0, seq: [] };
+  const dados = {}, abas = [], log = { escritas: [], flush: 0, leituras: 0, seq: [], linhasLidas: {} };
   function aba(nome, linhas, colunas) {
     const celulas = new Map(), dv = new Map();
     let maxR = linhas, maxC = colunas, oculta = false;
@@ -36,7 +36,7 @@ function novaPlanilha(clock) {
         const rg = {
           getRow: () => r0, getColumn: () => c0, getLastColumn: () => c1, getNumRows: () => r1 - r0 + 1, getNumColumns: () => c1 - c0 + 1,
           getSheet: () => sh, getA1Notation: () => letras(c0) + r0 + (r1 !== r0 || c1 !== c0 ? ':' + letras(c1) + r1 : ''),
-          getValues: () => (log.leituras++, grade(valor)), getValue: () => (log.leituras++, valor(r0, c0)),
+          getValues: () => (log.leituras++, log.linhasLidas[nome] = Math.max(log.linhasLidas[nome] || 0, r1 - r0 + 1), grade(valor)), getValue: () => (log.leituras++, valor(r0, c0)),
           getFormulas: () => (log.leituras++, grade((r, c) => (celulas.get(k(r, c)) || {}).f || '')),
           setValues: m => { escrever(m, false); return rg; }, setValue: v => { escrever([[v]], false); return rg; },
           setFormulas: m => { m.forEach(l => l.forEach(f => assert.ok(f.charAt(0) === '=', 'setFormulas sem =: ' + f))); escrever(m, true); return rg; },
@@ -142,16 +142,23 @@ function suite(fonte) {
 
   // 3. A caixa: exporta o que cabe no tempo, guarda o progresso, continua na próxima marcação.
   s.clock.t = 0; s.clock.passo = 8000;
-  r = null;
+  r = null; s.p.log.linhasLidas = {};
+  s.props.m.delete('analise_caixa'); // como numa cópia da ficha: a caixa existe, a propriedade não
   t('caixa tratada aqui', () => assert.equal(s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 })), true));
   t('caixa desmarcada', () => assert.equal(s.cart.getRange('AT4').getValue(), false));
   t('parcial: exportando e progresso guardado', () => { assert.equal(chave(s, 'analise.estado'), 'exportando'); assert.equal(s.props.m.get('analise_exportar_prox'), '4002'); assert.match(s.cart.getRange('AH4').getValue(), /^Bot: exportando 3998\/6999 · marque de novo$/); });
   t('duração do bloco guardada', () => assert.equal(s.props.m.get('analise_bloco_ms'), '16000'));
   t('blocos feitos já sem fórmula', () => assert.equal(formulasB(s), 0));
+  t('caixa lê só as linhas do bloco', () => assert.ok(s.p.log.linhasLidas.ANALISE_MODELOS <= 4000, String(s.p.log.linhasLidas.ANALISE_MODELOS)));
+  t('cópia: reconhece a caixa', () => assert.equal(s.props.m.get('analise_caixa'), '1'));
+  t('caixa guarda o feito', () => assert.equal(s.props.m.get('analise_exportar_feitas'), '3998'));
   t('primeiro bloco já com o valor novo', () => assert.equal(chave(s, 'chave.0'), 'NOVO'));
+  // Ficha instalada antes do total guardado (as oficiais em 18/11): lê a lista inteira uma vez e guarda o total.
+  s.props.m.delete('analise_modelos_total');
   s.clock.t = 0; let lidas = s.p.log.leituras;
   s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 }));
   t('caixa lê a planilha uma vez só', () => assert.equal(s.p.log.leituras - lidas, 1));
+  t('total guardado', () => assert.equal(s.props.m.get('analise_modelos_total'), '6999'));
   t('segunda marcação termina', () => { assert.equal(chave(s, 'analise.estado'), 'em_dia'); assert.equal(s.props.has ? 0 : s.props.m.has('analise_exportar_prox'), false); });
   t('caixa desmarcada à toa não exporta', () => { const f = s.p.log.flush; s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'FALSE')); assert.equal(s.p.log.flush, f); });
 
@@ -318,6 +325,8 @@ new vm.Script(prep.trecho()); new vm.Script(prep.trecho(true)); total += 2;
     ['modelos vazios não refeitos', 'var vazia = !lista.some(Boolean);', 'var vazia = !m;'],
     ['caixa relê a coluna A', 'if (!juntar) { try { linhas', 'if (false) { try { linhas'],
     ['caixa relê o fim dos modelos', 'if (!n || juntar) n = m.getLastRow() - 1;', 'n = m.getLastRow() - 1;'],
+    ['caixa lê os modelos inteiros', 'if (m && n > 0 && total > 0 && !juntar) return', 'if (false) return'],
+    ['caixa perde a conta do feito', "props.setProperty(C.propFeitas, String(feitas));", ''],
     ['sem garantia de um bloco', ' || (!blocos && !lidos.novos && Date.now() - t0 < limite / 2)', ''],
     ['bloco depois dos modelos', '(!blocos && !lidos.novos &&', '(!blocos &&'],
     ['sem flush depois de congelar', 'acaba (17/11).\n      SpreadsheetApp.flush();', 'acaba (17/11).'],
@@ -329,6 +338,7 @@ new vm.Script(prep.trecho()); new vm.Script(prep.trecho(true)); total += 2;
     ['cópia sem sincronizar', "props.getProperty(C.prop) || analiseSincronizar_(props)", "props.getProperty(C.prop) || 'viva'"],
     ['modelos visíveis', 'if (!m.isSheetHidden()) m.hideSheet();', ''],
     ['caixa por cima', 'if (ocupada) {', 'if (false) {'],
+    ['cópia não reconhece a caixa', "CHECKBOX) { props.setProperty(C.propCaixa, '1'); return; }", 'CHECKBOX) { return; }'],
     ['ignora o tempo', 'Date.now() - t0 + est < limite', 'true'],
     ['sem a duração medida', 'est = Date.now() - tb;', ''],
     ['força bloco depois da metade', ' && Date.now() - t0 < limite / 2)', ')'],

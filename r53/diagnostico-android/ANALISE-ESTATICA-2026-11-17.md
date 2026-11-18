@@ -145,3 +145,37 @@ As oficiais **não** precisam do pacote novo: a mudança do módulo (`acabar_`) 
   foi terminada pelo menu (70,7 s), e o CSV saiu igual ao anterior. Próximo passo: medir onde vão os segundos dentro
   do `onEdit` da caixa antes de mexer de novo.
 - Continua sem rodar: a marca `desatualizada` numa oficial, a caixa no celular, o menu na Era, a paleta.
+
+### Medição da caixa por dentro (18/11, cópia descartável do Ciclo)
+
+Cópia "TESTE caixa da ANALISE (descartável) 18-11 · Ciclo", com marcações de tempo no `AnaliseEstatica.gs`. A caixa foi
+clicada de verdade pelo painel do navegador. Tempos contados do começo do `onEdit` (o `t0`):
+
+| Passo | Tempo |
+|---|---|
+| Fora do código (abertura do gatilho, desmarcar a caixa, aviso) | ~7 s |
+| Primeiro toque na planilha (trava, propriedades, abas) | 1,4 a 4 s |
+| Ler a `ANALISE_MODELOS` inteira (18.480 linhas) | ~5 a 7 s |
+| Ler só as 4.000 linhas do bloco | 3,4 a 4,5 s |
+| Primeiro `flush` (cálculo das fórmulas do bloco) | 4,5 a 6,6 s |
+| Segundo `flush` (congelar) | 3,4 a 4,6 s |
+| Fechamento (propriedades e texto) | 0,5 a 3,7 s |
+
+**Mudança testada** (no `AnaliseEstatica.gs` do repositório, ainda não nas oficiais):
+- a caixa lê só as linhas do bloco; o total e as fórmulas já exportadas ficam nas propriedades
+  (`analise_modelos_total`, `analise_exportar_feitas`). Ficha instalada antes disso lê a lista inteira uma vez;
+- a caixa só escreve o estado na ANALISE quando ele muda;
+- cópia da ficha: a caixa vem junto e a propriedade não. O instalador agora reconhece a caixa (antes pagava ~3 s a
+  cada marcação e o texto "exportando N/T" nunca aparecia).
+
+Resultado: exportou tudo pela caixa e o CSV saiu idêntico ao de referência. Mas as marcações com bloco deram 21,4,
+26,4, 24,5 e 30,3 s, e na reexportação 28,6, 30,2, 28,0, 29,0 e 25,7 s. Ganho de 3 a 4 s por marcação, engolido
+pela variação do Google. **Não resolve.**
+
+**Tirar o primeiro `flush` não funciona:** sem ele, o `copyTo` com `contentsOnly` grava vazio. As 18 mil chaves
+saíram em branco (o teste escrevia `__velho__` antes da fórmula para provar que o valor era novo). A cópia foi
+restaurada e reexportada, com CSV de novo igual à referência.
+
+O bloco custa ~15 s quase sem depender do tamanho (leitura ~4 s, dois `flush` ~9 s). Somado aos ~7 s de fora e ao
+primeiro toque, a marcação fica em 25–30 s. Próxima ideia, não testada: dividir cada bloco em duas marcações
+(uma escreve e calcula, a outra congela).
