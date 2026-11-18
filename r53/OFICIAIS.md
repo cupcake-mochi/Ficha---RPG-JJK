@@ -89,6 +89,27 @@ Detalhes do mecanismo: `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`.
     Bot > Exportar para o bot, em dia às 11:23. CSV igual à referência (`8d40252463892e70` sem a linha
     `analise.exportada_em`, 18.502 linhas, formato 13, sem `#`).
   - **Não rodou:** o portador na Era; o celular; um `construir()`.
+- **Corte C e o Amparo sujo, 18/11 por volta das 11:35** (commit `8f46597`, PR #133). Pedido do Mizuki no chat:
+  "pode fazer a 1, 3, 4, 5 (todo ganho é bom, se afetar nada negativamente ta tudo bem)". Backup: os de manhã
+  (`17Y3R4…` e `1s-jeX…`), anteriores a todos os cortes. Duas trocas, cada uma só se o hash de antes batesse:
+  - **C** no Codigo (`preparar_portador_sem_modulo.js`): o portador sai do `r53OnEditOriginal_` depois do
+    `r53LivreConferido_`, com o `r53ContinuarPaletaPendente_`, sem carregar o módulo.
+  - **A corrigido** no EditorR53: com a marca `r53_amparo_sujo` (Trilha ou Caminho mudou na FICHA) o portador
+    sincroniza as Famílias como antes. Sem isso, o `r53LivreConferido_` apagava a marca sem a sincronização rodar.
+  - Codigo `261b452940ad` → `94f1a184f2af` e EditorR53 `abade0324d3f` → `35065b22a3ea`, iguais nas duas; relido depois
+    de recarregar o editor, os outros nove arquivos sem mudança.
+- **Testado nas oficiais, 18/11 11:39–13:40** (no painel do navegador do app):
+  - **Portador, Ciclo:** 6,6 s e 10,5 s (com A e B eram 13,0 e 9,8). O registro diz 1,3 s dentro do código
+    (`R53_ONEDIT`); o resto é o Google abrindo o projeto. **Era:** 12,8 s e 3,7 s. Nas duas o nome foi salvo, apareceu
+    na FICHA PESSOAL, marcou a ANALISE `desatualizada` e voltou ao texto original (conferido pelo CSV).
+  - **± na Ciclo** (FICHA!AM34, integridade 25/25): −1 deu 24 em 11,9 s, +1 voltou a 25 em 13,6 s. A vida não serviu
+    de teste: com o máximo em 0 (J26), o ± zeraria a vida atual (19). Na Era a vida e a energia estão em 0/0.
+  - **Paleta na Ciclo:** "Mizuki · Claro · rosa e magenta" em 19,3 s e de volta a "Mizuki · Escuro · ameixa e rosa"
+    em 16,9 s, as duas concluídas. A linha 4 da CARTEIRA (texto "Bot: …" e caixa AT4) pintou com a paleta clara e
+    ficou legível; a FICHA voltou igual à da Era.
+  - **Depois dos testes:** a ANALISE das duas ficou `desatualizada` (AH4 "Bot: desatualizada · marque ao lado"); falta
+    o Mizuki rodar Bot > Exportar para o bot em cada uma.
+  - **Não rodou:** o celular.
 
 Para voltar: restaurar o Codigo do backup, ou `node r53/diagnostico-android/preparar_analise_estatica.js --reverter`
 no editor e apagar o arquivo `AnaliseEstatica`. A ANALISE fica com valores congelados até alguém refazer as fórmulas
