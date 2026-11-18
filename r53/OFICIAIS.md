@@ -85,7 +85,9 @@ Detalhes do mecanismo: `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`.
   - **Ciclo, portador editado e voltado** (O9 "Teste portador", depois o texto original, conferido pelo CSV):
     `onEdit` de **13,0 s** e **9,8 s**, os dois concluídos (antes dos cortes, na cópia: 22,6 a 30,7 s, um estouro).
     A ANALISE ficou `desatualizada` (AH4 "Bot: desatualizada · marque ao lado"), como deve depois de uma edição.
-    A exportação para voltar a em dia não foi rodada por mim (a permissão barrou o clique no menu): fica com o Mizuki.
+    A exportação para voltar a em dia não foi rodada por mim (a permissão barrou o clique no menu): o Mizuki rodou
+    Bot > Exportar para o bot, em dia às 11:23. CSV igual à referência (`8d40252463892e70` sem a linha
+    `analise.exportada_em`, 18.502 linhas, formato 13, sem `#`).
   - **Não rodou:** o portador na Era; o celular; um `construir()`.
 
 Para voltar: restaurar o Codigo do backup, ou `node r53/diagnostico-android/preparar_analise_estatica.js --reverter`
