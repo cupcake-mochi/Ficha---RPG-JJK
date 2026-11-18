@@ -146,7 +146,7 @@ function suite(fonte) {
   s.props.m.delete('analise_caixa'); // como numa cópia da ficha: a caixa existe, a propriedade não
   t('caixa tratada aqui', () => assert.equal(s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 })), true));
   t('caixa desmarcada', () => assert.equal(s.cart.getRange('AT4').getValue(), false));
-  t('parcial: exportando e progresso guardado', () => { assert.equal(chave(s, 'analise.estado'), 'exportando'); assert.equal(s.props.m.get('analise_exportar_prox'), '4002'); assert.match(s.cart.getRange('AH4').getValue(), /^Bot: exportando 3998\/6999 · marque de novo$/); });
+  t('parcial: exportando e progresso guardado', () => { assert.equal(chave(s, 'analise.estado'), 'exportando'); assert.equal(s.props.m.get('analise_exportar_prox'), '4002'); assert.match(s.cart.getRange('AH4').getValue(), /^Bot: exportando 3998\/6999 · toque de novo$/); });
   t('duração do bloco guardada', () => assert.equal(s.props.m.get('analise_bloco_ms'), '16000'));
   t('blocos feitos já sem fórmula', () => assert.equal(formulasB(s), 0));
   t('caixa lê só as linhas do bloco', () => assert.ok(s.p.log.linhasLidas.ANALISE_MODELOS <= 4000, String(s.p.log.linhasLidas.ANALISE_MODELOS)));
@@ -160,7 +160,14 @@ function suite(fonte) {
   t('caixa lê a planilha uma vez só', () => assert.equal(s.p.log.leituras - lidas, 1));
   t('total guardado', () => assert.equal(s.props.m.get('analise_modelos_total'), '6999'));
   t('segunda marcação termina', () => { assert.equal(chave(s, 'analise.estado'), 'em_dia'); assert.equal(s.props.has ? 0 : s.props.m.has('analise_exportar_prox'), false); });
-  t('caixa desmarcada à toa não exporta', () => { const f = s.p.log.flush; s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'FALSE')); assert.equal(s.p.log.flush, f); });
+  t('caixa apagada não exporta', () => { const f = s.p.log.flush; s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', undefined)); assert.equal(s.p.log.flush, f); });
+  // Marcação que estourou os 30 s deixa a caixa marcada: o toque seguinte desmarca e tem de continuar.
+  s.c.analiseNaEdicao_(ev(s, 'FICHA', 'B6', '3'));
+  s.clock.t = 0; s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 }));
+  t('estouro simulado: parcial', () => assert.equal(chave(s, 'analise.estado'), 'exportando'));
+  s.cart.getRange('AT4').setValue(true);
+  s.clock.t = 0; s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'FALSE', { r53Inicio_: 0 }));
+  t('desmarcar continua a exportação', () => { assert.equal(chave(s, 'analise.estado'), 'em_dia'); assert.equal(s.cart.getRange('AT4').getValue(), false); });
 
   // 4. Editou no meio da exportação: recomeça do começo.
   s.p.dados.k6998 = 'FIM';
@@ -169,7 +176,7 @@ function suite(fonte) {
   t('parcial de novo', () => assert.equal(s.props.m.get('analise_exportar_prox'), '4002'));
   s.p.dados.k0 = 'MEIO';
   s.c.analiseNaEdicao_(ev(s, 'FICHA', 'B5', '9'));
-  t('edição no meio apaga o progresso', () => { assert.equal(s.props.m.has('analise_exportar_prox'), false); assert.equal(s.cart.getRange('AH4').getValue(), 'Bot: editada no meio · marque de novo'); });
+  t('edição no meio apaga o progresso', () => { assert.equal(s.props.m.has('analise_exportar_prox'), false); assert.equal(s.cart.getRange('AH4').getValue(), 'Bot: editada no meio · toque de novo'); });
   s.clock.t = 0; s.clock.passo = 1000; s.c.analiseNaEdicao_(ev(s, 'CARTEIRA', 'AT4', 'TRUE', { r53Inicio_: 0 }));
   t('recomeço pega a edição do meio', () => { assert.equal(chave(s, 'chave.0'), 'MEIO'); assert.equal(chave(s, 'chave.6998'), 'FIM'); assert.equal(chave(s, 'analise.estado'), 'em_dia'); });
 
@@ -333,6 +340,7 @@ new vm.Script(prep.trecho()); new vm.Script(prep.trecho(true)); total += 2;
     ['junta na caixa', "ANALISE_EST_.limiteCaixa, false);", "ANALISE_EST_.limiteCaixa, true);"],
     ['sem a versão 13', 'an.getRange(linhas.versao, 2).setValue("\'" + C.versao);', ''],
     ['caixa não desmarca', 'e.range.setValue(false);', ''],
+    ['desmarcar não exporta', "if (v !== 'TRUE' && v !== 'FALSE') return true;", "if (v !== 'TRUE') return true;"],
     ['edição no meio não recomeça', 'props.deleteProperty(C.propProx);\n      if (!naB)', 'if (!naB)'],
     ['B não limpa', 'if (naB) r.getSheet().getRange(r.getRow(), 2, r.getNumRows(), 1).clearContent();', ''],
     ['cópia sem sincronizar', "props.getProperty(C.prop) || analiseSincronizar_(props)", "props.getProperty(C.prop) || 'viva'"],

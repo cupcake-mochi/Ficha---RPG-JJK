@@ -96,10 +96,14 @@ function analiseNaEdicao_(e) {
   }
 }
 
-/** A caixa "Exportar para o bot" da CARTEIRA: exporta o que couber e desmarca. */
+/**
+ * A caixa "Exportar para o bot" da CARTEIRA: exporta o que couber e desmarca. Qualquer toque exporta, marcando ou
+ * desmarcando: uma marcação que passa dos 30 s do gatilho morre antes de desmarcar, e o toque seguinte (que desmarca)
+ * tem de continuar a exportação, não ser perdido (medido em 18/11: o tempo fora do código varia de 6 a 14 s).
+ */
 function analiseCaixa_(e) {
-  var ss = e.source || SpreadsheetApp.getActive(), r = null;
-  if (String(e.value).toUpperCase() !== 'TRUE') return true;
+  var ss = e.source || SpreadsheetApp.getActive(), r = null, v = String(e.value).toUpperCase();
+  if (v !== 'TRUE' && v !== 'FALSE') return true;
   try {
     r = analiseExportar_(typeof e.r53Inicio_ === 'number' ? e.r53Inicio_ : Date.now(), ANALISE_EST_.limiteCaixa, false);
   } catch (err) {
@@ -326,7 +330,7 @@ function analiseTexto_(ss, props, estado, extra) {
   var cart = ss.getSheetByName(C.carteira);
   if (!cart) return;
   var t = estado === 'em_dia' ? 'Bot: em dia · ' + extra
-    : estado === 'exportando' ? (extra === 'recomeça' ? 'Bot: editada no meio · marque de novo' : 'Bot: exportando ' + extra + ' · marque de novo')
+    : estado === 'exportando' ? (extra === 'recomeça' ? 'Bot: editada no meio · toque de novo' : 'Bot: exportando ' + extra + ' · toque de novo')
     : estado === 'desatualizada' ? 'Bot: desatualizada · marque ao lado'
     : 'Bot: marque ao lado para exportar';
   cart.getRange(C.texto).setValue(t);
@@ -357,7 +361,7 @@ function analiseCaixaInstalar_(ss, props) {
 
 function analiseFrase_(r) {
   if (r.estado === 'em_dia') return 'ANALISE exportada: ' + r.total + ' fórmulas em ' + Math.round(r.ms / 1000) + ' s.';
-  if (r.estado === 'exportando') return 'Exportadas ' + r.feitas + ' de ' + r.total + '. Marque a caixa de novo (ou use o menu Bot) para continuar.';
+  if (r.estado === 'exportando') return 'Exportadas ' + r.feitas + ' de ' + r.total + '. Toque na caixa de novo (ou use o menu Bot) para continuar.';
   if (r.estado === 'ocupada') return 'Outra exportação está rodando. Tente de novo em instantes.';
   return String(r.estado);
 }

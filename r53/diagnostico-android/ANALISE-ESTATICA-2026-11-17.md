@@ -41,7 +41,7 @@ Decisões do Mizuki (17/11):
 
   Um bloco só começa se o tempo já gasto mais a duração do último bloco couber no limite. Na caixa o limite é 16 s
   (18 s até 18/11) contados do começo do `onEdit`, para caber nos 30 s do gatilho simples. Se não couber, o texto diz
-  "exportando N/T · marque de novo".
+  "exportando N/T · toque de novo".
 - **A caixa lê a planilha uma vez só** (os modelos). O número de modelos e as linhas de estado vêm das propriedades
   do documento. Motivo: com a ANALISE viva, cada leitura custa de 2 a 3 s, do tamanho que for (ver a prova abaixo).
 - **A caixa só existe depois da primeira exportação** (é ela que instala). A primeira sai pelo menu (PC) ou pelo
@@ -196,3 +196,12 @@ que manda é a variação do Google, não o tamanho do trabalho.
 
 O que protege a exportação mesmo assim: o progresso é gravado depois de cada `flush`. Uma marcação que estoura os 30 s
 perde só o pedaço em andamento, e a caixa fica marcada; o toque seguinte desmarca sem exportar.
+
+**Qualquer toque exporta (18/11, `450709a1a988` na cópia):** marcar ou desmarcar a caixa continua a exportação, para
+o toque depois de um estouro não ser perdido. Apagar a célula não exporta. Os textos passaram a "toque de novo".
+Na cópia:
+- marcar (10:12:07) e desmarcar 8 s depois, com a primeira ainda rodando (10:12:15). O desmarcar entrou no exportador
+  (13,2 s, achou a trava ocupada) e desmarcou a caixa. A primeira estourou (30,7 s), mas o bloco dela já estava
+  gravado: o texto ficou em 0/18.480 e a marcação seguinte pulou para 7.988;
+- depois, uma marcação por bloco: 32,3, 26,1, 23,0 e 31,1 s, todas concluídas (o corte não é exato nos 30 s);
+- CSV igual à referência (`8d40252463892e70`).
