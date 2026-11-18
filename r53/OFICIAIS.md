@@ -107,8 +107,10 @@ Detalhes do mecanismo: `r53/diagnostico-android/ANALISE-ESTATICA-2026-11-17.md`.
   - **Paleta na Ciclo:** "Mizuki · Claro · rosa e magenta" em 19,3 s e de volta a "Mizuki · Escuro · ameixa e rosa"
     em 16,9 s, as duas concluídas. A linha 4 da CARTEIRA (texto "Bot: …" e caixa AT4) pintou com a paleta clara e
     ficou legível; a FICHA voltou igual à da Era.
-  - **Depois dos testes:** a ANALISE das duas ficou `desatualizada` (AH4 "Bot: desatualizada · marque ao lado"); falta
-    o Mizuki rodar Bot > Exportar para o bot em cada uma.
+  - **Depois dos testes:** a ANALISE das duas ficou `desatualizada` (AH4 "Bot: desatualizada · marque ao lado"). O
+    Mizuki rodou Bot > Exportar para o bot nas duas: em dia às 14:07 (Ciclo 14:07:11, Era 14:07:54). CSV sem a linha
+    `analise.exportada_em` igual à referência de 17/11 (Ciclo `8d40252463892e70`, Era `9bfc57db7091f8fd`), 18.502
+    linhas, formato 13, sem `#`.
   - **Não rodou:** o celular.
 
 Para voltar: restaurar o Codigo do backup, ou `node r53/diagnostico-android/preparar_analise_estatica.js --reverter`
