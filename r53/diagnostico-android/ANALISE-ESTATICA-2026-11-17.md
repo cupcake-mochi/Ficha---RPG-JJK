@@ -214,3 +214,25 @@ Na cópia:
 - Cópia de teste: editar o portador marcou `desatualizada` como devia, mas a edição levou 29,97 s (19,9 s dentro do
   código da ficha, pelo `R53_ONEDIT`) e a seguinte 29,55 s. Não é a ANALISE: na segunda o estado já era desatualizada
   e a marca só lê uma propriedade. É o que está mais perto do limite agora.
+
+### Editar o portador da CARTEIRA perto dos 30 s (18/11, cópia de teste)
+
+Medido com embrulhos temporários nas funções do onEdit, já tirados. Quatro edições do portador: 29,97, 29,55,
+27,43 e **30,68 s (tempo limite)**, depois 22,6 e 22,9 s. Numa de 22,9 s, dentro do código (19,6 s):
+
+- `analiseNaEdicao_` 1,7 s (primeiro toque na planilha, que alguém sempre paga);
+- 4,3 s logo depois do `salarioEditar_`: o portador (CARTEIRA linhas 9–15, colunas O–AS) é a área `nome` do
+  salário, que no modo fórmula (`SALARIO_.formula = true`) só trava e dá flush, e a chamada seguinte espera o recálculo;
+- `r53Editar_` 4,9 s: nenhum cartão no portador, mas `r53SincronizarFamilias_` lê o Amparo
+  (`DADOS_R53_CATALOGO!X10:AJ10`, 4,4 s) em toda edição da CARTEIRA. O Amparo é o estado da Família Amparo, escolhido
+  na FICHA AMALDIÇOADA, na INVOCAÇÕES e na CONFIGURAÇÃO;
+- carga do módulo 3,7 s e o `onEdit` do módulo 4,2 s.
+
+Testados na cópia (só nela, não no git nem nas oficiais):
+
+- **A:** no `r53Editar_`, sem cartão na área, não sincroniza o Amparo quando a edição é na CARTEIRA linhas 9–12;
+- **B:** no `salarioEditar_`, `nome` só vale fora do modo fórmula.
+
+Com os dois: 13,2, 12,4, 14,4 e 12,4 s (código 7,4 s; o `r53Editar_` caiu para 0,26 s e o buraco de 4,3 s sumiu).
+O nome continuou gravado, chegou à FICHA PESSOAL e a ANALISE foi marcada `desatualizada`. Hashes na cópia:
+EditorR53 `676337f165f7` → `addf731166ea`, Codigo do pacote `57a8398fa8c5` → `fc43e080e87c`.
