@@ -288,7 +288,9 @@ function salarioEditar_(e) {
   var config=n===SALARIO_.config&&salarioToca_(r,35,76,11,17);
   var missao=n==='FICHA PESSOAL'&&(salarioToca_(r,15,87,49,72)||salarioToca_(r,11,11,28,30));
   var emitir=n==='CARTEIRA'&&salarioToca_(r,3,3,46,46);
-  var nome=n==='CARTEIRA'&&salarioToca_(r,9,15,15,45);
+  // 18/11/2026: no modo fórmula o nome do portador não muda nada aqui; a trava e o flush só faziam a chamada seguinte
+  // esperar o recálculo do nome (~4,3 s medidos numa cópia do Ciclo).
+  var nome=!SALARIO_.formula&&n==='CARTEIRA'&&salarioToca_(r,9,15,15,45);
   var total=n==='FICHA PESSOAL'&&salarioToca_(r,86,86,23,30);
   if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,86,87,15,21)&&salarioGasto_(ss,r,e))return true;
   if(SALARIO_.formula&&n==='FICHA PESSOAL'&&salarioToca_(r,10,12,61,71)&&salarioCorrigirData_(ss,r,e))return true;
