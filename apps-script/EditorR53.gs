@@ -214,8 +214,11 @@ function r53Editar_(e) {
  if(!/^(FICHA AMALDIÇOADA|INVOCAÇÕES|CONFIGURAÇÃO|CARTEIRA)$/.test(owner))return false;
  var gs=R53_EDITOR_.contextos.filter(function(g){var a=g.area_editor;return g.aba===owner&&range.getLastRow()>=a[0]&&range.getRow()<=a[2]&&range.getLastColumn()>=a[1]&&range.getColumn()<=a[3];});
  // 18/11/2026: o portador (CARTEIRA O9:AH12) não muda o Amparo, que é a Família escolhida nas outras abas. Reler o
- // Amparo esperava o recálculo do nome (~4,4 s) e levava a edição do portador aos 30 s numa cópia do Ciclo.
- var portador=owner==='CARTEIRA'&&range.getRow()>=9&&range.getLastRow()<=12&&range.getColumn()>=15&&range.getLastColumn()<=34;
+ // Amparo esperava o recálculo do nome (~4,4 s) e levava a edição do portador aos 30 s numa cópia do Ciclo. Com a marca
+ // do atalho livre (Trilha ou Caminho mudou na FICHA), o portador sincroniza como antes: o r53LivreConferido_ apaga a marca
+ // logo depois, e sem sincronizar o Amparo ficaria velho até outra edição fora dos cartões.
+ var portador=owner==='CARTEIRA'&&range.getRow()>=9&&range.getLastRow()<=12&&range.getColumn()>=15&&range.getLastColumn()<=34&&
+  !(typeof R53_LIVRE_PROP_==='string'&&PropertiesService.getDocumentProperties().getProperty(R53_LIVRE_PROP_));
  if(!gs.length){if(!portador)r53SincronizarFamilias_(ss);return false;}
  // Capture before waiting: an older Class callback may overwrite the visible
  // cell while this newer input event is queued. Scalar events retain e.value.

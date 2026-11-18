@@ -37,6 +37,42 @@ const ok = (c, m) => { console.log((c ? 'ok   ' : 'FALHA ') + m); if (!c) falhas
   const fora = [[18, 37], [22, 37], [30, 3], [40, 20]].find(([r, c]) => livre(r, c) && !(r >= 9 && r <= 12 && c >= 15 && c <= 34));
   ok(!!fora, 'achou uma célula da CARTEIRA fora dos cartões e do portador');
   if (fora) ok(editar(fora[0], fora[1], 'x') === false && leuAmparo(), 'outra célula da CARTEIRA (' + fora + '): ainda relê o Amparo');
+  // Com a marca do atalho livre (Trilha ou Caminho mudou), o portador sincroniza: o r53LivreConferido_ apaga a marca.
+  vm.runInContext("var R53_LIVRE_PROP_='r53_amparo_sujo';", A.ctx);
+  ok(editar(9, 15, 'Nome novo') === false && !leuAmparo(), 'portador sem a marca do Amparo sujo: não relê');
+  A.props.r53_amparo_sujo = '1';
+  ok(editar(9, 15, 'Nome novo') === false && leuAmparo(), 'portador com a marca do Amparo sujo: relê, como antes');
+  delete A.props.r53_amparo_sujo;
+}
+
+// (C) Codigo: o portador sai antes do módulo, com a paleta pendente; o resto segue para o módulo.
+{
+  const { preparar } = require('../diagnostico-android/preparar_portador_sem_modulo.js');
+  const { DEPOIS } = require('../diagnostico-android/preparar_atalho.js');
+  const antes = 'function r53OnEditOriginal_(e){' + DEPOIS + '}';
+  const fonte = preparar(antes);
+  let threw = false; try { preparar(fonte); } catch (err) { threw = /já presente/.test(err.message); }
+  ok(threw, 'C: o preparador recusa um Codigo que já tem o corte');
+  const chamadas = [];
+  const ctx = {
+    r53EdicaoLivre_: () => false, r53LivreMarcar_: () => {}, r53EditarCaminho_: () => false, r53Editar_: () => false,
+    r53LivreConferido_: () => chamadas.push('conferido'),
+    r53ContinuarPaletaPendente_: () => { chamadas.push('paleta'); return 'paleta'; },
+    r53Modulo_: () => { chamadas.push('modulo'); return { onEdit: () => 'modulo' }; },
+  };
+  vm.createContext(ctx); vm.runInContext(fonte, ctx);
+  const ev = (aba, r, c, r2 = r, c2 = c) => ({ range: { getSheet: () => ({ getName: () => aba }), getRow: () => r,
+    getLastRow: () => r2, getColumn: () => c, getLastColumn: () => c2 } });
+  const rodar = e => { chamadas.length = 0; return [ctx.r53OnEditOriginal_(e), chamadas.join(',')]; };
+  let [r, c] = rodar(ev('CARTEIRA', 9, 15));
+  ok(r === 'paleta' && c === 'conferido,paleta', 'C: portador (O9) não abre o módulo e continua a paleta pendente');
+  [r, c] = rodar(ev('CARTEIRA', 9, 15, 12, 34));
+  ok(r === 'paleta' && c.indexOf('modulo') < 0, 'C: o bloco inteiro do portador (O9:AH12) também não abre');
+  for (const [aba, l, col, l2, c2] of [['CARTEIRA', 18, 15], ['CARTEIRA', 8, 15], ['CARTEIRA', 9, 15, 13, 15], ['CARTEIRA', 9, 35],
+    ['FICHA', 9, 15], ['FICHA PESSOAL', 9, 15]]) {
+    [r, c] = rodar(ev(aba, l, col, l2, c2));
+    ok(r === 'modulo' && c === 'conferido,modulo', 'C: ' + aba + ' ' + [l, col, l2, c2].filter(x => x !== undefined) + ' segue para o módulo');
+  }
 }
 
 // (B) salário
