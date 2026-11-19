@@ -11,7 +11,7 @@ const vm = require('vm');
 const REAIS = {
   Spreadsheet: 'getSpreadsheetLocale setSpreadsheetLocale getSheetByName insertSheet deleteSheet getSheets setActiveSheet moveActiveSheet getRange getRangeByName setNamedRange getNamedRanges removeNamedRange getId toast getActiveSheet getName getNumSheets getRangeList getUrl getSpreadsheetTimeZone rename',
   Sheet: 'getName setName setHiddenGridlines getMaxColumns getMaxRows deleteColumns deleteRows deleteColumn deleteRow insertColumnsAfter insertRowsAfter insertColumnAfter insertRowAfter setColumnWidths setColumnWidth setRowHeights setRowHeight getRange getRangeList hideSheet showSheet isSheetHidden setConditionalFormatRules getConditionalFormatRules clearConditionalFormatRules setRowGroupControlPosition setColumnGroupControlPosition getRowGroup getColumnGroup getRowGroupDepth getColumnGroupDepth getRowGroupControlPosition getColumnGroupControlPosition getProtections getDataRange getLastRow getLastColumn getImages getParent getSheetId activate getIndex setFrozenRows setFrozenColumns getColumnWidth getRowHeight hideColumns showColumns hideRows showRows collapseAllColumnGroups collapseAllRowGroups expandAllColumnGroups expandAllRowGroups expandRowGroupsUpToDepth expandColumnGroupsUpToDepth setTabColor protect getSheetName getSheetValues clear',
-  Range: 'setBackgrounds setFontFamilies setFontSizes setFontColors setFontWeights setHorizontalAlignments setVerticalAlignments setFontStyles setWraps setValues setValue getValue getValues getDisplayValue getDisplayValues setFormula setFormulas getFormula getFormulas getFormulaR1C1 getFormulasR1C1 setFormulaR1C1 setFormulasR1C1 setTextRotation merge mergeAcross mergeVertically breakApart isPartOfMerge getMergedRanges getNumRows getNumColumns getRow getColumn getLastRow getLastColumn getCell getA1Notation getSheet setBorder insertCheckboxes removeCheckboxes setNumberFormat setNumberFormats getNumberFormat setNote setNotes clearNote getNote getNotes shiftRowGroupDepth shiftColumnGroupDepth setDataValidation setDataValidations getDataValidation getDataValidations clearDataValidations protect getBackground getBackgrounds getFontColor getFontColors setBackground setFontColor setFontFamily setFontSize setFontWeight setFontStyle setFontLine setHorizontalAlignment setVerticalAlignment setWrap setWrapStrategy clearContent clearFormat clear check uncheck isChecked activate offset copyTo getHeight getWidth isBlank setShowHyperlink setRichTextValue getRichTextValue getGridId',
+  Range: 'setBackgrounds setFontFamilies setFontSizes setFontColors setFontWeights setHorizontalAlignments setVerticalAlignments setFontStyles setWraps setValues setValue getValue getValues getDisplayValue getDisplayValues setFormula setFormulas getFormula getFormulas getFormulaR1C1 getFormulasR1C1 setFormulaR1C1 setFormulasR1C1 setTextRotation merge mergeAcross mergeVertically breakApart isPartOfMerge getMergedRanges getNumRows getNumColumns getRow getColumn getLastRow getLastColumn getCell getA1Notation getSheet setBorder insertCheckboxes removeCheckboxes setNumberFormat setNumberFormats getNumberFormat setNote setNotes clearNote getNote getNotes shiftRowGroupDepth shiftColumnGroupDepth setDataValidation setDataValidations getDataValidation getDataValidations clearDataValidations protect getBackground getBackgrounds getFontColor getFontColors setBackground setFontColor setFontFamily setFontSize setFontWeight setFontStyle setFontLine setHorizontalAlignment setVerticalAlignment setWrap setWrapStrategy clearContent clearFormat clear check uncheck isChecked activate offset copyTo getHeight getWidth isBlank setShowHyperlink setRichTextValue setRichTextValues getRichTextValue getRichTextValues getGridId getTextStyle getTextStyles',
   RangeList: 'setBorder check uncheck setBackground setFontColor getRanges activate clearContent insertCheckboxes removeCheckboxes setValue setNote setFormula setNumberFormat setFontFamily setFontSize setHorizontalAlignment setVerticalAlignment setWrap setFontWeight setFontStyle clear clearNote clearFormat clearDataValidations setDataValidation breakApart setTextRotation trimWhitespace',
   Group: 'collapse expand getControlIndex getDepth getRange isCollapsed remove',
   Protection: 'setDescription getDescription setWarningOnly isWarningOnly remove getRange addEditor addEditors removeEditor removeEditors getEditors canEdit setRange getProtectionType canDomainEdit setDomainEdit getRangeName setRangeName setNamedRange setUnprotectedRanges getUnprotectedRanges',
@@ -19,8 +19,11 @@ const REAIS = {
   DataValidationBuilder: 'setAllowInvalid requireValueInList requireValueInRange requireCheckbox setHelpText build requireFormulaSatisfied requireNumberBetween requireTextContains copy withCriteria',
   ConditionalFormatRuleBuilder: 'whenFormulaSatisfied whenTextContains whenTextDoesNotContain whenTextEqualTo whenTextStartsWith whenTextEndsWith whenCellEmpty whenCellNotEmpty whenNumberGreaterThan whenNumberLessThan whenNumberEqualTo whenNumberBetween setBackground setFontColor setBold setItalic setUnderline setStrikethrough setRanges build copy',
   RichTextValueBuilder: 'build setLinkUrl setText setTextStyle',
-  TextStyleBuilder: 'build setBold setFontFamily setFontSize setForegroundColor setItalic setStrikethrough setUnderline',
+  TextStyleBuilder: 'build setBold setFontFamily setFontSize setForegroundColor setForegroundColorObject setItalic setStrikethrough setUnderline',
+  TextStyle: 'copy getFontFamily getFontSize getForegroundColor getForegroundColorObject isBold isItalic isStrikethrough isUnderline',
   CellImageBuilder: 'setSourceUrl setAltTextTitle setAltTextDescription build toBuilder getAltTextTitle getAltTextDescription getContentUrl getUrl',
+  Ui: 'createMenu createAddonMenu alert prompt showModalDialog showModelessDialog showSidebar',
+  Menu: 'addItem addSeparator addSubMenu addToUi',
   SpreadsheetApp: 'getActive getActiveSpreadsheet getActiveSheet getActiveRange flush newCellImage newDataValidation newConditionalFormatRule newRichTextValue newTextStyle getUi openById openByUrl create',
 };
 const NOMES = Object.fromEntries(Object.entries(REAIS).map(([k, v]) => [k, new Set(v.split(' '))]));
@@ -78,7 +81,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
   function criaAba(nome) {
     const A = { nome, maxR: 1000, maxC: 26, v: new Map(), f: new Map(), notas: new Map(), merges: [], dv: new Map(), cf: [], caixas: new Set(),
                 fmt: new Map(), prot: [], oculta: false, grade: true, congeladas: 0, profL: new Map(), profC: new Map(), fechL: [], fechC: [], posL: 'AFTER', posC: 'AFTER',
-                bordas: 0, larg: new Map(), alt: new Map(), est: new Map(), lados: new Map(), ricos: new Map() };
+                bordas: 0, larg: new Map(), alt: new Map(), est: new Map(), lados: new Map(), ricos: new Map(), links: new Map(), ocultasL: new Set() };
     const poe = (i, j, que, val) => { const k = i + ',' + j; if (!A.est.has(k)) A.est.set(k, {}); A.est.get(k)[que] = val; };
     const borda = (r, c, nl, nc, a) => { if (a.length !== 8) throw new Error('setBorder quer oito argumentos'); A.bordas++;
       const marca = (i, j, lado) => A.lados.set(i + ',' + j + ',' + lado, a[6] + '|' + a[7]);
@@ -100,6 +103,12 @@ function criaSheets(FICHA_SRC, GS, extras) {
       const ref = /^=(?:(?:'([^']+)'|([A-ZÇÃ_]+))!)?\$?([A-Z]+)\$?(\d+)$/.exec(f);
       if (ref) { const B = (ref[1] || ref[2]) ? acha(ref[1] || ref[2]) : A; return B ? B.le(Number(ref[4]), numero(ref[3])) : '#REF!'; }
       if (f === '=TRUE') return true;
+      // 19/11/2026: a R53_EVENTOS lê cada célula do retrato do Caminho como =IF(ISBLANK(X),"",X), com o mesmo X
+      const vazio = /^=IF\(ISBLANK\(((?:'[^']+'|[A-ZÇÃ_]+)!\$?[A-Z]+\$?\d+)\),"",((?:'[^']+'|[A-ZÇÃ_]+)!\$?[A-Z]+\$?\d+)\)$/.exec(f);
+      if (vazio && vazio[1] === vazio[2]) return calcula('=' + vazio[1]);
+      // 19/11/2026: a fórmula que é só um texto entre aspas vale o texto (o otimizarAnaliseAndroid() confere isso)
+      const lit = /^="((?:[^"]|"")*)"$/.exec(f);
+      if (lit) return lit[1].replace(/""/g, '"');
       return f;                                            // o resto fica como texto: quem precisa da conta é o LibreOffice
     };
     A.le = (r, c) => { const k = r + ',' + c; return A.f.has(k) ? calcula(A.f.get(k)) : (A.v.has(k) ? A.v.get(k) : ''); };
@@ -115,6 +124,11 @@ function criaSheets(FICHA_SRC, GS, extras) {
       const formato = (que) => (m) => { matriz(m, nl, nc, que); cada((i, j, a, b) => poe(i, j, que, m[a][b])); return R; };
       const um = (que) => (x) => { cada((i, j) => poe(i, j, que, x)); return R; };
       const grava = (i, j, x) => { const k = i + ',' + j; if (typeof x === 'string' && x[0] === '=') { confereFormula(nome + '!' + letras(j) + i, x); A.v.delete(k); A.f.set(k, x); } else { A.f.delete(k); if (x === '') A.v.delete(k); else A.v.set(k, x); } };
+      // O Sheets come um apóstrofo do começo do texto rico, como come no valor digitado (o Android.gs dobra o dele)
+      const rico = (i, j, v, que) => { if (!v || !v.__rico) throw new Error(que + ' sem texto rico'); const k = i + ',' + j;
+        // texto rico nunca é fórmula, nem quando começa com =
+        const t = v.texto[0] === "'" ? v.texto.slice(1) : v.texto; A.f.delete(k); if (t === '') A.v.delete(k); else A.v.set(k, t);
+        A.ricos.set(k, v.negritos); if (v.links.length) A.links.set(k, v.links); else A.links.delete(k); };
       const mescla = (r0, c0, l, n) => {
         for (const m of A.merges) {
           const cruza = r0 <= m[2] && r0 + l - 1 >= m[0] && c0 <= m[3] && c0 + n - 1 >= m[1];
@@ -134,11 +148,17 @@ function criaSheets(FICHA_SRC, GS, extras) {
         getBackgrounds: () => [...Array(nl)].map(() => Array(nc).fill('#120F1D')), getFontColors: () => [...Array(nl)].map(() => Array(nc).fill('#F4F1F7')),
         getBackground: () => '#120F1D',
         setValues: (m) => { matriz(m, nl, nc, 'setValues'); cada((i, j, a, b) => grava(i, j, m[a][b])); return R; },
-        setValue: (x) => { grava(r, c, x); A.ricos.delete(r + ',' + c); return R; },
+        setValue: (x) => { grava(r, c, x); A.ricos.delete(r + ',' + c); A.links.delete(r + ',' + c); return R; },
         // 05/10/2026: o texto rico (as cartas de Habilidades põem os subtítulos do livro em negrito): a célula guarda o
         // texto, e o teste lê os trechos em negrito
-        setRichTextValue: (v) => { if (!v || !v.__rico) throw new Error('setRichTextValue sem texto rico'); grava(r, c, v.texto);
-          A.ricos.set(r + ',' + c, v.negritos); return R; },
+        setRichTextValue: (v) => { rico(r, c, v, 'setRichTextValue'); return R; },
+        // 19/11/2026: o otimizarAnaliseAndroid() troca as constantes da ANALISE por texto, quinhentas por vez
+        setRichTextValues: (m) => { matriz(m, nl, nc, 'setRichTextValues'); cada((i, j, a, b) => rico(i, j, m[a][b], 'setRichTextValues')); return R; },
+        // 19/11/2026: o estilo da letra da célula do canto, como o Sheets devolve: o que o construir() gravou nela, e o
+        // padrão do Sheets no resto. Os links da CONFIGURAÇÃO copiam esse estilo e tiram só o sublinhado.
+        getTextStyle: () => { const e = A.est.get(r + ',' + c) || {};
+          return estiloDeTexto({ fonte: e.setFontFamilies || 'Arial', tamanho: e.setFontSizes || 10, cor: e.setFontColors || '#000000',
+            negrito: e.setFontWeights === 'bold', italico: e.setFontStyles === 'italic', sublinhado: false, riscado: false }); },
         getDisplayValue: () => String(A.le(r, c)),
         // Mesmo contrato textual da leitura de uma célula; esta VM não recalcula fórmulas.
         getDisplayValues: () => [...Array(nl)].map((_, i) => [...Array(nc)].map((__, j) => String(A.le(r + i, c + j)))),
@@ -244,14 +264,23 @@ function criaSheets(FICHA_SRC, GS, extras) {
       // 09/10/2026: a linha do aviso da paleta, que passou a ter duas linhas de texto
       setRowHeight: (lin, px) => { dentro(lin, 1, 1, 1, 'setRowHeight'); A.alt.set(lin, px); },
       getRange: (a, b, c, d) => (typeof a === 'string' ? porA1(a) : range(a, b, c, d)),
-      getRangeList: (lista) => { const rs = lista.map(porA1); return rigoroso('RangeList', {
+      getRangeList: (lista) => { const rs = lista.map(porA1);
+        // 19/11/2026: o que a lista faz igual em cada faixa (os módulos leves do R53 usam setNote e clearNote), repassado
+        // ao Range, sem contar a chamada duas vezes
+        const repassa = Object.fromEntries(['setNote', 'clearNote', 'clearContent', 'setBackground', 'setFontColor', 'setFontWeight', 'setFontFamily', 'setFontSize',
+          'setFontStyle', 'setHorizontalAlignment', 'setVerticalAlignment', 'setWrap', 'insertCheckboxes', 'setFormula', 'setDataValidation'].map((n) => [n, (...a) => {
+          rs.forEach((x) => { x[n](...a); CHAMADAS['Range.' + n]--; }); return lst; }]));
+        const lst = rigoroso('RangeList', { ...repassa,
         setBorder: (...a) => { rs.forEach((x) => borda(x.getRow(), x.getColumn(), x.getNumRows(), x.getNumColumns(), a)); },
         setNumberFormat: (f) => { rs.forEach((x) => { x.setNumberFormat(f); CHAMADAS['Range.setNumberFormat']--; }); },
         setValue: (v) => { rs.forEach((x) => x.setValue(v)); },
         check: () => rs.forEach((x) => { if (!A.caixas.has(x.getRow() + ',' + x.getColumn())) throw new Error('check numa célula que não é caixa de seleção: ' + x.getA1Notation()); x.setValue(true); }),
         uncheck: () => rs.forEach((x) => { if (!A.caixas.has(x.getRow() + ',' + x.getColumn())) throw new Error('uncheck numa célula que não é caixa de seleção: ' + x.getA1Notation()); x.setValue(false); }),
-      }); },
+        getRanges: () => rs.slice(),
+      }); return lst; },
       hideSheet: () => { A.oculta = true; },
+      // 19/11/2026: as linhas_ocultas do ABAS (FICHA). Sem a quantidade, o Sheets esconde uma linha só
+      hideRows: (lin, n) => { if (n === undefined) n = 1; dentro(lin, 1, n, 1, 'hideRows'); for (let i = lin; i < lin + n; i++) A.ocultasL.add(i); },
       setConditionalFormatRules: (regras) => { if (!regras.every((x) => x && x.__regraCf)) throw new Error('regra de cor que não foi montada');
         regras.forEach((x) => { if (x.formula) confereFormula(nome + ', regra de cor', x.formula); }); A.cf = regras; },
       setRowGroupControlPosition: (p) => { if (p !== 'BEFORE' && p !== 'AFTER') throw new Error('posição de controle inválida'); A.posL = p; },
@@ -264,6 +293,7 @@ function criaSheets(FICHA_SRC, GS, extras) {
       getLastRow: () => Math.max(0, ...[...A.v.keys(), ...A.f.keys()].map((k) => Number(k.split(',')[0]))),
       getLastColumn: () => Math.max(0, ...[...A.v.keys(), ...A.f.keys()].map((k) => Number(k.split(',')[1]))),
       getImages: () => [],
+      getParent: () => ss,   // 19/11/2026: o onEdit das famílias custom pega a planilha pela aba
     });
     return A;
   }
@@ -283,29 +313,73 @@ function criaSheets(FICHA_SRC, GS, extras) {
     getNamedRanges: () => Object.keys(P.nomeados).map((n) => rigoroso('NamedRange', { getName: () => n, getRange: () => P.nomeados[n], remove: () => { delete P.nomeados[n]; } })),
     getId: () => 'planilha-de-mentira', toast: (texto, titulo) => { P.avisos.push([String(titulo || ''), String(texto)]); },
   });
+  // 19/11/2026: o TextStyle (o que getTextStyle e build devolvem) e o TextStyleBuilder (newTextStyle e copy). Todos os
+  // campos existem desde o começo, valendo null quando ninguém escolheu: o rigoroso estouraria num campo que falta.
+  const CAMPOS = ['negrito', 'italico', 'sublinhado', 'riscado', 'fonte', 'tamanho', 'cor'];
+  function estiloDeTexto(base) {
+    const o = { __estilo: true }; CAMPOS.forEach((k) => { o[k] = base[k] === undefined ? null : base[k]; });
+    return rigoroso('TextStyle', Object.assign(o, { copy: () => construtorDeEstilo(o),
+      isBold: () => o.negrito, isItalic: () => o.italico, isUnderline: () => o.sublinhado, isStrikethrough: () => o.riscado,
+      getFontFamily: () => o.fonte, getFontSize: () => o.tamanho, getForegroundColor: () => o.cor }));
+  }
+  function construtorDeEstilo(base) {
+    const o = {}; CAMPOS.forEach((k) => { o[k] = base[k] === undefined ? null : base[k]; });
+    const sim = (que, k) => (b) => { if (b !== null && typeof b !== 'boolean') throw new Error(que + ' quer true, false ou null'); o[k] = b; return api; };
+    const api = rigoroso('TextStyleBuilder', {
+      setBold: (b) => { o.negrito = !!b; return api; },   // como antes: o Codigo.gs passa true
+      setItalic: sim('setItalic', 'italico'), setUnderline: sim('setUnderline', 'sublinhado'), setStrikethrough: sim('setStrikethrough', 'riscado'),
+      setFontFamily: (f) => { if (f !== null && typeof f !== 'string') throw new Error('setFontFamily quer texto'); o.fonte = f; return api; },
+      setFontSize: (n) => { if (!Number.isInteger(n) || n < 1) throw new Error('setFontSize quer um número inteiro'); o.tamanho = n; return api; },
+      setForegroundColor: (c) => { if (c !== null && !/^#[0-9A-Fa-f]{6}$/.test(c)) throw new Error('setForegroundColor quer #RRGGBB'); o.cor = c; return api; },
+      build: () => estiloDeTexto(o) });
+    return api;
+  }
+  const blob = (buf, tipo) => ({ __blob: buf, getBytes: () => Array.from(buf).map((b) => (b > 127 ? b - 256 : b)), getContentType: () => tipo || null,
+    getDataAsString: (cs) => { if (cs !== undefined && !/^utf-?8$/i.test(cs)) throw new Error('getDataAsString: o teste só lê UTF-8'); return buf.toString('utf8'); } });
+  // 19/11/2026: o menu que o onOpen põe na barra (Bot, Recursos, Salários): guardado em P.menus
+  P.menus = [];
+  const menuDeMentira = (titulo) => { const m = { titulo, itens: [] }; const api = rigoroso('Menu', {
+    addItem: (rot, fn) => { if (typeof rot !== 'string' || typeof fn !== 'string') throw new Error('addItem quer rótulo e nome de função'); m.itens.push([rot, fn]); return api; },
+    addSeparator: () => { m.itens.push(['—', null]); return api; }, addToUi: () => { P.menus.push(m); } }); return api; };
   const ctx = {
     console: { log: () => {} }, Logger: { log: (m) => { P.registro = String(m); P.registros.push(String(m)); } }, Date, Math, JSON,
     Utilities: { sleep: () => {}, base64Decode: (s) => Array.from(Buffer.from(s, 'base64')), base64Encode: (a) => Buffer.from(a).toString('base64'),
       DigestAlgorithm:{SHA_256:'SHA_256'}, Charset:{UTF_8:'UTF_8'},
-      computeDigest:(alg,text,charset)=>{if(alg!=='SHA_256'||charset!=='UTF_8')throw Error('Digest não suportado pelo ensaio');return Array.from(require('crypto').createHash('sha256').update(text,'utf8').digest());} },
+      computeDigest:(alg,text,charset)=>{if(alg!=='SHA_256'||charset!=='UTF_8')throw Error('Digest não suportado pelo ensaio');return Array.from(require('crypto').createHash('sha256').update(text,'utf8').digest());},
+      // 19/11/2026: os módulos leves do R53 (Caminho.gs, PaletaAndroid.gs...) moram em gzip dentro do script
+      newBlob: (dados, tipo) => blob(typeof dados === 'string' ? Buffer.from(dados, 'utf8') : Buffer.from(dados.map((b) => b & 255)), tipo),
+      ungzip: (b) => { if (!b || !b.__blob) throw new Error('ungzip sem blob'); return blob(require('zlib').gunzipSync(b.__blob)); } },
     SpreadsheetApp: rigoroso('SpreadsheetApp', {
       getActive: () => ss, flush: () => {},
+      getUi: () => rigoroso('Ui', { createMenu: (t) => menuDeMentira(String(t)) }),
       newCellImage: () => { const b = {}; const api = rigoroso('CellImageBuilder', {
         setSourceUrl: (u) => { if (!/^data:image\/png;base64,/.test(u)) throw new Error('imagem sem data:image/png'); b.url = u; return api; },
         setAltTextTitle: (t) => { b.titulo = t; return api; }, setAltTextDescription: (d) => { b.desc = d; return api; },
         build: () => ({ valueType: 'IMAGE', getAltTextTitle: () => b.titulo, getAltTextDescription: () => b.desc, toJSON: () => 'IMAGEM ' + b.titulo + ' ' + b.desc + ' ' + b.url.length }) }); return api; },
-      newRichTextValue: () => { const o = { __rico: true, texto: null, negritos: [] }; const api = rigoroso('RichTextValueBuilder', {
+      newRichTextValue: () => { const o = { __rico: true, texto: null, negritos: [], links: [] };
+        const trecho = (que, ini, fim) => { if (!(Number.isInteger(ini) && Number.isInteger(fim) && 0 <= ini && ini < fim && fim <= o.texto.length)) throw new Error(`${que} fora do texto: ${ini}..${fim}`); };
+        const api = rigoroso('RichTextValueBuilder', {
         setText: (t) => { o.texto = String(t); return api; },
-        setTextStyle: (ini, fim, est) => { if (o.texto === null) throw new Error('setTextStyle antes do setText');
-          if (!(Number.isInteger(ini) && Number.isInteger(fim) && 0 <= ini && ini < fim && fim <= o.texto.length)) throw new Error(`setTextStyle fora do texto: ${ini}..${fim}`);
+        // Os dois jeitos do Apps Script: setTextStyle(estilo), no texto todo, e setTextStyle(início, fim, estilo)
+        setTextStyle: (...a) => { if (o.texto === null) throw new Error('setTextStyle antes do setText');
+          if (a.length !== 1 && a.length !== 3) throw new Error('setTextStyle quer (estilo) ou (início, fim, estilo)');
+          const [ini, fim, est] = a.length === 1 ? [0, o.texto.length, a[0]] : a; trecho('setTextStyle', ini, fim);
           if (!est || !est.__estilo) throw new Error('setTextStyle sem estilo'); if (est.negrito) o.negritos.push(o.texto.slice(ini, fim)); return api; },
+        // 19/11/2026: o link dos títulos da CONFIGURAÇÃO. Também com os dois jeitos: (url) no texto todo e (início, fim, url)
+        setLinkUrl: (...a) => { if (o.texto === null) throw new Error('setLinkUrl antes do setText');
+          if (a.length !== 1 && a.length !== 3) throw new Error('setLinkUrl quer (url) ou (início, fim, url)');
+          const [ini, fim, url] = a.length === 1 ? [0, o.texto.length, a[0]] : a; trecho('setLinkUrl', ini, fim);
+          if (typeof url !== 'string' || !url) throw new Error('setLinkUrl sem endereço'); o.links.push([ini, fim, url]); return api; },
         build: () => { if (o.texto === null) throw new Error('texto rico sem texto'); return o; } }); return api; },
-      newTextStyle: () => { const o = { __estilo: true }; const api = rigoroso('TextStyleBuilder', {
-        setBold: (b) => { o.negrito = !!b; return api; }, build: () => o }); return api; },
+      newTextStyle: () => construtorDeEstilo({}),
       newDataValidation: () => { const o = { __regra: true }; const api = rigoroso('DataValidationBuilder', {
         setAllowInvalid: (b) => { o.invalido = b; return api; },
         requireValueInList: (lista, seta) => { if (!Array.isArray(lista) || !lista.length) throw new Error('lista de menu vazia'); o.lista = lista; return api; },
         requireCheckbox: () => { o.caixa = true; return api; },
+        // 19/11/2026: a validação por fórmula (validacoes_formula do ABAS). A fórmula passa pela mesma conferência das
+        // gravadas: aba citada que não existe e vírgula fora do inglês
+        requireFormulaSatisfied: (f) => { if (typeof f !== 'string' || f[0] !== '=') throw new Error('requireFormulaSatisfied sem fórmula');
+          confereFormula('validação por fórmula', f); o.formula = f; return api; },
         requireValueInRange: (r, seta) => { if (!r || typeof r.getA1Notation !== 'function') throw new Error('requireValueInRange sem faixa'); o.faixa = r.getSheet().getName() + '!' + r.getA1Notation(); return api; },
         build: () => o }); return api; },
       newConditionalFormatRule: () => { const o = { __regraCf: true }; const api = rigoroso('ConditionalFormatRuleBuilder', {
@@ -317,11 +391,13 @@ function criaSheets(FICHA_SRC, GS, extras) {
         build: () => { if (!o.faixas) throw new Error('regra de cor sem faixa'); return o; } }); return api; },
     }),
     PropertiesService: { getDocumentProperties: () => ({ getProperties:()=>({...P.props}), getProperty: (k) => (k in P.props ? P.props[k] : null), setProperty: (k, v) => { P.props[k] = String(v); },
-      setProperties: (o) => Object.assign(P.props, o), deleteProperty: (k) => { delete P.props[k]; } }) },
+      setProperties: (o) => Object.assign(P.props, o), deleteProperty: (k) => { delete P.props[k]; } }),
+      // 19/11/2026: a dos salários (Salarios.gs), que marca qual gatilho instalado cuida da edição
+      getScriptProperties: () => { P.propsScript = P.propsScript || {}; const q = P.propsScript; return { getProperty: (k) => (k in q ? q[k] : null), setProperty: (k, v) => { q[k] = String(v); }, deleteProperty: (k) => { delete q[k]; } }; } },
     // 08/10/2026: a trava do script é a da montagem (umaDeCadaVez_). P.montagemOcupada faz de conta que outra execução a tem
     LockService: { getDocumentLock: () => ({ tryLock: () => true, releaseLock: () => {} }),
                    getScriptLock: () => ({ tryLock: () => !P.montagemOcupada, releaseLock: () => { P.travasSoltas = (P.travasSoltas || 0) + 1; } }) },
-    ScriptApp: { getProjectTriggers: () => [] },
+    ScriptApp: { getProjectTriggers: () => [], getScriptId: () => 'script-de-mentira' },
   };
   // os enumerados não passam pelo rigoroso: são valores, e o nome errado dá undefined, que o Sheets de mentira recusa
   ctx.SpreadsheetApp = new Proxy(ctx.SpreadsheetApp, { get(o, k) {
@@ -353,7 +429,7 @@ function retrato(P) {
       tamanho: A.maxR + 'x' + A.maxC, oculta: A.oculta, grade: A.grade, valores: mapa(A.v), formulas: mapa(A.f), formato: mapa(A.est), bordas: mapa(A.lados),
       mesclagens: A.merges.map((m) => m.join()).sort(), notas: mapa(A.notas), menus: mapa(A.dv), caixas: [...A.caixas].sort(), numeros: mapa(A.fmt),
       cores_de_aviso: A.cf.map((r) => JSON.stringify(r)), grupos: { linhas: mapa(A.profL), colunas: mapa(A.profC), fechadasL: A.fechL.map(String), fechadasC: A.fechC.map(String), posL: A.posL, posC: A.posC },
-      larguras: mapa(A.larg), alturas: mapa(A.alt), travas: A.prot.length, travadas: Object.fromEntries(Object.keys(travadas).sort().map((k) => [k, travadas[k]])),
+      larguras: mapa(A.larg), alturas: mapa(A.alt), linhas_ocultas: [...A.ocultasL].sort((a, b) => a - b), links: mapa(A.links), travas: A.prot.length, travadas: Object.fromEntries(Object.keys(travadas).sort().map((k) => [k, travadas[k]])),
     };
   }
   return { ordem: P.abas.map((a) => a.nome), idioma: P.locale, nomeados: Object.fromEntries(Object.keys(P.nomeados).sort().map((n) => [n, P.nomeados[n].getSheet().getName() + '!' + P.nomeados[n].getA1Notation()])), abas };

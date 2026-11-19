@@ -112,32 +112,58 @@ ok('as abas nascem na ordem do ABAS, e a planilha termina em português', P.abas
 ok('cada aba fica do tamanho que o gerador mediu', ABAS.every((s) => { const A = S.acha(s.nome); return A.maxR === s.rows && A.maxC === s.cols; }),
    ABAS.map((s) => { const A = S.acha(s.nome); return `${s.nome} ${A.maxR}x${A.maxC} (${s.rows}x${s.cols})`; }).join(' · '));
 ok('as ocultas ficam ocultas, e só elas', ABAS.every((s) => S.acha(s.nome).oculta === !!s.oculta));
+// 19/11/2026: a CONFIGURAÇÃO ficou horizontal (ficha-v01/configuracao_horizontal.py): cada seção do desenho vertical
+// virou um painel de 17 colunas, e os 25 cartões dos cadastros gerais, duas colunas de cartões no painel 1. As
+// conferências continuam escritas no endereço vertical, e o `noPainel` faz a mesma tradução do blocos()/ponto() do
+// gerador. `doPainel(p)` diz se uma célula da aba montada caiu no painel p.
+const PASSO = 17, SECOES = [[737, 796], [797, 866], [867, 936], [937, 1008], [1009, 1401], [1402, 1732], [1733, 1876],
+  [1877, 2112], [2113, 2253], [2254, 2385], [2386, 2527], [2528, 2812]];
+const BLOCOS = [[1, 1, 736, 8, 0, 1], [1, 9, 8, 16, 0, PASSO - 7],
+  ...Array.from({length: 25}, (_, n) => { const r = 9 + 29 * n; return [r, 9, r + 28, 16, 12 + Math.floor(n / 2) * 29 - r, PASSO + 1 + (n % 2) * 8 - 8]; }),
+  [734, 9, 736, 16, 389 - 734, PASSO - 7], ...SECOES.map(([lo, hi], i) => [lo, 1, hi, 16, 9 - lo, (i + 2) * PASSO + 1])];
+const noPainel = (r, c) => { const b = BLOCOS.find(([r1, c1, r2, c2]) => r1 <= r && r <= r2 && c1 <= c && c <= c2);
+  if (!b) throw new Error(`CONFIGURAÇÃO fora do mapa: linha ${r}, coluna ${c}`); return (r + b[4]) + ',' + (c + b[5]); };
+const doPainel = (...ps) => (k) => { const c = Number(k.split(',')[1]); return ps.some((p) => c >= p * PASSO + 1 && c <= p * PASSO + PASSO); };
 {
   const C = S.acha('CONFIGURAÇÃO');
+  const caixa = (r, c) => C.caixas.has(noPainel(r, c)), menu = (r, c) => C.dv.has(noPainel(r, c)), estrito = (r, c) => menu(r, c) && C.dv.get(noPainel(r, c)).invalido === false;
   ok('a CONFIGURAÇÃO não tem a faixa cinza de linhas congeladas', !C.congeladas);
   ok('a CONFIGURAÇÃO tem 30 caixas de ligar e menus de caixa, modo e fonte',
-     [...C.caixas].filter(k => k.endsWith(',2')).length === 30 && Array.from({length:30},(_,i)=>(11+i)+',2').every(k=>C.caixas.has(k)) && ['11,3', '11,4', '11,6'].every(k => C.dv.has(k)));
+     [...C.caixas].filter(doPainel(0)).length === 30 && Array.from({length:30},(_,i)=>caixa(11+i,2)).every(Boolean) && [[11,3],[11,4],[11,6]].every(([r,c]) => menu(r,c)));
   ok('25 lembretes MESTRE VIU e 175 seletores estritos independentes dos bônus',
-     [...C.caixas].filter(k=>k.endsWith(',14')&&Number(k.split(',')[0])<=732).length===25 && Array.from({length:25},(_,n)=>n).every(n=>{const r=9+n*29;return C.caixas.has((r+2)+',14') && Array.from({length:7},(_,i)=>(r+5+i)+',12').every(k=>C.dv.has(k)&&C.dv.get(k).invalido===false);}));
+     [...C.caixas].filter(doPainel(1)).length===25 && Array.from({length:25},(_,n)=>n).every(n=>{const r=9+n*29;return caixa(r+2,14) && Array.from({length:7},(_,i)=>estrito(r+5+i,12)).every(Boolean);}));
   ok('22 lembretes e 20 tipos fixos da parte 3b',
-     [...C.caixas].filter(k=>Number(k.split(',')[0])>=733 && Number(k.split(',')[0])<939).length===22 &&
-     Array.from({length:20},(_,i)=>({r:797+Math.floor(i/2)*14+2,c:i%2===0?2:10})).every(x=>C.dv.has(x.r+','+x.c)));
-  ok('10 Famílias têm MESTRE VIU e menu de estado até o último cartão',
-     Array.from({length:10},(_,i)=>({r:939+Math.floor(i/2)*14,c:i%2===0?2:10})).every(x=>
-       C.caixas.has((x.r+2)+','+(x.c+4)) && C.dv.has((x.r+5)+','+(x.c+3))));
+     [...C.caixas].filter(doPainel(2, 3, 4)).length===22 &&
+     Array.from({length:20},(_,i)=>({r:797+Math.floor(i/2)*14+2,c:i%2===0?2:10})).every(x=>menu(x.r,x.c)));
+  // 18/10/2026 (a0b23e5, ficha-v01/extensoes_custom.py): o estado de cada Família custom se escolhe no menu da FICHA
+  // AMALDIÇOADA (O41 a O50, painel FAMÍLIAS CUSTOM); o cartão da CONFIGURAÇÃO só o espelha, com Neutra no vazio.
+  const FAm = S.acha('FICHA AMALDIÇOADA');
+  ok('10 Famílias têm MESTRE VIU e o estado do menu da FICHA AMALDIÇOADA até o último cartão',
+     Array.from({length:10},(_,i)=>({r:939+Math.floor(i/2)*14,c:i%2===0?2:10,o:'O'+(41+i)})).every(x=>
+       caixa(x.r+2,x.c+4) && !menu(x.r+5,x.c+3) && C.f.get(noPainel(x.r+5,x.c+3)) === `=IF('FICHA AMALDIÇOADA'!${x.o}="","Neutra",'FICHA AMALDIÇOADA'!${x.o})`
+       && (FAm.dv.get(x.o.slice(1)+',15')||{}).faixa === 'DADOS_CRIACAO!M2:M4'),
+     Array.from({length:10},(_,i)=>({r:939+Math.floor(i/2)*14,c:i%2===0?2:10})).map(x=>C.f.get(noPainel(x.r+5,x.c+3))).slice(0,2).join(' · '));
   for (const [tipo,n,inicio,passo,campos] of [['Melhoria',30,1011,26,[5,6,7,8]],['Restrição',30,1404,22,[5,6,7]]]) {
     ok(n+' cadastros de '+tipo+' conservam caixas e menus estritos até o último cartão',
        Array.from({length:n},(_,i)=>({r:inicio+Math.floor(i/2)*passo,c:i%2===0?2:10})).every(x=>
-         C.caixas.has((x.r+2)+','+(x.c+4)) && campos.every(d=>C.dv.has((x.r+d)+','+(x.c+3)) && C.dv.get((x.r+d)+','+(x.c+3)).invalido===false)));
+         caixa(x.r+2,x.c+4) && campos.every(d=>estrito(x.r+d,x.c+3))));
   }
-  ok('as linhas livres de equipamento aceitam menu e digitação avulsa', ['98,4','99,4','104,4','104,26'].every(k=>S.acha('FICHA PESSOAL').dv.get(k).invalido===true));
+  // 26/10/2026, pedido do Mizuki (02a49a7): menu do catálogo só nas seis primeiras vagas de equipável (D92:D97), que
+  // aceitam também o nome escrito; as duas últimas (D98, D99) e os itens guardados (D104, Z104) são de escrever, sem menu.
+  const FP = S.acha('FICHA PESSOAL');
+  ok('as seis vagas de equipável aceitam menu e digitação avulsa; as duas livres e os itens guardados ficam sem menu',
+     [92,93,94,95,96,97].every(l=>FP.dv.has(l+',4') && FP.dv.get(l+',4').invalido===true) && ['98,4','99,4','104,4','104,26'].every(k=>!FP.dv.has(k)),
+     ['92,4','97,4','98,4','99,4','104,4','104,26'].map(k=>k+' '+JSON.stringify(FP.dv.get(k)||null)).join(' · '));
 
 }
 const formulasDoAbas = (s) => s.vals.filter((t) => typeof t[2] === 'string' && t[2][0] === '=');
 // 07/10/2026: as linhas da lista do conjunto da INVOCAÇÕES saem do ABAS como referência à célula do texto, e o acabamento
 // as troca pela ligação até a ficha, que cita a mesma célula. Só elas chegam diferentes, e só desse jeito.
-const chegou = (s, t) => { const f = S.acha(s.nome).f.get(t[0] + ',' + t[1]);
-  return f === t[2] || (s.nome === 'INVOCAÇÕES' && t[1] === 4 && /^=HYPERLINK\("#gid=\d+&range=[A-Z]+\d+",/.test(f || '') && f.endsWith(',' + t[2].slice(1) + ')')); };
+// 19/11/2026: e as constantes da ANALISE (fórmula que é só um texto entre aspas): o otimizarAnaliseAndroid(), no fim do
+// construir(), troca cada uma pelo próprio texto. Chegam como valor, com o texto da fórmula.
+const literal = (f) => { const m = /^="((?:[^"]|"")*)"$/.exec(f); return m ? m[1].replace(/""/g, '"') : null; };
+const chegou = (s, t) => { const A = S.acha(s.nome), k = t[0] + ',' + t[1], f = A.f.get(k);
+  return f === t[2] || (s.nome === 'ANALISE' && f === undefined && literal(t[2]) !== null && A.v.get(k) === literal(t[2])) || (s.nome === 'INVOCAÇÕES' && t[1] === 4 && /^=HYPERLINK\("#gid=\d+&range=[A-Z]+\d+",/.test(f || '') && f.endsWith(',' + t[2].slice(1) + ')')); };
 ok('toda fórmula do ABAS chega à célula dela, igual (as linhas da lista de invocações, dentro da ligação)',
    ABAS.every((s) => formulasDoAbas(s).every((t) => chegou(s, t))),
    ABAS.map((s) => s.nome + ' ' + formulasDoAbas(s).filter((t) => !chegou(s, t)).length).join(' · '));
@@ -172,7 +198,12 @@ ok('todas as abas nascem antes de a primeira ser preenchida, e cada etapa vai pa
 ok('nenhuma fórmula é gravada antes de a aba que ela cita existir e ter o tamanho dela, nem com a planilha fora do inglês', !S.P.orfas.length,
    `${S.P.orfas.length}: ${S.P.orfas.slice(0, 3).join(' · ')}`);
 const totalM = ABAS.reduce((n, s) => n + s.merges.length, 0), chM = (CHAMADAS['Range.merge'] || 0) + (CHAMADAS['Range.mergeAcross'] || 0) + (CHAMADAS['Range.mergeVertically'] || 0);
-ok(`as ${totalM} mesclagens vão em lotes: menos de um terço em chamadas`, chM > 0 && chM < totalM / 3, `${chM} chamadas`);
+// 19/11/2026: o terço deixou de caber por decisão de desenho. A INVOCAÇÕES perdeu a cópia de fileiras no R53 (b7eaa00,
+// 19/10: os cartões básicos e graduados têm entradas diferentes) e a CONFIGURAÇÃO horizontal não usa cópia
+// (configuracao_horizontal.py). A conferência continua cobrando o lote: nunca mais chamadas que os grupos do
+// gruposDeMescla_ (a cópia de formato só tira), e menos da metade das mesclagens.
+const gruposM = ABAS.reduce((n, s) => n + S.ctx.gruposDeMescla_(s.merges).length, 0);
+ok(`as ${totalM} mesclagens vão em lotes: no máximo os ${gruposM} grupos, menos da metade em chamadas`, chM > 0 && chM <= gruposM && chM < totalM / 2, `${chM} chamadas`);
 ok('nenhuma etapa lê a planilha célula a célula: a mesclagem, a fórmula e o valor de uma célula são lidos de matriz',
    !CHAMADAS['Range.getFormula'] && (CHAMADAS['Range.isPartOfMerge'] || 0) <= ABAS.reduce((n, s) => n + (s.copias || []).reduce((m, k) => m + (k[5] ? k[5].length : 1), 0), 0) && (CHAMADAS['Range.getMergedRanges'] || 0) <= 5 && (CHAMADAS['Range.getValue'] || 0) <= 5 && !CHAMADAS['Spreadsheet.moveActiveSheet'],
    `getFormula ${CHAMADAS['Range.getFormula'] || 0}, isPartOfMerge ${CHAMADAS['Range.isPartOfMerge'] || 0}, getMergedRanges ${CHAMADAS['Range.getMergedRanges'] || 0}, getValue ${CHAMADAS['Range.getValue'] || 0}, moveActiveSheet ${CHAMADAS['Spreadsheet.moveActiveSheet'] || 0}`);
@@ -254,11 +285,14 @@ console.log('\nA PLANILHA MONTADA, EM USO (pelo onEdit de verdade)');
 const ed = (aba, a1, value, oldValue) => ({ range: S.ss.getSheetByName(aba).getRange(a1), value, oldValue });
 {
   const C = S.acha('CONFIGURAÇÃO');
-  const cel = S.ss.getSheetByName('CONFIGURAÇÃO').getRange('F46');
+  // o EM USO do Nível inicial: F46 no desenho vertical, G46 na CONFIGURAÇÃO horizontal
+  const [lEm, cEm] = noPainel(46, 6).split(',').map(Number);
+  const cel = S.ss.getSheetByName('CONFIGURAÇÃO').getRange(lEm, cEm);
   cel.setValue(999);
   S.ctx.onEdit({ range: cel, value: '999' });
-  const esperada = ABAS.find(a => a.nome === 'CONFIGURAÇÃO').vals.find(v => v[0] === 46 && v[1] === 6)[2];
-  ok('escrever por cima de EM USO devolve a conta', C.f.get('46,6') === S.ctx.formulaNoIdioma_(esperada, S.P.locale));
+  const esperada = ABAS.find(a => a.nome === 'CONFIGURAÇÃO').vals.find(v => v[0] === lEm && v[1] === cEm)[2];
+  ok('escrever por cima de EM USO devolve a conta', /^=IF\(F46="",E46,/.test(esperada) && C.f.get(lEm + ',' + cEm) === S.ctx.formulaNoIdioma_(esperada, S.P.locale),
+     `${lEm},${cEm}: ${String(C.f.get(lEm + ',' + cEm) || C.v.get(lEm + ',' + cEm)).slice(0, 60)}`);
   const entrada = S.ss.getSheetByName('CONFIGURAÇÃO').getRange('E11');
   entrada.setValue(3);
   S.ctx.onEdit({ range: entrada, value: '3' });
@@ -303,17 +337,29 @@ try {
   const px = partes(ip['xp total']); A.f.delete(px.r + ',' + px.c); A.v.set(px.r + ',' + px.c, 500);       // o LibreOffice é quem faz a soma; aqui o total é posto à mão
   const m3 = S.ctx.limitesA1_(ip['missões 3']);
   S.ctx.pessoalEditada_(ed(NOME, letras(m3.c1 + 1) + m3.l1, 'Longa'));
+  var nivelNaPrimeira = F.le(partes(idx['nivel']).r, partes(idx['nivel']).c);
+  S.ctx.pessoalEditada_(ed(NOME, letras(m3.c1 + 1) + (m3.l1 + 1), 'Longa'));
 } catch (e) { erroUso = e; }
-ok('anotar missão na extensão, com 500 de XP, sobe o nível da FICHA para o 4', !erroUso && F.le(partes(idx['nivel']).r, partes(idx['nivel']).c) === 4, erroUso ? erroUso.message : String(F.le(partes(idx['nivel']).r, partes(idx['nivel']).c)));
+// 12/11/2026, livro R66 (nivelQueSobe_): "no máximo um nível por missão concluída". Os 500 de XP valem o nível 4, e
+// do 2 ele chega lá em duas missões.
+ok('anotar missão na extensão, com 500 de XP, sobe um nível por missão: do 2 para o 3, e a segunda leva ao 4',
+   !erroUso && nivelNaPrimeira === 3 && F.le(partes(idx['nivel']).r, partes(idx['nivel']).c) === 4,
+   erroUso ? erroUso.message : nivelNaPrimeira + ' → ' + F.le(partes(idx['nivel']).r, partes(idx['nivel']).c));
 cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
 // 01/10/2026: o Mizuki digitou um número por cima do NO DOMÍNIO da FICHA AMALDIÇOADA, e a conta sumiu sem aviso.
 {
   const AM = 'FICHA AMALDIÇOADA', X = S.acha(AM), spec = ABAS.find((s) => s.nome === AM);
   const rot = spec.vals.find((t) => t[2] === 'NO DOMÍNIO'), calc = [rot[0] + 1, rot[1]], chave = calc.join(',');
   const conta = X.f.get(chave), a1 = letras(calc[1]) + calc[0];
-  const puras = spec.vals.filter((t) => typeof t[2] === 'string' && t[2][0] === '=' && t[0] >= 7);
-  ok(`as ${puras.length} caixas calculadas da FICHA AMALDIÇOADA só apontam para uma célula: a conta mora na DADOS_AM`,
-     puras.length > 700 && puras.every((t) => /^=(?:'[^']+'|[A-Z_]+)!\$?[A-Z]+\$?\d+$/.test(t[2])), puras.filter((t) => t[2].indexOf(',') >= 0).length + ' com vírgula');
+  // 19/11/2026: desde as extensões custom (a0b23e5, 18/10) e o R53 (b7eaa00, 19/10), os cartões editáveis (DADOS_R53),
+  // as Famílias custom (DADOS_CRIACAO) e os rótulos da Classe 0 (DADOS_CUSTOM) põem a conta na própria FICHA
+  // AMALDIÇOADA, e os cartões fechados mostram um rótulo fixo (=IF(TRUE,...) ou =IF(FALSE,...)). As outras caixas
+  // calculadas continuam só apontando para uma célula.
+  const daCasa = (f) => /DADOS_R53|DADOS_CRIACAO|DADOS_CUSTOM/.test(f) || /^=IF\((?:TRUE|FALSE),"[^"]*","[^"]*"\)$|^=IF\(TRUE,/.test(f);
+  const puras = spec.vals.filter((t) => typeof t[2] === 'string' && t[2][0] === '=' && t[0] >= 7 && !daCasa(t[2]));
+  ok(`as ${puras.length} caixas calculadas da FICHA AMALDIÇOADA fora dos cartões R53 e custom só apontam para uma célula: a conta mora na DADOS_AM`,
+     puras.length > 150 && puras.every((t) => /^=(?:'[^']+'|[A-Z_]+)!\$?[A-Z]+\$?\d+$/.test(t[2])),
+     puras.filter((t) => !/^=(?:'[^']+'|[A-Z_]+)!\$?[A-Z]+\$?\d+$/.test(t[2])).slice(0, 3).map((t) => letras(t[1]) + t[0] + ' ' + t[2].slice(0, 50)).join(' · '));
   let erroAm = null;
   const antes = S.P.avisos.length;
   try { S.ss.getSheetByName(AM).getRange(a1).setValue(3); S.ctx.onEdit(ed(AM, a1, '3', '0')); } catch (e) { erroAm = e; }
@@ -370,11 +416,21 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   };
   const comVirgula = (v) => v[2].replace(/"[^"]*"/g, '').includes(',');
   const naFicha = tenta('FICHA', (v, sp) => comVirgula(v) && !S.ctx.linhaSemTrava_('FICHA', v[0]));
-  const naCarteira = tenta('CARTEIRA', comVirgula), naPessoal = tenta('FICHA PESSOAL', comVirgula);
+  // 25/10/2026 (0a9e2da): o número público da ficha ("Nº M-1.0-...") volta calado pelo r53RestaurarVersaoPublica_, sem
+  // aviso. Ele tem conferência própria logo abaixo; a escolha da CARTEIRA fica com uma conta comum.
+  const VP = S.ctx.R53_VERSAO_PUBLICA_ || [], publica = (aba, v) => VP.some((p) => p.aba === aba && p.linha === v[0] && p.coluna === v[1]);
+  const naCarteira = tenta('CARTEIRA', (v) => comVirgula(v) && !publica('CARTEIRA', v)), naPessoal = tenta('FICHA PESSOAL', comVirgula);
   const emGrupo = tenta('FICHA PESSOAL', (v, sp) => comVirgula(v) && (sp.grupos.col.some((g) => v[1] >= g[0] && v[1] <= g[1]) || sp.grupos.lin.some((g) => v[0] >= g[0] && v[0] <= g[1])));
   ok('escrever por cima de uma conta da FICHA, da CARTEIRA ou da FICHA PESSOAL (em grupo ou não) devolve a conta, na pontuação do português, com um aviso cada',
      !erroD && [naFicha, naCarteira, naPessoal, emGrupo].every((x) => x.voltou && x.avisos === 1 && x.t[2] !== F(x.t[2], 'pt_BR')) && !S.P.orfas.length,
      erroD ? erroD.message : [naFicha, naCarteira, naPessoal, emGrupo].map((x) => `${x.a1}: ${String(x.ficou).slice(0, 50)} (${x.avisos})`).join(' · ') + ' · ' + S.P.orfas.slice(0, 2).join(' · '));
+  {
+    const p = VP.find((x) => x.aba === 'CARTEIRA'), a1 = p ? letras(p.coluna) + p.linha : 'AH2', Y = S.acha('CARTEIRA'), n0 = S.P.avisos.length;
+    try { S.ss.getSheetByName('CARTEIRA').getRange(a1).setValue('rew'); S.ctx.onEdit(ed('CARTEIRA', a1, 'rew')); } catch (e) { erroD = e; }
+    ok('o número público da ficha na CARTEIRA volta calado, com a versão 1.0, na pontuação do português',
+       !erroD && !!p && Y.f.get(p.linha + ',' + p.coluna) === F(p.depois, 'pt_BR') && S.P.avisos.length === n0,
+       erroD ? erroD.message : `${a1}: ${String(Y.f.get(p ? p.linha + ',' + p.coluna : '') || '').slice(0, 60)} (${S.P.avisos.length - n0})`);
+  }
   // e não só uma de cada aba: TODA conta que não é livre volta. Era o que a trava cobria (toda fórmula, e mais nada)
   const todas = {};
   for (const nomeAba of ['FICHA', 'CARTEIRA', 'FICHA PESSOAL']) {
@@ -398,9 +454,13 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
     return S.ss.getSheetByName(nomeAba).getRange(a1).getValue() === 7 && S.P.avisos.length === n0; };
   const spP = ABAS.find((a) => a.nome === 'FICHA PESSOAL'), spI = ABAS.find((a) => a.nome === 'INVOCAÇÕES'), idxF = S.ctx.indice();
   // 08/10/2026 (B41): a Integridade atual da invocação é livre como a vida (duas caixas por ficha)
+  // 18/10/2026 (a0b23e5): as extensões custom somaram as caixas livres delas às 24 de vida e Integridade atual; estas
+  // continuam livres, contadas pelo rótulo de cima
+  const rotuloI = new Map(spI.vals.map((t) => [t[0] + ',' + t[1], t[2]]));
+  const atuais = (spI.livres || []).filter((a1) => { const p = partes(a1); return /^(VIDA|INTEGRIDADE) ATUAL$/.test(rotuloI.get((p.r - 1) + ',' + p.c) || ''); });
   ok('a vida da FICHA, o Volume de um item e a vida atual de uma invocação ficam como o jogador escreveu, sem aviso',
-     !erroD && (spP.livres || []).length > 1 && (spI.livres || []).length === 24 && livre('FICHA', S.ctx.cel_(idxF, 'vida')) && livre('FICHA PESSOAL', spP.livres[1]) && livre('INVOCAÇÕES', spI.livres[4]),
-     erroD ? erroD.message : `${(spP.livres || []).length} · ${(spI.livres || []).length}`);
+     !erroD && (spP.livres || []).length > 1 && atuais.length === 24 && livre('FICHA', S.ctx.cel_(idxF, 'vida')) && livre('FICHA PESSOAL', spP.livres[1]) && livre('INVOCAÇÕES', atuais[4]),
+     erroD ? erroD.message : `${(spP.livres || []).length} · ${atuais.length} de ${(spI.livres || []).length}`);
   // se o Sheets não entender a fórmula na pontuação do português (a caixa mostra #ERROR!), ela vai como o construir() grava
   const G = S.acha('GLOSSÁRIO'), onde = 'A' + G.maxR, deVerdade = S.ctx.formulaNoIdioma_;
   let idiomas = [], erroE = null, foi = null;
@@ -561,7 +621,10 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   const cabe = (A, x, textos) => x.textos.every((c, i) => textos[i] === '' || somaDe(A.alt, c) + c[4] >= linhas(textos[i], c[0]) * MED.linha + MED.respiro);
   const comum = (A, x) => x.textos.every((c) => [...Array(c[3])].every((_, k) => A.alt.get(c[2] + k) === MED.minima));
   const mostra = (A, x) => JSON.stringify([...new Set(x.textos.flatMap((c) => [...Array(c[3])].map((_, k) => c[2] + k)))].map((l) => A.alt.get(l)));
-  const escreve = (aba, nome, a1, v) => { aba.getRange(a1).setValue(v); S.ctx.onEdit(ed(nome, a1, v)); };
+  // 19/11/2026: com o valor de antes, como o Sheets manda (vazio chega como undefined). Desde 26/10 o esticarCaixas_ usa
+  // o e.oldValue para saber se alguma altura muda; sem ele, apagar um texto parecia não mudar nada.
+  const escreve = (aba, nome, a1, v) => { const antes = aba.getRange(a1).getValue(); aba.getRange(a1).setValue(v);
+    S.ctx.onEdit(ed(nome, a1, v, antes === '' ? undefined : antes)); };
   const RES = 'Resistência a fogo, frio, eletricidade, veneno e dano cortante. Reduz o dano recebido enquanto a proteção estiver ativa, incluindo ataques repetidos e efeitos contínuos.';
   const IMU = 'Imune a medo, sono, paralisia e efeitos de veneno comuns. Esta imunidade permanece ativa durante o combate e não impede outros efeitos de controle descritos na ficha do personagem.';
   let erroE = null;
@@ -631,7 +694,13 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   const cfgSpec = ABAS.find(a => a.nome === 'CONFIGURAÇÃO');
   const cfgStretch = cfgSpec.esticam || [], CFG = S.acha('CONFIGURAÇÃO');
   const CC = S.ss.getSheetByName('CONFIGURAÇÃO');
-  const paired = cfgStretch.filter(x => x.gatilhos.includes('B779'));
+  // a descrição do nível 2 custom: B779 no desenho vertical, traduzida para o painel do Caminho e Trilha
+  // Na horizontal, todas as caixas que esticam formam um grupo só (a altura de uma linha vale para os painéis lado a
+  // lado); `recorte` tira dele as caixas de uma mesma linha, para as contas de altura do par
+  const cfgA1 = (r, c) => { const [l, cc] = noPainel(r, c).split(',').map(Number); return letras(cc) + l; };
+  const recorte = (...a1s) => ({ aba: 'CONFIGURAÇÃO', gatilhos: a1s, textos: a1s.map((a) => (cfgStretch[0] || { textos: [] }).textos.find((t) => t[1][0] === a)) });
+  const B779 = cfgA1(779, 2), par779 = recorte(B779, cfgA1(779, 10));
+  const paired = cfgStretch.filter(x => x.gatilhos.includes(B779)).length === 1 && par779.textos.every(Boolean) ? [par779] : [];
   ok('nível 2 custom expande seu cadastro e reutiliza as nove cartas do grupo 7',
      paired.length === 1 && paired[0].aba === 'CONFIGURAÇÃO' && S.ctx.cartasDaDadosAm_(S.ss).cartas.length===9);
   // O simulador não recalcula IF/VLOOKUP. Estes são os resultados escalares
@@ -639,49 +708,57 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   const PG=S.ss.getSheetByName('DADOS_PROGRESSAO'),PGA=S.acha('DADOS_PROGRESSAO');
   const fixed=['K7','K8',...Array.from({length:60},(_,i)=>['BG'+(i+2),'BH'+(i+2)]).flat()];
   const orfasAntesCustom=P.orfas.length;
+  const linhas779 = par779.textos.filter(Boolean).flatMap(c=>Array.from({length:c[3]},(_,k)=>c[2]+k)), alt779 = new Map(linhas779.map(l=>[l,CFG.alt.get(l)]));
   const saved=fixed.map(c=>{const x=partes(c),k=x.r+','+x.c;return {k,v:PGA.v.get(k),f:PGA.f.get(k)};});
   try {
     PG.getRange('K7').setValue(1);PG.getRange('K8').setValue(0);
     PG.getRange('BG2:BH61').setValues(Array.from({length:60},()=>['','']));
     PG.getRange('BG3').setValue('Habilidade própria');PG.getRange('BH3').setValue(LONGO.repeat(3));
     S.ss.getSheetByName('FICHA').getRange(idx.caminho).setValue('Caminho próprio');
-    escreve(CC,'CONFIGURAÇÃO','B779',LONGO.repeat(3));
+    escreve(CC,'CONFIGURAÇÃO',B779,LONGO.repeat(3));
   } catch(e){erroE=e;}
   const first=S.ctx.cartasDaDadosAm_(S.ss).cartas[0];
   ok('editar descrição custom preenche o cartão original inteiro e aumenta sua altura',
      !erroE && S.ss.getSheetByName('FICHA').getRange(first.texto).getValue()===LONGO.repeat(3)
-     && FA.alt.get(first.linha)>MED.minima && paired.every(x=>cabe(CFG,x,[LONGO.repeat(3),''])),
-     erroE?erroE.message:'');
-  try{PG.getRange('BH3').setValue('');escreve(CC,'CONFIGURAÇÃO','B779','');}catch(e){erroE=e;}
+     && FA.alt.get(first.linha)>MED.minima && paired.length===1 && paired.every(x=>cabe(CFG,x,[LONGO.repeat(3),''])),
+     erroE?erroE.message:paired.map(x=>mostra(CFG,x)).join(' ')+' · carta '+FA.alt.get(first.linha)+' · '+JSON.stringify(String(S.ss.getSheetByName('FICHA').getRange(first.texto).getValue()).slice(0,30)));
+  try{PG.getRange('BH3').setValue('');escreve(CC,'CONFIGURAÇÃO',B779,'');}catch(e){erroE=e;}
   ok('apagar descrição custom encolhe o cadastro e a mesma carta original',
-     !erroE && paired.every(x=>comum(CFG,x)) && FA.alt.get(first.linha)===MED.minima
-     && S.ss.getSheetByName('FICHA').getRange(first.texto).getValue()==='');
+     // na horizontal a linha volta à altura da montagem, que é a maior entre os painéis que a dividem
+     !erroE && paired.length===1 && linhas779.every(l=>CFG.alt.get(l)===alt779.get(l)) && FA.alt.get(first.linha)===MED.minima
+     && S.ss.getSheetByName('FICHA').getRange(first.texto).getValue()==='',
+     erroE?erroE.message:paired.map(x=>mostra(CFG,x)).join(' ')+' · carta '+FA.alt.get(first.linha)+' · '+JSON.stringify(String(S.ss.getSheetByName('FICHA').getRange(first.texto).getValue()).slice(0,30)));
   ok('o cenário custom não grava fórmula em lugar de texto',P.orfas.length===orfasAntesCustom,P.orfas.slice(orfasAntesCustom).join(' · '));
   saved.forEach(x=>{PGA.v.delete(x.k);PGA.f.delete(x.k);if(x.v!==undefined)PGA.v.set(x.k,x.v);if(x.f!==undefined)PGA.f.set(x.k,x.f);});
 
-  const families = cfgStretch.filter(x => x.gatilhos.includes('B946') || x.gatilhos.includes('J1002'));
+  // Na CONFIGURAÇÃO horizontal a altura de uma linha vale para todos os painéis lado a lado, e o gerador junta todas as
+  // caixas que esticam num grupo só. O par de Famílias é o recorte desse grupo com as duas descrições da mesma linha.
+  const B946 = cfgA1(946, 2), J946 = cfgA1(946, 10), B1002 = cfgA1(1002, 2), J1002 = cfgA1(1002, 10);
+  const families = [recorte(B946, J946), recorte(B1002, J1002)];
   ok('as descrições da primeira e da última Família usam a altura compartilhada do par',
-     families.length===2 && families.every(x=>x.aba==='CONFIGURAÇÃO' && x.textos.length===2));
-  if(families.length===2){
+     cfgStretch.length===1 && families.every(x=>x.textos.every(Boolean) && x.gatilhos.every(g=>cfgStretch[0].gatilhos.includes(g)) && x.textos[0][2]===x.textos[1][2]),
+     JSON.stringify(families.map(x=>x.textos)));
+  if(families.every(x=>x.textos.every(Boolean))){
     const originais = new Map(families.flatMap(x=>x.textos.flatMap(c=>Array.from({length:c[3]},(_,k)=>[c[2]+k,CFG.alt.get(c[2]+k)]))));
     const restaurada = x=>x.textos.every(c=>Array.from({length:c[3]},(_,k)=>c[2]+k).every(r=>CFG.alt.get(r)===originais.get(r)));
-    const pair=families.find(x=>x.gatilhos.includes('B946'));
-    try { escreve(CC,'CONFIGURAÇÃO','B946',LONGO.repeat(2)); escreve(CC,'CONFIGURAÇÃO','J946',LONGO.repeat(3)); }
+    const pair=families[0];
+    try { escreve(CC,'CONFIGURAÇÃO',B946,LONGO.repeat(2)); escreve(CC,'CONFIGURAÇÃO',J946,LONGO.repeat(3)); }
     catch(e){erroE=e;}
     ok('duas descrições longas de Família cabem lado a lado',
        !erroE && cabe(CFG,pair,[LONGO.repeat(2),LONGO.repeat(3)]),erroE?erroE.message:mostra(CFG,pair));
-    try { escreve(CC,'CONFIGURAÇÃO','J946',''); } catch(e){erroE=e;}
+    try { escreve(CC,'CONFIGURAÇÃO',J946,''); } catch(e){erroE=e;}
     ok('apagar uma descrição conserva o espaço necessário para a Família vizinha',
        !erroE && cabe(CFG,pair,[LONGO.repeat(2),'']) && !restaurada(pair));
-    try { escreve(CC,'CONFIGURAÇÃO','B946',''); } catch(e){erroE=e;}
-    ok('limpar as duas Famílias devolve o par à altura original de 25 pixels',!erroE && restaurada(pair)
-       && pair.textos.every(c=>Array.from({length:c[3]},(_,k)=>originais.get(c[2]+k)).every(h=>h===25)));
-    const last=families.find(x=>x.gatilhos.includes('J1002'));
-    try { escreve(CC,'CONFIGURAÇÃO','J1002',LONGO.repeat(3)); } catch(e){erroE=e;}
+    try { escreve(CC,'CONFIGURAÇÃO',B946,''); } catch(e){erroE=e;}
+    // na horizontal a altura original é a da montagem (a maior entre os painéis da linha), não mais 25 px
+    ok('limpar as duas Famílias devolve o par à altura original da montagem',!erroE && restaurada(pair),
+       erroE?erroE.message:mostra(CFG,pair)+' antes '+JSON.stringify(pair.textos.map(c=>Array.from({length:c[3]},(_,k)=>originais.get(c[2]+k)))));
+    const last=families[1];
+    try { escreve(CC,'CONFIGURAÇÃO',J1002,LONGO.repeat(3)); } catch(e){erroE=e;}
     ok('o texto da Família 10 também cresce até caber inteiro',
        !erroE && cabe(CFG,last,['',LONGO.repeat(3)]) && !restaurada(last));
-    try { escreve(CC,'CONFIGURAÇÃO','J1002',''); } catch(e){erroE=e;}
-    ok('limpar a última Família restaura a altura original de 25 pixels',!erroE && restaurada(last));
+    try { escreve(CC,'CONFIGURAÇÃO',J1002,''); } catch(e){erroE=e;}
+    ok('limpar a última Família restaura a altura original da montagem',!erroE && restaurada(last),erroE?erroE.message:mostra(CFG,last)+' antes '+JSON.stringify(last.textos.map(c=>Array.from({length:c[3]},(_,k)=>originais.get(c[2]+k)))));
   }
 
 }
@@ -707,7 +784,9 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
      && new Set(abrir.map((a) => a[0])).size === 36 && [12, 24].every((d) => abrir.slice(0, 12).every((a, i) => a[1] === abrir[d + i][1] && a[2] === abrir[d + i][2])),
      `${abrir.length} · ${JSON.stringify(abrir.slice(0, 14).map((a) => a[0]))} · ${JSON.stringify(alvos)}`);
   ok('clicar no número grande ou no título de uma ficha recolhida também a abre ("clicar no número grande \'2\' em I207 não abriu a invocação")',
-     !erroA && JSON.stringify(pelosOutros) === '[[true,false],[true,false]]' && abrir[13][0] === 'I207', erroA ? erroA.message : `${JSON.stringify(pelosOutros)} · ${abrir[13] && abrir[13][0]}`);
+     // 19/11/2026: as fichas cresceram e o número grande da ficha 2 desceu de I207 para I240; ele se acha pelo valor 2
+     !erroA && JSON.stringify(pelosOutros) === '[[true,false],[true,false]]' && /^I\d+$/.test(abrir[13][0]) && IV.getRange(abrir[13][0]).getValue() === 2,
+     erroA ? erroA.message : `${JSON.stringify(pelosOutros)} · ${abrir[13] && abrir[13][0]} = ${abrir[13] && IV.getRange(abrir[13][0]).getValue()}`);
   ok('a seleção que chega na ficha 8, recolhida, abre a fileira e a coluna de fichas dela, e mais nenhuma; outra célula não abre nada',
      !erroA && JSON.stringify(antes) === '[true,true]' && JSON.stringify(fora) === '[true,true]' && JSON.stringify(depois) === '[false,false]' && outra[0] === true,
      erroA ? erroA.message : `${JSON.stringify(antes)} ${JSON.stringify(fora)} ${JSON.stringify(depois)} ${JSON.stringify(outra)}`);
@@ -729,9 +808,14 @@ cacheXP.forEach(([k,f])=>{dadosXP.v.delete(k);dadosXP.f.set(k,f);});
   const FI = S.ss.getSheetByName('FICHA'), spF = ABAS.find((a) => a.nome === 'FICHA');
   const noAbas = (a1) => { const x = partes(a1); const t = spF.vals.find((v) => v[0] === x.r && v[1] === x.c); return t ? t[2] : undefined; };
   const fixa = (a1) => a1.replace(/^([A-Z]+)(\d+)$/, '$$$1$$$2');
+  const leBuff = (x) => { const inteiro = `VALUE(REGEXEXTRACT(${x},"[0-9]+"))`, quebrado = `N(REGEXMATCH(${x},"[.,][0-9]*[1-9]"))`;
+    const texto = `IF(REGEXMATCH(${x},"^[+-]?[0-9]+([.,][0-9]+)?$"),IF(LEFT(${x},1)="-",-${inteiro}-${quebrado},MAX(${inteiro},${quebrado})),0)`;
+    return `IFERROR(IF(ISTEXT(${x}),${texto},IF(N(${x})>0,MAX(1,INT(N(${x}))),INT(N(${x})))),0)`; };
   const pares = [['vida', 'vida_max'], ['energia', 'energia_max'], ['integridade', 'integridade_max'], ['proteção', 'proteção']];
   ok('a vida, a energia, a Integridade e a Proteção somam a caixa de Buff/Debuff delas, que nasce em 0 e não é conta',
-     pares.every(([r, alvo]) => { const b = idx['buff de ' + r]; return !!b && noAbas(b) === 0 && String(noAbas(idx[alvo]) || '').indexOf('+IFERROR(VALUE(' + fixa(b) + '&""),0)') > 0; }),
+     // 10/11/2026 (4e2f908): a caixa é lida pelo buff() de ficha-v01/leitura_buff.py, que arredonda o decimal contra o
+     // dono e aceita texto com sinal e vírgula; a expressão abaixo é a mesma, letra por letra
+     pares.every(([r, alvo]) => { const b = idx['buff de ' + r]; return !!b && noAbas(b) === 0 && String(noAbas(idx[alvo]) || '').indexOf('+' + leBuff(fixa(b))) > 0; }),
      JSON.stringify(pares.map(([r, alvo]) => [r, idx['buff de ' + r], String(noAbas(idx[alvo]) || '').slice(-50)])));
   let erroB = null; const nB = S.P.avisos.length, bV = idx['buff de vida'], xB = partes(bV);
   try { FI.getRange(bV).setValue(5); S.ctx.onEdit(ed('FICHA', bV, 5)); } catch (e) { erroB = e; }
