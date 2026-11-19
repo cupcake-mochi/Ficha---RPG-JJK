@@ -353,6 +353,9 @@ function analiseCaixaInstalar_(ss, props) {
     return;
   }
   cart.getRange(C.molde).copyTo(destino, {formatOnly: true});
+  // 18/11/2026: num construir() do zero, a linha 3 ainda é uma mesclagem só (AH3:AT3; quem a separa é o
+  // instalarSalarios), e a cópia do formato levava a mesclagem junto, prendendo a caixa AT4 dentro dela.
+  destino.breakApart();
   try { cart.getRange(C.faixa).merge(); } catch (err) { console.log('ANALISE estática, mescla: ' + err.message); }
   cart.getRange(C.caixa).insertCheckboxes().setValue(false);
   SpreadsheetApp.flush();

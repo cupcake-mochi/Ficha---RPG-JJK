@@ -46,6 +46,7 @@ function novaPlanilha(clock) {
             else if (op && op.formatOnly) { const d = dest; grade((r, c) => { const x = dv.get(k(r, c)); if (x) d.getSheet()._dv.set(k(d.getRow() + r - r0, d.getColumn() + c - c0), x); }); }
           },
           merge: () => rg,
+          breakApart: () => rg,
           insertCheckboxes: () => { grade((r, c) => dv.set(k(r, c), 'CHECKBOX')); return rg; },
           getDataValidation: () => dv.get(k(r0, c0)) ? { getCriteriaType: () => 'CHECKBOX' } : null
         };
