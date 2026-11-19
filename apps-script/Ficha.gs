@@ -1386,6 +1386,27 @@ function gruposDeMescla_(merges) {
 }
 
 /**
+ * Cria os grupos de linhas e de colunas de uma aba (`[primeira, última, ...]`, base 1). Com o serviço Google Sheets
+ * ligado, tudo vai num batchUpdate só; sem ele, um shiftRowGroupDepth por grupo, como antes. O flush antes da chamada
+ * garante que a API veja a aba com o que o SpreadsheetApp já gravou.
+ */
+function criarGrupos_(aba, lin, col) {
+  if (!lin.length && !col.length) return;
+  if (typeof Sheets !== 'undefined' && Sheets.Spreadsheets) {
+    var id = aba.getSheetId();
+    var pedido = function (dim) {
+      return function (g) { return { addDimensionGroup: { range: { sheetId: id, dimension: dim, startIndex: g[0] - 1, endIndex: g[1] } } }; };
+    };
+    SpreadsheetApp.flush();
+    Sheets.Spreadsheets.batchUpdate({ requests: lin.map(pedido('ROWS')).concat(col.map(pedido('COLUMNS'))) },
+      aba.getParent().getId());
+    return;
+  }
+  lin.forEach(function (g) { aba.getRange(g[0], 1, g[1] - g[0] + 1, 1).shiftRowGroupDepth(1); });
+  col.forEach(function (g) { aba.getRange(1, g[0], 1, g[1] - g[0] + 1).shiftColumnGroupDepth(1); });
+}
+
+/**
  * Uma regra de cor que o gerador declara na aba (`condicional` no ABAS): o texto que começa ou contém um trecho, ou uma
  * fórmula; e o que ela faz (o fundo, a letra, o riscado). A FICHA refaz todas as regras dela no corDeEstado_, e por
  * isso as declaradas entram de novo lá.
@@ -1430,7 +1451,9 @@ function montarAba_(aba, spec) {
     // que a montagem é em inglês.
     v[t[0] - 1][t[1] - 1] = t[2];
     if (typeof t[2] === 'string' && t[2].charAt(0) === '=') formulas++;
-    if (t.length > 3) {
+    // 18/11/2026: a R53_EVENTOS (r53/caminho_leve.js) grava o estilo 0 com a lista de estilos vazia; sem o estilo,
+    // a caixa fica com o padrão da aba.
+    if (t.length > 3 && spec.estilos && spec.estilos[t[3]]) {
       var e = spec.estilos[t[3]];
       ff[t[0] - 1][t[1] - 1] = e[0];
       fs[t[0] - 1][t[1] - 1] = e[1];
@@ -1608,8 +1631,9 @@ function montarAba_(aba, spec) {
     // Cada grupo é [primeira, última, fechado, profundidade]. Um grupo pode morar dentro de outro (a extensão do
     // painel de XP, dentro do painel): todos nascem primeiro, e depois fecham de dentro para fora.
     var deDentro = function (a, b) { return b[3] - a[3]; };
-    (spec.grupos.lin || []).forEach(function (g) { aba.getRange(g[0], 1, g[1] - g[0] + 1, 1).shiftRowGroupDepth(1); });
-    (spec.grupos.col || []).forEach(function (g) { aba.getRange(1, g[0], 1, g[1] - g[0] + 1).shiftColumnGroupDepth(1); });
+    // 18/11/2026: na MONTAGENS, os 207 grupos um por vez levaram 201 s e a aba passava dos 6 minutos. Com o serviço
+    // Google Sheets do projeto, todos nascem numa chamada só (addDimensionGroup, na mesma ordem: o de dentro aprofunda).
+    criarGrupos_(aba, spec.grupos.lin || [], spec.grupos.col || []);
     // 01/10/2026: a FICHA AMALDIÇOADA tem cinquenta grupos de linhas, e quase todos nascem fechados. Quando os
     // fechados são a maioria, todos fecham numa chamada só e os que nascem abertos são abertos de fora para dentro.
     var lin = spec.grupos.lin || [], fechados = lin.filter(function (g) { return g[2]; }).length;
