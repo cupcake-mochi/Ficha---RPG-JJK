@@ -38,6 +38,43 @@ A Era foi feita primeiro; a Ciclo depois, em outra sessão do Claude que retomou
 Para voltar: restaurar dos backups `16fAW6…` e `1sw4tc…` (planilha e projeto). A volta da DADOS_R53 também existe nos
 pedidos de volta do preparador; a dos cartões não.
 
+### Ensaio numa cópia de jogador, depois da instalação · 19/11/2026
+
+Pedido do Mizuki no chat: "va fazendo oq falta" e, para o script da cópia, "Autorizei, pode seguir". Nada foi feito
+nas oficiais. Os testes rodaram em duas cópias descartáveis feitas pelo Drive, as duas já na lixeira:
+- `1KCEtB…`, copiada da Ciclo instalada;
+- uma cópia do backup `1sw4tc…`, que é a Ciclo de antes da R67 e serviu de base.
+
+- **Tempo do `onEdit`** (cópia nova, primeira abertura):
+
+  | Medida | Com a R67 | Antes da R67 |
+  | --- | --- | --- |
+  | `onOpen` | 30,8 s | 23,3 s |
+  | Primeira edição de verdade | 30,9 s, estourou os 30 s | 24,6 s |
+  | Edições seguintes no cartão | 14,7–16,7 s | 18,9–21,1 s |
+
+  O código frio da R67 pesa uns 6 s a mais e passa do limite na primeira edição. Já aquecido, não ficou mais lento.
+- **Máxima de ponta a ponta** no nível 17 (dropdown FICHA!AH11), no cartão da FICHA AMALDIÇOADA:
+  - Explosão com dano dá 19d8, saldo 8 e 25 PE, sem aviso;
+  - DADOS_R53 linha 46 dá base 0, forma 5 e orçamento 8;
+  - é a mesma conta do modelo do bot.
+- **Bot, rodado localmente** na ANALISE exportada pelo menu da cópia ("Bot: em dia · 19/11 12:40", formato 13):
+  - O `conferir` local dá o mesmo resultado da produção: 12 erros, todos `invocacao.N.exp.acerto`. A ficha exporta essa
+    chave como `resultado`, e o esquema B47 do bot ainda espera `entrada`. **Esses erros de formato fazem o bot
+    parar antes dos cartões** ("Formato/entradas inválidos: contas dependentes não executadas"). Por isso nenhuma ficha
+    formato 13 tem a Máxima, nem nenhum outro cartão R53, conferida no Discord hoje. Isso já acontecia antes da R67.
+  - Quando a parte dessas 12 chaves é trocada para `entrada` no teste, o bot confere a Máxima: "Classe 5 · Dano 19d8 ·
+    25 PE · saldo 8 · ficha VÁLIDO". Ele também acusa 22d8, 30 PE e saldo 2 como errados.
+- **`construir()`:**
+  - Não roda nas oficiais nem nas cópias delas. O pacote leve trava `construir`/`continuar`/`acabar`, e o seletor do
+    editor não lista função. Ficha nova continua pelo pacote completo do repositório.
+  - O `regressao-construir.js` no ramo da R67 roda 7 min e para na aba FICHA, porque o Sheets de mentira não imita
+    `Sheet.hideRows()`. Com esse método acrescentado só no teste, ele passa e para na CONFIGURAÇÃO:
+    `Range.getTextStyle()`, que o Apps Script tem mas a lista `REAIS` não tem.
+  - As duas chamadas são das extensões custom de 18/10 (`a0b23e5`, `ccbd053`). Então o arnês está desatualizado desde
+    então, e o `construir()` completo não foi certificado nesta rodada. O remendo do teste foi desfeito.
+- **Não rodou:** o celular (não há como daqui) e o `construir()` num Sheets de verdade com o pacote completo.
+
 ## ANALISE estática · 17/11/2026
 
 Pedido do Mizuki no chat, com ele no PC: "Sim, as duas coisas" (mesclar a PR #132 da ficha e a RPG---BOT#104 do bot,
