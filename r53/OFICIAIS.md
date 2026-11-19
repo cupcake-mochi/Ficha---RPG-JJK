@@ -9,6 +9,35 @@ Estes são os **dois modelos oficiais**, confirmados expressamente pelo usuário
 
 A antiga `1u0zWQ…`, a C, a candidata A `1427…` e as cópias de ensaio são referências históricas. Não substituir estes dois endereços pelos links de publicações antigas. A ficha do amigo usada para diagnóstico não integra este par e não foi alterada.
 
+## Técnica Máxima R67 · 19/11/2026
+
+Pedido do Mizuki no chat, depois do ensaio na cópia `1H6snr…`: "Pode instalar". Preparador e pedidos da PR #136
+(ramo `claude/rodada-r67-0b8c4f`, commit `76bc667`); roteiro em `diagnostico-android/PLANO-RODADA-R67-2026-11-18.md`.
+A Era foi feita primeiro; a Ciclo depois, em outra sessão do Claude que retomou do mesmo ponto, pelo Brave.
+
+- **Backup antes**, pela página de cópia de cada oficial (leva o projeto junto), no Drive da conta dona:
+  "BACKUP antes da R67 19-11-2026 · Era da Revolução" (`16fAW6…`) e "… · Ciclo Maldito" (`1sw4tc…`).
+- **Projeto:** os onze arquivos relidos antes batiam com o "antes" do manifesto nas duas. Seis trocados, iguais nas duas
+  e relidos depois de recarregar o editor: Analise `98f8f056cd4f` → `948bd0b51a61`, AnaliseEstatica `450709a1a988` →
+  `4543892d3cd9`, Codigo `94f1a184f2af` → `d7031a736b37`, EditorR53 `35065b22a3ea` → `f23329f99dc3`, Ficha
+  `6c0391edac63` → `57d66d9cb7b5`, Invocacoes `e73584ddf3b1` → `650d9336aba9`. Os outros cinco sem mudança. O Codigo
+  novo já traz os dois `R53_LIVRE_HASHES_` novos, então o atalho segue ligado.
+- **Planilha, pela API do Sheets:** 26 células da DADOS_R53; 2.008 trocas com regex (251 em cada coluna: CV, DA, DB,
+  DG, DH, DI, FH e FX, como no ensaio); cartões da FA, das 12 domadas e a DADOS_AM!HM38 em 206 pedidos (80, 30, 25 e
+  71), todos aceitos. O cartão da FA mostra "SEM DANO" com a caixa desmarcada; a HM38 dá 0.
+- **Ciclo comparada com a Era** célula por célula, depois das duas prontas: FA J355:U357, INVOCAÇÕES I220:AF1383,
+  DADOS_AM!HM38 e DADOS_R53 A2:GA253, 71.293 células. Fórmula, nota, validação, fundo e mesclas iguais. Nenhum `#`
+  em DADOS_R53!CV2:GA253 nas duas.
+- **Exportação:** menu Bot > Exportar para o bot nas duas, em dia às 11:23 (Ciclo 11:23:08, Era 11:23:36). A ANALISE
+  de cada uma é igual à do próprio backup, fora `analise.exportada_em`: 18.502 linhas, formato 13, sem `#`. (Os
+  modelos estão vazios; a Máxima só muda número quando alguém monta uma.)
+- **Não rodou nas oficiais:** nenhum teste pela interface (o `onEdit` da R67 não foi medido nelas), o celular, um
+  `construir()`, a inversa. No ensaio as duas primeiras edições depois da instalação estouraram os 30 s (código frio)
+  e as seguintes levaram 12,1 s e 6,6 s; a primeira edição de cada ficha nova pode repetir isso.
+
+Para voltar: restaurar dos backups `16fAW6…` e `1sw4tc…` (planilha e projeto). A volta da DADOS_R53 também existe nos
+pedidos de volta do preparador; a dos cartões não.
+
 ## ANALISE estática · 17/11/2026
 
 Pedido do Mizuki no chat, com ele no PC: "Sim, as duas coisas" (mesclar a PR #132 da ficha e a RPG---BOT#104 do bot,

@@ -173,6 +173,21 @@ Achado: a planilha está em pt_BR. Fórmula com vírgula dá "Formula parse erro
   caminho é o backup.
 - A foto de antes dos 6 blocos das INVOCAÇÕES. Só a FA N355:U358 e o HM38 foram lidos.
 
+### 6.2 Ensaio de 19/11 (cópia `1H6snr…`, feita da Ciclo oficial) e instalação nas oficiais
+
+Rodou na cópia:
+- Os onze hashes de partida batiam com o "antes"; os seis arquivos instalados e relidos no "depois".
+- DADOS_R53: 26 células e 2.008 trocas (251 por coluna). Cartões, notas, validação, fundos, mesclas e bordas aceitos.
+- Pela interface, cartão da FA: nome "Teste R67" e DANO marcado deram R356 "8 − Melhorias 0 = 8 pontos", P356 "5 PE",
+  L357 "24d8"; a nota nova aparece na caixa. Depois DANO desmarcado e SEM DANO marcado.
+- Execuções: as duas primeiras edições (nome e dano) estouraram os 30 s (30,6 s), as seguintes levaram 12,1 s e 6,6 s.
+  Leitura: código frio logo depois de instalar.
+
+Não rodou na cópia: o resultado do SEM DANO lido de volta, troca de Classe com a R356, domada, Buff com `R53_ONEDIT`,
+a inversa e o `construir()`. Os valores de teste ficaram na cópia (D356 "Teste R67", T356 marcado).
+
+Instalação nas oficiais em 19/11, com o "Pode instalar" do Mizuki: ver `r53/OFICIAIS.md`, seção "Técnica Máxima R67".
+
 ## 7. O que fica de fora e os riscos
 
 - Oficiais: nada nesta sessão. Depois, só com você no PC e backup antes.
